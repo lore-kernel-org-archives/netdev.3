@@ -1,101 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793748916;
-	b=49W9yG3M5P3iK8P23gDQy+FISPFl5JRRsjCZ0PROcYkp10jCnVLSl5KOJNjL9ET6h6ST
-	 fW2d9vzzp0SlfPl38uANA1mymEQi5WSarAAQA3rCobD+WFZj9zSWUNCDrnMK3CLfWcNri
-	 /hZgwXP0opoe5tP/JqbsKGGBtJQ0FsyaRmN365FqBVwUzIBpslRI7HP78E6wb9mMsdi3J
-	 RAgvfoAjhyMckuyd5KWqLu7CuFxLC6Dnp0yNL2B33mfZsb9e/ZQoEJbojvf8VCwg8Odx0
-	 Yuy4tvBXFjTuwVVq5UqRQzj0A6trH7vj1/S+IpoQv0KUiKc81cSsNTRF6UXz0unnPVA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793748916;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=nKxJiX2hq5njbsbRPPasik6GSDqBNI5NA8L85r6kDpk=;
-	b=V0hOceQwWNm7SYFD3lAYea0N71xB/Zt+G/a9+BpQsGqJLFGaitfKHyGqtFZjf7n0t/LJ
-	 N5CNCw4eYwM7vRyOotsU/KSHwZlNCeOjJbvEnsqO/XU4S3QessIOPTnQ/chqtdv8s8qXK
-	 sIz4dz1C+lV0Fm0Wz5aJJVQOYMZzZUDkus+T6D+Iz+PHvYrjK8hoyhRzKGmNeDDJmHlUI
-	 tdzDzE9D6S45so1SFAfP/ioL175l+dzr+FQTMQd/YPm5iY4blVYx2godvEfuLCLv66N11
-	 vVr8nZIOFaO7HomAU0OfMCcIUfcDf711ancvA8KJ3EAtCMBK1otwAbEDDJrG1dlSLpQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VxTJ+4aJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.43
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.84
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793748944;
+	b=PMflxAa1Ow/YkhHFjwro/m1q+4eYQ8VcQ7K3N6h8qkqM9K4ds1DykIo7BRDdAMknbx53
+	 xfp1hrkAq0Wlzm5B1CZVtcR+AmVskX6+7hOqY6OYbSnYVVGH9ibZwmarA0O72b1fhTlqQ
+	 M97uqSN6qyoq1On+a4kugX4Ykw/Myt5Q8JjMAj7QPcAQKuwZB7LOdBNYujCNkI2jWGI2P
+	 9JcC56BIly9j0ml/k5VLiWc2s4P/xAokCzHQ2+RN/wfxG0gjicAMBZkRmE0yprmIDDqCx
+	 fva1jZm3OP0BSR2ibv29TAdq+u/h2YeRmSP+9nt2lrf9G9KGzcaiDr3zFpHXp7vNvwA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793748944;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer;
+	bh=PL9qczLM2vePYzFGhXvjJjFfnm/7O0KesC4zQojdSF8=;
+	b=X7LiyR4l0aBYX3e6fLa3qkEDdf/0S61T+fVWgy72uZw6UXnPHNOqFy9cwlRBEO/E4N5r
+	 /ybWLAY4rB9hQ51fkFEtLLQI1ALv0KfgQ9McA7bsAC2AMASnHaBADApMB2prcM6SH9tEN
+	 INhXLD+GCV+fl+hbRvhjfxGOOHiBpOGQT/b7DO0lEK577dp20OhL09ATEqIlImzsVonIN
+	 x7pgd5O33Ix0MVAT4t1a/3leCkp3Y9W54pe6Ruk2VZ7c4F6tUeOF+iLaaUKwQ5Gvj/dzl
+	 0+AJio8QfLWAcJRrSaHiwDlXkQXtJ+00jQMME3RkI8YxilL3dhZCFmB051thHQ2Uo8Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=XHN9+Kkt;
+	arc=none smtp.remote-ip=66.163.189.84
+Received: from sonic306-22.consmr.mail.ne1.yahoo.com (sonic306-22.consmr.mail.ne1.yahoo.com [66.163.189.84])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E28606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:35:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48E28606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA56B606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:35:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA56B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VxTJ+4aJ
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91c73c63116so1981946d6.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 15:35:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793748914; cv=none;
-        d=google.com; s=arc-20260327;
-        b=P2jmtb2BWKh1wOZn28Srbf6azgPuthXiHy3/p/KrSut8HGDeoiXs0LksMc9uO9q+ZF
-         br34gDkJ22JXP40FwaYpx5iK/0hT88OqaE+BDiNH1PxR6YddQggemtV+kaLyiWWWVN+i
-         HSMPZkwLhRM3z/PI/GgoT9J1r5ne9sD5+U1qneBbCiJmHPotq2wsGWaapCDX9txVp3L5
-         0yh+uk9RNAxPdLfnjRI1Uap/jZbcobJdiZQbzO4MlQHYlPsCdDnmGPKOHKZlwcT88xkx
-         DkaUuM/UYQXd4tc52+mkwgzYR+IRmST0fSqEAFJKdyIrBjT7pHMTnmZZIY4c6NxeJeSp
-         DmhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=nKxJiX2hq5njbsbRPPasik6GSDqBNI5NA8L85r6kDpk=;
-        fh=upGGgx/ImqNXeOoZiuJiAEw4lkASZQtilggUoQDSV1Y=;
-        b=ERHeS1poHjM2C3SK5p82djtMpSZcKa/1KjEZcfT+oSLSY4M6TmGR6sakfjBUL/5rzt
-         IF8S99+O207b6R66y8Oye6IB4EwkTWVXcKmp27dfgx+SAlOog54EhEiH/qHZ+2zDsELF
-         rT3mEZTOQhOuW7aoELmyYDZmc6bgjum5L6e1PYlat2oOQMG+A+8/NjZoyS+94VPlOOy2
-         ROgE4m6fTRr9E/ZamMvvnb86OM0NUoLQBwy7ju/02Bf269F9lMWqgb/KsJLaivE4T6Cz
-         KNAJaEbDjfwY76+AAWpuemuQ8F4/uZ0dWaGqU5QPWlQmiyUhGBWahEBxWCDIxqelyeTm
-         mVOQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793748914; x=1794353714; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nKxJiX2hq5njbsbRPPasik6GSDqBNI5NA8L85r6kDpk=;
-        b=VxTJ+4aJ4hoGXlN0OEblscqsEQ8ZIHoVlcPvCs4QWOtOxiB6KfhsX9LnWXJ1+88jC5
-         0JTCj2E5N2/3fs3r1e+RvaE9uLU+ENzivEnj2ssqal8mv3UOGemtl16V1KRc5jm/UX3C
-         RxanjYA2i4+D/A+cmNKKG0E8C4enpHVo0ZPMBVFtUDmR5OiNohPGtyk0ZJGJRTkv93uX
-         v7hCXNF/t2IwvnBd8lnfDtMCDVh7ykrqTzVw9MjHzF74JPrJRs78yx3S2MLuciYisYU+
-         qAU9pf9YwEGQt2oG/HcPePOzm8xYVcD/4WEYZIKmHy4+NwBYlOcYGNmtY8HhfcBa5r8h
-         1msA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793748914; x=1794353714;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nKxJiX2hq5njbsbRPPasik6GSDqBNI5NA8L85r6kDpk=;
-        b=f5kOYssQUeGln3qHzoYSQQPW3CwfwCgPdBsfXaT+lKzP7UNiPkBOmwcGjtDCU7O3IS
-         TEOSg4fcg1wvew3kULz8OkJxAcwTAT4uDdjqc1FhgzanvT7hiIFOGoohdOHxWe4jK09n
-         d9fmUQ9GVlUNHsFsXVJ0o3n2MBhFQSygXOZ/0tpUriFvr5uJcvXrhgsa68CyHrNxkj/7
-         uSktFAEv9c54HKotDC0WNmS4CHg8No/d37c2GVla9OFDFVY/vxxN/K2sRyIhzrtvUEyh
-         /wD1O4F6RDbBIhmhNUUvb58X9cwd8eRtKjycNyC4lvwWb2LrxlU+sNF7irgyM/9NHMQ6
-         gXmA==
-X-Forwarded-Encrypted: i=1; AKwUvBzOBI4nMeUuwMyfJ0RKBH3IXMNJeM7GMqXTgc/lyUJ1R3C26lDi/o7wHgogTbKJJWzBkBegidQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+oxd7YAQlR8bTHhhijFIkguYkRP690uixaBpTPaLxOReb8wvns
-	osUuDVpB+8ZZmjBLhCu6NypG61yKi/x0nJJ1R6YLhIPBHghyQNmE9G3WhnXj7K3j20RCOJKuAty
-	21RcaXL7hb7CdmN3sCdnHzIqpMICD/sE=
-X-Gm-Gg: AYBFou3Wl4aN0KOL+f6bop/Iqx23hu+kJ7cTSmoUVXbJSP1NrG4LUsxBWwtChY7pGYt
-	3i83V+J4mDRRe2npeAaVylM3I9CY7ZyMyQ5R4ncUxhC+oLg0WvGLxFW39EA56M7WeB7rvFji8xr
-	EFfGC4bfCJrmMRwGuYFioVL0DmAqEEHo8rgXHtN/g036TVgTXckyYsXVrINWUYtq2mH+Y+83wAR
-	nkqhJe/vW2CMqZsz55/n5TQ3vrdJe/qrWe4Hsw/fyuzVBSMxOShduQss0dxlOyv9Ed64EeuzOHp
-	dt+dpapsRLDfTP22JfFrqD7Yoh0yQ5oaihe+4d+pEYxN5+RhAe2/TV2urNo/avYjJkMlw7KPJAn
-	p3PuFJYcDPJqkkZOWjlu36Kg0yBL4lJHEwLEaefp/BXN4fRLwdnyYetKZRnXpnzA4iX5bMmGdtC
-	Dw30oMhkn7IivyWDNE155G8BeDokt7xBeFroKgG6DlAdE7RZrVR/qKv3jU+4LkkKCEOxRGVujpQ
-	dAsV9cnrizFCJFBWpveoDm8MQ==
-X-Received: by 2002:a05:6214:300b:b0:91c:7f1f:2c9e with SMTP id
- 6a1803df08f44-91ca4c1bea5mr239516046d6.55.1793748913967; Tue, 03 Nov 2026
- 15:35:13 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=XHN9+Kkt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793748942; bh=PL9qczLM2vePYzFGhXvjJjFfnm/7O0KesC4zQojdSF8=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=XHN9+KkttPbOsIBTzJZISZqKGyH0VP3eaKcM8ItuoJ2XshdqB1cEWn3BDUEyxSSJDm93DrOj8CE7US3hwuxnyKM9Jtr5ALk6D0/SlRjBHsfhraJI8/G33kbSknT0ut5sqQAtkwA2hP1KZKYg/VI2GhedenY3cmxa84qxjBTTIdkSnWZuBWpacElbOX4/e+oUD47t56HqypgEG+7FrK6K+wxidAtWFP/Vt70cQBJdmx/5MwV6Z4urhvj6j37Lcspoxc8Rn0wiMSOC9E3i8cctyMI39neC8OF5p7ZpXi40WnJZ9yIjUSD/MZ0PgAhJYG8AnH2LK54f40WerewWEFGtIQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793748942; bh=wwpTX1lMHzJJRr9tiCjHeeBu85cmABqgGqUdwagFot4=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=Pc8leTZEXGQbhChuFwwpZMpikunBYhKX34Gq8VthtGN8cZmoEpkmbtXDxa7QG463+eCYxGBgh17t1tvomMDCz8Mba5xdyXKVwH2xVKP9AH+18DZCiWckpoGK5DFOTfx+tl0Pocab1N6SzWA0gmM1wPjxoJnK6FEZgc+1bluF83MudS/yBNQ3hleXga86rLy3c0d4G3ZO2Dm7q3gMjbDh75CKYCOw3yElzvYCOV3bcFd4DkCuezv0M7PdoS0cC/JaAVy1m/affWK+lz9eAMGwJ0pXTBAGDOmO+5fZ86KyVyKVmWl4+d/A2NrUeMJ5RgQTzXZaygnWvq3+WgVySjhMEA==
+X-YMail-OSG: 75neefEVM1lry92bN75.8jqsptLS8tFoLnO39ub3GhFFdAQlZAObdULuFDBiSH2
+ HmZb.YJ4w65XaFTYP_CfH9.uzCT.We8l98K.7I42Qi0G.73OVJ5rynVsdoE8hEgjR6XmL6Yhzotv
+ QjZWCnhserrsR7VPuLK_uIs8quSuqqe2JLqQUqWiT3eR4yF80L.dG_3zsS6o9qtRc9._lRvOQyUT
+ XNsyCPW50RwbK1XDbTnHqlUmPM1YP_2EZdDl0HBzdVcH7T.0WwyFmxfLbsxywAcwwQYo.IYsUSlL
+ pZycqeFsnCpgENy.8MzXAxKfzyMwPFW85zGStJFBgkMRU2u9oU_i3Y3SoNI_h5njCjhrGTkLxhI.
+ T4y5ACVYALcpOrfgLcnJcI1JAUFTYCJuVSrC3T73m37ppVE9b5SqW7Qypzio7tLd7uhdF3XdLUPv
+ wlfPqDPkC4UQBRSl9ueMqn2xaHQl3YYqXgLZBXi2deGB7LkWMvWG9rQoTUF_.3DvobkHggqfdaCd
+ VoSfE_JIkcLDiBdYdL8roZvCOHUOqwyuNISC6GNIaMaZmn5DTQYrFARyP5nOH8miEL0FcQwhK4JD
+ PafRSh8OFVIAxxX.gszOIouD3UQ_AYNgrHW0h5dkSGO4PHJoHDue7mu7xPqji_i6UBRW0yF.bbgx
+ pwWbXpIQXum5L1LsjRuUfenUBT8OTW8bqr9kbh5tMeiE3EPxlNFOu66uGyJ1yY9xd2AD1RM6Ztqe
+ J5Vt.ScjzIE6Dk1Y0PrLqZhXRqDHitAVgYJoUCLZdNVIZhTFQsU5gLrkr9LQiiIkBVHXck0MFumS
+ mq7EKR_1u32IXxfhMpoV.0iAsUI6ZlAK6fPH0elhaaJ2JL_cQj2Oa_VTQT617E_MunecXrVMZrvJ
+ dLODzpLXLqRCuJ8KJqukAE2z060GtCbovURCCyq_Wgxrmdipo0aijna3UNFiHf51tbDm_7AbuIl1
+ lqqDFHnTGvuCtGmwoBZultFgstPcHWC671ZeEQbRq2KLpe.ErXrGDkoNN4FL_3Yu722CdC4n4lZE
+ E.Yjq8pTh0D7gq5TJQeRhBB9cou3oItR6t7lwHR9JWrUqtF1alPUMHpZZuN08aVcB2EJHWk5vpVw
+ Ain63rrnZFZw.wSy53SIEjdkMzbAdKjxC9drNIiJBZgbj7XKFVmjr6BncaFw_CwBjISPWuO9dX2J
+ z_GNZC_94kl6WdXD7mQKkejKqVsjGzn6_alNqYASalUl7YTDXXmJcBD0578hOc97JYMWzV5T2s3T
+ 7Fsi3NkJnoLBwuB.214q5Y6.zPTDKCo5gwXhTA2HOoQ4VaGH3Zoh8LnqtkSay2Rim_obQbxTXFUT
+ YaDMlWy34LsJwVny_q5uXfQ1ireN8872MESk0YarwTjt87aa.I2SLs6hGCoAwrpn_FWOMSOwvcCg
+ Pk8EmCBRX9ThYRt6NBwDnNgcoDlPoXYUMkrkWNgTm8y2n8dPVqroc4o8ZNP1Wv01OkqWMELZNaWv
+ YeI5YRgg0QvR9TPDlllfA7pCI9xixZ7EOJ7AdcA528qntuP15rAbmAU8o5frpz0wX3AhoH3Q_pvG
+ R_aCVwIFwEdIXEyWCRXFOioMFz_FDq9NnN4QYYbgGcjb1Ul0NjcBI0XJPcqKmaBtHyTvDe9M1rbk
+ xU0yKy5UblLTlaJbRIPwRRvkbEj1YkeJbA5UKzDKkeWnGxmgUiLWx.QTFl2ufotQQGt4hRa1i7Cc
+ Zp2SVVOYIJyl8CloD7kBfC9CAdNL0kld3lTMu0eONha8Cpv_F9xWLwCaYJX6G86DNwCxlhfxsyT3
+ L_0_Z0uIyvwv5jTpoBJpyTDcg.9Ue97w0KEjE6AAlf15zjJ.3GJ4cUYLdssPj4gW.OgTNRaZkboz
+ u_NDRuTrKu6.BWVgvsK1ScxuYj9UvMeVevqX32O5qJk5Fh.grwrl6DM5NZZ.UxiWVrYVX3CgHjHn
+ fnJOd3jNEUSI6GsQ4pi0AgAa53BPdq0CrrNcxw25KPXyqQOxuCeSso1fTo1JIHD9Rptf2GvDaJUr
+ fkw95buy.Aov6AY8O8L3Bj4ARQM3wVneWqKg95X36hHM6zJ8LNT64ekWrWeTmMPnfKsj2amwCf9x
+ 5qGs299UiBV3GjR2nrbY1WrOXzo5Issqg2_DmRhVslJjZXPxuGp2EWAEQFgB6R14xvai7C08ubgB
+ en0PHY0kpAbKR.R6_kKGYsVE2J3o6hlYqlKku7ALzkGrwOaqZcCxmzq2BlWPNGeAcWVJOhAc5Kwf
+ y.SLe3GX7gETOHaHap7VR.g2VBbexSzgGGCy7e0PmN9QqlNXAkG6Z.ZnEPbN4vwfk3tfAxiOL3Jz
+ UpVowugU0XXrfp0sy9oIf1ofc_uEfAfopc_2h0c_cEOJ3OUQi
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 038ae7ca-bbce-48f5-9b72-58330aa70dc2
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Tue, 3 Nov 2026 23:35:42 +0000
+Received: by hermes--production-ir2-5dd9bf4598-hl6xw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2582614db1dba6081b7cea4524be2424;
+          Tue, 03 Nov 2026 23:35:36 +0000 (UTC)
+Message-ID: <3685f73e-0c28-4ff1-8c8e-3c39643a6649@yahoo.com>
+Date: Wed, 4 Nov 2026 00:35:33 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,36 +84,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103-keyupdate-rfc-v5-0-de1ab90a88d5@gmail.com> <20261103-keyupdate-rfc-v5-4-de1ab90a88d5@gmail.com>
-In-Reply-To: <20261103-keyupdate-rfc-v5-4-de1ab90a88d5@gmail.com>
-From: Daniel Pereira <danielmaraboo@gmail.com>
-Date: Tue, 3 Nov 2026 20:35:03 -0300
-X-Gm-Features: AclHuK9j19hhkEsExp91lQWmWztn20ZPkjs1fSHVQiEkHUWk4-OotQ7EK4u8uqk
-Message-ID: <CAMAsx6d0kMWT+QLBVGnGjfbEUDuOfrBaoCaizMNKZKn+NmkG=Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 4/6] tls: update the RX key when a KeyUpdate
- is received
-To: martin.belanger@dell.com
-Cc: martin.nvme.dev@gmail.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kuba@kernel.org, sd@queasysnail.net, 
-	davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	john.fastabend@gmail.com, hare@kernel.org, cel@kernel.org, 
-	alistair.francis@wdc.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	rdunlap@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH net-next v8 09/11] net: dsa: realtek: rtl8365mb: refactor L2
+ MAC handling
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com>
+Content-Language: pl
+In-Reply-To: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-<devnull+martin.nvme.dev.gmail.com@kernel.org> wrote:
-On Tue, Nov 03, 2026 06:57 PM, Martin Belanger via B4 Relay
->
-> From: Martin Belanger <martin.belanger@dell.com>
->
-> When a KeyUpdate arrives, kTLS blocks reads with -EKEYEXPIRED until
-> the user installs the next key. A kernel user such as nvme-tcp or
-> sunrpc never does, so the connection stalls.
->
-Hi Martin,
+Move the L2 MAC pack/unpack helpers above the family C serializers
+and use them there instead of open-coding the byte packing, since the
+layout of the MAC address words is the same for both families. The
+now unused per-field MAC masks are dropped.
 
-Reviewed-by: Daniel Pereira <danielmaraboo@gmail.com>
+Rename the family C serializers to rtl8365mb_c_l2_*() and keep
+rtl8365mb_l2_{data_to_uc,uc_to_data,data_to_mc,mc_to_data}() as thin
+dispatchers taking priv, so that a following patch can add the family
+D layout without touching the family C code again.
 
-Thanks,
-Daniel
+No functional change.
+
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+---
+ drivers/net/dsa/realtek/rtl8365mb_l2.c | 117 +++++++++++++------------
+ 1 file changed, 62 insertions(+), 55 deletions(-)
+
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_l2.c b/drivers/net/dsa/realtek/rtl8365mb_l2.c
+index 0494d8a..01cf2d5 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_l2.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_l2.c
+@@ -12,12 +12,6 @@
+ 
+ #define RTL8365MB_L2_ENTRY_SIZE			6
+ 
+-#define RTL8365MB_L2_UC_D0_MAC5_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_UC_D0_MAC4_MSK		GENMASK(15, 8)
+-#define RTL8365MB_L2_UC_D1_MAC3_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_UC_D1_MAC2_MSK		GENMASK(15, 8)
+-#define RTL8365MB_L2_UC_D2_MAC1_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_UC_D2_MAC0_MSK		GENMASK(15, 8)
+ #define RTL8365MB_L2_UC_D3_VID_MSK		GENMASK(11, 0)
+ #define RTL8365MB_L2_UC_D3_IVL_MSK		GENMASK(13, 13)
+ #define RTL8365MB_L2_UC_D3_PORT_EXT_MSK	GENMASK(15, 15)
+@@ -36,12 +30,6 @@
+ #define RTL8365MB_L2_UC_D5_FWD_PRI_MSK		GENMASK(4, 4)
+ #define RTL8365MB_L2_UC_D5_STATIC_MSK		GENMASK(5, 5)
+ 
+-#define RTL8365MB_L2_MC_D0_MAC5_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_MC_D0_MAC4_MSK		GENMASK(15, 8)
+-#define RTL8365MB_L2_MC_D1_MAC3_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_MC_D1_MAC2_MSK		GENMASK(15, 8)
+-#define RTL8365MB_L2_MC_D2_MAC1_MSK		GENMASK(7, 0)
+-#define RTL8365MB_L2_MC_D2_MAC0_MSK		GENMASK(15, 8)
+ #define RTL8365MB_L2_MC_D3_VID_MSK		GENMASK(11, 0)
+ #define RTL8365MB_L2_MC_D3_IVL_MSK		GENMASK(13, 13)
+ #define RTL8365MB_L2_MC_D3_MBR_HI1_MSK		GENMASK(15, 14)
+@@ -131,16 +119,29 @@ struct rtl8365mb_l2_mc {
+ 	bool igmp_asic;
+ };
+ 
+-static void rtl8365mb_l2_data_to_uc(const u16 *data, struct rtl8365mb_l2_uc *uc)
++static void rtl8365mb_l2_mac_to_data(const u8 *m, u16 *data)
++{
++	data[0] = (m[4] << 8) | m[5];
++	data[1] = (m[2] << 8) | m[3];
++	data[2] = (m[0] << 8) | m[1];
++}
++
++static void rtl8365mb_l2_data_to_mac(const u16 *data, u8 *m)
++{
++	m[5] = data[0] & 0xff;
++	m[4] = data[0] >> 8;
++	m[3] = data[1] & 0xff;
++	m[2] = data[1] >> 8;
++	m[1] = data[2] & 0xff;
++	m[0] = data[2] >> 8;
++}
++
++static void rtl8365mb_c_l2_data_to_uc(const u16 *data,
++				      struct rtl8365mb_l2_uc *uc)
+ {
+ 	u32 val;
+ 
+-	uc->key.mac_addr[5] = FIELD_GET(RTL8365MB_L2_UC_D0_MAC5_MSK, data[0]);
+-	uc->key.mac_addr[4] = FIELD_GET(RTL8365MB_L2_UC_D0_MAC4_MSK, data[0]);
+-	uc->key.mac_addr[3] = FIELD_GET(RTL8365MB_L2_UC_D1_MAC3_MSK, data[1]);
+-	uc->key.mac_addr[2] = FIELD_GET(RTL8365MB_L2_UC_D1_MAC2_MSK, data[1]);
+-	uc->key.mac_addr[1] = FIELD_GET(RTL8365MB_L2_UC_D2_MAC1_MSK, data[2]);
+-	uc->key.mac_addr[0] = FIELD_GET(RTL8365MB_L2_UC_D2_MAC0_MSK, data[2]);
++	rtl8365mb_l2_data_to_mac(data, uc->key.mac_addr);
+ 	uc->key.efid = FIELD_GET(RTL8365MB_L2_UC_D4_EFID_MSK, data[4]);
+ 	uc->key.vid = FIELD_GET(RTL8365MB_L2_UC_D3_VID_MSK, data[3]);
+ 	uc->key.ivl = FIELD_GET(RTL8365MB_L2_UC_D3_IVL_MSK, data[3]);
+@@ -161,23 +162,13 @@ static void rtl8365mb_l2_data_to_uc(const u16 *data, struct rtl8365mb_l2_uc *uc)
+ 	uc->is_static = FIELD_GET(RTL8365MB_L2_UC_D5_STATIC_MSK, data[5]);
+ }
+ 
+-static void rtl8365mb_l2_uc_to_data(const struct rtl8365mb_l2_uc *uc, u16 *data)
++static void rtl8365mb_c_l2_uc_to_data(const struct rtl8365mb_l2_uc *uc,
++				      u16 *data)
+ {
+ 	u32 val;
+ 
+ 	memset(data, 0, RTL8365MB_L2_ENTRY_SIZE * 2);
+-	data[0] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D0_MAC5_MSK, uc->key.mac_addr[5]);
+-	data[0] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D0_MAC4_MSK, uc->key.mac_addr[4]);
+-	data[1] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D1_MAC3_MSK, uc->key.mac_addr[3]);
+-	data[1] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D1_MAC2_MSK, uc->key.mac_addr[2]);
+-	data[2] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D2_MAC1_MSK, uc->key.mac_addr[1]);
+-	data[2] |=
+-		FIELD_PREP(RTL8365MB_L2_UC_D2_MAC0_MSK, uc->key.mac_addr[0]);
++	rtl8365mb_l2_mac_to_data(uc->key.mac_addr, data);
+ 	data[3] |= FIELD_PREP(RTL8365MB_L2_UC_D3_VID_MSK, uc->key.vid);
+ 	data[3] |= FIELD_PREP(RTL8365MB_L2_UC_D3_IVL_MSK, uc->key.ivl);
+ 
+@@ -200,16 +191,12 @@ static void rtl8365mb_l2_uc_to_data(const struct rtl8365mb_l2_uc *uc, u16 *data)
+ 	data[5] |= FIELD_PREP(RTL8365MB_L2_UC_D5_STATIC_MSK, uc->is_static);
+ }
+ 
+-static void rtl8365mb_l2_data_to_mc(const u16 *data, struct rtl8365mb_l2_mc *mc)
++static void rtl8365mb_c_l2_data_to_mc(const u16 *data,
++				      struct rtl8365mb_l2_mc *mc)
+ {
+ 	u32 val;
+ 
+-	mc->key.mac_addr[5] = FIELD_GET(RTL8365MB_L2_MC_D0_MAC5_MSK, data[0]);
+-	mc->key.mac_addr[4] = FIELD_GET(RTL8365MB_L2_MC_D0_MAC4_MSK, data[0]);
+-	mc->key.mac_addr[3] = FIELD_GET(RTL8365MB_L2_MC_D1_MAC3_MSK, data[1]);
+-	mc->key.mac_addr[2] = FIELD_GET(RTL8365MB_L2_MC_D1_MAC2_MSK, data[1]);
+-	mc->key.mac_addr[1] = FIELD_GET(RTL8365MB_L2_MC_D2_MAC1_MSK, data[2]);
+-	mc->key.mac_addr[0] = FIELD_GET(RTL8365MB_L2_MC_D2_MAC0_MSK, data[2]);
++	rtl8365mb_l2_data_to_mac(data, mc->key.mac_addr);
+ 	/* key.vid,key.fid shares the same memory space */
+ 	mc->key.vid = FIELD_GET(RTL8365MB_L2_MC_D3_VID_MSK, data[3]);
+ 	mc->key.ivl = FIELD_GET(RTL8365MB_L2_MC_D3_IVL_MSK, data[3]);
+@@ -228,17 +215,13 @@ static void rtl8365mb_l2_data_to_mc(const u16 *data, struct rtl8365mb_l2_mc *mc)
+ 	mc->igmp_asic = FIELD_GET(RTL8365MB_L2_MC_D5_IGMP_ASIC_MSK, data[5]);
+ }
+ 
+-static void rtl8365mb_l2_mc_to_data(const struct rtl8365mb_l2_mc *mc, u16 *data)
++static void rtl8365mb_c_l2_mc_to_data(const struct rtl8365mb_l2_mc *mc,
++				      u16 *data)
+ {
+ 	u32 val;
+ 
+ 	memset(data, 0, RTL8365MB_L2_ENTRY_SIZE * 2);
+-	data[0] |= FIELD_PREP(RTL8365MB_L2_MC_D0_MAC5_MSK, mc->key.mac_addr[5]);
+-	data[0] |= FIELD_PREP(RTL8365MB_L2_MC_D0_MAC4_MSK, mc->key.mac_addr[4]);
+-	data[1] |= FIELD_PREP(RTL8365MB_L2_MC_D1_MAC3_MSK, mc->key.mac_addr[3]);
+-	data[1] |= FIELD_PREP(RTL8365MB_L2_MC_D1_MAC2_MSK, mc->key.mac_addr[2]);
+-	data[2] |= FIELD_PREP(RTL8365MB_L2_MC_D2_MAC1_MSK, mc->key.mac_addr[1]);
+-	data[2] |= FIELD_PREP(RTL8365MB_L2_MC_D2_MAC0_MSK, mc->key.mac_addr[0]);
++	rtl8365mb_l2_mac_to_data(mc->key.mac_addr, data);
+ 	data[3] |= FIELD_PREP(RTL8365MB_L2_MC_D3_VID_MSK, mc->key.vid);
+ 	data[3] |= FIELD_PREP(RTL8365MB_L2_MC_D3_IVL_MSK, mc->key.ivl);
+ 
+@@ -258,6 +241,30 @@ static void rtl8365mb_l2_mc_to_data(const struct rtl8365mb_l2_mc *mc, u16 *data)
+ 	data[5] |= FIELD_PREP(RTL8365MB_L2_MC_D5_MBR_HI2_MSK, val);
+ }
+ 
++static void rtl8365mb_l2_data_to_uc(struct realtek_priv *priv, const u16 *data,
++				    struct rtl8365mb_l2_uc *uc)
++{
++	rtl8365mb_c_l2_data_to_uc(data, uc);
++}
++
++static void rtl8365mb_l2_uc_to_data(struct realtek_priv *priv,
++				    const struct rtl8365mb_l2_uc *uc, u16 *data)
++{
++	rtl8365mb_c_l2_uc_to_data(uc, data);
++}
++
++static void rtl8365mb_l2_data_to_mc(struct realtek_priv *priv, const u16 *data,
++				    struct rtl8365mb_l2_mc *mc)
++{
++	rtl8365mb_c_l2_data_to_mc(data, mc);
++}
++
++static void rtl8365mb_l2_mc_to_data(struct realtek_priv *priv,
++				    const struct rtl8365mb_l2_mc *mc, u16 *data)
++{
++	rtl8365mb_c_l2_mc_to_data(mc, data);
++}
++
+ /*
+  * rtl8365mb_l2_get_next_uc() - get the next Unicast L2 entry
+  * @priv: realtek_priv pointer
+@@ -293,7 +300,7 @@ int rtl8365mb_l2_get_next_uc(struct realtek_priv *priv, u16 *addr, int port,
+ 	if (ret)
+ 		return ret;
+ 
+-	rtl8365mb_l2_data_to_uc(data, &uc);
++	rtl8365mb_l2_data_to_uc(priv, data, &uc);
+ 
+ 	ether_addr_copy(entry->mac_addr, uc.key.mac_addr);
+ 	entry->vid = uc.key.vid;
+@@ -326,7 +333,7 @@ int rtl8365mb_l2_add_uc(struct realtek_priv *priv, int port,
+ 	uc.is_static = true;
+ 	/* age greater than 0 adds/updates entries */
+ 	uc.age = 1;
+-	rtl8365mb_l2_uc_to_data(&uc, data);
++	rtl8365mb_l2_uc_to_data(priv, &uc, data);
+ 
+ 	/* add the new entry or update an existing one */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+@@ -358,7 +365,7 @@ int rtl8365mb_l2_del_uc(struct realtek_priv *priv, int port,
+ 	uc.key.vid = vid;
+ 	/* age 0 deletes the entry */
+ 	uc.age = 0;
+-	rtl8365mb_l2_uc_to_data(&uc, data);
++	rtl8365mb_l2_uc_to_data(priv, &uc, data);
+ 
+ 	/* it looks like the switch will always add/update the entry,
+ 	 * even when age is 0 or uc.key did not match an existing entry,
+@@ -463,7 +470,7 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 	 */
+ 	mc.member |= BIT(port);
+ 	mc.is_static = 1;
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data(priv, &mc, data);
+ 
+ 	/* First look for an existing entry (to get existing port members) */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+@@ -472,7 +479,7 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 				    data, RTL8365MB_L2_ENTRY_SIZE);
+ 	if (!ret) {
+ 		/* There is already an entry... */
+-		rtl8365mb_l2_data_to_mc(data, &mc);
++		rtl8365mb_l2_data_to_mc(priv, data, &mc);
+ 		dev_dbg(priv->dev,
+ 			"%s: found %pM addr=%d member=0x%x igmpidx=0x%x %s\n",
+ 			__func__, mac_addr, addr, mc.member, mc.igmpidx,
+@@ -487,7 +494,7 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 			mc.is_static = 1;
+ 		}
+ 
+-		rtl8365mb_l2_mc_to_data(&mc, data);
++		rtl8365mb_l2_mc_to_data(priv, &mc, data);
+ 	} else if (ret == -ENOENT) {
+ 		/* New entry, no need to update data again as it already
+ 		 * includes the member.
+@@ -529,7 +536,7 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 	memcpy(mc.key.mac_addr, mac_addr, ETH_ALEN);
+ 	mc.key.vid = vid;
+ 	mc.key.ivl = true;
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data(priv, &mc, data);
+ 
+ 	/* First look for an existing entry (to get existing port members) */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+@@ -547,7 +554,7 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 		/* Return on any other error */
+ 		return ret;
+ 
+-	rtl8365mb_l2_data_to_mc(data, &mc);
++	rtl8365mb_l2_data_to_mc(priv, data, &mc);
+ 	dev_dbg(priv->dev,
+ 		"%s: found %pM addr=%d member=0x%x igmpidx=0x%x %s\n",
+ 		__func__, mac_addr, addr, mc.member, mc.igmpidx,
+@@ -565,7 +572,7 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 		mc.fwd_pri = 0;
+ 		mc.igmp_asic = 0;
+ 	}
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data(priv, &mc, data);
+ 
+ 	/* update the existing entry. */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+-- 
+2.53.0
+
