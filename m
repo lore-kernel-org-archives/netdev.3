@@ -1,113 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793705229;
-	b=rVfAPj88jF81n2Ovzo14XC0M2UserBqFqC2P7OsNrwpMYOK2dHCWeH2sx2lcqB0Sn7QG
-	 F7w0/Jbhpmxg+0T+od29PnV62omCGPAnyQCCFeMN5WrBdBOXc6O7wjoRRxTAmWHJ0zHA1
-	 LZ1hodPii2InkBHNkWjX2v0jVE9UdEqVQoO/lfEgj8d7bT9nvEEcIXJDfVptT6Hcv0yJE
-	 RZQZNpeXE3efmDodUyfPjkxczXEyZZO5aQZGjclz8R+qVyF9mARKJbocI8fSIAN60y28Y
-	 fIyyFxfk27BQSk9DNWjztgDjGNyfXTKXu0sC1+fiJD5Wk5GpRgjIN5/5S3puvfCh/hA==
+	t=1793705352;
+	b=CFan7sh0ENI81mdNE3KXoxXfbOoDdx8dAr/9iwYChUH4VO3RyH0qGreT/fc+8FNanIsd
+	 lVB0L1F1IvyEjw0Lgl0rulO8WKXbVzg70soLWsg5Svkl10PToJyCt/NYtE/qGtI4utNd3
+	 0AXtAZmp0ceuUkTIPXZq13AxvZfGHcLAsUA/mGGLZ7x1f8lzzUMCLFwYmg3sT98BeR+Aj
+	 w1nIFH/UFtz03XOpX8Bdw6WLandGeVfwZNdgogfQgRslyC/sQUEZ7OB4oZKkW0Ns9tRzY
+	 bND2FQTG78hVU/pJw/+qNN9OveApmhmwjO9wByfP+Ln5m1WtSgZxJILolpn2w/RDnAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793705229;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=6ZK4MEp+1JhLWagJOOKQAnhmLtK+F9M0oYPH1JwAIqo=;
-	b=dydHB1bIiBeTf5dwpTZpLZthWvuDOWRegnzUZnimFnTyTOIJP/T1vXvzc3SGOlf472TF
-	 I+ovFllM9pat7jm7M7+rNNCx8StD1cCJTB25C9M7fZS9lVGTCQKXmQtixOb/rXIQpbxUz
-	 u2MFlLCYdgy4mHHIWCIPdlKFW7jAUklFHB9wtWH/dRQNLa3D351hY7RP6dHKLpElmUWT7
-	 NUNg2Bz4f+1Asz5EQ35dBdUD9USiakBGDmdxPIuNN+a75QX98wwDab/hJioS4Sk6wyuOd
-	 CavEsTojSvm7mej++uO1j8vZbYhp/1Iw58D9CZcNxIyHZz1YNa1p8jNE0JJBWRxJXqA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793705352;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=J5yxO8lilgc19IuqfuL9Fa6EIhGpaW4Jlrhz7b/ZRXE=;
+	b=MirYWXDUdnBLYJTb7ym9lfw0LfJbSrl7/Vimh/99z31OBeZPqzuJh+i7fN13amesOhYB
+	 fogp6vv0hV0Q57SKx0hl/z40X473X3HqD0d/Jh5TXMNRAt1KfDf2JBMG2ZUzoSlD2GJf6
+	 vOG7woh4w9qZ/x9fO7ehX5dpVPPJJjSetgXcWMLCB38z4XerU3HWFpY9NiUmvaouhmAky
+	 1vLj0bOTfLJBuDaBg+/TxS973P1EnCxwvPqinLhjAMkL+0C4FwotwGUhzlB0bsAUb2cyC
+	 jVgH4vSeqYFLRY8nG+GsmwyzNZvH/NqEFqfG3/qthFFeZicLPFsGYSNY9lfaoGdYHyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=temperror header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cIzcpetq;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kukZe6Tt;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jv4K7HV2;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862B0606C541
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:27:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 862B0606C541
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FD8606A815;
+	Tue,  3 Nov 2026 11:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cIzcpetq;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kukZe6Tt
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A3AAUw21594184
-	for <netdev@vger.kernel.org>; Tue, 3 Nov 2026 11:27:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6ZK4MEp+1JhLWagJOOKQAnhmLtK+F9M0oYPH1JwAIqo=; b=cIzcpetqGekZWhko
-	Co2+K+dm5h+cI5fi/8nw6oLUIG96JJLqdgMIv7NGTUM2mjyrvlC+tC9Wogfk3LbD
-	llNJsjw8AxaCbmlETQHHOYe+TBTcN8+kT2Ma1k2AUyvkQmdo53PVLQqgih62+z+C
-	RftpfmkTKG5akAJEcplZfu2As5jqi1qIgCk37ZHa1/UhRVP4NwMLZQOLaGiUTaIc
-	QVPLT+I+uqiYP2EaEnkeAMl0ebIURbQxF6SNPdyJ9LnepZsW+id/u0NwtuyNTs0o
-	vpWrKZscLisfT6kOfHb39fiPeRcsbY+ZDwlsgeEzfO8szWs9hJm2of1I1E8qMhAC
-	YgnHmQ==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hq081ufg6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:27:07 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2eaae8d29e0so35679115ad.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:27:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793705227; x=1794310027; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6ZK4MEp+1JhLWagJOOKQAnhmLtK+F9M0oYPH1JwAIqo=;
-        b=kukZe6Ttq7r6DYTXpBP3luW5XadHvVG/Cw4/pZUq+ndxgzPjTz0UaHtow28oVll1K4
-         7AXjfpKnCDY/b/weD3d2yroSsOe/2vHgTqFwZJ0LRaPUnCQC1YswhZMsyXa+eeSMML6G
-         wtaheiKtYiVwdCF3gbaBtjsTN8ir02qJhk7kVSP9hPZkVx7uK+MBn3fBIHZqgqLLmQTJ
-         WZubkw1QI0DOL+ZkGgd4T5uKLnk6jmsl48kdVxSDhfEQFnFfdqMLggg6U+R+R5K5WgD7
-         h5wscDONsyojqWWvZk5EfzDGH32gVHtP6/kxdbasNoELWxDBgedquHDZ8O7pR3w1zOI4
-         A/QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793705227; x=1794310027;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6ZK4MEp+1JhLWagJOOKQAnhmLtK+F9M0oYPH1JwAIqo=;
-        b=KR6SEx5M7DRSGBQpWbB/nJwYG7p2lpfiG9xkuFn7yV8u7YByKnHEnZkr0b6+ExBdmW
-         INfu+aCa80+fjgm5YbTK4L7+TFlwLVNVrgDhHIiL2UnihxJQP0HmxeGpharOwzAb3cXx
-         pdMylZTyUP0hB7EO/O29u1XQzyI/Z5n0fpdRlrvH24TftN1t0nB6QJVhCdV0nuQFdYSd
-         ztVQVlLdCG1083Y3yH09F3pAeQh02QEYD+Ztne2nuG0GsHFLa5WRv/u3sFU66fSLRFxE
-         wWHdaKuQ2EUMRaq1mgcQo25hi9Atv3CtB400DWJ1xExFaEoIxLi4gAB8XaPMBe+pw2IW
-         ALrg==
-X-Forwarded-Encrypted: i=1; AKwUvBz1ajwfAyJ5ID8LcG7oguxlpFWRe7pyZVrCgKOFQy99tHwzglV5lSBe/tfK5CnH1vbneeKUqVU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/UXyOXZimIpBe6Jgax/Afej+ENyBG44Zdwu/A1F5y6fRHG/RKe
-	8fF7Ygxcx0P8h1Agzlygw1tFsmmYFFUR+I97ZScUeX64UBHlzoTeNwD3/N6irnrCflS47bK05q3
-	nv9lNmdv1xblxA++QFdDV+UDuWJG1KE1HeRVqU5WkvrbdZQbm/qprir9HMyc=
-X-Gm-Gg: AYBFou33/5Ae+dMGhbaCYvP4FqeRx7TQwKJnQx+Jpxhq5oW+SC9/fs3Hlrud+KaWP7k
-	vFMMcvOZsPNZw229XJ+612OBxJ09l9mJbQ1sIiWElk8mEjSWCH68+NbXmSEjlFALpol6zDkEM/y
-	5OU3I0G5WTdP6wrwcRVOMWIjpGy6jfNwp496GHUS/+VzmsCerE3is5Qg/yFIPBLt8NwOVSVCgL7
-	HD2wcZLonF+N/KPX5vfqURmUjYHFuOdtHqv8iHqj2KWzgcLnVeGiZZh8fTHXYfkgvkXsFK418+o
-	t2H7c48jTKm4CK4kpM5c2g8eMloe5NlzpYiv8QiTvRew5ji/IEu+W7HHFt4Q4iDTN6r+5OpJNrF
-	rQhMDKePb3PsnHRN75EaWPBgxBC+rfEiVKymM806HvpyKrvkoVwo6NTgeud85CIvTGgGfwpyuX2
-	nh75lppqiElJsB2bNTrClYHVR23RYJgkY1QKTLs4xFnSDnaU7aGRWJPV4ckr+5GT52D7kZNDQuV
-	9k=
-X-Received: by 2002:a17:903:2ac7:b0:2df:ab73:7e94 with SMTP id d9443c01a7336-2eb36475385mr99038255ad.51.1793705226872;
-        Tue, 03 Nov 2026 03:27:06 -0800 (PST)
-X-Received: by 2002:a17:903:2ac7:b0:2df:ab73:7e94 with SMTP id d9443c01a7336-2eb36475385mr99038125ad.51.1793705226361;
-        Tue, 03 Nov 2026 03:27:06 -0800 (PST)
-Received: from [10.149.127.220] (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39052effsm39701255ad.3.2026.11.03.03.27.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 03:27:05 -0800 (PST)
-Message-ID: <9400d812-c0ad-404c-b1c2-50860865e336@oss.qualcomm.com>
-Date: Tue, 3 Nov 2026 16:57:02 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jv4K7HV2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508211F00ADD;
+	Tue,  3 Nov 2026 11:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793705351;
+	bh=J5yxO8lilgc19IuqfuL9Fa6EIhGpaW4Jlrhz7b/ZRXE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jv4K7HV2eFB7r3M6sMnFkarUIXko0cUORWLLWFiEOPrPZ1NGdGXMGLwjdw5DhHzTy
+	 ew9ilppd5krjkME3P4f+WXvX16Ws2lY2nsjfUTHK4jR66nV89xkvQ75y5pSUdaV9M9
+	 Bsl7XD9bj7SeL/8uICn6opt9xdNlUdjV3RRUG9K8mzF7dGIdfnY9cPmVxJ70mwb6Y/
+	 lpSgFUqAjADItLdUPsV8wyRDZ5AmUM2BCXseHskATowKdqzGx2OjWz7UHXPshMEjiW
+	 vrWHAvj/B/rAmTNtLcru8K/8JiuTDFoVWnXKhbhCrsp4oI6pHIIOeigx7BD2Sb1Zeh
+	 Otrr5A5py4Iqw==
+Subject: Re: [PATCH net 3/3] nfc: llcp: free the response skb when the data
+ exchange fails
+From: netdev-bot+sashiko@kernel.org
+To: joasantonio108@gmail.com
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 11:29:10 +0000
+Message-ID: <179370535090.488856.2461985767393023537@kernel.org>
+In-Reply-To: <179335864272.64596.2156668877648051796@gmail.com>
+References: <179335864272.64596.2156668877648051796@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,191 +63,284 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next] netfilter: nf_conntrack: add ct expression
- support for netdev egress chains
-To: Florian Westphal <fw@strlen.de>
-Cc: pablo@netfilter.org, phil@nwl.cc, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20261006085844.2694120-1-hari.chandrakanthan@oss.qualcomm.com>
- <asTd69Buuk6PisMl@strlen.de>
- <fe6fe48c-df09-41be-acff-bbae33454bd9@oss.qualcomm.com>
- <as0HMjsgUvKd7dAo@strlen.de>
- <67d8e88a-eff0-4c8d-a030-b29b5d86f450@oss.qualcomm.com>
- <atISKsTHeHwAXfZf@strlen.de>
-Content-Language: en-US
-From: Hari Chandrakanthan <hari.chandrakanthan@oss.qualcomm.com>
-In-Reply-To: <atISKsTHeHwAXfZf@strlen.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDA0NSBTYWx0ZWRfXyXmhbVPp5pJw
- rxVaPsWY3DqZaqoXyPst8T2Tdlm83bGI6I9q4PE3RygxmaPRAhMP8trduhZ2uPweRoybdDx62ek
- IIG/NT5jfJrm3huYOTHOleY9kkL4qL0=
-X-Proofpoint-ORIG-GUID: 48n3177jhgAOLir2ImkkttBpDsh6Icxl
-X-Authority-Analysis: v=2.4 cv=F73C5ahN c=1 sm=1 tr=0 ts=6ae9c50b cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=saytb5X9iVpQGUYAlOwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-GUID: 48n3177jhgAOLir2ImkkttBpDsh6Icxl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDA0NSBTYWx0ZWRfX2KPqP2tcRBkm
- elv21pW0MuNLUD4Y7SWTCqRWmvSWpXy6uT5lJfdSd9fv4umfrvKm4HCWtUADsZy1soIOGa7w7aC
- mZdtluhhScilZPw0O5PysxjUSQXkHv9ucNsIpYfEpshOVJXBzSnZWSAB7y8QB7hwlSqmyuHpDZ2
- uCSTPqVXbxRt+gnpC0NSLjXpfBtJQooi3fuJLYNnrvOmlB19UevWzw7fZ7btZAJgomhJuw9S1vs
- KyvY/22jpo1BD3k7yTuMnjPU1K2h+3mHHxGIkrYjPxsHQNHlPPuhIxiIihW9s5/XKirtNXKTaCw
- gpgyBdUf9Wcxwl3vBy04uwQXdVi/+HdacT0nRgzzcQoTsNJZ+dm796lqmkn2Wl2OAR8iSNGDLeM
- BCvvKMsBiBu9paFqkLhps5UzcLd2feTieqvIidFJhBKEkWyWWTW4m9plu245nHOcGXsClbLpPqO
- 49PzgWxMTIL09niFSsA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-03_02,2026-11-02_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611030045
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-On 10/16/2026 5:31 PM, Florian Westphal wrote:
-> Hari Chandrakanthan <hari.chandrakanthan@oss.qualcomm.com> wrote:
->> By netdev/egress only, I mean that the nft rule with a ct expression
->> (e.g., ct mark set) is present only in the egress chain for a netdev,
->> with no other nft conntrack rules in inet or bridge chains.
->>
->> For example, it may be possible that only rules similar to the below
->> nft rules are added at the netdev egress chain, with no other ct rule
->> in inet or bridge hooks.
->>
->> nft add table netdev qos_table
->>
->> nft add chain netdev qos_table wlan0_qos \
->>       { type filter hook egress device "wlan0" priority 0\; }
->>
->> nft add rule netdev qos_table wlan0_qos \
->>       ether daddr 00:03:7f:01:50:65 \
->>       ip saddr 192.168.1.10 \
->>       ip daddr 192.168.1.20 \
->>       ip protocol tcp \
->>       tcp sport 12345 \
->>       tcp dport 443 \
->>       ct mark set 0x10
->>
->>> Where are the skbs coming from, i.e. though what pipeline?
->>>
->>> Bridge?
->>> Routing?
->> In the use case that we are trying to address, the device is a Wi-Fi
->> access point router. It receives the classification rules from a Wi-Fi
->> client device for QoS prioritization of down-link traffic to the client
->> (n-tuple to Wi-Fi TID mappings) via SCS. We would like to apply these
->> classification rules on the access point router using nft rules
->> (ct/skb mark set rules) at the WLAN netdev's egress chain.
-> I still see no reason to ever conntrack.  Is this for 'sticky'
-> skb->mark ?
+Critical: 3 · High: 0 · Medium: 0 (1) · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Critical] Double free of the LLCP response skb on digital (NFC-DEP)
+  devices.
+- [Critical] Double free of the raw-socket response skb on digital NFC-
+  DEP targets, caused by the companion commit "nfc: rawsock: free the…
+- [Critical] nfc: rawsock: double free of skb in
+  rawsock_data_exchange_complete()
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but on ST21NFCA
+  the failed HCI LLCP initiator exchange that the commit message…
+
+--
+
+nfc: llcp: free the response skb when the data exchange fails
+
+This patch makes nfc_llcp_recv() free the skb it gets when the data
+exchange reports an error. The commit message says HCI and NCI pass a
+response skb along with the error, so the old early return leaked it. It
+also says the skb is NULL when the error comes without a response.
+
+> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> index 74bf817007cf2..f0632a0b94e74 100644
+> --- a/net/nfc/llcp_core.c
+> +++ b/net/nfc/llcp_core.c
+> @@ -1638,6 +1638,8 @@ void nfc_llcp_recv(void *data, struct sk_buff *skb, int err)
+>  
+>  	if (err < 0) {
+>  		pr_err("LLCP PDU receive err %d\n", err);
+> +		/* skb may carry the response even when the exchange failed */
+> +		kfree_skb(skb);
+
+[Severity: Critical]
+The double free isn't in this hunk. The commit message builds on the
+raw socket change earlier in this series ("Like for raw sockets"), and
+that change looks like it can free the response skb twice on digital
+stack devices.
+
+With the rawsock patch applied, rawsock_data_exchange_complete() frees
+the skb whenever err is set:
+
+net/nfc/rawsock.c:rawsock_data_exchange_complete() {
+    ...
+	/* skb may carry the response even when the exchange failed */
+	if (err)
+		goto error_skb;
+    ...
+error_skb:
+	kfree_skb(skb);
+    ...
+}
+
+A raw socket can connect with nfc_protocol = NFC_PROTO_NFC_DEP.
+rawsock_connect() calls nfc_activate_target(), and
+digital_activate_target() stores that value in ddev->curr_protocol.
+After that, every send from rawsock_tx_work() takes this path:
+
+rawsock_tx_work()
+  nfc_data_exchange(..., rawsock_data_exchange_complete, sk)
+    digital_in_send()
+      digital_in_send_dep_req()
+        ... digital_in_recv_dep_res()
+
+digital_in_recv_dep_res() has several protocol error paths that set
+rc < 0 and jump to exit: while resp is still live:
+
+  - a bad SoD length byte
+  - an oversized frame
+  - the NAD bit is set
+  - a NACK is received
+  - an ACK has a PNI mismatch
+  - an ACK arrives with no chaining skb
+
+On each of them it calls the callback and then frees resp itself:
+
+net/nfc/digital_dep.c:digital_in_recv_dep_res() {
+    ...
+exit:
+	data_exch->cb(data_exch->cb_context, resp, rc);
+
+error:
+	kfree(data_exch);
+    ...
+	if (rc)
+		kfree_skb(resp);
+}
+
+So rawsock_data_exchange_complete() frees resp once, and the end of
+digital_in_recv_dep_res() frees it again. The remote NFC-DEP peer
+controls all of these error conditions. A single malformed DEP_RES is
+enough to corrupt memory or crash the kernel.
+
+Before this series, rawsock_data_exchange_complete() did not free the
+skb on error. That makes this a regression, and both patches are
+tagged Cc: stable.
+
+The rawsock commit message says the skb is NULL when the error comes
+without a response, and it lists digital as one of those cases. That
+doesn't match digital_in_recv_dep_res(). It passes a live skb to the
+callback but keeps ownership of it.
+
+Which side is meant to own the skb when err is set? One option is for
+digital_in_recv_dep_res() to pass NULL to the callback on error, as
+digital_in_send_complete() already does. Then HCI, NCI and digital
+would all follow one rule. Could that change go into this series ahead
+of the rawsock and llcp patches? Could the data_exchange_cb_t
+kernel-doc also state the ownership rule?
+
+                 ^^^^
+
+[Severity: Critical]
+Can this free the response skb twice on digital stack devices (port100,
+trf7970a, st95hf, nfcsim)?
+
+On those devices LLCP runs over NFC-DEP. digital_dep_link_up() sets
+ddev->curr_protocol = NFC_PROTO_NFC_DEP, so every LLCP exchange goes
+through:
+
+nfc_llcp_tx_work() / nfc_llcp_send_symm()
+  nfc_data_exchange(..., nfc_llcp_recv, local)
+    digital_in_send()
+      digital_in_send_dep_req()
+
+The exchange then completes in digital_in_recv_dep_res(). That function
+still frees resp after it has called the callback:
+
+net/nfc/digital_dep.c:digital_in_recv_dep_res() {
+    ...
+	rc = digital_skb_pull_dep_sod(ddev, resp);
+	if (rc) {
+		PROTOCOL_ERR("14.4.1.2");
+		goto exit;
+	}
+    ...
+exit:
+	data_exch->cb(data_exch->cb_context, resp, rc);
+
+error:
+	kfree(data_exch);
+    ...
+	if (rc)
+		kfree_skb(resp);
+    ...
+}
+
+With this patch, nfc_llcp_recv() frees resp inside data_exch->cb(). The
+"if (rc) kfree_skb(resp)" at the end then frees the same skb again.
+
+Several other cases also reach exit: with a live resp and rc < 0:
+
+  - resp->len > ddev->local_payload_max (-EMSGSIZE)
+  - the NAD bit is set
+  - a NACK is received
+  - an ACK has a PNI mismatch
+  - an ACK arrives with no ddev->chaining_skb
+
+The remote NFC-DEP peer controls all of these. The SoD length byte is
+checked before the CRC.
+
+The commit message says:
+
+    Free the skb on the error path; it is NULL when the error does not come
+    with a response, and kfree_skb() handles that.
+
+That doesn't seem to hold for digital NFC-DEP. There the error does come
+with a response, but the producer keeps ownership of it.
+
+The producers also disagree with each other:
+
+  - digital_in_send_complete() frees resp and passes NULL on error.
+  - HCI (__nfc_hci_cmd_completion()) and NCI hand ownership to the
+    callback.
+  - digital_in_recv_dep_res() frees resp itself after the callback.
+
+The data_exchange_cb_t kernel-doc in include/net/nfc/nfc.h doesn't say
+who owns the skb when err is set.
+
+Could the producers be made to agree in the same series? For example,
+digital_in_recv_dep_res() could pass NULL on error the way
+digital_in_send_complete() does, or stop freeing resp after it calls the
+callback. This patch is also tagged Cc: stable.
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but does a failed HCI LLCP
+initiator exchange like the one in the commit message still leak the
+response skb on st21nfca?
+
+Take a READER_F target with supported_protocols == NFC_PROTO_NFC_DEP_MASK.
+For it, st21nfca_hci_im_transceive() drops the callback it was given:
+
+drivers/nfc/st21nfca/core.c:st21nfca_hci_im_transceive() {
+    ...
+	case ST21NFCA_RF_READER_F_GATE:
+		if (target->supported_protocols == NFC_PROTO_NFC_DEP_MASK)
+			return st21nfca_im_send_dep_req(hdev, skb);
+    ...
+}
+
+So nfc_llcp_recv() is never reached on this path. The completion goes to
+st21nfca_im_recv_dep_res_cb() instead.
+
+When the controller returns an error result, __nfc_hci_cmd_completion()
+passes both skb and err to that callback and does not free the skb. The
+callback then returns early:
+
+drivers/nfc/st21nfca/dep.c:st21nfca_im_recv_dep_res_cb() {
+    ...
+	if (err != 0)
+		return;
+    ...
+}
+
+Does this leak one skb per failed WR_XCHG_DATA exchange?
+
+[Severity: Critical]
+The commit message builds on the raw socket change ("Like for raw
+sockets"). Is the same double free also reachable through the companion
+commit f50c413847da ("nfc: rawsock: free the response skb when the data
+exchange fails") in this series?
+
+After that commit, rawsock_data_exchange_complete() frees the skb on any
+error:
+
+net/nfc/rawsock.c:rawsock_data_exchange_complete() {
+    ...
+	/* skb may carry the response even when the exchange failed */
+	if (err)
+		goto error_skb;
+    ...
+error_skb:
+	kfree_skb(skb);
+    ...
+}
+
+A SOCK_SEQPACKET raw socket does not need CAP_NET_RAW, and it can connect
+with nfc_protocol = NFC_PROTO_NFC_DEP. digital_activate_target() then just
+stores that value:
+
+	ddev->curr_protocol = protocol;
+
+>From then on, raw socket exchanges follow this path:
+
+rawsock_tx_work()
+  nfc_data_exchange()
+    digital_in_send()
+      digital_in_send_dep_req()
+        ... digital_in_recv_dep_res()
+
+A malformed DEP_RES (bad SoD length byte, NAD bit set, NACK, PNI
+mismatch) reaches the exit: label with a live resp.
+rawsock_data_exchange_complete() frees it, and then
+"if (rc) kfree_skb(resp)" in digital_in_recv_dep_res() frees it again.
+
+That commit message also says the skb:
+
+    is NULL when the error does not
+    come with a response (digital, timeouts, device close)
+
+This doesn't seem to match digital NFC-DEP. In the baseline,
+rawsock_data_exchange_complete() did not free the skb on error, so this
+double free would be new with the series.
+
+Should the fix for digital DEP ownership cover the raw socket path too?
+
+>  		return;
+>  	}
 >
-> I think conntrack for that is waaay too much overhead and would
-> use a nft map for this.
 
-   As I understand, an nft map would work for a fixed-tuple classifier 
-requirement
-   (for eg 5 tuple only), but the Wi-Fi SCS protocol  allows clients to 
-push classification
-   rules with anywhere from one to five tuple fields. In a real Access 
-Point deployment
-   with multiple clients connected simultaneously, each pushing their 
-own classifier
-   rule sets, using maps would require to maintain multiple maps per 
-client and
-   keep them in sync with client connect and disconnect events makes the 
-management
-   more complex.
-
->>>> To address this, as suggested by Pablo, we are considering enabling
->>>> conntrack lookup/creation at
->>>> netdev/ingress. This would allow netdev chains to access conntrack state
->>>> without requiring conntrack
->>>> to be enabled for the inet or bridge families, avoiding unnecessary
->>>> overhead for netdev-only use cases.
->>> FWIW bridge conntrack is already problematic (see recent RFC patch
->>> to refag in INPUT, conntrack is pretty much routing-only.
->>>
->>>> Kindly share your thoughts on this approach.
->>> I think you'd have to explain your use case.
->>>
->>> I thought you only want
->>>
->>> skb-> mark = ct->mark
->>>
->>> from egress. That would imply something else already enabled conntrack
->>> anyway, else you'd have no conntrack marks set that you could read.
->> As mentioned in the previous comment, in the use case that we are
->> trying to address, the device is a Wi-Fi access point router. It
->> receives classification rules from a Wi-Fi client device for
->> prioritizing downlink traffic to the client (n-tuple to Wi-Fi TID
->> mappings) via SCS. We would like to apply these rules on the access
->> point router using nft rules (ct/skb mark set rules) at the WLAN
->> netdev egress chain.
->> The nft rules at netdev egress chain achieve the below functionality:
->> 1. If connmark is not set on the first skb seen by the rule,
->>      perform flow classification (based on dmac addr and n-tuple) and
->> store the result in the ct's mark via ct mark set. Typically, this rule
->> will be skipped when the connmark is already set for the flow.
->> 2. If connmark is already set (for subsequent packets), copy it to
->>      skb->mark. Ideally, only this rule should be processed by the vast
->>      majority of packets for the flow.
->> There are three advantages we see in this solution for this use case:
->> 1. We wanted to avoid incurring the cost of n-tuple match for every
->>      single packet at the netdev egress hook, by applying the
->>      classification rule (tuple match and connmark set) only for the
->> first packets until connmark is set.
-> Hmmm.  Conntrack has overhead.  Did you check that bringing
-> in conntrack into the picture really saves cycles?
->
-> If you assume conntrack is already active anyway to provide NAT, etc,
-> then my point is moot.  But in that case all that is needed is to
-> permit retrieving ct->mark in netdev egress chains, which is much
-> simpler and doesn't require conntrack enablement.
-
-I agree, in a typical AP deployment running NAT/firewall, conntrack is 
-already active, and
-that is the case we want to address now.
-
-I will revise the patch to simply allow ct expression evaluation at
-netdev egress chains without enabling any conntracks.
-
->
->> 2. Adding the rules at the egress hook of the netdev restricts the
->>      scope of these rules only to packets egressing the netdev of
->>      interest, without incurring the cost of processing these rules for
->>      traffic egressing on other netdevs in the system or other hooks.
-> I think that IFF you really need to bring in full-blown conntrack, then
-> Pablos proposal makes sense.
->
-> However, I think that we really have to make many more changes to
-> make this work, even to existing bridge conntrack support.
->
-> As-is, bridge conntrack is no 'works out of the box' solution, it
-> requires extra setup (conntrack zones) to separate VLANs or you risk
-> unwanted cross-vlan-traffic.
->
-> I think we'd have to bring at least the vlan id into the nf_conn
-> entry and auto-separate such entries if request is coming from
-> bridge resp. netdev hook.
-
-Yes, we looked into this. Without VLAN context in the conntrack,
-two flows with identical 5-tuples on different VLANs will share an 
-nf_conn entry.
-
-We looked at what is needed to address this: the VLAN ID needs to be 
-carried
-through the full conntrack pipeline — tuple extraction, hashing, lookup,
-netlink support for userspace, and flow offload.
-
-We will work on the basic support for this VLAN solution and submit the 
-patches
-once they are tested to get more feedback. The patch to create/lookup ct at
-netdev ingress support would then depend on it.
-
-Does this direction look reasonable to you?
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179335864271.64596.805818095553030218%40gmail.com
