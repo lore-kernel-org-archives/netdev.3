@@ -1,97 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706645;
-	b=xLXynEGXlOhMNmm3vN4bUCjLDArEeeV7cfU2vYMneP58o83D2l2ZfuVjJ5wSy8HYNMEI
-	 rLLyspUzk5dlxsmszuyWm/q5sRmCbpFKmA6WW+mMzOIewXtnFTI3xgQxHb/xv57MS+opK
-	 VY58ftXLKcYFjYYLSlSU9S8DbBiRZXSGLRB5j85IayMSo3WHIzxaWrDXkYGmQTPB2Kfm2
-	 DjqKPmsdBskppDqYv2YjdNKNa3v2pU2t1qCNQlyPWQu5xWZpn7FkpWrSWKIegWVzYTrH9
-	 zCszdz56Owe6aNTAF0BJ/kVg8QjurRp+fQLNZ++DXOwl2metG6H8ammenaRWBDA4g8w==
+	t=1793706646;
+	b=gZBDheM9yV80fcaOz1WkkKyo7wPSQpnvSzIx2/QP8+FLtn69ChaXGuCIgbwsCQMQHQJA
+	 YR5TS5DNC2HisTPqzipxa0SwQnjc3BgxOseK2RFqVRhfidhYc1VU/OY47whQsinTVq6cP
+	 rUNiLBwt7l4ALH/C72h64H66aLfYQhh+ngvVEjeNDQHiaDzi/QLFsUsEhGzeUrcBG0RMb
+	 v6OFtsbrixK2hqQ+XgkJbE4YN5PpY/9NaqHuymR3jN6+wardC4+aMy+N126b59BAm0LsV
+	 iQ1vJad4x5nDrwAl0HFaKsNILMC1FYSmlHt2VCPd51VouIsodtKAU6yiPIeQeS3zMCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706645;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706646;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=VJVYoV66ZWlCSKMq9UP4qiOpvHPf91Q6R1ZFhFW7yl4=;
-	b=IMlyOY5X1bqdEolfRrQGjFkCDNlEcxEs9rosKgKizC8ihq1sIUK8pM5x2b5ibHE6TA3v
-	 N/eCqZivkVK+I+GcwxTOdHrPrStY+L9eDF0/3VCynPbJUhi0fVUDeQgCljyj177/1jKHp
-	 L4HRFWmE1QxbO8aWOxalbXSqCBD0O+8QXFz7OYkv/y86TZIlmJKhX8WYYG5VD1lGvawsM
-	 XT/dwfMiEpS4pNR1Xa9arAqj40cILSxi+KHLlNHbQzwccPCoFeK3mmrukD3yP+x2gwrcj
-	 85I/ba8Pu5hQXTGvF3W6/GDtP+D7q/dsVgB7UHHnDjRQHLZQ5uZzNuVtw1MDQKZ+nkw==
+	bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
+	b=TZMe997HfngXfLXp/oUn9g1drour7SOh0Q4xiqTymGo3gQOzNqxBUKNjz7o6k/GkIyBr
+	 4bAVcKArqZz8tWWO5vn60P61gWXSA5ZaS5mSG+wcHhy6I2tmbeviyTwt8JGnPxhj2IXLA
+	 vZqncqKTFwZ9bvpcP9hbW/wOMc6iY6F1jhq+CG3a8Y5xBOPWxyRrMMU3AmrvOOVGVVgSc
+	 R5YhsE9uib6cP4+kB0Id5oJAYIERHN2sIWRBJJExG2s9U9A0tfvFgE0GPQTz4ERllnR3/
+	 NrgIjmg971toBqr/O+yoMW2hp5QHcWyRQiLm3WKklLJl5TKKaurJZE5pe/ZeBndtgdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=JG5+voIm;
-	arc=none smtp.remote-ip=209.85.128.170
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=fT6ZHcbN;
+	arc=none smtp.remote-ip=209.85.128.176
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74F66082BCF
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:50:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E74F66082BCF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32B56082BD9
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:50:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A32B56082BD9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=JG5+voIm
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b09e07e149so33014337b3.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:50:43 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=fT6ZHcbN
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b300713befso2043627b3.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:50:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793706643; x=1794311443; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1793706644; x=1794311444; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VJVYoV66ZWlCSKMq9UP4qiOpvHPf91Q6R1ZFhFW7yl4=;
-        b=JG5+voIm8YTjfsd55AAV3HQ/hnlIBZ1bqkudSIHYHgBAOg/DZ7069ajknDps976l9V
-         Nzl+UX9wxtFe+DU9JmpDHzfsoeKSIl3SGUHJc+DR30NcxrorZtE0Byw5vLSRqn6p8z+5
-         7mEhZE1Wju+lm9I1bKBi7AVb75ZwKC2Y2i4YE=
+        bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
+        b=fT6ZHcbNxQ0nvZypckGeEvAuNUWNmRFthPNA/j2/pDDVWlc5tTUTQl5h/KHya6UHPY
+         yt5h7DrFMFYk1ImiMExJRjqyAbZ3U7PWwZf9Ld5O8a75Hsn0IXmRODj6yfr6NiKHWVi5
+         EnOaYjAYFpiLwsscj9h6KEhEWSZy8lUeiqD1o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793706643; x=1794311443;
+        d=1e100.net; s=20260707; t=1793706645; x=1794311445;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VJVYoV66ZWlCSKMq9UP4qiOpvHPf91Q6R1ZFhFW7yl4=;
-        b=JDg64Dueu17knqIXROZaSwlv/iOuW3woeTl2thfKuVgmo1zs1mOK6FwPzSATCebTB/
-         gRWL2fl7e7Qhll4T+6EicrLDaVyRE/Lel4wMOFyCaxEyDXX4pE9qCnHYg8Pcs9BR9T67
-         uSI5LuwkpbaHkHhUu37GjkXPCdwR5xNeWP1vOF8hK9G1HAvw6hTofphlXqlZeQJdvRqM
-         3+sYfPOABeVRHl4jaM0nMsZ8CfQCvubxNdKco3dFBCw5rCPpBWfXkd8mAYRRu6FwKijF
-         uUTvzWJ9YZ1FyMPvfPQ/Uy9WtFeObAN2rHM/oIZ10f3UihAMpM2sh2uNBmtP/3MZ0W6A
-         5ZkQ==
-X-Gm-Message-State: APuU4Z+vB8dE+5j7Yav1I8iJG4PwxF0isu2TDyEQQoD9qCyZ7CevlRC4
-	e6AB9OqXFyIjW9jKSuAuBzhcun5Ie5sm4kRgZjIQB+wA9kItDJSrOZXo8y0sYSHyzlZ1om/2Fhh
-	Rgx8=
-X-Gm-Gg: AYBFou3ZhPVO7aoRPI4O80esUaRqf5M0Kq8wy5zNcqQjpoq2qoHt4xto1rgYY5iblyz
-	5fzBOiox6WTPa30yk0+JxrKpqDjxc8cwGzsJqORTMoswE8+PZ8FWEXAgJoETT+ALuGU/shOYBno
-	Mrx59aVc8kW42MADiDMCV/0tqgImo3UPdMXNMpxoNkmGoXjeery5U9C+rcKMQjgmttSjBsVoRra
-	um0Ejq7DL/ayNuSgDuGtdk28qdNQVQAoSLNVbRe3mjZgh06Jl6LUyBhllw3lgjwV4aAtUPFip9j
-	W/j9HhxSHSkLF+h4H6QHh0oeEY/sSjRjf3oln32muTaxesU2iq3+OfslzlDtzMwERWPEx3JILpl
-	mmLiz6+IiktTqfjyGUBTWvVqwoxHnlF+wjRjElf//2sxAPHhT2gJZB3KgSYmxA1/ScdKiFh3/Ow
-	CQ5BejGhUGYL4ie/j8pRTP2ANrPywjNE2nAzVmnT//K7Hi1Wp5V2f2vwzA+VXKTPOvSJeuELkat
-	vj5H6yu4eouB9ZjZZ1CNcCVbs9ucxGrdPEQjJCl1bZqmCKQ4QRUlc6VV+YPtEBQ0TKfRrhWOZAL
-	uZEL6ir/aWGr48th0DLbqnoQ+YMdOU6pfiRG0P8NaIrgmPexJ11jX+whuWTBZ5lJpuTPkPR4Izh
-	gPbbBLa9aA29+Ru8=
-X-Received: by 2002:a05:690c:c507:b0:873:5ddf:d872 with SMTP id 00721157ae682-8b2b6749779mr76437497b3.61.1793706642822;
-        Tue, 03 Nov 2026 03:50:42 -0800 (PST)
+        bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
+        b=eyjRwba+NExDyJHUuW6N6QokQ2EKObMAD/GzqT8ksjptQ883s4EuxqVOVdUPEpKfQs
+         /SUPm/L8DZlnsVDTg5GVzkOswZ3GsukD+UkJu9+lo/IUAD1nqiBWHwv8AwHTmDDiPHYe
+         vYj71yPKU/Ljim+KAeNehoWoI0/b+8ibRJ8FJ7cHbg60pXbdc/GLPq1ILEwHWQ9f91Qg
+         zT8tZZ3cgadXouua4Ld5JbxZ+E7ZnOyiWIjOy60qjMYAxBiuOcP3ApMDOIGN/V8L6jVQ
+         nQaAGO1bZdfKbCNvn6wgZpCxfaLbuHRGg9Y+adN/oZqOb+SVOT/NUS+da1X/U8PvNirc
+         e7gw==
+X-Gm-Message-State: APuU4Z/8n8zHFUXtG6VAJr4NmpNUfs9nzYMkC90A+eFr/j4WgPiX6NKV
+	31l6oUXORs9FCQcQ4PD6hJzchH1J9s6DkrZqcLklDfVWXZdpPLdMH9/npEdMBUAoMebyiBEBrhQ
+	FH/I=
+X-Gm-Gg: AYBFou0MpQ2eUM7vuKEJa1cX8l4Noy0cgp3OuJC5+Mpdx2fVNQX8bCXlPx17Ow/gltZ
+	4uPJaXGoT7ZEY8uyltrPxK+7EJKO0/cVIu1tmKN0lriwtBAuKxULXWkP8lN9mhkIRHfoqynYREZ
+	AHfnZAD5WPJ2oyE2uJ02qtVnRmba9kpmLXVDGLbN/vMyHV9v2Co0x3Or8z99LWr1BfnhuM9ZRzQ
+	SwSiIxLOZTWPnxRzFQ6/Q59zVWW/n8kZ3A9HR+Ky4+mXoSIIClZbhMJN7NUPo86RC3zWCxtnlyj
+	vXnYQ70q3qPi9dfa1xH45JK+Nqt0BPA8uyZ1KukM8Ck6+neqNmTgh5afFqtdi+CUfP18FQ4hZJg
+	lJXlCcql3LBczUA3E+uVOiYsYDMYcw9/ZIbYsHmp47DeWwURawicekwVc2WGkAPD/BP9Tay4P8h
+	0etVq86lyBB75VSm4iMb0fk6jbhrsS1+f2UqU85B9jJkrs7WE2xj5SQNpl5KGy7NU0U0vQFo2NN
+	PVLBjwO59fJvZ3D5jJJ/0vmd+B4GkQgwUuT6RI2bgkOcUTQ1ta584lY0mMVNa7xi+yMWlKlay6Z
+	fcELiDrUt3C2lEJTjgPX8JnZyluDQL+QsA9U0vpdXe6jb36aV/r2JRjVjYzmd0JBz9jObr78zQ6
+	v/RdoOqRKBj50h9RgZuPQQEwLbDX6Chn9QFxm
+X-Received: by 2002:a05:690c:f90:b0:8b1:9c2:87d6 with SMTP id 00721157ae682-8b2b66d0066mr98565757b3.17.1793706644511;
+        Tue, 03 Nov 2026 03:50:44 -0800 (PST)
 Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b704d699sm70016857b3.5.2026.11.03.03.50.40
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b704d699sm70016857b3.5.2026.11.03.03.50.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 03:50:41 -0800 (PST)
+        Tue, 03 Nov 2026 03:50:43 -0800 (PST)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	stable@vger.kernel.org,
-	shaos <shawnq1@163.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Simon Horman <horms@kernel.org>,
 	Jiri Pirko <jiri@resnulli.us>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Victor Nogueira <victor@mojatatu.com>,
-	Tom Goff <thomas.goff@boeing.com>
-Subject: [PATCH net v3 3/4] net/sched: sch_teql: reject qdiscs from another network namespace
-Date: Tue,  3 Nov 2026 06:50:31 -0500
-Message-Id: <SER-NSBD.v3.r0.20261103064310-3@mojatatu.com>
+	Sashiko <sashiko-bot@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v3 4/4] selftests: tc-testing: teql: cover each attach rejection on its own
+Date: Tue,  3 Nov 2026 06:50:32 -0500
+Message-Id: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <SER-NSBD.v3.r0.20261103064310@mojatatu.com>
 References: <SER-NSBD.v3.r0.20261103064310@mojatatu.com>
@@ -106,91 +101,100 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reported by shaos <shawnq1@163.com> with a reproducer, which was
-reproduced and verified in our test environment.
+Found by Sashiko (nipa) while reviewing the previous posting of this
+series:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v2.r0.20261101171325-4%40mojatatu.com
 
 The issue:
-The teql master devices are created once in the initial network
-namespace and their Qdisc_ops are global. teql_qdisc_init() takes the
-teql_master embedded in the registered sch->ops and uses it without
-checking whether the new qdisc's device lives in the same network
-namespace as the master. A qdisc created in another netns can therefore
-attach to the init-net master and change its MTU and flags.
+Case 124e attaches teql as a child qdisc and expects the attach to be
+refused. It requires nsPlugin, so its device sits in the test network
+namespace while the teql0 master is in init_net. Both the root-only
+check and the namespace check refuse the attach with -EOPNOTSUPP, and
+the case checks the exit code and an empty dump only, so it passes
+whichever check answers it. It no longer proves that a child attach is
+refused as such, and the case added in the previous posting covers the
+namespace check alone.
 
 The Fix:
-Reject a teql qdisc whose device is not in the master's network
-namespace with -EOPNOTSUPP and an extack message; same-netns teql still
-works.
+Run 124e in the initial namespace, creating its own device the way the
+other teql cases do, so that only the root-only check can refuse it.
+Attach a root qdisc from the test namespace in the second case, so that
+only the namespace check can refuse that one.
 
-Initialize the private skb queue before any validation so every
-constructor failure path, including qdisc_create_dflt(), which resets the
-qdisc before destroying it, sees an initialized empty queue.
-
-Conditions to recreate the bug:
-CONFIG_NET_SCH_TEQL=y, CONFIG_DUMMY=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
-As an unprivileged UID, unshare a user and network namespace, create a
-dummy device, set its MTU to 60000, and add a root teql0 qdisc:
-
-  unshare -Urn
-  ip link add dummy0 type dummy
-  ip link set dummy0 mtu 60000
-  tc qdisc add dev dummy0 root teql0
-
-The init-net teql0 device changes from MTU 1500 to 60000. A pfifo control
-on the same device leaves the MTU unchanged, and a direct MTU change on
-init-net teql0 is denied. The namespace needs CAP_NET_ADMIN; no init-net
-privilege is required. With the fix the attach fails with
-"Operation not supported" and the init-net MTU stays 1500.
-
-Fixes: 7316ae88c43d ("net_sched: make traffic control network namespace aware")
-Reported-by: shaos <shawnq1@163.com>
-Link: https://lore.kernel.org/netdev/20261022144830.67948-1-shawnq1@163.com/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
 Link: https://lore.kernel.org/netdev/179366641863.488856.17368571591466000274@kernel.org/
-Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-v1 -> v2: considers comments from Sashiko (nipa) on the repost2 posting:
+v2 -> v3: considers comments from Sashiko (nipa) on the v2 posting:
+https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
+
+Case 124e now runs in the initial namespace and creates its own device, so
+only the root-only rejection can answer it.  The case added in v2 keeps the
+namespace rejection covered.  Each case now witnesses exactly one check.
+
+v1 -> v2: new case covering the cross-netns attach rejection, following a
+Sashiko (nipa) review of the v2 posting of 3/4:
 https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
 
-The cross-netns check ran before the "teql can only be used as root"
-check, so every case it did not catch was answered by that check, masking
-the assertion that tc-testing case 124e makes.  The root-parent
-validation now runs first and the namespace check second; 4/4 adds a
-case that covers the namespace rejection on its own.
+ .../tc-testing/tc-tests/qdiscs/teql.json      | 36 +++++++++++++++----
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
- net/sched/sch_teql.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 70c948a26f80..dc21cd9704a2 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -200,6 +200,8 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct Qdisc *first;
- 	unsigned long flags;
- 
-+	skb_queue_head_init(&q->q);
-+
- 	if (dev->hard_header_len > m->dev->hard_header_len)
- 		return -EINVAL;
- 
-@@ -211,9 +213,12 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
- 		return -EOPNOTSUPP;
- 	}
- 
--	q->m = m;
-+	if (dev_net(dev) != dev_net(m->dev)) {
-+		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
-+		return -EOPNOTSUPP;
-+	}
- 
--	skb_queue_head_init(&q->q);
-+	q->m = m;
- 
- 	raw_spin_lock_irqsave(&m->slaves_lock, flags);
- 	first = rcu_dereference_protected(m->slaves, lockdep_is_held(&m->slaves_lock));
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
+index 0179c57104ad..ab5d0881c007 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
+@@ -90,12 +90,8 @@
+             "ets",
+             "tbf"
+         ],
+-        "plugins": {
+-            "requires": [
+-                "nsPlugin"
+-            ]
+-        },
+         "setup": [
++            "$IP link add dev $DUMMY type dummy",
+             "$TC qdisc add dev $DUMMY root handle 1: qfq",
+             "$TC class add dev $DUMMY parent 1: classid 1:1 qfq weight 15 maxpkt 16384"
+         ],
+@@ -104,7 +100,35 @@
+         "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:1",
+         "matchJSON": [],
+         "teardown": [
+-            "$TC qdisc del dev $DUMMY root handle 1:"
++            "$TC qdisc del dev $DUMMY root handle 1:",
++            "$IP link del dev $DUMMY"
++        ]
++    },
++    {
++        "id": "6a06",
++        "name": "Reject TEQL attach from a different network namespace",
++        "category": [
++            "qdisc",
++            "teql"
++        ],
++        "plugins": {
++            "requires": [
++                "nsPlugin"
++            ]
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc teql0 3: root",
++        "matchCount": "0",
++        "teardown": [
++            [
++                "$TC qdisc del dev $DUMMY root handle 3:",
++                0,
++                1,
++                2
++            ]
+         ]
+     }
+ ]
 -- 
 2.43.0
 
