@@ -1,123 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702480;
-	b=Y6sVxyjNgVrBI7kd4jAEPWbhNHjOyzSEgat4FpacCmt6C15746gx51CLeSol/lG32avR
-	 Jp5TzNkKbo0HdIQGt2bFwuH/Gz90Z3TbeAu1C3yH6BQxPYYOf8j4KBzkrX1TWayR/B47c
-	 qREyQ63/5JU+irVF03n6KPL8pmHZUmTdg1LuE2Qvf74YOiPrwSOjbaae5P+itI4MGbDfG
-	 wRe6upAmJCaYkmPd9W4KgSDk2qYqhhP8qQA77JVJPtVJSrHzUyy/bZSjmKKP6+EcKWQo/
-	 Vm3HMuddx5yTSkX5a09BbTz897oTslXYp6hNC5UwVdSePsJk9OUJ42/brZDG55LKJyQ==
+	t=1793702521;
+	b=ZaLTSLYtiFnzagD3qQFMO34fNNbcSksAg/bMaGHBtWwjwQOzaU5K/n8lC6fwRIv5QieC
+	 YJtlGzVWI51pre9pBZr4FJV1A21LTiGuyukB8NPrZOCHFhyHgsb4Cr7Jsrj/me8RBpGG+
+	 JpOQS5l3VwoFxZ3KgFAOEr0X2Ch5t7OFmEseft3oBsGSxmA6Jk26CYoA/QSSLQt/hlwKm
+	 QMtLB2iREm+gQsUIz6juYoGd5X9CgDFgMESk65yc3LkraiYLWOWJRV3dZnaWVYincX7Ri
+	 1mSA8RcyWDPzlkaS3q/3SlSv9bqakzdXXW4WdRZYkIR/UiPo9kwSaz+WTy6sP2l3Kxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702480;
-	h=DMARC-Filter:Received:Received:Received:Date:Message-ID:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-Rspamd-Pre-Result:X-Rspamd-Queue-Id:X-Rspamd-Pre-Result:
-	 X-Rspamd-Action:X-Rspamd-Server:X-Spam-Level:X-Spamd-Result:
-	 X-Spam-Flag:X-Spam-Score;
-	bh=n3928gBIWqHxVcE0Q0TQTSHKUQ5+JmJrD1oVco54lEw=;
-	b=SsNNhpNjGYW2vCZtMkflse9ue8YHNtR8+zbGG5fBevd4SYsJ2hVgVPVNH3P4hJ68/df6
-	 pJzUlpQCJkZaDvEKSRGrzteXSeBQenr0ZuEbFckUlTvj1mSY7SiUpQHhtJzfTgqBUtZnX
-	 KGPfx4asqIUjRtWhnSjU4CUWRold3ESi4aGFeWei6yh4oWfgxf10HOQGcthEPH5dIfr9A
-	 fSlITyTca7dNoYNjL+GB7dS6JUM466ks8zqr/C5aLdfQlu+4/Yvz1dG6dh8xowYtyLQE5
-	 nAeYjPv+WK6PboMtJ5JCCWvkviDiVOw6D4DSVf6DVdmuB4kuC/bcd4rs6cfcivrhikQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702521;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Debian-User;
+	bh=wP/O8IukHJOBL3tN+2cJW0yWsYWUQ+Q8NGz6s00IHmg=;
+	b=Rw7COGDyM+44e7YfrI9GW0TK8xxndnGYNHLeCoxNh5J6QLFjCTR6UEMk3VJj84mX46oE
+	 HrO84WM/UW5QKNojvdCQcILh6HyOeyOBXG4H8ag2EtU4QNEdAKvDmvn2Ac8N/+E8lXu2y
+	 mJvEOV0nmguc8hbyUPpdBVk8KGwP7k10AMvANvsESGmDnb53/aENLp9x9fxuTmWhdzpb5
+	 fCY01JaRhzSK5Kzgm5rH3vKbHqoxUcVyUZ1f1lUlHY8X9E7w0PyObRSbcDoaOTa8Pn3VQ
+	 GIqODbRnyUYSh043wwFNF9+MKwxJy4YRc3kv5Nv48hu5ha5jvLRtiFsQMI1O0kEDzbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=rTkwzoiY;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34065606A81D;
-	Tue,  3 Nov 2026 10:41:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34065606A81D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 87A641FF84;
-	Tue,  3 Nov 2026 10:41:18 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A98D41350A;
-	Tue,  3 Nov 2026 10:41:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fPJkIE266WqxEgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 03 Nov 2026 10:41:17 +0000
-Date: Tue, 03 Nov 2026 11:41:09 +0100
-Message-ID: <87ik2exkmy.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RFC 09/38] ALSA: info: don't write past the end of a data entry
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-9-59422ed3e465@kernel.org>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
-	<20261102-work-procfs-bugfixes-v1-9-59422ed3e465@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE55606A823;
+	Tue,  3 Nov 2026 10:42:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BE55606A823
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=rTkwzoiY
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=wP/O8IukHJOBL3tN+2cJW0yWsYWUQ+Q8NGz6s00IHmg=; b=rTkwzoiYqZlEfmzua7BVb7+Cwb
+	ev03kGiWw/4fgGGuk3kUzkZzyFMbubZOySczgWYqOySzgqlk9+JzcEWX1xgby87RfCalXJcDRYQ5p
+	MZ/RmZ+6hdUzBLzq1A4+5Ya78hfTer3zwfDAAzaxVKD0hwGp0XIVrmgUytmUldDmsPijjOEXVcai7
+	AYVaC/vPM2khzcPEbMkvGNpFRjh6UX0TCzGz/ApbVGkCwGQL3FCmQFrKL5OpQip/KPEhz526Rv/x/
+	w6IwZd6oYUAKSdgJoCV2H0TYNQpVW/knvT4L+cyiiD/5r1Bi+nlUGMm1yupFKk/C4cSnXCe2seU1f
+	OpNpl/yg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xOBxn-006sNC-1D;
+	Tue, 03 Nov 2026 10:41:59 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 03 Nov 2026 02:37:46 -0800
+Subject: [PATCH net-next v4 1/5] netconsole: send the oops when oops_only
+ is set
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -126,64 +62,112 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Queue-Id: 87A641FF84
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261103-netcons_ratelimit-v4-1-b554c27ba27a@debian.org>
+References: <20261103-netcons_ratelimit-v4-0-b554c27ba27a@debian.org>
+In-Reply-To: <20261103-netcons_ratelimit-v4-0-b554c27ba27a@debian.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Eric Dumazet <edumazet@kernel.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>, paulmck@kernel.org, 
+ gustavold@gmail.com, asantostc@gmail.com, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2865; i=leitao@debian.org;
+ h=from:subject:message-id; bh=u7vxqLs2/rKuvcNrK64iMGWJtslWiwS22UFEpFhL96c=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq6bpqvm619FfG1cCtAmGdxXD4NBude3/FtjD2l
+ 9ZNMf7u1MmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaum6agAKCRA1o5Of/Hh3
+ balKD/4rlkZCoe7PG0nvt/ptwNv936k3w0jdZBvwXVtfmCHc0jtvde4qfuOSLwBVzsrpMFZwycL
+ pllK0t3udh7c0+Ofie+ywwrMQog9fGRa3H5fSEKWMNL3zR0BfRRCCT3f5zlsZ1+DZ2KY0U0cD14
+ DMjUFWXaajZmwR8Pgbd+jVstr0fty6uM5W2g/fy/xdM+Dm7IOgY69/MuPaY9wcqgO7rkz1qQxou
+ /IlRK7Z14wRPLEzC95hh46ky2QGt98aHHEladL86ultcR6+1Dom1NUXRhkls0g5peH1hT0a4mnS
+ nBII1WltlWW7co9vhI65ZPRc7eNMu9qqFpUi7yzJENudxQHUHbUD7M/hqxP4j5RlG/EZ9o9TUKl
+ nUmf3svERu9hXDl3TwWMUNQccVKU9bjqoGzZfYHi8AQwDOqWgN+Pa5UTVuCwtQox51iHuXj/89l
+ Foq69FoGdprj/eCSKay+20SkoIDYE6QgoOrt95xiMVGO4oF2B2dxTU8QBr6W3Tq57raLd40mu6b
+ F4WQBUdPYF1ZVTYE4n40N+2krUQnS7hA/se86yZC82sIFh8GAUOPKeQwwdO9b2QcSOcsTe9Y6Mj
+ nNX+92LZgOrB1LuRgGBAzf+gflb4l0GuXIN/lQQFQISwVDlMYNeHSrMVBQ8nOhm+M5wKavJ5NJH
+ S2ydW8HsJEzZVPg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On Mon, 02 Nov 2026 15:21:24 +0100,
-Christian Brauner wrote:
-> 
-> snd_info_entry_write() clamps the count to what is left of the entry
-> by computing entry->size - pos as a size_t. For a position past the end
-> that wraps and the write goes to the driver unclamped, for opl4 into
-> sample memory outside of what the entry covers. At the end of the entry
-> the driver gets a count of 0 and vmalloc(0) warns. Before the clamp
-> moved into the common code the driver ignored such writes. Fail them
-> with -ENOSPC instead, like a block device does at the end of the
-> device. Returning 0 would make writers that use stdio retry forever.
-> 
-> Fixes: d97e1b78239c ("ALSA: info - Check file position validity in common layer")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+A target running with oops_only=1 receives nothing when the kernel
+oopses, which is the one thing the option exists for. Only a panic
+still gets through.
 
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+netconsole_write() bails out unless oops_in_progress is set, and that
+flag is already gone by the time netconsole runs. netconsole is
+CON_NBCON_ATOMIC_UNSAFE, so console_is_usable() keeps it out of the
+emergency flush an oops prints in, and the records only leave the box
+once the printer thread runs.
 
+die() wakes that thread from oops_exit(), by which point
+bust_spinlocks(0) has cleared oops_in_progress again. TAINT_DIE is set
+in between, so test that as well, behind a helper.
 
-thanks,
+With oops_only=1 on a netdevsim target, an lkdtm EXCEPTION produces 44
+lines of oops. The receiver gets none of them before this change and
+all of them after it, while ordinary messages stay suppressed.
 
-Takashi
+The taint never clears, so from the first oops on, an oops_only target
+sends everything instead of going quiet again. Sending the aftermath of
+a crash beats sending nothing.
 
-> ---
->  sound/core/info.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/sound/core/info.c b/sound/core/info.c
-> index c4d57d0809ad..982087bc8575 100644
-> --- a/sound/core/info.c
-> +++ b/sound/core/info.c
-> @@ -171,6 +171,8 @@ static ssize_t snd_info_entry_write(struct file *file, const char __user *buffer
->  	pos = *offset;
->  	if (!valid_pos(pos, count))
->  		return -EIO;
-> +	if (pos >= entry->size)
-> +		return count ? -ENOSPC : 0;
->  	if (count > 0) {
->  		size_t maxsize = entry->size - pos;
->  		count = min(count, maxsize);
-> 
-> -- 
-> 2.53.0
-> 
+Fixes: 7eab73b18630 ("netconsole: convert to NBCON console infrastructure")
+Reviewed-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netconsole.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 267254f046de9a..6637b4a16b6c98 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -83,7 +83,8 @@ MODULE_PARM_DESC(netconsole, " netconsole=[src-port]@[src-ip]/[dev],[tgt-port]@<
+ 
+ static bool oops_only;
+ module_param(oops_only, bool, 0600);
+-MODULE_PARM_DESC(oops_only, "Only log oops messages");
++MODULE_PARM_DESC(oops_only,
++		 "Only log oops messages, everything once the kernel died");
+ 
+ #define NETCONSOLE_PARAM_TARGET_PREFIX "cmdline"
+ 
+@@ -96,6 +97,17 @@ static int __init option_setup(char *opt)
+ __setup("netconsole=", option_setup);
+ #endif	/* MODULE */
+ 
++/* The kernel is dying, or has died.
++ *
++ * oops_in_progress only spans the printing of the crash. netconsole is
++ * CON_NBCON_ATOMIC_UNSAFE, so the records reach the target later, from the
++ * printer thread, with the flag already cleared. TAINT_DIE outlives it.
++ */
++static bool netconsole_kernel_dying(void)
++{
++	return oops_in_progress || test_taint(TAINT_DIE);
++}
++
+ /* Linked list of all configured targets */
+ static LIST_HEAD(target_list);
+ /* target_cleanup_list is used to track targets that need to be cleaned outside
+@@ -2480,7 +2492,7 @@ static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
+ {
+ 	struct netconsole_target *nt;
+ 
+-	if (oops_only && !oops_in_progress)
++	if (oops_only && !netconsole_kernel_dying())
+ 		return;
+ 
+ 	list_for_each_entry(nt, &target_list, list) {
+
+-- 
+2.53.0-Meta
+
