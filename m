@@ -1,105 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793679158;
-	b=HOGRQdWAgczAQ4DAkCa34xhrJLRWpHEzPikvh2ds+UV5uRv6iBXZms7dWTpZ4Z3QkP5H
-	 F39w0I6aETMQbK8t+SKEwRAK8ebf0VmHvSgvD0OXaWaI1GviNobHnisy0jHSGmxVlQ9K5
-	 wtuurR+tog+VnTlcF+LWt5f6ahQoM9EW6lxcat9NT5BG98WwZ/LLZMIUD24VaZeAONRSJ
-	 y/LM9ptWDQKiXiInoGGNbm/EDPnvTvjs4Vyi6USHnZqu7v8SQQNmcrgFYuB+dRqCsJsZ9
-	 8KBVuokSEK2deYv+OwLY/HWtHkJgouYU5agbT4GUsdxlz1GSz5UfruhJdXFs35NrTFA==
+	t=1793679522;
+	b=kp5PADt9Q5pUPV8WeLCR9a/y8rPuExSanj8U7DlwBtZTHSmF5ogAj9fp2o5K3h4C9698
+	 2Z0VGT3NpHf3EZ0Sql4k4iHq/JFPsn+w8Vfl2cM0dPDKwaWxcOwpZBlt9QURIsy5PBkRs
+	 RWQQdq8iKmeNwSu7IfqYmdL9JcRGkl/78by7ayZ5kL+XjQjdYAUQ7xihtTH/PJAhXjtK1
+	 jhdlkrIGpU/pZCAl48O6YoOaXSwo+OpAjf2SjPfizbCqcdLscEC7PSyO1C4fHdOUpMBjL
+	 T2IJr8mYSd2QFGSkkGQDETZki2DuheiEgqN4mCO9mrkM1r7KpimVwhEvPCWJ8EMmSUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793679158;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=rPw7FVQQb55NWDv1ECpivZUbEpxMXe57ZeNyV7jgnK8=;
-	b=Y12iDW20juoe3rFw4yO+m2RHT0RHFfyiGqsFM8rFDqP778+UQawr+4EOh0UHbjG7FhW7
-	 WiC27jUS+2cXL9prdYSiSnCEDCIDGmTX4SJytRiP03gFey/USye+37aXaUL8N89jQ0uFK
-	 AmC4w2o5hi7N2fn3dqSFBosBp6lzkEcSrU0Y0w7mIcrOMaXBOuuTEqTVmmYebbFtlCKZZ
-	 HjE8sPgebSLjhfb/eA8gJxBMT3fW/n7/07ufn5ort8is5Z6AjuB88Q23fRlQOPJB6Ogtj
-	 nUAwURO7cYyPZ7h7k494P2uwAalqp/ElJBoZm8eYud0XvSTh/R+xr14+Kd7LCNHCcWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793679522;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=AJFKR2DVegmCOvKm+XgKiQZC99Uzm4Ks3f9FW73MosI=;
+	b=FXak1FuGGNH5ruK1df4wUxmmWdd8QtvQuPZxK73UY7i95hMu1V3zSsVCs/YFmhSVrKeB
+	 7Ry9uEnOGyU6Gkz2xyV4pX0ymoXPHrDVlUWEuTEnTjLVY5K+1uULE4dbAsHwlAgCxXm+E
+	 0XMiWYiwaVn5797FJTOR3f64J9cv4Z9towaDEmwsyS1G7CAXRNksy0LSnKtM2JdtXcBWq
+	 xFajkkY2kvCWL2J/6oYV2roj7UdqErmOdg4HCOl0D7I4EVh8gK3M9+YSNpGyFdRaIc0b9
+	 A+LzDijtnxh9R8Uwv+2RaWIbZPjo/HRIcULd3WlvcBK+PEQ5E131012jw8pKCfv5uog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yodvlzDT;
-	arc=none smtp.remote-ip=209.85.215.173
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d2M0IvLc;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78DE606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 04:12:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B78DE606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADE7606A338;
+	Tue,  3 Nov 2026 04:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yodvlzDT
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso1524639a12.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 20:12:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793679157; x=1794283957; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rPw7FVQQb55NWDv1ECpivZUbEpxMXe57ZeNyV7jgnK8=;
-        b=yodvlzDTCEsqdiGMpwo5m4PJfJljPJYo90R4CS8fBrIUlAVyMfHgZFueg6BokZZslF
-         7Ytt8Vx0g0EAWJL2p7slSQlRs7RPfs2D8w9Tp3mplUfj9qgpzEizRg3cmHGpK9nrGyo2
-         dWZnl8M9orQP/QkHM/NoDY9miG0JV3+w4PoEFDS+KS7XLAk6sRsfCyIE1FiPoqLu4z9k
-         9eTl7NFcCUp3//fPxK/ifIae9drOD7nJPwwWTxvqnH1CSyRM0eeFWYJL31x8oKXJ13Rc
-         kcbjPEU0cAzSswSdWigWMJg+/tpQYY0fcpsHdx/xnHr8QjW+3tz0rW0npozGWImNQmEB
-         8fuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793679157; x=1794283957;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rPw7FVQQb55NWDv1ECpivZUbEpxMXe57ZeNyV7jgnK8=;
-        b=ma0cFsk7NKu4C20wuyOfiiSlRdb1Ei8xb5LhC7nn3E6qYNHKtcFBIVYJxgFNSOVCiH
-         AmVtj/gRy5GtktEY/OvPE7u9acIVh4Pt7dJhAoKMjpW6Bk2ol7CAW+DiEwiyPz2J1WNk
-         IoCDZaLSep2COUn0uyGYGOT7Y9p9IuKdFKRu3e9qLpb4NMrBk29aLJnCc/C0lZo3PH5l
-         Af+SQxJKcAOt08UFGc9G9uLBmIso0ojmJByfj9q9xqnm/SVuHqhakA/2KbJzF+1OJTnb
-         SHT4GW2/exdBBIhnYxF8p4igouJKh1s48jvR+w+29JQykAxQiYPeDuaO+I8Qui7S4Ir3
-         +ChQ==
-X-Gm-Message-State: APuU4Z+Ma553r4NR/w5QGRiKjcZmY4yoF9Ns4REYKanBg5jFbMkFyn0g
-	HDgPNb7kJzonAWN6yWmXojPFcB9tJeOvedzOBGFxUxB6sIRv6w5EXap+L08BYfSF
-X-Gm-Gg: AYBFou09HHGr2meeHUdPtnxMJYuIMkMRjB/2c2cmNk4o3f12syIoW7MrdKJIvVW5Oey
-	07EytQvOlIeBWJHmIlM1WwJiXePSH2xZ+ulPPtD2toGFL8paKUBuSdXakuqv3WzBtkSRZpKlXkZ
-	GdkD5nyJT4rijrNnt+gBgrMRn0za6hBRaSqi8mvDnCgb95kh0vnb85/fuP5m49JTZAll7Sa5bxX
-	Xq/HQFJvI6mhAX8ItKazZdwdt10qCmvz4jVzEjyLB9kXvc62YGJvRNfRffxd15fbbZQZTTNp/T6
-	HQ9afqxyqX1M0UjQhjNvaoqXj3p4nq7mgWudQ9fNm55NQmUml9LpSZKWw3ghlMBkPlk17mp/Qe0
-	E677UX1oq5pgaDNFwT04DvVVgVwttBbTudQdEhTIieg8daagFdrQMsX22UkPRm0p27y7G+iFXVw
-	Ukgn6WTCq/HytNZXpVQ7pxr3vYuQlk+CD6FWo8goDM5Fv/ZG1Tj7f1VA5dSox5012DYtsFytOTs
-	ifwJMDsn4vJK/w7YhCnxe2VSgnZ+Ca1IHtc96FHETQnEoeaaxETu5ymckgjL1fpqMdLlYkQ9s0l
-	52fZC0o=
-X-Received: by 2002:a17:90b:2b47:b0:3a2:b16d:928b with SMTP id 98e67ed59e1d1-3ae897a5c58mr9740533a91.46.1793679156506;
-        Mon, 02 Nov 2026 20:12:36 -0800 (PST)
-Received: from gmail.com ([2407:cdc0:f00f::117])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c6f010asm1941708a91.15.2026.11.02.20.12.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 20:12:36 -0800 (PST)
-From: Jia Jia <physicalmtea@gmail.com>
-To: netdev@vger.kernel.org
-Cc: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	bobbyeshleman@gmail.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 3/5] vsock/virtio: amortize RX socket locking for stream packets
-Date: Tue,  3 Nov 2026 12:11:32 +0800
-Message-Id: <20261103041134.33310-4-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261103041134.33310-1-physicalmtea@gmail.com>
-References: <20261103041134.33310-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d2M0IvLc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D191F00919;
+	Tue,  3 Nov 2026 04:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793679521;
+	bh=AJFKR2DVegmCOvKm+XgKiQZC99Uzm4Ks3f9FW73MosI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=d2M0IvLcWRf9nosJBt3+PWZBmLgaROlN4XFALkCf7RFXZWo3jq6bzyTLqJIcf1RAK
+	 5BdHk33tG7M5c8e0xvOV6YqdFwEj1RmmN3DrleFIxfE23+lsgHMNuT7fe2PQ0r+JQa
+	 KxXLEwKQ8IX6KzY63ldagGkvcmU1aRQ0VC/yQ9V5cTADLzTzhM6ZAZHmqb/IEtcRDv
+	 NqQugqweg2ll4i843lt4p8z0Idug/0UDqtlJ3YLJ2SUsBDkujcRnH031H/4l4LAu1y
+	 l7z339Bv+XIyf5gTKsOccBD9sPA0R/s/9NyQCn0izzAyfhfTbUzFBBEBbwsa3oGvpZ
+	 qiqF1sXbAjjmw==
+Subject: Re: [PATCH net v2] net: bridge: disable MRP ports before the FDB
+ flush in del_nbp()
+From: netdev-bot+sashiko@kernel.org
+To: teel4res@gmail.com
+Cc: idosch@nvidia.com, razor@blackwall.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ horatiu.vultur@microchip.com, bridge@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 04:18:40 +0000
+Message-ID: <179367952018.488856.4094824897348236390@kernel.org>
+In-Reply-To: <179333317814.2102764.8780283783548366593@gmail.com>
+References: <179333317814.2102764.8780283783548366593@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,552 +64,201 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The virtio-vsock RX worker looks up a socket and takes its lock for every
-packet. Retain the connected lookup reference and socket lock across a
-bounded run of STREAM/RW packets for one established native socket.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Reuse the locked socket while packets match the same flow. Finish the
-batch on a malformed packet, flow change, non-RW traffic, or a change to
-the socket state, transport, protocol, sockmap state, or receive buffer
-limits. A connected lookup miss falls back to the existing receive path,
-which can still find a bound socket.
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-Limit an uninterrupted socket-lock ownership interval to 64 packets and
-64 KiB of payload. The payload limit is one
-VIRTIO_VSOCK_MAX_PKT_BUF_SIZE. Small or zero-length packets still incur
-per-packet work, so an independent packet limit is needed. The 64-packet
-limit uses VHOST_NET_BATCH as a reference; it is a policy choice rather
-than a protocol limit.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Beyond these limits, a larger batch would only further amortize socket
-lookup and lock/unlock operations, while virtqueue work, validation,
-tracing, skb ownership, credit update, and queueing remain per-packet. I
-therefore expect diminishing returns while the uninterrupted socket-lock
-interval continues to grow, but I have not measured larger limits yet.
+- [High] The fix needs an RCU grace period between br_stp_disable_port()
+  writing p->state = BR_STATE_DISABLED (br_if.c:348) and the final…
+- [High] The reorder assumes br_mrp_port_del() always clears
+  BR_MRP_AWARE_BIT on the port being deleted, so that…
+- [Medium] The commit message's safety argument describes code that is
+  not in the target tree.
 
-Only the guest virtio RX worker is changed. The benchmark exercises the
-host-sender-to-guest-receiver direction, where this worker is on the
-receive path. I have not measured the corresponding worker and socket-lock
-overhead in vhost-vsock or vsock_loopback, and they use different worker
-and locking models. Leave those paths unchanged pending separate policy
-and validation. I plan to evaluate vhost-vsock separately as follow-up
-work.
+--
 
-Performance:
+net: bridge: disable MRP ports before the FDB flush in del_nbp()
 
-These results cover P1-P3, before the notification changes in P4 and P5.
+This patch moves br_mrp_port_del() and br_cfm_port_del() ahead of
+br_stp_disable_port() in del_nbp(). An MRP ring port then has
+BR_MRP_AWARE_BIT cleared before STP disables it. The goal is for the port
+to really reach BR_STATE_DISABLED before the FDB flush, so that no frame
+is learned with dst == p and later forwarded to the freed port.
 
-Tested on a single-stream vsock connection (one Guest receiver thread on
-CPU0, virtio-vsock IRQ on Guest CPU1, fresh QEMU Guest per state). The host
-uses vhost-vsock.
+Link: https://lore.kernel.org/netdev/20261012123051.GA714215@shredder/
 
-For throughput, vsock_perf runs on the host as the
-sender, with a custom single-threaded Guest receiver pinned to Guest CPU0
-using blocking recv(). The fixed-64K table uses a 64K buffer; the matched
-table uses the sender's request size. The virtio-vsock IRQ/RX worker is
-pinned to Guest CPU1. To normalize run times across payloads into a
-bounded, deterministic window and avoid long runs being skewed by host
-background noise or virtualization scheduling jitter, transfer sizes scale
-proportionally with the request size (64B/64M, 256B/256M, etc.), capped at
-2G for 4K-64K. The custom receiver keeps the recv() size and count
-explicit; vsock_perf's receiver uses poll()+read().
+> Remove the MRP and CFM instances before disabling the port, so that
+> br_stp_disable_port() actually transitions the port to BR_STATE_DISABLED.
+> The synchronize_net() in nbp_vlan_flush() then drains the receive paths
+> that could still learn with the old state, and the FDB flush that
+> follows removes their entries.  No frame can be learned after that
+> flush and before netdev_rx_handler_unregister().
 
-End-to-end RX throughput (fixed-64K receiver; Gbit/s):
+[Severity: Medium]
+Does this description match the tree the patch applies to?
 
-  payload  baseline RX  PATCH RX  throughput change (95% CI)
-           (Gbit/s)      (Gbit/s)
-  64B        0.1285       0.2462    +91.59% [+79.74%, +104.22%]
-  256B       0.5909       0.9666    +63.59% [+61.03%, +66.19%]
-  512B       1.1817       1.8350    +55.29% [+46.76%, +64.32%]
-  1K         2.3252       3.3600    +44.50% [+38.93%, +50.30%]
-  4K         3.8436       5.5661    +44.82% [+40.30%, +49.47%]
-  8K         4.6609       5.4115    +16.10% [ +8.91%, +23.77%]
-  16K        5.1196       5.6399    +10.16% [ +4.07%, +16.61%]
-  64K        5.6095       5.7062     +1.72% [-3.19%, +6.89%]
+Earlier in the message the flush is called br_fdb_delete_by_port(), but
+that function no longer exists under net/bridge/. The current del_nbp()
+does this:
 
-Fixed-syscall stress test (receiver recv() size = sender write size;
-no perf; Gbit/s):
+	vg = nbp_vlan_group(p);
+	nbp_vlan_group_unpublish(p);
+	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
+	nbp_vlan_flush(p, vg);
 
-  payload  baseline RX  PATCH RX  throughput change (95% CI)
-  64B        0.1446       0.2540   +75.71% [+63.67%, +88.62%]
-       recv() calls (baseline/PATCH): 1048577/1048577
-  256B       0.4211       0.9061  +115.18% [+72.13%, +169.00%]
-       recv() calls (baseline/PATCH): 1048577/1048577
-  512B       0.7980       1.6112  +101.90% [+95.30%, +108.72%]
-       recv() calls (baseline/PATCH): 1048577/1048577
-  1K         1.4965       2.6986   +80.33% [+68.93%, +92.49%]
-       recv() calls (baseline/PATCH): 1048577/1048577
-  4K         2.9384       4.8590   +65.36% [+60.17%, +70.72%]
-       recv() calls (baseline/PATCH): 539544/524982
-  8K         3.8170       5.1887   +35.94% [+27.66%, +44.75%]
-       recv() calls (baseline/PATCH): 274857/262991
-  16K        4.6856       5.5996   +19.51% [+15.36%, +23.81%]
-       recv() calls (baseline/PATCH): 147518/131351
-  64K        5.5182       5.8800    +6.56% [-0.83%, +14.49%]
-       recv() calls (baseline/PATCH): 48492/32910
+nbp_vlan_flush() contains no synchronize_net(), and it runs after the FDB
+flush:
 
-Guest CPU1 aggregate cycles per received byte
-(fixed 64K receiver, with perf):
+net/bridge/br_vlan.c:nbp_vlan_flush() {
+	ASSERT_RTNL();
 
-  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
-  64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
-  256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
-  512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
-  1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
-  4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
-  8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
-  16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
-  64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
+	__vlan_flush(port->br, port, vg);
+	__vlan_group_free(vg);
+}
 
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- include/linux/virtio_vsock.h            |  23 ++
- net/vmw_vsock/virtio_transport.c        |   7 +-
- net/vmw_vsock/virtio_transport_common.c | 303 ++++++++++++++++++++++--
- 3 files changed, 318 insertions(+), 15 deletions(-)
+The only grace period before the flush is in nbp_vlan_group_unpublish():
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index f91704731057e..748633aa0cc81 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -282,6 +282,29 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
- 
- void virtio_transport_recv_pkt(struct virtio_transport *t,
- 			       struct sk_buff *skb, struct net *net);
-+
-+/*
-+ * Initialize a batch to zero before use. A non-empty batch owns @sk's socket
-+ * lock and the reference returned by vsock_find_connected_socket_net(). The
-+ * caller retains both until it calls virtio_transport_rx_batch_finish(). An
-+ * empty batch owns neither.
-+ */
-+struct virtio_transport_rx_batch {
-+	struct sock *sk;
-+	unsigned int pkts;
-+	size_t bytes;
-+};
-+
-+static inline bool
-+virtio_transport_rx_batch_empty(const struct virtio_transport_rx_batch *batch)
-+{
-+	return !batch->sk;
-+}
-+
-+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-+				     struct sk_buff *skb, struct net *net,
-+				     struct virtio_transport_rx_batch *batch);
-+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
- u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
- void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 4f9aa9c4c3aa5..9af85712bd387 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -631,6 +631,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
- 
- static void virtio_transport_rx_work(struct work_struct *work)
- {
- 	struct virtio_vsock *vsock =
- 		container_of(work, struct virtio_vsock, rx_work);
-+	struct virtio_transport_rx_batch batch = {};
- 	struct virtqueue *vq;
-@@ -666,6 +667,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 			/* Drop short/long packets */
- 			if (unlikely(len < sizeof(*hdr) ||
- 				     len > virtio_vsock_skb_len(skb))) {
-+				virtio_transport_rx_batch_finish(&batch);
- 				kfree_skb(skb);
- 				continue;
- 			}
-@@ -673,6 +675,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 			hdr = virtio_vsock_hdr(skb);
- 			payload_len = le32_to_cpu(hdr->len);
- 			if (unlikely(payload_len > len - sizeof(*hdr))) {
-+				virtio_transport_rx_batch_finish(&batch);
- 				kfree_skb(skb);
- 				continue;
- 			}
-@@ -685,11 +688,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 			/* Force virtio-transport into global mode since it
- 			 * does not yet support local-mode namespacing.
- 			 */
--			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-+			virtio_transport_recv_pkt_batch(&virtio_transport, skb,
-+							NULL, &batch);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
- 
- out:
-+	virtio_transport_rx_batch_finish(&batch);
- 	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
- 		virtio_vsock_rx_fill(vsock);
- out_nofill:
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 2a9cfed085515..f83e5b2edce35 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -33,6 +33,15 @@
- #define MAX_COLLAPSE_LEN \
- 	SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM, PAGE_ALLOC_COSTLY_ORDER)
- 
-+/*
-+ * Bound the interval that an RX worker owns a socket lock. One maximum packet
-+ * buffer (64 KiB) bounds payload in one uninterrupted ownership interval.
-+ * Small and zero-length packets need a packet limit to bound per-packet work;
-+ * the 64-packet policy uses VHOST_NET_BATCH as a reference.
-+ */
-+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS	64
-+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES	VIRTIO_VSOCK_MAX_PKT_BUF_SIZE
-+
- static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
- 					       bool cancel_timeout);
- static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
-@@ -1793,13 +1802,94 @@ virtio_transport_find_socket(struct sockaddr_vm *src,
- 	return sk;
- }
- 
-+static void
-+virtio_transport_trace_recv_pkt(const struct virtio_vsock_hdr *hdr,
-+				const struct sockaddr_vm *src,
-+				const struct sockaddr_vm *dst)
-+{
-+	trace_virtio_transport_recv_pkt(src->svm_cid, src->svm_port,
-+					dst->svm_cid, dst->svm_port,
-+					le32_to_cpu(hdr->len),
-+					le16_to_cpu(hdr->type),
-+					le16_to_cpu(hdr->op),
-+					le32_to_cpu(hdr->flags),
-+					le32_to_cpu(hdr->buf_alloc),
-+					le32_to_cpu(hdr->fwd_cnt));
-+}
-+
-+static bool
-+virtio_transport_recv_pkt_set_owner(struct sk_buff *skb, struct sock *sk)
-+{
-+	if (skb_set_owner_sk_safe(skb, sk))
-+		return true;
-+
-+	WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-+	return false;
-+}
-+
-+static bool
-+virtio_transport_sock_has_psock(const struct sock *sk)
-+{
-+	return (uintptr_t)rcu_access_pointer(__sk_user_data(sk)) &
-+	       SK_USER_DATA_PSOCK;
-+}
-+
-+/* The caller holds sk's socket lock. */
-+static bool
-+virtio_transport_rx_batch_can_continue(struct virtio_transport *t,
-+				       struct sock *sk, u32 len)
-+{
-+	struct virtio_vsock_sock *vvs;
-+	struct vsock_sock *vsk;
-+
-+	vsk = vsock_sk(sk);
-+	vvs = vsk->trans;
-+
-+	/*
-+	 * Keep a connected lookup reference only for the native, established
-+	 * STREAM path. Sockets outside ESTABLISHED can change table membership;
-+	 * a completed or reassigned socket must resume the per-packet path.
-+	 */
-+	if (sk->sk_state != TCP_ESTABLISHED ||
-+	    sk->sk_type != SOCK_STREAM ||
-+	    sock_flag(sk, SOCK_DONE) ||
-+	    vsk->transport != &t->transport || !vvs)
-+		return false;
-+
-+	/*
-+	 * Do not admit a packet that would hit an existing RX limit while the
-+	 * worker owns the socket lock. The caller holds that lock, so no reader can
-+	 * dequeue until the batch is released.
-+	 */
-+	return (u64)vvs->buf_used + len <= vvs->buf_alloc &&
-+	       !virtio_transport_rx_buf_full(vvs);
-+}
-+
-+/* The caller holds sk's socket lock. */
-+static bool
-+virtio_transport_rx_batch_can_receive(struct virtio_transport *t,
-+				      struct sock *sk, u32 len)
-+{
-+	if (!virtio_transport_rx_batch_can_continue(t, sk, len))
-+		return false;
-+
-+	/*
-+	 * Sockmap can replace sk_prot and publish a psock without the socket lock.
-+	 * Check both at each packet boundary; a boundary that sees a replacement
-+	 * returns to the existing per-packet path.
-+	 */
-+	return READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-+	       !virtio_transport_sock_has_psock(sk);
-+}
-+
- /*
-- * The caller holds sk's socket lock.
-+ * The caller holds sk's socket lock. If @batchable is non-NULL, update it
-+ * after processing @skb to say whether a native STREAM/RW batch can continue.
-  */
- static void
- virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 				 struct sk_buff *skb, struct sock *sk,
--				 struct net *net)
-+				 struct net *net, bool *batchable)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1809,6 +1899,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
- 			le32_to_cpu(hdr->src_port));
- 
-+	if (batchable)
-+		*batchable = false;
-+
- 	/*
- 	 * The socket may have been closed or reassigned after lookup but before
- 	 * its socket lock was acquired. Listener sockets have no assigned
-@@ -1852,6 +1945,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	}
-+
-+	if (batchable)
-+		*batchable = virtio_transport_rx_batch_can_receive(t, sk, 0);
- }
- 
- /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
-@@ -1869,14 +1965,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
- 			le32_to_cpu(hdr->dst_port));
- 
--	trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
--					dst.svm_cid, dst.svm_port,
--					le32_to_cpu(hdr->len),
--					le16_to_cpu(hdr->type),
--					le16_to_cpu(hdr->op),
--					le32_to_cpu(hdr->flags),
--					le32_to_cpu(hdr->buf_alloc),
--					le32_to_cpu(hdr->fwd_cnt));
-+	virtio_transport_trace_recv_pkt(hdr, &src, &dst);
- 
- 	if (!virtio_transport_valid_type(le16_to_cpu(hdr->type))) {
- 		(void)virtio_transport_reset_no_sock(t, skb, net);
-@@ -1898,13 +1987,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 		goto free_pkt;
- 	}
- 
--	if (!skb_set_owner_sk_safe(skb, sk)) {
--		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-+	if (!virtio_transport_recv_pkt_set_owner(skb, sk))
- 		goto free_pkt;
--	}
- 
- 	lock_sock(sk);
--	virtio_transport_recv_pkt_locked(t, skb, sk, net);
-+	virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
- 
- 	release_sock(sk);
- 
-@@ -1919,6 +2006,194 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- }
- EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
- 
-+/*
-+ * Release an active RX batch. A non-empty batch holds the socket lock and the
-+ * reference returned by vsock_find_connected_socket_net(). An empty batch
-+ * holds neither.
-+ */
-+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
-+{
-+	struct sock *sk = batch->sk;
-+
-+	batch->sk = NULL;
-+	batch->pkts = 0;
-+	batch->bytes = 0;
-+
-+	if (!sk)
-+		return;
-+
-+	release_sock(sk);
-+	sock_put(sk);
-+}
-+EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
-+
-+static bool
-+virtio_transport_rx_batch_matches(const struct virtio_transport_rx_batch *batch,
-+				  const struct sockaddr_vm *src,
-+				  const struct sockaddr_vm *dst,
-+				  struct net *net)
-+{
-+	struct vsock_sock *vsk = vsock_sk(batch->sk);
-+
-+	/* The connected table is keyed by peer address and local port. */
-+	return vsock_addr_equals_addr(src, &vsk->remote_addr) &&
-+	       dst->svm_port == vsk->local_addr.svm_port &&
-+	       vsock_net_check_mode(sock_net(batch->sk), net);
-+}
-+
-+static bool
-+virtio_transport_rx_batch_can_add(const struct virtio_transport_rx_batch *batch,
-+				  u32 len)
-+{
-+	if (batch->pkts >= VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS ||
-+	    batch->bytes >= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES)
-+		return false;
-+
-+	return len <= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES - batch->bytes;
-+}
-+
-+static void
-+virtio_transport_rx_batch_account(struct virtio_transport_rx_batch *batch,
-+				  u32 len)
-+{
-+	batch->pkts++;
-+	batch->bytes += len;
-+}
-+
-+static void
-+virtio_transport_rx_batch_process(struct virtio_transport *t,
-+				  struct sk_buff *skb, struct net *net,
-+				  struct virtio_transport_rx_batch *batch,
-+				  const struct sockaddr_vm *src,
-+				  const struct sockaddr_vm *dst)
-+{
-+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	bool batchable;
-+	u32 len;
-+
-+	len = le32_to_cpu(hdr->len);
-+	virtio_transport_trace_recv_pkt(hdr, src, dst);
-+
-+	if (!virtio_transport_recv_pkt_set_owner(skb, batch->sk)) {
-+		virtio_transport_rx_batch_finish(batch);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
-+	virtio_transport_recv_pkt_locked(t, skb, batch->sk, net, &batchable);
-+	if (!batchable) {
-+		virtio_transport_rx_batch_finish(batch);
-+		return;
-+	}
-+
-+	virtio_transport_rx_batch_account(batch, len);
-+	if (!virtio_transport_rx_batch_can_add(batch, 0))
-+		virtio_transport_rx_batch_finish(batch);
-+}
-+
-+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-+				     struct sk_buff *skb, struct net *net,
-+				     struct virtio_transport_rx_batch *batch)
-+{
-+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	struct sockaddr_vm src, dst;
-+	struct sock *sk;
-+	bool batchable;
-+	u32 len;
-+
-+	/*
-+	 * Batch only STREAM data packets. Control packets can change connection
-+	 * state or send a reply. Keep SEQPACKET on its existing path: its EOM/EOR
-+	 * record-boundary semantics have not been separately evaluated for batching.
-+	 */
-+	if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM ||
-+	    le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW) {
-+		virtio_transport_rx_batch_finish(batch);
-+		goto recv_pkt;
-+	}
-+
-+	len = le32_to_cpu(hdr->len);
-+	vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
-+			le32_to_cpu(hdr->src_port));
-+	vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
-+			le32_to_cpu(hdr->dst_port));
-+
-+	if (!virtio_transport_rx_batch_empty(batch)) {
-+		/* A post-processing check cannot bound a packet already admitted. */
-+		if (!virtio_transport_rx_batch_can_add(batch, len) ||
-+		    !virtio_transport_rx_batch_matches(batch, &src, &dst, net)) {
-+			virtio_transport_rx_batch_finish(batch);
-+		} else if (!virtio_transport_rx_batch_can_receive(t, batch->sk,
-+							   len)) {
-+			virtio_transport_rx_batch_finish(batch);
-+			goto recv_pkt;
-+		}
-+	}
-+
-+	if (!virtio_transport_rx_batch_empty(batch)) {
-+		virtio_transport_rx_batch_process(t, skb, net, batch, &src, &dst);
-+		return;
-+	}
-+
-+	/*
-+	 * A packet larger than the byte cap must take the regular path. Starting a
-+	 * one-packet batch would already exceed the bound on socket-lock ownership.
-+	 */
-+	if (!virtio_transport_rx_batch_can_add(batch, len))
-+		goto recv_pkt;
-+
-+	sk = vsock_find_connected_socket_net(&src, &dst, net);
-+	if (!sk) {
-+		/*
-+		 * A connected lookup miss can still match a bound socket in
-+		 * virtio_transport_recv_pkt().
-+		 */
-+		goto recv_pkt;
-+	}
-+
-+	if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
-+		/* Let the regular receive path send the type-mismatch reset. */
-+		sock_put(sk);
-+		goto recv_pkt;
-+	}
-+
-+	lock_sock(sk);
-+	/*
-+	 * Serialize initial admission with sockmap's callback updates. Later
-+	 * packet boundaries recheck native state and end a batch when they
-+	 * observe a replacement.
-+	 */
-+	read_lock_bh(&sk->sk_callback_lock);
-+	batchable = virtio_transport_rx_batch_can_receive(t, sk, len);
-+	read_unlock_bh(&sk->sk_callback_lock);
-+	if (!batchable) {
-+		/* State or receive-buffer failures keep the regular lookup path. */
-+		if (!virtio_transport_rx_batch_can_continue(t, sk, len)) {
-+			release_sock(sk);
-+			sock_put(sk);
-+			goto recv_pkt;
-+		}
-+
-+		virtio_transport_trace_recv_pkt(hdr, &src, &dst);
-+		if (virtio_transport_recv_pkt_set_owner(skb, sk))
-+			virtio_transport_recv_pkt_locked(t, skb, sk, net, NULL);
-+		else
-+			kfree_skb(skb);
-+
-+		release_sock(sk);
-+		sock_put(sk);
-+		return;
-+	}
-+
-+	batch->sk = sk;
-+	virtio_transport_rx_batch_process(t, skb, net, batch, &src, &dst);
-+	return;
-+
-+recv_pkt:
-+	virtio_transport_recv_pkt(t, skb, net);
-+}
-+EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt_batch);
-+
- /* Remove skbs found in a queue that have a vsk that matches.
-  *
-  * Each skb is freed.
+net/bridge/br_vlan.c:nbp_vlan_group_unpublish() {
+	ASSERT_RTNL();
+
+	RCU_INIT_POINTER(port->vlgrp, NULL);
+	synchronize_net();
+}
+
+This layout came from commit 83edc87a9172 ("net: bridge: vlan: quiesce
+readers before freeing port VLANs"). The testing in the changelog was
+done on v7.3, which still has the older ordering.
+
+Could the message name nbp_vlan_group_unpublish() and
+br_fdb_cleanup_by_dst() instead, or describe both layouts if a stable
+backport is intended? Could the patch also be tested on the target tree?
+
+> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+> index 2c05ebc1299d1..fb25ce3e5e646 100644
+> --- a/net/bridge/br_if.c
+> +++ b/net/bridge/br_if.c
+> @@ -341,13 +341,13 @@ static void del_nbp(struct net_bridge_port *p)
+>  
+>  	nbp_delete_promisc(p);
+>  
+> +	br_mrp_port_del(br, p);
+> +	br_cfm_port_del(br, p);
+> +
+
+[Severity: High]
+Does br_mrp_port_del() always clear BR_MRP_AWARE_BIT on the port being
+deleted?
+
+br_mrp_set_port_role() can leave a port MRP-aware with no instance
+pointing at it. Take a ring with primary A and secondary B. Setting
+IFLA_BRIDGE_MRP_PORT_ROLE=PRIMARY on B is accepted, because B is
+MRP-aware and br_mrp_find_port() finds the instance:
+
+net/bridge/br_mrp.c:br_mrp_set_port_role() {
+	...
+	case BR_MRP_PORT_ROLE_PRIMARY:
+		rcu_assign_pointer(mrp->p_port, p);
+		break;
+	...
+}
+
+Now p_port == s_port == B. A keeps BR_MRP_AWARE_BIT and stays in the
+BR_STATE_FORWARDING state that br_mrp_add() set.
+
+Later, when A is removed from the bridge, br_mrp_find_port(br, A) checks
+only p_port, s_port and i_port. So br_mrp_port_del() returns early:
+
+	if (!mrp)
+		return;
+
+br_stp_disable_port()->br_set_state() also returns early:
+
+	if (test_bit(BR_MRP_AWARE_BIT, &p->flags))
+		return;
+
+As a result, A stays FORWARDING.
+
+If VLAN filtering is disabled at runtime, br_allowed_ingress() returns
+true without looking at the unpublished VLAN group. A frame that arrives
+between br_fdb_cleanup_by_dst() and netdev_rx_handler_unregister() is then
+learned with dst == A. Nothing flushes that entry before
+call_rcu(&p->rcu, destroy_nbp_rcu). A later frame to that MAC would reach
+br_forward() with the freed port.
+
+This looks like the same use-after-free as the one in the changelog. It
+needs no reader preemption, only traffic during the teardown window.
+
+Should teardown force the port out of MRP-aware mode, or disable it
+directly, even when no instance references it? Alternatively, should
+br_mrp_set_port_role() avoid orphaning the port it displaces?
+
+>  	spin_lock_bh(&br->lock);
+>  	br_stp_disable_port(p);
+>  	spin_unlock_bh(&br->lock);
+
+[Severity: High]
+Is there still a window here with CONFIG_BRIDGE_VLAN_FILTERING=n?
+
+The fix needs a grace period between br_stp_disable_port() writing
+BR_STATE_DISABLED and the final br_fdb_cleanup_by_dst(br,
+br_port_to_dst(p), 0, 1) in del_nbp(). The only synchronize_net() in that
+window is in nbp_vlan_group_unpublish(). Without VLAN filtering, that
+function is an empty stub:
+
+net/bridge/br_private.h:
+static inline void nbp_vlan_group_unpublish(struct net_bridge_port *port)
+{
+}
+
+Nothing else in the window synchronizes. That includes br_ifinfo_notify(),
+list_del_rcu(), update_headroom() and netdev_reset_rx_headroom().
+
+One possible interleaving:
+
+CPU1 (RX softirq, br_handle_frame_finish())
+    reads p->state and sees FORWARDING
+    passes the BR_STATE_DISABLED check
+
+CPU0 (del_nbp())
+    br_stp_disable_port()
+        br_set_state(p, BR_STATE_DISABLED)
+    br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1)
+
+CPU1
+    br_fdb_update(br, p, vlan, eth_hdr(skb)->h_source, 0)
+        fdb_create(br, dst, addr, vid, flags)   /* dst == p */
+
+br_fdb_update() does not check the port state again. No FDB flush runs
+after this point: netdev_rx_handler_unregister() only drains, and
+destroy_nbp() does no FDB cleanup. After call_rcu(destroy_nbp_rcu), a
+frame to the learned MAC would reach br_forward() with the freed port.
+
+BRIDGE_MRP and BRIDGE_CFM depend only on BRIDGE. BRIDGE_VLAN_FILTERING is
+default n and depends on VLAN_8021Q. So MRP=y with VLAN_FILTERING=n is a
+valid configuration. The window is short on !PREEMPT_RT, but on PREEMPT_RT
+the softirq reader can be preempted inside it.
+
+This also seems to contradict this line in the changelog: "No frame can
+be learned after that flush and before netdev_rx_handler_unregister()".
+
+Would an unconditional synchronize_net() after br_stp_disable_port() and
+before the final FDB flush close this window?
+
+>  
+> -	br_mrp_port_del(br, p);
+> -	br_cfm_port_del(br, p);
+> -
+>  	br_ifinfo_notify(RTM_DELLINK, NULL, p);
+>  
+>  	list_del_rcu(&p->list);
+
 -- 
-2.53.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179333317814.2102764.8780283783548366593%40gmail.com
