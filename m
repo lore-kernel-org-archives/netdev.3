@@ -1,100 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793743294;
-	b=Jf2OKu+NeMls4yE82Q/Nz64HTBKkqiolw4bU0Xe22Hhj8PeT2NEKUGSrw9NqOJQB4lP6
-	 Egk1D15Vy0PfqjvUYz0lJkkBJk0wTdkM/8gEL+Y0zglVRyrvWT3+ks4MP78SDUjA5gN6f
-	 0LuGfumvyxEQETiB0qnC3aZ3lPBaBdA4i8CtTTbD7o4flCm4IxXG8IBt6pASrfSm2zp3V
-	 RdkZq36GRakbyednFbw+cVjCYvf+SprvX1RyCUVgY8SafH+SDgXKFGgSo6nAQER7kxd0s
-	 11Oi4JC1aRz16DRLADx54OLCVSFNUsi54X+VPUfv1lfSA4eswSzZs+y4t71dIppuXXA==
+	t=1793743346;
+	b=mTo2ZqClQgTNmrufuSjqCtMFizpKg5R30SDRnYfLCY09FAKXug1H5TySgM0ThW2uJuPN
+	 +3GGw1Cr7CYeAXG3B3cSJ4xDg6Z851XZInFAuCy1O/zlyvzlQ1Pfpavw7IhX0T8EEKhSu
+	 kUL9QklIU7e2FPQ4V1Hn2dBZINUWipK2gNA8dwSsWecd1U1PH4YVKojeu/bBqBdAi5CLq
+	 GwKP9EddGK3RYuNFX2OqlId7Ql7iXGrOKBieJ/GA6HmjLCpTiug3SypyH2LZY7jm8BszP
+	 oILZbM5Vq0GlS3Uk7MFkfBz190TIKffiFGbOCjnZQipZbe+yXWbcEvtZYaIYnj2OLZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793743294;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793743346;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=/vkfVcszp/6CANrfIIkrkEVTtlHbfMcsPJeQ0gMSiJ8=;
-	b=X2mfaDOD1sSXX9+eH01MGj6RNFAojbfrIQxr9IfVfxJuQAnD8Em+FFhnskxiWI64qTFu
-	 DI59riNh2pcb/aiCfWcJLo8Vw2yBKHzJVFRt5DreJRiZuU7DYp1cs4FUhMGoQdmQHPKK8
-	 +vZg98yRoMD6kC0jSKREaOVmGnoI6EO9Ws577j6nSqwdkB4xNnd/YcER55+xOpOE3xewd
-	 IJNr/rPX7BWZuuMSCViq8Lg2sBiACsMHEChPoC9NwnGxf6INe2XT1Bwd6l0ug0QOdEUe7
-	 +8P6aQa2o1SNLfRZmzGVbNoPNhJQLh3bYqZ7yH3khwYcFQYAUDk4a9XHmvV4v560tMQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
+	b=Mg2XuOzfD6eX/42wNj3kjeWiCyqIr5igaIBLTE1wfbc87yWtMThszk0DmzIlaoNfd265
+	 PsQon4LuvU97WqqLl8AZMgxm0b+Fw/ZXMiyWen2Xjst6/n1U9ueATqWPOshwVamBjNbe/
+	 CcHbVkRYGpAJqDnudsifImFo9d1yQve7jp+ahK1fkphJUbIKfqlt1ha4XE1tJqhyVVl3u
+	 KSdEnJMGcwA4mg9PaP+wH2u7PoewQifuFgIIfvhcyXQYiRFcTT8BGVPitnzWUZAdsnoVq
+	 6JykfDs1iIu8uv+j1kLDeycADEBI+/xdc4K789vwfYpFb7tNCFB2ccuXHzMf1yzBmuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HuitUxjF;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Aog6qtnP;
+	arc=none smtp.remote-ip=74.125.82.176
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937A4606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:01:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 937A4606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4487E606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:02:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4487E606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HuitUxjF
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48e09aa5264so26687f8f.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:01:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Aog6qtnP
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-369f33df08eso18848eec.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:02:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793743292; x=1794348092; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/vkfVcszp/6CANrfIIkrkEVTtlHbfMcsPJeQ0gMSiJ8=;
-        b=HuitUxjFW9zovnmjr58SvH31extRM0vbZ7FxRWMk8xhxTo6SLpu9KlNvjdCNPfYr2y
-         pnHw1ntDwCu/xCfQHB+ebGVwMioT9M8rkF6EFu8TZWR6TYDr+PjpIQd+6bO3SLOmY5YJ
-         CU+4cvH1BeEtUf0/BFLSAmUfqZztW7C9JNc9wsGU3VOSx5Qw/4GXSv2TMtonyZiwNKTs
-         xJeijkxVJ+xvZylZX3CkCzoZajV5Pxvv14TMQI88x4ejMuxEtqLQrqvXa/Odn7Ht/Ers
-         8qflXRVVMlCxgRyYHYqJYs4WgbkOnx+7+lBby5oqCHk5ccLBSQPX4FH9EXeGbmDjCyUc
-         Q7lQ==
+        d=gmail.com; s=20260707; t=1793743345; x=1794348145; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
+        b=Aog6qtnP0tAl7RfxxsRY+nhBR8Om1wLA7yqodbUGaCnryP65x8QfNoYRuRPx/0/8tH
+         n4hz/yfQlbBKdM6+NlsGtakiC3RDeAJ9JQfG8/xJKTWamfBlCIpWTj4PvwddrmR+JYv+
+         PgN41rauk0EjgMmaQdxlM77EKsiHubLZJsfwXbYVcTYAZLQ8WBi1aaoRGRlOW3h9Wlnd
+         1qVOmUI3ZjZWutQ7MzGSjevagkxa00Qje6nwdRpzeVv9ut9oXmeK567npp1Z3CwOmVWq
+         JDfrXXtSk1GVcuqJagWmtLZnFo/MxyiIu1FItEMYZH9NXdGsL4GxAXK+/ioe3zYl1vtQ
+         J+VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793743292; x=1794348092;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/vkfVcszp/6CANrfIIkrkEVTtlHbfMcsPJeQ0gMSiJ8=;
-        b=f+rF1lW/nf1y9yNjmD2WLJ0jrrVLmKR0Ru2pexTp5VxsQW7h4eBcK/i6dKXEhwMNkf
-         WdxR3+etbq5lVnOvF+T924TOvd+XBDIKMxH2ZaSxbbvidPSexmhFW6TNDLFvyMei2NZN
-         S66qOO98+EHDtloRRzYPminwk9prezEpsoeG7dI7XQW8Ce5paBUVf9q7VT0wjyFSN8HV
-         Zwp5nhY8LpDewFYuIaL/r5Pp6WXLdD/hp8oy887Q864irRLbTHAcW3/HnlKUTf6q5jKF
-         p31L3IVOyK1Cr4FxuPZlT6N3Og2OWAtx0HDsVlOA0Rz3ngjoruj498BnzwJ8qYSYmkSr
-         rJVg==
-X-Forwarded-Encrypted: i=1; AKwUvBxo5qxfBoNRM5QTMpKuZyM1L8U1fqR4E77VMgOv1wNqQGwr6txqY25oNZkENgtp4U7KyREfC1c=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9xw0pidHqopK2+41AFVL4sQLk9ynoYdEiargUHXydlews8PtFh
-	oc8u7V59IN34cy3M0FyBE+5Kiqf64n814JaOiywjV7ZpoFaYbb3UPLCpT9mK5x+c
-X-Gm-Gg: AYBFou0aWm/k6gJ3bQD5pOrsRu12xP/3o8zFCjZXhTeJ2R8PKlpSdEQVCDtPEBrclMP
-	3m5hOo3sagmYD5rFvfZve0tiTXNC601cQm8sRjYTV3cS5GmaT43sFPRifvP2o6Zm2ojLlhnhlIZ
-	Z1RC0LrDI8rxVcB+RkHR5/5p+dAH2X7jXdyZ8o+o9USSHYyFf8U9cKBFKRKSNuUbCjRkmn7Hp0c
-	4ReVxwk8PtqHF8orfxECqeZ9cyObW3d91BF2M6nIBBePiOR3F4SfXBJhMkgzfUvbP6+1XPZmUfv
-	JWgEqZGYa1r0FGN00sJQFWAM91UsA1+YOmwIhgJC665Fnus3HiFn0kl1yopLL37VaM1y6l2ViHl
-	TqwR+a7Dpl7iY19xUNFv+iEPhhUAtvKSxwpilJs2tPLu0uKDC4TuQPYComjDR0Fu4o2F2B5WSmz
-	7Ht1Yb6gllwcYVWC7x2ePEO3SPgFegUt65resRUUmvChO8uI0rX2FDSpyQvYHNsaGqyhlk5t+NZ
-	VmhT4LlndeTp1kptI1gc5ZPlatdKFl80+aaLnI9CAaNNdclMHFEoO6HKUwbff8VwRvD0wZhPGvm
-	PuBSCnTcAQ9mH/qIBkmVGeYvT0OP97Jv73tt0PJI5J8SRVkWckrBPRVUFoTraZiVZg==
-X-Received: by 2002:a05:6000:1a85:b0:48e:7e1f:8cee with SMTP id ffacd0b85a97d-48e7e1f8d39mr20799656f8f.12.1793743291709;
-        Tue, 03 Nov 2026 14:01:31 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fecac2772sm255044f8f.18.2026.11.03.14.01.31
+        d=1e100.net; s=20260707; t=1793743345; x=1794348145;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
+        b=kMpVMmj0dFX5YfqmCbrt7T3Lnb4yK/W82SGycrzwih2Vsj2GPLjoVD1SBQYh4BqN+w
+         9GxPncR6YPi9NXMiRqFNMo7Yk8VIWGa93/JLoFHjed6E4LlSSKfHQ8p8zGj5tz7CNpWF
+         +vuZ3y3YJmJzSvDnazMMefmOvArkuFHmS7tKRqt21ScQ7eGb7CYBvF2OrqJuY+/sqCrh
+         EThu02UWVAQh53bvSojuAZpsSqZsLkzKSBs6Q98gF8Al9QrPiXzM8rzCZ9rXEjTavRr2
+         HaH+pseRq+tOC3BMeRm8YIlrtoYZdHjdt381HHorAuS4IaptlnfCPGR/39wuqPxT0Fmb
+         Z2lA==
+X-Gm-Message-State: APuU4Z9uMTIobjpq3UtXa80759qqK5hWdKl1Rj5JkGWLtnwMPigVxwby
+	ThOempL6LrBpXjb/HgvOjpowwWCTk9jpfcxU7reroW+HU/CpBtiFpQIZ4kjMfg==
+X-Gm-Gg: AYBFou0agiPwoutIl4RZmN9aCgZufMrlbT9SfPd6q329lxF+iETHItMCldqUw3ti/cZ
+	EjY10W62L2c9xRqtfBZFgMCSaYXEIXUHnxVf+JULv1af+CsH0E/IQEBvCjXmIPfev/Is/vjMFTY
+	pKIUoSEevixpzRTzAaIT7g48JuTYFRK1WWER9nTDins3F+hbO4ShrkVlWEnsOb+yVT5xQk6Yg70
+	bjYK+MYR788bXm4B4bHn85K6oMlHhk+pKHwabCvSwBVBDwHdKpmz/Dq9UTSNYsPTD32uZZayPBl
+	bNqdRgkqbXhbbochHYBU3rwGeSWOa2TAauoLc0zj5ynhAnDfZ5z0NxpMPNBFE7ti0O7JvrOe9bM
+	IjbMbOiU1JOo0pXH9TEAMC9u1uzBJAGfWnkYmQPDxecvqApwBhxX/4GIhV1yD/ruE+QzK/X9KlY
+	Tao5TbMSN2kVZGXfHSBQGTVrxa1JNIQttGBqH7/5EKq48tNd3kcofxek99/MBpF8WN4W5k11AG9
+	5xQa5gKsdRnPr5Ig7cY6nceQ7Iq1OTkX4HqTEul/e3RN0y+w6wM1FOZy9NjVWx0VEIYYR4zT/v3
+	oXWNPo+2wB3PgVwsQU9uJmNSg2dR+A==
+X-Received: by 2002:a05:7300:3b0c:b0:36a:238:1485 with SMTP id 5a478bee46e88-36a4244276cmr30366729eec.37.1793743345194;
+        Tue, 03 Nov 2026 14:02:25 -0800 (PST)
+Received: from eldorado ([2600:8802:b00:1f88::287])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39c5f0csm808541eec.29.2026.11.03.14.02.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:01:31 -0800 (PST)
-Date: Tue, 3 Nov 2026 22:01:30 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org,
- davem@davemloft.net, kuba@kernel.org, willemb@google.com, horms@kernel.org,
- netdev@vger.kernel.org, bpf@vger.kernel.org,
- willemdebruijn.kernel@gmail.com
-Subject: Re: [PATCH v2 net] udp: restore hlist_nulls for primary and
- secondary hash tables
-Message-ID: <20261103220130.215f0000@pumpkin>
-In-Reply-To: <CAL4WiiobvgoNp3Y-6qEh=OV9truPNn1v8-DoqFxR1rx=rpkZXA@mail.gmail.com>
-References: <20261030122045.3035709-1-edumazet@kernel.org>
-	<179362213820.3131.12108035098960840444@kernel.org>
-	<c573bbcc-e0d8-4f43-b14b-09c676a6fe38@redhat.com>
-	<CAL4WiiobvgoNp3Y-6qEh=OV9truPNn1v8-DoqFxR1rx=rpkZXA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Tue, 03 Nov 2026 14:02:24 -0800 (PST)
+From: Florian Fainelli <f.fainelli@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stephen@networkplumber.org,
+	dsahern@kernel.org,
+	Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH iproute2-main] libnetlink: handle failed time seeds and sequence wrap
+Date: Tue,  3 Nov 2026 13:59:32 -0800
+Message-ID: <20261103215932.1191741-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,83 +93,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 3 Nov 2026 14:34:29 +0100
-Eric Dumazet <edumazet@kernel.org> wrote:
+A 32-bit time_t overflows when the board clock is beyond 2038. time()
+returns -1, and the first request then has sequence zero. The sequence
+range check underflows and discards the valid reply, leaving ip blocked
+in recvmsg(). The same range check also fails on a normal counter wrap.
 
-> Le mar. 3 nov. 2026 =C3=A0 09:40, Paolo Abeni <pabeni@redhat.com> a =C3=
-=A9crit :
-> >
-> > On 11/2/26 13:22, netdev-bot+sashiko@kernel.org wrote: =20
-> > > Thank you for your contribution! Sashiko AI review found 1 potential
-> > > issue(s) to consider.
-> > >
-> > > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
-> > >
-> > > If you believe none of the issues are legitimate, please reply to each
-> > > issue of Medium severity or higher and explain why the AI is wrong.
-> > > If any of them are legitimate and you plan to respin, please let patc=
-hwork
-> > > know by including "pw-bot: cr" as a separate line at the end of your =
-reply
-> > > (one such reply per series is enough).
-> > >
-> > > - [High] The hlist_nulls restart does not work when an IPv6 SO_REUSEP=
-ORT
-> > >    socket is tail-inserted back into the bucket it was just removed f=
-rom. =20
-> >
-> > This look real to me. On the flip side the most straight forward fix - =
-avoid
-> > tail insertion in udp_lib_get_port() would re-introduce the issue addre=
-ssed
-> > by commit d894ba18d4e449b3a7f6eb491f16c9e02933736e. But rehash already =
-avoids
-> > tail insertion... =20
->=20
-> Agreed, it is real, although not a regression: before this patch,
-> hlist_add_tail_rcu() set n->next =3D NULL and a reader parked on the
-> socket stopped there as well. v2 simply did not fix this case.
->=20
-> We still need the tail insertion: udp4_lib_lookup2() returns as soon
-> as the first matching socket has a reuseport group without connections,
-> so a dual-stack IPv6 group placed first would win over AF_INET sockets,
-> despite their better score.
->=20
-> The problem only exists while a reader can still be parked on the
-> socket, that is less than an RCU grace period after udp_lib_unhash().
->=20
-> v3 records get_state_synchronize_rcu() in udp_lib_unhash(), and
-> udp_lib_get_port() only uses tail insertion if
-> poll_state_synchronize_rcu() says the grace period has elapsed,
-> otherwise it uses head insertion, as udp_lib_rehash() already does.
-> The cookie fits in an existing hole of struct udp_sock.
->=20
-> The cost is that an IPv6 SO_REUSEPORT socket rebound within a grace
-> period of its disconnect keeps its head position, so the v4/v6 ordering
-> is not enforced for it, the same as after a rehash today. This needs
-> disconnect() then bind() on the same port, with AF_INET and dual-stack
-> AF_INET6 reuseport sockets sharing that port.
->=20
-> I also kept sk_nulls_add_node_rcu() unchanged, the tail insertion logic
-> is now local to UDP.
+Use zero as a fallback seed when time() fails. Compare the unsigned
+sequence distance against the number of requests, allowing wraparound
+and rejecting the sequence immediately before the first request.
 
-Is there a different issue that is a socket is rehashed there is a chance
-that it ends up back on the same list.
-If that happens you need it to stay in the same place (if possible),
-certainly moving it to the end would mean that a reader could miss out
-some items but not see a different nulls value.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ lib/libnetlink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-There is an even more unlikely possibility of a reader starting on chain A,
-being moved to chain B, and then back to A - so missing some items on A.
-Probably just worth noting that it is extremely unlikely.
-
-David
-
->=20
-> Thanks !
->=20
-> pw-bot: cr
+diff --git a/lib/libnetlink.c b/lib/libnetlink.c
+index edf3a8ba7ce0..5bc7c43245fb 100644
+--- a/lib/libnetlink.c
++++ b/lib/libnetlink.c
+@@ -194,6 +194,7 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
+ 		      int protocol)
+ {
+ 	socklen_t addr_len;
++	time_t now;
+ 	int sndbuf = 32768;
+ 	int one = 1;
+ 
+@@ -246,7 +247,8 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
+ 			rth->local.nl_family);
+ 		goto err;
+ 	}
+-	rth->seq = time(NULL);
++	now = time(NULL);
++	rth->seq = now == (time_t)-1 ? 0 : (__u32)now;
+ 	return 0;
+ err:
+ 	rtnl_close(rth);
+@@ -1092,7 +1094,7 @@ next:
+ 
+ 			if (nladdr.nl_pid != 0 ||
+ 			    h->nlmsg_pid != rtnl->local.nl_pid ||
+-			    h->nlmsg_seq > seq || h->nlmsg_seq < seq - iovlen) {
++			    (unsigned int)(seq - h->nlmsg_seq) >= iovlen) {
+ 				/* Don't forget to skip that message. */
+ 				status -= NLMSG_ALIGN(len);
+ 				h = (struct nlmsghdr *)((char *)h + NLMSG_ALIGN(len));
+-- 
+2.53.0
 
