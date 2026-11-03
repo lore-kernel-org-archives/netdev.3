@@ -1,59 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793709832;
-	b=wBlKsKibpyjwqVwAas0pmG+1n61Lx7nIA45BllyxichB0lTQYC43Ob/iJUDOSBkmWup9
-	 hbga/c1jRCC1kbPS23e72zhPrJRB/o77WUpTzrB/A6BL1hsF1abs5TSSOraklaXyg/noe
-	 jh8ZEgUdnZaSfiZB2o3cY+giHr4fV7d2QW1INY4kIQXxy/0BlnLx+/+kT6CTabRikB0+e
-	 W+9NTEOjoQAGz9jHTyQvSym2wfPzjL9unf1RLrmY2yatoso9/qn1SZUVcsz5I5xAu7QF4
-	 sj8Zy+QLI/Gl1Fre3hE53ld6KC3XMToR80wa9WPA0SuKfb2ROxtj6ALSSFIAzQ9L2ug==
+	t=1793709847;
+	b=nUAsqeFj6uI1pcEjYt7J7HIsyS4MrRscBNCzldc+HGsCEhvXqCSe1Pp3/36GBQLwHD2G
+	 +krWp+LCxSsJik6YNQ+3QChCahu9HByzTusEdjF7TahqkQWFxwK90AsThs6KDjKv0M9N/
+	 D7ZnwJWyNNS+XeFp1kW+dAEfkhF7IsBOmZTboGu/Lg7zFBecr+HZnPYGuBbaUT+uM5Oft
+	 QyHvHw9qp79aoWBUSUxXZcRt9UOw8EXgO2S4W7HDhD6DuwQs2e6Eazvc3vN3edIti7PMI
+	 3Vzbk08jsgFThmquT41y5u9lyVAt3gBbhg5d6aQMMH+NRdLVwcbcjcqX/urJ8m7h2eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793709832;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=NsgSbkB27Pf5TMWO9sdStQcnc7NhggjeuaxefOi9tnA=;
-	b=wHHBDHgpPO4pjXb4X2ZOON0DI5Z4gPLHG1/nMHBTZwLNLLi6aWXFhC11Fv7XQV3pw5bN
-	 s06gb+pHSJ2zFYdnBW/9Kbt+g625XfxhgPx/yC5OhMGFyn+obm5r9iRQqZcZzqtXZSndb
-	 OoOMtH56iqUcqWaO/BqWcFW2jjo45Kw2qS8iWfED/cZAT7MRQLX2WANzfR11G6QlsGrbS
-	 3pSnlTyG4OoDPLDuxoGeMh8TW2+mH1ZyZvCX7UtJNnPRSpbGsfKNyawq27d0Pn3ix0MZn
-	 to0GDH+iKHUzRDIP6Qn6+oXvzPBIUv9YIUAI86mEOO3XoaXKrdVeNIwcGX0qYs3RZoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793709847;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=SDONtbWDzjpkNCP8z+J1ZmTfhAL8f5UvEEB+UemUNR2+MVBcsz6kDWS71TRfpcEOtY24
+	 nBCZyK3P4kXl1yZ/rN5x4ycidqrHcMMtqAkoDHpHhDJTIr0nKAfXP9lBpqSXLKQPprLPt
+	 SPkY5w7f8muiJ7/7HA+Z5BzDNodYk/+/oCn+dbjBKS9mleL7aNtlzacnxKoaKShVnJ8CK
+	 GCrIc62/Mb6zTMDd6mT5q0e1fZUIcYBxmW6SqLVzC/GsPdhWSOAjQ029RjvtB/rUXIsks
+	 e2y5nSfPUCihvO3bjgQyKEIz2yYt2TFw/QoVF3qUpeM5C4rMoMeOUxiBQkqc934jkDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ccauj+4A;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jmQFcXMD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE5F606EE8C;
-	Tue,  3 Nov 2026 12:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB4C606EEBE;
+	Tue,  3 Nov 2026 12:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ccauj+4A
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD57E1F000C1;
-	Tue,  3 Nov 2026 12:43:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jmQFcXMD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533AB1F00A1A;
+	Tue,  3 Nov 2026 12:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793709831;
-	bh=NsgSbkB27Pf5TMWO9sdStQcnc7NhggjeuaxefOi9tnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ccauj+4AmTSvdQOJtK7q4KyI8yqvwQbSxQUW3MzkqSWtdHrc57N0rPFma3J6chcFt
-	 pVVVG7/NrPWQV1z9gn5wpBtcHzPl9feAGYiG1LCFqWgRBFMwvsah5A5GJn7XUwIoJo
-	 rCDnaVM8AwLmmFDywx7OyC05qqSQl7nblT7u5MQXv836o6DQF3FyBWfm02gMtOMcNE
-	 icUfnOIgHAPhPJGz1RDYk98NBhmB+CUQ8Evh/5QUZAHXzUIPF1lILnW315ImixEq63
-	 0HgLaM4JwQYzszN8poQczWvARLs51tXtfEgpqBZ5e3LByPKh0hlkxgbhiMEVBgGBl3
-	 NUekNCIU1Ky8w==
-Date: Tue, 3 Nov 2026 12:43:46 +0000
-From: Simon Horman <horms@kernel.org>
-To: Julius Bairaktaris <julius@bairaktaris.de>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, steffen.klassert@secunet.com, willemb@google.com,
-	jiayuan.chen@linux.dev, mfleming@cloudflare.com,
-	almasrymina@google.com, bigeasy@linutronix.de,
-	richardbgobert@gmail.com, ecree.xilinx@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 1/4] net: make room for the tunnel header in
- skb_segment_list()
-Message-ID: <20261103124346.GJ865646@horms.kernel.org>
-References: <cover.1792838740.git.julius@bairaktaris.de>
- <b27640960edcb8e072fdd2e8d282c1deee747b8a.1792838740.git.julius@bairaktaris.de>
+	s=k20260515; t=1793709846;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jmQFcXMDmEnNE1w0efpuVPmoPkbfYCNmcIm+1Xq7CE3g2WHuBhCxOUf5YvXN1gUJy
+	 3hEd/eJMQ6r0PWqAFRmgDyY7M7wGfkPrPbZrpl6V1ImusRDd4isT1bkklu7kNkepqc
+	 J0uzB7aHBv/grD0RewWcmn2SfyxSpWfo75Kbt27eAbEwqmKy9vDtbBHz02nulqfpoQ
+	 kH1HDFl0wzRqoEOwAHhLHyVEkaE52N6H398cNoF3V4aYztps7zNr9Xk3EjPS6CVjz4
+	 cC6Xj0m7QdHSFvhYdQDzf1YG7iSI4qUdEc30KKfXzBIi5NkAvEVW3LUO8fcGUnDeQW
+	 gFk0pnVWqvnhQ==
+From: netdev-bot+sinfo@kernel.org
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+ pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: 
+ Re: [PATCH net] net/smc: fix handshake abort on a terminating link group
+Date: Tue, 03 Nov 2026 12:44:04 +0000
+Message-ID: <179370984481.488859.15201934441460346319@kernel.org>
+In-Reply-To: <20261103123955.47454-1-mjambigi@linux.ibm.com>
+References: <20261103123955.47454-1-mjambigi@linux.ibm.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,22 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b27640960edcb8e072fdd2e8d282c1deee747b8a.1792838740.git.julius@bairaktaris.de>
 
-On Sun, Nov 01, 2026 at 05:42:29PM +0100, Julius Bairaktaris wrote:
-> skb_segment_list() pushes each frag_list member back to the outer MAC
-> header and copies the tunnel headers in front of it, but never checks
-> that the member has the headroom. A fraglist GRO packet forwarded into
-> a tunnel and segmented in software then hits skb_under_panic() on IPIP,
-> and on VXLAN the copy writes before the member's head (KASAN:
-> slab-out-of-bounds write in skb_segment_list()).
-> 
-> Call skb_cow_head() on each member before pushing it.
-> 
-> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-> Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+Hi!
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
