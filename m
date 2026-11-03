@@ -1,94 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.193
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793734402;
-	b=MWRy9ieAXRuwdUQzAhcj5LvTfA/551dp26DENi2cMQL18MVVqqRQKBYjsscqY+D1d85K
-	 GfS5fgKGfzQy77Iu0MlEetV17BJtPnhqeF7bUxmMzS9hK51xDrdhaM79fINrDCGb+j7j7
-	 6ESrxPo8nnokQoptW4clBTBHeTg31vJy8S+p+4+hNd29sE4oHOqCw6uo4VgHKHyVQ473P
-	 urluDamx/9JhjhG8oTkuoSUOuRuRO9dj9boBuLQUxH0Rq3CRK3nlPKLumYQ+0c30dINi5
-	 Lyp0QrS5KhomgC5KZm50POqVOkdNinPIR/ENwic7FyQHK+ZCIDLyNm3PLACqru8cWZg==
+	t=1793734403;
+	b=YMkp/TFJ9p3Ep+tvs5q68wr8Y5nF3iq18M3ZsR5rX/PRbHM4DHfMGLCsLeEuNrI5P1lO
+	 1i8tBJgQP9g+4IBLvKPHDOIEsmiTcaawiTKlEAKlmUB/NRG4tm1Gy4T1z4vjp9hx5gl4P
+	 eM3K50pBSrea+law/lW4l0EB1rbrxBjQcalDUaW5xKm/a3A7s2FO61jdlfYf4AcZz7RN4
+	 LwaYyMWQ3D7zrpAM28Tj7ZGJKbpdZBnLo5MX/L2FnAL/a8cR7YV87r9C9qw7kHo950aoM
+	 FsAXX92IdXn0Z4Iv7PIQBoczLW4Z2O4Vp+JEe7RQsRNProIlzQnHLl2e5pv42C1lU4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793734402;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793734403;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
-	b=mWnh44W+proecB4FUkcQUcfDd+7E7gPDoO+/9LqyCuugV0DOGdQY1czxm2QrF6y9SEvl
-	 4YllWzyp82ajnFJgIyYhJq9YQQtt4SwF5clL8Jn5GKeutZqEG3Ojm9HRXZm+lYOc+lIcy
-	 RDb9eQlU39UhUbXnl2SolsplZQIiSp9Z5P8cKuPQvVudNEb7xT/LvV6AJX1ejyDIdIEfK
-	 IsQXhUdp+lBe/GkD4PSoqnNJLPAdYvbSjPTQmgmbcAGnAtK6CUurDwEtHqoaIWoNHQzf5
-	 sYdcPj+ifp8lvH14VzSfUnFJgmgW2OApoB/mzjpiL/9c+jDZ2lcHLdQfYeSX3JIi3OQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
+	b=SSKuBhujyMoEZ04WdkdKJECsZpas4Y8WrNXcZ67hwRJGQw192d4TXaqsOsjFIbl1tF9r
+	 E21Q56Q4Hajd5I87v4pO71jlf/0YIEGy75YHRdUwt9K++3x5xfTY4W9FtkSM4Hh2ttSVo
+	 jH3h5fs6YNw+yC9vAeUQABG4OOXggUIeR4j51qoAcTCvdm9aRXx8X4JWgVYrHGnLaCRN1
+	 j6IXxBl9ZPtxFKRw62FmkdWSjmeFs1DeKtmbOp6rTGhI2x4lZksRkbahVEkUMR11X+wkJ
+	 pfqtQWZtHBpM0avQ5kBn7gHLUDUCXSqO65Ajij5fN5hmHWmqGYzPO1XwlKj2urzr2Ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="YuXBTCh/";
-	arc=none smtp.remote-ip=74.125.229.131
-Received: from mail-dl2-f3.google.com (mail-dl2-f3.google.com [74.125.229.131])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RLOlwJ3e;
+	arc=none smtp.remote-ip=74.125.82.193
+Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C99606A31B
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:33:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39C99606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8C606A32E
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:33:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41F8C606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YuXBTCh/
-Received: by mail-dl2-f3.google.com with SMTP id a92af1059eb24-1b23f91cd75so325770c88.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:33:22 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RLOlwJ3e
+Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-35829219da8so1188146eec.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:33:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793734401; x=1794339201; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
-        b=YuXBTCh/9wQHInJCdqQEUZkHSCIwFh0ICAddijMJaVCBVsjZBX627gmzAX82JySlC9
-         3HhEWrguvbwBsj5fhN+Yb7IImHP12s6GC6kb5Arhgl5kfa1z3w4PRFZurkxaZLQk+rZP
-         SgHOLX0ZMcpXMGfZ1yWg3HMoxBmkpUtB1Ydu83/ESgTd9CHt9AF7UQo9bu9B46+kLYVM
-         UaCnBzb6Y0945MBtCs0ad94QtUU6I0t+GBaf2OQ8XjowjSq5xQYR+etSE2zcEd3wpSjo
-         a+0V2tXcwgvi3xPbpyrA7Eecytq7SUdAcoeTwIm2FOWNp1RYaeGPIFQLtpE32ydXq9HX
-         qICA==
+        d=gmail.com; s=20260707; t=1793734402; x=1794339202; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
+        b=RLOlwJ3eELPPVZT985+ArtXPGXIAXSmgMhCqBjHZxWtFb81U4qfxqdHKO7E/nNFVxw
+         +dWZuJUojEVNTMMSr5KEdRvo7Cu9/yOSG6ezN/5Mux3zoIBZJRn7HuQhmQO8cjEWuFcn
+         7B+dr0mHGcivIrJbc2TbAHxL6fnVSWKdiqpw3dR1Ai+Z00xelMsZB+8oiopozrvxY48s
+         NxMmo6tT1bUUPZsnVT3DXrh3kOutM6RWm/fJDNUWJLQl4zWtaRmAEs7cYVFHP1j6QNIw
+         2TF9jiU4d9i/1vFgoS5Bbd1I/kcGnNAvVjYWdmt006xBeclMmbCc/J5GiG579Fx7M1wQ
+         BcLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793734401; x=1794339201;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
-        b=tCcNJyvCEjiJeotbDWz4TufdAk3aR/a1Mu6Evf260+FDfroS5fO1mNjv8SYOzw38Vb
-         sb0CiUi8wJfDqSuqzcqry2k8Ae+cnszEOi0xH1zFO/llFSMLVT/51E3kbS5JJpeuVgyN
-         cbRHXleBdDIRumdzul4hewcrEcc8VHFaAFkvKsjZMKwuGs9Q3AXpzFWFPoGueLE3B/M7
-         a/MwsymEghKZZf05OSL2rR2QFziaFuzbxPDQhOH0B9q0BQbKdJmPd2BhimUvZMs0/Cjj
-         HWGpRzuMia62nkOO/UI9cTqWobMboAFlOYbD/JoXQYsiVEHDJA60SjDndjVyn74t3cl4
-         ohgw==
-X-Gm-Message-State: APuU4Z/bCJt2yyt8ed2jeM/1TCDJDVyOQOXqnX/fYocgDl8z8K5sDb6E
-	BSgp2i+dGkwW/fsEk3M64iK02rMZkCK5nJahAfwY9UsVK8OxZB/Yh033
-X-Gm-Gg: AYBFou1Zow+t+NvaPCYNTM2QfHQUoQpdfTsDK0JuSDJ4YdcTdzYQJJodZG7kHd7pzuR
-	DU8Zi0V81Tp393jR19mjpn7yPXi6YEvDjYhcIhWaR+h7UIwqcIQJh6t8ycjiHgSxgUbQ1s+Fkfd
-	1jCcB7nekK2bvb1uhvoylg/RshsqM5JmhjlmOvlCy+auv9RqvL9YpkM/5CRBHUMyVcvfOoJxy5B
-	0ceDZTCyH1DcJAQnSJ4eyQXjyXThVOeFRZkl8EQhwIs+IijGKGbabyDPYWhvyM25bYdgDeAKx7h
-	VaKVHp9dcrMAFUsHbfbUTnpH70dWNK286xMOn6QBoQ3ThcM6kRYfT/3MT3jcnIj+ls3BMU6oC1I
-	SVG0v/Ja31QshAs8NWd29bebgloMl7rNWw4AjrWHMmmSTyh/eAg1eW5FJl5T54BqC6WnJUaNtZ/
-	J3VWQJlkk4jYQJMy3QK5M7tm4S3RNfPic6JycaMMqTianpC4hg88CEKBhcEWff2W0l1GZNXidcN
-	Dt3CQtWGRIV79COV0J6aPwGJ5wOFkKlV0RQ20OnknqZoeVrdvpGGT8hEMK4pbvUz97jKYm6lJwx
-	b5ZZv2NI3KA9t7+kGXKOKg==
-X-Received: by 2002:a05:7022:7f13:b0:195:76af:b810 with SMTP id a92af1059eb24-1ac5bf91b35mr20811181c88.25.1793734401028;
-        Tue, 03 Nov 2026 11:33:21 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:70::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c2c2f7sm954213c88.9.2026.11.03.11.33.20
+        d=1e100.net; s=20260707; t=1793734402; x=1794339202;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
+        b=LpSYfAKYHhYlB1ruRHI1UyF9Ujzosta4tUVOjpRYeqB2fWK4mU31z6Xh7eRVqgUemZ
+         Vke6bdCtEztfSIE9uUy91PhB6GjLxeZ9WYzCw1ENhPWCIbynrFPTTbYwHZcNAwLtwzR7
+         o8PxplXJawsdaJLdIO0cbodBXmDvR/5+8rEfvrwb9YuOk7DPD5fK1pXW5ZaqYkv45+X9
+         nbBwY8a1HfROpWvsw9+iwgMQgfiLs0xULbSQ4g4JpqlArTBmfOWLzqX9u0D0T3XdCOFB
+         CgVhGTHU4Mkb5LNhQlz674cIew0u8etAgr6sSqqLlMX8yJXbyQx9PLqP18Ot0SrzHoP6
+         WmtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxovWZ3cXVEjtrA/pdUawPaOrdkY1WhNmF71p5DVgTVXkmRzA56d+3P00JKaRm+UoVong1UhoI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Zagf12YePBUQsgVRuWWju4+2hQ412baB8K+AuJs6suPnFcsKI
+	/QfN4aFFinWQ8DTEcvolcR9WRi/29OPFnNkqI2GfL00mDboNSa7AV5j1
+X-Gm-Gg: AYBFou0ofLoKBC8ogfmNNqEN+d6+oSKmgFUm1SNKhcuiHIO1Vyh7qVmpwnRIJM9lvfg
+	zj2Itxp9ms1y3a8SAI0GJL6ei9zwNv3e/nZqyaCZEcli2qtPuKt6BOrQOHIngn8e6Jov8u7GBEJ
+	Ays66Sb8lRATRfr470E4hbosYgS9qkyYas5kVC+/gVSFSR8CDVpfU+aIjsSvjOQQEcq2SJEB1Ar
+	tF5v79h4wSr7yckAj3AEJ0oJ1DSdNo1bj7U+namGDwH896nrTmc2MmzIz7CmDhbunhyePgExyAQ
+	vlCbNBos+FNpCA96tQkXaA3XFtsVaXi87qAVI5Zz6qRkgzU4PHtqbP4/wUaZ6oWkje8wjmtd+wE
+	gWOrUKFd9JMft9aQ13aP2eFl1lzRwdF63Uz9VadsQ/m3HrJTh1FRaplhQ8lTpRwc7lgfbgqwR9o
+	kUbo0T2axsjYutwqNMoWE3RxRGxI3NXSuFuxhqodVhIeee4NE8zrX6DnSAqimcGMKO9ombQJ+L4
+	1XudWV0nrQ3VaE9ssfBUy/Dus3FTQjUEIYa8Oyzo0n5P+i+1jqcIZ8rJXLqUelnfdyuWvakg/Ch
+	avjH2u6fFISteemB+P59Xw==
+X-Received: by 2002:a05:7300:f293:b0:361:a195:c46e with SMTP id 5a478bee46e88-36a2fd4c964mr24744916eec.1.1793734402208;
+        Tue, 03 Nov 2026 11:33:22 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6f::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca38a6160sm238153eec.9.2026.11.03.11.33.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 11:33:20 -0800 (PST)
-Date: Tue, 3 Nov 2026 11:10:51 -0800
+        Tue, 03 Nov 2026 11:33:21 -0800 (PST)
+Date: Tue, 3 Nov 2026 11:32:10 -0800
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH net-next v3 2/4] selftests: drv-net: add an iperf
- performance test
-Message-ID: <auowsuqDwvC8c24l@devvm16445.scu0.facebook.com>
-References: <20261102190827.989117-1-sdf@fomichev.me>
- <20261102190827.989117-3-sdf@fomichev.me>
- <875wye4ie8.fsf@all.your.base.are.belong.to.us>
+To: Breno Leitao <leitao@debian.org>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, 
+	Eric Dumazet <edumazet@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, david.laight.linux@gmail.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v4 2/7] net: cap sockopt_expand_out() at
+ MAX_RW_COUNT
+Message-ID: <auo2s-G1DHiLK-hH@devvm16445.scu0.facebook.com>
+References: <20261103-sockopt_expand_out_v2-v4-0-2d36da923578@debian.org>
+ <20261103-sockopt_expand_out_v2-v4-2-2d36da923578@debian.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,223 +111,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <875wye4ie8.fsf@all.your.base.are.belong.to.us>
+In-Reply-To: <20261103-sockopt_expand_out_v2-v4-2-2d36da923578@debian.org>
 
-On 11/03, Björn Töpel wrote:
-> Stanislav Fomichev <sdf.kernel@gmail.com> writes:
+On 11/03, Breno Leitao wrote:
+> sockopt_expand_out() grows the output iterator up to INT_MAX, but the
+> MCAST_MSFILTER getters converted by the next two patches rewind it with
+> iov_iter_revert() once they know the real reply size. iov_iter_revert()
+> refuses to unroll past MAX_RW_COUNT:
 > 
-> > Add the drivers/net/perf target, with a lib/py of its own like the one of
-> > drivers/net/hw. Add Iperf3Runner.measure(), which returns an Iperf3Result
-> > that other results can join later, and report its throughput from the test.
-> >
-> > Single-stream iperf3 throughput is flaky and can change considerably
-> > between back-to-back runs on the same hosts.
-> >
-> > Tested on two mlx5 hosts. Captured metric output:
-> >
-> >   # # ktap-metric-json: {"goal":"higher","name":"throughput","value":49.92071602072054}
-> >
-> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> > ---
-> >  tools/testing/selftests/Makefile              |  2 +-
-> >  .../selftests/drivers/net/lib/py/load.py      | 20 ++++++-
-> >  .../selftests/drivers/net/perf/Makefile       | 11 ++++
-> >  .../testing/selftests/drivers/net/perf/config |  1 +
-> >  .../selftests/drivers/net/perf/iperf.py       | 23 ++++++++
-> >  .../drivers/net/perf/lib/py/__init__.py       | 57 +++++++++++++++++++
-> >  .../selftests/drivers/net/perf/settings       |  1 +
-> >  7 files changed, 111 insertions(+), 4 deletions(-)
-> >  create mode 100644 tools/testing/selftests/drivers/net/perf/Makefile
-> >  create mode 100644 tools/testing/selftests/drivers/net/perf/config
-> >  create mode 100755 tools/testing/selftests/drivers/net/perf/iperf.py
-> >  create mode 100644 tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-> >  create mode 100644 tools/testing/selftests/drivers/net/perf/settings
-> >
-> > diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-> > index 07c3719f8b04..c55d7792b27c 100644
-> > --- a/tools/testing/selftests/Makefile
-> > +++ b/tools/testing/selftests/Makefile
-> > @@ -159,7 +159,7 @@ TARGETS_HOTPLUG = cpu-hotplug
-> >  TARGETS_HOTPLUG += memory-hotplug
-> >  
-> >  # Networking tests want the net/lib target, include it automatically
-> > -ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
-> > +ifneq ($(filter net drivers/net drivers/net/hw drivers/net/perf,$(TARGETS)),)
-> >  ifeq ($(filter net/lib,$(TARGETS)),)
-> >  	INSTALL_DEP_TARGETS := net/lib
-> >  endif
-> > diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
-> > index e24660e5c27f..f337b576c4b4 100644
-> > --- a/tools/testing/selftests/drivers/net/lib/py/load.py
-> > +++ b/tools/testing/selftests/drivers/net/lib/py/load.py
-> > @@ -3,10 +3,18 @@
-> >  import re
-> >  import time
-> >  import json
-> > +from dataclasses import dataclass
-> >  
-> >  from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-> >  
-> >  
-> > +@dataclass
-> > +class Iperf3Result:
-> > +    """Average throughput (Gbps) of an iperf3 run."""
-> > +
-> > +    throughput: float
-> > +
-> > +
-> >  class Iperf3Runner:
-> >      """
-> >      Sets up and runs iperf3 traffic.
-> > @@ -53,9 +61,9 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-> >              kwargs["timeout"] = duration + 5
-> >          return cmd(cmdline, **kwargs)
-> >  
-> > -    def measure_bandwidth(self, reverse=False):
-> > +    def measure(self, reverse=False):
-> >          """
-> > -        Runs an iperf3 measurement and returns the average bandwidth (Gbps).
-> > +        Runs an iperf3 measurement and returns an Iperf3Result.
-> >          Discards the first and last few reporting intervals and uses only the
-> >          middle part of the run where throughput is typically stable.
-> >          """
-> > @@ -78,7 +86,13 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-> >  
-> >          avg = sum(stable) / len(stable)
-> >  
-> > -        return avg
-> > +        return Iperf3Result(avg)
-> > +
-> > +    def measure_bandwidth(self, reverse=False):
-> > +        """
-> > +        Runs an iperf3 measurement and returns the average bandwidth (Gbps).
-> > +        """
-> > +        return self.measure(reverse=reverse).throughput
-> >  
-> >  
-> >  class GenerateTraffic:
-> > diff --git a/tools/testing/selftests/drivers/net/perf/Makefile b/tools/testing/selftests/drivers/net/perf/Makefile
-> > new file mode 100644
-> > index 000000000000..31b0b60de4f6
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/perf/Makefile
-> > @@ -0,0 +1,11 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +TEST_PROGS := \
-> > +	iperf.py \
-> > +# end of TEST_PROGS
-> > +
-> > +TEST_INCLUDES := \
-> > +	$(wildcard lib/py/*.py ../lib/py/*.py) \
-> > +# end of TEST_INCLUDES
-> > +
-> > +include ../../../lib.mk
-> > diff --git a/tools/testing/selftests/drivers/net/perf/config b/tools/testing/selftests/drivers/net/perf/config
-> > new file mode 100644
-> > index 000000000000..6450f34933e6
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/perf/config
-> > @@ -0,0 +1 @@
-> > +CONFIG_IPV6=y
-> > diff --git a/tools/testing/selftests/drivers/net/perf/iperf.py b/tools/testing/selftests/drivers/net/perf/iperf.py
-> > new file mode 100755
-> > index 000000000000..5b6f0bce2a03
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/perf/iperf.py
-> > @@ -0,0 +1,23 @@
-> > +#!/usr/bin/env python3
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +"""Measure TCP throughput with iperf3."""
-> > +
-> > +from lib.py import Iperf3Runner, NetDrvEpEnv, ksft_exit, ksft_metric, ksft_run
-> > +
-> > +
-> > +def tcp(cfg):
-> > +    """Measure TCP throughput."""
-> > +    result = Iperf3Runner(cfg).measure()
-> > +    ksft_metric("throughput", result.throughput, goal="higher")
-> > +
-> > +
-> > +def main():
-> > +    """Run the iperf performance test."""
-> > +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-> > +        ksft_run([tcp], args=(cfg,))
-> > +    ksft_exit()
-> > +
-> > +
-> > +if __name__ == "__main__":
-> > +    main()
-> > diff --git a/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-> > new file mode 100644
-> > index 000000000000..2bb2cd08ff7d
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
-> > @@ -0,0 +1,57 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +"""
-> > +Driver test environment (performance tests).
-> > +NetDrvEnv and NetDrvEpEnv are the main environment classes.
-> > +NetDrvContEnv extends NetDrvEpEnv with netkit container support.
-> > +Former is for local host only tests, latter creates / connects
-> > +to a remote endpoint. See NIPA wiki for more information about
-> > +running and writing driver tests.
-> > +"""
-> > +
-> > +import sys
-> > +from pathlib import Path
-> > +
-> > +KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
-> > +
-> > +try:
-> > +    sys.path.append(KSFT_DIR.as_posix())
-> > +
-> > +    # Import one by one to avoid pylint false positives
-> > +    from net.lib.py import NetNS, NetNSEnter, NetdevSimDev, UserNetNS
-> > +    from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily, \
-> > +        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
-> > +    from net.lib.py import CmdExitFailure
-> > +    from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
-> > +        fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
-> > +        wait_file, ctl_file_write, tool
-> > +    from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
-> > +    from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
-> > +    from net.lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft_pr, \
-> > +        ksft_run, ksft_setup, ksft_variants, KsftNamedVariant
-> > +    from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
-> > +        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
-> > +    from drivers.net.lib.py import set_ethtool_feat
-> > +    from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
-> > +    from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
-> > +
-> > +    __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
-> > +               "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
-> > +               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "Netlink",
-> > +               "CmdExitFailure",
-> > +               "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
-> > +               "fd_read_timeout", "ip", "rand_port", "rand_ports",
-> > +               "wait_port_listen", "wait_file", "ctl_file_write", "tool",
-> > +               "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
-> > +               "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
-> > +               "ksft_disruptive", "ksft_exit", "ksft_metric", "ksft_pr",
-> > +               "ksft_run", "ksft_setup", "ksft_variants", "KsftNamedVariant",
-> > +               "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
-> > +               "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
-> > +               "ksft_not_none",
-> > +               "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
-> > +               "Remote", "Iperf3Runner", "set_ethtool_feat"]
-> > +except ModuleNotFoundError as e:
-> > +    print("Failed importing `net` library from kernel sources")
-> > +    print(str(e))
-> > +    sys.exit(4)
+> 	if (WARN_ON(unroll > MAX_RW_COUNT))
+> 		return;
 > 
-> nit: is there a KSFT_SKIP symbol?
+> MAX_RW_COUNT is INT_MAX rounded down to a page boundary, so a caller
+> that expands into the (MAX_RW_COUNT, INT_MAX] range and then reverts
+> hits that WARN_ON, and the iterator is left where it was instead of
+> rewound. So does a caller whose optlen already covers such a size.
 > 
-> Reviewed-by: Björn Töpel <bjorn@kernel.org>
+> Cap the size at MAX_RW_COUNT instead, before the early return for an
+> optlen that already covers it, so a size that could never be reverted
+> later is rejected up front.
+> 
+> Sashiko found this while reviewing the conversions.
+> 
+> Acked-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-It is a copy-paste from selftests/drivers/net/hw/lib/py/__init__.py (and there
-is a similar code in net/lib/py/ynl.py). I guess I can add "# KSFT_SKIP"
-here instead of doing the real import.
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
