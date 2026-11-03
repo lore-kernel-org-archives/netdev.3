@@ -1,98 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793683866;
-	b=lqRetM5XyH1JaWTo9JEFMdTFawvnCNpk8KKLLk8YMbLAsQN3TWAbD378ErbiJvOrxQUQ
-	 8PQAxfjMW7V9QO+lfZgTf8FB0N31vbNWWpflpom7FSvGTsbjsJLlxmrEwXYgGSM4ZWk+S
-	 tA/C4IqNcCSEufl7n0u1qrc428TRPUjtT8ZUb1Ql4xhtU3NcXbN4ja7SmLwGNCJ9Ev2Fc
-	 mXEEgZpRI8otqoAb1kgdlqXcTEVanJAUgnPQXpGlCz3cqaGtSNp3DY9uuIuDlLm+9dheq
-	 mURXbwRbVSw2QokRe27OHUxz3Bw7eniF6l7M7WZl13gsrnF33u8mUFZmiC+h1Wp0hhQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793683866;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=Q3/Td8B8t3SdY+QKbIiQxN+A9gUB91bNSneIAZqeY8Y=;
-	b=xeBVBcDf+yNVMxl8ghsdE+d58uEwJnh0ADoI+J2s237HLSFpqeTgTpAUi6qDuj2OaRoH
-	 XKVIHays1qSJqFDqsAPF1/Kl4B0iouofiPXkRenTa4qZDSjwXAQ8jGqL7kO7cKpaygb40
-	 8WDgHzroFGjKaJs36HhahCa9UP/wV4IZnhjLZjyaQtqFC0Tk4HbX0K72qxZyfc0Y9rh5h
-	 2mdn6EZU9G31+z+TWPU9jXYHip2S76yaWypiRKkg1qSf9GqQ0Vd+FZiRRPxbmNPDMdA7B
-	 dyxf5VJkLvSIyVE5DRhO7/P3fyYfNu506CD7y/20mk6HDBvyKx3G5C6jAtJ9ERk0fnw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=DTDenI6H;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793683921;
+	b=WOjrjC5LiKOO976Tkuu/6LVH1t8eiE5DOFyeSHr8uR6Y1/YvpD1gt/rZXTVwy4Df5CXc
+	 vLTgNn4HE9QvEOm39QQ6idfHsZtcB/TntuO1phSwBklQJ2xFSzHJpNoKihmypMAbUnY4o
+	 p1pwSFiXoyqZnwdK31YmesEaxcWQM56FEy+s9l+1lzn/klK74utHiIUE6MMKaqmljwCh4
+	 Lfp/lPaAlZOi2kvrDy0y2zapXJ/Ldgw2dVKtpu+S+1uRYy08owYzhtjSGyhEc7FBIKFKV
+	 ucWn7ylYF90RNg6YzFA3bYhM/Mnev+u/OJ0k01mPbbp1K4TrDIX9fV/gRp7/yQboUUQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793683921;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
+	b=ddPHF1e65NsnHDNIKMnjEIZ9QYSFsuTLpNeBQ5MeXO7U1ea9oxQaFCm7LML4nOHPMiCT
+	 cuxAV4bX2yK+P8POqa6IIISdjYw27lKt/ALFX5y3h1S+hJhH66uhJ3I853x+KslUzk24T
+	 hFvradcjpqa7nPo+7L3GU3ymiwgpS+3svNIEKfAkzWJOnuRLZ3JnnKSHm2fxx7I9hEawK
+	 Pgmbywkn7FW/QsUtfxEqTNEObo6qnxzSfWrVrA+JSvJ1w0Z+wrjWf3VghwieU+eS560VQ
+	 80m+lgqRHBaFJWOsYcfpysFSQOPpf3VWFFbP1yZGsxwnRPAUwQV5kmhHYnc5Y8GihHw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KHTrgv55;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC23606A324;
-	Tue,  3 Nov 2026 05:31:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BC23606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFC4606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:32:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AFC4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=DTDenI6H
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 61E2F202299;
-	Tue, 03 Nov 2026 06:31:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793683862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q3/Td8B8t3SdY+QKbIiQxN+A9gUB91bNSneIAZqeY8Y=;
-	b=DTDenI6HkKb6xQaZ5i/aDhMT7A60H+TmW4OnrAHAvdcU9/E9Z7stos6Y7qXYRIg10AhuUy
-	DjHVwXlGixwPduGB3b9FGqfpZS7mtYQ3U0q2Ov3Dw054GTPtMbb+OUMCvUTHW/Nl3slSeI
-	1eh/qn+OfDM+C7tqaWAWex0GnGmaExgU7OZgutQHTw6R5tX1WrmUKNzUY2FPB2HBroNYho
-	38C2p57xDTFxNdjOrW3J7zhlzR4U/4EfGyJFdwUfVsCH6eA1VRvfPHXRzb2a3Rva3hgVb8
-	9m8+70SuY3RYLh2g24iXWl3Z9zk+xwXKCb84xM7c4yn0E4AZ9/xYgTj0EBHHtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793683862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q3/Td8B8t3SdY+QKbIiQxN+A9gUB91bNSneIAZqeY8Y=;
-	b=BWvvbSjIN2uKpTNEKyxDJwVu9qsTxdCXGBrc9N0WTDoVBj3ROYIkIx+S1Pxnu23tdOOVgl
-	k7v4bjYmaBAdmwEovVQXEMUoEb7eVadr0WtoYnCyi7myWRZywEHAwj3pxNKGqJLYSCe7XJ
-	w7boUhmTO+L7DvNrZpHRxfncikNiZA8vV7Q1fmU4AHKD22qsGDztHDA7nrdqQ07YytchqH
-	1GF8n9AI6mG5/nXa1j9dGlh166adt2nyJ5aBdMxZAE7VLzsiGM5h0m4nykeXXFuBm6EDec
-	lpyuv9ilh+6C9XZ11iWwD91dlBG9DZQvr3L36UgeJk8FC4tYPx6E+NaeQsROgQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793683862; a=rsa-sha256;
-	cv=none;
-	b=Dsaqzqw0IkIOkxdtYvb3cCAAwExCqn0e91PZeE/qVhHRezRKnEx7sWCM6zei2BARvQmYLh
-	JwmBbTUvwdOXGe4UW7hRVSjQV7IkQouRDpXqi4zh/ifOpuKSyTilLnEWRF2kjLIhJ6Xk7S
-	DnZhsH20LzYCXqP0fwJkEGuDKaEgCElNF9VnwKeinJmYd/IaMISRHEkPzyKW8UkDLluxe+
-	JIknhA5UsHIbw4VOpOj4RS0rjFSaVfFBaOkBz4+XJfj+i0Yf2tet1B3Do4Nzzn4X1cw6S3
-	a+4DhctGdZcvX8MfHEFaOkzo9tEwmtT25SsyecUKsc4UudQeOWgSGDtrMPm/Jw==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xO76s-002P5r-13;
-	Tue, 03 Nov 2026 06:31:02 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xO76s-00000008mgf-0uod;
-	Tue, 03 Nov 2026 06:31:02 +0100
-Date: Tue, 3 Nov 2026 06:31:02 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
-Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>, stable@vger.kernel.org,
-	Bin Yu <byu@xidian.edu.cn>, Cheng Wen <wencheng@xidian.edu.cn>
-Subject: Re: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop
- phylink
-Message-ID: <aulxlj404e_atUAS@pengutronix.de>
-References: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KHTrgv55
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a073778890so2597521b3a.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:32:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793683920; x=1794288720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
+        b=KHTrgv55L5jRUpGS0pkOTtgCHdCehw7SscRH5zb01bTV7n0hSsadRaI2qgUpK3oyl0
+         BB8euP8guD8NlUoDxn256k3h3xrRbMfYGZ3hwqc5RkjSd7OBl07c8PtV6Ftx3TOZ/GdK
+         eDGM9xecKbl8EPM3VynH44kSXIAHmE3qsZxB763j5ZwWVgPRyEkxsbQBX91nH0QpmO65
+         fIjmRVc8TSw9T+O3h67VyHQgEVq3QB9ehXyPvpZJ0M83B1iU494HqctHAcvaIJ7m3+bm
+         +vJLvFpFMWZtcEz7bVBdnhfyzNcTWdqjj1En4TtO7mRWQh5W0R0gdnW/N3HEQ2N3ks1K
+         SybQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793683920; x=1794288720;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
+        b=mUH/iy/07MPw/MiX6YgoDBxvA6Hzp97xusHNU0MJk0ck66sQY/XKxJIogDyFFDDuHb
+         UYr8RN+mvTn2vEl+v/UWrCl1Zp9moXz4IdmNQsSlVAyD2t63ZBqjsfMtvBmgSaV20scN
+         XVFmi10yLcNvo/mgJjOcDvBKGVvk+FEJeZBRbU4z0u5lLRO6+fy5kj0G+aaimot6II9h
+         MDLikZur+LqBRqicwOAKJ9Kkh8ycBeBJJLAwPexsAo5MdgXlMYzsJZe4SZ5tnduU9tcK
+         DlE6r6dKSGOEn5cKc4Bll7PeF3ct7J21BniOvaxA+BJPwHD0tjO5c4uM7SKuC7xxp6hI
+         wGQw==
+X-Forwarded-Encrypted: i=1; AKwUvBwY+4zR4U7t0xu2Xa33Sryt7AFbTh+BqrcgTnHzJVN8vWMFTJx8rQdyzBCShZ0gMaM/gpSegGc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8be2Z7rcs2sSDQrQaObUMOdW1Oy0AV+G5w9e0+GqjvCvqToXcG
+	u197HsW7H0npZdme4aVFh06rR6lKhByubtueZVvJx0NhO6gZqNGUOa0khxsc6FWAThBpzBi6HFb
+	MS8XQDw==
+X-Received: from pgby21-n2.prod.google.com ([2002:a05:6a02:6515:20b0:cd6:9a9f:f4b9])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9cc8:b0:3e2:47cf:17f1
+ with SMTP id adf61e73a8af0-3e928e66cb3mr10029400637.51.1793683919547; Mon, 02
+ Nov 2026 21:31:59 -0800 (PST)
+Date: Tue, 3 Nov 2026 05:31:59 +0000
+In-Reply-To: <CAL4WiioRi2hZRMTv-v=iUpSZhbnj__rh=Uh+g2dOCre-YBa6Ug@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,51 +79,110 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20261102035943.9700-1-qingfang.deng@linux.dev>
+ <bfbc4b3c-fe19-4070-97b4-4ff8ded06011@linux.dev> <d6ba5426-fbee-49da-b18b-1419fd84fa0f@linux.dev>
+ <CAL4Wiio9VXUtGg4UrFFU1kG2JENYL8xi0DzsDmhOp=zXs0DiUg@mail.gmail.com>
+ <b8595ed2-6e7a-48f1-8240-3d522776e378@linux.dev> <CAL4WiioRi2hZRMTv-v=iUpSZhbnj__rh=Uh+g2dOCre-YBa6Ug@mail.gmail.com>
+Message-ID: <aulxmZNZqmAzK6r1@google.com>
+Subject: Re: [PATCH net] tcp: initialize send sequence numbers before
+ deferring TFO
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: Qingfang Deng <qingfang.deng@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Yuchung Cheng <ycheng@google.com>, Wei Wang <weiwan@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 01, 2026 at 12:52:13AM +0800, YuanZhe Liu wrote:
-> lan78xx_disconnect() stops phylink before unregistering the net device.
-> phylink_start() is only called from lan78xx_open(), so when the device is
-> unplugged before the interface has been brought up, the attached PHY is
-> still in PHY_READY and phy_stop() reports:
-> 
->   called from state READY
->   WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0xad/0x380
-> 
-> The same warning is emitted after an ifup/ifdown cycle, where the PHY is
-> already in PHY_HALTED.
-> 
-> unregister_netdev() already closes a running device, which calls
-> lan78xx_stop() and phylink_stop() with dev->dev_mutex held and after the
-> URBs have been terminated. Unregister first and disconnect the PHY
-> afterwards, so the interface is stopped exactly once and only while it is
-> running, and the net device can no longer be opened while its phylink
-> instance has no PHY attached.
-> 
-> Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Bin Yu <byu@xidian.edu.cn>
-> Signed-off-by: Bin Yu <byu@xidian.edu.cn>
-> Co-developed-by: Cheng Wen <wencheng@xidian.edu.cn>
-> Signed-off-by: Cheng Wen <wencheng@xidian.edu.cn>
-> Signed-off-by: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
+On Mon, 02 Nov 2026 09:20:41 +0100, Eric Dumazet wrote:
+> Le lun. 2 nov. 2026 =C3=A0 09:13, Qingfang Deng <qingfang.deng@linux.dev>=
+ a =C3=A9crit :
+> >
+> > On 2026/11/2 16:00, Eric Dumazet wrote:
+> > > Le lun. 2 nov. 2026 =C3=A0 08:41, Qingfang Deng <qingfang.deng@linux.=
+dev> a =C3=A9crit :
+> > >> On 2026/11/2 14:11, Jiayuan Chen wrote:
+> > >>> On 11/2/26 11:59 AM, Qingfang Deng wrote:
+> > >>>> TCP_FASTOPEN_CONNECT can return from connect() before tcp_connect_=
+init()
+> > >>>> when a cached cookie or cookieless Fast Open allows deferring the =
+SYN.
+> > >>>> At this point write_seq contains the initial sequence number, whil=
+e
+> > >>>> snd_una and snd_nxt have not been initialized to that sequence num=
+ber.
+> > >>>>
+> > >>>> Consequently, inet_diag and /proc/net/tcp{,6} report the initial
+> > >>>> sequence number as the send queue length despite no SYN or payload=
+ being
+> > >>>> queued.
+> > >>>>
+> > >>>> Initialize snd_una and snd_nxt to write_seq before marking the
+> > >>>> connection as deferred. Both sequence-based queue lengths then rem=
+ain
+> > >>>> zero until the first write starts the connection and runs
+> > >>>> tcp_connect_init().
+> > >>> This patch looks good to me. But idiag_wqueue can still go negative
+> > >>> on the normal connect path, since the socket is already hashed and
+> > >>> diag does not take the socket lock. We always set write_seq first,
+> > >>> then init snd_una later:
+> > >>>
+> > >>>     tcp_v4_connect
+> > >>>       WRITE_ONCE(tp->write_seq, st.seq)
+> > >>>       tcp_connect
+> > >>>         tcp_connect_init
+> > >>>           WRITE_ONCE(tp->snd_una, tp->write_seq)
+> > >>>
+> > >>> Can you try this instead?
+> > >>>
+> > >>>     r->idiag_wqueue =3D READ_ONCE(sk->sk_wmem_queued) ?
+> > >>>                       READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_=
+una) : 0;
+> > >> This does not guarantee the load order on a weakly-ordered CPU. LLM
+> > >> suggests using this load-acquire/store-release sequence:
+> > >>
+> > >> r->idiag_wqueue =3D smp_load_acquire(&sk->sk_wmem_queued) ?
+> > >> READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una) : 0;
+> > >>
+> > >> Then in tcp_connect_queue_skb(), replace sk_wmem_queued_add()
+> > >> with smp_store_release():
+> > >>
+> > >> /* Paired with smp_load_acquire() in tcp_diag_get_info(). */
+> > >> smp_store_release(&sk->sk_wmem_queued, sk->sk_wmem_queued + skb->tru=
+esize);
+> > >>
+> > >> What do you think?
+> > > Please do not do this.
+> > >
+> > > /proc/net/tcp and inet_diag dump sockets without holding the socket
+> > > lock. They provide a best effort snapshot, and transient inconsistent
+> > > values are expected (see the comment about rx_queue in get_tcp4_sock(=
+)).
+> > >
+> > > The window in tcp_v4_connect()/tcp_v6_connect() is a few usec, with t=
+he
+> > > socket lock held by the caller. Adding memory barriers in the TCP sta=
+ck,
+> > > on a field updated in many places, to cover this is not worth it.
+> >
+> > tcp_connect_queue_skb(), as the name suggests, only queues the
+> > connecting SYN. So this adds a small setup cost on weakly-ordered CPUs
+> > (on x86, smp_store_release degrades to a compiler barrier).
+> >
+> > If strong memory ordering is not required, do you prefer Jiayuan's appr=
+oach?
+>=20
+> Neither, let's keep v1 as is.
+>=20
+> I know tcp_connect_queue_skb() only queues the SYN. The cost is not the
+> problem; sk_wmem_queued has many other writers, and one release store
+> among them is a special ordering rule that nobody will remember the
+> next time this code is changed. This is too much complexity to hide a
+> transient value in a best-effort dump.
 
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
++1.  v1 looks good to me too.
 
-Thank you!
-
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
