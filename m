@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701729;
-	b=dnK2lztzHk1/EeuyfqoxfR2RnZK8BY5sqAC2diCm8x1qZsQkaYHpYymEt3+PWY2u2Ad0
-	 UZJgj/nL2XqJnuRJrzRBE+nAZhY85ZEGNu/cOkBjxBk1Ft/kHDuA9fANL8Mx9ahDVYTXS
-	 duTBV2qFA2VzbfGkgrr/LIjImwudURu8LGzZtTY2BMyMVh4Gd4Y1GReUTXxg4LHzxomqL
-	 n0lFCd8+onGWrfI7NL3oSZIyZbLkoP4SOaTcv51Pzi3fG4kZFAYh8DcJqHKK5cYMSIWTJ
-	 UllxQCf5N+Sje6oGwyW0YzUdKyd+9AiWaQvm13sJo7WO8WttSyknfLUc/QebQJqcohw==
+	t=1793701730;
+	b=vX6FPGdhuRxhA/wJkFhq85YdE64jPHZNWjJ5q6vcQ9gHNr/I22StZPRR8daCsiQyZGxa
+	 iHd3kn6cTgPSUq6gCDLy5FGg2oDhpOu249MrFOJCwCMlTRArNJn+WPbnp2u7mcdyV5DHG
+	 lg8kAVNdptEikmFVWoTpaixKUKQhMnBhgZVWFF4vtSY2wZOaI4r4x/ypPG2dzQmo09Y+c
+	 OHf8utZrOJ/87qDzCKLx6gP57lDsc2T0U+5xiOpgLIg0hTJpwE4Onbg+AWhUIrM9SRnRK
+	 4MzlxQPFtLTyH3BPKjp7ZEXjrifUItx4doBO+7Y5JGOw/ivfd5/583m+LjJZyMNVMSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701729;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701730;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=1nWpelF9/VGZh/vb7Tz46GHWSc2AwSVyy7M1a5xC1/I=;
-	b=vYRab8On/bOch9V/JQwdbHZrzT90Vtz9rOX6kkkc5N2qDP/infslGNhPcgpX2q9IL2I1
-	 SrZmzSaatPqnr6Vs8uYBtuxWJnjm+9a0f2IslFvaMnA/bBVK8EfEtJyN/dhtMfOSt1ud0
-	 /D8cXp7q5MPewGdSaLcoT4O2jxh4JXZ2ge2sF2oKqqY4qYoRH7CELORIxIjWckxzU6zfb
-	 gPYmxbVR1hIqy8KKwQdKv96O+Rpj/7dMf/td9X/rYm13alAImF9vLo2fj5qZLK6pnenJ3
-	 e88ieOXbPTaOrck37mV78rh4mIKXpnzbPVbqb/xg0Q207967714C8MMkCOb/KUnppWA==
+	bh=J/CHTWTxLznWvODPQ4Afo29zCdiwl4//kWg7/xkmshI=;
+	b=mb5mP8OXchwkXKGYvtvz1DmyXeXEbTSLw7I1eMaFXhkLrcrmZRjTJS8jVi9ftr9+Qfnv
+	 /vfzEMtkEp7JLE0KC75unTrAXsKkog0upgNasNoZEZm1V8NA8Ru8Yz2Vi8/ScSxYooOBk
+	 kgWp8xmivrGFvTsEs2RIaN3zuviqLFB3ll9j3K8M0bDgG4UTHc7YkHEOXhH+S2rgV7WKH
+	 xHDuV66MhNuRtd+TO082og5OoOx//Zss+BNLY10Q38t96jg595gyhY6UFQPHOM6TeenHd
+	 Vxg4hfDh5K0DqrH2z0RGdZk6VYgqE4sApbbqzBQLoMHkXkx4c55UnPCYyaWsHLiK4EA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,16 +25,18 @@ Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD8D6071534;
-	Tue,  3 Nov 2026 10:28:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AD8D6071534
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2293607153E;
+	Tue,  3 Nov 2026 10:28:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2293607153E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowADn9ZZbt+lqeak7AA--.2751S2;
-	Tue, 03 Nov 2026 18:28:43 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowACHk5Rat+lqb6k7AA--.6253S2;
+	Tue, 03 Nov 2026 18:28:42 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -43,9 +45,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] net: ethernet: sunplus: spl2sw: release the port node in probe
-Date: Tue,  3 Nov 2026 10:28:52 +0000
-Message-Id: <20261103102852.1340500-1-vulab@iscas.ac.cn>
+Subject: [PATCH] mlxsw: core_hwmon: unregister the hwmon device on event ops failure
+Date: Tue,  3 Nov 2026 10:28:50 +0000
+Message-Id: <20261103102850.1340455-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,74 +59,55 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADn9ZZbt+lqeak7AA--.2751S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uFyUGFy7uw4rKFykur17KFg_yoW8Cr18pa
-	yUGayY9ryqyF4xAa4xtw18AFyYk3WDKrWF9a1Iyw4ru390yr17Ar4DWFyjvrWrCFWkKF45
-	tr1UAFykZFs8A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowACHk5Rat+lqb6k7AA--.6253S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4fZw1kJFW7Zr47Xw15XFb_yoW8Gw17pr
+	WrGa909ryIgr4jvw48XaykXFy5GayIgayfuFyrAFWfJF18GrW09F90qF1akF1UGrWUGF13
+	try8Zw1UuFZ8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8
-	Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_GcJvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6J
-	UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAIAA2rpnOFw8QAAsy
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14v26F4UJVW0obIYCT
+	nIWIevJa73UjIFyTuYvjfU7nmRUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgkAA2rpnIRz0wAAs3
 
-spl2sw_get_eth_child_node() returns a device node reference obtained
-from for_each_child_of_node(), so the caller must drop it with
-of_node_put(). spl2sw_probe() never does, leaking one reference per
-port on both the success and the error paths.
+If mlxsw_linecards_event_ops_register() fails, the error path calls
+hwmon_device_unregister() with line_cards[0].hwmon_dev, but that field
+is assigned only after the registration succeeds and is therefore
+still NULL. The hwmon device returned by
+hwmon_device_register_with_groups() is never unregistered, and the
+error path dereferences a NULL device.
 
-Drop the reference once the node is no longer needed and on the early
-continue paths.
+Unregister the hwmon_dev local variable instead.
 
-Fixes: fd3040b9394c ("net: ethernet: Add driver for Sunplus SP7021")
+Fixes: 99a03b3193f6 ("mlxsw: core_hwmon: Add interfaces for line card initialization and de-initialization")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/ethernet/sunplus/spl2sw_driver.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/mellanox/mlxsw/core_hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sunplus/spl2sw_driver.c b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-index 5e0e4c9ecbb0..551d36ea0579 100644
---- a/drivers/net/ethernet/sunplus/spl2sw_driver.c
-+++ b/drivers/net/ethernet/sunplus/spl2sw_driver.c
-@@ -427,6 +427,7 @@ static int spl2sw_probe(struct platform_device *pdev)
- 		if (of_get_phy_mode(port_np, &phy_mode)) {
- 			dev_err(&pdev->dev, "Failed to get phy-mode property of port@%d!\n",
- 				i);
-+			of_node_put(port_np);
- 			continue;
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_hwmon.c b/drivers/net/ethernet/mellanox/mlxsw/core_hwmon.c
+index a5e7aee730d6..16644f367df6 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/core_hwmon.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/core_hwmon.c
+@@ -920,7 +920,7 @@ int mlxsw_hwmon_init(struct mlxsw_core *mlxsw_core,
+ 	return 0;
  
-@@ -435,17 +436,20 @@ static int spl2sw_probe(struct platform_device *pdev)
- 		if (!phy_np) {
- 			dev_err(&pdev->dev, "Failed to get phy-handle property of port@%d!\n",
- 				i);
-+			of_node_put(port_np);
- 			continue;
- 		}
- 
- 		/* Get mac-address from nvmem. */
- 		ret = spl2sw_nvmem_get_mac_address(&pdev->dev, port_np, mac_addr);
- 		if (ret == -EPROBE_DEFER) {
-+			of_node_put(port_np);
- 			goto out_unregister_dev;
- 		} else if (ret) {
- 			dev_info(&pdev->dev, "Generate a random mac address!\n");
- 			eth_random_addr(mac_addr);
- 		}
-+		of_node_put(port_np);
- 
- 		/* Initialize the net device. */
- 		ret = spl2sw_init_netdev(pdev, mac_addr, &ndev);
+ err_linecards_event_ops_register:
+-	hwmon_device_unregister(mlxsw_hwmon->line_cards[0].hwmon_dev);
++	hwmon_device_unregister(hwmon_dev);
+ err_hwmon_register:
+ err_temp_gearbox_init:
+ err_temp_module_init:
 -- 
 2.34.1
 
