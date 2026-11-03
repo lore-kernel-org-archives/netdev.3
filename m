@@ -1,108 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793696193;
-	b=fu9c61YYvrJamG3mJhVcETLoEqk6Q8ybgoRtp5+79+gRZ0bNMV1Rno5VeH/GxfMK9UdY
-	 +3iB9IbPnEiVeRfTaJiqDEwgMbMU7/ZuHSCMNSlMX0QWWc/RO95ifbPCb1h0w8B3TGVih
-	 4a7OQ4sDiYzxVf28S0Y7CgBFJBQGw2fEjglMbu7BZ4+WxbBAkCAGRREeEp/5EGNkVg3rm
-	 XAkqK7uePM5ApwDbCKmtxX2gcxMtF9ja5bKeU4ILwKgHhVTALQy4JEHQUO2qj6TVh9y9l
-	 /7glaXUo8Rhdz646GtPKvF37XL823wTP1igFHRJTBF38q/wEtaqFRpdSEwY4QxmNCfg==
+	t=1793696284;
+	b=2xtuHOHmj2wn53BQ4mZb44LUk07XTt/95+TZmhDGiYeM4EnI7PmqeSTTz1QKCQYONmdA
+	 w98byqS26rpclnLo8zYunSAz5P1/ynTi5Lu+3tAzclTogmWp7FjzEkO7hmltsChCAmn40
+	 3F2mEtINI7qltkFzNZx6lGO4sarWPDtgfOv8CzEcOJcHRJhbS8WIuUEc9FagparSUyPh+
+	 P9cHoGtnXjBRGIp5giZFr2hcItAk/DPgaaqYSGCB6pKMJ6xud4PWJDt3//g8g06cqxNHJ
+	 az55cMeXj43T6phICk2Largf1QN4QFnomr7E6+En+TKgJUQBgKSaIszcvXLTu37+C3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793696193;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=0eq2D2jYQoQcNB0A0YEhxE5qSu++X2zrdL69lZRBaaY=;
-	b=WxtfnLyQf2BvvSjlWQNV0FO+KyfVUWEmnY96zUAWjUay9ZVom92i8axPfSJfFVvJ8H21
-	 g668zw7Rn+/2OX8HxJ7EzJpbnwg1WR18ItL+wwlnzWVq8eS06rL7UpKU+TOClOpXiRDr7
-	 eXSueIUbVtZuo2CTtUYFx0LxJr4lyo7MGc+cncn0sm5BA/pjaGfArV6QGW8ZjJKzxJ3z2
-	 M0ylKA5SjfquOlT5C6Tfce2pzCfkMK5P9nthubUQnbIaJWl9zKbU4KHm3eY+kVdqlRveF
-	 Y9FS1+AAfvjzZSEsiPd6OdQh7/GNqls/LQpa5YGf7WNwDvyq4TvsC6G15EOhsEuH72w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793696284;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=AUgj7ybzOrbdmhNXXkJnAoh6ZouzAZL90keqraEO3nw=;
+	b=Fpjoxxf8KMdizHSx241kHucpNzc+EwwoF5rbYM9Aosl6z8+jgMEjg4gXlQM4+5UAhJ0s
+	 3XomaOIuc7/41WSNQ6K4vhXi1wmbZ8T4c/gJWpXFUXtfQwis4kPvp9L5kvloi6uOsotL3
+	 jrlsQhP0n/UZzipjsgntNX22MypzZMHVFsH5KWRxFg7UnX536MtWwrtTjQVq5ioNkd9BE
+	 /+hgFH4cHryOqB1aY5iZEXLYpYhDYDI7X6130ATs4vfwGNpfl12/0ETnHN/Y4+GVz4MuT
+	 JPSGtzaKZbXqOesLhUct0AIWK7z1TzwFo1RxKzFFbjP+FuW5kscJOpQIKRT8uItYpgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWFkOrsC;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Q88fxJgs;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WjFKDjIJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9D9606A332
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:56:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C9D9606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB8D606A327
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWFkOrsC;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Q88fxJgs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793696192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0eq2D2jYQoQcNB0A0YEhxE5qSu++X2zrdL69lZRBaaY=;
-	b=aWFkOrsCNC6jeC/sw/skjcIDESLGLU1YeIb10muaNM78MJ8i3EsLo+Nw59+NgOFmB5aWZo
-	VDuGNXJW1b5h/DuY60T8d8IFuehoN9otcvEbQUDMM5mTwNLTDnlBVV9yWLtE0q8S6fkTSj
-	WMVXxUrhn+Uv0YsuU5ifQWvE84HXWm8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-Z5iFUsbCPc6jR6lw4bEKGg-1; Tue, 03 Nov 2026 03:56:28 -0500
-X-MC-Unique: Z5iFUsbCPc6jR6lw4bEKGg-1
-X-Mimecast-MFC-AGG-ID: Z5iFUsbCPc6jR6lw4bEKGg_1793696188
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a20e41008cso28024825e9.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:56:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793696187; x=1794300987; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0eq2D2jYQoQcNB0A0YEhxE5qSu++X2zrdL69lZRBaaY=;
-        b=Q88fxJgsJA4E0kXmoHEzxKAQVBFcDXBz+8OUN0wBDR7hK4A74Ax6t5CHgVkkcbx04l
-         Xs9gl9jYaRfreUu+5eUgCye9Y9J1iLGe40CWCuEfpAuNUcL+PpQ/omzGcO5fEbIMOhWe
-         L9lwis0Y4wZDcoYP4sShDhD23YKA8/vNYNp4Zzx5WcYjojwIrqc8gpaSPLo0aObyG1q7
-         f/6INvJRwP4snqIs5DJvi+XoMqeXoS4aDIkXyt+/xLRPLqxXypHGgF2Ue95s6Sbgx/rD
-         FlwZYuwkhFqIZCJbBKnKatPw6ks3c+/6E/RtInyRHtLttw534NOxp7UPOjMPn5kYyWzr
-         z7Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793696187; x=1794300987;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0eq2D2jYQoQcNB0A0YEhxE5qSu++X2zrdL69lZRBaaY=;
-        b=uAODVKU06rYjgqMFCEgKkg0rP3Yfp124iwLDfitR3Q2A1pcDDZH4m7vwxeOd2BWTxX
-         4dozvVvzC0MDzks31C3sYlo2e3PWN7zversSHHGPumyh1jYLOIkv+vY+6VZ56Dco7eG3
-         QNDzl4ON/HkhnVWjcLXqxLAr3bGBmmRZ+fY2f1HuFHvXW8JPWtV1mvRdOGaAPy87k3Py
-         xruIShG8Vpx42jDG3aGAWaodVphOss77u4cvzQ5QkgnfZj/aXy+8JnSLgAaJGZ4AkQnV
-         138+l3TfNRhDi6NigmL2wYnk9kjmtRAwzQKan2IPtj21MpOfdCIAvAEGSTbnI2aahnAs
-         XsZg==
-X-Forwarded-Encrypted: i=1; AKwUvBxA9zU1/aTeh1TmcRi2A+FGgVv5TGM5drQBRuzbao+HqhDSz85pxMDinUdLC5Rm3rXGPeMmkA4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9NATfA1TMx6NnPi65gmHZlCacDtmxEp4eei02LkFsL5Wzpjynj
-	Hm7zzTbIu3sGCGJXJnBUKk1tMAVA8yAtghaUcpFg8+L+TRQ/N+M6MB3ODBOe96nathY1pY6PqB+
-	oVOXP3wLKZEm6/obVfNJHpBhQDcK97gIwL77hiPOzuc04FqdPtavTp9JOL2KYgpkJhw==
-X-Gm-Gg: AYBFou1mQi1j2WsV2jRq8bFbiAPmCntFpH0FBRVN364H8nfadIHcvBx/mpBwPFaKrbD
-	oq+TKpKy0VPQBEvTVhoMbMmxzMsyHRHpelUHLHNU/OSYWhKbANN20iiauh9S98u72UT5E3jLlob
-	WmUQl4vOcmooVC0aOaMpbG/D51mUqZwMomwaZtvLKaHftaqkLNNpry9nkJviYwihyhYw+0u5y4g
-	jxFMdY1kEwi7lEBKvGAAY/WqoRxZ782eXIrzjJ9UbBUUBo0DLHsAf6Jq0cUh552kP/PU1Nx/KQd
-	h6SOZO9wcrcgPYt1eHBknAo4rVLppoWVnDmVv/WmYzpZQe1LxthRpcVKDooQkM8ZyJ7VI1Eu+Ix
-	HA9JSwbQr/YUMUjNW86Q2waGzoOT3OFMNX3I48E96CLqNM3islJW12miInzEDX7JRooffzptnhj
-	GeMSq5B4p8DOkM3ag/Z1S064EwuviWf+1JAoswAuSfgkc=
-X-Received: by 2002:a05:600c:34cf:b0:4a2:fe3:121b with SMTP id 5b1f17b1804b1-4ac18d68ba0mr257502075e9.28.1793696187604;
-        Tue, 03 Nov 2026 00:56:27 -0800 (PST)
-X-Received: by 2002:a05:600c:34cf:b0:4a2:fe3:121b with SMTP id 5b1f17b1804b1-4ac18d68ba0mr257501695e9.28.1793696187165;
-        Tue, 03 Nov 2026 00:56:27 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abeb77af8csm433231295e9.1.2026.11.03.00.56.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 00:56:26 -0800 (PST)
-Message-ID: <a2ad86f8-1e4c-48e6-8cd3-4c43d73dea3b@redhat.com>
-Date: Tue, 3 Nov 2026 09:56:25 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WjFKDjIJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3771F00A16
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:58:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793696283;
+	bh=AUgj7ybzOrbdmhNXXkJnAoh6ZouzAZL90keqraEO3nw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WjFKDjIJEA+bvQq5UVn7x5MxjjLIWhQscCNd94OnDDvq/EATAgJAkxNwykHjG9aTJ
+	 APMiBitUjbRauW84B1eUmRsYt19y/Wh+E8xAuFe5y1uaQ1Y83+3Y8l8inhu98hZ4kq
+	 RfaBDFc9dETiActHyzP5iHPEuQy/rJHVf6ewu3r32ldAZY0z9SRtlLTXVFXydhc75m
+	 Znzu9gGPiKd2VRpcwJs9KdW6SWf9og1BFKZdXKQCe7LPjm4nVxTuHWsThKhi3KFKuN
+	 QW7nKvFOd3XbPjCdfRdfMvnMz2v39pyEy37dmOfUeeMchGyJ+DZKCFvJSh08KXyD43
+	 y3xHIrZ9AGDlg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5bfc3292d90so2804934e87.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:58:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzeHSZiWzMQp9+UFigl/f4Ji816H1qNavYR8BUh/JHSZaH0LO5QShYXAgPDwEqsV+gkECguftA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/QpNsmZyGArJXhRNHBg/1kXJPCMFCL+Y/2hfbU8lQyUgGVDj7O
+	RZyNpQl021rm90AT35cGtoc7fruWTKGbkr34RZdRDN01e8/uWVu6X1MSLsxRiSDKQ1x8JKeT1T+
+	Wf0Zl9yaIv8buK4dwb32e4HHZjSahmQ0=
+X-Received: by 2002:a05:6512:b84:b0:5bf:dc30:93a5 with SMTP id
+ 2adb3069b0e04-5bfdc3094a3mr4560521e87.4.1793696282130; Tue, 03 Nov 2026
+ 00:58:02 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,44 +59,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/4] net: phy: as21xxx: fix read_status speed
- handling
-To: netdev-bot+sashiko@kernel.org, ansuelsmth@gmail.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261028073024.25175-3-ansuelsmth@gmail.com>
- <179335632134.3134.7804602022043442736@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <179335632134.3134.7804602022043442736@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20261102135330.2493332-1-robh@kernel.org>
+In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 3 Nov 2026 09:57:48 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=DvHOGWpYYudhG-EhxTk3iUhtfz7OBS0mFgurvnCmb3g@mail.gmail.com>
+X-Gm-Features: AclHuK-LEcFutZHI-ID3nCMC-9st3AveCqqRSTzeXkI5ke3GTM3j4j9Kq1OFBKw
+Message-ID: <CAD++jL=DvHOGWpYYudhG-EhxTk3iUhtfz7OBS0mFgurvnCmb3g@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Ivan Vecera <ivecera@redhat.com>, Benson Leung <bleung@chromium.org>, 
+	Guenter Roeck <groeck@chromium.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
+	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Chanh Nguyen <chanh@os.amperecomputing.com>, 
+	Alistair Francis <alistair@alistair23.me>, Julius Werner <jwerner@chromium.org>, 
+	Paul Cercueil <paul@crapouillou.net>, Dmitry Osipenko <digetx@gmail.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Ray Jui <ray.jui@broadcom.com>, Scott Branden <scott.branden@broadcom.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-sound@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, mfd@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/30/26 11:32, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 5 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] With AUTONEG_DISABLE, as21xxx_read_status() no longer takes
->    speed/duplex from the PHY.
-> - [Medium] In autoneg mode, as21xxx_read_status() now reads
->    VEND1_SPEED_STATUS on every link-up, which is the PHY's own report of…
-> - [Medium] The new early `if (!phydev->link) return 0;` in
->    as21xxx_read_status() (drivers/net/phy/as21xxx.c:732-733) makes the…
-> - [Medium] In forced mode (AUTONEG_DISABLE), phydev->speed/duplex hold
->    the user's configuration.
-> - [Medium] net: phy: as21xxx: missed pause and <=1G speed in
->    as21xxx_read_status()
-The above ones looks legit to me.
+On Mon, Nov 2, 2026 at 2:53=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org> =
+wrote:
 
-/P
+> Unit-addresses by default (and most commonly) are hexadecimal. There's a
+> number of cases using decimal patterns. Fix all of them, limiting the
+> pattern to match the 'reg' limits if there are any.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+
+Yours,
+Linus Walleij
