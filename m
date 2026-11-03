@@ -1,94 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.33
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793708708;
-	b=COPB5q9Kgv2QcS4OllbA6HpY15H3E0A2GYk8XlAD5emtmMleBIhCjffUKeBI1VWHrTH0
-	 n/0md2+ad1NV0SPp6Mm9/G2RgXxN8qmT0jQQNv5iOys0C6STYwa7w/B7gnGvGFSYUoC12
-	 TNnyoqpbfzHkIDkNP9iKS1wxpPLp5ZeNz9g95lqe1Jur9fugo13HEhuyLt/VsUm9gkkJc
-	 lLF5iJSAf+6dax6szYHv11o+95aV11++RTHwFmiSOaqYd7GJLOrHUVW1WTVeFxH1mvzUt
-	 ZdmtUt9yNV/0CAXi1R86M6/S4hHoOvVLZOWcN0Q9wBKaawijViU+WvJUDe7dGHJ8jKA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793708708;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
-	b=O2SQ/8C1OFoAf50DOhUVvH8N0S9yfH/n9RSa5lvnX8udbkyRrVy/HPRbf8j3t3PK+t+v
-	 U081KADYdybe6OoF4umiryzS1BAMZAm/cGfTkWeXOA8FEp2iymMyngAsbEIKA+Af6NpNg
-	 FAjRUzqkUHos1uNYZYInqhwvsIa3XVem/B8Dy0EepwJsOVLT1my97ST5WblB5QPK3AcNl
-	 h8PC5T2XsOxi3wumdbEc2sZy3tlEtOt2aPWAUIaW0f74aR6Cw7o47uAuwMXq6c67qgvew
-	 zvVlBgP6roV6U7SJHB5bS4vD009qd8zWhMxatXNOUjOu3KZPfFPETwIDJoCGVC6EBpw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XEzCxe9e;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.33
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010033.outbound.protection.outlook.com [52.101.46.33])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793708771;
+	b=lsPgLeBbi1SlB98QCqB7ojN2OmZMuq4LKTqz4jKj00shFPmfHEqP0+GXiOSP8X2g8Iks
+	 dlnn6QHiOUbjIHR8JkD9Q6eZTX4o4Cqj5jC0ZWLOI5f6I4OOKN1D12g79mevRpugDoEEI
+	 NNMYzfNSKFusd5/ATR7uLsv2tDe6KD/YOFl+uWQYDBa6Ou0ey6z8E1PXn6sDnfiIkkrbn
+	 1vh8xQO9LHu4gkclxKnznpGqn2ZJBccymHig/C9lnPAmHLAnaei3MWhyKv07Ji0yqOKiH
+	 +zuvNqu3LnhIQHaLL4JiY4vkCtZPLeZ9AHVj5NDL9bLO6TWswEr8vpifFeiJL/zX9lg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708771;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=orrpCKDFSt9gDgtM7J88eOaGMeMvBiiqJpohCbwRqEw=;
+	b=CVi0a2BCq7nFiG0KaXvSvzT95tU/mgXwcXLi70y0saaC5SrAKpJ2MnEMj5XyVbGXM/OF
+	 nHrxmZbc7I6vI+iY6Qu+EtQmJkemKsgSB0R01dg7cZ1oHeADl24kYj14NVYPTFooDFbi4
+	 ZCN4GftihNDMnts09dfdLZshuPlFRrGykq9M326u/x+RtOlwzKA2E0u785BZPKkAmQPG0
+	 9XnsxC0uA/S8lACPyInDL9ki0fZzASQOxNORnHdGHBp9Qf+gai+yX/9ryuCM6g19916j5
+	 AZg5+wRmfrqG7UiwCyJZkFgo4hi+qOIlsB4UXtA2vz3OOUtC7ThQPaWSFWEGrCv05mg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=hYk5cVnY;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85834606A339
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:25:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85834606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68271606A326;
+	Tue,  3 Nov 2026 12:26:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68271606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XEzCxe9e
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y6e6sCSh8Vbkj7R9S5s59RmF65azurRGzSTaJWQ2jGsvU1+IZBYSQpuDPYf3Q/4nmlU2WI1iWfwgVywQRNPhRyDQEW/K0nVgPmiDAnxVH3y5hCm4p4gLFe7PrPYYfm8Lv1GR1WorY0AIdyida3rrGTBtev2zia/8pA7TcfxEwtsfnUAeEXBCSid4Ow5KYD8aWRyXw5jDpa6S+tzIen+gsng9F8tcedkwOJqsi9laCCHrPdqF1MEFeRUNq6JHWKAyMSzajfA+sUbfSlz7QJWLjgey3vJNc6XBN7o9U51PJWzy3nhs6JRnZ6UK+r/Kk/0yWwGPFMtbRySQFowsWf3w/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
- b=od/HQsEi7Zs0/aEjmcLkrwv6FOEhBwEc2NVNs7WeYtumEM1jVZVW/cS5YMAKvlI3uvGnnRMcrdVVSh4znbh/XxyMil3f6FtWO2/aYZ0DPYXfvsmN0IzS7688GQKtyEwPjDmUV0kN43D2N7jeWvyEqR7prW8hf/GNTBgXpQ2+UZBg9dXfc54y9I2i8yHt1qsWU9jZiVDPH/jy6j/qnDtLLpSiAJG6VF/cqSKp/QYMaFf/IRsukPOmZyaVXtaS9VpBUjQQ4nlDdC9FWNBM6q+aDbDmsL3d2HKeZnH2UmWOAzGbX/nvPW0qycYfaSPsjF/U0QlEL/3EnBs697N1XZ0hiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
- b=XEzCxe9e7FL39BGq7DWhPrzdd6ebBCo4vD6/jWUoNUPMesAzOvkS+g43ncAY35JhboNob5wW3SInBj2bD5LaZ5KDx0DiPW0zNhPVuTfRDn0ZQKSyiRaAIj79asZ8b91K37i5kpEa+agA8uVILJ3DhDSwNcDm0xraHX1/2zuBp0kNDDMDjLrEWniJfxpPW01M5LEtARorK/eyW0cNNDsppWSAdrBicaRM+og5wi49iZz4yWL0La6d+Xr3X7m/6U9L8HWEE6XgniLlfbSue/WoU7mxdnJ7Qtw/5+qCWuIz0LZ4S24kmQKrL2yGcJApdkgKtgXNu/i4RHErUAifqKlAWA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by CH3PR12MB8755.namprd12.prod.outlook.com (2603:10b6:610:17e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 12:25:02 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Tue, 3 Nov 2026
- 12:25:02 +0000
-Date: Tue, 3 Nov 2026 14:24:50 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Vincent Bernat <vincent@bernat.ch>
-Cc: David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH] net/ipv4: check RTNH_F_LINKDOWN before
- ip_ignore_linkdown()
-Message-ID: <20261103122450.GA1158309@shredder>
-References: <20261102231456.965943-1-vincent@bernat.ch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102231456.965943-1-vincent@bernat.ch>
-X-ClientProxiedBy: TLZP290CA0003.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::17) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=hYk5cVnY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793708770; x=1825244770;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=w0Lxn/wh2HtjjqJ/6yq2K0YWFQ62cFd+21xnLqoOMw0=;
+  b=hYk5cVnYTFC/P8Dn8vAcU86IELcAx9dddmX+jnB3GzilPJWJ8IzaXd8K
+   3joUHy2vgcjQrxhUXxdvwYAmPRiPo4sl5EZH4pCMXqL75vAA4grTcVrcd
+   MMz/2m7IWROF3ZPIbdqu/FulGoGFptdM36w9sgVIMUqVS7xOTCtUB3YdG
+   DuJSeO7RK7nHxxte5p9ssxEML40UQSnNSaKysgdGo1hKm18wdg2x2u3tw
+   DEnRE9DN1MVOxEyaxWnRiPdlg7qy3vyH5+oRNkKmcr6iWQ0Ly15YKgLTz
+   w8iEiOXeIYhUbJCkeNR69+yFbPQFP/W/cPphafR7E6S3myP6fAqinZV7J
+   A==;
+X-CSE-ConnectionGUID: pEFwRhSlTGmrax0Bq44i/g==
+X-CSE-MsgGUID: Fls9AbYkSxaHozdYSpUTww==
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="66194078"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Nov 2026 05:26:04 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 3 Nov 2026 05:26:03 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 3 Nov 2026 05:26:01 -0700
+Date: Tue, 3 Nov 2026 13:26:00 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Steen
+ Hegelund" <Steen.Hegelund@microchip.com>, <netdev@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] net: lan969x: fix page pool leak when RX DMA allocation
+ fails
+Message-ID: <20261103122600.5tk7iirkrrvesfgz@DEN-DL-M70577.microsemi.net>
+References: <20261103102854.1340615-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,81 +83,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CH3PR12MB8755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8cb8df5e-4d9e-4047-3c11-08df39a57c02
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|9063799003|10067099003|18002099003|22082099003|261102123227099003|11063799006|261022075727099003|261026121527099003|261009223027099003|261021121427099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	ZaPUpe8H+xpTGHMixW3nlZ1+3nvxZ55o7YzHTr+WI3Py0r2aNWcbqiWlTKTbrdP/te6Cih2CjJErpO4ehFibcHoa1Gzct8wMEPnrljje2oePP6q+VN6i3Q2wBFhXZ7F2vMYvGrgCrT6IfDNfIbml1kcGrL/jp9dWwVYoRKAoFIqmedYSozo4FVX0pNcl1omUh22E/gEe9JCHrdrZAM38G+AIe1T2o7I5fhFJVsWtpazYx9hh+QHzYNr3qZObJBYClpCaefSZt4LFVvw0o1ZjWuVHhpZVvUyxkFWt8wzjpoqcxVnRb42UI0H8xBRAafKMCulq45uxWJfVFIvcGwZFnxjdbeo6eDPmseG2hXwQsUtCBAAt8rQDXclN7uDhJgW7x2cIbP+CnVrL0A+7VG8BAMJde0smeXotNQPwa1awYOyz5tvlGXEDr1Q8FZQ1FEZY9bveLoJxZ1cj9TmQIE2r2TjaaqzbOjrPwPxKLnR+JU2u80A1fikWiOYA8XADIo3dXxUtVnzAETP1DuJ1bxQaakQXEXYvk18t9/lX+mi72dUov4+6/hiV8W+ZTteecxC2GxJP6jI1X1QCcnojRm5IRmL6bdDwoxkuoKEWibjnOHPBwWY4pHVqZnVLX1bRNXK5Pt3mXljRudHyyeS9/IvgkDF3guEGP5wHx2igA4uEMSc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(9063799003)(10067099003)(18002099003)(22082099003)(261102123227099003)(11063799006)(261022075727099003)(261026121527099003)(261009223027099003)(261021121427099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kMBZA8FMLpeCgXwbS8O+1KfUT6YGd5Jiw3+6STmeekavL4NbrvdtKGEMx216?=
- =?us-ascii?Q?XRtdrqIRAb4og4zGGaxCtWnfAoRLSuOpnteSYtKNjHPG+zZ7neQDw3CG+Jm3?=
- =?us-ascii?Q?6wf18LSx6gN1079xNDTuZzEIV6RoRwBIkUV/MYU2SVcEkk8k4J2XuwjJxpNO?=
- =?us-ascii?Q?3jvrsGguFFA1tgzLtnGgbm9+4FOLJ+LVX04s4+MG83HyWw2hNVEJalEXfzRQ?=
- =?us-ascii?Q?FFNpJMHxKqZ8wZNIye2f4ShHYAz7Njqv7sn0Hyil6L8qv2JBDx0Feb5T7v/G?=
- =?us-ascii?Q?r4sfJmzguqoFNu0hXIdO7j2tfpr3RZyPDlStMkOpVESQgoFketK4zcuwpH0m?=
- =?us-ascii?Q?V3dKNg7U8XD/CjD7hmxzMML2b/e1FcCDx+qx4iHzVkZDkljfqei0yMC0lLfz?=
- =?us-ascii?Q?VQTxbmuvxxM6OC4cC5VreNOBlK+LT3n5D0SkU/RcqUm5Oi3RWGO/QhozgITS?=
- =?us-ascii?Q?3GDrrUQnILFA1H4MQGGWy+wiQcznRPQGyurSoKln7bVJY7jCQHuM4f7Nr+QY?=
- =?us-ascii?Q?58neqRhd5jCh+HoAUEp53FVLQi7JokYZi90L1aGWD2BaZ+m47ao+HZF1G5VU?=
- =?us-ascii?Q?TeaEBLQ3XzpNpNBE3tP138WBTu8P0QV6IfRuRbNeQfUXRO0SmIrBqDSa/rAL?=
- =?us-ascii?Q?/iaI5nZ6L7LY9JZui8NXyLzsSIQxJIjFTqPHzVOM1pxJTj5imLav1L/+x2fe?=
- =?us-ascii?Q?AqGl/59v9iE1jauZZmT+ejLNDSH/HlxBBJQnaih8PhjkYQ8bg+wz7xZdL1Nh?=
- =?us-ascii?Q?d/cLswRN57JOw9Tar4UOmky9CYdz5cEWCImtXoskJo3KEMCXmSJZEQoLPgr3?=
- =?us-ascii?Q?m8W5EmAp5GFGhFeFXpDM19rP2KlnHRHEeMAJ7KvWP2G1Zut0eDFEx6qzz3lb?=
- =?us-ascii?Q?gKAidLEyiMBSBuw7nzmsxpDqhQbG7zDdZMPNGGewu4GJtRG68gyoSMnTWpTK?=
- =?us-ascii?Q?dGwRbOdL+Yrkwhh0saXJaPrs0DjMNThemdzh/FQmfuDmmny2iZrBHEufdYeX?=
- =?us-ascii?Q?DcXHt8VQwBhUUkJdpCW3QeZsIhYTLjriEp1Mu7PKz5VAwQB9DrN2pLFnoDPa?=
- =?us-ascii?Q?orjrsI3iveBRKYPVjp0r9ytD3Geei5Ko5m2Rw4qQT/+bOKUKnZdmCyDDC/EF?=
- =?us-ascii?Q?r4gcg7B++cRcRPVitSssPrPzBHlhNj/fxcv5OCaVEdFqDqgZRCTGZuCEMs7x?=
- =?us-ascii?Q?Uq4KH5/6ujh5gpQY75Ktwa+po5SIJ4WNXFe9FNRUUFNpiWdjnFywBjkKouNf?=
- =?us-ascii?Q?C9YcKgYYAm1kelR/58sP2eU0p31uc9InDEn/fMe1M6TVNl3MszSs5KWkJ6V+?=
- =?us-ascii?Q?D9sF3As2vPWqf1sUr/Jg+mxPESuAsqxmH8dLsjhkrRdmmEAwpl82LcCVDOWS?=
- =?us-ascii?Q?dHhj0ML2CxjDJMyeZE1vSsFZIli9MbCaPlkr6dYjqoLWDI+XWI+ZMhGHQbc3?=
- =?us-ascii?Q?gDtlC2NTNIz5B6sA1KX6QAg1p66ijaPX6EoADQLTY03QfsqS7LEBHbo/hICg?=
- =?us-ascii?Q?qYxDitZTHhYBqTLrqKba4lafwHF8tfGL4qbLFYFRwdAwYXYz6WpqOKJg/Pue?=
- =?us-ascii?Q?XNrulGMPLTqq8oXhZ7K4sxlEYCniReVDXxtuRubqMR5cqK2dHMc/nbQLnS8i?=
- =?us-ascii?Q?RGEqPEQoCfX9l7nPar2w+pbe0FWoeJHoo51ShzaHfpXL52YEWxg9y96fAe04?=
- =?us-ascii?Q?/NNjUGi3Hr93LDtwlASYij6903iG1QRnbweFXsu0DJ72zfh+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8cb8df5e-4d9e-4047-3c11-08df39a57c02
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 12:25:02.3957
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +iW1q8rxQ2u4yzpOJSCUT2VOXPnmv8Oq95cuXeESn2WMurmOcIK/CDM1cuE2R9Nm7hDCQHZwaqwJbzuQKcLIRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8755
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261103102854.1340615-1-vulab@iscas.ac.cn>
 
-On Tue, Nov 03, 2026 at 12:13:30AM +0100, Vincent Bernat wrote:
-> In commit c0c5a60f0f13 ("net: evaluate
-> net.ipvX.conf.all.ignore_routes_with_linkdown"), I introduced a small
-> performance regression of about 5 cycles per lookup by adding several
-> dependent memory loads through `IN_DEV_ORCONF`.
+Hi Wentao,
+
+> lan969x_fdma_rx_alloc() creates the RX page pool and then allocates the
+> FDMA coherent memory. If fdma_alloc_coherent() fails, the function
+> returns without destroying the page pool.
 > 
-> This patch cancels this regression in the most common case where an
-> interface is not down.
+> The failure propagates out of lan969x_fdma_init(), and
+> sparx5_frame_io_init() then marks the FDMA IRQ as unavailable, so
+> lan969x_fdma_deinit() is never called on teardown and the page pool is
+> never released. Destroy it before returning the error.
 > 
-> Here is the distribution before this fix for lookups in a table with
-> 500k /32 routes:
-
-[...]
-
+> Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+> Cc: stable@vger.kernel.org
+> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> The median lookup time goes from 132 to 126 cycls. Benchmark were run in
-> a VM pinned to an isolated CPU and running on an AMD EPYC 8024P (Zen
-> 4c).
+> diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> index 053d125eda65..bc293ba1707d 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
+> @@ -169,8 +169,10 @@ static int lan969x_fdma_rx_alloc(struct sparx5 *sparx5)
+>                 return PTR_ERR(rx->page_pool);
 > 
-> Signed-off-by: Vincent Bernat <vincent@bernat.ch>
+>         err = fdma_alloc_coherent(sparx5->dev, fdma);
+> -       if (err)
+> +       if (err) {
+> +               page_pool_destroy(rx->page_pool);
+>                 return err;
+> +       }
+> 
+>         fdma_dcbs_init(fdma,
+>                        FDMA_DCB_INFO_DATAL(fdma->db_size),
+> --
+> 2.34.1
+>
 
-For net-next:
+Thanks. The leak is real, but this init path has another problem
+of the same kind:
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+  - If lan969x_fdma_tx_alloc() fails, lan969x_fdma_init() only frees
+    the RX coherent memory. The page pool and the RX pages that
+    fdma_dcbs_init() already took from it are leaked, for the same
+    reason you describe.
+
+All of this has been there since the FDMA implementation was added, and only
+triggers on allocation failures at probe. I have a net-next series for
+MTU-dependent RX buffer sizes coming up (very soon, within days) that reworks
+this exact code and its error unwind, so I'll fix this (and other related
+issues) there.
+
+I'd suggest dropping this one.
+
+pw-bot: rejected
+
+/Daniel
+
