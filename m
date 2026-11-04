@@ -1,49 +1,128 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801486;
-	b=w2piOlIeScmyxJBiDXsT1N2iJ7RaKXDmDmmeULGIeIYxeriLOltUXLHR4uhX4mKSZc5g
-	 QXaIK2Y4Z1flTNPBRWhRf5ptPJtQT7RQ0bulDD6gCvg6qUfSqGSpMlOJlxPCrZQrFntrm
-	 fUppM4Qh32aou+k5EMGzx18a8npTo3GFtxpPeyBSXA8cD+PktSrLNrvqTad54Fp0+RtaR
-	 POOUklZDiwYMTTPBQ2fJu0S2waH6W8f3/DtZycHX0wLjJGBvGVcUzX1gA9pr/1IAaoohJ
-	 UZCnr5WhoSgcZPd/3edTeWHzDYAiBNbOu2Qewr/fZeTH/W1/sswcY0hH4vPOuughopQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801486;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=enY38Oq2A7kMvpKwm1AKaR2lxE1Xnu/WdFP/uy+yQhs=;
-	b=dibrQYoNzFh4oDyjWkS8h8SRh2Ji7vvzW4mqm1lOY2qsh08FLjp5WSqB2mxusWHUoaVj
-	 s2K3/yd7GJBhW63y8LV0ksz2ftnrN2Z4YvBJRQOI8ygtB09fWJrd9aGjyReS0IW3uJv6M
-	 uMMyIvLtLmUWWmCPIiFYw779Ek42oCvmPKWdEv0uYcCyVtfnuLkDzlCQYQ7KHnc2qRDxo
-	 AFuj7wJtsHbLk/LixJOYeB6Ge34aiRBB7QCRM/7NXyNiQ6qYNcjBxA72vHkIlDOo3warO
-	 a3OD+UAi+0TbsqzAvkg0vp3nJ8ulhrxcHimN8t78QkRwSbTQmpO6Uoppvcnre07H19A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2scHvA0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793801577;
+	b=0bDSU9yFhJe7dry48qXPKR16slixcatxjYoAUloqr4vptZ/4rtPAmksbOznOvMaQezDP
+	 3WI52pCzP/7eBUoucwQ98TKRGIlQTSRZ25qLEecu5O2KMgMaYzsCZ12VFrsjruqtZJxuN
+	 GvhQsvdAsa3vJdtapiWmWFgjt7QaGJ+kHrtrnIQ5JbfNMDgjvpk2POFBxLODkUt/nb7CR
+	 rZUJmoZF0C5wKtBOQDx778OiwxHaxR3TnbYrTtWDOW8wbxVzNfGMDFRKKqybdiZyR12L9
+	 gCGVSAqFJYnLWpTyf8TCt/T/0dfONYi+dXv60VoPBxF2N3TTQvTTzBSWyNwb2DEd0bA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801577;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=vPKphMntFlRbCoJiNva+NPTVzD04hwQp6nw8rRPM9P0=;
+	b=pgcmkxLAE8VQfYvtpWzlarDg7WSaVrnr16bzfqApJm40qEot1wfOh7dPNRZz51d6aiop
+	 eEqF1jJooLnPOlQGYcd7TmZm45028IR0bHRr9s2l+y0d05tLl6UpnoIWstiMoZD/PK8XE
+	 1oE30GSEicq3rnh3c3zN4Y7NPffV7Z1bQCXprG+TSKSnnONm5+yp46fByJ7NQG6y9be07
+	 VbjJaQSgpmUEYQnhabl84gMKlJepjmjfv24boBOTmwT5Li4STpg7F+AqjHHXNIwBU32To
+	 k6nNXV02ZS7kkSY8yaG6Sdk/URcYEYykgpzSXm5yWhNNJE4QBoHCXB9BAk9sZCEcveQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=analog.com;
+	spf=pass smtp.mailfrom=analog.com;
+	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=K+j2VoZI;
+	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=k06FRZwc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6FC606EEA8;
-	Wed,  4 Nov 2026 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD7F606D80A;
+	Wed,  4 Nov 2026 14:12:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AD7F606D80A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2scHvA0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB0B1F00A26;
-	Wed,  4 Nov 2026 14:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793801485;
-	bh=enY38Oq2A7kMvpKwm1AKaR2lxE1Xnu/WdFP/uy+yQhs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T2scHvA05T9qN+J3uX+KFqvfhP8SmUMdvqfid6iMPKZ1dJEIXg1BINKxzdOFU7o7t
-	 Lw5Y2RBr8BaHMDXA0r6BAylXqSQbPCOrI6t8uz5beGUy56VaSYEquwYPuY2rmwiIBv
-	 IbKW8HrIwbetcHa/NrwXW8wtOODwY7skMrdt68PvFqzpXBNihvuS2uS+6mRa4ZMXcz
-	 ST+XPPnGggrifCHFLEdLqIi2qArg061mF/Ipj3n9bareI552FsDOjfFWBchHLsgIMH
-	 zjrVZjsV53Iiv1RglEdSL9J0sPCZfdvvgEGDJzb/H9cPjPAZ72cr6NeiFFjC4iPTop
-	 qiQaGSF3qS9BA==
-From: Chuck Lever <cel@kernel.org>
-Date: Wed, 04 Nov 2026 09:11:09 -0500
-Subject: [PATCH v8 09/14] SUNRPC: Publish reply positions for upper-layer
- consumers
+	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=K+j2VoZI;
+	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=k06FRZwc
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4E2fbX1243214;
+	Wed, 4 Nov 2026 09:12:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
+	 h=cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=DKIM; bh=vPKphMntFlRbCoJiNva+NPTVzD04h
+	wQp6nw8rRPM9P0=; b=K+j2VoZIfOAWKzHnoBaJWM3wgAQbAFdSoIAQVsBg1yxGm
+	841hdjJCshNG7M3sX9T4NkbzYAJNymRJD3B7AoPHFZCOo0DaRqEXMLLU7yn/nyxv
+	/4gznUNRZ4Rl8wdrBgxuy1cjqus9NcGQ9aQi1OyO/0lC0rNfa9L9fJrO7Izm6TFN
+	P0ErVP3+AdMyMnM6gvBQNv+p7LPOx14YY4K6HgGkux8L4zINHmDWKdmW8d/CGOJ4
+	0LJZGGBvqlrf+AEHpygBDh9fBdO8xSVTl8xKZDfGs01TY1KBcV4vZwcnsiQw3BiZ
+	8eNihh82NSLs/lu3Ogj+ZQqpi87omkT7HrB2ybxiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=DKIM; bh=vPKphMntFlRbCoJiNva+NPTVzD04h
+	wQp6nw8rRPM9P0=; b=k06FRZwcyIbcQhp9vbqo1e/d257QgkDtUA1sD89q1sUJo
+	VvFSNe/lnM27abHUHOUhtxr5qNIh9zk3pPrf2RNG2TbfjPSBqBMYiTf95yNNznlN
+	r7Pr7G8c3nBn1nRvp4c3hZ83eHA+4VqVvCLnEb+gNWpEP89sXtfs1F/WBUOtqVSO
+	35wY02A9wuS9f6Yq8z+9TGHJtvqyV5oFWFssOjbqmHZvcFu1KE4aoxKTcNfdYGdD
+	dZtV0NaHOZcZ9S5ixW3PUn48AqQm4ZYpvl3ki8GxYWiuZRSeUWUQcUVXQ08MijxJ
+	Bj9USfjfxh9cQQE4AZMFBci+BpW2ZXY3JozLidILQ==
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013015.outbound.protection.outlook.com [40.93.201.15])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4hqnfhngad-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 09:12:46 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GBu7JdDRtthwwYGg2KQj/lugI22yyumlMQPak0/mYwNpPRM7hKdnqLWZICmGnFjxz0MlkJUJJ8TnUPd+H3uNQNQ8tdq/worPL8sWYavZZuHSB6gxbVd3j1oPOHqQQkJLpVCgy8mafT6WKr6TNAI9tddLLiypsqLozTR18d8P2dHyaS7UdMYU1ZLxbC5tXiQMTIV9r79E0fbqBRDHlntdJpNNBvO/XV/DMSH54SGpTrrOpwdlZV4LhXhUpooII4miSeKqRiCY+l5q6Ug+8H6poJXO8JYIixeRfDLPhoAxXdmGaqM5jfm+kCd/O+OwI1qOqBX/GtK5Bi9RbPYD6aLd5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vPKphMntFlRbCoJiNva+NPTVzD04hwQp6nw8rRPM9P0=;
+ b=anCeKKzdCU/HSApvmDiHgNYAQmvxnHf/GKjpvpvOAyrejt/WrlRolJmH63xTcqvBzX79UXWHgXbDxR8dl8TcC3NrxgIRRr5PI+2HtQs9mdwAq0AZRvmV/3MEfQi9LsOpvkWCZc+q0BFQcLrXuzSboRulYEeocxMZWg4KoQB1879qhBPhFXTI9KnU77nUTC79cihY9SsRzM/x/pvOSY1eegAA87yJo0pbXD3b+FjBDvioWa8upFncu5YbOIVzy+E1dnV/nuYjMSkd+N7Fbwp4uVF9n6NhvNxb57v04JcdQ4u1JXsbAa6JeaKsDKL4Hi6Q7ghFYxAQXjQ1RbHv2vxcVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=analog.com;
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com (2603:10b6:5:388::24)
+ by DSVPR03MB485361.namprd03.prod.outlook.com (2603:10b6:8:37f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 14:12:44 +0000
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed]) by DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed%5]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 14:12:44 +0000
+Date: Wed, 4 Nov 2026 15:12:41 +0100
+From: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>
+To: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Marcelo Schmitt <marcelo.schmitt@analog.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ciprian Regus <ciprian.regus@analog.com>
+Subject: Re: [PATCH net-next 3/5] dt-bindings: net: adi,adin1110: Add
+ adi,spi-oa-tc6
+Message-ID: <aus899mJ-XZg6ZgF@analog.com>
+References: <20261103160918.409701-1-iustin.stolniceanu@analog.com>
+ <20261103160918.409701-4-iustin.stolniceanu@analog.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261103160918.409701-4-iustin.stolniceanu@analog.com>
+X-ClientProxiedBy: CPBP307CA0002.DNKP307.PROD.OUTLOOK.COM
+ (2603:10a6:380:1::14) To DM4PR03MB5981.namprd03.prod.outlook.com
+ (2603:10b6:5:388::24)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,321 +132,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-duplicate-reply-cache-v8-9-eea5b90e4318@kernel.org>
-References: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
-In-Reply-To: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>
-Cc: Rick Macklem <rmacklem@uoguelph.ca>, linux-nfs@vger.kernel.org, 
- netdev@vger.kernel.org, Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev-9c833
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11347; i=cel@kernel.org;
- h=from:subject:message-id; bh=yfQcoMe2swRLucLwyzOJFbZqKnxmmBqDyRK0hvhc9fg=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq6z0BmQjXxx5dJXTPQOlEwh2bcY9OY+RJGSNFu
- MgJWbCuV9aJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaus9AQAKCRAzarMzb2Z/
- l9n4EACFQ+4qeklYhMo5nZiL1vHrQdVu4kMGdpGjG3VCr+17AEqsnHNTO5yZk4QsPq8dRDu2SC5
- gX+GojYhoZ/M4t8wuxUW/G5im/LUQU82ysvUdseogmM41fGDuYPl0kuWvXuGt4TVUOKOoYgK+53
- zm9ne6iNLwKqMQnEA9LOY4ztXH5MxdX2m/m0n31bpj12GKV+jkG+gOWeYG3wOJcH5dO34iM3Hlx
- GyX0MrKsi1WXBm8GT07Ar+R2QUcmECIaSpYag8CUc8phGX1YBnzRsI1zDG3CqO6V3QrtQUNME4D
- QSjyKIMUwUTfY8wh62cs9Q+7Hvk2Jzmm0Q+gVesmYcBkIPrMKhd/LIj/m4BKPAK8cQRVYuBul4H
- j8sP2voPHywg+/PHp+gg7B85t/al5NWOl1vNsZMZLb6m22tgyNHkX2f8gNfVFj/wfgH7q2du7oJ
- D+pq2gVuBLWbdktsGWla49urlxdxA22RoUYjlsxOpVQGiFdLyrf2x8yQcfZHuRis3dEJjmEYhSe
- rt0RNajEOh0xHhXozi2Y/ntVsmNWn8XHcw74OUcDg8Y3gf1ZwIThqQMYO4ytgkZV6Yugu0m2Hrp
- aF+OB16kTa594ZUqFBMsKUXuz8gYx7TOIoJ7MaKiKbnVQxjBXD1bFGdEHvsP+dn1pQ2Ez5n4gD5
- P3vnbh00pc6Axgw==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR03MB5981:EE_|DSVPR03MB485361:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32473bf5-492d-4edb-1ae3-08df3a7db1e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|10067099003|18002099003|22082099003|3023799007|56012099006|11063799006|4143699003|261021121427099003|261021135927099003|261102123227099003|261026121527099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	tU0bDysoZRVPkWT86CFVEaKj+iL2HDLiqu9SM1jZoRhLnbEGJbkrsFsWonI8pxyRexNLzQ6Cbx8TPCsQ8+v7fUbP3LLSHtWOYr9hUGiEzqJncJm48eNa5pDNuSRoBb4s+jLFr9E8Pa79fGzggQdmWTtb5jvik4svcIHxpvgZV1HbH7hp3Y+S+2gv/0PJ9/cq+79a9BImL4TF/vtoeQKvpioR7I/G/QruNG5B6jP7VkhXey1PUwNkeW1aNFWzldwCcvXY8W+9y1OAdyNd7Ap54OJMxDMLYw/dltUieXR7A0BPt544hqDf7vEiMIkumQJHuWmRyJ26XrV0wINJZ4Y7TIc8RRNtvr4jIUWVAutgrAN0JptVkUWfuYdFEPxbY74zEV86QTpjlC29qy0chW3nd0varrbhhxxxqmlMUu8ajv9MYUToAGPfhKhDa9vF+dER5ntfmkqbSJTdOfvZXrl8m7DnpxrKGuHG2K2me+kVkeo5MAaW5yZsHhOpz2uE8tBruGmXgelIMKDYo+Ktx1psrvuUOLe9wTQoFk6FAFFx/iIInRfoZMd4osKo4ezRm8F4nfz+jBZT39YABELFqnQ0fnjCLCOv/LjuY49lVH8uiDeqoqS8WtZlbtja5bYBM8t+59o/hFcfUzC5Y/JJOsNyqTVYl3twhDgh1lZOuwm+Ubg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR03MB5981.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(10067099003)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006)(4143699003)(261021121427099003)(261021135927099003)(261102123227099003)(261026121527099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YnRmcW0rdE10N1FLOHpvRUw3ejRyZHE4R29qRnBLK1FIZkdVdzR3TC9tUzFp?=
+ =?utf-8?B?OUN5WTdXVWkrRGJEUVd0cTZmeDAwYkx1UjBvNTg5YlVLSmJ2N2JTQ2xQQmZD?=
+ =?utf-8?B?cFpkcWN4UHpSdmlHV3FzN1dPZEZTUDhQaTRGQ01Fak5Yc3NGRFNwYW9DVzlQ?=
+ =?utf-8?B?VFhNN0pKRWtDLzhoWkFUL1haenZodm5FTE9hUitkWXUrUG5GSGlqTzAvRVNC?=
+ =?utf-8?B?RVR2MmhtYmh2V1FITCtoeDhna3pFbi9RRnc3Nmhmb1VVanNreU80ckRWRGlp?=
+ =?utf-8?B?NXBBMTF3UWpObERsK3JvSm1MRUEzVlhEMkpOZWpGRjdKVURsS1gwSGgwQ0lX?=
+ =?utf-8?B?Z3BiMk9FalRyN3JoNW4rZmV5ZER6TFZzcFJJdFB1WW8wS2p6WGJUK1ZjbUU5?=
+ =?utf-8?B?dlp0T2xGdHpuQllWdGQ0cGQ3dHFMNjdzUDROZHNRU3ZBMzZua3NkbTVWNTN2?=
+ =?utf-8?B?Q2NkNGxhbXN4SlVVVmpkNzh1Vkd0N3h5N052Q1FJSWVOcG51RUJmN2NidENI?=
+ =?utf-8?B?MFFFSk5TalUzd1R1alM3RXVRY0trVFZyV21SdjlRZG1mVkx3NE9DbWVHTXdZ?=
+ =?utf-8?B?WnZUdzR1UGZQN1VnakJEUm9TN1NqVXN2K0NhaS8wTGhBbFg3bkg3ODR1a3RT?=
+ =?utf-8?B?bUo3SVNEMlo4WEJDcVVKUVVEa0gvblBidmFCS3RFdFFRWVEwNVpRSlBTOHlW?=
+ =?utf-8?B?cG5PM0JVY1B0VmFGT0JOUVFOdlg3TWhvcE1tTHJNeEp5Qm5XWlVnN0F6cm1D?=
+ =?utf-8?B?WmJFUjZQOGpUREMvcVhaLzhTamI0WElQZjBhT2E3bG1UNnlBRUhCMnd1aklL?=
+ =?utf-8?B?Z2lmd25CQXJZdi9UMkVmNS8ydkZpVHV5blZsSUtIK1kzMXQyN3RTMmwwTUlo?=
+ =?utf-8?B?Yk1YbDZyN2xLcWlvRUlmWm5xMjdDaXJyQjNFODFNMFlKOTBBYWxCUThFY2Zk?=
+ =?utf-8?B?aE5RN3l5a3F1dEhRNDQ3UXVPaHFDZFlLdUxNbnlIako5anRoM2I2anppaEF5?=
+ =?utf-8?B?TXpvclVNYU5qRnhyOVlaWWxVY282U1MzOHRnSElVMDBFWUNGbWtKOXdhQzVE?=
+ =?utf-8?B?ZWhFU1BjcW50akZodHBVa0tIOVZYNnhDamlvMk9rZk80YlRpMTN1aWM3UmtU?=
+ =?utf-8?B?QWxORnpaNUw4ZzhFUkZMdWFFRFhIeVk2c1ZYdFd1dUxWK2hiS1RMWFJ1Tms1?=
+ =?utf-8?B?ZWdIcnIyK0NJNHRxQk1sTWZGMlBhN2N2Ly9hRkF1eVBkeXNDTnBpSWtCUmRx?=
+ =?utf-8?B?L3YyUkJ2RzFUUk5ZQnpwVk1TMFBYc2JVZmhxK2pKOXRXSkRrUE92YzFJSVhV?=
+ =?utf-8?B?VmlKc0UrYkZjSmFwMXFKa2E3WXZXbTh1NVNVWmYzODNZR3FNa1FmV3NySHov?=
+ =?utf-8?B?ZW5xRzF0SGlaZUZ2L3ZUY0JPcER2VFdZM0ZrZ3ZiYzkvcTIzRC9OdU9Nd2tE?=
+ =?utf-8?B?bFNzcjFKUXRyOGowSG1qbkVtdi8rSnY2dEJXYk9TU0taOW0yR0dNRnNQZ2pm?=
+ =?utf-8?B?Vm41ZTF4TFpTSm1kNTRpK3RnUFBFOUFZTjVoZDhxMlZMS25UQjRxd3pveDhC?=
+ =?utf-8?B?NXY4aXR2TXdUUE42WUxkbnVGZERqMVE5SXdXbkdSTVh5YkJweSs1eWpBZ3R3?=
+ =?utf-8?B?bnZWWlVjZjNtN3BHWHN2VlEyM1R4ZFJmN0lrSzJRODBXQ0dzRFdPeDAwdWpi?=
+ =?utf-8?B?RWwvdEJCZW0rYmRsSE0wN3lETW9DTit5dWpsOGJVU1crM0QwUVJMbzZ3K3Bv?=
+ =?utf-8?B?NGpXdG51d2FWcjZCMmVGeWFLWlBGbGw1Uytya05qeUN4NWFjNm5RZWIzR2Yr?=
+ =?utf-8?B?di9WcGlyZzdjL09EUWw3cjlDS3VXTlM2U2dMMm5GSmZpOWhEK2FFNzk0aEpE?=
+ =?utf-8?B?RHJ3MDNCdXFlanM0NVFPeVJtY3krUVQ0c094ZlpXSEFVWGZpSzVENlZ2cFBP?=
+ =?utf-8?B?WFIzT3Rrc2ZuK0VyQzdCYmR1dXRFQm5MMHBBTkQwL0w5dUc3K1dIdmNkV1hV?=
+ =?utf-8?B?V2ZqaEFkSzk4S1RuK3JSTlkzWkF3Vll1SURaYVFqbENBQzVpYjk5QXVlb3Fr?=
+ =?utf-8?B?QzNGeW1DTVVGZjh5eWVTTGViNHk1cmFBRit3azl3QktwK0FFMkE5ZXN1SXlw?=
+ =?utf-8?B?T09LNzdEWWV1eTIwTDZzbVVjTHdNemtpcXpkaEhUYkRjSlRsSzBPY2p3cmp5?=
+ =?utf-8?B?Y3VUeExRcEVIc2NCSUNaR0srajAxbXc1UGRUYll3SUFtcVptUEU5Z2cvSEdi?=
+ =?utf-8?B?KzZpcHBETGJ0Y291akhyanFVaDV6ejRWZnR4cnFUck1GL0Fnd1gzVzJXTVVW?=
+ =?utf-8?B?TkJvWXZVdUNUYXVTazhsZTU4ZnFQMVZRMGZhYkJSa3NqQ1ZuNVJsdz09?=
+X-Exchange-RoutingPolicyChecked:
+	V0Z0CywQ/2LR7A4/ta9AefPT4lt1MvOvFBMeA31R1MjNutJc8imnl3cE7qjbez9vn8JxH+akX1iwQxDXjYYG2WmZE40/xQUnq7uBnJWh57SeB2JJlYYxr2iu47Xf7zyhePw1krBGRGNn3kIUNYB7+qXV6O8CRwt0UfcwXGqZMIzDoUNqUYLfXEPOO3AG4DeDGZ1ZriauxR9AnhFY7pc96AkyvHOVR6K3IHVy6SKM6Ev2Dbk1CiVupzov3qpv24/zkufJiDM/amMHduAX0PUVPXz/YXvMYiutiuqaYPT7Ubb/Nh0vIHK0njug1McqtSZBCqNEJBJY7iG/Ykmr/oJS9w==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32473bf5-492d-4edb-1ae3-08df3a7db1e8
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR03MB5981.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 14:12:44.2777
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CinjTkEKUfy2E0vNGwhKG8yum/gnm7AOojLjHNdAHkXf0T+HukUeP9L9RquNMEmoaPro/YJORUMu4aCYvQXbAMp6lquhwoJMFQMuILU1ehE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR03MB485361
+X-Authority-Analysis: v=2.4 cv=I6Pw19gg c=1 sm=1 tr=0 ts=6aeb3d5e cx=c_pps
+ a=vvCUPcqovLgrcFR9lHNvxw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=N--XFCr6TIEc_64PeIT2:22
+ a=gAnH3GRIAAAA:8 a=OCyn0DeAHqlee7AmNIMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: yO2H8CS1flgi52P4lz9_zwDjivXcsLOc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA1NiBTYWx0ZWRfXyqFPAVS9Glb0
+ h8Agzj1T31FuUNoaB7MRHFfAXaKyJX75mGRj3KO+UZvYmpAxdI9nYHELwQb5Ka/jel8mvnHFjxM
+ RHr4/a38H+P/uAdmKMENtD3IaZ/CkkP2z/tC8UWKwZxt7JAyoQWOA6S8paOJQiYTYDrX4ne8TVh
+ DBk4kFKKSNHbVIizkm0zwZINjvSu+la93Y/G54zhqxrHZQJ4cHB9TXLNnmuU7L5qvkOL4W5iWyk
+ tUK+bK4ne0bAe/PTTvSa554KUAOUpUaHRtpesv+cP+oBvHxwyRLZr+GzUCcoX68K303/VsZ/i7d
+ Dr3IID3jA40HmqsX3XtBQg6TkSnhn2QxVBMNGIJI3D2GdQPSdLprtorAarhMwjFqOMzpmDAbJ78
+ QXQ0mjhIq5d1v8EFBQSc29xfPAJL2lnZe8oJqAuj9s3h+oz2iN5a9Yq55tsEIDX1HswKmUk24Z1
+ ahHfGkvyFbGs8yvdcaw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA1NiBTYWx0ZWRfXy+VdrkiUzL0f
+ vjS4G8vR4+THKVVxxEli297VAGs7rqolKVkzsvWek7ocEqhPFGg7LTYv2/vTLNA1h87uUcfg+/m
+ frBnLjAe8vhvX2mklJrY+lTcMZMyo4OV5M7W6o3Stz9w5B7dXnlM
+X-Proofpoint-ORIG-GUID: yO2H8CS1flgi52P4lz9_zwDjivXcsLOc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-04_04,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1011
+ impostorscore=0 suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611040056
 
-An RPC server's duplicate reply cache has to hold a cached reply
-until the client has received it. SUNRPC gives an upper layer no way
-to learn that, so a cache entry lives for the full retention
-interval even when the reply was delivered at once.
+On Tue, Nov 03, 2026 at 06:09:16PM +0200, Iustin Stolniceanu wrote:
+> From: Ciprian Regus <ciprian.regus@analog.com>
+> 
+> The ADIN1110 and ADIN2111 support two SPI host interface protocols:
+> the generic SPI protocol and the OPEN Alliance TC6 protocol. The
+> protocol is selected by the state of the SPI_CFG1 pin, which the device
+> latches when it comes out of reset, together with SPI_CFG0, which
+> selects CRC (generic SPI) or protection (OPEN Alliance) mode.
+> 
+> The protocol is set by the board hardware, so the driver must know it
+> in advance. Add a boolean property to describe a device configured for
+> the OPEN Alliance TC6 protocol. Without it, the generic SPI protocol is
+> assumed, as before.
+> 
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+> Signed-off-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+> ---
+>  Documentation/devicetree/bindings/net/adi,adin1110.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/adi,adin1110.yaml b/Documentation/devicetree/bindings/net/adi,adin1110.yaml
+> index 0a73e01d7f97..e19b6c94708d 100644
+> --- a/Documentation/devicetree/bindings/net/adi,adin1110.yaml
+> +++ b/Documentation/devicetree/bindings/net/adi,adin1110.yaml
+> @@ -43,6 +43,12 @@ properties:
+>        Enable CRC8 checks on SPI read/writes.
+>      type: boolean
+>  
+> +  adi,spi-oa-tc6:
+> +    description: |
+> +      The device is configured, through the SPI_CFG1 pin, for the
+> +      Open Alliance TC6 protocol instead of the generic SPI one.
+> +    type: boolean
+> +
 
-Add two transport-neutral values that an upper layer can compare:
-the position of each reply on its transport, recorded in the svc_rqst
-by xpo_sendto(), and the position up to which the peer has
-acknowledged, recorded on the svc_xprt. The units are private to the
-transport (bytes for a stream, Send sequence for RDMA). A consumer
-learns only whether one is less than or equal to the other. A reply
-that xpo_sendto() does not hand to the wire keeps position zero and
-is never reported as acknowledged.
+Should this disallow the adi,spi-crc property if set?
 
-The acknowledged position is an atomic64_t. A transport publishes it
-outside any lock the consumer holds, and a torn 64-bit read on a
-32-bit host could run ahead of the peer. A transport raises the
-position through svc_xprt_advance_acked(), a plain read and store
-that computes a maximum only while one context per transport
-writes. A cmpxchg loop would make the helper safe from any context
-at the cost of a locked instruction on every acknowledgment.
+I also see that there's a similar protection concept in OA TC6, but that
+seems not to be supported here? Is that intrinsically the same as adi,spi-crc?
 
-An acknowledgment proves the peer holds the reply, so no retransmit
-of that call follows. A retransmit the peer sent before the reply
-reached it precedes the acknowledgment in the byte stream and can
-still be ahead of its lookup when the transport refreshes the
-position: unread in the socket, or read and parked in
-svc_authenticate(), which can sleep for seconds in the ip_map upcall
-or defer the request. A consumer that evicts on the refreshed
-position sends the retransmit through the procedure again.
-
-Count a transport's requests from first read until the consumer
-reports the lookup with svc_xprt_recv_done(), and carry the count
-across a deferral. A revisited request repeats its lookup, so a
-procedure that defers after the first lookup was reported puts the
-request back under the count. Publish the position through
-svc_xprt_acked_pos(), so the transport can withhold the position
-while any request but the caller's is counted. A request that never
-reaches a lookup is uncounted when it is released.
-
-Add a per-service hook that runs once per request when its reply
-phase ends, whether svc_send() sent the reply or svc_process()
-dropped it, so an upper layer can record the reply's position
-against its own state either way. On the drop path the position is
-zero.
-
-Link: https://patch.msgid.link/20260921-duplicate-reply-cache-v6-8-db5e13fd9944@kernel.org
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- include/linux/sunrpc/svc.h      | 18 +++++++++++++
- include/linux/sunrpc/svc_xprt.h | 25 ++++++++++++++++++
- net/sunrpc/svc.c                |  3 +++
- net/sunrpc/svc_xprt.c           | 56 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 102 insertions(+)
-
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index b1dff5c8aa89..fc83b24934b0 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -59,6 +59,8 @@ enum {
- };
- 
- 
-+struct svc_rqst;
-+
- /*
-  * RPC service.
-  *
-@@ -101,6 +103,13 @@ struct svc_serv {
- 						 * connection */
- 	bool			sv_bc_enabled;	/* service uses backchannel */
- #endif /* CONFIG_SUNRPC_BACKCHANNEL */
-+
-+	/*
-+	 * Called once per request after its reply phase, whether
-+	 * xpo_sendto() succeeded, failed, or was never reached because
-+	 * svc_process() dropped the reply. See rq_reply_pos.
-+	 */
-+	void			(*sv_reply_sent)(struct svc_rqst *rqstp);
- };
- 
- /* This is used by pool_stats to find and lock an svc */
-@@ -272,6 +281,13 @@ struct svc_rqst {
- 	unsigned int		bc_to_retries;
- 	unsigned int		rq_status_counter; /* RPC processing counter */
- 	void			*rq_private;	/* For use by the service thread */
-+
-+	/*
-+	 * Transport position of this request's reply, set by
-+	 * xpo_sendto(); zero when the reply did not reach the wire.
-+	 * Comparable only with the xpt_acked_pos of the same svc_xprt.
-+	 */
-+	u64			rq_reply_pos;
- };
- 
- /* bits for rq_flags */
-@@ -282,6 +298,7 @@ enum {
- 	RQ_DROPME,		/* drop current reply */
- 	RQ_VICTIM,		/* Have agreed to shut down */
- 	RQ_DATA,		/* request has data */
-+	RQ_RECV_PENDING,	/* counted in xpt_recv_pending */
- };
- 
- #define SVC_NET(rqst) (rqst->rq_xprt ? rqst->rq_xprt->xpt_net : rqst->rq_bc_net)
-@@ -364,6 +381,7 @@ static inline void svc_thread_init_status(struct svc_rqst *rqstp, int err)
- struct svc_deferred_req {
- 	u32			prot;	/* protocol (UDP or TCP) */
- 	bool			secure;	/* RQ_SECURE of the original request */
-+	bool			recv_pending; /* RQ_RECV_PENDING, carried over */
- 	struct svc_xprt		*xprt;
- 	struct sockaddr_storage	addr;	/* where reply must go */
- 	size_t			addrlen;
-diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
-index 52082d8ea6dd..aea98ddbfe52 100644
---- a/include/linux/sunrpc/svc_xprt.h
-+++ b/include/linux/sunrpc/svc_xprt.h
-@@ -28,6 +28,7 @@ struct svc_xprt_ops {
- 	void		(*xpo_free)(struct svc_xprt *);
- 	void		(*xpo_kill_temp_xprt)(struct svc_xprt *);
- 	void		(*xpo_handshake)(struct svc_xprt *xprt);
-+	u64		(*xpo_acked_pos)(struct svc_rqst *rqstp);
- };
- 
- struct svc_xprt_class {
-@@ -66,6 +67,10 @@ struct svc_xprt {
- 	atomic_t		xpt_reserved;	/* outq space rsvd, UDP only */
- 	atomic_t		xpt_nr_rqsts;	/* Number of requests */
- 	struct mutex		xpt_mutex;	/* to serialize sending data */
-+	atomic64_t		xpt_acked_pos;	/* replies up to this position
-+						 * are acknowledged; 0 = none */
-+	/* requests read but not yet past svc_xprt_recv_done() */
-+	atomic_t		xpt_recv_pending;
- 	spinlock_t		xpt_lock;	/* protects sk_deferred
- 						 * and xpt_auth_cache */
- 	void			*xpt_auth_cache;/* auth cache */
-@@ -161,6 +166,24 @@ static inline bool svc_xprt_is_dead(const struct svc_xprt *xprt)
- 		(test_bit(XPT_CLOSE, &xprt->xpt_flags) != 0);
- }
- 
-+/**
-+ * svc_xprt_advance_acked - Raise a transport's acknowledged position
-+ * @xprt: transport that sent the replies
-+ * @pos: position the peer has acknowledged, in @xprt's own units
-+ *
-+ * Context: Any context. Callers must serialize against other writers
-+ *	of @xprt's xpt_acked_pos.
-+ * Return: %true if the position was raised, %false if @pos does not
-+ *	exceed the recorded position.
-+ */
-+static inline bool svc_xprt_advance_acked(struct svc_xprt *xprt, u64 pos)
-+{
-+	if (pos <= atomic64_read(&xprt->xpt_acked_pos))
-+		return false;
-+	atomic64_set(&xprt->xpt_acked_pos, pos);
-+	return true;
-+}
-+
- int	svc_reg_xprt_class(struct svc_xprt_class *);
- void	svc_unreg_xprt_class(struct svc_xprt_class *);
- void	svc_xprt_init(struct net *, struct svc_xprt_class *, struct svc_xprt *,
-@@ -175,6 +198,8 @@ int	svc_xprt_create(struct svc_serv *serv, const char *xprt_name,
- void	svc_xprt_destroy_all(struct svc_serv *serv, struct net *net,
- 			     bool unregister);
- void	svc_xprt_received(struct svc_xprt *xprt);
-+void	svc_xprt_recv_done(struct svc_rqst *rqstp);
-+u64	svc_xprt_acked_pos(struct svc_rqst *rqstp);
- void	svc_xprt_enqueue(struct svc_xprt *xprt);
- void	svc_xprt_put(struct svc_xprt *xprt);
- void	svc_xprt_copy_addrs(struct svc_rqst *rqstp, struct svc_xprt *xprt);
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index f261a4f47276..0dcb1085ecb1 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1503,6 +1503,7 @@ svc_process_common(struct svc_rqst *rqstp)
- 
- 	/* Reset the accept_stat for the RPC */
- 	rqstp->rq_accept_statp = NULL;
-+	rqstp->rq_reply_pos = 0;
- 
- 	/* Will be turned off only when NFSv4 Sessions are used */
- 	set_bit(RQ_USEDEFERRAL, &rqstp->rq_flags);
-@@ -1748,6 +1749,8 @@ void svc_process(struct svc_rqst *rqstp)
- 		goto out_baddir;
- 
- 	if (!svc_process_common(rqstp)) {
-+		if (rqstp->rq_server->sv_reply_sent)
-+			rqstp->rq_server->sv_reply_sent(rqstp);
- 		svc_release_rqst(rqstp);
- 		goto out_drop;
- 	}
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index 15c14d75ec12..4baeb82d02c0 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -593,14 +593,57 @@ static void free_deferred(struct svc_xprt *xprt, struct svc_deferred_req *dr)
- 	if (!dr)
- 		return;
- 
-+	if (dr->recv_pending)
-+		atomic_dec(&xprt->xpt_recv_pending);
- 	xprt->xpt_ops->xpo_release_ctxt(xprt, dr->xprt_ctxt);
- 	kfree(dr);
- }
- 
-+/**
-+ * svc_xprt_recv_done - a request has been looked up in the reply cache
-+ * @rqstp: request that has been looked up
-+ *
-+ * A transport counts each request from its read until this call, and
-+ * svc_xprt_acked_pos() withholds the acknowledged position while the
-+ * count is non-zero: a retransmit the peer sent before the
-+ * acknowledgment may be among the requests counted. Call this once
-+ * the request has been looked up, before the reply cache acts on the
-+ * position. A request that never reaches a lookup is uncounted when
-+ * it is released.
-+ *
-+ * Context: any context.
-+ */
-+void svc_xprt_recv_done(struct svc_rqst *rqstp)
-+{
-+	if (test_and_clear_bit(RQ_RECV_PENDING, &rqstp->rq_flags))
-+		atomic_dec(&rqstp->rq_xprt->xpt_recv_pending);
-+}
-+EXPORT_SYMBOL_GPL(svc_xprt_recv_done);
-+
-+/**
-+ * svc_xprt_acked_pos - acknowledged position the server may act on
-+ * @rqstp: the request on whose behalf the position is read
-+ *
-+ * Context: process context. May take and release the socket lock.
-+ * Return: the position up to which the peer has acknowledged replies
-+ * and no earlier request can still be ahead of its lookup, or 0 when
-+ * the transport publishes no position or cannot yet vouch for it.
-+ */
-+u64 svc_xprt_acked_pos(struct svc_rqst *rqstp)
-+{
-+	struct svc_xprt *xprt = rqstp->rq_xprt;
-+
-+	if (!xprt->xpt_ops->xpo_acked_pos)
-+		return 0;
-+	return xprt->xpt_ops->xpo_acked_pos(rqstp);
-+}
-+EXPORT_SYMBOL_GPL(svc_xprt_acked_pos);
-+
- static void svc_xprt_release(struct svc_rqst *rqstp)
- {
- 	struct svc_xprt	*xprt = rqstp->rq_xprt;
- 
-+	svc_xprt_recv_done(rqstp);
- 	xprt->xpt_ops->xpo_release_ctxt(xprt, rqstp->rq_xprt_ctxt);
- 	rqstp->rq_xprt_ctxt = NULL;
- 
-@@ -1037,6 +1080,8 @@ void svc_send(struct svc_rqst *rqstp)
- 	trace_svc_stats_latency(rqstp);
- 
- 	status = xprt->xpt_ops->xpo_sendto(rqstp);
-+	if (xprt->xpt_server->sv_reply_sent)
-+		xprt->xpt_server->sv_reply_sent(rqstp);
- 
- 	trace_svc_send(rqstp, status);
- }
-@@ -1352,6 +1397,13 @@ static struct cache_deferred_req *svc_defer(struct cache_req *req)
- 	}
- 	dr->xprt_ctxt = rqstp->rq_xprt_ctxt;
- 	rqstp->rq_xprt_ctxt = NULL;
-+	/*
-+	 * The revisit repeats the lookup, so a request a procedure
-+	 * defers after its lookup was reported is counted again.
-+	 */
-+	if (!test_and_clear_bit(RQ_RECV_PENDING, &rqstp->rq_flags))
-+		atomic_inc(&rqstp->rq_xprt->xpt_recv_pending);
-+	dr->recv_pending = true;
- 	trace_svc_defer(rqstp);
- 	svc_xprt_get(rqstp->rq_xprt);
- 	dr->xprt = rqstp->rq_xprt;
-@@ -1386,6 +1438,10 @@ static noinline int svc_deferred_recv(struct svc_rqst *rqstp)
- 	 * it handled last. Restore the value computed at receive time.
- 	 */
- 	assign_bit(RQ_SECURE, &rqstp->rq_flags, dr->secure);
-+	if (dr->recv_pending) {
-+		set_bit(RQ_RECV_PENDING, &rqstp->rq_flags);
-+		dr->recv_pending = false;
-+	}
- 
- 	dr->xprt_ctxt = NULL;
- 	svc_xprt_received(rqstp->rq_xprt);
-
--- 
-2.56.0
-
+>    interrupts:
+>      maxItems: 1
+>  
+> -- 
+> 2.43.0
+> 
