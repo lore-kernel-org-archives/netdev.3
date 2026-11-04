@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793805599;
-	b=wP3FAhmhKx3q+3CdjyT22Wnve9wS0IYag0f+J8hVSfM3fCHS77A4ROzPlZXxa2Ndc58t
-	 Hr918XIErlgSd8mURY/9FdiYIyshifxoQR5c31aHN6MhqDle6H281IQw9pRd6TkSxANAy
-	 //RNFxBqMif28aXD9XZ8R2fnGqsph0bSgAXUfS6gZeNRul5VgcHnYkvkOgSO70bXuYdj6
-	 bgHh0hVmia9F3DaR8ryLHAAMGZuow/850rp59Y8T+25VNMK2dBd7wkdSYYl4OCkOS9lBR
-	 2Z2qMTWwW4ECckK0kqpFsHYnYX5eK4Ch+UVqnx45c1/VA8l6qcKkaGQfO/oSDaPr/Aw==
+	t=1793805604;
+	b=T3vJlozTqVUSIotldBMqA5bzuHcRn58Y0klAPOr/A4k5axbGzMY+1KYBHi91enAfd4Dj
+	 tRpvsms9ZvkGdCfxnG9SkrFXwpdM5wGd8FcDroqykZV1PJe6re7QIGQuNYal4Nh8iSA4/
+	 m/N/NGuR+CA3v8ZiiFzdGaILzYEAgmYY3J5mEpbuo+gKpVdd3Z02OOfsDrxMc3U8vbtRK
+	 7+Iu3piqLZHsb/VTPAhWKx/XQRwzDxFREJkhGwc4OdX+X3r3s8hQWhE93XXcnU8BuNr01
+	 k7hUnJX45+ZocTrJdTUW9wvmMYFE7ofQEMLJve/6socodFRqIrS+fPRzirdVB/WvE7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805599;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793805604;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
 	 References:Date:Message-Id:X-Mailer:X-Last-TLS-Session-Version;
-	bh=1vYsnOf0pcSBEhv+qYUPA7uTPXegSNz6pmF1iuHj2Ig=;
-	b=qBvK39Zv0KaBJjH+ZV51Ic8CfmqOYgIPoEZw5k6vU03NniiG+IQxQZjMOJjI2y31aebG
-	 ICy50ifPnSS9jnlQoufHZfX5fhGy05J6zLfLd4GT/KzghkmembXrXgJKpmInTI2veH9E4
-	 5snHslUbrZz65k0kT3GwV43vGAkI3gQKNgWKIDkwUETAix8QxSG898dLobPWYIp7rs2pl
-	 s0lKUrEkrhUzL+86m5sr9/D9VM0r78erReW5tQX0F9pNby88cbsWjIonrsiUJmaNaiEc8
-	 sBGR4nnXzpKdGCTD1Ez/kEWnBXIkbtF9YfeZHt9+MPzz7gIP4wmJcX1o1O4fAek04pg==
+	bh=tvVt81974dDm61IpAOs9Ba0sQDHPKYiHvBxV+dZs6KQ=;
+	b=QyuUMfJ6B4dZh3P5k+tQrBTPEsCr2YksZMgK4FAZFal2eMz7ZkXrw4MuH+auO+o/RUjM
+	 aViDH1Wn0n97pGkd3ZQlr7u3YrpSv+DxjBe2DW9bs/2gpvOZEs/3BzmLrfEm7AHHgidt0
+	 PkUbWlrCJ8McT5VAOoFMAt13Ip9IdHOcNGpLqDMq5J7lZ040Z9lILnZy6Mso4F1dM52O3
+	 0xVPyi66yyabVJkxYuax74an9H0xwas0k7xbPIwwwbKwer8UOob/dV74JQYDnzPTGoqqk
+	 liUFYHiEk1DgWRLsJ1YUBvx5qoTx47HqoZ/mtr2v6Fx1+vBkFGqvNyjadg2DzVkGxLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RI8n1doZ;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GRvivkqT;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CA5607477A
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:19:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8CA5607477A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC0B6083624
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:20:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BC0B6083624
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=RI8n1doZ
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=GRvivkqT
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 714EA1A145D;
-	Wed,  4 Nov 2026 15:19:57 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 16FEFC8F472;
+	Wed,  4 Nov 2026 15:21:08 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FD3460770;
-	Wed,  4 Nov 2026 15:19:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA8DE103291D1;
-	Wed,  4 Nov 2026 16:19:53 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 12CD160770;
+	Wed,  4 Nov 2026 15:20:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2ACF0103291D1;
+	Wed,  4 Nov 2026 16:19:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793805596; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793805601; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=1vYsnOf0pcSBEhv+qYUPA7uTPXegSNz6pmF1iuHj2Ig=;
-	b=RI8n1doZ24e5lp563mCYI2FwK6ME6AAO2Q+tWCrxV0h5W4iqc6uhNqICWo+niO5NERQVGV
-	gSszIk4D/XVVCErrLdr7ZCBGQhJv8yHlvAWfEcaxl5Vx2WVZqjAnSAgRmuZbbvlEFv/EZ/
-	KEySkQjkpDWCcDOA5eHWBDkHWMin5r3P5FF06Snl8Z7UIjlqkWF6auMwabhkeM9eBAXHvt
-	rtT6e+P3Ievm8MbsBVC9eCLtaysvr53zOh0IqKVqzz9p1q/PfNsJF5AoYd8yABD6BgTnfu
-	LQg7AoD1KXXVgQCC5jF1iyyyGZ7z4vMdYauOzbCWbEdzLIDHQeHvywZm6RebyQ==
+	bh=tvVt81974dDm61IpAOs9Ba0sQDHPKYiHvBxV+dZs6KQ=;
+	b=GRvivkqTIqK4QgRIMpMVcKj7g9FAYSk5xLU8U+mFqx1RJ3kgHy7OYYG3Cj1nbL/detV/qe
+	Ah4b9U5chZFnlCWkqPjHk8TadhZ/6KWin25D8hlewqxx75uxsm/Vm7kJPf/4w8WogulXqB
+	yTCBS9wHogh7Olz096i4cCrl5eZq4zCP6SNvI4hnC9eJK5pNfXbU+ijTiqodZVkY0Ecznc
+	6V6p0JLgFgGPwQBGo9UcFpbICPfwNNKWRWj1nf3R4mQjh9/6bJ62D5wjbOPtozXMwFU9iN
+	cNW/CBp/TgJHiVtD02PZ0+Du8xcuNi5KU0Fm3dFG0VrqMCIzLRslD6WJqsFh5g==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,8 +61,8 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 08/14] net: pse-pd: stop async event sources
- before freeing PI data in unregister
+Subject: Re: [PATCH net v3 11/14] net: pse-pd: free the notification kfifo
+ when registration fails
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Carlo Szelinsky <github@szelinsky.de>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -76,21 +76,21 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
  Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>, 
  netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20261103220217.1131971-9-github@szelinsky.de>
+In-Reply-To: <20261103220217.1131971-12-github@szelinsky.de>
 References: <20261103220217.1131971-1-github@szelinsky.de>
- <20261103220217.1131971-9-github@szelinsky.de>
+ <20261103220217.1131971-12-github@szelinsky.de>
 Date: Wed, 04 Nov 2026 16:19:34 +0100
-Message-Id: <179380557479.1333589.2203505623273885498.b4-review@b4>
+Message-Id: <179380557481.1333589.9794436031902414643.b4-review@b4>
 X-Mailer: b4 0.16.1-dev-17221
 X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 03 Nov 2026 23:02:11 +0100, Carlo Szelinsky <github@szelinsky.de> wrote:
-> pse_controller_unregister() flushes the power domains and frees the PI
-> array before it disables the IRQ, while pse_isr() uses both. No in-tree
-> driver hits this: tps23881, the only user of devm_pse_irq_helper(),
-> requests its IRQ after it registers the controller, so devres frees
-> the IRQ before unregister runs. A driver that keeps its IRQ across
-> unregister would read freed memory.
+On Tue, 03 Nov 2026 23:02:14 +0100, Carlo Szelinsky <github@szelinsky.de> wrote:
+> When pse_controller_register() fails after it allocated the
+> notification kfifo, it returns without freeing it.
+> 
+> Free the kfifo on every error path.
+> 
+> Found by code inspection and AI review.
 > 
 > [...]
 
