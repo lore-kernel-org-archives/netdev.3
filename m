@@ -1,67 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801479;
-	b=PZJIvqugh8UD+8hcXLfJIq+MAxB6qxRNpLtxxaS+uWt9xlyVJfeK789i1NQnvQfxZdJK
-	 GGHl2tJcas1EddCLXBZUdHpGABqRv9hNSP5JdO3W2m3HrAyXxgfuQM2uf2xiT/pc/AZO6
-	 /dZrqbFkVJ8y6CS6G6PT3DnAPcNkGsm3rjtH2NCKRih/7k8EfpJkFS7uXMrwYHwgK7CRr
-	 fHOb4prtpSMY+veZtmE7WRMwRmNQB2Lsdl6Wat/+i84QQaRIS8kc6t3K/RRCl6g/Hzwgm
-	 Wx8aK63ekKgygqmDKcQj2sUtA9Ew6xhBrAEFPLHJ6Xkn/bmfCPDyqTgtSEvrwQ+eVWQ==
+	t=1793801480;
+	b=xumMzHhTTV+QusIXrT4l9hYJMMGkH+OMVDf27jr6LWqzTbzcbRrYXw1AW3xDv4Qx23Lr
+	 smIsd0YdurKWqWHHV/Dg5YvNiuJ/yzJLozfq15Xi2D7UL7ExmFHVJxTvcz4nEbNc/uXSI
+	 c/1RuUe9sbM/u6nqhwv3QaIrBU7t89pXBITiIudEx7th78V/IjupWDpk/wrMnbbZMD+19
+	 rW+TgZbjjVWzVU+nRSFFzPzarce/PDW8Kz5qkpMcTxNaMVzm+MZu9wwvN7W5GVkDTIqlZ
+	 xGPi0sphZJRi4b0WkNdyosR7VLnov41qUfGttwxd1nvyVxiI3GmIjDPzUK91aOy/1Tw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801479;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=0IzRZI1EYcAR+rnJDb9O7CuuunEacG6iwjyH3nTpCUg=;
-	b=f0nk42l7vkYyqdbf9xZBeNbZl88cI7PY5plGbDuRu5D8OTzVMbpr/SiOrrpsfWQezl4K
-	 F1WGMbTo8WBPUDIm3lzBqQ3NGQ6uS9nCWg4e4pEB3/Ayv9Z6j/Svks3BOXdI4szel6uP4
-	 KRDn6tYoLj2h1nMwSyML40t80Ot9wlBWo4SWQ/RmAlKWmWZ9ghSbiVh2DE+heJN2IqTLZ
-	 VKH/zk0edGk2lI2S3gnmCgugs+7zHOirHkELiqwwmD1/NL4sIhfulhTBoGQfs/A5UAKwf
-	 6zQqb300WFHavVPnf2RCY9S1XiCRVwgk5dgG4yn+V1vNK/lGCrYa4t/EwZKq9kdsIHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801480;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=EvU7V2odlggodyOuH+rjPVBT9c0F1hREWOVj6LzgAHU=;
+	b=kwdpaJ8AyD/Te/cZZQZ4MFP5hUfS/byvRvbs0K8AwNtUQyZ5ZqsZ4MSr/pycdynl4NC4
+	 oN225MkmuBlypu5MipV+P95iSYfMAjMZeC4bPRCeQfWsWq9L8jKa38+LB7ztUyfooe56U
+	 bFZQa9eQEE91mgCO0P5HiTvyhSqFXt4IHoX38KUEHr/ySAY9SrLnIgP20ywLZ9gzDTW63
+	 uKlRuFAlorjuyhUFnTk/JZQNeFgRMEInb2vheXXO4O574LVLK8jLc+F+iZsAkab0Xec0e
+	 vZxVbqnlmku5bjS9/anY7OrC2P7g8allxrOz2MIoWqv3MaK1nmVQ8jSZV7Wbia/h/wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=cSsCNJem;
-	arc=none smtp.remote-ip=220.197.31.9
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="f1/Ya/4e";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E898606A333
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:11:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E898606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CDB606D820;
+	Wed,  4 Nov 2026 14:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=cSsCNJem
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=0IzRZI1EYcAR+rnJDb9O7CuuunEacG6iwjyH3nTpCUg=;
-	b=cSsCNJemmiKANx65mI09gC4jemYNAiF52pkbghI2Lo+UZUIIJRqdZTyfJY6pws
-	ivJgmGW6CU/M/QPVwCBPEWT5TyGxls4nj7kIm0yncmUCwztOG4OrGTUn5xoO6puw
-	fszGpqhTe/lgquyaRpCTU/2kvj41eVKFjAKuPg9GZRDng=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3PxzEPOtqyHU0Cg--.5199S2;
-	Wed, 04 Nov 2026 22:10:13 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: edumazet@kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	horms@kernel.org,
-	sashiko-bot@kernel.org,
-	liuhangbin@kylinos.cn,
-	jiayuan.chen@linux.dev,
-	netdev@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: Re: [PATCH net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace period
-Date: Wed,  4 Nov 2026 22:10:10 +0800
-Message-Id: <20261104141010.2290568-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261103090011.4128420-1-edumazet@kernel.org>
-References: <20261103090011.4128420-1-edumazet@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f1/Ya/4e
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62331F00A15;
+	Wed,  4 Nov 2026 14:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793801479;
+	bh=EvU7V2odlggodyOuH+rjPVBT9c0F1hREWOVj6LzgAHU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=f1/Ya/4eOJ2q8MJNQN/5cVtHA6HWEulfG8WMJKoYjlZIngBFu7rxc4C+E67yegf5p
+	 Qo1uQ9zXjw2XmABAxjpzc2rCKIQ0Aca6ebycsl7yDcWWtImVTIk3gsNyPLvghPa07q
+	 HQvvWr+hHs+l+Ls854BhbY1KUxDEIVd3ZeO17ujskn5TwIZ6MTZJ63qVQ/A8cQZ/E9
+	 Dq7TLIWF/ReTn15xSuyK+f+5M3QYJ6WFlCbpwF9KdZSkK4QbgWflC2D9b33lzWy8a+
+	 VaK2y2nDrpbSAnezl+AzvHzhgfMAiFH9C7g/r21KsWF6wvD7YldRLgab3IfGRRYzyd
+	 dG9ocN5pkkcOA==
+From: Chuck Lever <cel@kernel.org>
+Date: Wed, 04 Nov 2026 09:11:04 -0500
+Subject: [PATCH v8 04/14] SUNRPC: Assign a unique identifier to each
+ svc_xprt
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,101 +53,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3PxzEPOtqyHU0Cg--.5199S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXFyrXF1UJF1fJr1DJrWrXwb_yoW5Kw18pF
-	Zaqry2vrWDJ34UGr4xZa18C3s3Z3WSyFW7Cry8tr12yw1rWr1xtFW2q3W09FWYgrWrGFW3
-	Jrs0g343Ar1DAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEEfO3UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqAXVrGrrPMX3gQAA3a
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261104-duplicate-reply-cache-v8-4-eea5b90e4318@kernel.org>
+References: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
+In-Reply-To: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>
+Cc: Rick Macklem <rmacklem@uoguelph.ca>, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev-9c833
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4290; i=cel@kernel.org;
+ h=from:subject:message-id; bh=5xlo0KB7Khd0Ps2XgqBr7P43qEKbVgyFIrz9tdufqUU=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq6z0A8FRuARSlurbKmX/iib01bqrGKnzHSN0c+
+ GLCwklg2bmJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaus9AAAKCRAzarMzb2Z/
+ lzCbD/45ksQpzD3NNfMbvop0RQuj87hr4ACAiKu/zdIURiQ15sgCNgOUdnBJhZwjRhECofqD/KR
+ OzbX9U7dYV1sofNnbhtzjwg1Q7S4cYRzX1LMr1i/vuyd9CWoXiDtSA/UG3sUEV8wyLh+ecySQuV
+ lTgWQNypLX0hK+lPpG3p9J79UxHFYp7C8/WaVfKFGesrYgWVQBolsMPmJfDSXLE63nGqOaDjU2o
+ mzU2E087Ba4KxcXW3rcuT5ERQHbykJ3zbSRwsoKC4MFxcUTECMXCiTggiXmxE39APQaK3PnWvUd
+ 9doSXjXAZNtPQJP3+LxnHrRJmNPiFLEdkMfTqCLipU8GqpEVj8uSzrK03R0InEWCGUf/MVPx4Js
+ LjVDP1zRadK8rvONIDydkTraKvC+PMT6bRqyFhlZEnGADcRu4btnQOKPhiryEVbKDr1J2hZKm0k
+ l5SNnLgUk+JihRiqpzHYPdAOiGxi6Z5+987+xRhed2DsMMdwrR+6XaBvpKFIgZ1xFDAhJFtLTb5
+ 0gmG84Y8rLWhkf4qvhdz1b/UgdI8SYzQBW8OiOBJjps1k+Sq4ICzGl8ZV03/s3Anht+LOUfeWBk
+ u3bdpQXi4MzTgjT/Ur/T5I8c5z3aDBY/HDhK+tneUQS5wCaEGulY6kW0Hy9mwI7gxit0bXbKCiO
+ hwS4Y+xpbMeVrMg==
+X-Developer-Key: i=cel@kernel.org; a=openpgp;
+ fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+A consumer that associates state with a transport without holding a
+reference cannot detect ABA collisions: once a transport is freed,
+SLUB may hand out a new svc_xprt at the same address.
 
-Hi Eric,
+Assign each transport a 64-bit identifier from a global sequential
+counter in svc_xprt_init(). The counter does not wrap, so two
+transports never share an identifier and a consumer needs no
+release when the transport is freed. The NFSD duplicate reply cache
+is the first consumer.
 
-I wrote a reproducer for this and ran it on both sides of your patch.
+Reviewed-by: NeilBrown <neil@brown.name>
+Link: https://patch.msgid.link/20260921-duplicate-reply-cache-v6-3-db5e13fd9944@kernel.org
+Signed-off-by: Chuck Lever <cel@kernel.org>
+---
+ include/linux/sunrpc/svc_xprt.h |  1 +
+ include/trace/events/sunrpc.h   |  8 ++++++--
+ net/sunrpc/svc_xprt.c           | 17 ++++++++++++++---
+ 3 files changed, 21 insertions(+), 5 deletions(-)
 
-Setup
------
-v7.4-rc1 (6628e7d4c6b) on an x86_64 VMware guest with 2 vCPUs,
-CONFIG_KASAN=y (generic), CONFIG_SLUB_DEBUG=y, PREEMPT_LAZY. The working
-tree only carries the instrumentation described below and your patch (it
-reports itself as 7.4.0-rc1-dirty); nothing else differs between the two
-runs.
+diff --git a/include/linux/sunrpc/svc_xprt.h b/include/linux/sunrpc/svc_xprt.h
+index 2af222f3ea2c..52082d8ea6dd 100644
+--- a/include/linux/sunrpc/svc_xprt.h
++++ b/include/linux/sunrpc/svc_xprt.h
+@@ -56,6 +56,7 @@ struct svc_xprt {
+ 	struct svc_xprt_class	*xpt_class;
+ 	const struct svc_xprt_ops *xpt_ops;
+ 	struct kref		xpt_ref;
++	u64			xpt_id;
+ 	ktime_t			xpt_qtime;
+ 	struct list_head	xpt_list;
+ 	struct lwq_node		xpt_ready;
+diff --git a/include/trace/events/sunrpc.h b/include/trace/events/sunrpc.h
+index ff855197880d..77efe63d2c14 100644
+--- a/include/trace/events/sunrpc.h
++++ b/include/trace/events/sunrpc.h
+@@ -1986,7 +1986,8 @@ TRACE_EVENT(svc_xprt_create_err,
+ 		__sockaddr(server, (x)->xpt_locallen) \
+ 		__sockaddr(client, (x)->xpt_remotelen) \
+ 		__field(unsigned long, flags) \
+-		__field(unsigned int, netns_ino)
++		__field(unsigned int, netns_ino) \
++		__field(u64, xpt_id)
+ 
+ #define SVC_XPRT_ENDPOINT_ASSIGNMENTS(x) \
+ 		do { \
+@@ -1996,13 +1997,15 @@ TRACE_EVENT(svc_xprt_create_err,
+ 					  (x)->xpt_remotelen); \
+ 			__entry->flags = (x)->xpt_flags; \
+ 			__entry->netns_ino = (x)->xpt_net->ns.inum; \
++			__entry->xpt_id = (x)->xpt_id; \
+ 		} while (0)
+ 
+ #define SVC_XPRT_ENDPOINT_FORMAT \
+-		"server=%pISpc client=%pISpc flags=%s"
++		"server=%pISpc client=%pISpc xpt_id=%llu flags=%s"
+ 
+ #define SVC_XPRT_ENDPOINT_VARARGS \
+ 		__get_sockaddr(server), __get_sockaddr(client), \
++		__entry->xpt_id, \
+ 		show_svc_xprt_flags(__entry->flags)
+ 
+ TRACE_EVENT(svc_xprt_enqueue,
+@@ -2024,6 +2027,7 @@ TRACE_EVENT(svc_xprt_enqueue,
+ 				  xprt->xpt_remotelen);
+ 		__entry->flags = flags;
+ 		__entry->netns_ino = xprt->xpt_net->ns.inum;
++		__entry->xpt_id = xprt->xpt_id;
+ 	),
+ 
+ 	TP_printk(SVC_XPRT_ENDPOINT_FORMAT, SVC_XPRT_ENDPOINT_VARARGS)
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index bcc867592f2d..15c14d75ec12 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -26,6 +26,8 @@
+ static unsigned int svc_rpc_per_connection_limit __read_mostly;
+ module_param(svc_rpc_per_connection_limit, uint, 0644);
+ 
++static atomic64_t svc_xprt_id_seq;
++
+ 
+ static struct svc_deferred_req *svc_deferred_dequeue(struct svc_xprt *xprt);
+ static int svc_deferred_recv(struct svc_rqst *rqstp);
+@@ -191,9 +193,17 @@ void svc_xprt_put(struct svc_xprt *xprt)
+ }
+ EXPORT_SYMBOL_GPL(svc_xprt_put);
+ 
+-/*
+- * Called by transport drivers to initialize the transport independent
+- * portion of the transport instance.
++/**
++ * svc_xprt_init - initialize transport-independent portion of a transport
++ * @net: network namespace in which the transport operates
++ * @xcl: transport class providing operations and metadata
++ * @xprt: svc_xprt to initialize
++ * @serv: RPC service that owns this transport
++ *
++ * @xprt->xpt_id is never reused: the 64-bit counter behind it does
++ * not wrap.
++ *
++ * Context: Process context. May sleep.
+  */
+ void svc_xprt_init(struct net *net, struct svc_xprt_class *xcl,
+ 		   struct svc_xprt *xprt, struct svc_serv *serv)
+@@ -211,6 +221,7 @@ void svc_xprt_init(struct net *net, struct svc_xprt_class *xcl,
+ 	set_bit(XPT_BUSY, &xprt->xpt_flags);
+ 	xprt->xpt_net = get_net_track(net, &xprt->ns_tracker, GFP_ATOMIC);
+ 	strcpy(xprt->xpt_remotebuf, "uninitialized");
++	xprt->xpt_id = atomic64_inc_return(&svc_xprt_id_seq);
+ }
+ EXPORT_SYMBOL_GPL(svc_xprt_init);
+ 
 
-ireq->ipv6_opt has a single in-tree producer (calipso_req_setattr()),
-which needs CALIPSO + NetLabel + an MLS SELinux policy, so to keep the
-test self-contained I added a debug-only patch, never meant for upstream,
-that
-
-  - allocates a fake ipv6_txoptions in tcp_v6_route_req() and stores it
-    in ireq->ipv6_opt, i.e. exactly the slot calipso_req_setattr() fills;
-  - does an mdelay() inside the rcu_read_lock() section of
-    tcp_v6_send_synack(), right after "opt = ireq->ipv6_opt;".
-
-The trigger is a SO_REUSEPORT listener group on ::1 with
-net.ipv4.tcp_migrate_req=1: a crafted SYN from a raw socket, a second
-listener joining the group, the first one closing so that the request
-socket migrates and the clone takes over ipv6_opt, the second listener
-closing, and a retransmitted SYN then handled on the other CPU while that
-CPU sits in the (deliberately widened) RCU section.
-
-The instrumentation also makes the two sides measurable, which is what
-the timestamps below come from: the reader is parked for 3.2s with the
-pointer already in a local variable, and the destructor runs in the
-middle of that window.
-
-Without your patch
-------------------
-  t+0.30s  SYNACK #2 on CPU1: rcu_read_lock(), opt = ireq->ipv6_opt,
-           then stalled for 3.2s
-  t+1.00s  reqsk_timer_handler(): oreq is migrated to the second
-           listener, inet_reqsk_clone() makes the clone share ipv6_opt,
-           reqsk_migrate_reset(oreq) clears oreq's pointer
-  t+3.09s  the clone's timer fires with no listener left to migrate to:
-           __reqsk_free() -> tcp_v6_reqsk_destructor() -> kfree()
-  t+3.51s  CPU1 resumes and ip6_xmit() reads the options
-
-  BUG: KASAN: slab-use-after-free in ip6_xmit+0x1301/0x19a0
-  Read of size 2 at addr ffff88801497908a by task poc/5786
-  CPU: 1 UID: 0 PID: 5786 Comm: poc
-  Call Trace:
-   <IRQ>
-   ip6_xmit+0x1301/0x19a0
-   tcp_v6_send_synack+0x631/0xbe0
-   tcp_rtx_synack+0x116/0x4a0
-   tcp_check_req+0xb37/0x23c0
-   tcp_v6_rcv+0xfff/0x34a0
-  ...
-  Freed by task 0 on cpu 0:
-   kfree+0x1b1/0x510
-   tcp_v6_reqsk_destructor+0x37/0x70
-   __reqsk_free+0xd4/0x230
-   reqsk_timer_handler+0x83a/0xe10
-  ...
-  The buggy address belongs to the cache kmalloc-96 of size 96
-
-The dereference lands 416 ms after the free here, which is what makes the
-ordering unambiguous; in a real deployment the window is a few
-instructions wide, but nothing else changes.
-
-With your patch
----------------
-Same parameters, two rounds: the timeline does not move at all (the
-destructor still runs at t+3.09s, the reader still dereferences the
-pointer at t+3.51s) and there is no report whatsoever. kfree_rcu()
-cannot complete a grace period while CPU1 is inside rcu_read_lock(),
-which is what the changelog says.
-
-(Note that KASAN reports only once per boot unless kasan_multi_shot is
-set, so on the unpatched kernel the second round is silent by
-construction. The fixed kernel being silent from the very first round is
-the part that matters.)
-
-If you end up respinning for the pktopts issue Sashiko raised, I can
-re-run this on the new version. The reproducer and the debug-only patch
-are easy to share if anyone wants to look at them.
-
-Tested-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+-- 
+2.56.0
 
