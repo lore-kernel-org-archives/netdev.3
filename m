@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825280;
-	b=ao3Ui3tcTXiZMMQdmbuzRDoWeTBMZ0p1EqrRryIuoa+NwRHxtI+NmdnWEkq6N+474G1Z
-	 +4gpXS+bYAx6UEIZorDIBzCk8GrUwlt1BitqxtrY9B/ZjNbGAdnlAuFHZJpiRVlbCZume
-	 TCDdomG7g/BAyd1XZqfw68XZvseaWggF06WLitf1JkS7ws/vxFba1X0Cw5onhBuwRGvAp
-	 ThSLoXfj6m/y68DHmt4YZj2xi7xm8Ufxm6vNzvHmmQr7fXYnYD8CTaVi0jvrpjuOPOzxd
-	 37fbtKUVJUHOjlGyO903Q0gMemt1G/1DmMLy55pYgrb+5R0E9OTFxlPqxDRKZzCm7GA==
+	t=1793825281;
+	b=gBT11e8BDj6vwFuL6bOBBjoGWKxtkUlz6q5A3LHu9T/vCJTISDuxS1BfpSe0JXMm84uT
+	 9Wemch0M3+TCLE/AOttuC6zJI6tvfjorF7S3Tipw2gdW6P1TgKNmw55Bd4ygimu/iPY3t
+	 bnO/TMVrRPTyInpv5uv2tPnkPvzus48c0JS0zQDriaP3rL/rRd1g9ueZpyhXXB6dP+Oga
+	 DaGSSPc/RUbwiXwc1ZNuMFexMM5PCD/RiXQZ40uEhlKf/TjHg3vBfC/cptjYqEng4dVbS
+	 eaTntr9tNydC5Eo1Hr9YjV/j+sTyvWYpnvBQTfipbN8pmE2Al606DK2gMdKdfFzJNyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825280;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825281;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=I0fgOhN7DOs5sphgS4nlyf+SCbWBYGAvkUGVDVkmjaU=;
-	b=kiQA7/XxY8mQpZiHHdyOizi0EIAYN3D4S7KqbGOxBcfUxNyzhhwt5Kalg5+RAprOP3Yz
-	 TpXZtjqDeAD590OR1/3nqEBq8RN+obRhh+Jj9jb49u8ubqlFYS+TQOPEEKSCns0VUccrN
-	 xB6fR3CrsCWPz6rpwHdpnoCO/JszY8el346hIWO14oOnlmaiTYWeXFRSiXVV3U2E4sXq2
-	 WVnLurjRekepFUfGjj8M/Zzld38q3Adv8gwc3gTMWtNwq5V6KwZBLEU6WIVZ/Hal3TMN4
-	 6yFhASXGOyS/Xp1SEPJzHfXNDwpY4KbehqqdpizTlHFoHOtMboYjLULILNotY99cgcA==
+	bh=buSYjS3GdLDfaKyeptPicEQ91X+3t3GOSNONVwKle3Y=;
+	b=N8kxgtp7IEO0F9hEiYl2ka//7mQNBnPPiOLKFhw0u69Ttc2x5E7G8F2ggvhtDU2jka+G
+	 gkIxsxJ/RjCPQLW+7L0t8JMa7n1+iGMbc7f+AljUgRCzwY1w1OdLnODBB0wVoYXZaksE7
+	 cjJvmD/Uniy/SDg3k2+J4BJgjyd6zh7sEotVB91M/Zkbm6++tzM1pWFvQqQHwdD04lY4J
+	 gkOIqlqXsr6vc9FkQOktNJULhpiPZ+qgdtdjHQY8a7EpvFgBtF7LbDiH1oPTZXmILzBRf
+	 961VYBrHOJztBwju1X5cMs6XbANn9N6tW/zg517N/Ie/pTzgydtj62RtXMKZaam7Crw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=toxicpanda.com;
 	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=YDJTrwwM;
-	arc=none smtp.remote-ip=209.85.219.44
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=n5JRV+li;
+	arc=none smtp.remote-ip=209.85.222.182
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6566097320
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 20:48:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E6566097320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E0A6097323
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 20:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62E0A6097323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=YDJTrwwM
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-91bb5795792so12669766d6.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 12:48:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=n5JRV+li
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93f20b304c0so109597085a.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 12:48:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793825279; x=1794430079; darn=vger.kernel.org;
+        d=toxicpanda.com; s=google; t=1793825280; x=1794430080; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=I0fgOhN7DOs5sphgS4nlyf+SCbWBYGAvkUGVDVkmjaU=;
-        b=YDJTrwwMNzWZhpqHWAwh0/U7X7bKPFN9bG8joZwVNyH1FdSqG5VMTsM3OrdkmH0u0/
-         OJOoveA9Rc8RO7KfhGJKsPLNtGR0lMlI04wtKEwt+lPRGzCBt32voi95Z9Gss/rP0lA4
-         17CWSeYeywWfXc+GR5xoNPOGQ5EkSel3SrIduDiQxUCMiZ+VN0csYxQ5eonSOhGgtbDZ
-         8QwsDoAssfMjFZlbHP1YFecSmiZtxG72sZanIvCauhd2bIODki7X0iDgkg2NVpRh34cd
-         AvRX2whPHKp5m097S7UTPFvVd+5Vi6FGtCY0zc5PwW9B0iPC088258L5zktzhjdi2eUO
-         ixJg==
+        bh=buSYjS3GdLDfaKyeptPicEQ91X+3t3GOSNONVwKle3Y=;
+        b=n5JRV+lili6umKLAoMjLsyydR3GILW0jpmcjF4t+2wG3MeNkqWudVHHnDvvNw2IxIY
+         4YoB2T3w1rO+Ul88DOh1quzTgya5Pgjb8Zmq6YEi+dZyBypWpvL6gUQuW/Y6hDbCZS+B
+         rzQH1JO+f1YEV5ZE9gLDE9zGacbUis90IUUODmhv3NKo88GOv0hmhGvSzEqCeDGdWKTE
+         eB0Xi1w7QK3T3HH9l0SDtZJzi3zAHV3KwRnudkzZKPuCqEA/9VM3rT0CO9k0kD9yBAby
+         47+T5RvOUYoOdXpzc5wHZ9vIc5llJgaD5VQ47+eXu0LP8RFj5BDDvReP40IxGdGFEMYt
+         r8fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793825279; x=1794430079;
+        d=1e100.net; s=20260707; t=1793825280; x=1794430080;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=I0fgOhN7DOs5sphgS4nlyf+SCbWBYGAvkUGVDVkmjaU=;
-        b=YNWNhb2+36CFj/8eIy4ZIUONHsNi0fXEPfwYCgoMHxFFFcE9nClGmkCJvcTkXPwUEE
-         Mr56xd++eFEw95L8kdvlQeOYQPfNgkTg58/wC8LemV1LZvlMd6b9mBq/RQrFzPA9cCOW
-         qP7OmH+VdlXIauMTeWrjYBXXnlzZMcpHegGrTj1dbuexNpSoWUJH2VvvebyjGF+g4bs/
-         7g5B76y5EpJCR4t032MxF4f/Or4jXpVZATlkREEDAxrCWwZ2aNjedmLJMlesziGO6Vdt
-         i/h6H0nExZFrwFEYdUhZkvs+jBz6M/OYMxiuwXdmv3aYQ9DMBhkJldFvIzl26inHR9Pq
-         F35w==
-X-Forwarded-Encrypted: i=1; AKwUvBxgsGd0L2RcczjhYe92EJxgxRtZRsbH3ZyLmZkMnRbuUsLR4HTMHWo7q3/nIyo3RUo9rW+5Xc0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+GElnGpdcYcNyV7MoeDkL5Lc5KZuwdL9Gz3pKwnrJ8/zLxIa26
-	XWYveyVsNDJ/CD/i4AqBm60TL+5/Y+YZMASEm6o0jLHVY3easF7ZQwmoOcRlZF++cO0=
-X-Gm-Gg: AYBFou0a27Lmszpu7TCj7hKP/a4fHgY4JvzN7wjOyrDmM4gG5yrOHIBoHppj6hLzzJP
-	BbuI33E4EVz9DJPn1v4cbjLwGXSaGGAPwTA3oNt0EF2yvh+iBVigS97YQdL8IZ6F6lc6ZqCJmnh
-	W8cAG7hwvHznlB2CUy8CXOGCvivTZp4FGeF/rvUSEp8stxeh/RfjadThRmYybhlPwN2FVihlJn2
-	uvGNJb0zXZCzKBkOnNnETXILO6weqwT5EpvE9l7GMIhGpg15MDC3Aeuo8MIUfgyCrKANNzVr9Oq
-	33zTdSOkOa8tZGfui5uohu7Uc7l6+OY7oJCIm1vsuHz+GtCxkWRQVqGhSiXsleK+s0ksm6KAk1L
-	DCHuAS6BwpOuKkBfLbx/ftNBq4GHZhFggGYCqpwsCOW0F7Dsj6P3PRlI0gxJaHVRvz27hmaykKl
-	/jTOE3DRfgn7NvbwJwRhEa7+0ZLNV86jgio5rGFjyPYSIDuOjTVLzFxVqL3JS7w1ARUB64B60Gs
-	c5/BkI3zSKgJBhA8Xi32snlYIJjR1u48PmYuU0MVoiUpzVvO8bwM9qrR1XK7Se0GrNENKlsqKNH
-	gq5shTpzL1XFWIt7cWrPkGeCps1RsbzWk5JzO0WEsZDd2A==
-X-Received: by 2002:a05:6214:3017:b0:914:1807:dc70 with SMTP id 6a1803df08f44-91ca4adcf1emr285668046d6.13.1793825279344;
-        Wed, 04 Nov 2026 12:47:59 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.255])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e962b4403sm2743706d6.20.2026.11.04.12.47.58
+        bh=buSYjS3GdLDfaKyeptPicEQ91X+3t3GOSNONVwKle3Y=;
+        b=F3QgN1IcQgyGR26SLc+SIuW8mduVHWLgLubhgbqtmzGyHOQPwSNDNPR1DZEUJUVe1L
+         dYlfiaqUxjEViYFLXB7tiatGFhD4KnqTsWDRY2Wgz4jaWVCk4xJl7vLpa2m+Yht9cXcy
+         8OrWSeBoz0GfYH7xdfoaw3jviWs0+mEmsKOLKuD+ihkTuFLOWcOIZq48uk4IImrUGP3g
+         4RJhz8wl+jr5ZjBXqsZCMubOtmwSVR9sqc1jPBpSN32byKcqL3juvl6VFcC/n/1oz2Wa
+         jSB5mhl+/nVNs5qy9bcIDKH+eKR+V5k1Yv573LADsjC8+Ko5B8tnXpniHP/HZ/1fq4el
+         BBxw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/Qi3IQiUMQ+jwv5Fz8DGZraGVTztOZbp1ck/mxAwmqb7n9svqLq63/sUjlvkpeILY+z+SLvI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9mrstZj94TKA0PMAsMq0x9X689mZayHAabmlqmAA0/+7yPSuDA
+	nVyonwbNXE1Nfm12WSpccGx9Hj/Hg+HlNuRVJhUHvpVF/AWo0JDzq9glw2Uc3jyP8J4=
+X-Gm-Gg: AYBFou2eQI7MJMlzYzBhkPZ9LIs3oxXRxE+bgpnqptnzwP2i63RGIakCKot2b3gtOl6
+	gxYvB1/xKoFHdVxKHa+x5j2T/+n6fFBov+hiT26Al9hxqW/cKw5Po9D64Y44ycrMM+XqXpXitW+
+	uMM94taE5JZRyVSaA6HcON2K9wLMwJ1lJmx5vDodTeESUBkjfz0xCtoCZhwCx2NQbaG7Jo42nIl
+	l6eMy0k/8944r1Rzt5m3ykHCwU87l9tP3dfW72l2AltfscVIymWprUCCzJaCjzIg70HUZx1/UZ+
+	ciYNdOX+qgQp3Nqwc2VJmtd4tMt9hz8PgFGhy3mAQecyKUjBy+TjdYD2XGpNDjEgJ0i2mdJ8MKk
+	2ZhAcAr6ciG7yR6QRpRYzRltWcooLWJeV7QrI6MagTh14JDqXe3nxe3nHWm5/fojQfTstX79/jl
+	c9AmwIXDJH4+4jJTUTSwBSiSsg60CzJRq/wFG4l3P9rnpJISA0n3rO53T0MpcCIBmYVH3X6FYnu
+	cETFMVG1YsUNAULy5kKKbULqXBn5cnZCdL0tvLF9gGlTzStKNglb60jkfiwVxOwyy/07ZV9AdQk
+	8wD46Q1KdaO/B2XvffHeLP/n3FLJmVEagE1NcGPCn+7LdQ==
+X-Received: by 2002:a05:620a:3181:b0:944:907:8f64 with SMTP id af79cd13be357-9442174703bmr2898691085a.67.1793825280424;
+        Wed, 04 Nov 2026 12:48:00 -0800 (PST)
+Received: from toxicpanda.com ([153.61.196.244])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e896f09e3sm18368646d6.25.2026.11.04.12.47.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 12:47:58 -0800 (PST)
+        Wed, 04 Nov 2026 12:47:59 -0800 (PST)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 04 Nov 2026 20:47:20 +0000
-Subject: [PATCH net-next v4 08/15] net: skbuff: make skb_try_coalesce()'s
- len unsigned
+Date: Wed, 04 Nov 2026 20:47:21 +0000
+Subject: [PATCH net-next v4 09/15] net: skbuff: reject data_len > len in
+ copy_and_csum_dev
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-b4-skbuff-bug-on-followups-v4-8-b7ffeb364f5d@toxicpanda.com>
+Message-Id: <20261104-b4-skbuff-bug-on-followups-v4-9-b7ffeb364f5d@toxicpanda.com>
 References: <20261104-b4-skbuff-bug-on-followups-v4-0-b7ffeb364f5d@toxicpanda.com>
 In-Reply-To: <20261104-b4-skbuff-bug-on-followups-v4-0-b7ffeb364f5d@toxicpanda.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -110,113 +110,60 @@ Cc: Juergen Gross <jgross@suse.com>,
  David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
  xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793825269; l=3910;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1793825269; l=1669;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=1Fxify4JpxLzLM1Ti2e+64TfuNshdGdOIM7pownAVrU=;
+ bh=3g9gWyq3LNSnz8GQIQ6Nd2kWG1X8iSKYPw0MOlaABeg=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QHxEsFLzJgR3nlUT1UdgoB00cssfz8v87Mti65uiGcMrjonP4uPcKrvqTbz8Wc8/j5y224vXNuI
- 0BaUMX9dJ8Aw=
+ QKwOCX5WX+o2z0CP94Bi0sfWoF2Js1lcQMZ0CTKZpHu/4B9z0ISKOPPwpZOGdR/7NPil22GR5Na
+ aLXWG/bs0rA4=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-skb_try_coalesce() keeps from->len, which is unsigned, in an int.  A
-corrupt from->len above INT_MAX turns negative, gets past the
-len <= skb_tailroom(to) check, and reaches skb_copy_bits() as a negative
-length.  skb_copy_bits() returns -EFAULT for most such skbs.  If
-skb_headlen(from) is still a small positive value, skb_copy_bits()
-clamps the head copy to the negative length and memcpy() takes that as
-2GB or more.
+skb_headlen() is len - data_len in unsigned arithmetic, so it underflows
+to about 4GB for an skb whose data_len is bigger than its len.
+skb_copy_and_csum_dev() compares the checksum start against
+skb_headlen(), so its checks don't catch such an skb:
 
-skb_put() used to run before the copy, and its overflow check caught
-most of these lengths, but not the ones that wrap skb->tail back below
-skb->end.  commit 279877d86c82 ("net: skbuff: don't BUG() when
-skb_copy_bits() fails in copy helpers") moved the copy ahead of
-skb_put(), which left only the tailroom check.
+ - Without CHECKSUM_PARTIAL the checksum start is skb_headlen() itself.
+   On 64-bit the 4GB value becomes the length of the linear copy.
+ - With CHECKSUM_PARTIAL any checksum start below len passes, whatever
+   the linear area really holds.
 
-Make len unsigned, like from->len, so that such an skb doesn't take the
-copy path.  It gets to the truesize sanity check instead, which sees
-that from->len is more than from->truesize can hold.  That check only
-warns, and only after the head of @from has been added to @to as a frag
-of that size.  Make the check refuse the coalesce, and move it ahead of
-the head steal so that @to isn't touched.  The check compares the int
-delta against len, so it now tests delta < 0 explicitly.
+The BUG_ON() that commit 56453199d28f ("net: skbuff: don't BUG() on a
+bad csum_start in skb_copy_and_csum_dev()") replaced compared against
+the same value, so this isn't new.  No path is known to build such an
+skb.
 
-An skb from a driver that under-reports truesize used to warn once and
-get coalesced.  It isn't coalesced any more.
+Check for data_len > len before anything uses skb_headlen(), and zero
+the frame.
 
-A test module that coalesces an skb with a page frag head and a len of
-0x80000010 gets false and an untouched @to.
-
-Found by the Sashiko AI review of the BUG_ON() series.
-
-Fixes: 279877d86c82 ("net: skbuff: don't BUG() when skb_copy_bits() fails in copy helpers")
-Fixes: bad43ca8325f ("net: introduce skb_try_coalesce()")
-Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
+Link: https://lore.kernel.org/all/179273112823.3134.12241973533522574538@kernel.org/
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- net/core/skbuff.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ net/core/skbuff.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index fd4689cea94b..2c246f563555 100644
+index 2c246f563555..b017c9f861fe 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -6480,7 +6480,8 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 		      bool *fragstolen, int *delta_truesize)
- {
- 	struct skb_shared_info *to_shinfo, *from_shinfo;
--	int i, delta, len = from->len;
-+	unsigned int len = from->len;
-+	int i, delta;
+@@ -4165,6 +4165,15 @@ void skb_copy_and_csum_dev(const struct sk_buff *skb, u8 *to)
+ 	__wsum csum;
+ 	long csstart;
  
- 	*fragstolen = false;
- 
-@@ -6525,9 +6526,6 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 		return false;
- 
- 	if (skb_headlen(from) != 0) {
--		struct page *page;
--		unsigned int offset;
--
- 		if (to_shinfo->nr_frags +
- 		    from_shinfo->nr_frags >= MAX_SKB_FRAGS)
- 			return false;
-@@ -6536,13 +6534,6 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 			return false;
- 
- 		delta = from->truesize - SKB_DATA_ALIGN(sizeof(struct sk_buff));
--
--		page = virt_to_head_page(from->head);
--		offset = from->data - (unsigned char *)page_address(page);
--
--		skb_fill_page_desc(to, to_shinfo->nr_frags,
--				   page, offset, skb_headlen(from));
--		*fragstolen = true;
- 	} else {
- 		if (to_shinfo->nr_frags +
- 		    from_shinfo->nr_frags > MAX_SKB_FRAGS)
-@@ -6551,7 +6542,19 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- 		delta = from->truesize - SKB_TRUESIZE(skb_end_offset(from));
- 	}
- 
--	WARN_ON_ONCE(delta < len);
-+	/* @from claims more data than it has memory for.  Leave @to alone. */
-+	if (WARN_ON_ONCE(delta < 0 || delta < len))
-+		return false;
-+
-+	if (skb_headlen(from) != 0) {
-+		struct page *page = virt_to_head_page(from->head);
-+		unsigned int offset;
-+
-+		offset = from->data - (unsigned char *)page_address(page);
-+		skb_fill_page_desc(to, to_shinfo->nr_frags,
-+				   page, offset, skb_headlen(from));
-+		*fragstolen = true;
++	/* skb_headlen() underflows if data_len is bigger than len, and then
++	 * the checks below don't bound the copy from the linear area.
++	 */
++	if (unlikely(skb->data_len > skb->len)) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		memset(to, 0, skb->len);
++		return;
 +	}
- 
- 	memcpy(to_shinfo->frags + to_shinfo->nr_frags,
- 	       from_shinfo->frags,
++
+ 	if (skb->ip_summed == CHECKSUM_PARTIAL)
+ 		csstart = skb_checksum_start_offset(skb);
+ 	else
 
 -- 
 2.55.0
