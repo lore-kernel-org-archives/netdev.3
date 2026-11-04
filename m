@@ -1,58 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793793075;
-	b=V5Tm0Yq699vYWPlxo7dvEcbORx2gFAAKv4j28JJxWehFJ5412b5Z8vRVjRex/JkNF9iJ
-	 Pxzcq96rNex+d14JvCn4iH8XomS5JU4H2oq6KLKtM07RkPpSNL0b/H/hwMFLj6xWap9oc
-	 LDrfPwPj+Nn93fB8uqmXgSV734QEAQuXNCehuJGL5j9nWejlpmDJ3kmYKar5zWixXY9a4
-	 YqoDBiAzpt8bXhJKY3wwxNtODhSItNrzsarQg9K2DGbTGTIi1KRTJADlf8jJZUevNuHRh
-	 1zvwVnr69GGmurPIUzjenVxNgwc6b6ee/+mFuGDXiDZYkf4/Q+yVyeYpoaWfG7Ig4yw==
+	t=1793793331;
+	b=K4rIGvkYhqi2cEA/TIayJVU9Sq5+1IezA2N/vNO2BxNg51pX6OyY0serlx2H/QCNYd15
+	 8r7zsKY0nzfHvBEEeBm+yOu9pRxY1KO0fnRfe+axslYIssZZ39FSUH5xUmVV0Mt6KVTyo
+	 mKyvWPaETMXXJ2CptNLVkW2d+hExJr5f5HIeqs+Fta8ojaGb8XCb8PLKvZWSU/neo2jJ2
+	 U3l5mA5/557xY0UASZolDoV2Zsc7s+RWnme9FTYC9h4VRdHs3H+dr2nSmzwf2y0YcR7Mv
+	 3SQeDEPXwZB8KxbslAWlXobzZpqofOJQq70fGSOcSiX9AL+s0OygGPvephCMwBbVDTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793793075;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=g11exoxlvmrxitGNcbcJpKjoh89AXFeg8RsYV6aUIHI=;
-	b=xqXVoELWkc67jOzJ7hrWI6dQK2Klz8tIw0S29t6g7yWpxoUqRk4cvU9VEUXTpRmCb5z8
-	 wolrvmhO4e1YC+SYvRS2ztXM+sp9vEp0aQZH5PRw7UbSoErDZRApVE2BiC9oyjxBS5+fW
-	 xV5ztDWgC15swoK4xQKi8+yQYHHRZ44kvKCglT7DMIqmawG8zPQn2x2Kc1yDdglvkkOi8
-	 7dGYcHRbpJ3jZeZ/Jjy5j7HZusS3mDPvEWCErLgQlEKaU74u7DT/eycAik1zBndnN3UyK
-	 4VItekBpq640safzWv+2oOoXUWvI02KqCvv5eVamxsZHhSxbIeOZaiI47PU6FIcMn4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793793331;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+	b=wuWnogZEfVV6R8wd6c+NKnUNoawqXvmC+0UcI/HsHCyEPEhpnCR+8POV88EdQRQKw4zi
+	 UySDTe63yIpqMc4njXiK8LukSlZoNJ14oOc0CrPY9+Avq4CUASZrSqD+M0Hxhw2qoZisf
+	 l1lnN4eMlttPNU0fhWNkI/141rLw6U2K2yRYiPivgjx15hlgJZhkhNIj+iixLNhwCCdCO
+	 i49WlhLQ7PjA8S1IlluXn96HHX31GbcyKKIQWcSK9JPOpbx1si45Twc/zXkh2GfY4zi8/
+	 gPe2nQpNZhF2c8qYJQdyDeTNc+UBjN7rXIcMh+XfweLdv0G2M50p8l9qFIS+8cDiDmQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=TV2WdrL4;
-	arc=none smtp.remote-ip=113.46.200.223
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TVaEdkDf;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OB90n+T6;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88213606A31B;
-	Wed,  4 Nov 2026 11:51:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88213606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF995606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:55:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF995606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=TV2WdrL4
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=g11exoxlvmrxitGNcbcJpKjoh89AXFeg8RsYV6aUIHI=;
-	b=TV2WdrL4S17kV8RPOgnULouHNk3W0Dzy8ycqX7tnsKMk6uH7lgx2WLIpz0RgS777SnIxSQKAP
-	89s63YlDDlU6hUyt3N55M9q8R1Q3xQO5NUrDtjGVgvKRgbYAx/SWNBIHRVnNgeywoZ31JrSsJXG
-	N9h5KeHpfl7WHeaqfFpssTs=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4jKP0F1nDFzmV7W;
-	Wed,  4 Nov 2026 19:50:53 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0AB6040565;
-	Wed,  4 Nov 2026 19:51:04 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 4 Nov 2026 19:51:03 +0800
-Message-ID: <87245a0b-2d33-49c6-a21b-9a316c50bef7@huawei.com>
-Date: Wed, 4 Nov 2026 19:51:02 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TVaEdkDf;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OB90n+T6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793793328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+	b=TVaEdkDfxu+ttcd49UN3hpPiddciRLBGKnCDr4WmMnvOSugZToqS2KUzwAa04Bg4Y4QyiH
+	0lOlD0LTy0F+jnjte0DVJSTswhGbPlLIMIGcGRwHFKzzjTYWTBZlTGQObCUt6KmXfluLON
+	NSE4d45xge7HYiNrXWRjVOz2gzypc1M=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-601-aEl3i8zRNzWvwMS172-NZA-1; Wed, 04 Nov 2026 06:55:27 -0500
+X-MC-Unique: aEl3i8zRNzWvwMS172-NZA-1
+X-Mimecast-MFC-AGG-ID: aEl3i8zRNzWvwMS172-NZA_1793793326
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a2065a2ef9so6732925e9.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 03:55:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793793326; x=1794398126; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+        b=OB90n+T6u+KhZNTtac+ncEBveC4daHUIoBoha2vSI4QkWS+WGVy9IMvcMaJ4JMHjI+
+         YqAKfwIMs0Vg+0WR2zTiS/vl73B0hZ/Yh3JuJxBwwJWerUE9RQfYQUj+h+VSdyQw9lMJ
+         Q6ObvVZjyp2vU6UX7emvwNjEPiIh2UKVL0OPLQPZLOqSKi5dgO9b24ZYT1Q49yx+SNIH
+         VaUOaxqz8Och2oLTf3UIJE4x9rmje3Qxtu12sRPesPjJjLMd5/0rMVmTM3kSZtYV1Xpc
+         xLdAJqtsqvMUd5SXKDQGD1II6/vZprJjGateT3zlX+pLHIl8pqEQh5pKie60eB/FAJ5r
+         c6bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793793326; x=1794398126;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gOOrV9m6B3oUuMrsbApNieFqj9oSqnExm9VloXX8/Mw=;
+        b=P6ZrpL9Nslt0sZ17QlyFQBwWGcyBg2IusFWKtcQ78p8ps903JiiMf8kTaLSGV2RWva
+         8y9+uNJOqlw66CNjxqoBCWMHHimAGHcO+bI/xqNGyFdJvVWwecoCrtCD8HGQnGkVKY3Y
+         sN+DEkYxj/l0qnpXvT59/ZDMT2A6XZXoBRnfiEG3uJHadR4ojb/gr7PHZMclPk+RGp0+
+         5fQ7gN7OT9lm2CyHD+7oVBpsjhqJk569Ztu9A6x7F+kdgAYCXSrGzimIYoTQfaT/XkRE
+         L3x5s6QPdza9AkAzHK2AMZb05s/jvjggaBagmdVHI0tv9aotDlPEnWssvoCF2Zrv7N6H
+         /L+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwt8CwYHGTIyx9ErNaaCSm2vO1AujMJGwjzvQ4HzRh4kWGuqLytJ5oNmsp9Iq2N/1m15eDNFog=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9RzvrTX2/mweJHvH9f6i/HPBdbKp3slV2UCa1qgfMjfC0Q4uHg
+	lHAhL6AeC299HaKTSxNksQer7/Wt9xQdgjf7CuYGna4n0QtcmALjF+9tdvSHqP2pqPIOUfj8HhF
+	yX3y3GNYTepXk0XJfNn6x2rZwK7Qoy26XXwtT0+CmMPXs9IIZ48O+cV3yIA==
+X-Gm-Gg: AYBFou00oyJbwBth2hksRUeeb95KWSEb1bde8fWTXhGZbCcYCfaCGwmVl7wMy2pOmpH
+	r+iPCaibZeQKXP+/RAGFUWSk8+SMH7bDh6sGuIG8Z0gSJ2EZLN1zWp1aQrVyu+347sjGl0TSSyM
+	OUdtMESXglof6btXB01glODN7LWmezfjZLfcaz55cJcoWRPXlwwmPXLC0PhQwJ4sJkJeTI4kbjl
+	+jSMLbn1Os0xjn2TyLYGsMMh/Bzwz2WGLVYhets9MTINO/5v9qHsATmY3Jljz+ortAmMLK5d9gc
+	niAR/swY1BVVS2Zmzam2R79h1Xsq55rBsMe3zvIULyQJkaxQPypYkicvQyLvVv4euHlOVSh/faM
+	EhP9BrIzI2/bT2Z75VUHLyEekXrihOqucDi23VX4VxQ==
+X-Received: by 2002:a05:600c:1d28:b0:4a2:1612:637a with SMTP id 5b1f17b1804b1-4ac1793fb6bmr421627785e9.16.1793793326168;
+        Wed, 04 Nov 2026 03:55:26 -0800 (PST)
+X-Received: by 2002:a05:600c:1d28:b0:4a2:1612:637a with SMTP id 5b1f17b1804b1-4ac1793fb6bmr421627415e9.16.1793793325683;
+        Wed, 04 Nov 2026 03:55:25 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b4533873f0sm45067805e9.4.2026.11.04.03.55.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 03:55:24 -0800 (PST)
+Date: Wed, 4 Nov 2026 06:55:22 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] vhost/vsock: size receive SKBs from declared
+ payload
+Message-ID: <20261104065405-mutt-send-email-mst@kernel.org>
+References: <20261004235101.1464007-1-4ncienth@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,80 +123,129 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@kernel.org>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<shenjian15@huawei.com>, <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
-	<yangshuaisong@h-partners.com>, <ningwei15@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 net 2/4] net: hns3: fix page_pool leak in
- hns3_alloc_ring_memory error path
-To: <netdev-bot+sashiko@kernel.org>
-References: <20261030095633.377289-3-shaojijie@huawei.com>
- <179370110712.488856.17112299707405359724@kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <179370110712.488856.17112299707405359724@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261004235101.1464007-1-4ncienth@gmail.com>
+
+On Mon, Oct 05, 2026 at 08:51:01AM +0900, Daehyeon Ko wrote:
+> vhost_vsock_alloc_skb() sizes the skb from iov_length(), the total guest
+> descriptor length.  virtio_transport_inc_rx_pkt() instead adds hdr->len to
+> rx_bytes and buf_used, and budgets each queued skb as SKB_TRUESIZE(0).  The
+> guest controls the descriptor length and hdr->len independently.
+> 
+> A guest can therefore provide a 64 KiB descriptor while declaring a zero
+> payload.  The descriptor-sized skb remains queued, rx_bytes and buf_used
+> remain unchanged, and only the fixed queue-entry budget limits retention.
+> This is not a lifetime leak: the skb is freed when dequeued or at socket
+> teardown.  Repeating this across connections can nevertheless exhaust host
+> memory.  On Linux v7.2, 455 such descriptors retained 30,255,680 bytes for
+> a 262,144-byte receive buffer; a full-payload control retained 265,984
+> bytes.
+> 
+> Vhost previously read hdr->len and allocated pkt->buf from that value.  The
+> conversion from virtio_vsock_pkt to sk_buff instead allocated receive skbs
+> from the descriptor length, introducing the allocation-accounting mismatch.
+> 
+> Copy the header into a stack object and validate hdr->len before allocating
+> the skb.  Size the allocation as sizeof(hdr) + payload_len so descriptor
+> capacity no longer determines queued memory.  Check payload_len against
+> len - sizeof(hdr) to avoid addition overflow on 32-bit hosts.
+> 
+> Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 
 
-on 2026/11/3 18:18, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] The commit message says the new cleanup in
->    hns3_alloc_ring_memory()…
->
-> --
->
-> net: hns3: fix page_pool leak in hns3_alloc_ring_memory error path
->
-> When hns3_alloc_ring_buffers() fails for an RX ring, the out_with_desc
-> error path in hns3_alloc_ring_memory() frees the descriptor ring. It does
-> not destroy the page_pool that hns3_alloc_page_pool() just created. This
-> patch adds a guarded page_pool_destroy() to that error path.
->
->> Add page_pool_destroy() to the out_with_desc error path, guarded by
->> a NULL check, mirroring the cleanup done in hns3_free_ring_memory().
-> [Severity: Low]
-> This isn't a bug, but is hns3_free_ring_memory() the right name here? I
-> can't find a function with that name under
-> drivers/net/ethernet/hisilicon/hns3/.
->
-> The only other RX page_pool_destroy() is in hns3_fini_ring(). That function
-> calls hns3_free_desc() first and destroys the pool last:
->
-> drivers/net/ethernet/hisilicon/hns3/hns3_enet.c:hns3_fini_ring() {
-> 	hns3_free_desc(ring);
-> 	devm_kfree(ring_to_dev(ring), ring->desc_cb);
->      ...
-> 	if (!HNAE3_IS_TX_RING(ring) && ring->page_pool) {
-> 		page_pool_destroy(ring->page_pool);
-> 		ring->page_pool = NULL;
-> 	}
-> }
->
-> The new out_with_desc path does it in the opposite order. It destroys the
-> pool and sets ring->page_pool to NULL, then calls hns3_free_desc().
->
-> That order looks harmless today. By the time hns3_alloc_ring_buffers()
-> returns an error, it has already detached every buffer it attached. Each
-> desc_cb[i].dma is zero, so hns3_free_buffer_detach() returns early and
-> never hands a page back to the NULL pool.
->
-> Could the commit message name hns3_fini_ring() instead? It could also drop
-> the word "mirroring", since the order differs.
+Weird that this wasn't applied in net yet.
 
-Agreed, that function does not exist. Will rename to
-hns3_fini_ring() and drop "mirroring" in v4, since the
-destroy order differs (pool-then-desc here vs desc-then-pool
-in hns3_fini_ring()). The opposite order is safe in this
-error path because hns3_alloc_ring_buffers() has already
-detached every buffer.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
+let me know if you want me to apply this.
+
+> ---
+> Changes in v3:
+> - clarify that queued skb memory is under-accounted rather than leaked, and
+>   explain why a zero payload is the strongest case;
+> - remove v1-to-v2 implementation rationale from the permanent changelog;
+> - correct the Fixes tag from ab9aa2f3afc2 to 71dc9ec9ac7d; and
+> - make no code changes.
+> 
+> v2: https://lore.kernel.org/netdev/20261004073419.4039011-1-4ncienth@gmail.com/
+> 
+> The issue was identified during an LLM-assisted source audit and confirmed
+> with a focused in-kernel probe on Linux v7.2.  The code diff is
+> byte-identical to v2, so its existing build and runtime results remain
+> applicable.
+> 
+>  drivers/vhost/vsock.c | 34 ++++++++++++++++------------------
+>  1 file changed, 16 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index abed1fbcf66cc5..35f75e23c7497e 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -364,7 +364,7 @@ static struct sk_buff *
+>  vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>  		      unsigned int out, unsigned int in)
+>  {
+> -	struct virtio_vsock_hdr *hdr;
+> +	struct virtio_vsock_hdr hdr;
+>  	struct iov_iter iov_iter;
+>  	struct sk_buff *skb;
+>  	size_t payload_len;
+> @@ -382,34 +382,32 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+>  	    len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
+>  		return NULL;
+>  
+> -	/* len contains both payload and hdr */
+> -	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+> -	if (!skb)
+> -		return NULL;
+> -
+>  	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
+>  
+> -	hdr = virtio_vsock_hdr(skb);
+> -	nbytes = copy_from_iter(hdr, sizeof(*hdr), &iov_iter);
+> -	if (nbytes != sizeof(*hdr)) {
+> +	nbytes = copy_from_iter(&hdr, sizeof(hdr), &iov_iter);
+> +	if (nbytes != sizeof(hdr)) {
+>  		vq_err(vq, "Expected %zu bytes for pkt->hdr, got %zu bytes\n",
+> -		       sizeof(*hdr), nbytes);
+> -		kfree_skb(skb);
+> +		       sizeof(hdr), nbytes);
+>  		return NULL;
+>  	}
+>  
+> -	payload_len = le32_to_cpu(hdr->len);
+> +	payload_len = le32_to_cpu(hdr.len);
+> +
+> +	/* The pkt is too big or the length in the header is invalid */
+> +	if (payload_len > len - sizeof(hdr))
+> +		return NULL;
+> +
+> +	/* Allocate only for the payload declared in the header. */
+> +	skb = virtio_vsock_alloc_skb(payload_len + sizeof(hdr), GFP_KERNEL);
+> +	if (!skb)
+> +		return NULL;
+> +
+> +	memcpy(virtio_vsock_hdr(skb), &hdr, sizeof(hdr));
+>  
+>  	/* No payload */
+>  	if (!payload_len)
+>  		return skb;
+>  
+> -	/* The pkt is too big or the length in the header is invalid */
+> -	if (payload_len + sizeof(*hdr) > len) {
+> -		kfree_skb(skb);
+> -		return NULL;
+> -	}
+> -
+>  	virtio_vsock_skb_put(skb, payload_len);
+>  
+>  	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
+> 
+> base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+> -- 
+> 2.55.0
 
