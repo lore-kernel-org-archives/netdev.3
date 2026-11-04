@@ -1,100 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793789719;
-	b=fTubaMIJtiDTeAgdaLaCBZQsFxpskohJ0e9ei2iPNnkTDGAO7KFWYgXVr/hxazrK7bng
-	 z/2m95k0gX9x4BxYrukStD86DvqpfarmAn/d+xGwjmryYTlkIm8TNs8a1fndFWGIxfNQy
-	 8/XPKy8XquhqSASyKyFMjNzkFaLorj3Rte7gbWP4wsGx58gxw4X2qvQ9sFuCmpWEF4LXI
-	 NwPAgM39jeWFLbmRFTJnPjwMENQttxutV9CxPxndVLll5unQy9Y+HWkqTizp88fuqkVDr
-	 anym1xa9hF3rw95MY1WEol7MSjO7l5q15YjoJQ6tC7lQJARXJEm2RetXiE3BCMkSKFw==
+	t=1793789752;
+	b=Yo0NDjdNMgEW3apqt9URwxfBLWLUfdiX5R+RltML808HFMvz22BwO/Ydu1TY93qbpDYR
+	 AyI44Bxjy/OmN/PG5L+ajAWTaQQfeXipeSi+LQxMW7A3Nz5RworFPsBTdjSHsv88lIuY6
+	 xLewlS6Q/jUbjwQrd1NgvR+Bgbynx2JVleJpDlIn+mzxes9k0S2OwDDcHnDuLGBXy5GrV
+	 NfpRIxmuuu2EcBgA3DrP7oUY8TMM+2qL5qSEZRcRX5GNk6+u/r3DaSlHCD9tTtz2L1Ve9
+	 n1XAe8o0edNa5lGaQ7v53Ir8pDg0xgiKrLZoKxEwocqifPCqg3J4Qr+693i92oV5L8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793789719;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=svQ3K123JPnzXeQWDnbEp5nT6eUSmJWo2XdSJUKEnlw=;
-	b=SCCnSbzZij+ZImRK+aghogVVx+35HUg6kqfB1g1T7HVzzgLv3/IDH8shGYzjN5Xfb01Q
-	 5DMGPtuhbVu8aZuGqYye0XsSIW0CwR02dJz37iClm6fSV4MauL5aOBVrJoMSu8aWG+YmX
-	 cLopGQJr26EqcsNZDkgOHgsUYYE9BRJPkzW05x59utisGB2PhDtwBcg1otqZlYFW3Pc+o
-	 ieWn7VGcSgubc6ZMTIyB8OL4J8RQRlOnvHl0CrjjiSM77Gs0VYNcbKD3+44Va1eFnWxfE
-	 rp3QQsiH7VUARc6ptvHYminbnLUt1CxL31dd2xRtIdiE18LmmImQAlb443IgTjd+dzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793789752;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ZmxlQbjY666CB2DpfDGRCp8x+UD5CCdq+P/PXnNUKNg=;
+	b=VKOFL0w7BCwmwwLcx0Z0sMEs64Srs74Np1mfpR5hAcODYx+1bQQ06EQqjU513Wv3i6g8
+	 HL7KuNOYVC3NBAMs/p4oMjxJum0E3hnpPNyG83OlB43kTzWclwgi4CwGuUfHChJ5OfyHk
+	 O4f4o92rusVd0BiK+rakpiPCT66JDWIQ5/TpgJTxQIaJJhcwveYNDHYWekBVOr/c+8IfH
+	 frWhh8xsnRCtDNnocjUb6TL7GFW9Po9uraw9NT5qvZMDVr0J+rSuLAEeJZHjTQG6O8wj2
+	 cPFw5iYpNQ/52OlL0wgqjQmiOO8eBQLlotOOU2ULSVykgsovZVNjgIKOkiMj6w6ihlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mylsWZY6;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4tv6X1+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6BA606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 10:55:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D6BA606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA17606A31B;
+	Wed,  4 Nov 2026 10:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mylsWZY6
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so478697a91.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 02:55:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793789718; x=1794394518; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=svQ3K123JPnzXeQWDnbEp5nT6eUSmJWo2XdSJUKEnlw=;
-        b=mylsWZY6HwqPDKZlYnXLspPDOPGGWu1z3Ud+RdWElpdkudKz2bL7MGxoS1n9hHIvGi
-         KgSSkDVJSOZlBlBEtDbwKSb+7MmPGIQzYLrjns7Ernl27whywuP1t41+mfEe11ierZxB
-         vrQB7TSUZo+RjdfVwxyQiX+XerCfygih6K6mMLVaAP41RT+qnbaS9zolCTx+IVyl9De6
-         XUuYCLXHQEhIYGTb5Lv6A1Wxy/fRH7ueKDqF1s1YuCrMBnarXExMMSz6WfcxMa7xWKue
-         ffsYIZRQjk92yzjQRdPUzLadMm5KtgoiFHNyXH3f64E7fW4jWP962HFk81VdFJJZXYOl
-         NapA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793789718; x=1794394518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=svQ3K123JPnzXeQWDnbEp5nT6eUSmJWo2XdSJUKEnlw=;
-        b=zgf/39aelxainDgvT0bunYVHwS6/BEptNwDtEshIfdKbWACnAwLr9wj3mdgfmHVa4W
-         JhDIGq58kdCDaT64XrKNDWlmvoNv0YWNjvkpj/7CXKh477q8SaMu4z/JNo3Uzz+TcI+l
-         2KcukAFw4Fd2Mn3SZ+i+ejDZgyWqHiyFViFgbcfjuWUdCQVE1Z0IKvdkgD71QxRhObig
-         IUrsaP8TMgSln7Pu4IUped4Qqj9uodt+8b8eVnsnT1txrwNFYD8mOZSu36IIJBjKAgT6
-         zsTQ579GyeCNuQLvZK04u56Kat+aGA0edSiuPNFCOhH9HU0lY0EIRostb1xgGrbOip3c
-         /DQQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy2933KKn7UUw2vSKzSUhZUYXfh3Ve1cqnAiAQVU0A/IchNQKFeSu8/rkYMuafq/Ofwqly7654=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8j2j177c8hc+J76s/tLuV9i/17U8m62tzQBbSrRq675YMoZ3Hi
-	ojQI6bbMFG43L+hnIksVF5RtOfs8QrC+dbQJxEbdIzZ9m7yIrpBEidq8
-X-Gm-Gg: AYBFou1O+nWbanFNKigOu4bHMEHr77H4bh+JpDdpWmcqAl58wUSWJPvCoX3idnCWXle
-	0ayQ8f9Rxm9H40Qy9b4ve4X1o/qBbhSP/1j297VtmXVW2NChCbj19E79awzzzi7zkAZxlTYPzde
-	dj6/UT8nIEBulGfu7Zre+5XMKjp5FlauXm5CrchjrivO3ZWLyDOngyolGHypuhraccAHrEOy3uq
-	0mH+ikxeYlE+S2xWvr8xcnJEQq3MBEHai5NZWWNnLUJrkt3C6Ds9Fw/SRQSRQz9ZYSCZROpr21q
-	LAhEdPm2Us50wgU66izlP0x23CgYzQFKQdDREGOnPN1IW0elwcZuinM+11feXXi3qqqetbbBPfo
-	XlgUdC8LhjlsOho1eGZXtMi+khZXseJkhBMkogvvwH8/fAu6TvIH2oXqu6E+dpXcDM3GgJtsUGV
-	hCnpKyVENFukVT+jOPP4xrXNx/GREOSyz/yRk6fuzTnLTqj6q74b6PlGhrVVI4lkJHaIjRADHsJ
-	X03DIKa1Sxn1HYw8+FQfqnfpV4HWuWOrXeeiTSe483OdruVlFffHazhRLUPwI3qhPjp4XvcNoj5
-	qH8+AdchIEwiMbYMsOLzpxS4v+/f1ucB0tP/Y++7BaRcGqvJCy//IbUH1fN4XWmEc6H0Rehxgaf
-	/XrTVG7hbMV8US6u0Y9AfMCQQq73OoEWnFA==
-X-Received: by 2002:a17:90b:4cd2:b0:3a7:3474:b1ee with SMTP id 98e67ed59e1d1-3ae897f8a0dmr14154983a91.60.1793789718149;
-        Wed, 04 Nov 2026 02:55:18 -0800 (PST)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b094d572e7sm1739595a91.1.2026.11.04.02.55.15
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 04 Nov 2026 02:55:17 -0800 (PST)
-From: Jun Yang <juny24602@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] sctp: preserve stream scheduler across outq teardown
-Date: Wed,  4 Nov 2026 18:55:05 +0800
-Message-ID: <20261104105507.62743-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4tv6X1+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C51F000C1;
+	Wed,  4 Nov 2026 10:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793789752;
+	bh=ZmxlQbjY666CB2DpfDGRCp8x+UD5CCdq+P/PXnNUKNg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N4tv6X1+fuRnzcFWc7kFqvNw1R/k3c5ZOX6VF/gvjliL25lWCLvp1ly3mk/hsSILr
+	 5jbE824NhPu4esLW+cDfVZbZM9is5IPDBMpC+nkPe4VYYdavglPO44FG8HkQUtRQ8m
+	 mWe+B6lpTfbuC4ssp6a3RS8x36Gb0eXjGg21MGQCaLlg1i4VQQar9BgvkU1LwgX0DN
+	 cuNECgFq5NQfSvh/e8689Fr0/X0SK6tVY5BSlw2M0+0et4TI9pAg3WsBuabyOSmK74
+	 g2JL0gM4lqnx+sPUTyiynnb7Qxxm08kbxCd/L/hQfFjLVQoRB9AQHPjOoM/QNKp1Gw
+	 W8OnbjgUPT8GA==
+Date: Wed, 4 Nov 2026 11:55:48 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Biao Huang <biao.huang@mediatek.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Eric Dumazet <edumazet@kernel.org>, kernel@collabora.com, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH net-next v4 02/10] dt-bindings: net: mediatek-dwmac:
+ deprecate rx/tx delay vendor properties
+Message-ID: <20261104-glistening-woodoo-narwhal-ebb587@quoll>
+References: <20261103-dwmac-mediatek-mt8189-v4-0-c86c14fc50f4@collabora.com>
+ <20261103-dwmac-mediatek-mt8189-v4-2-c86c14fc50f4@collabora.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,50 +67,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261103-dwmac-mediatek-mt8189-v4-2-c86c14fc50f4@collabora.com>
 
-From: Jun Yang <junvyyang@tencent.com>
+On Tue, Nov 03, 2026 at 11:12:07AM +0100, Louis-Alexis Eyraud wrote:
+> The mediatek-dwmac bindings provides the 'mediatek,rx-delay-ps' and
+> 'mediatek,tx-delay-ps' vendor properties for describing the internal
+> RX and TX clock delays.
+> 
+> The generic Ethernet controller bindings also provides standard
+> properties to describe the same kind of property with the same unit
+> (picoseconds)
+> 
+> So, ddd deprecated flag to these vendor properties and update their
 
-sctp_outq_teardown() reinitializes a live outqueue with sctp_outq_init(),
-which clears q->sched before calling sctp_sched_set_sched(). This makes
-sctp_sched_set_sched() skip sctp_sched_free_sched(), although the
-association's streams still retain their scheduler-private state. If the
-socket's default scheduler differs from the installed one, the new
-scheduler interprets that stale state through the shared union in
-struct sctp_stream_out_ext.
+typo add/ddd, but entire three paragraphs can be simpler:
 
-Preserve q->sched across the reset so sctp_sched_set_sched() can free the
-old scheduler's per-stream state and clear the union before installing
-a different scheduler.
+"Deprecate foo bar, because they duplicate standard properties from
+generic Ethernet controller bindings". This has benefits, because you
+start everything with clear action what you are doing here shortly
+followed by "why".
 
-Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
+With commit msg fixed:
 
- net/sctp/outqueue.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
-index e92fb9da4647..6cb4b4339d8b 100644
---- a/net/sctp/outqueue.c
-+++ b/net/sctp/outqueue.c
-@@ -190,9 +190,13 @@ static inline int sctp_cacc_skip(struct sctp_transport *primary,
-  */
- void sctp_outq_init(struct sctp_association *asoc, struct sctp_outq *q)
- {
-+	const struct sctp_sched_ops *sched = q->sched;
-+
- 	memset(q, 0, sizeof(struct sctp_outq));
- 
- 	q->asoc = asoc;
-+	/* Retain the scheduler to allow freeing its per-stream state. */
-+	q->sched = sched;
- 	INIT_LIST_HEAD(&q->out_chunk_list);
- 	INIT_LIST_HEAD(&q->control_chunk_list);
- 	INIT_LIST_HEAD(&q->retransmit);
--- 
-2.54.0 (Apple Git-157)
+Best regards,
+Krzysztof
 
