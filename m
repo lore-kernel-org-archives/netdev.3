@@ -1,75 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793828129;
-	b=Yy4WELS9eilyrKWxvq5uPkBCn724tFWADCaQY3q+OHgBl5TDguh6PZSbU+Uxn0e3gmtR
-	 6SVXlyD5X3fxHuw2DBa83NVdITP5TGpOz6Cft7qZPkAHR9+2RpLXCZjeVTExEIiCskRyK
-	 sZgyUxttKbgBUfrSN0VboIcFsbKWXFFPCfTRQXqtVakCHdGa8r+41Hno5vb3l9e5IbEPU
-	 7Ng2+a3fFKaqjorrP1MwFMpeQbd5jDhSEUzuFqqEAM07Eos5RZ09zbWXnpM45/WvLAlV7
-	 D4f3ZeU0FiyS62Hr3jRxHyZnc+i3tu/u9fLIp6MIViLNzf4r661YUiwxcll8g8LuYfg==
+	t=1793828780;
+	b=hh/mBAv5AGhSbOSbp5uUb9zExyDpQ1GMsiao4+zjYFO+7U+WK4ZP8jdfBbkkFgEtVVgs
+	 JVoe/tsd6nkrtOHfCQb2SAJnfHW5ceI1mx/Gp2lpnuLjehTjluKDNkc/qUZS4Uk03KhnX
+	 4E6URhg3wdZr0reAWIbY2XgY/nuuNgTKibMv3+nuceRrMGGKCAJSwPtB2sM6A+VWnAqxK
+	 XhOUhKwN/RcfxR/wZWn/0EeUQvrIg/I7lpWdWgN3j9J4T5GcfEwWAFCF819L6I88Atp0m
+	 wDEWAUXe4uSbmwU+Xr5VfCRT7Zq2O3QObpf8H/lWtt+8GylVz7yjMokrIhqnyRpY2VA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793828129;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=UZCPbOxuHxVfcCpmEyp2FuF94MWKe2jTtQcOlBA8NP8=;
-	b=oZ5kAyE4Xg0/1d5x1pQ0XaWRMEDwCzDZzoaFYe2A3goCoCZ6FocFbHd6cZdAoOFRZACX
-	 +ImHqDwgY3p7kYyFQT/e9J9+ZD2zUBD51cp636coZ2afEexGLZoG8jdoy9Rf52B4n7fKn
-	 JgxWdANwmgOnvbmslVnc/ScxJtKyyDWRLDvKfbGNQxKG08HtM23h/51zdR0qpz1WaihVF
-	 u/QNCyIgkIrwJMOcApkGflBnJkHbUL1hPGC8gmTrvhMrvQY4BMctauPSgr6j1OYE4WJsN
-	 vuZC/y3pfMbYf/VpAwQbZJwdEByA3utL6AipmX73b4fhRg3VPUnJxPXRe76K9uxXaRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793828780;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Ec5yxUyaEP25Q/oUGA4H4MV4YE5ouxLMYYhMfOZGe1Q=;
+	b=hC+2HEyWzZ2/Dp7Cnz5/D0vronJrWmb8cnAAFfCjZ6VjZk3XbUJbX+VkVajNY2UzY6iD
+	 hYheUABzeF/PAa3Fb7VTSZvWOxcf85yQ338sn1SAE7JfQ748yVQxP1G9Nvhuj9+TIJkml
+	 ZVchaxjH4Mmnrj9LjPf3CpfVNNva3uXalNWnYneWDR/RTNeVYhBtf4IxNT84Dvry1Bzm1
+	 jX/0uA6NxFTf0PN15rrVsG2pOjl/3T92uybiI5fYCo6F+OTSuccy1016yzPMu1qTT3L7G
+	 nnZH7I0LrfWHd726QQUEAKpNSz24HBhNuHNV1V+z7w4WrSmevPIemlR0meYldSDMZhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=VDrsKog5;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=corp.free.fr;
+	spf=pass smtp.mailfrom=corp.free.fr;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=cDeIPDmu;
+	arc=none smtp.remote-ip=212.27.60.169
+Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16A606A328;
-	Wed,  4 Nov 2026 21:35:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C16A606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E60606F280
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 21:46:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23E60606F280
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=VDrsKog5
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UZCPbOxuHxVfcCpmEyp2FuF94MWKe2jTtQcOlBA8NP8=; b=VDrsKog51b2RF7ESU9eYKcZLb8
-	VqMM9W/eeGlQgJy1/KjdcLA2TaK3nJJH1QKsBvJ1gSnoIvwrZDLlOnhXQnczL8BcAFReUSgXn/+Yv
-	uXArciRi7epVa64gYAv3P0Khywv0cbo4wUI7FDbezlCziZysGT/TTxixnefFk+tS31rs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOidY-00EOR7-8u; Wed, 04 Nov 2026 22:35:16 +0100
-Date: Wed, 4 Nov 2026 22:35:16 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: joseph@telaak.dev
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=cDeIPDmu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
+	t=1793828777; bh=kHccQU20VE8id2uLCz+zTe/NtLXqRcm03EMpvqiYi9E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cDeIPDmuIUr+fbQAj1haI22eC3sWqHM0aVIYrVUORA6hRik/ZjzyvfSBnE0A+QqnP
+	 pBsz6x2RKaO5oj8KylaNVkS8puA4AqeH4f+4MjtsDw5rQYpdAotFTZQWL2wgkrcsAe
+	 LLujOYi7VnFwLWsveebMjjyIUh1wuO2lSeOBc548v+qgXjJ7TU0igUNjI8hsbzvyxA
+	 17mOGuh8TZ4BXQ9yu8Dc+M/SXv+kbh1a/knDohqgQCnf85WexhVybo4S3urFOgq9RN
+	 v9CvmpoxPljfuS8UUoTVszcrdkrVLEZ69sUoHlzPa9re9RB/V96JsD75pAluiabV5y
+	 /JIB6kw7FrOGA==
+Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
+	by rcs.proxad.net (Postfix) with ESMTPSA id 0198344C007C;
+	Wed,  4 Nov 2026 22:46:16 +0100 (CET)
+From: Alexandre Cassen <acassen@corp.free.fr>
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next 2/2] net: stmmac: Add Siflower SF19A2890 glue
-Message-ID: <ba345fce-e88a-4aac-b9a4-59c500f80247@lunn.ch>
-References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
- <20261104-sf19a2890-gmac-v1-2-a15965a49574@telaak.dev>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] net/sched: let hardware only actions drop per CPU stats
+Date: Wed,  4 Nov 2026 22:45:54 +0100
+Message-ID: <20261104214607.556269-1-acassen@corp.free.fr>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,30 +68,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104-sf19a2890-gmac-v1-2-a15965a49574@telaak.dev>
+Content-Transfer-Encoding: 8bit
 
-> +/* The MAC adds an RGMII delay only where the device tree asks for one */
-> +static int sf19a2890_gmac_set_delays(struct sf19a2890_gmac *gmac)
-> +{
-> +	u32 tx, rx;
-> +	int ret;
-> +
-> +	ret = sf19a2890_gmac_get_delay(gmac, "tx-internal-delay-ps", &tx);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = sf19a2890_gmac_get_delay(gmac, "rx-internal-delay-ps", &rx);
-> +	if (ret)
-> +		return ret;
-> +
-> +	writel(tx, gmac->cfg + SF19A2890_GMAC_TX_DELAY);
-> +	writel(rx, gmac->cfg + SF19A2890_GMAC_RX_DELAY);
-> +	writel(!!rx, gmac->cfg + SF19A2890_GMAC_RX_DELAY_EN);
+This series lets hardware only actions drop their per CPU stats and
+the tunnel_key dst cache:
 
-What does SF19A2890_GMAC_RX_DELAY_EN do? By default rx is 0, so the
-delay is not enabled. Is that any different to actually enabling it
-with SF19A2890_GMAC_RX_DELAY set to 0?
+- skbedit, police, mpls and sample honor TCA_ACT_FLAGS_NO_PERCPU_STATS.
+- Action init sees the offload flags of the filter, so a skip_sw filter
+  alone now satisfies the skbedit queue_mapping check.
+- tunnel_key skips the dst cache for skip_sw actions.
 
-	Andrew
+v2:
+- Add patch 2 so that a skip_sw filter is enough for patch 3 (Sashiko
+  [1], Jakub).
+- Give the memory saving in patch 3 (Sashiko [1], Jakub) and patch 1.
+- Drop the race note from patch 1. Commit 1800f27a5ef8 ("net/sched:
+  act_api: take tcfa_lock for hardware stats updates") fixes this race,
+  which Sashiko [1] also flags.
+- Add Jamal's Reviewed-by to patches 1 and 3.
+
+v1: https://lore.kernel.org/netdev/20261009051930.3619697-1-acassen@corp.free.fr/
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009051930.3619697-1-acassen%40corp.free.fr
+
+Alexandre Cassen (3):
+  net/sched: honor TCA_ACT_FLAGS_NO_PERCPU_STATS in more actions
+  net/sched: act_api: pass the filter offload flags to action init
+  net/sched: act_tunnel_key: skip dst cache for skip_sw actions
+
+ net/sched/act_api.c        | 17 +++++++----------
+ net/sched/act_mpls.c       |  8 ++++----
+ net/sched/act_police.c     | 10 +++++-----
+ net/sched/act_sample.c     |  6 +++---
+ net/sched/act_skbedit.c    |  9 +++++----
+ net/sched/act_tunnel_key.c | 10 +++++++---
+ 6 files changed, 31 insertions(+), 29 deletions(-)
+
+-- 
+2.43.0
+
