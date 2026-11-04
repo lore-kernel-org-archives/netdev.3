@@ -1,84 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793827613;
-	b=0B8EKrwP7nDtPHJWAsJGFwqoMZFv/oVt/cGBXCAh8By9xnS+eBHOdGd/L3f88OMlsvhA
-	 59LXi92BLmC2cSNuTXdYOHEAWka926AeZ+Ywim90k7dJtTMJdUPqCLkohTX2vEPJuOqcd
-	 xVzrfAeZrqxsWrM8c6ctLKDeoVsmSu8Cgs7Cm/5SV6qSdGFqGQuhv39SuBUaT6akkQteD
-	 J6Lh0fjXEJRAxxTO3LBrWBzIUeUBQICk0KSpCISn6RH4GULp2avXDbNMRVCli3UhfJXXH
-	 BmiIH41lqhBlnevAZTSrUx5HAL6o0cS0cHSLGXwZPdR8Cnkx6KXWJjCZZOhog4vuN6A==
+	t=1793827767;
+	b=z5U5LINF+uI640utwFZx6uNqTiGvpD/krCQCZkxCE1hucrcVpmR3ooQFUAI3YwZQB5RY
+	 sKDNbvUUhyDxWYId01fMzwuNigdeReFklxwSIQsXhUlJjPi/lCVWDY26I/Xe5c7A7eKpA
+	 PW6VmNW3mKLCPnSnmwWRboMAQXNUe3nQLjO2oNR60CMfGe4DmOCicc0qiCGTWWXp0KRRp
+	 zvk6U2DkutkZm5SYAuOaj8ql58fY/BecIvVbN3um+o5Za/Q5Rp9rNLvzJb5mJLuvARk+2
+	 dzrGXb7Dbx6na8yC0iiP9V2PEfMh792SbHBPa/eWYJpqFQJmwQSfyB1VEa46+VFuvBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793827613;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=Fx8mwjCrbZCWbiZSWWBXN0aiI/C9oFeig/QmjdPJVek=;
-	b=FNOKnGDHgiCsSJvzvnSpMiojm6jwp9fKro1zS57m3O3I/BrbLNF4yBnJaU/2iMvEjoxZ
-	 bW0EsywWjaPkwsM57OPxjC+qOdpw4auEcmzqSZo2xUJxUhLrVZg4U5lLFnXwiryJ1msIT
-	 d1Q8HBPd2U1mKHKC3j0mPg8o9iLupaWDtcLQBI7nIDjcF5UeTRBj9pGm+zksm9tXyKdTQ
-	 kmjKTYvY1XvxUwCSMEIHOz5+ECVTWTTGjvNosyr+PAkHBP3z97qpCVD2J/1dnWAeaMPMG
-	 ynoAiok7d8wTR/8iv7f2C3ewvI2MK2vM7fCfO7iv0cLaXmc3QulIzs9jPewJLDYUDPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827767;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=Z5JEWAHX8HIT/y9bERySyCdVuC9uxNIx0YOcG+Jkvv0=;
+	b=MUQ7ziU4EJoW7sEVY+QZAXZQ3m1bOALU5nz4mx8A3hYEOkIt5z/dWlopvxbBhtXIzMjK
+	 jWqnoyZvarJHLHegejtC7oxEw2nndjiH9cGdMsR9BO/otWpJhiwsCoj77yvgRj6lBSS7p
+	 zZ8AhejaVpC2bS2aE9f9dmJU/hICzuYVC5+vthXPLTmGAg0k/RnRNCJtR8/wQnIfwdVIr
+	 uGmexxtSYT/bP+tCgEB3Wisy1gy7WQ89jvcGYzfSZhqlN1ShjSQ/SKkd4rPBX1YK2uIbP
+	 i7amepin6HqMUz2qNJMLVFQmyqmshDOJXD2/TOq9eem/wYE7q6YHz6F4sBqBRI9X67w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vy+SWiVb;
-	arc=none smtp.remote-ip=209.85.160.170
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=i26NWnj+;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB8A606B2DE
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 21:26:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FB8A606B2DE
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE245606BA3D;
+	Wed,  4 Nov 2026 21:29:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE245606BA3D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vy+SWiVb
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53cd0c8614eso7737401cf.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 13:26:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793827612; x=1794432412; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Fx8mwjCrbZCWbiZSWWBXN0aiI/C9oFeig/QmjdPJVek=;
-        b=Vy+SWiVb/NpXstpdw56lw+criQ5VLmL5fI7nn0T68KlPT3t+Dt/ZXXIrVA+Cb9oTH4
-         TPCa6A3seRH9NuwzLYB4U8f/OShYV6IlQIso/owGoN/zGKf8RjT/HHAYQiFq6Md9/AGx
-         OQu+WfEphT/kKjXP8GvKBBFJyiAVMrQefdiWdJmUUcdvKTLoDsWtPAZotnQX9UJOrzaQ
-         xRONIbMdbEwkr1WI3Kg4PeBEsFZ5Y37wda519hWTRbTA9zS4VszXsqzBXwuK7HvvH0Qa
-         FvCJLDSn4KAlIWnCl9a6eAaYBJKX17NVHsnq7L+bnHg+v812XRAWefqQg5U2r0LgvExP
-         /fLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793827612; x=1794432412;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fx8mwjCrbZCWbiZSWWBXN0aiI/C9oFeig/QmjdPJVek=;
-        b=KrhoVu3M2ixsK35Wpx690BB0EYFsI1zMZFHFDV1w2a80U4Xxe0aFQjnJgua0CItO9a
-         z5lh+amCf4q2xD+gDUxFx7hJR1lScUCKp7FnfbEJ08zSk62W7iJ/9Da9dzGwgXMaMbqq
-         mc+Bf97aORrv5lVJ9EkKBxnr31pf9ianD5EaykZj9ukRBtR2JTryDHiIUypq71rTvBzP
-         C44o9PU/G8bsU1hGn6GvFVr923h2xN9JE6aBXcPcCsVcPMPcIWlOC614bflyfdMMgHQz
-         qQj/h2I77gGMtwtJO1YJnVYrUg4tf7hs/dlXQvWGNnNwy8FRGHagysyh/yn2PcONjr2Z
-         KOQw==
-X-Forwarded-Encrypted: i=1; AKwUvBzDRcSeuO2ByDdyzk68HiS0/jGzFSBqAtkqH8/mfNyK3GpQiHiw9l+q2ZcoYbBprJBWJ6bW8w8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9cu/x3EV8JSq0RAO9j+Ou66ZC/ZXgDVDwihpnT16yInNXcsZbO
-	v6UcG2Q+jdwgazL8B1fh1XImrIYWv85KO9CDLoq0Igj0BREvifLLjJX4
-X-Gm-Gg: AYBFou2bphzgng+wp5te5MjdMZotsZIB/8i+sgGp3hS4OGLbdL5S3jokuLSKtqa3QZl
-	Mjykl3jWKn6u9XP6jsD68MCFCPSt+BUpXmAYIw8L5Smsg8tZPZ+Zw/dsUTdo8uwwzDxfIuFENnx
-	oYtwlb+0wC0kouPyPZjpokFmrw2/xV8fu1DlLWVLWhxpTA69kFX5BqR48iPx1GcX7ZAmokbVb4H
-	DHeZJZV6KrbQCUUOLopfaCIjH1u5fCmYZ1eWNxWGqg9OIk0LrGGUO1AMNfFbHViMYX95tRBxCyx
-	g0knonK85qiYFPpsoYmtFXyFPgXRH+SBZSlaNW4x6Sht7uCIQkIJY8XB51Yq90G+4QwSpf+rD/v
-	sn5BBpLzDmbk1aBmJrx4PC+masHL8VjhpMVlRvBeorckygK2t8hiKOP1DPr9KGlBWksU8cJD7Ww
-	kp3spxFcrqJmJnNzcb1Ky1rqQzZXthl1SIUsx0FPgCWOo6SzEYKWCLbmdSZ7jIhUWv7QAGLqD7x
-	vBrhOUIJd2N8f/dgZ4xGpsOM2lrqY3hEAZ78WGAYVdqm3/+wcL6UWJy/w3I9CFxHNf/mKhhEZFk
-	ibyQUNvKmtc4YyJX
-X-Received: by 2002:a05:622a:2510:b0:533:8bf0:e6 with SMTP id d75a77b69052e-542b6a703c1mr284677281cf.35.1793827611998;
-        Wed, 04 Nov 2026 13:26:51 -0800 (PST)
-Received: from localhost ([2620:10d:c091:500::4:a8c5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54b10c4dcddsm34508841cf.20.2026.11.04.13.26.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 13:26:51 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=i26NWnj+
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Z5JEWAHX8HIT/y9bERySyCdVuC9uxNIx0YOcG+Jkvv0=; b=i26NWnj+huXIiWxNXO7EvLj08L
+	dpWAOUvdfL/BjVLhLZa9UB9Y6lVKooJS3wov0erHqIbKb8nrhToeu3GBLuiNNksYk4T1yQVbzKkgD
+	Y1Xb8/BoUJPnygFcAh5QHLr5/mvJbMZJv9xH9SJR1VI8xfNE9Iwe7KavNZ0C7QZg/2xM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOiXe-00EOKk-TI; Wed, 04 Nov 2026 22:29:10 +0100
+Date: Wed, 4 Nov 2026 22:29:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: joseph@telaak.dev
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Chuanhong Guo <gch981213@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: Add Siflower SF19A2890
+ GMAC
+Message-ID: <e134193f-ba1b-47c1-9a06-419b1b796ea0@lunn.ch>
+References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
+ <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,105 +79,32 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 16:26:50 -0500
-Message-Id: <DMMQTFS3ULM2.3HSJGB1UT085M@gmail.com>
-Cc: "Simon Horman" <horms@kernel.org>, "Jakub Sitnicki"
- <jakub@cloudflare.com>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Willem de
- Bruijn" <willemb@google.com>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH net v2 2/2] selftests/net: psp: test bidirectional data
- transfer
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Wei Wang" <weiwan@google.com>, "David S . Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Shuah Khan"
- <shuah@kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261030043145.2185700-1-weiwan@google.com>
- <20261030043145.2185700-3-weiwan@google.com>
-In-Reply-To: <20261030043145.2185700-3-weiwan@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
 
-On Fri Oct 30, 2026 at 12:31 AM EDT, Wei Wang wrote:
-> _data_basic_send() and _data_basic_send_netkit_psp_assoc() currently
-> only verify unidirectional data transmission from the test socket to
-> psp_responder. As a result, they do not exercise the receive path for
-> PSP-encrypted TCP data segments arriving at the test socket (such as
-> packets redirected across a netkit interface associated via dev-assoc,
-> which relies on SKB_EXT_PSP surviving packet scrubbing).
->
-> Use the existing "data echo" command in psp_responder to verify that the
-> test socket can also receive PSP-encrypted data from the peer in both
-> _data_basic_send() and _data_basic_send_netkit_psp_assoc().
->
-> Signed-off-by: Wei Wang <weiwan@google.com>
-> ---
->  tools/testing/selftests/drivers/net/psp.py | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/s=
-elftests/drivers/net/psp.py
-> index 473500901879..e507951b440b 100755
-> --- a/tools/testing/selftests/drivers/net/psp.py
-> +++ b/tools/testing/selftests/drivers/net/psp.py
-> @@ -120,6 +120,12 @@ def _check_data_rx(cfg, exp_len):
->      ksft_eq(read_len, exp_len)
-> =20
-> =20
-> +def _check_data_echo(cfg, s):
-> +    _send_with_ack(cfg, b'data echo\0')
-> +    s.settimeout(1.0)
+> +  rx-internal-delay-ps:
+> +    description:
+> +      Applied in steps of about 55 ps, rounded to the nearest step.
+> +    maximum: 14025
 
-I'm not a huge fan of setting the blocking timeout here. If we are going
-to set a timeout it should be when the socket is created. Otherwise this
-function has an unexpected side-effect. Another option is to use non
-blocking reads with timeout like:
+Please add minimum, and multipleOf.
 
-def _recv_careful(s, target, timeout=3D2):
-    """Read exactly target bytes, tolerating short reads"""
-    data =3D b''
-    end =3D time.monotonic() + timeout
-    while time.monotonic() < end:
-        try:
-            data +=3D s.recv(target - len(data), socket.MSG_DONTWAIT)
-            if len(data) =3D=3D target:
-                return data
-        except BlockingIOError:
-            time.sleep(0.001)
-    raise KsftFailEx(f"short read, got {len(data)} of {target} bytes")
+I've not looked at the code yet, but default: 0 would also be good.
 
+> +        rx-internal-delay-ps = <550>;
+> +        tx-internal-delay-ps = <935>;
 
-def _req_echo(cfg, s):
-    """Ask the peer to echo, and check the reply arrives intact"""
-    _send_with_ack(cfg, b'data echo\0')
-    ksft_eq(_recv_careful(s, 5), b'echo\0')
+These values are odd. The RGMII standard says 2ns is required. Where
+is the rest coming from.
 
-> +    ksft_eq(s.recv(5), b'echo\0')
-> +
-> +
->  def _check_data_outq(s, exp_len, force_wait=3DFalse):
->      outq =3D 0
->      for _ in range(10):
-> @@ -478,6 +484,7 @@ def _data_basic_send(cfg, version, ipver):
-> =20
->      data_len =3D _send_careful(cfg, s, 100)
->      _check_data_rx(cfg, data_len)
-> +    _check_data_echo(cfg, s)
->      _close_psp_conn(cfg, s)
-> =20
-> =20
-> @@ -726,6 +733,7 @@ def _data_basic_send_netkit_psp_assoc(cfg, version, i=
-pver):
-> =20
->          data_len =3D _send_careful(cfg, sock, 100)
->          _check_data_rx(cfg, data_len)
-> +        _check_data_echo(cfg, sock)
->          _close_psp_conn(cfg, sock)
-> =20
-> =20
+> +        fixed-link {
+> +            speed = <1000>;
+> +            full-duplex;
+> +        };
 
-I'm ok with the approach overall. The coverage is sufficient for the
-purposes of the series.
+Does this mean there is a switch on the other end? Maybe look at what
+the switch is doing for RGMII delays.
+
+	Andrew
