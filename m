@@ -1,54 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793818475;
-	b=qf/3uPnOsFqNUayFEiJtOuo1/kpwTf8K2AoGZMLwIZ/FdmYnCHjaFZSjPFm/J+lXlwaG
-	 ZAnebN4p9y1yc06LC2oS2eu2FqrXPj+tFjnxyq2ed97qMGo7jxZUgxsSNlAgLX6YtXBjg
-	 nWl23cTCCH8KLoI3M9oLw7EDil6WVCkCECZj/D1J8cmArxnlJjFVxl8TMvDjTTc1sPZb6
-	 frbfiZqrhJNYDnPCIaLwM9W8NY+WLRghSW8+HAnGiufaCNFbMNM1Igk4VfxN4vrcvXGuw
-	 6lxVjCzoqBx+VeeNPU2ZXVfsxHlV7Hnb6Q+KFm3GAzOEldbypfNB19TU9NIopYCiefA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793818475;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=as3D3aYhSIPQsb3CvkJTVuYWCDas5wXhOyjIY9yo5yo=;
-	b=uX6KKTwLEn8YDzyC2pFKtsH6wb+GAWyg6knPZukg0AzjL8qmgCDYjjW8Amt4b1E0qG2E
-	 y8PB6go3E58T8Srl/sNTN/1Czsf8KLYNCfkuHvPdYbVQpeCLthOCsO4nsD77b2v9m/mZx
-	 K/SgZv2osA7hPbAMJeUpDhH+g+KDFKqVb7EezcgRbjiiqL+OELOOipw9jNXdR+prtBiy3
-	 GfR4sKMgna2W4yW0dDtvn+5xfPlTr71JpHhE1FhDvLN5gx4Yh76EbrW3vf/4lf7DpHg1W
-	 UruqqicK9N155RPOY6t/R8a5Ap1FXZIS8g/tHThhQAmxCtN1+30PI0z5IPWzR/jQANw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hojbtNFU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793818513;
+	b=oHhdAj2cY/LE+j1xx8J97/sC/kaXqHvC3/6vAqzBmyDXr3HDBCgOG2+ZpGHXyETYs3Tl
+	 FVcEAK+2pLI2ZVlVReEbWLgABDW6077gDGxJv5TFwKGchiyhqT1GuncrA9moCwOVusFQN
+	 tm75qs5YI1sjhLipuOFqFYYkRbPXVsmEHtsMOu954GftfZgWhoSeZYsrar931WPrrGsVt
+	 QBlTLPgdihcDQECPNjqMB3A3FFBIyTHxLoY19gx37xEy5C7blM+gsSs3HlWVuI3l59Rc0
+	 TOxrm6iIZ7VysMtWdP8kZmwr6d/FArBhD+5Ycf1puUSQes92ihXDe6xwAmdvNtVTr0A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793818513;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=JomHWK70VEVph5MhIX9rA/gqgQnzCIbgLr6yP8EQo1o=;
+	b=EIFbk/Px4q5U8TaVDr57D9KFpEE/lyBHxkS7whv53/50L6E4sng2d+hfEoPAEeQtvnig
+	 jCFQEQTmF4z7QVMNL2irUEvyALQf623YzzBNRiUtsz9kwxzIKP4Ingb6htZgOb+/UiB+N
+	 YVitzah9WPymINE9tZHWX3chrTsCa54R18nG8lnX80FzBBlOBuPlc+ujeEoYeNsZjW0q9
+	 mmUOld+X0PXAhf/XjyHhN79H1G9wUYU6VocR2GUcd3OmE4XYwzfFmFRGWrHLQFs0KIsqu
+	 X5NniK//eVUWgLtkwAgeSV8SyyzePBBh3LxWfJ6/4uwLjfqRKmT94hXJTPXXic9FcQg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FOY01Rl6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.50
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3012A606EEBD
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7730606EE9D
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:55:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7730606EE9D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hojbtNFU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3DC1F0093A
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:54:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793818475;
-	bh=as3D3aYhSIPQsb3CvkJTVuYWCDas5wXhOyjIY9yo5yo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hojbtNFUNbZv0kS5EeBrObTOGokkNfm2N6Q2ZdsgIOeOXCdrPsCundlUuAI7/tKzK
-	 aga13OWLvO0S7S5Mqo5M9plnI/UArcDnUD0Z53jdxVkDl16Ejpcgwqsb9sYw7/4G3k
-	 doFIlofDbaa0tFp2MbMSDEz4NNlgwe4vKVFn2r29dRM2Ffm+17NajDLl1mu1ngjoev
-	 nZnKFdEiv/NvAY0+Kx2p33+6pqdeRC8FhU4glkQEbIKerfFpQeNpbaP5vZS2F2oLUP
-	 5//RqsaVM0btC/C78V8VmiwG6llv54oVhpaZm7mjD8Zw/OXgYdvh9+zoizf8H75S8Q
-	 3K9sW3Www9Wdw==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-48e94879f02so402075fac.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:54:34 -0800 (PST)
-X-Gm-Message-State: APuU4Z+0peWicmro7Im7cSiOP0Z7a6UhhafiQ7jhi5t1k7TknjH6NhNB
-	7kRdlUqw6HvTlc7sshrkZxbJqbfzuIFAMM1cOkvEX1+uueyMBzG0AVMrL2uySq7lRxCm1Orl66w
-	dc18dt2mvMUQvjvMcszkgtkYXSnR1Q8E=
-X-Received: by 2002:a05:6870:3313:b0:49e:43e7:1187 with SMTP id
- 586e51a60fabf-4a9076395dfmr10797327fac.21.1793818474246; Wed, 04 Nov 2026
- 10:54:34 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FOY01Rl6
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-9999f21f617so218195241.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:55:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793818512; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cPhFnhUjhbc6QN1Ow3/6vVh6R4RhWT2aquyGf2YpYDlUOBypRo5hYlBPHpiocwNmXL
+         6HA0ykgHSjKq3fjxw4GKnfe4Lz5SSi87LPzNaYYyZ8/SCr2zDofGaeyvpXVebTNY1+NT
+         WHess9dCtJza2YaibBoe9wI6OnWTM1LsqbaQneb70BC7X94URE2g3eB12tg+sTEgvFM9
+         3LW2sgfwZdj0bEC4W9TUpjTC0S2t66QEvxZ33dBkSzjMk9v1LJDy6R7mpDu1+KhghiJj
+         BjUsPWFeV0Xj4oGvI73Jjv7Fl/X4J7gXksOKRGlRxiYiX6vKp5oRYkLkmckCsK7LvkC8
+         avAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JomHWK70VEVph5MhIX9rA/gqgQnzCIbgLr6yP8EQo1o=;
+        fh=I2jzV8HL06WbCrlvTpHR0S7jQ43uYIJiBUlvrs9KFLk=;
+        b=LiUSlfEhZMFbXEPIgkOLSMszAJRN66D+1T+1i4XW98ikgIN+33AZKVaEC/ceotK4nY
+         LtvQfrebLnC0d6OEstTSji/0KFoaA99LkGS5vWzj+6kBQAOD1oo7iwGyMwGZxjalHKuZ
+         9GB274GvqHziZhGGteQNAQPY+6bhs1ruN9EbpWswif8allqjzuNpxCHD31B/47Yw/Rkj
+         TG7NfsERi9gdNbpvce7b1TEeSHR5x/vDqGy/6cG+G57+U6hY73XWIFp0AX5QlRQfiDCD
+         L9Ts2QjhwryPZUKePqIJeZN1cgo6HnUBmpCRlA+J5OEAIUHHFbG+Lle6nwpIDSNICde+
+         Wjgw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793818512; x=1794423312; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JomHWK70VEVph5MhIX9rA/gqgQnzCIbgLr6yP8EQo1o=;
+        b=FOY01Rl6IGDR5WgkOoelYjGCKwSO3TRZWGH7SjR6GWEOQwrvKAnOADQR30W6FjEnrV
+         fFHSPmRK8ZKumGIRR9it27hWUiBI6mMf4itJpyvN5mf9OkZLgy6N1qzKCt5GcDV4QLKm
+         AsI/bMcZu/pR1RWz7IJ1IZe0h4bJPhGAJ1ga3giXlZs/aE0wJOBnmXWuB+oV3T++G/mn
+         WVvlwkAuxPTVcEct8+iH3CDAXX0D7ojxUU9eSKXJfn7IxCzBScMZMQEJew+HOKMQS7dr
+         DA6MAcTR1Y6bVNqaIN8osvjxVbAJSTCbZs+iMNNr7KNnxwDoj1u/OT4eXMJma3mH8hg1
+         r6QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793818512; x=1794423312;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JomHWK70VEVph5MhIX9rA/gqgQnzCIbgLr6yP8EQo1o=;
+        b=Xu3AfY2pJ3XbXQJR5LUdcPRQUS5xQQAmti50pZ/M7l/apMwsCv1vMNwNiEOd2XU5VF
+         AqxKGLMNKpw9ATUJn2CC+g8RiqAoMI8dLw3aXVKBpGMwwbEP2QSdsQoOKrf+143ZNYkK
+         StjeuuN4VDQEQXh64aK0RyMrBINhKG5cboQMYrB/qRBA4OfDNQ9gV8mBm+W7s6M7AM5s
+         XEyh5oP4uOWExohxgk3wwELt/bWeMVtIzckqGhb+h/IG5MWrpCGn//hiR+oQ0mk6yOg9
+         +/7y3vTuFtDIAx+lf1bE444bEMHy0LHdFqud9TktEHILwnV731Jof4Vja0GqaR11Dyqy
+         xngQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz0RyZh6stsA2z1lWWeQGpovjX5xanhZDw4jEkLMLCqbKp6teCMyyDa2v8x0G13kA+Ljet1+tA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9r7/3L494eh2lzltpzYA9Z2BEHzyJFOn79dswqfynwDWbmQcue
+	ZJk9TLQUsn/bm6rbVm7ulwclB6g9Td1BL7vc12BNTMk4VhKqEMMFVHhXXgLpN28taOGOO4VsnGE
+	wzPnIlNkvYqNSoQKuvvYwBFgRpyAOus8=
+X-Gm-Gg: AYBFou0txWCtw9tYx57yqfYwUrIkDucOXKn7W67+/xWyxy3O+FzDbxOd74ViACdOAsE
+	3msDPv3eoPqAWE25FgfObV0Hp2CAYgY24oyIWuOoYVyDIpkAM8WZSTehetfCKZLiYmfMWxl+OvF
+	tFBY9g1cGDOW/tA4O8Cb3VrDEAEdlkqVTgWN3GOOB/N2pXPorLn0tw4YCCvwfPVREGItdg3+vKg
+	88CdtdOHipW6mFR9XzTB1hUyIFiG8PjG9sJYy6VWWYURjKQ1GNsOdNSSTLVgdBcr7BB0TTH/dYR
+	VbwTI569hcrqaGYwWhKaz8GUHYXrtkZqC61AburIJQgfjLXDfbcxI8vOtkSqyGWtid2g/rwzfJj
+	b+TaU5yfG9caWkK5Jme6lbKzLNHv2NYWGfJjlPLIf9rj1kKiq6QMOJ0dUUQ5naLkFlpkEtXAJFR
+	r9qxfadTxGRny2t7zyPi10PX/wXRXfji1deIQxYYMj9lO2sGsppYfKCAxcBbLORqdI41kQpAuYI
+	gucoRaM3+HECZ8joxQKxDYWJDNnZg==
+X-Received: by 2002:a05:6102:3c83:b0:7b3:6079:1900 with SMTP id
+ ada2fe7eead31-7d0726a03bemr6260355137.37.1793818511776; Wed, 04 Nov 2026
+ 10:55:11 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,97 +106,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104182058.2673882-1-me@chasehil.tz>
-In-Reply-To: <20261104182058.2673882-1-me@chasehil.tz>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 4 Nov 2026 19:54:23 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiir-KjBF-rdqH3_KcjbBruVAC2JN_B_S4dYHph=bpZkbKg@mail.gmail.com>
-X-Gm-Features: AclHuK_RW9JPnwbOHE7QkebXPrqe_xwfOF_lfHvATslXaa0OuUjc1Q9Es0Uo7mA
-Message-ID: <CAL4Wiir-KjBF-rdqH3_KcjbBruVAC2JN_B_S4dYHph=bpZkbKg@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: route: don't blackhole in-use routes when
- retiring fnhe routes
-To: Chase Hiltz <me@chasehil.tz>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	weiwan@google.com, linux-kernel@vger.kernel.org
+References: <20261104-submit-stmmac-vlan-prio-v1-v2-1-6cfc71e636ad@gmail.com> <179381842538.488859.11490770653999769834@kernel.org>
+In-Reply-To: <179381842538.488859.11490770653999769834@kernel.org>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 4 Nov 2026 11:55:00 -0700
+X-Gm-Features: AclHuK--X9CuBUmjc3vuMAmJzOpEI1xjQqSDf0syF668uw7WASBz7nJRNkp7F_4
+Message-ID: <CADvTj4rwKjHXgxUR3XPob0_78POnTin_uaBUnm-9r7JyCfNAXw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: stmmac: rebuild VLAN priority steering when
+ filters change
+To: netdev-bot+sinfo@kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Piotr Wejman <piotrwejman90@gmail.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le mer. 4 nov. 2026 =C3=A0 19:21, Chase Hiltz <me@chasehil.tz> a =C3=A9crit=
- :
+On Wed, Nov 4, 2026 at 11:53=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
+:
 >
-> When a route cached in a nexthop exception (fnhe) is replaced or
-> flushed, rt_bind_exception() and fnhe_flush_routes() call
-> dst_dev_put() on it. That sets dst->dev to blackhole_netdev and
-> dst->input/output to dst_discard*(), but other CPUs can still be
-> using the route, e.g. as a noref dst taken from the fnhe under RCU.
-> Packets that reach dst_input() or dst_output() after that are dropped.
+> Hi!
 >
-> If dst_dev_put() runs after a forwarded packet has entered ip_output(),
-> ip_skb_dst_mtu() in __ip_finish_output() can return the MTU of
-> blackhole_netdev (68), and ip_fragment() can then drop a DF packet and
-> send ICMP_FRAG_NEEDED with mtu 68 to its source.
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
 >
-> This was hit on a 6.12 router that sent ICMP_FRAG_NEEDED with mtu 68
-> for packets it forwarded. A kprobe on __icmp_send() showed that the
-> skb's dst had dev =3D=3D blackhole_netdev and still had the PMTU from its
-> fnhe.
->
-> Commit 5018c59607a5 ("ipv4: fix race condition between route lookup and
-> invalidation") fixed the same race in rt_cache_route() by putting the
-> old route on the uncached list instead of calling dst_dev_put(). Do the
-> same for routes retired from an fnhe. rt_flush_dev() still moves them
-> to blackhole_netdev when their device is unregistered.
->
-> fnhe routes are also retired on fnhe expiry (ip_del_fnhe()) and
-> eviction (fnhe_remove_oldest()). Those paths don't bump rt_genid, so
-> without the obsolete marking ipv4_dst_check() could still accept the
-> route. Keep marking retired routes DST_OBSOLETE_DEAD, as dst_dev_put()
-> did, so that users that cached them, such as sockets, look up again.
->
-> Tested on v7.4-rc1 with network namespaces: a router forwards IPv4 TCP
-> (iperf3 -P 8) over an ip6tnl device whose PMTU update creates an fnhe
-> for the destination, while a loop adds and deletes an IPv4 route. The
-> sender drops incoming ICMP_FRAG_NEEDED, so it keeps setting DF.
->
-> Over 60s without this patch, the sender received 505,291
-> ICMP_FRAG_NEEDED with mtu 68, and the router dropped 67,024 packets in
-> dst_discard_out() and 599 in dst_discard(). With this patch there were
-> none. Neither kernel sent any without the route churn, or without an
-> fnhe (ip6tnl with encaplimit none).
->
-> When the sender accepted the ICMPs, its route to the destination ended
-> up with "mtu lock 552" without this patch. With it, the route had no
-> PMTU.
->
-> Deleting the tunnel, its underlay or the peer netns under the same load
-> (12 runs) completed without unregister hangs or warnings, with and
-> without this patch.
->
-> The same tests on a kernel with PROVE_LOCKING, KASAN, DEBUG_LIST,
-> DEBUG_ATOMIC_SLEEP and the netdev/netns refcount trackers produced no
-> reports. Lockdep recorded the new fnhe_lock -> uncached list lock
-> dependency, and in a separate 20s run 109,305 routes were retired
-> from an fnhe through the new path.
->
-> Fixes: 95c47f9cf5e0 ("ipv4: call dst_dev_put() properly")
-> Signed-off-by: Chase Hiltz <me@chasehil.tz>
-> Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
-> ---
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 
-Co-authored-by: is not a tag we use (checkpatch complains about it),
-please use Assisted-by: instead.
+As the commit message states:
+No hardware testing was performed.
 
-The changelog is also quite long, you could move some of the testing
-details below the --- line.
-
-Otherwise this looks good to me, thanks.
-
-fnhe routes are never on the uncached list while they are cached,
-and the fnhe slot is cleared under fnhe_lock before
-fnhe_retire_route() is called, so there is no risk of a double
-list_add(). rt_flush_dev() takes care of the device reference.
-
-Note that IPv6 has a similar issue in rt6_remove_exception().
-
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
