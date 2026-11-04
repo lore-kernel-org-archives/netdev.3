@@ -1,62 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793805056;
-	b=DYann0pOsn26etIKmHR66+pXpahNov0fCMriUxDV8n39RDKC+ABmOqkrqKVFYm7CsQOA
-	 Hj3CM8iZxfSrThtPjMITCL353H9RsGRxQyOlOjy0cL3YPXOBhj2kpd7/KSBpQ4682A8nJ
-	 q/Xv3m8HKSWym9ZGCf4k8pspyFBdoJai0S5bBeYkNeoqem726AOX0mjcnod9Takdk4wwf
-	 10fc11PY7xtMfD0IxxxnfRaPLU2WdQhA9MJ9iY3y1yt1tU+jWl4sIFPbl6B5bGMJiyqgS
-	 SUQAWT59H+BUQBT5Bq7RWqZ3YRP1OXrlF+lR8rJ2GiO+TIpef7eSQqQ8zDyB63BSaeg==
+	t=1793805053;
+	b=Swcd0VYgIuVTyUtva/ZKQqnuyIf1ehl0Y+2S5SHggY4xmW2i72EfuUACQhE61bwuQtDn
+	 Qa3NQSgBRfnRX+m/j7a+QE3h7qpCkQyz7pKk6YTUY+byCd++ij5DHWlKU2FtNgKLvx0ml
+	 U9U1/aa+UNz+rbMShw8lJfpLFrggrWWxSbAuslg2VBPoNVrilf88hlcsOoRa79HPr/wg4
+	 pxBR3qtkNWfItJ4ig+afOZHzIqSwVMJpkL2WwFReKCuF4exeK2ZKXoA4ncoR2SvSKYgzI
+	 J0wbCRg7SQNJMkIiZsH5uX/yxVtVjBXBXN2jP/gYJ0LfcF6fdB1vHbh5Xykqy3MtugA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805056;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793805053;
 	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=GF6d3pNDOSjz5HIuFJrfOK9I1WV91tbPmxomODct6jo=;
-	b=Z11cs/EDmmLp5GGZlth3AgSjnsctBASkn4XcFhqPUrL1HeyQweCytzF1fmtYK9XJcdAt
-	 69jHEqwwOB8kK6kA8aRlyyZiNz1nb/EhR4dszEcelb9QrnizFtZFI9dFFHnC7sHogVTOE
-	 FYBqSp95U3f1W0ec8CSQZAhzcFhzrqqhrbyEzK+l/Zz6rSwiMsCQEt/vRHFjryLpM+0Jc
-	 03ZrutLzUGU6Kp+kMncLvolwsLcB0XZr3l7MRyQiRvJigDMHJMDJnIq1xADL53VcI+RSh
-	 hqi9SjjQ3PZvkULVbXwxu+d4FocKm9K+9uFUD6JM/01JnyTP8+FyYHiYplZkYsEOtOA==
+	bh=jvjNz2XqwJuSY4izjvEkknUfW9JWC88MajzwfFFh+SU=;
+	b=XyyiZe/At59b6Rf0/k9t0POlkt2Krv/V/h/ww01ZIzj4jfoxuOMh8r33HlT98RqIfz3b
+	 OZo1+XM45tOfxFyMgS2MjY4bMS7Ee2vnyQruakLXMfh1di80ua6NefkRgIePUtFp3nuQW
+	 hSz1EyGRojh6oxUyjGU9nhDG3leZw28Ea6Y/p+5lfvuLPXrkSzd7EEPjdqynQZqG6bw38
+	 6vMZpx6U2VXirr9AJX/p/xhtCd7BdO29sPen1dsVolAOhrXK7tPfQS3m3vcLPX+/MhIsH
+	 nd0Zm1IA8ZcbNV5r0c3X94xKzTWpQZtt7fiz/cTGxWWGhlKkTXrwDhuyWrS7wlf1qsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linutronix.de;
 	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LqYmIVPT;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5K0wE7q1;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GIEySveD;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rql4AOJ3;
 	arc=none smtp.remote-ip=193.142.43.55
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A2D606D80A
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:10:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1A2D606D80A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A59A606A326
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:10:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A59A606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LqYmIVPT;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5K0wE7q1
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GIEySveD;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rql4AOJ3
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1793805054;
+	s=2020; t=1793805050;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GF6d3pNDOSjz5HIuFJrfOK9I1WV91tbPmxomODct6jo=;
-	b=LqYmIVPTsuVUEeAZ+SeSjpN5huc8rBHbyOHaXtRmBVq6V+R9jDk+WtwMUCln9B9GS63CdV
-	+6/0S9k0x8JIvHKlRlIVXjoQU4T++GNz8/o0beOUsGNt5rtABBe1mS8Zv3DjnWLf5i++P1
-	2YgFMUgHk/nLm1Z5Ybn4e2f/h2DHKkp0B1ynYnQAaQwQIEJlAZZ/vtDWyceLe6GGuVOMkN
-	4+jH6Le3SKhEqYPjI9bbczz3gQkh42iw4eQHOzmw5A5JrggCqR9DxOHyVawdC/xse/biBb
-	EDeNzBJy8BeU3AjKFhTqXX2ybcGJjiqiK3Qw+93W91Q7XQ8WJNTY1HLQQtiAtg==
+	bh=jvjNz2XqwJuSY4izjvEkknUfW9JWC88MajzwfFFh+SU=;
+	b=GIEySveDCXzzCfnFV6Le7BlUSHHHfCF6okb8iUJAzegvTgHLY7BmyfPZ9tWuL4Zug9YOGL
+	k22DPrKSX7nwY7n3Z9N+CpnW5x6lnvAB/Ox4MKh4Ho7ejCGtimTTVwgaOgWM5NTl5ANfYu
+	ELYnrU0VoukXAwqY3ZE0btQ5sdUzBfCnenSLrsL+5SP9jSDiT/A939enNOgEf3Vhahj1eD
+	CquKrCkLLyXKUtp8KPd/V8VR9JnHMQY3oJCUFldFBbxp3W1FP4NuByHkiwa7VUbmBdXyu6
+	h6CPL5uMc6pSPzwgEHXkWPaoIsGCCNGGSVkkvL8bxzzkad5WRkdCrQh6Tkh7EQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1793805054;
+	s=2020e; t=1793805050;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GF6d3pNDOSjz5HIuFJrfOK9I1WV91tbPmxomODct6jo=;
-	b=5K0wE7q1M7VVGiUyEu+fgkQTw1hsF5FzknQ4Mae4MawWSmzX49B4pAdpWNgbchX/Q9Jvee
-	DlRBt3ShV3L2poDg==
+	bh=jvjNz2XqwJuSY4izjvEkknUfW9JWC88MajzwfFFh+SU=;
+	b=rql4AOJ3mQabD0KmJ1BIctd9a+kpfhWiNGQaWJ5xy56yu6lpKMqUUmFcaQbbNIbsk+ujlb
+	QA6aWUZCH4R9Y2AA==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
@@ -77,9 +77,9 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Daniel Machon <daniel.machon@microchip.com>,
 	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net-next v10 6/8] hsr: Assign a socket for cloned skbs
-Date: Wed,  4 Nov 2026 16:10:42 +0100
-Message-ID: <20261104-hsr_ptp-v10-6-2c4a38ad973c@linutronix.de>
+Subject: [PATCH net-next v10 1/8] hsr: Add header_ops::parse_protocol
+Date: Wed,  4 Nov 2026 16:10:37 +0100
+Message-ID: <20261104-hsr_ptp-v10-1-2c4a38ad973c@linutronix.de>
 In-Reply-To: <20261104-hsr_ptp-v10-0-2c4a38ad973c@linutronix.de>
 References: <20261104-hsr_ptp-v10-0-2c4a38ad973c@linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
@@ -94,59 +94,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The cloned skb does not have the socket recorded of the original skb
-because skb_clone() clears sk_buff::sk. The original skb is never
-submitted but freed in hsr_forward_skb(). skb_tstamp_tx() will only
-submit timestamp information to the sender if the socket is recorded and
-the TS flags are available.
+af_packet uses dev_parse_header_protocol() to assign skb::protocol.
+The hsr stack does not assign a callback so the field is assigned to 0.
 
-As of the recent changes everything is available except the socket and
-the requested timestamp gets lost.
+There is nothing known to be broken because this is missing. Having a
+callback assigned makes it possible to use the protocol field later in
+the series by packets which originate from the AF_PACKET interface.
 
-This does not consider PRP part of the stack. The specification says
-that PTP-PRP packets do not have the RCT therefore these packets can be
-sent directly from userland skipping the stack.
+The header used by the HSR stack corresponds to the ethernet header for
+the "first" part so the protocol member is at the same position.
 
-Assign the socket of the original skb to the clone so the timestamp is
-forwarded to the user.
+Use eth_header_parse_protocol() for the hsr_header_ops's parse_protocol
+callback.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/hsr/hsr_forward.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/hsr/hsr_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index d2a11d4560309..85c8dd61ee6f8 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -12,6 +12,7 @@
- #include <linux/skbuff.h>
- #include <linux/etherdevice.h>
- #include <linux/if_vlan.h>
-+#include <net/sock.h>
- #include "hsr_main.h"
- #include "hsr_framereg.h"
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index fc512204600cd..59df647d2fd45 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -247,6 +247,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, st=
+ruct net_device *dev)
+ static const struct header_ops hsr_header_ops =3D {
+ 	.create	 =3D eth_header,
+ 	.parse	 =3D eth_header_parse,
++	.parse_protocol =3D eth_header_parse_protocol,
+ };
 =20
-@@ -347,6 +348,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_fram=
-e_info *frame,
- 	if (!skb)
- 		return NULL;
-=20
-+	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
-+		skb_set_owner_w(skb, frame->skb_std->sk);
-+
- 	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
- 		return skb;
-=20
-@@ -581,6 +585,8 @@ static void hsr_forward_do(struct hsr_frame_info *frame)
- 		 */
- 		if (frame->has_hsr_header && frame->skb_std) {
- 			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
-+			if (skb && frame->skb_std->sk)
-+				skb_set_owner_w(skb, frame->skb_std->sk);
- 			goto inject_into_stack;
- 		}
-=20
+ static struct sk_buff *hsr_init_skb(struct hsr_port *master, int extra)
 
 --=20
 2.55.0
