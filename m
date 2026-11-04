@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793827021;
-	b=PNUOLaGZ+bmtcj2aomMyQxJEOo2PR+9oXReT48TytTZt04vhK46XfJnjwGg9XgGPCKF4
-	 CEUqsyfC7YwzCU1z3bt+z/oM68vOnNQjgp4cxC7s2TjsV3imb1cYa0XafQ2xr49QXDWky
-	 OEkGNYBl92nCAZvHa23Y9gwClDfRWW4l9Dseurga1iwKP6Q9D0lL5ryqCWwx9JKvATdN0
-	 hSE4GSGrWHgtjBTV0qOf/nO3Es66DTsojH9I94OwaqC4UF9KESHWeiJuXRaSaoCPXsnFk
-	 qIYo2Lszcg18HnbLfckPvLYiWK2bCoFlTLHjRrl1AId5A3jrP68a3rEK2nV5u1THCag==
+	t=1793826860;
+	b=PigivZFo4wKABwqlT+6YXzootfldEExfcxKa0Lq9PScJvne/PstHzMbc6e48pyY6EGMF
+	 6lRYpMiWF04qTB8CzCric3H3GKJOh5W5bSRYXR9d8YAVLn2m2iLQWp2DaUPsPwy7D+7kv
+	 T1F2fB+aFa9eEyOBFGxy+nPdx00ZGhPIaprMOVoJsyT+oC3HgJvI/d1rLBtedaXNRICip
+	 w2wWWvzzM6s/LyOfpYXM4DwzoyxjK5c3owWjDM6K13DyIgkV/DUNRIUU59VwT79YQta/M
+	 LMUWGKa7DpibA0Ke8ekuab1IYsEV/OUZU2fDGl151PS27UXSkcW5riLQCaDQ1NPVgig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793827021;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793826860;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=zeHs9UAP7YIb3jk19VW8WXuXpSby7HHZ4SLZ7Ya7qeg=;
-	b=NJug/H7Ioiu5StT7XnG/xBB9AEC2kOTlGoMob8Jmh/2hAWFJv9eFF/HjTSOj3p8o0RZn
-	 QwuxbQB0wrAhKAh+mOOXdn7TpaL8o9H6IiglnwCyq73yjziWdXZHQ5LtOLYZc7s8uFT6h
-	 6ROcD5HYmmHxibKVXD7UGQ2RlHXHwEfU6mZYgN6uy+lboOaWBt83jtle4WPOwH3hgUw0o
-	 tszlQt1iivaDWQHF+O+k3D6Hyv+qZR+RNjuDds+htZGDL9esajIPovSox2MAKnFrAE+j+
-	 DeJ/e+PI56jhGWfySq14GTzUOGzee0Qyk0xdI/GGuWh5UmuM7LziPNS0s+tI9mAqLJw==
+	bh=ulWAa08tPZnJZAAMojZfgqs4wxYXZkHD77FK42yiGkc=;
+	b=2PtTa4R8gxKzLT1fQIi/HI4q8DaWSWV7xlhkh5OrfLqtbVmEREegF+kNgKe5/RAGLkKJ
+	 sT99B6EOPfCtudJodX2TabL3yYFxBNgUlg6dYG1T9Yc2lXmWI8PrHVO7vuFDB1U207kH4
+	 6aVBu0158o21E4YYjE7GowcpsaiyXmRd5Pd7ajSsYgSAVGXY1ZW9ipZ7+4Su3eXRjNa6e
+	 Wpz0G34j22JtHQvGLIRLsUZ87LIFLvfwSExpYnVPxLzZw9VLaxjKPkq1OFKdX1drdCkjV
+	 kuWmd7s0wMBt0h82dE9kELQxVpnZ6IvKBpex57rviOlZ8sSVjgWd/IV+y2MSoQpxcrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S3SzdWSz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gICWh0N0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31780606A863;
-	Wed,  4 Nov 2026 21:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C3606EEB7;
+	Wed,  4 Nov 2026 21:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S3SzdWSz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AC31F00A02;
-	Wed,  4 Nov 2026 21:16:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gICWh0N0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A466B1F00919;
+	Wed,  4 Nov 2026 21:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793827021;
-	bh=zeHs9UAP7YIb3jk19VW8WXuXpSby7HHZ4SLZ7Ya7qeg=;
+	s=k20260515; t=1793826860;
+	bh=ulWAa08tPZnJZAAMojZfgqs4wxYXZkHD77FK42yiGkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S3SzdWSzW86Oi7IX1tUBoRNN3T1qaKpCsD195aJc0q3DFSVT8WBvY060bSLKhgobb
-	 ozqt92gwXbw5PQb0azuNQvXlPB7WnJ6cBECkdsTADqTj+zV4KFstm2CIoVK3RnyKHw
-	 qukYCNAdRUYdRI6RQkFYFD46MOjD+1c8YqXVIsSOalpjdzN976W0rXYKybUDWkvkIa
-	 rfbNpjRPuRxsQxtxAfSij5iqz5tsGOkFhdPq9CXCzRhQ5vabAbm6JESEBXYkE7I8Zz
-	 Xcw2dOWqmhnKSnz+HejYopwm49XOlRK/JAYtCOxhFx3vpJFr7q8EZmlKY7qc7HALif
-	 bf0zrDFVpbYqg==
+	b=gICWh0N0cBEP36qoPjK07EDc0Aojrv63Cx+pq3ht7lC1Swqoe5+i3NPMXMP1HLqAh
+	 aYFDImUWgb2oQZfvZy0Eomed2z9bppjTMLZJqaCJ+P/lVF/sMbBDXyuQTYMAX6jaEG
+	 PZ2WLVcqSv9VuBvnWcTH3x8qTM6W0XC/ec65sI7vf6cdAdfTZxwUHxtQYl9brUxiQ+
+	 dMCuHf59LCoq+BPf/+eWD45uHwN16HzFpn4iF3C3dDC4Tki7Nt0/cDmwKsfuapAQM6
+	 WJY+xD/1Nj4i6s+oj2j1TqT1hys8Qp60ucvc7zwo51H/qzcJ2edAoUx8uzmvP8dUPB
+	 VqHIpYrdBBhDw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -100,11 +100,11 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 6/6] proc: drop the poll_table from ->proc_poll()
-Date: Wed,  4 Nov 2026 22:16:46 +0100
-Message-ID: <20261104-work-procfs-cleanup-v2-6-1e6687e226b1@kernel.org>
-In-Reply-To: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
-References: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
+Subject: [PATCH RESEND v2 12/13] samples/kfifo: let procfs copy out reads
+Date: Wed,  4 Nov 2026 22:14:06 +0100
+Message-ID: <20261104-work-procfs-net-v2-12-221e2437fed1@kernel.org>
+In-Reply-To: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
+References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,158 +116,128 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5605; i=brauner@kernel.org; h=from:subject:message-id; bh=xctjOvW/3SEZoVIWJreYFKvLSI3LgHd/aggSpp1K3Wc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9XpDCwWfSYe8eveS8yHFO7St6c86UqkTd43v8XXbxs eORD9pDOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYivoGRYdl9h7P19TJf4stb 3x3lv8VUfL7o3Cmvh99vBMo/PlY8S4bhn/KGbxquT4Jf+f7xcV3IcHfqg01FBpdsX2pJecw75bG miBMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3702; i=brauner@kernel.org; h=from:subject:message-id; bh=20rJkgesQhfyVvX+iP+2cn2t9uRQnDiG02PYUBwi/V4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97jPsktFdvOpVs6nmzzyvU+U6ZXtuXBM8rzljz9wMw 1nV1yaYdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkmR4jw4orl8X8M5o+3ma9 GfZdRD43+XLkoesF4WpvMhbuurvzRQEjw6V1dx4JZH/R15uYuWfHNB9+M1aVOLPGyMglXg065jc nMgIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-Every entry sleeps its pollers on the wait queue procfs owns for it
-now, so take the poll_table away from the method. An entry can't hand
-procfs a queue of its own anymore then, which is what went wrong for
-sunrpc, and the method only reports the mask.
+Implement ->proc_read_buf() so procfs copies what is read to userspace
+after it unpinned the entry, and take the data out of the fifo with
+kfifo_out() instead of kfifo_to_user(). A reader that passes a bad
+buffer loses what was taken out for it now, kfifo_to_user() left that in
+the fifo. The samples can be spliced now too, and a sendfile() from them
+into a target that fails or takes less than was read drops what was
+taken out in between, like for the rtas error log.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/rtasd.c | 2 +-
- drivers/input/input.c       | 2 +-
- drivers/md/md.c             | 2 +-
- fs/proc/inode.c             | 2 +-
- include/linux/proc_fs.h     | 9 +++++----
- kernel/sched/psi.c          | 4 ++--
- mm/swapfile.c               | 2 +-
- net/sunrpc/cache.c          | 2 +-
- sound/core/info.c           | 2 +-
- 9 files changed, 14 insertions(+), 13 deletions(-)
+ samples/kfifo/bytestream-example.c |  9 +++------
+ samples/kfifo/inttype-example.c    | 10 ++++------
+ samples/kfifo/record-example.c     |  9 +++------
+ 3 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtasd.c b/arch/powerpc/kernel/rtasd.c
-index 49036790b67c..34705234db57 100644
---- a/arch/powerpc/kernel/rtasd.c
-+++ b/arch/powerpc/kernel/rtasd.c
-@@ -343,7 +343,7 @@ static ssize_t rtas_log_read(struct file * file, char * buf,
- 	return error;
+diff --git a/samples/kfifo/bytestream-example.c b/samples/kfifo/bytestream-example.c
+index 8c58fb46a2bf..214e46a64cc1 100644
+--- a/samples/kfifo/bytestream-example.c
++++ b/samples/kfifo/bytestream-example.c
+@@ -125,26 +125,23 @@ static ssize_t fifo_write(struct file *file, char *buf,
+ 	return copied;
  }
  
--static __poll_t rtas_log_poll(struct file *file, poll_table * wait)
-+static __poll_t rtas_log_poll(struct file *file)
+-static ssize_t fifo_read(struct file *file, char __user *buf,
++static ssize_t fifo_read(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
  {
- 	if (rtas_log_size)
- 		return EPOLLIN | EPOLLRDNORM;
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index a984810eb80d..5a0547296c6c 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -1097,7 +1097,7 @@ struct input_seq_state {
- 	int input_devices_state;
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&read_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_to_user(&test, buf, count, &copied);
++	copied = kfifo_out(&test, buf, count);
+ 
+ 	mutex_unlock(&read_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
+ }
+ 
+ static const struct proc_ops fifo_proc_ops = {
+-	.proc_read	= fifo_read,
++	.proc_read_buf	= fifo_read,
+ 	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
  };
+diff --git a/samples/kfifo/inttype-example.c b/samples/kfifo/inttype-example.c
+index c5d16b815e73..8384d7f8de6c 100644
+--- a/samples/kfifo/inttype-example.c
++++ b/samples/kfifo/inttype-example.c
+@@ -119,26 +119,24 @@ static ssize_t fifo_write(struct file *file, char *buf,
+ 	return copied;
+ }
  
--static __poll_t input_proc_devices_poll(struct file *file, poll_table *wait)
-+static __poll_t input_proc_devices_poll(struct file *file)
+-static ssize_t fifo_read(struct file *file, char __user *buf,
++static ssize_t fifo_read(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
  {
- 	struct seq_file *seq = file->private_data;
- 	struct input_seq_state *state = seq->private;
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 7560dcf0f5c8..94926a7c3d6f 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -9176,7 +9176,7 @@ static int md_seq_open(struct inode *inode, struct file *file)
- 	return 0;
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&read_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_to_user(&test, buf, count, &copied);
++	copied = kfifo_out(&test, (int *)buf, count / sizeof(int)) *
++		 sizeof(int);
+ 
+ 	mutex_unlock(&read_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
  }
  
--static __poll_t mdstat_poll(struct file *filp, poll_table *wait)
-+static __poll_t mdstat_poll(struct file *filp)
+ static const struct proc_ops fifo_proc_ops = {
+-	.proc_read	= fifo_read,
++	.proc_read_buf	= fifo_read,
+ 	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
+ };
+diff --git a/samples/kfifo/record-example.c b/samples/kfifo/record-example.c
+index dcc749247c64..29d08e90a63d 100644
+--- a/samples/kfifo/record-example.c
++++ b/samples/kfifo/record-example.c
+@@ -132,26 +132,23 @@ static ssize_t fifo_write(struct file *file, char *buf,
+ 	return copied;
+ }
+ 
+-static ssize_t fifo_read(struct file *file, char __user *buf,
++static ssize_t fifo_read(struct file *file, char *buf,
+ 						size_t count, loff_t *ppos)
  {
- 	struct seq_file *seq = filp->private_data;
- 	__poll_t mask;
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 7f6c63885f53..c35e13b44eed 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -546,7 +546,7 @@ static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
- 	poll_wait(file, &pde->open->poll, pts);
- 	if (!pde_pin(pde))
- 		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
--	rv = pde->proc_ops->proc_poll(file, pts);
-+	rv = pde->proc_ops->proc_poll(file);
- 	pde_unpin(pde);
- 	return rv;
- }
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index 872f3bd54c11..6e2bcdf3c1b5 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -84,11 +84,12 @@ struct proc_ops {
- 	int	(*proc_release)(struct inode *, struct file *);
- 	/*
- 	 * procfs owns a wait queue for an entry with a ->proc_poll() and
--	 * does the poll_wait() on it before it calls the method. The owner
--	 * wakes the pollers with proc_poll_notify(). A poll on a removed
--	 * entry reports EPOLLERR | EPOLLPRI.
-+	 * does the poll_wait() on it before it calls the method, which only
-+	 * reports the mask. The owner wakes the pollers with
-+	 * proc_poll_notify(). A poll on a removed entry reports
-+	 * EPOLLERR | EPOLLPRI.
- 	 */
--	__poll_t (*proc_poll)(struct file *, struct poll_table_struct *);
-+	__poll_t (*proc_poll)(struct file *);
- 	/*
- 	 * procfs pins the entry around ->proc_mmap() and wraps the
- 	 * vm_operations of the mapping so that ->open(), ->fault(),
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 9362c27d47ab..ecb9028b5c49 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1606,11 +1606,11 @@ static ssize_t psi_cpu_write(struct file *file, char *buf, size_t nbytes,
- 	return psi_write(file, buf, nbytes, PSI_CPU);
+-	int ret;
+ 	unsigned int copied;
+ 
+ 	if (mutex_lock_interruptible(&read_access))
+ 		return -ERESTARTSYS;
+ 
+-	ret = kfifo_to_user(&test, buf, count, &copied);
++	copied = kfifo_out(&test, buf, count);
+ 
+ 	mutex_unlock(&read_access);
+-	if (ret)
+-		return ret;
+ 
+ 	return copied;
  }
  
--static __poll_t psi_fop_poll(struct file *file, poll_table *wait)
-+static __poll_t psi_fop_poll(struct file *file)
- {
- 	struct seq_file *seq = file->private_data;
- 
--	return psi_trigger_poll(&seq->private, wait);
-+	return psi_trigger_poll(&seq->private, NULL);
- }
- 
- static int psi_fop_release(struct inode *inode, struct file *file)
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 1d063a1cef43..e7c019871e35 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3315,7 +3315,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- }
- 
- #ifdef CONFIG_PROC_FS
--static __poll_t swaps_poll(struct file *file, poll_table *wait)
-+static __poll_t swaps_poll(struct file *file)
- {
- 	struct seq_file *seq = file->private_data;
- 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index b8f70d8c3b0c..4854a42d43a2 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1588,7 +1588,7 @@ static ssize_t cache_write_procfs(struct file *filp, char *buf, size_t count,
- 	return ret ? ret : count;
- }
- 
--static __poll_t cache_poll_procfs(struct file *filp, poll_table *wait)
-+static __poll_t cache_poll_procfs(struct file *filp)
- {
- 	struct cache_detail *cd = pde_data(file_inode(filp));
- 
-diff --git a/sound/core/info.c b/sound/core/info.c
-index 3439ae341e26..8e64d8e3e5b2 100644
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -184,7 +184,7 @@ static ssize_t snd_info_entry_write(struct file *file, char *buffer,
- 	return size;
- }
- 
--static __poll_t snd_info_entry_poll(struct file *file, poll_table *wait)
-+static __poll_t snd_info_entry_poll(struct file *file)
- {
- 	struct snd_info_private_data *data = file->private_data;
- 	struct snd_info_entry *entry = data->entry;
+ static const struct proc_ops fifo_proc_ops = {
+-	.proc_read	= fifo_read,
++	.proc_read_buf	= fifo_read,
+ 	.proc_write_buf	= fifo_write,
+ 	.proc_lseek	= noop_llseek,
+ 	/* kfifo_from_user() cut a record to what its length byte holds */
 
 -- 
 2.53.0
