@@ -1,78 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793784234;
-	b=HbNrHBrH4nZfI3UvDIF5CN2Adq5/XxfKQ4ln2/Fb9giSVRlqZzjl8TOEs/iUtw5TGyw4
-	 A0DQv6OPtcygNMyyFyb03MV6SRof5HvRhntLUE97jN+d52Ny5w2SEtygdaU5oAezvN6FP
-	 h7R1k1G2V6CCWu/7HoOP2jBPWkF3J3S20yRhFsO0NS/pCmOj2IDwBaTCUw6t0FQpAwWUV
-	 UPGtvlfRoFG8UZD/G4EqVk0xrFpc7DI18zCMoCz9D4syYLyNU6hpcqhE0pQc+GuPwt09E
-	 At3rZqKvTuw4v4i/LFbdmZdmOjqE5QjBM4a+ntBnrg2npJ62hHQFa2TNoqfKwhZOWaw==
+	t=1793784384;
+	b=bFwyp7UVVKcHQMFI0bKGB1KaFe4i71TDwjZIiSIw3uzMXUW/ynFcCN6Zlh6qt+KQ7Oh+
+	 /DNwWakaLqTvvBEEpS2IKY8pg58A213koRw1JwRdQpLePDuMxI4uNRvvIGLNTzYvv91EJ
+	 GZjku1v3yEsCDn4kHftJXlnBDl4+7i2hzJHQFNbeKoC8wanHdQbo+tY+8ndT8dwnehFgr
+	 sZDCR/uEuXL4qdt493KRKrHHpkdkG6Sm5DXdJzvnuyJaG43FAK9mGopoFsaeFMsPwRrcy
+	 KUuHl2D3fM7ICJlNGE/hBcs4RzZ1AWtV5Kabdj5O9BVRvRPN5hZJQkcz5C1bXTj9SPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793784234;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=bmXVSSlN45L+rv4ubBxKKCnM10XnTPIhgH058pVIBqk=;
-	b=tKuSVqy8fSTLxqPrZHNQnWPQnwA9RoDYusZSphsXoI9t2wH5Mlu9bqU7hAfDurWIg6y2
-	 7hcoHz6k78bPyKAXxbVFf9wy1JZTMdlw5VVSzNZfI0eVKXBkGW8j86N4pyWl3nJxJwJ/j
-	 uM9nr87OJnwYEQJ2vtlO9UMPDiyz7Dzlz/hX9vOlaAbduGWyk0rcehePfmx5QUHPg6W/9
-	 VRvBHR6xf38Uifx375KhGmXWlmfKy/zeJndoQ7OxGWhrDwAzrzHPi1evWQmSDkvLhwvbi
-	 5Ti99Ck4uQIOm8PSoOhzyelqOmPUvKKXr7yOhxXtKzb5WfM+hUkAgMUF0cr41ENw9TQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793784384;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=4pw2w5TX2D1rqXpzVEo3CKWGtWhwTLpbdQMFSbOSiU0=;
+	b=EfoHhyK52RU1J/mrMW946hOg0+T+jTC6wcXKYGx6/oy2nxpwhZh5Z8UltwdPRdZzEOGP
+	 o2eijk+odqaUQsduEJkOdBeL6JfYcun9p1uZRXHlJWJyTezL4wsNvAXcFd6nVv5TEW+Kr
+	 KvnydrdvYUMahc4ni+PaGfSHBsQQSSserbolce5APY+LCTjsReX8r79I4Spc2PBMJwcFg
+	 IUtft6jIA2l5CakcciGumUJEw1xGzBUqW+p0J90TBzV9V9i+uL4/jrHV2xWeZa7gj2hsz
+	 W80Yz7zD/I2PPL1edG73lC4LcRXx5T1Kc9C+PRL85h2hAWISdiYnx49MIy9ypH/c0rQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Yuo2h5l8;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581CC606A32C;
-	Wed,  4 Nov 2026 09:23:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 581CC606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QxeH4739;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BE606A335
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:26:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA4BE606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Yuo2h5l8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Yuo2h5l87UV4o0gWUa4o4VALrLc2KJegur7qOWc388cIJSMKpjFWL5lxnL+0VXf3JWNG5dqOQPsbB
-	 jWY8eVH1YouWxbIGPD9RMwFiNshML03+1XazcuXhLWjjGMMDTHNiY8FMzR5blCS7CpCEe7OYuPIPSY
-	 JU7RXOmrOnVkLqBk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66aeaf9a7b38-69342;
-	Wed, 04 Nov 2026 17:23:52 +0800 (CST)
-X-RM-TRANSID:2ee66aeaf9a7b38-69342
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.97])
-	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6aeaf9a699c-c8aff;
-	Wed, 04 Nov 2026 17:23:52 +0800 (CST)
-X-RM-TRANSID:2eea6aeaf9a699c-c8aff
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemdebruijn.kernel@gmail.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	willemb@google.com
-Subject: [PATCH net v2 2/2] selftests: net: exercise SO_MARK on connected sockets
-Date: Wed,  4 Nov 2026 17:23:38 +0800
-Message-ID: <20261104092252.15712-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261104092240.15649-1-yanxia@cmss.chinamobile.com>
-References: <20261104092240.15649-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QxeH4739
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6F057C8F46C;
+	Wed,  4 Nov 2026 09:27:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7209560770;
+	Wed,  4 Nov 2026 09:26:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AE2B1032912A;
+	Wed,  4 Nov 2026 10:26:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793784378; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=4pw2w5TX2D1rqXpzVEo3CKWGtWhwTLpbdQMFSbOSiU0=;
+	b=QxeH4739fwoLhz0ukYQzV6AsMjONbp5QSomsJ41SMZ1kGtMIhp0IkZD2VMRKg0s4BQx7mC
+	VVTLpP2Og3F8/hZ8ws3JQPAN0rEbD9e04H94QwE8ZZLvxuvqSj/95XVG87xULXJW6trTnK
+	lbDpP5+rZu/S4b9Y0SWU+44qKu5esBVtDfSmUDFngdjUqFWnYD+/rRBl3r7Rzd/h9Ua7iX
+	UqMU1y0H/p42JuTGo2GR6oj5TtGqa9BadHKfIjsAuLZ5JPBIxb6rbtMSXe3g+kjbAO7WRW
+	4aGIRrEXwnttIVKDiPd1tamr6KCG6PYJgHpEVHxlUXFQikUfxOmZRDxyr5eUxA==
+Message-ID: <4244dde8-9efe-415e-bbf5-7b95f36ad379@bootlin.com>
+Date: Wed, 4 Nov 2026 10:26:08 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,130 +62,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261104092338.XOrybbEKBLb6klfzqqsK6fd7HULA9jXrDYm2aPLiZuQ@z>
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net] net: stmmac: ptp: fix support for PTP_EXTTS_REQUEST2
+ ioctl
+To: James Clark <jjc@jclark.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261104052504.1886335-1-jjc@jclark.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261104052504.1886335-1-jjc@jclark.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-cmsg_so_mark.sh sends to an explicit destination without connecting the
-socket, so it does not exercise the route cached by connect(). This left
-the IPv6 SO_MARK cache bug uncovered.
 
-Add a cmsg_sender option to connect before sending and omit msg_name in
-that mode. Keep the existing cases and add connected IPv4 and IPv6 UDP,
-ping and raw sends with a per-message mark equal to the socket mark,
-prohibited by a policy rule, or explicitly zero.
 
-On UML, the added IPv6 UDP and ping cases with the prohibited mark fail
-before the kernel fix. With the fix, all 54 cases pass.
+On 11/4/26 06:25, James Clark wrote:
+> Commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to
+> ptp_clock_info") modified the PTP core to validate the supported flags
+> of external timestamp requests, rather than relying on each driver to
+> check them.
+> 
+> stmmac_enable() and dwmac1000_ptp_enable() ignore the flags, and
+> neither stmmac_ptp_clock_ops nor dwmac1000_ptp_clock_ops was given any
+> .supported_extts_flags. Since PTP_EXTTS_REQUEST2 always implies
+> PTP_STRICT_FLAGS, the core now rejects every PTP_EXTTS_REQUEST2 for
+> this driver with -EOPNOTSUPP, where before that commit the same
+> requests succeeded. Only the PTP_EXTTS_REQUEST ioctl still works.
+> 
+> Tests on an NXP i.MX 8M Plus (FRDM-IMX8MPLUS, GMAC 5.10a) show that the
+> auxiliary snapshot inputs timestamp just the rising edge. The reference
+> manuals for the STM32MP13 (GMAC 4.20a) and the Cyclone V HPS (GMAC
+> 3.70a, which uses dwmac1000_ptp_clock_ops) say the same.
+> 
+> Encode this in .supported_extts_flags. A PTP_EXTTS_REQUEST2 for the
+> rising edge then succeeds, and one for the falling edge or for both
+> edges fails with -EOPNOTSUPP.
 
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
-v2:
-  - New patch; add 18 connected-socket cases alongside the existing 36.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
-The test gap was noted during automated review of v1:
-https://lore.kernel.org/netdev/179371875338.488856.4546363285391899557@kernel.org/
-
-Tested the same selftest on baseline, v1 and v2 UML kernels: baseline
-fails 2/54 cases; v1/v2 pass all 54. Both versions of cmsg_sender build
-with GCC 12.3.1. ShellCheck 0.11.0 reports the same 13 existing SC2086
-diagnostics before and after the change.
-
- tools/testing/selftests/net/cmsg_sender.c   | 21 ++++++++++++++++++---
- tools/testing/selftests/net/cmsg_so_mark.sh | 16 ++++++++++++++++
- 2 files changed, 34 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
---- a/tools/testing/selftests/net/cmsg_sender.c
-+++ b/tools/testing/selftests/net/cmsg_sender.c
-@@ -34,6 +34,7 @@
- 	ERN_CMSG_RD,
- 	ERN_CMSG_RCV,
- 	ERN_SEND_MORE,
-+	ERN_CONNECT,
- };
- 
- struct option_cmsg_u32 {
-@@ -48,6 +49,7 @@
- 	unsigned int size;
- 	unsigned int num_pkt;
- 	bool msg_more;
-+	bool connected;
- 	struct {
- 		unsigned int mark;
- 		unsigned int dontfrag;
-@@ -93,6 +95,7 @@
- 	printf("Usage: %s [opts] <dst host> <dst port / service>\n", bin);
- 	printf("Options:\n"
- 	       "\t\t-s      Silent send() failures\n"
-+	       "\t\t-k      Connect before sending\n"
- 	       "\t\t-S      send() size\n"
- 	       "\t\t-4/-6   Force IPv4 / IPv6 only\n"
- 	       "\t\t-p prot Socket protocol\n"
-@@ -121,8 +124,12 @@
- {
- 	int o;
- 
--	while ((o = getopt(argc, argv, "46sS:p:P:m:M:n:d:tf:F:c:C:l:L:H:Q:")) != -1) {
-+	while ((o = getopt(argc, argv,
-+			   "46ksS:p:P:m:M:n:d:tf:F:c:C:l:L:H:Q:")) != -1) {
- 		switch (o) {
-+		case 'k':
-+			opt.connected = true;
-+			break;
- 		case 's':
- 			opt.silent_send = true;
- 			break;
-@@ -521,6 +528,12 @@
- 
- 	ca_set_sockopts(fd);
- 
-+	if (opt.connected && connect(fd, ai->ai_addr, ai->ai_addrlen)) {
-+		fprintf(stderr, "Can't connect socket: %s\n", strerror(errno));
-+		err = ERN_CONNECT;
-+		goto err_out;
-+	}
-+
- 	if (clock_gettime(CLOCK_REALTIME, &time_start_real))
- 		error(ERN_GETTIME, errno, "gettime REALTIME");
- 	if (clock_gettime(CLOCK_MONOTONIC, &time_start_mono))
-@@ -530,8 +543,10 @@
- 	iov[0].iov_len = opt.size;
- 
- 	memset(&msg, 0, sizeof(msg));
--	msg.msg_name = ai->ai_addr;
--	msg.msg_namelen = ai->ai_addrlen;
-+	if (!opt.connected) {
-+		msg.msg_name = ai->ai_addr;
-+		msg.msg_namelen = ai->ai_addrlen;
-+	}
- 	msg.msg_iov = iov;
- 	msg.msg_iovlen = 1;
- 
-diff --git a/tools/testing/selftests/net/cmsg_so_mark.sh b/tools/testing/selftests/net/cmsg_so_mark.sh
---- a/tools/testing/selftests/net/cmsg_so_mark.sh
-+++ b/tools/testing/selftests/net/cmsg_so_mark.sh
-@@ -68,6 +68,22 @@
-     done
- done
- 
-+# Check per-message marks after connect() has populated the route cache.
-+for i in 4 6; do
-+    [ "$i" = 4 ] && TGT=$TGT4 || TGT=$TGT6
-+
-+    for p in u i r; do
-+	for mark in "$((MARK + 1))" "$MARK" 0; do
-+	    expected=0
-+	    [ "$mark" -eq "$MARK" ] && expected=1
-+
-+	    ip netns exec "$NS" ./cmsg_sender -"$i" -p "$p" -k \
-+		-M "$((MARK + 1))" -m "$mark" -s "$TGT" 1234
-+	    check_result "$?" "$expected" "IPv$i $p connected mark $mark"
-+	done
-+    done
-+done
-+
- # Summary
- if [ $BAD -ne 0 ]; then
-     echo "FAIL - $BAD/$TOTAL cases failed"
-
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
