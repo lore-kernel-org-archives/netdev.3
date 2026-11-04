@@ -1,101 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793817029;
-	b=oLbG7EYRujHUviW8AibO/DexjQywUY768Sh5fZ+/fZAYLKokrMHH3IKUPTuPXvo3XwQP
-	 DsV5N9otUpkp/M0PvALgAm74lPN/AG7V1yiA6PChjSepkH7E85SBwJe9qrNXuYhw1kese
-	 L8NkgpQJH1rodzZQ1ONpxRDzLvMspCjomqNSzCw04OjboNwAXy7EaIKWjXv1Zab9nIBaz
-	 6dxLEhZrWaPP8VSP5gk6xYmYuiUpvFgUusOK93ZJabU5AngNxLLBQOjj4ycWTOXTiUGRj
-	 lTFlWowDiKM/7jtKLw+1tLfuQJCdvD43/OB2994OZdu5I8zBS0M/ldfTmf871hameLg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793817029;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793817161;
+	b=kEYyBp0VUqxuUJPU7Riu4dWiSUMstBHOr6O3wciSqjj/2jepEXTJCpEqyyrvT65CU7Jh
+	 OZ2JhlA8OsFrK0eBTSM+MA6kBFqTaiBntWhkZ9w8oe8z+ZjqiaKWZLFWrkR7+V4lYzUyG
+	 LbMd2gJhc3x+m7Uf/1B3LiWfUPbuUEamUakAzFgt7bKCi9FI7L9h97FhwKUZQO4Q8aJ5F
+	 EJHGzuMwfB6YepkTyAGiavHEbdohp3ozU8QS4CoxMMczBayluTmALikeb9sNCIZx9bW6k
+	 d2r3dC8czmHa1AXddQ77GYGaE/HeX9q/tSOpr2D+7j1d1zcZjPxMrJCpRXg7Z3KumCw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793817161;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=6vlBLO9On7q47NyBJ2Rw1NocpmdzrNn/c5hU8D8zRfc=;
-	b=p/krSoZBhhmthd+mmOI7Ncofvp0aAbHbu4NdpTqQ4kY/FuG1VsItxeXLEM9RI4O8LTgk
-	 x2zlFi5WuQ3G2Xz6UavIFTLp3+kQAx24VOjcqtagTbvAkZFwfypb+z++bcadgKkI/1Dkv
-	 j0fSyKeZ6cA8gY+A0FLVn0tcGAUYlmBSGiDIA3xhKlVHhPvd2TtC1VWaewPVmjwPbGEB3
-	 OmmB/WQhy68r2Tbm61L/7s4TiKhlOWUfIx94EKuYTrs67c6I8aA4FJMmXt4P5mUz+Id7A
-	 +TJISMdXpH4bp56WeFrhxRCci2wdIdE6e1uDlrKc3DJ8bIJt/zT3YSLedUSN6vS62rA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=everpuredata.com;
-	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=D+vzaXEc;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.217.49
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=bgGvwwQ0hp1A5Cajh6ZjxfCDvcyK9tWxZx+AIP+8L3A=;
+	b=LUBXRQQwDyO2M8s/TagMJclZev2LaeyrBhQ3RnDDgpaYDQF5NqvndnLWt2kSWRLf9IfN
+	 x4nzmhfAj56/tAYn6tlZJpBTZzDBiMJStn6Mvp+YsLqO9sdTDnGwT++Ehru2LJ//7xnSt
+	 ywhtTJdmJLH1IsKIz0gCLoDHLGNw+8L0/E4h9SGBOj44tKzWjmQl0Qt+2FtKbfAAFrC83
+	 HqCLYeI/MzMnDdq6Pk3BxAO1wZTajA1mNHhzwqjkZgONKpRE2Cts8wU8kb/6Su8SIxJAN
+	 T7xbWXUZrjMu+qeKo1NNPAFXDhDvTrK1AJhLiSRuF7z7d2521LmiyH7ano05dHpE+MA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WnhNglyv;
+	arc=none smtp.remote-ip=209.85.216.53
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DE2606A328
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:30:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14DE2606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF37606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:32:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EF37606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=D+vzaXEc
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-7cc53938a8fso572078137.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:30:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793817023; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FyXQ8gRKoORRRXC4+9eFxT6t78jukU11hEC138VyhzEh5+xNlikTD50nrzATv33KRl
-         QBy8yylbFUinKrxZ3fkhwxpoI3nMWeLmfiBX7zGNcsphN5XTUP5kGQk3r12asrnDbYMo
-         UCgLhQfiVilV3gBO3uW9kbB9pPhURqOSC5uK1jAH5jK1DpqUasyA1w6R2Bsb4ECmCrfo
-         ElNikAzp7c2N0Geb/pRmOkfLSyz7b9wa+/pcT9bx6TILoYnJm7AXg7KZmM+TduLF5lWE
-         disWxrn1lmeieeXGUBvZbgAz0Unp1POjkjgAvhgX/AHNLheJ33cIpQQXON6j7RMHaVk+
-         NE0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6vlBLO9On7q47NyBJ2Rw1NocpmdzrNn/c5hU8D8zRfc=;
-        fh=GuwKir4kw6mFlkxLdiQUL3ZyKchc8uWqACjmiDK+CrY=;
-        b=oPpDAEt8pn52pnoCf8FGVo4mIipQqLCSrMss6ri52z5LnTsukOfKAiOKQd8pnNfcTv
-         TDQpJrtBSRqTp9aL2+X2cZksV9lKCTISpqeUJLlz/vsKVBy5cMUhiie+mhjlTvUwDKPt
-         o4IbPVvvFvmcBUPuKZp44Fyyv1Q93vqC7q5PaGMYBD9cMNttC5s9DQ+PUKfysPk2wYnz
-         VH9B8641OU1qdloiQoRL8KWThVltbPAiUpLo8ZZUYBcZU+B6nZaxtCZy6zW8LenPcRZ4
-         68TOL97NCaiAHjRoanH1Yu6vyN+BBRJju8Wm+6tu9qmlPRUYSFIIWi9Hc0xYhxlYsGNp
-         Tg7g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WnhNglyv
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso1388323a91.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:32:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1793817023; x=1794421823; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793817161; x=1794421961; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=6vlBLO9On7q47NyBJ2Rw1NocpmdzrNn/c5hU8D8zRfc=;
-        b=D+vzaXEcyQsrqSCPGZFnsmiGvYNBSc4foTiivjqiQoqaMvSxloeeFxaM5RXt6S2Kv6
-         V9y2OBTNagImvYAvD10a+ZoSyI9FAmiK/KzEsrd/zYfkRAWLXuO+u9GbM4FBFTl9MbPS
-         kRyUIbTsbZSmYQQLaciF+SGH0bpTJ1mFPQdzvRxHRBu1u/Miw3SOCmssLYPYx7bNVYPZ
-         EBJMPfwBdPViJ2doX3G+mxxchBNoO8kqnaMhAprre7AkIt/4ny0vrfK4SLSP0Nt2bTTw
-         uz/yAV3vprRPcCj3PtI0OiyjmsPECr7nrryw5M7Zb4RMktGqwLoCZwH84JtIQ+5N+CoT
-         6k7Q==
+        bh=bgGvwwQ0hp1A5Cajh6ZjxfCDvcyK9tWxZx+AIP+8L3A=;
+        b=WnhNglyvCBh7ZPhaI+5vGqQkRigBp6TtgG0deUYHZNLf5FfinhmiZlHNByAGYNI4SL
+         iSmUomw8vSyjos/KvmTEAGXcIjs5ntqRuFyyj+SDPaP1aolY1XC5rpnAwltboXplmF+H
+         npO6z20tFVzn719f2b9XBNGstbEQRzUzgPW46+Dsks0ffp36oCT9dlXJBTg/OBdPsrVi
+         GNYZxZ3TbMimbcRV0fLQ8t6EMIgUb0I6KT4dp0PaW8ZUcUSIu2Wb+fcGOlDFOAa4NmGE
+         /sOsDZA4Gw4LOrkEAAF/eXmFi8HbwyV59xDcNGJrES/3JiZfwhay4EOl/OoArRih0CKd
+         3NWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793817023; x=1794421823;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793817161; x=1794421961;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6vlBLO9On7q47NyBJ2Rw1NocpmdzrNn/c5hU8D8zRfc=;
-        b=nvKZ5nDbXH1AH4UEgd9SRnhveFuAfTE6C5BtriU3CAnp8/8YgZNktOjosG1Pz7xBjz
-         Kd0fPUNkaNb3eOl3v51e2Ts3pAJkYCHJjwCVvx4tndVFQ0qkCQNrzSEYvlrNMSUkZlF5
-         6O0V+XpeHMMpXkrTf/7pqbgYx0uocAdazk3E9RpIEae9d6lZzjKL0sPtAHnM/Nstzqxp
-         +iSKZCgLjnYq1A61GI7X5yuRG5MeLoT1jvLHrSWr2PBGdwRHvSOR6qhbvwC1Z8Np0s16
-         HyCagpedpyR/M36yRgfJc7XqCSDUOyqC9ug9zme6jsNtK4wQ3BMtEWuZqobuTUW03O6+
-         Y42w==
-X-Gm-Message-State: APuU4Z8c4ILz6Ao3rqklBbK7MmDiNlAKwVuhi7netB77MT9jwLuM5ubk
-	KmlX1znwIBy83M6K/v/KD7YvXw5n9NOmakr3iFnpqszDNk02jdkFAXo2YAc7KPdba/EYvF+CNCW
-	2HhIlXvrYOZw3zyFlxHBKI9HXAVxBjN2xVcNUBPFHZg==
-X-Gm-Gg: AYBFou2BLDOvoetcpr2Olo1nHmUlFFfFyoAyw2/Knn/eSVJf8tEwpJqcj/YAs3E6ov9
-	V/JWqRbXpMHU3l4X3fLe1aFvkyE4HNuOjIgRNGRvy+wtHs+r8OzSLCJIURs92kUD3ULhdmzUmwO
-	0hIS7eUvxu25UmHUA+JKOv7BSIgT8OYmmwwpL6S/dLdBp3mHnGja46lPf+ZfrxByCiHpEvVgHJR
-	0OH4EgbHmN9/HVuvdgtPblJetKm58szdBFg3V4e2fZjF4hHMt8pYW75uKkGYoiH5gE2kwWsn1PZ
-	mBljMv5CP0N5SXxv1mEqoc5uLy9mm/6BL5P/o5bptSQNCRQr44+8ft7RzKINM7T99jA9l/KYi39
-	LqvpVsJD2t0rjtIph1dblCsacwl+1iZsE2ptgIL5liyFLxAosqSmD6Qog1HJc5sy7+ntbHF/fI1
-	XVVmSlu/rLj1/V2QHZoXcfVoyYJhjcw+e86BwzYODUv/gq+F10mJ/knVJUvp8uA1uF91oZ5S/Rv
-	XSVNRt+dqIWLfxudtVdzKhP
-X-Received: by 2002:a05:6102:3e8e:b0:7cb:bb33:8413 with SMTP id
- ada2fe7eead31-7d072bb37c6mr7312101137.9.1793817022500; Wed, 04 Nov 2026
- 10:30:22 -0800 (PST)
+        bh=bgGvwwQ0hp1A5Cajh6ZjxfCDvcyK9tWxZx+AIP+8L3A=;
+        b=CBvg9TDQ5swS818wf1+E0sN9dLNCa5MkatiBCIhmeOtXfOg+iD6aFGCRakK6yp4Pcd
+         Z1w/w7Fzw3B6gPZS3HvNnt33tqD/iRhpOsjQUzKdey1foZKx8VLL1X4w324FCKRZNrdx
+         XdQzY3/hbdxFGGM01F2jXhFhV7C5lygfsG9dH8yxc7dcSO2l5qX6Qh6SKqtWS5BoO9eA
+         6Uqe+ywZbrFcNvSHKwnD4MXxnEFspSAhHkIb6DhDVci0NbuNQceA6kG6KF+yH0meIS1q
+         Xy4qIarmuiE7j8lTKGQw1WhFt//Rs9kSiqvGeZFPoAenJ3V3NR6QP9AhDItNxeMfl+Oh
+         J5Ig==
+X-Forwarded-Encrypted: i=1; AKwUvBxom5bU56zCHOPks9EbPfeW4hXLqu1sI1sB0mL6urcbd5Tc6+jGr5lpjKsX9rhc8ZMjoVgVtcw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z80VgYNpBS8eOXLyb5K/7gn1qGrJyhYvCEmbUilInB8fZTu2iFb
+	bwTL/3sV97vTl3oiT0/JzXy6jfN2hEomXfidhCBzw16L1vxRRxiZMWGY
+X-Gm-Gg: AYBFou1xJeHX1bYq1XAmSlS4g8OWCwuSJ65jn1n8yR03F/1XY1sfzY9j/VuVUbX9Coj
+	ox0lBBY5h3Mx4ZL5XBhT6x5EZ0RqA0pPB6NquxBk1JF1cohGt72CcJB3abT09FnK5wTWWJ9BKAP
+	mOMA1/5Pe9LT+s4GVmve9WW6uxksUWm+tBRw7x2GwKmMTQH9KgcrrXpnWHh/rFhN0gcro92Tk6E
+	CZ6+Imc3/42kWHrXVmRpqNwAJeFx0KjekgSKtnbeOEl1NjO8R4+0vnAgWd7bzD9IZkqTC4S5qw3
+	mrwOLZJBEzv+tKgk8GQuS7H9Yb8eQWu8VUUalDDNSj9kv/Bk86XKu0J1Ja+tXzNobeYgt2reVHw
+	rAtSnTv6GdNGy7LxP3DIs7GR391cp/ZSOG5DgYf7bNr4Sl+2mcY4Q3lcsy0Rmq1MBESgRoNJV7p
+	5fR6CQDSeqODZ6186bvnY2/dUmXr5Lm7jr4n8ga0GWkMZMz+e0mEGIBKj/Ks4VQ5t3TFOAwHoaU
+	ZSgnJKdpuPi3cObazp9UP1PryyA29gdRlo0M9D8xIz5MZq5Wn8iRUlG+Q78WaS6s3nv73/0hMT1
+	5gOj5prVecBZ6mjeztmyIHQ7ZIk5Z8iZQ6sSPjIZqtLAVC06Qhywghz56OqjxtTnYNKAm7Dj6Bm
+	zlMXdTEVY8jZNnR88H4NOaczyTWTNWLCt9w==
+X-Received: by 2002:a17:90b:554c:b0:3b0:a1c6:95ae with SMTP id 98e67ed59e1d1-3b0afc77a41mr178745a91.31.1793817160656;
+        Wed, 04 Nov 2026 10:32:40 -0800 (PST)
+Received: from localhost ([153.61.198.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b313c143sm154357a91.2.2026.11.04.10.32.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 10:32:39 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 18:32:39 +0000
+Message-Id: <DMMN42GPUESV.YUIKSBF4E297@gmail.com>
+Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
+ <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
+ <jiayuan.chen@linux.dev>, <davem@davemloft.net>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@google.com>,
+ <willemb@google.com>, <matttbe@kernel.org>, <mptcp@lists.linux.dev>,
+ <mason@kernel.org>, <josef@toxicpanda.com>
+Subject: Re: [PATCH bpf v2 08/15] net: Leave sk_stream_wait_memory() once
+ the socket is dead
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Eric Dumazet" <edumazet@kernel.org>
+In-Reply-To: <CAL4Wiiq+QX8quVBjEZK5qipki6Yt7vx4=tt2L4o+FwO9zD-5=g@mail.gmail.com>
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-9-alexei.starovoitov@gmail.com> <CAL4Wiiq+QX8quVBjEZK5qipki6Yt7vx4=tt2L4o+FwO9zD-5=g@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,188 +106,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102220310.12649-1-rjethwani@purestorage.com> <179374354756.488856.17787079121679404910@kernel.org>
-In-Reply-To: <179374354756.488856.17787079121679404910@kernel.org>
-From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Wed, 4 Nov 2026 10:30:11 -0800
-X-Gm-Features: AclHuK9IwD1rDZTP-2krUHCIqiisxEe3xHzAbLlTex379jxu1nU7vOHg_omGLSc
-Message-ID: <CAKaoeS1koPSPtjzj3sFYnZoO5XkYaDcWnodHR+KsGNfz2CYrgA@mail.gmail.com>
-Subject: Re: [PATCH net v5] kcm: reject attaching sockets with a ULP, and TLS
- on KCM sockets
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, jiayuan.chen@linux.dev, 
-	syzbot@syzkaller.appspotmail.com, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, hare@suse.de, 
-	sagi@grimberg.me, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 3, 2026 at 2:05=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 2
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The commit message understates one user-visible regression.
-> - [Low] The commit message says 'rmmod kcm waits until such sockets are
->   destroyed'.
-> - [Low] Documentation/networking/kcm.rst ('Attach transport sockets' /
->   'Unattach transport sockets', lines 144-190) is not updated for the=E2=
-=80=A6
->
-> --
->
-> kcm: reject attaching sockets with a ULP, and TLS on KCM sockets
->
-> With this commit, kcm_attach() refuses TCP sockets that already have a
-> ULP, and it now refuses raw IPPROTO_TCP sockets too. Attached sockets get
-> an unregistered dummy kcm_ulp_ops, so tcp_set_ulp() refuses kTLS on them
-> afterwards. The marker stays until the socket is destroyed, and it pins
-> the kcm module.
->
-> Link: https://lore.kernel.org/netdev/3108e934-ec00-458b-8720-450554b35b55=
-@linux.dev/
->
-> > Holding a ULP also has visible side effects: getsockopt(TCP_ULP) and
-> > inet_diag report "kcm" on a socket that was ever attached,
-> > sk_has_decrypt_user() is true so PSP RX association is refused after th=
-e
-> > attach, and adding an attached socket to a sockmap fails with -EINVAL
-> > rather than -EBUSY.
->
-> [Severity: Medium]
->
-> Is the sockmap effect really limited to attached sockets?
-> SIOCKCMUNATTACH does not remove the kcm_ulp_ops marker, because
-> kcm_unattach() only clears sk_user_data:
->
-> net/kcm/kcmsock.c:kcm_unattach() {
->     ...
->         write_lock_bh(&csk->sk_callback_lock);
->         csk->sk_user_data =3D NULL;
->         WRITE_ONCE(csk->sk_data_ready, psock->save_data_ready);
->     ...
-> }
->
-> sk_psock_init() checks for a ULP before it looks at sk_user_data:
->
-> net/core/skmsg.c:sk_psock_init() {
->     ...
->         if (sk_is_inet(sk) && inet_csk_has_ulp(sk)) {
->                 psock =3D ERR_PTR(-EINVAL);
->                 goto out;
->         }
->     ...
-> }
->
-> Before this patch, this sequence succeeded:
->
->   SIOCKCMATTACH -> SIOCKCMUNATTACH -> BPF_MAP_UPDATE_ELEM on a sockmap
->
-> With this patch, the map update fails with -EINVAL for the rest of the
-> socket's life.
->
-> Could the stable-facing paragraph that lists the user-visible changes als=
-o
-> say that a socket that was ever attached can no longer be added to a
-> sockmap or sockhash?
+On Tue, Nov 03, 2026 at 09:23 PM Eric Dumazet <edumazet@kernel.org> wrote:
+> "A signal or SO_SNDTIMEO of the target ends it" does not look enough to
+> me. tcp_sendmsg_locked() takes the timeout from sock_sndtimeo() of the
+> target, a socket the sender does not own and cannot configure. With the
+> default MAX_SCHEDULE_TIMEOUT, a blocking sendmsg() on the sender's own
+> socket never returns, and the sender's sock_hold() pins the dead target
+> until then.
 
-Good catch, I'll list the sockmap case in the stable paragraph,
-and I'll fix the earlier paragraph that said the -EINVAL only applied to
-attached sockets.
+Right. It's not enough.
 
-> > listen() after a disconnect fails with -EINVAL, as
-> > the dummy has no .clone, and rmmod kcm waits until such sockets are
-> > destroyed.
+> Since this patch makes SOCK_DEAD a reason to leave, one wakeup before
+> sock_orphan(), while the socket is still owned by the closer, should be
+> enough. The sender can only get the socket lock back after
+> sock_orphan(), so it sees SOCK_DEAD. Nothing walks the wait queue after
+> sock_orphan(), so skipping remove_wait_queue() stays safe.
 >
-> [Severity: Low]
+> Something like this (untested). sk_wq can be NULL here for MPTCP
+> subflows, hence skwq_has_sleeper():
 >
-> Is "waits" accurate here? Unloading does not block on a non-zero module
-> refcount:
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ void __tcp_close(struct sock *sk, long timeout)
+>  adjudge_to_death:
+>   state = sk->sk_state;
+>   sock_hold(sk);
+> + /* A sockmap egress redirect can sleep in sk_stream_wait_memory()
+> + * without a reference on our file. Let it see SOCK_DEAD.
+> + */
+> + rcu_read_lock();
+> + wq = rcu_dereference(sk->sk_wq);
+> + if (skwq_has_sleeper(wq))
+> + wake_up_interruptible_all(&wq->wait);
+> + rcu_read_unlock();
+>   sock_orphan(sk);
 >
-> kernel/module/main.c:try_stop_module() {
->         /* If it's not unused, quit unless we're forcing. */
->         if (try_release_module_ref(mod) !=3D 0) {
->                 *forced =3D try_force_unload(flags);
->                 if (!(*forced))
->                         return -EWOULDBLOCK;
->         }
->     ...
-> }
->
-> The reference taken by __module_get() in kcm_attach() is only dropped by
-> tcp_cleanup_ulp() when the TCP socket is destroyed. As long as any TCP
-> socket that was once attached still exists, rmmod kcm fails at once with
-> "Module kcm is in use". This holds even after every KCM socket is closed
-> and every socket has been unattached.
+> This can be a follow-up and does not need to block the series.
 
-Right, rmmod fails immediately rather than waiting. I'll reword it to say
-it fails while any once-attached socket exists.
-
-> > diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-> > index a7f94d42036fb..1f8bcbb8b9c3b 100644
-> > --- a/net/kcm/kcmsock.c
-> > +++ b/net/kcm/kcmsock.c
-> > @@ -30,11 +30,26 @@
->
-> [ ... ]
->
-> > +/* Not registered, so TCP_ULP can't select it. It only holds
-> > + * icsk_ulp_ops so tcp_set_ulp() refuses other ULPs like kTLS. Like an=
-y
-> > + * ULP it stays until the socket is destroyed, pinning this module, an=
-d
-> > + * tcp_cleanup_ulp() releases it. Clearing it on a live socket would r=
-ace
-> > + * with lockless readers such as do_tcp_getsockopt() and tcp_diag.
-> > + *
-> > + * No .clone: children copy icsk_ulp_ops without a module reference, s=
-o
-> > + * a socket that was once attached must not listen().
-> > + */
-> > +static const struct tcp_ulp_ops kcm_ulp_ops =3D {
-> > +     .name =3D "kcm",
-> > +     .owner =3D THIS_MODULE,
-> > +};
->
-> [Severity: Low]
->
-> This isn't a bug, but should Documentation/networking/kcm.rst be updated
-> as well? The "Attach transport sockets" section only says:
->
->   - fd: file descriptor for TCP socket being attached
->
-> The "Unattach transport sockets" section says unattaching "is
-> straightforward".
->
-> After this patch, SIOCKCMATTACH refuses raw IPPROTO_TCP sockets and
-> sockets that already have a ULP, both with -EOPNOTSUPP.
->
-> The kcm marker also stays after SIOCKCMUNATTACH. For the rest of the
-> socket's life:
->
->   - setting TCP_ULP fails with -EEXIST
->   - getsockopt(TCP_ULP) and inet_diag report "kcm"
->   - listen() fails with -EINVAL
->   - sockmap insertion fails with -EINVAL
->   - PSP RX association is refused
-
-Yes. The next version updates kcm.rst.
-
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261102220310.12649-1-rjethwani%40purestorage.com
-
-pw-bot: cr
+Makes sense to me. Thx
+It depends on the SOCK_DEAD test, so it goes on top of this series.
+Will send it as a follow-up.
