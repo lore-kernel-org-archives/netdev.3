@@ -1,61 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793797157;
-	b=XsywHw1z3m1GemeT583UL4C6VcRoZIhHzz7rg3gPGEOUC84FH5GAdXlCZDHBCHdHqAkt
-	 HEvR0oY6z9uB66k1dKvZpnUjLPyY8wDCbamPNOnGoy3T4IF0jWlet6FM3V9hzBppd4qWI
-	 a7InkoaCtG2m+0a3wGZPai2UI9GUPc5VmysobY56VHbHrEKQ+EhNaFJXOWRT4VqW0WhPy
-	 4lvwUhZREsjO+ISyi0PwgO3eRDrMuyd/KBljQ5Qcioq/5krSHORriyunIUBXEYf8P+uRZ
-	 ieMxvcGJaouQ7828yhWklRB06jr1a559tsQYdDUc78zyNHEhCLiaEj9NmxQN1o/7RkA==
+	t=1793797467;
+	b=qc0wBgHWyMA4nj0wAKkTaHZiNm0FMF5hofJo38HDi+srVhYaIxiQov+aC4INn8JU9tAi
+	 71SrRX5q4I20YW+lfCG7nVssC4tf5B+jG4+96YoZNdsKcQoK47x9KBxih7sYjJMnRBxsc
+	 aWjcvkeInU0OuNr+XcaIc3JsQa08yh469skPFyjZ+aMsfJuhVz9mBS0HOgoYOkmRoSV52
+	 Z1SbWs6W/gHkqRY6NC8xW/Te3VSUcI1FJ/g703JOGuJvSZM9S9UF3fpzhB4KxWyi15JBk
+	 qldYLD3phcloqQ9nFfIVXYlK7iq4JguVgNIK9DqUwBmqPq5XfDkAGTSjWZWFHTMig4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793797157;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=KqxiA3lLXIGYrb6Orjr2tvhyCTxjiNV+pkKH8a5JfkzshV/b9Suil36gHwqe7tFA0KL5
-	 5bKu1pGkuZIaHpAaZVknzr+56t7xhpZs3f2rlzijam9ssy/utfhvMgGfNfxcbjTe3pDOe
-	 +zVZ6OqjoiobleS9ZKHlJgdE/W4F5dg7C5/UT7xUo1OydfF/Gu9B2193SuXweW+lSpIXM
-	 0Kt4g9zYH/BJ1yFn84nkYRtq6xSXdoM6RGRZId8qfC+a0tbM6AdRewkM603Dr5t8pV7/o
-	 ilX1DTCa7Lt3S9orYwJ0Dxk7jr432iEky12jLGA2VHZDJmu6sSByfylolR1+6ex85ug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793797467;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=0gGIxmVj15HwpHlgucVC67kzMBeDjNiHcqiz6hAOrv8=;
+	b=OJNczZTS74yiI6N8oYUNVhgnTtxeCtU4zHg0LwNINVEsdud8dqxdJ47+6jX5YaDaZSCW
+	 NPWrKBTSCFK8SPXxpw9zV4Z1j6N+jnG2RgzPQzowbph/Cd30E6qsv2IcI8Arfgkz36cLh
+	 LI6BJ5HoWoK4I2Pk7ASRTVF3RRPdRC4vGD8mMZjr+2EBtE4AqQXUeQhKVqTKYsopZXd4c
+	 SH/ogDCJSoYJjQk+4luoEtnJFJjgA9G8pU9VY9q+yYg1FdSD9rw9gvqFxOrLtJerfNRkr
+	 rq6JU61q7IFy3KycSresxoLu330R1jKRa5PWeRN8LL9kuyEBlZAK1LUbJoQoGvey58g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUlp63ag;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C182rFoz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD619606A32D;
-	Wed,  4 Nov 2026 12:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBBB606D805
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bUlp63ag
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23D01F000C1;
-	Wed,  4 Nov 2026 12:59:15 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C182rFoz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDEE1F00A17
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797156;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bUlp63aga3UMVDyqh1ngWGRKLBYgpglVjpk6DY2jECK+glhxVlW8a51KARWKCIiW7
-	 GVuIG+JRY0e5y1MmhSUllt/IRDo6OxpcKSHR89g++p/QzdvnUDsG6pvPmGPhGY2krh
-	 8zlvNuXLO7TKulDQIR9e8vvci4D5GmqXvRqq2kaAyb2ZbD2kx0fVMKbGIU73HkjBZ2
-	 Q+5wBI7hwHw3FFiDSROX0nLJzuAWCeMu/4kJoR7gN9POKJT8OPk+PuIvYxsiy3+wGP
-	 MauzuH2NiDtoYe9OCzYRUvImxH4JnhpZkIvVbMbBYsk1mGjtqBIfegF2ZwgAwjCvC4
-	 vPKsopESK/5fg==
-From: netdev-bot+sinfo@kernel.org
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Matthieu Baerts <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH net] mptcp: pm: kernel: use RCU to free endpoint listeners
-Date: Wed, 04 Nov 2026 12:59:15 +0000
-Message-ID: <179379715527.488859.15110751341771291620@kernel.org>
-In-Reply-To: <20261104125327.1041456-1-edumazet@kernel.org>
-References: <20261104125327.1041456-1-edumazet@kernel.org>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793797466;
+	bh=0gGIxmVj15HwpHlgucVC67kzMBeDjNiHcqiz6hAOrv8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=C182rFozjpn+i/0Ts1DVq3b+ldJzLaYXncXGSKU5f4XCAI4+yQi49mycFeAVy/gy7
+	 8i034pd2KQtcZ+CDX7gNbb1ARO9RfgRTbhmouZunnvcULJfaG9HPLVwZ3ytUngroM8
+	 egwAbMwpz9XNDrjkbvaFb7ks4aeC1jnf/7xgjiQSSRWyIkLiOi9LhuCZ0m05jFhICK
+	 nr+140ioY7Z+vWkH+hoTBBLG9p9apDmaJAyXwiVWq7Jj1yLXp7seJxi3P3EtW934rg
+	 oWpdYy+4j+63c1HAegqRqhpSl5cl6n6imJzOTlCBDI2RliYbTkTkC1EonSRTyah1Td
+	 f1twz4w1M1Eww==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba3ac592faso713915e87.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 05:04:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBx6gMYPiW+qUAHgKaEecRDBswFGFCqIyj9TD+Ltauhq697P0YqOk/L0zGviQm14xvbtOcVa3HI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/DrInlmwpNTlQwYGM972BXQgodykZieTA6BhFKY7jn1EhwnMeW
+	sYkBGIsFp6meRyzITT/ZxTR6g3ZNy4QU7P/+MkmeW773U0m0kpk2n9U9W0fem1jHETnSskenKjZ
+	RtTMvFB48yKGHgOmK8ypa4f14fFUfKtk=
+X-Received: by 2002:a05:6512:39cd:b0:5bf:b166:f58b with SMTP id
+ 2adb3069b0e04-5bfd95782a4mr5476115e87.55.1793797464785; Wed, 04 Nov 2026
+ 05:04:24 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +59,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com> <20261022-add-board-ok3572-c-v1-5-0b0fd85a31ee@qq.com>
+In-Reply-To: <20261022-add-board-ok3572-c-v1-5-0b0fd85a31ee@qq.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 4 Nov 2026 14:04:12 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=2Z3hP74dHRyE3Aabp+PvpcHX_90PQy+a_HMQwBdNx6g@mail.gmail.com>
+X-Gm-Features: AclHuK9_TlXav34NYeX4rfS2IYWnnq1y5c9wSfeOajfltWQaA7IZMQ4oBhaALpc
+Message-ID: <CAD++jL=2Z3hP74dHRyE3Aabp+PvpcHX_90PQy+a_HMQwBdNx6g@mail.gmail.com>
+Subject: Re: [PATCH 05/27] dt-bindings: pinctrl: rockchip: Add RK3572
+To: 1579567540@qq.com
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Elaine Zhang <zhangqing@rock-chips.com>, Lee Jones <lee@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+	Ulf Hansson <ulfh@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Jisheng Zhang <jszhang@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Wu <david.wu@rock-chips.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Jaehoon Chung <jh80.chung@samsung.com>, 
+	Shawn Lin <shawn.lin@rock-chips.com>, linux-clk@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	mfd@lists.linux.dev, linux-gpio@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org, 
+	linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Wed, Oct 21, 2026 at 6:12=E2=80=AFPM Cunhao Lu via B4 Relay
+<devnull+1579567540.qq.com@kernel.org> wrote:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+> From: Cunhao Lu <1579567540@qq.com>
+>
+> Add the RK3572 pinctrl compatible.
+>
+> Signed-off-by: Cunhao Lu <1579567540@qq.com>
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+This patch 5/27 applied to the pinctrl tree.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Yours,
+Linus Walleij
