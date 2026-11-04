@@ -1,101 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793810386;
-	b=p0tot/pQtpzkTePSce/9mTqW8jwTc1WStULHYF8Sc74sKSCR+o7rBTpG5uSvjsdm7lvj
-	 hQQ4zfe0/Ir3kLw+3jRizSfsfb53Gq24X/frm8Vslrsd28IPf+ojlwCFQGG4EEaQB+tey
-	 jrWizKVhNi+itvUcQhzMhNDoXgJICR1GFtW2uozV/wn5zaAKLUEDNJ7KPLOED5WEBJi/z
-	 sjaQZcQDtejoEMasMwQEtJOoK6jVCqNxrUFT9XU8vKDHvCByhUy3XRki2OeI+pTHwjfwb
-	 MvD4P4QBWMluI1pupAyeKxtlR5M5ezrZm/zsECPG16n5ZEkvtUUxSghIvfWH+STyvFA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810386;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.43
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793810564;
+	b=S+nmrrKb+mo/4/ZfdOqBy1QWcZ8+oyu8duVuLjkF07JuCwTXI8Sq7nriH7pEmSjiByWZ
+	 oGOBxwwguKVDyVtohYR5dhns7SOrAyt65oliP+ST0F2qxpc8XBjS0bbMrVrSQZz9pf2Pm
+	 QNPYY0jb0RVoTT3kUHpM/3SrYfHB9f4LsdmPabaelvEcnIiNhxlFGQMqteB2iVeDNDzrm
+	 3dDuzX4WJejVbIoJE1C/e0d9AWKjb1KX5R5c13PTY/lHViHcn27lSaEwXuwISq7rG9/AD
+	 1vdquxkdk8vT33c4pltDFCvEARGWeZAlw+jKoE8f+oQ/UcbvcaqU/SacFLSDqzEH5DQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793810564;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=v9hFqWhtC5GX+p4lP05SUZf7Nx79dRHnQWtHSWGeSxQ=;
-	b=VGc2LiN16nQpAw9Mv590azL/BKiTzA/wkzBRdRooq351eINabunwNVvT2mmnMGzKf8eZ
-	 MW87R2a+xo5cdisc+ZliljjuJ0dUbIXTEgHcINyxCiRkoS31uFE6TGVfBSMwJO8Jw3hTw
-	 NA/PgXNgVF+wXf0N9uetAu9hxABcjRvrQrZCzV/6b/ABM4qEHonrOhu6zmkRFcNbkVRmb
-	 9smc3CQEganCFwOiWL2oSgnp/h1RpfCuapSrL3XLpM1BcBPKYzDbjHwFLawdDFeEUJW0Y
-	 QDsQlEiaHkDvfVzwvTAM65DP4TGuItnJJ0H0iy7g4b6ocerF728ePOTD/puYzc7D4CQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
+	b=b0SLBA+2HBEO2/B1s5bUEM8A3r7RYlfb7SEoLAEkfPPsnBELHtQsXoeD7b3sgBSsINSq
+	 1unBRSDgvMrYsjmjOpozhfa6WGEWELKUHKe6T11gwmMrNrwZLKEkAcDv8U6nu6wQBkXdT
+	 vAGJt/T7aLvHaRg13dYnsXoc8UBCL9HPGCvpx2iEexOkQ23p1s8yO5lYfpk6fVcxz2dQH
+	 Cqq+jyElAcKDJ+5v57YYYLIUMJWUmXjPta3TZ0GlkzXZVPrGkxLhxYjtI1Mb+CthVE9ZB
+	 yFJxV79xEjjpGM4O7fhUSHIYFWD4JBiOuaArkdEaVf41XBZdUAoPmMFgiyjl9BYe+mw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ujSReGkM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yuRK4eVF;
+	arc=none smtp.remote-ip=209.85.219.43
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B2606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:39:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E79B2606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C5606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:42:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A36C5606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ujSReGkM
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-490f38e9688so147642f8f.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:39:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793810384; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gIlpJFZyElOXLt1x4aVcKtjyIFIWc8R7KZ/6O6JjvhyAbLPJ3NKPeed/yn3c8UIYzn
-         3bCe2+uZxeWjeVGnk3TKuDVJ7PvfCggWWKuG7+06upCBmkwh9LjTXsciXOerjpFBLvU0
-         GlIkZ06UUqlXouGaCXC0+k0gRWa1gokJlCD1wvTSDtcnDvaVLGYBDhWWmFxyEIVO+kfS
-         y9SjOqsZfTVSj+JE812nBgv/RuffaK3LDEpVmV7qlVkUoyK3n0hKQRh63NhHBpG3U1Wh
-         smtkjELV/c8+d3UkZcMkw/VS0q3R2tnEadd+pa8hz9Gj6wIZq3yF+gazzVh9/FdIvQGW
-         5svQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v9hFqWhtC5GX+p4lP05SUZf7Nx79dRHnQWtHSWGeSxQ=;
-        fh=zjBcUWYfBi6qaSihV/EWRgQ2+4c3+e3u5D97wRVhSYQ=;
-        b=MeKK5urWhWIH8N7neOAJIGSaIrs270HX24LUDM5l8XYi59AAStdjJlHP9hipb4tqog
-         vC8yQX+92Y5HeHfB0KwBgisx4skkB2YgOEgcl5Nrt1C3ckcojUJfKn3kxWvVH4ivP/6c
-         p7dRqfBK6rp0Alq8dQaiQuQLA99BJ+L6wxjSl3q6JCIfXw9qzh2Bq4RopCaEaORKMVAf
-         KFT1AiN+1iWGItdfp31FRFexdQRtr8RLNUTiVOa1TXWgoTWEu4Zvjfe+Fsdg0N+fIv1B
-         gkf1mLbKZtFwMawOSDPDhgosCO+cUOHR9A1q6stNPT1CCaYnvZM3YHD+LFNVBZJEQAcX
-         xBTg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yuRK4eVF
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91c75267b0fso10042566d6.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:42:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793810384; x=1794415184; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v9hFqWhtC5GX+p4lP05SUZf7Nx79dRHnQWtHSWGeSxQ=;
-        b=ujSReGkMHDN10N9A76S9V4++cdgbBj66eecwgWY5849ZCMaoISw55A7+h2iVC0GoZf
-         aa3ZqWMNvKIkddAR3w8F0BhKJXk7GkZCj9OzDOJMVC/e1+spxp7RhVlZN1VdrOoKqEMo
-         0sTBPU7wunyHq3MW0GEoYLeyy8uNqeEKvV5nI9tXcdyJQ4otvKL3AROzwneaDU3Rr4rZ
-         O9XPLpuRSCwKgIj24jQXdjkUsuogGmmpTNeAoAHFogqyTe5Fy+e3QQaJCYu5p93Yr3pX
-         RjH1h2xG9C0G9G8pi5c67akT9Eceu+3U43JnomWQH3we/BvDqCKVl6q/ysHePJ4iiM8f
-         ZIjQ==
+        d=gmail.com; s=20260707; t=1793810563; x=1794415363; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
+        b=yuRK4eVFFHvGeSfGpuT2oAyAnci9C1QVfq99WLjpeiK18Qe/SoncpvQeTFYND2jvjp
+         8MUOfmm2GHt6qadP7AMENObqTtw72UqH9DtiQcHKJIo8CjlVH1QWs7e03n4G/LO+8jBK
+         hXxvCg1qxfKxdz4ydB/w0Ri5vzeIxTfUGp8Qk0/zN4HB2TPvduDo83vnro7vS8dzGDFg
+         lJPLRx7HPSQ8BKzQbMdvPJEPMbXOEuADO9kv7j/V2UMATen2qiBOTXrwMraVND2QmXCn
+         EDdspFtz/b/n5sHrGluTYYpv+8IYzZ/8tgYzniqm1cNA2zFn6NESjm/goBa2yWfz8uKh
+         uu4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793810384; x=1794415184;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793810563; x=1794415363;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=v9hFqWhtC5GX+p4lP05SUZf7Nx79dRHnQWtHSWGeSxQ=;
-        b=efnfvWUlUlseko/2xBLKXATQ6hA7GVXs1xPwIo7h23SwQzjqy5dILqhB75tUel8+7m
-         GRudGG2SP8jfPN1ttnghr+VFhK5/E0U3o/pCqvrqQzQHNJub+FJEONYoKARSq0zUmiIE
-         Dq/oaq9Rrn5Bt/S1Gqy169HbJ2l4LxO9bSwcc/A5LpmCQxPhWmuGGXziNUSz+hfPhLpT
-         A7vhADpELLX92AHAc4Wcubs23FlqMo7gji3Uhi8dSudKH5T0HRIwCPIIHis3e52fzJ8P
-         /1KoKGaUhUubky1ek7fXjnK3ro3WrXbqURsRDZ8qTTb6Vtjy17P7/niVwqQtsdeWMCxk
-         BuTw==
-X-Forwarded-Encrypted: i=1; AKwUvBwcL4aZv9+38ed7ZiiGokx328YDd29xMINCHRtexvOsXTVaqxU+Us6yH10Z70RLiNEif1kWayI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/mtMUxcTNX/UjWTk9op+wSt/nt3H0rOswLJJK7OpGYYWjdh2ir
-	X4U/Fvfz2X8M6yXBtf0QppsfeleO+ywApUTPUAUBfXMgYbBtiQ/xnisfT7wKp0pME3NzbVZm0JD
-	TykD93Od8zzzM61G2PQOOyKaosTt1K64=
-X-Gm-Gg: AYBFou2wBhsyIM9ptIN9lKSl9aoSTV3SfSiZjECud+wVt/mIZGWT1ZPomubhr9JrDeS
-	sUZgYJZoAOGYWuzUkH8JwH9ANy8aYOjFzd9ZyKcxOismcx+yrEaT9cDmIng3UbN+A4Hlii0A/6n
-	/LhUtBK7TW9urkUjNc/gyvmXHYgC6VeVaC65CKywFZ1tpBrwjd1Wnjj+N4xntd+LU6Y/KVlKAUT
-	T6MqCXu4lgVu3dcWhNBma6hlyYLcvNFUPARFVU3YMOQyyNAAE5pZNdBxAOHMXgciQ/Ijl2WoxDN
-	MODqE/ith7PItKfR9bZfJSA9328jDezFH+t0hTFs3erHgQy7ddAkUWKVD87oNdKcAm54NNJ3ea8
-	ZOzKCzCUuiG1kY+j3TmjrkpkeIOMwt7IkgrNQX1zQvBs+oqzlSkvXqZE/A43poOPXXKh/v9NMl8
-	5O8BGE/6ER0saih9dxjBggwnNU0m2QfmDxQtoppK2gXGXKy+tq2zLQQQ==
-X-Received: by 2002:a05:6000:4610:b0:48e:1b11:7ee6 with SMTP id
- ffacd0b85a97d-49114d42ea3mr83089f8f.2.1793810384089; Wed, 04 Nov 2026
- 08:39:44 -0800 (PST)
+        bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
+        b=EhqMe8TRqNzWvPR9EC+hQNaRmJNeYoeE3v9SgtFnmFUC31qDvtqoaUKDYJkEJoxmhI
+         Vr6RmfvBEESvu71xkJT1BD6NP8rPavrqHP2Ma1LGAoFSeyi0i5g7ihkswDFeuODjED7j
+         Q4RFb8YJK1rZbTaEaUHWEEuUMMVFDHX0b8PEfqQMGGhULwY+ZiahGI/xizrWqDvila6w
+         Vv60KKmN0bs5iO2Ht+fPzC4Gbv1Pw+Ax5k/eFMm3ISrkDwaR3oVRLC41rGXPaHmH7Ez6
+         N5VBwOMqMDRJ3iZufUftp+BQrwJMmvKWSUmSOkY8zPW1MGlpgfaOBUh/ZfBHzirajt1P
+         H7Ig==
+X-Forwarded-Encrypted: i=1; AKwUvBwchyUKdx8nv3eBfA9ZlVyXWv0S2Qnxfkrp7et2e98Aglx2YS3EST12IFS+SzTKGBU7wnQfpMQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9H10bHxFJ0O9O0rn6Dpc/J9xlfZNpHELVn8FuYCE01+UUwFzaM
+	jwTiFlVZt3YK6mvaZeqPK2q+QLJCJr6TGcCCGXDvOGcozIC+tVWFfL3v
+X-Gm-Gg: AYBFou00CKZ9SIdr7tQZtU0CSZsAmMgq2H9+/H1q2jBHIHu3IQYhVounkjbbUsTIVLL
+	xVRfz+WgBYb9SoY0Rtg8/qezHtlibMLrUZ2YL0uPLn5Cc7q7urY0/5zhUdqdg3vuLPPV/ZVv9lk
+	mak3c3geAI3T4obDKGz0xAhV0hSxgDZhxhIKVYP7lgFymZGT16WZZbWzjG66fXGSYR5stnqXKzS
+	tuGhmIF6VXdy9cQt0ic7xPACjlK4k3haSL8ZdhdBZbyevmak3t8oKqTCnc08WBtHok4a/rYl8o5
+	J7e+kr5pubG8gsrhl5mo75gc32Ntb2Yw4BKlwCXAEbf2m33npmLw39O6WXCaZAAYAplcQtrvVc2
+	nVl7q7F7kP84DTw96rI3VxZubNtDTTLBgpHBiTHacZ2UhnZ3vBLoFiZnX51m5yOW3t/tTxNN/JS
+	kTfSd/pQbIunTiS+Eq+1zNW6C9Da/S/rSqcIVm4myIsTRS/uUIFQHcsDMkZdVCLfKCxXwjZIABf
+	NSAtNnmtyNpZgcZGGILxFk1LWfX3O8EvvEdqgW14IEjrNsf3g1GyBIwTG6xngsnxncI0a5Ery6E
+	4iTqgQ+XOS2s1/bc
+X-Received: by 2002:a05:6214:448e:b0:91c:8f2d:4025 with SMTP id 6a1803df08f44-91ca4ae89c9mr259102566d6.17.1793810562410;
+        Wed, 04 Nov 2026 08:42:42 -0800 (PST)
+Received: from localhost ([2620:10d:c091:500::5:7adf])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e7e013a5dsm23275976d6.27.2026.11.04.08.42.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 08:42:41 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,205 +87,159 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
- <willemdebruijn.kernel.2de9d4f8c5034@gmail.com> <ce3e6832-ca9f-4e91-8302-b5bd7cf2f178@redhat.com>
- <willemdebruijn.kernel.1f1cead288fc2@gmail.com> <CAKgT0Ue8i8gTiJg91UYjKPvwfZ9ydf6XXDD1dmaJpjVAb7mwPg@mail.gmail.com>
-In-Reply-To: <CAKgT0Ue8i8gTiJg91UYjKPvwfZ9ydf6XXDD1dmaJpjVAb7mwPg@mail.gmail.com>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Wed, 4 Nov 2026 08:39:07 -0800
-X-Gm-Features: AclHuK_6Btf1MVbem2YTlVMjTK1eWRQjhmWMdUbWSxj8DsaTUyRgbKNHVKKDXbI
-Message-ID: <CAKgT0Ue6yT1+ON2v_xEQef+eY8tUzEaF=zWaFY1udnLUybPVsQ@mail.gmail.com>
-Subject: Re: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other than fraglist
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kernel-team@meta.com, kuba@kernel.org, tactii@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 11:42:40 -0500
+Message-Id: <DMMKRVD73MEB.XP1KMYHPAZBV@gmail.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "Simon Horman" <horms@kernel.org>, "Thaison Phan" <thaisonphan@google.com>,
+ "Kuniyuki Iwashima" <kuni1840@gmail.com>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH v1 net-next 2/2] tcp: Subtract psp_sk_overhead() in
+ __tcp_mtu_to_mss() and tcp_mss_to_mtu().
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Eric Dumazet"
+ <edumazet@kernel.org>, "Neal Cardwell" <ncardwell@google.com>, "Daniel
+ Zahka" <daniel.zahka@gmail.com>, "Willem de Bruijn"
+ <willemdebruijn.kernel@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261103000712.658501-1-kuniyu@google.com>
+ <20261103000712.658501-3-kuniyu@google.com>
+In-Reply-To: <20261103000712.658501-3-kuniyu@google.com>
 
-On Wed, Nov 4, 2026 at 8:34=E2=80=AFAM Alexander Duyck
-<alexander.duyck@gmail.com> wrote:
+On Mon Nov 2, 2026 at 7:06 PM EST, Kuniyuki Iwashima wrote:
+> Currently, psp_sk_overhead() is added to icsk->icsk_ext_hdr_len.
 >
-> On Wed, Nov 4, 2026 at 8:24=E2=80=AFAM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > Paolo Abeni wrote:
-> > > On 11/4/26 03:51, Willem de Bruijn wrote:
-> > > > Alexander Duyck wrote:
-> > > >> From: Alexander Duyck <alexanderduyck@fb.com>
-> > > >>
-> > > >> The netif_needs_gso function lets a GSO skb reach the device unseg=
-mented
-> > > >> when it is CHECKSUM_PARTIAL or CHECKSUM_UNNECESSARY. The second ca=
-se was
-> > > >> added for FCoE, whose transmit path marked CRC offload that way at=
- the
-> > > >> time. Commit 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate=
- CRC
-> > > >> offload") moved FCoE back to CHECKSUM_PARTIAL but left the exempti=
-on in
-> > > >> place, with nothing left that needed it. Fraglist GSO, added later=
-, is
-> > > >> its only user today, as its segments already carry valid checksums=
-.
-> > > >>
-> > > >> A TCP GSO skb can still arrive as CHECKSUM_UNNECESSARY without bei=
-ng
-> > > >> fraglist. Hardware LRO builds its aggregates that way, for example=
- mlx5
-> > > >> sets SKB_GSO_TCPV4 or SKB_GSO_TCPV6 and CHECKSUM_UNNECESSARY, with=
-out
-> > > >> SKB_GSO_DODGY. IP forwarding and bridging turn LRO off, but a tc m=
-irred
-> > > >> redirect does not, so such an skb can be sent out another device. =
-It
-> > > >> has no csum_start and its TCP checksum field is whatever the aggre=
-gate
-> > > >> left there. Drivers that only set up TSO for CHECKSUM_PARTIAL, suc=
-h as
-> > > >> fbnic, i40e and ice, then send the whole skb as one oversized fram=
-e
-> > > >> with a bad checksum.
-> > > >>
-> > > >> Have the validate_xmit_skb function mark any CHECKSUM_UNNECESSARY =
-GSO
-> > > >> skb other than fraglist as CHECKSUM_NONE, which means the same on
-> > > >> transmit. The netif_needs_gso function then segments it in softwar=
-e,
-> > > >
-> > > > tcp[46]_gso_segment convert to CHECKSUM_PARTIAL and then
-> > > > tcp_gso_segment will send it on to hardware if skb_gso_ok with
-> > > > NETIF_F_GSO_ROBUST.
-> > > >
-> > > >> and the __skb_gso_segment function unshares the header before the
-> > > >> protocol code rewrites the L4 checksum field. The callers of the
-> > > >> netif_needs_gso function that decide on segmentation for themselve=
-s,
-> > > >> such as tap, are left as they are.
-> > > >>
-> > > >> Found by code inspection. In QEMU with an emulated fbnic, TCPv4 an=
-d
-> > > >> TCPv6 GSO skbs built this way each went out as a single 11 KB fram=
-e
-> > > >> with a bad TCP checksum. With this change they are segmented into
-> > > >> MSS-sized frames with valid checksums.
-> > > >>
-> > > >> Fixes: 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC o=
-ffload")
-> > > >> Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
-> > > >
-> > > > Reviewed-by: Willem de Bruijn <willemb@google.com>
-> > > >
-> > > > With the above aside. Not important enough to respin imho.
-> > > >
-> > > >> ---
-> > > >>   net/core/dev.c |   11 +++++++++++
-> > > >>   1 file changed, 11 insertions(+)
-> > > >>
-> > > >> diff --git a/net/core/dev.c b/net/core/dev.c
-> > > >> index f32353b0467c..28b4a652d037 100644
-> > > >> --- a/net/core/dev.c
-> > > >> +++ b/net/core/dev.c
-> > > >> @@ -4207,6 +4207,17 @@ static struct sk_buff *validate_xmit_skb(st=
-ruct sk_buff *skb, struct net_device
-> > > >>    if (unlikely(!skb))
-> > > >>            goto out_null;
-> > > >>
-> > > >> +  /* Only fraglist GSO, whose segments already carry valid checks=
-ums,
-> > > >> +   * can be handed to a device as CHECKSUM_UNNECESSARY. Any other=
- GSO
-> > > >> +   * skb has no csum_start for the device to segment from. NONE m=
-eans
-> > > >> +   * the same on transmit, and has netif_needs_gso() segment it i=
-n
-> > > >> +   * software.
-> > > >> +   */
-> > > >> +  if (unlikely(skb->ip_summed =3D=3D CHECKSUM_UNNECESSARY &&
-> > > >> +               skb_is_gso(skb) &&
-> > > >> +               !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
-> > > >> +          skb->ip_summed =3D CHECKSUM_NONE;
-> > > >> +
-> > > >
-> > > > It's unfortunate that we need to add yet another branch in the hot =
-path.
-> > > > But I also do not see a good alternative.
-> > > I understand fraglist GSO has some use-case, but I'm really wondering=
- if
-> > > it's really worthy the pain?
-> > >
-> > > I'll personally think we should consider removing it entirely.
-> >
-> > If non-fraglist TSO packets with CHECKSUM_UNNECESSARY can be built and
-> > drivers are incapable of handling them, this has to be fixed up.
-> >
-> > The GSO stack trick of fixing up csum_start/csum_off and then handing o=
-ff
-> > the TSO packet to the driver is a neat solution.
-> >
-> > Though that currently only works for TSO, not yet for USO.
-> >
-> > Apparently with a bit deeper restructuring the check can be added witho=
-ut
-> > additional overhead to the common hot path:
-> >
-> > +/* Like netif_needs_gso(), but only fraglist GSO, whose segments alrea=
-dy
-> > + * carry valid checksums, may reach the device as CHECKSUM_UNNECESSARY=
-.
-> > + * Any other GSO skb has no csum_start for the device to segment from.
-> > + *
-> > + * The extra test sits behind skb_is_gso() and ip_summed !=3D CHECKSUM=
-_PARTIAL,
-> > + * which netif_needs_gso() evaluates anyway, so non-GSO and regular
-> > + * CHECKSUM_PARTIAL GSO skbs see no additional branches.
-> > + */
-> > +static bool validate_xmit_needs_gso(const struct sk_buff *skb,
-> > +                                   netdev_features_t features)
-> > +{
-> > +       if (!skb_is_gso(skb))
-> > +               return false;
-> > +       if (!skb_gso_ok(skb, features))
-> > +               return true;
-> > +       if (likely(skb->ip_summed =3D=3D CHECKSUM_PARTIAL))
-> > +               return false;
-> > +       return skb->ip_summed !=3D CHECKSUM_UNNECESSARY ||
-> > +              !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST);
-> > +}
-> > +
-> >
-> > @@ -4222,10 +4243,18 @@ static struct sk_buff *validate_xmit_skb(struct=
- sk_buff *skb, struct net_device
-> >         if (unlikely(!skb))
-> >                 goto out_null;
-> >
-> > -       if (netif_needs_gso(skb, features)) {
-> > +       if (validate_xmit_needs_gso(skb, features)) {
-> >                 unsigned int max_segs =3D 0;
-> >                 struct sk_buff *segs;
-> >
-> > +               /* NONE means the same as UNNECESSARY on transmit, but =
-has
-> > +                * __skb_gso_segment() unshare the header before the pr=
-otocol
-> > +                * GSO code rewrites the L4 checksum and sets CHECKSUM_=
-PARTIAL.
-> > +                */
-> > +               if (skb->ip_summed =3D=3D CHECKSUM_UNNECESSARY &&
-> > +                   !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-> > +                       skb->ip_summed =3D CHECKSUM_NONE;
-> > +
-> >                 if (unlikely(!gso_within_dev_limits(skb, dev)))
-> >                         max_segs =3D skb_gso_output_max_segs(skb, dev);
-> >
+> __tcp_mtu_to_mss() subtracts icsk->icsk_ext_hdr_len from mss
+> after clamping to tp->rx_opt.mss_clamp, which comes from the
+> peer's MSS option configured via advmss.
 >
-> The problem with that is the order of operations. The issue I am
-> attempting to address is that there was an e1000e patch that was
-> trying to make changes to ndo_features_check to address this. That is
-> when I realized there are numerous drivers that would be encountering
-> the same issue.
+> Since PSP is upgraded after TCP_ESTABLISHED, PSP and non-PSP
+> flows share the same route mtu and advmss.
+>
+> This makes it impossible to configure a route so that both PSP
+> and non-PSP flows achieve 4K MSS for TCP_ZEROCOPY_RECEIVE.
+>
+> With mtu 4220 and advmss 4108 (4096 + 12 TS), non-PSP flows
+> get 4K MSS, but PSP flows are clamped to 4108 first and then
+> reduced by 40 bytes to 4056, breaking TCP_ZEROCOPY_RECEIVE.
+>
+> With mtu 4220 and advmss 4148 to compensate for PSP, PSP flows
+> get 4K MSS, but non-PSP flows get 4136 bytes, spilling over
+> 4K page and also breaking TCP_ZEROCOPY_RECEIVE.
+>
+> Let's subtract psp_sk_overhead(sk) before clamping in
+> __tcp_mtu_to_mss() and add it in tcp_mss_to_mtu() and
+> to icsk->icsk_mtup.search_high.
+>
+> Note that tp->rx_opt.mss_clamp now bounds only the inner TCP
+> segment rather than the outer PSP packet, which is consistent
+> with xfrm and assumes that the peer's MTU is at least as large
+> as the local route MTU or that PMTUD is enabled.
+>
+> Also, in psp_sock_set_tx_key(), icsk->icsk_mtup.search_high is
+> simply incremented by psp_sk_overhead(sk) because PSP is upgraded
+> right after TCP_ESTABLISHED before any MTU probe fails in practice.
+>
+> Reported-by: Thaison Phan <thaisonphan@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/ipv4/tcp_output.c    | 14 +++++++++-----
+>  net/ipv6/ipv6_sockglue.c |  2 --
+>  net/psp/psp_sock.c       |  2 +-
+>  3 files changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index cf3ddc055d48..08d0d4a639fe 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -2060,6 +2060,8 @@ static inline int __tcp_mtu_to_mss(struct sock *sk,=
+ int pmtu)
+>  	 */
+>  	mss_now =3D pmtu - icsk->icsk_af_ops->net_header_len - sizeof(struct tc=
+phdr);
+> =20
+> +	mss_now -=3D psp_sk_overhead(sk);
+> +
+>  	/* Clamp it (mss_clamp does not include tcp options) */
+>  	if (mss_now > tp->rx_opt.mss_clamp)
+>  		mss_now =3D tp->rx_opt.mss_clamp;
+> @@ -2088,9 +2090,10 @@ int tcp_mss_to_mtu(struct sock *sk, int mss)
+>  	const struct inet_connection_sock *icsk =3D inet_csk(sk);
+> =20
+>  	return mss +
+> -	      tp->tcp_header_len +
+> -	      icsk->icsk_ext_hdr_len +
+> -	      icsk->icsk_af_ops->net_header_len;
+> +		tp->tcp_header_len +
+> +		psp_sk_overhead(sk) +
+> +		icsk->icsk_ext_hdr_len +
+> +		icsk->icsk_af_ops->net_header_len;
+>  }
+>  EXPORT_SYMBOL(tcp_mss_to_mtu);
+> =20
+> @@ -2103,7 +2106,7 @@ void tcp_mtup_init(struct sock *sk)
+> =20
+>  	icsk->icsk_mtup.enabled =3D READ_ONCE(net->ipv4.sysctl_tcp_mtu_probing)=
+ > 1;
+>  	icsk->icsk_mtup.search_high =3D tp->rx_opt.mss_clamp + sizeof(struct tc=
+phdr) +
+> -			       icsk->icsk_af_ops->net_header_len;
+> +		psp_sk_overhead(sk) + icsk->icsk_af_ops->net_header_len;
+>  	icsk->icsk_mtup.search_low =3D tcp_mss_to_mtu(sk, READ_ONCE(net->ipv4.s=
+ysctl_tcp_base_mss));
+>  	icsk->icsk_mtup.probe_size =3D 0;
+>  	if (icsk->icsk_mtup.enabled)
+> @@ -2643,7 +2646,8 @@ static inline void tcp_mtu_check_reprobe(struct soc=
+k *sk)
+>  		icsk->icsk_mtup.probe_size =3D 0;
+>  		icsk->icsk_mtup.search_high =3D tp->rx_opt.mss_clamp +
+>  			sizeof(struct tcphdr) +
+> -			icsk->icsk_af_ops->net_header_len;
+> +			icsk->icsk_af_ops->net_header_len +
+> +			psp_sk_overhead(sk);
+>  		icsk->icsk_mtup.search_low =3D tcp_mss_to_mtu(sk, mss);
+> =20
+>  		/* Update probe time stamp */
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index 4b3536571c98..ea03fcffd147 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -48,7 +48,6 @@
+>  #include <net/xfrm.h>
+>  #include <net/compat.h>
+>  #include <net/seg6.h>
+> -#include <net/psp.h>
+> =20
+>  #include <linux/uaccess.h>
+> =20
+> @@ -109,7 +108,6 @@ struct ipv6_txoptions *ipv6_update_options(struct soc=
+k *sk,
+>  			struct inet_connection_sock *icsk =3D inet_csk(sk);
+> =20
+>  			icsk->icsk_ext_hdr_len =3D
+> -				psp_sk_overhead(sk) +
+>  				opt->opt_flen + opt->opt_nflen;
+>  			icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
+>  		}
+> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+> index a6b1c42dd626..f2cba3fa3a23 100644
+> --- a/net/psp/psp_sock.c
+> +++ b/net/psp/psp_sock.c
+> @@ -243,7 +243,7 @@ psp_sock_set_tx_key(struct sock *sk, struct psp_dev *=
+psd, struct psp_assoc *pas,
+>  	pas->upgrade_seq =3D tcp_sk(sk)->rcv_nxt;
+> =20
+>  	icsk =3D inet_csk(sk);
+> -	icsk->icsk_ext_hdr_len +=3D psp_sk_overhead(sk);
+> +	icsk->icsk_mtup.search_high +=3D psp_sk_overhead(sk);
+>  	icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
+> =20
+>  	return err;
 
-One alternative we could probably look at would be to modify something
-like gso_features_check to strip all the GSO features except for
-SKB_GSO_FRAGLIST if CHECKSUM_UNECESSARY is set. Thoughts?
+Thanks. I agree with premise. I'd say this is an improvement over the
+way we have it now.=20
+
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
