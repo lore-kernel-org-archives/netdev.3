@@ -1,60 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.117
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793798839;
-	b=vBLNTshmG9fPUryrQPIm0pX1m0Uwqeyizu23ynSp9dU5x42LqJ3L1h+tJc2cbzw6cXBa
-	 1PGcRT0wwpEEHjs3/ePYaX3JUcIqtkrRZcCn33vnvCidn6up/B3ClICzqGq5xxFIohb6n
-	 Wfcv6sWVgPxeQYUDxnZ7fEBSoZ+43Yk+Tq+iSyKFYt2LwEe2kQ+ra0xoFcgntl9eGa2RC
-	 CM2JbdZCchcI3trIV6HNV4xnfoHUBNv0u8OnfRy3H6cGZhSNbHSWG3DzO4syVXD1TjmZQ
-	 F3BbH2Pxu+t03nAB6zD9QAz9Sw/AR6W5Hpga5POG1eNcfRybYsHo4mKltzdQ1EIQnLQ==
+	t=1793798945;
+	b=VQjDfj+syyXXwrAcQyceIU5FjgIPx0ErAXLCohvSV7hoeu8DfdjxGf5Ukp/bO+k0xwiJ
+	 LBHjE5by2Fv3JzdEW5zn3znwhNf9gjF0TwxoU0bXQRSceZ2F+WJfPbwGEwcGRWdARuVn6
+	 fNiczeNjT1aB/vU4cY+b+dgUcuvptk1pqBAUkrPRxnOkpk6pdF1QGtdLPN60HPZbsbLcf
+	 jGaLy51DpcGaxCCJBYJNBcxboUlv/Kgg0kgNJj4ziiamD+Qtl0NEbGdAB40mqyTowNca+
+	 pndubPqoUpFJhMRLga0H2ZCPJm4haJlm8W+brjAn/y2N4GHvsxtmuxQHId8FfBHU4RQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793798839;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=hhq5EOa6Odz+K2vaBaOuOYmvWaBTRJ+kEF4fefMeYnQ=;
-	b=DxrA0qn8VCgj2gUKnl5uO6reMVVYSkY7K5G+XmwNWMvB4SCeyBCk9SWqa3ED8pA8+NhY
-	 FHu64fvL8ztdmpjoyKJ49eobXmWRBYnQyf1v2rxZ3oEvwcO3YX7cMGKfjmbMB+Rw4cNKp
-	 AyCy41WRziPtBt9t55leiBSEoWe8JtA6N50PyIHmp0PcFmMGftJpiTeA3QFFdqwcTfPCs
-	 TIGSYgSmqFb1Y38Sc94FIFuD0CTvdhC7MZS8oxOvfmnfxjLjbkDHH8MerRTxr6KXucULG
-	 /G7H0JZjKNyqhRYYM+Jwlhzro6jNV+/8ew/dlFWEWK//zgDaj9XVl5akYqWKTXlUVig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793798945;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=e2yqxeW5iyA3GvtFtAiD65K4HSNLST1MrLwZ5EwDuxM=;
+	b=eMLfW9nFF9KUHU9La1UGdXVPNbkWZazyXdhIcVkfzjkE1UEs68/MJs7hlhsSSmuD1dLQ
+	 z6SrFBv3PNCEI0OxWSpYoGhrwCm3kR+twq5rahQcOcXKul5KtAjk1TPzNQQTDWwpgVY1Z
+	 0eMUn+uVCboT3eiPSpWCGNyqYgs6vBCS4WpFsiyjD4PXchdkU/HsXeNuv6nMmKhfOggcu
+	 ywK0w/b0Gryx8oC6B1V15DtVh2Qq/i12B4nsU9uemloHyigT0re5VxTlKpSyDUZjds94Q
+	 KjMpT7aQc3+DhmJjgC7zlAairZqKg84WWf/Y2OmCD1JB1YQDosNcMDTWbrqyER+oWOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1g4.org;
-	spf=pass smtp.mailfrom=1g4.org;
-	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=LokHz1aa;
-	arc=none smtp.remote-ip=79.135.106.117
-Received: from mail-106117.protonmail.ch (mail-106117.protonmail.ch [79.135.106.117])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fkL7mEYC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81FD606A326;
-	Wed,  4 Nov 2026 13:27:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C81FD606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A83606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=LokHz1aa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail; t=1793798828; x=1794058028;
-	bh=hhq5EOa6Odz+K2vaBaOuOYmvWaBTRJ+kEF4fefMeYnQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=LokHz1aag6PaSNFE8C27kBJ0WZ6M+UPGHXO+rQSR0cNM/2otH80f1ijoMEGuR55gW
-	 b4QL7QYt40r1A8rSZ8mzFMAVGBkEd24hvQwLCMm6b9DUZ6oO38XXyaeHg/Zqg/w9Mr
-	 Xuzjd10Gz32YbH9HD3+dR2GhiETXDW2tWFiKkRse7s5HA+nLsh+tlNfkFT6xTRz7OH
-	 B7Of+E4TFuHrasbBSkEP4d0F18omzemN55swOa82ZMF3ORRlcHiCmy96DQ2IPNw7RB
-	 /58u7U5RPNRi7lV3nvfCIDzzkKizj1Kur0hi39lOpH+lVckEaQkoQjOVtZalGAswbE
-	 M2/BI/0Nr6GVQ==
-Date: Wed, 04 Nov 2026 13:26:56 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-From: Paul Moses <p@1g4.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 2312891301@qq.com, blum@kernel.org, co+6dcbccedc9ec6452@bugs.sh, eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com, kmehltretter@gmail.com, linfeng.sun.dev@gmail.com, lirongqing@baidu.com, longpareto@gmail.com, oss.patchbox@gmail.com, phx0fer@gmail.com, physicalmtea@gmail.com, sergiiushakov@google.com, shubham@octane.security, stable@vger.kernel.org, stjepan.poljak@gmail.com, syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com, tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu, xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com, zenghui.yu@linux.dev, zhaimingbing@cmss.chinamobile.com, zhangjiao2@cmss.chinamobile.com
-Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
-Message-ID: <boz9jnakQM6uAhZfWbN75Fy90K5NZ8XCEXBRlhjkqDryEgBVXwJzIPrq1giWoitEnsZPiK4FyKlYBVHioGorKSw4JzSVd8kxw9RIhEz0-kE=@1g4.org>
-In-Reply-To: <20261104081535-mutt-send-email-mst@kernel.org>
-References: <20261104081535-mutt-send-email-mst@kernel.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: e60a96041563db78786d8f092c9f5e833f03cb84
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fkL7mEYC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D75D1F00A16;
+	Wed,  4 Nov 2026 13:29:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793798944;
+	bh=e2yqxeW5iyA3GvtFtAiD65K4HSNLST1MrLwZ5EwDuxM=;
+	h=From:To:Cc:Subject:Date;
+	b=fkL7mEYCJm3nzPQx0GTKvQ752gU2em3ImtrVVDYI4TqvBwNJhJwM2+AqZsNR8KMHY
+	 ZsbDFXeo+G0rhUAewFY+acux3sybR09Z+7yWkNdpLwY9pxptse1X8iEhOxq6aZVESj
+	 mO8+kVaD8iU8UjgwbrVPQMjeRKMdAe0/vu/2/UbkOCsUGa5vOV/EQP+MHfE8Tu9HlM
+	 l11imL9bHMOAlJjZ1cmHJSL2GPbxeZCx6U75nSsbLlpsLuYjv8F33DzS1wB+5i81cN
+	 7kIpJ+2Bk43mx2p770YBVr4rXUFaO2NZgT9xx5cC2pe7JC5Pb7UMigcXcB3heiHq9X
+	 k6pWtCbhG2h3Q==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	edumazet@kernel.org,
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH net] net: require a full socket in sock_confirm_neigh()
+Date: Wed,  4 Nov 2026 14:29:00 +0100
+Message-ID: <20261104132900.1071940-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,113 +62,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 12, 2026 at 06:56:40AM +0000, Paul Moses wrote:
-> > On Wed, Mar 11, 2026 at 08:00:45PM -0400, Michael S. Tsirkin wrote:
-> > > On Wed, Mar 11, 2026 at 02:12:17PM +0000, Paul Moses wrote:
-> > > > >
-> > > > > Indeed, seems legit, thanks!
-> > > > >
-> > > > > The only thing is that I dislike two error handling paths here.
-> > > > > So I wonder why isn't this as simple as fixing the double free
-> > > > > directly:
-> > > > >
-> > > >
-> > > > That works for me, should I send it out?
-> > > >
-> > > > Thanks,
-> > > > Paul
-> > >
-> > >
-> > > Please do.
-> > >
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >
-> > Oh and I forgot
-> >
-> > Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
-> >
-> >
-> > >
-> > > --
-> > > MST
-> >
-> >
->
-> Considering that this pattern has occurred in multiple independent source=
- files,
-> maybe it is worth it to make intent more clear? What about this?
->
-> >From c3b9431dc736cec60c0b288b13d9fa718341f46a Mon Sep 17 00:00:00 2001
-> From: Paul Moses <p@1g4.org>
-> Date: Tue, 10 Mar 2026 15:23:58 -0500
-> Subject: [PATCH] vdpa: don't free reply skb after genlmsg_reply()
->
-> genlmsg_reply() hands the reply skb to netlink, and
-> netlink_unicast() consumes it on all return paths, whether the
-> skb is queued successfully or freed on an error path.
->
-> vdpa_nl_cmd_dev_config_get_doit() currently jumps to nlmsg_free(msg)
-> after genlmsg_reply() fails, which can hit the same skb twice.
->
-> Return the genlmsg_reply() error directly and keep nlmsg_free()
-> only for pre-reply failures.
->
-> Fixes: ad69dd0bf26b ("vdpa: Introduce query of device config layout")
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: Paul Moses <p@1g4.org>
+From: Kyle Zeng <kylebot@openai.com>
 
-I like crediting people for their work.  Let's do this. Pls post as a
-proper patch starting a new thread, so all 0day tooling catches this,
-and I'll apply. I'll then apply a rework removing the duplication, on
-top.  Thanks!
+An skb can retain dst_pending_confirm after its original output and
+socket owner have changed. For example, a raw MSG_CONFIRM packet can
+cross veth, have a TCP request socket assigned by TPROXY, and be bridged
+into gretap. Neighbor output for the outer packet then calls
+sock_confirm_neigh() with the request socket in skb->sk.
 
+The helper unconditionally treats a non-NULL skb->sk as a full socket
+when accessing sk_dst_pending_confirm. TCP request and TIME_WAIT sockets
+do not contain that field. This produces an out-of-bounds four-byte read
+and, if the word is nonzero, an out-of-bounds four-byte zero write. A
+KASAN-enabled kernel reports:
 
-> ---
->  drivers/vdpa/vdpa.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-> index 34874beb0152e..702d3a7772219 100644
-> --- a/drivers/vdpa/vdpa.c
-> +++ b/drivers/vdpa/vdpa.c
-> @@ -1352,15 +1352,19 @@ static int vdpa_nl_cmd_dev_config_get_doit(struct=
- sk_buff *skb, struct genl_info
->  =09}
->  =09err =3D vdpa_dev_config_fill(vdev, msg, info->snd_portid, info->snd_s=
-eq,
->  =09=09=09=09   0, info->extack);
-> -=09if (!err)
-> -=09=09err =3D genlmsg_reply(msg, info);
-> +=09if (err)
-> +=09=09goto mdev_err;
-> +
-> +=09put_device(dev);
-> +=09up_read(&vdpa_dev_lock);
-> +
-> +=09return genlmsg_reply(msg, info);
->
->  mdev_err:
->  =09put_device(dev);
->  dev_err:
->  =09up_read(&vdpa_dev_lock);
-> -=09if (err)
-> -=09=09nlmsg_free(msg);
-> +=09nlmsg_free(msg);
->  =09return err;
->  }
->
-> --
-> 2.53.GIT
->
+  BUG: KASAN: slab-out-of-bounds in ip_finish_output2+0xc9f/0xd60
+  Read of size 4 at addr ffff8880bdc3d880 by task tproxy_dst_conf/1771
 
+Require sk_fullsock() before accessing the socket field, moving the
+existing helper earlier in the header to make it available here. Keep
+neigh_confirm() independent of the socket type so the skb's neighbor
+confirmation still works, including for socketless packets. This also
+covers the IPv6, VRF, and BPF neighbor-output callers.
 
-It's obvious now your intention was always to diminish my=20
-contribution. This really only reflects negatively on you.
+Fixes: 4ff0620354f2 ("net: add dst_pending_confirm flag to skbuff")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ include/net/sock.h | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-You or claude didn't even disassemble it. It's slop. My
-patch is objectively superior both in human readability
-and performance.
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 0c1a6895d347..3144efad8c36 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2287,6 +2287,14 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie);
+ 
+ struct dst_entry *sk_dst_check(struct sock *sk, u32 cookie);
+ 
++/* This helper checks if a socket is a full socket,
++ * ie _not_ a timewait or request socket.
++ */
++static inline bool sk_fullsock(const struct sock *sk)
++{
++	return (1 << sk->sk_state) & ~(TCPF_TIME_WAIT | TCPF_NEW_SYN_RECV);
++}
++
+ static inline void sk_dst_confirm(struct sock *sk)
+ {
+ 	if (!READ_ONCE(sk->sk_dst_pending_confirm))
+@@ -2298,7 +2306,8 @@ static inline void sock_confirm_neigh(struct sk_buff *skb, struct neighbour *n)
+ 	if (skb_get_dst_pending_confirm(skb)) {
+ 		struct sock *sk = skb->sk;
+ 
+-		if (sk && READ_ONCE(sk->sk_dst_pending_confirm))
++		if (sk && sk_fullsock(sk) &&
++		    READ_ONCE(sk->sk_dst_pending_confirm))
+ 			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		neigh_confirm(n);
+ 	}
+@@ -3031,14 +3040,6 @@ skb_sk_is_prefetched(struct sk_buff *skb)
+ #endif /* CONFIG_INET */
+ }
+ 
+-/* This helper checks if a socket is a full socket,
+- * ie _not_ a timewait or request socket.
+- */
+-static inline bool sk_fullsock(const struct sock *sk)
+-{
+-	return (1 << sk->sk_state) & ~(TCPF_TIME_WAIT | TCPF_NEW_SYN_RECV);
+-}
+-
+ static inline bool
+ sk_is_refcounted(struct sock *sk)
+ {
+-- 
+2.53.0
+
