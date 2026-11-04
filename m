@@ -1,57 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793804200;
-	b=UU/mv7N+XLlWqVrKEy242e6+ZmXIu5sDQ4yEbHy2EJ77NHBhojdlIfEI5rcmLDeDwRT2
-	 cA4HGfvBvV+44JqTdHjawy6GN5ptliZssLctciib+vOZtqHclu6JgNbX4SLF98JPTCqoN
-	 X1bduTvGmvlFyVfmTyuIuzWEFx+8KnFEio9l3AgZA55erZfRrwJ4lfHuGmw4vhRvirm5H
-	 PjKws9WBSuw2PjC0xQSg0Avo/eSGr+XiskQrSAb92htHLSJZwiadkqT2Q+JhtzAQd7NdJ
-	 PKXx8TxCA+C8R/AXsxegZlGvqtRBqonAbQ2MvOMtJOYxv1CVdBFDPhn7gzvPTnalqQA==
+	t=1793804418;
+	b=DCY3BYUs4LX4vYP2aPvfPCPMPC6gu/Fy3OrU7xcNGu2V+iVQyJM75mcKRi3dCzUusfWo
+	 +sxhFuT32WkCrgiT8MbguyP+WGlC18h+EPqFzLRBG8f5UGpxk0HWuGaBHX8EFi3VEveRU
+	 iHLylwtWl2ZH9qSIlb+cEfyBD5+Ua7CNZk3DxPDu2dIDFbt2s1FxoPK4lHuYfOGZKMoku
+	 7/pf8wi1lJ+J1BlzjphyFVFpHropgw0RDK0exOOOGuivoJzAm5G3cPKwUfTepnW2KHhK6
+	 //kxanqvldIx8nQYcAuvQ8Zd2ihRcrXenkSrs7oovD6WY7gLfod51gfHEQzg65pAirA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793804200;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=59zhTayxczl43EeYDiMSSxpzLdPh5wVDsn3GkH9nffc=;
-	b=hLo6+D8RoFbRCRdd0vYh6bx0jgcHZS5LyCHwy+a0zTjuZtNMyQm0tK8aisbTJALKoIPy
-	 bvVXmVyCq4/r7rGfqVtRAQXka1qS67fRRwEcFc4jkPJwMdkKReQD/+aFcOPYH2mgUbG8t
-	 ayHUJrrbWWAoCbqJJ8MpJ2t4VowHqoOPWNHmDktbLOKfQxEPz+fqVrLsGp5iCh0x5RC3d
-	 U40gOKeIOX5Z0FU0rdSy8j6PG1ERJjpyuand32jveeNd9Pc4eGppahjHVDQ8xYC8s0iTT
-	 meW77hB9NCi9WmWReQXCwfV6x/kzGQCPqjF0q0Z+SK+9oAvObM89gvRAJoU+1pQL/yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804418;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=L2TX4jw8nBgVDDi3cr/Q5stFGHBBLzs3q4obJ5FleF8=;
+	b=B2Kz4S53jjiseXt5ew78SF58uGUWRGnhyg6ehldpHJhwuPzLUwtUMDWuWs/YWwznfcAm
+	 G3Qs+wkOPQ3ezwbTclmrJCALDI4uyxJ7Ola3PANycMZQC/q/oveJE+K8UX2ln/LD5eM/y
+	 EwCO2uxxBCX5FKl6bRHJlCyumEyTcmVNbT+VfeKCksYokg0fY0bGxUrnyzTYcJJqORmiG
+	 ES2bg7UCmM1o9kAIqYLw0IySkQTHm9OyIbYDqylnu8RXoQWs4ISE1GbPEI83F8tGyDbqk
+	 mfJoI8pYvhritTQvN3qkKBjIPWmHUELKJTJ0y98wWGfex6hYKtD9nrLJvneXe4NhwoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ksej+oID;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mdjSfNjz;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CC3606A328;
-	Wed,  4 Nov 2026 14:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B77606A331;
+	Wed,  4 Nov 2026 15:00:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86B77606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ksej+oID
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A771F000C1;
-	Wed,  4 Nov 2026 14:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804199;
-	bh=59zhTayxczl43EeYDiMSSxpzLdPh5wVDsn3GkH9nffc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ksej+oIDIBq0Lssyj4jKKmoO9D0FheijDjcLkWtrCBSdXuCdPdlONB/yW3l8R5B1B
-	 WXzWWTQGWBnf8wiRAal8qMOBvD6dNjR45XhyXSDhm76MfJxdI5vHbS8VJ2i/FsOWau
-	 xVucDZMJNOMchEo8l0gYt7SLipQvxzAgpESk7tSyz48gqr4qJiqKg+pvy7L5twQCLn
-	 9oVbgvH3TyqprheKDjubv5Vn3YR/y94UzxZFdIaOSUWbcKqfz3PA+mLfEZMQkCUWkf
-	 FgXg7066/vRmIPMLBOuRaLCLOLbBTgTKn5LWastAkEBGsuGSznoMtuuH/VFnWOA82K
-	 jjub1Ky2gy2pw==
-Date: Wed, 4 Nov 2026 15:56:35 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Jian Shen <shenjian15@huawei.com>, Jijie Shao <shaojijie@huawei.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: hisilicon: Remove orphan femac driver
-Message-ID: <20261104-realistic-elite-kagu-7beabd@quoll>
-References: <20261104145038.946918-1-robh@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mdjSfNjz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=L2TX4jw8nBgVDDi3cr/Q5stFGHBBLzs3q4obJ5FleF8=; b=mdjSfNjzuysfatSV3UV5aMC+2m
+	LLA4mrTdxlRu5ZW7vy8FnbTi08PDsefTmZsYT4HSI5QmxXr6b9kQ6gwpJoP3w2GNCz+3yIzQClEGW
+	MovEpP2TUpGaakLgsn/Opwmj1HaO62nrediWVdWoN4HdC/txEiq40bsbXLoL5HdKtcv4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOcT0-00EL1c-U5; Wed, 04 Nov 2026 15:59:58 +0100
+Date: Wed, 4 Nov 2026 15:59:58 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Stolniceanu, Iustin" <Iustin.Stolniceanu@analog.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Schmitt, Marcelo" <marcelo.schmitt@analog.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Regus, Ciprian" <ciprian.regus@analog.com>
+Subject: Re: [PATCH net-next 0/5] net: ethernet: adi: adin1110: Add OPEN
+ Alliance TC6 support
+Message-ID: <c1747691-2c2e-4a7a-af04-92c94cb041b2@lunn.ch>
+References: <20261103160918.409701-1-iustin.stolniceanu@analog.com>
+ <49b292c4-c0e9-4b19-aa4d-d15dd20d25b6@lunn.ch>
+ <IA3PR03MB8453F2E91946AE59A9818B9AF2682@IA3PR03MB8453.namprd03.prod.outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,32 +77,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104145038.946918-1-robh@kernel.org>
+In-Reply-To: <IA3PR03MB8453F2E91946AE59A9818B9AF2682@IA3PR03MB8453.namprd03.prod.outlook.com>
 
-On Wed, Nov 04, 2026 at 08:50:34AM -0600, Rob Herring (Arm) wrote:
-> Remove the HiSilicon femac driver as it is not used on any upstream SoC.
-> The hi3516cv300 only has clock, pwm, and this driver.
+On Wed, Nov 04, 2026 at 08:06:56AM +0000, Stolniceanu, Iustin wrote:
+> On Tue, Nov 03, 2026 at 20:49 UTC, Andrew Lunn wrote:
+> > On Tue, Nov 03, 2026 at 06:09:13PM +0200, Iustin Stolniceanu wrote:
+> > > The ADIN1110 supports two SPI host interface protocols: the generic SPI
+> > > protocol, which the adin1110 driver implements today, and the OPEN
+> > > Alliance TC6 protocol. The protocol is selected by the SPI_CFG1 pin,
+> > > which the device latches when it comes out of reset.
+> >
+> > Is it possible to read the status of this pin from a register?
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../bindings/net/hisilicon-femac-mdio.txt     |  22 -
->  .../bindings/net/hisilicon-femac.txt          |  41 -
->  drivers/net/ethernet/hisilicon/Kconfig        |  12 -
->  drivers/net/ethernet/hisilicon/Makefile       |   1 -
->  drivers/net/ethernet/hisilicon/hisi_femac.c   | 976 ------------------
->  drivers/net/mdio/Kconfig                      |   7 -
->  drivers/net/mdio/Makefile                     |   1 -
->  drivers/net/mdio/mdio-hisi-femac.c            | 150 ---
->  8 files changed, 1210 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-femac-mdio.txt
->  delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-femac.txt
->  delete mode 100644 drivers/net/ethernet/hisilicon/hisi_femac.c
->  delete mode 100644 drivers/net/mdio/mdio-hisi-femac.c
+> No, not for SPI_CFG1. The ADIN1110 has no register that reports the 
+> SPI_CFG1 level or the selected host protocol.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Seems like a badly thought out hardware design.
 
-Best regards,
-Krzysztof
+> The only way to detect the mode at runtime would be to probe it:
+> read the PHYID register using one framing and fall back to the
+> other if the value does not match. I have not tried that yet, and I
+> am not sure that clocking a transaction in the wrong framing is
+> harmless for the device, so I went with a DT property describing how
+> the board straps the pin.
+> 
+> If you would prefer autodetection, I can try it on hardware for V2.
 
+Do you have an reference design using a jumper, so you can try all
+combinations? At minimum, it would be good to probe the chip, print an
+error message, and return ENODEV, if the property and the hardware
+don't match.
+
+      Andrew
