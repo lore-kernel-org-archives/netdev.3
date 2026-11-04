@@ -1,61 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793830549;
-	b=ihe9ra1Um2YrtJT2wG2neN2Ev2mRz2xtm2Us5e5ZBuBwRHgVKlVQGjItBPOqe6G1uHDY
-	 VN5gNnYMSXYc52RO429Vpv1PgvY10fU1dD4kzV71wD8qogjNS+HGqEO5gKveWQ9y4yvab
-	 ptFOQCYPZcV3aBHqVY2+CAkfz3pZPI58gnZwN6akM39l13iqFKU6vnJshs454Dc3j9J2b
-	 iJN99Kx5ZOwdX+bEQUo2++9QbELUHfwxEbUcxkm+yKufdtLfKvUXl+0dz3cU/lLEIoIO/
-	 HC9RUts2C9Z3w0iJhLw0WC91LoHXjKJNhyaVSKKKH25biDQKDqOilg5BekLxP4URJMQ==
+	t=1793830592;
+	b=Vp6/wSuu7qOY4vNP/UoVkuJDL4mY3o8e1UtWKtWZ593W+NxzISkRDGKiG+QGaljwvWQK
+	 5XXCJomeTCO05TdJUXOKfRL7fvSwEUeUkrIR4zqsijqbuKeWoZ/Lq6PrsIqL9z+uTfC4L
+	 sSpbogRjqFgdFxutG7VaIoUjIThCH9FGpihGAMNMnYBPZ27ppvJc2FOkF0fkNGMeepqUH
+	 8ftRFRG14wNkKfAesCfgCfAcACIFB7jVlJjAMtKFTzChOlMMX7LuUOsI7Hz+XsQ7oKXVR
+	 9+oPqx36ZLgWbTSU2vv9Gca5JYucSIfTb3bg18C6Vaogii3la3y4syDGwRywNp+go1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793830549;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=3F2m60G+gxvBW4y7hHQfye8ccenVYUgHpUwX5iBXsZ8=;
-	b=G9FngmTgHzFR7j365zDAAiBsEs/Fiqgq+T4FQPx57uyYjrZriLZh6/9t7FmfJJ4qE3Jj
-	 bHgiM9f3jBzNQzQArrxOW709YcMxCzwRpvhkt76ogIwveKkZmH7WxzLDmyEiVUlfH87+8
-	 MPOWAO8kzsQwHXI3VCee0FtEgEaubzHI//gKOx1wn4sZxQHfloRoXX1wiBdTMv47GLFA8
-	 v48MSVq3wf5BzBrfiR2/CTFO+ebqSNoZcPuvs9jGnS7kkUHrUhzKxlOhxkGwvNExdoShj
-	 XXp9VE99RbmpD/ymStPgBSkytcjH4tT5vbUXl/sfHtANbRKrks7p937eH7WoGHkZG9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793830592;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
+	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=4dUj7qtlv87aoaokSVHZlryaRSMAw8BaqO13OeSv3d8=;
+	b=Mq3uf2CEov02h+iZ6ff8NkG/FCexQkBL6o5qLSzEv19OgWfAOzknnmQG9zwZb40SDNtW
+	 efIzaUtp+lzYBZNbzO1EuwmYTariA6msUJ+8yb6Q4Tz/W80qOknjOXGtQras5O103H1pS
+	 u5Zb9QePszqnGSSLDPqqGg2zpHC0gSmVUF6UH0B4zp/rj0GOGmr8XRk4ghbOiFOAlFWsN
+	 briAKKrOuK5KE/LBZw2z+aStT3Ed6kIvCJ874DgaUGcS0l6WRpBq9ImwAJOv1vsZyLOS7
+	 v8pa/Dd1FiQK4Xo7MwA0xUwr1Wr7Gmkc+NvZFzVKoha5cpmvSbBzFefuECV1yru440w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dJOZs+AM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=telaak.dev;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A61606A333;
-	Wed,  4 Nov 2026 22:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dJOZs+AM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53661F000C1;
-	Wed,  4 Nov 2026 22:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793830548;
-	bh=3F2m60G+gxvBW4y7hHQfye8ccenVYUgHpUwX5iBXsZ8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dJOZs+AM4zB+jYeDBNu+8sm5YhR0e3ZjPOxteGNYsvz1a/yShGJxsSdMMuKOAg8W6
-	 JDB21X3tYBniVSMV95Q9/3YKfVHwgLQ7+LZt0oCeckS2VF6c2hVQC5DiutJa2C7PYS
-	 bYuVdfaB1zXEpyjMH+eoaONQyhn6aXKO67wxl/hdlLwrCcXTAYC4lMmh2Ft2w6DVjR
-	 J7metHeoA8E7rvU7K1jY7pGDLl+oqrsorvh4ryOdCmQ6SY6T4H1qhal/6zHf5OSS4S
-	 7OmCEDUeRY0eSWjjMVNs2Iyzu3C3d6yGGOYBvV1MmyJb+Bs3yvIQG581tN52S7w9Nr
-	 GTNRMljkU+YaA==
-Message-ID: <b9b97bf371302d42319ce21fbd4532d39ee97a28.camel@kernel.org>
-Subject: Re: [PATCH] net/rds: drop the device reference for ODP memory
- regions
-From: Allison Henderson <achender@kernel.org>
-To: Wentao Liang <vulab@iscas.ac.cn>, "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,  Simon Horman
- <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	rds-devel@oss.oracle.com
-Date: Wed, 04 Nov 2026 15:15:46 -0700
-In-Reply-To: <20261104022810.1484182-1-vulab@iscas.ac.cn>
-References: <20261104022810.1484182-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CF4606D83F
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 22:16:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3CF4606D83F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=telaak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0880a46e7so38093b3a.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 14:16:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793830591; x=1794435391;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4dUj7qtlv87aoaokSVHZlryaRSMAw8BaqO13OeSv3d8=;
+        b=Qp0GvLkmzqRQVJe2++/I8JMIC6HcWolS3Jo3IHT+ARjaNlHS7y2m3Y2b7fWiN3iePW
+         r2Nz3cvza5WCl3KtPJtUbJdYF/MrXvfXEdlJFfS6t8lZ7MUo0GdsSF6jMxRfenbzZfI4
+         3OR1uoq3/aanDKzvASoQR7YQIPaZSx6ClsF+76MHrT0lSvtORt9W6KTzqcextKcLgN7y
+         vooUr1WZqYxXqA4IBNNhvyK+N3XRLvXpcOVAbQ3+RkLYXqszEYAkInvrhCaNe5bzSK9D
+         ePn2yjCaOvCiJcrCHdEgrkxO/molfxbIsnQJ22PU4udlTdVUSruzjtgkJw7itnakV1AX
+         VY2g==
+X-Forwarded-Encrypted: i=1; AKwUvBxgEAu70UA+7EY2WjbJtREdckH4vIkQICxR4WSEq0PbXkfqut4oQnKhwkPIWOj8OeOm6herV6I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+yFn6qPXHR1aBeVsjy6/bGBD21iyo5dQjDaovXYqgLCA6bqH1W
+	nnFTORDqmeIV2aT3tq48OJeqGfT1NPi4PfwTBzLvB+4PPoffj0eGkxur85hlLiJ/
+X-Gm-Gg: AYBFou1sklWHCaTMFyS7oaOWgVAgcwdnaJGLJhC5CfVQUrxBFQFuMjeuwLrk5Fb259H
+	TVknjPdML7XMZ4YJNkG0qh+Lau8foyJMnZr+bEIs2kpDXsRxF+VpQoFlvQQhCynbtQ/doTVvDXt
+	Z/BWWGpw3dwMlJIrYpYhNoiT8trMCxVfDnzZclTK3PpTPqf//izSmmbHR8qQMYUsEi6ZnXaUEyF
+	ZzRpwrych0cYbyV3P0Z/blIbRJALAcU9nBD/7IlUPDv80iXo26htuDW6wb488DXl8/QkZjWp9gQ
+	MmyCfRBss0pgfiiFIrqXeChKIehQ4PRRtGcTKKojc3XXv3GkZ5NkqtQj9zdJ+F49jYAhTbs3LkR
+	HAfxBkWiMdTKoldgTBhFUTgeBryAD41oydQzLSOH5/Xuu7YhVzuaJl+hXFsPZJC0rhmIRSVMqad
+	wU1wAQg41PINf/R42PNELKoxJ0AznzkBWekjDf5+enStJ9J8LY7ZomyFgX9ChciGrXXpOOA52ka
+	iXOg4q1Tn/P6PR/KA+rG4vSBWqi/tQIiOr+NYx1g1/t8IS71Ar62x9es9hdN9Om5yCMoepLic0n
+	j67RM4UhRaJadzHR5hucCC1nRYQhLnO/gULZKfFsKpB9vJHHitEgE//A0wa4GYW5PdXg0DvjZqN
+	2eCA8Ecx/d7GTXcHvD7B+zlqoXoHwyV/ZegmIiJc9IDM=
+X-Received: by 2002:a05:6a00:929b:b0:8a0:67e7:1004 with SMTP id d2e1a72fcca58-8b1e519d1camr483994b3a.11.1793830588206;
+        Wed, 04 Nov 2026 14:16:28 -0800 (PST)
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com. [74.125.82.172])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09b567137sm1346094b3a.33.2026.11.04.14.16.26
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 14:16:26 -0800 (PST)
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-36a315ed211so81690eec.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 14:16:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzoQbmq3VHAbwfyUpYiYa4kIYAXXMiEMHWXkQUmBINrIojPeGaP1erBSrOmtUgIRRsdhxZm7+k=@vger.kernel.org
+X-Received: by 2002:a05:693c:80da:b0:368:2c6d:ddfe with SMTP id
+ 5a478bee46e88-36de5f6f030mr1017112eec.9.1793830585474; Wed, 04 Nov 2026
+ 14:16:25 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,69 +81,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
+ <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev> <e134193f-ba1b-47c1-9a06-419b1b796ea0@lunn.ch>
+In-Reply-To: <e134193f-ba1b-47c1-9a06-419b1b796ea0@lunn.ch>
+From: Joseph Telaak <joseph@telaak.dev>
+Date: Wed, 4 Nov 2026 17:16:14 -0500
+X-Gmail-Original-Message-ID: <CAPY4CJ74O1tFVCpcN9seoeWDF0VR9GNfKuE+rWODQamN2sjL3g@mail.gmail.com>
+X-Gm-Features: AclHuK9-UnITn3qNlxFDVEt7-zpIej_-hzEuMRZnZQ7mZri5SrN5fWqpIt5XJGI
+Message-ID: <CAPY4CJ74O1tFVCpcN9seoeWDF0VR9GNfKuE+rWODQamN2sjL3g@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: Add Siflower SF19A2890 GMAC
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Chuanhong Guo <gch981213@gmail.com>, Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 2026-11-04 at 02:28 +0000, Wentao Liang wrote:
-> rds_ib_get_mr() takes a reference on the rds_ib_device with
-> rds_ib_get_device().  The FRMR path stores it in ibmr->device and
-> rds_ib_free_mr() drops it when the MR is freed.
->=20
-> The ODP path allocates the ibmr with kzalloc_obj() and returns it
-> without recording the device.  rds_ib_odp_mr_worker() only deregisters
-> the MR and frees the ibmr, so the reference taken for every ODP MR is
-> never dropped and the rds_ib_device can no longer be released.
->=20
-> Store the reference in ibmr->device and drop it in the worker after
-> the MR has been deregistered, which also keeps the device and its PD
-> alive for as long as the MR exists.
->=20
-> Fixes: 2eafa1746f17 ("net/rds: Handle ODP mr registration/unregistration"=
-)
-> Cc: stable@vger.kernel.org
-> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> Please add minimum, and multipleOf.
+>
+> I've not looked at the code yet, but default: 0 would also be good.
 
-Hi Wentao,
+Will do: minimum 0, multipleOf 55 and default 0.
 
-Thanks for the patch.  The fix itself looks reasonable, but few things to u=
-pdate: since
-this is a bug fix, it should should target net with [PATCH net v2]. The com=
-mit message
-should mention how this was found, and whether it was tested. Reproducing t=
-his needs an
-ODP-capable device, so if it was only build-tested, please say so. It looks=
- like there's
-a few check patch nits to work through as well:
-https://patchwork.kernel.org/project/netdevbpf/patch/20261104022810.1484182=
--1-vulab@iscas.ac.cn/
+> These values are odd. The RGMII standard says 2ns is required. Where
+> is the rest coming from.
 
-Other than that it looks straight forward to me.
+They are the values the vendor bootloader programs, and I checked them
+against the hardware. Sweeping each delay over its 256 steps at
+1000 Mb/s, TX works from 0 to about 2.8 ns and RX from 0 to about
+1.5 ns; 935 and 550 ps sit inside both windows, and a 2 ns RX delay in
+the MAC fails.
 
-Thanks,
-Allison
+The rest of the skew is not programmed anywhere: the switch's PCDU
+register for this port reads back 0, and with the MAC's delays at 0 as
+well the link still passes traffic. So it comes from the board routing
+or the chips themselves, which I can't separate from software.
 
-> ---
->  net/rds/ib_rdma.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
-> index db7e92e7bd29..8cd8295f66a3 100644
-> --- a/net/rds/ib_rdma.c
-> +++ b/net/rds/ib_rdma.c
-> @@ -591,6 +591,7 @@ void *rds_ib_get_mr(struct scatterlist *sg, unsigned =
-long nents,
->  		}
->  		ibmr->u.mr =3D ib_mr;
->  		ibmr->odp =3D 1;
-> +		ibmr->device =3D rds_ibdev;
-> =20
->  		sge.addr =3D virt_addr;
->  		sge.length =3D length;
-> @@ -697,5 +698,6 @@ static void rds_ib_odp_mr_worker(struct work_struct  =
-*work)
-> =20
->  	ibmr =3D container_of(work, struct rds_ib_mr, work.work);
->  	ib_dereg_mr(ibmr->u.mr);
-> +	rds_ib_dev_put(ibmr->device);
->  	kfree(ibmr);
->  }
+If you'd rather see this described another way in the DT, I'm happy to
+change it for v2.
 
+> Does this mean there is a switch on the other end? Maybe look at what
+> the switch is doing for RGMII delays.
+
+Yes, a MaxLinear GSW150 on its CPU port, with phy-mode "rgmii-id" and no
+*-internal-delay-ps. As above, its delays read back as 0.
