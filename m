@@ -1,100 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.75
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793794353;
-	b=JQb+Dnqu6SnKi1TGixJ/yf+WUNJgnUkpocmc7ifvq27TthXvJAjprps6MUVc9BRy4Bn4
-	 Ax0uI63pjoLX6pwDvev1hHldJwu4ig0gARA2dPORG4mO//Vk/QO5VapeiJG5+M5auR9xl
-	 TMvf8K1INMDVYK3pP/pwIsfeHZAV2qpUBKH3flLP5Vqrdy3wleqt0ZYI29wpetiquUBap
-	 aDdRiVcQ4iQ4J7UwR9n1sgEiEhRXWTZM92n6VbsjJJ2feApcKFcQux9ehHfbMyU2k19vl
-	 Kpi/JA4Nlfpy5Mr+pMnM3okjOyY9KNCu0hAH1ERBo007++ygoyxFgB5E7C0Cum9Q5HA==
+	t=1793794431;
+	b=csQtTBbnlsDos0rm45mJqBhJdVhCBVzoWN555bPcOoS9RSEidojHRudGOjbtkH7ogxVG
+	 +N2Jqaw3k2SVNp/vmMR6USFC2ALWXrg0VyrN7edbDyRy7BVVsei2ygsT5cQcwzS3g+96N
+	 Q9AHQGh7FEzOAcGcsyKvKL/qVZC1UWJmtAt0e6UvuaK5JU+Acziv99kx7e1SH02wK3okZ
+	 5FPvY40jh/wC3UkUl/3Qkik99SH51XsXBWG/LV5idv760r955GhYpZtelSbyVqxIItjCa
+	 nQRbpk7/5Gn1o9cRu7I1NRefyRiyFpOCMw7BIt9ngRYgsM+m3skrFA7RhKAuarsh8AQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793794353;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
-	b=oOwdLddiKXQA4KkoOfPKQowgQYXggeC1FuZO9ugGa3Abe6TjO2gGA81ReGU4QhAX27Ob
-	 V0WUPYCASM/CU6Jz0v8z2DgDmTrhne6w41iV6DThpluf4/QkU32v7gX0gdA6jV9IB8hxB
-	 oxZsNHgV3IHhFdLg4CfZm1Isto/8TPYLOgxL0WCMzirp3ZOblZNSje8tsVchPn/K/a8Ky
-	 UTRcC6YvXLy8QsLegaz/FPbwHNGzGE+YymM7emchcFxtLE6e85N5wr91pqyGX8acFPCvX
-	 1duOJYQlKxw0c2rNa3h2r9oR2No+4+r8qUVlsb/qdvaXPQvlZUitc8lxbQJy/ZEsLMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793794431;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:DKIM-Signature;
+	bh=HHnM5TEkoHOuFm3yyh6DB+8RQEyRe9oYyVhpQPrUB+g=;
+	b=SXyj3IWCvSVgWs7OEDr/2c6OYowVL2MNMFQguYUB9eqlT4hvUltjfywFcS6v31owCHxi
+	 hD/FYUv4D1vSkEwhkA9iv/2ri+EOAtymZHC0K9DVlf23YrqgMFmGRheTxCq0s2oRF5e9h
+	 VEmoft8GDIFCuzlrg1cpNOEgU2+ScTJxmTC88vzu7mPh7tFmpzbG7fFOkq/Il6VpjaqgT
+	 6kDwR9Gq0xVX7PpyT8+c7em7LPslnRUaUQM09sbdwNsItmtu69b76PwltVF0UI4Ny1sR8
+	 RHcWLsCixfTN18BE1N+PsUR9rWvikONZOSKjk80p1+7n3Os53KskrVCQeTgl2keibOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LbYAv4p+;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=poczta.fm;
+	spf=pass smtp.mailfrom=poczta.fm;
+	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=TQNB0B6f;
+	arc=none smtp.remote-ip=217.74.67.75
+Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A1606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:12:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 178A1606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3534606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:13:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3534606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LbYAv4p+
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a73fdd2966so837365e9.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:12:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793794351; x=1794399151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
-        b=LbYAv4p+IC3snsp4kyiDeq7JnlTxI8zeQoSRa0t2mpXN/FGnEHu1VCTe3tgYCN3zzQ
-         M7QikGo5VP+jY2Eyj+bCaWUC/mDXfSlcSaLRK9oTlDAXMPg3cDhVbawlu/fwTg1I8/LI
-         BmhiSghDeUn8DhwqW/GNdddqO1qNgtCxeIxksmf0azGKBHqAWOwM5d9khwEO9x8kEn6r
-         K3eAQUFfJ4QWRAVYDNY2IJFcra10k3WPOgay/xz7htrS/Hpmi4pQNIVuy1M/3T6j4lYH
-         DaClonnOHHocLlJhTrdIfaU86F9PCyoXmy7+TPFQTKJCytyWC/rJFs0XZtHSWwBDRqm3
-         8tCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793794351; x=1794399151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
-        b=BXvO+hFnmTX7htB39h9VeYhL121+/ranUaKpOlMAo71DIJ4nENRl4aDgvrcKGf3GrB
-         59B8Ei9HJHKV4NO/6PXQYBpw+5zKr98Vz3taVKvuuEkVqjuIDB2TwEDYJh20bqSdKV9/
-         iHLGX81hlibvu861szebMY/vJbH7Y/4ZT9UdmZrKhqR37lbPrS+NQ5ZiYTOVOUCQv9zm
-         XF6B7atEO4jTxxVCJ0XoydM7kUN4mG7W4i+w9IoEgxjuONoppS3s06dAn2H3lMSZvQYg
-         Fda5g86C3eRkjT28UIopTN+C/SFrNSttYjRePBHk4ERRoTpaTjlCsM0zzUBn4Jkzuovr
-         fwBQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxVNYZSaG1TSvpIxeyWq5kMV56aXwAHl4RANIkOGStUT2HbMqBoAShRuWfc2jiVwD4ek6miAjo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8/Fap799GsK9atvQfTPjHyfK97XBVnTi9rbgLt2elJhNRxayjG
-	BqTkxs+dP64eqKx3t/KsLt5Ou7zxfQwI5wAiwyF1r7Xhy8WyfksoR1Fi
-X-Gm-Gg: AYBFou3VubJLGjAKtFPqYs1tMgU8tK000D8tb/k8GSnMSVzdnb62dV3/bVxQPcNfrlP
-	7Lg9NrGdTzo2QcB8w2pGXZAis/4phDXrRLRn8Nuj9zJ6jn6U5K5GTcSQwzV32IgY3hfu69Af/gU
-	q6YWgAsJNIcB6Eoy0ObSp76vEKELgpiDPCc32PVX1brJ9JexhknS/qh8+m2LHM0SsUlq2Uu9DYm
-	dIyQsVfJHh6OcV9j90G9b1W5Dn0fCwkKZcrn2Omvyign276zYJZ5NpEAfg4KqZzyK2QMlcWZeB+
-	tNMHL0nCZfjC5ruP2gwhrjL2oaPmB9SOuDgPvUpawphZM3EEXqCY9Zv9D7NxjgkCH3XYdsUMT5E
-	OwcgWkK3ngjPRWzXbrizKBibJYRPCnqveUNSiFaTyRh/Xn2K0gdjr4/YaQaOfystZXoJy+CKU2B
-	bU8eB5D0zL++8C/jHtKZ6ehD/JdtNVTmnJLLOl8Q+3tID3VdKjMATkupJw9uA6YIw9oCalmAjxo
-	Qc1ql44QeqKsxPhgIFvXW8XiiMcPwmok+9LKsfqsmCSW/B8oNCwhnTSGbkbUg+eryAUKqmy8o/U
-	xzvArF5xmrjwK1kHrRXlB3YG2/0X9TEKxDJBh5cFWdD/pSjmpI/u1wkBZCv4/Hf4xEK13ZkB0Dz
-	6SHQvcnl/8G4MhAlObwj2jVl/BZgBF5fRZsqNQhkb
-X-Received: by 2002:a05:6000:310c:b0:48e:eb:56a5 with SMTP id ffacd0b85a97d-48e6e2fb8a8mr35066356f8f.4.1793794351171;
-        Wed, 04 Nov 2026 04:12:31 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-006.paris.inria.fr. [128.93.83.6])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48fee968763sm3641943f8f.56.2026.11.04.04.12.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 04:12:30 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org (open list:MARVELL MVPP2 ETHERNET DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] net: mvpp2: fix double free of the replaced rule in  mvpp2_ethtool_cls_rule_ins()
-Date: Wed,  4 Nov 2026 13:02:23 +0100
-Message-ID: <20261104120225.28377-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=TQNB0B6f
+Received: from localhost (unknown [80.68.231.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
+	Wed,  4 Nov 2026 13:13:34 +0100 (CET)
+From: Slawomir Stepien <sst@poczta.fm>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	aleksander.lobakin@intel.com,
+	ilias.apalodimas@linaro.org,
+	toke@redhat.com,
+	lorenzo@kernel.org,
+	ihor.solodrai@linux.dev,
+	tavip@google.com,
+	maciej.fijalkowski@intel.com,
+	sst@poczta.fm
+Subject: [PATCH v6 bpf 0/3] xdp: fix page_pool leaks
+Date: Wed,  4 Nov 2026 13:13:13 +0100
+Message-ID: <20261104121316.1155680-1-sst@poczta.fm>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,35 +70,194 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
+	t=1793794416; bh=HHnM5TEkoHOuFm3yyh6DB+8RQEyRe9oYyVhpQPrUB+g=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=TQNB0B6fUFVq9ONkh9XwodYEzxH6DJLJB7MCuv0VlT5DkrmvzNJ2+i/9jTeQUph4E
+	 1/nIaTk32QcsBZ3+wpUxZhfz5fYL8vF/bPmhZfJaC0rv7q3ftPpxQAYJnOnbO7P6Uz
+	 pbAP/gSpkATEQgFOtDc6A1tuUUXSUzmWZKeEZe5M=
 
-When a rule already exists at the requested location,
-mvpp2_ethtool_cls_rule_ins() removes it from the hardware and frees it,
-but leaves port->rfs_rules[loc] pointing at the freed structure. If
-inserting the new rule then fails, the next rule insertion will free the
-rule once again.
+v1:
+https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
+v1->v2:
+- add skb to xdp_buff converter (Jakub)
+- postpone restoration of veth's xdp_rxq_info mem model (AI)
 
-Clear the slot as soon as the old rule has been freed.
+v2:
+https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
+v2->v3:
+- make skb->xdp_buff conversion agnostic of current skb->data position
+  (Toke)
+- do not pull mac header in veth (Toke)
+- use virt_to_head_page() when checking if xdp->data comes from
+  page_pool (Olek)
+- add ack from Toke
 
-This bug was statically found and theoretical. Compile tested only.
+v3:
+https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
+v3->v4:
+- include skb->head when calculating packet length (Toke, lkp)
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Fixes: 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
----
- drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 1 +
- 1 file changed, 1 insertion(+)
+v4:
+https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
+v4->v5:
+- rely again on sk_buff::pp_recycle when setting mem type on rxq
+  (Jesper, Jakub)
+- add ack from Toke on patch 2 and restore it on patch 1
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-index 80d15d7a5ec3..8ec94387cb57 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-@@ -1405,6 +1405,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
- 		if (ret)
- 			goto clean_eth_rule;
- 		kfree(old_efs);
-+		port->rfs_rules[efs->rule.loc] = NULL;
- 		port->n_rfs_rules--;
- 	}
- 
+v5:
+https://lore.kernel.org/bpf/20251029221315.2694841-1-maciej.fijalkowski@intel.com/
+v5->v6:
+- rebase onto bpf/master
+- patch 1: set MEM_TYPE_PAGE_POOL unconditionally in
+  xdp_convert_skb_to_buff(); mem type only matters for frags consumed
+  by the program, and those always come from skb_pp_cow_data() (Jakub)
+- patch 1: add DEBUG_NET_WARN_ON_ONCE() for a non-linear skb without
+  pp_recycle and document the expectation in kdoc (Jakub); the warning
+  is limited to non-linear skbs since linear ones legitimately skip
+  the CoW
+- new patch 2: veth_xdp_rcv_one() ran the program on an xdp_frame with
+  whatever mem type the previous packet left on rq->xdp_rxq; use the
+  frame's mem type instead, as cpumap and devmap do. With patch 3 alone
+  veth sends page_pool frames to its peer and the peer's program
+  trimming frags crashed the kernel, so this comes first
+- patch 3 (was 2): veth turns the buff into an xdp_frame on
+  XDP_{TX,REDIRECT}, so the head is released through mem type too;
+  keep the queue's original model unless the buffer was copied into
+  rq->page_pool (Jakub)
+- patch 3: take page_pool refs on compound heads via netmem helpers
+- patch 3: do not restore the rxq mem model after XDP_{TX,REDIRECT}
+  and on the error path; with patch 2 every path sets its own mem type
+- patch 3: veth can now redirect MEM_TYPE_PAGE_POOL frames, which needs
+  commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
+  XDP") in devmap; list it as a stable prerequisite
+- drop Reviewed-by/Tested-by tags as patches 1 and 3 changed
+
+Hi,
+
+here we fix page_pool leaks which happen when fragment is released
+within XDP program and memory type is set incorrectly. The reports come
+from syzbot and AF_XDP test suite.
+
+Most of the changes are about pulling out the common code for
+init/prepare xdp_buff based on existing skb and supplying it with
+correct xdp_rxq_info's mem_type that is assigned to xdp_buff. A bit more
+stuff, page_pool related, had to be done on veth side.
+
+Originally, this work was started by Octavian Purdila and continued by
+Maciej up to v5. Maciej then took the larger veth rework from the v5
+review to net-next as an RFC [1]. This v6 picks up the v5 series, with
+Maciej's agreement, as the minimal fix for bpf and stable, and addresses
+the v5 review. Maciej stays the author of patches 1 and 3 and my changes
+are noted in their commit messages; patch 2 is new.
+
+For veth, Jakub listed three options: stop turning skbs into xdp_frames
+in veth, decide the head's mem type when the CoW was skipped, or CoW the
+head on the Tx/Redirect path. The first one changes veth's XDP handling
+beyond a fix (it is what the RFC does), so patch 3 takes the second:
+veth knows whether it just copied the buffer into rq->page_pool, and
+only then advertises MEM_TYPE_PAGE_POOL. An skb that skipped the CoW is
+linear and keeps the queue's original model, as before this series.
+The two do not conflict: the RFC can go on top of this series and
+replace the veth parts of patches 2 and 3.
+
+[1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
+
+Patch 2 fixes the same problem for frames in veth_xdp_rcv_one() that
+commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
+XDP") fixed for devmap; cpumap already handled it.
+
+Testing (x86_64, QEMU via virtme-ng, KASAN + DEBUG_VM + DEBUG_NET; the
+series ran on bpf/master fb7bd3a2aad7 and, rebased without changes, the
+reproducers, kprobe path checks, devmap test and selftests below ran
+again on 05441d697f7f with the same results; the runs without the series
+on bpf/master c8a8a68d3ab4):
+- reproducer: an xdp.frags program that trims all frags with
+  bpf_xdp_adjust_tail() on 8000-byte pings over a 9000 MTU veth pair;
+  without the series both generic XDP and native veth XDP hit
+  "BUG: Bad page state ... page_pool leak" followed by
+  VM_BUG_ON_PAGE(page_ref_count(page) == 0) and a panic; with the
+  series 20/20 packets are trimmed with no splat
+- native veth XDP_TX of multi-buffer packets, with and without
+  trimming frags first (200 large + 200 small pings each), then veth
+  teardown and a 75s wait for page_pool "stalled pool shutdown" or
+  negative inflight warnings: none
+- BPF selftests on bpf/master with tools/testing/selftests/bpf/config:
+  ./test_progs -t ns_xsk,xdp: all 34 tests (205 subtests) passed, no
+  splats, with and without the series
+- the standalone AF_XDP suite (test_xsk.sh) also runs the tests that
+  test_progs skips as flaky; XDP_ADJUST_TAIL_SHRINK_MULTI_BUFF reports
+  PASS either way, but without the series dmesg shows 60 "page_pool
+  leak" splats from generic XDP (bpf_xdp_adjust_tail -> __xdp_return ->
+  page_frag_free on pages allocated by skb_pp_cow_data()); with the
+  series there are none
+- frame path: one veth bounces 8000-byte pings with XDP_TX, its peer
+  trims all frags of the resulting frames (IPv6 off, so no skb touches
+  the peer's rxq first); with patches 1+3 only: "page_pool leak",
+  VM_BUG_ON_PAGE() and a panic in veth_xdp_rcv_one(); with the whole
+  series 50/50 frames are trimmed, kprobes show all __xdp_return() calls
+  with MEM_TYPE_PAGE_POOL, no splat, also with IPv6 on so that skbs and
+  frames interleave on the peer's queue; bpf/master alone passes as well
+  since veth only sends MEM_TYPE_PAGE_SHARED frames there
+- remaining veth paths, each confirmed with kprobes: skbs that skip the
+  CoW (frames passed up by one veth and forwarded back into it: 1229 of
+  1260 runs without skb_pp_cow_data(), heads from the page_pool),
+  XDP_REDIRECT failing on the skb path (40 xdp_return_buff()) and on the
+  frame path (40 xdp_return_frame()), XDP_PASS of 20 frames after their
+  frags were trimmed; no splat, and none of the page_pool shutdown or
+  inflight warnings 75s after teardown
+- devmap egress after patch 3: veth redirects copied skbs through a
+  devmap whose egress program trims all frags; with the series 20/20
+  trimmed, all __xdp_return() calls with MEM_TYPE_PAGE_POOL, no splat,
+  nothing 75s after teardown; with b3ca872947ef reverted on top of the
+  series: "page_pool leak" from page_frag_free() under
+  dev_map_bpf_prog_run(), VM_BUG_ON_PAGE() and a panic, hence the
+  stable prerequisite in patch 3
+- W=1 builds of the touched files with LLVM=1 and with DEBUG_NET=n: no
+  warnings
+- XDP_ADJUST_TAIL_GROW fails in DRV mode with and without the series,
+  so it is unrelated
+- not tested: page_pool frames from hardware drivers redirected into
+  veth, bpf_xdp_pull_data(), multi-queue load, the full test_progs run
+
+Performance (the same VM with 8 vCPUs, non-debug kernels with
+PAGE_POOL_STATS, bpf/master fb7bd3a2aad7 with and without the series;
+pktgen sends skbs into one end of a veth pair, the program on the other
+end counts packets; median of 6 runs of 8s over two boots per kernel):
+- 64-byte packets with native XDP_DROP, XDP_TX and XDP_REDIRECT (devmap
+  to another veth), and generic XDP_DROP on 1 and 4 CPUs with 64 and
+  8000-byte packets: within 2% of the base kernel, no regression
+- native veth with 8000-byte packets (3 frags): XDP_TX +8.8%
+  (0.507 -> 0.552 Mpps), XDP_REDIRECT +8.4% (0.613 -> 0.664 Mpps).
+  Without the series veth_xdp_get() takes plain page references on
+  the head and frags, so the pages copied into rq->page_pool are
+  released from the pool instead of recycled (~1.2M/s
+  rx_pp_recycle_released_ref plus slow allocations); with page_pool
+  references they go back to the ring (~1.4M/s rx_pp_recycle_ring, no
+  released_ref)
+Absolute numbers in a VM differ between boots, so only the relative
+change is meaningful.
+
+This v6 was prepared with an AI coding assistant (Claude) from the v5
+review thread; the assistant wrote the code changes, all of patch 2,
+the changelog updates, and ran the tests listed above.
+
+
+
+Maciej Fijalkowski (2):
+  xdp: introduce xdp_convert_skb_to_buff()
+  veth: update mem type in xdp_buff
+
+Slawomir Stepien (1):
+  veth: use the frame mem type when running XDP on an xdp_frame
+
+ drivers/net/veth.c | 56 ++++++++++++++++++++++++++++++----------------
+ include/net/xdp.h  | 36 +++++++++++++++++++++++++++++
+ net/core/dev.c     | 25 ++++-----------------
+ 3 files changed, 77 insertions(+), 40 deletions(-)
+
+
+base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
 -- 
-2.53.0
+2.56.0
 
