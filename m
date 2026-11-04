@@ -1,91 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793815142;
-	b=kXA2h2Kv7hGmw5y6aXEjEqcd58+2hQzjrprV2sPKcdy39Q5vu/PRGEOUE6OiN+yMoFI5
-	 mCbtmUWlUpA8QlUyszJ0i8NVz14IoZ+vF6kLLqTZVAC2PrOx8WhGcVdDUKiO7sJ0hs6o+
-	 iKShWCBJ1yFW3KrCm8Wk5vHf7RRpYYXYI9nl0S4w9d4KZE4tCfdJqMupw0yrzcSPhIo2y
-	 7G0SACwPOEH1RmT4uLuVRy7Fw/BjyQcIrkp60FF4fcw1KMnba52rYqo8QdgZOAXqzSFaJ
-	 +WKgGlPvJl6MkdcN4wk+ve+jHTDqL05kGq6+1z/mOx6vnVqgTnyrh5GcjaM5dKhjX4w==
+	t=1793815149;
+	b=Ja98HebiOQRQqsUn06wiQ60PPhvkGYM+2kmRvREIgnhKV8krWc67Ne7ityjPCQ//lqxI
+	 jz+/5+vO7ldXodxBoQELJGH4yOEvqdunxSegMwHPKvB4t6Me86tOYxgXZZe4AVWbXtVnL
+	 JTjthBTcZdKV2mL0v5kiql0/+PLm3Ruf0DASFWxZ44DPiNGKxzeWIP2IV+AO8GO4PB9UA
+	 NE7VhVfHafcARxWzdjxmz6teYJH9BT1M93YFQw8hRaoI3LOmV25OrVXGTzJP/JrlGFxPK
+	 23zXrNBhOZalcOfEjkcq2CZ5sPhJ2IiZRt4lM8an26SPLfbwKkOR94e7qEKm0VkPK0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793815142;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793815149;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
-	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
-	b=rAMtrSM5SKtjSfaBK9kA/WScvGrNI3hJMO53wYe5de1WsMzjjuEF3cVp7TkQdmvEMWvQ
-	 BzjdH37Pc7URJpDhGrUpe543KTofHteR8fAIxkQYtKNBo4yvoNj6XR1hs9HWHeNW8YR2b
-	 lFOsBBwfKAdSMltO1zBubOoyMHkqMOi3xsLZfuHmze4YD2dEC6vhli2M0ElqZj+d6W3eL
-	 FoHoYV/UQfsZ1tWO8rYXh5lPOw9Gr8y5ZWJqmhqzonwbzd9xf7KVJNBnzTK/5ixFDpEUl
-	 8YiL/KAz53v4YVw1UG1SyBr4Rf7ScbQfPAczV3Sp9Nm/fApT964xZmLqezIB7uf+nTw==
+	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=9OTNLiIqnUXo5KXOl56BbVvGFg7giq+An3nV/JQrijE=;
+	b=4lJ2NvkVYyr3rOQlCNXQQ29nAmGh6IGUCVxW75F4cZYA2SPbDiqTM1Pzd6BiS40COYir
+	 vvN85fKetRAZv/gI+vULAQf6u6h9Ysd+fWJ2mD5+b/Bo2UVXmHpWuBNvMTmSGc+q/kS2T
+	 fytVhU38V8LXbVcQGcCJ/WPFE2oek9JltyFO00Zu/QbHHUaIIe9+b6gsg9JZVZSkYIbm4
+	 QW2TA+VpLBhjIvW5gAmfO0RLd4D87chSbJ/Kuvwt9yUFq59qHoedct3IjKAt2tXa/YQJf
+	 IMqD6hdSdkUlKDUUlf805XnkwdtBAXU9vn+5g2nUKYKmfGnoRkQtz4k49Dn0Nxgy2Yw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BwZjJYuH;
-	arc=none smtp.remote-ip=209.85.214.180
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oUG6mLyj;
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCEF606A339
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:59:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FCEF606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E5A606A339
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:59:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94E5A606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BwZjJYuH
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e987b4a710so11577395ad.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:59:01 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oUG6mLyj
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so586551a91.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:59:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793815141; x=1794419941; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793815148; x=1794419948; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
-        b=BwZjJYuHu4C5xRyvxpOt4TmnLLHzPmDzqOIsNcQCemo2wDlGld5Q/lmW9A8MryqQ0Q
-         rITH9Bx5qa/CkWy6AJZSxntn4YSM1MU+Kmoci4x9E06v3p7YmoDN6Sr2cVXPg8F4Q0VL
-         xyMd88fFmtePHPKaybT3TSqx04llb+9FptfNj9jjdPNzy6ehkl2aKp0hhc2I+Y6J1Klc
-         aGcQkL999koiB2n5OjEa/gHB/zlPMBhgEdQB0LQjYXvpoWrzpVBKXeLn7BTAuTM5obdf
-         9A1s/xZXXdUdFKhWxG92TlWVIgY5KjG07hTtP/EMFoROP19iWofu+WVxFmyVa9NC8n/j
-         86Yg==
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=9OTNLiIqnUXo5KXOl56BbVvGFg7giq+An3nV/JQrijE=;
+        b=oUG6mLyjg/yptE9UwSwW8GhN3WIHbFQi+vaLoRHcUTxrPQO1IKPagofcu5CpsHFOpO
+         PaTtT4tM8QNkjQo6gTfOr00r12ejqj6glJ5msNnSXAQqEKyMGZ5mL3xLgn8d5X01iDlL
+         aBKZw0cf7x1fV+TUIYoh61nx1E3pd9vCYcwyFjHobNaHAn1XMZUaAG13/l9NDDCovaje
+         2umP5rFG2qZqQcr7ceEwmcs3aRnBPQmCDM9fy4rdzzr2p5gN2Utt8iVEdljh210+bL7t
+         zrh3mnbhjCvq0jaFRrT8tXzANq6QodSK7oK52VPT5r4K4uMg81yiK/agj6udV9VKT497
+         VUXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793815141; x=1794419941;
+        d=1e100.net; s=20260707; t=1793815148; x=1794419948;
         h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
-        b=C0MEE6WcbhIntkn/cyClVzkGEXkRL4KtPmK5CV2jUMLheDoFataL9b/3WbyIb4e4Ji
-         ZseuSCE15BNFWNlQ9J4lrHvdNXUhdUxWO6z896O4Hr2JN3yzABA5vMw9NHdzKAS9OmBi
-         Msp8/dcKpXRfMyhokfGshZwZ5vKtNiCu61AFIh2x4ZCDD29dzQ5xUWLnvagrZ4Tz7A3A
-         PZAObp4SeDhxgd5r9eQmFWO5RkGtS5Cf3dsefBBQ6goooDlm5HIeKBeLttif7b/fLkMt
-         N/6T0cNVbf7sPRWWQOv833lcjZxmAs9W3uEIAmsS89C7F6GvFkVA6gH0ySP/AqbBnsPs
-         KvWQ==
-X-Gm-Message-State: APuU4Z/10O1qB5FQHqtdTqEzjAtJXwr6t21glnIqHYyTnDJaj5jUVvZE
-	cpAVLIFsFZ93zvskmnlPUO9z8pn+Gp/8O+hDODIJMX2zwdP4MgG5R+rfdNdLvQ==
-X-Gm-Gg: AYBFou3+4ZfMMloxnifG8OshxJLbvM6Mwwd/7+xc1IppjJFXOQLpVX1GjngI5vdTOhU
-	DyKCVpFIVvMUEQXhwNwAmwf1ge8+rr7SNXia/XNeic7l9KoyDuDAIDHE/2svHmaNO/XP4KkUYAo
-	y67281SSCUvB2UBPQFT1PkRKJUTOjHLF27KftHLWxHzET8oftzKDSMr2SNowdIMJiH5N4uWyOhj
-	yQT/HQBZMwUVeoxbTNBNX11lh01MTYaVXVozl1hnzTMyX8/tp0nuTNYDHLlXG1HNCfuYN0Tz6jC
-	1WsRUXWieCaZVv2oEoSJee/lpDyTGOOXUsYOk2RSzg+eLhkTI7jUHbHmhxBe0umCvv4sm81LHUq
-	tTgAcg0+rvqGFCKXAp5ybWg1N2+ZwH47tLHcTHwzAU940TLsUeMnYLmzXhe4krJit9yLiO8ogWF
-	GLAHJ4QjPxl5ZATkV7muwH3cbaRrWfSi2rFZXlDTTgwunmXGrt3lEp65ykcrTFbK2VcNUN8K2tz
-	DYCBZswZ5RNZSus7uh6SBO3AtY5M61yoBxS3UXP/8rVrkO+xXaEaOg+JqcDLtSYv+E/AMn68ow9
-	5moVST3iCbmF6DHMTqr2cs9AJWIsTZA7ykPYn8OEzfxVBWDebf66wVXyMYzq7pYLalCzwz2XqII
-	lA2eFhNvVbSqm85jfwyqxWa+ZWk9CVUx1PJ+r/7L9TWA2ag==
-X-Received: by 2002:a17:902:d50a:b0:2e6:e9a:eb48 with SMTP id d9443c01a7336-2ed24050bc2mr1066155ad.41.1793815140726;
-        Wed, 04 Nov 2026 09:59:00 -0800 (PST)
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9OTNLiIqnUXo5KXOl56BbVvGFg7giq+An3nV/JQrijE=;
+        b=oQBL0G+FoD0o9PpkCehg0cDOKEk7h/IQrzvWmKVDDSJkPPSX8fUWiRPbsA4Sicvkd6
+         0YoVsPuyvpEeVRiP+SnEt+kXex6A8cNWVTg/3TEYh8i0h5Y2bxzRne5bUG0pZLgWSlxn
+         syWm3R1MoQTJt7kIrf2/S1dNwTiVP8wbTPj4zf/6o5S8RZ6r2EwejyLQIA/Akm9yZS04
+         MKTyuSL1xEDYVBG+tv97OT4wubnhWyAZNH9bp/nbUGx37eTDkw0FFxQeR8NWCk4z7sRe
+         SVrcmFLc6G3r8SyqxdUdFzTTkL7fDHWI0D1fFKAlPYg1OFhL6CqGl9cGiVzVdiwBJufq
+         227A==
+X-Gm-Message-State: APuU4Z8uSgucOxoA9Qq6uHvL/4XFdNZSLYhkfh9Tur+tgC9lW8kSGGNM
+	yrk/w1pUyiHcj7UBYrCex/nEGE8Y4U87YMLtyKCDm6ov5cEOuOtjvP678++vQA==
+X-Gm-Gg: AYBFou37oYlSIoZ8DJB6FRvAeBaDjTFv9IItzOEIfKCX/DSfXkDLioglthxs90SZGl4
+	6Sr+l1vs+GukP+EhVzpWTU6Kl0nrdzOeYnRnod+fvLhqUem/Br+X93kDd1Lw2yJUEKRJPmw4MO5
+	T0S2gNNRI4N3tpp57SVwPTyeUqSD/hFAEemvGizdLouO/UenQRNZ4m7MAyaq4zGgrDnoANDGrab
+	o+fAhKY2NW36S3jQM8YgLKvFYOk+rjHw56Lek9xgc2DiyEpRUTFfC68JqGpfLsQLtNFepoGVerw
+	xpwyOYtk28Zrulua+jAj1mvZPeea2Id9Fcx7YpFj84tRG6mbq73FxqdGKfZ/zEacNA36tC3+taE
+	V/LgwMqSpstwbWlyfEkwfi3ydVFHiAoidKUSK0wUTlCQegY7rjU9/sun8Fek702FifbCUUAMzrv
+	9x5L/j4ioiyJhtm+7MrWZCQPB3YX609R+OKpoegxmLaa9gLYKr2XpKf6bqVfEwEwZL+2snV7g60
+	dSDQv1vqHVVsR4kdwI7OeV63MUyIZTEG+3uQMFHZ1MVDjibsGtRFqlPGNLLJXl7LcCadVSLizt4
+	Xhwf6ihNffXwh2iZNaIAOPsuBPbinUT0Xcqw760LYZ7AprtYBFoZ7GdlrG8l8MNiL3+Rd/VTJi+
+	JzsoANqGFjukJpwI6pcnM2tbUfy2mfZ0O33MIm9ph16gVPw==
+X-Received: by 2002:a17:90b:570c:b0:3ab:e588:c288 with SMTP id 98e67ed59e1d1-3ae897ccb52mr14990622a91.11.1793815147672;
+        Wed, 04 Nov 2026 09:59:07 -0800 (PST)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe1e4dsm10474875ad.21.2026.11.04.09.58.59
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31d2b5esm34216a91.15.2026.11.04.09.59.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 09:59:00 -0800 (PST)
-Subject: [net PATCH 0/5] fbnic: Fix FW crash restore,
- stop path and mailbox teardown bugs
+        Wed, 04 Nov 2026 09:59:07 -0800 (PST)
+Subject: [net PATCH 1/5] fbnic: Take the instance lock to restore filters
+ after a FW crash
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 04 Nov 2026 09:58:59 -0800
+Date: Wed, 04 Nov 2026 09:59:06 -0800
 Message-ID: 
+ <179381514591.9644.8634689197787321139.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: 
+ <179381496288.9644.9775319757787890210.stgit@ahduyck-xeon-server.home.arpa>
+References: 
  <179381496288.9644.9775319757787890210.stgit@ahduyck-xeon-server.home.arpa>
 User-Agent: StGit/1.5
 X-Mailing-List: netdev@vger.kernel.org
@@ -100,36 +105,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Fixes for races and ordering problems in the paths that take the datapath
-down or rebuild it: the FW crash restore, ndo_stop and PM suspend/resume,
-the Tx force-flush, and the DMA flush on mailbox teardown.
+From: Alexander Duyck <alexanderduyck@fb.com>
 
-Patches 1-3 were found by code review or inspection; patch 3 has not been
-seen to trigger. Patches 4 and 5 together appear to resolve a hang with a
-PTP Tx timestamp left in flight. The series was tested on fbnic hardware
-with firmware 26.09.14-017_h7ab84d2ef68f, cycling the interface through
-DPC/AER recoveries for a full day, and under QEMU with the fbnic device
-model and live firmware.
+The fbnic_fw_config_after_crash function resets the MACDA and action
+TCAM shadows and rewrites them through the __fbnic_set_rx_mode function
+from the service task, holding RTNL only. fbnic is ops-locked, so since
+the netdev workqueue moved from RTNL to the ops-compat lock the core
+calls the fbnic_set_rx_mode function from it holding only the instance
+lock. The two do not exclude each other.
 
-These patches were previously posted as part of a larger set:
-https://lore.kernel.org/netdev/179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa/
+Both sides can then allocate MACDA entries at the same time, one can
+zero an entry the other is still filling in, and one can clear hardware
+entries the other has just written. The crash path also syncs the live
+address lists while the netif_rx_mode_run function works on a snapshot
+of them, so the reconcile that follows can count the same delta twice
+and leave an address that is never unsynced.
 
+Hold the instance lock across the restore, as the fbnic_bmc_rpc_check
+function does. The netif_rx_mode_run function holds it from snapshot
+through reconcile, so the crash path now syncs either before the
+snapshot or after the reconcile.
+
+Fixes: 5a81c72ef9ad ("net: run netdev work under the ops-compat lock")
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-Alexander Duyck (5):
-      fbnic: Take the instance lock to restore filters after a FW crash
-      fbnic: Fix service task races with ndo_stop and PM suspend
-      fbnic: Disable PTP completions during the Tx force-flush
-      fbnic: Suspend phylink after taking the datapath down in ndo_stop
-      fbnic: Wait for the outbound flush to complete on mailbox teardown
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index ad234bb0f75d..09eeb4b4ded8 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -181,10 +181,15 @@ static int fbnic_fw_config_after_crash(struct fbnic_dev *fbd)
+ 		return -1;
+ 	}
+ 
++	/* The rx mode work rewrites the same shadow under the instance lock
++	 * alone, and this runs from the service task under RTNL only.
++	 */
++	netdev_lock(fbd->netdev);
+ 	fbnic_rpc_reset_valid_entries(fbd);
+ 	netif_addr_lock_bh(fbd->netdev);
+ 	__fbnic_set_rx_mode(fbd, &fbd->netdev->uc, &fbd->netdev->mc);
+ 	netif_addr_unlock_bh(fbd->netdev);
++	netdev_unlock(fbd->netdev);
+ 
+ 	return 0;
+ }
 
-
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  5 +++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 16 +++++++
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  4 +-
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   | 43 +++++++++++++++----
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 10 +++--
- 5 files changed, 64 insertions(+), 14 deletions(-)
-
---
 
