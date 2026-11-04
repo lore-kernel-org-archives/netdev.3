@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793828781;
-	b=ZzQufIa+8mdNCOzlkPTrZiuXQAxkpqB7ePacLPXxKXgvqmXonXZZHPs2lKBvDsIqLuFQ
-	 JsB8y3KLJxwHny6XIlDhOr7W8c9SJVgi+Bm07PQM7QyK0rdAhQLdJq/ZOfJPFaTb249t3
-	 ra8pqg5ymc3tZt01CAvTRL9nb1B+sO8eRRe38sOw1AA4Pg+D82+Xa5hvDEPCJ492uJ7YA
-	 WXY+CNXU2Svwj7Bo9CVTV4xbTMcaQVCOaFuwurGtu1pEG69LdYvXWMI0BIcqdZGncxrgZ
-	 /0LVI8wDAbwktgAdmeqoXpGSmNsx36UUoWK0Cdcc95PqNl4OTCDnoVaegtietyePWZg==
+	b=hIporwLLrNvw/3/qgBAcLiT04CiDtoGXb1nO2oSk0fXmzHnjpdOilrJo3ane0QAJYtxB
+	 ZNLgXMAPjfbW+vCeUzPnxEMWpRdbOHukNWmvHu/Ay0b8YQaVfZfOiOgTmjoJXb67myo1Z
+	 1g4RlfQGvpCbQkQ30i/DItTndUSQG7VFjPrvbneqfLl9cmYw3JZ+OtJbAHJHq3Fxf4WCv
+	 Iv0eCFwcG/22S4CHd0/lNGfcvYhm49lKateYwsTt7oy0l7/iIQkafzJOPacV+Cwg2vrHf
+	 VgpCfNu/SInHqaVKbAN4godZ5ul37tYA97MZ1MHU/NWzg0Q/B8AYpTCYRIn9ZA/vH8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793828781;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=mHZc8+YQF2EtSdEWVUQndOkbLFBfBDM9FI4AIDv+tqo=;
-	b=NZd3W7KKY2BL4L40mh75s5sY8bK1ACOMFaorGcuKfpL2vZwnUnSCQo+piBj+8WW8pbzL
-	 mXzVSikE6eebQE+dnD3z+rYD7/Vc+mTQf/Vz9g+LmuYoNzqNKCFECgzDfy0Ga/bw19294
-	 yQDzcksj3JFIyDYmAIlVToLjd5Z5QYIdtJJH03f4cGtztEiJyvyy9iIgOYNmOjR4xdEx2
-	 1Gg7XJy0uS2zia8V6gd4bdHb9JylkVcB3DoExabyyql36JGp155wfSFlS+Q7GX0jt3Pm3
-	 VTaesgGwdSKIDMAx5eytWPO8iOcK7AjhbjIVBsBoiyBWPg9jnDUgB7tIGkSSObrDNHQ==
+	bh=RTziZNdTshu8mr9IgxCRzQVNRcfcIYFxAuEoFWGnD+0=;
+	b=nDKoh77ErAzBf8cvkf5J5cg3+KeZSAzugtG6iRy0lcZJ5Z8SiBehHfUzExyVpATT9bK4
+	 sBPV1QBlc9ocoVTL9x7bp2KebajvZQrlk0UmpbsR4CnH96uTeRW0Jy+O5CD59YvTZ+XdY
+	 1yHSVYYd5NROF9eHRGx33QaRHquQdiBFok8//PW78ybKY5aPh0F2bLlQ5Mm3UsdfmDgu5
+	 c/YYcwW/d+Y7tFbRw4+f39rMiqVUHVnKr+aUVJdnDPB8Q20v+vDdpPr3GOBauNoIKIDOF
+	 MlePxM44lzw2dop7m6B0L065qd2WHQsUkCYeotAMbTe6qOGqsqnukrMEkCgxtHNNNAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=corp.free.fr;
 	spf=pass smtp.mailfrom=corp.free.fr;
-	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=ZZB526cZ;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=pkiIkJK2;
 	arc=none smtp.remote-ip=212.27.60.169
 Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DA7606EEBF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E7E606F282
 	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 21:46:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23DA7606EEBF
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23E7E606F282
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=ZZB526cZ
+	dkim=pass (2048-bit key, unprotected) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=pkiIkJK2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
-	t=1793828777; bh=h/hC71b64OsrfSdyZupVKYVsUNv4wkpiGAFci4awMt4=;
+	t=1793828777; bh=kdxP7VYI9vMJcEC+R5fDK9cpA1cV+nrarMTELy30Vco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZB526cZKYLCKD4dveNqVCDUZPKVUEUDkD9uXlpTmmEAfQqs81lufi8bi5IbpjAB4
-	 40M2oWnado44ZsVufycbuPzxqPknmqIlflU4++6wDuxu1Qk7TdKljJLn3DSwHQZwFD
-	 CbzBSaqlOjsqYf85cgKbD+oUBo6FWEV8qL3n6NA+U/HotBiqc6IaBt/65wdsYKCMd3
-	 yHXsxsqxunKiPpApg7AOZmxlTOe4NNMnLd0GWdbQDNKp2jq7xwIBV17obFfVQXj1Ax
-	 vJibkvdCfumHoQzg9BNb5YUnzok+wOP5D/F8NSlhe1UjbmSSl+/o0tASDB/oRhrkZ7
-	 PEss2H9lt3aUg==
+	b=pkiIkJK2gXofnVLyoXPXtYEx62n+q/S//ibFT6yjIv6J0pOQaIB5nbnWTGmQtNuZV
+	 8GRq1Vk5nLQb+/3YeWMkf0Syp7HWji+qoDAFa3zWg7z/Hw4LWurnslqO/QfANyL4OO
+	 jH9Kqu08+2vG82wXvf1hwYs7nlpXvCJpUexYCDcUYyFTNHTLjh/DKyS/3Wf3L/N6BM
+	 bs5hw1NpfJIck2bNPhFvDD+FEmv3Hk2Shl7+U+T1Mkvsadu/k8bxQajxXe3VJxJelj
+	 1B70SmTF6bIqOfFBmrCGzCkn6T8t7hXoC2Sj4kuTARoV6NrYkcdGROg5j2ZCtBWzT5
+	 6ymU+bWr7BS4w==
 Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
-	by rcs.proxad.net (Postfix) with ESMTPSA id 76E0F44C04D7;
+	by rcs.proxad.net (Postfix) with ESMTPSA id 3D84A44C0479;
 	Wed,  4 Nov 2026 22:46:17 +0100 (CET)
 From: Alexandre Cassen <acassen@corp.free.fr>
 To: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -56,9 +56,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Ido Schimmel <idosch@nvidia.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 2/3] net/sched: act_api: pass the filter offload flags to action init
-Date: Wed,  4 Nov 2026 22:45:56 +0100
-Message-ID: <20261104214607.556269-3-acassen@corp.free.fr>
+Subject: [PATCH net-next v2 1/3] net/sched: honor TCA_ACT_FLAGS_NO_PERCPU_STATS in more actions
+Date: Wed,  4 Nov 2026 22:45:55 +0100
+Message-ID: <20261104214607.556269-2-acassen@corp.free.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104214607.556269-1-acassen@corp.free.fr>
 References: <20261104214607.556269-1-acassen@corp.free.fr>
@@ -73,75 +73,156 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A skip_sw filter gives its skip_sw flag to its actions only after their
-->init() returns. ->init() then cannot know that the action never runs
-in software unless the user also sets skip_sw on the action. Since
-commit 34d35b4edbbe ("net/sched: act_api: deny mismatched
-skip_sw/skip_hw flags for actions created by classifiers"), this action
-flag also needs the filter one. The Sashiko AI review [1] of the
-tunnel_key dst cache patch reports this limit.
+skbedit, police, mpls and sample store and dump
+TCA_ACT_FLAGS_NO_PERCPU_STATS since commit 40bd094d65fc ("flow_offload:
+fill flags to action structure"), but still allocate per CPU stats.
+These take about 6.5 KB per action on a 128 CPU host.
 
-Pass the filter offload flags to ->init() so that an action can skip the
-state only the software path needs, like the tunnel_key dst cache.
-tcf_idr_create() stores them in the new action, which replaces the
-inheritance after ->init(). Since commit 9463e8d8c692 ("net/sched:
-act_api: inherit filter offload flags only on new actions"), this
-inheritance only applies to new actions, so the final action flags do
-not change.
+Honor the flag as the other offloadable actions already do. For example,
+a per subscriber policer offloaded to hardware:
 
-No action reads skip_hw at init and only act_skbedit reads skip_sw.
-Since commit 4a6a676f8c16 ("act_skbedit: skbedit queue mapping for
-receive queue"), it requires skip_sw for a receive queue_mapping. The
-filter flag is now enough for this check.
+  tc filter add dev $DEV ingress protocol ip flower skip_sw \
+     dst_ip 10.0.0.1/32 \
+     action police index 1 rate 1mbit burst 10k \
+     conform-exceed drop/pipe no_percpu
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009051930.3619697-1-acassen%40corp.free.fr [1]
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
 ---
- net/sched/act_api.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ net/sched/act_mpls.c    |  8 ++++----
+ net/sched/act_police.c  | 10 +++++-----
+ net/sched/act_sample.c  |  6 +++---
+ net/sched/act_skbedit.c |  9 +++++----
+ 4 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index e142d33dc5ef..13317d1abde1 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -1531,6 +1531,12 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
- 		ops[i - 1] = a_o;
+diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+index aa56521b7179..a870386386d9 100644
+--- a/net/sched/act_mpls.c
++++ b/net/sched/act_mpls.c
+@@ -60,7 +60,7 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb,
+ 	int mac_len;
+ 
+ 	tcf_lastuse_update(&m->tcf_tm);
+-	bstats_update(this_cpu_ptr(m->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&m->common, skb);
+ 
+ 	/* Ensure 'data' points at mac_header prior calling mpls manipulating
+ 	 * functions.
+@@ -123,7 +123,7 @@ TC_INDIRECT_SCOPE int tcf_mpls_act(struct sk_buff *skb,
+ 	return p->action;
+ 
+ drop:
+-	qstats_cpu_drop_inc(m->common.cpu_qstats);
++	tcf_action_inc_drop_qstats(&m->common);
+ 	return TC_ACT_SHOT;
+ }
+ 
+@@ -196,8 +196,8 @@ static int tcf_mpls_init(struct net *net, struct nlattr *nla,
+ 		return ACT_P_BOUND;
+ 
+ 	if (!exists) {
+-		ret = tcf_idr_create(tn, index, est, a, &act_mpls_ops, bind,
+-				     true, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_mpls_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+ 			return ret;
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index 3f8147f37549..0b0c09e3dfd9 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -80,8 +80,8 @@ static int tcf_police_init(struct net *net, struct nlattr *nla,
+ 		return ACT_P_BOUND;
+ 
+ 	if (!exists) {
+-		ret = tcf_idr_create(tn, index, NULL, a,
+-				     &act_police_ops, bind, true, flags);
++		ret = tcf_idr_create_from_flags(tn, index, NULL, a,
++						&act_police_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+ 			return ret;
+@@ -259,7 +259,7 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
+ 	int ret;
+ 
+ 	tcf_lastuse_update(&police->tcf_tm);
+-	bstats_update(this_cpu_ptr(police->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&police->common, skb);
+ 
+ 	p = rcu_dereference_bh(police->params);
+ 	ret = p->action;
+@@ -313,10 +313,10 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
  	}
  
-+	/* New actions inherit these flags and init can skip software state */
-+	if (tc_skip_sw(fl_flags))
-+		flags |= TCA_ACT_FLAGS_SKIP_SW;
-+	if (tc_skip_hw(fl_flags))
-+		flags |= TCA_ACT_FLAGS_SKIP_HW;
-+
- 	for (i = 1; i <= TCA_ACT_MAX_PRIO && tb[i]; i++) {
- 		act = tcf_action_init_1(net, tp, tb[i], est, ops[i - 1],
- 					&init_res[i - 1], flags, extack);
-@@ -1549,9 +1555,7 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
- 				/* Action is created by classifier and is not
- 				 * standalone. Check that the user did not set
- 				 * any action flags different than the
--				 * classifier flags, and inherit the flags from
--				 * the classifier for the compatibility case
--				 * where no flags were specified at all.
-+				 * classifier flags.
- 				 */
- 				if ((tc_act_skip_sw(act->tcfa_flags) && !skip_sw) ||
- 				    (tc_act_skip_hw(act->tcfa_flags) && !skip_hw)) {
-@@ -1560,13 +1564,6 @@ int tcf_action_init(struct net *net, struct tcf_proto *tp, struct nlattr *nla,
- 					err = -EINVAL;
- 					goto err;
- 				}
--				/* Other filters share an existing action */
--				if (init_res[i - 1] != ACT_P_CREATED)
--					continue;
--				if (skip_sw)
--					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_SW;
--				if (skip_hw)
--					act->tcfa_flags |= TCA_ACT_FLAGS_SKIP_HW;
- 				continue;
- 			}
+ inc_overlimits:
+-	qstats_cpu_overlimit_inc(police->common.cpu_qstats);
++	tcf_action_inc_overlimit_qstats(&police->common);
+ inc_drops:
+ 	if (ret == TC_ACT_SHOT)
+-		qstats_cpu_drop_inc(police->common.cpu_qstats);
++		tcf_action_inc_drop_qstats(&police->common);
+ end:
+ 	return ret;
+ }
+diff --git a/net/sched/act_sample.c b/net/sched/act_sample.c
+index 44319a159b55..3029e93c4dea 100644
+--- a/net/sched/act_sample.c
++++ b/net/sched/act_sample.c
+@@ -69,8 +69,8 @@ static int tcf_sample_init(struct net *net, struct nlattr *nla,
+ 		return ACT_P_BOUND;
  
+ 	if (!exists) {
+-		ret = tcf_idr_create(tn, index, est, a,
+-				     &act_sample_ops, bind, true, flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_sample_ops, bind, flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+ 			return ret;
+@@ -173,7 +173,7 @@ TC_INDIRECT_SCOPE int tcf_sample_act(struct sk_buff *skb,
+ 	int retval;
+ 
+ 	tcf_lastuse_update(&s->tcf_tm);
+-	bstats_update(this_cpu_ptr(s->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&s->common, skb);
+ 	retval = READ_ONCE(s->tcf_action);
+ 
+ 	psample_group = rcu_dereference_bh(s->psample_group);
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index 26258b353cde..1f958b7d2a60 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -45,7 +45,7 @@ TC_INDIRECT_SCOPE int tcf_skbedit_act(struct sk_buff *skb,
+ 	struct tcf_skbedit_params *params;
+ 
+ 	tcf_lastuse_update(&d->tcf_tm);
+-	bstats_update(this_cpu_ptr(d->common.cpu_bstats), skb);
++	tcf_action_update_bstats(&d->common, skb);
+ 
+ 	params = rcu_dereference_bh(d->params);
+ 
+@@ -85,7 +85,7 @@ TC_INDIRECT_SCOPE int tcf_skbedit_act(struct sk_buff *skb,
+ 	return params->action;
+ 
+ err:
+-	qstats_cpu_drop_inc(d->common.cpu_qstats);
++	tcf_action_inc_drop_qstats(&d->common);
+ 	return TC_ACT_SHOT;
+ }
+ 
+@@ -221,8 +221,9 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+ 	}
+ 
+ 	if (!exists) {
+-		ret = tcf_idr_create(tn, index, est, a,
+-				     &act_skbedit_ops, bind, true, act_flags);
++		ret = tcf_idr_create_from_flags(tn, index, est, a,
++						&act_skbedit_ops, bind,
++						act_flags);
+ 		if (ret) {
+ 			tcf_idr_cleanup(tn, index);
+ 			return ret;
 -- 
 2.43.0
 
