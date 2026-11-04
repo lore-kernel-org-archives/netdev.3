@@ -1,60 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793829303;
-	b=dSmd0p7Pd/+JOYip4NSauyaTKdvOu2xgl9EZXe59BaFqqf+RuAuWjFBX9eHUhrbwqxGu
-	 Orap5n/xsSt4GG+4MvrH2E5hGHONsZr5+ELBKWaIdPeKTn1dvS02F8YEf8wNXvEag3aJQ
-	 NLYLX5+YecKgwnNmpX2fP50gH9lxNbG9GzZzkBP54J/0rmDX1Y0tjcWUe+q18O1LXY3Bv
-	 J/CHzduIQD+ntgqH8yy/Etd3oG/MyotckU6HN7bXtRQwcEH6/0XhvzB5PRKzrtIyaeIQR
-	 uaaVXxJXpu0RMp5GnEO484Zh5ATK8J5ANt+vWIp71GcFay4NjrYDXZjimOmhCwjnIJA==
+	t=1793829675;
+	b=ssctGcK2vFTH9urXTRlerfQuHw1RWdLufZ/ALMUunwFCBn9P8fnXa6gIacDMptizS3rZ
+	 4JwE16XZFk4IYEd9q74VH43nlXqY63ZCRkviuVmhEoLnafOAODeVJpL39Ei3kY9qkLE2J
+	 jxMj3GHF/yUC79wAT2sA+Iaq80vdz9sYB6lfIYTJ3zSc2DSi+SlINr4sBPqqrblQm5Zii
+	 kJPQHc24LsE/5LJ7iKDjNLOKq3H5Wy+IMWzBrqUqUkuG9dpwRIQgC19C7JaWD7IJJ8uiQ
+	 IN6EQ5wMWneT+rNZL3domfNV/V9BwivsbY3Xx2brUCKicTgjZ+b6SdTueVRb0hVLy+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793829303;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=OtqVTx74iD0Sp4Bbn7WEPLQlERnQa+4V0BtNpGWAxZ8=;
-	b=j5mKDpGgRT/NGLJI+LdtjEOl6AG+CGE8lYnJWcmsZxbID8talU/H9MIkOzqODIy1+I2f
-	 /jMuWx+iKbIALSZohhl3NeYMGNcE06JPnXBLeuAKQRaG0+4e3aFqB1z1SwRNesLvrTK9Q
-	 54DW6uDeoY3grxL9YhKMUXmHrP9Apqrmff1P2NYjF3FEH0ROiGTBKqscIp3nckpyqV9pe
-	 tGb81DmsdfKSyr0vCo/tgH6hzEr83bp5gKVtMakivJybCB8cqflUZUECjzOCVoG4zrSvb
-	 v5RgINif7KZgAwev5WpaqShW7YhN2zCuXrG4N9TgeIzIn2dWCJJaXaZYx4xSogwe/fw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793829675;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=w9CdwPErUt55SviF3rKSmqb1tl8IBDbw/57AfeFpaXU=;
+	b=PSRfQHsiq1cekGHyvmJWvpK8fc60iiLechu3EGfdoPa3qn+3/joy8aq3dOCdWz1zJ6pW
+	 CU0KE2VkNFDWI9WlrMoIVSJl1Yt5HXnIeobwznBO+InLIY3833phPeyBaOMKxPh61PxQ3
+	 AV634Igo4EVI74X/8hEkrunDX9OeIQBw27xtj1AV1XBgtxHDe3z9Jlt/OnIsxPCaa/lfR
+	 4NBrdoQA2q1CZa8CRNE86DiKUo8mzEsG9pJ9Dofe59y7dM33QV69SL1nthabV5C17+fbU
+	 SIg5U7B9C7/ij8izc40q1heNhZNTS1SGm80wrk1ITw7m6jLrfvxpFnC830EMuq4rveA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zachschneider.com;
-	spf=pass smtp.mailfrom=zachschneider.com;
-	dkim=pass header.d=zachschneider.com header.i=@zachschneider.com header.a=rsa-sha256 header.s=protonmail header.b=XfalIpmk;
-	arc=none smtp.remote-ip=109.224.244.20
-Received: from mail-24420.protonmail.ch (mail-24420.protonmail.ch [109.224.244.20])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PXKOc23H;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02A8608660A
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 21:55:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D02A8608660A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=zachschneider.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zachschneider.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EDD606C587
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 22:01:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8EDD606C587
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=zachschneider.com header.i=@zachschneider.com header.a=rsa-sha256 header.s=protonmail header.b=XfalIpmk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zachschneider.com;
-	s=protonmail; t=1793829299; x=1794088499;
-	bh=OtqVTx74iD0Sp4Bbn7WEPLQlERnQa+4V0BtNpGWAxZ8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=XfalIpmkra+4G6TIfzXN3P07mvgy0mwhH72HWUfJuj7zXXsplVAPZS4M0gFdJGG+T
-	 k3vkV3HUc7eCuOduENIEuooERSWOKNUQQz91nw3QvyrJ/HXPdkOyrX5VVqgdPypaJS
-	 NuwreKd5e30vnYmwO0J9DJ5yJjHFK5RHhcWghkzncwyzOCqwIkokW9v/8RbJK2rH6D
-	 VDTLfP2Kjmyd9+/aEl0/kLW7vrDJdAxmWSGXeAJuEr8TcKoy7yYiE7/j9ixv9wThYw
-	 BrbN66lxSUc6vhFpvEFhVHPQM4Stx+D5lM6ba7JPXqMt4PmD5uf9mDYSxB+8HoqtUA
-	 4gaKQMF/qLhag==
-Date: Wed, 04 Nov 2026 21:54:56 +0000
-To: Jakub Kicinski <kuba@kernel.org>
-From: Zach Schneider <me@zachschneider.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, netdev@vger.kernel.org
-Subject: Re: r8169: RTL8126A (XID 64a) TX packets lost with TSO enabled
-Message-ID: <b0oeaAtAyqYEqeVhnKks-yIHdPaXsJ2jKv6mf1-dNKYO0PlLdLg8J3YuyGng35U-3XBenDAwohSYctK0pXjUMEwA4yyvfTM89zpa8MkTb_Y=@zachschneider.com>
-In-Reply-To: <20261020172004.69c2d778@kernel.org>
-References: <20261013230904.58717-1-me@zachschneider.com> <20261020172004.69c2d778@kernel.org>
-Feedback-ID: 134141743:user:proton
-X-Pm-Message-ID: d9031605c3d38825d29bfb6264c582af155113aa
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PXKOc23H
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793829673;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=w9CdwPErUt55SviF3rKSmqb1tl8IBDbw/57AfeFpaXU=;
+	b=PXKOc23Hk9VOovhUEfaQZ+AoaSAMC9HlQ14vlQEGgVR/Ax8ZXVYuHtNtFuswnDDTx9OL7T
+	wPboaZGstSEhvknu/i9DsA3zlJBINnkgccplWBdkxZDuYE7/wy5E+j8iAy3oE9FTn2Xe47
+	eZDyxXYEih5JkTwfdy7dpz3Kf5CxNvw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-nPOl_08aPTO2CdaX177x4A-1; Wed,
+ 04 Nov 2026 17:01:07 -0500
+X-MC-Unique: nPOl_08aPTO2CdaX177x4A-1
+X-Mimecast-MFC-AGG-ID: nPOl_08aPTO2CdaX177x4A_1793829665
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5F6A81955F1B;
+	Wed,  4 Nov 2026 22:01:05 +0000 (UTC)
+Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 76C9B195604C;
+	Wed,  4 Nov 2026 22:01:00 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net] ice: do not classify EAPOL MAC address as LLDP
+Date: Wed,  4 Nov 2026 23:00:42 +0100
+Message-ID: <20261104220042.1421735-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,41 +86,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Thanks for looking, and sorry for the slow reply.
+01:80:c2:00:00:03 (Nearest Non-TPMR Bridge) is also the 802.1X PAE
+group address used by EAPOL, and the virtchnl MAC filter API carries no
+ethertype to tell the two apart. ice_vc_can_add_mac() therefore rejects
+it on untrusted VFs, which fails the whole ADD_ETH_ADDR request and
+breaks 802.1X authentication:
 
-I tested net/main at 6baae996ecf6 (includes c2124f80be4c "vlan: restore
-HW VLAN tag insertion with reorder_hdr off"). The problem is still
-there, same 100 MB HTTPS upload over enp14s0 as before:
+[  128.447213] ice 0000:17:00.2: An untrusted VF 0 is attempting to configure an LLDP multicast address
+[  128.447301] iavf 0000:17:11.0: Failed to add MAC filter, error IAVF_ERR_ADMIN_QUEUE_ERROR
 
-  r8169, TSO on (default)   upload stalls, >120 s,  29.0% retransmitted
-  r8169, TSO off            39.4 MB/s, 2.5 s,       0.0% retransmitted
+Drop 0x03 from ice_is_mc_lldp_eth_addr() and treat it as a regular
+multicast MAC. Trusted VFs still get the ETH_P_LLDP forwarding rule
+through the other two LLDP addresses and the rule does not match on
+the destination MAC anyway.
 
-For what it's worth, there is no VLAN device on this interface: the
-test traffic is untagged on enp14s0 directly, which isn't enslaved to
-any bridge. So I would not expect the in-band-tag path to be involved
-here. The CONFIG_R8126_VLAN remark was only about why the vendor
-driver ends up with TSO off, not about VLANs being in use.
+Fixes: 2296345416b0 ("ice: receive LLDP on trusted VFs")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/net/ethernet/intel/ice/virt/virtchnl.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Happy to run anything else.
+diff --git a/drivers/net/ethernet/intel/ice/virt/virtchnl.c b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
+index ca8018e3dd4288..27f0e1dee24642 100644
+--- a/drivers/net/ethernet/intel/ice/virt/virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/virt/virtchnl.c
+@@ -744,8 +744,9 @@ ice_vfhw_mac_add(struct ice_vf *vf, struct virtchnl_ether_addr *vc_ether_addr)
+  * ice_is_mc_lldp_eth_addr - check if the given MAC is a multicast LLDP address
+  * @mac: address to check
+  *
+- * Return: true if the address is one of the three possible LLDP multicast
+- *	   addresses, false otherwise.
++ * Return: true if the address is one of the LLDP multicast addresses
++ *	   handled by this driver (Nearest Bridge or Nearest Customer Bridge),
++ *	   false otherwise.
+  */
+ static bool ice_is_mc_lldp_eth_addr(const u8 *mac)
+ {
+@@ -754,7 +755,7 @@ static bool ice_is_mc_lldp_eth_addr(const u8 *mac)
+ 	if (memcmp(mac, lldp_mac_base, sizeof(lldp_mac_base)))
+ 		return false;
+ 
+-	return (mac[5] == 0x0e || mac[5] == 0x03 || mac[5] == 0x00);
++	return (mac[5] == 0x0e || mac[5] == 0x00);
+ }
+ 
+ /**
+-- 
+2.56.0
 
-Thanks,
-Zach
-
-
-On Tuesday, October 20th, 2026 at 7:20 PM, Jakub Kicinski <kuba@kernel.org>=
- wrote:
-
-> On Tue, 13 Oct 2026 18:09:04 -0500 Zach Schneider wrote:
-> > For comparison, Realtek's out-of-tree r8126 10.018.00 driver ends up
-> > with TSO off by default on this setup: rtl8126_fix_features() clears
-> > NETIF_F_ALL_CSUM unless built with CONFIG_R8126_VLAN, so TSO is dropped
-> > too.
->=20
-> If this is VLAN related it could be due to recent regression in VLAN
-> handling.
->=20
-> Could you please test commit c2124f80be4ceb6e from net/main ?
-> 
