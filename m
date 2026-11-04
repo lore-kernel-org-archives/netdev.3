@@ -1,88 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793752190;
-	b=ZiilKpUm8OC1r99R35pllBD8D3dMVMBdjw9BZ1BDgEw3sS3JUt9BVXY7wHeC4vq7QToN
-	 +HahOsgw6m8oyELpmNj9jdZknA5WnpwaKzMNJQO6PAk8/uh/lR0SdGqzu7mYPtNqr5hdf
-	 VOHrUG3g1ihJ3jE6py40qWFoxhaWlNY1JllUWEi4QNBm/kkxGlL9ZnaX6F9VtHDGkrsyD
-	 pNYxBobzUwardk0IqdnkFTapjRx3KGG/8W6qGaRGpwrZ7SQ94RKMgn4WPbMix0Yt5dE9J
-	 upXM0bZKq1vZxmOvU4JnjJvrQjkfoKqkTb7BZuqBK5wI7tBfAT1e2RyfpCEN+r2E/+g==
+	t=1793752225;
+	b=BmP4150cK9q9ZjT8RD6NcS+5Ldn3Q2JeeBGfa8bZ+CtLntDrHMsb5reGbHfYZy3Bx6RF
+	 PlXy4DIOxym2RqtNRzA89MKlJHJLaKEWG8Gp16pHpbquaIvaBFm0ACE33A0waWZaj+oau
+	 AC+SkuQM8ApsXw7nlsbVRMdarPNfmysrbXG5VcVPZJdgr1zaYmrmC57PSDmBwgVLgks1A
+	 Dup5YnR8/gy9cdOf8Ma1V+QYWgGc5ndNFW+rbwz4HVIcHHiWPetDfZF1eBoJqbXQRBjuG
+	 /mGUVrJ59Fvng9CXm2bNKSSN/ikNVu+A1j78NY2IK1L7eQAkCKcSdXAXv29vKwvq/mQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793752190;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793752225;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 Content-Type:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:
 	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
-	b=G7/69UgVPiH/p5JlxhGqD/UZYqBr8HNmKaPGg5tDbWRyQ5rlx/kc+iDNiSOiyf7GQFgg
-	 yJRPQDJKXfu0NEN4F/4oK9d6bIoBRS7eW9Rt5hmVqRiNW54OjfrJObHyl23fgYueJ7wH1
-	 RP89hHBJue+MRo6ggXzrXauLtKlabX8zudxrOMT9yfHathy83LNfT+rabPyfuqVpSurtt
-	 CYpkviEWllb1kk//wa+fky8XPRCCWg5ew9PRpfVDmFJixbD33eGwocJ8cDdw6gDzAPOfU
-	 aviI/2DJWUyLgQ8/ld9hdy8KTEovOGU31jTeXm3y3xIc8ovWLWNNWCAeGuwZ2zNJubg==
+	bh=eEi4Cxmtvez/mBUi4eznPoU/CcbHOpGSzjw4nibALaU=;
+	b=O96H6OXOU4IYXlZYjtevkWPsJ7v+4az9HS9m9DXrzivi/13EjzhCBySBfuhqoL3kmlsE
+	 mp7tBfE3j4JTo3DlpMOcEY9m5GIsQaH92uD9ZKv5F7fAOhb2XSpCATJOSOLuvdcTHL2WI
+	 IMjzhFvVWkrYqkp3bUkURMeXHHWkXRzIY34MAd7KJZhYZhlmLDJNSFZQ5jrJjaI5Urno1
+	 vD9OEwyW2+IbcSkB31iVRR/06fsjLbp0mw7FWdSeZ9mSBQZl2Ev7Ro7N21/mer5BWa/a5
+	 S2PLwhhLWrZhK3pyqXazTQFaGHclYEcvssbpo+K0bh79RodusHWt3ufJ8kWR7FGD1kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjX00fYx;
-	arc=none smtp.remote-ip=209.85.216.42
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zKJMjQZ2;
+	arc=none smtp.remote-ip=209.85.216.50
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15915606A324
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:29:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15915606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589C7606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:30:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 589C7606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjX00fYx
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so116664a91.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:29:49 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zKJMjQZ2
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3acb512a7a0so136899a91.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:30:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793752189; x=1794356989; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
-        b=xjX00fYxVz0C5LjLk+NtFhJOKKqfjNjgWARkozAxE3Xnti9OROsLwpnCuQkHhGg/WA
-         V4PLR2qbe+yp82UmUbpn1REbcLOlVUogKhCHbKEulXXIDMrT8XM/MtgEfJlnQ5rJDwQh
-         D9NNsz1RoI0NVuIFfpIFlqiLrNiqV+4U8oZc/Nd5M0Z4yiVeGEvyk+5lHeuU1f/jr3Fd
-         7g1F6H5/YS1dkgcmfOKrEwzwhdBuRgOZjfI3r7ozz3BZp3Ts78ePkvLoCfIDCIC0iAqp
-         6LH/xd/KrpDWT7oE9VrL1rnd0EeEQvZ/RynACvOC1G9VFtptzPCZK+I+FGxP9hkhKsSx
-         EGOw==
+        d=gmail.com; s=20260707; t=1793752225; x=1794357025; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eEi4Cxmtvez/mBUi4eznPoU/CcbHOpGSzjw4nibALaU=;
+        b=zKJMjQZ281aKiS/bWO849qnX+J63/ObIv6qtGf4h23nwKtLqvuZeAZkSYeqkDanS5i
+         6GXi2Kg5gPdFQJxv9PQ5+AhikjGWTkkXSRlWqAhtKAmAJdIgrhWqPXgWl36D/ZErOKss
+         mb+y8vF1hOTiGLsahM2m5wTT8ZhdUiszk0F2loGelEb0OuAMnp9eQS1ee2niyvStMQ5z
+         BYDpWyZi4/eWqfMH5awg8c3sd0CL17nqkwxHixqLQ357paesHt1C1HFUewnjY1BDhyxZ
+         wSo6f65RtSL36fmHWlZzIZM2lJEsuWlUH1+TIyu+d39JWMrZcSLH9fvTnFLOlrYqlQIz
+         5bWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793752189; x=1794356989;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
+        d=1e100.net; s=20260707; t=1793752225; x=1794357025;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
-        b=EYl6ME/NGN8puCOxBEqM9ySAVZVw7QLjPK/31AHd6OVz+/GSzWzcmDJ49fb39cu8N3
-         3W47X6IEeDdkFp5shlMHpG6ZipnxIkKPHOJM4CzzbC9BA8AJI+yqMfoleUSPibJZZyUc
-         y95Sgfwo0hTRvj/EYjyQ7qgK8v5CuTcWwupmPM9ixGLEEL6DCBdh1yMJY/VNJoI9inGQ
-         jVAjmVIaxj863tdD11+kCsfPxIk91NouqMyP1H9H/GKbYjRczMY2qfWnQWfLhZfpNx1j
-         2p63hxo+QuIcZBV+l7TybjPf+Iw2eegPtCUFRtZBI9clck1OYNhh5AGEn0R6d3PKpme0
-         TmVQ==
-X-Forwarded-Encrypted: i=1; AKwUvByJ+NwPS7FtILIHsd4PSVmkqwPwo5O0LljGgwDo3qK7HJIZAcvjQipE9GHkukN4odweBAxTlQ0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8HkIJODyIsn0OnX3/zJDbN8ZgIoQqQIYppYROiaCVfKUB/fO3y
-	YjdUb2YPZGiDpeoA6JXtv7fW/kfDRzHZJy3ZIg3htv1J7ZyTWoi3eOSi
-X-Gm-Gg: AYBFou0fNKg5YcSXYpbQ/qxf7A5Qk7VRPQTxIy/lF6UuSCEEGa12X9TuxinBekeyv/u
-	MIcYa5gE/NAWAaOBJTgwSZDkYiZO/YyVS2Jd5TdnK0FHMMOptfxuyc4YxXTq236AiUYzX/J10qb
-	oi4CcinIMx34NpHtl6h/6DJtcDfj9OCEuh9m6mGoxOpoGC1RzU69wxdaAgzduXw1eevbyqVF7mB
-	VeJYUjscU9f6oyCcekAMZys5FC6jJwgsS+pCZLtEqTSoBk3xu44+WZDc8pIhmC92Pz1fb92QCYU
-	XzoXDUaIuYW5n5jd4lB1PnkyCk2sU2qg1iPtmGocDYi37BmAm8G3DPrQlNbOUTzC4t63yWPRdWI
-	h1MFCAvwcoIb81xjmjYmBzDOwOeh5Kg6eSjOyPpzn13i3cQOZQBT3vW0Z4sUqLxat7/Ms/iefrR
-	Qg3HbHuQAZ5aMOf+OIOH9uieFZPqKhcEiwSWZeSWNF9Gp6Iz+36hk11SYGcG9PDg35dxQRX8tUU
-	+g8u6b99TTjHzTgbXLXGCbIUkTClTu0hZx24/lAaSjFTQ8K9x4U1TL4x6Q48F3Bj7EsQ8wc00ys
-	v/T0Iq+IYMvz2Q34ifl1fmOBIKBAP/tSiaIIsNEzFvwV7atY1zZfuSTTzUvAhAhapaJ8bJEdSbI
-	tpqf8O8sypy8NAj9KiKNJ9Oo1uo26FlsB7Q==
-X-Received: by 2002:a17:90b:2006:b0:3b0:9310:b252 with SMTP id 98e67ed59e1d1-3b09310d1e7mr631008a91.30.1793752189425;
-        Tue, 03 Nov 2026 16:29:49 -0800 (PST)
-Received: from localhost ([153.61.198.249])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944ea360sm1208878a91.14.2026.11.03.16.29.48
+        bh=eEi4Cxmtvez/mBUi4eznPoU/CcbHOpGSzjw4nibALaU=;
+        b=CgAfvX0Wrdiir63gZ1OMR+vscm7CXc+c5851rmPgIVcnYbz6JPkVxoDPGV8ieYW9UM
+         ZFtzJuACej/rg0+sTzEDg+xJHVUFDtmFP42pwcMoXdcISnjnD4h4bt6sL1PU6Oll4pmt
+         JpggqGwg6cJHyNyN/CVQTzWXSS1858+f3yzn+MJF/RAk4fetwPzlZ1teZEt278KP22e3
+         fhJ9bs+f39G4B8a0c5j5Ob0c9d5K/J4vLauiW7EBYaUH2bGhEk2W3lYOzD1pUHRvtu27
+         UTe3NwbiM/5cIxHzjFLSVrDQEhd3J8PXYHEq67SdPmbo+IRkc3DkElb4s44EpDDvlpIX
+         c6Mg==
+X-Forwarded-Encrypted: i=1; AKwUvBy+BmjsU0/eCvrKn2vcGF2rsPWSjNp66jj9gJPWHMCUn3DHBhn5BP/sF9vGAVqdhNbbXtXXH5M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/0Tl+J9/brnG25LHWp5KgPbEpbAG3wHPWyXiKNjCXBsBAr0x83
+	htMcTaG+bH1quncxrs3hIRJ4vVx26UG4vaT3K09nCLLWa9SMO19z/suY
+X-Gm-Gg: AYBFou1GpkpdPnL7/OjEHB04+x7ohr4D3PrYqbj08s7fknrwtNu/XA0ihizppncezz4
+	uGQdIgmeYMcX50YMSRGwn2YH2gzfZ81T8PUoQuNIjzhCd1hyUxCxjzJGQF1Vp2ZsvpfPFenVhGd
+	wf2+DY/c/vuBqbkNWJcSnpqU+CZY48llFD3D3tfGbOXm9fpFsZ+eutivIwQdSjSaJhtjWrxmU3A
+	rBULSzsjh6ayKJBT71IKm85hLooQDFYHd3KsFuaJMtwK1RoPPqVOkwo2JDZc98nMXCXC9zXzEmd
+	qgxXfw+hYys7IaVAAVlY6EZSefHNn6jqr+ZeifADonw+3av3N03PSo268vowrpYQxGE8IxiNNig
+	w5P16pBc/Usru+FC82SLzkB/yUUjPsx+WOH79wMRkZGtfwJDofffZRe4NdBwsoNJm/9IV7kgVmP
+	3fJVc3rtxkSVoa6ypMxTHiJ9BKHzhiQbvukC1HEOR07lxc63xmciSbCbHI80HUaYw0C0BIaKILy
+	t/RRbpoHQxCz/Y1mwK91zbsJ+K6URWNzxdOAjEXd4c1vtWnH2E7/IksZhWUfIixMPaWgoGDW1b9
+	8iji2Mdb455VhnARZqun78V/EpAvWptuu4vyWaZnKUfm1w4TTl8p2GqAViilaBnBN6m9yeG60i2
+	/SnVNbTp0h9yuAIypGD+4GsvZ4WOWB31gFg==
+X-Received: by 2002:a17:90b:35c8:b0:3ac:9a5e:9ce7 with SMTP id 98e67ed59e1d1-3ae897aa7aemr12306124a91.49.1793752224515;
+        Tue, 03 Nov 2026 16:30:24 -0800 (PST)
+Received: from localhost ([153.61.198.255])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm636905a91.0.2026.11.03.16.30.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 16:29:48 -0800 (PST)
+        Tue, 03 Nov 2026 16:30:23 -0800 (PST)
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 00:29:48 +0000
-Message-Id: <DMM02ZEK63KB.3KNTQTKEJD0G3@gmail.com>
+Date: Wed, 04 Nov 2026 00:30:22 +0000
+Message-Id: <DMM03F7F8IDM.VMOKC4RWW2LV@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>
 Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
  <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
  <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
@@ -90,12 +91,11 @@ Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
  <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
  <kuniyu@google.com>, <willemb@google.com>, <matttbe@kernel.org>,
  <mptcp@lists.linux.dev>, <mason@kernel.org>, <josef@toxicpanda.com>
-Subject: Re: [PATCH bpf v2 09/15] bpf, sockmap: Check the TCP state in
- recvmsg()
+Subject: Re: [PATCH bpf v2 14/15] bpf, sockmap: Keep the rest of the cork
+ after a redirect
 From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>
-In-Reply-To: <179374188255.488855.9131092470801455035@kernel.org>
-References: <20261102072112.4160195-10-alexei.starovoitov@gmail.com> <179374188255.488855.9131092470801455035@kernel.org>
+In-Reply-To: <179374188416.488855.8465787275984951547@kernel.org>
+References: <20261102072112.4160195-15-alexei.starovoitov@gmail.com> <179374188416.488855.8465787275984951547@kernel.org>
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,16 +108,53 @@ Precedence: list
 MIME-Version: 1.0
 
 On Tue, Nov 03, 2026 at 01:38 PM netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org> wrote:
-> Would it help to mention this path, and that TCP_LISTEN is covered as
-> well, in the commit message?
+>>  			if (!cork)
+>>  				*copied -= free;
+>>  		}
+>
+> Should the cork case also subtract the freed bytes from *copied and keep
+> the error?
 
-Not worth a respin.
+No. That's deliberate, and the commit log says that it stays. See
+commit fec51d40ea65 ("bpf: sockmap, zero sg_size on error when buffer is
+released"). A cork has data of earlier sendmsg() calls. An error for
+that data doesn't go to the current caller.
 
-> Should data that arrived on an earlier connection be kept out of the
-> copied_seq update too, and not only out of __tcp_cleanup_rbuf()?
+>> +		if (cork && msg->sg.size && !psock->cork) {
+>
+> Is this case meant to stay out of scope, or should *copied at least be
+> reduced by the freed tail?
+
+Out of scope. It's already explained in the commit log.
+A smaller *copied alone is wrong. ret is 0 and tcp_bpf_sendmsg()
+continues with the next bytes of the user buffer. Then the return value
+doesn't tell which bytes are lost.
+
+> This isn't a bug introduced by this patch, but putting the tail back here
+> adds a new way into a race that already exists in the SK_PASS branch. Can
+> a restored cork be freed while tcp_bpf_push() is still using it?
 
 yeah. It's an old bug, not from this patch.
-msg->sk == sk says that the data is from this socket. It doesn't say
-from which connection.
-To hit it the app has to call connect(AF_UNSPEC) and connect() with
-unread data on the psock.
+Each SK_PASS on a cork has this window, with or without a redirect
+before it.
+
+> Would it fix this to detach psock->cork in the SK_PASS branch before any
+> push that can drop the lock, and attach it again under the lock afterwards,
+> as the SK_REDIRECT branch does?
+
+For this case, yes. Jiayuan proposed to serialize the senders in the
+reply to patch 13. That covers this case and the new cork above.
+
+> Non-cork messages already have the same accounting problem. Should
+> sk_msg_apply_bytes() be charged with the bytes actually sent rather than
+> tosend?
+
+No. The verdict has to end before release_sock(). See
+commit cd9733f5d75c ("tcp_bpf: Fix one concurrency problem in the
+tcp_bpf_send_verdict function"). A refund after lock_sock() can land on
+the verdict of another sender.
+The prog runs again on the rest. Without this patch the kernel frees it.
+
+> Could a test be added that checks how many bytes the peer receives?
+
+Right. test_sockmap doesn't catch it. It can be a follow up.
