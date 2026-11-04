@@ -1,74 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793751255;
-	b=TBA8WdhnqeW636JztNsBSnm9Ubma8uU3s+eyue5i0NatOAsdb3jY7xj5pK63c1ml3ib1
-	 79xWX9vXyKp3OAgKYrVtL/J2QEs7XawUv9kPe/nCxtYfay24m2GJhdRjwlaSrcamREu+Z
-	 qlgG2W5yHFFzsZ6tCMrCieLf6zEU5JoaozRVDG4+RaM1CvlmgBKUJBtouioI+o+LWE3Dw
-	 EA9r3DbMXALUIKc8YNTsHshDl8jO6tCtzPM5neN9DE1a6cWkX0nI70+a8O4TleHH9KqRT
-	 Wmzc4S6jUFOtOj9yrsJobgEYm85bm6VNBXXwbdR3RteCtB3w6UE0ep9IeZ54lKf1/CQ==
+	t=1793752106;
+	b=T7RV20ba5dwLbsOdCUmNvLD0jbhs5bg6pCjv4QCCqnVHYT8BBsQM3jkuPz0o2pP892EL
+	 yNMdhuYkfsPqJLKI/C7iiRRXmHOi++b0ad1HhxMwUnRnZI/K+PqWXqcymNelvDRtlclPS
+	 iCOZH+h9HDkAUXp0w9VERA27lZgoU8XsTO7Nfn80TUzlpx/7tfPNT8t/4hH0kqoxGLzTE
+	 gbyhpz9V6Ftg2ECLppMOgE+bYHw1Og+GEOcRc0bztsk+ZxPRauMvHcVTD4ERQ+3Xvx8fE
+	 kB8WqZcfKhwiP25o/aOi1J9kOfG9tNHDgOUoQ9qFDfFr1hXiEOklVLXOnT4UU4+U6/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793751255;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793752106;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:In-Reply-To:
-	 Mime-Version:References:Message-ID:Date:Subject:From:To:Cc:
-	 Content-Type;
-	bh=0C3vS80b0D+y+F8f8rSDZook9rRTV5pBeEVsPEFc3Yg=;
-	b=vtGTNcOenwfdCbtlGPtfYc/5XjuRTxbqw2gKuQOTPSguNP6B2Q4k9E4kVmrGXjFP3JJ1
-	 l36n4wLQ1Q5YTCOcHiuBN9eFuUJu+0vNdc/bXiTJIq7VxYmliSQDposZVF5+/gsHot5DG
-	 L+5Uby5Pb/O1ioCe6a2vie5DGCgsdX3qeRheTr4ImWy6RzGQJ8S6E90Sx6of7MRphD3C7
-	 QhHYgLI0uUPAQKynLzlJgcA+SOM0zB6Jw7KsBDcYF1haHusS/gdOOHamOG8IhsgodMqqH
-	 uvssiLQOpxHAughOqvtxLZwmeX8mGWkRWLvDELqaFNtHMNavYszurmoEKeKO7YQESBg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=N9u2giWdwIjOfoxPhFOBtJJGKmXk1nnXCe77BsBVdFw=;
+	b=RFyLGcvrlyhqn/e92n5oo1uLL272Db9OpYCc5wCGN0Vcaiz5n34tvcZqXPbYdqdQfJgO
+	 Z7ASwx9Xl64PRPiWuZ/qdrv+HbM2vuvejIu9rLrwz88rnYyu7uLEMQqoKX6QMML0E7zPa
+	 BpjP6yP4rFNvrlXSM2P05ejmg3OdVPqysaM+nTo3O+FzKGI67W5R96HTP4qL1WgatPRc8
+	 Gd15isE4NmyH8Ul1EXuJBXR6Z9m5M1so0OtJKXT2cdTt8JdD3vcUKZFOwxLlxgEnCO7Wo
+	 m0YG//+yQ/D63Lh4s4S25k7LosaWEnGKEqPT7VvoN0VWx9elcjjOd0f0DpBa9hAv7XQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gpsiXt+L;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YxkZp1mz;
+	arc=none smtp.remote-ip=209.85.214.176
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590F8606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:14:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 590F8606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599BA606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:28:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 599BA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gpsiXt+L
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36a223755e4so380326eec.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:14:14 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YxkZp1mz
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e8fe8e343fso579295ad.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:28:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793751253; x=1794356053; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:date:message-id:references
-         :mime-version:in-reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0C3vS80b0D+y+F8f8rSDZook9rRTV5pBeEVsPEFc3Yg=;
-        b=gpsiXt+Lx1ZaXcGETB/DpG859ORQWw34HeZ4i/HbRZkr2HrHRYRnlQClCxPPrvdMBS
-         GEflGEM2njFo3OKgBIVjNYlaCgIw144SlM7nIaotrEa0MWvxmqBS0BdWomjoHGW6iEeP
-         DeFrOHsmBQIbnSwRrgOLE8Q2EwTb8Q53jI/z2AJw1IC3Oy8XIJMd2wDBXvvDOxuaO6hN
-         bcKQqDRyLcWauKBNgtcURfJ3O4vAUZ+PsMzZXXFoC38sJkIdqiWyppoZ5/AuULZWjF7Y
-         E6+t00iSLmoJbKR3NDF32G7Y8yMxrxl46JsGRRlo599aOF2HOj7p4J4j1ksFDMw0v5If
-         Bblw==
+        d=gmail.com; s=20260707; t=1793752106; x=1794356906; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=N9u2giWdwIjOfoxPhFOBtJJGKmXk1nnXCe77BsBVdFw=;
+        b=YxkZp1mz77ojbFPxidaXHQKjUlHQaIgDEy5h4M9t1/S4CoKN0VHi8gjLfZxbymF55+
+         aHmiuKgloUrDu+nvzQQ+Sgp9HgHlHjpGtUztVe/SK2hNF1iQBwfOcq3jrx9SmaOWdbYx
+         IOP66YHyJB5zeog0zg3fuqBPwdKVBUHzB7aGKihgH51rmVtlY8TE6IWBhwsad3/DU+0r
+         A20sej+C3V8QObTb3FNNjAu5xTZn9XLwICCGcPyuMJN68DJbYA6vXUU0pTUVIIbADUZH
+         ubicMipElbC8x11tPTMXjtazSoYuI5H4aTutLFCuz0jWDswOXFEBUYU5xcMx463oa1a1
+         RVaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793751253; x=1794356053;
-        h=content-type:cc:to:from:subject:date:message-id:references
-         :mime-version:in-reply-to:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0C3vS80b0D+y+F8f8rSDZook9rRTV5pBeEVsPEFc3Yg=;
-        b=hFy8zfvd9ZqOl/xyN+bE5OhSYTB7PAUsC2XOJf22iC4PLAff9sCvvJuaepnr6RnwFU
-         5dBPtCI2LzylS5b+HmBs/Q4+HZHytCF4qwx24re+L5p7DpGduD7drW2FgMUIW9gqSSvH
-         t3MucMeDSuY8oMguruvzs6YjZUVsnM36qCm4sq6cGPSwIprXCMLx+V20qmIXmGAtBKbb
-         PPGwX8sgaSAGTaKhwetRC5ukBSe/EBZyArtqviCaEHePdxkdVZ930pMCAVEKJF3jfwzZ
-         rVPS7+Y3IgiH7L7CPZ+m4gRjSd3kEs6WRFW1+nUlQ1NsdAHhdUiUYT0axFYB6oSeif6w
-         nP7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwF+iaKMN1VKeRChXTXyKaDeVF9+lPMNKn/z8HgAbUJLr/7f6WXVLI+C9Awm0H5OyE3+WrqFDk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z98EFnFWU9hdSmwkkIc3MaDPshEM9y2tsvJgfH7+dcauTLqr+cb
-	qZBlw0sh23BesZgbo7aLz1KroqoiUVmZu+hKBaR+C9jE6rSGhv7RQYxz4FPYMcKpAAO6LYmEQSx
-	hyLa/xLCb9mJhdGiNIoQbug+ohw==
-X-Received: from dyclv23-n2.prod.google.com ([2002:a05:7301:6197:20b0:36c:a067:eca4])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:a945:b0:35d:d9a9:e455 with SMTP id 5a478bee46e88-36a423b3556mr37881360eec.21.1793751252976;
- Tue, 03 Nov 2026 16:14:12 -0800 (PST)
-In-Reply-To: <20261103235152.1904727-1-sdf@fomichev.me>
+        d=1e100.net; s=20260707; t=1793752106; x=1794356906;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N9u2giWdwIjOfoxPhFOBtJJGKmXk1nnXCe77BsBVdFw=;
+        b=OpmkJiDHpq3Qbti4NeyVUtPCrAqjU71uciY83TfpicgmLV48XxUcKApbFDhJjmJJsY
+         qKW6wmSlhimKvbzvpVSlYy/rPhCDuKtpYevq1AKEne7969qkwSCzKLBft6QMRnPleYAj
+         O4G2Lm1hrShHgL/jZIX9tBFJbHgbZ2XbJ8QbM4HAtSrpUZACO+poDacHxKm84Fe10Pp/
+         8gtIwxpwYsNolV6HPJCZRJqWUSdJ88EifaJUL8yyweJhVShrtJoNLbuy2Qq/4mqqPoZo
+         x5cd5XehpuyzTCLElVQ3xHYoRJ5Epyif2zAsTCvyzYAiLkAMCSmEtIbeOXtn98zpb+UJ
+         RHGw==
+X-Forwarded-Encrypted: i=1; AKwUvByDC7TDVsYz19bahi34s7SbmMki6zR23F29rKqzz8qwTrUYCH42EFz/5ZtM1W78xFZDLBFL8SU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+2s+o8X9R/JeOBnAR1okhWGaiN/G4so9e2IpD4oYBatIGzBfmq
+	jvZ3G164vk7nKX6Wp+fZVuarSq6C660mR6gdMkTN0o7cjG4Kd6wWzqHG
+X-Gm-Gg: AYBFou2p77NRbJXlSRLDnxtHUJCva1NmUvcQ0ONw8iNmldbw1YpWCsuko52spqY0XRl
+	kYV2ueRFtfW0Dg2ljxz6/me3MJCIDRz9oefhxWFFfvkhgD2vgKWrAceN96OfR9GLG9BNmVnXkav
+	IB6q/LWOf4lfVYSl1qu9P7kFJk8BXsmdgbLoNxAEU7qggLcMhZgX3YYjaSgSibwaVYQFc1HgN9t
+	tL2Puc2fxTsXLAslsUHM3caSY1xkroAsKS0vLiICN5Hnu85OhXKDp15Gydomeokj3e4fdlYShjg
+	+GwzVXfecYz4Lqq5oGHPs8tCuZRNR+/LSidrcUrr4gM5omMDj0HIPaYbAu+0/uVMNtokXSFu+jr
+	h8tSigOQypIMAD9taEZmQdlfz1NtkZjGiLaZJmHqzopgfNJdY3uQ8korHNQ4uvfQXXPqGg1nLAP
+	T/LDh+UE3GAQIxKptiJ6goa97yOuTDxa0+Lep4vgnFQ6B8wNoXwoQUqc1uxMaZa6uglEA1ShIQi
+	0/LVFFGdoLkKyZ1FJfJTZ6mcrB4IRs0ocsTnFV3NqR5v/TIFCB0YiVAe1nHd1G1BOkEsrhQH1ZW
+	zmfzqL1EJt+JseaUTv7+rWQT3KXDTXVVYHdncWodJpv8skzf8jgBhqoBMfdb9Wfy+Y7riDQ2IG5
+	UAUi+vTygn2iAyh7F60jvoW/bHsp2eXEQeA==
+X-Received: by 2002:a17:90b:2741:b0:3ac:7556:8eda with SMTP id 98e67ed59e1d1-3ae897b955emr11276403a91.26.1793752105586;
+        Tue, 03 Nov 2026 16:28:25 -0800 (PST)
+Received: from localhost ([153.61.198.245])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b093d481a3sm1165337a91.1.2026.11.03.16.28.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 16:28:25 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 00:28:24 +0000
+Message-Id: <DMM01WTK5E12.1RIGV9OGW23PZ@gmail.com>
+Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
+ <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
+ <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
+ <jiayuan.chen@linux.dev>, <davem@davemloft.net>, <edumazet@kernel.org>,
+ <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+ <kuniyu@google.com>, <willemb@google.com>, <matttbe@kernel.org>,
+ <mptcp@lists.linux.dev>, <mason@kernel.org>, <josef@toxicpanda.com>
+Subject: Re: [PATCH bpf v2 03/15] bpf, sockmap: Don't let an SK_PASS verdict
+ cover the next message
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: <netdev-bot+sashiko@kernel.org>
+In-Reply-To: <179374187706.488855.8366350890804573396@kernel.org>
+References: <20261102072112.4160195-4-alexei.starovoitov@gmail.com> <179374187706.488855.8366350890804573396@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,42 +105,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261103235152.1904727-1-sdf@fomichev.me>
-Message-ID: <18e4af42c8b279c4.3137322e32382e36372e3935.1c58a7.0000sendgmr@google.com>
-Date: Wed, 04 Nov 2026 00:14:13 +0000
-Subject: Re: [PATCH net-next v2 0/7] net: devmem: size TX net_iovs from the
- dmabuf layout
-From: Mina Almasry <almasrymina@google.com>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, edumazet@kernel.org, 
-	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, 
-	rdunlap@infradead.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	sdf@fomichev.me, almasrymina@google.com, bobbyeshleman@meta.com, 
-	asml.silence@gmail.com, razor@blackwall.org, daniel@iogearbox.net, 
-	leitao@debian.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-On Tue, Nov 3, 2026 at 3:51 PM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+On Tue, Nov 03, 2026 at 01:37 PM netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org> wrote:
+>> +		if (!psock->apply_bytes)
+>> +			psock->eval = __SK_NONE;
 >
-> TX bindings use PAGE_SIZE net_iovs, so a frag covers at most a page.
-> A 64KB skb needs 16 frags, and MAX_SKB_FRAGS caps devmem skbs at about
-> 68KB, which makes BIG TCP ineffective for devmem TX.
->
-> This series picks the TX net_iov size from the dmabuf sg table instead:
-> the largest power of 2, up to 2MB, which aligns every DMA segment. With
-> a 2MB hugepage-backed udmabuf a BIG TCP skb takes a few frags. There's
-> no UAPI change since TX addresses are dmabuf offsets.
->
-> TCP still bounds skbs by size_goal, so frags get larger, skbs don't.
-> A single frag can now be as large as the skb, which matters for
-> NETMEM_TX drivers with tso_max_size above 64KB:
-> - mlx5: 32-bit length per data segment
-> - gve: splits frags into 16KB descriptors
-> - fbnic: keeps the default 64KB tso_max_size
-> - bnxt: 16-bit BD length, devmem TX frags are capped at 32KB by a new
->   per-device limit
+> When psock->apply_bytes is not 0, eval stays __SK_PASS during the push.
+> The budget is still debited only after tcp_bpf_push() returns. Can a
+> second sender on the same socket still get past the prog here?
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
+Yes, as today. It's already explained in the commit log.
+
+> But B's message is sized against the budget before A's in-flight bytes
+> are removed from it. Would it be better to reserve the budget before the
+> push? That means debiting tosend, and ending the verdict when the budget
+> reaches 0, before calling tcp_bpf_push(), instead of subtracting after a
+> failure.
+
+No. That breaks the single sender. After -EAGAIN the verdict has to
+cover the bytes that the push didn't send. A refund after the failed
+push can land on B's verdict.
+
+> The shared-cork problem with two PASS senders already existed. The kfree()
+> variant used to need a third sender to end a byte-limited verdict. The
+> early reset makes it reachable with only two senders.
+
+yeah. It's an old bug, not from this patch.
+Two senders are enough today too. B's first message goes out with A's
+verdict, and the code after the switch resets eval. The prog runs on B's
+second message. SK_REDIRECT frees the cork that A still pushes.
+The log of patch 13 says that a cork is not safe for two senders.
+Jiayuan proposed to serialize the senders in the reply to that patch.
+
+> With the early reset, can sender A's bytes be charged against a verdict
+> that another sender installed?
+
+Not a bug. eval, apply_bytes and sk_redir belong to the socket, not to
+a thread. B's verdict ends early and the prog runs again for the rest.
