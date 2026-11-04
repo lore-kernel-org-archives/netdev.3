@@ -1,55 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776318;
-	b=HEIdKnEhu18tw62jnd/ANLb/ajK0jpPsD7AfYMFe18PdnDO7C/aWK400BV2v8tewFq9k
-	 SmUGBWRVzYTgzeqO4sW8zgeXHL+rBqnUZ3+osYkGh5LkOhouFcVDkAfX7DduwCgzBCV5N
-	 Xy1V8t8Jz1OM5zuTIqPuOU6eDhj7EPOnvm5+NjjLfTdRfKC+XUGEilmXH59vYVcCHvZtm
-	 0eJzwPRDpLgzoLU4Am0fAHYAO5qSkdY23lnaEcedMza7jTnrYbhG3DM1L3UNLqN9LTZnR
-	 MOH90JotlRDs3hHt4rv9g9KhS5as4JO/MX1+cCx4vR4X6QRhVHdJllabWDsYtshkJeA==
+	t=1793776314;
+	b=5rtuMg4icCAn29O7OdENvt9ivrRxpFfQjdl3m3ncBJdzMivxEFI55LwiHLgD3t2dYKjI
+	 xMHferIzJce55iuXMSItxYoHwWIhrsfhE40uAGXQNzGcCu3EKHau0rHpofZUXY8gWDTcH
+	 CCRveVPHTQ6ge57FHL1WYu51rA7L6Fc0bYLgp2IOb8Qn5fAo1imKmdMsRL4UffjQADSDx
+	 fS2tOcdSg44jc/IjzS2dwEb8I2CEZ4yDjkjESpomNdQqksvFIG078CXAavuEZ3ew8Y0bZ
+	 RZvz+Dxa/56Qbs4fPkcAwLX4lai3cvzIxiyqHf/JBHKPLOzcafzcPyEUpCSgP7qUFqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776318;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776314;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=67tMf6yvwclmZif6chXBIm4kJBJKenRUKUJwhmdRgps=;
-	b=EOAuIZWsJpxnL7sACoF4AUrxh4f+x/BjX2bxN3MYBIOVXuMVPMoTNI0HxmfmNJDJlL9e
-	 UQ5dvTOWfTW3v/8BcSAI5KfmMi3/hQUl8gHqt0MNf9cg3XuSquWm2SYzgOj21ibtT4u53
-	 sNm7k/xXRq0jW+mpYB5IhLcfzhvDpSTLMnmuCnWGqlJrMTAMUoI9wswjtHq0+gd0Rqux1
-	 djeNne5179fqzYwn4u1gNNKdAGMI2mDqjAB+gNIpCTZfZIaat++vu8ccqjNQvBp401dyU
-	 sI3tIhmjEk6EcPxHfnr97IiijIWFH4FhY0gf4u776kgZrhOdeNm6Ms2GZpp+BG8Rl6Q==
+	bh=b8As2EoG9x8Tl2CWTFOn4J47dWkvfEM0iQdBFybeGCQ=;
+	b=xwNp6BPTdHwpvSiur/0yE555U3z/tTcsYdLmxS5do02n/9UqcYpnsKUev13M/PMCYiqA
+	 yI6mZvvR3xtcrpIIwT1rPLpdR1KiTsyLsmk6XpVmnPxjElzN8Q4/JKk/EoA1c4a+4B4qN
+	 v17Rp/eKxesmLjeBBbvx2OJU9WsQXco9gUmEQAb44j9aBMqvY4lYJn5drAu9xqVAqd2hd
+	 u2s4MJeXiaThsofrd119/UDaIYpQge929lgnnfpAAx19hpbeHFszETX7CIfz80zguiWWU
+	 OxSs5FYSBFKm1AuyapcavrI4bMnTlxQJHXsrC1ahZ5yPEftaR+27YKnogw38XptaSIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dks6ewJE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYih+uwX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9677606A328;
-	Wed,  4 Nov 2026 07:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7844A606A31B;
+	Wed,  4 Nov 2026 07:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dks6ewJE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615181F000C1;
-	Wed,  4 Nov 2026 07:11:56 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AYih+uwX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094921F0093A;
+	Wed,  4 Nov 2026 07:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793776317;
-	bh=67tMf6yvwclmZif6chXBIm4kJBJKenRUKUJwhmdRgps=;
+	s=k20260515; t=1793776314;
+	bh=b8As2EoG9x8Tl2CWTFOn4J47dWkvfEM0iQdBFybeGCQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dks6ewJE+WK6bAYIEDOfm55sLdX5GL3L8d+YyGVFLAutCCcVJzGvMrJrFaTq3M1fd
-	 SpUdABkekK0RDFGu/sc9bt2hayLLUvxVrU/1XNnUZEPHeZCJDlAZENaqyfzj0rwDpD
-	 MlbyL+JpaloTe+cdo4CN+PL1gAbSGFKrH+bNHEgVCjwQrC4JurSAPm7KrksOJ3E64+
-	 KeVBMh3u+0SGao5jrgqVlS+efEf+w1e1MYtd6XTim0sc2oMR9uOPRlkVptSFhaega1
-	 GVTVtFpQWETHEqqmHHrB4v+gG3OZiFCWrpumD5wo6G3rPLlTMBo24/weZdyM230PPU
-	 uK+9qcmajaSPA==
-Date: Wed, 4 Nov 2026 08:11:54 +0100
+	b=AYih+uwXmkzj09KGHDETie/kyqpTI2WQIjdZHIlpyfIiZyvDdbTf9XDp2eA5HIseo
+	 ltmVAoG9K1HXAcLT/Yib/DyOVdCi3U/eyoqHI/QvYJ+CiiH/heX6x5EQJeMr2XVn2U
+	 5A9+IHiti5y9QOqzK48dFAv0+7xuQ7hk8x3hb//v1i4k400eAJ342MwLAvyVGWKOh0
+	 XpizxtSN52iAP0xV6WFCo60UQrbfgm8n/Tzh/b56NKZYcpUrN6LhdLjHJpaBNkBO6a
+	 VkOTAXM8uUZ9L3JW4BY+5i2UXKMkg9yfEmTU0obgl2AJSfsb8jTjGZT15MOahsNKJJ
+	 BwYYdgLAP/gHw==
+Date: Wed, 4 Nov 2026 08:11:50 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: oe-linux-nfc@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH] nfc: llcp: drop the socket reference for non-datagram UI
- frames
-Message-ID: <20261104-excellent-artificial-finch-b7bd77@quoll>
-References: <20261104022810.1484199-1-vulab@iscas.ac.cn>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-rdma@vger.kernel.org, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	Allison Henderson <achender@kernel.org>, rds-devel@oss.oracle.com
+Subject: Re: [PATCH] net/rds: drop the device reference for ODP memory regions
+Message-ID: <20261104-invincible-flying-agouti-fbecd2@quoll>
+References: <20261104022810.1484182-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,26 +60,30 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261104022810.1484199-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261104022810.1484182-1-vulab@iscas.ac.cn>
 
 
 On Wed, 04 Nov 2026 02:28:10 +0000, Wentao Liang wrote:
-> nfc_llcp_recv_ui() looks the destination socket up with
-> nfc_llcp_sock_get(), which takes a socket reference.  Sockets of every
-> type are linked into local->sockets, so a bound SOCK_STREAM socket can
-> match the lookup.  When the socket is not a SOCK_DGRAM one the function
-> returns early without dropping the reference, leaking it for every
-> received UI frame sent to such a socket.
+> rds_ib_get_mr() takes a reference on the rds_ib_device with
+> rds_ib_get_device().  The FRMR path stores it in ibmr->device and
+> rds_ib_free_mr() drops it when the MR is freed.
 > 
-> Split the check and put the reference on the non-datagram path as well.
+> The ODP path allocates the ibmr with kzalloc_obj() and returns it
+> without recording the device.  rds_ib_odp_mr_worker() only deregisters
+> the MR and frees the ibmr, so the reference taken for every ODP MR is
+> never dropped and the rds_ib_device can no longer be released.
 > 
-> Fixes: 968272bf0087 ("NFC: Handle LLCP UI frames")
+> Store the reference in ibmr->device and drop it in the worker after
+> the MR has been deregistered, which also keeps the device and its PD
+> alive for as long as the MR exists.
+> 
+> Fixes: 2eafa1746f17 ("net/rds: Handle ODP mr registration/unregistration")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  net/nfc/llcp_core.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  net/rds/ib_rdma.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
 Multiple things here:
