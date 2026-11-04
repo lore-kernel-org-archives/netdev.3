@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793820080;
-	b=qZR466aMeh4QgRe5q5AXuI8ea9c1oOkWYMscCF1tGopmUnANe4yb97i7yfQain7BE0TZ
-	 AZlCLGTncM2jGlvJKEER++dYD+A28OfJ3qriXmWoAPJpbaAfO1OMb/jdg1JFJgalanolP
-	 yP8WVrAffqnqWvc8qMA8i+RSAS7g1vVQwmYFioMcwxT4zqMk33zXP1aRr9hAPF8wtVKo+
-	 zeDt0yoXAXltTIvIhseW0Fp7upfOoLX0RgE4oVlInbxZKUl0IihMEyp2Z9J88FhZ3zO4T
-	 G9JZyQrTnXiCv0Hlp4K/1jy2WYSJdDnaHKUICOA09zO2RrPX4Rbh7BYRH0guw77u22g==
+	t=1793820125;
+	b=FhnwaPT6DwixzWazVQKYOvLnwPS0lF/Thui8xab6XFH7THKPtpDjDf0H/duNCSYkwL6w
+	 WgjOUI+7lG1GoeSlDCxg8VWo7RtLgrdL63jbg/bBLSzWBRAXrclhOGwaLmuRZnFAgJPxl
+	 csjMUvty69bpF05EjQBLWPtcM8yU4yn6k30hvwHkBiMIBEnQ8sl0GLH0c+JbxsEw7UU89
+	 fIO5G8zGe7ZF6qSzO5T6wdNSw8xZK9Gp2Dkhddz+WYEXcIVO8HHTzvgZxN4qDUZkt1Hjt
+	 tsUpiNVjKCy0jCun4CTwFMlGcJAwSE61ekyBBmZOQ7zHDSprrE0dwCfZgynZetXxFXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793820080;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793820125;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=p9+kMzHwjVYuWJQ2+obB/IGMwn7xV7y09JcSQ7GHv6w=;
-	b=v7KZ1fVRfZO0NSMi3LFU+6KOpuSSJE3JUnEjTIuDakkP8rgVQSQlKIR+LEpoUtYRnsu3
-	 iJRtj3flSKcQpyGhFcK9SFVkoHKPZ4UeuMv9K7e2PcDBaOflGzzwyusd1RVx8ytAmaKA6
-	 n/wSp8jkd9eBqGqhBv45TsAjVFDUKGz/xVDMRzk1SyLFxeG6n9h5CaYBIep/GfRGfsiUe
-	 WPG6ZT8WvNpbh9jqCplYHyVdLlvPGdS9KaaKv/Ti1+Eg/5rd04cxEZaQ5Fz7qIf2/8rNQ
-	 deDXdC+FAN3t12UsopZXxOoNLnDTZG0Y/48XIieJaD+XOZBXizSKjFgHXvjntTkH5Vg==
+	bh=E1vD3O9CKVYh6HjmlrAgiThE5xPMlSXjct4LkBIJ4ZU=;
+	b=NxRf2jbhZs4PXacfu2t0DKd1mV+AHKt/CYFo0WtDDRMW0l5ugojwOqIbqqmMwGURqwPb
+	 pPa+utCiKAalNnmuio6rx2q/GqBSMLNWqaueIiDwjU8gYctFdmOXxuRObtQCobVOjikIY
+	 WSS2if+xD08wFrPNhixInJwq/5vSKIRdnfUcqLCLbJAjqhepfniKpaMiiAdoztpaY0RKA
+	 zjOVz28An6YRjXxbPg5vgj1FsNx7vyQruKtY64RUVKrNj6/OcncfytRFxilFAxH8d17Fv
+	 E8JIMQKzNS16GMhJwBjO0GceOX3y3g+kgLGTFFXwmh0UsJxA5RtlzQFAODL2EqWNy8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Da9qhDAh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NswRMcqB;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86050606A855;
-	Wed,  4 Nov 2026 19:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01B606D82A;
+	Wed,  4 Nov 2026 19:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Da9qhDAh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB7D1F000C1;
-	Wed,  4 Nov 2026 19:21:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NswRMcqB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87571F000C1;
+	Wed,  4 Nov 2026 19:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820080;
-	bh=p9+kMzHwjVYuWJQ2+obB/IGMwn7xV7y09JcSQ7GHv6w=;
+	s=k20260515; t=1793820124;
+	bh=E1vD3O9CKVYh6HjmlrAgiThE5xPMlSXjct4LkBIJ4ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Da9qhDAhe1gMlC4H3sEx9s8bGAWOfqOAYoq5Ueb9q8Ynl2389Maztmcp2QYHP5RUa
-	 OZi38NVuKARinV0XCKJY4csd2ZWdhTyFIQtFYAj0HTzWZSV2i1vKEm7P7/Pts5FZCn
-	 QcJTzEeOU9QU1jpuc0CN9kj/jSPx/znq777Ooa0/kAzqFdLCFoQLN31MunMZ6V42ul
-	 zYUXtsChACfm6Z+hTrPGrAKTMgQ5FfXYR+IE5qTYw8gsFIqpDD7UrTt1lKIhy24azZ
-	 jz8zin7Ffk74C14OK7JkiGN0Jj9FrbP13tt/L09oeijZ2cBW9SHXjgz22CRX5WoLnO
-	 SiIObxm9KtSIA==
+	b=NswRMcqBfCW7Yx+oHzm7X7x3Vx4jEKmXruK32+U47DYkhN6rM/lfoH6AjN/SxL36f
+	 PgY3FjroHKYvb5ZucZtjjxfeMesHu2aiCu42BfFriOzz2a4zJcMYsY+q/uNY/jVlJJ
+	 mQbA97oSkcIOHIdNHKCmo9rGnj+/+FM6G0eHvq02j3TpFo9jYjkaTorhB3ZPVCn8O/
+	 KrKgum+HPtAyA1T4+n9pWNsjQ+Y0I7sn0Fwghzv5FJeoW2kBqDX6BHChClQ+D48khG
+	 NOJNO5qh2fzt0fT/JulzaUiqzxtJvpPURLPvwRRXNWlyCu69pQW8Kq49mWs0Mw5ust
+	 pZrAkn/r9fpNg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -99,11 +99,10 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 21/51] powerpc/rtasd: zero the error log buffer
-Date: Wed,  4 Nov 2026 20:21:06 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-21-021c84d852e0@kernel.org>
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 24/51] scsi: ips: don't return 0 from writes to the proc file
+Date: Wed,  4 Nov 2026 20:21:50 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-24-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
@@ -117,35 +116,34 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1050; i=brauner@kernel.org; h=from:subject:message-id; bh=mkSbMC6ZDV5f4P2v+qDezcMlza9tkw/MXVPMWZSeje8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bnx60+3VpD19ZT+7SySmfPjO+TBTt49lvc0+93eF3 4WPq6Z96ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIlBCGv0LG0fo2q8pr72Sl RxoY7Psg/0D2YuivaZvXryurm/TnzyVGhuV3JU9sXMk96YvRxJhvUz9Ozgtes07tY8uDXTNaVxx jf8kGAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=745; i=brauner@kernel.org; h=from:subject:message-id; bh=M56s+R4IzmhMvI79F+bEsnRzyAX8hD//ktSOts+7Usw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bnzxmUHw2l7pkLsqhYUfQu3abymsV/u8xrZmTWDq2 g3r1DVfdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyko5aR4VlF9Y6Ezj35Scu2 1YjO/m7UtL24teDezKI9Ly4oZn88c5fhv8cv7zNNOrwr0iK6hZPXPQ1f+pT5o1tFzHcBAQ/F8yd /cAIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-rtas_log_read() hands out a whole slot of the error log but
-pSeries_log_error() only fills in the sequence number and the event,
-which is usually a lot shorter. The rest of the slot is whatever
-vmalloc() left there. Use vzalloc().
+ips_write_info() ignores what is written to /proc/scsi/ips/<n> and
+returns 0. Writers that use stdio, echo for example, take that as no
+progress and retry forever. Return the number of bytes that were
+written.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/rtasd.c | 2 +-
+ drivers/scsi/ips.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/rtasd.c b/arch/powerpc/kernel/rtasd.c
-index fd40864bdb70..dd0df5e164a3 100644
---- a/arch/powerpc/kernel/rtasd.c
-+++ b/arch/powerpc/kernel/rtasd.c
-@@ -523,7 +523,7 @@ static int __init rtas_event_scan_init(void)
- 	rtas_error_log_max = rtas_get_error_log_max();
- 	rtas_error_log_buffer_max = rtas_error_log_max + sizeof(int);
+diff --git a/drivers/scsi/ips.c b/drivers/scsi/ips.c
+index c7d6c5aae340..85c4fb164743 100644
+--- a/drivers/scsi/ips.c
++++ b/drivers/scsi/ips.c
+@@ -1428,7 +1428,7 @@ ips_write_info(struct Scsi_Host *host, char *buffer, int length)
+ 	if (!ha)
+ 		return (-EINVAL);
  
--	rtas_log_buf = vmalloc(array_size(LOG_NUMBER,
-+	rtas_log_buf = vzalloc(array_size(LOG_NUMBER,
- 					  rtas_error_log_buffer_max));
- 	if (!rtas_log_buf) {
- 		printk(KERN_ERR "rtasd: no memory\n");
+-	return 0;
++	return length;
+ }
+ 
+ static int
 
 -- 
 2.53.0
