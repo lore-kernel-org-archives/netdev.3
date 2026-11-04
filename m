@@ -1,70 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793772878;
-	b=YL8/z3+3GSbSJAfavbYAz0cf5D+2o9PZj2f6UPaKRDXabNKcT2r1CC8E/JSdj0L+8Ll1
-	 sHO9fkA/tQaWzBeoaOtTFOjMdhWwQX+vo2xT+sRrCDhHB1NUhGrTYVOzx0InHECmk3tRi
-	 ccDhgeCGhpC6MYShtYI5rnJN75UeKaXhgh5vhJr4KKYfsRSntSK4NL+RXdPYoCSEGeTHO
-	 vth6XPsMzFRwkeCeoIKd3ArinhbCENhoLLjHse0pSwBvVmo41L47JIRwF6kRSWzELbAWH
-	 hpiLBdadeIpLYb1QWAEtBE9P3G0uWaXaUHefvJReZXmYnt95CUdb5QJ93Bh4bhlD7dw==
+	t=1793773150;
+	b=ynBVRPoMIMYPGF3VBrikVwn58TQkQf37DWDYyqU6LhxgiR01NMftXgdn4ErF1BnfvaOB
+	 XlakWcmRpzrTXycGJdkixJhLrVilRzy11LhRlXlqlD3MWj941BLAWs2nMgWspNDhAdWDZ
+	 n3hB8tUCO+fYLM6nsZCrt3GfxYg1HX3YQ1d81jho+1aJme5nE9Bq4EipGo9HwxgP02RH3
+	 O22R9qRbM0sl27ECLRPzmlwcJgAd98/y2Kaw+1wI4PLrmjy9dRO6i9pleExHtoseXxHlz
+	 DKFUZmG74J822nZ73E081Atg8OFbU2EPPBQaoRYhguTUVoA4lQwq/t/Mja5djnA/L/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793772878;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=CvfPGziobIrEteIOatX8FyBV7rtb7GgNQIea2gIpbyE=;
-	b=Du4bCuHkODjJwY8LRqDFh1k4ULj6z3zAqx/ETeCxYdfmdLegVe6SLA4UioRdnVI80198
-	 zwpEgXn4OypAiC4xcehtr/Y1cHCGmmVrgVxC7ld1HorncFvlTeDzZ3Cq9SdE3wsrdSJ0j
-	 1RF8W27TcWUUpyzPqQRnC8c1JnbjEukqJC0WeVfwjwl28uV3P9YPR6pn5NkXWC6rKL/rF
-	 2Vhys6qHeej5f+fX7VftiQ3Pc477kvsenGyQ956E2O9shHV+TcuD8+XJSlRBdqoMml8Q0
-	 onNDf1xjQbZ7BV3LQNPH415s0yJ2lp0lxRFoTIgZfFAX/epBNJFnpdq+SzQuj+vDpqg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793773150;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
+	b=ap2GK0W8bLIUUX0/hSC6nYJvCI8tAjdLtRvFT+mmXCk9pABHMa4UPHxAU29Rirpp4IyG
+	 U4v4LcqIAhgGLUsWqOM6PF40CYcUNIvGcnpoHedW3vipS88E/Be51L6R158BoUoSef9aL
+	 bvbToAkIwuQb1bAF4GIp51YBcRx2V6Ey/bphIBBBJvYIGiIY3eahyqgQ4pmMWiFFcTmh4
+	 69LFoZNf25NxqVeznpn/OEJoeoKoiI6jawOnbI3ZNCwaqGGVlrKUD+4/p09wRcPpDvZ5h
+	 VhkSrY3vak1hhPfbjrxTvGDdQzZahpGhVvZD4M35d1RQlHu+buL/S1Jym2C3ufCCdXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=pzgmwfbB;
-	arc=none smtp.remote-ip=111.22.67.135
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7A2606A326;
-	Wed,  4 Nov 2026 06:14:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B7A2606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsNIxUDt;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3172A606A326;
+	Wed,  4 Nov 2026 06:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=pzgmwfbB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=pzgmwfbBkhN8kkiIQ31P4oJtjcaXPTVCQGoK7E5QgQMNbCDdemW/0QNd5uyezKyBxX1Ztq55FaoYf
-	 Dn9YKGgffjVcPB96gb70iuEVmhBxpRguXS9uNpOG4lBjrrhxANBRd4/ijA1ROcL5EKwKNeQy+QaLSB
-	 tSzVKA6Pg1fCrkqA=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aeacd47e2b-661a6;
-	Wed, 04 Nov 2026 14:14:32 +0800 (CST)
-X-RM-TRANSID:2ee36aeacd47e2b-661a6
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.97])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aeacd47cf2-161b3;
-	Wed, 04 Nov 2026 14:14:32 +0800 (CST)
-X-RM-TRANSID:2ee56aeacd47cf2-161b3
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	yana06070@163.com
-Subject: [PATCH net-next v2] ipv4/ipv6: preserve multicast filters after a failed source leave
-Date: Wed,  4 Nov 2026 14:14:19 +0800
-Message-ID: <20261104061419.87989-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YsNIxUDt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7941F000C1;
+	Wed,  4 Nov 2026 06:19:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793773149;
+	bh=LPA6Inh2wBCKqBtP/pIYKJnpKzD87TCTJsmoxrtXeEE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YsNIxUDtfeyDcYt8sJ34QTw2tmm+0IbDKbcbXKiB7jY7xxAdrr35W5f53afkV9TeW
+	 nv3F+SfFGiQt9K40RVcNBvQ8cLqIbBQG68QE5lfTDRlcYecnfx3usbfPUtLAOrLKRf
+	 DFtqUGeRhi3RFCvD6mer0iWDuZy2kiD2MZArnQ8/p1+E/x2drJ35zmSecBLaYXUCig
+	 ycbLRHA/CSPKXREi1iR7sp8JsfWTf/0RuxJ9Nn1P5Qs4VmoBzEtwHjyR+HRcSFAUdX
+	 DwY3o+eDzjOJkMTWSacullqcYFeMEbHG/jIxIEHmXz8gqHjL/iLDcAD1lXQModUNxj
+	 Y8iOCRXB3T2Ig==
+From: netdev-bot+sinfo@kernel.org
+To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Cc: Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Jeroen de Borst <jeroendb@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] gve: bound the device reported rule count in the flow
+ rules query
+Date: Wed, 04 Nov 2026 06:19:08 +0000
+Message-ID: <179377314801.488859.9571867900418118906@kernel.org>
+In-Reply-To: <20261104061329.1881388-1-yhlee@isslab.korea.ac.kr>
+References: <20261104061329.1881388-1-yhlee@isslab.korea.ac.kr>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,112 +68,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-After joining a group with IP_ADD_MEMBERSHIP or IPV6_JOIN_GROUP,
-MCAST_LEAVE_SOURCE_GROUP for an unjoined source returns EADDRNOTAVAIL
-but switches the socket's filter mode, so the existing membership stops
-receiving. Leaving and rejoining the group restores reception.
-IP_DROP_SOURCE_MEMBERSHIP has the same problem.
+Hi!
 
-ip_mc_source() and ip6_mc_source() allow an empty-filter mode switch before
-checking whether a source list exists for deletion. The failed request
-changes EXCLUDE {} to INCLUDE {}, so the socket no longer accepts packets
-from any source.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Check for a missing source list before changing the filter mode. Preserve
-EADDRNOTAVAIL for the rejected deletion and keep mode switches for valid
-source additions.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Found while reviewing the error paths of ip_mc_source() and
-ip6_mc_source().
-The reproducer uses socket calls without kernel changes or fault injection.
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-Tested with a UDP socket reproducer under UML using the IPv4 generic and
-legacy APIs and the IPv6 generic API. All three paths lose reception
-before this change and keep receiving with the fix. Source joins and
-leaves, block/unblock, last-source leave, and ordinary leave/rejoin also
-pass.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-W=1 x86_64 builds with derived allmodconfig and allyesconfig configurations
-also pass, with no changes to the warning sets.
-
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
----
-
-Changes in v2:
-- Target net-next and drop the Fixes and stable tags, as requested by
-  Ido Schimmel.
-- No code changes.
-
-v1: https://lore.kernel.org/netdev/20261030063603.697510-1-yanxia@cmss.chinamobile.com/
-
-Validation was performed for v1 on net fcc00b15cb21a6de76826e5012b2c758505f5e65.
-The two modified files are identical at the net-next base commit.
-For the x86_64 builds, the derived configurations disable WERROR and
-KASAN; the derived allyesconfig also disables KUNIT_ALL_TESTS. The complete
-before/after warning sets are identical for each configuration.
-
- net/ipv4/igmp.c  | 7 ++++---
- net/ipv6/mcast.c | 7 ++++---
- 2 files changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index 144fca1..9c38045 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -2520,6 +2520,10 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
- 		err = -EINVAL;
- 		goto done;
- 	}
-+	psl = rtnl_dereference(pmc->sflist);
-+	if (!add && !psl)
-+		goto done;	/* err = -EADDRNOTAVAIL */
-+
- 	/* if a source filter was set, must be the same mode as before */
- 	if (pmc->sflist) {
- 		if (pmc->sfmode != omode) {
-@@ -2534,10 +2538,7 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
- 		pmc->sfmode = omode;
- 	}
- 
--	psl = rtnl_dereference(pmc->sflist);
- 	if (!add) {
--		if (!psl)
--			goto done;	/* err = -EADDRNOTAVAIL */
- 		rv = !0;
- 		for (i = 0; i < psl->sl_count; i++) {
- 			rv = memcmp(&psl->sl_addr[i], &mreqs->imr_sourceaddr,
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index ecef55f..2ade335 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -395,6 +395,10 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
- 		err = -EINVAL;
- 		goto done;
- 	}
-+	psl = sock_dereference(pmc->sflist, sk);
-+	if (!add && !psl)
-+		goto done;	/* err = -EADDRNOTAVAIL */
-+
- 	/* if a source filter was set, must be the same mode as before */
- 	if (rcu_access_pointer(pmc->sflist)) {
- 		if (pmc->sfmode != omode) {
-@@ -408,10 +412,7 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
- 		pmc->sfmode = omode;
- 	}
- 
--	psl = sock_dereference(pmc->sflist, sk);
- 	if (!add) {
--		if (!psl)
--			goto done;	/* err = -EADDRNOTAVAIL */
- 		for (i = 0; i < psl->sl_count; i++) {
- 			if (ipv6_addr_equal(&psl->sl_addr[i], source))
- 				break;
-
-base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
--- 
-2.39.0.windows.2
-
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
