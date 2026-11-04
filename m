@@ -1,54 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793768619;
-	b=JaieB8kmAWQ761ZwmH2Yw6GNfPmv/c7HD+nS0oKy5vg50bvbc5LuAlg9esemauhNasgC
-	 Fh4T3jcajwayzD1gmcoqrFrgJrZ0Yd/DlCZESphIetcWB82phCHyDXLFWgVFTECC6+O8j
-	 IS/O5qO1fmyuXbrJk7W9kweZPZuYAMDSHqZ9rzgUlOlzQaDeMyYciGJIKllfDjHOz8GAK
-	 0q02o2L/vxagQc8bXNpJbe0YPTi6VjIhdgJIwRWUCNdKo+sIdiFKXMHQg925TYwRAzc7K
-	 wSqPMvVeirdJIOuRAl59+mIfaMUde85pcGksO0a7CLGkIwimzJT/ZYa9Yt4xw+j16pA==
+	t=1793768924;
+	b=IJdv3YrWNpdIYv7OM398L0pFhqMKhhtQ49uT0pOMXGrYTmewMB8BfDnFB0KEDX6OcoFL
+	 73XFcYxdxYU70WaWhsGsOyhOBQqwYA+weUKkWQHBLaESSfxzXWGbLEnz4OEDEBaiw908/
+	 qa7KNOJlQwvEIF0Jkj4QhVuFeDoX4Iq6+aYeiVLlBBH6PEVDwTk2qn01+hbrHctpn3f/5
+	 3Fh8UD/gdCXGBOvy5LxEIJipaZRGqBP4Bzet7NX61dfKXrYKIQHvXiUQ/lwZSLzBrzxGn
+	 tERbt6Mrtqgt0JtQr3CZY73AADw+9T3NxiMAO/FwHJsbQMRonU7eFCvKqLX8la/0a8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793768619;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=NwhFy6BQ6fYDBl77314WUNOYeP2MIqXuKdbvJFIH2ek=;
-	b=EZ+JDYgxSIKtAiVZVGCa+A7HhC0FF4NBtcy0kdcyQO6D1ZaKZsx9hP3pn2JTikrwp3OG
-	 mQfKkLDKtDnVYeWQuriAd9YR9Tvq20otYUb+Z8frWTtOTnSEfGjqAsUEUbXDtf6Qej8R+
-	 LLdlT6fUXWFhgN/V1KymqdQStzD8e1xojbMyAnVG7Pqb2pT7vXkOYK3Ky9ncmiaeBD8SX
-	 DucMPDQqbt2bvZiltwhdfWTv94I2XEuEcTAfFXM5jPSEm3TYNwQN2rNTGQSHF4pws5+we
-	 p2bFhq5I0x2pN7lfC3xFNZxnV3lic67nUZHaIU2RSUnai0So3KM7K1d8iXLu34pjPHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793768924;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=n0Xywr94Vk3WtL8YoWlzK4ISWgOH/R1JCv5dLFPIkIM=;
+	b=nPwVNTPGdb32M13LHZfB4jN0EIkPMEssOkqVLUOIoc6/KqN6sZYS4r7rVBnvN0/oMOdQ
+	 E0oor+IKouu3LhAnNRmai2Aa8IadfvuF3BJl7Pmayi7Xre/mcvP+Ge8sshzteDxnvhZ5u
+	 qp55AppODLpy2kIXULnJUOtWV/G8jITDcUL/mARSbm8a92aqEEz1s1cksF3Vz4yIqWkAN
+	 rLrCwPuf1Fv8FNjgpfl4es/wgzZsG60ftlTlTzrJP0wN9Ue9kHX1FHdGXyiksIygwhWEJ
+	 oUCPlXrrxM/rBMrfnHy28CinDHDsEzYWtHqBzVJkA3mGY5R1Se8yWvoA/4pawvFwqSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.210.72
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9AB606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 05:03:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A9AB606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-83edc5c5ae9so271303a34.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 21:03:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793768618; x=1794373418;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NwhFy6BQ6fYDBl77314WUNOYeP2MIqXuKdbvJFIH2ek=;
-        b=Lvy6AqGGXbvRfBDmlsEchH+tuzX8mwu6lJySEYZlfAAWY69UsoyS7ixhjTEbEXl9Kw
-         BM53GM4HmI5VgA+DM+4VtM4/bkh1pQysDM5Tnm5uYP/0mFQ5OOGHCaUg9zwrK2fUKECd
-         ArUmw1p14Fu/5m+qz6ZDLWM14hBgmIYmtIw9xvpMREfKuOhXOM93i62Z+eQoG0VCwCYE
-         tK0eD+Lv3VunLRa9weZK/myfYuhmVuMhI0moF0WmGfk6qRVJp08lPefKlGa8eWxlHRRT
-         b1eedgMxzCXz33/ji6uIAujoaOrIUpKWnBZyBs5TMcqwYDry1Y8XN9Bn7S1XOqP7jqyv
-         dFvg==
-X-Forwarded-Encrypted: i=1; AKwUvBwHkIKhUeaRvJvXSriEKU4YE0ua/wOdgY3Y6lcy+Vw0q3kLKWW5HnlxeBF+5CO4CPVxBkCqhGs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8snJPV332T09FExyS7a0TIEv7660QEO/zYV3DtBUbDACVgugd3
-	ng5lqUg5MQig1CEw2QBHBp2d1R+wjsmEcCrv5xHJMzs2wfintaMHQJ7HxQ7zSvbJLjTTgpAdw/h
-	a0e0oidVHxVnd6+j+g4HbyH4A9z1wz5CNHqF+muHWZOtp7O8LsKpNFhp8vZk=
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=sBtyhiUk;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C37606A326;
+	Wed,  4 Nov 2026 05:08:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C37606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=sBtyhiUk
+Received: from [192.168.1.7] (unknown [103.212.145.77])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 88CC920B7166;
+	Tue,  3 Nov 2026 21:08:27 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 88CC920B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1793768908;
+	bh=n0Xywr94Vk3WtL8YoWlzK4ISWgOH/R1JCv5dLFPIkIM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sBtyhiUkjSOC/y4YU7Q21hwoxP7b2bPy3yWUAXMGrspoYU6r5YJoWUxbiU4IRvLbk
+	 /tZfk/4PiSP0xw10D+e45eGHP/iBPIXSq3nwkE0Ldk18NG74S4XnxOMi5T10kFk22t
+	 E2t3gAlfocgO7RXnyG7s3rJ2BFSso9F36oI52sXQ=
+Message-ID: <c3ec0e88-5077-4eee-8ed8-9b2f71f00b0a@linux.microsoft.com>
+Date: Wed, 4 Nov 2026 10:38:39 +0530
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,155 +53,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2382:b0:4b9:e5fa:8a13 with SMTP id
- 5614622812f47-5640dd44e89mr10919497b6e.24.1793768617926; Tue, 03 Nov 2026
- 21:03:37 -0800 (PST)
-Date: Tue, 03 Nov 2026 21:03:37 -0800
-In-Reply-To: <6ae3d50b.9c6421ad.36baac.0003.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aeabca9.fc50a118.dd1b.0001.GAE@google.com>
-Subject: Re: [syzbot] [sctp?] kernel BUG in __pskb_pull_tail (2)
-From: syzbot <syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: hv_netvsc: user-configured RSS indirection table is zeroed on MTU
+ change
+To: Amir Boussejra <amir@boussejra.com>, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: amir.boussejra@gatewatcher.com
+References: <40fb2352-4859-4334-849b-f6a4229605a1@boussejra.com>
+Content-Language: en-US
+From: Aditya Garg <gargaditya@linux.microsoft.com>
+In-Reply-To: <40fb2352-4859-4334-849b-f6a4229605a1@boussejra.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
-
-HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kernel..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=162b8add580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
-dashboard link: https://syzkaller.appspot.com/bug?extid=f15a6eff7a53f6eb7dc3
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11b49b29580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15b49b29580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-05441d69.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0edd3964be19/vmlinux-05441d69.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/84d6d8dd5648/bzImage-05441d69.xz
-
-AI-generated root cause summary:
-When receiving an SCTP packet that is nonlinear (such as an SCTP GSO packet
-constructed with fragments in frag_list), sctp_rcv attempts to linearize the
-packet using skb_linearize() if the sk_buff is cloned (e.g., tapped by a packet
-socket or shared) or not recognized as GSO. During linearization via
-__skb_linearize() and __pskb_pull_tail(), skb_copy_bits() fails with -EFAULT due
-to a discrepancy in frag_list fragment lengths or readable offsets, triggering a
-BUG_ON assertion failure. In production builds, this BUG() results in an invalid
-opcode oops and kernel panic, causing an immediate denial of service.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=f15a6eff7a53f6eb7dc3
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-kernel BUG at net/core/skbuff.c:2903!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 2 UID: 0 PID: 6002 Comm: syz.0.20 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-Code: 5b f8 48 89 df e8 2b 03 fe ff 31 ff 41 89 c4 89 c6 e8 7f 58 5b f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 5c 5e 5b f8 90 <0f> 0b e8 54 5e 5b f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90000648870 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-RDX: ffff88802ce60000 RSI: ffffffff89b30684 RDI: 0000000000000005
-RBP: ffffc900006488f0 R08: 0000000000000000 R09: 00000000fffffff2
-R10: ffff888046a12f77 R11: 0000000000000000 R12: 00000000000000e4
-R13: 0000000000000180 R14: 0000000000000000 R15: ffff888030406780
-FS:  000055558120b500(0000) GS:ffff8880d467c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000020000001a000 CR3: 00000000385f5000 CR4: 0000000000352ef0
-Call Trace:
- <IRQ>
- __skb_linearize include/linux/skbuff.h:4025 [inline]
- skb_linearize include/linux/skbuff.h:4037 [inline]
- sctp_rcv+0x143e/0x3cc0 net/sctp/input.c:120
- ip_protocol_deliver_rcu+0x44c/0x4d0 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x3fb/0x6e0 net/ipv4/ip_input.c:241
- NF_HOOK include/linux/netfilter.h:325 [inline]
- NF_HOOK include/linux/netfilter.h:319 [inline]
- ip_local_deliver+0x1a3/0x200 net/ipv4/ip_input.c:262
- dst_input include/net/dst.h:481 [inline]
- ip_rcv_finish net/ipv4/ip_input.c:492 [inline]
- NF_HOOK include/linux/netfilter.h:325 [inline]
- NF_HOOK include/linux/netfilter.h:319 [inline]
- ip_rcv+0x33a/0x3c0 net/ipv4/ip_input.c:612
- __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:6433
- __netif_receive_skb+0x1f/0x120 net/core/dev.c:6546
- process_backlog+0x487/0x1600 net/core/dev.c:6897
- __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7966
- napi_poll net/core/dev.c:8029 [inline]
- net_rx_action+0xa40/0xf20 net/core/dev.c:8186
- handle_softirqs+0x216/0xa20 kernel/softirq.c:669
- do_softirq kernel/softirq.c:569 [inline]
- do_softirq+0xaf/0xf0 kernel/softirq.c:556
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xff/0x120 kernel/softirq.c:473
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- ipt_do_table+0xd71/0x1b10 net/ipv4/netfilter/ip_tables.c:357
- nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
- nf_hook_slow+0xbf/0x220 net/netfilter/core.c:633
- nf_hook include/linux/netfilter.h:280 [inline]
- __ip_local_out+0x541/0xb80 net/ipv4/ip_output.c:120
- ip_local_out+0x2a/0x1f0 net/ipv4/ip_output.c:129
- __ip_queue_xmit+0x876/0x1f50 net/ipv4/ip_output.c:533
- sctp_v4_xmit+0x91a/0x1070 net/sctp/protocol.c:1061
- sctp_packet_transmit+0x22fe/0x30b0 net/sctp/output.c:659
- sctp_outq_flush_transports net/sctp/outqueue.c:1174 [inline]
- sctp_outq_flush+0xb2b/0x3380 net/sctp/outqueue.c:1222
- sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1826 [inline]
- sctp_side_effects net/sctp/sm_sideeffect.c:1211 [inline]
- sctp_do_sm+0xce1/0x5c30 net/sctp/sm_sideeffect.c:1182
- sctp_assoc_bh_rcv+0x392/0x740 net/sctp/associola.c:1048
- sctp_inq_push+0x25c/0x320 net/sctp/inqueue.c:91
- sctp_backlog_rcv+0x169/0x590 net/sctp/input.c:331
- sk_backlog_rcv include/net/sock.h:1194 [inline]
- __release_sock+0x39d/0x440 net/core/sock.c:3341
- release_sock+0x1e5/0x280 net/core/sock.c:3940
- sctp_sendmsg+0x1166/0x22e0 net/sctp/socket.c:2091
- inet_sendmsg+0x11c/0x140 net/ipv4/af_inet.c:864
- sock_sendmsg_nosec net/socket.c:800 [inline]
- __sock_sendmsg net/socket.c:818 [inline]
- ____sys_sendmsg+0xa23/0xc30 net/socket.c:2715
- ___sys_sendmsg+0x190/0x1e0 net/socket.c:2769
- __sys_sendmmsg+0x20c/0x440 net/socket.c:2858
- __do_sys_sendmmsg net/socket.c:2885 [inline]
- __se_sys_sendmmsg net/socket.c:2882 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2882
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff80879fb19
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff70bcd848 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007ff808a25fa0 RCX: 00007ff80879fb19
-RDX: 0000000000000001 RSI: 0000200000000e40 RDI: 0000000000000004
-RBP: 00007ff808837b70 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff808a25fac R14: 00007ff808a25fa0 R15: 00007ff808a25fa0
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-Code: 5b f8 48 89 df e8 2b 03 fe ff 31 ff 41 89 c4 89 c6 e8 7f 58 5b f8 45 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 5c 5e 5b f8 90 <0f> 0b e8 54 5e 5b f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-RSP: 0018:ffffc90000648870 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-RDX: ffff88802ce60000 RSI: ffffffff89b30684 RDI: 0000000000000005
-RBP: ffffc900006488f0 R08: 0000000000000000 R09: 00000000fffffff2
-R10: ffff888046a12f77 R11: 0000000000000000 R12: 00000000000000e4
-R13: 0000000000000180 R14: 0000000000000000 R15: ffff888030406780
-FS:  000055558120b500(0000) GS:ffff8880d467c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000020000001a000 CR3: 00000000385f5000 CR4: 0000000000352ef0
+On 29-10-2026 14:40, Amir Boussejra wrote:
+> Hi,
+> 
+> On Azure/Hyper-V, any MTU change on an hv_netvsc interface silently 
+> zeroes a
+> user-configured RSS indirection table, so all RX traffic lands on ring 0.
+> 
+> Reproducer in our case (any multi-queue hv_netvsc NIC, ethtool and ip 
+> only):
+> 
+> ```
+>   ethtool -X eth0 hkey $SOME_KEY equal 4
+>      ethtool -x eth0             # See conf
+>      ip link set eth0 mtu 1600     # must differ from the current MTU
+>      ethtool -x eth0               # all zeros in indirection table
+> ```
+> 
+> With the table left to the driver (ethtool -X eth0 default) the same MTU
+> change is harmless: the table comes back correctly spread.
+> 
+> Confirmed with kprobes on 6.12.90 - these all fire on the MTU write:
+> 
+> ```
+>      netvsc_change_mtu
+>      netvsc_detach
+>      rndis_filter_device_remove
+>      netvsc_attach
+>      rndis_filter_device_add
+> ```
+> 
+> [`netvsc_change_mtu()`](https://github.com/torvalds/linux/blob/v6.12/ 
+> drivers/net/hyperv/netvsc_drv.c#L1209)
+> 
+> An MTU change re-creates the device:
+> [detach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/ 
+> hyperv/netvsc_drv.c#L1233), then
+> [attach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/ 
+> hyperv/netvsc_drv.c#L1239).
+> 
+> The detach [frees the RSS indirection table](https://github.com/ 
+> torvalds/linux/blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1622)
+> (`rndis_filter_device_remove()`), and the attach
+> [allocates it zeroed](https://github.com/torvalds/linux/blob/v6.12/ 
+> drivers/net/hyperv/rndis_filter.c#L1557)
+> with `kcalloc()` and refills it only if
+> [`(!netif_is_rxfh_configured(net))`](https://github.com/torvalds/linux/ 
+> blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1572)
+> (`rndis_filter_device_add()`).
+> 
+> 
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Hi Amir,
+Thanks for reporting this bug
+I'll post a fix for this and notify here as well
+
+Regards,
+Aditya
