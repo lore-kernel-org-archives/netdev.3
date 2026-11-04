@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793819964;
-	b=ERbXDCOPBlHuaeLHRl34ZDgA27jsye2IHhlrQjAp2kl/gAJbbl30dgybSAwGzz8+QvZz
-	 ZrLYVUQpu8QAWh+kIaYKIiJaX3YJAR2sc+RNsNC0lQkCOa+39Xebx7roSk5DChIgdlnKX
-	 ysRH+ejiouxw0niyMSHteNbgkE/mS0F62hfA+eTwqZzQU14ibU7D5C8wkaeU77aN8D0VE
-	 qTZ8e9ztE/zi/oEfQ+fAvBDu01L0K/YFj9Onn3Pb0aiM239B/5LNdg9pbqLisDuJM55vw
-	 fyIVSH4jMpKlpVhGwMfkNKdiGCJxa9gLYsTNJ7dwWPiTO54aMCEoFaEI83VKOvMawbA==
+	t=1793820007;
+	b=LZouyut5wk2l6DpLtVRxE6qP+x6WunzL1F6IWmzM16M4SSj8mwGa7QKFjbOdfxDSZ0jF
+	 84X2vcE9lXsj9oxlBSfLCEjDbGsiSxQWzT1v+V7yAx4sJ0l5KHb+o30Twv6/Dpsw634ej
+	 6i9PZ9OtMFm4KiPm15O/8p3BeWtqG+dkeW0MeWV0TEaS5rNJ2dMQJlQsSh9eohz7oWM+t
+	 PFDIY4TEHGz9iMS5hYJTjIOt3UxdoCKrrIm5lS9Ovp51ZwNWaqfcV0ZRcgIb7zsNd75GN
+	 lymQch75hQlHcAEZ/rYhvXnPHVeIRJxPf3RAVXgcDBZzu9jdTM9zeXz53ene4buRn+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793819964;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793820007;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=+QMuJvtMuQ+CXnn6xLeWoxU7H9VJY0mzKEyTXi76/+M=;
-	b=u1Tq8Jd6wwk8QvhAjbv4gS38dUEe2kpzpUpCUz5dRbOtIDcJJJl2aHYf9ikjYcv0B+KX
-	 rtq4rNtyonakfUwydTfITqfTDJb9dsNlvY7isXlIlNtVMDGM5deTtV8Yt2nesOaPRlnZD
-	 sPFRVsejEsPh7BSEmJW+E/rJh1KzT+hjCgs8PYboLqXmxWL7Q56qHR+p0TJD7EkcKMTBh
-	 +n6DyXp6LzHDRHI6Kz/vjUKmWjzZchvyLLTiyuQ1o6KyZaBCs5bm/CAUbUu9irhntX01m
-	 tMLezODQc4cB/MOi7+4wHf1EwNJbVHScmcpcWQbBb35vn6HZO1eqYZ6z7Vq84pvU9fA==
+	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
+	b=hBaJL6kVqSW3DA1R49vZSFORySNrhOFG2ATSVkJlptbJMMpGCb4amPnSHKTUgzu0ntlQ
+	 TRKsE1Z2Gbc6I8o6QzjyFN07vHP6/Tp3Bp5CLFLQEOY7ufTkpOL4nTtHFuLdwfzRd4KGU
+	 rmVnQVhzBsA4BB184z6ewpEkke+fBr/HkppYS2AgGtaCt885FqRv6DmgII02OrhWm2h0h
+	 rfkvmIH62glY8gvIDS1jmmCNN9y1nueCWH3gfe0HH+a8VM1nkPZszYpUYyolLHvBM7hKI
+	 u40hZYXnoeVzTAnxJmPa74vyZyRJmXu9EQulmi7VOFFbxt6T8v+A+iAYRWYn18Ji7Ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gxIENLz0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gx1ml92n;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C94E606EE8C;
-	Wed,  4 Nov 2026 19:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9405A6070F22;
+	Wed,  4 Nov 2026 19:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gxIENLz0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C301F00919;
-	Wed,  4 Nov 2026 19:19:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gx1ml92n
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBF81F00919;
+	Wed,  4 Nov 2026 19:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793819964;
-	bh=+QMuJvtMuQ+CXnn6xLeWoxU7H9VJY0mzKEyTXi76/+M=;
+	s=k20260515; t=1793820007;
+	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gxIENLz0UJSM86XrOE1Sp3JOvLA1u1MA6tN2TKsN8z69sY8YtYsnY9pKSo3aFOcfQ
-	 It+yrAGN09WT7v77bOcS26Rrfp6yDzWLpkBPnc74ur6LeQ3oTzrvuG6Ky0kmVgi5Bb
-	 Z3j0QjnFD8aYVcI8yWVigWpiQHEHJJZHAuuleBaspMz1mpQ5rRYAMWLJX0zRU4vJo6
-	 RVoQiNLCqpiXG3Q/pt4TC6GrXdJ/RtFA4o6YSTd9QUZ7eQ0PuRnoorZ/GGmdi0VNty
-	 8+ElarT6h6fA4UlBB9caj85En7ce0T5GP9cwgZFrj2EBL5oKo+5dRL8rx9quzBAg6O
-	 vLwWBgOdvm1Pw==
+	b=Gx1ml92nagZ7BrakhHXJtPQ+gcEUXo9KcayoMJOCqeD8l4YNPDO/HrtuxrVu5D/yq
+	 AkBUy+fEu7DUS3PpJdPB8rP4qDEH7v+3NmBlnra1bCI78Eid7vxjW2+TTJjKFk1pa7
+	 AD/p7tsz2i4zyXv6Wo6PwRfTfO4UBAA/iJgcwnGbIppd57DabriHGLgMEnacFdb1iY
+	 GWlISVkMuIM9OcUzNZg45npnuMJt6k2wY5mP16R0b4wLk6SxDPuMPpdKe7JIGFtdcz
+	 NWUGr2t2OzbQHDfP3LGVAcsb0fhKK1thVAFYLu2RzFUd22BqXfCyjuiOfZQwNar7gn
+	 x0rZz3DaKTIvg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -100,10 +100,11 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 13/51] sched/psi: don't drop the last byte of a trigger write
-Date: Wed,  4 Nov 2026 20:19:09 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-13-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 16/51] PNP: isapnp: don't read past the end of the buffer on a large pread()
+Date: Wed,  4 Nov 2026 20:19:53 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-16-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
@@ -117,44 +118,48 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310; i=brauner@kernel.org; h=from:subject:message-id; bh=/5ST8groFWC3ZYrB9+5K2L5OtN8hrslkTr6MpvXzbng=; b=kA0DAAoWkcYbwGV43KIByyZiAGrrgdqjlnhsS+Xn2bQzAZGlod8csUEIbzAtYr5Z7PKO7g1AP Ih1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmrrgdoACgkQkcYbwGV43KLVfgEA1c1M +KyfIhJG/BAv6BFn00vAnDN1zj94NkCXNtd8aaQBAIjacXos/OXrlYuIrWKCfCTQiGjILl4kpqo N1Eyu2lMK
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=brauner@kernel.org; h=from:subject:message-id; bh=PRZX3tU6vm07qtbuZVgSHwh1cNhLueRVjGfMu08d6P4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brwfzl4y9YPS+9UnzD/xWPz9cFZ3YUK46s/HNev+T X6yzjO1pKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAik/IZGTbFfnLPjP3etuFi 3uYXH/odI/9bLkx7YPeroPeyylQ3HSWGf0oRmziNpv1f8fdY/M9fuwrPnSgJELfs+hiheTJ/BWs JOxMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-psi_write() copies at most 32 bytes of the write into its buffer and
-terminates the buffer by overwriting its last byte. For a write shorter
-than 32 bytes that is the last byte the writer sent. A trigger written
-without a trailing newline loses its last digit then, "some 150000
-1000000" turns into "some 150000 100000", and a shorter one like
-"some 150 10000" fails with -EINVAL because the window doesn't fit
-anymore. Only writes that end in a newline parse as intended.
+isapnp_proc_bus_read() truncates the position to an int. A pread() at
+an offset like 0xfffffc00 turns it negative, the check against the size
+of the configuration space passes, and the loop then puts everything
+from that position up to byte 256 into the reader's buffer, no matter
+how few bytes were asked for.
 
-Copy at most 31 bytes and terminate behind them.
+Keep the position as a loff_t and clamp the count against what is left
+of the configuration space.
 
-Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/sched/psi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pnp/isapnp/proc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 7c5381423334..8b59635e95d4 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1566,11 +1566,11 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
- 	if (!nbytes)
- 		return -EINVAL;
+diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
+index b3abab24050b..1829c20d5446 100644
+--- a/drivers/pnp/isapnp/proc.c
++++ b/drivers/pnp/isapnp/proc.c
+@@ -23,15 +23,13 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
+ 				    size_t nbytes, loff_t * ppos)
+ {
+ 	struct pnp_dev *dev = pde_data(file_inode(file));
+-	int pos = *ppos;
++	loff_t pos = *ppos;
+ 	int cnt, size = 256;
+ 	int ret;
  
--	buf_size = min(nbytes, sizeof(buf));
-+	buf_size = min(nbytes, sizeof(buf) - 1);
- 	if (copy_from_user(buf, user_buf, buf_size))
- 		return -EFAULT;
- 
--	buf[buf_size - 1] = '\0';
-+	buf[buf_size] = '\0';
- 
- 	seq = file->private_data;
+ 	if (pos >= size)
+ 		return 0;
+-	if (nbytes >= size)
+-		nbytes = size;
+-	if (pos + nbytes > size)
++	if (nbytes > size - pos)
+ 		nbytes = size - pos;
+ 	cnt = nbytes;
  
 
 -- 
