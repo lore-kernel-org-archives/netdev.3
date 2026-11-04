@@ -1,51 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.57
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.196
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793772367;
-	b=Rke/YGVOZKYNihvaJppbIhxxTYKv7bdBmAv2AUbyzrWJVFwJTxxPm1ibzzJ6e0ELt/hv
-	 b7O2DkFnqKa9nlwXd+f6DklFWcoHdt76oaDfWv4f8qgtv5QWu0NH90rCOeY+waX70D2XS
-	 4oLlpLLtbosL2/IOVTFj6O6o1HOw2vkcSSukttarAG2EhNaHJVeOZFaWWmjGnociKDW3l
-	 tJFAfIgBfmvreVwXgTzZSiqt+0rz7sExAagp5zrPpyJMxv5zm/v1+1onJiBR3dovdocq/
-	 01BhDuFI9pboLQtq7wyGEd30eWlq2X/CDs7jNrH/3Kr6TsXnThJC4NvOYgrJysY4PNA==
+	t=1793772410;
+	b=qoF6Hh6QU+4yidx4bXpvFH1eOSRXDlxyHCTgeHRxoqD/iaavqt+ssV0GoyxIgS8Lu6pC
+	 O72ItzCVWqWMHBQPd6mmu6eWxZlXa2FPnjiy4bUVUO182ZDD4xlYu4bkIvi/3ivLh74dV
+	 8WkZs5crQn0X+zZIge6KgsEP+AZHMpobwC3b4XQ/fTtxiuhMAVF/EICnNlH1XH1BuMLWf
+	 5gb6neI59pHMfCCnbJFXuFtn4BploMkM8sDZSLrNsVPxwu94lxRxkPKBWLpJ0iYoWqMJf
+	 pBG+qyS1OzI8CN4nqaiIU0B2tejF+qKlqyxGmU4+1xqKftiUHJxK+aO/EbElqDJQMKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793772367;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793772410;
+	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=AYliQvvoP9t2xBU+MfGX2zhe1ZgquUqopej93F/CQ4Q=;
-	b=K937gaODBnSzjn90f7nG1Aj5QSK/CiWXYzSJhVvoWay8SEGJE8chbsw81ZFyUUKI4uPe
-	 hZE5nYDiwgLoPaplLd4M6gpwRFxURzDly6j/5pRwY3rlEHsi/u/HkkqjdMOPWW3TSXOo/
-	 dJGHUw0DAu4Be+WlxRG7KicdsRK1ccg3/T55tx6d/5KZJnwxeW7Zw+U/lGd902j5whQ7G
-	 Af9m9qx+9OeIcx96EChe81ZuksYOvPvZ8pgAUhtQWwYTG9WdA06IdgCK4KkAMEX5D1PYT
-	 5FRKeYz3sQ60wOvktkKePX7I6H55DCsRxw9u66rJfbakCZmSxiJihZn4BmzrMRWylFQ==
+	bh=6xpVksnSDn3j0NaVs5bRI6NG/0Uqo43oan1u8fG6FCc=;
+	b=g8lEFybG2ICRDomUwwthACCRwi7m0ZSVIDTYJu1ss/rg5lIeV5B+vqYGOd9tOZI8OkBb
+	 twENh21kPDzu0IilqAUQPTM9FUWf281YBeCmG+FEyRz7NEBhrpcXeCvdJL3AfVxM8gJMX
+	 bM7hTSheW2P3M1zAId4OZL3vSVdHp3I5usUHYzyVUJ3jsMU0N1MEP291N9q2+O2t6pwMo
+	 tMWm0BLFfBETFwHBPId2mAhTptbZxGgdd3muc+3I7R52nFeV659eiLsXWcnlOiaDqFsDv
+	 Td+7wuikHMiAa+VFH4JJBcheMkSrt52J6u3ismAL06t2RS8td5h9f73IrEdP7tMDMow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=91.218.175.57
-Received: from mta0.migadu.com (out-57.mta0.migadu.com [91.218.175.57])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=motor-comm.com;
+	spf=pass smtp.mailfrom=motor-comm.com;
+	arc=none smtp.remote-ip=115.124.28.196
+Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B620F606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 06:05:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B620F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AYliQvvoP9t2xBU+MfGX2zhe1ZgquUqopej93F/CQ4Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793772354; v=1; x=1794377154;
- b=tG0OTtk0f8ZcYcb+ozibhuTIE8MGWeWV43lqRPVcurrDR1RPMyw+7dPAjB2cpk+w+/sPh3WS
- H+cFhr11CppQ5DHLndMniEipQaOax5wvG23fFvUUerj5ERLXqGc+CrFbyriCPuNDOwogw40Z5mT
- Yx1TxtPR9oycfNTCLEH74xAA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ba0b2edfcf9ab841;
-	Wed, 04 Nov 2026 06:05:54 +0000
-X-Mizu-Trace-ID: ba0b2edfcf9ab841
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <b0e5f200-1860-4222-afc3-8d67161ea1c1@linux.dev>
-Date: Wed, 4 Nov 2026 14:05:38 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52D7606A32F;
+	Wed,  4 Nov 2026 06:06:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D52D7606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06748211|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.316453-0.0542113-0.629336;FP=13617245593832804278|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033071099199;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jwJZ9Nm_1793772403;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jwJZ9Nm_1793772403 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Nov 2026 14:06:44 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH net-next v28 2/3] net: phy: Add support for Template Control register for PMA
+Date: Wed,  4 Nov 2026 14:06:35 +0800
+Message-Id: <20261104060636.3901918-3-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261104060636.3901918-1-kyle.switch@motor-comm.com>
+References: <20261104060636.3901918-1-kyle.switch@motor-comm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,63 +68,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 5/7] ipv4: convert do_ip_getsockopt() to
- sockopt_t
-To: Breno Leitao <leitao@debian.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>,
- Eric Dumazet <edumazet@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- david.laight.linux@gmail.com, kernel-team@meta.com
-References: <20261103-sockopt_expand_out_v2-v4-0-2d36da923578@debian.org>
- <20261103-sockopt_expand_out_v2-v4-5-2d36da923578@debian.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261103-sockopt_expand_out_v2-v4-5-2d36da923578@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Add support for the 10GBASE-T PMA Template Test Mode register
+field, which allows selecting one of eight test modes (Normal and
+TestMode1..TestMode7) used for PHY validation.
 
-On 11/3/26 7:01 PM, Breno Leitao wrote:
-> Convert the SOL_IP switch and ip_mroute_getsockopt() to sockopt_t, its
-> last leaf on a sockptr_t pair. The IP_MSFILTER and MCAST_MSFILTER
-> bridges go away.
->
-> ip_getsockopt() builds the sockopt_t with sockopt_init_user() and
-> writes optlen back unconditionally, because IP_OPTIONS and others
-> report a length and can then fail. ip_mc_msfget() therefore stores its
-> length only after its last copy, so a copy failure can't report a
-> changed one.
->
-> The write-back also happens before the netfilter fallback, so an
-> unwritable optlen turns any error into -EFAULT and skips the fallback.
-> Likewise optlen is now read before the level check and the MRT_*
-> dispatch, so an unreadable or negative one wins over -EOPNOTSUPP.
->
-> IP_OPTIONS with no options set and IP_PKTOPTIONS used to return the
-> result of copy_to_sockptr(), the number of bytes not copied, so an
-> unwritable optlen made getsockopt() return 4. They now return -EFAULT.
->
-> sol_ip_sockopt() builds the sockopt_t with sockptr_to_sockopt() and
-> stores optlen back as well. This extra code will go away when we
-> convert sol_ip_sockopt() to talk sockopt as well, but for now we are
-> converting the leaves.
->
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-> Acked-by: Ido Schimmel <idosch@nvidia.com>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+---
+ drivers/net/phy/phy-c45.c | 23 +++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ include/uapi/linux/mdio.h | 12 ++++++++++++
+ 3 files changed, 36 insertions(+)
 
-
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 870920311f9a..c5f5753f7194 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
+ 
++/**
++ * genphy_c45_template_testmode - configure template testmode registers
++ * @phydev: target phy_device struct
++ * @test_mode: testmode includes Normal to Test mode 7
++ *
++ * Description: Set template testmode include Normal to Test mode 7
++ *
++ * Return: 0 on success, or a negative error code on failure (e.g. register
++ * read/write error).
++ */
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
++{
++	u16 ctrl;
++
++	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
++		return -EOPNOTSUPP;
++
++	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
++	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
++			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
++
+ /**
+  * genphy_c45_plca_get_cfg - get PLCA configuration from standard registers
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 21afc2082b17..1f52e62df734 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2367,6 +2367,7 @@ int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_c45_pma_resume(struct phy_device *phydev);
+ int genphy_c45_pma_suspend(struct phy_device *phydev);
+ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode);
+ int genphy_c45_plca_get_cfg(struct phy_device *phydev,
+ 			    struct phy_plca_cfg *plca_cfg);
+ int genphy_c45_plca_set_cfg(struct phy_device *phydev,
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 06f4bc3c20c7..353ca13c64fc 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -63,6 +63,7 @@
+ /* Media-dependent registers. */
+ #define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
+ #define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
++#define MDIO_PMA_10GBT_TESTMODE 132 /* Test mode control */
+ #define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
+ 					 * Lanes B-D are numbered 134-136. */
+ #define MDIO_PMA_10GBR_FSRT_CSR	147	/* 10GBASE-R fast retrain status and control */
+@@ -320,6 +321,17 @@
+ /* PMA 10GBASE-R Fast Retrain status and control register. */
+ #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+ 
++/* PMA 10GBASE-T Template Test Mode Register*/
++#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
++#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
++#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
++#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
++#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
++#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
++#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
++#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
++#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
++
+ /* PCS 10GBASE-R/-T status register 1. */
+ #define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
+ 
+-- 
+2.25.1
 
