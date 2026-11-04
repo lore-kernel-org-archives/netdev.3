@@ -1,84 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793805454;
-	b=sYEjEJ/PZw/AMF8YAsj3UBfP9nuyn+ydDwlyToRXzmG1mFaOI6Q/uDgbFmbafz4cnJP7
-	 IKQYZjSixWuQYHePNX6SxmU3KDEa6ZKHe9LshjN4b5SnWMRWN6LI6OelJWeEfaobeEZ7P
-	 DGeRiigKacggTgZ8hihEBxuytB54oiqxtjgLJ8YT/tz1U33OGVxeIPH7TzHVUbzHEzRh/
-	 13CwafFlaBAcHacLMUsbP4W9mP6UQ8zmi2qzMU16WxYsvIf2iVAi58oJ+DsC9wfIwXBrW
-	 /nFQjoOpnlF/+VB0mfqmOHBOcN8Q3XgaJUujVlFSg/LNFiMuQEG5VT7MYCLTiHkTEGw==
+	t=1793805559;
+	b=ywZuHK90876jPo6MpgKZPJXwHFOC9WePnMOWaUQv3RfENalhW7A0JHMNCFQArnnQFb/f
+	 F7w8APoNUBfThmwtRgKhK60F3bO4zp7NQMlrrW3HhRG75yuWwieE+4Me4jKxDBMGlzgPU
+	 j5ZdCtqFlSdwk5Yqt4bRTzGDiqcdqJElxzrisKy1/VE6Mbwiiptcyh1VQfGaetifVZ3LM
+	 UKjP90Sq3DmEsDiKi6mCbnOnziqp4e3c4rPx3iEPW1F8vJ1b9k+En5EXvlXGglr/zqsIe
+	 t6fWtKOw3aGbJzIHwKVmEzdfpZMm5WMsVXNl8x9R2OIlJOvoztVKtPAXUUwR6Wr4kSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805454;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
-	bh=nvhHnUzlcZUczhYTg/v2fPLBpOLZ61h48TU8KHeiVn8=;
-	b=Yb898x8swOnpciZ14YdAG+413FlwjGowTvKUSxH/HiECpiLqaZcN78cJxBUOt/XQzp7z
-	 S9Aga0HkTWuGI43shaHs1TxCn7N0Oyb17RuKJsPFxp69XUclYuyG9MtQsHRl9RKHn5cWZ
-	 N12YKZ9uMKhbi1eqI8yq+NGChzsizfxTwrKNc+turJMJeOWk7maA3kAvOQI69FV/nPWcF
-	 QbJ4XhAAd0EojtPJ8LazXs7uDFBMZ5YcQk/0Nvm5i6OpbjjYeiQxr2j5yHIJFfIhhd4PB
-	 9KUONJTOBhI10PichgxbJj1luhqLit6CcjP9uUIunljv36tb4VFg5X6WDA2/V8ne91g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793805559;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=s6n+1O0vv7H3iZHusRNAoBbUxsNQKqIKFg3s49HK+Eg=;
+	b=CMhthMFGPKWKx52aR5TE8U5bimdSiq/KCnwaATGT3DhqFUl31XF+AHNdDwlwPZCe7FOG
+	 cxHJxccdm5y0a/YWLCjiECxw+KxlZuefF+FW0DdbKKfO8+91j2/xTHimC/wSsyuYOsYVw
+	 mQ7VZ2kN7EWKg12Tu3/4ItYUpBMlNf4/HsvXPHqYynL2scew5nL03zC4Mdr4UAmEpEQIt
+	 00BYAx6usr8GuXiZ4vO1RP9cCDsdtDiPJwUZG7EURpQKvLr/aaPEjDi7mGlchKGIzIdCS
+	 IHkzuLgyuuD5Qq+TYiaQ5feEXyjQCN0rr9vFmBAwpUYpjd525l585DdUMUGQlEhUUKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y8VWdJi8;
-	arc=none smtp.remote-ip=209.85.222.173
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	dmarc=none header.from=grische.xyz;
+	spf=pass smtp.mailfrom=grische.xyz;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13476606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:17:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13476606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y8VWdJi8
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93f3c616c84so76514185a.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 07:17:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793805453; x=1794410253; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nvhHnUzlcZUczhYTg/v2fPLBpOLZ61h48TU8KHeiVn8=;
-        b=y8VWdJi8w19RHnscyCPKs6dX/Hf5BsGea33ym1Q2L3fH57oQ0zF0pWQMPsLXCOJO+Z
-         lekMV7t+/bSlKG8Gzmwc4IWVjDNc1VWE6ELEP2XYbNe/Xnv/+ryJNDPbRNnjMxpy/y2X
-         5qE/ZqPqrLg+q1vus2P+hmsXEHeML9poyemDs8WgH9t5EYi4SHHJWu0b6bUT2giif2GC
-         pqNKgK9TLUViHoqKsP1Gh8+g0SetnU6bVSL0lu2nBjmtaY7R+WbrvqraDo/3K0XZ74ai
-         +ma1Av1d3yVE3N717+l6PspoqJI/PT3JnznFQ6yyMXuuAyKkGzX3Oii9qqNL1SRY10cB
-         VsEw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4FE606D834
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:19:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A4FE606D834
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grische.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grische.xyz
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so7578175e9.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 07:19:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793805453; x=1794410253;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nvhHnUzlcZUczhYTg/v2fPLBpOLZ61h48TU8KHeiVn8=;
-        b=dNdOewjc4AxTK14MxSBFPbAdnaS1ahAdw3+W5Tlt3yHleFn8jdr9y/6pBXDsabp7dC
-         4fOjDlHgp5tCp1QGpEvd7DLF7aRjNarqQ+TOkXEm3vvplVsywtfo+3eaPROcKF6PUwhO
-         ct2NSHDU19bbIf/AnBXeSErtajbOcBBcsq067kLcRS0PgPUzuljw71ClVtE67wMNjSZI
-         Bkwc+nyx/+yOePC/i1l8a0UuQzMCK5XhtfvHmwsCIe2j2J28yAgp9H0Ni8KmQQlIbwlr
-         PVse0gfkvIFBE215lhXPGoBdOrfiEE3sATUyJFiDhv/B1hMog88IB1q97gORDN+LWDtv
-         ev6A==
-X-Forwarded-Encrypted: i=1; AKwUvByniR5DVZ3S+sgJHtaiUCSIUSgofPsOux/NrtClWMPfo+iwDpEaCP8DeUW4VCO7GJzGb7F8WXE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8BTX+bBGlUdI6bVgV+xoe6gkFATQJ0WFdZ5s2ZJr+2iU838cVo
-	b2EM4TABfDNWr1rlD4ge4+FDENpdS4sUrdyTuuz+6Nwrt/nxQmxvz8MT
-X-Gm-Gg: AYBFou3nOxTXEhftoqq9bmab/V0tLG7azhPZyq5UNkrIwG63BSDxltpG8fCYZzz74b5
-	RHsuyvZKrIH3bhHrXdV8XgZylzYgV217zH8xJrl4f1DMIEmwUi9M2fUWEpcRYRtAihkn2GB3PCj
-	em3fAhoudfdMO7X233ljwBQxQ4v8YoVip2p3FZwLO+GrSqIlgcv6Q82cpntlKSYfJE7BF+46dlb
-	Oz7b5C2ZqkzoauI5MxaKyW56xQCEPnPFb1xV3rroGS412n+LYP+wTkSH38PUaDv10rYPLnQxsr9
-	+sKvuloWgThxi1PEN5jPMfs2bYKG5GDTltfKq8o8fpzpDqh8C0CxAyCmO/E0PWGPmIKNKgzjDs+
-	yMf72d28IVEXFd3FtPFKbyPKLZmMoYf0fAegc9e22sbqGHK46zWpRAMBMzeqqJonfKSIkVCE+9y
-	VIJt8YhAv//vPIEePCkN3jhHWgZdjjFuFWNvZ0lb12pqMFPjYoYenTkyr7btB8lpkyhAuRzC6HW
-	92JzB0g3bVuE6B0TGJfG1iJBLrAIeedYoQ0F+qA1au83dJIeTC7TMo8visET4Xjocygz4vBWASZ
-	19cr75ME+wfmP+hg
-X-Received: by 2002:a05:620a:17a4:b0:92e:bc28:5479 with SMTP id af79cd13be357-944214d169fmr2878280885a.2.1793805452862;
-        Wed, 04 Nov 2026 07:17:32 -0800 (PST)
-Received: from localhost ([2620:10d:c091:500::5:7adf])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d481f90bsm221328685a.22.2026.11.04.07.17.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 07:17:32 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793805557; x=1794410357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=s6n+1O0vv7H3iZHusRNAoBbUxsNQKqIKFg3s49HK+Eg=;
+        b=Aq5OpubaBocrFaA68Wlw4kvshCJviJYspA1tLJMn9TEQHvTAwXpnKfKC/Xp+UBDTou
+         Js6t5u0t6zfvNWWxVW5KcsFyyj8W4icI1d1htRE0vGYvTASvK+6fPeXkh7Jbu/BhnWMo
+         4HP/uZzzsLcg2tPrdC6KVKfyD8s2bOZmJxngIlcIcCcPdGsmlMrwlPFnOu+p6CYmBbBc
+         LDlKwnRmKZ/c77mxSpcYyhWJGLZ41LrlGVhBARBkBJLRvLkwULGW8m9aJ3tTcB8Gbqoe
+         Pp52lgJqSO5FR1LP5qXJjo42n4OUWqBaIe0SGJ2RsxtyBIIdeQV9+QFRAKYjKSd9JWos
+         X9cQ==
+X-Gm-Message-State: APuU4Z+cfRjOdcUBSu3Y66jn5Ckpztuxl3ujrlMZjJ934tLaRT0DquOf
+	xKA6AaFbj6kDZwp/Nec43EzaIqeUBtRlmMk5PYqhQRI7AP0m6p/2LWufaEQknInFtIVONV8u+QM
+	PzXyzDhSGWjA9
+X-Gm-Gg: AYBFou1PWS37d9ZztEmkNVai39+GHsa2SnQPyT5l8V7Vys5s2L4X+7br9q9QDcFViN/
+	n7+8D5pp7a03ndI33aUdDbxq0paVqec1WGEU2QUuBmIZnskl3jWYiqf/YCt+64WRiD9KXI99+va
+	FuQKlELIu7uxtOCD1e2KwzeuNBXxlaLiVfJTdABxqlWgLWNYpQEfbphlksaNR8+V4dzBgyv4W3S
+	bfUZsT8ocPNUP69FnaoMX8lVHlLZ9u0/+wV3RTQauWo1Y1bMHLhMtWvnxxqqZ/nkfeVl5vmU3y0
+	UkOiabxdY8pTjpXiroPoX09QdtZEkLakxFMLSYOclaeDnsMD3cI/d+7fvOctFCLg301+bz3NbRG
+	8TlWq1NnsD7wWZ67bWkfzbW/uQyZViOVc43mos49Gu59g45j8ZPzGmIV1F0+Du2k9R3EGnvyuhN
+	StIXKWWOy+QT9l+e5uemVp4bBIZowzgPX7sd4eISW/bh9OIL4JL+KzwBNkYCgeNxyAlp8Gn46n3
+	MXH23QDNysexWbqlgFv9MxXn48q5/bWoczCpfg5PkQ3AcPD60Ig3OjskHoHf0iJXi/LsuQjph3U
+	zO4drneKW1K6HmjdMq+iRn56uiVNsdLefA0C+2CXY/RGXOMB
+X-Received: by 2002:a05:600c:46d2:b0:4a1:7ec7:a479 with SMTP id 5b1f17b1804b1-4ac1980118cmr359849885e9.33.1793805557406;
+        Wed, 04 Nov 2026 07:19:17 -0800 (PST)
+Received: from lake ([2a02:810d:d09:1b65:4366:70cb:bf82:f8ac])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d8e29sm4639812f8f.19.2026.11.04.07.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 07:19:15 -0800 (PST)
+From: Christian Schmidbauer <opensource@grische.xyz>
+To: netdev@vger.kernel.org
+Cc: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Christian Schmidbauer <opensource@grische.xyz>
+Subject: [PATCH net v2 0/3] net: stmmac: deliver frames with Rx checksum errors to the stack
+Date: Wed,  4 Nov 2026 16:19:10 +0100
+Message-ID: <20261104151914.2651241-1-opensource@grische.xyz>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,64 +84,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 10:17:31 -0500
-Message-Id: <DMMIYO3E9XF8.3JATGNVBKS9HE@gmail.com>
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Eric Dumazet"
- <edumazet@kernel.org>, "Neal Cardwell" <ncardwell@google.com>, "Daniel
- Zahka" <daniel.zahka@gmail.com>, "Willem de Bruijn"
- <willemdebruijn.kernel@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>
-Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "Simon Horman" <horms@kernel.org>, "Thaison Phan" <thaisonphan@google.com>,
- "Kuniyuki Iwashima" <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH v1 net-next 1/2] psp: Check pas->tx.spi in
- psp_sk_overhead().
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261103000712.658501-1-kuniyu@google.com>
- <20261103000712.658501-2-kuniyu@google.com>
-In-Reply-To: <20261103000712.658501-2-kuniyu@google.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Nov 2, 2026 at 7:06 PM EST, Kuniyuki Iwashima wrote:
-> The next patch moves psp_sk_overhead(sk) from icsk->icsk_ext_hdr_len
-> to __tcp_mtu_to_mss() and tcp_mss_to_mtu(), which can be called
-> between psp_sock_assoc_set_rx() and psp_sock_set_tx_key() while Tx
-> packets are still sent in cleartext.
->
-> Currently, psp_sk_overhead() only checks if sk->psp_assoc is set,
-> and even without the next patch, if ipv6_update_options() is called
-> between psp_sock_assoc_set_rx() and psp_sock_set_tx_key(),
-> psp_sk_overhead(sk) is added to icsk->icsk_ext_hdr_len twice.
->
-> Let's check pas->tx.spi in psp_sk_overhead().
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
-> not worth backporting, no one does that, only theoretical issue.
-> ---
->  include/net/psp/functions.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
-> index b23c30898389..410adb6718c1 100644
-> --- a/include/net/psp/functions.h
-> +++ b/include/net/psp/functions.h
-> @@ -145,9 +145,9 @@ static inline struct psp_assoc *psp_skb_get_assoc_rcu=
-(struct sk_buff *skb)
->  static inline unsigned int psp_sk_overhead(const struct sock *sk)
->  {
->  	int psp_encap =3D sizeof(struct udphdr) + PSP_HDR_SIZE + PSP_TRL_SIZE;
-> -	bool has_psp =3D rcu_access_pointer(sk->psp_assoc);
-> +	struct psp_assoc *pas =3D psp_sk_assoc(sk);
-> =20
-> -	return has_psp ? psp_encap : 0;
-> +	return pas && pas->tx.spi ? psp_encap : 0;
->  }
->  #else
->  static inline void psp_sk_assoc_free(struct sock *sk) { }
+On dwmac1000 the MAC drops every frame that fails Rx checksum validation
+before the driver sees it. The enhanced descriptor parser would discard
+such a frame even if the MAC delivered it. As a result, a VXLAN tunnel
+over IPv6 with zero UDP checksums receives nothing while Rx checksum
+offload is on, and neither rx_dropped nor rx_errors shows the loss.
+Patches 2 and 3 deliver these frames with CHECKSUM_NONE instead, as
+commit fe4042797651 ("net: stmmac: dwmac4: stop hardware from dropping
+checksum-error packets") did for dwmac4.
 
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+Patch 1 makes the AF_XDP zero-copy Rx path honour the checksum error
+status. That path already receives such frames on dwmac4, and patches
+2 and 3 make them reach it on dwmac1000 as well. Patch 3 depends on
+patches 1 and 2.
+
+Tested on an Aruba AP-325 (ipq806x-gmac-dwmac) on the net tree, with
+and without the series.
+
+Not tested:
+
+- Patch 1 was only compile-tested, as an AF_XDP zero-copy setup was not
+  available.
+- dwmac-loongson, which also uses dwmac1000_dma_ops.
+- Cores with normal descriptors, such as Rockchip RK3288, RK3328 and
+  RK3399.
+
+Changes in v2:
+
+- Rebase on net, where commit 834ec9530832 ("net: stmmac: drop split
+  frames on AF_XDP zero-copy RX") fixed the multi-buffer issue that
+  Sashiko raised in the v1 review.
+- Drop RDES0_LENGTH_ERROR from the Error Summary mask in patch 2, as
+  the bit does not contribute to Error Summary and the length check
+  further down discards such a frame anyway.
+- Explain in the commit message of patch 2 why RDES0 bit 7 is not
+  treated as an L2 error.
+- Set DMA_CONTROL_DT in patch 3 only with enhanced descriptors, as
+  the normal descriptor parser does not report a checksum-only error.
+
+v1: https://lore.kernel.org/netdev/20261020190319.884375-1-opensource@grische.xyz/
+
+Christian Schmidbauer (3):
+  net: stmmac: honour Rx checksum errors in the AF_XDP zero-copy path
+  net: stmmac: dwmac1000: don't discard frames with only a checksum
+    error
+  net: stmmac: dwmac1000: stop hardware from dropping checksum-error
+    packets
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac1000.h     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c | 8 ++++++++
+ drivers/net/ethernet/stmicro/stmmac/enh_desc.c      | 8 ++++----
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 8 +++++---
+ 4 files changed, 18 insertions(+), 7 deletions(-)
+
+
+base-commit: 241dec6f9ab74d8c3ef246764f3611666b96b9e1
+-- 
+2.54.0
+
