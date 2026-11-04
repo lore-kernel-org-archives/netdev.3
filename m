@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793759289;
-	b=WYXCrXMV79aIsWwdtXNqUc/pyuEVvYfbg7QWdsmsx3D+UsuJM8X2+JcfYD5mm+ztKdnW
-	 NHy+XtXKwCye2NgN/+C0mPFxkge/FEu5UWRpoZCaG23xOkNvcve7ot6L9LmV+iPqq5yRJ
-	 QDXM8oxf3P18p48gk3XPqogV0QEtrYu0IpGIap8hg0Rr3CuR86LAN50/nRfmFEh4ir34C
-	 vd4tawYP6P6rPkMdRokfV5mu+8Uy8Amsxre67dKl4Jo8R4gtZeOj8Ok8NiyjdLgjHE6Pe
-	 WHzgrwuqawkGkiriQXv0jWpR74ReXwiXua0s6lYA5q8B9q0FbnDJliB585c4zfmSkJw==
+	b=h95uyJzRfUdJiqJ+JqoBjEQX0eoNAYlMosXIDya1t6Z78S87wMD5CL/i8kptMgjHxhye
+	 vWRU+bjv1jSnh0sK1a4e3gxJnxrlaqes2DRMYQcWBW4wjt/Q3BTiuGyfe4P8bXqwyekU2
+	 mCZej84AG4HHsN/rDNJ414B6KJUQszgVpEckY2MGp1Qy5hzx3Gakm5qUR/3z5u2zjORM0
+	 A/Tbf76eJ8YW6B2/nHz1vVlL6haYQ61Vnl6TTu5FdlWijngjkRlbQnrAPsplAnW1LqlKZ
+	 BtxckoZaZYwqMN2zDZ5ZgT2szvoU5mcAtm3mRygQabny/kwSzeHN4gkUeX+7dLc3htg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793759289;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=Ojrc+x8JHkngO7OdqeCuGVdfBdyZz/qzrjANOLDklpE=;
-	b=csDaPVHy4FdOaeH1w3ohYmz138WKG/9r4AOVdzMVnsdG6HWF6i4whk4N7fbUB/oYufs6
-	 n4zScJ8gH5jOHEG6ru2bWou3J/AE+aUEsQNuwGcCNuq8FjdjCemCVsi0AurgjUivbOAKH
-	 4wGxG499of8OCQz+73kiG5wmK4R6w9agR1UH1FONBW9TTSoseP2NG0r9F6aqsAaFI19sB
-	 jkjeIHCge7SZWcJ56N461ztiEWQ3zEJtHoH6uUfLqtegAiDuzZAuSR5CzkvaT3nz8XoER
-	 0NBgs44mI5OhykWFj3iIrEpRtfNkNSZTdv/wFXaUp6vFY6vgBhyNsbud7PUZ6hPW0Uw==
+	bh=m3ICyWKLt/3CRgSG3lfoecO7ZJvBzNsttX/y1Vej1r4=;
+	b=ZEJwt5cOPRlmLzTTxKdeQW02r9txKgnhcgn8NTtqEVLsO0W8ehsj78hu0Fo41tr5RGn1
+	 3JPJihgnEXZnAr/2miz7IYv1ZsWoJFksnjaLTEJoGbfT3Ymo/65HtHGr7SGWLfQuEsor7
+	 gF8/KzG/pLw0fnTcWKghj/MxGq8VPoI343a81S+loCvoP25f/o8jpGoieEH4hUmBEIeoR
+	 5rypewwjrh7BxPXGdAAqeuijffe4XRliKujIhnofmmcdM4s2ulYnNnZEUDk0O+Wfx0LCq
+	 kYY4+po8L5S5jtrAc41yXNmwMKOEeEsZZ9Ek4oxo3sYGVY7Mn/Pwmo3QfodxN9dXDRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,32 +25,28 @@ Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B26606D805;
-	Wed,  4 Nov 2026 02:28:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45B26606D805
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BAA606A31B;
+	Wed,  4 Nov 2026 02:28:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7BAA606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowABHcPozmOpqvps+AA--.42060S2;
-	Wed, 04 Nov 2026 10:28:03 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowABHcPowmOpqmZs+AA--.42059S2;
+	Wed, 04 Nov 2026 10:28:00 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
+To: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Cc: linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
+Cc: linux-wpan@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH] net/smc: deregister the MR when SG mapping fails
-Date: Wed,  4 Nov 2026 02:28:12 +0000
-Message-Id: <20261104022812.1484233-1-vulab@iscas.ac.cn>
+Subject: [PATCH] ieee802154: drop the extra phy reference in del_iface
+Date: Wed,  4 Nov 2026 02:28:09 +0000
+Message-Id: <20261104022809.1484165-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,63 +58,57 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABHcPozmOpqvps+AA--.42060S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF15AryDWrykZr4fAF18Xwb_yoW8XryDp3
-	yfCrWvkryfJF12vw1Iyr18uas0kanrKryUCrWkCwn09wn7Jr1UAFn2gF12qFn8CFWkCF4a
-	vr4rt3yrWr4UAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBjb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+X-CM-TRANSID:qwCowABHcPowmOpqmZs+AA--.42059S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7XF48JrWftFy7Ww17Cr4kZwb_yoW8Jr4fpa
+	y5u34UKr98Wr13W3yxA3WxGF1SkwsrtryruF1kAanYyr18Xa43C39agw4Ivr13Ar4kZFy5
+	CFyUtF1rZ34DCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB0b7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
 	AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
 	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14
 	v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
-	McIj6xIIjxv20xvE14v26rWY6Fy7McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26F1j6w1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07bzhL5UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAQBA2rqY+TJjQAAsJ
+	McIj6xIIjxv20xvE14v26Fy26r45twAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVW7JVWDJwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUyXo2DUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRUBA2rqY-nHUAAAsT
 
-When smc_ib_map_mr_sg() maps fewer entries than the SG table holds,
-smc_ib_get_memory_region() returns -EINVAL with the memory region
-still allocated and its pointer left in buf_slot->mr[link_idx].
-The caller only undoes the DMA mapping and frees the SG table, and
-because buf_desc->is_map_ib[] is set only after this function
-succeeds, smcr_buf_unmap_link() later skips the buffer.  Both the
-MR and the pd->usecnt reference taken by ib_alloc_mr() are lost.
+ieee802154_del_iface() takes a reference on the phy of the interface and
+then looks up the phy named by IEEE802154_ATTR_PHY_NAME, which takes
+another reference. When the optional attribute names the phy of the
+interface being deleted, phy and phy2 are the same device, the lookup
+reference is not dropped and the function later puts the phy only once.
+Deleting an interface while passing its own phy name therefore leaks a
+wpan_phy reference.
 
-The stale pointer is also harmful: a retry takes the "already done"
-shortcut and treats a memory region that was never mapped as valid.
+Put the lookup reference in the matching case as well, leaving only the
+reference taken from the interface.
 
-Deregister the memory region and clear the slot before returning.
-
-Fixes: 897e1c245773 ("net/smc: use separate memory regions for RMBs")
+Fixes: bb1cafb8fc41 ("ieee802154: add support for creation/removal of logic interfaces")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- net/smc/smc_ib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ieee802154/nl-phy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index daaa8a72da90..fa21d269196e 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -735,8 +735,11 @@ int smc_ib_get_memory_region(struct ib_pd *pd, int access_flags,
+diff --git a/net/ieee802154/nl-phy.c b/net/ieee802154/nl-phy.c
+index 4c07a475c567..e7a8237b73c3 100644
+--- a/net/ieee802154/nl-phy.c
++++ b/net/ieee802154/nl-phy.c
+@@ -311,6 +311,8 @@ int ieee802154_del_iface(struct sk_buff *skb, struct genl_info *info)
+ 			wpan_phy_put(phy2);
+ 			goto out_dev;
+ 		}
++
++		wpan_phy_put(phy2);
  	}
  
- 	if (smc_ib_map_mr_sg(buf_slot, link_idx) !=
--			     buf_slot->sgt[link_idx].orig_nents)
-+			     buf_slot->sgt[link_idx].orig_nents) {
-+		smc_ib_put_memory_region(buf_slot->mr[link_idx]);
-+		buf_slot->mr[link_idx] = NULL;
- 		return -EINVAL;
-+	}
- 
- 	return 0;
- }
+ 	rc = -ENOBUFS;
 -- 
 2.34.1
 
