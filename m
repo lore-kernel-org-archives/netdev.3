@@ -1,105 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.56
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793785180;
-	b=FMUtexGyZ7Hgpg1naap7B/DvnOQBiRR2R/k5aGF8QhD+jhRsa3PD/v/BYQMIDjB4dP82
-	 2yK8Zomm/5EFjy1h8izMtwU93cMzQCIfqvJDNreHQEs0HojOAvdt1mR4btZjZ0P1LfE+K
-	 FnJ4xaGw5tTZaTTGIx9EK0GH6EhVKcoLZGeVYYV4t5g8cVt3LnPRCjiWvsv7fczSJQ0Fc
-	 T2UMPxBTXC3DWCsk2fEJyk0LT+qEgNEL3zoze2vH7uW9/cH0mxqDnxEbBDZ8bbJ1zndqN
-	 QIQpqkBgSAcrsviJvBZyI/ak6zaF5flZMNljf1OqcQUaDBQqJbuiDWvEEBNKoD8aLcg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793785180;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Q9gWlkU9iD+sPfwuubzYbaViWyjwKjPDBkj2h9KdhN4=;
-	b=pCi3PdWbsPmbUNZurLUpyCtPPwy2z3Xzqm5Zst9OfbA9fOGVY7aHKCzR8QWWXU/Y8ZsI
-	 gVyI17+vKw/Ufq0p6HB0/pqx6KO//i87YqZ0h25eU2oTi3Ry3fU4ChldAc5HB6eNbmV5q
-	 OXbK+9IQoK27pB6G/MyIoaXi56MV7dAjtdRrZjzRpiUidq5rEp8k2iPGXR7Jk+7JHl7E0
-	 /9b0XICwzRMmgGPq24xj+4gRuSBiNvr2SbI/mIC40zXt4qdUvotk8e1VmFEkKB+XtndGN
-	 hXbq7+kK82gzw402bqU4sup3TMPXPH5G4X0NiB2ToJrbG5WoL6FVHd3nhoxMpKf9FxQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.nxp.com;
-	spf=pass smtp.mailfrom=oss.nxp.com;
-	dkim=pass header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wUClb9eA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.56
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013056.outbound.protection.outlook.com [52.101.72.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.190.31
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793785210;
+	b=3sn/M/0YFxVTixTNRq99c7k0Gldv31MCmv7pd/P1FoWz4U1Cb3Q/HeCgsh2nUnvefHxb
+	 rlmVE5k9VlKAMIFoAuvzOrq/Kii3o1civJe/j5rgyQ1nEsV93f9ZV++KCiEuCeGuc1lZz
+	 t55y+pIFaDYC/YdyVPz1SpfT5RJIIZkKj/6dUNQ1/uzKk6NMQBiO8gfzT29jfsWMzgr8p
+	 JqvSy+uBPT2qi97NSSIgAjJ/adoSJ/cZnmUpNfHjHfKWQdBaLyMNoLX/Fz7Hw5l3tEV+w
+	 mIwN7drjKI547vnmateymPTzTbN8iswVlnJmwSIU34GkejNBPjLy9iqn2F50h582Eyg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793785210;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:From:To:Cc:References:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=0M0yINGH08Mmxxuka47Cr2UkeO83GbsdRwXTj6J0JUg=;
+	b=RUQSwLtm9CH/q+PBN8B1YEgv1t9w6bjiOwKU7kXGTlaD8W1mzoprzHKCOccCfYaVugQQ
+	 wlemoh84WVHhjkNXHkYK+jyAJevuYPg22qMSvnKI/SG31RkTUj/weV2nbOPK3vpuO+0y9
+	 FdLVc/03rxBhAy9hsTJ4/ksBivV/KmAeCg7nrH4asvvdMicZPdtbvJLgCKkzgTIU9xAMA
+	 5BrgwtpfQTVIznlt5wyFDKbOZivDroMpJnH2u+mQV0sMNx64t291EkOOH6TeKskyN5MSz
+	 BS/v4avS4dKJTtoe3SN6XXzDQiU+pm9vAOUF76fTsOKvNsFcC1X1ZMuMyvhFNrDUBRA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=sfJxv8X6;
+	arc=none smtp.remote-ip=66.163.190.31
+Received: from sonic307-56.consmr.mail.ne1.yahoo.com (sonic307-56.consmr.mail.ne1.yahoo.com [66.163.190.31])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75A2606A32E;
-	Wed,  4 Nov 2026 09:39:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B75A2606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CFD606A329
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:40:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34CFD606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.a=rsa-sha256 header.s=selector1-NXP1-onmicrosoft-com header.b=wUClb9eA
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pRECCq5b8YvQ+elPjwc8Xej/+r4iNFwJhvT5E35D/hteHGrk7ZPiszNsWCiPrzGAhkiOennrJwZP7Eo/gBceq01/ViiKWPdc5vWC10B5M2gFI9c/JqDDHEeY947hIhcSweCRcH9HkBBk22vkach3291h9l3tqTuRkkpbasAA+//1XJFLxE7aS4uxBThlJq8WvtXEDjKz74aaYlOhVd4qbsfouZobnjbGaVn4S9ZO2DjpPlz5gVmu0saKirrcyUt7HfrBc+cVj73vXn9PE7hFCDUy10wYJDDkqjiMa++kYvHCQrQDmr9lZz40xTUMdj1K8MxCR6eYzVqIpEZiPvQptg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q9gWlkU9iD+sPfwuubzYbaViWyjwKjPDBkj2h9KdhN4=;
- b=ZP4HnFh4gXfErwePxibEuHORGhu9PpWI4qyyuoedPpmNevslhgBvrjCnVCZ6iRqsqBpOaQwS7qI1PMls2bc5SP2zbTd6FbNrfYSaOj8uzXtzBgc64OZ3d6jXMTncms2alSaR4spcal4ABqm+Fov0MhHX6kF7Yr5fEXzjmIx3Ne19L/VSJlVTcwYpVO/MyyzNEQ+Cm0QztHuBcrmrOEUk1wuM8dOXlKjQt8d+xm7cQDqHNEoDzlhyKNkpoSLohKi02i43nJ7fBxk7wwwcO5qTiHHevuV3vecBM9HRw/vgzNe0ctpLlDw79ec8ktbojeYLsK7meepIfMCu/25MuzJw3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q9gWlkU9iD+sPfwuubzYbaViWyjwKjPDBkj2h9KdhN4=;
- b=wUClb9eA6JgmOnyiSyJSc7cNrBVKTBRm/IGhIjI2/SkAE2gT3zSpVj4YXuJpxUaEQS82tsoapeNcx206Z144rdj028ARODzHVfAQ5hd5cDZf87YwNzpwI8fszRrp3Hhl0065IhohVMUtF2wkyesKgs+MYM+/vdSijRKEkmMCpY2m4R3grpzRJ6q/x2thCPRsJIxAZhyjDdprEPlRmgzzSbOS5y41bEY1a6ui8CpCY/r0vIFB3oyUuhyPmnCt5CV864p+qW72tYTQ5XHZpPRLAVT4BjBUr1u+NWC+6VSYllpvyjDgKIfXP8bQbrK3FNqAHbkRs14c+Ocrlz5E4jeYFw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com (2603:10a6:150:2c6::8)
- by DB9PR04MB9751.eurprd04.prod.outlook.com (2603:10a6:10:4ce::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Wed, 4 Nov
- 2026 09:39:32 +0000
-Received: from GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4]) by GVXPR04MB12316.eurprd04.prod.outlook.com
- ([fe80::fc6e:ca22:f065:def4%5]) with mapi id 15.21.0592.009; Wed, 4 Nov 2026
- 09:39:32 +0000
-Message-ID: <80a22fef-2ed7-405d-b48b-75ec4316f6fe@oss.nxp.com>
-Date: Wed, 4 Nov 2026 11:43:09 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/4] ptp: netc: use 133MHz as the default
- reference clock rate for i.MX952
-To: xiaoning.wang@oss.nxp.com, netdev@vger.kernel.org
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Clark Wang <xiaoning.wang@nxp.com>
-References: <20261104092217.1730351-1-xiaoning.wang@oss.nxp.com>
- <20261104092217.1730351-5-xiaoning.wang@oss.nxp.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20261104092217.1730351-5-xiaoning.wang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0PR02CA0135.eurprd02.prod.outlook.com
- (2603:10a6:20b:28c::32) To GVXPR04MB12316.eurprd04.prod.outlook.com
- (2603:10a6:150:2c6::8)
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=sfJxv8X6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793785209; bh=0M0yINGH08Mmxxuka47Cr2UkeO83GbsdRwXTj6J0JUg=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=sfJxv8X6EBVv2+TZ/mdXlGdC3uk0UArYGV3dGclSqZefDwPY1E0RzxMAOTU4yNGJx7GXQGDHau9erMLCeIsOe3OGZ+w/WxcZYYBGAu4VFar0lex+dis0XQC7wO4hhBGXY7qNsDdSk7oporUtcrVrwv8G0o0DY8LYgWLb3f1yG0PcDDwAH4Jhqct4pdgl+NfrEiZi2o4t4kGG4CiS/5OQ/WUWW3YvFa4yZhYVO0SkjMV2AOhVCtlmKCehEZVRPtHNHwZfYs8pE+5Agw42he9zSY4zSv3rPMY4iLbJVlo96QtO4MjrtkCKp0iX803pGAexK9Iwg46hKOan2pAjS9xP7w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793785209; bh=01HHmqQNloGtvyCow+xtFB94AWON+kVli7HvpKRd02U=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=Y2inFJ1qaC5V2sgGrtEq3TXBNb3+FR6fpEzvCG8eh/5SGNBqH2oJLyGmgtFPPH2u3mqQIefoThMxgnhPilAKe25Ti9wTaiAneCziW2mSQhBS0o3XPhgApUML0YS/B76K6xL3SevVgp1lYt2K40uhDtmY4pbtWqcGjGjZ6NXdqKnpA1mb7GWVOaYlUX3/80HN3gLKO62ycf3YI00svM6Xfc/Ja2SMsiatN8pz7aojjYYdYHBCFKpb9Tiwub2wS3djWQFkNN/EtNVvQIEnRYuz+a2qi4H863IZe4XybiRad2+5jz9r1bR3neW1LfeHNg+JwZrWl41AkRSAAcHJG5cWSA==
+X-YMail-OSG: L8TJw4oVM1nwLNGoDgcE0Vy2.1fLm3rSj0aQQ.pRdHQFfuMUGHFuGLh6MW8wq0W
+ .HFuDOfZPLEnZDDe4dbWQ3y19tJDHA.LcBBsE1Ou.C.98eI9FAtMR7whGG2qfDmglmoN0IEmDsu1
+ Y7dkj2M4VWRdm3HivWWWbH6bq6G.3cxQxyxMJP2WkUbAsQ1_.RkQux6Lou4FHaRpO7rbfq3h7NuJ
+ pS9VB4mVhhnKnvgYAidK6mA49Bl9MPBg8jEO1.o7OV5DxYskb0INZ31HQjESGim8BtfRoXoSuwl9
+ _plZ37ojSbJBlgxazJ4sc0KfBgQGeea_r2K2f7ic_5kT_JkOHZBAJNfnM9vaRjkWK6yNCnWbW31K
+ bcUKz4EfaIz_pK02.6WcK1YYwQhuloOR2WDB0_etKvFwzUoI4iaCS.s7B6GduXIuSHyII8OAdmdv
+ iGzsqdG7Bc_sxtPJV_5re_S82iyeqxV3Oq8Z.NYyShFe35khX4bWBdV746Z64aSl_qKSarcq9UPZ
+ p1Jt4jGdYtweF92JJPl4zcffsIV3aCcUtNgBphBZGIqLk6Fvr.pUo0n8jXzuq8eH36boyWs6F8TC
+ 4XiWVVioU5p.j2xW3wjz7tnmUbRQB0K3zVf7umx2c03HuYNKcnc6dM91YSJreg.Du.KxEez4Fx9B
+ _ystvgAQtVRFwE3xKp.or0h5AnVe6R6e.UFW0FavkAh_4L6.23bOHVAPWHNBhVtuWpaEmHuu2D38
+ ClVWyxsFSHshMy39fKMB6nIJxO.sfJxXahgZ_5bbWRR4Klf5Ek1SRNUaajCgRotYD7Cq.EV5WL5w
+ wDV3NA1e4HoPty5g58Q.jRAAvWz7mAVTIiXiojKuLEZJqsa07DX5DTu5goPNvhZ0scO0wQB_7lWl
+ YdRd3Q1iRb1CqsH8fusqm.xfNYSrsFlaeuEwyQh1ASS45GjV5qpGaYHQPphqK5NPICsGV_hkzsGY
+ dv.UplVE5v.G6Ku9khVnzOCBPpTSu1rRubgSlXSFYV.Y0iJHF85i2zysZaJeg3BCibukdKDQ9t0Q
+ KrGIXFyW6u44UFN.bYooiP.zX9cRQF9sEx_WhvYHXH5axyGHP3FJuIFLyeF4tAox7Z7yMxmeS21_
+ s4AexbkvwiPcRHe_1szaRlh3Zu.3jxvif9iOKUf0v9AUWGm6xZrPaTGENx7HUqzY_xtOvxgbOKZ2
+ 7Va0SyaczXc_sfijTX_V9xxh1.TtOFeVe8qIHUcMQbvhbhgFCFNMoGA233JQh3dRTFLwCeA.jRvr
+ Q9Nb6Q3Zouv_tAqoM3u5ptM6T87XPq0QlUh5OUT.xN34VjkGwNgpBIZ6azoRphMzpWft31gD65t3
+ ZEqqhSIcq8D2jWpULDjaUVacgH7Q82uA0GFgILcvhLhT7pphmqSKsu7va6uDP_j4JLA18t.unRBv
+ dN86sSlTrGOkQoGCRoG0DCbGeLRqXzyUPiLTlIkcN.peSQLVQCAF_xGrRcMh_cfaNJFpO_6lEHHP
+ 7Lsw82jJE_aeg5XR0h32qdQ4nZam3fcTG1yC5PJhckZL9bhhr2TBdA629SKx9wRuierP8dYxqc2f
+ 7JtoxFyYzRDAUmfRd.NSOeL5FEGq4TU9zRCrK460cc6PYABVp7uemh1WTFdXEApy_lCaMbihR1Jg
+ itPdS7svj3Os8SOtuSy3GPkxTPApCAir89Msa7KucshOBh9F3H49ihirnQ1he5oXZ8ELpYRKZp6g
+ I.XryDPWpK3vD8wJxw1ewGm3u0mFDagPOOAy3FKoUrHUg.cMZf_iliAcy4O1IG3HUsRI9.iPaS8G
+ RdUBRFUa_riR9b3jEvshUIA6eozIZ2bJPwuXJvpJzRrwYkZyrBbZjBzevPk9HD6I.h3gdkaisRoH
+ QMal74ty1ulRLAzZvl016KWnnqSxTXCHTIkc0hIhW1CTVJP.qf07pLxLuqHI7hQPBOXHV1QuAFRn
+ nX18xxsm6p.PaC9GeHxRX0HkjMMBS.6ldw9D3JMYtfsHdtMTXuZb6u5mmV_IPUomtH.bO1z33UqM
+ MNj65YvaTocA.WLnomE31GE1UUSy5bihpl7EISD3z_tevD2R3umxOwE.kiewDJ3cYiaE4H43kxGy
+ D3k.e8c9MXLVpi9aExG7TAaAdn4KOUkMkiWpuCydwVYEOjxe7ko4xZM2bxrhQKuCLWSMqAGevFlL
+ pp.pdROGnFXw5QpsvumKXsjJ480BXFVLnO0JBope8JonX45aTx5m_SBHU5JCih6RqBxEAR4iM4A3
+ Rtjbx39yN_G__RMVCEPY0vayfHeD.HGfpBNC0ZCZpGQibG.H2czcgBp.rj2hKsBNrlrlqPZGYf0n
+ cYGeU4MBZJ1K26xp6_DVWJ7uu
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 4a983934-1367-4ab1-bb45-ee1417ec361e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Wed, 4 Nov 2026 09:40:09 +0000
+Received: by hermes--production-ir2-5dd9bf4598-nbdmm (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 7ca3a7e8fdb7da374483454663f3396d;
+          Wed, 04 Nov 2026 09:40:04 +0000 (UTC)
+Message-ID: <c353d13b-048d-43da-987c-3b83ae6e19e9@yahoo.com>
+Date: Wed, 4 Nov 2026 10:40:11 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,83 +84,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12316:EE_|DB9PR04MB9751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57cdac61-57a4-4ee8-a9fa-08df3a57877b
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|19092799006|1800799024|7416014|376014|4143699003|22082099003|11063799006|56012099006|18002099003|10067099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	jv+5Zsi3a9Nb6gFya5zXwWfueUHaM3rkOZ9og+sg8Go+had7T7G3RZ4rGY0h/dXrJog88L8zEJ27k7oe1vcOTktVrYR+duLh/K6PfJ2XO5lLm3ikixO6M2nvtVxru2Z0yacaRWsVTVgAFvQgztQQ6bHFsp9ocXSATcna9bmyd9kgED7Q3P6/rOe5EX7JfGIJah7rZVDXhQwOCRoPth5I7rKoOc6kqjzW6RbasPM8T9tBjcKj8FULzR5RNJY5v/XVwKVpOhosb8XEVNecC61rD9tVh/JH5ICgbdTsj459bB623Ev3ZG5kXw2ptVKOWBiRh3blAe8gybIbotz1zAj5ITVF3x2lUNLEK40dmxrRefIqPj1AjTKmUN8tiA3cRK7acQnLzBQ9B4W9Dx9YeC3RvBHWWBWBO4S+xlwStR99AUduwW9URCRle1mWhsfU+SO1cO2CQ8MVJM1FTpPKuEWDExbVUVXO+7PqkoD/rvrdDUSNOcBpVmWl+WJO3rgxtkdAO6Rzh1tU2C+47IFlxfLWiGZwkz/E0ZZl4ceY5wpIUC2UHm5wvSq5q1tAE+6dhzR84I5ISJzUKhwnMZMWTp0oI+Qjtbc1KU81VXteKmk2uPxvVy4WmwPU/70WW9hAxp3/Ni/LQmacYEAfkXz5e2UTwpPrF2b45j2oUSdDQw6zot0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12316.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(19092799006)(1800799024)(7416014)(376014)(4143699003)(22082099003)(11063799006)(56012099006)(18002099003)(10067099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGRuRndQdjRtQ04waGg0M0pQRzh6bWp3T1g1YkZiU216MjhTU0s1ZFdaN045?=
- =?utf-8?B?RkR6eDkyVHNBRVZiRVljZVpqVzJwYjFMNEFpY3VBRFQyV0IycENGS0JNRnlV?=
- =?utf-8?B?QkNOYXJJYkdDakp5NytaeEFsN2JtNVk5VHNsMDBxa2RSdUREaGJUWThzNUw3?=
- =?utf-8?B?c1cwQXJrM2hHMURWYlJRU1ZlaGtIczd1TzhzaE05RkpWcDdqbm8zUnFFdG9S?=
- =?utf-8?B?Q0phSjBiK0hpNmIxU0tLR2xUeEx0eGNUemltWXBXQVRSSkEzakhoVmdQaW1O?=
- =?utf-8?B?SWh2ZjZnMUNHNVhtOUNqOGtqNzczU1g4WVpWNmZQTmxibmZrYUR2OGc3Z0pQ?=
- =?utf-8?B?QjlOT0t6YlVCbURDMVVvN0F0bGl2OHlUNGZzejQrVE9zTUZmK0VJakxDS3oy?=
- =?utf-8?B?WHpmWmJnQSt4aFd2M1gzeVBDTkNkQlcySVBUODduYjJWWWRoTWpyWFp4cGw5?=
- =?utf-8?B?M2ZzRE9VNmkrNTBFQThuZDh0TUF2ajhwYXdRV0drMCtVekQxMXFNdkI4ZHJL?=
- =?utf-8?B?VzJkWEtKMGFlMGV0NGJsUGdRUFI3ZTR1c3FzcnJQMU5hakZYYXNvWjI1Kzd0?=
- =?utf-8?B?UkJDY1R2aG91eituSUs1dXYwNFNSTFhRVUN6a29aVE4xaGFiUEtraXI3Ymho?=
- =?utf-8?B?eTQzTUU5S1I3d0NPUUxGUkJLekF2eGpFeWpmNlZQVlV1NWlSckVobURTL1BW?=
- =?utf-8?B?OXN6b3NPcUE2aWR5d0VWNVMvcEtTKzgxYUUrMTNseW56MHVFcTBuSUtaRGQw?=
- =?utf-8?B?K2RidEl0aVptTzNVMXpBTXh4b3o3Z0QxRmtiQ1JCNzJPQkZCa3JrRHpFdVQw?=
- =?utf-8?B?dVQzNFBkd254NWxDQ05GR2lZOEErUnpsZUVlLy9qQlhzQ1lyeW5GYXFrdnc0?=
- =?utf-8?B?Vzcrdm90Tk5vRUh4TnpubGxVQlZMVlV4cno2RGh1RHBHYVFiWWo3V2tJdEFp?=
- =?utf-8?B?YitNWktCeUdZdDI1aGlaYXNacExJTk14YWdUVUNIK0w5OVk3WWhRUVRBMHh2?=
- =?utf-8?B?WUFGeW0yNGxJbjBUL1IrdmhUTUxqVlR3bk9TVVd4c0hERURld01nVFFJMC9j?=
- =?utf-8?B?MzBtRlQzbDJjWDY3YTcvYTliM2x6RXduQWUzQ1V0NEg1OTd2Y3lDcGxrWGF6?=
- =?utf-8?B?cHpNQW1zVElXdTQ1UzRNNnV3VnZPZmZObS9ZMm1nSFJJQm1qNE92OVVXVTZV?=
- =?utf-8?B?aktXYnBqS21QOVM0QXV3SmdBKzluYkJ5ank0RmVoN05WNXRZVEJLSVhWNnRQ?=
- =?utf-8?B?Ulo4cWU1VlFRRzhHbW1wN0Noc1FTcGxPc3B0Q0luRUlud1BOSG9UWmFMVWVU?=
- =?utf-8?B?b0laUHk0aU43Q1ZDMzFVdXJrZFkxZjc1TERZYXcwNElJZG5mcWYxWVJXWTVL?=
- =?utf-8?B?ejBMSUo0MjdqTFMxbEVpdGMxUWt5ZHRMTDNuUkJiR1R1R2k3K3V2cDBpVFZM?=
- =?utf-8?B?ZVFKNFJLR3IvdUZQM0tzZHc0c051SStnYUhBV29NdjI1eDdhclhXUk5zN2k2?=
- =?utf-8?B?aCtHYlJhZEJTRkdwSUVNaWhaeHhVVkRtb2hGbldGSVcwQXlZR1RadXNrSE5k?=
- =?utf-8?B?b0IrWjQwU0U2ZDc1Q3BFNytSeWN4QkN3T1YzWlFFMXYrVkhsWE1kWDZqUmRD?=
- =?utf-8?B?bk45TzBTNkNWMmtzZzBNVUhJOTlnQzU3RWlwQjBucVoycERMUEVSVklzTmNk?=
- =?utf-8?B?NitJdGkzamxQUUhhSUloNzV6bG5PWmhPTHBrUkZBQ3hzd3VoU0ZDK09ROER6?=
- =?utf-8?B?bVV4R1JKRkxmYnlZMTBkVTVERGxORHk2bFJEUFJFSHZVTlRMQmdBa3NjZDVv?=
- =?utf-8?B?NzM3UGpRREpRQ3JVUUYrTnVGU2pMWEI3L2x3dGREWWpsODh0TDhIcytsL0NE?=
- =?utf-8?B?S0wwbUFWNmpDRkpNQTdZelRMVFZpMVpQV01aS0dnQlM5MDhORjU2NWVIWWox?=
- =?utf-8?B?V05JOGRLUHhONmNMT0FGaUtza2JiS29PQVgvSEZZQWwwOWIvaVJ3dGFnOTVU?=
- =?utf-8?B?VkJCekxKVXlDK3Z6ZkdhaE0wblR5aktDSktpKzhLN1VSVXZ3NTBvSDlUU3Vm?=
- =?utf-8?B?cnlvYzFrS01VeWg5VDg1Vlc5RnJTMllYUVBlaFpqdkhKb2s4MlozMUtqN3h5?=
- =?utf-8?B?NWJqN2RzaVQzQWFXOUZkdkt3ZkRwajRzTjJyWWEyd3E4VkdYS2xhRVVHZzBq?=
- =?utf-8?B?cFNQT2sxaHc4SkpOUlMzMitsQ1NaMUF2Wms2ZzZhbkl0SWc3aU9FN3E1bVlr?=
- =?utf-8?B?dHVYNWs4M2crb25QSWlLYzhxVldFWGJ3WGNSTTAwblRteEs5QXhtdUFxNFJR?=
- =?utf-8?B?MDNLcnBhajlZUGJoaTdOenRQeUd4T0pvR1dMWHBhc1F6REM2cFhqQT09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57cdac61-57a4-4ee8-a9fa-08df3a57877b
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12316.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 09:39:32.1599
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /fS2vBrx0VdE3j/NPgV45V29wEecJRhZh+SCUz+ZEPeh1wrS0tysoAQiSmaS0lZY+s4nMvrXKOZeffXbMZ1pag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9751
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 10/10] net: dsa: realtek: rtl8365mb: add
+ support for RTL8367S-VB
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <c7f88f0e-b174-4715-b148-5f9a2648bc2f@yahoo.com>
+ <auph2uJLrJ6Nj0dh@analog.com>
+ <6c6155f0-0431-4ef9-8067-dbc104af710e@yahoo.com>
+Content-Language: pl
+In-Reply-To: <6c6155f0-0431-4ef9-8067-dbc104af710e@yahoo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On 11/4/26 11:22, xiaoning.wang@oss.nxp.com wrote:
-> +#define NETC_REV_4_6			0x0406
->  
->  #define NETC_TMR_FIPER_NUM		3
->  #define NETC_TMR_INVALID_CHANNEL	NETC_TMR_FIPER_NUM
-> @@ -88,6 +89,7 @@
->  #define NETC_TMR_EXT_OSC		2 /* tmr_1588_clk, from IO pins */
->  
->  #define NETC_TMR_SYSCLK_333M		333333333U
-> +#define NETC_TMR_SYSCLK_133M		133333333U
->  
+On Wed, Nov 04, 2026, Alvin Šipraga wrote:
+ > I haven't yet had the time to look closely at all the patches [...].
+ > But I'll try and take a closer look tomorrow and point out where else
+ > we could improve in this direction. I hope it's possible to remove
+ > most of the if (family is x) { do something } constructs and keep
+ > things flat.
 
-I wonder if you want to keep this sorted so that you add NETC_TMR_SYSCLK_133M
-before NETC_TMR_SYSCLK_333M
+Hi Alvin,
+
+While waiting for your comments I went through the series myself with
+that goal. Per-family constants and the L2 serializers are the cleanest
+case, so I'm taking them one step further than a num_ports member.
+Instead of adding more members to struct rtl8365mb_chip_info one by
+one, I'm grouping everything that depends only on the family into a
+single struct that chip_info points to:
+
+   struct rtl8365mb_family_info {
+     enum rtl8365mb_family family;
+     unsigned int num_ports;
+     const struct rtl8365mb_jam_tbl_entry *jam_table;
+     size_t jam_size;
+     size_t l2_entry_size;
+     void (*l2_data_to_uc)(const u16 *data, struct rtl8365mb_l2_uc *uc);
+     void (*l2_uc_to_data)(const struct rtl8365mb_l2_uc *uc, u16 *data);
+     void (*l2_data_to_mc)(const u16 *data, struct rtl8365mb_l2_mc *mc);
+     void (*l2_mc_to_data)(const struct rtl8365mb_l2_mc *mc, u16 *data);
+   };
+
+There is one instance for family C and one for family D, and the chip
+table entries only say:
+
+     .family_info = &rtl8365mb_family_d,
+
+ > The reason I'm saying this is that I saw quite a few places where you
+ > have a construct of the form:
+ >
+ > if (family is d)
+ >   // use family d constant
+ > else
+ >   // use family c constant
+
+For the L2 code this removes the construct entirely: the four
+rtl8365mb_l2_*() dispatchers and rtl8365mb_l2_entry_size() are gone,
+and the callers use fi->l2_uc_to_data(), fi->l2_entry_size and so on.
+The same goes for num_ports in detect() and the jam table in
+switch_init().
+
+Some places differ in sequence and not only in constants, e.g. the
+SerDes configuration, the CVLAN entry packing and the PVID handling.
+I'd rather not hide those behind callbacks without a clear gain, but
+I'll go through them again and convert what reads better as
+per-family data or ops. If you see specific spots when you review the
+rest of the series, please point them out and I'll look at those
+first.
+
+Thanks,
+Mieczyslaw
