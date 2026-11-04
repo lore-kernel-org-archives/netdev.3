@@ -1,80 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.46
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793810772;
-	b=29eCK7R8y0zwcbHrA8rnk31NZzRzJds43tPRI0Qh5N+PVvF0sNMVThuQCPviHdLX2CnZ
-	 kZ1cIJeES+udOxRzXZ8xTEUK7zg+VoUs/vdOzg8wNVGM65lm0rZYaztJQX0mB/DPI2vtY
-	 xqWP+j+oL/F0FdLayiT6agUK2a8fcLZ/5PYJRJcSKqnwldPQVXcJt4TiC2sANYyGTkhWP
-	 OjOmTvY3ULqHuBfcxZt09A+AWxWTvtM1TqZToEZvbhLzSiXYZNNyUrtrv7YjuIYqyIKhS
-	 uYydJlASDEOPdw/BZ5O9NZOQ268307/r7YqAC7xTQdwvK6OkDJ9TL3uJ1Syxl0CBtAQ==
+	t=1793810805;
+	b=AOPjyOQJb7Amgz1QW0nn91u6vINCPmoz4+XMp0+pMJHjsxEI2Ft3bni+dNyaqzseUmP5
+	 XnqW2goZpGyJxdqdBnA5X8/w3Dx5gglInMjHH2oOQ+Y/+rFSxur3HNo3bVp9bIAL2lITL
+	 ww8qYrVJMr1BDtRB3LHjYX8nfthnDxO6zrpdw+1BAuCe3iwj3kvn71gMWNMyY3QX1pbYx
+	 6Xv8Su8DqpfKs+0RrEkQGCU6JtR9HyZnJbTJO3wBwj4duLCqiIFjafLl+eDSZDZ+YhNKF
+	 kP7klAHLV2tZQSs10/Yf3PoxlonnmDKdPtrXxcl6/gM62C64f3z67H96tjEhCsFZqfA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810772;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=SFrbJ3RqQqeBPd4Xoqyu8DGpsu+3gFnNtvd1aPsr9A0=;
-	b=I/aYpuC5DOKGfW7w1W69gyn4SeJYG0rYviT0fcIg2Pge/gOpwZwFbA9KHR+yysZvwv6/
-	 1TeC+Tt0w4bWGzefqU8nmGKmdy0mBLPpgQvJQ5I0D9PzIUsiHov5KBK/A0lhm/hWFoPTf
-	 j4wZH0cROD/56yIoh+PTjzWgxjIUsy8pZabWnBkWOhWIKyune+oZK4K3TGrNuLi+Xd58S
-	 TeSGsGKD3VJ1VTgWrxAsOMId+pxZQl3vj8IwCMLUHF7w14A6qnSBYMwdFIF4MU1KXZgb+
-	 6m4ZPw5w+eUyu1TqfFqiX6VZ1TEwNAPcWMc+Z1Vgz59sJ9evkCvx6ZEPwF6EeLTZl4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793810805;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=xW8Hgn0qnZIeMrCgDDMj8in7eDtwrUG9nG8ML12gUO0=;
+	b=uglhrcif0yvOsCvSA99vmbsDUmTeIYr/mfHltShB7eRVwpaP6P1SeTxkixVMoggBe8gS
+	 GjmpDOSbZKU56kwjkPxbrnpkgMApcuYgbiAHEHnJgC/JxzrsJwdHhbXMWWV1masikWLfH
+	 kfCSDnWQVGpGXc+CDirTHr+Wrjj6VUhiMFNhg6mYZMObmXTKDjUBckgwCVqK6XoRCa1Sf
+	 FjC3CNGsgH9ie34ITL0hVpHFbCyf9MCp1D94ZL8NPguLu/XndRWf7iRIZ69wldT5bu8rp
+	 kakE1j4wtR4PIPjrjWThAuABgS2+SQO418rlchfb24kAKGI3yigkdeXcAdlxlrmuifg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QHBHB2O7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42AD606A33B;
-	Wed,  4 Nov 2026 16:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QHBHB2O7
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793810771;
-	b=aye4J6vqIjsBYGUtFDQfNI6sy19x61oFHqlpSFtPBGerl22ZkyuDd5/U6QJDB3fmZDRh
-	 pcHTJfzfuq1M7GgIUffx28LAuKHRV3yeyHM7R8GBp7lUzTMBe42/xk7uughFUnJsRdyiL
-	 MKUob1mw4dCSe97d2YmYsFYfDKfF4faavlQK6ca/3aGJtxSolM1sohpIIRdry8zRSMIjp
-	 yqGf1Vz5gCVL+4yz7vh+1TqSm00kwRM2OwXw6Mn7t4GH3avA2YJh1mD+0ruU4l4Iv73ZN
-	 VOOaIrFbTIpXqKfefFVqII/Qy2gwuikYvgIe6YHJ+xSLJXStNP4sN6pcAhG74U+MqiQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793810771;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=SFrbJ3RqQqeBPd4Xoqyu8DGpsu+3gFnNtvd1aPsr9A0=;
-	b=JzgN+LJ7QEYGiPCrydqXI6lPbT8UNaqlMAuOlK8+N5Iu+EWGuaVGcKVjZfxD4xLmDIdp
-	 lZUL2eNBSqsfKyCZUkdo10rO3GLE/4u17bjJeiSiWAAP7N0aGyf+Ly26zQVxVfz+EIL0s
-	 i0LX3bt3+aHiPNRgpdWUILdVWRAqXQabjF+0S9AV1ylcPWOFaZwLj686LuYPeEhcETBw5
-	 tAz/+E3xNzSxWRLhLfJJ0eEoiAGVjm+JiUkKDYHTVTi3Xb6fqmYjhk8y1FQR/KgNXpLNh
-	 b2a+y6juhIqEyBaHL1ZFveiEp23x9D7sM8UEZfmLZ0C5/3WHp3SA2BgPY2bQH8do5zA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y0e9JUYS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id E95321F00A20;
-	Wed,  4 Nov 2026 16:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810771;
-	bh=SFrbJ3RqQqeBPd4Xoqyu8DGpsu+3gFnNtvd1aPsr9A0=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=QHBHB2O7NLBrqPktJtj2c2SfoXe1u7ne56qagtKa4zOYS/97sveEsKQ6+0rIA2F9T
-	 5c12R99axvLZr6sGTndyNncKVViiyFXDuwEMJqd6VyBuRAdfEC5JVxK3GXrrqcSxHA
-	 DzpPohLvUaE+0ZuKchCGbnBTYEYlhGiK8cqCs273Qr3kFlHXA10LRaG02qYUz8Iakl
-	 l0izdRLg6TKVfXPGHkN3z1GhiOG7Yzl0xTILMdBqswzrSfMBAWJOYzISkrp6axKoWx
-	 jhupe6tsKDSJl+THHgKdqW76tuNCCl9o7z/+A7Gb8DFBqKDNoxGUYSH03e/WPrAFlA
-	 3mL7CGsCa1Z0A==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 488D946ECA;
-	Wed,  4 Nov 2026 16:46:09 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Subject: [PATCH net-next v5 0/4] net: qrtr: Add support for using identical
- MHI endpoint devices
-Date: Wed, 04 Nov 2026 08:46:00 -0800
-Message-Id: <20261104-qrtr-multi-ep-v5-0-4cdb2b4f1920@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194C606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:46:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0194C606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=y0e9JUYS
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso7158825e9.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:46:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793810803; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mM2xDUjQpYpojPHxeDWhWclpjvikcgRgqbyW/GgFT2DKUQaKbQzNYw7r5DFy5DF+TA
+         ACD/zOxdthnl/ZRQEGdLMo/SeGMoNp77XeM9VuQCBJhjbXH5yfMvXcrfjR/6oZLVZc1i
+         5obyeymM6IVxJOy/KGyN8TXcT8t3uVwxs+61N/f0qRLyPRORTvuJnl493XasA+Ox6w9K
+         Iz1omFaD6SzEW9EhW3mnzD9b5a2OKJifadoVZ+EZwUGsFcLTTj2vgnXBo8duinC9X55Q
+         RhcPyhS4TTQApejimo+yeN0pzewQU+tD32SzFg2MNFbbbSMYmy3G6vMAvy3FSlLUADwA
+         tAMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=xW8Hgn0qnZIeMrCgDDMj8in7eDtwrUG9nG8ML12gUO0=;
+        fh=GJDOkJGMPhVedBW4znRBBLZnIkPYpiu96hIit20RvTE=;
+        b=c3+0M6UfvSd57ygk6us8C3Q0Zkni/C2Slhob1xBkh709+M4xnfTxn9I+qxMh0ee50o
+         WL1/rMv4agmoGd+ENHUGU8QPOWBEsJ9TnlPiZb8JUPNx7KtItv22nvFFicbXUSngCTkV
+         Qo71iyQnSQhV78LQVzM73TH74PUL0onxBrr5GYyPvvqp8B8rtPkxa+of2TtW9KK2JOr1
+         OYaWyIFqRzrtPRyY7rqu8ugdwPRuc7vLFhD/1Zx3t+Rso/D1oMMHZOUb0NmXtEbZP7k0
+         wS5pla19z6I6j67Ze/v1wrIthmKXsc8xX3GJiuRCz3vUdSt85nURzBvMypha1JJ8Vd+H
+         MTTg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793810803; x=1794415603; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xW8Hgn0qnZIeMrCgDDMj8in7eDtwrUG9nG8ML12gUO0=;
+        b=y0e9JUYSaUDBVvZ2e4FCtN4PphH4PhbUxTOvAqu1Yiwdw9J9JEw6UnDYeYAIMwHoTK
+         q45hOs1zbGNPwzM7UlU4DiOgI74AA/XdJIvYogHT0fh5TuFGeS/LR//NOt77ARAngyAu
+         WAann/dvzBCgMG6387hsiEo6pK+5LVVZfNQMSvVytJikApONJ/IL15cXX31eaVWe7AIv
+         GAt4bl3SsPssyfcWFsBOdl1wE6a4OXeb2kaJ2DszQMhKhsXtRMdzxW9iEwuDg4EPXyxa
+         bENBVm0zYvwx4MSWjeFlrTVgcVgxSFk/F2tH6ZdOOpiHJt0trZf/zdgME6VyJTj+OAkz
+         F0wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793810803; x=1794415603;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xW8Hgn0qnZIeMrCgDDMj8in7eDtwrUG9nG8ML12gUO0=;
+        b=0QUB0crTBAYlpWnNybHyU+y9DGWqA2h/C7edZSSvIGI6PMmlTweiFk5I5nNa/ssBXG
+         1cu4hkCDx3g4e0lg5pkA5JiidtZg8VgPeEHw1k1VzV/VcWSBA7BLGLBTVZQf7JhVlglC
+         gGvPkUAWfYZ8U+hDMFCts4ROo794rc27ZhZysHyuXB9beqMNkdqfD0pKJNAuOJm5qpYG
+         BdFoh1+kjeYQX/07IdJuf04igsU3zX2srUBgbS/JBmKVHldd+dgIMCKiIvqz3Gq8fo2S
+         qMy5M47+qVJv/rI1DEghFhNWjOjeh+NPrSpRnR8wwYsyhtRryWayek865cBbw39Gbrlv
+         BQ8g==
+X-Gm-Message-State: APuU4Z9Wr8sL3Pi+pVRWAEvBFHeFjAIFLnQlwilPT/K9QZq4HtzlNPyg
+	HNMsMP97ZgWnNaWS0IZJYMS0VaQ8dkbkYWcINCy0JsQkqR6Jp6BidMYU7cpx/n5Do+Pkvmfx4Kl
+	LcTSfAmjnyb7J1LKqqyHCE3kS59cBTJMPh2M0uK4=
+X-Gm-Gg: AYBFou2/HJXjz2ytLh3vXcJpB7g4hmwKi4jAjTU+9LAhdai99xiBasPiigJPwaBMgC4
+	HikPd5wpREMKfM1pPiqlp0XGBhAAfDT2GbsgkV4UUGcPU8Upogm93Nzt2hico9Flh/lb2myHBMl
+	ypyf7yhilN8k5EeoUqE8HBrYgA0Hw/mpeTn5BZdBPrbDbnw6yae6JD43kcoNXrdd3tdjpxEs9m2
+	yynIYylwthr452GoLjoV6GZs9Zzhlj6NVrxqGntcVGscKcsr7SpboZsdYyOz7LsvB/BJiBzG3XM
+	ce4oSV7w6ZoBXdd/EBWFxCxHzOtPXJIqcL1mfHPTJcXNaCgGCpEOSirOQ9JrTK22LGZKIG7dGcH
+	0UkqNoUs8w7ydhUmldEoxjV/Sgi1VwXTtOp65hZPh2FRGpoDiKCxDkFoFrnPbVYWb0bA=
+X-Received: by 2002:a05:600c:83c5:b0:4a1:88de:9e8b with SMTP id
+ 5b1f17b1804b1-4ac17191074mr340156395e9.5.1793810803211; Wed, 04 Nov 2026
+ 08:46:43 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,152 +102,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAEhh62oC/3XN3WrDMAwF4Fcpvp6LLOfH7dXeY+zCkZXVo0la2
- wkdJe8+J4NRuuVGcJD0nbuIHDxHcdzdReDJRz/0OZQvO0En23+w9C5ngYAVHJSR15CC7MZz8pI
- vkrAmbKgsmJXIP5fArb+t3pvoOcmeb0m8/2zi2HwypYVbbk8+piF8rdWTWj82WiYlQRoLFVmrK
- +P06xDj/jraMw1dt89jrZjwAUH1jGBGsHbOgDOFsrCB6EcEnxGdEQIwWrExh7LeQIpfRMFfpFi
- QqnVNXbbkNP+DzPP8DU1QPxKcAQAA
-X-Change-ID: 20260918-qrtr-multi-ep-c27c2bc54ee1
-To: Manivannan Sadhasivam <mani@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jeff Johnson <jjohnson@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
- ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Chris Lew <christopher.lew@oss.qualcomm.com>, 
- Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, 
- Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
- Juha-Matti Tilli <juha-matti.tilli@iki.fi>, 
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, 
- Daizhuang Bai <daizhuang.bai@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4612;
- i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=y2J9xaz0uLoyFrScT4xkB8c2QveIyP+efStfQ3ylWUE=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBq62FO+oXYYLu7YdB5LRuFC36REfIvTqUPmpa67
- tN4fsbPzXSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCauthTgAKCRBVnxHm/pHO
- 9RDyCACmwwMCggdJFkWxixS65FSH8KOFaNcvNc9SDm9DBEwVuguMWSvgCe30SoP2dhJpy3Z1Wla
- N0eXxchVMHXKWIyJGLTEha1O3XrM/w6KwazZ/SYDB9qnqm4HbwOH3MmyEZAfqV1FZhupGf0my20
- KfB1bisuX/XFx1ElPWUorH5MuZXxNR3gpm/tavZl3pNsxZVzHdBGogKA2gnLe2oIMvhWyEr6Mev
- zNgypS8iMzKy4GqXCRfsfx+q0ySvIh258KDCTKH/spEObRwxTWqlmKMK8Pb3nO2KpuFA/pjUXTm
- 3A6em7ks+HNgtFlDssqDhW94f2qJecthJ4A6s2yS8CwEW5Md
-X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reply-To: manivannan.sadhasivam@oss.qualcomm.com
+References: <CAKx9m6PywVwkirvkAtz144c-yg71c2+OcNYOTM4Bjtd8dF2PaA@mail.gmail.com>
+ <CAKx9m6OsGKGKGxPnjwy8U-bDyvXVEK-dVNmvP0ZqSL-t2Exsgg@mail.gmail.com>
+ <anziUH_cC1LXoB1x@pie> <CAKx9m6OMQKufDpqGJewG1OyvZGBKGimSxxxGRDGWgFicSRoTGQ@mail.gmail.com>
+ <apSDPwF49Z1Zd0kJ@pie>
+In-Reply-To: <apSDPwF49Z1Zd0kJ@pie>
+From: Giuseppe Nespolino <g.nespolino@gmail.com>
+Date: Wed, 4 Nov 2026 17:46:31 +0100
+X-Gm-Features: AclHuK9_yja2JGAKkLua79AIy7He68jvu-sXCLEGjHXqKKP-0aST3GQ2LevbB2Y
+Message-ID: <CAKx9m6MMTVg0WQXVwQurT+ZaPfmYkaXV8reOJzLuYR=gA4s+vA@mail.gmail.com>
+Subject: Re: dwmac-motorcomm: RX dies after long s2idle, only wrapper
+ SYS_RESET recovers
+To: Yao Zi <me@ziyao.cc>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Answers are inline
 
-This series reworks the QRTR driver to add support for using identical MHI
-endpoint devices at the same time. Currently, QRTR driver has a limitation on
-using more than one identical MHI endpoint devices like QCS6490 or any Qcom
-Endpoint device making use of QRTR at the same time. Because of the fact that
-these devices will have the identical QRTR node id, they cannot be used at the
-same time, on the same host machine.
+Il giorno dom 30 ago 2026 alle ore 21:24 Yao Zi <me@ziyao.cc> ha scritto:
+>
+> Hi Giuseppe,
+>
+> Sorry for the late reply.
+>
 
-This limitation is a blocker for running upstream kernel on devices like Qcom
-based routers as they often have multiple identical WLAN Endpoint devices
-connected to the Router SoC.
+No worries.
 
-This series supersedes the following 2 series from Juha:
-https://lore.kernel.org/all/20260915054207.2513877-1-juha-matti.tilli@iki.fi
-https://lore.kernel.org/all/20260915074135.2567411-1-juha-matti.tilli@iki.fi
+[ CUT ]
 
-Compared to the series from Juha, this series simplifies the multi-endpoint
-support by computing a unique node id for each MHI endpoint and uses it for the
-internal QRTR book keeping. This ensures that even if the MHI endpoint devices
-have same node ids, the host QRTR will always use a unique node id for each one
-of them.
+> Sorry for not making me clear. I mean the state of OOB_WOL_CTRL right
+> before motorcomm_resume() sets it would help, which would prove whether
+> it's the case that some firmware or internal hardware logic
+> automatically arms OOL WOL after suspend.
 
-More details can be found in the individual patches.
+Sorry for the long silence, I struggled a bit to recollect data.
 
-Merge Strategy
-==============
+I built dwmac-motorcomm with a dev_info() dumping the wrapper registers
+at four points: entry of the suspend callback, entry of
+motorcomm_resume(), right after stmmac_pci_plat_resume() (i.e. just
+before motorcomm_deassert_mdio_phy_reset() and motorcomm_init()), and
+after motorcomm_init(). Ubuntu 7.0.0-42, real s2idle, four cycles in the
+same boot: three came back fine, the fourth (31 minutes) broke RX.
 
-Since both QRTR and ath drivers are falling under the networking tree, the whole
-series can be merged through netdev tree.
+                 OOB_WOL_CTRL  MGMT_INT_CTRL0  INT_MODERATION  EPHY_CTRL
+  suspend entry  0x00000001    0x00000000      0x00c800c8      0x00000075
+  resume entry   0x00000000    0x003f0000      0x00000000      0x00000001
+  before init    0x00000000    0x003f0000      0x00000000      0x00000001
+  after init     0x00000001    0x00000000      0x00c800c8      0x00000001
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
----
-Changes in v5:
-- Rebased on top of net-next/main
-- Collected tags
-- Link to v4: https://patch.msgid.link/20261022-qrtr-multi-ep-v4-0-c6fdb75fcd3e@oss.qualcomm.com
+PMCSR already reads D0 at resume entry; SYS_RESET reads 0x80000001 at
+all four points.
 
-Changes in v4:
-- Moved the 'ep_nid' and the node id assignment into a single
-  'qrtr_nodes_lock' critical section and used READ_ONCE() elsewhere
-- Propagated the radix tree insert error out of qrtr_node_assign() and
-  rejected the packet or failed the endpoint registration
-- Fixed the assign condition that stopped adding bridged node ids as
-  lookup keys
-- Moved the control packet length check to qrtr_endpoint_post() and
-  extended it to DEL_SERVER and DEL_CLIENT
-- Rejected endpoint node ids at and above QRTR_NODE_HOST_BASE
-- Returned error for the QMI message received from an unknown server in
-  ath{11k,12k} so that the QMI core drops the service
-- Dropped Juha's Tested-by and Vasanth's Reviewed-bt as the code changed since v3
-- Link to v3: https://patch.msgid.link/20260922-qrtr-multi-ep-v3-0-c00831e88957@oss.qualcomm.com
+So yes, OOB WOL is armed when motorcomm_resume() runs, but on every
+resume, not only the failing one: the whole wrapper comes back with what
+look like its post-reset defaults (0x003f0000 is exactly what I read
+right after a SYS_RESET in August). An earlier pm_test=devices cycle left
+these registers intact, so the state loss only happens in a real s2idle.
 
-Changes in v3:
-- Added missing qrtr_node_rewrite_ctrl() for QRTR_TYPE_RESUME_TX
-- Fixed the types of ath{11k/12k}_pci_get_qrtr_node_id() and helpers to use
-  'unsigned int' to match qrtr_host_node_id()
-- Collected tags
-- Link to v2: https://patch.msgid.link/20260921-qrtr-multi-ep-v2-0-27dd80d841a0@oss.qualcomm.com
+The failing cycle is byte-identical to the three good ones at all four
+points, including after init: the DIS write lands and the masks are
+cleared, yet interrupts stay dead (MGMT_INT_CTRL0 then latches 0x11,
+mmc_rx_framecount_gb grows while rx-0/tx-0 don't). So these registers
+don't tell a good resume from a bad one.
+That matches another result I owe you: on 1 Oct I put a naturally broken
+controller through a second 60s s2idle before recovering it, and that
+resume did not fix it, whereas the same resume does recover a controller
+where I armed OOB WOL by hand on a healthy link. So the natural failure
+doesn't look like "OOB WOL left armed"; something the resume path
+doesn't touch stays wedged, and only SYS_RESET clears it.
 
-Changes in v2:
-- Rebased on top of net-next/main
-- Used READ/WRITE_ONCE for reading/writing ep_nid
-- Link to v1: https://patch.msgid.link/20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com
+I think that still argues for the patch: the device comes out of s2idle
+in a reset-like state nobody commanded, and resume never performs the
+explicit reset + init sequence that probe does. I'll send it as you
+suggested, with the usleep_range() folded into motorcomm_reset(). With a
+single natural failure captured so far I can't claim more than that it
+recovers the stuck state; I'll keep the instrumented module loaded and
+report back.
 
-Cc: linux-arm-msm@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: ath11k@lists.infradead.org
-Cc: ath12k@lists.infradead.org
-To: Manivannan Sadhasivam <mani@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Jeff Johnson <jjohnson@kernel.org>
+As before, the analysis was done with an AI assistant; all numbers come
+from this machine.
 
----
-Manivannan Sadhasivam (4):
-      net: qrtr: Allow the host QRTR to assign a unique node id
-      net: qrtr: Assign unique node id for MHI endpoints
-      wifi: ath11k: Connect to the QMI server belonging to the device owned by this driver
-      wifi: ath12k: Connect to the QMI server belonging to the device owned by this driver
-
- MAINTAINERS                           |   1 +
- drivers/net/wireless/ath/ath11k/hif.h |   9 +++
- drivers/net/wireless/ath/ath11k/pci.c |   9 +++
- drivers/net/wireless/ath/ath11k/qmi.c |  11 +++
- drivers/net/wireless/ath/ath12k/hif.h |   9 +++
- drivers/net/wireless/ath/ath12k/pci.c |   9 +++
- drivers/net/wireless/ath/ath12k/qmi.c |  12 +++
- include/net/qrtr.h                    |  22 ++++++
- net/qrtr/af_qrtr.c                    | 141 ++++++++++++++++++++++++++++++----
- net/qrtr/mhi.c                        |   4 +-
- 10 files changed, 210 insertions(+), 17 deletions(-)
----
-base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
-change-id: 20260918-qrtr-multi-ep-c27c2bc54ee1
-
-Best regards,
---  
-மணிவண்ணன் சதாசிவம்
-
-
+Thanks,
+Giuseppe
