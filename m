@@ -1,66 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793757267;
-	b=bFxlXXLJS80QcxKsCVxTlMYrFbClkBckB4eLkOUeLygzyMFS9k93tGzTrUTGC3yBjkOu
-	 BAFssw8UmzFyyahQSEmitFMSCCGTMkX3gcBpRUuXOq4fYxCBP4snUkm+zL6wXyt3k+xXp
-	 U8K4JyxzFwH13n8UbZBndTyi68SZbzx5Ait5cTiZZ8rkZn8KqOII2rymWqxO+RfnwithM
-	 kWa85mHFBVS4SbLwDuYxoHC7lntD+uEEbZTiCNyjt8D8DVdlZSD2KQA8ShS61DknCXf3P
-	 XYAiFP/FBaQCnTizNzTpSbpcHWAdnKASyMSYqrj9aKCo1UhbtfUQYVoED4fkVkns5WA==
+	t=1793757713;
+	b=MDKLI+YizIBIn0QpE8a2Ovb3vv622Jt6nN3H6kzPOdatqvl9QzzjbEkLfgxU5K31pdNk
+	 CdASpA98OdjqIH/qjyIanKy2HpzTuyYEpphhw9rQugbarZkidWe/lgTJEmUXk+BNKYXtg
+	 gZevZZ337LS7UTfAjzOigI42v1gBF6wNskd76rPnl45ZArVWH17ZeGyLARqi+Du/8uail
+	 dhMaqLZJLXylFg04BpgVleoYvpXWu9cVbTtHQ9i6tO3SILTAQqE5whUyduaG5uGOCInxv
+	 eF+H6tf5dT9413/CZiOWwUB/60iSa3456Pissvd5mARk5bMW0k7t2QStJNAiVRhgXpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793757267;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=oR+Bkg8GJxAW2CVAmjRHYxlRtmLJ1D5BjCzlD2s/Akw=;
-	b=F4f/kitT/mKrTKUdqJ0f8RXMYXKCDLUa/2PXWOe6At4ZiaJutDKk8Omcknqy5Lv81Lbz
-	 0hXOkgwEkcUm5P5Ssmz9pZMtVTBrHOB7ZYSboCJz6xNSW1Lzsx4BGgMmBOsGQKPs4uvGR
-	 6701Uo/wDrqDmBa8Rth1fhWbXYl0C44P+qQcJ6eWhsbowxolIIuUi8fRX8oR4ATt6OclH
-	 k9npv+hf50s6ud+LQGPCaqMaH2SBAl5guEZuxTResU7ke6eEIYTBSlCYdnzcQpa9dPheS
-	 ghm3tyREa96BtD4lTv3CLA5sacisCKteXczHCTS4XnRt/owvjtIpKFrqtvrUoeBy/3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793757713;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=Ef3LJtj0EHb+BHKwRreNfN/8Uj/h0T0Rh6JYGdvZlAI=;
+	b=MTv6AgD4k0RH4XCNTRCsk1Bah+RczudaHme3+VhekJepJGRWA86ZI7Sq2EVqlahdokar
+	 2BrjHis32BoJyaLvhey+1YPe91JNlYzG5FcijTxh+l95LaXhjzWHv9WhLr9F4He6xjGR4
+	 aiK9FAeYpspBLkXELKRLjTteJQgEmrGHkxAcb3Ozpc8QZEcFYbM/ASIm6On3jt8ZvbFvT
+	 /DEhaeBHBGB0epjHez+8a6/NhZ720U5wAzM1q9L+ckodAGt8neX8yZpzWycUqvszNGYWf
+	 gz2//WDASXuhkszv0BdFeHOkRTRXKMjayTPOtdEAv84JfEztMwTnnlgzOKXSFSGyU+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=JLHhJh1k;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oZWUGAbX;
+	arc=none smtp.remote-ip=209.85.221.172
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E08606A332;
-	Wed,  4 Nov 2026 01:54:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93E08606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFCE606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 02:01:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2DFCE606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=JLHhJh1k
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A40STr43727576;
-	Tue, 3 Nov 2026 17:54:04 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=oR+Bkg8GJxAW2CVAmjRHYxlRtmLJ1D5BjCzlD
-	2s/Akw=; b=JLHhJh1korhfc+kAoLkD7tpKzO4/g+QQyNVLTcABw4JPEEVnjq/m4
-	UsTM8qbhUpYDxKxKlKIu5jBLRYPTe9zFHU6q1Lw13Bb6ocfLDunRtV3/XakHtP+n
-	NLV7vCXO+sFBDAoi40vIvtRE3FoJ/9Qn7H3dqTPBqo/9CeQl7384n0OIv0cwKzvp
-	QATjyUsU92FMi7NjnFRkjyMTPALoc8C5cAZFnPYpPw/a2FFdOVM7lESlhhQF+egn
-	3Xi1ml3LBnSymUxCw8Oj3KX36J9qd+VJrqQRpinv2nty5Y/BkRj+FLtVHzDGaPrP
-	th3zov8siEpFkvQV54v0KcEG424pLlzAA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hqbb1qbu4-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 03 Nov 2026 17:54:04 -0800 (PST)
-Received: from localhost (2620:10d:c085:108::4) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 4 Nov
- 2026 01:54:03 +0000
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Tue, 3 Nov 2026 17:53:18 -0800
-Subject: [PATCH net-next v5 3/7] vsock: pass the netns to
- ->has_remote_cid()
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oZWUGAbX
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5ead5ff47caso47661e0c.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 18:01:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793757712; x=1794362512; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Ef3LJtj0EHb+BHKwRreNfN/8Uj/h0T0Rh6JYGdvZlAI=;
+        b=oZWUGAbXBr8Chv1GtF/QCTEz3tyNJc7mD9ZQb3n2OE8/HSv+ML4KfqEozI3L8z3pTa
+         ueTqC1UrQ+y3H97xhtgb3/y+jhfakcIWE6tS3lG5Dah0JpON718I6mJtxwUsIOv6DFQl
+         ZK+2IkPPkRghQ+EjZFtEfI9mYDBOHqz4kALeVnI6bcAYreIMNy/Cw6OLzy/Lkxxq/OiR
+         9FAXpDnC2kbPNYYj6CcXk/HZLCcI+yz4MuFBRbNThA/0/viAYRlQ+DQjysFpphSxiLtN
+         +98+VobQ78p5L7NM6k5hfid5TFCGxNSFJFaF0rJ08LiqpVut6TMStSxcTTgr8hgfL34E
+         xOsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793757712; x=1794362512;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ef3LJtj0EHb+BHKwRreNfN/8Uj/h0T0Rh6JYGdvZlAI=;
+        b=HaDdtXcWNKyqt0N7w9QzR+Bq1R2+P5OCrKvzKawdkzMQezV8aI8PV9ht5DDm36YezE
+         xdvXTLFt6X9sM/cRZryBd+AkPZ3PvEDXEdKYAfFwYzIMd/kVztGm/FoTOrY8fwvm9HbR
+         zg6AtRjnUOFZyC0BFHEuyw6vbVopk2E09/RcJcrw+QVvNZ/SogNRHAxzJ1rZcSGiLGM3
+         IHoqTSOu7d1xHkmkSXU63e6DGYb1p1ECmPUfUvIoxoEbXo5Ykmni5KQDBWVbUWd0usav
+         nSjHcSvmiUQrK6w/lGgCbqhqYjpaZkR54bW9+RJwdhMpI4clzJeFZD7Vo8XVO0heLCia
+         OHZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwXS/exwIlp0sGFv94tqNfpQ8n8aQIocBIIIsQ6TwcH53CwpBmtIsEDkbKykcZabfV/wT5Rvfw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Xl3nw1qb3jIM/lqLUvp9VnnDJalsz4byLsYh4MPxCIXZE3Upz
+	KfKxW07fNpB7Ua5zHkOkv4mLW0dAaFkpAC+U9qEw2IO7M2dwbyKbcHAc
+X-Gm-Gg: AYBFou1+H+r8Hpi89qODNfvJKPeTEysRbJooS8qgw1EvOdxr2m5+58t9CowoMypoZVG
+	tpFWbjuk2wnDCi/LYg1qJBuJCgZLsG6isaemeSwK9vGb1DrF83thPAEjxDtkTRRw7CamyKaS3jI
+	gei6xUa0s/mX287kW1CzRw994iYJrHtgqdm8FdRmz/t9FG9GoAAF4Nohq3ckY419fsv/9Kg+g/O
+	ZO4WAZ/IJnLC0RMiRrIEkpv++9jXYZCF9QCobH8AbOJy1TzReqFDC+MYt/Pjc7afufcBBltuGs4
+	E0yRRYXJx/rW9biifNel8+9tmMU1+PynZz53VPCnguNJOnSukdgcaUzSTUNaqlgTGxPbg/EAdn9
+	58cRfcOoaR8wME/xrfXQUoVGuUWZA6gh8UO+K84P7H/emC6Z1U1AZc+/0m+jat/kiBJHWyXdi3C
+	HhpdodGgxJ3ie0L0wO4LHpjKfN9+1Qvrl7EHjIn72k1sHmxmGGQewoAADxmS+RLcBYJz6q+DuJ8
+	kH0V2qRfsspbcnkxKfw40F0foRHtZlq2aKrCNIejwxlVbI1dCsYRLAlZfcnoYDuovwoJhtTbbD/
+	m6JIH5VavWSq0xsq/zjZ6vX+uInCi8+Bn0od1LgBe7cKzhvI8vSFu0nXXu90L1sYZYQdpx4pMBq
+	NnMGzcn0YDbPFnimEsywy9x+A6JdF0NaiRf3ZEqVqk4/o/7sTf4R6lm95nZ7I0mSPryRLo94=
+X-Received: by 2002:a05:6122:3115:b0:5d4:1193:73d3 with SMTP id 71dfb90a1353d-5ec6894bf5emr6089133e0c.14.1793757712007;
+        Tue, 03 Nov 2026 18:01:52 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d7780fsm615030e0c.3.2026.11.03.18.01.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 18:01:51 -0800 (PST)
+Date: Tue, 03 Nov 2026 21:01:50 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>, 
+ netdev@vger.kernel.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ mst@redhat.com
+Cc: Eric Dumazet <edumazet@kernel.org>, 
+ Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
+ Hassan Sultan <hassansultan@google.com>, 
+ virtualization@lists.linux.dev
+Message-ID: <willemdebruijn.kernel.2e11b18d6e190@gmail.com>
+In-Reply-To: <20261103203113.550604-2-edumazet@kernel.org>
+References: <20261103203113.550604-1-edumazet@kernel.org>
+ <20261103203113.550604-2-edumazet@kernel.org>
+Subject: Re: [PATCH net 1/3] net: virtio: validate outer protocol of UDP
+ tunnel GSO packets
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,144 +110,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261103-vsock-guest-ns-v5-3-48179b9b66b8@meta.com>
-References: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
-In-Reply-To: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>,
-        Eric Dumazet
-	<edumazet@kernel.org>
-CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>,
-        Bobby Eshleman <bobbyeshleman@gmail.com>,
-        Bobby Eshleman
-	<bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: Me3SgFmUXnB2ZtChJutEyFXdcG4XU-ey
-X-Authority-Analysis: v=2.4 cv=LsIHWXdc c=1 sm=1 tr=0 ts=6aea903c cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22 a=20KFwNOVAAAA:8
- a=VabnemYjAAAA:8 a=XJcQsa36eN5O9Fc7FbYA:9 a=QEXdDO2ut3YA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfXx+zuCa20p+Po
- /fWnkqje2odZn539UhAfWdoHvrt3EjTT2/AL2u0vUR1IY2G3rQFUxSxnZsDVwNR0CFf0LYrjq35
- cVLh+CrhJMmESahPRnfBwdyaeJ+4q1yQU8z/2TatEdHIfUVFWQeX8235TCNZe8G32W3XK+t7ZHc
- pdOzICV6XE22iHhrAch0C4W24gz9g4eaq1NMIiyS7RJA1qfapEN89dTN/rS0QtPUaKFowYMRJ9N
- /O9swn4ggQK+VHTaNbaye8Ip3JxNLrAoX28vhvH3WVuFCwiemcs+vffRVk8x3N4nP8x1c/U9X1Y
- Sfsz36YHLss9ukGryES1hKFsan3meLBhFo2mGB1h9orRUxt4kzCjWeKiaF0H7ozrDY86BU69LkP
- W1nnlhGDAjnveWb6eBG+D25UwKK9y4el3bHG3qSjOR+nsdv2TIWQR7lo10PbkAtgXZmCcyvVWIr
- B4501mf8abfr5BbTeeQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX66HY/FS/arBk
- /otKztARnWDnBYLZ/ZD+KmUZ6S+/SBfupujqkf+oR3bp0zsYM2w9TnjfP5mu4egsItK8evp4oMf
- Ra+KqFA/xERvwBYT/H1tbVZYoxCzoNY=
-X-Proofpoint-ORIG-GUID: Me3SgFmUXnB2ZtChJutEyFXdcG4XU-ey
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_01,2026-11-03_04,2025-10-01_01
 
-The transports only use the socket to find its network namespace. Pass
-the namespace instead, so that a later patch can ask whether a CID is
-taken in a namespace without necessarily having a socket on hand. This
-will help with avoiding CID collisions when devices move between
-namespaces.
+Eric Dumazet wrote:
+> virtio_net_hdr_tnl_to_skb() trusts the virtio header to describe a
+> UDP tunnel over IPv4 or IPv6, but never checks that the frame actually
+> carries such an outer header. Because VIRTIO_NET_HDR_F_NEEDS_CSUM is
+> mandatory for tunnel GSO, __virtio_net_hdr_to_skb() skips the flow
+> dissector, so virtio_net_hdr_match_proto() is never applied either.
+> 
+> A guest (or a tap writer) can then inject a frame with an arbitrary
+> outer ethertype, for example ETH_P_NSH, with SKB_GSO_UDP_TUNNEL set.
+> The GSO stack then runs nsh_gso_segment() on top of the UDP tunnel
+> segmentation, which assumes a different header layout. The result is
+> segments with skb->data before skb->head, and a host crash in
+> skb_under_panic() as soon as a later layer pushes a header:
+> 
+>   skbuff: skb_under_panic: ... put:4 ... dev:gretap1
+>   kernel BUG at net/core/skbuff.c:215!
+>    skb_push
+>    __gre_xmit
+>    gre_tap_xmit
+>    ...
+>    tun_get_user
+> 
+> Require the outer L3 protocol to match the declared tunnel type:
+> for Ethernet frames, look at the ethertype after optional VLAN tags,
+> and check that the outer network header fits before outer_th_offset.
+> For IFF_TUN, skb->protocol is already set by the caller.
+> 
+> Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
+> Reported-by: Hassan Sultan <hassansultan@google.com>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Cc: Willem de Bruijn <willemb@google.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
 
-No functional change.
+Thanks for the fix. It overlaps with
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- drivers/vhost/vsock.c            | 4 +---
- include/net/af_vsock.h           | 2 +-
- net/vmw_vsock/af_vsock.c         | 6 ++++--
- net/vmw_vsock/virtio_transport.c | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+commit "net: resolve uncommon partial checksums at ingress"
+https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com/
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index abed1fbcf66c..01f8930ca51f 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -91,10 +91,8 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
- 	return NULL;
- }
- 
--static bool vhost_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
-+static bool vhost_transport_has_remote_cid(struct net *net, u32 cid)
- {
--	struct sock *sk = sk_vsock(vsk);
--	struct net *net = sock_net(sk);
- 	bool found;
- 
- 	rcu_read_lock();
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 370fcd3ddabc..1c38a27fadf2 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -183,7 +183,7 @@ struct vsock_transport {
- 	 * CIDs via the hypervisor (i.e. supports the fallback overlay). VMCI
- 	 * does not implement this as it only serves CIDs 0 and 2.
- 	 */
--	bool (*has_remote_cid)(struct vsock_sock *vsk, u32 remote_cid);
-+	bool (*has_remote_cid)(struct net *net, u32 remote_cid);
- 
- 	/* Read a single skb */
- 	int (*read_skb)(struct vsock_sock *, skb_read_actor_t);
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index aa4732c3599f..c9b28e34b1b3 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -633,11 +633,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 			new_transport = transport_g2h;
- 		else if (transport_h2g &&
- 			 (!transport_h2g->has_remote_cid ||
--			  transport_h2g->has_remote_cid(vsk, remote_cid)))
-+			  transport_h2g->has_remote_cid(sock_net(sk),
-+							remote_cid)))
- 			new_transport = transport_h2g;
- 		else if (sock_net(sk)->vsock.g2h_fallback &&
- 			 transport_g2h && transport_g2h->has_remote_cid &&
--			 transport_g2h->has_remote_cid(vsk, remote_cid)) {
-+			 transport_g2h->has_remote_cid(sock_net(sk),
-+						       remote_cid)) {
- 			vsk->remote_addr.svm_flags |= VMADDR_FLAG_TO_HOST;
- 			new_transport = transport_g2h;
- 		} else {
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 4f9aa9c4c3aa..eced6929405d 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -548,7 +548,7 @@ bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
- static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
- 					     u32 remote_cid);
- 
--static bool virtio_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
-+static bool virtio_transport_has_remote_cid(struct net *net, u32 cid)
- {
- 	/* The CID could be implemented by the host. Always assume it is. */
- 	return true;
+There are a bunch of subtle issues here. That series is up to v7.
 
--- 
-2.53.0-Meta
+Two specific issues are that
+- skb->protocol in general cannot be trusted, and
+- non-L3 sources cannot be assumed Ethernet
+
+Would it make sense to take the relevant parts from the quoted commit,
+which has hopefully resolved those edge cases, and send that on its own?
+The rest of the series can come later.
+
+> ---
+>  include/linux/virtio_net.h | 28 ++++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index d6466f96cdd0..d3f97d71d81c 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -282,6 +282,31 @@ static inline unsigned int virtio_l3min(bool is_ipv6)
+>  	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
+>  }
+>  
+> +/* The outer network header of a UDP tunnel GSO packet must match the
+> + * tunnel type declared in the virtio header, otherwise the GSO stack
+> + * would parse the packet as something else (e.g. NSH).
+> + */
+> +static inline bool virtio_net_tnl_outer_proto_ok(const struct sk_buff *skb,
+> +						 bool outer_isv6,
+> +						 unsigned int outer_th)
+> +{
+> +	__be16 expected = outer_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
+> +	__be16 proto = skb->protocol;
+> +	int nh_off = ETH_HLEN;
+> +
+> +	/* L3 device (IFF_TUN): the caller already set the protocol. */
+> +	if (proto)
+> +		return proto == expected;
+> +
+> +	/* Ethernet frame, possibly VLAN tagged. */
+> +	proto = eth_hdr(skb)->h_proto;
+> +	if (eth_type_vlan(proto))
+> +		proto = __vlan_get_protocol(skb, proto, &nh_off);
+> +
+> +	return proto == expected &&
+> +	       nh_off + virtio_l3min(outer_isv6) <= outer_th;
+> +}
+> +
+>  static inline int
+>  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
+> @@ -338,6 +363,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (!virtio_net_tnl_outer_proto_ok(skb, outer_isv6, outer_th))
+> +		return -EINVAL;
+> +
+>  	/* In case of USO, the inner protocol is still unknown and
+>  	 * `inner_isv6` is just a guess, additional parsing is needed.
+>  	 * The previous validation ensures that accessing an ipv4 inner
+> -- 
+> 2.53.0
+> 
+
 
