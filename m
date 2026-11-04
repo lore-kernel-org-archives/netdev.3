@@ -1,55 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793796049;
-	b=2yWw/nV3YlbpbDESRRFsZHOWrik2LbWwC+F0GHSgXuOxhUFn0h7cKzChZxMwW6ZCnLkl
-	 ETe2sl33mVV1DdC6ZfVQYGfAf8hG4Et8NtQ7Ieu9p5OuMAHL01YwZLMvtq9wjCDk3hoaj
-	 mX1ShGDHO7AYzuwV5DpEf9nBCFE6GAzj9/Jefr9EAau8XhXw4WlReqAOUGl5XxPvBiYfg
-	 Esa7CsawGFzufRvLhbmLN9AUExris9Bgu8KcS/hTWucVr/Bd9hjRP1RQKe5EtDpbksgQA
-	 kx0ilzr1VlugPm4SEHMBKKq3tWEQPqYFxdaKzJcVz9RHbtw+wFtd6C2c27QNU8NAdCg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793796049;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=alfWwL6/FuueZbwen1V8hepkvtjYNfPuDnxUgf69IeQ=;
-	b=DOSw4+knsevLmzndgGkk81HVgvIZMwLgY1Xzbr5I7lHTRa3704cyWM+jcVfziqoDbtzv
-	 8LcVYJFp6/f7qjUc0Dh/EMWqhOSqZ0zQ4FGDCu92XRsHsx4CIjRbqj5pungMj4ULBGfIz
-	 DCQocnjk3+lvRk1MvppPrPZ57v0cyMWN1ENkhvAIqB2B0xDMf5sJ+fZ5+eQRF23IUOlz4
-	 h7aEM8UwfCmeIlCDpCUAatNpVRAmHcUMiJ/hRmhod5wpDYlk5aRrOB02LqgUF/Fcl4MFo
-	 7ePTl9yj0MT2xYhhTHiydeYC4+iYOSu5XXgBllF1wL4lunA7bEW++vmlQ1jYQXLebZA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gySUN7DJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.70
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793796218;
+	b=RVIRz2PeLIkKqCRi8QWZzc5QyuoLd7A1mHNfflixsPI+MUb2+IOJVy5boGK35mpBfs+w
+	 b19vguAJwI6LYHfJnrBQa5BDjGbY355kspQg5ul2XsX69FgaBqe0VfPwkT2yfTGYMWcUA
+	 lzjat+qPV+kTTofoy8FS6inkLWGZHAIErU/axtPVIdxPAkQ74KbMDcA8KM1MYZuyudeG5
+	 z1Qm9jQHB+Q4VklKMTdAr2ECNbgyf7/jM/MgJ9GTZqoIFjVYGmdeo4LS2JxiETVnutRUi
+	 Znr+E3C8LIiwiUwIKcG/CyteJKBuk36jw1INeE1FNyaMdGs4CQhPB1aoRthXSgfaF0Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793796218;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Vy9StAtGUW9W8nCKn6+BOkqA7LKEOM4EO3Uqo4eJBvs=;
+	b=GCDi+NWuDY+c9M0rMyGMY3idkOEKTGpQGFEtZXyHyvCFmeMo+y6qQfpbh7qexdpf2aB/
+	 zp9RvH00iP1iMoztPBsGoXMKRFdgTdja1lpqdz4sheSF/lXh994T0YsNcZge0OnkNudid
+	 YhBsutAeFXd4zeeYBbIy68lkVwYRshT0jgg5MFVvBKovg8eZraYtHpqORiZT/1eKskB7g
+	 H60/xbBJNQmRZ6BDBuKyak8z9IIzIMJW3FNkVBeUHCPVXqMVfQpFDOhUJhbRjlRDRAJpN
+	 TI8TOMVNudpihWhavKReOV1FHRL43eapM6KFN6sEm/CskAVhP7mGiNCkF+TX7eHgBaw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=KG+0yFkx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.198.70
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010070.outbound.protection.outlook.com [40.93.198.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58266606A335
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B242606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:43:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B242606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gySUN7DJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113E11F00A1D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793796048;
-	bh=alfWwL6/FuueZbwen1V8hepkvtjYNfPuDnxUgf69IeQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gySUN7DJaGHHwlysYEGpIJF47dle3J4s3We53JvzRKIDu50gj5a2wkGJPwbEx3KbN
-	 IolmNtz1cKv7hu/lS9yd/VIv00HU/99J6FN9TsvQYw+RaR/BtNAWRh7Bk3A/jITpFQ
-	 LAhrZAU4d/9wTkkWUQlC+kp0c+J0rfZAE/BbDjZyXfZtUe8qeeCnX4TdGiq47gbBn9
-	 kREQQfm2F5xX7pCSvnulapabG89v1ZJqZxwn6RlDM/FE+D42KVOaN8mQtxZm/gFRy/
-	 jupooXjF333Ngy3s9Iful/ZC4eLNa/SpQae1jkG5FEhWTY2xARIL7ztxwwWP8Ewoll
-	 /ffreyaOzjyhA==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-486f013db83so228292fac.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:40:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBylac0gW3oUr7+FkCQy1LNBuh+3bJ3wTK7LbK/3Yb/nrI7X1ijBZFE2pCuLZfQyO7/DwbtgsHw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/w0DiqD5Dn+v1k9SeLJZK0dfdmHMHJYbiYdvbOfb010yGWpBet
-	6dCrYPFHXdpvyrMK/aPyAZUhrXF0vajOb1QRrbBvbVokJhj8eIrvTEFFa3WHtBQbPsjMW4jCGXP
-	V+/zkZH9oMfrwHmpTOTgryjllquZGF9c=
-X-Received: by 2002:a05:6870:d609:b0:49e:d4c:e6f0 with SMTP id
- 586e51a60fabf-4a90772c1b0mr10331737fac.46.1793796047403; Wed, 04 Nov 2026
- 04:40:47 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=KG+0yFkx
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HPu/EbuCVbpEARaFjE/vvX0C+L+o2Sb4kLOyw4ngEbIl0H/tVXsX/ouyVguNow2im7IHF72z04VRsNDDutL+dafm09ZCMYw1CwnCXdHJvhZvHXToanGP6Pyq9eZyY4ePZWohY9dhiXDJ/xkxubeeFDFm2897L46HbFzENtMoTnxYLHuUwl/aCQLC/yl1lhruaW8pubQ612vUALW721k6Jp97Agb0VoHfE2/pnmD7kvPn3cDtH9WnndCZnkxJtBiqquG+DgO/KTllUay2N3WgZzMcCyAar+qUavGZtHxbtOJi05VduDA963OHwXT12JElp84kqnzBdlXalEty6hOnXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vy9StAtGUW9W8nCKn6+BOkqA7LKEOM4EO3Uqo4eJBvs=;
+ b=MxpF9oGRh5di2LSPhhpBRe124XYXW3+0NJNHYhmuxOiImx3ePOiuZFNiUlEA5Bt+69g8fCPnyX35msuofD6rfu5cpOUSzqOrrEdr5wIrj9hIvxixYqqvFERATQL+OP+3s4oeONTPPEMdfKk/p/nMsxHa3ulx13M4lJHmhFP+K8qI100B1iiJnlwAN5tnYPok+t5k3xjkTi7xZ1FjM64BPMwxCyl9ybcjchvdJh5w/SQxHhgAMbnIQZKO5XUiePSWv46M2GkEhMxyaU82eqSwNrdHWB3vIOx83VkyTYqLO+TDLeiD8pKiYOgAgEV9Ml85A+pJdQZ2PENoCMUkUaEWhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vy9StAtGUW9W8nCKn6+BOkqA7LKEOM4EO3Uqo4eJBvs=;
+ b=KG+0yFkxCTW/pdsOqPEUvgmMGlmnfPSlxmg9eGLICs5olpN/7vyLYk7oHwsDNbz/QQB/VelF15/PrFcH+z2iWNf6PljXIJCrR92+hTfIwMgT8dkrwlVV11mnDZx5Rm7NqeqB+huX+dKRjGAf68HhkQiUs8JF/BimBsplkrYEEMs=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4283.namprd12.prod.outlook.com (2603:10b6:5:211::21)
+ by DS0PR12MB999079.namprd12.prod.outlook.com (2603:10b6:8:302::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
+ 2026 12:43:36 +0000
+Received: from DM6PR12MB4283.namprd12.prod.outlook.com
+ ([fe80::9eab:812b:ad20:6087]) by DM6PR12MB4283.namprd12.prod.outlook.com
+ ([fe80::9eab:812b:ad20:6087%6]) with mapi id 15.21.0546.016; Wed, 4 Nov 2026
+ 12:43:36 +0000
+Message-ID: <71b57111-5f13-4499-8a21-a4203505a2c8@amd.com>
+Date: Wed, 4 Nov 2026 12:43:32 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] MAINTAINERS: remove and replace myself as sfc
+ maintainer
+To: netdev@vger.kernel.org
+References: <20261104013138.4103896-1-edward.cree@amd.com>
+Content-Language: en-GB
+From: "Austin, Alex (DCCG)" <alex.austin@amd.com>
+In-Reply-To: <20261104013138.4103896-1-edward.cree@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0062.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:153::13) To DM6PR12MB4283.namprd12.prod.outlook.com
+ (2603:10b6:5:211::21)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,137 +95,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <38fa9f2cc476502e9b1c1fef09ebba1df5dd5901.1793795528.git.x-professor@outlook.com>
-In-Reply-To: <38fa9f2cc476502e9b1c1fef09ebba1df5dd5901.1793795528.git.x-professor@outlook.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 4 Nov 2026 13:40:35 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiqen5n7i2Wa_YxJLYOr32aj4dgknPnjbVpi-xPOcMAd7Q@mail.gmail.com>
-X-Gm-Features: AclHuK8GZXD43O-lNJEKnJiywNAx6AQFktc6lK1CpovXsWvfdozbKRYapn5LGpk
-Message-ID: <CAL4Wiiqen5n7i2Wa_YxJLYOr32aj4dgknPnjbVpi-xPOcMAd7Q@mail.gmail.com>
-Subject: Re: [PATCH net v3] tcp: free saved_syn after an RCU grace period
-To: Yingjie Wang <x-professor@outlook.com>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4283:EE_|DS0PR12MB999079:EE_
+X-MS-Office365-Filtering-Correlation-Id: b0531277-8c2c-46c1-811a-08df3a713e2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|11063799006|56012099006|261021121427099003|261021123027099003|261102123227099003|261022105027099003|261028144727099003|261026140227099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	ND0WDjqtW8IKuB2CVjMFjTozsKrI/QlXwQZmWeh+phXLLd3VD/6NMpnZg9jDGAb8FHEL56JuvnCgOYl60mU31053bjlkZ9B4QE/0AEBFK427yadxCV35OWOXDKvDVqEHhEzXS8mvg2P4VN1c7BxIYUQtAl08zliICODRycIABeaNq61EgG+/rTveiquVv8JdzY44Ac7G/QfU6seSYpVLIwxmDqkMAFvjQeZDKkSq7eg0GONJzIOf4Bao8rB0OkAFUVI2+FMb7gK4o0GYnc7CfOJOn27L5/+GRg4iKTGVe1U0CNkhRz83WjAgjXTFFXCKg9TUw0CR6adbaXuHgOK+xhBWrEtV+uYRxJqKQ9H0qV08CSJZvlrCFIs5zhVJ2w0QIj89usJeaUfkRc+wdHdsZl0/j4PXoMrwaUyI3XjN6TkgQXty/zvhQ7KS4eRL0SAY/Dbbi6ffZnc5DoDR81nHzaDJucTus9bf0oKpRpbCWL9nna9DpSWgrmWcmD+bi1FZ5V+48SlMJniNq3SulO4/ASw9IS7ZhOPdjWL3Cvsq3MWm3CTXLGp/U6KEcbL2oRxQelTlCf0fe9RnCU54H5eQ8cWxDrxVQ/VrNKG9PVnAJwnTLqcCYk9Ow2I9oUlT3qlC0DfcYCoY4jF8JVuphJj0piyx16TB882n/zB+zlHhHfM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4283.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261102123227099003)(261022105027099003)(261028144727099003)(261026140227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cm1pK3hBcGZWS0FhZDNZUXFJWEFYRmFNQjJwNGRuYzNPM21veGFFMy9tem10?=
+ =?utf-8?B?Wk54R2lZR2U1SDJQVkhwWHQzZ2JzTjlmRjZ0YmRObTNjcXE2UExub0xJS0o2?=
+ =?utf-8?B?Z2lpN3JOVGhmUGlxU3dmdTl0UE00MzlRaW1LdXBWVm9OZERtSEVlTEN3c0l5?=
+ =?utf-8?B?N0J2K1VzZERnZ1NyaWcwRWRUdW9tRTZDRjVDbWtHTjdVdkoxWDJLQlh2K1M0?=
+ =?utf-8?B?Y3lLRHR2TWRmanhLMVFwak5CcjdzNEtIOEsraHkwY0VKc3hmSnJFUGY2MDJt?=
+ =?utf-8?B?MUU0ellpclM0NmFMQTNVVGdUWVRxSndSWVJzTVl5REtrSEh2aHhKTEd5RjZs?=
+ =?utf-8?B?clpkZ0JyU0w4L056VHVBTjNYRmhzYTFPOWJRcVMrV0hUS0tzSm0zSmh2TUdF?=
+ =?utf-8?B?bjI5QWcyV0NEZVMwTDNpcHJ3TUlqcWh1WlQyTThnQ2tvU2hPckpUQ2lGcDVT?=
+ =?utf-8?B?aTFKUjhXSzNFOXZYME9CODVoN2creUxaMDlQMDFyL0hXcnk2cG1INVd1VDlN?=
+ =?utf-8?B?d0dsVyt0MWNmaGdRbjdWdngvOUFFMm1QWG1ZamppWnlFTzBkT3B2L2RJR281?=
+ =?utf-8?B?TGptYUV0YkJaVXc1L3VUNEJaU2tFNWhlTFpjK08rc3ZYTzNYcnlDQUl5UWlu?=
+ =?utf-8?B?c1ZkNzFLcUl0cnJKRlFqYkVva21aTTBFSXByTjN4dlRFeUNaV1BQcW1DVmVB?=
+ =?utf-8?B?aWNPRTFIZ1NzaVNveWRENEROMm9IZDYrbGFuZ0NKSW04Z1NPQys3a25DUEtv?=
+ =?utf-8?B?dWJKWnVrL3AraXAzRjl5Y2hlc0tUMTFZSEMwMEZwTnY1SStTeHNMZklBTXAx?=
+ =?utf-8?B?NHg2VTVzQTZSYVpaZjlkZi95UmRGUzlmQlZHSGtFZzdUOVVjL2cyTDlMNEpx?=
+ =?utf-8?B?eUtsQkpaTEMrOUhOTmJxSUMwY1U4a0ErYVlzcUk1YXFZd0pTVXpjUzB3MUQw?=
+ =?utf-8?B?S2pWR0JyS0xkWG9UZ21zOTBacmFMNmp1cUo2QU5yNHhPWGx0RDdZeCtIbUNM?=
+ =?utf-8?B?aXZqZGJtSFRUVDZTTEhPb2NxcE9BZUdnN3JSUWkzclNNb0xqenR2bW85dmxJ?=
+ =?utf-8?B?OVNkemJrb2M3TXFLT0VWN0FncjV1NVRySGFUSC9uTTBCWDRLZVBTWVVmclRF?=
+ =?utf-8?B?T3VTTFhoRUUwR3NlSXo1SkI4MTVBV3MzWnVVcTJoY3ZwWkVyY084RnltNk5V?=
+ =?utf-8?B?WmUvZVdCeEN0UXM0Q0R2NEZ3cFIvZk1hVE8wYnpmNjRqZHlsMXRSQTZoa05m?=
+ =?utf-8?B?aHRMSS8yaXBmalJCMUtIRnFZSFZZb0RTTzM3Wm8vcGJyZDhEZnNYRFlRL04r?=
+ =?utf-8?B?TTBvZm83N0hla0RuTVNRZUd1OGhEcUZFQ0tYM1dqcUJ6WXpuTlB0VGsxenBN?=
+ =?utf-8?B?QlBUTVU5NUZvSGlyczBJSUlRQ0tyaWQxTFY3MW1KR1UxNW9ES3czL1RHUU1L?=
+ =?utf-8?B?aGVJM0FPUk52WWo1eEgrZHloOVhLNzUwZEFwV2NZamRGNm5vaUZITGx2d0dv?=
+ =?utf-8?B?bGpQNWo1RmxlR3haUXkxeUIwVlJNTzV2MEVpaEo0cjVsejJCVHVNZExPZmhU?=
+ =?utf-8?B?TSt1OE1aUklrdlR0elp2cVV0WkMvWWhDazNoWTh1WmNNeDgwNy9pNWRQOUZE?=
+ =?utf-8?B?bE9oRWRpUS9lbEg2OWovazNSNks0RWkycVRsU0MwdlpJOXJUS3g1QVlHVmds?=
+ =?utf-8?B?cUlIZVVXMWNGU2VsY1g3MWU2Q0lRUzlpYkh4ZENFc3FmS1ppWGJsZUFXdzhW?=
+ =?utf-8?B?L1VMbnFYUVZyQ1RhdjZRK2lJK0NxbUM5V0ZEcys2NnNHL2hxaGxidnIybG1w?=
+ =?utf-8?B?ai8zbHBjYjVtc1pxZFhidDk0WmNlWUQ1NGpTTEU4OFJUdU9qVzZTLzdzZ25v?=
+ =?utf-8?B?WHhDbi84WVpDTGN2M2dTZVNyNytXL2E2VzNyQWhEODVHZFNnOGtDS3g5VElu?=
+ =?utf-8?B?RlJ1TGU4b2NqOFYxa3MrcEpEZlhtOEdRT0x6L294TVNWMmdUMFI4dU9mQkNJ?=
+ =?utf-8?B?Z3ZTaU9RZXU2bHB1NDEzbisyT0RjR1pKSm9vTzFoTWJsVWZGKzJaRW1CK0VX?=
+ =?utf-8?B?ZExBR0t5L3o0TzZDeEZSeEFjNGJ5dnlLV3RGd2w3d1JxbkNHL29XRXI4VnQ0?=
+ =?utf-8?B?U0p0VjRpWG5UTS9CbmY2SFFhOTY3dkVMK0lmV2ZRMm9taHByUEg4QzNjRmI2?=
+ =?utf-8?B?Z1FQL1JRQWt4NWpqREhRZXNBd2h5ZWdvU3ZhcHdSSkhhWXN0OHZLQ0V1d0Q1?=
+ =?utf-8?B?S2thejAzamRSbk9lWm5Zb3p4UzZkK1lEc2hnbU9SYTRuWnRFOTdRNXorUnJt?=
+ =?utf-8?B?NWdiVHhQZW85bWF4TWlrYU5ucEcwcHRvbnZVODFQV0RYNFhTSi84QT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0531277-8c2c-46c1-811a-08df3a713e2f
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4283.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:43:36.0812
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xYxVvVYPt9/ZyHzgX2i42MFzqftB1EDPtf3Aw70jV+bDzLwNOMIWrTz2O1oA2ekfK7WkEpDyM2Zn+5mFjI63kw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999079
 
-Le mer. 4 nov. 2026 =C3=A0 13:32, Yingjie Wang <x-professor@outlook.com> a =
-=C3=A9crit :
->
-> tcp_reqsk_record_syn() allocates saved_syn separately from its request
-> socket. bpf_sock_ops_get_syn() can load that pointer while processing a
-> retransmitted SYN under RCU.
->
-> There are two ownership transfers which can let another CPU reclaim the
-> allocation while such a reader is still using it.
->
-> First, tcp_move_syn() transfers req->saved_syn to a newly created child
-> socket. The child can be closed and tcp_saved_syn_free() can reclaim the
-> allocation before a reader of the old request finishes.
->
-> Second, inet_reqsk_clone() shallow-copies request_sock during request
-> migration. After reqsk_migrate_reset() clears the old request pointer, th=
-e
-> migrated clone owns it. However, a reader which already loaded the pointe=
-r
-> from the old request can still be using it when the clone is released.
->
-> I found this through LLM-assisted concurrency fuzzing.
->
-> Mark the request-socket saved_syn pointer as RCU protected and use RCU
-> accessors for its reads and updates. Keep the full-socket pointer plain
-> because all of its accesses hold the socket lock. Embed an rcu_head in
-> struct saved_syn and use kfree_rcu() in both teardown paths. This lets a
-> request-side reader which loaded the object before an ownership transfer
-> finish.
->
-> This follows commit e3f33b0a1d89 ("ipv4: free inet_opt and ireq_opt
-> after an RCU grace period"), which fixed the same ownership-transfer
-> pattern for IPv4 options.
->
-> The issue was confirmed with KASAN on v7.3-16007-g36aad21d50d1 using
-> temporary kernel instrumentation to widen the reader and request-migratio=
-n
-> window. KASAN reported a slab-use-after-free read in
-> bpf_sock_ops_get_syn(), with the allocation freed by __reqsk_free() from
-> reqsk_timer_handler(). The same explicit migration test completed without
-> a report with deferred reclamation. A patched kernel without the delay
-> instrumentation also completed a successful migration and seven saved-SYN
-> reads without a KASAN report.
->
-> Fixes: 0813a841566f ("bpf: tcp: Allow bpf prog to write and parse TCP hea=
-der option")
-> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmi=
-tting SYN+ACKs.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
+
+
+On 04/11/2026 01:31, edward.cree@amd.com wrote:
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+> 
+> 
+> From: Edward Cree <ecree.xilinx@gmail.com>
+> 
+> I will be retiring this month, so it is time to hand over the baton
+>  after a decade maintaining the Solarflare drivers.
+> Remove my M: line, and add Alex and Andy as the new maintainers.
+> 
+> Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
 > ---
-> Changes in v3:
-> - Keep tcp_sock::saved_syn under the socket lock and apply RCU protection
->   only to request_sock::saved_syn, as suggested by Eric Dumazet.
-> - Use unrcu_pointer() when transferring or reclaiming the request-side
->   pointer.
-> - Describe the discovery as LLM-assisted concurrency fuzzing.
-> - Rebase onto net/main commit 241dec6f9ab7.
->
-> v2: https://lore.kernel.org/r/3dd45a687afdd0213ee82685c52777e5b0855e20.17=
-93704772.git.x-professor@outlook.com
-> - Add RCU annotations and accessors following Kuniyuki Iwashima's review.
->
-> v1: https://lore.kernel.org/r/34f32e63b803f9f7faf0b0a5754219e48a986136.17=
-93616950.git.x-professor@outlook.com
->
->  include/linux/tcp.h             | 6 +++---
->  include/net/request_sock.h      | 4 +++-
->  net/core/filter.c               | 2 +-
->  net/ipv4/inet_connection_sock.c | 6 +++---
->  net/ipv4/tcp_input.c            | 2 +-
->  5 files changed, 11 insertions(+), 9 deletions(-)
->
-> diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-> index d18f7bc1e5d0..3ae57ae65ec4 100644
-> --- a/include/linux/tcp.h
-> +++ b/include/linux/tcp.h
-> @@ -618,13 +618,13 @@ static inline void fastopen_queue_tune(struct sock =
-*sk, int backlog)
->  static inline void tcp_move_syn(struct tcp_sock *tp,
->                                 struct request_sock *req)
->  {
-> -       tp->saved_syn =3D req->saved_syn;
-> -       req->saved_syn =3D NULL;
-> +       tp->saved_syn =3D unrcu_pointer(req->saved_syn);
-> +       RCU_INIT_POINTER(req->saved_syn, NULL);
->  }
->
->  static inline void tcp_saved_syn_free(struct tcp_sock *tp)
->  {
-> -       kfree(tp->saved_syn);
-> +       kfree_rcu(tp->saved_syn, rcu);
->         tp->saved_syn =3D NULL;
->  }
->
-> diff --git a/include/net/request_sock.h b/include/net/request_sock.h
-> index 5a9c826a7092..ddc134f1d15d 100644
-> --- a/include/net/request_sock.h
-> +++ b/include/net/request_sock.h
-> @@ -16,6 +16,7 @@
->  #include <linux/types.h>
->  #include <linux/bug.h>
->  #include <linux/refcount.h>
-> +#include <linux/rcupdate.h>
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 09713dc4c6a7..4d43d3559960 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -25465,7 +25465,8 @@ F:      drivers/slimbus/
+>  F:     include/linux/slimbus.h
+> 
+>  SFC NETWORK DRIVER
+> -M:     Edward Cree <ecree.xilinx@gmail.com>
+> +M:     Alex Austin <alex.austin@amd.com>
+> +M:     Andy Moreton <andy.moreton@amd.com>
+>  L:     netdev@vger.kernel.org
+>  L:     linux-net-drivers@amd.com
+>  S:     Maintained
 
-nit: this include is not needed.
+Congratulations on your well-deserved retirement!
 
-Not worth a new version though.
-
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Reviewed-by:  Alex Austin <alex.austin@amd.com>
