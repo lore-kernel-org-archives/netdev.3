@@ -1,84 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793810564;
-	b=S+nmrrKb+mo/4/ZfdOqBy1QWcZ8+oyu8duVuLjkF07JuCwTXI8Sq7nriH7pEmSjiByWZ
-	 oGOBxwwguKVDyVtohYR5dhns7SOrAyt65oliP+ST0F2qxpc8XBjS0bbMrVrSQZz9pf2Pm
-	 QNPYY0jb0RVoTT3kUHpM/3SrYfHB9f4LsdmPabaelvEcnIiNhxlFGQMqteB2iVeDNDzrm
-	 3dDuzX4WJejVbIoJE1C/e0d9AWKjb1KX5R5c13PTY/lHViHcn27lSaEwXuwISq7rG9/AD
-	 1vdquxkdk8vT33c4pltDFCvEARGWeZAlw+jKoE8f+oQ/UcbvcaqU/SacFLSDqzEH5DQ==
+	t=1793810674;
+	b=rEgYTCBgDpcLqmjz2+ilUA7kIlNgTNBjCZ+ufcwAWZd4+iBhHDzdEhAGAejA1EDu75cu
+	 532wdJ75NTqIZo4TUc7VgMu7TE0VAO7jpDQqyoftNtgDc5vrorLF8ScVSo0QLMM19P78u
+	 j4bAiGnJtONvkzHkmSEzz/L2J1/mYnBzR0krnad7pvF61veMefsyySG2Xqzs6hoXkwtGX
+	 kZaxWqxNbXlfl3GrE9q5owlq23dcd+yBqcGKfuUGqaKjOBQUW7Diov19UL9eD+ln1w0CG
+	 e7dRj2/nxct4PpOR8wm87L0XjRm7U+f7yygZm36B84DacVBWBIuh/F1La8OIP8yrJiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810564;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
-	b=b0SLBA+2HBEO2/B1s5bUEM8A3r7RYlfb7SEoLAEkfPPsnBELHtQsXoeD7b3sgBSsINSq
-	 1unBRSDgvMrYsjmjOpozhfa6WGEWELKUHKe6T11gwmMrNrwZLKEkAcDv8U6nu6wQBkXdT
-	 vAGJt/T7aLvHaRg13dYnsXoc8UBCL9HPGCvpx2iEexOkQ23p1s8yO5lYfpk6fVcxz2dQH
-	 Cqq+jyElAcKDJ+5v57YYYLIUMJWUmXjPta3TZ0GlkzXZVPrGkxLhxYjtI1Mb+CthVE9ZB
-	 yFJxV79xEjjpGM4O7fhUSHIYFWD4JBiOuaArkdEaVf41XBZdUAoPmMFgiyjl9BYe+mw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793810674;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=bQvIDegU+Ei70cEI3udJurYLW6e3mWqJ7u/8qcqyJE8=;
+	b=YIlzj0PG4LlHKmENrE4SoayUVjrkNzwMhYFNkLi+ucG0BQg+a+cCU+ewiSDCqKvsjZbx
+	 PB+sooCYKkUai/SvOF1i+70TJMQLdaEmeViHzcTf6dou2guIZxOjj508gLt+vMsViShL/
+	 ee7RTX1esvyJXfugUk4Or4r4zfeX0k00yimkeysocUGjgSKV+VhqtCxjW6m5Pnlqjd8uw
+	 lYYq8rj76yGXAZyEAknqXZLMuZf/AscDFV9Zg/zroRinEy5zbVA7/rk1M317/8vSLN/ff
+	 io1MkfuszXmeWK0vir13TEoIEoL8jjJ0MgMo/lUcEvlBd6+nXjbzs1E4LYOjYnP40ZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yuRK4eVF;
-	arc=none smtp.remote-ip=209.85.219.43
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="c/2xBfda";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36C5606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:42:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A36C5606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6F5606A329
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yuRK4eVF
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91c75267b0fso10042566d6.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793810563; x=1794415363; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
-        b=yuRK4eVFFHvGeSfGpuT2oAyAnci9C1QVfq99WLjpeiK18Qe/SoncpvQeTFYND2jvjp
-         8MUOfmm2GHt6qadP7AMENObqTtw72UqH9DtiQcHKJIo8CjlVH1QWs7e03n4G/LO+8jBK
-         hXxvCg1qxfKxdz4ydB/w0Ri5vzeIxTfUGp8Qk0/zN4HB2TPvduDo83vnro7vS8dzGDFg
-         lJPLRx7HPSQ8BKzQbMdvPJEPMbXOEuADO9kv7j/V2UMATen2qiBOTXrwMraVND2QmXCn
-         EDdspFtz/b/n5sHrGluTYYpv+8IYzZ/8tgYzniqm1cNA2zFn6NESjm/goBa2yWfz8uKh
-         uu4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793810563; x=1794415363;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c7OMuhEmxcvJT9wqjETUbrxK1nwfNMV6htSFGTLN/QY=;
-        b=EhqMe8TRqNzWvPR9EC+hQNaRmJNeYoeE3v9SgtFnmFUC31qDvtqoaUKDYJkEJoxmhI
-         Vr6RmfvBEESvu71xkJT1BD6NP8rPavrqHP2Ma1LGAoFSeyi0i5g7ihkswDFeuODjED7j
-         Q4RFb8YJK1rZbTaEaUHWEEuUMMVFDHX0b8PEfqQMGGhULwY+ZiahGI/xizrWqDvila6w
-         Vv60KKmN0bs5iO2Ht+fPzC4Gbv1Pw+Ax5k/eFMm3ISrkDwaR3oVRLC41rGXPaHmH7Ez6
-         N5VBwOMqMDRJ3iZufUftp+BQrwJMmvKWSUmSOkY8zPW1MGlpgfaOBUh/ZfBHzirajt1P
-         H7Ig==
-X-Forwarded-Encrypted: i=1; AKwUvBwchyUKdx8nv3eBfA9ZlVyXWv0S2Qnxfkrp7et2e98Aglx2YS3EST12IFS+SzTKGBU7wnQfpMQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9H10bHxFJ0O9O0rn6Dpc/J9xlfZNpHELVn8FuYCE01+UUwFzaM
-	jwTiFlVZt3YK6mvaZeqPK2q+QLJCJr6TGcCCGXDvOGcozIC+tVWFfL3v
-X-Gm-Gg: AYBFou00CKZ9SIdr7tQZtU0CSZsAmMgq2H9+/H1q2jBHIHu3IQYhVounkjbbUsTIVLL
-	xVRfz+WgBYb9SoY0Rtg8/qezHtlibMLrUZ2YL0uPLn5Cc7q7urY0/5zhUdqdg3vuLPPV/ZVv9lk
-	mak3c3geAI3T4obDKGz0xAhV0hSxgDZhxhIKVYP7lgFymZGT16WZZbWzjG66fXGSYR5stnqXKzS
-	tuGhmIF6VXdy9cQt0ic7xPACjlK4k3haSL8ZdhdBZbyevmak3t8oKqTCnc08WBtHok4a/rYl8o5
-	J7e+kr5pubG8gsrhl5mo75gc32Ntb2Yw4BKlwCXAEbf2m33npmLw39O6WXCaZAAYAplcQtrvVc2
-	nVl7q7F7kP84DTw96rI3VxZubNtDTTLBgpHBiTHacZ2UhnZ3vBLoFiZnX51m5yOW3t/tTxNN/JS
-	kTfSd/pQbIunTiS+Eq+1zNW6C9Da/S/rSqcIVm4myIsTRS/uUIFQHcsDMkZdVCLfKCxXwjZIABf
-	NSAtNnmtyNpZgcZGGILxFk1LWfX3O8EvvEdqgW14IEjrNsf3g1GyBIwTG6xngsnxncI0a5Ery6E
-	4iTqgQ+XOS2s1/bc
-X-Received: by 2002:a05:6214:448e:b0:91c:8f2d:4025 with SMTP id 6a1803df08f44-91ca4ae89c9mr259102566d6.17.1793810562410;
-        Wed, 04 Nov 2026 08:42:42 -0800 (PST)
-Received: from localhost ([2620:10d:c091:500::5:7adf])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e7e013a5dsm23275976d6.27.2026.11.04.08.42.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 08:42:41 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c/2xBfda
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9F31F000C1;
+	Wed,  4 Nov 2026 16:44:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793810674;
+	bh=bQvIDegU+Ei70cEI3udJurYLW6e3mWqJ7u/8qcqyJE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=c/2xBfdaGBLrIZLTzTRRV+621+fS6sxissQ6IyXDuqGkDZk1caF40hjAYoZ3zCPyD
+	 BtsWAWES2CqNm1d7eHkAiuIED17n6H1pQVEWXOu7kv2UgUrdccjeJ/znFm91rY93XW
+	 V6osZXhH6VaCR2iLA98bAROLgdaBlpv6ig2A6uo86jKWmKusvRLT4Eoo+9o5dPRdeP
+	 RxjkYpTUelw+0e9t/Dwh70EqG2l7IDNo30GqWNPZaFh4wDszLE8O2phq8ed4LQ7FeD
+	 ZfaDVdNmYY2N/GZRVwVuqCXvI5L/dksaztAnPbeTZSGfcyW1GjjozziGt5uhDWNcAb
+	 VPKtP4kaPB1Zg==
+Date: Wed, 4 Nov 2026 10:44:32 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Li, Yifan2" <yifan2.li@intel.com>
+Cc: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
+	"Ruinskiy, Dima" <dima.ruinskiy@intel.com>,
+	"Li, Lili" <lili.li@intel.com>, "Wang, Jie" <jie.wang@intel.com>
+Subject: Re: [PATCH iwl-net] igc: Disable PTM after the last device reset on
+ remove
+Message-ID: <20261104164432.GA1216460@bhelgaas>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,159 +62,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 11:42:40 -0500
-Message-Id: <DMMKRVD73MEB.XP1KMYHPAZBV@gmail.com>
-Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "Simon Horman" <horms@kernel.org>, "Thaison Phan" <thaisonphan@google.com>,
- "Kuniyuki Iwashima" <kuni1840@gmail.com>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH v1 net-next 2/2] tcp: Subtract psp_sk_overhead() in
- __tcp_mtu_to_mss() and tcp_mss_to_mtu().
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Kuniyuki Iwashima" <kuniyu@google.com>, "Eric Dumazet"
- <edumazet@kernel.org>, "Neal Cardwell" <ncardwell@google.com>, "Daniel
- Zahka" <daniel.zahka@gmail.com>, "Willem de Bruijn"
- <willemdebruijn.kernel@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261103000712.658501-1-kuniyu@google.com>
- <20261103000712.658501-3-kuniyu@google.com>
-In-Reply-To: <20261103000712.658501-3-kuniyu@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN7PR11MB170846508FFD9A89461965524FAF682@MN7PR11MB170846.namprd11.prod.outlook.com>
 
-On Mon Nov 2, 2026 at 7:06 PM EST, Kuniyuki Iwashima wrote:
-> Currently, psp_sk_overhead() is added to icsk->icsk_ext_hdr_len.
->
-> __tcp_mtu_to_mss() subtracts icsk->icsk_ext_hdr_len from mss
-> after clamping to tp->rx_opt.mss_clamp, which comes from the
-> peer's MSS option configured via advmss.
->
-> Since PSP is upgraded after TCP_ESTABLISHED, PSP and non-PSP
-> flows share the same route mtu and advmss.
->
-> This makes it impossible to configure a route so that both PSP
-> and non-PSP flows achieve 4K MSS for TCP_ZEROCOPY_RECEIVE.
->
-> With mtu 4220 and advmss 4108 (4096 + 12 TS), non-PSP flows
-> get 4K MSS, but PSP flows are clamped to 4108 first and then
-> reduced by 40 bytes to 4056, breaking TCP_ZEROCOPY_RECEIVE.
->
-> With mtu 4220 and advmss 4148 to compensate for PSP, PSP flows
-> get 4K MSS, but non-PSP flows get 4136 bytes, spilling over
-> 4K page and also breaking TCP_ZEROCOPY_RECEIVE.
->
-> Let's subtract psp_sk_overhead(sk) before clamping in
-> __tcp_mtu_to_mss() and add it in tcp_mss_to_mtu() and
-> to icsk->icsk_mtup.search_high.
->
-> Note that tp->rx_opt.mss_clamp now bounds only the inner TCP
-> segment rather than the outer PSP packet, which is consistent
-> with xfrm and assumes that the peer's MTU is at least as large
-> as the local route MTU or that PMTUD is enabled.
->
-> Also, in psp_sock_set_tx_key(), icsk->icsk_mtup.search_high is
-> simply incremented by psp_sk_overhead(sk) because PSP is upgraded
-> right after TCP_ESTABLISHED before any MTU probe fails in practice.
->
-> Reported-by: Thaison Phan <thaisonphan@google.com>
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
->  net/ipv4/tcp_output.c    | 14 +++++++++-----
->  net/ipv6/ipv6_sockglue.c |  2 --
->  net/psp/psp_sock.c       |  2 +-
->  3 files changed, 10 insertions(+), 8 deletions(-)
->
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index cf3ddc055d48..08d0d4a639fe 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -2060,6 +2060,8 @@ static inline int __tcp_mtu_to_mss(struct sock *sk,=
- int pmtu)
->  	 */
->  	mss_now =3D pmtu - icsk->icsk_af_ops->net_header_len - sizeof(struct tc=
-phdr);
-> =20
-> +	mss_now -=3D psp_sk_overhead(sk);
-> +
->  	/* Clamp it (mss_clamp does not include tcp options) */
->  	if (mss_now > tp->rx_opt.mss_clamp)
->  		mss_now =3D tp->rx_opt.mss_clamp;
-> @@ -2088,9 +2090,10 @@ int tcp_mss_to_mtu(struct sock *sk, int mss)
->  	const struct inet_connection_sock *icsk =3D inet_csk(sk);
-> =20
->  	return mss +
-> -	      tp->tcp_header_len +
-> -	      icsk->icsk_ext_hdr_len +
-> -	      icsk->icsk_af_ops->net_header_len;
-> +		tp->tcp_header_len +
-> +		psp_sk_overhead(sk) +
-> +		icsk->icsk_ext_hdr_len +
-> +		icsk->icsk_af_ops->net_header_len;
->  }
->  EXPORT_SYMBOL(tcp_mss_to_mtu);
-> =20
-> @@ -2103,7 +2106,7 @@ void tcp_mtup_init(struct sock *sk)
-> =20
->  	icsk->icsk_mtup.enabled =3D READ_ONCE(net->ipv4.sysctl_tcp_mtu_probing)=
- > 1;
->  	icsk->icsk_mtup.search_high =3D tp->rx_opt.mss_clamp + sizeof(struct tc=
-phdr) +
-> -			       icsk->icsk_af_ops->net_header_len;
-> +		psp_sk_overhead(sk) + icsk->icsk_af_ops->net_header_len;
->  	icsk->icsk_mtup.search_low =3D tcp_mss_to_mtu(sk, READ_ONCE(net->ipv4.s=
-ysctl_tcp_base_mss));
->  	icsk->icsk_mtup.probe_size =3D 0;
->  	if (icsk->icsk_mtup.enabled)
-> @@ -2643,7 +2646,8 @@ static inline void tcp_mtu_check_reprobe(struct soc=
-k *sk)
->  		icsk->icsk_mtup.probe_size =3D 0;
->  		icsk->icsk_mtup.search_high =3D tp->rx_opt.mss_clamp +
->  			sizeof(struct tcphdr) +
-> -			icsk->icsk_af_ops->net_header_len;
-> +			icsk->icsk_af_ops->net_header_len +
-> +			psp_sk_overhead(sk);
->  		icsk->icsk_mtup.search_low =3D tcp_mss_to_mtu(sk, mss);
-> =20
->  		/* Update probe time stamp */
-> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
-> index 4b3536571c98..ea03fcffd147 100644
-> --- a/net/ipv6/ipv6_sockglue.c
-> +++ b/net/ipv6/ipv6_sockglue.c
-> @@ -48,7 +48,6 @@
->  #include <net/xfrm.h>
->  #include <net/compat.h>
->  #include <net/seg6.h>
-> -#include <net/psp.h>
-> =20
->  #include <linux/uaccess.h>
-> =20
-> @@ -109,7 +108,6 @@ struct ipv6_txoptions *ipv6_update_options(struct soc=
-k *sk,
->  			struct inet_connection_sock *icsk =3D inet_csk(sk);
-> =20
->  			icsk->icsk_ext_hdr_len =3D
-> -				psp_sk_overhead(sk) +
->  				opt->opt_flen + opt->opt_nflen;
->  			icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
->  		}
-> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-> index a6b1c42dd626..f2cba3fa3a23 100644
-> --- a/net/psp/psp_sock.c
-> +++ b/net/psp/psp_sock.c
-> @@ -243,7 +243,7 @@ psp_sock_set_tx_key(struct sock *sk, struct psp_dev *=
-psd, struct psp_assoc *pas,
->  	pas->upgrade_seq =3D tcp_sk(sk)->rcv_nxt;
-> =20
->  	icsk =3D inet_csk(sk);
-> -	icsk->icsk_ext_hdr_len +=3D psp_sk_overhead(sk);
-> +	icsk->icsk_mtup.search_high +=3D psp_sk_overhead(sk);
->  	icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
-> =20
->  	return err;
+On Wed, Nov 04, 2026 at 02:22:40PM +0000, Li, Yifan2 wrote:
+> On Mon, Nov 02, 2026, Bjorn Helgaas wrote:
+> > On Sat, Oct 31, 2026 at 10:19:28AM +0800, Li Yifan wrote:
+> ...
 
-Thanks. I agree with premise. I'd say this is an improvement over the
-way we have it now.=20
+> > > Reset the device while the upstream port still has PTM enabled,
+> > > so that the PTM Request gets a response. Then disable PTM and
+> > > bus mastering. With this order, a later reset sends no PTM
+> > > Request (tested on I226-LM). igc_ptp_stop() has already cleared
+> > > IGC_PTP_ENABLED, so no new PTM dialog starts after this reset.
+> > 
+> > IGC_PTP_ENABLED is just a software flag, and it appears to be
+> > related to PTP, not directly related to PTM, so there are some
+> > dots missing between it and hardware PTM messages.
+> 
+> Sorry, I skipped steps. In igc, PTM is used only for PTP cross
+> timestamps. The driver starts PTM dialogs only from the PTP code, by
+> setting the TRIG bit in PTM_CTRL:
+> - igc_ptp_reset() sets PTM_CTRL.EN and triggers the first dialog.
+> - igc_ptp_getcrosststamp() triggers dialogs for each cross timestamp
+>   request.
+> 
+> igc_ptp_stop() runs before the reset and stops both:
+> 1. igc_ptp_suspend() -> igc_ptm_stop() clears PTM_CTRL.EN.
+> 2. ptp_clock_unregister() removes the PHC and waits for the
+>    getcrosststamp() calls in progress, so no more calls come.
+> 3. It clears IGC_PTP_ENABLED. igc_reset() calls igc_ptp_reset(),
+>    which returns early when this flag is clear, so the reset path does
+>    not set PTM_CTRL.EN again.
+> 
+> So IGC_PTP_ENABLED does not control the hardware directly. It only
+> stops the driver from setting PTM_CTRL.EN again. v2 will describe
+> these steps.
 
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+I don't think the PCIe spec includes any generic way to trigger PTM
+dialogs, and in general, I think devices are permitted to initiate
+them at any time, independent of driver or other events.  So I think
+igc has device-specific knowledge that the NIC *only* initiates PTM
+dialogs when a driver sets the TRIG bit.  If so, I think that's worth
+a mention.
+
+I haven't worked through the steps you outlined, but maybe they
+explain why there's no PTM Request after the later reset.
+
+> > > If the interface is down,
+> > > unregister_netdev() does not reset the device, so reset it explicitly.
+> > > PTM is still disabled before bus mastering, as the related fix above
+> > > requires.
+> > 
+> > Which fix requires PTM disable before bus mastering disable?  And
+> > why is that required?
+> 
+> c080fe262f9e. Its commit message says: "Avoid an i225/i226 hardware
+> issue that PTM requests can be made even though PCI bus mastering is
+> not enabled. These unexpected PTM requests can crash some systems."
+> The order is a workaround for that I225/I226 hardware issue, not a
+> PCIe spec requirement. The commit message does not say more about
+> why the order matters, but when I checked with the hardware team, I
+> found an internal erratum for that issue.
+> 
+> I found c080fe262f9e when I searched the igc history for this PTM
+> problem. Our issue is different: after the device has done a PTM
+> dialog, the next CTRL.RST can make it send a PTM Request, even when
+> PTM Enable is clear.
+
+I think that part of the c080fe262f9e commit log is just wrong.  The
+fact that i225/i226 can make PTM requests when bus mastering is
+disabled is perfectly fine; it's not a hardware issue.  I *suspect*
+that only the pci_disable_ptm() in that commit is actually required.
+
+> > > Skip the reset if the device cannot respond: error recovery is in
+> > > progress or has failed (pci_channel_offline()), the device is gone
+> > > (pci_device_is_present()), or igc_rd32() has already reported "PCIe
+> > > link lost" (IGC_REMOVED()). Otherwise the reset accesses a device in
+> > > error recovery, or polls all-ones register values for about two
+> > > seconds until igc_disable_pcie_master() times out.
+> > >
+> > > Call pci_disable_ptm() only if PTM is enabled. pci_enable_ptm() can
+> > > fail in probe, for example if the upstream port does not support PTM,
+> > > and probe continues without PTM. The PCI/PTM change above also made
+> > > pci_disable_ptm() use a reference count: it decrements
+> > > dev->ptm_enable_cnt without a check, and then does the same for the
+> > > upstream port. Before, it did nothing if PTM was not enabled. After a
+> > > failed pci_enable_ptm(), the count of the device becomes negative and
+> > > stays negative after the driver unbinds. pcie_ptm_enabled() returns
+> > > true for a negative count, so after the next probe
+> > > igc_is_crosststamp_supported() reports PTM support and igc_ptp_reset()
+> > > starts PTM cycles on a device that does not have PTM enabled. Commit
+> > > 650f197d8ea6 ("idpf: disable PTM on probe failure and on remove") adds
+> > > the same check to idpf.
+> > 
+> > This sounds like a bug in the PCI core PTM support, i.e., maybe
+> > pci_disable_ptm() should be checking for PTM being enabled?
+> > Otherwise I'm afraid lots of drivers might trip over this.
+> 
+> Agree and thanks! I sent a PCI core fix:
+> https://lore.kernel.org/r/20261104121457.2108515-1-yifan2.li@intel.com
+
+Thanks for that!
+
+Bjorn
