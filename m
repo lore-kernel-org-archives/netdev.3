@@ -1,63 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793828960;
-	b=sSjmx5/YEvzuv91ecDaqU7yFYCF2vXVZoSCwvUHDRu9+UtgF10MaDIJ/9psGSZgCqaZh
-	 Tj8Imenlfxcn8ateoQQs8OkRs6E0fk4R9CIGJt+8g4q3nvTodB1sGEMpQB2bMM0Nid8tv
-	 DMY2kteSNryGdvcUNWlWnsrJm4WYKBV5ry5svXBq1Hm6XeP9P4xGHdXEn2vtyyfznxyW0
-	 IUwZsTp31iPmz9jkFHRcgsye/HMmxFy30garnV7nA9I90hRFZSBKC683QIHYMevn3X4TH
-	 xxmr5nw+46UN2mMurk2VPNIaM1JxvjIuUqXkOKo1ZdZotjUBq8HAeoo4FNUKp/OJ6mQ==
+	t=1793828984;
+	b=YdZ0kZk+1fU7YVO6QbcnuKjgqQdKiB7x04t8nLLoLuQXbBqsmyvlfAYrchWiOofHaX0y
+	 3hC5mCFIFzW5bmB/CD55sfiEVDhmW8FQ7e35EXh5XhHuEU61QbbmvVOlOZwGh0lD5dBuz
+	 /RNQ/6JloMqOSMEbdtNRFNPhibZ+pWYoEiYdQEe+lqN7BJex3RV6YR0ahIXBO+WKBF1+k
+	 XxUCyKe4OG211Sujgp20c4Xevtfv+ZTyr2//s2pE/jGgyGjwC3gFZXpXzH+qBZBQFqsfo
+	 FZiRGsZ1+irkb80xYTX994QBxMvUv1ef1LtSc3ODZSEmhaR1EHgyBPKLTadCqywqshg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793828960;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793828984;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=idAwm9qenugv2ZJbuj/+gZ5oOboDMCzCkLIVSojZF0s=;
-	b=w01F3miPwhVHZEKi2R6hvtQJLZikn+C2KCc+nmtDXkMHZzQiKjPvFJQwlEeg84jMumIH
-	 3W9/zwt9rTi97JGf7Vj317Q28RM38+VDGsTieh28Kc7iZmWSm963oVhvSVYNiSn4Jwlwd
-	 +7LUTnbfCeiHRQOFLuM7yeRNOE59wZYHQY0WB5iZAfniMxljhc1tPRk9XddgD/ComnSEG
-	 fLjp6en9akc88Pb+bIisKNvWXBhe+cqu6kQEWN/sXRmqAod8NyoIuAzY9xvqjzvqWd44F
-	 muvGOEfIKW/WMAEDanm1cUawKS/29qkdz+RGFx61ToeuFH4R6U1cD78uUNXNYcnmFoA==
+	bh=RinK2DTX0zCufv7dIR25sE/5ixQgGujYjwaK0erONYI=;
+	b=3Sl6kLuTxvoKcSc6+WtJjEUq6YTXz/8bWCtv/TISfyESgItVdAWRk/+uF5Y0fr6Fgs1U
+	 5dV3YsSH3PIuLkuf1K8WlFhtfAKJ9LbC+IFP6+7JTpK+ZHqL9p1hziV9fu1IGtMf5xMBk
+	 4G+r+eNTTkSD2wc4aRI3ZvzEBzWJX8uJUdk5RMIc9biDmFMQbnP/p5KKJIczFb8xFaJiQ
+	 604qFJXfXj65la0B8fIk7Dqhd99jY7gEg/7TPTttbVBZqmaHaHJSUhyRMlXdSy+/QeCSx
+	 SYFiN4ygVQRepIjxAcmKDEmc6c5gP0I+Zzj4nC2jlmRXHED/sboWYFnbmu+/dcDbjIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="hWp/+L2O";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YNQ6vUL3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AD56070743;
-	Wed,  4 Nov 2026 21:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543AA6070753;
+	Wed,  4 Nov 2026 21:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hWp/+L2O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8305C1F0093A;
-	Wed,  4 Nov 2026 21:49:19 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YNQ6vUL3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75AA1F0093A;
+	Wed,  4 Nov 2026 21:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793828959;
-	bh=idAwm9qenugv2ZJbuj/+gZ5oOboDMCzCkLIVSojZF0s=;
+	s=k20260515; t=1793828984;
+	bh=RinK2DTX0zCufv7dIR25sE/5ixQgGujYjwaK0erONYI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hWp/+L2O+GrExZF0k2VePlUL+pg1NMekQxFJr7U3KD1t6y1mY5XOvMpbxk05GNPlC
-	 9UbCTP3mCJkayDH426/DMbJKCFjS7PtKpW0l0ynhP5g/0kzgBfiqLrj/2ZQpu28Z8s
-	 DmwGd1NTfM5t+1+NuEAttZADduQJfOv6SJWB1IMPi8no7tPAKUyGYWscwLyRH2ocK8
-	 KAhVs/Y1bIWTcFW2velTna4t2eAIRms7eg281jHPQejQgTVPBo1l6y/ogEMHuFvLxX
-	 7zK8dh9l/MnBxDrcob503x50uJQayV4Dl1EU0Or28vdP4sFq7D3CfECGU8IPbWrkXb
-	 3QfbMZ+FwZFkw==
-Date: Wed, 4 Nov 2026 15:49:18 -0600
+	b=YNQ6vUL3MV8yghkVxSfC6S/qwKZDwCihc4OskGx/Z2L1Z/IBHFp34De/yDbKN8FLw
+	 vBIP91IcF/OEkuPRVBDIRtswEVVoDwdOKEbrT7mBTRvBwT86fjQiqpvNQzBPm9uhUv
+	 bmE57/nk/jMY993Tu181PsmCU/oZwAm1WIW2PJJl9jNmuwA+gGWPgrqtYB/ubxzaHX
+	 dGK//672vugxtQqwyRKv5e9xcgyt5DYcS9RmdkmpSQdXnJvYqNH5siAaXEfYWbbvjF
+	 9RcbWBF8p3vdMNmK0em9ieAe+kbPMQmb7qLl/hkGb/S+38WNsCTZ3xNMyKsYDMzGTE
+	 NzKF7HLbPY70g==
+Date: Wed, 4 Nov 2026 15:49:42 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jonas Jelonek <jonas@jonasjelonek.de>
-Cc: Sander Vanheule <sander@svanheule.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Russell Senior <russell@personaltelco.net>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH net-next 2/4] dt-bindings: net: pse-pd: realtek,pse-mcu:
- add VMAIN supply
-Message-ID: <179382895766.500957.15768243931044602700.robh@kernel.org>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
- <20261103220312.860629-3-jonas@jonasjelonek.de>
+To: Joseph Telaak <joseph@telaak.dev>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>, Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Vladimir Oltean <olteanv@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: dsa: lantiq,gswip: add
+ reset-gpios
+Message-ID: <179382898210.502893.8721462307288531503.robh@kernel.org>
+References: <20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev>
+ <20261104-mxl-gsw1xx-reset-v1-1-53839bf5c88e@telaak.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,21 +66,18 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103220312.860629-3-jonas@jonasjelonek.de>
+In-Reply-To: <20261104-mxl-gsw1xx-reset-v1-1-53839bf5c88e@telaak.dev>
 
 
-On Tue, 03 Nov 2026 22:03:10 +0000, Jonas Jelonek wrote:
-> Describe the VMAIN supply at the MCU controller level. The rail feeds the
-> PoE subsystem as a whole rather than an individual PI. Its regulator power
-> budget defines the aggregate limit programmed into the MCU.
+On Wed, 04 Nov 2026 02:15:47 -0500, Joseph Telaak wrote:
+> The standalone GSW1xx switches have a hardware reset input, and boards
+> wire it to a SoC GPIO. Allow describing it. The SoC-integrated GSWIP
+> variants have no such pin.
 > 
-> Require a finite regulator power budget dedicated to this MCU, representing
-> the PoE power allocation of the system.
-> 
-> Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
+> Signed-off-by: Joseph Telaak <joseph@telaak.dev>
 > ---
->  .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml          | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
 
 Acked-by: Rob Herring (Arm) <robh@kernel.org>
