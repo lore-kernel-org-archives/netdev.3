@@ -1,105 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.182
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793809478;
-	b=K0JPJ9r2Byefz709cgmVc/ZoLYh/cMRyr190hRNrBh7WRnzgCDpVte5t/PvK62MmrgmM
-	 qeiasZeThoRr/COUFO76j0hXJ4Pj/O38bdS2SrLD1d60CwuQTvKRA9ouxET8kNIMzEOLW
-	 gwUH/7IKhalGZD5jD7AG8pCxVgihUIAqx+zP4tHZ7yRSwl7I2WnloELk9/HDEEe784I4p
-	 ex292ShV7cJbLuKv0VquPLn0VxWXVgln6Fh3jTbQWg/Jm4W8Kamy9vsMUNKBVoDQdmQIE
-	 xI7m8eFHfO6nSO/scJMKtStVwN9Hm/glwALj5vp+fAeAWv8e7MZgxUtcb5euSwNJ4Eg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809478;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=ytwtwFXLfZthSRCPbGLzVPAFTTC4VWn/TZg3jkbm7sA=;
-	b=kaK4CPQayG1INuQpR12757wj8oeNLGyZ5KMjDx1Vg66F8zUChUbh0MWdBE7uY/Ee+Gr2
-	 ii7UYwT0LjCs2SKeiOf7/Uf9u+I0DesEy5n4mpQrkRg9JmyK46NsTLvztm61g8d1AeuRN
-	 NwGdpET8NJSP92MZHoIxmKtVGwxn4XKRYraC9/Kfvqfs16fs8PPJEsRPu6LZR/PJw5Y5+
-	 jbu56fmZwwPDy5OMrXtXV8vrvLWL5YoDXqQvg7egVyCF59+X3Q7coyi05LyUXWZuLHxJA
-	 GOdjguUm5hxSbfjZmeJ6CewBk88A5gNgxXXxDmA/OCrfhahFPNctQMBSlYBD1pRYoEw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YG8tym7C;
-	arc=none smtp.remote-ip=209.85.221.182
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793809605;
+	b=QmwDsYYB7FWzMsY3e4kZgUe6KLJ0OiaXUSt3RB8KjgW6c8OHhhH6/mIHBGB4tKsmajKT
+	 wN2laiSaJixycawP8pS38OLUVMwMDijRl244q8fjvpTOzxgY69feFiQGgJEAvtwhwFPNq
+	 zK4qksoQ9EKCCIBJam0sQjVo/F3wOMT0RL5RCAXZHBG1fAApdFudX1KuldMrcQoAhCixS
+	 +CG6BE4jQBUKLLP0aE4LS9mXrtue+MDoUN88ZbF81bDrnBtmwzs+ujd0SaWVJlocto7FZ
+	 hjZpR12NjqNSjZxvssV+mXfF29nQOV3s5tNebzfXX0mseMOS2TvmyEOsx3q1dbwWuew==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793809605;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=XqcOSoI2kRENMhOfGA/ODIWysXZLeFgrpZu657FzjSs=;
+	b=nppq6DXj9zKyS4PkzVV6eqSBbLQjv6fKGgh09JQmfc3/16KU6MtkaIP0g7eimw+vRJB3
+	 b0EZrAc6waFZr5JlbTJOZynVJeqKqhzzuIp1F0nq5Q5Cd2se+RFhL2Dg28HmTcC/UjriK
+	 ju6hCzlOfXv8JS349Ho23mSM/7CxU0iVbyZegy1F9LuLhiRoM+JK4Jc/5CAfNXlEM3iKW
+	 IgwJ4OLnWVAUm3jGACtS+zq4cWH6Sx9UqRXuO4cd79m4QsnKZjWi5j7ocYBOfMhmfVsGL
+	 hXpoiSBWEN12BS5GgPbeLSV1ah7qwJFBPUvbrnwKYF7fVO+91sBHWWUXA4evAs6JQTQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CM13evda;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90486606A326;
+	Wed,  4 Nov 2026 16:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CM13evda
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793809605;
+	b=WxZPwbTLs0KLHl+Y7/bDq5EeiH32pOSyFk4P09lXBH9dF2seUJu44p470se3wsI74tzT
+	 WcrquxfneGGiRT+n8IU1aHg6U1AuCa2emIBcA3cLfdUtaYcw9fpilDTtYTuh+9OnyGr07
+	 EeZb9wpSm3f4TDphS0BMzr3r1Q8i6qZLk3Yjp4Cg4CoCx/5hCML9aHELHpWOmm9a00lZL
+	 j+OBnXWZOUmfGHBgqeQhHUtNoXHRGVsMjy7k05+9m3YtsSsjCD3TOGLQnHUJ7WqIaWTPY
+	 Ex6KQ2cCpp1aTFS9+cMvjDEQEiucO/K2EI6oqsug9RjD9azs3fGXcLRM4EwPLmQUIww==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793809605;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=XqcOSoI2kRENMhOfGA/ODIWysXZLeFgrpZu657FzjSs=;
+	b=NNbH7XPwzJfIQjpan58x1x/Hrab8LGKgPFEytOcIfBePGX5XMDMkyMmBBmlKFQs4/+T4
+	 pOtx2a4bvpbVSAN0dzXNJlHzvEHBKnmo9tbmXwoZjYB659YpBmbNMzQZIDm5KBDBSqGWP
+	 BgM/s3udsrf2igTOTUfntD0Rmv7SLiUXLB+Ei5w6X9TlvMCQfEnfbhp7vuoFmhHLMookp
+	 8ZGAn59if6nEwjzxyTC8++mYo3ucsLBmUciRXuqL2Dm7+xFI/MRQXanbIkDM0ZB6xZCMG
+	 gIht11bAi8S7bcfSDb0hTPkzeuMqx5iw9sEkHrNKGho/r2M+zvYb7cRaeik1ksqv6zQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101D4606AAC0
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:24:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 101D4606AAC0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YG8tym7C
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5ea969fafeeso322437e0c.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:24:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793809477; x=1794414277; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ytwtwFXLfZthSRCPbGLzVPAFTTC4VWn/TZg3jkbm7sA=;
-        b=YG8tym7CgxkptPrRM6N4vI9Gyw/H3NoPmUF6ldaEapb8yldmVRDFMtRHPdRoVvoN1x
-         9xdfu41I9MYWb+Lo5HogJNk77o4Bohx4wr+AxYoH5AHAanovuzx/IgLACdA6XBXJG78f
-         QJk+qGi+nCgLMkVXevjQdDC1jj0VnDEljQyr7k4A6M32DEkBc2sHeeqxl/BTjichsAeM
-         meBpm6IjbXGLTzgKKVKbUDMhBK231VUSLvlF0KM/3vfFA/FTL5gvOpi+7Rn1f9OPYt2V
-         16CG/4YC1T2KdBQJs/8F8Ny+Ciicqh7asHnjU2nziV/U9v0PuZN9KQWkx69OdkxedJGD
-         FBBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793809477; x=1794414277;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ytwtwFXLfZthSRCPbGLzVPAFTTC4VWn/TZg3jkbm7sA=;
-        b=odnI7kX1MdEsafGY/H/NVhpy36kolRi+kDKKyN3j4bDOMRYx9tVgZ6tPODdsGEORx/
-         N2tWprwAhdHkm31oTC4HSLIclROEhD72oCKFfNSyc/EPw+Nz+rlu1ZU9XpFkBIzwhODI
-         Do7nmQivGtxvITECID++PTOmzbD3pDIoobbgd8eO6Qs0uy1lD7iaMsswk7rBMCGKAFwQ
-         oTQIH3ixzbyhrAOlXb2LbJ3eEgBOskgtdRIt1eN9ztxkHkqtbXpDsPqsESQxL8O95h5I
-         ByW63ZDxeskYuQv9t2VWiCn5HgfDY1Pa6BYhnVOEENkPb1/j9pApI7BgFYFwwMrMy/Eq
-         KerA==
-X-Forwarded-Encrypted: i=1; AKwUvBy/NorHC8Q3fk6g8msOfO9TJ7ykHpqHqGDrKhkeIxRlRt0NXFE1qkJ7+s2PXpzi/gnPrj22Gik=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9s+p0iFoaqOG1b637pAPcImqagZZbldAbQz5glt3j4/YQQ5yMe
-	wsjhMSXrD1w/D5FCd9URZOYDSX+9bO8Ev7VdrPed1oWOzurs+LkDymSQ
-X-Gm-Gg: AYBFou3MW31kVYILJPqEvnafEPzXd4ue1Y5h7GDsxCKzHU1pJBRY2pdRjf+W3v5ihG5
-	48h5F72Zq/oho2ywr/nzf2q22oaMB7w8yN46wDqETJyukIo17mUBTpZ6ncgy+YWZVmpLnxAmNUT
-	Af1pDwOdF96AfsKBZ1edbcdsk43vCWvwBE+GzBDgZZJeN5e+KzieQNh0qCGhrpo0SRgt/w+OQO6
-	tDsVnwWSTgHU2njK7kCNvJ2Zz9mH8Nm1NhZmogOGZ1c6tU7ATUdgc2gK8lj3mCHSGRpe5H8weQ6
-	oYOTTSP4+q+o9CoOMfENvVFQo8FH5uCaJWd6l+oREvn1ZeaFbUFj+/MVvo7CjQxrJKeiNbDqw8a
-	NPjO7UzCtVuvq2bp8KhQhyBKCx1Azx3L9l76FOXplfMdxReR5LSQ/l0xDAXUqb3gII0hzvyt8z+
-	kc1789kSQudvWuMlqMom71UJ3Tyi3O5xGl8CQK2YJgsYcooIbd2mcHsmoBZistzr45CFoaLtDwS
-	23Eh/poEWCDvq1eQ3bV3wacoqevDwgqvxIce6qrxL5Da+DU+3cCVo96TxIdJ5r137xLbUdpYi5M
-	VaUORM6VE/dXtJn2mW41UtvtJOeiBn9ZpTH4574P54rtd6G7mHVw2qnxwLX+VrGzRnU+fDNYDBS
-	PFTpx5aacWbTnCtvLqSMfa828yqnYLD76OPbCCyDfxmZbO2iDDH+1r0JNxH6xhyCLYFOsp7o=
-X-Received: by 2002:a05:6102:1623:b0:7a6:a24e:8140 with SMTP id ada2fe7eead31-7d072c2ba18mr5773758137.14.1793809476799;
-        Wed, 04 Nov 2026 08:24:36 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fe2d5fesm1891241137.7.2026.11.04.08.24.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 08:24:35 -0800 (PST)
-Date: Wed, 04 Nov 2026 11:24:34 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Alexander Duyck <alexander.duyck@gmail.com>, 
- netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- edumazet@google.com, 
- horms@kernel.org, 
- kernel-team@meta.com, 
- kuba@kernel.org, 
- tactii@gmail.com
-Message-ID: <willemdebruijn.kernel.1f1cead288fc2@gmail.com>
-In-Reply-To: <ce3e6832-ca9f-4e91-8302-b5bd7cf2f178@redhat.com>
-References: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
- <willemdebruijn.kernel.2de9d4f8c5034@gmail.com>
- <ce3e6832-ca9f-4e91-8302-b5bd7cf2f178@redhat.com>
-Subject: Re: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other than
- fraglist
+	by smtp.kernel.org (Postfix) with ESMTPS id B45F11F000C1;
+	Wed,  4 Nov 2026 16:26:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793809605;
+	bh=XqcOSoI2kRENMhOfGA/ODIWysXZLeFgrpZu657FzjSs=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=CM13evdaMJmOZ/jza3wRt04swqYZGmtAK3y2WcUtsY/MgxRFQVipTGnzvkFwlj1I8
+	 VsU3wwImJsiWAsXZDVB9dUB0ExaApWNna0zqOwUhGmQ18PwDszl1TyaQdRtPucoPt2
+	 HDLXYRPa8fRQOywziLUJZcWGZC7c4mi8Q8tjj9/eis6O7Fwu1nQPfRTLFL8qLocTDM
+	 mjrQRFLg9LxFyjDNX2+SJHm92HHsnFh775dE5sbCE6Jdd5LgA+rIMTTbXN5NQczRmg
+	 1TNWzqMUEmHiJwG2FbVQtLzHEaPEHAUbKMRlPjuKS+5WPOSg9MGYJD+8hCz6TRBCUx
+	 SK4fR2wZOg4Ew==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 13AC946EB7;
+	Wed,  4 Nov 2026 16:26:44 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Wed, 04 Nov 2026 17:26:43 +0100
+Subject: [PATCH net v3] vsock/virtio: clear vqs[] to avoid a UAF on a
+ failed PM restore
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,140 +83,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQQ7CIBAF0Ks0sxYD1IK68h7GBYXBooYaaImm6
+ d2luOnGuPyTP+9PEDE4jHCsJgiYXHS9z6HeVKA75a9InMkZOOWCUcpIir2+k4Bx6AOSUVkS0Rv
+ CrJb1QVjFWgP5+RnQuleBz+BxgMv3GMf2hnpYyKXWucV5l/nESvnfUmKEkcYoQa2ksqHihA+jA
+ m4NlpHEVwzf/2R4ZoRslDLCKMl2a2ae5w9qgSuWGgEAAA==
+X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793809603; l=3366;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=M5xaSNmFTKxhlPUeiNqMrmM7Ti9uva3s+Lictxc3xSk=;
+ b=WiOH3gK7gWMGtImU9UnXdRgEZeOga4gZyBeLDnXYU6u/5UOadx+GaGWSQtbgVTmXTQcBfTXY9
+ PGRLQ/f248gDMYpfGRy39AwTlpbiJWq423G3xb7DftydlGoHe0CV4/S
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
 Content-Transfer-Encoding: 7bit
 
-Paolo Abeni wrote:
-> On 11/4/26 03:51, Willem de Bruijn wrote:
-> > Alexander Duyck wrote:
-> >> From: Alexander Duyck <alexanderduyck@fb.com>
-> >>
-> >> The netif_needs_gso function lets a GSO skb reach the device unsegmented
-> >> when it is CHECKSUM_PARTIAL or CHECKSUM_UNNECESSARY. The second case was
-> >> added for FCoE, whose transmit path marked CRC offload that way at the
-> >> time. Commit 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC
-> >> offload") moved FCoE back to CHECKSUM_PARTIAL but left the exemption in
-> >> place, with nothing left that needed it. Fraglist GSO, added later, is
-> >> its only user today, as its segments already carry valid checksums.
-> >>
-> >> A TCP GSO skb can still arrive as CHECKSUM_UNNECESSARY without being
-> >> fraglist. Hardware LRO builds its aggregates that way, for example mlx5
-> >> sets SKB_GSO_TCPV4 or SKB_GSO_TCPV6 and CHECKSUM_UNNECESSARY, without
-> >> SKB_GSO_DODGY. IP forwarding and bridging turn LRO off, but a tc mirred
-> >> redirect does not, so such an skb can be sent out another device. It
-> >> has no csum_start and its TCP checksum field is whatever the aggregate
-> >> left there. Drivers that only set up TSO for CHECKSUM_PARTIAL, such as
-> >> fbnic, i40e and ice, then send the whole skb as one oversized frame
-> >> with a bad checksum.
-> >>
-> >> Have the validate_xmit_skb function mark any CHECKSUM_UNNECESSARY GSO
-> >> skb other than fraglist as CHECKSUM_NONE, which means the same on
-> >> transmit. The netif_needs_gso function then segments it in software,
-> > 
-> > tcp[46]_gso_segment convert to CHECKSUM_PARTIAL and then
-> > tcp_gso_segment will send it on to hardware if skb_gso_ok with
-> > NETIF_F_GSO_ROBUST.
-> > 
-> >> and the __skb_gso_segment function unshares the header before the
-> >> protocol code rewrites the L4 checksum field. The callers of the
-> >> netif_needs_gso function that decide on segmentation for themselves,
-> >> such as tap, are left as they are.
-> >>
-> >> Found by code inspection. In QEMU with an emulated fbnic, TCPv4 and
-> >> TCPv6 GSO skbs built this way each went out as a single 11 KB frame
-> >> with a bad TCP checksum. With this change they are segmented into
-> >> MSS-sized frames with valid checksums.
-> >>
-> >> Fixes: 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC offload")
-> >> Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
-> > 
-> > Reviewed-by: Willem de Bruijn <willemb@google.com>
-> > 
-> > With the above aside. Not important enough to respin imho.
-> > 
-> >> ---
-> >>   net/core/dev.c |   11 +++++++++++
-> >>   1 file changed, 11 insertions(+)
-> >>
-> >> diff --git a/net/core/dev.c b/net/core/dev.c
-> >> index f32353b0467c..28b4a652d037 100644
-> >> --- a/net/core/dev.c
-> >> +++ b/net/core/dev.c
-> >> @@ -4207,6 +4207,17 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
-> >>   	if (unlikely(!skb))
-> >>   		goto out_null;
-> >>   
-> >> +	/* Only fraglist GSO, whose segments already carry valid checksums,
-> >> +	 * can be handed to a device as CHECKSUM_UNNECESSARY. Any other GSO
-> >> +	 * skb has no csum_start for the device to segment from. NONE means
-> >> +	 * the same on transmit, and has netif_needs_gso() segment it in
-> >> +	 * software.
-> >> +	 */
-> >> +	if (unlikely(skb->ip_summed == CHECKSUM_UNNECESSARY &&
-> >> +		     skb_is_gso(skb) &&
-> >> +		     !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
-> >> +		skb->ip_summed = CHECKSUM_NONE;
-> >> +
-> > 
-> > It's unfortunate that we need to add yet another branch in the hot path.
-> > But I also do not see a good alternative.
-> I understand fraglist GSO has some use-case, but I'm really wondering if
-> it's really worthy the pain?
-> 
-> I'll personally think we should consider removing it entirely.
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-If non-fraglist TSO packets with CHECKSUM_UNNECESSARY can be built and
-drivers are incapable of handling them, this has to be fixed up.
+virtio_vsock_vqs_del() frees the virtqueues but leaves vsock->vqs[]
+pointing at them. If virtio_vsock_restore() then fails, the driver
+stays bound with a dangling vqs[], and the next freeze or unbind
+passes a freed virtqueue to virtqueue_detach_unused_buf():
 
-The GSO stack trick of fixing up csum_start/csum_off and then handing off
-the TSO packet to the driver is a neat solution.
+  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+   virtio_vsock_remove
+  Freed by task ...:
+   vp_del_vqs
+   virtio_vsock_freeze
 
-Though that currently only works for TSO, not yet for USO.
+Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
+early from virtio_vsock_vqs_del() when vqs[] is empty: a second
+del_vqs() would free virtio-mmio's IRQ again ("Trying to free
+already-free IRQ").
 
-Apparently with a bit deeper restructuring the check can be added without
-additional overhead to the common hot path:
+Found with the help of Anthropic's Claude and reproduced on virtio-pci
+by failing the restore with failslab; the virtio-mmio IRQ issue was
+found by the netdev Sashiko review. With this patch neither report
+appears on virtio-pci or virtio-mmio guests, and the vsock vmtest.sh
+single-VM tests pass. A find_vqs() failure after some virtqueues were
+set up was not exercised.
 
-+/* Like netif_needs_gso(), but only fraglist GSO, whose segments already
-+ * carry valid checksums, may reach the device as CHECKSUM_UNNECESSARY.
-+ * Any other GSO skb has no csum_start for the device to segment from.
-+ *
-+ * The extra test sits behind skb_is_gso() and ip_summed != CHECKSUM_PARTIAL,
-+ * which netif_needs_gso() evaluates anyway, so non-GSO and regular
-+ * CHECKSUM_PARTIAL GSO skbs see no additional branches.
-+ */
-+static bool validate_xmit_needs_gso(const struct sk_buff *skb,
-+                                   netdev_features_t features)
-+{
-+       if (!skb_is_gso(skb))
-+               return false;
-+       if (!skb_gso_ok(skb, features))
-+               return true;
-+       if (likely(skb->ip_summed == CHECKSUM_PARTIAL))
-+               return false;
-+       return skb->ip_summed != CHECKSUM_UNNECESSARY ||
-+              !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST);
-+}
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+Changes in v3:
+- Shorten the commit message (Stefano, Michael).
+- Drop the two comments on clearing vqs[] (Bobby) and shorten the
+  remaining one.
+- Drop the tool note below "---"; it is in the commit message (Stefano).
+- Comment changes only; not rebuilt or retested.
+- Link to v2: https://patch.msgid.link/20261028-vsock-restore-uaf-send-v2-1-675aad6da714@eldare.de
+---
+ net/vmw_vsock/virtio_transport.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..ffe7cd93463d 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -714,8 +714,10 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
++		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ 		return ret;
++	}
+ 
+ 	virtio_vsock_update_guest_cid(vsock);
+ 
+@@ -781,6 +783,14 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 	 */
+ 	virtio_reset_device(vdev);
+ 
++	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
 +
-
-@@ -4222,10 +4243,18 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
-        if (unlikely(!skb))
-                goto out_null;
-
--       if (netif_needs_gso(skb, features)) {
-+       if (validate_xmit_needs_gso(skb, features)) {
-                unsigned int max_segs = 0;
-                struct sk_buff *segs;
-
-+               /* NONE means the same as UNNECESSARY on transmit, but has
-+                * __skb_gso_segment() unshare the header before the protocol
-+                * GSO code rewrites the L4 checksum and sets CHECKSUM_PARTIAL.
-+                */
-+               if (skb->ip_summed == CHECKSUM_UNNECESSARY &&
-+                   !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
-+                       skb->ip_summed = CHECKSUM_NONE;
++	/* After a failed restore no virtqueues are live, and a second
++	 * del_vqs() would free virtio-mmio's IRQ again.
++	 */
++	if (!vsock->vqs[VSOCK_VQ_RX])
++		return;
 +
-                if (unlikely(!gso_within_dev_limits(skb, dev)))
-                        max_segs = skb_gso_output_max_segs(skb, dev);
+ 	mutex_lock(&vsock->rx_lock);
+ 	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+ 		kfree_skb(skb);
+@@ -791,10 +801,10 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 		kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
+ 
+-	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+-
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
++
++	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ }
+ 
+ static int virtio_vsock_probe(struct virtio_device *vdev)
+
+---
+base-commit: 363c8c79220d0db4d65dcd570529ddda15067cb5
+change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
 
 
