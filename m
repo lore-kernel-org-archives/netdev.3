@@ -1,100 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793811109;
-	b=CEojni4D8N8eMS5NtbpR3iNMUsdtHmeRzRc4yhv+alHPUgsF3f+GtbBmSz2vY3Go/Wgh
-	 doVAjJxGfMhLZatCf7e7SjItMbzKfJqpXLgOdPVPJ43aZcxLNt8wkSCZLQeB1B4tZsWYu
-	 VEbXWOGg2Lp0sYuuMWSb+4YFHuoW8pA1V8eZESv+Oi1+PJXfHTYqyQlb8DBNmcJKhsibu
-	 4z+/2pGjfIb37uDnXJX7Ps8oPqRtLIQQHsxI/zhBhdPfcQFpukgrr23WPz+ID6a0GXG1N
-	 27AnY3BmYWory6ng2BwBL1oQnGFGmmgTMnQ+CGTwvGH+McyTyAj9+Ranm2fNRDa2BGw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811109;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793811144;
+	b=qDAwXeGq0M8LnoGj/3UgoOQeIRCLf2REBmT6JETxbxUl0JgBrxQlP1NzH+4/0EJePJvB
+	 HvwtWGz8G4opZrcH2mgqDzy0dQOYu/w4kNi7Wj/UwQUpw1D9c1yqhE6qeWGK2bZ6Xejcv
+	 1QR80HJgZqv0KqLeSRBxM3cGagkSiDB1okSyEog5uiN5t/80Q1yPBtPYy2Pb0Ffj/HpFc
+	 LjO1QXI1uFNnuyly2iw4QGF224W6LfmR4z4TOM4tq4yuT8b2CTgQ2MEzKYUh4sRi5cCHy
+	 e0AgpoTG5dPMCv4cIP8Kv5fiid4t3wYFCAYqSQwMAMbH88AEpXWQ8fExFao8y9i3YOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793811144;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
-	b=JX+GTIHTqY8kSsNJfR6it18yK8UOobPk5/SAU/MCJuGkQLJUppAZ5CUcZtkAdQj/rTct
-	 x3MRMB5Kw6UIn1KRRDBXsOvAQGfqfqB1d3UjkNu324WYkKgAAIbYWu57G4416G/X2ug3t
-	 k5PK6fsu2LLSOL4wkfHGUW4VtEyf332pcCdEy5SmEwnUxJ7tzyxc5JIRgLruXu9L3MxPo
-	 XwO1VxzVilKn3pwIZDyM5St03f2on4JKNDGjbTxIJVArJdIf4A+atIec4r4tQYBGrcL9p
-	 yuWxxtlWwdMT7zgBefMYz1KHprSr7Ba2mlCBXzayG/vzAyiA3mWyrpcwS+cJYMrC4kg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=mDQelrr4Kh/Jq4lqD8Bd1ygw8a8v5DRiulkfJQImUaA=;
+	b=vfutptBcigkTVSo2Vz0TnfZYKXI6lz3hu2vKJ5kysdhhR7RWCE7K2xZzgH8Mmf325wVE
+	 7ZB43TucHP5MGkdU+b4XBU4CcL6qM9AkLz79MG3vwDaFxEYqHcArhZdbxIw0BAqN20IzW
+	 Kok/bdR53+kTzeRArLwYuwUdm+pfevgEk+GjH5twg22uizY8rC3aK/cCwEsNCHfzWvBGR
+	 FVk1m2wmTrXHzMAFNJeO8HIQ+WlhUo98scr3bQxXRGK33djtXHXCnZPMwFiVQmkT1qPwK
+	 SIotmWe3ukHqX6gsRTjJqEUptLKEWJaz2BPyDEberYPPCwL0KBnpRHU+y2H7/o7Q11Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sUiapWpU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kvAlMHA9;
+	arc=none smtp.remote-ip=209.85.215.173
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F3B606D815
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:51:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24F3B606D815
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D0E606D81F
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:52:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67D0E606D81F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sUiapWpU
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3ab39af88aeso12070991fa.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:51:48 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793811107; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oz9+UMM3CVVHvVOcOat9C56cuvh8H55mR728vHJvjN7Wh+RzLxD1IWQ1yMPCHzmqAI
-         Lx8/dhthXUi723U/2DoNyal63nTMIUdtBm6Q/SUm0QHiBRzZVBX0vUymDW39hPUPjX0y
-         KTUCNjuTolBZxXdwGFY2q4Yd0kCDpowJcQxf5w4PmTuWzhXpWKW6qvswZKvIy7d69xPx
-         wskZBqIaq5gXgBfGqZFMWQQKRr+5V51icJkDFHpVVWYJB5+FKW2GDGeIrSi6ZEnsevfq
-         Yml8q6qZkpDC8/Mq372i7iiKlraiHw3CndlGD1E/xLWxuWM/zR5OekxdK+yoezuERVyq
-         Ummw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
-        fh=S8qEIF54J7KXqDYRJldDk7Oklc6zicKUxLni5mFZ4BI=;
-        b=podv5qVpTvmjbfbN3GkFPrSTTlufmbvt/hhaLcUTtxxBRSXVTyJfj3E9IxKfYcjDmI
-         sg/Ziw9jxtQk3Tay3xSFYr+OOWKQJL3GMl490CwGgER2DbkNq73SpgChqMjWMl5QCYSK
-         H1rM8KUVk3pD1GKOxdLNCpIlvv6k1jioxFD0dGKnI4XFlQY95klFSEFgpn9i7AgBxjJo
-         Js4AiaST6dznud/L25oS1TksmhHBrwSmKz69PaZawOS33pa67vhYZQUgb5/BHhAiy3ar
-         CbZRY/JbzAznLA7ARBjBVe9ncQxC487FqTqYg7LUhUpQhsGL6jd6b7oKzN4CDysFufXp
-         R8uA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kvAlMHA9
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cdb2e0062bbso397167a12.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:52:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793811107; x=1794415907; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
-        b=sUiapWpU33bD3PNfwz+SBizdNBHjR8BaT2fJ+5L6GKHpvy4cePKi0+JskuCdR5R2XV
-         O8PcNGys79ueKjGy9WV3w8+Tfi/I0LG5OG92ifyrQiqmjmiu5DujThDT4ncnuivMWGPk
-         tzsqX4w1JkWt/TSznuHAkoayvQaBA5ItudR2uVMIkkPUUTXutnNzYlG7VmplIceW92iU
-         8CApQT1241sCxEXZ8HrmApcO2i4ouqe7QGrvQsy+avtrB3OlKBKZQMStrS7OSDcXjaJP
-         fIuZh2Ghw9Bav09F9QN7W1Ecttt5+QxLEHs9wHvPRvsslhr0QG4WcMrq63TN7+Jr9s2i
-         C9oQ==
+        d=gmail.com; s=20260707; t=1793811144; x=1794415944; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=mDQelrr4Kh/Jq4lqD8Bd1ygw8a8v5DRiulkfJQImUaA=;
+        b=kvAlMHA9YpLVp95q/S6+rfIKB0rxBFrfLZZgcxl9tkXcKRkQztUBTwOrAwv1bYnEZh
+         qDB1aza7sd7sCkFjHBgbTr5ONi7xasnnWnCMi3ZChAbqAIz43AtJgQH3k5eE7vHhu81s
+         a/gxOxiNC2yAXPRow31/dN3IIgNd3T99tw940mkHjn4kRm7FfmfUBHFenV0rEbEQyWQL
+         FhiKhaB64QHMEzInvtZs2J9qRFs2LQzbdCgHc3iKCCKThQI3QIo4EmxmOra02M2gpiiQ
+         rfTN9Xgt5EltN0laDIAcJhL3bE61iNfw35jRRqPFxcu2WlCzSTaKzJ7BnZOYk1NW8jyC
+         2NYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793811107; x=1794415907;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793811144; x=1794415944;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
-        b=np9D5bGOcQYF2BMqDAavwYWWckVoxJi7n0QoLg6nWAwx01C0m4nflIBG6r9ODTqJ7W
-         WclcFSIhQgoJtwNRMzbBt0kRR+eExIy27wr1gOc4+w9KEI2Xzb1K8PlgHVSwNJN/CfNn
-         VvI28HowoDIbG48l/UW+AcJ/VsmufnWgXl3HhymNeYlNcibEwCFYaRu/kOlIBzkP0L4t
-         3bU6ySt2nhRbsb1nZcTNIUQhI72Cwn9HyxmtxxpHAx/qp9gO+NjUUH7J31cKDCmo2P3K
-         ELp+hd6rGXR6R2XbnpEHWLEHGrjs1Hq/+U61SWNHllYMj2AyoGV1X9OV7Ko9Drxh7SnR
-         Wjxw==
-X-Forwarded-Encrypted: i=1; AKwUvBxVsUV2OQLvr9T+2pfj0+jTKFT2WAlbFZpnpU48iojUXdV8YUNVYHEbopNrADyyWMQCJNEHuTQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9UUIzj3xgdThMjHeWXsAa0yLbUtdpGuOfn/+j1zCIcGUBEmqrj
-	FlH1aALTn2HTBZbqAsqi98hgW0RQK7oMt1eQ6nZ6VVXf0o2XJyr+dwyK1oBfpZddY48HEfV5Moa
-	ojDDTPq5h+KbpUi8Uiy3+YvD5HVjCSjM=
-X-Gm-Gg: AYBFou1F2g+G74brxQNljyjCojKq9G6EjHlyBrFLTRX2Bqs/GOLOc7qdbAhsbixFpKF
-	4ZuynFA8U8ifX0vXgoOjP1hGk3MrNEQOET1O1H+kR0A+I1Td3TofAsS87wc/Sa4m7dAp7yLDdaO
-	VmYyAFiyyyPYl5d8GjkeHiVVUbTbDmp5mUiD/SAKOQOCWYwD2EDXYYh4N6Y7by9HRqEVBO/EgMI
-	BrBqS3FzGrciDmrFI8e/oL5us07Hsn33zJlm7M7W+70oYHfzRp76cPty1YUTWYaULCLekwN/d+o
-	bS1kEJuNS8xliLxwhCycC3tlfVq/7Uf6Ch1Xn2ZaqcrnCEkpJPla/et4oRA0Arkhw5W6er5vhNO
-	e8IMg/W5gVpzeE5U2fue7m/1kdB/tJfp2WZW2D6Esgsf/jXKyC1x3PjIwm5OL
-X-Received: by 2002:a2e:8a88:0:b0:3ab:4014:885f with SMTP id
- 38308e7fff4ca-3acb7ad2de7mr37137611fa.23.1793811106978; Wed, 04 Nov 2026
- 08:51:46 -0800 (PST)
+        bh=mDQelrr4Kh/Jq4lqD8Bd1ygw8a8v5DRiulkfJQImUaA=;
+        b=x/eFAmLbgn6idJOmlibVZNGnS5Ez4YckoLMItDK3tv9L/Ps2GiiP72b3LmbMMkBvAi
+         qfsLzFvGwXE1NwiTL2+UL/F3kmEX0UFXl7WD8HxOvd7GSvbop4BZCbLfvXs6D3j0gqPG
+         0ZBwpMCkIKOBETacqhnDJAnm+D5IJK7L46Jta5hDPcJCB7yRn7GT04ggQ69MemkFjpV9
+         MRvbgRkMiOiDqcFJaVNt3tZRVlWVV6w1zuOlkrJPp/0HIS94Nyd2lLveIeh/24xHyb7+
+         UqYgNvJtAM2H8s4Ix49jaSFy/LQYHHS0T6H5sAHvAnbgBKjHCfTB02V1SpsJcRvU85oW
+         bwIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwm63fSxLq9btjMB9EZj5q1ROIBKisl1kEeHwcGouOJT4t3rYc2yd+Ucjcd+6NbR/kFVosleys=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Wu2PiQP2f0gbUAhI3/jl//SaxbrAWG3rAflIjeYwwt9xa9n4O
+	ZYwyqbogfqUZ4TSK+73jCZHuHa8aLvJSZtAm2hudjgtEPFRtgImMokS6
+X-Gm-Gg: AYBFou3UOTgqf3VdPKZYoeGiqv/QpqChpD0Kr3urKBczGHO7EAFyqduAmWBLLAbhh0a
+	whdRifgHk+h33jNFXfie7b0bsqjnX/kvISxQ+2QlRN8itRIglCSkjGUacNcCws67KGgchtNdICf
+	Ccd3jnUPKbOj9bsanavMBWySjjI2CJn18QZtjqkFbAgQeYhneIqoKrS8mTCA4UlVI6J1GtTtJ4K
+	B2uSToFr7wegONoE5Hu/8O3YyBq28Hy7iThFHA4n4Z+8eYi34JditClraNeDN8I2nG0SdoB2hSC
+	6G0G6eAMUBJLW+TrOW2jyXnxVIUjza0oOnyjP31LZjuZS9AWqEPJrJ0M3sUfjKXpflrNZeED7zW
+	e6/OTm5vQV1D91BRvmqoLOlf+QmMw6/f+nUTLuiPEBKMZeePRI8yRmSn96b4kJRCvz6tD7vw+UV
+	1K0VxOlBs3thIiDXjhovHvfMx530o8jvkB/wzW7nUhGJxGj49ZMuOjbRgyUs/SD3TCeRruP5w4G
+	mudHEuPIFXxni6ok4ZMGzheGDMG7VslqK9lDFPR8SzkgLsCdTsF2aR9y0NOj4Q6uF3HNzc6Wi+a
+	lZudbjxarSzBQhvJD5J2bKtzwVeUcJ9Ar60awPkcYKRJliLrEf9dxhKCffdDBkjyZivzzhFAzNv
+	cfhotJpmWiRzYvMiWIht2km0DccUo8yyW8g==
+X-Received: by 2002:a17:90a:fc4d:b0:3b0:ac2c:1619 with SMTP id 98e67ed59e1d1-3b0ac2c19c0mr685175a91.39.1793811143452;
+        Wed, 04 Nov 2026 08:52:23 -0800 (PST)
+Received: from localhost ([153.61.198.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09445a7f6sm4685568a91.6.2026.11.04.08.52.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 08:52:22 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,53 +88,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261104013139.1341582-1-bobby.prani@gmail.com>
- <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org> <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
- <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org> <aus4ag1KxpuBNSP1@gremlin>
-In-Reply-To: <aus4ag1KxpuBNSP1@gremlin>
-From: Pranith Kumar <bobby.prani@gmail.com>
-Date: Wed, 4 Nov 2026 08:51:20 -0800
-X-Gm-Features: AclHuK8lUkRtT9DIM2v6hdb2JEoHz8N8QglBfCOcEbvQSbdRZXUQbv2xSsHG0dQ
-Message-ID: <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
- mapcount removal
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Richard Cochran <richardcochran@gmail.com>, 
-	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Nov 2026 16:52:22 +0000
+Message-Id: <DMMKZAEHX53I.49LHFPRSGLX4@gmail.com>
+Cc: <bpf@vger.kernel.org>, "network dev" <netdev@vger.kernel.org>
+Subject: Re: [PATCH net] net: reject a negative TCP header offset in
+ qdisc_pkt_len_segs_init()
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Paolo Abeni" <pabeni@redhat.com>, <sashiko-reviews@lists.linux.dev>
+X-Mailer: aerc 0.20.1-355-gf870624f6c37
+References: <20261101194433.2637113-1-alexei.starovoitov@gmail.com>
+ <sashiko-outbox-194018@kernel.org> <DML39PMNWP8Q.7K2P5T3AG8LP@gmail.com>
+ <f029172d-855b-4e93-8a86-d4aff72c9abb@redhat.com>
+In-Reply-To: <f029172d-855b-4e93-8a86-d4aff72c9abb@redhat.com>
 
-Hi Lorenzo,
-
-On Wed, Nov 4, 2026 at 5:55=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
+On Wed Nov 4, 2026 at 8:41 AM UTC, Paolo Abeni wrote:
+> On 11/2/26 23:46, Alexei Starovoitov wrote:
+>> On Mon, Nov 02, 2026 at 11:44 AM sashiko-bot@kernel.org <sashiko-bot@ker=
+nel.org> wrote:
+>>>> +		/* A header in front of skb->data gives a negative offset. */
+>>>> +		if ((int)hdr_len < 0 ||
+>>>> +		    !pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
+>>>>   			return SKB_DROP_REASON_SKB_BAD_GSO;
+>>>
+>>> [Severity: High]
+>>> Should the (int)hdr_len < 0 check be placed immediately after hdr_len i=
+s
+>>> computed rather than only inside the SKB_GSO_TCPV4 | SKB_GSO_TCPV6 bran=
+ch?
+>>=20
+>> No. It's already explained in the commit log.
+>>=20
+>>> When (int)hdr_len < -8, hdr_len + sizeof(struct udphdr) wraps to an
+>>> unsigned int in [0x80000008, 0xffffffff] (> INT_MAX), which triggers
+>>> DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in
+>>> include/linux/skbuff.h:pskb_may_pull_reason() before returning
+>>> SKB_DROP_REASON_SKB_BAD_GSO.
+>>=20
+>> Not a bug. That's CONFIG_DEBUG_NET only and the warn is right:
+>> the header is stale.
+>>=20
+>>> Can this write uh->len (and uh->check in bnxt_sw_udp_gso_xmit() and
+>>> enetc_tso_hdr_csum()) before the start of the header buffer when
+>>> skb_transport_offset(skb) < -4?
+>>=20
+>> No. The driver doesn't see this offset.
+>>=20
+>>> Third, for other GSO types (such as SKB_GSO_FRAGLIST, SKB_GSO_UDP,
+>>> SKB_GSO_SCTP, or SKB_GSO_ESP), hdr_len remains 2^32 - |offset| at the e=
+nd
+>>> of qdisc_pkt_len_segs_init():
+>>>
+>>> When (gso_segs - 1) * |offset| > skb->len, can qdisc_skb_cb(skb)->pkt_l=
+en
+>>> underflow in 32-bit unsigned arithmetic to ~4.29 GiB (exceeding
+>>> QDISC_PKT_LEN_MAX), causing deficit-based schedulers such as drr_dequeu=
+e()
+>>> and ets_dequeue() to spin in their deficit-refill loops?
+>>=20
+>> No.
 >
-> On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+> FTR the nipa sashiko instance dismissed the above concerns autonomously:
 >
-> I mean 1.54%, theoretically is even less convincing for me :)
-
-With reducing the strength of one barrier, I think this is a non-trivial ga=
-in.
-
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101194433.263711=
+3-1-alexei.starovoitov@gmail.com
 >
->
-> In any case for something touching a sensitive memory barrier operation t=
-o have
-> a stronger argument put forward for release ordering being suitable than =
-simply
-> stating it's fine in the commit message and updating a comment.
->
+> you can reasonably safely refer only to such instance when submitting
+> patches to net/net-next.
 
-Can you please explain what information is missing? I think the commit
-message has all the details of why release is sufficient instead of
-full barrier.
+Nice. I'll borrow your mechanism.
 
-Thanks,
---
-Pranith
