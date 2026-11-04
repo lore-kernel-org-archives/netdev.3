@@ -1,105 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793758257;
-	b=Y6MQrGy5ZVFxb3sGkMqzj6ntyT+Yy+vPBsQ1X99083MittiCbMthNQgPUGc/ABaYy66b
-	 yYpps65bhXZHmlDKz3dhbJPPjG2JqQTtBbmM5Hh+2tkbHITkYXp9u9X+o9pC765fesxLm
-	 Ro1H3G2+Tknz6Sh0d4+qleoAlBsj/kuy3kBk/4EZ6aQ64CVAN2/sg7QiU5GgLzpWKE13c
-	 Kdbj8NT1Ir9wT0GxbmhmW8I4E2VT1Xzm10Pe7/t6W6VdIQVU0squT9DCe/YgGFfXk3ras
-	 gmeklbwPSk3id6m4+LWXVNqEovKzxJiGWtmA4CE2FX1ztxunlo/a1+RvNcznXG5upsw==
+	t=1793758507;
+	b=dhohNaWzppahNCCXrww3nCyMJxrYgOagaA/r7c90G4J9yDmXZX4Z6m4gl0Ojf6XU7SUw
+	 R3IvjHPHgdKAUD+dGbhphzFk+cIEFG1WFGBP3Th9su0diXeQX4u+bPCPxHw1o+Yf164AN
+	 ivF5gJfFA4jQqOmIepu+fOGfhSbIgzhRxAzqasp1A12v7sGgTZTdw+6Ee+OWpsoAyQT+d
+	 fwq2fmT5o1V500k0K1KmHJyTU5hAu0SmXZ7s97ZJ7XXe5YzH0CWft9reYHOeL62HK6q5l
+	 2alIcCJahh4RrnvO9qtJkqXeFqtAfk+CY9AnvZOBMV/djfvQjsnnPG+BJNKdsCjznMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793758257;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=cU876HDDCHMexU03ZAhAifA645G7RjUz/Egex4hmXuI=;
-	b=iKko4HpIdzFtcga+ctmRolAjqL1QgcoRfkm4t0Kp6N7WJe2iPLrtyMLSfBbGqCI0G6eA
-	 MX3KnhX/tnc41tsqhfZdOaYpzyaHCbg2GodW4uuEdIQOrS1Xn/6rbJmLTPc7t2RempRA7
-	 Bjllyx4wiiywTx5GNreH8N2S+T+hgr88Md1IK5BDBxBeVXOy+1xxJuyRnDF3ecLO6pkSw
-	 z2kOjsRW2tjvt6CChhALe3TlKBvFJuZf2vg7J9+Y5ObjA++MwIIvA1EMwc/pgbRF3N595
-	 VlCZQvIsbyNQdV684FZlDq3nR+HMUJzPUMSrE1KIePZIgblFtJYpNQgT/eQnECDYYqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793758507;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=KCVoTIbXy96jCroV4C2G1A6meDs0e6KbH5onKp8a1a4=;
+	b=W4NO1XR9a81i3vXG07RNoKpw9krzYKqLnBHsbq7bDEhbONjtgjtxo9rQ+nX7pb5Qe9YE
+	 VGnDcGMBLf38xyzhJa+HVZ4TQrxN13NXzNjqvXZaenorrnPMYkYC1i4iX7XX1feth+KHW
+	 rhxb6ppZOKYbUGyxgx2nWm82suPY5QJP/O4AdeDHxkDxsNW9e3ELCmgvDb3gqTtfHxUX7
+	 Eypq40VAGL2cLmTO2HhpKT4Xt1Zt2U3I7ZWOHYxE1P9z8mtSkXuR8c66XPdCWmF+atf++
+	 Um9B6FZmA/qASJHWfpstVl4cN0a9XIaErTZR+DsO8LMhTTgMaYGgCU20DnzXXIss8mA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vAgke006;
-	arc=none smtp.remote-ip=209.85.219.43
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.21
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B927606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 02:10:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B927606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vAgke006
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91e7c847aceso2380596d6.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 18:10:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793758256; x=1794363056; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cU876HDDCHMexU03ZAhAifA645G7RjUz/Egex4hmXuI=;
-        b=vAgke006Ec3ktT817FXZata6HPLZzc8OLDzQBLfOSq5OFrxUEUgEw0PieS4DXE9Hq7
-         0bjk2uZCu6wJ3pZq1ADM8JlkUemr3qu808nLPS7K519Ey1PmiTlgHE/cGaHlNXhReSeS
-         9HLaZl1NZGEFMl5wP2W5oAgaMyxSWZf1GGUdIymzmkxRxqSQyQfrITc/GFvVHHz3lOZA
-         P8sTL3Gu+eA9lOLafSXwj6Ca8gDP3InTmC+o/66LjLxMy+JYUm0igR3Vus8YxKfW6HMW
-         JneyNWHoQdc9ZVgsjXkM1UCyYMdyOKCaTo6m+PPOyr7w28bZfCy9ogBM8GfWndG+2v3v
-         NGKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793758256; x=1794363056;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cU876HDDCHMexU03ZAhAifA645G7RjUz/Egex4hmXuI=;
-        b=p0e1sjtwOvqxTtL4G8e1Cn77dvDcgOn7HetiCJmWJxo4+NIHIR2/X6mblAVEluDJVR
-         fuy3Sp841xS08Uki1LE/wnyWo0R8OS8Fm3AxR6mBXRVw2aNwujginkMtwrUlFTlKgPpG
-         0n/N//8kc/5gqUSqqdpcx6LPtQuA9SiuwS7jRs3pjMmV3qHN0TRkXxyNWvjx3T4WKU0T
-         FVKHB8YL15OuTQxzYsaMiVm98AhLvbsI9L9xt+XB+MgrfrSb7z2WGjGjeZ4jxatbG8QF
-         +jJRoeBk0iHo5VvQfC8sbdp9PYbIu/RVVtbZNHLCcrnsRkb0AZapnTeHNF3JdvaN/Ap6
-         eFTw==
-X-Forwarded-Encrypted: i=1; AKwUvByX4WgZiU1edw9L1VK3PrZ+v/F2R97Rrixi6gvT9dtwWG/TBpkH2WV981jjx8rte9Bt+oX15+0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9wy+eswJ+PIGWadDydnUow+ixo5vceXjWPl18CUHHBOyQCDPqV
-	XSXYagspIEuOIlqdgVvVFT5fX+GcOy/m+r23ZvDlAbTuB1EFiivIQ1aB
-X-Gm-Gg: AYBFou2G2uY81nRNf1qiOGQe1UYfVCWluNZTg5CazZNW1GRW+gSlftQqE7IFJFF5hwu
-	mum3irURy2O++PF1YJRK9+sOuBDhB1uJtcN0KVwlFuwB3mH6xrDiLocmWUISfnrZit1mjJUH+yR
-	omTRsn0rDRhuegkPLNHshbuKb03J11Sa1VJuFV/viA8zYlQB2g58OFraoJj0XFNR9NPmZKIbPDI
-	7fguPrmgRGusNephtnAFCXlz6D3sZPuXlqPF5ELqYEk2+tZ5mqA6Fcl/kLW54pVkv18QZosN3cf
-	AW9MoVBP1kfy4h5GKUjHXCpE85T/iiC+BCHqcZlGLcAqX4Hc1Zglq4G0LkPrWbnED/ttMfNNSGB
-	zVPHKxbhYLZa9S8poKyzPOTQXKgryqFKoUydGkWNDwDV7obk1EOJJOp75cahak2OY98J+PKFLid
-	EeJSOZFspYYwEeLt6A3DZV/vF/o3FBAyTOBV76fuVQRUVh32mvOAhBCWSNZmBSj+BQAfjkt+vGe
-	hhanr6ICe/dOH3mVp4tWxmWqY7F8lcJ9e60XZfmp/wvx8emSP5pBB1i4yk7JpO/B55QCSUaWiar
-	VnYOFA3HCnUL0M/pTP8O7WnQm3gCr3657Zm+T2qF8TjNz/z2t8x0dXZT/sbSGYwvms2+b3//NmH
-	mngDtBdtpCUtcaFEBs/iWJf7yyhPA1rgZ8mQ0HTRVuM9Pm4xrn0apj8BM2962bgZwx3NIJy8=
-X-Received: by 2002:a05:6214:310f:b0:91c:61e9:7b68 with SMTP id 6a1803df08f44-91ca4b7ad25mr211563366d6.21.1793758256179;
-        Tue, 03 Nov 2026 18:10:56 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e7dfdfb5fsm6279506d6.16.2026.11.03.18.10.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 18:10:55 -0800 (PST)
-Date: Tue, 03 Nov 2026 21:10:54 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- netdev@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, 
- Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Hassan Sultan <hassansultan@google.com>, 
- virtualization@lists.linux.dev
-Message-ID: <willemdebruijn.kernel.316a1799578d9@gmail.com>
-In-Reply-To: <20261103203113.550604-3-edumazet@kernel.org>
-References: <20261103203113.550604-1-edumazet@kernel.org>
- <20261103203113.550604-3-edumazet@kernel.org>
-Subject: Re: [PATCH net 2/3] selftests: net: tuntap: fix UDP checksum length
- in build_udp_packet_csum()
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F76606A333;
+	Wed,  4 Nov 2026 02:15:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48F76606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowADXxf8ZlepqMHY+AA--.9580S2;
+	Wed, 04 Nov 2026 10:14:49 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Stefan Schmidt <stefan@datenfreihafen.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] ieee802154: atusb: drop the URB reference after a failed resubmit
+Date: Wed,  4 Nov 2026 02:14:58 +0000
+Message-Id: <20261104021458.1468481-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,50 +57,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXxf8ZlepqMHY+AA--.9580S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JryUKFWfKFW7Zw15Kw4UJwb_yoWkXFX_Kr
+	ySvF93Xry5CFsFk3W5AFsxZrWvk3ZFqFs3ZFWagayfJ3yYyF1I9F40yas8Gw4UGrsIvF9x
+	JwnxJr4Ut34SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTAYjsxI4VWkCwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
+	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
+	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
+	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+	Yx0E2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
+	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUIYiiDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgQBA2rqY4K7qwAAsx
 
-Eric Dumazet wrote:
-> build_udp_packet_csum() passes udph->len, which is in network byte
-> order, as the number of bytes to checksum. On little-endian hosts this
-> reads up to 64KB past the UDP header and computes a wrong checksum.
-> 
-> Existing callers did not crash only because they use packet buffers
-> of MAX_VNET_TUNNEL_PACKET_SZ bytes.
-> 
-> Use ntohs(udph->len), as tap.c does in its own build_udp_packet().
-> 
-> Fixes: a942fcd72e97 ("selftest: tun: Introduce tuntap_helpers.h header for TUN/TAP testing")
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+usb_get_from_anchor() returns the URB with a reference held by the
+caller.  When atusb_submit_rx_urb() fails, that reference is not consumed,
+and re-anchoring the URB takes an additional one.  The caller's reference
+is then never dropped.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Release it after putting the URB back on the idle anchor.
 
-> ---
->  tools/testing/selftests/net/tuntap_helpers.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/net/tuntap_helpers.h b/tools/testing/selftests/net/tuntap_helpers.h
-> index d6c0437136ec..ac9b2da57a6d 100644
-> --- a/tools/testing/selftests/net/tuntap_helpers.h
-> +++ b/tools/testing/selftests/net/tuntap_helpers.h
-> @@ -335,7 +335,7 @@ static inline void build_udp_packet_csum(uint8_t *buf, int family,
->  	sum += htons(IPPROTO_UDP) + udph->len;
->  
->  	if (!csum_off)
-> -		sum += add_csum(buf, udph->len);
-> +		sum += add_csum(buf, ntohs(udph->len));
->  
->  	udph->check = finish_ip_csum(sum);
+Fixes: 7490b008d123 ("ieee802154: add support for atusb transceiver")
+Cc: stable@vger.kernel.org
+Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/ieee802154/atusb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-If respinning: we probably should also do CSUM_MANGLED_0 conversion here.
-
-And to zero udph->check first. All existing callers do. But the calloc in
-patch 3/3 does not.
-
->  }
-> -- 
-> 2.53.0
-> 
-
+diff --git a/drivers/net/ieee802154/atusb.c b/drivers/net/ieee802154/atusb.c
+index 5f7fc4ee7a07..c924f17171f4 100644
+--- a/drivers/net/ieee802154/atusb.c
++++ b/drivers/net/ieee802154/atusb.c
+@@ -183,6 +183,7 @@ static void atusb_work_urbs(struct work_struct *work)
+ 	} while (!ret);
+ 
+ 	usb_anchor_urb(urb, &atusb->idle_urbs);
++	usb_free_urb(urb);
+ 	dev_warn_ratelimited(&usb_dev->dev,
+ 			     "atusb_in: can't allocate/submit URB (%d)\n", ret);
+ 	schedule_delayed_work(&atusb->work,
+-- 
+2.34.1
 
