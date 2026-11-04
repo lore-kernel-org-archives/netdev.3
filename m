@@ -1,123 +1,131 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793796285;
-	b=yGCP5VC9AePpXiWYOE8kASmcB4lpB8CbC+6y+jOzCxeK0Kbb8JgvY7pO/3BQerK4U9Sl
-	 MEFWBc/CovuqQB+Bb9lJdtUi2btq1zBOl1XiCZ2NaCxe88R+TCKTk7TYCyfZ5N4wOdJkp
-	 qIDBd2jeEUxd2yYXVkT0JFpGU4h8MHjgjmgY3f5xW1+gfkevd6dUwawNlXfRIHW60K6Mn
-	 e1ljMo4mnCeR5DE34T+XqgyR/abijpf4gd3GhpcjJ+SGfhhLoPPT2P1xv0UhloT3TqoRv
-	 uw7bf575Ep7jh3XARWeDhZ4VysYlZCj5cc3SfFloAfv610vqGf+c3hJ6NRbB7EhmPaQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793796285;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=Lpw21cJiJ9wruQZ4XIkQa5WxAYUj9rrJY9kVvdlbygk=;
-	b=3RFZvdo0/Zb80IpSwvUAgz0SsCwrJNXSZyQH8KYB9YqPNLpH77kT7kRZtGQXO2gUWYcl
-	 ZSOTZPQNiNoP529JWGVZ8vvMtNki1XlVObYwB3G/8mslxTMh9uLpUOTb7A6pdynVGYBoZ
-	 jlUobFuELqgw6cAZF/3R5SykGiJ4rjaPCUyd7RAprHwuqjcojvFMA9njoCbuCtomfwrBT
-	 umoHZRK4pqj9bonYneH5IL7kIDV4KlIoVlscbkavDVeAf1VDmlFEV+kXJvopjvaEQDjDk
-	 2afwMnBCrZ3wmRSVHzV0VMBzk236RbsRqIo8c85Y/Rl50TrrGithBN+M7T39Qdhn2sg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VrzyRa5y;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TIKOv8cM;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793796286;
+	b=Fk2V3lLY9YnNr2ydp/1YUa32j8ZC3axcfHCWzxkq4kd8KlZxVEvHtNl9jhk0X/m5cVPd
+	 +PI8imqG5YKfhf9PAALSXjWlzzs4XsicsYE8zFwgzBWB9ZPXZjGemOTv09QuRJKHLKhPn
+	 BYoUlkILU+u1eUshxVb/hchDwc2gQnX58ogwPXd036ktLXqjv7A99OO19UKTGV2PBsBwZ
+	 l6xRUPUTVH72nlnb/Pw6oo9r0UeuQU2O55WtpMe8VEeb2kvItFDFRrcz0t1LgFPtJ/tHD
+	 ZxP4aODuGs6/FZPgkAc8NGfYkY03qoiNJ/zdQh4IGoCVqajHqlvMJAAfADOnLl5TcJw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793796286;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=0yzs8/EfulQiSGpQnLGNC5ly82N1VH5VytwaHtTi2xY=;
+	b=cyOk4sXe4ZimsCZ9gVynhtdsVE0HOJ5vMdY9z/2jlWPvAlB4Q58z9jtAdMOv9/pvbfM/
+	 kWCgJe0LRITEa5TZsVgqgeiUwXM6x+tdoPTmXf9YRlQ5nNpw7eWHtfzSoruuGbVNZvMli
+	 rz64aIcuXIAs6yIqWR7dwu2VH1XrvDv14cuspMnB68QTwbuWlkhjrZmgiC/QHTQvgM7nD
+	 dKcXiXnqTNtfgJ3eHwCF1+/m7TbXLpWe4g+Gi2eUvotkpc+yuil2/+qdZNdBSE7bhQYIJ
+	 tD46cRtxh3icRWGE0RX3xWykyfmaHO+8n3JDKLZHVFO+fjE+Po51klvdWiqZ9Lm9bRg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e1zmYigc;
+	arc=fail smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96471606A329
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:44:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96471606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71A7606A331;
+	Wed,  4 Nov 2026 12:44:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A71A7606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=VrzyRa5y;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TIKOv8cM
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4BZxA9608496
-	for <netdev@vger.kernel.org>; Wed, 4 Nov 2026 12:44:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=Lpw21cJiJ9wruQZ4XIkQa5Wx
-	AYUj9rrJY9kVvdlbygk=; b=VrzyRa5yJxKjF5oCblD4/urpQd+MDemmYa1H0ioS
-	bMMwosTxK4S14FNlA5omekOFPhDLypULjSJg4XTej+4KbSGwYudvfFkLypNQYL9A
-	Ag77eCy9U2haTWbsANJlDXeSf52C47b3AQZXb8i/8BfXvC/cCiuLcbK9ztiVXO5l
-	6mUKXPpumdZOsQ4aoLtfMLVgzD4MtP3ScIcBORJyzx4JnJPWICgAplP+EdHV1o//
-	zm7wVYhoChgnhF/er4ogwF28SYaG3YKXkqeeVzDbca+RwBSTtin1QphAnokxP4vP
-	yb8sDkP4C5vmGYiLSE7hz7/8pzzSXnIYu7DIEHHdfbs5mw==
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hr3r80aqc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 12:44:43 +0000 (GMT)
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1af203073e0so1256784c88.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:44:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793796282; x=1794401082; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Lpw21cJiJ9wruQZ4XIkQa5WxAYUj9rrJY9kVvdlbygk=;
-        b=TIKOv8cMs59SLInjeoHjWErjkqcFC92AT01kYBuiGMqWtzlDHGLrvjFQpFwDvriI48
-         E72mUF+0lqXwts2apxF9Jb0Igp2w95pdxpvdJ6x9Zki9tfuAY06WqBN6OWtgCpo1+OoT
-         z1WWlOxFP+Shr1z9wTxsDSNv6sGkQfEw8qfmnEzqHccrF3eMBbIbe2wqCC+ytZVn6QFT
-         y+7rksuxrVtR+/cpbIyNK/cP3Jz45xbTs6IhcZyNDr84WQC+C/KUwg43l0su9s8I5+gi
-         KKidJBpDDQMwa2ZM2MTizyOxY/rNKSz6gEPMkL02p/VqukcJ7mfodapkS+8BO5zfsjDW
-         qFlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793796282; x=1794401082;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lpw21cJiJ9wruQZ4XIkQa5WxAYUj9rrJY9kVvdlbygk=;
-        b=cOQwgKMwAQepZwy223nRXrSRXrctU6BLv2UFI2J0PSuwKeqgxBqHeW//9fBsu0Oj6e
-         bzxyZV4XgRwneDBHuHguNCYLx7n4Q89zX27WHDuEiIr4+99oNyJNmaCpLnWSLw2kH7TY
-         MZvwiM6Ib6BUtGzGXCfe+nZRwin7wmrJSCJCcNXaBGw48FLxLN6pISzEcyxHmCKLgC2T
-         oFP7krw6DNflqf60GHNIUpa+SnVy6OxZLG4eyQbLbsuZU/d6cYAfdepWmpfrg6w7Kr1i
-         rHyfJ9lLcIS/OeEw493/Osk5pnJiRbFe0E8CyIHUyJFeBYKRrMd260kpgPch96bDd5sQ
-         BGZg==
-X-Forwarded-Encrypted: i=1; AKwUvBx6n7ool7l3Rl2wwC2ouVTbePgAWqKVm7BMG39Ph9hdB3i4u7eThgCJnv2VPk/LoYVDgZzI5CU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/KN/u9UHHfKaStcYt0ewIbPDHFNTX1mq9k/5B/Tp0bLISrgpAw
-	05Wa1nE1amN2E6DkcFXn45UBEifdaCDuTBW5ov+1wS5sVpMI1HrVQfvC84rRqKFrET7z5hO1VPY
-	VjP2na66RvMyu2u/LrpUifciwhXpd+ViPcmiYDTntcfKc3vfX5xlHVQ7x9+U=
-X-Gm-Gg: AYBFou3vjpai1kyBCSGd5qQmkXucxBmO/OSP4yfNuSOCxAJvdhG2LJIR0cw09O5fVIx
-	a+dP/hcI+YZsrEa8DamfanKId+5e9m/bhFjAiW79bjdAtcsCa6nUo1fCNYiceUQnTwuSu7IBu3m
-	Qmpadl9LoVwZjj4odSmukPFEA3LB/smfeTNpd7GqgVMgyvrcmCIACq51oTV3KfdjR8sM0Y5b3p0
-	4tmC524lT6z61KmPr0LAHHrcAponxb2W55FXquEOMLtSmIRFZN6+qe1vsCYdASYBzy4zJxWF/rv
-	YLmTlOUdbihcM9Keg8rpS+RgREv30S2ab7uVMFk9/CfipMIvHS+nem/tOxRC7eeil7pRvgwIuVA
-	ZSuxegZsGefopVwi9yIhPKzV82xtwY/BuifP6jEuYKk9JECRoKKB+KE7QqvhGGCgY7yEAbwQ81P
-	K4RLsEGZlwUTabuw==
-X-Received: by 2002:a05:7022:b044:10b0:179:a1d0:be39 with SMTP id a92af1059eb24-1ac5e320c51mr27221947c88.29.1793796282365;
-        Wed, 04 Nov 2026 04:44:42 -0800 (PST)
-X-Received: by 2002:a05:7022:b044:10b0:179:a1d0:be39 with SMTP id a92af1059eb24-1ac5e320c51mr27221898c88.29.1793796281578;
-        Wed, 04 Nov 2026 04:44:41 -0800 (PST)
-Received: from QCOM-aGQu4IUr3Y (i-global052.qualcomm.com. [199.106.103.52])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c30521sm8110251c88.13.2026.11.04.04.44.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 04:44:41 -0800 (PST)
-Date: Wed, 4 Nov 2026 20:44:35 +0800
-From: Shawn Guo <shengchao.guo@oss.qualcomm.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Abel Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] arm64: dts: qcom: lemans-sa8255p: add ethernet
- nodes
-Message-ID: <ausos--t6wJVzI9g@QCOM-aGQu4IUr3Y>
-References: <20261103-sa8255p-emac-dts-v2-0-05f9355df966@oss.qualcomm.com>
- <20261103-sa8255p-emac-dts-v2-2-05f9355df966@oss.qualcomm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e1zmYigc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793796285; x=1825332285;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=s/2SlgwOnSVVu2i0HjyTHopXtE+fjuO8Jalb0K92EGk=;
+  b=e1zmYigcYLI4/9k9qhzRN8lx+6YEFAopIAuPpDtDJ6YaBBctlZDakudq
+   7i0J53FVLYQ6oFPgBSdcuoyVH8+fvAcQi/Wd5r+65IWzwu0Z62v/6gG9g
+   Y5Bl8dsAMEpYS87gaf9AStigTWkQP6vtMpuMxFhWlXngeSzWmZ9r59Okl
+   m5nzkEFJRfJm1EEu0LCLsfG4lVcqxDOe2cN0GZdhkA35zy0r7kFfzNPil
+   12OZhgN+pGDkv/GayaK4MPTEDNx+nU8VkoVElKFlRwNbUyuHrIrZGl6UI
+   h+7v3wG43PhGp4iK8yyN2ERotRJTHqLZeGVHLVnn+CHOYrFm9cmmQijhw
+   Q==;
+X-CSE-ConnectionGUID: V4YOBdWUQz+5vTCup+qGtA==
+X-CSE-MsgGUID: qm1NAzHuS++rb9ZdQTHDaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2651540"
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="2651540"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:44:44 -0800
+X-CSE-ConnectionGUID: Swuhn3gBRGqZaf2j2jjZkg==
+X-CSE-MsgGUID: tAJuNlTITtSf/x+kWeghlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="7028474"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:44:45 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 04:44:44 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Wed, 4 Nov 2026 04:44:44 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.34) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 04:44:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FLXKHU5OKXB3Tm8cU1GEjJjXg9bRXTHO6JLir4I7bM5J64SHr1Y4x9ouJ1j63+54brYC8oa1AhjMqGYShSxLV0sDjweYWkqNqNy5rndkvkKiN6etCXq54n4OOVDj8UG/SAiVPjXyc9MnSfGwMdx3AkYGEIoJagG6Cc1SXzuy6UMWxAVCtu+oYzzPxz7ur4Tk62Ci01Ya0SFcDH+wnh5Hpe48WQOSeip21jZEM/FWR5WZbQPGt8HISf382/ursIl7NkhotT9PdZKdGW47PVNSCRfKuwwaI/H+xicG02LHuj8q+u4MV6BTqk3qUbwE4bABFJTpID2LxT8IhqphovMt/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0yzs8/EfulQiSGpQnLGNC5ly82N1VH5VytwaHtTi2xY=;
+ b=QwoxWJhjhKIwuhAjnVWfU+fhI/mYVbFwhqvrJ6xBApKynIBIPHH237mg/3+RVdgq7UlPzWqlkN7TrejTSEixhRRMhmnzFi/PP6XV36qxvGkCr7/+VejZ4Ud1WgLOQP08TusKOrz88h2hcNXfqrT/MAo22JRmhmeqjIJM40R27H2znTBX4lGPNFGOUmFuB6r7mpAJ3pFqZmB5Gtl2lz0CDhwyCgD48OG7yK+wvEhx7f0DyU0QiKIVkiUdvN/AkHiH5RGv0JID2OIW7uLp+pEEbmt8b+cqvGta/x3zvo8b8VMDTCpyiIX1YFkhgp2CCWdZeoqTSbnZ1G9JnXq3HYANcA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13) by DM3PPF1A34EE115.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f0e) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 12:44:40 +0000
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 12:44:40 +0000
+Date: Wed, 4 Nov 2026 13:44:29 +0100
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Slawomir Stepien <sst@poczta.fm>
+CC: <ast@kernel.org>, <daniel@iogearbox.net>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
+	<sdf@fomichev.me>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<magnus.karlsson@intel.com>, <aleksander.lobakin@intel.com>,
+	<ilias.apalodimas@linaro.org>, <toke@redhat.com>, <lorenzo@kernel.org>,
+	<ihor.solodrai@linux.dev>, <tavip@google.com>
+Subject: Re: [PATCH v6 bpf 0/3] xdp: fix page_pool leaks
+Message-ID: <ausorQSZn/tuxUWg@boxer>
+References: <20261104121316.1155680-1-sst@poczta.fm>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261104121316.1155680-1-sst@poczta.fm>
+X-ClientProxiedBy: DUZPR01CA0276.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b9::25) To LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,363 +135,258 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103-sa8255p-emac-dts-v2-2-05f9355df966@oss.qualcomm.com>
-X-Proofpoint-ORIG-GUID: n84bWiKd5WCI0kq77MRFsGnuaRZxMFwf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA1MCBTYWx0ZWRfX7BRFDNibhCaB
- FddIEuPMIgRNcTRBkM7ANPvek+UtalRp1YHnYpE58EAoMR5d4rLk0J/VeDTgvg/lY1YYX6gUEA7
- fC6HNDMM6DxvBGtuV8RA1phIkhIoafwKlbE5sAJOamrsUNsocyh8zFwFLrfc/+0lziVB8EZfKi4
- QYUqUtUITs+atHUXI/wchIv2NYc30GrqKJBOrUXfR6NcQmiwhprr6UD4RKRsRsBUKtFrN/mg8Tg
- TaEDtN0FH9I0cXgKmaa2nDR8sVgSToHudp+VwUpMB1xV980hGPI/GgatBoRo92fe+teJPpPlUqL
- nHTvftEXAmJbsTHn3k1RMuiIMNLf4BFUFPtsDtJocjm711zXwYMO7oOTFeJkvO6LrLhOusOSwiO
- f5QY+0hU8InYp6a9GRE+xsBknY06KttBO/4d81oEnKrbBZb6BcKokhO3N4nRxGmKVJGa072lDE5
- i3g7bUJ1WemSv7oTNpA==
-X-Proofpoint-GUID: n84bWiKd5WCI0kq77MRFsGnuaRZxMFwf
-X-Authority-Analysis: v=2.4 cv=UuP2pOwB c=1 sm=1 tr=0 ts=6aeb28bb cx=c_pps
- a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=apQYb0sKy1KnhfKHRK8A:9 a=CjuIK1q_8ugA:10
- a=vBUdepa8ALXHeOFLBtFW:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA1MCBTYWx0ZWRfXybSojFHrF0Ag
- mfzfGVl2rbHC8J+Z7X69ntcuRaRtzWeRvRX1jPOPPoSB5Eu1DTIPS6J+YK+ynOXwD41myI6WsFb
- 1m5K9wZV42ax9KoyMTXtSHREX/3yxzg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_04,2026-11-03_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 adultscore=0
- spamscore=0 impostorscore=0 phishscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040050
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|DM3PPF1A34EE115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85adedcf-4efa-4d5e-5441-08df3a7164aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|11063799006|5023799004|261021121427099003|56012099006|261009223027099003|261021135927099003|261021123027099003|261022105027099003|261022113327099003|261022075727099003|261026121527099003|261028144727099003|261026140227099003|261102123227099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info: 3ONFt75qCGVKEPCq1o4kJ6DE4tCngVybjx5ZexNKdKQzXAd9jhRlN7U6dqDPspCGm9AziwZZIvlj0Z69Mpxs8mpRs/NvjhqPJE3V/vjcvv0yc6uklrel/qzpELnyTGve3DuGaPeHxh5fT5p9V/zIA6UYisTV2XBSpqqsXxATOoi2mSCvwE/Diuh5JqcnlWFOPJspBfuyO4e5i0mJfxNKd9IMJe5V6VsyAEZ0XyuCY2DvFJ/CntOrbNQBJHfRoGUNMRJe/swbEYt9XUoi5XY7+jEctDGRp+wG5TyFD/7JPvk6XZONUcWpC58u+XFfHKyCiESRyArpxeylUQdil2WKy2kpN3eCIaDsKFHNhFq5gQuqbYmSicn9CQtsqCCm4H0hTtaxTYM09uC0tKhilR7t5kd0+lQeNW2VJ7SOlZvq83PuWngF50XfaF727WXxz27dpwxaNOPiJv71WjSoFFtOUmRLYHzDnHOebjr19dnFyN4CCVmjloB3GZL/GzRuWHSEIkhWDlNLnvXoQaSHqV4y0LxtpWtnXizz+PMizLFaPa3zf9yCkxB9ttfhGC836U8XQpdbHSRlt76solOnJYeuJvoZQItC1WtiSiRhQ2FhqTOun3alKZFI7epgj36M6pmR
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(11063799006)(5023799004)(261021121427099003)(56012099006)(261009223027099003)(261021135927099003)(261021123027099003)(261022105027099003)(261022113327099003)(261022075727099003)(261026121527099003)(261028144727099003)(261026140227099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TmZr8F78EM2Zo2yH5tOoOV6mZctvJrxI8QO0pHIuikoKfLOTYJAh109D2Uy9?=
+ =?us-ascii?Q?I5jv1W6UUqbwCVXJHEmr6w0CiY/QgsYfGDUUAsQpsiywb6QkMM6tbaTFo/yu?=
+ =?us-ascii?Q?ouFvEMYyWq+L6ADpqpI02485C+KrR/6WvmWuSSyEEcCrIhDQdr79JSV+mes5?=
+ =?us-ascii?Q?htc5YM487y9NXW10Yh3WM5iHkWhD0y2+e0lt5MdsTvmHQIA1+165byB4/OV1?=
+ =?us-ascii?Q?jTyrGnzD5ieFRydCNmZxugSDz10bfIdphe39hA7EkBHzWpSe2Wxnwnq5c8DX?=
+ =?us-ascii?Q?t+yb20uwqhjIUBlH0n49Ak00A7UTRYFeQIAhrPTPlg1D7Ahkvy9pp2JhIUEe?=
+ =?us-ascii?Q?TnPRrmz70CAFU4oAhgN02caRIIaqAz0INuMKBMvRCHCqMWNnRtz21K58E+3O?=
+ =?us-ascii?Q?FtofSFkaycBW1uZBeVgBDsuTAJeHYiZ1vQN30sYxEky0DUw1biD9qofBzO7N?=
+ =?us-ascii?Q?2rCZlH2AZE5EtQINtTirdHJian9hRu+ga4a+3IbM8J37QJA/iw0WV4gTM1m0?=
+ =?us-ascii?Q?UjNOwttH5CzdQLPA+TGI281gckFEj1aErPeo1oBOb1hwnJtWAuQVCSFCn2w6?=
+ =?us-ascii?Q?HtFlwVcECWZig9zZOykLdF4ZrXJDlOiJISQUTqIZ1wGK+FXkjfPymkimr54+?=
+ =?us-ascii?Q?Q7ttFMRpm/KB68LxwLtd0Ta1XnJcUAtgkCIw+kes8JQm9+BDXrNQL4AuAuSL?=
+ =?us-ascii?Q?2dr/5/k5X4NnC8MIuQWJ3q41lTJK8En/qBqQqrTtbeiX0R9MiJR75w6rCQsb?=
+ =?us-ascii?Q?UNeirHt5cXpWgOD3LVRgnj2fTHFA3oA6iH/SZLmc6EC0omWvjg7wSFhPkft6?=
+ =?us-ascii?Q?dnpttMLduuW2sDU7fBfxNGP/mVTQc8pGX/Oqyuy4jejbmz4oS2nEe/UfjG2y?=
+ =?us-ascii?Q?/Pu4G7LYW5p8jpDH0UG4mrBDo/LOROQYQ9JBHOl1hRaB8YYfIGNyDoLRczMB?=
+ =?us-ascii?Q?xMkbAa+lLVfTDoDbN1c3qJ6YJDQBmoM6OGi45/MIZcb7sRbUNS80lbiy4FqR?=
+ =?us-ascii?Q?6zSrQth/t63hRjhChKterdlX2Ss/d8SIl12I2VnNC5bGfPtzJp03UzW4qy30?=
+ =?us-ascii?Q?ikO9xf+WxJ2AWgwvgCmXxSrAEF6a3E4oetgu8alH2qg9bym+rzsbhxDKrhTj?=
+ =?us-ascii?Q?0dRU8/SJo8YEZOnO+RTKPvpxy9IxHuxTswPjyiMliDukiV/6zCnP9L3HINTF?=
+ =?us-ascii?Q?9Idaj8lwAa2M8cfswWcPh8oV6dYa7PY+vz3Mt5xXQWBKVidXAYqQtSWLI+Nt?=
+ =?us-ascii?Q?prQXJuTbEZyuKcjoGuPNae4WElqE9OLBZbv8d+w+yW4gvt3Hq3WuV189Fn6/?=
+ =?us-ascii?Q?c5COKJNdrLVMaqxz7rBbJBLoq4yWttW4vvTRAKLKJhjfWYU7k8CmqL2WNlzD?=
+ =?us-ascii?Q?6q9i3yqh8S1X+aNaRAKHsKUMBU4vkEEyUUr4qSnfsfxhtLJovvqBU7J848py?=
+ =?us-ascii?Q?EaMLDau2epv23v29JYyCukhkxdwRWqIHOpKFBSnsCOqnEHHcpZEoLkwrMJNP?=
+ =?us-ascii?Q?sH1+vxujSKY7X/9+Ag6hgK0poClOWqhB5WGvVPgS2CvS79BS4o2buQ8nXwPB?=
+ =?us-ascii?Q?1Sk5qv9UQnRaCp85AOdLuW9RZ8qrvDd0AoQHFZxc1AZE4SSO20VSFwuVGviP?=
+ =?us-ascii?Q?0jNswz6gOIalTEyNthNRmD8KYsYhkgiENRuQD+hMn8l7Td6Z1d4Sgo+o/7d2?=
+ =?us-ascii?Q?dPMEQx2ZHHWXHbYnxGDTXtL/y9cn9f3BP5L9QSVJQutSF+2bZZoNXYWo2WFj?=
+ =?us-ascii?Q?C4vTDgMa0W3nOOd2BZkFBy/uKq3G5mI=3D?=
+X-Exchange-RoutingPolicyChecked: EsNyDT7oz0cX11h6tx5SaWOOBnv4nR8Bh8/jy4E4Ywacs7WLF+owVL4igBPR0k4V4/awd4t5Pclhvmrlbnqpl0vA4B6iIdt+6fQ7SHwCpoUepyO8s9vL3CyT8e5AB7vFzHhtOW/gd0t69vHUXShENS2eFct7PnkuRHBC1LNoF4n70Z06yeWgw2flDs1enj7One9bLX2lqGIuVD6FEa13KRMf52Yy2qjV2ZmHoU4ltU+ZK1bz/qj0OVEcKsSPd1z6vif5Sux3SFAVVFvdQONjJZOg4oE82BE4ZlosRF9qgSinrOI0eTfwy+navFcscEncrGCeegMUAborL5Ik+WQoVg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85adedcf-4efa-4d5e-5441-08df3a7164aa
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:44:40.5309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: txeOLih204pVH+6Hgy+gEi1LVDYBX1NNVNGySCzFiDFMxMkBgMdUeLtvB+SNWwwYRyDhkJHnOF5T6tfvDo1Uy/xPFXZIevwLAmzHWidvxxg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF1A34EE115
+X-OriginatorOrg: intel.com
 
-On Tue, Nov 03, 2026 at 11:42:00AM +0100, Bartosz Golaszewski wrote:
-> Add the ethernet nodes along with their serdes PHY nodes for the gearvm
-> variant of the lemans ride board. Enable scmi7 and scmi8 to serve the
-> EMACs.
+On Wed, Nov 04, 2026 at 01:13:13PM +0100, Slawomir Stepien wrote:
+> v1:
+> https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
+> v1->v2:
+> - add skb to xdp_buff converter (Jakub)
+> - postpone restoration of veth's xdp_rxq_info mem model (AI)
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  arch/arm64/boot/dts/qcom/lemans-gearvm.dtsi      |  30 ++++
->  arch/arm64/boot/dts/qcom/lemans-sa8255p-ride.dts | 207 +++++++++++++++++++++++
->  2 files changed, 237 insertions(+)
+> v2:
+> https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
+> v2->v3:
+> - make skb->xdp_buff conversion agnostic of current skb->data position
+>   (Toke)
+> - do not pull mac header in veth (Toke)
+> - use virt_to_head_page() when checking if xdp->data comes from
+>   page_pool (Olek)
+> - add ack from Toke
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/lemans-gearvm.dtsi b/arch/arm64/boot/dts/qcom/lemans-gearvm.dtsi
-> index 91c97a55f2787406b104650956b9a511a6a34c23..96a54f32f0eeb16dbce9802e74eec82622ecd35f 100644
-> --- a/arch/arm64/boot/dts/qcom/lemans-gearvm.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/lemans-gearvm.dtsi
-> @@ -58,6 +58,18 @@ &cpufreq_hw {
->  	clock-names = "xo", "alternate";
->  };
->  
-> +&ethernet0 {
-> +	compatible = "qcom,sa8255p-ethqos";
-> +	phys = <&serdes0>;
-> +	phy-names = "serdes";
-> +};
-> +
-> +&ethernet1 {
-> +	compatible = "qcom,sa8255p-ethqos";
-> +	phys = <&serdes1>;
-> +	phy-names = "serdes";
-> +};
-> +
->  &firmware {
->  	scmi0: scmi-0 {
->  		compatible = "qcom,scmi-smc";
-> @@ -3218,6 +3230,24 @@ &uart21 {
->  			     "perf";
->  };
->  
-> +&soc {
-> +	serdes0: phy@8901000 {
-> +		compatible = "qcom,sa8255p-dwmac-sgmii-phy";
-> +		reg = <0x0 0x08901000 0x0 0xe10>;
-> +		#phy-cells = <0>;
-> +		power-domains = <&scmi7_dvfs 0>;
-> +		status = "disabled";
-> +	};
-
-We have the serdes node for Embedded variant as well.
-
-        serdes0: phy@8901000 {
-                compatible = "qcom,sa8775p-dwmac-sgmii-phy";
-                reg = <0x0 0x08901000 0x0 0xe10>;
-                clocks = <&gcc GCC_SGMI_CLKREF_EN>;
-                clock-names = "sgmi_ref";
-                #phy-cells = <0>;
-                status = "disabled";
-        };
-
-Per Nord discussion with Konrad [1], I plan to move serdes nodes back to
-common DTSI and let variant DTSI to supplement or overwrite properties
-as needed. Does that make sense?
-
-Shawn
-
-[1] https://lore.kernel.org/all/ausjj6ScavYiYKWo@QCOM-aGQu4IUr3Y/
-
-> +
-> +	serdes1: phy@8902000 {
-> +		compatible = "qcom,sa8255p-dwmac-sgmii-phy";
-> +		reg = <0x0 0x08902000 0x0 0xe10>;
-> +		#phy-cells = <0>;
-> +		power-domains = <&scmi8_dvfs 0>;
-> +		status = "disabled";
-> +	};
-> +};
-> +
->  &ufs_mem_hc {
->  	compatible = "qcom,sa8255p-ufshc";
->  	power-domains = <&scmi3_pd 0>;
-> diff --git a/arch/arm64/boot/dts/qcom/lemans-sa8255p-ride.dts b/arch/arm64/boot/dts/qcom/lemans-sa8255p-ride.dts
-> index 6f19064997a4b50525fdf630307b843604368645..2b3c9e90802bf89b91354039f0e6a24941fc95d5 100644
-> --- a/arch/arm64/boot/dts/qcom/lemans-sa8255p-ride.dts
-> +++ b/arch/arm64/boot/dts/qcom/lemans-sa8255p-ride.dts
-> @@ -14,6 +14,8 @@ / {
->  	compatible = "qcom,sa8255p-ride", "qcom,sa8255p";
->  
->  	aliases {
-> +		ethernet0 = &ethernet0;
-> +		ethernet1 = &ethernet1;
->  		serial0 = &uart10;
->  		serial1 = &uart4;
->  	};
-> @@ -101,6 +103,179 @@ trip1 {
->  	};
->  };
->  
-> +&ethernet0 {
-> +	phy-handle = <&sgmii_phy0>;
-> +	phy-mode = "2500base-x";
-> +
-> +	pinctrl-0 = <&ethernet0_default>;
-> +	pinctrl-names = "default";
-> +
-> +	snps,mtl-rx-config = <&mtl_rx_setup>;
-> +	snps,mtl-tx-config = <&mtl_tx_setup>;
-> +	snps,ps-speed = <2500>;
-> +
-> +	power-domains = <&scmi7_pd 0>, <&scmi7_pd 1>;
-> +	power-domain-names = "core", "mdio";
-> +
-> +	status = "okay";
-> +
-> +	mdio {
-> +		compatible = "snps,dwmac-mdio";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		sgmii_phy0: phy@8 {
-> +			compatible = "ethernet-phy-id31c3.1c33";
-> +			reg = <0x8>;
-> +			device_type = "ethernet-phy";
-> +			resets = <&scmi7_rst 0>;
-> +			reset-names = "phy";
-> +			reset-assert-us = <11000>;
-> +			reset-deassert-us = <70000>;
-> +		};
-> +
-> +		sgmii_phy1: phy@0 {
-> +			compatible = "ethernet-phy-id31c3.1c33";
-> +			reg = <0x0>;
-> +			device_type = "ethernet-phy";
-> +			resets = <&scmi8_rst 0>;
-> +			reset-names = "phy";
-> +			reset-assert-us = <11000>;
-> +			reset-deassert-us = <70000>;
-> +		};
-> +	};
-> +
-> +	mtl_rx_setup: rx-queues-config {
-> +		snps,rx-queues-to-use = <4>;
-> +		snps,rx-sched-sp;
-> +
-> +		queue0 {
-> +			snps,dcb-algorithm;
-> +			snps,map-to-dma-channel = <0x0>;
-> +			snps,route-up;
-> +			snps,priority = <0x1>;
-> +		};
-> +
-> +		queue1 {
-> +			snps,dcb-algorithm;
-> +			snps,map-to-dma-channel = <0x1>;
-> +			snps,route-ptp;
-> +		};
-> +
-> +		queue2 {
-> +			snps,avb-algorithm;
-> +			snps,map-to-dma-channel = <0x2>;
-> +			snps,route-avcp;
-> +		};
-> +
-> +		queue3 {
-> +			snps,avb-algorithm;
-> +			snps,map-to-dma-channel = <0x3>;
-> +			snps,priority = <0xc>;
-> +		};
-> +	};
-> +
-> +	mtl_tx_setup: tx-queues-config {
-> +		snps,tx-queues-to-use = <4>;
-> +
-> +		queue0 {
-> +			snps,dcb-algorithm;
-> +		};
-> +
-> +		queue1 {
-> +			snps,dcb-algorithm;
-> +		};
-> +
-> +		queue2 {
-> +			snps,avb-algorithm;
-> +			snps,send_slope = <0x1000>;
-> +			snps,idle_slope = <0x1000>;
-> +			snps,high_credit = <0x3e800>;
-> +			snps,low_credit = <0xffc18000>;
-> +		};
-> +
-> +		queue3 {
-> +			snps,avb-algorithm;
-> +			snps,send_slope = <0x1000>;
-> +			snps,idle_slope = <0x1000>;
-> +			snps,high_credit = <0x3e800>;
-> +			snps,low_credit = <0xffc18000>;
-> +		};
-> +	};
-> +};
-> +
-> +&ethernet1 {
-> +	phy-mode = "2500base-x";
-> +	phy-handle = <&sgmii_phy1>;
-> +
-> +	snps,mtl-rx-config = <&mtl_rx_setup1>;
-> +	snps,mtl-tx-config = <&mtl_tx_setup1>;
-> +	snps,ps-speed = <2500>;
-> +
-> +	power-domains = <&scmi8_pd 0>, <&scmi8_pd 1>;
-> +	power-domain-names = "core", "mdio";
-> +
-> +	status = "okay";
-> +
-> +	mtl_rx_setup1: rx-queues-config {
-> +		snps,rx-queues-to-use = <4>;
-> +		snps,rx-sched-sp;
-> +
-> +		queue0 {
-> +			snps,dcb-algorithm;
-> +			snps,map-to-dma-channel = <0x0>;
-> +			snps,route-up;
-> +			snps,priority = <0x1>;
-> +		};
-> +
-> +		queue1 {
-> +			snps,dcb-algorithm;
-> +			snps,map-to-dma-channel = <0x1>;
-> +			snps,route-ptp;
-> +		};
-> +
-> +		queue2 {
-> +			snps,avb-algorithm;
-> +			snps,map-to-dma-channel = <0x2>;
-> +			snps,route-avcp;
-> +		};
-> +
-> +		queue3 {
-> +			snps,avb-algorithm;
-> +			snps,map-to-dma-channel = <0x3>;
-> +			snps,priority = <0xc>;
-> +		};
-> +	};
-> +
-> +	mtl_tx_setup1: tx-queues-config {
-> +		snps,tx-queues-to-use = <4>;
-> +
-> +		queue0 {
-> +			snps,dcb-algorithm;
-> +		};
-> +
-> +		queue1 {
-> +			snps,dcb-algorithm;
-> +		};
-> +
-> +		queue2 {
-> +			snps,avb-algorithm;
-> +			snps,send_slope = <0x1000>;
-> +			snps,idle_slope = <0x1000>;
-> +			snps,high_credit = <0x3e800>;
-> +			snps,low_credit = <0xffc18000>;
-> +		};
-> +
-> +		queue3 {
-> +			snps,avb-algorithm;
-> +			snps,send_slope = <0x1000>;
-> +			snps,idle_slope = <0x1000>;
-> +			snps,high_credit = <0x3e800>;
-> +			snps,low_credit = <0xffc18000>;
-> +		};
-> +	};
-> +};
-> +
->  &gpll0_board_clk {
->  	clock-frequency = <300000000>;
->  };
-> @@ -145,6 +320,14 @@ &scmi6 {
->  	status = "okay";
->  };
->  
-> +&scmi7 {
-> +	status = "okay";
-> +};
-> +
-> +&scmi8 {
-> +	status = "okay";
-> +};
-> +
->  &scmi11 {
->  	status = "okay";
->  };
-> @@ -162,6 +345,22 @@ &sleep_clk {
->  };
->  
->  &tlmm {
-> +	ethernet0_default: ethernet0-default-state {
-> +		ethernet0_mdc: ethernet0-mdc-pins {
-> +			pins = "gpio8";
-> +			function = "emac0_mdc";
-> +			drive-strength = <16>;
-> +			bias-pull-up;
-> +		};
-> +
-> +		ethernet0_mdio: ethernet0-mdio-pins {
-> +			pins = "gpio9";
-> +			function = "emac0_mdio";
-> +			drive-strength = <16>;
-> +			bias-pull-up;
-> +		};
-> +	};
-> +
->  	pcie0_ep_clkreq_default: pcie0-ep-clkreq-default-state {
->  		pins = "gpio1";
->  		function = "pcie0_clkreq";
-> @@ -205,6 +404,14 @@ pcie1_ep_wake_default: pcie1-ep-wake-default-state {
->  	};
->  };
->  
-> +&serdes0 {
-> +	status = "okay";
-> +};
-> +
-> +&serdes1 {
-> +	status = "okay";
-> +};
-> +
->  &uart4 {
->  	status = "okay";
->  };
+> v3:
+> https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
+> v3->v4:
+> - include skb->head when calculating packet length (Toke, lkp)
 > 
+> v4:
+> https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
+> v4->v5:
+> - rely again on sk_buff::pp_recycle when setting mem type on rxq
+>   (Jesper, Jakub)
+> - add ack from Toke on patch 2 and restore it on patch 1
+> 
+> v5:
+> https://lore.kernel.org/bpf/20251029221315.2694841-1-maciej.fijalkowski@intel.com/
+> v5->v6:
+> - rebase onto bpf/master
+> - patch 1: set MEM_TYPE_PAGE_POOL unconditionally in
+>   xdp_convert_skb_to_buff(); mem type only matters for frags consumed
+>   by the program, and those always come from skb_pp_cow_data() (Jakub)
+> - patch 1: add DEBUG_NET_WARN_ON_ONCE() for a non-linear skb without
+>   pp_recycle and document the expectation in kdoc (Jakub); the warning
+>   is limited to non-linear skbs since linear ones legitimately skip
+>   the CoW
+> - new patch 2: veth_xdp_rcv_one() ran the program on an xdp_frame with
+>   whatever mem type the previous packet left on rq->xdp_rxq; use the
+>   frame's mem type instead, as cpumap and devmap do. With patch 3 alone
+>   veth sends page_pool frames to its peer and the peer's program
+>   trimming frags crashed the kernel, so this comes first
+> - patch 3 (was 2): veth turns the buff into an xdp_frame on
+>   XDP_{TX,REDIRECT}, so the head is released through mem type too;
+>   keep the queue's original model unless the buffer was copied into
+>   rq->page_pool (Jakub)
+> - patch 3: take page_pool refs on compound heads via netmem helpers
+> - patch 3: do not restore the rxq mem model after XDP_{TX,REDIRECT}
+>   and on the error path; with patch 2 every path sets its own mem type
+> - patch 3: veth can now redirect MEM_TYPE_PAGE_POOL frames, which needs
+>   commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
+>   XDP") in devmap; list it as a stable prerequisite
+> - drop Reviewed-by/Tested-by tags as patches 1 and 3 changed
+
+I mentioned the changes [0] that were developed after v5 revision yet you
+decided to go with what you had - that might be okay but to be transparent
+it would be worth stating *why* you chose not to pursue further or explore
+approach where __do_xdp_generic() is called from veth.
+
+Was it due to semantics change pointed out by Bjorn? Or is it too big a
+hammer for fixing page_pool leaks and should be implemented as a
+follow-up?
+
+Regardless, thank you for reviving this work, I am to blame for not
+dedicating further effort here.
+
+[0]: https://lore.kernel.org/bpf/20260509084858.773921-5-maciej.fijalkowski@intel.com/
+
+Thanks,
+MF
+
+> 
+> Hi,
+> 
+> here we fix page_pool leaks which happen when fragment is released
+> within XDP program and memory type is set incorrectly. The reports come
+> from syzbot and AF_XDP test suite.
+> 
+> Most of the changes are about pulling out the common code for
+> init/prepare xdp_buff based on existing skb and supplying it with
+> correct xdp_rxq_info's mem_type that is assigned to xdp_buff. A bit more
+> stuff, page_pool related, had to be done on veth side.
+> 
+> Originally, this work was started by Octavian Purdila and continued by
+> Maciej up to v5. Maciej then took the larger veth rework from the v5
+> review to net-next as an RFC [1]. This v6 picks up the v5 series, with
+> Maciej's agreement, as the minimal fix for bpf and stable, and addresses
+> the v5 review. Maciej stays the author of patches 1 and 3 and my changes
+> are noted in their commit messages; patch 2 is new.
+> 
+> For veth, Jakub listed three options: stop turning skbs into xdp_frames
+> in veth, decide the head's mem type when the CoW was skipped, or CoW the
+> head on the Tx/Redirect path. The first one changes veth's XDP handling
+> beyond a fix (it is what the RFC does), so patch 3 takes the second:
+> veth knows whether it just copied the buffer into rq->page_pool, and
+> only then advertises MEM_TYPE_PAGE_POOL. An skb that skipped the CoW is
+> linear and keeps the queue's original model, as before this series.
+> The two do not conflict: the RFC can go on top of this series and
+> replace the veth parts of patches 2 and 3.
+> 
+> [1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
+> 
+> Patch 2 fixes the same problem for frames in veth_xdp_rcv_one() that
+> commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
+> XDP") fixed for devmap; cpumap already handled it.
+> 
+> Testing (x86_64, QEMU via virtme-ng, KASAN + DEBUG_VM + DEBUG_NET; the
+> series ran on bpf/master fb7bd3a2aad7 and, rebased without changes, the
+> reproducers, kprobe path checks, devmap test and selftests below ran
+> again on 05441d697f7f with the same results; the runs without the series
+> on bpf/master c8a8a68d3ab4):
+> - reproducer: an xdp.frags program that trims all frags with
+>   bpf_xdp_adjust_tail() on 8000-byte pings over a 9000 MTU veth pair;
+>   without the series both generic XDP and native veth XDP hit
+>   "BUG: Bad page state ... page_pool leak" followed by
+>   VM_BUG_ON_PAGE(page_ref_count(page) == 0) and a panic; with the
+>   series 20/20 packets are trimmed with no splat
+> - native veth XDP_TX of multi-buffer packets, with and without
+>   trimming frags first (200 large + 200 small pings each), then veth
+>   teardown and a 75s wait for page_pool "stalled pool shutdown" or
+>   negative inflight warnings: none
+> - BPF selftests on bpf/master with tools/testing/selftests/bpf/config:
+>   ./test_progs -t ns_xsk,xdp: all 34 tests (205 subtests) passed, no
+>   splats, with and without the series
+> - the standalone AF_XDP suite (test_xsk.sh) also runs the tests that
+>   test_progs skips as flaky; XDP_ADJUST_TAIL_SHRINK_MULTI_BUFF reports
+>   PASS either way, but without the series dmesg shows 60 "page_pool
+>   leak" splats from generic XDP (bpf_xdp_adjust_tail -> __xdp_return ->
+>   page_frag_free on pages allocated by skb_pp_cow_data()); with the
+>   series there are none
+> - frame path: one veth bounces 8000-byte pings with XDP_TX, its peer
+>   trims all frags of the resulting frames (IPv6 off, so no skb touches
+>   the peer's rxq first); with patches 1+3 only: "page_pool leak",
+>   VM_BUG_ON_PAGE() and a panic in veth_xdp_rcv_one(); with the whole
+>   series 50/50 frames are trimmed, kprobes show all __xdp_return() calls
+>   with MEM_TYPE_PAGE_POOL, no splat, also with IPv6 on so that skbs and
+>   frames interleave on the peer's queue; bpf/master alone passes as well
+>   since veth only sends MEM_TYPE_PAGE_SHARED frames there
+> - remaining veth paths, each confirmed with kprobes: skbs that skip the
+>   CoW (frames passed up by one veth and forwarded back into it: 1229 of
+>   1260 runs without skb_pp_cow_data(), heads from the page_pool),
+>   XDP_REDIRECT failing on the skb path (40 xdp_return_buff()) and on the
+>   frame path (40 xdp_return_frame()), XDP_PASS of 20 frames after their
+>   frags were trimmed; no splat, and none of the page_pool shutdown or
+>   inflight warnings 75s after teardown
+> - devmap egress after patch 3: veth redirects copied skbs through a
+>   devmap whose egress program trims all frags; with the series 20/20
+>   trimmed, all __xdp_return() calls with MEM_TYPE_PAGE_POOL, no splat,
+>   nothing 75s after teardown; with b3ca872947ef reverted on top of the
+>   series: "page_pool leak" from page_frag_free() under
+>   dev_map_bpf_prog_run(), VM_BUG_ON_PAGE() and a panic, hence the
+>   stable prerequisite in patch 3
+> - W=1 builds of the touched files with LLVM=1 and with DEBUG_NET=n: no
+>   warnings
+> - XDP_ADJUST_TAIL_GROW fails in DRV mode with and without the series,
+>   so it is unrelated
+> - not tested: page_pool frames from hardware drivers redirected into
+>   veth, bpf_xdp_pull_data(), multi-queue load, the full test_progs run
+> 
+> Performance (the same VM with 8 vCPUs, non-debug kernels with
+> PAGE_POOL_STATS, bpf/master fb7bd3a2aad7 with and without the series;
+> pktgen sends skbs into one end of a veth pair, the program on the other
+> end counts packets; median of 6 runs of 8s over two boots per kernel):
+> - 64-byte packets with native XDP_DROP, XDP_TX and XDP_REDIRECT (devmap
+>   to another veth), and generic XDP_DROP on 1 and 4 CPUs with 64 and
+>   8000-byte packets: within 2% of the base kernel, no regression
+> - native veth with 8000-byte packets (3 frags): XDP_TX +8.8%
+>   (0.507 -> 0.552 Mpps), XDP_REDIRECT +8.4% (0.613 -> 0.664 Mpps).
+>   Without the series veth_xdp_get() takes plain page references on
+>   the head and frags, so the pages copied into rq->page_pool are
+>   released from the pool instead of recycled (~1.2M/s
+>   rx_pp_recycle_released_ref plus slow allocations); with page_pool
+>   references they go back to the ring (~1.4M/s rx_pp_recycle_ring, no
+>   released_ref)
+> Absolute numbers in a VM differ between boots, so only the relative
+> change is meaningful.
+> 
+> This v6 was prepared with an AI coding assistant (Claude) from the v5
+> review thread; the assistant wrote the code changes, all of patch 2,
+> the changelog updates, and ran the tests listed above.
+> 
+> 
+> 
+> Maciej Fijalkowski (2):
+>   xdp: introduce xdp_convert_skb_to_buff()
+>   veth: update mem type in xdp_buff
+> 
+> Slawomir Stepien (1):
+>   veth: use the frame mem type when running XDP on an xdp_frame
+> 
+>  drivers/net/veth.c | 56 ++++++++++++++++++++++++++++++----------------
+>  include/net/xdp.h  | 36 +++++++++++++++++++++++++++++
+>  net/core/dev.c     | 25 ++++-----------------
+>  3 files changed, 77 insertions(+), 40 deletions(-)
+> 
+> 
+> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
 > -- 
-> 2.47.3
+> 2.56.0
 > 
