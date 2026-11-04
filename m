@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793768504;
-	b=tVS4dikqE70KF780EkQtIlYT/kl+7tbYiOVoK+/VBQx3tLb2FlLjF8U/Y+6DxwERENXd
-	 fe/uFkN8wFh5rsUYjwXXGmr2J3/ye61suhbClI4mgOAN2yNPI3ioHGTjiq/l/8qtR7HAN
-	 mDHrKvX47SKU4TcSQiEwTf/fxFxONg9Ig8dGgUGBHW2YezGfEg10CKiOjtfocCK1u13J7
-	 mcyrHBoNGYTbU9FKMqq42OzoVTssPtinTElvT16PX5EWgkW4Ri7MyQ7OfgC0A20fE7d4Q
-	 Oy/Q0tOPlnCsJs4N7G0czmwh8YraRrcCACGxv19Pkyhysf8Rv12NO0mX76BGgJys1kQ==
+	t=1793768498;
+	b=VDy7K4AenIq4DV+9EZKRvCZalwmeVFvcAfcW1DGpT2B+cC2MEyxjCQ643WK1FJfDEITq
+	 NA37vDB5Rh501C3i4aQyTAABZoOYjD/1vhSIMLgpaKqgDEiKE6I1ziQe7OElBReeMF9Ax
+	 aD8fluZZbMu/Od7jIOYW9XLDGLFkgP6AEh8m/6uzqEJM8wFTHd++qj3GFtaT9An7gVgTZ
+	 ZDJwHY60iP3uaHMZaAxmU3KHv099cu1j/gzT6pSZNv3ad8CceL6EDELTF0QMgZHGhXo6b
+	 vbbuKV6zFBEg4NAgtBOt94OHYqC4hXiG2T3AK0qObPcsAIevJzTfMJGe0ajbKAqd5cQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793768504;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793768498;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=5GMAqY7FM6ZAQr9W6BNb+fX/DcRpx409vq4+uvPz0kM=;
-	b=Xxs9HmOgCsKZtFPK7Ne9OBSaiXd2nmRKjPyGditGiDAtv4af+Pl6F/4bsmwt6MLN+U6h
-	 RbyWY0/O0lUC2/KqOSOtTDkDHoL5fj7ULpQjjD6m3UF5dGtf1VutSrAV0ysV13GphwzjZ
-	 7MR64CVxpPh54gUlyXb0GUoiBjExfGmM0H0TjhGwoBMH+zokrz+5FWey81iwbxcqUlUGp
-	 sVLr/Rvz4AX2xWbpqDpJZW8Hr629/sgjcZyYNb/yYSdJ/RN+bchY7Ir4ixlIQkx+kDIBc
-	 vsXrl2BebQB3fMZvom70k/HqdD45RH46TDSiiOm5afwPdUYNh6HIPAUBjRTsO/rzcnw==
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=0wPtjYOAhIeZugd2ESPq1FOUrzmTQoQ46TekB4ReUyc=;
+	b=3i9/fY9YI70DvwMaB9hrIYuKWJAt1OtWdL5mTTIAdfsVIv06zKZWSiS51Vu0BKtkbuyd
+	 G4o1KnTM3Gs9/bf7/GkPVaeVeOihJCYJsVM3j01T2Z1t/H0/USKv8K4F7w1dFzD0RfsjT
+	 EVunKy9peDWnZViMOYKk7qWKgzNZiWtKkyypbHFxf50+O8CqRdzd1I6IiCdonJctStT1h
+	 VcpYmH4k9W2jnrJtH3haP0YGcocQXAooutcYWS78XlwK3qMjZG1RyTN/Z0iF9jY8HOq8r
+	 yz8zX9WaYNRyng0Ikba02Rl5w49Kk/KO26juYL6U9OrwFXrcvLaqDK565RTH9J1Y9Sg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRJlvdw2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CtRmgpZy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65764606A329;
-	Wed,  4 Nov 2026 05:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA7606A326;
+	Wed,  4 Nov 2026 05:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LRJlvdw2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45DB1F000C1;
-	Wed,  4 Nov 2026 05:01:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CtRmgpZy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0095B1F000C1;
+	Wed,  4 Nov 2026 05:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793768504;
-	bh=5GMAqY7FM6ZAQr9W6BNb+fX/DcRpx409vq4+uvPz0kM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LRJlvdw25Xn4b3ldmZixbHRHdB75iJJps7HrEj5OLHlxh6QvGS13Ce74HnCf/H5aa
-	 +iBXWoI2Lxhn7mUL4CeWdc7d25IdJnKGLScCeY2HNCPIXpyz7me/R6XXULkAzjlhrM
-	 sWzk0Hqc/EVlc9xyQJfR3WUEbyO76ryKPFC81tu+mw+KirEFUerNvwEtlTyHTskn0A
-	 k2B71zGp9Jxs9GA8OjLDXfhcYf2+MHnBk0SKJQ+PYuQH67PcPPI6zsdc1/DtwMeWpg
-	 d3lKDC7TcxTzFY03h6G7cbT0YbGv//y8pZRoCxzOVljMKQTbBaT4X/pH+8EgJUaKOx
-	 g8Ombk6P3rLqg==
+	s=k20260515; t=1793768497;
+	bh=0wPtjYOAhIeZugd2ESPq1FOUrzmTQoQ46TekB4ReUyc=;
+	h=From:To:Cc:Subject:Date;
+	b=CtRmgpZyrIgh/V5uGJm1gNFDDHYYe0cxTv3xIBOYXyhDknpdO5c/gPdu5Vro1Q05Y
+	 2ltnQt3AjXx3RZWvDeItvo90XY7wVSpKMs8s3QduRRt5Yme/w9SYQ8Hj0et8Uzmn5F
+	 PX2wBa5sqaYtZQt5MeEiAJc1PmA0gFUOg4mMSfSClOkUnFSd2bBxRT2aWbbFxEHAsa
+	 XlExbJhunu+f3dtg93Bvi2nj9PSyM0BuCbn6Jpxn05X0QRKlKNN9RrNpNLIcXKs2oW
+	 UOQqsBZdm9fcrM8z5ZkAqLYBJtC6Wyth3Klve/vgA2wLoayWFKizvvhL2IwZY7gqWx
+	 RcOob2BdXvGNQ==
 From: Eric Dumazet <edumazet@kernel.org>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -51,12 +51,10 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Hassan Sultan <hassansultan@google.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v2 2/3] selftests: net: tuntap: fix UDP checksum length in build_udp_packet_csum()
-Date: Wed,  4 Nov 2026 06:01:30 +0100
-Message-ID: <20261104050131.629967-3-edumazet@kernel.org>
+Subject: [PATCH net v2 0/3] net: virtio: validate outer protocol of UDP tunnel GSO packets
+Date: Wed,  4 Nov 2026 06:01:28 +0100
+Message-ID: <20261104050131.629967-1-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261104050131.629967-1-edumazet@kernel.org>
-References: <20261104050131.629967-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,54 +66,51 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-build_udp_packet_csum() passes udph->len, which is in network byte
-order, as the number of bytes to checksum. On little-endian hosts this
-reads up to 64KB past the UDP header and computes a wrong checksum.
+virtio_net_hdr_tnl_to_skb() does not check that a UDP tunnel GSO
+packet really has outer IPv4/IPv6 and UDP headers matching the
+declared tunnel type. A guest, or any tap writer, can send a frame
+with another outer ethertype (NSH in the report), and the GSO stack
+then builds segments with skb->data before skb->head. The host
+crashes in skb_under_panic() as soon as a header is pushed.
 
-Existing callers did not crash only because they use packet buffers
-of MAX_VNET_TUNNEL_PACKET_SZ bytes.
+Patch 1 validates the outer headers, using the parsing helpers from
+Michael's series "net: resolve uncommon partial checksums at ingress",
+as Willem suggested. The rest of that series (checksum validation and
+completion) is left to Michael.
 
-Use ntohs(udph->len), as tap.c does in its own build_udp_packet().
+Patch 2 fixes a selftest helper computing UDP checksums over a length
+in network byte order.
 
-While at it, clear udph->check before summing instead of relying on
-the caller, and send 0xffff instead of a computed zero checksum, as
-the kernel does with CSUM_MANGLED_0.
+Patch 3 adds tun selftests, on tap and IFF_TUN devices: valid outer
+IPv4 frames (plain and VLAN tagged) are accepted, mismatched or non-IP
+outer headers are rejected.
 
-Fixes: a942fcd72e97 ("selftest: tun: Introduce tuntap_helpers.h header for TUN/TAP testing")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- tools/testing/selftests/net/tuntap_helpers.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+v2:
+- Patch 1: use Michael's helpers instead of a new one: find the L3
+  header from the device type instead of assuming Ethernet when
+  skb->protocol is unset, do not trust skb->protocol when it disagrees
+  with the frame, and require UDP exactly at outer_th_offset. Stop at
+  IPv6 AH headers (Willem).
+- Patch 2: clear udph->check before summing and send 0xffff instead
+  of a zero checksum (Willem).
+- Patch 3: clear the reused buffer before building each frame (Willem).
+  Add IFF_TUN tests, where skb->protocol comes from the tun_pi header.
 
-diff --git a/tools/testing/selftests/net/tuntap_helpers.h b/tools/testing/selftests/net/tuntap_helpers.h
-index d6c0437136ec..ecad83fae158 100644
---- a/tools/testing/selftests/net/tuntap_helpers.h
-+++ b/tools/testing/selftests/net/tuntap_helpers.h
-@@ -330,14 +330,22 @@ static inline void build_udp_packet_csum(uint8_t *buf, int family,
- 	size_t ipalen = ip_addr_len(family);
- 	uint32_t sum;
- 
-+	udph->check = 0;
-+
- 	/* No extension IPv4 and IPv6 headers addresses are the last fields */
- 	sum = add_csum(buf - 2 * ipalen, 2 * ipalen);
- 	sum += htons(IPPROTO_UDP) + udph->len;
- 
- 	if (!csum_off)
--		sum += add_csum(buf, udph->len);
-+		sum += add_csum(buf, ntohs(udph->len));
- 
- 	udph->check = finish_ip_csum(sum);
-+
-+	/* A zero UDP checksum means no checksum: send 0xffff instead,
-+	 * as the kernel does with CSUM_MANGLED_0.
-+	 */
-+	if (!csum_off && !udph->check)
-+		udph->check = 0xffff;
- }
- 
- static inline int build_udp_packet(uint8_t *buf, uint16_t sport, uint16_t dport,
+v1: https://lore.kernel.org/netdev/20261103203113.550604-1-edumazet@kernel.org/
+
+Eric Dumazet (3):
+  net: virtio: validate outer protocol of UDP tunnel GSO packets
+  selftests: net: tuntap: fix UDP checksum length in
+    build_udp_packet_csum()
+  selftests: net: tun: test outer protocol of UDP tunnel GSO packets
+
+ include/linux/virtio_net.h                   | 169 ++++++++++++
+ tools/testing/selftests/net/tun.c            | 269 +++++++++++++++++++
+ tools/testing/selftests/net/tuntap_helpers.h |  10 +-
+ 3 files changed, 447 insertions(+), 1 deletion(-)
+
+
+base-commit: 787268686c64be60023743b527645a907e38ccca
 -- 
 2.53.0
 
