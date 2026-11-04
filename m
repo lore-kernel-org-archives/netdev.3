@@ -1,78 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793776958;
-	b=r+GrLaZcBbgImjfK3yFrjG+GHOVQcaes4U7fRF4urTf+MX5Kces/QtVBzrycOYWpmkcZ
-	 jKm5Kh+9Sx3SvqeeKAHcoH0Lm6zWnyen8FCKOQ60pAa0qxlohDXWnGmFeNLvhDT30xy5q
-	 mKW85h93fnifTMV+uPiVbjneXnjSlXvhVGihGI1obEB1XZ/eRsaiFaIR7nrAMQWSJuubk
-	 tS7cxvfzQAgsIVuLJktc2ArmqA8pU5kr+tXc14WEu716KZ5PR2lBgV1j6hMEskS5Uy1lo
-	 jgsqc7qLXapO9wUBRRT1FjHdQWCwkRBXP3xwZf9ZGCk0hddauABVbi+lObXALedqdIg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776958;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=MOReuoec1CLoNa//dtGNf5m3XGY/nvtMHuSPmq6nhyA=;
-	b=zYKCYrQjEbrxpDCqouybR1WtpDIjFw8RP01vUoW4z/d/Bbe5NgWSOgdqGGyoDAf+SgXY
-	 4BqodJ+8BFEnubP7LjBEgwo46BVVPRvPC5VFfrovR0Z95ZiC3tsgP5UGPHLpIB63FLixv
-	 V1E2feaWMUFduwJ38Ept7BkkqsBGcBjywoK5Cm9IsFar8uk/Ap603HWnpPj3Q5a3KbRS6
-	 HSTJZN4tYqQr8asbGC8dkKyTG2U23nPMiF0UHvsJVGgbwX+iPKHiVhHHTIAeIgr1isp8m
-	 31iibJTQfw1oRlZNIuFkHjknQ3wK1wEsBj2e+bi7Ge1dePXys1WABDe+6RKE93Xu+UA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TIEwbRL3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2AE606D81C;
-	Wed,  4 Nov 2026 07:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TIEwbRL3
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793776958;
-	b=kPVkBcWLsFvwh05Zxf6XyMTa/p/d0daGyxyqeToOLQyiQRZHn6MKrG2uDElMAdPr/Usx
-	 ye9jSjfxGcIVZzl7Wke6QF8JBbz6Exf2Vf6ALBlZKOdbiLTM5mN8N25s2YkrLEZXA1LzQ
-	 U7qjmcXnvBG5S4AQSmRxPDCZe2voYjsBgyq4fweL+hbN879muH85FvS6V4jrkfn77VBdA
-	 GVaMbxgPF60NPz0VR9Te2r/VjroK0Qu9PNP1okO1H71idY/XYGMb4afhM8oLMCpb1py5D
-	 36vJHtU3y3PzNDkUWR7HRfBgoRv++D2MuFRJ4w6angMGxpLntzCQwLuJ/TCF60lNxLg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793776958;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=MOReuoec1CLoNa//dtGNf5m3XGY/nvtMHuSPmq6nhyA=;
-	b=TQTAMw18AikVfVvsmIsQN3lPeBCee0pnCJXf0b/ynbB6UI5G3QakzYpQRzTNIp0E8eDM
-	 heiDrbWc2qriCIlcpRf7nsEsdc+fFezFg9+6mc3omHCnEnN0eANrLK9VD03Y6YP2ryp6U
-	 wJkf5E2KtbWRC+Mp3EcnLVfVR12d6DeYC1sbnsmOLpjQtr2q/4h3p4ARD8PN3fLsETuO2
-	 AYckv5rtgDQ9I0cV7HaWG8SDLwUGskQvG623oAf0D/D51XGMAdj0NyCcDO+R+VULl345o
-	 OjoY9HtCSP9q/nV/0hv61lpQOlWVuOoy7nvkOkZR+W+NwKrClg+BgJAdKZpvWCf9Q9w==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793777388;
+	b=uTbFvlfUdqOyTsdu+fsjwfd4i4kc+Hv4N4PzWLx5s6O11xXRQtqGA+5Bk/G+WEJSAiXC
+	 mYxfEEUFwRtRzLH92zLeW5bmB2tWC8zSZFTHUP8M1F/YpngD+LImhZ0eRmjYnG889INJz
+	 Wuk4XR+zbftrn4uz+ANENazcDDNAm7Yzr5BsvFp/mlEO9DXgnQQU4cUZwxNdV57cEnGUd
+	 mHthALE2YxsosoJJwRU2uvq/V/tUvwOfFXVxtZyZCcFZ47ThPzkDA89oUippURf81M8Os
+	 7y40CBpJCKIZ52aLAv9Rbb2xFhkhJ7Q//dO+Z3Oqhergq1CoBjEX5BTpzEJWBaKkpfQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793777388;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
+	b=hoycJT3FwbiiSj9SWQgT4/RcPDnIU58J7VS+vm1lj9vyYbxV96gbukky5exVfRV3uBZQ
+	 8/eM8B27U4Dzr85j2KWcWsPQWEwxPRMBzUoJG76OTahg0zsu8OwA1FmjJF5O4FYddIGKG
+	 GCJ+S2TkOqJbZtpFpoFFvxId9V2tGozKrastQdI4d2AayknNdian/qW/TZWNDenXX87jV
+	 QcbZ73rwkyNFN62PUEP28WrF0ZFdjaLxfmSj0VW65riG9Ydy4j7wfKxhaO36MsxEs5mdO
+	 1918kHjgGOdPgj8vK70Vj++SlI9NvFUoW2gLg+k2OJuBtenbNdItsgoQDb6AJ6fL8Sw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GnP1ALsd;
+	arc=none smtp.remote-ip=209.85.221.44
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 9CD061F0093A;
-	Wed,  4 Nov 2026 07:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793776958;
-	bh=MOReuoec1CLoNa//dtGNf5m3XGY/nvtMHuSPmq6nhyA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=TIEwbRL3sLpRnF56qQHid6QrDYfoeOkxuStey2WN8p/Y7kDaMRlDi4pHNwl8BX2Mm
-	 1SUkHAw/AzTQt3Xt15rrdM7plIgInkq/ywZCPHaTKsvEUUGG8qFXjO9+KG4FUtYE+C
-	 PiwvXouOohh0r+fjJe6S/LhBuZxEv/wwS3pm4B+AvO4Np0RbjuLEvlFqmSe0fiIUaZ
-	 mV9eNr26q95uD1958OfB1T6THn7UhpEACmXrPgRhJbk4SGfDHoYKQ2QPsoN71T6ohZ
-	 i1dlgYRzwwmbVCdOTAEV5o170/udrrvbezeMd2/rzFH8dGPJ4Y7JY63H9m1GlWdZur
-	 wZb5HRHW51i6Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 32EBC46D2D;
-	Wed,  4 Nov 2026 07:22:36 +0000 (UTC)
-From: Joseph Telaak via B4 Relay <devnull+joseph.telaak.dev@kernel.org>
-Date: Wed, 04 Nov 2026 02:22:24 -0500
-Subject: [PATCH net-next 1/2] dt-bindings: net: Add Siflower SF19A2890 GMAC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFAC606A336
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 07:29:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CFAC606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GnP1ALsd
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c4649b35bso278891f8f.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 23:29:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793777386; x=1794382186; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
+        b=GnP1ALsdVz51CwsNe01ids8Vf3XofkIBdeApDuS2THdbzLAnZE0sO2UqznJzBj77zU
+         L6EI5+xeloPdKNSnc4WPtEMZdWTe7nWiHbCxh3VlTUYFq8wx2Z8VXfdDxRa8hCPBzv29
+         rrXw2TobSoWy5g6L7i7Cwh9b/x4FlcBBCfmL3k/4ezm/6ySR5g79027PUjWHzCU36aJf
+         X1YfREmSrAMg+tbF58CiZP9DSlnvCSD4YawDUaN69Y3Bo5dZ6HSJE75H0dFr7y9MqbBA
+         qwXuZ55mj8XK+XayBwxEWpiF/fcNM3QXgLrJg8HdScRkw7+1GUA+DdWlzZP5zmmxhc1y
+         lKNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793777386; x=1794382186;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
+        b=eDcHtu79gVCuGIeFY8WZU2/SkAMlbhJvxe0R6T2V/cOyw3Y1xZAnYwibpLaRiyCMJh
+         kCe9U85gwC9llxib/1RvutBZ3CSOYWv0WkALpkFBTL8wzBUMjnRwzlSf8BxMsfHMgGUE
+         ll+JenCfd2x4fMK/bKAQYeBtFh7mJGrK2R6K3+kaPRwmVFbCxejqBU8F4eYinRtd7crq
+         WAvE2RY+Bcn9vqxUWnzpy1FLKo75ElZZdkS9O37IqukWlDrcQVAAT3BYW3bW32HTSLJW
+         cX9y84fg1LgCQ6+vT+oTzvkM8hO34Ljuq+frkFY/VLFmh9z6GE1UiDFwDNiHSLxUWH4M
+         KXJA==
+X-Forwarded-Encrypted: i=1; AKwUvByahz8b64bQ9LKsIwtb/+jKeUAQlauDYOsPUdEZG838ChigUc//DNSkdey1Chn1Qjsf3Z7iCwk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8cNuTTxvRqP4GnCRdmewgvsKg+NzP7heE+EruFB5Zwb61JlguQ
+	tH3UQWUBxJycNgqrrWx/u+A7ZUWAJCtG1+AQ/IFgrTJwQXJBM17r1LQv
+X-Gm-Gg: AYBFou1pyrAmoq3s5B1061iXHLFs4gKZyI5/QuksTp453rU03KyCXkjFckes4wAkRgT
+	xlaziNaeLWHGXWDbP4MnR993bAGPkcDGETtaNnBYmbUqCoDrqTxVsJgWCdeffRVnczYM3n/UriS
+	ucrXyCx0P974/V79SIk16W5PomiAdqU4K4fcW4wpyvR/3JGUOzgoZhGEYquCiBC405GmROUaWhs
+	ObgSQsoL4hy2S4+8OilDz1/aEGcfOqsa3UC5x1VZbWG6Frq06J47GGnfE97FWKLAEqBFmuRXQUa
+	t6+NAd6rPDJMR9iOGzZW9onP2N04kOnb/A1dKxRQcw/yMiZzm9x7ym/48xJZsT9aPTXynueWkXA
+	RbFRPCQJ+Zcfr6jzzyWi/mIz7T9gkR+pFhpiS+oUFwKoEjPuD+IKzdfMXIgZYbdIsYklN8zcoLU
+	s1WVhlIJriku/BPKuf0th0ePpe1/EH8jrJ8oJb7DPxxQ2BBiNkvYpeXhNlSBBQJ+yu94orboAvt
+	GRxRynCnToF3IXKRRvMl+wM9T6G46nm12WieQwGjWCt8hpIV6J1GrEvWKkIe0lk5XUgAczhmiP1
+	FWPrvAWu9jIDnbtzbBjzYKWsvFm/8SlI8jb6VZqUJL3fsokXX1ldzgxs/bFxU9sFeHBiuWeM1l+
+	PYNzQJzUmmOgcco79tPuWOqO5a3MzWl2UfQ==
+X-Received: by 2002:a05:600c:46ce:b0:4a6:7d6:821f with SMTP id 5b1f17b1804b1-4ac189928e9mr345693905e9.29.1793777386280;
+        Tue, 03 Nov 2026 23:29:46 -0800 (PST)
+Received: from Ansuel-XPS24.localdomain (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b2a555e59dsm130754225e9.0.2026.11.03.23.29.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 23:29:45 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RFC net-next] net: airoha: npu: attach passive devfreq scaling
+Date: Wed,  4 Nov 2026 08:29:39 +0100
+Message-ID: <20261104072940.52933-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,183 +104,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
-References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
-In-Reply-To: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Chuanhong Guo <gch981213@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, Joseph Telaak <joseph@telaak.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793776955; l=4305;
- i=joseph@telaak.dev; s=20261104; h=from:subject:message-id;
- bh=XOuu0yKHxzyySINW5UI8L81RpxlJ/TBeyAQn1sO1t/Q=;
- b=fisEUu+QvicaWpO+KC4U+S4bZAlkUMjZ+KOJ4cxZYLaahaAsnH+U3P8OYszWrmpXkxZA9VQ8I
- ZyA4qvWinNvBKDhiFXJ1ry6q9QPeY6FdUTNdQjeTDSBshkVQbt/xD/R
-X-Developer-Key: i=joseph@telaak.dev; a=ed25519;
- pk=oQI+UfddlZ0wK2ac4WKOGNjUl1ZEN8j9ZVFSqEDoNP0=
-X-Endpoint-Received: by B4 Relay for joseph@telaak.dev/20261104 with
- auth_id=1404
-X-Original-From: Joseph Telaak <joseph@telaak.dev>
-Reply-To: joseph@telaak.dev
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Joseph Telaak <joseph@telaak.dev>
+The NPU can scale to different operating state from idle to normal to
+turbo. Attach a passive devfreq that will scale the NPU frequency with the
+CPU with the use of OPP table and opp-required properties.
 
-The Siflower SF19A2890 has a DesignWare GMAC 3.73a whose interface
-type and RGMII clock delays are set in a configuration block of their
-own, next to its clock and reset manager. It takes a fourth clock, the
-RGMII transmit reference.
-
-Signed-off-by: Joseph Telaak <joseph@telaak.dev>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- .../bindings/net/siflower,sf19a2890-gmac.yaml      | 110 +++++++++++++++++++++
- .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
- 2 files changed, 111 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/siflower,sf19a2890-gmac.yaml b/Documentation/devicetree/bindings/net/siflower,sf19a2890-gmac.yaml
-new file mode 100644
-index 000000000..377f24a65
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/siflower,sf19a2890-gmac.yaml
-@@ -0,0 +1,110 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/siflower,sf19a2890-gmac.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Siflower SF19A2890 GMAC
-+
-+maintainers:
-+  - Joseph Telaak <joseph@telaak.dev>
-+
-+description:
-+  The Siflower SF19A2890 has a Synopsys DesignWare GMAC 3.73a. Its
-+  interface type and RGMII clock delays are set in a configuration block
-+  of their own. The MAC adds an RGMII delay only where the
-+  rx-internal-delay-ps or tx-internal-delay-ps property says so.
-+
-+select:
-+  properties:
-+    compatible:
-+      contains:
-+        const: siflower,sf19a2890-gmac
-+  required:
-+    - compatible
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: siflower,sf19a2890-gmac
-+      - const: snps,dwmac
-+
-+  reg:
-+    items:
-+      - description: MAC registers
-+      - description: Interface configuration registers
-+
-+  interrupts:
-+    maxItems: 3
-+
-+  interrupt-names:
-+    items:
-+      - const: macirq
-+      - const: eth_wake_irq
-+      - const: eth_lpi
-+
-+  clocks:
-+    items:
-+      - description: GMAC main clock
-+      - description: Peripheral registers interface clock
-+      - description: PTP reference clock
-+      - description: RGMII transmit reference clock
-+
-+  clock-names:
-+    items:
-+      - const: stmmaceth
-+      - const: pclk
-+      - const: ptp_ref
-+      - const: byp_ref
-+
-+  rx-internal-delay-ps:
-+    description:
-+      Applied in steps of about 55 ps, rounded to the nearest step.
-+    maximum: 14025
-+
-+  tx-internal-delay-ps:
-+    description:
-+      Applied in steps of about 55 ps, rounded to the nearest step.
-+    maximum: 14025
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - interrupt-names
-+  - clocks
-+  - clock-names
-+  - resets
-+  - reset-names
-+
-+allOf:
-+  - $ref: snps,dwmac.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/mips-gic.h>
-+
-+    ethernet@10800000 {
-+        compatible = "siflower,sf19a2890-gmac", "snps,dwmac";
-+        reg = <0x10800000 0x200000>, <0x19e04440 0x10>;
-+        interrupt-parent = <&gic>;
-+        interrupts = <GIC_SHARED 32 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SHARED 34 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SHARED 33 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "macirq", "eth_wake_irq", "eth_lpi";
-+        clocks = <&gmac_crm 0>, <&gmac_crm 1>, <&gmac_crm 3>, <&gmac_crm 2>;
-+        clock-names = "stmmaceth", "pclk", "ptp_ref", "byp_ref";
-+        resets = <&gmac_crm 0>;
-+        reset-names = "stmmaceth";
-+        phy-mode = "rgmii-id";
-+        rx-internal-delay-ps = <550>;
-+        tx-internal-delay-ps = <935>;
-+
-+        fixed-link {
-+            speed = <1000>;
-+            full-duplex;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index 2c4842404..c3d96d58a 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -98,6 +98,7 @@ properties:
-         - rockchip,rk3588-gmac
-         - rockchip,rv1108-gmac
-         - rockchip,rv1126-gmac
-+        - siflower,sf19a2890-gmac
-         - snps,dwmac
-         - snps,dwmac-3.40a
-         - snps,dwmac-3.50a
+Posted as RFC to understand if it's the correct way to handle this...
 
+DT patch will come later.
+
+ drivers/net/ethernet/airoha/airoha_npu.c  | 61 ++++++++++++++++++++++-
+ include/linux/soc/airoha/airoha_offload.h |  3 ++
+ 2 files changed, 63 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index 4d3195eb00f7..f8055ca65ec4 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -12,6 +12,8 @@
+ #include <linux/of_platform.h>
+ #include <linux/of_reserved_mem.h>
+ #include <linux/regmap.h>
++#include <linux/pm_opp.h>
++#include <linux/clk.h>
+ 
+ #include "airoha_eth.h"
+ 
+@@ -656,6 +658,62 @@ void airoha_npu_put(struct airoha_npu *npu)
+ }
+ EXPORT_SYMBOL_GPL(airoha_npu_put);
+ 
++static int airoha_npu_devfreq_get_cur_freq(struct device *dev, unsigned long *freq)
++{
++	struct airoha_npu *npu = dev_get_drvdata(dev);
++
++	*freq = clk_get_rate(npu->clk);
++
++	return 0;
++}
++
++static int airoha_npu_devfreq_target(struct device *dev, unsigned long *freq,
++				     u32 flags)
++{
++	struct airoha_npu *npu = dev_get_drvdata(dev);
++
++	return clk_set_rate(npu->clk, *freq);
++}
++
++static int airoha_npu_devfreq_get_dev_status(struct device *dev,
++					     struct devfreq_dev_status *stat)
++{
++	struct airoha_npu *npu = dev_get_drvdata(dev);
++
++	stat->busy_time = 0;
++	stat->total_time = 0;
++	stat->current_frequency = clk_get_rate(npu->clk);
++
++	return 0;
++}
++
++static struct devfreq_dev_profile airoha_npu_devfreq_profile = {
++	.target = airoha_npu_devfreq_target,
++	.get_dev_status = airoha_npu_devfreq_get_dev_status,
++	.get_cur_freq = airoha_npu_devfreq_get_cur_freq
++};
++
++static int airoha_npu_devfreq_probe(struct device *dev)
++{
++	struct airoha_npu *npu = dev_get_drvdata(dev);
++	struct devfreq *devfreq;
++	int ret;
++
++	npu->clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(npu->clk))
++		return dev_err_probe(dev, PTR_ERR(npu->clk), "failed to get clk\n");
++
++	ret = devm_pm_opp_of_add_table(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to parse NPU freq thresholds\n");
++
++	npu->gov_data.parent_type = CPUFREQ_PARENT_DEV;
++	devfreq = devm_devfreq_add_device(dev, &airoha_npu_devfreq_profile,
++					  DEVFREQ_GOV_PASSIVE, &npu->gov_data);
++
++	return PTR_ERR_OR_ZERO(devfreq);
++}
++
+ static const struct airoha_npu_soc_data en7581_npu_soc_data = {
+ 	.fw_rv32 = {
+ 		.name = NPU_EN7581_FIRMWARE_RV32,
+@@ -803,8 +861,9 @@ static int airoha_npu_probe(struct platform_device *pdev)
+ 			 (val >> 16) & 0xffff, val & 0xffff);
+ 
+ 	platform_set_drvdata(pdev, npu);
++	dev_set_drvdata(dev, npu);
+ 
+-	return 0;
++	return airoha_npu_devfreq_probe(dev);
+ }
+ 
+ static struct platform_driver airoha_npu_driver = {
+diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
+index 7589fccfeef6..ac776dc31487 100644
+--- a/include/linux/soc/airoha/airoha_offload.h
++++ b/include/linux/soc/airoha/airoha_offload.h
+@@ -6,6 +6,7 @@
+ #ifndef AIROHA_OFFLOAD_H
+ #define AIROHA_OFFLOAD_H
+ 
++#include <linux/devfreq.h>
+ #include <linux/skbuff.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+@@ -167,6 +168,8 @@ struct airoha_npu {
+ #if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NPU))
+ 	struct device *dev;
+ 	struct regmap *regmap;
++	struct clk *clk;
++	struct devfreq_passive_data gov_data;
+ 
+ 	struct airoha_npu_core {
+ 		struct airoha_npu *npu;
 -- 
-Git-155)
-
+2.55.0
 
