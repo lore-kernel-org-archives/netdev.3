@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793821732;
-	b=OLmIOzT8dGlhM01mKsB5z/HseXvKViJD/YjQgCoBfuxRoWFLw/kS/bBVpGJtqTlLaR2e
-	 AoWsVQ42yk2KMdqlIKt8WlTYCjiR4PwSaMr0zEtpeHsBHAhcbE5rt4JnJqcMywt4Z2rS0
-	 rFsaENpXmCPGUnPFQDtoGIv6efrEmeZ05yukxsuwhJdVreUk4M00cogfOcylpL5thsbzn
-	 ekKbXPPH+wARUY0GOPcIEj8jnVTf9NCgCFs5dBD8kRG68OSyV5cIu1wv5LSdVnEPjyUtN
-	 wDYGL3EIpEM8dfUmaclWoXIUe5DfSiMg4W+J6csKp7TdXJISk3SPyX2RsK/N1Rp5fdQ==
+	t=1793821806;
+	b=hu5Yui38/5AoWdhbAHYkoyWubQpDQ8WqumEuSlf7LgCjKFX0odcDjTcNLQtBXtizbNaV
+	 SWIyov5h/MUHyNDLnmEWhJlxDYQ+EUtnCmOfJm0dOFDA+PjmCYv4P/bwa3VNPrQw8K0ik
+	 +01fEq9c+983Le2Y7M2kzVceiLSfvIvm3oTXjNl7zmB0YYIrFuYggO4yCYJjT+zeTDveV
+	 jMgTIesyszoZ/3Eh0ppGd0x9u7j4Ol9tuKhyGMtgokBKX0uMxBUs/r1yk6TtXYJk6hcee
+	 WEKv+zDSNKOsHH/XPIZ1jPB8jGdAkbiJRmC+AFBhANpx/9kIHGV60/8HJZXfO/vUzwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793821732;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793821806;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=b8WPUZ8Xzk4Uf3KLwo9v6zFft8hyFZnIr4Ta+1e+n9o=;
-	b=pjEzfAFW+zJ+PkaZ4KUNsJewLYs2fUVLle4RcrGgbQiPS3giIEq5AmPfNTw6gIP+YtR2
-	 PbePAHFGSQb3NN1tLsFG61V32tZgeVpUYh9x+0FUytScc2jHqFUShQbOM73eheRTXi/CQ
-	 I3kE/7AIEKo5j7UAPvzVW+oQrNaTNm/NKV+UWbsl8/bDBIkycqpkjG7HXjb6s/fVlub+O
-	 tmnVLDwZo2Sov+9sLF14e8vYd7ah3FmAHxQ8JneJjfsyDW+fL2dXUGD9G0aZRJuDe335+
-	 EeobOKUSmX5MPqAHfyf1HSdAAnjb4+SMhxkr951yF9dyGM1I9FHGF/CuzixWa1XJ/2w==
+	bh=o8L0vvGY5Km24xgHgPbylEP8c5DuS625RCEauDmBOHw=;
+	b=iEZOO4Yv3zZRbGMLq4qIUXD20eCSD6ZJSwe5P7hfK9mRYgQPSjCLZtNOLxN5vzSZyLZm
+	 PXEyRTkTrb7jm67UQ3W/2M06eGYajZrbWXscKI5FNj9WVPGSLrVU3rh635CirToKMOb9g
+	 qJlgzJrU/1g24mX5sM11DWLE/WmLSx7+dQqWNiEl5Lj/4hm8ho45JgLXz16bEK6oXr0Bd
+	 7KM2v/31xZk75cwf0iLd3dWl94jzbL0RKaFBpDfQNOWmb00wUaVHS7csNbI4473uSNV8I
+	 WNWehwRoma/qNOBu9G2PDD8VfLNaffWDUDlJuJzPYMt3okvo797pW4MohnKJivifS5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G1PL0TCS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYsPe7EK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F46606B2C2;
-	Wed,  4 Nov 2026 19:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E035606A84C;
+	Wed,  4 Nov 2026 19:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G1PL0TCS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A081F00A17;
-	Wed,  4 Nov 2026 19:48:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYsPe7EK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004D31F000C1;
+	Wed,  4 Nov 2026 19:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821732;
-	bh=b8WPUZ8Xzk4Uf3KLwo9v6zFft8hyFZnIr4Ta+1e+n9o=;
+	s=k20260515; t=1793821806;
+	bh=o8L0vvGY5Km24xgHgPbylEP8c5DuS625RCEauDmBOHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G1PL0TCSVDwmq6lGU2BKIO3vpAy9ola4AujwmSLJkb5KMUnTLPKnCEvvzLMviPtgn
-	 wND4dUemZH7RzXVci0wodw5Ce5v9lazZa2PJvSlXlL50ggFDTSmwojOvxU4655sT6V
-	 da1eeT2llGyW2Eu8uZBGRP3z0bbZYTxk2n8D/Foa2zoY7iqG+BVIhTnHhNZAOkWxK4
-	 00B0IFoyr+ECjUwAY17pI+6EKbEfW3y0CVh1pSS5m57e6CtXfHKw4ln+bCYcwItAdI
-	 P9pOOC3vNTRs9xSAmPdROXPvJKb29eGdAkqsnQstZewCU65bM0CCjaHNhaQiD25bxA
-	 MmdfbQAJQvIJw==
+	b=dYsPe7EK9xlznqxSarRjMWb/keF20UxFAAIxFblrc1DyDdCICYC0tZhLXHGBEjv2m
+	 wlolIDJ7YESPSIUpyajqx3Pi5Z9zhYfRI4siggX085u5ZCM59zXJsjvpX8buE3Tg23
+	 SlNWXDQdYn3g1vBGkIMitmFjx3pOOiiqYXRBb4AvwUHkH0/o2nSoE/7xM2+bGZtgQ5
+	 OviczvtzIq+aURT2ywz7ETtS4VmDmtvxHciSqzRG/NUK0pmlve0K75uh+30R9f7Khm
+	 DjfChaLv0h87xnlfhv41ydwZ032RXJPkYnLbVO+AjaHCHz+rJCzl03k7b2tSTGaF4A
+	 finR4PnDyeWlA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -100,11 +100,11 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 26/26] ALSA: info: drop the poll_table from the info entry poll op
-Date: Wed,  4 Nov 2026 20:48:37 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-26-245e54e87116@kernel.org>
-In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
-References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 01/30] jbd2: let procfs own the seq_file of the info file
+Date: Wed,  4 Nov 2026 20:49:51 +0100
+Message-ID: <20261104-work-procfs-fs-v2-1-319e0f9a8aae@kernel.org>
+In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
+References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,48 +116,86 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1550; i=brauner@kernel.org; h=from:subject:message-id; bh=YteJ3j6/FblA5UteLfKk0N1VeXt3kJcYQjXVJOX1kxo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97pocuEQtOyVxSrtIrlLVW6YsviVsb7cE3Er6v6NVN EuJ7xFfRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQSWxgZzvozyXl46z6zj9qs wOZhqjrL/zyXKUPnOr7f0ol3l6+NZGTY7Dmr8rLwiZlvru6dp3epj+dff5pW5ubNCo5fef2qu8q ZAQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=brauner@kernel.org; h=from:subject:message-id; bh=4wXeP/X63evRQ0XlRmaO+RfgvVw7qBYaC3PXgCgMk/I=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97tFWfOxU95GH3XdJTEYBl8knnmuK/UXrVrUrzorQz FINDXTtKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmEieL8P/uohlXprsW1qaIpK+ b1x9yGKVsvXjy55Vj5KKjk2tPrHQnZFh1Trl08dUnn26v0t1fseh4COavFYvfAQPnCsMWqPzN0G SEQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-procfs owns the wait queue a /proc/asound file is polled on and wakes
-the pollers through proc_poll_notify(), so the poll op of an info entry
-has nothing to do with the poll_table anymore and only reports the
-mask. Nothing in the tree implements the op.
+Declare the seq_operations and the size of the session state and let
+procfs open and free the seq_file of /proc/fs/jbd2/<dev>/info.
+->proc_open() only takes the snapshot of the statistics now and
+->proc_release() frees it. Reading the file then no longer holds up its
+removal when the journal goes away.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- include/sound/info.h | 3 +--
- sound/core/info.c    | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ fs/jbd2/journal.c | 33 +++++++++------------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
-diff --git a/include/sound/info.h b/include/sound/info.h
-index d6cb0346f77d..327d92059f67 100644
---- a/include/sound/info.h
-+++ b/include/sound/info.h
-@@ -48,8 +48,7 @@ struct snd_info_entry_ops {
- 			 void *file_private_data, struct file *file,
- 			 loff_t offset, int orig);
- 	__poll_t (*poll)(struct snd_info_entry *entry,
--			     void *file_private_data, struct file *file,
--			     poll_table *wait);
-+			     void *file_private_data, struct file *file);
- 	int (*mmap)(struct snd_info_entry *entry, void *file_private_data,
- 		    struct inode *inode, struct file *file,
- 		    struct vm_area_struct *vma);
-diff --git a/sound/core/info.c b/sound/core/info.c
-index f837cfbe7313..c8735a6ec789 100644
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -193,7 +193,7 @@ static __poll_t snd_info_entry_poll(struct file *file, poll_table *wait)
- 	if (entry->c.ops->poll)
- 		return entry->c.ops->poll(entry,
- 					  data->file_private_data,
--					  file, wait);
-+					  file);
- 	if (entry->c.ops->read)
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 	if (entry->c.ops->write)
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 3a4f3f613ead..1e4f4e95a00e 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1173,51 +1173,36 @@ static const struct seq_operations jbd2_seq_info_ops = {
+ 	.show   = jbd2_seq_info_show,
+ };
+ 
++/* procfs opened the seq_file and allocated @s */
+ static int jbd2_seq_info_open(struct inode *inode, struct file *file)
+ {
+ 	journal_t *journal = pde_data(inode);
+-	struct jbd2_stats_proc_session *s;
+-	int rc, size;
++	struct jbd2_stats_proc_session *s = ((struct seq_file *)file->private_data)->private;
++	int size = sizeof(struct transaction_stats_s);
+ 
+-	s = kmalloc_obj(*s);
+-	if (s == NULL)
+-		return -ENOMEM;
+-	size = sizeof(struct transaction_stats_s);
+ 	s->stats = kmalloc(size, GFP_KERNEL);
+-	if (s->stats == NULL) {
+-		kfree(s);
++	if (s->stats == NULL)
+ 		return -ENOMEM;
+-	}
+ 	spin_lock(&journal->j_history_lock);
+ 	memcpy(s->stats, &journal->j_stats, size);
+ 	s->journal = journal;
+ 	spin_unlock(&journal->j_history_lock);
+-
+-	rc = seq_open(file, &jbd2_seq_info_ops);
+-	if (rc == 0) {
+-		struct seq_file *m = file->private_data;
+-		m->private = s;
+-	} else {
+-		kfree(s->stats);
+-		kfree(s);
+-	}
+-	return rc;
+-
++	return 0;
+ }
+ 
+ static int jbd2_seq_info_release(struct inode *inode, struct file *file)
+ {
+ 	struct seq_file *seq = file->private_data;
+ 	struct jbd2_stats_proc_session *s = seq->private;
++
+ 	kfree(s->stats);
+-	kfree(s);
+-	return seq_release(inode, file);
++	return 0;
+ }
+ 
+ static const struct proc_ops jbd2_info_proc_ops = {
++	.proc_seq_ops	= &jbd2_seq_info_ops,
++	.proc_state_size = sizeof(struct jbd2_stats_proc_session),
+ 	.proc_open	= jbd2_seq_info_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+ 	.proc_release	= jbd2_seq_info_release,
+ };
+ 
 
 -- 
 2.53.0
