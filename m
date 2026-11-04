@@ -1,87 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793805055;
-	b=XSqsd2EMXajn/lx67MjeibBoXwd45UK6WjmWeooj78yJAvvbsKukAdMbHinDVkHjUTz7
-	 8vzd4yogBRhixxc+OCIANiFGRzY9LvVTITyKEfgbbzkgCbXxocxGPerve9+q8yNCiXKim
-	 6RNGkUQm88TGjLcD78+Gv7eYsXpWgvkN9e5mtOBcVDBIh0KWur9mJ4iGSN0gNKV60tIsO
-	 SYZIb7ayjvHt9/k6XNv8Azy99qWvI+IeIghsi6jEkGLW0b4MqjpCu9nu58eMlIeLlHxi1
-	 YtKoVoKmcB3vUD2bhrMCDTpw0FTBSuWughlj2b9Q5aquhu/n1CyijhumIVuy1VVm0nw==
+	t=1793805057;
+	b=RLoQPyyPMRMP79t88ui76NsGOE+5z0EnVV2N4ngaZE5UX0tMYOApdWvFqKUaJhknNFR9
+	 rxx27JTlKoLWU2gtlpHRAUHfJHpdNRFJUh76e2foNXaSIiFZeLoUtpPQw4pq6Oaqr6gJa
+	 VjrofTDblQCAwFLZGkwnvYvBpseL58WeYkRJHTb5Qsm0AauzVoHKGPn3YbTDIvc8vymT0
+	 ewvfGpljnLo8s1kjJ2VjGum2r+QZxiIhqqYmaYCUJ+XXYZTZ1FkUvLYJHH4jv2DT4z2Pd
+	 iUEAkCFcXa2v2xzRfMUXI8koCXXqZ+5UgCWPnND5AViReWKtqdMcb1zGBw6zZMLuNXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793805055;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=B3GJZaJfM7BaQoOKyyMag0j1vgRY7QSdAOOCj79Pwwg=;
-	b=Y5N6l3ds56mrtp8uKa4UKMzd/rNjdqKDByLMjfBTLPlVJx8FxFhYMHxKPM2ZNa+90K8j
-	 JIRGZpNc3ZWVOCjiBssnGTPzTTF/9r6OsfmC3JJuSzyTtRjA9R+AOrYdzH+ZXjx4wvM8r
-	 Y6QCwS6HOayPVMQ3hOZLWft688QZGzfTzE3qGVXMe4CZ2NBm7LDf2RAGbcL7wIRlSF7am
-	 2lCFdcpAn3ZYwkAw9HD0YaBRg0iFpXj9hec+3ayOYRc+Vpg1quPjXQw35xU7S2rK+0RYG
-	 Dxv0WQNZ+ZdKWaF1+Mc39dsd4yZmHklTOr4cJnHXLq1L9ud5UaLkGi0U1QgDti4+6Tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793805057;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=c0Yx8fCK0WNB0T/fR6sEUWKNxkcIAIvJtE+ku38GnRo=;
+	b=R595X1CIotFRH8eT16UvXsBIpm9n7gOQKmfXnAd+VqBTvK6VVpCpUrK/9HN3REC5wLe5
+	 EyAhGcGn29GFLNep5MrFaiO+OrySQUm3ehA6nir1qH9vtGUCgTQt0xryFAhMbleRj+c/X
+	 KvVkfOP6zu/nauDbipxDgK3taW78qP4ZPhzPQcFpqK2miLGcPKekZoD38+OizqocR0842
+	 55CGk07akKmoqtBUAYXP53XEBwNoha2T3JFolbAnXjEXYIOHo7kkf72Ez1jIAmf0vCiIN
+	 PUwmYlKhb8Cd/6IOE/r3wkhJNuu2sCi3lNmHdjPpcX/FcIbvCEhgLMh8rXiC7jL3wMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Pd69AWE9;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=ZIj+z0Qc;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxCUen4N;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4E8606D802
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:10:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B4E8606D802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B169D606A339;
+	Wed,  4 Nov 2026 15:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Pd69AWE9;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=ZIj+z0Qc
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1793805052;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B3GJZaJfM7BaQoOKyyMag0j1vgRY7QSdAOOCj79Pwwg=;
-	b=Pd69AWE9lXhZW7tRh15AXww/np3Z/04F2bpLlLt+/36R/6ZcqB3BCOwJX4ixwYazVjhQ1R
-	em7RsuDtmJNxKZLB/Iibuh75V3hQeo2/EXviheqxLjfBYxAmSVagyTte2CWAGtYlPDNdPE
-	H0mHsqKtp/I0OwjdtZw8sfcPoRcz86E53L3aQBUA+d6MapE2CDZpJ5cHL0HWVXSbqXeoKG
-	y0B4K2jpSv2E+82WWcICtBVP5xBeUUCqr9NReE6gCcCx5FWBGnr/DAgc1MhmLLNyOoTSgL
-	8w4T1NxrSGnFrtj1EnUYhdVoNVw0W5w2V5BvxFFMWNLLnnLunPgcSs3KF1WB2A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1793805052;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B3GJZaJfM7BaQoOKyyMag0j1vgRY7QSdAOOCj79Pwwg=;
-	b=ZIj+z0Qc+QRYMKys35dUCq4FlzB9/AiIgfzUu7BCaxVvUvHIN+c415OdujQfboXJJ6q+O9
-	Hnd/0yLRafQBv9Bg==
-To: netdev@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chintan Vankar <c-vankar@ti.com>,
-	Danish Anwar <danishanwar@ti.com>,
-	Daolin Qiu <d-qiu@ti.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Neelima Muralidharan <neelima@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Pratheesh Gangadhar TK <pratheesh@ti.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net-next v10 4/8] hsr: Drop received PTP packets
-Date: Wed,  4 Nov 2026 16:10:40 +0100
-Message-ID: <20261104-hsr_ptp-v10-4-2c4a38ad973c@linutronix.de>
-In-Reply-To: <20261104-hsr_ptp-v10-0-2c4a38ad973c@linutronix.de>
-References: <20261104-hsr_ptp-v10-0-2c4a38ad973c@linutronix.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxCUen4N
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B771F0093A;
+	Wed,  4 Nov 2026 15:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793805056;
+	bh=c0Yx8fCK0WNB0T/fR6sEUWKNxkcIAIvJtE+ku38GnRo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VxCUen4NZ3vMY6FPjJBWsDBEG3Cr4cxOXUzHPRxo7vu1KJ8bVaJ2iolxlHa4/Y69O
+	 k7aD2ffxNSvIdYaB35guq4qpr63DJfMzjs7q97G4hdG4g4VQQeDvbQsJneRwE8gUP8
+	 2/jhKyKEZx2slly2Ipi2rodTX947xCSNbtCEK3Sh5R+0qywpFADx5gtr4FVnirAHpR
+	 ieZTTOgYOou9GT7LOmERzu8UgdHJGRdnjFEMc1ng2Uq1ucMkRv/14qw8lOGbu/9Dsj
+	 6XATEQawrajFHcTotkLrA7VGKUFOtqIRpbLTHgIoAkvhJTDkkFdDo2hKyPYWFU9F+k
+	 p3S+kdR1PoK5Q==
+From: Eric Dumazet <edumazet@kernel.org>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	willemb@google.com,
+	steffen.klassert@secunet.com,
+	tom@herbertland.com,
+	cenzhang@linux.microsoft.com,
+	AutonomousCodeSecurity@microsoft.com,
+	Eric Dumazet <edumazet@kernel.org>,
+	stable@vger.kernel.org,
+	Taesoo Kim <tsgatesv@gmail.com>
+Subject: [PATCH net v4 2/2] net: gro: invalidate frag0 after a pull
+Date: Wed,  4 Nov 2026 16:10:42 +0100
+Message-ID: <20261104151042.1157782-3-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261104151042.1157782-1-edumazet@kernel.org>
+References: <20261104151042.1157782-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,107 +68,188 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Receiving PTP packets via the HSR interface does not make sense. The HSR
-stack will forward one copy to the user and ignore the duplicate from
-the other port. The PTP stack is however interested in both copies since
-they will have different content (due to different processing times
-within the HSR ring) and different timestamp information which is not
-forwarded at all.
+Since commit bd56a29c7a4e ("net: gro: change skb_gro_network_header()"),
+skb_gro_header_slow() no longer invalidates NAPI_GRO_CB(skb)->frag0
+after pskb_may_pull(). skb_gro_may_pull() keeps comparing against the
+frag0_len value set in skb_gro_reset_offset(), assuming that after a
+slow pull, all later accesses are beyond frag0_len.
 
-Forwarding a PTP packet by the HSR stack is undesired because the
-forwarding takes time, it is not accounted in the packet and this makes
-the outgoing PTP packet inaccurate and therefore useless.
+This is not true:
 
-Drop all received PTP packets. For the PRP configuration it is the
-ether type, for HSR configuration it is the encapsulated protocol, that
-is checked. A PTP stack that is doing PTP over a HSR network needs to
-retrieve the PTP packet on the original slave interface where it was
-received. The PTP packet is dropped with RX_HANDLER_CONSUMED meaning it
-won't be visible by packet sockets bounded to protocol ETH_P_1588. It
-works for sockets bound to ETH_P_ALL which is what linuxptp is doing.
+- udp4_gro_receive() and udp6_gro_receive() read the network header
+  with skb_gro_network_header() after udp_gro_udphdr() pulled the
+  UDP header.
 
-L3 packets (PTP over UDP) is not considered because it is not part of
-the HSR specification.
+- vxlan_gro_receive() calls skb_gro_remcsum_cleanup() at a lower
+  offset after the inner handlers pulled their headers.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+- skb_gro_remcsum_process() can pull beyond the inner Ethernet header
+  before eth_gro_receive() reads it.
+
+- napi_frags_skb() calls __skb_pull(skb, ETH_HLEN) after a slow pull,
+  so frag0 still points to the Ethernet header.
+
+If the pull consumed the first page fragment, __skb_pull_tail() released
+it. If the head had to grow, pskb_expand_head() freed the old one.
+These reads, and the 2-byte write in skb_gro_remcsum_cleanup(), then
+access memory the skb no longer holds a reference on.
+
+esp4_gro_receive(), esp6_gro_receive(), skb_gro_receive_list() and
+udp_gro_receive_segment() also pull directly and never invalidated
+frag0.
+
+Add skb_gro_frag0_invalidate(), which only clears frag0_len, and call
+it before each of these pulls. This is a single store in the slow path,
+and frag0 stays non NULL, so skb_gro_network_header() does not need
+a NULL test.
+
+frag0 must be invalidated even if the pull fails: __pskb_pull_tail()
+can return NULL after pskb_expand_head() freed the old head, for
+instance if a frag_list member has to be cloned or pulled.
+
+As frag0 is now invalidated before a pull that can fail,
+gro_try_pull_from_frag0() can see an skb whose linear part does not
+cover skb_gro_offset() while frag0 still points to the start of the
+packet, for instance after skb_gro_remcsum_cleanup() pulled a shorter
+length. Copying from frag0 would then corrupt the headers: only use
+frag0 while frag0_len is not zero, and use pskb_may_pull() otherwise.
+If this pull fails, for instance after a failed pskb_pull() in
+esp4_gro_receive(), do not hold the packet: later GRO lookups and
+gro_complete() handlers expect its headers in the linear part.
+
+This was found by Taesoo Kim and Cen Zhang, using LLM assisted code
+analysis, and confirmed with reproducers.
+
+Fixes: bd56a29c7a4e ("net: gro: change skb_gro_network_header()")
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Cc: stable@vger.kernel.org
+Reported-by: Taesoo Kim <tsgatesv@gmail.com>
+Reported-by: Cen Zhang <cenzhang@linux.microsoft.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- net/hsr/hsr_slave.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ include/net/gro.h       | 10 ++++++++++
+ net/core/gro.c          | 20 ++++++++++++++++----
+ net/ipv4/esp4_offload.c |  1 +
+ net/ipv4/udp_offload.c  |  1 +
+ net/ipv6/esp6_offload.c |  1 +
+ 5 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 5274ba6dd36e6..a5b47f016abd7 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -23,6 +23,7 @@ bool hsr_invalid_dan_ingress_frame(__be16 protocol)
-=20
- static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
+diff --git a/include/net/gro.h b/include/net/gro.h
+index c49ea8e1298f..7a19d4486456 100644
+--- a/include/net/gro.h
++++ b/include/net/gro.h
+@@ -160,9 +160,19 @@ static inline bool skb_gro_may_pull(const struct sk_buff *skb,
+ 	return likely(hlen <= NAPI_GRO_CB(skb)->frag0_len);
+ }
+ 
++/* A pull can release the page fragment frag0 points to, or reallocate
++ * skb->head, even if it fails. Call this before the pull, to make sure later
++ * skb_gro_header() and skb_gro_network_header() calls no longer use frag0.
++ */
++static inline void skb_gro_frag0_invalidate(struct sk_buff *skb)
++{
++	NAPI_GRO_CB(skb)->frag0_len = 0;
++}
++
+ static inline void *skb_gro_header_slow(struct sk_buff *skb, unsigned int hlen,
+ 					unsigned int offset)
  {
-+	struct hsr_ethhdr *hsr_ethhdr;
- 	struct sk_buff *skb =3D *pskb;
- 	struct hsr_port *port;
- 	struct hsr_priv *hsr;
-@@ -44,8 +45,7 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buf=
-f **pskb)
-=20
- 	if (hsr_addr_is_self(port->hsr, eth_hdr(skb)->h_source)) {
- 		/* Directly kill frames sent by ourselves */
--		kfree_skb(skb);
--		goto finish_consume;
-+		goto finish_free_consume;
++	skb_gro_frag0_invalidate(skb);
+ 	if (!pskb_may_pull(skb, hlen))
+ 		return NULL;
+ 
+diff --git a/net/core/gro.c b/net/core/gro.c
+index a749755c83f3..75f6a5f39a4b 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -245,6 +245,7 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+ 	if (unlikely(skb->remcsum_offload))
+ 		return -EINVAL;
+ 
++	skb_gro_frag0_invalidate(skb);
+ 	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
+ 		NAPI_GRO_CB(skb)->flush = 1;
+ 		return -ENOMEM;
+@@ -457,12 +458,19 @@ static void gro_pull_from_frag0(struct sk_buff *skb, int grow)
  	}
-=20
- 	/* For HSR, only tagged frames are expected (unless the device offloads
-@@ -64,15 +64,28 @@ static rx_handler_result_t hsr_handle_frame(struct sk_b=
-uff **pskb)
- 	skb_reset_mac_header(skb);
- 	if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
- 	    protocol =3D=3D htons(ETH_P_HSR)) {
--		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
--			kfree_skb(skb);
--			goto finish_consume;
--		}
-+		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN))
-+			goto finish_free_consume;
-=20
- 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
- 	}
- 	skb_reset_mac_len(skb);
-=20
-+	/* PTP packets are not supposed to be forwarded via HSR as-is. The
-+	 * latency introduced by forwarding renders the time information
-+	 * useless. Userland needs to capture the packet on the original
-+	 * interface instead of hsr.
-+	 */
-+	if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
-+	    protocol =3D=3D htons(ETH_P_HSR)) {
-+		hsr_ethhdr =3D (struct hsr_ethhdr *)skb_mac_header(skb);
-+		if (hsr_ethhdr->hsr_tag.encap_proto =3D=3D htons(ETH_P_1588))
-+			goto finish_free_consume;
-+	} else {
-+		if (protocol =3D=3D htons(ETH_P_1588))
-+			goto finish_free_consume;
+ }
+ 
+-static void gro_try_pull_from_frag0(struct sk_buff *skb)
++static bool gro_try_pull_from_frag0(struct sk_buff *skb)
+ {
+ 	int grow = skb_gro_offset(skb) - skb_headlen(skb);
+ 
+-	if (grow > 0)
++	if (grow <= 0)
++		return true;
++
++	/* frag0 can only be used if no pull happened. */
++	if (likely(NAPI_GRO_CB(skb)->frag0_len)) {
+ 		gro_pull_from_frag0(skb, grow);
++		return true;
 +	}
++	return pskb_may_pull(skb, skb_gro_offset(skb));
+ }
+ 
+ static void gro_flush_oldest(struct gro_node *gro, struct list_head *head)
+@@ -564,13 +572,17 @@ static enum gro_result dev_gro_receive(struct gro_node *gro,
+ 	if (NAPI_GRO_CB(skb)->flush)
+ 		goto normal;
+ 
++	/* Must be called before setting NAPI_GRO_CB(skb)->{age|last}.
++	 * A held packet must have its headers in the linear part.
++	 */
++	if (unlikely(!gro_try_pull_from_frag0(skb)))
++		goto normal;
 +
- 	/* Only the frames received over the interlink port will assign a
- 	 * sequence number and require synchronisation vs other sender.
- 	 */
-@@ -84,7 +97,10 @@ static rx_handler_result_t hsr_handle_frame(struct sk_bu=
-ff **pskb)
- 		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
- 	}
-=20
--finish_consume:
-+	return RX_HANDLER_CONSUMED;
-+
-+finish_free_consume:
-+	kfree_skb(skb);
- 	return RX_HANDLER_CONSUMED;
-=20
- finish_pass:
-
---=20
-2.55.0
+ 	if (unlikely(gro_list->count >= MAX_GRO_SKBS))
+ 		gro_flush_oldest(gro, &gro_list->list);
+ 	else
+ 		gro_list->count++;
+ 
+-	/* Must be called before setting NAPI_GRO_CB(skb)->{age|last} */
+-	gro_try_pull_from_frag0(skb);
+ 	NAPI_GRO_CB(skb)->age = jiffies;
+ 	NAPI_GRO_CB(skb)->last = skb;
+ 	if (!skb_is_gso(skb))
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index abd77162f5e7..2309468cfc3d 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -37,6 +37,7 @@ static struct sk_buff *esp4_gro_receive(struct list_head *head,
+ 	__be32 seq;
+ 	__be32 spi;
+ 
++	skb_gro_frag0_invalidate(skb);
+ 	if (!pskb_pull(skb, offset))
+ 		return NULL;
+ 
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index cf07c3c6611a..cd9d7426b227 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -743,6 +743,7 @@ static struct sk_buff *udp_gro_receive_segment(struct list_head *head,
+ 			pp = p;
+ 		} else {
+ 			if (NAPI_GRO_CB(skb)->is_flist) {
++				skb_gro_frag0_invalidate(skb);
+ 				if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
+ 					NAPI_GRO_CB(skb)->flush = 1;
+ 					return NULL;
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 22895521a57d..ca947cb94fb7 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -64,6 +64,7 @@ static struct sk_buff *esp6_gro_receive(struct list_head *head,
+ 	if (NAPI_GRO_CB(skb)->proto == IPPROTO_UDP)
+ 		encap_type = UDP_ENCAP_ESPINUDP;
+ 
++	skb_gro_frag0_invalidate(skb);
+ 	if (!pskb_pull(skb, offset))
+ 		return NULL;
+ 
+-- 
+2.53.0
 
