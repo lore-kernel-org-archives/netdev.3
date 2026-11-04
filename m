@@ -1,102 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793781529;
-	b=4rE/ZWuasHocKXBk89g/3DanhChJ0we8MXj/snlpsBOWbCKQU4OScg7j/+gsJ3IxIJSz
-	 8GWc70f5OYx8PuORa1iX9GOIe03sSoIzdKn9W0wgZcfGHby+wsEbjX9JhpbBB3r1hAiI+
-	 R5CXxcyW2TbAIPGyDDd0gv6dIe00ccWT1ExpUUGB8GUrIpzZksXWpoDH1tFPQ0xHHBB/N
-	 ihO8vYJA0YybGB8vNaECMFdOT3x/lguy7kQ27/akcvMcPELsT9M5Bo+zGR8Wimbuhb96k
-	 v4t6FGKGAq9/DWfeNPM5ranC56mvE21IYkXBGMns23e3Q+ona3UqQPOU9KHmmZtmdww==
+	t=1793781705;
+	b=pLsv1gRES2fzzO63Ltv8R7rUYrtDcm2pWNwjjoVT/YVZrBXI9OY2QgGInv4wa4/9VqxY
+	 TCR8R1pH89qG6lrWqdblxPmR7Hi7FnLgHK+hOxuE7wXle8AXbUpBQWz+RKXdRzyJEhYi5
+	 zgr9WNhphmv3XRJtyzEPft2aDRqNRZJk+vuzwMX+kKI9pavqxfVjoLJeBLnkgul3Px5+k
+	 +tcasw2govpHl8UtyAq/lo/qxVlUtqQbVEvqxxbrINWV87gN463N6KLZX5ZW0cIsp5ceR
+	 ZI+XlxuqTGha+eyDOtoKFu43jH6s4sScTi/PxUjDx3DR4po1uGTeNK+EmCI+oImzOlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793781529;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
-	 X-Spamd-Result:X-Spam-Score;
-	bh=fn9pOwl2J0XG5BgCYcngjb7A66uzF2y3ZoLghzGOkZA=;
-	b=frw/2jRP+6bhW8uiAQ3ZQbPVqsqYBEjQPfmBPTIWH+AfLmFgFxid8GRUP5pV43jLUPxI
-	 7EGdkXr02Vk7Q4HvyZ2Y+Fir8QJflu1bo3c6poCCKa4ceRKdcTuxpB5BnnI+jmpaGpnwy
-	 4bNbs0zTVNsbXxUMXPR7At+c10bE2dNLu+ZRIKzkw4IFN+AycKmsJRCm7TULBk14bqN3m
-	 cDISxxNLJlGE/KGdYSUScRgrXHMqDyqfltXpesqOOfUkUBw5SzGPhFR//yFejZonPgiSW
-	 7y5XIFZYamG/cimeAoRu64541QXZdq7KjJsztgl4HADbn/3yZ5mtbG/l6gL99dPPQxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793781705;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
+	b=yV3XCVfD5oO8AYt3l8dC4wKkuvIC7S/DX/JBsIYdXd7+Y4P92hEjs7uRA7MG/zX8gfAS
+	 huNoPMP8B5THekPMiPSJt7HXtmh7YhIYSP4BsDSlnKJyk5r2jmx/16Y4JuocYSPNqJ2SV
+	 6LlG638h8CmaN/Pez0b3I/wEJUewsiIsy1r3BXx7XuJppP+auwhT/08hWCczmnqeUEq1q
+	 ZHwHtT/Ho09rqSpCA22V0esk8qITHQGlZmt0X4i4RsWeQ9UK8LDWxQ3exMyeqWmmShVCq
+	 td6jEU7A+gWU/4+OYfkPsJiHY5HSvhYaHKdDZ+crrn7I4sX7M5R2zeFJEN8UoVzG3YA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fA3O9gy4;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gFBk0IZx;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fA3O9gy4;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gFBk0IZx;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YjOMFFH3;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="hkYPDeo/";
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7A3606A329;
-	Wed,  4 Nov 2026 08:38:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B7A3606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83CA606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:41:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E83CA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fA3O9gy4;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gFBk0IZx;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fA3O9gy4;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gFBk0IZx
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 476E02009B;
-	Wed,  4 Nov 2026 08:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793781527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YjOMFFH3;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hkYPDeo/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793781698;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fn9pOwl2J0XG5BgCYcngjb7A66uzF2y3ZoLghzGOkZA=;
-	b=fA3O9gy4OyDPyMVktW0BsXoQkkG8Ai0tQSL7cP1inKZRftggtBP7MlNcC4ja2mvjL8v9QK
-	aqG0ZpzF3Y5K2Nn3gqqtiAE7AtaQt89X2AzicwKipGYF02r++U8PuzybIptC4JdsCvUHz+
-	ROw6LIfzWHmC2noeLap+toYBI3Gl+gY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793781527;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fn9pOwl2J0XG5BgCYcngjb7A66uzF2y3ZoLghzGOkZA=;
-	b=gFBk0IZxHinMUg91qFZV9JlDpfMF8eZdv2uNLvZXZs1e9BatBaO+XwNhIKFUz79BDkJcPM
-	0gypWuzwiVk6mOCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793781527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fn9pOwl2J0XG5BgCYcngjb7A66uzF2y3ZoLghzGOkZA=;
-	b=fA3O9gy4OyDPyMVktW0BsXoQkkG8Ai0tQSL7cP1inKZRftggtBP7MlNcC4ja2mvjL8v9QK
-	aqG0ZpzF3Y5K2Nn3gqqtiAE7AtaQt89X2AzicwKipGYF02r++U8PuzybIptC4JdsCvUHz+
-	ROw6LIfzWHmC2noeLap+toYBI3Gl+gY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793781527;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fn9pOwl2J0XG5BgCYcngjb7A66uzF2y3ZoLghzGOkZA=;
-	b=gFBk0IZxHinMUg91qFZV9JlDpfMF8eZdv2uNLvZXZs1e9BatBaO+XwNhIKFUz79BDkJcPM
-	0gypWuzwiVk6mOCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B41B134F0;
-	Wed,  4 Nov 2026 08:38:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id A64HBRbv6mq1AgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 04 Nov 2026 08:38:46 +0000
-Message-ID: <6abf56cc-d3df-4ca8-9f6d-fe9fa3462837@suse.de>
-Date: Wed, 4 Nov 2026 09:37:22 +0100
+	bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
+	b=YjOMFFH3B4gbABFW7fjGUAsevGp1qOhYK4t+oEW42rYDmrTfX0E62gBogAS5/RJcqmxlkv
+	BfutCBRDBbt42KXBnUTkR7eaTtR9oNFSniWhgBQ60Vl6TvZqkl7Zrc3lRxfl4jpALUXJD6
+	+tyms6FTx143skW03MLdFS5gnHblItI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-411-0YiDLBk3MeuWA5bPKlxHAg-1; Wed, 04 Nov 2026 03:41:37 -0500
+X-MC-Unique: 0YiDLBk3MeuWA5bPKlxHAg-1
+X-Mimecast-MFC-AGG-ID: 0YiDLBk3MeuWA5bPKlxHAg_1793781696
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so294951f8f.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:41:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793781696; x=1794386496; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
+        b=hkYPDeo/+rw5xYOEw5/EDKXBZ44X6fnZdMHtvBQtQeO0kKS2SpiKEtE/sZOsk4+37W
+         YJelI7l9+h3FrNSB1Iib7+EvvhPgnjUJ9eEEKINL9oT6Vte3FSIG7OinOymwWJp7u7vD
+         DBIg2CxBjteS95KbwDdWLuCDVpay4zdX9DLRqjmRN+UWtkqfqSGqRXaC+dfOF4/49HWS
+         10nACvG/WkkngPf35DzrZZIxo+nQDqrVyeBPm1HSEzKXHyR+9AaA7xFAuLhsxQt5u68p
+         +n4b13z8gbD/0LXI5wNUevVBTrtd+Wz/HtHYth4j693qQpEwrqnwSpKaMOsPYLm7NtHK
+         s6zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793781696; x=1794386496;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
+        b=FnHVlsJYeJEgyb4OsG2uvMQnyua2olG9H5OPGIKzW8h4nrZgalkk8CMrhjTCbzXK5a
+         /QRZYXoxUzZA4mAgHJvQ+jAHlrJ2p6yfnjIS+FxwZRLutowpRDZbGjnPma5s3TS1exgm
+         4kms4sF1JpZhW274bWmIGNW7aojW9u+1TSJGjYwku35aEV0Sx2+pwl4gs7nvkal5DZQr
+         YM3bSSmlLBeOziggKU+v4+hJuhNHUZtq4zO9NqsjAV1KjRihrUJSGukThG3nF/deXtED
+         98PK0kZMmnoAFX6VduaVjhG9Nlof/Zui+ik+C5/7Xx1DBTlfoKKUr9HF1Ftm9iAZktjw
+         LoxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz+RaT3JHVhopVgJUdmRyHGc37sVev0XGOfHFq1/hjeiRsmXO9JxAq28g1QTHp6MJPEctfCUsw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9hpOK/D0oSG6Flg15vzL7cktcWEMYA3BpqouC4LbuRx2hDJ+ev
+	QCE4ODPCks3wgMqttdErZWksajgR7mjhIPwGR7uInveZAfiXkc19LCCCuGz7/g6A2R+bV3Qqm4v
+	J2tdMFH2ifwcAf79/7qToCdCxvxT6xnnsgUlUfnW7WCF5q/p+3/eKXtfoBQ==
+X-Gm-Gg: AYBFou1vIpzoGUGajP8ShYXLTb6Ji8U9akRXYVgIc3Tr2plVU5UTclAUoimR1RQ9Mct
+	6hExLLbTWYWT7jhJg3GR3T6j52q6c+p8aQ2LoAOjuui+2kMS0Lj8UuldA6MdKBI5sAsaoXjNJmP
+	bbLPtATcEzoId4SSRy4pcxEyhN3TruVaYhDoOCdLTThrc6FRDvO2u98ZtoSA+WjS7oABs3CPvOM
+	cukGFYJJ0Bn/TUUByqp1GG8Q5Jn1MIMPUW38Rd/g31jBqeGZWF8I+ab2MisxhC9UqFX9DGJ9Weh
+	3BLZhTV78/R6JgCvBIfAwmgiG4zYnm0Q0VC++C/A5wgs30CSOT+jpsdlmXXvaqpGJGMBHSoAKVd
+	yCEQNmJal+qms9sJ9FwBaCQ5M0bPUTVSmxDlfHygngMz7NiEyOdx7/2vgYUNZV/iFdWmPb1kU5t
+	L8MfXffL4OwLC05Rz8QpbhqxGykTyxBkrgT7ZdvyEOZJk=
+X-Received: by 2002:a05:600c:6099:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4ac185bc1d2mr329183195e9.26.1793781696134;
+        Wed, 04 Nov 2026 00:41:36 -0800 (PST)
+X-Received: by 2002:a05:600c:6099:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4ac185bc1d2mr329182855e9.26.1793781695664;
+        Wed, 04 Nov 2026 00:41:35 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d87b5sm2470040f8f.11.2026.11.04.00.41.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 00:41:35 -0800 (PST)
+Message-ID: <f029172d-855b-4e93-8a86-d4aff72c9abb@redhat.com>
+Date: Wed, 4 Nov 2026 09:41:34 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,77 +113,64 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH nf-next] selftests: netfilter: nf_queue: drop the no-op
- loop initializer
-To: Sasha Levin <sashal@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20261103165419.687806-1-sashal@kernel.org>
- <20261103165419.687806-5-sashal@kernel.org>
+Subject: Re: [PATCH net] net: reject a negative TCP header offset in
+ qdisc_pkt_len_segs_init()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ sashiko-reviews@lists.linux.dev
+Cc: bpf@vger.kernel.org, network dev <netdev@vger.kernel.org>
+References: <20261101194433.2637113-1-alexei.starovoitov@gmail.com>
+ <sashiko-outbox-194018@kernel.org> <DML39PMNWP8Q.7K2P5T3AG8LP@gmail.com>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261103165419.687806-5-sashal@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <DML39PMNWP8Q.7K2P5T3AG8LP@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-13.29 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-0.999];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -13.29
 
-On 11/3/26 5:54 PM, Sasha Levin wrote:
-> The out-of-order verdict loop starts with "for (ooo_count; ...", and
-> clang warns about the unused expression:
+On 11/2/26 23:46, Alexei Starovoitov wrote:
+> On Mon, Nov 02, 2026 at 11:44 AM sashiko-bot@kernel.org <sashiko-bot@kernel.org> wrote:
+>>> +		/* A header in front of skb->data gives a negative offset. */
+>>> +		if ((int)hdr_len < 0 ||
+>>> +		    !pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
+>>>   			return SKB_DROP_REASON_SKB_BAD_GSO;
+>>
+>> [Severity: High]
+>> Should the (int)hdr_len < 0 check be placed immediately after hdr_len is
+>> computed rather than only inside the SKB_GSO_TCPV4 | SKB_GSO_TCPV6 branch?
 > 
->    nf_queue.c:354:10: warning: expression result unused [-Wunused-value]
+> No. It's already explained in the commit log.
 > 
-> Leave the initializer empty.
+>> When (int)hdr_len < -8, hdr_len + sizeof(struct udphdr) wraps to an
+>> unsigned int in [0x80000008, 0xffffffff] (> INT_MAX), which triggers
+>> DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in
+>> include/linux/skbuff.h:pskb_may_pull_reason() before returning
+>> SKB_DROP_REASON_SKB_BAD_GSO.
 > 
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> KernelCI's clang builds show this warning.
+> Not a bug. That's CONFIG_DEBUG_NET only and the warn is right:
+> the header is stale.
 > 
->   tools/testing/selftests/net/netfilter/nf_queue.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>> Can this write uh->len (and uh->check in bnxt_sw_udp_gso_xmit() and
+>> enetc_tso_hdr_csum()) before the start of the header buffer when
+>> skb_transport_offset(skb) < -4?
 > 
-> diff --git a/tools/testing/selftests/net/netfilter/nf_queue.c b/tools/testing/selftests/net/netfilter/nf_queue.c
-> index cca6c3cfa9e46..bc0b2f601a0a4 100644
-> --- a/tools/testing/selftests/net/netfilter/nf_queue.c
-> +++ b/tools/testing/selftests/net/netfilter/nf_queue.c
-> @@ -351,7 +351,7 @@ static int mainloop(void)
->   		if (opts.out_of_order) {
->   			ooo_ids[ooo_count] = id;
->   			if (ooo_count >= 15) {
-> -				for (ooo_count; ooo_count >= 0; ooo_count--) {
-> +				for (; ooo_count >= 0; ooo_count--) {
->   					nlh = nfq_build_verdict(buf, ooo_ids[ooo_count],
->   								opts.queue_num, opts.verdict);
->   					if (mnl_socket_sendto(nl, nlh, nlh->nlmsg_len) < 0) {
+> No. The driver doesn't see this offset.
+> 
+>> Third, for other GSO types (such as SKB_GSO_FRAGLIST, SKB_GSO_UDP,
+>> SKB_GSO_SCTP, or SKB_GSO_ESP), hdr_len remains 2^32 - |offset| at the end
+>> of qdisc_pkt_len_segs_init():
+>>
+>> When (gso_segs - 1) * |offset| > skb->len, can qdisc_skb_cb(skb)->pkt_len
+>> underflow in 32-bit unsigned arithmetic to ~4.29 GiB (exceeding
+>> QDISC_PKT_LEN_MAX), causing deficit-based schedulers such as drr_dequeue()
+>> and ets_dequeue() to spin in their deficit-refill loops?
+> 
+> No.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+FTR the nipa sashiko instance dismissed the above concerns autonomously:
 
-Thanks!
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101194433.2637113-1-alexei.starovoitov@gmail.com
+
+you can reasonably safely refer only to such instance when submitting
+patches to net/net-next.
+
+/P
+
