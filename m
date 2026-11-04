@@ -1,78 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793807653;
-	b=WMybuL4SXQEXDkK8US36sAWW7updNX1rqzuha9UZwqwpwUKZ3ofAQnoiL88tRDbGWgX9
-	 5QKPwggldhejxiT2U5rWkTfV+CoUeSOsDlyqIZ4mVgY84FPcsHjymJKxDvTBzYGRqK9ku
-	 IPNRvbjMjQeEeXeEAo347xX4ciaJmBPSSNnv0FJDyNqxskpBmetPrs+s6KQRt9I88l5DH
-	 VdVWPtz0/XARP9hBmEJnl0BIXAae+HJvMLmeJxVs0cCn/WWO2MgKQXGrUseQMPTYCmGV9
-	 sIXr/MmldTmrq0+GJXCrBlTUrT8a6smJrUS2FKOGJMzKTWly9XZF7XXaBzieW7Lg0Vg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793807653;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Rspamd-Queue-Id;
-	bh=3ZyKVlgETx/e5PJXK1nIzrIGfB7mow/Rq5EMyqi1gw8=;
-	b=oVIabaDKY7s6Jh4PV4HTRu5jcsS1ulghkm5uPiUj0pV/tmw39Vx0x4cL2Pi2wetRuEes
-	 uHJLJZ2dbIqpb8TVOvlzxO1DDBvKer/qxM0dpIVjE06EhVJlPvqkkHl36BQ/NEcjWwcuJ
-	 jIUE6hb2toVX8KOlPWN2VrZ7Oc/27YBDTpiN0nU6GmQTQLk5+U7axfqTWiSsRdF7D84WK
-	 57B0NqChX8Gc67KMR+JNpUN6h4n1WYXFTsjY4sn5871JSZigRuXnpl5c9fE1HdwZu3tsp
-	 KiNmtZC5YNpTDusPSsbEbUYhrjogDbYzZwReSXw5b1Nq0KA3q2dpBwTavyFdDbNZ+fQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mandelbit.com;
-	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b="E0ixl/Yi";
-	arc=none smtp.remote-ip=195.10.208.46
-Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793807741;
+	b=TQ4QDUQd5rSTUQiUMUi0aLQ6oBhDjYBNZBM/1xXum+BOWxszQqCuAVgmxQgDMGI5lvHK
+	 Ktio13TxDCC9005+/FE3O1y1mAF/SvAmr3aoMkWUzyUr2tg3a/jQ+f9wPoeKj6kP/qBPY
+	 EvqMF9oPn/YaLUcvIAu9UzZRWPnYqNhBOTmEHZbwFbrRbEOMC4ZDzoS2le50YHiTBQUeS
+	 odx4R6sKRb0Zdd2jMk4qwa90l4fENL3TYgRGY7tckS41Gksm5eArJJAaOSTNlYk/w3rKW
+	 Fpdm0FSsWWYF+40kwIwNyMvSh/G2IFc/qIM+abBpCyUY8qhCUHYa8oLz6ahCRSYWo4Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793807741;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:In-Reply-To:References:MIME-Version:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=uG3FhY5enp6KhprejgTETmEojafa/AG4GsoBAEaegu8=;
+	b=ralNeJ5FSNkDCIi5OwCXyWAK9EbBoB8c1+bl/VawHKnmqHmXeoH7MwV1nA+eUbzkOgyO
+	 FxHLc+8nA30773IGEt7eYn6Oq0OJPUMgV5MRdCv1V8VBgfh/BO6xfNUF90RusTLEr9jx0
+	 Y6YYz+B9wAGj1e5al5TRltuHqHLcj3QPs3nRVRyK5VsGrESf6S7yoGazWF9oKZ28vRc9p
+	 A+RP8/X3bGKv5MEJa7bfGNa15u4EacZkp/z6VDsbu4keviJF1gmHMJ/8XJ155x54m9NdX
+	 gXNRhrqm9z4QnoYtFgpSFO4K1hvctrqaOop1MHvMo7/JpnXch9Eqm2MjhuF31WKuHQQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="qQwv1PI/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.46
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E94606A330
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:54:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92E94606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB3A606A329
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:55:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CB3A606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=E0ixl/Yi
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4jKVNj5Ts8zNltw;
-	Wed, 04 Nov 2026 16:53:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1793807637;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3ZyKVlgETx/e5PJXK1nIzrIGfB7mow/Rq5EMyqi1gw8=;
-	b=E0ixl/YinGNQhnB4ZG2o2Rf0sU+Lyv3QubVHY8S8j8NLzppnoFQEeatuXGOfMcV+aCgphn
-	b1JxhZxjRujM8R1lOjVyaKT2EtI/CbVhtCrZkQ8H28f9wtgbIjGUlly2t68Zm/IsZJCvmI
-	hs8HHkbNmcd6p/Di3CecT9mJewiozjn+5uGOeGYSgcUdRaBH9G8lnRMlFLyZNBrtALJOsI
-	D8CBcf+je7hCOxw9gVIlEugVcXCoUteDSpv+Qwq1JxVl6loqfI2mcJE3Rt033azAO5/onV
-	Jnt2N15PC0s0jujvw6CRMZLfHLiyCARBlhmTMjWIcPT+vHfEv5+osK35wUuDew==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
-From: Ralf Lici <ralf@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Florian Westphal <fw@strlen.de>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@mandelbit.com>
-Subject: [PATCH net-next 0/3] ipv6: tie the dst cookie to the lookup that returned the dst
-Date: Wed,  4 Nov 2026 16:53:28 +0100
-Message-ID: <cover.1793806941.git.ralf@mandelbit.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qQwv1PI/
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-67a6cc9acbeso660839d50.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 07:55:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793807740; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Jj9E5tAJodbyTEFsmbCX+BP46p9Uaa6sHjWF4n9fbgWKpKzCCmA7tpjh4agCfmWsnS
+         Taj5FJ+lNQMR9s/24vs238nY0czph+yqEFrgKKTkWELRB+EHj1gm56TpME02w+DNv2OX
+         Tg9MiFFdrbzqoZIJlkIQRpUor3CApltjYQnNVHJulBn6BZhj+usTNAltvuRRUWcmatyx
+         aNg1+3pvQVSt7oQFQUOLl8XRwfTn+DGSRtRRMO9frjKqnA+TbwzJRc4rVZgn8MlQSRBB
+         m0DbNxTo+KTXQ7CgLs4HPvjQIQCVnWb7iGa/r9Lv1F2Ets5OxPmtuDFuSUTQSXeLzSly
+         XImg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:dkim-signature;
+        bh=uG3FhY5enp6KhprejgTETmEojafa/AG4GsoBAEaegu8=;
+        fh=HQJ/9C88Z8tTA2Y98rX85RQSB94oZe6tgb8RHKkaUSk=;
+        b=jZI1gWaqAfalfioR9cy0nxd9wIBnVVTX/w0ifPoTangxLECHDxfej+vZq1Hi0QHp4I
+         OfIyXerPwu0cqKi+J5vUSHsBUKDaTlxOZw6RfnI4uDGDeaQVaX6M9b8bDZylmN/cuqEu
+         EtVt8MaeXL5fgy2iUNSqoqamMhqQ10HSY55T5pWJ0vRnyNiUH1hmxZ3ffRTRJhYwel6K
+         BWz70lMTKtNFauK2AbhtrthKzUFxINsMNjcRfytKCXMImh4SAtU1Q7dZChv7ERe39BWH
+         UFZPxIgFTAwSVjKRZ9cugsUmdnxWUTGiw3awy5508BD0DI2/y8p0Cl35z+GEyzuBiqkK
+         aBVw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793807740; x=1794412540; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uG3FhY5enp6KhprejgTETmEojafa/AG4GsoBAEaegu8=;
+        b=qQwv1PI/1SFi+6hzgIC0tjP6JkbFCVhPoM7AS8YvsTeGGWvyIspG8vDPm2TcEaJRbQ
+         NqvlnDyKIaJc780ANEwbrVWytxMocmId/Yd7ffh5CCmW9mg1izYCezoWLCie6FyQ5Occ
+         nWgEvA0OqRSZW6qEx326uo5QZ+HubyajA4EuY1IIdbgxR4t/oUdrDx9Q+TScm8y3+N0X
+         f8RKq0wwjr7YJkaPkrOOgCypHNg1fRElxBXSfZh4PBLaV/I2NQOlfGef/lO0LcpkaAEJ
+         eamnBV848uEAyx+Wp5bJzwmQSQZdfR/LvZZYk6qwBZajRTIHRhz1e6Xo2RV5gduVgCvR
+         BvMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793807740; x=1794412540;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :references:in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uG3FhY5enp6KhprejgTETmEojafa/AG4GsoBAEaegu8=;
+        b=TZ5/z1iBYrTCO/1BDZouUAURz26zeFCZ0v6a/TJGrFx6HK8bXBd9CcxhwlL0iZ8Bzr
+         dRO3add13bLeMTET2/VvVC40c/jk4tsD7eEmIkeAS3ySfZ28ZtBSMdz95RSJVASOwMqV
+         fhq4/11QxDA7kBVJL91MaGEMgtYXSv7GZygzKjdssfxuvQGe+UH/HGytpkNH7xJGXYzf
+         lBOjuDjqekd445lU0bJ9Yt0YwmLDWfYw1zy6yJ1ZX0IxGZ3ks5BsS2+uJNzjX9olLWCe
+         vAKn5z54AhbI6beDMxm8OnxMJY5KANH4Qa/Ljl0b4rlIY076X3e3yIxq8b/T6y01nMzy
+         dnZg==
+X-Forwarded-Encrypted: i=1; AKwUvBxYMUkZJKh2FT6vBIceEtX5QQmqrNFWUeUkC9VmUiNkcx96HPElGOTDbq8TGoFywpKPr1QFm/w=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+TskfmZ5e4iAtk+TuCaI7yCIE5ROYd+9HyTKbSVWW3nCxDwjb4
+	WeOWwiI7//KKpyMTU+aKvAvW0jj6FgMYfBeUY0CJyxouwWSFtyi8hVa6OxFpmmReYM/LG68B5+C
+	DUpJlPde4/CmIooz+2tf+nqj0DmgzpW8=
+X-Gm-Gg: AYBFou2MCJeQcjRLLJBdijy5K0IRROKMcxYlzOfW77pI2scluuKWKbxPAo4oWfqNr/o
+	JBhBaFnk83zYTIK71pIJS6ybK0rDX8S4qY5UOWePPVP0D2+iXJK4L1khJlmL2ZykpD28MGnrly5
+	jtlJrvDQ2yAfVkuMr5jGc03O3LCBbpr/YJVb0Kf+pEYiTvammnK2IK2z2a/qUrb8iZ6lqyY0AAx
+	UieTpxmzhk+Us3kTsJn4JY6FxSCuBOI+U+QhCjk1vj2Wp25YRR6kZBOB3nZar/KML0dJErS7Q+R
+	cvEtWS5hfthhtfhrzTBifka8LCj+f3WbxYyNpOS/MBQgSmLr20rHt/WrTk70fdWSb9iAzut6HsN
+	4XNP82bBERKav8qVbntC6idaVlnjffNU5a4bh
+X-Received: by 2002:a05:690e:4089:b0:67b:e9d5:89bd with SMTP id
+ 956f58d0204a3-67be9d58bddmr2433777d50.78.1793807735629; Wed, 04 Nov 2026
+ 07:55:35 -0800 (PST)
+Received: from 313336824172 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Nov 2026 09:55:34 -0600
+Received: from 313336824172 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Nov 2026 09:55:34 -0600
+In-Reply-To: <179377433748.488859.18424652819498691331@kernel.org>
+References: <20261104063245.23402-1-0xbeac@gmail.com> <179377433748.488859.18424652819498691331@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,68 +109,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jKVNj5Ts8zNltw
+From: BeaCox <0xbeac@gmail.com>
+Date: Wed, 4 Nov 2026 09:55:34 -0600
+X-Gm-Features: AclHuK-d5MDjuPFIkWxVxOzfz5M0wSMntlCEi4c7058mPNhkapkJn4VyKormY0Q
+Message-ID: <CAF2udye3be+BUfJoMoVwM2GC+REtfKn36dxuyCs4NW5eBLAE7Q@mail.gmail.com>
+Subject: Re: [PATCH net 0/3] net: ethernet: disable async work before teardown
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
 Hi,
 
-This series implements a first part of the model proposed in [1] to
-address the late cookie sampling race: a dst can be stored together with
-a cookie read after a FIB change that its lookup did not see, and then
-passes dst_check until the next change.
+The issues were found by manual code inspection while auditing
+Ethernet remove paths for async work that can outlive the netdev (the
+same teardown pattern as a missing cancel/disable_work_sync before
+free_netdev). They were not hit in production and are not from syzbot.
 
-The case that made me post it as a series is xfrm. Adding a policy
-restamps every fib6 node, so a socket whose lookup ran just before the
-insertion keeps its plain dst and leaks plaintext although the policy
-matches. I reproduced it for TCP connect and connected UDP, and the same
-window lets a more specific blackhole route be bypassed for routes using
-nexthop objects. The ovpn patch [2] hit the same pattern in
-dst_cache_set_ip6.
+Testing is as described in the cover letter: KASAN on QEMU/KVM
+(x86-64, 2 vCPUs). There is no physical atl1 / enc28j60 / xgmac
+hardware in the test setup; platform/SPI teardown was exercised with
+test devices, and the atl1 probe path was not exercised.
 
-The conversion is initially limited to tcp_v6_connect,
-ip6_datagram_dst_update and ip6_sk_dst_lookup_flow. Other TCP TX cache
-paths, including established-socket route refills, header rebuilds and
-accepted-socket setup, still use late cookie sampling. This gives the
-lookup-cookie API a small set of users and concrete fixes to review. If
-the approach is accepted, I plan to follow up with a broader conversion
-across the networking core and drivers.
-
-Compared to [1], the fallback cookie is 0 instead of the pre-lookup
-generation, so fib6_flush_trees is left alone, and nexthop-object dsts
-are checked in ip6_dst_check instead of passing the generation down to
-ip6_rt_pcpu_alloc. The other cache users (dst_cache, sctp, ipvs,
-flowtable, sk_rx_dst, the xfrm bundle cookies) are not converted and
-behave as before.
-
-I tested it in a VM with lockdep, PROVE_RCU and DEBUG_ATOMIC_SLEEP,
-using a debug-only delay after the lookup to hit the window: no
-warnings, and the plaintext and blackhole bypass are gone in these test
-cases.
-
-[1] https://lore.kernel.org/netdev/20260901122501.482920-1-ralf@mandelbit.com/
-[2] https://lore.kernel.org/netdev/cover.1789639346.git.ralf@mandelbit.com/
+If a later revision is needed for other reasons I will fold this into
+the commit messages.
 
 Thanks,
+BeaCox
 
-Ralf Lici
-Mandelbit Srl
+On Wed, Nov 4, 2026 at 6:38 AM netdev-bot+sinfo@kernel.org wrote:
 
----
-Ralf Lici (3):
-  ipv6: stamp the default route node with a fresh serial on link failure
-  ipv6: add ip6_dst_lookup_flow_cookie
-  ipv6: use the lookup cookie when caching the dst in sockets
-
- include/net/ip6_route.h | 18 ++++++++++----
- include/net/ipv6.h      | 13 ++++++++++
- net/ipv6/datagram.c     |  6 +++--
- net/ipv6/ip6_output.c   | 55 +++++++++++++++++++++++++++++++++++++++--
- net/ipv6/route.c        | 24 +++++++++---------
- net/ipv6/tcp_ipv6.c     |  5 ++--
- 6 files changed, 98 insertions(+), 23 deletions(-)
-
-
-base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
--- 
-2.56.0
-
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
