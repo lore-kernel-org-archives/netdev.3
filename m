@@ -1,66 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793757267;
-	b=QRtRFh/oXGiTPhnPoa+U3XUv0rnG4MS3F6IvAg3z9aN/Avf7RQy1NC6IU2TLmFwWeIWN
-	 PmEkEFDuPK0BPLWJXJ+NaFuQM5VOq5Sd2K2FyDx70EhDjsNHjx8OPocTD+mR8LTDXsM27
-	 Y6/iWhr6rjcnZ6SNsJRUnj+Ey4SsCqOmbsjkqjHrOzvitnZUtkS1fxRIW1L+S6YAq/q+1
-	 Dmwb/i5a2WCjlMnvPHcL3gmaV4T+czyNI2mjr8hEL59VGhtD4ZjEcAtkcU14u4ZPoyI0N
-	 ViN+WeLcYKgnF50uMu0Cchoq7uj08sGle8ThJPIughA5Kft8u6T4/Qc4QyECBKsVLrQ==
+	t=1793757268;
+	b=fjRiYrfbLFZAt9qPol2gpkJWUmPkIef4nCjj53T6Yk7+N1TAraif+uccDIOAe5Fg4mFB
+	 S/2hJxpnqLywoWxEke8gr79hcT0I4bK5q2DRmT00PvACPngfxmuy8wpxBcFVhJno1pbsV
+	 uIM/+4hcdGp53aBrxRtqGxfA47GrOqtJ61ek1l0RsX2laBGwHLpKqcBLWtTB6BrNTfEBc
+	 F9Ft3KVp24reFaRNhXiTPIsN47k75AOcZTWC9gL5TQ48uzEBMHCsFwnli40ohcB18mnCl
+	 T1MLgxaMhepQeoC+p+Wi2CfegUcpfed3MmWayMm+1BCBlSXlbPSUbgwMuPlKgY3qQDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793757267;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793757268;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Subject:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:X-Originating-IP:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
 	 X-Proofpoint-Virus-Version;
-	bh=UMrTlTbQEQWJPHtpalLZFSJKxO6m/cCb7KtsWW1IBBw=;
-	b=2ycXGkaWJ1MrhTdV0EpCBG7ifOlAiLOOY5pHfLlDIxLZrtNmFgwL0ffAy8ULqb+SE5vK
-	 n6dz87zvltMJ5YK60pMiJWX5SxJ6pQ/68aqpLP3Q98mE+xq5aLS2CVdiMRHvMYrX4LwIT
-	 nd48BGCThZ2lw4whqYwgWrNUpTpbXIgM3uatJkZDRoV7Jsyw2WQMZ7bZH3zQDWnAgMA+2
-	 lWBqunu2phe8JfifCHignKS7MtsRDsdJ37D41iDJLLDjjD/ph3wsk1ePmxLQ87pes5K9/
-	 1c8tnh73FIQuq58qQmjKF+jk6KgyA4oiKRRJ0gSH1DHBUJ7YGlWzr9Ff8hByyi/12Cg==
+	bh=LSeW2bIn6BgxLSAOT2Lw9B2rplEpw5sJn6WUcX7UXc4=;
+	b=qq/tuKpssS10M0mv0GyB8F2RUR4K6dypN2Apg3qYGznwJdkWj69GV9gdywJMS/hA6ldZ
+	 9UOQz5g3dfXmS4yzm/7UkHOFPcIOGmQny0ULaf2b+widfHauoqXYSI+CsrQMQvVKkqXjs
+	 5N+D4oa3xjdXHFDUNEK34IVB/viSDdr9MaA0L3u+aBVsGDvduzOBn576OpbU9B7XvZ0uK
+	 8z2ziqZNWGCzxCgfQtK2xtiDG2ocZr62PlwIQrxkllRrGuf6wbwcdXTJSKdijvAaNClVE
+	 c8Q8NbwXFBQ5qJbe5gV8z5Zn+RyBQ6oGsdsqmxBudfcq4xbBTmyKv8k9HO1SpdCILJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=meta.com;
 	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=aNQ51ppK;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=EZK4eA1D;
+	arc=none smtp.remote-ip=67.231.153.30
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24095606A31B;
-	Wed,  4 Nov 2026 01:54:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24095606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C349606A339;
+	Wed,  4 Nov 2026 01:54:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C349606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=aNQ51ppK
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A40SSQs2932710;
-	Tue, 3 Nov 2026 17:54:07 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=EZK4eA1D
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6A40Ss6h1797857;
+	Tue, 3 Nov 2026 17:54:11 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=UMrTlTbQEQWJPHtpalLZFSJKxO6m/cCb7KtsW
-	W1IBBw=; b=aNQ51ppK8N/80prsAuoC7z27dq0MScQ4sYBhtzW5Mt8lzx0RqJ2fm
-	WYv8qKIjJ3klezXGtfuQXMpokAM39sVS3uWC7R4FVADapNLG6XRo9h10Wq1Fm1xX
-	JrpIf1jvVGbGcp6Kq7kSivOiRvE3Bx26T+0E3f2i/NapuKUUITgikUBLX8fIyKa3
-	xoVTb1yE5mcNWj4JhqTeBRR5xfzELtfggUtNaUZZm9JWJb9WhgA+hM0AiBfkn9Xn
-	oPIIPOqjoe7/vNVOLW+3CvK8Y7rnBzceQuOSrykRtOmM+WjFSW/mrypi+EwDhct+
-	NtX02sgKVmL2VvLpKZgk4zAGhUqu41c3g==
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=LSeW2bIn6
+	BgxLSAOT2Lw9B2rplEpw5sJn6WUcX7UXc4=; b=EZK4eA1Dr+c3PcRcL9qiPzptK
+	d7f01ikf2DaYwYe7PkpP7/UZXtO9A/oxE6jJdaRyfxUIctPXd5EVe+1dmGxRTR3K
+	aRjkl3G53iOcKJxLAGL1YUYFamtfPi81PCjWZib5JhP2Ofb1Du50tLbWGJX/QIOz
+	wg5KSEDkkKFMb+n3JGsDH3RJCiNWCmV4On8IbQbSCt73FA7kTNJYUNjdDNh3dVQ6
+	LJh5nE30v4T/jdm+kdGv1/n0aJPKEAcBs22mYn7WluWE72nj6/ThWZ4u0dMKsMFx
+	w3PgWoHDvX/+6OfhNu9qHKEdqelXv9Qsz02SRO/f4rfudpLJFsy9eG2TsMURw==
 Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hqhrjd2r6-2
+	by m0089730.ppops.net (PPS) with ESMTPS id 4hqm44bbmk-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 03 Nov 2026 17:54:07 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+	Tue, 03 Nov 2026 17:54:11 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
  (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 4 Nov
- 2026 01:54:05 +0000
+ 2026 01:53:55 +0000
 From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Tue, 3 Nov 2026 17:53:20 -0800
-Subject: [PATCH net-next v5 5/7] vsock/virtio: support guest device network
- namespace
+Subject: [PATCH net-next v5 0/7] vsock: assign the guest vsock device to a
+ network namespace
+Date: Tue, 3 Nov 2026 17:53:15 -0800
+Message-ID: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,9 +72,12 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261103-vsock-guest-ns-v5-5-48179b9b66b8@meta.com>
-References: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
-In-Reply-To: <20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com>
+X-B4-Tracking: v=1; b=H4sIAAyQ6moC/2XOz2qEMBDH8VcJc3bK5I+J8dT3KD3EONkNZbUYG
+ 7YsvnvBQxE9D5/vb15QeMlcoBcvWLjmkucJetE2AuI9TDfGPEIvQJGy1GmJtczxC28/XFacCo5
+ kQzKtHIN10Aj4Xjjl5x78gIlXnPi5wmcj4J7LOi+/+1KV+32PelLnaJVI6L1vdafZh254f/Aa3
+ uL82EtVHbS6vFQVElqvh9F1aWTPJ63/tSR53dZIOGhljIvWDkqftDloRRdtkJCMa5WLKcYUD3r
+ btj8crXHmbwEAAA==
+X-Change-ID: 20260831-vsock-guest-ns-d06af451da67
 To: Stefano Garzarella <sgarzare@redhat.com>,
         "David S. Miller"
 	<davem@davemloft.net>,
@@ -105,299 +108,158 @@ CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
         Bobby Eshleman
 	<bobbyeshleman@meta.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX3EsV0qm5pHxk
- 8q895hSeOIEhWkd9OLTicPWxzHdaCY73k9910F0+D3fP0S/o1D/13N+PVglVJ74EL9Teee4oLN1
- wZ0BNL85+icgm9PRrMc3brz8Wz61y3I=
-X-Proofpoint-ORIG-GUID: g3ip2H_-XqDzqszIV2caht_x3ECz9kfn
-X-Proofpoint-GUID: g3ip2H_-XqDzqszIV2caht_x3ECz9kfn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfXwYsFBmjE4P+T
- 3ci7HOFfwHGed70vl+gurEjCAiQmSxZ1GcA4Zz/zY4Dyl7WrflI38gMUxW2MAJdQuEtdBsH4NCT
- 6BN9dtKFZfKyIKIMJ0CjBNYhdB/Yy339mLSjwp8PJ5ALZrvhKpcm0IYVhxjCL0QmQ5BT2dgHaXc
- NFyxgqu1Hm6x70JKI2dIYqUbMoF9ImZNzEpj2uGoU5WPUDbkiplnwI3yyBjDNhz4NFmm3wZUPBc
- msZTL/Fz7xZlzt63TWfwSjzhJrmvgbOeUscpr5tDrb4YebxaTLZLzFP51H3OX+YaxHBryOQeq9x
- EX+jzeZ4qOBIVnD/On6F+ji7rJd+fLQyPRtvjdAXJHdXlWjCn73uLpqIaC0AdKdjJaAHAAR02I5
- EYwIbN/dfByJmrthN28CpoTICCrlcT07l+7TbpBGOZEIPG119pIQ46DM4/QEsrLaRr/kSv1goNJ
- PBM4kV6g9S5dT6EKxPg==
-X-Authority-Analysis: v=2.4 cv=IICXmQvG c=1 sm=1 tr=0 ts=6aea903f cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX1+5t3y9M8kaz
+ kK4AABIOek0V08ipiGDAYTC155K0cNxew27UcvOZIQyOAKalgeSOK7aRVRezDVcVy44w9Tqc+QO
+ wqI3ZDaSHrAnmbCcrH70v3m22bTTp/8=
+X-Proofpoint-GUID: gvy76xoU1-6znoIqGJXM4vJHl0VUwmeX
+X-Proofpoint-ORIG-GUID: gvy76xoU1-6znoIqGJXM4vJHl0VUwmeX
+X-Authority-Analysis: v=2.4 cv=OMGyTiaB c=1 sm=1 tr=0 ts=6aea9043 cx=c_pps
  a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=VabnemYjAAAA:8
- a=0Wy0JZZX8GSs-a8CyA8A:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=855S8uPTkML1Oy45N9_h:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=_eT-hsJ4gDFAW4DEsJ0A:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDAwNyBTYWx0ZWRfX3sNEecdM0+Lb
+ dT35JxCLyvAPEH3kZGYxyjMQRvQY0LQXjgAGk33KDDVgwFo0EhNOcuFv3jYNU4+aFilg5k06wcK
+ cfFKpoh3QRN315OxcSPpTxxF7jERDTs+l2BYCOFUNxIrmmfmMjmFoq3n+bmqWRHLYUq9lKT0rlD
+ sDoXf4XxbbXB8l+H6HFoy8dUa/ELdeDy26qArnrdnp06xMsQFUxx4pwbNYuzkVTyKwcG9nHCc0f
+ SzFgllujC8bHyv8vkT3Z7N7hwmrDesPzFi0Su8CITCEdvnUd0apPDmPhVg3gCHOHQMrmxrfiaGs
+ c0jvpiHURq2uQax6iTH1GRwnAxiFhgK4xEpVFlZL3Y2FGjvzOs+ZyLnghsF/MeBUVKx83fnQtV1
+ LsOOOsYfVesrA9X0nvvII3HdTTr6o3zpnsoXOcThZTaJ8Pe3trnQvN1o0mFB9lXZ6mvCo27Fo/l
+ dOanq9LT2lmi1e95+jA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-04_01,2026-11-03_04,2025-10-01_01
 
-virtio-vsock did not have namespace support (the device was always
-accessible to any global namespace).
+vsock network namespaces let a host put each VM in a namespace of its
+own. A guest has no equivalent yet. It has a single G2H device that
+cannot be assigned to a network namespace.
 
-Make the virtio-vsock device assignable to a namespace and initialize it
-to init_net. Because virtio-vsock and init_net are both hardcoded to
-global mode, nothing changes until the assign command is issued.
+This series lets a guest move that device into a network namespace. A
+new generic netlink family, "vsock", supports the command
+VSOCK_CMD_DEV_NETNS_SET which assigns the device to the namespace the
+request was sent from. The namespace's existing ns_mode then decides who
+may use it: a "global" namespace shares the device with every other
+global namespace, and a "local" namespace keeps the host connection to
+itself. The device starts out in the initial namespace, so until the
+command is issued nothing has moved and no mode has changed. There is no
+explicit unassign as assigning the device back to the initial namespace
+is equivalent.
 
-An assign can land while virtio_transport_rx_work() is draining a
-batch, so the assigned namespace is re-read per packet rather than once
-per batch. Matching the rest of the batch against the namespace the
-device has left would reset connections that belong to the new one.
+The command requires CAP_NET_ADMIN in the initial user namespace, so
+that an unprivileged user namespace cannot claim the device.
 
-When a device is assigned to a namespace, every already established
-vsock socket that is no longer able to reach the device is forcibly
-closed. For that reason, adding new sockets to the connected table must
-be performed atomically with regards to namespace assignment. This
-ensures that when the socket is added to the connected table that it
-actually passes the new reachability conditions set by ns assignment. If
-it wins the race to the table and does NOT pass the reachability tests,
-then it will be reset. This is the purpose of the new helper
-'vsock_maybe_set_connected()'.
+Connections that can no longer reach the device after a move are reset,
+so that a namespace which has lost access cannot keep using a socket it
+opened while it still had access. The assignment holds a reference on
+the namespace, so deleting that namespace does not move the device; only
+another assignment does.
 
+Transports opt in through a new netns_assign_allow flag. Only
+virtio-vsock sets it here, because it is the only guest transport
+that I am able to test against.
+
+Based off of Stefano's original series:
+https://lore.kernel.org/all/20200116172428.311437-1-sgarzare@redhat.com/
+
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
 Changes in v5:
+- Rename the uapi header to linux/vsock_netlink.h (Stefano)
+- Drop the VSOCK_CMD_DEV_NETNS_SET reply and rely on the netlink ack
+  (Stefano)
+- Keep vsock_register_mutex static, export vsock_cid_lock() and
+  vsock_cid_unlock() for vhost_vsock_set_cid() instead (Stefano)
+- Replace vsock_g2h_next_unreachable() with a generic
+  vsock_next_connected_socket() next to vsock_for_each_connected_socket(),
+  which cannot be reused because the sweep takes lock_sock() (Stefano)
+- Use rcu_dereference_protected() in vsock_nl_dev_netns_fill(), drop the
+  RCU read lock and allocate the nsid with GFP_KERNEL (Stefano)
+- Point to the vsock_g2h_assign_mutex comment for the lock ordering in
+  vsock_g2h_net_assign() (Stefano)
+- Reverse xmas tree in vsock_dev_do_ioctl() (Stefano)
+- Set SOCK_DONE and peer_shutdown on swept sockets, so recv() returns EOF
+  and send() fails with -EPIPE/-ECONNRESET instead of -ENOTCONN (Sashiko)
+- Only move sock->state back to SS_UNCONNECTED in vsock_connect() if it is
+  still SS_CONNECTING, via the new vsock_connect_close(), so a socket
+  swept while connect() sleeps cannot be connect()ed again and have
+  vsk->trans freed under in-flight skbs (Michal)
 - Send the RSTs in virtio_transport_recv_listen() and
   virtio_transport_recv_connecting() to the netns the packet arrived on,
   not the socket's: after an assign the socket's netns may no longer
   reach the device, so the RST would be dropped by the reachability
   check this patch adds to virtio_transport_send_pkt() (Stefano, Sashiko)
+- Pick up Stefano's RoBs on patches 2 and 3
+- Link to v4: https://lore.kernel.org/r/20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com
 
 Changes in v4:
-- Drop packets in virtio_transport_send_pkt() from a netns that cannot
-  reach the device, e.g. shutdown() or credit updates on a swept socket
-  (Sashiko)
+- All Sashiko fixes (see individual patch change lists)
+- Link to v3: https://lore.kernel.org/r/20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com
 
 Changes in v3:
-- Re-read the assigned netns per packet in virtio_transport_rx_work()
-  rather than once per batch, so a mid-batch assign cannot reset the new
-  namespace's connections (Sashiko)
-- Drop the NULL netns reset in virtio_transport_rx_work(), the assigned
-  netns is now pinned
-- Drop the .reset op and the virtio_transport_reset{,_no_sock}() exports,
-  the sweep no longer sends a RST (Sashiko)
+- Lots of fixes for race conditions found by local and upstream Sashiko.
+  Sorry for the delayed reposting, it took significant time to track
+  down and confirm that these were real issues, and come up with a
+  decent solution for each...
+- Pin the assigned netns instead of returning the device to init_net
+  when it is deleted, and refuse an assign that would make the device's
+  CID collide with a nested H2G vhost-vsock with the same CID
+- Drop the idea of sending RST to the peer from the reset sweep. Sending
+  a RST required a lock_sock, which can't be acquired underneath the
+  vsock_table_lock.  Splitting into two phases of locking opened up new
+  races, I couldn't find a solution I was really happy with. Probably
+  not worth the complexity
+- New prep patch passing the netns to ->has_remote_cid(), which is used
+  in a later patch in the series for avoid CID collisions between nested
+  H2G guests and the G2H device
+- Various fixes (see individual patch change lists for more details)
+- Link to v2: https://lore.kernel.org/r/20260921-vsock-guest-ns-v2-0-693bd78fde9e@meta.com
 
 Changes in v2:
-- Export virtio_transport_reset(), wire it to the new .reset op (Stefano)
-- netns_assign_allow is now a bool (Stefano)
-- Pass NULL, not &init_net, in virtio_transport_rx_work(), and
-  comment why (Stefano)
-- Drop the if (net) guard around put_net() (Stefano)
-- Drop the comments at the vsock_maybe_set_connected() call sites,
-  the commit msg seems sufficient
+- Replace the IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS ioctl with the "vsock"
+  genl family and VSOCK_CMD_DEV_NETNS_SET
+- RST the peer from the reset sweep, v1 only set TCP_CLOSE locally, so
+  the peer waited on a connection the guest had abandoned (Stefano)
+- Drop the vsock_assign_g2h_netns helper patch, the tests use ynl cli.py
+- Note why only virtio-vsock opts in (Stefano)
+- Add a getter to the uAPI
+- Various fixes (see individual patch change list for more details)
+- Link to v1: https://lore.kernel.org/r/20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com
+
 ---
- net/vmw_vsock/virtio_transport.c        | 32 +++++++++++++++++++++-----
- net/vmw_vsock/virtio_transport_common.c | 40 ++++++++++++++++++++-------------
- 2 files changed, 52 insertions(+), 20 deletions(-)
+Bobby Eshleman (7):
+      vsock: constify the transport in vsock_for_each_connected_socket()
+      vsock: rename the vsock pernet operations
+      vsock: pass the netns to ->has_remote_cid()
+      vsock: add a netlink command to assign the g2h device to a netns
+      vsock/virtio: support guest device network namespace
+      selftests/vsock: test the guest vsock device network namespace
+      selftests/vsock: test the netns assign privilege checks
 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index eced6929405d..06df82b130cf 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -256,6 +256,15 @@ virtio_transport_send_pkt(struct sk_buff *skb, struct net *net)
- 		goto out_rcu;
- 	}
- 
-+	/* A socket reset by an assign can still send credit updates from
-+	 * recvmsg() and setsockopt(SO_RCVLOWAT).
-+	 */
-+	if (!vsock_g2h_net_reachable(net)) {
-+		kfree_skb(skb);
-+		len = -ENETUNREACH;
-+		goto out_rcu;
-+	}
-+
- 	/* If send_pkt_queue is empty, we can safely bypass this queue
- 	 * because packet order is maintained and (try) to put the packet
- 	 * on the virtqueue using virtio_transport_send_skb_fast_path.
-@@ -542,7 +551,7 @@ static bool virtio_transport_msgzerocopy_allow(void)
- 
- bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
- {
--	return vsock_net_mode_global(vsk);
-+	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
- }
- 
- static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
-@@ -587,6 +596,7 @@ static struct virtio_transport virtio_transport = {
- 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
- 
- 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
-+		.netns_assign_allow       = true,
- 
- 		.notify_poll_in           = virtio_transport_notify_poll_in,
- 		.notify_poll_out          = virtio_transport_notify_poll_out,
-@@ -616,7 +626,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
- 	struct virtio_vsock *vsock;
- 	bool seqpacket_allow;
- 
--	if (!vsock_net_mode_global(vsk))
-+	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
- 		return false;
- 
- 	seqpacket_allow = false;
-@@ -633,7 +643,12 @@ static void virtio_transport_rx_work(struct work_struct *work)
- {
- 	struct virtio_vsock *vsock =
- 		container_of(work, struct virtio_vsock, rx_work);
-+	struct virtio_transport *t = &virtio_transport;
-+	netns_tracker ns_tracker;
- 	struct virtqueue *vq;
-+	struct net *net;
-+
-+	net = vsock_g2h_net_get(&ns_tracker);
- 
- 	mutex_lock(&vsock->rx_lock);
- 
-@@ -682,10 +697,15 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 
- 			virtio_transport_deliver_tap_pkt(skb);
- 
--			/* Force virtio-transport into global mode since it
--			 * does not yet support local-mode namespacing.
-+			/* Only grab a reference if the net changes underneath
-+			 * us.
- 			 */
--			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-+			if (unlikely(!vsock_g2h_net_eq(net))) {
-+				put_net_track(net, &ns_tracker);
-+				net = vsock_g2h_net_get(&ns_tracker);
-+			}
-+
-+			virtio_transport_recv_pkt(t, skb, net);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
- 
-@@ -694,6 +714,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 		virtio_vsock_rx_fill(vsock);
- out_nofill:
- 	mutex_unlock(&vsock->rx_lock);
-+
-+	put_net_track(net, &ns_tracker);
- }
- 
- static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 1e762a480df4..7efcbdc7e04f 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1468,8 +1468,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
- EXPORT_SYMBOL_GPL(virtio_transport_release);
- 
- static int
--virtio_transport_recv_connecting(struct sock *sk,
--				 struct sk_buff *skb)
-+virtio_transport_recv_connecting(struct sock *sk, struct sk_buff *skb,
-+				 struct virtio_transport *t, struct net *net)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1478,9 +1478,14 @@ virtio_transport_recv_connecting(struct sock *sk,
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RESPONSE:
--		sk->sk_state = TCP_ESTABLISHED;
-+		if (!vsock_maybe_set_connected(vsk)) {
-+			virtio_transport_reset_no_sock(t, skb, net);
-+			skerr = ECONNRESET;
-+			err = -ENETUNREACH;
-+			goto close;
-+		}
-+
- 		sk->sk_socket->state = SS_CONNECTED;
--		vsock_insert_connected(vsk);
- 		sk->sk_state_change(sk);
- 		break;
- 	case VIRTIO_VSOCK_OP_INVALID:
-@@ -1498,6 +1503,7 @@ virtio_transport_recv_connecting(struct sock *sk,
- 
- destroy:
- 	virtio_transport_reset(vsk, skb);
-+close:
- 	sk->sk_state = TCP_CLOSE;
- 	sk->sk_err = skerr;
- 	sk_error_report(sk);
-@@ -1702,7 +1708,7 @@ static bool virtio_transport_space_update(struct sock *sk,
- /* Handle server socket */
- static int
- virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
--			     struct virtio_transport *t)
-+			     struct virtio_transport *t, struct net *net)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1711,12 +1717,12 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	int ret;
- 
- 	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_REQUEST) {
--		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		virtio_transport_reset_no_sock(t, skb, net);
- 		return -EINVAL;
- 	}
- 
- 	if (sk_acceptq_is_full(sk)) {
--		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		virtio_transport_reset_no_sock(t, skb, net);
- 		return -ENOMEM;
- 	}
- 
-@@ -1724,20 +1730,18 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	 * Subsequent enqueues would lead to a memory leak.
- 	 */
- 	if (sk->sk_shutdown == SHUTDOWN_MASK) {
--		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		virtio_transport_reset_no_sock(t, skb, net);
- 		return -ESHUTDOWN;
- 	}
- 
- 	child = vsock_create_connected(sk);
- 	if (!child) {
--		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		virtio_transport_reset_no_sock(t, skb, net);
- 		return -ENOMEM;
- 	}
- 
- 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
- 
--	child->sk_state = TCP_ESTABLISHED;
--
- 	vchild = vsock_sk(child);
- 	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
- 			le32_to_cpu(hdr->dst_port));
-@@ -1750,7 +1754,7 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	 */
- 	if (ret || vchild->transport != &t->transport) {
- 		release_sock(child);
--		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		virtio_transport_reset_no_sock(t, skb, net);
- 		sock_put(child);
- 		return ret;
- 	}
-@@ -1758,7 +1762,13 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	if (virtio_transport_space_update(child, skb))
- 		child->sk_write_space(child);
- 
--	vsock_insert_connected(vchild);
-+	if (!vsock_maybe_set_connected(vchild)) {
-+		release_sock(child);
-+		virtio_transport_reset_no_sock(t, skb, net);
-+		sock_put(child);
-+		return -ENETUNREACH;
-+	}
-+
- 	vsock_enqueue_accept(sk, child);
- 	virtio_transport_send_response(vchild, skb);
- 
-@@ -1855,11 +1865,11 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 
- 	switch (sk->sk_state) {
- 	case TCP_LISTEN:
--		virtio_transport_recv_listen(sk, skb, t);
-+		virtio_transport_recv_listen(sk, skb, t, net);
- 		kfree_skb(skb);
- 		break;
- 	case TCP_SYN_SENT:
--		virtio_transport_recv_connecting(sk, skb);
-+		virtio_transport_recv_connecting(sk, skb, t, net);
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
+ Documentation/admin-guide/sysctl/net.rst |  42 +++
+ Documentation/netlink/specs/vsock.yaml   |  72 ++++
+ MAINTAINERS                              |   2 +
+ drivers/vhost/vsock.c                    |  23 +-
+ include/net/af_vsock.h                   |  18 +-
+ include/uapi/linux/vsock_netlink.h       |  28 ++
+ net/vmw_vsock/Makefile                   |   2 +-
+ net/vmw_vsock/af_vsock.c                 | 523 +++++++++++++++++++++++++++--
+ net/vmw_vsock/virtio_transport.c         |  34 +-
+ net/vmw_vsock/virtio_transport_common.c  |  40 ++-
+ net/vmw_vsock/vsock_nl_gen.c             |  36 ++
+ net/vmw_vsock/vsock_nl_gen.h             |  20 ++
+ tools/net/ynl/Makefile.deps              |   1 +
+ tools/testing/selftests/vsock/Makefile   |   5 +
+ tools/testing/selftests/vsock/config     |   1 +
+ tools/testing/selftests/vsock/vmtest.sh  | 550 ++++++++++++++++++++++++++++++-
+ 16 files changed, 1326 insertions(+), 71 deletions(-)
+---
+base-commit: 599d0e97610f09162d84c4ede4164628c066921e
+change-id: 20260831-vsock-guest-ns-d06af451da67
 
+Best regards,
 -- 
-2.53.0-Meta
+Bobby Eshleman <bobbyeshleman@meta.com>
 
