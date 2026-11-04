@@ -1,106 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793806622;
-	b=X10PDddRZuPb5/sl/LtlCKwByH4gAc4tI6bX94w9fT/ZmwbzkXn2KOcoTpQ0Tyq07Ftd
-	 GvFcJybPoBhqFQ4omI0tkVI7CK8e1g09ZDopobA8Z/SJZuabJY210lHAQF/B0xjBayoPM
-	 td0j5nWSmXkkUe6lD485NWfxbcnNRDOon4HHnHETNwiNqlKRM0vuR6XMuMJZSTZtIERw2
-	 lONq77lIc/oT9PAMEaU8uM76hgRQ05Pc0y3JfsjI3koOWP4U6uDwJhJbvGfUqhWZWyu4F
-	 XNgj1MZVOPqyOSmzCH7VEg/R0hd/E2MxbrTs75ARdCQ+qDIqA18X4J4TIaGDy3w1qpQ==
+	t=1793806646;
+	b=4wQlLDbcuPOtzV1NdTPRdl3DZl57RHY1amH+MhMGtYzJxCFH9MkLFhRcQimCGRk/XflB
+	 MbWzVGoYmIkyzzPp7gOZvn3qk3OcPmUiG3VWbdhD74+d7o11GyUJKtmOhyFfj/rCRXOfa
+	 8p2gOw4Jgi45Q712wyCaK+zV/+9DWtMaNmBxkYfCdWpLRayonUlDsB/6iKEmR6Y706k8E
+	 zAw5HyzCNVpycCLri40oZLZhSRSi6sxKgEF5S8HTrLXOoUDSD3Z1Xs4WfdjV7wi5yhxBV
+	 wziNuXW+8fk8Uunz5e2z07uS/Tg036SL086DKRgVFz4LIrxhip9d9WRqmendMKiKa2Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793806622;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=hVIa3swhsbmrrYjC4G+lOwvdapL/nqbZUw7IU7FT/vo=;
-	b=u1OYXnHIfMwHWiKFW8PipDplb4XA7+8I5hh6T+9wiO/BqmfzRaALowMVGfeZStMcC+sL
-	 RqGX7sdruM4bUcW7liWvpCcubCSEhC2aRN7oJh3coLkL7Vtp8LiFYgX15/AgmRWJAv0mg
-	 JBO+G3AWmxtELBNdD2BUPHLhEbtg8ZiB6MHsAsMfv3x5A85bz31/vxuOzz3v7pwv4iAvw
-	 Ip0uKZZ5ERqFv8Nh7NelTaXQhCxMzn2W1WB/gD/0US7PaFKw/lGRAyjTr1X72Mu6TiS6h
-	 VlvlQnLAlp5WO0Qq/JVYo9mDMVXqbWdoZqBxGZV7CCuK3YdcDgdpk3eI6IgTa37Ju4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793806646;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=6gr+1hN5mr88TUb6c1EFHl/+fcbV3ZF/wh6O3QIfUwQ=;
+	b=TLM7B8hng08BVFZuRboCGuHmLEQ6IlCXS8HhZI6Fn1alq3F8bQMcB/SIcMEAScSJOPYQ
+	 DfCpKAihXHU8nc4EtNQlpzRBv9BKWHqGGLiVGp2BaWse1AE6YJFE/TT6OhOGQFWrWyDOs
+	 w4DbTs9QgHliUogoA5qh2V4NMez4DTxNrrt/0dU81tiZ/ivKe5HDD4fFZfHqnEaQogtSF
+	 u+oli2dT5/kusJ1iO+sHAmXpwsUeZDp44sXB1VCZwQD0LmbXnboKj3tRbUpvTAEbUwpTv
+	 zvTab7g4+7jdhRAPKRQVRe5+zTyXwxzigTP+BlPV8Xs3sIOWjDU/QQCW9LeeFeH1l7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TETlKGWw;
-	arc=none smtp.remote-ip=209.85.221.179
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W0wn3z2B;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A244E606D832
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:37:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A244E606D832
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2350A60A5BFE
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:37:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2350A60A5BFE
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TETlKGWw
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5ec6f271883so556920e0c.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 07:37:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793806620; x=1794411420; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=hVIa3swhsbmrrYjC4G+lOwvdapL/nqbZUw7IU7FT/vo=;
-        b=TETlKGWwXd26BqRSjtY4Kqiz2NmWqu1rnB1Mn8XDlZ/rNsd0uDIm/ZiddlC/txO7Yz
-         gc/ai3HsxXq7sT+Znf52SFnPg6TTN2+sUsN08ENAdZTrqcVBtxqlFgjn5VIJ0Km/HoM6
-         wMqd+8q50ughxtSqJxnqzGLIrgj1zjMMmu6XtYH+udk7CieiLb2y4ChJ4X+IWzOVWgYV
-         xmokiRyif5pSpwLRiDPIsoJsqUV+h69RiurOqr3TN7qHEwg7THksFSjdJ37X99htugBZ
-         us60Cw2SDm7Uki/NVz7PLbK+oWVKpYZrRTdMGmF0LFGnnlz0Us7UI9iz3HtdVirnRGbX
-         qpow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793806620; x=1794411420;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hVIa3swhsbmrrYjC4G+lOwvdapL/nqbZUw7IU7FT/vo=;
-        b=FRhT0f4mI+1H/Fkytg3zgLTqzwxA1qRNkAExkp6DXCP1VKvsvsf7tOzYsJFzMBRm4r
-         4H7OwZ7f2pmUszgQQqghOpt7BR3uVFYDwTiEbP9Mc3wxsNqPC6cRq8aW/PPkBIOR8I9w
-         7TYj4xv46p/RZQ+Y8aYMFhBtRDHfXZ+m1QnuL0ju3r9HnmD0/lK2KduPE+DldL5T5K9c
-         HYopkEx0sIkzqD25ZgFzIeMv2bgNobd1f8waYFf8DuJt+edEwatW95m1ld2uqiQEwW2M
-         L4xmKZoV70g8T4ZM2/Ldah341j6W7eb4/0E8RBcPddHM1bq3CwERfrTAbrXzEFX3EzNX
-         +9Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBz5Ii8cBsPBUkJYx/D0wIspA7KtWooYx/hlSXaLe44Zw2Kcb0tBwQC2B62F9uuIQDeKmmVjIL0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/iz0zIE+9w+jXBzWz0a2/9CbpHEU0EGbzdn0iCBFZmWuxqcLdk
-	0PwJjxFPznirO/uK8f4tY4MVF7jf1s4I7xr9vnNL2jBzchs3GSDlu/2Z
-X-Gm-Gg: AYBFou12f1BL7lo8+dy2Wnnv6P65l9iwBVs5W3VjgvmuoPc+C/ZazZ3+xsODhuZh9fl
-	4aP9hSYOIQvs6SEt6w8qUqsLgqE9w4r2ote4yKwnKI/n/8uJEKBXUBuH0C3m9T8/EeBruizuyQe
-	ppTrIAjhSHPTMUNdKZ2wNLl2zacLuHPORCVlXW6oVBIR88auuH2S2lK0AZrW/ov5jRfzhg0eTGG
-	ek0c/TMwU4ZFSCCsPVbYr6+eU5Zz2vhtdliVgaa7GzcUlh+T+ntJZ6dprYx9h4v9hYCGyke8XHj
-	PU/CBnfiNKdJWdIrxER+xpfCuluS/I51krz6XeWmOoHBCqGKtHe1i1WULaoq5mkh5hKT6qH7XMl
-	9kQ/p4Be/CWIOhVq55Ryxv8PnaOzdLZUhzLDqf2uA61XM3FWT20XW8eL1rrtMjkwPLTZn/6//Mn
-	7Uo7UREC6MJzUJKiPCKz+BYx/gQtmfs3bx8FAjs/lYmiitzQ86dDGpXYQ0/kpy5NnwB88UykJIK
-	mjfTQFmXgnDq47G5neg+EDQvbMnl/aLLCMmCde4lClHkBrrhdvqVVhFvlXnnIRI7XFTEQvZcjcS
-	RAhZ6lIo4JFEHiEY0fnrXDwxoFDBsApEOOFRUouZ9cYOe/OUg4/GLcdWozXRNAxM4MLz2fMII5s
-	kiDvwwVRzoSMLgZhjQrRqVPbQ1uESVS8D6k9jcxNvoVahTCFpzEIlqwC10evPeR1JrXbJEb+OnQ
-	WswpRuopK+CB7KVi9/Pw==
-X-Received: by 2002:a05:6122:4d86:b0:5ea:aedd:6087 with SMTP id 71dfb90a1353d-5ec6871d3d2mr7672956e0c.4.1793806620530;
-        Wed, 04 Nov 2026 07:37:00 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d774dcsm1927819e0c.5.2026.11.04.07.36.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 07:36:59 -0800 (PST)
-Date: Wed, 04 Nov 2026 10:36:58 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- netdev@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, 
- Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Hassan Sultan <hassansultan@google.com>, 
- virtualization@lists.linux.dev
-Message-ID: <willemdebruijn.kernel.394adf46ec48d@gmail.com>
-In-Reply-To: <20261104050131.629967-4-edumazet@kernel.org>
-References: <20261104050131.629967-1-edumazet@kernel.org>
- <20261104050131.629967-4-edumazet@kernel.org>
-Subject: Re: [PATCH net v2 3/3] selftests: net: tun: test outer protocol of
- UDP tunnel GSO packets
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W0wn3z2B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793806645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6gr+1hN5mr88TUb6c1EFHl/+fcbV3ZF/wh6O3QIfUwQ=;
+	b=W0wn3z2BOvAbc0oeEJkHqkX2S0LSRx/eThaPn5jZL1pRaps1oGZSQqY6VV+fQdBfLFPZxh
+	qhNosmDxIFHbiZQ2ryCWQe/4RkRbU1JeGmz9ZD85jnkwSTr3S9pn78Al9r3hp5Zdk1vyYk
+	oGdHsjsGl+7qXQtH71WBwZ1CVIOwChc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-498-khiY1PBXPvuBLjBHwqeKGA-1; Wed,
+ 04 Nov 2026 10:37:19 -0500
+X-MC-Unique: khiY1PBXPvuBLjBHwqeKGA-1
+X-Mimecast-MFC-AGG-ID: khiY1PBXPvuBLjBHwqeKGA_1793806624
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F010180059B;
+	Wed,  4 Nov 2026 15:37:02 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D01FD1955F06;
+	Wed,  4 Nov 2026 15:36:38 +0000 (UTC)
+Message-ID: <8f74bba9-6484-4faf-a409-ce31cb42a63c@redhat.com>
+Date: Wed, 4 Nov 2026 16:36:37 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,34 +71,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Benson Leung <bleung@chromium.org>,
+ Guenter Roeck <groeck@chromium.org>, Linus Walleij <linusw@kernel.org>,
+ Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>,
+ Srinivas Kandagatla <srini@kernel.org>,
+ Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, Ulf Hansson <ulfh@kernel.org>,
+ Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+ Lukasz Luba <lukasz.luba@arm.com>, Orson Zhai <orsonzhai@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>,
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+ Shawn Guo <shawnguo@kernel.org>, Chanh Nguyen
+ <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>,
+ Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>,
+ Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>, Ray Jui
+ <ray.jui@broadcom.com>, Scott Branden <scott.branden@broadcom.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
+ linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-sound@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-tegra@vger.kernel.org, mfd@lists.linux.dev,
+ linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
+References: <20261102135330.2493332-1-robh@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Eric Dumazet wrote:
-> Add tests writing single 4in4 Geneve GSO frames to tun devices with
-> UDP tunnel offloads enabled.
+On 11/2/26 14:53, Rob Herring (Arm) wrote:
+> Unit-addresses by default (and most commonly) are hexadecimal. There's a
+> number of cases using decimal patterns. Fix all of them, limiting the
+> pattern to match the 'reg' limits if there are any.
 > 
-> tun_vnet_udptnl_proto uses a tap device:
-> 
-> - outer_proto_ok: an outer IPv4 header, with or without an 802.1Q tag,
->   is accepted.
-> - outer_proto_bad: an outer ethertype that does not match the declared
->   tunnel type (IPv6 on an IPv4 tunnel, or NSH, with or without a VLAN
->   tag) is rejected with EINVAL.
-> 
-> tun_vnet_udptnl_proto_l3 uses an IFF_TUN device with a tun_pi header,
-> so skb->protocol comes from userspace and there is no Ethernet header.
-> The outer IPv4 header carries options, as virtio_net_hdr_tnl_to_skb()
-> expects room for an Ethernet header before the outer transport header.
-> 
-> - outer_proto_ok: tun_pi and the frame agree on IPv4, accepted.
-> - outer_proto_bad: tun_pi claims IPv6, or the IP version of the frame
->   is not 4 while tun_pi claims IPv4: rejected with EINVAL.
-> 
-> Without the first patch of this series, both outer_proto_bad tests fail
-> because the kernel accepts the frames.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>   .../bindings/display/xylon,logicvc-display.yaml      |  2 +-
+>   .../devicetree/bindings/dpll/dpll-device.yaml        |  2 +-
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+
