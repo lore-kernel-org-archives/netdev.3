@@ -1,73 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825501;
-	b=K6ABwXfksSHwkI7F88hPQsygBBlGMGz3nccvbJ3phrloZgcfq1JeCKtlxqkKrZCklaI5
-	 FM0ABwBCPq2vEqh6yxPBHyWuEoEaXvbpdJoMOTsh9yM2dRMmkY72DldR/YawsIzN7QuHA
-	 seiJONEFm40GRsqZiE01wjGEtFDx2JZ7wnmluekCO3zpUz8pkQD2o34CwnZwrMkqGvxIm
-	 x97Gk7AYcoDrCDD/MmNiwcF6tExZ3DqcqHEIPMxFXBhEdq9IMsUuPL0GeLyzhFbJtHZqQ
-	 BWqiPwBssJj8SmibrmWgkskZQvCNadIh5a8mZeyEyi5ogLKK9LdnymxwoBgu09bYgyA==
+	t=1793825807;
+	b=SioBlFHzvXucKZSuWvptJk/F/huszxx5gipT6brTIDxNFKwh4CmZFoi6cEdxS4l2kna4
+	 Teo13bDzNT5IJuIZgQgHUJ2ePOZOyZtxXbDfcnekwpGSaqa4JmtagxxAsMN2Vpq3B2Ojd
+	 P0O60+StDn/HCdo587J1FO+/zMboYfLiHDc0q/Le1lRIn7lhgykLbWY0LeqLluesEJAEV
+	 JKiSlHSsL/PNn8eYOkeq7AUcCaTK9Qvojwn3mP62NpiT2zn8xNAKruym0HYO5De/4l1we
+	 gfmVWCD4o/62zY9DFlRLkGf+mzu/jUqyKm/kL17iqiSSIF45YpB7SGpQGCpoS+w1/+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825501;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825807;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=ZfTs+ryizwPn0Cl3XX+fYi34UNKxEvbPC3g5XcJfRFc=;
-	b=dYJTLAp/5N4zIID7Y6IZ8r1bbODGWq0q+oYCKO3rjubo74iC14O62YoVwIWq8A1+kAbD
-	 wVPO3xGf5aHGJMbPwsCX9vFHrIkn4hBwXLIKCkieGIXTKSXxDdRO8mX3JOEJwScRT0YoG
-	 HIxBNwoChT5b0gzjSNSOctW5B5umvnVqDQUuv4gGpYqkCZBdixfqC17kFRZEy+cZmV4Sx
-	 t/rm5sOcQcblOC1SDbGvheGldz/u5zQ6I8KFDBMZbLEFTl65oZVP0NjXgQCuo0H/dEfjG
-	 MJYuzmwjWmxUGczVjpt9p4hovGWc7sK8SMeqy5sXLQc+ZD+wBH1d2RVI+1JrpjqV5Zw==
+	bh=aT59RqPPXneyKB2jjsHTsRzCsHVLOHKqmGVlxOGkRWE=;
+	b=ZRarBe15qaxy7RvumXLcASitYF1yRD1vAVq3KnidwhOfj0Q6aJBylgzkXHa5K83iP/hE
+	 MBhRQuXD40BY41MtHlOFAxlctfH4roBzdQqZm85HKZBo/EwtAFFfBIaCoe9ME/CvXAQUb
+	 9OXjjug8dEtrIjg/PcqglVXEcGHOuwn3DmIgb6zBRgVMaxnuJQdpEzprp8Sb2DfhQ9nDc
+	 2IZvMdEfmP/nTsG0saaoC9D/gO+ETKLGikWkNNm0mclb/gKPNYEAq7ySE6jFtMWg3IXVG
+	 C5rYEKdt/tjDSGnYcfEFl5PBWsuwgCZNvc0XK4tJUkbRIoe5gl3FjZIncgwqiE8jsXw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=lunn.ch;
 	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gYMcabrr;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=MlPK7uAH;
 	arc=none smtp.remote-ip=156.67.10.101
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7886078141;
-	Wed,  4 Nov 2026 20:51:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B7886078141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C2609C59C;
+	Wed,  4 Nov 2026 20:56:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B09C2609C59C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gYMcabrr
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=MlPK7uAH
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ZfTs+ryizwPn0Cl3XX+fYi34UNKxEvbPC3g5XcJfRFc=; b=gYMcabrrRrrv8R/JgiDQxQdpoO
-	B4xeVkOkMAmW5SkgjzvXAXfOQ6JqfSA21vWQ3ZWQJRkwxEO00Cr1X2Q8EZW3y3AT0vPDV9fkXqdBk
-	gqDbevO66SBMR4liG1+Nj0cg3+SfEF6DPc6bOe2V8Dj/iZhjs/xwOY6jPcw98oWTSJ+c=;
+	bh=aT59RqPPXneyKB2jjsHTsRzCsHVLOHKqmGVlxOGkRWE=; b=MlPK7uAH3bIp0l9Xu0yU0NYT/x
+	JW3zlB0+WS2+jqhjyGFLH0zUYcXlHjqmU+ZVguAL2jrva2MyhUIO5tTxIwSytiP/ZtWOqlwJ4N7NX
+	VzyNyd3Uw9an5w5GyS3pcHXrxerr3zrO1t4+ETPSY5KG25ZjBWbFIEmJbxCH3GY6XrB0=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xOhwz-00ENw1-4M; Wed, 04 Nov 2026 21:51:17 +0100
-Date: Wed, 4 Nov 2026 21:51:17 +0100
+	id 1xOi28-00ENzC-Mu; Wed, 04 Nov 2026 21:56:36 +0100
+Date: Wed, 4 Nov 2026 21:56:36 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
+To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joris Vaisvila <joey@tinyisr.com>,
-	Ahmed Naseef <naseefkm@gmail.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v4 5/6] net: phy: mediatek: add calibration
- logic for AN7581
-Message-ID: <68eecc53-ed61-463d-bb5f-c68b507be82a@lunn.ch>
-References: <20261103221439.30502-1-ansuelsmth@gmail.com>
- <20261103221439.30502-6-ansuelsmth@gmail.com>
- <2b744929-609b-4529-8b6b-30feb3ebbbde@lunn.ch>
- <6aeb7861.6171b307.11ae12.6b94@mx.google.com>
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Subject: Re: [PATCH net-next v5] net: phy: aquantia: Add support for 5GbaseR
+Message-ID: <b14d40a3-0a57-4e0c-9cd5-2ac15d6e1b5c@lunn.ch>
+References: <20261104-aquantia-support-5gbaser-v5-1-9adc0f538d66@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,24 +68,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6aeb7861.6171b307.11ae12.6b94@mx.google.com>
+In-Reply-To: <20261104-aquantia-support-5gbaser-v5-1-9adc0f538d66@oss.qualcomm.com>
 
-> It's safe in the measure that the worst is that link goes down during the
-> calibration... I will rework the function to assign the base address to the
-> default address for port 0 (it's hardcoded by the SoC) and use the lock and
-> read/write helper instead.
+On Wed, Nov 04, 2026 at 05:57:52PM +0800, Hongmei Xu wrote:
+> Aquantia PHYs can operate with a 5G USX interface between the PHY
+> and MAC, reported as interface type 12 in the PHYXS vendor interface
+> status register (MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G).
+> 
+> Without this change, aqr_gen1_read_status() falls through to the
+> default case and sets phydev->link = false when the interface type
+> is USX 5G, preventing 5G links from coming up.
+> 
+> Add the missing PHY_INTERFACE_MODE_5GBASER handling in three places:
+> 
+> - aqr_gen1_read_status(): map USX 5G interface type to
+>   PHY_INTERFACE_MODE_5GBASER so the link is correctly reported
+> - aqr_gen1_config_init(): accept PHY_INTERFACE_MODE_5GBASER as a
+>   valid interface mode, otherwise the PHY is rejected with -ENODEV
+> - aqr_gen2_get_rate_matching(): return RATE_MATCH_PAUSE for
+>   PHY_INTERFACE_MODE_5GBASER, consistent with 10GBASER and 2500BASEX,
+>   since the MAC-side interface runs at a fixed rate and the PHY handles
+>   rate adaptation via pause frames
+> 
+> Co-developed-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+> Signed-off-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+> Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
 
-Are there multiple PHYs in the package? What happens if both are doing
-calibration at the same time?
-
-PHY #0                            PHY #1
-
-
-phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
-
-		       	      	  phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
-				  ret = mtk_cal_cycle_wait(phydev_p0);
-
-ret = mtk_cal_cycle_wait(phydev_p0);
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
     Andrew
