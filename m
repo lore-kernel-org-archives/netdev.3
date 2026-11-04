@@ -1,60 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793810933;
-	b=R0aKpbkWQmhW9H93KYVIlidMUuFsYjXhPD5n6tPD+VXTXER6VX9TRVjoVIocTgdXco5P
-	 upxmUGH5U3meUGJpoBU9fXW58ULqrboBJd4qccuQdy8xLKfljzg1Bg9ygiKvkXaKGoYTJ
-	 ijQC5YSehtthSstX0YXV//nmkONl5G00fsgCtFrshSnMJiYaKiWHozz4DWfW0jzbAph2T
-	 dyt93YJqAw+Dit9w8noLb98dzhus4CtmBQT4djJgeA5jcvobTrv5R8R4Ve60JDAe49rlF
-	 pXRyyW/+iaZYIg20u/mY5vw1d6Dq4UOTUhIS0+TAsTN/QNqBONZmXyy8CUdFCUAZeRA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810933;
-	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
-	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
-	 X-SimpleLogin-Want-Signing;
-	bh=+6NWrTkD19j6pXo7fX9iBIpL0RSF2GXs9ygbR1u2JBY=;
-	b=BLsOqj0T9bnxzgsij4cwfEtEP1nA0jb3MQQ5fTOXrqKeXtiS1F5KmYESIIewWKj9rDd4
-	 8b8WeQ0jaGo530EgA74XsIE3rjFSlZiRlKoQNMycdeqHGsdv1Vk/dqoAltCVB/fCHufoJ
-	 3coJIBgPeOLf2MZqSbdEz6OJbSgtbOH/HyRFDa4DDF7EQQcOP6m/QCbhhplFSdB2M7cvq
-	 0ampsHaYH//86x1t333LJ2v2aPvB5hHKCb4utTBesHTj6dv+62KHKFgW/3puQ84hxX9E/
-	 OnsnJirS/08CBFTNf+eBwQiC4+B4KFUOVsw3Uu2HBnPT+i/j861/Vvr8F9hJ8N5c0Aw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=eldare.de;
-	spf=pass smtp.mailfrom=eldare.de;
-	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=vFIzAH37;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.173
-Received: from mail-200173.simplelogin.co (mail-200173.simplelogin.co [176.119.200.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793811029;
+	b=yYcJgmt0kiybLWIpZqttBem5LBSzOrGDOAZq2oQicMT3YZAtUNEygTU4o4deLXI5vJ9G
+	 fi+ahDjvf7roT5mjXIndgPr6Tm65UPMGxNthcO2r4ekGwHXdCPBHHE2J75poU/bK8H8yz
+	 6JSr0Yoow3LYbxqXE8JRUfjRcF9o370G/6B1VWTXXH3uIoeJfL7d6YpZI6UMKppS7NcwU
+	 zJQnkyYAmRjtg/zUFuYihUNnzep8RS2mjT+sVqTCYpxh/fAhlupbudz/2ESFmSerjpcg+
+	 CaJXYRvEIz9f880XNns8yRVDedMBbUPUis0IkjWW/egQz9i2eWvpODcttSe05wmZBxg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793811029;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=wRLlZ1j87EtkCty0brvd94nJUm5Ap97e5SuLylI9V0s=;
+	b=3YX73qdUq2F2dSxcZn6ctUS93MkXBUO5l38WasFULPV98+6SgTjQj2eiBpL8zPdVane3
+	 8iID7KxCp78LMwoOI+4eY3gJmPUxD2ZoGvaTmLnmsWMtiCTC9r1Tvf/z/xx+cIb0sZibZ
+	 lYI43PPvP+rdyrk8Ph/mH2MUUnmfyq7f+qDlS+LiyD1ClTR+9wzX+O9365T81aNKPShXB
+	 QAdXmAEyw4GA/hnTVAx8SwcBFw238BSDXQ3rnouseEtdNDdGXbXAXp9Cdfeuqh9ocIQ38
+	 VLp9ALv3T1eto8eMG6YwlSafljzU5htM4VHzQFuAskQkyTzkaospNZs7CdKMOh0O5rQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QQHGNMb+;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B00C606D815
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:48:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B00C606D815
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2076083625
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:50:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A2076083625
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=vFIzAH37
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1793810930;
-	cv=none; b=N0D8eoC8N93Rzw2s/p7ne8H5Qo2NehM3SEUus6xtEEucCRWTSTU4odUMAFcI5UgFsSaXgy7q8sFmjfyjhzVy/bVYpcv8KINQ1zgrEAzyJgnWJhvfoFnVcY/YkKR90hMp+cjtJZgMoQN3BP+s1/JlwGC7zMSmI1HIoeCklN15Rgruqi/MyluW/hFq/dJzp/jcAnpASpYBtVanaxzv2Yi7pNQDoM3d8jODdAvEFBMQEHnajDRVyzm2U16z/GoMlCcpzJofXjdaYu9CxLhtx8Cr09nA1Dsd+zhk6W66iN7p0QyqKL9uID9MEjkDQzL8W10gq7mYlpqy/RnxOUnluRAomg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1793810930; c=relaxed/simple;
-	bh=NZfHjc8GabK+5fWc9xU1eIPV8ar6IHlihuK1W6X9Wrk=;
-	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=2iqJnhFf4VrmHikqBv0PQ8K5NOhbaMGatWwyMimu1PLix+Qs5J94WbChyvcux0x3SAH+WAUU1qJ4ofY8vNqpZoR7Ov3H6ri3IPULnDIs9WCd0LeR5veg/OTMKEuuTmj5CEy0r4qr5nlZvIqv6ewEgvlUAqTd0E2EZjRJ5oDg8yrBkPm3tcbf05cNKCq789u7YsfAvW/8f/8Cape1+ghk7cbmrMHPm9Yflf4u2AWUkr7YqEXGqBtuDND7BR+ZrfS9X08NeBv9QkKVaf7IRV3fic2hXeymLXQAKaoxqYOLk1PziXzCz7cYG1wRrpGd35cQ0OpREoyyG8NEBtfrPsgsSA==
-ARC-Authentication-Results: i=1; mail.protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
-	t=1793810930;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+6NWrTkD19j6pXo7fX9iBIpL0RSF2GXs9ygbR1u2JBY=;
-	b=vFIzAH37Cw5VrNpmVFx3zCpuY0HMvAs8h3OdcAiJwMmK75wgnH+SUsX+0FMbLZK3Wt7ACv
-	Uj6m29AHzV6CsBGkDlTCceU5UIchtfrK/FYZPU9/OH9o9Xh4JhkfGAdDtShlx4eVXFVUDG
-	uVG2UKdHELMjqEsMSpM8siiqPJxdJJw=
-Date: Wed, 04 Nov 2026 16:48:44 +0000
-Subject: Re: [PATCH net v3 1/2] vsock/bpf: release sock lock while waiting for
- data in recvmsg
-In-Reply-To: <auSkQOU6qmj0NPEt@sgarzare-redhat>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QQHGNMb+
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ac6795617aso904088a91.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:50:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793811029; x=1794415829; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wRLlZ1j87EtkCty0brvd94nJUm5Ap97e5SuLylI9V0s=;
+        b=QQHGNMb+0QXTkb2xaMhIE2o6wJ/UCFPrA+wH8ibIlleVEWiQw5/+2Rh37PV7u3m5dy
+         WHrJTfhMVXtdu/kt8bJ5Fc+fd6snIC4EKWU+VK3oRSF2jq9m78AlYfdJ7Sm2M1MTt38I
+         cgJlFeXE3IB3O0BMMpoJy/RsQbeKQiKBT+gvXLHfVH/K2NkQ2RNdM9dLaVziveZqjVXR
+         X9ua81BZFJ+NT5/IOXyWU3n3fD18Sjsnek2phpfPNKIV2kMTGux8x40l5Cq8ht22eqlh
+         pcQYQnn1gGgW2T9438cJF45cJrPVKNz3DOtc2EtuQA/Mn38nbVOezV1b4yO0tJRY9VSV
+         SB5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793811029; x=1794415829;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wRLlZ1j87EtkCty0brvd94nJUm5Ap97e5SuLylI9V0s=;
+        b=X4jdblrdcHUNm2j6uL6riTKc937RSNYKOrJa60f2amzi72QQ/JDr0v2e7ufXg8P6Wv
+         KHQuLKmqmkimpsHKW6aC8DDmg/anJLbaaN56bLR4SCofR6sHX+WYmusDnzrA1cbQuZhU
+         vuNhGtPG+JB6+D5ojy1juB7H8+b4iMKL4vcJGEyAxToAA5svjhLG3oZJFVxFBc5iN8qG
+         7d35WWUaJebXMV53bRVG//XOSe0xSgGAjpdrtQT2DEF1XsDxbIgQSHKo56PtA0DaDQRW
+         zhWfVd9+LqwuejN6rMiXQC2s0zkuBFdH37ntaaQIzt1g9ymnAWTljZ3znfEK2VyC0sIw
+         Fkjw==
+X-Forwarded-Encrypted: i=1; AKwUvByc3IJ4zmAYeWbw82fQWKB2MrmLzoKW8UE60wHojBwzY4Px3xRkEZKwNb05vSXeUpp0xO2xzmU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/GooHmRwfG44WOvni3AXxzPwVCaZmI+fzIKnb2K2RR+jwq8qhv
+	NtNASYCH8Kwcn4uzuZdbS235FOrcsOJ8w7A8qEhFU5ukuJjvKldJG3gTD8TQDOlnYKZzFjGmJZT
+	7XQjlEQ==
+X-Received: from pjbhk4.prod.google.com ([2002:a17:90b:2244:b0:3ae:49df:2522])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ccc:b0:3a8:32f2:f4a5
+ with SMTP id 98e67ed59e1d1-3ae898385aemr14324010a91.53.1793811028658; Wed, 04
+ Nov 2026 08:50:28 -0800 (PST)
+Date: Wed,  4 Nov 2026 16:49:56 +0000
+In-Reply-To: <20261104165025.1026357-1-kuniyu@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,86 +79,132 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+References: <20261104165025.1026357-1-kuniyu@google.com>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261104165025.1026357-2-kuniyu@google.com>
+Subject: [PATCH v1 net-next 1/2] tcp: Don't call tcp_update_recv_tstamps() if
+ not needed.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Geliang Tang <geliang@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-From: jrmmhm.kernel@eldare.de
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>,"David S. Miller"
- <davem@davemloft.net>,Eric Dumazet <edumazet@kernel.org>,Jakub Kicinski
- <kuba@kernel.org>,Paolo Abeni <pabeni@redhat.com>,Simon Horman
- <horms@kernel.org>,"Michael S. Tsirkin" <mst@redhat.com>,Michal Luczaj
- <mhal@rbox.co>,virtualization@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,stable@vger.kernel.org
-Message-ID: <179381093020.9.4719932034061956856.1746278795@eldare.de>
-References: <20261028-kbh3-1-022-fix-v2-v3-0-bc0752b2d3db@eldare.de>
- <20261028-kbh3-1-022-fix-v2-v3-1-bc0752b2d3db@eldare.de>
- <auSkQOU6qmj0NPEt@sgarzare-redhat>
-X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1746278807
-X-SimpleLogin-Want-Signing: yes
 
-On Fri, Oct 30, 2026 at 03:18:10PM +0100, Stefano Garzarella wrote:
-> Ditto about commit message, please put more effort on writing something
-> readable by a human.
+When RX HWtstamp is enabled on NIC, skb_hwtstamps(skb)->hwtstamp
+is set, which sets TCP_SKB_CB(skb)->has_rxtstamp to true.
 
-Agreed, I'll rewrite both messages myself for v4, much shorter.
+Then, tcp_recvmsg_locked() always calls tcp_update_recv_tstamps()
+and sets TCP_CMSG_TS to cmsg_flags so that later tcp_recvmsg()
+calls tcp_recv_timestamp() after release_sock().
 
-> >+            if (sk->sk_err) {
-> >+                    ret =3D -sk->sk_err;
->
-> Why?
+If a socket does not have SOCK_RCVTSTAMP in sk->sk_flags or any
+flags set in sk->sk_tsflags, tcp_recv_timestamp() does nothing.
 
-Same as vsock_connectible_wait_data(): an error that arrives during the
-wait is returned to recv(). Without the check the loop still ends, since
-every path that sets sk_err also closes the socket or sets peer_shutdown,
-but recv() then returns 0 or -ENOTCONN instead of the error.
+However, it is not free because sk->sk_tsflags shares the same
+cacheline with sk->sk_forward_alloc, which is always modified
+under lock_sock()/bh_lock_sock(), causing cacheline bouncing.
 
-> >+            if (sk->sk_state !=3D TCP_ESTABLISHED) {
-> >+                    ret =3D sock_flag(sk, SOCK_DONE) ? 0 : -ENOTCONN;
-> >+                    break;
-> >+            }
->
-> I'm thinking if we should split this in multiple patches.
+   0.31 =E2=94=82 403:   test   %al,%al
+   0.02 =E2=94=82      =E2=86=93 je     4a0
+  12.40 =E2=94=82        test   $0x2,%bpl        ; if (cmsg_flags & TCP_CMS=
+G_TS)
+        =E2=94=82      =E2=86=93 je     48f
+  11.59 =E2=94=82        mov    0x60(%r14),%r15  ; sock_flag(sk, SOCK_TSTAM=
+P_NEW)
+  12.25 =E2=94=82        mov    0x170(%r14),%ebx ; READ_ONCE(sk->sk_tsflags=
+)
+  20.70 =E2=94=82        mov    0xd0(%rsp),%rdi  ; if (tss->ts[0]) {
+   0.39 =E2=94=82        test   %rdi,%rdi
+        =E2=94=82      =E2=86=93 je     44c
 
-From reading the code, it can be split without breaking bisect: first
-loop on all exit conditions with the lock still held, then drop the lock
-around wait_woken(). The order is fixed, since dropping the lock alone
-brings back the early -EAGAIN, and the loop alone does not fix the
-deadlock, so both would carry the Fixes tag. That is why I kept it as one
-patch, but I'm fine either way. Split it like that for v4, with the
-current 2/2 on top, or keep it as one?
+Also, sk->sk_flags is on the cold cacheline in tcp_recvmsg().
 
-> >+            if (!timeo) {
-> >+                    ret =3D -EAGAIN;
-> >+                    break;
-> >+            }
->
-> Is the move of this check changing some user visible error?
-> I mean before this patch it was one of the first checks, is this okay?
+Commit f0e70409b7eb ("net: avoid unconditionally touching
+sk_tsflags on RX") introduced SOCK_TIMESTAMPING_ANY to avoid
+such false sharing.
 
-Yes, for non-blocking reads, intentionally: -sk_err, 0 on peer shutdown
-and the not-connected result now come before -EAGAIN, as on the native
-recvmsg path. I'll say so in the commit message.
+Let's check SOCK_RCVTSTAMP and SOCK_TIMESTAMPING_ANY under
+lock_sock().
 
-> >+            if (signal_pending(current)) {
-> >+                    ret =3D sock_intr_errno(timeo);
-> >+                    break;
-> >+            }
->
-> Why? Should be a separate patch?
+We still need to touch sk->sk_flags, but with this change,
+tcp_rr -T 128 -F 10000 gains ~3% more throughput on AMD EPYC
+7B12 Zen 2 Rome (2 sockets, 256 vCPUs).
 
-No, the loop needs it: with a pending signal wait_woken() returns at
-once, so without the check the loop spins until SO_RCVTIMEO expires, or
-forever if none is set. I checked it by removing the check: a signalled
-reader without SO_RCVTIMEO never returned and used a full CPU. The
-native path does the same.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ include/net/sock.h |  7 +++++++
+ net/ipv4/tcp.c     | 12 +++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
-> >+            if (data < 0) {
->
-> Why not data <=3D 0  and void the other if?
-
-Right, will do in v4.
-
-Thanks,
-Jerome
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 173b37b2b8bb..ba310182e6cc 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1063,6 +1063,13 @@ static inline bool sock_flag(const struct sock *sk, =
+enum sock_flags flag)
+ 	return test_bit(flag, &sk->sk_flags);
+ }
+=20
++static inline bool sk_want_rx_tstamps(const struct sock *sk)
++{
++	return READ_ONCE(sk->sk_flags) &
++		((1UL << SOCK_RCVTSTAMP) |
++		 (1UL << SOCK_TIMESTAMPING_ANY));
++}
++
+ #ifdef CONFIG_NET
+ DECLARE_STATIC_KEY_FALSE(memalloc_socks_key);
+ static inline int sk_memalloc_socks(void)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b9de7c302ba8..4166be09b826 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1878,6 +1878,12 @@ void tcp_set_rcvbuf(struct sock *sk, int val)
+ 	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
+ }
+=20
++static bool tcp_want_rx_tstamps(struct sock *sk, struct sk_buff *skb)
++{
++	return TCP_SKB_CB(skb)->has_rxtstamp &&
++		sk_want_rx_tstamps(sk);
++}
++
+ #ifdef CONFIG_MMU
+ static const struct vm_operations_struct tcp_vm_ops =3D {
+ };
+@@ -2069,7 +2075,7 @@ static int tcp_zc_handle_leftover(struct tcp_zerocopy=
+_receive *zc,
+ 		offset =3D *seq - TCP_SKB_CB(skb)->seq;
+ 	} else {
+ 		skb =3D tcp_recv_skb(sk, *seq, &offset);
+-		if (TCP_SKB_CB(skb)->has_rxtstamp) {
++		if (tcp_want_rx_tstamps(sk, skb)) {
+ 			tcp_update_recv_tstamps(skb, tss);
+ 			zc->msg_flags |=3D TCP_CMSG_TS;
+ 		}
+@@ -2280,7 +2286,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 			if (!skb_frags_readable(skb))
+ 				break;
+=20
+-			if (TCP_SKB_CB(skb)->has_rxtstamp) {
++			if (tcp_want_rx_tstamps(sk, skb)) {
+ 				tcp_update_recv_tstamps(skb, tss);
+ 				zc->msg_flags |=3D TCP_CMSG_TS;
+ 			}
+@@ -2893,7 +2899,7 @@ static int tcp_recvmsg_locked(struct sock *sk, struct=
+ msghdr *msg, size_t len,
+ 			tcp_fast_path_check(sk);
+ 		}
+=20
+-		if (TCP_SKB_CB(skb)->has_rxtstamp) {
++		if (tcp_want_rx_tstamps(sk, skb)) {
+ 			tcp_update_recv_tstamps(skb, tss);
+ 			*cmsg_flags |=3D TCP_CMSG_TS;
+ 		}
+--=20
+2.56.0.385.gac671c819a-goog
 
