@@ -1,95 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.35
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825380;
-	b=dqxwQxC3t72vT5Ogi7Nk3Q7C1/U+450b1Hc7JzkOQlxnk+Au8OY4onncbgpghZC0Kbby
-	 V7VnSch46ycTfhZwx8v+7CG21DwOu9CJXOyo8bUWWBG5anun0ItcnYCMwHZi58q3CprDG
-	 yLTbhiNcKtqw7JgNiAusLzuDlwJyvEisxoX1ETF3h4VD5XegOv8ayGlyBc3Xect7T4FYA
-	 0qaj1GU6xtVZsImuPKU1iUNWUMuRMPL78ESvxvB7XN2eY4aAxUYi3FPKF6dyRce03MBcE
-	 YMQ3V8UjbRD0VaSeD37mYPqRKLbjBkhRaAZYJKN6ZYfiAO8otWlPKuozQdHEm72esuQ==
+	t=1793825501;
+	b=K6ABwXfksSHwkI7F88hPQsygBBlGMGz3nccvbJ3phrloZgcfq1JeCKtlxqkKrZCklaI5
+	 FM0ABwBCPq2vEqh6yxPBHyWuEoEaXvbpdJoMOTsh9yM2dRMmkY72DldR/YawsIzN7QuHA
+	 seiJONEFm40GRsqZiE01wjGEtFDx2JZ7wnmluekCO3zpUz8pkQD2o34CwnZwrMkqGvxIm
+	 x97Gk7AYcoDrCDD/MmNiwcF6tExZ3DqcqHEIPMxFXBhEdq9IMsUuPL0GeLyzhFbJtHZqQ
+	 BWqiPwBssJj8SmibrmWgkskZQvCNadIh5a8mZeyEyi5ogLKK9LdnymxwoBgu09bYgyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825380;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=KWiRV1sGkuoDXhM09Z+91Z+gqhSc78puMi7yQgR1TGE=;
-	b=NcTrOW18xxL9EM/jO8YiG5torkkB99TioKFeEIM204Okv63E1FfMC3wT2Q9Q66TGISKn
-	 UWQY/BYHBcQNXo1DENVWhL21r3Z2aj6W+7Abm39z8x3bjaEZfElTrY/kJLDZPDgjGKhsE
-	 wT5Xz62sxqOFAsv3bFQdm27nkT19pZu+2iEAi4xqmwyHiSsnnPBJVQ2+RPU4/Seo8A5pT
-	 yHiF1C2rSuIiD9VvL9WMgo2Gwg8gD9uwpj7W1zBOAoGhVvF6nw+EELAKXE3Zp4UTWWYif
-	 XGne76xiHQI9EPjZSxON+tKjSml/lhDpDywts2baAkZlq2qYpx2Rf52EWEhw5uym+9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825501;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=ZfTs+ryizwPn0Cl3XX+fYi34UNKxEvbPC3g5XcJfRFc=;
+	b=dYJTLAp/5N4zIID7Y6IZ8r1bbODGWq0q+oYCKO3rjubo74iC14O62YoVwIWq8A1+kAbD
+	 wVPO3xGf5aHGJMbPwsCX9vFHrIkn4hBwXLIKCkieGIXTKSXxDdRO8mX3JOEJwScRT0YoG
+	 HIxBNwoChT5b0gzjSNSOctW5B5umvnVqDQUuv4gGpYqkCZBdixfqC17kFRZEy+cZmV4Sx
+	 t/rm5sOcQcblOC1SDbGvheGldz/u5zQ6I8KFDBMZbLEFTl65oZVP0NjXgQCuo0H/dEfjG
+	 MJYuzmwjWmxUGczVjpt9p4hovGWc7sK8SMeqy5sXLQc+ZD+wBH1d2RVI+1JrpjqV5Zw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=3lud85Yp;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=gIjKeGI7;
-	arc=none smtp.remote-ip=160.80.4.35
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.35])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508AC606B2E4;
-	Wed,  4 Nov 2026 20:49:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 508AC606B2E4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gYMcabrr;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7886078141;
+	Wed,  4 Nov 2026 20:51:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B7886078141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=3lud85Yp;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=gIjKeGI7
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A4Kmwv7026955;
-	Wed, 4 Nov 2026 21:49:03 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 3A5D8121681;
-	Wed,  4 Nov 2026 21:48:53 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793825333; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KWiRV1sGkuoDXhM09Z+91Z+gqhSc78puMi7yQgR1TGE=;
-	b=3lud85Ypuk1tJ4tH2Yskpq8GzXEWvWfGmN9+7cebU6nDqyMHSirqd70IOiIm/74cz/PBeg
-	jLQkFeBqdmDRtaDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793825333; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KWiRV1sGkuoDXhM09Z+91Z+gqhSc78puMi7yQgR1TGE=;
-	b=gIjKeGI7fmepMSDdBPAlik4cT5XZmFCK5v/N/c5pedyglD8RjJJr/NOmaJ01XH904Vu+xZ
-	9sjCp9XD/QzLFvudkjfrFM7ku642bphdwieD9vqn0D2MkOjX4O8Gpv0K2N19MXGh0DamjS
-	p5z1qyxWzfxl6H5o6jyO/gFN3kYtYoP+QZNICk/l/QypChvSHz6M2zbcKA7ACKvy61IikD
-	FpL/nILSAQC12OE8NTobXZm/gTvou1yZMIjNHxUidllVDFySilBE09vEKxybns9UBLXKpe
-	cEPbLllIc7QziULnLD6LibaeiCdAZxW6/AgU2huu7TFG3Me21r5jubtRz0qwUg==
-Date: Wed, 4 Nov 2026 21:48:52 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        David Ahern
- <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Shuah Khan
- <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        bpf@vger.kernel.org, David Lebrun
- <david.lebrun@uclouvain.be>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Mathieu Xhonneux <m.xhonneux@gmail.com>,
-        David Lebrun <dlebrun@google.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Andrea Mayer
- <andrea@common-net.org>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net 6/6] selftests: seg6: add test for skb checksum with
- CHECKSUM_COMPLETE
-Message-Id: <20261104214852.853a936a50a49e2cf2acbbd4@uniroma2.it>
-In-Reply-To: <aulUayPCDOYwAm1e@fedora>
-References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-7-andrea.mayer@uniroma2.it>
- <aulUayPCDOYwAm1e@fedora>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gYMcabrr
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ZfTs+ryizwPn0Cl3XX+fYi34UNKxEvbPC3g5XcJfRFc=; b=gYMcabrrRrrv8R/JgiDQxQdpoO
+	B4xeVkOkMAmW5SkgjzvXAXfOQ6JqfSA21vWQ3ZWQJRkwxEO00Cr1X2Q8EZW3y3AT0vPDV9fkXqdBk
+	gqDbevO66SBMR4liG1+Nj0cg3+SfEF6DPc6bOe2V8Dj/iZhjs/xwOY6jPcw98oWTSJ+c=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOhwz-00ENw1-4M; Wed, 04 Nov 2026 21:51:17 +0100
+Date: Wed, 4 Nov 2026 21:51:17 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joris Vaisvila <joey@tinyisr.com>,
+	Ahmed Naseef <naseefkm@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v4 5/6] net: phy: mediatek: add calibration
+ logic for AN7581
+Message-ID: <68eecc53-ed61-463d-bb5f-c68b507be82a@lunn.ch>
+References: <20261103221439.30502-1-ansuelsmth@gmail.com>
+ <20261103221439.30502-6-ansuelsmth@gmail.com>
+ <2b744929-609b-4529-8b6b-30feb3ebbbde@lunn.ch>
+ <6aeb7861.6171b307.11ae12.6b94@mx.google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,62 +76,27 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6aeb7861.6171b307.11ae12.6b94@mx.google.com>
 
-On Tue, 3 Nov 2026 11:26:35 +0800
-Hangbin Liu <hangbin.liu@linux.dev> wrote:
+> It's safe in the measure that the worst is that link goes down during the
+> calibration... I will rework the function to assign the base address to the
+> default address for port 0 (it's hardcoded by the SoC) and use the lock and
+> read/write helper instead.
 
-> [snip]
-> > +
-> > +log_test()
-> > +{
-> > +	log_test_expected "$1" "$2" "$3"
-> > +}
-> 
-> We'd better use log_test_expected directly, otherwise the log_test in
-> lib.sh will be overwrite.
+Are there multiple PHYs in the package? What happens if both are doing
+calibration at the same time?
 
-Hi Hangbin,
+PHY #0                            PHY #1
 
-Right, I will call log_test_expected() directly in v2.
 
-> > +
-> > +test_command_or_ksft_skip()
-> > +{
-> > +	local cmd="$1"
-> > +
-> > +	if [ ! -x "$(command -v "${cmd}")" ]; then
-> > +		echo "SKIP: Could not run test without \"${cmd}\" tool"
-> > +		exit "${ksft_skip}"
-> > +	fi
-> > +}
-> 
-> Then we can use require_command() in lib.sh here, which will call
-> log_test() in lib.sh.
+phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
 
-Yes, I will use require_command() too.
+		       	      	  phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
+				  ret = mtk_cal_cycle_wait(phydev_p0);
 
-> [snip]
-> > +
-> > +if [ "$(id -u)" -ne 0 ]; then
-> > +	echo "SKIP: Need root privileges"
-> > +	exit "${ksft_skip}"
-> > +fi
-> 
-> I wonder if there is any one run the selftest with none root privileges.
-> Cause almost all the selftests need ip configurations.
-> [snip]
+ret = mtk_cal_cycle_wait(phydev_p0);
 
-The test needs root privileges to create the namespaces, write the
-sysctls, add the tc filters and load the BPF programs. Without the
-check, a non-root user without these privileges gets a SKIP from a later
-check, for example "SKIP: dummy dev not supported", which does not say
-that the privileges are missing. With the check, that user gets "SKIP:
-Need root privileges". I would prefer to keep it.
-
-Thanks for the review,
-Andrea
+    Andrew
