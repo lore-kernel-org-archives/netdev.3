@@ -1,58 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793786671;
-	b=T6vV3m1JvJ5j4ADHCy2RiXA1m8n4BuhIms8NP3o3HFTQMKkw/RZH+fUTmRniWVDDjy8G
-	 lcMCnpbiOSSRC5YSeNypjxRp9DG4sSUKRr1BrzXv4SiOIGpczcpg/035dnjJ0LzoFhJTO
-	 IOjwuGvY0JYclrRYRpkUWyWNr99b7HObtbekORxUuCsr5ArZi+uJfopITKXLZWTU6lJKn
-	 mAU+m3oJ+76lwjTDEgC9WXPoc7rP5qkO9mN06Maenj0H7mglhuhGp8Ed0dNY3fPtTVQwU
-	 IzzvNWXS20NJO+/gH4bCib2Zrg2rsZDNKzwW9EltJb9ICtI9FnuDFYB+zr25acwbB/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793786671;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=qYJ1iukmwutASrDYFKbbVpW3SfEfl5i637ohOvctWDc=;
-	b=eIG/S5Fdpl4jWlRa979/PvHeFm/VdTNlRy8Af8cnsIhZ8Enw5BzMP1YlIZh4S+cxMA8K
-	 LzNFH/49NLMvRxOPLb81Q3OZllQ5vdPKozeT/aAj38ajn2WXxbcjW/O9ctBI9zpr+RC3Z
-	 H39FJhawm493MuLW28Ae4eoEvGZ6clw/QreGhsibHSee7VquHUPPA+dvXIxNJYR5Q2zJO
-	 VRU/YHR7Y9rYo9gC2TO70retTw9F24lRs1sAK5TmwXBqy+FgQ50nBsB46uZHLNiv2QECV
-	 k5WJy1vykOGcEjVwGH00PlDhchv79XIr/cYQbRIlbQ46VfLDJoPEYchUINXdkgHn9lQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=gorCUYXt;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.176
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793786772;
+	b=EocG/l11Xb2JIw40Z9gO9M68/NsvIujm5uIOStLYNA9xNODEH3+OBO1INek+ShyzYS/U
+	 yfQPvGeOytGiA47GaiyHg6h/+bcJgJfIbL1AZpR259b1ugqO39vdYrvka7oGDf+cFum6G
+	 B9dhzcEFnk1w+bQeIYR5Y6Z8yu2SbH3YsQ0/LLffPJkA2GBzBRtkXMhgGd9rx9U3qWLB4
+	 HCoNkphjs1ShjMI0SIO6BsNfDqthm/7B80bj1iqB2YTbiIvJN0FmWLOQVghMdoF5CAXeA
+	 mSlaSc73iTaxL5OheHNXZt7924FE4yE2BKDScAXvVlCGiRiy2lPHXE4Et1nAo1kUW9Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793786772;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=OZ/Lc2atzdlS6PHoKjibJKd8Fm/mT6zblt3N30zwe2A=;
+	b=nUwoBnOcpu0FdY199lUEHDIIgu4SosNVBSfBXkDCO2VOfYfb1hvkdJ/WFIRJitCD51JI
+	 V+/M8nVV9WYlEGynC2aZOXjPojJcEe52vQfp+mfU+FupIdxsR8Ry/n08JRcjey4uMASep
+	 SP+rVSsGV1no2XxfwUfVi89A/ef0QGvSbHj4YGrlpsaxiV9yto7uGRzFmnFaRJfdeuLOW
+	 4LRHg7KY1bGQrciYEmZdRCTnPXxAJcFbsVbt0LRXhLt/NZ4om7/MRKJmq6kjcWBy3bGEC
+	 6pQ1htlPADe7qu0rfRZbH9kxAJAGdwDF+OpZd9bVSOdZtFdHBHFG255RAymlGhCpO2g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k0B4Gqlt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.176
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD2606A33A;
-	Wed,  4 Nov 2026 10:04:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70DD2606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4DC606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 10:06:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB4DC606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=gorCUYXt
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id ADFF9C8F46C;
-	Wed,  4 Nov 2026 10:05:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B9CEC60770;
-	Wed,  4 Nov 2026 10:04:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E2F6103291CE;
-	Wed,  4 Nov 2026 11:04:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793786667; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=qYJ1iukmwutASrDYFKbbVpW3SfEfl5i637ohOvctWDc=;
-	b=gorCUYXt0IZqHlZyTFA71abpERYlFGhqqaiAgT1PcwmpEgd4IPwgYpReXKJbdE2VdWXyfq
-	gCYXss3jNCxF68x/JK/YYaNw/a8T7i+uQiTiEVVkiMLsd3vh0WABB4tLl8Jfxr1czQSnSL
-	MolMv8H8DZJgQSe/x+gpjZ5HW37gLnnxlkQNHvaP+PJmjPqKKszbrAYklXXqPiGTbrkVo0
-	t5T6/NFycewkZRFcDwwAIXzsLBM4zbMfWeJbxuQhdL69zYu64NwzMhglKUG0xolLd0a6mZ
-	Tenr96aAp0jf3J5L78k7Ob7KhWtUhTibqzRJoCK3+ZEbIo4kUu++MHp3MgaAKQ==
-Message-ID: <1c17b621-3032-41d0-92bb-98ac6c01bc57@bootlin.com>
-Date: Wed, 4 Nov 2026 11:04:23 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k0B4Gqlt
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4d7034a99a9so329412b6e.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 02:06:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793786771; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qB98CTNz1JN0ANtmxeIwhX5CW4MtX7QURP1oGpT8hbxjAM/sj7B4bBq+wX9NT3s/xC
+         K4+or+spRi7fznmFz9QdOM+6ksZ7aa8sJtDStYNLIW0+KffMPRWwlodhloqseKkAEWAz
+         QFa6A63LZOaj34MjfitLYT0C0s1rY4m4EvctQY2/ifzE3UjsVykIKmtmn61SEXfItEkt
+         d1HxEr9i9jmAtvmae7tDvn+xYpaFnIdKBuc2iVczcZ9eQa12JrtUxSpr0q4rhTLSyQRL
+         t1z/aYBwI2C1CUxPRMmdwPZdpkIwzR2VGRNfVuxzJCVGrr6nhme1MrX0zICwb4ygmJzY
+         nsZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OZ/Lc2atzdlS6PHoKjibJKd8Fm/mT6zblt3N30zwe2A=;
+        fh=fLCu+dHkWvlUqt8nP8BllfusHc6HRVP3BbZ35Lf58Kg=;
+        b=LIBRz8cBF2vF7OpZKtLekViRVlp+7dv8hKYToJFr2Sxp1+URslI6ySDqxt+RkoIDxO
+         h4Q3bNuB18XZMpgT25DVBGYiWaCVhIctqIkfVtL2N9dCCIdL2UNnYQ1o+EXDl+6EhwLs
+         6vn8M2dK6zzOKsfp4tJ05wLxH2JfI+jy3J4zfsZVWNo09D2kFbNw2cylGWrDSxuh98IZ
+         d2pV+8s3qPlmxAXvSQG3zV5km0jmHEmzcszzFYrBgTkSfR+VRiY2poVVNDIy4iU/29OI
+         NvxlLg3NjKCAHYF5BPliw1+0m5CuFkBdIXe7hnR526e8bqzOQzhqJZYXziYcEmLITmqD
+         CClg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793786771; x=1794391571; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OZ/Lc2atzdlS6PHoKjibJKd8Fm/mT6zblt3N30zwe2A=;
+        b=k0B4Gqlt36xOeJNCh6Er/BJuNdWlBdrrfaaeLNnyTxfMkHiJ3LRXBTLYqTW6VnIhWt
+         PsFtCAdU9P53J6z7kqMW0sXopm76nPzNU31CoyVfC+Abm4iy5bHp7tkre72ce7bbeBtl
+         G+e/PuSzBE/Wrs0uWo+0aplpq21rnDWXZsU6oLzchkOPTdruDGMdJf8PrYem0nxKQeWQ
+         oVHhYTzzppP0D9UAOYJj2/o1N7CP8MACdEer+uj+2UcVCondcBbokiDrmSlVJJe0Bzx3
+         wmoeUcdWa7euVBeTgSQ8dZAgMPtaWiSnfBfv0homUE5iAsIQMUP8tHlR5DYDSPUBJgLk
+         pt0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793786771; x=1794391571;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OZ/Lc2atzdlS6PHoKjibJKd8Fm/mT6zblt3N30zwe2A=;
+        b=RfV4U+b5vyWc7ZQSshfHfT29HvSJ6up2alkZjqPOdZ4GWqnMsyDDWmeid6RqTYjL2j
+         DucHTgrkKEdkp0B3+X793F0FFnFIoYm1mAl7U3PY8HxPlhDl48ZpNs5ZXbQm+zYeMGOr
+         phKZyRHmm8cjroJOki+BymTvrVkkSuX0ox+mu1ixg+YdexOLtteoGKIV5+ZSSIeddQqg
+         JPhfesJETxzsZROx/or5INy5Sw0zanWzPTq0yQkEPRhLhj1AAeT08dcASBDlm9/Xz7SA
+         J7+8vt7kvsMeigpxi1HDvIc0Nu1e69dgj3lmtsoXgXfZFAhdJT+DtyJvxKNxhpEnXlBG
+         CT1g==
+X-Gm-Message-State: APuU4Z9qDeQpC411qU64xiizA6ag6jHgvDwfsnJ6MtCixaLtVFzwPjW8
+	0Jf/1fzTJaxGRCapR1EgtsZZC3yN/q4pjRupSs0YLNKwfJu4uDHHsTHQi07vNAX+i34XdlaJEWm
+	JGMPg81EJV/VNSpwXJXm1I4x8jE3HkqxGdnhK0Vk=
+X-Gm-Gg: AYBFou0eCfcEe60XyTbed2cMJq/aAQLiC2WDO+1GzTo7U3MycZS4mhIB8yrvaYCCwY8
+	Y5ROkevYlpdNRl6cBAT1aweb1Z/tmRTpSJHHpFhRu61/bGwvX4JgorTqdjfksRZyEG8hJ6rPVUi
+	Qgd8Aeay6iz3RVMsEqGw3EBhLeiyhujBPoUb6ghZ3aOFQaD5YxvPBf4Qij2Pg84jXuvr/A9xlv9
+	xGJD9Ozne+XFNNlP3Vnbmdm+UQ3Vc7OvC83oSxE5i9mMCxiQ/nGVq3wrxuYmuFZ7ajgIBsCY261
+	uf9xFRxeJc3jf50UPFZk8NSbmgl2NUyixoICDoEjSC8nj95gSdWbgUUathz1JFvAPT6fDF7cn2U
+	cigyN+3wzAczBgIr4GQR+hmbVaie7obC8xf153abyeXn96HnmHKxNJT2gu55CYyv92ntUom0=
+X-Received: by 2002:a05:6808:3a0d:b0:4b9:e6ab:d085 with SMTP id
+ 5614622812f47-5640dd277b1mr10897713b6e.37.1793786770706; Wed, 04 Nov 2026
+ 02:06:10 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,70 +103,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net-next 2/4] dt-bindings: net: pse-pd: realtek,pse-mcu:
- add VMAIN supply
-To: Jonas Jelonek <jonas@jonasjelonek.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Sander Vanheule <sander@svanheule.net>,
- Russell Senior <russell@personaltelco.net>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
- <20261103220312.860629-3-jonas@jonasjelonek.de>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261103220312.860629-3-jonas@jonasjelonek.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20261102155641.3682626-1-mmyangfl@gmail.com> <20261102155641.3682626-3-mmyangfl@gmail.com>
+ <84089fcc-0150-4464-970a-09400f3ec5ca@lunn.ch>
+In-Reply-To: <84089fcc-0150-4464-970a-09400f3ec5ca@lunn.ch>
+From: David Yang <mmyangfl@gmail.com>
+Date: Wed, 4 Nov 2026 18:05:32 +0800
+X-Gm-Features: AclHuK_lPVKhdBS5T7TT7NXGuhN1GFF0oSF2CW2k7kB40YvYn0ddad8zYQxOMNE
+Message-ID: <CAAXyoMN4ySBtnLjqKcfAa4XwUR14-fjaJh-hcCyumERagmcHvg@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/6] net: dsa: motorcomm: Rely on port isolation
+ for CPU port
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Nov 4, 2026 at 11:59=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > -     ctrl =3D ~priv->cpu_ports_mask;
+> > -     res =3D yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port), ctrl=
+);
+> > -     if (res)
+> > -             return res;
+> > +     if (!(BIT(port) & priv->cpu_ports_mask)) {
+>
+>         if (!dsa_is_cpu_port(ds, port) ?
+>
 
-
-On 11/3/26 23:03, Jonas Jelonek wrote:
-> Describe the VMAIN supply at the MCU controller level. The rail feeds the
-> PoE subsystem as a whole rather than an individual PI. Its regulator power
-> budget defines the aggregate limit programmed into the MCU.
-> 
-> Require a finite regulator power budget dedicated to this MCU, representing
-> the PoE power allocation of the system.
-
-binding change should be send at the beginning of your series.
-
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-
-Thank you!
-
-> Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
-> ---
->   .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml          | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> index 526f8525bb4d..82288bb57b33 100644
-> --- a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> +++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml
-> @@ -92,6 +92,13 @@ properties:
->         asserted.
->       maxItems: 1
->   
-> +  vmain-supply:
-> +    description:
-> +      Regulator representing the PoE power allocation of the 44-57V VMAIN
-> +      supply. This MCU must be its only power-budget consumer. Its unclaimed
-> +      power budget is used to configure the MCU global PoE power budget. The
-> +      regulator must define a finite regulator-power-budget-milliwatt value.
-> +
->   required:
->     - compatible
->   
-
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+The next line is ctrl =3D ~priv->cpu_ports_mask, but could change both
+if you prefer.
