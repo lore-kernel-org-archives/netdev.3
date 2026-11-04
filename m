@@ -1,61 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793787280;
-	b=4jcMKKDw6cczcUa3CS18XQalDJTDsxFczEPULm+ndUVECPagwXHg+nmfC2meRiL3iW8c
-	 YsrWRxYxlkMtGYUazGtyzsmLo37yeVL1fExGLkKoQCePAwYz7XWtrGlckbcNGRRAAWh+x
-	 2jezpy2wIwXnRhQxGyVwxIN4bCYmtK144ppAum5Yrm4PweH4Ew6BBa9gyh/PiAjBJzc21
-	 F8ZjyaT0kwR5jKhBEUen1zUqfp7R6OpoQxiPljYQapbu4sqy71lWLayaZcbFwFdgPEahZ
-	 pcoHkx7ROvJcKc7lDzfTne67lNrQgxIpw5fT8uL7V/uiraSoQuI5CzezRxuTsvkWPaA==
+	t=1793787575;
+	b=48Obyp8xNIbT1fsHXNEvGeUAfA/DR7/9py75YAPtxkl+x2J+CcZpDn+RAVv+hV1TQ6is
+	 J7I0n2EmOMo/V/7j0+XaneOPb+q8qxwSQY257N1aCPC1mBa7LBK6UhWEkRTxkOLhfRSi7
+	 uh1bGqsMV5LMTnzvC+bLnacgZZw2Uwxgafu15i4MIKvgUll0A63bHGAw7MGV5tqSmGQMP
+	 bER5ywCkGs47116SbwrJN9ZvQ5q+qOXi7MAJvvGFZqC85q4TjJ5SbJw0KIBeCTZ1G9WSk
+	 S0KqFZQVFcU7/ltY60fLP+D4XU/b41nhaJYmHsPr+tnwcu3nBnabI59lIsVngjcgIRA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793787280;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=JFuvjpFgpIgnI/buX16Ja3+yga1xnT/9led9URms74U=;
-	b=owMQkPMjyuQbKcH45EToZ2+o1GYquWcudiKLFbZO238KY34Eo9X4rmULWism4d4SCzeE
-	 KiMlx4kdIVuYImUepsReF3ta5vxXUFOe/5l3gIFQHWzjgkigWqixGrxrPG1+zW5zpVEXK
-	 5Rr/7ntqaI6hV3L4mc0BA5RwCUk0FbaaOkzAK1NmF/X2QEO2dC/4WdapVguI9Blr42v0u
-	 CYYQBvhSWfk9kwS2o0zDi1bmD2AUmcdWJC1WMLfWAMXAByh5TeG4S6Ezc0UqjGY14FAVY
-	 wYX/n193nCTs7DNdmXfypOHBJ8w3Di2/M/BN/hpwKzWRZKI7KdrhqvIfsMHyiwzUK4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793787575;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=kNT+TBf7Xk703cd7+a2HBBEiMx+XYquVY2orv0TAisc=;
+	b=P5bNLzvHmB0f8J82QVMzVHBQnTWL09jHM+SEn/Hjea7iTYwC+yxP3XQOl/wEcpqwOO1p
+	 x3KFVgJsX0VP0o5vGt6RADXQvobNvW0DT+kPGarY+pZv91dMQhH2sXv2LsFmPpy3anU+P
+	 v09yoOMVBounhiGgm0JZW2Ea5x1WNroaiRaSlmwBDZM1eUIyJ3ucnmgXhM9CUz91dacxW
+	 HVNlMp7d6tj4bGB5H8wtVLty3PVwcfbb+cfVsub7sHV9Fo6MHFRu5wV+8b3SYPZrkvsZG
+	 xVEJLsqc7C+w8rSx4KGsXGN7Y1ZyzYS9W8V+10Lz94uQrymy7g2oz1NPGt26kNEexVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=anby1nHA;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XZ5OhaRN;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 4B997606A31B;
-	Wed,  4 Nov 2026 10:14:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B997606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE0B606A31B;
+	Wed,  4 Nov 2026 10:19:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECE0B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=anby1nHA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793787276;
-	bh=JFuvjpFgpIgnI/buX16Ja3+yga1xnT/9led9URms74U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=anby1nHAVv6SWDDgHRf1GgPFV3ukJ5S8ugvVTkHAkjIpeilqB+6ou0smubfTGkqTq
-	 vzBD+GhIyvIb1MDGInLXxr33WUZ85ZnnQ3djVQeibS3VPpRL3QLzhanpMLLEKvYZmq
-	 nxBaYmmrTuN7bv1TU06pt5U4jC7CxQNG7OzA5xhyZqoJHU5BdzOD4rqyb46/322IEm
-	 HNKor1ceHvPoyQ27iB06ye96JoSBjdPtZIYIZh5HtSI9cLTmy9Z8IbZOTKZBgueaL5
-	 7yeAg391vFXwLR3FNwVmlCGzG6Tzu/4jGHb5qfYnf64liEPOzDZ/RtNlNeyprNG0oC
-	 xk2MG2U3W3QoA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 63B3B6005D;
-	Wed,  4 Nov 2026 11:14:36 +0100 (CET)
-Date: Wed, 4 Nov 2026 11:14:34 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Muhammad Zuhayr al-Tayyar <mzuhayr@earthlink.iq>
-Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [BUG] netfilter: nf_tables: hw-offloaded flowtable entries leak
- when the flowtable is deleted (UNBIND at commit, DESTROY at release)
-Message-ID: <ausFiqLdZGbCZRDX@chamomile>
-References: <AM0PR02MB4307BD45EE715C8B94EE3E6AC6682@AM0PR02MB4307.eurprd02.prod.outlook.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XZ5OhaRN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793787575; x=1825323575;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rcTDP+KWHo2gNfswjTOl43Ulpy6RCia8WdpYg5XrOlU=;
+  b=XZ5OhaRNYSglUlomoMz1x1ahRG/He7jLj+SkrdQkmx1jFivRhsoe0eYh
+   FjRxlWRozfGUZXyEoNVqNj9nnMWyMyOxGhqBZ9iTe4LuAj92UODzWFPY3
+   rWzHo4LbihvlX4pRp2y01eAJpGC3cX1C3Bt+FUpFLMJd12rj3yElY1xM0
+   bteAcIwf6ZCOpd1qihKj8nA1QSVyk+EfINxUgN9zeen+vAHA9KKXH3VN7
+   Ju+aQBgLvA5MLY0d7xBc87gNvf4da5jR23iU7ynEZJkaaa4LmpfqjNhLS
+   /1B3oBjP72R/jC71CLaG58sLtk19mmXDZjYI9pwr7n+1b/2iDaTYXaRpf
+   Q==;
+X-CSE-ConnectionGUID: H9tBFbT9QpesQrKWRzLz7g==
+X-CSE-MsgGUID: 9g5duCfPQA6QhR29pHP02w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2571370"
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="2571370"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 02:19:34 -0800
+X-CSE-ConnectionGUID: zlNP84fiQmicvrk/eaMssQ==
+X-CSE-MsgGUID: jbRfxsLoSeW0GYgXP4nngQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="6702443"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 02:19:31 -0800
+Date: Wed, 4 Nov 2026 12:19:28 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Liu Chao <liuc63@xiaopeng.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, khtsai@google.com,
+	fangxy@xiaopeng.com, Randy Dunlap <rdunlap@infradead.org>,
+	dbrownell@users.sourceforge.net, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] usb: gadget: u_ether: fix out-of-bounds read in
+ get_ether_addr
+Message-ID: <ausGsH4Q6IDMMtin@ashevche-desk.local>
+References: <20261104025058.2650911-1-liuc63@xiaopeng.com>
+ <20261104025058.2650911-3-liuc63@xiaopeng.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,219 +87,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM0PR02MB4307BD45EE715C8B94EE3E6AC6682@AM0PR02MB4307.eurprd02.prod.outlook.com>
+In-Reply-To: <20261104025058.2650911-3-liuc63@xiaopeng.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi,
+On Wed, Nov 04, 2026 at 10:50:58AM +0800, Liu Chao wrote:
+> get_ether_addr() walks the MAC address string with a fixed six iteration
+> loop, calling hex_to_bin() twice per iteration, and never checks for the
+> terminating NUL.  A short string therefore makes it read past the end of
+> the buffer.  The dev_addr and host_addr module parameters of the legacy
+> gadget drivers are copied into their own kmalloc'ed buffer by
+> param_set_charp(), so the overrun crosses a slab boundary and KASAN
+> reports it at insmod time:
+> 
+>   # insmod g_ether.ko dev_addr=ab
+> 
+>   BUG: KASAN: slab-out-of-bounds in get_ether_addr+0x1ec/0x230
+>   Read of size 1 at addr ffff888009f91f53 by task insmod/70
+>   ...
+>    get_ether_addr+0x1ec/0x230
+>    gether_set_dev_addr+0x6b/0x180
+>    eth_bind+0xfd/0x3b0 [g_ether]
+>    composite_bind+0x1bb/0x7b0
+>    gadget_bind_driver+0x229/0xb00
+>   ...
+>   Allocated by task 70:
+>    __kmalloc_noprof+0x1d1/0x4a0
+>    param_set_charp+0x4a/0x220
+>    parse_args+0x267/0x5c0
+>    load_module+0x4f6a/0x6600
+>   ...
+>   The buggy address is located 0 bytes to the right of
+>    allocated 19-byte region [ffff888009f91f40, ffff888009f91f53)
+> 
+> Besides reading past the end of the string, the loop ignores what
+> hex_to_bin() returns: it yields -1 for a character that is not a hex
+> digit, and that value is shifted and OR'ed into dev_addr unchecked, so a
+> malformed address can be accepted as a valid one and the interface comes
+> up with an address that nobody asked for:
+> 
+>   # insmod g_ether.ko dev_addr=aazz:cc:dd:ee:ff
+>   # cat /sys/class/net/usb0/address
+>   aa:ff:cc:dd:ee:ff
+> 
+> The configfs dev_addr and host_addr attributes of the ECM and NCM
+> functions reach the same parser through gether_set_dev_addr() and
+> gether_set_host_addr().  Their store handler passes the page-sized
+> configfs buffer straight on, so an overrun there stays inside the same
+> object and is never reported, but a malformed address is silently
+> accepted all the same.
+> 
+> Replace the open coded loop with parse_mac_pton(), which checks the
+> length and every digit before writing anything to dev_addr, and keep the
+> existing eth_random_addr() fallback for all failures.
 
-On Wed, Nov 04, 2026 at 10:07:51AM +0000, Muhammad Zuhayr al-Tayyar wrote:
-> Hi,
->  
-> When a flowtable with "flags offload" is deleted (nft flush ruleset,
-> deleting the table/flowtable, or loading a ruleset that starts with
-> "flush ruleset"), the hardware entries of connections that are offloaded
-> at that moment are never removed from the NIC. The NIC keeps forwarding
-> those connections with no ruleset loaded. For a firewall this means that
-> replacing or removing the ruleset does not stop already offloaded
-> connections.
+> Note that this makes the accepted syntax stricter: the old loop also took
+> a separator-less string such as "aabbccddeeff" and the Cisco notation
+> "aabb.ccdd.eeff", both of which parse_mac_pton() rejects, so such input
+> now falls back to a random address instead of being parsed.
 
-Thanks, this bugs has been already reported 3 times in the last two
-weeks.
+Hmm... indeed. Perhaps we want to continue supporting those.
+Web browsing and AI assistance suggests that there are only few
+formats that can be met IRL: raw (no delimiters), Cisco (4-digit-dot),
+Windows (with hyphen instead of colon), and quite rarely OUI split
+(3 bytes + 3 bytes with one of the standard delimiters ':', '.',
+or '-').
 
-I posted an alternative patch which is not yet covering all cases.
+Examples in the kernel and comments are only suggested about standard
+hexadecimal 2-byte-colon.
 
-This is on my radar.
+The function itself was introduced in 331a2d82bcaf ("[PATCH] USB:
+ethernet/rndis gadget address params"), and not in the USB network
+core split as your Fixes points to. The commit message doesn't tell
+anything about supported formats. Documentation also doesn't
+clarify it anyhow.
 
-> Environment
-> -----------
-> - NIC:     NVIDIA ConnectX-6 Dx, in-tree mlx5_core, firmware 22.36.1010
->            (DEL0000000027), eswitch switchdev, flow_steering_mode smfs
-> - Kernel:  AlmaLinux 10.2, 6.12.0-211.69.1.el10_2.x86_64 (distribution
->            kernel with backports; behaves like current mainline here)
-> - nft:     flowtable "flags offload" on two VLAN subinterfaces of the
->            uplink (indirect block, mlx5e_rep_indr_setup_ft_cb); traffic
->            routed between the two VLANs
-> - Note:    on mlx5 a separate driver bug keeps flowtable rules from being
->            hit until a chain-0 tc rule with prio >= 2 exists (reported
->            separately to netdev). For this test I added and removed such a
->            rule first:
->              tc qdisc add dev <uplink> ingress
->              tc filter add dev <uplink> ingress protocol ip prio 2 flower \
->                  skip_sw dst_ip 192.0.2.254 action drop
->              tc qdisc del dev <uplink> ingress
-> 
-> Symptom
-> -------
-> With a TCP transfer offloaded ([HW_OFFLOAD], uplink rx_packets ~20 pps vs
-> rx_packets_phy ~19k pps), I ran "nft flush ruleset". Afterwards:
-> - the transfer continues and is still hardware-forwarded (rx_packets
->   ~20 pps, rx_packets_phy ~19k pps), with NO ruleset loaded;
-> - the conntrack entry shows [ASSURED] (no longer offloaded), its counters
->   are frozen and its timeout only counts down, because no packet of the
->   connection reaches the kernel;
-> - "devlink dev eswitch set pci/<BDF> mode legacy" fails with
->   "Can't change mode, E-Switch is busy" (mlx5 still counts the leaked
->   rules in esw->user_count);
-> - the entries stay until reboot. After "devlink dev reload ... action
->   driver_reinit" the rules are gone from the NIC, but the eswitch still
->   refuses mode changes ("busy") until a reboot;
-> - the mlx5 SW steering dump (/sys/kernel/debug/mlx5/<BDF>/steering/fdb/)
->   still shows the two flow rules of the connection after the flush.
-> 
->   Dump taken after "nft flush ruleset" (nft list ruleset is empty),
->   decoded with a small local script:
->     192.168.1.10:22 -> 192.168.2.10:41234 tcp  pop-vlan, set-dmac,
->         set-smac, counter, -> FW table 0xf (VLAN push + out)
->     192.168.2.10:41234 -> 192.168.1.10:22 tcp  pop-vlan, set-dmac,
->         set-smac, counter, -> FW table 0x10 (VLAN push + out)
->   Raw rule entries (match on 192.168.1.10/192.168.2.10, ports 22/41234,
->   tcp):
->     3303,0xf000004c,0x6ac5e1e0,...c0a8010ac0a8020a0016a11200000006
->     3303,0xf000004f,0x6ac5e660,...c0a8020ac0a8010aa112001600000006
-> 
-> Trace
-> -----
-> From an earlier run of the same setup: function_graph on
-> nf_tables_flowtable_destroy, nf_flow_table_free,
-> nf_flow_table_offload_setup and flow_offload_work_handler
-> (funcgraph-retval, funcgraph-abstime), plus the mlx5:mlx5e_delete_flower
-> event.
-> 
-> At load, BIND succeeds for both devices, and FLOW_CLS_REPLACE reaches the
-> driver callbacks:
->   841.635738 | 15)  nf_flow_table_offload_setup [nf_flow_table]() {
->   841.635751 | 15)    } /* flow_indr_dev_setup_offload = 0x1 */
->   841.636970 |  3)      nf_flow_offload_tuple [nf_flow_table]() {
->   841.636972 |  3)        mlx5e_rep_indr_setup_ft_cb [mlx5_core]() {
->   841.637029 |  3)        } /* mlx5e_rep_indr_setup_ft_cb = -95 */  (other device)
->   841.637030 |  3)        mlx5e_rep_indr_setup_ft_cb [mlx5_core]() {
->   841.637729 |  3)        } /* mlx5e_rep_indr_setup_ft_cb = 0x0 */
->   841.637730 |  3)      } /* nf_flow_offload_tuple [nf_flow_table] = 0x1 */
-> 
-> At "nft flush ruleset", the release path runs and the DESTROY work finds
-> no callbacks:
->   847.435723 | 23)  nf_tables_flowtable_destroy [nf_tables]() {
->   847.435724 | 23)    nf_flow_table_free [nf_flow_table]() {
->   847.435852 | 16)  flow_offload_work_handler [nf_flow_table]() {
->   847.435853 | 16)    nf_flow_offload_tuple [nf_flow_table]() {
->   847.435855 | 16)    } /* nf_flow_offload_tuple = 0x0 */  <- no driver callback
->   847.435855 | 16)    nf_flow_offload_tuple [nf_flow_table]() {
->   847.435857 | 16)    } /* nf_flow_offload_tuple = 0x0 */
->   847.435859 | 16)  } /* flow_offload_work_handler [nf_flow_table] = 0x0 */
->   847.435926 | 23)    } /* nf_flow_table_free [nf_flow_table] = ... */
->   847.435938 | 23)  } /* nf_tables_flowtable_destroy [nf_tables] = 0x0 */
-> - No nf_flow_table_offload_setup(UNBIND) call inside
->   nf_tables_flowtable_destroy(); the unbind had already happened at commit.
-> - mlx5e_delete_flower events: 0.
-> 
-> Control experiment: with the flowtable left in place, "conntrack -D" on the
-> offloaded connection makes mlx5e_delete_flower fire twice (original +
-> reply), and the hardware entries are removed correctly.
-> 
-> Analysis (mainline)
-> -------------------
-> - When NFT_MSG_DELFLOWTABLE is committed, the kernel calls
->   nft_unregister_flowtable_net_hooks() -> nft_unregister_flowtable_ops(),
->   which does nf_unregister_net_hook() and then
->   data.type->setup(..., FLOW_BLOCK_UNBIND).
-> - FLOW_BLOCK_UNBIND only frees the flow_block_cb entries
->   (nf_flow_table_block_setup()). It does not remove offloaded flows.
-> - Later the release path calls nf_tables_flowtable_destroy() ->
->   data.type->free() = nf_flow_table_free(). That tears the flows down and
->   queues FLOW_CLS_DESTROY through nf_flow_offload_tuple() over
->   flowtable->flow_block.cb_list, which is empty by then. The hardware
->   entries leak.
-> 
-> Before 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable
-> binding", v6.13), nf_tables_flowtable_destroy() called free() first and
-> only then FLOW_BLOCK_UNBIND for each hook, so the DESTROYs were delivered
-> while the callbacks were still registered. That commit moved the UNBIND
-> into __nft_unregister_flowtable_net_hooks() to fix BIND/UNBIND imbalances,
-> but the hardware flows are now deleted only after the callbacks are gone.
-> 
-> The commit was backported to the stable branches. In the stable trees,
-> 6.12.10+ (6.12.9 is the last without it), 6.6.y, 6.1.y, 5.15.y and 5.10.y
-> all have the UNBIND in the commit path and none in
-> nf_tables_flowtable_destroy(). So every maintained kernel appears to be
-> affected, including the distribution kernel I tested. The code is
-> unchanged as of v7.3 and v7.4-rc1.
-> 
-> The same leak has been reported independently on a different driver:
-> Qualcomm IPQ9570 PPE, kernel 6.18.55 (ImmortalWrt/OpenWrt,
-> https://github.com/perceival/openwrt-flint3/issues/115, 2026-10-22). The
-> reporter's PPE flow table filled up after a few firewall reloads and gave
-> the same root cause (hooks unbound at commit before nf_flow_table_free()
-> sends the DESTROYs). Their fix is local to that driver.
-> 
-> Proposed tag:
->   Fixes: 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable binding")
-> The fix should keep that commit's balancing and only make sure the
-> hardware entries are deleted before FLOW_BLOCK_UNBIND.
-> 
-> Possible directions:
->  (a) tear down and flush the flowtable's hardware entries before
->      FLOW_BLOCK_UNBIND in the commit path, or
->  (b) for a full flowtable deletion, keep the UNBIND in
->      nf_tables_flowtable_destroy() after free(), as in v6.12.
-> 
-> One way to do (a) that covers every UNBIND caller (flowtable deletion,
-> removing a device from a flowtable, the NETDEV_UNREGISTER event): in
-> nf_flow_table_offload_setup(), before unbinding, tear down the flows that
-> use the device and wait for their DESTROY work. This is UNTESTED:
-> 
-> 	if (!nf_flowtable_hw_offload(flowtable))
-> 		return nf_flow_offload_xdp_setup(flowtable, dev, cmd);
-> 
-> +	/* Remove this device's hardware entries while the driver
-> +	 * callbacks are still registered.
-> +	 */
-> +	if (cmd == FLOW_BLOCK_UNBIND)
-> +		nf_flow_table_gc_cleanup(flowtable, dev);
-> +
-> 	if (dev->netdev_ops->ndo_setup_tc)
-> 
-> nf_flow_table_gc_cleanup() already does teardown -> flush_delayed_work(gc)
-> -> nf_flow_table_offload_flush(), the order established by 91bfaa15a379
-> ("netfilter: flowtable: Fix hardware flush order on nf_flow_table_cleanup")
-> for the netdev-down case. This only works if no caller unbinds after
-> nf_flow_table_free() has destroyed the hashtable, which is true for the
-> current mainline destroy path. Removing one device from an existing
-> flowtable needs the same care; I have not tested that case.
-> 
-> Reproduction (control vs. bug, same setup, only the teardown order differs)
-> --------------------------------------------------------------------------
-> Minimal ruleset:
-> 
->   table inet leak {
->       flowtable ft {
->           hook ingress priority 0
->           devices = { "<uplink>.2", "<uplink>.3" }
->           flags offload
->           counter
->       }
->       chain forward {
->           type filter hook forward priority 0; policy accept;
->           meta l4proto tcp ct state established flow add @ft
->       }
->   }
-> 
-> Control: "nft flush chain inet leak forward" (stop new offloads),
-> "conntrack -D" for the offloaded connection, wait 4 s, then
-> "nft flush ruleset": mlx5e_delete_flower = 2, the kernel forwards again
-> (rx_packets == rx_packets_phy), eswitch mode change works.
-> 
-> Bug: "nft flush ruleset" directly: mlx5e_delete_flower = 0, the NIC keeps
-> forwarding, eswitch busy.
-> 
-> Steps for the bug case:
-> 1. Load the ruleset above; start a TCP transfer between the two VLANs and
->    wait until it is [HW_OFFLOAD] with rx_packets << rx_packets_phy.
-> 2. nft flush ruleset
-> 3. The transfer keeps running with rx_packets << rx_packets_phy. The
->    conntrack entry is [ASSURED] with frozen counters. The flow rules are
->    still in the mlx5 steering dump. devlink eswitch mode change -> EBUSY.
-> 
-> 
-> Thanks,
-> Mohammed Zuhair, Earthlink Telecommunications
+AI gives this table (take, of course, it with grain of salt):
+
+MAC Address Format Structure	Example Pattern in g_ether Context	Approximate Number of Public Web Resources	Usage Percentage	Primary Source Context
+
+Raw / Continuous Hex (No Delimiters)	g_ether.host_addr=123456789abc	~110 references	~3.1%	U-Boot automated environment macros, hardware factory provisioning notes, custom embedded board bringing-up logs.
+
+Cisco Dot Notation (3 blocks of 4 digits)	g_ether.host_addr=1234.5678.9abc	~15 references	~0.4%	Hybrid enterprise routing guides, blog posts authored by legacy network engineers config-switching to Linux gadgets.
+
+Semi-Grouped (Irregular byte clustering)	g_ether.host_addr=123456:789abc	~3 references	< 0.1%	Highly specific hardware diagnostic scripts or open source issue trackers validating parser limits.
+
+So, taking it into account as a trend, we can really forget about semi-grouped
+and Cisco cases. The Raw is easy to support.
+
+		bool valid;
+
+		/* Try standard format of MAC address */
+		valid = parse_mac_pton(str, dev_addr, ".:");
+		if (valid && is_valid_ether_addr(dev_addr))
+                        return 0;
+
+		/* Fallback to raw format */
+	// check, if it correctly handles the case you want to fix here
+	// I believe it does handle it correctly
+		if (bin2hex(...) && is_valid_ether_addr(dev_addr))
+                        return 0;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
