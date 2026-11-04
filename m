@@ -1,74 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776544;
-	b=2tXvUSuMPJc7oyG6W2KUaSXA0T+zx37ARJUuwam9Ng9F/WcKitJP9y43Nfw/w8ttLm7r
-	 ymBz4+u+naBPvHmU4iPtYDKxLKwT5I7GNnUutNz03CTIiV9YSswLBiHjyYYDQxlajcDL+
-	 gF6dH6iB+POxpI2czQS98dJ5iZTBQxPfO15xn2hSQK2ZFyr0YfFPZtVTewjUrQk1646Yd
-	 lamAtrG8Cj4cpC7QwSRoCXhWSkt3M94uVmQUaoXI4VA8Jy56djKBJeIVavcHIiEo7tCgo
-	 8hric1c/Oug8DDecfSUUJ9S8lKhACuXyVTuOMh6aDI4KhwMPPu5W1FnRg6qc94jVwxA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776544;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=BFV/VQ+QWjrP6E459iluHuys0SDd5TGNzyDmCdFINos=;
-	b=22QEpW732DBYqKdrekwIUzhNToMDrV1HaE93e8Jp9o3DyrJObiEthWQ5vHYplYRwFIEf
-	 /7VJqd6qQzS7P7GzpWehfqAk2YxQJJ4GRKQYpe8diiyUo3HVBQEohEWgNfxD9bwMo+mg5
-	 WEUn4JokEaW5EZIekd32lgQLJ1yKG5Yr0VmV+B0doRDgeJbdfjN/9LSP8cXtllOhKs9nz
-	 sDbY+4b51hq3bOHCNiIZCUXg+D+ITVm4RTvnlmr000VRQhrQ5yUvAnUofinqcCd50LWRC
-	 NycSswHyZJN2gyPdtRYnmXe7LXaO8DkISWhXhOTMtSB4E5Mfk3MQSTIoCmBn4cWg9RA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=D6JnA8Xk;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793776567;
+	b=NUcuohJtzUhvgLJhUtqW43ZIRxUiUBT3pHdCoKJZkhk2cUoFshVZqi1HZ8Eu3Coe0oS+
+	 SFRAv33D6Bd1sNdvvimiWlZJF+hu92XzlQai0cNNiFaUur0ATsdzAJ2e/zag46lKtfwrv
+	 lbt0QlRdP8WfDtnH5jBcxagbV4NYcbDmAqDChm7lXd0Q6RNY0ihCdKgMwyfaNqpUeK4aB
+	 KONPQ++D0oQA9xNhYTdP74SLH6MpAQzOPW8Y9Zdnb4TBP1fTDUrnf2ZiSDjOn9lXUUQPr
+	 EyqXR4iZzy9EX+G+37VV+Pp5F0thhgclSSZfpf2PLqYhPWjx0ct7C5N0FF6K8LJKGXA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776567;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Czov5U9qZ2bigGPiKCWEuiT/74SJfBbTyeasjx6Z4cY=;
+	b=3R6KVzpvsKaPYnde6pFwkLoJlUqPOSGmSr1EKjcwpcqP4KMW0HjXHnPi4onboFZupMJd
+	 006KZ7tFHnAJn/HwEYP+Dm+ej5hs/rSgcMWCxr3oy/2C1jQKw06Z+WjDl9/LDygazbH0Q
+	 +0mm8+1Xp2fI9CV64avk3v2IvmTPqSFQKUpQwuxqlDPeTuYgjttIX5lPsyZ6928gUklgi
+	 wonz7CFCZgJRayY8fj4A8acakitwnpFc9nXMS23MwEfF1SpBXmNDepDDL5nkCccTFeR3O
+	 iDSa0xwGt79ozx87ZHjs1YJBiMtzd6iUOnd8FYqTVTr+Rk6Qr/m69RosXrEfeHNrD8A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I7mSZ41j;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F49D606D817;
+	Wed,  4 Nov 2026 07:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I7mSZ41j
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793776567;
+	b=WhvSQEzFsYVeMcfqHbmNv4AUfR5oANRgjMiMyGlYSxHhuZCmDsmAUzWMlenJpFkFU2z7
+	 SV77H9vU8lv4PHrwX5of/nAETszeQ4QXtkdh9+5NuxLAwxbLZJ29lqA3sdbLtO+peTvNT
+	 wq3bgVUfqudpA8CVSJRlnwo0r3m+J8ohms+yWHLskL4YB+hNe5y3KF+ev+GjDjnmuHZos
+	 X8oKkPFcZJJzvt9Thth43/5GuWpNlBEBUOO53aHGgxN+Uvb06V8E2FI5DCpBmzKC0ki0H
+	 QiJ4tdyC538twYIBc7k4kSv6UHOmPZEtHVO9Z1JuyiSRVKfCUfPl22rYkONngFwDwQQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793776567;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Czov5U9qZ2bigGPiKCWEuiT/74SJfBbTyeasjx6Z4cY=;
+	b=uvNFdFKHz4xq0ZQKWHB8NZyyQ31wPmP0Egl5Ku64hsnPrZLuUEZbjYA5QHa84gBQp2Ee
+	 j7odSz71SUfRHTtKJ8mpldpqpgqgvHd9PKIywvHTlgW9OoWSkr2aXk4qIltYvo6p7t+oe
+	 NpPS27VOcUfvI8xD2s+7UrHVZcYsRkGY4LwR6AtXkYtwQ6mXpxtdEF9cTUjHZoXhaj4Dy
+	 WCZzqXQqiHu1m1Fh8R8JO+/rgJQmGUoeuij5xiqHYyw/UP8rYHz3ctoP+mmK0F64xlfTY
+	 o2CuUMdpA5mLuUHs/qrKag2v93aWrnKZiduuGZiFRQxDUM0+zu0O4shGYdycP232+ag==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58141606A32C
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 07:15:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58141606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=D6JnA8Xk
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b07b06027eso630583a91.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 23:15:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793776544; x=1794381344; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BFV/VQ+QWjrP6E459iluHuys0SDd5TGNzyDmCdFINos=;
-        b=D6JnA8Xkhg8aRFrKyK4hQsimDwPxja7zro9JWiX3TCSmx1gbBEUAa/b0LhiIKW6aYi
-         L6PL2KSghI8axoIhqEQBdZ31GFpnlIyKhxojS2XRx1Xn6eZR7fXViSDF/woJXfem2tuI
-         OI0VHDGjjltM1KyEEVtewpQipHRuaqtEdFTIeAZ0ECyBqJy0+99NrxQ1XaXAEK4zAK5Z
-         IbhSkKAFyXFCJPENV+OT5/PnGKpODf10StSDR8AJFPhjsa73WM3PU1wF6L6vL9vAch4X
-         +Us19PbHcP/hOIs1fnajNSc56jYOLqpg48AqUCYvdTQs9OFITg8TFdrPsI3JHmIkYvkv
-         Nc2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793776544; x=1794381344;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BFV/VQ+QWjrP6E459iluHuys0SDd5TGNzyDmCdFINos=;
-        b=aZMZPK5I584xSOuci8yXTRT9nVvbp/GTPa1x8LkAmSDjOkDFYCJ7NjI0YVGnmdjt8p
-         h431yF2+uPYWp8x5yVbTCrdceQSSYmn3f1sY7bmP8qmJoZryYf9jR2fNG+9T0zV37voS
-         9Icug02+UPfJc0fv4GWyYzqWg0rOMTKzFygdumPSqOLDvBehEwTY1V9miQJar2whUYFU
-         A46KxA3Va2Lc3LSYjsEgTb7Yz3D9XUItTsHGtIH73QMGMqGdmwZwmLupPV28+628cOmq
-         0NCnPEjrvyKlc0vAi1Pgs4MxI9lGUUKzghE7yOeS/wX49IX7Y4/OeNfhgKDnjUOT1apB
-         zL4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwg6lPN+9SQWXrYca/VC5rmPaEBAaVME9zMapvMzZ/0KSHA7rEswEu/Mifl33fizqkTDo775so=@vger.kernel.org
-X-Gm-Message-State: APuU4Z81C5mlrGq8i2gBPG2APioDJc0Zs/hzeTmwujtYBSbddjhplBj/
-	EEQTHGsGEMuEQfv3/mlVzNxSAaQvzbyAP7Xipx3Pg2iV/W/O7ZKKaL+hM+Msg3eD/MD4hgB0Mqa
-	0YMcR/g==
-X-Received: from pjbtb5.prod.google.com ([2002:a17:90b:53c5:b0:3ab:b4c5:c343])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3194:b0:3b0:9781:ee8b
- with SMTP id 98e67ed59e1d1-3b097820c66mr817296a91.26.1793776543321; Tue, 03
- Nov 2026 23:15:43 -0800 (PST)
-Date: Wed, 4 Nov 2026 07:15:42 +0000
-In-Reply-To: <20261102075441.3771550-1-edumazet@kernel.org>
+	by smtp.kernel.org (Postfix) with ESMTPS id 461441F00A02;
+	Wed,  4 Nov 2026 07:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793776567;
+	bh=Czov5U9qZ2bigGPiKCWEuiT/74SJfBbTyeasjx6Z4cY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=I7mSZ41jsOyeQb+hunOIe6fZNIPg8zdARqsxx7oQ0POx13ldqh6T5WRwnWUd28iXa
+	 IndtVJBo3GZ2Etosxh8r7Ulcbrs36Upkp/mqsUdWcH1bulI7FGzAs7kVIgGrqfNBGT
+	 RW6rZEO50uMb+C5YrUssAw/Q/a7EdD+rs7qeJdkjS1iqeqfdoLIswK2GUKGEphlh4V
+	 lRYnyM7bPU0G9OvUxQyF67d7yapicqBXXC1v7SVmP5vmy+dXW/jVjG0A0EGMVe3WGQ
+	 jzOIavIH6fjHDcsGP1GDZ1RSdAfCkP7EkFfOMzKv9KYRJboItFKvd5Da/FRLqOFjSq
+	 OOWLzgkSn8i6Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4562F46CCF;
+	Wed,  4 Nov 2026 07:16:05 +0000 (UTC)
+From: Joseph Telaak via B4 Relay <devnull+joseph.telaak.dev@kernel.org>
+Date: Wed, 04 Nov 2026 02:15:47 -0500
+Subject: [PATCH net-next 1/2] dt-bindings: net: dsa: lantiq,gswip: add
+ reset-gpios
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,74 +82,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261102075441.3771550-1-edumazet@kernel.org>
-Message-ID: <aurbl7JB_b0Ytysl@google.com>
-Subject: Re: [PATCH net] tcp: ipv6: do not read ireq->pktopts from tcp_v6_send_synack()
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Anvik Loitongbam <permissiontogallop@gmail.com>, Yingjie Wang <x-professor@outlook.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261104-mxl-gsw1xx-reset-v1-1-53839bf5c88e@telaak.dev>
+References: <20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev>
+In-Reply-To: <20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev>
+To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>, 
+ Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Joseph Telaak <joseph@telaak.dev>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793776564; l=1120;
+ i=joseph@telaak.dev; s=20261104; h=from:subject:message-id;
+ bh=vhM/sPd7QRmgpTVspArEnQoT+I2HuhqV0EniWc/LMRE=;
+ b=Lc+omdu1USXrwx85IXa8FnCINB8L495JrO9H5ehYsw5L73R4EC9PlCxU5WXjjNgvNNnZ0h8Rk
+ QIwWbO4hwMAAbeLswLPtEBeg2N/+LqJwzQH3tfIg83IfmD7CLZOGkoh
+X-Developer-Key: i=joseph@telaak.dev; a=ed25519;
+ pk=oQI+UfddlZ0wK2ac4WKOGNjUl1ZEN8j9ZVFSqEDoNP0=
+X-Endpoint-Received: by B4 Relay for joseph@telaak.dev/20261104 with
+ auth_id=1404
+X-Original-From: Joseph Telaak <joseph@telaak.dev>
+Reply-To: joseph@telaak.dev
+Content-Transfer-Encoding: 7bit
 
-On Mon, 02 Nov 2026 08:54:41 +0100, Eric Dumazet wrote:
-> When IPV6_FL_F_REFLECT is set on a listener, or the
-> net.ipv6.flowlabel_reflect sysctl has FLOWLABEL_REFLECT_ESTABLISHED,
-> tcp_v6_send_synack() reflects the flowlabel of the SYN packet,
-> reading it from the skb stored in ireq->pktopts.
-> 
-> Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
-> into ehash table"), request sockets are processed without holding
-> the listener lock. A cpu can then process a retransmitted SYN for a
-> request socket, and send a SYNACK from tcp_check_req(), while another
-> cpu receives the ACK completing the 3WHS. tcp_v6_syn_recv_sock()
-> consumes ireq->pktopts when it wins the hashdance, and the first cpu
-> reads a freed skb:
-> 
->   BUG: KASAN: slab-use-after-free in tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
->   Read of size 8 at addr ffff88802b08b608 by task poc-ipv6-pktopt/5076
-> 
->   Call Trace:
->    <IRQ>
->    tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
->    tcp_rtx_synack (net/ipv4/tcp_output.c:4719)
->    tcp_check_req (net/ipv4/tcp_minisocks.c:762)
->    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
->    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
->    ip6_input_finish (net/ipv6/ip6_input.c:534)
->    ip6_input (include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:545)
->    ipv6_rcv (include/net/dst.h:481 net/ipv6/ip6_input.c:119 include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:351)
-> 
->   Freed by task 5074 on cpu 0 at 15.412249s:
->    kmem_cache_free (include/linux/kasan.h:235 mm/slub.c:2780 mm/slub.c:6630 mm/slub.c:6757)
->    tcp_v6_syn_recv_sock (net/ipv6/tcp_ipv6.c:1528)
->    tcp_check_req (net/ipv4/tcp_minisocks.c:934)
->    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
->    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
->    ip6_input_finish (net/ipv6/ip6_input.c:534)
-> 
-> Request socket migration has the same issue: reqsk_migrate_reset()
-> transfers ireq->pktopts to the clone, which can be freed while
-> another cpu holding a reference on the old request socket is still
-> sending a SYNACK.
-> 
-> The SYNACK timer itself is not an issue, because
-> inet_csk_reqsk_queue_drop() calls timer_delete_sync().
-> 
-> Save the flowlabel of the SYN in the request socket instead, so that
-> tcp_v6_send_synack() no longer needs ireq->pktopts.
-> 
-> As a side effect, the flowlabel is also reflected for SYN packets
-> reusing a TIME_WAIT socket, as ireq->pktopts is not set in this case.
-> 
-> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
-> Reported-by: Anvik Loitongbam <permissiontogallop@gmail.com>
-> Reported-by: Yingjie Wang <x-professor@outlook.com>
-> Closes: https://lore.kernel.org/netdev/82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com/
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+From: Joseph Telaak <joseph@telaak.dev>
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+The standalone GSW1xx switches have a hardware reset input, and boards
+wire it to a SoC GPIO. Allow describing it. The SoC-integrated GSWIP
+variants have no such pin.
+
+Signed-off-by: Joseph Telaak <joseph@telaak.dev>
+---
+ Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml b/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
+index 49af5573e4..9a74ea2a6d 100644
+--- a/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
+@@ -40,6 +40,11 @@ properties:
+       - const: mdio
+       - const: mii
+ 
++  reset-gpios:
++    maxItems: 1
++    description:
++      GPIO connected to the hardware reset input of a standalone switch.
++
+   mdio:
+     $ref: /schemas/net/mdio.yaml#
+     unevaluatedProperties: false
+@@ -173,6 +178,7 @@ allOf:
+         mdio:
+           required:
+             - compatible
++        reset-gpios: false
+     else:
+       properties:
+         reg:
+
+-- 
+Git-155)
+
+
