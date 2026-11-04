@@ -1,71 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.234
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793756175;
-	b=BaM/8NDk/yfsmXguuI0DVRJIfN2S7VZC9QfprwDjzV6Ckj/Fv1G8kaBdWDUWFH1/cb8g
-	 mBvoNkRg9EFiV40DGGrWhnr2LowqkJAyioB8+AxWg8btbfQK+XLT0exdNoDEzoCZTYzyr
-	 TouZQFbdEg616fuU9LnUHGWd9cHRPI+VKpolf7+ue1W6YVLdGHmB+agDnO7oU6pTIVnoL
-	 5Bn4oYF/7fSoPdffwOWw0IwdgVX218M0KcCBcW8mpnjSNu2oG6+E787FBHHSNoLFQO5Zj
-	 ZAkH/FjlKRCckFjJTxWONE2U85Stu4kWGxcJIJm68U4DMJhTb5pSmVsf9DJG7quoEZQ==
+	t=1793756233;
+	b=4arHaxTM2jYB678BoyUJ2e/7rXhFJYa5p9XiLmjn6OkS96w2I1S1uk2n9ieS7zKwqSuV
+	 L4Vwbq5sXhJcuy+mQPGGaU5TSXwd1fgb8n7yWUcCl0v27IIBCGVQlwRrMpn+u9C8ewATI
+	 JGTwjEb5voaeYdXpZoW+H6fNbH5iX0i2nQn4VfMZ5i9OAjYWz3JRvOMFlGJyLw+Q63U0Z
+	 exblkx1Fv+nT4h8scODalxGTgFEP0/k0XLnuzwYteExdUtw1sh8IjJo1VY6f4y4sIOvby
+	 gw9R7ZBjgWtaCtxrKpFm4+0aKSWR4hnmBQwcS1I1RMMZZgD4VgDINfy5BJLl5aFJMHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793756175;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=GAC24OLY0Y1nAdH6NCIJXJvDYqD0c/SMa5E8X0eawBg=;
-	b=THS9LtkztZm8FRerDdCoK94ia0WzwV4vY1ftkERfxy3F8Qy0xpRWdM0U5Wf1Q9AGr3Mp
-	 isU2BQM3+Py1NDWV4CDXdZJgQgg/Zv3fOcKPY01Y/xXCVhHrk8NMOu3Eso7KjC3jCi+lv
-	 I1kHupel/eBFesjNJcGraTCottLTfsx0pDPFlf2Y+NjBV5xWw5v5ZkNK4/MiMlUiOxu7X
-	 By49gCAmFYP+xHv0FzlWZdnFY0+M/p7WCkj3Z4XxM/+znEdBEVYbNIQmiiKYo08GGOYDl
-	 fMqwrbnxt2/Zmv3vJy/VvmnLT1f0Lt/hf8+flKDTljOCEv8quVamam4o5FYjd4003pQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793756233;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=UO7Z5tsn7txdFCLAXrnod+ml4wDdbMy6SVmjOROOIxY=;
+	b=J3HpjHIRpc/iUMDYeP5JerGkzKYP/pD68RTmiGVDp8eULQs3boE0MMaTmc0AXpmBL3nV
+	 LzCnFsn0qJb5EMufZFcPyYfUkxjNKSH014/jFyPIrTllHPv8IQi8h/ZNQHz0HLLrDHzCA
+	 jNSWjEFmfu3FaypKHt/EPg4xrd7XviRoB0VazYNgvH8y/BFQv3xwj1tBrKNTgiMejR311
+	 m3Cw9ZAkH7z33JRh6jNkYJDX6QaldKAfYCfYDKS/jpEkZonVZ5iDfz30OC9oy0eiN8Edw
+	 VvsCqSQ1gfbbOgsZZoSxFtvqJgf7AQOUYD/1F8ff4gSVF0csineGKbGaEoAbf7EBMuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKi9HXom;
-	arc=none smtp.remote-ip=209.85.222.200
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l1zduyM3;
+	arc=none smtp.remote-ip=95.215.58.234
+Received: from mta1.migadu.com (out-234.mta1.migadu.com [95.215.58.234])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9CB606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 01:36:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C9CB606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D2606A331
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 01:37:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E0D2606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eKi9HXom
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93cb93c874bso260904685a.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 17:36:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793756174; x=1794360974; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GAC24OLY0Y1nAdH6NCIJXJvDYqD0c/SMa5E8X0eawBg=;
-        b=eKi9HXom1jzQHDi++4BhoU+PjYzuksmlc/bhrDksLQ8N38WhhZEupkeXxvZocRBziR
-         fHWkVatJt1ZLAchLLmmSBOMYJECXm3XjxNJ6kSHGOxv5L7nd6FhWrO2vncIyxme/HUhz
-         px+hQjAlt3qdDiA4wsBo9GIhqCl+RSz2kgbmpHP4+qNKXmY+Pls7f0M7RKwot8ASY3J8
-         X5TEXJ66plHHW7NMz/Opbloi6GV67ACx55aax1bZdwVAETOt+Nn2jwmM/sptvo4McXYh
-         TAZfSjym5j4wZSBvaF94jRE+ivS7NnZ2nDPTP3fybpiJ27WPCxkDJe67fqxv5m2yQbdL
-         NA5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793756174; x=1794360974;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GAC24OLY0Y1nAdH6NCIJXJvDYqD0c/SMa5E8X0eawBg=;
-        b=qG6FOToHQLR3W0+R9qywWNJ95U00wRQkiMrGUStRuHp++BGoAqUzm1c10m44hFBLrf
-         PVxij32bEK9o0RXYaus0bPHKDWgv8EfsOL1qe2GkWBKTNPd83oFbSeSRiVdL8MHC94Tm
-         g6p5iXbNceegvXbPEfCV/0sHUrvcPmGdDdpBIfBdJSxXJ9wh2a//Ua9YXPhd+JW+1SE1
-         NJcdJy68LG8YtHDeouxwA90mToHPKw5ihESdBNzJ6wl+XbjDW+K9Lh8DmzjTeCJ0nZPm
-         2Y3h7oL7kH/eK/AzyFbT8ezvch/qHjGFmZaZnUw8Xn2OXZfCv3yAs1oGFHTs4pQq+yfg
-         uSIg==
-X-Gm-Message-State: APuU4Z/OPLqf7UUFCqgD/Dcqnc5SM1LYUcuEC457zgHb4N8KqWO+oQ3U
-	+TRe9DFtscCOO9pQYeKCA58a9oXeRkZ3L3Qv5eIkPpY/aRs8MbvakeVHP8x66UmzWCFnZkPASF8
-	SBeTnkWe4zXnl0S81Dz7yC5PAnQ==
-X-Received: from qtnm25.prod.google.com ([2002:ac8:4459:0:b0:535:6bd2:134f])
- (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5d8f:0:b0:535:22c2:f161 with SMTP id d75a77b69052e-542b742cdcbmr224703161cf.21.1793756173996;
- Tue, 03 Nov 2026 17:36:13 -0800 (PST)
-Date: Wed,  4 Nov 2026 01:36:06 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l1zduyM3
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ffKLXdFUxdazV2FKiPThxW70uDTjU2urA0VpiC9e5/c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793756230; v=1; x=1794361030;
+ b=l1zduyM3a16NRzkhHAex74mVxwZjso2sza56O6C4oTVeHHcMTUFwd9kEzTU8pcLi+U0URmhQ
+ rypucibmqL2HnxUkL1pSuYAFCRN+uHZ5txJjBhKaFtQcLFlhT2QFNiAro8JFAfq4t9zKPi4kRWL
+ JYHI+xmlq2GRSYc0FhE/9jEU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 6af974aafe6e345e;
+	Wed, 04 Nov 2026 01:37:10 +0000
+X-Mizu-Trace-ID: 6af974aafe6e345e
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 4 Nov 2026 09:36:58 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: net: fix format warnings on 32-bit
+ architectures
+Message-ID: <auqMOoEVdX805ZE7@fedora>
+References: <20261103155503.534876-1-sashal@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,67 +70,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
-Message-ID: <20261104013606.1527767-1-namangulati@google.com>
-Subject: [PATCH iwl-net] idpf: fix Rx payload buffer leak when header buffer
- allocation fails
-From: Naman Gulati <namangulati@google.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Naman Gulati <namangulati@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103155503.534876-1-sashal@kernel.org>
 
-With header split, idpf_rx_update_bufq_desc() allocates the payload
-buffer for a buffer ID first and its header buffer second. If the header
-buffer allocation fails, it returns -ENOMEM and leaves the new payload
-buffer in bufq->buf[buf_id]. idpf_rx_clean_refillq() then stops without
-consuming the refill queue entry, and the next NAPI poll retries the
-same buffer ID, again starting with the payload buffer.
-libeth_rx_alloc() overwrites bufq->buf[buf_id], and the earlier payload
-buffer is never returned to its page_pool.
+On Tue, Nov 03, 2026 at 10:55:03AM -0500, Sasha Levin wrote:
+> On 32-bit architectures ssize_t is an int, tv_sec is a long long with a
+> 64-bit time_t, and uint64_t is not a size_t, so ipsec, txtimestamp and
+> the tcp_ao library warn when printing them with %ld, %lu and %zu:
+> 
+>   txtimestamp.c:191:42: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type '__time64_t' {aka 'long long int'} [-Wformat=]
+> 
+> Print ssize_t with %zd, tv_sec as long long, and the net namespace
+> cookies with PRIu64 as the rest of ftrace-tcp.c already does. While at
+> it, print tv_nsec, a long, with %ld instead of %lu, and cast it to long,
+> as it is a long long on x32.
+> 
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> Found with a 32-bit build of the selftests with a 64-bit time_t (gcc 16
+> and clang 21 with -m32 -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
+> KernelCI's 32-bit arm builds show the same warnings. The changed files
+> build without format warnings there now, and the x86_64 builds don't
+> change. The other selftests get the same kind of fix in separate
+> patches.
+> 
+>  tools/testing/selftests/net/ipsec.c                 | 2 +-
+>  tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c | 2 +-
+>  tools/testing/selftests/net/txtimestamp.c           | 9 +++++----
+>  3 files changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+> index 89c32c354c008..ba8c36a93f176 100644
+> --- a/tools/testing/selftests/net/ipsec.c
+> +++ b/tools/testing/selftests/net/ipsec.c
+> @@ -2030,7 +2030,7 @@ static int __write_desc(int test_desc_fd, struct xfrm_desc *desc)
+>  	if (ret == sizeof(*desc))
+>  		return 0;
+>  
+> -	pr_err("Writing test's desc failed %ld", ret);
+> +	pr_err("Writing test's desc failed %zd", ret);
+>  
+>  	return -1;
+>  }
+> diff --git a/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c b/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
+> index 27403f8750547..cd93ff8965dda 100644
+> --- a/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
+> +++ b/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
+> @@ -504,7 +504,7 @@ static int setup_tcp_trace_events(struct test_ftracer *tracer)
+>  	size_t i;
+>  	int ret;
+>  
+> -	filter = test_sprintf("net_cookie == %zu || net_cookie == %zu",
+> +	filter = test_sprintf("net_cookie == %" PRIu64 " || net_cookie == %" PRIu64,
+>  			      ns_cookie1, ns_cookie2);
+>  	if (!filter)
+>  		return -ENOMEM;
+> diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
+> index f7bdf30b78d9f..be1452d73b303 100644
+> --- a/tools/testing/selftests/net/txtimestamp.c
+> +++ b/tools/testing/selftests/net/txtimestamp.c
+> @@ -188,12 +188,13 @@ static void __print_timestamp(const char *name, struct timespec *cur,
+>  		return;
+>  
+>  	if (cfg_print_nsec)
+> -		fprintf(stderr, "  %s: %lu s %lu ns (seq=%u, len=%u)",
+> -				name, cur->tv_sec, cur->tv_nsec,
+> +		fprintf(stderr, "  %s: %lld s %ld ns (seq=%u, len=%u)",
+> +				name, (long long)cur->tv_sec, (long)cur->tv_nsec,
+>  				key, payload_len);
+>  	else
+> -		fprintf(stderr, "  %s: %lu s %lu us (seq=%u, len=%u)",
+> -				name, cur->tv_sec, cur->tv_nsec / NSEC_PER_USEC,
+> +		fprintf(stderr, "  %s: %lld s %ld us (seq=%u, len=%u)",
+> +				name, (long long)cur->tv_sec,
+> +				(long)(cur->tv_nsec / NSEC_PER_USEC),
+>  				key, payload_len);
+>  
+>  	if (cur != &ts_usr) {
+> -- 
+> 2.53.0
+> 
 
-Each such failure leaks one payload buffer. The pool's inflight count
-never drops to zero, so when the queues are re-created or the device
-goes away, the pool never finishes shutting down and
-page_pool_release_retry() keeps warning about a stalled pool shutdown.
-
-This happens when the header buffer pool runs dry while the payload pool
-still has pages, for example under memory pressure: a header page holds
-several header buffers and only goes back to its pool once the skbs
-using all of them have been freed.
-
-Release the payload buffer when the header buffer cannot be allocated,
-as ice_alloc_rx_bufs() already does, so that the retry starts from an
-empty slot. idpf_rx_page_rel() also clears the slot, so the buffer queue
-teardown cannot release the buffer a second time.
-
-Fixes: 90912f9f4f2d ("idpf: convert header split mode to libeth + napi_build_skb()")
-Signed-off-by: Naman Gulati <namangulati@google.com>
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 885df6294ad94..7383d8241ead5 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3745,8 +3745,10 @@ static int idpf_rx_update_bufq_desc(struct idpf_buf_queue *bufq, u32 buf_id,
- 	fq.truesize = bufq->hdr_truesize;
- 
- 	addr = libeth_rx_alloc(&fq, buf_id);
--	if (addr == DMA_MAPPING_ERROR)
-+	if (addr == DMA_MAPPING_ERROR) {
-+		idpf_rx_page_rel(&bufq->buf[buf_id]);
- 		return -ENOMEM;
-+	}
- 
- 	buf_desc->hdr_addr = cpu_to_le64(addr);
- 
--- 
-2.56.0.398.g882cbad275-goog
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
