@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753088;
-	b=kA9MPDpHcywmEHuIv0tQrsekt2mC8+Yvq+VZuIiAXkBRRAgQ+xCg9aeg/YJ57pcJp4ms
-	 Y3hkAWWFCFRsW/qm/YI3i93/lYV5jvqSmz+C8TOqb8+D0wrjwmvNhYhFnWJYOYtJF/Q6A
-	 XrzPqdQsfeCoJJM1/B1sZyODrmAym3aYB3K+Tzzv0gyXC50O0oe8WfVjj12dLBfaaYUBN
-	 vMh2y4AY59qfK769H28WNDiZRHSqU+F/OQ2C+XleTOytclEtROSirM9MuTdzvX1VlpZ0i
-	 mFOK/B/bHQeZBhMqVO0c59sz0CIyRRR+28APrDtLJW6tjhBDwA7G+fM4QhKWaXNJFew==
+	t=1793753085;
+	b=s5q8/eaSKeW8+WY2qKVolhjAZulZx892WBe64tUPWXuHxec1ZtU1J8JNS0oYqYtW18de
+	 KfZHGiEkCmq0me9bVIWxr2CSddzPXqWnAFLESrk1aQzOeAOyAxmhrjo5R+8sHkfQPq/nG
+	 bz/SWCdmsDX21Dvp6qvs0dSRWfebzog7WHHz4aib2HZ4Bw4fucWdRqy+KmmOJmORGqGZw
+	 EpTTCcf4I0/H3pBNaeZRV4JQIdI1oT1WNQucuDZsjDu7mDKBjQTH86I9/cRNfUk6oEgas
+	 hT3j446FaUmLJfpqvAWdKp1T8t6cpIVLAtMr/1B3NyVW03HnfPU5Lxoo8Eor1IamSOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753088;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793753085;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=xDaWwYamnM8xFgiMskxFb1AkwtDbpPrZEs7/nRoZh10=;
-	b=dl16GovmZN8KIQcxJaeYwZ+SLo4yV62knrJ6cPXpsMN85iL/uXnOgP3LxzVYRPLSR2V7
-	 bP4Pznvbv1v4ckLC5090gFM+vbkJ0Re1MvOgCJM607VuveWZhGe/eEcpjwxffZM4sqInY
-	 RCZv9CHz2+Tbd7YWsIIpylo1bBxJ1zmadt7Hy9zsAIxPj3YIQmN31cBPXYaUlhEv2gkVx
-	 CLa1Vazm5Z6eVXMK9VpiOkVM2z2qw+VAWAndbuI3hxas7FtriaT84hZZ4L9NWnMYQvcbg
-	 cKok5ZB5AF0FwFiHbDULHWNEoWaQvpiBRhxKGymrs4RnrlK9HiDwq11kO/M7Vh1GZ8g==
+	bh=Jre6mNlia4lO0vOgzXU982il6damrPS9ITgvm+XnwMk=;
+	b=oKgpmUX2w31uHqicG0eZGwMH8JBUO1fLEsDFg8rOAObKaiHdv5Vfoha2kZ8AzGkGmbRg
+	 p379DqlalYt110qS8Dxj5pdgcZmzEvLeEoDBVZGnyjCZEMMQLkyUl2VUIXzc3ufPbjPzn
+	 64p5QES7Znp4TAofOzGmFHoVRVADKA5gkKsx/+jAaOiG/XFRxQV+q1SVWfjel5Q+2jh4y
+	 KScXC+Ov5PZvvb+N1SO4kqoYuWfuS4HLarbfnSc8Z6Oict6tlucUYZYMdsA8vNwt4Zcl+
+	 nLKBs76aIYBMB+i0NTaFxUozESkcC2VssXHGiiUc1SI74Wib7t1MkgghX67AB8+So1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2gVgahM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TDxA0ZLg;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C803C606A335;
-	Wed,  4 Nov 2026 00:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C203B606A328;
+	Wed,  4 Nov 2026 00:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N2gVgahM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A311F0093A;
-	Wed,  4 Nov 2026 00:44:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TDxA0ZLg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133171F000C1;
+	Wed,  4 Nov 2026 00:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793753087;
-	bh=xDaWwYamnM8xFgiMskxFb1AkwtDbpPrZEs7/nRoZh10=;
+	s=k20260515; t=1793753084;
+	bh=Jre6mNlia4lO0vOgzXU982il6damrPS9ITgvm+XnwMk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N2gVgahM1JnQBqJ9NY7L/7RnEhKM1tIO7WEh1uWGlxsOTH3bcjO21ozBzKZwxbBEV
-	 XFZt/PmHlBpKYsXyKJStEcFyxBWAEnwbzEFaFUvtDjhFua7EOwVlDtUOjDc8aZ32S3
-	 US5J13Te3US01ru9Z1WZHl5DK8RxD7wkK9eYkLqHFh+hL1NHvEA/P5yihx/fsIpUhj
-	 /x5lYZ97+1Bs+f7ibEpcSlfmOGlvtWqedMoMVWEdxaADIpZy0x45ZKdzAasdvwsOjP
-	 XOpC+C8GG4s4Axnlcs/Aw/Hb6AOw0dAfb9FLKekkhe9YPpmmuLte+Ebhbo9KW8DgBh
-	 ifhiROVZCnAfg==
-Subject: Re: [PATCH net v4 5/7] selftests: drv-net: psp: test ipv6 tcp socket
- with extension headers
+	b=TDxA0ZLgZvMhZGIe4+NRxPSflwTeRfXZmIkAoBASu5bFwd1qoY5Hl8WNfB/VgAa6u
+	 uc25kIjyq8JMVAfVEd6l79mr57XA39BV/LXCRIZty71u/SYS60BZh5R3WZwZIuCXYr
+	 MsqTqSM1Gd2UsCMuds5/MShl8ImO7R/22yO2TaraWj5GoBXba8tAUCHC1HGjMy2cqh
+	 d1h3nERtJIeusUFylsjfB1MrqX9hg8Vq+PJ4i7dLD6O1Amu1ElU+Pww4kh91nYmd90
+	 p22lulppZKAHoBvq0weQ/KBmugS0yMFZ+q+/COmfSdBy15vrjOjMUL0FFHVfxOT8ZL
+	 QwDp8X1M2CnKg==
+Subject: Re: [PATCH net v4 2/7] net: don't fragment decrypted skbs
 From: netdev-bot+sashiko@kernel.org
 To: toddfreed@meta.com
 Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
  sashiko-bot@kernel.org, kuba@kernel.org, bjorn@kernel.org
-Date: Wed, 04 Nov 2026 00:44:46 +0000
-Message-ID: <179375308652.488856.5309560182914770139@kernel.org>
-In-Reply-To: <20261103001143.246081-6-toddfreed@meta.com>
-References: <20261103001143.246081-6-toddfreed@meta.com>
-X-sashiko-severity: Low
+Date: Wed, 04 Nov 2026 00:44:43 +0000
+Message-ID: <179375308359.488856.7259635335257893530@kernel.org>
+In-Reply-To: <20261103001143.246081-3-toddfreed@meta.com>
+References: <20261103001143.246081-3-toddfreed@meta.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -63,140 +62,116 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Low] _remote_count() treats only an existing qdisc of kind 'clsact' as
-  usable.
-- [Low] data_send_ipv6_exthdr() installs the extension-header socket
-  option in phase 2 (`s.setsockopt(socket.IPPROTO_IPV6, opt,…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch is titled "net: don't fragment decrypted skbs", but
+  the check it adds lives only in the IPv4 fragmenter, ip_do_fragment()…
 
 --
 
-selftests: drv-net: psp: test ipv6 tcp socket with extension headers
+net: don't fragment decrypted skbs
 
-This adds a PSP selftest that sends on an IPv6 PSP TCP socket in three
-phases: no option, an extension header option set (dstopts, hopopts or
-rthdr), then the option removed. After each phase it checks the device
-tx-packets counter and what the peer received. A software flower filter on
-the remote counts and drops any UDP packets that leak out.
+This patch makes ip_do_fragment() drop skbs that have skb->decrypted set
+and return -EMSGSIZE. Without it, fragments of a kTLS offload or PSP
+packet lose the decrypted mark and can be sent unencrypted. The commit
+message says IPv6 needs no change, because ip6_fragment() refuses
+oversized skbs unless ignore_df is set.
 
-> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-> index a5b1e14f120f0..c9a725cc89a27 100755
-> --- a/tools/testing/selftests/drivers/net/psp.py
-> +++ b/tools/testing/selftests/drivers/net/psp.py
+> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+> index eaa6fabda347e..415bc4d524b58 100644
+> --- a/net/ipv4/ip_output.c
+> +++ b/net/ipv4/ip_output.c
+> @@ -770,6 +770,14 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+>  	struct ip_frag_state state;
+>  	int err = 0;
+>  
+> +	/* psp and tls offload need the packet's l4 header, which non-initial
+> +	 * fragments do not have
+> +	 */
+> +	if (unlikely(skb_is_decrypted(skb))) {
+> +		err = -EMSGSIZE;
+> +		goto fail;
+> +	}
+> +
 
-[ ... ]
+[Severity: High]
+Does ip6_fragment() need the same check? The commit message says:
 
-> +def _remote_count(cfg, proto, match):
-> +    """
-> +    Count, and drop, the @proto packets matching flower @match which reach
-> +    the remote, with a software filter on its ingress (offloaded filter
-> +    counters are refreshed periodically). Dropping keeps such packets away
-> +    from the remote's stack. Returns a function reading the count, or None
-> +    if the filter can't be installed.
-> +    """
-> +    flt = (f"dev {cfg.remote_ifname} ingress protocol {proto} pref 1 "
-> +           f"handle 0x5053 flower")
-> +    try:
-> +        qdiscs = tc(f"qdisc show dev {cfg.remote_ifname}", json=True,
-> +                    host=cfg.remote)
-> +        if not any(q['kind'] == 'clsact' for q in qdiscs):
-> +            tc(f"qdisc add dev {cfg.remote_ifname} clsact", host=cfg.remote)
+  an ipv6 tcp socket does not ever emit fragments. ip6_fragment() refuses
+  skbs bigger than the mtu unless ignore_df is set, which tcp doesn't set.
 
-[Severity: Low]
-What happens here if the remote already has a plain ingress qdisc rather
-than clsact?
+TCP doesn't set ignore_df itself, but IPVS sets it on locally generated
+IPv6 skbs, for example in ip_vs_bypass_xmit_v6() and ip_vs_dr_xmit_v6():
 
-clsact and ingress use the same ingress parent. tc qdisc add sends
-NLM_F_EXCL, so tc_modify_qdisc() rejects the request:
-
-net/sched/sch_api.c:tc_modify_qdisc() {
+net/netfilter/ipvs/ip_vs_xmit.c:ip_vs_dr_xmit_v6() {
     ...
-				if (n->nlmsg_flags & NLM_F_EXCL) {
-					NL_SET_ERR_MSG(extack, "Exclusivity flag on, cannot override");
-					return -EEXIST;
+	/* Another hack: avoid icmp_send in ip_fragment */
+	skb->ignore_df = 1;
     ...
 }
 
-The CmdExitFailure is caught and _remote_count() returns None. Then
-data_send_ipv6_exthdr() raises KsftSkipEx("can't count UDP on the remote").
+When ignore_df is set, the only size check in ip6_fragment() does not
+fire:
 
-The existing ingress qdisc would accept the "filter add dev X ingress ...
-flower ... action drop" command unchanged, so the test skips even though it
-could run.
+net/ipv6/ip6_output.c:ip6_fragment() {
+    ...
+	mtu = ip6_skb_dst_mtu(skb);
+    ...
+	if (unlikely(!skb->ignore_df && skb->len > mtu))
+		goto fail_toobig;
+    ...
+}
 
-Should the check also accept a qdisc of kind 'ingress'?
+IPVS has its own MTU check in __ip_vs_get_out_rt_v6() ->
+ensure_mtu_is_adequate(), but that check uses dst_mtu(&rt->dst).
 
-The later patch "selftests: drv-net: psp: test that ipv4 psp packets aren't
-fragmented" reuses this helper, so it would skip in the same way.
+ip6_skb_dst_mtu() switches to the device MTU when the socket has
+IPV6_PMTUDISC_PROBE or higher set:
 
-> +            defer(tc, f"qdisc del dev {cfg.remote_ifname} clsact",
-> +                  host=cfg.remote)
-> +        tc(f"filter add {flt} skip_hw {match} action drop", host=cfg.remote)
-> +    except CmdExitFailure as e:
-> +        ksft_pr(f"Can't install a filter on the remote: {e}")
-> +        return None
+	if (np && READ_ONCE(np->pmtudisc) >= IPV6_PMTUDISC_PROBE) {
+		mtu = READ_ONCE(dst_dev(dst)->mtu);
 
-[ ... ]
+ip_metrics_convert() caps RTAX_MTU at 65520, not at the device MTU, so a
+route MTU above the device MTU is accepted.
 
-> +@ksft_variants(_ipv6_exthdr_variants())
-> +def data_send_ipv6_exthdr(cfg, opt, val):
+That seems to open this path for an IPv6 kTLS offload or PSP socket that
+uses IPV6_PMTUDISC_PROBE, INTERFACE or OMIT and connects to an IPVS
+service over such a route:
 
-[ ... ]
+ip6_xmit()
+  NF_INET_LOCAL_OUT hook
+    ip_vs_dr_xmit_v6()          /* passes dst_mtu() check, sets ignore_df */
+      ip_vs_send_or_cont()
+        ip6_output()
+          __ip6_finish_output() /* skb->len > dev->mtu */
+            ip6_fragment()
+              ip6_frag_next()   /* alloc_skb() + ip6_copy_metadata() */
 
-> +        # 2. With the option: dropped, not counted, and nothing reaches the
-> +        # peer. The data stays queued.
-> +        s.setsockopt(socket.IPPROTO_IPV6, opt, val(peer))
-> +        tx_pkts = _get_quiesced_stat(cfg, 'tx-packets')
-> +        udp = remote_udp()
-> +        queued = _send_careful(cfg, s, 20)
-> +        _check_data_outq(s, queued, force_wait=True)
-> +        ksft_eq(_get_quiesced_stat(cfg, 'tx-packets'), tx_pkts)
-> +        ksft_eq(remote_udp(), udp, comment="UDP at the remote")
-> +        _check_data_rx(cfg, total)
-> +        total += queued
-> +
-> +        # 3. Option removed: the queued data, then new data, sent and
-> +        # received
-> +        tx_pkts = _get_quiesced_stat(cfg, 'tx-packets')
-> +        s.setsockopt(socket.IPPROTO_IPV6, opt, b'')
-> +        wait_outq_empty()
-> +        total += _send_careful(cfg, s, 20)
-> +        wait_outq_empty()
-> +        ksft_gt(_get_quiesced_stat(cfg, 'tx-packets'), tx_pkts)
-> +        _check_data_rx(cfg, total)
-> +    finally:
-> +        _close_psp_conn(cfg, s)
+ip6_copy_metadata() doesn't copy ->decrypted, so every fragment reaches
+the device with decrypted == 0.
 
-[Severity: Low]
-If an exception is raised after the phase 2 setsockopt() and before the
-phase 3 setsockopt(..., b''), the finally block closes the socket with the
-extension header option still set and data still queued.
+Wouldn't the TLS or PSP payload then go out in cleartext, as it does in
+the IPv4 case without this patch?
 
-Possible sources are a RuntimeError from _send_careful(), KsftFailEx("no
-action on the remote filter") from remote_udp(), CmdExitFailure from the
-remote tc/ssh calls, or netlink errors from _get_quiesced_stat(). Plain
-ksft_eq() failures don't raise, so they don't hit this.
+The setup is similar to the IPv4 reproducer in the commit message: a
+manipulated route MTU plus a PMTU socket option. Later patches in the
+series don't touch net/ipv6/ip6_output.c.
 
-On a fixed driver every packet from this socket is dropped, including
-retransmits, the FIN, and the ACK for the peer's FIN. After s.close() the
-socket stays as an orphan in FIN_WAIT1 until the orphan retries run out.
+Could the same skb_is_decrypted() check be added at the top of
+ip6_fragment(), and the ipv6 paragraph of the commit message updated?
 
-Until it is destroyed, sk->psp_assoc stays alive. That keeps the
-psp_dev_get() reference taken in psp_assoc_create(), the entry on
-psd->active_assocs, and the device TX key, which psp_assoc_free() only
-removes at socket destruction.
-
-Could the later dev, assoc and removal cases run by ksft_run see this
-leftover association?
-
-Would clearing the option in the finally block, or with a defer, before
-_close_psp_conn() let the queued data drain and the connection close
-cleanly?
+>  	/* for offloaded checksums cleanup checksum before fragmentation */
+>  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+>  		err = ip_check_csum_start(skb);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103001143.246081-1-toddfreed%40meta.com
