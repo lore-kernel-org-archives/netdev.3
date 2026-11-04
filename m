@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776304;
-	b=oVC0bppgf7vDcnyp4gEm4IzNVceGFmu/ltkWxfge0AqiPg9Vp8TywWbpXjxILQUvlAqC
-	 BpPBZbKblbZtTuBqzgrB6EAx+2YzC73fIQ+3PXWOOUH87esQiY/BcZvvzWOoyh0v5/tx4
-	 j8Kt6i/pb/TxUucR5YCRbX5eMOpMSFnwfrmkSLEYHSIPLbxF5cDsb26HZKnwkFMk/OPUk
-	 s6N4smW2JcxVRMFCBli3eFCKgcglGWknXpYPfFhdoxsHZ1HMobSCDRlltN9/RQQtUCFkk
-	 7EshvW6TFLbCvdSjU5aTsgxsWrL1j7HV6zn/PKS6b0i7cK6uOKB+FCHCsU1mB8Uw6kA==
+	t=1793776318;
+	b=HEIdKnEhu18tw62jnd/ANLb/ajK0jpPsD7AfYMFe18PdnDO7C/aWK400BV2v8tewFq9k
+	 SmUGBWRVzYTgzeqO4sW8zgeXHL+rBqnUZ3+osYkGh5LkOhouFcVDkAfX7DduwCgzBCV5N
+	 Xy1V8t8Jz1OM5zuTIqPuOU6eDhj7EPOnvm5+NjjLfTdRfKC+XUGEilmXH59vYVcCHvZtm
+	 0eJzwPRDpLgzoLU4Am0fAHYAO5qSkdY23lnaEcedMza7jTnrYbhG3DM1L3UNLqN9LTZnR
+	 MOH90JotlRDs3hHt4rv9g9KhS5as4JO/MX1+cCx4vR4X6QRhVHdJllabWDsYtshkJeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776304;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776318;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=bec9RzTPLLmJAAb1t+Dt4YBUMgyTBx8NXKAJ/4cYHqk=;
-	b=1Z5+9yWTlzuNGQDxF2cv4HKoiYz5FNDrsu9Af/XkV+MBNJqQwq5Ou760tCUHr5syrdzG
-	 fk2m3rkUaEjVdmbEsnc/2Ps8ioAQKDyJslyymOglBY8OrLGHIjQNVU0/ptdot2/PXQgL6
-	 W5pJX1JXJw7zWx/i8C2uyeeMtUyf2zcnMlRRXy9VXd8PofpFzYwVWFgJJgvTj6Bfag5iw
-	 K+x/BIsmXKGgnr+MNgxWI0ocx6vyG+UiQcSV/8/U8TEChHJ+lx+FiB615njMnnAzGolyV
-	 XVjzMl5aHmIQFNgMleFSNNNMIpjyPF7FQxf5ZsWE1zd5XyOPWLESq5FKF4moOg0vJow==
+	bh=67tMf6yvwclmZif6chXBIm4kJBJKenRUKUJwhmdRgps=;
+	b=EOAuIZWsJpxnL7sACoF4AUrxh4f+x/BjX2bxN3MYBIOVXuMVPMoTNI0HxmfmNJDJlL9e
+	 UQ5dvTOWfTW3v/8BcSAI5KfmMi3/hQUl8gHqt0MNf9cg3XuSquWm2SYzgOj21ibtT4u53
+	 sNm7k/xXRq0jW+mpYB5IhLcfzhvDpSTLMnmuCnWGqlJrMTAMUoI9wswjtHq0+gd0Rqux1
+	 djeNne5179fqzYwn4u1gNNKdAGMI2mDqjAB+gNIpCTZfZIaat++vu8ccqjNQvBp401dyU
+	 sI3tIhmjEk6EcPxHfnr97IiijIWFH4FhY0gf4u776kgZrhOdeNm6Ms2GZpp+BG8Rl6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ThlOQyHz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dks6ewJE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226E1606A31B;
-	Wed,  4 Nov 2026 07:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9677606A328;
+	Wed,  4 Nov 2026 07:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ThlOQyHz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B49A1F000C1;
-	Wed,  4 Nov 2026 07:11:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dks6ewJE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615181F000C1;
+	Wed,  4 Nov 2026 07:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793776304;
-	bh=bec9RzTPLLmJAAb1t+Dt4YBUMgyTBx8NXKAJ/4cYHqk=;
+	s=k20260515; t=1793776317;
+	bh=67tMf6yvwclmZif6chXBIm4kJBJKenRUKUJwhmdRgps=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ThlOQyHz/xayqNhXt2GKt4v6ZaPZccwwetPDz4uBCv+G89DcYedZFCVjSZQPmIp3z
-	 ef+r5s3rIfP8zrML4glscx6rwfn7lWkxyQKLb8iMMk61qg6bNdXKXhl2ckWyqlS8W8
-	 kpff/k6siaFoGJ56cil9ZycYJeAaQAKsPfiBsGap5YS4BLI0VfQXgCZ1cXH69G2R8p
-	 ve6LRH7lUfQSwDVAg8AzzkWxdVaQfCpgSpplHOrZFsYiNLuxnfavqwb+GI28OYqCGj
-	 5fyaixoNhRQ9faS649I0hVqsX2vUQMsQJYEDkSoF37Zpyt0X1GUixNu747iiFDULlZ
-	 0zUfClrOZ910g==
-Date: Wed, 4 Nov 2026 08:11:40 +0100
+	b=dks6ewJE+WK6bAYIEDOfm55sLdX5GL3L8d+YyGVFLAutCCcVJzGvMrJrFaTq3M1fd
+	 SpUdABkekK0RDFGu/sc9bt2hayLLUvxVrU/1XNnUZEPHeZCJDlAZENaqyfzj0rwDpD
+	 MlbyL+JpaloTe+cdo4CN+PL1gAbSGFKrH+bNHEgVCjwQrC4JurSAPm7KrksOJ3E64+
+	 KeVBMh3u+0SGao5jrgqVlS+efEf+w1e1MYtd6XTim0sc2oMR9uOPRlkVptSFhaega1
+	 GVTVtFpQWETHEqqmHHrB4v+gG3OZiFCWrpumD5wo6G3rPLlTMBo24/weZdyM230PPU
+	 uK+9qcmajaSPA==
+Date: Wed, 4 Nov 2026 08:11:54 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Dai Ngo <Dai.Ngo@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Tom Talpey <tom@talpey.com>, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, linux-nfs@vger.kernel.org, 
-	Simon Horman <horms@kernel.org>, Trond Myklebust <trondmy@kernel.org>, 
-	NeilBrown <neil@brown.name>
-Subject: Re: [PATCH] svcrdma: drop the extra reference on the backchannel
- transport
-Message-ID: <20261104-colorful-rich-dinosaur-bfaeca@quoll>
-References: <20261104022813.1484267-1-vulab@iscas.ac.cn>
+Cc: oe-linux-nfc@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	David Heidelberg <david@ixit.cz>
+Subject: Re: [PATCH] nfc: llcp: drop the socket reference for non-datagram UI
+ frames
+Message-ID: <20261104-excellent-artificial-finch-b7bd77@quoll>
+References: <20261104022810.1484199-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,31 +61,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261104022813.1484267-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261104022810.1484199-1-vulab@iscas.ac.cn>
 
 
-On Wed, 04 Nov 2026 02:28:13 +0000, Wentao Liang wrote:
-> xprt_setup_rdma_bc() takes two references on the new rpc_xprt: one for
-> the xpt_bc_xprt link, which svc_xprt_free() drops, and a second one
-> whose final put used to live in __svc_rdma_free().  That put was
-> removed when svc_xprt_free() took over releasing the backchannel
-> transport, but svc_xprt_free() only drops the reference belonging to
-> the xpt_bc_xprt link.  The second reference is therefore never
-> released: the rpc_xprt outlives the callback client and the
-> connection, and the net namespace reference taken by xprt_alloc() is
-> leaked with it.
+On Wed, 04 Nov 2026 02:28:10 +0000, Wentao Liang wrote:
+> nfc_llcp_recv_ui() looks the destination socket up with
+> nfc_llcp_sock_get(), which takes a socket reference.  Sockets of every
+> type are linked into local->sockets, so a bound SOCK_STREAM socket can
+> match the lookup.  When the socket is not a SOCK_DGRAM one the function
+> returns early without dropping the reference, leaking it for every
+> received UI frame sent to such a socket.
 > 
-> Keep only the reference that svc_xprt_free() releases, the same way
-> the TCP backchannel transport does, and drop the comment pointing at
-> the function that no longer performs the put.
+> Split the check and put the reference on the non-datagram path as well.
 > 
-> Fixes: 729580ddc53e ("svcrdma: xpt_bc_xprt is already clear in __svc_rdma_free()")
+> Fixes: 968272bf0087 ("NFC: Handle LLCP UI frames")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  net/sunrpc/xprtrdma/svc_rdma_backchannel.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  net/nfc/llcp_core.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 
 Multiple things here:
