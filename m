@@ -1,111 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793793874;
-	b=z5Q6vcxvW+dEDZ2VCkzdPOKEQdv9o6ku7rnRi7lFbPq9HTfXpGwV14ASmZJ3PzMHID7I
-	 dXIB1RhSrMSfVwVPPIBn0cm2VVyVVBJ9G3f7pmPnjqfOFDbvVOMMAjzjcq1U4mOk2YHrn
-	 1H8/1ExXlyVjeAI+ERp6b3ojO6tF27McAEckbLSQzh9aMgCQb8nrKa4mAoQ04KBKx8j7l
-	 y8mt1q5sypT3PVuFMKJolm5+Oxqc/4EIg9YtDswAHpQ/PfIT3KRuGAhLevZpkPRpuAda1
-	 7NKjiaxTwm6WA2w0e6GLF2jqMSbtwxIqgf0TsHaR3ElUyvYPwDoXQRtLxsLriADHLNw==
+	t=1793794353;
+	b=JQb+Dnqu6SnKi1TGixJ/yf+WUNJgnUkpocmc7ifvq27TthXvJAjprps6MUVc9BRy4Bn4
+	 Ax0uI63pjoLX6pwDvev1hHldJwu4ig0gARA2dPORG4mO//Vk/QO5VapeiJG5+M5auR9xl
+	 TMvf8K1INMDVYK3pP/pwIsfeHZAV2qpUBKH3flLP5Vqrdy3wleqt0ZYI29wpetiquUBap
+	 aDdRiVcQ4iQ4J7UwR9n1sgEiEhRXWTZM92n6VbsjJJ2feApcKFcQux9ehHfbMyU2k19vl
+	 Kpi/JA4Nlfpy5Mr+pMnM3okjOyY9KNCu0hAH1ERBo007++ygoyxFgB5E7C0Cum9Q5HA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793793874;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=OUiJjgiBoxlCfwD7k2wmbIMBxvsfPqQZKBPmjCnOmAg=;
-	b=4oYGfAsnWjXYE8YT4uo+6pPbcGqQZXNsBwm8fiW5Bh2JLO1gPL+oLRjnzscupI2ZYnWW
-	 JM8p9lTGqgQvoQgpi0qRD/pQccBhW2wVfGxujPXR+r/e50kuV6EWbCWXg5Tfl6ijkSfN8
-	 aLSxCP9/VLjPbv3Az08ZQsUZw4AuQ9WJ59WIYRwyFULDQ4iPyKUFEzC1fxNvRUUYHOlwy
-	 nOz4kXlxUaNqsUY6Td6irDbs0tffLbO9GqRdcl+XA9X+7po5t6Ch6eXd/T8R/irR5tfd4
-	 f2m6ZQ81LqM2LUekUm64iPZ/ow7xIIhTyIz5MJnFpGzBRgmxn5Ruad/O537uDTCO8Ww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793794353;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
+	b=oOwdLddiKXQA4KkoOfPKQowgQYXggeC1FuZO9ugGa3Abe6TjO2gGA81ReGU4QhAX27Ob
+	 V0WUPYCASM/CU6Jz0v8z2DgDmTrhne6w41iV6DThpluf4/QkU32v7gX0gdA6jV9IB8hxB
+	 oxZsNHgV3IHhFdLg4CfZm1Isto/8TPYLOgxL0WCMzirp3ZOblZNSje8tsVchPn/K/a8Ky
+	 UTRcC6YvXLy8QsLegaz/FPbwHNGzGE+YymM7emchcFxtLE6e85N5wr91pqyGX8acFPCvX
+	 1duOJYQlKxw0c2rNa3h2r9oR2No+4+r8qUVlsb/qdvaXPQvlZUitc8lxbQJy/ZEsLMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aoEchb89;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XY4SsWNC;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LbYAv4p+;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EAC606A329
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:04:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02EAC606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A1606A326
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:12:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 178A1606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aoEchb89;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XY4SsWNC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793793873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OUiJjgiBoxlCfwD7k2wmbIMBxvsfPqQZKBPmjCnOmAg=;
-	b=aoEchb89gvvb6h2u09uHbQU72owqh5kxOmPkmTEH9ylP7zLAbwzs3krGqPNc+dIK5x4khW
-	Sbrxed6Q8Wl3ZolpkhTQEkEv/cofiEsvLCK1j4TP+osaa5IwhrOlRvBnYJ+1Y+vopLh5bv
-	IivAk5LWjI8g4BsNtb4fDoPgoYLxGiw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-3atrnhZhOEC6KojdhGZpgg-1; Wed, 04 Nov 2026 07:04:31 -0500
-X-MC-Unique: 3atrnhZhOEC6KojdhGZpgg-1
-X-Mimecast-MFC-AGG-ID: 3atrnhZhOEC6KojdhGZpgg_1793793871
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48b02d63407so588918f8f.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:04:31 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LbYAv4p+
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a73fdd2966so837365e9.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:12:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793793870; x=1794398670; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OUiJjgiBoxlCfwD7k2wmbIMBxvsfPqQZKBPmjCnOmAg=;
-        b=XY4SsWNCd/XyU4bYIRGZpysUegzvuvZjLZwC9/pkKxhwrQvlMsnFy1RNbVfp+sFKXf
-         c0OGUwcXRMIFZ0LfYbkEHiGiEn930zYX1E6u5PRXkoViBsWCGQKrnEVgdawdALpC4gPo
-         hqW+JhS4TmRElOr4HGCVNzELVq1D1Dtw44VTNT9DVaxzp7l20rkUqbTeefUXmiCb8FBy
-         ig+m4gcVtIgasXfARf7/uF8n0l73dj7ImFfbN2BPSfYzs25EzNgu+tC6O8Iz2S4TJwPW
-         CSFT0UkEFSbBQbL7MeF+5FrHHLxxIaqSfN95ZZYrZ1DkbGtuayqpPqR0RjoZf94GdPj+
-         +/kw==
+        d=gmail.com; s=20260707; t=1793794351; x=1794399151; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
+        b=LbYAv4p+IC3snsp4kyiDeq7JnlTxI8zeQoSRa0t2mpXN/FGnEHu1VCTe3tgYCN3zzQ
+         M7QikGo5VP+jY2Eyj+bCaWUC/mDXfSlcSaLRK9oTlDAXMPg3cDhVbawlu/fwTg1I8/LI
+         BmhiSghDeUn8DhwqW/GNdddqO1qNgtCxeIxksmf0azGKBHqAWOwM5d9khwEO9x8kEn6r
+         K3eAQUFfJ4QWRAVYDNY2IJFcra10k3WPOgay/xz7htrS/Hpmi4pQNIVuy1M/3T6j4lYH
+         DaClonnOHHocLlJhTrdIfaU86F9PCyoXmy7+TPFQTKJCytyWC/rJFs0XZtHSWwBDRqm3
+         8tCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793793870; x=1794398670;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OUiJjgiBoxlCfwD7k2wmbIMBxvsfPqQZKBPmjCnOmAg=;
-        b=k2oqtQPWmrJzqSpE7hOmpRrZ2yY4oHwJlJYb2u1Z2UhWL/t/i7FTh978fx8XS16/Z6
-         DoWEvVWlXM5mbZj4GXuXU0oqsZme1rwb6ugwk4k2xW0Uf7A1q+C5hSx6e4Pm6qGSFJ05
-         wzjtxpVwBxspA/dC7YR/xnew5JG1IChttbepcpBZYbN8ZzTXnU9mGR4GXqYBjTH8aTYA
-         8QftQXBKLdTL9L2Qar7JIrIuLdChUuF2ZKfByE+lPC8MiFGG3U6oGiDvgqkE9ggh7EHV
-         Iye8rmANSbTGfQV0tF//f0qhSuyNZmN+QX5EMUslDOCSZ2QEOXUbgCdCG/RkHd/b3tiB
-         vmjQ==
-X-Gm-Message-State: APuU4Z+oclOROoXZkCX+eYap1xrRjc8vuZ95KBUgF1YvTtLzQl7QFof2
-	0IVqhfrz4jDRH1OoftXX4cD4AWN1vnicjaorcgeAEb71+fIEDsHCjUhRc5KoCyYzv2vVKO/tLIX
-	CIEs6/pzAq2Ny5rac5WqkvBzWMA6Od1iED3dO7ZDapRzQ7Cj9ffhUg8F2CQ==
-X-Gm-Gg: AYBFou3ap7Acn5kX+uSo5qMh0951/MdyypdfRPjz4RpJ8S+zWO/HyqLb3bLScyWFWdk
-	0K17zC0nr+6MkQkvy+CRcCYdceN4w75bl/MMJN2o2WJ5hwn4fOpkMZdxeHVv1VYfTI2xc1cxUlQ
-	3jONvaYXlnM+3TyvrjRM/218u8EBViAFEgICzS3PZyVYTADRzm6ea8mKDYkE4irgoO37GqsFtOO
-	JBq68A4WAoNPvymu4lL2M82ZBZD/pWFGqEsHBKcqrotTIOaqRf+6Lx+1g41/BjaiNB+fMTk+3av
-	o/AhwOHhvTCL6U0M1rjFjB6/4Aa6/DWPsAGqiQUHJ9w1Grz6W0W24iEkUQWIr4MrhxCJgdBFtbI
-	xHy+yDJAJ69Z27yGgCnMNpDBppFZKF8uM4PiAzIo6ZA==
-X-Received: by 2002:a05:6000:15ce:b0:487:1662:cf4c with SMTP id ffacd0b85a97d-48e6e2c155cmr25924779f8f.7.1793793870307;
-        Wed, 04 Nov 2026 04:04:30 -0800 (PST)
-X-Received: by 2002:a05:6000:15ce:b0:487:1662:cf4c with SMTP id ffacd0b85a97d-48e6e2c155cmr25924726f8f.7.1793793869640;
-        Wed, 04 Nov 2026 04:04:29 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm2780896f8f.28.2026.11.04.04.04.27
+        d=1e100.net; s=20260707; t=1793794351; x=1794399151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3hdjxJDa2z71+/Z+9H1w4CH4cajXV37L3T9XXobZoCA=;
+        b=BXvO+hFnmTX7htB39h9VeYhL121+/ranUaKpOlMAo71DIJ4nENRl4aDgvrcKGf3GrB
+         59B8Ei9HJHKV4NO/6PXQYBpw+5zKr98Vz3taVKvuuEkVqjuIDB2TwEDYJh20bqSdKV9/
+         iHLGX81hlibvu861szebMY/vJbH7Y/4ZT9UdmZrKhqR37lbPrS+NQ5ZiYTOVOUCQv9zm
+         XF6B7atEO4jTxxVCJ0XoydM7kUN4mG7W4i+w9IoEgxjuONoppS3s06dAn2H3lMSZvQYg
+         Fda5g86C3eRkjT28UIopTN+C/SFrNSttYjRePBHk4ERRoTpaTjlCsM0zzUBn4Jkzuovr
+         fwBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxVNYZSaG1TSvpIxeyWq5kMV56aXwAHl4RANIkOGStUT2HbMqBoAShRuWfc2jiVwD4ek6miAjo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8/Fap799GsK9atvQfTPjHyfK97XBVnTi9rbgLt2elJhNRxayjG
+	BqTkxs+dP64eqKx3t/KsLt5Ou7zxfQwI5wAiwyF1r7Xhy8WyfksoR1Fi
+X-Gm-Gg: AYBFou3VubJLGjAKtFPqYs1tMgU8tK000D8tb/k8GSnMSVzdnb62dV3/bVxQPcNfrlP
+	7Lg9NrGdTzo2QcB8w2pGXZAis/4phDXrRLRn8Nuj9zJ6jn6U5K5GTcSQwzV32IgY3hfu69Af/gU
+	q6YWgAsJNIcB6Eoy0ObSp76vEKELgpiDPCc32PVX1brJ9JexhknS/qh8+m2LHM0SsUlq2Uu9DYm
+	dIyQsVfJHh6OcV9j90G9b1W5Dn0fCwkKZcrn2Omvyign276zYJZ5NpEAfg4KqZzyK2QMlcWZeB+
+	tNMHL0nCZfjC5ruP2gwhrjL2oaPmB9SOuDgPvUpawphZM3EEXqCY9Zv9D7NxjgkCH3XYdsUMT5E
+	OwcgWkK3ngjPRWzXbrizKBibJYRPCnqveUNSiFaTyRh/Xn2K0gdjr4/YaQaOfystZXoJy+CKU2B
+	bU8eB5D0zL++8C/jHtKZ6ehD/JdtNVTmnJLLOl8Q+3tID3VdKjMATkupJw9uA6YIw9oCalmAjxo
+	Qc1ql44QeqKsxPhgIFvXW8XiiMcPwmok+9LKsfqsmCSW/B8oNCwhnTSGbkbUg+eryAUKqmy8o/U
+	xzvArF5xmrjwK1kHrRXlB3YG2/0X9TEKxDJBh5cFWdD/pSjmpI/u1wkBZCv4/Hf4xEK13ZkB0Dz
+	6SHQvcnl/8G4MhAlObwj2jVl/BZgBF5fRZsqNQhkb
+X-Received: by 2002:a05:6000:310c:b0:48e:eb:56a5 with SMTP id ffacd0b85a97d-48e6e2fb8a8mr35066356f8f.4.1793794351171;
+        Wed, 04 Nov 2026 04:12:31 -0800 (PST)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-006.paris.inria.fr. [128.93.83.6])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48fee968763sm3641943f8f.56.2026.11.04.04.12.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 04:04:28 -0800 (PST)
-Date: Wed, 4 Nov 2026 07:04:26 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	dongchenchen2@huawei.com, bpf@vger.kernel.org, daniel@iogearbox.net
-Subject: Re: [PATCH net] net: reject a negative TCP header offset in
- qdisc_pkt_len_segs_init()
-Message-ID: <20261104070345-mutt-send-email-mst@kernel.org>
-References: <20261101194433.2637113-1-alexei.starovoitov@gmail.com>
+        Wed, 04 Nov 2026 04:12:30 -0800 (PST)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org (open list:MARVELL MVPP2 ETHERNET DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: mvpp2: fix double free of the replaced rule in  mvpp2_ethtool_cls_rule_ins()
+Date: Wed,  4 Nov 2026 13:02:23 +0100
+Message-ID: <20261104120225.28377-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,58 +104,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261101194433.2637113-1-alexei.starovoitov@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 01, 2026 at 07:44:33PM +0000, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
-> 
-> qdisc_pkt_len_segs_init() stores skb_transport_offset(), or the inner
-> offset, in the unsigned hdr_len. A header in front of skb->data gives a
-> negative offset. For an offset a little below zero, pskb_may_pull() gets a
-> small length and succeeds. Then a 64-bit kernel reads the TCP header far
-> after the skb and can crash. Further below zero pskb_may_pull() fails.
-> 
-> Commit 28a57fb2c5df ("net: iptunnel: fix stale transport header during
-> tunnel decapsulation") fixed one source of such offsets. Other code that
-> removes bytes from the front of a packet can leave the same stale header.
-> 
-> Return SKB_DROP_REASON_SKB_BAD_GSO for a negative offset in the TCP branch.
-> SKB_GSO_UDP_L4 and the other GSO types read no header and still get a wrong
-> qdisc_pkt_len(). On a 64-bit kernel only packets that cause the read after
-> the skb today get a new result. Then __dev_queue_xmit() drops them and
-> returns -EINVAL, but sch_handle_ingress() ignores the result. Their content
-> can be valid. Thus the code that leaves the header stale needs its own fix.
-> 
-> Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+When a rule already exists at the requested location,
+mvpp2_ethtool_cls_rule_ins() removes it from the hardware and frees it,
+but leaves port->rfs_rules[loc] pointing at the freed structure. If
+inserting the new rule then fails, the next rule insertion will free the
+rule once again.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Clear the slot as soon as the old rule has been freed.
 
-and cc stable, maybe.
+This bug was statically found and theoretical. Compile tested only.
 
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Fixes: 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
+---
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->  net/core/dev.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 3ac700d37e59..ccf4b02e08de 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4320,7 +4320,9 @@ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
->  	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
->  		const struct tcphdr *th;
->  
-> -		if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
-> +		/* A header in front of skb->data gives a negative offset. */
-> +		if ((int)hdr_len < 0 ||
-> +		    !pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
->  			return SKB_DROP_REASON_SKB_BAD_GSO;
->  
->  		th = (const struct tcphdr *)(skb->data + hdr_len);
-> -- 
-> 2.55.0
-> 
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+index 80d15d7a5ec3..8ec94387cb57 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
+@@ -1405,6 +1405,7 @@ int mvpp2_ethtool_cls_rule_ins(struct mvpp2_port *port,
+ 		if (ret)
+ 			goto clean_eth_rule;
+ 		kfree(old_efs);
++		port->rfs_rules[efs->rule.loc] = NULL;
+ 		port->n_rfs_rules--;
+ 	}
+ 
+-- 
+2.53.0
 
