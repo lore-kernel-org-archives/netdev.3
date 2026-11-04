@@ -1,55 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.24
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793785877;
-	b=M1pcJuwWsdqnz8pE9j0hZB1uMWhoP1nWM2m58dAHLrVBcs1VNIH1YOExWTucbNI9Vvpz
-	 /++/THvDrvKdo1vT4LGiLNLLoSbbCYdBKMINoJkaMwMNFhYtUieRLmBRG0GJJg1+j2apP
-	 gt30wKN76z/KTbhBCIGnTzUyAEl2c5sQrExLggQh2KdmoYntu709s0XvB4OHXfdXllk00
-	 w2gpJP3sfo9cyuuoHFPdXWFm9s73xJJALGFMW3zQJjBWQ38QW0HkLjpk8zJO/49syBij9
-	 J7qPoAuz0PEltLtTcVXqxOe3SvhtrycfMhaxzn9BfyPeA82AcpiMfle4iUpKgDn3/qA==
+	t=1793785899;
+	b=uDmOWklY3Y9OvnrVG+L48tOt+4CBkE32CCntSWotvp5h1lVVAl37kZylT0SHcJUpPfIB
+	 pAmaM92o54VoHv8AH5NGPSvmUU6IrnbTJ58aWMahwaFXri3px3+iumyKs7caDk8t1vzxh
+	 o56v0u3M9lD0gWpaGZpktG6aqGWQQ/hKRybqdr7ZQrDLeAoHQzCvwskwTtH8PO3aOAvfx
+	 Di0uNpBJn+8+gKYO9tHrfBVdsNy/uXO76OZpIIa16XErcHJNHtluq0Mq/K1KbFZfPPvrG
+	 +USEjzvJ1CaG/9byKZL6PIVZ17oNq8HAdRNiX3Ec4q4Dt7cnjXhmYTjg5TWfCxwNzlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793785877;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=oojRhALGnxSxyxmQajAogvjEsQGOsY9/BMU8rYXtxHA=;
-	b=IPEk5elmlofqj4koF+BeNgrkgTjEA2VO9hUJayDnTupg3jUQ6xJ3OuzRWWnT9YDk2r3S
-	 aTikaYlVJX0uPZARIowB+Jaw1ZuqIjnntIjdeU3vg2uYwrN2vBfV6oZVHRXRi8+5iZ5Kc
-	 tzPFj1hXVvierV9u/xMl623HtEfYtkP6cr9U6iVZsZ8q03zElrOuegwPiBPrxLiQMpQD/
-	 WKJw/4xCr5GyMcsncRsn0+lLJ5F0MmWRSsR2Iwls1bXqTT7AWhgzxNo7zddh/JP9MdycT
-	 JyFXTHWbbC53W4VCicNGetTFLmWD6GPT7yCy0of1MGqCRyLUMCv2zb+Ei8USxMBJbCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793785899;
+	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
+	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
+	bh=kZmwgsq2euZuRwrrnE3ckSKAVMRx12ifpPWl5rPDrL8=;
+	b=ys82Lyw+SlhbrYGTLQTOXWhEhehoE2zOhWv7VLBVa6f0CL6kcnMAyPeq5vrCy692aNAv
+	 XscMM7eCFwc9PAX2Tl/eCT2h4wahJCU9X4fCyauuJAVNFe4VLIKWAsP1qHh+xkh5ptz5P
+	 bbLYDxTHdzhKK/fGFS0jZVkNacT3DNEGc4F9IoTaOmgLaP/YBMPzbJbYvcGGb6IDPlU+z
+	 uAr4QufsX6eXsADRu8j0LIoi7aL9McYdwN+AaOLEqAY2sH3mdcxUGfQgXlgQ1NNnDYau7
+	 2IuXfxXgqCQ7ma5HCDFXiFKozruLiVB6SSV0oQ/PwIdSaliRc3qZV4xBNJVjD33posA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNEvKN31;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=jonasjelonek.de;
+	spf=pass smtp.mailfrom=jonasjelonek.de;
+	dkim=pass header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=dQ1PLDGj;
+	arc=none smtp.remote-ip=212.227.17.24
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD008606A328
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40183606A328;
+	Wed,  4 Nov 2026 09:51:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40183606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNEvKN31
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627EE1F00A15
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:51:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793785876;
-	bh=oojRhALGnxSxyxmQajAogvjEsQGOsY9/BMU8rYXtxHA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gNEvKN31QMSPR2Y/tFdlB1WbCay38cMmkGAxG8T+kCgAVdRTnq/s1XaG5JFrLoFMX
-	 dTXnsU5evxZJfNlQofHA/WAs67ObYLzKigwzuIoPab23Nkblc6MjjWQIwdqf8Ijd2r
-	 6EZ43ul1VuQyR869uns+JlIIQKtgmav5C+hgEqMuFG7DccDgO+OmUzZ8TXXNVlpTU5
-	 qjYHiUs8gUJz6zCHqLpxXot5Hf5urVAVktCUjAcdRx2s7AfW18HgdDt9P7qBrHCFW7
-	 tO11pu9mONt39IYvgcgmFSZsroW112vi3kiJsb6ys+BLk+fuLJico+S+NBYA8NRs5e
-	 vITiyyJqoLt/A==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-49e08af5fd4so229943fac.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 01:51:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwsj4FjsQBk/1y8VLMog51pZOcJPkYWSp/u/RcvMKMLswsdEGvL5k5LBQfnxyLsmfv03Use1w4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+ID4qfCypdmVL1Phzc/ko8oSUg0xj6ecG/qIbMF6nATCdg8iE+
-	2LWRYhGcrrF0w2BfZaYV6gqaTP1nLZyVrEB1/6T04OCmjGMgVObH2PvYx1NMNL9G8gUC+vtK2L3
-	8kvRWUOGD9cdQT3DNXoD70+60X8oluLY=
-X-Received: by 2002:a05:6871:ec4a:20b0:4a9:58d3:b60c with SMTP id
- 586e51a60fabf-4a958d3b7d2mr4822097fac.32.1793785875663; Wed, 04 Nov 2026
- 01:51:15 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=dQ1PLDGj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
+	s=s1-ionos; t=1793785864; x=1794390664; i=jonas@jonasjelonek.de;
+	bh=kZmwgsq2euZuRwrrnE3ckSKAVMRx12ifpPWl5rPDrL8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=dQ1PLDGjiWJg/v7f/s19c7cuxjckamcIITrTAFCl8fQP23AkfwATANBC1S2en/ra
+	 MwV9QmPEnVKtJjtoofLkpEzLurBujBw8l+l3KO3udVJZh2D8Jcg4oM04/9jlQiN/I
+	 l+34ZU9Lb3kwG6DTNs4ZV3u/iiguOOsgiTaMmm5WLZGaZlE8TivtFcsMq3Zay9z3A
+	 UsuYm6C8Q/4oxTG+T0c7jkKxpdWd74NGwyuLNP0NkKPKlSpts+2wYuTNpUxG1hdEv
+	 zBQw9Na5wn0kBUcrqPyDsKR47KNRJxBVNK+ENL+Ma8o7uDvCjXHu+Mj9dK+As4woB
+	 hmqhBlgnxtAQ8vFGmg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
+ [213.165.67.113]) with ESMTPSA (Nemesis) id 1MowbA-1wjV0Y0mOk-00hTin; Wed, 04
+ Nov 2026 10:51:04 +0100
+Message-ID: <05061207-9c41-410e-9b60-c19428bf8585@jonasjelonek.de>
+Date: Wed, 4 Nov 2026 10:51:00 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,155 +63,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103092957.4164530-1-edumazet@kernel.org> <179378464765.488856.7246331085173485104@kernel.org>
-In-Reply-To: <179378464765.488856.7246331085173485104@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 4 Nov 2026 10:51:04 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiowpe6mFG2tZ3Qtqod3Rkv4V0Ed3M5V1B1Y8P1vq0kTcQ@mail.gmail.com>
-X-Gm-Features: AclHuK_i8Q3E2HW_M_daroL4NRGLMWacYRtS_V3G7bXliFwkea254yA8nCoUAzo
-Message-ID: <CAL4Wiiowpe6mFG2tZ3Qtqod3Rkv4V0Ed3M5V1B1Y8P1vq0kTcQ@mail.gmail.com>
-Subject: Re: [PATCH net] inet: frags: bound the wmem charge of the socket
- completing a reassembly
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org, 
-	netdev@vger.kernel.org, fw@strlen.de
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/4] net: pse-pd: realtek-pse-mcu: avoid global
+ disable on teardown
+Content-Language: en-US
+To: Kory Maincent <kory.maincent@bootlin.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ Sander Vanheule <sander@svanheule.net>,
+ Russell Senior <russell@personaltelco.net>
+References: <20261103220312.860629-1-jonas@jonasjelonek.de>
+ <20261103220312.860629-5-jonas@jonasjelonek.de>
+ <5fba2b22-a7b6-4c9e-96e3-1ea41b984ba8@bootlin.com>
+From: Jonas Jelonek <jonas@jonasjelonek.de>
+In-Reply-To: <5fba2b22-a7b6-4c9e-96e3-1ea41b984ba8@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gsHUty2uZsYmoM27TOS1eZBV0eWfq5zWfptcqsY5SfmUozXAakO
+ wcJqi38Oc143elPnF44gotc48K3Naxpy+v5WweVXKwYIaXLEUicvpy38DoR25wOEGO6fwLF
+ 9Ls7GZnSkPWs5gevvP1aYaAlvSZ6JGWwYlyxcGFRSZUjdHVAE1bfjg7m9zGGA7pJ+qERxYK
+ WrEJMg7zULHv82/MuzzZw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1Ir0M1KS+Os=;apCugwWKtGkCnUGHIHPInhljfb7
+ ycvwNMXwlJW7VaGpHiEjNa7QlwU/T7ZByggnMQ+Al5kZ4t97g8uwv1MPvBzf/pcdI1y6WXA+d
+ v9Na+ITefQji372UEqNj9+/oTBAxB71WUdwMFi+vFBzVvf+rrjp0aNPX9NgIfj74yskbk2zez
+ KR3ofpbtoHDqYAmdWOdWuG4ROWOc965rlxLySiFHGPEKZIr91p45ztJ84vcIt6If2AcT+nYRC
+ 1Qq8SfybhrR2VPdlwpwkBRtiaVJoCese5A6spVivUBLgUZ0vY3eoXbiON/ssHX1onlcUuDrgJ
+ oUK6qgdndTey7Mq8s9ZicW0xrC65WMwc746cuPxCcznrzNRZ2zicIOORiMFNx+7eF7VAaJw5K
+ kJHaxuddUdR34o3Ev85q3hHOCPp2PpNYCHwU8KCHfLK9Cf8NQNqbiXVUlWgarD/4LDztNTBxz
+ 5T4j8PIT++ugFXXlqcQjXM7cr0CJfL+b8Uc0Q8GjsUIKjANXH6TsE8rEgIrCnfET3AkUSm2Mm
+ wKjZU1mkAuMhWStSWkEHl94VbNQNPdVm3fIpjqu5dy+oTh8Jq8nlXJ6zlICTc/nFfeDEIOcuu
+ 01Ioc28dDAJWu2DHIlt/8VZdh4qU+kDFLLggEA91E5wWdeawjRSWYeDAby2sZbFCENXuUqiyP
+ bni7UfSlBBNAissBFo00sDV96uHgndgzBMWy/f3GbxBOilZu/y34oxUua3Dt/FFJDBFSMVodZ
+ 00+OGRkI7RbbYl2glcDmsJiqQ20yePQdIt3MmdUj9MLEAJ6ba8097f9WNYiG/i48d/sS/j238
+ Pi8NMgbOm15jyexj6T42674KssUdzm0jz3oKlVLkn9ABEjnnSWB4YUHqcmLYzD2lifE9rEtCY
+ aKTHDXgWLVm8FS4O0R2D5Las+p7I10n9j+dqMesIPxa41sMQATkFPHho5E5Z+ymgFUITr7dHJ
+ wL5zBp/R9xdCN30pIqWAEYpprYHWGephAS3VlqBiM/PA0MVWSue/d2QKMkQBkPbdg/DmNbJki
+ 6hDZa9Vfc6kObVEXXDGIcbD1f03wfGCZweozhvR68Mkzs/9rIyZAzSeNeJ3uMQReVFSkHz5fp
+ zREbqrJNdIGZGA49QrWrKT12qIkz7+2ay5LJnPZe4EKX3vpNK+vEj2wxSrqdNDvZTtQrI3kPr
+ ZAOz1KU8/ZYnoPguDu40tWmtH9TGvKCvFRpzpbagrogUg8O4GlggBqXyUkKpDrmfMCxeyf9ZU
+ tKFEMA8yvl69Rbhuv0dyWR6FbT3CQ2azEg6ommbCFTeotdLfOwVZy1apihfuXH5RjRT+knhsG
+ kKHQoA5CU2qbeJHkJtLMvEwZghYzACH5L3XsWZx6atv4/1GCS1ldc3LeLnCRYqHrgmDgBfmZb
+ SN0agQRkk2/kTHfF8PIYQrPNMAaK5UHGToCEUJYCZBVyMVUjO41p2zBcVo+UdQvXvbdFTZu0i
+ 0KF0H3lwkG1VUN6CL5PvbADDC5xMLW775/Q4ORg7E7XTckFCsVzGN8VY5y4pcif1GASl9Y9c7
+ 3OUU7tyPfG2cWG9mYBRATRe6UOYVM63wd3zWf3iZuw+rCVfitF0SXaBw6p0lpbbTGt+QR6ndR
+ HYy0+Kx+mszbNZX6xJubvxLfFkWEY0DcCC3QHCAWSX91CIq2j2W3pfTh2mGgstkQ3G8ShqZBf
+ fxHdul8oH2p8w18Zs8DaEFPRoMiM+5xkPkTAudgGgOQElu3BGW3tp4ISw0YtQQWoRopHv9Aaq
+ gohXv9bqjoV5+yxhCoV96m0sPMtqDR/qp6VnCgm/lVyjLPBw0G/JxHSuf8E4YSCSfnmZHQKz8
+ W9/e6yaAXMBDa6rKL0zDYtaMpyYfyl2RPhDtan/FqtD4TBHHTH5o/jyJirMu0aCaWaH/v7dzb
+ 1bqPhk5NF8X8TGaO2iNceuBt+aF3wl9DYhOj3ejNWwWmjHV1b+ERqJC2DEM8qxemUUEyIVIOG
+ TxCD+wHITGIBGSlvaPef6oJ2OV1isa6xEA4PPPZZiMLS3HfyC+FCuqdGgcGXJrt3TLjv21yy1
+ Pe+3QLCcWJMz1pJD2i39ISlLVY779Uco+z6zdTvtvcQip9HFIf9aB/LjwOv5NWJbues/8992L
+ p9PKcIaD0NXfzQy27WeEAUT4Re3drL3LI/7bZh/W7o66o46ZXADoJoTIXwrqsPZ/vLytqtiQ5
+ xAPhAPjIQBajII2z08hvJCLqXQwiEZRug4E+07Tofrl74j2N8dh4AYmS9IgiIpatrBmHWtKXR
+ 4+sdGvOwAYb0DPjQUDj4aWquOQEagsSnX7PbaHCdxSNfrEpWez1rUqlsylxGiwgIcYPsHsZOt
+ fL519/dxalLeEmxsUlYKOWabziKe8HsWOo8N/X4zyxLfv7ATBECDQUZYBojsrIdMQAmkcmxMX
+ ftJPDAQc0UD6opyQAl4yzgE8mTEonpoCSQRcUaLNgVgg+CeljeDTyQLGLI78TIbz09laX07gN
+ iUTpFB8UxHBCnUXdFgRAOZtpeM6vt4PHONpE9rxppKeO2f9+np5PKtVK47+RIfZ4CbY1rlKHf
+ W88asq7YesjFhNU6rJHF9eaHgX2+HjxrtEnF4UFfhsuIIA6QZEtCTkyRQPtRGta+CyXbu7lo9
+ n631/wi1EvRBcTcZ0YZd1GL74e+y/62KuDLIAV77fOLe8NxRaJEuvckTb7WcPk9j+Q/+Dq2Gk
+ rb+8TXV51aHzbDbLP9y/01E/KXI+Q9lqNeQ30LD1q5ZldttZY5kEL4Xava5bN2YX6kov3s2Ey
+ Z/+nlCmdpsodjN1
 
-Le mer. 4 nov. 2026 =C3=A0 10:30, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
+Hi Kory,
+
+On 04.11.26 10:45, Kory Maincent wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> On 11/3/26 23:03, Jonas Jelonek wrote:
+>> The driver installs a global-disable cleanup action when it enables a
+>> previously disabled MCU. Consequently, driver teardown stops all ports
+>> only when the MCU was disabled at probe, making the behavior depend on
+>> the initial firmware state.
+>>
+>> Leave the MCU globally enabled on teardown so an independently powered
+>> controller can continue autonomous delivery. This also allows persisten=
+t
+>> supply constraints to keep the rail powered without an explicit global
+>> disable command stopping the ports.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> No SoB?
 >
-> - [High] In net/ipv4/inet_fragment.c, inet_frag_wmem_ok() (lines 533-540)
->   reads sk->sk_wmem_alloc without any socket-wide lock or reservation=E2=
-=80=A6
+> Also this patch is not related to power management. Please send it stand=
+alone.
+
+I messed it up completely, my fault. Sorry for that.
+I'll drop it from this series for v2 and send it standalone.
+
+> IMHO this should de send as a fix because we don't want to have a remove=
+ behavior change according to the Linux version.
+> With all this change you can add my Reviewed-by.
 >
-> --
->
-> inet: frags: bound the wmem charge of the socket completing a reassembly
->
-> This patch adds inet_frag_wmem_ok(). The new helper refuses a reassembly
-> when charging the queue's truesize to the completing socket would push
-> sk_wmem_alloc above 2 * sk_sndbuf + 4MB, capped at INET_FRAG_MAX_TRUESIZE=
-.
-> The aim is to keep sk_wmem_alloc from saturating while several reassemble=
-d
-> skbs owned by the same socket are alive at the same time.
->
-> Closes: https://lore.kernel.org/netdev/24feda7d-ae49-45af-9596-2cc5f149f2=
-8e@redhat.com/
->
-> > diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-> > index 0b8d22ffafca6..c11d7e976dfa5 100644
-> > --- a/net/ipv4/inet_fragment.c
-> > +++ b/net/ipv4/inet_fragment.c
->
-> [ ... ]
->
-> > @@ -519,6 +520,25 @@ int inet_frag_queue_insert(struct inet_frag_queue =
-*q, struct sk_buff *skb,
-> >  }
-> >  EXPORT_SYMBOL(inet_frag_queue_insert);
-> >
-> > +/* When a socket owned fragment completes a queue, the truesize of all
-> > + * other fragments is charged to its sk_wmem_alloc, although they were
-> > + * orphaned when queued and possibly sent by someone else.
-> > + * Bound this like ip_append_data() bounds the memory a socket can
-> > + * allocate (2 * sk_sndbuf), plus slack for fragments inflated by a
-> > + * refragmentation using a small MTU. Otherwise, several reassembled s=
-kbs
-> > + * alive at the same time can saturate sk_wmem_alloc, and leak the soc=
-ket.
-> > + */
-> > +#define INET_FRAG_WMEM_SLACK SZ_4M
-> > +
-> > +static bool inet_frag_wmem_ok(const struct inet_frag_queue *q,
-> > +                           const struct sock *sk)
-> > +{
-> > +     u64 limit =3D 2ULL * READ_ONCE(sk->sk_sndbuf) + INET_FRAG_WMEM_SL=
-ACK;
-> > +     u64 wmem =3D (u64)refcount_read(&sk->sk_wmem_alloc) + q->truesize=
+>> ---
+>> =C2=A0 drivers/net/pse-pd/realtek-pse-mcu-core.c | 13 -------------
+>> =C2=A0 1 file changed, 13 deletions(-)
+>>
+>> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-core.c b/drivers/net/ps=
+e-pd/realtek-pse-mcu-core.c
+>> index a90e19fb90e0..ab57c348436c 100644
+>> --- a/drivers/net/pse-pd/realtek-pse-mcu-core.c
+>> +++ b/drivers/net/pse-pd/realtek-pse-mcu-core.c
+>> @@ -894,13 +894,6 @@ static void rtpse_mcu_cleanup_vmain(void *data)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 regulator_disable(pse->vmain);
+>> =C2=A0 }
+>> =C2=A0 -static void rtpse_mcu_global_disable(void *data)
+>> -{
+>> -=C2=A0=C2=A0=C2=A0 struct rtpse_mcu_ctrl *pse =3D data;
+>> -
+>> -=C2=A0=C2=A0=C2=A0 rtpse_mcu_set_global_state(pse, false);
+>> -}
+>> -
+>> =C2=A0 int rtpse_mcu_register(struct rtpse_mcu_ctrl *pse)
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct rtpse_mcu_match_data *match=
 ;
-> > +
-> > +     return wmem <=3D min_t(u64, limit, INET_FRAG_MAX_TRUESIZE);
-> > +}
+>> @@ -994,12 +987,6 @@ int rtpse_mcu_register(struct rtpse_mcu_ctrl *pse)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret && ret !=
+=3D -EOPNOTSUPP)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 return dev_err_probe(pse->dev, ret,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 "failed to enable PSE system\n");
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!ret) {
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+ =3D devm_add_action_or_reset(pse->dev,
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rtpse_mcu_global_disable, pse);
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(ret)
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return ret;
+>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
 >
-> [Severity: High]
-> Is this check safe when other reassemblies charge the same socket at the
-> same time?
->
-> inet_frag_wmem_ok() reads sk_wmem_alloc without a lock. The charge it
-> approves is applied later, in two steps:
->
-> inet_frag_reasm_prepare()
->     refcount_add(ts_delta, &sk->sk_wmem_alloc);
->
-> inet_frag_reasm_finish()
->     /* after the loop over every fragment */
->     refcount_add(sum_truesize - head_truesize, &sk->sk_wmem_alloc);
->
-> The only lock held across this is the per-queue lock, for example
-> spin_lock(&qp->q.lock) in ip_defrag(). The IPv6, nf_conntrack and 6lowpan
-> callers follow the same pattern. That lock serializes one queue, not all
-> the queues charging the same socket.
->
-> Suppose several CPUs complete different queues for the same socket. Can
-> they all read the same sk_wmem_alloc value W, all see
-> W + q->truesize <=3D limit, and then all add their charge?
->
-> The limit is at most INET_FRAG_MAX_TRUESIZE (INT_MAX / 2). So three such
-> completions racing would seem to be enough to push sk_wmem_alloc past
-> INT_MAX. That is the saturation and socket leak the commit message
-> describes.
->
-> One possible path from an unprivileged user/net namespace:
->
-> tun_chr_open() sets tfile->sk.sk_sndbuf =3D INT_MAX, so the limit works o=
-ut
-> to min(2 * INT_MAX + 4M, INT_MAX / 2) =3D INT_MAX / 2.
->
-> tun_build_skb() and the sock_alloc_send_pskb() path leave the skbs owned
-> by the tun socket via skb_set_owner_w(), so is_skb_wmem() is true. These
-> skbs are not orphaned before tc ingress, and tun_get_user() takes no
-> per-write lock outside the napi_frags mode.
->
-> Add clsact plus act_ct on the tun device and raise ipfrag_high_thresh.
-> Then several threads writing the final fragments of different datagrams
-> to the same tun fd would each reach this path on their own CPU, each
-> under a different q->lock:
->
-> netif_receive_skb()
->   tcf_ct_handle_fragments()
->     nf_ct_handle_fragments()
->       ip_defrag()
->         inet_frag_reasm_prepare()
->           inet_frag_wmem_ok()
->
-> The window between the check and the second refcount_add() covers
-> skb_clone(), skb_morph(), skb_unclone() and the whole fragment loop in
-> inet_frag_reasm_finish().
->
-> Would this need an atomic reservation on sk_wmem_alloc instead? For
-> example, add the charge first and then recheck and roll back, or use a
-> cmpxchg loop.
 
-Right, and tun sockets default to sk_sndbuf =3D INT_MAX, so the limit is
-INT_MAX/2 there.
-
-I will send v2 with an atomic reservation (cmpxchg) in
-inet_frag_reasm_prepare().
-
-pw-bot: cr
+Best,
+Jonas
