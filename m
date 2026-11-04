@@ -1,95 +1,146 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.35
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793824002;
-	b=Vb3dJzMy//kPHC9cNeyrYIsct+dH7SmDKefoU/SmN3ODL8tlx2nJTeRlkYNPNlC5Yy6g
-	 dOqApALWU61uvFepgF5kd633cTzLDLX8N+ZIF6whO6vzGn1V91LixY2e7dWvRcWxtqmCL
-	 l0U3B+cRGkD5fRpScqMmAvHK/HqUtmpnzezjkI5smzWZATYLR7H43iCCj3d5qCPvl3EZ0
-	 ZxBGwCM3xBwiAWl0MeKfLzUqg1M+txwOQ9P3urYiP273abmaHBPdTyZow1KD3Gtned8IJ
-	 LHmsqrRPAOMkJqRIzTqRIIIRJLnSU2tYYv3UnqjAqNI4pduz8nmYt0Tp6JJgnou9DVQ==
+	t=1793824362;
+	b=sj1kAh2qDVRnOqBQ7wG3dx7JOSO/9XFoy3dIRsF780QBc8XTMyWAXaVeTWZtKizbM/nL
+	 6L+FM3g7614G94aYlro74Khc2ZhnTwLQUfpsdjQPJtyQvTgNdcnnEF184VKEUXhDp0sHx
+	 MQxh0I9FMGRheLjkx7oxcyCPIE9aOGxwltZ9wvOX6Fu6u13jvaclr7LngNSHMlV8EuQpx
+	 QSOxsUvcUqwojojp/xoM8atquu4OxFxoyx110wV4stBN2dENwtZ1u4OaVYmYNjqEeURA0
+	 o/UU+bVGfC/lFZ5iP3erXmRiA9jL74JRRFzKLY8Q7plv7Po1uj2DxesyrF2YTRJQtHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793824002;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
-	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
-	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=Zy0da+RmL4OG3OVXsPiCDxk1YUO9Mt8OW1eMIQoj6ps=;
-	b=pk3hzerbAyADDlPt0qXQMABGbBz7RtYylfurkTcQIwNEp6LkM109NhEAr47JxTskL0BN
-	 tVlGbnHahqcHdBm7PwejDqjUk+UmKEPijxvG5HieznZdn+FcJUaeqRhYh08667EcXr8Zq
-	 9HA5fY4s2MMxYFkt+pdhtVDcXuEemBNXsCptDxFTNmD9IQ/s/uZ8QezDVj8z7/vqK5bUh
-	 Ekh7G2dJxOq4rda/rKmopXQdPP6SChq9oAW3hiO8kvlnhhstekyD8hwfPug5k8h2QdmCl
-	 jvTnmPwgPcIQhSQWFuCa7UAEExhvGMocyjI6FQDlrVzcDFtNiMsYoPqMT1+44yqp6NA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793824362;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=/lO0mL+cBkndSMWtbQjIRUpGnu/CrhJuhEAaumulM8U=;
+	b=YVC3Mn/VC7P76FJ15bd2We3Gd6k7YVGKx+NuVKS4Gf4LD01XwHJzBU7q9uZJc8FGkkKd
+	 mS8Ei/PgcbZyF4cIUaMnk3O4x90hZnpkH+5eD2Qhff4g8Q+qeoQiqpRgde5++csGj6dT3
+	 SVkbZMpqdf9sF/5FMqQgMQlssxTlrfd9dk90RtJi/T9k0X+24StqUhFgEQqLJ3DXvyK/e
+	 2HvNUwWSj1z3zzKGOsYZbSzEjBB1nenCTGNFJKyTcrNkzHgGk9ZWVxWfxdjTgDUT1ubaS
+	 NrylY7fDJiZpeCvET0m8GXzNhyfi82su0eRvAV1vaNqe1b04+y9FDog46ckuxMDI7Nw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=ldLCA6rR;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=mjJK1j5Q;
-	arc=none smtp.remote-ip=160.80.4.35
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.35])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA62606A33B;
-	Wed,  4 Nov 2026 20:26:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FA62606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=azykdYLR;
+	arc=none smtp.remote-ip=192.198.163.13
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE163606A84E;
+	Wed,  4 Nov 2026 20:32:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE163606A84E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=ldLCA6rR;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=mjJK1j5Q
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A4KPoV6026281;
-	Wed, 4 Nov 2026 21:25:55 +0100
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 402991209D4;
-	Wed,  4 Nov 2026 21:25:46 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793823946; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zy0da+RmL4OG3OVXsPiCDxk1YUO9Mt8OW1eMIQoj6ps=;
-	b=ldLCA6rRq3os4tvfZIs6fO/PijLgBdg7VxyRstRpyQ9UzRMGOXI6uI0AQHbokBPMrJuLwa
-	Kl5lYnzZCYRTtACg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793823946; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zy0da+RmL4OG3OVXsPiCDxk1YUO9Mt8OW1eMIQoj6ps=;
-	b=mjJK1j5QTbfhSGv23Dw+64AcWgl6YE3lhTwdbo9BKazkGHYVDBUCH3yBSasN8iDyAlY2v4
-	1gj/cFeZWVg3/yM3QiIq4NrngPkIJ4Jb9bZbzS4bKomXQjPeCBFJGTcAOYHSZucyC7chzT
-	Jemqedpx7QfoyHHukGFnZ9WbRLTmzqp5RxTNBqBJR5MKJZLB43p6la/eyLKv+Lz1Q+i26T
-	8ZN0REU41k1FXHEUgTIMDi+41Y29r3zJ8SHW2Dz8IJvUcoCUBqe5BnNamLuf8Rduu3afIH
-	yUVSaQ6Gj3os5xhH+bM2tWbMmUH2rosbTpIt9v9hYU+WR7MQmjZnytkh6B0LMQ==
-Date: Wed, 4 Nov 2026 21:25:46 +0100
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        David Ahern
- <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Shuah Khan
- <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        bpf@vger.kernel.org, David Lebrun
- <david.lebrun@uclouvain.be>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Mathieu Xhonneux <m.xhonneux@gmail.com>,
-        David Lebrun <dlebrun@google.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Andrea Mayer
- <andrea@common-net.org>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net 5/6] seg6: account for the MAC header in skb
- checksum on L2 encapsulation
-Message-Id: <20261104212546.1222c4cfcccaecf68f326cdf@uniroma2.it>
-In-Reply-To: <aulI7pl1oWRKzXgt@fedora>
-References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-6-andrea.mayer@uniroma2.it>
- <aulI7pl1oWRKzXgt@fedora>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=azykdYLR
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793824362; x=1825360362;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6f8UgVjKpQ2wVNTwKjGWI3IG5kYob1To5ZXvPuHXznw=;
+  b=azykdYLRMV+Zru+0A7b/DkYuNubzZsIpW/0gDE9PhJBscjZ8sZlhtsj3
+   QSkQ+XOSIQbg7vjgJ+33BRRniLnHeWYLHEoaE9wACUvKv5NJPqvkTyM5p
+   Hc1yJrjIP5rHWLT6QrceUqs+NOdL9qk8Kn1EbVREctTyq4JUxn67nKSBx
+   rNmxngRxfJ7OdkgwXr+zXCORu11/VV/Id7JDlhO24Qo+fFg429CxtKopk
+   Elaww18k4nm/RtUKhNfWA8DNxc0Z32200kbc4EJ130OjwTOqiZPdTkhxI
+   02/j9tCw7B2WZjRk+uJWZihEgThCcz1IyHVLsEUz3qy/xM4WniYXhxzGF
+   A==;
+X-CSE-ConnectionGUID: rMJT0IByQKOFP/qWIL8mYA==
+X-CSE-MsgGUID: GDELmCUWSnGbypNy/YupbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2590678"
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="2590678"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:32:41 -0800
+X-CSE-ConnectionGUID: oeRVokCFTSG70c80N5OpXQ==
+X-CSE-MsgGUID: cq871yY0SA+tQsjaqT4Xmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
+   d="scan'208";a="6690148"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:32:23 -0800
+Date: Wed, 4 Nov 2026 22:32:20 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Rob Herring (Arm)" <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lee Jones <lee@kernel.org>, Srinivas Kandagatla <srini@kernel.org>,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Chanh Nguyen <chanh@os.amperecomputing.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Julius Werner <jwerner@chromium.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Ray Jui <ray.jui@broadcom.com>,
+	Scott Branden <scott.branden@broadcom.com>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sound@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-tegra@vger.kernel.org, mfd@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
+Message-ID: <auuWVGsyb3RrOIfh@ashevche-desk.local>
+References: <20261102135330.2493332-1-robh@kernel.org>
+ <20261104-vigorous-flat-dingo-3e5bd2@quoll>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,72 +149,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-vigorous-flat-dingo-3e5bd2@quoll>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, 3 Nov 2026 10:37:34 +0800
-Hangbin Liu <hangbin.liu@linux.dev> wrote:
+On Wed, Nov 04, 2026 at 06:32:43PM +0100, Krzysztof Kozlowski wrote:
+> On Mon, Nov 02, 2026 at 07:53:22AM -0600, Rob Herring (Arm) wrote:
+> > Unit-addresses by default (and most commonly) are hexadecimal. There's a
+> > number of cases using decimal patterns. Fix all of them, limiting the
+> > pattern to match the 'reg' limits if there are any.
 
-> [snip]
-> >  		skb_mac_header_rebuild(skb);
-> > -		skb_push(skb, skb->mac_len);
-> > +		skb_push_rcsum(skb, skb->mac_len);
+...
+
+> > --- a/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
+> > +++ b/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
+> > @@ -123,7 +123,7 @@ properties:
+> >          const: 0
 > >  
-> >  		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
-> >  			err = __seg6_do_srh_encap(skb, tinfo->srh,
-> > -- 
-> > 2.43.0
-> > 
+> >      patternProperties:
+> > -      "^layer@[0-9]+$":
+> > +      "^layer@[0-9a-f]+$":
 > 
-> Should we put the skb_push_rcsum() inside of __seg6_do_srh_encap() and
-> seg6_do_srh_encap_red()? They all do skb_mac_header_rebuild() again.
-> [snip]
+> These two lines are looking good.
+> 
+> Andy, it's okay if I give Rb tag?
 
-Hi Hangbin,
+Yes, again a pointer to 34d1e754155b ("dt-bindings: iio: drop unneeded quotes").
 
-I am not sure where exactly you would like to put skb_push_rcsum() in
-these two functions. I can read it in two ways.
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-1) Right after skb_mac_header_rebuild(), for example in
-   __seg6_do_srh_encap():
+I expect to see
 
- 	skb_push(skb, tot_len);
- 	skb_reset_network_header(skb);
- 	skb_mac_header_rebuild(skb);
-+	if (proto == IPPROTO_ETHERNET)
-+		skb_push_rcsum(skb, skb->mac_len);
- 	hdr = ipv6_hdr(skb);
+ Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> # xylon
 
-   Here the outer headers are already pushed, and skb_mac_header_rebuild()
-   moves the MAC header in front of them, outside skb->data. The push then
-   makes the packet start with that MAC header, instead of the outer
-   IPv6 header.
+or something that matches the piece you reviewed.
 
-2) Before the outer headers are pushed, for example in
-   __seg6_do_srh_encap():
+-- 
+With Best Regards,
+Andy Shevchenko
 
-+	if (proto == IPPROTO_ETHERNET)
-+		skb_push_rcsum(skb, skb->mac_len);
-+
- 	inner_hdr = ipv6_hdr(skb);
- 	flowlabel = seg6_make_flowlabel(net, skb, inner_hdr);
 
-   This can work, with the push removed from seg6_do_srh(), but the L2
-   case in seg6_do_srh() would still keep the skb_mac_header_was_set()
-   check and the headroom for the MAC header, and part of the L2 handling
-   would move into __seg6_do_srh_encap() and seg6_do_srh_encap_red().
-   __seg6_do_srh_encap() is also used by the ENCAP mode, End.B6.Encaps
-   and bpf_push_seg6_encap(), and seg6_do_srh_encap_red() by the
-   ENCAP_RED mode.
-
-So the first way does not work. In the second one I do not see a real
-advantage, and it would split the L2 handling between three functions.
-For this reason I would like to keep the change as it is in the patch.
-
-What do you think? If you meant something else, please let me know.
-
-Thanks,
-Andrea
