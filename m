@@ -1,49 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793801407;
-	b=J8Ldm9N1kVAv4jkYPxeovwE2xMSilswresa85F8R3tMIgBf5UFqRw9XrCWlKYgFwhE8n
-	 dJ7GamEeTARcCgJsjyaQB7oAgDmHAhxa5vfjCBtg0eXD25ldfqNY5JRRK2OQagBYeQVvA
-	 7ksx0ja01pCHXJsnhn0caBT9sJ/NzQymqaq/HWCL9JVtmgFczh6SB9ZgdgXQjsvD2JGwQ
-	 q2WZ/sXnf09NkvuxRNIjFRROSM9awaWsVhrtKe+OUWr1KsQI5MJDHLwsSTnOMjOI5v0S1
-	 uwWEDeC2CmGu7TM362S7nXAGLngGZrDsp3KGvFs4E2vTeCPe61imy9/ys3UHHszRwvQ==
+	b=YLN3l5uk7MCAfRdmoeJp81GhR1AuibD6l/QaVBy84qUEAHs/7a2kaNiJSV9V9rgO90bD
+	 vc1bh26L44EB4xn0AiuN6zHBmciYuj7yEpsUROuEdpdmqF/czfgfGvyyuGV76k2Zzp06v
+	 O7MbDvvH2cMwrJuOdkUNySsB7FD1Qhzc/mt7o6Lq0Hsn47FA/rOl0BQ1M3uGV58j+3XEy
+	 jLaM4fvuD86AAAjRfN4YvdBIH6IppQM2FC8pU5J9GQxsN9oO0fGq3KxKz8nZrgqmQOh3K
+	 E/CLQ97ogJa0xcC8dK+3jPZ5dPLu6cL7GtbqhkhgolIiMWobvqo57Ld39ArrBtDUVCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793801407;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=fW5HOlKTan2dR5Wf4x0NwheYEdGlIy7He4FvyJlAgog=;
-	b=4RbvRkcz6HQGw+I83JFY5Y2dh0lTkTNaElVGMlXUgz0flnfheqRG+chGEH2+h11k2lAe
-	 ZHcBb2HvsZJsIC1HRC9SngytWaWmXRPo+CW9JdGVeXclMKa6S8xrbYuCfRqLzve5KG4aG
-	 3at2C7AyeCBasGiRM788wUao/jT4TsJuKwAaOTPlCJmTOyGyNRBquA0beHNcbAKvxPbgM
-	 lQU7Imm973XpS44w9peBoQkql2EpbIxTbJHSURyFMlWqjAwXESQd5WIjvo0/LFFGbBn41
-	 0fabyAWXtkZVwONyBs2bS5s7gT3ZDgjUw6DCOIVcXV/S83htLa2QJfZ17/IqKPNdE7A==
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
+	b=SgjmlaS0v6JaI8L5e8VjxVLPL/QgZ/vOgMvROUfI1Z6yjbRbBQXrPwlWxGiTNwLUvLZN
+	 K2aGIkfWemihWxUxUCYasoWBf6J3MJRMT4ylD0HQQE8KG9X1+XFUNK3d9PJnpe4mPHnsb
+	 CirgDWafVBYuqVpWv4W9xiC31jx8uHWn8+3wqff5QkZz98x+bvaBuktNPOboOM/rzDzrf
+	 f47cChaZ/e6nPkQW0mCQT7B5gEhvBSpWD9F9WDLzeWpNkJOEr+y413E27K7St3IvBAzYW
+	 qb2m2NumKuN8SODtrO3+ReVYabMESZRdVzOXhM9HmjsquMyZP9XjhJtD6qxqv/HnyVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CeWoWOl6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=toxicpanda.com;
+	spf=pass smtp.mailfrom=toxicpanda.com;
+	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b="pq3g/bOU";
+	arc=none smtp.remote-ip=209.85.219.50
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA62606A31B;
-	Wed,  4 Nov 2026 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A023606D805
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:10:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A023606D805
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CeWoWOl6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858F11F0093A;
-	Wed,  4 Nov 2026 14:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793801406;
-	bh=fW5HOlKTan2dR5Wf4x0NwheYEdGlIy7He4FvyJlAgog=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CeWoWOl6ONr6tzoXfmX/Yu8rfwRLb/el9MYes1hTO5dA6NPZpdFRq5Ot38As1HpuA
-	 p/e7ddOoUvQISg03VEz5BemkYXkh79um1yx0XlN9ijoeI2NDZFfzAY4FusZ6BymNod
-	 xUV38waywxRAOL1OKLrsPlv3QyWuoSxIPTzueG5cfsoiZG2yWahI0XhWWF5P88Yi5y
-	 EHGzhR4KoGnrEFidDpNhhDPDp0NAZ8AgbV6PI6W0i+3BuZPu26t2CYWtU0+E6KBdEU
-	 E15jg4jUoNwiA93ZbTDVf34zxh6UuABsvK5v24GW0/fnHf6KOh3dMvfzCLfIkdhTNp
-	 vdAie2vQohSxw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D25939E4DA8;
-	Wed,  4 Nov 2026 14:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=pq3g/bOU
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91c791d5460so10299906d6.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1793801406; x=1794406206; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
+        b=pq3g/bOUfq0Yp9sLjFjCbtvlrE7Qv37AIQDPWErqvoVqdvo9xd9+crfCI1n/K0m2B6
+         /wyj/0wj7PG9On9oxbXiA4rR65b4VsiwfWH27eP7hjSzrTjFaPE5VsCuVLqLFeDollNV
+         sSQkgF5p76zqF8M9G+GCUKOvNgstu4dm2MtmBAlnVSrHvAx2VNh1rsIbm7TLW/4YUnpH
+         2wamaFqvyznTtMzIDz0Caf8OxwRpcmXrUmepVB5vQmVQ2aC5DHcIMLavjRxAG33cfmcv
+         YehJUZYQiSvn32N26c8g4y7N960LtKU/uhkwpOuWWY9Gt8P0rRbNkVIa/+Gz2vV9TBLy
+         qiIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793801406; x=1794406206;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
+        b=KcAEMzyizribwoZvtv4HCmthjTNYVVowh9PU5hPubMMBMk8Zu5QH6OcgXdx2HkmDKE
+         E/H7qXdJxdPoPBdBs631IR5kO66Qac7qaPNS/sr8tK1E4j59cyXLkDnn2nv4kLQ3aqEP
+         4SyGePCYiJqBm80HuIjPdGTpFTPvATGRlRNOTAlZvK12SVj5kxmT/d9yRRw4mjxUbkoI
+         6OHsBkdT1XQb+LHJY5DeG8s34CFMz85u9D8H7uAJ3s9ssC2A8ALHhEQpsSHEgw+wkUkm
+         Qwduq/J6J4wyu529d0o6f3YtG398/4ZKZ6yRwrmUHuRpwhsmcskTCWakDxYbnnr8IU9W
+         wr1A==
+X-Forwarded-Encrypted: i=1; AKwUvBwZ5cUari5XdJRV1q4XNGothdg5lOotHtxOH27RDofJ0VAscTnbVGpdz0iMvk2cDWzcv5CZxJ4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8M6hKLVFg2wXIli+7GHxAtMcyxuc0izK2w5oJZBIqLtPwq+hJw
+	qolEs9Z/hrpbQ/ODHwxSqEf/N5TU/AaMFQyoXG8oIJkWaTUdgd/YThWjwgH5EqmBvFs=
+X-Gm-Gg: AYBFou3NLCG867XNdUVfmmOMzsWmt7igXd7bPsVuwn4vUQbmLumzUGQG9FnO4Dkdzsy
+	Lxo4X+NROwxSBbrlKm79fYMjSDDyGiQCEX57LadtxGosIvV4iZJ6F7z1bfp7AmTw61vTT1oPflm
+	Q0tIQZG9S/TI6kJTPQ2+Go6lCjN26AkHorlrHnEkaOVm819w2kMQNRsNjWKC9yHatQzHoaAg/+N
+	EWKTI6ocG/4zmQvWCNjlNkb1r8KCOvUOqBWDzVA6rd9OysYp35RaX+QKbSW96VnAFqCSvUpXJSf
+	1SrDajXR9H/8dgOrZOSK7W/BqvXiuwEJTOTy8dnl8301OJQVO2MNV0I5eKAsn4y/hmT8KYacJUA
+	XWJglauKex3mP6Dz/47Bvkg+2XBKnNb+eHB901GAJLBWUo/betMWEGQNjDxMqIei2S9rp9Q1ooY
+	3a8LevplYcz20e0C1xZEd4K6V5/jJueJXYRqygIUH3DgcY2ixA9kFxWGW9ZoVJo7rFQsKX8nj4k
+	8wCUgsp/SA1RCF+oMSOdWYsjCFYmVBFA7/f8eLDGskAWE3C2KoqKePlaWoUL7mxBvKtZQYG5x0B
+	/viGsP6RYKzzvCH7EAEjm2hJV6s1UfGsveKaX+31WF+l6C1robPkM/G9CfDOBQUj/A==
+X-Received: by 2002:a05:6214:5902:b0:91c:7c53:152d with SMTP id 6a1803df08f44-91ca4b2d871mr264201116d6.29.1793801405923;
+        Wed, 04 Nov 2026 06:10:05 -0800 (PST)
+Received: from toxicpanda.com ([153.61.196.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e7e728f87sm19598316d6.36.2026.11.04.06.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 06:10:05 -0800 (PST)
+Date: Wed, 4 Nov 2026 14:09:52 +0000
+From: Josef Bacik <josef@toxicpanda.com>
+To: "Hallgrimur H. Gunnarsson" <halg@google.com>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
+	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+Message-ID: <orevqgwqw53sxc3tii5zr6x7veu3p5nr3ndkndegpikfogmqy6@j5agkwrxcksj>
+References: <20261028221705.3915340-1-halg@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,40 +108,141 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] wireless-2026-11-02
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179380140530.2844943.17914935106232306722.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Nov 2026 14:10:05 +0000
-References: <20261102104649.727621-3-johannes@sipsolutions.net>
-In-Reply-To: <20261102104649.727621-3-johannes@sipsolutions.net>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028221705.3915340-1-halg@google.com>
 
-Hello:
-
-This pull request was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Mon,  2 Nov 2026 11:46:33 +0100 you wrote:
-> Hi,
+On Wed, Oct 28, 2026 at 10:16:57PM +0000, Hallgrimur H. Gunnarsson wrote:
+> When an unprivileged process creates a new user namespace, it is granted
+> a full set of capabilities (CAP_FULL_SET) scoped to that namespace.
+> While these capabilities are isolated to the namespace, they allow
+> unprivileged local users to reach deep kernel subsystems (most notably
+> networking configuration and raw sockets via CAP_NET_ADMIN and
+> CAP_NET_RAW) that historically assumed a trusted caller and have
+> accounted for a large share of local privilege escalation
+> vulnerabilities.
 > 
-> Just a handful of fixes I'd collected before, sending
-> them so I can get the latest versions once all the
-> merging happens.
+> Many workloads and sandboxes use unprivileged user namespaces strictly
+> for basic UID/GID, mount, PID, or network isolation and never need
+> high-risk capabilities like CAP_NET_ADMIN or CAP_NET_RAW. Likewise,
+> system administrators often want a host-wide policy ceiling restricting
+> which capabilities unprivileged user namespaces may acquire, without
+> disabling unprivileged user namespaces altogether.
 > 
-> Please pull and let us know if there's any problem.
+> Prior work by Jonathan Calmels [1] proposed addressing this via a sixth
+> per-thread capability set (cap_userns) alongside a global sysctl mask.
+> During that discussion [1, 2], feedback (e.g. from Casey Schaufler)
+> suggested that rather than adding another per-thread capability set and
+> prctl() interface, capability restrictions could be integrated directly
+> into struct user_namespace and configured via clone3(). At the same
+> time, as noted in [1], a clone3() flag alone is not sufficient for
+> administrators who need to enforce a host-wide ceiling on unprivileged
+> user namespaces without modifying every userspace callsite.
 > 
-> [...]
+> This series combines both pieces of feedback: it embeds a capability
+> bounding set (cap_bset) directly into struct user_namespace, reusing
+> the existing task cap_bset, cap_permitted, and cap_effective sets on
+> namespace entry, and provides both a system-wide sysctl ceiling for
+> unprivileged user namespaces and a CLONE_NEWUSER_BSET flag for
+> voluntary per-namespace restriction via clone3().
+> 
+> In addition, because restricting CAP_NET_ADMIN at user namespace
+> creation time prevents userspace from bringing up the loopback
+> interface in new network namespaces, the series first introduces
+> an opt-in flag to automatically enable loopback on network namespace
+> creation:
+> 
+> 1. Opt-in loopback activation on netns creation (Patch 1)
+> 
+>   New network namespaces start with the loopback interface (lo) DOWN by
+>   default, requiring CAP_NET_ADMIN over the owning user namespace to
+>   bring it up. To block external network access while preserving
+>   localhost networking, sandboxes commonly create an isolated network
+>   namespace with only the loopback interface enabled.
+> 
+>   However, requiring a sandbox to hold CAP_NET_ADMIN in a new user
+>   namespace solely to bring loopback up conflicts with reducing the
+>   CAP_NET_ADMIN attack surface. Today, an unprivileged sandbox must
+>   start with CAP_NET_ADMIN to bring loopback up, drop it, and then
+>   block CAP_NET_ADMIN from being regained in nested user namespaces
+>   (e.g. via seccomp or max_user_namespaces limits). Conversely, when
+>   CAP_NET_ADMIN is restricted at user namespace creation time (via the
+>   sysctl ceiling or CLONE_NEWUSER_BSET introduced in Patches 2-3, or
+>   via LSMs such as Landlock), tasks inside the new namespace never
+>   acquire CAP_NET_ADMIN and cannot bring loopback up from userspace,
+>   breaking localhost networking for unprivileged sandboxes.
+> 
+>   Introduce the CLONE_NEWNET_LOOPBACK flag for clone3() and the
+>   corresponding UNSHARE_NEWNET_LOOPBACK flag for unshare(), which imply
+>   CLONE_NEWNET and automatically bring the loopback device up in
+>   copy_net_ns() before returning the new network namespace. Making this
+>   an explicit opt-in preserves default network namespace semantics
+>   while allowing unprivileged sandboxes to create an isolated network
+>   namespace with functional localhost networking without ever holding
+>   CAP_NET_ADMIN.
+> 
+> 2. Per-user-namespace capability bounding set & sysctl ceiling (Patch 2)
+> 
+>   Add cap_bset to struct user_namespace (initialized to CAP_FULL_SET in
+>   init_user_ns) and introduce a system-wide sysctl ceiling for
+>   unprivileged users at:
+>     /proc/sys/kernel/unprivileged_userns_caps_allowed
+>   (defaulting to CAP_FULL_SET).
+> 
+>   When a new user namespace is created:
+>   - Privileged creators (holding CAP_SYS_ADMIN in the parent user
+>     namespace) inherit cap_bset from the parent user namespace.
+>   - Unprivileged creators (lacking CAP_SYS_ADMIN in the parent user
+>     namespace) have the child namespace's bounding set constrained by
+>     the sysctl ceiling combined with any effective capabilities the
+>     creator already holds in the parent namespace:
+>         child_bset = parent_bset & (sysctl_ceiling | creator_effective)
+>     Allowing the creator to retain capabilities it already holds in the
+>     parent namespace ensures that a process granted a specific
+>     capability (e.g. CAP_NET_ADMIN) does not lose it when creating a
+>     nested user namespace.
+> 
+>   When a task enters a user namespace via clone()/unshare() or
+>   setns(), its cap_bset, cap_permitted, and cap_effective sets are
+>   clamped to user_ns->cap_bset. In addition, cap_capable_helper() is
+>   updated so that implicit capabilities granted to the parent-namespace
+>   owner of a user namespace are likewise bounded by the owned
+>   namespace's cap_bset.
+> 
+> 3. Per-namespace restriction via clone3() (Patch 3)
+> 
+>   Introduce CLONE_NEWUSER_BSET and add cap_bset to struct clone_args.
+>   When specified alongside CLONE_NEWUSER, the new user namespace's
+>   bounding set is further intersected with the requested cap_bset mask,
+>   allowing container runtimes and sandboxes to drop unneeded capabilities
+>   from a user namespace at creation time even when permitted by the
+>   global sysctl.
+> 
+> 4. Introspection via NS_USER_GET_INFO (Patch 4)
+> 
+>   While tasks inside a user namespace see their initial ceiling in
+>   /proc/<pid>/status (CapBnd), threads may subsequently drop
+>   individual capabilities from their per-thread bounding set. Add
+>   an extensible NS_USER_GET_INFO ioctl on userns file descriptors
+>   to allow userspace to directly query a user namespace's cap_bset.
+> 
+> 5. Selftests (Patches 5-8)
+> 
+>   Add kselftest suites covering CLONE_NEWNET_LOOPBACK, the sysctl
+>   ceiling, creator capability retention, nested monotonicity,
+>   parent-owner bounding, CLONE_NEWUSER_BSET and NS_USER_GET_INFO.
+> 
 
-Here is the summary with links:
-  - [GIT,PULL] wireless-2026-11-02
-    https://git.kernel.org/netdev/net/c/c4328134f3f7
+FYI I'm doing something similar with cells
+(https://github.com/josefbacik/linux/tree/cells) that gives the same
+sort of discrete control over the different parts of the network.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I super dislike this mapping of user to capabilities, as you said it
+creates this hodgepodge of areas that need to be updated and just
+creates more possibility of escapes where we get it wrong.
 
+Extending userns makes sense in the current landscape, but I'd rather
+get away from using arbitrary user ids + a capability set as a control
+for what a task can do. Thanks,
 
+Josef
