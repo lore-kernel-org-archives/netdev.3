@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793820435;
-	b=xWhxCiki6OaHOwkl/n/xcBfaC9c/5F0FsmmBpm/G5rPqoKgC0BYqhYaBko/y+ZUty+FB
-	 fndWQHzz3+MoStvvLLYBTaMYlzeyfp8NrTjk0oVbAQQU03/JJojOl32jeFlVjns0dOaOH
-	 n1Ro106woeWZ6AhHwKJXe4KnvDbKpVKQJ2l8pC6gfKQPJ3uE7CIE8qn16BxhfYzI9Nwp+
-	 llQVyatp18GFiZ3USeYtpBLf3C7DvFYJbEuuLwYHMEnEnQuFYjJbpiLBQd0GXTxRr3Ca4
-	 4LBi5HnIGajEv+RW9zawFr3D7fuFCsJG1cT2fbEWfGU9KJ8ICdqgbltqKAIVexmQqbQ==
+	t=1793820464;
+	b=BAZw6L7wJRfGb16UHqJg5G1bAwztw3+IyXD7b/3c5pggoyAQ9DrIazmD9GXB7bJiqq44
+	 Gt6a0zrXec4i9urzgE+0gyN1o4cyY+uAxcvEHMYD9zl7RuzafVV8FouPG9eNdwxLZ02kf
+	 tWJm6Ef+rN6LKuXhjfWpxxE2BiH4Nf43TT25YRZay1f3+VZohMlR1ezIXHNo8K69EUIOd
+	 kaj4e5nVldke8sF4XWxFkUvoqKdjMvYlKSI3OsBjNRaEmTI8o91h1Zu/JE0fS0t/SdyL+
+	 POUqbUkHWZikWOW+JXJhSB2G+qmIyrDBKmpkUB/0BhglvmD5MvhL+1fIFGr2ll5856g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793820435;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793820464;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=r5+oZHp7BRrXwItSZJfGO9IDNpMhGDSeaixBJWzgZo8=;
-	b=4pz6gdVR9uZaroG8nEbej1ZP2W+9UonfAMEt8EJTxiDVpeCOtVbjv8RBoAFAjJXcYpmA
-	 GdVQKLRC4jnyuu3in0gTV3DNiC9RN+HZSuwbe69Rv5TJUzgmSNAlByqVfHfxXNzR2pZI+
-	 q5L0prlVivPPlAbS5TPVxosGWKJT+SC7ISsIoogyXYCf0YSTTP8AEfpedPgEyTgqwdonZ
-	 m50JX8EJzTXHJQ50YCl0N75PtAEJmgBJEhIHMCShGhTl+wIhFwk6Ginha7B6SYj9jHCPH
-	 zlEGb9DjeUbckxrZC3d49WbDSsPCQSF4ygyIsQNFADwFVmVpvgEvLyLIswrWgmw+dJw==
+	bh=8vwIQDZABfbDXUA4Rhtj/FFiRIzet50vFXOLtBzgPyU=;
+	b=ku09+zXQTh8i0ILDGXuUNXTcv+U5ev4dPOlrNIs0CpBsAusoX64y93HNUv2pV3TGgYrW
+	 owpdRBGTjWDy+8J5xWmAyOnvO64p+zJtDHyo1dGfoVv/jpGHQPw27eQRbW6LNtrcjY90C
+	 zsfRT9OaYbUe5955ZjYWKvuKkeUCumyuyCQPlNasBI0nDYv/GHITPyFU9r/dO5gPbRDST
+	 tdINNolqCT9n8OTadD45gx+wPz6dOqHT6zpRnth6259c46Amb9tKdT75JZkvy442ov25w
+	 q3LbUA4OgLInsLTuDE57Nc/p2Z+gSwB3Luy7+JGNid11Zxsq6CEztiLavpUZWPT/D1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fZMD0huu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+qv0mwQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5A1607264F;
-	Wed,  4 Nov 2026 19:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB8F6070A97;
+	Wed,  4 Nov 2026 19:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fZMD0huu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AAB1F00A02;
-	Wed,  4 Nov 2026 19:27:02 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K+qv0mwQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA621F000C1;
+	Wed,  4 Nov 2026 19:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820434;
-	bh=r5+oZHp7BRrXwItSZJfGO9IDNpMhGDSeaixBJWzgZo8=;
+	s=k20260515; t=1793820463;
+	bh=8vwIQDZABfbDXUA4Rhtj/FFiRIzet50vFXOLtBzgPyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fZMD0huuUQp5LSr9n7+L0WCkQqKPzyWmpwqfqg+XzsqNRlIuKtlf3Iar8GeYyXaoh
-	 Duy1KTIkLZPd4wpyWSeEROyKAch5aD1WchnGy/bdzHJBKTDW5fUbZVdDqnccb3ML1S
-	 ynk82YbCOwpdp9OfHLn4Hk4TAslcNPy+3iNGpY8Onlv8nBJw5pFj50Y4poa5zyKxIw
-	 OVO6zjJj0L1s71YhuEz2nNM9sGb2RL+EkTlUz3tA5wau2YU3GduBQbxH1kPyHOemIX
-	 jzrV1tyP5WTyanlHmpiwciBJbTfxSsr8dPDlHohaL0lhPAdIlgdQvP+X/AxRNITsuF
-	 bSYKsfrnb9SrA==
+	b=K+qv0mwQcjtL/qGdS6zLTIdv/G0RXM8xsdMjUnhgG0fNfAYk4b2pJX930sQZnPQep
+	 +LPdNInthRhEsKuQKDBplBRNncD5RXDkf1MmvrNYXt/kezR7Og4AukJlDkC+uqQdvQ
+	 3UcyZsZ5M2SCBuJu/oEitA7gekht06is34RQC+0SGBCyvPBf2/f+wRq4YKjtHH607t
+	 u2wONuJ6/ShFerskIef6UB1DalfazMx1QVWxa/FYtYmDpi1QxRXXlAEaJ1aaOkdQFG
+	 kAOIkXKB/WNg0BuIpmEdndNkSZIlkssgbriZFcnsRM4VXunhgfFvWP2W8uGj5+pKbF
+	 w0V3MGDPqlrPQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -100,9 +100,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 45/51] selftests/proc: check a sysctl listing while entries come and go
-Date: Wed,  4 Nov 2026 20:27:00 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-45-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 47/51] proc: sysctl: look at the table under sysctl_lock when creating an inode
+Date: Wed,  4 Nov 2026 20:27:29 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-47-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
@@ -116,208 +116,86 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5901; i=brauner@kernel.org; h=from:subject:message-id; bh=PpkRsqulHaX8LI6MUrkW65va02k7nMeISt9l3ZnWEgo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bmK23C5Vd0CJeVXYmud2s9Pn+J3m37HmVpnFi7ow2 bTfWdpXOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYyeRLDfw/N+y99eaf/2OCk /PjiV39BNqFbYdWnZD3mCaZ8OpuwbArDb9buj/tfO6Qb3GbVUb7QsZ5hkv1nv0KD0viMIPmMExu SGQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2783; i=brauner@kernel.org; h=from:subject:message-id; bh=qNc6cmXDzjiIgH+LQmxRb8DpjTAU1o7z7wzEsOSW+y4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bmJza0sIPDqr+OtjFeG4XR03HmoLr7n57Jt/hcxie 69L4b9dO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbi187wv2hWT/9l9+XPdiy4 Mvm7x6F5LA4Csrv4Z0ak9SrWM8XotDD8M7ASkA469SZgqbzuxov6f2ekegdpRrKw1vJ3ZETYaKT yAAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-List /proc/sys/net/ipv4/conf of a new network namespace in two pieces:
+proc_sys_make_inode() checks under sysctl_lock that @head isn't being
+unregistered, lets go of the lock, and then reads the mode of @table
+and calls ->set_ownership() with @head. That's fine as long as the
+caller holds @head in use, which keeps unregistering from getting past
+that check. The next patch has a caller that only pins the memory of
+@head. For that one the table, and whatever the owner of the header
+keeps behind it, is only there for as long as nobody unregisters the
+header, which happens under sysctl_lock. So read the mode and set the
+ownership before letting go of the lock. The ->set_ownership()
+callbacks only look up ids in a user namespace.
 
-- with a buffer that holds the dots and "all", register a tun device
-  whose name sorts first, finish the listing: "all" is listed once
-
-- with that device registered and a buffer that holds the dots and it,
-  unregister it, finish the listing: "all" is still listed
-
-Both fail without the fix, the first lists "all" twice, the second not
-at all.
+No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore            |   1 +
- tools/testing/selftests/proc/Makefile              |   1 +
- .../selftests/proc/proc-sysctl-readdir-churn.c     | 152 +++++++++++++++++++++
- 3 files changed, 154 insertions(+)
+ fs/proc/proc_sysctl.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index 8520c7878ea2..5b5e24e39cbd 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -25,4 +25,5 @@
- /self
- /setns-dcache
- /setns-sysvipc
-+/proc-sysctl-readdir-churn
- /thread-self
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index e0c0d313f4d0..dae09f333455 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -30,6 +30,7 @@ TEST_GEN_PROGS += setns-sysvipc
- TEST_GEN_PROGS += thread-self
- TEST_GEN_PROGS += proc-multiple-procfs
- TEST_GEN_PROGS += proc-fsconfig-hidepid
-+TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index f5c9f04e8509..82024f1ea756 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -500,6 +500,7 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	struct ctl_table_root *root = head->root;
+ 	struct inode *inode;
+ 	struct proc_inode *ei;
++	umode_t mode;
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/proc/proc-sysctl-readdir-churn.c b/tools/testing/selftests/proc/proc-sysctl-readdir-churn.c
-new file mode 100644
-index 000000000000..b2ad097b464a
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-sysctl-readdir-churn.c
-@@ -0,0 +1,152 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A listing of a /proc/sys directory that takes more than one getdents64()
-+ * must not show an entry twice or skip one when an entry is registered or
-+ * unregistered in between. /proc/sys/net/ipv4/conf/<dev> of a tun device
-+ * comes and goes with the device.
-+ */
-+#define _GNU_SOURCE
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/if.h>
-+#include <linux/if_tun.h>
-+#include <sched.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define CONF_DIR	"/proc/sys/net/ipv4/conf"
-+#define TUN_NAME	"a0"		/* sorts before "all" */
-+#define TUN_PATH	CONF_DIR "/" TUN_NAME
-+#define SMALL_BUF	80		/* ".", ".." and one short name */
-+#define NAMES		64
-+
-+static int tun_open(const char *name)
-+{
-+	struct ifreq ifr = {};
-+	int fd;
-+
-+	fd = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-+	if (fd < 0)
-+		return -1;
-+	strncpy(ifr.ifr_name, name, IFNAMSIZ - 1);
-+	ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
-+	if (ioctl(fd, TUNSETIFF, &ifr)) {
-+		close(fd);
-+		return -1;
-+	}
-+	return fd;
-+}
-+
-+/* one getdents64() into @buf, the names appended to @names */
-+static int list(int fd, char *buf, size_t size, char names[][NAME_MAX + 1],
-+		int *n)
-+{
-+	long ret, off;
-+	int got = 0;
-+
-+	ret = syscall(__NR_getdents64, fd, buf, size);
-+	if (ret < 0)
-+		return -errno;
-+	for (off = 0; off < ret;) {
-+		struct dirent64 *d = (void *)(buf + off);
-+
-+		if (*n < NAMES)
-+			strcpy(names[(*n)++], d->d_name);
-+		got++;
-+		off += d->d_reclen;
-+	}
-+	return got;
-+}
-+
-+static int count(char names[][NAME_MAX + 1], int n, const char *name)
-+{
-+	int i, c = 0;
-+
-+	for (i = 0; i < n; i++)
-+		if (!strcmp(names[i], name))
-+			c++;
-+	return c;
-+}
-+
-+FIXTURE(sysctl_readdir) {
-+	int dir;
-+	int n;
-+	char names[NAMES][NAME_MAX + 1];
-+	char buf[65536];
-+};
-+
-+FIXTURE_SETUP(sysctl_readdir)
-+{
-+	int tun;
-+
-+	if (unshare(CLONE_NEWNET))
-+		SKIP(return, "unshare(CLONE_NEWNET): %s", strerror(errno));
-+	tun = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-+	if (tun < 0)
-+		SKIP(return, "/dev/net/tun: %s", strerror(errno));
-+	close(tun);
-+	self->dir = open(CONF_DIR, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	if (self->dir < 0)
-+		SKIP(return, CONF_DIR ": %s", strerror(errno));
-+	self->n = 0;
-+}
-+
-+FIXTURE_TEARDOWN(sysctl_readdir)
-+{
-+	close(self->dir);
-+}
-+
-+/* a device registered in front of the position doesn't repeat an entry */
-+TEST_F(sysctl_readdir, register_in_front)
-+{
-+	int tun;
-+
-+	/* ".", ".." and "all", "default" doesn't fit */
-+	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n), 3);
-+	ASSERT_EQ(count(self->names, self->n, "all"), 1);
-+
-+	tun = tun_open(TUN_NAME);
-+	ASSERT_GE(tun, 0);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-+
-+	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-+		    &self->n) > 0)
-+		;
-+	EXPECT_EQ(count(self->names, self->n, "all"), 1);
-+	EXPECT_EQ(count(self->names, self->n, "default"), 1);
-+	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-+	close(tun);
-+}
-+
-+/* a device unregistered in front of the position doesn't skip an entry */
-+TEST_F(sysctl_readdir, unregister_in_front)
-+{
-+	int tun;
-+
-+	tun = tun_open(TUN_NAME);
-+	ASSERT_GE(tun, 0);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-+
-+	/* ".", ".." and the device, "all" doesn't fit */
-+	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n), 3);
-+	ASSERT_EQ(count(self->names, self->n, TUN_NAME), 1);
-+
-+	/* closing the device unregisters its sysctls under RTNL */
-+	close(tun);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), -1);
-+
-+	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-+		    &self->n) > 0)
-+		;
-+	EXPECT_EQ(count(self->names, self->n, "all"), 1);
-+	EXPECT_EQ(count(self->names, self->n, "default"), 1);
-+	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-+}
-+
-+TEST_HARNESS_MAIN
+ 	inode = new_inode(sb);
+ 	if (!inode)
+@@ -509,12 +510,22 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 
+ 	ei = PROC_I(inode);
+ 
++	inode->i_uid = GLOBAL_ROOT_UID;
++	inode->i_gid = GLOBAL_ROOT_GID;
+ 	spin_lock(&sysctl_lock);
+ 	if (unlikely(head->unregistering)) {
+ 		spin_unlock(&sysctl_lock);
+ 		iput(inode);
+ 		return ERR_PTR(-ENOENT);
+ 	}
++	/*
++	 * The table, and whatever the owner of the header keeps behind it,
++	 * is only there for as long as nobody unregisters the header, which
++	 * happens under sysctl_lock. So look at them before letting go of it.
++	 */
++	mode = table->mode;
++	if (root->set_ownership)
++		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+ 	ei->sysctl = head;
+ 	ei->sysctl_entry = table;
+ 	hlist_add_head_rcu(&ei->sibling_inodes, &head->inodes);
+@@ -522,8 +533,8 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 	spin_unlock(&sysctl_lock);
+ 
+ 	simple_inode_init_ts(inode);
+-	inode->i_mode = table->mode;
+-	if (!S_ISDIR(table->mode)) {
++	inode->i_mode = mode;
++	if (!S_ISDIR(mode)) {
+ 		inode->i_mode |= S_IFREG;
+ 		inode->i_op = &proc_sys_inode_operations;
+ 		inode->i_fop = &proc_sys_file_operations;
+@@ -535,11 +546,6 @@ static struct inode *proc_sys_make_inode(struct super_block *sb,
+ 			make_empty_dir_inode(inode);
+ 	}
+ 
+-	inode->i_uid = GLOBAL_ROOT_UID;
+-	inode->i_gid = GLOBAL_ROOT_GID;
+-	if (root->set_ownership)
+-		root->set_ownership(head, &inode->i_uid, &inode->i_gid);
+-
+ 	return inode;
+ }
+ 
 
 -- 
 2.53.0
