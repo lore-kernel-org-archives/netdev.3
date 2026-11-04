@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793759588;
-	b=Nlh8wHL5vqUsretsumXNKeWbowC3OKU/C1GLdd/UWnu8uRTRujA+4NcBNZG5H1ATdiGF
-	 0R+tDIYlG7pFjpbMMUxEQ/xj0XYevvB0JnRJrvGVjuzQ5CtgMjuk6teGjlWxLa3wYF+Oy
-	 ChQpFm5FvAcp0bFv4wcYcYFo9xpyE6VOGET4+jn2rttR4aEKA7Zq+VPYtCMLp6x/j5rFg
-	 NourCVcIqMmxh6FbDsXlD64P/3biG6xx0HOLW6DrzU6cxkUR0FbBx1h1yndTmu6WbWKpV
-	 b1M1kiiQ9H+nj+fz97scGmnMa22wp0KcEh+tt03ccZSc/PPNJivjLLg5HHr5+BU2uqw==
+	t=1793759599;
+	b=Ike3Ugbigm1bz17zaoyXwy+UUP4FnvZ63SjjGph1IPvm9MlYbcMRnyiK02knx0VhOTNi
+	 3T6vmEYL+nwGrvP24CU78pfGmA0eSCUvQJZk2GG5KnWqvw2RZPnFyw65EHd1d2gOW/oQc
+	 NjouKtCtSLRPigLLU0YbHLEh8GwhK9sRSbZx+s133nJz1bEIMd8JooU2enq9Z0lIa0yrS
+	 mIKyeW0jPc/Z4Q/OZ0fs1gDjqX1aodN1kWF5Td4SWZ128mr3K7DZ2NyRFJRIyFkV/tXum
+	 +QxxWp8zCkTcpTF1MdimNZ5rQ+WbsNowQDfpwCeD1isPYO/Pnwe6Q/GF0dWFcgxfmMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793759588;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793759599;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=CdmhZb9JXWAczyOlf8TeO/DluUcc28rbbQMJzsXXYLqrtBa1KSrL/Mx1or9KbOlhOoxD
-	 KC9+aUhchYQI0nJluZWNRgtEoA6TZiy2DgktI1QHs2HHSjkxsJ9XrrcX1zVbSokJV1Fi0
-	 3KjYVnpTtft7VTMN5GlTwi/hQuPdfQ2JempMwJIE6k0NT7PMiAwwPWPLZN7GOBs4/7Zu8
-	 3EzW3IbY8lHrBZz4VjMS3mEKertGT3JIG4OBI6WSwBkIsmOtZL4Q5QLopBYoaYUAwk/AN
-	 0dfDvDkQ72Rvvsy85JlVIQ23wVhOLM+4NTO6QLUtirWPHOwBkgpnN2lcieaJnf2841g==
+	b=Cci7rBkcGNSR8q38XGVpziICkjSlBqAkfA1pCTBepMIMfAvKEXp/896F8wRgtL1jaiVu
+	 wBXAxuYZ21niOeVZhtoy/c3Dg/kjj2+YDuanZT4Ub58iF+MFhgbr65GdpW86VEeyPN1S7
+	 WG+P9T1+XhXv7yT9Tpua699fZTDhFzQoeleHQlenL1jCMShUtA5iryvtR+FbSk+Hyovon
+	 G6zoaz0rrmgMKFb0vPvOTVXtO/QI22SivgBi+ZZvzqyBCyXoSl/7FzdR6DK38IE7cbTvH
+	 iqNt15lD0Do5r5N1aAdy7JSi2BNQW3ZNdSOFY7LBYbGVZ5by98F+sxXiKI4DNZBa19w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HOFr2pxS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y5vIdDvx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6252606A31B;
-	Wed,  4 Nov 2026 02:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB68606A333;
+	Wed,  4 Nov 2026 02:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HOFr2pxS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498381F0093A;
-	Wed,  4 Nov 2026 02:33:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y5vIdDvx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6824C1F00919;
+	Wed,  4 Nov 2026 02:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793759587;
+	s=k20260515; t=1793759598;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HOFr2pxSBd8My6klkIObkxlqOW/WaEPLtQUV/fdTheTVjOBrpGFrsBnfVtomL97JW
-	 s9pnlXxnZMaaQftNO3nTymX3HK6B0m8cko2s9bAp+Jw7qvr2qK/Ekv4V+Aj7ikGN7z
-	 +EVhPWPb9yh6q0hDRKt+NwTEp6/vsyO9MR0Go7cBplmAAi3ZbacLFY/jLxoxm5Y2V9
-	 BHlLXRLODvYq7XZmj/he+DZOUSx1TyryOAHkWBqfp/qkROGV2leNqOAK8vjDegN9DM
-	 X4JUZ2zImanBJKQTmLCGcpwbD5ULKfCvxg4pqKqlLq301OaYP0hJJkYYCIxnU323gp
-	 txAZMvcBm1nqQ==
+	b=Y5vIdDvxRFXKD+yDDgUuH4neDN251eEZUffzRoppVvSIK2Xl0588XZR0BObReEvs5
+	 1OCUUXcFJsGegIhWcWQo7TbF4gi4lauzrSP2TjtOzkSjGPjoEnWQVLd9yILdPW+5C5
+	 SyO4jr5psIhA2OxnEsEdmcCXkb30hkMvU6+JnNjc90UIOv8erHfNBMwZtcXg2m/iss
+	 rz8oQTj4GrbQW0uAnX+qQmt6+5ZrJAQ11NzoNRJ31RKgY5zc5t/37zwBuibckJR3We
+	 WR+ec1vN/Fkl4gv7V1X9d/0pPoXGAbADSkAjco4u2BWewNqB3Zk++aspE3R6iw9vtu
+	 NTH3FyxPm6bGQ==
 From: netdev-bot+sinfo@kernel.org
 To: Wentao Liang <vulab@iscas.ac.cn>
 Cc: David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>,
@@ -47,11 +47,11 @@ Cc: David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
  oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org
 Subject: 
- Re: [PATCH] nfc: llcp: drop the socket reference for non-datagram UI frames
-Date: Wed, 04 Nov 2026 02:33:06 +0000
-Message-ID: <179375958687.488859.16468079358918278608@kernel.org>
-In-Reply-To: <20261104022810.1484199-1-vulab@iscas.ac.cn>
-References: <20261104022810.1484199-1-vulab@iscas.ac.cn>
+ Re: [PATCH] nfc: llcp: put the socket reference on a refused connection
+Date: Wed, 04 Nov 2026 02:33:17 +0000
+Message-ID: <179375959796.488859.12096524912848885147@kernel.org>
+In-Reply-To: <20261104022811.1484216-1-vulab@iscas.ac.cn>
+References: <20261104022811.1484216-1-vulab@iscas.ac.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
