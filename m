@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793767877;
-	b=Hz8RmbdDPzSAS+KRfhqCxZ0/UDaSUdTDPk8JOnzUPsoPY2BGojZnFXgJz4xmNibtSkXE
-	 TpCrZvO0M/5wxSYrzgdtcvLkOEZyTTvtpGAIfguntvTQ6Uy8HQo/tYX0pYbvHwC6AbuFa
-	 vkNJj0w4A4jzXvlp/Od0S3tzM7dTF4/K8u3TdwXZd8ByY6Qc7Saw+lDNvonfceMuBZ0dl
-	 VkIhBwpS+3fxojIfKrQ4ru9KqrsR9fGqf2vwglc2WmmodhpYffc6ell2EPEJ2e4yGSqsP
-	 9S6QFtZwGhzZvarv1/Fm+ZY66wYdkQg/21yis81FFoGa689pk0Y5hBig5zlpCUbBVFA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793767877;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793768142;
+	b=08l5XStKGcBt0b0UUvwiadB00GoLkfZJaRPCIihsqnWV3On0XVtmZ9Obos5orGUdpo9z
+	 9IQcWiedmlK0rQ8zYN4GZlqzjiMi4YY5JAPnnB7pGATgUlmN+sng/T28aAySh4FBfFY8F
+	 z3RhCJ9HBIQTIcSJVNI+jDLwbUweZS7DE/wnLRkgGuVcipvXGpFBwHiXT7eQHJXE5Rw43
+	 YXLAQ8e1GkOt2NNolzFwfnhRsZbGJIwRzkbSrrCWcZWE092oQ+tMNqWcVOB2EK+yqsgc0
+	 iL9gCVLeoTcM2fdnm1I6K0sEkitW3IvaUmd2X3k6zVpuLuGq88+e4ea+t+8uQ/CmbsQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793768142;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Mp8xsFriBqyXmCTwSHqo960HmvB3XMBtAen4xkqgSVo=;
-	b=zdTi+fr4EL77CvZcpl0B9kzas4OpvdoKvf/zecOxmZ3Iau/fRAVjGw7ZeJf/k0Ayniwz
-	 LA6sSlGV79mrPJ4RX38Si7g4ipkgeD0SPgPI3X15OxVEV8IOsT9MWJxPk6Hzt+LcPc1oz
-	 JQqDUYK6jgyzz3IvvNWsn2tNt7GsKH5K0z5+3DaEOoAKMb8KC5AjXpk6skfaIZgDAP4lV
-	 AMz78Z02KkwZoSqJehJblI/59vNTtrbCDuvZCHPRZZ2rxjrUDqETVS7BHsRiS3b54kUHQ
-	 VQjdVaXV+5Rz+tXAPsSpAWdu7xGbZoml42MoiRgnSQIThcNWWQyM+ui3MjNMVhGOpmw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=fyg2Lfr0HdPSioS70GnDwBHK6gsJqmKsD2MC7JLmcRM=;
+	b=0toaoL2cQhKo4yZ/YuibES2hHNED5M7kjNhKEvRESCRukpUqWb4qnTMDeMctVAd9Vxh6
+	 8eQJYuuBBd5uzzN+qGUaNsv/baS2BqlI4PD/uUfShHyXxm06jRuJZM8472uj/iWVXGDAu
+	 MNkTX5d9KKAqwpubgvd1T65ZwVCGcGnEis1Dza9tmdIslTGhL7LnY7788fwx6x7+sK2xS
+	 klHdhlVp5h7WeGS2Yqtift8zDgTUhL2643+i2sMmQMvp4welY41pbpL2WZgitjo27WEv9
+	 M36o8gcqEEPQ2OHn492r1g/uyukAaSJpltKW50Vmo9eK9sTA3Sohl3IM3nefQALiWOA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UAguqIPl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.45
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kXv71ivi;
+	arc=none smtp.remote-ip=74.125.82.71
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A18606A328
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 04:51:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6A18606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA05606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 04:55:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCA05606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UAguqIPl
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-15943c9c005so923257c88.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 20:51:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793767876; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HCnC8qcTpO8psNqc+k29WVLEddnCMj72sqTC1zlF7lcT1T8mIMQUBtXlP/8YGhG/Zy
-         sHvFp1+BvxGeug1eqQYhOxP2Yr5hV394JqPQZFPfZ9ekmlPQavCC6yFqSOW7bJGuHrXq
-         9kKknls5JrLeeg7hkDgnZL0Yje6L/rMC/FLLWMpcMgkv6AZI1/J67q1l6jqUxD++qNtp
-         6koyMCcGsu+bF0175fJlivWfTtwR9vioDrYVotVQp4jqt/ai/bH2mSbSWFBZ8Dta/A3j
-         2a/abvBZza/XWHsPeX0GDIru2XhK4F4j9n0HQwtcG36A0q3P0YuL53dxIvdvq6e2mAAm
-         H5QQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Mp8xsFriBqyXmCTwSHqo960HmvB3XMBtAen4xkqgSVo=;
-        fh=q3pjB6gXiyaoodM4v5OTZ74Z7XD01pF6E0Tsh5uYcV8=;
-        b=ntC8oFkXTZ4brELliQrPuVmwuhpQOdj7gfYTXYWif2MGoAaD9He1FgFPoiTv1hTKpX
-         LeY0Quzqfi+aZV+aPGfpESfzNsPeCR+89pCbUzx1Jyp0GTTzywnid5XiVERwr5d9bfzH
-         sPbWgVM6U02VRR+UZDDa3NHw2+d0h/5KhoiHJVMs3fOViAtQnI/rmDVSFSFsQmf5tayM
-         SlZd1cYTCI5mwYTqksYEinCSzqGq3nnfOM8B2AQ0UMAAo/qiSVctf5FoObwMWSzDCBiW
-         7uSLZKJvKWfm8L7fwdVzUhci9/opC070Wmf7p51lE2RFbe+Kak7eOOWH2FYOOWajAk88
-         eJjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kXv71ivi
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-1b0d864826cso1227002c88.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 20:55:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793767876; x=1794372676; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mp8xsFriBqyXmCTwSHqo960HmvB3XMBtAen4xkqgSVo=;
-        b=UAguqIPle6zcUMb4YAD63PWBLz5jwb6dHVKUqYbn4e1cJXWj2CFq/40p0V+SKk3GCb
-         LpxfANox8Sxh2upFoUm5uUP7zd5OtCQenbdo45g0ZWLNAl7eoFVsVNlRNjAmTA2XOT4l
-         t/gARt//D7ed3JdNS+MbiDAcoRUCivKSngGseqWi4JneUVEDGjVAUoqPe1ZYWyvARc5e
-         UOu9FfaCyAUbxmX5BQRLoMJ4ybYbL7z2KisICvRoor4T4AkNiTSnrPmodlbRHKlXKbLx
-         pkqw4hx7OQFemiBmE6gjgcWs+euiA5E6jZtZIHSzoa4+I1UEC7j7P90EQa7zOLHyPQxS
-         xinw==
+        d=google.com; s=20260707; t=1793768141; x=1794372941; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fyg2Lfr0HdPSioS70GnDwBHK6gsJqmKsD2MC7JLmcRM=;
+        b=kXv71iviNlO9l3Zi8g+QxMcbDuwwUsRuZODaQ2rZ+/NM5M/bib5aimbNDl3aiEp8w5
+         OlZfTQ7zXOOnIGkgkekaUgryL2hAaq85NWVDD9sdxFGwgITX7vEgyOeGYefO23oT5vO1
+         nrNGP+ouIcCrYoiSKCW9xgq45gk/psOHpFhYnkbvw1nJePfnEhFIy4jcBodQgGv6qjGB
+         0edgErj6a+7+O8xZis7ObiYOQSnxH5JZTIsWZWIM/tw7L1RX8jkkjbXvm7uKBBxsleGC
+         MgvtC7CUsmkucup3Xyw63LPYFlr216/SSqw2nWYgv3m6JIscQEJm0X1lMsUeHqbgWPrX
+         lCOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793767876; x=1794372676;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793768141; x=1794372941;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Mp8xsFriBqyXmCTwSHqo960HmvB3XMBtAen4xkqgSVo=;
-        b=OxK1bgZUMchBK5sIwEmLvMOoX0sW8LlDKYDEqTwryPFjoFxic87jJhWJ+llvyMZFVQ
-         RdZaI7zV8M9bMufs0VmGF8ZFwu6TNO7/3kf27S1sgSmAvKi3IB2M8/vlbXeFW4YTAK8y
-         QZgPhqvj+vI5KC0pbIJsOFckdh3x26uwphxZ6aC0Y7VXGGZplv3exaD45hvEBjJSESE3
-         SPWyP65/GxV7xFFB3QfvXsAZk4KLF0P/2fverwyNs+vIyNFMQxNuBbYZshgzbiRHOzLJ
-         YOtXlByY/XmHEPm3ihdpFglqgY2tVp5HV2rcoJkKdmAikhXtB30HIoh4yT2CqOc1m+PC
-         L9Hw==
-X-Forwarded-Encrypted: i=1; AKwUvBzqdVY+89eMEmpSPiJpGr3nCfUO0n5bmGqKAKgM5vshKi9UBq1fuWQD0+Hks4gO7whfsf+A9u8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9TlBFOBwOZfrGTPCg96Ph5fkVzK8TkkOPgFKyzDSc4hdhQhQNa
-	rrO7DrMksMFI7rh1t9f0ZCLEj7RtkUYWC3QxJeObn1axkZ71BQogeJ0OlP0Hy0KWgBUfS0YhFgD
-	dUD5DXyEF7gCz0nkUlBNAOeCTZ3w/GZNppG6W3UMT
-X-Gm-Gg: AYBFou1ehBdATJqkqzUl702w4hj310lBFcdDZ52GHsPXV6YcUHBuSGFsYLq8h5XU8f6
-	Mzqff8LQmFfI8YVSz9XVTSygBJXQgY1K9ljo0eQ/pKAUYTfwyIPoPm59wCVt0l0WwoWBQgGYVWW
-	hWl37z22Gbffv54HM2aBXOfk7UoFjK2JJJHQNpyLtxrSpWbMO395TDBQN3dQVb5hTpiC5LADFaS
-	Lzxm4SSH4CbFGuwgsu5g/DOpMF6onfmM7jtnujWZCgZTGkRLaPLevMqQZ734xmxQOPHbxqYsoSU
-	qQp+E/5jvEYTPHcvJs28wiji2Ai6FTrRcUEeNi9575akHNkZL+OMCrUB9drMH2FI7bOMOKsNOWM
-	oE0Q7LpeAc8jBFB9Iy80RDn3UjXIwWcTwK15wFCgfR2yAjiaMHonva1jI2fZ6Q/IE2ws85hok4z
-	nfgCsvgh7KvaZqrExo
-X-Received: by 2002:a05:7022:7f12:b0:1ab:faad:cc9 with SMTP id
- a92af1059eb24-1ac5bbb503dmr23077930c88.11.1793767875002; Tue, 03 Nov 2026
- 20:51:15 -0800 (PST)
+        bh=fyg2Lfr0HdPSioS70GnDwBHK6gsJqmKsD2MC7JLmcRM=;
+        b=SY7ia0WP2hr/mTaZoHI0FdKUV1FQav+GUktbeE9YbV8i5bU8K1ejEtSW4giSBJYHWE
+         ajTdyuwqhxi3MqFDhG35V7Y1wA4fqy/QcsQgxDz0n+KnySf1PhkkLxWE9NT2k3ARC3ZI
+         0eIrmlyrX/DSPTXQ0Lgv+poPKT7RcCuUPZH1PBNMjDV68sBDsLHzr6/W+HNvr5uu1hk8
+         DwVmgn3L0/HyTfnHeWOqu/r68v7+Kyh4oD4x+15ryVFOP532FWjhHyCKIyF6KpHeblMY
+         wrO04dr3blXCRQS3EL9X0nagHsPspSQ/3U6gc5PjXkCLsJmF2mgqTcaCRxFgbgXzLGQJ
+         4qaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy+RZyEzR1c1aix9tAsmWuYaWH7JJ96596rmhjKSaoCBIb352q/yNgs3ffrIOoc0AHHuuJ5Z1M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+abropWirSjjgu8sgE7sRAw+09Tf7cMjfcnRUA/ERPERQTCPa+
+	DgYp2bExMOtS4va6WJNF6gPAfSIqTDvF1VBtW8kR5Tg6jlQtzPtdwxJYlw8ER4uh22M9CT9HlC3
+	mw1KT7HaXJVlQkgGGkg==
+X-Received: from dlaf18.prod.google.com ([2002:a05:701b:2412:b0:19e:9bf:dc47])
+ (user=bcochrane job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:4512:10b0:181:73fc:e53 with SMTP id a92af1059eb24-1ac5b7e21fdmr23206658c88.29.1793768140660;
+ Tue, 03 Nov 2026 20:55:40 -0800 (PST)
+Date: Tue,  3 Nov 2026 20:55:34 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,353 +75,149 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261103042210.2984373-1-bcochrane@google.com> <179376630095.488856.6614017924619723779@kernel.org>
-In-Reply-To: <179376630095.488856.6614017924619723779@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
+Message-ID: <20261104045534.79783-1-bcochrane@google.com>
+Subject: [PATCH net v3] bnxt_en: Take RTNL before netif_close() when aborting
+ FW reset
 From: Bryan Cochrane <bcochrane@google.com>
-Date: Tue, 3 Nov 2026 20:51:02 -0800
-X-Gm-Features: AclHuK9J1H0G53iFpSG9-VmpGKScwgpb_eB7c9i3tFYXGIKtJDzmkDwUVeNsWY8
-Message-ID: <CALuKKxG_j11CcA7ZEr9AashVAvtcRQCbramLXFxCW9QpqWQ4nA@mail.gmail.com>
-Subject: Re: [PATCH net v2] bnxt_en: Take RTNL before netif_close() when
- aborting FW reset
-To: netdev-bot+sashiko@kernel.org
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	joe@dama.to, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+To: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Joe Damato <joe@dama.to>, linux-kernel@vger.kernel.org, 
+	Bryan Cochrane <bcochrane@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 3 Nov 2026, <netdev-bot> wrote:
-> - [High] New deadlock in bnxt_fw_reset().
-[...]
-> CPU1
->       rtnl_lock();
->       netdev_lock(bp->dev);
->       netif_close(bp->dev)
->         bnxt_close()->bnxt_close_nic()->__bnxt_close_nic()
->           while (bnxt_drv_busy(bp))
->               msleep(20);
->
-> bnxt_drv_busy() tests BNXT_STATE_IN_SP_TASK. Normally only the sp_task
-> clears that bit, and the sp_task is the thread stuck in this loop.
->
-> Would this spin forever with rtnl_mutex and the instance lock held?
+netif_close() must be called with RTNL held in addition to the netdev
+instance lock: __dev_close_many() asserts it, and the NETDEV_GOING_DOWN
+and NETDEV_DOWN notifier chains it runs rely on it for serialization.
 
-Yes, this is a valid finding, thanks. bnxt_fw_recover() can enter
-bnxt_fw_reset() from the devlink health recover path as soon as the
-reporter is in the error state, and bnxt_unlock_sp() then sets
-BNXT_STATE_IN_SP_TASK although the caller is not the sp_task. Before v2
-the instance lock was held across netif_close(), so this could not
-interleave; the unlock/relock window in v2 makes it reachable, and the
-thread that would spin in __bnxt_close_nic() is the sp_task itself, so
-nothing would ever clear the bit.
+Commit 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+replaced rtnl_lock() with netdev_lock() in bnxt_fw_reset_task() and
+bnxt_fw_reset(). That is sufficient for the paths that only tear the
+NIC down internally with __bnxt_close_nic(), but the abort paths close
+the netdev via bnxt_fw_reset_abort() -> netif_close(), and the error
+path in bnxt_fw_reset() calls netif_close() directly. Those now run
+without RTNL and trigger a WARN_ONCE() cascade when a firmware reset is
+aborted:
 
-v3 will not drop and retake the locks in bnxt_fw_reset() at all. The
-bnxt_get_registered_vfs() failure sets fw_reset_state to
-BNXT_FW_RESET_STATE_ABORT and queues bnxt_fw_reset_task(), which then
-performs the abort through the fw_reset_abort path that already takes
-RTNL before the instance lock. bnxt_fw_reset() keeps the instance lock
-from bnxt_lock_sp() to bnxt_unlock_sp() as before, with no netif_close()
-in it.
+  RTNL: assertion failed at net/core/dev.c (1740)
+  WARNING: net/core/dev.c:1740 at __dev_close_many+0x1be/0x1f0
+  Workqueue: bnxt_pf_wq bnxt_fw_reset_task [bnxt_en]
+  Call Trace:
+   netif_close_many+0xb5/0x190
+   netif_close+0xa2/0xd0
+   bnxt_fw_reset_task.cold+0x8d/0x213 [bnxt_en]
+   process_one_work+0x19d/0x3a0
+   worker_thread+0x1af/0x320
+   kthread+0xe3/0x120
 
-The unconditional set_bit(BNXT_STATE_IN_SP_TASK) in bnxt_unlock_sp()
-when bnxt_fw_reset()/bnxt_fw_exception() are entered via devlink is
-pre-existing and not specific to this fix; I'd rather address it in a
-separate patch.
+followed by the same assertion from call_netdevice_notifiers_info(),
+fib_rules_event(), inetdev_event(), rtnl_fill_ifinfo(),
+devlink_compat_phys_port_name_get() and ip_mc_down().
 
-> [Severity: Medium]
-> This is a pre-existing issue, but this path returns without calling
-> bnxt_ulp_start(). Nothing undoes the bnxt_ulp_stop() at the top of
-> bnxt_fw_reset(). Does this leave the RoCE/aux driver suspended after the
-> abort?
-[...]
-> Since this path is being rewritten anyway, could the ULP be restarted her=
-e
-> too?
+This was observed on a machine in real use with a BCM57504 (4 PFs,
+FW 236.1.153.0) running v7.1.6: the firmware crashed, announced a
+"Fatal firmware reset event" and then failed to come back within the
+advertised max wait, so bnxt_fw_reset_task() aborted the reset on all
+ports:
 
-Agreed. With the abort routed through bnxt_fw_reset_task() in v3, rc is
-0 at the ulp_start label and bnxt_ulp_start() runs, the same as for the
-POLL_VF abort.
+  bnxt_en 0000:c1:00.1 eno16905np1: Firmware reset aborted
+  bnxt_en 0000:c1:00.1 eno16905np1: fw_health_status 0x448100
 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but commit 004b5008016a seems
-> to have left one more netif_close() call without RTNL that this patch doe=
-s
-> not cover. bnxt_vf_reps_destroy() holds only the instance lock:
-[...]
-> If this patch is backported to stable on its own, this site from the same
-> Fixes commit would still be there.
+Take RTNL (before the netdev instance lock, matching the OPENING state
+which already uses rtnl_trylock()) in the fw_reset_abort path of
+bnxt_fw_reset_task() and route the POLL_VF abort through that same
+path.
 
-Agreed that bnxt_open_nic() -> netif_close() under bnxt_vf_reps_destroy()
-has the same problem, but it is a different call path (devlink eswitch
-mode change and SR-IOV disable) with its own locking context, so I'd
-prefer to keep it out of this fix and handle it separately. The two
-fixes can be backported independently.
+bnxt_fw_reset() cannot take RTNL in its bnxt_get_registered_vfs() error
+path because it already holds the instance lock, and dropping that lock
+to reorder would let a concurrent devlink health recover enter
+bnxt_fw_reset() and set BNXT_STATE_IN_SP_TASK through bnxt_unlock_sp(),
+which the subsequent close would then wait on forever. Instead, mark
+the reset as aborted and let bnxt_fw_reset_task() perform the abort via
+the same fw_reset_abort path. The normal reset flow, which may run on
+many VFs at the same time, keeps running without RTNL, and the ULP is
+restarted after this abort like after the other aborts.
 
-> [Severity: High]
-> This is also a pre-existing issue, but the same netif_close() without RTN=
-L
-> looks reachable through the TPH queue restart path. bnxt_tph_update()
-> runs from bnxt_sp_task() under bnxt_lock_sp(), which takes only the
-> instance lock:
-[...]
-> Can this trigger the same ASSERT_RTNL() warnings when the HWRM calls fail
-> on unhealthy firmware?
+The bug was found by inspecting the kernel log of the affected machine
+and the driver source; the fix was prepared with the help of an AI
+coding assistant (Gemini based) and reviewed by the submitter. It is
+build tested (allmodconfig with W=1, plus the same change on top of
+v7.1.6 built as a module for the affected BCM57504 host). The aborted
+reset path itself only runs when the firmware fails to return from a
+reset, which could not be reproduced on demand.
 
-Also pre-existing and known: the netif_close() in the bnxt_queue_start()
-error path was added by commit 325eb217e41f ("bnxt_en: bring back
-rtnl_lock() in the bnxt_open() path") precisely because that path does
-not hold RTNL. It is outside the scope of this patch.
+Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan Cochrane <bcochrane@google.com>
+---
+v3:
+ - Do not drop and retake the locks in bnxt_fw_reset(). Route the
+   bnxt_get_registered_vfs() failure through the bnxt_fw_reset_task()
+   abort path instead; this also restarts the ULP after that abort. The
+   v2 unlock/relock window let a concurrent devlink health recover set
+   BNXT_STATE_IN_SP_TASK via bnxt_unlock_sp() and hang the close
+   (reported by the netdev Sashiko review).
+v2: https://lore.kernel.org/netdev/20261103042210.2984373-1-bcochrane@google.com/
+ - Keep bnxt_lock_sp() in bnxt_fw_reset() and take RTNL only on the
+   bnxt_get_registered_vfs() error path, to avoid RTNL contention when
+   many VFs recover at the same time (Michael Chan).
+ - Dropped Stanislav's Acked-by because of the change above.
+v1: https://lore.kernel.org/netdev/20261029032832.1511180-1-bcochrane@google.com/
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-pw-bot: cr
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 33c4cacc8ffe..f48e67670ccf 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -14860,8 +14860,8 @@ void bnxt_fw_reset(struct bnxt *bp)
+ 		if (n < 0) {
+ 			netdev_err(bp->dev, "Firmware reset aborted, rc = %d\n",
+ 				   n);
+-			clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+-			netif_close(bp->dev);
++			bp->fw_reset_state = BNXT_FW_RESET_STATE_ABORT;
++			bnxt_queue_fw_reset_work(bp, 0);
+ 			goto fw_reset_exit;
+ 		} else if (n > 0) {
+ 			u16 vf_tmo_dsecs = n * 10;
+@@ -15524,6 +15524,8 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 	}
+ 
+ 	switch (bp->fw_reset_state) {
++	case BNXT_FW_RESET_STATE_ABORT:
++		goto fw_reset_abort;
+ 	case BNXT_FW_RESET_STATE_POLL_VF: {
+ 		int n = bnxt_get_registered_vfs(bp);
+ 		int tmo;
+@@ -15547,9 +15549,8 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 		bp->fw_reset_timestamp = jiffies;
+ 		netdev_lock(bp->dev);
+ 		if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
+-			bnxt_fw_reset_abort(bp, rc);
+ 			netdev_unlock(bp->dev);
+-			goto ulp_start;
++			goto fw_reset_abort;
+ 		}
+ 		bnxt_fw_reset_close(bp);
+ 		if (bp->fw_cap & BNXT_FW_CAP_ERR_RECOVER_RELOAD) {
+@@ -15682,9 +15683,11 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 		netdev_err(bp->dev, "fw_health_status 0x%x\n", sts);
+ 	}
+ fw_reset_abort:
++	rtnl_lock();
+ 	netdev_lock(bp->dev);
+ 	bnxt_fw_reset_abort(bp, rc);
+ 	netdev_unlock(bp->dev);
++	rtnl_unlock();
+ ulp_start:
+ 	if (!rc)
+ 		bnxt_ulp_start(bp);
 
+base-commit: 787268686c64be60023743b527645a907e38ccca
+-- 
+2.56.0.398.g882cbad275-goog
 
-On Tue, 3 Nov 2026 at 20:25, <netdev-bot+sashiko@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 (2) =C2=B7 Medium: 0 (1) =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] New deadlock in bnxt_fw_reset().
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but the same Fixes
->   commit (004b5008016a) left another netif_close()-without-RTNL site=E2=
-=80=A6
-> - [High] This problem wasn't introduced by this patch, but the same
->   netif_close()-without-RTNL bug is still reachable through the TPH=E2=80=
-=A6
-> - [Medium] This problem wasn't introduced by this patch, but the
->   bnxt_get_registered_vfs() failure path in bnxt_fw_reset() leaves the=E2=
-=80=A6
->
-> --
->
-> bnxt_en: Take RTNL before netif_close() when aborting FW reset
->
-> This patch takes RTNL before the netdev instance lock on the FW reset
-> abort paths in bnxt_fw_reset_task(). It does the same on the
-> bnxt_get_registered_vfs() failure path in bnxt_fw_reset(), so that
-> netif_close() runs with RTNL held. The goal is to fix the ASSERT_RTNL()
-> warnings introduced by commit 004b5008016a ("eth: bnxt: remove most
-> dependencies on RTNL").
->
-> > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/et=
-hernet/broadcom/bnxt/bnxt.c
-> > index 33c4cacc8ffe3..1ea1e8266eabf 100644
-> > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> > @@ -14860,9 +14860,16 @@ void bnxt_fw_reset(struct bnxt *bp)
-> >               if (n < 0) {
-> >                       netdev_err(bp->dev, "Firmware reset aborted, rc =
-=3D %d\n",
-> >                                  n);
-> > +                     /* netif_close() requires RTNL, which must be tak=
-en
-> > +                      * before the netdev instance lock.
-> > +                      */
-> > +                     netdev_unlock(bp->dev);
-> > +                     rtnl_lock();
-> > +                     netdev_lock(bp->dev);
->
-> [Severity: High]
-> Can a concurrent devlink health recover hang the sp_task here while it
-> holds RTNL?
->
-> bnxt_sp_task() is not the only caller of bnxt_fw_reset(). When
-> devlink_health_report() returns -ECANCELED,
-> bnxt_devlink_health_fw_report() calls __bnxt_fw_recover() from the sp_tas=
-k
-> without the devlink lock.
->
-> At that point the reporter is already in the error state. A userspace
-> "devlink health recover" can then reach bnxt_fw_reset() through
-> bnxt_fw_recover() at the same time.
->
-> Before this patch the instance lock was held all the way through
-> netif_close(). The new unlock/relock window seems to allow this ordering:
->
-> CPU1 (bnxt_sp_task)
-> bnxt_devlink_health_fw_report()
->   __bnxt_fw_recover()
->     bnxt_fw_reset()
->       bnxt_lock_sp()          /* clears IN_SP_TASK */
->       set_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
->       bnxt_get_registered_vfs() returns < 0
->       netdev_unlock(bp->dev);
->
-> CPU2 (devlink health recover)
-> devlink_health_reporter_recover()
->   bnxt_fw_recover()
->     __bnxt_fw_recover()
->       bnxt_fw_reset()
->         bnxt_lock_sp()        /* now gets the instance lock */
->         IN_FW_RESET is set, nothing to do
->         bnxt_unlock_sp()
->           set_bit(BNXT_STATE_IN_SP_TASK, &bp->state);
->           netdev_unlock(bp->dev);
->
-> CPU1
->       rtnl_lock();
->       netdev_lock(bp->dev);
->       netif_close(bp->dev)
->         bnxt_close()->bnxt_close_nic()->__bnxt_close_nic()
->           while (bnxt_drv_busy(bp))
->               msleep(20);
->
-> bnxt_drv_busy() tests BNXT_STATE_IN_SP_TASK. Normally only the sp_task
-> clears that bit, and the sp_task is the thread stuck in this loop.
->
-> Would this spin forever with rtnl_mutex and the instance lock held?
->
-> CPU2 can wait on netdev_lock for the whole time the func_qcfg HWRM call i=
-s
-> timing out, so the window may be wide.
->
-> The commit message says:
->
->     BNXT_STATE_IN_FW_RESET stays set across the lock switch, so a
->     concurrent close marks the reset aborted as it does today and a
->     concurrent recovery request backs off.
->
-> The back-off path goes through bnxt_unlock_sp(). Isn't that the code that
-> sets the bit causing the hang?
->
-> It is older behavior that bnxt_unlock_sp() and bnxt_rtnl_unlock_sp() set
-> IN_SP_TASK no matter who the caller is. The comment in bnxt_lock_sp()
-> assumes the caller is always bnxt_sp_task(). The new window is what makes
-> the problem reachable.
->
-> >                       clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
-> >                       netif_close(bp->dev);
-> > -                     goto fw_reset_exit;
-> > +                     bnxt_rtnl_unlock_sp(bp);
-> > +                     return;
->
-> [Severity: Medium]
-> This is a pre-existing issue, but this path returns without calling
-> bnxt_ulp_start(). Nothing undoes the bnxt_ulp_stop() at the top of
-> bnxt_fw_reset(). Does this leave the RoCE/aux driver suspended after the
-> abort?
->
-> The old goto fw_reset_exit had the same problem. Neither bnxt_close() nor
-> a later bnxt_open() resumes the ULP.
->
-> bnxt_hwrm_if_change() only queues BNXT_RESTART_ULP_SP_EVENT when
-> BNXT_STATE_FW_RESET_DET is set. That won't happen if the func_qcfg failur=
-e
-> was transient.
->
-> The matching abort for the POLL_VF state in bnxt_fw_reset_task() reaches
-> ulp_start with rc =3D=3D 0, so it does restart the ULP:
->
-> ulp_start:
->         if (!rc)
->                 bnxt_ulp_start(bp);
->
-> Since this path is being rewritten anyway, could the ULP be restarted her=
-e
-> too?
->
-> >               } else if (n > 0) {
-> >                       u16 vf_tmo_dsecs =3D n * 10;
-> >
->
-> [ ... ]
->
-> > @@ -15682,9 +15688,11 @@ static void bnxt_fw_reset_task(struct work_str=
-uct *work)
-> >               netdev_err(bp->dev, "fw_health_status 0x%x\n", sts);
-> >       }
-> >  fw_reset_abort:
-> > +     rtnl_lock();
-> >       netdev_lock(bp->dev);
-> >       bnxt_fw_reset_abort(bp, rc);
-> >       netdev_unlock(bp->dev);
-> > +     rtnl_unlock();
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but commit 004b5008016a seems
-> to have left one more netif_close() call without RTNL that this patch doe=
-s
-> not cover. bnxt_vf_reps_destroy() holds only the instance lock:
->
-> drivers/net/ethernet/broadcom/bnxt/bnxt_vfr.c:bnxt_vf_reps_destroy() {
->     ...
->         netdev_lock(bp->dev);
->         if (netif_running(bp->dev)) {
->                 bnxt_close_nic(bp, false, false);
->                 closed =3D true;
->         }
->     ...
->                 bp->eswitch_mode =3D DEVLINK_ESWITCH_MODE_LEGACY;
->                 bnxt_open_nic(bp, false, false);
->     ...
-> }
->
-> bnxt_open_nic() calls netif_close() on any failure. That includes the
-> immediate -EIO when BNXT_STATE_ABORT_ERR is set:
->
->         if (rc) {
->                 netdev_err(bp->dev, "nic open fail (rc: %x)\n", rc);
->                 netif_close(bp->dev);
->         }
->
-> There are two callers, and both hold only the devlink instance lock:
->
-> - bnxt_dl_eswitch_mode_set() for DEVLINK_ESWITCH_MODE_LEGACY
-> - __bnxt_sriov_disable()
->
-> Wouldn't this hit the same ASSERT_RTNL() in __dev_close_many()? Wouldn't
-> it also run the NETDEV_GOING_DOWN/NETDEV_DOWN notifiers without RTNL?
->
-> If this patch is backported to stable on its own, this site from the same
-> Fixes commit would still be there.
->
-> [Severity: High]
-> This is also a pre-existing issue, but the same netif_close() without RTN=
-L
-> looks reachable through the TPH queue restart path. bnxt_tph_update()
-> runs from bnxt_sp_task() under bnxt_lock_sp(), which takes only the
-> instance lock:
->
-> bnxt_sp_task()
->   bnxt_tph_update()
->     bnxt_lock_sp()
->     netdev_rx_queue_restart()
->       netdev_rx_queue_reconfig()   /* only asserts the instance lock */
->         bnxt_queue_start()
->
-> bnxt_queue_start() closes the device on its error path. This happens if
-> any of these fail: bnxt_hwrm_rx_ring_alloc(),
-> bnxt_hwrm_cp_ring_alloc_p5(), bnxt_hwrm_rx_agg_ring_alloc() or
-> bnxt_tx_queue_start().
->
-> err_reset:
->         netdev_err(bp->dev, "Unexpected HWRM error during queue start rc:=
- %d\n",
->                    rc);
->         napi_enable_locked(&bnapi->napi);
->         bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
->         netif_close(dev);
->
-> Can this trigger the same ASSERT_RTNL() warnings when the HWRM calls fail
-> on unhealthy firmware?
->
-> >  ulp_start:
-> >       if (!rc)
-> >               bnxt_ulp_start(bp);
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261103042210.2984373-1-bcochrane%40google.com
