@@ -1,59 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793811872;
-	b=OrB1mdzxiu77dhHZUjeKd5Dh9fwo5VcHLOj1nmUJ6x/8KJ5Xt4Vgr6yq5sZBL5LueQlB
-	 uw+T1R8fsvhQVNxRVFkTKo/78D3AH00iZ8/MWKee9meKXasIpZu0RuSd7iZPJrLDEKy+g
-	 m2amg+hREGJjrSDu8QVvPiqABO/BH5E6QXHaBlK9d0QSPCRQ3XPi5dH8whnHnorr4SPqa
-	 c3MWdNrI8QR8U1K6h3pK5Pa77k8DFfmdS/ZNHFrg2SodBl0GWbJQAYJaBshv0s4rlXrhc
-	 tQRQiIBQEv+v9AJJZw+G9dLL0hN45t+Jq+QSW3Ggcpxj8QSQUaL3XtUP2DPScrC/WVA==
+	t=1793812096;
+	b=gYTEAbl23pBhcssxz/TU4VYhyQXoom6XjU/DKg8n3rQS9bIE3hi32fC/FiNFp/l6ldzT
+	 8elLn61GWgtbMY7YjQ5VFRk4XZm5OnSLBMqszByLD81WW+AZBLhN9UItV6DOlkPYnwFVd
+	 2NF484uUhW4Fadv5m11hHOtgjJvelYH4AlszA6kdfQmeHEupFDSP77dLcDjeSk1KoeFu/
+	 2wQGRczXRoUEeq5c1YCPFSb0E51q9/d9eGLrQqZxoi2QkOf5+YN06HlO03++x2i3JXOpK
+	 OxM1/NS2uVJDBdrJY1LnMehDn2VR+d25kinZKxTSDNAjy7zQ/KeZDwekS7CvMsO/ezg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811872;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Debian-User;
-	bh=uk4o3l+cI6AUeTKrPcS2F8cKNnNOt3JCQtSUOlfoC4U=;
-	b=nZbAW6qdTQeX2Ti7amTkJOGIGjZ19zU2j6pA/tmTuqEQTf+3sAGrYZoQypjK0v5exUFS
-	 DuMfMk6IxsNfPltJMrcgSxGH6RS06BDTLaRy8unV+RmXVMXNh+uPDaIszElQEpYjIrkh1
-	 xanQU2SMqd0JHbnIIlJlcfxAoJNv/bRxKL1a8aWs+p0F31S4n31oItUJ8YGGESr3yehdW
-	 VpEtg5D9eAjby1MYrFcHBM+jjEmx8d3lL74Kx97QnK57PIpxf3kBjObef/9NYN+fuqcyg
-	 tH7sDHXjTTLhKaueshkC5sk26n9Y3bR9nsdrbDkIf0TeEueQoP5jyVui0nDMlGtK71Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793812096;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Flag:X-Spam-Level:
+	 X-Spamd-Result:X-Spam-Score;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=ZnNxrhHM0q81jTYZGrPT/hIvWXxiJm/7oD92etJqJRGrrGJOSmF9+5jtNf9z+SDASjsE
+	 a3vioPPJevUeiuHS1bASFAkXC1T0dPiC2nS5P8geMKjrtiT2wYMqpCPmh/7gyN2OABHps
+	 BIdZuFt4dDuolyrsGQHZQ0/71pFd+M2j1MxJCN8Pt/SFw5qHM8HoMg+b3zle9n0iFuNDy
+	 zAkQm1xbne6IaNozQbc8rR64oNVOy/fNPz9t8HIhcpvktSwsRJSt0Nm4udnkp3VNA95HZ
+	 Wy9CQLnt4GKx5Ny+HReVTgOY2vvxl/QvFTW2BwlL6q1j463u5Lx+EOkk3LcbXo3swCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b="Wy/Nfw9n";
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE;
+	arc=none smtp.remote-ip=195.135.223.130
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F5E606A328;
-	Wed,  4 Nov 2026 17:04:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51F5E606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A698606A31B;
+	Wed,  4 Nov 2026 17:08:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A698606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Wy/Nfw9n
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=uk4o3l+cI6AUeTKrPcS2F8cKNnNOt3JCQtSUOlfoC4U=; b=Wy/Nfw9nAGXrezygvqCJUcWDuP
-	4tgj9tSVq9W21pEAPZZ9e6czTmt5vPLa3mjxAKu+VopWXU1bLEI6w1m4C9tz+LxLDoIrOpv/AFWdL
-	7ifGkJ3Gm7GGZZiRqwp4QZlll2MusDoLdUSyk1jgb6jvIbFJ+8S52iLM2w1eVpz5cNz3x54dRDXK5
-	6Krp4Nho2/k3OmuX0nuYY58Vsx5czGjZf/fTUbXYftJwo6QS7LB16RwIRSkIlulkfDnW08RGCrG3m
-	brKhMGLNMCjYQdus0nbmlMvJmgwdnIjcEmggGy5V9J+mXcRAjLgfK7U6zI+FZTcZSlrEf1cpCTZFt
-	6qBwWb9w==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xOePQ-007sJp-24;
-	Wed, 04 Nov 2026 17:04:24 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 04 Nov 2026 09:04:11 -0800
-Subject: [PATCH net] net/mlx5e: Fix queue stats access to queues without
- stats
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fjeXHbcB;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sPziOhVE
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B404E21E87;
+	Wed,  4 Nov 2026 17:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
+	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
+	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793812093;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
+	VJ546hT6PFr1ahBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793812093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=fjeXHbcBmeGoOsQ66MGtk7GS97PTuZ0SEVrDEHqBxbJJLqTk7k413Q5Un5kc3kzCv9DGv1
+	svXJGNH7HfRr8rq2ydZrKOUWAS3UWNAooQXZml6mVQGtgM7NzwVVDEzRJerTeElyCC8OPv
+	o3QHY3tzXARmYC9Rw9KUCZgK7BbaYe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793812093;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KerPOCuXiJ/QZToY/uoNDeTIPUL/z8dbK1bs/3iiQhs=;
+	b=sPziOhVEQebu5+LUfB7+JL50/zHMNQZED0i4bMOiXVcQLwF+IIytgIue9+9NhG+mHS857y
+	VJ546hT6PFr1ahBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80407134A5;
+	Wed,  4 Nov 2026 17:08:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wvMBFHxm62pTFgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 04 Nov 2026 17:08:12 +0000
+Date: Wed, 4 Nov 2026 17:08:10 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Pranith Kumar <bobby.prani@gmail.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+Message-ID: <autkT1eNM7-oSM4F@pedro-suse.tail5790ac.ts.net>
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+ <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+ <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
+ <aus4ag1KxpuBNSP1@gremlin>
+ <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,105 +125,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-mlx5e-qstats-null-v1-1-a6a003245cec@debian.org>
-X-B4-Tracking: v=1; b=H4sIAIpl62oC/yWM2w6CMBAFf4Xss5vQyiX6K8YHLgdYU6t2iyEh/
- DtFH2eSmZUUQaB0zVYK+IrKyycwp4y6qfEjWPrEZHNbGZMX/HRLCf5obKKyn53j86WvCosaGGp
- K3TtgkOX3vJFHpPtf6tw+0MXjRtu2A31tYDF6AAAA
-X-Change-ID: 20261104-mlx5e-qstats-null-39d642e7eef7
-To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Joe Damato <joe@dama.to>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2484; i=leitao@debian.org;
- h=from:subject:message-id; bh=DiyLilUFtJe6EmmoocnPaoco145t0qJs//3Ho1BL0Wk=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq62WVgMUdZQ4y0rzCThMu01r/F/P+jSPB3bkZk
- b3M/nIuo0mJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCautllQAKCRA1o5Of/Hh3
- bWRlD/99Y/6qRsFFNX71O1qu3CGXHscsZwfh3YL61/vLVI4DDqf7GnBdpkBU9zJ0Clyrp/KBMuR
- ZkOBaMoBvm+E+HRVEaORAGGYwbNzJGN0DwfGFL6ZG/7gb0ckFh61uFAlqyendRGKcbwkN4PXVnt
- 3784zfyNWda0EeWDNGjD+oABU4Era2v0ljujk5bsWfXnqeqI38rI85R9TonKew6agHkGDQ0cZtW
- 1Vcg3fUW3dyFSlaOxfia3zO8rh78fEB3RQxK4K1yk9hYZ8xFv4U/KD762bj2Jfco2DxJg+VoJMo
- Or+yg1erejs5oFsMAcHq4oCXpcD3q/N+D5MvukWOfDHxMTAmaDVgeS032FFfyqj9jTbILWpAsuT
- 7dON+rw/NX8kXgszgNYGQNGxd7hSKHHKsigSzydZy/zsG6l2nhoWAT0k7d+pVKzudM95mBgZDSt
- SRW8xhs+znClLYOAdvI7jvFafPY+Q4S4NxSzyn8xvajoXTDi79YBIUtx897Nh3XV4tI/5uuvWrf
- e47uy6ZdyuJQOME4L7wlAW8Z5ufI09HuiibVAZek1y7rgYWD+a9RF21R8xw6oKM0QswLoIggMN8
- KETDdftzW6rDlVuM/rav9jpM2r7/XW0E8XngG/IR2qj3JXDOS+dhjwQFFNLGgyT64mFI756+Lxo
- z92N/uGV2L24xlQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spamd-Result: default: False [-11.80 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_DN_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,infradead.org,google.com,suse.com,surriel.com,linux.dev,gmail.com,kvack.org,vger.kernel.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -11.80
 
-I am seeing the following mlx5e crash in the Meta fleet:
+On Wed, Nov 04, 2026 at 08:51:20AM -0800, Pranith Kumar wrote:
+> Hi Lorenzo,
+> 
+> On Wed, Nov 4, 2026 at 5:55 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+> >
+> > I mean 1.54%, theoretically is even less convincing for me :)
+> 
+> With reducing the strength of one barrier, I think this is a non-trivial gain.
 
-  pc : mlx5e_get_queue_stats_rx+0x4c/0xc8
-  Call trace:
-   mlx5e_get_queue_stats_rx+0x4c/0xc8 (P)
-   netdev_stat_queue_sum+0x78/0x480
-   netdev_nl_qstats_get_dump_one+0xf0/0x268
-   netdev_nl_qstats_get_dumpit+0x7c/0x1f8
+Counting cycles on an arm64 simulator for a microbenchmark is completely
+unconvincing.
 
-When dumping device-wide qstats, the core calls the per-queue callbacks
-for every queue below real_num_{rx,tx}_queues, regardless of whether the
-netdev is up. Some of those queues have no stats behind them:
-
- - RX stats live in priv->channel_stats[], which only has entries for
-   channels that have been opened (stats_nch). real_num_rx_queues can
-   be larger, for example after the channel count is raised while the
-   netdev is down, or after opening the channels failed part way.
-
- - TX stats are looked up in priv->txq2sq_stats[], which is NULL for
-   SQs that were never activated and for HTB queues while the channels
-   are closed.
-
-In both cases the callback dereferences a NULL pointer. The dump needs
-no privileges, so any user can trigger it.
-
-Return early for RX queues at or above stats_nch and for TX queues
-without SQ stats.
-
-Fixes: 7b66ae536a78 ("net/mlx5e: Add per queue netdev-genl stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index c3c2c5720c6f32..72bca10c579df9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5489,7 +5489,7 @@ static void mlx5e_get_queue_stats_rx(struct net_device *dev, int i,
- 	struct mlx5e_rq_stats *xskrq_stats;
- 	struct mlx5e_rq_stats *rq_stats;
+> >
+> > In any case for something touching a sensitive memory barrier operation to have
+> > a stronger argument put forward for release ordering being suitable than simply
+> > stating it's fine in the commit message and updating a comment.
+> >
+> 
+> Can you please explain what information is missing? I think the commit
+> message has all the details of why release is sufficient instead of
+> full barrier.
  
--	if (mlx5e_is_uplink_rep(priv) || !mlx5e_stats_nch_read(priv))
-+	if (mlx5e_is_uplink_rep(priv) || i >= mlx5e_stats_nch_read(priv))
- 		return;
- 
- 	channel_stats = priv->channel_stats[i];
-@@ -5521,6 +5521,9 @@ static void mlx5e_get_queue_stats_tx(struct net_device *dev, int i,
- 	 * inactive sqs.
- 	 */
- 	sq_stats = priv->txq2sq_stats[i];
-+	if (!sq_stats)
-+		return;
-+
- 	stats->packets = sq_stats->packets;
- 	stats->bytes = sq_stats->bytes;
- 
+rmap is gnarly code and I'm not sure people have an appetite towards weakening
+random atomic ordering semantics for a virtual 1.54% cycles gain in some
+microbenchmark, without actually explaining why it is safe. __folio_remove_rmap()
+has (indirectly) a lot of callers which may subtly expect different semantics.
 
----
-base-commit: 241dec6f9ab74d8c3ef246764f3611666b96b9e1
-change-id: 20261104-mlx5e-qstats-null-39d642e7eef7
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+Pedro
