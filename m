@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793820095;
-	b=PpGNl2JQ+Iyn+xRsPkOFwNGQKgZifn2VdMDrh2lzlqAcBVLJStjcibvYaKVabTOlA0be
-	 4ODPnhfIsS8bRz17dD3M3IfREJ5sPvVCk9pnn65Mt3Z2BCYJgWRqRcmepm9WSiKILKScc
-	 hnd40fvuiOmWbTyzd7798FgqGi3gGBMAznwE/4eNlDBMIWSJIAbSmwb+l/1AaR/Iq1Bu4
-	 PaSsjO1H8qqau96qEzOswi+0U0AYT94GQSY3mma+545hamhH8qxnZ2s36OXT6aT4CQQXf
-	 ZpBb1x2f7Z6CJpq08S0D7kqaQQyWemA4DjfMggz6XJqTZcwAsGqnHLPxO6G4UwEit7g==
+	t=1793820140;
+	b=bOBICy6Dj9CTXnEceF7geiRFDBpifes08k3ES2WYEqPEAw6qaiXhKbAh2nIradIFKDkc
+	 v3ri/bBvMrl/jHgl4NwDX7V+QMPXAsBW6iVPCbzmIlfB1n/W/T72Wzzx4fIKcoKHkbh6U
+	 48dRQhqHwnStOTIe9bTuZ2u4t+j9Y66/kd0Ou/82mCi9S65H1wiGLslXiIdSfBkUSLm+h
+	 gh1dlwRw7N0fCngxooiih6fO5Fl4aPkLNsrlVvRgcXdi/3VzZ+vN2eAc0UIhLqEqhQfWZ
+	 CtM1iOCxd47VrJvwRf2KaivxpxTxHzO/ejrKcyLVKU5T8nyL74dp0Bd+enBYWqMMdVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793820095;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793820140;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=ih8EKkL3fEFrmnOibnSg6zuDA24U9CpFmMUb1+ThTQI=;
-	b=sMunYd4xJPcP/d89IArdZqMCCE30wexaTGhVntJmaxDeKe2/mTiBynXQH23cxfE7zOIr
-	 a72HO/gry9K229WLZhXaJv1tG0Bbak70k4Tx/7PqFWMvJHUrxiJ9nVhYAjWIoRI2bv8Wa
-	 SpsIuAWGfq8vBbN0d5wJGxnhL/OiWIt70CDiOX2Lk3V8boCl6uLk3csIU9DJ7KAawItCB
-	 0GEq6c/2IQ4ppmQv3Al7b2r2dfLOXfBZYcoq/9isSLPM6bNwC8V50ENxO7B/Orflqe83Q
-	 I1MENUp140WM3v/7UXK93ESgR5BU3CC0uj2N5FNcrPggDtrcHc+Uxi9Uti2+4txNRIQ==
+	bh=frXlYovGKxKiSN/Oj3/IY9GUET6etUhHzbC1M94LuG8=;
+	b=VK1v6kiQLzDMhP8FLgkq9jFO1jbWsvNnQau/9r+BkkqS/ZdeHoQCQN8xzI/lFNrPmIh3
+	 lGtIgPbeco2nDTMset394w1hlXByTTVzEWiAL7oIsoKDGsJYfW3J2RJowCDSTrAnYCHB7
+	 SZ5AbThqK3PU7A/PLZZ8+sKzluXuuRSkX7sV8Qx3vIIPIe6t+tLPvlfiEYkODcdHo2yj2
+	 /vbiapFCZzep0o4KWhAl9EhkLxGtiAyaK9C6ucdxITfvPCLwbERf0TGCF4RXEdH5rSQB2
+	 bqV0qC86DFTh961Kjo7cQPxxZ1BIeTP2H0ixR7WysA4kEHK1L6hrXMvbQuFgkq66C2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="NV/pCHTx";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m4qlh5ad;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0F0606AB3A;
-	Wed,  4 Nov 2026 19:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB963606B2C9;
+	Wed,  4 Nov 2026 19:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NV/pCHTx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDE71F0093A;
-	Wed,  4 Nov 2026 19:21:22 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m4qlh5ad
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A39E1F000C1;
+	Wed,  4 Nov 2026 19:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820095;
-	bh=ih8EKkL3fEFrmnOibnSg6zuDA24U9CpFmMUb1+ThTQI=;
+	s=k20260515; t=1793820139;
+	bh=frXlYovGKxKiSN/Oj3/IY9GUET6etUhHzbC1M94LuG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NV/pCHTxChzVH1ioWmq+QeUT+SBXucwSnRPJOdBi/Q2y75DGHw15YBMqYjqgrtt2O
-	 VyFPPs8v7zjoqFDFOJ5oAl9YXifHpXNyabEPReJZQwa8XXH4iQGv2Qty9h/jandirD
-	 aUMSk23okxfo9KtkbC4/nzn1Iw09lddant5cO9hakE0csEjqm8lPvF90MPEOYpmUAd
-	 IMkDVpUwfqgAQLlAK9nXdyRgIdGxWTHDKSyuqOT48xWUvA/iAJk+qPbBXnzRbF0y+d
-	 wn/gLZpI4BHKSDGznFL2I2ZF9zF+c1mxFQKqQBN2chjmpu2miV52eKF6iZL2Z2lRgn
-	 AL7Cg1xDOYz2Q==
+	b=m4qlh5adzIihmnlMCPV3MfzvM9clEODdoNPI2uMqY4fs5tXjOCWDUSzu6mv2JPcnd
+	 rIPr1zKO2U3CjW3V1MIfmNbgfh1n07E+bfpMs8tk02/3DnE87bHvJw3d0jbyRKMVJD
+	 IyG1TCJ8IDfIKO9zXzTPhcHA+ABY+MPRa3JEdRoY9H5TpyzNGzOxFD39D4e/nEzri/
+	 xV3khedTdJnJfO/uoKUxMN3c9AMOVj129ZcQ4wKqGT6ApGnU+0jvS+ZI/4rijimnGb
+	 2/KGqEkHg6aA14vgzVafdv5HLYM59RkWvexV7pVOwnU2YNnoy7SUAi1RAXlTmBHVKt
+	 aZyeLWcmGYS+Q==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -99,11 +99,10 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 22/51] ALSA: info: don't write past the end of a data entry
-Date: Wed,  4 Nov 2026 20:21:20 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-22-021c84d852e0@kernel.org>
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 25/51] wifi: libipw: don't return 0 from writes to debug_level
+Date: Wed,  4 Nov 2026 20:22:05 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-25-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
@@ -117,40 +116,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1329; i=brauner@kernel.org; h=from:subject:message-id; bh=/wIh+WZXKaFyyFYwMjXKmLvFs42DoCHjOzS3J0v96D0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bny2zMufh/VIknXNykPasit38Tx6t1dcVkb8Us6vt wpbDDY/7ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI8+UM/3Qne19pyPzkZ7uK 4+ps9RZDLa75iTtP5zvl3PvzK0/j/yuGf5bm066vnniBYWL95HgLE52AGfqMMk4eWldmv104x1K Fmw8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1059; i=brauner@kernel.org; h=from:subject:message-id; bh=PSZyn/5j7f+UAGnOkF9zGJ8rErtLF7uTzeHltQyv5ig=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bny1/eaz260dbT8unLZwrN5tXTy3yfvErX9TPsXMM V8nc4f3WkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEjHoY/iffUCphqBDzD6jS 3KKZ9/nt+Yxbx7kDk6dL8t/4/j9YjZmR4beq8vlDlkeLZQ/dKD+x8ZzFnrPzDR5/5vD+ZfFD7WF 3CS8A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-snd_info_entry_write() clamps the count to what is left of the entry
-by computing entry->size - pos as a size_t. For a position past the end
-that wraps and the write goes to the driver unclamped, for opl4 into
-sample memory outside of what the entry covers. At the end of the entry
-the driver gets a count of 0 and vmalloc(0) warns. Before the clamp
-moved into the common code the driver ignored such writes. Fail them
-with -ENOSPC instead, like a block device does at the end of the
-device. Returning 0 would make writers that use stdio retry forever.
+debug_level_proc_write() returns the length of the string it parsed. A
+write that starts with a NUL byte thus returns 0 and writers that use
+stdio retry it forever. Return the number of bytes that were written
+instead, which also stops writes longer than the 11 bytes it looks at
+from coming up short.
 
-Fixes: d97e1b78239c ("ALSA: info - Check file position validity in common layer")
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Cc: stable@vger.kernel.org
+Fixes: b453872c35cf ("[NET] ieee80211 subsystem")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- sound/core/info.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/info.c b/sound/core/info.c
-index 023b4736aa6d..f608d335b6c9 100644
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -171,6 +171,8 @@ static ssize_t snd_info_entry_write(struct file *file, const char __user *buffer
- 	pos = *offset;
- 	if (!valid_pos(pos, count))
- 		return -EIO;
-+	if (pos >= entry->size)
-+		return count ? -ENOSPC : 0;
- 	if (count > 0) {
- 		size_t maxsize = entry->size - pos;
- 		count = min(count, maxsize);
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_module.c b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+index 22358b2c2ecd..552c8ff3928b 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_module.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+@@ -236,7 +236,7 @@ static ssize_t debug_level_proc_write(struct file *file,
+ 	else
+ 		libipw_debug_level = val;
+ 
+-	return strnlen(buf, len);
++	return count;
+ }
+ 
+ static const struct proc_ops debug_level_proc_ops = {
 
 -- 
 2.53.0
