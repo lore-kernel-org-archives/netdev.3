@@ -1,22 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.5
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.15
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1793827206;
-	b=oBreD0NHCSpMPBUPG09DaU9QRo7R+bMUWwpvocYmV+NyxMBX0SrrYhzeurPE+/fx7hws
-	 cM1eeDStoXrgwfButFCAGej52UerKZwpjEN68IUzEAI5NvVrILRFl6aV1y5FrMQQ0HlJn
-	 1aE1UxLjewR5ZmDC6aTXzAIsboR968GMXCUyesWuW0fix6KhxeK7Em5qynvTn8jyNH8eS
-	 UFiwf1UjBFUM3XW5FoJZj8YRklrkOF63invx4caJPc+O68pmsdYqYvlTiHQZG3c9n4CrL
-	 TbtFfCQuOEourFXsuG8k0He2WgXZLsxp8RQcRz8iGeAjBePi/U7pSQQFeBIbY2Qso5Q==
+	b=smt+W9aVv/Ee//W53h5VoqKIob58F1cqyiN0KMi+dsJTsEZHVjBuwmRs/AuGBYDzHPZI
+	 EN55gWacHhZmwRYrcYCKLLqQAvYmjPeMt9RIC7P+49oDR0GJPPGr/cfre5g2A5tykhqx8
+	 if7cgrLvzeBV4FfYOb8m63nOvo/fyo4VFRgLG283Ci2cifNLwabyN/4vw+05WqD2d7gd5
+	 99YLQODArtvW7UOk4w3p+XN7nm1a/BQnbGR/iX/xHI7GtumqxtW2OnPz+9P3Yxh28R0pu
+	 vJcI+PdsPmVoxvmy51uynJtWZGoj7QaKqVf6xUT/m29rZfjxtTLshgtSyNuaRVuzpSg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793827206;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 From:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
@@ -26,53 +26,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eOxMHXkQ7P1VZT9E3exgWWiZJEC6dXZ4SGBJ1mLWO5s=;
-	b=hpLgx0zNcZvWZ2C3GIZcZsr85T0YqhJQ9/xGp4g7Kx0FTxYeOa9ErVmktKvlInY0DVii
-	 Yc3F5rCVQvNvcQbl4m9iAE0mlreGCboIuFmi+Gwn/cu/UmNho2x+eWI3+NtEGCGt2/N4/
-	 gwMpS/JSdRcRPzaxTP+/l7XDg37KaEp5QQmCDIU1iHUYfvhkW63cr87zYAMi21hkP3hvj
-	 zfmiXjxtirWYeIqqCBZ++ORV+WrI03an+2Sd+zp2vvpldtbsqudQJ0vmv8lLqSzsFwnbc
-	 93Cp4fq6oZu3tkkMCflzoap7eGDZ4YebVH5K8nWPi3naT3vcso6l93k6AvBeQ5yS1Ng==
+	bh=9Es1gM8LS9tAV+WW7bNMA2fZCPfH7pbTUuphDn7RIQU=;
+	b=CHVvQTd76SUMBbrJP1ltOkZF4tXOUEJokTpFfD1JDx0SiAaOUyt1oCgWWhgMDFlFIuw2
+	 KaOrMJvwwfd7mHFZRpPt+vc9Ly6yCrRnyUEHkThQf545SGWkuNOimE/j/U/focBYAkIDs
+	 BpiTYcGX0n/zoVa5TJKtSNG5lvE4sHMBAc/qGepre87Q1o+z67IOV0uHOABMqeiyxG4Kn
+	 +ddIeDH5XvWgvpNIryo1I1Y7msjrlXWGY5eIbHLWtJhvHU8kcXdQMZx5rO2wogH7LXZrf
+	 GmuymASVL/6CQJY+Fgl8DJpdjq+gq06y1i1d25mQCqi+x/uf8+FdCgyZQQpvoVI90bw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OwuN7L9y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.5
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010005.outbound.protection.outlook.com [52.101.193.5])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WV4jkAt5;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.15
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013015.outbound.protection.outlook.com [40.93.196.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B988F606B2C4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06468606B2D6
 	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 21:20:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B988F606B2C4
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06468606B2D6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OwuN7L9y
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WV4jkAt5
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=APQD8NVbdsRTFT0anLgm048ilc2Oc7bNUJ0TuzBvdGnWBRST3A4HlyrpGM7ax5o8gCczmMAILObjZEy6Hgj+0if+gOET71QMfMRBiQ9AY8fa1qBWtlwji5f6ELV44MkBpRZMMxdJnU3Oy4vnM7KPBw6+eqEOsLC57MOut1yWac+G78ui147VjExgdOGpZmgxH/Lz8M4FBtNpAe8YuIfkcaM4mq3qXNkhIlLFnCauEdGbi9dVTDeHWH/L/qa5Gkxfi4NcYHCmNnyT/yyaUHrFPUr/3UljLKV7ILBb2k8oIDNrWLA5YSQgLVXo0hRC+IZPKTrsp/vtVU3V7MBA5SiaDA==
+ b=VdAOZUD541MMYc4NKXZ2pBW/mevMW0dbg++dNTSpp2jDdAHH1vztdCHoo/rdSPotwsLYpMCcjnrLOX2i/Jn0Zfmxv7s+7VB4SCQ4Hx+GxEHPJFV4J7rX3p4MbjmNJbPEEmN2Pf+YgcaDogKlGUvV03PYPr9X42CMoYqsyxtHkB8TbmpWUySd+LHOdTkXzBsFeltILzdl/flv314h+nSJ59Py7tJfps3qkbldLXWB1B3Kmd05tZ2InC+0j867ftoWc/cqpPIvSgTinyIyJN9M/WByN3zXgr25mmBkwh6Fe7ITwmPbAW0rZ2h8gT6IPvCnzowiJ52zEBT4mlRsxQ9J0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eOxMHXkQ7P1VZT9E3exgWWiZJEC6dXZ4SGBJ1mLWO5s=;
- b=xdPR8aBcUqGCh2OYRRgmq+6I/1odELYg47yxX3DWekJPIJnqT09Z8kqXhRZgtBfGXjQiuhLalPaRBmspxYHaokcE9u014vIUaYI/dC9sr0SGgg7e6HUZJtevKyF5iQ0c0oRKFReHP0wFB/UvmhXnZx8mdF53xx4umrReqTM1CSnG//lwszXDH8rJYOqrhxVSbHGTeaSRNV4fxdlR3wuCzHeyMelHY/isqkpNbgN+8IsYU+FKh9gMPRXaYdIR8MiEOBISA8QZPkDof5Q5wgdLZ9cteJa5svaPa3cd9El06m7zqT2YVFZBAkzJhjSPNTIHeQHJG9R5EVUXhifWAkVo/A==
+ bh=9Es1gM8LS9tAV+WW7bNMA2fZCPfH7pbTUuphDn7RIQU=;
+ b=csflmvhyuP+MYMsb16xk9MrPa+VhjcAeES2tJoyqC6Alpu4IwxszSG0IZ510Zlv3VErGySB5dTagcr9sTHjDBzL2wNCRRm+lJgnobzdFjnrd9yJEkDgaElbBTg+78bjJOnJOZ8NM0x3lOdUPuyFtf6kF2AURefu691WM5P/7D6BV/zTs2H+GfQaFR87OXmeuBdR7kSkue+iVINNsywu3S7EOmMy1HiAyeUXSnau3KwSh4fbWgmV0uYs4jm75lo1y/PCwqOBs/ZGswxEWlDA69V5Bnd6ujfsVpilnkYFEIjJ5/Xl/cWFWqutZyY3T6Q+j7GJU59g1+CTcmPse0zWR9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eOxMHXkQ7P1VZT9E3exgWWiZJEC6dXZ4SGBJ1mLWO5s=;
- b=OwuN7L9yoH9WNSNT7b+PrZfGbJxe8j1jb3+dR5KcR+PQpsVu9AyMS4H40+kD4OKUHsFjn2DzF7aKMQuiTBsvdLONTuPrnS1U3uRIvn3UwLSslqY3DpT0eY6lgsEgxZ0uc7HNzSOt93RvTNuCnX8BPtY13w21vkoi16uWnD3rA4k=
-Received: from CH0PR03CA0027.namprd03.prod.outlook.com (2603:10b6:610:b0::32)
- by IA1PR12MB8334.namprd12.prod.outlook.com (2603:10b6:208:3ff::11) with
+ bh=9Es1gM8LS9tAV+WW7bNMA2fZCPfH7pbTUuphDn7RIQU=;
+ b=WV4jkAt5H1sTl03mdZq967t4Ig51AAtTSS+ouq3W+2P2bcfq9xuFOWKFkIyAdSV+9qqpigZ4dleW1fdNfe6zPVsL6AzBzyQw4n/yvj0Hzelqhmagv0Cwtl3+aml7131TFRpUEIVn6iYJanS439HjtvpcYd8H2xVvQ4Fn4o+3AQA=
+Received: from CH0PR03CA0030.namprd03.prod.outlook.com (2603:10b6:610:b0::35)
+ by CY8PR12MB7683.namprd12.prod.outlook.com (2603:10b6:930:86::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Wed, 4 Nov
- 2026 21:20:02 +0000
+ 2026 21:20:01 +0000
 Received: from CH2PEPF00000148.namprd02.prod.outlook.com
- (2603:10b6:610:b0:cafe::16) by CH0PR03CA0027.outlook.office365.com
- (2603:10b6:610:b0::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Wed, 4
- Nov 2026 21:20:02 +0000
+ (2603:10b6:610:b0:cafe::70) by CH0PR03CA0030.outlook.office365.com
+ (2603:10b6:610:b0::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.9 via Frontend Transport; Wed, 4
+ Nov 2026 21:20:01 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,15 +82,16 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  CH2PEPF00000148.mail.protection.outlook.com (10.167.244.105) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Wed, 4 Nov 2026 21:20:01 +0000
+ 15.21.592.5 via Frontend Transport; Wed, 4 Nov 2026 21:20:00 +0000
 Received: from SCSEJOYNER01.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 4 Nov
- 2026 15:20:00 -0600
+ 2026 15:19:59 -0600
 From: Eric Joyner <eric.joyner@amd.com>
-Date: Wed, 4 Nov 2026 13:19:42 -0800
-Subject: [PATCH net-next v3 1/5] ionic: write the extra_stats invalid
- markers one counter at a time
+Subject: [PATCH net-next v3 0/5] ionic: FEC reporting fixes and
+ .get_fec_stats handler
+Date: Wed, 4 Nov 2026 13:19:41 -0800
+Message-ID: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,9 +103,11 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261104-ionic-get-fec-stats-v3-1-b261fd53d0a7@amd.com>
-References: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
-In-Reply-To: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOQQ6DIBBFr2JmXQwMVqSr3qPpwuCoNBEbIERjv
+ HsJG1dd/rz5b/4BgbylAI/qAE/JBru6HOStAjP3biJmh5wBOba8Ew3L3Bo2UWQjGRZiHwPTmiv
+ Z6rbRvIPc/Hoa7VasL3D51NEW4Z3JbENc/V7eJVF4MSspUDQcRS3uqDQTLM8y9WfdHflnvwy1W
+ ZdiSHi1/u1JmAVCjpzUgKQ4XobzPH+ExuiP9AAAAA==
+X-Change-ID: 20260814-ionic-get-fec-stats-990736964908
 To: <netdev@vger.kernel.org>
 CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
@@ -117,103 +120,103 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000148:EE_|IA1PR12MB8334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c7a6f71-68ff-431b-2de5-08df3ab9635a
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000148:EE_|CY8PR12MB7683:EE_
+X-MS-Office365-Filtering-Correlation-Id: 576c41ab-a52d-4ffb-79a5-08df3ab962ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|23010399003|10067099003|22082099003|261102123227099003|18002099003|261022105027099003|56012099006|11063799006|261021121427099003|261026121527099003|261021135927099003|261009223027099003|261028144727099003|261026140227099003|261022075727099003|261021123027099003;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|23010399003|36860700016|6133799003|18002099003|56012099006|261102123227099003|13003099007|261009223027099003|261021135927099003|261021121427099003|261022105027099003|261021123027099003|11063799006|261026140227099003|10067099003|261028144727099003|261026121527099003;
 X-Microsoft-Antispam-Message-Info:
-	XdJKtqbymzyzTi85DIkwr5VLA7T2Ul8CTDL2zJjSe2JKRVs8Uyw79598vcO3Tmc7xMAho7/3Jxjksiq31Hljr2VcUDijiRmew1pNjGBrRDBYiZO9gDgcrscroIWTPX8f//ye5/Y18isKjay2cDnshiG6uen6kiP0iDfrACyLahBWOeDm1MQAChERb193kLZT80tosee0DO8HHGvCjoLIJUJVd1e+q0lgK2aU6z0QWe1j1e9cACwHbN3vP8T126AQOSubq/WXne6u00WXoMYQJwCgAIFlxb/xfySC7e8WrxvzGb/9YkQvtxmttDANNHXz1vLA9po2r9ndHeqQmFbSiJwuh/u6/kamQSA8uPjab9c7t+6zJ1fNUcd8rj4J8C0rXZG6n8HGcE+0L+150j3eRVCHQ1EhMW2w4lQcSTOpm5+scnmSygvmuT8WZT4t3sZd3XAYJ3tuJJbJgtt1q3p11CHIcQUyqRB9hDDjtrewwYQ4lcDeQ9+E0xz0K947wQcPQuzhsutNw6PuDFo9nKLg9gA7NwiQXcIvOGMPvy26pJQaY6XV9Q8HlfhV87b46w3mtaMvcgeP2/nVNwiB12G2UBN759RRafMFBQ00svj8Ng3nrySCZH/eZrIJ2HAD+WU+K/Fnqn6HOWbrMSna3wNOiZIS+OQS3iAm+BIY8vHIXIWd9SWB1NPmRXQH1PjZNvz3Oh9I/Jj8TIj/Nec7no89mg==
+	/aaKE0RmteqR+x2ikAjhu7JM+A2OePh4v3ijCdyvYeq0hbM8znAWe87BZVnPBo4TD2gctUSPkJ+cTv2Gok0+sKdaSQRdp09990iBKCgQPWqPIwnEAkn7JdAxjGOW4W36R1IwbJZcedg9nDR4mjT90Idogu7X+8wdgG3swbdbIHrWn6J4urcJHpp3/BlzyhnJogpqDU1yofW5RSj9Vo8io5mhyc43+qg2+nJ29I1QahLR0Ltb3CizC3daJlmyfs7JLmpFVBcqDSovI3Bao8BjnXH8EV8Rw0OXdP9lO/BOrckC+wniU08I8NT3ZwZWGgIpqqKSKCrtjUEyzf0912xhvBxGj5cOMFf/4ECFn18JseTHYBn3Pngj1M83RjILWLp4E78DF8w54/vlOSHiY3hfCsXhwBNXs9mSjtdzaYvpPi3g5NTrMnN6Ky4bNh5Hn+hNowzLVpZRqtZoYgW0J2j89kC9UlofmIduMkJxqZeDle79yISXMgz7S1bf++D/tvy2umDEQpkUgSLAr/RmzTc/m5AdhXoL1k68JOLe/sbaFeGdJeDFLo/OQ/+SRY1Bd8XnWTIfYfAIkq7Aqmh/5uFhLPG54IgrFjnt6DlZGhVgj8qcK08qOir778R5CZM0mEZIIgV5zUQYa3SdjC3kTqrOnWqRqkY9VdJoYD4FVkX+3pw=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(23010399003)(10067099003)(22082099003)(261102123227099003)(18002099003)(261022105027099003)(56012099006)(11063799006)(261021121427099003)(261026121527099003)(261021135927099003)(261009223027099003)(261028144727099003)(261026140227099003)(261022075727099003)(261021123027099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(23010399003)(36860700016)(6133799003)(18002099003)(56012099006)(261102123227099003)(13003099007)(261009223027099003)(261021135927099003)(261021121427099003)(261022105027099003)(261021123027099003)(11063799006)(261026140227099003)(10067099003)(261028144727099003)(261026121527099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	MTwunBbmOTGZ4cKDvhW8yM3E7StH2vH/rpLU0+Rwaxvp1X1+2wXI2vkGBJDCRH4r/xq/Ky1BE9t8E4oQhHFT2pYMWyG+ySbel/MMk60NH6q7oAB3UGCiYM1AAc7VFh6QKnYpupUtOFsAwcfF9zi2Cnsypuv2Su5hvVyv7uG8UYxZRTD0jAoX0CQ3EDV+3TpieUa7uJcwAjrghhDgXAZpAcHezv2rhUw3/VzX275izcmy834Ci6MTZjR9OjNJfn6XsRPd3DQSxpZ1ZgBqpHJGmU4enXK25dey7kpEXAqzLvKG27za90QNyTfu+smXg1xzs1o8cmrxZiyME1KEpdhksXOnmnZgufmiOT1xyw5r6oiW12sv2K5en0aFdq7QdKsvMbcMIAldhF2oUThZ7eL6AOalMuWh2qZju/IkxnyIA1YPeJ5TDpfl9u6HCEfEIWBt
+	xIO9HIfMgeGgtJ34mjeVbQP+Nd31sP6P5VLFWo3YGG/YVchxYKGVkV/SrGEjD0pDBaEAtlBLwRAxZNBqEhS0Yge/YZ79PfeC+FhjqUR/Z2WwurTfI/NmxdU6AuNp8XEdBn1oaLZPrO86ZD3JYppaaBXOGcTNDye+yHbrM4wnlwOcq6YuQwjZjvW/z8SKjrZ4W2pLGiMBur2mg8bLGTY2U0iwN49JGPLBIglNwDw7z9UQ9Z1Srv0ekZHqsWg2fBRIAhj09gtUOkxg8WvVJID8W0ZSf74veJJszZI7q8TrEG6oebRKj7oFio/84/bqeELo5f8XHAj4EzIfnK61WLgwAat450WdwyyvWsxc3N9/vlKOWc/CFKYGCfT2aNqHwby9gpvEPbg+ZY+0mFl+ltu2GjEvv7VhOolh/u4HsEy/AcIkAPDWwAWkpoXJcsJ0R3aE
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 21:20:01.9831
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 21:20:00.8581
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c7a6f71-68ff-431b-2de5-08df3ab9635a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 576c41ab-a52d-4ffb-79a5-08df3ab962ae
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CH2PEPF00000148.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8334
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7683
 
-From: "Nikhil P. Rao" <nikhil.rao@amd.com>
+Add a .get_fec_stats ethtool handler, and fix the FEC reporting it
+depends on.
 
-ionic_port_init() marks every counter in the device-written extra_stats
-block invalid before asking firmware to refresh it, so that a statistic
-this driver knows about but the firmware does not is reported as absent
-rather than as zero.  It does that with a memset() of the whole block.
+Patch 1 writes the IONIC_STAT_INVALID markers in extra_stats one
+counter at a time, so a reader that tests a single counter cannot see a
+torn value.
 
-The .get_fec_stats handler added later in this series reads those
-counters one at a time and tests each against IONIC_STAT_INVALID to
-decide whether to report it.  memset() gives no guarantee about the
-width of its stores, so such a reader can observe a counter that is
-neither its old value nor the marker.
+Patches 2-4 fix ionic_get_fecparam(). fec->fec reported the constant
+set of supported modes instead of the configured mode, and
+fec->active_fec reported the requested mode instead of the operational
+one. Patch 2 has a Fixes: tag, but patches 3 and 4 rework the lines it
+changes, so it is sent to net-next with them rather than to net. The
+bug only affects what ethtool reports.
 
-The block is entirely __le64, each member naturally aligned, so walk it
-as an array and write the markers one counter at a time instead.  A
-counter read on its own is then either a complete value or the marker.
+Patch 5 adds the handler. It reports statistics only while the
+operational FEC mode is RS.
 
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+The netdev AI review of v2, which Simon forwarded, asked whether the
+per-bin local really guarantees a single read of each counter. It does
+not, so v3 reads every counter with READ_ONCE() and drops the struct
+copy. The port_info lifetime problem that the AI review raised on v1
+and v2 is fixed in net-next by commit d90d1a768b3b ("ionic: fix
+port_info use-after-free on firmware recovery").
+
+Claude was used while developing this series: to investigate the v2
+review questions, and to help write the code changes and commit
+messages. The authors reviewed every change. The series was tested on
+Pollara and Vulcano NICs.
+
 Signed-off-by: Eric Joyner <eric.joyner@amd.com>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_main.c  | 8 ++++++--
- drivers/net/ethernet/pensando/ionic/ionic_stats.h | 2 ++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+Changes in v3:
+- Read each counter with READ_ONCE() and drop the struct copy of
+  extra_stats (netdev AI review of v2).
+- Report statistics based on status.fec_type, the operational FEC mode,
+  instead of config.fec_type, matching the active FEC mode that patch 4
+  reports.
+- Add patches 1-4, which fix the FEC reporting the handler depends on.
+  Patches 1-4 are by Nikhil, who is also a Co-developed-by on patch 5.
+- Drop Vadim's Reviewed-by from v1, since the code has changed.
+- Rebase onto current net-next.
+- Link to v2: https://lore.kernel.org/r/20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index 38b47b959a11..8197df5532f5 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -12,6 +12,7 @@
- #include "ionic.h"
- #include "ionic_bus.h"
- #include "ionic_lif.h"
-+#include "ionic_stats.h"
- #include "ionic_debugfs.h"
- 
- MODULE_DESCRIPTION(IONIC_DRV_DESCRIPTION);
-@@ -723,7 +724,9 @@ int ionic_port_init(struct ionic *ionic)
- 	struct ionic_identity *ident = &ionic->ident;
- 	struct ionic_dev *idev = &ionic->idev;
- 	bool allocated = false;
-+	__le64 *stat;
- 	size_t sz;
-+	size_t i;
- 	int err;
- 
- 	if (!idev->port_info) {
-@@ -741,8 +744,9 @@ int ionic_port_init(struct ionic *ionic)
- 	/* If the driver knows about more "extra stats" than the firmware,
- 	 * make sure these stats are marked as invalid.
- 	 */
--	memset(&idev->port_info->extra_stats, 0xff,
--	       sizeof(idev->port_info->extra_stats));
-+	stat = (__le64 *)&idev->port_info->extra_stats;
-+	for (i = 0; i < sizeof(idev->port_info->extra_stats) / sizeof(*stat); i++)
-+		WRITE_ONCE(stat[i], IONIC_STAT_INVALID);
- 
- 	WRITE_ONCE(idev->link_down_count_init, false);
- 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_stats.h b/drivers/net/ethernet/pensando/ionic/ionic_stats.h
-index 7ed935868e84..8a0edcc86fb8 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_stats.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_stats.h
-@@ -4,6 +4,8 @@
- #ifndef _IONIC_STATS_H_
- #define _IONIC_STATS_H_
- 
-+#include <linux/ethtool.h>
-+
- #define IONIC_STAT_INVALID	(cpu_to_le64(~0ULL))
- 
- #define IONIC_STAT_TO_OFFSET(type, stat_name) (offsetof(type, stat_name))
+Changes in v2:
+- Latch each histogram bin into a local before testing it against
+  IONIC_STAT_INVALID, so the sentinel check and the store cannot be
+  folded into two separate reads of the firmware-updated DMA buffer.
+- Explain in the commit message why the RS FEC check gates every
+  reported counter rather than just the histogram: they all come from
+  the RS decoder, including fec_corrected_bits_total despite its name.
+- Rebased onto current net-next.
+- Link to v1: https://lore.kernel.org/r/20260731214021.15279-1-eric.joyner@amd.com
 
+---
+Eric Joyner (1):
+      ionic: Add .get_fec_stats ethtool handler
+
+Nikhil P. Rao (4):
+      ionic: write the extra_stats invalid markers one counter at a time
+      ionic: report the configured FEC mode in ethtool_fecparam.fec
+      ionic: map the FEC type through a helper in ionic_get_fecparam()
+      ionic: report the operational FEC mode from ethtool --show-fec
+
+ .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 116 ++++++++++++++++++---
+ drivers/net/ethernet/pensando/ionic/ionic_main.c   |   8 +-
+ drivers/net/ethernet/pensando/ionic/ionic_stats.h  |   2 +
+ 3 files changed, 112 insertions(+), 14 deletions(-)
+---
+base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
+change-id: 20260814-ionic-get-fec-stats-990736964908
+
+Best regards,
 -- 
-2.53.0
+Eric Joyner <eric.joyner@amd.com>
 
