@@ -1,58 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793786583;
-	b=i1Mq+9um04WrlEIsenu2sfazFCIv3vjfIxyqOX+aSbg3xpIB2Ai3DQJnYG3H8/VlPMf5
-	 Q2VPLUxY/nJbfsxJoyG9rnei0JFEN6BuDlEBtVzZsaR3nNqq0KbL+x4IcmJRiwZxS0UBW
-	 yS70cG4QDm+0/zNgiM2iWhspuh/vyWLvRqFyp0nTI8jIgKgYwd5BnvuUXppqfjTU8eoaa
-	 SHySA8DRLkcqdDz7yk1arW12FA5aTDa3DTzPT3QWNI78rc4q/f9m7CkoIcPkwtMNi9WtW
-	 XTjIEyYbJ3MKVeLHG5TcjjjJ1Wl5D0BH6dC991TufAezXGRukT7evv1qt36075f5kXg==
+	t=1793786586;
+	b=uhGP/dlmQxBbud3dww12rQKq+MrsFb+aE8Xl79hLGTAaSsw2AUIeuUiAMKfckTXl14qQ
+	 UxxKGFJRkXQH9Q0H7jQXIGJgqxCON9wJ01FTNxmMwiR79auvmYj4XlNPd2kJsoOE0unFD
+	 G8S+ZsgcnOCCc7amgkQF/iEYngvLi+dU6z0GyGW+KL6gP3N4eo0XvPotPQ3zPWGBrlRQF
+	 17//BIyUtURqWLOpt8psiUMvS9muy/T65qmk7IXrGF4r5Kg8V29TGO+HbOPWTBsaCTOnP
+	 HFITUAEZh8WP1wvPGqKgZjxynpRJ55608dCbgR9mHD7jgHldWdrqS1/fgnHaZb5CfaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793786583;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=4CtePqmfE3IlljY9sCYmE7WsQB53bpyDId8jwWKXqo0=;
-	b=qjxcVuFa2l7+aBH1tg4kf5qmVKM1hz/suyDHYriseoIT0Ajv769E/pHgzvzcm5bII8WU
-	 xiByuWmFdWFurPWDcUJd/PcPD+gzdIeGqHHiI3Uly+PxvZU0Re2vCkGOZyFbpyDv1eadT
-	 vKZdUWO/iS5W5iipv2u85DC5rDQjQdvi3Gni9RTGPAG4kXDkxwpGEF6UMKpic56hjO3Ny
-	 k6Y3xV7LSpK4c9X5Nb5cFR++vTLccpZz5zL+mID8kXtH/YBzUgWhGkvF9EIBO8YqzHLdz
-	 afBFh9tGkjVmBrT4jV9Ja+Be0NN23E3RPMyKOuR5ziwznwtVoNMhGmp1nSi1RQd1ExA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793786586;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=1uSRjBukXt5Dd5O77lr8PlstNG6LU3yReylREjd+JGMBU4JINM9cfkimA48qojtYNWQP
+	 kuFri0CRgV5InJTuB+GLc7HdSo6taTDYOFXt167fwoPH/XNCbmaoQpTLLMI95HINzvdcg
+	 PoWQY2V4qCWUAWVFe6We1B21vWkZ2EofnzYMuClTrw8ow0vdyEanH5hQFe4nomQYKQgab
+	 rHhTYbJ5cAYvxI3qI7K+R1D0PIj1z3s/205AQL/SYSXRKAMe2b6Kel/bNv8DTaVzJGwQy
+	 Vo8uB+7J1fUQveHTahRr9rGF4b5kGRmW6SxDE/UZ1PQjMER/nvjzQw5cBlQoFBAMQKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mO8a8Fbh;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q4hUIRK7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE15A606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 10:03:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DE15A606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F7606A328;
+	Wed,  4 Nov 2026 10:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mO8a8Fbh
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 11A1CC8F46C;
-	Wed,  4 Nov 2026 10:04:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1A11960770;
-	Wed,  4 Nov 2026 10:03:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E78AD103291CE;
-	Wed,  4 Nov 2026 11:02:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793786579; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=4CtePqmfE3IlljY9sCYmE7WsQB53bpyDId8jwWKXqo0=;
-	b=mO8a8FbhChgY9+A9MFsGx1oFfSUYuboW3QbtxaqRpk4jxCModb687LEwITwPTEcQbBKlBi
-	iNATC9wLlool7m2Mr7aPn2MV3Iut4K5krpaQ0Erj3dGLT2VGCoXNcCJnmah06l5T79GVWk
-	7yer7VHIqORa4stCfEBgAZ9ZiWAv8Tdc8nUq3rbbt5OLsWiz271TwVGkB4Bse6F03+1Llm
-	Tmv1VIqn6Na/4hrlKky21PjHNguuzvRgMCtEyxxHIiP4rj0sg6ykJ+Pc+KifQ/SJunNNs1
-	NS82kUmoR3tPG1fH6t3GemNwJ3azIRseearlxFadmu0rVutJU3aFXGz8VofH4g==
-Message-ID: <c0af13a8-5ea6-47d3-9c6c-2935f8cd8ce0@bootlin.com>
-Date: Wed, 4 Nov 2026 11:02:50 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q4hUIRK7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEAB1F000C1;
+	Wed,  4 Nov 2026 10:03:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793786585;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q4hUIRK7lDxlTwiRVNaJGxTPAiN/l7vZNchSOA4DrZa0R96ZY6IrkIqVhRLj0jeb1
+	 gNEEjq1SXvNTbcHawXpC9cWHy2jJN+nGse6jRDawnpk3aDWOD4w5eVS3oI7mtb+dSa
+	 lVkdmCyNIdWKocjbK647dnTrlxEZD4ZoyW07+PAGgK/1N2oxI7+TpmCn3lbrXltCKP
+	 4C1SUxftATUV3v7fwXSffcoQm59l3bN3o5wmUst6CMLC14PDLwbfCDQxMyjTG+1qz6
+	 6ay7L7NHxaDR7MMJoKzqlGWry9URlB4DtWrNBsSfRDe3tVPc07U8CndxCXfzmL9VX1
+	 CmHA3DVSucSXg==
+From: netdev-bot+sinfo@kernel.org
+To: Yifan Zhang <yfzhang23@stu.pku.edu.cn>
+Cc: linux-wpan@vger.kernel.org, netdev@vger.kernel.org, alex.aring@gmail.com,
+ stefan@datenfreihafen.org, miquel.raynal@bootlin.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ zihanx@nebusec.ai, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] mac802154: validate pinned interface before beacon
+ transmission
+Date: Wed, 04 Nov 2026 10:03:04 +0000
+Message-ID: <179378658462.488859.2613991577119336688@kernel.org>
+In-Reply-To: <179378621331.55520.8126896786309171541@stu.pku.edu.cn>
+References: <179337523079.51423.6573078122047317758@stu.pku.edu.cn>
+ <179378621331.55520.8126896786309171541@stu.pku.edu.cn>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,135 +65,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net-next 1/4] net: pse-pd: realtek-pse-mcu: ensure MCU
- does dynamic power management
-To: Jonas Jelonek <jonas@jonasjelonek.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Sander Vanheule <sander@svanheule.net>,
- Russell Senior <russell@personaltelco.net>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
- <20261103220312.860629-2-jonas@jonasjelonek.de>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261103220312.860629-2-jonas@jonasjelonek.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
+Hi!
 
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-On 11/3/26 23:03, Jonas Jelonek wrote:
-> From: Russell Senior <russell@personaltelco.net>
-> 
-> The MCU may have any power management mode configuration by default
-> but the driver should ensure that the MCU performs dynamic power
-> management with priorities as advertised. On certain devices, the
-> default MCU configuration ships with another default, possibly
-> preventing any power delivery.
-> 
-> Select the mode before deasserting the hardware port gate, so a failure
-> to establish the management policy does not ungate the ports.
-> 
-> Signed-off-by: Russell Senior <russell@personaltelco.net>
-> [jonas@jonasjelonek.de: adjust commit message, macro naming and comment;
->   change error handling and select the mode before ungating ports]
-> Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
-> ---
->   drivers/net/pse-pd/realtek-pse-mcu-core.c | 32 +++++++++++++++++++++++
->   1 file changed, 32 insertions(+)
-> 
-> diff --git a/drivers/net/pse-pd/realtek-pse-mcu-core.c b/drivers/net/pse-pd/realtek-pse-mcu-core.c
-> index c70b09ca2012..f3fc67fe29d3 100644
-> --- a/drivers/net/pse-pd/realtek-pse-mcu-core.c
-> +++ b/drivers/net/pse-pd/realtek-pse-mcu-core.c
-> @@ -68,10 +68,14 @@
->   /* Nominal PSE rail; 802.3at/bt operating range. */
->   #define RTPSE_MCU_PSE_VOLTAGE_UV		54000000
->   
-> +/* RTPSE_MCU_CMD_SET_POWER_MANAGEMENT_MODE values */
-> +#define RTPSE_MCU_POWER_MGMT_DYNAMIC_PRIO	0x02	/* dynamic, with port priority */
-> +
->   enum rtpse_mcu_cmd {
->   	RTPSE_MCU_CMD_SET_GLOBAL_STATE,
->   	RTPSE_MCU_CMD_GET_SYSTEM_INFO,
->   	RTPSE_MCU_CMD_GET_EXT_CONFIG,
-> +	RTPSE_MCU_CMD_SET_POWER_MANAGEMENT_MODE,
->   
->   	RTPSE_MCU_CMD_PORT_ENABLE,
->   	RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE,
-> @@ -369,6 +373,26 @@ static int rtpse_mcu_set_global_state(struct rtpse_mcu_ctrl *pse, bool enable)
->   	return (resp.payload[0] == 0x0) ? 0 : -EIO;
->   }
->   
-> +static int rtpse_mcu_set_power_management_mode(struct rtpse_mcu_ctrl *pse, u8 value)
-> +{
-> +	struct rtpse_mcu_msg req, resp;
-> +	const struct rtpse_mcu_opcode *opc;
-> +	int ret;
-> +
-> +	opc = &pse->dialect->opcode[RTPSE_MCU_CMD_SET_POWER_MANAGEMENT_MODE];
-> +	if (!opc->valid)
-> +		return -EOPNOTSUPP;
-> +
-> +	rtpse_mcu_msg_init(&req, opc->op);
-> +	req.payload[0] = value;
-> +
-> +	ret = rtpse_mcu_do_xfer(pse, &req, &resp);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return (resp.payload[0] == 0x0) ? 0 : -EIO;
-> +}
-> +
->   /* Port operations */
->   
->   static int rtpse_mcu_port_get_status(struct rtpse_mcu_ctrl *pse, unsigned int port,
-> @@ -826,6 +850,12 @@ int rtpse_mcu_register(struct rtpse_mcu_ctrl *pse)
->   	if (ret)
->   		return ret;
->   
-> +	/* ensure the MCU does dynamic power management with priorities */
-> +	ret = rtpse_mcu_set_power_management_mode(pse, RTPSE_MCU_POWER_MGMT_DYNAMIC_PRIO);
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Why do you pass RTPSE_MCU_POWER_MGMT_DYNAMIC_PRIO as parameter?
-You are calling this function only once in the whole series so you can 
-directly use it in the function.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-pw-bot: cr
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-> +	if (ret)
-> +		return dev_err_probe(pse->dev, ret,
-> +				     "failed to set power management mode\n");
-> +
->   	/*
->   	 * Some boards gate all ports through a hardware line; deassert it only
->   	 * after the MCU is confirmed, so a discover failure never ungates the
-> @@ -944,6 +974,7 @@ static const struct rtpse_mcu_dialect rtpse_mcu_dialect_gen2 = {
->   		[RTPSE_MCU_CMD_SET_GLOBAL_STATE]	= RTPSE_MCU_OP(0x00),
->   		[RTPSE_MCU_CMD_GET_SYSTEM_INFO]		= RTPSE_MCU_OP(0x40),
->   		[RTPSE_MCU_CMD_GET_EXT_CONFIG]		= RTPSE_MCU_OP(0x4a),
-> +		[RTPSE_MCU_CMD_SET_POWER_MANAGEMENT_MODE] = RTPSE_MCU_OP(0x10),
->   
->   		[RTPSE_MCU_CMD_PORT_ENABLE]		= RTPSE_MCU_OP(0x01),
->   		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE] = RTPSE_MCU_OP(0x12),
-> @@ -964,6 +995,7 @@ static const struct rtpse_mcu_dialect rtpse_mcu_dialect_gen1 = {
->   	.opcode = {
->   		[RTPSE_MCU_CMD_GET_SYSTEM_INFO]		= RTPSE_MCU_OP(0x20),
->   		[RTPSE_MCU_CMD_GET_EXT_CONFIG]		= RTPSE_MCU_OP(0x2b),
-> +		[RTPSE_MCU_CMD_SET_POWER_MANAGEMENT_MODE] = RTPSE_MCU_OP(0x17),
->   
->   		[RTPSE_MCU_CMD_PORT_ENABLE]		= RTPSE_MCU_OP(0x00),
->   		[RTPSE_MCU_CMD_PORT_SET_POWER_LIMIT_TYPE] = RTPSE_MCU_OP(0x15),
-
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
