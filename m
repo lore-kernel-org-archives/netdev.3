@@ -1,110 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793821956;
-	b=5ImmeBhC4njlDReX7azQ/xBUhAk1bVcOGSHxIXZuDIryWt1iXFCfQ2D3tmE+PCJbHnol
-	 zgxD1LVMrMx4u8+NI2hAV8G4fwfAcO8lihaiJY2z0qS4X36mLnw4B8Z9LyF6Pb7xANhOH
-	 t532O66xPgnBZS8D70RvH30Wc07MqXcJLy7yX7krqlRwceIGqme1t304RULBMAcwrFc6+
-	 eDGYjJJpLhztnGxTa+ERlIc3UcZTymjT1i5mM3pZXx7LoZ1lPXeHoqzVku+lWIbKXlrES
-	 MXHCkgQYi4UisRzTA6UDDNLHW0fWmpa9PxEJjk56OZMnBMEKukAkOcM2aW3Nn0f9Rbw==
+	t=1793821975;
+	b=YzwyZpHEZLb422FqooOibsfRSs9Fm4jn6emXdhUIBFBRULTcLibw5JsaIZp5mwOErzoe
+	 MGlKohZgjLmOhZZTfEJlusRzcBSF6RTFASeUDCWGzsMIT1V3bEBs2JxZpNB9QMEFbS1G9
+	 P5Ua9nUQ80wKT8HjB9zOGw2us4aeqlUeZnHy+L0/A4DdWvXW3XXNV7IntM3Ugh/BgWa3j
+	 TZF9rNShxcwuWxmos+P7ZcGFArhXhbjC+bcFCYDaFe4gspNSDTCyb8Xr2YsMMxw8LlZ3h
+	 kEh1r0PKdBCrW+iBorPPwyGiOtZ8tqPSvHBU3Fpl4A/avEcYa+wPR0jXSBwJmdmSeXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793821956;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=yr3akMspnIWFpqWJkjrAgv6glOgJhJX8fSAifemHFwA=;
-	b=bYJZFrpN/s4tezcsRcny9S2RAZ6c9Az9L8yQysuo4gbdbpJAAWOFVhUQTqUNDxDbyKk2
-	 dDpD2I2iIVw/vpHJg5qeCLYx3wkiMMZcJkXp1h1RkKwhh6GMhxojKg/vvA4J5WHA1CCLG
-	 mnYTamMhsmRRygCkgs9HGIF/B30R+cGeQCMP6v3wVq0KQ9BD3uADW/3J0/fV5HrwNxdGU
-	 lS5lJ8K+7W5NZRx6BL/vol3KNAqm3M55T3RNNnUqHWEnFwCBkIwdCn1YpI/hlJr/b4846
-	 EW0lGAA+ZtupX4bJ4woW4pgKCFZY3eaJZrYs67X1kK0jFi69Ue/nwN8GqLbLGKrzFOw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793821975;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:Date:
+	 From:To:Cc:Subject:Message-Id:In-Reply-To:References:X-Mailer:
+	 Mime-Version:Content-Type:Content-Transfer-Encoding:X-Virus-Scanned:
+	 X-Virus-Status;
+	bh=EpEivueZqLIKADrPWMjl3A7k/b/byEHl6Jp1sTC5nhg=;
+	b=ldGIEEye4F38GYLdeIXqP7UF3zS+gXK+lxNn4RSMR0kD0QY/O1E5qpVWMZS9R3R5qfa1
+	 h0IpVpd3sKOngvOH5STYf44jqob8ZinUW1Zh1eJoCNTqWEFs/PRm2S3UaqrqB6ANCfhZx
+	 HAzp8OuzvrI5PFS/be/qRu4/ED4BjPJKnWSMmTTlEOD+lTM7X/qJc7DnrCafzxc+wSv0L
+	 zZzB1ztuL8u5316CbQbDITmMDE/Qn6aN4u3pypBroqnSfS1jU2wchq2+N52FuffRktAYb
+	 RMmVnV1OxDSlC6sPorusStuHNo5lThuLe40wl9hYxCYMtOujvjNPvuVHUwzXy6Vcb9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Wdi/cBrV";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4C6609529D;
-	Wed,  4 Nov 2026 19:52:35 +0000 (UTC)
+	dmarc=pass header.from=uniroma2.it;
+	spf=pass smtp.mailfrom=uniroma2.it;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b="82Rinob/";
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=pNb6qZfq;
+	arc=none smtp.remote-ip=160.80.4.35
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.35])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8963606D829;
+	Wed,  4 Nov 2026 19:52:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8963606D829
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wdi/cBrV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742AB1F00A17;
-	Wed,  4 Nov 2026 19:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821955;
-	bh=yr3akMspnIWFpqWJkjrAgv6glOgJhJX8fSAifemHFwA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wdi/cBrV+aPpgWRwzXpiA+ib3De0K0pQhXbyKJhu1iexPEaDfaOTHNqiiiqzPXo1n
-	 sHBvBkYLvUp265kZxirmL7Ost0iN+Glcw1jB+xXLZfNzc7jQ/+vNrfyJuIub3D24aH
-	 FJeeaeTI1JKYgVteizb9BzRe2OXphrQw0/Z3qIHs6/g1diX9mzri9ugVAFK0faPBni
-	 4fNDrMwo9L4EM/Oii/TzK2gV2q/Po1jRRBmUKKs+oPw3OgQB1bIjbd27ca1yrbdHfk
-	 Mgqqa9yGsWvWaLe2ghGBqK/zKktWtu1oUQAE7grmxfWRAs9G65+CGMdjqpjfo1wZXs
-	 QP7jFCWB/AzOQ==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 11/30] latencytop: let procfs copy in writes to /proc/latency_stats
-Date: Wed,  4 Nov 2026 20:52:21 +0100
-Message-ID: <20261104-work-procfs-fs-v2-11-319e0f9a8aae@kernel.org>
-In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
-References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=82Rinob/;
+	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=pNb6qZfq
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A4JpmJF025384;
+	Wed, 4 Nov 2026 20:51:53 +0100
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id CD48A121681;
+	Wed,  4 Nov 2026 20:51:43 +0100 (CET)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1793821904; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EpEivueZqLIKADrPWMjl3A7k/b/byEHl6Jp1sTC5nhg=;
+	b=82Rinob/Kq6ijDpOWSDVjYui4K310k0guZ4huTu5qmv02CiEy0tC6aSjjC5d6ClOIE/ctE
+	Td69ys8BnLPeJnBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1793821904; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EpEivueZqLIKADrPWMjl3A7k/b/byEHl6Jp1sTC5nhg=;
+	b=pNb6qZfq/ux+uANgdgzkai8tw1rFIfLTwO+Om53h8yqg6/JsnXt9wViqFRRG6MRqAB4y0R
+	EouYFy1suM3t5S1VUIWwi/bJlnuLKqAnodQdLN8q4VD6iupoE7mvN8H5N8lIGFRyXTX2in
+	z/TjO4lrPe4b3QT3oZ/W+o0/98/CjxJSmbqGvyQ5dkzXVOTZURP5+piBH0e/U/0wux0H/4
+	cFwvE7HLUVBiuW9vAxLfr76QbGaFZXLdZgCQ4MAq+wUBagrAgPIF6ySHF9fGHa1Dr/ciuO
+	THWheRk2k76QVQ95sZzDTtlHmzR8dnSidQ99TZ0IWFOVPQkYn2U0+r4ZCbCGlw==
+Date: Wed, 4 Nov 2026 20:51:43 +0100
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+        Shuah Khan
+ <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        bpf@vger.kernel.org, David Lebrun
+ <david.lebrun@uclouvain.be>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Mathieu Xhonneux <m.xhonneux@gmail.com>,
+        David Lebrun <dlebrun@google.com>,
+        Stefano Salsano <stefano.salsano@uniroma2.it>,
+        Andrea Mayer
+ <andrea@common-net.org>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net 3/6] seg6: update skb checksum when SRv6 behaviors
+ advance to the next SID
+Message-Id: <20261104205143.f254aaaf5d5b112fc0188016@uniroma2.it>
+In-Reply-To: <aulA09qBNtIxJq7S@fedora>
+References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
+ <20261031225033.64-4-andrea.mayer@uniroma2.it>
+ <aulA09qBNtIxJq7S@fedora>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,47 +98,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=brauner@kernel.org; h=from:subject:message-id; bh=9/PXHkkWFBWwJpiw0GjnsftfBxXIsWStv0RQuWJfsao=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97rHYoefdeeu3Wu6hdxnVaz7v/WWclHzHXeCSxcHZu dEaxyrZOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZiz8Xwz0LT9mYft9DOxTmH s3zMX0Q82m1+d9ocNc7ZMcs3fnzYeY2R4XCAwMyUHolzwR/2ZJ/ocma7der9hQWXfd9w6kXPqxW I5gUA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Implement ->proc_write_buf() so procfs copies in what is written before
-it pins the entry. The write only clears the statistics and doesn't look
-at what was written anyway. Writes larger than PAGE_SIZE - 1 bytes fail
-with -EINVAL now.
+On Tue, 3 Nov 2026 10:15:03 +0800
+Hangbin Liu <hangbin.liu@linux.dev> wrote:
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- kernel/latencytop.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> [snip]
+> > +	if (skb->ip_summed == CHECKSUM_COMPLETE) {
+> > +		update_csum_diff4(skb, old, *(__be32 *)srh);
+> > +		update_csum_diff16(skb, (__be32 *)daddr, (__be32 *)addr);
+> > +	}
+> > +
+> > +	*daddr = *addr;
+> 
+> Nit: we can re-use seg6_update_csum() if the transport header set correctly.
+> But that function is static and we need adjust header files.
+> So the current change looks good for me.
+> [snip]
 
-diff --git a/kernel/latencytop.c b/kernel/latencytop.c
-index b764f47606d3..35f73ca07656 100644
---- a/kernel/latencytop.c
-+++ b/kernel/latencytop.c
-@@ -267,8 +267,7 @@ static int lstats_show(struct seq_file *m, void *v)
- }
- 
- static ssize_t
--lstats_write(struct file *file, const char __user *buf, size_t count,
--	     loff_t *offs)
-+lstats_write(struct file *file, char *buf, size_t count, loff_t *offs)
- {
- 	clear_global_latency_tracing();
- 
-@@ -277,7 +276,7 @@ lstats_write(struct file *file, const char __user *buf, size_t count,
- 
- static const struct proc_ops lstats_proc_ops = {
- 	.proc_show	= lstats_show,
--	.proc_write	= lstats_write,
-+	.proc_write_buf	= lstats_write,
- };
- 
- static int __init init_lstats_procfs(void)
+Hi Hangbin,
 
--- 
-2.53.0
+I thought about something similar. seg6_local finds the SRH with
+seg6_get_srh(), and the SRH is not always where the transport header
+points, for example with a Destination Options header before it. Passing
+the SRH to seg6_update_csum() and moving it to include/net/seg6.h would
+make it usable in seg6_local. I will likely propose this for net-next,
+after this series, to avoid changing more files than needed in this fix.
 
+Thanks for the review,
+Andrea
