@@ -1,82 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793800511;
-	b=N8uVPhfomaZRPnNAB9fNpsxsbr0z5bN7r/lKO2vIR5wDWLJ6wg7s2UGO2VW8FXfc+wMz
-	 pMp7WDdOdqK1PJJpAaEz22ssghqaPLIDq7hdJAu9+bbQv2yVqP7+jEaA2soLjIvhX9DT/
-	 9Phw9XPcaRMwXcyrB6S1pjipV/tgCTwcaHF1LHHGgaWjMl+aKhKGUGLVVHDJPVDTXQ7QS
-	 7qa6jmxLNw3ElEoN+2MuXKNtkyAHFI1nS0Sgtrt2CZ2NkDW/IzKUWy40aEbzcrq2C954l
-	 Y1WJOdMyCpp8VE3pR4Lft1o+goEx3mT9Oy1Vzylkt8vthY3tWPWDnpXzr14EZOeCg2w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793800511;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=maDQ2WD6HiiRMLihh/6PlAJLLE5S+DKoSCvfTu9OXko=;
-	b=DHFLNedkRgLRp0B4vfhkDWH1Qsf8DxNukV36P1qW4lUhyGRthMnw9DLbTDqvGaz+WUn8
-	 xT9MGC13rAdyWzeZFd0AMc4uNQR2DB7IJr8bfLl62cpHGNoQYtKAcZnGZFhxtIGcojNQN
-	 5Zoz747Gcs6XD31mobsHErIeAAZgoUokG4K8+RxRxbn/dgDzhIp1ljIRFdXJ8N0FmDKK1
-	 By23vzuFzquETjj55FrwVpEmaRmVM0DLcs8T9P/GfM416XbkEzCKH9qzmwbZgIYEuuCa1
-	 4Vyx944OGXOueIbNGd/ErZkLJkqnf8VFPxxhT3aJWxQmGUkn4TX+yvcZPTL1yGcQdZQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=grische.xyz;
-	spf=pass smtp.mailfrom=grische.xyz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793800557;
+	b=1HyzCR6t8rf+lrUMBvmEXWGRLG8Dyy8FqGmT0aoOanTKlGgm+7+wlFGxKkyfenTW8rpH
+	 6jVagNeiM697kF2KOuHhHC75smehcUImTDM4Dw9I1BM30ovILJf3g2by2hb3iugud/g3v
+	 oyNY7ULAFDLIE8kvW244Z2M/p484B8ur2asvfV4bbljMDtY/WxF/LKA26yr8kQgdXsOLA
+	 X/J2KRPobDVxCHSiCAD+mmHhw2rZW8WP99Yv4ikB9+8UYueP5qDvdBHqeiTqbDCiNIlf2
+	 ycZZNwFaZMdEYRrcndVZEkQYTgDu0y+gZcie1sieI10XV99o7Fc3jhy1qsu9mOr4KBg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793800557;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=1La6srXM8X/sIag8bKohAPdLipW0D+7qqlLp+GotLXw=;
+	b=wwnnlQq6KKqwBuBw90afIktu/kkUaGe0GxKAFDZ4q+anyG6oeTtWcb8OeyRnyTe+WRzK
+	 zXbsKz3hj3EWhUHYIwVk+250yGNzOjBccX7mv35OFYpOOQbTyt95WbZtf3o//WwfYt1Kc
+	 Md1epJ7dKcMHRBZYytTtKkYqxkwnSbVlZRv6XDca14rG2y8VUfk/E1VenLQhhW8mw/SOJ
+	 AMinW80jkwOlGeuG3lDCtb9PDWzKjbQEivyNKdHAMysHWd9x5YRQDwh4tGq9Xpor8B520
+	 5aR0Rg8l9yYGGwaMJF30ug4BYhAaNMhjAhPgesdPuY/5NijwcUdAMTOlA31lzI5Dt9w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fyTV59mW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D793606A32C
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:55:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D793606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grische.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grische.xyz
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b1aa2848d2so1068534a12.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 05:55:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793800509; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ObGj9dnLC2Z39xe3CY6os2qK/GzEWerdhZEqEIh/y3nt2Tu5I0VIhdKwyilS2Y2fut
-         U92BRLFgc7wTdKdLulL+nwsFStWWS+AJ38pAkXkbhN2j9EQmpP3cnw0TVSGckBOYcZ+c
-         c7LgoDloRCzIoIzdyf4v1N0NcElTeO7yjZcH7+UhrV3q0oURQzoDjhnfcBqMH6zTSyO2
-         zqXt/g6OIQym7/cTA+wOH5zQA9iiVVoIuqDdZRMfN9CwkeIclAA34pT2EBAvhLiISPdg
-         ASXuUXV6lM0q2b0am995Yw6Q3RRuDHi5b5xnix8kcnUGAWhE1p6C/0ytCPKZj3HfYLlf
-         bjlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version;
-        bh=maDQ2WD6HiiRMLihh/6PlAJLLE5S+DKoSCvfTu9OXko=;
-        fh=6xcr8MPMOfRhtmWf391bS+ua7NId2YVSSJB1zqCoGKc=;
-        b=bJ/8KoE4ATYYBlVrKY7iIqvceL/WLjnsfAfWd4l/Q9bKasJatRK0xbkvgfeD3D6zAf
-         qq9G+5+KxScfEG5aX86QCQeezpUCPCZmc7Qfma35DEqNA53mOYW03N1jSsDKfhKd2kEF
-         aqk70hHUxhxkhUcaymbFEkZkftuXhBIVLuWuB4/7qwA1SWqQw6MnkItLrugttHA1IfrZ
-         YvcQjg6q6xO2mKHjpO3POq+tyRLQhavrVkNkXPEfd7yIBLpSnb9Wwv4i0HtKMwXTP0oS
-         cH88U3/cMCW6ryfW6QXDxhEUG1G9WYvC3ThLlaQ9862x5S911ezurqfgW1cW3TidUErK
-         LUmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793800509; x=1794405309;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=maDQ2WD6HiiRMLihh/6PlAJLLE5S+DKoSCvfTu9OXko=;
-        b=tiXl/kxBjejCHryvfndOe3EeT5mtJtTkW5LuSoL/IdQIVq2Nig74SEuJsQrX43L0bL
-         vnQrcSMI0tc63xcyrbne8PWBANT5UrTTQ+MdYaGwQzhzqNO3artQJiQ9g48cfsGfbWun
-         kZe30hUsdNZyy93zpt8ZZHszXojHVHr/yHtkvh66frP5xO34li8QW9a70849QzCyg9O8
-         2hJbsw3BlXKoHngK/Dw0cnN3LJXXU6f3uI1Jn/QNJANRYjQ0xlmDO25A+Y0u07RIhx4+
-         Y8mUZZU3OMMLmP01fq/n7rkN/auXIXPq14bJBNrJdIuqOcE+F+sQZ9kI7j0I9frzUpEu
-         DgJw==
-X-Gm-Message-State: APuU4Z/jlXKigzvtpIgD70svXCj+7qF07jyozplCu7fh62rqQlKR9YPC
-	gJzVKJnzNdibm6Be+8uIXwyPPunR41fAYQ9Jhizagr5+JPQq02YRlK7lYCMARDayoxSiXRscYhI
-	dp9l698/kR00AWnFhc9j1XHgVdJjc56ZLbjcY7RRMeA==
-X-Gm-Gg: AYBFou1RB7MUT4NtSjBqkTL7Uqzh71NSu8WeM3prwTmUkZ9uO/9ws71qDR7IJ23tlIJ
-	IPY1oTCQOlZRxT3E5+eAhYPe16+1TdUK6kr64rhR2phENNBcX2uc8XU6U2AG4+DTaRF/vhQF+ZP
-	EihOq63pOeOChc5in+Cg+LhlZJhhtmkTyHVxDB/vnhKiiRH8gfNxzJYghNdsFdM0+QuRO7Z7uDK
-	7Y1vkNiSf8/NU+ClQY+4Wfrvd0+W5nZ+NZTLJio0iGckiyk7wF6vTOc08zGZcSfCk589TOCsDjE
-	Lw43t834mKUlUdIC2T1W618J1q9l3hKbGGv0geCZfcWUJFm4c69paOHAvYweWg7ub7WitcT8w8O
-	Kbh0gEiDv3T0atj9pKAGs/DeNw6KfsBUjKoE=
-X-Received: by 2002:a05:6402:1851:b0:6b3:f7f6:649e with SMTP id
- 4fb4d7f45d1cf-6b4d438aba8mr8776244a12.7.1793800508173; Wed, 04 Nov 2026
- 05:55:08 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F36606A326;
+	Wed,  4 Nov 2026 13:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fyTV59mW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C6A1F00919;
+	Wed,  4 Nov 2026 13:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793800556;
+	bh=1La6srXM8X/sIag8bKohAPdLipW0D+7qqlLp+GotLXw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fyTV59mWbSB5r4WN7LjlGdDpQLQRh7hjEPnfTdCHa6YIFWvDcWEvB06eYk88OSzsT
+	 Ww0bcXPS0BYyI8PRW0YSVj6s+ZOwLablr0X8a/e4eh3KEanqY/34HFwJ+1eSxaIvH2
+	 kw1wwOKjwSfk0GpaGiC9I5m+q+RWQg2VxdumiiJgqIRow5+Ym8/1CFPyNNvGkCzep7
+	 fXpgSGmpuv2+8vVuparIdANfXIw4wJZ8e4wGkJHq+4lQSyedTIVx81CTGBdYowjCi9
+	 P3BCuVmRI61bmD8CpcGzkotpiZtAcdjzGf5yYO6U67lPzEq1f4tTgAN3KPaSZm/JIh
+	 D/4mDEJJgjyCw==
+Date: Wed, 4 Nov 2026 13:55:51 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pranith Kumar <bobby.prani@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+Message-ID: <aus4ag1KxpuBNSP1@gremlin>
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+ <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+ <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,46 +67,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261020190319.884375-3-opensource@grische.xyz> <179279532326.3134.8925339564776340456@kernel.org>
-In-Reply-To: <179279532326.3134.8925339564776340456@kernel.org>
-From: opensource@grische.xyz
-Date: Wed, 4 Nov 2026 14:54:41 +0100
-X-Gm-Features: AclHuK-Y4PhN7UgN6Wg1KVGHuCHUflIixbfP_eRM3Iuwj9ty4dhSxmMFdf4CmYc
-Message-ID: <CALsH2cy0Pn2DFAjqb5H2PR6o+_Vr=ig7bbL9-RA82sC99wf50Q@mail.gmail.com>
-Subject: Re: [PATCH net 2/3] net: stmmac: dwmac1000: don't discard frames with
- only a checksum error
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, o.rempel@pengutronix.de, 
-	stable@vger.kernel.org, mcoquelin.stm32@gmail.com, 
-	alexandre.torgue@foss.st.com, aaro.koskinen@nokia.com, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
 
-> Can this mask let giant frames through when Rx checksum offload is
-> disabled?
-
-Yes, in threshold Rx mode. The dangerous case was a giant frame that
-spans two buffers, because stmmac_rx() parsed its last descriptor as a
-new frame. The same happened without this series for any frame larger
-than the Rx buffer.
-
-Commit 834ec9530832 ("net: stmmac: drop split frames on AF_XDP
-zero-copy RX") has since fixed that in net, and v2 will be based on it.
-
+On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/4/26 10:46, Pranith Kumar wrote:
+> > Hi David,
+> >
+> > Thank you for looking at the patch.
+> >
+> > On Wed, Nov 4, 2026 at 1:16 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> >>
+> >>
+> >>> In an arm64 page map/unmap microbenchmark with 20,480 minor
+> >>> faults, simulated cycles fell by 1.54%.
+> >>
+> >> Thanks for the patch.
+> >>
+> >> While I see value, I am not convinced this is the right time for this
+> >> micro-optimization while we are busy with other things.
+> >>
+> >> This needs a better evaluation: 1.54% in a micro-benchmark without knowing the
+> >> stddev isn't particularly helpful.
+> >>
+> >
+> > This result is from a deterministic simulation, hence no stddev.
 >
-> Should bit 7 also count as a discard reason unless IPC (hw->rx_csum) is
-> enabled?
+> Ah, I'd assume even a deterministic simulator would have some variance due to
+> preemption, TLB flushes etc.
+>
+> But the bigger question is: which arm64 variant is simulated? I'd assume it
+> might vary heavily no?
 
-Bit 7 alone does not identify a giant frame, because on cores with the
-advanced timestamp feature it reports a timestamp instead.
-With the current code enh_desc_get_rx_status() does not know which core
-it runs on, and it has no access to hw->rx_csum.
+I mean 1.54%, theoretically is even less convincing for me :)
 
-A giant frame that fits one buffer therefore reaches the stack with a
-verified FCS in threshold Rx mode only.
+In any case for something touching a sensitive memory barrier operation to have
+a stronger argument put forward for release ordering being suitable than simply
+stating it's fine in the commit message and updating a comment.
 
-Dropping it would need a new parameter that tells the parser whether
-the core has the timestamp feature.
+--
+Cheers, Lorenzo
