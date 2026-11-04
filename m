@@ -1,47 +1,75 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793783771;
-	b=k8F8BddSh7q4coCJf1/9jqDvLiSOsXOZqFaB8V6E/UCAP4mRz23+9iH0Xqi/q2oq7FQz
-	 1G//MxUsUBQF/iZDCb0ssWgZI2CpiD5oM875zsgW3pyyQz6/gesI2zuqTeXNEWHPIv6RD
-	 Pgxj3CX1127549qSaLOTvihRtEsaTCpksWCyZpeNd1uG6OiQEKLTWl9nlv2ARM/1FiBba
-	 EhgNZuHPfgbdF4UqsvR6UIHCDVAATcTQJvPeO6VG8gprsSraFEPpAQii8bfaNZxIdQyqw
-	 WPpBi5EfY1EfWStGJ5tab4kZg9SBfBqVmD1hC9zPqSuIKjc8XCZMYVrSG3oxFNjq+aw==
+	t=1793783863;
+	b=Mp/cCq9dDUkW6x5kXXovUkU7J2Ex+2BqH69nJ8KhkeNbPD/7prSSk650FUwGrH8lOyLp
+	 DLUKUJJGIMlfk2qSqAmZ/79JddkC6q2vyUYRZMho57P0tgyJb5IbwLTDrbszeDlWXNztD
+	 Gja1FcEBx3NRAJSk+p5KUFPBlfef033sxwY0NreKWyNSaJuJGbZDdwIiB3L7duz0On+6C
+	 615q4ErCCEnxaZzLq9savxhB882DouhijwqN1Nfgxo170QqtMIzPKK5exJfPjdn+LmbV6
+	 SlJLqer8eJaJHAFTkyouKkld5rcONdezwYqmvMHy9LU8sNBpddBCF2OVfjO9cBOD4Qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793783771;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=ovOevQ6/0ArQF2qyajrFoA2dRWz7jgN0t8Al0f9gBIw=;
-	b=fqczmtItYH7vjkI9l7kHls1V1abz87XOz3qWfn5lozVSm3RtdTGY52bxEBVcP5l2FBiq
-	 cd4LAKfk1B4lSgyTGRBijkac3layBLEcbDo9x02SRix8pAcLPAEVVNEwaJzDDeycOYC42
-	 2bOjCmg8eOyaKtTz14pLtfOM97YGRNmLC1M0oUi39lA8xSD5nQ63rpCteWD5mAGBkSUVj
-	 L3pp/jBuyEqE2PxTLF/J55yJTQg9q9nh8jTOdLgfAaXH3Hw9kYrtK+7Fopfx+yFAolovB
-	 dHI3lqjv3xiEJQCWmTOwpwC48/wZYFNxXtwDUQ+gcEl3wcDQpLnLTLnAzd2hEGeuucw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793783863;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=vFLCfIpQzvj87maXuJncKjZMHxfbMjkVEErOwSrEMzQ=;
+	b=sFWKpBwLggaRTm8knp6AldUbYKl9CFDvHYpYxQ0aIYOK66knpWkwBJGQ6MrbCws4tUW5
+	 /9wYQlWzbbdct9yJklGSVNfw1Qeq5cFbORaIa5K5rluZFtqQOTrVIPaSU4CZtYHG0jcb+
+	 xMaxR5g4+0UmnzCKSr1qjjRNJN3steQAoDhNvG2fi2N/XYXPYtmBGpgeA06dgoa1P/1iT
+	 g+uT2q5j3TNWVFjsOSYaNjz0fftSURMmT1Jn/EFO7OnjczO9MBjHSYgydQl8PmosW8/m6
+	 dEDYZPS0Ljyow+DwVy65NwlNnPA2quntRu/FjrvBzizeDghFWwhhmsSlf+NdH31xglA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQWp9KhI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AkGIp68v;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E62D606A328;
-	Wed,  4 Nov 2026 09:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C20606A31B;
+	Wed,  4 Nov 2026 09:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQWp9KhI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0931F000C1;
-	Wed,  4 Nov 2026 09:16:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AkGIp68v
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9461A1F000C1;
+	Wed,  4 Nov 2026 09:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783771;
-	bh=ovOevQ6/0ArQF2qyajrFoA2dRWz7jgN0t8Al0f9gBIw=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=bQWp9KhIaG6cCe/dKbExBuWWrsaqTMREWjvKXKfI5t4XC6ZC9AMDyz+tYYi5jHtXq
-	 1wYiM5lGXqbtusVcYup3lE2HfgaUXBFhW+dfIUyIuSLLovLiv+uSI6ISDa6lIb6Y7J
-	 L4myGCiHkxb47GBVnxd3ZXI/hAohQWyiM6wPDBWI4vh3D9KT2HQ8jrn/s5XZgozXhV
-	 5OIZm09+ZGOQA/FPtwPa5IF/ptxaexBui0qUHFcbLlcsjgkD9Uhw/8Waly3AXGxAEe
-	 COrtFxdR07RYu2NM/BIf6wUxZknvI2W6Camm31J6GMAnoNINl0hqrh8t7Oki13n1a9
-	 zYfDerupu1SVA==
-Message-ID: <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
-Date: Wed, 4 Nov 2026 10:16:03 +0100
+	s=k20260515; t=1793783862;
+	bh=vFLCfIpQzvj87maXuJncKjZMHxfbMjkVEErOwSrEMzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AkGIp68vobiZwB2XixXdCJHgtF8bS2InhigVuwsdqp6n5/W+M82eXJQmgMDIXncGQ
+	 ZsgLev6upKoTph4wRGMw/6Rt8tdd4yiEe0QTNTPemQ626tgZDkM1GcZGQlIINcGmX1
+	 rweyg/M+elK322suBIlSSUF7Ca/phJp24NGzpraEYkCKjrptZL+chTq0rR5ps9q2f2
+	 buSjg3t9Zzbjt9a55NJ2t3tMIsF7dtK6fdeAh04poa02hll2Rco50kbc8I+oEfsxAS
+	 NzUPxVvIxDSaOzz7ERaAm3QpoNHvfOUNEKEQothQH0rTaYd4IAl0SGRh52pJdJDENe
+	 eaiECSjcPGAaQ==
+Date: Wed, 4 Nov 2026 10:17:28 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+	NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 01/38] PCI/proc: don't truncate the position of
+ config space accesses
+Message-ID: <20261104-beugt-kapern-geehrt-19e2e2dd58f6@brauner>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-1-59422ed3e465@kernel.org>
+ <CAHk-=wiSA7-mqmAjTQDaU7UjUyWt0TxYwXHafL8ZAPudy+B_uQ@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,96 +79,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
- mapcount removal
-To: Pranith Kumar <bobby.prani@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
- Lance Yang <lance.yang@linux.dev>, Richard Cochran
- <richardcochran@gmail.com>,
- "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)"
- <netdev@vger.kernel.org>
-References: <20261104013139.1341582-1-bobby.prani@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261104013139.1341582-1-bobby.prani@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiSA7-mqmAjTQDaU7UjUyWt0TxYwXHafL8ZAPudy+B_uQ@mail.gmail.com>
 
-On 11/4/26 02:31, Pranith Kumar wrote:
-> Removing a PTE mapping must precede lowering its folio's mapcount.
-> The COW path relies on this order to keep the old page from being
-> reused while a stale translation can still access it. The mapcount
-> update needs release ordering for that edge, rather than the full
-> ordering of atomic_add_negative().
-> 
-> Use atomic_add_negative_release() for non-large folios removed at PTE
-> level. Leave large-folio operations fully ordered; their path can
-> queue a partially mapped folio for deferred splitting. Update the
-> COW ordering comment to describe the required guarantee.
-> 
-> In an arm64 page map/unmap microbenchmark with 20,480 minor
-> faults, simulated cycles fell by 1.54%.
+On Mon, Nov 02, 2026 at 09:58:51AM -0800, Linus Torvalds wrote:
+> I think this would actually be better with rw_verify_area() just
+> checking a per-file maxbytes.
+>
+> We already have that logic for lseek and friends - using that fairly
+> hacky combination of s_maxbytes and !unsigned_offsets().
+>
+> We should combine s_maxbytes and unsigned_offsets() at file open time
+> into f_maxbytes and check that not just at lseek but in
+> rw_verify_area.
+>
+> And then things like proc_bus_pci could set it's size limit in one single place.
 
-Thanks for the patch.
+Yeah, I like that.
 
-While I see value, I am not convinced this is the right time for this
-micro-optimization while we are busy with other things.
+Hm, maybe we should keep this and the isapnp thing small and do that
+change on top.
 
-This needs a better evaluation: 1.54% in a micro-benchmark without knowing the
-stddev isn't particularly helpful.
-
--- 
-Cheers,
-
-David
+This also might mean a change in behavior. Because a read past the end
+returns 0 for proc_bus_pci and for a regular file past s_maxbytes. So
+that would potentially need some more changes.
