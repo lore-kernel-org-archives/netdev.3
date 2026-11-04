@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793752175;
-	b=40FvmFwm/3eSXEBCJsQm8yAihKT4ler19LkjycJC8KZXeGqHeTW5D8E5LllVx6d/Aon6
-	 yLphIGFvTKhZqS1nHjQWx5frDZPfHQAeu611DXJOr7Ss+yzWJCcNzHM5R75kL1gMTKQCX
-	 ixgwWeGPHb63uARU59lqSTQ3elOjdezTuPcVqaO2XSejuvkVVq/4IF20iWXK2YdBp+Jj6
-	 RlGrhUL5CwiDF9Mhl335PC1ySlTlxJ9RjIkvJlwEOsaJOy6apznAOCuuBQMRtCb4ICQBu
-	 hm/Vz1W3gaACWhZOuxS0sZI3KzeJi2v55dQaRqgDlv26GEX6D6gEjA2zcCICxNxB9rw==
+	t=1793752190;
+	b=ZiilKpUm8OC1r99R35pllBD8D3dMVMBdjw9BZ1BDgEw3sS3JUt9BVXY7wHeC4vq7QToN
+	 +HahOsgw6m8oyELpmNj9jdZknA5WnpwaKzMNJQO6PAk8/uh/lR0SdGqzu7mYPtNqr5hdf
+	 VOHrUG3g1ihJ3jE6py40qWFoxhaWlNY1JllUWEi4QNBm/kkxGlL9ZnaX6F9VtHDGkrsyD
+	 pNYxBobzUwardk0IqdnkFTapjRx3KGG/8W6qGaRGpwrZ7SQ94RKMgn4WPbMix0Yt5dE9J
+	 upXM0bZKq1vZxmOvU4JnjJvrQjkfoKqkTb7BZuqBK5wI7tBfAT1e2RyfpCEN+r2E/+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793752175;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793752190;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
 	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=/eXhEqhme6RLyDy1UKx6O3gu8VaW7aGNyJfDtIx+o0Y=;
-	b=aTPZIWHE9c+G/KlHH0BqxIfofIsLKGn5qN3YFQ6/Uei/O/ZKPEsOn+mjd0JLzgv665si
-	 G8Tx7yCo93IZD5sUcfvAVTXjTdttSIQt1LMsDDH+siZj0lpQ9G5wFxYHuu1DLJsjBwum+
-	 nAMH+N7fvkwQOTBoUIfSnMUgcOPspkI7pqdjZfyv3cwB79uFmcUObMAWobgWjP/XSDg3i
-	 jS623HVFKTpdp2KDpPZYqkyA//A2+DAiGIMduwpgVMLa/skHpP5HQ3HNaXF8kD4NFZPwV
-	 1sFXtibQPmNe1AWIhiA4Vv3M/qTqkB/O03Jp6Jqcy55eehfZyxlLHSp3l+EX7G6cE7A==
+	bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
+	b=G7/69UgVPiH/p5JlxhGqD/UZYqBr8HNmKaPGg5tDbWRyQ5rlx/kc+iDNiSOiyf7GQFgg
+	 yJRPQDJKXfu0NEN4F/4oK9d6bIoBRS7eW9Rt5hmVqRiNW54OjfrJObHyl23fgYueJ7wH1
+	 RP89hHBJue+MRo6ggXzrXauLtKlabX8zudxrOMT9yfHathy83LNfT+rabPyfuqVpSurtt
+	 CYpkviEWllb1kk//wa+fky8XPRCCWg5ew9PRpfVDmFJixbD33eGwocJ8cDdw6gDzAPOfU
+	 aviI/2DJWUyLgQ8/ld9hdy8KTEovOGU31jTeXm3y3xIc8ovWLWNNWCAeGuwZ2zNJubg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nfqyj3ib;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjX00fYx;
+	arc=none smtp.remote-ip=209.85.216.42
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525FB606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:29:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 525FB606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15915606A324
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 00:29:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15915606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nfqyj3ib
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a05effaf8dso111153b3a.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:29:35 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xjX00fYx
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so116664a91.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 16:29:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793752175; x=1794356975; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793752189; x=1794356989; darn=vger.kernel.org;
         h=mime-version:content-transfer-encoding:references:in-reply-to:to
          :from:subject:cc:message-id:date:content-type:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/eXhEqhme6RLyDy1UKx6O3gu8VaW7aGNyJfDtIx+o0Y=;
-        b=Nfqyj3ib/rCzof5QIGoG/Lqq9chSKO/bVoOr8RIHzuC/3AET4vx2vpR30emtjAd+vf
-         YGXUIDIdr2sdIMnE0Ch+jMQMWPcaRlv6ROgC4/6W2OXClOfOijo4vezZ1GGrN3atAfTN
-         tk4bTILohXkHLL9HoS6c7OZ1nj4qMbgXlVlKc7SHjRh+UVBeLs1Jzkw86INEsQH962Ub
-         i8XCw5R8km/duPnPnDd6NZRB7icYJ/PqYnfVKiR5PF8OrFUg/SVdiNtmPNAjBgXs/52i
-         gQoZbnQOSXtI2ABFQHCh/CCzKJQeQrg8To85JZJrSkijjSKf84krBmPjbrv3cmz6ty1U
-         255g==
+        bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
+        b=xjX00fYxVz0C5LjLk+NtFhJOKKqfjNjgWARkozAxE3Xnti9OROsLwpnCuQkHhGg/WA
+         V4PLR2qbe+yp82UmUbpn1REbcLOlVUogKhCHbKEulXXIDMrT8XM/MtgEfJlnQ5rJDwQh
+         D9NNsz1RoI0NVuIFfpIFlqiLrNiqV+4U8oZc/Nd5M0Z4yiVeGEvyk+5lHeuU1f/jr3Fd
+         7g1F6H5/YS1dkgcmfOKrEwzwhdBuRgOZjfI3r7ozz3BZp3Ts78ePkvLoCfIDCIC0iAqp
+         6LH/xd/KrpDWT7oE9VrL1rnd0EeEQvZ/RynACvOC1G9VFtptzPCZK+I+FGxP9hkhKsSx
+         EGOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793752175; x=1794356975;
+        d=1e100.net; s=20260707; t=1793752189; x=1794356989;
         h=mime-version:content-transfer-encoding:references:in-reply-to:to
          :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/eXhEqhme6RLyDy1UKx6O3gu8VaW7aGNyJfDtIx+o0Y=;
-        b=W75sW/WCrnFk9ks4zXT1PIOFjFTsCfoOqj5WyKDaVAQsFhIfaNVEiLLTPcTGc8Rax8
-         nGsZM2TvGvxWisvV9ux1JReOv9QrlLyIGfH9FYk4V80ddJFRQITisq5BO3OU3yrrfv2d
-         5M+LdE2eHqE+eclS/q1d1NWBq1ZphU0dp5pzUu8Okj7AC+IrBlyNjIjslNfnkP/I81Ea
-         Juph5g0AIbTva1Hxw48ptvXUf61eSA4vD1KUsTAIEZNLGF80NTIP4ZcCb4SB5rU6r/EE
-         kGHrsW0Tn7ZFCjxnwK+U8o5lKgjNGLEVFcDTpzSq76WRmKoJzpO3PVCCLZBS7gtsUw5E
-         CJqw==
-X-Forwarded-Encrypted: i=1; AKwUvBwnhMcu1SxAKi/39PGHoX7jYTY7Tyu1wBdZ/LZryt3erXtN6XHfij9rQTyMIsoUh68LDJjg9EI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/AQ2stZIDc0almD1oRDv4DPnWx7NXISmYuxj+lUC2gZyu+qoXM
-	wjm1HwFuc2lNr689qFLae9C7rbGStbPoq712nT+1EYuiqNqVJelpu1SB
-X-Gm-Gg: AYBFou3jQBCWPhrYts1UFZSMeCQa7C7PtaikrBTUWsKGqhSxA052dR8+UqKrNLjB1eg
-	uvb7Ii4dlBueJoa0qdLh2IyTDxCAz03Igvbtmejs3c/HC0qvp+fyDDb5OV+FJShNbplUpKfzhqC
-	4cZOKzjxZF0+UK2YkOGxm3kRyf5GTW6rOP8wkleldasip3zmPgGfRPPXf//4xDPSi5Ye4RTbbOP
-	d9dgu1arnjoEGc/bDBd8nNnDdZ6f/NAXRLIVPtth2OmbgWJAgxWqQpPFsTKyFnbilHIqZopRFQ4
-	B6P0h186SqN5yqZq8s0hZSfUG8ISpjLthHNJbjT7+aSJZdXC4x1u+rouWkVaMgTtCZn2c6ZnKkb
-	Vw5MzBMeVHCuBgbG31mfOWFSYqdDmpIN+pfijOt9O8jpcaneJHXyIdl/TI3J7Nqe7qGEWskOcWZ
-	l4eftMNgyuq0NQ1DPEOB4SsnZHhMLHqC9HxeUcUGlc7/iqYE2j/ytEJJCR1W+mUzRKbCJnUAddd
-	mYXX+o7H+9ZBnNlWu1ADnvboYvdToOOSp+PQ1QgdBkTEjNEMF8pVIA3IqcJ636CyD6Br7hz0c/8
-	1s7OOlmPh9NRZL/Gy1F64VZVMkreitGbOFGOvc6qVmvRHtJIk6cv5Gjs0rgeuHIcO0H81Spzd98
-	tQ+xpFF64kFAT9ndgAnOtxXXIfdTHbLSNqQ==
-X-Received: by 2002:a05:6a00:4c15:b0:89d:e6e2:b2a6 with SMTP id d2e1a72fcca58-8a9bd4e6f67mr10982582b3a.45.1793752174633;
-        Tue, 03 Nov 2026 16:29:34 -0800 (PST)
-Received: from localhost ([153.61.198.255])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09a7cbe56sm180227b3a.10.2026.11.03.16.29.33
+        bh=gLFQSHxO4gGr22ybqjiMEW9byafCmVvekiJO/cKrO1Q=;
+        b=EYl6ME/NGN8puCOxBEqM9ySAVZVw7QLjPK/31AHd6OVz+/GSzWzcmDJ49fb39cu8N3
+         3W47X6IEeDdkFp5shlMHpG6ZipnxIkKPHOJM4CzzbC9BA8AJI+yqMfoleUSPibJZZyUc
+         y95Sgfwo0hTRvj/EYjyQ7qgK8v5CuTcWwupmPM9ixGLEEL6DCBdh1yMJY/VNJoI9inGQ
+         jVAjmVIaxj863tdD11+kCsfPxIk91NouqMyP1H9H/GKbYjRczMY2qfWnQWfLhZfpNx1j
+         2p63hxo+QuIcZBV+l7TybjPf+Iw2eegPtCUFRtZBI9clck1OYNhh5AGEn0R6d3PKpme0
+         TmVQ==
+X-Forwarded-Encrypted: i=1; AKwUvByJ+NwPS7FtILIHsd4PSVmkqwPwo5O0LljGgwDo3qK7HJIZAcvjQipE9GHkukN4odweBAxTlQ0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8HkIJODyIsn0OnX3/zJDbN8ZgIoQqQIYppYROiaCVfKUB/fO3y
+	YjdUb2YPZGiDpeoA6JXtv7fW/kfDRzHZJy3ZIg3htv1J7ZyTWoi3eOSi
+X-Gm-Gg: AYBFou0fNKg5YcSXYpbQ/qxf7A5Qk7VRPQTxIy/lF6UuSCEEGa12X9TuxinBekeyv/u
+	MIcYa5gE/NAWAaOBJTgwSZDkYiZO/YyVS2Jd5TdnK0FHMMOptfxuyc4YxXTq236AiUYzX/J10qb
+	oi4CcinIMx34NpHtl6h/6DJtcDfj9OCEuh9m6mGoxOpoGC1RzU69wxdaAgzduXw1eevbyqVF7mB
+	VeJYUjscU9f6oyCcekAMZys5FC6jJwgsS+pCZLtEqTSoBk3xu44+WZDc8pIhmC92Pz1fb92QCYU
+	XzoXDUaIuYW5n5jd4lB1PnkyCk2sU2qg1iPtmGocDYi37BmAm8G3DPrQlNbOUTzC4t63yWPRdWI
+	h1MFCAvwcoIb81xjmjYmBzDOwOeh5Kg6eSjOyPpzn13i3cQOZQBT3vW0Z4sUqLxat7/Ms/iefrR
+	Qg3HbHuQAZ5aMOf+OIOH9uieFZPqKhcEiwSWZeSWNF9Gp6Iz+36hk11SYGcG9PDg35dxQRX8tUU
+	+g8u6b99TTjHzTgbXLXGCbIUkTClTu0hZx24/lAaSjFTQ8K9x4U1TL4x6Q48F3Bj7EsQ8wc00ys
+	v/T0Iq+IYMvz2Q34ifl1fmOBIKBAP/tSiaIIsNEzFvwV7atY1zZfuSTTzUvAhAhapaJ8bJEdSbI
+	tpqf8O8sypy8NAj9KiKNJ9Oo1uo26FlsB7Q==
+X-Received: by 2002:a17:90b:2006:b0:3b0:9310:b252 with SMTP id 98e67ed59e1d1-3b09310d1e7mr631008a91.30.1793752189425;
+        Tue, 03 Nov 2026 16:29:49 -0800 (PST)
+Received: from localhost ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944ea360sm1208878a91.14.2026.11.03.16.29.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 16:29:34 -0800 (PST)
+        Tue, 03 Nov 2026 16:29:48 -0800 (PST)
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 00:29:33 +0000
-Message-Id: <DMM02SF04UK0.3RQNDSDPR2SGW@gmail.com>
+Date: Wed, 04 Nov 2026 00:29:48 +0000
+Message-Id: <DMM02ZEK63KB.3KNTQTKEJD0G3@gmail.com>
 Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
  <andrii@kernel.org>, <eddyz87@gmail.com>, <memxor@gmail.com>,
  <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
@@ -90,12 +90,12 @@ Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>, <daniel@iogearbox.net>,
  <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
  <kuniyu@google.com>, <willemb@google.com>, <matttbe@kernel.org>,
  <mptcp@lists.linux.dev>, <mason@kernel.org>, <josef@toxicpanda.com>
-Subject: Re: [PATCH bpf v2 07/15] bpf, sockmap: Check the target of an
- egress redirect before each send
+Subject: Re: [PATCH bpf v2 09/15] bpf, sockmap: Check the TCP state in
+ recvmsg()
 From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
 To: <netdev-bot+sashiko@kernel.org>
-In-Reply-To: <179374188061.488855.10389706003415159913@kernel.org>
-References: <20261102072112.4160195-8-alexei.starovoitov@gmail.com> <179374188061.488855.10389706003415159913@kernel.org>
+In-Reply-To: <179374188255.488855.9131092470801455035@kernel.org>
+References: <20261102072112.4160195-10-alexei.starovoitov@gmail.com> <179374188255.488855.9131092470801455035@kernel.org>
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,29 +108,16 @@ Precedence: list
 MIME-Version: 1.0
 
 On Tue, Nov 03, 2026 at 01:38 PM netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org> wrote:
-> This isn't a bug introduced by this patch, but the comment mentions
-> unaccepted children as redirect targets. Can tcp_bpf_push_locked() hold
-> the lock of such a child while the listener tears it down?
+> Would it help to mention this path, and that TCP_LISTEN is covered as
+> well, in the commit message?
 
-yeah. It's an old bug, not from this patch, and not only in sockmap.
-inet_csk_listen_stop() takes only the BH lock of the child.
-tcp_abort() calls lock_sock() on such a child too. See
-commit dbd62ad55a4c ("tcp: avoid double destroy in tcp_abort() of an
-unaccepted child").
+Not worth a respin.
 
-> After that, the retry check here returns -EPIPE. So the window exists only
-> at this commit, or in a backport that takes this patch without the next
-> one.
->
-> Could the series be reordered so that fix lands first?
+> Should data that arrived on an earlier connection be kept out of the
+> copied_seq update too, and not only out of __tcp_cleanup_rbuf()?
 
-No need. The window is there without this patch too.
-This patch doesn't add it, and patch 8 closes it.
-Both patches have Fixes: 4f738adba30a.
-
-> This is a pre-existing issue, but it is related to the sleep above. Is a
-> redirect sender that sleeps in sk_stream_wait_memory() on the target woken
-> at all when the target's owner closes it?
-
-It isn't. It's an old bug, not from this patch.
-The sleep is interruptible. A signal or SO_SNDTIMEO of the target ends it.
+yeah. It's an old bug, not from this patch.
+msg->sk == sk says that the data is from this socket. It doesn't say
+from which connection.
+To hit it the app has to call connect(AF_UNSPEC) and connect() with
+unread data on the psock.
