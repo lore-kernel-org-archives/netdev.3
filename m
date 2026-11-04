@@ -1,108 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793779841;
-	b=QAiPWkukgcSEAj+cccDe6BcVGad8QDktqbyWJSN7zkPJRMfMgG1CwPjlZehIUVl/2FD8
-	 7nR1CpKy4A2KyeuLcR04vmRLCuKHWm9LsqHNAWuh3de5PrdccotN8Z9X/2Fphsgguh9gV
-	 x6B2RI6yGbsKWugi+RlvFSpgEltITsHr3Cv2FrW7Vx+NobQwGdaM2anjxcRDyRuZEDcLp
-	 jRL7UKhcCYyL9EvC4CpShJLdl+ETPJP5kurWu2ZM5MrnDERCt3GIMraAQqYv7UN19crwM
-	 yLc6s2bmutlMEaGqVTZIwhqQ4aHSCrUeqkGwqgJGdpPpOiXcSv7mY2Xc5QHa5QVCjfA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793779841;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=AIXih/+g+9WTOCjrd3v2llW1L1i6Jm4IJcUxf1FA9ws=;
-	b=pvAisuc2LKtEf58VGWI/NE1G2S9IHupdd4hCUxM+IHl5HJarkB2vglBI9yxyjAY8rU7I
-	 bno0XkXgvVrPwrAqHA5lj/Xpx/YvnaUYln8MoB+RUrGncXLT7gRzps02P9uM8LuCb8X/z
-	 M6hqra39m0YBDuNrTeizhfTW3Kne6DAyQKkl5RN1xd0XE5QCwtmD920Ho11ToQxm5ejzE
-	 Q9XkSVnLBv/D9nARh1/PNXGlXSS8/rVLhc5g1aOA6d1AKnfAnEJOwMuTRxrFnYQGqjjR4
-	 MEyn2+1XkDBkVz0S2o6B3Bu1rRehywehuxrFyT8Tip2XA7DUlZh47M+0EJ5BaYpTqxA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfssRooC;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=h56TphMe;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793779896;
+	b=GSmU9I0jxPgW1xPFGDZbYxJ9DMCLNrOOArSQn+j7TPonmUKgIyKsHVUNOaneQk/DW8QG
+	 hTDrJzHPvCYuEgYa3Wj838qcpv+kqm0Pwc/KZUX+VUtPCN+irlJFOao+I20zNNEGA9XOL
+	 FjyKeCoGkvSLYTLWZqUAopr8h4M5bY2CyC6n6RLb3phafSFibpcFFXLNQU32oTp60kwRx
+	 oCcyyk2zBXYg/H7QlSXL5fXfHkTGZvliitg7SSkB3eY/wr2v7E4EWM5Vvd0RiRSkVKemx
+	 cArtVbom+6JuXsFEePOcy/bJJdploic9hIMa8Qhf6R8rdwGa9ctQMiukUhvLsJa+FBw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793779896;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=MLhpiOQq+BcLHoXpwFBleckIHcU5aB2HxUSVZEWSQXc=;
+	b=sNqPr33gj2ePQyWBBFufCZqZhczblKEbgop1W152s2Pe+aZXQrznYrQQHSXrDBg9mYwN
+	 S95uQ5lS32yyeFmQ3WqemfxCH2xxOoRyH6BNkhQkLv2Vh4KROvnmUrmwFFUAAqWuCm4KM
+	 igydlTlomKtnZ/pC/H2VENqHcYZDmPQawggQzyURNxz2hNe5+vaMrTnEbgapg57Y5hThj
+	 rjz5MPADkKy62tVtWUImPTyac7H3wb5wqBQhnYSzDw3bEYR6Bqd+NRF0jOq9tM1xZzlr1
+	 k9o4HbFqoSKBAl0XEfA3ArMe+BPE7iQkj1dBtmT93PHfFjBYdCk9uKH7o8OBxksLrxw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IuXFvwm/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41DD606A31B;
+	Wed,  4 Nov 2026 08:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IuXFvwm/
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793779895;
+	b=a2NQcqweFi0UL41gAF1ZBj1W0z3PpKMG7kCeS3l2smMS17M9UqKj4z7fR80TUfR0LE9X
+	 iL9PbfWvrRhlBxnf9qCf/TOIh2mr4+JwEt5s2WQV0HR9N1YuRm30pWrnWdgoUSDPM5/ZG
+	 LmpjJHfwTU5XyfZTDny8n5kxCIl6GhYcd02bWcP/Oe1qpKY9mQcF7Re/CF90EcHLs+Ta4
+	 xKdIsoSrvtNNBtk7hkaZ30BkxOoQ0fAJcYSy1YKWsgRSCANojYPoFOW9G2SnkgbJq43vs
+	 OWquyDiuhA8IqRshsVfxXAcQXXsNxqIiJLIvu7ziG43QHZB6mKzGPD8FgpHu1Ekw5zw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793779895;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=MLhpiOQq+BcLHoXpwFBleckIHcU5aB2HxUSVZEWSQXc=;
+	b=onY+AXlfaq2v+lNl8+i1GnWHzalFb/HcO2kUIyC5oznBY9tNesNlF+okmShSBs5vqIwz
+	 wvhx5YFrP1HqhQoOsLc/IHYTYekdriJ/yim/MzIjNynLPYJxsOc+IMzXafApgqA3rwbpJ
+	 BGykl7rYI1yU6IEE60lGpAUU/luZNZIGhsxNa1LsV0CC7wVpK5+gVKvdZbczI0Yf41Y1W
+	 CKaLCWI4X5oePeFWZADpmzMcdffCSGWUI7c4oiGmhcXnptt0rYbbB5k2hSabSg5f+JrsR
+	 o91p/JBAjdQwWVybCu8CibXWVaqnjFPmE0IgN+J40Avmz6GqJX4GjxzbHS2+QlXkpXw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9315F606A32D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:10:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9315F606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfssRooC;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=h56TphMe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793779839;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AIXih/+g+9WTOCjrd3v2llW1L1i6Jm4IJcUxf1FA9ws=;
-	b=BfssRooC5UFgIECUtCytQtm25wzxNrUZdc/+TUBauFqbZtl34J183AjfVT2j4XJykLb7vF
-	UgtixEUBB9r6JmwU/HhGz1LGmHk7+90ioEenJLjALabxEfRoTx+iE6dfsgk5/4CnJOGOQO
-	8Oo5u/ugCfXhIOrWc6GUgRhBPiBK0A4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-1j6AjlEgNIawzKzGWuzGbQ-1; Wed, 04 Nov 2026 03:10:38 -0500
-X-MC-Unique: 1j6AjlEgNIawzKzGWuzGbQ-1
-X-Mimecast-MFC-AGG-ID: 1j6AjlEgNIawzKzGWuzGbQ_1793779837
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-49034831bb3so193058f8f.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:10:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793779837; x=1794384637; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AIXih/+g+9WTOCjrd3v2llW1L1i6Jm4IJcUxf1FA9ws=;
-        b=h56TphMeazGFab3XJ5SBMl+iJ45Yb80vSGCPMbVFEIGmQYcRU/nOViZvvQkcako54G
-         eqKr9ulvIpeug/TB2FLfbP6GTPqT+RKhFEVLIhBKCrq299+HrCGgtcZ+1HtNQv2gEAoH
-         Sp0QFRk1xy8eW+dFZauJYGqd97dwZsPcO//MofnckUw7QXxLNuU2bJ9pW6ejHcbUUa/+
-         gOa2xq+m2P4SeanDXJjfAtV7ZQeirGA0328AuAtc+6qPbwtMI0EOpITi7g/X9NBKX1bv
-         aGJPlfDJP+OAUw9hXLgT188vR4ZIaHgTamf+BCaIO6WFBuspvd8IfDtsCY4ATqN+EumI
-         adDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793779837; x=1794384637;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AIXih/+g+9WTOCjrd3v2llW1L1i6Jm4IJcUxf1FA9ws=;
-        b=SHdyba6opnPSC9npQWZdQIrHso8Fx9/bU8j1uD8ZADQmOGRb8ipf0T2G7DOA6zwJKe
-         zTFllDwxw/DWvAOKfRUfvyYwXObPB72ZOfy8FDAmPUxI+vNTgZ4bj4kWZTZEps3ox1zG
-         fbV1krze+L3+h5GC56sXHIca+sQLiAGxPjsW571Pd5sU/o2Gs2jwtzjHqjA6vm6JU40O
-         hpiLinfmg2DDqoa/Wm67qRsAtRML5plroahkOdHlB48dMydR5twIO0+yMVeQmph+FtZb
-         hZYwI3eAGJNpDJS5s4FN+inTcD96s181sPc3Rn7POw4C56K7qeIwJLZIBeYLo9fYfIOF
-         o5Yg==
-X-Forwarded-Encrypted: i=1; AKwUvBwEs5bk4LfI/huI0CZfVj/DFZVpB46tzisTdIw4WH47gVJXnDKon1SiUkW5PYIEqlruN/wq+qU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/cKGB1buCGJ2w9qgO+YeSdaRscuib/Xcl0IynLJCYT3jUkkfNG
-	+Cuv/7wR78mfCQOeNXqTHnTJ+5NsjERJRr3LqW8f0namczbu1MvIvMR2eo3XzhUAFpqE9gmV579
-	hj0bMcVAP6kEGl6AGHu0mwRcHV6M4WAzDIpoMGRtD401HxCaw3+59+ncDUA==
-X-Gm-Gg: AYBFou1q4t8KfFETZKUnrXB0U1j7cvHFE68Wkcm8bPomeaxo6QDyZjli1cqYR/FJ/PO
-	sLLEQR1QTcEZM6XKIBJpUnddQrK9fiFMzHpoqTU/Rx/mIDAf8zJzJieVXCchSDmnfFydPO227v3
-	VqdUmIrsOi1JCa6IOLEr58WleIin/rqRt15ECRRL76WAU7IPRfDB/2N4fPQ5re+jPiAkkKvO+Vs
-	DCmEZlVJmX1gO1maD/5y0TEgbCFH8RrvgA+4cjwDOtMFrf43QxJXzF0xJffoZ3EKmqC0iGRSNth
-	kiwa51i3STOJ+/4dt7UxU7wUufaDvgBiqvauNfYavfJ+MT1KQOC1VzJhUwabMCtnGpo/Ilc+9gc
-	eYOrkm8fBaCHGq30YYLbzO6WnhLRJSNCdPb7EEsmikC/ZaWmfVYlnKlOf0lodujh4D5A0hAo5Vy
-	/P78BL7M9ufPvufSL5DSE7K8aJkxLC8tobC62FiiWHFr4=
-X-Received: by 2002:a05:6000:40dc:b0:48e:412:3829 with SMTP id ffacd0b85a97d-48e6e3071f9mr35514456f8f.15.1793779837103;
-        Wed, 04 Nov 2026 00:10:37 -0800 (PST)
-X-Received: by 2002:a05:6000:40dc:b0:48e:412:3829 with SMTP id ffacd0b85a97d-48e6e3071f9mr35514390f8f.15.1793779836215;
-        Wed, 04 Nov 2026 00:10:36 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fece99b33sm2302373f8f.23.2026.11.04.00.10.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 00:10:35 -0800 (PST)
-Message-ID: <1e517947-48cb-4733-9e51-8a165d3ba534@redhat.com>
-Date: Wed, 4 Nov 2026 09:10:34 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id D90231F000C1;
+	Wed,  4 Nov 2026 08:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793779895;
+	bh=MLhpiOQq+BcLHoXpwFBleckIHcU5aB2HxUSVZEWSQXc=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=IuXFvwm/+J/Uw90dfZV8DYqJig3VePze9NUmNZyJSpUgokU4roHu3dwD34f0QZFKR
+	 H6+6SZSDk2olabbd3/lY9OAp/fQUe3GiMeV/IFynh05MCitH2Fb9ojYiYuxSiGLIKb
+	 P2nG97WdhzzjAxE4dEfeYo7sgg8Ah2gXFRib2vw8cA3Zka2XvIcDBSjZLZI9PhzjyN
+	 vjd395E9DuQEzIY7iA23/jfuRaBKU1g1cNt4kyjnu/20GbiH3R9HGr+4aEFZOUWdQ0
+	 51JWU6Q9QYhLOOVz0HzAmh3mYGX5gNLMxB4YUhESXhoL27kSnLwOk9bshKCn+fdCFS
+	 6TY7uQ7nZHiug==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 4E3BB46D4D;
+	Wed,  4 Nov 2026 08:11:34 +0000 (UTC)
+From: Marcin Knap via B4 Relay <devnull+marcin.knap.vecima.com@kernel.org>
+Date: Wed, 04 Nov 2026 09:11:24 +0100
+Subject: [PATCH net v3] xsk: Do not free ZC Rx buffer when the Rx ring is
+ full
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,134 +83,252 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/sched: fix rate estimator use-after-free when
- clearing NOLOCK
-To: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com
-References: <20261030030453.31928-1-cenzhang@linux.microsoft.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261030030453.31928-1-cenzhang@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261104-xsk-zc-rx-double-free-v3-1-11a0c7ef1973@vecima.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQQ6CMBAF0KuQrh3TKYjiynsYF6VMpSrUtNCgh
+ LtbcKML4/JP/rw/Mk/OkGf7ZGSOgvHGtjGkq4SpWrZnAlPFzAQXOXIsYPBXeCpwA1S2L28E2hE
+ ByrTkm0JVGWoWf++OtBkW98ha6tjpffR9eSHVzeJcq43vrHss6wGX8p+hgIAgpMRC57nY6fIQS
+ JlGrpVtlpEgPpiU/2JEZJTmWGWy0KnefjHTNL0A+P3rnhkBAAA=
+X-Change-ID: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, jtollet@cisco.com
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ Jason Xing <kerneljasonxing@gmail.com>, 
+ Nitin Shetty J <nshettyj@marvell.com>, Marcin Knap <marcin.knap@vecima.com>, 
+ Joshua Washington <joshwash@google.com>, 
+ Harshitha Ramamurthy <hramamurthy@google.com>, 
+ Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>, 
+ Ratheesh Kannoth <rkannoth@marvell.com>, 
+ Subbaraya Sundeep <sbhatta@marvell.com>, 
+ Bharat Bhushan <bbhushan2@marvell.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793779893; l=8126;
+ i=marcin.knap@vecima.com; s=20261019; h=from:subject:message-id;
+ bh=/laycyHfa7+gbXe0gfkjeC8lPXK/Rk4DOFzJfL0dQwQ=;
+ b=hQCx725MgG1C0JQBAD56aXXsYonoB7PKYR+oWIN1Bt+sR9ahZvW+49W7jXZ/OcSy9QDVfXk28
+ shOgotK2NCWB0XstEKyqQIWoOAlOaPF9TGPzKZTut+Z2IOzTkHQoE8N
+X-Developer-Key: i=marcin.knap@vecima.com; a=ed25519;
+ pk=rCvVOuopf4s4BHtLE+FRnv0x83PoFHgBPo9mtNlvzLk=
+X-Endpoint-Received: by B4 Relay for marcin.knap@vecima.com/20261019 with
+ auth_id=1237
+X-Original-From: Marcin Knap <marcin.knap@vecima.com>
+Reply-To: marcin.knap@vecima.com
+Content-Transfer-Encoding: 8bit
 
-On 10/30/26 04:04, Cen Zhang (Microsoft) wrote:
-> qdisc_create() creates the rate estimator requested by TCA_RATE before
-> qdisc_graft() converts a lockless child of a locking parent. The
-> conversion in qdisc_clear_nolock() frees the per-CPU statistics, but
-> the estimator keeps its own copy of the cpu_bstats pointer and its
-> timer keeps reading the freed per-CPU memory on every estimator tick.
-> 
-> An unprivileged local user can trigger this. The estimator timer can
-> access freed per-CPU statistics in softirq context and panic the kernel:
-> 
->    BUG: unable to handle page fault for address: ff9d8b20ffa47920
->    RIP: 0010:gnet_stats_add_basic+0x77/0xc0
->    Call Trace:
->     <IRQ>
->     est_fetch_counters+0x31/0x50
->     est_timer+0x52/0x170
->     call_timer_fn+0x9f/0x210
->     run_timer_softirq+0x6e/0xb0
->     </IRQ>
->    Kernel panic - not syncing: Fatal exception in interrupt
-> 
-> Fix by doing the NOLOCK conversion in qdisc_create(), right before
-> the estimator is created, instead of in qdisc_graft(), so that the
-> estimator captures the final statistics pointer. Removing the
-> conversion from qdisc_graft() is safe: a new qdisc is created by
-> qdisc_create() with the parent it is grafted under, and since
-> commit bc50835e83f6 ("net: sched: Disallow replacing of child qdisc
-> from one parent to another") an existing qdisc can only be grafted
-> again under its original parent. Either way the qdisc was already
-> converted for that parent at creation.
-> 
-> Fixes: 8a53e616de29 ("net: sched: when clearing NOLOCK, clear TCQ_F_CPUSTATS, too")
-> Cc: stable@vger.kernel.org
-> Cc: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
-> ---
-> 
-> The bug was found and this fix was developed with the assistance of an
-> LLM-based code analysis tool.
-> 
-> Backport note: trees without commit bc50835e83f6 (v6.14) still allow
-> regrafting an existing child qdisc under a different parent and need
-> an additional fix for that path, for example cherry-picking that
-> commit as well.
-> 
->   net/sched/sch_api.c | 14 ++++++++------
->   1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-> index f36c41224bcc..d89f3f0a3c5f 100644
-> --- a/net/sched/sch_api.c
-> +++ b/net/sched/sch_api.c
-> @@ -1247,10 +1247,6 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
->   		unsigned long cl;
->   		int err;
->   
-> -		/* Only support running class lockless if parent is lockless */
-> -		if (new && (new->flags & TCQ_F_NOLOCK) && !(parent->flags & TCQ_F_NOLOCK))
-> -			qdisc_clear_nolock(new);
-> -
->   		if (!cops || !cops->graft)
->   			return -EOPNOTSUPP;
->   
-> @@ -1327,6 +1323,7 @@ static int qdisc_block_indexes_set(struct Qdisc *sch, struct nlattr **tca,
->   
->   static struct Qdisc *qdisc_create(struct net_device *dev,
->   				  struct netdev_queue *dev_queue,
-> +				  struct Qdisc *parent_qdisc,
->   				  u32 parent, u32 handle,
->   				  struct nlattr **tca, int *errp,
->   				  struct netlink_ext_ack *extack)
-> @@ -1405,6 +1402,11 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
->   			goto err_out4;
->   	}
->   
-> +	/* Only support running class lockless if parent is lockless */
-> +	if ((sch->flags & TCQ_F_NOLOCK) && parent_qdisc &&
-> +	    !(parent_qdisc->flags & TCQ_F_NOLOCK))
-> +		qdisc_clear_nolock(sch);
-> +
->   	if (tca[TCA_RATE]) {
->   		err = -EOPNOTSUPP;
->   		if (sch->flags & TCQ_F_MQROOT) {
-> @@ -1817,7 +1819,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
->   create_n_graft2:
->   	if (clid == TC_H_INGRESS) {
->   		if (dev_ingress_queue(dev)) {
-> -			q = qdisc_create(dev, dev_ingress_queue(dev),
-> +			q = qdisc_create(dev, dev_ingress_queue(dev), NULL,
->   					 tcm->tcm_parent, tcm->tcm_parent,
->   					 tca, &err, extack);
->   		} else {
-> @@ -1834,7 +1836,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
->   		else
->   			dev_queue = netdev_get_tx_queue(dev, 0);
->   
-> -		q = qdisc_create(dev, dev_queue,
-> +		q = qdisc_create(dev, dev_queue, p,
->   				 tcm->tcm_parent, tcm->tcm_handle,
->   				 tca, &err, extack);
->   	}
+From: Marcin Knap <marcin.knap@vecima.com>
 
-Jamal: could you please have a look?
+When an XDP program redirects a zero-copy buffer to an XSK and the
+socket's Rx ring is full, xsk_rcv_zc() frees the buffer and returns
+-ENOBUFS to xdp_do_redirect().
 
-Side note: I'm not sure if you are aware but we process the pending patches
-in this order:
+A failed xdp_do_redirect() leaves the buffer owned by the caller, so
+the driver releases it as well. That is harmless when the driver frees
+it right away, as i40e, ice, igc, stmmac, idpf and most others do:
+xp_free() ignores a buffer that is already on the pool free list. It
+breaks when the driver releases or uses the buffer later, after it may
+have been reallocated:
 
-https://netdev.bots.linux.dev/suie.html?delegate=netdev
+- mlx5e treats the failure as XDP_DROP and releases the buffer when
+  the Rx WQE is refilled. By then the buffer can be in use for another
+  Rx descriptor, so an in-use buffer goes back on the free list and the
+  same UMEM frame is later handed to user space twice. With striding
+  RQ this also ended in a NULL pointer dereference in
+  mlx5e_post_rx_wqes().
+- ixgbe and igb keep the buffer in the ring on their need_wakeup
+  -ENOBUFS (XDP_EXIT) path and run XDP on it again on the next poll.
+- dpaa2 hands the buffer back to its hardware pool while it is also on
+  the pool free list.
+- octeontx2 returns false on a failed redirect, so the caller goes on
+  to build an skb from the freed buffer.
 
-And you can restrict the list to the tc subsystem selecting the appropriate
-filter with the funnel icon in the top right.
+Leave the buffer with the caller on both the single-buffer and the
+multi-buffer -ENOBUFS paths, as xsk_rcv() and xsk_rcv_check() already
+do. Make the drivers that relied on the core freeing the buffer free
+it themselves:
 
-/P
+- i40e and ice consume the descriptor on XDP_EXIT without freeing it.
+- gve DQO counts the redirect error without freeing the buffer.
+- octeontx2 now frees the buffer and reports it as consumed.
+
+Seen on Mellanox ConnectX-6 DX MT2892 (FW 22.47.1026) with AF_XDP
+zero-copy on 7.3.0-rc6 when the user-space consumer could not keep up
+with the Rx ring. With this change no duplicate frames were seen with
+striding RQ on or off.
+
+Fixes: 269009893146 ("xsk: recycle buffer in case Rx queue was full")
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Nitin Shetty J <nshettyj@marvell.com>
+Signed-off-by: Marcin Knap <marcin.knap@vecima.com>
+---
+Tested on mlx5 (ConnectX-6 DX) in zero-copy single-buffer mode.
+The i40e and ice changes and the multi-buffer path are build-tested
+only, as I don't have that hardware available.
+---
+Changes in v3:
+- Target net instead of bpf (Maciej).
+- Reword the changelog only: drivers that free the buffer right away
+  are not affected; name the ones with a deferred release or reuse
+  after free (AI review). No code changes.
+- Collect Reviewed-by tags.
+- Link to v2: https://patch.msgid.link/20261030-xsk-zc-rx-double-free-v2-1-cf01d4a9f3f7@vecima.com
+
+Changes in v2:
+- Also free the buffer on zero-copy redirect failure in gve DQO and
+  octeontx2, which relied on the core freeing it (AI review).
+- Audited the remaining zero-copy drivers against Björn's table.
+  ixgbe and igb no longer run XDP on a freed buffer after
+  XDP_EXIT; making them drop and consume the descriptor (R2) is
+  left for a follow-up unless you prefer it in this patch.
+- Rebased on current bpf.
+- Link to v1: https://patch.msgid.link/20261019-xsk-zc-rx-double-free-v1-1-2aa19f6628fb@vecima.com
+
+To: Joshua Washington <joshwash@google.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: Sunil Goutham <sgoutham@marvell.com>
+To: Geetha sowjanya <gakula@marvell.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Subbaraya Sundeep <sbhatta@marvell.com>
+To: Bharat Bhushan <bbhushan2@marvell.com>
+To: Magnus Karlsson <magnus.karlsson@intel.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: Simon Horman <horms@kernel.org>
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: bpf@vger.kernel.org
+---
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c           |  4 +++-
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c             |  1 +
+ drivers/net/ethernet/intel/ice/ice_xsk.c               |  1 +
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  3 ++-
+ net/xdp/xsk.c                                          | 15 +++------------
+ 5 files changed, 10 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 82ed5e48b00a..cc544420df11 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -686,8 +686,10 @@ static void gve_xsk_done_dqo(struct gve_priv *priv, struct gve_rx_ring *rx,
+ 			goto err;
+ 		break;
+ 	case XDP_REDIRECT:
+-		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog)))
++		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog))) {
++			xsk_buff_free(xdp);
+ 			goto err;
++		}
+ 		break;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 51a05ce4c7ce..a11ee1f3fa38 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -360,6 +360,7 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
+ 		return;
+ 
+ 	if (xdp_res == I40E_XDP_EXIT) {
++		xsk_buff_free(xdp_buff);
+ 		*failure = true;
+ 		return;
+ 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 0643017541c3..7c1dd4c87a71 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -636,6 +636,7 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
+ 		if (likely(xdp_res & (ICE_XDP_TX | ICE_XDP_REDIR))) {
+ 			xdp_xmit |= xdp_res;
+ 		} else if (xdp_res == ICE_XDP_EXIT) {
++			xsk_buff_free(first);
+ 			failure = true;
+ 			first = NULL;
+ 			break;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index 90af9b9044aa..6d10c132f61c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -1555,7 +1555,8 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
+ 				*need_xdp_flush = true;
+ 				return true;
+ 			}
+-			return false;
++			xsk_buff_free(xsk_buff);
++			return true;
+ 		}
+ 
+ 		err = xdp_do_redirect(pfvf->netdev, &xdp, prog);
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 781ba46eb152..89bac2feeff2 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -224,21 +224,15 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 	struct list_head *xskb_list;
+ 	u32 contd = 0;
+ 	u32 num_desc;
+-	int err;
+ 
+-	if (likely(!frags)) {
+-		err = __xsk_rcv_zc(xs, xskb, len, contd);
+-		if (err)
+-			goto err;
+-		return 0;
+-	}
++	if (likely(!frags))
++		return __xsk_rcv_zc(xs, xskb, len, contd);
+ 
+ 	contd = XDP_PKT_CONTD;
+ 	num_desc = xdp_get_shared_info_from_buff(xdp)->nr_frags + 1;
+ 	if (xskq_prod_nb_free(xs->rx, num_desc) < num_desc) {
+ 		xs->rx_queue_full++;
+-		err = -ENOBUFS;
+-		goto err;
++		return -ENOBUFS;
+ 	}
+ 
+ 	__xsk_rcv_zc_safe(xs, xskb, len, contd);
+@@ -252,9 +246,6 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 	}
+ 
+ 	return 0;
+-err:
+-	xsk_buff_free(xdp);
+-	return err;
+ }
+ 
+ static void *xsk_copy_xdp_start(struct xdp_buff *from)
+
+---
+base-commit: fb7bd3a2aad70a76232a7168a505386d0a1396af
+change-id: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
+
+Best regards,
+--  
+Marcin Knap <marcin.knap@vecima.com>
+
 
