@@ -1,83 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793783077;
-	b=uqZRUWMPOEN9hllw06IlxrkPinUoikTfqzKKZuz4AneVBKDlTRx09/eb6Be/DIdJ4gSL
-	 56azuKO0DokEgVZr3vhmEJXML4uQGAFErQLxm225pyxXst5FSAJKfBumnhtdDvt0L76Lp
-	 8kBTEVeQk2u/ZElKDVSE/KXw27RPln4XDI3QFQDH8U8oJEFvfMRHIQKpUs/JenUPijXHk
-	 WsIdDOFbYYQ7shjeo/Ii9+EJua6H1Nhq6zGiq3LA5TKOIi/MzEXmQ+mfOl9qzoA0Q3ouv
-	 ONHn5ngClndAWDuOrg8zuV6bIbPu7fDycoWAxjWF0wUqeW+pYmRNJG0nAhLBhfJhKuw==
+	t=1793783104;
+	b=WRe8gG67Q3WngQnkowVIvCie4bfXPnsXGK1JHkh7TRdEwT9dZK6wiu5GCIs34WB3UhhJ
+	 dp5kLLktng81jCyswhXKXmeOh2J3ZXP0QaGUg4ybmojuxKP5TxKRJ8qyUajFKdPDlnOz0
+	 ufhxwfFGJYh5F1ytClG5MRJwzOhbb8ANr0i93GCvIZHugGPpEp+ZMPOEdSqtP10Jlzd7b
+	 ZelMhJXNoFyasBUkf0cxHt3///7CWbTHcZIqTyfXFAA3f3M1daXXAamOSOrRePNoNHYT0
+	 prk0mHKd24hZzH3bYdo82HQ3B6lKleC0zyZaSvRnoSVh5SAJGIOgxqCOtdmXCnzoT5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793783077;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=Yi6uSUZH/rRvO4dc8qtfm+oA6mubW8QBOCH28tEKExo=;
-	b=iMSDkM5DUP+gtkJz7B7Eix7bfMOJ/9jfS+BneGU87wsA+n6UpDv6n3T7UnmDZyN9/Rc0
-	 PFtgmnL490slxtlVZJ1LhSX8C2Hdl2HJ2WecWoLc53EGCkuHgd5TmfVgCXiG7hNXz83Ih
-	 iy2AQvmACnGEwIs9rzgUWRlk54AvI/M+TWgr+Yjgdz3kncv+x+Bv69QyPqB30UJImyCf0
-	 ZeZxjF3CSYUPVD6KjXp2/djkzsCgpXcyAL0WU3MgZ1JCqpBkVyJ9X0no0/9TJzPfqUcFH
-	 NB+T9cihZ+Uhn/LgUWD9xAA9tVSrxaU8oLt470S1cnwqrzFl7H3OEbuALQ371Mmh+3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793783104;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=BeJ1+ZEVQLZEJsNPtmgSzO5kLlwOm5eGbYdwldVrJkWMBD6LdvYG4k50bS2S63RpCEJa
+	 pGjCY1v8umHd+sqmD9vC3Rl4AZmI2uPlmArE/hybPcAXm7QX4sDtDcEju0pcLfhvEHhas
+	 nG7ZGMMPwCbkf1pP8X6751AjcoPbWIAW2AbI9Rzta3clg4w+xdrHEDF07NsawQiSf1t/j
+	 eyUxIk0WSSMOsHV7Wqj9+O1ot/GpD/RuILAjPXq12EfZ3T310+GfHAseEWER5t6F48F7a
+	 ZkhYydgeZW3rGvF3CKBm0l+oABrkVifA0P9HfGr7CCRXZdJ6S078nbC0k2iFtrlZHyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=klg9zMBD;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ogdohVTD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AFA606A328;
-	Wed,  4 Nov 2026 09:04:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20AFA606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94335606A334;
+	Wed,  4 Nov 2026 09:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=klg9zMBD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793783077; x=1825319077;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t8cJaf6alrVXE44hj9mQKJqj29+9TVluofn8Kon4sL8=;
-  b=klg9zMBDxudzSYw8lIkmy1aXwVTaOmfH7gmDwddqZopVRI9kkD4+e6/Z
-   1tgJPT8HqDP+4uVmRH9f83u4HLCou81vIWX99svoveehzQLT+qpxSXec6
-   98/RoAdMGyStaT+WFQv8+dRTva+PZnqrKsdrNDTfntfvok5Lffs/Tla6h
-   k2DyazoX2+cMHCntjeaCdnbrYop6HMb5o3mCXKPjJcW6VbKqmEpEHQQkE
-   YuOQAz4gySlIFRsohxqD6XOfp/lmrHttBG/3KZX9mK/BMQGadC1B/i3cz
-   qBOAOqB6fIu52WYNIOcxbahQN82y5uTuhS3wy/s6fXTLA67xJN1fk8NCd
-   Q==;
-X-CSE-ConnectionGUID: m4FwuLt3RqmuBJQ4wRAWcA==
-X-CSE-MsgGUID: BsRzQy+HR4a7snb/coIbIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2560604"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2560604"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 01:04:36 -0800
-X-CSE-ConnectionGUID: 6qQSRYk2Sl+6FINxHbSa3g==
-X-CSE-MsgGUID: 2sb06OhQSOuQLClbM+8xUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6551391"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 01:04:33 -0800
-Date: Wed, 4 Nov 2026 11:04:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Liu Chao <liuc63@xiaopeng.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, khtsai@google.com,
-	fangxy@xiaopeng.com, Randy Dunlap <rdunlap@infradead.org>,
-	dbrownell@users.sourceforge.net, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] lib/net_utils: allow mac_pton() to take a custom
- delimiter
-Message-ID: <aur1Hqd53BXKgWQu@ashevche-desk.local>
-References: <20261104025058.2650911-1-liuc63@xiaopeng.com>
- <20261104025058.2650911-2-liuc63@xiaopeng.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ogdohVTD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC791F000C1;
+	Wed,  4 Nov 2026 09:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793783104;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ogdohVTDI0cfEuN2qgFTmiIHWT648XiMpHfL/vIfvwvcjW/ZMN6GV6Q3gH7M2c3Hx
+	 QYC2Ou6ihYTksPvaOowqt3sKZpoWIARezoxtisraxJa4X6Ug29G/XpCDX4bxBQMCjq
+	 Q8sCaz4rPha57nBvBkyZogpyDaWfLbd6b7ZpvZxmJH0RvotFfqbr9a2hMGu7LlJKrN
+	 Fo9qhjSWleyAYz+IVcZMm1eHDD14j12KwR0qZeKatavv0u4phPHujqyoiIaNHYiA/I
+	 mWKqAtj/ixP2bp+Pcr27zxzXgYmKHWBqLVzk4sAf/Zj9FKe+4LjeHxDYZ6vNB5IffR
+	 beNkQe4w7v9SQ==
+From: netdev-bot+sinfo@kernel.org
+To: luoqing <l1138897701@163.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Patrick McHardy <kaber@trash.net>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] netfilter: conntrack: avoid secs-to-jiffies
+ overflow in SIP helper
+Date: Wed, 04 Nov 2026 09:05:02 +0000
+Message-ID: <179378310288.488859.5501372329923288019@kernel.org>
+In-Reply-To: <20261104085925.773471-1-l1138897701@163.com>
+References: <20261104085925.773471-1-l1138897701@163.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,29 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104025058.2650911-2-liuc63@xiaopeng.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 04, 2026 at 10:50:57AM +0800, Liu Chao wrote:
-> mac_pton() hardcodes ':' as the only accepted separator, which pushes
-> callers that need a different notation to open-code their own parser.
-> 
-> Split the body out into parse_mac_pton() taking the set of accepted
-> delimiters as a string, and turn mac_pton() into a static inline wrapper
-> passing ":" so that every existing caller keeps its current behaviour.
-> The strnlen() guard still runs before any delimiter is inspected, so
-> strchr() is never handed a NUL character.
-> 
-> No functional change intended.
+Hi!
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Exactly what I had in mind, thanks!
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
--- 
-With Best Regards,
-Andy Shevchenko
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
