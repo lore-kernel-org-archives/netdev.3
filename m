@@ -1,85 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793753819;
-	b=TySaZDW80GDbsONBW7CgZ7RFH4+/ONERBUoixcH2CLk37IeVe/t+33UlMJ+3OPLZ4txQ
-	 11znCS9aw9oZybvvCkv9qhS9E8Mj5ZA1Ben3l73ch/DV9fQKpyt5IxOgPcvKYYKj0R6iT
-	 1hvvmUecdwvux7d8lg2e7BvqBe2Jcvb8BkPvwMdS00H079N97FFhYbcxFjyz5Snp5uJ61
-	 s08ssEcH0+dFMyqjemVpYADpe32EFAu6qzorRiWdPayoXG6/sYTUwXc2CoHXFsvzoYA4y
-	 BImHVgUC88WmW9Yzrdf+FiW2gD4kuYdYy8+6iFUkKnAPF3Ey5Mm9lGr/hmaf502SFfA==
+	t=1793754688;
+	b=WK5JmkKAqZMtlMaiwbwaNXWOM4QGU154ryHEoQG9WLwdTBtzaF5MQfp7WQHDgzI3UtCs
+	 zBZu/aAbh3618JYyz4+HAoP/aBcSkBgulBz4UQ4mebShsBmZh370I9Z5drbfI08KfoSXb
+	 OCTyKX+ZqXgfu5wTiY1LpqrkKYbJcSDCCPpozN5ZA2sqqCfWkFuaQcRCKRof0zcCSa/Er
+	 qlIwGkMWSmEj7HfA7T6+gedCUqH8mi4vIRhUGM2APyaod/W2HrMC6AjP7em9GFrzDGDsT
+	 Zik+8wJAIi+e5HWP1dQ6ot4TMNE1daaUDXr5rAt9ZSqlNNy8wk+KkHCUW+joZ9NrB/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793753819;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=P/DiIq4E5hY6ERPqc4p6/eiApm3YQ3DYXnC0jmxG1dU=;
-	b=f5FrK8eHZnCc+0QymE3rA5OeUljNyV3U2gdbWnbsevP+7KW3diE22WuzczeYk+wRq6uW
-	 SvMh0ifvS58O71l+D2xLMP3B+oI/SsEg2rCctX7bI5K2b2R2k30ScEfPZfNBIbUcMY6Sz
-	 W2afldqhhC/rpYdURiV5WZq+7vpig0NrxZwbu9ao6vZishF+Ld6xsIxn+E4vBXhFlEQTE
-	 h7wBo9EnvbdD/aAtCce+YvKsdGn3UeWJ6Gmr5JsBIAiYH/4jz3+jvurEHNpXamLZmkxo3
-	 hTVUyELoVujAv1+J4G7C7QaeLH9cVScya1Yvi2rdw8djOMAQXASAqengR5KjPXd6yAg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793754688;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=0XVsgUYYITlAtYJaSIrHBYVMeYH8vlOK4hQO3FcxViI=;
+	b=0evicOgIzbAtyHL035bGVPLxSMQmM8kyxZel7DS03ULiS8vJdfmv+hq8s9PPp3C8n7Vp
+	 YP9umSpP0UIkmcjPCvIq4XF0DF8q5S41zulhvU2g3yCZRrL1eK+b+4VEgQ2d+guHgYIdt
+	 km/dVIDje9NgT2JliNB+wPUPkcc2U/hP8ZGxV31m5aQX7ms5T4zgCvOHFiuEids5Ae7HA
+	 3ZEqUTwyILXxp/M4Uc0UA1yRlobZCidvWvoZc1JdI38wMtzplF3sly62A16qflQKZEkl5
+	 eJxGyRRRLHwUfqS04+OkFKaa4hdnJ3llMghKloNMCFVXPCaz02d3efWGHidwsN/M4CQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q7UWjUF8;
-	arc=none smtp.remote-ip=198.175.65.13
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u65yL+6G;
+	arc=none smtp.remote-ip=91.218.175.99
+Received: from mta0.migadu.com (out-99.mta0.migadu.com [91.218.175.99])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF29606A31B;
-	Wed,  4 Nov 2026 00:56:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AF29606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB250606EE87
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 01:11:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB250606EE87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q7UWjUF8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793753818; x=1825289818;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=zWlPRyG3WzBsJRCZoWEQHc1bfqsPLkX/J47KhKkthKk=;
-  b=Q7UWjUF8T7hiTc/KdLcMniZpkMTxnzcBxR2vJ2KhGyOqwqW+meHas6iu
-   GSau5terINzgUayeUGTOjn59nny89d7g/hWTTxKtCQexAHedN4KF/JcQu
-   KSbcbDwbbPp/3IvfK95xiCZlXUFiup+rKRffPwW+2JTjfPKoUS+EpNPCr
-   0CWS3B8MG8XoNeWPnCEKrmGO8teTtN8QndMylYfF+XRX7cEZiqoEULJeD
-   MlwkRxtYomhxok2AdTUHegYNKGeZ7MZ1rEc+mb35H6gd6+ZprGfGM1tyY
-   FVuQ8q0JKk8iM8cPRp0s0jrrysyvQqqPSgON9zbr31cOcMI6oXnRxKIM3
-   w==;
-X-CSE-ConnectionGUID: XMIkeFLsTlCXUULAgYI5ew==
-X-CSE-MsgGUID: iB1RpQfpSwWAQgCYrey3oQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2379382"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2379382"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:56:58 -0800
-X-CSE-ConnectionGUID: qWZs14qiRYy3+UXwlORXAA==
-X-CSE-MsgGUID: /4RAmKWSQOO8U0XPepJM+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6449379"
-Received: from vcostago-desk.jf.intel.com (HELO vcostago-desk) ([10.98.24.84])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 16:56:57 -0800
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Jamal Hadi Salim
- <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+e044a9b6370ed8ca9737@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v2 2/2] net/sched: taprio: do not replay missed
- entries in advance_sched()
-In-Reply-To: <ff74c290-3093-49ec-85ce-0e2385419366@gmail.com>
-References: <20261009123309.284193-1-krystianmkaniewski@gmail.com>
- <20261009123309.284193-3-krystianmkaniewski@gmail.com>
- <87ik36lee9.fsf@intel.com>
- <ab4a8b2c-0274-4423-8d10-04e7efb6c120@gmail.com>
- <874ieoj990.fsf@intel.com>
- <ff74c290-3093-49ec-85ce-0e2385419366@gmail.com>
-Date: Tue, 03 Nov 2026 16:56:56 -0800
-Message-ID: <87bj85wh0n.fsf@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u65yL+6G
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=BCkOieLQhI6i5yJANtPfr6lFATiHdKgIYRQJAU8uJZA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793754684; v=1; x=1794359484;
+ b=u65yL+6GlXtKpuPTPKrrD5ZvABrSN9p0vnTGckpysXWc7VU553qw9APkkHQvT5mYqviwnTwP
+ nRbZmkVdPSX9MtZn21JiQMkxphcFU9nz8TpYBknHKkvsLjcpb579fl4qAJUmjrT4jM2+83eOUYl
+ vydNLxAkQtcF2jY5B/asMTOM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 10e2ba06084617f3;
+	Wed, 04 Nov 2026 01:11:24 +0000
+X-Mizu-Trace-ID: 10e2ba06084617f3
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 4 Nov 2026 09:11:16 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>,
+	Leonardo Souza Silva <Capleonardo12@outlook.com>
+Subject: Re: [PATCH net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace
+ period
+Message-ID: <auqGNNsCDh-s--lq@fedora>
+References: <20261103090011.4128420-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,77 +69,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103090011.4128420-1-edumazet@kernel.org>
 
-Hi,
-
-Krystian Kaniewski <krystianmkaniewski@gmail.com> writes:
-
-> On 10/14/26 22:51, Vinicius Costa Gomes wrote:
->>>>> +	struct sched_entry *entry, *found = NULL;
->>>>> +	ktime_t cycle_start = sched->start_time;
->>>>> +	s64 offset, entry_end = 0, elapsed = 0;
->>>>> +
->>>>> +	if (ktime_after(now, cycle_start)) {
->>>>> +		s64 periods = div64_s64(ktime_sub(now, cycle_start),
->>>>> +					sched->period);
->>>>> +
->>>>> +		cycle_start = ktime_add_ns(cycle_start,
->>>>> +					   periods * sched->period);
->>>>> +	}
->>>>> +	offset = ktime_sub(now, cycle_start);
->>>>> +
->>>>> +	/* The offset is less than one period, so an entry which ends after
->>>>> +	 * @now is found at the latest at the entry which reaches the end of
->>>>> +	 * the cycle, or at the last entry. A schedule has at least one entry,
->>>>> +	 * so the loop always sets found.
->>>>> +	 */
->>>>> +	list_for_each_entry(entry, &sched->entries, list) {
->>>>> +		entry_end = min_t(s64, elapsed + entry->interval,
->>>>> +				  sched->cycle_time);
->>>>> +		if (offset < entry_end ||
->>>>> +		    list_is_last(&entry->list, &sched->entries)) {
->>>>> +			found = entry;
->>>>> +			break;
->>>>> +		}
->>>>> +		elapsed = entry_end;
->>>>> +	}
->>>>> +
->>>>> +	*start = ktime_add_ns(cycle_start, elapsed);
->>>>> +	*end = ktime_add_ns(cycle_start, entry_end);
->>>>> +	sched->cycle_end_time = ktime_add_ns(cycle_start,
->>>>> sched->cycle_time);
->>>>
->>>> Having this side effect here was unexpected. I think this would make
->>>> more sense outside this function.
->>>>
->>>
->>> Agreed. I can make taprio_entry_at() return the cycle end through an
->>> extra output argument and have advance_sched() store it explicitly in
->>> oper->cycle_end_time. The helper could then take the schedule as const.
->>>
->>> I can wait for the rest of your review of this patch before sending v3
->>>
->> 
->> I am going to try and review this by end of this week.
->> 
->> 
->> Cheers,
->
-> Hi Vinicius,
->
-> Just a gentle ping on patch 2/2. Did you have a chance to continue the
-> review?
-
-
-Sorry for the delay, just another minor/optional nitpick. The series
-look good, run a couple of tests on a VM. For the series:
-
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-
-
+On Tue, Nov 03, 2026 at 10:00:11AM +0100, Eric Dumazet wrote:
+> ireq->ipv6_opt is only set by calipso_req_setattr(), when a CALIPSO
+> NetLabel mapping is configured.
+> 
+> Request socket migration (net.ipv4.tcp_migrate_req=1, or a
+> BPF_SK_REUSEPORT_SELECT_OR_MIGRATE program) clones the request
+> socket with inet_reqsk_clone(), so that the old request socket and
+> its clone share the same ipv6_opt, then reqsk_migrate_reset() clears
+> the pointer in the old one.
+> 
+> Another cpu holding a reference on the old request socket can still
+> be using these options, sending a SYNACK from tcp_v6_send_synack()
+> or creating a child in tcp_v6_syn_recv_sock(), when the clone
+> is freed. tcp_v6_reqsk_destructor() frees ipv6_opt with a plain
+> kfree(), leading to a use-after-free.
+> 
+> Both readers already run under RCU, like their IPv4 counterparts.
+> Use kfree_rcu() in tcp_v6_reqsk_destructor(), as commit e3f33b0a1d89
+> ("ipv4: free inet_opt and ireq_opt after an RCU grace period") did
+> for ireq_opt.
+> 
+> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/netdev/179369559062.488856.15441115725436277776@kernel.org/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+> Found by Sashiko while reviewing another TCP fix :/
+> 
+>  net/ipv6/tcp_ipv6.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index d406cd3c8ceabfdbb66f3e1b4f9e9a74754e8d0b..b1dec5d86d633db67a754c70ee1c63290a9acb5a 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -607,7 +607,7 @@ static int tcp_v6_send_synack(const struct sock *sk, struct dst_entry *dst,
+>  
+>  static void tcp_v6_reqsk_destructor(struct request_sock *req)
+>  {
+> -	kfree(inet_rsk(req)->ipv6_opt);
+> +	kfree_rcu(inet_rsk(req)->ipv6_opt, rcu);
+>  	consume_skb(inet_rsk(req)->pktopts);
+>  }
+>  
 > -- 
-> Krystian Kaniewski
+> 2.53.0
+> 
 
--- 
-Vinicius
+Cc Leonardo for the fixup.
+
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
