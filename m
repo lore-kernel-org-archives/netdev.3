@@ -1,108 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801620;
-	b=yw657k96kVKqG8Gv5lyI8e/CXH5H9129lb91cemDSWeDnb+lbvhtsAOV/CHQRnv9s58d
-	 ayuNtHh3PRmA0NKU+J1BBgSWuyQfaKx5HRCJaupyR9Bdd5ddYX3rOFN5m4o5mstPceOsv
-	 Bed4E/tCVk1kNUIQtrShj/nHG2EdyQumXo53SUhQRSNJDnqrapIav8RlsvZMGEmmH6nJo
-	 RUfSFvGY78ue4EWpu+k+Qxv758Leml8EVy2INh0gfdidZW/pkVfHhTr12ZLn0rLL770Jn
-	 jnwOelu6ipP+v9i/fxWe9apCsssf+6CF3pqVH06ncNCJsLT/uqsACLwlGgO26CkOQAA==
+	t=1793801843;
+	b=b8BG8PO7q2fFylzOD3AmVffOqQFWTyDky+vXXJe7KbyjsioreXEGK4ELhYLj14DhiKjC
+	 xJmIR1h4MDkf9pNaKECzrfSI1qxSEMKU+aAVZf7f99ui+aycEI4o7pgigEe17FQeju4gw
+	 JeVN3mf/jB7qbctrh/06t/a8mFCXHmwQsmp1H5T+3wmEixPudzWBEj1UychOCpqxgK21N
+	 FGYRFD8lBkSsZrZmK5wjYENYp5uzBw2Zak3DT96Tr/6d9yk7UipJy19roLTCDjjH9X2Or
+	 2IBFTCeJ1WUOmpDEqQL6gDeIDPAzFq5p+svkG35I9q700+GHiJ/Tfff+o1iKmiL1Wdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801620;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=C39tlu6xlshMWq2hwsMtOj8GLZZ3XOveWxHL0ZGLUl8=;
-	b=LoCWpJsv+Z6BynNZLPR7FQALF4gazS7N+Jgwlfy+9g+Wc822oWJ8DntbKj2sWSzZgFJ9
-	 xhCdBG79DOGcWuDRNJoGgUxBcsegQQG6RbVDpklchfbn4q9k0DzXzgQhwM0a62P+gHpzg
-	 OUxhX/s2pkj0ea77qRbVpVwp6iyAAqPAx+PWf0IUmb8PJ1HPzYiCsBaFmyvnP2LSsNGmv
-	 NiEtgRzmOHcHokZ4bJ1WxgjdfIMuWrOaF8K330mQ93qXTqlz59mD36fSIzBiC5li9Y6oT
-	 dzDqVNouq9VzFNtBHHZLlpf7DpDbmzxfdrmEfON1Q0ca5mfITDQq9vbmh2yM2omG4Aw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801843;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=dVHG44+BDIBCBwDY+96Lk7oESZ3fyFBd8Aec92tJSYg=;
+	b=CSgBrVcbnJ2P5U97L5YJ5MsdGvx0d0jB02eSTcfFv/YwjNnTzjbU4EU8URKKb2ZxXVPi
+	 GY93S2OfKtmYaipBOocVMmr3tKbkQETgle3Ih1GjFYEEjh0rZFiuDZSl7onpvyIzhHTxZ
+	 uxuZZlg0VPAF0jL7tyd2Y5EJLWTEuqTeka6bqG7t6yq9ZlTwMyMUE4ir2DWRLkYr82NrJ
+	 ebFSubarvqUrwbw/voVBDgIlvrbDt9knlD1GTQzvOYLGhRf3sAIb2YwBSZsZGtG8IssGH
+	 mGkVAuzfTZISy17IgMiKF0Kuv/pTqnHD41VYDn16vSrtnJvdGhIGCyBs3MaoMrQsb/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Evfek09f;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=mmqt+Q1j;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ToATedU9;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5A606D83D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:13:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BE5A606D83D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2358606A333
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:17:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2358606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Evfek09f;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=mmqt+Q1j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793801619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C39tlu6xlshMWq2hwsMtOj8GLZZ3XOveWxHL0ZGLUl8=;
-	b=Evfek09fxHUgg+q/tq4fvPAzJbHTYMQzd/yTceZKyIUBs0IljbGCq26EijJ4nCMUFe9Hc0
-	PaD8M9BQs4jFqElqKWuCwwN79TekM183O0cMpZUU4djmxXz2izt+CZrx4TNwPTDZjx9Vrq
-	6dFbKyDbYBJ9bmYM5tce8wgGIgqhups=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-14pKC1oKMVOsfiAwsY9DNQ-1; Wed, 04 Nov 2026 09:13:38 -0500
-X-MC-Unique: 14pKC1oKMVOsfiAwsY9DNQ-1
-X-Mimecast-MFC-AGG-ID: 14pKC1oKMVOsfiAwsY9DNQ_1793801617
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c430f0f01so694022f8f.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:13:37 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ToATedU9
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c445c95d553so105550866b.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:17:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793801617; x=1794406417; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C39tlu6xlshMWq2hwsMtOj8GLZZ3XOveWxHL0ZGLUl8=;
-        b=mmqt+Q1jLBJ5qfdX9Trw0Nt9nJEV2+9qd3k9y4/cbx+4mJlCsizDVidStqFpBHHdmv
-         ZOhfM1LLFqA+wFzCyrlsE4MdyHYwBVVLrXrxbtOm28xzqn+oe/G3gytRxO6ql8cGL68m
-         lvKUBEHIyO8vhWQjF/cnG2ChO4jATV0cLpbF5Gu33rwi1Fo8B/O+RaNXru+YJm6fkgcm
-         WYqG0RGbNz4VoszIVQKkZA9RMejtfLHb8Y7EBEApw2eC5ZTuId8BO/JwKD8dy5NO+7OV
-         3QdMSwAb6ZEkxZd4+BNcg+llu4p+hVBSfT+V1xUJydBLPOblgixaVyyvCPbLKSUSE+8V
-         zesg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793801617; x=1794406417;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793801841; x=1794406641; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=C39tlu6xlshMWq2hwsMtOj8GLZZ3XOveWxHL0ZGLUl8=;
-        b=b2cee1ubPVFYoqY3+B1e9YhK6Hn3LkjMZEckQPYJA2qi3w09yeg9fz0y2n91dZy4Mr
-         xoBfk1bVstgqBTqwWthPZdwmVj7gP62YfTikEHcx9E+G7OP72cV2nFxUn9dDxTv5bvIx
-         iwSScdOe7GRehg6ehcXO5rrV1s5ee+UOvIKWn/PYevFZfvg7hNojFO0i9mYwA3pehgOQ
-         hMBfwG1hjlYK1JeQnjeyG+Q/I103BWwrOyg2Q3iijXy4UgYtwSTEvLvajLvQ2NxAldC7
-         g813IM/llVGW09Z/tZ7UbSxwky606z76F6s/2P+nTp18EkHPBcnNC1r7mymzrZqEzoJU
-         oPgg==
-X-Forwarded-Encrypted: i=1; AKwUvBxwaf9W1VHRXGzAF4YN8oOq4qQCsG59OoqP5nRQ5QqKbbxyAfFQXVAi4xPFAZKJySaOFX+/UPk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/b1JwBi4IwpcLcFdPhmH0FrarmHLlag5oobIDuCNpnk0FQbgFE
-	oNhmKWZI3NUSTlRmNRwFtyJS43ZiFVrY8E41ioqGuYZUgvuLpf8przPwA7rA+4E65zvLFIQlmc5
-	wGtwovkK/E28H58k3UokmhJTaRJR6gX1o19d3/HesT88T2D5efRJAndrBwQ==
-X-Gm-Gg: AYBFou3G1FuVlTgbRGZSl/gNfBlE9yeWkuO8xDmGvDNb/hB0SR6twevIk9RF9ZeXCZX
-	ASNAeSZWWwl3h/jEB1Y5q+sgg5oY1ImOfixkOGdJzIRLppnhOp/A4XRyF16ZJ6nBHtlli38QxRg
-	zRFlqrwfPtZbCYLoyLua026TbbG7i44yTtPvpFxFlgZ2vHR0ylmukRB1UB3CADEQ/9xX0MQQN+1
-	yvs21z1v/lcnpn6OzI4D2jcBvBG+MUcJg+O8CjNgHFcZxW9bfzSsJ0lNX+D9ytuoH4hGV770064
-	YY9FxhZn3o/o/L5lDJXvjOhyor93X52pp6bL/10UbsIEYK02uSh5o9arPErMieRkcc/jTUYKcDM
-	/bpr91IDM6TSCpI6TC2xTQgN59tj59GcvVnwSAESCzkIWvyUR9KQ3Q405wP2ly76/T+eoUTIzVY
-	zb1tOZW/8md8wOLhfUmDstcKU89aPj+mlW/GUasFr7DC0=
-X-Received: by 2002:a05:6000:2313:b0:488:7d08:edbc with SMTP id ffacd0b85a97d-48e6e30ba6fmr37096695f8f.24.1793801616604;
-        Wed, 04 Nov 2026 06:13:36 -0800 (PST)
-X-Received: by 2002:a05:6000:2313:b0:488:7d08:edbc with SMTP id ffacd0b85a97d-48e6e30ba6fmr37096644f8f.24.1793801616114;
-        Wed, 04 Nov 2026 06:13:36 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fe7189883sm4443181f8f.0.2026.11.04.06.13.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 06:13:35 -0800 (PST)
-Message-ID: <b5187890-a0df-45c9-aeed-3b1fefba57ab@redhat.com>
-Date: Wed, 4 Nov 2026 15:13:33 +0100
+        bh=dVHG44+BDIBCBwDY+96Lk7oESZ3fyFBd8Aec92tJSYg=;
+        b=ToATedU9d4AKlw1TrrcSx/rpQqZJKU5ptfLvpNhrtrjFQdMtoINZFG4rPpIrjIXCV+
+         IVe/cNotw+557JLtvVZbTeDduv/m5TUx29giIs68Hexdp8hKmIVZFzAkG6cnnXmMGKnf
+         08bGt3gEH4AjURa26dm+mGQBohqrWiBHpetP6sNc/DNzeNCypHOPFzKIUyrisurCCHPl
+         vHjH/WtGiJ1Ool+HIWLHn3o4WkeGgDTdc64IPQSy8Au7+1HQuWXFKNxns2KxF43YsO58
+         lKv725PdTYPVd8HM2W38F4u372nPQh9J3ZI2JnHpTFXvtH9zcaSluEYc8MpQJzzHBkW5
+         Burw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793801841; x=1794406641;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dVHG44+BDIBCBwDY+96Lk7oESZ3fyFBd8Aec92tJSYg=;
+        b=tEd6KE2+/RIw0UT8xCcVJBgrRRC0lgDSP4jOyag0JSKL8otLYAozKMhBQwort9GKM/
+         f3QOOgW6Sg48G1Z3x6uyUrEms6v4UwTic5PWmRoDOro8x2W0h7oRdCDJJfBCBOEzF7Pv
+         VTlNyo8LW7CagfaHXR7Qzdz5a4yBXN1Z3HKZzrg56DxCCQ6gtsqh3eBkU0ufU5uWS+gi
+         q4b4KZRhQZcvCvx94LrBJsNuxQRpRCRSiEKNPKV7B8PEP2+7+o1Lkg+uI6prEsMWdD6g
+         RnCeTvVjrrgQyrd5QxiNC1bGIjhEIdIdm86lALDn1MUATDiceUdaQKh0mTKYnHhHc3Xv
+         IW1A==
+X-Forwarded-Encrypted: i=1; AKwUvBzmkPcz6xt5mdtwRC4Yk+2yUGmCTl0tqJ1zKoSoRaqHGD5v6kfvlMExUiOfN7QeA9+3jqJljHY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Hs9lz5RYB4sxxgwKLyzjiE0pJPqavF2EPEcP3nQlxEXtfwwJ5
+	zDjwpUF0G29bv7YuUNgcw8Aaape9RjRT+At7bnNguGByosG+dZZlgBJ5
+X-Gm-Gg: AYBFou2rWrndTmOM4wCxRPkZQ1usLpQymVFZwJG7CDfi4E/Dnr0biFMRQobQUJqjrBr
+	Po86x6a3E7vBqa8KMRLiTzqaGJP2sK6VxjKJt9VoVKdpoSSzWneVzlomMgaTxueQas6WgjrREkS
+	s8D17Mk1m/qF3GPkEXPKF7WaWyHJy5D0ynCgVGsiIM9atApIJhg7A37S+zCT7fIvFprC72z5STM
+	mIu5Fas5aMCoZKyzZHpA9QVPpsusVJWmi2eSEHEm72BiF158+lQ8YmRc0u4Zuz2qIOGzzm8I3iS
+	UmiiiG9knRyVnjfNhYDREUNyX6yVxLTeT/9rF9n4i8cs0lX4KVQ+7U1TR2ntKhXg42Aa7Xy339n
+	dKkOCEy0gkheMPiLRygWuEv/7xkzcmrlOhCjjWXxvyTgMbL4ctS2udsxOVcHL6VPPh5LnLfdBH4
+	/lSlwJWUp0yiN43ctl5mG3tfE0hgr09xOc6n9TmbdHsn3Chs9dijmPKQHVvgjRiyZ6mqmyEJl3o
+	S287H+HAlEDZCLQMxpd4U7y3m/V91z47xvC5OSglrrYNCOHmqJoGSdVijJju9ew5Km7T0KcWz0d
+	py8sFl01xXbUgm4spIwcWNAy9gN9y3zLrS+TV2S7tRwkpm68yszj883Rc8ezKaPmM8a9VQb51Jv
+	m4WxfkXswdgfz8bJFS538Y9s2DyEoNZu93HIr3EPWm2nZGsplgY97Cs2Z3D6z4bIepGjD3hGCDc
+	d6TvMwpyLVoyQwdVCtKvNe10K6dCheLjI/L7CumFqSOhzHxW6aDqmZYL0fpK/YBdV7Fvj1rNfX7
+	Q==
+X-Received: by 2002:a17:906:604c:b0:c3f:55e6:83e6 with SMTP id a640c23a62f3a-c4cc399b6f7mr687400066b.15.1793801841000;
+        Wed, 04 Nov 2026 06:17:21 -0800 (PST)
+Received: from Ubuntu.tail0f733b.ts.net (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d0e43e2eesm77311566b.31.2026.11.04.06.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 06:17:20 -0800 (PST)
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Vedang Patel <vedang.patel@intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3 2/3] net/sched: taprio: prevent cycle time extension overflow
+Date: Wed,  4 Nov 2026 15:17:12 +0100
+Message-ID: <20261104141713.355958-3-krystianmkaniewski@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
+References: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,119 +109,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net/mlx5: macsec: free struct mlx5_fs_id after an
- RCU grace period
-To: Tariq Toukan <tariqt@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- "joasantonio108@gmail.com" <joasantonio108@gmail.com>,
- Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
- "leon@kernel.org" <leon@kernel.org>
-Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "edumazet@kernel.org" <edumazet@kernel.org>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
- "sd@queasysnail.net" <sd@queasysnail.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "horms@kernel.org" <horms@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>,
- Boris Pismenny <borisp@nvidia.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <179313582625.87630.11382992904624255106@gmail.com>
- <e91e786d3bf20ed981ab2d214ae3358d137d597e.camel@nvidia.com>
- <94dfe8e7-5eaf-45be-94f5-7d2e2b38fdb2@nvidia.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <94dfe8e7-5eaf-45be-94f5-7d2e2b38fdb2@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11/4/26 13:49, Tariq Toukan wrote:
-> On 04/11/2026 13:20, Cosmin Ratiu wrote:
->> On Tue, 2026-10-27 at 18:17 -0300, Joas Antonio dos Santos wrote:
->>> macsec_fs_id_del() removes a struct mlx5_fs_id from its rhashtable
->>> with
->>> rhashtable_remove_fast() and then frees it with kfree() right away.
->>>
->>> The TX (SCI) table is read locklessly from the transmit path:
->>> mlx5e_macsec_handle_tx_skb() and mlx5e_macsec_tx_build_eseg() call
->>> mlx5_macsec_fs_get_fs_id_from_hashtable(), which does
->>> rhashtable_lookup() under rcu_read_lock() and then reads
->>> mlx5_fs_id->id. A transmit that looked the entry up just before it
->>> was
->>> removed reads freed memory.
->>>
->>> Before commit d4ece08f4b1d ("net/mlx5: Maintain fs_id xarray per
->>> MACsec
->>> device inside macsec steering") the SCI table held struct
->>> mlx5e_macsec_sa directly, and mlx5e_macsec_del_txsa() freed it with
->>> kfree_rcu_mightsleep(). That commit moved the table into macsec_fs.c
->>> with the new struct mlx5_fs_id, but frees it with a plain kfree().
->>>
->>> Add an rcu_head to struct mlx5_fs_id and free it with kfree_rcu().
->>>
->>> The same issue was flagged by the Sashiko AI review as a pre-existing
->>> problem while reviewing the HW-GRO for PSP series.
->>>
->>> Fixes: d4ece08f4b1d ("net/mlx5: Maintain fs_id xarray per MACsec
->>> device inside macsec steering")
->>> Link:
->>> https://lore.kernel.org/all/20260909065542.4B80D1F00ACA@smtp.kernel.org/
->>> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
->>> Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
->>> ---
->>> v2:
->>> - Drop the macsec.c hunk: the sc_xarray_element free was already
->>> fixed
->>>    by ad17ad50b8dc ("net: mlx5e: Fix use-after-free of the MACsec
->>> xarray
->>>    entry on RX SC deletion"). (Simon)
->>> - Embed an rcu_head and use kfree_rcu() instead of
->>>    kvfree_rcu_mightsleep(). (Simon)
->>> - Fixes: now points at the commit that introduced the kfree().
->>> - v1:
->>> https://lore.kernel.org/all/179285888829.90275.17386097105525068016@gmail.com/
->>>
->>> Testing: compile-tested only (arm64, W=1, CONFIG_MLX5_MACSEC=y, no
->>> new
->>> warnings). I do not have
->>> MACsec-capable ConnectX hardware, so this was not run on a device.
->>>
->>>   drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c | 3 ++-
->>>   1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
->>> b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
->>> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
->>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/macsec_fs.c
->>> @@ -94,6 +94,7 @@ struct mlx5_fs_id {
->>>       refcount_t refcnt;
->>>       sci_t sci;
->>>       struct rhash_head hash;
->>> +    struct rcu_head rcu;
->>>   };
->>>
->>>   struct mlx5_macsec_device {
->>> @@ -684,7 +685,7 @@ static void macsec_fs_id_del(struct list_head
->>> *macsec_devices_list, u32 fs_id,
->>>
->>>       xa_erase(fs_id_xa, fs_id);
->>>
->>> -    kfree(fs_id_found);
->>> +    kfree_rcu(fs_id_found, rcu);
->>>
->>>       if (macsec_fs_is_macsec_device_empty(macsec_device)) {
->>>           list_del(&macsec_device->macsec_devices_list_entry);
->>> -- 
->>> 2.39.5
->>
->> Thank you for the fix, it looks good.
->>
->> Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-> 
-> Acked-by: Tariq Toukan <tariqt@nvidia.com>
+cycle_time_extension is an unrestricted signed 64-bit netlink value.
+should_change_schedules() and get_interval_end_time() add it to an
+absolute time without checking for overflow. A positive extension can
+therefore wrap the result negative. The schedule handover test then
+ignores an extension that should cover the admin base time. The
+txtime-assist path can use the same wrapped value as its extended cycle
+boundary.
 
-While I have your attention, there is another mlx patch pending:
+Add one helper that saturates positive overflow at KTIME_MAX and use it
+for both sums. Values that do not overflow, including negative
+extensions, keep their existing behavior.
 
-https://lore.kernel.org/all/20261028145805.54595-3-fourier.thomas@gmail.com/
+Fixes: c25031e99344 ("taprio: Add support for cycle-time-extension")
+Fixes: 4cfd5779bd6e ("taprio: Add support for txtime-assist mode")
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+---
+v3:
+ - split the overflow handling from the advance_sched() change (Vinicius)
+ - use the same helper for the sum in get_interval_end_time()
+ - add Acked-by from Vinicius
+ - drop the obsolete Assisted-by trailers
+ - rebase onto current net/main
+v2: https://lore.kernel.org/all/20261009123309.284193-3-krystianmkaniewski@gmail.com/
 
-/P
+ net/sched/sch_taprio.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 2a31b189d654e2..e4c937cf74c10f 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -239,6 +239,18 @@ static s32 get_cycle_time_elapsed(struct sched_gate_list *sched, ktime_t time)
+ 	return time_elapsed;
+ }
+ 
++/*
++ * Netlink accepts any s64 cycle_time_extension. Saturate positive overflow
++ * so comparisons remain monotonic in end_time.
++ */
++static ktime_t taprio_cycle_ext_end(ktime_t end_time, s64 extension)
++{
++	if (extension > 0 && end_time > KTIME_MAX - extension)
++		return KTIME_MAX;
++
++	return ktime_add_ns(end_time, extension);
++}
++
+ static ktime_t get_interval_end_time(struct sched_gate_list *sched,
+ 				     struct sched_gate_list *admin,
+ 				     struct sched_entry *entry,
+@@ -249,7 +261,8 @@ static ktime_t get_interval_end_time(struct sched_gate_list *sched,
+ 
+ 	cycle_end = ktime_add_ns(intv_start, sched->cycle_time - cycle_elapsed);
+ 	intv_end = ktime_add_ns(intv_start, entry->interval);
+-	cycle_ext_end = ktime_add(cycle_end, sched->cycle_time_extension);
++	cycle_ext_end =
++		taprio_cycle_ext_end(cycle_end, sched->cycle_time_extension);
+ 
+ 	if (ktime_before(intv_end, cycle_end))
+ 		return intv_end;
+@@ -916,7 +929,8 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 	 * next schedule base_time, we can extend the current schedule
+ 	 * for that amount.
+ 	 */
+-	extension_time = ktime_add_ns(end_time, oper->cycle_time_extension);
++	extension_time = taprio_cycle_ext_end(end_time,
++					      oper->cycle_time_extension);
+ 
+ 	/* FIXME: the IEEE 802.1Q-2018 Specification isn't clear about
+ 	 * how precisely the extension should be made. So after
+-- 
+2.53.0
 
