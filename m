@@ -1,60 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793792354;
-	b=rb9+s5hd5Op2bh4lAVLBH8buREpQXohYyO9XsTnYMHXwYMwbROdkxHatCSBUjsDURpCK
-	 28XWdMkm76NAONJLo0TSQIjEQROew2mOC/Za56F8GjfVYpRCcjxvYJ0quATm/zvFqOVzK
-	 OPMLWDixX37mLvmLTFPY3EXOmMhp5IA7s2Htk0wzXqtuEVNrBl5LPwzRfkt3Ec9ds3ivU
-	 XSsubmtRR64c2kSIwvAEtf7PIucaoLNmHZ8IcWHGHGt9MvuvO2XVBY1DIXjlRADKSWw5p
-	 vZAeJoYVvPfuYWGcO8vo/dJ95gUNgwG+BUsDJJIL19ELf+G+lfYLcg32aassWt5UVqg==
+	t=1793792360;
+	b=ou7BLkS3y8PS3db/93tkHADnS26vw+/Cm6CCLPE5kQngSUP58SOqQ9/kCp0IjlLMmuuu
+	 +Hi40asCoakgoIPZDuoZbBVmkNHScBODtlpnLABlabxd2gW3eY+olClUJejcgL7GFNUVa
+	 l2pnHuB2idPERk/G12EtV/hQ+9EotnzQYdN2sqleazwvjeQFlM7DkUirAPThRCfLktBHO
+	 W8RVXOuyCkSbmaxy90mdIVbb8+ho+G9ENf+Bc1eMXbFpxOtINb6/4c+2hhNVK38roIlfe
+	 xwKSgXmRU1sj0bmW4PD0xnNUbSdVyy++vVaX9Wp+fxTe9yxmE9CTPwjDVzM9u74D6qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792354;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=b65pzJ5TnRWSzP7nj43qs8PY9qI0f+kdw1kbXZqXiCEdW3WRMGc6lEml8lW5AiQu8mHe
-	 lBPYXC9m9JwggIT1XK0mVwnwYLpvq3+gpHFoQd6KuUozHD80XIRGSSZshO4gI1xg4ki2C
-	 Het5stWkcdnkykje+6JjLmsUK5xbM3jFKp0cX6k+Vxd7EYGGISrpMUrzzTZsKAjDcEjP0
-	 tdsWax/icEYy+0CSgRkA5jJFMEukpi2sGl7guaf825rfRXlG6Al/G/PMJ2xnGEEJwghpJ
-	 Kkxzsa5EiZpLjLsuIB4eIcsg9e3npefK3vjmTDyNMCGNypg7gb4I82y3Pg/9qTKQUwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793792360;
+	h=DMARC-Filter:DKIM-Signature:Cc:Date:Message-Id:Mime-Version:Received:
+	 In-Reply-To:X-Original-From:User-Agent:From:Content-Transfer-Encoding:
+	 References:X-Lms-Return-Path:Content-Type:To:Subject;
+	bh=8SRH22hkLlGe2H+tqK/rV7yAjjgHaHhYIT6zi/fmEEg=;
+	b=4antVEXwGEHK2EqQm39MQtVECZf47OMD14KOV0eLWtsYgZmNyWVlK/OQT7dldyB4mfSb
+	 xPDVdB+dwU4tL7NyydJhQ96+dqPRXZfX/n3jxaNyLfZwmRF5PwgxDTjW5tN98ckhdHkR5
+	 wO1sojRcOdTMgnL7lPWn9sR3jp8EqnLHkUZZOLcvrMegA45C+wUK2d9QoiSsOSRPs5KfO
+	 NEP4f0PM+znoOZCh6pkXTcsrwQPY4Yrnz+FDlbzRtjeiUlvcXlnxXe8nc1DTd3RQiW7N3
+	 o3RT4SHdyxV9R6/9cu7LDMXZB2QkToJ6z+HAdF+PcOHDpSgJ9G/OTViKAlbasn8DkuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="n12fr9o/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=yunsilicon.com;
+	spf=pass smtp.mailfrom=yunsilicon.com;
+	arc=none smtp.remote-ip=209.127.231.30
+Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FEB606A32D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n12fr9o/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319221F0093A;
-	Wed,  4 Nov 2026 11:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793792353;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n12fr9o/eLfRH66x7aUMM99yMJ8o11YgLqvYJSltxvo/lttYGQ96bIuq/jHpl+Xkv
-	 bQbYgYxFZrkBypIAf2FKY43tlNfZEKLPJ+HprQJcCe93Qlp0R6Lx6HjxomujtrOaxt
-	 kcB4we/H+nupAzCZi63W3Z+e/pjbazZoLNcOXPgn/u8pK1L2Az+PVIRJIDsdUK62vx
-	 63QiGcU4mu6GnLqHTJIH3U7qAPRlfLFHyTHZamcRe5jljsmLenBW4s3GBwaJJj8yvB
-	 zy2ciSfwH3AYhu30fZn6VI4SiwcTpGwUpJtHT28pKus16SPAxyd2dyBkoF4/EDbF/l
-	 C6utxzNsZUjTg==
-From: netdev-bot+sinfo@kernel.org
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Mahesh Bandewar <maheshb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- Kyle Zeng <kylebot@openai.com>
-Subject: Re: [PATCH net] ipvlan: make outbound skb headers writable
-Date: Wed, 04 Nov 2026 11:39:12 +0000
-Message-ID: <179379235268.488859.11510660996410063187@kernel.org>
-In-Reply-To: <20261104113530.986664-1-edumazet@kernel.org>
-References: <20261104113530.986664-1-edumazet@kernel.org>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9000A606A334
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:39:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9000A606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1793792352; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=8SRH22hkLlGe2H+tqK/rV7yAjjgHaHhYIT6zi/fmEEg=;
+ b=RAJJhd16mXoD9UaPxX4+Pqi7MqdX6r9CY2RgTHB52T02i7GKNhVBJT2nBlRyyi+AobFfpQ
+ B3OUZbPaSGhvRA4VuVZX5mZmJ71mJZCRXTjwXahChZsGUE/1FZE4HnyE6Ynt4ZpxPHVrfB
+ hUd9f3W4ry8gEwzmNZCMNF0aLfw0L/nvkN0P2i41aCgUQ4b30e4dyHVKOOG1iIt/fwqR/p
+ vCe+HQIH/99OPowrtZqMYTPirP5vM8g974T+6/asdXvMY1eqK1JapLmwjvXU5+f3vzTGyG
+ LXcdKW3EcriTFJ/0XQufESlAycxww4HbjObSQEbbSn+wE8HdqUqtKW0Y62unFw==
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
+	"Leon Romanovsky" <leon@kernel.org>, <weihg@yunsilicon.com>, 
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, 
+	<linux-rdma@vger.kernel.org>
+Date: Wed, 4 Nov 2026 19:39:09 +0800
+Message-Id: <fbea0512-f1d1-483b-b04f-eec0948db42a@yunsilicon.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,26 +57,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+Received: from [127.0.0.1] ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Wed, 04 Nov 2026 19:39:09 +0800
+In-Reply-To: <d9d02f67-558f-426f-b3a4-b13bd0a95c0e@lunn.ch>
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+User-Agent: Mozilla Thunderbird
+From: "Xin Tian" <tianx@yunsilicon.com>
+Content-Transfer-Encoding: 7bit
+References: <20261012114352.2471317-1-tianx@yunsilicon.com> <20261012114354.2471317-3-tianx@yunsilicon.com> <d9d02f67-558f-426f-b3a4-b13bd0a95c0e@lunn.ch>
+X-Lms-Return-Path: <lba+26aeb195e+09b9b4+vger.kernel.org+tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+To: "Andrew Lunn" <andrew@lunn.ch>
+Subject: Re: [PATCH 02/15] yunsilicon: add the register HAL
 
-Hi!
+On 10/12/2026 11:21 PM, Andrew Lunn wrote:
+> On Mon, Oct 12, 2026 at 07:43:55PM +0800, Xin Tian wrote:
+>> Add the register access layer and the per-device register map: doorbell
+>> and interrupt registers, the command queue pointers and the device
+>> capability queries that the upper layers call.  The register map is
+>> described by xsc_hal.h and implemented for the Andes device.
+>>
+>> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+>> ---
+>>   .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
+>>   .../yunsilicon/xsc/pci/hal/andes_impl.c       | 708 ++++++++++++++++++
+>>   .../yunsilicon/xsc/pci/hal/andes_reg.h        |  43 ++
+>>   .../ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h |  85 +++
+>>   .../net/ethernet/yunsilicon/xsc/pci/main.c    |   3 +
+>>   5 files changed, 840 insertions(+), 1 deletion(-)
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
+>>
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> index c163aa950..81b65232e 100644
+>> --- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> @@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+>>   
+>>   obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+>>   
+>> -xsc_pci-y := main.o
+>> +xsc_pci-y := main.o hal/andes_impl.o
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+>> new file mode 100644
+>> index 000000000..46fc045f9
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+>> @@ -0,0 +1,708 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/* Copyright (C) 2024 - 2026, Shanghai Yunsilicon Technology Co., Ltd.
+>> + * All rights reserved.
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/pci.h>
+>> +#include "andes_reg.h"
+>> +#include "common/xsc_core.h"
+>> +#include "common/xsc_cmd.h"
+>> +#include "common/xsc_hsi.h"
+>> +#include "common/xsc_reg.h"
+>> +#include "xsc_hal.h"
+>> +
+>> +/* message opcode */
+>> +enum {
+>> +	XSC_MSG_OPCODE_SEND		= 0,
+>> +	XSC_MSG_OPCODE_RDMA_WRITE	= 1,
+>> +	XSC_MSG_OPCODE_RDMA_READ	= 2,
+>> +	XSC_MSG_OPCODE_MAD		= 3,
+>> +	XSC_MSG_OPCODE_RDMA_ACK		= 4,
+>> +	XSC_MSG_OPCODE_RDMA_ACK_READ	= 5,
+>> +	XSC_MSG_OPCODE_RDMA_CNP		= 6,
+>> +	XSC_MSG_OPCODE_RAW		= 7,
+>> +	XSC_MSG_OPCODE_VIRTIO_NET	= 8,
+>> +	XSC_MSG_OPCODE_VIRTIO_BLK	= 9,
+>> +	XSC_MSG_OPCODE_RAW_TPE		= 10,
+>> +	XSC_MSG_OPCODE_INIT_QP_REQ	= 11,
+>> +	XSC_MSG_OPCODE_INIT_QP_RSP	= 12,
+>> +	XSC_MSG_OPCODE_INIT_PATH_REQ	= 13,
+>> +	XSC_MSG_OPCODE_INIT_PATH_RSP	= 14,
+>> +
+>> +	XSC_MSG_OPCODE_UNSUPPORT	= -1,
+>> +};
+>> +
+>> +#define REG_ADDR(bp, offset)	((bp) + (offset))
+>> +
+>> +static void xsc_read32(void __iomem *bar, u32 off, void *data, int len)
+>> +{
+>> +	u32 val = readl(REG_ADDR(bar, off));
+>> +
+>> +	memcpy(data, &val, len);
+Hi Andrew,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Both are fixed in v1, which I'll post shortly.
+> Why memcpy. Probably because the types are messed up.
+Fixed.
+>> +}
+>> +
+>> +static void xsc_write32(void __iomem *bar, u32 off, void *data)
+>> +{
+>> +	writel(*(u32 *)data, REG_ADDR(bar, off));
+>> +}
+> Please sort out your types. You should not be passing a void *. Pass
+> u32 *. Casts are a red flag, they are generally not needed and
+> normally indicate bad design.
+>
+> 	Andrew
+Fixed.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks,
+Xin Tian
