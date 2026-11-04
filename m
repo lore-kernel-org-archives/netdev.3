@@ -1,123 +1,164 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793807879;
-	b=VH5v56YaQ8//NPry5D39Wn91mVmk24TqfuX35ddRy7E066Ctftcqy5YY9TTTMnEu0m+Q
-	 BYZTzQj2xZuGqzn+NsEVelwm/GYafcqC9YyLwqwF2guXlcgpTkOowM6bzwSWdw0GyvDkj
-	 9dPbotW+MQWaGUwTDSMfjKQYV5/bWuEZq2Fm/yLzJ5lcFmjXbCUsTg8k5zCeDuzmfup2y
-	 To7No4OSKqb2XIbKG9FjjVsUT1LFj9lG2ZFxZowsG1LWmJg4dKHzZV/sw1VszsKvrwz0P
-	 vZk3th/MEm81hw0hw96noTHVJnqMPsY1NXZd63RknqWosPGrXNgl8qXs3eyzFrW1NYA==
+	t=1793808242;
+	b=VVS3pQfwMxMJrZJeKDoTdwwS+Jm9VHgO8Qgsq7HkC65U9KCUC06lwodo6JK/DYCDcLgD
+	 2Xu95YGvaBFK7AU85BAHfvPL5+ae/RU+0Di3takwa7fBVcww+JtDWNZMu+kVcUTGeH0cD
+	 8DaDZGuDkPdbrZHzwWK1JhLiUBTTd9xlEIMfGu450J5oACjnWyBBmoDI4KGF0ktJS70QO
+	 tqyT8TaWtzHUzkTSqjhbMWAeljQtxqBf+zZ63/1hx2y24CQ+xITuQfqgr10TafboUgOYJ
+	 unX83PpUI5bDv9761ter4LigjFs5i3r53z7k32qS6caELUTWDwfqLLLOK7fAmKx8RNQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793807879;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
-	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793808242;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:CC:References:Content-Language:From:
+	 Organization:In-Reply-To:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=PQgSTD6kY2Q5/lRJZ1jp85OWt0HLIzgtSE1J42bFdTk=;
-	b=nGWPuiT/+DzRasI/kZS2Q4VdpoEgDYqZcGrYg3doQJR3zBMShjaVkJDISSZAE7smlyCJ
-	 oDrh8dXUciyngdIuh8PO49UuRovHT57OSIXBWOnvxx5+p/oDSxWAGXML2G7czRhHxXFse
-	 ckv/GimzND17h060Ia7yMhD34wvh0tOMCPK2BVBMhgDjCr1pHN4nvwpHhuiIhCwys5IhM
-	 NY/XTfVwnSJgMGiJSJdkaxZLw+nqEnaUS6zxQifFnifmGut40a2RfMGoYBB94StJVZQd7
-	 Bf4u5/Tb0RKKNQq6gS/YL3iHE8duc6ZQDR+2NwJ/dO5OPO7OwcweaBdkkdVm0lmJSeA==
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-HPE-SCL:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=fy3LRc6E9lYHtY2aS3bJmEkqDu7mKrcbDcUqA5Um9Z8=;
+	b=M/kMN3gdcPbbM3C6a2afOdAeUgX0xsGzJroUd2OoGc3R+IdvTohKMJJIwe1Mj/ca9APO
+	 7kkkR3wHBOz84X54b4CQgiZsYYAuS409bhiRNm1FrOodWMM6fiEkd2d4WLM8SXLuRjuFb
+	 8MVbFYf1vpk1+pTio3lLmjHwDV2/kbReI/e0U3yCmK6bNywkvxCuEL9GORmwvjd9bFgis
+	 f3rFF2p7omcFRcPH7bT8DMBbwuFK8oWJmO7d//v1I2t3mf+9UtCLGuy/QCfzcKTWiQnZ9
+	 IGwobSSAkogNjzGq6VidAH1xq7aWELghETyj6tKx9wRS9Fv51YTCrknUAGAZ+8NNT8Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=analog.com;
-	spf=pass smtp.mailfrom=analog.com;
-	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=kneaNj+o;
-	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=f7xlqI+G;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	dmarc=pass header.from=hpe.com;
+	spf=pass smtp.mailfrom=hpe.com;
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b="hcC/4q2k";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2076E606D813;
-	Wed,  4 Nov 2026 15:57:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2076E606D813
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497DA606A31B;
+	Wed,  4 Nov 2026 16:04:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 497DA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=kneaNj+o;
-	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=f7xlqI+G
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4Fg7T83844332;
-	Wed, 4 Nov 2026 10:57:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
-	 h=cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=DKIM; bh=PQgSTD6kY2Q5/lRJZ1jp85OWt0HLI
-	zgtSE1J42bFdTk=; b=kneaNj+oXJ/tWi/8uxG3IWVK8Ar1W7nPc4u7DKU8QD86C
-	a0xsXrN4dAKwn6p8zEwza8eDt56XxL4lBgJqmcPSNvhHdSVlIw08/YpO4sNsexPY
-	CqiVVi+WNgmyorB352ZTiAXiDrx24Mxni97wxr1sWz52oMRqKRLJBvwwRSyYr3Yu
-	6jhl4UfrHXcJ3/xWWs4NOhWSgdbZTQYtSCcRRVJPJf/UnzMVMG9QF2Q8/MBYYCpk
-	g2QyFG7HzotoMcDHG+c/O1cC9K3d7vp/Xq+XDkngmEiO1B8lDKXZnO31h+q+VvHX
-	ZNmpbaTro712ourdG5h/+cEd9EAIV+2UvkipH681A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=hcC/4q2k
+Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4FjvWI1875262;
+	Wed, 4 Nov 2026 16:03:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=DKIM; bh=PQgSTD6kY2Q5/lRJZ1jp85OWt0HLI
-	zgtSE1J42bFdTk=; b=f7xlqI+GCPfDxYitI3NzjUC4qcn6ok97Yvl7y3CKqU6/r
-	0N0wnuBzPcj/VM9sfZ863H4MyzXwpvplx+RrQnXiv3LVVZJMp5i5riEdZmHVNmr/
-	OWgm522I02F7qCGhfpOqaqgS3jNLHDOx6bO5gJmPfVAiO5fYP+ZTRkD8eNnB2M61
-	SjPKE1RzSZCVL0WJQzeZZnVL4Qz/A62xW1Iw7Ccc6NKFQpxiC7eL5DINPftL3Svu
-	myTe6JLhvD7JOvpicbNr+AR/GQIYDVSRTSiu3sgSAUFHb8rulSQsFKLeY7YralI5
-	SF4gsEmy9jzH4idgRVHK+0XwZXAXbvahFsSQ17IKA==
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4hqh167uan-1
+	:references:subject:to; s=pps0720; bh=fy3LRc6E9lYHtY2aS3bJmEkqDu
+	7mKrcbDcUqA5Um9Z8=; b=hcC/4q2kba6Qtwtzuq/L2vOb2FpT4U010IJCePUv4f
+	vYjrDqY84GJRq8RdubiASdbNywNG/k8XLKsWmY77XnBGUTE3AbgiY00GOzDU5i8W
+	MzvRVQor6OJw/o6434oSkpxGnhEfXDNL6zw7GNOW26ZkJZWfZdBu7t508Mofyvw3
+	WClvnnfF7bvSoX23qqSobKTN9zj7AHJ+7gYWoWlrhBj01SdV+Bpmn0Fq97GjbicY
+	iBEt+7FxVDKOw+N9x/yHcTYrzFdccJQx976HwvSlxFakAseXdV40kSPqLxyzygao
+	TjwXHIARDZHI5XqSzetFcG7QiBy0xcexO6xI0lqWnCiQ==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4hr381477m-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 04 Nov 2026 10:57:50 -0500 (EST)
+	Wed, 04 Nov 2026 16:03:32 +0000 (GMT)
+Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 15974800EFF;
+	Wed,  4 Nov 2026 16:03:32 +0000 (UTC)
+Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 4 Nov 2026 04:03:31 -1200
+Received: from p1wg14925.americas.hpqcorp.net (10.119.18.114) by
+ p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 4 Nov 2026 04:03:26 -1200
+Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 4 Nov 2026 04:03:26 -1200
+Received: from CH4PR07CU001.outbound.protection.outlook.com (192.58.206.38) by
+ edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 4 Nov
+ 2026 16:03:26 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dYLglKxdBcK4O1AMYY/6wxx8MxLy0IKVxtqfRW8BimPFiN+5p3b9KJyTPMNmTa4fU7EdJF0csfdkAE5/q1g25lVAff1FPAFRxTM51nTFXFGwz3fHlNCs2VeN64WyJPhSfSePWGRhd5E8pbjCetqAVPFN+XEoeBqJNUtXIEpDiZR1RQ82dMjJDGk8hM8O6JDjbDNgwQJrcXyF0w8PBU0hTYQ9moEBRG6/VeSUHcv/sDrbY4GK/9RvRASKjW3DoX9RL1bVPaqUpJSzPKLhCyEAwJBYF5vJ/t5pCuW3O5zK6MrMhBo7hVDdzFCihh3LC3Z257sJHsF2pwNsHRIAew+bgw==
+ b=DtnADEnZnlrdqS86jTKarirpyylQUzw4X9XyYQ2UGgIorZ3bZIohseoq2snfev5D73M3o1I8v1IhU/ApIPa5xavpetLFk+xLnGaRJIpwK3dY9MYTcZey67rqbCAU/vZ+PQ+Lw15KCq/PWbt9lyriwdPpFowsxUJJnwUO6RcTR5zsPo3Qog/UJlIFTz6om1boDK7NtAblRGWrmam6wvq4w80HpNcKk659S9rnsg0qBCCJVeg3h838PVENd87BRWKWrt49tlvNd6IyT8SJfhLPKL9+6XMhpRPXYzXLuiPPlnPhgGj4heHsHJZEjnMhM2C4hs1/scv+aggR2rs6VWOdBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PQgSTD6kY2Q5/lRJZ1jp85OWt0HLIzgtSE1J42bFdTk=;
- b=LVvO73w5x4nd7/Tfslz+VI+aPs2YxvtS9dcK3P2wFlJHnTx3E1cirPzUXK3QXdsOome3yf7tZkCgrWF7aNIcXVWBNHIKdaxHgF0ZG4xme4420jjJn/B/nI3Ye3R2pFdyUhPicLTBZWpwGTHiWyVomgbfzso++yYeVjyXJkjApcn9Ra3mDX1ocwWETDTYevy4X8meHQe/4XZz8YtbGMqTiFt0sTSWT03d9PFUfF5MFktqEkrM3h9WdFwUtiiBC2itR1APQOuedX/y0wG+yzw29ctr7rw+/3CPO2cwvX7MO6f3+TlDR9OM1w/7524mcM9g8EQ1iICXtpnIfuYRkNQ6Ww==
+ bh=fy3LRc6E9lYHtY2aS3bJmEkqDu7mKrcbDcUqA5Um9Z8=;
+ b=MPGZxmGlubeLTOp2MI/kppiBxcsqjEupPE5xJr9jSDtyTUGsF+rdoYPgc2vjmL5Vg1XFoLCIQDeJ2N3zCy0ngb13aLcOF8b8Nqmgpx90bMF3tfrSb11k65wEkIggYhlVN2CSX1BMS+755k6rySgSxRxHtkE9Pf0d0e/b0SYgb0KiCAzq2DZDwT1Nm3OKSm1diwSSAvn9asOnQHuOZpJVU3ZASRJeChOK607xdOQ/eb9IUuYkzCXtUjll1alqjf7Kb/QrUxZS3LlKfdHgIFRynoiTF87mkHNyrsnDBNWryB8zTG+9YLo8pyiQ5jRZFBT+yX6KRi++wwRU7ntMqcEx3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=analog.com;
-Received: from DM4PR03MB5981.namprd03.prod.outlook.com (2603:10b6:5:388::24)
- by DS7PR03MB5526.namprd03.prod.outlook.com (2603:10b6:5:2cb::12) with
+ header.d=none;dmarc=none action=none header.from=hpe.com;
+Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
+ by DS0PR84MB3418.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:1be::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
- 15:57:48 +0000
-Received: from DM4PR03MB5981.namprd03.prod.outlook.com
- ([fe80::7af0:3071:4d42:63ed]) by DM4PR03MB5981.namprd03.prod.outlook.com
- ([fe80::7af0:3071:4d42:63ed%5]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 15:57:48 +0000
-Date: Wed, 4 Nov 2026 16:57:44 +0100
-From: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>
-To: Stijn Cleynhens <stijncleynhens@gmail.com>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>,
-        Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mieczyslaw Nalewaj <namiltd@yahoo.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: dsa: realtek: rtl8365mb: keep the neutral
- PVID in VLAN-unaware bridges
-Message-ID: <autRCms7HolT2-au@analog.com>
-References: <20261104082514.2139278-1-stijncleynhens@gmail.com>
- <20261104082514.2139278-3-stijncleynhens@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261104082514.2139278-3-stijncleynhens@gmail.com>
-X-ClientProxiedBy: CPBP307CA0006.DNKP307.PROD.OUTLOOK.COM
- (2603:10a6:380:1::16) To DM4PR03MB5981.namprd03.prod.outlook.com
- (2603:10b6:5:388::24)
+ 16:03:24 +0000
+Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 16:03:24 +0000
+Message-ID: <e9f446e4-665e-4eb3-9507-a60e9b3bb9cd@hpe.com>
+Date: Wed, 4 Nov 2026 08:03:20 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
+ Slingshot NIC drivers
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        "Slingshot
+ Open Source Team" <slingshot-os-team@groups.ext.hpe.com>,
+        Nathan Chancellor
+	<nathan@kernel.org>,
+        Nicolas Schier <nsc@kernel.org>,
+        Richard Cochran
+	<richardcochran@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S.
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Guenter Roeck
+	<linux@roeck-us.net>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+        Sandeep Bhoot
+	<sandeep.bhoot@hpe.com>,
+        Iraimani P <iraimani.pavadai@hpe.com>,
+        "Mamila
+ Santosh" <santosh-kumar.mamila@hpe.com>,
+        Leon Romanovsky <leon@kernel.org>
+References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
+ <20261030151121.1f232b50@kernel.org>
+ <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
+ <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
+ <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
+ <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
+ <e9937650-1354-4d66-95fa-3492e3821823@lunn.ch>
+ <3418b0f9-d053-4be1-81a0-fc938fc5a7ac@hpe.com>
+ <20261104133938.GP3889730@ziepe.ca>
+Content-Language: en-US
+From: Doug Ledford <doug.ledford@hpe.com>
+Organization: Hewlett Packard Enterprise
+In-Reply-To: <20261104133938.GP3889730@ziepe.ca>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------VPCoK90z8uWTh9FHeou7PNpk"
+X-ClientProxiedBy: CY8PR11CA0040.namprd11.prod.outlook.com
+ (2603:10b6:930:4a::17) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+ (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -128,220 +169,191 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR03MB5981:EE_|DS7PR03MB5526:EE_
-X-MS-Office365-Filtering-Correlation-Id: 576f7939-15c2-4c85-fd73-08df3a8c5f2e
+X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|DS0PR84MB3418:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ca32e39-dca7-4936-e43b-08df3a8d279f
+X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|4143699003|11063799006|56012099006|3023799007|261021135927099003|261021123027099003|261102123227099003|261022113327099003|261026121527099003|261028144727099003|261026140227099003|261009223027099003|261022105027099003|261022075727099003|261021121427099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	ZLjXsDF/xTC4QSGhSbZ2axAQq4S2G6FNYHo2I1Xh7v0LKQ9FIcE1gWCA/EPVLOfAGgypQITfqJchJCFeqqlWEYWwUI5GXJz2Y8/GGFB6ybSpjxzvk/Lxmvti2W83Hjwging4354882cieZgFCm2i4R7DBbYIHEjGTjwhWgdxoNZY4ar3EXMTU3lVhg9Pexqwx1HBnEKbj1ue+aTyHB19UsFjSdf7FFKzMial8WzOTnty/VEmkVXyDMj1WkP1Tb8qAmTeWn0Xqv5qZFeBG8BumfgAjko/kTO4n7AzhEME7KEQYug8yBu2pHMZD73/69zAObXs+bL2i2jmVZiNU70k8UTXOPrDrMMJWZkaA+rXU5dIC3fsoNDk8qkN7lTAs2Kvlx5TefI4jVfiNLusLjcGtNo4oJOG2mShsaETupEDsDyIm5c6iqWRaG/saXHoOxdpOrIgrKm1IpZt7MFQseFSUYFG4iwGpNRL3Ibinv+KaadHWb2jwMfVUUQmDahy8PUIDBus+rlIWYDRAuZgrrWpMTU5XCUpCcb2VQuzMo1pgmpUIBmA/RrB6xIlRsir4EL24e5F0AlMB5ZGq2Dv43Etu6FBQ7q3Mt+i1kn6noeRAxpWGrY6iXr7QCDrRhiYO4CGRAqJZqe5ywPWZdyDMclZ3fJRDmoNaVe2Q/rCFgojscs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR03MB5981.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(3023799007)(261021135927099003)(261021123027099003)(261102123227099003)(261022113327099003)(261026121527099003)(261028144727099003)(261026140227099003)(261009223027099003)(261022105027099003)(261022075727099003)(261021121427099003)(10067099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|4143699003|5023799004|56012099006|261021121427099003|261021135927099003|261009223027099003|261022105027099003|261026140227099003|261102123227099003|261028144727099003|261022075727099003|261026121527099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info: irBNvs3qZAnt40ceU7Iv9+Bei8rC/YNoS7PcFX21i46mFQyolxnUOgQQYAebf+Fit2SQrGX6aW0DhVGWnpbkEYf0/Yj/SR9t0U2dbOLuk34ZSj76VJD0Euvg7ClBvi+OTNDj4oPAlsTYobkIDuhzlR1F3CK71Ssz2rwq1TyGNLqtA7caLIS0g+jQ6FJvzirysB0DtuO74PEBoTJFq8RhTG40B0P5a/fS4dZ8hCN3anw6Uy9Q00+TwpgpiMWUwPodY/NzCl7DRWrCPWuLcL5T4NfWLYN66mGrHQ9VwdFWtidWBlQHLj7kob+31n9KSosrAPipSs7T9UmLpvyCDa5dSQusnM/cikP2fo6xE0F01h1nh4xQ+jmiDhSymXqLM3Z0v08m6ZzI7q41rsyvvw7yfTrncCLnPYAubGHlCpdu2n+tXXbl38j6BjXsbNvVnJcXcpIijC3S0bQlPxPIYCArXImecAAgYAsS/gqmDbq8ThadFVE1N440QGk6gAVnq/QwPwHZtArxhBK/GYCMIttCpH7naETGmPP7kpesRDcXELAGeBYZ7WR0PO47ascLq5/0wHuW44cBEDOpoeqZnYjii3rmSOpJbWiZnhWJzDXOoo4D9EhOPSBMJkY1+sm9iKvfbkJSlXAy3ZEzoiPmgnkbOP3MmEQDY1gpX1UgVa0OwHw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(4143699003)(5023799004)(56012099006)(261021121427099003)(261021135927099003)(261009223027099003)(261022105027099003)(261026140227099003)(261102123227099003)(261028144727099003)(261022075727099003)(261026121527099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SkhQdm5NQjFOOWl3MjViYmVRbDB3c2Y5MlVlSE9MWDNPMElkMUF6NnBDSDRm?=
- =?utf-8?B?QWEvMnJ4TGFocXRVUEpuQ0ZYc21UeHV5c0NCckxOQmZJdFhqUWwrd3g2czhJ?=
- =?utf-8?B?T09TTVoyWU1RQmtaZ1kyVGtsL3FiL1E3QnNZRVAvMGpxdmxDeHF1a2hQNzV3?=
- =?utf-8?B?L0xNeklPUk1UZldTS2hoSjRUUVV0V2JJNE00NmVyTTJCb1Yxak1zU0diMDJj?=
- =?utf-8?B?d21rME9oZTJDNm4vVmlRanFaaHdJTmRXZ1BlSUN1Q0ZTUklMZHMxUmJDTWdG?=
- =?utf-8?B?cjNaTGowYnFRekNHQVlwK3U4RGRNYlFtVGNiUytXeWRsNFNvNkdMT3RFSHBT?=
- =?utf-8?B?eFBwTTZ3Yjhjc3Uxb1g0Q3JyUEVRbElqSW1Odk9MOU5UNTVYcnMyTFVEVHd5?=
- =?utf-8?B?Wi9vSm9LUUJBaVZ0VTJ2K01Rd21QVE9qVXdjSFd0UFA1ai82aGFhbWh3Z0Fj?=
- =?utf-8?B?L2NMd3kzMGZhM3dKV2F6SE5lY1BVb1NPUjBsY2dvcDVPcXE5WFZwaFVmMWtn?=
- =?utf-8?B?UGp4ejVRNUR5N3FJY1FCZk5CWWlZakl1RHNCYVYzY2UvQW9jTUxmaUsrbUZJ?=
- =?utf-8?B?dCswTzNVZTEySEVrUWVVVVlJUnJHbG5QUWZyVG9XL0VCUUhkd3lTNWYxQXBL?=
- =?utf-8?B?V3FkQTZFU3pVWllXYzJDQ3FrU0pwUGdRc2RPT2ZLdE5RZ3BwRFkxUkdOSTZT?=
- =?utf-8?B?Q3BnL2w3aXkxanMvTUZNQjQyYmpLdmI0akFWSXJjY3VsWjdyaVkxQ1N3ZkhL?=
- =?utf-8?B?ZnZteHNxUnNhVkJVN2VaWSsxNUsrS1p0TW1ldUNkVnFzNFM2ditEUlNhbVdM?=
- =?utf-8?B?L2dmZHdqbU9MNFFDKzd2NHNJdWFwM3Rmei9NZmQ3RWtudUFwbWpLSG9WVFRS?=
- =?utf-8?B?MTE3bGZZWmpPVWxZYzJGZmhORzlCVUlTKzNEWnpmUkRZN1lqbTIvbk0yUU5j?=
- =?utf-8?B?VElFd1BWOXp6U0FaV3pSUldCdXhPTDJLajg4NWtlT082WUs1MUx6dkJlRDVU?=
- =?utf-8?B?QlBNdEJmczdYcmNrMFhSZXFkOG5ZMnlxU0tHaTZnbXBiZ2V4Mis4bXVJQ0Rv?=
- =?utf-8?B?aGt4SVpsSVhJeThML1NFZEpIOHRJRm1vYTlVVDYvK2F4Rk5YM0dtTXpFaUlH?=
- =?utf-8?B?M2p3OXphbXgvbXJvYzFkOC93bTkvc0lGa1lPYVdWZmJHbG1TWHpkOEhtZ2RG?=
- =?utf-8?B?SkNVaDhreWttbjNyZnJvS3RwQ3EwVXJzQmh4MEljc2swU0xxQjlrVStlKzlE?=
- =?utf-8?B?eUJjMVZyN3cvQTBMZkJmWHlCRHYrK0srdkZHQ0NTUitGY2x3TzdjSmk5MUdE?=
- =?utf-8?B?MUpQaFhaSGZZNWpOTWdsVGdqRjVjVFRLZmp3dTB1N0FHVmJmQnhCOVlCRGVu?=
- =?utf-8?B?eXJEQi9HZnJUMWtqN1FsNi9WTy94WUNCOC9XT2s5ZDZrOHRZZEVqV0lSWmVn?=
- =?utf-8?B?YkVnKzdZNUkzRGp1cERzajBCTCtha2xPcm5SblcwNTJIdHVua29LeDE3ajRa?=
- =?utf-8?B?UDU5UkVOQ0x2SUNPN1FUb2JZbGZEUGpET1BXRUFvVEo2amlRZDE5ZUYxMGtJ?=
- =?utf-8?B?dFl1TkhGVWJIZHBkSm1JOE40Q2NtS0s0bFJGUWJDSmRIRWpVL1lxQU1DZUp4?=
- =?utf-8?B?cHdCaGttNnJ4M3c3OUxIN05sTDF6UDQ0MUNWek1sWkNhUjNPN3Q1OXhPMmxa?=
- =?utf-8?B?Zmh6Y2pNZ3hINC9ZSTRsN2xSb2JFbjZNV2Q0QVZiTDFqY1JRL3ZCZWJnK0xm?=
- =?utf-8?B?NDRuT2NYN3RSS0lISU94SnR1QUFMRlI3WDQyenozNEZOaFlLM1RVTXFNMmNC?=
- =?utf-8?B?OFBHMy9EdWhxOFVMTk1aZlNmZ3M0eDh3eHE5SE51TVdrZVdWZFNRRitpR2Y4?=
- =?utf-8?B?SnVETXhlTUtDUitFbkNldGgwNnNETzcrRTd0ZWtqRjdKMXA3cmZmU2hLZDJ0?=
- =?utf-8?B?aVo0dnVScWNxcFlZNGcxVkd6OFpYZFVqYjh3K0hZWUlZRWxRa3ZGcnhGVUVY?=
- =?utf-8?B?aE9lYVpVSFdKY2ZBWDZGamlCMjZsc3hJcUJkYU43QXBCMlE1TTZwcytxMGxr?=
- =?utf-8?B?M1luUk5XdDVIbUw0VEhoRGdDRkRVL1BZSnlsYXpEM3hKRGtmQ2ZkWGdIR3Er?=
- =?utf-8?B?Tk1YbUdRaGRtV3RGT1hSVXBEV085ZGN2VDRzR1NrWWxOU0tjZmF6cnFyUGFq?=
- =?utf-8?B?MzdLdzROVWlhQVdHU2p5Wnd1YnhtbTdzRXZpZkZlNzJQS1dhWDByVDRYK0Z5?=
- =?utf-8?B?SUl0VjlPNXhvMDdtSXhsSkRaMVB2Skpld1k4c282Y2VJUU9GVTVNNE1GZHVm?=
- =?utf-8?B?MGw4Q0QyM29HREZUaTJiRm9DMWd3dEQzNVM1Rll2bEdCZVBBTkdEdz09?=
-X-Exchange-RoutingPolicyChecked:
-	wuJvx0JcARubjCMHOf6bYf1vq4CdEtPZvOSEZKk0zWGkDt2y10GmYRpbc8gn+6FCEXpgxmJ1pepMoRKjZHwY3e44Bsr80M+bvtBYWaWBF3Sm6cCHKRBVsk0+8g2okGxPomFoieUix4OKIMJwAmcXSk4sJngBMg25p0lBWQzR7cDa4KNETUmLvxkNxUttBsY9qPrrAofxW5e7b/y92WrcIeoMHNYLP+IajlnqXtv1Qu/icK37y9nYCGAfNmpWNy/xL4ODEcm69hicEokmcHxgbyZ43QFaNpRjBCFb015mNME79sKBzOcE0cu7Y8N8ZTnV6vVAGPIz8BcAHTaRCtEdsA==
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 576f7939-15c2-4c85-fd73-08df3a8c5f2e
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR03MB5981.namprd03.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WHRkSGhTMTgzODNTWUs3WnRIalhRM2N5OHp0cGxSb0I4NUd5d0ZJQVBOMFJI?=
+ =?utf-8?B?RkRWOE9xcU5tYWc2NUdwdnh2QklSbFk3R3hoc2I5aVdYd1RnR0VOYy80QWVy?=
+ =?utf-8?B?SWlvd21JMDM3dmxYejlCSG8vTlFjc1VMZjU1MzZ0MW0ycHBCckRrRWZRbmhZ?=
+ =?utf-8?B?eFFkaHgzSUZRd1dQbTdrMG5nMnFJZTYwQXlBVlRKOXJubElyU1hkMUxqbWNC?=
+ =?utf-8?B?RlVrMDEyMlBUcmFGOE9jeU1iTkFXdlZ3RnR4S1hLS0VabFdzM2JUTnd4OEZQ?=
+ =?utf-8?B?VERWanQ3VUpvOHZuUHpTS040azJORVpzQ04rZ0wxSTVPRVFaSGdlZUZKUGdu?=
+ =?utf-8?B?bGYya1dVQkoyZ1hmK2FZY1JpUVlUenpMVmZLdUJmYVdrV1hvbmRvWVNFeXg4?=
+ =?utf-8?B?eG9GZStyeWFraUNLOEd6d2FFSXVZMkdyNzVJOGxkbWJuRWRneUpzZ0tJMlZv?=
+ =?utf-8?B?ZVhvTlh0THhWOEZWS3lTR29xSDhqNHc5QzM3SUNtUEVIUGFHbHRhV3grMktY?=
+ =?utf-8?B?aE5zcVNSQnZFTDlWMzlTeEt3Q0hoalBLN1RGZE5oaENEelJLMUE1UzNzS0Vq?=
+ =?utf-8?B?Tks4TWk0SndjOGt6RWRrVXJsNm9RUTBNUFZZTDJRSVp0Mk5kQ1VBOTByVE92?=
+ =?utf-8?B?NHZMZGp5Wlpiek8xQytGMjNuZEhpVkdWZkp4bVNTT3VwZUFoY25CQmVyK2ds?=
+ =?utf-8?B?UTZGdTVTdXVKeVdmSU9XdTErRnZ6OUZLNWdoY3pKZVRoTGYzWkZNdFJoWVNT?=
+ =?utf-8?B?TXVEZ0wrM2ljT2pidFl1aWR5QW9Layt5b01MNDUrcjdoc2dPZHprYXpmUjlY?=
+ =?utf-8?B?QTAyTitxekw2L1dFd0hJWXdBSVZHNXdkLzNaZ0ZsNldsdEVjUzVXR2tCZktt?=
+ =?utf-8?B?Y3Q2OVZBYndKRXltc1hNZlEvUW84RjY4MnFMUEljQkROWEw5TjBxL1o2YkNh?=
+ =?utf-8?B?WldjWGF2SkZEdVRrcUV6VExFallMWWl5RTJsUlJRbGpIZG5ETWJBRjN4cmxU?=
+ =?utf-8?B?YllGZWtySWUyUHgzZTB4cjNBL0UwNmZsQUx2K1YraWFWNWY2RVpkd3NmWmsz?=
+ =?utf-8?B?K1BZS0M0RWFwUVVGWXBRV0xhcVFhTUZYU0ZyZnV3RG1CL1RPUzdQVkhBcE5G?=
+ =?utf-8?B?ZSt3Wkp4OWRXVmtscHRWaUF5R0VoNjNEK29wOXV0M0pKaEVLL3VmRUVoVHJ0?=
+ =?utf-8?B?b09mS0E2dnlyOVhiU0JqaEc3SnExVlRpN1RXcmUvOVVKM2JENjhEMzN6VnFp?=
+ =?utf-8?B?Wkp0S1hMYks0TjArUkJBZGsxYTExTDRQMlFuVjdQaWdlL3RoYksvQVo1eUV5?=
+ =?utf-8?B?NklrNDBHdml2MjdGSGNJRnVOdURDTXpUNm1Bb0NVanJIaXFwTTdwTHg0NlRT?=
+ =?utf-8?B?Q2VQNUJ6cnBxS0lVb2xpZDEvekJJSWNqV25JUjg4UTV2WTFKc0Faa3lUS0xP?=
+ =?utf-8?B?M0M4RDJad01VY3RESjJSNHllbU9qcFJ1UFBQMk1FUUdYT002Y1dIbUpjUEpE?=
+ =?utf-8?B?Vk8zS0V4ODI1K3VYbnQ3aXlIVG5SencwNytmck9IVERnODMwSGpyMmVleGVO?=
+ =?utf-8?B?RDlEQjdpaS9PVGc0a1ZzdnBVckxQL0JMQXlUMGVBV3ZQVU8zZ0oyRkg0azVt?=
+ =?utf-8?B?eDBvYmd2MTVYWVhmYmY1L2ZMMGlZZTJkU0ZUa2h0RUFoeVdPZ29aTFRoSXJS?=
+ =?utf-8?B?SzVNdEIxRXFneFVIblp5VTltdnBGbkFPcUNsem5hTFlLTC9YWWpPcVpGRWJp?=
+ =?utf-8?B?VFJkWTY1SnhYcU1NdWcvOWpVRjB3MjhkUkJ6RzF3bWRsWk5HYXp6ZjhkMk9R?=
+ =?utf-8?B?SndSN3hCYzJyY3FENkpvVDcrVXQ2bnh5MnRvQ2dJVHVSblNTaHBTQmt3QWJX?=
+ =?utf-8?B?WDdJWWZ4cTNFWGxNRlFkUk5kcllOdkhpUkcwRlJhdkJTeUpFK1lQU0VCbEpa?=
+ =?utf-8?B?RnM0N2k5MGhQM0xDZm1UQTdYSmJyTnAxY0YrZGovM2liU0dWMEdtNVdxUHls?=
+ =?utf-8?B?dENmclNjUVI0TWFBZnY1ODd0SEFIT1FPTnJpWXdEZUlRdTZCd1Z4dDM1NEl6?=
+ =?utf-8?B?YlBIZTgwQWdqQmt5Q3FJazlmVHJvZy90dmF2RWlaOXAvUzdzTFFwR2xva0JO?=
+ =?utf-8?B?enVhRjArUE9RWmI1dGZSek5UekQ0Q2V5SFBGOU0weXZBSW9ycWg4MHZCTTE1?=
+ =?utf-8?B?UTFPRFBuMzZDRk1haUdrMHZ1cGhwbi9GSE1YeC9sN1E3NHg0WmhpL21PdlZL?=
+ =?utf-8?B?NmNNMjFJaVZ0d29ha0hYOFJXWllkOEpkN2FoV05IdVlsZ0x4Z05Bd3hiSFl2?=
+ =?utf-8?B?TkRhMzkyb1U0QU52RWc3QzhzZVhiWEduS1cyY1JtSHB2aXVlcWZwUT09?=
+X-Exchange-RoutingPolicyChecked: Hq53iObyRNVt3uHYyjDuYmi8wQ2lTV0xOq3Xz97vo8Y01qfwpoR3hRaHncLRrvz/5MQz8q2FYXkCBkl7m+/EUNimF7Hnw9vFT8qlIHtX9BjyKpV8cg1rbqWEUpCZxZacrcHqMY2xJl8WK/SGW2kcsS/RY9lSUMHVYQynJ9lVPDjOE9ORenCJ6vwEzta4M/w1qCw88f1y8cfxBt/JEZeVyRGJ7H3GmP8laaeFYUX5nFDVUuQuNAMBZUMOvEgqNQPcdmmVg3/be1OohvP0fy9ZJ7+cM6qjMM28p45168DdfoPBKGwx8Q0QI35lJKGUByils0UvJS1xnZ9PXoqJwapkQQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ca32e39-dca7-4936-e43b-08df3a8d279f
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 15:57:48.1626
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 16:03:24.0305
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KbjPVEP7kFwieip8aWMEGpe2B6Boe8XzsK3SQpJ3ZE3Mc9kbJ3PydhqvCzcRNnzn3Z+1kbJ8fq1PUsf7ggHGemw+vMlY0fMkbaTiyb6+87U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR03MB5526
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA2MyBTYWx0ZWRfXxVP75s/b2ScA
- oD2IV/chE2pkpTkGl/A1ZQ4zM9CwEw5hA+Re4UffGv6+Yll9d1nLuaE2oKyikN+FZ67TSn3zts4
- yRgYvDAfhORPmAl1emkl+fRXNJmlJGEj3/wq4YW7vkinE16OQLV4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA2MyBTYWx0ZWRfX5VI0QDKolBa+
- e2dQd4ZY7VubcjSdy/3nwKnw/+w53r+dQNZKx/lOv9mBrmrJIIOXBGkb4b9pdCmEnhRRUsBONbQ
- U9BdzzXxrs6yC1qsqhyVpA9jsD0/HS4Gv5WLLHOM/oejykheRnvVv9mjwGe/llcNkIS/xdHNuKP
- 0yl8q72pb/HhqpAWW2/XWe7dXAySoLJpfyNMnTIE1g5a4x9QB62A4wF7tKcRVCzyHQ9PGrS5CWg
- zEb3Bkwuyh27ho0L3Ffjz5ttJztckmnsazmgjwT9RizluMIDnin1k8WNkpMjI2alEx8ytAM+r+C
- F8+X717evmXvuMNT51mshOotb0O9K0tU6GFhQObblzQc4MMjXl2HMb1KLzFAqnql/35HVYE3JfZ
- dy3q8n43tURDJD/05xg0q/ZTXO41BoImzwykHO/oEszDlB8h88tIqrp5e4Deyq/2Wn0HubayycT
- Vr72QNn1KlNHjOlx+Tg==
-X-Proofpoint-ORIG-GUID: JT_CSpG-Kf-d1tLL3pqbUwH0x-Npugca
-X-Proofpoint-GUID: JT_CSpG-Kf-d1tLL3pqbUwH0x-Npugca
-X-Authority-Analysis: v=2.4 cv=QtHLTlyd c=1 sm=1 tr=0 ts=6aeb55ff cx=c_pps
- a=9AjoWhdl+q7f6/Aw5qa/DQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=uXIjobp8t2wMuQ0fPvqm:22
- a=pGLkceISAAAA:8 a=yJlrqC8-b5213dFiCpIA:9 a=QEXdDO2ut3YA:10
+X-MS-Exchange-CrossTenant-UserPrincipalName: uQ7n+Ho17IDUdZ1/BMc3lIX/zMq/BiWqn3AfiIOgJIUQETrYpZhvOaagypI8UC3ZoCz3zKaKemhHhEo30E1nFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR84MB3418
+X-OriginatorOrg: hpe.com
+X-Authority-Analysis: v=2.4 cv=Vexir1p9 c=1 sm=1 tr=0 ts=6aeb5754 cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=J0OTuHAx6l5K1fCpvPfz:22
+ a=MvuuwTCpAAAA:8 a=jVuFBR1eL88z1vzVjrAA:9 a=QEXdDO2ut3YA:10
+ a=8Vrha7d0SC6zxrckoCoA:9 a=FfaGCDsud1wA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA2MyBTYWx0ZWRfX4wbdfmED02xK
+ t/WJOrWz+6DkEyNGpKlJCG8C8d8M8IlHAPicj/5pLIc5gE/7VX25RvASVuql2Cmwcbu3n2XtKkG
+ 2a0yJCkR/tSXIXucSaw8AH3ChcqdDSI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA2MyBTYWx0ZWRfX1ibce/QKAn5K
+ w0NJiloAnhdGK7qHkwzZLgdClb+IICbmLCy3bQ+FP2+HFD2euvf+M5Ze93acY948JrXHBgUVCTl
+ SBdKh1Bc3DofQ6A0wPc8ltD8M9j1BkWrdaWWKsOh6PONCQ9+0xo2pHRcfhEFnc3TYws//97oqX0
+ 0SRsYC5znmYWBVuRW8b0LHGwpR3vVrzDtrq8Q47PpmnJ80ifs9ZweUzNCSsje9LvPWdZIzYogyo
+ YeaxxAW1L5Z7UNhN2+tyXThD/rnPqULFInMrMxy6+IERjnfqKA3s6y6fkcOhobEssgHo3gzbxZJ
+ oiLn2aVFgshUmB58mKpJzG0QGHkwPDftiswlu8IR8dIhvEXJhVp8B4DDUfYjZvloes6gPrPHGB+
+ zZfix1b4stiW/XC1R2Vkk3cTUkpX9DOZQn/BVmFCSK4EoPqNBEGtC7nfLnkBROzGzDdbMv3g8sZ
+ QK4Q2p24R5nJ7UYlH6Q==
+X-Proofpoint-GUID: yGbtP0hHL2FSRJNXf_JyxPUTCrnE6oZR
+X-Proofpoint-ORIG-GUID: yGbtP0hHL2FSRJNXf_JyxPUTCrnE6oZR
+X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-04_05,2026-11-04_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 adultscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 spamscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040063
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611040063
 
-On Wed, Nov 04, 2026 at 09:25:14AM +0100, Stijn Cleynhens wrote:
-> The switch looks up its forwarding database by the VLAN that it
-> classifies a frame to, and untagged frames are classified to the port
-> PVID. With configure_vlan_while_not_filtering, the bridge PVID is
-> programmed into the port also while the bridge is VLAN-unaware, so
-> untagged frames of such a bridge are looked up in VLAN 1. DSA however
-> installs the FDB and MDB entries of a VLAN-unaware bridge with VID 0,
-> so these entries never match a lookup.
-> 
-> This breaks assisted learning on the CPU port: when a station that was
-> first learned behind a user port moves behind the CPU port (e.g. a
-> wireless client roaming between access points), the static entry that
-> DSA installs for it on the CPU port does not override the learned one,
-> and unicast to the station is dropped as a hairpin until the learned
-> entry ages out. Clients that need a DHCP reply in that window do not
-> get one.
-> 
-> Keep the PVID requested by the bridge per port and only program it
-> while the port filters VLANs. Otherwise keep the neutral PVID (VLANMC
-> index 0, VID 0) that standalone ports already use,
+--------------VPCoK90z8uWTh9FHeou7PNpk
+Content-Type: multipart/mixed; boundary="------------erFmylyvWfgRzMGG5rbeTH0Z";
+ protected-headers="v1"; hp="clear"
+Message-ID: <e9f446e4-665e-4eb3-9507-a60e9b3bb9cd@hpe.com>
+Date: Wed, 4 Nov 2026 08:03:20 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
+ Slingshot NIC drivers
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ Sandeep Bhoot <sandeep.bhoot@hpe.com>, Iraimani P
+ <iraimani.pavadai@hpe.com>, Mamila Santosh <santosh-kumar.mamila@hpe.com>,
+ Leon Romanovsky <leon@kernel.org>
+References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
+ <20261030151121.1f232b50@kernel.org>
+ <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
+ <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
+ <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
+ <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
+ <e9937650-1354-4d66-95fa-3492e3821823@lunn.ch>
+ <3418b0f9-d053-4be1-81a0-fc938fc5a7ac@hpe.com>
+ <20261104133938.GP3889730@ziepe.ca>
+Content-Language: en-US
+From: Doug Ledford <doug.ledford@hpe.com>
+Organization: Hewlett Packard Enterprise
+In-Reply-To: <20261104133938.GP3889730@ziepe.ca>
 
-Makes sense.
+--------------erFmylyvWfgRzMGG5rbeTH0Z
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> so that untagged frames are classified to the VID of the bridge
-> entries.
+On 11/4/26 5:39 AM, Jason Gunthorpe wrote:
+> On Tue, Nov 03, 2026 at 08:21:05PM -0800, Doug Ledford wrote:
+>> Top-posting an executive summary: HPE's ask is whether we should submi=
+t
+>> this driver through the netdev community or the rdma community. HPE
+>> prefers netdev, with RDMA as an aux driver, but needs the maintainers=E2=
+=80=99
+>> call. A minimal Ethernet driver is about 48k lines plus 36k lines of
+>> mostly machine-generated headers (details below).
+>=20
+> It depends on a simple question: can you create a functional ultra
+> ethernet device without a netdev and without an IP or routing table?
+> Like IB?
+>=20
+> If yes then maybe you could do RDMA first.
+>=20
+> If no, then you must get a netdev first.
+>=20
+> Jason
 
-This part threw me off a bit. What do you mean by "VID of the bridge
-entries"? If the neutral PVID is programmed on the port of a
-VLAN-unaware bridge, I would expect all untagged frames to be classified
-VID=0. And with IVL this should be classified local to the bridge. Is
-that what you want to say, or am I missing something?
+That's tricky to answer.  Can you create portals table entries for
+Slingshot and ignore IP, yes.  But, you also normally connect to a
+fabric manager over an IP socket in order to get your NID (similar to
+IB's LID) and that's what you then use for RDMA traffic.  But the NID
+can also be derived from the MAC address.  So, it can go either way.
 
-> Commit the PVID
-> again when VLAN filtering is toggled.
-> 
-> This only covers untagged frames. Tagged frames in a VLAN-unaware bridge
-> are still classified by their tag, so a tagged station that roams keeps
-> hitting the stale learned entry until it ages out, as before. Fixing
-> that would need the switch to ignore the C-tag on ingress of these
-> ports, which is left for a separate change.
-> 
-> Fixes: 336e3e4a1ab3 ("net: dsa: realtek: rtl8365mb: add FDB support")
-> Signed-off-by: Stijn Cleynhens <stijncleynhens@gmail.com>
-> ---
->  drivers/net/dsa/realtek/rtl8365mb_main.c | 139 +++++++++++++++--------
->  drivers/net/dsa/realtek/rtl8365mb_vlan.c |   9 +-
->  drivers/net/dsa/realtek/rtl8365mb_vlan.h |   3 +-
->  3 files changed, 101 insertions(+), 50 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index b90e46c16..a7db267bc 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> @@ -838,6 +838,8 @@ struct rtl8365mb_cpu {
->   *         access via rtl8365mb_get_stats64
->   * @stats_lock: protect the stats structure during read/update
->   * @mib_work: delayed work for polling MIB counters
-> + * @bridge_pvid: PVID requested by the bridge, 0 if none. Only programmed
-> + *               while the port filters VLANs. Protected by vlan_lock.
->   */
->  struct rtl8365mb_port {
->  	struct realtek_priv *priv;
-> @@ -845,6 +847,7 @@ struct rtl8365mb_port {
->  	struct rtnl_link_stats64 stats;
->  	spinlock_t stats_lock;
->  	struct delayed_work mib_work;
-> +	u16 bridge_pvid;
->  };
->  
->  /**
-> @@ -2004,6 +2007,41 @@ rtl8365mb_port_set_vlan_egress_mode(struct realtek_priv *priv, int port,
->  			RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK, val);
->  }
->  
-> +/* Program the PVID that the port should use for untagged frames: the PVID of
-> + * the bridge while the port filters VLANs, and the neutral PVID (VID 0)
-> + * otherwise. A VLAN-unaware bridge, like a standalone port, gets its FDB and
-> + * MDB entries with VID 0 from DSA. As the switch looks up its forwarding
-> + * database by the VLAN that it classifies a frame to, a bridge PVID would make
-> + * those entries miss every lookup.
-> + */
-> +static int rtl8365mb_port_commit_pvid(struct dsa_switch *ds, int port,
-> +				      bool vlan_filtering,
-> +				      struct netlink_ext_ack *extack)
-> +{
-> +	struct realtek_priv *priv = ds->priv;
-> +	struct rtl8365mb *mb = priv->chip_data;
-> +	u16 hw_pvid, pvid = 0;
+--=20
+Doug Ledford <doug.ledford@hpe.com>
+    GPG KeyID: B826A3330E572FDD
+    Key fingerprint =3D AE6B 1BDA 122B 23B4 265B  1274 B826 A333 0E57 2FD=
+D
 
-Please separate the variables on their own lines.
+--------------erFmylyvWfgRzMGG5rbeTH0Z--
 
-> +	int ret;
-> +
-> +	lockdep_assert_held(&priv->vlan_lock);
-> +
-> +	if (vlan_filtering)
-> +		pvid = mb->ports[port].bridge_pvid;
+--------------VPCoK90z8uWTh9FHeou7PNpk
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-I think an else { pvid = 0; } would be more explicit than setting it
-upstairs, but it's a nitpick.
+-----BEGIN PGP SIGNATURE-----
 
-> +
-> +	ret = rtl8365mb_vlan_port_get_pvid(priv, port, &hw_pvid);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (pvid == hw_pvid)
-> +		return 0;
-> +
-> +	if (pvid)
-> +		return rtl8365mb_vlan_pvid_port_set(ds, port, pvid, extack);
-> +
-> +	return rtl8365mb_vlan_pvid_port_clear(ds, port, hw_pvid,
-> +					      vlan_filtering);
+wsF5BAABCAAjFiEErmsb2hIrI7QmWxJ0uCajMw5XL90FAmrrV0gFAwAAAAAACgkQuCajMw5XL915
+LA/8Drat0FkxPCgXJNIpNUTOlZQIG2QTwhaBnWU0ue6JKvDHVgnEmH08qyYmNdIAELPJY+KjySNo
+JR9/1DxCinn5rGkDxyzOiX7AvSY9bcp0cHHE0bbzeGbF86yps3JXnrAkzC+5NrxzYOIGsZfc4Muf
+jUBQNLTFasEHNfakPutKqeTZO1u+He6L37vL7J4vzNgRMSUqB3yBzagsGZEEz3Rd2Q3kMm0tJpgj
+eWpKxpEiYl+OJ8RUpIe10zS+TY3oVVwcej2KyNa8qQxxXgwuZUy9ksm55885zyhErZTrzX6iOjJA
+aWK6dDMPAOpsuxdII9hvZY/4hxnnc1zpiQQeUrXdYhw9A4P0npmbs5CiVe2QpoWn899kOdGBbdze
+ydYNQjYtHQ1Od9h45DrJ7mH3ukBXerDUcDcPAbu4hlk1TaTL8NX1g/raZzgyLItPNuzAHs241XN/
++JNVKerbSS0h+kd1RfgLIyYB98WtXF9FyuG6DICjQgF45x9vyGyDx0W79/Al5uOPk+NtT8xKYe8Z
+lETJoyJN837JKrQEH2QHc0ghVsiQahyNEWcjjHx7DWO5or2csAYpgdDC2KKlHI54lNOA/AjyXYYi
+qNMPjmrjRX5hCoitJdUJpjq+W2WX+HupHBs1PPRoBkJQryaZG6qrEasF/MpkgoZeB91HzYqLtBnO
+VG4=
+=9Ev2
+-----END PGP SIGNATURE-----
 
-Can we unify _set and _clear somehow? The code gets quite confusing with
-the two variants, and it seems now that with the vlan_filtering
-argument, you can unify the logic.
-
-In general the patch makes sense, I'm just straining a bit to follow the
-logic reliably. If not something like the above, can you give a thought
-as to how it might otherwise be simplified?
-
-Kind regards,
-Alvin
+--------------VPCoK90z8uWTh9FHeou7PNpk--
