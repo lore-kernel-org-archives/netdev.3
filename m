@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793788467;
-	b=jO84db0gnEHTg+bS23ZfSyDEsMU4XIF8jT4NviEtkIDoc7FKcUtjQpYJl/eArN1UrLKb
-	 azQyHct9xdKt8gHbwtFaA/s0R23funVnSV4lsSDS2BUL+5gCkokuUPOtyhY1GayCcKzLl
-	 xEookTEMaxuqmY0cLtuSCdz10/w+Ji1cVoUpLXIMQMZ599R4yWptoaVZwyiJqqT/MJtTm
-	 GSMn3jyAjfd6wE1cH9jEP+9Ch8vsiNA/IC6Z0OXTfVyENfycYSfidBin0igiY585sG/JZ
-	 rKIGIG21+K1d0Nu3ATWevwIjkNstL2Fk7VBSxr/ZB92/HPBW4RKH97jRQimk81hqYeQ==
+	t=1793788681;
+	b=VigsNstbpoj38YeJ1GolCWXYwVqOjsvDJnx1ndBcu5k+uzGkJV7HOla29CnBSc0GCHWO
+	 FqzLlCFowxmfiwacz8HzSr6lzduzcR+OGETbUDOZvwG2e7DkHcwKc4V7/EReEwIagqtP4
+	 3EbLm9r/p79D70Qk1wsWf4vtRGxr3xNGF7OZhdlxHRoFHNXJVgSM7rznz2jRvVD/2chOr
+	 5YM9LD11AVr8rjsROX4QFe8oPjDtltjQkUS3ParN9e+zpp+dCrXiquWYxAOIElvhbJxtr
+	 eALOReiD92ySuW3e60aw98HzmkiUmH9kOZyC38tXdl/t1ACa+XABQWgnhtnw5CyKnFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793788467;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=h/IyEnODLjG54iLprqGuhwix9RXe6REIL8RaNZR63d0=;
-	b=Vf/M19v3cEh+tw4cbfd0liamqRdQg2gk8RQ6R2N8n71HJtCaEHfqoilw8GgJNFV7PpCh
-	 xAFobBmaLzR4n/J9OnUCeRWtCPcHPDwimppSfqn8SMvcrrPelpIDkiim0t5B3uU9HooWO
-	 5PwFnmbWZfUVI77aAYjiqSusRrwtMv3ggb4zWU0Ei9QeC63XFLHoMK0/KW0dclyCmTmyk
-	 BaMQH3jpDEDKEldLNgVuAar+9VBkTP2WAsEATwE0RfelsqlkuKY/advmPX3+gqFJfxAK4
-	 WWWCDQQzh6X4Vup+0K93dh3nZdCnDHY0O14Jg1KXcXF2kdT5QGQi4PPr3/sEDhfJXgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793788681;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Hg5P+ZRZSjSwStS0M8368HqB4GPBayyeLSUkGa3qSME=;
+	b=OBWz5Y9uEjO6//OBNmNowsbTOoNwoX8cy3v5++3OFcvXYDGV/QmG0uCF+TgMYwl1x65o
+	 Gyzvomo4s3/dZppts3EpJMvAbi9VP7l5l8eTy9bh/PTGe6d1d9rkDJaPecLs0cAFJnlZ1
+	 GsjaKSAGF+9j498RSDK1iodLjKZxwdj2PBfw+93PrbOmAlDE5uWJlgXhUVkl9Eg/tibX3
+	 n6Ke7LzBlpn1cfIOq9htduol1ogyAosriDvH5MXc+jV8ChvQ+zJ6aWYaTco2FmC7AEbNw
+	 pY5u535x95OiZeciPG+10RDYOaNOQnfQol3XYFR6p0OaHpA5JTdra+VWkHRBP+MUbkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H0UYgqRB;
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O8nd1Zka;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAF8606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 10:34:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABAF8606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F703606A32C;
+	Wed,  4 Nov 2026 10:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H0UYgqRB
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48c5b7d5865so38369f8f.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 02:34:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793788465; x=1794393265; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h/IyEnODLjG54iLprqGuhwix9RXe6REIL8RaNZR63d0=;
-        b=H0UYgqRBv3N1RDy5WALaO+DwGXv+cpb7/uVGz2PG2K8C9+GnrO9hjaoFeK/wPuA1O/
-         aduIJ5lRrxepNZjuDICFbbDPyDcnpa2To1lLReQG3xRZuqdP7Mp9kF9/wswuMrDRWyTF
-         Skq9uTYmNFd1Y55lWLhjsy8jcDENfH+maLhjRXGGOa55CgtXOpNjXc56qRGJO9xHbKKW
-         3fRdYK9WrbPc4dUK/LrZRRnj/7pbPtb5x63h6O9BpkQr/IU4jqxbQ9ZRnuE/fcfoftZ0
-         D1Od0704SoghcyZft4+eIXlaRAfPKuGBudLJPaJMwiBHPSBRArYwym9jNrlkGwtuGzaF
-         abmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793788465; x=1794393265;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=h/IyEnODLjG54iLprqGuhwix9RXe6REIL8RaNZR63d0=;
-        b=GncoxMkgSNmboBZ9zpG3GppEe9XJhjEt9xpqvWah6O0cyXcpvJ7JjC1F3IGzbwJ4xp
-         1J3JIkZTyzAJWZKc8KE44fPqjhPmy37oxgwBBcMqYeX5/ss6fh1NSKxOf6OAd0oD1HQt
-         JEpTKsTSVSFfuv1zVlA4yb66o4juOAYXc+byN7QP5nzjnRQirHRgWZndwP1l/BaDP5tq
-         Lwp4ekNtXNxeHdcZhaQNxVAJKw0vt9vNwIXUG1qvBt8FhftuFqGEB+61ni1KiGn9A9YM
-         Ea06SoGT5QfXygZqNMC45J2IgRD/4uK5iVIUQmOeWCrR0ytNtg8hPBG1ZOFOGfmZtMW/
-         07aw==
-X-Forwarded-Encrypted: i=1; AKwUvBxxv2Ofy7t1ElofxCSkFtCo795vlHprlHaTnVfNlyqrI4sjEIFBRAwM+TmeqE2ibuUv5dMAenY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8XKRWlplJn1hMRZWIcux/srI3QPhD+hniZ4GIG6AqIdgd4sD2v
-	BYBHraAMj9jLoCrvD4SIoDynSFwH4UFZl1KjxsIRR+yvNfyLNudfiRRU
-X-Gm-Gg: AYBFou1CDKy9R2UlbS7lyxR9BPGByV7cYx2etB7xQu2QwWqPww21rEN1HrObGudXlgF
-	uKoPH5ZrOut38usn84nYablXWWTCcXLMgHop0s/oCDoeRXcsRGFFLfI8ToD76/QEn0p4WO41IMy
-	o6R75UwJxtoUGuXj7eFJHIdp7HkPAdlYgRlbZ/sTNJ/QpBVJfjUSfXMI++u0oj6QDIKEh59vPG9
-	KiYE1qru9N59Wuz8PqDo/Oc6PTnVbHFHiSTwK0Inss86bciZaXBv7XV0UUQgFpkjyDhtCxsvShS
-	SecniR1AGlBrTIbL9SlGdHOQCMGWWWomyWapZNYMQVFZunzpw5nBu82xjxKZfw6d8IC9HpNSQBH
-	Z2E6SYGDgTKKBN1eY+9Gplsv+YKSCbWgSyWsON7yvgDLRjhWTLV7hB3uYULIzHF0kJxyYDuZIwr
-	uV3Az0GH09oU+eBA3P06IFUIeZEVOcwV90cOc04O/9M2iW7la1boCGbftGmYdGuWyeYXUkPRQgY
-	wBSZkQJODEvcfnmWaRkATmr70jORU/kywwhTR1NxqJQTx6KuifSF4TXPg1ZUOxuA6LcFlTqBDgm
-	lY+yoK863/IM4NHfmufM+lcMA3zBOXEVV1aAj62qkGvQXQ96s4fjYmR5UUrtka4+3jdACyfGyxn
-	Zt8VWBvPY670twCE0Cg0=
-X-Received: by 2002:a5d:608e:0:b0:48c:698b:502c with SMTP id ffacd0b85a97d-48e6e2bcec8mr28938089f8f.1.1793788464784;
-        Wed, 04 Nov 2026 02:34:24 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-006.paris.inria.fr. [128.93.83.6])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48fed552afcsm3105132f8f.41.2026.11.04.02.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 02:34:24 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hariprasad Shenai <hariprasad@chelsio.com>,
-	netdev@vger.kernel.org (open list:CXGB4 ETHERNET DRIVER (CXGB4)),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] cxgb4: clear the sge maps and bitmaps freed on adap_init0()  failure
-Date: Wed,  4 Nov 2026 11:33:08 +0100
-Message-ID: <20261104103309.24360-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O8nd1Zka
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74CD1F000C1;
+	Wed,  4 Nov 2026 10:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793788680;
+	bh=Hg5P+ZRZSjSwStS0M8368HqB4GPBayyeLSUkGa3qSME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=O8nd1Zka7C4i6ewawjLjcddUeG3m8bZYQTmFTBmk/+OSb7FdN5sU12nkrWhgYZcgz
+	 GnRz6AIzDwexyIMonClnB2PM9db3ZcM1qW2pIVB2NghnEAzVkx2HZ3UdAgBi7roAtg
+	 PjSEnPvMwkJfHrQflndEzJAd/hGX4TWlKe/HBiVGBgyvtdmbRNebpoaqA9rmRfzv5G
+	 JlaWRa1v1OU/oIcRa1ukKkM3ecX/NepNa3UjEyD4pi0S4S+noVezeXKITaobe/FLgg
+	 zrOZp3YzVb2YXD78yPGXTH0Uy9hTohsJ/ahpieajshCLogepHwJvYYdGfzQU1M1n1A
+	 5r6rjGwKsGTSg==
+Date: Wed, 4 Nov 2026 11:37:56 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Po-Yu Chuang <ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5 1/7] dt-bindings: net: ftgmac100: Make Aspeed
+ compatibles standalone
+Message-ID: <20261104-helpful-courageous-hedgehog-f05bbf@quoll>
+References: <20261104-support_ast2700-v5-0-44057f4dde75@aspeedtech.com>
+ <20261104-support_ast2700-v5-1-44057f4dde75@aspeedtech.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,45 +63,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261104-support_ast2700-v5-1-44057f4dde75@aspeedtech.com>
 
-The bye: label of adap_init0() frees sge.egr_map, sge.ingr_map,
-sge.starving_fl, sge.txq_maperr and sge.blocked_fl but leaves the
-pointers set. If the call of adapt_init0() from eeh_reset_done() fails,
-then a subsequent call to remove_one() may call free_some_resources(), and
-free the resource again.
+On Wed, Nov 04, 2026 at 01:13:54PM +0800, Jacky Chou wrote:
+> The aspeed,ast2400-mac, aspeed,ast2500-mac, and aspeed,ast2600-mac
+> compatibles are currently only valid when paired with the generic
+> "faraday,ftgmac100" fallback: if a node ever bound through the
+> generic entry alone, ftgmac100_probe() would set
+> rxdes0_edorr_mask/txdes0_edotr_mask to BIT(15) instead of the Aspeed
+> BIT(30), skip Aspeed clock setup, and leave the DMA mask too narrow.
 
-Clear the pointers after freeing them.
+And device would work or not? If device still works after all these
+steps above, then why isn't fallback applicable?
 
-This bug is theoretical and was found statically.
+Be explicit, because I have no clue whether Aspeed clock setup is
+necessary for device to operate.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Fixes: 4b8e27a86d20 ("cxgb4: Allocate dynamic mem. for egress and ingress queue maps")
----
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+> 
+> Make each of them a standalone compatible instead, so none of the
+> Aspeed compatibles require the generic fallback alongside them.
+> 
+> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> 
+> ---
+> ftgmac100_of_match[] has had dedicated entries for AST2400, AST2500,
+> and AST2600 since commit 03a2aba50b2c ("net: ftgmac100: List all
+> compatibles"), so there is no known kernel + devicetree combination
+> where a node has actually bound through the generic entry and gotten
+> the wrong EDORR bit. This part is a binding correctness fix, not a fix
+> for an observed failure.
+> 
+> Note that arch/arm/boot/dts/aspeed/aspeed-g4.dtsi, aspeed-g5.dtsi, and
+> aspeed-g6.dtsi still declare their MAC nodes with the two-string
+> "aspeed,astXXXX-mac", "faraday,ftgmac100" compatible, so this will make
+> dtbs_check warn against those files until the redundant fallback
+> compatible is dropped there as well. That .dtsi change will be sent as
+> a separate series through the Aspeed/arm-soc tree, since dt-bindings
+> changes don't go through that tree.
+> ---
+>  .../devicetree/bindings/net/faraday,ftgmac100.yaml         | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> index d14410018bcf..c870dd0bda7b 100644
+> --- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> +++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> @@ -13,12 +13,10 @@ properties:
+>    compatible:
+>      oneOf:
+>        - const: faraday,ftgmac100
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index d449cca00608..9176653c7d70 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -5402,11 +5402,16 @@ static int adap_init0(struct adapter *adap, int vpd_skip)
- bye:
- 	adap_free_hma_mem(adap);
- 	kfree(adap->sge.egr_map);
-+	adap->sge.egr_map = NULL;
- 	kfree(adap->sge.ingr_map);
-+	adap->sge.ingr_map = NULL;
- 	bitmap_free(adap->sge.starving_fl);
-+	adap->sge.starving_fl = NULL;
- 	bitmap_free(adap->sge.txq_maperr);
-+	adap->sge.txq_maperr = NULL;
- #ifdef CONFIG_DEBUG_FS
- 	bitmap_free(adap->sge.blocked_fl);
-+	adap->sge.blocked_fl = NULL;
- #endif
- 	if (ret != -ETIMEDOUT && ret != -EIO)
- 		t4_fw_bye(adap, adap->mbox);
--- 
-2.53.0
+This const goes to your new enum
+
+> -      - items:
+> -          - enum:
+> -              - aspeed,ast2400-mac
+> -              - aspeed,ast2500-mac
+> -              - aspeed,ast2600-mac
+> -          - const: faraday,ftgmac100
+> +      - enum:
+
+here.
+
+Best regards,
+Krzysztof
 
