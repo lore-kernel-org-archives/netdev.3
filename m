@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793794875;
-	b=nhIVKnMt7AKZighPIMWPhFRFFERI9zVXca5mgX2CDq9dr20SUwhyboWrFnjUhtqXV0XY
-	 hdEOQQnqvYZrcHZAlGgomEHGyE7LBV8AijVXgrQAhx/CPvft2DYWHojCTcAq9YeIfstKg
-	 XqtTr27mT/MAn8VMrHnt6Vv0bbwMQSZRR7tjeENRbJ8z+azGik44hVQOba6Z8Q/JV3RL/
-	 oMF+qQYWQ0qFuymEWTTBlO7780rkoS+N816jEHGuE1xZ6lEBiwaEq4wMhWuZBZVFdWaNq
-	 PuPO7Q9ZLTpHWXDZs+TLnpjfC2CqKtZTKlt/MR/OtyUDSiamAm02a3vBXxf+6orD7nA==
+	t=1793795379;
+	b=T3RgneyqTNTRO7rtckDLQEMrRJDM9yU7CROhCs7rX5UbpuD6jmT8O0mZwl4PPUwuzTu7
+	 E0cNFicPJglKpD9g2UIYRUbxPbNvhYGN0onteQHrbWac9KwcKDQKoayRsPzeRb63eZPbB
+	 wMu7rVo2z994cvZ6CobOTgHp+CWyuTNC4n6SjDGiROByNW0j7oyHBMzf4vfJomtcFIQkE
+	 fFphFzF870GrtsSeJRUhvX8F54NELZIxblKYGSsI8WfhQ5BoVVGkgHelVTZYfbn8eJb4D
+	 hJ1E+Xg/FaFoLssMRmXgZ40LpABmdhOMiwpD5OJW1TC9OmNOKWQahV61kxi9178lWtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793794875;
-	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
-	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
-	bh=t+5ALu3SxfMtXK8dSlzHR0u+CXuqexSNQoee4rWPijk=;
-	b=M7feXJPB17VH5FVnKMSNiyWDXuIvuEIRQishlcvJcv71x9q2YMPcS28rLA8ZaRp3rX2b
-	 hD+mT91wejMu0umjrfKhEki7Mr/FZFQNIZM1ajyPTiGG5TktdL0ZhLenMlnFDTy1K+ed0
-	 BJRlsbfqsw2N45SVv9TOMOhLKyuyFjmw1oIdRhmKPDN5ROvqS9Q/YWDrsXO+UQ1F6+sMB
-	 hDWE8A1QeKQwf3bvu4Gc2N71nChxAVwlaEdK2kAyDswr2zekqkvCwUSDKKTXrNMut2oHR
-	 phxqBJYbcqdg/WGDtHylpycj73RsBQS93FaugLlWHUOpN7MvzeTBjpetdqAKgQsvhAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793795379;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=qXCTJhJI3/79HSvBTGd8yiSUrhQoGBOGkEtjCUXCtXg=;
+	b=P+o/w5PZBUG+4G36b0ZMizpBWMi8dJVzU/RxFvXJaZjiXfU4Rr272CvKQq3fhS9qJHuJ
+	 hXR+9v3qHYvvg3y9sET65xUCp0R+bqBM1BgyH2LbR2wh7Bxv1aCfXgaOJ83/ua1J7R/WL
+	 IcaQAh063YN1Q86kzZqTDzENiDnD2qzmu1FTvOGEOm7gvmH1piD+OIh2Ixwf2YGU4IkAs
+	 gHGcAgM9AqmaUUvDr1RBUGd/M40JPk48En4XgHcLTUvE7eDtvCMZmGCmvYoDQmjHt7LZ5
+	 DzMJedEZrSs40XJ6pK7nZTmOrlr+WexaV21IzkOicLkfAddij1NpcCD2Gq3OWuLW9mA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jonasjelonek.de;
-	spf=pass smtp.mailfrom=jonasjelonek.de;
-	dkim=pass header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=UqjNNXFw;
-	arc=none smtp.remote-ip=212.227.17.10
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aKXOGIAV;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0897D606A31B;
-	Wed,  4 Nov 2026 12:21:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0897D606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98AD606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=UqjNNXFw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1793794847; x=1794399647; i=jonas@jonasjelonek.de;
-	bh=t+5ALu3SxfMtXK8dSlzHR0u+CXuqexSNQoee4rWPijk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=UqjNNXFwzhi1NPn1Fwd2B4IVWpVNYJSpBYOx77A2Ql1bbReQrUF2X8PKkMefrvEN
-	 /aJa4tPC+vuN36zahQ2qmyQHWxJaFzSl2M4H9K1aZVrTM/TRPyzwWHl4Ij6fPIjK8
-	 J3tqx7nze7IC6D3NEK7PL96BhVjMZmvDdIJb3Xe7Y1EVmVSYhpDy8KnJ63iagjPWp
-	 3e7o4Sxq6vHFsdpSb9LEbzTDGxpiEIPC91036nXxRiBiSDzofcl6IXNti6L277xtx
-	 hMkkw5+qD5FnwXYFepUQgtLw0/LysuZehGNSzgK7PrpH98KUFM6qcUREgd7OKnSP3
-	 V0wQGbviopf7b3k7bA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue109
- [213.165.67.113]) with ESMTPSA (Nemesis) id 1Mt6x5-1wVWS614W1-00xFCD; Wed, 04
- Nov 2026 13:20:47 +0100
-Message-ID: <e0910567-999c-4c96-9b20-2e34434bec3d@jonasjelonek.de>
-Date: Wed, 4 Nov 2026 13:20:44 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aKXOGIAV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA971F000C1;
+	Wed,  4 Nov 2026 12:29:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793795378;
+	bh=qXCTJhJI3/79HSvBTGd8yiSUrhQoGBOGkEtjCUXCtXg=;
+	h=From:To:Cc:Subject:Date;
+	b=aKXOGIAV4b+iikbbvXDfkKxPfrG4XVw0XYNj2mBxWlkgidDnVnI/hfv0k5TVYlYX1
+	 heJX2rV75Qn2w0TGTptrdYEYIZbYZfZhAJu/922fZ4yNbh6tyB7vbs7cu0534LJQrc
+	 i7bttbQ5wxWh/vynSAm3MHYb1U4oPJzAwvMRZOSkCdNFzKJv0L47QMv+pZvNTsdVPN
+	 z7h1SPkPTe/SlcaoXAc6fQGwby8fu8MGdW/pNfxQwxfrYi1arltzTFJQ3/DXLqoWQc
+	 DBZDjZ/FbdtOgxOi989QN3hegpM6lP/ABxeCQuUoL0/5CkyfFSce4qxcX7+nNGjlaZ
+	 5VSXdboEiQwnQ==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Phil Sutter <phil@nwl.cc>
+Subject: [PATCH v2 net] inet: frags: bound the wmem charge of the socket completing a reassembly
+Date: Wed,  4 Nov 2026 13:29:27 +0100
+Message-ID: <20261104122927.1033747-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,173 +64,286 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/4] net: pse-pd: realtek-pse-mcu: configure
- global power budget
-Content-Language: en-US
-To: Kory Maincent <kory.maincent@bootlin.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Sander Vanheule <sander@svanheule.net>,
- Russell Senior <russell@personaltelco.net>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
- <20261103220312.860629-4-jonas@jonasjelonek.de>
- <5e00fd7f-40f9-4041-8dfa-fff222b57b92@bootlin.com>
-From: Jonas Jelonek <jonas@jonasjelonek.de>
-In-Reply-To: <5e00fd7f-40f9-4041-8dfa-fff222b57b92@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tiscwDo2yseEFnKtASqrbIyNK1OpkL4ansvF+UBM4xHN4bilJwM
- NHk8e9lfRHksja80Ge4C76ehzpYDyS7mlmlD3H9nbn3HdoyOAEGcvIY5CBy8488v2lcdSV0
- dZXonfksnUdkCq6gWp2KUjuuRv8oywnVnwb4RhTJmjo6Uv/e11XIKyeCagI0v6yCqRS4mlx
- bmFfNirTyYVdzQKnjN1Ww==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lSEaDRhdmOQ=;K0JpkGdxbNNpRP3rFMeVU0vr+fc
- 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
- HghGbzaE
+Content-Transfer-Encoding: 8bit
 
-Hi Kory,
+When a socket owned fragment completes a reassembly queue,
+inet_frag_reasm_prepare() and inet_frag_reasm_finish() charge the
+truesize of all other fragments to its sk_wmem_alloc. These fragments
+were orphaned when queued, and might have been sent by someone else,
+for instance padded TUN packets.
 
-On 04.11.26 12:32, Kory Maincent wrote:
->
->
-> On 11/3/26 23:03, Jonas Jelonek wrote:
->> Use the optional VMAIN regulator power budget to configure the MCU's
->> aggregate PoE power limit during probe. Quantize the available budget t=
-o
->> the protocol's 100 mW units and reserve exactly that amount through the
->> regulator core.
->>
->> The regulator budget represents the usable PoE allowance. Program zero
->> reserved power so the previous firmware guard band does not further red=
-uce
->> that allowance.
->>
->> Require a finite budget of at least one protocol unit when vmain-supply=
- is
->> provided. Program the budget before selecting dynamic power management =
-and
->> ungating the ports, so enforcement starts with the regulator-derived li=
-mit.
->>
->> Enable VMAIN before hardware initialization and register one managed cl=
-eanup
->> action to free any reserved budget and release the enable reference on =
-probe
->> failure and driver removal. Record each successful reservation immediat=
-ely
->> so subsequent initialization failures are covered by this action.
->>
->> Read the current budget index before programming the MCU. Retain the
->> programmed MCU limit on probe failure and driver removal, as reducing t=
-hat
->> limit to zero would interrupt ongoing power delivery.
->>
->> Boards without vmain-supply retain their existing firmware-managed
->> budget.
->>
->> Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
->> ---
->
-> ...
->
->> =C2=A0 +static void rtpse_mcu_cleanup_vmain(void *data)
->> +{
->> +=C2=A0=C2=A0=C2=A0 struct rtpse_mcu_ctrl *pse =3D data;
->> +
->> +=C2=A0=C2=A0=C2=A0 if (pse->requested_budget_mW)
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 regulator_free_power_budget=
-(pse->vmain, pse->requested_budget_mW);
->> +=C2=A0=C2=A0=C2=A0 regulator_disable(pse->vmain);
->> +}
->
-> Following patch 4 logic, you might not want to disable the PSE controlle=
-r power supply,=C2=A0
+Commit 3ae20e4697eb ("inet: frags: limit the truesize of a reassembly
+queue") bounds this charge to INT_MAX / 2 per queue, but a socket can
+complete several queues while the reassembled skbs are still alive,
+for instance held in a qdisc. sk_wmem_alloc can then go past INT_MAX,
+refcount_add() saturates it with a WARN, and the socket is leaked.
 
-I added it because of the requirement that regulator_enable() calls must b=
-e
-balanced with regulator_disable() calls. Accepting that this may power off=
- the
-rail in theory, something outside of the driver would need to keep the sup=
-ply
-enabled. Concretely, I'm thinking of "regulator-always-on". And all boards
-I've seen so far which can use this driver do not provide a provide to rea=
-lly
-power off the PoE rail. Sure this is no finite guarantee.
+This is reachable from an unprivileged user/network namespace, by
+raising ipfrag_high_thresh.
 
-What is the correct way? I see either droping the enable call too, just re=
-lying on
-that it is correctly handled outside of this driver, or I keep enable + di=
-sable and
-the continued delivery is ensured with "regulator-always-on".
+Refuse the reassembly if the charge would push sk_wmem_alloc above
+2 * sk_sndbuf, the bound ip_append_data() uses, plus 4MB of slack for
+fragments inflated by a refragmentation with a small MTU, and never
+above INT_MAX / 2. The cap matters for tun sockets, which use
+sk_sndbuf = INT_MAX, and whose skbs are still owned when act_ct or
+openvswitch reassemble them at ingress.
 
-> this will lead to a power off of all your PIs.
+Several queues can complete at the same time on different cpus for
+the same socket, so the charge is reserved with a cmpxchg() loop in
+inet_frag_reasm_prepare(), before it modifies the queue, and settled
+in inet_frag_reasm_finish(). Move the size checks of ip_frag_reasm(),
+ip6_frag_reasm() and nf_ct_frag6_reasm() before
+inet_frag_reasm_prepare(), using the first fragment which becomes the
+head, so that a successful inet_frag_reasm_prepare() is always followed
+by inet_frag_reasm_finish(). All callers already kill the queue when
+inet_frag_reasm_prepare() returns NULL.
 
-Is this enforced by PSE-PD or just based on the rail really being turned o=
-ff?
+Found by code inspection (AI review), not reproduced.
 
-> I think you should still free the power budget, to not allocate it twice=
- if the module is loaded again.
->
-> Else is ok to me.
->
+Fixes: 18685451fc4e ("inet: inet_defrag: prevent sk release while still in use")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://lore.kernel.org/netdev/24feda7d-ae49-45af-9596-2cc5f149f28e@redhat.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Phil Sutter <phil@nwl.cc>
+---
+v2: Reserve the charge with a cmpxchg() loop in inet_frag_reasm_prepare(),
+    and settle it in inet_frag_reasm_finish() (Sashiko).
+    Move the size checks of ip_frag_reasm(), ip6_frag_reasm() and
+    nf_ct_frag6_reasm() before inet_frag_reasm_prepare(), so that the
+    reservation can not be leaked.
+    Mention tun sockets (sk_sndbuf = INT_MAX) in the changelog.
+    Tested with a tun + act_ct reassembly test (IPv4/IPv6), and the
+    fragmentation related selftests.
+v1: https://lore.kernel.org/netdev/20261103092957.4164530-1-edumazet@kernel.org/
 
-Best,
-Jonas
+Notes, and planned net-next follow-ups:
+
+- inet_frag_wmem_reserve() open-codes a cmpxchg() loop on
+  sk_wmem_alloc.refs, used as a byte counter here. The closest existing
+  helper, __refcount_add_not_zero_limited_acquire(), was added for mm
+  vm_refcnt: it has acquire and not-zero semantics we do not need, and
+  would WARN again if the counter is already saturated. I plan to propose
+  a bounded add helper in include/linux/refcount.h for net-next.
+
+- A reassembly refused by this check is reported like an allocation
+  failure in inet_frag_reasm_prepare() callers (debug message, REASMFAILS).
+  This should be rare, and I prefer to keep this fix small. I plan to add
+  a dedicated drop reason in net-next.
+
+LLM was used to review the code, write the fix, and test it.
+
+ net/ipv4/inet_fragment.c                | 61 ++++++++++++++++++++++---
+ net/ipv4/ip_fragment.c                  | 13 ++++--
+ net/ipv6/netfilter/nf_conntrack_reasm.c | 13 ++++--
+ net/ipv6/reassembly.c                   | 13 ++++--
+ 4 files changed, 78 insertions(+), 22 deletions(-)
+
+diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
+index 0b8d22ffafca69b2bccd98eca3d4bda93ebb816a..f330d0a3982339703e3bedd217fd185cf06857c6 100644
+--- a/net/ipv4/inet_fragment.c
++++ b/net/ipv4/inet_fragment.c
+@@ -17,6 +17,7 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/slab.h>
+ #include <linux/rhashtable.h>
++#include <linux/sizes.h>
+ 
+ #include <net/sock.h>
+ #include <net/inet_frag.h>
+@@ -519,6 +520,43 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL(inet_frag_queue_insert);
+ 
++/* When a socket owned fragment completes a queue, the truesize of all
++ * other fragments is charged to its sk_wmem_alloc, although they were
++ * orphaned when queued and possibly sent by someone else.
++ * Bound this like ip_append_data() bounds the memory a socket can
++ * allocate (2 * sk_sndbuf), plus slack for fragments inflated by a
++ * refragmentation using a small MTU. Otherwise, several reassembled skbs
++ * alive at the same time can saturate sk_wmem_alloc, and leak the socket.
++ *
++ * Several queues can complete at the same time for the same socket,
++ * and some sockets (tun) use sk_sndbuf = INT_MAX. The charge is reserved
++ * with a cmpxchg() loop, a refcount_t has no helper for this.
++ */
++#define INET_FRAG_WMEM_SLACK	SZ_4M
++
++static bool inet_frag_wmem_reserve(struct sock *sk, unsigned int charge)
++{
++	u64 limit = 2ULL * READ_ONCE(sk->sk_sndbuf) + INET_FRAG_WMEM_SLACK;
++	int old = refcount_read(&sk->sk_wmem_alloc);
++
++	limit = min_t(u64, limit, INET_FRAG_MAX_TRUESIZE);
++	do {
++		if (old <= 0 || (u64)old + charge > limit)
++			return false;
++	} while (!atomic_try_cmpxchg(&sk->sk_wmem_alloc.refs, &old,
++				     old + charge));
++
++	return true;
++}
++
++static void inet_frag_wmem_adjust(struct sock *sk, int delta)
++{
++	if (delta >= 0)
++		refcount_add(delta, &sk->sk_wmem_alloc);
++	else
++		WARN_ON_ONCE(refcount_sub_and_test(-delta, &sk->sk_wmem_alloc));
++}
++
+ void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
+ 			      struct sk_buff *parent)
+ {
+@@ -530,6 +568,11 @@ void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
+ 	int delta;
+ 
+ 	if (sk && is_skb_wmem(skb)) {
++		/* skb->truesize is already charged to sk, and is part of
++		 * q->truesize. inet_frag_reasm_finish() settles the charge.
++		 */
++		if (!inet_frag_wmem_reserve(sk, q->truesize - skb->truesize))
++			return NULL;
+ 		/* TX: skb->sk might have been passed as argument to
+ 		 * dst->output and must remain valid until tx completes.
+ 		 *
+@@ -605,17 +648,18 @@ void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
+ 
+ out_restore_sk:
+ 	if (orig_truesize) {
+-		int ts_delta = head->truesize - orig_truesize;
+-
+ 		/* if this reassembled skb is fragmented later,
+ 		 * fraglist skbs will get skb->sk assigned from head->sk,
+ 		 * and each frag skb will be released via sock_wfree.
+-		 *
+-		 * Update sk_wmem_alloc.
+ 		 */
+ 		head->sk = sk;
+ 		head->destructor = destructor;
+-		refcount_add(ts_delta, &sk->sk_wmem_alloc);
++		/* On failure, head stays in the queue and will be freed
++		 * with the queue: only charge its truesize.
++		 */
++		if (!nextp)
++			inet_frag_wmem_adjust(sk, (int)head->truesize -
++						  (int)q->truesize);
+ 	}
+ 
+ 	return nextp;
+@@ -626,7 +670,6 @@ void inet_frag_reasm_finish(struct inet_frag_queue *q, struct sk_buff *head,
+ 			    void *reasm_data, bool try_coalesce)
+ {
+ 	struct sock *sk = is_skb_wmem(head) ? head->sk : NULL;
+-	const unsigned int head_truesize = head->truesize;
+ 	struct sk_buff **nextp = reasm_data;
+ 	struct rb_node *rbn;
+ 	struct sk_buff *fp;
+@@ -691,8 +734,12 @@ void inet_frag_reasm_finish(struct inet_frag_queue *q, struct sk_buff *head,
+ 	head->tstamp = q->stamp;
+ 	head->tstamp_type = q->tstamp_type;
+ 
++	/* After inet_frag_reasm_prepare(), q->truesize is charged to sk.
++	 * sum_truesize also includes what it added (skb_unclone() and
++	 * frag_list clone).
++	 */
+ 	if (sk)
+-		refcount_add(sum_truesize - head_truesize, &sk->sk_wmem_alloc);
++		inet_frag_wmem_adjust(sk, sum_truesize - (int)q->truesize);
+ }
+ EXPORT_SYMBOL(inet_frag_reasm_finish);
+ 
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index 36105dd192823e745123971412b978f0573d10eb..ef7fd61284a3fa86ba5464abd8c277e3753da6ac 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -413,16 +413,19 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
+ 		goto out_fail;
+ 	}
+ 
++	/* Check the size on the first fragment, which will become the head:
++	 * inet_frag_reasm_finish() must follow inet_frag_reasm_prepare().
++	 */
++	len = ip_hdrlen(skb_rb_first(&qp->q.rb_fragments)) + qp->q.len;
++	err = -E2BIG;
++	if (len > 65535)
++		goto out_oversize;
++
+ 	/* Make the one we just received the head. */
+ 	reasm_data = inet_frag_reasm_prepare(&qp->q, skb, prev_tail);
+ 	if (!reasm_data)
+ 		goto out_nomem;
+ 
+-	len = ip_hdrlen(skb) + qp->q.len;
+-	err = -E2BIG;
+-	if (len > 65535)
+-		goto out_oversize;
+-
+ 	inet_frag_reasm_finish(&qp->q, skb, reasm_data,
+ 			       ip_frag_coalesce_ok(qp));
+ 
+diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
+index be72c4346f8b7196a1f9fa823680200258114233..f25ff2a12a824aaa24e6788e38461a9e22d61fea 100644
+--- a/net/ipv6/netfilter/nf_conntrack_reasm.c
++++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
+@@ -330,11 +330,10 @@ static int nf_ct_frag6_reasm(struct frag_queue *fq, struct sk_buff *skb,
+ 	if (unlikely(ecn == 0xff))
+ 		goto err;
+ 
+-	reasm_data = inet_frag_reasm_prepare(&fq->q, skb, prev_tail);
+-	if (!reasm_data)
+-		goto err;
+-
+-	payload_len = -skb_network_offset(skb) -
++	/* Check the size on the first fragment, which will become the head:
++	 * inet_frag_reasm_finish() must follow inet_frag_reasm_prepare().
++	 */
++	payload_len = -skb_network_offset(skb_rb_first(&fq->q.rb_fragments)) -
+ 		       sizeof(struct ipv6hdr) + fq->q.len -
+ 		       sizeof(struct frag_hdr);
+ 	if (payload_len > IPV6_MAXPLEN) {
+@@ -343,6 +342,10 @@ static int nf_ct_frag6_reasm(struct frag_queue *fq, struct sk_buff *skb,
+ 		goto err;
+ 	}
+ 
++	reasm_data = inet_frag_reasm_prepare(&fq->q, skb, prev_tail);
++	if (!reasm_data)
++		goto err;
++
+ 	/* We have to remove fragment header from datagram and to relocate
+ 	 * header in order to calculate ICV correctly. */
+ 	skb_network_header(skb)[fq->nhoffset] = skb_transport_header(skb)[0];
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index 8418ed9423f4bb923d4d06a07aae704d91f94774..91a65fe6735003aec73f53f66f6fecc8846533c3 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -275,16 +275,19 @@ static int ip6_frag_reasm(struct frag_queue *fq, struct sk_buff *skb,
+ 	if (unlikely(ecn == 0xff))
+ 		goto out_fail;
+ 
+-	reasm_data = inet_frag_reasm_prepare(&fq->q, skb, prev_tail);
+-	if (!reasm_data)
+-		goto out_oom;
+-
+-	payload_len = -skb_network_offset(skb) -
++	/* Check the size on the first fragment, which will become the head:
++	 * inet_frag_reasm_finish() must follow inet_frag_reasm_prepare().
++	 */
++	payload_len = -skb_network_offset(skb_rb_first(&fq->q.rb_fragments)) -
+ 		       sizeof(struct ipv6hdr) + fq->q.len -
+ 		       sizeof(struct frag_hdr);
+ 	if (payload_len > IPV6_MAXPLEN)
+ 		goto out_oversize;
+ 
++	reasm_data = inet_frag_reasm_prepare(&fq->q, skb, prev_tail);
++	if (!reasm_data)
++		goto out_oom;
++
+ 	/* We have to remove fragment header from datagram and to relocate
+ 	 * header in order to calculate ICV correctly. */
+ 	nhoff = fq->nhoffset;
+-- 
+2.53.0
+
