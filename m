@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793820525;
-	b=DwtsAXtnTTWbqxFe/HyrJNPPvGdZsaNMXpB2xvZ9K9gSPQYxGsTE5/PNOudDLRZJ7Ei7
-	 wTYUcZkyPfn411IuYM+IrEHZn2bbjBq8vgWaUKYyq5jknEE84sMShhdJPncAw5UoPJlWV
-	 5KCEkYIOkyAbcqzu9k10QhXMVFAO18L7Y+oOfgEYeYTsPl66cUWqn4PAEguuXX1kVwNwC
-	 rAT/W4mqGafAeG3SBXMf2wWg5Hpiq/S9pbM58IILPdhJLnOvb+7jgkKki3QcIl3aJpZmJ
-	 rtOS/5RDBLL/jkVrm3UScV+jqb0Hj+2y/YUuAO+kwdgYNMbaWm2vWSTftZgQIiXqJ7Q==
+	t=1793820601;
+	b=UKmmMfDfojzXQqSlaZU4af3kvfM/hoT4BpKP+vdeRTZHTKFwFBppFywF5oJL6PVBXyve
+	 gKBVoL4WThDAx1WzLabOruK6mRyNIrBJLd+50bDHI2rIjXBRktbivQUVP3JZ6jg39g7sk
+	 E1/6vROfX4lhbXCp0jXeJBL9j8ySqnOsbbm0kf+cYIzzi6OoqfC75dBq+hkNmGWuh344m
+	 FcVNV1USSSWzHp9O62EfKl2i3Xh/k9SYYJXyLtM2SuKAMQ04MT/qqjwevhUexoMTiVuwe
+	 3z0YtC7uHfqCePy6WsIwxrhXcf3nznkqVsn+why1BEqT5obS9s7xkWIJ9YEdWE/Xniw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793820525;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793820601;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=KE0FjFLg86Wqg2LOdvIKebjks/LaCpUOq5x1mMvJN8E=;
-	b=40xIcFy5tLLNmYD0TxRpjO+ol9Fk5LWfIqWSV5+uBlWCVC+NPnald0wK/x0mu54N947+
-	 UBwoI4O1p5ETIj3bRqi5EDMFFOc76eoNG6+aUO/8b+1usa5lEnli+ae0f8s3zN8Vcj/Ec
-	 lcS5HXQez9lbwRqK6ahb9K4bbv2pEwhC58sTq8uwo/RbwVUQP3AF0Ul8QuML/ucDKaM24
-	 fpr0ZTyNsprDPige5hDKeRTtOJHhmArgSUT7xYqVXHpJVn0pcaofsnICuCemXELHsN3FB
-	 Z7eRZuZfqUjHPYRu0a9QKXrudiPZ3RMr1FOcR4ZDniDkUs7mIeOb0HVZ2i2kao0/plA==
+	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
+	b=XH+638p21S+Fq/k5jbHFlXezLVQddj0KJ4HJ5KsestRLIFQdMhf2A79//gh6H6smMoTL
+	 Z1grgOiAegBpFUE22Ohm6u/UJlFVodmXpRksKwcmLd+jtmUPGVQgsNv5O49VCjltIlJ/r
+	 ncYjQirx3nabKWwfTJDMdcW7SX0IHI/JGvMD3wGW4ZqXCeu/8KONwhJwetl9Eqm5JtlqA
+	 OJuGoGqV1U1IxggBEKl5/9Gq7tVl+wZkMaZiVvYkwx2FyfQ5D4QmI+0oiWg3h45rSP/3s
+	 HM12QQKdhx1tAB+70CB18asDNO39Zr7y2nk1Lqec3vru1+u8YW75pqnC8dA6x6YrNKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJukzHF4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAfHNNjx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7542607524A;
-	Wed,  4 Nov 2026 19:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2B5606BA0A;
+	Wed,  4 Nov 2026 19:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJukzHF4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5AB1F000C1;
-	Wed,  4 Nov 2026 19:28:28 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAfHNNjx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD01F000C1;
+	Wed,  4 Nov 2026 19:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820520;
-	bh=KE0FjFLg86Wqg2LOdvIKebjks/LaCpUOq5x1mMvJN8E=;
+	s=k20260515; t=1793820601;
+	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NJukzHF4aV1KUnciVzdApjdNLx1CFG6CVAD2vCJ43JPCAnjjn1zUpxzmLM9SfrWre
-	 gCGPTz2pnkhsoLDD0ufQYz7LJbRa17CKdFnkfKWFZpzCvx3VornSWUNThr1WFvwPGn
-	 CADeWgCgoQP5K7ENKjJkvGY6u4437GknzfxpYekJnpL3cgHKr3XG5TRSEcefhaKP7V
-	 nX57prmegY0CCerzsNzag/fJkXOMUpt/ed2ZwMst0kUSU+NPQt8+F88n3teURVqhXg
-	 7vNgcQSCorU7kpZuBp2BFO4KHe0i6WajNcx/gISK920csNZ4jtjgQF1W1PAyzKkO5E
-	 yV22BOQaWeKsQ==
+	b=SAfHNNjxvTql4E+z1yQcRoEm/3CalSsruYEaDFEAwD2MR1+O3Ye99A+nthRvUfnOh
+	 sNn+nv5DU4hxg8sd8IUitV774fqcqp2VIOWX8POpirUeoVFOvqQmSu0pEFGlLAHGYD
+	 U87bWU9TJDKpUyRG2Fvt11MmjA/bvZTaV8Xtwfl1DJLnDy1EfMx2ldZqvi8wS8l7pU
+	 z8u/IwnNqmGhZUVhezOwwUvQynv27Lczh9RmSaROx62H78AJOuM6lf9qnQZTrXgOYI
+	 GjXIYIMTlREUsQuzCmK2Ia6wH6NcuAlyzHfRrgkTdGYoEXU8eOGVb8ZJpacNOliGBs
+	 x5gOzg3clGATQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -100,11 +100,11 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 51/51] selftests/proc: check that a faulting readlink() doesn't hold up removal
-Date: Wed,  4 Nov 2026 20:28:26 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-51-021c84d852e0@kernel.org>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
-References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 02/23] proc: add pde_pin() and pde_unpin()
+Date: Wed,  4 Nov 2026 20:29:47 +0100
+Message-ID: <20261104-work-procfs-core-v2-2-76ace653a773@kernel.org>
+In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
+References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,263 +116,222 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7257; i=brauner@kernel.org; h=from:subject:message-id; bh=tBvbDpChuad7Gf34o7zrAy5GeGJ/8Uzeoj8ryWST3Tk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9buLeeHbphO3/N55kVVv59tmN3VuetO2e/UrKp4azz iWph8NwQkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEjIIZ/vAeD7jB+vdim/Jj tQ0hkWc2r77GNq27cuqvPzkuqa9flfYz/NOXCS3acGvTlZz++E+JTd/e+ny6wif2bUN30YcXfYm /q1kB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6493; i=brauner@kernel.org; h=from:subject:message-id; bh=WCaLeEgGoNbtr6H3vvQuwG4filJLGelQOjwPMQ9yV2w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bi/ebdDe0XTixBOHxbcsFINz3ObkSvH8+eO/6mfq0 8n+EQkaHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMJCmdkmLjyc2loYnKPx58S sfPOs8+JCT3z1bl78s6yrbfys18/W8/IcOrbba3Kb0tMyr/aFPrY3mpm+ScfpZKvcvT5Zh+Tzv7 bTAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-Add the symlink case:
+Every call into an entry that can go away is wrapped in use_pde() and
+unuse_pde(), and a permanent entry is called straight away. The read,
+write, poll, ioctl, mmap and lseek methods all spell that out as the
+same if-else. The next patches add a few more callers. So put it into
+pde_pin() and pde_unpin() and use them everywhere.
 
-- readlink() /proc/asound/<id> of a dummy card into a buffer backed by
-  userfaultfd
-
-- change the card's id through sysfs while the reader faults, which
-  removes the symlink with snd_card_mutex and info_mutex held
-
-- expect that to finish without waiting for the reader
-
-Skipped without snd-dummy.
+No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore            |   1 +
- tools/testing/selftests/proc/Makefile              |   1 +
- tools/testing/selftests/proc/config                |   5 +
- .../selftests/proc/proc-remove-slow-readlink.c     | 191 +++++++++++++++++++++
- 4 files changed, 198 insertions(+)
+ fs/proc/inode.c | 116 +++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 55 insertions(+), 61 deletions(-)
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index 7b8133492782..3fa89f46b9c7 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -22,6 +22,7 @@
- /proc-uptime-002
- /proc-pidns
- /proc-remove-slow-sysctl
-+/proc-remove-slow-readlink
- /read
- /self
- /setns-dcache
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index bce6beca7274..df02699a3587 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -33,5 +33,6 @@ TEST_GEN_PROGS += proc-fsconfig-hidepid
- TEST_GEN_PROGS += proc-sysctl-readdir-churn
- TEST_GEN_PROGS += proc-pidns
- TEST_GEN_PROGS += proc-remove-slow-sysctl
-+TEST_GEN_PROGS += proc-remove-slow-readlink
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index 18f6490bfe77..66a3688757dd 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -206,6 +206,18 @@ static void unuse_pde(struct proc_dir_entry *pde)
+ 		complete(pde->pde_unload_completion);
+ }
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
-index 052e365af5a9..1504a761b39b 100644
---- a/tools/testing/selftests/proc/config
-+++ b/tools/testing/selftests/proc/config
-@@ -3,3 +3,8 @@ CONFIG_NET_NS=y
- CONFIG_IPV6=y
- CONFIG_TUN=y
- CONFIG_USERFAULTFD=y
-+CONFIG_SOUND=y
-+CONFIG_SND=y
-+CONFIG_SND_DUMMY=m
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/proc/proc-remove-slow-readlink.c b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
-new file mode 100644
-index 000000000000..3290225daecd
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A readlink() that faults while copying out the link must not hold up
-+ * removal of the /proc symlink. Changing a sound card's id removes
-+ * /proc/asound/<id> with snd_card_mutex and info_mutex held.
-+ */
-+#define _GNU_SOURCE
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest_harness.h"
-+
-+#define CARD_ID		"Dummy"
-+#define NEW_ID		"procslow"
-+#define LINK_PATH	"/proc/asound/" CARD_ID
-+#define TIMEOUT_MS	5000
-+
-+struct reader {
-+	char *buf;
-+	size_t len;
-+	ssize_t ret;
-+};
-+
-+struct renamer {
-+	const char *id_path;
-+	const char *id;
-+	int done;
-+	int ret;
-+};
-+
-+static void *readlink_thread(void *arg)
++/* Pin an entry that can go away around a call into it, see use_pde(). */
++static bool pde_pin(struct proc_dir_entry *pde)
 +{
-+	struct reader *r = arg;
-+
-+	r->ret = readlink(LINK_PATH, r->buf, r->len);
-+	return NULL;
++	return pde_is_permanent(pde) || use_pde(pde);
 +}
 +
-+/* a new id removes the card's old /proc/asound/<id> link */
-+static int set_id(const char *id_path, const char *id)
++static void pde_unpin(struct proc_dir_entry *pde)
 +{
-+	int fd, ret;
-+
-+	fd = open(id_path, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return -errno;
-+	ret = write(fd, id, strlen(id)) < 0 ? -errno : 0;
-+	close(fd);
-+	return ret;
++	if (!pde_is_permanent(pde))
++		unuse_pde(pde);
 +}
 +
-+static void *rename_thread(void *arg)
-+{
-+	struct renamer *r = arg;
-+	ssize_t ret;
+ /*
+  * At most 2 contexts can enter this function: the one doing the last
+  * close on the descriptor and whoever is deleting PDE itself.
+@@ -275,14 +287,12 @@ void proc_entry_rundown(struct proc_dir_entry *de)
+ static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	loff_t rv = -EINVAL;
++	loff_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde->proc_ops->proc_lseek(file, offset, whence);
+-	} else if (use_pde(pde)) {
+-		rv = pde->proc_ops->proc_lseek(file, offset, whence);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EINVAL;
++	rv = pde->proc_ops->proc_lseek(file, offset, whence);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -291,13 +301,10 @@ static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
+ 	ssize_t ret;
+ 
+-	if (pde_is_permanent(pde))
+-		return pde->proc_ops->proc_read_iter(iocb, iter);
+-
+-	if (!use_pde(pde))
++	if (!pde_pin(pde))
+ 		return -EIO;
+ 	ret = pde->proc_ops->proc_read_iter(iocb, iter);
+-	unuse_pde(pde);
++	pde_unpin(pde);
+ 	return ret;
+ }
+ 
+@@ -312,14 +319,12 @@ static ssize_t pde_read(struct proc_dir_entry *pde, struct file *file, char __us
+ static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	ssize_t rv = -EIO;
++	ssize_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_read(pde, file, buf, count, ppos);
+-	} else if (use_pde(pde)) {
+-		rv = pde_read(pde, file, buf, count, ppos);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_read(pde, file, buf, count, ppos);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -334,14 +339,12 @@ static ssize_t pde_write(struct proc_dir_entry *pde, struct file *file, const ch
+ static ssize_t proc_reg_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	ssize_t rv = -EIO;
++	ssize_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_write(pde, file, buf, count, ppos);
+-	} else if (use_pde(pde)) {
+-		rv = pde_write(pde, file, buf, count, ppos);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_write(pde, file, buf, count, ppos);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -356,14 +359,12 @@ static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, struct p
+ static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	__poll_t rv = DEFAULT_POLLMASK;
++	__poll_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_poll(pde, file, pts);
+-	} else if (use_pde(pde)) {
+-		rv = pde_poll(pde, file, pts);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return DEFAULT_POLLMASK;
++	rv = pde_poll(pde, file, pts);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -378,14 +379,12 @@ static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned in
+ static long proc_reg_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	long rv = -ENOTTY;
++	long rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_ioctl(pde, file, cmd, arg);
+-	} else if (use_pde(pde)) {
+-		rv = pde_ioctl(pde, file, cmd, arg);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -ENOTTY;
++	rv = pde_ioctl(pde, file, cmd, arg);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -401,13 +400,12 @@ static long pde_compat_ioctl(struct proc_dir_entry *pde, struct file *file, unsi
+ static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	long rv = -ENOTTY;
+-	if (pde_is_permanent(pde)) {
+-		return pde_compat_ioctl(pde, file, cmd, arg);
+-	} else if (use_pde(pde)) {
+-		rv = pde_compat_ioctl(pde, file, cmd, arg);
+-		unuse_pde(pde);
+-	}
++	long rv;
 +
-+	r->ret = set_id(r->id_path, r->id);
-+	ret = write(r->done, "x", 1);
-+	return (void *)ret;
-+}
-+
-+/* the sysfs id file of the card with @id */
-+static int find_card(const char *id, char *id_path, size_t size)
-+{
-+	struct dirent *d;
-+	int ret = -1;
-+	DIR *dir;
-+
-+	dir = opendir("/sys/class/sound");
-+	if (!dir)
-+		return -1;
-+	while (ret && (d = readdir(dir))) {
-+		char cur[32];
-+		FILE *f;
-+
-+		if (strncmp(d->d_name, "card", 4))
-+			continue;
-+		snprintf(id_path, size, "/sys/class/sound/%s/id", d->d_name);
-+		f = fopen(id_path, "r");
-+		if (!f)
-+			continue;
-+		if (fgets(cur, sizeof(cur), f)) {
-+			cur[strcspn(cur, "\n")] = '\0';
-+			if (!strcmp(cur, id))
-+				ret = 0;
-+		}
-+		fclose(f);
-+	}
-+	closedir(dir);
-+	return ret;
-+}
-+
-+FIXTURE(dummy) {
-+	char id_path[PATH_MAX];
-+	bool renamed;
-+};
-+
-+FIXTURE_SETUP(dummy)
-+{
-+	self->renamed = false;
-+	if (access(LINK_PATH, F_OK) && system("modprobe -q snd-dummy"))
-+		SKIP(return, "no snd-dummy");
-+	if (access(LINK_PATH, F_OK))
-+		SKIP(return, LINK_PATH ": %s", strerror(errno));
-+	if (find_card(CARD_ID, self->id_path, sizeof(self->id_path)))
-+		SKIP(return, "no sysfs id file for " CARD_ID);
-+	if (access(self->id_path, W_OK))
-+		SKIP(return, "%s: %s", self->id_path, strerror(errno));
-+}
-+
-+FIXTURE_TEARDOWN(dummy)
-+{
-+	if (self->renamed && set_id(self->id_path, CARD_ID))
-+		TH_LOG("couldn't name the card " CARD_ID " again");
-+}
-+
-+TEST_F(dummy, remove_while_readlink_faults)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct uffdio_register reg = {};
-+	struct uffdio_zeropage zero = {};
-+	long psz = sysconf(_SC_PAGESIZE);
-+	struct renamer rn = {};
-+	struct reader r = {};
-+	struct uffd_msg msg;
-+	struct pollfd pfd;
-+	pthread_t rt, nt;
-+	int uffd, done[2];
-+	char *buf;
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (uffd < 0)
-+		SKIP(return, "userfaultfd: %s", strerror(errno));
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_API, &api), 0);
-+
-+	buf = mmap(NULL, psz, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(buf, MAP_FAILED);
-+	reg.range.start = (unsigned long)buf;
-+	reg.range.len = psz;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	r.buf = buf;
-+	r.len = psz;
-+	ASSERT_EQ(pthread_create(&rt, NULL, readlink_thread, &r), 0);
-+
-+	/* The reader now sleeps in the copy of the link to userspace. */
-+	pfd = (struct pollfd){ .fd = uffd, .events = POLLIN };
-+	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
-+	ASSERT_EQ(read(uffd, &msg, sizeof(msg)), sizeof(msg));
-+	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
-+
-+	/* Renaming the card removes the link that is being read. */
-+	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
-+	rn.id_path = self->id_path;
-+	rn.id = NEW_ID;
-+	rn.done = done[1];
-+	self->renamed = true;
-+	ASSERT_EQ(pthread_create(&nt, NULL, rename_thread, &rn), 0);
-+	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
-+	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
-+		TH_LOG("removing " LINK_PATH " waited for the reader");
-+	}
-+
-+	zero.range.start = (unsigned long)buf;
-+	zero.range.len = psz;
-+	ASSERT_EQ(ioctl(uffd, UFFDIO_ZEROPAGE, &zero), 0);
-+	ASSERT_EQ(pthread_join(rt, NULL), 0);
-+	ASSERT_EQ(pthread_join(nt, NULL), 0);
-+	EXPECT_EQ(rn.ret, 0);
-+
-+	/* The link was read before it went away. */
-+	EXPECT_GT(r.ret, 0);
-+	EXPECT_EQ(readlink(LINK_PATH, buf, psz), -1);
-+	EXPECT_EQ(errno, ENOENT);
-+}
-+
-+TEST_HARNESS_MAIN
++	if (!pde_pin(pde))
++		return -ENOTTY;
++	rv = pde_compat_ioctl(pde, file, cmd, arg);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ #else
+@@ -425,14 +423,12 @@ static int pde_mmap(struct proc_dir_entry *pde, struct file *file, struct vm_are
+ static int proc_reg_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	int rv = -EIO;
++	int rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_mmap(pde, file, vma);
+-	} else if (use_pde(pde)) {
+-		rv = pde_mmap(pde, file, vma);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_mmap(pde, file, vma);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -457,14 +453,12 @@ proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
+ 			   unsigned long flags)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	unsigned long rv = -EIO;
++	unsigned long rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
+-	} else if (use_pde(pde)) {
+-		rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
 
 -- 
 2.53.0
