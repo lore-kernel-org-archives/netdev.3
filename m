@@ -1,59 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793792136;
-	b=V6iiJigrNmJxin2fccTQWQydWoi9EJxKX8hCaicg2k0P5xszAKhZvkT8NiywmvJkrPih
-	 aKlOBauhkh+cwhnHtx6Kir4WNyuliT9bHtVMttUDyjSpe3QjTUNjo7cKzlkY/UaoPsNmZ
-	 KKtLgTv6m+Yl7dFr7xat8HBSfA1T+Au4vGH4Tgt22nAgMzeQ5Ki2Bt/t0eXuu76mZfCcr
-	 oq/xQVzerFdqXSCFt1Dn0Ct2N25jnjXIPh6hYSgiaUxku5+NbHFTARTqeFCaTdB7sW+sO
-	 YqmO8ZZGsllFxbxzLXSKthkV907iIf4ukhyySQDaBIQU7A3KlGlRqB9ygOVog1hNKlg==
+	t=1793792354;
+	b=rb9+s5hd5Op2bh4lAVLBH8buREpQXohYyO9XsTnYMHXwYMwbROdkxHatCSBUjsDURpCK
+	 28XWdMkm76NAONJLo0TSQIjEQROew2mOC/Za56F8GjfVYpRCcjxvYJ0quATm/zvFqOVzK
+	 OPMLWDixX37mLvmLTFPY3EXOmMhp5IA7s2Htk0wzXqtuEVNrBl5LPwzRfkt3Ec9ds3ivU
+	 XSsubmtRR64c2kSIwvAEtf7PIucaoLNmHZ8IcWHGHGt9MvuvO2XVBY1DIXjlRADKSWw5p
+	 vZAeJoYVvPfuYWGcO8vo/dJ95gUNgwG+BUsDJJIL19ELf+G+lfYLcg32aassWt5UVqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792136;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=DiTNhjiby/N/S8aTfjpWGWUjlVo4gDdyQaJC/ra1gL8=;
-	b=5Q5Ltuw1PfFv7Y9ol7eZtgNv8E8dIAiQdCGCKNuwc1MWG9g0jCHQ/q7jqCLMAa9kRur0
-	 Tmu0COGStP/j+SQxf1TLEmRpb2Z2sIo47bmbUAsxzmrhfU62BFCdjgkgDU8JCjZ44kLWm
-	 Fp4XWnQkPuGRiyDeBic3n22uetNkRxLiG+hFqjLFPyFk5Gh/95kr1vMV2l6oWAmxXkcMV
-	 zVGza4BMf5/d4mzhykW0FiJqM/UgsTA6vMiuEZCLme3d+dLrSH8xhl2Z+tuxjlBx/xBJa
-	 S923H2KiWQABfL7hHDTRCozvQl3F8/VB0kxrTfYzoCCTBooeNb2MJr34sr4DHOqFkdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793792354;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=b65pzJ5TnRWSzP7nj43qs8PY9qI0f+kdw1kbXZqXiCEdW3WRMGc6lEml8lW5AiQu8mHe
+	 lBPYXC9m9JwggIT1XK0mVwnwYLpvq3+gpHFoQd6KuUozHD80XIRGSSZshO4gI1xg4ki2C
+	 Het5stWkcdnkykje+6JjLmsUK5xbM3jFKp0cX6k+Vxd7EYGGISrpMUrzzTZsKAjDcEjP0
+	 tdsWax/icEYy+0CSgRkA5jJFMEukpi2sGl7guaf825rfRXlG6Al/G/PMJ2xnGEEJwghpJ
+	 Kkxzsa5EiZpLjLsuIB4eIcsg9e3npefK3vjmTDyNMCGNypg7gb4I82y3Pg/9qTKQUwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=afB2dfy9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="n12fr9o/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20576606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FEB606A32D
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=afB2dfy9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC0B1F000C1;
-	Wed,  4 Nov 2026 11:35:33 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n12fr9o/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319221F0093A;
+	Wed,  4 Nov 2026 11:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793792135;
-	bh=DiTNhjiby/N/S8aTfjpWGWUjlVo4gDdyQaJC/ra1gL8=;
-	h=From:To:Cc:Subject:Date;
-	b=afB2dfy9O53QJjrcOv0Qvx3ebyGft7SHbLiPWo8PLZLcjzo3GoMaM4E+9vi+Dww3Q
-	 49pLLRcnqFD916Kb8Ty03la5kr4fGQJiKXtXyUGK5nV8RVVzV+D5KMhO1VHZ0bHe0k
-	 M5NnngZr6gyvmRnQ6d4Ti4iC4sAnqu57L7eLDwbcHrc7HaRhhIHkJKOhXHPIZuKphm
-	 YYscFPMMeKSeawMgQtDFCFkEV7OiT7I6Ec9zf/MqJTNyHOqhtU/iJX0RI0S3gEBd3d
-	 VNvBQL8VKAVR1jRkENgDJCAyF6zyRQpY/k6KQn9yn4YGaaxPCneSF4FPMWsJ3wXXo5
-	 a+/nPx+VNM4/w==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>,
-	Mahesh Bandewar <maheshb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net] ipvlan: make outbound skb headers writable
-Date: Wed,  4 Nov 2026 12:35:30 +0100
-Message-ID: <20261104113530.986664-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793792353;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=n12fr9o/eLfRH66x7aUMM99yMJ8o11YgLqvYJSltxvo/lttYGQ96bIuq/jHpl+Xkv
+	 bQbYgYxFZrkBypIAf2FKY43tlNfZEKLPJ+HprQJcCe93Qlp0R6Lx6HjxomujtrOaxt
+	 kcB4we/H+nupAzCZi63W3Z+e/pjbazZoLNcOXPgn/u8pK1L2Az+PVIRJIDsdUK62vx
+	 63QiGcU4mu6GnLqHTJIH3U7qAPRlfLFHyTHZamcRe5jljsmLenBW4s3GBwaJJj8yvB
+	 zy2ciSfwH3AYhu30fZn6VI4SiwcTpGwUpJtHT28pKus16SPAxyd2dyBkoF4/EDbF/l
+	 C6utxzNsZUjTg==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ Mahesh Bandewar <maheshb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ Kyle Zeng <kylebot@openai.com>
+Subject: Re: [PATCH net] ipvlan: make outbound skb headers writable
+Date: Wed, 04 Nov 2026 11:39:12 +0000
+Message-ID: <179379235268.488859.11510660996410063187@kernel.org>
+In-Reply-To: <20261104113530.986664-1-edumazet@kernel.org>
+References: <20261104113530.986664-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,70 +64,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Kyle Zeng <kylebot@openai.com>
+Hi!
 
-In L3 and L3S modes, ipvlan_process_v4_outbound() and
-ipvlan_process_v6_outbound() hand the skb to ip_local_out() and
-ip6_local_out(). The IP output path assumes it owns the network header:
-__ip_local_out() rewrites tot_len and the header checksum, and
-transport-mode XFRM can memmove the network header into the headroom
-when xfrm_skb_check_space() finds enough room, without copying.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-The skb reaching ipvlan can have its header shared with another skb,
-for example after an AF_PACKET tap on the ipvlan device or a tc mirred
-mirror action. pskb_network_may_pull() only makes the header linear;
-it does not unshare an already linear head. The writes above then
-modify the other skb. If that skb is on the receive path and its IPv4
-header was already validated, IPv4 option processing can use the
-modified header, write past the linear data, and corrupt
-skb_shared_info.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Use skb_cow_head() before taking header pointers and entering the local
-IP output path, like ip_forward() does with skb_cow() before it touches
-the header. Only checking skb_header_cloned() is enough here: skbs that
-TCP transmits are clones of the write-queue skb, whose header area has
-been released with __skb_header_release(). Their headers are private,
-so they are not copied, which avoids a reallocation for every TCP
-segment sent through an ipvlan slave.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-If the allocation fails, the existing error accounting and drop paths
-are used. L2 mode is unaffected.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-[edumazet: use skb_cow_head() instead of skb_unclone() to avoid
- copying every TCP segment, reword changelog]
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- drivers/net/ipvlan/ipvlan_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 7ad12dc7845c836bdd04395f153b2b4b397797d6..d2afc2ec896e039d174e2b0ecfd4c9ff6634cfaa 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -438,7 +438,8 @@ static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
- 		.flowi4_mark = skb->mark,
- 	};
- 
--	if (!pskb_network_may_pull(skb, sizeof(struct iphdr)))
-+	if (!pskb_network_may_pull(skb, sizeof(struct iphdr)) ||
-+	    skb_cow_head(skb, 0))
- 		goto err;
- 
- 	ip4h = ip_hdr(skb);
-@@ -504,7 +505,8 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
- 	struct net_device *dev = skb->dev;
- 	int err, ret = NET_XMIT_DROP;
- 
--	if (!pskb_network_may_pull(skb, sizeof(struct ipv6hdr))) {
-+	if (!pskb_network_may_pull(skb, sizeof(struct ipv6hdr)) ||
-+	    skb_cow_head(skb, 0)) {
- 		DEV_STATS_INC(dev, tx_errors);
- 		kfree_skb(skb);
- 		return ret;
--- 
-2.53.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
