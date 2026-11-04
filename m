@@ -1,44 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.20.114.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793769273;
-	b=gG/NkCYXKQulHyhvHTu9gPFaQyyXXTQuTdp2oKqiD0n6D8qBIhygsy0NIX8s56mJKUBG
-	 LNqU7FAGeBQMwTN8IH7znZRODTP7eRK9RjJRhkT1xoM2ayTL7SdHYSeNmYImIIkJDlOox
-	 hPUgyzAryxM9TVNGGG1NfRX1wRW5WDv+CXYH/JpthCJpk4jAzr8epxdYcoJ0U4p69vR7l
-	 nxLc1nYoZtmho7weYY2AR3qv1BEku4rxVf6gRLJljoi4Cs5Hl0MVPDjtFlF3qzf/X7Doo
-	 YyrcNh7PjptABYVNV4pUyxK7Idwgzz/jGMI/Fxt+8hHGPlxncI6SNbszAwuzVV/4EmQ==
+	t=1793769826;
+	b=JROlPKpGzMLeFFZJM8eX7I5rV8BytzkUNJ0ms6WkXGZQNoAyadfgTn0Myv4Uq4+BflFo
+	 UsCUXHURe30OVDEd88+mqLizxG+S7L/anJnZbMNI963Wd2CToFsUJei0sRw0Y/Wx0OtrA
+	 dZZS2bzjiu9KjAXh3T9NvbXUZiMfkUpp/Y33byBTXDzIDzcmpWxziSTTAawXqIJvnduCf
+	 x10JZKXusL4MhQbmLE9Ym0uYtQJ15aVgvwPPmbkSG89s36NQmlsv65SBXaV428Ac9X9pK
+	 115QpY/IrUHivO5rNzp0g1hZhViXfCbYszC8hCWyYSaw61Eo0qnfD6BounsU/hHJhjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793769273;
-	h=DMARC-Filter:Received:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-ID:References:
-	 In-Reply-To:To:CC:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=YDPaXizwmC/JpiKEr55NlOYCnlfjA2XwAZhmjmD4s7A=;
-	b=mXpC/LKOC/TMi/d11Lfk0DOFdBUulzApZRGE3l0u1qY+Kg8DiKDXhf1sKpIUi26xEe9s
-	 eVKyt4uroRSZoS66JNxqX+apDVeQsi97qn4zAkwGeGT+RX8LvOY61YIHZ/U/ciZjG/6PG
-	 RTYvDk3ZvM/PWSYPspVGIKpsgF0vWvZrtpQoiYAthYa3/us+a8u8jwUXaWjnsWSFxTDmd
-	 ELmUTkUGDI4fNFq9VexMzqknJ7aK6f13ttAKPgK5WSfDoV1zqTSrnmf/2NJp+whakd+ew
-	 3V+OrwmIGw0xMcmCWrUQD/rrbY5lZkeVNAdq04fAHg5Tk+7tBjvq4tqHxBYWHypCW7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793769826;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Qn8NAtZoDb7HH34IWyK2VCQA4luhbTedxXM4sKwZuRo=;
+	b=KmyVvwH7Vogy0deTX0kWr9wqzgLGJ1vp7qB9FWG/OOtkPdH+7EqXNLZ6q4bcxGIFp3x8
+	 WvwtZbIKtVMHDdOVN6QNBXwfqf/BxzKAvcphDcWBxSabztUSTDdoXlXFWRm/RaIRa9qwb
+	 GlgxBTxtcqSXARbCiiGFLt2+vn1t09+yB48HRhgYsWvrCCELmjZeLAiac0u9VjSnA8A7n
+	 v8BEXluBY8+OF8HXuscOE/5beptYXBenXXh7D2BZsvM/Aa9qkPU8Ck0FnA002DtcbirPF
+	 VG4WR82CHw6Kr8/zV6uHLd9oFKPJ6+ukVwffRSroKhGu++lj+FrImEvzT9KqorLaK0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=aspeedtech.com;
-	spf=pass smtp.mailfrom=aspeedtech.com;
-	arc=none smtp.remote-ip=211.20.114.72
-Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oC27qxmL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AC0606A33A;
-	Wed,  4 Nov 2026 05:14:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56AC0606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 4 Nov
- 2026 13:14:10 +0800
-Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 4 Nov 2026 13:14:10 +0800
-From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Wed, 4 Nov 2026 13:14:00 +0800
-Subject: [PATCH net-next v5 7/7] net: ftgmac100: Allow building on ARM64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33A606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 05:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oC27qxmL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D67D1F00A16
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 05:23:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793769825;
+	bh=Qn8NAtZoDb7HH34IWyK2VCQA4luhbTedxXM4sKwZuRo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oC27qxmLddM+EFhnLVgpy/VmEZXINf+xmHMuE4FdR6WRBLVsnWvH4KjVNHVFraJuO
+	 /8MkqE97l3jpwOqC3pKUzDOHT9ZRJ1DXXVzgBzKn9ZKDZfJsxzGxxh2bMHJWSUoO4P
+	 Iw9Rl2YyPuajJcU8OJRvCxTdBU9IleHw9W+6i52qbeVTRP/a4YmrOt01ifcx6sjGHh
+	 ZJUmeQWpsSTW5zqXezbe306mtiwtYW/T/dYIHro4eFD8m5+H6WJxonqCYrmAb1qqy0
+	 h4YEOzoU8ZjAqpOXrGwZ3Owi4CViRUiQdQ7ALC9gsPHBJny2GXKyd3FzwjFZ+u3zSd
+	 pjJPF6FRZ9MwA==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-49429181ce9so295268fac.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 21:23:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvByNE81onbqSiRLwS5roxAYLYRNbV0eaChJxRFG0PKTAztmb+Fp7ToipEM0KZhRQIGK9SnJdv7c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+9+18H5dPgrn3eosKn8jh6xp9CtupxQxbxsfKnCdW7SWWE5CyA
+	1zkmRdqZPmArh/kXzRSd4cUCBuXAMkzNCFjfYXSCwvcwjVc9IUG/4HlU3G6hTPFrGxY0D8L/ixo
+	jx9Ko/uPlpzBWK817+stRNrl6E8u2zcE=
+X-Received: by 2002:a05:6870:e988:b0:485:d1ab:793c with SMTP id
+ 586e51a60fabf-4a90769be04mr9501691fac.29.1793769824978; Tue, 03 Nov 2026
+ 21:23:44 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -48,110 +59,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261104-support_ast2700-v5-7-44057f4dde75@aspeedtech.com>
-References: <20261104-support_ast2700-v5-0-44057f4dde75@aspeedtech.com>
-In-Reply-To: <20261104-support_ast2700-v5-0-44057f4dde75@aspeedtech.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Po-Yu Chuang
-	<ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Eric
- Dumazet" <edumazet@kernel.org>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793769249; l=3621;
- i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=b4nuOAGj7hDll45AfQpS7jJIfXwEMU2no6rHulerEMM=;
- b=ycTrYe09/7qJ8UtK6Iscl6+3st9GBPj2Tl2F/2X/USQLgC11MPUTCW2wA/U3Uqc60S9EIhm9L
- zoOxcbUAAe0ANe/DGWHFAHUW9zFUuGL6wymHya65F0v0ljIhw5+ekRI
-X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
- pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-9-alexei.starovoitov@gmail.com>
+In-Reply-To: <20261102072112.4160195-9-alexei.starovoitov@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Wed, 4 Nov 2026 06:23:34 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiq+QX8quVBjEZK5qipki6Yt7vx4=tt2L4o+FwO9zD-5=g@mail.gmail.com>
+X-Gm-Features: AclHuK_M_LLkqH56WlWzBGN8TVZ6lnrAKJmZVwCPt2OMDTAdOmG-v8JtUt35WrY
+Message-ID: <CAL4Wiiq+QX8quVBjEZK5qipki6Yt7vx4=tt2L4o+FwO9zD-5=g@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 08/15] net: Leave sk_stream_wait_memory() once the
+ socket is dead
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net, 
+	andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
+	john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	kuniyu@google.com, willemb@google.com, matttbe@kernel.org, 
+	mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Allow the Faraday vendor menu and FTGMAC100 driver to be selected on
-ARM64 so AST2700 platforms can enable the MAC. The driver now programs
-the upper DMA address fields, so it no longer needs to be marked BROKEN
-for 64-bit builds.
+Le lun. 2 nov. 2026 =C3=A0 08:22, Alexei Starovoitov
+<alexei.starovoitov@gmail.com> a =C3=A9crit :
+>
+> From: Alexei Starovoitov <ast@kernel.org>
+>
+> When an sk_msg prog redirects data to the egress of another socket, the
+> sender calls tcp_sendmsg_locked() on that socket. The sender holds a
+> reference to the sock, but not to its file. Thus __tcp_close() can call
+> sock_orphan() while the sender sleeps in sk_stream_wait_memory().
+> sock_orphan() sets SOCK_DEAD and sets sk_wq to NULL.
+>
+> After the sleep the loop continues and does not test SOCK_DEAD. The
+> subsequent sk_set_bit() can dereference the NULL sk_wq. The tests of sk_e=
+rr
+> and sk_shutdown do not always stop the sender. sock_error() clears sk_err=
+,
+> and __tcp_close() can call tcp_disconnect(), which clears sk_shutdown. Th=
+e
+> sender then adds data to the write queue of the dead socket, and
+> inet_sock_destruct() warns.
+>
+> Leave the loop with -EPIPE when the socket is dead after the sleep. The
+> function already tests SOCK_DEAD before remove_wait_queue() for the same
+> reason. A caller that has the socket open never sees SOCK_DEAD.
+>
+> Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor soc=
+ket TX/RX data")
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> ---
+>  net/core/stream.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/stream.c b/net/core/stream.c
+> index cb255e2a3a5d..334124d683a7 100644
+> --- a/net/core/stream.c
+> +++ b/net/core/stream.c
+> @@ -150,7 +150,11 @@ int sk_stream_wait_memory(struct sock *sk, long *tim=
+eo_p)
+>                                     (sk_stream_memory_free(sk) && !vm_wai=
+t),
+>                                     &wait);
+>                 sk->sk_write_pending--;
+> -               if (ret < 0)
+> +               /*
+> +                * A sender which sockmap has redirected to sk does not k=
+eep it
+> +                * open. A dead socket has no sk_wq.
+> +                */
+> +               if (ret < 0 || sock_flag(sk, SOCK_DEAD))
+>                         goto do_error;
 
-AST2700 has no dedicated MACH_ASPEED_G7 symbol; unlike the 32-bit
-generations it is only gated by the common ARCH_ASPEED symbol. On
-32-bit Aspeed platforms, arch/arm/mach-aspeed/Kconfig nests
-MACH_ASPEED_G4/G5/G6 under "if ARCH_ASPEED", so MACH_ASPEED_G6 already
-implies ARCH_ASPEED and is redundant once ARCH_ASPEED is part of the
-condition. Drop it and select MDIO_ASPEED directly on ARCH_ASPEED.
+This is fine, but it only helps a sender that wakes up.
 
-This does widen the MDIO_ASPEED select beyond AST2600: it is now also
-selected for AST2400/AST2500, which keep driving their embedded MDIO
-controller from FTGMAC100 itself and have no MDIO node for this driver
-to bind to, so it is built but stays unused there. Update the
-MDIO_ASPEED help text to describe this.
+As you said in your reply to the bot on patch 07, nothing wakes it.
+__tcp_close() sets sk_shutdown and calls sock_orphan() without a wakeup
+on sk_sleep(sk), and once sk_wq is NULL, sk_stream_write_space() cannot
+reach the sleeper either.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
----
- drivers/net/ethernet/faraday/Kconfig |  7 +++----
- drivers/net/mdio/Kconfig             | 16 ++++++++++------
- 2 files changed, 13 insertions(+), 10 deletions(-)
+"A signal or SO_SNDTIMEO of the target ends it" does not look enough to
+me. tcp_sendmsg_locked() takes the timeout from sock_sndtimeo() of the
+target, a socket the sender does not own and cannot configure. With the
+default MAX_SCHEDULE_TIMEOUT, a blocking sendmsg() on the sender's own
+socket never returns, and the sender's sock_hold() pins the dead target
+until then.
 
-diff --git a/drivers/net/ethernet/faraday/Kconfig b/drivers/net/ethernet/faraday/Kconfig
-index 474073c7f94d..9acc2d260c1f 100644
---- a/drivers/net/ethernet/faraday/Kconfig
-+++ b/drivers/net/ethernet/faraday/Kconfig
-@@ -6,7 +6,7 @@
- config NET_VENDOR_FARADAY
- 	bool "Faraday devices"
- 	default y
--	depends on ARM || COMPILE_TEST
-+	depends on ARM || ARM64 || COMPILE_TEST
- 	help
- 	  If you have a network (Ethernet) card belonging to this class, say Y.
- 
-@@ -28,11 +28,10 @@ config FTMAC100
- 
- config FTGMAC100
- 	tristate "Faraday FTGMAC100 Gigabit Ethernet support"
--	depends on ARM || COMPILE_TEST
--	depends on !64BIT || BROKEN
-+	depends on ARM || ARM64 || COMPILE_TEST
- 	select PHYLIB
- 	select FIXED_PHY
--	select MDIO_ASPEED if MACH_ASPEED_G6
-+	select MDIO_ASPEED if ARCH_ASPEED
- 	select CRC32
- 	help
- 	  This driver supports the FTGMAC100 Gigabit Ethernet controller
-diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
-index d44278f26fab..d784782c230f 100644
---- a/drivers/net/mdio/Kconfig
-+++ b/drivers/net/mdio/Kconfig
-@@ -50,12 +50,16 @@ config MDIO_ASPEED
- 	depends on OF_MDIO && HAS_IOMEM
- 	help
- 	  This module provides a driver for the independent MDIO bus
--	  controllers found in the ASPEED AST2600 SoC. This is a driver for the
--	  third revision of the ASPEED MDIO register interface - the first two
--	  revisions are the "old" and "new" interfaces found in the AST2400 and
--	  AST2500, embedded in the MAC. For legacy reasons, FTGMAC100 driver
--	  continues to drive the embedded MDIO controller for the AST2400 and
--	  AST2500 SoCs, so say N if AST2600 support is not required.
-+	  controllers found in the ASPEED AST2600 and AST2700 SoCs. This is a
-+	  driver for the third revision of the ASPEED MDIO register interface -
-+	  the first two revisions are the "old" and "new" interfaces found in
-+	  the AST2400 and AST2500, embedded in the MAC. For legacy reasons,
-+	  FTGMAC100 driver continues to drive the embedded MDIO controller for
-+	  the AST2400 and AST2500 SoCs. AST2700 has no dedicated MACH_ASPEED_G7
-+	  symbol and is only gated by ARCH_ASPEED, so FTGMAC100 now
-+	  unconditionally selects this driver on every ARCH_ASPEED platform,
-+	  including the older AST2400/AST2500 SoCs where it has no MDIO node to
-+	  bind to.
- 
- config MDIO_BITBANG
- 	tristate "Bitbanged MDIO buses"
+Since this patch makes SOCK_DEAD a reason to leave, one wakeup before
+sock_orphan(), while the socket is still owned by the closer, should be
+enough. The sender can only get the socket lock back after
+sock_orphan(), so it sees SOCK_DEAD. Nothing walks the wait queue after
+sock_orphan(), so skipping remove_wait_queue() stays safe.
 
--- 
-2.34.1
+Something like this (untested). sk_wq can be NULL here for MPTCP
+subflows, hence skwq_has_sleeper():
 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ void __tcp_close(struct sock *sk, long timeout)
+ adjudge_to_death:
+  state =3D sk->sk_state;
+  sock_hold(sk);
++ /* A sockmap egress redirect can sleep in sk_stream_wait_memory()
++ * without a reference on our file. Let it see SOCK_DEAD.
++ */
++ rcu_read_lock();
++ wq =3D rcu_dereference(sk->sk_wq);
++ if (skwq_has_sleeper(wq))
++ wake_up_interruptible_all(&wq->wait);
++ rcu_read_unlock();
+  sock_orphan(sk);
+
+This can be a follow-up and does not need to block the series.
