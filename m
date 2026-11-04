@@ -1,49 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793802607;
-	b=RgIAG1KY2nYM9/Lh/hKe/5mBtt3kV7Ant41nfl2K1LylHoq5bQ/h+WY9Dneb4VHndbDP
-	 rGT1VLircKEdYCCdrSLwgeM0caMR5lTa++4sCF3Ta4grmnRkjEu74uCYmeedRkHCqju08
-	 OubU0iZ6GDGrR2g6BnbpNUTEMAP1q891AQLuUGjFlo2e2yYCtTQYJdyJ2WWaxHE/bJS6Y
-	 amMd2mN7m9ltL564G6FWQuAY7kqmgAeqvNB0a0mZvnDPFQNOomVKaA5qX937ZqSFhc9lI
-	 y8qVjBScOjjq8/RA9/6sw80Ht1+i5B+NsG7yJyviO29R9Vb8qClIIaHPCv0vRl3t2NQ==
+	t=1793802991;
+	b=kNWztw9neHLC3VJAoL8V92sqCIdVWA/OfmS3tvnsBy7reuB2ROPb2zgEW/MrPWJgyytd
+	 WW+Hjxlwx5gSZJ9ye1Z+JklfMXoShUgIqL0Fp7rzob6ZQZLNtM1CtRetfU4awHzKILPeT
+	 ruRtbSeCm9E/R/OTdWCQ5wepBFlvLG3OBt51gOkLwPKlrRhKl7dm+h0f4Pst/XiBWEXvt
+	 9m9PPluo3+S0gLWPnTmg3wgzZx2h4mKU7Rf/O1Jhek3LJZHS4csCGRxGj5vhqXlJ9bV30
+	 FHCSoJ0kMOnlZjiUfvBljDEpoOCMk+yLlTKFMccopGcNLnuLV7P6aaut1tdfVe9Tf6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793802607;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=1rJSq25xfu3r2W4rjWjb/4F/VogDdfQBOz7FAnFZlOs=;
-	b=Z13UG53pR0u8OknXnm+svqSzQ0s8YVwqTdvEufZVRz9+bMKDVXMeImAkPv+UBiBNmoMW
-	 xpI14Y5EqsuEzElbOjvb3fgBjHEwT4Xr/bhtWktY4knqaB9JIi5CaBbg/NaE8mJ6Mkp1P
-	 xQ5+j4oLVtPi7VjiK3IJRe2NJNtCPs7p8MfKlms8N5AX3gLOf1DOZI4QOzAw0OEMUo9u/
-	 4h3GRXgUQjmKy/DsCzLno7AuM7cLbuLfG8cnjGdA6HtDp6JxMATvGcoDgT3szF7IIwnPe
-	 FUX5MYL6Y3A6iKbOmMeIX9+V7NrCpu5Yk+OknM/f8lo2PVtcqXQwjY+fS6SnsGhv2kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793802991;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=UsTSTNr9Wticc38e58ZIWY5uITUM7R+lCgEyKvDw3nQ=;
+	b=avUkbX16RQWHgraYqkZ2FTfTB1nDRtXuktsM1FybX4Ln5wHj8a2EhIeg0vv8z8+8AdL3
+	 zUlvIgD9uHtlqyf+/yhHAuspzIHXkiHL6S8SCPWP2EL4IHe/sQdWbD8segNuwET79CEvv
+	 we7j8pE4X2WMlZRPdek3Ugea1ubOlL5Rh8B3uvoD/75BXdJxZl1h0rfs61OhjhoeNmcCM
+	 IrGkS7tCfRhqCsclK4ZnJafigqXshsRB6uc+XzDB4LYpXWtAqA8ZZ7Z6fiOw5gYRIkF/y
+	 hwuKy3DX/wGeCPqqxZhtuZYhg8/QJOCkXV/yqfQbIv3qbxY/jf7wdRNmp+hYLlbjhMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QjCNgeZB;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hvss5G9m;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF690606A333;
-	Wed,  4 Nov 2026 14:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D948606A326
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:36:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D948606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QjCNgeZB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869071F000C1;
-	Wed,  4 Nov 2026 14:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793802606;
-	bh=1rJSq25xfu3r2W4rjWjb/4F/VogDdfQBOz7FAnFZlOs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=QjCNgeZBhcXlxUpDzVBXCY5jzSpVvDTRjqyc6e9WwHp1rlNb+FNTQsyE0cyc8hV+7
-	 hWyzp+k2cI2DITnXUGCB0vLQOLLGN2rU/QG35rOoEdNMQXOgSEq5ovOuDS74gtE6Bl
-	 77yBdNddg6V6uk77OyWyrnh4iybVvGcLtl6fajUXNPluSQhzL+Wmi2HxAQ/drbVKNC
-	 jEWGNNAPeDmNkHpIog2I+cmMzAqafs5nXIPMeP9iVkcIISUmD930Nkh8Sd5x6oL7iK
-	 QUx+0AIrv1i6WVvU7PUfkUsiV2SvSykoRa4pOkeKSoLGrVcjo39z5uSLGOx2XNPHKI
-	 TSL+lOa/1T0Vg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D1D539E8A46;
-	Wed,  4 Nov 2026 14:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Hvss5G9m
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso1218751eec.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:36:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793802990; x=1794407790; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=UsTSTNr9Wticc38e58ZIWY5uITUM7R+lCgEyKvDw3nQ=;
+        b=Hvss5G9mBXHoAafGDDQUN4FuXzGK2I4F28BMoy1eiwhT/Ce+0lcAUND/RSMKtLy5gv
+         CRILA6BnD0J2HIQj41dFspHqJggQedsp/mIiEJX2bqkxwK9kXC2LXdJ//pX9P0I8/VGl
+         J+Pg2976Iig95d9xreihq1sFJBOpltsLKsrefYl+1CmiS1Sq506b2jJLXqKF8oHJve8l
+         mxrZhRIO7tEVjZjDrQrtGurLoZW4zuzDrhYXJzsnqHxHcr7ErpTrUpvs355jM3IsI3sx
+         KEKO4d6t4Q4DfIIXOWGunuATiIAUQL7TLaECVXYfZUSAXX8K7xV5CWsRqyYnmrWXIJbv
+         H9kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793802990; x=1794407790;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=UsTSTNr9Wticc38e58ZIWY5uITUM7R+lCgEyKvDw3nQ=;
+        b=gHgNIN3msREd7Czo6yY0xU7jFb3NGwBXLUeOtOrZu+7EjVr0pl26896r3DZJR7ZPq9
+         u/oViKGvkCk6xxWCQhjp5Z0IMMMG6FUNjLPMwTIaSGiugj48G4wHYKhkplOPesLJejzX
+         F8agSAF9cn/q4qRnAEfFWlfbzenEbk2Lh70TtefNITyMEocV0WBaREWoZyhhLPkaTmJ/
+         XSGb2zJAn2BLm7VBmrkXVxJvN560xlLbrYSYeo8cL4qMj1YJsVuMxdmd/e57Scj3KRFl
+         b4JS99roGcTutuwWjd8FEG8PDmrVqE5i/QMWLP9domJcXtxXUM6l7AUorO7eH9Ff0vFT
+         BpFw==
+X-Gm-Message-State: APuU4Z8+xEC5YCHh9BjtXytb+dCU7P8k2tVnRs7pvFCSAtnSGtUGzhCV
+	qBmUFuSXXpW6joFVoY4EEC1/LTqYI6PSWSvF0+bNN1vRWMRzVx614eiMFVnVaMClmvs=
+X-Gm-Gg: AYBFou2UEsVZQdJoAmtM9zpadUxr35SaDd/RnkCVOfeL4juIPirA7aV7Q6mQ75kI1+Q
+	dweU538IvN8DUJ2FxEK3rgfiM6S0faJ0av0fN5ozEm++jct3NUBmCd7P2KodtYuyWCB40Sg9vO1
+	LPx9bIVs/q64/QaS3sgm9HkuY/TN+RkAIspoJp5Capkb5fDsYHlKKxe+yXuRCOTeKde7HxF7Zpd
+	4LMAc6jZBxaj6JzdgP1mlQvzBUEtVqH3Op3aQ7tBZ8FFkGlXnd86WeLr4ZJM0jBDS3OQnM8TNKE
+	qI14alysweUWHdcM05yOAMhRBbV+TEwfl/PdFMWJNjtQT+9zUPbjeDnCXdZd+DBQEV0l62d7066
+	/u+o4vX6IeaJFeKUSYI4kUCjbVViotTOGMdfSB4+6X1rd30YFJpbWYyP8WRtzgQ8my9/p+NWgch
+	6dYcXTJijyVU5AGIdDTlsZr7yAXZ9eRB6zKiDaznlc8XWZ5Oep0ndc7A1PGUSUYQdJqxHa59zfF
+	JkjdcMJkZEtNC1qoqgburMHzwVjtybaCqNkQGwkMgHMq4Gv+zfpfzjy5rRMU+UQv/cq84/gUxPx
+	9wQX1xKRBZX3iHUadNCm01WH/JeNk1Dbtbi8QczNbonJUMexl4u7C5HoczM=
+X-Received: by 2002:a05:693c:6092:b0:35e:5ca:e0df with SMTP id 5a478bee46e88-36a424609c2mr29593192eec.35.1793802990157;
+        Wed, 04 Nov 2026 06:36:30 -0800 (PST)
+Received: from [127.0.1.1] (59-127-145-64.hinet-ip.hinet.net. [59.127.145.64])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36d34d5960esm6208241eec.5.2026.11.04.06.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 06:36:28 -0800 (PST)
+From: Zhi-Jun You <hujy652@gmail.com>
+Date: Wed, 04 Nov 2026 22:36:11 +0800
+Subject: [PATCH] net: ethernet: mtk_wed: fix double free in
+ mtk_wed_rx_reset
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,51 +91,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] vhost/vsock: size receive SKBs from declared
- payload
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179380260530.2859910.7796955617386470662.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Nov 2026 14:30:05 +0000
-References: <20261004235101.1464007-1-4ncienth@gmail.com>
-In-Reply-To: <20261004235101.1464007-1-4ncienth@gmail.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- bobby.eshleman@bytedance.com, davem@davemloft.net, will@kernel.org,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261104-double-free-v1-1-efa52326702f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBRF0a3IH2uiRRO2IgZaD18EaRGJ2Ltie
+ Ab3XuThGJ7K6CKHgz0vc4CMI7JDM/cQ3AaTSpSWMslEu+xmgugcIIw2RW5VnhZWUyhWh47P71b
+ Vv/1uRtjtXdB9Pyt+IfBvAAAA
+X-Change-ID: 20261104-double-free-b6b95c2539c6
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Sujuan Chen <sujuan.chen@mediatek.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org, 
+ Zhi-Jun You <hujy652@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793802984; l=1229;
+ i=hujy652@gmail.com; s=20261026; h=from:subject:message-id;
+ bh=BAz+fNM/Iyf94+H1t6m97KLkVam+zChfLqMn+estExE=;
+ b=n902yQuPJrVcZaUjXryGj97qgtl3JwbpauFUgWDNdIsyHcSg+2Qqp6KztWjzVWsc0l44pJhUw
+ UWdl6ZEPjM4AWQvGOzBGd31a3rOHoTI09O+BKXmwl4p8a63U8pOu72N
+X-Developer-Key: i=hujy652@gmail.com; a=ed25519;
+ pk=uXjqvnRsKEfHEyUr63sOg4fEJIDs4AmiW/rB1cWarXg=
 
-Hello:
+mtk_wed_free_rx_buffer already calls mtk_wed_hwrro_free_buffer but
+mtk_wed_rx_reset calls both subsequently. This would cause double free
+because dma_free_coherent doesn't set freed desc to NULL.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Fix this by removing the mtk_wed_hwrro_free_buffer in mtk_wed_rx_reset.
 
-On Mon,  5 Oct 2026 08:51:01 +0900 you wrote:
-> vhost_vsock_alloc_skb() sizes the skb from iov_length(), the total guest
-> descriptor length.  virtio_transport_inc_rx_pkt() instead adds hdr->len to
-> rx_bytes and buf_used, and budgets each queued skb as SKB_TRUESIZE(0).  The
-> guest controls the descriptor length and hdr->len independently.
-> 
-> A guest can therefore provide a 64 KiB descriptor while declaring a zero
-> payload.  The descriptor-sized skb remains queued, rx_bytes and buf_used
-> remain unchanged, and only the fixed queue-entry budget limits retention.
-> This is not a lifetime leak: the skb is freed when dequeued or at socket
-> teardown.  Repeating this across connections can nevertheless exhaust host
-> memory.  On Linux v7.2, 455 such descriptors retained 30,255,680 bytes for
-> a 262,144-byte receive buffer; a full-payload control retained 265,984
-> bytes.
-> 
-> [...]
+Compile tested only because I don't own v3 hardware.
 
-Here is the summary with links:
-  - [net,v3] vhost/vsock: size receive SKBs from declared payload
-    https://git.kernel.org/netdev/net/c/d5e912448cd9
+Fixes: 1543b8ff02f0 ("net: ethernet: mtk_wed: add wed 3.0 reset support")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/map/216156
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhi-Jun You <hujy652@gmail.com>
+---
+ drivers/net/ethernet/mediatek/mtk_wed.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index f40ac5794341..5e9674c9e63a 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -1723,7 +1723,6 @@ mtk_wed_rx_reset(struct mtk_wed_device *dev)
+ 				   false);
+ 	}
+ 	mtk_wed_free_rx_buffer(dev);
+-	mtk_wed_hwrro_free_buffer(dev);
+ 
+ 	return 0;
+ }
 
+---
+base-commit: 11140c51df12e594d6bf2c8d2af5dec63b0219ac
+change-id: 20261104-double-free-b6b95c2539c6
+
+Best regards,
+--  
+Zhi-Jun You <hujy652@gmail.com>
 
