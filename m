@@ -1,98 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793783690;
-	b=gP0VL1c1Z3+toh0fknLjDn5N7WAANRnNUC3Wc7F9CusMBw920Z/U92bvjKQYzNG2nKud
-	 dXz961N8K/Tq2nU9kh6L70gUcCIxgdJqPKl/RZPPiYPsAOnbfAaAyny+DREXjZfXOle3M
-	 BwKa2DxdWRUc4t3aT2yV2Qd3Zyq8znzLxsLqUbtjmYuOIQtWzSJEXXeTzsaZ27zHbTGZt
-	 Elvvu+6UUe4YKERpq83st1SkRUvafgReNfG9ZtPCjJnp6ejBSFm0nuDisJYI7lCZn/rIB
-	 K4f/JWqcZSOOEIY9pww3rzoI5Ao7K9aophaDIfgC6jifaM+eKeBZkMfElYbUlL+pE0A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793783690;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=czUbxv5EfuLpmjrkgw21CAlQ/JdV9gdYAJCXYckMMh4=;
-	b=xHw/yHWRGK0JUsw0dYUeVPMqVTGZHsBX3zi7ACPmIiyvBuAtumzE0SECqBtg3ANFlf4T
-	 0A0ID9ewwOBL7sv4FOXsyT/njQO+ba1pUyNYmEm9tdRp0ha/PFN0pJsgLcEHk/ctU4qrU
-	 2rhFrwOL/OyTHXDjMYBAwnZvRZEcoWK+ahQuGsH16KcIednmZaP0V2k24U3j8J8uTNIk7
-	 ZdWvaAAVXyaP0eABi91PwPjj+cu7vjRFkaXXLSzD64Nt2HYH68QTvWwHUUCh1h/2XUyHs
-	 QI0SJ/8qg4/CIfgsYJVXvqBa9NjGvXW6dCJROkPWMdDNy7+Liqpe9DRMYDOLU1osdgQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=AQqHQRIl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793783736;
+	b=heY8DZfjs596eoeBD5Z2sDOUU9B1ozsiyIw9Ub5j5NN18cL3ACo/mUb+8fdUQxz5eknT
+	 AGHLKCBcM82NzD0fuSMaukcw6smbGvzmBLwxSSuq5fKTgnyFK3wIgZtHAwOfjsyOLGNUl
+	 EiCrjnO3XhFFGMySJ3xCOCLWogk3C1BrrMYba4ksBCT8888DurqYn6Vt6hFNjwvkESbOU
+	 /ilzQS+Bmzpgc8XaQVtUdl3qH0LHiLromofkdHAcDZgzYez5ObWIz+6D+m3kF3Mt6fzkT
+	 kzuU+alJ51HWmnUBCnfr72czmjbMxJZizh+ZFsMPXlAwFP7C4rrf0/Ct+Mu9O4f6a7Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793783736;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
+	b=xmcr7yec+WPhYpeNieSszKshZJXr/3jZlrcW8PLnr+8Zh4T2kyeXJvf1i/aGPlwa+qVS
+	 R6xPzgd1Ro2Z+SaMXtkyN6ZxEdLAAtVN6DqR2QjzGXvdlwahqdhv6qUOiaQl1kLdUMPPo
+	 svBQYusftCZ8mNsJ9Le9tpJsm1Jf6NSf+sX3zXiHp5gTlqJVORtB3x1oNI6PIm6r1kdGV
+	 PolVhj4xUkvFWlKwY7Lk1oM+acc8YBO0v7qi0n7xFCNGfHNKesXbXw7JqXVKcphP3VWel
+	 PHCWI5ukpuhM5nNOHoVBztxqRAXPCZbK895HWGrw28um8DVKOXnYgI8YqQOODf7vdeA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QF98rpjB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A7606A328
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:14:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 399A7606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1070606A31B;
+	Wed,  4 Nov 2026 09:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=AQqHQRIl
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a05f2d5cd3so228784b3a.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 01:14:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793783689; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xnyt6naC7bOOeVa2cidY91xHaQ71jW84dVv8TehIBkeJkdgLKjQA+d04M3nhStHhS+
-         ry8NUMHl7axKUROpGT3YGPrOUPViwvtjL+6x6FmnVZ2vFVgq2Zst9s7EVtRYv6zb9EaE
-         lYuThZSa1ok4jE8fg2XJh2o/ecFksYZOSyI30toOoBWXYYR2ngLiVtnF3G3koKyi8p0o
-         c4CeTHJx50Qf6rHUFiG4TJty6ewjwzdbTcg7qfivz19hfqSepUfVRNh9ipqGyyT82I9z
-         LQv/QHKbd1+R4lh+XHHY45wFBsaPt3c9mfOwrWgx3TaJQwLkAN8dKTzEdxTotDfiWqFy
-         S0EA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=czUbxv5EfuLpmjrkgw21CAlQ/JdV9gdYAJCXYckMMh4=;
-        fh=x4xhomiBH41unImTZwfWiBgFlqpZewoUX4ShROqIbzg=;
-        b=WR0plemb74wuzEHLzIEqC0mCBMGCBXEeVZnH21EMtAeM/KZrQE73/tQG/SYr4a2rEj
-         aia/tv4dUKVtf70Cr5PvCPBJm+pVMF4B4LgN7vtcS9e0cPt5meY9Sns1steq6IKxgqNY
-         DjMXW6nkssThZgPHYvV+qOzmyV/viQNAHYUwRvzOUhR2216FYpNpJr4VdMCwiIAt6Qni
-         o/0/+L3FKu65CzbwmnApoDVKMGyePC0iZpvHE8HG8MpTqjw/zqVt7BFMrjrkiA9Pnxjk
-         8HBOYuH2tpA7oAvRWEjA8yMec6hEagNx3passBJSXK1nzEhw6W2ylt0M+MJQ1qgbTLI8
-         Qkdw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793783689; x=1794388489; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=czUbxv5EfuLpmjrkgw21CAlQ/JdV9gdYAJCXYckMMh4=;
-        b=AQqHQRIlgEz6uzCGkg04TmOJsYG2eT4MvgX8UrzjPyNzZbEQwCB9itFh1O+e74qSrk
-         +0mlDibQIRXNWIfyTomgiRrLRHHZOhnGIOrNSSSnZG4tCrSYL9c2r4MFvmFhmfNGTbVg
-         UvVj59+PYDAcmXXiru/Roz+PEE2YVAl8Mj9Ak=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793783689; x=1794388489;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=czUbxv5EfuLpmjrkgw21CAlQ/JdV9gdYAJCXYckMMh4=;
-        b=2CfNOBwfnbqxu+oMItkdtAwGfPh+iic7J4Qi3PtuuiivGAncgOUZgvAYdwQikHZxSK
-         bUoecyMscp1JSwpO3yLPtSuL8MjDrqpMawEsE34G+z909XwNsiqacIwO281ayNg27F7B
-         RxiGNbklvB4zV6D2I/cGkK+JcOqy8S2THxbrwrdYFcyXX4GUNIZ6o5vMDWlylPchIxGR
-         CJS3CSEzYnVJbPgjvtuFp06RxrIOqKV5I4JjZ+iChuBPJauVjIJsLEchr7Lguz5/I53c
-         it5XrdT6zXc5NjvDI9UAsfHNGsbJnsy2x3pAP+WfS6DwDYOuX32UG5r7d2g0EmN4EM/3
-         xsSA==
-X-Forwarded-Encrypted: i=1; AKwUvBxO0i974uLFjt3KqUWsT0ujyPZ3VrTdQ6m+03lrHx9ZFVZ+QAMqTw5LaFVWdQjWh/AZx36DWk0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/tLM+Tm0HlDKoHk7kjfbtE18FjXN7BAjs1+RsmyBauc3YCtUc8
-	y9xlcqe2Wp+sMQu2DJvJEfdkq4d23WAa942rdjQ6WzyFe6UxuB5ez7ZyJmge9bGMgv6yFN1WHBX
-	MjqIn5xwN6nzNSbz0R/LS7fJnDWvMGOlT4XatvcDV
-X-Gm-Gg: AYBFou0M86rwsrwmgwNy03dsCR5WSvSp+FK31nxZtNDydE8oHlEWXn2IBuUHT3YH2zV
-	IcI9xC0zP5xPdDKrGzTIoEHznCIybnYR3i5xGOuEXiBpZYXHX/y0Od/TycD95beam902+v52382
-	zYqMI+9xYd/3z78hiqT8wOxVKUewhOaeTkpnWJ4CYp2QDZPEMIRrNqfgPpHJLXrnf9D5qrYxY3P
-	jeAeGbkfLRny0KDAMKbOwN+q8rApOcBjAWZvTpVj4Jn6KgC1G31J4QZXy9ydMJ3jT4yZaQitNKp
-	OkKhrxu8J0uow0vGsYJ8lGx1ZLJFkXGF3fNfpoHBttHOoiQG6XVRmM6WXK02xNh7Y7gxiD0LEw8
-	Mzz8GDrBVqLIee1t9vKsxECj6ceF80OibQowzVdsiAKOaxTxSw3Hj5minxuDaYvo8GHOpga0ZG+
-	QOuPvt+PIFLyMDbgo=
-X-Received: by 2002:a05:6a00:a90:b0:89f:521:8089 with SMTP id
- d2e1a72fcca58-8a9bcff6a9dmr11969821b3a.19.1793783689421; Wed, 04 Nov 2026
- 01:14:49 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QF98rpjB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786C51F000C1;
+	Wed,  4 Nov 2026 09:15:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793783735;
+	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QF98rpjBzH7nX1jmz4Zo8ykeu0WPbxz0HGt6XxCXrOQ4V4PB3P/wbn5sluIzZ3bgP
+	 woOpkCVq06Ek6V7bKkHEP2phdvrGGARxXAl1OBE0IhgkRUa/IQ935AFbXxh1YUY5bJ
+	 utfjbIjp7LtybAhtZNGHqFcIoDw2mhpfxaUaUe5IHuBCvHt5tgYAPu/YfrtEAf4jWd
+	 v5zbJS1rE1Hby/io2vM2SNwmccLVR3w7pjdFYCtf7rR4Wu4skeBeZ5GH0Q1ajKmHHR
+	 yetiYqpJqieJOdcKUSYdWCjNW5p22mqd+bHsoVYbOTO4y8Ft2ybe6f5kRc5h/hiSzc
+	 /PiiXfUYZ7Gcw==
+Date: Wed, 4 Nov 2026 10:15:18 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 03/38] netfilter: xt_recent: don't remove the proc
+ entries under a spinlock
+Message-ID: <20261104-entgangen-nettigkeiten-intuitiv-f39521735261@brauner>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-3-59422ed3e465@kernel.org>
+ <auig_zhd3L0HEis3@strlen.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,175 +79,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030030453.31928-1-cenzhang@linux.microsoft.com> <1e517947-48cb-4733-9e51-8a165d3ba534@redhat.com>
-In-Reply-To: <1e517947-48cb-4733-9e51-8a165d3ba534@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 4 Nov 2026 04:14:38 -0500
-X-Gm-Features: AclHuK8QWfUruPb5mmDSb_oYTX82loMdqpI8kSB4xjZlQlMEjnsaHJgwVrRB1uY
-Message-ID: <CAM0EoMn5ODpLK=OhPTy=0Zq1rgT7Gm6JGKnRs=Q=mzp_6x+JDw@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: fix rate estimator use-after-free when
- clearing NOLOCK
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <auig_zhd3L0HEis3@strlen.de>
 
-On Wed, Nov 4, 2026 at 3:10=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wrot=
-e:
->
-> On 10/30/26 04:04, Cen Zhang (Microsoft) wrote:
-> > qdisc_create() creates the rate estimator requested by TCA_RATE before
-> > qdisc_graft() converts a lockless child of a locking parent. The
-> > conversion in qdisc_clear_nolock() frees the per-CPU statistics, but
-> > the estimator keeps its own copy of the cpu_bstats pointer and its
-> > timer keeps reading the freed per-CPU memory on every estimator tick.
-> >
-> > An unprivileged local user can trigger this.
+On Mon, Nov 02, 2026 at 03:41:03PM +0100, Florian Westphal wrote:
+> Yes, but note that this change is already part of a pending nf -> net
+> merge request.
 
-This is a bit of an overstatement (Sashiko is infecting me with its
-pedancity); you should qualify it with "needs CAP_NET_ADMIN in a
-userns" or something like that. In general you should provide for
-conditions on how to reproduce this in the commit (looks like straight
-tc commands).
-
->> The estimator timer can
-> > access freed per-CPU statistics in softirq context and panic the kernel=
-:
-> >
-> >    BUG: unable to handle page fault for address: ff9d8b20ffa47920
-> >    RIP: 0010:gnet_stats_add_basic+0x77/0xc0
-> >    Call Trace:
-> >     <IRQ>
-> >     est_fetch_counters+0x31/0x50
-> >     est_timer+0x52/0x170
-> >     call_timer_fn+0x9f/0x210
-> >     run_timer_softirq+0x6e/0xb0
-> >     </IRQ>
-> >    Kernel panic - not syncing: Fatal exception in interrupt
-> >
-> > Fix by doing the NOLOCK conversion in qdisc_create(), right before
-> > the estimator is created, instead of in qdisc_graft(), so that the
-> > estimator captures the final statistics pointer. Removing the
-> > conversion from qdisc_graft() is safe: a new qdisc is created by
-> > qdisc_create() with the parent it is grafted under, and since
-> > commit bc50835e83f6 ("net: sched: Disallow replacing of child qdisc
-> > from one parent to another") an existing qdisc can only be grafted
-> > again under its original parent. Either way the qdisc was already
-> > converted for that parent at creation.
-> >
-> > Fixes: 8a53e616de29 ("net: sched: when clearing NOLOCK, clear TCQ_F_CPU=
-STATS, too")
-> > Cc: stable@vger.kernel.org
-> > Cc: AutonomousCodeSecurity@microsoft.com
-> > Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
-> > ---
-> >
-> > The bug was found and this fix was developed with the assistance of an
-> > LLM-based code analysis tool.
-> >
-> > Backport note: trees without commit bc50835e83f6 (v6.14) still allow
-> > regrafting an existing child qdisc under a different parent and need
-> > an additional fix for that path, for example cherry-picking that
-> > commit as well.
-> >
-
-Good note - this fix is not safe in older kernels before bc50835e83f6.
-Is this the protocol to signal backporters? My gut feel is they use
-automated tools and would not be reading commit logs to backport?
-
-> >   net/sched/sch_api.c | 14 ++++++++------
-> >   1 file changed, 8 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-> > index f36c41224bcc..d89f3f0a3c5f 100644
-> > --- a/net/sched/sch_api.c
-> > +++ b/net/sched/sch_api.c
-> > @@ -1247,10 +1247,6 @@ static int qdisc_graft(struct net_device *dev, s=
-truct Qdisc *parent,
-> >               unsigned long cl;
-> >               int err;
-> >
-> > -             /* Only support running class lockless if parent is lockl=
-ess */
-> > -             if (new && (new->flags & TCQ_F_NOLOCK) && !(parent->flags=
- & TCQ_F_NOLOCK))
-> > -                     qdisc_clear_nolock(new);
-> > -
-
-Please leave the above lines alone; they seem like a separate
-unnecessary "fix." Follow up with net-next to remove this hunk.
-On current main it is dead code, so it does not help you fix this
-graft issue and for older kernels the backporters wouldnt have to
-worry about the dependency on bc50835e83f6
-
-The rest looks reasonable.
-
-cheers,
-jamal
-
-> >               if (!cops || !cops->graft)
-> >                       return -EOPNOTSUPP;
-> >
-> > @@ -1327,6 +1323,7 @@ static int qdisc_block_indexes_set(struct Qdisc *=
-sch, struct nlattr **tca,
-> >
-> >   static struct Qdisc *qdisc_create(struct net_device *dev,
-> >                                 struct netdev_queue *dev_queue,
-> > +                               struct Qdisc *parent_qdisc,
-> >                                 u32 parent, u32 handle,
-> >                                 struct nlattr **tca, int *errp,
-> >                                 struct netlink_ext_ack *extack)
-> > @@ -1405,6 +1402,11 @@ static struct Qdisc *qdisc_create(struct net_dev=
-ice *dev,
-> >                       goto err_out4;
-> >       }
-> >
-> > +     /* Only support running class lockless if parent is lockless */
-> > +     if ((sch->flags & TCQ_F_NOLOCK) && parent_qdisc &&
-> > +         !(parent_qdisc->flags & TCQ_F_NOLOCK))
-> > +             qdisc_clear_nolock(sch);
-> > +
-> >       if (tca[TCA_RATE]) {
-> >               err =3D -EOPNOTSUPP;
-> >               if (sch->flags & TCQ_F_MQROOT) {
-> > @@ -1817,7 +1819,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb,=
- struct nlmsghdr *n,
-> >   create_n_graft2:
-> >       if (clid =3D=3D TC_H_INGRESS) {
-> >               if (dev_ingress_queue(dev)) {
-> > -                     q =3D qdisc_create(dev, dev_ingress_queue(dev),
-> > +                     q =3D qdisc_create(dev, dev_ingress_queue(dev), N=
-ULL,
-> >                                        tcm->tcm_parent, tcm->tcm_parent=
-,
-> >                                        tca, &err, extack);
-> >               } else {
-> > @@ -1834,7 +1836,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb,=
- struct nlmsghdr *n,
-> >               else
-> >                       dev_queue =3D netdev_get_tx_queue(dev, 0);
-> >
-> > -             q =3D qdisc_create(dev, dev_queue,
-> > +             q =3D qdisc_create(dev, dev_queue, p,
-> >                                tcm->tcm_parent, tcm->tcm_handle,
-> >                                tca, &err, extack);
-> >       }
->
-> Jamal: could you please have a look?
->
-> Side note: I'm not sure if you are aware but we process the pending patch=
-es
-> in this order:
->
-> https://netdev.bots.linux.dev/suie.html?delegate=3Dnetdev
->
-> And you can restrict the list to the tc subsystem selecting the appropria=
-te
-> filter with the funnel icon in the top right.
->
-> /P
->
+Dropped.
