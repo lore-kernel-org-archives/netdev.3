@@ -1,71 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793765568;
-	b=JL4YLokKx7RafAXfKZGPYQdjIIFsq76Is4qsfDultSgZPY9HeA2jDUA1XZYC5Ory8Re9
-	 mqEurRjOnS+al92z32ZHoTV/mgXBW4E3KNWomIS4FEBte0J4dPc7Hn36DPS+IymsdtYzn
-	 VnxXNwXoEPH2voSX6Q6jmV3a5WMu49Yx5htSmq1AURnIgg6Zsoy+bZ4gbDL/2hvujweOY
-	 ALIlv5UJBiyrEi88eT5QTnfr5fvMovafF4Sc+Yj57WINyTnw8rs782NARxtYXXjuIZaF6
-	 nLYEJnAImG7hC99NdXZq/z9eFLlnTmJA/ZYE2uPgBdjNCs82Vdk3Ld9s8bnDy9kj2Ew==
+	t=1793765740;
+	b=rpEG1mVk8lm2LwbmA2QZOaTb1crSCx69+6kv/33RDh2yS728A6zJGRFDfuRDz81q+PGJ
+	 BtdjOfqXBFiYdXiAj6+3YmupaYTm95XClEuTlyIQ8a6R59gfeq8RUZAlh1V+JqyqrPV9l
+	 eERWrW17hSZHEuHnIjpTeJuZ5bj4v8l2iFrnA9yzzP/+EHCGqXfnuAnU8h1Rewbg0Jhuq
+	 wtacD5Yh0QGMShVXD3nGSVlTeU1DxpWLRlWy8K/5y1dt6LNwE18lJr6NgnvSmy5lpybqG
+	 AuVWWgJx21pmno49x+33VuZfS3N7ZyFK/AzWSTlXZu4b4hJShG6QHSPmzK6GM2bWXAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793765568;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=rNQVTx4lhPT7gUYO3AytUq5JqSDXfzRQRvUF5K9FXCY=;
-	b=2/B/804rs/uXBWRzDvKcYygwyBnbHPFKRNNxIvw90DtlHW+52ofaCQebU4REWx2qepEg
-	 YW5uXnddr1DB1LP5W+BRwZmTH6oWEaP6LZcvVrK2han064E1yPNPw1riw3AkjP9l2MZPT
-	 WS/AW9apsK/FT/GGhPxAUHJtdgcjJncuFwTMOVUPzLfEexa2m2FKWJ2kpp4+Xzle/6XCe
-	 O4Tt/gZUDciTeO7xVPe/vhkIjbFSJcQcqLREHjVUHnnfs/56gYrlyIK+wMrkULUcAnUTr
-	 7J0jCpW230hP2n2YaTBRsI6g+Swmy5S0lSTTkzZrF8VF+JEtEUYhikOECjJ1lzMxWYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793765740;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=t33hTerwq+aQ3mBUBeIWL6pRcgQAoxI6zsMD8gzG6mU=;
+	b=36xGL7PgcgzQgV6rH6hUmCDsJ95YJ/a296JbcJ0Gm6vRIWp5fPX4GB+WQrDBCLu4KQbt
+	 F4tQTfdCv89xKgAcOahFpQTfi2mKnulIxM2HvDYdPYOWX+dLyNmEs1QI1Z2oKWOhRUbIj
+	 46laEpdWC6aLGFx/EGZZR6FTd2PCSHwnjoDLsELHy7YyLkDeXqxVJYsmClhYv5eLKNGQD
+	 zgVKTPPZXdrJL9XLucsFcXVGzIcoi1YaKhnIpCuLUci0EBaF/BxO3rTCR19xiDDKN4Lib
+	 avHpqvOD8T1M8FPHeX5SOo47B1cNoINZxRvinRylmwna7XfMDdY2FsyDANms4iz+CAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=j2KqxSqa;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Nm5tWPga;
+	arc=none smtp.remote-ip=91.218.175.199
+Received: from mta0.migadu.com (out-199.mta0.migadu.com [91.218.175.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6A6606A31B;
-	Wed,  4 Nov 2026 04:12:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B6A6606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2650E606A328
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 04:15:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2650E606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=j2KqxSqa
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rNQVTx4lhPT7gUYO3AytUq5JqSDXfzRQRvUF5K9FXCY=; b=j2KqxSqahhxPxqBn2O3ZEJgme5
-	ImruPr9ETsXPi8d5ePjsYJb2m6RBUStdiGJSdtSFxd7HFkI+VOcc+oUZkVWFpl3AwHtWJAln4RcJ6
-	GeDbFfQRtejBBRlQKwEIpeph9JpAzdmKAJne4RpTmXYZCzm2yihURS8yhqAn7HP27Pg4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOSMP-00EEjx-JJ; Wed, 04 Nov 2026 05:12:29 +0100
-Date: Wed, 4 Nov 2026 05:12:29 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, bpf@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] net: stmmac: unwind the XSK pool when the initial wakeup
- fails
-Message-ID: <972f6505-f5ff-470a-bc2e-d82f7ecd0577@lunn.ch>
-References: <20261104025342.1527441-1-vulab@iscas.ac.cn>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Nm5tWPga
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NxfwJu25c702HsG2QS65lReEnsmm0Rh4tGfKZ6I/Ny4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793765736; v=1; x=1794370536;
+ b=Nm5tWPgalX68xFEfNNc38YSABIskZs6IG3VHTQJSocIT9xy+bmmlyDrpey5dO0uaTtE3Dxg2
+ FlByApCrm5HoyBCjsWmgB3rQSOmlqx8bwsHCmfr5IN1jMcByvHN5l+GVTlUDRCh840ayfel0S83
+ 2LguG0x76ctHm9JLCq0RQ8t4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 4202d724f29ea87b;
+	Wed, 04 Nov 2026 04:15:23 +0000
+X-Mizu-Trace-ID: 4202d724f29ea87b
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ea399c85-c775-47a7-b42a-80a645ae16b9@linux.dev>
+Date: Wed, 4 Nov 2026 12:15:08 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,16 +58,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104025342.1527441-1-vulab@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/7] ipv6: treat a negative optlen as 4 in
+ do_ipv6_getsockopt()
+To: Breno Leitao <leitao@debian.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>,
+ Eric Dumazet <edumazet@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ david.laight.linux@gmail.com, kernel-team@meta.com
+References: <20261103-sockopt_expand_out_v2-v4-0-2d36da923578@debian.org>
+ <20261103-sockopt_expand_out_v2-v4-1-2d36da923578@debian.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261103-sockopt_expand_out_v2-v4-1-2d36da923578@debian.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> +static int stmmac_xdp_disable_pool(struct stmmac_priv *priv, u16 queue);
 
-Never add forward declarations in the kernel, move the code needed
-before it is called.
+On 11/3/26 7:01 PM, Breno Leitao wrote:
+> do_ipv6_getsockopt() reads optlen into an int and never checks its
+> sign. Most of what consumes len compares it as unsigned, so a negative
+> optlen reads as a huge buffer, and the reply depends on the option.
+>
+> The int options clamp it to their own size:
+>
+> 	len = min_t(unsigned int, sizeof(int), len);
+>
+> so getsockopt(fd, SOL_IPV6, IPV6_TCLASS, buf, &len) with len set to -1
+> answers 4 bytes and reports 4, rather than failing.
+>
+> The other options see a huge buffer. The sticky options reply with
+> their whole header, IPV6_2292PKTOPTIONS writes every pending control
+> message without a limit, and IPV6_PATHMTU and IPV6_FLOWLABEL_MGR pass
+> their length check.
+>
+> do_ip_getsockopt() rejects a negative optlen, but doing that here would
+> turn a call that works today into an error for a caller that passes an
+> uninitialized length. Answer it as 4, as the int options do, for every
+> option this function handles itself.
+>
+> That leaves the int options as they are. The sticky headers are cut to
+> 4 bytes, IPV6_2292PKTOPTIONS gets a 4 byte control buffer, and
+> IPV6_PATHMTU and IPV6_FLOWLABEL_MGR fail with -EINVAL, as they do for
+> any other undersized buffer.
+>
+> MRT6_* is dispatched earlier and keeps rejecting a negative optlen, and
+> the netfilter fallback still sees the caller's value.
+>
+> This changes what callers that pass a negative length see. It is a
+> behaviour change, not a fix, so there is no Fixes: tag.
+>
+> The conversion of this function to sockopt_t builds its buffers from
+> optlen, which the standard helpers reject when negative, so the answer
+> has to be settled before that.
+>
+> Suggested-by: David Laight <david.laight.linux@gmail.com>
+> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> Acked-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-    Andrew
 
----
-pw-bot: cr
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+
+
+> ---
+>  net/ipv6/ipv6_sockglue.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index 4b3536571c9804..700133e2fd11c2 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -1002,6 +1002,11 @@ int do_ipv6_getsockopt(struct sock *sk, int level, int optname,
+>  
+>  	if (copy_from_sockptr(&len, optlen, sizeof(int)))
+>  		return -EFAULT;
+> +	/* Historic bug compatibility: take a negative optlen as 4, as the
+> +	 * int options always did.
+> +	 */
+> +	if (len < 0)
+> +		len = 4;
+>  	switch (optname) {
+>  	case MCAST_MSFILTER:
+>  		if (in_compat_syscall())
+>
