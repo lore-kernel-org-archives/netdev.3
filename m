@@ -1,102 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793769914;
-	b=qjQqUM7HA2+RjIK50UHRTXpQCzRWFZb6nZpqJAdvK5MkA8u4qYJSpaAB9WTiLpKe3ksH
-	 b5+O6zVGMOy2M++02s5rr48oZZ87ZQlIc6BRQzpNsmImirJ4eYlXT0mhKuRZcqeR/k4W/
-	 +kq9KFc26gQGnEoBntzVDO4HSOYBzsoLJmyhWBFSW9i9XdFXqvgP860VtSO8FJJcyLm13
-	 KMYpq2DVvc0CCtAeDjvXWmLhw162YHYLY/6lxTILvyq3h7nghhG5JX+oMGTIznx3j74nK
-	 VNQu5X2qV2hT6ndiz+sqZtbiKLLBZf0TRYoZHgG4ybR7HhS30H3Bb0DLuoOhnhCVmPg==
+	t=1793770146;
+	b=puzY6Y4BRjkAY98mEMkh3pXaLV7CXFEeXF+6bt9DTD3h2nNis/kBL0VYJcJ620qgKcj/
+	 QkALuB6jOzJE/27Tb6YcxUnrBK1LcgMaiAJ+tyzXIxfLEuzicI2p1vSQAm87RkXPqY1+F
+	 s8pHioxDUClFfN3XRX0BChrFh6SS491YM9tSFSPm7YMm0d+6w4nWZoeT1eFEivCObqVhe
+	 gwqaJt3JUU7Y0lOKoABMHwYPIH7FQYfaJTNgv6XU13SmAkmyn1uZDs2yahkILJF5ESwSA
+	 lxddpOzw2MqBHGlE+dGi17bh8yNpBj3m4DsSgT1OqsAyPimmD13kICqfKbIgCoP9rdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793769914;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793770146;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=LOG7AOmS6IRRfgPKSJTi33/lfhAOaV7O3VJZu3BP5NY=;
-	b=R1X095QBzvL5qM1z7m2AHv13EFJU43EHwYJJU4rCB6uC0gaS7CJF398QjdFit88nJ+AJ
-	 oc073h6Qey+KTJn6EAwS823tcgSy5goRbF+sJSLLR9XAq1vGu9sE/ayZnKmI3n5D3Lm88
-	 AUFsdrKi7uJDRhTIJtt7iFziI+mJdyqZliWT5TtOm12/i9a1UFxKNEbfDJ2IxQ+IUrJ02
-	 YSnvM/m6N4PZli2QO5OrsqXlSTP5rpRmvwVT8dppt5n9mV14ss0dPla0vM1IYShW8xaWl
-	 BdaSlUEz7G+osmGi8kwDC60NzS4FgxmTetgyjoPZjl9Wec1ggR4hfGMIgxGU/vcEXSw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ZCC50QbEHF1bMAUFkDnjNV2OWw2AywfGw5wx0TGBlWE=;
+	b=uFaVNwx4xX2UZ01WYkhbpqWOnF16ACPhHCX/jmwvt7pNJHg21NHrbyNro9tOhP0inBaj
+	 Leh1mQRayInVQ2KbmLKALWa7FQZOqX4ZNCIgy6yPA18vRdYLHWKiOdZ2KAF5BVJ/CphN6
+	 a9udYZkGW2MJTpSrTrL8UCkS0Msl5G8VxhJfLKCG/syVcnYTrfxVIkOahP+BeulTTI5hb
+	 k7JhJuhYRsN7JVlI7NoLV9+lu7Oo2C4UAkC+BYsHhF5lEX1WfK3HLauqRvx092+oZMw18
+	 VmHG/b2rYfrFiuTlN4DDTIfTZl3bcQic9V8fzBd4sJwoIf8MqylPYnSqE/vDawQnjaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jclark.com;
-	spf=pass smtp.mailfrom=jclark.com;
-	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nitJ5qF+;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yJL7y96y;
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F53B606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 05:25:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F53B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C28606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 05:29:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2C28606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nitJ5qF+
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3514b90bb89so591506eec.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 21:25:13 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yJL7y96y
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36a18fc7a38so670975eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 21:29:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1793769912; x=1794374712; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793770145; x=1794374945; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LOG7AOmS6IRRfgPKSJTi33/lfhAOaV7O3VJZu3BP5NY=;
-        b=nitJ5qF+g9pmuZqnfV6g0OB2usPhDHrYEncfSFTxZEDjIH1OwBIA3zox7IJFPp06xQ
-         K40SE3iJq/v5lK77yc3wmc/H2K16h3UBaGoBS/BQR8tzXfNIu6//GCQHf1EnYCbZ+ywt
-         miFb3XK1cclhKOn9uTeLPEpbQZQVmJ+Fgf10SMwBwim3ydvAujDiNXmmRufW9mEm5XZW
-         SloOfOTgz8ZM3sfAxIDFP8cxjHM8mWCme4zti/cz7dAjWhAsxuYVrh9GFTU67ZFy0FHI
-         ef/0aXDV7erBBR5vnomigRcB9xehqpQUKofRsctxlcIdPI88tpOPOcWYgtA96F3U/iER
-         ivFg==
+        bh=ZCC50QbEHF1bMAUFkDnjNV2OWw2AywfGw5wx0TGBlWE=;
+        b=yJL7y96yzAOUDaONmz+iDLaVSzO05E803AMg9Ju8sqRRh9EVrwZGofisf2Ez9zHhZV
+         QWcTHbCQKlC/Hycxfan27fc5tTFL30ogcHXq15AAwaQNFZvnaf7q+isUzlcTuuGoKA+f
+         uuWwYR4K58KvQCV8rgi49xlZa8GGEeDpRbBCtkkDswLDkkqVnwT90aaQuyTLmo+vVSNt
+         6IN3aZwj845q6JK7wGLofQSF+G86luV09ZxzuLXHG7JzyPnB7Dnnic1iCxXKrUkpwja3
+         HeqXAdzQe0zKLRGP3vdKjL4CO4Zr+CmTgg5a6qJOWy2fYZJniKwAZjH2YdsVFQjJ4Xvg
+         hDtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793769912; x=1794374712;
+        d=1e100.net; s=20260707; t=1793770145; x=1794374945;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LOG7AOmS6IRRfgPKSJTi33/lfhAOaV7O3VJZu3BP5NY=;
-        b=E8myZ3FvPxkGdomY11KNCVyZw3ZYSZgIvhdDXe98aS9biZ2dv+YesNU4H2s/GOFIZ2
-         buHj8tf5mHhwaDhmL+iIeSBaPbsCouVKZPdDT01fARt//yB0I9FA0EjHOnxTTEVI+qa6
-         VOHHy4XGAr1qQ7NRwAHWbvcsxWN2xBHu7Ehr0cFsHbWVkgjU2yyni33RbZg5lFnSJS1q
-         uMh9JCxuHrnioNN2tv/eJ0saXAuL1BYNyEkhUZPRrvUUpGDfLtEuYDWPHMHK9s7C5kqn
-         nTgrsfVe2IaA9F3vWe5gJtc+pGX/yD/ltNTGWCrKXcCcmvRY5/Ga7SnF90VDmGmTfEdj
-         Bjlw==
-X-Forwarded-Encrypted: i=1; AKwUvBw3zjSsSTCkrM/632CuERgua8JWrCdQQbCZ2zBv7GLnoyLw33j8otus0EE/YO6VWM8Pw7U6d7E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8XhGQ2L6bb7VfE3itUUktd8Twgw8XACyR6APukvmEuS6OPkWFs
-	4gIiFw4JfZfUPbGZyOXeRKEvGhBBOETvg84dE3RrJTnbF8JJM1mNvVDTdl3MMeGFbw==
-X-Gm-Gg: AYBFou0yof0tQjgeRFibMNS0GloPlHeo3T9fNX4axKqbCClOr7FwkMAJa6cJQaiOVdv
-	7CCvJGw4KwNZHeAyXBOEZsUqC9GJFxx5dgQUX2ZhPghHWAknYpHVwfOD5oiGk38ZMfQ2U7oimRh
-	0VVDOfmBtspb9mHwEB9Jd1KR/maLpAhpzUWMmC+OxAaKqhvmA6PeIRHgeZXc5OzGRrL7T1jMTb0
-	JW9At7TXIEPMhePqxEQxIqpEkaDfuGPZWMj/MehWYXXDn9hNw3IF/EklD0+bJtoWA/B35If2Xrh
-	5QsX+aKyiH/VOwPV+D4NKoOeuLFcsNfiQOJCzQBDorcBFXNUB68EMz70qoYh6+1MR2SdTGQzxKc
-	mwxVoHAsyj3Poi2VjJ2Q0jPlxqBK8fGONhuuSdSzSlGMl2HhqOt8AKPcOpB/x9KtM5wEKsvV5aG
-	jqLyJEtZ+MEaN0jZtmtyNAk/8dSMkhXixgMDX0FVtQpRl0oBRg1gq0ne8M5zjlbuJtMZjt1Q4Jv
-	2rAXuh3oHJp+fiaMqPCl3g3zdfATIzWZDIMaxCnUY2oS5b51SnHW1EDUZOLENFg3lOy3kQawCpo
-	fNDy/AxqXXVK6fKU4XWTvEjjeA3jDifTfL1eP8h/GKoLF5isrp8mgywkg61u8h0F7V6ydBDqhVD
-	/eyXrVl7yPIUmrO3wSg==
-X-Received: by 2002:a05:7301:4242:b0:358:dfed:d0fe with SMTP id 5a478bee46e88-36a42219d4fmr21775375eec.5.1793769912239;
-        Tue, 03 Nov 2026 21:25:12 -0800 (PST)
-Received: from cantal.lan ([58.136.77.237])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39c5f0csm3405176eec.29.2026.11.03.21.25.06
+        bh=ZCC50QbEHF1bMAUFkDnjNV2OWw2AywfGw5wx0TGBlWE=;
+        b=DBu6tzeyte7jkG05/qdhbsWo82nrOi4T6Wbt0XI97jjdfH5Yp9h6NjK0tytqHUiSKc
+         yXktj8nDWiSiOVk7r9L5Xl19XCfOh9UZvTToF4LB2q6CbovFDRe+p1orAWDt/kbNcgnw
+         RUCGowQtkAWhNkbFv6BpyrGpKJup3T8Av/T7Ivo+EKJm1Ww4S5m0Kg34uI1aRnv55NFa
+         v4clS60PBQl33P3CL4Rw2Zfj6EvTz7a+EMb8LYpKnj0GHosV8RbWUw0xU1XjP2VPjmuh
+         eUOEZhSDTdlPpN9gtratU+ryOj8870GkyscWdpx9V6tMg2ocr7mOaoaxhXEXRxyMWKwo
+         u/LA==
+X-Gm-Message-State: APuU4Z+C1DlohrluVsoMXOJ0Ar7RsXu47bGGBPzproPPhJWlf5UwOcbb
+	EEIKamx7W6RbgLgCrWzFNMyLw7Dhu2Y/41F2QLkFWj4n+PN2X1apuunHv0Dyag==
+X-Gm-Gg: AYBFou0Xnk7lEVH+DbVFTz7yydMzdRPPrXpyBoKH4ew2RWxc9yrWNnDTKVvj2doYeXR
+	f6z631SO7ND4rRwxanIiT2ww/OFSKEEMu9MRh8e92d3izdtdFGJrjKn001xEvdbE8OjheO0De2r
+	G+oOArYvMWxRhHps3Ac45hqj7+FkAPR97b+a0DhTu7NhVRHxz3SiwcpRES54MP9F1kwY4Tz9lwF
+	JrtGCcAZ+oyrSa+55hSdZsk5WReof/DjQnct2yG68fkoKXATeY7A14knrGEfYaCMFcfrvKfMtoV
+	SEvon++DMd+jvl/bt6IZmBxL1OHXVZ27hNOxEFuZXcKrM8+MinjB3QV+McZoUKI9iqoUSmWX3N0
+	UjQ01eknEvm5K3CBFYgNcUH6fWcu2aaitF0HpQdE+KAOIabw5FwHdnVCl64QjiLpzgU4ZzjG2s1
+	rmJ/H+lgwSKR6e0UJgguNzO0V4m7SQqxuL+M4F2AbOyHXNrLX9QPsuAfPQ+CdE8Meoe7PoYricn
+	qfErZzWulTSLOEVDvKZzQttzrF4B4GYDMMI02PrARoxKRhEPNNWsihZORw0D7Saot1+ejTERui5
+	sjPdEpUtpb/LcQ83Ioal/a+nIi5+V8NbZ5Wkpjx5fBDx9M6MoiCNSiKcgI7Gd1omAs03bC+T7uD
+	78G4Yae/UqG1ImrOU8dRGz+L91MAbVOmaR8mGbpq1spQy+g==
+X-Received: by 2002:a05:693c:8815:20b0:356:4b46:9393 with SMTP id 5a478bee46e88-36a423e547fmr23440390eec.24.1793770144230;
+        Tue, 03 Nov 2026 21:29:04 -0800 (PST)
+Received: from l ([2603:8002:ea00:6800:c05d:b1de:ff25:6930])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca38a6d3dsm4336409eec.7.2026.11.03.21.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 21:25:10 -0800 (PST)
-From: James Clark <jjc@jclark.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: stmmac: ptp: fix support for PTP_EXTTS_REQUEST2 ioctl
-Date: Wed,  4 Nov 2026 12:25:04 +0700
-Message-ID: <20261104052504.1886335-1-jjc@jclark.com>
+        Tue, 03 Nov 2026 21:29:03 -0800 (PST)
+From: Dave Seddon <dave.seddon.ca@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	David Ahern <dsahern@kernel.org>
+Subject: [PATCH iproute2] libnetlink: zero padding in rta_addattr_l()
+Date: Tue,  3 Nov 2026 21:29:01 -0800
+Message-ID: <20261104052901.2735000-1-dave.seddon.ca@gmail.com>
 X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -109,56 +96,49 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to
-ptp_clock_info") modified the PTP core to validate the supported flags
-of external timestamp requests, rather than relying on each driver to
-check them.
+rta_addattr_l() copies alen bytes but advances the parent by
+RTA_ALIGN(len), so the 1-3 padding bytes are never written. Nests built
+in stack buffers (lwtunnel encap, RTA_MULTIPATH, RTA_METRICS) then send
+those bytes to the kernel. For example, in
 
-stmmac_enable() and dwmac1000_ptp_enable() ignore the flags, and
-neither stmmac_ptp_clock_ops nor dwmac1000_ptp_clock_ops was given any
-.supported_extts_flags. Since PTP_EXTTS_REQUEST2 always implies
-PTP_STRICT_FLAGS, the core now rejects every PTP_EXTTS_REQUEST2 for
-this driver with -EOPNOTSUPP, where before that commit the same
-requests succeeded. Only the PTP_EXTTS_REQUEST ioctl still works.
+  ip nexthop add id 53 encap mpls 101 ttl 10 via 192.0.2.1 dev d0
 
-Tests on an NXP i.MX 8M Plus (FRDM-IMX8MPLUS, GMAC 5.10a) show that the
-auxiliary snapshot inputs timestamp just the rising edge. The reference
-manuals for the STM32MP13 (GMAC 4.20a) and the Cyclone V HPS (GMAC
-3.70a, which uses dwmac1000_ptp_clock_ops) say the same.
+the three bytes after MPLS_IPTUNNEL_TTL are stack contents:
 
-Encode this in .supported_extts_flags. A PTP_EXTTS_REQUEST2 for the
-rising edge then succeeds, and one for the falling edge or for both
-edges fails with -EOPNOTSUPP.
+  05 00 02 00  0a 7f 00 00    MPLS_IPTUNNEL_TTL, ttl 10, stack bytes
+  05 00 02 00  0a 00 00 00    with this patch
 
-Fixes: 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to ptp_clock_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Clark <jjc@jclark.com>
+and valgrind reports "sendmsg(msg.msg_iov[0]) points to uninitialised
+byte(s)".
+
+The kernel skips padding when parsing, so nothing fails, but its own
+encoder zeroes it (__nla_reserve()). Do the same here.
+
+Fixes: 6ef87f9cce21 ("ip: route: add congestion control metric")
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
 ---
-I used an LLM coding assistant to help prepare this patch.
+addattr_l() has the same gap, but all its callers zero their request,
+so it is left alone.
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 2 ++
- 1 file changed, 2 insertions(+)
+Kernel side: nla_next() advances by NLA_ALIGN(nla_len), so padding is
+never read; __nla_reserve() memsets it to zero.
+---
+ lib/libnetlink.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index a37405534beb..31a66e855d6b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -277,6 +277,7 @@ const struct ptp_clock_info stmmac_ptp_clock_ops = {
- 	.n_per_out = 0, /* will be overwritten in stmmac_ptp_register */
- 	.n_pins = 0,
- 	.pps = 0,
-+	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
- 	.adjfine = stmmac_adjust_freq,
- 	.adjtime = stmmac_adjust_time,
- 	.gettimex64 = stmmac_get_timex,
-@@ -294,6 +295,7 @@ const struct ptp_clock_info dwmac1000_ptp_clock_ops = {
- 	.n_per_out = 0,
- 	.n_pins = 0,
- 	.pps = 0,
-+	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
- 	.adjfine = stmmac_adjust_freq,
- 	.adjtime = stmmac_adjust_time,
- 	.gettimex64 = stmmac_get_timex,
+diff --git a/lib/libnetlink.c b/lib/libnetlink.c
+index edf3a8ba..c4a8e694 100644
+--- a/lib/libnetlink.c
++++ b/lib/libnetlink.c
+@@ -1502,6 +1502,7 @@ int rta_addattr_l(struct rtattr *rta, int maxlen, int type,
+ 	subrta->rta_len = len;
+ 	if (alen)
+ 		memcpy(RTA_DATA(subrta), data, alen);
++	memset((void *)subrta + len, 0, RTA_ALIGN(len) - len);
+ 	rta->rta_len = NLMSG_ALIGN(rta->rta_len) + RTA_ALIGN(len);
+ 	return 0;
+ }
 -- 
 2.56.0
 
