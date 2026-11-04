@@ -1,55 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793804961;
-	b=5bycbt4CfRAifutS+v0Lij9DNiBv9BSwZAu9RVyL9NpNivnNcyc9SpPL6FDYQr7v3e1X
-	 5BcZdgE+oJ8AeJ0z+na3djnRQ9OrpGjSZpPvHBUFqM/YO5AQ1aI4Z7XfL8qTEz71co+Cp
-	 DpQiYC09LMpFZhQhUEflGjxs0VqnPRoeMnxSUTzn3L86B3lwcjoEFR3kBVUfrVe994DOD
-	 FB9a36P+Xd3JGPQ/bt9ZKz5uL+ZTuVmfN9Ajslo0wk02ZfhC2ie9aVLxVThS6aaxEvufN
-	 cjqOfxi4Qc8gXMJfR781t/j6wlH7a9lkllIDv5xWLCUW1QMDNADyyOPfD/gmMj4GKrw==
+	t=1793804968;
+	b=yPh57KOuqMBS2g2pULQ4lpufN5Sl/eltLgk/s/Hcpe77FoQc15oFNRqywnjqrkrFNaKX
+	 3XnIifUW+8r32Wz+2WM2Ymit/DGpYgL3SOSUhGWSx5W6KVuktsiD7aCUAQLwZCX01rnlO
+	 Kge82kdPUhC6M7KvDBWDAPYrIJYpHHd8Qu4ah4l4Zm4wEEOTBJhqzjwi6czXDcWuRxuNK
+	 jrYpieqXyM7sWHmLaIBdmm2RDvTgcRrazNLEiSCGGigmu7TO1NxibfzBEVlEXwozKVgZK
+	 rJ8oeakuPjaB511M6kV2gd/zrS61MZEYXhmGkCTpiZX6Vh46d4Zu0E69FMdr4u6Y+Cg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793804961;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=PZ9W5jMyXKX3yUIRHeeF4bKkSid+UAfYqLNNsUE71VU=;
-	b=p1C3xUudvsfme4HFLSFRSpXk0FcFxoCg3bVqQrpREXfF+45vHB6c8/79QOSBpzL8+YoT
-	 KhLWmVZMJ3GL51K1/7bSX04MhHwIfKa9wTJgQSsMvt4hHb1oTijHoNvGftf21f7Cg8lju
-	 x2rRESRAsIMcGQSXaz/eWekd+wPG6OYtL5EnE+hMUuRmii+vTaS1CeYi+I3dwL1QZx8M0
-	 0E/qow72VIBqo9VWrV47Y6TwUsaWIGZyWFuQ/IX2OPoAnoNlsrLvM7nzLuhCUJ8AT8LA+
-	 T9EPO0uDaOGE2he+Nohj8NFX9jhbXT/5kqxkv6lSh0wZsscJ1VxGKmWBemVe6bocVdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793804968;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 X-Mailer:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=pYaBYvyHGfqovA0PmSh49RnZhLfxkHCuFby1QxWDzbg=;
+	b=J25fAuCulyXTm/CWsTerLkqJ7Q/fUms3wDnMnO1ejWAglysvm9sAj3DKvGG7FwAwUX+V
+	 x6I4r9br4ji/QpDiAj5d1ER2yRg1r0T37Fbg2XXYA8UKwAb7SVXdTmNX05tFTVHr0Zk5G
+	 qyi3GKgh0uh28az+qBAMENCNVWSua02xKFZO0gmv1DymWasO6b4Nf727p69eKPXAb+XAw
+	 AWJGKONLookoJNC7R2ZbUQdGnx0Pjy8thZQs2bST/51IXOckgQbQb9F7gTpqcpQr7wSZf
+	 W9LKk5H/0aWRVPMWfW9M1pDPT8wsVFKfhoncyNhoOqGCCSdkYS38tSik/phlkRA0mnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jZJ9Vj+E;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33784606A32D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:09:21 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Eoph5MmI;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D4B606A330;
+	Wed,  4 Nov 2026 15:09:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57D4B606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jZJ9Vj+E
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102B41F00A1D
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793804961;
-	bh=PZ9W5jMyXKX3yUIRHeeF4bKkSid+UAfYqLNNsUE71VU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jZJ9Vj+EUsOKcs5AaAMaejgBs1wmEyEZhvVFxEM2EXkz/sOghQPbZX1fgLOpKb+wv
-	 cw2W4vj/g2HmZRwZrnoyy/YZmEeJ8pLFNfXJ9763YjnorHl3/smo8LkyoX5gSNvg5p
-	 LwmJjNaFHtDUFcus+sw/NWLAazQ0TQUywmfZcJHSUYlrSBtgBDETxjAuZZoc3PbXTG
-	 6FnY3d4qbcUjXNRQTRLh+DPWoJcpf4H5Q0FAhxNBsa+3nmJq2O4qrF5a3HmQXcr75l
-	 sb4OsmlZeQmrKEhbaiYl1bkg78K2vnXSkLNpVr/PaB7mgxzLSX/ZohBORDEn7XjO2x
-	 SU5yUk+vbLEHA==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-4a75a5fa32dso244154fac.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 07:09:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBySwEDX71FToCW/zX2LN5LI9SoGIbwrUliFcoGm01YSUZvppXVingHWuPodS519Jf/KJ+9ooEs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+AVNP4bTCTBYct5ZDdSZeNfP5HiH2pCLEu2rXfG1Vg1dF5eUt1
-	9vIatRxYXPj4V3+yjGyxvr3mXWoCbTmkIW+itYGQQQeskT6PJIZ8Bh42TT/a/hSJjj1h3f4dcTU
-	MdI8k1aSdv/Qv4rcZrFoY8gmz8WdKbkU=
-X-Received: by 2002:a05:6870:c0d0:b0:449:bccf:bb6e with SMTP id
- 586e51a60fabf-4a9072eed47mr9411537fac.7.1793804960254; Wed, 04 Nov 2026
- 07:09:20 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Eoph5MmI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Eoph5MmIPb0ytWXb28Qha0xneV1DCdjoeQyjfxrtu/kLsQfit7nTuPtfPSt6RToq6z9kFDIuCwIMk
+	 CRlsXd1GyEVEUfxCUYvMNpGv05RZuqVz2NoE/Sku81Ly8H7Nrpu6vFvRRxGJKVmXAKBWy+xQgK4VGO
+	 ESGYG48D8O3F0xYU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aeb4a90177-6a51c;
+	Wed, 04 Nov 2026 23:09:11 +0800 (CST)
+X-RM-TRANSID:2ee36aeb4a90177-6a51c
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.23.104.16])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36aeb4a95cdd-21ec0;
+	Wed, 04 Nov 2026 23:09:11 +0800 (CST)
+X-RM-TRANSID:2ee36aeb4a95cdd-21ec0
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kuniyu@google.com,
+	xeb@mail.ru,
+	yana06070@163.com
+Subject: Re: [PATCH net] ip6_gre: fix changelink conflict checks for L2 tunnels
+Date: Wed,  4 Nov 2026 23:08:59 +0800
+Message-ID: <20261104150330.70978-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179353522212.3131.3721818848581323546@kernel.org>
+References: <20261028115710.27806-1-yanxia@cmss.chinamobile.com> <179353522212.3131.3721818848581323546@kernel.org>
+X-Mailer: git-send-email 2.43.0
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,161 +82,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103105752.49542-2-edumazet@kernel.org> <179380083642.488856.12336059973220391773@kernel.org>
-In-Reply-To: <179380083642.488856.12336059973220391773@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 4 Nov 2026 16:09:08 +0100
-X-Gmail-Original-Message-ID: <CAL4WiipYthA7wwfuk4xU0OQaW5No11XXRG5HwFxNeMfMnA8ucQ@mail.gmail.com>
-X-Gm-Features: AclHuK98ebxXGkgNQALWUk96fG91psaFgnvdDfUzdKl-qYDRdANoT3i1s2uQNko
-Message-ID: <CAL4WiipYthA7wwfuk4xU0OQaW5No11XXRG5HwFxNeMfMnA8ucQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/2] net: gro: do not undo remote checksum offload
- on merged packets
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, willemb@google.com, steffen.klassert@secunet.com, 
-	tom@herbertland.com, cenzhang@linux.microsoft.com, 
-	AutonomousCodeSecurity@microsoft.com, stable@vger.kernel.org, 
-	tsgatesv@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Le mer. 4 nov. 2026 =C3=A0 15:00, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] For VXLAN, the new fraglist branch in skb_gro_remcsum_cleanup()
->   (include/net/gro.h) breaks inner checksums when the VXLAN packet is=E2=
-=80=A6
->
-> --
->
-> net: gro: do not undo remote checksum offload on merged packets
->
-> This patch changes skb_gro_remcsum_cleanup() so it no longer undoes the
-> remote checksum adjustment on packets that GRO merged. Fraglist members
-> are the exception: their original inner checksum is restored in the
-> headers pulled by skb_gro_receive_list(). The goal is to avoid stray
-> writes into payload, or into a freed frag0 page.
->
-> > diff --git a/include/net/gro.h b/include/net/gro.h
-> > index 2300b6da05b27..13a8ef217a1d7 100644
-> > --- a/include/net/gro.h
-> > +++ b/include/net/gro.h
-> > @@ -354,6 +354,23 @@ static inline void skb_gro_remcsum_cleanup(struct =
-sk_buff *skb,
-> >       if (!grc->delta)
-> >               return;
-> >
-> > +     if (NAPI_GRO_CB(skb)->same_flow) {
-> > +             /* skb_segment_list() keeps the inner headers of fraglist
-> > +              * members: restore their checksum. skb_gro_receive_list(=
-)
-> > +              * pulled these headers, then moved skb->data past them.
-> > +              * A valid remote checksum offset points to the inner
-> > +              * transport header, which is part of these headers.
-> > +              * Headers of other merged skbs are not used anymore.
-> > +              */
-> > +             if (NAPI_GRO_CB(skb)->is_flist &&
-> > +                 grc->offset + sizeof(u16) <=3D skb_gro_offset(skb))
-> > +                     remcsum_unadjust((__sum16 *)(skb->data -
-> > +                                                  skb_gro_offset(skb) =
-+
-> > +                                                  grc->offset),
-> > +                                      grc->delta);
->
-> [Severity: High]
-> Restoring the sender's checksum on fraglist members is correct when the
-> outer VXLAN packet is forwarded unchanged. Is it also correct when the
-> packet is decapsulated locally by VXLAN?
->
-> The VXLAN socket accepts fraglist GSO packets:
->
-> drivers/net/vxlan/vxlan_core.c:vxlan_create_sock() {
->     ...
->         udp_allow_gso(sock->sk);
->         return sock->sk;
-> }
->
-> Because of this, udp_unexpected_gso() returns false for the
-> UDP_TUNNEL|FRAGLIST|TCPV4 aggregate. udp_queue_rcv_skb() then passes the
-> whole aggregate to vxlan_rcv() without segmenting it.
->
-> The decap side then adjusts the checksum only once, through a pointer
-> into the head skb's linear data:
->
-> drivers/net/vxlan/vxlan_core.c:vxlan_remcsum() {
->     ...
->         skb_remcsum_process(skb, (void *)(vxlan_hdr(skb) + 1), start, off=
-set,
->                             !!(vxflags & VXLAN_F_REMCSUM_NOPARTIAL));
->     ...
-> }
->
-> include/linux/skbuff.h:skb_remcsum_process() {
->     ...
->         delta =3D remcsum_adjust(ptr, skb->csum, start, offset);
->     ...
-> }
->
-> Nothing walks skb_shinfo(skb)->frag_list. So after this patch, each
-> fraglist member keeps the restored sender checksum, which is not a valid
-> final checksum under RCO.
->
-> iptunnel_pull_offloads() removes only the encap GSO bits, which leaves
-> SKB_GSO_FRAGLIST|SKB_GSO_TCPV4. Suppose the decapsulated inner packet is
-> then bridged or routed out a device without FRAGLIST support. In that
-> case skb_segment_list() reuses each member's own inner TCP/UDP header.
-> __tcpv4_gso_segment_list_csum() also leaves the checksum alone when the
-> addresses and ports match:
->
-> net/ipv4/tcp_offload.c:__tcpv4_gso_segment_list_csum() {
->     ...
->         if (!(*(const u32 *)&th->source ^ *(const u32 *)&th2->source) &&
->             iph->daddr =3D=3D iph2->daddr && iph->saddr =3D=3D iph2->sadd=
-r)
->                 return segs;
->     ...
-> }
->
-> Would every segment except the head then leave with an invalid inner L4
-> checksum? This path needs:
->
-> - a remote sender setting VXLAN_HF_RCO
-> - REMCSUM_RX and REMCSUM_NOPARTIAL on the VXLAN device
-> - rx-gro-list on the lower device
-> - no local socket for the inner flow, so is_flist gets set
->
-> Before this patch, with frag0-based drivers, the member's linear header
-> kept the adjusted checksum, which is valid for this path. The stray write
-> went to the stale frag0 page instead. The commit message does not mention
-> the local decap case.
->
-> GUE does not seem to be affected. FOU/GUE sockets do not call
-> udp_allow_gso(), so the aggregate is segmented before gue_remcsum() runs
-> on each segment. The follow-up patch "net: gro: invalidate frag0 after a
-> pull" does not change this logic either.
->
-> Could fraglist GRO be refused or flushed once a NOPARTIAL remote
-> checksum adjustment has been made? Alternatively, could the VXLAN decap
-> path adjust the frag_list members too?
+Hi,
 
-Yes, the checksum of fraglist members can not be right both for
-forwarded packets and for packets decapsulated locally.
+The collect_md case is valid. I reproduced it with v1 under UML for all
+four ip6gretap/ip6erspan combinations. Without the metadata tunnel, the
+update succeeds; with it, v1 returns EEXIST. The revised lookup skips
+collect_md entries and keeps walking the bucket, so a real ordinary
+duplicate behind a metadata entry is still rejected.
 
-In v4, skb_gro_receive_list() refuses skbs with skb->remcsum_offload
-set, so fraglist members never carry an adjusted checksum, and
-skb_gro_remcsum_cleanup() simply returns for merged skbs.
+The revised patch passes those cases and the existing namespace tests.
+I am sending v2 to net-next with the Fixes and stable tags removed, as
+requested by Ido Schimmel.
+
+The encapsulation setup runs before the lookup in the existing code.
+That rollback issue needs a separate change.
+
+Thanks,
+Xia
 
 pw-bot: cr
+
+
