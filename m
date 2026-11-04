@@ -1,86 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793816480;
-	b=N7JKViVa2fCuefg1AjZrY7U2pcSbSnhLe8XD56p9Pgx04i6DWU1ouTIlPLK9x4L+bJAO
-	 NRxV/bb2XstJMSbGQlJ05TPQXLloA9ZiVqSFLMoOlQDv1zBgqEufKincA08VDtNbBu2ga
-	 CFKregJ3kXSX4AxjxzKSW8nFlSuF22xYO6Fuf6RdvQFdmo1XIVZqf88WvhVjSqxNLqpv3
-	 pwNAOlZICcFeqkkXFi83QRCJiu2CHN5Bn0aoHHt7GpM6fRenjCzEVozxn9DRxOqmXgOND
-	 DJYcz5gQO72I8laV5cd3fc/Upq2+GbPsdW3GTw7vL0yM2mjeqJYSbYg1sKWjsSf0g4g==
+	t=1793816486;
+	b=uCEZzGPlQ1PWLo8X/tx4y9/LyQi8FdXKEQCCcXrN5j4WVcxw0Cp7ejbvOjhl4Qree9XF
+	 //csiCoct5FeHv+TGQlsaFZIPUgrWB8PL3HrAqa/tMxdzSqfk6FQ57mr4yb4keJxGRgXb
+	 HVga1KnfZwspg7RoEa3N8n91+j08X9AzOu0TGoGjprxqIX0NZ0twSKsdoA4zihAt+jWga
+	 oSub9hJ321JMTLqX2WyJKEhxZ0ZfZ/nXOCY0+Fs13eDzlkGcw4Jh5aM1/hoWmjGKaMdxR
+	 a/foa1i2LWlKfaOyuVtp13R7P435bgMCWq38lhb5qZWkw8yJwD4EtcSr8i+4GrmuYKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793816480;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793816486;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=k5d9AKGgnASGpBaA9KpcVgjLXomk+I+wEOEeX7xp7Ws=;
-	b=EvyFnOLDE+ZIR6qyiw8gqSl8XSWzre+0LKRvefs/7ou8lAtFIhCWEIw+9XdjN3wVZ1WY
-	 4qEfuo+Hcmyx7YAQTC42+aeDaF/ijXOtK1reIDBj7LJHU5DldYtp5W8jqRYJi4y107n6R
-	 LxcY2jjKNzTRX6b/Rc6GjW+UU1ZMmf+33Oh2WUkdE5D7nt8FggVpJ4RADSY+WhFIAYFCC
-	 EDgL6nfX9ryU/AkH/AxfsymYIZi/18bdcWh85cwp5qnm4uLHWN7GElnnsb0tVd07JzJoT
-	 MN7JqOP0GgoO4HiYsU0ySg9FOrCnQm20UsHV5qiz2iqV1F+orc1nxZdsBFMSKkHaGig==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=aTDvp/Q0M0o5LAma9UuHl2ioDRXCh/2jQrBcsrQNRLI=;
+	b=HzDy9m2wmybZUkDsqw/b7TpRelDyZ1W+21uvXSXVE0/aJOTczquVjAid6/J+wqP03cN6
+	 uohnU2gxz6iAO7eBTJqXTVCVNj57zS0NM+t9CRTlUBTCNDyBXBTSvP2rX/e7cAwTRvqAT
+	 2vSHGxrgt+TRRHQBUgYsQYcFaA7Js+2fSiHE94sRAzPlvDFuggCnK5SjaAx9La3CJdG1M
+	 Rt9+yIn3qw1dTBS2zhzcD7BMHSWSnbk/TfuVdbH/prR8BZzojpEQoLkmHNAToD1IYE3D4
+	 FJDeMvQCvWvpXwoQCsxBheAIbBawKhyJT8HB4rcX9MuLy5nhKeT5PIzv0dOyjo/p9BA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iXWY16W4;
-	arc=none smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aRNKux8j;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72236082BE9
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:21:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B72236082BE9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9CC60A6F48
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:21:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F9CC60A6F48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iXWY16W4
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4910b863b84so87602f8f.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:21:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aRNKux8j
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48bbb06e746so679631f8f.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:21:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793816478; x=1794421278; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=k5d9AKGgnASGpBaA9KpcVgjLXomk+I+wEOEeX7xp7Ws=;
-        b=iXWY16W4ged8/qBPTv5M6NGbA7HDoliiumzdMwssxWszKa97bd7qAJfPEk9xnXHT8K
-         5qgWRXyMB95iVCtmxVosUVT56W+9r9IuWvOSHifkoMdE4TezSTaRQXs/gZfy0ez+TF2Q
-         7sXFpCnPBd156fT6hUQVoZlPtbkbW6dWE/YpjNBmJpOZSl0WH/zN3Doyn8CQCQAAqNkA
-         4EHDsdZ2KdPbO8YicddvuokiwCraM3lpO+l86nxZXOOmrdyAcumvig21MR9T1UtPspt8
-         pkaAXGFIDTJDfS3Mcx0DlB5Kj4OEA37j8UWBdAIHYES9nh+upNxS/tam489kYvAs7WG6
-         Vd/g==
+        d=gmail.com; s=20260707; t=1793816485; x=1794421285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aTDvp/Q0M0o5LAma9UuHl2ioDRXCh/2jQrBcsrQNRLI=;
+        b=aRNKux8jXMUGWHWagH10tnaFubvYY/cvfOC258fy0pVp0hcDXzySw/Q6YXq9semX30
+         farQ9acn5oTFCbz1nQL+p/mcyFEYgrwgN5EvIVBNM71OgHEeF1zic8TstmtsCVUGPmJt
+         svvzBkSOKPQlpOjEA/yBPnevN7N4NF7wBRjNZ1Zp8UNyUZRom8veuAMr/CkVFaneuGp4
+         +M0dgse9SXLkSvVQNLQPEmLpXsXnEpd+P1McqG+XoZhCaKxL4P989KsnwcMm8oylWep8
+         e32kq2zNveMI520KnbsIi5VuE6ZaIFO8ItsZWsNrPQZSO1WSM24gLV/gsz/cuJyQsZK8
+         2L2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793816478; x=1794421278;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=k5d9AKGgnASGpBaA9KpcVgjLXomk+I+wEOEeX7xp7Ws=;
-        b=p0jvYdWhkVGbDOd+BSoJ9Y05PVpBtKdorSNepbjhk+gvin29Jx7Cj6ZjzTEUly6Y8h
-         PX/Ssgw2zkSKnrBYmWal8N85vi844nGp7foJwm5GdZWjXwgPkBhBGbFT2pQkejHA9n5p
-         G9bbWisHzSR2ifBk+X3eHSZhbBTnhJ8ZLcF2qce+NTEYikWgarFFqJOCLdmiISkjnh/n
-         QlUz4qduUO5H0AJRqpOxJRxFLwZTKiwZ5K4fyxIy6AR8D8wVaXkqA5/tESJNHhhJ8MmG
-         CM7CwutsFXRPid2YH4CBA4tB6klMdShfoXLb3sG6XY0fomrG1cGrvsXedgQvnANEzvt5
-         QpWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzSC8ybnkbSMycccOSzxDzsvEPZeX1Biephv50L+vlQ7hI5yx656NwfzzcvHstzpAMKwqZTLb0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8fde4NuPZG+/gohpLmkO2FKHhcORqnQ+DGwGJ0jhur7z5nUcld
-	L6dFX5RsWuwrUAKW8sUu7PttOlG97BixHl6Pscz/WOxDWLOmF9H9lC11
-X-Gm-Gg: AYBFou0+ayYl8LZOeBEpdAhRWmH225SGgfyd6442cguT/H2a9mR55oGpXie2EDfz3Jt
-	My/KHW/63CYOJZcdZcHrz2HPnmnDcevCWL1ylLtgfH3WhlD2fnIoPJ8CSxv33rEVK3K/MP7obpF
-	lQiJz9RGPEueDes1u/DZFFu+yYatFU9q7OUjvQ2lrwhTpgeUq8OvNczT6/+sGWiJ8kPMbgrfshh
-	VutAFkPQMrCyUunVObvNkzW8/B6G18wBhTAgf36DlMtgd72b2ZUjOk4JJjbaNpRgEIgnsNctBbP
-	3wDcRbVh8gC+cQstiGP6/CZCCN7nHnBc/L5fsIHh4hq+J2DSH05mNr79Ns4TvAgT9EPwziedss9
-	0nu/8jwtiwbUJTRweGJn5mb/OuvU03ruXJrAbiRr6cONXnh6gy+LYWHfOk2/R4hAMYGA7jI6czJ
-	vp6tlBNZkolzUDx6OdH9Uzjb1yqaNY1P5QXVacowd0BmMGeBbf0W/7cDVowl6a1dGzhgbdNbkPV
-	LlKAsuzKQrMOf/fLwwKR2cWrYrEEQ2wb6VSpwXXy9Pa64xkGqRHoj03QiN7EBl+cfYqDcGlb4iE
-	HgRxj8yTj/Pj25hxrET/G8QM4ZRviKpWwTINzhWH/ZbhPxTor034Pxm2M7hdnOAsMnEvKEje5iv
-	ShVWK5cTw6nEQWxQiyddB09EuKA91ZLSUE3Cv8g==
-X-Received: by 2002:a05:6000:41f0:b0:48c:54ec:ea3 with SMTP id ffacd0b85a97d-4911963185fmr440964f8f.13.1793816477918;
-        Wed, 04 Nov 2026 10:21:17 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793816485; x=1794421285;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aTDvp/Q0M0o5LAma9UuHl2ioDRXCh/2jQrBcsrQNRLI=;
+        b=SQtiangk2tr1oL8lXf4wYMNqimvy6sAj1opVBDOz/F3wrV78KeVJPcmv8yxJyJeiqs
+         rKcisrFFTjU/fdcDNnhnNdliGsgg7vVXaote7hUDeu6i0tdUGUPyLWjuqOlCU9cCN//c
+         uHqByaURTlxT1cE9SFPDERAOyl3Csbwn56vf604JvAYAhY6vOj6h0YIBzvZYussz5ZWA
+         C2yMssB/5B2NYS4G6hWD0dBj6Chhtmaj+wsy/vQBRgpeXm3ecAWhHnq9z9V4MB+jjKQS
+         3pqaJXCUXvFzZemIAcSwd1KYMqJqlX972w4UtbGHgcAHBfnUOWOLoLt82PyJkKWiE7TY
+         PM4A==
+X-Forwarded-Encrypted: i=1; AKwUvByJhGXzGytolTiamqtwuDWCFMkYO+uCNuoVJzWoAcaf7JNut+og/OiTk3JCzzwZ0m3Yk9+PDZw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+E3aLkB6huXM+tIic/aPS1KESwZogrD8ulyRa8HKayZIvq1unV
+	BtrW5x3G7pabrg2MiPAiV6Ah9RjZh0tEnQSgGGmKefyL7bogRJgeVIhj
+X-Gm-Gg: AYBFou22S5iF2ikKhS1pg/ywEWRnKOgkLtrby1lNanKAlxFASElOealQ5rahPBC3BQv
+	mA+qaADbQB7VdTvRIRx9UA6pdPdSmz+0KhQCx87dzfLrtav0fJbN5eLbZ7bZQ6XmYNWu2jkEo90
+	SpnsKF8MXLmUmvHqA2cQgRZnGOpNuzp3hN2mMWgs8PwDqP2/yk94iwwyUZy5g1/SwhhUMxjZTEW
+	hYpxlEdJP5i7tlSF14+QzID6GsC7gun6yI0YsIINuj7akrRhwvRY2qb7hsY7GwM3B2thcjsHeWl
+	CTMAvDJDjvwlVDpVPAdEBL4L15eSUgV0cQ4xCbENAtlK87Z3DJ8E5U1vv0X3rY5/N2JFftqkcAJ
+	2XpJCrNq0Qn/fgQ8XtIgzenTp98L0TzHPOX/DPVcPJNuD27U79UPXIeSSfw7guXGRkzC8Ntzssn
+	RKY20b0wBnfFe50deYRnyiuKE2GkCFjoZ7Po9yKEmffV8h2yqeGg8VhkNCsG3VOo8Te0pRwW8dY
+	WwueF+wbBKpdi9Sz349JWcxrY2eTVoX2xNv6MsjOmK0T0cff8VfgJlZmLr8AHSd+fQkLeevSD6f
+	tyQgk0EDLdoVGncgqlmqKLErS5XN1GAlrglomUm8flICGoF2xmbwXhp+eeIjP3pRhBC1h9pbCXt
+	3oDmKYz0a1z/qCnEhVBojb2/o4N2DXwvdvNKLrg==
+X-Received: by 2002:a05:6000:46ca:b0:48d:f541:a6e7 with SMTP id ffacd0b85a97d-48e6e4f4976mr26708137f8f.40.1793816484784;
+        Wed, 04 Nov 2026 10:21:24 -0800 (PST)
 Received: from iku.lan ([2a00:23c8:254f:fd01:b079:a2f1:caf7:b446])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm4073202f8f.28.2026.11.04.10.21.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm4073202f8f.28.2026.11.04.10.21.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 10:21:17 -0800 (PST)
+        Wed, 04 Nov 2026 10:21:24 -0800 (PST)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@linux.dev>,
@@ -104,10 +102,11 @@ Cc: linux-renesas-soc@vger.kernel.org,
 	Prabhakar <prabhakar.csengg+renesas@gmail.com>,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next v4 06/14] dt-bindings: net: dsa: renesas,rzn1-a5psw: Add RZ/T2H and RZ/N2H ETHSW support
-Date: Wed,  4 Nov 2026 18:20:54 +0000
-Message-ID: <20261104182105.1102555-7-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH net-next v4 14/14] net: dsa: Kconfig: Enable support for RZ/T2H and RZ/N2H SoCs
+Date: Wed,  4 Nov 2026 18:21:02 +0000
+Message-ID: <20261104182105.1102555-15-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261104182105.1102555-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20261104182105.1102555-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -120,249 +119,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Extend the A5PSW DSA binding to cover the ETHSW variant used on newer
-Renesas RZ/T2H and RZ/N2H SoCs. ETHSW is derived from the A5PSW switch
-found on RZ/N1 but differs in register layout, clocking and interrupt
-topology, and exposes four ports in total (including the CPU/management
-port) instead of five.
+Update the Kconfig entry for the Renesas RZ/N1 A5PSW Ethernet switch
+driver to depend on ARCH_RENESAS instead of ARCH_RZN1. This allows
+the driver to be built for other Renesas SoCs that integrate a similar
+Ethernet switch IP, such as RZ/T2H and RZ/N2H.
 
-Update the schema to describe these differences by adding dedicated
-compatible strings for RZ/T2H and RZ/N2H.
-
-Use the RZ/T2H compatible string as the fallback for RZ/N2H, reflecting
-that both SoCs integrate the same ETHSW IP.
-
-Add myself as a co-maintainer of the binding to support ongoing work on
-the ETHSW family across RZ/T2H and RZ/N2H devices.
+Also update the help text and prompt to reflect support for the ETHSW
+variant used on these SoCs.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
 ---
 v3->v4:
-- Restricted the reg property for ethernet-ports to maximum 3 for RZ/T2H
-- Added RB tag from Rob
+- No change
 
 v2->v3:
-- Added a restriction to disallow port@4
-- Updated commit message
+- No change
 
 v1->v2:
-- Added full names for SoCs
+- Added RB tag
 ---
- .../bindings/net/dsa/renesas,rzn1-a5psw.yaml  | 158 +++++++++++++++---
- 1 file changed, 136 insertions(+), 22 deletions(-)
+ drivers/net/dsa/Kconfig | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-index 250c59e58439..338e499b42b1 100644
---- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-@@ -4,43 +4,108 @@
- $id: http://devicetree.org/schemas/net/dsa/renesas,rzn1-a5psw.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
+index fe8cd5338fda..f6894495b9ed 100644
+--- a/drivers/net/dsa/Kconfig
++++ b/drivers/net/dsa/Kconfig
+@@ -101,13 +101,14 @@ source "drivers/net/dsa/xrs700x/Kconfig"
+ source "drivers/net/dsa/realtek/Kconfig"
  
--title: Renesas RZ/N1 Advanced 5 ports ethernet switch
-+title: Renesas RZ/N1 A5PSW and RZ/T2H, RZ/N2H ETHSW Ethernet Switch
+ config NET_DSA_RZN1_A5PSW
+-	tristate "Renesas RZ/N1 A5PSW Ethernet switch support"
+-	depends on OF && (ARCH_RZN1 || COMPILE_TEST)
++	tristate "Renesas RZ/N1 A5PSW and RZ/{T2H,N2H} ETHSW Ethernet switch support"
++	depends on OF && (ARCH_RENESAS || COMPILE_TEST)
+ 	select NET_DSA_TAG_RZN1_A5PSW
+ 	select PCS_RZN1_MIIC
+ 	help
+-	  This driver supports the A5PSW switch, which is embedded in Renesas
+-	  RZ/N1 SoC.
++	  This driver supports the Advanced 5-Port Switch (A5PSW) found on
++	  Renesas RZ/N1 SoCs, and the Ethernet Switch (ETHSW) found on
++	  Renesas RZ/T2H and RZ/N2H SoCs.
  
- maintainers:
-   - Clément Léger <clement.leger@bootlin.com>
-+  - Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
- 
--description: |
--  The advanced 5 ports switch is present on the Renesas RZ/N1 SoC family and
--  handles 4 ports + 1 CPU management port.
-+description: >
-+  This binding describes the Ethernet switch IPs used on Renesas SoCs:
- 
--allOf:
--  - $ref: dsa.yaml#/$defs/ethernet-ports
-+  - The A5PSW (Advanced 5-Port Switch) found on the RZ/N1 family, which
-+    provides 4 external ports and 1 CPU/management port.
-+  - The ETHSW (Ethernet Switch) found on the RZ/T2H and RZ/N2H families,
-+    which is derived from the A5PSW IP with some register layout
-+    differences, additional timestamping support, and a total of 4 ports
-+    including the CPU/management port.
- 
- properties:
-   compatible:
--    items:
--      - enum:
--          - renesas,r9a06g032-a5psw
--      - const: renesas,rzn1-a5psw
-+    oneOf:
-+      - items:
-+          - enum:
-+              - renesas,r9a06g032-a5psw
-+          - const: renesas,rzn1-a5psw
-+
-+      - const: renesas,r9a09g077-ethsw
-+
-+      - items:
-+          - const: renesas,r9a09g087-ethsw
-+          - const: renesas,r9a09g077-ethsw
- 
-   reg:
-     maxItems: 1
- 
-   interrupts:
--    items:
--      - description: Device Level Ring (DLR) interrupt
--      - description: Switch interrupt
--      - description: Parallel Redundancy Protocol (PRP) interrupt
--      - description: Integrated HUB module interrupt
--      - description: Receive Pattern Match interrupt
-+    oneOf:
-+      - items:
-+          - description: Device Level Ring (DLR) interrupt
-+          - description: Switch interrupt
-+          - description: Parallel Redundancy Protocol (PRP) interrupt
-+          - description: Integrated HUB module interrupt
-+          - description: Receive Pattern Match interrupt
-+
-+      - items:
-+          - description: Switch interrupt
-+          - description: Device Level Ring (DLR) interrupt
-+          - description: Parallel Redundancy Protocol (PRP) interrupt
-+          - description: Integrated HUB module interrupt
-+          - description: Receive Pattern Match interrupt 0
-+          - description: Receive Pattern Match interrupt 1
-+          - description: Receive Pattern Match interrupt 2
-+          - description: Receive Pattern Match interrupt 3
-+          - description: Receive Pattern Match interrupt 4
-+          - description: Receive Pattern Match interrupt 5
-+          - description: Receive Pattern Match interrupt 6
-+          - description: Receive Pattern Match interrupt 7
-+          - description: Receive Pattern Match interrupt 8
-+          - description: Receive Pattern Match interrupt 9
-+          - description: Receive Pattern Match interrupt 10
-+          - description: Receive Pattern Match interrupt 11
-+          - description: Switch timer pulse output interrupt 0
-+          - description: Switch timer pulse output interrupt 1
-+          - description: Switch timer pulse output interrupt 2
-+          - description: Switch timer pulse output interrupt 3
-+          - description: Switch TDMA timer output interrupt 0
-+          - description: Switch TDMA timer output interrupt 1
-+          - description: Switch TDMA timer output interrupt 2
-+          - description: Switch TDMA timer output interrupt 3
- 
-   interrupt-names:
--    items:
--      - const: dlr
--      - const: switch
--      - const: prp
--      - const: hub
--      - const: ptrn
-+    oneOf:
-+      - items:
-+          - const: dlr
-+          - const: switch
-+          - const: prp
-+          - const: hub
-+          - const: ptrn
-+
-+      - items:
-+          - const: switch
-+          - const: dlr
-+          - const: prp
-+          - const: hub
-+          - const: ptrn0
-+          - const: ptrn1
-+          - const: ptrn2
-+          - const: ptrn3
-+          - const: ptrn4
-+          - const: ptrn5
-+          - const: ptrn6
-+          - const: ptrn7
-+          - const: ptrn8
-+          - const: ptrn9
-+          - const: ptrn10
-+          - const: ptrn11
-+          - const: tp0
-+          - const: tp1
-+          - const: tp2
-+          - const: tp3
-+          - const: tdma0
-+          - const: tdma1
-+          - const: tdma2
-+          - const: tdma3
- 
-   power-domains:
-     maxItems: 1
-@@ -52,14 +117,21 @@ properties:
-     unevaluatedProperties: false
- 
-   clocks:
-+    minItems: 2
-     items:
-       - description: AHB clock used for the switch register interface
-       - description: Switch system clock
-+      - description: Timestamp clock
- 
-   clock-names:
-+    minItems: 2
-     items:
-       - const: hclk
-       - const: clk
-+      - const: ts
-+
-+  resets:
-+    maxItems: 1
- 
-   ethernet-ports:
-     type: object
-@@ -94,6 +166,48 @@ required:
-   - clock-names
-   - power-domains
-   - ethernet-ports
-+  - interrupts
-+  - interrupt-names
-+
-+allOf:
-+  - $ref: dsa.yaml#/$defs/ethernet-ports
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: renesas,r9a09g077-ethsw
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 24
-+        interrupt-names:
-+          minItems: 24
-+        clocks:
-+          minItems: 3
-+        clock-names:
-+          minItems: 3
-+        ethernet-ports:
-+          patternProperties:
-+            "^(ethernet-)?port@[0-3]$":
-+              properties:
-+                reg:
-+                  items:
-+                    - maximum: 3
-+            "^(ethernet-)?port@4$": false
-+      required:
-+        - resets
-+    else:
-+      properties:
-+        interrupts:
-+          maxItems: 5
-+        interrupt-names:
-+          maxItems: 5
-+        clocks:
-+          maxItems: 2
-+        clock-names:
-+          maxItems: 2
-+        resets: false
- 
- examples:
-   - |
+ config NET_DSA_KS8995
+ 	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
 -- 
 2.56.0
 
