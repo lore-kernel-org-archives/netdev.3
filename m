@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793802565;
-	b=ke6YRRnWewFwnHAAqtt0XaMsnBFjh7cdY2xXv+FOV6bDJo210BY6NlixZwEZq30D4XUt
-	 z5rKfME2Foax3q60q540K89qYaje884pIibJK3ejBVynoTg44v+Xwibh0muFG+CHXrxJS
-	 090dq43117dRcL/2rHe3F+rycpwWfXZWvXuJWByjkwKwjSyX8orfjgxqXdFBrUycRuOIr
-	 zLy9yOcx4b32WyzhSDHRKnyyLrZkJFNWb7g9Up1+UE4ZzmifMRRkCXx4eUn0bGb0h+Hta
-	 f+IcY4+FageBMM60CZuTo7aiwvsibRw5WdNlwk9d7jkGYRL76+Gbx0qStittG5ph6HQ==
+	t=1793802567;
+	b=1akcyFNC31iCruTVTHd5/WA9NKtn/j+ZxW47Lv3u+3rMqoZgI1WsJypujtG2Fnrp/Q7z
+	 AJZ5M+0p/g+t2y9Gz4Q4zgY6DmT1Eii7CdtrzbMt7trSQXTtfCQvnFDVtEKUUBAy3jFyK
+	 kDBiRIUmmWPOA2oUFm8xZhMJF9DKd8sAIXl/ftcJ+r+3kirUd+rbpAANG3ZcajDqWQP6J
+	 2Chx8DfqVn2HhEa0o31jvtTak5HEfZbvBrPfBsDlC7qX78rE5V1Jbg/7MOdALyJvqbflf
+	 AId7xPj91Sv/BbZ5PGaLfPjrM8uzHDpvwtsalSLnXD+/l/f884ocuXCQnLEGZAonyjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793802565;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793802567;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=xNW8SUXY3/+f+CDeibZWKLCb0tWZvjpoSzIxOcHgyuI=;
-	b=E5ZfIFYvtNw9OBe1t9zlS5l9hLRM5a76j0LPhdz+Ia7Zp3wdBWSWUiKs+2HPdl8wxD3N
-	 OAQhAwJEzynmLbEcHHziy9YbqYoWwN54Eyn54w7y+omsFmLwj3YwnqLaC0dz3RWuIaUaZ
-	 W43gS4SzSd7U6IbnXrLWGuff9I61I0bnQM+RmLsDhjTs/wik9fYqf57eoZIN0LzDuVVjJ
-	 FvujS0L81PmsTP4Mbb0pqQiTvdNeP40o/hvNNUN7HQg1SuXHHItBAA/Nxl6ol+H2wSk1Y
-	 aJ3Uz+JcqwYCddFkPdXnbfMVb++NU1r4xHRKIRPngSmXPQi1R19OCNUF4p2mMdc7lmA==
+	bh=Xz3sb8BWuunlpYCoTGvQBeihdIazj1yMmpL1EBO9/qs=;
+	b=4DJ3vRsAbN2DaDmrsWJLn+LmDAlbK3E95Mcp9TdSbfcspdeSg+LZ3qWyAa1eaa1KTMQd
+	 6XMkz2VENTh0S2JeYrqseaOyozm/YO5q1v9G+MCf5GcVHECl9JWPE9YCdROMaBJPPMeph
+	 RniEmJ2/lsCXxYRe3GBlBh6E5sH2ULRGo7haHJourXlUyOYxZxMMxjvnZY4w8vm0ugoh5
+	 Fab/OHG7sgime9t6dwVApsFVmI0NPDIMqlnsVAKJ6VisQx+eWVDh7jvOnxWufnphCQp+l
+	 tO//NR6bS9QgcDk8NHs9Rq0p5fA+kz4keNCTSo34Lvf7DKb+CVx7m/JFfuq4ZDs/7gA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=efI5Ys1z;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gRS1rRHN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF1D606A32C;
-	Wed,  4 Nov 2026 14:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105AC606A330;
+	Wed,  4 Nov 2026 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=efI5Ys1z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1663A1F000C1;
-	Wed,  4 Nov 2026 14:29:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gRS1rRHN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6266B1F000C1;
+	Wed,  4 Nov 2026 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793802564;
-	bh=xNW8SUXY3/+f+CDeibZWKLCb0tWZvjpoSzIxOcHgyuI=;
+	s=k20260515; t=1793802566;
+	bh=Xz3sb8BWuunlpYCoTGvQBeihdIazj1yMmpL1EBO9/qs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=efI5Ys1zqFnSjvBXgC/EKaW0nO5QpLq5noEzldRvTyu0hD6EMxfTA8Fo7YwuqF2+N
-	 qvy89l8Dr4R7umwkJLeLtNMLoiGYx5bGJHvlqOqRCWKJ893fu5SN3MWMfakt+Qi0LW
-	 jAlGqSdiSA4nHiezJfbC1VKN6szToV9uL/BPxILU7OJv+bMcEow9KVqKSc62He9JwZ
-	 8HSJ4LqxKPNgAxFNQyuGuQTnHK9Gv9pfQIkVJFelRognY3BnoJFXudeM7HgPV8aMUo
-	 S+/keZysw8tfjJK4aAQ7Hsstjm9LIxPOZ2VlGGmVjgNCJS7vnK4WtlJnRLnFhR9JJq
-	 isfTbIhSUTvbg==
-Subject:
- Re: [PATCH net 05/15] ipvs: do not create conns from packets with port 0
+	b=gRS1rRHNHRSJsts9JvGgJWF3hWpHvNoZuaISWb7KKCRXoc3M+ntSHJBgiKkAtdttR
+	 y4wbhvzvQM8qTcWSI6ugqeLKZoS0OCIuFRIK/aHS+MZBA0fsnruwQN/CG6X+lS8ZRy
+	 ZCHY1lXMRec+WCeL1uT/mi4d+Aejz8YCSDiqxf8GWO9JuEnUDXZQyAMrkKV6pXtIoC
+	 lyxFNqAbUlEzkciJtQR08COMSJlD0r8ExWZley6pOq37uAOEMhbd9SWNDM0qenb2HX
+	 +B2Ce1NGd65XXbKOmAXclPICYTsLYKMDyuA+ieGzZfsLPCZIXRbMToGPf3o2S2sFfh
+	 uI6hEYbJWdauQ==
+Subject: Re: [PATCH net 07/15] netfilter: nf_dup: preserve guard across
+ NFQUEUE reinjection
 From: netdev-bot+sashiko@kernel.org
 To: pablo@netfilter.org
 Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
  netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Date: Wed, 04 Nov 2026 14:29:23 +0000
-Message-ID: <179380256363.488856.4080152698263995983@kernel.org>
-In-Reply-To: <20261103140308.591690-7-pablo@netfilter.org>
-References: <20261103140308.591690-7-pablo@netfilter.org>
-X-sashiko-severity: Medium
+Date: Wed, 04 Nov 2026 14:29:25 +0000
+Message-ID: <179380256596.488856.13512803385415062400@kernel.org>
+In-Reply-To: <20261103140308.591690-9-pablo@netfilter.org>
+References: <20261103140308.591690-9-pablo@netfilter.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,211 +64,131 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The subject of this patch says IPVS should not create
-  connections from packets with port 0.
-- [Medium] udp_conn_schedule()
-  (net/netfilter/ipvs/ip_vs_proto_udp.c:55-57) now returns 1 for any UDP…
-- [Medium] The new port-0 early `return 1` in tcp_conn_schedule()
-  (ip_vs_proto_tcp.c:66-68), udp_conn_schedule()…
+- [Low] The commit message for "netfilter: nf_dup: preserve guard across
+  NFQUEUE reinjection" leaves out a behaviour change.
+- [Low] The patch has Cc: stable@vger.kernel.org and Fixes: cd58bcd9787e
+  (2010, xt_TEE), but it reads and writes current->in_nf_duplicate.
 
 --
 
-ipvs: do not create conns from packets with port 0
+netfilter: nf_dup: preserve guard across NFQUEUE reinjection
 
-This commit stops the TCP, UDP and SCTP conn_schedule handlers and
-ip_vs_new_conn_out() from creating normal connections when the client
-port or virtual port is 0. Such connections can never be matched later
-because of the NO_CPORT lookup rule, so a new duplicate connection is
-created for every packet.
+This patch saves current->in_nf_duplicate in struct nf_queue_entry when
+a packet is queued. nf_reinject() then restores it while hook traversal
+resumes after a verdict, and puts back the verdict task's previous value
+on exit. BH is now disabled for the whole of nf_reinject().
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
+> Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
+> Cc: stable@vger.kernel.org
 
-> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-> index 8a3c880fdb266..f3eb72e95024d 100644
-> --- a/net/netfilter/ipvs/ip_vs_core.c
-> +++ b/net/netfilter/ipvs/ip_vs_core.c
+[Severity: Low]
+
+Will this apply to the stable trees that this Fixes tag covers?
+
+__nf_queue() and nf_reinject() read and write current->in_nf_duplicate.
+That task_struct bit was only added by:
+
+a1f1acb9c5db ("netfilter: nf_dup{4, 6}: Move duplication check to task_struct")
+
+Older stable trees covered by the 2010 Fixes tag, such as 6.12, 6.6, 6.1,
+5.15 and 5.10, still use the per-CPU nf_skb_duplicated guard. That flag
+is also cleared after ip_local_out() returns, so the same bug seems to
+exist there. This patch won't build against those trees, though.
+
+Could a dependency note or backport hint be added? That would make it
+clear those trees need a version that saves and restores the per-CPU
+flag instead.
+
+> diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+> index 90d887546f7db..a8aa7ad832c3f 100644
+> --- a/net/netfilter/nfnetlink_queue.c
+> +++ b/net/netfilter/nfnetlink_queue.c
 
 [ ... ]
 
-> @@ -1328,7 +1329,7 @@ struct ip_vs_conn *ip_vs_new_conn_out(struct ip_vs_service *svc,
->  	/* check pre-requisites are satisfied */
->  	if (svc->fwmark)
->  		return NULL;
-> -	if (!vport || !dport)
-> +	if (!vport || !dport || !cport)
->  		return NULL;
+> @@ -365,21 +366,30 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+>  	const struct nf_hook_entry *hook_entry;
+>  	const struct nf_hook_entries *hooks;
+>  	struct sk_buff *skb = entry->skb;
+> +	bool old_in_nf_duplicate;
+>  	const struct net *net;
+>  	unsigned int i;
+>  	int err;
+>  	u8 pf;
 >  
->  	/* for persistent service first create connection template */
-
-[Severity: Medium]
-The FTP application helper also creates connections from packet data.
-Does it need the same port 0 check?
-
-In ip_vs_ftp_in(), a client on an established FTP control connection
-can send "PORT a,b,c,d,0,0". The legacy branch of
-ip_vs_ftp_get_addrport() returns success with port 0:
-
-net/netfilter/ipvs/ip_vs_ftp.c:ip_vs_ftp_get_addrport() {
-    ...
-		*port = get_unaligned((__be16 *) (p + 4));
-		return 1;
-    ...
-}
-
-ip_vs_ftp_in() then uses that value as the cport. It creates a normal
-connection without IP_VS_CONN_F_NO_CPORT:
-
-net/netfilter/ipvs/ip_vs_ftp.c:ip_vs_ftp_in() {
-    ...
-		ip_vs_conn_fill_param(cp->ipvs, cp->af,
-				      ipvsh->protocol, &to, port, &cp->vaddr,
-				      htons(ntohs(cp->vport)-1), &p);
-		n_cp = ip_vs_conn_in_get(&p);
-		if (!n_cp) {
-			n_cp = ip_vs_conn_new(&p, cp->af, &cp->daddr,
-					      htons(ntohs(cp->dport)-1),
-					      IP_VS_CONN_F_NFCT, cp->dest,
-					      skb->mark);
-    ...
-}
-
-__ip_vs_conn_in_get() only matches when this holds:
-
-	(!p->cport ^
-	 (!(cp->flags & IP_VS_CONN_F_NO_CPORT)))
-
-So a lookup with cport 0 never finds this entry.
-
-Wouldn't every such PORT command then add another duplicate connection?
-That is the same problem the commit message describes.
-
-The extended EPRT/EPSV branch of the same function already rejects
-port 0, so the two formats handle it differently:
-
-	if (s == data_limit || !hport || *s != edelim)
-		return -1;
-
-[ ... ]
-
-> diff --git a/net/netfilter/ipvs/ip_vs_proto_tcp.c b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-> index fec0e8b47b716..2e55b62445c60 100644
-> --- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
-> +++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-
-[ ... ]
-
-> @@ -62,6 +63,10 @@ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
->  		return 0;
->  	}
->  
-> +	/* Do not create connection for port 0, skip the packet */
-> +	if (!ports[0] || !ports[1])
-> +		return 1;
+> +	DEBUG_NET_WARN_ONCE(current->in_nf_duplicate &&
+> +			    !entry->in_nf_duplicate,
+> +			    "%s called with unexpected duplication guard",
+> +			    __func__);
+> +	local_bh_disable();
+> +	old_in_nf_duplicate = current->in_nf_duplicate;
 > +
 
-[Severity: Medium]
-Does this change where port 0 packets sent to a configured VIP:port end
-up?
+[ ... ]
 
-This check runs before ip_vs_service_find(). Returning 1 while *cpp is
-still NULL makes ip_vs_try_to_schedule() accept the packet:
+> @@ -402,9 +412,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+>  	switch (verdict & NF_VERDICT_MASK) {
+>  	case NF_ACCEPT:
+>  	case NF_STOP:
+> -		local_bh_disable();
+>  		entry->state.okfn(entry->state.net, entry->state.sk, skb);
+> -		local_bh_enable();
+>  		break;
 
-net/netfilter/ipvs/ip_vs_core.c:ip_vs_try_to_schedule() {
-    ...
-	if (unlikely(!*cpp)) {
-    ...
-		*verdict = NF_ACCEPT;
-		return 0;
-	}
-    ...
-}
+[ ... ]
 
-Before this patch, a SYN with source port 0 to a VIP:port that has a
-service was always handled by IPVS. It was either scheduled to a real
-server or passed to ip_vs_leave(). When no destination was available,
-ip_vs_leave() did this:
-
-	icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, 0);
-
-	return NF_DROP;
-
-Now the packet goes to the director's own TCP stack instead. If the
-director has a local listener on the same port (for example bound to
-the wildcard address), can a remote sender using source port 0 now
-complete a handshake with it through the VIP? IPVS used to shadow that
-listener. The local TCP receive path does not appear to reject
-th->source == 0.
-
-udp_conn_schedule() gets the same early return, and so does
-sctp_conn_schedule() for INIT chunks.
-
-Would dropping port 0 packets that match a service, instead of
-accepting them, avoid the duplicate connections without changing where
-this traffic goes?
-
->  	/* No !th->ack check to allow scheduling on SYN+ACK for Active FTP */
->  
->  	if (likely(!ip_vs_iph_inverse(iph)))
-
-> diff --git a/net/netfilter/ipvs/ip_vs_proto_udp.c b/net/netfilter/ipvs/ip_vs_proto_udp.c
-> index f32785682402d..92c0b76c1a021 100644
-> --- a/net/netfilter/ipvs/ip_vs_proto_udp.c
-> +++ b/net/netfilter/ipvs/ip_vs_proto_udp.c
-> @@ -52,6 +52,10 @@ udp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
->  		return 0;
+> @@ -418,6 +426,9 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
 >  	}
 >  
-> +	/* Do not create connection for port 0, skip the packet */
-> +	if (!ports[0] || !ports[1])
-> +		return 1;
-> +
+>  	nf_queue_entry_free(entry);
+> +out:
+> +	current->in_nf_duplicate = old_in_nf_duplicate;
+> +	local_bh_enable();
+>  }
 
-[Severity: Medium]
-Does this check also need to cover one-packet scheduling (OPS) UDP
-services?
+[Severity: Low]
 
-It runs before the service lookup, so it also applies to services with
-IP_VS_SVC_F_ONEPACKET. ip_vs_schedule() sets IP_VS_CONN_F_ONE_PACKET
-on those connections:
+This isn't a bug, but the commit message doesn't mention that the
+BH-disabled region in nf_reinject() is now much wider.
 
-	flags = (svc->flags & IP_VS_SVC_F_ONEPACKET
-		 && iph->protocol == IPPROTO_UDP) ?
-		IP_VS_CONN_F_ONE_PACKET : 0;
+Before this patch, local_bh_disable() and local_bh_enable() only wrapped
+entry->state.okfn() in the NF_ACCEPT and NF_STOP case. Now every
+reinjected NFQUEUE packet runs with BH disabled, duplicated or not. That
+covers the NF_REPEAT hookfn re-run, nf_reroute(), nf_iterate() and the
+nf_queue() re-queue path.
 
-ip_vs_conn_hash() never inserts such connections into the table:
+The change looks needed, because a softirq running on the current task
+must not see the guard while it is set. Could the commit message say so
+and explain why?
 
-net/netfilter/ipvs/ip_vs_conn.c:ip_vs_conn_hash() {
+The message also only says that the guard is cleared:
+
+  "The output call then returns and clears the guard before a later
+  verdict resumes hook traversal."
+
+It doesn't describe what users see. nf_dup_ipv4() clears the guard
+unconditionally after the output call, and nf_dup_ipv6() does the same:
+
+net/ipv4/netfilter/nf_dup_ipv4.c:nf_dup_ipv4() {
     ...
-	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
-		return 0;
+	if (nf_dup_ipv4_route(net, skb, gw, oif)) {
+		current->in_nf_duplicate = true;
+		ip_local_out(net, skb->sk, skb);
+		current->in_nf_duplicate = false;
     ...
 }
 
-So they cannot cause the duplicate hashed connections this patch
-targets.
+Say the duplicate is queued in LOCAL_OUT or POSTROUTING and reinjected
+later. A TEE or nft dup rule further along then duplicates it again. That
+new copy can be queued again, so each verdict makes another copy.
 
-Before this patch, an OPS service forwarded UDP datagrams with source
-port 0 to a real server. RFC 768 allows source port 0 when no reply is
-expected, which is the one-way traffic OPS is meant for.
-
-With this change, ip_vs_try_to_schedule() returns NF_ACCEPT for these
-datagrams. They go to the director's local stack and are no longer load
-balanced. Could ONE_PACKET UDP services be exempted from this check?
-
->  	if (likely(!ip_vs_iph_inverse(iph)))
->  		svc = ip_vs_service_find(ipvs, af, skb->mark, iph->protocol,
->  					 &iph->daddr, ports[1]);
+Could the changelog describe this behaviour?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103140308.591690-3-pablo%40netfilter.org
