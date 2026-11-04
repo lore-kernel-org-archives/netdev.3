@@ -1,55 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793797526;
-	b=TedzzW4rUJnaTXOnr75bbJqihvdS3QGCBrWIWywEIw7tlzZLsbso8IZVKVWpTQ9eDwyU
-	 VLWO/ZqgVTnBjQ7kiLY7roBPQwuaZrSYAUiNA3Z7klmd79FcG+CdicAlhO1h1yHOqq8Ca
-	 KeuoBOtiDJuEFskwZvo+qrYmNMay0PU1KsGHK78bsEYtT+aB7OgJKwqbHVGDcoHbRHqtT
-	 vxZpErPh4M4vE9Z4BcXXJ3kK5CC1FBFkRkpccpuV9q+JDzo25APC1bUW6kDoAvSh/nqp1
-	 8n7EVlmOQ7JplvrE9N1bDtPvPPDlfOCqrYHX2Lyz5tkaLDsOZ1R4V9n1a+p/3b9xFfA==
+	t=1793797673;
+	b=SsldoPD+LXhWzprmjWP9AHC07LxbnmNPGPv/u1/onse0J14Ouwml+hohs33zF8uSwNDX
+	 SXIgCsovv6f326/NU/AICcYFw08l+62dIt6wwe+tpBxYJHpkh3ATkgIotsHoT9d4DE+1q
+	 r6IKtaKi9VRZAyOe4rbI53TjVst9GhJgx6F7P5GCE8MBdg0F1Y1+4WEoWO+R91q/zbGLQ
+	 yB7FG8FFEIFLIkbezAXxMdHkrKFqYEI2ZaPmdz9mRA3CtKpdzU6JR18zUknx2L/vaHPBn
+	 qBLa/0sJ7mMmFMV37ZCZABGwVnmgUmJ6t78jpZaQ6uzEugp/tEAfPkX+9Ryu1cKYB7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793797526;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=LPKBxmhyg89L22fIaf9IQyOx1ftYYGNVMEyFVHYOx+w=;
-	b=ieJIrHlbbkR/NfQc5CfsALVVxMJyhgDfIeZaHBUmQSYXINVrK2aeiQs6IhVlNwwHFh8N
-	 +dNWjjiF+t6qu+brXUpBlmb4wSXSiIjWBOZCDLf84KXXr00f8lliEVGWcfKbVukRyAD0e
-	 oM5wyk1syEl90pFcGuxIj1GhvoulZ0hpuIUBR9yuTmC2K99VP/Tzc1DSDL/73lT62g2nO
-	 FIWwMFrDdFf34vlBl7jKW1KPxFrRyVU1/xp+AiQMQ+mURR8nRoXrtnueNuqzNKXjd+Bg/
-	 ed6fGvkezKWQSRcu44baT+zr1ZNDboQFWNYK+74CPl05FhmubPODhzGpohzyNLNegtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793797673;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=syN+KxszM/EDpPfFgs02hxOZ/ZWREys7/rnS23nuAlE=;
+	b=uX54wUEVdBN+OhqxcT8whkb8C2CEpGz4xrXknjAeBoOqYZRQlLjbqsCeLo5ElusVraXM
+	 g68XsZDpUCIcFYMzf4CpPxZgccsCsebM8bwePOQOjBPcn2gkHdkbGzP3IbN5BjEP2NPhy
+	 PSwds+SpGnYn8IC8lYy9wZ0VF5zlMBOk79sMp0FXH8cnSDmH8iQXUhIHhP3Rg3XctNSuf
+	 +ovLk3zvyxw5UvssOilIeVlDHDT7w6lDOrdbzbVDj8Sp4Dt8sW/LDstiJsuvSrYl3/NMb
+	 m0DV2R3/YQ4P+Jdf1A2hETrKVW5+gImpOPf1MMovSMhKbd5YOK5h8LcgFBdX0GGs6oQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WLqSLvYw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJnhdI2I;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17971606A32E
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CE9606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WLqSLvYw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06061F00A2A
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:05:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJnhdI2I
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F8F1F000C1;
+	Wed,  4 Nov 2026 13:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797525;
-	bh=LPKBxmhyg89L22fIaf9IQyOx1ftYYGNVMEyFVHYOx+w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WLqSLvYwRuBRb2z2uy097jLLlVZenw1O0Ud3+HdLZPMW2W/yzMsw4PoGFqDOIDUwu
-	 bYeTnemOekwxxrWyrcu3N1/2zGODfTWspcTCv2AIYLDuBbLuQUV8lPQQYsoeeaXIZo
-	 s9pxZA4n1vrlJHdLmklh37T+D8AiUXYc4GVoPjPUCjjcMlonowAys/U2PRW90Kfnup
-	 tuf9hIDTCB7oNt5tvVL+asbU98CD4ARrQUGqF8Nf8SlgNeuq/Vl88CJ3YEo52TiM8A
-	 criMClDoEAWjWwpB9F04k/fO5WKv51xfXn5g8+JQfVgeQbC0d/BD2BPOItMFG3+Cjh
-	 JM4GUMBVSYcnA==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba36cc21cdso656456e87.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 05:05:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBy7ZZoi9jGUMJSjmC1tDESJGhAp3g3K3SC3HiBd6xytiptIrAxoegI/DNdj0oVUE8OsKYgsyko=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9XzrMJ11o9hR5XnzGA7ZKjrRfJFnPKY+pm7/ahRgHBLx/sViBE
-	FHzkqwDb5Kq6wSrX/2LuTgW3XmLBDwmFEDLS0TnCoA6wLZmntxX7MA8+WkxuCPS5LuASvUqdaIg
-	xslgsNYezNvnSAFTtw/ZWphdd9OVtQMY=
-X-Received: by 2002:a05:6512:3a89:b0:5bc:c446:760c with SMTP id
- 2adb3069b0e04-5bfd956f3c7mr5830020e87.48.1793797524594; Wed, 04 Nov 2026
- 05:05:24 -0800 (PST)
+	s=k20260515; t=1793797673;
+	bh=syN+KxszM/EDpPfFgs02hxOZ/ZWREys7/rnS23nuAlE=;
+	h=From:To:Cc:Subject:Date;
+	b=SJnhdI2IfqcGzRljkh5nil+pwIzBkghlSS3vwg0+M61NYsNa505ZchC5Y0jP9lc7h
+	 KqdIBXgb+3miOgN8yU4OSiTY6pl15nvTGuUa1LxcFFobd4z7snZih22mhMy9iOk9Xs
+	 JtSAJlr95Wra379/TtPf4Wo6zQtIj3cXcsIXqIsgr2YSFIXKmqyShEAK29iFmwIUho
+	 2INLC8treLP6duC0bCpfO7pmQT4XRMPv+h1ACOS8fpOvJXUXeWfAYr855riDK4acOH
+	 Wr7DLARoRNAHtQd7u/cJG14zAFyhh7JA5ak3JSyyle89OnkeqAsq60PRtnnORf4seB
+	 RBx8fJjZJbnRA==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>
+Cc: Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	netdev@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] mptcp: reject DATA_ACKs against a reversed send interval
+Date: Wed,  4 Nov 2026 14:07:47 +0100
+Message-ID: <20261104130747.1045741-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,56 +64,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com> <20261022-add-board-ok3572-c-v1-6-0b0fd85a31ee@qq.com>
-In-Reply-To: <20261022-add-board-ok3572-c-v1-6-0b0fd85a31ee@qq.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 4 Nov 2026 14:05:11 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkfnsnqr9DeJG1UY1BNPmXV=L1fh0o1fRgq2N70k3Aq2A@mail.gmail.com>
-X-Gm-Features: AclHuK_mv5t_ofBXXvFmTtsscxk8ZZZWMu9yfbYuWEEuKyuLUDpVdyNQz1Is1sQ
-Message-ID: <CAD++jLkfnsnqr9DeJG1UY1BNPmXV=L1fh0o1fRgq2N70k3Aq2A@mail.gmail.com>
-Subject: Re: [PATCH 06/27] dt-bindings: gpio: rockchip: Add RK3572 GPIO banks
-To: 1579567540@qq.com
-Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Elaine Zhang <zhangqing@rock-chips.com>, Lee Jones <lee@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
-	Ulf Hansson <ulfh@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Jisheng Zhang <jszhang@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Wu <david.wu@rock-chips.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Jaehoon Chung <jh80.chung@samsung.com>, 
-	Shawn Lin <shawn.lin@rock-chips.com>, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	mfd@lists.linux.dev, linux-gpio@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org, 
-	linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 21, 2026 at 6:12=E2=80=AFPM Cunhao Lu via B4 Relay
-<devnull+1579567540.qq.com@kernel.org> wrote:
+From: Kyle Zeng <kylebot@openai.com>
 
-> From: Cunhao Lu <1579567540@qq.com>
->
-> RK3572 GPIO banks have four parent interrupts and a separate debounce
-> clock.
->
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
+ack_update_msk() samples snd_nxt before taking the data lock, but reads
+snd_una after taking it. Concurrent transmission and ACK processing can
+therefore leave the sampled upper bound behind snd_una. Active-open
+completion also exposes a reversed interval when it initializes snd_una
+to IDSN + 1 while the socket-owned state synchronization is deferred.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+A peer-supplied 64-bit Data ACK half a sequence space away can pass both
+wraparound comparisons against such an interval. The resulting snd_una
+can make __mptcp_retrans() inflate a fragment's already_sent field. Later
+ACKs can then underflow data_len and cause out-of-bounds page fragments
+to be passed to TCP.
 
-Perhaps Bartosz can just apply this one patch to shrink the series?
+Read snd_nxt after acquiring the data lock and reject reversed intervals
+before checking the received Data ACK. This keeps the interval shorter
+than half the sequence space, so the existing upper-bound check cannot
+accept an advance beyond snd_nxt. Preserve the existing handling of old
+ACKs and keep the transmit fields under their existing socket locking.
 
-Yours,
-Linus Walleij
+Fixes: 7439d687b79c ("mptcp: avoid a few atomic ops in the rx path")
+Fixes: 3f83d8a77eee ("mptcp: fix more tx path fields initialization")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ net/mptcp/options.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index 64aa7a516a23..02e785a14b8a 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1122,9 +1122,9 @@ static void ack_update_msk(struct mptcp_sock *msk,
+ 			   struct sock *ssk,
+ 			   struct mptcp_options_received *mp_opt)
+ {
+-	u64 new_wnd_end, new_snd_una, snd_nxt = READ_ONCE(msk->snd_nxt);
++	u64 new_wnd_end, new_snd_una, old_snd_una;
+ 	struct sock *sk = (struct sock *)msk;
+-	u64 old_snd_una;
++	u64 snd_nxt;
+ 
+ 	mptcp_data_lock(sk);
+ 
+@@ -1133,10 +1133,14 @@ static void ack_update_msk(struct mptcp_sock *msk,
+ 	 * more dangerous than missing an ack
+ 	 */
+ 	old_snd_una = msk->snd_una;
++	snd_nxt = READ_ONCE(msk->snd_nxt);
+ 	new_snd_una = mptcp_expand_seq(old_snd_una, mp_opt->data_ack, mp_opt->ack64);
+ 
+-	/* ACK for data not even sent yet? Ignore.*/
+-	if (unlikely(after64(new_snd_una, snd_nxt)))
++	/* The active-open state sync can defer the snd_nxt update. Do not
++	 * accept an ACK against a reversed interval, or beyond snd_nxt.
++	 */
++	if (unlikely(before64(snd_nxt, old_snd_una) ||
++		     after64(new_snd_una, snd_nxt)))
+ 		new_snd_una = old_snd_una;
+ 
+ 	new_wnd_end = new_snd_una + tcp_sk(ssk)->snd_wnd;
+-- 
+2.53.0
+
