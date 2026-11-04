@@ -1,64 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793809670;
-	b=lJPH1AS2+CDi1+zWx00ko8QBt/Ea8s+uxpquZ9JgtvNnzTc84qzJn9fHfat+VMRBhj+F
-	 3ZcA90/uxFldOCN5gLXgs069p+KSa6MfcpKTTWzLS40c/pu4M94RrNkScTa1JVipDnpiE
-	 JIDds7fnoh4EMiqCXb76918RJTzJPM7DVp2tLKOqUpvlqeslddDWe7XEa8At0sRIQDREP
-	 qpvHDo4cyLiymFKKbxCPSH/aHBVSQHqAnRyKQTCdD4ZUxG5fmBf4z0VqsIX2Tb75zjkpf
-	 KYuiVhXAMsZNRHKzDvBFc0I5UhXt0YzaQ6x9K95qZ6Dil+ZE6+bH2vX016ln1I+sV9A==
+	t=1793809743;
+	b=nqW94TKZ4KnOCR/ZvSiv3IjS/Y6Hb7j7w6zQKR3d6wcd+wjl6DUtvQJkYuUWqXzSeoFd
+	 jQFir1bTCCGMyYTiBc+1zu37lVnGl9wfPkfxkoZP7S91xJHAzQIGKRxiZZjOHl7UmcB1i
+	 hPI463j/sg21xdoPCaYTaQ8sFimlMUOyiPWXp+aCPpTDlf8XtTo32pWfU6XrgvOrh90fi
+	 L6CceRdo/jeg/jvDSYWlmloMMd34aQE/fbhvth/U+m/wDDxsBAUHcJwF4ZHFzJaYP4ofP
+	 NLHV42CD+XE02KTh2i9Wq6T5bwHCz1JQaWPZBT+OT+YXSBwVcF/YY0aoZ9z1p8p0CFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793809670;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=cu6cV1RAJXT2pjkVd/3sugyxa4+64+REz3NN248psQg=;
-	b=cqzPCIH9vn/YUJdrS/iKmRHxoKXd1VV15cHFlKUg+WnwPvGUqRMCB0dlqqmewA6B3mFt
-	 W6R9Lu7xfyGpYjvikv9jCcwPWSLx6n5BR9XA98kpTqzofXi+4j9AC9xbXEObE8HFQx0UT
-	 XOdJoDzzjDWlmlcVp6EBoherFQUUns9jozWtuGH7epky/0fXw8F9lzh7f/zXgWJFgEdfa
-	 mnobnMnp9OILZvyLS9Pj84UwSw6+gQ3PKf+Gny9+k4hGoeI9V0dxblaLea8eXZtjI51at
-	 knFjPOvC7DdqJM1LsrKPggHSvr9RrnQA+DJSbnFqd5J6IV8eHL2wZA4d2sf9GDpJ9zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793809743;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=aMXCCZD/Ct0GmViTFWPgT1+QbEU503C2HJaGHUQ7IDQ=;
+	b=grsvDmMmdzNk77jcNbMeesIaHueGB+VJy7W/T4feUuRX+TeBArzxW2/NGgzJ+VYWqXzw
+	 nU4zhgaVSMZWMjXIhHplgxBmJh03S94g4MwAjDwFzmRgXlar4dNf8hBYuN7p4rlJtcnqJ
+	 V77DZz0wBJKEWhsbLUEPoJFQ86UNpjP6Qf+tm9yihk40b3RDxm+Fu1jf5sxfjWDQvyGAR
+	 P+dfTAwBX9F/49E994HG7xyGdtwTkpegt6EJYv1W/OlHQ95e19pelIdtsSeBwWcZbkOxj
+	 AyZhhDi05divmwmnv27+p26TeEZLaj2zpCNkstCCBFaq6xJQcQG4t3zRo1Ug+g6g3ww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=v4+34glr;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jQy3xh7A;
+	arc=none smtp.remote-ip=209.85.210.197
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79074606A31B;
-	Wed,  4 Nov 2026 16:27:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79074606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05D2606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:29:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B05D2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=v4+34glr
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=cu6cV1RAJXT2pjkVd/3sugyxa4+64+REz3NN248psQg=; b=v4
-	+34glr1t4efCu4wh7nYrRIP4EMSfh4EX5rLzIYRLzznVOwZRJaELDFIIcAjLm8WSvMwVyyprsAkGj
-	wShTGLtjFMM2mO7gM/6gBEyWSq9TRnaP8j0DzPZPNdGyHKTMKzY/bC+RxO9LjeB7/wQ+4s7d7YEDm
-	PDPTg/oV0OSAsUI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOdpn-00ELsb-IL; Wed, 04 Nov 2026 17:27:35 +0100
-Date: Wed, 4 Nov 2026 17:27:35 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: c45: select 10BASE-T1L type when forcing
- 10 Mbit/s
-Message-ID: <fb774957-6e00-4d04-ae40-23e286cd691a@lunn.ch>
-References: <20261104152534.1425241-1-iustin.stolniceanu@analog.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jQy3xh7A
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a0592d4539so1358115b3a.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 08:29:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793809741; x=1794414541; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aMXCCZD/Ct0GmViTFWPgT1+QbEU503C2HJaGHUQ7IDQ=;
+        b=jQy3xh7AM/EpJ8ATzYgmP7dFHvpCNxiEcvtsoX+LA4ZgGtE1DLTwsP8YI0/NT1Bjr3
+         /ZBNo66ol0FL/xV9BqtXLoMGuZ9iQglymDGHkRXyojgzgVSiK8Ct9yB03L+hB4WXY8ij
+         y2z7hNJ+tRaKDaCj9TltXJI3Zrim46uy/MNzBtQ0TiBlaNxejSHV7T03dNwRX1MNmlNh
+         HF8WbCU1icygo4kLXZ3JjnwDFgDcq0M1/hJLDeZ9BTYpqOr5NMB0+pNjpa2nnJR8HGKr
+         sqO1z/PDUQdD2q13Qn2WxRGr0w+VlPImMSY3L0sQpHOiQxj6AjS3dFJeHzacP1AD860F
+         mnAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793809741; x=1794414541;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aMXCCZD/Ct0GmViTFWPgT1+QbEU503C2HJaGHUQ7IDQ=;
+        b=tiGuH52OJ/9zvrK+rLyD749Alarfnb/9ohDuRJZOAmbhmz0wzrDqn69IBEjdGgLnKu
+         Quwc2SlpBtao5JPhAn03rCzzFJl8/Y54tBEoP+Oq93fTeqsXHvq1DxMrTWfJHW+emKKJ
+         OPhf9ZxYUAmomYzTgjW/sYuHgJZn15Tp9KH01VYOlgAjfjs5bhLxMLGH8hv+lOYCDLZ3
+         y+T1jMPO3UJSRbzDnw8UJlGgjtMADykmhZiWMtJ+AC1cOr5x4KqCx7Nv/yGFvUOyfsGA
+         Pf+T/AGvcnMr/qucJ1G7FZvbv6zk9Zhrbphxx9Hof3hY57l1NsqZcQoNfcSsWO+G5jLM
+         VLFA==
+X-Forwarded-Encrypted: i=1; AKwUvBxR7oW7aIPedNtp0m+xZTdX6vOx7i16V/8n0rbjcURKIOnKWxaraoGcob4Yv6h1wwe50aH6PyE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+D6vkCSHUde6/uMi6jV02l+XO39/DQn5LmIyZdLm+SHoNt7SZa
+	pvdKgNL1wGKLKGuY12PC9pSsjaOHL8BPj+Wz3R0yQf5WMg0OWkB+XxWxpx3XnOtyikWK08iGUVY
+	FLOwDlA==
+X-Received: from pgdo19-n2.prod.google.com ([2002:a05:6a02:6213:20b0:cd6:db2:b293])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0b:b0:3e0:e242:5ff
+ with SMTP id adf61e73a8af0-3e928a29f0bmr15815926637.56.1793809741292; Wed, 04
+ Nov 2026 08:29:01 -0800 (PST)
+Date: Wed,  4 Nov 2026 16:27:56 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,47 +75,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261104152534.1425241-1-iustin.stolniceanu@analog.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261104162858.991930-1-kuniyu@google.com>
+Subject: [PATCH v1 net] af_unix: Remove gc_in_progress check in unix_peek_fpl().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Qihang Tang <q.h.hack.winter@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
->  /* BASE-T1 PMA/PMD control register */
->  #define MDIO_PMA_PMD_BT1_CTRL_STRAP		0x000F /* Type selection (Strap) */
->  #define MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000	0x0001 /* Select 1000BASE-T1 */
-> +#define MDIO_PMA_PMD_BT1_CTRL_STRAP_B10L	0x0002 /* Select 10BASE-T1L */
->  #define MDIO_PMA_PMD_BT1_CTRL_CFG_MST		0x4000 /* MASTER-SLAVE config value */
+unix_vertex_dead() and unix_peek_fpl() are synchronised
+with unix_peek_seq to prevent GC from purging a live
+socket's recvq.
 
-I don't know where STRAP comes from, because 802.3 calls it type
-selection. Version 2022 defines:
+unix_peek_fpl() skips the synchronisation if gc_in_progress
+is false.
 
-1 x x x = Reserved
-0 1 1 1 = Reserved
-0 1 1 0 = 10GBASE-T1
-0 1 0 1 = 5GBASE-T1
-0 1 0 0 = 2.5GBASE-T1
-0 0 1 1 = 10BASE-T1S
-0 0 1 0 = 10BASE-T1L
-0 0 0 1 = 1000BASE-T1
-0 0 0 0 = 100BASE-T1
+However, on weakly ordered arch, GC might have already
+started working while the write to gc_in_progress is
+buffered.
 
-It would be good to add all of these.
+This does not occur on x86.
 
-> @@ -182,6 +182,10 @@ int genphy_c45_pma_setup_forced(struct phy_device *phydev)
->  		bt1_ctrl = 0;
->  		if (phydev->speed == SPEED_1000)
->  			bt1_ctrl = MDIO_PMA_PMD_BT1_CTRL_STRAP_B1000;
-> +		else if (phydev->speed == SPEED_10 &&
-> +			 linkmode_test_bit(ETHTOOL_LINK_MODE_10baseT1L_Full_BIT,
-> +					   phydev->supported))
-> +			bt1_ctrl = MDIO_PMA_PMD_BT1_CTRL_STRAP_B10L;
->  
->  		ret = phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_PMD_BT1_CTRL,
->  				     MDIO_PMA_PMD_BT1_CTRL_STRAP, bt1_ctrl);
+This is an unlikely path that happens only when AF_UNIX
+fd is peeked so not worth complicating.
 
-And this should be made more generic. Maybe add a helper which takes
-speed and supported, and returns the correct type selection. We don't
-yet have 2.5G, 5G or 10G BaseT1, so you can skip those.
+Instead of adding memory barriers in unix_gc() and
+unix_peek_fpl(), let's simply remove the broken short-circuit.
 
-    Andrew
+Fixes: e5b31d988a41 ("af_unix: Give up GC if MSG_PEEK intervened.")
+Reported-by: Qihang Tang <q.h.hack.winter@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+The reporter reproduced it on arm64 QEMU.
+---
+ net/unix/garbage.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index a0b515354e8b..fbeabfb0db34 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -329,9 +329,6 @@ void unix_peek_fpl(struct scm_fp_list *fpl)
+ 	if (!fpl || !fpl->count_unix)
+ 		return;
+ 
+-	if (!READ_ONCE(gc_in_progress))
+-		return;
+-
+ 	/* Invalidate the final refcnt check in unix_vertex_dead(). */
+ 	spin_lock(&unix_peek_lock);
+ 	raw_write_seqcount_barrier(&unix_peek_seq);
+-- 
+2.56.0.385.gac671c819a-goog
+
