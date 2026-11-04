@@ -1,70 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793792541;
-	b=S5ywK5lp/q9qJvR4kd1/SU7uxLnSkwGCz/xUjYfhKvpimn/pL+Kdz1duAPkVb/ACITRZ
-	 vRBjAKt8t0W6+nUXRATMA34rFyarT6++hl/i4rBwGY1z1FIWHGR32lucX7TQ15CkGS7Ng
-	 e+ae3daSHiPzdlNt7L4ye9Fs1b+QHR1Xn7YbnKcFFkQ0iolKCHLo+UVKaQtleA6XoWQ/D
-	 coWqtLMhKsK49CS5xETkfuSVfE0Xgi+2bL11F9pc2efVs04WpUb1Ovog1sATSly745kHp
-	 QE6qEJC6K/LACGShN+HZ160Y98loGhBm/kGsGRnRNrf+T0ZDGUlsuB4QJsxS9SnMkPA==
+	t=1793792631;
+	b=IDVH9ZTMofV/LV37WIuSSe5KrBFnwb0xY0So7MGgTp50N6MguYIgc6s8wshxhYI/dvjE
+	 hRN0VGRUTecXNLE2IxwoDOOnGBh2e1ZYt7LDtadNWh7JC1NbQXPnp0/5OJvqwdvuUtXzU
+	 kXU1IDWBrBqarctqWXpVEp5hLfh3lwvHNp1kfjzpBScVNJR7O/DwveE5B7B93Qoh3SBDP
+	 iLleye9qrKskzl/+AzawPPZX4neNG95r6LQMfdlFpTYme3LzJwtO4sx2w3UCIbWMptSUb
+	 RepIz43QQ3OkRbb8LL69B9xPsIBwTLeDa4IewOyphhXcSnGotpxDGSLmm1CU54d0eFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793792541;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Status:
-	 X-Spam-Checker-Version;
-	bh=D5UEf4Kw0Bb3Mtn0doCb3H9WcV9PIrFjslUwc2RO04Y=;
-	b=Sj/pTCvNbl5S9bpyBdfzTSjzo97zRf8H3yfaBsvE31+pjnxsb2BmkU2k3sA/lSyJxa7r
-	 1MCDLk4DGkD3i/YhCk6M2NOjKRZjxVFsqsN5WWvcojB06xJEB0QguzaYcGd0dsNpg6vbt
-	 oRtYBkht23AXNqDuie1qRQnZMVZxX6184nMqbK6yFTnJHiBogf0KkG7N2DlaX4xltUb/k
-	 wWruL+iNLxcjf+eUI+woQCqBi35hGnsZ+pwM2AAh1OjAz4xKZoxcUmxuf/6O1yI05ZSDP
-	 rZhu0eJpW5/ukHOpTipKTy3P0bHniOBfypRWBmFEsEJHZhD3FT4Fhdph1BSq89+LsPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793792631;
+	h=DMARC-Filter:DKIM-Signature:Message-Id:To:Received:References:From:
+	 Date:Content-Type:In-Reply-To:Content-Transfer-Encoding:
+	 X-Original-From:Cc:Mime-Version:X-Lms-Return-Path:User-Agent:Subject;
+	bh=9nOS00/4oT0JM3BaBnrKdFTphpzGiSyZVFHCo5yrkhs=;
+	b=aTKLVNAyWMuNfwc2tqikUWAKYj1BU6snAuSkVMxGBUp6Xiv78kCv8yBdyowBYrT9+4c0
+	 H5oy7cNxTxFBnTcCkT4Nq1xUnMFguCxQuewnXHJTq726S3MKonoO9IdWzrG0Xlf4k82Fp
+	 pmZE4dBH5N3uXtMJE3gEKKfe4g9GvpkGhn2XggLCOtZkdb4J0oGeEKtob0lBTZvY4fMxw
+	 npQOoLBIQlEBUgHoYYVdZUq2miCVpI7GNDodB0lnntL0Nb8kG4GBNPeo4re+IVCzr6rjm
+	 2OdVi8PMBxH2fWTiaBd9Do6xHjUzcG+X+hauEEuRo9XLhV/gY6B1pTxWKtcND0h6jwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=VOOQQb3a;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=yunsilicon.com;
+	spf=pass smtp.mailfrom=yunsilicon.com;
+	dkim=pass header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b="MtK/nnnj";
+	arc=none smtp.remote-ip=209.127.231.36
+Received: from va-2-36.ptr.blmpb.com (va-2-36.ptr.blmpb.com [209.127.231.36])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id D8853606A326;
-	Wed,  4 Nov 2026 11:42:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8853606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD127606A32C
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 11:43:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD127606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=VOOQQb3a
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793792538;
-	bh=D5UEf4Kw0Bb3Mtn0doCb3H9WcV9PIrFjslUwc2RO04Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VOOQQb3aQKUnG5gMkSe9fPtzk6DslIEZeWbQXi32J8dkTEGJmTSDelZMSa5MQes2F
-	 Km5x462pEFfSHRRwkpK6mZF26ZoZw/ndbS4/+E0HoCVTBGrFPz2oa7nq+I18U9wM44
-	 2Xkkd3Qpq6APUzt25WOPGJXrCYnIrgolBNDkibREioCTyzlUAMCjGGdN/KkdFt4KPy
-	 GzQHyJBHm7PgbabDICeCBpM+msZwqigouoImmq/mSguoCZ8MbACSBo5xL5/zNdzd8r
-	 hwgVgyTbvHDilYzF3Oz6klk8lBIrN7MNKub+Z1tB2+Pbv/2S9KdcxHhVZgV0uKXs/A
-	 mb3MCypV3t/ew==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 1750460055;
-	Wed,  4 Nov 2026 12:42:18 +0100 (CET)
-Date: Wed, 4 Nov 2026 12:42:15 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: =?utf-8?B?Sm/Do28=?= Silva <jgc3silva@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sven Auhagen <sven.auhagen@voleatech.de>,
-	Oz Shlomo <ozsh@nvidia.com>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: flowtable: do not clear the offload bit
- twice
-Message-ID: <ausaF4X_RieUIjxg@chamomile>
-References: <20261103-flowtable-offload-bit-v1-1-20f5952c00a1@gmail.com>
- <aunoySCHzqwI1QIz@chamomile>
- <f909ccfb-0bad-4ad2-a5d7-d836f4bbc958@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b=MtK/nnnj
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1793792626; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=9nOS00/4oT0JM3BaBnrKdFTphpzGiSyZVFHCo5yrkhs=;
+ b=MtK/nnnjbdaeOpcgGZO4J+1NB9HjOGugK+u/DR3v3usbabbH0Xxcn4c4bnBKwyWeGfgy8d
+ 3DaObYDhWS4Dnd5B+ysAaWCtSkOdS/dDNOH9JCL40JqwSbEZ3Ez5bcD2zSxXSWY6P8MnL3
+ LOv+ElHS2IpQWjhg+r9/gPtXukk4NCeeIAnQxi/wsSrVskM8KfaVlH5m2MBk3xWXOvS8Or
+ XkIE6/PacORfaalQadAmCunVLAsnPsV/NmZCINe4aH24vCCPe+zZesv8zrNvdMe0MELm+4
+ hgI9J/2N/UFSF+8kcon3UutnPRf1tlLDdJaqSND0+8yjJ80S7OKDZFk9WnzIEw==
+Message-Id: <e63df858-d9f6-4d1c-8802-9a8b83c9f904@yunsilicon.com>
+To: "Junxian Huang" <huangjunxian6@hisilicon.com>, 
+	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
+	"Leon Romanovsky" <leon@kernel.org>
+Received: from [127.0.0.1] ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Wed, 04 Nov 2026 19:43:43 +0800
+References: <20261012114352.2471317-1-tianx@yunsilicon.com> <20261012114356.2471317-4-tianx@yunsilicon.com> <47c82da8-99cd-ec81-f264-d270fef057ee@hisilicon.com>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Date: Wed, 4 Nov 2026 19:43:42 +0800
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <47c82da8-99cd-ec81-f264-d270fef057ee@hisilicon.com>
+Content-Transfer-Encoding: quoted-printable
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,89 +68,136 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f909ccfb-0bad-4ad2-a5d7-d836f4bbc958@gmail.com>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26aeb1a70+954ab2+vger.kernel.org+tianx@yunsilicon.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/15] yunsilicon: add the command queue
 
-On Tue, Nov 03, 2026 at 06:56:30PM +0000, João Silva wrote:
-> Hi,
-> 
-> The fix was LLM generated but I wouldn't say it's just "for correctness".
-> For some context, this issue was hit while developing hardware-offloaded
-> flows for the RTL930x target in openwrt. There was a point in development
-> where this was causing flows to pile up and eventually exhaust the TCAM of
-> the PIE engine on the switch.
+On 10/13/2026 11:11 AM, Junxian Huang wrote:
+>
+> On 2026/10/12 19:43, Xin Tian wrote:
+>> Add the command queue that is shared by the ethernet and RDMA functions:
+>> the request/response rings, the command work handling and the device
+>> initialisation sequence that queries the HCA capabilities, the GUID and
+>> the message opcode table.
+>>
+>> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+>> ---
+>>   .../net/ethernet/yunsilicon/xsc/pci/Makefile  |    2 +-
+>>   .../net/ethernet/yunsilicon/xsc/pci/cmdq.c    | 1247 +++++++++++++++++
+>>   drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |  310 ++++
+>>   drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |   18 +
+>>   .../net/ethernet/yunsilicon/xsc/pci/main.c    |   55 +
+>>   5 files changed, 1631 insertions(+), 1 deletion(-)
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+>>   create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+>>
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/=
+net/ethernet/yunsilicon/xsc/pci/Makefile
+>> index 81b65232e..656cdffa1 100644
+>> --- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+>> @@ -6,4 +6,4 @@ ccflags-y +=3D -I$(srctree)/drivers/net/ethernet/yunsili=
+con/xsc
+>>  =20
+>>   obj-$(CONFIG_YUNSILICON_XSC_PCI) +=3D xsc_pci.o
+>>  =20
+>> -xsc_pci-y :=3D main.o hal/andes_impl.o
+>> +xsc_pci-y :=3D main.o cmdq.o hw.o hal/andes_impl.o
+>> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c b/drivers/ne=
+t/ethernet/yunsilicon/xsc/pci/cmdq.c
+>> new file mode 100644
+>> index 000000000..48832b26d
+>> --- /dev/null
+>> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+>> @@ -0,0 +1,1247 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (c) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd.
+>> + * All rights reserved.
+>> + * Copyright (c) 2013-2016, Mellanox Technologies. All rights reserved.
+> Why Mellanox?
 
-Good, but that is not an out-tree driver?
+Hi Junxian,
 
-If so, this should follow nf-next.
+This is intentional=E2=80=94the code is derived from the Mellanox driver, a=
+s Leon
+noted. I'll keep it as is.
 
-Thanks
+>> + */
+>> +
+>> +#include <linux/module.h>
+>> +#include <linux/errno.h>
+>> +#include <linux/pci.h>
+>> +#include <linux/dma-mapping.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/random.h>
+>> +#include <linux/kthread.h>
+>> +#include <linux/io-mapping.h>
+>> +
+>> +#include "common/xsc_cmd_api.h"
+>> +#include "common/xsc_cmd.h"
+>> +#include "common/xsc_core.h"
+>> +#include "hal/xsc_hal.h"
+>> +
+>> +enum {
+>> +	CMD_IF_REV =3D 3,
+>> +};
+>> +
+>> +enum {
+>> +	NUM_LONG_LISTS	  =3D 2,
+>> +	NUM_MED_LISTS	  =3D 64,
+>> +	LONG_LIST_SIZE	  =3D (2ULL * 1024 * 1024 * 1024 / PAGE_SIZE) * 8 + 16 =
++
+>> +				XSC_CMD_DATA_BLOCK_SIZE,
+>> +	MED_LIST_SIZE	  =3D 16 + XSC_CMD_DATA_BLOCK_SIZE,
+>> +};
+>> +
+>> +enum {
+>> +	XSC_CMD_DELIVERY_STAT_OK			=3D 0x0,
+>> +	XSC_CMD_DELIVERY_STAT_SIGNAT_ERR		=3D 0x1,
+>> +	XSC_CMD_DELIVERY_STAT_TOK_ERR			=3D 0x2,
+>> +	XSC_CMD_DELIVERY_STAT_BAD_BLK_NUM_ERR		=3D 0x3,
+>> +	XSC_CMD_DELIVERY_STAT_OUT_PTR_ALIGN_ERR		=3D 0x4,
+>> +	XSC_CMD_DELIVERY_STAT_IN_PTR_ALIGN_ERR		=3D 0x5,
+>> +	XSC_CMD_DELIVERY_STAT_FW_ERR			=3D 0x6,
+>> +	XSC_CMD_DELIVERY_STAT_IN_LENGTH_ERR		=3D 0x7,
+>> +	XSC_CMD_DELIVERY_STAT_OUT_LENGTH_ERR		=3D 0x8,
+>> +	XSC_CMD_DELIVERY_STAT_RES_FLD_NOT_CLR_ERR	=3D 0x9,
+>> +	XSC_CMD_DELIVERY_STAT_CMD_DESCR_ERR		=3D 0x10,
+>> +};
+>> +
+>> +static struct xsc_cmd_work_ent *xsc_alloc_cmd(struct xsc_cmd *cmd,
+>> +					      struct xsc_cmd_msg *in,
+>> +					      struct xsc_rsp_msg *out)
+>> +{
+>> +	struct xsc_cmd_work_ent *ent;
+>> +
+>> +	ent =3D kzalloc_obj(*ent, GFP_KERNEL);
+>> +	if (!ent)
+>> +		return ERR_PTR(-ENOMEM);
+>> +
+>> +	ent->in		=3D in;
+>> +	ent->out	=3D out;
+>> +	ent->cmd	=3D cmd;
+>> +
+>> +	return ent;
+>> +}
+>> +
+>> +static void xsc_free_cmd(struct xsc_cmd_work_ent *ent)
+>> +{
+>> +	kfree(ent);
+> One line function is unnecessary.
+>
+> Junxian
 
-> Thanks for considering.
-> 
-> João Silva
-> 
-> 
-> On 03/11/26 13:59, Pablo Neira Ayuso wrote:
-> > On Tue, Nov 03, 2026 at 09:52:56AM +0000, João Silva via B4 Relay wrote:
-> > > From: João Silva <jgc3silva@gmail.com>
-> > > 
-> > > An expired hardware flow remains in the flowtable until its asynchronous
-> > > hardware deletion completes. Teardown clears IPS_OFFLOAD_BIT, so a packet
-> > > can create a replacement flow referencing the same conntrack entry while
-> > > the old flow is still waiting for deletion.
-> > > 
-> > > The next GC pass calls flow_offload_teardown() on the expired old flow
-> > > again, clearing the replacement's offload bit. More packets can then
-> > > create additional flows for the same conntrack entry. A pending hardware
-> > > work item can also delay deletion and expose the same repeated teardown.
-> > > 
-> > > Commit d2d31ea8cd80 ("netfilter: conntrack: fix erronous removal of
-> > > offload bit") closed this window for software flows by unlinking them in
-> > > the same GC pass and made the conntrack state fixup one-shot, but
-> > > hardware flows stay linked until NF_FLOW_HW_DEAD is set.
-> > > 
-> > > Make clearing IPS_OFFLOAD_BIT part of the existing one-time teardown
-> > > transition, alongside the conntrack state fixup. Subsequent teardown calls
-> > > must not alter the offload state now owned by a replacement flow.
-> > Let's better target nf-next for this, this looks like LLM triggered
-> > for correctness.
-> > 
-> > Thanks.
-> > 
-> > > Fixes: e5eaac2beb54 ("netfilter: flowtable: fix TCP flow teardown")
-> > > Signed-off-by: João Silva <jgc3silva@gmail.com>
-> > > ---
-> > >   net/netfilter/nf_flow_table_core.c | 6 ++++--
-> > >   1 file changed, 4 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-> > > index 0d72dc8ae47a..709b55b74cc7 100644
-> > > --- a/net/netfilter/nf_flow_table_core.c
-> > > +++ b/net/netfilter/nf_flow_table_core.c
-> > > @@ -398,9 +398,11 @@ static void flow_offload_del(struct nf_flowtable *flow_table,
-> > >   void flow_offload_teardown(struct flow_offload *flow)
-> > >   {
-> > > +	if (test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
-> > > +		return;
-> > > +
-> > >   	clear_bit(IPS_OFFLOAD_BIT, &flow->ct->status);
-> > > -	if (!test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
-> > > -		flow_offload_fixup_ct(flow);
-> > > +	flow_offload_fixup_ct(flow);
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(flow_offload_teardown);
-> > > 
-> > > ---
-> > > base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> > > change-id: 20261103-flowtable-offload-bit-f15bfd1d38ed
-> > > 
-> > > Best regards,
-> > > -- 
-> > > João Silva <jgc3silva@gmail.com>
-> > > 
-> > > 
-> 
+Fixed in v1.
+
+Thanks,
+Xin Tian
+
+
+>
+>> +}
