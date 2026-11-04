@@ -1,62 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.62
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793821611;
-	b=iMc4+xcABcpD/9o5F+gQ2SVbk2plJ8K6fU2lgLMT20JP3fVw8J1roE3fT+XqZkqTW/1k
-	 AnpAHTshD1pCTSJSZyA64/KS7HvEHo04IinDK636oFACb+A6oNve3i8x+IPgWyeUkbyqJ
-	 89dFvp2DHPorHWIsT6wmUTtuQXVWJ3+fUa4N//5no3F5+HJZ9F2aIt/XS7+XW693Jc5oX
-	 ovvL//8mAP9B/tK9XUH6deiDy1GY20yEtYd19M3FjckAGFGg9EmpkY+F20zghlzZVE0xh
-	 YLXZyUqdV4Tn2HuaaYt0WvOahWDMBnzHeJJQcOLjAcdPG7712kGiIGlzoH755+3xH+Q==
+	t=1793821628;
+	b=yRI6Liarzp3jK275sDuF+hJW7ivNC8t1+fgMtEewuTb7QiMRxDErQdnzNgbarb3kACPd
+	 3ugea0oiLlLmmzA42k5hsUP51NBp/oIlGDbRaMV507WL7exmqWaBos7FjESQjIXGMnHy3
+	 DtOAbc05/7F69p2DHPK1bznfyjc6StHfpj7GmL8vx2WRMRp918AKDfqxRs/w75etSr8lz
+	 pEB8HosXIvVttmtx79r+/575y8rV5h90eRPA9e5QlOaVQ3eiAoYiTlVhz98XNsb+VDWw+
+	 qiKsE1D0zA4VnjQvGY9CsNV5TSItj3PEfczHryCbo7xKuuRhFWDgpzywFFgR8/4GSpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793821611;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Rspamd-Queue-Id;
-	bh=5mMtQ1ykVc8hLzz2/8sqp19SKRaqnGNJ8R6YMinTtwg=;
-	b=bptOKJ6Blq7Qh7g8bvb6IxVkdTnxDkZnEtXP7jHw27obKl3KBA4wP4dRKrh+/qWwX/wn
-	 gKVbZAdeRbNIgapxrye7hLAKBh5wBC6gpUCMQJx7tCYlD4KLm+0TPCmPkfoU2/z2Z3t8K
-	 /YjRWZQYe2aJdL5spp+L/6OGupcOejmWpVFK8fTXM5yZKcaTvMXRvGAq0xKKIXFTKRBTE
-	 ZdWJLVArgGtASTqa8vDYQ3Xc+sOBYPNQF/qE5YOfeQuchD9YQfIF5gVwKTkvzGpzRWWR+
-	 C/k57oLLC9+znFHzAlYU3eTkiz/PJgGFxI8faF6RhuAZs3r8vqj4yA/OPBH8qwjAPxQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793821628;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=zft31zEOyoxpoaQra2tyBUnsx6CBcNbPccBHjIcKUVg=;
+	b=jfor4nVauZqrwusaRWFTqlKuJ1C1wi1P2F6gKGuW9Qwnf6pQ+bqd1EuxBllqN6zsq0vV
+	 bCDpIwzRkQ5BR+c0QGrVWowsvOYMDrb8ZjaNKKbwNpOqPanGMt7GFWmjWyp+L5MlnzHHT
+	 J5xSBCwDtZTSqa1obXHya2YirFvbGUYccKogEBYoeWmJXu5Kw4iKjkjLR7QI854SbImMg
+	 5SVJ8OcgWBW3MWtzfCHHCpBVw8ICenM4oC9COVqOTKF+vHaMuk2TVckp4L3MD7WKO9FwL
+	 D7IR08g4DVQ/gH7huBoDfWrB9FZAxUyZR9u4ow/axoWhpZF6MniVjBc9iX+9R81v1DQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mandelbit.com;
-	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=NRxKGG1F;
-	arc=none smtp.remote-ip=195.10.208.62
-Received: from mout-b-202.mailbox.org (mout-b-202.mailbox.org [195.10.208.62])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RajwCGCh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE940608C9B3;
-	Wed,  4 Nov 2026 19:46:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE940608C9B3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62715608E3AC;
+	Wed,  4 Nov 2026 19:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=NRxKGG1F
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-202.mailbox.org (Postfix) with ESMTPS id 4jKbY920ZgzKnmR;
-	Wed, 04 Nov 2026 20:46:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1793821597;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5mMtQ1ykVc8hLzz2/8sqp19SKRaqnGNJ8R6YMinTtwg=;
-	b=NRxKGG1FlFJU0JKddYKfBWf+IlBopX9xQGcJjScOYCfQEpRyxTfXYn/MHAsXMhnx3avkGl
-	4Et5+naPtOW1dMERriWlbEQnNo0DzRvZRvwc5H8BNMQqU8OewOILlNzTU4z/6jppef2oEe
-	rGb10Y6/ZHa1iL98uNrNXyNLtkmalVPK2eqiBmNTtpQdegCuW/TnYufkHCs9JOBYIaR25X
-	Max+TSm2/XFkMp2bk7TS2EU617Jy/dVb6sjLPL53TQSDfo+LbshEGMUU6ogGo9RLnJqwpk
-	R6SrNqUGQ0srGOS9UK6J4R4Kyf1ZYpZMMWzyQyPgMX3Zg7SmtdFwYCwwPKAtKQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
-Message-ID: <f4bdb8b8-45d6-477d-bd7f-4ca4bbafef7c@mandelbit.com>
-Date: Wed, 4 Nov 2026 20:46:34 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RajwCGCh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A421F00919;
+	Wed,  4 Nov 2026 19:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793821628;
+	bh=zft31zEOyoxpoaQra2tyBUnsx6CBcNbPccBHjIcKUVg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RajwCGChuwyoqoZXwpUtB63CnfJNCXfYV3MXWhfQVc5Ev6XMozMwlvc6X98vleQyv
+	 f9HzBE4v113NX/e1l78y5ttqcWo69gQcs6Ww+sQGKZ3cLiPEcmIedv9Dr8Fupfzesw
+	 W2qdod9xWoMSOmx1XAyg2z9rNs/8Jv2qrPox1n/Zc4FZI6mKO77lTmc1CJ+0psYuJ3
+	 GAD2h5/aLL7ToIPisurMJ320J6bxgj0LUdPq4xrjzKapKKfnTHEzSVwuWV6kBmMycE
+	 p8oPLiWRZfJASR8Mhh1/kUIyHucEcqRy1EkK1gmQTe3G+tur6Iu40MBhi/iT5cSWMY
+	 VmRs6TTIcG5Ww==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <mason@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kara <jack@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org,
+	kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	jfs-discussion@lists.sourceforge.net,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sh@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	sparclinux@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-doc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-input@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 19/26] wifi: ipw2x00: let procfs copy in writes to the debug level
+Date: Wed,  4 Nov 2026 20:46:53 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-19-245e54e87116@kernel.org>
+In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
+References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,75 +114,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/mlx5e: Prefetch packets of upcoming CQEs in
- the linear MPWQE path
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- dtatulea@nvidia.com, cratiu@nvidia.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, netdev@vger.kernel.org, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, linux-rdma@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261103235823.536706-1-antonio@openvpn.net>
- <DMM0ADCEGAAB.2RFNF1ZI5TGWK@gmail.com>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Organization: Mandelbit SRL
-In-Reply-To: <DMM0ADCEGAAB.2RFNF1ZI5TGWK@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4jKbY920ZgzKnmR
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1605; i=brauner@kernel.org; h=from:subject:message-id; bh=SZl2laNUZYNGFN2sYGUP5fs3tBGCqMuq/D28k7CZWwo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97up6Oev4hMLPxsZ2136FuR12SNXk+zJzkV2eLvcbC +ML1Vevd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkxyZGhh+zNh/MzVMol5A7 Oltna15SsRRnwKr/s7+v+ix/vNn+yDaG/x5P3yxp3xP3fKd4vL9mjb/e893xlTemrnQuFzt//Ms bC34A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Alexei,
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and parse the level from that copy. Writes larger
+than PAGE_SIZE - 1 bytes fail with -EINVAL now, and a buffer that can't
+be read fails with -EFAULT instead of looking like it was written.
 
-thank you very much for the review!!
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-On 04/11/2026 01:39, Alexei Starovoitov wrote:
-> can we prefetch 4 strides ahead without the CQE, like gve_rx() ?
-
-Yep! I measured your version against this patch on the same system (one
-RX queue, MTU 1500, mean of 3 runs, gain over stock):
-
-                                    v1      yours    yours + shinfo
-   UDP 512B flood, packets/s       +39%      +35%      +36%
-   TCP, 1 stream                    +7%       +5%       +8%
-   TCP in an ovpn UDP tunnel       +36%       +4%      +34%
-   XDP_DROP reading the packet,
-     NAPI CPU cycles/packet        -38%      -45%      -32%
-   XDP_TX, cycles/packet           -35%      -30%      -33%
-
-
-It matches my v1, except where every packet becomes its own skb, like the
-records of a VPN tunnel (ovpn from a development tree here).
-In that case I got only +4% instead of +36%.
-Dropping only the skb_shared_info prefetch from v1 gives +5% there, so
-that line is the one that matters.
-
-Its position depends on the packet length, which needs the CQE, but in
-bulk flows the next packets have the length of the current one. So v2
-will be your patch plus a prefetchw of the skb_shared_info line computed
-with the current packet's length: +34% for the tunnel, the rest
-unchanged, no CQE peek and no state bit, and it also covers CQE
-compression, where v1 did nothing: with it on, UDP floods gain 26%,
-TCP 6% (-46% cycles/packet) and the tunnel 32%.
-
-> Pls add XDP_DROP and XDP_TX numbers.
-
-In the table above. XDP_DROP without touching the packet doesn't change
-with any of them. With the prefetch the XDP rates hit the limit of the
-sender (12-16 Mpps) before the NAPI CPU saturates, so I quote cycles per
-packet there.
-
-I'll send v2 with your Suggested-by soonish.
-
-
-Thanks!
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_module.c b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+index 15d9a5efb581..08cc0d7f57c1 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_module.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_module.c
+@@ -216,14 +216,13 @@ static int debug_level_proc_show(struct seq_file *m, void *v)
+ }
+ 
+ static ssize_t debug_level_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buffer, size_t count, loff_t *pos)
+ {
+ 	char buf[] = "0x00000000\n";
+ 	size_t len = min(sizeof(buf) - 1, count);
+ 	unsigned long val;
+ 
+-	if (copy_from_user(buf, buffer, len))
+-		return count;
++	memcpy(buf, buffer, len);
+ 	buf[len] = 0;
+ 	if (sscanf(buf, "%li", &val) != 1)
+ 		printk(KERN_INFO DRV_NAME
+@@ -236,7 +235,7 @@ static ssize_t debug_level_proc_write(struct file *file,
+ 
+ static const struct proc_ops debug_level_proc_ops = {
+ 	.proc_show	= debug_level_proc_show,
+-	.proc_write	= debug_level_proc_write,
++	.proc_write_buf	= debug_level_proc_write,
+ };
+ #endif				/* CONFIG_LIBIPW_DEBUG */
+ 
 
 -- 
-Antonio Quartulli
-
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
+2.53.0
 
