@@ -1,80 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793776567;
-	b=siKptpaNZ74/+a1LogHSyMjwphHnk90clNqAc9XSgXhoOhgsjF22nQJYfxD4d8eO+2e+
-	 IAz9ImpAi+pQ3VqKHyQAcwgycuS6DVvveozNuT3xsUKSoDBmRpTgVNzOqJwHDd0OeAZhF
-	 08NLuEF5UrWU0JasEvpJvNulPP1XJv5jrQolghyu6vGQxfwhIzKVXhWjFWKKXCvJIGw1a
-	 Fd6KXp1Q/qdIpugrF2XXxESf/EgDj2Rl3gDNFZ93R5aR/olYLw9kp4Z5diKZrOjdnC1X0
-	 I9HZBgsZbPEszz+r1JilYLs0AubZfE0eIPWoIi3N+Hy40MZecnqM1gslZsqxcVFw8sg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776567;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=JzJ2sm0HA7zLXXojD+Y1kRVDhkZ262+huPCc7+3eLx0=;
-	b=xUTsqguRlmWNUe92OGzRtv5wjaEmK0FCGUDPStCuWfGkQncw6wB8nlsnbrfzT/dh0GVa
-	 6/pXOjB127KeGzgrjjiOkvved48yY88jxA4DeBCFbSl5yi3t3OWQ9mgnku2KemefneUgw
-	 ie1tyCcPfYn3erfQJeyoBoO//SvHc0SFbbflw3mSufIlthENqbAMd8cMvhq8F9PY8ay+B
-	 kduB6Md43LEBy/QXaNf/ytyrqMI2a3YtoqNbBZUtC/y1Sbp6XkrqFJFKXW4F9V9NuSJhP
-	 ACEMVGU/LoCEBRJYF/ThhTxLLrM6EtDD8LylYe84xuellcNvEt1bu89RMDLH8XACvSg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQGvag4+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793776822;
+	b=TUJYkG0X16ezO0HctCDK8fgBw05cRf7/5a7bAtqgFyQVCM4PRFs+Qf82b7MslBkdhNfp
+	 AMxcuAs/mYwjlx+PXnIhtiIpCd0FmggLeIRoPkknbtIhVIsXjS26pyfMF6UfsLCRrpzY2
+	 Q1g7a6//DuREQFWr/AqJBwGfbempXcqVEKqKE+dDzsCIOrSNYbl/L9KBV7zWLlCfNYcby
+	 UwNYniHJa/WZ16aPKvCpmGn/nplyEj3CwdFNd+gRoBPnkQv6+R8MCJGColXZzgf00ovkt
+	 4lt1vV+a9hUvTlrEB4xLPrlJJhP3wQuKNQr6irhaJTATRWw7SIHbMmaF6v3nCQuN6dw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776822;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=1Ekpcp5TWZq0p4aqoWrcejQKlqmgI+qIHdFwhI1gIDo=;
+	b=ZVTveoq+rATH/RmJO6VcB+InGFOcj1Jek3OAffO8h2NznchG0Q/HiNuK2T8ogujMN+Gh
+	 1iwiau0prYYFmwW2HANKJwwQKqPDYCu99iNKoWhQktvo67y6GVwjOWFMM91fBjS497uY+
+	 YBUA+hHc19h5/K7WGd+YYbjc95aWMYMo6YJC5KvZrdXz1Blp/kfexTS3YT70SvMOIlFTn
+	 BJnZIIL2fnTEcPryDUzfCIOOqr02QlQ+eLNZEepx6i4smCo4h8hqdlxVZmE8sAuvrJ5Dw
+	 N4WB2UzW3y8a1oxv89RZa2HlyHvjh4IK4JyBDyvP5lHoRT3737mzkTFRVkLSa38RQMQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LA8K4a0v;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5122606D802;
-	Wed,  4 Nov 2026 07:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D99606A332;
+	Wed,  4 Nov 2026 07:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQGvag4+
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793776566;
-	b=pYzQf29xVYYd/D1tJtSEO56B0PxEZS1RdqeLYTV27FWq/eSSTJcdv4eImSmdjuYlI78I
-	 8h2lvfaUSQjB2hyn949mUQIVSigWcgVOf1YuhwympQeYnXzQapIVyjUqir2cZvEbgm0ze
-	 hp5v+78OgCPam7N9t1tjZhd88/FvjHSuOooaTP/ZHN2RGauBbozNtAvULpeFEfqDDg9DB
-	 3JsDT4LuVUALc6kCdyWi4kBckky7GRFtY0mLhqN5S1NnS+KgrjwSqftJPHSVHwFPjVoMX
-	 GrssQPCd7ihxchcCWSfugAl2j3HhGamG/YvllsrdhM7nE/W6/3wXUlWZ8JRpIO5GLHA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793776566;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=JzJ2sm0HA7zLXXojD+Y1kRVDhkZ262+huPCc7+3eLx0=;
-	b=EP8YHS/gsejHYDMZBC1oov0OcLNVZsLOljwsIlylI2RWAilJ0jcGcr8ocx3FDYv8kidi
-	 WfxP3cu7RTv8RTw/u3wDEW6Vh/+XIlglPM/DdswXau7s7nArK6l92e5X1bEd2KmBzXiRg
-	 XTrRMVrjPO/UPmDvUfFKtYN1RMXgdvesyJdItoykg3rO5H0BG3gB2xQOEdWwwAILshWQs
-	 D3C220ZPo4V6+vQyFM6APEbYLwHZqWim62yU6MiCGDO7Lm51DyIAQDta2Ln5odMR1JbwJ
-	 0jLqgBxill4SsvSrQQEvWN2NqrrByLj6rAGC5JT59yRX2Wh1HsKaNP8n9GkbFWznZ9g==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6DA991F00A18;
-	Wed,  4 Nov 2026 07:16:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LA8K4a0v
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC851F00919;
+	Wed,  4 Nov 2026 07:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793776566;
-	bh=JzJ2sm0HA7zLXXojD+Y1kRVDhkZ262+huPCc7+3eLx0=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=MQGvag4+efWse/63asdymDzI/VQ/GnsoDSAqxmnmlxad/7BsoMk9a1JuntHzmNuWB
-	 7JVRA1elo483WuzpLKtcjQVNDt45hYZ+va93renrUVZQp/Kb61/H7SRfdMZsTrPI5s
-	 GQlqJ1ccI0Yq1AeN9vXD4qAO5SP/TAV9JoGxamnJZJExLROqnwPAuSI5aS8iulXddE
-	 9tG5LlsgR0yvpyJL0fqa5Evxdp2lmBgaIUvbI6Kcz9VTftDtsVUrYWBMW+xWgFfku1
-	 GrfCavJXJd0ot4f3P9bsAoEhujphxm95NTLrDTFleMWHjDLhSPOeMByUQQV+efjGs1
-	 520EMwUbe5CXw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D824046CBB;
-	Wed,  4 Nov 2026 07:16:04 +0000 (UTC)
-From: Joseph Telaak via B4 Relay <devnull+joseph.telaak.dev@kernel.org>
-Subject: [PATCH net-next 0/2] net: dsa: mxl-gsw1xx: reset the switch
- through reset-gpios
-Date: Wed, 04 Nov 2026 02:15:46 -0500
-Message-Id: <20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev>
+	s=k20260515; t=1793776821;
+	bh=1Ekpcp5TWZq0p4aqoWrcejQKlqmgI+qIHdFwhI1gIDo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LA8K4a0vJgQc39wUUG6i4hpczNDWdG+toSwrlumPAhyZytI5rGsyVjLUN56z84i4I
+	 eI7XB0uiMOIddzetTqmIiFzKr3PQDR6TmcEN2fFmw2dwYbZoaZsmLxzCEAGb0LVgwv
+	 Ww3grG7RbPpKmn9hpAHHMEf90NZvOJAeo/NdQKK9yah1Zw70/VSDsCj5SbTuRoBl2L
+	 XW8ZKc12B73OSjaOA+8CQuAw7GgcBN8Rfjoq7Egg1Z/XcjxFp1AH5aExHRbhlnFMq/
+	 SEYYVOMmDOdziKm4BnBrXO0xgsU4Ue03iDAmgYVQxl7nAwyeh/Prhi14AfBRb+K+6t
+	 n6iEpRfyPXyXw==
+Message-ID: <7c15c254-d157-4f5b-bfae-06a5301af222@kernel.org>
+Date: Wed, 4 Nov 2026 08:20:11 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,72 +51,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/7] dt-bindings: net: dsa: mediatek,mt7530: add EcoNet
+ EN751221 switches
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ chester.a.unal@arinc9.com, daniel@makrotopia.org, linux@armlinux.org.uk,
+ arinc.unal@arinc9.com, Landen.Chao@mediatek.com, dqfext@gmail.com,
+ sean.wang@mediatek.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, naseefkm@gmail.com, b.larsson@gmx.com
+References: <20261029184202.1859843-1-cjd@cjdns.fr>
+ <20261029184202.1859843-7-cjd@cjdns.fr>
+ <20261103-soft-lyrical-squid-c5a108@quoll>
+ <39cb446e-b667-4766-bd79-2635eb36166c@cjdns.fr>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
+ /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
+ s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
+ EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
+ rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
+ DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
+ IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
+ vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
+ oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
+ sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
+ vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
+ Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
+ BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
+ 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
+ f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
+ WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
+ XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
+ IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
+ YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
+ p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
+ GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
+ YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
+ vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
+ ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
+ QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
+ +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
+ wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
+ c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
+ K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
+ n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
+ qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
+In-Reply-To: <39cb446e-b667-4766-bd79-2635eb36166c@cjdns.fr>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKLb6moC/yWM0QrCMBAEf6Xcswe9BKr4K+JDG7f1RKPkogZK/
- 72pPg67MzMZksLo2MyU8FHTZ6wgu4bCtY8TWC+VybWuE2kdP8qdJ/tKKZxgyOz3fTj4bvAygqr
- 2Shi1/JInivUQUTKd/4u9hxtC3oq0LCsNFKCWfgAAAA==
-X-Change-ID: 20261102-mxl-gsw1xx-reset-37ac836b31fe
-To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>, 
- Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Joseph Telaak <joseph@telaak.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793776564; l=1736;
- i=joseph@telaak.dev; s=20261104; h=from:subject:message-id;
- bh=igALwEyK9Wac7PwuwvoflBG0rSNJJThjoKwT2Oko4+Y=;
- b=wNMJC2Z2oeJ+jBMsYQPSXXLdKSUIRlF3rnM+ntL60bXTQ7yZk3yvsp996s1eeXdU7ZF/c19Pf
- +lPxoUdEpmjDZPLnTCTai8hnYFBtOcJ2ftgtGvU8cw5wX1q+fn5EmF0
-X-Developer-Key: i=joseph@telaak.dev; a=ed25519;
- pk=oQI+UfddlZ0wK2ac4WKOGNjUl1ZEN8j9ZVFSqEDoNP0=
-X-Endpoint-Received: by B4 Relay for joseph@telaak.dev/20261104 with
- auth_id=1404
-X-Original-From: Joseph Telaak <joseph@telaak.dev>
-Reply-To: joseph@telaak.dev
 
-The GSW1xx driver never resets the switch, and the MDIO core does not
-handle reset-gpios for non-PHY devices, so the driver works with whatever
-the bootloader configured. On the GL.iNet GL-SFT1200 (SiFlower SF19A2890 +
-GSW150) the bootloader leaves the internal PHYs one MDIO address too high,
-and the WAN port has no PHY.
+On 03/11/2026 14:15, Caleb James DeLisle wrote:
+>>> +        const: econet,en751221-gswitch
+>> That's almost the same compatible, which makes me wonder if you describe
+>> the same device twice. Same device, same compatible.
+> 
+> 
+> Well, these are both MT7530 based, but one of them is on-die with the 
+> SoC and the other one is an MCM so for the driver they are very 
+> different - they're even loaded by different kmods. I think since one is 
+> MMIO and the other is MDIO, using the same compatible won't cause a 
+> driver problem - but I don't know if it's best practice to smooth over 
+> such a difference or not. Your advice here would be most appreciated.
+> 
 
-Patch 1 allows reset-gpios in the binding for the standalone switches.
-Patch 2 pulses it at probe.
-
-This is separate from commit 82e2c7db0830 ("net: dsa: mxl-gsw1xx: force
-internal PHYs into a known reset state"), which only programs the PHY
-bits of RST_REQ. On this board that commit is applied, and the PHYs still
-sit at the shifted addresses; only a hardware reset of the switch moves
-them back.
-
-Tested on a GL.iNet GL-SFT1200 (Intel GSW150 / PEB7084 at SMI address
-0x1f, reset on an active-low SoC GPIO), on the 6.18 backport that OpenWrt
-carries: after a warm reboot and after a cold power-on, all three ports
-find their PHYs at addresses 0 to 2 and link at 1 Gbit/s. Without the
-patch, port 0 fails with -ENODEV after every boot.
-
-The board's device tree goes to OpenWrt; there is no in-tree user yet.
-
----
-Joseph Telaak (2):
-      dt-bindings: net: dsa: lantiq,gswip: add reset-gpios
-      net: dsa: mxl-gsw1xx: reset the switch through reset-gpios
-
- .../devicetree/bindings/net/dsa/lantiq,gswip.yaml        |  6 ++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.c                      | 16 ++++++++++++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.h                      |  4 ++++
- 3 files changed, 26 insertions(+)
----
-base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
-change-id: 20261102-mxl-gsw1xx-reset-37ac836b31fe
+The drivers do not matter - we have one compatible for I2C/SPI/Serial
+devices as well. The only question is about the hardware, what are these
+devices and what are you here exactly describing. Compatible is en751221
+but you call it MT7530, so even more confusion.
 
 Best regards,
---  
-Joseph Telaak <joseph@telaak.dev>
-
-
+Krzysztof
