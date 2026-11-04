@@ -1,101 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793763337;
-	b=MXbXZc54n2h6QvbkuYqK27Ydd4k3/Aj8lqlo+tBdshCX4vIR8bkILF2jCcgCTlHLFrYo
-	 6L44cjwqxqgH4KvZZEIvw5BT8fvr7iCKkF/Rd8s63jm8QDv965y9usrOU6hEWC9wFphyB
-	 +1TMdXqEtBVafHSgpR0K4wZN+rogNcnRmBilSt76bq5R7D27aiejRfnDHY31EXF8RLSvI
-	 OWih9CX9LEGOlu7xYH+mehNQBWlGQ8udB8BEndxxsYidR6rB3yT2hwCtsV2wuho9Sih10
-	 JO70IIaM9yI0v5tTfanqtn+r6qW6lgj07UqR5HS8ZFx7irRCElHo2Ljpwm5GsK+umMw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793763337;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=T2FWaVlgG8DlrEVsmGNjQ+m7wefa9FtjIViJ89iIUCc=;
-	b=ia1bDqH9fGe7ryJNkyLdhZeeI9ydVvQbyHdtlK5Dh5cLFxEZ/oqZuQBDhPBh5+PlBVAO
-	 pHIvAZIhIGISdi1aMVyQMPqNBIMxRv6PHBGKSYd5cPzhDcv4959M3B5THJPXr1LePoJHm
-	 iMs3rpAx8mgQ67IYBQzcGffNpo5VaJKAm6hm/iJ/ebv2ibL92N+FsTw6ksxsM760XBvMh
-	 b+myQuTDQOZzjOtzrUAlryO1IPgU7+idDir3sjTsWXgxINhoWklpJW9B1Mqw3sWKAbFys
-	 RB5gufw5t89m17PuIIWKU+GuYt+K4yDY7/pDI/EL0nNO88ls6o0EaxXGe75pYYoNHSg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="ZM+Bo/NL";
-	arc=fail smtp.remote-ip=209.85.218.50
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793763370;
+	b=s3xrEY7Qox/WDtlnXQObwsaC/HXLAKXUxYdxTKqdRQuFos5tuOiE+8gsBI2UZzSq2nrz
+	 aYbOZ8oFbr2rvHNdTMoP/6uN3X3ukuosqNB0nmqF+fg+9HvmdBkSWLHQOwK7UE8eAnAQe
+	 DeXD56rbyXUvdBAH5T3t//uOm0v+3jVBac9SdrIJ+Cu82ozxfOFZkEkzjRhDeT8IU1fkz
+	 M/5VcwzyYcYxpSlLBIWuTRn4dNCe5DbCd9ItpuqnijUvkTpUnyzJLqv9xUWO4eme9H9kr
+	 T3FSq5SUEdhqvDz7NjRHt4ZJEBys2fJLA0ytMHSoKIC0rQQnbtY1krm+kFV69wabm/w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793763370;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=qpopuN+doQba10jwAd2uL5NWTJlgEoGqpws2vkRC128=;
+	b=K+8f7+Ptss9CI8FhkC+wIpaRK5uksZA9lFZyXcAG4/gvVeR3ZjPFxDaZPxMWggtMQ/LO
+	 JGWpk0SJ4lqCVDy4rDZmLRnnsyYIagULugMdx5cxnToSRWMbDce7jbqFjF+vgLM2zHhjX
+	 zjdhZeqh99eK7v9R1OfEegKIzhkA9/qlYmbnfRJTaUmg67N1u0/k4UlNw5qQmsroslsQL
+	 d0rNK47lDmVIbTX486vFa5BB0AAqY4F2VdbeQXDVQjrLtW6kQ7/sdmMCTppjMHxKly1HW
+	 XsiaHMETq4tO8gSXz50TIW5LXhlaUGt2k0oDClbkQQJ8Ayw9vOFcYEWcwB9MC6aSBYA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=xOVFg9lH;
+	arc=none smtp.remote-ip=162.62.57.252
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F8F606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 03:35:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3F8F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B45606A329;
+	Wed,  4 Nov 2026 03:36:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15B45606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZM+Bo/NL
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c468bd799ecso35402266b.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 19:35:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793763335; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y0a2CnTW59PhxddQ00OszUBBiWC6qs9fNF3FATsslO54VKuhoGH747KU20C27ygSer
-         40LFKtsQ+qZposm6B7XTYy7B9nFI5blCsM+qPY2XwHytEAF6I7jLL7x7M+OGX2WTmony
-         jFfzGlawW9Kufbz6UATAVdsJex4LqGRyq0obADX7cprWiiXo9oMBQ62jiSY2hwJSwoBj
-         ldVU+LNokloTdeaDXHwmjKJP4mpj65J/wTX3P9vZAQRlXR5JacPMt6ruLD7MHTRzYOpS
-         /aJoCax4Hv+/nky6bJNsIocuV5EBrZTydg/RIq/HvnhEVMpxfKqLbcguLRLNLSrt8V3S
-         HQlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T2FWaVlgG8DlrEVsmGNjQ+m7wefa9FtjIViJ89iIUCc=;
-        fh=XFP2NZnayxaCWgDviBcMGM0gqMmU0iNNTQj2DzPDbGk=;
-        b=M7noahlTmIS763BJuvElCWG9aUiGSj1BeqtMGCG2ZE0WL2AQPQpLXRWSBPKk0z5cSX
-         Rb5NREloPtGOh1pemRdBqmFhpeqo5jImLb9GCOv/iBzzN689L+A4GH+H8zPhyqpLTQ2+
-         bUA1hJQ7DSK9IAzSb7HoiwibjFGov2DzxxiNxlIUr2b8GE5n0XBkMmPHmiZW/V4L+hE5
-         AI9GVj15TpfnDJ0LqZtw0agemFsH5xk6DfQkK5W29TCnVhdrQ9+PuNH9JxpEmYz2FLB8
-         y0d3B7tAEMXxvttgZnrZqIllIeuqB4UkLSE8fdTFnM4rXArZzAsA/PcR9JCNGX6crV3l
-         IVYg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793763335; x=1794368135; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T2FWaVlgG8DlrEVsmGNjQ+m7wefa9FtjIViJ89iIUCc=;
-        b=ZM+Bo/NLHVAIGud/SRt1S82BHSV4Dy3O/1v/XhWAygF4W6LC8LJ4zz5tAHv0DKZISK
-         y99m2Vzu9GwsILtdlsp1jaTwouR/2MYaZmRoQEYGjyc1l9qj+unLS29lF5agI8+M5HLG
-         0zc9jcPKe0IbDIAMcl9xB1IndX3PyX1CtpGmg1HJxmIsKGflGof4vnHMxAw55W1f/Wcy
-         TbkSyTfpug2hmzKDyMDSQkiLuVmmUM8//uoc5GY4fuYPaFwMt86KGBfg6K5Vec6Rgfxj
-         N6E6our0/WG7Rd0Xd5gyJ6hair+/K9LSmfSxXKasKFEs4nwWUykQmzxp5ANZSCoa5RCb
-         IoBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793763335; x=1794368135;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T2FWaVlgG8DlrEVsmGNjQ+m7wefa9FtjIViJ89iIUCc=;
-        b=XiP2aDX+PcMIRN7/9FCXRAOPCazAImH6qDc1+j5H7l/aUJeHVuBlqEMB9E+sWNUMc7
-         twaO39B3+V8qo40r1ixzGgAxBZn/bRAsJzgxIuWe3bplLWKpdCOINR37XfmtzGOKgJkO
-         2F2RvLlSCep782O+4VvkBD6opYIDQ7L849MzrggAW1+S+99Ic5iowQTb9KHEZv1czFf0
-         lQTebA9rBvWCkuHql2bXwfHZb66vhxm3/Qn7LWuxjpIImODAot/mLjoy+/GsUynB6xOK
-         uqMESH/SXCrwneDRDw8J4LYPVdpmdWEgQsQ8T+TMFkEa5vXbnf1OJvSXlpqkPS/PvifU
-         arBg==
-X-Forwarded-Encrypted: i=1; AKwUvBwB3l8Bgosq8t/95ue98UyatVmOViopy9RrRU36+bR7vE9nLrqWs95zDId7/njhWjWU9KhTcTw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z98ZUkWt1YwNEt8qOlJIiBax7DyXb96jUe9VYdHmZ3Dfzn4PrZC
-	fATlMwyoT8P6AeaGU9lY5mH9OrW0hdVZScM44umGZ8au0c8d39v3wPKzphZeFX7f5FGb35VZ/Lq
-	yLOPypd2VaiBRgsVzYrrRF5gSOWmw2Ck=
-X-Gm-Gg: AYBFou0xcfJaSOwvQAdYm0Tth+VtxJRVvn/ipGziOqsRGXW1OLEb+T6w5p1d1roGuNW
-	G7/2LZ1WtkIkliJH8LcKRFmvzaqzz8RtNuSCayHvOKqUtXvDnGt9Mlrvft32VV7i2FpIO3B4fZL
-	fKbls1nHclg1W4i2QSGNZLujSLno/Qpg23rVb1om27RQ4UjwoAoawkcGRjv4lQnjwD8ammveEe3
-	Yswfxo6wLZN/GmoMZnZGZD/IXnATmY1Jv0FNWhl/NKtzmM2gdQkhhe7aPc7RmLA6p/OJSkzpz2I
-	3E8GzjZw+l5EyM7cLO8WXTjbCg/Cy4FYgBoU0AYkh46VQrYPYHbeUp0WSHqmCDmNCb7JyeTdIvC
-	6uNW/ijqKc9VMW6t6hYvS9SCpLYgwPDwhl8aR0w7rBCX4jpK2iW0KSH6BGYKlTSA3Yf2P7A5wpp
-	c=
-X-Received: by 2002:a17:907:a890:b0:c46:9ca9:f522 with SMTP id
- a640c23a62f3a-c4ca7a69782mr1214812566b.26.1793763334986; Tue, 03 Nov 2026
- 19:35:34 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=xOVFg9lH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793763364; bh=qpopuN+doQba10jwAd2uL5NWTJlgEoGqpws2vkRC128=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=xOVFg9lH4YTSIAE/AXyJCGsXfAz+7y1ZhZ5MKJ9xf/EDnKqRu+B80lAE5+GgpbTAT
+	 wpni1abKj3hPREZ+zWkVN8NDCcocXMfYPsL0hhD4OaFhNEUEwXsm1ka1SDNB80XH1d
+	 rxetMxzR8gn8x8fhJyrhXNSCcSC1jkf02jlSRJyQ=
+Received: from hub.zhongying.com.zhongying.com ([2409:891f:8f46:1a8b:2dd5:45b2:eebc:59b4])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id 8DBB9AD2; Wed, 04 Nov 2026 11:35:27 +0800
+X-QQ-mid: xmsmtpt1793763361th133irx5
+Message-ID: <tencent_1E208C03035DF063166FD46C1DA1978F6306@qq.com>
+X-QQ-XMAILINFO: MZtEYADUG4AgHR8pUw7izfIXguPi5//qyNitnHngK09yoAuitbbDAMiCye2ku5
+	 wEPVkXHIN4weRhn5RKColmvGD39TvYSlOJKmX7ooq2FJg8gEce0l0wSIELnzlptvQpUfOj8rBTp1
+	 6EMzwuiQ1U8LGoD0LMaYxOhAqIygsTXtY+5R1y+oTg/EYkec8IFq1fkxiN+2i1dHK0ex/vSZ5QgU
+	 Pf7/h8ckpxN9Wx7ag60uv1tryRnt90r7y8HjMQa+WFeY3ZCkxxdoAU762leBFitDSuQECPnROJFv
+	 FGk12iiemQoz97ysigqYrRtZBmYNM5pVP2/ImgiZb+oyluZ4K7UwfTHkR9khTDUAn1a4uM943wq4
+	 SIXb1NjsjkdvjWvUAOk/ajaPX+CWu5mWUqCLExXBuubW9LvjmsjGjOUqwfI1EfDytWWBAv5jiaO5
+	 BZYlglfyBLlwPicG4sf+sm6xgVI3KlfadOAmwo1qvlBK00WQ+xy9YIupOW9HR4IoF8s63P2VtZW/
+	 fCTFfcCHYa868Hu+XQQ38QWApmCl8oIpHr33+qC3kYK4xWcVtHXAz0+Vu0Fsda8+of2By0HVmrfc
+	 mh35RiUmH5rNmCjLgBGhSRyKpToKP897qMjRTAbYKE7dKCOLgeoMsGGXjJaSTM60wvXsj/iqeP1s
+	 dVPRQ/2jw4IlRAt6DXu9gbk4Y7hjww88nQPwlCT921FaWg2GqvyD+orBLGkLM+QbvOXAgwyZ7QK5
+	 NkmhVXpHSaK3+ibMVFtZpmyuTw4ch/4swYZNIym3dsjwZVPxYfNeQ9ZRLZ1n3y0fM39RP6qnPb9B
+	 kDiG6Ol76/s1zdCv61V06Lo8R99UurHXGquNuTCoHtZxGWFLileb13KjoD6B4J4g7eDujsBRNN9t
+	 brct2OoK4o5KbWAsgMjUvm7qGSnT3GQr7/fRb4IjIIpvuc4uZB51DUjm86fBLMo8HHonJ3GpHTZE
+	 kyGBlRAH5vMfrI/cVYFKe9ZX4ZBTuaFH+GkfuuwKFCj+nh8KC4f8LOL9BofNBUijJ8lKe63W4R2N
+	 WTf89P08YNqNTWGs4nXwENeq/W/l+mfUvIzRtf93tlA8uowgLWnsnCbPBp2pZIhSlsydikx6L/0m
+	 mdvjap
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+From: patrick <work_patrick@qq.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kselftest@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 1/2] netlink: add an optional per-netns ROUTE multicast index
+Date: Wed,  4 Nov 2026 11:35:25 +0800
+X-OQ-MSGID: <20261104033526.2917590-2-work_patrick@qq.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261104033526.2917590-1-work_patrick@qq.com>
+References: <20261104033526.2917590-1-work_patrick@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,57 +90,279 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <179374297269.488856.7749172366095110113@kernel.org> <20261103225321.19288-1-federico@rimpianto.com>
-In-Reply-To: <20261103225321.19288-1-federico@rimpianto.com>
-From: Chris Snook <chris.snook@gmail.com>
-Date: Tue, 3 Nov 2026 22:35:40 -0500
-X-Gm-Features: AclHuK8pgXDdUe8VVPBSwoSm2Xv7dqRRsi3A56cCZ8EmMNgChDd3Wu0uj8DEEoU
-Message-ID: <CAMXMK6uS4-4aq4A3pUMghkt5v3U+NekcCfDa7ytbjLD5ZwG+8g@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: atl1c: free the RX buffer when the descriptor
- reports an error
-To: Federico Musto <federico@rimpianto.com>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 3, 2026 at 5:53=E2=80=AFPM Federico Musto <federico@rimpianto.c=
-om> wrote:
->
-> Thank you for the detailed review. The findings on endian decoding,
-> multi-RFD error handling, stale RRDs after reset and missing error-path
-> work accounting were valid and have been addressed in v3.
->
-> The v3 now:
-> - decodes rrs->word0 once in CPU byte order and passes the decoded RFD
->   index to both the unmap and cleanup paths;
-> - unmaps, frees and recycles every RFD of an errored multi-RFD frame,
->   with ring wrap;
-> - counts errored descriptors as work so the RX refill runs;
-> - clears the RRD ring on reset, preventing stale error descriptors from
->   freeing newly reposted buffers.
->
-> The memory-ordering and link-reset/NAPI issues are pre-existing and are
-> left to separate patches rather than expanding this fix.
->
-> Validation on netdev/net:
-> - scripts/checkpatch.pl: 0 errors, 0 warnings, 0 checks;
-> - baseline and patched W=3D1 + Sparse builds both succeeded;
-> - no new warnings; three endian-related Sparse warnings removed;
-> - git apply --check and git diff --check passed.
->
-> The issues were found by code inspection; no hardware test has been
-> performed.
->
-> pw-bot: cr
+NETLINK_ROUTE broadcasts visit subscribers in unrelated network namespaces
+before checking whether they can receive a notification.
 
-I no longer have working test hardware for atl1c, so I'm unable to
-test this on real hardware. The same is also true of atl1e. There have
-been patches somewhat recently for atl1e that suggested some people
-are still doing work on real hardware for that one, but as far as I
-can tell no one has made new hardware for atl1, atl2, or atl1c in over
-a decade. If anyone is willing to help test patches on this hardware,
-please let me know.
+Maintain one ROUTE subscriber list per network namespace and one global
+LISTEN_ALL_NSID list. Select those candidate lists when the new
+net.core.netlink_route_mc_index sysctl is enabled. Exclude local sockets
+from the second list to avoid duplicate delivery.
 
-- Chris
+Preserve do_one_broadcast and the existing broadcast initialization,
+locking, completion and error handling. Change only candidate selection
+inside netlink_broadcast_filtered; do not force function inlining or add
+separate broadcast setup, completion or indexed-walk helpers.
+
+Use the existing table-grab protection for index maintenance at
+subscription, option and removal transitions. Keep both indexes populated
+while disabled so switching modes includes existing sockets immediately.
+The sysctl defaults to zero, is visible only in init_net and affects all
+network namespaces. Other Netlink protocols retain the original walk.
+Disabling the switch retains index maintenance and memory costs.
+
+AI assistance: An LLM assisted with implementation adaptation and
+simplification.
+
+Signed-off-by: patrick <work_patrick@qq.com>
+---
+ Documentation/admin-guide/sysctl/net.rst |  27 ++++++
+ net/netlink/af_netlink.c                 | 109 ++++++++++++++++++++++-
+ net/netlink/af_netlink.h                 |   4 +
+ 3 files changed, 137 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index fe43e8595..0cda347ed 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -280,6 +280,33 @@ checksums.
+ These messages are now emitted at KERN_DEBUG and can generally be enabled
+ and controlled by the dynamic_debug facility.
+ 
++netlink_route_mc_index
++---------------------
++
++Selects the multicast candidate lists used for NETLINK_ROUTE notifications.
++This setting is available only in the initial network namespace and applies
++to notifications originating in all network namespaces.
++
++Values:
++
++	- 0 - walk the original global subscription list (default).
++	- 1 - walk the sender's network namespace subscription list and the
++	  global NETLINK_LISTEN_ALL_NSID subscription list, regardless of the
++	  number of subscribers.
++
++Both auxiliary indexes are maintained in either mode.
++Existing sockets are therefore included immediately when the index is enabled.
++Each broadcast reads the setting once and completes using its selected path;
++changing the setting does not restart broadcasts already in progress.
++Group membership, namespace, permission and socket filter checks still apply
++in both modes. Other Netlink protocols continue to use their original lists.
++
++The indexed path can reduce notification costs when there are many ordinary
++subscribers in other network namespaces. It may add overhead when most
++subscribers are local or listen across network namespaces. Disabling the
++indexed path does not remove its memory or subscription maintenance costs.
++Without CONFIG_SYSCTL, the setting remains at its default value of 0.
++
+ netdev_budget
+ -------------
+ 
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 1281c42a3..fa21290be 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -31,6 +31,7 @@
+ #include <linux/string.h>
+ #include <linux/stat.h>
+ #include <linux/socket.h>
++#include <linux/sysctl.h>
+ #include <linux/un.h>
+ #include <linux/fcntl.h>
+ #include <linux/termios.h>
+@@ -93,6 +94,69 @@ EXPORT_SYMBOL_GPL(nl_table);
+ 
+ static DECLARE_WAIT_QUEUE_HEAD(nl_table_wait);
+ 
++/*
++ * Auxiliary NETLINK_ROUTE candidate indexes. Writers hold the table grabbed;
++ * broadcasts pin the same table with netlink_lock_table(). Socket/netns
++ * lifetime therefore follows the original mc_list, without another RCU domain.
++ */
++struct netlink_route_net {
++	struct hlist_head mc_list;
++};
++
++static unsigned int netlink_route_net_id;
++static HLIST_HEAD(netlink_route_all_nsid);
++
++/* Indexes stay populated in both modes; each broadcast samples this once. */
++static int netlink_route_mc_index __read_mostly;
++
++#ifdef CONFIG_SYSCTL
++static const struct ctl_table netlink_route_sysctls[] = {
++	{
++		.procname	= "netlink_route_mc_index",
++		.data		= &netlink_route_mc_index,
++		.maxlen		= sizeof(netlink_route_mc_index),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
++};
++
++static int __init netlink_route_sysctl_init(void)
++{
++	if (!register_net_sysctl(&init_net, "net/core", netlink_route_sysctls))
++		return -ENOMEM;
++	return 0;
++}
++fs_initcall(netlink_route_sysctl_init);
++#endif
++
++static void netlink_update_route_mc(struct sock *sk, unsigned int subscriptions)
++{
++	struct netlink_sock *nlk = nlk_sk(sk);
++	struct netlink_route_net *nn;
++
++	if (sk->sk_protocol != NETLINK_ROUTE)
++		return;
++
++	lockdep_assert_held(&nl_table_lock);
++	nn = net_generic(sock_net(sk), netlink_route_net_id);
++	if (subscriptions) {
++		if (hlist_unhashed(&nlk->mc_net_node))
++			hlist_add_head(&nlk->mc_net_node, &nn->mc_list);
++	} else if (!hlist_unhashed(&nlk->mc_net_node)) {
++		hlist_del_init(&nlk->mc_net_node);
++	}
++
++	if (subscriptions && nlk_test_bit(LISTEN_ALL_NSID, sk)) {
++		if (hlist_unhashed(&nlk->mc_all_nsid_node))
++			hlist_add_head(&nlk->mc_all_nsid_node,
++				       &netlink_route_all_nsid);
++	} else if (!hlist_unhashed(&nlk->mc_all_nsid_node)) {
++		hlist_del_init(&nlk->mc_all_nsid_node);
++	}
++}
++
+ static struct lock_class_key nlk_cb_mutex_keys[MAX_LINKS];
+ 
+ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
+@@ -598,6 +662,7 @@ static void netlink_remove(struct sock *sk)
+ 		__sock_put(sk);
+ 
+ 	netlink_table_grab();
++	netlink_update_route_mc(sk, 0);
+ 	if (nlk_sk(sk)->subscriptions) {
+ 		__sk_del_bind_node(sk);
+ 		netlink_update_listeners(sk);
+@@ -628,6 +693,8 @@ static int __netlink_create(struct net *net, struct socket *sock,
+ 	sock_init_data(sock, sk);
+ 
+ 	nlk = nlk_sk(sk);
++	INIT_HLIST_NODE(&nlk->mc_net_node);
++	INIT_HLIST_NODE(&nlk->mc_all_nsid_node);
+ 	mutex_init(&nlk->nl_cb_mutex);
+ 	lockdep_set_class_and_name(&nlk->nl_cb_mutex,
+ 					   nlk_cb_mutex_keys + protocol,
+@@ -915,6 +982,7 @@ netlink_update_subscriptions(struct sock *sk, unsigned int subscriptions)
+ 	else if (!nlk->subscriptions && subscriptions)
+ 		sk_add_bind_node(sk, &nl_table[sk->sk_protocol].mc_list);
+ 	nlk->subscriptions = subscriptions;
++	netlink_update_route_mc(sk, subscriptions);
+ }
+ 
+ static int netlink_realloc_groups(struct sock *sk)
+@@ -1555,8 +1623,25 @@ int netlink_broadcast_filtered(struct sock *ssk, struct sk_buff *skb,
+ 
+ 	netlink_lock_table();
+ 
+-	sk_for_each_bound(sk, &nl_table[ssk->sk_protocol].mc_list)
+-		do_one_broadcast(sk, &info);
++	if (ssk->sk_protocol == NETLINK_ROUTE &&
++	    READ_ONCE(netlink_route_mc_index)) {
++		struct netlink_route_net *nn;
++		struct netlink_sock *nlk;
++
++		nn = net_generic(net, netlink_route_net_id);
++		hlist_for_each_entry(nlk, &nn->mc_list, mc_net_node)
++			do_one_broadcast(&nlk->sk, &info);
++
++		/* Local all-nsid listeners were visited above. */
++		hlist_for_each_entry(nlk, &netlink_route_all_nsid,
++				     mc_all_nsid_node) {
++			if (!net_eq(sock_net(&nlk->sk), net))
++				do_one_broadcast(&nlk->sk, &info);
++		}
++	} else {
++		sk_for_each_bound(sk, &nl_table[ssk->sk_protocol].mc_list)
++			do_one_broadcast(sk, &info);
++	}
+ 
+ 	consume_skb(skb);
+ 
+@@ -1722,6 +1807,13 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
+ 	case NETLINK_LISTEN_ALL_NSID:
+ 		if (!ns_capable(sock_net(sk)->user_ns, CAP_NET_BROADCAST))
+ 			return -EPERM;
++		if (sk->sk_protocol == NETLINK_ROUTE) {
++			netlink_table_grab();
++			assign_bit(NETLINK_F_LISTEN_ALL_NSID, &nlk->flags, val);
++			netlink_update_route_mc(sk, nlk->subscriptions);
++			netlink_table_ungrab();
++			return 0;
++		}
+ 		nr = NETLINK_F_LISTEN_ALL_NSID;
+ 		break;
+ 	case NETLINK_CAP_ACK:
+@@ -2867,6 +2959,9 @@ static const struct net_proto_family netlink_family_ops = {
+ 
+ static int __net_init netlink_net_init(struct net *net)
+ {
++	struct netlink_route_net *nn = net_generic(net, netlink_route_net_id);
++
++	INIT_HLIST_HEAD(&nn->mc_list);
+ #ifdef CONFIG_PROC_FS
+ 	if (!proc_create_net("netlink", 0, net->proc_net, &netlink_seq_ops,
+ 			sizeof(struct nl_seq_iter)))
+@@ -2877,6 +2972,11 @@ static int __net_init netlink_net_init(struct net *net)
+ 
+ static void __net_exit netlink_net_exit(struct net *net)
+ {
++	struct netlink_route_net *nn = net_generic(net, netlink_route_net_id);
++
++	netlink_table_grab();
++	WARN_ON_ONCE(!hlist_empty(&nn->mc_list));
++	netlink_table_ungrab();
+ #ifdef CONFIG_PROC_FS
+ 	remove_proc_entry("netlink", net->proc_net);
+ #endif
+@@ -2905,6 +3005,8 @@ static void __init netlink_add_usersock_entry(void)
+ static struct pernet_operations __net_initdata netlink_net_ops = {
+ 	.init = netlink_net_init,
+ 	.exit = netlink_net_exit,
++	.id = &netlink_route_net_id,
++	.size = sizeof(struct netlink_route_net),
+ };
+ 
+ static inline u32 netlink_hash(const void *data, u32 len, u32 seed)
+@@ -2980,7 +3082,8 @@ static int __init netlink_proto_init(void)
+ 	netlink_add_usersock_entry();
+ 
+ 	sock_register(&netlink_family_ops);
+-	register_pernet_subsys(&netlink_net_ops);
++	if (register_pernet_subsys(&netlink_net_ops))
++		goto panic;
+ 	register_pernet_subsys(&netlink_tap_net_ops);
+ 	/* The netlink device handler may be needed early. */
+ 	rtnetlink_init();
+diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
+index 778a38093..bc7b38d4f 100644
+--- a/net/netlink/af_netlink.h
++++ b/net/netlink/af_netlink.h
+@@ -47,6 +47,10 @@ struct netlink_sock {
+ 						   unsigned long *groups);
+ 	struct module		*module;
+ 
++	/* NETLINK_ROUTE auxiliary multicast indexes; nl_table_lock protected. */
++	struct hlist_node	mc_net_node;
++	struct hlist_node	mc_all_nsid_node;
++
+ 	struct rhash_head	node;
+ 	struct rcu_head		rcu;
+ };
+
