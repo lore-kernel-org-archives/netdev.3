@@ -1,110 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793826962;
-	b=4dxCxQe8h1YaCiPHEPWMH3CtyogxbqipzhkF8Tisn+cHl1m5f62FoNjR1egy8iF7JdmT
-	 8gOi/1Pi4VNIgjwA1Uf1+iTHhMBq79/bu0po7jzRJcLsM4F3ZW14s7BJDZe9IXyww/xec
-	 rruhqpLaIDnW/deqUzH7d8Y44GsKMyeb4xW7jhCkDVabHxEfkWBLtnqMsIsF/OO/ElAC3
-	 Y+Tg3p9X9MYe7x1gb3RIhXsyoRT7XBj8Rqpf/8I77KTa54kcUloCGovwkFozWlLEcC7vr
-	 c7MeVLAPqa0zLXl6SLvXdtBOddOUcnGHTCF4xYJxvb/N3LIob9MUv8NsVP5eElU5m+A==
+	t=1793826973;
+	b=ulYtFqmglGpgML9VckQuU40lvKP7pQWSKXQz0oX8GdukuMhgYINpktixWHCOasAnxsWj
+	 7Ek62SIvJSDlVIDdtfNRhpX+PmBlGpIWaTlt5Id/GXD4Cojxc4PqohtBjkwP0cWojhMT7
+	 TAIsfxvBtx/OwNeXdvnl4GHZCFbmTXapZvAMwzH6gR+nbK1x8EF1l2tPNlV+2OjI1riT4
+	 JoUfhnNehi8HO+oP8S8UwrTU8dgpEf5sRU5Ja9BODfLhfOgy8RMuOtYursctqmMjQQTjF
+	 9A3dkgL5MzKmZvEJeQIuHunE+TdjKUPYWcKDym2ee59hXxSysvKqIvU3Of61F7HXQaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793826962;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=cYDbJcSF6MsxMTYnsYlWsg5fOwbFhsLezcPYxvIMO7Q=;
-	b=YCanq7znj7rUSc8KkQIZtdJ/1VWO00t6L5lbS1uK2sfHlbruOoaSaGY+R6h3dUsyewM4
-	 1jriH7H633tAOrbX9bzcJSVRjKdZxzsyGF56Z5fHZJc6CMn1R8B7FFuflAUD4cJx7SkAw
-	 hw7qatZuYQUd0psWUF0t/LYxZtQsxDBCUAcmOGvzs28ZTC8MNpA2GUNewZUEdxipn1kg7
-	 YEbbjc5y+ck/DSC+vyG7E/RrxMV6lwlrjOG5BEkoER2P5WRXzn71Md8OifI1vx49rE5rU
-	 yq6KnK2MnDWnqyTmSUC6BiM3wgIyxUmfmqOkbZYkujQThCnk186N8o2RKo2mtJwCLfw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793826973;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=E0amS/985lEuA/641nlWSjwLQ/LPYEzaMW2+uW18C48=;
+	b=VesdSblhAdjjGaxgBP1o3r9aV/RO+A2WufU13+iitdRdRL3MdD+9P+d6tIFwRnW8k6lK
+	 ZoIUxWJV0UGXkbaYoWBoQ6m1cw/JH3Vdz+h3YwZNQwJyL0NSF2ws7YRzqWCEBsMNzpN6N
+	 hrcNB/GzJbBH61GKGUj71CfeCAkb/8j+Bznk2HDttgpvFcZILLS52WSa1qEaku5SA3vUw
+	 NXRokC4Y7+ycQ+a4I7U1z25aqwDckuxXeAYnGsm5RSFa6nfJeSGIgun5HLWnhnGDzicfp
+	 PyU2+Q+/jkpzCEKzxt4A2+HX6ATK+JbWTBEd8+UXw2Dj4dtp5RPXbAg8ucYlRJwteqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJqxLTIM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=kIyTVelH;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78AC606A33D;
-	Wed,  4 Nov 2026 21:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBD860BC548;
+	Wed,  4 Nov 2026 21:16:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BBD860BC548
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJqxLTIM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8011F00A02;
-	Wed,  4 Nov 2026 21:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793826961;
-	bh=cYDbJcSF6MsxMTYnsYlWsg5fOwbFhsLezcPYxvIMO7Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NJqxLTIMyD+z+OGEGPKdNb5DVJxeR+ZPL5Hcq0qLrVgti4NdCfPFcWN5oUkoe2r24
-	 hntfK6cgVi/rSYBO0Vazr2E3tI24dW6AI+U7mB0ifoQfnKDA49wXp+nR253l3y375P
-	 wRumH3HzpRYvKA4sFylxrcLZdiNyh0VDgySBpfdUmQJQ/VqyOsczmMJ2TRKByc5yGh
-	 GWcMxajP7bHhTdPaZGg2JmWINVCr1wyP0683KcIJteDz3PQliV6Sj1hoLQ7P6nL/P/
-	 cRVmuMwa9WdES/V3C4Gr9BvODn9V/9W1+LLNyOEIXtRMer0IaVW/ukmhiV9vxIusLC
-	 Jt+17gTxG4kvw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=kIyTVelH
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=E0amS/985lEuA/641nlWSjwLQ/LPYEzaMW2+uW18C48=; b=kIyTVelHs7ZyeksgK64eNJxXc7
+	7XDnyK5BAGb07K70+4umsiUIAQa0uMwlx+epvyMTi5GaAEWEiF5OCBqhwJ6MsdfZYSReQVKOV5sbw
+	HfPDyWC8Jb7wpGA9JGU/Mb3QAfYhDvyc2rptefd8TI/PZthm8wUp9bZ0Nh10LOn/a76Q=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOiKx-00EOD1-CE; Wed, 04 Nov 2026 22:16:03 +0100
+Date: Wed, 4 Nov 2026 22:16:03 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: Iustin Stolniceanu <iustin.stolniceanu@analog.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 2/6] proc: drop ->proc_ioctl() and ->proc_compat_ioctl()
-Date: Wed,  4 Nov 2026 22:15:47 +0100
-Message-ID: <20261104-work-procfs-cleanup-v2-2-1e6687e226b1@kernel.org>
-In-Reply-To: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
-References: <20261104-work-procfs-cleanup-v2-0-1e6687e226b1@kernel.org>
+	Ciprian Regus <ciprian.regus@analog.com>
+Subject: Re: [PATCH net-next 5/5] net: phy: adin1100: Skip the soft reset on
+ ADIN1110/ADIN2111
+Message-ID: <309a1eb9-8255-42f0-a510-b40bf3302bbd@lunn.ch>
+References: <20261103160918.409701-1-iustin.stolniceanu@analog.com>
+ <20261103160918.409701-6-iustin.stolniceanu@analog.com>
+ <autAidTgykOObtzp@analog.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,117 +77,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3710; i=brauner@kernel.org; h=from:subject:message-id; bh=TJmOpj0pffvqgfu3ibe3PI3xVK1s2JegNCopUc+R49E=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9XhAfyCV0buqRnk1zX1d6OZ2eMalH8eJipr0uMWG5P A23N5kIdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEyESYzhDyevW1XFrfUf/qk0 7NeebL/7t/RqlyWCZU4H5euv2ca3zWRk2N39s2b6VCe3ycEuHT+SW44aVxkHnG07/u8yY8AaN5Y uXgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <autAidTgykOObtzp@analog.com>
 
-Every entry with ioctls implements ->proc_ioctl_buf() now and procfs
-copies the arguments in and out around pinning the entry, for 32-bit
-tasks too. Remove ->proc_ioctl() and ->proc_compat_ioctl().
+> > @@ -232,6 +232,15 @@ static int adin_soft_reset(struct phy_device *phydev)
+> >  {
+> >  	int ret;
+> >  
+> > +	/* On the ADIN1110/ADIN2111 MAC-PHYs, CRSM_SFT_RST resets the whole
+> > +	 * chip, undoing the MAC driver's setup, and MDIO reads return stale
+> > +	 * data until it completes. The MAC driver has already reset the
+> > +	 * chip, so skip it here.
+> > +	 */
+> > +	if (phy_id_compare_model(phydev->phy_id, PHY_ID_ADIN1110) ||
+> > +	    phy_id_compare_model(phydev->phy_id, PHY_ID_ADIN2111))
+> > +		return 0;
+> 
+> It seems more common to have a separate struct phy_driver entry in the
+> array passed to module_phy_driver() with a more precise
+> phy_id/mask. Then for ADIN1110/ADIN2111 you'd omit the
+> .soft_reset. Maybe Andrew knows what is preferred here?
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/proc/generic.c       |  7 -------
- fs/proc/inode.c         | 30 ++----------------------------
- include/linux/proc_fs.h |  4 ----
- 3 files changed, 2 insertions(+), 39 deletions(-)
+Humm...
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index e3ae11805c0f..b0027400ed23 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -488,13 +488,6 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 			pde->flags |= PROC_ENTRY_FULL_READS;
- 	}
- 	if (proc_ops->proc_ioctl_buf) {
--		if (WARN_ON_ONCE(proc_ops->proc_ioctl))
--			return -EINVAL;
--#ifdef CONFIG_COMPAT
--		/* 32-bit tasks go through the table as well */
--		if (WARN_ON_ONCE(proc_ops->proc_compat_ioctl))
--			return -EINVAL;
--#endif
- 		/* the table says what procfs copies, see pde_ioctl_arg() */
- 		if (WARN_ON_ONCE(!proc_ops->proc_ioctl_args ||
- 				 !proc_ops->proc_nr_ioctl_args))
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index a7ebbe334afa..75561e3f3355 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -588,14 +588,6 @@ void proc_poll_notify(struct proc_dir_entry *pde)
- }
- EXPORT_SYMBOL_GPL(proc_poll_notify);
- 
--static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned int cmd, unsigned long arg)
--{
--	const auto ioctl = pde->proc_ops->proc_ioctl;
--	if (ioctl)
--		return ioctl(file, cmd, arg);
--	return -ENOTTY;
--}
--
- /* the table lives in proc_ops, which goes away with the entry */
- static bool pde_ioctl_arg(struct proc_dir_entry *pde, unsigned int cmd,
- 			  struct proc_ioctl_arg *arg)
-@@ -652,38 +644,20 @@ static long pde_ioctl_buf(struct proc_dir_entry *pde, struct file *file,
- static long proc_reg_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	long rv;
- 
- 	if (pde_has_proc_ioctl_buf(pde))
- 		return pde_ioctl_buf(pde, file, cmd, (void __user *)arg, arg);
--	if (!pde_pin(pde))
--		return -ENOTTY;
--	rv = pde_ioctl(pde, file, cmd, arg);
--	pde_unpin(pde);
--	return rv;
--}
--
--#ifdef CONFIG_COMPAT
--static long pde_compat_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned int cmd, unsigned long arg)
--{
--	const auto compat_ioctl = pde->proc_ops->proc_compat_ioctl;
--	if (compat_ioctl)
--		return compat_ioctl(file, cmd, arg);
- 	return -ENOTTY;
- }
- 
-+#ifdef CONFIG_COMPAT
- static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(file));
--	long rv;
- 
- 	if (pde_has_proc_ioctl_buf(pde))
- 		return pde_ioctl_buf(pde, file, cmd, compat_ptr(arg), arg);
--	if (!pde_pin(pde))
--		return -ENOTTY;
--	rv = pde_compat_ioctl(pde, file, cmd, arg);
--	pde_unpin(pde);
--	return rv;
-+	return -ENOTTY;
- }
- #else
- #define proc_reg_compat_ioctl NULL
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index 8c406f4d09a5..f1ac112aa0fc 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -90,10 +90,6 @@ struct proc_ops {
- 	 * entry reports EPOLLERR | EPOLLPRI.
- 	 */
- 	__poll_t (*proc_poll)(struct file *, struct poll_table_struct *);
--	long	(*proc_ioctl)(struct file *, unsigned int, unsigned long);
--#ifdef CONFIG_COMPAT
--	long	(*proc_compat_ioctl)(struct file *, unsigned int, unsigned long);
--#endif
- 	/*
- 	 * procfs pins the entry around ->proc_mmap() and wraps the
- 	 * vm_operations of the mapping so that ->open(), ->fault(),
+#define PHY_ID_ADIN1100				0x0283bc81
+#define PHY_ID_ADIN1110				0x0283bc91
+#define PHY_ID_ADIN2111				0x0283bca1
 
--- 
-2.53.0
+static struct phy_driver adin_driver[] = {
+	{
+		.phy_id			= PHY_ID_ADIN1100,
+		.phy_id_mask		= 0xffffffcf,
+		.name			= "ADIN1100",
 
+That phy_id_mask is funky.
+
+static const struct mdio_device_id __maybe_unused adin_tbl[] = {
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN1100) },
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN1110) },
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN2111) },
+	{ }
+
+And this contradicts it.
+
+Please leaf through the datasheet for these devices and check how the
+ID is defined. Often the lowest nibble is the revision, so 0x0283bc81
+and 0x0283bc8f would be the same device, just different bugs.
+However, they can be different devices. This is why we have:
+
+#define PHY_ID_MATCH_EXACT(id) .phy_id = (id), .phy_id_mask = PHY_ID_MATCH_EXTACT_MASK
+#define PHY_ID_MATCH_MODEL(id) .phy_id = (id), .phy_id_mask = PHY_ID_MATCH_MODEL_MASK
+#define PHY_ID_MATCH_VENDOR(id) .phy_id = (id), .phy_id_mask = PHY_ID_MATCH_VENDOR_MASK
+
+Since they are different devices, it would be good to have multiple
+struct phy_driver, if that can be done without breaking backwards
+compatibility.
+
+	Andrew
