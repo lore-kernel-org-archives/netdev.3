@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793814937;
-	b=p0/c0wTUw9g8cRR66G5k2Is9hD4UWjW8YPYEj3gsAlDZLdvtBOD+KMttsc7671MGycjK
-	 noIscCStBNVIfmZOgWg6lZUcfJm6zuC49W4R3PQ52V4F5C/rWk1HCnhh0I624EA2Urth8
-	 O1E90qq0VPuDEVt4hhGqBflNNBUi2P208R0S2OlYIaux0kwfBvzMKva8NgITnegDLdNvU
-	 9rlrzuW4sjaM0vcBPNpxiY7Q2MyUv8S1N8owvb0EgkT1sj/tVTokZl29kh3M7jECKN7Of
-	 ntQfmQL8dp8QThtQNox1C1kmcqkj65G8s/XDoNAGjUpAj7iK9sWW1dTYEq6G65auC/A==
+	t=1793814983;
+	b=LML/qDwFIy997hZouGovIjBdXgkhMB5pQAJe8QsY4X/HxKdSpUGaL+3ygFnT9Mq3HWZF
+	 6k87FU1u6yh6C8A7+BwJSZZBJm6F4MXwDfDtv6nn9QJnQ+SCyoo05tyhNtJhlfucLjBW/
+	 aU/EL3fv/L+skmoOqFNO0b4YnpqeeS7ttAiufcUjR92l5nkYzabb/R1fRmoGSTxaxhEol
+	 nR/Lr4jEHCf5q3eGcIbjWR760zazKclhHexms2T/605UAyiXBcTb24pqnpDQgYuSlxbfD
+	 c+GFN1dycK83Rc30fjzORM09xHyZgPZ3qeIZBIfJv0/6jidnQlx7DfXxzEX0CBg+JGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793814937;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814983;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
-	b=m3Lq3wpv1j4fsJqMBLXZXC2aO8owjAnU0w+4ja8dCZiz+06GSA2jhLVw7YTaIgw2CKgF
-	 hFUcMZTnEUt1RlDet1amEmCw1qfyTUfTh6KTijoJPV8OtovIer5a8Hoz04wzzyhNCjHUX
-	 V9ltb02wg7uykF4xOEgrTHLv2c/gqERhtbqwDu9agYbL6d2pMnaTyPTQ/+Ngphay3EIIb
-	 r2iCn8Ibh5OLLHvXvuVZoAnUoiU9FBmgVRTGJJlfTqOkpTaWmaGxrkyosEWOM1WuelKJX
-	 YEDz7YegRiznl9pVZjdHs7KxrissJcgZ9b74SgJLXQj9RvTpx6+Doj7i0cNBwKCt1ew==
+	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
+	b=spO8niJjk5quDeGCrBc+JvXrO3gfzpTvykhNY5E61OoTdk1KOkXPsbbrLYAKgC1gc5Xi
+	 hMBGHY/brlqbf9lQ32OY7cYigE8/R19Iz9/fHJBLkodemfjMbeUtSOsMT5cj4uzi5UrJ4
+	 J9JK9WnXOGxOcTb3yfx+n9ZNH7nZfI6QHcZ1yycp/xbZ1wrDcpxizbmUCFknxHq87jCyf
+	 ywCJB57e3WcjcXeLuDm+fdWc76oP1prW6zyxzU80x7E94jfFR8Nt92kyywJYDUqTCDlCW
+	 oqyg5SGesso8oGh27/6GPwoaWBK8m31zpz3uSWdcCim8wzUguCqCJMMRuL3CciIJ8qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lv3gFXSS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WdWrZpQZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18357606A68A;
-	Wed,  4 Nov 2026 17:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D74606EEB7;
+	Wed,  4 Nov 2026 17:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lv3gFXSS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4DE1F00A16;
-	Wed,  4 Nov 2026 17:55:12 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WdWrZpQZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B8A1F00919;
+	Wed,  4 Nov 2026 17:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814936;
-	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
+	s=k20260515; t=1793814983;
+	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lv3gFXSSZQ1eyeFxl4sMw4NV+sDGb399yJy5J5a617cu3SzjnnFfUG43Lfl/7N2wR
-	 K+IhSwvXPWPYjM+q4YQ+IDJcS26tQY7yPe6vUEMgkrymmspdu0EotaGD42o6rpaRl9
-	 0A3kHepPv/ApdT3/KV9Zp4gd4PPOjbWG6usoLl5/UMWpBcxegT2cBWuUjFbtBLH7mv
-	 6ymbGGCGv3TrMbwp1kdSSvCMr+6QGHtpTwZWaklXV25iOtzvIgzYNxKq9awhT/uEik
-	 dFy+Ax1siZAlHQyp0vw3cAsPNd4lTDPGDdUR7g3JwRgFyHgFv3m15tZ2mAVMcDLMbJ
-	 1KqqoJMCmMAiQ==
+	b=WdWrZpQZG3jkjCCQpsfQrBfgI1HDfynUYNY6vSK8rFGYC+yFDlqVfIlEyf4lUkT0P
+	 47Qva0HSuMAdzfViLwsaTOh+Gv11NHerf7rOfu6InrqZM/g/ogcoP2D8FesuH1O8lI
+	 hy7orIASJbsGEcOppEShVEs3qXLaqbCm2X1l58C/mLO7S3SSho647wFT/6dMID+10o
+	 OEsRp/bw90rGUnntzwTIKbrSuRSgPWrqC9DAx8itOX9VTQCmMsQmbO+kpoEevaaznU
+	 jpanOJfr9ANyVI0+/ZlgBo3nJ2sRa69PFXETlEYKduVxU+xF7MZ1giUdKYjN5C4/6X
+	 bQ/q4gyj9YA2A==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -99,10 +99,11 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH v2 35/51] proc: warn about entries left in /proc/net of a dying namespace
-Date: Wed,  4 Nov 2026 18:47:21 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-35-bbf7d5546809@kernel.org>
+	Chuck Lever <cel@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 37/51] proc/vmcore: don't let vmcore_cleanup() run twice at once
+Date: Wed,  4 Nov 2026 18:47:23 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-37-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
@@ -116,45 +117,51 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=brauner@kernel.org; h=from:subject:message-id; bh=WtI/bNxyA4ZViPTNrsQhWLRSUjQUZ6M8VP3x2XTkww0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9znslLxak6zXzI89Tlobt8x2XHObOOr/+XjXLr/wSD pcMiUNGHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOZcIHhv9PR9Kbfsr9EuEwS 1OuN4o2O2Xfx2elLdO/WqT/FzfBsLsMfvrrlGXyfnU+ePfxJ5/kd5mMSt0XZXSfwl/mEMKZnOc9 mAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1758; i=brauner@kernel.org; h=from:subject:message-id; bh=gmON/Vwu30bm66aR7FLjt15bWl4pslPspuVjwp92LoI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zntzeuekQwxr7P0OOe39UCH++f+GeYsr8k/NVg0Tb VTs/Xvpc0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEwtsZGWZcnzuvlVNJw+uO fOP1dOFrwRJ3O9wSfjxvbSqZ8obd7yEjw9/p+SJB0Us0z7YI1mVedF7t1tNceCBK08xCfvPP1Pt LeAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-proc_net_ns_exit() runs after all the other pernet exits and frees
-net->proc_net right after removing "stat" from it. An entry that some
-pernet exit forgot to remove is left with a freed ->parent, and so
-PDE_NET() hands seq_open_net() and single_open_net() a freed struct net
-when the entry is opened through a file descriptor that someone kept.
+vmcore_cleanup() has a single caller, fadump's release_mem_store() on
+powerpc. That checks fw_dump.dump_active without a lock and calls
+vmcore_cleanup() without one, and kernfs only serializes the writers of
+one open file. So two tasks that write to
+/sys/kernel/fadump/release_mem through different files run
+vmcore_cleanup() at the same time.
 
-There is no such entry in the tree that we know of, but nothing would
-tell us about one either. So warn about it like remove_proc_entry()
-does for a directory that isn't empty.
+The first one removes /proc/vmcore and waits for its readers in
+proc_remove(). The second one finds the entry already unlinked, returns
+from proc_remove() right away and frees vmcore_list, the ELF headers
+and the device dumps while those readers still walk them. Or both of
+them free the same lists at once.
+
+Serialize vmcore_cleanup() with a mutex of its own. It can't be
+vmcore_mutex, removing /proc/vmcore calls release_vmcore() which takes
+it. The second caller then finds nothing left to free.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: e9720acd728a ("[NET]: Make /proc/net a symlink on /proc/self/net (v3)")
+Fixes: b500afff11f6 ("fadump: Invalidate registration and release reserved memory for general use.")
+Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/proc_net.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/proc/vmcore.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-index dbcf87a257e1..df5484813d5d 100644
---- a/fs/proc/proc_net.c
-+++ b/fs/proc/proc_net.c
-@@ -410,7 +410,13 @@ out:
- 
- static __net_exit void proc_net_ns_exit(struct net *net)
+diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+index 1fe70c4ecc54..ccb795b85509 100644
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -1764,6 +1764,11 @@ fs_initcall(vmcore_init);
+ /* Cleanup function for vmcore module. */
+ void vmcore_cleanup(void)
  {
-+	struct proc_dir_entry *left;
++	/* Not vmcore_mutex, removing /proc/vmcore calls release_vmcore(). */
++	static DEFINE_MUTEX(vmcore_cleanup_mutex);
 +
- 	remove_proc_entry("stat", net->proc_net);
-+	/* Whatever is left still points at net->proc_net and so at net. */
-+	left = rb_entry_safe(rb_first(&net->proc_net->subdir),
-+			     struct proc_dir_entry, subdir_node);
-+	WARN(left, "/proc/net: leaking at least '%s'\n", left->name);
- 	pde_free(net->proc_net);
- }
- 
++	/* Two writers of fadump's release_mem can get here at once. */
++	guard(mutex)(&vmcore_cleanup_mutex);
+ 	if (proc_vmcore) {
+ 		proc_remove(proc_vmcore);
+ 		proc_vmcore = NULL;
 
 -- 
 2.53.0
