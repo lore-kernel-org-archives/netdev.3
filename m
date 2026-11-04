@@ -1,101 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793772821;
-	b=z0mZ1GMBv2WHRpBg9MkIm6/oF1a+vd6eL2vCt+Fs3H9USm0U4UlXwQ86c5oU+1hMSoy3
-	 DmW2imrw7fpUK1Pvx38ckDF/nCr4JEnk3DE3nHVqCbrzYlUrKc4HDmiwk5xVa291FBCKy
-	 TOL3wkEKRG/2A/xH7sD99lQUHI7MrJNFzASCfi+X0H/gdOcZ5N/QbU0XVsRilZ9vXBxc4
-	 gp21qXwDxIuIghNY+MmbWUmwTcXySSvqr80/FEE1BQZOH4VgBu5a9Qv/FLLb0owuZLI42
-	 pWXG8QZA8jYIgptzQrJ5bxxZ8h5wsYcwdgybDkNSCbIzP7JWxF0CEspgg3e4ZbnPbrA==
+	t=1793772878;
+	b=YL8/z3+3GSbSJAfavbYAz0cf5D+2o9PZj2f6UPaKRDXabNKcT2r1CC8E/JSdj0L+8Ll1
+	 sHO9fkA/tQaWzBeoaOtTFOjMdhWwQX+vo2xT+sRrCDhHB1NUhGrTYVOzx0InHECmk3tRi
+	 ccDhgeCGhpC6MYShtYI5rnJN75UeKaXhgh5vhJr4KKYfsRSntSK4NL+RXdPYoCSEGeTHO
+	 vth6XPsMzFRwkeCeoIKd3ArinhbCENhoLLjHse0pSwBvVmo41L47JIRwF6kRSWzELbAWH
+	 hpiLBdadeIpLYb1QWAEtBE9P3G0uWaXaUHefvJReZXmYnt95CUdb5QJ93Bh4bhlD7dw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793772821;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793772878;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Vj9ktI48o7ufwGrRMOBI3Uxhb/8/rPw557mUsRk3qaM=;
-	b=x827kWmvPRALXJA47QLJZ+1LmJ16iodGADZwbaNUfFIxKq4EtQX+JIXIWw/ga1MHfa8R
-	 tDNYesY7WynX6/leEp9jbxXPC24lLjOZYKCJlKTmRxL3yTLDrFKn34tyarcIOA3cc/Hwp
-	 eQYFbNNQNxvz7gveoCB84f2eSrsv2IziuYiDU3u2MhImqTgniveyfreSpGjXv7oI1PX0+
-	 Ovo/RHL+YxHGv7oTAa6cvSYuMOZkLE0oFuToGKVfzb04JIDQEvItviu1L4EX4ZSEI3z40
-	 003LHihikFFoFkPLZoyej2e2CzcIZuBJ5IUmg3ibo2CEG5QpLnsEo0ilI2d/ybwtLDQ==
+	bh=CvfPGziobIrEteIOatX8FyBV7rtb7GgNQIea2gIpbyE=;
+	b=Du4bCuHkODjJwY8LRqDFh1k4ULj6z3zAqx/ETeCxYdfmdLegVe6SLA4UioRdnVI80198
+	 zwpEgXn4OypAiC4xcehtr/Y1cHCGmmVrgVxC7ld1HorncFvlTeDzZ3Cq9SdE3wsrdSJ0j
+	 1RF8W27TcWUUpyzPqQRnC8c1JnbjEukqJC0WeVfwjwl28uV3P9YPR6pn5NkXWC6rKL/rF
+	 2Vhys6qHeej5f+fX7VftiQ3Pc477kvsenGyQ956E2O9shHV+TcuD8+XJSlRBdqoMml8Q0
+	 onNDf1xjQbZ7BV3LQNPH415s0yJ2lp0lxRFoTIgZfFAX/epBNJFnpdq+SzQuj+vDpqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=isslab.korea.ac.kr;
-	spf=none smtp.mailfrom=isslab.korea.ac.kr;
-	dkim=pass header.d=isslab-korea-ac-kr.20260707.gappssmtp.com header.i=@isslab-korea-ac-kr.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=I+iLkkqw;
-	arc=none smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5760606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 06:13:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5760606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=pzgmwfbB;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7A2606A326;
+	Wed,  4 Nov 2026 06:14:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B7A2606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=isslab-korea-ac-kr.20260707.gappssmtp.com header.i=@isslab-korea-ac-kr.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=I+iLkkqw
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3550c917fd3so480232eec.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 22:13:37 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=pzgmwfbB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20260707.gappssmtp.com; s=20260707; t=1793772817; x=1794377617; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vj9ktI48o7ufwGrRMOBI3Uxhb/8/rPw557mUsRk3qaM=;
-        b=I+iLkkqwfwuAggym/kUWMbPAvyClX/edd9SOd5Q+2Ht2LKoaF0iJJaSlkQDacb6gU1
-         QPfWhvVsHabfsJUSytf0Z09bkekWtKfMPViypQRq9cPQR87bw+TBN6ZGB89hC8I4M3ZL
-         iGMMPkRlJZInSUAhsI9zwvlMDmcd2UvAT+nIQ6oHd6PSqz32CVURE5IA3WSuDmAJGnCt
-         tIFKq/uqSL/5nGMeIcRa0Uy868XTDdnCa9ipaWh5d4ZrmBoC7MK8DXSjXGOpwCWIEqQd
-         CF37MBLtALZ+bW44NRfcXRmHXl6AKQyVoRuIyZD9dHpefYrnarn1jelFxBobWgB0DiXX
-         3B9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793772817; x=1794377617;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vj9ktI48o7ufwGrRMOBI3Uxhb/8/rPw557mUsRk3qaM=;
-        b=ow43KyOniTG8N9AZ4AqB6/Wu3IphC9Cq/eaoWCjd5QY+p4a0xbqKvWVj+M8WWWJkPW
-         ECN4LyFc2iNAonQpCxSm1iyIxYYHLewyep28wY/LyGvijyYysWtB33sZ0EVkubbKOsj+
-         yqKaKkkf96YdPUcEF/fBS0uuUo5+ceg6Wn4vJmFw3FQFflwBm3l/c88uv9JtRvYyDNoc
-         ha2LivMuH6+MWETZp/0OD3r5nOMR6RDqxdxP0vOHHUIvyAmHFY998vgWm4rRUhoai2ve
-         dEekqAPqOaeCrA2O3QgoObNbrGEvVTzAmn95kcbFHz8kbYJS0ooqOOyCgV0OBJ10y5yy
-         Hklw==
-X-Forwarded-Encrypted: i=1; AKwUvBxoSbauotX7fppqsCEtRO2SHg/rMQa7YgJcW50CspoSJWSWR/nJS5W3MM+ifcYSnR7h6ALQaxY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/JU5+QM0RyEyVTS/ngrHEdoviIDoQA4ASI57U4W8iOYd/pXrqA
-	N0nVLUoaUvUM2i5h9HdFJHMlXYdUDWj4pofa35ctayB2up3VgUBdHqsyHuWQLW3ccaU=
-X-Gm-Gg: AYBFou0OwBDjFnoXrSnk4Rl+pdjh5cyRnvzMn63+SPPIaRAr93MpQnn3/ptmH9wpdJa
-	/B/Iz8oSygH4yW82lH5Xe0w05q0w5iO2Cp6DKE0o/tl0Q/rkcmomnwIPLOMdxDHw2NOmoaABtNS
-	iQ5y2jYT2NzkOSfeg0yVm6KMWbjzFYLYnrQ21lOvzct8LLqVt2tL1AKyLdPKCBWlelzyhgQN0YY
-	RrVw4RDzdHwPCKHAin7wwmBh554fkrV6HkA8wTVUMZPFYfewDyJcmglCw+pam/Ri9f6yLmRo4DW
-	RhsiUPJUd+flzupsRfH2dezULP1sDzGVDnrIYO8SZver9gxzvhiuhb23XJ4/ffbxVszgtXY27H0
-	AIV+IsuBQegyD4TbIE/4H5y2GQmi/0u3YKqfM88EooOdLiv2lTHM1NCUb6rTkKgG4Q0OXd5oSwd
-	2a/7AwKpSoQ1Pl+WtW6CuRK6kE01HrrA0wJtxJYXL7xJ4S0TB4duCl475d2AHKGzw11hPoIeW8a
-	UWLC9dqOWLF6eERpSMOUxSTBWZl9871BhetZCun3aG3eHm8IYFqbio08Hh7AjKPLlWQ2mpUrIwq
-	nTptxyV2GOzymNfWxdmlne7I1oA8Vs2Z+f8j1P2g6XVWb0iiMxsYrAHfg9m/F4rf/JJMQsbAyvJ
-	vbQc3qZwO1XPh+DPGo4kYqtrjpeccbAGcbXAYIrTsNoYN1GpZy7T0+X7N2g==
-X-Received: by 2002:a05:7300:d58d:b0:35e:f1a5:9ba6 with SMTP id 5a478bee46e88-36a4221aca2mr24932065eec.5.1793772816686;
-        Tue, 03 Nov 2026 22:13:36 -0800 (PST)
-Received: from yhlee-960QFG.Davolink ([2406:5900:1044:110c:744:cf40:a7b2:e78f])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca38fe477sm3776719eec.17.2026.11.03.22.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 22:13:36 -0800 (PST)
-From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-To: Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=pzgmwfbBkhN8kkiIQ31P4oJtjcaXPTVCQGoK7E5QgQMNbCDdemW/0QNd5uyezKyBxX1Ztq55FaoYf
+	 Dn9YKGgffjVcPB96gb70iuEVmhBxpRguXS9uNpOG4lBjrrhxANBRd4/ijA1ROcL5EKwKNeQy+QaLSB
+	 tSzVKA6Pg1fCrkqA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aeacd47e2b-661a6;
+	Wed, 04 Nov 2026 14:14:32 +0800 (CST)
+X-RM-TRANSID:2ee36aeacd47e2b-661a6
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.97])
+	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aeacd47cf2-161b3;
+	Wed, 04 Nov 2026 14:14:32 +0800 (CST)
+X-RM-TRANSID:2ee56aeacd47cf2-161b3
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Willem de Bruijn <willemb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Yehyeong Lee <yhlee@isslab.korea.ac.kr>,
-	stable@vger.kernel.org
-Subject: [PATCH net] gve: bound the device reported rule count in the flow rules query
-Date: Wed,  4 Nov 2026 15:13:29 +0900
-Message-ID: <20261104061329.1881388-1-yhlee@isslab.korea.ac.kr>
+	yana06070@163.com
+Subject: [PATCH net-next v2] ipv4/ipv6: preserve multicast filters after a failed source leave
+Date: Wed,  4 Nov 2026 14:14:19 +0800
+Message-ID: <20261104061419.87989-1-yanxia@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -106,170 +74,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-gve_adminq_process_flow_rules_query() turns num_queried_rules, which the
-device wrote into the admin queue buffer, into a copy length:
+After joining a group with IP_ADD_MEMBERSHIP or IPV6_JOIN_GROUP,
+MCAST_LEAVE_SOURCE_GROUP for an unjoined source returns EADDRNOTAVAIL
+but switches the socket's filter mode, so the existing membership stops
+receiving. Leaving and rejoining the group restores reception.
+IP_DROP_SOURCE_MEMBERSHIP has the same problem.
 
-	num_queried_rules = be32_to_cpu(descriptor->num_queried_rules);
-	rule_info = (void *)(descriptor + 1);
-	...
-	rule_info_len = num_queried_rules *
-			sizeof(*flow_rules_cache->rules_cache);
-	if (sizeof(*descriptor) + rule_info_len != total_memory_len) {
-		dev_err(&priv->dev->dev, "flow rules query is out of memory.\n");
-		return -ENOMEM;
-	}
+ip_mc_source() and ip6_mc_source() allow an empty-filter mode switch before
+checking whether a source list exists for deletion. The failed request
+changes EXCLUDE {} to INCLUDE {}, so the socket no longer accepts packets
+from any source.
 
-	memcpy(flow_rules_cache->rules_cache, rule_info, rule_info_len);
+Check for a missing source list before changing the filter mode. Preserve
+EADDRNOTAVAIL for the rejected deletion and keep mode switches for valid
+source additions.
 
-Nothing bounds that length.  The test above does not, because
-total_memory_len is descriptor->total_length and the same device wrote it,
-so it only asks the device to agree with itself.
+Found while reviewing the error paths of ip_mc_source() and
+ip6_mc_source().
+The reproducer uses socket calls without kernel changes or fault injection.
 
-There are two consequences.  For GVE_FLOW_RULE_QUERY_RULES the copy runs
-past the cache: at 47 rules it writes 4136 bytes into the 4048 byte
-rules_cache, and rules_cache_num is then set to that count for the ethtool
-paths to walk.  For GVE_FLOW_RULE_QUERY_IDS the destination is large
-enough, but the descriptor and the rule array share one
-GVE_ADMINQ_BUFFER_SIZE block and the array starts after the descriptor, so
-counts of 1021 to 1024 read past that 4096 byte block.  Those words reach
-userspace through ETHTOOL_GRXCLSRLALL, which needs no CAP_NET_ADMIN
-because net/ethtool/ioctl.c exempts it, and gve_get_flow_rule_ids() asks
-the device again on every call.
+Tested with a UDP socket reproducer under UML using the IPv4 generic and
+legacy APIs and the IPv6 generic API. All three paths lose reception
+before this change and keep receiving with the fix. Source joins and
+leaves, block/unblock, last-source leave, and ordinary leave/rejoin also
+pass.
 
-Bound the count by the space the array actually has, the admin queue
-buffer less the descriptor, before the multiply that cannot then overflow
-either.  That is 46 rules and 1020 ids, and it is never larger than the
-destination cache.  The total_length test stays, since it still catches a
-descriptor whose payload was truncated.
+W=1 x86_64 builds with derived allmodconfig and allyesconfig configurations
+also pass, with no changes to the warning sets.
 
-Reproduced with a KUnit harness that injects the device reply and is not
-part of this patch.  Unpatched, 47 rules gave the report below, and 1021
-and 1024 ids copied 4084 and 4096 bytes from the descriptor's end, 4 and
-16 bytes past the block.  With the patch all three are rejected with
--EINVAL, and 46 rules and 1020 ids still work.
-
-  BUG: KASAN: slab-out-of-bounds in gve_adminq_process_flow_rules_query+0xe7/0x390
-  Write of size 4136 at addr ffff8880027ae000 by task kunit_try_catch/33
-
-  CPU: 0 UID: 0 PID: 33 Comm: kunit_try_catch Tainted: G                 N  7.3.0-dirty #8 PREEMPT(lazy)
-  Tainted: [N]=TEST
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x3f/0x50
-   print_report+0xcd/0x620
-   ? gve_adminq_process_flow_rules_query+0xe7/0x390
-   kasan_report+0xde/0x110
-   ? gve_adminq_process_flow_rules_query+0xe7/0x390
-   kasan_check_range+0x105/0x1b0
-   __asan_memcpy+0x3c/0x60
-   gve_adminq_process_flow_rules_query+0xe7/0x390
-   gve_fr_rules_overflow_test+0xc9/0x430
-   ? __pfx_gve_fr_rules_overflow_test+0x10/0x10
-   ? __pfx___set_cpus_allowed_ptr+0x10/0x10
-   ? __pfx_read_tsc+0x10/0x10
-   ? ktime_get_ts64+0x192/0x250
-   kunit_try_run_case+0x1ca/0x4b0
-   ? __pfx_kunit_try_run_case+0x10/0x10
-   ? kthread_affine_node+0x247/0x360
-   ? __pfx_kthread_affine_node+0x10/0x10
-   ? __pfx_kunit_try_run_case+0x10/0x10
-   ? __pfx_kunit_generic_run_threadfn_adapter+0x10/0x10
-   kunit_generic_run_threadfn_adapter+0x7b/0xe0
-   kthread+0x36a/0x4f0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x34d/0x620
-   ? __pfx_ret_from_fork+0x10/0x10
-   ? __switch_to+0x22/0xde0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x19/0x30
-   </TASK>
-
-  Allocated by task 33:
-   kasan_save_stack+0x33/0x60
-   kasan_save_track+0x14/0x30
-   __kasan_kmalloc+0x8f/0xa0
-   __kvmalloc_node_noprof+0x1e8/0x4e0
-   gve_fr_ctx_init+0x24d/0x920
-   gve_fr_rules_overflow_test+0xae/0x430
-   kunit_try_run_case+0x1ca/0x4b0
-   kunit_generic_run_threadfn_adapter+0x7b/0xe0
-   kthread+0x36a/0x4f0
-   ret_from_fork+0x34d/0x620
-   ret_from_fork_asm+0x19/0x30
-
-  The buggy address belongs to the object at ffff8880027ae000
-   which belongs to the cache kmalloc-4k of size 4096
-  The buggy address is located 0 bytes inside of
-   allocated 4048-byte region [ffff8880027ae000, ffff8880027aefd0)
-
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x27a8
-  head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  flags: 0x4000000000000040(head|zone=1)
-  page_type: f5(slab)
-  raw: 4000000000000040 ffff888001042140 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-  head: 4000000000000040 ffff888001042140 dead000000000122 0000000000000000
-  head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
-  head: 4000000000000003 ffffea000009ea01 00000000ffffffff 00000000ffffffff
-  head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffff8880027aee80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   ffff8880027aef00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffff8880027aef80: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
-                                                   ^
-   ffff8880027af000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffff8880027af080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-
-Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
 ---
- drivers/net/ethernet/google/gve/gve_adminq.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 8b215fca9c1b63..02c1f398f6e395 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1542,14 +1542,20 @@ static int gve_adminq_process_flow_rules_query(struct gve_priv *priv, u16 query_
- {
- 	struct gve_flow_rules_cache *flow_rules_cache = &priv->flow_rules_cache;
- 	u32 num_queried_rules, total_memory_len, rule_info_len;
-+	u32 rule_info_max_len;
- 	void *rule_info;
- 
- 	total_memory_len = be32_to_cpu(descriptor->total_length);
- 	num_queried_rules = be32_to_cpu(descriptor->num_queried_rules);
- 	rule_info = (void *)(descriptor + 1);
-+	rule_info_max_len = GVE_ADMINQ_BUFFER_SIZE - sizeof(*descriptor);
- 
- 	switch (query_opcode) {
- 	case GVE_FLOW_RULE_QUERY_RULES:
-+		if (num_queried_rules >
-+		    rule_info_max_len / sizeof(*flow_rules_cache->rules_cache))
-+			return -EINVAL;
-+
- 		rule_info_len = num_queried_rules * sizeof(*flow_rules_cache->rules_cache);
- 		if (sizeof(*descriptor) + rule_info_len != total_memory_len) {
- 			dev_err(&priv->dev->dev, "flow rules query is out of memory.\n");
-@@ -1560,6 +1566,10 @@ static int gve_adminq_process_flow_rules_query(struct gve_priv *priv, u16 query_
- 		flow_rules_cache->rules_cache_num = num_queried_rules;
- 		break;
- 	case GVE_FLOW_RULE_QUERY_IDS:
-+		if (num_queried_rules >
-+		    rule_info_max_len / sizeof(*flow_rules_cache->rule_ids_cache))
-+			return -EINVAL;
-+
- 		rule_info_len = num_queried_rules * sizeof(*flow_rules_cache->rule_ids_cache);
- 		if (sizeof(*descriptor) + rule_info_len != total_memory_len) {
- 			dev_err(&priv->dev->dev, "flow rule ids query is out of memory.\n");
+Changes in v2:
+- Target net-next and drop the Fixes and stable tags, as requested by
+  Ido Schimmel.
+- No code changes.
 
-base-commit: 787268686c64be60023743b527645a907e38ccca
+v1: https://lore.kernel.org/netdev/20261030063603.697510-1-yanxia@cmss.chinamobile.com/
+
+Validation was performed for v1 on net fcc00b15cb21a6de76826e5012b2c758505f5e65.
+The two modified files are identical at the net-next base commit.
+For the x86_64 builds, the derived configurations disable WERROR and
+KASAN; the derived allyesconfig also disables KUNIT_ALL_TESTS. The complete
+before/after warning sets are identical for each configuration.
+
+ net/ipv4/igmp.c  | 7 ++++---
+ net/ipv6/mcast.c | 7 ++++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index 144fca1..9c38045 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -2520,6 +2520,10 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
+ 		err = -EINVAL;
+ 		goto done;
+ 	}
++	psl = rtnl_dereference(pmc->sflist);
++	if (!add && !psl)
++		goto done;	/* err = -EADDRNOTAVAIL */
++
+ 	/* if a source filter was set, must be the same mode as before */
+ 	if (pmc->sflist) {
+ 		if (pmc->sfmode != omode) {
+@@ -2534,10 +2538,7 @@ int ip_mc_source(int add, int omode, struct sock *sk, struct
+ 		pmc->sfmode = omode;
+ 	}
+ 
+-	psl = rtnl_dereference(pmc->sflist);
+ 	if (!add) {
+-		if (!psl)
+-			goto done;	/* err = -EADDRNOTAVAIL */
+ 		rv = !0;
+ 		for (i = 0; i < psl->sl_count; i++) {
+ 			rv = memcmp(&psl->sl_addr[i], &mreqs->imr_sourceaddr,
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index ecef55f..2ade335 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -395,6 +395,10 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+ 		err = -EINVAL;
+ 		goto done;
+ 	}
++	psl = sock_dereference(pmc->sflist, sk);
++	if (!add && !psl)
++		goto done;	/* err = -EADDRNOTAVAIL */
++
+ 	/* if a source filter was set, must be the same mode as before */
+ 	if (rcu_access_pointer(pmc->sflist)) {
+ 		if (pmc->sfmode != omode) {
+@@ -408,10 +412,7 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+ 		pmc->sfmode = omode;
+ 	}
+ 
+-	psl = sock_dereference(pmc->sflist, sk);
+ 	if (!add) {
+-		if (!psl)
+-			goto done;	/* err = -EADDRNOTAVAIL */
+ 		for (i = 0; i < psl->sl_count; i++) {
+ 			if (ipv6_addr_equal(&psl->sl_addr[i], source))
+ 				break;
+
+base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
 -- 
-2.43.0
+2.39.0.windows.2
+
+
 
