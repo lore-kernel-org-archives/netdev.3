@@ -1,69 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.63
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793794450;
-	b=GXNKCcCfDhonsKJCTYuunSr7S8CGJ4wJepaH0ihToGVNdnzU98gu/jMRR3cWrJ6xAZiE
-	 GAdhSs3FwqWdDQoowuxB2/5xj/XiiNu3Y/eprVDRfpOJxgCSpn81hNTZuNX748oO7AyeU
-	 E2BMZh/k3OHvdnvYAMauLI5i8Hpuiq3dOFDAfb075KFVTNraFg7cqKKfM0qbCUusdkG2E
-	 6qcqmnt/ZbXWjCOq+urc2Wty0VHWBkS7zas5dk0DXRYYxvvDGhJ+DCZylAlT90Sszgphn
-	 Ak4/I9N3YzOrsm2zO+4I9Nn4bVq7mxfPZ5pY8MrZL8HAo/tzVOwFcdOkOwoG67WaMRw==
+	t=1793794645;
+	b=Sl47GfduBKP+OiNahIPM8DMk9+ejXpiTs2L2c+elWNIjVfJypmb4JGqu2RarwhTvaYaV
+	 J07gMRsbmAsOe/nOr8N3GlbD3UvdfimVrIshK4LivzoAxKyi92nIKTzc2Jbzy+lkLb8Zz
+	 uCP1MfdIGCuWwAQf5cpM0yKxWrJLC1T72/RUuB/1IHwYGPZZz2qJh4cmCZ8mk6X77Bv60
+	 fdwuXcXhT1KlP7sML237PI84zW6g7mZ9aQwLSj1Rkg9+59PefGuUD5ahCUV0AHct0Iok1
+	 1HGGGwOKXLzBw9/8NUt3jCkvlzJetMmcjV6pF6Du1+8XzkxSq7N2E4XHccYSZqsRPzw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793794450;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 DKIM-Signature;
-	bh=I0SvXnnBFzW/xvbEzHzlb1uvVM4j+mzr2uJqd0jseEE=;
-	b=CvmgMhAqtDrerBs3tawitgwTOdz4xmQIaKxFWu5e4Wt7//7+0vFN0vS1L2zX9cyL6a+8
-	 wqHxgRUHdyWNK/GjdY0nV7pbTcXeMs8fOvP1r/+JyXJMDpAit+sNb8lnHKAtLohnDivH9
-	 DZF+PmZw2CxqyDn5DgGtHXrbjKsQVpPriCKP6T91H5tFkuh5MOamL2uMpMFL04LiWzugo
-	 BDFpeD4sYeg9X8noWOHZ3Rtkv4Q0v8x1A3q03ZfW1YA/Djlo16YSHsppxSz+ssnoAkygQ
-	 SKx6wKpHpIyIylQjRnSuH4zwqaRUBHyP4ydz09F6VjszuwDteyY21HPozwhKVkjNSCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793794645;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=GeF5kqhjYg76FiDQFTLk3CgPjL/qABFp98p09W1WKJA=;
+	b=VF0C90lnyw8ZG0aUKCja/oxYsru8vtPa/DmgUPab9a4fWoKO2DYN9CGsSSPqZZm2iplg
+	 xlmXdDg0cxU9HQE47TkiGJ2p3K3lM8pvRYPusDhtfLdzUYLLzsMWpk9pwmzRJ8JYg0GHG
+	 WaCkaojBc87C4+k5H8VKnS1g3vkCjJjOQY5gUbfS82eLctCRR3aZM+6o4IVqnLyjvxirW
+	 ZfsK1iiNhvE5IPcAItxLRCJdyVq4s7oz40rZk2ryweHqhZDz4s6njUgtHhOGz8M2VhHLl
+	 bbY+cElTR31/CLf2pj1w2yIRwFP0PUG4Wzy8evftIKpoPj+1XGqcfXmunTkvt3QK7kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=poczta.fm;
-	spf=pass smtp.mailfrom=poczta.fm;
-	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=HxwDk1MU;
-	arc=none smtp.remote-ip=217.74.67.63
-Received: from smtpo63.interia.pl (smtpo63.interia.pl [217.74.67.63])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZaoYLiYK;
+	arc=none smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BF7606A329
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:14:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77BF7606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A187606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 12:17:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A187606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=HxwDk1MU
-Received: from localhost (unknown [80.68.231.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Wed,  4 Nov 2026 13:14:05 +0100 (CET)
-From: Slawomir Stepien <sst@poczta.fm>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	aleksander.lobakin@intel.com,
-	ilias.apalodimas@linaro.org,
-	toke@redhat.com,
-	lorenzo@kernel.org,
-	ihor.solodrai@linux.dev,
-	tavip@google.com,
-	maciej.fijalkowski@intel.com,
-	sst@poczta.fm,
-	stable@vger.kernel.org
-Subject: [PATCH v6 bpf 3/3] veth: update mem type in xdp_buff
-Date: Wed,  4 Nov 2026 13:13:16 +0100
-Message-ID: <20261104121316.1155680-4-sst@poczta.fm>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZaoYLiYK
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-369f33df08eso1041296eec.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 04:17:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793794644; x=1794399444; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GeF5kqhjYg76FiDQFTLk3CgPjL/qABFp98p09W1WKJA=;
+        b=ZaoYLiYK3a3zD75MckhXgtoas0jInCoU58ox9eowCZPdk0R/ZyTQbO+ZJlhyHTrhRJ
+         vHYD6pqDp8kj8acZECXfxBnz45Z/+9cI88QzZBgobnkEQEX9iGzPae4kIj/cszkNG/LI
+         00qbw3o/tQtonIgDSnlH/ey4mAuckJwUt9Vq6DzUSqjMe5SQE/cPJ6e/JC9VFta36QwH
+         F8Q9L/DKXwncU3gtMSSJ+Ny0KUW5+L9Vm2pDIKMiJr/05FUbaAXFGAwm780WCzb0FvSt
+         r2Z+8FajrfXTdGtYHkCgE6BPeZLNdFok4FsebzXMpjHMYXz7JlTAKOoAPD56jSswrb7l
+         L2ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793794644; x=1794399444;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GeF5kqhjYg76FiDQFTLk3CgPjL/qABFp98p09W1WKJA=;
+        b=ABjjjTnUBp4Qv0goe1uEKLU5JM+ZM203DeBL2+wkxO0ETyoFWan4AAUI3Pxh61Nqh4
+         qZ32Y6yDEd8YMu/eS2R1oBaMrIanUjvcP/ELW55NYKIDpXK4C1Cm7EbKrGryKrC2Db2l
+         KJg+zwYElZ4O082MjBoj9v5VvD2ja/Oro+3mDc1UQAWZPGRse+qHo9qjuLwCEVctJpRm
+         ilI9nvRIHRSGFMQwxFWLWeRK171PIp9Y58Bp5gzj4E3YKcNLdqtzvMUA3LPvR6onCVOm
+         HHOAtbmI7exI/EymPgqV2GVFUtjuus9HnyYzHajADTVK25zkyutuveb2g0dVU0clrbRF
+         nI5w==
+X-Gm-Message-State: APuU4Z8gh1Ez7YV5m4JmCLsW6I9yHg/C78Qvj46tnb1iIa0+a5rOdK1D
+	Zyfu3gDcjicIU2scZTkWbt5jhtxojg1kBwM7t/oUntCob43aef6BgKd6+YHuug==
+X-Gm-Gg: AYBFou06GqrSwq4LlhEgEZaB5x5t+tGsDE+QpcX9YqjJvsz0vvyjPB1aWUI4y8WO/fA
+	0CxT3t7MvpiGMAycg3TMZuAFSEDPu4v8hOglHCizoYjOtUmuuvpZLDF74Afi2kW/tOykpSOt0AE
+	H+G0S+p1hrlxGHfwokVVKtByt/GGNpX14ZMfZJb0RDWs8KlRmk8pDhdaahgISNp1vTNJ8y8t56b
+	s1Ap5+Os9aXZuVl+X/gP4Gp5s1OXOFtoo7yyaUQhzBBGD26dbJxsHaigtkvJVKNVmyRZrqFJUM7
+	UDw/y+YZjHVZe8/bJSX4YbOtRsJmbww38pISZ4U4u2DLF0RnrdcEkG1FMIlzJbsdjNjo/g4TRJe
+	peFC/IiD5fiVKJhNNPNANRtyAQGjtf4Ym5nM4AcfNzF4lxrP/yaQ/b9TG51UmErFdnjBqAg+Gck
+	0fT1mEFBW9otGRykYx/vS7u7+otqDv1by1V1GNqdOEr82YHTL7VATxDqg/9yGiAP+QmBEog6QjE
+	rTok/a7GII5WCPLwJsB6eweEp79oVw5wsAApRGgkwGmdBk/ghOmZIzh3VcztISO0yrY3p2v9i6H
+	qwXVkM4Fk2Jz6xYEga4Ss+PBrAk8HLnwQ8hJ8oAhhjbpd1rOIVOesrtdWgB1npW23D4=
+X-Received: by 2002:a05:7301:fc81:b0:36c:d29e:668f with SMTP id 5a478bee46e88-36cd29e694cmr2469548eec.6.1793794643860;
+        Wed, 04 Nov 2026 04:17:23 -0800 (PST)
+Received: from prpatel-thinkpadp1gen7.rmtin.csb ([103.158.138.158])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca38d46fcsm7438355eec.13.2026.11.04.04.17.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 04:17:23 -0800 (PST)
+From: Prijesh Patel <prijeshpatel.dev@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	stephen@networkplumber.org,
+	prpatel@redhat.com,
+	Prijesh Patel <prijeshpatel.dev@gmail.com>
+Subject: [PATCH iproute2-next] man: ip-neighbour.8: document protocol keyword
+Date: Wed,  4 Nov 2026 17:47:02 +0530
+Message-ID: <20261104121702.56526-1-prijeshpatel.dev@gmail.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261104121316.1155680-1-sst@poczta.fm>
-References: <20261104121316.1155680-1-sst@poczta.fm>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,206 +95,76 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1793794447; bh=I0SvXnnBFzW/xvbEzHzlb1uvVM4j+mzr2uJqd0jseEE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=HxwDk1MUYVcIj9/PcQINoL7JSFd+5oA97Tacp2i2pnaOfhNuRfGscuBf6LUofiXfO
-	 RLW3yzX5CFJh9kKkqakTw2vAIZAsoPd9ij0GGWYPGzI834UEadNSMvKMiIFAc9QZI3
-	 JQXHgSUojrTInfyi/2tLw6ULa3zk0BLCrkGz1hUI=
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Document the `protocol PROTO` keyword, which tags a neighbour entry
+with its origin (e.g. static, boot, dhcp, or a routing daemon's own
+protocol id) on `ip neigh add/change/replace/delete`, and filters
+entries by that origin on `ip neigh show/flush`, including the
+special `all` value. Supported since 6b83edc0 ("neighbor: Add
+support for protocol attribute").
 
-When skb's headroom is not sufficient for XDP purposes,
-skb_pp_cow_data() returns new skb with requested headroom space. This
-skb was provided by page_pool.
-
-For CONFIG_DEBUG_VM=y and XDP program that uses bpf_xdp_adjust_tail()
-against a skb with frags, and mentioned helper consumed enough amount of
-bytes that in turn released the page, following splat was observed:
-
-[   32.204881] BUG: Bad page state in process test_progs  pfn:11c98b
-[   32.207167] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11c98b
-[   32.210084] flags: 0x1fffe0000000000(node=0|zone=1|lastcpupid=0x7fff)
-[   32.212493] raw: 01fffe0000000000 dead000000000040 ff11000123c9b000 0000000000000000
-[   32.218056] raw: 0000000000000000 0000000000000001 00000000ffffffff 0000000000000000
-[   32.220900] page dumped because: page_pool leak
-[   32.222636] Modules linked in: bpf_testmod(O) bpf_preload
-[   32.224632] CPU: 6 UID: 0 PID: 3612 Comm: test_progs Tainted: G O        6.17.0-rc5-gfec474d29325 #6969 PREEMPT
-[   32.224638] Tainted: [O]=OOT_MODULE
-[   32.224639] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-[   32.224641] Call Trace:
-[   32.224644]  <IRQ>
-[   32.224646]  dump_stack_lvl+0x4b/0x70
-[   32.224653]  bad_page.cold+0xbd/0xe0
-[   32.224657]  __free_frozen_pages+0x838/0x10b0
-[   32.224660]  ? skb_pp_cow_data+0x782/0xc30
-[   32.224665]  bpf_xdp_shrink_data+0x221/0x530
-[   32.224668]  ? skb_pp_cow_data+0x6d1/0xc30
-[   32.224671]  bpf_xdp_adjust_tail+0x598/0x810
-[   32.224673]  ? xsk_destruct_skb+0x321/0x800
-[   32.224678]  bpf_prog_004ac6bb21de57a7_xsk_xdp_adjust_tail+0x52/0xd6
-[   32.224681]  veth_xdp_rcv_skb+0x45d/0x15a0
-[   32.224684]  ? get_stack_info_noinstr+0x16/0xe0
-[   32.224688]  ? veth_set_channels+0x920/0x920
-[   32.224691]  ? get_stack_info+0x2f/0x80
-[   32.224693]  ? unwind_next_frame+0x3af/0x1df0
-[   32.224697]  veth_xdp_rcv.constprop.0+0x38a/0xbe0
-[   32.224700]  ? common_startup_64+0x13e/0x148
-[   32.224703]  ? veth_xdp_rcv_one+0xcd0/0xcd0
-[   32.224706]  ? stack_trace_save+0x84/0xa0
-[   32.224709]  ? stack_depot_save_flags+0x28/0x820
-[   32.224713]  ? __resched_curr.constprop.0+0x332/0x3b0
-[   32.224716]  ? timerqueue_add+0x217/0x320
-[   32.224719]  veth_poll+0x115/0x5e0
-[   32.224722]  ? veth_xdp_rcv.constprop.0+0xbe0/0xbe0
-[   32.224726]  ? update_load_avg+0x1cb/0x12d0
-[   32.224730]  ? update_cfs_group+0x121/0x2c0
-[   32.224733]  __napi_poll+0xa0/0x420
-[   32.224736]  net_rx_action+0x901/0xe90
-[   32.224740]  ? run_backlog_napi+0x50/0x50
-[   32.224743]  ? clockevents_program_event+0x1cc/0x280
-[   32.224746]  ? hrtimer_interrupt+0x31e/0x7c0
-[   32.224749]  handle_softirqs+0x151/0x430
-[   32.224752]  do_softirq+0x3f/0x60
-[   32.224755]  </IRQ>
-
-It's because xdp_rxq with mem model set to MEM_TYPE_PAGE_SHARED was used
-when initializing xdp_buff.
-
-Fix this by using new helper xdp_convert_skb_to_buff(). Unlike generic
-XDP, veth turns the xdp_buff into an xdp_frame on XDP_{TX,REDIRECT}, so
-the head is later released through the mem type as well and the
-helper's frags-only reasoning is not enough here. Advertise
-MEM_TYPE_PAGE_POOL only when the whole buffer was just copied into
-rq->page_pool by skb_pp_cow_data(); otherwise keep the queue's original
-MEM_TYPE_PAGE_SHARED model. An skb that skips the CoW has no frags, so
-nothing can be released through the mem type while the program runs.
-
-XDP_{TX,REDIRECT} no longer reset the mem type to the queue's original
-model before the buff is converted to a frame, as the frame has to
-carry the type chosen above. Nothing needs to be restored afterwards
-either: the previous patch makes the frame path set its own mem type
-and every skb sets it here. Add a page_pool variant of veth_xdp_get()
-so that we avoid refcount underflow when draining page frag.
-
-Frames redirected out of veth can now be MEM_TYPE_PAGE_POOL. A devmap
-egress program only releases their frags correctly since commit
-b3ca872947ef ("bpf: Use the frame mem type in devmap egress XDP"), so
-that commit has to come first when backporting.
-
-Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Closes: https://lore.kernel.org/bpf/CAADnVQ+bBofJDfieyOYzSmSujSfJwDTQhiz3aJw7hE+4E2_iPA@mail.gmail.com/
-Cc: <stable@vger.kernel.org> # 6.4.x: b3ca872947ef: bpf: Use the frame mem type in devmap egress XDP
-Cc: <stable@vger.kernel.org> # 6.4.x
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-[sst: rebased onto bpf/master; claim MEM_TYPE_PAGE_POOL only after CoW into
- rq->page_pool; take page_pool refs on compound heads via netmem helpers;
- drop the rq mem model restores as every path sets its own mem type now;
- dropped Reviewed-by as the code changed]
-Signed-off-by: Slawomir Stepien <sst@poczta.fm>
+Signed-off-by: Prijesh Patel <prijeshpatel.dev@gmail.com>
+Assisted-by: Claude:claude-sonnet-5
 ---
- drivers/net/veth.c | 52 +++++++++++++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 17 deletions(-)
+ man/man8/ip-neighbour.8 | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index afae2c6533b9..e159f0e00ddb 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -741,7 +741,7 @@ static void veth_xdp_rcv_bulk_skb(struct veth_rq *rq, void **frames,
- 	}
- }
+diff --git a/man/man8/ip-neighbour.8 b/man/man8/ip-neighbour.8
+index 1f890c0d..4784faff 100644
+--- a/man/man8/ip-neighbour.8
++++ b/man/man8/ip-neighbour.8
+@@ -28,7 +28,9 @@ ip-neighbour \- neighbour/arp tables management.
+ .BR use " ] [ "
+ .BR managed " ] [ "
+ .BR extern_learn " ] [ "
+-.BR extern_valid " ]"
++.BR extern_valid " ] [ "
++.B  protocol
++.IR PROTO " ]"
  
--static void veth_xdp_get(struct xdp_buff *xdp)
-+static void veth_xdp_get_shared(struct xdp_buff *xdp)
- {
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
- 	int i;
-@@ -754,12 +754,36 @@ static void veth_xdp_get(struct xdp_buff *xdp)
- 		netmem_inc_ref(skb_frag_netmem(&sinfo->frags[i]));
- }
+ .ti -8
+ .BR "ip neigh" " { " show " | " flush " } [ " proxy " ] [ " to
+@@ -39,7 +41,9 @@ ip-neighbour \- neighbour/arp tables management.
+ .IR STATE " ] [ "
+ .B  vrf
+ .IR NAME " ] ["
+-.BR nomaster " ]"
++.BR nomaster " ] [ "
++.B  protocol
++.IR PROTO " ]"
  
-+static void veth_xdp_get_pp(struct xdp_buff *xdp)
-+{
-+	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
-+	int i;
+ .ti -8
+ .B ip neigh get
+@@ -123,6 +127,14 @@ will not remove or invalidate the entry, but it can probe the entry and notify
+ user space when the entry becomes reachable. The kernel will return the entry
+ to stale state if it did not receive a confirmation after probing the entry.
+ 
++.TP
++.BI protocol " PROTO"
++the origin of this neighbour entry. The value can be a number or a
++string from
++.IR /etc/iproute2/rt_protos ,
++e.g.
++.BR static ", " boot ", or " dhcp.
 +
-+	page_pool_ref_netmem(netmem_compound_head(virt_to_netmem(xdp->data)));
-+	if (likely(!xdp_buff_has_frags(xdp)))
-+		return;
-+
-+	for (i = 0; i < sinfo->nr_frags; i++) {
-+		netmem_ref netmem = skb_frag_netmem(&sinfo->frags[i]);
-+
-+		page_pool_ref_netmem(netmem_compound_head(netmem));
-+	}
-+}
-+
-+static void veth_xdp_get(struct xdp_buff *xdp)
-+{
-+	if (xdp->rxq->mem.type == MEM_TYPE_PAGE_POOL)
-+		veth_xdp_get_pp(xdp);
-+	else
-+		veth_xdp_get_shared(xdp);
-+}
-+
- static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
- 					struct xdp_buff *xdp,
- 					struct sk_buff **pskb)
- {
- 	struct sk_buff *skb = *pskb;
--	u32 frame_sz;
-+	bool pp_cow = false;
+ .TP
+ .BI lladdr " LLADDRESS"
+ the link layer address of the neighbour.
+@@ -229,6 +241,14 @@ list neighbour proxies.
+ .B unused
+ only list neighbours which are not currently in use.
  
- 	if (skb_shared(skb) || skb_head_is_locked(skb) ||
- 	    skb_is_nonlinear(skb) ||
-@@ -768,21 +792,17 @@ static int veth_convert_skb_to_xdp_buff(struct veth_rq *rq,
- 			goto drop;
- 
- 		skb = *pskb;
-+		pp_cow = true;
- 	}
- 
--	/* SKB "head" area always have tailroom for skb_shared_info */
--	frame_sz = skb_end_pointer(skb) - skb->head;
--	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--	xdp_init_buff(xdp, frame_sz, &rq->xdp_rxq);
--	xdp_prepare_buff(xdp, skb->head, skb_headroom(skb),
--			 skb_headlen(skb), true);
--
--	if (skb_shinfo(skb)->nr_frags) {
--		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
--		xdp_buff_set_frags_flag(xdp);
--	} else {
--		xdp_buff_clear_frags_flag(xdp);
--	}
-+	xdp_convert_skb_to_buff(skb, xdp, &rq->xdp_rxq);
-+	/* Unlike generic XDP, XDP_{TX,REDIRECT} turn the buff into an
-+	 * xdp_frame, which later releases the head via mem.type as well.
-+	 * Only claim page_pool memory when the whole buffer was copied into
-+	 * rq->page_pool above; an skb that skipped the CoW is linear.
-+	 */
-+	if (!pp_cow)
-+		rq->xdp_rxq.mem = rq->xdp_mem;
- 	*pskb = skb;
- 
- 	return 0;
-@@ -830,7 +850,6 @@ static struct sk_buff *veth_xdp_rcv_skb(struct veth_rq *rq,
- 	case XDP_TX:
- 		veth_xdp_get(xdp);
- 		consume_skb(skb);
--		xdp->rxq->mem = rq->xdp_mem;
- 		if (unlikely(veth_xdp_tx(rq, xdp, bq) < 0)) {
- 			trace_xdp_exception(rq->dev, xdp_prog, act);
- 			stats->rx_drops++;
-@@ -842,7 +861,6 @@ static struct sk_buff *veth_xdp_rcv_skb(struct veth_rq *rq,
- 	case XDP_REDIRECT:
- 		veth_xdp_get(xdp);
- 		consume_skb(skb);
--		xdp->rxq->mem = rq->xdp_mem;
- 		if (xdp_do_redirect(rq->dev, xdp, xdp_prog)) {
- 			stats->rx_drops++;
- 			goto err_xdp;
++.TP
++.BI protocol " PROTO"
++only list neighbour entries with the given origin protocol. The special
++value
++.B all
++matches entries with any protocol, including those with no protocol
++attribute set.
++
+ .TP
+ .BI nud " STATE"
+ only list neighbour entries in this state.
 -- 
 2.56.0
 
