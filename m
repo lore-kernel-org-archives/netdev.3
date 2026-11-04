@@ -1,72 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793780461;
-	b=1H4O0CJ/xPqo1bKLy6AloeS70BLF9DJgRwpdesxNfx6AwAGcwkqZ0mX5fEUTYlCAFE+w
-	 y7SrxE1RmhOM3a3CkCqJIdbSab0NpRVfVSKh44QTNZwsEoIFRQXHkG1NUBFizjI/ld56p
-	 MB3AZ9+bhfOJTiFM45FVtF3JfgUgaIEYK4q0rPtXEmO7HYo5toAYS4AZ6wqvdKfrV0JZ+
-	 FVhrHo0sgTiTyrb1fQLdt5EBxh5+dfE0N2nScFAfQa6i2kz2kMBf4048TCTtItEXgG1aH
-	 7XiV32hh3MSoqwNoo7qSwk85heVyDimx978RJIMbhToFht/ExG/8q0eIU/up3YBoZBA==
+	t=1793780538;
+	b=MJ0U7s4dgAp7n0S2zUd3sBK9Mks4qOlJy7ofdDurcuAXuZdHblR/V0dTFfuct/NNbIH3
+	 rWaAHnWtNyu2PETJIOQ5v+YmFSrECm5i54PvM6w1OPZKB0dMMEBZZbt2o71pIxbYo+ueJ
+	 e/Y2Tu/tmGwuPZNwPlkc6x8LxAgoCz4qc64zhfn3Htyar5CPZ5f+DYfiM2QXNRw0yeb8H
+	 Gm/Uq3u8e/J0UK0qqmozDGPuF1JZ449+yNbh7Ca7o7YKwZ5OW0dD4pQRyDBM6qKRXLqj5
+	 kY6iIRmxp+RRdCqpajUlXKHaq+iaww7zyRZ/gy0jN1scqtRjhlJ9SEnPoRuVYHQUjXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793780461;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=iYtcs8Sbgt/mAGlPAOtTJUNavU/oK8TvQ0CPJNVaXu8=;
-	b=MsWnFnIX6Wm+sw2HR4ESYLvz7IfDWSeDZuBtePH08dLf14H4jeN+MXJ+uZqtwchGNAgv
-	 fojCS6k9rEYszIWwvedJ/RMGgV4XQou5CpJ9q4lHLmRpQbmF1yv7mCktFI+kdvHd0mrgw
-	 HY9jYqWkP5+6KRWa4BV+zauE5Igl4KeMg5c3FSArsfbSMTWSLJRbwTik+fneU/j91sn6k
-	 QyZNq4kR2flooD3kFVi9rDIQaomXT9cePpvvsw70RTKCYOO106VCax9vRcqanOiusQu52
-	 7/ZiCewojvk0+SOHnMZwD8SUGeWAPlwjpBa2RtxhBshLemfP+L0RQDeyVV0q5cvRyjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793780538;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=pADrcnEYh45IHa88Qe/iiabroBcjL7BN29WsN4XYUyU=;
+	b=QKzz11uuurqNKPpdJQg0EFLE0kbuy7DJWDG8dPWytnEXlSUaQdyQ1ucCf4jYegk6Szw5
+	 RXtKm8puw70bQkS0pYXoa006f8NQMRH9JxLk4mA+MuiQZC3/n1QCnlIxK9nvi1TOz+BJW
+	 t2uQS3NZDE7n0BPmMnLWBV11wy+ta2jiVFWh+iYcv43NRXajGXRgABDZMZTD7dBSUMxZW
+	 wk0zMfpyuGAume0Q/gaqhNgGb4sMBqc1i44o56mpHEgcmfICtQOJhOXljrwzcfWET+wYV
+	 5cfjyhygWCFP/xLsBQeTmdn5lhGqToEGJXLawmxBqo3ht8G5cx9MfL/Yj+pv5h+4FJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bDb5LU2O;
-	arc=none smtp.remote-ip=209.85.214.200
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EkMv8SpD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC782606A32C
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:21:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC782606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD4A606A31B;
+	Wed,  4 Nov 2026 08:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bDb5LU2O
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ea63087d79so5321485ad.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:21:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793780460; x=1794385260; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iYtcs8Sbgt/mAGlPAOtTJUNavU/oK8TvQ0CPJNVaXu8=;
-        b=bDb5LU2OoGCHX3hRQbY8L1Y3m8mR1bTaSmMPomByeTklD9mhkXQYAdghXG128jAanV
-         5H9trdbP5+aS8HYuH7P9Iug62Lhtg9RhMBvTodtZYOKwFHRFusxgSKy9yugi/iQRLD3K
-         +qWbxwXAheaCroRG3Ti4tVEOBgcLCE3OipTZfKNPlbPARhdXoGpV+p7ZI80trcAeKE0X
-         lzdxXPA9+9e6SVGhUJh/DB+gPC/2AFA2oMcX7sYD7ZGwc4i4Aye+xoQNZEirm8pW3btC
-         WbpoH6SdOtIaC4wUJk8kLJu/FtO6ivv3+2blY5kSl0uzqBJQaz4Pm5NUpoBiXpuhwR8A
-         Z4iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793780460; x=1794385260;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iYtcs8Sbgt/mAGlPAOtTJUNavU/oK8TvQ0CPJNVaXu8=;
-        b=vsfDX5DUyYkVMuo/pl+BOT9XR7n0MuyMZA3xBfdqmlrD+Xxc0yqzFfUdx9OOo/myb+
-         oLrw41KQgRWInJAecmBG0vVxllYdrVOSZdo/DNCANfyVTE9G1eGlzoYkzonrKvdKuW4W
-         ptM3arfoMo8FdbcRQHx4Io9oIEzvSJkVjIqOdl7Ob5cOfWPdk2etzyh5dDDQA39GxU/R
-         arcGON/AlPBRUQGHsakDOf+tyRMidl5PMlCbk+LtxlTeBpqMg/Z6cStfXMRlIeam3B4x
-         7bABpL0K/tJupkGcsP97CjA0sQs3TYSyN38pSrBUCuCbL/g2iwHQ8zpibMbv2p9S5onn
-         /dIg==
-X-Forwarded-Encrypted: i=1; AKwUvByL8M5kVrfortYPzG0EKmTPio1Nh9rUuyaVs3h6klBHpKUvBWgfjvVLD37FKzadck/XGPyKvAI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+fF+5CCsOVHeP8G3t43O5jt/Vs6elY8uQYNlcTSVHZDDS1zVbo
-	FbvpVbBvxneDDd1MXBC5foCP5jIbgXlaDFDEJj5+pPQU/76ePgTho8PdKN3p4eS0NKqG2veAqjI
-	dzm/oGg==
-X-Received: from plbkt8.prod.google.com ([2002:a17:903:888:b0:2e5:9026:72f2])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cec4:b0:2e9:851a:7188
- with SMTP id d9443c01a7336-2eb3649c631mr148863365ad.23.1793780459902; Wed, 04
- Nov 2026 00:20:59 -0800 (PST)
-Date: Wed,  4 Nov 2026 08:20:55 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EkMv8SpD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C32D1F000C1;
+	Wed,  4 Nov 2026 08:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793780537;
+	bh=pADrcnEYh45IHa88Qe/iiabroBcjL7BN29WsN4XYUyU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EkMv8SpDXRieR47meuB4Pmvi+QdeQNBFZee5HjFZ3ArWQntn9N0erRQunqJdSqJvi
+	 sWEvzP0bt2zYGdgLulDtJnGTDFmO+bq2cs44K+vBbPcQPtB+L3P5716FURpwk3uWog
+	 iY1qkIKamcct2cAmHBueyqILVdAwSkbh4sZiVKQ3FdWyUa6EA4457jh+gnyephq5zL
+	 FV2F+JbxaRPq05y2ie/ZaUpQ4ppa7iO6cwu6roHi4+e/uNh80NdytCmjEBZS7NObpE
+	 AhphzsAuRTjykkvYNNIvkd08xfwKMJaebMNrPd2VfuSxJEDgIhGpVvhOy1UHTFHGsu
+	 BLBtITrf8+y6g==
+Date: Wed, 4 Nov 2026 09:22:15 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC net-next] net: airoha: npu: attach passive devfreq
+ scaling
+Message-ID: <aurrN349nP-b6FK2@lore-desk>
+References: <20261104072940.52933-1-ansuelsmth@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,119 +61,174 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261104082058.452188-1-kuniyu@google.com>
-Subject: [PATCH v1 net] af_unix: Convert unsigned long to u64 for GC.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Lim Chanyoun <onleaf322@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GXeSiHAEIfQDVlvR"
+Content-Disposition: inline
+In-Reply-To: <20261104072940.52933-1-ansuelsmth@gmail.com>
 
-Lim Chanyoun reported that unix_vertex_max_scc_index could
-wrap around on 32-bit kernels, which confuses GC into purging
-a live socket receive queue.
+--GXeSiHAEIfQDVlvR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I apparently designed GC with u64 in mind to avoid wraparound. [0]
+On Nov 04, Christian Marangi wrote:
+> The NPU can scale to different operating state from idle to normal to
+> turbo. Attach a passive devfreq that will scale the NPU frequency with the
+> CPU with the use of OPP table and opp-required properties.
+>=20
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>=20
+> Posted as RFC to understand if it's the correct way to handle this...
+>=20
+> DT patch will come later.
+>=20
+>  drivers/net/ethernet/airoha/airoha_npu.c  | 61 ++++++++++++++++++++++-
+>  include/linux/soc/airoha/airoha_offload.h |  3 ++
+>  2 files changed, 63 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
+net/airoha/airoha_npu.c
+> index 4d3195eb00f7..f8055ca65ec4 100644
+> --- a/drivers/net/ethernet/airoha/airoha_npu.c
+> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> @@ -12,6 +12,8 @@
+>  #include <linux/of_platform.h>
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/regmap.h>
+> +#include <linux/pm_opp.h>
+> +#include <linux/clk.h>
+> =20
+>  #include "airoha_eth.h"
+> =20
+> @@ -656,6 +658,62 @@ void airoha_npu_put(struct airoha_npu *npu)
+>  }
+>  EXPORT_SYMBOL_GPL(airoha_npu_put);
+> =20
+> +static int airoha_npu_devfreq_get_cur_freq(struct device *dev, unsigned =
+long *freq)
+> +{
+> +	struct airoha_npu *npu =3D dev_get_drvdata(dev);
+> +
+> +	*freq =3D clk_get_rate(npu->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int airoha_npu_devfreq_target(struct device *dev, unsigned long *=
+freq,
+> +				     u32 flags)
+> +{
+> +	struct airoha_npu *npu =3D dev_get_drvdata(dev);
+> +
+> +	return clk_set_rate(npu->clk, *freq);
+> +}
+> +
+> +static int airoha_npu_devfreq_get_dev_status(struct device *dev,
+> +					     struct devfreq_dev_status *stat)
+> +{
+> +	struct airoha_npu *npu =3D dev_get_drvdata(dev);
+> +
+> +	stat->busy_time =3D 0;
+> +	stat->total_time =3D 0;
+> +	stat->current_frequency =3D clk_get_rate(npu->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct devfreq_dev_profile airoha_npu_devfreq_profile =3D {
+> +	.target =3D airoha_npu_devfreq_target,
+> +	.get_dev_status =3D airoha_npu_devfreq_get_dev_status,
+> +	.get_cur_freq =3D airoha_npu_devfreq_get_cur_freq
+> +};
+> +
+> +static int airoha_npu_devfreq_probe(struct device *dev)
+> +{
+> +	struct airoha_npu *npu =3D dev_get_drvdata(dev);
+> +	struct devfreq *devfreq;
+> +	int ret;
+> +
+> +	npu->clk =3D devm_clk_get_enabled(dev, NULL);
 
-Let's make it true on 32-bit kernels.
+I guess this should be devm_clk_get_optional_enabled() otherwise this patch
+will break backward compatibility. Moreover, we should bail out early if
+npu->clk is NULL.
 
-Note that unix_vertex.{out_degree,index} are converted for
-consistency; they are bounded by the number of allocated
-objects and do not exceed UINT_MAX on 32-bit kernels.
+> +	if (IS_ERR(npu->clk))
+> +		return dev_err_probe(dev, PTR_ERR(npu->clk), "failed to get clk\n");
+> +
+> +	ret =3D devm_pm_opp_of_add_table(dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to parse NPU freq thresholds\n"=
+);
+> +
+> +	npu->gov_data.parent_type =3D CPUFREQ_PARENT_DEV;
+> +	devfreq =3D devm_devfreq_add_device(dev, &airoha_npu_devfreq_profile,
+> +					  DEVFREQ_GOV_PASSIVE, &npu->gov_data);
+> +
+> +	return PTR_ERR_OR_ZERO(devfreq);
+> +}
+> +
+>  static const struct airoha_npu_soc_data en7581_npu_soc_data =3D {
+>  	.fw_rv32 =3D {
+>  		.name =3D NPU_EN7581_FIRMWARE_RV32,
+> @@ -803,8 +861,9 @@ static int airoha_npu_probe(struct platform_device *p=
+dev)
+>  			 (val >> 16) & 0xffff, val & 0xffff);
+> =20
+>  	platform_set_drvdata(pdev, npu);
+> +	dev_set_drvdata(dev, npu);
 
-Fixes: 4090fa373f0e ("af_unix: Replace garbage collection algorithm.")
-Link: https://lore.kernel.org/netdev/20240228030508.31297-1-kuniyu@amazon.com/ #[0]
-Reported-by: Lim Chanyoun <onleaf322@gmail.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/unix/garbage.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+why do we need that one? I guess this is exactly what platform_set_drvdata(=
+) is
+doing, right?
 
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index da774f56ca64..a0b515354e8b 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -78,9 +78,9 @@ struct unix_vertex {
- 	struct list_head edges;
- 	struct list_head entry;
- 	struct list_head scc_entry;
--	unsigned long out_degree;
--	unsigned long index;
--	unsigned long scc_index;
-+	u64 out_degree;
-+	u64 index;
-+	u64 scc_index;
- };
- 
- struct unix_edge {
-@@ -148,8 +148,8 @@ enum unix_vertex_index {
- 	UNIX_VERTEX_INDEX_START,
- };
- 
--static unsigned long unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
--static unsigned long unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
-+static u64 unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
-+static u64 unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
- 
- static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
-@@ -372,7 +372,7 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
- }
- 
- static LIST_HEAD(unix_visited_vertices);
--static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-+static u64 unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
- 
- static bool unix_scc_dead(struct list_head *scc)
- {
-@@ -450,14 +450,14 @@ static bool unix_scc_cyclic(struct list_head *scc)
- 	return false;
- }
- 
--static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
--				     unsigned long *last_index,
--				     struct sk_buff_head *hitlist)
-+static u64 __unix_walk_scc(struct unix_vertex *vertex,
-+			   u64 *last_index,
-+			   struct sk_buff_head *hitlist)
- {
--	unsigned long cyclic_sccs = 0;
- 	LIST_HEAD(vertex_stack);
- 	struct unix_edge *edge;
- 	LIST_HEAD(edge_stack);
-+	u64 cyclic_sccs = 0;
- 
- next_vertex:
- 	/* Push vertex to vertex_stack and mark it as on-stack
-@@ -553,12 +553,12 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
- 	return cyclic_sccs;
- }
- 
--static unsigned long unix_graph_cyclic_sccs;
-+static u64 unix_graph_cyclic_sccs;
- 
- static void unix_walk_scc(struct sk_buff_head *hitlist)
- {
--	unsigned long last_index = UNIX_VERTEX_INDEX_START;
--	unsigned long cyclic_sccs = 0;
-+	u64 last_index = UNIX_VERTEX_INDEX_START;
-+	u64 cyclic_sccs = 0;
- 
- 	unix_vertex_max_scc_index = UNIX_VERTEX_INDEX_START;
- 
-@@ -582,7 +582,7 @@ static void unix_walk_scc(struct sk_buff_head *hitlist)
- 
- static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- {
--	unsigned long cyclic_sccs = unix_graph_cyclic_sccs;
-+	u64 cyclic_sccs = unix_graph_cyclic_sccs;
- 
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
--- 
-2.56.0.385.gac671c819a-goog
+Regards,
+Lorenzo
 
+> =20
+> -	return 0;
+> +	return airoha_npu_devfreq_probe(dev);
+>  }
+> =20
+>  static struct platform_driver airoha_npu_driver =3D {
+> diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/so=
+c/airoha/airoha_offload.h
+> index 7589fccfeef6..ac776dc31487 100644
+> --- a/include/linux/soc/airoha/airoha_offload.h
+> +++ b/include/linux/soc/airoha/airoha_offload.h
+> @@ -6,6 +6,7 @@
+>  #ifndef AIROHA_OFFLOAD_H
+>  #define AIROHA_OFFLOAD_H
+> =20
+> +#include <linux/devfreq.h>
+>  #include <linux/skbuff.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/workqueue.h>
+> @@ -167,6 +168,8 @@ struct airoha_npu {
+>  #if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NP=
+U))
+>  	struct device *dev;
+>  	struct regmap *regmap;
+> +	struct clk *clk;
+> +	struct devfreq_passive_data gov_data;
+> =20
+>  	struct airoha_npu_core {
+>  		struct airoha_npu *npu;
+> --=20
+> 2.55.0
+>=20
+
+--GXeSiHAEIfQDVlvR
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaurrNwAKCRA6cBh0uS2t
+rELpAPwI9Nyf59rcUT+dErD/iejg4G1NiCfVcWRFwPmERqWr2QD/dKM7AqI7pn1A
+Ju7qDHM8TiXXoQDNkpgJgPGDMOaVXgw=
+=UYLH
+-----END PGP SIGNATURE-----
+
+--GXeSiHAEIfQDVlvR--
