@@ -1,68 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793782843;
-	b=cQNkyFPuqsRs2jhM0SkraNVF/6TPT+OxoO7IJF0TpKFEoUtEMPwfcMN18zCNx7GapmU0
-	 fgUC8JSYVnDXETZIPJUp+hoccusEQJ7mrosj8daMNkcz27iiMQZrHOgbh9lhcCmBQdRYg
-	 RU1Sqz7/pWuHrd4V4H9S26JX7rZAoG3QRk5KVMuBXqKsVBeliFY+jA1bjQOg9HLZlFq5L
-	 ZQdjej8df8srvY2PU+FXOHUwx+C6q+CDSQ7ldCWx77Yot0nQYapC5mYfBunVjH5AfjiA4
-	 57ZcFVEY3+EWoNnCKh0yJrN9OH5KNAVMt0tbW/DzNm1zu2ldcQ0rov526OFpVNVVABg==
+	t=1793782924;
+	b=oUsensVd9iWBt5mENb6rezvrfNl7iPa6b5MgbOG0C9iUWOJd4akCW9XiDd3XNFXPPcDd
+	 nZYwBW3NhYPLSlRJ26uN+uSfN8k3zTwT7k7rFhzlRCh4p/85kyuvRSWHdGB7BLAJJB5CA
+	 SSPiMKn+kg2Mxdpkad8/SlUeEowF0044Wmy8vbv50lHX/Dp+RX6ZSmnWfPhN7B7otpo0h
+	 QVv2iO4u11O61XYfLRdmw2i6Thh2M4fGkRngIJf3iOuL+DPiW+4E+SsEzZ9oCNqrulp1c
+	 hF0qBBuY8pIaPwQP7tolprOjwFVehH+nfrbfYVxeb6fh7azOytbwLg6QWA0X44lGYDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793782843;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=8H9Y/J3F3inFdF+nnaPoG+JnVtlCMIQn9GwvVhWehH4=;
-	b=DEvgEyVE6qSFeqOfwkxa/Wdzmc+k+wdlY/qOSawjiSWQsxGO5Y5hLSmrOVc/0c2wUtxU
-	 oM+zq2vmrfPXU1Nc3153i2nicnbhhTn8Hq9o6pACFP18uEJLfkVavBkitvWWMOV/rk0kb
-	 SMtS8R0frmi6/Eg5o6UBVa5rlAVjFImL918Rxaa1c2rULvtoKrMSl/s8V6e8ub8XopbEk
-	 r4MMmfDOBck/30gDUoOO9g5/E+ubUKhlHn/xeXAJ/FjBz8DLoXJ4OAfZvAm1537y80Q33
-	 AoYfEEhgtcwcsbL/fWQZeQ7Gb31nkKGkADzvQ92PyBKsLFM4IAKQcyNHu6oyzBVO+7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782924;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=7K6HjA65RbxLhotG+xqE4WNbbNBpJ+HkuzJl8AH55mo=;
+	b=1YorIGKZgZCtC5KeWdbrM3tNezW6NG//a/KnhsN6mDylzFeOrXeXXBHRCJ5lTVraA7/6
+	 USU8YjZGrjP0NAFW+tX7o+6bVQ6DBflDCZaFsuq1OAoCMYEvkIfJ1DE6DFJI2DuEfPE7D
+	 q2OS2D+wf24F5xascOoSc4uIdoBYKRYFiCV+Z6YOuiU+2bsOM2DqBpY2i8yJ5X21ZRidb
+	 LntLQPVaIUOzswP/zIladbxRK1bTDroitQ7RHl9dB3RwnLBT7CCXwZAI9PD/Hzdq1zR/H
+	 wD5P68zdE72AERp46NVsJgPP+WYWbNyMgRxpNkNXTi5IE9/fmy4ceKK/mRhNmoxVB+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hgxgTSLT;
-	arc=none smtp.remote-ip=117.135.210.4
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y0fImH2i;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1627B606A326;
-	Wed,  4 Nov 2026 09:00:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1627B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D06606A31B
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 09:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=hgxgTSLT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8H
-	9Y/J3F3inFdF+nnaPoG+JnVtlCMIQn9GwvVhWehH4=; b=hgxgTSLTlOtbH4xmAG
-	UeEOUQSBj435U8QuDQbvp/AilR1VxktQgQTbB1JtnGkr4KZz+ReyynSkkcol3t0M
-	R5BsH7TFN2gGTi6Vcyuvep1BXu5g4ZEEDcxF6KTXaKD2BHf0+5KDmbCBkXG6kKnc
-	x55727gvJ4Rw/u4ir71dpvkS8=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgB3LJju8+pqEDm4Dw--.32829S3;
-	Wed, 04 Nov 2026 16:59:27 +0800 (CST)
-From: luoqing <l1138897701@163.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Patrick McHardy <kaber@trash.net>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/2] netfilter: h323: avoid secs-to-jiffies overflow in RAS timeout
-Date: Wed,  4 Nov 2026 16:59:25 +0800
-Message-Id: <20261104085925.773471-2-l1138897701@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261104085925.773471-1-l1138897701@163.com>
-References: <20261104085925.773471-1-l1138897701@163.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y0fImH2i
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A41C1F000C1;
+	Wed,  4 Nov 2026 09:02:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793782923;
+	bh=7K6HjA65RbxLhotG+xqE4WNbbNBpJ+HkuzJl8AH55mo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Y0fImH2iLHf479Z+DSHlaNu0HsnDOkvKsDQs8qX39Mkhvl06r1gkSy6anlAfiXXNQ
+	 WZUeyjFEsABl66B9itLiCdimGCfGvEQvUfBQbh6SPJco5wSLf74E8JH1p8jfaI557/
+	 z9rip73wiDG0X69zwHG1J2XmYj6U3xcZigmBUNNjmWDqc1QjtbgnX7Ulnzl1uAUj1k
+	 mZRzDC3BqcAtsfbaaN54vXBd1TYFmfjfzrqahkc8ObGuXwTVl+iFk3B66DFBSHwSRR
+	 nf7RjzWX5eWt1wAifQr0urgiGw8E2jE5HDHz4HvB9uLLeLJ+DaIrlGdGBGRtXHXPbP
+	 vlBx0HsyP6BTQ==
+Subject:
+ Re: [PATCH net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace period
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, sashiko-bot@kernel.org
+Date: Wed, 04 Nov 2026 09:02:02 +0000
+Message-ID: <179378292255.488856.6917577451813010963@kernel.org>
+In-Reply-To: <20261103090011.4128420-1-edumazet@kernel.org>
+References: <20261103090011.4128420-1-edumazet@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,71 +63,199 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgB3LJju8+pqEDm4Dw--.32829S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CFWrXF18Gr1kZryUJw4rAFb_yoW8Kw1xpF
-	W5K3srKw4xJr4Yk3Wvk3WkAF4DXw4fGF45Crn8KayrCwn8Jr1v9FWFk3s2ga47trs3Xr43
-	ZF4jqw17G3W0yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j1PfQUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3Q+N0Wrq8+9HUAAA3F
 
-From: Qing Luo <luoqing@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-process_rcf() converts info->timeout with "* HZ" twice, once for the
-conntrack refresh and once for the Q.931 expectation, both in 32-bit
-arithmetic.  info->timeout is a u32 decoded from the ASN.1 timeToLive
-field and only checked for being non-zero, so it is remote-controlled
-by both the endpoint (RegistrationRequest) and the gatekeeper
-(RegistrationConfirm).
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0 (1)
 
-With the signed expiry test "(__s32)(ct->timeout - nfct_time_stamp)
-<= 0", a timeout of 2147484 seconds (24.9 days) at HZ=1000 is born
-expired, and 4294968 seconds wraps to 704 jiffies.  The RAS connection
-therefore drops mid-call, or the Q.931 expectation stays pinned for
-days after the peer is gone.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Reuse nf_ct_secs_to_jiffies() for both conversions and compute the
-value once.
+- [High] The fix is incomplete.
 
-Sweeping all 2^32-1 inputs at HZ=1000, the helper never wraps, never
-yields a value that reads as expired, and matches the old expression
-up to INT_MAX / HZ; objdump shows the two 32-bit "imul $0x3e8" in
-ras_help() replaced by a 64-bit multiply plus cmp/cmova saturation.
+Pre-existing issues:
+- [High] The ipv6_opt attached to a request socket is charged to the
+  listener's sk_omem_alloc and never uncharged.
+- [Low] After this patch, ireq->ipv6_opt is freed after an RCU grace
+  period, and the commit message says its readers 'already run under…
 
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qing Luo <luoqing@kylinos.cn>
----
- net/netfilter/nf_conntrack_h323_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+--
 
-diff --git a/net/netfilter/nf_conntrack_h323_main.c b/net/netfilter/nf_conntrack_h323_main.c
-index 4cb1665bba02..5e900037fa6f 100644
---- a/net/netfilter/nf_conntrack_h323_main.c
-+++ b/net/netfilter/nf_conntrack_h323_main.c
-@@ -1375,9 +1375,11 @@ static int process_rcf(struct sk_buff *skb, struct nf_conn *ct,
- 	}
- 
- 	if (info->timeout > 0) {
-+		u32 timeout = nf_ct_secs_to_jiffies(info->timeout);
-+
- 		pr_debug("nf_ct_ras: set RAS connection timeout to "
- 			 "%u seconds\n", info->timeout);
--		nf_ct_refresh(ct, info->timeout * HZ);
-+		nf_ct_refresh(ct, timeout);
- 
- 		/* Set expect timeout */
- 		spin_lock_bh(&nf_conntrack_expect_lock);
-@@ -1388,8 +1390,7 @@ static int process_rcf(struct sk_buff *skb, struct nf_conn *ct,
- 				 "timeout to %u seconds for",
- 				 info->timeout);
- 			nf_ct_dump_tuple(&exp->tuple);
--			WRITE_ONCE(exp->timeout,
--				   nfct_time_stamp + (info->timeout * HZ));
-+			WRITE_ONCE(exp->timeout, nfct_time_stamp + timeout);
- 		}
- 		spin_unlock_bh(&nf_conntrack_expect_lock);
- 	}
+tcp: ipv6: free ireq->ipv6_opt after an RCU grace period
+
+When a request socket is migrated, the old request socket and its clone
+share ireq->ipv6_opt. If the clone is freed while another CPU is still
+using the options through the old request socket, that is a
+use-after-free. The patch frees ipv6_opt with kfree_rcu() in
+tcp_v6_reqsk_destructor(), as was already done for the IPv4 ireq_opt.
+
+Closes: https://lore.kernel.org/netdev/179369559062.488856.15441115725436277776@kernel.org/
+
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index e006a30360eae..517f34166cda6 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -607,7 +607,7 @@ static int tcp_v6_send_synack(const struct sock *sk, struct dst_entry *dst,
+>  
+>  static void tcp_v6_reqsk_destructor(struct request_sock *req)
+>  {
+> -	kfree(inet_rsk(req)->ipv6_opt);
+> +	kfree_rcu(inet_rsk(req)->ipv6_opt, rcu);
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but it
+is on the line being changed. Is the listener's sk_omem_alloc charge for
+ipv6_opt ever released?
+
+calipso_req_setattr() charges the listener, sk_to_full_sk(req), through
+ipv6_renew_options()->sock_kmalloc(). It only uncharges the options that
+it replaces:
+
+net/ipv6/calipso.c:calipso_req_setattr() {
+    ...
+	txopts = ipv6_renew_options(sk, req_inet->ipv6_opt, IPV6_HOPOPTS, new);
+    ...
+	txopts = xchg(&req_inet->ipv6_opt, txopts);
+	if (txopts) {
+		atomic_sub(txopts->tot_len, &sk->sk_omem_alloc);
+		txopt_put(txopts);
+	}
+    ...
+}
+
+calipso_req_delattr() uncharges in the same way. tcp_v6_reqsk_destructor()
+does the final free of ipv6_opt with no atomic_sub(), both with kfree()
+before this patch and with kfree_rcu() after it.
+
+tcp_v6_syn_recv_sock() charges the child separately through
+ipv6_dup_options(newsk, ...), so the listener's charge stays in place.
+
+On a listener with a CALIPSO label, does sk_omem_alloc grow by roughly
+80-110 bytes for each connection request? With the default optmem_max of
+128KB, sock_kmalloc() would start failing after about 1300 requests. Then
+ipv6_renew_options() returns -ENOBUFS, and every later SYN is dropped by
+the LSM hook in tcp_v6_route_req():
+
+	if (security_inet_conn_request(sk, skb, req))
+		return NULL;
+
+When the listener is destroyed, __sk_destruct() would also report optmem
+leakage.
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the commit message says
+that both readers "already run under RCU, like their IPv4 counterparts".
+Now that ipv6_opt is freed after a grace period, should it get the
+matching RCU annotations?
+
+In struct inet_request_sock, ipv6_opt is a plain pointer, while the IPv4
+member of the same union is __rcu:
+
+	union {
+		struct ip_options_rcu __rcu	*ireq_opt;
+#if IS_ENABLED(CONFIG_IPV6)
+		struct {
+			struct ipv6_txoptions	*ipv6_opt;
+
+Both IPv6 readers load it with a plain read. For example, in
+tcp_v6_syn_recv_sock():
+
+	opt = ireq->ipv6_opt;
+	if (!opt)
+		opt = rcu_dereference(np->opt);
+	if (opt) {
+		opt = ipv6_dup_options(newsk, opt);
+
+The IPv4 readers use rcu_dereference(ireq->ireq_opt). Meanwhile,
+reqsk_migrate_reset() writes NULL to the same field with a plain store,
+on a request that other CPUs may still be reading.
+
+KCSAN would report this as a data race, and sparse cannot check the RCU
+usage. In theory the compiler could reload ireq->ipv6_opt after the NULL
+test and pass NULL to ipv6_dup_options().
+
+Would it make sense to add __rcu, rcu_dereference() and RCU_INIT_POINTER()
+on top of the kfree_rcu() change?
+
+>  	consume_skb(inet_rsk(req)->pktopts);
+
+[Severity: High]
+Does this fully close the window described in the commit message?
+
+After inet_reqsk_clone(), the old request and its clone also share the
+same inet_rsk(req)->pktopts skb. reqsk_migrate_reset() clears it together
+with ipv6_opt:
+
+net/ipv4/inet_connection_sock.c:reqsk_migrate_reset() {
+    ...
+	inet_rsk(req)->ipv6_opt = NULL;
+	inet_rsk(req)->pktopts = NULL;
+    ...
+}
+
+pktopts is still freed right away, both here and in tcp_v6_syn_recv_sock()
+when that request wins own_req:
+
+net/ipv6/tcp_ipv6.c:tcp_v6_syn_recv_sock() {
+    ...
+	if (*own_req) {
+		...
+		if (ireq->pktopts) {
+			newnp->pktoptions = skb_clone_and_charge_r(ireq->pktopts, newsk);
+			consume_skb(ireq->pktopts);
+			ireq->pktopts = NULL;
+    ...
+}
+
+At the same time, tcp_v6_send_synack() on the sibling request can read it
+without any RCU protection:
+
+net/ipv6/tcp_ipv6.c:tcp_v6_send_synack() {
+    ...
+		if (inet6_test_bit(REPFLOW, sk) && ireq->pktopts)
+			fl6->flowlabel = ip6_flowlabel(ipv6_hdr(ireq->pktopts));
+    ...
+}
+
+tcp_v6_init_req() keeps pktopts whenever REPFLOW (or the common rxopt
+bits) is set on the listener, so this does not need CALIPSO.
+
+With REPFLOW set, tcp_migrate_req=1 (or a BPF migrate program), and a
+listener that is closing, one possible sequence is:
+
+CPU A                                CPU C
+reqsk_timer_handler(oreq)
+  nreq = inet_reqsk_clone(oreq, nsk)
+  tcp_rtx_synack(nsk, nreq)
+    tcp_v6_send_synack()             tcp_check_req(oreq) (final ACK)
+                                       tcp_v6_syn_recv_sock(oreq)
+                                         own_req = true
+                                         consume_skb(oreq->pktopts)
+      ipv6_hdr(ireq->pktopts)  <- skb already freed
+
+The timer's reference on oreq protects ipv6_opt in this case, but it does
+not protect pktopts.
+
+The reverse order also looks possible. CPU C handles a retransmitted SYN
+on oreq and calls tcp_check_req()->tcp_rtx_synack()->tcp_v6_send_synack().
+At the same time, CPU A has done inet_ehash_insert(nreq, oreq) but not yet
+reqsk_migrate_reset(oreq). CPU B then processes the final ACK on nreq and
+frees the shared skb in tcp_v6_syn_recv_sock().
+
+In both cases ipv6_hdr() reads from a freed sk_buff. That can oops, or it
+can put stale bits into the flow label of the SYNACK.
+
+tcp_v6_syn_recv_sock() frees the skb directly, so switching to an RCU
+deferred free would not help here. Does pktopts need its own handling,
+for example an skb_get() for the clone, so that each request drops only
+its own reference?
+
+>  }
+>
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103090011.4128420-1-edumazet%40kernel.org
