@@ -1,102 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793780710;
-	b=uHgu/Jd4KEVLLJQXjtFbV6ONrv1Ek8Jb/Sq74KuFz2gB1pxE3Zv2SZHn7I7UKlA17tNG
-	 8BiEK68BswvT16TRpxVFaH2hZaFSMfd9Q/mdI87OwwSnqtWUw4F6SPN8lubEdw/JyLzuR
-	 PlkkhIA4Myvb3tjmgqNYwWCpcOG6nvCxRzzaMN0a4efBZgZ2MPK6lz/bWxiA3ta3kluh0
-	 WSOzo5ejNCuiZfHfkBa+koxDPqEf66f9xgRNx24G73wAhA5v6HnrWdyj4ujpj7KJ56Rgk
-	 sjYszyCfkjjBnC5vrITk2wuqhXj/tbatDVqv+FSZXshB/YPruRwLnSbosG5XUlLSdEw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793780710;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793780734;
+	b=aUD/R2LB26nqJTFDZXNPEwNSP6M7IXLPH5fqPgidq2p5FANtyH8qWnmOiCPWsGRCaxdT
+	 t/BhyFswQ8LylY4rEdLdPdS/yVZelt/zNoW+vM9ezDcCResCgN2WXd2rWSLwP4IfoCxqS
+	 lqZZmRbkSAbJb/asdPZSubC2knlBzmwN/uFglsH5vvngVgRqSySB4HK0lHxo6oF/htegV
+	 pnESkgjKRWBjwGmynnlY5PVX1d0wuHrpd0FPmMVMCPlYkE+XgIUg3czlT8PMlKGxcp19z
+	 wFLW406UUv/64ZqtBJuZ0TNLo+h4WF3xrOagSSG8AEQ+HeqXAywrPSzYoC4vFuzHWZA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793780734;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=FKuLGeQlF4RW2kwGzmc9mYrve3HSsInpdIIYPazhnh8=;
-	b=aalNNBYinheqCBNs8HFiD/VADYe0BUZYIvbKBgBiI9rs8yWoUbWWO5YPINK2KMVj73Ca
-	 3x6bJlT402CJ7qba97lurK5XQH5l56CofxnoYSVcuZ6IrzAK+sjOa2GMNZu9rtbb21CB5
-	 KuFeVPj5Sy/v3wkiV1Td+9zXs+m52iW72lO/qa79DNkzEwdVLNL9pD3Q7i9VESwJaJdRN
-	 qjmX3QKvbCJgPbas9gql8wtEITarqXzky+QJlBBLW96/YQ15g1s3+HV8Vz2WiCx87aKFU
-	 rwJNFTMFa77lOqIMN6S5JNq1m5E3wgL26MYGQGldzg1HHjo8vkmwrNFsPgav0ESqm0w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XHRcm5IB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=rxxWOir1eLyoN3YvCU9ZlQIZgB4gaoERImUZzmrTYyc=;
+	b=lcqKDy+S/rWdTjdw2eDAiF/Ci9IzonHXmN/SKDzwuiVRRF/najSU4U98Em77vTwA3S+0
+	 3GisXB0RnmeD4zUZwkq64xA8A+JlIOTboiSKMqVnwxkL9tVM1Oz3poyaDvcE1g/9YcAk2
+	 aJw48MzVE7PEjP4ue8fxrcwkmpNlogoRkq8+p6vvD5Kgnb+WFUrcG0wauNCxR634Inj9c
+	 1Qm+U2PePDqXaGyd8Yv2dmAIKdECkJpojk3x6N6a6i5/EWBchsky6fSIgtnkqBxFYXJDH
+	 fiYusM92/NL6dBkrSAH1UQ/NJgCx7i8EQFFHfEbiH10/PMieQc/AF9JNXCsomRbch1w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wa0rj6lX;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544D5606A326
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:25:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 544D5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E551F606A32E
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E551F606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XHRcm5IB
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-353804b591eso792926eec.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:25:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793780709; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WH9lqM/7c7FDynKvzY4EqsUN9ifYRfNm86CiZ8b75ZBNAYUOgW2BXtleAOeiiRz07q
-         w/v12EY5cZaSgSDx8blYLLlPnNiih5z9MBioFct9pNK/0pLmwhKb1hc5tm3F4x24eZ31
-         EWz4jZcvJjuPX+XjnRTCO1/N+9LL1z5KVC5dC8YbautB2Id2Gtar9M2THnTHTOvQYz9t
-         ASHjuPJGkHrWXcK5iM7TZyNPOdiQY+19+dKyD1/9VsiBm5k9XvTt9/FtfvBqX0jDlSsb
-         rHOEFog4y4HinZQ64t9gTi7x29hRm8AfCaLiMLJe38/L0DAQ+uOoM21jr10ay5jv4UwW
-         VJdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FKuLGeQlF4RW2kwGzmc9mYrve3HSsInpdIIYPazhnh8=;
-        fh=S2EEAzhZx5A3dGrc66+JbXr0hRET4vt6Am++YF+beUo=;
-        b=SRl3bc0oU6Yuo83qjqJCEnTJj6VISniNV7MCM/ibwkhzrouFszq4jnoqqIKw5fiD9r
-         76p0Qe351T8l/AsIBCVVEF0v5fzeuadifch8tRMikMGqo1TNOumfcYBiFwXvdgGCC6/n
-         pZJ4IUTZd6RoilkyrteuUevGo9Ov/GEJ+HJhZcez1JNHz1R6qmeqGEuRJ6JFrttqqV7C
-         Prb8vQErbKtZJqdH/1cfwCjcfEjjBRchGY48Ins1wt+gcuaz0cTsAYF2CWsCW0C8FU4Z
-         2+ZQXTRPNN4vVIvTk2XaMJw9211o/mJxWWn2kZRNuq4yYgikWaMgNydVTOoKqBqpTL+b
-         T0KQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wa0rj6lX
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b2237b596cso853440a12.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:25:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793780709; x=1794385509; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FKuLGeQlF4RW2kwGzmc9mYrve3HSsInpdIIYPazhnh8=;
-        b=XHRcm5IB6Ixs1DShwBjMqzGpTIly2AeVGmuKBesbcSBuOro268Tjd3G79SrMf9cMDX
-         GKgnaxJVAcGk9U/1H5RqfcCK9gF+lRKxzHZFdtu/Fs7gXxLmcKq7FzjTPGpMaYQ851mu
-         5lQx2uUIZBVTGaUYED4A7PjY9J9mf4pvctFNKzNw7/pPhGshLKldmHocLmDV3y6kODl+
-         RLFwNwm1wfwd8/AAgH+d0DzhkYqKciBne4dqJEnwXikuAkbnz/Bko0LUtaff66IxhNj1
-         AneFBQnf9FipHCaCvByCCLh2KjHu17KpOZLQVSN2z2olXi8ALSXjXF0XQqe5aFjO39Kn
-         Vwdw==
+        d=gmail.com; s=20260707; t=1793780732; x=1794385532; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rxxWOir1eLyoN3YvCU9ZlQIZgB4gaoERImUZzmrTYyc=;
+        b=wa0rj6lXsIdA+z2Ac9aNZVpvYG/LiC36mJKBmp41iCojudTm2YuCW3EvFA8PdLbIWb
+         ABKLxTd7/n+kh1mSegoGCurrsEwME1cpKZaa/fX2hDbqlHjl2SHkSQd0G4Ip6coO1Ck8
+         tcb3mG6fjOQXNpfafB2bUGwnGPOXIeyvS2XL2/4riPinHUnv5mdTZGk8KFE1HHcVDloh
+         yogmj1a4hAFguXHALo+guHlCxpGm2QRz28a+j90fYmeLuV1nFa8jsoKYxJzYCDQi/WO7
+         zzeUy3Hkyw9oEetFYgSYd/n/QcYwvQjfU3zFOQVMSs/HxGc7tEjHq8NSHSu4fW3Z7dVt
+         YYOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793780709; x=1794385509;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FKuLGeQlF4RW2kwGzmc9mYrve3HSsInpdIIYPazhnh8=;
-        b=lD+T4cNZ22b1ZnqhEX0tTGO8g7LRHvT5WWTdrFxako42S1OrC+zoMHpXMZD4yjMyiJ
-         wGMaaGeAzMSdeiFKZNUAoLD6Usga0Z2Zoy64HKN6VDUv99pU2l8BI6ZsIPBaa1ndVeov
-         hgSZpty62JO2qtxgUTuNow97v3tJVqNub21mKLXPnPYrgnOsKC70NKT8guFnJP4WJg7T
-         8JwB5no1Q7TKKcCuKQUo5cbrcDVsCjqO2do2tS3UbSt5EXDK4shIvVKcjynPPRJolnkQ
-         zScaWkgS+9xeoTa9BIlHDFIEAz8E3DSY15H2fbbzb90UjllhqW7A1MPWXmLm9kYU/lti
-         qM8g==
-X-Forwarded-Encrypted: i=1; AKwUvBwPxkJAzT+0bWrNxPsNffl7pHTHJAnnW/liUVA1jgSdT6Hv3MpjPixpAUzjebcRjb/8icgw6CE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+QGxexsWJBEXrBdNClccvT+2X4fowcmQM2zbmMiqEA8L1Lp8xD
-	f0cQhfiYAaM7PRNMfnvNvxdtkFXncY7ZvGzgApL8/iWSqWqdQYMoGHbmLbqhVKqa+QyZ3qoYJCx
-	1b447VGoKVkxYjRo3iq32bl/FeecYOvvZNqIyOe4i
-X-Gm-Gg: AYBFou0SN2x6uT0EvuNBIhs5pS0AKXjNq0Um227ATT/V7DoVzvOcaEHUcad1MhBnFwN
-	QUQjL+Vj0P+akJx4q07VfT7D8ggXjdWqF8ksNSdfR6G0Rs/sXm6TMn/ng7pK0zdGvPLOp8Xu/R4
-	SAlOo7yull0hR5OsUDHBerUbDydBqEm00VymZo6v7E0n6Mi6ym28Au+4nhF7/oSt0mxEMFlyR77
-	mAdqtBR3G0stDALmxMwD+GaVpxav0q5kU8bKE5ebLOqpgF4heNVUHBRGZ5n9B9UYPrWlzTMgUAg
-	+zjmMopYZgPKaof8rY+D8vsEw42Zcf2eVgJbicSbQt5OhyjSSuFpdDO0siBL69GHxPGqlaSB92G
-	KrRb8QFQhi36LOkPMFuT/c0v94O8BpWTgLq1AMxH7IWTxZTBuRsVrcWoJg3Kw+0eU4ZPVk9RvwK
-	jkjXyZm0tQgUGrhPt5fJTQ28TP+dMBFgGXYNvQs7Hsyp9kiuAdW8zOOKOfDN5kL6jakQsqulSDy
-	uS4vWJWdg==
-X-Received: by 2002:a05:7022:4b:b0:1a3:dbb2:478a with SMTP id
- a92af1059eb24-1ac5c92de5dmr29193712c88.27.1793780708100; Wed, 04 Nov 2026
- 00:25:08 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793780732; x=1794385532;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rxxWOir1eLyoN3YvCU9ZlQIZgB4gaoERImUZzmrTYyc=;
+        b=L/ZD1OvBj/UCZSU8SUG9MtViE46Ln5+9s7VSdiEm0yWEQ4C3ztv59VNUx4Osl91KsW
+         z/qUYs+hOD9MhyTRTv6Q4AAYdnkQSu6mxG0oInlZjyrdS4una4akUDp5Vf2mLbKzNOzx
+         zNwC/yrLBZrgtdpvLanYk2VGeEcZOnp5JxvIIPwJ1+h4NtqFPnvo3UPBmlgUhGtYNOhf
+         Jk/AY4Nr8dCkqRIB/UsxhWZrU2hPodYbRLXZ20I+Eb4MIV719gW/KBSYyOTPIDMNzAoo
+         XhtmfNILSq4B46oSQUJntu/Bo+G7n7RZaXNMr3fNUT7sDRlEYPNQiPAP3y30lh1v9YI2
+         Mhig==
+X-Gm-Message-State: APuU4Z+9RQS8Db/OpL/7Bc2KhxcHYZFWuqra6+KTf+FlsyTIYcD0cuww
+	bAZXx++LwFIfYYfWvcF9X0LhSSeudX4psxmIHkQHGlXJDEmb+yw4SiuRNlNijeBA
+X-Gm-Gg: AYBFou0Yb2MQvHCjOSh8HvCjaxQqulAF2inB4jcAlcjqvQ3hRT24J9xIxyevYjXXmm4
+	f70x5HAIk15T8yKtibazf9bIlo9M6zqCanYWk81eUKsWq23I65ENJtCtIgB8suwAElf6p2ExAq6
+	P0qBH6S86DHELKDFO3gxii/M3bKbuRFc2Fe/G91VgRmEmM45tKMRrUKN0MKVrngaAfFxvFHI5VV
+	7z1ncgGkYERE/12bbnSU0EbALI0bxTgj36ggnaKB7wiTvLHL+Hl0kQK21cS/3p3uN8fAG4cakU4
+	jqsBScfxWDTI2jfIqYPfKH7/GwVrJutAvSrNbuRvlOxjIrOZFV/IfxEE4dn7A5HTvmeD6K3N8z7
+	2DdJIAytCfeBCPEdKjKRmovrJs9bBqyLTnfjLsqaMg6DPY/Ywxibzlxohi5dKGMMQxYV3Qq68jf
+	EqZfNoK33GyPFP3qiw1UXVbDr7BWUUCnQ1LYKSS2kYfXR+RqG8ni/1diHBK91ksUGcpr4SQxjOJ
+	Q6OyAEYMBYUUgh4keKqVhgSTnNVE9NLaY5V8xOBVD3mPQQBDnXVeTrCdA4RQ6TifdQ6ks/oZCPr
+	ORwaPGz2CWTZL33iy4nvhcD26h+govCSKtpg2pE8ooz0O2byh3w9SkzQksJyE6Kt2vyXzajpMjB
+	25O5obj9kavLeSF8fqTSPMvQifHxzeam3JQYmxPv0lFqf3oqX0v4HhiG16LLXIsvu3vYWSGxz85
+	xG
+X-Received: by 2002:a05:6402:14c4:b0:6b3:b3f9:c418 with SMTP id 4fb4d7f45d1cf-6b4d428effdmr9322697a12.12.1793780732121;
+        Wed, 04 Nov 2026 00:25:32 -0800 (PST)
+Received: from desktop.home.arpa (2a02-1810-1e16-ac80-48ed-b9ce-6098-90a2.ip6.access.telenet.be. [2a02:1810:1e16:ac80:48ed:b9ce:6098:90a2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b55ac81386sm483243a12.29.2026.11.04.00.25.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 00:25:31 -0800 (PST)
+From: Stijn Cleynhens <stijncleynhens@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Linus Walleij <linusw@kernel.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/2] net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+Date: Wed,  4 Nov 2026 09:25:13 +0100
+Message-ID: <20261104082514.2139278-2-stijncleynhens@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261104082514.2139278-1-stijncleynhens@gmail.com>
+References: <20261104082514.2139278-1-stijncleynhens@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,50 +107,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104082058.452188-1-kuniyu@google.com> <179378058137.488859.5892003889281444606@kernel.org>
-In-Reply-To: <179378058137.488859.5892003889281444606@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 4 Nov 2026 00:24:56 -0800
-X-Gm-Features: AclHuK-8Z8HD53IXz7zN02m7ZMsr1_JqmJH2qe9vwEPabOJEyWWe1YDSHJBX4vQ
-Message-ID: <CAAVpQUBj3EgSBG5Ad13rsHF+Mrx-06nLjbcs7J65HAA1nW4seg@mail.gmail.com>
-Subject: Re: [PATCH v1 net] af_unix: Convert unsigned long to u64 for GC.
-To: netdev-bot+sinfo@kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Lim Chanyoun <onleaf322@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 4, 2026 at 12:23=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+DSA installs the FDB and MDB entries of standalone ports and of
+VLAN-unaware bridges with VID 0, and the driver writes them with
+Independent VLAN Learning. No bridge VLAN sets up the VLAN4k entry of
+VID 0 though, and it defaults to Shared VLAN Learning, so the switch
+looks up and learns frames classified to VID 0 by FID. Lookups never hit
+the IVL-keyed static entries, and a learned entry for the same MAC sits
+alongside the static one.
 
-The reporter mentioned LLM-assisted static analysis.
+Set up VID 0 with IVL, like every other VLAN the driver programs.
 
->
->  - Whether the issue was actually triggered,
+On its own this has no visible effect: standalone ports do not learn and
+the driver does not control host flooding, so the unused static entries
+only meant that traffic was flooded to the CPU. The next patch, which
+moves VLAN-unaware bridges onto VID 0, depends on it.
 
-The reporter triggered it.
+Fixes: 336e3e4a1ab3 ("net: dsa: realtek: rtl8365mb: add FDB support")
+Signed-off-by: Stijn Cleynhens <stijncleynhens@gmail.com>
+---
+ drivers/net/dsa/realtek/rtl8365mb_main.c |  8 ++++++
+ drivers/net/dsa/realtek/rtl8365mb_vlan.c | 31 ++++++++++++++++++++++++
+ drivers/net/dsa/realtek/rtl8365mb_vlan.h |  1 +
+ 3 files changed, 40 insertions(+)
 
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index da06f952a..b90e46c16 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -2232,6 +2232,14 @@ static int rtl8365mb_vlan_setup(struct dsa_switch *ds)
+ 		}
+ 	}
+ 
++	mutex_lock(&priv->vlan_lock);
++	ret = rtl8365mb_vlan_4k_setup_neutral(priv);
++	mutex_unlock(&priv->vlan_lock);
++	if (ret) {
++		dev_err(priv->dev, "Failed to set up VLAN 0\n");
++		return ret;
++	}
++
+ 	/* VLAN is always enabled. */
+ 	ret = regmap_update_bits(priv->map, RTL8365MB_VLAN_CTRL_REG,
+ 				 RTL8365MB_VLAN_CTRL_EN_MASK,
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+index 8d49ffadc..58948e76f 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+@@ -322,6 +322,37 @@ rtl8365mb_vlan_4k_port_set(struct dsa_switch *ds, int port,
+ 	return 0;
+ }
+ 
++/*
++ * rtl8365mb_vlan_4k_setup_neutral() - Use IVL in the neutral VLAN
++ * @priv: realtek_priv pointer
++ *
++ * Untagged frames of standalone ports and of ports in a VLAN-unaware bridge
++ * are classified to VID 0, the VID of the neutral PVID. No bridge VLAN sets
++ * up its VLAN4k entry, which by default uses Shared VLAN Learning, so the
++ * switch would learn these frames by FID while the driver installs its FDB
++ * and MDB entries for VID 0 with Independent VLAN Learning. Use IVL in VID 0
++ * as in every other VLAN.
++ *
++ * Context: Can sleep. Must be called with &priv->vlan_lock held.
++ * Takes and releases &priv->map_lock.
++ * Return: 0 on success, or a negative error code on failure.
++ */
++int rtl8365mb_vlan_4k_setup_neutral(struct realtek_priv *priv)
++{
++	struct rtl8365mb_vlan4k vlan4k = {0};
++	int ret;
++
++	lockdep_assert_held(&priv->vlan_lock);
++
++	ret = rtl8365mb_vlan_4k_read(priv, 0, &vlan4k);
++	if (ret)
++		return ret;
++
++	vlan4k.ivl_en = true;
++
++	return rtl8365mb_vlan_4k_write(priv, &vlan4k);
++}
++
+ /*
+  * rtl8365mb_vlan_4k_port_add() - Add a port to a VLAN 4K table entry
+  * @ds: dsa switch instance
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.h b/drivers/net/dsa/realtek/rtl8365mb_vlan.h
+index 27a526b61..809034009 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_vlan.h
++++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.h
+@@ -28,6 +28,7 @@ int
+ rtl8365mb_vlan_port_set_framefilter(struct realtek_priv *priv,
+ 				    int port,
+ 				    enum rtl8365mb_frame_ingress frame_type);
++int rtl8365mb_vlan_4k_setup_neutral(struct realtek_priv *priv);
+ int rtl8365mb_vlan_4k_port_add(struct dsa_switch *ds, int port,
+ 			       const struct switchdev_obj_port_vlan *vlan,
+ 			       struct netlink_ext_ack *extack);
+-- 
+2.56.0
 
-> or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
