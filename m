@@ -1,109 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.70
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793800682;
-	b=j6T6eNU3uERW2XyDdwJbTBEV0R+FIbwuXsBB8oC81N58w3dr1a2346ThF67zZn7914JT
-	 y37Hr9R6QNd6FEtZCzXQmc/04s0QckT8Iwto4CYM3EXNoBWKZN3JcdJCUkM1fL/h3TUnq
-	 cHz5Po4bl86F2pBuFHgIhVtOL3TALJBkTJtlKNb1M3zNhi5YvVbITmiAJxJOud54bC0Ll
-	 Rh/qpcm2jkBT+OtxDKuw6+3PQsXMdLJWnPK4+64SBH1yv/P3iWo3UtMqujdGywhA/jkDw
-	 XUX68T1pySgWLkFFrD5nzyfoheE1wDWMtp1ZmpHLfrRc4anzsI9YEnKzF/MyJg1FtfQ==
+	t=1793800735;
+	b=ZdP/yfB5j2tG674uik9NlKl9lWTtCKMuQdjYcqTd3hgs5VDS227tfM+uUkBCjzpxNWC6
+	 IOFj+Heu40ELgUrZtNGcdmnyaHwtUx4eFUwV3yzaPB4FWnaCnTwv2ZvZznzji8ApdpjHD
+	 gHrTSMSYBNhxK7zlAaP4vTkayDKDabaXRwq/GY3ePHxixT8fziqezi+Y6jgebNcsQB5gW
+	 kDyeVWAsmWBixZkOMg/0BjSttUHPEg7pTbtRUztSpUBtw5YcuToA3bHEyIDfZavY5WdsN
+	 iz3xI8JyWPjam5c5NmfLSq6bT7inkqObNSU/vBlmOcuTO1ACCQII4Qubq3bbj1V2bWA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793800682;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=0Ld5vX56sRU7cDmhENLu2s+g2ZXmsedVrDad1btRlgg=;
-	b=W4EKzKeuxdTAvn4J0aziMIjwZaXFxJNvyomHnOz1bAdhEbUsB6pgC5qFE0mL572s6Fyf
-	 pUPkO6nzoiebli7eDOkaN/+KkSpnN9BN2eMS/FvFNUVLUB0G3pmzSOMx5bGkDDEA9dsqZ
-	 WKWPJ2J4n49KsXGFBC780XmPvch0ChMqxnlag82SPewwODHQ7D9eZL5cpwqoCLMIf5d0g
-	 8VyLfZLT/g8fgLAnbkHBlPPDrWocNlbGotQnEX6WoKU5ip2ES2e55Xkdv9BjjYQbKZf0M
-	 NNCMgUWQJb9aQRFiPwzhjFIufR4JwGuWN/TXcBrKDv0Ltq959jOgfJdmpZ9DPXKwqDw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793800735;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=o4EIHpxl57I6a94RuHg0e1sZQ5iF0hUORfBXfBn7tP4=;
+	b=P8CBmGbVQqYFN5EwVHViq+bAen/aZp07Rz30ixhCzBLOZOfNbiMy9xc5zzNeT8eOIFid
+	 gfbK36cPGX0CLDIUI42fJU/7spE9lEg0cV2aRei+YkuQaxPZW1Ei3JlvakmJILeT/f+Fp
+	 gSTYhhZvP67LH9DllwvQnC6P1UiYgWMwCv/b+W6llCO5bMHcmVw4FmA3ivS0PBXnNA14S
+	 JYDDF+owdgjQ5Zkjhgat5zsKCczKotn+YYTUB+R9AkB0iw5aP6tZ1kAueNFsj5qSbdDVy
+	 CSa/xWIq4FinGHIgg35UzaRdvRrCbKLWIe7Ag6Qvlk8xX4Wz58A5I0qPR3SogW1HrNQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=A9tNqL2a;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.70
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011070.outbound.protection.outlook.com [52.101.62.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=grische.xyz;
+	spf=pass smtp.mailfrom=grische.xyz;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271B3606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:58:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 271B3606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=A9tNqL2a
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vhLPz2rjrE9lRT4ZWgIfl5iTlxM4yaykgFPwP4LZpJU4E1+yvKd83MCFayfPHP1ex05nNyp5WoSWqJIi6TtS+gLVIT2NnF2rxMegRPz3Ij1odQ9y8LbZr8nF7Z7xbAf/gc5I+a5kBSUMPV9ytTFoK71yDnaWfZPDItmQqa243JUEl2lt/FVCwxhWRhxWOF2kxSKdesuOhSRIuDWXFwnP17t10RTgUTmNJgX6Q/2cyaxHToeJi8s/gs7PbPqgC5CXLWVyVzrb/6I/BBLU9KNbfDcIvNmFkGk42PIIcGtiQLt9C0vTcICPx65vJxyzdewnZo/Fsdtijio3e6+JPYx1Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0Ld5vX56sRU7cDmhENLu2s+g2ZXmsedVrDad1btRlgg=;
- b=WGJzUSilOTFo056XcseNkG7GC6jtoAjKrCVNwBuQEiyWRpbJEPoerZWb92TjeQcAaRsfkzAgg/zmJD3+L5Qlg26nSSLSzr6WXybx4SIvLTnTeFrVvum9rJQzDlBI14FXuc3EU73gsPDaYyjF5KxKdADiw6L7cVjO0n1bZWOW8RCEQM+Vfz85TWVNJNF8II4wKAG+k0gLzUgh3e5WuubuUqAs2bAOdp7+xouXYhZoK6vxuXR5guogWC9nl+mPgx2e6eKd2v52HlV3vEFnJC8+fn6+z2ChREcJ3WdT0PPbT9FPEyD2P7WxeCzYdi/CHDgzKF4NUN4/xxxBETNmCnvavg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0Ld5vX56sRU7cDmhENLu2s+g2ZXmsedVrDad1btRlgg=;
- b=A9tNqL2aZ6yWlZ335CQFOwvA84PvNsaFrE4c2FqfCBUU9AN9KOgnWgBxCrQxw+z8tAdzn2yk9bJOO1djU2lTIhZ5pHBrwHUXAmHqSmXS7ng9e3lJV6l1Yy32sRoeQuKcIIJ+zaMM6u+gDV20HWMZljvNt/57DvD+PSTZAxs13M4Bby9TbU2Ci3GSySs9jmlwvdrc7jF0zyPeGFcYphYsIr+i9JCmKo1nj9U77qI6V2RXhMobfrkK9nB5NWglzaylr5PREg5z5evUzOrV43BO/z5taU8HbXK3jvuib1uqk88hIba90yYoptMzgoDkxSdYH9eDoUD8gBA1aJp8e9KUlQ==
-Received: from BN0PR10CA0014.namprd10.prod.outlook.com (2603:10b6:408:143::12)
- by IA0PR12MB7602.namprd12.prod.outlook.com (2603:10b6:208:43a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
- 13:57:44 +0000
-Received: from MN7PEPF0000014B.namprd04.prod.outlook.com
- (2603:10b6:408:143:cafe::18) by BN0PR10CA0014.outlook.office365.com
- (2603:10b6:408:143::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Wed, 4
- Nov 2026 13:57:44 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MN7PEPF0000014B.mail.protection.outlook.com (10.167.254.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Wed, 4 Nov 2026 13:57:43 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 05:57:24 -0800
-Received: from tuxedo.docsis.vodafone.cz (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 05:57:19 -0800
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>
-CC: Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>, Andy Roulin <aroulin@nvidia.com>,
-	<mlxsw@nvidia.com>
-Subject: [PATCH net-next] net: neighbour: Avoid sending RTM_NEWNEIGH for a dead neighbor
-Date: Wed, 4 Nov 2026 14:56:56 +0100
-Message-ID: <217109d64f0cdcba1db9569ee6ff7304754c47a4.1793793623.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.56.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28D8606D80C
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 13:58:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B28D8606D80C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grische.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grische.xyz
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso893511a12.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 05:58:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793800733; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LBUXXdd37az2J3atc2GpeeWj1nu4U3RPEG5gHWXIxiTJXHsWkGYdq58wvlkI9WehpC
+         Et++SmYCVjo6wDpgGNqBDa12i+OuusfRq2iqWtGHzx+qX4hMcJ6D7KSSouqFK1PiE25o
+         K3Q+i0g7B9G6AWb7PTliG7Yi9XiTtL1dVOAZKEpGbFl5OyfP+oI3d4mrp9Wefba5Ppg2
+         zkf0ArYY85Z/s1sPZIfoeiolrt2DjVDStKXKdoDzNzjOaovHFTkY7yC3Q3035FUqYxy+
+         mOGHXH+WFp/IffBJCK5adWbaXgOuCidMqdMx1APl02G4PfuetFZwJ2LWRMHzHdo2yYDE
+         cHPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version;
+        bh=o4EIHpxl57I6a94RuHg0e1sZQ5iF0hUORfBXfBn7tP4=;
+        fh=6xcr8MPMOfRhtmWf391bS+ua7NId2YVSSJB1zqCoGKc=;
+        b=EzmveQUnjVfrcgeaWGGdOJ/2IfKisjdBrglEHGY2ENISQlDAhfRsrrcUjGRirs41lA
+         RF7e7bdJ++o2S/A+1Z9CCRAzChZVNklYZ7rRPeI+g/qrbb+f0S8jhuGnX/nmiiV9ViAd
+         MvwrdpAoQXNjT7CsgQXsKKUvud9lAg3S+lwyFEGIA6vTNn7/COcQKFdWYoIyDvGWodIv
+         u7DpK9Uv1EKuT5sD6lOdK6WWMl1t3fvQ10dHDy8WnduK1VCUp+JGCDZwvHm//nAzgKQn
+         huEtvSJdn7SQ72dACO55T1+5l4+3vLqLeTLItEApqKEmqlcXsY1r6rTgkONUY+UhXN15
+         PKBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793800733; x=1794405533;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=o4EIHpxl57I6a94RuHg0e1sZQ5iF0hUORfBXfBn7tP4=;
+        b=dXfE/G8O1hS2Hli69rA3t1BnBKJf5pTLOJPJT9waviuIym2HtNABkLJ1Y2fyncRpV7
+         Rkff/NdCN0mIL491Mjz2d2pGVHKLBA1T27p9Ql+ZXUo0VrxYqTTlH0zjg3O6VpHSw9mB
+         GQYHOSLVVzQXFSzIV1jpogG2ANRKy/KAN2LlRAHZBY1PGAJT+hcZbYxiMfr1kPfSfkeC
+         7aH1qXdmmMpCOCoKKo82o3nAp7FlaoB9URiw8uf6QlZpjemXykaNhfJQvzwwsz7uUGUi
+         8FnVNh1VCxrFWU73VCLMORLKo6j4/svRuwm+nez5D0KYOXjMhtoQ/R5HnMQlt/wOM6Qd
+         wD3A==
+X-Gm-Message-State: APuU4Z+4v/gSDqnAKAtC3C7405H//6e3R8h7DkE3iASQBcJjQsbAMNGx
+	2QdBmj36s6P0hInahr9GUufLz8MFOTmM2dGMeSYG3Nw2vjbt4ge3qW51P4zdx42IvLZirGSQXP/
+	ofEv0TwpMOMvbXICC+jZ4ROVQYM05bNJpcGX95mD2jg==
+X-Gm-Gg: AYBFou0u6T+OgixQ7nlTQrP5PUAam/lYqRHVPyIFRmjSgY2lxOVUP9q6hlZ69RjcK7e
+	5WVy4FhC1SevlFixzGicnhQTaM5MQRozgCgvw6ajQXVnGjU7FnbV/MOexstZLL/5QFlXs+tzDKn
+	amLCW737MIL/ohtI/5fe6Q7P65E6l3tML54qyWhGTvoHcB2720sdqFzLaMLZgaecSiF6VYwqyD6
+	VY/1yD2nmaAkF2YbFUD3+WfKeOeZkKSG+/jS0swTcEnel1Va0Qc4ElsoJXzPIu3y5ShTIu9K/jh
+	iWU3J2AwcB8vkvcqEQtK3PAN5ZwYfa2p0QWkV4xGdzudGyMWQB95IB/HUQZibyXIWL6JZcbtpnt
+	/hTDzHMHj2z8PI0TaBx4cddcz9Nja8Vijdv9+
+X-Received: by 2002:a05:6402:10c4:b0:6b1:d439:5c5 with SMTP id
+ 4fb4d7f45d1cf-6b4d3374024mr8489250a12.3.1793800733137; Wed, 04 Nov 2026
+ 05:58:53 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,115 +86,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN7PEPF0000014B:EE_|IA0PR12MB7602:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d586cdb-912a-430a-a86b-08df3a7b997c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|36860700016|82310400026|261022105027099003|261026140227099003|261022075727099003|11063799006|56012099006|261026121527099003|261021123027099003|261021121427099003|261102123227099003|261028144727099003|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	VxWtaWsFWFfbV6xEo7qdz+428QWuT+nCbeTbHDzFD1bvNX7whKqBvThk4AvplLwhIDp+LUVC1ZyaFSIQxzpqLOyGW5AbN69oWanZT46xTFTVxgdx1MtTSD+qFh6tTqFLm/mcoarjMa3XK7tNpKzVb7N7hfdopUM1Pv5TJ+W88Jhb8Dis5HNyDVgR0hdrG3z6/h8wvOM6KbGaadqoJx0lkTiJCC57jN3hokXO8qt0y9FA4rY8kKzvJrA/DWnnet/OKI+p1E4iqy3Wa8SobLRrMhcsNWiuigEiq7MPqtw6INlCeFP+Xeow8puoliXHwShkHReWjMI37ZWGEDA8T6MbcO/o2Yh4rsDicjKDomKsOd3SpjI1k2BDMvObps6f/EnvLhxBftpTYVVSwNwf8R6R5IYAQwTw5LYyWfPmKMH0o1UOuxAoM3wwPpiqEFSSdWTyRu9N3iY7YPi2TwUHBEI9oIautf/0rydpVSzuEjrtciUmPWJUVJe9oupNNJT8kxFR4EeIWNArv0XR8O/aFBijevkytye5I/1Mia3Zgcn9kW3a3YbkV7OJLLhRQz1S/tz78hYaOycGI2yjm7xNSi74VAGvqSaQaTQZ/ER6QV204YlNVW910I+7O2n7uUStLQU9ZxiEma6Z/XjRZfKVFqJzOY31nRCg7H6+9xT+ffLT9AmiGaXcKOvHuZXy2PFIW2CBR+2Ot4dtch+O8Cx79eWsjA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(36860700016)(82310400026)(261022105027099003)(261026140227099003)(261022075727099003)(11063799006)(56012099006)(261026121527099003)(261021123027099003)(261021121427099003)(261102123227099003)(261028144727099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	nc2EYmR0VXRY3anLPXkGApTUCG4SBndCIh2x3dMlauJOAgpEg8Rzy9COZo01qi5n525iARvdJvsekpsCY+vE5uOySDv42zAhIG085VPLD3zkkEF1Vfg/0CXBEelQWkYSQ/he29XtgQGAloCZ0PwO0BNvvkaoi751qpNP0f5XORr51FOJZFqnWMLt09pM+WgbalLSnPhmE2ysx69ONd0vzgumlAkfBbXKV+dUFSrB2ewyaaikkqlMd4BVzz2F/WC8U7XfCFGnK64wJZe66q+aEOYpLsNkgjeFS+aDmHksSXkZVgYjl4IJbdMYgN6NF26DYrsAGKmADdVBTAmBsHR/enKEXWB2N4m4PbbCzUwHefv2q80a4YUpkA+kc36jElb8lSeyH8MbiEEc+RAcswtKylm8arb+jvYOLoQdPKy7AYlIsT5vVpsKAqv+Qp32CuJB
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 13:57:43.8413
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d586cdb-912a-430a-a86b-08df3a7b997c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN7PEPF0000014B.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7602
+References: <20261020190319.884375-4-opensource@grische.xyz> <179279532482.3134.8732796861806998047@kernel.org>
+In-Reply-To: <179279532482.3134.8732796861806998047@kernel.org>
+From: opensource@grische.xyz
+Date: Wed, 4 Nov 2026 14:58:25 +0100
+X-Gm-Features: AclHuK_IvwAzwzvaVvW3vcX9pBmkxBHmo3ddDOqECYjDXhAMhYt-2sOn-aUE7ys
+Message-ID: <CALsH2cwoB3P5Td3SgZ7ARTcGRLhCANSDU9dXake6ty1XAf38Tw@mail.gmail.com>
+Subject: Re: [PATCH net 3/3] net: stmmac: dwmac1000: stop hardware from
+ dropping checksum-error packets
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, maxime.chevallier@bootlin.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, o.rempel@pengutronix.de, 
+	stable@vger.kernel.org, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, aaro.koskinen@nokia.com, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-During the processing of neighbor timer, in neigh_timer_handler(),
-when the number of probes for an unresolved neighbor is exceeded, a
-non-ext_validated neighbor is marked as failed. To send the ICMP /
-ICMPv6 destination unreachable diagnostic, neigh_invalidate() unlocks,
-and gives opportunity for a concurrent update to mark the neighbor as
-dead and send an RTM_DELNEIGH notification. After the lock is
-regained, neigh_timer_handler() proceeds to send its own RTM_NEWNEIGH
-notification, this time on a dead neighbor.
+> Does this work on dwmac1000 cores that use normal descriptors?
 
-Sending an RTM_NEWNEIGH after the corresponding RTM_DELNEIGH has the
-obvious semantics of recreating the neighbor, which is not what we want to
-convey here.
+No, this only works on enhanced descriptors.
 
-Userspace can in theory recognize these faulty RTM_NEWNEIGH reports by
-the state, which will be NUD_NONE, but there is no reason why it
-should.
+> Would it make sense to set DT only when enhanced descriptors are in use,
+> or to make ndesc_get_rx_status() report csum_none for checksum errors?
 
-The following diagram, which illustrates the issue, comes from Andy
-Roulin:
-
-timer handler (softirq)                neigh_flush_dev() (linkwatch)
-write_lock(n->lock)
-nud_state = NUD_FAILED
-neigh_invalidate():
-  write_unlock(n->lock)
-  error_report()
-                                       write_lock(n->lock)
-                                       unlink, n->dead = 1
-                                       refcnt != 1 -> nud_state = NUD_NONE
-                                       write_unlock(n->lock)
-                                       RTM_DELNEIGH
-  write_lock(n->lock)
-write_unlock(n->lock)
-RTM_NEWNEIGH: state 0, no lladdr, ndm_refcnt 0   <- stale
-neigh_release() -> neigh_destroy()
-
-Fix the problem by refusing to send any notification other than
-RTM_DELNEIGH when the neighbor is dead.
-
-The issue comes from a user report and was obseved in the wild. It was
-reproduced on a vanilla kernel by extending the race window by inserting an
-mdelay for neighbors on a device with a hardcoded name.
-
-It is tricky to track down where the issue was actually introduced, and
-practically speaking, it may have been present "always". At least as far
-back as 5.10, which is currently the oldest LTS-supported kernel release,
-the code still looks substantially the same: neighbor timer causes neighbor
-invalidation, which unlocks to send ICMP, which a flush can then race. Even
-2.6 has elements that look like they could combine into the same race. I am
-therefore not citing any particular Fixes tag.
-
-Assisted-by: LLM
-Co-developed-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
----
- net/core/neighbour.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index d6e9c7c59a89..6fa490f7652a 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3593,6 +3593,13 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 	int err = -ENOBUFS;
- 	struct net *net;
- 
-+	/* An attempt to send anything but RTM_DELNEIGH on a dead neighbor
-+	 * indicates that the neighbor was marked dead while another update
-+	 * gave the lock up for a bit. Do not send such notifications.
-+	 */
-+	if (n->dead && type != RTM_DELNEIGH)
-+		return;
-+
- 	rcu_read_lock();
- 	net = dev_net_rcu(n->dev);
- 	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
--- 
-2.56.0
-
+v2 will set DT only with enhanced descriptors.
