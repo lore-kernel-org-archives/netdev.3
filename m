@@ -1,62 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793825807;
-	b=SioBlFHzvXucKZSuWvptJk/F/huszxx5gipT6brTIDxNFKwh4CmZFoi6cEdxS4l2kna4
-	 Teo13bDzNT5IJuIZgQgHUJ2ePOZOyZtxXbDfcnekwpGSaqa4JmtagxxAsMN2Vpq3B2Ojd
-	 P0O60+StDn/HCdo587J1FO+/zMboYfLiHDc0q/Le1lRIn7lhgykLbWY0LeqLluesEJAEV
-	 JKiSlHSsL/PNn8eYOkeq7AUcCaTK9Qvojwn3mP62NpiT2zn8xNAKruym0HYO5De/4l1we
-	 gfmVWCD4o/62zY9DFlRLkGf+mzu/jUqyKm/kL17iqiSSIF45YpB7SGpQGCpoS+w1/+g==
+	t=1793825829;
+	b=i89AU0aqfb1P5+OPkbLUc1JcSHu5bV2DCLFBjQhV3Z+WJ0PW32GUIksPZ67S8BudxJlY
+	 PNt62wkLGyoWtUJ4J+twYnVYXhqz2Pr/rkNT3y9jWXpLM4UR2h/iE/4MdxKrpASXCfjXo
+	 t7jJp0q1vuTvnm7bOjoxvueD0XmB76neZspJFZi/JU7mrbOtwgB5e+/1vsFJjuoWXKurk
+	 5ZZTo4d0Kb+t9zfIPZuas11+QPt5J2zVXBuCK1Xz2BLL0xqd8FYykwPzeKezmytnQ5OeM
+	 vWsfdjoHFUMf0nd0Fzdmt6uGVPqpfxeidI5xHTpaHicRy4N5fhcZIJFG7Nr8veIXLpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793825807;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=aT59RqPPXneyKB2jjsHTsRzCsHVLOHKqmGVlxOGkRWE=;
-	b=ZRarBe15qaxy7RvumXLcASitYF1yRD1vAVq3KnidwhOfj0Q6aJBylgzkXHa5K83iP/hE
-	 MBhRQuXD40BY41MtHlOFAxlctfH4roBzdQqZm85HKZBo/EwtAFFfBIaCoe9ME/CvXAQUb
-	 9OXjjug8dEtrIjg/PcqglVXEcGHOuwn3DmIgb6zBRgVMaxnuJQdpEzprp8Sb2DfhQ9nDc
-	 2IZvMdEfmP/nTsG0saaoC9D/gO+ETKLGikWkNNm0mclb/gKPNYEAq7ySE6jFtMWg3IXVG
-	 C5rYEKdt/tjDSGnYcfEFl5PBWsuwgCZNvc0XK4tJUkbRIoe5gl3FjZIncgwqiE8jsXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825829;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=L6s4TTDFhNuhrsnjNiQdR7CRo6Dzt3ANt515Ib4703k=;
+	b=CsfXChdSkqCgjC7zm8yDQQAs3WnXdztvzrb0FlAujlfXCnVvXy2f99/U7u6/x6r960NI
+	 EU/t34XjYKQIWhimFfoXR1y3LsGtiGqlMHZiSp7JfHZc2sz3uBS7q6pp2e19ylXr+3JRu
+	 YpME34Sc1RXVG0gD3JNqcIGpBEdHij1BywEmRPjp+d9vG8QbHvMGCN/ao8OxiDYmM7zAt
+	 zYMUnqpMxiaS3BBkMy8G/nUpAVOYRdZ104iXTiQ/ixxjGmRYtpbc81q3TynZbBmepypIn
+	 XWPNAxu3VexaaqCqQTGsPFz+9i24/R28e4kKuBEBapRC4AYuKoad0pn6lw1NWIV+MFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=MlPK7uAH;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JpQXbB51;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="XSX/+KDj";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C2609C59C;
-	Wed,  4 Nov 2026 20:56:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B09C2609C59C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B77609C040
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 20:57:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38B77609C040
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=MlPK7uAH
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=aT59RqPPXneyKB2jjsHTsRzCsHVLOHKqmGVlxOGkRWE=; b=MlPK7uAH3bIp0l9Xu0yU0NYT/x
-	JW3zlB0+WS2+jqhjyGFLH0zUYcXlHjqmU+ZVguAL2jrva2MyhUIO5tTxIwSytiP/ZtWOqlwJ4N7NX
-	VzyNyd3Uw9an5w5GyS3pcHXrxerr3zrO1t4+ETPSY5KG25ZjBWbFIEmJbxCH3GY6XrB0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOi28-00ENzC-Mu; Wed, 04 Nov 2026 21:56:36 +0100
-Date: Wed, 4 Nov 2026 21:56:36 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v5] net: phy: aquantia: Add support for 5GbaseR
-Message-ID: <b14d40a3-0a57-4e0c-9cd5-2ac15d6e1b5c@lunn.ch>
-References: <20261104-aquantia-support-5gbaser-v5-1-9adc0f538d66@oss.qualcomm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JpQXbB51;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=XSX/+KDj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793825828;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L6s4TTDFhNuhrsnjNiQdR7CRo6Dzt3ANt515Ib4703k=;
+	b=JpQXbB51eC4YbxGNr9rbAouwt3QYNfrCjZ/I/rBkSNiPGjHTFm3CUkzLCkVs8B4SAI3TW/
+	zS50odUCKCLHEmB+ula1gQyqX0QWOnbNt9NAuNCUpODBvYO04vEt59E4b6dyFznJBVwxeJ
+	w28ISCMVVJ3IB5HVk1GTTBL8ZrvTgF8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-CYCa8vCzOma5f2k98KfLyg-1; Wed, 04 Nov 2026 15:57:04 -0500
+X-MC-Unique: CYCa8vCzOma5f2k98KfLyg-1
+X-Mimecast-MFC-AGG-ID: CYCa8vCzOma5f2k98KfLyg_1793825823
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4ae2756fa7aso8344105e9.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 12:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793825823; x=1794430623; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L6s4TTDFhNuhrsnjNiQdR7CRo6Dzt3ANt515Ib4703k=;
+        b=XSX/+KDj/myjMKCt2zt9+q5XUkJPNGNbEYPReBac0xi4QN/9krLLkG6WmCr8vG4ul/
+         j8HcJRcZkfGP20Y7nxlFEbUQAOpkfzwDNYvkrtjkzdmvcnwPb0i3NCmRN55yE3CPUdqX
+         OGvpn9ShgiEuPmfOc7nXiV+YpnVZrmdv04IqqlrU0s4Wxlk3ruUtvCNKgeN0nHZQ94P9
+         VIRjdf+2CEheb/ypMc+13Qawscq/kgtL/dwI1Us72aC0BlIgKin+KlFy7T7wi0quhNLW
+         zEaL28CtRdFvROdLKe3w+M0JHWUJ5JohBgl23zl92CQOT2xlqm1gtQBnFGUuOi2AYtHd
+         IwDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793825823; x=1794430623;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L6s4TTDFhNuhrsnjNiQdR7CRo6Dzt3ANt515Ib4703k=;
+        b=yF/Ooy8YWd/iWJIojCAN26W6hv/eA0aVTNzhUEj/YOOuFcIU+LjdeeyEtjLyj8neEC
+         iPvg0jscGuIcUq09nWEUbN8iIl40XcgTOd13NfQKatnTI8iNl066cWdxtWq8ze1v6zEk
+         sRHDIZ+i2Dx2d3SAjkkL60rUrFzv6FxT9Y99/DHPUcYrnc/zsZPONJs8D4OvnTXRPC8z
+         r+XgYFGTch8iNeoOX3s0Q1jVjfvbF0tUHrxQRxBS9z9W2xzm9CJNVvliWynvqnXYFuaL
+         YB7ZujdJZ6JKgYjjYUlpM4LkRsd1N5gZuL5G8tAIvA9B3Y00zgDBFmJxypdm2lgzOuAw
+         6K+w==
+X-Forwarded-Encrypted: i=1; AKwUvBy1st07ozNIoJLEU0b56NjsNIklbVpDbsMCVjZdNTvtceXAQRHt3ZAKLZ6W1g+OYEH+1mhwpCY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8PQcJcQdZPRNEBc4NEsPJBmUVnEGt/sT9pbJjQfzFk/oQIdJ29
+	7wYUXsPdHqP5bwsO2rlGnRoFIoKyHwPmNnbBIfFyll3Pxdt1mX0kLz7vIf8WfcoyVj6c/KqwWhM
+	Oopgbfz7XnFl1WwMXOgbxCxzfuelw5ACYkuV21FaP/lOVOJSqi6TUokepvA==
+X-Gm-Gg: AYBFou3nyiyh4AFk2PUeRqYvnhTfPjH0ef4zm2k0bCeV1UJ//lnBdKCArEs8mSs577I
+	Ietq/Ep1/ebtnz9CPEbHpSq1Vv2UJ6zB6491A7SqJgxkH0W3dYuPJCXnQx6xuYjizK/IXDi7xa3
+	FnDQjPgNh9Dbz660bDoDA/ab0QmDPiLjCjm+J4HO87vNIqwh3Jelur8w+dJ7sl6R9+1CX4j1Ruz
+	UIUCY3qLUSOz1itD+1MPv+ep6ko/G+ZbzEtpF1r5AKasHqnqKF50zAA4jBYBX+v2X/+t/vlLC10
+	t2LTkJgW1vNDqmO48BGTtoBDn1rehXD6u1/0EghRETOq7IeVyglfAGsY+zxVw0V+Dd6IvNggLMf
+	gyGnj+TOQWmbzdlFDDG9wPq4eytAPbFrVr4ymJCyLn4ewCRvI+RDae+HmrRz7d6knvBRxSZ0LjE
+	9jWfpcUTE6uEL5+Ty3W2DTIu1cuRen89JMkbWfnSz5nXI=
+X-Received: by 2002:a05:600c:8b55:b0:4a1:f736:79f3 with SMTP id 5b1f17b1804b1-4ac17ffb30fmr374653945e9.5.1793825823519;
+        Wed, 04 Nov 2026 12:57:03 -0800 (PST)
+X-Received: by 2002:a05:600c:8b55:b0:4a1:f736:79f3 with SMTP id 5b1f17b1804b1-4ac17ffb30fmr374653795e9.5.1793825823110;
+        Wed, 04 Nov 2026 12:57:03 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56b78d656sm12312525e9.0.2026.11.04.12.57.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 12:57:01 -0800 (PST)
+Message-ID: <c9ef3133-856f-4554-8c7f-0f49d364c617@redhat.com>
+Date: Wed, 4 Nov 2026 21:57:00 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,34 +112,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104-aquantia-support-5gbaser-v5-1-9adc0f538d66@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: usb: cdc_ncm: reject short
+ GET_NTB_PARAMETERS responses
+To: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>, netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, oliver@neukum.org
+References: <20261102001114.38144-1-xinsheng.zhu.ny@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261102001114.38144-1-xinsheng.zhu.ny@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 04, 2026 at 05:57:52PM +0800, Hongmei Xu wrote:
-> Aquantia PHYs can operate with a 5G USX interface between the PHY
-> and MAC, reported as interface type 12 in the PHYXS vendor interface
-> status register (MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G).
+On 11/2/26 01:11, Xinsheng Zhu wrote:
+> usbnet_read_cmd() returns the actual transfer length, but cdc_ncm_init()
+> only checks for negative errors when reading the NTB parameters. A short
+> response therefore leaves the missing bytes zero-filled, and
+> initialization continues with parameters that were not supplied by the
+> device.
 > 
-> Without this change, aqr_gen1_read_status() falls through to the
-> default case and sets phydev->link = false when the interface type
-> is USX 5G, preventing 5G links from coming up.
+> CDC NCM 1.1, section 7.2.1, Table 7-3 defines a 28-byte NTB parameter
+> structure. The pre-errata structure also contains 28 bytes: NCM 1.0
+> Errata 1, Issue K.
 > 
-> Add the missing PHY_INTERFACE_MODE_5GBASER handling in three places:
+> Require GET_NTB_PARAMETERS to return the complete structure before
+> continuing initialization. Return -EIO for short responses, including
+> zero-length responses, and preserve negative errors from
+> usbnet_read_cmd().
 > 
-> - aqr_gen1_read_status(): map USX 5G interface type to
->   PHY_INTERFACE_MODE_5GBASER so the link is correctly reported
-> - aqr_gen1_config_init(): accept PHY_INTERFACE_MODE_5GBASER as a
->   valid interface mode, otherwise the PHY is rejected with -ENODEV
-> - aqr_gen2_get_rate_matching(): return RATE_MATCH_PAUSE for
->   PHY_INTERFACE_MODE_5GBASER, consistent with 10GBASER and 2500BASEX,
->   since the MAC-side interface runs at a fixed rate and the PHY handles
->   rate adaptation via pause frames
+> The issue is theoretical and was found by manual inspection of
+> usbnet_read_cmd() callers with LLM assistance.
 > 
-> Co-developed-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-> Signed-off-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-> Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+> Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+Sashiko noted on v2 that this may cause regression:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011035150.53315-1-xinsheng.zhu.ny@gmail.com
 
-    Andrew
+Since thei issue is theoretical I think we are better off without
+this change.
+
+/P
+
