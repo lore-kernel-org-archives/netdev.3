@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801479;
-	b=P5Dt+ssWFjYsPGtf9nPWUHVqqhjWSTRSOo8JYHBElYrexUrCVhGFvUmABWmLn7H2dAGr
-	 9g41RbNEhRT/3tYI1FMeEr/rqeg2lkDSbMn1bbTmLojF56CItv8PgkLuZ7jtw4RzUg9XC
-	 suEBDMnaS39lmuJxGs0cJhEHv4rR5u4nwyHrCwhLnlzY6ljWPmnutGE4Kz6oYccdpSm5E
-	 FOx49irP3GDcBi077DDJRp8P5hxibRFe8UTuHQARePDulqyOuadk6gUA/0X40kRCqSEcQ
-	 EJieIkD/6kfKDR+y764KYnGonA79dXg5k0hFkFQpBAhFo4TUNAkBa/RFd32GrvWWj7w==
+	t=1793801476;
+	b=zJ+trEsUo4MefZ7gP2FP4fgHjvEOUzVy/+LXJPClN8RAm650la/auz1Q4NqKSESunfWL
+	 Vzru0VPFbeWvruYhKWN8QNuqsF8gob6/OiAQbl3HEyWmEWC9knee2ijvb9IbqR8LgnP96
+	 srHrBJ39qDywP6Gk1dxHSMSZOd9Hl9z86WTqyWOFCC/qotL9KWJoG6MRgAIevXoYlrp0I
+	 JN6ruc5m7Gs5vNspg5SCNG8byE1HwefwiFRCqaLAgZ0k+Dp1FNSml2ceajBTMjicMeQth
+	 oYIrzqj+7BEbEhowLQczwRn5I+pgZ0783v+7R2bK+XpoL/f7skZ4F9I5HaHoJmpIVZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801479;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801476;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=GO4d/CrsOhR28HwuMbAhECKWLHdlnGgz4E2dZWaYK7w=;
-	b=PyTO47Ig0oAPwMM8BSmfNWEAHTmd2d1zhIEGWGVau9lUonmRapmDQzSosQMc5obEdIwD
-	 SvF8jyB9oSfwIsvn8mVvUEZAXtF0N/Uf7f3NmKLyKzDAlrx1rt+CR4r7eBFfJahKhz5G1
-	 sqhHJbg9J8XrgmBVYltfUnPE6QrE7020lBb9Gp7JaYs/NWvLzgiz9TXDbW/xd6oWLFEk4
-	 urWf86oPccUr9/Q1hurmQfga7suSqXePjGmgQfMC4eIlgxAyr6zXS/a7aiobPl4FFxcfH
-	 kBcXulhN58Kk6+phKi5pynzx3Hm1zyxZkF83kSOW6mansAJx+piiEJWA6P+CiQL2eDw==
+	bh=xV477epFviKsmaszl55lgee6+nC/JrmaD78Xje/EaSU=;
+	b=HOez1kUVKpeS9bfvTdAr7+J5wRvLi2kBCfVBtsJgTrkNv6fVoUyVWdWno9cM0AAtod+g
+	 hYVazQfRbe7zZ+HEgclg7WGTf87XgS7DggR0Gqr+lTrDi6gW5vopIBQ4kczOf+oMMkh4F
+	 GpQJhwinKYdmvZLOs51mD6+MtP17vTLjZl/3qi6PykeK0lqjZNgP9cWGKyzyrod5FZO44
+	 W0gAq5FHFoyXmyTrT+mdeXxkpKT/MLu4y0mwKn6sTF0Xkhconf4PQetRs7Pcpi/F2SUzp
+	 gpd3VoSIpQFFURPnLwFnYUO2Z06GfJjay7dE9AMCL1UZa0IqIpRUe/R4L/kK0GfEKsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eoTtJ16b;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kBTcQMDf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57DC606A335;
-	Wed,  4 Nov 2026 14:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E563606D812;
+	Wed,  4 Nov 2026 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eoTtJ16b
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE00B1F00A1E;
-	Wed,  4 Nov 2026 14:11:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kBTcQMDf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4975E1F00A17;
+	Wed,  4 Nov 2026 14:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793801478;
-	bh=GO4d/CrsOhR28HwuMbAhECKWLHdlnGgz4E2dZWaYK7w=;
+	s=k20260515; t=1793801476;
+	bh=xV477epFviKsmaszl55lgee6+nC/JrmaD78Xje/EaSU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=eoTtJ16b5OVuG8Z/3xCsRprYPgoCFtmEo8ZRJzesgsszch1uXNYuVbgykP1S9dtsp
-	 pfSMP8s0yss7/THdWEbzZpb0kIOMfk0gTeXfzZJVrgnLvKa51YsSaFMq5ETv+rRj9/
-	 PKgXrmEOYjy5a3m1Rajhh3BNpUsXUxCANRvI891zdGJa02CBM6cnC4PkPrgMyrGlp7
-	 n0nU/7XfVCtbABxa4H63eG61JwHyxokQjvYxCfmAHd0qJ93/DcYAvqu4V0MN9r6T5k
-	 YpY2nc+MfRUVtahsAh7t42xruGz26rhC4159yeQB1kU1wZhGiRY3sS6maKg2k0uhTZ
-	 ZZ615naAnBRSw==
+	b=kBTcQMDfIfhgGCB2H5aYQxQRMvLdNKH/d+5O2po0CccPDxREQjjx7ULlVUCMV3KQ7
+	 nGJBs1Ii7V/gEzgz1aNzZubS1T+coejkXwh3fIO25OK97FV95pWVSv6nFH9M3VzQMU
+	 MdXSus9nY15Mo8+C99IWC2ri/JdxnbOrQ7PtsrJA2yggGlzSY3EBcCkEMSatxDVMwD
+	 Hvcw0PjGlEeEOCiHBmWw/FL+zIQPKUUBO2CIayHfNximvDUGjig1thCDZ+3OWPbmYb
+	 NCKtTuKX1TrAmPfik/PvKv2UYjK6xLUdWmc3GHzKYLqDaCK3dW3V9PGPnlr6qzC4eA
+	 Er/OItBMDbmxg==
 From: Chuck Lever <cel@kernel.org>
-Date: Wed, 04 Nov 2026 09:11:03 -0500
-Subject: [PATCH v8 03/14] NFSD: Remove hard cap on duplicate reply cache
- size
+Date: Wed, 04 Nov 2026 09:11:01 -0500
+Subject: [PATCH v8 01/14] SUNRPC: Reject an AUTH_TLS probe inside a TLS
+ session
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-duplicate-reply-cache-v8-3-eea5b90e4318@kernel.org>
+Message-Id: <20261104-duplicate-reply-cache-v8-1-eea5b90e4318@kernel.org>
 References: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
 In-Reply-To: <20261104-duplicate-reply-cache-v8-0-eea5b90e4318@kernel.org>
 To: Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
@@ -64,106 +64,59 @@ To: Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
 Cc: Rick Macklem <rmacklem@uoguelph.ca>, linux-nfs@vger.kernel.org, 
  netdev@vger.kernel.org, Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev-9c833
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3485; i=cel@kernel.org;
- h=from:subject:message-id; bh=t8G27LUDpaP09iMOryqKHDtv2R52uxZaNtibo2VdTLo=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq6z0AQIzCdV24UEV/tlPNaOG/uTubNeg1rHirH
- yelAqZNJsCJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaus9AAAKCRAzarMzb2Z/
- lxuTEACeueXAx9an6eg3FjPo5jPRAfGWc8oqY1yb9sYjFzp8arbuC375RgoBvtM8CmnSEG4aMRa
- acUDZBSOyTkoPZmRBssCjYk0MMk7ihPd4KCez+k6x+4nrxmSEPebJBkGhH3uuKl2M6Dp9EYi65u
- jbj96AjpzWZlu5XcpByWGsCeCY5W97OByxxuk3OwWBYwwlnZZsW7/qbm1E+t+7Kv3g4OHYbK9Vn
- YBFFLDVpA07261g6qPQIODkWNbzxdC256ZN0vgWBb0mOarEfy/slCJWZNh0FR1G4UTjLIHxqds3
- WXt5X49CwvHbHKsbvDso8R7aB6YchK7jRcD47TxCWwhcUGXRSv2skd8vziSfRl0gOb+T0KBoBCi
- HJgF50RA5xrCmX5yIdkh5G3FL0OsyXgWuLV4h6kAXPzQwrN4TgB4poZpsNeZiJn9q7Yt3/wRUH7
- 1I4x3XexuCsHjNBQm3UNpTQHCDa8JpDszEXUc14Njc+23SaSZhtj82uXwbLm8Um3LWZ/Wfbxxzo
- KSCZ8alTZicAh6PhaKmylOrmOSE4zkti56ZBtcu9TjFVpZT6jEfbThftNeA71CS2U0J4R21j8oZ
- J8yMkCzyL6C9nbNXWHVpkxELqSkxicRyTWft4PuENqyWnNBaLjqauxo5fWc949fGRJ/oLMpM15Z
- NZA5JziNNikg/Vw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1494; i=cel@kernel.org;
+ h=from:subject:message-id; bh=bRiCz+D0MM4tKXKtXLNBsAuhCgKqmhqHujaY3f3WiHM=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq6z0AQGmAAitZ3BEPrTChKFDBHo+LouZZbFNqN
+ TLLkAFAYfeJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaus9AAAKCRAzarMzb2Z/
+ l/3zD/9YvN5C57dhj783PdgsiyhyKOCPllnCSShvZx9qQh9cfLyas9bjVBPhyTpJHlaKsOl2AIl
+ SgxMF6AelhxVjUs3Kih+qjBywCBbe5oSunRd4R2LEiEyKF27Bpr8ehZD+dvI2V5BwhbogUG4Jja
+ RBdSyPyhcVE4kNrFRnVjM7sl9Rsl/ImZUn/m4kw3tTU3ISlnRZVMQE8xwz5zQ/hcqBhknCU/jV1
+ HKf4KFcFSpQdmbGHKtDm8YMsCsHPqhGXPFi3iu/r33UAmNXS4gY2XbfDVjKxsrScz7O/wZ9QxQw
+ iPRk39W45dQPMekcwMUtc/738rsiM+lhhd8sv197kqK1Z7HcIAgo93o5W0pNYVxeyndWFCqUJqk
+ hBjD302TZQ139mEkF9sw4HMYt8fNRyLkJJJ+nRjCnRHPEpbVb+aoU71M5s9SeZbalPnJuLxHJ9t
+ CU7z9TDMpGZwmKjY3x7V+qXSdBLBvJ9aC9WelYUnQrLbnFN1nXQUJQsAzR+WjDatO+Vf0rqvPfC
+ 95M8fz2fnTLDwlk0Jqssdp2VvZdvyODIcpyncs8H/kg7MmyPwBWomwVJh8nPYLEQ1CmfGCvlgxA
+ yRwbQt/+srcE90TKazyD/b3p5BZ/CaFq7KTyf2jtyOJE0IbsMyhoeSrnEAyQDZpnQOUWVF9mF9k
+ eQ2Di0RFrnI3ODg==
 X-Developer-Key: i=cel@kernel.org; a=openpgp;
  fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-nfsd_cache_size_limit() scales the DRC entry limit with the square
-root of low memory, then clamps the result at 256k entries. The
-clamp binds on any host with more than 64 GB of low memory. Once
-the cache reaches max_drc_entries, nfsd_prune_bucket_locked()
-evicts oldest-first regardless of age, so on such a host the cap
-governs retention rather than RC_EXPIRE. A server that completes
-more than about 2200 calls per second fills 256k entries inside
-the 120 second RC_EXPIRE window, and from then on entries are
-evicted before they expire. Those are the entries a retransmit
-could still hit.
+svcauth_tls_accept() accepts an AUTH_TLS probe on a connection that
+already carries a TLS session. It sets XPT_HANDSHAKE, and
+svc_tcp_handshake() then clears XPT_TLS_SESSION and calls
+tls_server_hello_x509(). The first handshake_req stays hashed until
+the socket is destroyed, so the second request fails with -EBUSY and
+svc_tcp_handshake() leaves the connection open. The kTLS ULP is
+still installed, but XPT_TLS_SESSION is clear, so every later test
+of that flag treats the connection as cleartext.
 
-Commit 0338dd157282 ("nfsd: dynamically allocate DRC entries")
-added the clamp in 2013, when the formula's worst case of 1 KB
-per entry made 256 MB a reasonable ceiling for the hosts of the
-day. The formula was already sized to memory; the clamp froze it
-at that generation of hardware.
+RFC 9289 Section 4.1 requires the server to reject a probe sent
+within an existing TLS session with AUTH_BADCRED. Deny the call
+there, before the handshake is started.
 
-Remove the cap and let the square-root formula govern sizing. It
-scales sub-linearly with memory, and the hash table already uses
-kvzalloc, so larger sizes need no physical contiguity. The limit is
-unchanged at 64 GB and below. At 1 TB the formula yields 1048576
-entries, four times the old cap. Even at 1 KB per entry, the worst
-case the old comment assumed, a full cache is 1 GB, 0.1% of that
-host's memory. Below the limit, the shrinker frees only entries
-older than RC_EXPIRE, so the unexpired entries are not reclaimable,
-and each net namespace sizes its own cache.
-
-Reviewed-by: NeilBrown <neil@brown.name>
-Link: https://patch.msgid.link/20260921-duplicate-reply-cache-v6-2-db5e13fd9944@kernel.org
+Fixes: 74aaf96feaca ("SUNRPC: Teach server to recognize RPC_AUTH_TLS")
 Signed-off-by: Chuck Lever <cel@kernel.org>
 ---
- fs/nfsd/nfscache.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ net/sunrpc/svcauth_unix.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
-index b43b276a92b3..391cbca74836 100644
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -47,8 +47,8 @@ static unsigned long nfsd_reply_cache_scan(struct shrinker *shrink,
- 					   struct shrink_control *sc);
+diff --git a/net/sunrpc/svcauth_unix.c b/net/sunrpc/svcauth_unix.c
+index ad8a73653e42..fee7e20e2e9b 100644
+--- a/net/sunrpc/svcauth_unix.c
++++ b/net/sunrpc/svcauth_unix.c
+@@ -1144,6 +1144,12 @@ svcauth_tls_accept(struct svc_rqst *rqstp)
+ 		return SVC_DENIED;
+ 	}
  
- /*
-- * Put a cap on the size of the DRC based on the amount of available
-- * low memory in the machine.
-+ * Size the DRC by the amount of low memory in the machine. The
-+ * limit scales with the square root of available memory:
-  *
-  *  64MB:    8192
-  * 128MB:   11585
-@@ -59,22 +59,24 @@ static unsigned long nfsd_reply_cache_scan(struct shrinker *shrink,
-  *   4GB:   65536
-  *   8GB:   92681
-  *  16GB:  131072
-+ *  32GB:  185363
-+ *  64GB:  262144
-+ * 128GB:  370727
-+ * 256GB:  524288
-+ * 512GB:  741455
-+ *   1TB: 1048576
-  *
-- * ...with a hard cap of 256k entries. In the worst case, each entry will be
-- * ~1k, so the above numbers should give a rough max of the amount of memory
-- * used in k.
-- *
-- * XXX: these limits are per-container, so memory used will increase
-- * linearly with number of containers.  Maybe that's OK.
-+ * These limits are per-net-namespace, so memory used increases
-+ * linearly with the number of namespaces. Below the limit, the
-+ * shrinker frees only entries older than RC_EXPIRE, so unexpired
-+ * entries are not reclaimable under memory pressure.
-  */
- static unsigned int
- nfsd_cache_size_limit(void)
- {
--	unsigned int limit;
- 	unsigned long low_pages = totalram_pages() - totalhigh_pages();
- 
--	limit = int_sqrt(low_pages << PAGE_SHIFT);
--	return min_t(unsigned int, limit, 256*1024);
-+	return int_sqrt(low_pages << PAGE_SHIFT);
- }
- 
- /*
++	/* RFC 9289 Section 4.1: a probe inside a TLS session is rejected */
++	if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags)) {
++		rqstp->rq_auth_stat = rpc_autherr_badcred;
++		return SVC_DENIED;
++	}
++
+ 	/* Signal that mapping to nobody uid/gid is required */
+ 	cred->cr_uid = INVALID_UID;
+ 	cred->cr_gid = INVALID_GID;
 
 -- 
 2.56.0
