@@ -1,59 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.72.192.73
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793796697;
-	b=Xqc2d1uGzvrRfZ3LUn5lwaAdrrKWdBtbkcYM+dDXyXz8CjMlUfiB1q5ieu6T9CQLLi7P
-	 QVjn4MMrwD2bNmp6JmcEmpb/5k3Qzpjl6fGnpf35klYcJrcEAiFIiWYZgdycGBO8fOg4E
-	 RxEgoJEqmuj5NEJ4rTruE+MnYetLJuTnHra9WQGwbNMv6QyFM6w6zWL19G19/xhQsCR6b
-	 f7yH7maMxeb27kKb+EuNl2pNfne99q6lsF8R/9LavAfSGnFfPED3OjDP0isHlNWTUdzwS
-	 eRN1pkLB/nz5zBKSQtYquEw+77AaeWsUAqAQv43VcZjonIpNCMQ0Lq94wKTQ9Jp2Acg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793796697;
-	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
-	 References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
-	bh=GTgLqekxREDnux3hnYrxYqItzfHMhOlshtaUeR7+j5Y=;
-	b=yopM4f2FNSn+c7hFwPIH/pDCtqJyc7Ns9sPTSpkrvQ+QCg1Zz7OXEeQ676kqL+LStVHe
-	 vYgjcxJOfoO+aENhocDXR31hRKg+l3Mg8NoN6hZ3LX6t9wWVTtSO7eTyQwUcizv//fogm
-	 qj863n0gcH6hWbjoMn9TC/qC5ErSjoOOImAOF7IpYUPY3SaxqaYNB1cb5xXuhU+Xlr8+3
-	 pbs/CosZwD39FzIKmv/coDkB2itQhHFnOeLRU4uyxkId47DgYlpWI4lUe00bYOKwMHRYi
-	 tHuoyxgawoWilHrIPIWUcCJ64gIPC+EpXSUJfGAPHA682ylKn2G79+FlKxJrbwdeNUA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jonasjelonek.de;
-	spf=pass smtp.mailfrom=jonasjelonek.de;
-	dkim=pass header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=1SzuAvfl;
-	arc=none smtp.remote-ip=217.72.192.73
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.146.134
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793796780;
+	b=hEnX1VJOk5CmlVcAOcJ7+oA1iJFOWhULUrGCsfch11a8+0NkfIR1mBfNWPMEw58qTkTJ
+	 qX0w9GUF65sMe7e46qosu6KAyUTB3o8iW8ZZtPkr4mG+HPxKCjZ0FbbyfxoBdsQggIPwg
+	 sWnP5H184tKxxcDSk/Bf8B5SqgKnEgV77JwYBIyzdaBNFVhEuSNGuDFGL2gwIEr/NashF
+	 MorFO33WHGeRX5cSXMA9OVz8R6TtJPkr29yMRfqGfi+ybpv14IA1YpY1eC79splH3SK1Z
+	 6T6G4StzzEJttfJ5+7UdhCc+fTiwI9t6aH0jzsrR8ENe804pPWBVTKrSUuY6Ml6E0uQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793796780;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Zb/cR5nUi8bjjrqeEtXEtrCTn+c+dWcoAbznSZCLh1Y=;
+	b=5a11jC06QlD9Ox5Q7Ht6gk4UAA/fpPQVoNy9Efa3nng1oWuquj47O0tv3lp54wuYpGkp
+	 a6bwNLG9X5w7zs83CGJlNs+7C8RQhcG0l33SueFfkCH/wdYFvgIOAqtGc/MKNU2J/bnb8
+	 sj8sxwg4NXo8Pc6pvGzjx9Ut9OzlMwNatLvSEKVUCBopvCHigZVsR8SiPUao0XvqpLyuj
+	 BrTgyn2n8ykcf9pk4jllsWJDTGcC/jYwuDRgWHw8rtUu4bVO/QunJ7kJhspa8YJYfskQa
+	 4PinGAAI0oNCVA6hh54pfQXHfv6ksCGaBw0NQcGJuM5/xLOMeRBuDWw1KCrf1VsVuXA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=deeproute.ai;
+	spf=pass smtp.mailfrom=deeproute.ai;
+	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=tf+HOC1n;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.146.134
+Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2134.outbound.protection.partner.outlook.cn [139.219.146.134])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8933606A328;
-	Wed,  4 Nov 2026 12:51:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8933606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD23F606A326;
+	Wed,  4 Nov 2026 12:52:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD23F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=1SzuAvfl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1793796687; x=1794401487; i=jonas@jonasjelonek.de;
-	bh=GTgLqekxREDnux3hnYrxYqItzfHMhOlshtaUeR7+j5Y=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=1SzuAvfl0xA8weUUl70fmcYiTjnU/ehtK41ZbzgsPfDnutvmTFPdgEvl6XSnwTv2
-	 K22ffL+k8ziUe2t1+FfaBDA8dhCUkzoLTy6c/SJJGzWGUO720cmqFPwKl5llKAmgt
-	 9KcUAGk6vrmoXy0pKYOFYIn2u2nd+EzR6i0D4a8Dm6EUB0DxJe3b/O7VkG0SU3F7G
-	 gy5tgwOVEsRoPKjW3jGn+VlECLjz4ailLfvM/4aDbesAyfjWvd8W7LJUjfulXI1dd
-	 58M7OOBjE/ewM4EYfDN4jbHdspmnBy/kXF7Eb90MpabFJUXvp1/wtWsPyuixSlX4O
-	 0+xxq/4bAA72sg3tKQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
- [213.165.67.113]) with ESMTPSA (Nemesis) id 1MhCq4-1wtONZ2THG-00mxZq; Wed, 04
- Nov 2026 13:51:27 +0100
-Message-ID: <d1196efc-ef27-4b69-81a6-f1fd99ccb85b@jonasjelonek.de>
-Date: Wed, 4 Nov 2026 13:51:24 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=tf+HOC1n
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AL75pZr7o40aTraMe2S0ttHCqZneLaU7gRADTnwCHLdmJAQtuElzS4oZbKtH2jh+0NFpeQX901kSy+qQjYQs5UScvFd5XlZRGvI3qW38WbNKq1gMSpG8AARK6N+jBgjlK6YPpB/TAXv0FGGaskBOUr+hj5G68tlgdYt5KdsSGrTN0r2YcKw95m3CHNR1y2GckT13u3SxuSuOFs58S3PYW0xk2WfBOOUcHYWhNbi9Wx9qm+L4SiJ69L4qghDVTTZjkeZ/FMqODjZ5szTK3mFt1EQb9XhUtye/nqhlKU0LiSxqgLzAZ+av1EKw27bUAZnWTgcP+sWxTsVkXG1E78qO3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zb/cR5nUi8bjjrqeEtXEtrCTn+c+dWcoAbznSZCLh1Y=;
+ b=FxRxJK+lenIjqRMto9u9hFXGaqMNSdS2MQvXoNK+AqxbrCiTX2uCkQj28MoyirqDL/3/JeIrO4EoAowf07wbmkkqikvGcSJBpL8YIuQbacFNZX1MS/VHZ/4248ysSS/ysxidLMeA/h9uErfbrf0qDB5xuer3mHR8XqNPt50ZT8nTdBbAFjKNz4s/z37KcUur0VC14DA+3Aq4OoUThCYjq3j36QfHEpsXnF3aJ14Ctx4OnUUnWPw3LcKqRDoCTdlbQmNsWlP5Lpq29Ii4fpRbeakeIWOsKXzoj4vQBd851F4xGI1wria7IT8eIOdgV+VWH0PU0/TZ94pKqMKwFfTwXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
+ dkim=pass header.d=deeproute.ai; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zb/cR5nUi8bjjrqeEtXEtrCTn+c+dWcoAbznSZCLh1Y=;
+ b=tf+HOC1nu6equ33frkRulvJml7zoE/sIKME4vxabvMqiuSLob5jHkDexad6SQtUWmIksJxt+mloS7LvAzwo9fb7eWSjXim4saicMuVbwf93EwdU6i6ct+wkhaYU5vdmC/kXxxrnAgKddeThgHYdpz8uwu77VHJblD5Vhn5mKUtE=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=deeproute.ai;
+Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:a::9) by ZQZPR01MB1075.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:b::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
+ 2026 12:52:47 +0000
+Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ ([fe80::2dda:e54d:5a3c:d686]) by
+ ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn ([fe80::2dda:e54d:5a3c:d686%6])
+ with mapi id 15.21.0592.009; Wed, 4 Nov 2026 12:52:47 +0000
+From: Jingxuan Xie <jingxuanxie@deeproute.ai>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ John Ogness <john.ogness@linutronix.de>, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC PATCH net v3 0/1] af_packet: avoid waiting for TPACKET_V3
+ copies at retirement
+Date: Wed, 04 Nov 2026 20:23:24 +0800
+Message-ID: <179379500489.189393.11299513853625665657@deeproute.ai>
+In-Reply-To: <179369815762.488859.15460471694371846273@kernel.org>
+References: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
+ <179369815762.488859.15460471694371846273@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SH0PR01CA0009.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::21) To ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:a::9)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,210 +102,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/4] net: pse-pd: realtek-pse-mcu: configure
- global power budget
-Content-Language: en-US
-To: Kory Maincent <kory.maincent@bootlin.com>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- Sander Vanheule <sander@svanheule.net>,
- Russell Senior <russell@personaltelco.net>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
- <20261103220312.860629-4-jonas@jonasjelonek.de>
- <5e00fd7f-40f9-4041-8dfa-fff222b57b92@bootlin.com>
- <e0910567-999c-4c96-9b20-2e34434bec3d@jonasjelonek.de>
- <357f6311-7f00-42c3-8eec-e0fd0c35749e@bootlin.com>
-From: Jonas Jelonek <jonas@jonasjelonek.de>
-In-Reply-To: <357f6311-7f00-42c3-8eec-e0fd0c35749e@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:W/jSt+EVkXI+DSADrCyMZJ32Rl3/tDP8Pp94pKOhcLWv6ULeWgC
- CP4ozdJKUtn/PEqmGlXedWG96I9n7o6RrzmLeejdiL48SAD02xEbiuNalooRnbG++x62nOC
- wv8fenebItzY4p5MYQR/zI/8DZl68LHev57mpzC4P9XHvghltbwpymciztTjO03KpUVZjXf
- tVRR2ah+vjrLJaFgckbpw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:oECLamO+RUs=;Drag0WLXKGMnf3KIkkcOiIijqOA
- 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
- 6kW3RXz7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQZPR01MB0980:EE_|ZQZPR01MB1075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99e5299c-8936-45a5-6434-08df3a728700
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|23010399003|366016|1800799024|10067099003|22082099003|18002099003|56012099006|4143699003|261022075727099003|261022105027099003|261026140227099003|261028144727099003|261021123027099003|261009223027099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	AyTN2T8ER+jCIr5FYoGPN/432GZd+4vr29qJluAGOls37mBbFz6BdiZ/M4pJkqVSQWqAGJHokMQolhIAPbqcYl+ZSl3j58Fal8Gb2w13QEXRlCAbAFGbRks6bQtYCa5e6E3BSxc95DIfjsu/yMFFKUa5oBiw/j9BJD+xwXNDmRp191FaaJfSMwrmKn3kXYYmXvP6HI2r4JMo5uTpmh6Q1L3DBziFvODs/geTdI5m/2TXuc5ZDxCOoVlRbMKdmLtZOtu3hduO0jTOHDcWj/cOExjawrxKbe3TARMbjE4QIJj5uFjxXOiOFkyQshwF42c88vqyP2SUqB6uDEiA3thodnfWxUk4JEwfQ5mmpuNOI5duu5JpwYV3/P86mBaKNwF/adMN7fgoQ2ErK9rQHKJCubChQFikv83ZzEhsZYXVlJPMIYRAV+AoYzz4rWvZ2w4PDeWC6G1VwMlEHgDy1CIV9hmwERtmzWpjBclHEoapTUj8MgXeLLzT/NozLfdSj7AZe5VVElFc1F81Y4wD6guv484t03CiwHsOaM72ZDzWDVeyma0EKM+A2rGEDwhoZqky
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(23010399003)(366016)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(261022075727099003)(261022105027099003)(261026140227099003)(261028144727099003)(261021123027099003)(261009223027099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NGlNNE5sSFhMVU0rdVJZc2xERGVrMURCUGUxYitEa3RCSFd5VDZmUDBqbzFy?=
+ =?utf-8?B?NzNlMXM4WnZValJPNzJiWmhKUkN2QnZRZ29IM0JOQklxNFJBUWdiS0tlRWR3?=
+ =?utf-8?B?UlAxQ3ZvNEtjZEQvKzhwM3EycmR0dk9RVCtCNzJabHdLcDV2NzZ0VUdjOHYy?=
+ =?utf-8?B?UjFLU3I5S2kvb1NrRjY0STI3RERvai9DRjFTNWFwdWpNd2JDd3dld3llSWFi?=
+ =?utf-8?B?eDZSeER1Ynk1NnZnVEdQT0pCRUNSODN6akVrQ1hzdFRaaVpKVUFhdzBnT29R?=
+ =?utf-8?B?VW9iaTdEbE56Zld0TCtQekhTKzIxalVyWnlGbkJtOUlqNHIrZ0VTbnI1RmxD?=
+ =?utf-8?B?cVlWVTJldzRndm5CTEpLdE0zRjZHUWZWWTlGVEdhbGhXZ3VBNndlZkUzQnpC?=
+ =?utf-8?B?ckFiQU9SVzVqdWwvQXBCOGRtZHgvOXBKVHBRams2c1NObVEybEhqdSt4aDdX?=
+ =?utf-8?B?Y2V0dVNuU29jbHNiRVZBQ3Y0KzE1OG9RLy8reEk5eEhsZ1FmWFo3Vk9JNzlK?=
+ =?utf-8?B?ZzREcVhoSjRFY0wxQlRkVUNJbjNOLzgzRmRVN3Rhb1luQ2hKOXF4OEdBZWhL?=
+ =?utf-8?B?SnE4QzFqcUFEdzJHNzZ5VmZRbURMeDlCVGw5VnZyRGZwcHE4K0hmTk9QTUZH?=
+ =?utf-8?B?M2VLaEh2UWYyRWJDSWZqbXEwbGZ3QTQwSDYvTTJYSmdSTDg2STFhSkZ2eWVp?=
+ =?utf-8?B?VTB2Z0x6Y0I0djVlUGdrM3dNL0xOb0tHSkJhajNjQitDR2g3MzJwRGNlck90?=
+ =?utf-8?B?aVBTdmRZazN4VlM3SGxicXo0K0hEaXBkSW9DeDUxdm9vQmVuOWdEZnVhUHE2?=
+ =?utf-8?B?bktxMmFuR2E2b1VYcEhVQVJXbWRsN0d2NFNldDI3bmdsb0QvclhaU1JNVmNh?=
+ =?utf-8?B?T05sZTIwNUNJVkh0M2RHaUlKWEQyZVpIZncwemsxYVRlK1dHSlpHKyt0WEkr?=
+ =?utf-8?B?TUlFQmNMR2NoZFRlMnU1U1lVTk9vRGtGV3JpRXBZSldQdWg2OFpxNloxNmQx?=
+ =?utf-8?B?NDU3dWhac01CM2lvb1NXUnNFcm5FcHBlWHpqSXFsMjhMMDJUNzZnUHFIYXJJ?=
+ =?utf-8?B?QlVDN0dackxQOHBpYnJIYVZDUVEwN3hBZnM4VVdoOFFIbk1oQnN6Y2NoSHBp?=
+ =?utf-8?B?cE5UcnFiWHlpNS9iVk1RTWs4MnM4N3NkNUtuSkZ6My8rSHNkRE5VWnVIWTFH?=
+ =?utf-8?B?Rmk5Yi9RZXJKd2VQNDdINkpPVGVENjRISHBYc3V5SUtyZXZka21LV0hYRHUw?=
+ =?utf-8?B?SmtNczR0UFZiZngwMTdYRFdGaWpEd1YzVUJWSFczb1o2SzZqTW5EQ0ViRXhT?=
+ =?utf-8?B?NUFvd28ybjR5VnR2OWVUdGJDR2VUeTM2Tk1aTVdZZE8wUDJlRGd1eC9PclVi?=
+ =?utf-8?B?VEZ4dUZuL1pqWkl5TGdISXJETlhvYzhnVGdVTVlQUFMrY2svUSs2ZE5INytT?=
+ =?utf-8?B?SDRSSUw1Tjk3YjFTeFB4NVJHRUIzNUJqNFlIdTZOS0lrM1ppZVNHV29yUm01?=
+ =?utf-8?B?VEgyUVpiS3N1MXJUaGtnbE5WK245VlNzUWZBU2tLTUg5NythaWt5WHhJVXZG?=
+ =?utf-8?B?UUpjaTloYzVtdU94a0hmRURaNjdTYTlXWlRrNHh4aCs4enplQmZOajNTeko5?=
+ =?utf-8?B?NTB0bHYranNZVmRZbm5sWnFaZVBUaXVMY3gzdDBkekxMakZSRFFsMi9idGl3?=
+ =?utf-8?B?TGtYdlJmS1NWalNRY2xITm5KM2U3VlhIRVJDUlVoYno5eWtCTHZCOEVmdjEv?=
+ =?utf-8?B?ak1UU09sREFOVWdoT29zV3hBeFBXSm1IT2J3eUlQdDNwb1ZGd1UyRlV5TXNI?=
+ =?utf-8?B?RFNwYldsWWdoYTc1RmVjWmJDQ3JyUndpaDlmUDZLclk0dnhZUkNFazJBTFdT?=
+ =?utf-8?B?WVI0NmdrdDhiTmc5amxHaFloV0xETUxJV2xTdmN3QnlyVXl2RWxMQm1BMGR5?=
+ =?utf-8?B?M0NSeUttR2lUQmVLK0hzSnAwVFoxNE9EUWw2VXpON2YveDFXeUsrRHMrQkRM?=
+ =?utf-8?B?NEVITW5TeTRxMk84Qms3YitWWWxpV0grNmRpd3lEN09FRzRuNG9uT2NQS1Ju?=
+ =?utf-8?B?SU1mc2J3ekpPanZmSFdQTEMzQU9wR05Xa2UzRjZDMlFzUTRVYWpPVW5kMkN3?=
+ =?utf-8?B?SFExNG9YSE1VdnFBNk1VZDNJZllmM25BZEZGMXBGWGJwaUhjZ2dneHA5eVNG?=
+ =?utf-8?B?cmZudzJGcGdlcnpTNGZJOUpad3I3MXNLTVFlTG1OT0lQam9PcS92T1BHUHlD?=
+ =?utf-8?B?MVpYZVFjendLYWY4WXYxVWVuRWQrTjBYZFBXcUd3aWpYSHpMbDNpdWdiUlQv?=
+ =?utf-8?B?SklKYTh5ZFVINytldHhrSmY2cENxNE9SME85U0ZHOFB3dU9jdy9tdz09?=
+X-OriginatorOrg: deeproute.ai
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99e5299c-8936-45a5-6434-08df3a728700
+X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:52:47.7578
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5uf5BTD7NBUVWCjcZ7bvQBbWllp0XJqemTfZHv27GGa/SkEO04SBsLZtpawTyy5n+wU9x7Q0XL9Eb9N59+ecGY4AlQnop4rOxaco+BY0v98=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1075
 
+The issue was found from a field observation in a PREEMPT_RT
+deployment: a receive path blocked for hundreds of milliseconds in
+prb_retire_current_block() waiting for blk_fill_in_prog_lock, which was
+held for read by a preempted packet copy. Manual code inspection found
+the same unconditional write_lock() in both the full-block and timer
+retirement paths.
 
+I reproduced the ordering on QEMU ARM64 SMP PREEMPT_RT by delaying a
+copier after frame reservation. Without the patch, the second send
+blocks until the copier is released; with the patch, only that capture
+record is dropped, and the block is published after release.
 
-On 04.11.26 13:36, Kory Maincent wrote:
->
->
-> On 11/4/26 13:20, Jonas Jelonek wrote:
->> Hi Kory,
->>
->> On 04.11.26 12:32, Kory Maincent wrote:
->>>
->>>
->>> On 11/3/26 23:03, Jonas Jelonek wrote:
->>>> Use the optional VMAIN regulator power budget to configure the MCU's
->>>> aggregate PoE power limit during probe. Quantize the available budget=
- to
->>>> the protocol's 100 mW units and reserve exactly that amount through t=
-he
->>>> regulator core.
->>>>
->>>> The regulator budget represents the usable PoE allowance. Program zer=
-o
->>>> reserved power so the previous firmware guard band does not further r=
-educe
->>>> that allowance.
->>>>
->>>> Require a finite budget of at least one protocol unit when vmain-supp=
-ly is
->>>> provided. Program the budget before selecting dynamic power managemen=
-t and
->>>> ungating the ports, so enforcement starts with the regulator-derived =
-limit.
->>>>
->>>> Enable VMAIN before hardware initialization and register one managed =
-cleanup
->>>> action to free any reserved budget and release the enable reference o=
-n probe
->>>> failure and driver removal. Record each successful reservation immedi=
-ately
->>>> so subsequent initialization failures are covered by this action.
->>>>
->>>> Read the current budget index before programming the MCU. Retain the
->>>> programmed MCU limit on probe failure and driver removal, as reducing=
- that
->>>> limit to zero would interrupt ongoing power delivery.
->>>>
->>>> Boards without vmain-supply retain their existing firmware-managed
->>>> budget.
->>>>
->>>> Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
->>>> ---
->>>
->>> ...
->>>
->>>> =C2=A0=C2=A0 +static void rtpse_mcu_cleanup_vmain(void *data)
->>>> +{
->>>> +=C2=A0=C2=A0=C2=A0 struct rtpse_mcu_ctrl *pse =3D data;
->>>> +
->>>> +=C2=A0=C2=A0=C2=A0 if (pse->requested_budget_mW)
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 regulator_free_power_budg=
-et(pse->vmain, pse->requested_budget_mW);
->>>> +=C2=A0=C2=A0=C2=A0 regulator_disable(pse->vmain);
->>>> +}
->>>
->>> Following patch 4 logic, you might not want to disable the PSE control=
-ler power supply,
->>
->> I added it because of the requirement that regulator_enable() calls mus=
-t be
->> balanced with regulator_disable() calls. Accepting that this may power =
-off the
->> rail in theory, something outside of the driver would need to keep the =
-supply
->> enabled. Concretely, I'm thinking of "regulator-always-on". And all boa=
-rds
->> I've seen so far which can use this driver do not provide a provide to =
-really
->> power off the PoE rail. Sure this is no finite guarantee.
->>
->> What is the correct way? I see either droping the enable call too, just=
- relying on
->> that it is correctly handled outside of this driver, or I keep enable +=
- disable and
->> the continued delivery is ensured with "regulator-always-on".
->
-> Indeed if you use "regulator-always-on" it does not turn off the power s=
-upply when we call regulator_disable().
-> https://elixir.bootlin.com/linux/v7.3/source/drivers/regulator/core.c#L3=
-269
->
-> Does the PSE controller needs this supply to start, or is it only requir=
-ed to power the PSE PIs?
->
-> If it is the first you will need to enable it in the driver.
-> If it's the latter, you could describe it as the PI's regulator parent s=
-upply. An enable of any PI will enable this vmain regulator.
->
+I will include this in the commit message if a v4 is needed for other
+reasons.
 
-The purpose of this supply right now is to have the budget defined correct=
-ly
-and let the driver apply it. The rail input and managing the budget global=
-ly
-across all downstream managers and PIs is done in the firmware. The physic=
-al
-rail on the board itself doesn't need explicit enabling, mostly because it=
- really is
-always-on. Potentially it might be used for more later, including referenc=
-ing it
-in vpwr-supply of PIs.
-
-So having regulator_enable() here in the first place is probably not usefu=
-l.
-
->>> this will lead to a power off of all your PIs.
->>
->> Is this enforced by PSE-PD or just based on the rail really being turne=
-d off?
->
-> If you call regulator_disable() on the main PSE power supply it will tur=
-n off the power rail which will turn off you PIs.
->
-
-Best,
-Jonas
+Thanks,
+Jingxuan
