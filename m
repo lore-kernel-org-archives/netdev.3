@@ -1,105 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.246.1.125
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801843;
-	b=lQ1QhcFLKNldHAQhk6qQPK0YUaFIw/6kkMrHIexRG3hGgJlvFfs6GECELV/mFSvMrOQH
-	 ugbufb6cTCx/UpWWYfVxi5VNI237BgHOryWCLq6sIeGBOkBclKAm9BzydgYsqr4XQFd6t
-	 N5vz0XV2DMwbh8J08v2r0qEYNCMcJNOFBFtjYW2jAP/FE8lpmqFxPPrAjhJqVQBO6ZiPO
-	 ZMjT9Ym0AcJfGLpNighGWot9ZLK6m0s+Q3Y9j+kQ3hKNv7ygRw89ogQKFHL0QGw+yV4ej
-	 ZBIE3IMkx171g9p04IgouXjnhqaiIcpL/mzv8JuEq5bWEY3fL9l2qwje+qc9YEXGDjg==
+	t=1793802040;
+	b=UADeOpiXaThHIlJTzI8nsWdaZMRnkbleZJdnPzCAjyic3x3JhGIw2Xj8yzxWOjakw+6/
+	 OqKL8AmLrXKYeG0IhUaaPUYyGsBfzQ8mz0LS2jS66Jje0dQFvRCMr0UVIoJgNYqBSpMt2
+	 sZ3VsPiDlBzfkK0/BhrDNtTnm2rvcE/n8d3L7692w4wa/o/QjzPk7IN9QHKKtveWFsJ4n
+	 Dc76ginw7bTeEa+OrVk5q9wrGbB4k+3M37xNYfABg9rLha2YNOhyUjE3kPxdIztWL1yn8
+	 zsni8n8HuateyYsCZP2e9wsmTk1eAAzChAWnbBjA7N8hUTiNKMju7PHbHfGCevQY9TQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801843;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=gFimt1rkvDCCjT4BzWgXH68/6Kziwpyu6m2kyzBiw1s=;
-	b=eOcK61P14uni0nnv1e4LLEwAdfU+HxZCnnpwkAM1I5WF1Y4x4gOEFtPA8/LOMSuW0m5K
-	 IdXHLwbr8cotqYUjA16TZvSN6U3mVskkna9XsKJZbrlVDvKGYn1o8celWa1MqKEPbDdPB
-	 VQHPZnAri6ulj4PsZUiv5JRsunyR1h55syb8V20AQskooe3AMHp1QDUVUroaVWYBVMl7Z
-	 t98DAi5aKU58yunCKFIljj/nzNk3coltSzQ7+RxZC/vxQmbh+xNw0LL67HgFrlrT9UOUU
-	 NNltJln91t3MimyPzvQBZZbPTdHmxXGa8gm4PH/zC4qbIHBs/HhPHc/IqZ0vmUosLog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793802040;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=ZWkMkEz34qfqdG6bxgl7Nwtc60Bl3MSLZzaFL0LwxII=;
+	b=WrRbMUoFgckB2iTIPiNUp+BPQe2k63xaVTutbPWF72bxM1SWpfc89JQ8CnaNubS9k1o3
+	 KXCgPyDjznq2sk1x28i7brN3YD84vXbwQwdJUUN6rHa37GblkubmN0qAir1DjfhFtZhZG
+	 94yp3K24+ak6epS8yArz/11VOe8rSGNXSFCQLf73JdrH1+ulzPBNRe0lpjQzyx6pQhiOW
+	 HR7iOQh0LYWcIheZ/RGRiejNQptD40BjYkI7T+Yx5FjdVPr9eHyVJgriNHeKUJUIV1neW
+	 hZSK/IOXxDPsXDUzFs9Vn6UXKACqMvJQIWvQOuAEy6Wm5inwc9qhfA9Z2WMoWFOMf8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mR9b1zcc;
-	arc=none smtp.remote-ip=209.85.218.42
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.de;
+	spf=pass smtp.mailfrom=amazon.de;
+	dkim=pass header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=foWrZ8nl;
+	arc=none smtp.remote-ip=44.246.1.125
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D59606A332
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:17:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08D59606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FA3606A31B;
+	Wed,  4 Nov 2026 14:20:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2FA3606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mR9b1zcc
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c315869241fso118215666b.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:17:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.de header.i=@amazon.de header.a=rsa-sha256 header.s=amazoncorp2 header.b=foWrZ8nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793801840; x=1794406640; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gFimt1rkvDCCjT4BzWgXH68/6Kziwpyu6m2kyzBiw1s=;
-        b=mR9b1zccPhZiroZ6jHhY+R1mcQtJ4EBotJVvk7yIjXuM/psBiMRAPoXyHC1PmbkJuO
-         cNpn3bqa2c3VNWMTdtI+E0usCnL4uZGdrUkRxop6Vexni6jE4/jJcchHQy73VUYnxExx
-         cYy1RgrUr+yxtfi3yy5L/g5fiekYR0aPqv/gIVn8GBMmRJp7eRE/+iFPWZNHOxvLSsBV
-         JtppO1NRAbux6PkpUjSqYFeT1P2jTFvTZvz9993L8K5VLP7Ww7kkVV0QWKfQWrL8IF/h
-         CM+lTWLPqy3+nKJ06efr3YOitFsO2ODFDhWGBOSF1bNSBUiyNALnFROTN5ivrjH+G6+U
-         aHNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793801840; x=1794406640;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gFimt1rkvDCCjT4BzWgXH68/6Kziwpyu6m2kyzBiw1s=;
-        b=LxW8ZBwd/3craxnDORhhWG4gAgk7iotQVbtDxV5fsC3876v+5Vojc11uwuDwg4OrKM
-         gUb40QLevFLvnn0tQx4dlLJ3vbfE7j1suZmne460h6xgMXfeC8M3ClEpncIaPEsuXkKs
-         3HwZEGXy9MWB+pj/BFLc+/cChmQ1NcXJ1nfaP1ISOiH2snjcOEe1IrafmS4wkPeUY+12
-         uwB48iKsIYPSuCRumBuoHYRuUg/s70B3eaIK26rHsMwirsvk/nVwsfRDU5XlndRwqCLT
-         Ix8xUfm22tB5OkMSV8rK118Bbekl7dVmwq3vN1Frw3TQ26EwggpyO6xTzW3IZz9A5ZF2
-         OYjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx2YkchieuB/VCCUsIC0iJPt1BOTcuzz5z7RcFcG2n4MF4aat3KpbdIzpv6GpIk3dm41I6wAxI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8hEXvvzDxFTdPpVRaK0D35Wx14gDH7uTEV2Ud0EneNbz9lwRYL
-	rRFr/oQ21ZKao4k2tMpJ0b9hyiHqtBJKVNPpFgKrfRtrfNT2OA+rZq1c
-X-Gm-Gg: AYBFou3qlPs+iMu1PpVoxbGyKiTHNECNMFRnFHK+QzG9cDfmj+orKuxXerWnOe2vTtC
-	kWtGMysb1cTxASTZa+xWFxEv3xM65StNPwYLehtuGRMVCuym83QO4mi4idbh3ir8QERbb8IOSU3
-	86hwVo9pFT9JhetkhLmI678rhkgoTyBvUF84xoIH3LuPWZfGPobwjVIXRNDf0e+Ey2V4jaoBisJ
-	Vls3eJvozxQjQXDwFAQAtequYlfx9DWGlVsuDmLKjW6knzKKdefLDGtAW4nOzHawnmSnOmC1Sta
-	VDw6g85ZjjMs0Q45+ddzUoQkihMcxlRaVAbWtXeCiYucF7O6rGtrThRZ89zUe5cnZr7EOk6fxPY
-	jlv2Iq8r6CP/BdDiuXUi0v+Rq6Dfhvmjx6ot7Q5FVbHP8OHaJbeWgR5+A68rZK9Z4aIF0mSqOTY
-	qc/zWwnqJIevJuG8xZzq8J6Nfwp+rYgxK6TkhOFbRpD2OWT0ZpNt306CEzETbmrOqZcJCDsrGCs
-	gEYJUm0mLUCGVJD2MbGNW8M/2CQJlZzYIK++y4KaeomO3DvWKBZ6Mg8iGABUh38L80H7H3/o5yz
-	fAWgsaHWU6S8aoDqDwape4sA/SVyvBnf0ClOMtLOrkaP1LSSOlQjs9380yZN2jOEJOwHIsXAtYK
-	mCY3cHeumC703cL+M5jYNxPJ0Lk4vh3jkOnoUif0d0dvEZzTMuVhjrAGir6hfNHdQphyFYvY7yl
-	vRMWa5xszw1W89UdmfCSRUJTa+mHW+e8xWPd+76Xk1h2LF8cwND2PEEWI+NJx0pBhO6525MI6fg
-	Q==
-X-Received: by 2002:a17:907:1c8e:b0:c49:c76f:dad4 with SMTP id a640c23a62f3a-c4ca7a6e69fmr1463979066b.31.1793801840118;
-        Wed, 04 Nov 2026 06:17:20 -0800 (PST)
-Received: from Ubuntu.tail0f733b.ts.net (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d0e43e2eesm77311566b.31.2026.11.04.06.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 06:17:19 -0800 (PST)
-From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Vedang Patel <vedang.patel@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 1/3] net/sched: taprio: reject software schedules that overflow their timestamps
-Date: Wed,  4 Nov 2026 15:17:11 +0100
-Message-ID: <20261104141713.355958-2-krystianmkaniewski@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
-References: <20261104141713.355958-1-krystianmkaniewski@gmail.com>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1793802039; x=1825338039;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZWkMkEz34qfqdG6bxgl7Nwtc60Bl3MSLZzaFL0LwxII=;
+  b=foWrZ8nl0al5BlrZOU2HmJIFpBblsCuL8SgqMKQCxZ5JkvkHPoFz8b/U
+   OzzksiH9t9x91zflIAhh4/Pnd3DKleJFCbMX9N1VUKe9PvmQqHiPPaCQz
+   oUrlNHzne07euO0TxzHvpgF182/P71ZjtQzFyzddFRS8Zh/F9ULwVL0Zr
+   mpcxBr5O47AAKUx9Yh16xRHO+mJ94+NS0n0/CFZ5iddL2L/iMbAz+qbvb
+   9vjr2iRAl1Ot9BiVmyKn70LHAfLNKiAx46/LEcuk4Z2Lq+i/lUZFPK7fJ
+   eFDvVzPQNjEX5NbhQi338Bf0iim8cp04yM6fChRJxYOYUSqo0osMSEWFQ
+   w==;
+X-CSE-ConnectionGUID: OWBh+DL4RfSg7m1EbTIh9g==
+X-CSE-MsgGUID: FZk83n8lTBOQRpczBs4aqg==
+X-IronPort-AV: E=Sophos;i="6.27,195,1787011200"; 
+   d="scan'208";a="33088013"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 14:20:37 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:16873]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.238:2525] with esmtp (Farcaster)
+ id e36fee1b-2d14-4142-9d4f-578e8f0777f8; Wed, 4 Nov 2026 14:20:37 +0000 (UTC)
+X-Farcaster-Flow-ID: e36fee1b-2d14-4142-9d4f-578e8f0777f8
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 4 Nov 2026 14:20:36 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Wed, 4 Nov 2026 14:20:35 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
+	<shuah@kernel.org>
+CC: Hangbin Liu <liuhangbin@gmail.com>, Liang Li <liali@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Bjoern Doebel <doebel@amazon.de>
+Subject: [PATCH net] selftests: bonding: feed link monitor to deflake prio_test
+Date: Wed, 4 Nov 2026 14:20:18 +0000
+Message-ID: <20261104142018.552135-1-doebel@amazon.de>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,108 +87,63 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-taprio takes base-time as an unbounded signed 64-bit value. A base time
-in the future is used as the schedule start unchanged, and
-setup_first_end_time() then adds the cycle time, the first interval and
-the gate durations of the first entry to it. With a start close to
-KTIME_MAX these sums overflow, and the software schedule starts with end
-and gate close times that lie far in the past.
+With the bond idle between test steps, the arp/ns link monitor can
+declare a healthy slave down (~300ms without RX/TX). If this hits a
+failover step, the bond picks a different active slave than expected,
+and primary_reselect=failure/better never reverts it:
 
-If this is the first schedule, the qdisc timer is armed for its future
-start. With an operational schedule running, taprio_start_sched() keeps
-the earlier operational expiry instead. A large cycle-time-extension
-can then trigger an early handover to the pending admin schedule.
-advance_sched() uses the invalid entry end as the next expiry and can
-keep restarting inside the same timer interrupt.
+  TEST: prio (active-backup ns_ip6_target primary_reselect 2) [FAIL]
+      Current active slave is eth0 but not eth2
 
-Before a software schedule is initialized and published, check that the
-computed start is not negative and leaves room for every timestamp
-initialized from it, and reject the schedule with -ERANGE otherwise. Full
-offload and txtime-assist do not use the software timer and are not
-affected. Schedules with a reasonable base time behave as before.
+Reproducible when running tests under load (2-4 / 100 runs).
 
-Fixes: 5a781ccbd19e ("tc: Add support for configuring the taprio scheduler")
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Fix by pinging a non-existent neighbor for the duration of the test to
+keep traffic coming. 100 runs under the same load with the patch
+applied: 0 failures.
+
+Fixes: 42a8d4aaea84 ("selftests: bonding: add bonding prio option test")
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
 ---
-v3:
- - reword the range-check comment to describe only software timer
-   timestamps (Vinicius)
- - add Acked-by from Vinicius
- - drop the obsolete Assisted-by trailers
- - rebase onto current net/main
-v2: https://lore.kernel.org/all/20261009123309.284193-2-krystianmkaniewski@gmail.com/
- - no change
-v1: https://lore.kernel.org/all/20261006113335.241564-2-krystianmkaniewski@gmail.com/
+ .../selftests/drivers/net/bonding/bond_options.sh   | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
- net/sched/sch_taprio.c | 46 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
-
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 4f69ef3d847a6b..2a31b189d654e2 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1258,6 +1258,48 @@ static int taprio_get_start_time(struct Qdisc *sch,
- 	return 0;
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+index 187b478d0ddf2..f599a2a8ef156 100755
+--- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
++++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+@@ -74,6 +74,16 @@ prio_test()
+ 
+ 	# create bond
+ 	bond_reset "${param}"
++
++	# Keep the arp/ns link monitor fed for the duration of the test:
++	# ping a non-existent neighbor, which generates steady broadcast
++	# ARP requests sourced from the bond's own address. These egress on
++	# the active slave and are flooded onto the backup slaves' links,
++	# where they validate as RX activity. Without traffic, idle slaves
++	# are declared down by the monitor between test steps and the
++	# failover checks below race with the monitor.
++	ip netns exec ${s_ns} ping -i 0.1 -W 1 192.0.2.99 &> /dev/null &
++	local ping_pid=$!
+ 	# set active_slave to primary eth1 specifically
+ 	ip -n ${s_ns} link set bond0 type bond active_slave eth1
+ 
+@@ -157,6 +167,9 @@ prio_test()
+ 		check_active_slave "eth0"
+ 		bond_check_connection "change slave prio"
+ 	fi
++
++	kill $ping_pid 2>/dev/null
++	wait $ping_pid 2>/dev/null
  }
  
-+static int taprio_validate_start_time(struct taprio_sched *q,
-+				      const struct sched_gate_list *sched,
-+				      ktime_t start,
-+				      struct netlink_ext_ack *extack)
-+{
-+	int num_tc = netdev_get_num_tc(qdisc_dev(q->root));
-+	const struct sched_entry *first, *entry;
-+	u64 offset = 0, span;
-+	int tc;
-+
-+	if (TXTIME_ASSIST_IS_ENABLED(q->flags) ||
-+	    FULL_OFFLOAD_IS_ENABLED(q->flags))
-+		return 0;
-+
-+	first = list_first_entry(&sched->entries, struct sched_entry, list);
-+
-+	/* The software timer adds the cycle time, the first interval and
-+	 * the finite gate durations of the first entry to the start. Entry
-+	 * offsets are also calculated from that start. None of these sums
-+	 * may overflow.
-+	 */
-+	span = max_t(u64, sched->cycle_time, first->interval);
-+	list_for_each_entry(entry, &sched->entries, list) {
-+		span = max(span, offset);
-+		offset += entry->interval;
-+	}
-+
-+	for (tc = 0; tc < num_tc; tc++) {
-+		if (first->gate_duration[tc] == sched->cycle_time)
-+			continue;
-+		span = max(span, first->gate_duration[tc]);
-+	}
-+
-+	if (start < 0 || span > KTIME_MAX ||
-+	    (u64)start > KTIME_MAX - span) {
-+		NL_SET_ERR_MSG(extack, "Schedule timing is out of range");
-+		return -ERANGE;
-+	}
-+
-+	return 0;
-+}
-+
- static void setup_first_end_time(struct taprio_sched *q,
- 				 struct sched_gate_list *sched, ktime_t base)
- {
-@@ -1982,6 +2024,10 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 		goto unlock;
- 	}
- 
-+	err = taprio_validate_start_time(q, new_admin, start, extack);
-+	if (err)
-+		goto unlock;
-+
- 	setup_txtime(q, new_admin, start);
- 
- 	if (TXTIME_ASSIST_IS_ENABLED(q->flags)) {
+ prio_miimon()
+
+base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
 -- 
-2.53.0
+2.50.1
 
