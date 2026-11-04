@@ -1,95 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793814934;
-	b=1r2qQ94jev7sq0Y265VkWi9d0iINKTYoBXg1p2yEm/38Vx/EJiVJkEIfsbsZdr7cUnlQ
-	 tnCcBdMouNuWo02sRPdhGMsGdx+G1dzxmf5Bm6tLFX4WY7CTTWZElmbBQ7RYNmLSfYHPg
-	 CUyRKYe5tIS3VMmMI9L1WpwRoi+7I2RsEjV2cGX6J1pJPPcFr7rbo9KzYQFZdHq5j84TD
-	 pybP3AeOBNWgYHFoXwSNuwn3U6BJuAq6o1YFluWyIGPZT04VAns+xjOUYTY0E0AjIKrKp
-	 oGa456KKW/Sa21cIzllcchlirCgDnrsagY2/zC/1TdAUk6pVGo7bJb55CtrnRF4//xw==
+	t=1793814937;
+	b=p0/c0wTUw9g8cRR66G5k2Is9hD4UWjW8YPYEj3gsAlDZLdvtBOD+KMttsc7671MGycjK
+	 noIscCStBNVIfmZOgWg6lZUcfJm6zuC49W4R3PQ52V4F5C/rWk1HCnhh0I624EA2Urth8
+	 O1E90qq0VPuDEVt4hhGqBflNNBUi2P208R0S2OlYIaux0kwfBvzMKva8NgITnegDLdNvU
+	 9rlrzuW4sjaM0vcBPNpxiY7Q2MyUv8S1N8owvb0EgkT1sj/tVTokZl29kh3M7jECKN7Of
+	 ntQfmQL8dp8QThtQNox1C1kmcqkj65G8s/XDoNAGjUpAj7iK9sWW1dTYEq6G65auC/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793814934;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=004Mwgs4oRIrBA3c5/AHI4mXqprCX8WwDJXcGVBXHgo=;
-	b=SR6S5KQA6DVOMPIKNmjkGEnDnb0Cq5zRW2KOlj2KGI7WC/xABAqam6CBei08hTgyX0nj
-	 e81JIviyEP5zf1p3pHjHqFf+3TX/53HLG0ngvkjZ2a4ZiDkjL6uD2+UUkqvU7WSpQZRyR
-	 Ug16kjtrFwc9vmsYpvxELQCLsR3C4Sui3oLBcFfVR5Cc8OlEhyebGw3uUkNQUrki+dEoN
-	 QEyw8MgaFY1cF/KuqBXKGe43w061Rgzqe/6zBc9zklGE832raGX3/4l8lm++U3rWCMuan
-	 sLjpBAHvlXX+CxlZ6pGksc3lcg6TqY/7P0yw4y0lCCxeNO0viNd+gETCfuzMWA03NUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793814937;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
+	b=m3Lq3wpv1j4fsJqMBLXZXC2aO8owjAnU0w+4ja8dCZiz+06GSA2jhLVw7YTaIgw2CKgF
+	 hFUcMZTnEUt1RlDet1amEmCw1qfyTUfTh6KTijoJPV8OtovIer5a8Hoz04wzzyhNCjHUX
+	 V9ltb02wg7uykF4xOEgrTHLv2c/gqERhtbqwDu9agYbL6d2pMnaTyPTQ/+Ngphay3EIIb
+	 r2iCn8Ibh5OLLHvXvuVZoAnUoiU9FBmgVRTGJJlfTqOkpTaWmaGxrkyosEWOM1WuelKJX
+	 YEDz7YegRiznl9pVZjdHs7KxrissJcgZ9b74SgJLXQj9RvTpx6+Doj7i0cNBwKCt1ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tqP0RRMd;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lv3gFXSS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3FA6078C19
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:55:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F3FA6078C19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18357606A68A;
+	Wed,  4 Nov 2026 17:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tqP0RRMd
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36d6765756fso833615eec.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:55:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793814933; x=1794419733; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=004Mwgs4oRIrBA3c5/AHI4mXqprCX8WwDJXcGVBXHgo=;
-        b=tqP0RRMdDlfdtRKqZxHJxBPzn1FobVQ6akaPUUpGb1iZHN5C1dPVtAaYavjOHyItyI
-         RXeULz0aSFCzGPgQLbGnnb53odCnBvtrJfKffRu6phF9ZcACkbl/feqCCm4DcV09jHn9
-         zY75Lc91624GzOW8V6ZWGNNnyjZWhXuakMM2pIrRzcpECOACCGnd0DcSEdI1c27UXVEn
-         qQrJ+QROewjWnVEviglaoJVAep8l21pm4qdUwFm/6sIplTwnNZQXw7gdaNhKSg9rqjUc
-         knn70EIXLeLdswWLU7NqJ3ZMTlOLTsEe55KMnRJu3+kcpy7981fZecfApBP6giJhypc5
-         jfFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793814933; x=1794419733;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=004Mwgs4oRIrBA3c5/AHI4mXqprCX8WwDJXcGVBXHgo=;
-        b=ZI6wLRU93gnaIP09ZF0P5Upc5+VFAPODYDivxrOd/AjF1LzRCTZC66t+gRjKQ3YzdJ
-         i7VToBCHBneAV5yMitO6xd7+s9RHMON8WK2LS/tPwP6GZchx7aKrjnBZqQBh39Fg7sWr
-         R24TFWZo5/J/4r3gwQ6BPBQB5PY47sev2r4q1ve+HrzxESGWTbPsXuziYSk8i5R0z7x7
-         /zKsJ2dt0432aKBX17efKnnlqPrjOf6Jw54rKj2R/fxd6yV5+w0Rbx7s6YF2eGy+iESm
-         CDiR/0y8YzTd6XWno1puWMTXw6DnSrJOV5LTFBtPnCvEjTXozrxbaalReIkqhqfBE3AF
-         EBsw==
-X-Gm-Message-State: APuU4Z+X2ojTodqNalHJpSPk18YENoGK0jYrXTzEqDwYPgPfCXDFn8PU
-	lM1kqYKmWyNMzzOvvBDOsl3TLS8V4dppujCB4/ciBLlRgaCvl2IZ2u7Uwii3TZFo
-X-Gm-Gg: AYBFou085ERTjLiXhmJ7sS9FveaRh1NPn8+9wslVFQT/5tTAI1IbkPArKbtpbe2SdIt
-	ZGRq/RItCnGwGLartFD5yUyjc8bG1rusxS2lrOF3tEs2OGZ+PL8K+aPitgAmTXOlCaGJUcHXW+Q
-	8dWkk7K1ySf6jNYT7FPNr8MupqksM4RHE+SEaRPoxz3ls1dyfbAiTQwk6I9MWlla7Z0HWywYeNN
-	uWCdSpPl/Pgv9UuJignhCQA/+o2NlaRfL7AFy+To//T2dfV19HaptoFy0kAFXa8gNXGykguBRdn
-	Cl5wilr6zQSQfoKUvtH31ePi2gNrQ8n4VG52Qi7TtX3XMjpi/6pMW9AUti10Yiv0i9b2l17D+/p
-	GfjY5t18QmZuyg+hZATwYfd45vQtj1TK2N3+LmuIuZ1wsAF3WdlXCwhUoTaMrxVYlPdLbEDrE9X
-	bNkuHT8iS+Cv+srpl0x6/98Pj2oBI3qW5IJ6OzvjAGFuCFnbbslMx38L8PWSiZQarp9MwKQUU8K
-	R1CSwDK8WFlpA49Uw9P7FApoS6S6QLcVosMu4b4C0GIalrLaR0iO23lAb5MhJSH/k/Ps8v8OyXR
-	RjeCLprHEoJdfRh25ONaa198glfdSlNUGb1UGHyfLdBQL4Ub3Pg=
-X-Received: by 2002:a05:693c:41d5:20b0:368:d0b6:b231 with SMTP id 5a478bee46e88-36a4239256emr23995781eec.10.1793814933199;
-        Wed, 04 Nov 2026 09:55:33 -0800 (PST)
-Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca3989670sm12064024eec.25.2026.11.04.09.55.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 09:55:30 -0800 (PST)
-From: Matt Vollrath <tactii@gmail.com>
-To: netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lv3gFXSS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4DE1F00A16;
+	Wed,  4 Nov 2026 17:55:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793814936;
+	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lv3gFXSSZQ1eyeFxl4sMw4NV+sDGb399yJy5J5a617cu3SzjnnFfUG43Lfl/7N2wR
+	 K+IhSwvXPWPYjM+q4YQ+IDJcS26tQY7yPe6vUEMgkrymmspdu0EotaGD42o6rpaRl9
+	 0A3kHepPv/ApdT3/KV9Zp4gd4PPOjbWG6usoLl5/UMWpBcxegT2cBWuUjFbtBLH7mv
+	 6ymbGGCGv3TrMbwp1kdSSvCMr+6QGHtpTwZWaklXV25iOtzvIgzYNxKq9awhT/uEik
+	 dFy+Ax1siZAlHQyp0vw3cAsPNd4lTDPGDdUR7g3JwRgFyHgFv3m15tZ2mAVMcDLMbJ
+	 1KqqoJMCmMAiQ==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <mason@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net] net: reset transport_header for ndo_features_check
-Date: Wed,  4 Nov 2026 12:55:17 -0500
-Message-ID: <20261104175517.2395704-1-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kara <jack@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org,
+	kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	jfs-discussion@lists.sourceforge.net,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sh@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	sparclinux@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-doc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-input@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH v2 35/51] proc: warn about entries left in /proc/net of a dying namespace
+Date: Wed,  4 Nov 2026 18:47:21 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-35-bbf7d5546809@kernel.org>
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
+References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,149 +114,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=brauner@kernel.org; h=from:subject:message-id; bh=WtI/bNxyA4ZViPTNrsQhWLRSUjQUZ6M8VP3x2XTkww0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9znslLxak6zXzI89Tlobt8x2XHObOOr/+XjXLr/wSD pcMiUNGHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOZcIHhv9PR9Kbfsr9EuEwS 1OuN4o2O2Xfx2elLdO/WqT/FzfBsLsMfvrrlGXyfnU+ePfxJ5/kd5mMSt0XZXSfwl/mEMKZnOc9 mAwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-ndo_features_check() can see a transport_header that does not point at
-the L4 header, while ndo_start_xmit() for the same skb sees the right
-one.
+proc_net_ns_exit() runs after all the other pernet exits and frees
+net->proc_net right after removing "stat" from it. An entry that some
+pernet exit forgot to remove is left with a freed ->parent, and so
+PDE_NET() hands seq_open_net() and single_open_net() a freed struct net
+when the entry is opened through a file descriptor that someone kept.
 
-Commit 663ead3bb8d5 ("[NET]: Use csum_start offset instead of
-skb_transport_header") made csum_start authoritative because receive
-processing overwrites transport_header, and resets it from csum_start
-"just before we push a packet with partial checksums off into the device
-driver". That reset, which now sets inner_transport_header instead for
-encapsulated skbs, sits in validate_xmit_skb(), on the non-GSO path
-only, after netif_skb_features() has called ndo_features_check().
+There is no such entry in the tree that we know of, but nothing would
+tell us about one either. So warn about it like remove_proc_entry()
+does for a directory that isn't empty.
 
-So the hook sees a wrong transport_header for a CHECKSUM_PARTIAL skb
-(after GRO, or from a container or VM) when no stacked device (VLAN,
-bond, tunnel) ran validate_xmit_skb() first and something earlier
-pointed the header elsewhere:
-
-* IPv6 forwarding with a destination options or routing header:
-  ip6_rcv_core() sets it just past the fixed header, and only hop-by-hop
-  options are stepped over before forwarding.
-* br_nf_pre_routing_ipv6() does the same for bridged IPv6.
-* seg6 inline, rpl and ioam6 point it at the header they insert.
-
-A hook that bounds header lengths with transport_header can then leave
-offloads enabled that the hardware cannot handle. For example,
-i40e_features_check() limits IPLEN using skb_network_header_len(),
-which returns 40, while i40e_tx_enable_csum() writes the real length
-into the 7-bit IPLEN field, so more than 468 bytes of extension headers
-overflow into L4_FC_LEN. Rather than make every driver measure from
-csum_start, give the hook the headers the transmit path gets.
-
-Move the reset above netif_skb_features(). Skbs that skip
-skb_gso_segment() reach ndo_start_xmit() with the same values as
-before, since VLAN insertion, the TLS device fallback (whose tcp_hdr()
-now sees the reset header) and linearization keep csum_start and the
-header offsets in step. Software segmentation parses the headers
-itself, except for SCTP over UDP, where inner_transport_header already
-equals csum_start. Encapsulated SKB_GSO_DODGY skbs that the device
-segments now reach the driver with inner_transport_header at csum_start,
-which TCP or UDP checked, rather than a value bpf_skb_adjust_room() or
-bpf_lwt_push_ip_encap() may have copied from a stale transport_header.
-
-Fixes: 5f35227ea34b ("net: Generalize ndo_gso_check to ndo_features_check")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: e9720acd728a ("[NET]: Make /proc/net a symlink on /proc/self/net (v3)")
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-If this is considered too expensive, I'll make a documentation patch
-instead and the drivers can fix the holes as they please. Either way,
-the core-driver contract needs improvement.
+ fs/proc/proc_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Drivers exposed, by reading the code (none tested on hardware):
-
-Every stale source above involves IPv6 extension headers. Since commit
-5f0764cb1c81 ("net: extend IPv6 exthdr detection of tunneled packets"),
-the core keeps IPV6_CSUM, TSO6 and GSO_UDP_L4 off such skbs by reading
-nexthdr, so on net only HW_CSUM devices are exposed:
-
-- i40e: as described above.
-- ice in GCS mode (E830): the same IPLEN check, and ice_tx_csum() also
-  writes the real length unmasked into the 7-bit IPLEN field. GCS mode
-  has no TSO.
-- gve DQO: gve_can_send_tso() counts buffers per segment from
-  skb_tcp_all_headers(), which has to match the header length that
-  gve_prep_tso() programs from the reset header. Device effect unknown.
-- hns3 with HW Tx checksum: removes offloads when the transport offset
-  plus 60 exceeds its 480-byte header limit, which a stale offset can
-  hide. Device effect unknown.
-
-Outside drivers, the TLS device fallback reads tcp_hdr()->seq between
-the two points, for TLS offload traffic over an SRv6 inline, rpl or
-ioam6 route that falls back to software.
-
-Not exposed: drivers that measure from csum_start (igb, igc, ixgbe,
-fbnic and others), and on net the IPV6_CSUM drivers (r8169, stmmac,
-iavf and others).
-
-For stable: i40e is HW_CSUM since v5.19, hns3's HW Tx checksum since
-v5.11, gve's check since v6.8 and ice GCS since v6.15. 6.1.y (as of
-6.1.191) has commit 864e3396976e ("net: gso: Forbid IPv6 TSO with
-extensions on devices with only IPV6_CSUM") but not 5f0764cb1c81, and
-that guard reads transport_header. A stale header lets a TSO6 skb with
-extension headers past it, and validate_xmit_skb() then WARNs and drops
-the skb on any IPV6_CSUM device with TSO6. This patch fixes that as
-well, though a backport of 5f0764cb1c81 is the targeted fix.
-
-In QEMU, a kprobe on ndo_features_check() found transport_header
-differing from csum_start in 18425 of 18427 skbs of a routed IPv6 TCP
-flow with destination options, and in all 23300 of a TCP flow over an
-SRv6 inline route. With this patch, it found none.
-
-This surfaced while working on a new ndo_features_check()
-implementation [1].
-
-[1] https://lore.kernel.org/all/20261028170239.28606-1-tactii@gmail.com/
----
- net/core/dev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index df1a840b03343..155be1f51494c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4207,6 +4207,15 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 	if (unlikely(!skb))
- 		goto out_null;
+diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+index dbcf87a257e1..df5484813d5d 100644
+--- a/fs/proc/proc_net.c
++++ b/fs/proc/proc_net.c
+@@ -410,7 +410,13 @@ out:
  
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (skb->encapsulation)
-+			skb_set_inner_transport_header(skb,
-+						       skb_checksum_start_offset(skb));
-+		else
-+			skb_set_transport_header(skb,
-+						 skb_checksum_start_offset(skb));
-+	}
+ static __net_exit void proc_net_ns_exit(struct net *net)
+ {
++	struct proc_dir_entry *left;
 +
- 	features = netif_skb_features(skb);
- 	skb = validate_xmit_vlan(skb, features);
- 	if (unlikely(!skb))
-@@ -4239,16 +4248,9 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 		 * support checksumming for this protocol, complete
- 		 * checksumming here.
- 		 */
--		if (skb->ip_summed == CHECKSUM_PARTIAL) {
--			if (skb->encapsulation)
--				skb_set_inner_transport_header(skb,
--							       skb_checksum_start_offset(skb));
--			else
--				skb_set_transport_header(skb,
--							 skb_checksum_start_offset(skb));
--			if (skb_csum_hwoffload_help(skb, features))
--				goto out_kfree_skb;
--		}
-+		if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+		    skb_csum_hwoffload_help(skb, features))
-+			goto out_kfree_skb;
- 	}
+ 	remove_proc_entry("stat", net->proc_net);
++	/* Whatever is left still points at net->proc_net and so at net. */
++	left = rb_entry_safe(rb_first(&net->proc_net->subdir),
++			     struct proc_dir_entry, subdir_node);
++	WARN(left, "/proc/net: leaking at least '%s'\n", left->name);
+ 	pde_free(net->proc_net);
+ }
  
- 	skb = validate_xmit_xfrm(skb, features, again);
 
-base-commit: 03897066069fd47caf2908183edf3b22b822ea73
 -- 
-2.43.0
+2.53.0
 
