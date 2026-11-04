@@ -1,93 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793815162;
-	b=PR9xVGBmdtHkAcggYTKcYcF7dH5NnBmB9OrAnbVjbpIw39w+Q8LCmvJWV41mXKc5Xo6P
-	 KeJXwvdyow6Hym0hNpwxR9a0UMOsX6HPeIL/Je+PnnHC6W/AajBovom9QYxJyoVqijl/S
-	 TbWw06kAd0/la93Hu/J5INPtadzgzEMbgGFmMDiwhfafFgoltF50IQ0fGNaUIQoP9Z2X8
-	 KfitpmlznYI3O1jE7DAFxSWhRyq5GiWNm+aCGEMDmYKP76Un4CWCStuEUerZl1lrB7stG
-	 xvPEn3GfR8vu1itec5dIPx6thRW3q2CMdm8wxWT4fhS20rJEWmnXeIL5GcX0JhINgpw==
+	t=1793815177;
+	b=M6U9yiEgiJS77fOwzGSGWhFyfFtd/GgCPJuapqXyrdsAi9c0yxYM2J9E37hLTi/zM9x7
+	 2Omt/C1bH7pHC8qLhwwM6B3fbtoK71hVPw0tvnUltLjYqT9Dple7WjiZIi4YVWvIESAFU
+	 Mab2ztXULApBcB4TcEyccBIOynAgb6SQZI/6qXEqdMnefQpz/58cwf5nrUXAxst0Ph7x8
+	 t+NGcwXmWXW7kLBXbrIzlgN86gn9DpmHgnrsdePNliqDdaIrf3SdPwU7ODL7tEEVSTmyd
+	 52Yps4+JmwI6p20Qp8O58YkMAMiCOAZhe2xjP+CtZs64xwkJi2nLUbn+mqwp6jf1t6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793815162;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793815177;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=alxRdOw0ifgGw6E4KPI/BCLiVFQxg6B2Q0J4yj2r7CY=;
-	b=NIBDQIQVnyBs817c91GuRQl1JQjbTN9onYFJxssi8Ht4CCDwQrA8UooFKTJeQMM4CuAv
-	 LIBtj3rXuQzfTvxNgmX0e04vrzgxzzcjJc5PFvfo/ilxENFZ0cVUEXvlJXKuZ0XBTpSP1
-	 xK+JpbpoigOC3QW6vkG+67vGGZf/EVjTe8csZwbpQH2+0H/USIM6CK3qHezAzU2lOkfHz
-	 4Ywq9ecQt8wJal48E+74s42zNPcYvPgHJqFGEUlxfgvtY/a9GbL/VtrZLfynPoh4AtC1z
-	 fIHQ2/2hVmuDFbfZ+hYULGvEMlX9hVDi39i6XBZRvXBEBbF7+3jGJvT0SdtD7SnsYpQ==
+	bh=e4nHy+K5oryhprQG9Gu5JRUGcNvfAn2s5nlbyb3Rin0=;
+	b=Sl2cZPd6kxiyi0H6Ch25jAF58rmNJb4AQxkrNTlvSHn73g0WmOKTMHfWuWjEFFiB04T0
+	 diYbRKSxpq8y5+xT4JhEVt7OwQyerKAnITqEgY8dkX2D0LppdPHpdl91Hq/Yik9b5N7dm
+	 Z/vOviKvOCNfNDPqpJcYxw18L/OpcuC18THdN7LVR02/jvmG75E7hCWy5Dia8hiELkztG
+	 nRS/jhIPRBZnGU3ievgn9niWG30Jj6Ues3Fx+BFolP0WE3KRB1Ts/4cGWP7ce1eezN5bf
+	 akChYIvb1qpmDacYInoG0D3pV8K11p3D8Y6Pi5R8N0GXxOZASUb6IhTHP0PT64LDA1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KSdi1Tvz;
-	arc=none smtp.remote-ip=209.85.214.182
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iZ0uuZH9;
+	arc=none smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE60606B084
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:59:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EE60606B084
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4D5606B0AF
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:59:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB4D5606B0AF
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KSdi1Tvz
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e9ae391a05so6158335ad.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:59:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iZ0uuZH9
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc4dbda1e5dso418000a12.2
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:59:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793815161; x=1794419961; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793815176; x=1794419976; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=alxRdOw0ifgGw6E4KPI/BCLiVFQxg6B2Q0J4yj2r7CY=;
-        b=KSdi1TvzgevhF1rwqZI4dA5KBQMqzFDcfeMf3wzF4yoOsBeGrtC8Rg5ovpJNVCGQN3
-         03ZzQxvDEV3Rs3vujEvyK9XhExo+zh+m4dWtJhVDlOBk4bz1fMxMlVIFAWMw8JhFvLrR
-         sQXZhyfTl3icbBOAEtaKiYV2hF8qqmpsobJ5bYNG+4FnbVKqb7bwEQqbyvPs7taxT9iC
-         J4Nw7ODX6LI4svZUMUbjXBeHgczL2vKPAlSy9r8a2AvpR4ijQzaUw2GUwcikccEveQBG
-         zWYqUenxiQdTAu+8LcH/PfljEgUxO79lZVWFFDKxsiGlntMk3VG2fMa5WGUoCCRp9f3V
-         gFoQ==
+        bh=e4nHy+K5oryhprQG9Gu5JRUGcNvfAn2s5nlbyb3Rin0=;
+        b=iZ0uuZH9krn/5x+l1DLBrAUmpNVHCMbjpjp+A+JL9M4JyiZRC5T1oOIyy9geA2Veun
+         V+z56fBqjCn2nLlGUFxHfGD3SlxJvXA/Fy6npwV37Y9FjHC62MoaNuJOt8/Gi4MYeJVv
+         z54X30yAZni8yPXKS5eWKgWko2lPs0RG+auPjM5yW8WVipfaJEYen2k5rC82tZCIGVX3
+         HzEZm08fa1w/HfBUKf4FgqVCIbUASVTi7FWFUv8+ndQWP5/quV15vp05zJiRxxBXJO0F
+         Jl5VdfTiKYEt4rgRRPhNijoxS1W3HFE65J5aCNwfUk2CVdI+UfrRN+Ortz1Al9nyaHRG
+         gecQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793815161; x=1794419961;
+        d=1e100.net; s=20260707; t=1793815176; x=1794419976;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=alxRdOw0ifgGw6E4KPI/BCLiVFQxg6B2Q0J4yj2r7CY=;
-        b=HnQ5Jh0jgAUaC5BzFQexSKjmjjMONqfCPiKWuA3GhHG7I5tl+vvo8X2refLIuiEqJN
-         OJJha9Qk/jfQ2J70byzsVu+YVBeYlpc7c4NNrnnuO+HJk/YJ9l/lpbveK9DwsZAmq39V
-         dZU8ZQ7dM61xcAzXyqV6qENg8AO/rDrgn7XPyaJXDTjD6jBFHo5fIWjM/wCJ0JGDGzUo
-         CNNHopQ6ms+fje3+F96Wx1cC1ZmYqDxIvjyEEAulaDTe5cl/m9cH63IlvNLAk+U7Z4s/
-         VNS2C7FWYSwuV9FTpk3PWqAPDDP1IqrlqAaevSPtxZpLsiBnW1ZhnZ1qT6OI3KfbkAhs
-         vcVQ==
-X-Gm-Message-State: APuU4Z/78TXl2Fq5hZfHuKkGn8ypOzQAtnVA2iAhNDDfuQlsSZMSizHi
-	VXhE9WWMnVCE/bSEXNOhYAtZ4GZwu7XB9xCcRvHodck9xnkOcuj2pF9rHTP3Qg==
-X-Gm-Gg: AYBFou3uevfwPc6UEKf1G10P4TMZXUWmmionPSxDlcgSu0Z57ZhO0bOrdUp2bth2aaQ
-	ddoPW/o3qVIH8PWR8yAH8I77noD/Koy/n04nxteX8PJMXxW6EOScf7PJC2VABumH2f/WljPEztl
-	6sjSFUeLrOkVzg5P32Wcw6E5WUV5YSymjHEh8g6CvWcPYrzETQvBlyzCWFKcv9aoD1pLWXMOlkr
-	d4wOoRSxkfJt+Q4DjEaBRigl/4oPdm5mU/OgNCnuaNe6r/+HOdtxmLdWuVFNcLXYPJ1Or+Cwjy1
-	15ZKu+BW7iN8bRy7mYIjIVW3eAxwjb+sgOdCOYAyv0yPesbRiP8VAS3wEKCRTfQTHEdtTUHY3Pk
-	rBbryKfPeP0p+GtmrY/lmRQZ9TJKt32N7nDyMsqmF5iIswbiDC/zyDs1VPASIYI3KDxzCVax6Qw
-	TzjLMA148g5Ap417V5wq+vBbppwFJrfmrhfBn6XrdWOE7zJLdd/jwrFjoX4QaClMcsLUF99T5vq
-	BNAaT1TOeAktda0Mngxkvgt7eoKe/0KgHh6jSBud4TuLUgrdo4fn5t1F7ebreAZ4ZIN3eQTpXxn
-	6KGGfQx5NtWk4fZuW8/po3FunHVWQeTKph/c5K77anpXOMnhq0/Rz8i07EFGKIEkBw3Czm2AfOV
-	jZ/KMKcsIO9flcU/6cFaffUzuRrslK7uOSgf6ic5nwltcMQ==
-X-Received: by 2002:a17:903:2f8b:b0:2e9:528c:b9ea with SMTP id d9443c01a7336-2ed23ed9521mr1202465ad.11.1793815161275;
-        Wed, 04 Nov 2026 09:59:21 -0800 (PST)
+        bh=e4nHy+K5oryhprQG9Gu5JRUGcNvfAn2s5nlbyb3Rin0=;
+        b=agsYz+zklN8ow7BnSThpIo6pgsGRGd4IPHFUnSNX15GIwWf+gfUN4NTfTbxomsKsjD
+         j3PAC1EfH/KL9QYjRIeTt3NA7HIdmUFcAN8bocZYHOBlIalHKsdLD/vZczjRSteFKHu9
+         gqHWUVzpLxUqYatLaEQ5S07ZfSnZ4l7apeWLknbronINkf1x9C2hh8kRKyetKXEpTtbu
+         8XJnZ8s2mPuiQ8DC8XKCrena5r3dhMOTmOn2c9PtlMKyZ75FwVuE5megsdr+bYlWgiWg
+         i9f4PzSpM9TSX/FY9J8yLnhBdrn9FObayaE1yBODgXDGrUN8U3jOORsDDLsNHBES3L6p
+         esxA==
+X-Gm-Message-State: APuU4Z+RMWMqNw5Rv5oy4pVUpLRigGx3Nidm+imwvBFGt0FSmH4U54r/
+	i355X4B6JZ4Jh4IrN0AzcOAZEP9udc97FeFIwhQRMZt3ulFgdT25rpUjrx467Q==
+X-Gm-Gg: AYBFou1L3jr/arPNXeebCs60wmW7dqnuQ4R9JTB1R8dNCrZmC0YfCk1SOGhLmuFqFtE
+	fBTEkV5tkktYxxNhBvP6g636MOWHV1XnaC/qq2AXh/titd3qd6SatMNGU7H4rtx0V6l2NFmj26g
+	qVsmYQDQiz72uTsrPRRpZTlgjtlIWGe+YYaOickRbB232nGLXME38xDL8cWvwnwZOm3bx/r00yD
+	UlLnGrvl4paf50Qm4hvnP5RYVQd29M28E3IaAY3Vb9nl0SOcJpFSMqYqQcxHyOIfmdnPD3d8ONX
+	fyo56daeJM+AOnqqTA2ceZOAOauHqaAZWnXetV7/QkalsCK8xKF/wbCQX931kgigzc2TeHpZFJR
+	EB6hTVuDQYS0WQZMz8+p+3A6cxEVuFrsx5cIkAS94Ykz7JWkTMHELOdietofRpkzKsFkLKRY09c
+	wEA39IgLbBtYTWMQf5cxxCHqSmr1Fe4ZySBQBSDZEot8/bD2TqB8hHhp9BbQjxUEm7wSDzIjkwC
+	8xD1RqyG8TN3Lm/msKI8Mzj4ic1xUU7CwzWWJt9LPedqRQOcfcV8GXsmqvX2eM3psxCCdkfzOWf
+	8ndOWDaIRGgOLvbb7o7ubK1pACYX5lG0I987tzl9eVTe7fTIN3QlH9kN+9xags331hbBz42bEAw
+	ATdkWElJaXEo0XQq5pfX8WP9HzmKi6/KOROyJl3EL9P3VGQ==
+X-Received: by 2002:a17:90b:53c7:b0:3ac:7e3a:1033 with SMTP id 98e67ed59e1d1-3ae897c5e5dmr14219508a91.59.1793815175869;
+        Wed, 04 Nov 2026 09:59:35 -0800 (PST)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe3238sm10586305ad.17.2026.11.04.09.59.20
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31d2b5esm35401a91.15.2026.11.04.09.59.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 09:59:20 -0800 (PST)
-Subject: [net PATCH 3/5] fbnic: Disable PTP completions during the Tx
- force-flush
+        Wed, 04 Nov 2026 09:59:35 -0800 (PST)
+Subject: [net PATCH 5/5] fbnic: Wait for the outbound flush to complete on
+ mailbox teardown
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 04 Nov 2026 09:59:19 -0800
+Date: Wed, 04 Nov 2026 09:59:33 -0800
 Message-ID: 
- <179381515954.9644.10831265959574467679.stgit@ahduyck-xeon-server.home.arpa>
+ <179381517319.9644.1165591016149104577.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179381496288.9644.9775319757787890210.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -107,67 +107,85 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-When the Tx queues fail to go idle, fbnic_wait_all_queues_idle() falls
-back to fbnic_tx_flush(), which sets FBNIC_TMI_DROP_CTRL_EN. That bit
-only drops packets at the Tx MAC Interface start of packet protection FIFO.
+The fbnic_mbx_reset_desc_ring function drops bus mastering and arms the
+outbound flush for its ring: the write flush for the Rx ring and the
+read flush for the Tx ring. Nothing waits for that flush to finish.
+The fbnic_mbx_clean_desc_ring function goes straight on to unmap and
+free the ring's buffers, so a device read of a Tx buffer, or a write to
+an Rx buffer, can still be outstanding after the buffer is gone. With
+an IOMMU it can also target an IOVA that has been unmapped or reused.
 
-The PTP completion path is governed by a separate bit in the same
-register. With only the drop enable set, a timestamped frame has its
-packet discarded while the matching completion is still forwarded to
-the host. fbnic_clean_tsq() then walks the ring with no packet left to
-match it against and reports "Tx timestamp without matching packet".
-The drop does not retire the completion either, as the completion FIFO
-is only drained when the completion disable is set.
+The PUL link reset status register reports when each direction's flush
+has drained. Poll the done bit for the ring's direction after arming
+the flush and before freeing its buffers. The flush only has to retire
+what the outbound path already holds; the 1ms cap keeps a wedged device
+from spinning.
 
-Set FBNIC_TMI_DROP_CTRL_CMPL_DIS together with the drop enable so the
-completions are drained rather than leaked to the host, and clear both
-bits again when the flush is turned off.
+Every caller of the fbnic_mbx_clean function runs with the datapath
+already down, which matters because the read flush covers all
+outstanding reads, not just the mailbox ones. A device that has lost
+its link reads back as all ones, so the done bit appears set and the
+poll ends on the first pass.
 
-Fixes: ad3d9f8bc66c ("eth: fbnic: add TX packets timestamping support")
+Fixes: 3b12f00ddd08 ("fbnic: Gate AXI read/write enabling on FW mailbox")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h  |    1 +
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c |   10 +++++++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h |    4 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c  |   16 ++++++++++++++++
+ 2 files changed, 20 insertions(+)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index cbb25d11638c..414871a94104 100644
+index 414871a94104..c371ac9f78c1 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -441,6 +441,7 @@ enum {
- #define FBNIC_TMI_SOP_PROT_CTRL		0x04400		/* 0x11000 */
- #define FBNIC_TMI_DROP_CTRL		0x04401		/* 0x11004 */
- #define FBNIC_TMI_DROP_CTRL_EN			CSR_BIT(0)
-+#define FBNIC_TMI_DROP_CTRL_CMPL_DIS		CSR_BIT(1)
- #define FBNIC_TMI_DROP_PKTS		0x04402		/* 0x11008 */
- #define FBNIC_TMI_DROP_BYTE_L		0x04403		/* 0x1100c */
- #define FBNIC_TMI_ILLEGAL_PTP_REQS	0x04409		/* 0x11024 */
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 0bcee152d47c..07d4b2e92362 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -2349,15 +2349,19 @@ void fbnic_disable(struct fbnic_net *fbn)
+@@ -956,6 +956,10 @@ enum {
  
- static void fbnic_tx_flush(struct fbnic_dev *fbd)
+ /* PUL User Registers */
+ #define FBNIC_CSR_START_PUL_USER	0x31000	/* CSR section delimiter */
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS \
++					0x31030		/* 0xc40c0 */
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS_AW_FLUSH_DONE	CSR_BIT(7)
++#define FBNIC_PUL_USER_IP_LINK_RST_STATUS_AR_FLUSH_DONE	CSR_BIT(8)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH_MODE	CSR_BIT(20)
+ #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH	CSR_BIT(19)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 49b8813a3564..e00d626f6438 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -7,6 +7,7 @@
+ #include <linux/dev_printk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/gfp.h>
++#include <linux/iopoll.h>
+ #include <linux/types.h>
+ 
+ #include "fbnic.h"
+@@ -176,10 +177,25 @@ static void fbnic_mbx_unmap_and_free_msg(struct fbnic_dev *fbd, int mbx_idx,
+ 
+ static void fbnic_mbx_clean_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
  {
-+	u32 drop_ctrl = FBNIC_TMI_DROP_CTRL_EN | FBNIC_TMI_DROP_CTRL_CMPL_DIS;
++	u32 flush_done, val;
+ 	int i;
+ 
+ 	fbnic_mbx_reset_desc_ring(fbd, mbx_idx);
+ 
++	/* Arming the flush only starts it. Wait for the outbound path to
++	 * retire the requests it still holds before the buffers they may
++	 * target are unmapped and freed. A lost link reads back as all ones,
++	 * which ends the poll on the first pass.
++	 */
++	flush_done = mbx_idx == FBNIC_IPC_MBX_RX_IDX ?
++		     FBNIC_PUL_USER_IP_LINK_RST_STATUS_AW_FLUSH_DONE :
++		     FBNIC_PUL_USER_IP_LINK_RST_STATUS_AR_FLUSH_DONE;
++	if (read_poll_timeout_atomic(fbnic_rd32, val, val & flush_done, 2,
++				     1000, false, fbd,
++				     FBNIC_PUL_USER_IP_LINK_RST_STATUS))
++		dev_warn(fbd->dev, "Outbound flush did not complete: %08x\n",
++			 val);
 +
- 	netdev_warn(fbd->netdev, "triggering Tx flush\n");
- 
--	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, FBNIC_TMI_DROP_CTRL_EN,
--		    FBNIC_TMI_DROP_CTRL_EN);
-+	/* Drop packets and retire their PTP completions */
-+	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, drop_ctrl, drop_ctrl);
+ 	for (i = FBNIC_IPC_MBX_DESC_LEN; i--;)
+ 		fbnic_mbx_unmap_and_free_msg(fbd, mbx_idx, i);
  }
- 
- static void fbnic_tx_flush_off(struct fbnic_dev *fbd)
- {
--	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, FBNIC_TMI_DROP_CTRL_EN, 0);
-+	u32 drop_ctrl = FBNIC_TMI_DROP_CTRL_EN | FBNIC_TMI_DROP_CTRL_CMPL_DIS;
-+
-+	fbnic_rmw32(fbd, FBNIC_TMI_DROP_CTRL, drop_ctrl, 0);
- }
- 
- struct fbnic_idle_regs {
 
 
