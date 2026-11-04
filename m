@@ -1,59 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793810674;
-	b=rEgYTCBgDpcLqmjz2+ilUA7kIlNgTNBjCZ+ufcwAWZd4+iBhHDzdEhAGAejA1EDu75cu
-	 532wdJ75NTqIZo4TUc7VgMu7TE0VAO7jpDQqyoftNtgDc5vrorLF8ScVSo0QLMM19P78u
-	 j4bAiGnJtONvkzHkmSEzz/L2J1/mYnBzR0krnad7pvF61veMefsyySG2Xqzs6hoXkwtGX
-	 kZaxWqxNbXlfl3GrE9q5owlq23dcd+yBqcGKfuUGqaKjOBQUW7Diov19UL9eD+ln1w0CG
-	 e7dRj2/nxct4PpOR8wm87L0XjRm7U+f7yygZm36B84DacVBWBIuh/F1La8OIP8yrJiA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793810674;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=bQvIDegU+Ei70cEI3udJurYLW6e3mWqJ7u/8qcqyJE8=;
-	b=YIlzj0PG4LlHKmENrE4SoayUVjrkNzwMhYFNkLi+ucG0BQg+a+cCU+ewiSDCqKvsjZbx
-	 PB+sooCYKkUai/SvOF1i+70TJMQLdaEmeViHzcTf6dou2guIZxOjj508gLt+vMsViShL/
-	 ee7RTX1esvyJXfugUk4Or4r4zfeX0k00yimkeysocUGjgSKV+VhqtCxjW6m5Pnlqjd8uw
-	 lYYq8rj76yGXAZyEAknqXZLMuZf/AscDFV9Zg/zroRinEy5zbVA7/rk1M317/8vSLN/ff
-	 io1MkfuszXmeWK0vir13TEoIEoL8jjJ0MgMo/lUcEvlBd6+nXjbzs1E4LYOjYnP40ZQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="c/2xBfda";
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793810772;
+	b=WsRJ6WqllrfPsa+0XZpJJgdx0DPP6uYUPBnpAZ6h3qdf0/ysX67ceH5gxSOo24G99R4M
+	 q+d+D3D8w5Qypcqrs6MaVwxv43UnF/FW49CfN2i2eJDB3BvQhbU8Zy762m3Pul+kJTVlH
+	 JpGOTNcdrpqlEWrMetlmLMYB36wLgePeaPV5Cku8PFK7iU8X1MpTOLTDESXC5lydC2VzN
+	 PJA3f8ZVamqqpAqncMB0n0C4UiBd/6LmYGoAxClOfGX6wO2GiuiSQ96/1/cKmGGxDKep7
+	 EOs5x5ELqVW45TFSUNPUu77o2iTqETN+kDDIp1CaBQHGjhItIo6brQ85PkvVTBFzn2A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793810772;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=JfRW0SPoALVVWDl2xAXTfh37dfRQmby6sb8WYvVZUog=;
+	b=1LwIvpLuFFfJMKXvN7fprJMkMpfSOmtReVWXMppoXFHbsDJrkUpbWh2Bfxd+HeNaNhKC
+	 xrCdOisFs1uK49jDOv8qNIc+S7ftySvwtPCh8TuA9uWl0AI2fvefM17JD+gYGrfUePG4Y
+	 Ofw+eOqQsx2HkjKP3hs22tkF2NQ1ldlSJlvM0mHLUajCxZbZu3reabzUP8XEa6vZj8R7c
+	 /ozFNSfOmMkjmRoul4HwSe9D2vyShXN9Oc8ebEOI62EJ/U1a1gRkiZIQNADc3DgW6T/2w
+	 27o9nMDC1dZb/CW4kcTUh9WmYkv1oPHk55Cbt4MP3T4OIqzYThndafWhXEnBTRu5dLA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WV9EWSqQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6F5606A329
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 16:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCCF606D817;
+	Wed,  4 Nov 2026 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c/2xBfda
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9F31F000C1;
-	Wed,  4 Nov 2026 16:44:33 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WV9EWSqQ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793810772;
+	b=oX4qZQ0X/LEZpGiGsTad+R+lcXXEDZWouBoS3l5mbcOOX6XK2hZXXoc6U7SQdSKa3ZOs
+	 Mt3W7EmwwJ5iUQ0E5XAS15xpatC4V84T87ZsDWbTXcjJcF1YgBI12g6RSNKXrdtEDfXFD
+	 dibho8BNkb59sObmY1ORzmTViUkASmgb9D+8nDgy5V2u5An93LjptChBrCtVkcqdzkF7u
+	 0kWNGJGHFrfvUr/M07+m/ddN5GeUB0YWURz6momw21L2gZlpRkfy/bxZp4YEeoX286Key
+	 yXEg7FEGtbkeRNMfEdEYsFMNY2oNlKK3if1dMwq1jdYHN6Sm+DQ39630wHYMj/p3C2w==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793810772;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=JfRW0SPoALVVWDl2xAXTfh37dfRQmby6sb8WYvVZUog=;
+	b=mG3qJWzHM+oE6KeOzg/+3REXCv/7hZrdpr1keji4ZT/vHlgxM9hIoazDgOuXL8BcKtbM
+	 vvDzX54d3s4Nw9JO2PtLZX7AYV7qmX3AFNiYRbAtwm218NKC9cRdP0dQzAjduqAv/xIBS
+	 o5sRgKAorOBv/EWcTp1V+c8M+CLuTW5YN9TRtXZOfUFWELh5E16Mfc1kY6AOpdmR/fjVV
+	 ghaz0r37byly4r4Wd8fdzAF/P8FIkJZ++0/swPFO/1mKe7GkJOdxfU7BoJ33RUx3t96S+
+	 JhEwLL7MOdcyeB+ye+fKA8SXgq3jmuAoe1gr16fyEmizKrFnLlcP1yNoFQubgwSkt0g==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id F0AD11F00A21;
+	Wed,  4 Nov 2026 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793810674;
-	bh=bQvIDegU+Ei70cEI3udJurYLW6e3mWqJ7u/8qcqyJE8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=c/2xBfdaGBLrIZLTzTRRV+621+fS6sxissQ6IyXDuqGkDZk1caF40hjAYoZ3zCPyD
-	 BtsWAWES2CqNm1d7eHkAiuIED17n6H1pQVEWXOu7kv2UgUrdccjeJ/znFm91rY93XW
-	 V6osZXhH6VaCR2iLA98bAROLgdaBlpv6ig2A6uo86jKWmKusvRLT4Eoo+9o5dPRdeP
-	 RxjkYpTUelw+0e9t/Dwh70EqG2l7IDNo30GqWNPZaFh4wDszLE8O2phq8ed4LQ7FeD
-	 ZfaDVdNmYY2N/GZRVwVuqCXvI5L/dksaztAnPbeTZSGfcyW1GjjozziGt5uhDWNcAb
-	 VPKtP4kaPB1Zg==
-Date: Wed, 4 Nov 2026 10:44:32 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Li, Yifan2" <yifan2.li@intel.com>
-Cc: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Gomes, Vinicius" <vinicius.gomes@intel.com>,
-	"Ruinskiy, Dima" <dima.ruinskiy@intel.com>,
-	"Li, Lili" <lili.li@intel.com>, "Wang, Jie" <jie.wang@intel.com>
-Subject: Re: [PATCH iwl-net] igc: Disable PTM after the last device reset on
- remove
-Message-ID: <20261104164432.GA1216460@bhelgaas>
+	s=k20260515; t=1793810772;
+	bh=JfRW0SPoALVVWDl2xAXTfh37dfRQmby6sb8WYvVZUog=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=WV9EWSqQrxTLVYIztlmELVMVh85LejnCzBIC/5HM5n2zKwdA0gfrXRjWfoF++o0TO
+	 bl91mJb7fEVI0JbWMBszqwbTfU14LXei3zPpLRQVF7I2pti/yOu4LMd/qz6iwCMssi
+	 cAjPa2ZJxWP85xi2ZGVDsHLMKxQKPdj2PGy/MJ35LvWa/lSVPQ8+GftpI1YaDw7JYu
+	 OLFq5Agow/jaHVmgR23ZCg9uvZCqetjCGX5G4PnYn+y7nazs9eUiiE7dyTXk7LuAUh
+	 0wWofSEUX+MsN/nceCi8NuWRmkXPkd7h/rslsP8V38vIlpRElE6vL595Srh1DzZrIc
+	 Gw0rBmvp+f2hg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 7BA4946ED2;
+	Wed,  4 Nov 2026 16:46:09 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Date: Wed, 04 Nov 2026 08:46:03 -0800
+Subject: [PATCH net-next v5 3/4] wifi: ath11k: Connect to the QMI server
+ belonging to the device owned by this driver
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,108 +83,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN7PR11MB170846508FFD9A89461965524FAF682@MN7PR11MB170846.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261104-qrtr-multi-ep-v5-3-4cdb2b4f1920@oss.qualcomm.com>
+References: <20261104-qrtr-multi-ep-v5-0-4cdb2b4f1920@oss.qualcomm.com>
+In-Reply-To: <20261104-qrtr-multi-ep-v5-0-4cdb2b4f1920@oss.qualcomm.com>
+To: Manivannan Sadhasivam <mani@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jeff Johnson <jjohnson@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Chris Lew <christopher.lew@oss.qualcomm.com>, 
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, 
+ Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
+ Juha-Matti Tilli <juha-matti.tilli@iki.fi>, 
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+ Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4200;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=8jdd/IxbkpdXzxb0pbbCtVyl0Xl30Xp8Q0D9LtdyvhY=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBq62FPbjDf/0qWzmhZRJGSlPc5ilpfYhrma+JkR
+ fdrQ7uP0XWJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCauthTwAKCRBVnxHm/pHO
+ 9R8BCACidy14HAjJGZYhBuvH+k52nwAL23/DmWX1dAWwekfv4MDQF8Mdj64fv2T9mMtH8wOaQUM
+ dT470wVrTKQAKkfzzLMPschxkhU9Y7BdbFAI2dE+Wjv0mHTCjKUnB5EIFtJzZxQRtJm0zCOwpiQ
+ PB1RyQdwiruDc/o/OIEOR3zgTZROTIejzZ6JxdFEjJx2TG0fByWWvRU8FqNWrZNl1+VmJZ2o30S
+ vbL84l3K8MHy1yjWWauqzT15iT44TJc09Jmh6uAJTZhzQWIDo6PT1GvU8pspoUQn+vaegVLO57w
+ 7XQUlbm8TLs0+WSDQsdhSf91VgQvDYzqpoZpGMhuVwntwryg
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 04, 2026 at 02:22:40PM +0000, Li, Yifan2 wrote:
-> On Mon, Nov 02, 2026, Bjorn Helgaas wrote:
-> > On Sat, Oct 31, 2026 at 10:19:28AM +0800, Li Yifan wrote:
-> ...
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-> > > Reset the device while the upstream port still has PTM enabled,
-> > > so that the PTM Request gets a response. Then disable PTM and
-> > > bus mastering. With this order, a later reset sends no PTM
-> > > Request (tested on I226-LM). igc_ptp_stop() has already cleared
-> > > IGC_PTP_ENABLED, so no new PTM dialog starts after this reset.
-> > 
-> > IGC_PTP_ENABLED is just a software flag, and it appears to be
-> > related to PTP, not directly related to PTM, so there are some
-> > dots missing between it and hardware PTM messages.
-> 
-> Sorry, I skipped steps. In igc, PTM is used only for PTP cross
-> timestamps. The driver starts PTM dialogs only from the PTP code, by
-> setting the TRIG bit in PTM_CTRL:
-> - igc_ptp_reset() sets PTM_CTRL.EN and triggers the first dialog.
-> - igc_ptp_getcrosststamp() triggers dialogs for each cross timestamp
->   request.
-> 
-> igc_ptp_stop() runs before the reset and stops both:
-> 1. igc_ptp_suspend() -> igc_ptm_stop() clears PTM_CTRL.EN.
-> 2. ptp_clock_unregister() removes the PHC and waits for the
->    getcrosststamp() calls in progress, so no more calls come.
-> 3. It clears IGC_PTP_ENABLED. igc_reset() calls igc_ptp_reset(),
->    which returns early when this flag is clear, so the reset path does
->    not set PTM_CTRL.EN again.
-> 
-> So IGC_PTP_ENABLED does not control the hardware directly. It only
-> stops the driver from setting PTM_CTRL.EN again. v2 will describe
-> these steps.
+When two identical ath11k PCIe devices are connected to the same host, both
+advertise the WLFW service with the same service and instance id. The QMI
+lookup reports both servers to each device, so a device may connect to the
+firmware running on the other device.
 
-I don't think the PCIe spec includes any generic way to trigger PTM
-dialogs, and in general, I think devices are permitted to initiate
-them at any time, independent of driver or other events.  So I think
-igc has device-specific knowledge that the NIC *only* initiates PTM
-dialogs when a driver sets the TRIG bit.  If so, I think that's worth
-a mention.
+But now, QRTR provides each MHI endpoint a unique node id which is
+different from the node id announced by the device. So use the same id to
+pick the correct server. Add a get_qrtr_node_id() HIF callback that returns
+the node id derived from the MHI controller index and zero for transports
+that do not assign one. In the new_server callback, reject any service
+whose node id does not match. A node id of zero disables the check, so
+transports that do not assign one keep their current behavior.
 
-I haven't worked through the steps you outlined, but maybe they
-explain why there's no PTM Request after the later reset.
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath11k/hif.h |  9 +++++++++
+ drivers/net/wireless/ath/ath11k/pci.c |  9 +++++++++
+ drivers/net/wireless/ath/ath11k/qmi.c | 11 +++++++++++
+ 3 files changed, 29 insertions(+)
 
-> > > If the interface is down,
-> > > unregister_netdev() does not reset the device, so reset it explicitly.
-> > > PTM is still disabled before bus mastering, as the related fix above
-> > > requires.
-> > 
-> > Which fix requires PTM disable before bus mastering disable?  And
-> > why is that required?
-> 
-> c080fe262f9e. Its commit message says: "Avoid an i225/i226 hardware
-> issue that PTM requests can be made even though PCI bus mastering is
-> not enabled. These unexpected PTM requests can crash some systems."
-> The order is a workaround for that I225/I226 hardware issue, not a
-> PCIe spec requirement. The commit message does not say more about
-> why the order matters, but when I checked with the hardware team, I
-> found an internal erratum for that issue.
-> 
-> I found c080fe262f9e when I searched the igc history for this PTM
-> problem. Our issue is different: after the device has done a PTM
-> dialog, the next CTRL.RST can make it send a PTM Request, even when
-> PTM Enable is clear.
+diff --git a/drivers/net/wireless/ath/ath11k/hif.h b/drivers/net/wireless/ath/ath11k/hif.h
+index 017fed1b4bd1..f432fa4890be 100644
+--- a/drivers/net/wireless/ath/ath11k/hif.h
++++ b/drivers/net/wireless/ath/ath11k/hif.h
+@@ -32,6 +32,7 @@ struct ath11k_hif_ops {
+ 	void (*ce_irq_disable)(struct ath11k_base *ab);
+ 	void (*get_ce_msi_idx)(struct ath11k_base *ab, u32 ce_id, u32 *msi_idx);
+ 	void (*coredump_download)(struct ath11k_base *ab);
++	unsigned int (*get_qrtr_node_id)(struct ath11k_base *ab);
+ };
+ 
+ static inline void ath11k_hif_ce_irq_enable(struct ath11k_base *ab)
+@@ -159,4 +160,12 @@ static inline void ath11k_hif_coredump_download(struct ath11k_base *ab)
+ 		ab->hif.ops->coredump_download(ab);
+ }
+ 
++static inline unsigned int ath11k_hif_get_qrtr_node_id(struct ath11k_base *ab)
++{
++	if (!ab->hif.ops->get_qrtr_node_id)
++		return 0;
++
++	return ab->hif.ops->get_qrtr_node_id(ab);
++}
++
+ #endif /* _HIF_H_ */
+diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+index a163168f3617..d40c057e130c 100644
+--- a/drivers/net/wireless/ath/ath11k/pci.c
++++ b/drivers/net/wireless/ath/ath11k/pci.c
+@@ -10,6 +10,7 @@
+ #include <linux/of.h>
+ #include <linux/time.h>
+ #include <linux/vmalloc.h>
++#include <net/qrtr.h>
+ 
+ #include "pci.h"
+ #include "core.h"
+@@ -900,6 +901,13 @@ static int ath11k_pci_start(struct ath11k_base *ab)
+ 	return 0;
+ }
+ 
++static unsigned int ath11k_pci_get_qrtr_node_id(struct ath11k_base *ab)
++{
++	struct ath11k_pci *ab_pci = ath11k_pci_priv(ab);
++
++	return qrtr_host_node_id(ab_pci->mhi_ctrl->index);
++}
++
+ static const struct ath11k_hif_ops ath11k_pci_hif_ops = {
+ 	.start = ath11k_pci_start,
+ 	.stop = ath11k_pcic_stop,
+@@ -921,6 +929,7 @@ static const struct ath11k_hif_ops ath11k_pci_hif_ops = {
+ #ifdef CONFIG_DEV_COREDUMP
+ 	.coredump_download = ath11k_pci_coredump_download,
+ #endif
++	.get_qrtr_node_id = ath11k_pci_get_qrtr_node_id,
+ };
+ 
+ static void ath11k_pci_read_hw_version(struct ath11k_base *ab, u32 *major, u32 *minor)
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 7dc07339b957..09c23ddffb38 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -3170,8 +3170,19 @@ static int ath11k_qmi_ops_new_server(struct qmi_handle *qmi_hdl,
+ 	struct ath11k_qmi *qmi = container_of(qmi_hdl, struct ath11k_qmi, handle);
+ 	struct ath11k_base *ab = qmi->ab;
+ 	struct sockaddr_qrtr *sq = &qmi->sq;
++	unsigned int node_id;
+ 	int ret;
+ 
++	/*
++	 * Identical devices advertise the same QMI services, so connect only
++	 * to the QMI server on this device's node. A node id of 0 means the
++	 * transport has not assigned a unique node id, so accept the server
++	 * unfiltered.
++	 */
++	node_id = ath11k_hif_get_qrtr_node_id(ab);
++	if (node_id && service->node != node_id)
++		return -EINVAL;
++
+ 	sq->sq_family = AF_QIPCRTR;
+ 	sq->sq_node = service->node;
+ 	sq->sq_port = service->port;
 
-I think that part of the c080fe262f9e commit log is just wrong.  The
-fact that i225/i226 can make PTM requests when bus mastering is
-disabled is perfectly fine; it's not a hardware issue.  I *suspect*
-that only the pci_disable_ptm() in that commit is actually required.
+-- 
+2.43.0
 
-> > > Skip the reset if the device cannot respond: error recovery is in
-> > > progress or has failed (pci_channel_offline()), the device is gone
-> > > (pci_device_is_present()), or igc_rd32() has already reported "PCIe
-> > > link lost" (IGC_REMOVED()). Otherwise the reset accesses a device in
-> > > error recovery, or polls all-ones register values for about two
-> > > seconds until igc_disable_pcie_master() times out.
-> > >
-> > > Call pci_disable_ptm() only if PTM is enabled. pci_enable_ptm() can
-> > > fail in probe, for example if the upstream port does not support PTM,
-> > > and probe continues without PTM. The PCI/PTM change above also made
-> > > pci_disable_ptm() use a reference count: it decrements
-> > > dev->ptm_enable_cnt without a check, and then does the same for the
-> > > upstream port. Before, it did nothing if PTM was not enabled. After a
-> > > failed pci_enable_ptm(), the count of the device becomes negative and
-> > > stays negative after the driver unbinds. pcie_ptm_enabled() returns
-> > > true for a negative count, so after the next probe
-> > > igc_is_crosststamp_supported() reports PTM support and igc_ptp_reset()
-> > > starts PTM cycles on a device that does not have PTM enabled. Commit
-> > > 650f197d8ea6 ("idpf: disable PTM on probe failure and on remove") adds
-> > > the same check to idpf.
-> > 
-> > This sounds like a bug in the PCI core PTM support, i.e., maybe
-> > pci_disable_ptm() should be checking for PTM being enabled?
-> > Otherwise I'm afraid lots of drivers might trip over this.
-> 
-> Agree and thanks! I sent a PCI core fix:
-> https://lore.kernel.org/r/20261104121457.2108515-1-yifan2.li@intel.com
 
-Thanks for that!
-
-Bjorn
