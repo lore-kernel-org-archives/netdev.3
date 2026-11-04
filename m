@@ -1,49 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=211.20.114.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793768924;
-	b=IJdv3YrWNpdIYv7OM398L0pFhqMKhhtQ49uT0pOMXGrYTmewMB8BfDnFB0KEDX6OcoFL
-	 73XFcYxdxYU70WaWhsGsOyhOBQqwYA+weUKkWQHBLaESSfxzXWGbLEnz4OEDEBaiw908/
-	 qa7KNOJlQwvEIF0Jkj4QhVuFeDoX4Iq6+aYeiVLlBBH6PEVDwTk2qn01+hbrHctpn3f/5
-	 3Fh8UD/gdCXGBOvy5LxEIJipaZRGqBP4Bzet7NX61dfKXrYKIQHvXiUQ/lwZSLzBrzxGn
-	 tERbt6Mrtqgt0JtQr3CZY73AADw+9T3NxiMAO/FwHJsbQMRonU7eFCvKqLX8la/0a8g==
+	t=1793769254;
+	b=QDQed3xrImla3LuJhC8H5SKC/LQbxWpPX8wS9abjwYV5xJBQDZG/w6yQ1/z9O7tDS7q8
+	 ajlX6XWgEjj/F3/l7a9cZNdWcSDwtZFK0xrBsdzfttSxO+ns4lpG87CVgin2ona5V1F0t
+	 sN85gvowZWHkjmand1j+8uafHVIQyXaNa0aOE7rRDv2lh5al4pk/ThmsLbyYPaZI35Dug
+	 UhfOz6J5VWymrLSp/T7RF5FK57zQPTtDr3Zfnadz7708HYNR0Ti6lQSa5liEuqaAhw2+w
+	 Ki6JYgRvwB9VQzmU2fyocNDsoIqJPEjoT+AxzcuAMG4az5zCykZg1XdMXqSy+UHGkQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793768924;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
-	 X-Spam-Checker-Version;
-	bh=n0Xywr94Vk3WtL8YoWlzK4ISWgOH/R1JCv5dLFPIkIM=;
-	b=nPwVNTPGdb32M13LHZfB4jN0EIkPMEssOkqVLUOIoc6/KqN6sZYS4r7rVBnvN0/oMOdQ
-	 E0oor+IKouu3LhAnNRmai2Aa8IadfvuF3BJl7Pmayi7Xre/mcvP+Ge8sshzteDxnvhZ5u
-	 qp55AppODLpy2kIXULnJUOtWV/G8jITDcUL/mARSbm8a92aqEEz1s1cksF3Vz4yIqWkAN
-	 rLrCwPuf1Fv8FNjgpfl4es/wgzZsG60ftlTlTzrJP0wN9Ue9kHX1FHdGXyiksIygwhWEJ
-	 oUCPlXrrxM/rBMrfnHy28CinDHDsEzYWtHqBzVJkA3mGY5R1Se8yWvoA/4pawvFwqSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793769254;
+	h=DMARC-Filter:Received:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-ID:References:
+	 In-Reply-To:To:CC:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=/RdDdlZQkQkhB5job68w1V+dpTPFunI5igUntY4AjPk=;
+	b=x6nai034PoF0tFrc9YUzdeeiXDDhX5t1AyN44+rwTM0ZyVBzj56LwDRXmeYOBKAEO9qe
+	 5N3Uj7tRycBDVvl4bNgcUK0b39pdIs9x+xOYVLX7TRxRy3ELfvnvo5CMk95kKzt54kzdm
+	 rtQbfFtT6bwP1MroJdH68vs0ERJFNYkQPPmbBBErWpH/SfT8AWUgSW2k9/gJJaUG7YXkq
+	 DnV6Uw9FKndb5uValcxfe/kvijDT2Eng1fK4/ExLF+C2cWRw7LsfQgqea8M+oYxEoHlhO
+	 udOGygffjCNG/jAVg9lusx3IH3+rQF1s7j26wBYM8Hwar9wpao7bp2S16itJ5yYc7Hg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.microsoft.com;
-	spf=pass smtp.mailfrom=linux.microsoft.com;
-	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=sBtyhiUk;
-	arc=none smtp.remote-ip=13.77.154.182
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C37606A326;
-	Wed,  4 Nov 2026 05:08:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C37606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=sBtyhiUk
-Received: from [192.168.1.7] (unknown [103.212.145.77])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 88CC920B7166;
-	Tue,  3 Nov 2026 21:08:27 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 88CC920B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1793768908;
-	bh=n0Xywr94Vk3WtL8YoWlzK4ISWgOH/R1JCv5dLFPIkIM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sBtyhiUkjSOC/y4YU7Q21hwoxP7b2bPy3yWUAXMGrspoYU6r5YJoWUxbiU4IRvLbk
-	 /tZfk/4PiSP0xw10D+e45eGHP/iBPIXSq3nwkE0Ldk18NG74S4XnxOMi5T10kFk22t
-	 E2t3gAlfocgO7RXnyG7s3rJ2BFSso9F36oI52sXQ=
-Message-ID: <c3ec0e88-5077-4eee-8ed8-9b2f71f00b0a@linux.microsoft.com>
-Date: Wed, 4 Nov 2026 10:38:39 +0530
+	dmarc=pass header.from=aspeedtech.com;
+	spf=pass smtp.mailfrom=aspeedtech.com;
+	arc=none smtp.remote-ip=211.20.114.72
+Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CB5606A32D;
+	Wed,  4 Nov 2026 05:14:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85CB5606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 4 Nov
+ 2026 13:14:10 +0800
+Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Wed, 4 Nov 2026 13:14:10 +0800
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+Date: Wed, 4 Nov 2026 13:13:54 +0800
+Subject: [PATCH net-next v5 1/7] dt-bindings: net: ftgmac100: Make Aspeed
+ compatibles standalone
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,74 +49,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: hv_netvsc: user-configured RSS indirection table is zeroed on MTU
- change
-To: Amir Boussejra <amir@boussejra.com>, linux-hyperv@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: amir.boussejra@gatewatcher.com
-References: <40fb2352-4859-4334-849b-f6a4229605a1@boussejra.com>
-Content-Language: en-US
-From: Aditya Garg <gargaditya@linux.microsoft.com>
-In-Reply-To: <40fb2352-4859-4334-849b-f6a4229605a1@boussejra.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261104-support_ast2700-v5-1-44057f4dde75@aspeedtech.com>
+References: <20261104-support_ast2700-v5-0-44057f4dde75@aspeedtech.com>
+In-Reply-To: <20261104-support_ast2700-v5-0-44057f4dde75@aspeedtech.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Po-Yu Chuang
+	<ratbert@faraday-tech.com>, Eric Dumazet <edumazet@kernel.org>, "Heiner
+ Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Eric
+ Dumazet" <edumazet@kernel.org>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793769249; l=2822;
+ i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
+ bh=9QbfrCu2gROJjfiyPf4so69mFqmkSbnzSchCShQ4QY4=;
+ b=itAWxG9FfGRrrGw0wpANKLORs0SLNT1QPqutyY2WWkjjxF38OxMPhcCuYe8suIjbA6/BMQ9pK
+ 7k+77P0LrTpAOrorIYh0PrUNVIWPncamnaMLhcMqYTOT3/sRegFtqNp
+X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
+ pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-On 29-10-2026 14:40, Amir Boussejra wrote:
-> Hi,
-> 
-> On Azure/Hyper-V, any MTU change on an hv_netvsc interface silently 
-> zeroes a
-> user-configured RSS indirection table, so all RX traffic lands on ring 0.
-> 
-> Reproducer in our case (any multi-queue hv_netvsc NIC, ethtool and ip 
-> only):
-> 
-> ```
->   ethtool -X eth0 hkey $SOME_KEY equal 4
->      ethtool -x eth0             # See conf
->      ip link set eth0 mtu 1600     # must differ from the current MTU
->      ethtool -x eth0               # all zeros in indirection table
-> ```
-> 
-> With the table left to the driver (ethtool -X eth0 default) the same MTU
-> change is harmless: the table comes back correctly spread.
-> 
-> Confirmed with kprobes on 6.12.90 - these all fire on the MTU write:
-> 
-> ```
->      netvsc_change_mtu
->      netvsc_detach
->      rndis_filter_device_remove
->      netvsc_attach
->      rndis_filter_device_add
-> ```
-> 
-> [`netvsc_change_mtu()`](https://github.com/torvalds/linux/blob/v6.12/ 
-> drivers/net/hyperv/netvsc_drv.c#L1209)
-> 
-> An MTU change re-creates the device:
-> [detach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/ 
-> hyperv/netvsc_drv.c#L1233), then
-> [attach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/ 
-> hyperv/netvsc_drv.c#L1239).
-> 
-> The detach [frees the RSS indirection table](https://github.com/ 
-> torvalds/linux/blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1622)
-> (`rndis_filter_device_remove()`), and the attach
-> [allocates it zeroed](https://github.com/torvalds/linux/blob/v6.12/ 
-> drivers/net/hyperv/rndis_filter.c#L1557)
-> with `kcalloc()` and refills it only if
-> [`(!netif_is_rxfh_configured(net))`](https://github.com/torvalds/linux/ 
-> blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1572)
-> (`rndis_filter_device_add()`).
-> 
-> 
+The aspeed,ast2400-mac, aspeed,ast2500-mac, and aspeed,ast2600-mac
+compatibles are currently only valid when paired with the generic
+"faraday,ftgmac100" fallback: if a node ever bound through the
+generic entry alone, ftgmac100_probe() would set
+rxdes0_edorr_mask/txdes0_edotr_mask to BIT(15) instead of the Aspeed
+BIT(30), skip Aspeed clock setup, and leave the DMA mask too narrow.
 
+Make each of them a standalone compatible instead, so none of the
+Aspeed compatibles require the generic fallback alongside them.
 
-Hi Amir,
-Thanks for reporting this bug
-I'll post a fix for this and notify here as well
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 
-Regards,
-Aditya
+---
+ftgmac100_of_match[] has had dedicated entries for AST2400, AST2500,
+and AST2600 since commit 03a2aba50b2c ("net: ftgmac100: List all
+compatibles"), so there is no known kernel + devicetree combination
+where a node has actually bound through the generic entry and gotten
+the wrong EDORR bit. This part is a binding correctness fix, not a fix
+for an observed failure.
+
+Note that arch/arm/boot/dts/aspeed/aspeed-g4.dtsi, aspeed-g5.dtsi, and
+aspeed-g6.dtsi still declare their MAC nodes with the two-string
+"aspeed,astXXXX-mac", "faraday,ftgmac100" compatible, so this will make
+dtbs_check warn against those files until the redundant fallback
+compatible is dropped there as well. That .dtsi change will be sent as
+a separate series through the Aspeed/arm-soc tree, since dt-bindings
+changes don't go through that tree.
+---
+ .../devicetree/bindings/net/faraday,ftgmac100.yaml         | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+index d14410018bcf..c870dd0bda7b 100644
+--- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
++++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+@@ -13,12 +13,10 @@ properties:
+   compatible:
+     oneOf:
+       - const: faraday,ftgmac100
+-      - items:
+-          - enum:
+-              - aspeed,ast2400-mac
+-              - aspeed,ast2500-mac
+-              - aspeed,ast2600-mac
+-          - const: faraday,ftgmac100
++      - enum:
++          - aspeed,ast2400-mac
++          - aspeed,ast2500-mac
++          - aspeed,ast2600-mac
+ 
+   reg:
+     maxItems: 1
+@@ -94,14 +92,14 @@ unevaluatedProperties: false
+ examples:
+   - |
+     ethernet@1e660000 {
+-        compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
++        compatible = "aspeed,ast2500-mac";
+         reg = <0x1e660000 0x180>;
+         interrupts = <2>;
+         use-ncsi;
+     };
+ 
+     ethernet@1e680000 {
+-        compatible = "aspeed,ast2500-mac", "faraday,ftgmac100";
++        compatible = "aspeed,ast2500-mac";
+         reg = <0x1e680000 0x180>;
+         interrupts = <2>;
+ 
+
+-- 
+2.34.1
+
