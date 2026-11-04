@@ -1,111 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793815021;
-	b=1RtcZ4H7Yvmu7BNfpsOw5R8YNcCL817+lT4MYRI4mwVQ1BOJHjHgqto/jn3NPbKrkVqa
-	 pX1pryw8L1aGPyfITjnIow2nV8l5QWIonz+/3U7gnbHNCAtTCVhuFA8UEmOFHG9/2OslZ
-	 99r5faOy1kNFlSaAbaSPwMhnKfWNIiVobgBLuYi90YbTJWg+vbPiMFgOkq46jxHSKT6kl
-	 S7wxGq7id9JaFTzWxLv3UdplMmBtOEX1CBjUxXf8wbR729aaj926E0+O7nv1/+rezZFKB
-	 ESKUd9hGT8m1HVbvdj4/y3AQb1sTrX+spAcQcH5QNtnmIm9cJxRgZ7EYcsLMJE17Csw==
+	t=1793815142;
+	b=kXA2h2Kv7hGmw5y6aXEjEqcd58+2hQzjrprV2sPKcdy39Q5vu/PRGEOUE6OiN+yMoFI5
+	 mCbtmUWlUpA8QlUyszJ0i8NVz14IoZ+vF6kLLqTZVAC2PrOx8WhGcVdDUKiO7sJ0hs6o+
+	 iKShWCBJ1yFW3KrCm8Wk5vHf7RRpYYXYI9nl0S4w9d4KZE4tCfdJqMupw0yrzcSPhIo2y
+	 7G0SACwPOEH1RmT4uLuVRy7Fw/BjyQcIrkp60FF4fcw1KMnba52rYqo8QdgZOAXqzSFaJ
+	 +WKgGlPvJl6MkdcN4wk+ve+jHTDqL05kGq6+1z/mOx6vnVqgTnyrh5GcjaM5dKhjX4w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793815021;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
-	bh=qeQgphPdxdiWtw36JzKqWooMSgzPZU+EeD4NlyLVhDM=;
-	b=hLWmFrbPw7erilaLuXoiV/7HRrwEOrMVpup6UyLm8lHm7YmyiBt+xXFplhDYhCHP3LVS
-	 vynbqIoOhr4+ti6wXyLdyl5iiQHoNj866LJGWssg+f07Q9VHRPBsRyfeNg6QRec0rglK7
-	 mUv07lPvusXTYkekg8Rrtrdf2XIOduIzih/WU7whBaYgURp3v5CfbsTdcnlCenrm/OzXM
-	 27IcMkVM7UyNZ8dgd//cqwN3UXfC63F8vzFaY+V8YIrOQqs7p7tKlQLuNPk/fB/VtKwqi
-	 FzU6kiWXhyWsyBjkk6j7FEzbVcQkjo53dNE1NL3V5Swd+1AkIYQbIcbHOWm3RsPq/kQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793815142;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
+	b=rAMtrSM5SKtjSfaBK9kA/WScvGrNI3hJMO53wYe5de1WsMzjjuEF3cVp7TkQdmvEMWvQ
+	 BzjdH37Pc7URJpDhGrUpe543KTofHteR8fAIxkQYtKNBo4yvoNj6XR1hs9HWHeNW8YR2b
+	 lFOsBBwfKAdSMltO1zBubOoyMHkqMOi3xsLZfuHmze4YD2dEC6vhli2M0ElqZj+d6W3eL
+	 FoHoYV/UQfsZ1tWO8rYXh5lPOw9Gr8y5ZWJqmhqzonwbzd9xf7KVJNBnzTK/5ixFDpEUl
+	 8YiL/KAz53v4YVw1UG1SyBr4Rf7ScbQfPAczV3Sp9Nm/fApT964xZmLqezIB7uf+nTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jJ+YsSS1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BwZjJYuH;
+	arc=none smtp.remote-ip=209.85.214.180
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E895607A3C1;
-	Wed,  4 Nov 2026 17:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCEF606A339
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 17:59:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FCEF606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jJ+YsSS1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0110B1F000C1;
-	Wed,  4 Nov 2026 17:56:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793815020;
-	bh=qeQgphPdxdiWtw36JzKqWooMSgzPZU+EeD4NlyLVhDM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jJ+YsSS1mKgXVutXvIprPjWbk/f3EaiHLkE0iUZZAD8UlGdeiTsq37AMjiJ1LQO42
-	 s7IKloTcsbSWCr6Lc4020v768o++Pni3fgFkFO5tp1ySQmamfYyvOlYF89oN/AE0uz
-	 cDBLCJtKpTc2bEc32o8AER5NNVvUQIyxG/58XGRNwW4UebnC4TzH2w4THg6Y4IuZEE
-	 HY4QLlr1k8HjiamlPJYs4KZrW3+I6WmOXTXZ8NvkX2h2a4OGzF5wxpPCxFfmNGgkxC
-	 TEjrpd9SN8JK0f/Vf8mgRK+nlmhJ6yDeGzIC6DtBcVm6ZCj3+6Kd0iuDWQx/Ae1YSo
-	 KOmYuIt4jqdDw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 39/51] powerpc/crash_dump: recover from a machine check in copy_oldmem_page()
-Date: Wed,  4 Nov 2026 18:47:25 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-39-bbf7d5546809@kernel.org>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
-References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BwZjJYuH
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e987b4a710so11577395ad.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 09:59:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793815141; x=1794419941; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
+        b=BwZjJYuHu4C5xRyvxpOt4TmnLLHzPmDzqOIsNcQCemo2wDlGld5Q/lmW9A8MryqQ0Q
+         rITH9Bx5qa/CkWy6AJZSxntn4YSM1MU+Kmoci4x9E06v3p7YmoDN6Sr2cVXPg8F4Q0VL
+         xyMd88fFmtePHPKaybT3TSqx04llb+9FptfNj9jjdPNzy6ehkl2aKp0hhc2I+Y6J1Klc
+         aGcQkL999koiB2n5OjEa/gHB/zlPMBhgEdQB0LQjYXvpoWrzpVBKXeLn7BTAuTM5obdf
+         9A1s/xZXXdUdFKhWxG92TlWVIgY5KjG07hTtP/EMFoROP19iWofu+WVxFmyVa9NC8n/j
+         86Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793815141; x=1794419941;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QTmRvblz37PC5NCgNvE/BNHc3Kf6wzzDBVIqvbKgPn0=;
+        b=C0MEE6WcbhIntkn/cyClVzkGEXkRL4KtPmK5CV2jUMLheDoFataL9b/3WbyIb4e4Ji
+         ZseuSCE15BNFWNlQ9J4lrHvdNXUhdUxWO6z896O4Hr2JN3yzABA5vMw9NHdzKAS9OmBi
+         Msp8/dcKpXRfMyhokfGshZwZ5vKtNiCu61AFIh2x4ZCDD29dzQ5xUWLnvagrZ4Tz7A3A
+         PZAObp4SeDhxgd5r9eQmFWO5RkGtS5Cf3dsefBBQ6goooDlm5HIeKBeLttif7b/fLkMt
+         N/6T0cNVbf7sPRWWQOv833lcjZxmAs9W3uEIAmsS89C7F6GvFkVA6gH0ySP/AqbBnsPs
+         KvWQ==
+X-Gm-Message-State: APuU4Z/10O1qB5FQHqtdTqEzjAtJXwr6t21glnIqHYyTnDJaj5jUVvZE
+	cpAVLIFsFZ93zvskmnlPUO9z8pn+Gp/8O+hDODIJMX2zwdP4MgG5R+rfdNdLvQ==
+X-Gm-Gg: AYBFou3+4ZfMMloxnifG8OshxJLbvM6Mwwd/7+xc1IppjJFXOQLpVX1GjngI5vdTOhU
+	DyKCVpFIVvMUEQXhwNwAmwf1ge8+rr7SNXia/XNeic7l9KoyDuDAIDHE/2svHmaNO/XP4KkUYAo
+	y67281SSCUvB2UBPQFT1PkRKJUTOjHLF27KftHLWxHzET8oftzKDSMr2SNowdIMJiH5N4uWyOhj
+	yQT/HQBZMwUVeoxbTNBNX11lh01MTYaVXVozl1hnzTMyX8/tp0nuTNYDHLlXG1HNCfuYN0Tz6jC
+	1WsRUXWieCaZVv2oEoSJee/lpDyTGOOXUsYOk2RSzg+eLhkTI7jUHbHmhxBe0umCvv4sm81LHUq
+	tTgAcg0+rvqGFCKXAp5ybWg1N2+ZwH47tLHcTHwzAU940TLsUeMnYLmzXhe4krJit9yLiO8ogWF
+	GLAHJ4QjPxl5ZATkV7muwH3cbaRrWfSi2rFZXlDTTgwunmXGrt3lEp65ykcrTFbK2VcNUN8K2tz
+	DYCBZswZ5RNZSus7uh6SBO3AtY5M61yoBxS3UXP/8rVrkO+xXaEaOg+JqcDLtSYv+E/AMn68ow9
+	5moVST3iCbmF6DHMTqr2cs9AJWIsTZA7ykPYn8OEzfxVBWDebf66wVXyMYzq7pYLalCzwz2XqII
+	lA2eFhNvVbSqm85jfwyqxWa+ZWk9CVUx1PJ+r/7L9TWA2ag==
+X-Received: by 2002:a17:902:d50a:b0:2e6:e9a:eb48 with SMTP id d9443c01a7336-2ed24050bc2mr1066155ad.41.1793815140726;
+        Wed, 04 Nov 2026 09:59:00 -0800 (PST)
+Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe1e4dsm10474875ad.21.2026.11.04.09.58.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 09:59:00 -0800 (PST)
+Subject: [net PATCH 0/5] fbnic: Fix FW crash restore,
+ stop path and mailbox teardown bugs
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
+Date: Wed, 04 Nov 2026 09:58:59 -0800
+Message-ID: 
+ <179381496288.9644.9775319757787890210.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,62 +98,38 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2421; i=brauner@kernel.org; h=from:subject:message-id; bh=VIVKq8y+KdCJwnDd/z4L2OCrr1yqDfObdGoCOSjiCdM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9znu/ZLFx05xpnp+TTtxLuaWnvKXR5q5SRcWM5RNFJ +7uuXKbraOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAi0wIZ/nB7KCi471/L1Nq6 9n0/51Uea/Fd3qy9fnsOr1vwmcnr62yG/yWGkZU+VvatQgcYS97WRSfuKtivn95TcozLZv5XWWl eDgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-A capture kernel reads the memory of the crashed kernel, and that memory
-may well have uncorrectable errors. On powerpc a machine check in the
-kernel is only recovered from if the instruction that took it has an
-exception table entry (cf. mce_common_process_ue()). copy_oldmem_page()
-copies with copy_to_iter(). For a read() of /proc/vmcore that is a user
-copy, all of whose loads have exception table entries, so the machine
-check turns into a short copy and read_from_oldmem() returns -EFAULT.
+Fixes for races and ordering problems in the paths that take the datapath
+down or rebuild it: the FW crash restore, ndo_stop and PM suspend/resume,
+the Tx force-flush, and the DMA flush on mailbox teardown.
 
-But since commit 4a22fd20379c ("vmcore: convert __read_vmcore to use an
-iov_iter") /proc/vmcore can be spliced too, and splice(), sendfile()
-and copy_file_range() copy into kernel pages with memcpy(), which has
-no exception table entries. A machine check there panics the capture
-kernel. The same goes for the reads of the ELF headers and notes that
-vmcore does itself, and those have been memcpy() for as long as
-copy_oldmem_page() has had its kernel buffer branch, since commit
-54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page").
+Patches 1-3 were found by code review or inspection; patch 3 has not been
+seen to trigger. Patches 4 and 5 together appear to resolve a hang with a
+PTP Tx timestamp left in flight. The series was tested on fbnic hardware
+with firmware 26.09.14-017_h7ab84d2ef68f, cycling the interface through
+DPC/AER recoveries for a full day, and under QEMU with the fbnic device
+model and live firmware.
 
-Copy with _copy_mc_to_iter() instead. PPC64 selects ARCH_HAS_COPY_MC
-and there it uses copy_mc_generic() for kernel and user destinations
-alike, which has the exception table entries. Everywhere else it is
-_copy_to_iter().
+These patches were previously posted as part of a larger set:
+https://lore.kernel.org/netdev/179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa/
 
-Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
-Fixes: 4a22fd20379c ("vmcore: convert __read_vmcore to use an iov_iter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/crash_dump.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 1543917bd3e1..ca7e019ae3e9 100644
---- a/arch/powerpc/kernel/crash_dump.c
-+++ b/arch/powerpc/kernel/crash_dump.c
-@@ -83,12 +83,12 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
- 
- 	if (memblock_is_region_memory(paddr, csize)) {
- 		vaddr = __va(paddr);
--		csize = copy_to_iter(vaddr + offset, csize, iter);
-+		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
- 	} else {
- 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
- 		if (!vaddr)
- 			return -ENOMEM;
--		csize = copy_to_iter(vaddr + offset, csize, iter);
-+		csize = _copy_mc_to_iter(vaddr + offset, csize, iter);
- 		iounmap(vaddr);
- 	}
- 
+Alexander Duyck (5):
+      fbnic: Take the instance lock to restore filters after a FW crash
+      fbnic: Fix service task races with ndo_stop and PM suspend
+      fbnic: Disable PTP completions during the Tx force-flush
+      fbnic: Suspend phylink after taking the datapath down in ndo_stop
+      fbnic: Wait for the outbound flush to complete on mailbox teardown
 
--- 
-2.53.0
+
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  5 +++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 16 +++++++
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  4 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   | 43 +++++++++++++++----
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 10 +++--
+ 5 files changed, 64 insertions(+), 14 deletions(-)
+
+--
 
