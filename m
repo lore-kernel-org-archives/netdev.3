@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793816484;
-	b=dTYy5sjhCWIiDQ19zn5SRPKnQ1UgfRvYLDsVg+d1u4Gv+BpzNby+jjz5IF8mQhfenSRK
-	 tCx2NSs7fqR6ca6T9UE4F2nvJS+G3ul0EWHVdO74THXSu0C6WH5U6QZkmrre3eLqFta/I
-	 QRRQbsai6ZkPqLled5Ga9l+egV7kjhOiJzamUkCT6/wloK9zCpln0RL768LM2IZDEz5pJ
-	 /KVrOFOs/5wevWo2/gNFviGg+TPZPjqelN2Ov5SDT/iKAAldx1vXvCIxc5JwT27+DnYk6
-	 mg1fX04mZq/vCnqgTtiQW47tDEQN7wSwoNxZQucOLhBS5aLKA+f4r10nMf/mIzDUp7w==
+	t=1793816485;
+	b=Wu91mVgaNHV9ZKI8Ap+1eXGKZMQHOHO4nznljj9yEYmu/PiTsUW6KTqH1SuDQu/itGSi
+	 or6sxfx0RKJz+JeFRUfkbj02mu6rDmHjaorQ+ut6vN2rKwPS0x7utkCexUpi6egfQWLv8
+	 uSosRIZMkzbfBaiIekeoMyrsupGYIwugw3X7igELfrO/f93iW9hnfkT+WfufiTIUsHrOp
+	 lRYYIvBICbVLu2qhNttbh04jX2pmbco8StoK5PAm9I1IEJWpLFzqn8Blzq65qEsbRBVnb
+	 1PMBEpnQd9mAMxXDuuSoCXAW2c/5aA8QvX/oX4hhblPSbleBezRGDlJiA3LEpqselqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793816484;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793816485;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=kS8FsxW+/obnUJdGTs0yg1R4GTkAEyCFRJDeSYb2Rwc=;
-	b=jAR9EN6Q51spCF11eoUIT0SrI4YGP8fu3RXHqnQIIwZLbRA5RZntC2xEuLjkY1y0mGZq
-	 vkRlrfgj8PcoeP+Jwp3KefMpuLRlFoWRcNaL6RNBhQDf639MoXtoRAoMdfaIQSXYecN0L
-	 OL+2VmjJpXlVM12LhNKcwaUIyPHCPpMsaoS2iNxfmdIK2VFI/ImN6x4taiGghzVNrJevu
-	 rsLM8Dn0Q6if5Qd6JoKUZD/vNtPLxVduTYWsyCZEyb6pHK/OfhJWP9yXwesOMhXUH9I0p
-	 90xpI+KjdvU3BY9Lwe8fOkxWRTfNu6b5SrRBbvcx0Rer/9t0mVUXdoNhSi3xC/UrlHw==
+	bh=Mky9j+WOnq3WliGY/AldJ7Jn18rgTtc7t2LkEe9tf5Y=;
+	b=EegyZ2sMJUai5p5OuDURsWsAnu6Rx7zaOoSFRkxs5sVy0uiyMor8nMspJV80DwoBCx80
+	 ah77CvXZOSBWNMJqMh0pPSZPaSMAIVz1co+sLQ2ff04vOJwuM3pk1myW8MXS/dupb7jee
+	 vo56MD7sTBQK3WuoEKhh4E8rVjdhV6QPvcgg5SMmrPo8NRhwh/vizB5hllU1z32p3cL/i
+	 dgPRUln6hL2ARN7GBmtd12Qk+7ED4lW2ezQ9SviR85PF776mz6xRqmpKRafYIWjFsnKiT
+	 Jc9yR83cFqnWBy68b1CrsZVAhjlEGQFa6QFWPXuMEvR6lBcmFU9EEwyHQFv0Og2UVGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MaRJVZjH;
-	arc=none smtp.remote-ip=209.85.221.48
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=el7ZrjEl;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB060A2600
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:21:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42DB060A2600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9BE60A3806
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 18:21:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE9BE60A3806
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MaRJVZjH
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48e10a70540so648796f8f.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:21:23 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=el7ZrjEl
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48bbb06e746so679612f8f.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 10:21:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793816482; x=1794421282; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793816483; x=1794421283; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kS8FsxW+/obnUJdGTs0yg1R4GTkAEyCFRJDeSYb2Rwc=;
-        b=MaRJVZjHoGszbKDJC8SqmXpVaKUXgwGDHZNfnnz+umrkQSI07I2biPhuPRC1OxUbxw
-         cOBw84HZIgTo5EPSsSINCBq2dGPskloOeDHU1ZEOSvq7QIcfAlqTJgErFSxqoWP/HuLq
-         4RBEBw+df40WPYpG8gti9C2+yIH1SO7hm2qkmVguzyuO/plf/sfa3czoImmmnwLenwPl
-         N2oaT0zYoR4kMpLUSYlDemDNJCOa8klIiQr7rZLE48DQh1H2+OtCRZI23Rfqx05TQ2UG
-         ELIbyiZk6P4TyuQqP47aS5LMOM+7/d3nRV9N3D2ThyJPOwZpZVf+uzumYoZpK/XwdVYr
-         tyFg==
+        bh=Mky9j+WOnq3WliGY/AldJ7Jn18rgTtc7t2LkEe9tf5Y=;
+        b=el7ZrjElkjGEwbcTxvHJbqH+Z5l0fG1MWnuGf50FD/jKywrXSo/L9eO78LgbLa8l+H
+         3/T2X05Y5sNOBDN3JakoeF9hmmn9JaguzMNoD7zt/hfAqDYdjOLXnA3fFWNJjxHCUW9j
+         W7dobHmaZyxd43ulo69mZESUlQmXEX7YAUIkZPz5ZcaIxJnilWF5MHV/NPhZAN86U8Y1
+         eMJRfZXerQecCDq8nQ4eqSaXWP4GCeVRhrurAyj8monLRW/CHUHRqIXmh6AC7dQfYeot
+         EE2edhN3LiQadpPN4WyJY2573sF2XuRDDirnfVHyz0cw4aDnK+a4hv5g8UwYMQMGykgr
+         tGGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793816482; x=1794421282;
+        d=1e100.net; s=20260707; t=1793816483; x=1794421283;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kS8FsxW+/obnUJdGTs0yg1R4GTkAEyCFRJDeSYb2Rwc=;
-        b=vlWrSe/cX+91bdndQvC4a6bTu4302+6/63U8q/KOUzRHQLbp3HjubsbtncEgz93wAF
-         KY5MpsfSHOhBKZGlubN+qEA3x6exXAIWIgqcFsXSVCtFx4lVy8gIMBmLaBytmpj7ZGaM
-         /BX9ueosUMRAAiIwTW70g6pKIyeCqpfhWVqyhTNuWzpbwyaR0elO3D/be6gftZ85umzU
-         XY1LMHt6j4TGT+iO6cRT3YoI4B3fjIL3aWCmPUFS2TPxt7WJQ5px2DKzE1NZCeD/vMuh
-         /b91sNxW45fwPJCcF43fWY1/kOh0OtQh8JdJbxbsGfDELwB9Z+zw36wFnsoq41TkTnn1
-         jFvw==
-X-Forwarded-Encrypted: i=1; AKwUvBzuSH51itEly8iiwIdH/qRkgJv5JLHb8PsUiDpo57T8RcXgLBAFuniRyDuTFF6esI6d9STdzy4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+RYpXcEDnIDXD81/csAelxkHYDL9N7ApXmwlp4cHarP6/zUYf9
-	lBlyzr5O/AeODyva+gEjp0A/BXusqcOVdcbs3naXwO6ebav4SwWlssYg
-X-Gm-Gg: AYBFou0To88+rUTe5SIZjpnHp2KBCAmMg6Wvz/J8iJTq8jTF/cPCO5wkwf1pWV4GIMR
-	+pyWoMRkG516kEDZXGVPuYeWBRpbr+MYsM7OQGfDiZxgW8Xv2eq+NRQLrzVeoOEhoyzS+tsym/w
-	nJ3Ks51yQb0pG3RkDHA5PXwc0FcvIkieNGD+plBCxNsichMsfDzqJPmjUvQrBe1eME22onYTaHc
-	XjZ+Dpd2c0VAy2EX/XzKLFzxqkoTAfpttcGi6XeBJKdkmDbGpWwRx42xSjoGNkc9nkNIClIk41p
-	mhezsWcUAcb0YWsO/Re/vT7etkkpvgeh6bwCR70aJbqYfhYIfCj1HBWftyIgEoXCv54Xujp9Osf
-	m5+wuZSX2cTJI+E7uiC4yWFo06HNMAJ4ggdU7h7IKNdAWKQBog7Md5CStLNUvNKA203MA68dkl6
-	JI39W0O85MNNdn+9lVzujCQlBKXDVG8ZugnNLUqtlMuX/It8+zLT0hi9phwbNBRizS/VFUKHIGm
-	0d5Sm4c08ky8EmBuLxGrwJxCSTp32U5R9alld04+R6f0PkH8e9YwOYVgUeTj/ErF/K3UnIGpGeu
-	hj/jF0x/Noso+F2duE6JDg75llql3RKW2HWPgtr9/Dv47hhnr3MPY0+q5WQJV+CrqIsUBnVmkLR
-	KBXamliuxVWGGzZUZMR0sEdCk5ixiQH/A0MjGVQ==
-X-Received: by 2002:a5d:6208:0:b0:48d:ecba:3cf8 with SMTP id ffacd0b85a97d-48e6e4f8bc8mr29009463f8f.43.1793816481575;
-        Wed, 04 Nov 2026 10:21:21 -0800 (PST)
+        bh=Mky9j+WOnq3WliGY/AldJ7Jn18rgTtc7t2LkEe9tf5Y=;
+        b=fKupknywCAkPa6dwjpJxmd6aZTKiczRAiYYEMbgnkv5Js/Av51w9i/+j8+OYqqZrxy
+         SJupk2DjCAaDgLbxW0g5HnZqAAvc7Unjtwk/gBIVF73t8QW1uzXSO38ye5/9zFgHC/5L
+         FnmNZauEhejIvUX3IJjyDsZSLscST1O77Rj2y/hEnV7OS7A1irCS7R9cT0KDnjljDFIb
+         wpuvvwXfHWoYQniai6ERoNgVfd8VDEx7j9bD2YRrTkTlzmw3N+CIAbsL/jqpHtjLBSqS
+         zCMrBQEA7V1HxyDwmhFM3MBt+ehqMchitgHdLFmRq9EAkBdcxTi0+/lW/UmLgXcnySc4
+         IbYQ==
+X-Forwarded-Encrypted: i=1; AKwUvByUWxXoAW/ERJXqI24TKAqwEWulUICnTwAb9T08D0Q0yk7ewxUW+3Q6UmpiEqGllCdt0xtemNQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+AcmXdWxA+rGkLIewN8DGvE3I7HT0/a0164Dr7nEvDUtJoYb19
+	d7xYC+mwHGSiKvS1x8v9d3Sx8lm9rGS/fntDKyb3aV7Bp98Vq/6nF5Y7
+X-Gm-Gg: AYBFou0uFb3WoO55OiFFVbQ8RpwoxHzzKtdV17aKMizvyqfuMZGBotc7k9YGNTV0hnY
+	as+9FoBow/v1DtQuZChifCPpjfw8sB60G8LwjlhpFKxA2ZohBoVn9k2+7fAPVb4iwh2dLHuSU13
+	U2LT3b4eY66ZKyg+nhbcqH8Dm9bfue6YAU+w2HPZC3rsd895ZRr8ukk+8G8IOULelPRzHHZe55M
+	FpvxZGuyyi1s94mvdVQuPKsNU5t6Iwttf3QivYm5gFLpRSR9mjuowFQ3ri3Ecvv/dQjSRxXY7KR
+	nS/xk5NhXOto8WJlr56Pj+7dnqOzazl4Xv7hqWc+VRbBDRwPSpkkQqbzl5SwHYhsv3yjgpE5fQ4
+	or2voKrC02rf+ZBznDBXT5yKqGTJH5r0gzSnjJBmThrFxGvpCwesafiGRLEqULJGbTNk90dXpMA
+	x0ssxqbSXuwjkpfM0CSWt7BAjopRKhD8nzGFpY9PHHCEPedVQZkH8t5r3uvb5S18JruGkDbqQJn
+	QZsPluUEyIrI0y8V3Dhdua2yFZE6xFwj6vUhCT39BnvqcN/Dlu63Vv/ICuWnTGM4+jzeHUVdetx
+	E1NNnq78N339nFqV04prdxT3VQR1mMjDhZelko2cr3NrSMq+OVWEKJ1FHVOocABhfghmaTUgOd1
+	8/dnUbmRFC1YKajDS7N2KdVkBGIVTRcMxjLiz3yQFWvkB6R0ZRJPTZjqui28=
+X-Received: by 2002:a05:6000:4a19:b0:488:8bc1:a2eb with SMTP id ffacd0b85a97d-48e6e308b00mr36775005f8f.39.1793816483116;
+        Wed, 04 Nov 2026 10:21:23 -0800 (PST)
 Received: from iku.lan ([2a00:23c8:254f:fd01:b079:a2f1:caf7:b446])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm4073202f8f.28.2026.11.04.10.21.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed0844e2sm4073202f8f.28.2026.11.04.10.21.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 10:21:21 -0800 (PST)
+        Wed, 04 Nov 2026 10:21:22 -0800 (PST)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@linux.dev>,
@@ -103,9 +103,9 @@ Cc: linux-renesas-soc@vger.kernel.org,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next v4 10/14] net: dsa: rzn1-a5psw: Get switch info via OF data
-Date: Wed,  4 Nov 2026 18:20:58 +0000
-Message-ID: <20261104182105.1102555-11-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH net-next v4 12/14] net: dsa: rzn1-a5psw: Add fixed frame length workaround for management port
+Date: Wed,  4 Nov 2026 18:21:00 +0000
+Message-ID: <20261104182105.1102555-13-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261104182105.1102555-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20261104182105.1102555-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -122,192 +122,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-The driver previously assumed a fixed 5-port layout and derived the CPU
-port and number of PCS instances from this. Newer Renesas variants use
-different port counts. Although the CPU port remains the last port, the
-fixed port/PCS topology hard coded in the driver no longer matches all
-hardware.
+The ETHSW IP used in SoCs such as RZ/T2H and RZ/N2H has a hardware issue
+where the internal mgmt_tag_vld signal is asserted as a level instead of
+a single-cycle pulse. This causes the frame length counter on the
+management (CPU) port to over-increment, so valid frames are falsely
+detected as oversized and dropped.
 
-Introduce an a5psw_of_data struct holding the per SoC switch info, and
-use this match data in place of the previously embedded constants. This
-makes the port loops, PCS allocation, management-port setup, and other
-topology dependent code reflect the switch layout selected by the
-compatible string.
+The recommended workaround is to program the maximum frame length
+register (FRM_LENGTH) of the management port with a fixed, large value.
+
+Add a management_port_fixed_frame_len member to struct a5psw_of_data to
+hold the SoC-specific value. When it is set, program A5PSW_FRM_LENGTH
+for the CPU port with this value in a5psw_setup(), and skip updating
+FRM_LENGTH for the CPU port in a5psw_port_change_mtu() so that MTU
+changes do not override the workaround.
+
+No functional change for existing SoCs, which leave the value unset.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
 v3->v4:
-- Added return value check for of_device_get_match_data
+- No change
 
 v2->v3:
-- Fixed typo in commit message: swicth -> switch
+- Marked of_data as const pointer to avoid build warning
 
 v1->v2:
+- Added info about the IP issue and the workaround.
 - Updated commit message
-- Renamed A5PSW_MAX_PORTS macro to A5PSW_MAX_NUM_PCS
 ---
- drivers/net/dsa/rzn1_a5psw.c | 31 ++++++++++++++++++++++---------
- drivers/net/dsa/rzn1_a5psw.h | 20 +++++++++++++++++---
- 2 files changed, 39 insertions(+), 12 deletions(-)
+ drivers/net/dsa/rzn1_a5psw.c | 18 +++++++++++++++++-
+ drivers/net/dsa/rzn1_a5psw.h |  3 +++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
-index bdfa84745eda..ee0187aae2bd 100644
+index f8fe6f3b8e12..f3eb8646dea5 100644
 --- a/drivers/net/dsa/rzn1_a5psw.c
 +++ b/drivers/net/dsa/rzn1_a5psw.c
-@@ -382,13 +382,14 @@ static void a5psw_port_bridge_leave(struct dsa_switch *ds, int port,
- 				    struct dsa_bridge bridge)
+@@ -209,8 +209,13 @@ static int a5psw_port_enable(struct dsa_switch *ds, int port,
+ static int a5psw_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
  {
  	struct a5psw *a5psw = ds->priv;
-+	unsigned int cpu_port = a5psw->of_data->cpu_port;
- 
- 	a5psw->bridged_ports &= ~BIT(port);
- 
- 	a5psw_port_set_standalone(a5psw, port, true);
- 
- 	/* No more ports bridged */
--	if (a5psw->bridged_ports == BIT(A5PSW_CPU_PORT))
-+	if (a5psw->bridged_ports == BIT(cpu_port))
- 		a5psw->br_dev = NULL;
- }
- 
-@@ -924,20 +925,21 @@ static void a5psw_vlan_setup(struct a5psw *a5psw, int port)
- static int a5psw_setup(struct dsa_switch *ds)
- {
- 	struct a5psw *a5psw = ds->priv;
-+	unsigned int cpu_port = a5psw->of_data->cpu_port;
- 	int port, vlan, ret;
- 	struct dsa_port *dp;
- 	u32 reg;
- 
--	/* Validate that there is only 1 CPU port with index A5PSW_CPU_PORT */
-+	/* Validate that there is only 1 CPU port with index matching cpu_port */
- 	dsa_switch_for_each_cpu_port(dp, ds) {
--		if (dp->index != A5PSW_CPU_PORT) {
-+		if (dp->index != cpu_port) {
- 			dev_err(a5psw->dev, "Invalid CPU port\n");
- 			return -EINVAL;
- 		}
- 	}
- 
- 	/* Configure management port */
--	reg = A5PSW_CPU_PORT | A5PSW_MGMT_CFG_ENABLE;
-+	reg = cpu_port | A5PSW_MGMT_CFG_ENABLE;
- 	a5psw_reg_writel(a5psw, A5PSW_MGMT_CFG, reg);
- 
- 	/* Set pattern 0 to forward all frame to mgmt port */
-@@ -1149,7 +1151,7 @@ static void a5psw_pcs_free(struct a5psw *a5psw)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(a5psw->pcs); i++) {
-+	for (i = 0; i < a5psw->of_data->npcs; i++) {
- 		if (a5psw->pcs[i])
- 			miic_destroy(a5psw->pcs[i]);
- 	}
-@@ -1176,7 +1178,7 @@ static int a5psw_pcs_get(struct a5psw *a5psw)
- 			goto free_pcs;
- 		}
- 
--		if (reg >= ARRAY_SIZE(a5psw->pcs)) {
-+		if (reg >= a5psw->of_data->npcs) {
- 			ret = -ENODEV;
- 			goto free_pcs;
- 		}
-@@ -1222,11 +1224,16 @@ static int a5psw_probe(struct platform_device *pdev)
- 	a5psw->dev = dev;
- 	mutex_init(&a5psw->lk_lock);
- 	spin_lock_init(&a5psw->reg_lock);
++	const struct a5psw_of_data *of_data = a5psw->of_data;
 +
-+	a5psw->of_data = of_device_get_match_data(dev);
-+	if (!a5psw->of_data)
-+		return -ENODEV;
++	if (dsa_is_cpu_port(ds, port) && of_data->management_port_fixed_frame_len)
++		return 0;
+ 
+ 	new_mtu += ETH_HLEN + A5PSW_EXTRA_MTU_LEN + ETH_FCS_LEN;
 +
- 	a5psw->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(a5psw->base))
- 		return PTR_ERR(a5psw->base);
+ 	a5psw_reg_writel(a5psw, A5PSW_FRM_LENGTH(port), new_mtu);
  
--	a5psw->bridged_ports = BIT(A5PSW_CPU_PORT);
-+	a5psw->bridged_ports = BIT(a5psw->of_data->cpu_port);
+ 	return 0;
+@@ -990,8 +995,19 @@ static int a5psw_setup(struct dsa_switch *ds)
+ 		if (dsa_port_is_unused(dp))
+ 			continue;
  
- 	ret = a5psw_pcs_get(a5psw);
- 	if (ret)
-@@ -1271,7 +1278,7 @@ static int a5psw_probe(struct platform_device *pdev)
- 
- 	ds = &a5psw->ds;
- 	ds->dev = dev;
--	ds->num_ports = A5PSW_PORTS_NUM;
-+	ds->num_ports = a5psw->of_data->nports;
- 	ds->ops = &a5psw_switch_ops;
- 	ds->phylink_mac_ops = &a5psw_phylink_mac_ops;
- 	ds->priv = a5psw;
-@@ -1313,8 +1320,14 @@ static void a5psw_shutdown(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, NULL);
- }
- 
-+static const struct a5psw_of_data rzn1_of_data = {
-+	.nports = 5,
-+	.npcs = 4,
-+	.cpu_port = 4,
-+};
+-		/* Enable egress flooding and learning for CPU port */
+ 		if (dsa_port_is_cpu(dp)) {
++			/*
++			 * Workaround for ETHSW IP issue, mgmt_tag_vld is asserted as a level
++			 * instead of a single-cycle pulse, causing the frame length counter
++			 * to over-increment and trigger false oversize frame drops.
++			 * The recommended workaround is to set the maximum frame
++			 * length on the management port.
++			 */
++			if (a5psw->of_data->management_port_fixed_frame_len)
++				a5psw_reg_writel(a5psw, A5PSW_FRM_LENGTH(port),
++						 a5psw->of_data->management_port_fixed_frame_len);
 +
- static const struct of_device_id a5psw_of_mtable[] = {
--	{ .compatible = "renesas,rzn1-a5psw", },
-+	{ .compatible = "renesas,rzn1-a5psw", .data = &rzn1_of_data },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, a5psw_of_mtable);
++			/* Enable egress flooding and learning for CPU port */
+ 			a5psw_flooding_set_resolution(a5psw, port, true);
+ 			a5psw_port_learning_set(a5psw, port, true);
+ 		}
 diff --git a/drivers/net/dsa/rzn1_a5psw.h b/drivers/net/dsa/rzn1_a5psw.h
-index d54acedac194..197ff5916578 100644
+index e952afd95dca..5bec33b23079 100644
 --- a/drivers/net/dsa/rzn1_a5psw.h
 +++ b/drivers/net/dsa/rzn1_a5psw.h
-@@ -195,8 +195,8 @@
- #define A5PSW_aCarrierSenseErrors		0x924
- 
- #define A5PSW_VLAN_TAG(prio, id)	(((prio) << 12) | (id))
--#define A5PSW_PORTS_NUM			5
--#define A5PSW_CPU_PORT			(A5PSW_PORTS_NUM - 1)
-+/* Maximum number of PCS instances (excludes CPU port) */
-+#define A5PSW_MAX_NUM_PCS			4
- #define A5PSW_MDIO_DEF_FREQ		2500000
- #define A5PSW_MDIO_TIMEOUT		100
- #define A5PSW_JUMBO_LEN			(10 * SZ_1K)
-@@ -231,12 +231,25 @@ union lk_data {
- 	struct fdb_entry entry;
+@@ -237,12 +237,15 @@ union lk_data {
+  * @npcs: Number of PCS connected to the switch
+  * @cpu_port: CPU port number
+  * @tag_proto: DSA tag protocol used by the switch
++ * @management_port_fixed_frame_len: Fixed frame length for the management
++ *   port to account for the HW issue.
+  */
+ struct a5psw_of_data {
+ 	unsigned int nports;
+ 	unsigned int npcs;
+ 	unsigned int cpu_port;
+ 	enum dsa_tag_protocol tag_proto;
++	unsigned int management_port_fixed_frame_len;
  };
  
-+/**
-+ * struct a5psw_of_data - OF data structure
-+ * @nports: Number of ports in the switch
-+ * @npcs: Number of PCS connected to the switch
-+ * @cpu_port: CPU port number
-+ */
-+struct a5psw_of_data {
-+	unsigned int nports;
-+	unsigned int npcs;
-+	unsigned int cpu_port;
-+};
-+
  /**
-  * struct a5psw - switch struct
-  * @base: Base address of the switch
-  * @hclk: hclk_switch clock
-  * @clk: clk_switch clock
-  * @dev: Device associated to the switch
-+ * @of_data: Pointer to OF data
-  * @mii_bus: MDIO bus struct
-  * @mdio_freq: MDIO bus frequency requested
-  * @pcs: Array of PCS connected to the switch ports (not for the CPU)
-@@ -252,8 +265,9 @@ struct a5psw {
- 	struct clk *hclk;
- 	struct clk *clk;
- 	struct device *dev;
-+	const struct a5psw_of_data *of_data;
- 	struct mii_bus	*mii_bus;
--	struct phylink_pcs *pcs[A5PSW_PORTS_NUM - 1];
-+	struct phylink_pcs *pcs[A5PSW_MAX_NUM_PCS];
- 	struct dsa_switch ds;
- 	struct mutex lk_lock;
- 	spinlock_t reg_lock;
 -- 
 2.56.0
 
