@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793759289;
-	b=h95uyJzRfUdJiqJ+JqoBjEQX0eoNAYlMosXIDya1t6Z78S87wMD5CL/i8kptMgjHxhye
-	 vWRU+bjv1jSnh0sK1a4e3gxJnxrlaqes2DRMYQcWBW4wjt/Q3BTiuGyfe4P8bXqwyekU2
-	 mCZej84AG4HHsN/rDNJ414B6KJUQszgVpEckY2MGp1Qy5hzx3Gakm5qUR/3z5u2zjORM0
-	 A/Tbf76eJ8YW6B2/nHz1vVlL6haYQ61Vnl6TTu5FdlWijngjkRlbQnrAPsplAnW1LqlKZ
-	 BtxckoZaZYwqMN2zDZ5ZgT2szvoU5mcAtm3mRygQabny/kwSzeHN4gkUeX+7dLc3htg==
+	b=WB8BUxA23a09/zx49LefBsGfghr97MibcuCpPcLSkNYh0wprG3zreOku41A1t68N6LZn
+	 Dzeh+DJ5Uy6QN0HkqGejVKHMll9f/UmRs+ElAeVEiIyD22VwLydMErXkJK4TphR3f7j8p
+	 oSeF2lyyWpH/0tWGpGkai5nqi8OQV3G28X+fnx6HeyA+SjUu2VN52sXeN0UfvsKL1nG9U
+	 nlWHJxIcNBuFGSjqF5drdsXDicLHQueDalTv+DUExDXCi/XbmfsA9OHQl8ZbVt6gY5lBZ
+	 hO/1hDuK9vyT7Rg382Tk2g7IaKPD3iDNQmjQiACzeoe+LXFJ3iMDep6TVK0xaj+SheQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793759289;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=m3ICyWKLt/3CRgSG3lfoecO7ZJvBzNsttX/y1Vej1r4=;
-	b=ZEJwt5cOPRlmLzTTxKdeQW02r9txKgnhcgn8NTtqEVLsO0W8ehsj78hu0Fo41tr5RGn1
-	 3JPJihgnEXZnAr/2miz7IYv1ZsWoJFksnjaLTEJoGbfT3Ymo/65HtHGr7SGWLfQuEsor7
-	 gF8/KzG/pLw0fnTcWKghj/MxGq8VPoI343a81S+loCvoP25f/o8jpGoieEH4hUmBEIeoR
-	 5rypewwjrh7BxPXGdAAqeuijffe4XRliKujIhnofmmcdM4s2ulYnNnZEUDk0O+Wfx0LCq
-	 kYY4+po8L5S5jtrAc41yXNmwMKOEeEsZZ9Ek4oxo3sYGVY7Mn/Pwmo3QfodxN9dXDRw==
+	bh=+YDG5KwrUVea+LaUfWinEfGxdL08ft+A2mCkARsXnrE=;
+	b=H4Jy7H8/e+mXSPW6IyJleGmJ0fgicAsY2G+pNum25RFm9rJNRfNFw8blirOMiQSXzd+3
+	 cV+BU9WB/1bkYWWDiO46hte2Ndoz1Nv5LTrmOqO4PR7FnvTZB0n+b4KAA00s0p0gN7nS9
+	 VuVBib4xXy4h4+YG+6Uacl2Vx77h52zFqHAJ3BVeMhodmGqk73zSrUCy1bS9bCxLSUww2
+	 zS+ESokKGVLRrZ+UMfmhp3TAirljfPCWEP5Kbkb/IcuvLGCRCSkqC3PlJtnBJE5R8etOt
+	 hDcakccEN2xz9C6abmThaarBATcTtrd3Hr/yAQ6HeAGk/zwulPyvpUP1CZlThP11mLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,28 +25,26 @@ Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BAA606A31B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C292F606A32D;
 	Wed,  4 Nov 2026 02:28:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7BAA606A31B
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C292F606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowABHcPowmOpqmZs+AA--.42059S2;
-	Wed, 04 Nov 2026 10:28:00 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowADH8PozmOpqxJs+AA--.42087S2;
+	Wed, 04 Nov 2026 10:28:03 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+To: Martin Schiller <ms@dev.tdt.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Cc: linux-wpan@vger.kernel.org,
+Cc: linux-x25@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH] ieee802154: drop the extra phy reference in del_iface
-Date: Wed,  4 Nov 2026 02:28:09 +0000
-Message-Id: <20261104022809.1484165-1-vulab@iscas.ac.cn>
+Subject: [PATCH] net/x25: release the route on a nonblocking connect
+Date: Wed,  4 Nov 2026 02:28:12 +0000
+Message-Id: <20261104022812.1484250-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,57 +56,57 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABHcPowmOpqmZs+AA--.42059S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7XF48JrWftFy7Ww17Cr4kZwb_yoW8Jr4fpa
-	y5u34UKr98Wr13W3yxA3WxGF1SkwsrtryruF1kAanYyr18Xa43C39agw4Ivr13Ar4kZFy5
-	CFyUtF1rZ34DCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB0b7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14
-	v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xf
-	McIj6xIIjxv20xvE14v26Fy26r45twAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
-	w2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVW7JVWDJwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20E
-	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUyXo2DUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRUBA2rqY-nHUAAAsT
+X-CM-TRANSID:qwCowADH8PozmOpqxJs+AA--.42087S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruFy3CF4DJw1xJw1DtrWkZwb_yoWkKwc_uF
+	nag3y8Xr1UJrWrCa1UKr43Arn7t34DWw1fXr4Ivr4aqry0qry7K39xCw15AF17u3y7WrZ8
+	Awn3C34F934IgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbsAYjsxI4VWkKwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
+	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
+	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
+	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
+	Yx0E2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
+	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAK
+	I48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2
+	IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v2
+	6r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Ar0_tr1lIxAIcVC0I7IYx2
+	IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IUYbiStUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwMBA2rqZFjHuAAAsF
 
-ieee802154_del_iface() takes a reference on the phy of the interface and
-then looks up the phy named by IEEE802154_ATTR_PHY_NAME, which takes
-another reference. When the optional attribute names the phy of the
-interface being deleted, phy and phy2 are the same device, the lookup
-reference is not dropped and the function later puts the phy only once.
-Deleting an interface while passing its own phy name therefore leaks a
-wpan_phy reference.
+x25_connect() takes a reference on the route with x25_get_route() and
+drops it at out_put_route.  The nonblocking path after
+x25_write_internal() jumps straight to out instead, so the reference
+is leaked on every nonblocking connect.
 
-Put the lookup reference in the matching case as well, leaving only the
-reference taken from the interface.
+That path cannot use out_put_neigh because the neighbour is still
+needed by the pending call, but the route is no longer referenced
+once the neighbour has been looked up.
 
-Fixes: bb1cafb8fc41 ("ieee802154: add support for creation/removal of logic interfaces")
+Jump to out_put_route so only the route reference is dropped.
+
+Fixes: e21dba7a4df4 ("net/x25: fix nonblocking connect")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- net/ieee802154/nl-phy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/x25/af_x25.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ieee802154/nl-phy.c b/net/ieee802154/nl-phy.c
-index 4c07a475c567..e7a8237b73c3 100644
---- a/net/ieee802154/nl-phy.c
-+++ b/net/ieee802154/nl-phy.c
-@@ -311,6 +311,8 @@ int ieee802154_del_iface(struct sk_buff *skb, struct genl_info *info)
- 			wpan_phy_put(phy2);
- 			goto out_dev;
- 		}
-+
-+		wpan_phy_put(phy2);
- 	}
+diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
+index f45c9ec7d2c6..89e0f247c5b1 100644
+--- a/net/x25/af_x25.c
++++ b/net/x25/af_x25.c
+@@ -812,7 +812,7 @@ static int x25_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
+ 	/* Now the loop */
+ 	rc = -EINPROGRESS;
+ 	if (sk->sk_state != TCP_ESTABLISHED && (flags & O_NONBLOCK))
+-		goto out;
++		goto out_put_route;
  
- 	rc = -ENOBUFS;
+ 	rc = x25_wait_for_connection_establishment(sk);
+ 	if (rc)
 -- 
 2.34.1
 
