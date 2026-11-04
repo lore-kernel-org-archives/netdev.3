@@ -1,108 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793781705;
-	b=pLsv1gRES2fzzO63Ltv8R7rUYrtDcm2pWNwjjoVT/YVZrBXI9OY2QgGInv4wa4/9VqxY
-	 TCR8R1pH89qG6lrWqdblxPmR7Hi7FnLgHK+hOxuE7wXle8AXbUpBQWz+RKXdRzyJEhYi5
-	 zgr9WNhphmv3XRJtyzEPft2aDRqNRZJk+vuzwMX+kKI9pavqxfVjoLJeBLnkgul3Px5+k
-	 +tcasw2govpHl8UtyAq/lo/qxVlUtqQbVEvqxxbrINWV87gN463N6KLZX5ZW0cIsp5ceR
-	 ZI+XlxuqTGha+eyDOtoKFu43jH6s4sScTi/PxUjDx3DR4po1uGTeNK+EmCI+oImzOlg==
+	t=1793782081;
+	b=knB309RE/ryucokV5zuboJOxaXvbSoxQna8NKm/GQeTAYPqGVjQO4MAepUie/qnZxUMf
+	 8yBF1nutvp/hXTVMnPi7a1D31VbjFUAoRKtFocE1vkC2ul6wk8A/0EBjVwHqZdS9UKT+E
+	 62bmkFs8J8fkQQzmwMOq+uSinhGGTMg/VMbuAe1O/HhcOAjrzAX0RZ57gm1UrGxfL//vJ
+	 iKhRz6aOgFC+/NC2eiXNdb2CPjFSm+7EtVC9ocu1xZ6QDRlIGswR/Asu7ShTU6W2sum9L
+	 wDoxRflNOFXdcjUoo1oA5djkCn0Bkwd7b0MsClZmFObfmH6P0Pjc23VsBYWBmsa0FAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793781705;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
-	b=yV3XCVfD5oO8AYt3l8dC4wKkuvIC7S/DX/JBsIYdXd7+Y4P92hEjs7uRA7MG/zX8gfAS
-	 huNoPMP8B5THekPMiPSJt7HXtmh7YhIYSP4BsDSlnKJyk5r2jmx/16Y4JuocYSPNqJ2SV
-	 6LlG638h8CmaN/Pez0b3I/wEJUewsiIsy1r3BXx7XuJppP+auwhT/08hWCczmnqeUEq1q
-	 ZHwHtT/Ho09rqSpCA22V0esk8qITHQGlZmt0X4i4RsWeQ9UK8LDWxQ3exMyeqWmmShVCq
-	 td6jEU7A+gWU/4+OYfkPsJiHY5HSvhYaHKdDZ+crrn7I4sX7M5R2zeFJEN8UoVzG3YA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782081;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
+	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=bKYL0tIwOuQrMDxrCyv61nKmyjjc86ptxINLaNUCb9M=;
+	b=fnLKby1d1Ct/Lz7P4GNEQrkEXsnYsK5pcLU/4iMYpqDqrVKyB85bc/G1gxKezGtrHEoB
+	 YBeAZrrUlhHxaiJkp2hHCkaS8ADP/ll5ZPfrPJu6MCMeAy8pSFAVgOrD6i2PUZyt2QzHd
+	 hGDDUINxodyDgN0S/Dv6we/qoqkGHhIO6nRFCk1e/TxoVKsVlYBj8j9O9MtWQfMiJ2UAy
+	 c4JBqNJ6IJC+6K1xQxrlWanFj6Zgrx2h4XO7UiKXKyTYUgGIETJr6BY44VypQSqqZW1fH
+	 SAs2OFSrI6+hGzx4ShX0oD5bJD7kshqZyMl/2PQIepyEZZH7SBjoTspsbweJL3bNWQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YjOMFFH3;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="hkYPDeo/";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=telaak.dev;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.210.43
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83CA606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:41:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E83CA606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YjOMFFH3;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hkYPDeo/
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793781698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
-	b=YjOMFFH3B4gbABFW7fjGUAsevGp1qOhYK4t+oEW42rYDmrTfX0E62gBogAS5/RJcqmxlkv
-	BfutCBRDBbt42KXBnUTkR7eaTtR9oNFSniWhgBQ60Vl6TvZqkl7Zrc3lRxfl4jpALUXJD6
-	+tyms6FTx143skW03MLdFS5gnHblItI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-0YiDLBk3MeuWA5bPKlxHAg-1; Wed, 04 Nov 2026 03:41:37 -0500
-X-MC-Unique: 0YiDLBk3MeuWA5bPKlxHAg-1
-X-Mimecast-MFC-AGG-ID: 0YiDLBk3MeuWA5bPKlxHAg_1793781696
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e0389d6f9so294951f8f.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:41:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793781696; x=1794386496; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
-        b=hkYPDeo/+rw5xYOEw5/EDKXBZ44X6fnZdMHtvBQtQeO0kKS2SpiKEtE/sZOsk4+37W
-         YJelI7l9+h3FrNSB1Iib7+EvvhPgnjUJ9eEEKINL9oT6Vte3FSIG7OinOymwWJp7u7vD
-         DBIg2CxBjteS95KbwDdWLuCDVpay4zdX9DLRqjmRN+UWtkqfqSGqRXaC+dfOF4/49HWS
-         10nACvG/WkkngPf35DzrZZIxo+nQDqrVyeBPm1HSEzKXHyR+9AaA7xFAuLhsxQt5u68p
-         +n4b13z8gbD/0LXI5wNUevVBTrtd+Wz/HtHYth4j693qQpEwrqnwSpKaMOsPYLm7NtHK
-         s6zA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFCB606A32E
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:48:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AFCB606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=telaak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-8490a7d6696so218180a34.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:48:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793781696; x=1794386496;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tOA6pkU/gNCWHcJNqJZg0NzRYRy3OJtENBm4suvgaWI=;
-        b=FnHVlsJYeJEgyb4OsG2uvMQnyua2olG9H5OPGIKzW8h4nrZgalkk8CMrhjTCbzXK5a
-         /QRZYXoxUzZA4mAgHJvQ+jAHlrJ2p6yfnjIS+FxwZRLutowpRDZbGjnPma5s3TS1exgm
-         4kms4sF1JpZhW274bWmIGNW7aojW9u+1TSJGjYwku35aEV0Sx2+pwl4gs7nvkal5DZQr
-         YM3bSSmlLBeOziggKU+v4+hJuhNHUZtq4zO9NqsjAV1KjRihrUJSGukThG3nF/deXtED
-         98PK0kZMmnoAFX6VduaVjhG9Nlof/Zui+ik+C5/7Xx1DBTlfoKKUr9HF1Ftm9iAZktjw
-         LoxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz+RaT3JHVhopVgJUdmRyHGc37sVev0XGOfHFq1/hjeiRsmXO9JxAq28g1QTHp6MJPEctfCUsw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9hpOK/D0oSG6Flg15vzL7cktcWEMYA3BpqouC4LbuRx2hDJ+ev
-	QCE4ODPCks3wgMqttdErZWksajgR7mjhIPwGR7uInveZAfiXkc19LCCCuGz7/g6A2R+bV3Qqm4v
-	J2tdMFH2ifwcAf79/7qToCdCxvxT6xnnsgUlUfnW7WCF5q/p+3/eKXtfoBQ==
-X-Gm-Gg: AYBFou1vIpzoGUGajP8ShYXLTb6Ji8U9akRXYVgIc3Tr2plVU5UTclAUoimR1RQ9Mct
-	6hExLLbTWYWT7jhJg3GR3T6j52q6c+p8aQ2LoAOjuui+2kMS0Lj8UuldA6MdKBI5sAsaoXjNJmP
-	bbLPtATcEzoId4SSRy4pcxEyhN3TruVaYhDoOCdLTThrc6FRDvO2u98ZtoSA+WjS7oABs3CPvOM
-	cukGFYJJ0Bn/TUUByqp1GG8Q5Jn1MIMPUW38Rd/g31jBqeGZWF8I+ab2MisxhC9UqFX9DGJ9Weh
-	3BLZhTV78/R6JgCvBIfAwmgiG4zYnm0Q0VC++C/A5wgs30CSOT+jpsdlmXXvaqpGJGMBHSoAKVd
-	yCEQNmJal+qms9sJ9FwBaCQ5M0bPUTVSmxDlfHygngMz7NiEyOdx7/2vgYUNZV/iFdWmPb1kU5t
-	L8MfXffL4OwLC05Rz8QpbhqxGykTyxBkrgT7ZdvyEOZJk=
-X-Received: by 2002:a05:600c:6099:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4ac185bc1d2mr329183195e9.26.1793781696134;
-        Wed, 04 Nov 2026 00:41:36 -0800 (PST)
-X-Received: by 2002:a05:600c:6099:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4ac185bc1d2mr329182855e9.26.1793781695664;
-        Wed, 04 Nov 2026 00:41:35 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d87b5sm2470040f8f.11.2026.11.04.00.41.34
+        d=1e100.net; s=20260707; t=1793782080; x=1794386880;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bKYL0tIwOuQrMDxrCyv61nKmyjjc86ptxINLaNUCb9M=;
+        b=cIZLiP+xm/gxkcprz7OUZj1clz4OytlWZ52u8nqw9A5wo2Il3wWVmZN6ED0eOedqBp
+         pXdkSZSiOActZdn28E+bci4LP2D2TM3awqoZMOanejDAT/wQEW1cgZPYYUrQFFOVi1BR
+         cz4SVshAC3rl0h6SRHYA9W9FC+4wAlUn+UW/Eph3r7g0RoGPqSlfEpYvUhrH9bTurCFa
+         s/M9DAJuQMmX+tqV7Ctnt6+137pOWQwLR3jfggruTazPUS++JP6zLpJD4hK9MyO6zhK3
+         lZ0gCtJh5WQL+nfb8+bbjmSOwN5serJkF1cXH1Z9GwY6DU++ep8v1EdCofYplRSWxfKa
+         t+yw==
+X-Forwarded-Encrypted: i=1; AKwUvBxxPhV7FGhsD5jV43IEvYkevRe7i4ucbvN9bEZTn5XwmgQlP/olnZdeFt+S2+rN/ezvUC0ZlVQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+S8obKjxJ8MNc0N9HQR3gih7rP8EF90RG3+gXrLMs1DqKwEtXO
+	wMCciqeSQrRLPs3dLz4cCzh1aRmWsaq/L/OAlHnM4nuReWhnhAevfhPpSIF/xJW9roQ=
+X-Gm-Gg: AYBFou2XjMR5ifvuDJmufvbNrFaFmIvpJP9vOp9cDhhcFUgo0H6BmiS7z3vtWVRwnMy
+	3WCbJv3zL7fxy0kZnQtwmbLYTzMLwe9vMKH5V9j1QFYnIQlaVCR5sb7MedH2cBXfV0KbgyTRm1B
+	GRan20jMsPeQtw76Qsboz36ysxwf19vSbtDdOSofqAkhRmExx62KvJoLfocRooNBliVlV9BhYsw
+	wQxZxGGPKvNoi1I7D3tiun92e3QFjQdyB+euClWJW9mSAgqkwAO4Y1XBjIPIXG/0vJX9QlBDjji
+	oqtUndOzZTB4nOEjqs9zXloZoud0qJWpByVm5PkI+oFTgfVH2J1n1Q1EzCCuTh+eKBFCtmOecuF
+	pizy+ipr4oOjx9nJoBcaPi15+SaMq6M6xC6U9JjaRVXh8PKw81ME0n/ncFpyOyMT+bA4OEW6jBs
+	ZgDhdK8DqQH4NA1dWyJ52kwt+yXoHRI+YWbx9fNxVkCAUTo1Afl/fSNoktfpaLzWErTm9oDaC0T
+	Q50fJRzaRJk10gYGFnCXyht2RWxi7nsWFdrHmo9TqYI7gi7VQqOQlCdIaKkXsy8h8dpgtdbKNOv
+	lDE6GoWat8F6nd7mJUB9otZbpZNhGVSAV22IbABqqh5eHHbdCME9wM1vVCVcnSCSjE7xpbG4LZC
+	OBa6mO+d/8YVc6ocawNO9OqZJ9Bj5tSqwKP9AxPBg
+X-Received: by 2002:a05:6808:1202:b0:50c:bc6f:fba8 with SMTP id 5614622812f47-5640de44ed0mr9781324b6e.65.1793782080244;
+        Wed, 04 Nov 2026 00:48:00 -0800 (PST)
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com. [209.85.161.52])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-567a9f400fasm1130189b6e.8.2026.11.04.00.47.59
+        for <netdev@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 00:41:35 -0800 (PST)
-Message-ID: <f029172d-855b-4e93-8a86-d4aff72c9abb@redhat.com>
-Date: Wed, 4 Nov 2026 09:41:34 +0100
+        Wed, 04 Nov 2026 00:47:59 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6dde81a6820so273905eaf.2
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 00:47:59 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwFlEH8RcqLmg+1VvUdCeUCD4eSx7nej0UP5vpQnlGZgVKoEB5DSrDXbjCvogFyG+lNErJkqUQ=@vger.kernel.org
+X-Received: by 2002:a05:693c:6407:b0:36a:7b3c:4e0a with SMTP id
+ 5a478bee46e88-36a7b3c4f8dmr7297124eec.24.1793781644445; Wed, 04 Nov 2026
+ 00:40:44 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,65 +81,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: reject a negative TCP header offset in
- qdisc_pkt_len_segs_init()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- sashiko-reviews@lists.linux.dev
-Cc: bpf@vger.kernel.org, network dev <netdev@vger.kernel.org>
-References: <20261101194433.2637113-1-alexei.starovoitov@gmail.com>
- <sashiko-outbox-194018@kernel.org> <DML39PMNWP8Q.7K2P5T3AG8LP@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <DML39PMNWP8Q.7K2P5T3AG8LP@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
+ <20261104-sf19a2890-gmac-v1-2-a15965a49574@telaak.dev> <6e8d69e3-9404-4a80-874e-0133f942229e@bootlin.com>
+In-Reply-To: <6e8d69e3-9404-4a80-874e-0133f942229e@bootlin.com>
+From: Joseph Telaak <joseph@telaak.dev>
+Date: Wed, 4 Nov 2026 03:40:32 -0500
+X-Gmail-Original-Message-ID: <CAPY4CJ5RZFkQh5G0BbgC7FesQQbQ53AJQv6pYoK+YEVo8k62bA@mail.gmail.com>
+X-Gm-Features: AclHuK9Odzf_wS7Gr7Do7DU0hVIY-1521pU5hfzHYwAlyguOls_NqIQeDv60H-0
+Message-ID: <CAPY4CJ5RZFkQh5G0BbgC7FesQQbQ53AJQv6pYoK+YEVo8k62bA@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] net: stmmac: Add Siflower SF19A2890 glue
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Chuanhong Guo <gch981213@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/2/26 23:46, Alexei Starovoitov wrote:
-> On Mon, Nov 02, 2026 at 11:44 AM sashiko-bot@kernel.org <sashiko-bot@kernel.org> wrote:
->>> +		/* A header in front of skb->data gives a negative offset. */
->>> +		if ((int)hdr_len < 0 ||
->>> +		    !pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
->>>   			return SKB_DROP_REASON_SKB_BAD_GSO;
->>
->> [Severity: High]
->> Should the (int)hdr_len < 0 check be placed immediately after hdr_len is
->> computed rather than only inside the SKB_GSO_TCPV4 | SKB_GSO_TCPV6 branch?
-> 
-> No. It's already explained in the commit log.
-> 
->> When (int)hdr_len < -8, hdr_len + sizeof(struct udphdr) wraps to an
->> unsigned int in [0x80000008, 0xffffffff] (> INT_MAX), which triggers
->> DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in
->> include/linux/skbuff.h:pskb_may_pull_reason() before returning
->> SKB_DROP_REASON_SKB_BAD_GSO.
-> 
-> Not a bug. That's CONFIG_DEBUG_NET only and the warn is right:
-> the header is stale.
-> 
->> Can this write uh->len (and uh->check in bnxt_sw_udp_gso_xmit() and
->> enetc_tso_hdr_csum()) before the start of the header buffer when
->> skb_transport_offset(skb) < -4?
-> 
-> No. The driver doesn't see this offset.
-> 
->> Third, for other GSO types (such as SKB_GSO_FRAGLIST, SKB_GSO_UDP,
->> SKB_GSO_SCTP, or SKB_GSO_ESP), hdr_len remains 2^32 - |offset| at the end
->> of qdisc_pkt_len_segs_init():
->>
->> When (gso_segs - 1) * |offset| > skb->len, can qdisc_skb_cb(skb)->pkt_len
->> underflow in 32-bit unsigned arithmetic to ~4.29 GiB (exceeding
->> QDISC_PKT_LEN_MAX), causing deficit-based schedulers such as drr_dequeue()
->> and ets_dequeue() to spin in their deficit-refill loops?
-> 
-> No.
+> This is only used during the probe sequence, you can simply pass it as
+> function parameters, this avoids using up memory to store that :)
 
-FTR the nipa sashiko instance dismissed the above concerns autonomously:
-
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101194433.2637113-1-alexei.starovoitov@gmail.com
-
-you can reasonably safely refer only to such instance when submitting
-patches to net/net-next.
-
-/P
-
+Thanks, v2 will pass the device to the delay helpers and drop the
+member.
