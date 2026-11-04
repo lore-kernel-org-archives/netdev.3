@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.27
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793807840;
-	b=hca1+yMOGwoQPhYkkjph4I2xXcV7HGksZ65eBJyvbCIdSRw91BLuiC3N6KGzJu2k7YGA
-	 NiKEuAD54i8jDuKl8vmZrrSlK0zvPtzVvEe+1gV40caBPjuC1qa+9L8mGG+e9nzeocX9F
-	 o3esqANlGDQewNB4Nu9MiNBJWHzo05hoKJ9OicHZjIgAxJH5vlqfvWVgNLBq/0XBRnDkZ
-	 vNRnPLzM7SvCvUbxLcFmz4rMubtwdA/90HZ+BYbkwSw8IG4uQ/ci5Re516CziFOS8WN7K
-	 tsuCFfZT7r5JjvcfuPsPpj6ib8qsALt6VVeJXep5Q826gqcunfzJiq714LYFJmiHIVQ==
+	t=1793807838;
+	b=3un+4BHFV0vqhZh75HNiGgidXbg31c3mwwGWDoVf6n5CeCJ6txXu1Obdu0foPXu9hNqW
+	 /C1ORKi3+lhd5m74TYWjtv8ZFIjPUkydJtJmGgN0G4ZzjnyvdoW7XKY9ki52yUjeAZDgD
+	 nrBgFwjNpTuJaphxlnan9e6//exXST5xTTmF1gz+KXmnkeaqUPW7L5nSgt9mYV0UrmriG
+	 i9mk/BepxlS0QEhbAgNVmvYivu+PulijgtsbI/q+pthBhBH6s8msPVqSRTHZQ2yb4xtNl
+	 zbxXeEXrKTPT5JVJ3CpZqDBtF82FOEpzdETAx7kWYhvwAceMcp1zUnW6QK+cNOksDMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793807840;
-	h=DMARC-Filter:DKIM-Signature:To:X-Mailer:Received:X-Original-From:
-	 X-Lms-Return-Path:Subject:Message-Id:Mime-Version:References:
-	 In-Reply-To:From:Date:Content-Type:Content-Transfer-Encoding:Cc;
-	bh=sEqrrV3Crliv78+ZI7CQE8xTDYk3MYWDUETNd8o/kK4=;
-	b=eb2+QOAsytieJEBdFD5kQmB/s2fwnVLWmL2uUI4qIfk5gBvYcBvpFipLe2hriHvW5Zoj
-	 1nfr6/GWCj9Ni/UX4i38bllAU/hj0m67WzgO4hlmskqfHSyY1wmWMMxh+uaR0OEOWlVWw
-	 wWrCu5IxuCY7C74WXlln9VtwVlkTZ+iPr/0aefEXEb+BJGgL4605hp9NSLymnWrXQVnM9
-	 ry+TQLYOa10Sa4ZhFnG4jFDKVEu71KDiYdzoawmJRpamOf1J/IkMPJ3xXJw4D3ciYeyuM
-	 kvWX85U/Nhudxta48exK7cCSMPoaKYDhRqvBabwZSIAGa7fsNpmuMnfqwRdmebxtIXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793807838;
+	h=DMARC-Filter:DKIM-Signature:X-Original-From:Subject:Received:
+	 Content-Transfer-Encoding:From:Message-Id:To:Mime-Version:X-Mailer:
+	 In-Reply-To:References:X-Lms-Return-Path:Content-Type:Cc:Date;
+	bh=Gem3O/e+pVH9BlS7FCL6vQ9dj9eYYb793NGKe1oObHM=;
+	b=q05lojwdnSzKHIyvUonMtLg9kB2qGltp29e2ZdV2QtIFGad3cVA8cQj54CsUT3tQNdEG
+	 hY+c6+UAX4+Fb7/7kL5q7XiMKYkZkVRYhs4O97FIe8pKBWGZqNxQoKsjq116U4DZZ49qt
+	 V5fZSsbeNm+uZ6Y7ECYLGeo/Ho/6rHWDq+9V1vMn/puaSZEFF2RBUR1quN0HlFwZLDmA+
+	 s/eYE1buu5mJogq+LDDtXxdA/wzxPNWX1szK1ikVxUA5ScjkXO0ch+ywUwWpwYrmiAsoY
+	 yAGYDb9sQs3Goevj4eYzKAGIQLbQXV2yZhEiVIwpGdwni1xWDjRxiDDululsKZ6Gvlg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=yunsilicon.com;
 	spf=pass smtp.mailfrom=yunsilicon.com;
-	dkim=pass header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b=BtNZGP2m;
-	arc=none smtp.remote-ip=209.127.231.27
-Received: from va-2-27.ptr.blmpb.com (va-2-27.ptr.blmpb.com [209.127.231.27])
+	dkim=pass header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b=Kl0lBloS;
+	arc=none smtp.remote-ip=209.127.231.30
+Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8A6082BC8
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:57:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EF8A6082BC8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5089A606EE97
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 15:57:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5089A606EE97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b=BtNZGP2m
+	dkim=pass (2048-bit key, unprotected) header.d=yunsilicon.com header.i=@yunsilicon.com header.a=rsa-sha256 header.s=feishu2403070942 header.b=Kl0lBloS
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1793807834; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1793807832; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=sEqrrV3Crliv78+ZI7CQE8xTDYk3MYWDUETNd8o/kK4=;
- b=BtNZGP2myEic0KpVEXEnnp4MvwEMWYD43y+IZQoH0h6NWQLhf51S+IkpqPos5gQoTNAHiW
- PaLZ7e0ACit/LFF8E54rjE/azDyPRszGzMYtCG+ZVKGTLq13SkftBDpJ//SXJnHVdSIH16
- VNMu1AIdjBNgnV7e/gNB1H5CE/scxJqe5TSMl4pVm1+PNWRg4culBiAk2c2BCQWU++OKHd
- iEztie1iyAJcdsP63I9RQIpYaJP0ZUvEn0FNNTRiuXeYmhCc6a2d+jvY652oHssLVVJaVP
- q+BJySsAEZ+8xCKe/nP9iQN73PSd6VG17Voga6iQz3jOOXSwNiSdWYEb62OwSg==
+ bh=Gem3O/e+pVH9BlS7FCL6vQ9dj9eYYb793NGKe1oObHM=;
+ b=Kl0lBloS/ExYGNgr3WlRviCJNVjJ9jGnrWvJt1kR6RKfLJiIPMrBTdgkYZ1vwg4Z4eSYmu
+ nHsC0CtTBhGXlP0DZBXthFi5TcnmYqcgXn5bzoo0LKVqLVYyM4kN6zzVpw5mF333bW+cca
+ inDMvVpaiPGDBDwvPWG9cKl+c4MjnvF4ASDlAUfMSR+X5MzngDoClmWmVKnmR/XAQCLJYw
+ cJ8DzlZnLvCHLI6VMjXtZvXPhrwbaNVTyDqdodsPI4fIz0FAYROe8vKYRFamnHzN0hyYVg
+ kdjQnErfnvgXHVSC/KOgsWjJJwXn8XYzPN9j5TCJhZnKkqgzJkHRw6EV//w6qw==
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Subject: [PATCH v1 08/15] net/xsc: add ethernet TX path
+Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Wed, 04 Nov 2026 23:57:09 +0800
+Content-Transfer-Encoding: 7bit
+From: "Xin Tian" <tianx@yunsilicon.com>
+Message-Id: <20261104155708.37053-9-tianx@yunsilicon.com>
 To: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
 	"David S. Miller" <davem@davemloft.net>, 
 	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
 	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
 	"Leon Romanovsky" <leon@kernel.org>, 
 	"Junxian Huang" <huangjunxian6@hisilicon.com>
-X-Mailer: git-send-email 2.25.1
-Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Wed, 04 Nov 2026 23:57:12 +0800
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
-X-Lms-Return-Path: <lba+26aeb55d8+6bde2f+vger.kernel.org+tianx@yunsilicon.com>
-Subject: [PATCH v1 09/15] net/xsc: add ethernet RX path and statistics
-Message-Id: <20261104155710.37053-10-tianx@yunsilicon.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,1181 +64,1619 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261104155650.37053-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261104155650.37053-1-tianx@yunsilicon.com>
-From: "Xin Tian" <tianx@yunsilicon.com>
-Date: Wed, 04 Nov 2026 23:57:12 +0800
+References: <20261104155650.37053-1-tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+26aeb55d6+a400eb+vger.kernel.org+tianx@yunsilicon.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
 	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+Date: Wed, 04 Nov 2026 23:57:10 +0800
 
-Implement the ethernet receive path on top of page pools.  Each RQ
-gets a page pool with DMA mapping and device sync; receive pages are
-partitioned into fixed-size fragments laid out at successive
-offsets, and a page is recycled only when its last fragment is
-consumed, so the pool holds a single reference per page.  WQEs are
-replenished in batches and the RX doorbell is rung after the batch.
+Implement the ethernet transmit path.  Opening the interface now
+brings up the full software side: per-channel CQs and a raw-TSO
+queue pair per channel, one NAPI instance polling the completion
+queues, and the queue-to-sq mapping used by the stack.  Queues are
+NUMA-bound to their channel CPU, NAPI is enabled before the queue
+pairs are transitioned to RTS, and the doorbell is programmed only
+after a write barrier.
 
-Frames are built either linearly, with build_skb on the received
-page and the packet-parse header length reserved as headroom, or
-non-linearly for MTUs too large for the fragment size, by copying
-the header into an skb and attaching the remaining fragments as
-page frags.  The completion handler validates the CQE, drops
-truncated and oversized frames, reports checksum status including
-tunnel inner and outer checksums, extracts the RSS hash with its
-layer classification, records the receive queue and hands the frame
-to GRO.
+ndo_start_xmit builds a WQE from a control segment plus one data
+segment per mapped fragment.  Checksum offload mode is chosen from
+skb->ip_summed, and TSO carries the MSS and inner header size in the
+data segment fields.  Over-length packets that would need more than
+one WQE are linearized and retried.  Each fragment's DMA mapping is
+recorded in a completion-ordered FIFO so the completion path unmaps
+in the order it was issued.  The doorbell is skipped when
+netdev_xmit_more() indicates more work is coming, stop_room keeps
+one WQE slot free so the queue is stopped before it can overflow,
+and byte queue limits track completion progress.
 
-Also implement the RSS receive side: a set of receive queue pairs
-created through a single multi-QP firmware command that returns a
-contiguous QP number base, wired to the RSS indirection table.
-
-Add ndo_get_stats64 folding per-channel TX and RX software counters
-into the rtnl statistics, and advertise RX checksum and RX hash
-offload.
+The NAPI poll loop drains the TX completion queue, unmaps DMA,
+consumes SKBs with napi_consume_skb, updates the consumer index and
+re-arms the CQ.  Advertise SG, IP and IPv6 checksum offload, and
+TSO.
 
 Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h |   3 +-
  .../net/ethernet/yunsilicon/xsc/net/Makefile  |   2 +-
- .../net/ethernet/yunsilicon/xsc/net/main.c    | 364 +++++++++++-
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |   2 -
- .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  | 556 ++++++++++++++++++
- .../yunsilicon/xsc/net/xsc_eth_stats.c        |  40 ++
- .../yunsilicon/xsc/net/xsc_eth_stats.h        |   1 +
- .../yunsilicon/xsc/net/xsc_eth_txrx.c         |  17 +-
- 7 files changed, 975 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 936 +++++++++++++++++-
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  | 345 +++++++
+ .../yunsilicon/xsc/net/xsc_eth_txrx.c         | 143 +++
+ .../yunsilicon/xsc/net/xsc_eth_txrx.h         |   1 +
+ .../net/ethernet/yunsilicon/xsc/pci/vport.c   |   6 +-
+ 7 files changed, 1415 insertions(+), 21 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
 
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+index bc41e88cc..ea536389e 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+@@ -568,7 +568,8 @@ int xsc_core_frag_buf_alloc_node(struct xsc_core_device *xdev,
+ void xsc_core_frag_buf_free(struct xsc_core_device *xdev,
+ 			    struct xsc_frag_buf *buf);
+ 
+-u8 xsc_core_query_vport_state(struct xsc_core_device *xdev, u16 vport);
++int xsc_core_query_vport_state(struct xsc_core_device *xdev, u16 vport,
++			       u8 *state);
+ 
+ static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
+ {
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
-index ffb819884..43d049e42 100644
+index 0e6249cec..ffb819884 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
 @@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
  
  obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc_eth.o
  
--xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o
-+xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o xsc_eth_stats.o
+-xsc_eth-y := main.o xsc_eth_wq.o
++xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-index a02f95145..e56e0eec3 100644
+index 21a50085f..a02f95145 100644
 --- a/drivers/net/ethernet/yunsilicon/xsc/net/main.c
 +++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
-@@ -686,6 +686,14 @@ static int xsc_eth_open_channel(struct xsc_adapter *adapter,
- static int xsc_eth_modify_qps_channel(struct xsc_adapter *adapter,
- 				      struct xsc_channel *c)
- {
-+	int ret;
-+
-+	c->qp.rq.post_wqes(&c->qp.rq);
-+	ret = xsc_core_eth_modify_qp_status(adapter->xdev, c->qp.rq.rqn,
-+					    XSC_CMD_OP_RTR2RTS_QP);
-+	if (ret)
-+		return ret;
-+
- 	return xsc_core_eth_modify_qp_status(adapter->xdev, c->qp.sq.sqn,
- 					     XSC_CMD_OP_RTR2RTS_QP);
- }
-@@ -707,8 +715,329 @@ static int xsc_eth_modify_qps(struct xsc_adapter *adapter,
+@@ -95,22 +95,825 @@ static int xsc_eth_netdev_init(struct xsc_adapter *adapter)
  	return 0;
  }
  
-+static void xsc_eth_init_frags_partition(struct xsc_rq *rq)
+-static bool xsc_eth_get_link_status(struct xsc_adapter *adapter)
++static void xsc_eth_build_queue_param(struct xsc_adapter *adapter,
++				      struct xsc_queue_attr *attr, u8 type)
+ {
+ 	struct xsc_core_device *xdev = adapter->xdev;
+-	u16 vport = 0;
+-	bool link_up;
+ 
+-	link_up = xsc_core_query_vport_state(xdev, vport);
++	if (adapter->nic_param.sq_size == 0)
++		adapter->nic_param.sq_size = min_t(u32,
++						   BIT(xdev->caps.log_max_qp_depth),
++						   XSC_SQCQ_ELE_NUM);
++	if (adapter->nic_param.rq_size == 0)
++		adapter->nic_param.rq_size = BIT(xdev->caps.log_max_qp_depth);
++
++	if (type == XSC_QUEUE_TYPE_RQCQ) {
++		attr->ele_num = min_t(int, XSC_RQCQ_ELE_NUM,
++				      xdev->caps.max_cqes);
++		attr->ele_size = XSC_RQCQ_ELE_SZ;
++		attr->ele_log_size = order_base_2(XSC_RQCQ_ELE_SZ);
++		attr->q_log_size = order_base_2(attr->ele_num);
++	} else if (type == XSC_QUEUE_TYPE_SQCQ) {
++		attr->ele_num = min_t(int, XSC_SQCQ_ELE_NUM,
++				      xdev->caps.max_cqes);
++		attr->ele_size = XSC_SQCQ_ELE_SZ;
++		attr->ele_log_size = order_base_2(XSC_SQCQ_ELE_SZ);
++		attr->q_log_size = order_base_2(attr->ele_num);
++	} else if (type == XSC_QUEUE_TYPE_RQ) {
++		attr->ele_num = adapter->nic_param.rq_size;
++		attr->ele_size = xdev->caps.recv_ds_num * XSC_RECV_WQE_DS;
++		attr->ele_log_size = order_base_2(attr->ele_size);
++		attr->q_log_size = order_base_2(attr->ele_num);
++	} else if (type == XSC_QUEUE_TYPE_SQ) {
++		attr->ele_num = adapter->nic_param.sq_size;
++		attr->ele_size = xdev->caps.send_ds_num * XSC_SEND_WQE_DS;
++		attr->ele_log_size = order_base_2(attr->ele_size);
++		attr->q_log_size = order_base_2(attr->ele_num);
++	}
++}
++
++static u32 xsc_rx_get_linear_frag_sz(u32 mtu)
 +{
-+	struct xsc_wqe_frag_info next_frag = {};
-+	struct xsc_wqe_frag_info *prev;
-+	int i;
++	u32 byte_count = XSC_SW2HW_FRAG_SIZE(mtu);
 +
-+	next_frag.di = &rq->wqe.di[0];
-+	next_frag.offset = 0;
-+	prev = NULL;
++	return XSC_SKB_FRAG_SZ(byte_count);
++}
 +
-+	for (i = 0; i < xsc_wq_cyc_get_size(&rq->wqe.wq); i++) {
-+		struct xsc_rq_frag_info *frag_info = &rq->wqe.info.arr[0];
-+		struct xsc_wqe_frag_info *frag =
-+			&rq->wqe.frags[i << rq->wqe.info.log_num_frags];
-+		int f;
++static bool xsc_rx_is_linear_skb(u32 mtu)
++{
++	u32 linear_frag_sz = xsc_rx_get_linear_frag_sz(mtu);
 +
-+		for (f = 0; f < rq->wqe.info.num_frags; f++, frag++) {
-+			if (next_frag.offset + frag_info[f].frag_stride >
-+				XSC_RX_FRAG_SZ) {
-+				next_frag.di++;
-+				next_frag.offset = 0;
-+				if (prev)
-+					prev->last_in_page = 1;
++	return linear_frag_sz <= PAGE_SIZE;
++}
++
++static u32 xsc_get_rq_frag_info(struct xsc_rq_frags_info *frags_info, u32 mtu)
++{
++	u32 byte_count = XSC_SW2HW_FRAG_SIZE(mtu);
++	int frag_stride;
++	int i = 0;
++
++	if (xsc_rx_is_linear_skb(mtu)) {
++		frag_stride = xsc_rx_get_linear_frag_sz(mtu);
++		frag_stride = roundup_pow_of_two(frag_stride);
++
++		frags_info->arr[0].frag_size = byte_count;
++		frags_info->arr[0].frag_stride = frag_stride;
++		frags_info->num_frags = 1;
++		frags_info->wqe_bulk = PAGE_SIZE / frag_stride;
++		frags_info->wqe_bulk_min = frags_info->wqe_bulk;
++		goto out;
++	}
++
++	if (byte_count <= DEFAULT_FRAG_SIZE) {
++		frags_info->arr[0].frag_size = DEFAULT_FRAG_SIZE;
++		frags_info->arr[0].frag_stride = DEFAULT_FRAG_SIZE;
++		frags_info->num_frags = 1;
++	} else if (byte_count <= XSC_PAGE_SIZE_4K) {
++		frags_info->arr[0].frag_size = XSC_PAGE_SIZE_4K;
++		frags_info->arr[0].frag_stride = XSC_PAGE_SIZE_4K;
++		frags_info->num_frags = 1;
++	} else if (byte_count <= (XSC_PAGE_SIZE_4K + DEFAULT_FRAG_SIZE)) {
++		if (PAGE_SIZE < 2 * XSC_PAGE_SIZE_4K) {
++			frags_info->arr[0].frag_size = XSC_PAGE_SIZE_4K;
++			frags_info->arr[0].frag_stride = XSC_PAGE_SIZE_4K;
++			frags_info->arr[1].frag_size = XSC_PAGE_SIZE_4K;
++			frags_info->arr[1].frag_stride = XSC_PAGE_SIZE_4K;
++			frags_info->num_frags = 2;
++		} else {
++			frags_info->arr[0].frag_size = 2 * XSC_PAGE_SIZE_4K;
++			frags_info->arr[0].frag_stride = 2 * XSC_PAGE_SIZE_4K;
++			frags_info->num_frags = 1;
++		}
++	} else if (byte_count <= 2 * XSC_PAGE_SIZE_4K) {
++		if (PAGE_SIZE < 2 * XSC_PAGE_SIZE_4K) {
++			frags_info->arr[0].frag_size = XSC_PAGE_SIZE_4K;
++			frags_info->arr[0].frag_stride = XSC_PAGE_SIZE_4K;
++			frags_info->arr[1].frag_size = XSC_PAGE_SIZE_4K;
++			frags_info->arr[1].frag_stride = XSC_PAGE_SIZE_4K;
++			frags_info->num_frags = 2;
++		} else {
++			frags_info->arr[0].frag_size = 2 * XSC_PAGE_SIZE_4K;
++			frags_info->arr[0].frag_stride = 2 * XSC_PAGE_SIZE_4K;
++			frags_info->num_frags = 1;
++		}
++	} else {
++		if (PAGE_SIZE < 4 * XSC_PAGE_SIZE_4K) {
++			frags_info->num_frags =
++				roundup(byte_count,
++					XSC_PAGE_SIZE_4K) / XSC_PAGE_SIZE_4K;
++			for (i = 0; i < frags_info->num_frags; i++) {
++				frags_info->arr[i].frag_size = XSC_PAGE_SIZE_4K;
++				frags_info->arr[i].frag_stride = XSC_PAGE_SIZE_4K;
 +			}
-+			*frag = next_frag;
-+
-+			/* prepare next */
-+			next_frag.offset += frag_info[f].frag_stride;
-+			prev = frag;
++		} else {
++			frags_info->arr[0].frag_size = 4 * XSC_PAGE_SIZE_4K;
++			frags_info->arr[0].frag_stride = 4 * XSC_PAGE_SIZE_4K;
++			frags_info->num_frags = 1;
 +		}
 +	}
 +
-+	if (prev)
-+		prev->last_in_page = 1;
++	if (PAGE_SIZE <= XSC_PAGE_SIZE_4K) {
++		frags_info->wqe_bulk_min = 4;
++		frags_info->wqe_bulk = max_t(u8, frags_info->wqe_bulk_min, 8);
++	} else if (PAGE_SIZE <= 2 * XSC_PAGE_SIZE_4K) {
++		frags_info->wqe_bulk = 2;
++		frags_info->wqe_bulk_min = frags_info->wqe_bulk;
++	} else {
++		frags_info->wqe_bulk =
++			PAGE_SIZE /
++			(frags_info->num_frags * frags_info->arr[0].frag_size);
++		frags_info->wqe_bulk_min = frags_info->wqe_bulk;
++	}
++
++out:
++	frags_info->log_num_frags = order_base_2(frags_info->num_frags);
++
++	return frags_info->num_frags * frags_info->arr[0].frag_size;
 +}
 +
-+static int xsc_eth_init_di_list(struct xsc_rq *rq, u32 wq_sz, int cpu)
++static void xsc_build_rq_frags_info(struct xsc_queue_attr *attr,
++				    struct xsc_rq_frags_info *frags_info,
++				    struct xsc_eth_params *params)
 +{
-+	int len = wq_sz << rq->wqe.info.log_num_frags;
-+
-+	rq->wqe.di = kvzalloc_node(array_size(len, sizeof(*rq->wqe.di)),
-+				   GFP_KERNEL, cpu_to_node(cpu));
-+	if (!rq->wqe.di)
-+		return -ENOMEM;
-+
-+	xsc_eth_init_frags_partition(rq);
-+
-+	return 0;
++	params->rq_frags_size = xsc_get_rq_frag_info(frags_info, params->mtu);
++	frags_info->frags_max_num = attr->ele_size / XSC_RECV_WQE_DS;
 +}
 +
-+static void xsc_eth_free_di_list(struct xsc_rq *rq)
++static void xsc_eth_build_channel_param(struct xsc_adapter *adapter,
++					struct xsc_channel_param *chl_param)
 +{
-+	kvfree(rq->wqe.di);
++	xsc_eth_build_queue_param(adapter, &chl_param->rqcq_param.cq_attr,
++				  XSC_QUEUE_TYPE_RQCQ);
++	chl_param->rqcq_param.wq.buf_numa_node = dev_to_node(adapter->dev);
++
++	xsc_eth_build_queue_param(adapter, &chl_param->sqcq_param.cq_attr,
++				  XSC_QUEUE_TYPE_SQCQ);
++	chl_param->sqcq_param.wq.buf_numa_node = dev_to_node(adapter->dev);
++
++	xsc_eth_build_queue_param(adapter, &chl_param->sq_param.sq_attr,
++				  XSC_QUEUE_TYPE_SQ);
++	chl_param->sq_param.wq.buf_numa_node = dev_to_node(adapter->dev);
++
++	xsc_eth_build_queue_param(adapter, &chl_param->rq_param.rq_attr,
++				  XSC_QUEUE_TYPE_RQ);
++	chl_param->rq_param.wq.buf_numa_node = dev_to_node(adapter->dev);
++
++	xsc_build_rq_frags_info(&chl_param->rq_param.rq_attr,
++				&chl_param->rq_param.frags_info,
++				&adapter->nic_param);
++}
+ 
+-	return link_up ? true : false;
++static void xsc_eth_cq_error_event(struct xsc_core_cq *xcq,
++				   enum xsc_event event)
++{
++	struct xsc_cq *xsc_cq = container_of(xcq, struct xsc_cq, xcq);
++	struct xsc_core_device *xdev = xsc_cq->xdev;
++
++	if (event != XSC_EVENT_TYPE_CQ_ERROR) {
++		netdev_err(xsc_dev_to_netdev(xdev),
++			   "Unexpected event type %d on CQ %06x\n",
++			   event, xcq->cqn);
++		return;
++	}
++
++	netdev_err(xsc_dev_to_netdev(xdev),
++		   "Eth catch CQ ERROR: %x, cqn: %d\n", event, xcq->cqn);
 +}
 +
-+static int xsc_eth_alloc_rq(struct xsc_channel *c,
-+			    struct xsc_rq *prq,
-+			    struct xsc_rq_param *prq_param)
++static void xsc_eth_completion_event(struct xsc_core_cq *xcq)
 +{
-+	u8 ele_log_size = prq_param->rq_attr.ele_log_size;
-+	u8 q_log_size = prq_param->rq_attr.q_log_size;
-+	struct page_pool_params pagepool_params = {0};
-+	struct xsc_adapter *adapter = c->adapter;
-+	struct xsc_channel_stats *channel_stats;
-+	u32 pool_size = 1 << q_log_size;
-+	struct xsc_stats *stats;
-+	int ret = 0;
-+	u32 wq_sz;
-+	int i, f;
++	struct xsc_cq *cq = container_of(xcq, struct xsc_cq, xcq);
++	struct xsc_core_device *xdev = cq->xdev;
++	struct xsc_rq *rq = NULL;
 +
-+	stats = c->adapter->stats;
-+	channel_stats = &stats->channel_stats[c->chl_idx];
-+	prq->stats = &channel_stats->rq;
-+	prq_param->wq.db_numa_node = cpu_to_node(c->cpu);
++	if (unlikely(!cq->channel)) {
++		netdev_err(xsc_dev_to_netdev(xdev), "cq%d->channel is null\n",
++			   xcq->cqn);
++		return;
++	}
 +
-+	ret = xsc_eth_wq_cyc_create(c->adapter->xdev, &prq_param->wq,
-+				    q_log_size, ele_log_size, &prq->wqe.wq,
-+				    &prq->wq_ctrl);
++	rq = &cq->channel->qp.rq;
++
++	if (!test_bit(XSC_ETH_RQ_STATE_ENABLED, &rq->state))
++		netdev_err(xsc_dev_to_netdev(xdev),
++			   "ch%d_cq%d, napi_flag=0x%lx\n",
++			   cq->channel->chl_idx, xcq->cqn,
++			   cq->napi->state);
++
++	napi_schedule(cq->napi);
++	cq->event_ctr++;
++}
++
++static int xsc_eth_alloc_cq(struct xsc_channel *c, struct xsc_cq *pcq,
++			    struct xsc_cq_param *pcq_param)
++{
++	u8 ele_log_size = pcq_param->cq_attr.ele_log_size;
++	struct xsc_core_device *xdev = c->adapter->xdev;
++	u8 q_log_size = pcq_param->cq_attr.q_log_size;
++	struct xsc_core_cq *core_cq = &pcq->xcq;
++	int ret;
++	u32 i;
++
++	pcq_param->wq.db_numa_node = cpu_to_node(c->cpu);
++	pcq_param->wq.buf_numa_node = cpu_to_node(c->cpu);
++
++	ret = xsc_eth_cqwq_create(xdev, &pcq_param->wq,
++				  q_log_size, ele_log_size, &pcq->wq,
++				  &pcq->wq_ctrl);
 +	if (ret)
 +		return ret;
 +
-+	wq_sz = xsc_wq_cyc_get_size(&prq->wqe.wq);
++	core_cq->cqe_sz = pcq_param->cq_attr.ele_num;
++	core_cq->comp = xsc_eth_completion_event;
++	core_cq->event = xsc_eth_cq_error_event;
++	core_cq->vector = c->chl_idx;
 +
-+	prq->wqe.info = prq_param->frags_info;
-+	prq->wqe.frags =
-+		kvzalloc_node(array_size((wq_sz << prq->wqe.info.log_num_frags),
-+					 sizeof(*prq->wqe.frags)),
-+			      GFP_KERNEL,
-+			      cpu_to_node(c->cpu));
-+	if (!prq->wqe.frags) {
-+		ret = -ENOMEM;
-+		goto err_destroy_wq;
++	for (i = 0; i < xsc_cqwq_get_size(&pcq->wq); i++) {
++		struct xsc_cqe *cqe = xsc_cqwq_get_wqe(&pcq->wq, i);
++
++		cqe->data1 |= cpu_to_le32(XSC_CQE_DATA1_OWNER);
 +	}
++	pcq->xdev = xdev;
 +
-+	ret = xsc_eth_init_di_list(prq, wq_sz, c->cpu);
-+	if (ret)
-+		goto err_free_frags;
-+
-+	prq->buff.map_dir = DMA_FROM_DEVICE;
-+
-+	/* Create a page_pool and register it with rxq */
-+	pool_size = wq_sz << prq->wqe.info.log_num_frags;
-+	pagepool_params.order = XSC_RX_FRAG_SZ_ORDER;
-+	pagepool_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
-+	pagepool_params.pool_size = pool_size;
-+	pagepool_params.nid = cpu_to_node(c->cpu);
-+	pagepool_params.dev = c->adapter->dev;
-+	pagepool_params.dma_dir	= prq->buff.map_dir;
-+	pagepool_params.max_len = PAGE_SIZE;
-+
-+	prq->page_pool = page_pool_create(&pagepool_params);
-+	if (IS_ERR(prq->page_pool)) {
-+		ret = PTR_ERR(prq->page_pool);
-+		prq->page_pool = NULL;
-+		goto err_free_di_list;
-+	}
-+
-+	if (c->chl_idx == 0)
-+		netdev_dbg(adapter->netdev,
-+			   "page pool: size=%d, cpu=%d, pool_numa=%d, mtu=%d, wqe_numa=%d\n",
-+			   pool_size, c->cpu, pagepool_params.nid,
-+			   adapter->nic_param.mtu,
-+			   prq_param->wq.buf_numa_node);
-+
-+	for (i = 0; i < wq_sz; i++) {
-+		struct xsc_eth_rx_wqe_cyc *wqe =
-+			xsc_wq_cyc_get_wqe(&prq->wqe.wq, i);
-+
-+		for (f = 0; f < prq->wqe.info.num_frags; f++) {
-+			u32 frag_size = prq->wqe.info.arr[f].frag_size;
-+			u32 val = 0;
-+
-+			val |= FIELD_PREP(XSC_WQE_DATA_SEG_DATA0_SEG_LEN_MASK,
-+					  frag_size);
-+			wqe->data[f].data0 = cpu_to_le32(val);
-+			wqe->data[f].mkey = cpu_to_le32(XSC_INVALID_LKEY);
-+		}
-+
-+		for (; f < prq->wqe.info.frags_max_num; f++) {
-+			wqe->data[f].data0 = 0;
-+			wqe->data[f].mkey = cpu_to_le32(XSC_INVALID_LKEY);
-+			wqe->data[f].va = 0;
-+		}
-+	}
-+
-+	prq->post_wqes = xsc_eth_post_rx_wqes;
-+	prq->handle_rx_cqe = xsc_eth_handle_rx_cqe;
-+	prq->dealloc_wqe = xsc_eth_dealloc_rx_wqe;
-+	prq->wqe.skb_from_cqe = xsc_rx_is_linear_skb(adapter->nic_param.mtu) ?
-+					xsc_skb_from_cqe_linear :
-+					xsc_skb_from_cqe_nonlinear;
-+	prq->ix = c->chl_idx;
-+	prq->frags_sz = adapter->nic_param.rq_frags_size;
-+
-+	return 0;
-+
-+err_free_di_list:
-+	xsc_eth_free_di_list(prq);
-+err_free_frags:
-+	kvfree(prq->wqe.frags);
-+err_destroy_wq:
-+	xsc_eth_wq_destroy(&prq->wq_ctrl);
 +	return ret;
 +}
 +
-+static void xsc_free_qp_rq(struct xsc_rq *rq)
++static int xsc_eth_set_cq(struct xsc_channel *c,
++			  struct xsc_cq *pcq,
++			  struct xsc_cq_param *pcq_param)
 +{
-+	kvfree(rq->wqe.frags);
-+	kvfree(rq->wqe.di);
-+
-+	if (rq->page_pool)
-+		page_pool_destroy(rq->page_pool);
-+
-+	xsc_eth_wq_destroy(&rq->wq_ctrl);
-+}
-+
-+static int xsc_eth_open_rss_qp_rqs(struct xsc_adapter *adapter,
-+				   struct xsc_rq_param *prq_param,
-+				   struct xsc_eth_channels *chls,
-+				   unsigned int num_chl)
-+{
-+	u8 q_log_size = prq_param->rq_attr.q_log_size;
-+	struct xsc_create_multiqp_mbox_in *in;
-+	struct xsc_create_qp_request *req;
++	struct xsc_core_device *xdev = c->adapter->xdev;
++	struct xsc_create_cq_mbox_in *in;
 +	unsigned int hw_npages;
-+	struct xsc_channel *c;
-+	int ret = 0;
-+	struct xsc_rq *prq;
-+	int paslen = 0;
-+	int entry_len;
-+	u32 rqn_base;
-+	int i;
++	unsigned int irqn;
 +	int inlen;
++	u32 eqn;
++	int ret;
 +
-+	for (i = 0; i < num_chl; i++) {
-+		c = &chls->c[i];
-+		prq = &c->qp.rq;
++	hw_npages = DIV_ROUND_UP(pcq->wq_ctrl.buf.size, XSC_PAGE_SIZE_4K);
++	/*mbox size + pas size*/
++	inlen = sizeof(struct xsc_create_cq_mbox_in) +
++		sizeof(__be64) * hw_npages;
 +
-+		ret = xsc_eth_alloc_rq(c, prq, prq_param);
-+		if (ret)
-+			goto err_alloc_rqs;
-+
-+		hw_npages = DIV_ROUND_UP(prq->wq_ctrl.buf.size, XSC_PAGE_SIZE_4K);
-+		/*support different npages number smoothly*/
-+		entry_len = sizeof(struct xsc_create_qp_request) +
-+			sizeof(__be64) * hw_npages;
-+
-+		paslen += entry_len;
-+	}
-+
-+	inlen = sizeof(struct xsc_create_multiqp_mbox_in) + paslen;
 +	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		ret = -ENOMEM;
-+		goto err_create_rss_rqs;
-+	}
++	if (!in)
++		return -ENOMEM;
 +
-+	in->qp_num = cpu_to_be16(num_chl);
-+	in->qp_type = XSC_QUEUE_TYPE_RAW;
-+	in->req_len = cpu_to_be32(inlen);
-+
-+	req = (struct xsc_create_qp_request *)&in->data[0];
-+	for (i = 0; i < num_chl; i++) {
-+		c = &chls->c[i];
-+		prq = &c->qp.rq;
-+
-+		hw_npages = DIV_ROUND_UP(prq->wq_ctrl.buf.size, XSC_PAGE_SIZE_4K);
-+		/* no use for eth */
-+		req->input_qpn = cpu_to_be16(0);
-+		req->qp_type = XSC_QUEUE_TYPE_RAW;
-+		req->log_rq_sz = ilog2(adapter->xdev->caps.recv_ds_num)
-+					+ q_log_size;
-+		req->pa_num = cpu_to_be16(hw_npages);
-+		req->cqn_recv = cpu_to_be16(prq->cq.xcq.cqn);
-+		req->cqn_send = req->cqn_recv;
-+		req->glb_funcid = cpu_to_be16(adapter->xdev->glb_func_id);
-+
-+		xsc_core_fill_page_frag_array(&prq->wq_ctrl.buf,
-+					      &req->pas[0], hw_npages);
-+		entry_len = sizeof(struct xsc_create_qp_request) +
-+			sizeof(__be64) * hw_npages;
-+		req = (struct xsc_create_qp_request *)
-+			((u8 *)req + entry_len);
-+	}
-+
-+	ret = xsc_core_eth_create_rss_qp_rqs(adapter->xdev, in, inlen,
-+					     &rqn_base);
-+	kvfree(in);
++	/*construct param of in struct*/
++	ret = xsc_core_vector2eqn(xdev, c->chl_idx, &eqn, &irqn);
 +	if (ret)
-+		goto err_create_rss_rqs;
++		goto err_free;
 +
-+	for (i = 0; i < num_chl; i++) {
-+		c = &chls->c[i];
-+		prq = &c->qp.rq;
++	in->ctx.eqn = cpu_to_be16(eqn);
++	in->ctx.log_cq_sz = pcq_param->cq_attr.q_log_size;
++	in->ctx.pa_num = cpu_to_be16(hw_npages);
++	in->ctx.glb_func_id = cpu_to_be16(xdev->glb_func_id);
 +
-+		prq->rqn = rqn_base + i;
-+		prq->cqp.qpn = prq->rqn;
-+		prq->cqp.event = xsc_eth_qp_event;
-+		prq->cqp.eth_queue_type = XSC_RES_RQ;
-+		ret = xsc_core_create_resource_common(adapter->xdev,
-+						      &prq->cqp);
-+		if (ret) {
-+			netdev_err(adapter->netdev,
-+				   "create resource common error qp:%d errno:%d\n",
-+				   prq->rqn, ret);
-+			goto err_destroy_rss_rqs;
-+		}
-+	}
++	xsc_core_fill_page_frag_array(&pcq->wq_ctrl.buf,
++				      &in->pas[0],
++				      hw_npages);
 +
-+	adapter->channels.rqn_base = rqn_base;
++	ret = xsc_core_eth_create_cq(c->adapter->xdev, &pcq->xcq, in, inlen);
++	if (ret)
++		goto err_free;
++	pcq->xcq.irqn = irqn;
++	pcq->xcq.eq = xsc_core_eq_get(xdev, pcq->xcq.vector);
++	kvfree(in);
 +	return 0;
 +
-+err_destroy_rss_rqs:
-+	while (--i >= 0)
-+		xsc_core_destroy_resource_common(adapter->xdev,
-+						 &chls->c[i].qp.rq.cqp);
-+
-+	for (i = 0; i < num_chl; i++)
-+		xsc_core_eth_destroy_qp(adapter->xdev, rqn_base + i);
-+
-+err_create_rss_rqs:
-+	i = num_chl;
-+err_alloc_rqs:
-+	for (--i; i >= 0; i--) {
-+		c = &chls->c[i];
-+		xsc_free_qp_rq(&c->qp.rq);
-+	}
++err_free:
++	kvfree(in);
 +	return ret;
 +}
 +
-+static void xsc_eth_free_rx_wqe(struct xsc_rq *rq)
++static void xsc_eth_free_cq(struct xsc_cq *cq)
 +{
-+	struct xsc_wq_cyc *wq = &rq->wqe.wq;
-+	u16 wqe_ix;
-+
-+	while (!xsc_wq_cyc_is_empty(wq)) {
-+		wqe_ix = xsc_wq_cyc_get_tail(wq);
-+		rq->dealloc_wqe(rq, wqe_ix);
-+		xsc_wq_cyc_pop(wq);
-+	}
++	xsc_eth_wq_destroy(&cq->wq_ctrl);
 +}
 +
-+static void xsc_eth_close_qp_rq(struct xsc_channel *c, struct xsc_rq *prq)
++static int xsc_eth_open_cq(struct xsc_channel *c,
++			   struct xsc_cq *pcq,
++			   struct xsc_cq_param *pcq_param)
++{
++	int ret;
++
++	ret = xsc_eth_alloc_cq(c, pcq, pcq_param);
++	if (ret)
++		return ret;
++
++	ret = xsc_eth_set_cq(c, pcq, pcq_param);
++	if (ret)
++		goto err_free_cq;
++
++	xsc_cq_notify_hw_rearm(pcq);
++
++	pcq->napi = &c->napi;
++	pcq->channel = c;
++
++	return 0;
++
++err_free_cq:
++	xsc_eth_free_cq(pcq);
++	return ret;
++}
++
++static void xsc_eth_close_cq(struct xsc_channel *c, struct xsc_cq *pcq)
 +{
 +	struct xsc_core_device *xdev = c->adapter->xdev;
 +
-+	xsc_core_destroy_resource_common(xdev, &prq->cqp);
++	if (xsc_core_eth_destroy_cq(xdev, &pcq->xcq))
++		netdev_err(xsc_dev_to_netdev(xdev), "failed to close ch%d cq%d\n",
++			   c->chl_idx, pcq->xcq.cqn);
 +
-+	if (xsc_core_eth_destroy_qp(xdev, prq->cqp.qpn))
-+		netdev_err(c->adapter->netdev, "failed to close ch%d rq%d\n",
-+			   c->chl_idx, prq->cqp.qpn);
-+
-+	xsc_eth_free_rx_wqe(prq);
-+	xsc_free_qp_rq(prq);
++	xsc_eth_free_cq(pcq);
 +}
 +
- static void xsc_eth_close_channel(struct xsc_channel *c, bool free_rq)
- {
-+	if (free_rq)
-+		xsc_eth_close_qp_rq(c, &c->qp.rq);
-+	xsc_eth_close_cq(c, &c->qp.rq.cq);
-+	memset(&c->qp.rq, 0, sizeof(struct xsc_rq));
++static void xsc_free_qp_sq_db(struct xsc_sq *sq)
++{
++	kvfree(sq->db.wqe_info);
++	kvfree(sq->db.dma_fifo);
++	sq->db.wqe_info = NULL;
++	sq->db.dma_fifo = NULL;
++}
 +
- 	xsc_eth_close_qp_sq(c, &c->qp.sq);
- 	xsc_eth_close_cq(c, &c->qp.sq.cq);
- 
-@@ -720,6 +1049,7 @@ static int xsc_eth_open_channels(struct xsc_adapter *adapter)
- 	struct xsc_eth_channels *chls = &adapter->channels;
- 	struct xsc_core_device *xdev = adapter->xdev;
- 	struct xsc_channel_param *chl_param;
-+	bool free_rq = false;
- 	int ret = 0;
- 	int i;
- 
-@@ -745,6 +1075,14 @@ static int xsc_eth_open_channels(struct xsc_adapter *adapter)
- 			goto err_close_channel;
- 	}
- 
-+	ret = xsc_eth_open_rss_qp_rqs(adapter,
-+				      &chl_param->rq_param,
-+				      chls,
-+				      chls->num_chl);
++static void xsc_free_qp_sq(struct xsc_sq *sq)
++{
++	xsc_free_qp_sq_db(sq);
++	xsc_eth_wq_destroy(&sq->wq_ctrl);
++}
++
++static int xsc_eth_alloc_qp_sq_db(struct xsc_sq *sq, int numa)
++{
++	struct xsc_core_device *xdev = sq->cq.xdev;
++	int wq_sz;
++	int df_sz;
++
++	wq_sz = xsc_wq_cyc_get_size(&sq->wq);
++	df_sz = wq_sz * xdev->caps.send_ds_num;
++	sq->db.dma_fifo = kvzalloc_node(array_size(df_sz,
++						   sizeof(*sq->db.dma_fifo)),
++					GFP_KERNEL,
++					numa);
++	sq->db.wqe_info = kvzalloc_node(array_size(wq_sz,
++						   sizeof(*sq->db.wqe_info)),
++					GFP_KERNEL,
++					numa);
++
++	if (!sq->db.dma_fifo || !sq->db.wqe_info) {
++		xsc_free_qp_sq_db(sq);
++		return -ENOMEM;
++	}
++
++	sq->dma_fifo_mask = df_sz - 1;
++
++	return 0;
++}
++
++static void xsc_eth_qp_event(struct xsc_core_qp *qp, int type)
++{
++	struct xsc_core_device *xdev;
++	struct xsc_rq *rq;
++	struct xsc_sq *sq;
++
++	if (qp->eth_queue_type == XSC_RES_RQ) {
++		rq = container_of(qp, struct xsc_rq, cqp);
++		xdev = rq->cq.xdev;
++	} else if (qp->eth_queue_type == XSC_RES_SQ) {
++		sq = container_of(qp, struct xsc_sq, cqp);
++		xdev = sq->cq.xdev;
++	} else {
++		pr_err("%s:Unknown eth qp type %d\n", __func__, type);
++		return;
++	}
++
++	switch (type) {
++	case XSC_EVENT_TYPE_WQ_CATAS_ERROR:
++	case XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
++	case XSC_EVENT_TYPE_WQ_ACCESS_ERROR:
++		netdev_err(xsc_dev_to_netdev(xdev),
++			   "%s:Async event %x on QP %d\n",
++			   __func__, type, qp->qpn);
++		break;
++	default:
++		netdev_err(xsc_dev_to_netdev(xdev),
++			   "%s: Unexpected event type %d on QP %d\n",
++			   __func__, type, qp->qpn);
++		return;
++	}
++}
++
++static int xsc_eth_open_qp_sq(struct xsc_channel *c,
++			      struct xsc_sq *psq,
++			      struct xsc_sq_param *psq_param)
++{
++	u8 ele_log_size = psq_param->sq_attr.ele_log_size;
++	u8 q_log_size = psq_param->sq_attr.q_log_size;
++	struct xsc_modify_raw_qp_mbox_in *modify_in;
++	struct xsc_channel_stats *channel_stats;
++	struct xsc_create_qp_mbox_in *in;
++	struct xsc_core_device *xdev;
++	struct xsc_adapter *adapter;
++	struct xsc_stats *stats;
++	unsigned int hw_npages;
++	int inlen;
++	int ret;
++
++	adapter = c->adapter;
++	xdev  = adapter->xdev;
++	stats = adapter->stats;
++	channel_stats = &stats->channel_stats[c->chl_idx];
++	psq->stats = &channel_stats->sq;
++	psq_param->wq.db_numa_node = cpu_to_node(c->cpu);
++
++	ret = xsc_eth_wq_cyc_create(xdev, &psq_param->wq,
++				    q_log_size, ele_log_size, &psq->wq,
++				    &psq->wq_ctrl);
 +	if (ret)
++		return ret;
++
++	hw_npages = DIV_ROUND_UP(psq->wq_ctrl.buf.size, XSC_PAGE_SIZE_4K);
++	inlen = sizeof(struct xsc_create_qp_mbox_in) +
++		sizeof(__be64) * hw_npages;
++
++	in = kvzalloc(inlen, GFP_KERNEL);
++	if (!in) {
++		ret = -ENOMEM;
++		goto err_sq_wq_destroy;
++	}
++	in->req.input_qpn = cpu_to_be16(XSC_QPN_SQN_STUB); /*no use for eth*/
++	in->req.qp_type = XSC_QUEUE_TYPE_RAW_TSO; /*default sq is tso qp*/
++	in->req.log_sq_sz = ilog2(xdev->caps.send_ds_num) + q_log_size;
++	in->req.pa_num = cpu_to_be16(hw_npages);
++	in->req.cqn_send = cpu_to_be16(psq->cq.xcq.cqn);
++	in->req.cqn_recv = in->req.cqn_send;
++	in->req.glb_funcid = cpu_to_be16(xdev->glb_func_id);
++
++	xsc_core_fill_page_frag_array(&psq->wq_ctrl.buf,
++				      &in->req.pas[0], hw_npages);
++
++	ret = xsc_core_eth_create_qp(xdev, in, inlen, &psq->sqn);
++	if (ret)
++		goto err_sq_in_destroy;
++
++	psq->cqp.qpn = psq->sqn;
++	psq->cqp.event = xsc_eth_qp_event;
++	psq->cqp.eth_queue_type = XSC_RES_SQ;
++
++	ret = xsc_core_create_resource_common(xdev, &psq->cqp);
++	if (ret) {
++		netdev_err(adapter->netdev, "%s:error qp:%d errno:%d\n",
++			   __func__, psq->sqn, ret);
++		goto err_sq_destroy;
++	}
++
++	psq->channel = c;
++	psq->ch_ix = c->chl_idx;
++	psq->txq_ix = psq->ch_ix;
++
++	/*need to querify from hardware*/
++	psq->hw_mtu = XSC_ETH_HW_MTU_SEND;
++	psq->stop_room = 1;
++
++	ret = xsc_eth_alloc_qp_sq_db(psq, psq_param->wq.db_numa_node);
++	if (ret)
++		goto err_sq_common_destroy;
++
++	inlen = sizeof(struct xsc_modify_raw_qp_mbox_in);
++	modify_in = kvzalloc(inlen, GFP_KERNEL);
++	if (!modify_in) {
++		ret = -ENOMEM;
++		goto err_sq_common_destroy;
++	}
++
++	modify_in->req.qp_out_port = xdev->pf_id;
++	modify_in->pcie_no = xdev->pcie_no;
++	modify_in->req.qpn = cpu_to_be16((u16)(psq->sqn));
++	modify_in->req.func_id = cpu_to_be16(xdev->glb_func_id);
++	modify_in->req.dma_direct = XSC_DMA_DIR_TO_MAC;
++	modify_in->req.prio = 0; /* single traffic class */
++	ret = xsc_core_eth_modify_raw_qp(xdev, modify_in);
++	if (ret)
++		goto err_sq_modify_in_destroy;
++
++	kvfree(modify_in);
++	kvfree(in);
++
++	return 0;
++
++err_sq_modify_in_destroy:
++	kvfree(modify_in);
++
++err_sq_common_destroy:
++	xsc_free_qp_sq_db(psq);
++
++	xsc_core_destroy_resource_common(xdev, &psq->cqp);
++
++err_sq_destroy:
++	xsc_core_eth_destroy_qp(xdev, psq->cqp.qpn);
++
++err_sq_in_destroy:
++	kvfree(in);
++
++err_sq_wq_destroy:
++	xsc_eth_wq_destroy(&psq->wq_ctrl);
++	return ret;
++}
++
++static void xsc_eth_close_qp_sq(struct xsc_channel *c, struct xsc_sq *psq)
++{
++	struct xsc_core_device *xdev = c->adapter->xdev;
++
++	xsc_core_destroy_resource_common(xdev, &psq->cqp);
++
++	if (xsc_core_eth_destroy_qp(xdev, psq->cqp.qpn))
++		netdev_err(c->adapter->netdev, "failed to close ch%d sq%d\n",
++			   c->chl_idx, psq->cqp.qpn);
++
++	xsc_free_tx_wqe(c->adapter->dev, psq);
++	xsc_free_qp_sq(psq);
++}
++
++static int xsc_eth_open_channel(struct xsc_adapter *adapter,
++				int idx,
++				struct xsc_channel *c,
++				struct xsc_channel_param *chl_param)
++{
++	struct xsc_core_device *xdev = adapter->xdev;
++	struct net_device *netdev = adapter->netdev;
++	const struct cpumask *aff;
++	unsigned int irqn;
++	u32 eqn;
++	int ret;
++
++	c->adapter = adapter;
++	c->netdev = adapter->netdev;
++	c->chl_idx = idx;
++
++	ret = xsc_core_vector2eqn(xdev, c->chl_idx, &eqn, &irqn);
++	if (ret)
++		goto err_out;
++	aff = irq_get_affinity_mask(irqn);
++	c->aff_mask = aff;
++	c->cpu = cpumask_first(aff);
++
++	ret = xsc_eth_open_cq(c, &c->qp.rq.cq, &chl_param->rqcq_param);
++	if (ret)
++		goto err_out;
++
++	ret = xsc_eth_open_cq(c, &c->qp.sq.cq, &chl_param->sqcq_param);
++	if (ret)
++		goto err_close_rq_cq;
++
++	ret = xsc_eth_open_qp_sq(c, &c->qp.sq, &chl_param->sq_param);
++	if (ret)
++		goto err_close_sq_cq;
++
++	netif_napi_add(netdev, &c->napi, xsc_eth_napi_poll);
++
++	netdev_dbg(adapter->netdev, "open channel%d ok\n", idx);
++	return 0;
++
++err_close_sq_cq:
++	xsc_eth_close_cq(c, &c->qp.sq.cq);
++err_close_rq_cq:
++	xsc_eth_close_cq(c, &c->qp.rq.cq);
++err_out:
++	netdev_err(adapter->netdev, "failed to open channel: ch%d, err=%d\n",
++		   idx, ret);
++	return ret;
++}
++
++static int xsc_eth_modify_qps_channel(struct xsc_adapter *adapter,
++				      struct xsc_channel *c)
++{
++	return xsc_core_eth_modify_qp_status(adapter->xdev, c->qp.sq.sqn,
++					     XSC_CMD_OP_RTR2RTS_QP);
++}
++
++static int xsc_eth_modify_qps(struct xsc_adapter *adapter,
++			      struct xsc_eth_channels *chls)
++{
++	int ret;
++	int i;
++
++	for (i = 0; i < chls->num_chl; i++) {
++		struct xsc_channel *c = &chls->c[i];
++
++		ret = xsc_eth_modify_qps_channel(adapter, c);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static void xsc_eth_close_channel(struct xsc_channel *c, bool free_rq)
++{
++	xsc_eth_close_qp_sq(c, &c->qp.sq);
++	xsc_eth_close_cq(c, &c->qp.sq.cq);
++
++	netif_napi_del(&c->napi);
++}
++
++static int xsc_eth_open_channels(struct xsc_adapter *adapter)
++{
++	struct xsc_eth_channels *chls = &adapter->channels;
++	struct xsc_core_device *xdev = adapter->xdev;
++	struct xsc_channel_param *chl_param;
++	int ret = 0;
++	int i;
++
++	chls->num_chl = adapter->nic_param.num_channels;
++	chls->c = kcalloc_node(chls->num_chl, sizeof(struct xsc_channel),
++			       GFP_KERNEL, xdev->numa_node);
++	if (!chls->c) {
++		ret = -ENOMEM;
++		goto err_out;
++	}
++
++	chl_param = kvzalloc_obj(*chl_param, GFP_KERNEL);
++	if (!chl_param) {
++		ret = -ENOMEM;
++		goto err_free_ch;
++	}
++
++	xsc_eth_build_channel_param(adapter, chl_param);
++
++	for (i = 0; i < chls->num_chl; i++) {
++		ret = xsc_eth_open_channel(adapter, i, &chls->c[i], chl_param);
++		if (ret)
++			goto err_close_channel;
++	}
++
++	for (i = 0; i < chls->num_chl; i++)
++		napi_enable(&chls->c[i].napi);
++
++	/* flush cache to memory before interrupt and napi_poll running */
++	smp_wmb();
++
++	ret = xsc_eth_modify_qps(adapter, chls);
++	if (ret) {
++		for (i = 0; i < chls->num_chl; i++)
++			napi_disable(&chls->c[i].napi);
 +		goto err_close_channel;
-+	free_rq = true;
++	}
 +
- 	for (i = 0; i < chls->num_chl; i++)
- 		napi_enable(&chls->c[i].napi);
- 
-@@ -763,7 +1101,7 @@ static int xsc_eth_open_channels(struct xsc_adapter *adapter)
- 
- err_close_channel:
- 	for (--i; i >= 0; i--)
--		xsc_eth_close_channel(&chls->c[i], false);
-+		xsc_eth_close_channel(&chls->c[i], free_rq);
- 
- 	kvfree(chl_param);
- err_free_ch:
-@@ -818,13 +1156,25 @@ static void xsc_eth_deactivate_txqsq(struct xsc_channel *c)
- 	clear_bit(XSC_ETH_SQ_STATE_ENABLED, &c->qp.sq.state);
- }
- 
-+static void xsc_activate_rq(struct xsc_channel *c)
-+{
-+	set_bit(XSC_ETH_RQ_STATE_ENABLED, &c->qp.rq.state);
++	kvfree(chl_param);
++	return 0;
++
++err_close_channel:
++	for (--i; i >= 0; i--)
++		xsc_eth_close_channel(&chls->c[i], false);
++
++	kvfree(chl_param);
++err_free_ch:
++	kfree(chls->c);
++err_out:
++	chls->num_chl = 0;
++	netdev_err(adapter->netdev, "failed to open %d channels, err=%d\n",
++		   chls->num_chl, ret);
++	return ret;
 +}
 +
-+static void xsc_deactivate_rq(struct xsc_channel *c)
++static void xsc_eth_close_channels(struct xsc_adapter *adapter)
 +{
-+	clear_bit(XSC_ETH_RQ_STATE_ENABLED, &c->qp.rq.state);
++	struct xsc_channel *c;
++	int i;
++
++	for (i = 0; i < adapter->channels.num_chl; i++) {
++		c = &adapter->channels.c[i];
++
++		xsc_eth_close_channel(c, true);
++	}
++
++	kfree(adapter->channels.c);
++	adapter->channels.num_chl = 0;
 +}
 +
- static void xsc_eth_activate_channel(struct xsc_channel *c)
- {
- 	xsc_eth_activate_txqsq(c);
-+	xsc_activate_rq(c);
- }
- 
- static void xsc_eth_deactivate_channel(struct xsc_channel *c)
- {
-+	xsc_deactivate_rq(c);
- 	xsc_eth_deactivate_txqsq(c);
- }
- 
-@@ -1121,6 +1471,14 @@ static int xsc_eth_close(struct net_device *netdev)
- 	return ret;
- }
- 
-+static void xsc_eth_get_stats(struct net_device *netdev,
-+			      struct rtnl_link_stats64 *stats)
++static void xsc_eth_build_tx2sq_maps(struct xsc_adapter *adapter)
 +{
-+	struct xsc_adapter *adapter = netdev_priv(netdev);
++	struct xsc_channel *c;
++	struct xsc_sq *psq;
++	int i;
 +
-+	xsc_eth_fold_sw_stats64(adapter, stats);
++	for (i = 0; i < adapter->channels.num_chl; i++) {
++		c = &adapter->channels.c[i];
++		psq = &c->qp.sq;
++		adapter->txq2sq[psq->txq_ix] = psq;
++	}
 +}
 +
- static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
- 			      u16 mtu, u16 rx_buf_sz)
++static void xsc_eth_activate_txqsq(struct xsc_channel *c)
++{
++	struct xsc_sq *psq = &c->qp.sq;
++
++	psq->txq = netdev_get_tx_queue(psq->channel->netdev, psq->txq_ix);
++	set_bit(XSC_ETH_SQ_STATE_ENABLED, &psq->state);
++	netdev_tx_reset_queue(psq->txq);
++	netif_tx_start_queue(psq->txq);
++}
++
++static void xsc_eth_deactivate_txqsq(struct xsc_channel *c)
++{
++	clear_bit(XSC_ETH_SQ_STATE_ENABLED, &c->qp.sq.state);
++}
++
++static void xsc_eth_activate_channel(struct xsc_channel *c)
++{
++	xsc_eth_activate_txqsq(c);
++}
++
++static void xsc_eth_deactivate_channel(struct xsc_channel *c)
++{
++	xsc_eth_deactivate_txqsq(c);
++}
++
++static void xsc_eth_activate_channels(struct xsc_eth_channels *chs)
++{
++	int i;
++
++	for (i = 0; i < chs->num_chl; i++)
++		xsc_eth_activate_channel(&chs->c[i]);
++}
++
++static void xsc_eth_deactivate_channels(struct xsc_eth_channels *chs)
++{
++	int i;
++
++	for (i = 0; i < chs->num_chl; i++)
++		xsc_eth_deactivate_channel(&chs->c[i]);
++
++	/* Sync with all NAPIs to wait until they stop using queues. */
++	synchronize_net();
++
++	for (i = 0; i < chs->num_chl; i++)
++		/* last doorbell out */
++		napi_disable(&chs->c[i].napi);
++}
++
++static void xsc_eth_activate_priv_channels(struct xsc_adapter *adapter)
++{
++	struct net_device *netdev = adapter->netdev;
++
++	netif_set_real_num_tx_queues(netdev, adapter->channels.num_chl);
++	netif_set_real_num_rx_queues(netdev, adapter->channels.num_chl);
++
++	xsc_eth_build_tx2sq_maps(adapter);
++	xsc_eth_activate_channels(&adapter->channels);
++	netif_tx_start_all_queues(adapter->netdev);
++}
++
++static void xsc_eth_deactivate_priv_channels(struct xsc_adapter *adapter)
++{
++	netif_tx_disable(adapter->netdev);
++	xsc_eth_deactivate_channels(&adapter->channels);
++}
++
++static int xsc_eth_sw_init(struct xsc_adapter *adapter)
++{
++	int ret;
++
++	ret = xsc_eth_open_channels(adapter);
++	if (ret)
++		return ret;
++
++	xsc_eth_activate_priv_channels(adapter);
++
++	return 0;
++}
++
++static void xsc_eth_sw_deinit(struct xsc_adapter *adapter)
++{
++	xsc_eth_deactivate_priv_channels(adapter);
++
++	return xsc_eth_close_channels(adapter);
++}
++
++static int xsc_eth_get_link_status(struct xsc_adapter *adapter, bool *link_up)
++{
++	struct xsc_core_device *xdev = adapter->xdev;
++	u8 state;
++	int err;
++
++	err = xsc_core_query_vport_state(xdev, 0, &state);
++	if (err)
++		return err;
++
++	*link_up = state;
++	return 0;
+ }
+ 
+ static int xsc_eth_change_link_status(struct xsc_adapter *adapter)
  {
-@@ -1152,6 +1510,7 @@ static const struct net_device_ops xsc_netdev_ops = {
+ 	bool link_up;
++	int err;
+ 
+-	link_up = xsc_eth_get_link_status(adapter);
++	err = xsc_eth_get_link_status(adapter, &link_up);
++	if (err) {
++		netdev_err(adapter->netdev, "failed to query link status, err=%d\n",
++			   err);
++		return err;
++	}
+ 
+ 	if (link_up && !netif_carrier_ok(adapter->netdev)) {
+ 		netdev_info(adapter->netdev, "Link up\n");
+@@ -142,6 +945,84 @@ static void xsc_eth_link_event_handler(void *arg)
+ 			   err);
+ }
+ 
++static bool xsc_get_pct_drop_config(struct xsc_core_device *xdev)
++{
++	return (xdev->pdev->device == XSC_MC_PF_DEV_ID) ||
++		(xdev->pdev->device == XSC_MF_SOC_PF_DEV_ID) ||
++		(xdev->pdev->device == XSC_MS_PF_DEV_ID) ||
++		(xdev->pdev->device == XSC_MV_SOC_PF_DEV_ID);
++}
++
++static int xsc_eth_enable_nic_hca(struct xsc_adapter *adapter)
++{
++	struct xsc_cmd_enable_nic_hca_mbox_out out = {};
++	struct xsc_cmd_enable_nic_hca_mbox_in in = {};
++	struct xsc_core_device *xdev = adapter->xdev;
++	struct net_device *netdev = adapter->netdev;
++	u16 caps_mask = 0;
++	u16 caps = 0;
++	int err;
++
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_ENABLE_NIC_HCA);
++
++	in.rss.rss_en = 1;
++	in.rss.rqn_base = cpu_to_be16(adapter->channels.rqn_base -
++				FIELD_GET(XSC_CAP_RAWETH_RSS_QP_ID_BASE_MASK,
++					  xdev->caps.nic_caps));
++	in.rss.rqn_num = cpu_to_be16(adapter->channels.num_chl);
++	/* hfunc is a constant: the driver never negotiates anything else */
++	in.rss.hfunc = XSC_HASH_FUNC_TOP;
++	in.rss.hash_tmpl = cpu_to_be32(adapter->rss_param.rss_hash_tmpl);
++	caps_mask |= BIT(XSC_TBM_CAP_RSS);
++
++	if (netdev->features & NETIF_F_RXCSUM)
++		caps |= BIT(XSC_TBM_CAP_HASH_PPH);
++	caps_mask |= BIT(XSC_TBM_CAP_HASH_PPH);
++
++	if (xsc_get_pct_drop_config(xdev))
++		caps |= BIT(XSC_TBM_CAP_PCT_DROP_CONFIG);
++	caps_mask |= BIT(XSC_TBM_CAP_PCT_DROP_CONFIG);
++
++	memcpy(in.nic.mac_addr, netdev->dev_addr, ETH_ALEN);
++
++	in.nic.caps = cpu_to_be16(caps);
++	in.nic.caps_mask = cpu_to_be16(caps_mask);
++
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err) {
++		netdev_err(netdev, "failed!! err=%d, status=%d\n",
++			   err, out.hdr.status);
++		return -ENOEXEC;
++	}
++
++	return 0;
++}
++
++static int xsc_eth_disable_nic_hca(struct xsc_adapter *adapter)
++{
++	struct xsc_cmd_disable_nic_hca_mbox_out out = {};
++	struct xsc_cmd_disable_nic_hca_mbox_in in = {};
++	struct xsc_core_device *xdev = adapter->xdev;
++	struct net_device *netdev = adapter->netdev;
++	u16 caps = 0;
++	int err;
++
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_DISABLE_NIC_HCA);
++
++	if (xsc_get_pct_drop_config(xdev))
++		caps |= BIT(XSC_TBM_CAP_PCT_DROP_CONFIG);
++
++	in.nic.caps = cpu_to_be16(caps);
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err) {
++		netdev_err(netdev, "failed!! err=%d, status=%d\n",
++			   err, out.hdr.status);
++		return -ENOEXEC;
++	}
++
++	return 0;
++}
++
+ static void xsc_set_default_xps_cpumasks(struct xsc_adapter *adapter)
+ {
+ 	struct xsc_core_device *xdev = adapter->xdev;
+@@ -172,14 +1053,26 @@ static int xsc_set_port_admin_status(struct xsc_adapter *adapter,
+ static int xsc_eth_open(struct net_device *netdev)
+ {
+ 	struct xsc_adapter *adapter = netdev_priv(netdev);
++	bool link_up;
+ 	int ret;
+ 
+ 	if (adapter->opened) {
+ 		netdev_err(adapter->netdev, "ndo_open on an already opened device\n");
+ 		return 0;
+ 	}
++	ret = xsc_eth_sw_init(adapter);
++	if (ret)
++		return ret;
+ 
+-	if (xsc_eth_get_link_status(adapter))	{
++	ret = xsc_eth_enable_nic_hca(adapter);
++	if (ret)
++		goto err_sw_deinit;
++
++	ret = xsc_eth_get_link_status(adapter, &link_up);
++	if (ret)
++		netdev_warn(netdev, "failed to query link status, err=%d\n", ret);
++
++	if (!ret && link_up) {
+ 		netdev_info(netdev, "Link up\n");
+ 		netif_carrier_on(adapter->netdev);
+ 	} else {
+@@ -196,6 +1089,10 @@ static int xsc_eth_open(struct net_device *netdev)
+ 			   ret);
+ 
+ 	return 0;
++
++err_sw_deinit:
++	xsc_eth_sw_deinit(adapter);
++	return ret;
+ }
+ 
+ static int xsc_eth_close(struct net_device *netdev)
+@@ -209,6 +1106,13 @@ static int xsc_eth_close(struct net_device *netdev)
+ 
+ 	netif_carrier_off(adapter->netdev);
+ 
++	xsc_eth_sw_deinit(adapter);
++
++	ret = xsc_eth_disable_nic_hca(adapter);
++	if (ret)
++		netdev_err(adapter->netdev, "failed to disable nic hca, err=%d\n",
++			   ret);
++
+ 	ret = xsc_set_port_admin_status(adapter, XSC_PORT_DOWN);
+ 	if (ret)
+ 		netdev_err(adapter->netdev, "failed to set port admin status down, err=%d\n",
+@@ -244,18 +1148,10 @@ static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
+ 	return 0;
+ }
+ 
+-/* Real xmit arrives with the TX path patch; keep TX live until then. */
+-static netdev_tx_t xsc_eth_xmit_drop(struct sk_buff *skb,
+-				     struct net_device *netdev)
+-{
+-	dev_kfree_skb_any(skb);
+-	return NETDEV_TX_OK;
+-}
+-
+ static const struct net_device_ops xsc_netdev_ops = {
  	.ndo_open		= xsc_eth_open,
  	.ndo_stop		= xsc_eth_close,
- 	.ndo_start_xmit		= xsc_eth_xmit_start,
-+	.ndo_get_stats64	= xsc_eth_get_stats,
+-	.ndo_start_xmit		= xsc_eth_xmit_drop,
++	.ndo_start_xmit		= xsc_eth_xmit_start,
  };
  
  static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
-@@ -1168,7 +1527,8 @@ static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+@@ -270,7 +1166,13 @@ static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+ 	/*mtu - macheaderlen - ipheaderlen should be aligned in 8B*/
+ 	netdev->mtu = SW_DEFAULT_MTU;
  
- 	netdev->vlan_features |= NETIF_F_SG |
- 				 NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
--				 NETIF_F_TSO | NETIF_F_TSO6;
-+				 NETIF_F_TSO | NETIF_F_TSO6 |
-+				 NETIF_F_RXCSUM | NETIF_F_RXHASH;
+-	netdev->features = NETIF_F_HIGHDMA;
++	netdev->vlan_features |= NETIF_F_SG |
++				 NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
++				 NETIF_F_TSO | NETIF_F_TSO6;
++
++	netdev->hw_features = netdev->vlan_features;
++
++	netdev->features = netdev->hw_features | NETIF_F_HIGHDMA;
+ }
  
- 	netdev->hw_features = netdev->vlan_features;
- 
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-index 4d9f92e09..92f055395 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
-@@ -12,8 +12,6 @@
- #include "xsc_eth_common.h"
- #include "xsc_eth_stats.h"
- 
--#define XSC_INVALID_LKEY	0x100
--
- struct xsc_rss_params {
- 	u32	rx_hash_fields[XSC_NUM_INDIR_TIRS];
- 	u32	rss_hash_tmpl;
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+ static int xsc_eth_nic_init(struct xsc_adapter *adapter, u32 ch_num)
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
 new file mode 100644
-index 000000000..00ac7eacc
+index 000000000..376b2cd0d
 --- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
-@@ -0,0 +1,556 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd. All
-+ * rights reserved.
-+ * Copyright (c) 2015-2016, Mellanox Technologies. All rights reserved.
-+ */
-+
-+#include <linux/net_tstamp.h>
-+#include <linux/device.h>
-+
-+#include "xsc_pp.h"
-+#include "xsc_eth.h"
-+#include "xsc_eth_txrx.h"
-+#include "xsc_eth_common.h"
-+#include "xsc_pph.h"
-+
-+static void xsc_rq_notify_hw(struct xsc_rq *rq)
-+{
-+	struct xsc_core_device *xdev = rq->cq.xdev;
-+	struct xsc_wq_cyc *wq = &rq->wqe.wq;
-+	u64 rqwqe_id;
-+
-+	rqwqe_id = wq->wqe_ctr << (ilog2(xdev->caps.recv_ds_num));
-+	/* reverse wqe index to ds index */
-+	xsc_update_rx_db(xdev, rq->rqn, rqwqe_id);
-+}
-+
-+static void xsc_skb_set_hash(struct xsc_adapter *adapter,
-+			     struct xsc_cqe *cqe,
-+			     struct sk_buff *skb)
-+{
-+	struct xsc_rss_params *rss = &adapter->rss_param;
-+	bool l3_hash = false;
-+	bool l4_hash = false;
-+	u32 hash_field;
-+	int ht = 0;
-+
-+	if (adapter->netdev->features & NETIF_F_RXHASH) {
-+		if (skb->protocol == htons(ETH_P_IP)) {
-+			hash_field = rss->rx_hash_fields[XSC_TT_IPV4_TCP];
-+			if (hash_field & XSC_HASH_FIELD_SEL_SRC_IP ||
-+			    hash_field & XSC_HASH_FIELD_SEL_DST_IP)
-+				l3_hash = true;
-+
-+			if (hash_field & XSC_HASH_FIELD_SEL_SPORT ||
-+			    hash_field & XSC_HASH_FIELD_SEL_DPORT)
-+				l4_hash = true;
-+		} else if (skb->protocol == htons(ETH_P_IPV6)) {
-+			hash_field = rss->rx_hash_fields[XSC_TT_IPV6_TCP];
-+			if (hash_field & XSC_HASH_FIELD_SEL_SRC_IPV6 ||
-+			    hash_field & XSC_HASH_FIELD_SEL_DST_IPV6)
-+				l3_hash = true;
-+
-+			if (hash_field & XSC_HASH_FIELD_SEL_SPORT_V6 ||
-+			    hash_field & XSC_HASH_FIELD_SEL_DPORT_V6)
-+				l4_hash = true;
-+		}
-+
-+		if (l3_hash && l4_hash)
-+			ht = PKT_HASH_TYPE_L4;
-+		else if (l3_hash)
-+			ht = PKT_HASH_TYPE_L3;
-+		if (ht)
-+			skb_set_hash(skb, le32_to_cpu(cqe->vni), ht);
-+	}
-+}
-+
-+static void xsc_handle_csum(struct xsc_cqe *cqe, struct xsc_rq *rq,
-+			    struct sk_buff *skb, struct xsc_wqe_frag_info *wi)
-+{
-+	struct xsc_dma_info *dma_info;
-+	struct net_device *netdev;
-+	void *hw_pph;
-+	struct xsc_channel *c;
-+	int offset_from;
-+
-+	c = rq->cq.channel;
-+	netdev = c->adapter->netdev;
-+	dma_info = wi->di;
-+	offset_from = wi->offset;
-+	hw_pph = page_address(dma_info->page) + offset_from;
-+
-+	if (unlikely((netdev->features & NETIF_F_RXCSUM) == 0))
-+		goto csum_none;
-+
-+	if (!(le32_to_cpu(cqe->data0) & XSC_CQE_DATA0_HAS_PPH))
-+		goto csum_none;
-+
-+	dma_sync_single_for_cpu(rq->cq.xdev->device,
-+				dma_info->addr + offset_from,
-+				XSC_PPH_HEAD_LEN, DMA_FROM_DEVICE);
-+
-+	if (unlikely(XSC_GET_EPP2SOC_PPH_ERROR_BITMAP(hw_pph) & PACKET_UNKNOWN))
-+		goto csum_none;
-+
-+	if (XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
-+	    (!(FIELD_GET(XSC_CQE_DATA0_CSUM_ERR_MASK, le32_to_cpu(cqe->data0)) &
-+	       OUTER_AND_INNER))) {
-+		skb->ip_summed = CHECKSUM_UNNECESSARY;
-+		skb->csum_level = 1;
-+		skb->encapsulation = 1;
-+	} else if (XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
-+		   (!(FIELD_GET(XSC_CQE_DATA0_CSUM_ERR_MASK,
-+				le32_to_cpu(cqe->data0)) &
-+		      OUTER_BIT) &&
-+		    (FIELD_GET(XSC_CQE_DATA0_CSUM_ERR_MASK,
-+			       le32_to_cpu(cqe->data0)) &
-+		     INNER_BIT))) {
-+		skb->ip_summed = CHECKSUM_UNNECESSARY;
-+		skb->csum_level = 0;
-+		skb->encapsulation = 1;
-+	} else if (!XSC_GET_EPP2SOC_PPH_EXT_TUNNEL_TYPE(hw_pph) &&
-+		   (!(FIELD_GET(XSC_CQE_DATA0_CSUM_ERR_MASK,
-+				le32_to_cpu(cqe->data0)) &
-+		      OUTER_BIT))) {
-+		skb->ip_summed = CHECKSUM_UNNECESSARY;
-+	}
-+
-+	goto out;
-+
-+csum_none:
-+	skb->csum = 0;
-+	skb->ip_summed = CHECKSUM_NONE;
-+out:
-+	return;
-+}
-+
-+static void xsc_build_rx_skb(struct xsc_cqe *cqe,
-+			     u32 cqe_bcnt,
-+			     struct xsc_rq *rq,
-+			     struct sk_buff *skb,
-+			     struct xsc_wqe_frag_info *wi)
-+{
-+	struct xsc_adapter *adapter;
-+	struct net_device *netdev;
-+	struct xsc_channel *c;
-+
-+	c = rq->cq.channel;
-+	adapter = c->adapter;
-+	netdev = c->netdev;
-+
-+	skb->mac_len = ETH_HLEN;
-+
-+	skb_record_rx_queue(skb, rq->ix);
-+	xsc_handle_csum(cqe, rq, skb, wi);
-+
-+	skb->protocol = eth_type_trans(skb, netdev);
-+	xsc_skb_set_hash(adapter, cqe, skb);
-+}
-+
-+static void xsc_complete_rx_cqe(struct xsc_rq *rq,
-+				struct xsc_cqe *cqe,
-+				u32 cqe_bcnt,
-+				struct sk_buff *skb,
-+				struct xsc_wqe_frag_info *wi)
-+{
-+	struct xsc_rq_stats *stats = rq->stats;
-+
-+	stats->packets++;
-+	stats->bytes += cqe_bcnt;
-+	xsc_build_rx_skb(cqe, cqe_bcnt, rq, skb, wi);
-+}
-+
-+static void xsc_add_skb_frag(struct xsc_rq *rq,
-+			     struct sk_buff *skb,
-+			     struct xsc_dma_info *di,
-+			     u32 frag_offset, u32 len,
-+			     unsigned int truesize)
-+{
-+	struct xsc_channel *c = rq->cq.channel;
-+	struct device *dev = c->adapter->dev;
-+
-+	dma_sync_single_for_cpu(dev, di->addr + frag_offset,
-+				len, DMA_FROM_DEVICE);
-+	page_ref_inc(di->page);
-+	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-+			di->page, frag_offset, len, truesize);
-+}
-+
-+static void xsc_copy_skb_header(struct device *dev,
-+				struct sk_buff *skb,
-+				struct xsc_dma_info *dma_info,
-+				int offset_from, u32 headlen)
-+{
-+	void *from = page_address(dma_info->page) + offset_from;
-+	/* Aligning len to sizeof(long) optimizes memcpy performance */
-+	unsigned int len = ALIGN(headlen, sizeof(long));
-+
-+	dma_sync_single_for_cpu(dev, dma_info->addr + offset_from, len,
-+				DMA_FROM_DEVICE);
-+	skb_copy_to_linear_data(skb, from, len);
-+}
-+
-+static struct sk_buff *xsc_build_linear_skb(struct xsc_rq *rq, void *va,
-+					    u32 frag_size, u16 headroom,
-+					    u32 cqe_bcnt)
-+{
-+	struct sk_buff *skb = build_skb(va, frag_size);
-+
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+	skb_reserve(skb, headroom);
-+	skb_put(skb, cqe_bcnt);
-+
-+	return skb;
-+}
-+
-+struct sk_buff *xsc_skb_from_cqe_linear(struct xsc_rq *rq,
-+					struct xsc_wqe_frag_info *wi,
-+					u32 cqe_bcnt, u8 has_pph)
-+{
-+	int pph_len = has_pph ? XSC_PPH_HEAD_LEN : 0;
-+	struct xsc_dma_info *di = wi->di;
-+	struct sk_buff *skb;
-+	void *va, *data;
-+	u32 frag_size;
-+
-+	va = page_address(di->page) + wi->offset;
-+	data = va + pph_len;
-+	frag_size = XSC_SKB_FRAG_SZ(cqe_bcnt);
-+
-+	dma_sync_single_range_for_cpu(rq->cq.xdev->device, di->addr, wi->offset,
-+				      frag_size, DMA_FROM_DEVICE);
-+	net_prefetchw(va); /* xdp_frame data area */
-+	net_prefetch(data);
-+
-+	skb = xsc_build_linear_skb(rq, va, frag_size, pph_len,
-+				   (cqe_bcnt - pph_len));
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+	/* queue up for recycling/reuse */
-+	page_ref_inc(di->page);
-+
-+	return skb;
-+}
-+
-+struct sk_buff *xsc_skb_from_cqe_nonlinear(struct xsc_rq *rq,
-+					   struct xsc_wqe_frag_info *wi,
-+					   u32 cqe_bcnt, u8 has_pph)
-+{
-+	struct xsc_rq_frag_info *frag_info = &rq->wqe.info.arr[0];
-+	u16 headlen  = min_t(u32, XSC_RX_MAX_HEAD, cqe_bcnt);
-+	struct xsc_wqe_frag_info *head_wi = wi;
-+	u16 head_offset = head_wi->offset;
-+	u16 byte_cnt = cqe_bcnt - headlen;
-+	u16 frag_consumed_bytes = 0;
-+	u16 frag_headlen = headlen;
-+	struct net_device *netdev;
-+	struct xsc_channel *c;
-+	struct sk_buff *skb;
-+	struct device *dev;
-+	u8 fragcnt = 0;
-+
-+	c = rq->cq.channel;
-+	dev = c->adapter->dev;
-+	netdev = c->adapter->netdev;
-+
-+	skb = napi_alloc_skb(rq->cq.napi, ALIGN(XSC_RX_MAX_HEAD, sizeof(long)));
-+	if (unlikely(!skb))
-+		return NULL;
-+
-+	net_prefetchw(skb->data);
-+
-+	if (likely(has_pph)) {
-+		headlen = min_t(u32, XSC_RX_MAX_HEAD,
-+				(cqe_bcnt - XSC_PPH_HEAD_LEN));
-+		frag_headlen = headlen + XSC_PPH_HEAD_LEN;
-+		byte_cnt = cqe_bcnt - headlen - XSC_PPH_HEAD_LEN;
-+		head_offset += XSC_PPH_HEAD_LEN;
-+	}
-+
-+	while (byte_cnt) {
-+		/*figure out whether the first fragment can be a page ?*/
-+		frag_consumed_bytes =
-+			min_t(u16, frag_info->frag_size - frag_headlen,
-+			      byte_cnt);
-+
-+		xsc_add_skb_frag(rq, skb, wi->di, wi->offset + frag_headlen,
-+				 frag_consumed_bytes, frag_info->frag_stride);
-+		byte_cnt -= frag_consumed_bytes;
-+
-+		/*to protect extend wqe read, drop exceed bytes*/
-+		frag_headlen = 0;
-+		fragcnt++;
-+		if (fragcnt == rq->wqe.info.num_frags) {
-+			if (byte_cnt) {
-+				netdev_warn(netdev,
-+					    "large packet reach the maximum rev-wqe num.\n");
-+				netdev_warn(netdev,
-+					    "%u bytes dropped: frag_num=%d, headlen=%d, cqe_cnt=%d, frag0_bytes=%d, frag_size=%d\n",
-+					    byte_cnt, fragcnt,
-+					    headlen, cqe_bcnt,
-+					    frag_consumed_bytes,
-+					    frag_info->frag_size);
-+			}
-+			break;
-+		}
-+
-+		frag_info++;
-+		wi++;
-+	}
-+
-+	/* copy header */
-+	xsc_copy_skb_header(dev, skb, head_wi->di, head_offset, headlen);
-+
-+	/* skb linear part was allocated with headlen and aligned to long */
-+	skb->tail += headlen;
-+	skb->len += headlen;
-+
-+	return skb;
-+}
-+
-+static void xsc_put_rx_frag(struct xsc_rq *rq,
-+			    struct xsc_wqe_frag_info *frag)
-+{
-+	if (frag->last_in_page)
-+		page_pool_recycle_direct(rq->page_pool, frag->di->page);
-+}
-+
-+static struct xsc_wqe_frag_info *get_frag(struct xsc_rq *rq, u16 ix)
-+{
-+	return &rq->wqe.frags[ix << rq->wqe.info.log_num_frags];
-+}
-+
-+static void xsc_free_rx_wqe(struct xsc_rq *rq,
-+			    struct xsc_wqe_frag_info *wi)
-+{
-+	int i;
-+
-+	for (i = 0; i < rq->wqe.info.num_frags; i++, wi++)
-+		xsc_put_rx_frag(rq, wi);
-+}
-+
-+static void xsc_dump_error_rqcqe(struct xsc_rq *rq,
-+				 struct xsc_cqe *cqe)
-+{
-+	struct net_device *netdev;
-+	struct xsc_channel *c;
-+	u32 ci;
-+
-+	c = rq->cq.channel;
-+	netdev  = c->adapter->netdev;
-+	ci = xsc_cqwq_get_ci(&rq->cq.wq);
-+
-+	net_err_ratelimited("Error cqe on dev=%s, cqn=%d, ci=%d, rqn=%d, qpn=%ld, error_code=0x%x\n",
-+			    netdev->name, rq->cq.xcq.cqn, ci,
-+			    rq->rqn,
-+			    FIELD_GET(XSC_CQE_DATA0_QP_ID_MASK,
-+				      le32_to_cpu(cqe->data0)),
-+			    get_cqe_opcode(cqe));
-+}
-+
-+void xsc_eth_handle_rx_cqe(struct xsc_cqwq *cqwq,
-+			   struct xsc_rq *rq, struct xsc_cqe *cqe)
-+{
-+	struct xsc_wq_cyc *wq = &rq->wqe.wq;
-+	u8 cqe_opcode = get_cqe_opcode(cqe);
-+	struct xsc_wqe_frag_info *wi;
-+	struct sk_buff *skb;
-+	u32 cqe_bcnt;
-+	u16 ci;
-+
-+	ci = xsc_wq_cyc_ctr2ix(wq, cqwq->cc);
-+	wi = get_frag(rq, ci);
-+	if (unlikely(cqe_opcode & BIT(7))) {
-+		xsc_dump_error_rqcqe(rq, cqe);
-+		goto free_wqe;
-+	}
-+
-+	cqe_bcnt = le32_to_cpu(cqe->msg_len);
-+	if ((le32_to_cpu(cqe->data0) & XSC_CQE_DATA0_HAS_PPH) &&
-+	    cqe_bcnt <= XSC_PPH_HEAD_LEN)
-+		goto free_wqe;
-+
-+	if (unlikely(cqe_bcnt < ETH_HLEN + ((le32_to_cpu(cqe->data0) &
-+					    XSC_CQE_DATA0_HAS_PPH) ?
-+					    XSC_PPH_HEAD_LEN : 0))) {
-+		rq->stats->dropped++;
-+		goto free_wqe;
-+	}
-+
-+	if (unlikely(cqe_bcnt > rq->frags_sz))
-+		goto free_wqe;
-+
-+	cqe_bcnt = min_t(u32, cqe_bcnt, rq->frags_sz);
-+	skb = rq->wqe.skb_from_cqe(rq, wi, cqe_bcnt,
-+				   !!(le32_to_cpu(cqe->data0) &
-+				      XSC_CQE_DATA0_HAS_PPH));
-+	if (!skb)
-+		goto free_wqe;
-+
-+	xsc_complete_rx_cqe(rq, cqe,
-+			    (le32_to_cpu(cqe->data0) & XSC_CQE_DATA0_HAS_PPH) ?
-+			    cqe_bcnt - XSC_PPH_HEAD_LEN : cqe_bcnt,
-+			    skb, wi);
-+
-+	napi_gro_receive(rq->cq.napi, skb);
-+
-+free_wqe:
-+	xsc_free_rx_wqe(rq, wi);
-+	xsc_wq_cyc_pop(wq);
-+}
-+
-+int xsc_poll_rx_cq(struct xsc_cq *cq, int budget)
-+{
-+	struct xsc_rq *rq = container_of(cq, struct xsc_rq, cq);
-+	struct xsc_cqwq *cqwq = &cq->wq;
-+	struct xsc_cqe *cqe;
-+	int work_done = 0;
-+
-+	if (!test_bit(XSC_ETH_RQ_STATE_ENABLED, &rq->state))
-+		return 0;
-+
-+	while ((work_done < budget) && (cqe = xsc_cqwq_get_cqe(cqwq))) {
-+		rq->handle_rx_cqe(cqwq, rq, cqe);
-+		++work_done;
-+
-+		xsc_cqwq_pop(cqwq);
-+	}
-+
-+	if (!work_done)
-+		goto out;
-+
-+	xsc_cq_notify_hw(cq);
-+	/* ensure cq space is freed before enabling more cqes */
-+	wmb();
-+
-+out:
-+	return work_done;
-+}
-+
-+static int xsc_page_alloc_pool(struct xsc_rq *rq,
-+			       struct xsc_dma_info *dma_info)
-+{
-+	dma_info->page = page_pool_dev_alloc_pages(rq->page_pool);
-+	if (unlikely(!dma_info->page))
-+		return -ENOMEM;
-+	dma_info->addr = page_pool_get_dma_addr(dma_info->page);
-+
-+	return 0;
-+}
-+
-+static int xsc_get_rx_frag(struct xsc_rq *rq,
-+			   struct xsc_wqe_frag_info *frag)
-+{
-+	int err = 0;
-+
-+	if (!frag->offset)
-+		/* On first frag (offset == 0), replenish page (dma_info
-+		 * actually). Other frags that point to the same dma_info
-+		 * (with a different offset) should just use the new one
-+		 * without replenishing again by themselves.
-+		 */
-+		err = xsc_page_alloc_pool(rq, frag->di);
-+
-+	return err;
-+}
-+
-+static int xsc_alloc_rx_wqe(struct xsc_rq *rq,
-+			    struct xsc_eth_rx_wqe_cyc *wqe,
-+			    u16 ix)
-+{
-+	struct xsc_wqe_frag_info *frag = get_frag(rq, ix);
-+	u64 addr;
-+	int err;
-+	int i;
-+
-+	for (i = 0; i < rq->wqe.info.num_frags; i++, frag++) {
-+		err = xsc_get_rx_frag(rq, frag);
-+		if (unlikely(err))
-+			goto err_free_frags;
-+
-+		addr = frag->di->addr + frag->offset;
-+		wqe->data[i].va = cpu_to_le64(addr);
-+	}
-+
-+	return 0;
-+
-+err_free_frags:
-+	while (--i >= 0)
-+		xsc_put_rx_frag(rq, --frag);
-+
-+	return err;
-+}
-+
-+void xsc_eth_dealloc_rx_wqe(struct xsc_rq *rq, u16 ix)
-+{
-+	struct xsc_wqe_frag_info *wi = get_frag(rq, ix);
-+
-+	xsc_free_rx_wqe(rq, wi);
-+}
-+
-+static int xsc_alloc_rx_wqes(struct xsc_rq *rq, u16 ix, u8 wqe_bulk)
-+{
-+	struct xsc_wq_cyc *wq = &rq->wqe.wq;
-+	struct xsc_eth_rx_wqe_cyc *wqe;
-+	int err;
-+	int idx;
-+	int i;
-+
-+	for (i = 0; i < wqe_bulk; i++) {
-+		idx = xsc_wq_cyc_ctr2ix(wq, (ix + i));
-+		wqe = xsc_wq_cyc_get_wqe(wq, idx);
-+
-+		err = xsc_alloc_rx_wqe(rq, wqe, idx);
-+		if (unlikely(err))
-+			goto err_free_wqes;
-+	}
-+
-+	return 0;
-+
-+err_free_wqes:
-+	while (--i >= 0)
-+		xsc_eth_dealloc_rx_wqe(rq, xsc_wq_cyc_ctr2ix(wq, ix + i));
-+
-+	return err;
-+}
-+
-+bool xsc_eth_post_rx_wqes(struct xsc_rq *rq)
-+{
-+	struct xsc_wq_cyc *wq = &rq->wqe.wq;
-+	u8 wqe_bulk, wqe_bulk_min;
-+	int err = 0;
-+	int alloc;
-+	u16 head;
-+
-+	wqe_bulk = rq->wqe.info.wqe_bulk;
-+	wqe_bulk_min = rq->wqe.info.wqe_bulk_min;
-+	if (xsc_wq_cyc_missing(wq) < wqe_bulk)
-+		return false;
-+
-+	do {
-+		head = xsc_wq_cyc_get_head(wq);
-+
-+		alloc = min_t(int, wqe_bulk, xsc_wq_cyc_missing(wq));
-+		if (alloc < wqe_bulk && alloc >= wqe_bulk_min)
-+			alloc = alloc & 0xfffffffe;
-+
-+		if (alloc > 0) {
-+			err = xsc_alloc_rx_wqes(rq, head, alloc);
-+			if (unlikely(err))
-+				break;
-+
-+			xsc_wq_cyc_push_n(wq, alloc);
-+		}
-+	} while (xsc_wq_cyc_missing(wq) >= wqe_bulk_min);
-+
-+	dma_wmb();
-+
-+	/* ensure wqes are visible to device before updating doorbell record */
-+	xsc_rq_notify_hw(rq);
-+
-+	return !!err;
-+}
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
-new file mode 100644
-index 000000000..adec41675
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
-@@ -0,0 +1,40 @@
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+@@ -0,0 +1,345 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright (C) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd.
 + * All rights reserved.
 + */
 +
-+#include "xsc_eth_stats.h"
++#include <linux/tcp.h>
++
 +#include "xsc_eth.h"
++#include "xsc_eth_txrx.h"
 +
-+static int xsc_get_netdev_max_channels(struct xsc_adapter *adapter)
++#define XSC_OPCODE_RAW 7
++
++static void xsc_dma_push(struct xsc_sq *sq, dma_addr_t addr, u32 size,
++			 enum xsc_dma_map_type map_type)
 +{
-+	struct net_device *netdev = adapter->netdev;
++	struct xsc_sq_dma *dma = xsc_dma_get(sq, sq->dma_fifo_pc++);
 +
-+	return min_t(unsigned int, netdev->num_rx_queues,
-+		     netdev->num_tx_queues);
++	dma->addr = addr;
++	dma->size = size;
++	dma->type = map_type;
 +}
 +
-+void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter,
-+			     struct rtnl_link_stats64 *s)
++static void xsc_dma_unmap_wqe(struct xsc_sq *sq, u8 num_dma)
 +{
++	struct xsc_adapter *adapter = sq->channel->adapter;
++	struct device *dev  = adapter->dev;
 +	int i;
 +
-+	for (i = 0; i < xsc_get_netdev_max_channels(adapter); i++) {
-+		struct xsc_channel_stats *channel_stats;
-+		struct xsc_rq_stats *rq_stats;
-+		struct xsc_sq_stats *sq_stats;
++	for (i = 0; i < num_dma; i++) {
++		struct xsc_sq_dma *last_pushed_dma;
 +
-+		channel_stats = &adapter->stats->channel_stats[i];
-+		rq_stats = &channel_stats->rq;
-+		sq_stats = &channel_stats->sq;
-+
-+		s->rx_packets   += rq_stats->packets;
-+		s->rx_bytes     += rq_stats->bytes;
-+		s->rx_length_errors += rq_stats->dropped;
-+
-+		s->tx_packets    += sq_stats->packets;
-+		s->tx_bytes      += sq_stats->bytes;
-+		s->tx_dropped    += sq_stats->dropped;
++		last_pushed_dma = xsc_dma_get(sq, --sq->dma_fifo_pc);
++		xsc_tx_dma_unmap(dev, last_pushed_dma);
 +	}
 +}
 +
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
-index a391afe97..0f11ef9ae 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
-@@ -11,6 +11,7 @@
- struct xsc_rq_stats {
- 	u64 packets;
- 	u64 bytes;
-+	u64 dropped;
- };
- 
- struct xsc_sq_stats {
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
-index 262421740..42e630547 100644
---- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
-@@ -118,7 +118,9 @@ int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
- {
- 	struct xsc_channel *c = container_of(napi, struct xsc_channel, napi);
- 	struct xsc_eth_params *params = &c->adapter->nic_param;
-+	struct xsc_rq *rq = &c->qp.rq;
- 	bool busy = false;
-+	int work_done = 0;
- 	int tx_budget;
- 
- 	rcu_read_lock();
-@@ -126,18 +128,29 @@ int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
- 	tx_budget = params->sq_size >> 2;
- 	busy |= xsc_poll_tx_cq(&c->qp.sq.cq, tx_budget);
- 
-+	/* budget=0 means: don't poll rx rings */
-+	if (likely(budget)) {
-+		work_done = xsc_poll_rx_cq(&rq->cq, budget);
-+		busy |= work_done == budget;
++static void *xsc_sq_fetch_wqe(struct xsc_sq *sq, size_t size, u16 *pi)
++{
++	struct xsc_wq_cyc *wq = &sq->wq;
++	void *wqe;
++
++	/*caution, sp->pc is default to be zero*/
++	*pi  = xsc_wq_cyc_ctr2ix(wq, sq->pc);
++	wqe = xsc_wq_cyc_get_wqe(wq, *pi);
++	memset(wqe, 0, size);
++
++	return wqe;
++}
++
++static u16 xsc_tx_get_gso_ihs(struct xsc_sq *sq, struct sk_buff *skb)
++{
++	u16 ihs;
++
++	if (skb->encapsulation) {
++		ihs = skb_inner_transport_offset(skb) + inner_tcp_hdrlen(skb);
++	} else {
++		if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4)
++			ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
++		else
++			ihs = skb_transport_offset(skb) + tcp_hdrlen(skb);
 +	}
 +
-+	busy |= rq->post_wqes(rq);
++	return ihs;
++}
 +
- 	if (busy) {
- 		if (likely(xsc_channel_no_affinity_change(c))) {
- 			rcu_read_unlock();
- 			return budget;
- 		}
-+		if (budget && work_done == budget)
-+			work_done--;
++static void xsc_txwqe_build_cseg_csum(struct xsc_sq *sq,
++				      struct sk_buff *skb,
++				      struct xsc_send_wqe_ctrl_seg *cseg)
++{
++	u32 val = le32_to_cpu(cseg->data0);
++
++	if (likely(skb->ip_summed == CHECKSUM_PARTIAL)) {
++		if (skb->encapsulation)
++			val |= FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_CSUM_EN_MASK,
++					  XSC_ETH_WQE_INNER_AND_OUTER_CSUM);
++		else
++			val |= FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_CSUM_EN_MASK,
++					  XSC_ETH_WQE_OUTER_CSUM);
++	} else {
++		val |= FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_CSUM_EN_MASK,
++				  XSC_ETH_WQE_NONE_CSUM);
++	}
++	cseg->data0 = cpu_to_le32(val);
++}
++
++static void xsc_txwqe_build_csegs(struct xsc_sq *sq, struct sk_buff *skb,
++				  u16 mss, u16 ihs,
++				  u8 opcode, u16 ds_cnt, u32 msglen,
++				  struct xsc_send_wqe_ctrl_seg *cseg)
++{
++	struct xsc_core_device *xdev = sq->cq.xdev;
++	int send_wqe_ds_num_log;
++	u32 val = 0;
++
++	send_wqe_ds_num_log = ilog2(xdev->caps.send_ds_num);
++	xsc_txwqe_build_cseg_csum(sq, skb, cseg);
++
++	if (mss != 0) {
++		val |= XSC_WQE_CTRL_SEG_DATA2_HAS_PPH |
++		       XSC_WQE_CTRL_SEG_DATA2_SO_TYPE |
++		       FIELD_PREP(XSC_WQE_CTRL_SEG_DATA2_SO_HDR_LEN_MASK, ihs) |
++		       FIELD_PREP(XSC_WQE_CTRL_SEG_DATA2_SO_DATA_SIZE_MASK, mss);
++		cseg->data2 = cpu_to_le32(val);
++	}
++
++	val = le32_to_cpu(cseg->data0);
++	val |= FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_MSG_OPCODE_MASK, opcode) |
++	       FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_WQE_ID_MASK,
++			  sq->pc << send_wqe_ds_num_log) |
++	       FIELD_PREP(XSC_WQE_CTRL_SEG_DATA0_DS_DATA_NUM_MASK,
++			  ds_cnt - XSC_SEND_WQEBB_CTRL_NUM_DS);
++	cseg->data0 = cpu_to_le32(val);
++	cseg->msg_len = cpu_to_le32(msglen);
++	cseg->data3 = cpu_to_le32(XSC_WQE_CTRL_SEG_DATA3_CE);
++}
++
++static int xsc_txwqe_build_dsegs(struct xsc_sq *sq, struct sk_buff *skb,
++				 u16 headlen,
++				 struct xsc_wqe_data_seg *dseg)
++{
++	struct xsc_adapter *adapter = sq->channel->adapter;
++	struct device *dev = adapter->dev;
++	dma_addr_t dma_addr = 0;
++	u8 num_dma = 0;
++	int i;
++
++	if (headlen) {
++		dma_addr = dma_map_single(dev,
++					  skb->data,
++					  headlen,
++					  DMA_TO_DEVICE);
++		if (unlikely(dma_mapping_error(dev, dma_addr)))
++			goto err_dma_unmap_wqe;
++
++		dseg->va = cpu_to_le64(dma_addr);
++		dseg->mkey  = cpu_to_le32(be32_to_cpu(sq->mkey_be));
++		dseg->data0 |=
++			cpu_to_le32(FIELD_PREP(XSC_WQE_DATA_SEG_DATA0_SEG_LEN_MASK,
++					       headlen));
++
++		xsc_dma_push(sq, dma_addr, headlen, XSC_DMA_MAP_SINGLE);
++		num_dma++;
++		dseg++;
++	}
++
++	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
++		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
++		int fsz = skb_frag_size(frag);
++
++		dma_addr = skb_frag_dma_map(dev, frag, 0, fsz, DMA_TO_DEVICE);
++		if (unlikely(dma_mapping_error(dev, dma_addr)))
++			goto err_dma_unmap_wqe;
++
++		dseg->va = cpu_to_le64(dma_addr);
++		dseg->mkey = cpu_to_le32(be32_to_cpu(sq->mkey_be));
++		dseg->data0 |=
++			cpu_to_le32(FIELD_PREP(XSC_WQE_DATA_SEG_DATA0_SEG_LEN_MASK,
++					       fsz));
++
++		xsc_dma_push(sq, dma_addr, fsz, XSC_DMA_MAP_PAGE);
++		num_dma++;
++		dseg++;
++	}
++
++	return num_dma;
++
++err_dma_unmap_wqe:
++	xsc_dma_unmap_wqe(sq, num_dma);
++	return -ENOMEM;
++}
++
++static void xsc_sq_notify_hw(struct xsc_wq_cyc *wq, u16 pc,
++			     struct xsc_sq *sq)
++{
++	struct xsc_adapter *adapter = sq->channel->adapter;
++	struct xsc_core_device *xdev  = adapter->xdev;
++	int send_ds_num_log = ilog2(xdev->caps.send_ds_num);
++
++	/* reverse wqe index to ds index */
++	xsc_update_tx_db(xdev, sq->sqn, pc << send_ds_num_log);
++}
++
++static void xsc_txwqe_complete(struct xsc_sq *sq, struct sk_buff *skb,
++			       u8 opcode, u16 ds_cnt,
++			       u8 num_wqebbs, u32 num_bytes, u8 num_dma,
++			       struct xsc_tx_wqe_info *wi)
++{
++	struct xsc_wq_cyc *wq = &sq->wq;
++
++	wi->num_bytes = num_bytes;
++	wi->num_dma = num_dma;
++	wi->num_wqebbs = num_wqebbs;
++	wi->skb = skb;
++
++	netdev_tx_sent_queue(sq->txq, num_bytes);
++
++	sq->pc += wi->num_wqebbs;
++
++	if (unlikely(!xsc_wqc_has_room_for(wq, sq->cc, sq->pc, sq->stop_room)))
++		netif_tx_stop_queue(sq->txq);
++
++	if (!netdev_xmit_more() || netif_xmit_stopped(sq->txq))
++		xsc_sq_notify_hw(wq, sq->pc, sq);
++}
++
++static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
++				   struct xsc_sq *sq,
++				   struct xsc_tx_wqe *wqe,
++				   u16 pi)
++{
++	struct xsc_core_device *xdev = sq->cq.xdev;
++	struct xsc_sq_stats *stats = sq->stats;
++	struct xsc_send_wqe_ctrl_seg *cseg;
++	struct xsc_wqe_data_seg *dseg;
++	struct xsc_tx_wqe_info *wi;
++	u16 mss, ihs, headlen;
++	u32 num_bytes, num_pkts;
++	u8 num_wqebbs;
++	int num_dma;
++	u16 ds_cnt;
++	u8 opcode;
++
++retry_send:
++	/* Calc ihs and ds cnt, no writes to wqe yet; ctrl-ds is reduced by
++	 * ds_data_num.
++	 */
++	ds_cnt = XSC_SEND_WQEBB_CTRL_NUM_DS;
++
++	if (skb_is_gso(skb)) {
++		opcode		= XSC_OPCODE_RAW;
++		mss		= skb_shinfo(skb)->gso_size;
++		ihs		= xsc_tx_get_gso_ihs(sq, skb);
++		num_bytes	= skb->len +
++				  (skb_shinfo(skb)->gso_segs - 1) * ihs;
++		num_pkts	= skb_shinfo(skb)->gso_segs;
++	} else {
++		opcode		= XSC_OPCODE_RAW;
++		mss		= 0;
++		ihs		= 0;
++		num_bytes	= skb->len;
++		num_pkts	= 1;
++	}
++
++	/*linear data in skb*/
++	headlen = skb->len - skb->data_len;
++	ds_cnt += !!headlen;
++	ds_cnt += skb_shinfo(skb)->nr_frags;
++
++	/* Check packet size. */
++	if (unlikely(mss == 0 && skb->len > sq->hw_mtu))
++		goto err_drop;
++
++	num_wqebbs = DIV_ROUND_UP(ds_cnt, xdev->caps.send_ds_num);
++	/*if ds_cnt exceed one wqe, drop it*/
++	if (num_wqebbs != 1) {
++		if (skb_linearize(skb))
++			goto err_drop;
++		goto retry_send;
++	}
++
++	/* fill wqe */
++	wi   = (struct xsc_tx_wqe_info *)&sq->db.wqe_info[pi];
++	cseg = &wqe->ctrl;
++	dseg = &wqe->data[0];
++
++	if (unlikely(skb->len == 0))
++		goto err_drop;
++
++	xsc_txwqe_build_csegs(sq, skb, mss, ihs,
++			      opcode, ds_cnt, skb->len, cseg);
++
++	/*inline header is also use dma to transport*/
++	num_dma = xsc_txwqe_build_dsegs(sq, skb, headlen, dseg);
++	if (unlikely(num_dma < 0))
++		goto err_drop;
++
++	xsc_txwqe_complete(sq, skb, opcode, ds_cnt, num_wqebbs, num_bytes,
++			   num_dma, wi);
++	stats->bytes     += num_bytes;
++	stats->packets   += num_pkts;
++
++	return NETDEV_TX_OK;
++
++err_drop:
++	stats->dropped++;
++	dev_kfree_skb_any(skb);
++
++	return NETDEV_TX_OK;
++}
++
++void xsc_free_tx_wqe(struct device *dev, struct xsc_sq *sq)
++{
++	struct xsc_tx_wqe_info *wi;
++	struct sk_buff *skb;
++	u16 ci, npkts = 0;
++	u32 nbytes = 0;
++	int i;
++
++	while (sq->cc != sq->pc) {
++		ci = xsc_wq_cyc_ctr2ix(&sq->wq, sq->cc);
++		wi = &sq->db.wqe_info[ci];
++		skb = wi->skb;
++
++		if (!skb) { /* nop */
++			sq->cc++;
++			continue;
++		}
++
++		for (i = 0; i < wi->num_dma; i++) {
++			struct xsc_sq_dma *dma =
++				xsc_dma_get(sq, sq->dma_fifo_cc++);
++
++			xsc_tx_dma_unmap(dev, dma);
++		}
++
++		dev_kfree_skb_any(skb);
++		npkts++;
++		nbytes += wi->num_bytes;
++		sq->cc += wi->num_wqebbs;
++	}
++
++	if (sq->txq)
++		netdev_tx_completed_queue(sq->txq, npkts, nbytes);
++}
++
++netdev_tx_t xsc_eth_xmit_start(struct sk_buff *skb, struct net_device *netdev)
++{
++	struct xsc_adapter *adapter = netdev_priv(netdev);
++	struct xsc_tx_wqe *wqe;
++	struct xsc_sq *sq;
++	u32 ds_num;
++	u16 pi;
++
++	if (!adapter->opened)
++		return NETDEV_TX_BUSY;
++
++	sq = adapter->txq2sq[skb_get_queue_mapping(skb)];
++	if (unlikely(!sq))
++		return NETDEV_TX_BUSY;
++
++	ds_num = adapter->xdev->caps.send_ds_num;
++	wqe = xsc_sq_fetch_wqe(sq, ds_num * XSC_SEND_WQE_DS, &pi);
++
++	return xsc_eth_xmit_frame(skb, sq, wqe, pi);
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
+new file mode 100644
+index 000000000..262421740
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include "xsc_eth_common.h"
++#include "xsc_eth_txrx.h"
++
++void xsc_cq_notify_hw_rearm(struct xsc_cq *cq)
++{
++	xsc_arm_cq(cq->xdev, cq->xcq.cqn, cq->wq.cc, 0);
++}
++
++void xsc_cq_notify_hw(struct xsc_cq *cq)
++{
++	xsc_update_cq_ci(cq->xdev, cq->xcq.cqn, cq->wq.cc);
++}
++
++static bool xsc_channel_no_affinity_change(struct xsc_channel *c)
++{
++	int current_cpu = smp_processor_id();
++
++	return cpumask_test_cpu(current_cpu, c->aff_mask);
++}
++
++static void xsc_dump_error_sqcqe(struct xsc_sq *sq,
++				 struct xsc_cqe *cqe)
++{
++	struct net_device *netdev = sq->channel->netdev;
++	u32 ci = xsc_cqwq_get_ci(&sq->cq.wq);
++
++	net_err_ratelimited("Err cqe on dev %s cqn=0x%x ci=0x%x sqn=0x%x err_code=0x%x qpid=0x%lx\n",
++			    netdev->name, sq->cq.xcq.cqn, ci,
++			    sq->sqn, get_cqe_opcode(cqe),
++			    FIELD_GET(XSC_CQE_DATA0_QP_ID_MASK,
++				      le32_to_cpu(cqe->data0)));
++}
++
++static bool xsc_poll_tx_cq(struct xsc_cq *cq, int napi_budget)
++{
++	struct xsc_adapter *adapter;
++	struct xsc_cqe *cqe;
++	struct device *dev;
++	struct xsc_sq *sq;
++	u32 dma_fifo_cc;
++	u32 nbytes = 0;
++	u16 npkts = 0;
++	int i = 0;
++	u16 sqcc;
++
++	sq = container_of(cq, struct xsc_sq, cq);
++	if (!test_bit(XSC_ETH_SQ_STATE_ENABLED, &sq->state))
++		return false;
++
++	adapter = sq->channel->adapter;
++	dev = adapter->dev;
++
++	cqe = xsc_cqwq_get_cqe(&cq->wq);
++	if (!cqe)
++		goto out;
++
++	if (unlikely(get_cqe_opcode(cqe) & BIT(7)))
++		xsc_dump_error_sqcqe(sq, cqe);
++
++	sqcc = sq->cc;
++
++	/* avoid dirtying sq cache line every cqe */
++	dma_fifo_cc = sq->dma_fifo_cc;
++	i = 0;
++	do {
++		struct xsc_tx_wqe_info *wi;
++		struct sk_buff *skb;
++		int j;
++		u16 ci;
++
++		xsc_cqwq_pop(&cq->wq);
++
++		ci = xsc_wq_cyc_ctr2ix(&sq->wq, sqcc);
++		wi = &sq->db.wqe_info[ci];
++		skb = wi->skb;
++
++		if (unlikely(!skb))
++			continue;
++
++		for (j = 0; j < wi->num_dma; j++) {
++			struct xsc_sq_dma *dma = xsc_dma_get(sq, dma_fifo_cc++);
++
++			xsc_tx_dma_unmap(dev, dma);
++		}
++
++		npkts++;
++		nbytes += wi->num_bytes;
++		sqcc += wi->num_wqebbs;
++		napi_consume_skb(skb, 0);
++
++	} while ((++i < napi_budget) && (cqe = xsc_cqwq_get_cqe(&cq->wq)));
++
++	xsc_cq_notify_hw(cq);
++
++	/* ensure cq space is freed before enabling more cqes */
++	wmb();
++
++	sq->dma_fifo_cc = dma_fifo_cc;
++	sq->cc = sqcc;
++
++	netdev_tx_completed_queue(sq->txq, npkts, nbytes);
++
++	if (netif_tx_queue_stopped(sq->txq) &&
++	    xsc_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room)) {
++		netif_tx_wake_queue(sq->txq);
++	}
++
++out:
++	return (i == napi_budget);
++}
++
++int xsc_eth_napi_poll(struct napi_struct *napi, int budget)
++{
++	struct xsc_channel *c = container_of(napi, struct xsc_channel, napi);
++	struct xsc_eth_params *params = &c->adapter->nic_param;
++	bool busy = false;
++	int tx_budget;
++
++	rcu_read_lock();
++
++	tx_budget = params->sq_size >> 2;
++	busy |= xsc_poll_tx_cq(&c->qp.sq.cq, tx_budget);
++
++	if (busy) {
++		if (likely(xsc_channel_no_affinity_change(c))) {
++			rcu_read_unlock();
++			return budget;
++		}
++	}
++
++	if (unlikely(!napi_complete_done(napi, 0)))
++		goto err_out;
++
++	xsc_cq_notify_hw_rearm(&c->qp.sq.cq);
++err_out:
++	rcu_read_unlock();
++	return 0;
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
+index dece589ab..bb477fd4a 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
+@@ -33,6 +33,7 @@ struct sk_buff *xsc_skb_from_cqe_nonlinear(struct xsc_rq *rq,
+ 					   u32 cqe_bcnt, u8 has_pph);
+ int xsc_poll_rx_cq(struct xsc_cq *cq, int budget);
+ 
++void xsc_free_tx_wqe(struct device *dev, struct xsc_sq *sq);
+ netdev_tx_t xsc_eth_xmit_start(struct sk_buff *skb, struct net_device *netdev);
+ 
+ static inline void xsc_tx_dma_unmap(struct device *dev, struct xsc_sq_dma *dma)
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/vport.c b/drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
+index 5118ff36b..9e40ec001 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
+@@ -6,7 +6,8 @@
+ #include "common/xsc_core.h"
+ #include "common/xsc_cmd_api.h"
+ 
+-u8 xsc_core_query_vport_state(struct xsc_core_device *xdev, u16 vport)
++int xsc_core_query_vport_state(struct xsc_core_device *xdev, u16 vport,
++			       u8 *state)
+ {
+ 	struct xsc_query_vport_state_out out;
+ 	struct xsc_query_vport_state_in in;
+@@ -29,6 +30,7 @@ u8 xsc_core_query_vport_state(struct xsc_core_device *xdev, u16 vport)
+ 		return err;
  	}
  
--	if (unlikely(!napi_complete_done(napi, 0)))
-+	if (unlikely(!napi_complete_done(napi, work_done)))
- 		goto err_out;
- 
- 	xsc_cq_notify_hw_rearm(&c->qp.sq.cq);
-+	xsc_cq_notify_hw_rearm(&rq->cq);
- err_out:
- 	rcu_read_unlock();
--	return 0;
-+	return work_done;
+-	return out.state;
++	*state = out.state;
++	return 0;
  }
+ EXPORT_SYMBOL_GPL(xsc_core_query_vport_state);
 -- 
 2.18.4
