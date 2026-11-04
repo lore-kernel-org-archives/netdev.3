@@ -1,100 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793777388;
-	b=uTbFvlfUdqOyTsdu+fsjwfd4i4kc+Hv4N4PzWLx5s6O11xXRQtqGA+5Bk/G+WEJSAiXC
-	 mYxfEEUFwRtRzLH92zLeW5bmB2tWC8zSZFTHUP8M1F/YpngD+LImhZ0eRmjYnG889INJz
-	 Wuk4XR+zbftrn4uz+ANENazcDDNAm7Yzr5BsvFp/mlEO9DXgnQQU4cUZwxNdV57cEnGUd
-	 mHthALE2YxsosoJJwRU2uvq/V/tUvwOfFXVxtZyZCcFZ47ThPzkDA89oUippURf81M8Os
-	 7y40CBpJCKIZ52aLAv9Rbb2xFhkhJ7Q//dO+Z3Oqhergq1CoBjEX5BTpzEJWBaKkpfQ==
+	t=1793777483;
+	b=lEAah2KH7Cza3k6tuYy9ghkByLkA+RqF7n2Ot4eV5OdTGSOGOM41BBx8hs6TqpU3Tffj
+	 SVjGtpcpr60TjeJnEGPTUieVqv1Ch8yVfTvpOr9ZqJfNSO8nHPPdHsnaD5539Qd4lieD9
+	 4KM606ok6KE4tUGLVbgYGaIhb377eqQkeltTD2FI7CgWNAm7N81m58Q1Ie5lGzAcD4IaN
+	 DHcUUh7hIgdKOqDVnn65MKh0ROtexOapRrHJ0IkNlLPb6FNW+LYOKq274dmE+8jVaHUO3
+	 R3a1vFrhSUWwXDu3dXQ5B+dkAfTj/q+RZLwEDm2vZb9vufJVknDWtC6oz26r6hsFaPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793777388;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793777483;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
-	b=hoycJT3FwbiiSj9SWQgT4/RcPDnIU58J7VS+vm1lj9vyYbxV96gbukky5exVfRV3uBZQ
-	 8/eM8B27U4Dzr85j2KWcWsPQWEwxPRMBzUoJG76OTahg0zsu8OwA1FmjJF5O4FYddIGKG
-	 GCJ+S2TkOqJbZtpFpoFFvxId9V2tGozKrastQdI4d2AayknNdian/qW/TZWNDenXX87jV
-	 QcbZ73rwkyNFN62PUEP28WrF0ZFdjaLxfmSj0VW65riG9Ydy4j7wfKxhaO36MsxEs5mdO
-	 1918kHjgGOdPgj8vK70Vj++SlI9NvFUoW2gLg+k2OJuBtenbNdItsgoQDb6AJ6fL8Sw==
+	bh=Gf1SJ60wh6rt1cgDzJ1XsuN+6DsStx0G3H1EPBnHUrc=;
+	b=k5BDCl4GnflyWJQ7FM525uNdPlKA5/DkKOaUD+rNyxnNmQQzQZpHLP4P/PWHoW+u5GWw
+	 6/nzgwuKOTFQJfo0Z5DbpVPmQ7HaxJrv3Pxe0hpAH66RC8lynlNrb109fjS1GqUbtW5ot
+	 muCAwOocwCkGvgUeyNnBzq2yiEV1LtbR9xjeMPX2T7T1B52q6C2PpEejXze7AhiLaChyA
+	 mHvLas1gOABg9iq7iyQRAOMaJor8hTN4Stgq69JmAmGfzDRY73BS5kKxhFLf2gas1ngG0
+	 C9Q9idAc+eob5p9jCpe58Fc2Nfd+3yhuTalvT9ely+Gxoswv6VJEX4fsM9i+gt1KEOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GnP1ALsd;
-	arc=none smtp.remote-ip=209.85.221.44
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bHveVmbM;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qPyUMYEP;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFAC606A336
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 07:29:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CFAC606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFA606A329
+	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 07:31:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEBFA606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GnP1ALsd
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c4649b35bso278891f8f.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 23:29:47 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bHveVmbM;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qPyUMYEP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793777481;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gf1SJ60wh6rt1cgDzJ1XsuN+6DsStx0G3H1EPBnHUrc=;
+	b=bHveVmbMboFoyV/JO0zO4CZHk0sykT/qOL2/fszQ0zblTFn2wFfP1dTCXlbULjVWuiQ6lA
+	hkIAVs4LrV6RSWBM7l4BxUVp6sN22wBPRZbykFsWabZRsqW5MC/L5EyhBomu7kdPVQkQ++
+	he3m5V8F58tqHZzmi38LORtin1KHjfY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-IBOb1S66PKSA0S6wmP-0dg-1; Wed, 04 Nov 2026 02:31:20 -0500
+X-MC-Unique: IBOb1S66PKSA0S6wmP-0dg-1
+X-Mimecast-MFC-AGG-ID: IBOb1S66PKSA0S6wmP-0dg_1793777479
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e489f97fso5169755e9.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 23:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793777386; x=1794382186; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
-        b=GnP1ALsdVz51CwsNe01ids8Vf3XofkIBdeApDuS2THdbzLAnZE0sO2UqznJzBj77zU
-         L6EI5+xeloPdKNSnc4WPtEMZdWTe7nWiHbCxh3VlTUYFq8wx2Z8VXfdDxRa8hCPBzv29
-         rrXw2TobSoWy5g6L7i7Cwh9b/x4FlcBBCfmL3k/4ezm/6ySR5g79027PUjWHzCU36aJf
-         X1YfREmSrAMg+tbF58CiZP9DSlnvCSD4YawDUaN69Y3Bo5dZ6HSJE75H0dFr7y9MqbBA
-         qwXuZ55mj8XK+XayBwxEWpiF/fcNM3QXgLrJg8HdScRkw7+1GUA+DdWlzZP5zmmxhc1y
-         lKNQ==
+        d=redhat.com; s=google; t=1793777479; x=1794382279; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Gf1SJ60wh6rt1cgDzJ1XsuN+6DsStx0G3H1EPBnHUrc=;
+        b=qPyUMYEPu6QMDw+ynFBXj+Jukdd/b7kY/MwSzggCPBbpqxVgSSKgaPVvCXHszLHMco
+         DlChHW+HSdOND+z92arp08ItIKAl5SBxI6sb508qvBIMVvrx5D+CCApcPJ6w2U8LroJm
+         r4b2JM0Z5YGcJCNO5bJoyhZPF2SGZUAU5HamlEA3FNIx58qghw1wsKgWyPu6gXbmqnQN
+         E+gOashfTRRTa6fbRRxM9NEUCG+fzcXqMLRRTDR5xfCivw/vR7Iab+z/LJZmmRbcob58
+         7nPyMK1EcwD+cvreIfJGyM9HJYnIuzgjJgn3rUsVj/grOtz2KJY44lsvT26XeYlcUWSR
+         WrDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793777386; x=1794382186;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=121s4JOLOhrrTtqNw+nRPzr1JTP5S9GXqoANnz/M4b8=;
-        b=eDcHtu79gVCuGIeFY8WZU2/SkAMlbhJvxe0R6T2V/cOyw3Y1xZAnYwibpLaRiyCMJh
-         kCe9U85gwC9llxib/1RvutBZ3CSOYWv0WkALpkFBTL8wzBUMjnRwzlSf8BxMsfHMgGUE
-         ll+JenCfd2x4fMK/bKAQYeBtFh7mJGrK2R6K3+kaPRwmVFbCxejqBU8F4eYinRtd7crq
-         WAvE2RY+Bcn9vqxUWnzpy1FLKo75ElZZdkS9O37IqukWlDrcQVAAT3BYW3bW32HTSLJW
-         cX9y84fg1LgCQ6+vT+oTzvkM8hO34Ljuq+frkFY/VLFmh9z6GE1UiDFwDNiHSLxUWH4M
-         KXJA==
-X-Forwarded-Encrypted: i=1; AKwUvByahz8b64bQ9LKsIwtb/+jKeUAQlauDYOsPUdEZG838ChigUc//DNSkdey1Chn1Qjsf3Z7iCwk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8cNuTTxvRqP4GnCRdmewgvsKg+NzP7heE+EruFB5Zwb61JlguQ
-	tH3UQWUBxJycNgqrrWx/u+A7ZUWAJCtG1+AQ/IFgrTJwQXJBM17r1LQv
-X-Gm-Gg: AYBFou1pyrAmoq3s5B1061iXHLFs4gKZyI5/QuksTp453rU03KyCXkjFckes4wAkRgT
-	xlaziNaeLWHGXWDbP4MnR993bAGPkcDGETtaNnBYmbUqCoDrqTxVsJgWCdeffRVnczYM3n/UriS
-	ucrXyCx0P974/V79SIk16W5PomiAdqU4K4fcW4wpyvR/3JGUOzgoZhGEYquCiBC405GmROUaWhs
-	ObgSQsoL4hy2S4+8OilDz1/aEGcfOqsa3UC5x1VZbWG6Frq06J47GGnfE97FWKLAEqBFmuRXQUa
-	t6+NAd6rPDJMR9iOGzZW9onP2N04kOnb/A1dKxRQcw/yMiZzm9x7ym/48xJZsT9aPTXynueWkXA
-	RbFRPCQJ+Zcfr6jzzyWi/mIz7T9gkR+pFhpiS+oUFwKoEjPuD+IKzdfMXIgZYbdIsYklN8zcoLU
-	s1WVhlIJriku/BPKuf0th0ePpe1/EH8jrJ8oJb7DPxxQ2BBiNkvYpeXhNlSBBQJ+yu94orboAvt
-	GRxRynCnToF3IXKRRvMl+wM9T6G46nm12WieQwGjWCt8hpIV6J1GrEvWKkIe0lk5XUgAczhmiP1
-	FWPrvAWu9jIDnbtzbBjzYKWsvFm/8SlI8jb6VZqUJL3fsokXX1ldzgxs/bFxU9sFeHBiuWeM1l+
-	PYNzQJzUmmOgcco79tPuWOqO5a3MzWl2UfQ==
-X-Received: by 2002:a05:600c:46ce:b0:4a6:7d6:821f with SMTP id 5b1f17b1804b1-4ac189928e9mr345693905e9.29.1793777386280;
-        Tue, 03 Nov 2026 23:29:46 -0800 (PST)
-Received: from Ansuel-XPS24.localdomain (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b2a555e59dsm130754225e9.0.2026.11.03.23.29.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 23:29:45 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RFC net-next] net: airoha: npu: attach passive devfreq scaling
-Date: Wed,  4 Nov 2026 08:29:39 +0100
-Message-ID: <20261104072940.52933-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1793777479; x=1794382279;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Gf1SJ60wh6rt1cgDzJ1XsuN+6DsStx0G3H1EPBnHUrc=;
+        b=kzuEnyNAeVU1VKQ3Y3urkdYSf1/jOF8OI8hfzNvoYbgyRQw9x1ydkblMQf8SWIm94B
+         qg14hV4LnXsrQxjZliC6mRxscKdxNSkrBwhguC/1jHQVLHVACBUpyMk+Cr6ZBBgxJmjv
+         7mtQLowXF7UAP6AWHRQeuiIwoU1PmIrJLuoQdTOpZe4EUEF0ZEMe2XdMYZknHHM4O6fT
+         rcARFiTDSCuAqDerGHvX/GEhLuWgmGFupgj0UYLf1JJ8+Br8ZVFV2co4JzS3j+vIgVo8
+         GlIm07wIzkpJvkOfNSC2HusALN5ROFpidy2iZ/piQzZ3Sna3nCDB1RX9ranvmrdb2giL
+         HNww==
+X-Forwarded-Encrypted: i=1; AKwUvByDfLatx7XeclWHjmHpSOrLQgZODW5JiCc59Cz19FrehPXdBD75Fz9V8KaZ+FAAs1fhaFi0Nng=@vger.kernel.org
+X-Gm-Message-State: APuU4Z91mEosEHVxij3t7yF3ML80ZBulz4ILBV9D2Ld/nlA+rKQNZb8W
+	b5/iGqKMkckttXUSfTPY5aSHzCAjCOAarESRlem8NWZX9UKAC56ov8vSJQ2uzkq3lVbu2EEl3mE
+	QbT81gziXmJthJZaEeGp5JzPXnd0ygVz4QWF9HOJbzz6Nsio0JlLUFwyWpA==
+X-Gm-Gg: AYBFou0aUlftFbseX+qgsrxnRCf7nlPISvgxL7lA6jcYP0DQbPvNVL4nEaKlsxlWAWr
+	2mcgzQeJ6ar8t+5pR5t/DGuUMiOiKkMqFgnGkhc2tioPFZ8hz/ejqi7bT53ecGiKAWCY160ducL
+	YKqb48K4ks9MuDv4um8coWy6vZiJPp5kHWKFUb133yoSMcfqVn3N90f6hS+kFT2WaMiTWERD+oL
+	xLBmLVfLSgKr+WMNmGPlF1nc3nU5rMc/zo2n5vRtxoecFzDadB2XcNp7tojVc4cgsrJFTv8fDso
+	1WnGi8dcxBe0qhxzEot8M0NpqE5wbhHRdoooEK9OkHx65ywT5Nndt7zWVDDxgHCC2uSCNy9COtT
+	XKSHjtpkusak40GcnyRPcLOHzSn4kXIeyCHU9T6LAHSVEONuX7lhDDNKDq4WYIMMCbJAsocSD88
+	XUHE78G5DToMLksokFDciJnfI6jlcgwjdJl40is/xzZss=
+X-Received: by 2002:a05:600c:19c9:b0:4a1:7c7d:8881 with SMTP id 5b1f17b1804b1-4ac182dcb6fmr342501385e9.13.1793777479243;
+        Tue, 03 Nov 2026 23:31:19 -0800 (PST)
+X-Received: by 2002:a05:600c:19c9:b0:4a1:7c7d:8881 with SMTP id 5b1f17b1804b1-4ac182dcb6fmr342500785e9.13.1793777478812;
+        Tue, 03 Nov 2026 23:31:18 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b4532916f2sm29117235e9.5.2026.11.03.23.31.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 23:31:18 -0800 (PST)
+Message-ID: <a323799f-a817-4022-96dd-e6f376fb4d03@redhat.com>
+Date: Wed, 4 Nov 2026 08:31:17 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,131 +112,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] netlink: add an optional per-netns ROUTE
+ multicast index
+To: patrick <work_patrick@qq.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ horms@kernel.org, corbet@lwn.net, rdunlap@infradead.org,
+ linux-doc@vger.kernel.org, skhan@linuxfoundation.org,
+ linux-kselftest@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261104033526.2917590-1-work_patrick@qq.com>
+ <tencent_1E208C03035DF063166FD46C1DA1978F6306@qq.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <tencent_1E208C03035DF063166FD46C1DA1978F6306@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The NPU can scale to different operating state from idle to normal to
-turbo. Attach a passive devfreq that will scale the NPU frequency with the
-CPU with the use of OPP table and opp-required properties.
+On 11/4/26 04:35, patrick wrote:
+> diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+> index fe43e8595..0cda347ed 100644
+> --- a/Documentation/admin-guide/sysctl/net.rst
+> +++ b/Documentation/admin-guide/sysctl/net.rst
+> @@ -280,6 +280,33 @@ checksums.
+>   These messages are now emitted at KERN_DEBUG and can generally be enabled
+>   and controlled by the dynamic_debug facility.
+>   
+> +netlink_route_mc_index
+> +---------------------
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
+The above breaks kdoc
 
-Posted as RFC to understand if it's the correct way to handle this...
-
-DT patch will come later.
-
- drivers/net/ethernet/airoha/airoha_npu.c  | 61 ++++++++++++++++++++++-
- include/linux/soc/airoha/airoha_offload.h |  3 ++
- 2 files changed, 63 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index 4d3195eb00f7..f8055ca65ec4 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -12,6 +12,8 @@
- #include <linux/of_platform.h>
- #include <linux/of_reserved_mem.h>
- #include <linux/regmap.h>
-+#include <linux/pm_opp.h>
-+#include <linux/clk.h>
- 
- #include "airoha_eth.h"
- 
-@@ -656,6 +658,62 @@ void airoha_npu_put(struct airoha_npu *npu)
- }
- EXPORT_SYMBOL_GPL(airoha_npu_put);
- 
-+static int airoha_npu_devfreq_get_cur_freq(struct device *dev, unsigned long *freq)
-+{
-+	struct airoha_npu *npu = dev_get_drvdata(dev);
-+
-+	*freq = clk_get_rate(npu->clk);
-+
-+	return 0;
-+}
-+
-+static int airoha_npu_devfreq_target(struct device *dev, unsigned long *freq,
-+				     u32 flags)
-+{
-+	struct airoha_npu *npu = dev_get_drvdata(dev);
-+
-+	return clk_set_rate(npu->clk, *freq);
-+}
-+
-+static int airoha_npu_devfreq_get_dev_status(struct device *dev,
-+					     struct devfreq_dev_status *stat)
-+{
-+	struct airoha_npu *npu = dev_get_drvdata(dev);
-+
-+	stat->busy_time = 0;
-+	stat->total_time = 0;
-+	stat->current_frequency = clk_get_rate(npu->clk);
-+
-+	return 0;
-+}
-+
-+static struct devfreq_dev_profile airoha_npu_devfreq_profile = {
-+	.target = airoha_npu_devfreq_target,
-+	.get_dev_status = airoha_npu_devfreq_get_dev_status,
-+	.get_cur_freq = airoha_npu_devfreq_get_cur_freq
-+};
-+
-+static int airoha_npu_devfreq_probe(struct device *dev)
-+{
-+	struct airoha_npu *npu = dev_get_drvdata(dev);
-+	struct devfreq *devfreq;
-+	int ret;
-+
-+	npu->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(npu->clk))
-+		return dev_err_probe(dev, PTR_ERR(npu->clk), "failed to get clk\n");
-+
-+	ret = devm_pm_opp_of_add_table(dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to parse NPU freq thresholds\n");
-+
-+	npu->gov_data.parent_type = CPUFREQ_PARENT_DEV;
-+	devfreq = devm_devfreq_add_device(dev, &airoha_npu_devfreq_profile,
-+					  DEVFREQ_GOV_PASSIVE, &npu->gov_data);
-+
-+	return PTR_ERR_OR_ZERO(devfreq);
-+}
-+
- static const struct airoha_npu_soc_data en7581_npu_soc_data = {
- 	.fw_rv32 = {
- 		.name = NPU_EN7581_FIRMWARE_RV32,
-@@ -803,8 +861,9 @@ static int airoha_npu_probe(struct platform_device *pdev)
- 			 (val >> 16) & 0xffff, val & 0xffff);
- 
- 	platform_set_drvdata(pdev, npu);
-+	dev_set_drvdata(dev, npu);
- 
--	return 0;
-+	return airoha_npu_devfreq_probe(dev);
- }
- 
- static struct platform_driver airoha_npu_driver = {
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-index 7589fccfeef6..ac776dc31487 100644
---- a/include/linux/soc/airoha/airoha_offload.h
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -6,6 +6,7 @@
- #ifndef AIROHA_OFFLOAD_H
- #define AIROHA_OFFLOAD_H
- 
-+#include <linux/devfreq.h>
- #include <linux/skbuff.h>
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
-@@ -167,6 +168,8 @@ struct airoha_npu {
- #if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NPU))
- 	struct device *dev;
- 	struct regmap *regmap;
-+	struct clk *clk;
-+	struct devfreq_passive_data gov_data;
- 
- 	struct airoha_npu_core {
- 		struct airoha_npu *npu;
--- 
-2.55.0
+/P
 
