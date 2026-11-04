@@ -1,104 +1,132 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793801407;
-	b=YLN3l5uk7MCAfRdmoeJp81GhR1AuibD6l/QaVBy84qUEAHs/7a2kaNiJSV9V9rgO90bD
-	 vc1bh26L44EB4xn0AiuN6zHBmciYuj7yEpsUROuEdpdmqF/czfgfGvyyuGV76k2Zzp06v
-	 O7MbDvvH2cMwrJuOdkUNySsB7FD1Qhzc/mt7o6Lq0Hsn47FA/rOl0BQ1M3uGV58j+3XEy
-	 jLaM4fvuD86AAAjRfN4YvdBIH6IppQM2FC8pU5J9GQxsN9oO0fGq3KxKz8nZrgqmQOh3K
-	 E/CLQ97ogJa0xcC8dK+3jPZ5dPLu6cL7GtbqhkhgolIiMWobvqo57Ld39ArrBtDUVCA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793801407;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
-	b=SgjmlaS0v6JaI8L5e8VjxVLPL/QgZ/vOgMvROUfI1Z6yjbRbBQXrPwlWxGiTNwLUvLZN
-	 K2aGIkfWemihWxUxUCYasoWBf6J3MJRMT4ylD0HQQE8KG9X1+XFUNK3d9PJnpe4mPHnsb
-	 CirgDWafVBYuqVpWv4W9xiC31jx8uHWn8+3wqff5QkZz98x+bvaBuktNPOboOM/rzDzrf
-	 f47cChaZ/e6nPkQW0mCQT7B5gEhvBSpWD9F9WDLzeWpNkJOEr+y413E27K7St3IvBAzYW
-	 qb2m2NumKuN8SODtrO3+ReVYabMESZRdVzOXhM9HmjsquMyZP9XjhJtD6qxqv/HnyVQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=toxicpanda.com;
-	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b="pq3g/bOU";
-	arc=none smtp.remote-ip=209.85.219.50
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793801474;
+	b=c8w/lZrQ5DsYoig38Q/zZIABuiEJCcRFbPQXp1svqshwkahwMEqU77lW7GCpVoYctr7f
+	 7bIOR5Ip5KYtN7Y6qPJkv05OPoIJ1s6bc5RqU6Vb8EGb5svn7GRN6mkkIW3BOxf2HHeyB
+	 O1lJnsqIGiqOnR4rB3MfJJlvIUkjJPL7OFlpsL6ZBMM9ebz6asSy+nJGeBSMlm27Pn31S
+	 TEN1xfep65L6T4vb0EvIa79CgLe+Ohy20ceciZ4iHRmmRkxjNTj3CTtxjvHpnR7ZAfmGW
+	 SeqXyrqc3t7Rg0cHlzmHYrTrv+fk0QpLDLvO205/G/+lgeWcrHKHsh6MTftRYkPRSxA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793801474;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=jmSGuOnNQrIwv5A39A7h7z7261Av/MHAZKbxZ/L9+X8=;
+	b=eckE3QD7pdAKHb1OpbJ1pVuP+5OqimPC0LO039XlDhtsz2UCYD4hmfYKWkqG+wWx+C/h
+	 a5FpuCU/eY/RyPUC7bZTfekQSwJgLUscZBu0M0c77jeK6boJnv/6GDs0MDqutM6tXSoAq
+	 8V35YBRO/QQ2Ti7hEodazVJSsXphON/N0A3to3gV3zClq4JOIDMIokyrA4soi6s4/ACK4
+	 fuSKCzUstmd4BIDz1fM4MMgZkmCryVlgLxYRI2uv3lGA20aiwjDyFs3WnSWoZzY+cvLHn
+	 aH6GrlZSqPoJ4FUNxBzMdNpqqhcJi0W/+yfXPaMRFyVnJLvaOw3Xru/PenZ0bCJyinQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=analog.com;
+	spf=pass smtp.mailfrom=analog.com;
+	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=YAerj6iA;
+	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=UcptCDfe;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A023606D805
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 14:10:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A023606D805
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA6A606A337;
+	Wed,  4 Nov 2026 14:11:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEA6A606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=pq3g/bOU
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91c791d5460so10299906d6.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 06:10:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793801406; x=1794406206; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
-        b=pq3g/bOUfq0Yp9sLjFjCbtvlrE7Qv37AIQDPWErqvoVqdvo9xd9+crfCI1n/K0m2B6
-         /wyj/0wj7PG9On9oxbXiA4rR65b4VsiwfWH27eP7hjSzrTjFaPE5VsCuVLqLFeDollNV
-         sSQkgF5p76zqF8M9G+GCUKOvNgstu4dm2MtmBAlnVSrHvAx2VNh1rsIbm7TLW/4YUnpH
-         2wamaFqvyznTtMzIDz0Caf8OxwRpcmXrUmepVB5vQmVQ2aC5DHcIMLavjRxAG33cfmcv
-         YehJUZYQiSvn32N26c8g4y7N960LtKU/uhkwpOuWWY9Gt8P0rRbNkVIa/+Gz2vV9TBLy
-         qiIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793801406; x=1794406206;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GN5BfdRea5fYOeBLCJpptlR+i/h5pRU6WPEvbKGT6ZM=;
-        b=KcAEMzyizribwoZvtv4HCmthjTNYVVowh9PU5hPubMMBMk8Zu5QH6OcgXdx2HkmDKE
-         E/H7qXdJxdPoPBdBs631IR5kO66Qac7qaPNS/sr8tK1E4j59cyXLkDnn2nv4kLQ3aqEP
-         4SyGePCYiJqBm80HuIjPdGTpFTPvATGRlRNOTAlZvK12SVj5kxmT/d9yRRw4mjxUbkoI
-         6OHsBkdT1XQb+LHJY5DeG8s34CFMz85u9D8H7uAJ3s9ssC2A8ALHhEQpsSHEgw+wkUkm
-         Qwduq/J6J4wyu529d0o6f3YtG398/4ZKZ6yRwrmUHuRpwhsmcskTCWakDxYbnnr8IU9W
-         wr1A==
-X-Forwarded-Encrypted: i=1; AKwUvBwZ5cUari5XdJRV1q4XNGothdg5lOotHtxOH27RDofJ0VAscTnbVGpdz0iMvk2cDWzcv5CZxJ4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8M6hKLVFg2wXIli+7GHxAtMcyxuc0izK2w5oJZBIqLtPwq+hJw
-	qolEs9Z/hrpbQ/ODHwxSqEf/N5TU/AaMFQyoXG8oIJkWaTUdgd/YThWjwgH5EqmBvFs=
-X-Gm-Gg: AYBFou3NLCG867XNdUVfmmOMzsWmt7igXd7bPsVuwn4vUQbmLumzUGQG9FnO4Dkdzsy
-	Lxo4X+NROwxSBbrlKm79fYMjSDDyGiQCEX57LadtxGosIvV4iZJ6F7z1bfp7AmTw61vTT1oPflm
-	Q0tIQZG9S/TI6kJTPQ2+Go6lCjN26AkHorlrHnEkaOVm819w2kMQNRsNjWKC9yHatQzHoaAg/+N
-	EWKTI6ocG/4zmQvWCNjlNkb1r8KCOvUOqBWDzVA6rd9OysYp35RaX+QKbSW96VnAFqCSvUpXJSf
-	1SrDajXR9H/8dgOrZOSK7W/BqvXiuwEJTOTy8dnl8301OJQVO2MNV0I5eKAsn4y/hmT8KYacJUA
-	XWJglauKex3mP6Dz/47Bvkg+2XBKnNb+eHB901GAJLBWUo/betMWEGQNjDxMqIei2S9rp9Q1ooY
-	3a8LevplYcz20e0C1xZEd4K6V5/jJueJXYRqygIUH3DgcY2ixA9kFxWGW9ZoVJo7rFQsKX8nj4k
-	8wCUgsp/SA1RCF+oMSOdWYsjCFYmVBFA7/f8eLDGskAWE3C2KoqKePlaWoUL7mxBvKtZQYG5x0B
-	/viGsP6RYKzzvCH7EAEjm2hJV6s1UfGsveKaX+31WF+l6C1robPkM/G9CfDOBQUj/A==
-X-Received: by 2002:a05:6214:5902:b0:91c:7c53:152d with SMTP id 6a1803df08f44-91ca4b2d871mr264201116d6.29.1793801405923;
-        Wed, 04 Nov 2026 06:10:05 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91e7e728f87sm19598316d6.36.2026.11.04.06.10.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 06:10:05 -0800 (PST)
-Date: Wed, 4 Nov 2026 14:09:52 +0000
-From: Josef Bacik <josef@toxicpanda.com>
-To: "Hallgrimur H. Gunnarsson" <halg@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Paul Moore <paul@paul-moore.com>, 
-	Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-Message-ID: <orevqgwqw53sxc3tii5zr6x7veu3p5nr3ndkndegpikfogmqy6@j5agkwrxcksj>
-References: <20261028221705.3915340-1-halg@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=YAerj6iA;
+	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=UcptCDfe
+Received: from pps.filterd (m0516787.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4Bd0Oc2876146;
+	Wed, 4 Nov 2026 09:11:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	DKIM; bh=jmSGuOnNQrIwv5A39A7h7z7261Av/MHAZKbxZ/L9+X8=; b=YAerj6i
+	AL9uMij2DeBtT70+EDZcrK6rP+nE5KrhvC0L0Wp/TVLzV2tuhJFMGGwsgVSxKmm3
+	FOxhoT/rOuc116QmmkdPOBggkXj6jjPQl5ukbnjOS0Q3rCkwa+mEVoPpZGFznX61
+	O8LRmV5VTVOPnd7p5IXKYfjDfdAAB/BHQKonpgIsst3FjL/Cs0jEl3FiJSwrdPnl
+	EDzeDXcuhTOUKei9deMRIYLEMxUfzY5cXOEvwqG3lKjJuLeZ0MFAYHnN16oT64mo
+	OpWfwWLkwOIUDr9gcg1AKdTxeCfYcVzycp9KaooPs9+f4y7j7y7WH1W6pVLSqAJ2
+	QWnDxC6NbmD7fDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=jmSGu
+	OnNQrIwv5A39A7h7z7261Av/MHAZKbxZ/L9+X8=; b=UcptCDfe+22ov/GgOwYed
+	G4OIaFQvML/u4FW5OvQK3HjJpfCHME/puHHwcpAvuN7EJVPOiSDLNrxKNSx6gnda
+	w1UHSPaMO2yw00Av66L1+iCxm4XAEm+lepBcsZYQ9eJPsACy4C2DxHEpTStNcJxJ
+	EqX1lUkGMSsLcRPNw6zrhJcJxHcO8BbYVNANCjXARZU1XHH3VhB4aOiE0KSvNupc
+	/7f30ARojLd8wVluayjBvfTWceDUou/3hbGxl7ME3bVHXxCENxBBe7Hv8fWLSG4s
+	xIefj1KPtEE1midh8ULo9XOLCcnmpL1BCVegd+/vRt+uJDC+srN684O+b9FQFDrp
+	w==
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010027.outbound.protection.outlook.com [52.101.193.27])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4hqrk4vkw3-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 09:11:01 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y5CC6fTod7lH4wbZgk/m1EeJBWW+Z2YDcfJoE63Y7UH74Vp5yNrBDDjgv8KVkUH5TVAYrzi9FVV5Wo3rEgDhTQBgj/b7xZytNo8Ln9HWB1YUJJJdo4r82E1ZE0sTIxfMe/4zC6El8QUvXWGDGc5jdUh/11SkcGbwYC/I+wihmcoZV9FxsfGGJKsK8w6ePbvtKeHsc8CJN6ZC0Em09dnKdugBEkwEMhTPCZTBvmbbKBEvUoUu82dUxn03MO0xQQMWIA2msnXwicCV6r2cuqa3Jh3BwllUSAR2V3oqU23U4+Fh7IKDHdkJDVAo+/NWz6u7seUCeHqOe2ohxRfhR/DRGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jmSGuOnNQrIwv5A39A7h7z7261Av/MHAZKbxZ/L9+X8=;
+ b=kIUj0jFRaMLK5DjkJmK1VikbfElmip6I4uOaAlqn4ymMJKE5HQCEf0xOL2MnFe2MXxaaovWe3blKROWVTylm/tWtf7bZAjNW+irUkeScCOwG1u891AKG0wkG/Runn+HqhiZ0E4CFhx0RLlrlWct64TVn4ctYcLdmS72L2Y413+9n+8NmBJaeZqPMxshmybS4Sk2AJ1ZXXq7AIEdFLlU3gWjHpkO9smwGSuEEGS6PAPoVskhhYcsSbCYKuevu89PfQyFsrum6rRGDU50m51P0m0gOQKpyQUwsLHwY7h4cC6SBiW3ixWdxmI0q5D12STSdbeG5ik2HuNUMoSjMn0TD6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=analog.com;
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com (2603:10b6:5:388::24)
+ by DSVPR03MB485361.namprd03.prod.outlook.com (2603:10b6:8:37f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 14:11:00 +0000
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed]) by DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed%5]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 14:10:59 +0000
+Date: Wed, 4 Nov 2026 15:10:56 +0100
+From: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>
+To: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Marcelo Schmitt <marcelo.schmitt@analog.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Ciprian Regus <ciprian.regus@analog.com>
+Subject: Re: [PATCH net-next 1/5] net: ethernet: oa_tc6: Allow custom reset
+ settle time values
+Message-ID: <aus8XiLynJmSXaXc@analog.com>
+References: <20261103160918.409701-1-iustin.stolniceanu@analog.com>
+ <20261103160918.409701-2-iustin.stolniceanu@analog.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261103160918.409701-2-iustin.stolniceanu@analog.com>
+X-ClientProxiedBy: CPAP307CA0001.DNKP307.PROD.OUTLOOK.COM
+ (2603:10a6:380:3::10) To DM4PR03MB5981.namprd03.prod.outlook.com
+ (2603:10b6:5:388::24)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,141 +136,205 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028221705.3915340-1-halg@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR03MB5981:EE_|DSVPR03MB485361:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79d597e5-99e3-46d8-621a-08df3a7d7373
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|10067099003|18002099003|22082099003|3023799007|56012099006|11063799006|4143699003|261021121427099003|261021135927099003|261022075727099003|261102123227099003|261022105027099003|261026121527099003|261026140227099003|261028144727099003|261021123027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	VE8y+7b5vsClHfhw62gyiI2HbXhI6cmnI7mE9v/7UAdCtdFLcQgFX4QVHh4C6Xwsr5I/aMEp+GIe4/UXPEMSKRBQccYzjZu5Qk6qb2ti0UNzrmZ6vyRF9rxV1oocqXKOep9T9BZDwptAfML5g0FOlcy4e6LeGOoV1RSlBK5V+1fNCceZe/bHIM35HoUqDVN6Ah1Lxyb5SHw1jO8ZFT5Y4C/H/Rotp/lJKEJl3xbNWXPNROP+lNJ4fLV/urHscUPHdWk0GLz1DD6ldwQ/gbhYXjBSXeT/W9pmY2Thuy1Bg60d9aZGGeEFuIpG/wLLs0rqZbZrxmjzkqXoylzW9sYLjyBhATiHOz0wGd4/VMXmy6v8bPD5pLY0k8IZQMMLkI6pnD829yIuZJST0qj88WB1C5VHVgJDLMJlIZlqcAx1GTm1l9l+ug/K4iZMs+nXtvYjFi0pSvxVguwyiTtP0stTGz/h5x2Lb55H7ZGusBOlbQyCSg395XVJYUj4rVtNm7Czm59VquNGRdKvAaUGpJWSF95caVl3CfgnfIiSl92FSaiW1LOkfohJ3xCLw9FX0CsJFEnDBhzAEk16B+WcTGiEVWeGZoA7qAC/ztJani+mu7egjhp16+CZFvlW0qkjH/Z1dLvDZ+ZVQCXWJcw3daZaCfa8JGNMe5iUmhNdbDuvyds=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR03MB5981.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(10067099003)(18002099003)(22082099003)(3023799007)(56012099006)(11063799006)(4143699003)(261021121427099003)(261021135927099003)(261022075727099003)(261102123227099003)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(261021123027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S2ZDQU16SlJ1S3RWYXlJR05TQ21tVmhWWVgwYS9pSy9MVFUvUFRWTGh6VzVM?=
+ =?utf-8?B?MmVQMVpCMjZycVlaV3oxT3RZVTllS3M3M2swTjc2UE5QdDZZaW5iMDduTitY?=
+ =?utf-8?B?cE1EK1kxUERPaWplL2RldHdaQThib1o0bWhDRXRGb1FGdUwrYm85bGIzK3B6?=
+ =?utf-8?B?ZWpnbkxmNVh6UWZ6cytjSjZUWTNBaEdhZkRabkViL2hXN3pGakMrTVh5aVBJ?=
+ =?utf-8?B?aDJjZ1FaVTRUVVp3N2hwR0lCTWJNN2hnaS9uVTFQZ0kwMFp4UktnSEJwSDJF?=
+ =?utf-8?B?Q1AzNlpmNUVoelUwWUtjZ2VQaHpHaDBpc0ZTUCtmTnpiRUg3ZUxwdk1QdVRm?=
+ =?utf-8?B?dW1UOG5nQkEzK25OeGIzTWg0WkZNL1cxQkZpa2JsQVQvdmlCTTh4aWJRcDk4?=
+ =?utf-8?B?MVd4ZnZLQWd6dVZoMHNtZEVUckFVSnVxMWd0djZFTnFTZHJmRDdMUVpPZ3hT?=
+ =?utf-8?B?SWkzcWpXejZvZUhsYXBEWnMycFp3RWFRR09ybGsvOWp3Uy90WU92ZHF1VllH?=
+ =?utf-8?B?c3JzdWxqY2ZkNTBQMVZQRDB4UVVyak91OVFzbHZFV1VIdTErYXl6STEyZXNu?=
+ =?utf-8?B?NlBtQThBbGxEdW5wNU9sbjhUV0dwQk9xS1YvZ0pLRFluaWhJY21SdlU0TnI2?=
+ =?utf-8?B?dnlvWFh1YVNHcW92cmszZGNpSWk1ZFI3TkpVUFJYWC9GTk5hOTR0WmxBT3hQ?=
+ =?utf-8?B?VFNGeWpjVm9ITjZlQXZEdWNhbUtyTTQzajdsWVJUcmExTzJIc3Y5bTVlQnZG?=
+ =?utf-8?B?RFBqWEtsNTRIRUVKL1pGTFZ4WHVnb2pQa0tRUThaN3pkdW5DanlLUEd3VTBV?=
+ =?utf-8?B?QlpLUzdMdS9zZmdJc084REFnU1kxWjVIQ0JneC9nT3NPY2pXdlNSRGtDazFX?=
+ =?utf-8?B?T09oeEpnSXRqc3FKTjBlOVVna1I1RnZaM3RUQkxwUzFUcllZWm5LdXlLRmJC?=
+ =?utf-8?B?R1lURmZUV1l5Tlg5Z3BGQW4zeU5FOEVvT21MV3FOYnc5SDdVUkw4YU5rMjBy?=
+ =?utf-8?B?QTdNOXN6YkYzZms4QnZoL2FVRW9MZGU0R3I1NGxBSlB1RUFmbm5iZEZYWDds?=
+ =?utf-8?B?VzY0WEhSNmh4b1ZYaDBKNkk5YUJqa1hGRkc5UkNlMFRIYktQQUZSaktQcTFZ?=
+ =?utf-8?B?ZmZHMStSVHo3dlBNL25XYlhudFowbGsybysyZ251RDhyenovRmg1Tm54Vzg1?=
+ =?utf-8?B?THRZMjZMMFNiVm1qRTBsUC8wbHQzNWlQeEdpZ2pZZHc1UjM0T3k0bzRDL3dB?=
+ =?utf-8?B?Y0RsSFh4S250eHlTaFIxOGVxVGw0b0Q3T3VDNzhNUS9RU3dUZDU5SUwrNUpz?=
+ =?utf-8?B?Mjh1QVdUSGMyT3VaVFhwYllOc2dnZ3RvcTVuVnRxSU4ycktkYnhTbW9oQUZO?=
+ =?utf-8?B?b3pLZWxZelZnZEs5UHhFK0tpYTFQRVlyZnZRYm1mUU1ZUzl0N2Q2b3pTV2dQ?=
+ =?utf-8?B?WGo1RzIyTDZYRnRkQWc2WEo5SDFSSkNQcEc4RXB4aUhudDE3LzVuandsVlN3?=
+ =?utf-8?B?dDhlcTNZZFNxRFF2Z3Fnc3h1b0VhYzV3bHV1YXZCQUwzbmhIamxMbVVTSlpt?=
+ =?utf-8?B?aFlOV084L3phenBCU1NnK0RCOVM0REtLU21RanZFQTdxSG53QTlhM1E3WSsv?=
+ =?utf-8?B?VDJxYkZJSDNkRERpbWw2bUNCU2tDUks5bzdLSnhaU3AvaittMHVoR2lWa29z?=
+ =?utf-8?B?MFdnd2cySTRieTBwT1FIRU9EelBUYTY3dHF0OU9oY0NBT2JYSHNwTEFpMWpR?=
+ =?utf-8?B?UWpxSjVWSktoN1B4bS9DMEIzM1ZpbTUwbGhMQ20reGlkaU4wS0pJWkdFODJh?=
+ =?utf-8?B?V2ZwcENZZWVtMmYxdEVxSWxtL3hWajBPamU1b1RjRnhGWGdnSytYbnlWVkxH?=
+ =?utf-8?B?eXJSWWxFT1VsQng0M1FkNEZQdWxUNU90REFGWHVjQ2xUNnB3TkNpMllleUx1?=
+ =?utf-8?B?ZzVtZjEzOFloeFo1enBteW0zUHpRN2lpaXNUb2RzWGdpMmx4aDNOektnNUJX?=
+ =?utf-8?B?dDBMYzhaVGdtRndYdlQ4d3dsV3puOEpFZVlGNWliK3FuRndKMkx2L0xHWFY2?=
+ =?utf-8?B?enYyaHN5YXNOTHBoYndRTVNtWFN4L25va1dEQzR4YnFLMkJWeTRHcmhyNjZl?=
+ =?utf-8?B?b1poV3dLWmcwbTQ4R0s1OUlvejB4bDdZbFBEbkJHZEd1b0JXQ2NiaEVDVGZJ?=
+ =?utf-8?B?NzZCK1J6amhWakpSamhvdWNGbDZQdTNkcXczY1hCdms1YVFza25mbVltai9Y?=
+ =?utf-8?B?SU5ubXhtUnhCTGVkd1dlUE5sdWV0WDBLcWpTcnRaZXI2SU9OME0zS05UbUEw?=
+ =?utf-8?B?TXBjS1V1bGc0N0NLclR4RkNnZWIwL1Z3bXFIUXlHOXRXWEN6VS9vZz09?=
+X-Exchange-RoutingPolicyChecked:
+	UgQ0VaLZxmPgkrFQrXiVJKFWPx1emVGFLQnG3a2fQM09p8zi1ySC2bd8g74usWOE2pSDl9LOiYmyhtuMdIoSEMfEA600GHx0MFBwgi1+pZjZxiONjpAAQ/EB1nJNWRxcwEf+V3Z2hbpkRdFSbYb8gh+FtrB3FZ2q1BgbSDVywpJejXvDUwDoSRqei9CDKbKDL7jAtDm5g0dOQERZ+EDNlxuUbU3+DzXHFdQ8nwoogG018rgXN7OioF0zI4bbTLcC9YMUU7QSVQsQGj2b2JQrHizz4PjHh29lyQ9E5S/AMhj6Ewles9KqOSNdHBsfKo2qIN+RJkpdvjWi5fwQc+6A4Q==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79d597e5-99e3-46d8-621a-08df3a7d7373
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR03MB5981.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 14:10:59.4199
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 18f1YJdaB1FB4vWoVGvJqwgcmveJe5n0xc6x90VzKZPlTTWwyCFkWzCLcehD+xbdMNuf7HfmGIAh127IDU+HaC7m+eyOSB/lEzBMVSeOsvA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR03MB485361
+X-Proofpoint-ORIG-GUID: jNecHAJzSAA7_hAGlidhKkjNhFUIORoB
+X-Proofpoint-GUID: jNecHAJzSAA7_hAGlidhKkjNhFUIORoB
+X-Authority-Analysis: v=2.4 cv=Y7RtIReN c=1 sm=1 tr=0 ts=6aeb3cf6 cx=c_pps
+ a=/qs4bcqls8FpsUBDM29/qQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=OmVn7CZJonkx5R5zMQLL:22
+ a=gAnH3GRIAAAA:8 a=yGNFWJL3veEjvfIGQkIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA1NiBTYWx0ZWRfX45oAtRV9OQEx
+ ZgqSi07XmhQ2opAF3Q5Gyp7iXB26A1drajPst11zydpyb0ELZTfuJhOZvOlpAcNg2j5n5h1bxvv
+ +Cuei0UlP1Zg53lbXyGhDZc+N+rNzCaXT3RkaQf0t8dWfUra5zrF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA1NiBTYWx0ZWRfX2O/ahkyflls8
+ DhK7bMW7YfOK64KmvCO7vZmzw5MzXhjKcauJxPQoxaQkJPB+khG498TEe8h5wMkf67zrBpDmt+W
+ RYg8W2/STJWnuvoY6XL8Vi20a9o+4MpybTVxuww24VhVOV4iRJ7b+kkXPtLvfyLBFBSMwRxKP7S
+ mM3Rh35Rsfhe6sohtN8cNs98Hz7azNrIf9+n8lU56IBbTdGCI5NQrwJwqNu1jzaUOjXDFRYWWeh
+ DGaePMIdWB1usIMwMNwUqJQNzSgOGvbPBitv00SIeUep3L/wYzQYnQ5oef9DMekwwnPzm3tsJYi
+ ZMxGrnmkkoeTMY7t3o9GRYOkOO/nJlpDF4UbWNoj3uu1UpjPc+Ecjdd3j/LyHa+eTe/8FbwzWA3
+ NJiAgEqH31JXgyUPzmrgbDAXn/YrS3CPUSdpH4vT+BpdXeJJh6BF1wiE/PGItdaC4N1XAbR+huf
+ CCrf5Pqk+/cI3E+bQBg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-04_04,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040056
 
-On Wed, Oct 28, 2026 at 10:16:57PM +0000, Hallgrimur H. Gunnarsson wrote:
-> When an unprivileged process creates a new user namespace, it is granted
-> a full set of capabilities (CAP_FULL_SET) scoped to that namespace.
-> While these capabilities are isolated to the namespace, they allow
-> unprivileged local users to reach deep kernel subsystems (most notably
-> networking configuration and raw sockets via CAP_NET_ADMIN and
-> CAP_NET_RAW) that historically assumed a trusted caller and have
-> accounted for a large share of local privilege escalation
-> vulnerabilities.
+On Tue, Nov 03, 2026 at 06:09:14PM +0200, Iustin Stolniceanu wrote:
+> From: Ciprian Regus <ciprian.regus@analog.com>
 > 
-> Many workloads and sandboxes use unprivileged user namespaces strictly
-> for basic UID/GID, mount, PID, or network isolation and never need
-> high-risk capabilities like CAP_NET_ADMIN or CAP_NET_RAW. Likewise,
-> system administrators often want a host-wide policy ceiling restricting
-> which capabilities unprivileged user namespaces may acquire, without
-> disabling unprivileged user namespaces altogether.
+> oa_tc6_init() waits a fixed 1 ms after deasserting the reset GPIO
+> before accessing the MAC-PHY. The reset timing parameters of a MAC-PHY
+> device are outside of the OA TC6 scope. For example, the ADIN1110 needs
+> up to 50 ms after RESET is deasserted before its registers can be
+> accessed.
 > 
-> Prior work by Jonathan Calmels [1] proposed addressing this via a sixth
-> per-thread capability set (cap_userns) alongside a global sysctl mask.
-> During that discussion [1, 2], feedback (e.g. from Casey Schaufler)
-> suggested that rather than adding another per-thread capability set and
-> prctl() interface, capability restrictions could be integrated directly
-> into struct user_namespace and configured via clone3(). At the same
-> time, as noted in [1], a clone3() flag alone is not sufficient for
-> administrators who need to enforce a host-wide ceiling on unprivileged
-> user namespaces without modifying every userspace callsite.
+> Add a reset_settle_us field to struct oa_tc6_quirks so drivers can
+> set this time. If it is not set, the GPIO reset keeps the existing
+> 1 ms wait.
 > 
-> This series combines both pieces of feedback: it embeds a capability
-> bounding set (cap_bset) directly into struct user_namespace, reusing
-> the existing task cap_bset, cap_permitted, and cap_effective sets on
-> namespace entry, and provides both a system-wide sysctl ceiling for
-> unprivileged user namespaces and a CLONE_NEWUSER_BSET flag for
-> voluntary per-namespace restriction via clone3().
-> 
-> In addition, because restricting CAP_NET_ADMIN at user namespace
-> creation time prevents userspace from bringing up the loopback
-> interface in new network namespaces, the series first introduces
-> an opt-in flag to automatically enable loopback on network namespace
-> creation:
-> 
-> 1. Opt-in loopback activation on netns creation (Patch 1)
-> 
->   New network namespaces start with the loopback interface (lo) DOWN by
->   default, requiring CAP_NET_ADMIN over the owning user namespace to
->   bring it up. To block external network access while preserving
->   localhost networking, sandboxes commonly create an isolated network
->   namespace with only the loopback interface enabled.
-> 
->   However, requiring a sandbox to hold CAP_NET_ADMIN in a new user
->   namespace solely to bring loopback up conflicts with reducing the
->   CAP_NET_ADMIN attack surface. Today, an unprivileged sandbox must
->   start with CAP_NET_ADMIN to bring loopback up, drop it, and then
->   block CAP_NET_ADMIN from being regained in nested user namespaces
->   (e.g. via seccomp or max_user_namespaces limits). Conversely, when
->   CAP_NET_ADMIN is restricted at user namespace creation time (via the
->   sysctl ceiling or CLONE_NEWUSER_BSET introduced in Patches 2-3, or
->   via LSMs such as Landlock), tasks inside the new namespace never
->   acquire CAP_NET_ADMIN and cannot bring loopback up from userspace,
->   breaking localhost networking for unprivileged sandboxes.
-> 
->   Introduce the CLONE_NEWNET_LOOPBACK flag for clone3() and the
->   corresponding UNSHARE_NEWNET_LOOPBACK flag for unshare(), which imply
->   CLONE_NEWNET and automatically bring the loopback device up in
->   copy_net_ns() before returning the new network namespace. Making this
->   an explicit opt-in preserves default network namespace semantics
->   while allowing unprivileged sandboxes to create an isolated network
->   namespace with functional localhost networking without ever holding
->   CAP_NET_ADMIN.
-> 
-> 2. Per-user-namespace capability bounding set & sysctl ceiling (Patch 2)
-> 
->   Add cap_bset to struct user_namespace (initialized to CAP_FULL_SET in
->   init_user_ns) and introduce a system-wide sysctl ceiling for
->   unprivileged users at:
->     /proc/sys/kernel/unprivileged_userns_caps_allowed
->   (defaulting to CAP_FULL_SET).
-> 
->   When a new user namespace is created:
->   - Privileged creators (holding CAP_SYS_ADMIN in the parent user
->     namespace) inherit cap_bset from the parent user namespace.
->   - Unprivileged creators (lacking CAP_SYS_ADMIN in the parent user
->     namespace) have the child namespace's bounding set constrained by
->     the sysctl ceiling combined with any effective capabilities the
->     creator already holds in the parent namespace:
->         child_bset = parent_bset & (sysctl_ceiling | creator_effective)
->     Allowing the creator to retain capabilities it already holds in the
->     parent namespace ensures that a process granted a specific
->     capability (e.g. CAP_NET_ADMIN) does not lose it when creating a
->     nested user namespace.
-> 
->   When a task enters a user namespace via clone()/unshare() or
->   setns(), its cap_bset, cap_permitted, and cap_effective sets are
->   clamped to user_ns->cap_bset. In addition, cap_capable_helper() is
->   updated so that implicit capabilities granted to the parent-namespace
->   owner of a user namespace are likewise bounded by the owned
->   namespace's cap_bset.
-> 
-> 3. Per-namespace restriction via clone3() (Patch 3)
-> 
->   Introduce CLONE_NEWUSER_BSET and add cap_bset to struct clone_args.
->   When specified alongside CLONE_NEWUSER, the new user namespace's
->   bounding set is further intersected with the requested cap_bset mask,
->   allowing container runtimes and sandboxes to drop unneeded capabilities
->   from a user namespace at creation time even when permitted by the
->   global sysctl.
-> 
-> 4. Introspection via NS_USER_GET_INFO (Patch 4)
-> 
->   While tasks inside a user namespace see their initial ceiling in
->   /proc/<pid>/status (CapBnd), threads may subsequently drop
->   individual capabilities from their per-thread bounding set. Add
->   an extensible NS_USER_GET_INFO ioctl on userns file descriptors
->   to allow userspace to directly query a user namespace's cap_bset.
-> 
-> 5. Selftests (Patches 5-8)
-> 
->   Add kselftest suites covering CLONE_NEWNET_LOOPBACK, the sysctl
->   ceiling, creator capability retention, nested monotonicity,
->   parent-owner bounding, CLONE_NEWUSER_BSET and NS_USER_GET_INFO.
-> 
+> When set, also apply the wait after the software reset, before polling
+> STATUS0 for RESETC. This is needed for devices that tristate their SDO
+> pin during a reset. Drivers that don't set reset_settle_us keep the
+> current behaviour.
 
-FYI I'm doing something similar with cells
-(https://github.com/josefbacik/linux/tree/cells) that gives the same
-sort of discrete control over the different parts of the network.
+Would it maybe make sense to split this into two quirk values? Something
+like hwreset_settle_us and softreset_settle_us? The ADIN1110 datasheet
+seems to have a slightly lower value for software reset.
 
-I super dislike this mapping of user to capabilities, as you said it
-creates this hodgepodge of areas that need to be updated and just
-creates more possibility of escapes where we get it wrong.
+Either way,
 
-Extending userns makes sense in the current landscape, but I'd rather
-get away from using arbitrary user ids + a capability set as a control
-for what a task can do. Thanks,
+Reviewed-by: Alvin Šipraga <alvin.sipraga@analog.com>
 
-Josef
+> 
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+> Co-developed-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+> Signed-off-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
+> ---
+>  drivers/net/ethernet/oa_tc6.c | 18 ++++++++++++++----
+>  include/linux/oa_tc6.h        |  2 ++
+>  2 files changed, 16 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+> index 364027c39fa4..68437b226528 100644
+> --- a/drivers/net/ethernet/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6.c
+> @@ -89,6 +89,7 @@ struct oa_tc6 {
+>  	bool int_flag;
+>  	bool disable_traffic;
+>  	bool prot_ctrl;
+> +	u32 reset_settle_us;
+>  	enum oa_tc6_quirk_flag quirk_flags;
+>  	struct gpio_desc *reset_gpio;
+>  };
+> @@ -652,6 +653,9 @@ static int oa_tc6_sw_reset_macphy(struct oa_tc6 *tc6)
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (tc6->reset_settle_us)
+> +		fsleep(tc6->reset_settle_us);
+
+If you have a separate softreset version, you can just set the value
+if (quirks) and flseep() here unconditionally.
+
+> +
+>  	/* Poll for soft reset complete for every 1ms until 1s timeout */
+>  	ret = readx_poll_timeout(oa_tc6_read_status0, tc6, regval,
+>  				 regval & OA_TC6_STATUS0_RESETC,
+> @@ -1474,8 +1478,10 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
+>  	mutex_init(&tc6->spi_ctrl_lock);
+>  	spin_lock_init(&tc6->tx_skb_lock);
+>  
+> -	if (quirks)
+> +	if (quirks) {
+>  		tc6->quirk_flags = quirks->quirk_flags;
+> +		tc6->reset_settle_us = quirks->reset_settle_us;
+> +	}
+>  
+>  	/* Set the SPI controller to pump at realtime priority */
+>  	tc6->spi->rt = true;
+> @@ -1515,12 +1521,16 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
+>  					     "failed to get reset gpio\n"));
+>  
+>  	if (tc6->reset_gpio) {
+> -		/* Keep the reset asserted for 10 us and then allow 1 ms of
+> -		 * settle time for the crystal oscillator startup.
+> +		/* Keep the reset asserted for 10 us and then allow the reset
+> +		 * settle time (1 ms by default) for the crystal oscillator
+> +		 * startup.
+>  		 */
+>  		fsleep(10);
+>  		gpiod_set_value_cansleep(tc6->reset_gpio, 0);
+> -		fsleep(1000);
+> +		if (tc6->reset_settle_us)
+> +			fsleep(tc6->reset_settle_us);
+> +		else
+> +			fsleep(1000);
+>  	}
+>  
+>  	/* Check the PROTE bit status so that we can reset the device */
+> diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
+> index 27f652d4920b..139dd4c33950 100644
+> --- a/include/linux/oa_tc6.h
+> +++ b/include/linux/oa_tc6.h
+> @@ -72,6 +72,8 @@ enum oa_tc6_quirk_flag {
+>  
+>  struct oa_tc6_quirks {
+>  	enum oa_tc6_quirk_flag quirk_flags;
+> +	/* Wait after the GPIO reset (default 1 ms) and the software reset */
+> +	u32 reset_settle_us;
+>  };
+>  
+>  struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
+> -- 
+> 2.43.0
+> 
