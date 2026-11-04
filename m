@@ -1,131 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.19
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793796286;
-	b=Fk2V3lLY9YnNr2ydp/1YUa32j8ZC3axcfHCWzxkq4kd8KlZxVEvHtNl9jhk0X/m5cVPd
-	 +PI8imqG5YKfhf9PAALSXjWlzzs4XsicsYE8zFwgzBWB9ZPXZjGemOTv09QuRJKHLKhPn
-	 BYoUlkILU+u1eUshxVb/hchDwc2gQnX58ogwPXd036ktLXqjv7A99OO19UKTGV2PBsBwZ
-	 l6xRUPUTVH72nlnb/Pw6oo9r0UeuQU2O55WtpMe8VEeb2kvItFDFRrcz0t1LgFPtJ/tHD
-	 ZxP4aODuGs6/FZPgkAc8NGfYkY03qoiNJ/zdQh4IGoCVqajHqlvMJAAfADOnLl5TcJw==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793796336;
+	b=Qe+95l1+Kmo/H8yHFEjvd95XFzIOIPRmw7lkvP62PgV8fCFqEDNPHS9RIsH1FQLO4qFW
+	 p86RrnSiVd+KrQx6BraOrRQLI9EjymrPN9Q1UdOUqM+YXbZGzanrB4f0p+phiagDGgwxT
+	 QYTBUIh6xVx/WEHOYSGoQxkQHHS/Z1Gt6mkPRt2RD1mRms9XklfpxuquyXM4TtwidIz0B
+	 utyGO62nMMnhL0dOtk12EJ9dbss6rTqgMaC1oZFDY5gqDP/nHQkuPkBhV6JbjEcKauuyI
+	 wvIpC7ml5qwmJ64INCKNpD1jQv+BhnP6TGX1l3aV6Pi0qizJBcMxS5WxFmS/7jPO7Xw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793796286;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793796336;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-Network-Message-Id:
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=0yzs8/EfulQiSGpQnLGNC5ly82N1VH5VytwaHtTi2xY=;
-	b=cyOk4sXe4ZimsCZ9gVynhtdsVE0HOJ5vMdY9z/2jlWPvAlB4Q58z9jtAdMOv9/pvbfM/
-	 kWCgJe0LRITEa5TZsVgqgeiUwXM6x+tdoPTmXf9YRlQ5nNpw7eWHtfzSoruuGbVNZvMli
-	 rz64aIcuXIAs6yIqWR7dwu2VH1XrvDv14cuspMnB68QTwbuWlkhjrZmgiC/QHTQvgM7nD
-	 dKcXiXnqTNtfgJ3eHwCF1+/m7TbXLpWe4g+Gi2eUvotkpc+yuil2/+qdZNdBSE7bhQYIJ
-	 tD46cRtxh3icRWGE0RX3xWykyfmaHO+8n3JDKLZHVFO+fjE+Po51klvdWiqZ9Lm9bRg==
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=eOKbToCJExomWfktswZQ8Tt1QmJoPra2DuhFwVEnMQo=;
+	b=c+sl6416bWjKxJpHjvHHCab9XyTv0u2SME/YZ1BhBH+4ucFE6Xgrh4+1s8gv8ukEETvT
+	 XOHrgIMKLz7fZZRtg3lyVDQGlpOoTjAW6yBaTzRNsJYNjnduHJzt42itUB2AhleSog6wg
+	 8r9xqBrwYqc+KnnnotdooIK6vVCJ4cBHw9Ci5jyfaHsT5LUEziTntoM27lhqh7b/XmH1B
+	 tUfnjTtiw1fxV18RUHO7IMdqFhRRgMy6eM5GwZk7o/fwb5gKoICxDTUUx3pqlHK1B1w5X
+	 brPGIfMrO2bakTGStbdqVxc1Cp3Y7XLxgnsKAo6vgxRjP8YdkvCZ5XgRWmhYRo6YJEA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e1zmYigc;
-	arc=fail smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=analog.com;
+	spf=pass smtp.mailfrom=analog.com;
+	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=moj1cM4E;
+	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=QlQEq3hS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.135.77
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71A7606A331;
-	Wed,  4 Nov 2026 12:44:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A71A7606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567BC606A31B;
+	Wed,  4 Nov 2026 12:45:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 567BC606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e1zmYigc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793796285; x=1825332285;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=s/2SlgwOnSVVu2i0HjyTHopXtE+fjuO8Jalb0K92EGk=;
-  b=e1zmYigcYLI4/9k9qhzRN8lx+6YEFAopIAuPpDtDJ6YaBBctlZDakudq
-   7i0J53FVLYQ6oFPgBSdcuoyVH8+fvAcQi/Wd5r+65IWzwu0Z62v/6gG9g
-   Y5Bl8dsAMEpYS87gaf9AStigTWkQP6vtMpuMxFhWlXngeSzWmZ9r59Okl
-   m5nzkEFJRfJm1EEu0LCLsfG4lVcqxDOe2cN0GZdhkA35zy0r7kFfzNPil
-   12OZhgN+pGDkv/GayaK4MPTEDNx+nU8VkoVElKFlRwNbUyuHrIrZGl6UI
-   h+7v3wG43PhGp4iK8yyN2ERotRJTHqLZeGVHLVnn+CHOYrFm9cmmQijhw
-   Q==;
-X-CSE-ConnectionGUID: V4YOBdWUQz+5vTCup+qGtA==
-X-CSE-MsgGUID: qm1NAzHuS++rb9ZdQTHDaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2651540"
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2651540"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:44:44 -0800
-X-CSE-ConnectionGUID: Swuhn3gBRGqZaf2j2jjZkg==
-X-CSE-MsgGUID: tAJuNlTITtSf/x+kWeghlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="7028474"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 04:44:45 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 04:44:44 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 4 Nov 2026 04:44:44 -0800
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.34) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 4 Nov 2026 04:44:43 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=moj1cM4E;
+	dkim=pass (2048-bit key, unprotected) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=QlQEq3hS
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4Bd0RF1972165;
+	Wed, 4 Nov 2026 07:45:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
+	 h=cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=DKIM; bh=eOKbToCJExomWfktswZQ8Tt1QmJoP
+	ra2DuhFwVEnMQo=; b=moj1cM4EaYUaj5+tfR35BZJXDGTc76hq/McDSjpcst8zK
+	MinWeJAEnUNGEJln1MDzbxwy3yfZOyCWKntePcGXDdZDc00BUbOS2/7Q/UaoCYIZ
+	dOBDlbr7YjFxBCZerTNQn/KcntuF1Gdm22GQ+PDAyJ+mkhIGDmHiuYq5jjTelQMS
+	7GKb7wnvwGlrlp9ziLTbQ4tMLtSay4oBfqzipVo9xkKsOv5mgTJmghKwtFFC6p00
+	fpCLu1ce6DWdc63wBpTDU3IgTjSKXT2hWwCEwbPZ8P6MaGQyK5mdfjjvUZrk6hgW
+	BHkHQeqoh1SKs5k5sfibtsPy++hKibKdFxQS24R1w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=DKIM; bh=eOKbToCJExomWfktswZQ8Tt1QmJoP
+	ra2DuhFwVEnMQo=; b=QlQEq3hSpzWOJXrdXmhJcKCI3s7aPSrDQt76nX767aKyp
+	5mzsOZTk/BAHdao9DxPefqOeJaxZPcbH/C28teVR/nHwL/6ul9VdKvsyZg5k85I5
+	6Rk40qX2Qt5qL2cmoBq7oNK7U6zyxD7REX+1x7T6mvM/ir9lqesQjMiT3k7X7q2c
+	dKZBA+UFzUB9fz8ld6GVoB7yLNI+D/SMSq0dbBEd/n+oyh7OsC5R7Le2yIuWIdqp
+	QvMUzQ21V7P715vW+qEkP3a4n1P91fY3EXgyXJnVmuyAxEXpoi6hrHTyA5IivR+f
+	K8twtyo4MxJh2Y48pgrGF6pvF9cKTxD1o4CXE+E+A==
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013005.outbound.protection.outlook.com [40.93.201.5])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4hqk2pwr9m-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 04 Nov 2026 07:45:19 -0500 (EST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FLXKHU5OKXB3Tm8cU1GEjJjXg9bRXTHO6JLir4I7bM5J64SHr1Y4x9ouJ1j63+54brYC8oa1AhjMqGYShSxLV0sDjweYWkqNqNy5rndkvkKiN6etCXq54n4OOVDj8UG/SAiVPjXyc9MnSfGwMdx3AkYGEIoJagG6Cc1SXzuy6UMWxAVCtu+oYzzPxz7ur4Tk62Ci01Ya0SFcDH+wnh5Hpe48WQOSeip21jZEM/FWR5WZbQPGt8HISf382/ursIl7NkhotT9PdZKdGW47PVNSCRfKuwwaI/H+xicG02LHuj8q+u4MV6BTqk3qUbwE4bABFJTpID2LxT8IhqphovMt/w==
+ b=RhezJkUGgqpXAqTiC45S/THPm3X+4Ly1RyJ0MreQDmGW00eQRvp2zfE9bKXibtfLoPiigoZOXf6KmTQmXg07v2imTL3O/Tc1iBXiVX1QxMG+pLPtLoVaiBUjaFkjN2LsXkchzZLwG+wXjogjivdWzvuPPne0rnHCT0BkkRP1iFej5YDLamY9fJ/kaZ6L9zlQcmVVSGrn5sBffbY15gdwS7I8F4GV0K97VDSZSHAylWpGsiNEB2xkmzkT3Rq2g1otJimKIWn7X3WzAwG5Pxy5XYcuQwH7g1jR2/oWBR3FafUWBIYOSPh4BSY6uB7s0EfdLjGhKXceq6m+MYU0NmXejQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0yzs8/EfulQiSGpQnLGNC5ly82N1VH5VytwaHtTi2xY=;
- b=QwoxWJhjhKIwuhAjnVWfU+fhI/mYVbFwhqvrJ6xBApKynIBIPHH237mg/3+RVdgq7UlPzWqlkN7TrejTSEixhRRMhmnzFi/PP6XV36qxvGkCr7/+VejZ4Ud1WgLOQP08TusKOrz88h2hcNXfqrT/MAo22JRmhmeqjIJM40R27H2znTBX4lGPNFGOUmFuB6r7mpAJ3pFqZmB5Gtl2lz0CDhwyCgD48OG7yK+wvEhx7f0DyU0QiKIVkiUdvN/AkHiH5RGv0JID2OIW7uLp+pEEbmt8b+cqvGta/x3zvo8b8VMDTCpyiIX1YFkhgp2CCWdZeoqTSbnZ1G9JnXq3HYANcA==
+ bh=eOKbToCJExomWfktswZQ8Tt1QmJoPra2DuhFwVEnMQo=;
+ b=XrgyybOd4EXN94/75miHJheLF/vwym9GDHWewWz88xbNSEeG+7XYdN/baA14FXQ1fK3I0wvK3tfiv111T5yeP6TmdoDZRb1qERn6OVZVB4wezjDCs6HCo6ipS+6gJCL5RaWmivzZuplUayO3QUFkePw3NxNXvQoSR5KuljHX2sMiFPL68OphOJYusH2vQiRwqyzfwGN/H/Dco0jdprUqaPc/+F78EtfojiPh28w7k9fXfELV1tKF7Jd8z0nuNRhv6v7PbLSFINaKxp9zKaZ5UosoxZ2qJtFmJJdQfKHU0t6PzYQrxCWK3pdwyH1KTA0U/hywLUZWKaYvXnaACgRouw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13) by DM3PPF1A34EE115.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f0e) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
- 12:44:40 +0000
-Received: from LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
- ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
- 12:44:40 +0000
-Date: Wed, 4 Nov 2026 13:44:29 +0100
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Slawomir Stepien <sst@poczta.fm>
-CC: <ast@kernel.org>, <daniel@iogearbox.net>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<sdf@fomichev.me>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<magnus.karlsson@intel.com>, <aleksander.lobakin@intel.com>,
-	<ilias.apalodimas@linaro.org>, <toke@redhat.com>, <lorenzo@kernel.org>,
-	<ihor.solodrai@linux.dev>, <tavip@google.com>
-Subject: Re: [PATCH v6 bpf 0/3] xdp: fix page_pool leaks
-Message-ID: <ausorQSZn/tuxUWg@boxer>
-References: <20261104121316.1155680-1-sst@poczta.fm>
-Content-Type: text/plain; charset="us-ascii"
+ header.d=none;dmarc=none action=none header.from=analog.com;
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com (2603:10b6:5:388::24)
+ by DS7PR03MB8104.namprd03.prod.outlook.com (2603:10b6:8:24e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 4 Nov
+ 2026 12:45:18 +0000
+Received: from DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed]) by DM4PR03MB5981.namprd03.prod.outlook.com
+ ([fe80::7af0:3071:4d42:63ed%5]) with mapi id 15.21.0592.007; Wed, 4 Nov 2026
+ 12:45:17 +0000
+Date: Wed, 4 Nov 2026 13:45:14 +0100
+From: Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        linux@armlinux.org.uk, luizluca@gmail.com,
+        maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v7 05/10] net: dsa: realtek: rtl8365mb: set and
+ get vlan 4k for family D
+Message-ID: <ausoMS5PcpEFz02i@analog.com>
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <1ccb6acc-0809-4abe-8443-576f6727a6d5@yahoo.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261104121316.1155680-1-sst@poczta.fm>
-X-ClientProxiedBy: DUZPR01CA0276.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b9::25) To LV2PR11MB868673.namprd11.prod.outlook.com
- (2603:10b6:408:422::13)
+In-Reply-To: <1ccb6acc-0809-4abe-8443-576f6727a6d5@yahoo.com>
+X-ClientProxiedBy: CPBP307CA0004.DNKP307.PROD.OUTLOOK.COM
+ (2603:10a6:380:1::13) To DM4PR03MB5981.namprd03.prod.outlook.com
+ (2603:10b6:5:388::24)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -136,257 +126,267 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|DM3PPF1A34EE115:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85adedcf-4efa-4d5e-5441-08df3a7164aa
+X-MS-TrafficTypeDiagnostic: DM4PR03MB5981:EE_|DS7PR03MB8104:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16bff26c-6df7-40d8-df2e-08df3a717abf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|11063799006|5023799004|261021121427099003|56012099006|261009223027099003|261021135927099003|261021123027099003|261022105027099003|261022113327099003|261022075727099003|261026121527099003|261028144727099003|261026140227099003|261102123227099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 3ONFt75qCGVKEPCq1o4kJ6DE4tCngVybjx5ZexNKdKQzXAd9jhRlN7U6dqDPspCGm9AziwZZIvlj0Z69Mpxs8mpRs/NvjhqPJE3V/vjcvv0yc6uklrel/qzpELnyTGve3DuGaPeHxh5fT5p9V/zIA6UYisTV2XBSpqqsXxATOoi2mSCvwE/Diuh5JqcnlWFOPJspBfuyO4e5i0mJfxNKd9IMJe5V6VsyAEZ0XyuCY2DvFJ/CntOrbNQBJHfRoGUNMRJe/swbEYt9XUoi5XY7+jEctDGRp+wG5TyFD/7JPvk6XZONUcWpC58u+XFfHKyCiESRyArpxeylUQdil2WKy2kpN3eCIaDsKFHNhFq5gQuqbYmSicn9CQtsqCCm4H0hTtaxTYM09uC0tKhilR7t5kd0+lQeNW2VJ7SOlZvq83PuWngF50XfaF727WXxz27dpwxaNOPiJv71WjSoFFtOUmRLYHzDnHOebjr19dnFyN4CCVmjloB3GZL/GzRuWHSEIkhWDlNLnvXoQaSHqV4y0LxtpWtnXizz+PMizLFaPa3zf9yCkxB9ttfhGC836U8XQpdbHSRlt76solOnJYeuJvoZQItC1WtiSiRhQ2FhqTOun3alKZFI7epgj36M6pmR
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(11063799006)(5023799004)(261021121427099003)(56012099006)(261009223027099003)(261021135927099003)(261021123027099003)(261022105027099003)(261022113327099003)(261022075727099003)(261026121527099003)(261028144727099003)(261026140227099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|4143699003|11063799006|56012099006|261021121427099003|261021123027099003|261009223027099003|261102123227099003|261022105027099003|261028144727099003|261026140227099003|261026121527099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	4MeKrFyi9zw+Qdbk3DZAGldArEq7datf0GnT4DKEDxPCzIiPSOC5KXLYyOLW4zRIMlr+Out7bA+U3vveViz7SDip2ePMcln0Fe5mTckoDve6d3mLRJ33BDtgBVMz/H+AJjI6rrrh8H25lGViDfwiovfyM0WHa+S8OLDi9l5qjbRdVFwoQHO/eiX4OtrtvphaOaW4fbC1HJ07+wfHWldE4/2ghetkPZOCJqNYKPPuNk+rrdc2DB01+geIjMF5CIkL4QChawd7Th91P9fbx9XNcKdBBBf+cc4Fd+x4zPCBgwNIQq7ZJG7GaBNIgVC+1QRQxkZat5xiuwm8kGUQ1ELBlUjAAQ9ojvuPfWiGArGQOl92IAQ83xthq4i3zuWna0NXCS94PDfAjisn9Z8hWW9OcVK2+WRLGToI5b9K2JWd6dnHvWJntoWQs58AJv3jk9foUzvhwmeligSCUyHiAfo3yMJSCplo7SgX+U9qqOnsMM3WUcHHxHJeaJe3GRre5gYjWApXNPT6hrpIkx5+HufOaGRpgFcM5e+H5SDMC3v3tuM9tNVu8Ha/4gac3O+S3tz3/xb84GuRA66/jXutAlrNV8LDpT0LkEqA331E4JWTzLjQTb/IxNGBG9TuVi30k2uxifr1wmtOluiFjBoSH2ILPvqPnCfE8UHyyW7g5Zdmckw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR03MB5981.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261009223027099003)(261102123227099003)(261022105027099003)(261028144727099003)(261026140227099003)(261026121527099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TmZr8F78EM2Zo2yH5tOoOV6mZctvJrxI8QO0pHIuikoKfLOTYJAh109D2Uy9?=
- =?us-ascii?Q?I5jv1W6UUqbwCVXJHEmr6w0CiY/QgsYfGDUUAsQpsiywb6QkMM6tbaTFo/yu?=
- =?us-ascii?Q?ouFvEMYyWq+L6ADpqpI02485C+KrR/6WvmWuSSyEEcCrIhDQdr79JSV+mes5?=
- =?us-ascii?Q?htc5YM487y9NXW10Yh3WM5iHkWhD0y2+e0lt5MdsTvmHQIA1+165byB4/OV1?=
- =?us-ascii?Q?jTyrGnzD5ieFRydCNmZxugSDz10bfIdphe39hA7EkBHzWpSe2Wxnwnq5c8DX?=
- =?us-ascii?Q?t+yb20uwqhjIUBlH0n49Ak00A7UTRYFeQIAhrPTPlg1D7Ahkvy9pp2JhIUEe?=
- =?us-ascii?Q?TnPRrmz70CAFU4oAhgN02caRIIaqAz0INuMKBMvRCHCqMWNnRtz21K58E+3O?=
- =?us-ascii?Q?FtofSFkaycBW1uZBeVgBDsuTAJeHYiZ1vQN30sYxEky0DUw1biD9qofBzO7N?=
- =?us-ascii?Q?2rCZlH2AZE5EtQINtTirdHJian9hRu+ga4a+3IbM8J37QJA/iw0WV4gTM1m0?=
- =?us-ascii?Q?UjNOwttH5CzdQLPA+TGI281gckFEj1aErPeo1oBOb1hwnJtWAuQVCSFCn2w6?=
- =?us-ascii?Q?HtFlwVcECWZig9zZOykLdF4ZrXJDlOiJISQUTqIZ1wGK+FXkjfPymkimr54+?=
- =?us-ascii?Q?Q7ttFMRpm/KB68LxwLtd0Ta1XnJcUAtgkCIw+kes8JQm9+BDXrNQL4AuAuSL?=
- =?us-ascii?Q?2dr/5/k5X4NnC8MIuQWJ3q41lTJK8En/qBqQqrTtbeiX0R9MiJR75w6rCQsb?=
- =?us-ascii?Q?UNeirHt5cXpWgOD3LVRgnj2fTHFA3oA6iH/SZLmc6EC0omWvjg7wSFhPkft6?=
- =?us-ascii?Q?dnpttMLduuW2sDU7fBfxNGP/mVTQc8pGX/Oqyuy4jejbmz4oS2nEe/UfjG2y?=
- =?us-ascii?Q?/Pu4G7LYW5p8jpDH0UG4mrBDo/LOROQYQ9JBHOl1hRaB8YYfIGNyDoLRczMB?=
- =?us-ascii?Q?xMkbAa+lLVfTDoDbN1c3qJ6YJDQBmoM6OGi45/MIZcb7sRbUNS80lbiy4FqR?=
- =?us-ascii?Q?6zSrQth/t63hRjhChKterdlX2Ss/d8SIl12I2VnNC5bGfPtzJp03UzW4qy30?=
- =?us-ascii?Q?ikO9xf+WxJ2AWgwvgCmXxSrAEF6a3E4oetgu8alH2qg9bym+rzsbhxDKrhTj?=
- =?us-ascii?Q?0dRU8/SJo8YEZOnO+RTKPvpxy9IxHuxTswPjyiMliDukiV/6zCnP9L3HINTF?=
- =?us-ascii?Q?9Idaj8lwAa2M8cfswWcPh8oV6dYa7PY+vz3Mt5xXQWBKVidXAYqQtSWLI+Nt?=
- =?us-ascii?Q?prQXJuTbEZyuKcjoGuPNae4WElqE9OLBZbv8d+w+yW4gvt3Hq3WuV189Fn6/?=
- =?us-ascii?Q?c5COKJNdrLVMaqxz7rBbJBLoq4yWttW4vvTRAKLKJhjfWYU7k8CmqL2WNlzD?=
- =?us-ascii?Q?6q9i3yqh8S1X+aNaRAKHsKUMBU4vkEEyUUr4qSnfsfxhtLJovvqBU7J848py?=
- =?us-ascii?Q?EaMLDau2epv23v29JYyCukhkxdwRWqIHOpKFBSnsCOqnEHHcpZEoLkwrMJNP?=
- =?us-ascii?Q?sH1+vxujSKY7X/9+Ag6hgK0poClOWqhB5WGvVPgS2CvS79BS4o2buQ8nXwPB?=
- =?us-ascii?Q?1Sk5qv9UQnRaCp85AOdLuW9RZ8qrvDd0AoQHFZxc1AZE4SSO20VSFwuVGviP?=
- =?us-ascii?Q?0jNswz6gOIalTEyNthNRmD8KYsYhkgiENRuQD+hMn8l7Td6Z1d4Sgo+o/7d2?=
- =?us-ascii?Q?dPMEQx2ZHHWXHbYnxGDTXtL/y9cn9f3BP5L9QSVJQutSF+2bZZoNXYWo2WFj?=
- =?us-ascii?Q?C4vTDgMa0W3nOOd2BZkFBy/uKq3G5mI=3D?=
-X-Exchange-RoutingPolicyChecked: EsNyDT7oz0cX11h6tx5SaWOOBnv4nR8Bh8/jy4E4Ywacs7WLF+owVL4igBPR0k4V4/awd4t5Pclhvmrlbnqpl0vA4B6iIdt+6fQ7SHwCpoUepyO8s9vL3CyT8e5AB7vFzHhtOW/gd0t69vHUXShENS2eFct7PnkuRHBC1LNoF4n70Z06yeWgw2flDs1enj7One9bLX2lqGIuVD6FEa13KRMf52Yy2qjV2ZmHoU4ltU+ZK1bz/qj0OVEcKsSPd1z6vif5Sux3SFAVVFvdQONjJZOg4oE82BE4ZlosRF9qgSinrOI0eTfwy+navFcscEncrGCeegMUAborL5Ik+WQoVg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85adedcf-4efa-4d5e-5441-08df3a7164aa
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NERKQWhYMy9YbFoyR1Vtd2kydmUwZXIweU5vMGpnMWJvakpRUHBPa0M0NFNj?=
+ =?utf-8?B?QW9rM3kxQ3BlenhTUkdtRUxUQXdQcXhvVkhVTndRQVFsTmxWbjRUSy9lcWR3?=
+ =?utf-8?B?K1dBWkdhaGRHbEtVQ0c3RHFYN1pBVVlJUmNEWldkT2hlUHZYSHR0eCtCQlhY?=
+ =?utf-8?B?MlovNFJvcmx0NFdIYURJMjN2TFM2MHlDajJ5UDIrMmo2SlRRMmhoRXhCdW1Z?=
+ =?utf-8?B?WXRNOHNQN3V2dlZGODFLM3REbmlVL01LOTlXeTBTY2Fld2ttQ3BIeW40cHVG?=
+ =?utf-8?B?azlCemwxY2hWekh1dFEzcCtrZ0pzWmliUC9ycWtVQzI3VE05SCtxTk4zTVlu?=
+ =?utf-8?B?WDBqVDkwUGtQRmNaaDU1STZhVWs0VUlhUUhKVk5ROEdZNy93dHIrS3NzTFRT?=
+ =?utf-8?B?ai9MVCtyY0FyWXRqNTRBS2dCcGdIMnowQm51eENrTmRuQXpoVjJWU2dxck05?=
+ =?utf-8?B?NmNVck01YXo4aDJWYWtTOVUrZFI3Qm1yZHZBdkZWaWxMNXM5MVl4VjVmN3VN?=
+ =?utf-8?B?ZmYveHlRQzZtS21vU3BKVkU0L1NsUHNrUlJMTUdLTDk3eDh2MzkwY3IxV3dt?=
+ =?utf-8?B?aE03L2tBYTZYdkJvMDM3SVZpWTlGa3Q0aEpKTlFxQjYva3BBMXJOenBHTDRN?=
+ =?utf-8?B?RkRKeVIyU2l1YVN4WDdZYVVwMFhDRUJscWpBREdTQkoveEprd0dmKzM2T3VP?=
+ =?utf-8?B?RXl3S2VqcDduNWVUZkYwZGtkQzVsOWNJMmJMZGtHKzcwMU54aGFLVWhidTRZ?=
+ =?utf-8?B?QkpPUjFHZTQ1dE1kdTFTYmZhSFdZOSs5WTF3NHJSK0Q3VHZyeG5JMlV6N3d2?=
+ =?utf-8?B?QWFkaWdINisvK01oZlNlc2hBc0RkVUswMHF6aTY4aUNxYVdDMUZWRllRdVBP?=
+ =?utf-8?B?d1VkUlU2aFZ3cjNtRURtSGVaNWF5OGh4aHhIZm1BdE4yTU9CYno5bjArbFNx?=
+ =?utf-8?B?YkpMOEI3cEc0VjRrTUppRFZXUWdXcDJQcDRwUG1ERHkrdzBxTWVNUmp5a2d0?=
+ =?utf-8?B?ejFackxSMG5uNWtjNTNGUFZBa2M5Y1VlbWdzaGR6YmRKZFJQcWNZWXFLUmY4?=
+ =?utf-8?B?dHhuc1h6ZW9rWGpnZldrd2NVaXNrczNBQ3E5K2lSVXlGM2JXNmVZbERtTkIy?=
+ =?utf-8?B?ZjdmSkpyQkhzMUFzZG9Ba3AwWTc1UVhMWTRyWHBuOTZvWFpoTlJVK1pZN3RG?=
+ =?utf-8?B?em96MGRERW5hNEUrN2gvSE44L2s1c0I5dXhOQ0tJY1RLTDdRSHhobnRhRWUv?=
+ =?utf-8?B?d3ZVRWE5UTVsUjRCNXJ6WWIxZkVNQ2FaRzR2OVk4eGFuK2o2aGRRbk9sb3hk?=
+ =?utf-8?B?Sy81VnpzSlErSHd6RGxsczNHVWorNUJ0RU05dm1ETDVGZXhoZnVGMEIzUTZ0?=
+ =?utf-8?B?VFlIWDJlSUFHVVNBMysrVGtYcUFzWUdMYTQ2NEpSY2tDaFoxeGFFampMNmFa?=
+ =?utf-8?B?dU0wQnJlaTd0dU0wTThhVzNjQjBMZjUrdzFoTC9hSUtaQ3ZEaHpxMUcxL0Z2?=
+ =?utf-8?B?L0hCZnVZelNCbC9GZ2I2dHFpYktuUUtnMjI3OHJpYjA1UWQrbkR1OWJYY1V4?=
+ =?utf-8?B?KzBnaWxXbzdya2dCcFN0MTA1RmNGR0F2Y21WbThLb2lYeGlFaGJoVHpmWldk?=
+ =?utf-8?B?aDdYalk4d214Q1JoZktqTEZReXN3ZTVhVWJZak0rZTFRY2dqUm5BRG9IVEdx?=
+ =?utf-8?B?bjNTbHhpSnJBTVZvRWxER3g3WXZwUW9HSHlpMnZTMjJlY01hZkNzWVB2VGxG?=
+ =?utf-8?B?UUJXTzl5bXNYeTFydUh6ZU9nZnNwclJxS2UzN2dpSXdSWTlUY002YWEwdWVn?=
+ =?utf-8?B?czZRemZsRHBycWhsazc5OG1Xb2tjTVJPdmhHRStqTXd3Q0srSGNHSHIrMkRW?=
+ =?utf-8?B?TWJXajJEenpmbGFFNHlUMHJoRVliYXlab1RtTTR4amZFUWphYzFyY1dZL1FQ?=
+ =?utf-8?B?YjNCeENUVzJ4d0dpYS92ekQrd2dmVzRIS2VjNjRUSDZuRE9lN0dDZ25IZmd3?=
+ =?utf-8?B?UGxsQ1o2Y0J3Zk0xcWNBc2FiN2hoQVptZ3l1blcvQ0lQQk5iYzdob0cyRzhG?=
+ =?utf-8?B?dndhREtzaUV3dk1tTVZwSlZUUU5Wb01TQ1FDT05oN1Rtb1RqK0FXeURCemRm?=
+ =?utf-8?B?aEx3dzd6L2F4RXFyeGVINkFWamd5UU5HTk0wTURaQm9tZEN5UFpSTitnaDJL?=
+ =?utf-8?B?U2t6UDlrNnRPOTJWQUd3V0Z0eEFxc1RCUVAvS3U0TUh3NG9MRnQxck41U0Zy?=
+ =?utf-8?B?VUIrWVVsTXkvTjVJVTVkaWhaUU5sVHF1RlRQOGt5ZnY4U29IS25FZ0JISUJw?=
+ =?utf-8?B?cUdEbnpjS0JZVTlHUmsxRjBMU0s2WDN6NWV6RkJXNXJYVmhITWh6dz09?=
+X-Exchange-RoutingPolicyChecked:
+	KRRB9ZqCp9Iu2Ef0zXCWMYjkMqkRhlTSHn7gk6DcVBP45X7Qg9/YP2Xy9t7h6kG0qVjaKzeqIVeOHpVOsHJq99h1Ag5cBYxIZGOjDPqmlv6Ogyo7rbnAb5/2Xla0BHNvRiQqLeKP5k9WXqfFAbEq2PEze/ZLHqo1gEsl+xrki/AorK7O78VHhDQ+iGSQmemzhKjAqIck/QNOTLncBW5bScBqfqCNG1wUxFH3wJS8yheZvJLu0abrH2TRKq+xx2E0hnl0WunM+5cSC2j1pDmtzfvwXBPTXCkQ4QQ3LtIqBMpJe0IFhe+gKyaOVSlgkSDf62KewgVRAhXm+90aczQFxw==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16bff26c-6df7-40d8-df2e-08df3a717abf
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR03MB5981.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:44:40.5309
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 12:45:17.8535
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: txeOLih204pVH+6Hgy+gEi1LVDYBX1NNVNGySCzFiDFMxMkBgMdUeLtvB+SNWwwYRyDhkJHnOF5T6tfvDo1Uy/xPFXZIevwLAmzHWidvxxg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF1A34EE115
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9pLXE8JCR8yg1AKV3yIrATggRZk11Kl+74d/Vi7l/O23lgTNONq7phT0/sekkojeYdsyW0BX4UbA2beYIh4FVYHXkFCBFo693GDwqar8ljw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR03MB8104
+X-Proofpoint-GUID: xw-7Di0fdwgHmKflqhlh_Mhx4YLwVJA7
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA0MDA1MCBTYWx0ZWRfX+FzNd1/BFg6P
+ Ezapz3+8zxyhVhGmTQEqDSPAsSNd4SUbn9epzwfD9szojl3vU1CLcIHpM8ncA5aXawJHSeoMqZy
+ n1D+YCAAkzA9jt0+LdK8VtJtmuR2vvjOlWtHNWJ7BkaTXF2Hc6ZA
+X-Authority-Analysis: v=2.4 cv=NPlAaE6g c=1 sm=1 tr=0 ts=6aeb28df cx=c_pps
+ a=l4G2nZJL/liaK5VsxlxrQQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=Z0pTeXoby7EwIRygza74:22
+ a=CjxXgO3LAAAA:8 a=VwQbUJbxAAAA:8 a=KMFrUNXYu4h0triGs00A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: xw-7Di0fdwgHmKflqhlh_Mhx4YLwVJA7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA0MDA1MCBTYWx0ZWRfX/VP4hVwl3TsU
+ rLTg87CtLDlPJXVpOx10rOe2ChRl9YLfHYsHWn4xI/Rt3x2Fa4bXqiCLRjIXI+qvBQjpXn5Sa+1
+ GIePdAcTBlyWRXUIFq97cXAqZW4Kf+3J1Y4jGSYvwqb5qbsq5L0xMFukEXme2QBJe0DTByH/xaz
+ bGsETBDoeHAMP0a4U0yqDeo+poV62SCKkGFIKGXV/p6sSBuxZ/WLa6uMSXC/EXPvASrhoX52bXV
+ So8RBbgHil7TSlIEPiZj7r+nBv/HMwdX9W4DOWzHxCQNPw68s3jU3Np9vMj8bmPC0EYA6BlpNRi
+ 940uUuzxkX4NR4z1ihFtw1TdoaIYilhe6xnUvHMx9MWGtcftyOTe0lxr75S3S/QOCL7cibIO4kt
+ JYPSqTdlV0ALCgm68cY6iQwSqezhtyi7uJNbIq54/cSsqFKD+gyM5RBTwyyG+ncsDh4IWkp1sEU
+ Q4VzNEt9vpTK5qGCObw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-04_04,2026-11-03_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611040050
 
-On Wed, Nov 04, 2026 at 01:13:13PM +0100, Slawomir Stepien wrote:
-> v1:
-> https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
-> v1->v2:
-> - add skb to xdp_buff converter (Jakub)
-> - postpone restoration of veth's xdp_rxq_info mem model (AI)
+On Mon, Nov 02, 2026 at 03:40:53PM +0100, Mieczyslaw Nalewaj wrote:
+> The hardware structure of 4K VLAN table entries has changed between
+> silicon families. Family D's CVLAN entry is two 16-bit words rather
+> than three: there is no third word extending member/untag past bit 7,
+> and no priority/meter fields at all. The FID field is restricted to a
+> narrower 2-bit width. The chip itself supports both IVL and SVL.
+> IVL_EN (bit 3) follows vlan4k->ivl_en, as on family C; the only caller,
+> rtl8365mb_vlan_4k_port_set(), always requests IVL. SVLAN_CHK_IVL_SVL
+> (bit 2) is left at 0, as in the vendor RTL8367D CVLAN API, which sets
+> it only from the SVLAN member API; this driver has no SVLAN support.
+> vlan4k->ivl_en is read back from IVL_EN.
 > 
-> v2:
-> https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
-> v2->v3:
-> - make skb->xdp_buff conversion agnostic of current skb->data position
->   (Toke)
-> - do not pull mac header in veth (Toke)
-> - use virt_to_head_page() when checking if xdp->data comes from
->   page_pool (Olek)
-> - add ack from Toke
+> Reusing the three-word family C layout unconditionally means the third
+> word is read from and written back to the register that holds it on
+> family C, but does not exist as a distinct table word on family D's
+> die; whatever data happens to be there gets folded into member/untag
+> bits [10:8] on read, and re-written on every read-modify-write cycle
+> in rtl8365mb_vlan_4k_port_set(). Give family D its own two-word
+> pack/unpack instead.
 > 
-> v3:
-> https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
-> v3->v4:
-> - include skb->head when calculating packet length (Toke, lkp)
+> The two-word layout matches the vendor switch API for this chip
+> family, which writes only 0x0510/0x0511 for a CVLAN entry.
 > 
-> v4:
-> https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
-> v4->v5:
-> - rely again on sk_buff::pp_recycle when setting mem type on rxq
->   (Jesper, Jakub)
-> - add ack from Toke on patch 2 and restore it on patch 1
+> The family D paths are not reachable until the RTL8367S-VB chip table
+> entry is added in the last patch of the series.
 > 
-> v5:
-> https://lore.kernel.org/bpf/20251029221315.2694841-1-maciej.fijalkowski@intel.com/
-> v5->v6:
-> - rebase onto bpf/master
-> - patch 1: set MEM_TYPE_PAGE_POOL unconditionally in
->   xdp_convert_skb_to_buff(); mem type only matters for frags consumed
->   by the program, and those always come from skb_pp_cow_data() (Jakub)
-> - patch 1: add DEBUG_NET_WARN_ON_ONCE() for a non-linear skb without
->   pp_recycle and document the expectation in kdoc (Jakub); the warning
->   is limited to non-linear skbs since linear ones legitimately skip
->   the CoW
-> - new patch 2: veth_xdp_rcv_one() ran the program on an xdp_frame with
->   whatever mem type the previous packet left on rq->xdp_rxq; use the
->   frame's mem type instead, as cpumap and devmap do. With patch 3 alone
->   veth sends page_pool frames to its peer and the peer's program
->   trimming frags crashed the kernel, so this comes first
-> - patch 3 (was 2): veth turns the buff into an xdp_frame on
->   XDP_{TX,REDIRECT}, so the head is released through mem type too;
->   keep the queue's original model unless the buffer was copied into
->   rq->page_pool (Jakub)
-> - patch 3: take page_pool refs on compound heads via netmem helpers
-> - patch 3: do not restore the rxq mem model after XDP_{TX,REDIRECT}
->   and on the error path; with patch 2 every path sets its own mem type
-> - patch 3: veth can now redirect MEM_TYPE_PAGE_POOL frames, which needs
->   commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
->   XDP") in devmap; list it as a stable prerequisite
-> - drop Reviewed-by/Tested-by tags as patches 1 and 3 changed
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+> ---
+>  drivers/net/dsa/realtek/rtl8365mb_vlan.c | 161 ++++++++++++++++-------
+>  1 file changed, 111 insertions(+), 50 deletions(-)
+> 
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> index 8d49ffa..36f0d2a 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> @@ -48,12 +48,16 @@
+>  
+>  #include "rtl8365mb_vlan.h"
+>  #include "rtl8365mb_table.h"
+> +#include "rtl8365mb.h"
+>  #include <linux/if_bridge.h>
+>  #include <linux/lockdep.h>
+>  #include <linux/regmap.h>
+>  
+> -/* CVLAN (i.e. VLAN4k) table entry layout, u16[3] */
+> +/* CVLAN (i.e. VLAN4k) table entry layout: u16[3] on family C, u16[2] on
+> + * family D
+> + */
+>  #define RTL8365MB_CVLAN_ENTRY_SIZE			3 /* 48-bits */
+> +#define RTL8365MB_D_CVLAN_ENTRY_SIZE			2 /* 32-bits */
+>  #define RTL8365MB_CVLAN_ENTRY_D0_MBR_MASK		GENMASK(7, 0)
+>  #define   RTL8365MB_CVLAN_MBR_LO_MASK			GENMASK(7, 0)
+>  #define RTL8365MB_CVLAN_ENTRY_D0_UNTAG_MASK		GENMASK(15, 8)
+> @@ -65,6 +69,9 @@
+>  #define RTL8365MB_CVLAN_ENTRY_D1_METERIDX_MASK		GENMASK(13, 9)
+>  #define   RTL8365MB_CVLAN_METERIDX_LO_MASK		GENMASK(4, 0)
+>  #define RTL8365MB_CVLAN_ENTRY_D1_IVL_SVL_MASK		GENMASK(14, 14)
+> +/* Family D CVLAN entry, word 1 (family D has no word 2) */
+> +#define RTL8365MB_D_CVLAN_ENTRY_D1_IVL_EN_MASK		GENMASK(3, 3)
+> +#define RTL8365MB_D_CVLAN_ENTRY_D1_FID_MASK		GENMASK(1, 0)
+>  /* extends RTL8365MB_CVLAN_ENTRY_D0_MBR_MASK */
+>  #define RTL8365MB_CVLAN_ENTRY_D2_MBR_EXT_MASK		GENMASK(2, 0)
+>  #define   RTL8365MB_CVLAN_MBR_HI_MASK			GENMASK(10, 8)
+> @@ -185,13 +192,16 @@ struct rtl8365mb_vlanmc {
+>  static int rtl8365mb_vlan_4k_read(struct realtek_priv *priv, u16 vid,
+>  				  struct rtl8365mb_vlan4k *vlan4k)
+>  {
+> +	bool is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+> +	size_t entry_size = is_d ? RTL8365MB_D_CVLAN_ENTRY_SIZE :
+> +				   RTL8365MB_CVLAN_ENTRY_SIZE;
+>  	u16 data[RTL8365MB_CVLAN_ENTRY_SIZE];
+>  	int val;
+>  	int ret;
+>  
+>  	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_CVLAN,
+>  				    RTL8365MB_TABLE_OP_READ, &vid, 0, 0,
+> -				    data, ARRAY_SIZE(data));
+> +				    data, entry_size);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -199,33 +209,61 @@ static int rtl8365mb_vlan_4k_read(struct realtek_priv *priv, u16 vid,
+>  	memset(vlan4k, 0, sizeof(*vlan4k));
+>  	vlan4k->vid = vid;
+>  
+> +	/* member/untag: d0[7:0]/d0[15:8] on both families. Family C
+> +	 * extends these into data[2] bits [2:0]/[5:3] for its 9th-11th
+> +	 * ports; family D's die has only 8 ports and no third table
+> +	 * word, so data[2] does not exist there and must not be read.
+> +	 */
+>  	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D0_MBR_MASK, data[0]);
+>  	vlan4k->member = FIELD_PREP(RTL8365MB_CVLAN_MBR_LO_MASK, val);
+> -	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_MBR_EXT_MASK, data[2]);
+> -	vlan4k->member |= FIELD_PREP(RTL8365MB_CVLAN_MBR_HI_MASK, val);
+> +	if (!is_d) {
+> +		val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_MBR_EXT_MASK, data[2]);
+> +		vlan4k->member |= FIELD_PREP(RTL8365MB_CVLAN_MBR_HI_MASK, val);
+> +	}
+>  
+>  	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D0_UNTAG_MASK, data[0]);
+>  	vlan4k->untag = FIELD_PREP(RTL8365MB_CVLAN_UNTAG_LO_MASK, val);
+> -	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_UNTAG_EXT_MASK, data[2]);
+> -	vlan4k->untag |= FIELD_PREP(RTL8365MB_CVLAN_UNTAG_HI_MASK, val);
+> -
+> -	vlan4k->fid = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_FID_MASK, data[1]);
+> -	vlan4k->priority_en =
+> -		FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_VBPEN_MASK, data[1]);
+> -	vlan4k->priority =
+> -		FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_VBPRI_MASK, data[1]);
+> -	vlan4k->policing_en =
+> -		FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_ENVLANPOL_MASK, data[1]);
+> -
+> -	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_METERIDX_MASK, data[1]);
+> -	val = FIELD_PREP(RTL8365MB_CVLAN_METERIDX_LO_MASK, val);
+> -	vlan4k->meteridx = val;
+> -	val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_METERIDX_EXT_MASK, data[2]);
+> -	val = FIELD_PREP(RTL8365MB_CVLAN_METERIDX_HI_MASK, val);
+> -	vlan4k->meteridx |= val;
+> -
+> -	vlan4k->ivl_en =
+> -		FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_IVL_SVL_MASK, data[1]);
+> +	if (!is_d) {
+> +		val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_UNTAG_EXT_MASK,
+> +				data[2]);
+> +		vlan4k->untag |= FIELD_PREP(RTL8365MB_CVLAN_UNTAG_HI_MASK, val);
+> +	}
+> +
+> +	if (is_d) {
+> +		vlan4k->fid = FIELD_GET(RTL8365MB_D_CVLAN_ENTRY_D1_FID_MASK,
+> +					data[1]);
+> +		/* Family D has no priority/meter fields in this entry -
+> +		 * left zeroed by the memset() above.
+> +		 */
+> +		vlan4k->ivl_en =
+> +			FIELD_GET(RTL8365MB_D_CVLAN_ENTRY_D1_IVL_EN_MASK,
+> +				  data[1]);
+> +	} else {
+> +		vlan4k->fid = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_FID_MASK,
+> +					data[1]);
+> +		vlan4k->priority_en =
+> +			FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_VBPEN_MASK,
+> +				  data[1]);
+> +		vlan4k->priority =
+> +			FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_VBPRI_MASK,
+> +				  data[1]);
+> +		vlan4k->policing_en =
+> +			FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_ENVLANPOL_MASK,
+> +				  data[1]);
+> +
+> +		val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_METERIDX_MASK,
+> +				data[1]);
+> +		val = FIELD_PREP(RTL8365MB_CVLAN_METERIDX_LO_MASK, val);
+> +		vlan4k->meteridx = val;
+> +		val = FIELD_GET(RTL8365MB_CVLAN_ENTRY_D2_METERIDX_EXT_MASK,
+> +				data[2]);
+> +		val = FIELD_PREP(RTL8365MB_CVLAN_METERIDX_HI_MASK, val);
+> +		vlan4k->meteridx |= val;
+> +
+> +		vlan4k->ivl_en =
+> +			FIELD_GET(RTL8365MB_CVLAN_ENTRY_D1_IVL_SVL_MASK,
+> +				  data[1]);
+> +	}
 
-I mentioned the changes [0] that were developed after v5 revision yet you
-decided to go with what you had - that might be okay but to be transparent
-it would be worth stating *why* you chose not to pursue further or explore
-approach where __do_xdp_generic() is called from veth.
+Don't you think it's better to just split out into family C/D variants
+for these ops? If you do so, then I think relabelling the old macros for
+the C family with RTL8365MB_C_ prefixes will also be appropriate.
 
-Was it due to semantics change pointed out by Bjorn? Or is it too big a
-hammer for fixing page_pool leaks and should be implemented as a
-follow-up?
+[...]
 
-Regardless, thank you for reviving this work, I am to blame for not
-dedicating further effort here.
-
-[0]: https://lore.kernel.org/bpf/20260509084858.773921-5-maciej.fijalkowski@intel.com/
-
-Thanks,
-MF
-
-> 
-> Hi,
-> 
-> here we fix page_pool leaks which happen when fragment is released
-> within XDP program and memory type is set incorrectly. The reports come
-> from syzbot and AF_XDP test suite.
-> 
-> Most of the changes are about pulling out the common code for
-> init/prepare xdp_buff based on existing skb and supplying it with
-> correct xdp_rxq_info's mem_type that is assigned to xdp_buff. A bit more
-> stuff, page_pool related, had to be done on veth side.
-> 
-> Originally, this work was started by Octavian Purdila and continued by
-> Maciej up to v5. Maciej then took the larger veth rework from the v5
-> review to net-next as an RFC [1]. This v6 picks up the v5 series, with
-> Maciej's agreement, as the minimal fix for bpf and stable, and addresses
-> the v5 review. Maciej stays the author of patches 1 and 3 and my changes
-> are noted in their commit messages; patch 2 is new.
-> 
-> For veth, Jakub listed three options: stop turning skbs into xdp_frames
-> in veth, decide the head's mem type when the CoW was skipped, or CoW the
-> head on the Tx/Redirect path. The first one changes veth's XDP handling
-> beyond a fix (it is what the RFC does), so patch 3 takes the second:
-> veth knows whether it just copied the buffer into rq->page_pool, and
-> only then advertises MEM_TYPE_PAGE_POOL. An skb that skipped the CoW is
-> linear and keeps the queue's original model, as before this series.
-> The two do not conflict: the RFC can go on top of this series and
-> replace the veth parts of patches 2 and 3.
-> 
-> [1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
-> 
-> Patch 2 fixes the same problem for frames in veth_xdp_rcv_one() that
-> commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
-> XDP") fixed for devmap; cpumap already handled it.
-> 
-> Testing (x86_64, QEMU via virtme-ng, KASAN + DEBUG_VM + DEBUG_NET; the
-> series ran on bpf/master fb7bd3a2aad7 and, rebased without changes, the
-> reproducers, kprobe path checks, devmap test and selftests below ran
-> again on 05441d697f7f with the same results; the runs without the series
-> on bpf/master c8a8a68d3ab4):
-> - reproducer: an xdp.frags program that trims all frags with
->   bpf_xdp_adjust_tail() on 8000-byte pings over a 9000 MTU veth pair;
->   without the series both generic XDP and native veth XDP hit
->   "BUG: Bad page state ... page_pool leak" followed by
->   VM_BUG_ON_PAGE(page_ref_count(page) == 0) and a panic; with the
->   series 20/20 packets are trimmed with no splat
-> - native veth XDP_TX of multi-buffer packets, with and without
->   trimming frags first (200 large + 200 small pings each), then veth
->   teardown and a 75s wait for page_pool "stalled pool shutdown" or
->   negative inflight warnings: none
-> - BPF selftests on bpf/master with tools/testing/selftests/bpf/config:
->   ./test_progs -t ns_xsk,xdp: all 34 tests (205 subtests) passed, no
->   splats, with and without the series
-> - the standalone AF_XDP suite (test_xsk.sh) also runs the tests that
->   test_progs skips as flaky; XDP_ADJUST_TAIL_SHRINK_MULTI_BUFF reports
->   PASS either way, but without the series dmesg shows 60 "page_pool
->   leak" splats from generic XDP (bpf_xdp_adjust_tail -> __xdp_return ->
->   page_frag_free on pages allocated by skb_pp_cow_data()); with the
->   series there are none
-> - frame path: one veth bounces 8000-byte pings with XDP_TX, its peer
->   trims all frags of the resulting frames (IPv6 off, so no skb touches
->   the peer's rxq first); with patches 1+3 only: "page_pool leak",
->   VM_BUG_ON_PAGE() and a panic in veth_xdp_rcv_one(); with the whole
->   series 50/50 frames are trimmed, kprobes show all __xdp_return() calls
->   with MEM_TYPE_PAGE_POOL, no splat, also with IPv6 on so that skbs and
->   frames interleave on the peer's queue; bpf/master alone passes as well
->   since veth only sends MEM_TYPE_PAGE_SHARED frames there
-> - remaining veth paths, each confirmed with kprobes: skbs that skip the
->   CoW (frames passed up by one veth and forwarded back into it: 1229 of
->   1260 runs without skb_pp_cow_data(), heads from the page_pool),
->   XDP_REDIRECT failing on the skb path (40 xdp_return_buff()) and on the
->   frame path (40 xdp_return_frame()), XDP_PASS of 20 frames after their
->   frags were trimmed; no splat, and none of the page_pool shutdown or
->   inflight warnings 75s after teardown
-> - devmap egress after patch 3: veth redirects copied skbs through a
->   devmap whose egress program trims all frags; with the series 20/20
->   trimmed, all __xdp_return() calls with MEM_TYPE_PAGE_POOL, no splat,
->   nothing 75s after teardown; with b3ca872947ef reverted on top of the
->   series: "page_pool leak" from page_frag_free() under
->   dev_map_bpf_prog_run(), VM_BUG_ON_PAGE() and a panic, hence the
->   stable prerequisite in patch 3
-> - W=1 builds of the touched files with LLVM=1 and with DEBUG_NET=n: no
->   warnings
-> - XDP_ADJUST_TAIL_GROW fails in DRV mode with and without the series,
->   so it is unrelated
-> - not tested: page_pool frames from hardware drivers redirected into
->   veth, bpf_xdp_pull_data(), multi-queue load, the full test_progs run
-> 
-> Performance (the same VM with 8 vCPUs, non-debug kernels with
-> PAGE_POOL_STATS, bpf/master fb7bd3a2aad7 with and without the series;
-> pktgen sends skbs into one end of a veth pair, the program on the other
-> end counts packets; median of 6 runs of 8s over two boots per kernel):
-> - 64-byte packets with native XDP_DROP, XDP_TX and XDP_REDIRECT (devmap
->   to another veth), and generic XDP_DROP on 1 and 4 CPUs with 64 and
->   8000-byte packets: within 2% of the base kernel, no regression
-> - native veth with 8000-byte packets (3 frags): XDP_TX +8.8%
->   (0.507 -> 0.552 Mpps), XDP_REDIRECT +8.4% (0.613 -> 0.664 Mpps).
->   Without the series veth_xdp_get() takes plain page references on
->   the head and frags, so the pages copied into rq->page_pool are
->   released from the pool instead of recycled (~1.2M/s
->   rx_pp_recycle_released_ref plus slow allocations); with page_pool
->   references they go back to the ring (~1.4M/s rx_pp_recycle_ring, no
->   released_ref)
-> Absolute numbers in a VM differ between boots, so only the relative
-> change is meaningful.
-> 
-> This v6 was prepared with an AI coding assistant (Claude) from the v5
-> review thread; the assistant wrote the code changes, all of patch 2,
-> the changelog updates, and ran the tests listed above.
-> 
-> 
-> 
-> Maciej Fijalkowski (2):
->   xdp: introduce xdp_convert_skb_to_buff()
->   veth: update mem type in xdp_buff
-> 
-> Slawomir Stepien (1):
->   veth: use the frame mem type when running XDP on an xdp_frame
-> 
->  drivers/net/veth.c | 56 ++++++++++++++++++++++++++++++----------------
->  include/net/xdp.h  | 36 +++++++++++++++++++++++++++++
->  net/core/dev.c     | 25 ++++-----------------
->  3 files changed, 77 insertions(+), 40 deletions(-)
-> 
-> 
-> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-> -- 
-> 2.56.0
-> 
+Kind regards,
+Alvin
