@@ -1,74 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793776012;
-	b=Mfsou9uYZLHc+XUbdIRORdXjUBjlinyhkuRyCI+Q2FusBsGB0LJKm+hoAXedKznZI4sK
-	 p0smCwcD+W7GPyPzr+5EcE0E87Ifoa+zxaACp21pGBqLt4hRcC37dEydeSuQNbseo2XHV
-	 JyOSOWkV5Xlrus+xgY0VTzLPXxM7p3Xxs9kvzLL5f6NELJgOzoPXr/LF0ksxdVR3aCOKN
-	 7JHHjoTZfDzR9Qlv+oCZVONl9CkCdq/B1vGzSQJy5z6Jjq15o7BiGFE1y+wHz/aEy1Xm4
-	 4/aPgJuJDu4pLcXFRIk2GkvKdNxl7jsqRN5hN10qFhUgfraSsKmnkMJHkpUPFZ5VU3Q==
+	t=1793776307;
+	b=oMez+1sF034aw9rJFeleBaJWaRFzl69MKQaGrlsGTeAhGrxXqRiXgplSWOBAs5MKlo4C
+	 Cq1E4P2bDEmBMtMv54MbBkQsZi/Jj6xdiUAGOgVljoKzAbYRNn3Ad8ac4rg5OLAdIfyJm
+	 L5Igr1PHGVpr2EgXk5Yiq3iACLUpg9f5sh199Cff29w/5q58xior/oHiyQZ/vTfC56Avh
+	 oJjk1y5GeAJjN5t98+JfDcqeE53wX8ExN28m1JxN6eViOIX4afXqUQn4pKP0rn5sCpqGr
+	 iA8mJsjQeglI1w1oJ04pHrvrorqWmOyV/OXtwWcRNbsZI8fbrjrQweqfuRcNHiWbelw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793776012;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=QJzESvD8vuME65W2GcPr8N8G0TWw7wsApf01g/in8yQ=;
-	b=FDhhJeH9MP79B8x9BCZ3nfDkRj8+t9y8NQw4ZdsisiY9nBJq1JRY9H21epRfI83TpcRY
-	 85WPeKkxT7ptMV7ismPzg7Z3bocHZcMQd326TqSG3w794J4EOZOQPkz7B1/xGbCyLbX8n
-	 e1bweLMxuMrX+MhrlMo4G6blxZbpCChuOiStswqGjLLO99ebVYbCgD90S7dC5Frw6YRz9
-	 barodg7De2kvDL+rWblSKfA6T9XVOrMvXUznzFb1VzoKXePLhSmrY4r+SJj1a21tUca+5
-	 0EL27Fay7q9KST08mqy4NRqwNAxAJcK2DJ/j6K3YnStqYTiFzDBO/zTRzv+5i8HhUYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793776307;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BhyrL+gZPz2pormGcY9bduMW+6XwjaguNMO4upbxytE=;
+	b=ygi0JjMawwSVvd9pxIuq0oHkfg1+/+Uzlz2wHSe0IOw3AKzSa6Twts2Ktek2tGf8tGkf
+	 e0QiOnNS2+lry55Btq53BMzv3o4KznhUFikv5jii1kUgabcElROCrIy8uS3YZ82nt+bZ8
+	 ZqQqp5lIpbaGDIU/ibGstLuMLD1DAKwzGjiBROBFu/oVtRMSwCQXF4rV4MsGF1iM87ZWV
+	 ASozrvcqDREGFCLN921lDbyh3vYSIsSiA3PXOYCEvCxubUvrBuwynsR4imEGDDDfHDLD8
+	 uaeI18jBGOe3t8BiOOWl0IxDhfucPcZcMwDY/0HEj350TrmmUIiPJQfm7GMu+Pb7+EQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gAI4SmBo;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="MCCZ1/2u";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAC1606A31B
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 07:06:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AAC1606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5FF606D804;
+	Wed,  4 Nov 2026 07:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gAI4SmBo
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3adad90c894so633882a91.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 23:06:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793776011; x=1794380811; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QJzESvD8vuME65W2GcPr8N8G0TWw7wsApf01g/in8yQ=;
-        b=gAI4SmBoPAmQd8xkI63BehgOf9VmvmdMORskjRU8iTNIhgN+EsaEzLRugabzGOW27c
-         urkNRX011I6DtdW67DVHiEV0sjsvotP2u7ubTCZysu0jdEiUGx4QdVX8Xx4hBlHJ3tlF
-         V7xkn+utKsXbM3QG+wxqg3roKcxpxpwhVQq7tIwyQuVUDBmLw4RGu4IPbTUMrqGK9Frm
-         vs4r8oA7fGS7r2t1pLbIh9UIlcHEBJ9G9Q3fE2/ammTdbnoHaLeyQHr/itHktb+kdahy
-         +f7SjwiMrrHTeszTXcgj2gZcXHoPpC8/OnSj+AsegoaFaCvRMp8Bv8byV6MFvclH/JlD
-         UIXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793776011; x=1794380811;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QJzESvD8vuME65W2GcPr8N8G0TWw7wsApf01g/in8yQ=;
-        b=sxqP8IgKwZ5OfyrYajFjgbFcCMysWMdAl0G+xfT1y4LQWSWDbS4VEDLPbouYJoD1BX
-         NC23PZHXTc2gv509pK+TTgzMKR4xwasW2cgGigDvU+ZtWxBCawOiwegQV1iTzt7IfTtL
-         1HkqZOQu9L+/22LqRMzI907f4wNepwJb+pr4PHfejlcpMfEW8tHdVUGyDJuIUYT0hw6h
-         LFCwk27MgpPJrSvHM00qnkSo6XW62Dt0g4E6C8VNDgq+v21EF5UgaCmevklF35AOSZax
-         9wNgm4tH3dM88F0bwlHJb7IlBSNJMW9RFEDe1RgHxSQ7ip2Dvf9mpbO8P1WN3gMcVFG8
-         yGdw==
-X-Forwarded-Encrypted: i=1; AKwUvBzQAgEhriB4WRd65JW0WFdj9t335X7kFsZ8zrJq7yjGT3FXhNjED+kw/t3sFFyAbNiBVKuPciw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z97IPl0CXZW9kAaSANMfB9avrbrq3TNdvLCxNfGHIdiQvNKXCdI
-	Q2Yx/Flq6pT02vXP4EpygIXYPkJCNB2cfKEzOO+JiQQ9eM9A+dyv6YAUOB0E8bO1NndlgCyHCyV
-	49a3liQ==
-X-Received: from pjbkr3.prod.google.com ([2002:a17:90b:4903:b0:3ac:24b3:3484])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e81:b0:3ac:8fff:5a1b
- with SMTP id 98e67ed59e1d1-3ae8982ab40mr13181199a91.34.1793776010617; Tue, 03
- Nov 2026 23:06:50 -0800 (PST)
-Date: Wed, 4 Nov 2026 07:06:50 +0000
-In-Reply-To: <20261103090011.4128420-1-edumazet@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCCZ1/2u
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946841F00919;
+	Wed,  4 Nov 2026 07:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793776307;
+	bh=BhyrL+gZPz2pormGcY9bduMW+6XwjaguNMO4upbxytE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MCCZ1/2u7usMXkzLabkYawkAc+KkLQRh8To1Fn9vaSkbVEyFHAymYWT4D8HPj3dtw
+	 agC9MpD7BaD8o3YByj3BVKd+jm8cDFC7ogJ58zKldT3YrfJkbY0yYYkwECLdq2JDM3
+	 OZEYZK6kc3jmA8JHMaSWBJgJYNWqSuW9VSMr/pbHZkkE6eahyaNKLkfpdL+PhDwa8f
+	 fQ140+iPh1B3du8hSuBLdVeFooHEe8fa51zvf687sruoJMtijtGb4O8/JCvKjMuDDJ
+	 TxV/Wr9+wiOIEGR9xtcEn6nBkp2pzLx25wzlUq4PS/KZVWt1nwet/vuH3kV/sWemPq
+	 s2KbD+tBeDo1w==
+Date: Wed, 4 Nov 2026 08:11:44 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	oe-linux-nfc@lists.linux.dev, Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Dumazet <edumazet@kernel.org>, David Heidelberg <david@ixit.cz>, 
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH] nfc: llcp: put the socket reference on a refused
+ connection
+Message-ID: <20261104-colossal-witty-gerbil-1caad4@quoll>
+References: <20261104022811.1484216-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,41 +58,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261103090011.4128420-1-edumazet@kernel.org>
-Message-ID: <aurZeKTs2w_MbMcs@google.com>
-Subject: Re: [PATCH net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace period
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261104022811.1484216-1-vulab@iscas.ac.cn>
 
-On Tue, 03 Nov 2026 10:00:11 +0100, Eric Dumazet wrote:
-> ireq->ipv6_opt is only set by calipso_req_setattr(), when a CALIPSO
-> NetLabel mapping is configured.
-> 
-> Request socket migration (net.ipv4.tcp_migrate_req=1, or a
-> BPF_SK_REUSEPORT_SELECT_OR_MIGRATE program) clones the request
-> socket with inet_reqsk_clone(), so that the old request socket and
-> its clone share the same ipv6_opt, then reqsk_migrate_reset() clears
-> the pointer in the old one.
-> 
-> Another cpu holding a reference on the old request socket can still
-> be using these options, sending a SYNACK from tcp_v6_send_synack()
-> or creating a child in tcp_v6_syn_recv_sock(), when the clone
-> is freed. tcp_v6_reqsk_destructor() frees ipv6_opt with a plain
-> kfree(), leading to a use-after-free.
-> 
-> Both readers already run under RCU, like their IPv4 counterparts.
-> Use kfree_rcu() in tcp_v6_reqsk_destructor(), as commit e3f33b0a1d89
-> ("ipv4: free inet_opt and ireq_opt after an RCU grace period") did
-> for ireq_opt.
-> 
-> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/netdev/179369559062.488856.15441115725436277776@kernel.org/
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+On Wed, 04 Nov 2026 02:28:11 +0000, Wentao Liang wrote:
+> nfc_llcp_recv_connect() finds the listening socket with
+> nfc_llcp_sock_get(), which takes a socket reference.  A socket that has
+> been bound but not yet put into listen state is also linked into
+> local->sockets with dsap set to LLCP_SAP_SDP, so the lookup can return
+> it.  In that case the state check fails and the function jumps to fail,
+> which only sends a DM; the reference taken by the lookup is never
+> dropped.
+> 
+> Put the reference before jumping to fail on that path.
+> 
+> Fixes: a69f32af86e3 ("NFC: Socket linked list")
+> Cc: stable@vger.kernel.org
+> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  net/nfc/llcp_core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+
+Multiple things here:
+1. Your team ignored completely previous feedback. Multiple times.
+
+2. You use multiple identities with this email address, thus I doubt that we
+   speak with an actual person.
+
+3. Your bot does not even bother running checkpatch, right?
+
+4. Nothing of this was reproduced nor tested.
+
+5. Finally, the same feedback:
+You sent multiple independent patches, to multiple independent
+subsystems. The amount of these patches clearly suggest this was
+AI generated and most likely not tested.
+
+More importantly, you sent all this work without properly organizing
+relevant patches into patchsets. This makes reviewing difficult
+and might cause multiple reviewers to address the same issue.
+Replying to the entire set is impossible and requires handling each
+patch independently, instead of applying or discarding the set.
+Maintainers also won't see the bigger picture of your work. Quite
+worrying.
+
+This is on the verge of hostile patch: bomb us with so many
+contributions, we won't be able to handle them in efficient manner,
+like responding ONCE to ask you to slow down.  Considering all this
+is untested and LLM generated, I have even more doubts whether this
+should be considered for review.
+
+Please read kernel documentation BEFORE posting more work. It will
+explain you how to identify subsystems, how to organize your work per
+subsystem (so a patchset grouping multiple patches with a short cover
+letter), how to document the issue discovery method and what was
+or was not tested.
+
+Best regards,
+Krzysztof
+
+
+
+
