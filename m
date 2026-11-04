@@ -1,76 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793827767;
-	b=z5U5LINF+uI640utwFZx6uNqTiGvpD/krCQCZkxCE1hucrcVpmR3ooQFUAI3YwZQB5RY
-	 sKDNbvUUhyDxWYId01fMzwuNigdeReFklxwSIQsXhUlJjPi/lCVWDY26I/Xe5c7A7eKpA
-	 PW6VmNW3mKLCPnSnmwWRboMAQXNUe3nQLjO2oNR60CMfGe4DmOCicc0qiCGTWWXp0KRRp
-	 zvk6U2DkutkZm5SYAuOaj8ql58fY/BecIvVbN3um+o5Za/Q5Rp9rNLvzJb5mJLuvARk+2
-	 dzrGXb7Dbx6na8yC0iiP9V2PEfMh792SbHBPa/eWYJpqFQJmwQSfyB1VEa46+VFuvBg==
+	t=1793827817;
+	b=lVotiXSMeSbhCLH5I/MHWpt2MedlJuoLOErTujv+aWND4CR+x4XfazK7HQ5wpFKgZ1Uv
+	 XvYxRmMIzkz8il81w6hbN/v/5zLvTmscePyLZKtZPVSVOnqQxW/LOjHLEnmBv4gvX8E51
+	 pCVTiWwEd1eeAdNwJs8DrblGuloicZGbyCgSiXISG5Og7W5FW+CUM0t9yxXB6hmhbEM/l
+	 BuDTD+5IzmbVJ/l/360vCiS0w9drR0xptNipdk5NjxnP3dl1OeYIfmVoo1wZM0o6MS2tt
+	 iZBiBz7pKAvGZ09v58vgqr/KrUV2asdfI/q/JdM9emytmoalJrog1Q/SkiTnMWBhN/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793827767;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=Z5JEWAHX8HIT/y9bERySyCdVuC9uxNIx0YOcG+Jkvv0=;
-	b=MUQ7ziU4EJoW7sEVY+QZAXZQ3m1bOALU5nz4mx8A3hYEOkIt5z/dWlopvxbBhtXIzMjK
-	 jWqnoyZvarJHLHegejtC7oxEw2nndjiH9cGdMsR9BO/otWpJhiwsCoj77yvgRj6lBSS7p
-	 zZ8AhejaVpC2bS2aE9f9dmJU/hICzuYVC5+vthXPLTmGAg0k/RnRNCJtR8/wQnIfwdVIr
-	 uGmexxtSYT/bP+tCgEB3Wisy1gy7WQ89jvcGYzfSZhqlN1ShjSQ/SKkd4rPBX1YK2uIbP
-	 i7amepin6HqMUz2qNJMLVFQmyqmshDOJXD2/TOq9eem/wYE7q6YHz6F4sBqBRI9X67w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827817;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=xS8E5Xjbml3R5zZBxPCvPqXCNF7w1EP6L2oody/G3yg=;
+	b=apiM7YNsnvsVx5uD1SxCk3tt12f+aXp0XX5Hdz8nP8WN87KMSghYN71uDEi68hDzs1SW
+	 qrgP/RiAS1bpOuDp4i9CEzz3hlTqBqoXcpeLABwU0mm320KYJ/BU7u5JM7fbxQgGkM8yj
+	 Pthi+V2FYebkgIDaxYaVtMVUMBjRxEWeXJuHCQydvV7dZKjGjmW8Wf14RU9CJTU3jKrqR
+	 JFUk6W97phgxnPI9q5TJGBdSr7ODdey+lZCWZrcuBu2FYaBGXVW/gdvlgbDTL+qK8IKg6
+	 2j8m4XTr7D2tixx+p3RKCuDmZju4Fbb8uio4BHLpCkcyOlylmnN6hPHZoa89aWn+0GQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=i26NWnj+;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezSKGxoX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE245606BA3D;
-	Wed,  4 Nov 2026 21:29:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE245606BA3D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF736606C92C;
+	Wed,  4 Nov 2026 21:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=i26NWnj+
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Z5JEWAHX8HIT/y9bERySyCdVuC9uxNIx0YOcG+Jkvv0=; b=i26NWnj+huXIiWxNXO7EvLj08L
-	dpWAOUvdfL/BjVLhLZa9UB9Y6lVKooJS3wov0erHqIbKb8nrhToeu3GBLuiNNksYk4T1yQVbzKkgD
-	Y1Xb8/BoUJPnygFcAh5QHLr5/mvJbMZJv9xH9SJR1VI8xfNE9Iwe7KavNZ0C7QZg/2xM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOiXe-00EOKk-TI; Wed, 04 Nov 2026 22:29:10 +0100
-Date: Wed, 4 Nov 2026 22:29:10 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: joseph@telaak.dev
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next 1/2] dt-bindings: net: Add Siflower SF19A2890
- GMAC
-Message-ID: <e134193f-ba1b-47c1-9a06-419b1b796ea0@lunn.ch>
-References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
- <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ezSKGxoX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4962C1F000C1;
+	Wed,  4 Nov 2026 21:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793827816;
+	bh=xS8E5Xjbml3R5zZBxPCvPqXCNF7w1EP6L2oody/G3yg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ezSKGxoX8mJh1PQJY1WVorcLp/yVHuGqHB2b2Fe4rTtXzNrqhcv2BJT3BxWN5Tjml
+	 KA22jmRBKJN9Sp0UqxS8RHOw1OruzjEDtWDZ6PqkwQBp0MyiGeJldqS9ANypwIFuTf
+	 uKxFpyy8/FcGPa4z5Fjg2ng/+ub0FlDMZh2pM6i4IzTimdPoyAj6FMTuR4rbbzt3kz
+	 5eNZKdXwXJ/j6HXThSO6ZZWXQeL1zGDE/0pdgppae8VxJyvPnfKHtwOekHfeDiYF3j
+	 G5taiErNUZAZDVKH9VOAuUZ/yGe+S6+PmbxAIQsblNv4btrgNDOPCL3diXspBkvrJE
+	 dOo7EOgTqTH4g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4017438003C5;
+	Wed,  4 Nov 2026 21:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,31 +53,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4 0/2] Fix TCP retransmissions on NS/NSP SoCs
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179382781479.3232389.1538844230446462425.git-patchwork-notify@kernel.org>
+Date: Wed, 04 Nov 2026 21:30:14 +0000
+References: <20261029211540.4123250-1-florian.fainelli@broadcom.com>
+In-Reply-To: <20261029211540.4123250-1-florian.fainelli@broadcom.com>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
+ jon.mason@broadcom.com, arnd@arndb.de, linux-kernel@vger.kernel.org
 
-> +  rx-internal-delay-ps:
-> +    description:
-> +      Applied in steps of about 55 ps, rounded to the nearest step.
-> +    maximum: 14025
+Hello:
 
-Please add minimum, and multipleOf.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-I've not looked at the code yet, but default: 0 would also be good.
+On Thu, 29 Oct 2026 14:15:38 -0700 you wrote:
+> On Northstar and Northstar Plus SoCs we would see about 1000 TCP
+> retransmissions per second due to a rate mismatch between bgmac and b53,
+> make sure that we run at the same speed on both side to avoid dropping
+> packets on the floor.
+> 
+> This issue was found during testing on a Northstar Plus reference board
+> (BCM958625HR) while running iperf3 to a test machine and noticing
+> retranmsisions:
+> 
+> [...]
 
-> +        rx-internal-delay-ps = <550>;
-> +        tx-internal-delay-ps = <935>;
+Here is the summary with links:
+  - [net,v4,1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
+    https://git.kernel.org/netdev/net/c/d4f3d2c04624
+  - [net,v4,2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+    https://git.kernel.org/netdev/net/c/41af38324341
 
-These values are odd. The RGMII standard says 2ns is required. Where
-is the rest coming from.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> +        fixed-link {
-> +            speed = <1000>;
-> +            full-duplex;
-> +        };
 
-Does this mean there is a switch on the other end? Maybe look at what
-the switch is doing for RGMII delays.
-
-	Andrew
