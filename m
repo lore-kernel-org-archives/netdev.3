@@ -1,146 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793824362;
-	b=sj1kAh2qDVRnOqBQ7wG3dx7JOSO/9XFoy3dIRsF780QBc8XTMyWAXaVeTWZtKizbM/nL
-	 6L+FM3g7614G94aYlro74Khc2ZhnTwLQUfpsdjQPJtyQvTgNdcnnEF184VKEUXhDp0sHx
-	 MQxh0I9FMGRheLjkx7oxcyCPIE9aOGxwltZ9wvOX6Fu6u13jvaclr7LngNSHMlV8EuQpx
-	 QSOxsUvcUqwojojp/xoM8atquu4OxFxoyx110wV4stBN2dENwtZ1u4OaVYmYNjqEeURA0
-	 o/UU+bVGfC/lFZ5iP3erXmRiA9jL74JRRFzKLY8Q7plv7Po1uj2DxesyrF2YTRJQtHg==
+	t=1793825211;
+	b=AXo4qF4C3qMArjtP51EIlj9ft6G4TPxUQ5LgefmR7G06ijeRq6Nz7/eMnXg1e2r0LyF5
+	 +SAPfJ6/knVzqsvL46pmg09pwIZbRi9KyEjtQVueGPkoctGCz3dOgg/fKXChUJo92qgUF
+	 F9bv+EVmq9LG4mH8S9iLSvM9z3ys/4QhBEInPxHkO+mv/czzMGP5eWOVSHZW3zr91ZuAt
+	 8LRjEnqvZ4Y66QKWzLznpO+wv87qvaCT++RC9DMO8vExbRKpgL6+jv7cWjWsLunt6Cljq
+	 GYwF+Pz3Zcy04DCPSyyE6KNFaZO2pe1M2i6H3P2EI1ymr5W50dugDu48f57/ustJS6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793824362;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=/lO0mL+cBkndSMWtbQjIRUpGnu/CrhJuhEAaumulM8U=;
-	b=YVC3Mn/VC7P76FJ15bd2We3Gd6k7YVGKx+NuVKS4Gf4LD01XwHJzBU7q9uZJc8FGkkKd
-	 mS8Ei/PgcbZyF4cIUaMnk3O4x90hZnpkH+5eD2Qhff4g8Q+qeoQiqpRgde5++csGj6dT3
-	 SVkbZMpqdf9sF/5FMqQgMQlssxTlrfd9dk90RtJi/T9k0X+24StqUhFgEQqLJ3DXvyK/e
-	 2HvNUwWSj1z3zzKGOsYZbSzEjBB1nenCTGNFJKyTcrNkzHgGk9ZWVxWfxdjTgDUT1ubaS
-	 NrylY7fDJiZpeCvET0m8GXzNhyfi82su0eRvAV1vaNqe1b04+y9FDog46ckuxMDI7Nw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793825211;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=jprIiT+sh8cBrL1Brn07csemCaTfTZPjoSZJmioozBs=;
+	b=EVK4ix1Em8HEKjqknkHYVo1+Aikxf9eAhxbrwu/IwVCWWtwSjlym0ATLKUPQDqeQfQiB
+	 tkc2KmgINy3acZsHPJj3DjYMKfm0wIYlCMczSi/j5FcrDxoOCZPv84AoW0+3TxhBq8T2w
+	 6zpN0G+ft2LxIrG4ayhRPlwF+f/0tVRfT4uL398vNjPJHqO9QC1p3flEa1nOa4iENB4CS
+	 P32qk4muV7RlJtKIuCDC7CTAzspMmHd2uUEv879LvFztrZ1uwNd0ORH+9PFh3MnczE/+B
+	 J6depNUXMntFb+3f5FQ7MlogEe1C/iswCqZI3KfXhHQVOi048WrCO9LkmXsmDct6HIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=azykdYLR;
-	arc=none smtp.remote-ip=192.198.163.13
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XvnzcN5C;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE163606A84E;
-	Wed,  4 Nov 2026 20:32:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE163606A84E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE2D60960A0;
+	Wed,  4 Nov 2026 20:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=azykdYLR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793824362; x=1825360362;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6f8UgVjKpQ2wVNTwKjGWI3IG5kYob1To5ZXvPuHXznw=;
-  b=azykdYLRMV+Zru+0A7b/DkYuNubzZsIpW/0gDE9PhJBscjZ8sZlhtsj3
-   QSkQ+XOSIQbg7vjgJ+33BRRniLnHeWYLHEoaE9wACUvKv5NJPqvkTyM5p
-   Hc1yJrjIP5rHWLT6QrceUqs+NOdL9qk8Kn1EbVREctTyq4JUxn67nKSBx
-   rNmxngRxfJ7OdkgwXr+zXCORu11/VV/Id7JDlhO24Qo+fFg429CxtKopk
-   Elaww18k4nm/RtUKhNfWA8DNxc0Z32200kbc4EJ130OjwTOqiZPdTkhxI
-   02/j9tCw7B2WZjRk+uJWZihEgThCcz1IyHVLsEUz3qy/xM4WniYXhxzGF
-   A==;
-X-CSE-ConnectionGUID: rMJT0IByQKOFP/qWIL8mYA==
-X-CSE-MsgGUID: GDELmCUWSnGbypNy/YupbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2590678"
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2590678"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:32:41 -0800
-X-CSE-ConnectionGUID: oeRVokCFTSG70c80N5OpXQ==
-X-CSE-MsgGUID: cq871yY0SA+tQsjaqT4Xmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="6690148"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 12:32:23 -0800
-Date: Wed, 4 Nov 2026 22:32:20 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "Rob Herring (Arm)" <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lee Jones <lee@kernel.org>, Srinivas Kandagatla <srini@kernel.org>,
-	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Chanh Nguyen <chanh@os.amperecomputing.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Julius Werner <jwerner@chromium.org>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Ray Jui <ray.jui@broadcom.com>,
-	Scott Branden <scott.branden@broadcom.com>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sound@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-tegra@vger.kernel.org, mfd@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
-Message-ID: <auuWVGsyb3RrOIfh@ashevche-desk.local>
-References: <20261102135330.2493332-1-robh@kernel.org>
- <20261104-vigorous-flat-dingo-3e5bd2@quoll>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XvnzcN5C
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6181F0093A;
+	Wed,  4 Nov 2026 20:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793825211;
+	bh=jprIiT+sh8cBrL1Brn07csemCaTfTZPjoSZJmioozBs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XvnzcN5CCGPTHmjiB3RlahfgbEFOq4h0RYu0tDxW6w8oEL6QqzkSycdDrVzHlDf+E
+	 EMtfSgigTLu5B8xu+DpMmLf8xVaUSs/ruD6sxtlqsUxSWsasMnnxrDocJvPBvDMhCB
+	 1pSxSFEBZ7Q5F+JE6SZMwThZKsxEfcuvP42Sh/uHo7wGchA+AJOlzqQA6uwhUpyN9t
+	 I1QfnuwaQ3midx8tbKfxDvL3qrare8/KEACTY4thspJ6EAGmxolx5aNdzE7YhdV20P
+	 BvAOJ6/fxGqfBInNxAbwtSdEli6zb2RYjyI0OBo0viZAnF0UJ9pRhVQTop/3Yx8KHq
+	 JvAMXBn55SmuQ==
+Subject: Re: [PATCH net 13/15] can: dev: can_fill_info(): don't wake up
+ controller if interface is down
+From: netdev-bot+sashiko@kernel.org
+To: mkl@pengutronix.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, liucj1228@outlook.com,
+ s.grosjean@peak-system.fr, stable@vger.kernel.org
+Date: Wed, 04 Nov 2026 20:46:50 +0000
+Message-ID: <179382521036.488856.13184139645230625670@kernel.org>
+In-Reply-To: <20261103204305.3211144-14-mkl@pengutronix.de>
+References: <20261103204305.3211144-14-mkl@pengutronix.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -150,45 +63,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104-vigorous-flat-dingo-3e5bd2@quoll>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 04, 2026 at 06:32:43PM +0100, Krzysztof Kozlowski wrote:
-> On Mon, Nov 02, 2026 at 07:53:22AM -0600, Rob Herring (Arm) wrote:
-> > Unit-addresses by default (and most commonly) are hexadecimal. There's a
-> > number of cases using decimal patterns. Fix all of them, limiting the
-> > pattern to match the 'reg' limits if there are any.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-...
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-> > --- a/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
-> > +++ b/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
-> > @@ -123,7 +123,7 @@ properties:
-> >          const: 0
-> >  
-> >      patternProperties:
-> > -      "^layer@[0-9]+$":
-> > +      "^layer@[0-9a-f]+$":
-> 
-> These two lines are looking good.
-> 
-> Andy, it's okay if I give Rb tag?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Yes, again a pointer to 34d1e754155b ("dt-bindings: iio: drop unneeded quotes").
+- [Medium] The commit message describes this as removing one trigger of a
+  flexcan abort on i.MX8QXP.
 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+--
 
-I expect to see
+can: dev: can_fill_info(): don't wake up controller if interface is down
 
- Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> # xylon
+This patch changes can_fill_info() and can_get_size() to skip
+IFLA_CAN_BERR_COUNTER when the interface is not running. As a result,
+do_get_berr_counter() is never called on a down interface. The goal is
+to avoid a synchronous external abort in flexcan_get_berr_counter() on
+i.MX8QXP when "ip link show" runs on an interface that was never brought
+up.
 
-or something that matches the piece you reviewed.
+Link: https://patch.msgid.link/20261027065012.191348-1-chunyuzhiqiang@yinhe.ht
+
+> diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+> index 766d455950f55..b958c04d53db6 100644
+> --- a/drivers/net/can/dev/netlink.c
+> +++ b/drivers/net/can/dev/netlink.c
+
+[ ... ]
+
+> @@ -1006,7 +1006,7 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+>  	    nla_put(skb, IFLA_CAN_CTRLMODE, sizeof(cm), &cm) ||
+>  	    nla_put_u32(skb, IFLA_CAN_RESTART_MS, priv->restart_ms) ||
+>  
+> -	    (priv->do_get_berr_counter &&
+> +	    (priv->do_get_berr_counter && netif_running(dev) &&
+>  	     !priv->do_get_berr_counter(dev, &bec) &&
+>  	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
+
+[Severity: Medium]
+Is this meant to change the output for every CAN driver, and not only
+flexcan?
+
+can_fill_info() is the only core caller of priv->do_get_berr_counter.
+With this check, no driver that sets the callback will report
+IFLA_CAN_BERR_COUNTER on a down interface. can_get_size() gets the same
+change.
+
+Several drivers turn on their hardware inside the callback so that this
+query works while the interface is down:
+
+drivers/net/can/sun4i_can.c:sun4ican_get_berr_counter() {
+    ...
+	err = clk_prepare_enable(priv->clk);
+    ...
+}
+
+drivers/net/can/c_can/c_can_main.c:c_can_get_berr_counter() {
+    ...
+	c_can_pm_runtime_get_sync(priv);
+	err = __c_can_get_berr_counter(dev, bec);
+	c_can_pm_runtime_put_sync(priv);
+    ...
+}
+
+Other drivers do the same thing:
+
+  bxcan_get_berr_counter() calls clk_prepare_enable()
+  xcan_get_berr_counter() and ctucan_get_berr_counter() call
+  pm_runtime_get_sync()
+  rcar_can_get_berr_counter(), rkcanfd_get_berr_counter() and
+  flexcan_get_berr_counter() call pm_runtime_resume_and_get()
+
+The commit in the Fixes: tag, ec56acfef2af1, states this intent
+directly: "flexcan_get_berr_counter() may be called from userspace even
+if the interface is down ... This patch switches on the clocks".
+
+After this change, the wake-up code in those drivers only runs when the
+device is already active, so it no longer does anything useful. Should
+that code be removed? Or would it be better to put the check in the
+flexcan driver instead?
+
+The commit message cites m_can as the precedent. Commit 91a55c72a821
+fixed m_can inside the driver:
+
+drivers/net/can/m_can/m_can.c:m_can_get_berr_counter() {
+    ...
+	/* Avoid waking up the controller if the interface is down */
+	if (!(dev->flags & IFF_UP))
+		return 0;
+    ...
+}
+
+That version still sends the attribute, with zeroed counters. With this
+patch, m_can sends no attribute at all for a down interface. Is that
+change intended?
+
+Because of the flexcan Fixes: tag and Cc: stable, this would be
+backported to every stable tree since v3.16. After that, "ip -details
+link show" would stop printing berr-counter for down interfaces on all
+drivers, including ones where the query always worked.
+
+The commit message does say that the attribute is no longer reported.
+Could it also say that this applies to all CAN drivers, and that it
+replaces the per-driver support for down interfaces?
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103204305.3211144-2-mkl%40pengutronix.de
