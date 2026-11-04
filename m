@@ -1,113 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.37
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793818144;
-	b=ihU2pABqPCmiVmTn8hle+Y4Rftwew29a6ZOR6kfnA+8sF6dd7n9bbZXmsUFjF1vkZ+df
-	 OQ+9aupTejSXuOpzcD+8ioID0DnDSaX1qpb37vexnzAjH3+Uxz/waJshyr47eCcVSn+1e
-	 Me8QnsUyhbc8CBm2KBm1v47/eY83C0ffs/KFo/nTYrXRvgrxKOuJjaolnpl2wOWh/J15L
-	 sukAes2KPs6lUXWxc0acu5kW+0WP8/4qoNPQroKt7uG+Ds0TiKCo23WgMT/1CBdbisKxO
-	 p9Us4fo2mTRFAaHYf+Jtpb1Z4G44mtm9oss5HIxndGFzipYbyelFX5WgDTwIViGVtLw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793818144;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=a5gbFSyoFRK0guk69IMyXpdI0RO3UIBCLkofjUx0efI=;
-	b=Y+CXSGUAmxfpilmV9Rf8cm3sL+LRdMcJVWqsoRTucPYL+Fazp8QZiQLBB68Ry5SfZfN8
-	 nHPrCiIYOS/U1YSIrCRfzMgUWVMCoxcBCP+9+LRr20/AUHLTF3uzjeozd5hiJiw3F/uCg
-	 t2ztsELgmW/iSjafLr7GLOl9FEsPs0Dn/VmJQPCb/tFM7Qbf8UynSmQ8jWA8B0Taom06X
-	 /GBlNN8qKXftzYIbKxt5y7OPbIbESaAoH3al2kXNe4N6n9UNCiClgHkICFJO6eABp50o3
-	 YlAPf5vi3vP29FwmZidZWBMcRLXC2n0ZML+GGMFKKEzEbkrKFodlCFWlcPavhDozqZA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OKuZCkv7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.194.37
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011037.outbound.protection.outlook.com [40.93.194.37])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793818232;
+	b=ZEkDIJQEPajp+vJE2Ru4WRTchwRpIj73eJCxOlDYEv59Avp4KeYBg1tAR3Rj/ynsEXSU
+	 mNByzLDiIhBRE+Z6/5g202NM54IzLvbqtizul7VOmFtI7b7odFM6Sabm/jZYS+xovOLmh
+	 FwhZ3715BQQkAH/4oU3cGR1BSqw+cgAbMbg9KBPuuJ0nu5T78L5umMzI9O+inQ8I3/YAh
+	 cOhInRzFoRT+q64RM6GHhJwkAbQ7cVLAShDPudPAMSUoPppkhabTooWQrBskGANQ4pjjT
+	 lHE/KDjXyRL9xk0rVAFeRyymwTlG2OyEH5KHa/ThOlf6NLD/fOOOtkp+CzMk5stedpQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793818232;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=EwghIjCIbGs1NDrmAzR7dg2Zewz0hQEfosg9p/Jb5jA=;
+	b=xHKoo1dYxWTxUJdXF+jnoneZHCs9Yk70LFL/ijs8ujn4szwmcRX8YM4VwX52SH/EGdzr
+	 PCwCTFdE5lr+z1OQy7s5SonFKyXBjTWPPbCjHzlq5LwYCSFkYHg82u8gUP4oNIqpvq9rv
+	 eUlg71traBtpNwpsnI7ZUV+7fe4/B3m21Y4XGCcDMh73n4go9PwDN1Cnzlxi/f+wcWRxk
+	 SvWziQ0BCHCWcPROSUrlNfhILUCeGNOwBEedtVrXRWRTF255tNtWNHm4xEWt9MvKwLlES
+	 o7gc6/irWeWu2dp8L2nZpg38fGDNxB1Y9bXnuG2A2iLKZ8NvKZetoV4zU/1fTdcvD/A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtbUHL8H;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB5606A329;
-	Wed,  4 Nov 2026 18:49:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69AB5606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137DF606A329;
+	Wed,  4 Nov 2026 18:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OKuZCkv7
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CWZlILJb1zutWD5vH2Ua16fBw1dsXVS0RLu1mDUB+74V8YVqsrnlzFDo19boQ2xRVNpk9Y3fguAPm3pY3a69SqhMFCGwmiQ5ulZKzF0CTPI5qQb8KozyYx1wAQQ/WKDdkRVbGM/zN7xVUziKWdlbwii6ZDRKb8Rj8cM0mldOrz7da4/XKaqowTXkNCs+T8Xg+zKo4bW3BDQibKGud4sXOZYfOdbv4miUDzy4gIqoId+1h0akKx0rzzV6zT1lLNjPvFPYwc9JoQGmtbYOpypfuwOLVQQODVaZg0v4C/xsrWKqr1g7r71JYHoZc9Og7YEKgONWb3i7Eud8PnX7vXKDtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a5gbFSyoFRK0guk69IMyXpdI0RO3UIBCLkofjUx0efI=;
- b=hF39abDB3uuR3zw7TD7mboKR+opTCp07boq4V5157luttbSAX/omdkTRDFwuAdBed7ojDyykrzFGwYkYD4ClWmLR1qcMSbBqRcQwNo0NOqvs/v6lZ7X/KHb/q/TUUChSs+VQ6ddh76IJeO6G0Cal/9htS4C2zJGK2yu2+jogGPkdV/uZa0YU9FzZroLvCzqe8Z7Np1H2G/6Ay+eS6nRQZtDWvH9CX3yRh4fWAq9oFgsDivLBY9bc10kLglv6KTFhDv/yJEmUl5k3/jNryOV37Avo9oesCiVUz5JMFU5ok144IUIefWL0ri52PQGqVPE579XBlU0vob+8y0wHUpFi6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a5gbFSyoFRK0guk69IMyXpdI0RO3UIBCLkofjUx0efI=;
- b=OKuZCkv7mT/ZlTwHM/YULLnAyyuyxBKwA9l9n/3lg+s0Z7J6+qX+5zKJ9oH0ErgIqqt4WLgY4gWA1aWWVMaG1fdfeFbHmpOolIKo5G9RmVATPg90puMlF0dJblGKYqk2RpagJYq0vzjA2Sxaofbh8eYl0wMfyPP3KQEvu+nFJoZMLoYbtK2uhvr3vvSgrjWo39sEFQkcKmFteFgtcdKVu6LH7ZKKkuc30z+tx5+pmfI4a+WmA7iVYRwL5ulbuKzs30KZOssavnZ8Y8adEfEH7CWYHM6cd2F5ChSnZ6O2P4+vHhTa127IW6RMv551Uj87bKz807Fy0IZMzCyb12tAvA==
-Received: from SJ0PR03CA0066.namprd03.prod.outlook.com (2603:10b6:a03:331::11)
- by CH2PR12MB4167.namprd12.prod.outlook.com (2603:10b6:610:7a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Wed, 4 Nov
- 2026 18:48:57 +0000
-Received: from MW1PEPF00018893.namprd03.prod.outlook.com
- (2603:10b6:a03:331:cafe::4b) by SJ0PR03CA0066.outlook.office365.com
- (2603:10b6:a03:331::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 4
- Nov 2026 18:48:57 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MW1PEPF00018893.mail.protection.outlook.com (10.167.249.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Wed, 4 Nov 2026 18:48:56 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 10:48:32 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 4 Nov
- 2026 10:48:31 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Wed, 4 Nov
- 2026 10:48:27 -0800
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "open
- list" <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark
- Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Parav Pandit
-	<parav@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net] net/mlx5: E-switch, Restore host PF enable for ECPF that isn't E-switch manager
-Date: Wed, 4 Nov 2026 20:47:56 +0200
-Message-ID: <20261104184756.773910-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtbUHL8H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D751F000C1;
+	Wed,  4 Nov 2026 18:50:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793818231;
+	bh=EwghIjCIbGs1NDrmAzR7dg2Zewz0hQEfosg9p/Jb5jA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=WtbUHL8HAxJZdXcvlrmHLqrRFBKaGhlzDRyNw0FbP9teGOyukxU/0FyvTa7t4JF8x
+	 Rohly1WUN3ysOy99n6OxvN9mWkgpbslRt0Yougir3WysLxZE3wYm66cfEiU2dPjT8/
+	 Lzrh8lT0qAwxssUlRDDpIW6fSMHpd/1ZrOrMAtDVNsP3RTI6GzCbF73Lw7P6aSoRg0
+	 uJ0v3OPbkKj+ZKzW5AxDpvOACfg1fgMk+Sv7m1q3y7RUB20aDkeO9FQnJsd0MxDt1U
+	 FSkzbRKmQIpcH80DtLr3cRdRGJ/uY3GFaHOcL408IjQuv+Pjsajh3eI2ErzGkg579M
+	 oKd1lf8SSW5kw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA1E2380045E;
+	Wed,  4 Nov 2026 18:50:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,112 +54,80 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW1PEPF00018893:EE_|CH2PR12MB4167:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72c84c2b-4ae4-4c12-1e93-08df3aa44825
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|36860700016|82310400026|261026140227099003|56012099006|261022105027099003|11063799006|261028144727099003|261009223027099003|261021121427099003|261021123027099003|10067099003|18002099003|261102123227099003;
-X-Microsoft-Antispam-Message-Info:
-	B2TNSmLTccf3gP6rliElgYbq7uUclRP/UqW9k4JwDAtB8sQpvtoMHf+RqJMsQ7gs3TzHGTt5HMRAK0e1XtIVp4iOU9oRFzhTVTZSCf93lqNaW8UBDO4sSAhrSlL3JL53yq5uWr+yuKExEi3ZvanynX2A2WPFe0xAgUiZbFEDeKdjksJ8kxHr0mfJqZxhAU+BhJKCOeQORGYuCQ3kyX3PdNZh3q7vVjqrypqxrdo4fG/x2Cpro0yUndPkEQfLMzE1R7Qmf/HkSfwlas6m1xhYRSlBHhG/wLbyo/IdbVGFVBqOE0CgIkn0ciTWGy002GZITBJRsIZSDEvj89qTP9mmSH8LDGfNeQjQKk0Otmf0FmXg5AC/eaPyHQfd2nMCVTsgmA4HACiPGefHqhf43IrI27Teik0L5z3mhmOT997mOa/jxMpusnYIm/nG/y1UuQYUjodeVSc6i4/2AEssujmxfaGQw57NkRx7XgNpf4lTvE5a2uYGudiRT7F2x3OvOHnZpbVCtJAM8KRCAIlJEjnfREbcs+w+S4hDTlbW0us1GDnQ2OgP8od/7qBLGR98lRrxAFEAgZU2rtdSjXqyw7m7sMPXiFeJ/yiW3XcfHzw83BfdznhOKaGyuxkKfXRJHWg+Rs2zNZhvfBOREGYmY0QO+4+3ek0h9G8AnehO7n9BIXXpeHuwpv09rBv9GpUMg8lYU2Ok8NDZg0qqRJVDmS+CcA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(36860700016)(82310400026)(261026140227099003)(56012099006)(261022105027099003)(11063799006)(261028144727099003)(261009223027099003)(261021121427099003)(261021123027099003)(10067099003)(18002099003)(261102123227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	V4WcnZLdeamixGCXOMMZu3BYVEX7tv2IezNYJEfF+lERPacw4mMVG2LQ/sooFQ7+LK33tjAiL8YP8VCHb2JsO8cXKXTbwaPVNZSKTtWf5IMUsrNa4FRgpQvfcCUryO2S4xkXsO+DGNzOvJbQEPLZV08QyKSjWCOHbecS5w4b2w4dMPSdd4aU3yELog2BYxU1stUv5B8zXdqaoczCFn90Prr5X+va6md9ezXy5QxrStzDCq6nrn+DAUMJ+cI7ZJZjfnDaw6EsRj9yjXRQOGUUrbNQZaLtX91t7QHwMO2FTlCywxpApQSVUm9+q+9eUaU3mj8tRamhgP1nkwezfAbqqDhrCR8oU3ylH3J1sMjghCFNifWZIXex2LeNR1Lwa+ozmeL9mtocCNcTHx2cgtQE32d4cJ7KTlVz/oCIiA5LVsqnORDxLG5QllzrRa28PS81
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 18:48:56.8410
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72c84c2b-4ae4-4c12-1e93-08df3aa44825
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MW1PEPF00018893.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4167
+Subject: Re: [PATCH bpf v2 00/15] bpf, sockmap: Fixes for verdicts, redirects,
+ corks and recvmsg()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179381823055.3044562.10845634608221940300.git-patchwork-notify@kernel.org>
+Date: Wed, 04 Nov 2026 18:50:30 +0000
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+In-Reply-To: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org,
+ mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
 
-From: Shay Drory <shayd@nvidia.com>
+Hello:
 
-The cited commit breaks host PF enable_hca when the ECPF isn't E-switch
-manager. For example, when the link layer is infiniband, the ECPF isn't
-E-switch manager, so after the cited commit enable_hca is never issued
-for the host PF, it stays in initializing state and fails to probe.
+This series was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
 
-Fix it by checking esw_allowed() only for vport bookkeeping
+On Mon,  2 Nov 2026 07:20:57 +0000 you wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
+> 
+> These patches fix bugs in sockmap:
+> 
+>   patches  area
+>   -------  ----------------------------------------------------------------
+>   01       recvmsg() after a fault
+>   02-04    the verdict of an sk_msg prog and the return value of sendmsg()
+>   05       the backlog of a stopped psock
+>   06       TCP listeners
+>   07-08    the target of an egress redirect
+>   09       the TCP state in recvmsg()
+>   10-14    corks and the redirect target
+>   15       bpf_msg_push_data() and bpf_msg_pop_data()
+> 
+> [...]
 
-Fixes: 0e6c95c98829 ("net/mlx5: Support devlink port state for host PF")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+Here is the summary with links:
+  - [bpf,v2,01/15] bpf, sockmap: Write sg.start when recvmsg() faults
+    https://git.kernel.org/bpf/bpf/c/b889ea1f6dbe
+  - [bpf,v2,02/15] bpf, sockmap: Don't let an SK_DROP verdict stick
+    https://git.kernel.org/bpf/bpf/c/436c4cfa071e
+  - [bpf,v2,03/15] bpf, sockmap: Don't let an SK_PASS verdict cover the next message
+    https://git.kernel.org/bpf/bpf/c/f4c044966d6c
+  - [bpf,v2,04/15] bpf, sockmap: Subtract all dropped bytes from the return value
+    https://git.kernel.org/bpf/bpf/c/fa84be67b5bc
+  - [bpf,v2,05/15] bpf, sockmap: Clear the resume state of a stopped psock
+    https://git.kernel.org/bpf/bpf/c/51e0f3d60be5
+  - [bpf,v2,06/15] bpf, sockmap: Give no progs to a TCP listener
+    https://git.kernel.org/bpf/bpf/c/7c036a39ba29
+  - [bpf,v2,07/15] bpf, sockmap: Check the target of an egress redirect before each send
+    https://git.kernel.org/bpf/bpf/c/4aeaad1c536e
+  - [bpf,v2,08/15] net: Leave sk_stream_wait_memory() once the socket is dead
+    https://git.kernel.org/bpf/bpf/c/430775a30b1f
+  - [bpf,v2,09/15] bpf, sockmap: Check the TCP state in recvmsg()
+    https://git.kernel.org/bpf/bpf/c/9f5763e6287a
+  - [bpf,v2,10/15] bpf, sockmap: Reset the copy position when corking
+    https://git.kernel.org/bpf/bpf/c/12c45473dfe7
+  - [bpf,v2,11/15] bpf, sockmap: Don't copy 0 bytes into a full cork
+    https://git.kernel.org/bpf/bpf/c/a912358996f8
+  - [bpf,v2,12/15] bpf, sockmap: Clear the redirect target before the sk_msg prog runs
+    https://git.kernel.org/bpf/bpf/c/e4c2fe0b9a62
+  - [bpf,v2,13/15] bpf, sockmap: Check that the redirected message is the cork
+    https://git.kernel.org/bpf/bpf/c/815cfc482e63
+  - [bpf,v2,14/15] bpf, sockmap: Keep the rest of the cork after a redirect
+    https://git.kernel.org/bpf/bpf/c/13c41b87e4a7
+  - [bpf,v2,15/15] bpf, sockmap: Clear the end mark of elements added by push and pop
+    https://git.kernel.org/bpf/bpf/c/0048086bd361
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 2d289fb1353b..dd7e33a20ab0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1514,13 +1514,9 @@ int mlx5_esw_pf_enable_hca(struct mlx5_core_dev *dev, u16 vport_num)
- 	struct mlx5_vport *vport;
- 	int err;
- 
--	if (!mlx5_core_is_ecpf(dev) || !mlx5_esw_allowed(esw))
-+	if (!mlx5_core_is_ecpf(dev))
- 		return 0;
- 
--	vport = mlx5_eswitch_get_vport(esw, vport_num);
--	if (IS_ERR(vport))
--		return PTR_ERR(vport);
--
- 	/* Once vport and representor are ready, take the PF out of
- 	 * initializing state. Enabling HCA clears the iser->initializing
- 	 * bit and PF driver loading can progress.
-@@ -1529,7 +1525,11 @@ int mlx5_esw_pf_enable_hca(struct mlx5_core_dev *dev, u16 vport_num)
- 	if (err)
- 		return err;
- 
--	vport->pf_activated = true;
-+	if (mlx5_esw_allowed(esw)) {
-+		vport = mlx5_eswitch_get_vport(esw, vport_num);
-+		if (!IS_ERR(vport))
-+			vport->pf_activated = true;
-+	}
- 
- 	return 0;
- }
-@@ -1540,18 +1540,18 @@ int mlx5_esw_pf_disable_hca(struct mlx5_core_dev *dev, u16 vport_num)
- 	struct mlx5_vport *vport;
- 	int err;
- 
--	if (!mlx5_core_is_ecpf(dev) || !mlx5_esw_allowed(esw))
-+	if (!mlx5_core_is_ecpf(dev))
- 		return 0;
- 
--	vport = mlx5_eswitch_get_vport(esw, vport_num);
--	if (IS_ERR(vport))
--		return PTR_ERR(vport);
--
- 	err = mlx5_cmd_pf_disable_hca(dev, vport_num);
- 	if (err)
- 		return err;
- 
--	vport->pf_activated = false;
-+	if (mlx5_esw_allowed(esw)) {
-+		vport = mlx5_eswitch_get_vport(esw, vport_num);
-+		if (!IS_ERR(vport))
-+			vport->pf_activated = false;
-+	}
- 
- 	return 0;
- }
-
-base-commit: 647b81ddefc6364290e67bf33c89d54971f8995e
+You are awesome, thank you!
 -- 
-2.44.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
