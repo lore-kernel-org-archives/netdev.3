@@ -1,58 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793782751;
-	b=UaJ+RAEefw6x/SxRyAMw3BLQJbna6OAGi7N8PotPDVQZwoddfvyifMAueBSCwKbvPKdx
-	 rwgIG+frfAP9lG1+JeuoYZi1rL9eRmrmCsLwTgIHwjHfZddQOk/jrycQVVypfyUCQIs/U
-	 BsbHvo35kLDvlGs+0JNgTt4NcSkDLEUy+JqUr/IJkaY90Qo6qehwwssiPrz32RRJmyXfJ
-	 plgpIwzmx3M9xskMph+wjvjFelRIzUUggYzPvXADgU60Y7P1RhIVYd3WzrgOFrKZtHB5N
-	 lLZzXATcuK1jNa/KK2IRhh9hPUSwo9gZgYlMYQO8AfAMyiWMLLtXZqavFgNqYeKM3Ig==
+	t=1793782839;
+	b=5FcY0UcmvFDbi9MwyNigm9Gx7fTdAZbEXofy+ue8jLloCoITZU+jyyiW2t7Wavkjnkcr
+	 F7dO7KXtRJ8grbrs6MrxIM4N5M2EDiWmk01ZDpb5jQIo/xeUcOEhoUqccPcd/RoAJQ7/a
+	 23HqzzbAcldKXqWSGAVyPcWRTVFmkHoOJUepvYp+yxHJvhXZCRVaFYjCrtvARxGNksRvr
+	 4CxlvsXwWz1NpKSRQOz5T/hBU9r/ZxNinBhzJKA7b8VnWuXq3cz3Twrf9j5m1mN9g49G6
+	 1ylky73AEyDw8+jfuj4brs/ad1IAzx7KFe1/t6bcDiBM1mguRm1YbPRZ22Jp1NNkR9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793782751;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=zGI141Yv9NE58oB2X+pDlabk+YgIi5wX/jsZU8v8Pp4=;
-	b=2kX10Pg87v4gxCzWqWE8KPbhyehbuXU/0qhSzjBDbfggg2PnoA9B7u7UtKbAk33VHGcr
-	 H38cTSFkAoG46DMlTzBfAkqAFIffOqQRMHWuYBQjJf4JdHA6wmslKxmybtRssyFolm5IQ
-	 x3ONSAPt4Ys2HABo07TISLA2/fWoqJqA/YZNtUFf0Tp+mWbzaZi0iFsVCVIu7qW21Zuwi
-	 mhoYQ2D5G3+G2OiU7XG+AASjmVs6u055u40A+0ZEjQykZW8+JqwDOrSkqLbwPuyXGW2tT
-	 gwsgyArgVxsItwEip2EFc97Ac28rORoLmR4NkPOX0ejRjDGuCcVA40MqL7VY6tsp/4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793782839;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=vtX9eU8J3Lmk3qBwxV4wOykn6nF9IeBVyI8Jpue03zQ=;
+	b=LX+JpXcLHS9U8rWQTdwQY3gmneaIhAjbw/21lj4uNw1er2U8vyHUyS2sYl/6plPzXHGo
+	 kiGyIvt6xV2Nlw5wQdfbPe1Ne73fea/ICiNf4lg6/jU5fu213vUiHgFltKTRwd1Ry6Yc3
+	 LiciwwaVK3aoG/bmrXDeukFt9VYmsbT53Voj4WQ8124vgBSO1FKhRXflmm/a6OFbuIyhq
+	 s9j4nywSJR9PFATBfdhpVqp74aaOPycjSloijXL7bJ+WrE/FMgxmmhCKU5vy25nV1b+iS
+	 7WyZwI6JZHHdD3yx/FRM/XyTgJ7MV6tR+47bhL4C66VDhwrIQNwQbKCLE26+EVOci4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=B9jQUyba;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Z8N3njDk;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E11606A329
-	for <netdev@vger.kernel.org>; Wed,  4 Nov 2026 08:59:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35E11606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54CD606A328;
+	Wed,  4 Nov 2026 09:00:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E54CD606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=B9jQUyba
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5C0834E413F5;
-	Wed,  4 Nov 2026 08:59:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 25E8060770;
-	Wed,  4 Nov 2026 08:59:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5956C103290E8;
-	Wed,  4 Nov 2026 09:58:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793782745; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=zGI141Yv9NE58oB2X+pDlabk+YgIi5wX/jsZU8v8Pp4=;
-	b=B9jQUybapG8VyvGtxfdc988sJ1wpJSrRRaIjB0f4qfG9UkAzdIuWysoxrFlVg1gs9uNg+O
-	rgWJQ9kNG6cN0wXpHsT1zTjsdilkYYtKw7YLwHnaTwmbx6i8/91uR9gT78efnP2R7sh0Kq
-	8IUjYwcLBk2vNVunpBTWAGOwCdLsWBid1rulPd+vo/CCuGDijTCCngpzHyN69BEHxJ18vK
-	8P6llNfWIvU2fUgxbpTY8JUT1dbI/gGKmN6jAXreJbdZZA2GszkzNKan4Nzop+vZlAjxUF
-	HopBkl8lC4BS/e5UjqgUl96GbhAEY4BBG9IjGeFyi1l1WUSct1mATaeJsBffdQ==
-Message-ID: <7c4eec6a-66a1-478e-8d9c-15394061b8da@bootlin.com>
-Date: Wed, 4 Nov 2026 09:58:57 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Z8N3njDk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=vt
+	X9eU8J3Lmk3qBwxV4wOykn6nF9IeBVyI8Jpue03zQ=; b=Z8N3njDkiP2htBS7bb
+	wriQDgLiqr4BvEkFrWDySTYVRO+98VECIHKn+p8egmdEiZbBY9JgcC4gdcEzaHwl
+	+VMLq884eeIQUUumMe9xE5Rx+lIRqiofZLj5KS1l/UenaTXMTdnP6p2KtjTsL45q
+	bSr3ndJDwBOyJYYDgquZmZWGw=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgB3LJju8+pqEDm4Dw--.32829S2;
+	Wed, 04 Nov 2026 16:59:27 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Patrick McHardy <kaber@trash.net>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/2] netfilter: conntrack: avoid secs-to-jiffies overflow in SIP helper
+Date: Wed,  4 Nov 2026 16:59:24 +0800
+Message-Id: <20261104085925.773471-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,90 +69,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: ptp: fix support for PTP_EXTTS_REQUEST2
- ioctl
-To: James Clark <jjc@jclark.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Jacob Keller <jacob.e.keller@intel.com>,
- Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261104052504.1886335-1-jjc@jclark.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261104052504.1886335-1-jjc@jclark.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgB3LJju8+pqEDm4Dw--.32829S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr47Zr4rtFyrAF4DCw4xtFb_yoW5WrW5pF
+	Z3t34SyrWxJF4Yya18Cw1kA3Z8Ww4fGa4fWrWYkayrCan8JF1YkFZYgry2qa4kJr4ktr13
+	Za15Wr4jkFn5ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uq-erUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC+Q+N0Wrq8+9h1wAA3A
 
-Hi James,
+From: Qing Luo <luoqing@kylinos.cn>
 
-On 11/4/26 06:25, James Clark wrote:
-> Commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to
-> ptp_clock_info") modified the PTP core to validate the supported flags
-> of external timestamp requests, rather than relying on each driver to
-> check them.
-> 
-> stmmac_enable() and dwmac1000_ptp_enable() ignore the flags, and
-> neither stmmac_ptp_clock_ops nor dwmac1000_ptp_clock_ops was given any
-> .supported_extts_flags. Since PTP_EXTTS_REQUEST2 always implies
-> PTP_STRICT_FLAGS, the core now rejects every PTP_EXTTS_REQUEST2 for
-> this driver with -EOPNOTSUPP, where before that commit the same
-> requests succeeded. Only the PTP_EXTTS_REQUEST ioctl still works.
-> 
-> Tests on an NXP i.MX 8M Plus (FRDM-IMX8MPLUS, GMAC 5.10a) show that the
-> auxiliary snapshot inputs timestamp just the rising edge. The reference
-> manuals for the STM32MP13 (GMAC 4.20a) and the Cyclone V HPS (GMAC
-> 3.70a, which uses dwmac1000_ptp_clock_ops) say the same.
-> 
-> Encode this in .supported_extts_flags. A PTP_EXTTS_REQUEST2 for the
-> rising edge then succeeds, and one for the falling edge or for both
-> edges fails with -EOPNOTSUPP.
-> 
-> Fixes: 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to ptp_clock_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: James Clark <jjc@jclark.com>
+refresh_signalling_expectation() converts the expiry from a SIP
+REGISTER 2xx response with "expires * HZ" in 32-bit arithmetic and
+stores it in a u32.  sip_strtouint() only rejects values above
+UINT_MAX, so the answering registrar controls the input.
 
-funny this wasn't noticed before, this looks good to me :)
+Expectations are reaped with "(__s32)(exp->timeout - nfct_time_stamp)
+<= 0".  At HZ=1000 an expiry of 2147484 seconds (24.9 days) crosses
+2^31 and the expectation is born expired, while 4294968 seconds wraps
+to 704 jiffies.  Registration refreshes break, or a signalling
+expectation stays pinned for days.
 
-I've tested this on cyclone V, stm32mp157 and imx8mp,
+Add nf_ct_secs_to_jiffies(), which multiplies in u64 and saturates at
+INT_MAX so the signed expiry test stays positive, and use it for the
+SIP expectation refresh.
 
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Sweeping all 2^32-1 inputs at HZ=1000, the helper never wraps, never
+yields a value that reads as expired, and matches the old expression
+up to INT_MAX / HZ.
 
-Thanks,
+Fixes: 0f32a40fc91a ("[NETFILTER]: nf_conntrack_sip: create signalling expectations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ include/net/netfilter/nf_conntrack.h | 10 ++++++++++
+ net/netfilter/nf_conntrack_sip.c     |  3 ++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-Maxime
-
-> ---
-> I used an LLM coding assistant to help prepare this patch.
-> 
->  drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> index a37405534beb..31a66e855d6b 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> @@ -277,6 +277,7 @@ const struct ptp_clock_info stmmac_ptp_clock_ops = {
->  	.n_per_out = 0, /* will be overwritten in stmmac_ptp_register */
->  	.n_pins = 0,
->  	.pps = 0,
-> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
->  	.adjfine = stmmac_adjust_freq,
->  	.adjtime = stmmac_adjust_time,
->  	.gettimex64 = stmmac_get_timex,
-> @@ -294,6 +295,7 @@ const struct ptp_clock_info dwmac1000_ptp_clock_ops = {
->  	.n_per_out = 0,
->  	.n_pins = 0,
->  	.pps = 0,
-> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
->  	.adjfine = stmmac_adjust_freq,
->  	.adjtime = stmmac_adjust_time,
->  	.gettimex64 = stmmac_get_timex,
+diff --git a/include/net/netfilter/nf_conntrack.h b/include/net/netfilter/nf_conntrack.h
+index c39425e54d87..b32716084ea8 100644
+--- a/include/net/netfilter/nf_conntrack.h
++++ b/include/net/netfilter/nf_conntrack.h
+@@ -210,6 +210,16 @@ bool nf_ct_get_tuplepr(const struct sk_buff *skb, unsigned int nhoff,
+ void __nf_ct_refresh_acct(struct nf_conn *ct, enum ip_conntrack_info ctinfo,
+ 			  u32 extra_jiffies, unsigned int bytes);
+ 
++/* Convert a timeout in seconds to jiffies, saturating at INT_MAX instead of
++ * wrapping the "secs * HZ" product in u32.
++ */
++static inline u32 nf_ct_secs_to_jiffies(u32 secs)
++{
++	u64 delta = (u64)secs * HZ;
++
++	return delta > INT_MAX ? INT_MAX : (u32)delta;
++}
++
+ /* Refresh conntrack for this many jiffies and do accounting */
+ static inline void nf_ct_refresh_acct(struct nf_conn *ct,
+ 				      enum ip_conntrack_info ctinfo,
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 64bc440b1181..e2fd97f53386 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -891,7 +891,8 @@ static int refresh_signalling_expectation(struct nf_conn *ct,
+ 		    exp->tuple.dst.protonum != proto ||
+ 		    exp->tuple.dst.u.udp.port != port)
+ 			continue;
+-		WRITE_ONCE(exp->timeout, nfct_time_stamp + (expires * HZ));
++		WRITE_ONCE(exp->timeout,
++			   nfct_time_stamp + nf_ct_secs_to_jiffies(expires));
+ 		WRITE_ONCE(exp->flags, exp->flags & ~NF_CT_EXPECT_INACTIVE);
+ 		found = 1;
+ 		break;
+-- 
+2.25.1
 
