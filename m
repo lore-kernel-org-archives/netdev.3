@@ -1,108 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793870823;
-	b=s6l6Irkg8IHFRtMwuzJE4NAEb6t4sKSD65j3wPDQfzMpdZ5bcTXfaGpNkeV2ifg7NHtq
-	 apiX6dscd7Y6IyFgwPzsF/yXlqPhhTxwMQyukv240l7uDckDW0MWdlbnk/t+iBEdVHs0W
-	 IikQbToBtLMQHMMeKB1qkzscqVVfuT64seGxtlWGYsNJIJM8HgZBYOy8fg6O2YpRGOt5W
-	 ejg1Kt8sxIye5ScMZaLpx26LWyWiwEV/eDU0RDaB/SYH5lu399fUwqdFHrxF7oz7LAJTW
-	 v6UuuFu/bqVvB3VaEvJRIHPZA7rEqo/mK8S/6Qrl6gor710l9Snez/ebHKrdrokxHwA==
+	t=1793871265;
+	b=NugeJxDDu51SnZubITyueA7VIeVy2BODCnRUSUgunjIT9QUCadETsuYAFwpvaSZSqRHX
+	 nber7Thvxs+bi8UXt4X6lL05Mte6kBOH5VNpFnoxfaH2T1RcgY/HGc77a5JEpCTT7DC/w
+	 4rb2DWWUxERyb8k9XFkLn2BfZlzI5E1vuYmzmdEbK2ZjK1F22D2ib/m3TKvK9gKHntKyv
+	 CnCJQ0XB9c27QorHsosIAuhS0BJtEMmrt7PoShvrRgkJ6vsKgyv+3TRZjxkqgRLgSbJtQ
+	 nPJ4nu93caziL+0yLpj+KWhN2J7cdgoIc2QOfcXkJe4ELZ48v2cln/DrX+Tm/8luJ7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793870823;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=xZzKTf//DQYIAN9VwQEvMddExwcCW3dbdXpAj0Adyw8=;
-	b=KRqnTnq35p3kal3Gi1ELx+5IdKtY2nNYsFlj7UH5S2x0TMX/zVgn385U4ui+f9h+1sZ2
-	 fOopYd8BbAY9hUfXhLW2IOzIbYwbtjpfE1IU9xj2DwoCiJ2SwUuxG1DvXifZmnep3aGux
-	 l0f0v98LEOrRbk06dwULiPEvvq3z9QxuyIFVFyDIHkolrREWy7CzhpuHGTKJPDARIq4O1
-	 xZwYHAWL/jLtlnk7efBZc7Z1ePcfFdd7OiZPWnT6ZdCakljOlfMQn7XCEVC6GcfCLtQds
-	 yu6Lhfcv/YFXqs5QHkxy9tAkvzm97tzttRYU6mN8n9CcTJFGwXY4Ofoga+eBZO9l4LA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871265;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=C/Y2LuddsDyNRSAMdBdz/n0l5K5m+Ze0flCJFO7KlMA=;
+	b=gsLfzY1DDgu3ef/I39re5uKCp7aFKjpAtGq0/hfVZaOnGhrnU9mA5+GENYkAEmQ1fFZx
+	 ztl8FX4XkXzvUb5MicAx9E5B1quUm2XvCjWPzNLWjNJLoD2oumeEl7VeVHdzOVxdX3rKD
+	 Gih05oqUHOzpJ15P0VS7ctm9FQ27336Jrr73DbLKF/+wf2qXMja2RNPO5aaJPrlKtZoAG
+	 mBqnWNoUg2pg4VtjqHrrWm1CvGnTqNvnuBnsvK7E/XgpHVi8dltijMYUZ0i9TFQXCTz2O
+	 /o7866GxTGPF4Dz8RI9L0IMg5AAqguYcHttvq/+lwKH22rlnQW8eBQ56QHkO/TcV/9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b2pKC2Ub;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fHaYctB5;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXFEcZpE;
+	arc=none smtp.remote-ip=95.215.58.123
+Received: from mta1.migadu.com (out-123.mta1.migadu.com [95.215.58.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AECE606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:27:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AECE606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369BF606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:34:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 369BF606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b2pKC2Ub;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fHaYctB5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793870821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xZzKTf//DQYIAN9VwQEvMddExwcCW3dbdXpAj0Adyw8=;
-	b=b2pKC2UbTlalxXeMydjDn4mD7Db7+cdC3bcjvHaiN4yUZZeoGNz/nLfZIn68iq+SSayXCB
-	bP7ZSWCLCNWLJj+kBNimNPdwjzhXdSGKv4V3dvcg3NkDwBm349HGLonEt2FotdfA+5R5D0
-	8bhGcr9YlrRqOQFka+6y2mSBbERyX/E=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-451-pwcMn-UBMqW1nIKZIOeB7w-1; Thu, 05 Nov 2026 04:27:00 -0500
-X-MC-Unique: pwcMn-UBMqW1nIKZIOeB7w-1
-X-Mimecast-MFC-AGG-ID: pwcMn-UBMqW1nIKZIOeB7w_1793870819
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48fcb657f32so1166158f8f.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:27:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793870819; x=1794475619; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xZzKTf//DQYIAN9VwQEvMddExwcCW3dbdXpAj0Adyw8=;
-        b=fHaYctB5SIwZSj1A3PKQanr9lALpXaILeX/6MjjI404AhOp13dWh1YQif8a1iYbuCt
-         ySunMulrJl/RQRuXZoJWi+csEThcA2w2sRxnSkJzuObKEInFuGhts1j6u7KEZQjwc0nS
-         iekFHHKNsR9BkG4iI+l6Vs5vQzhdorWMsTZvlGtctQFlRAM3MszCGmgZSA2fYamYGTOD
-         bXNig0r2OmPE/0OQJonuA+vmZW2eLXVzEqxcBr06yPf97SsoJbRqk+dHXywiDsC3i572
-         b9Wd9BRij5gaYN3Wo/u6N8QsdgxHve0jrvQQU+BC7hNliMTmlXMXCUUnkSoc55E9Sbdr
-         Cy/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793870819; x=1794475619;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xZzKTf//DQYIAN9VwQEvMddExwcCW3dbdXpAj0Adyw8=;
-        b=AdPz8xVeVTYY8Sqe+kLHnSjWiPctV+aA2rwNHe6Nce43gmJBYRMC7GrqrD2qFt+Fg8
-         RLyAOwSmBCgWZIrFONL2FpcMILeV9aYXEYBvceZnJixI8PI9UXV7qli9+gFGO8BST25K
-         +qFToVphYnT4IMiDJUQYUR4nB/6nFKOCvmXwNDmBVI2scB6R/YFgQIVEN9fBHz2LkeAN
-         0UiHCMjRrFCiRJ1Kvrx6wCNre0fEIfc6el1iGNI8yyNN3oKQAWe4NReLBvYNZ5/MJPho
-         mNiY2B/uTrPLX+79IEQjQDMjyAf7eUhJYrLZ2jOEmeehO+FwBaz+hrQk9sPLglH3QBN/
-         YWrg==
-X-Forwarded-Encrypted: i=1; AKwUvBwEZ7EwwHpsO/ywfKw+yodASSQ6De/fc66cH64aDiB5ehZ5RJORi3/Zw5nkbBsDam3HU7NYzXI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HX7lPM4nRZLqvrfMcLWC07RvOY4acIZS5Q7t49ULKPGZeUNaW
-	qt11i1XZfGfYs9b70prcC46dENlIdn9dLf+083ZBcuTL78rtu9M+f2y3DbZrjP3x30dElI5HDXx
-	aE8z6GPskxqhAyUq/4D2rAnV0urLqja+Hoz9zMSyTiOAji1yI+j/rni0qWA==
-X-Gm-Gg: AYBFou18TJDhV79RARQmTIIRQne31C5fqibC2z1hzhy4cWRKjZw/7cdrnLGU1qlQP5w
-	mu+yHPMJCiCW8FqY0juDXZA225xF20SbmSEDfzrgK+JRvszCuqCUEaAEyCn/QFm5TYwssDXvsp0
-	GDp9f954VB5r0itAHD0vp9iyoupC8Wo3Jd7IYyECTdveLSTnmKcxgGPAHl823MVZrf5TheY2oDw
-	/mcAuzcKPq9u9fyg7Zs/q3JlRM4rqFIo2ZJ4XVJwuLv0KiCrfScky5ykg5uH1YeyFsBxlbWw+fz
-	U5VpgZOR+omefBudHHFlfF2HkNv3OUGgZLJ9jTe0BGw3abivaIL8MqTihzoffsj6SXqAHNpdSa7
-	UZ4SyU0q2RPwtcBiGZRhMZzHjEMZ9SgipIpwnTk2MfhyvUshyiYpP6I7Oq5WbvtXJgf2A5mU87x
-	NZOP7QamRjUXnD3QFGSQ8MDnGT6+uMpud9lR6c/URI8VQ=
-X-Received: by 2002:a5d:64e7:0:b0:48e:17d1:16c9 with SMTP id ffacd0b85a97d-48e6e4f5652mr39090755f8f.40.1793870819107;
-        Thu, 05 Nov 2026 01:26:59 -0800 (PST)
-X-Received: by 2002:a5d:64e7:0:b0:48e:17d1:16c9 with SMTP id ffacd0b85a97d-48e6e4f5652mr39090709f8f.40.1793870818660;
-        Thu, 05 Nov 2026 01:26:58 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fece998absm9617108f8f.22.2026.11.05.01.26.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 01:26:58 -0800 (PST)
-Message-ID: <679b8dcf-0aac-4674-a006-5af0156a82ae@redhat.com>
-Date: Thu, 5 Nov 2026 10:26:57 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXFEcZpE
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HrqW5Nh36zw/NtuHC90IBBkHwA99AGwOxSLsencfKfQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793871262; v=1; x=1794476062;
+ b=lXFEcZpEoat8IKmQmJ8tqHbx4WeJanHUacy6QF28P5x2XIX7mUcPuG+dNatf5Syt2aQtDNDZ
+ R49GK9Lp2AmaIu8R0XA626hPKA40OcwlQlXX9jBNXpc4JBtE9FSUJs7AsZ9YS87JFLVKyDPeLME
+ /ud5RPbh9JLgeNuyLA2O8iVU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id f5021da18e182925;
+	Thu, 05 Nov 2026 09:34:22 +0000
+X-Mizu-Trace-ID: f5021da18e182925
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Thu, 05 Nov 2026 17:34:06 +0800
+Subject: [PATCH net v2] ipv6: ioam6: do not modify shared tuninfo
+ eh.nexthdr
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,68 +60,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/5] net: sparx5: add tc matchall port policer
- offload
-To: Daniel Machon <daniel.machon@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com
-Cc: robert.marko@sartura.hr, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261102-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v2-0-3bd47ec1b227@microchip.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261102-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v2-0-3bd47ec1b227@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261105-ipv6_ioam_lock-v2-1-8f0ea30c4ffa@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12NQQ6CMBREr0L+2pr+Woi68h6GEKhFvmBL2tpIC
+ He3oCuXM3kzbwavHWkP52wGpyN5siYFsctAdbW5a0a3lEFwUSDyA6MxFhXZ+lkNVvWsyJELVef
+ yxI+QRqPTLb23wysYHaD8lv7VPLQK69WKdeSDddOmjbjBP4P8N0RkyGQrpJLYJKS59NNAxvq9M
+ lAuy/IBRYOQMsQAAAA=
+X-Change-ID: 20261103-ipv6_ioam_lock-65102ca54908
+To: Justin Iurman <justin.iurman@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, 
+ Sashiko <netdev-bot+sashiko@kernel.org>
+X-Mailer: b4 0.16.0
 
-On 11/2/26 13:21, Daniel Machon wrote:
-> This series adds offload of tc matchall filters with a police action to
-> the ingress port policers of Sparx5 and lan969x, which are both served
-> by the sparx5 driver.
-> 
-> In hardware, each ingress port has four single-rate leaky bucket
-> policers. A policer drops the frames that exceed its rate and burst.
-> The four policers of a port share the pass and drop statistics counters
-> of the port.
-> 
-> The driver uses one policer per port, because with more than one, the
-> statistics reported to tc could not be attributed to the right policer.
-> This matches lan966x and ocelot. The policer meters each frame without
-> preamble and inter-frame gap, so the configured rate is a data rate, as
-> tc police expects and as on lan966x and ocelot.
-> 
-> Since the policer meters all ingress frames on the port, only filters on
-> chain 0 with protocol all are offloaded, and filters on shared blocks
-> are rejected. A police action that is already offloaded as a port
-> policer on another port is rejected too, since in software it is a
-> single bucket for all of its users. Only drop is supported as the exceed
-> action, and the police overhead parameter is not supported.
-> 
-> Patch #1 drops a redundant prefix from the existing POL_UPD_INT_CFG
-> register macros.
-> 
-> Patch #2 adds the registers used by the port policer.
-> 
-> Patch #3 tracks whether the ingress block of a port is shared, and adds
-> the per-port policer state.
-> 
-> Patch #4 adds the hardware programming of the port policer.
-> 
-> Patch #5 adds the tc matchall offload.
-> 
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-I understand the following will be very frustrating, but for unknown
-reason AI review did not kick on this series.
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-The changes looks sane to me, and addressing points raised on v1, but
-I think nowadays we need an explicit AI feedback.
+ioam6_do_inline() and ioam6_do_encap() stored the next header into
+the shared ilwt->tuninfo template and then memcpy()ed it into the
+skb. The lwtstate is used from multiple CPUs without locking, so
+another packet can overwrite eh.nexthdr between the store and the
+memcpy.
 
-Could you please re-submit the series?
+The packet can then leave with an HBH nexthdr that does not match its
+payload (e.g. TCP labelled as UDP, or a local packet labelled
+IPPROTO_IPV6). Set nexthdr on the per-packet Hop-by-Hop copy after
+memcpy instead, leave the shared template read-only.
 
-Thanks!
+Fixes: 3edede08ff37 ("ipv6: ioam: Support for IOAM injection with lwtunnels")
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+Closes: https://lore.kernel.org/netdev/179336082844.3134.1265197633714491521@kernel.org
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+The issue is reported by Sashiko. It was confirmed with concurrent TCP
+and UDP traffic through a shared ioam6 inline route on a multi-CPU host.
 
-Paolo
+Without the fix, a packet can leave with an HBH nexthdr that does not
+match its payload (e.g. hbh->nexthdr=17 with a TCP segment after the HBH,
+or hbh->nexthdr=6 with a UDP segment). With the fix, the same load reports
+no HBH/L4 mismatch: nexthdr is written only on the per-packet Hop-by-Hop
+header after memcpy, never on the shared tuninfo template.
+---
+Changes in v2:
+- Add one missed Fixes tag. No code change.
+- Link to v1: https://patch.msgid.link/20261104-ipv6_ioam_lock-v1-1-4f24c41b261b@kylinos.cn
+---
+ net/ipv6/ioam6_iptunnel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index cfb2c41634a0..b23f8a0cbaa9 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -276,12 +276,12 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+ 
+ 	hdr = ipv6_hdr(skb);
+ 	memmove(hdr, oldhdr, sizeof(*oldhdr));
+-	tuninfo->eh.nexthdr = hdr->nexthdr;
+ 
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 	skb_postpush_rcsum(skb, hdr, sizeof(*hdr) + hdrlen);
+ 
+ 	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	((struct ipv6_opt_hdr *)skb_transport_header(skb))->nexthdr = hdr->nexthdr;
+ 
+ 	hdr->nexthdr = NEXTHDR_HOP;
+ 	hdr->payload_len = cpu_to_be16(skb->len - sizeof(*hdr));
+@@ -314,8 +314,8 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 
+-	tuninfo->eh.nexthdr = NEXTHDR_IPV6;
+ 	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	((struct ipv6_opt_hdr *)skb_transport_header(skb))->nexthdr = NEXTHDR_IPV6;
+ 
+ 	hdr = ipv6_hdr(skb);
+ 	memcpy(hdr, inner_hdr, sizeof(*hdr));
+
+---
+base-commit: c3e67bd82b9b9b1a5118f09a429ccefe2aab0741
+change-id: 20261103-ipv6_ioam_lock-65102ca54908
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
 
