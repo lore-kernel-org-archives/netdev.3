@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793879849;
-	b=e6Slgi+ZNjLpLvr6pBJEVrvpF930WNu1PClWdpEuC9oT6Rzjg0SkSvIGy8H/J4HbUW5O
-	 6l5IbxsyxisG17a2i5IdH98sj32YE1GNtFu+ZLZP90xNNf62C+UnfGYZ9/w8jxs5YCV+f
-	 VyGV9ZCtnG9NHLLcY0NP0JnYKJ5h6p05uaVRgmLn7nyQj7x2fyB0FFXQTPtsL75DU/sPc
-	 d2y9OW0mRMJmcXzQFkyOxjlFfKFeVN7soKgXANQC61sHA2OYQkDvSN60l/HuiEl8pT0bC
-	 Rr59bNbNrXx2MXMU7t4tpKWSmRoqn1jEbP756nCjSBob7nBRsmklpZt2HMqpnkg2qRQ==
+	t=1793879840;
+	b=YFFxHKnGONy5YJGcrI8zJoiorXC5S9Bfw+8VBossXfdXPNOzxS2miRUaZ7Gmvi51HjmX
+	 KuoWjiCYkfBTJzNrlwG/HyV5RzFCogZdWesta8ZglkWiVEJDSJg0LcGneCmr5jabOWsDs
+	 pcfmk0TWMUIi9wgeBWazL13NhsI2o0XseB9j1wqy1JQKw2Xlx14LaYX7xCn037CKC/s3m
+	 Xto2PT9MVylpHz75gvz+MkSei0rR+e5IygETBXWYQxtFRyixdF79PpgtVwz68YJ5VY/hC
+	 odkFUUFWwN1WRNZo/U6+Xzu++wPuT5HHjmxtCiy7X/Hyh/T8SRW++c+Q/MRfe37GDIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879849;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879840;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Lpa4x7IMkI0pAmvLfxMZgiuZ7+FSjz5ACO8N7GXOsnc=;
-	b=Ihv4e73IBERcwO2V4C5M2rAH4CaWryefkTjfWa4fJfr0BvxA9Bx75sd5DMmH2YLySU8/
-	 ZY1TwKzyluoTY8hFJKeF5mdgfFV0s8kK4fxzLRafK1kKmDy/QB++724738Q2s76RcJbr4
-	 TnflY8JCPF3SplJpLXLPUg5KOCrCaSi+e9nyr1FAA73hzqpbO+g7J4U6DTmJt9D6Qvs++
-	 nW7HOpy2lLgmwSTpjyOb1HZJd8hK9W35y1dwE1kXdAi9CD/qR+GpWP0FMAQpKYoS8ClyW
-	 p79Ky+DX1eT9QT4d5MvYSOpK/g52JkKGF4VfrLpYoCKoIlT1ClRCWUe5jSX92LN7jKw==
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=F6G9t9GJ7DVLr9Njw9/XT7m63JOY/MgP9W42o8JEQqg=;
+	b=cRXbzPGqSGV8c1zEtvNoPFmTCkrXON4EnqVauDQ6JhEenQPwxZEg6zZl3lXc/uoYkOPI
+	 eX800LJBB9OIKBVHca43GYNbbx0cyvHvaDd/zAvo0febsFlRGA5q35Z98V5M7mk4VWOUJ
+	 7sPimZrHxZZh4DHGe4kmyUGdXbCjXuzfk53pvo0y0GGboK4Fs8rOepVDnWsJ7xQeLoltV
+	 /TvLnNVdwh7Ho4K4plSZWmocsqnI3dj5tu9hDIlMrtlVAOGvUzf/zERnkwKJEkE0jl5o0
+	 ZHQgTzaFklIUBARhRlJ8wYIqvH31tdhlmG0Sli1O+5E2SE8rlNu7G8wWhms1bEchKHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHKKOxtF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNol07mm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9C0606D801;
-	Thu,  5 Nov 2026 11:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424F4606A330;
+	Thu,  5 Nov 2026 11:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHKKOxtF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEF31F00A15;
-	Thu,  5 Nov 2026 11:57:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNol07mm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF671F0093A;
+	Thu,  5 Nov 2026 11:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879849;
-	bh=Lpa4x7IMkI0pAmvLfxMZgiuZ7+FSjz5ACO8N7GXOsnc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hHKKOxtFlWgDXqCg7HPSBhZblipLs99GZooDHgQPGVSXmlGHBrB84XvlhW2Ht8JY+
-	 c2nY3FQI1c5xfBHg9BdBf23QzkslS55wesYV+UMZTaBkcXaTT0gOOQ62RRcrMqCJHP
-	 ADNKkmDePPVKysQsV5fFQ+SxAh+ETj/n0lEOR9pkaQM4h915oSYuiWY8PFBrL4wcC7
-	 ULvByd9N1vE7KW81qFK+3zYlnzIkKQ3ytYL9IGUV2DrVMiBgwrouDA7f4jZt56AWWx
-	 5l9+Kp9Dirg1Q3HmBrpPOitZnuDba3NLZzwL/Iv7oe/EFvLj8fKcoJSu+Hcx+OuSdI
-	 By57OlPfi2n/A==
+	s=k20260515; t=1793879839;
+	bh=F6G9t9GJ7DVLr9Njw9/XT7m63JOY/MgP9W42o8JEQqg=;
+	h=From:To:Cc:Subject:Date;
+	b=gNol07mm/1BVzOdNyQhgGB3oV51tTU10WzVuTQQ3MBY7MyaEehB5gIDvi8YQK+pQY
+	 fZHCG35unbbbwEb0OtzkQEXhKkMUl3bYEzVTIgiXm00YHkMdzbISpwSYEY39ANnv06
+	 FB0IluJpQqLyrH3Pngf+GyVQsz+dREFbDLMyTMtH5+qibnlYuqftUSqAwz3NTZL5Hj
+	 34bEmVIVZm+EKHThjZWOGliWdnV/lrv6cd/ePOZ6oYLQr45lLvJJqHJYLffOB5C2i9
+	 XKhDvMgc0WLPsoKXi9rZLZXPhnqfDVwDniU5U//bDbFuHyLqe9FGnrb9aTkhy+KE0y
+	 QP80PBKZBi3Sw==
 From: Eric Dumazet <edumazet@kernel.org>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -52,12 +52,10 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Hassan Sultan <hassansultan@google.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v3 3/8] tun: clear stale skb->protocol of NAPI frags skbs
-Date: Thu,  5 Nov 2026 12:57:10 +0100
-Message-ID: <20261105115715.1466924-4-edumazet@kernel.org>
+Subject: [PATCH net v3 0/8] net: virtio: validate outer protocol of UDP tunnel GSO packets
+Date: Thu,  5 Nov 2026 12:57:07 +0100
+Message-ID: <20261105115715.1466924-1-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261105115715.1466924-1-edumazet@kernel.org>
-References: <20261105115715.1466924-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,48 +67,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With IFF_NAPI_FRAGS, tun_napi_alloc_frags() gets its skb from
-napi_get_frags(). If GRO merged the previous frame with
-GRO_MERGED_FREE, that skb was recycled by napi_reuse_skb(), which does
-not reset skb->protocol set by napi_frags_skb() for the previous frame.
+virtio_net_hdr_tnl_to_skb() does not check that a UDP tunnel GSO
+packet really has outer IPv4/IPv6 and UDP headers matching the
+declared tunnel type. A guest, or any tap writer, can send a frame
+with another outer ethertype (NSH in the report), and the GSO stack
+then builds segments with skb->data before skb->head. The host
+crashes in skb_under_panic() as soon as a header is pushed.
 
-On the IFF_TAP path, tun_get_user() calls tun_vnet_hdr_tnl_to_skb()
-before eth_type_trans(), so the virtio header checks see the protocol
-of the previous frame: the outer protocol check of UDP tunnel GSO
-packets rejects a valid frame when the two ethertypes differ, and
-GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are dissected with
-the wrong protocol.
+Patch 1 validates the outer headers, using the parsing helpers from
+Michael's series "net: resolve uncommon partial checksums at ingress",
+as Willem suggested. The rest of that series (checksum validation and
+completion) is left to Michael.
 
-This needs GRO to hold packets across writes, for example with
-napi_defer_hard_irqs and gro_flush_timeout set on the device.
+Patch 2 lets the callers tell whether frames start with an Ethernet
+header, instead of using the device type, which tun can change with
+TUNSETLINK.
 
-Clear skb->protocol for IFF_TAP frames, as for skbs allocated by
-tun_alloc_skb(). eth_type_trans() sets it right after.
+Patch 3 clears a stale skb->protocol left on recycled NAPI frags skbs,
+which could make the checks of patch 1 reject valid frames.
 
-Fixes: 90e33d459407 ("tun: enable napi_gro_frags() for TUN/TAP driver")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/179386753589.488856.11455181721004759454@kernel.org/
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- drivers/net/tun.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Patch 4 fixes a selftest helper computing UDP checksums over a length
+in network byte order.
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 3920b3dff1e8..6b648f21018c 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1941,6 +1941,11 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 			goto drop;
- 		}
- 		skb_set_network_header(skb, ETH_HLEN);
-+		/* A NAPI frags skb recycled by napi_reuse_skb() keeps the
-+		 * protocol of a previous frame. eth_type_trans() sets it
-+		 * below, the virtio header checks must not see a stale one.
-+		 */
-+		skb->protocol = 0;
- 		break;
- 	}
- 
+Patches 5 to 7 add tun selftests, on tap and IFF_TUN devices: valid
+outer IPv4/IPv6 frames are accepted; mismatched or non-UDP outer
+headers and misplaced outer transport headers are rejected, also on
+retyped devices.
+
+Patch 8 makes the UDP tunnel selftests write the tunnel offsets of the
+virtio header in little endian, so they work on big-endian hosts.
+
+v3:
+- Patch 1: fix a comment, ipv6_find_hdr() stops at AH (Sashiko).
+- New patch 2, and its tests in patch 6: Sashiko found that changing
+  the device type with TUNSETLINK bypasses the checks of patch 1.
+- New patch 3: Sashiko found that napi_reuse_skb() leaves a stale
+  skb->protocol on IFF_NAPI_FRAGS skbs.
+- New patch 7: test cases Sashiko found missing in patch 5 (outer
+  IPv6, VLAN with IPv6 or with a wrong outer_th_offset, non-UDP outer
+  L4). Fixed the patch 5 changelog.
+- New patch 8: big-endian hosts (Sashiko).
+- Collected Reviewed-by and Acked-by tags.
+
+v2: https://lore.kernel.org/netdev/20261104050131.629967-1-edumazet@kernel.org/
+- Patch 1: use Michael's helpers instead of a new one: find the L3
+  header from the device type instead of assuming Ethernet when
+  skb->protocol is unset, do not trust skb->protocol when it disagrees
+  with the frame, and require UDP exactly at outer_th_offset. Stop at
+  IPv6 AH headers (Willem).
+- Patch 2: clear udph->check before summing and send 0xffff instead
+  of a zero checksum (Willem).
+- Patch 3: clear the reused buffer before building each frame (Willem).
+  Add IFF_TUN tests, where skb->protocol comes from the tun_pi header.
+
+v1: https://lore.kernel.org/netdev/20261103203113.550604-1-edumazet@kernel.org/
+
+Eric Dumazet (8):
+  net: virtio: validate outer protocol of UDP tunnel GSO packets
+  net: virtio: do not use dev->type to find the outer L3 header
+  tun: clear stale skb->protocol of NAPI frags skbs
+  selftests: net: tuntap: fix UDP checksum length in
+    build_udp_packet_csum()
+  selftests: net: tun: test outer protocol of UDP tunnel GSO packets
+  selftests: net: tun: test UDP tunnel GSO on retyped devices
+  selftests: net: tun: test more outer header mismatches of UDP tunnel
+    GSO
+  selftests: net: tuntap: write UDP tunnel offsets in little endian
+
+ drivers/net/tun.c                            |  14 +-
+ drivers/net/tun_vnet.h                       |   5 +-
+ drivers/net/virtio_net.c                     |   2 +-
+ include/linux/virtio_net.h                   | 169 +++++++
+ tools/testing/selftests/net/tun.c            | 440 +++++++++++++++++++
+ tools/testing/selftests/net/tuntap_helpers.h |  29 +-
+ 6 files changed, 649 insertions(+), 10 deletions(-)
+
+
+base-commit: 37dfd0efbfffc20a57e41c2eb349ac49b1ca1ff8
 -- 
 2.53.0
 
