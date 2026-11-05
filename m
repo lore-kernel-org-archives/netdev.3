@@ -1,83 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.35
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793844002;
-	b=PCF688leVl9uBJbuUdPOOd+ZlYyRkhhN1uGsOckkHJKGY5b8DGQO1QTAKLbAamrC7i1l
-	 k8Ten+Jp+977MH8wcaCu/Awuk0p8qeriA3Xi3Zo3PZmHLGXC6iBhWVXuAHZ0P17i0bNJL
-	 o10OdTda4b1eJvaygYnc41aDNIrxYEYYhSTtn2R6Me/BQOhgk02cB5sVpxmUxY01DQCYA
-	 VvzqH2wLYzu5be87JtdIwXN/x64QvH60l0Hk2OaotowedpauMHPYOCnkZ136YUUrKPFgz
-	 r26M9zzv8nNHJeTorUwAvLj0J9uOBx8vbrmqWoAB9hZLL4IdlszQ6edAq5CjKxkKm/w==
+	t=1793844083;
+	b=SVqlr3mtStc3VFe+Nrf+SzNKLqDEyyJfMq6J6A7R70KOTdsGCbPOb6U35pkU+RRA58kK
+	 M5oLWkuWggKPXeZZo1Uh9mz4otJWYRZ+5Q2ZTwq6N+yQBd8+XIx6ce4N7TXhBjFnFK+t6
+	 E35v+7Zl6+y3P4JjyBrWhXQ7gljFyN+MDr1xy748XbQ/YR1/lLjq5BKxUV4WGpmvMdgrI
+	 BdecsOEV0+SOYbDW6PgUlAuPM3cS0B9wGyrqqwejFNl1IG6XcFLZUfUcGoOorloMdyWNN
+	 RSYmpjRrUWQbzm+HeuAxIdYdv/dvfYeTYtxOaNkoE2f03HrsBddHSWBrgPdca0o0Nog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793844002;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:From:To:
-	 Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=ImAMCNfgrZHhGnvZrY4VhJufPGL6dv60m/vPtmdLXwM=;
-	b=kG6csf0nFrSN4Vb5YdfWWrCRQ51A2O0xbH2iXX3lzYLCgnE65vXx6/3uAq9okRdy4m+i
-	 U4gTsKFRdgfCXV/yn1OOHE4P1Baj4GVNcHlx6xFilIpbkRw6uvjIpgresBkgpAIX+N6B1
-	 a4nBWAjPxkQ8r4b2Ud6onLr/l48QbV1jE5ZzCvr4oqBCPZOxBG1B/iZLrN0o7xV2rHYD6
-	 hJ+oI2/mA8XIgmFu/v8lKm4IGL8dwf71LBsloO+YI1NhplDFuGTUuKldec+sYSH3k50WA
-	 Cq6D4X6H/9jCW9a3oaLAphLlbHnIEHo5e3/FSX2Zl562hjsDG2KwnSn/QOrRUp6QTww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844083;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=uP4WjeA3JswVZeabC7KpofLrQ7N3W1fMzpyXVDcHxUY=;
+	b=3DngnZOC6e7PYe7WFmsVCZfRbvJ8JQoqHw5ZFZWaTk0YM0CgONj0FzIThLqSLuDa5KII
+	 4eQ4a3ZBcyvNTv+VhBFsTbGOX1K5nq5hXDZOef7BWNTZR/OvEIgc/HfAnlFJCpGUpEqKL
+	 /woMyiIoDJpOMuYkFmfUeW25d1JcfVKfh2xEooeeyfd84puOcW8LT5U9fmLLsTvjVW19v
+	 I1KyFKs8uiI9P2zK/rxjdNabQgAu1JudLUrBnvuW2D9GGfEDaiJMdALhbRNOcVYQzofza
+	 5NvzGEnYg/Xsb6Hu4rhn2HJcR3/H4gQMaDRJxgbS2hXigaNNkadFUhNoK8VYgWgprWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniroma2.it;
-	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=tds4UUfj;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=a+awCnuz;
-	arc=none smtp.remote-ip=160.80.4.35
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.35])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B88606D824;
-	Thu,  5 Nov 2026 02:00:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29B88606D824
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="N1Ch9/s4";
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1274D6082BE6;
+	Thu,  5 Nov 2026 02:01:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1274D6082BE6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=tds4UUfj;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=a+awCnuz
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A51xCAn001496;
-	Thu, 5 Nov 2026 02:59:17 +0100
-Received: from localhost.localdomain (unknown [160.80.105.87])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id C94871228D3;
-	Thu,  5 Nov 2026 02:59:07 +0100 (CET)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793843947; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ImAMCNfgrZHhGnvZrY4VhJufPGL6dv60m/vPtmdLXwM=;
-	b=tds4UUfj+wxvXhVWr+LUfKaO73mhLdIYrvbq50crqojK0ILr35sOKfUMwuoE1D93OFf2x5
-	Ppvh9wK8A+tzGZBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793843947; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ImAMCNfgrZHhGnvZrY4VhJufPGL6dv60m/vPtmdLXwM=;
-	b=a+awCnuzUg5m36Ynwcn1qef6suk/Jd/6XWVnqJn4DS65/YiSM6e3/NDpXnTsAuIB9iWd5O
-	QrDo7Zc1nZlLRKykBdYfsipTcRhjTTwWlHDrnajjSyhl6969sSZXhi/Opy+6SVkoTIooun
-	OEsP+tLezGN6W2LC6Sok+yXJydLeo6qXNAi1KCRn5oIFo+7uAvJ85Yc2tBieGfNr98HgnK
-	7iowRBVWKCD1FkaPTeMN2JBTwogxT9r7FMQDeCfzkIYVXyB3fq6KrW50X6uyizJm4XuhES
-	2lyg0p1qUxcEUaShL1Cc3U9uTjAHeFo6QNtdlie4ItnCpiIFLU4zQLyo9tnfGQ==
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-        Hangbin Liu <hangbin.liu@linux.dev>,
-        Justin Iurman <justin.iurman@gmail.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>, andrea@common-net.org,
-        Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: [PATCH net-next v2 1/5] seg6: handle a Fragment or AH header before the SRH consistently in PSP
-Date: Thu,  5 Nov 2026 02:57:11 +0100
-Message-Id: <20261105015715.57-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20261105015715.57-1-andrea.mayer@uniroma2.it>
-References: <20261105015715.57-1-andrea.mayer@uniroma2.it>
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=N1Ch9/s4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=N1Ch9/s4VmCUB/eX/jTozk30Qq7MARDEWNwjti1dtOcwqQp9GORLUeKXGxr4JvokHG9QvJ5x9SeS3
+	 ANMSLy4sxkgwtWZb5wJ2Xw/1DO7JOx65rB1yQqspHd7MLH8IP3jTqs/iP094NozjoRzzHAQkOPj/+7
+	 s57zXRoraISrVKDg=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36aebe36e06b-6d430;
+	Thu, 05 Nov 2026 10:01:18 +0800 (CST)
+X-RM-TRANSID:2ee36aebe36e06b-6d430
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from FHB-W5100256 (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96aebe36bc9a-3523e;
+	Thu, 05 Nov 2026 10:01:18 +0800 (CST)
+X-RM-TRANSID:2ee96aebe36bc9a-3523e
+From: xujiahao <xujiahao@cmss.chinamobile.com>
+To: Edward Cree <ecree.xilinx@gmail.com>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org,
+	xujiahao <xujiahao@cmss.chinamobile.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH net-next] sfc: avoid truncating MCDI hwmon attribute names
+Date: Thu,  5 Nov 2026 10:01:15 +0800
+Message-ID: <20261105020115.278-1-xujiahao@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,78 +76,78 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-seg6_pop_srh() already fails when a Fragment or AH header comes before
-the SRH with other headers in between, and the packet is dropped ("we
-expect SRH before FRAG and AUTH" in the code). But when the SRH directly
-follows the Fragment or AH header, it is removed:
+The name of each MCDI hwmon attribute is built in a 12-byte buffer as
+prefix + 1-based per-type index + suffix, with prefixes up to "power"
+and suffixes up to "_input".  With W=1 gcc reports:
 
-  (a) IPv6 | FRAG/AH | DOPT | SRH | ...   the packet is dropped
-  (b) IPv6 | FRAG/AH | SRH | ...          the SRH is removed
+  warning: 'snprintf' output may be truncated before the last format
+  character [-Wformat-truncation=]
 
-In both packets the Fragment or AH header comes before the SRH.
+at mcdi_mon.c:457, :488 and :495, in both the sfc and the siena copy.
 
-Align the two cases: check first whether a header is a Fragment or AH
-header, and only then look at its Next Header field. In this way, the
-packet is dropped also when the Fragment or AH header comes directly
-before the SRH. A Fragment or AH header before the SRH, with or without
-other headers in between, does not follow RFC 8200 and RFC 4302: a
-Fragment header must not come before the Routing header, as the
-Per-Fragment headers must include the Routing header [1], and AH should
-not come before the routing and fragmentation headers [2].
+The same 12-byte field in struct efx_mcdi_mon_attribute, which receives
+a strscpy() of the local buffer and backs the sysfs attribute name,
+would also truncate silently once a sensor type has more than 9
+instances: "power10_crit" already needs 13 bytes.
 
-At the penultimate segment, End with the PSP flavor alone today drops
-(a) and forwards (b) with the SRH removed. Packets with the Fragment or
-AH header after the SRH are not affected: seg6_pop_srh() does not look
-at the headers after the SRH.
+Enlarge both buffers to 24 bytes, enough for the longest possible name:
+"power" + 10 digits + "_input" + NUL = 22 bytes.
 
-Found by manual code inspection and reproduced in a VM without kernel
-changes or error injection, by sending to End with PSP the packets
-shown in the diagram, both with a Fragment header and with AH. With this
-change, the packets are dropped in both cases, all tests in
-srv6_end_flavors_test.sh pass, and KASAN reports no error. With the
-whole series, all the srv6_*.sh selftests pass.
-
-[1] - https://datatracker.ietf.org/doc/html/rfc8200#section-4.5
-[2] - https://datatracker.ietf.org/doc/html/rfc4302#section-3.1.1
-
-Fixes: bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End behavior")
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202401100509.U4prhh6J-lkp@intel.com/
+Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
 ---
- net/ipv6/seg6_local.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/sfc/mcdi_mon.c       | 4 ++--
+ drivers/net/ethernet/sfc/siena/mcdi_mon.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 0c3d1be7f129..da8225591fe3 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -796,11 +796,6 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
- 			if (unlikely(!hp))
- 				return false;
+diff --git a/drivers/net/ethernet/sfc/mcdi_mon.c b/drivers/net/ethernet/sfc/mcdi_mon.c
+index e574f91f6..9700228df 100644
+--- a/drivers/net/ethernet/sfc/mcdi_mon.c
++++ b/drivers/net/ethernet/sfc/mcdi_mon.c
+@@ -138,7 +138,7 @@ struct efx_mcdi_mon_attribute {
+ 	unsigned int type;
+ 	enum efx_hwmon_type hwmon_type;
+ 	unsigned int limit_value;
+-	char name[12];
++	char name[24];
+ };
  
--			if (hp->nexthdr == NEXTHDR_ROUTING) {
--				hp->nexthdr = srh_nexthdr;
--				break;
--			}
--
- 			switch (nexthdr) {
- 			case NEXTHDR_FRAGMENT:
- 				fallthrough;
-@@ -812,6 +807,11 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
- 				break;
- 			}
+ static int efx_mcdi_mon_update(struct efx_nic *efx)
+@@ -308,7 +308,7 @@ int efx_mcdi_mon_probe(struct efx_nic *efx)
+ 	MCDI_DECLARE_BUF(outbuf, MC_CMD_SENSOR_INFO_OUT_LENMAX);
+ 	unsigned int n_pages, n_sensors, n_attrs, page;
+ 	size_t outlen;
+-	char name[12];
++	char name[24];
+ 	u32 mask;
+ 	int rc, i, j, type;
  
-+			if (hp->nexthdr == NEXTHDR_ROUTING) {
-+				hp->nexthdr = srh_nexthdr;
-+				break;
-+			}
-+
- 			nexthdr = hp->nexthdr;
- 		}
- 	}
+diff --git a/drivers/net/ethernet/sfc/siena/mcdi_mon.c b/drivers/net/ethernet/sfc/siena/mcdi_mon.c
+index 0216a2a60..0037f603f 100644
+--- a/drivers/net/ethernet/sfc/siena/mcdi_mon.c
++++ b/drivers/net/ethernet/sfc/siena/mcdi_mon.c
+@@ -138,7 +138,7 @@ struct efx_mcdi_mon_attribute {
+ 	unsigned int type;
+ 	enum efx_hwmon_type hwmon_type;
+ 	unsigned int limit_value;
+-	char name[12];
++	char name[24];
+ };
+ 
+ static int efx_mcdi_mon_update(struct efx_nic *efx)
+@@ -308,7 +308,7 @@ int efx_siena_mcdi_mon_probe(struct efx_nic *efx)
+ 	MCDI_DECLARE_BUF(outbuf, MC_CMD_SENSOR_INFO_OUT_LENMAX);
+ 	unsigned int n_pages, n_sensors, n_attrs, page;
+ 	size_t outlen;
+-	char name[12];
++	char name[24];
+ 	u32 mask;
+ 	int rc, i, j, type;
+ 
 -- 
 2.43.0
+
+
 
