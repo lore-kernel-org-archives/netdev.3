@@ -1,86 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793903188;
-	b=cFM0+pzysVFTp+ZQ5cSZTjmmpwFyMz3EpbFRkvFuDpyCin/F5No5Ml/nEDhIeer/MV6J
-	 po2TvQq+RHCW+nZEBYxCUfbbkyEF8xpaWCPnAV0MxID6+fBFZg6d6QnC5qDrPLg0vpLeX
-	 Mli8SmHCE66PPt1WLy/wBeAc+srP2oURiQBTYhS0pUeuqczi/V0IlhguDu2DE390Tl4DA
-	 XMcmHnKdBW8VvT6FJD0GbEEXs2jhBAmHlKpb+dhJ7bT6dv7X1JHpy9ZFgmhDM6+mrBZYO
-	 lQpYA6SifEHIy4IoCYtqCHDxq0mSEVzcadB7DYdPxkIuBKR1z5VkbuWyAuO2ZDOXhww==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793903188;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=/R0hL4pC4E1+M4yPEUjAb9DEswCGIx3z9hc5cmLnrn8=;
-	b=RYbn3/hxRfDGlhYufbFPel9k+IJBb/WkzM6TuPi74pX12Y/kSUV5CDcdqK8c3kzBx71Z
-	 TYIrcpzOQpzdxPcOSpEHVq16URrYuDRVOGWqeSEv3NQEmKnzU9iTCqMmkzWkofnbCB/5+
-	 AJTrFn+5nOXPdEo1aenNb7O/W7T5Gt6MvndMHAZvsFBvVXta3q4sNDnNX2QyqSMCKpFwR
-	 dpPyPm6M7QaH6/RP/veODloWicMlvhHqzrJw9CIBj7UkrzxafIgFw4qoXaI4P6GT1rLbo
-	 aP0irO+QEPK2WP/WDHgYoGn308x6xFAFKODSynwujMSV+1Yr7vIzAXeoQQzL2lreKuQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WSADaA2/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=199.67.87.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793903240;
+	b=xx1TM1Lu4UzSp/kTf0R0lENUSHv/tPBqYA71ij5+fFQgt1tcA8PkawUxR0AI63mcdhQD
+	 5Voc2fANvvL5TfRwlhUpX+EzG4mdh0uDKbBhFE0VNEtSakVd71Da6eT2lmRL2E0JKx/4O
+	 +bCq7BPuIVgL+VtfNp/ON8Fi4EUOyT+cGqhjQOTfBgA4xsVMHNzq/3Q9/wdtFKlUyoQq4
+	 uA3BcvXUJ9TKoka9xFWvQPUheOri5dDbUwGiPXBnCF+WBvyMJGl8ObyH4V2abTvkB6A9o
+	 s5wxP15qTGseAOWFtklKvYiZS8TX+D3un8+3ggrB5yqJ5Mon7f0dkSbLY/88LEQp2fA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793903240;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-ZohoMailClient;
+	bh=ipwcc2A80/AaupT46EzltAo5MQdpn+zdfMs8yPUrjPM=;
+	b=ZImbIKgxbQdl0iRnnv8vlWJMOlWdixiEEhrnYDl+/B60oQdMlMO7/P1sh4kuGepJmZ4y
+	 ajUdEOZFZBR4KiJxS4KiR57/8/p1Q4eOg1asc3DOptck3YoyuufBfHTsSs8iFhSpsW1Wu
+	 uvQjmyH0YGKoPxXAxoBHN6MYzmVy4c+MvElst9vNJ8vPyUwIx5uPmY76QlVnE+RpSLanf
+	 NN6hx64kxZ3mWD/8L1RzogD3ASDAeHsHqJPkvJD+OBTBW4XZ8wYLvgdmotefy3eoD7V1u
+	 hr1O3KuzTvu2JYQGY0V7heci8jcOFVgzs49Kl9MhCCPVUtVA/wvxdR4bL8hFEilxxeg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=chasehil.tz;
+	spf=pass smtp.mailfrom=chasehil.tz;
+	dkim=pass header.d=chasehil.tz header.i=@chasehil.tz header.a=rsa-sha256 header.s=zmail header.b=JPTPB6oa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=199.67.87.7
+Received: from sender-op-o7.zohocloud.ca (sender-op-o7.zohocloud.ca [199.67.87.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D977D606A31B;
-	Thu,  5 Nov 2026 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED481606A31B;
+	Thu,  5 Nov 2026 18:27:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED481606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chasehil.tz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chasehil.tz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WSADaA2/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AEC1F000C1;
-	Thu,  5 Nov 2026 18:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793903187;
-	bh=/R0hL4pC4E1+M4yPEUjAb9DEswCGIx3z9hc5cmLnrn8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WSADaA2/B0njymg1oF8Zt+aQWjkjZp7YNB/CPyp9J98Lqyl4v6ZjN9fdw7/g/aDHs
-	 chIL9JCou1TsxyZomGHv2ZBjLQZ9Z1DMWTUjRpmHis5a1j1jVyAEUyc+4ePcQsFPhd
-	 OPBs016zO1yFXnt4RNHofu1Kp5EDvzii20mg9cT1xiXd9rLrrVGa/442/RYi2She4m
-	 EYJhTmYBt2Rvig1iLH8Imhje9jvJRWYRfaZbM8Jt178SF2ils406aYXkle+Zdk/FLn
-	 gDUCaggZAfj1BLbk+EODCjDPXj1SZjVg3T1elHfRmQ6s3AYErm9i4G5kIxtD/aXjgb
-	 Fehrul5E5Cuyg==
-Date: Thu, 5 Nov 2026 20:26:22 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH 17/17] PCI: Replace untrusted state with device trust
-Message-ID: <20261105182622.GD8298@unreal>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-17-1e536825b4eb@nvidia.com>
- <2026110526-aerobics-correct-4c06@gregkh>
- <20261105131856.GA8298@unreal>
- <20261105140352.GF3889730@ziepe.ca>
- <2026110558-tartar-juicy-036a@gregkh>
+	dkim=pass (1024-bit key, unprotected) header.d=chasehil.tz header.i=@chasehil.tz header.a=rsa-sha256 header.s=zmail header.b=JPTPB6oa
+ARC-Seal: i=1; a=rsa-sha256; t=1793903207; cv=none; 
+	d=zohomailcloud.ca; s=zohoarc; 
+	b=lcDRYbUDKSj3HMtjph/l5MoufWIBqVqQ/F6cMr0gR76xvQmY0MWHx9Bk/BwcrwiaRtkcI1/kVO49dXT1g0FETrsI3XEXDqsjUgJcR/sSR5mfIhOFBi0/xaIzjtgTT/an5/gjmKllQRDZeoTfzB4HJ2zODIjnHvlBAy3aoxShHkk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomailcloud.ca; s=zohoarc; 
+	t=1793903207; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ipwcc2A80/AaupT46EzltAo5MQdpn+zdfMs8yPUrjPM=; 
+	b=GGQEkVT31lFWFWpnrzkNY020FO3KAP9ZsjKFP+ne4N9YBjQUWceD9aJScxkd7fof/c3JQzbudT71oky7hetYS/B8/1M9crt9vmMP+HrxeYe15noIOGaNsWI89nAjCbm6f4eZ89gNRk1m+my+S5aAm3gAcwuC48+wXv737ZZnCYU=
+ARC-Authentication-Results: i=1; mx.zohomailcloud.ca;
+	dkim=pass  header.i=chasehil.tz;
+	spf=pass  smtp.mailfrom=me@chasehil.tz;
+	dmarc=pass header.from=<me@chasehil.tz>
+DKIM-Signature: a=rsa-sha256; b=JPTPB6oaA20OiS3flPwpir9s+HftOiFMddjnHAvNTWrp4FVSGTR+4lZFmBQQZHbCwFENA71BOUchC3zWJSH0qdmiTzWVRf6f+SZojXC7dzt4dCxQOSR4jZKEqRvGiWno2/oTI80awSBNtJV6dBCaADXrzZfVWaFEQNynR6+/9kY=; c=relaxed/relaxed; s=zmail; d=chasehil.tz; v=1; bh=ipwcc2A80/AaupT46EzltAo5MQdpn+zdfMs8yPUrjPM=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohocloud.ca with SMTPS id 1793903205253948.4769468504027;
+	Thu, 5 Nov 2026 13:26:45 -0500 (EST)
+From: Chase Hiltz <me@chasehil.tz>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	weiwan@google.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] ipv4: route: don't blackhole in-use routes when retiring fnhe routes
+Date: Thu,  5 Nov 2026 14:26:40 -0400
+Message-ID: <20261105182640.2999521-1-me@chasehil.tz>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,70 +71,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026110558-tartar-juicy-036a@gregkh>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Thu, Nov 05, 2026 at 10:43:00AM -0500, Greg Kroah-Hartman wrote:
-> On Thu, Nov 05, 2026 at 10:03:52AM -0400, Jason Gunthorpe wrote:
-> > On Thu, Nov 05, 2026 at 03:18:56PM +0200, Leon Romanovsky wrote:
-> > > On Thu, Nov 05, 2026 at 08:12:51AM -0500, Greg Kroah-Hartman wrote:
-> > > > On Thu, Nov 05, 2026 at 01:42:30PM +0200, Leon Romanovsky wrote:
-> > > > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > > > 
-> > > > > Convert the PCI specific untrusted to use the common device trust
-> > > > > level. Adversarial means the same thing untrusted does.
-> > > > 
-> > > > What about for USB?  Will that "move" to use this common trust level?
-> > > > If not, I don't think it's very "common" :)
-> > > 
-> > > It supposed to work for all buses out-of-the box, at least this is the
-> > > intention.
-> > 
-> > You mean DISABLED/FULL should work with this patch series on USB
-> > right? Meaning the core code will not bind a USB driver when DISABLED?
-> > 
-> > I was wondering if some of the broader things we are doing on PCIe
-> > also apply to USB, like device authentication. I don't know alot about
-> > USB, but I got AI to help me find some relavent spec information.
-> > 
-> >  https://usb.org/authentication
-> > 
-> > This looks like the parallel to PCIe SPDM device authentication. I
-> > would expect it to work broadly the same way as PCIe if anyone wanted
-> > to implement it:
-> 
-> No real need to as no one actually made a USB device with that spec :)
-> 
-> There was some patches on the linux-usb list 6 months or so ago to try
-> to implement it, but it stalled due to there not even be any devices to
-> test it for.
-> 
-> > 1) USB discovery discovers authentication support and creates an
-> >    attestation subsystem device for it
-> > 2) The struct device starts up with trust = DISABLED
-> > 3) Userspace runs the crypto flow through attestation subsystem. This
-> >    is extremely similar looking to PCIe SPDM:
-> >     1. GET_DIGESTS -> device returns a hash for each certificate chain
-> >        slot it has.
-> >     2. GET_CERTIFICATE -> device returns its certificate chain, read
-> >        in pieces.
-> >     3. CHALLENGE (nonce) -> device returns CHALLENGE_AUTH: the chain
-> >        hash, a salt, a hash of its descriptors, and a signature over the
-> >        challenge and the response.
-> > 4) Userspace inspects the above and approves the device
-> > 5) trust = FULL, driver is probed.
-> > 
-> > But I supposed Greg is asking about /sys/bus/usb/devices/DEVICE/authorized ..
-> 
-> Yes, that is exactly what I am asking about.
+When a route cached in a nexthop exception (fnhe) is replaced or
+flushed, rt_bind_exception() and fnhe_flush_routes() call
+dst_dev_put() on it. That sets dst->dev to blackhole_netdev and
+dst->input/output to dst_discard*(), but other CPUs can still be
+using the route, e.g. as a noref dst taken from the fnhe under RCU.
+Packets that reach dst_input() or dst_output() after that are dropped.
 
-I used AI assistance to create the conversion, which produced two patches.
-The first exports `device_trust_set_policy()` to support
-`/sys/,,,/authorized` and `/sys/.../interface_authorized_default`.
-The second adds calls to the `device_trust_*()` functions.
+If dst_dev_put() runs after a forwarded packet has entered ip_output(),
+ip_skb_dst_mtu() in __ip_finish_output() can return the MTU of
+blackhole_netdev (68), and ip_fragment() can then drop a DF packet and
+send ICMP_FRAG_NEEDED with mtu 68 to its source.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/commit/?h=device-trust-core-v2&id=98f5d11580d736a7878323dfb7238cd08c6c76af
-https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/commit/?h=device-trust-core-v2&id=f10f8e448540982699438dce369fef6cbfabcba5
+Commit 5018c59607a5 ("ipv4: fix race condition between route lookup and
+invalidation") fixed the same race in rt_cache_route() by putting the
+old route on the uncached list instead of calling dst_dev_put(). Do the
+same for routes retired from an fnhe. rt_flush_dev() still moves them
+to blackhole_netdev when their device is unregistered.
 
-Thanks
+fnhe routes are also retired on fnhe expiry (ip_del_fnhe()) and
+eviction (fnhe_remove_oldest()). Those paths don't bump rt_genid, so
+without the obsolete marking ipv4_dst_check() could still accept the
+route. Keep marking retired routes DST_OBSOLETE_DEAD, as dst_dev_put()
+did, so that users that cached them, such as sockets, look up again.
+
+In a netns reproducer that forwards IPv4 traffic over an ip6tnl device,
+with an fnhe for the destination, while the FIB keeps changing, this
+patch stops the mtu 68 ICMPs and the drops.
+
+Fixes: 95c47f9cf5e0 ("ipv4: call dst_dev_put() properly")
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Assisted-by: Claude Opus 5.5 <noreply@anthropic.com>
+Signed-off-by: Chase Hiltz <me@chasehil.tz>
+---
+v2:
+  - Use Assisted-by: instead of Co-authored-by: (Eric)
+  - Move test details out of the changelog (Eric)
+  - Add Eric's Reviewed-by; no code changes
+v1: https://lore.kernel.org/netdev/20261104182058.2673882-1-me@chasehil.tz/
+
+This was hit on a 6.12 router that sent ICMP_FRAG_NEEDED with mtu 68
+for packets it forwarded. A kprobe on __icmp_send() showed that the
+skb's dst had dev == blackhole_netdev and still had the PMTU from its
+fnhe.
+
+Tested on v7.4-rc1 with network namespaces: a router forwards IPv4 TCP
+(iperf3 -P 8) over an ip6tnl device whose PMTU update creates an fnhe
+for the destination, while a loop adds and deletes an IPv4 route. The
+sender drops incoming ICMP_FRAG_NEEDED, so it keeps setting DF.
+
+Over 60s without this patch, the sender received 505,291
+ICMP_FRAG_NEEDED with mtu 68, and the router dropped 67,024 packets in
+dst_discard_out() and 599 in dst_discard(). With this patch there were
+none. Neither kernel sent any without the route churn, or without an
+fnhe (ip6tnl with encaplimit none).
+
+When the sender accepted the ICMPs, its route to the destination ended
+up with "mtu lock 552" without this patch. With it, the route had no
+PMTU.
+
+Deleting the tunnel, its underlay or the peer netns under the same load
+(12 runs) completed without unregister hangs or warnings, with and
+without this patch.
+
+The same tests on a kernel with PROVE_LOCKING, KASAN, DEBUG_LIST,
+DEBUG_ATOMIC_SLEEP and the netdev/netns refcount trackers produced no
+reports. Lockdep recorded the new fnhe_lock -> uncached list lock
+dependency, and in a separate 20s run 109,305 routes were retired
+from an fnhe through the new path.
+
+ net/ipv4/route.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3a90c8d..cd69242 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -573,6 +573,17 @@ static void ip_rt_build_flow_key(struct flowi4 *fl4, const struct sock *sk,
+ 
+ static DEFINE_SPINLOCK(fnhe_lock);
+ 
++/* Other CPUs may still be using @rt, so don't dst_dev_put() it.
++ * rt_flush_dev() handles it if its device is unregistered.
++ * Marking it dead makes ipv4_dst_check() fail for users that cached it.
++ */
++static void fnhe_retire_route(struct rtable *rt)
++{
++	WRITE_ONCE(rt->dst.obsolete, DST_OBSOLETE_DEAD);
++	rt_add_uncached_list(rt);
++	dst_release(&rt->dst);
++}
++
+ static void fnhe_flush_routes(struct fib_nh_exception *fnhe)
+ {
+ 	struct rtable *rt;
+@@ -580,14 +591,12 @@ static void fnhe_flush_routes(struct fib_nh_exception *fnhe)
+ 	rt = rcu_dereference(fnhe->fnhe_rth_input);
+ 	if (rt) {
+ 		RCU_INIT_POINTER(fnhe->fnhe_rth_input, NULL);
+-		dst_dev_put(&rt->dst);
+-		dst_release(&rt->dst);
++		fnhe_retire_route(rt);
+ 	}
+ 	rt = rcu_dereference(fnhe->fnhe_rth_output);
+ 	if (rt) {
+ 		RCU_INIT_POINTER(fnhe->fnhe_rth_output, NULL);
+-		dst_dev_put(&rt->dst);
+-		dst_release(&rt->dst);
++		fnhe_retire_route(rt);
+ 	}
+ }
+ 
+@@ -1505,10 +1514,8 @@ static bool rt_bind_exception(struct rtable *rt, struct fib_nh_exception *fnhe,
+ 		if (do_cache) {
+ 			dst_hold(&rt->dst);
+ 			rcu_assign_pointer(*porig, rt);
+-			if (orig) {
+-				dst_dev_put(&orig->dst);
+-				dst_release(&orig->dst);
+-			}
++			if (orig)
++				fnhe_retire_route(orig);
+ 			ret = true;
+ 		}
+ 
+-- 
+2.56.0
+
