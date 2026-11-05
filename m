@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793886286;
-	b=T4FsH96IVLetG18wSV934zWAYpJbwIQtZ+x3F/wY682Ydp85YS9KI1nLPaDxOZSUoVSR
-	 zRwATXYaCkNxXpNyhl93MYDw/IE5Lsg2qs5lCMOil3NDpk4629ZMJmokZLseKjgYi0j2S
-	 FsnKU66ryWmjVjSkrbj1ZxPfOsIgey4vpw2PoR0EYzwrZ5uUYvnBbnLZo1WD7fmerOg1q
-	 eBb70wEET8RQJzyqT2pkEWC6p8km3nwsnABmTpe1eVZOCG7vF+/W1hKBOfkLDCURJCEhv
-	 BipRwlfp6u4rSMOnn7PCZPafk9lIZ7qvaqZqyITdE2tXTOpvnHsRRNxhoz3Lfg65h4A==
+	t=1793886285;
+	b=f8fuwlG+O9mWRIkODHZ0SO0WJu03h6a9AAdrv5BlqcFBU8e5ldv1GoE9qqQHV6NO51/K
+	 2627JziwmEbwBwQSCbEsInTvrQYrVrnrSdgmrW+AKbEkA+HR7JgQVzCD1Nn0en2aOv26C
+	 zw4tDTiBxtR42kW1dseHZa5V5JgY5C6eoHd/M1L2VrageiqNMQK8+ltuDE8q6OdcC7YV9
+	 m8eh4YXqJRMC4EuYBhPUpgsT4JQb5MjNoQ7nbp5WLwHbhCy30ru+cETAKb9wQ6OSi+q6T
+	 nXn1CZkF86YAR3XJBHR563N6YE5mB98NGqjK7Kp3JbelNfuoKw0vnI1xEhDGh8x6eGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793886286;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793886285;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=2vyd4+b0qKsADKSADGGr3aXOxp0V8c6j+Hf4etRu0RY=;
-	b=QqW/3nDHVeO4HRmkgZp35EVI6Dlpzhpx4gdIdcgSI7tytMp4JKmtncw024EvthWVNdKk
-	 gWGCSZq6vSuQedi0t2QkDtL94XlAAKjZtiC3J07j9wZb3FZCv6V0J3gfum7GveWwMsywF
-	 CxY25sMced12OvQIS34UZrYUsSxEeSqGL8OgcQ4yaATTpfyohm4syKLb2QJuOx7tCB6RA
-	 3jsRt+lSHi9J/lBHBaqnwKY7nl9eADpWyxUBGWnapU9QUp+HIknEY7jgSbyQp3ND9DF+h
-	 mCVHnAndz6Qj9LmhvGbA2CSeh9+MzEv6EGC1UJW5zebDbgfUTDkqfpWIAdqKgRLbK/g==
+	 Content-Type:Content-Transfer-Encoding;
+	bh=DlOBeGxzTAgZd6EL9u9PquVu5y4ryas9OocFg7pGGpY=;
+	b=MVTyRuGlTm1rduUNGbIOz7O+2Q+WJ5bNyWFilJy+xyh2vR05yDxWaS+g+ODBZ1YrIRAM
+	 AV8b1bwvTgtevjU9Xu+O8hrMN0GqJiRHE+O7cW5y+m0DL4sFmmkt6FiFlF+bNd3UvBTIX
+	 gh5L5ms2BvNDVg0Zhj7y+TS8+eK9Ly3ayOIeYXO4gFabnLfaedJvBr3fMIDvFYcOW1jn1
+	 y8c7fqxQAN5AkUjX36ycD9lxEAv0rAYvZY4ABqBbMK8rvIyqUV52dvnH5egX6VTLjVMCs
+	 ZikgZfS2tJtV1Kqo8B9ZPZWa9D6Y/eVi5AAlfdSXjTiSYos58EU7KialU+v23Tgx9Pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lkxdjpwy;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FB9XhIX4;
 	arc=none smtp.remote-ip=198.175.65.19
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EBF606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 13:44:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 15EBF606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC26606A33A
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 13:44:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EEC26606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lkxdjpwy
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FB9XhIX4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793886285; x=1825422285;
+  t=1793886283; x=1825422283;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8rezri/XGgDswkUed4NRpKnlDAfFZbgBdPPXSo+RN0k=;
-  b=lkxdjpwy7Ff9GBbfoPzDuasqo2dJwYAHE2wbPc4Yoq0QJgCrE5TR6xyD
-   Piz0FXyMsaFq4Ffu5LglUUEwjG9hsHF5Ilq1wb83R5/0ldkFwvGUvPcNM
-   gBv6SWUp4xNUcmRckl+KnWT+LlinNe1KFJt1ayfO2QLatAedCRr4+8hLp
-   Uc9Fs7aTvHNCNaC47oQ5ClXd3Pe8g0nETb/n0BqALdjqxUCqCotbXM2Cd
-   xYF+3ODmkMquWgBdmnkrQx5Fq1J7Zydb/eYPhG8o547bVwMtkfwDds29p
-   4iC37x7Wj7tKNIl4eQK+2Mx7zw6DkeZDHWrzg62yqQTFVs6XGnvpEpgrv
-   g==;
-X-CSE-ConnectionGUID: Iofg60MXS/68cc1S6ImkRg==
-X-CSE-MsgGUID: Jpj65lKgQuKsTt5tpit4Vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2710252"
+  bh=3ShtOES0wIYMmEUXlK0j8RP4PhK4H/DxYH8vgSziFIw=;
+  b=FB9XhIX4JT5ow0MI8LUeGVoR+OXmgkcAQteLQ8hWf+oUHNtwN0xHtkVw
+   HeRka70uNvvS6bme/5x6qyJSqnDvVbtVk3bM+jH7m4UbjG3e2Ptqd649l
+   7utdzjCK3ZSmz9a4SWQfM8dL2x6aF5TZ1K/GgvTTVz5PNGOy3JVsKJYMv
+   hCxtOfSx/5wDV0be7pIdq2hDvbOT322ItlNSFP0ReDVPFZNUaf7eGfKwt
+   KfqXnCLuiipo0oez9snMBKjPE04OYQm9f6aOXu2nubo4caPyLcS4s1Bcj
+   LDp/TjqFS6Sha4UypVQ4kysxgDUWbwpSIv/R1N6c8TFyTDBE0HmWOuh92
+   Q==;
+X-CSE-ConnectionGUID: PooYXzg5T96I3EsBDT+hcA==
+X-CSE-MsgGUID: Ej4zH3DOQZK1fK/uPKk10Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2710240"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2710252"
+   d="scan'208";a="2710240"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 05:41:32 -0800
-X-CSE-ConnectionGUID: vi3GL3JWT4iKslCbAOxCZg==
-X-CSE-MsgGUID: fj8VKUVvSN2XNTuhdzZjoQ==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 05:41:29 -0800
+X-CSE-ConnectionGUID: AuL59QHsTb+lGI8mu53wxg==
+X-CSE-MsgGUID: 7XJ6upZkSy2ggS6QmGdiig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="6874485"
+   d="scan'208";a="6874442"
 Received: from boxer.igk.intel.com ([10.102.20.173])
-  by orviesa007.jf.intel.com with ESMTP; 05 Nov 2026 05:41:30 -0800
+  by orviesa007.jf.intel.com with ESMTP; 05 Nov 2026 05:41:28 -0800
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To: netdev@vger.kernel.org
 Cc: magnus.karlsson@intel.com,
@@ -71,9 +71,9 @@ Cc: magnus.karlsson@intel.com,
 	kerneljasonxing@gmail.com,
 	bjorn@kernel.org,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH net-next 4/4] selftests: net: move xdp_hw_metadata from selftests/bpf
-Date: Thu,  5 Nov 2026 14:41:17 +0100
-Message-Id: <20261105134117.977655-5-maciej.fijalkowski@intel.com>
+Subject: [PATCH net-next 3/4] selftests: xsk: move the AF_XDP test suite to selftests/net
+Date: Thu,  5 Nov 2026 14:41:16 +0100
+Message-Id: <20261105134117.977655-4-maciej.fijalkowski@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20261105134117.977655-1-maciej.fijalkowski@intel.com>
 References: <20261105134117.977655-1-maciej.fijalkowski@intel.com>
@@ -86,429 +86,600 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Move xdp_hw_metadata and its XDP program to selftests/net, next to the
-AF_XDP library in net/lib/xsk that the tool is built from.
+Move the xskxceiver engine, the AF_XDP userspace library, the test
+definitions and the XDP program to net/lib/xsk, and test_xsk.sh with
+xsk_prereqs.sh to selftests/net.
 
-The tool used test_progs and network_helpers only for start_server(),
-two checksum helpers and strscpy(). Open the UDP socket with a local
-helper, copy csum_tcpudp_magic() and csum_ipv6_magic(), and fill
-ifr_name with snprintf(). Build the XDP program against the uapi
-headers rather than vmlinux.h: mirror struct vlan_hdr and enum
-xdp_rss_hash_type, and cast to void * in the bound checks.
+net/lib builds the XDP program and its skeleton with the bpf.mk rules,
+and skips xskxceiver with a warning when bpftool does not work, in
+which case test_xsk.sh skips too. List test_xsk.sh in
+TEST_PROGS_EXTENDED, so that it is installed but NIPA does not run it
+yet: it runs every case, flaky ones included.
 
-Build the tool only when bpftool works, and install it without running
-it, as it needs a NIC and a peer that sends it traffic. Copy
-xdp_metadata.h rather than move it, as the xdp_metadata test in
-test_progs still uses it. Update xsk-tx-metadata.rst and the XDP entry
-of MAINTAINERS.
+xskxceiver builds against the uapi headers from make headers, whose
+linux/netlink.h does not pull in linux/kernel.h, so include it for
+min_t() directly. Put tools/include ahead of CFLAGS, so that in O=
+builds a stale usr/include in the source tree does not shadow its
+linux/kernel.h and linux/types.h. Move the ethtool ring helpers from
+network_helpers into xsk.c, and cast to void * in the bound check of
+the XDP program, as bpf.mk does not build with
+-Wno-compare-distinct-pointer-types.
 
+xdp_hw_metadata and the xdp_metadata test keep using xsk.c from
+net/lib/xsk: selftests/bpf builds xsk.o from there in place of the
+find_bit.o rule, which only test_xsk.c needed. Update MAINTAINERS.
+
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 ---
- Documentation/networking/xsk-tx-metadata.rst  |  2 +-
- MAINTAINERS                                   |  1 +
+ Documentation/networking/af_xdp.rst           |  6 +--
+ MAINTAINERS                                   |  3 +-
  tools/testing/selftests/bpf/.gitignore        |  1 -
- tools/testing/selftests/bpf/Makefile          |  8 --
- tools/testing/selftests/net/.gitignore        |  2 +
- tools/testing/selftests/net/Makefile          | 18 +++++
- .../xdp_hw_metadata.bpf.c}                    | 35 +++++---
- .../selftests/{bpf => net}/xdp_hw_metadata.c  | 81 +++++++++++++++++--
- tools/testing/selftests/net/xdp_metadata.h    | 67 +++++++++++++++
- 9 files changed, 188 insertions(+), 27 deletions(-)
- rename tools/testing/selftests/{bpf/progs/xdp_hw_metadata.c => net/xdp_hw_metadata.bpf.c} (75%)
- rename tools/testing/selftests/{bpf => net}/xdp_hw_metadata.c (92%)
- create mode 100644 tools/testing/selftests/net/xdp_metadata.h
+ tools/testing/selftests/bpf/Makefile          | 25 +++-------
+ .../testing/selftests/bpf/Makefile.buildvars  |  6 +--
+ tools/testing/selftests/bpf/network_helpers.c | 48 ------------------
+ tools/testing/selftests/bpf/network_helpers.h |  2 -
+ tools/testing/selftests/net/Makefile          |  2 +
+ tools/testing/selftests/net/config            |  1 +
+ tools/testing/selftests/net/lib/.gitignore    |  2 +
+ tools/testing/selftests/net/lib/Makefile      | 25 ++++++++++
+ .../prog_tests => net/lib/xsk}/test_xsk.c     |  2 +-
+ .../prog_tests => net/lib/xsk}/test_xsk.h     |  2 +-
+ .../selftests/{bpf => net/lib/xsk}/xsk.c      | 49 ++++++++++++++++++-
+ .../selftests/{bpf => net/lib/xsk}/xsk.h      |  4 ++
+ .../{bpf => net/lib/xsk}/xsk_xdp_common.h     |  0
+ .../lib/xsk/xsk_xdp_progs.bpf.c}              |  2 +-
+ .../{bpf => net/lib/xsk}/xskxceiver.c         |  7 +--
+ .../{bpf => net/lib/xsk}/xskxceiver.h         |  0
+ .../selftests/{bpf => net}/test_xsk.sh        |  5 ++
+ .../selftests/{bpf => net}/xsk_prereqs.sh     |  2 +-
+ 21 files changed, 108 insertions(+), 86 deletions(-)
+ rename tools/testing/selftests/{bpf/prog_tests => net/lib/xsk}/test_xsk.c (99%)
+ rename tools/testing/selftests/{bpf/prog_tests => net/lib/xsk}/test_xsk.h (99%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk.c (95%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk.h (97%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk_xdp_common.h (100%)
+ rename tools/testing/selftests/{bpf/progs/xsk_xdp_progs.c => net/lib/xsk/xsk_xdp_progs.bpf.c} (98%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xskxceiver.c (99%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xskxceiver.h (100%)
+ rename tools/testing/selftests/{bpf => net}/test_xsk.sh (98%)
+ rename tools/testing/selftests/{bpf => net}/xsk_prereqs.sh (98%)
 
-diff --git a/Documentation/networking/xsk-tx-metadata.rst b/Documentation/networking/xsk-tx-metadata.rst
-index f240930ca1df..ac15e5fddc6b 100644
---- a/Documentation/networking/xsk-tx-metadata.rst
-+++ b/Documentation/networking/xsk-tx-metadata.rst
-@@ -144,6 +144,6 @@ See ``tools/net/ynl/samples/netdev.c`` on how to query this information.
- Example
- =======
+diff --git a/Documentation/networking/af_xdp.rst b/Documentation/networking/af_xdp.rst
+index cc3f0d16b28f..538e71adb759 100644
+--- a/Documentation/networking/af_xdp.rst
++++ b/Documentation/networking/af_xdp.rst
+@@ -211,7 +211,7 @@ Libbpf
  
--See ``tools/testing/selftests/bpf/xdp_hw_metadata.c`` for an example
-+See ``tools/testing/selftests/net/xdp_hw_metadata.c`` for an example
- program that handles TX metadata. Also see https://github.com/fomichev/xskgen
- for a more bare-bones example.
+ Libbpf is a helper library for eBPF and XDP that makes using these
+ technologies a lot simpler. It also contains specific helper functions
+-in tools/testing/selftests/bpf/xsk.h for facilitating the use of
++in tools/testing/selftests/net/lib/xsk/xsk.h for facilitating the use of
+ AF_XDP. It contains two types of functions: those that can be used to
+ make the setup of AF_XDP socket easier and ones that can be used in the
+ data plane to access the rings safely and quickly.
+@@ -751,7 +751,7 @@ return values:
+      returned number signifies the max number of frags supported.
+ 
+ For an example on how these are used through libbpf, please take a
+-look at tools/testing/selftests/bpf/xskxceiver.c.
++look at tools/testing/selftests/net/lib/xsk/xskxceiver.c.
+ 
+ Multi-Buffer Support for Zero-Copy Drivers
+ ------------------------------------------
+@@ -785,7 +785,7 @@ can be displayed with "-h", as usual.
+ This sample application uses libbpf to make the setup and usage of
+ AF_XDP simpler. If you want to know how the raw uapi of AF_XDP is
+ really used to make something more advanced, take a look at the libbpf
+-code in tools/testing/selftests/bpf/xsk.[ch].
++code in tools/testing/selftests/net/lib/xsk/xsk.[ch].
+ 
+ FAQ
+ =======
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 12e444f1f7a6..2123857f3365 100644
+index 09713dc4c6a7..12e444f1f7a6 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -30418,6 +30418,7 @@ F:	net/core/xdp.c
- F:	samples/bpf/xdp*
- F:	tools/testing/selftests/bpf/*/*xdp*
- F:	tools/testing/selftests/bpf/*xdp*
-+F:	tools/testing/selftests/net/*xdp*
- K:	(?:\b|_)xdp(?:\b|_)
+@@ -30434,7 +30434,8 @@ F:	include/net/xsk_buff_pool.h
+ F:	include/uapi/linux/if_xdp.h
+ F:	include/uapi/linux/xdp_diag.h
+ F:	net/xdp/
+-F:	tools/testing/selftests/bpf/*xsk*
++F:	tools/testing/selftests/net/*xsk*
++F:	tools/testing/selftests/net/lib/xsk/
  
- XDP SOCKETS (AF_XDP)
+ XEN BLOCK SUBSYSTEM
+ M:	Roger Pau Monné <roger@xenproject.org>
 diff --git a/tools/testing/selftests/bpf/.gitignore b/tools/testing/selftests/bpf/.gitignore
-index cd098c0271ef..e318a38035d2 100644
+index b815bf0d8877..cd098c0271ef 100644
 --- a/tools/testing/selftests/bpf/.gitignore
 +++ b/tools/testing/selftests/bpf/.gitignore
-@@ -38,7 +38,6 @@ test_cpp
+@@ -36,7 +36,6 @@ test_cpp
+ /uprobe_multi
+ *.ko
  *.tmp
+-xskxceiver
  xdp_redirect_multi
  xdp_synproxy
--xdp_hw_metadata
- xdp_features
- verification_cert.h
- *.BTF
+ xdp_hw_metadata
 diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 203f2cedaf77..2d46e47bab60 100644
+index c99e0f623e10..203f2cedaf77 100644
 --- a/tools/testing/selftests/bpf/Makefile
 +++ b/tools/testing/selftests/bpf/Makefile
-@@ -56,7 +56,6 @@ TEST_GEN_PROGS_EXTENDED = \
- 	test_cpp \
+@@ -33,14 +33,13 @@ TEST_GEN_PROGS += test_progs-cpuv4
+ TEST_INST_SUBDIRS += cpuv4
+ endif
+ 
+-TEST_FILES = xsk_prereqs.sh $(wildcard progs/btf_dump_test_case_*.c)	\
++TEST_FILES = $(wildcard progs/btf_dump_test_case_*.c)	\
+ 	     bpftool_btf_dump_sorted.expected					\
+ 	     bpftool_btf_dump_unsorted.expected
+ 
+ # Order correspond to 'make run_tests' order
+ TEST_PROGS := test_bpftool_build.sh \
+ 	test_doc_build.sh \
+-	test_xsk.sh \
+ 	test_xdp_features.sh
+ 
+ TEST_PROGS_EXTENDED := \
+@@ -58,8 +57,7 @@ TEST_GEN_PROGS_EXTENDED = \
  	veristat \
  	xdp_features \
--	xdp_hw_metadata \
- 	xdp_synproxy
+ 	xdp_hw_metadata \
+-	xdp_synproxy \
+-	xskxceiver
++	xdp_synproxy
  
  TEST_GEN_FILES += $(TEST_KMODS) liburandom_read.so urandom_read sign-file uprobe_multi
-@@ -568,13 +567,6 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
+ 
+@@ -257,9 +255,9 @@ $(RUNNER_OBJS): $(VERIFY_SIG_HDR) $(BPFOBJ) $(TRUNNER_BPFTOOL)
+ $(OUTPUT)/test_progs.o: prog_tests/tests.h
+ $(OUTPUT)/test_maps.o: map_tests/tests.h
+ 
+-# find_bit.c is the only runner source outside this directory, so it
+-# needs a rule of its own.
+-$(OUTPUT)/find_bit.o: $(TOOLSDIR)/lib/find_bit.c
++# xsk.c is the only runner source outside this directory, so it needs a
++# rule of its own.
++$(OUTPUT)/xsk.o: ../net/lib/xsk/xsk.c
+ 	$(call msg,CC,,$@)
+ 	$(Q)$(CC) $(CFLAGS) -c $< $(LDLIBS) -o $@
+ 
+@@ -570,18 +568,9 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
  	$(call msg,BINARY,,$@)
  	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
  
--$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c ../net/lib/xsk/xsk.c network_helpers.c \
--			   $(TOOLSDIR)/lib/find_bit.c xdp_metadata.h \
--			   ../net/lib/xsk/xsk.h network_helpers.h test_progs.h bpf_util.h \
--			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
+-# Keep xskxceiver independent from test_progs object dependencies.
+-$(OUTPUT)/xskxceiver: xskxceiver.c xsk.c network_helpers.c \
+-			   $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c \
+-			   xskxceiver.h xsk.h network_helpers.h \
+-			   prog_tests/test_xsk.h test_progs.h bpf_util.h \
+-			   $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
 -	$(call msg,BINARY,,$@)
 -	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
 -
- $(OUTPUT)/xdp_features: xdp_features.c network_helpers.c xdp_features.h \
- 			   network_helpers.h \
- 			   test_progs.h bpf_util.h $(OUTPUT)/xdp_features.skel.h \
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index 21412510ac26..0bd88b48a53c 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -60,3 +60,5 @@ udp_splice_checksum
- udpgso
- udpgso_bench_rx
- udpgso_bench_tx
-+xdp_hw_metadata
-+xdp_hw_metadata.skel.h
+-$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c xsk.c network_helpers.c \
++$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c ../net/lib/xsk/xsk.c network_helpers.c \
+ 			   $(TOOLSDIR)/lib/find_bit.c xdp_metadata.h \
+-			   xsk.h network_helpers.h test_progs.h bpf_util.h \
++			   ../net/lib/xsk/xsk.h network_helpers.h test_progs.h bpf_util.h \
+ 			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+diff --git a/tools/testing/selftests/bpf/Makefile.buildvars b/tools/testing/selftests/bpf/Makefile.buildvars
+index d2a0c0031b87..7e0dc8fa67cd 100644
+--- a/tools/testing/selftests/bpf/Makefile.buildvars
++++ b/tools/testing/selftests/bpf/Makefile.buildvars
+@@ -74,7 +74,8 @@ COMMON_CFLAGS = -g $(OPT_FLAGS) -rdynamic -std=gnu11				\
+ 	  $(GENFLAGS) $(SAN_CFLAGS) $(LIBELF_CFLAGS)			\
+ 	  -I$(CURDIR) -I$(INCLUDE_DIR) -I$(GENDIR) -I$(LIBDIR)		\
+ 	  -I$(TOOLSINCDIR) -I$(TOOLSARCHINCDIR) -I$(APIDIR) -I$(OUTPUT)	\
+-	  -I$(CURDIR)/libarena/include
++	  -I$(CURDIR)/libarena/include					\
++	  -I$(CURDIR)/../net/lib/xsk
+ LDLIBS += $(LIBELF_LIBS) -lz -lrt -lpthread
+ 
+ PCAP_CFLAGS	:= $(shell $(PKG_CONFIG) --cflags libpcap 2>/dev/null && echo "-DTRAFFIC_MONITOR=1")
+@@ -156,7 +157,6 @@ RUNNER_OBJS-test_progs := $(addprefix $(OUTPUT)/,			\
+ 	cap_helpers.o unpriv_helpers.o sysctl_helpers.o			\
+ 	netlink_helpers.o jit_disasm_helpers.o io_helpers.o		\
+ 	test_loader.o xsk.o disasm.o disasm_helpers.o			\
+-	json_writer.o bpftool_helpers.o usdt_1.o usdt_2.o		\
+-	find_bit.o)
++	json_writer.o bpftool_helpers.o usdt_1.o usdt_2.o)
+ RUNNER_OBJS-test_maps := $(addprefix $(OUTPUT)/,			\
+ 	test_maps.o testing_helpers.o)
+diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
+index d27dc79475de..70c6e4271ca1 100644
+--- a/tools/testing/selftests/bpf/network_helpers.c
++++ b/tools/testing/selftests/bpf/network_helpers.c
+@@ -646,54 +646,6 @@ int get_socket_local_port(int sock_fd)
+ 	return -1;
+ }
+ 
+-int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
+-{
+-	struct ifreq ifr = {0};
+-	int sockfd, err;
+-
+-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+-	if (sockfd < 0)
+-		return -errno;
+-
+-	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+-
+-	ring_param->cmd = ETHTOOL_GRINGPARAM;
+-	ifr.ifr_data = (char *)ring_param;
+-
+-	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
+-		err = errno;
+-		close(sockfd);
+-		return -err;
+-	}
+-
+-	close(sockfd);
+-	return 0;
+-}
+-
+-int set_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
+-{
+-	struct ifreq ifr = {0};
+-	int sockfd, err;
+-
+-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+-	if (sockfd < 0)
+-		return -errno;
+-
+-	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+-
+-	ring_param->cmd = ETHTOOL_SRINGPARAM;
+-	ifr.ifr_data = (char *)ring_param;
+-
+-	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
+-		err = errno;
+-		close(sockfd);
+-		return -err;
+-	}
+-
+-	close(sockfd);
+-	return 0;
+-}
+-
+ struct send_recv_arg {
+ 	int		fd;
+ 	uint32_t	bytes;
+diff --git a/tools/testing/selftests/bpf/network_helpers.h b/tools/testing/selftests/bpf/network_helpers.h
+index 878c9fc5c37c..c7a1fd119e37 100644
+--- a/tools/testing/selftests/bpf/network_helpers.h
++++ b/tools/testing/selftests/bpf/network_helpers.h
+@@ -89,8 +89,6 @@ int make_sockaddr(int family, const char *addr_str, __u16 port,
+ 		  struct sockaddr_storage *addr, socklen_t *len);
+ char *ping_command(int family);
+ int get_socket_local_port(int sock_fd);
+-int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
+-int set_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
+ 
+ int open_tuntap(const char *dev_name, bool need_mac);
+ 
 diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 7dba412401ea..9925360a9a98 100644
+index 9180b9bec515..7dba412401ea 100644
 --- a/tools/testing/selftests/net/Makefile
 +++ b/tools/testing/selftests/net/Makefile
-@@ -226,6 +226,15 @@ TEST_GEN_PROGS += $(YNL_GEN_PROGS)
+@@ -140,6 +140,7 @@ TEST_PROGS := \
+ # end of TEST_PROGS
  
- TEST_GEN_FILES += $(patsubst %.c,%.o,$(wildcard *.bpf.c))
+ TEST_PROGS_EXTENDED := \
++	test_xsk.sh \
+ 	xfrm_policy_add_speed.sh \
+ # end of TEST_PROGS_EXTENDED
  
-+# xdp_hw_metadata needs a working bpftool to generate its skeleton
+@@ -210,6 +211,7 @@ TEST_FILES := \
+ 	in_netns.sh \
+ 	lib.sh \
+ 	settings \
++	xsk_prereqs.sh \
+ # end of TEST_FILES
+ 
+ # YNL files, must be before "include ..lib.mk"
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 7a89e2618d4c..162df07f84e1 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -141,5 +141,6 @@ CONFIG_USER_NS=y
+ CONFIG_VETH=y
+ CONFIG_VLAN_8021Q=y
+ CONFIG_VXLAN=m
++CONFIG_XDP_SOCKETS=y
+ CONFIG_XFRM_INTERFACE=m
+ CONFIG_XFRM_USER=m
+diff --git a/tools/testing/selftests/net/lib/.gitignore b/tools/testing/selftests/net/lib/.gitignore
+index 6cd2b762af5d..1106fef3041f 100644
+--- a/tools/testing/selftests/net/lib/.gitignore
++++ b/tools/testing/selftests/net/lib/.gitignore
+@@ -2,3 +2,5 @@
+ csum
+ gro
+ xdp_helper
++xsk_xdp_progs.skel.h
++xskxceiver
+diff --git a/tools/testing/selftests/net/lib/Makefile b/tools/testing/selftests/net/lib/Makefile
+index ff83603397d0..0a6cd733883d 100644
+--- a/tools/testing/selftests/net/lib/Makefile
++++ b/tools/testing/selftests/net/lib/Makefile
+@@ -5,6 +5,15 @@ CFLAGS += -I../../../../../usr/include/ $(KHDR_INCLUDES)
+ # Additional include paths needed by kselftest.h
+ CFLAGS += -I../../
+ 
++# xskxceiver needs a working bpftool to generate its skeleton
 +BPFTOOL ?= bpftool
 +HAS_BPFTOOL := $(shell $(BPFTOOL) version >/dev/null 2>&1 && echo y)
 +ifeq ($(HAS_BPFTOOL),y)
-+TEST_GEN_FILES += xdp_hw_metadata
++COND_GEN_FILES += xskxceiver
 +else
-+$(warning excluding xdp_hw_metadata, bpftool not installed or not working)
++$(warning excluding xskxceiver, bpftool not installed or not working)
 +endif
 +
- TEST_INCLUDES := forwarding/lib.sh
+ TEST_FILES := \
+ 	../../../../net/ynl \
+ 	../../../../../Documentation/netlink/specs \
+@@ -13,6 +22,7 @@ TEST_FILES := \
  
- include ../lib.mk
-@@ -249,3 +258,12 @@ $(OUTPUT)/bind_bhash: LDLIBS += -lpthread
- $(OUTPUT)/io_uring_zerocopy_tx: CFLAGS += -I../../../include/
+ TEST_GEN_FILES := \
+ 	$(patsubst %.c,%.o,$(wildcard *.bpf.c)) \
++	$(COND_GEN_FILES) \
+ 	csum \
+ 	gro \
+ 	xdp_helper \
+@@ -22,4 +32,19 @@ TEST_INCLUDES := $(wildcard py/*.py sh/*.sh)
  
- include bpf.mk
+ include ../../lib.mk
+ 
++BPF_PROG_DIRS := xsk
+ include ../bpf.mk
 +
-+# Reference tool for checking XDP RX/TX metadata on real HW, built with
-+# the AF_XDP library of net/lib/xsk.
-+$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c xdp_metadata.h lib/xsk/xsk.c \
-+			   lib/xsk/xsk.h $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ)
++# AF_XDP test engine used by net/test_xsk.sh.
++XSK_SRCS := $(filter-out %.bpf.c,$(wildcard xsk/*.c)) \
++	$(top_srcdir)/tools/lib/find_bit.c
++
++$(OUTPUT)/xskxceiver: $(XSK_SRCS) $(wildcard xsk/*.h) \
++		      $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ)
 +	$(call msg,CC,,$@)
 +	$(Q)$(CC) -I$(top_srcdir)/tools/include $(CFLAGS) -I$(OUTPUT) \
 +		-I$(SCRATCH_DIR)/include \
-+		$(filter %.c,$^) $(BPFOBJ) $(LDLIBS) -lelf -lz -o $@
-diff --git a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c b/tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-similarity index 75%
-rename from tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-rename to tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-index 330ece2eabdb..a183436646b1 100644
---- a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-@@ -1,10 +1,23 @@
++		$(XSK_SRCS) $(BPFOBJ) $(LDLIBS) -lelf -lz -lpthread -o $@
++
++# TEST_GEN_FILES lacks xskxceiver when bpftool fails; clean it anyway.
++EXTRA_CLEAN += $(OUTPUT)/xskxceiver
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/net/lib/xsk/test_xsk.c
+similarity index 99%
+rename from tools/testing/selftests/bpf/prog_tests/test_xsk.c
+rename to tools/testing/selftests/net/lib/xsk/test_xsk.c
+index 4549358cc8c2..ca161511f1e5 100644
+--- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
++++ b/tools/testing/selftests/net/lib/xsk/test_xsk.c
+@@ -1,4 +1,5 @@
  // SPDX-License-Identifier: GPL-2.0
++#include <arpa/inet.h>
+ #include <bpf/bpf.h>
+ #include <errno.h>
+ #include <linux/bitmap.h>
+@@ -13,7 +14,6 @@
+ #include <sys/time.h>
+ #include <unistd.h>
  
--#include <vmlinux.h>
-+#include <linux/bpf.h>
-+#include <linux/if_ether.h>
-+#include <linux/in.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <linux/udp.h>
- #include "xdp_metadata.h"
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_endian.h>
- 
-+/* Mirror of struct vlan_hdr from include/linux/if_vlan.h, which is not
-+ * part of the UAPI headers.
-+ */
-+struct vlan_hdr {
-+	__be16 h_vlan_TCI;
-+	__be16 h_vlan_encapsulated_proto;
-+};
-+
- struct {
- 	__uint(type, BPF_MAP_TYPE_XSKMAP);
- 	__uint(max_entries, 256);
-@@ -39,25 +52,29 @@ int rx(struct xdp_md *ctx)
- 	data_end = (void *)(long)ctx->data_end;
- 	eth = data;
- 
--	if (eth + 1 < data_end && (eth->h_proto == bpf_htons(ETH_P_8021AD) ||
--				   eth->h_proto == bpf_htons(ETH_P_8021Q)))
-+	if ((void *)(eth + 1) < data_end &&
-+	    (eth->h_proto == bpf_htons(ETH_P_8021AD) ||
-+	     eth->h_proto == bpf_htons(ETH_P_8021Q)))
- 		eth = (void *)eth + sizeof(struct vlan_hdr);
- 
--	if (eth + 1 < data_end && eth->h_proto == bpf_htons(ETH_P_8021Q))
-+	if ((void *)(eth + 1) < data_end &&
-+	    eth->h_proto == bpf_htons(ETH_P_8021Q))
- 		eth = (void *)eth + sizeof(struct vlan_hdr);
- 
--	if (eth + 1 < data_end) {
-+	if ((void *)(eth + 1) < data_end) {
- 		if (eth->h_proto == bpf_htons(ETH_P_IP)) {
- 			iph = (void *)(eth + 1);
--			if (iph + 1 < data_end && iph->protocol == IPPROTO_UDP)
-+			if ((void *)(iph + 1) < data_end &&
-+			    iph->protocol == IPPROTO_UDP)
- 				udp = (void *)(iph + 1);
- 		}
- 		if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
- 			ip6h = (void *)(eth + 1);
--			if (ip6h + 1 < data_end && ip6h->nexthdr == IPPROTO_UDP)
-+			if ((void *)(ip6h + 1) < data_end &&
-+			    ip6h->nexthdr == IPPROTO_UDP)
- 				udp = (void *)(ip6h + 1);
- 		}
--		if (udp && udp + 1 > data_end)
-+		if (udp && (void *)(udp + 1) > data_end)
- 			udp = NULL;
- 	}
- 
-@@ -82,7 +99,7 @@ int rx(struct xdp_md *ctx)
- 	data_meta = (void *)(long)ctx->data_meta;
- 	meta = data_meta;
- 
--	if (meta + 1 > data) {
-+	if ((void *)(meta + 1) > data) {
- 		__sync_add_and_fetch(&pkts_fail, 1);
- 		return XDP_PASS;
- 	}
-diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/net/xdp_hw_metadata.c
-similarity index 92%
-rename from tools/testing/selftests/bpf/xdp_hw_metadata.c
-rename to tools/testing/selftests/net/xdp_hw_metadata.c
-index ab3f5fc56e86..6db928f1ffdc 100644
---- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/net/xdp_hw_metadata.c
-@@ -16,11 +16,11 @@
-  * - TX launch time HW offload is requested for transmission
-  */
- 
--#include <test_progs.h>
--#include <network_helpers.h>
- #include "xdp_hw_metadata.skel.h"
--#include "xsk.h"
-+#include "lib/xsk/xsk.h"
- 
-+#include <bpf/bpf.h>
-+#include <errno.h>
- #include <error.h>
- #include <linux/kernel.h>
- #include <linux/bits.h>
-@@ -47,6 +47,9 @@
+-#include "network_helpers.h"
+ #include "test_xsk.h"
+ #include "xsk_xdp_common.h"
+ #include "xsk_xdp_progs.skel.h"
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.h b/tools/testing/selftests/net/lib/xsk/test_xsk.h
+similarity index 99%
+rename from tools/testing/selftests/bpf/prog_tests/test_xsk.h
+rename to tools/testing/selftests/net/lib/xsk/test_xsk.h
+index 69158b67466c..2506b0dcc6bf 100644
+--- a/tools/testing/selftests/bpf/prog_tests/test_xsk.h
++++ b/tools/testing/selftests/net/lib/xsk/test_xsk.h
+@@ -5,7 +5,7 @@
  #include <linux/ethtool.h>
- #include <sys/socket.h>
- #include <arpa/inet.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <signal.h>
+ #include <linux/if_xdp.h>
  
- #include "xdp_metadata.h"
+-#include "../kselftest.h"
++#include "kselftest.h"
+ #include "xsk.h"
  
-@@ -87,7 +90,69 @@ int launch_time_queue;
- 	system(command);					\
- })
+ #ifndef SO_PREFER_BUSY_POLL
+diff --git a/tools/testing/selftests/bpf/xsk.c b/tools/testing/selftests/net/lib/xsk/xsk.c
+similarity index 95%
+rename from tools/testing/selftests/bpf/xsk.c
+rename to tools/testing/selftests/net/lib/xsk/xsk.c
+index 25d568abf0f2..6bd32caf5d08 100644
+--- a/tools/testing/selftests/bpf/xsk.c
++++ b/tools/testing/selftests/net/lib/xsk/xsk.c
+@@ -35,7 +35,6 @@
+ #include <bpf/bpf.h>
+ #include <bpf/libbpf.h>
+ #include "xsk.h"
+-#include "bpf_util.h"
  
--void test__fail(void) { /* for network_helpers.c */ }
-+static __u16 csum_fold(__u32 csum)
+ #ifndef SOL_XDP
+  #define SOL_XDP 283
+@@ -779,3 +778,51 @@ void xsk_socket__delete(struct xsk_socket *xsk)
+ 		close(xsk->fd);
+ 	free(xsk);
+ }
++
++int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
 +{
-+	csum = (csum & 0xffff) + (csum >> 16);
-+	csum = (csum & 0xffff) + (csum >> 16);
++	struct ifreq ifr = {0};
++	int sockfd, err;
 +
-+	return (__u16)~csum;
-+}
++	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
++	if (sockfd < 0)
++		return -errno;
 +
-+static __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr, __u32 len,
-+				 __u8 proto, __wsum csum)
-+{
-+	__u64 s = csum;
++	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 +
-+	s += (__u32)saddr;
-+	s += (__u32)daddr;
-+	s += htons(proto + len);
-+	s = (s & 0xffffffff) + (s >> 32);
-+	s = (s & 0xffffffff) + (s >> 32);
++	ring_param->cmd = ETHTOOL_GRINGPARAM;
++	ifr.ifr_data = (char *)ring_param;
 +
-+	return csum_fold((__u32)s);
-+}
-+
-+static __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
-+			       const struct in6_addr *daddr, __u32 len,
-+			       __u8 proto, __wsum csum)
-+{
-+	__u64 s = csum;
-+	int i;
-+
-+	for (i = 0; i < 4; i++)
-+		s += (__u32)saddr->s6_addr32[i];
-+	for (i = 0; i < 4; i++)
-+		s += (__u32)daddr->s6_addr32[i];
-+	s += htons(proto + len);
-+	s = (s & 0xffffffff) + (s >> 32);
-+	s = (s & 0xffffffff) + (s >> 32);
-+
-+	return csum_fold((__u32)s);
-+}
-+
-+static int open_udp_server(__u16 port)
-+{
-+	struct sockaddr_in6 addr = {
-+		.sin6_family = AF_INET6,
-+		.sin6_port = htons(port),
-+		.sin6_addr = IN6ADDR_ANY_INIT,
-+	};
-+	struct timeval timeo = { .tv_sec = 1 };
-+	int fd;
-+
-+	fd = socket(AF_INET6, SOCK_DGRAM, 0);
-+	if (fd < 0)
-+		return -1;
-+
-+	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeo, sizeof(timeo)) ||
-+	    setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &timeo, sizeof(timeo)) ||
-+	    bind(fd, (struct sockaddr *)&addr, sizeof(addr))) {
-+		close(fd);
-+		return -1;
++	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
++		err = errno;
++		close(sockfd);
++		return -err;
 +	}
 +
-+	return fd;
++	close(sockfd);
++	return 0;
 +}
++
++int set_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
++{
++	struct ifreq ifr = {0};
++	int sockfd, err;
++
++	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
++	if (sockfd < 0)
++		return -errno;
++
++	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
++
++	ring_param->cmd = ETHTOOL_SRINGPARAM;
++	ifr.ifr_data = (char *)ring_param;
++
++	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
++		err = errno;
++		close(sockfd);
++		return -err;
++	}
++
++	close(sockfd);
++	return 0;
++}
+diff --git a/tools/testing/selftests/bpf/xsk.h b/tools/testing/selftests/net/lib/xsk/xsk.h
+similarity index 97%
+rename from tools/testing/selftests/bpf/xsk.h
+rename to tools/testing/selftests/net/lib/xsk/xsk.h
+index 48729da142c2..3f1fea999763 100644
+--- a/tools/testing/selftests/bpf/xsk.h
++++ b/tools/testing/selftests/net/lib/xsk/xsk.h
+@@ -15,6 +15,7 @@
+ #include <stdio.h>
+ #include <stdint.h>
+ #include <stdbool.h>
++#include <linux/ethtool.h>
+ #include <linux/if_xdp.h>
  
- static int open_xsk(int ifindex, struct xsk *xsk, __u32 queue_id)
+ #include <bpf/libbpf.h>
+@@ -242,6 +243,9 @@ void xsk_socket__delete(struct xsk_socket *xsk);
+ 
+ int xsk_set_mtu(int ifindex, int mtu);
+ 
++int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
++int set_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
++
+ #ifdef __cplusplus
+ } /* extern "C" */
+ #endif
+diff --git a/tools/testing/selftests/bpf/xsk_xdp_common.h b/tools/testing/selftests/net/lib/xsk/xsk_xdp_common.h
+similarity index 100%
+rename from tools/testing/selftests/bpf/xsk_xdp_common.h
+rename to tools/testing/selftests/net/lib/xsk/xsk_xdp_common.h
+diff --git a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c b/tools/testing/selftests/net/lib/xsk/xsk_xdp_progs.bpf.c
+similarity index 98%
+rename from tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
+rename to tools/testing/selftests/net/lib/xsk/xsk_xdp_progs.bpf.c
+index 023d8befd4ca..84e5f4732289 100644
+--- a/tools/testing/selftests/bpf/progs/xsk_xdp_progs.c
++++ b/tools/testing/selftests/net/lib/xsk/xsk_xdp_progs.bpf.c
+@@ -64,7 +64,7 @@ SEC("xdp") int xsk_xdp_shared_umem(struct xdp_md *xdp)
+ 	void *data_end = (void *)(long)xdp->data_end;
+ 	struct ethhdr *eth = data;
+ 
+-	if (eth + 1 > data_end)
++	if ((void *)(eth + 1) > data_end)
+ 		return XDP_DROP;
+ 
+ 	/* Redirecting packets based on the destination MAC address */
+diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
+similarity index 99%
+rename from tools/testing/selftests/bpf/xskxceiver.c
+rename to tools/testing/selftests/net/lib/xsk/xskxceiver.c
+index 6cf95a44c8c0..0a63651434a5 100644
+--- a/tools/testing/selftests/bpf/xskxceiver.c
++++ b/tools/testing/selftests/net/lib/xsk/xskxceiver.c
+@@ -81,6 +81,7 @@
+ #include <linux/netdev.h>
+ #include <linux/ethtool.h>
+ #include <linux/align.h>
++#include <linux/kernel.h>
+ #include <arpa/inet.h>
+ #include <net/if.h>
+ #include <locale.h>
+@@ -91,7 +92,7 @@
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ 
+-#include "prog_tests/test_xsk.h"
++#include "test_xsk.h"
+ #include "xsk_xdp_progs.skel.h"
+ #include "xsk.h"
+ #include "xskxceiver.h"
+@@ -100,14 +101,10 @@
+ #include "kselftest.h"
+ #include "xsk_xdp_common.h"
+ 
+-#include <network_helpers.h>
+-
+ static bool opt_print_tests;
+ static enum test_mode opt_mode = TEST_MODE_ALL;
+ static u32 opt_run_test = RUN_ALL_TESTS;
+ 
+-void test__fail(void) { /* for network_helpers.c */ }
+-
+ static void __exit_with_error(int error, const char *file, const char *func, int line)
  {
-@@ -550,7 +615,7 @@ static int rxq_num(const char *ifname)
- 	struct ifreq ifr = {
- 		.ifr_data = (void *)&ch,
- 	};
--	strscpy(ifr.ifr_name, ifname);
-+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
- 	int fd, ret;
+ 	ksft_test_result_fail("[%s:%s:%i]: ERROR: %d/\"%s\"\n", file, func, line,
+diff --git a/tools/testing/selftests/bpf/xskxceiver.h b/tools/testing/selftests/net/lib/xsk/xskxceiver.h
+similarity index 100%
+rename from tools/testing/selftests/bpf/xskxceiver.h
+rename to tools/testing/selftests/net/lib/xsk/xskxceiver.h
+diff --git a/tools/testing/selftests/bpf/test_xsk.sh b/tools/testing/selftests/net/test_xsk.sh
+similarity index 98%
+rename from tools/testing/selftests/bpf/test_xsk.sh
+rename to tools/testing/selftests/net/test_xsk.sh
+index 62db060298a4..448cd2462278 100755
+--- a/tools/testing/selftests/bpf/test_xsk.sh
++++ b/tools/testing/selftests/net/test_xsk.sh
+@@ -103,6 +103,11 @@ do
+ 	esac
+ done
  
- 	fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-@@ -571,7 +636,7 @@ static void hwtstamp_ioctl(int op, const char *ifname, struct hwtstamp_config *c
- 	struct ifreq ifr = {
- 		.ifr_data = (void *)cfg,
- 	};
--	strscpy(ifr.ifr_name, ifname);
-+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
- 	int fd, ret;
++if [ ! -x "./${XSKOBJ}" ]; then
++	echo "xskxceiver was not built; skipping"
++	exit $ksft_skip
++fi
++
+ TEST_NAME="PREREQUISITES"
  
- 	fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-@@ -853,9 +918,9 @@ int main(int argc, char *argv[])
- 		error(1, -ret, "xdp_hw_metadata__load");
+ URANDOM=/dev/urandom
+diff --git a/tools/testing/selftests/bpf/xsk_prereqs.sh b/tools/testing/selftests/net/xsk_prereqs.sh
+similarity index 98%
+rename from tools/testing/selftests/bpf/xsk_prereqs.sh
+rename to tools/testing/selftests/net/xsk_prereqs.sh
+index 47c7b8064f38..d8fe786e967c 100755
+--- a/tools/testing/selftests/bpf/xsk_prereqs.sh
++++ b/tools/testing/selftests/net/xsk_prereqs.sh
+@@ -8,7 +8,7 @@ ksft_xfail=2
+ ksft_xpass=3
+ ksft_skip=4
  
- 	printf("prepare skb endpoint...\n");
--	server_fd = start_server(AF_INET6, SOCK_DGRAM, NULL, 9092, 1000);
-+	server_fd = open_udp_server(9092);
- 	if (server_fd < 0)
--		error(1, errno, "start_server");
-+		error(1, errno, "open_udp_server");
- 	timestamping_enable(server_fd,
- 			    SOF_TIMESTAMPING_SOFTWARE |
- 			    SOF_TIMESTAMPING_RAW_HARDWARE);
-diff --git a/tools/testing/selftests/net/xdp_metadata.h b/tools/testing/selftests/net/xdp_metadata.h
-new file mode 100644
-index 000000000000..9371889f76d3
---- /dev/null
-+++ b/tools/testing/selftests/net/xdp_metadata.h
-@@ -0,0 +1,67 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#pragma once
-+
-+#ifndef ETH_P_IP
-+#define ETH_P_IP 0x0800
-+#endif
-+
-+#ifndef ETH_P_IPV6
-+#define ETH_P_IPV6 0x86DD
-+#endif
-+
-+#ifndef ETH_P_8021Q
-+#define ETH_P_8021Q 0x8100
-+#endif
-+
-+#ifndef ETH_P_8021AD
-+#define ETH_P_8021AD 0x88A8
-+#endif
-+
-+#ifndef BIT
-+#define BIT(nr)			(1 << (nr))
-+#endif
-+
-+/* Non-existent checksum status */
-+#define XDP_CHECKSUM_MAGIC	BIT(2)
-+
-+/* Mirror of enum xdp_rss_hash_type from include/net/xdp.h, which is not
-+ * part of the UAPI headers.
-+ */
-+enum xdp_rss_hash_type {
-+	XDP_RSS_L3_IPV4		= BIT(0),
-+	XDP_RSS_L3_IPV6		= BIT(1),
-+	XDP_RSS_L3_DYNHDR	= BIT(2),
-+	XDP_RSS_L4		= BIT(3),
-+	XDP_RSS_L4_TCP		= BIT(4),
-+	XDP_RSS_L4_UDP		= BIT(5),
-+	XDP_RSS_L4_SCTP		= BIT(6),
-+	XDP_RSS_L4_IPSEC	= BIT(7),
-+	XDP_RSS_L4_ICMP		= BIT(8),
-+};
-+
-+enum xdp_meta_field {
-+	XDP_META_FIELD_TS	= BIT(0),
-+	XDP_META_FIELD_RSS	= BIT(1),
-+	XDP_META_FIELD_VLAN_TAG	= BIT(2),
-+};
-+
-+struct xdp_meta {
-+	union {
-+		__u64 rx_timestamp;
-+		__s32 rx_timestamp_err;
-+	};
-+	__u64 xdp_timestamp;
-+	__u32 rx_hash;
-+	union {
-+		__u32 rx_hash_type;
-+		__s32 rx_hash_err;
-+	};
-+	union {
-+		struct {
-+			__be16 rx_vlan_proto;
-+			__u16 rx_vlan_tci;
-+		};
-+		__s32 rx_vlan_tag_err;
-+	};
-+	enum xdp_meta_field hint_valid;
-+};
+-XSKOBJ=xskxceiver
++XSKOBJ=lib/xskxceiver
+ 
+ validate_root_exec()
+ {
 -- 
 2.43.0
 
