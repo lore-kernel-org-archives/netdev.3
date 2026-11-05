@@ -1,62 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793848827;
-	b=ftBzx9yy++2MlHtLTy1SJbcCVkirXsS3Gkd3S5wU5T7/E0yfcz0S4D674lJk+C9UU0s9
-	 DXN/iijVttQr6KspjGdyJiWoEOSkwUPNaO+pp56Qm/bIsza7koudAt/UUGaz2JjQoMbnV
-	 iuKPiLhX+LsKuZq+AhXBw6IwEGBLt2jZDFa5E92GhqsaxXKTpRxCpenHYHRbsF/1DEGVb
-	 rHzkOiAQHJ2kB8nayF5uyBSiyTzaHvENoxX72HQ8fLExl8zkrV/lxUYtOYp3CpyJCfdf3
-	 HgoS4ceaJy0F1gw+UcIZHEPIeFq0n0EAMItYdId+16P0haG+h4+wkHp8o0BPvUEkz9A==
+	t=1793849035;
+	b=ul0SemTZehlfDv2wMlXClyxn1wtDncGBv6Uyp8H2ASnP/BOkMFFWZ0CvkyHE6ryNDBZU
+	 3PsYwS3usRwJ3X9/OswJ/CEsqPyOSMiA4EQ5vP0HpEI2GNyhRoj9JfJHqudAirQG9sAB5
+	 bjWpzwOvduHygQA9zwTUQdgS3O3f7fbPcXopJRdCHxf9Jahbn3mC4D0xrxbVXbzEPLGHA
+	 5KvjnZPxLv+v5KUuTE33UntbZk6lqvYfrB7v18ox/BG1z16+vBzN00Xt4gKPWT5IdjaiP
+	 sx4Mid4IEwMcFa3fHIgn55w9Xa34iiHC6GIdC9ir0LUv5j/5fZoeHArPR/3p8SVj3tg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793848827;
-	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=f1k09c1wR/2ZTf34h9QyJ4bsorM7gCNcAVQZ4O8hKBU=;
-	b=NTcbkow6K8phrnWcFQ8C5aOlRx6cyEZ2i74+ZqLFjlEcUcTMp9tfgZ74LwvRGE+MgTZx
-	 cM7O2loUj40In0cpTMU4as48iO9UT6bcce/EfIeJ85BjeKZANh224Gs/fWqWNEDuv0Lct
-	 CZ/cv+mURV/LVH6KEJlsoesadLrjDLzw1ro6PQv/7nZXzWSHOwHphF/mGVAQrcD25bz/v
-	 G9AejFS57/0Ea/bjSGqs30M2CnOifVCHFXOvqcqBsEumFQc8J1CIJBRWafUaei7DzvQr/
-	 FK25JIJI3Ia8RBrCfLjAxsWZE6jVhYG2IM7jAb70znKO7+G6cLxadDL6Qra4yzSAOwQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793849035;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=RMhQUIdBSBohHBv0s+jn+92qXMfv8S1VzeMvLzZBnBQ=;
+	b=jQPJDomF/im2XbiK3xYd6/okzmgW1AHfAiLL96Z+mjBqdKYS2kNT684TC0XmRs5yhhr/
+	 dY6akhbaAaT2Acgs5W4WLogTiOugEIIfeWCN58F1DB/0LArNNmpWp35VamMcNOA+N9BzQ
+	 y1J+jHcDtIlQsj3asLGU2nvkboRiYvpJWix6LU48TSw6jd35wLWuRCWzqc0biLjo/NAAA
+	 E/Akq8rkoBYr1Cvb0dwSciCzAOphoCuPJMjeu10sm2BkfFAPP3yQGBX4re1vQmuZI5Pal
+	 acFnJVZE1/6YwQIOIu2JnGZyz3j0PlcL0sSuG3CF/HOzht3Ghtec2M267sAHzkOVrYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LVufgj4a;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OawRORAq;
+	arc=none smtp.remote-ip=91.218.175.21
+Received: from mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37602606A31B;
-	Thu,  5 Nov 2026 03:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD6B606A32D
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:23:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AD6B606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LVufgj4a
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D555C1F000C1;
-	Thu,  5 Nov 2026 03:20:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793848826;
-	bh=f1k09c1wR/2ZTf34h9QyJ4bsorM7gCNcAVQZ4O8hKBU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LVufgj4aKr3Qdju5kzCcj9anfQIgtXx4CcZmT9o4Jh6mt4FDHsKgOvFYwCrnmjO5I
-	 pJUBVrQknvnIS4q5g8aH6flzN/GQeIlOMOfJyz2N9JSvOrMPIdHVOjjjEw/wzaO2Zs
-	 MN+HLUzlCwssmHgeYLQ/glWpTIogak1Muym77DbfcYNNmsDeMQpZap5JCuAxKYDQI0
-	 6wAlCnHiWfpflzpi6WGHJ4fjHBTxUqJ64dr89Zc5oQJFhjemQM/6zUMhXTB/XMlBdV
-	 LMGQggTsxG/gn98zNiJrIRkidLWfj1UI5ddCp6PzVcc1IdRd9Dq1QKgWge0DLhKDId
-	 PjycxIt62Y5qQ==
-Message-ID: <b9ed2a8b5f687d7f581d4867a7867c5c012bb2cc.camel@kernel.org>
-Subject: Re: [PATCH v2 1/2] SUNRPC: add request-scoped disconnects when
- cancelling tasks
-From: Trond Myklebust <trondmy@kernel.org>
-To: tmenninger@purestorage.com, anna@kernel.org
-Cc: cel@kernel.org, ebadger@everpuredata.com, jcurley@everpuredata.com, 
-	jlayton@kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, 	netdev@vger.kernel.org,
- slingappa@everpuredata.com, Tim Menninger	 <tmenninger@everpuredata.com>
-Date: Wed, 04 Nov 2026 22:20:24 -0500
-In-Reply-To: <681354cdb85b67410793908d9aa4ee37a06408d2.camel@kernel.org>
-References: <20261105020249.2607367-1-tmenninger@purestorage.com>
-		 <20261105020249.2607367-2-tmenninger@purestorage.com>
-	 <681354cdb85b67410793908d9aa4ee37a06408d2.camel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OawRORAq
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=9TwfhhyQYL6sezbrnoxAIpd4i92BRlemNb9m/b/o/JM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793849032; v=1; x=1794453832;
+ b=OawRORAqIlGTqBo4KxA1Lm4jZSUfwHAKiWD8M//FYWY455xbcu2ExiDH2R9qu/gNYkTydUOy
+ FKpSYpD/B8wuVw7h0v8MdES5u2d7Uw78QEQrlgUrDabfYDyis0MqYWNVVxgEXU86B8ZIJDvUO9q
+ 7h+GpM8hJkvG3TJqJD617K10=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 195ef7053fc6f30c;
+	Thu, 05 Nov 2026 03:23:52 +0000
+X-Mizu-Trace-ID: 195ef7053fc6f30c
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 11:23:43 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+	David Lebrun <david.lebrun@uclouvain.be>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Mathieu Xhonneux <m.xhonneux@gmail.com>,
+	David Lebrun <dlebrun@google.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>,
+	Andrea Mayer <andrea@common-net.org>
+Subject: Re: [PATCH net 5/6] seg6: account for the MAC header in skb checksum
+ on L2 encapsulation
+Message-ID: <auv2v3HH4xX5nyNP@fedora>
+References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
+ <20261031225033.64-6-andrea.mayer@uniroma2.it>
+ <aulI7pl1oWRKzXgt@fedora>
+ <20261104212546.1222c4cfcccaecf68f326cdf@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,156 +78,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104212546.1222c4cfcccaecf68f326cdf@uniroma2.it>
 
-On Wed, 2026-11-04 at 22:14 -0500, Trond Myklebust wrote:
-> On Thu, 2026-11-05 at 02:02 +0000, tmenninger@purestorage.com=C2=A0wrote:
-> > From: Tim Menninger <tmenninger@everpuredata.com>
-> >=20
-> > rpc_cancel_tasks() allows callers to cancel a selected set of RPC
-> > tasks,
-> > but callers that also need to tear down the connection currently
-> > have
-> > to
-> > disconnect at the rpc_clnt level.
-> >=20
-> > That is broader than necessary for clients with multiple
-> > transports.
-> > A
-> > cancelled request is associated with a specific rpc_xprt and
-> > records
-> > the
-> > connection generation on which it was transmitted in
-> > rq_connect_cookie.
-> >=20
-> > Add rpc_cancel_tasks_and_disconnect() to cancel matching tasks and
-> > mark
-> > matching requests that remain on the transport transmit or receive
-> > queues
-> > for conditional transport disconnect when the request is released.
-> >=20
-> > Store the disconnect indication in struct rpc_rqst rather than
-> > struct
-> > rpc_task. An RPC task can release one request and later acquire
-> > another,
-> > so task-scoped state could otherwise be consumed by a successor
-> > request
-> > and disconnect the wrong transport generation.
-> >=20
-> > After cancelling matching tasks, walk the client's transports and
-> > mark
-> > matching requests belonging to that client that remain on the
-> > transmit
-> > or receive queues. An rpc_xprt may be shared by multiple rpc_clnt
-> > instances, so requests belonging to other clients are left
-> > untouched.
-> >=20
-> > When a marked request is released, use
-> > xprt_conditional_disconnect()
-> > with
-> > its saved rq_connect_cookie. This disconnects the transport only if
-> > it is
-> > still using the same connection generation on which the request was
-> > sent,
-> > and leaves a replacement connection untouched.
-> >=20
-> > Requests that were never transmitted do not require a disconnect.
-> >=20
->=20
-> I'm all for optimising where it makes sense, however this is adding
-> another spinlock protected section in xprt_release() for something
-> that
-> is clearly a rare corner case.
->=20
-> So how about something like the following change instead?
->=20
-Sorry, I oversimplified. Something like this:
+On Wed, Nov 04, 2026 at 09:25:46PM +0100, Andrea Mayer wrote:
+> On Tue, 3 Nov 2026 10:37:34 +0800
+> Hangbin Liu <hangbin.liu@linux.dev> wrote:
+> 
+> > [snip]
+> > >  		skb_mac_header_rebuild(skb);
+> > > -		skb_push(skb, skb->mac_len);
+> > > +		skb_push_rcsum(skb, skb->mac_len);
+> > >  
+> > >  		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
+> > >  			err = __seg6_do_srh_encap(skb, tinfo->srh,
+> > > -- 
+> > > 2.43.0
+> > > 
+> > 
+> > Should we put the skb_push_rcsum() inside of __seg6_do_srh_encap() and
+> > seg6_do_srh_encap_red()? They all do skb_mac_header_rebuild() again.
+> > [snip]
+> 
+> Hi Hangbin,
+> 
+> I am not sure where exactly you would like to put skb_push_rcsum() in
+> these two functions. I can read it in two ways.
+> 
+> 1) Right after skb_mac_header_rebuild(), for example in
+>    __seg6_do_srh_encap():
+> 
+>  	skb_push(skb, tot_len);
+>  	skb_reset_network_header(skb);
+>  	skb_mac_header_rebuild(skb);
+> +	if (proto == IPPROTO_ETHERNET)
+> +		skb_push_rcsum(skb, skb->mac_len);
+>  	hdr = ipv6_hdr(skb);
+> 
+>    Here the outer headers are already pushed, and skb_mac_header_rebuild()
+>    moves the MAC header in front of them, outside skb->data. The push then
+>    makes the packet start with that MAC header, instead of the outer
+>    IPv6 header.
+> 
+> 2) Before the outer headers are pushed, for example in
+>    __seg6_do_srh_encap():
+> 
+> +	if (proto == IPPROTO_ETHERNET)
+> +		skb_push_rcsum(skb, skb->mac_len);
+> +
+>  	inner_hdr = ipv6_hdr(skb);
+>  	flowlabel = seg6_make_flowlabel(net, skb, inner_hdr);
+> 
+>    This can work, with the push removed from seg6_do_srh(), but the L2
+>    case in seg6_do_srh() would still keep the skb_mac_header_was_set()
+>    check and the headroom for the MAC header, and part of the L2 handling
+>    would move into __seg6_do_srh_encap() and seg6_do_srh_encap_red().
+>    __seg6_do_srh_encap() is also used by the ENCAP mode, End.B6.Encaps
+>    and bpf_push_seg6_encap(), and seg6_do_srh_encap_red() by the
+>    ENCAP_RED mode.
+> 
+> So the first way does not work. In the second one I do not see a real
+> advantage, and it would split the L2 handling between three functions.
+> For this reason I would like to keep the change as it is in the patch.
+> 
+> What do you think? If you meant something else, please let me know.
+> 
 
-8<------------------------------------------------------
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout=
-/flexfilelayout.c
-index 7fe8b91fa47c..42b0b04de659 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -2459,6 +2459,12 @@ static bool ff_layout_match_io(const struct rpc_task=
- *task, const void *data)
- =09return false;
- }
-=20
-+static bool ff_layout_match_untransmitted_io(const struct rpc_task *task,
-+=09=09=09=09=09     const void *data)
-+{
-+=09return !RPC_WAS_SENT(task) && ff_layout_match_io(task, data);
-+}
-+
- static void ff_layout_cancel_io(struct pnfs_layout_segment *lseg)
- {
- =09struct nfs4_ff_layout_segment *flseg =3D FF_LAYOUT_LSEG(lseg);
-@@ -2484,6 +2490,9 @@ static void ff_layout_cancel_io(struct pnfs_layout_se=
-gment *lseg)
- =09=09=09clnt =3D ds_clp->cl_rpcclient;
- =09=09=09if (!clnt)
- =09=09=09=09continue;
-+=09=09=09rpc_cancel_tasks(clnt, -ECANCELED,
-+=09=09=09=09=09 ff_layout_match_untransmitted_io,
-+=09=09=09=09=09 lseg);
- =09=09=09if (!rpc_cancel_tasks(clnt, -ECANCELED,
- =09=09=09=09=09      ff_layout_match_io, lseg))
- =09=09=09=09continue;
-diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
-index 0dbdf3722537..28f5bacb59f9 100644
---- a/include/linux/sunrpc/sched.h
-+++ b/include/linux/sunrpc/sched.h
-@@ -219,8 +219,8 @@ struct rpc_task *rpc_run_bc_task(struct rpc_rqst *req,
- =09=09struct rpc_timeout *timeout);
- void=09=09rpc_put_task(struct rpc_task *);
- void=09=09rpc_put_task_async(struct rpc_task *);
--bool=09=09rpc_task_set_rpc_status(struct rpc_task *task, int rpc_status);
--void=09=09rpc_task_try_cancel(struct rpc_task *task, int error);
-+bool =09=09rpc_task_set_rpc_status(struct rpc_task *task, int rpc_status);
-+bool=09=09rpc_task_try_cancel(struct rpc_task *task, int error);
- void=09=09rpc_signal_task(struct rpc_task *);
- void=09=09rpc_exit_task(struct rpc_task *);
- void=09=09rpc_exit(struct rpc_task *, int);
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 6cedc824cf82..503e95647270 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -930,7 +930,8 @@ unsigned long rpc_cancel_tasks(struct rpc_clnt *clnt, i=
-nt error,
- =09=09=09continue;
- =09=09if (!fnmatch(task, data))
- =09=09=09continue;
--=09=09rpc_task_try_cancel(task, error);
-+=09=09if (!rpc_task_try_cancel(task, error))
-+=09=09=09continue;
- =09=09count++;
- =09}
- =09spin_unlock(&clnt->cl_lock);
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 016f16ca5779..97727732400b 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -869,15 +869,16 @@ void rpc_signal_task(struct rpc_task *task)
- =09=09rpc_wake_up_queued_task(queue, task);
- }
-=20
--void rpc_task_try_cancel(struct rpc_task *task, int error)
-+bool rpc_task_try_cancel(struct rpc_task *task, int error)
- {
- =09struct rpc_wait_queue *queue;
-=20
- =09if (!rpc_task_set_rpc_status(task, error))
--=09=09return;
-+=09=09return false;
- =09queue =3D READ_ONCE(task->tk_waitqueue);
- =09if (queue)
- =09=09rpc_wake_up_queued_task(queue, task);
-+=09return true;
- }
-=20
- void rpc_exit(struct rpc_task *task, int status)
+Oh, I miss-read the change. This is rcsum is only for inner header. The
+outer header will be updated via later skb_postpush_rcsum().
 
---=20
-Trond Myklebust
-Linux NFS client maintainer, Hammerspace
-trondmy@kernel.org, trond.myklebust@hammerspace.com
+Thanks
+Hangbin
