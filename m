@@ -1,56 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.63
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793866668;
-	b=2ZzItl41s48lxUtvMvxJxLwxI9oxvBcP/X0Nxrf+OUbO7yDsDZkdPY6KjTXqT2VdVVuO
-	 W3ZHjAMTJ85Ihuc5DWBKoQuOeVDD6Z24BmfVJYXGRt45rGU+29qCLPJC/zYb2RuahiT2k
-	 KEEflTUxq95UOL5uTB7zjpeFkaSItSL2m7RcYeARBtjg91opsvHIcnuLu6pcMx6gCi91I
-	 AV8AxcYFJulukjHeJQ6hNzVFHKKDahkxjV3jY39UPEeWX+xxhd+UGq5sOXC7+PrrHT8Lv
-	 FCZbhEc9Ss2Ax7nSsF++eda5qqmEeZeR+ZIfKwknOkiZV7i+uEPa04F1HM5u4yoCrYg==
+	t=1793866687;
+	b=3ReWvUvou9mj/OjCcxiRjD3WYemOMEeVo7MhvbQFY1N4anCbxPv3F7OFZXXLnDmFpy4o
+	 f8hybCmnhwup4zlJGQqCT7/eKIRoBndEFmxmALYZ1W8xloLmVScZCJUG4Qe1xtO3NmQdj
+	 Zl1m5IKxB//vwY7LzzTkXQ4BYoKKIo9GHISh7AEm1f4GvW1mjtpG5eVFWPnqgLpnqL4Ad
+	 UPJhfrixfXfl8ZflMRItIJmJ4+p37G9JYI1msBOfwZ27clt0BUCqqnqX+PfeHdr5a8yar
+	 835pzIF+16pRqoY4DJP2IaMk5hM/KbCjXHQ+PDCVynXDIoAYNsF7/o2lZpLOtOCxYvw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793866668;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 DKIM-Signature;
-	bh=4PBMioCVo1HxdzOkMsiafpKfAf735c8mJv4Cx+FgbRs=;
-	b=VcW5FekVfoYegKHqPVu2HQGOlwfdNqR5gNN62xeTGei0F4wHfiTbXiZmc7l172yELpKt
-	 MsfCcsTI5kHqhsh7901CuO9Dy7D4yU+3rzRi0ZQp8U/H8yKpQslKG82U95axyQWFMy3xL
-	 WqGjTAeQFdTSqjm/Varq70hBxSo5k+/8FQ3TYkeD62D7hDcJv4BIuTc0fzzbl6T84CfRQ
-	 5lUGpEDwcmrP0eeCH6t+1+DPPc21OV5h3IOOnVfTvRkmDlQDmapEvl20qYNajOKE+tutB
-	 4gIP+5aEKJhHJYsJgkejawTPrX2C9jRTREaNk2/62QjUvOFhX2N5rK3RVahVaH9SwUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793866687;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=mkeKijkZJAb32Xidxy1cWIRtF5ltLYzkBnezIwTR2i8=;
+	b=U++mMRpUyjbLhg3DuHjMtnNUm3ZvHIGdc4RmjjJECZm9I75Xp5fDHDX/YlYxQ+azks/V
+	 93zA3u0Xdqfn0iU1N1KNoDA00PTpuZ3scE6lY1Q5bQZqHbuSYpoOvibWc9b1ZgAehfgnx
+	 LU6VsSTn/aa5BK6QrBxzelRe6kZOKJqnc3Cr4ihw1KX8aBVJ5lUBptU49QV2XgN49isPk
+	 HQk8UE3/AH3GffcV9+YXP6H5/b6W1LQCZrs29JdzhKtk+iXeMb/xhCC/XfsguveaEV1RQ
+	 jxBJyETW2ZmEENa+hqBLhUXzn3+RWcFlpYRTf89ke+OED4DAZv8HSxrsU6SeTjdMRKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=poczta.fm;
-	spf=pass smtp.mailfrom=poczta.fm;
-	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=VaCKJ2SU;
-	arc=none smtp.remote-ip=217.74.67.63
-Received: from smtpo63.interia.pl (smtpo63.interia.pl [217.74.67.63])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fMfgocFw;
+	arc=none smtp.remote-ip=95.215.58.161
+Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DBE606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 08:17:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4DBE606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495EC606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 08:18:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 495EC606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=VaCKJ2SU
-Received: from nr200 (unknown [80.68.231.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Thu,  5 Nov 2026 09:17:39 +0100 (CET)
-Date: Thu, 5 Nov 2026 09:17:37 +0100
-From: Slawomir Stepien <sst@poczta.fm>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
-	kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, netdev@vger.kernel.org, bpf@vger.kernel.org,
-	magnus.karlsson@intel.com, aleksander.lobakin@intel.com,
-	ilias.apalodimas@linaro.org, toke@redhat.com, lorenzo@kernel.org,
-	ihor.solodrai@linux.dev, tavip@google.com
-Subject: Re: [PATCH v6 bpf 0/3] xdp: fix page_pool leaks
-Message-ID: <auw7ofYYYwOoGH2d@nr200>
-References: <20261104121316.1155680-1-sst@poczta.fm>
- <ausorQSZn/tuxUWg@boxer>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fMfgocFw
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=qwrMdxVPnM+5ZppQDh0ezd2BTYb3+ptUjf9aMMr/HGQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793866684; v=1; x=1794471484;
+ b=fMfgocFwzY6akGVpgl5ADZEuP5nOW+JyLD/ib5wT6AvwmFalE4CDGtIN+ydzyFu/pHtqGvLG
+ Sf4PAjnLLSPgElJVT0yBoh5UpnX/nmU4ZeQ4BE1uw38V+L/E8F69KYPRinqn/u4mMWEba3zopnu
+ /LvtkxJ2uXW7tq3iQ/rCErsQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 292388bdccba3920;
+	Thu, 05 Nov 2026 08:18:04 +0000
+X-Mizu-Trace-ID: 292388bdccba3920
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 16:17:46 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Ahmed Abdelsalam <ahabdels@cisco.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>,
+	andrea@common-net.org
+Subject: Re: [PATCH net-next v2 5/5] selftests: seg6: add tests for PSP with
+ a consumed SRH
+Message-ID: <auw7qq8vayCbOWMM@fedora>
+References: <20261105015715.57-1-andrea.mayer@uniroma2.it>
+ <20261105015715.57-6-andrea.mayer@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,222 +76,231 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ausorQSZn/tuxUWg@boxer>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1793866663; bh=4PBMioCVo1HxdzOkMsiafpKfAf735c8mJv4Cx+FgbRs=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	b=VaCKJ2SUpvJLmQmBXvHIBVFMeAVEmkEIi4dy9YzBvGEakUoSsXU5rf2KZ3YA0I65G
-	 ai+LY7iZAGmeS4LNtjsoUtH026QJf28XCyRhwam85fJFKRYDPWFA2wxW1GrZ6a7dI0
-	 ewtfVMUPAioZGMUlMJYZTH3+bIgiMzsZwuv3qe0o=
+In-Reply-To: <20261105015715.57-6-andrea.mayer@uniroma2.it>
 
-On lis 04, 2026 13:44, Maciej Fijalkowski wrote:
-> On Wed, Nov 04, 2026 at 01:13:13PM +0100, Slawomir Stepien wrote:
-> > v1:
-> > https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
-> > v1->v2:
-> > - add skb to xdp_buff converter (Jakub)
-> > - postpone restoration of veth's xdp_rxq_info mem model (AI)
-> > 
-> > v2:
-> > https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
-> > v2->v3:
-> > - make skb->xdp_buff conversion agnostic of current skb->data position
-> >   (Toke)
-> > - do not pull mac header in veth (Toke)
-> > - use virt_to_head_page() when checking if xdp->data comes from
-> >   page_pool (Olek)
-> > - add ack from Toke
-> > 
-> > v3:
-> > https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
-> > v3->v4:
-> > - include skb->head when calculating packet length (Toke, lkp)
-> > 
-> > v4:
-> > https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
-> > v4->v5:
-> > - rely again on sk_buff::pp_recycle when setting mem type on rxq
-> >   (Jesper, Jakub)
-> > - add ack from Toke on patch 2 and restore it on patch 1
-> > 
-> > v5:
-> > https://lore.kernel.org/bpf/20251029221315.2694841-1-maciej.fijalkowski@intel.com/
-> > v5->v6:
-> > - rebase onto bpf/master
-> > - patch 1: set MEM_TYPE_PAGE_POOL unconditionally in
-> >   xdp_convert_skb_to_buff(); mem type only matters for frags consumed
-> >   by the program, and those always come from skb_pp_cow_data() (Jakub)
-> > - patch 1: add DEBUG_NET_WARN_ON_ONCE() for a non-linear skb without
-> >   pp_recycle and document the expectation in kdoc (Jakub); the warning
-> >   is limited to non-linear skbs since linear ones legitimately skip
-> >   the CoW
-> > - new patch 2: veth_xdp_rcv_one() ran the program on an xdp_frame with
-> >   whatever mem type the previous packet left on rq->xdp_rxq; use the
-> >   frame's mem type instead, as cpumap and devmap do. With patch 3 alone
-> >   veth sends page_pool frames to its peer and the peer's program
-> >   trimming frags crashed the kernel, so this comes first
-> > - patch 3 (was 2): veth turns the buff into an xdp_frame on
-> >   XDP_{TX,REDIRECT}, so the head is released through mem type too;
-> >   keep the queue's original model unless the buffer was copied into
-> >   rq->page_pool (Jakub)
-> > - patch 3: take page_pool refs on compound heads via netmem helpers
-> > - patch 3: do not restore the rxq mem model after XDP_{TX,REDIRECT}
-> >   and on the error path; with patch 2 every path sets its own mem type
-> > - patch 3: veth can now redirect MEM_TYPE_PAGE_POOL frames, which needs
-> >   commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
-> >   XDP") in devmap; list it as a stable prerequisite
-> > - drop Reviewed-by/Tested-by tags as patches 1 and 3 changed
+On Thu, Nov 05, 2026 at 02:57:15AM +0100, Andrea Mayer wrote:
+> Extend srv6_end_flavors_test.sh with tests for the SRv6 End behavior
+> with the PSP flavor, alone and together with NEXT-C-SID, on packets that
+> carry a consumed SRH in front of the SRH to process.
 > 
-> I mentioned the changes [0] that were developed after v5 revision yet you
-> decided to go with what you had - that might be okay but to be transparent
-> it would be worth stating *why* you chose not to pursue further or explore
-> approach where __do_xdp_generic() is called from veth.
+> Each test sends a ping along an existing SRv6 Policy, and a router on
+> the path inserts an extra SRH in front of the Policy's SRH. An End
+> behavior on another router consumes the extra SRH, and the router
+> connected to the host must then remove only the Policy's SRH.
 > 
-> Was it due to semantics change pointed out by Bjorn? Or is it too big a
-> hammer for fixing page_pool leaks and should be implemented as a
-> follow-up?
-
-That. For me, at this point in time it is easier to reason about the fix first rather than refactor.
-
-> Regardless, thank you for reviving this work, I am to blame for not
-> dedicating further effort here.
-
-No worries Maciej! You did a great job and I think it is worth pushing.
-
-> [0]: https://lore.kernel.org/bpf/20260509084858.773921-5-maciej.fijalkowski@intel.com/
+> These tests set seg6_enabled to 1 on the hosts, which must accept the
+> extra SRH, and set it back to 0 at the end. With seg6_enabled set to 1,
+> a host also accepts the packet when the Policy's SRH is not removed, or
+> when the extra SRH is removed in its place. For this reason, the
+> receiving host accepts the echo request only when its first SRH is the
+> extra SRH, with Segments Left 0 and followed by the ICMPv6 header. Any
+> other echo request is dropped, including one without any SRH. The extra
+> SRH is recognized by its last segment, which is the SID that triggered
+> its insertion.
 > 
-> Thanks,
-> MF
+> The check on the receiving host uses the ip6tables srh match. Without
+> it, these tests are skipped. A test fails if the route that inserts the
+> extra SRH, or the rules on the receiving host, cannot be added.
 > 
-> > 
-> > Hi,
-> > 
-> > here we fix page_pool leaks which happen when fragment is released
-> > within XDP program and memory type is set incorrectly. The reports come
-> > from syzbot and AF_XDP test suite.
-> > 
-> > Most of the changes are about pulling out the common code for
-> > init/prepare xdp_buff based on existing skb and supplying it with
-> > correct xdp_rxq_info's mem_type that is assigned to xdp_buff. A bit more
-> > stuff, page_pool related, had to be done on veth side.
-> > 
-> > Originally, this work was started by Octavian Purdila and continued by
-> > Maciej up to v5. Maciej then took the larger veth rework from the v5
-> > review to net-next as an RFC [1]. This v6 picks up the v5 series, with
-> > Maciej's agreement, as the minimal fix for bpf and stable, and addresses
-> > the v5 review. Maciej stays the author of patches 1 and 3 and my changes
-> > are noted in their commit messages; patch 2 is new.
-> > 
-> > For veth, Jakub listed three options: stop turning skbs into xdp_frames
-> > in veth, decide the head's mem type when the CoW was skipped, or CoW the
-> > head on the Tx/Redirect path. The first one changes veth's XDP handling
-> > beyond a fix (it is what the RFC does), so patch 3 takes the second:
-> > veth knows whether it just copied the buffer into rq->page_pool, and
-> > only then advertises MEM_TYPE_PAGE_POOL. An skb that skipped the CoW is
-> > linear and keeps the queue's original model, as before this series.
-> > The two do not conflict: the RFC can go on top of this series and
-> > replace the veth parts of patches 2 and 3.
-> > 
-> > [1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
-> > 
-> > Patch 2 fixes the same problem for frames in veth_xdp_rcv_one() that
-> > commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
-> > XDP") fixed for devmap; cpumap already handled it.
-> > 
-> > Testing (x86_64, QEMU via virtme-ng, KASAN + DEBUG_VM + DEBUG_NET; the
-> > series ran on bpf/master fb7bd3a2aad7 and, rebased without changes, the
-> > reproducers, kprobe path checks, devmap test and selftests below ran
-> > again on 05441d697f7f with the same results; the runs without the series
-> > on bpf/master c8a8a68d3ab4):
-> > - reproducer: an xdp.frags program that trims all frags with
-> >   bpf_xdp_adjust_tail() on 8000-byte pings over a 9000 MTU veth pair;
-> >   without the series both generic XDP and native veth XDP hit
-> >   "BUG: Bad page state ... page_pool leak" followed by
-> >   VM_BUG_ON_PAGE(page_ref_count(page) == 0) and a panic; with the
-> >   series 20/20 packets are trimmed with no splat
-> > - native veth XDP_TX of multi-buffer packets, with and without
-> >   trimming frags first (200 large + 200 small pings each), then veth
-> >   teardown and a 75s wait for page_pool "stalled pool shutdown" or
-> >   negative inflight warnings: none
-> > - BPF selftests on bpf/master with tools/testing/selftests/bpf/config:
-> >   ./test_progs -t ns_xsk,xdp: all 34 tests (205 subtests) passed, no
-> >   splats, with and without the series
-> > - the standalone AF_XDP suite (test_xsk.sh) also runs the tests that
-> >   test_progs skips as flaky; XDP_ADJUST_TAIL_SHRINK_MULTI_BUFF reports
-> >   PASS either way, but without the series dmesg shows 60 "page_pool
-> >   leak" splats from generic XDP (bpf_xdp_adjust_tail -> __xdp_return ->
-> >   page_frag_free on pages allocated by skb_pp_cow_data()); with the
-> >   series there are none
-> > - frame path: one veth bounces 8000-byte pings with XDP_TX, its peer
-> >   trims all frags of the resulting frames (IPv6 off, so no skb touches
-> >   the peer's rxq first); with patches 1+3 only: "page_pool leak",
-> >   VM_BUG_ON_PAGE() and a panic in veth_xdp_rcv_one(); with the whole
-> >   series 50/50 frames are trimmed, kprobes show all __xdp_return() calls
-> >   with MEM_TYPE_PAGE_POOL, no splat, also with IPv6 on so that skbs and
-> >   frames interleave on the peer's queue; bpf/master alone passes as well
-> >   since veth only sends MEM_TYPE_PAGE_SHARED frames there
-> > - remaining veth paths, each confirmed with kprobes: skbs that skip the
-> >   CoW (frames passed up by one veth and forwarded back into it: 1229 of
-> >   1260 runs without skb_pp_cow_data(), heads from the page_pool),
-> >   XDP_REDIRECT failing on the skb path (40 xdp_return_buff()) and on the
-> >   frame path (40 xdp_return_frame()), XDP_PASS of 20 frames after their
-> >   frags were trimmed; no splat, and none of the page_pool shutdown or
-> >   inflight warnings 75s after teardown
-> > - devmap egress after patch 3: veth redirects copied skbs through a
-> >   devmap whose egress program trims all frags; with the series 20/20
-> >   trimmed, all __xdp_return() calls with MEM_TYPE_PAGE_POOL, no splat,
-> >   nothing 75s after teardown; with b3ca872947ef reverted on top of the
-> >   series: "page_pool leak" from page_frag_free() under
-> >   dev_map_bpf_prog_run(), VM_BUG_ON_PAGE() and a panic, hence the
-> >   stable prerequisite in patch 3
-> > - W=1 builds of the touched files with LLVM=1 and with DEBUG_NET=n: no
-> >   warnings
-> > - XDP_ADJUST_TAIL_GROW fails in DRV mode with and without the series,
-> >   so it is unrelated
-> > - not tested: page_pool frames from hardware drivers redirected into
-> >   veth, bpf_xdp_pull_data(), multi-queue load, the full test_progs run
-> > 
-> > Performance (the same VM with 8 vCPUs, non-debug kernels with
-> > PAGE_POOL_STATS, bpf/master fb7bd3a2aad7 with and without the series;
-> > pktgen sends skbs into one end of a veth pair, the program on the other
-> > end counts packets; median of 6 runs of 8s over two boots per kernel):
-> > - 64-byte packets with native XDP_DROP, XDP_TX and XDP_REDIRECT (devmap
-> >   to another veth), and generic XDP_DROP on 1 and 4 CPUs with 64 and
-> >   8000-byte packets: within 2% of the base kernel, no regression
-> > - native veth with 8000-byte packets (3 frags): XDP_TX +8.8%
-> >   (0.507 -> 0.552 Mpps), XDP_REDIRECT +8.4% (0.613 -> 0.664 Mpps).
-> >   Without the series veth_xdp_get() takes plain page references on
-> >   the head and frags, so the pages copied into rq->page_pool are
-> >   released from the pool instead of recycled (~1.2M/s
-> >   rx_pp_recycle_released_ref plus slow allocations); with page_pool
-> >   references they go back to the ring (~1.4M/s rx_pp_recycle_ring, no
-> >   released_ref)
-> > Absolute numbers in a VM differ between boots, so only the relative
-> > change is meaningful.
-> > 
-> > This v6 was prepared with an AI coding assistant (Claude) from the v5
-> > review thread; the assistant wrote the code changes, all of patch 2,
-> > the changelog updates, and ran the tests listed above.
-> > 
-> > 
-> > 
-> > Maciej Fijalkowski (2):
-> >   xdp: introduce xdp_convert_skb_to_buff()
-> >   veth: update mem type in xdp_buff
-> > 
-> > Slawomir Stepien (1):
-> >   veth: use the frame mem type when running XDP on an xdp_frame
-> > 
-> >  drivers/net/veth.c | 56 ++++++++++++++++++++++++++++++----------------
-> >  include/net/xdp.h  | 36 +++++++++++++++++++++++++++++
-> >  net/core/dev.c     | 25 ++++-----------------
-> >  3 files changed, 77 insertions(+), 40 deletions(-)
-> > 
-> > 
-> > base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-> > -- 
-> > 2.56.0
-> > 
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  tools/testing/selftests/net/config            |   1 +
+>  .../selftests/net/srv6_end_flavors_test.sh    | 280 +++++++++++++++++-
+>  2 files changed, 279 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+> index 7a89e2618d4c..d5d2382b0b01 100644
+> --- a/tools/testing/selftests/net/config
+> +++ b/tools/testing/selftests/net/config
+> @@ -27,6 +27,7 @@ CONFIG_IP6_NF_IPTABLES=m
+>  CONFIG_IP6_NF_IPTABLES_LEGACY=m
+>  CONFIG_IP6_NF_MANGLE=m
+>  CONFIG_IP6_NF_MATCH_RPFILTER=m
+> +CONFIG_IP6_NF_MATCH_SRH=m
+>  CONFIG_IP6_NF_NAT=m
+>  CONFIG_IP6_NF_RAW=m
+>  CONFIG_IP6_NF_TARGET_REJECT=m
+> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> index 0355149bb7d6..157baa8ecb0b 100755
+> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
 
--- 
-Slawomir Stepien
+[...]
+
+> +# In a network namespace, accept the echo requests whose first SRH has the given
+> +# SID as last segment (Segment List[0]), SL=0 and the ICMPv6 header after it,
+> +# and drop any other echo request, including one without any SRH.
+> +# args:
+> +#  $1 - network namespace in which the rules are added
+> +#  $2 - expected last segment of the first SRH
+> +add_srh_check_rules()
+> +{
+> +	local nsname="$1"
+> +	local sid="$2"
+> +
+> +	ip netns exec "${nsname}" ip6tables -A INPUT \
+> +		-p ipv6-icmp --icmpv6-type echo-request \
+> +		-m srh --srh-lsid "${sid}" --srh-segs-left-eq 0 \
+> +		--srh-next-hdr 58 -j ACCEPT &&
+> +	ip netns exec "${nsname}" ip6tables -A INPUT \
+> +		-p ipv6-icmp --icmpv6-type echo-request -j DROP
+> +}
+> +
+> +# On a host, check that the echo requests carry the extra SRH alone.
+> +# args:
+> +#  $1 - host on which the rules are added
+> +#  $2 - expected last segment of the first SRH
+> +setup_hs_srh_check()
+> +{
+> +	local hs="$1"
+> +	local sid="$2"
+> +	local hsname
+> +
+> +	hsname="$(get_hsname "${hs}")"
+> +
+> +	add_srh_check_rules "${hsname}" "${sid}"
+> +}
+> +
+> +cleanup_hs_srh_check()
+> +{
+> +	local hs="$1"
+> +	local hsname
+> +
+> +	hsname="$(get_hsname "${hs}")"
+> +
+> +	ip netns exec "${hsname}" ip6tables -F INPUT
+> +}
+> +
+> +# Test a Policy with a consumed SRH: a router inserts the extra SRH on the
+> +# packets towards a SID, and another router consumes it. The destination host
+> +# accepts only the echo requests that carry the extra SRH alone.
+> +# args:
+> +#  $1 - router that inserts the extra SRH
+> +#  $2 - SID that triggers the insertion
+> +#  $3 - router with the SRv6 End behavior that consumes the extra SRH
+> +#  $4 - source host
+> +#  $5 - destination host
+> +#  $6 - suffix of the address on the loopback of the destination host
+> +#       (i.e. cafe::<host>:<suffix>), if any
+> +check_and_log_consumed_srh()
+> +{
+> +	local rt="$1"
+> +	local sid="$2"
+> +	local end_rt="$3"
+> +	local hssrc="$4"
+> +	local hsdst="$5"
+> +	local suffix="$6"
+> +	local msg
+> +
+> +	if ! ${HAS_SRH_MATCH}; then
+> +		msg="IPv6 Hosts connectivity: hs-${hssrc} -> hs-${hsdst}"
+> +		if [ -n "${suffix}" ]; then
+> +			msg="${msg} (${IPv6_HS_NETWORK}::${hsdst}:${suffix})"
+> +		fi
+> +		log_test_skipped "${msg}"
+> +		return
+> +	fi
+> +
+> +	if ! setup_rt_consumed_srh "${rt}" "${sid}" "${end_rt}"; then
+> +		log_test 1 0 "Extra SRH on rt-${rt} for ${sid}"
+> +		return
+> +	fi
+> +
+> +	if ! setup_hs_srh_check "${hsdst}" "${sid}"; then
+> +		log_test 1 0 "SRH check on hs-${hsdst} for ${sid}"
+> +	elif [ -n "${suffix}" ]; then
+> +		check_and_log_hs_lo_addr_connectivity "${hssrc}" "${hsdst}" \
+> +			"${suffix}"
+> +	else
+> +		check_and_log_hs_connectivity "${hssrc}" "${hsdst}"
+> +	fi
+> +
+> +	cleanup_hs_srh_check "${hsdst}"
+> +	cleanup_rt_consumed_srh "${rt}" "${sid}"
+> +}
+> +
+> +host_srv6_end_flv_consumed_srh_tests()
+> +{
+> +	local sid
+> +
+> +	log_section \
+> +		"SRv6 connectivity test hosts (h1 <-> h2, PSP with a consumed SRH)"
+> +
+> +	if ! ${HAS_SRH_MATCH}; then
+> +		echo "SKIP: ip6tables srh match not available"
+> +	fi
+> +
+> +	set_hs_seg6_enabled 1
+> +
+> +	# Policy (i.a): rt-4 inserts the extra SRH consumed by rt-3
+> +	sid="${LOCATOR_SERVICE}:2::${END_PSP_FUNC}"
+> +	check_and_log_consumed_srh 4 "${sid}" 3 1 2
+> +
+> +	# Policy (i.b): rt-2 inserts the extra SRH consumed by rt-3
+> +	sid="${LOCATOR_SERVICE}:1::${END_PSP_FUNC}"
+> +	check_and_log_consumed_srh 2 "${sid}" 3 2 1
+> +
+> +	# Policy (i.c): rt-4 inserts the extra SRH consumed by rt-3
+> +	sid="$(build_csid_container 2 "${END_CSID_PSP_FUNC}")"
+> +	check_and_log_consumed_srh 4 "${sid}" 3 1 2 "${END_CSID_PSP_FUNC}"
+> +
+> +	# Policy (i.d): rt-3 inserts the extra SRH consumed by rt-4
+> +	sid="$(build_csid_container 1 "${END_CSID_PSP_FUNC}")"
+> +	check_and_log_consumed_srh 3 "${sid}" 4 2 1 "${END_CSID_PSP_FUNC}"
+> +
+> +	set_hs_seg6_enabled 0
+> +}
+> +
+>  test_iproute2_supp_or_ksft_skip()
+>  {
+>  	local flavor="$1"
+> @@ -1102,6 +1354,28 @@ test_kernel_supp_or_ksft_skip()
+>  	ip netns del "${test_netns}"
+>  }
+>  
+> +# Before enabling the tests with a consumed SRH, make sure that the rules they
+> +# use can be added.
+> +check_srh_match_support()
+> +{
+> +	local srhm_ns
+> +
+> +	if [ ! -x "$(command -v ip6tables)" ]; then
+> +		return
+> +	fi
+> +
+> +	if ! setup_ns srhm_ns; then
+> +		return
+> +	fi
+> +
+> +	if add_srh_check_rules "${srhm_ns}" "${IPv6_TESTS_ADDR}" \
+> +		&>/dev/null; then
+> +		HAS_SRH_MATCH=true
+> +	fi
+> +
+> +	cleanup_ns "${srhm_ns}"
+> +}
+> +
+>  test_dummy_dev_or_ksft_skip()
+>  {
+>  	local test_netns
+> @@ -1145,6 +1419,7 @@ test_dummy_dev_or_ksft_skip
+>  # supports PSP also supports NEXT-C-SID.
+>  test_iproute2_supp_or_ksft_skip psp
+>  test_kernel_supp_or_ksft_skip psp
+> +check_srh_match_support
+>  
+>  set -e
+>  trap cleanup EXIT
+> @@ -1156,5 +1431,6 @@ router_tests
+>  host2gateway_tests
+>  host_srv6_end_flv_psp_tests
+>  host_srv6_end_flv_next_csid_psp_tests
+> +host_srv6_end_flv_consumed_srh_tests
+>  
+>  print_log_test_results
+> -- 
+> 2.43.0
+> 
+
+Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
