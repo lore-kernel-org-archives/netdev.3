@@ -1,106 +1,134 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793890609;
-	b=uc8tQTGuds4ah65Bu2irLe02xX1agvq6u/glv/BRiMFUanYmovk0Yg7eyKanzxPjKsg4
-	 sW51pfRAgG3y8oybjqKXtK8iGufmrywhHCz6L6ryFlhVLB6siNksEw9QD1oeBt4VNyfnG
-	 1pIWkdacCPNCZyb8DbP6f647jak2VeAWlPYgk91OxDxXfekPzTbHKIrO5OtISkJZe78Zx
-	 6aGz41Iq9wXlG67D9thy8P7rWxukdIMc4Gxcw5NgyRGjb3rCp+4gTpb6OACHVy9bYEZo/
-	 AmY1o5w3UxFzcKwKLAcdW1+uT8AD8qjsu/Ysuj8txQghaSWEw9aRrCocw/PllLGyr6Q==
+	t=1793890796;
+	b=a2S06/bVYDTOv79KsjhjeZOACFgNVCRdxoWCs6NOodqh262q6d9IFBclBfToePA/be8j
+	 E4NQF+FMWe5H2DbAxXYCPt4qNczJuIGXiRoUACW65STd8MjZIqkbywPkQQEogzH7DCtq4
+	 qDNLXiDzHyz44myf9RO9PMRmL+IGk6vqdu/nNVflKWwWydUl/JsKaY8j3pA0h2gdGxxnm
+	 eUoeOJLJkLEZ5so586/8QWIMkwbrDGpsC1mVgedPrdws5c/Gad47DNPHXN37S9Z7hVcrV
+	 RlfqfGBYbrNu1ycQUleMFRefFkXFhgI+XqblbZKT4ufeJ9Gun1eXhcvt8XrKeoCXWqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890609;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890796;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
-	b=3pwHTPJNgLbewhX3PDtBPrd/z3827cAPG/m79giadbW0R3h5sqds3dz7hnw3GHHtnatl
-	 zqqIiRRlfyAknCSvLUUmXz1l5jt86Ia/mRlkBjL/JFBRO0AIzFF/xdp0v+nfLv5VUw4u+
-	 lF88VjcB5QhNZwGzhgAXCWTN2SARr3hAXnH56CQ3ASfq1+yPMbXl/i99xXSHB4n3sYNbX
-	 PqbrylauBH4X8H7cDA0+FV+2TlndgC63biJKDO2fLCHCy27s74NpDlNCsHc+ujsnBbRgb
-	 uTWzvwHkNCx11kyu1bwyWypR1ykvzNswkPiEyXdgdIAI8+P4MYOrHGkcR2m4hO8OCiw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=sv1GqJtGOVxD2bg62FKkDXwLV7ybcH0/LrV/szN48RM=;
+	b=B3LwamSY/w18ZjMRcnxR3s8Kwko9hj3Q6/mP4YmjLo+nl3WIndSVIGCoHlRSfgMaCCsG
+	 t93ZDvVbBjBweS+eGUS/v4yvOk3L//kA/xcRcjN16xKHuazg22M1KXmSwLKzKvncTznfA
+	 hM84X8r7VLOuGfMD4fwXHVn22FCZMpErRWg2R9TYG9ZtMgHmSItDNNSZUoSB2qsqUKYJD
+	 NPa5J8jl3cMbhAJTthX259lyCCy5qqijplE93Gt5Un63Pk+PEoORcrAwvIXJeJPcqFjA4
+	 YKwxihcLN9yFaxIZam21twz2gPzE6h/TpuFE7TXpdZUayESSICCwfSpnY/l7//l0t8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iw3o4sxl;
-	arc=none smtp.remote-ip=209.85.221.173
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bpBlGkKK;
+	arc=none smtp.remote-ip=209.85.221.182
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25C6606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:56:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C25C6606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE874606D805
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:59:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE874606D805
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iw3o4sxl
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eac319a6c2so735177e0c.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:56:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bpBlGkKK
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5eaf34452a9so637507e0c.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:59:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793890608; x=1794495408; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
-        b=Iw3o4sxlhm+moLG+aWbh3F5bLzfTYJo29Wwgj+PWL3gtGOa3bF9YHXs/ByMsrm5avV
-         XQZRtXkikmf9IhrNGlqQOg2WM5LlJu8k2HeoEZsS+f/0oyebZKGE5Wqr9Vs4ct6XVLBf
-         r27X+4Af0hvwxE+0RvtcJwtNXiB8LxOCS2r8ANhoDKqDCA3FIgfH1aEuLdp5apI6oHiY
-         hgSWCqx8f2Al/GaaenmCGOTyFFL8Z7iPBt3g/NJEKoWGbaE0ooG/5TMDeiw1ZEZLkOTI
-         FDjS5VAkQwDcZCxZ1QvEHEOPpB2asrwJnBz94ojPKmg5FxPar3LS2aOjQ0Dbq8mc0rRi
-         km3g==
+        d=ziepe.ca; s=google; t=1793890795; x=1794495595; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sv1GqJtGOVxD2bg62FKkDXwLV7ybcH0/LrV/szN48RM=;
+        b=bpBlGkKKYmX68RAsE9EkcMc+aPwep+Jt4D7c/OZg3kVQeHpZyfmkntRrTHho6EP8wd
+         Ydil1svNY3g9CpIhj2GHYQ7d434gL/SpPpSr+DXV/upiAZMCvC9nreTgfts3zuhMwCcm
+         Qskdy4s4owr7KaU/9VifToG4uoaZc2rkAAcVF19z0f6dAbM64dHUzvDPxywg/TCQt9WF
+         2ooxRy05KElc/DdqHagH2RzabKyRAsKGjv0e7Kqhd2EeSxnmqf8lncs0n6nLDm8+XKat
+         ++mZs0G+SfgC2WTprHf/u2SbYhDe7xP1yG7Q6zYRZWtdxX3hRx/GELgc/Kk/Jaz7fcIZ
+         8CIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793890608; x=1794495408;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793890795; x=1794495595;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
-        b=CSV78JKnbXXEJvDTFPruwfmr8XysNuC1crvWFr04RI8PIdfc8YlsKxUaLKk8vNkJzF
-         3AXgD/F1KQinLDj/Ku/tHTT4NCDuDAvgSBcdmaIvi6stOOj/HrEBvGgO3ugNtemkcYXe
-         5HS2gNOk273NZEAOAkL1w7QwspjoXfWcfXrd5a1qavD3VLGnhVAqECmQMb4o4rKgusV6
-         aFT2KSFJ55tSztM/XUKkmsMX2EfBhAkdThgncUZbgNk3JSQgOz06dZo93IHRVMv96wik
-         1MvgPEfPLoYoN/qqHfvnHxTud+3SzXNbLhThja0FPED9wpxhVJL6ohR+g7FJr5jdkIkA
-         bQDA==
-X-Gm-Message-State: APuU4Z/YTiPhjux7i51QZhgvIhRCs6+hakOUUoay3BCUU+jpM+Taivb3
-	XoAi8K8cMnxIagVDqmqKVGh6NRtqbUeccyrMvBB7M/oc5yLCrC/YMQwg
-X-Gm-Gg: AYBFou211NdUx/rJRCxO25oOd83dzblabHLhmecFDKP4y+aoTpMYNlMjJYUE0GWoaeo
-	bLipVHHUdUMPdGrW8mhbOUYWxssqe+JgfUAWSVfeiJXlnZi18qjFrKIMGV+mFx0WoKII4z1hRoQ
-	miBxjB6L5kxO950myiVYAYOrPaGlKKvWEuGtneufVCBfpT3jASJSHEts4ER5b/z/EapzC3jbkTy
-	Fj5hqgAEWajpjoZKzqCDPzEvvoOJ7KxETyI12ftBr6E+bEOcUHPq5d277BUS+GHb8oEYSz0lsGD
-	TDXqCLcbmzU27Rn0dzI5gpCtUjCeo/umNtgVgD26APy9XPbxNuLQiHCZwOItC8krzh96hc6Q6wT
-	u0xLpzAgDk4vj2OPJn4Jd95hoj6FZKK0uC3jPkLWSn/w0co0rYF9qpYpSEiV1Dl1hsueGNEJ96b
-	xWVjuoHUw65km/NpVrzqlG6td5/uRMr4ObLZVoms51zwQ0zqDcj0BipHaX4nbRyxi1o/NXmjKUZ
-	1pPOjAtYqS+mOr8cN10o+rPsUuUTcOVeqixYSbzY9WmP/zTaxqfC8I0bCpFlkxK+LfqJd69sqX0
-	k5iZwbBgYixk3shGnJl/Nz96J+Dm58Rzq8ygkPzkAbO8p9dtLum6ExUzNPeYz2JOXKGB93d/qOP
-	UzwyZZu19PAbGek7JTBB2YYZuTj1wcuxZ4eVo/1qLNDk34wHKRjDzlF78o+MlQpBMt1b/D7A=
-X-Received: by 2002:a05:6122:e248:b0:5ea:d2de:eff4 with SMTP id 71dfb90a1353d-5ec689edd4emr9688175e0c.22.1793890607584;
-        Thu, 05 Nov 2026 06:56:47 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d774dcsm4395072e0c.5.2026.11.05.06.56.45
+        bh=sv1GqJtGOVxD2bg62FKkDXwLV7ybcH0/LrV/szN48RM=;
+        b=syXe8QFKKBsp7oOIIgkJ6SM3P+ldX7L0Jy+L4MsNoUmIMtEbDy5QTEpFdDjJ19EuFj
+         a4YOATltTHSLIvwvVE3KSOeei73/3WP8bmg3dzZ1oE8JieiiC3aWQ9dDnf1vjfsFdjdK
+         +a9QRvjHuwB+tBiveXpXKFfA7hVXJwglIhbL5vz9G04IsyK7jgZP/61NM1ozvG6zy2PY
+         QVVHh/gWK7oJMBYz7pOE7Yt3XQkEtReC6W/GwErFaxpc2/bjGrDGWRhCjvBDaIV0drHz
+         EyvdDANtsMlr/CBt7MVjtKJmYtOpOwVrxnsXmCR7Am7vpvhyAWu1cM0DhH1GzpUZvkVI
+         ai4g==
+X-Forwarded-Encrypted: i=1; AKwUvBxxvZBN6ozWOkJXryx6aeHA8JB9nGV0BjqeAyDxvB2hGJPA4yL74UnaQllQw96Llxf/UAIqCjo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/XWmGB34pM/jwVhLVnRzrNC/oMkQvRNJtUVOVDvTvJH3dE/YcM
+	2Cy+NH5B89IMYuJXtpn0BIF76yYb/ovW6E1XoWb0hDJI/x1e52T04w6JYZZOmom825Y=
+X-Gm-Gg: AYBFou0nytabhzRTucIC3Wm341/Co8k7PaU/BtxuqlSC5st7zcUKUdUoeK+mnGVoBkF
+	8DXrI6VPF9XR6MkCcZ5/BofZ+4TLRWmmtS5euYTC0djAmvxWZSrG9lnO4u+KoMcrZNn1rZmDqVE
+	K+g2JQxgZklaD0e3rd7DnFP7tPJXxZtRQNIFqQq6AKOrvaFSiAq7rzGtqp+10Rm/6mNEYbt0ff6
+	CH3PntWs4MJIpG/e8FRy2klwYl2pTZbU0JGCkn9zhdO9nrzAgpm6XAV9L7iw68DyLuqeYTYh8fX
+	olsomMxSAismG531tIECKAIMIvq9kqH/II57JLx1YPs9+TEjxMIN9jNguZY+/AdyQ7xUc/VwEwj
+	gHhdOTlixAfJCLnjfCvVkOyyveAiJCYU/myN9NkxJdTmMlY4qq46GlqEfoB8p2uRfnvR+xK5Im/
+	mFdkZUlVNUXJu4HZXt4Uppg3r2p5d9fDrmkWNSAackDozsr2ULdxiYRYi7gw4f0+APu6l2N6T+l
+	d4LeDlNO2eoDm9CIMq9tloI2diQewd08oGk/JM3p2nh4TVR2C0xxaWC0Sr8lzMhfWRJi6EKu18R
+	x1kjdPtu+DMz4R2MK63/T+W72F6QNxEd5wQe4rdAxLnc47qVkfyWtKWg43dXxL3AzL9QzT66Nr1
+	vrBzKKxhb4PU=
+X-Received: by 2002:a05:6122:6c0a:b0:5d9:302a:8243 with SMTP id 71dfb90a1353d-5ecb429571cmr1423011e0c.12.1793890794801;
+        Thu, 05 Nov 2026 06:59:54 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8df2a38sm4234612e0c.16.2026.11.05.06.59.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 06:56:45 -0800 (PST)
-Date: Thu, 05 Nov 2026 09:56:45 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Stephen Hemminger <stephen@networkplumber.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- bpf@vger.kernel.org, 
- dsahern@kernel.org, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.192ba63c82bdd@gmail.com>
-In-Reply-To: <20261105154509.1cedd84b@stephen-xps.local>
-References: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
- <20261103092226.2e8ab229@stephen-xps.local>
- <willemdebruijn.kernel.a20ae72714a7@gmail.com>
- <20261105143049.51af15a1@stephen-xps.local>
- <willemdebruijn.kernel.213e1d84478e4@gmail.com>
- <20261105154509.1cedd84b@stephen-xps.local>
-Subject: Re: [PATCH net-next] docs: netdev: fix iproute2 process documentation
+        Thu, 05 Nov 2026 06:59:53 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xOywS-00000002o7b-2oaN;
+	Thu, 05 Nov 2026 10:59:52 -0400
+Date: Thu, 5 Nov 2026 10:59:52 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH 10/17] driver core: Expose device trust authorization
+ through sysfs
+Message-ID: <20261105145952.GA663069@ziepe.ca>
+References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+ <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
+ <2026110514-bunkhouse-handset-6a3a@gregkh>
+ <20261105132729.GB8298@unreal>
+ <2026110535-engulf-precut-cf10@gregkh>
+ <9d896ebb-6892-4cac-a7c5-41def47f0be0@arm.com>
+ <54c9476c-9f76-4ea1-a73a-c9937d6b463c@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,44 +138,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54c9476c-9f76-4ea1-a73a-c9937d6b463c@lunn.ch>
 
-Stephen Hemminger wrote:
-> On Thu, 05 Nov 2026 08:46:22 -0500
-> Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+On Thu, Nov 05, 2026 at 03:43:53PM +0100, Andrew Lunn wrote:
+> > Yup, and that's true even in the PCI TDISP case - there's a major amount of
+> > "communication" and "configuration" involved in that. The principle which
+> > should (hopefully) generalise is that a bus/host controller driver can
+> > always interrogate its child device to perform whatever attestation and
+> > general configuration is appropriate, but we won't hand off any _control_ of
+> > that device to a specific device driver (nor enable potentially-impactful
+> > bus-level features like DMA, interrupts, etc. if relevant) without the
+> > requisite agreement between the bus code and the user.
 > 
-> > Stephen Hemminger wrote:
-> > > On Tue, 03 Nov 2026 09:44:53 -0500
-> > > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-> > >   
-> > > > Stephen Hemminger wrote:  
-> > > > > On Mon,  2 Nov 2026 22:35:56 -0500
-> > > > > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
-> > > > >     
-> > > > > > +
-> > > > > > +Patches are tracked in patchwork under the netdevbpf project and delegated
-> > > > > > +to 'shemminger' for further processing:
-> > > > > > +    
-> > > > > 
-> > > > > Minor nit. David Ahern (dsa) handles the iproute-next patches.
-> > > > > I stick to only iproute.     
-> > > > 
-> > > > I know, but there is no separate delegation in patchwork to David.
-> > > > 
-> > > > I assumed all iproute2 patches would get delegated to your patchwork
-> > > > component. Is this not correct?  
-> > > 
-> > > Right now we correct it manually. Often patches target the wrong tree.  
-> > 
-> > This is not about the trees, but delegate on patchwork. There is no
-> > delegate dsahern in the dropdown menu.
+> Maybe it would be good to list subsystems which the bus driver can
+> use, and cannot use.
 > 
-> David is dsa in patchwork
+> You list interrupts as potentially being dangerous. What about reset
+> controllers, GPIOs, regulators? At least in the embedded world, the
+> bus driver might need to enable power, set a clock ticking, and take
+> the device out of reset via a GPIO, before the device pops into
+> existence and will enumerate on the bus.
+>
+> I don't see why interrupts are dangerous, which makes it hard for me
+> to determine if GPIOs and clocks, and regulators are also dangerous?
 
-Ah. I assumed that stood for Distributed Switch Architecture.
+IMHO we shouldn't try to over think this.
 
-A convenient homonym perhaps? :)
+The overall point is to give the userspace a place to inject policy.
 
-Will send a v2 with that part revised. Thanks!
+Bus drivers should try as hard as they can to contain their child
+devices. Like PCIE should activate the iommu, disable ATS. USB should
+limit the messages it exchanges, and so on.
+
+When userspace accepts the bus driver it also accepts its containment
+capability. So if it accepts one that uses gpio, etc then that's fine.
+
+We are not the point of trying to describe what threat models various
+kernel drivers can support. Userspace has to figure that out on their
+own.
+
+Jason
