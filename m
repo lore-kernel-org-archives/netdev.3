@@ -1,121 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.50
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.51
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793913513;
-	b=YllbaRqsFM+s0kevAIOrwNT/7e++L0OhMtjPj/e3DOUJV6UEcHf1oQ3oVPtrCLrYVcew
-	 qdp0EFX7GpbAjWm4U/zJ8wZVWyFE1H+4pfVRQRcdqfK+Qpngid4Bdar/c9LiR7UhS860b
-	 gVJb8KAo8pHV6jcYgRX71BNvIQJdVI7XTCRUhIl188okp7g0dZ93x45DXVFBoIodbUFD+
-	 oqCX80FwzemmrQjvsLHgDiiPSpMokJ+1kotT8KUEN1EF9Iv/WST5TvHnY7cfiGMaGEDOc
-	 JMNR7+f7Uq6Jl+xD/2gsmRNV/nCAwoZP2teN6hRh4saeY1PZeKKD9wzh8sKRG2Rv31w==
+	t=1793914045;
+	b=sHdtDwB0lfNSJKio69zCO5KwlbC+Hp7TUiH9bOmAwiuJr+8hp31U4cHOZFV6xXTc48an
+	 282vFEcAjUMDu+pAHWNT7BlIfbYEol8IxOEVgn1ERsTC7bz8IRdXOPPA5AfSCPgj8hOCD
+	 KFOeqiukFUK5c0TyKT/KVNt2JcZIFWa/MxR5Xfgj9aLro3RRLw+0IT0ZyKZ4dr+fQMArr
+	 ynSR411Q5KJsOb79Pwa5iN99OdgJhw/knCQyqc/49BdxESeJmNw5A0yFpWpHm7IEjh1qD
+	 TNzTYoBQAly/fsjI0gx5IOnWAqVLuXxjgfXqGK4S1lj6jkhsnqHKra0A/x0xZGeCpEg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793913513;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type:X-NV-OnPremToCloud:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=idhKrh8uUVc5yxt+j09UwoBoyIDMx5hoaetLDVaRBeU=;
-	b=cle9ohlX4TtvFcKHSFg4VSCQyj/3gvsPP3VQvbgbUeKqklSfUWf+vEdnB+EeciQRL3gF
-	 HbG7vwslOVXAAn/FPvcAK74veaeSW5yYWscNkN0ZlCowy7z+6YB8WzdatiJ1CwSomrrog
-	 x2QYau/aa7Dg2sn7QE2WRNoNbufO33cGILOrj6Q0/jYAQgIOCXTSlBoNu/PSQuaJG9VgX
-	 QlvrGgoP9dG5mcch6QNMj5W5DimBmALBdBph0QZJRKLtWBlOK57RGYDRoW0cjoxYtfBvJ
-	 E4o4kwrtPVnwgZZchXJNqjI3GeXI4hsEKEfNSMS1gX9QR2J62M34JnxuG7W5MZvtELA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793914045;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=THABttIrCrQJ7hBmQ20KZf2AKE1jXHtkzAQnRjFVbLo=;
+	b=kGLj/1A4fe0CX7vOMJ3+oWPjotUNe6F+qRaqgGsJl0RUXW1iE4PSsb/42sR4mkBG5dHD
+	 NTA3PvJLE2tj9slCwPbHMKyGxT9kShZLOHH8ob8cmQ/nonmoGo9MH1xUYruVzRzjxkHTE
+	 IkImqwaMmLYmgOx/dqu/mLDfarRTVGRQOomaL+zr8EEUmSirovEuY+GkFDhz8fM3J+sLn
+	 DJidi1cCUL2VJACwpqK+G0kyCx9aBvJSJIw3WkUpgi5P3Ip0yBr5Mnvd1+ck3PCkKkk07
+	 3P4mLdqEGaBbWtBgwqWjkHNxD4eZnHGMEjlkeh63taSoO3WDYBnus6ZjaH+t4PykS9g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VEXv6wgd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.50
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011050.outbound.protection.outlook.com [52.101.52.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=okpsmsZg;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.51
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09A0606D802;
-	Thu,  5 Nov 2026 21:18:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A09A0606D802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7200F606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:27:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7200F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VEXv6wgd
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n1TpEYWzevc/T6umSNC3srCDVP+KD3d6JFqNqaHr4+BQaSEE4KDz98joqts46jCun+mYWHcQTAceudQjaZJyM2x9TtCpbUErVXkA7aEmm16WVhq8w0zA/VS+0itbW51HgWImIL/XFHvbn5pt21EfE1AJ9Cru0N1Dls792xXtCBGae1btKYGlvt8ZmQAFUXml5H/a0SJBs1vb7ni6cBK0nQmiZzQ3ciSpp5StzijLMLTSkVfetjcKKSzI/eb26vbSwLVFdjfEknhSUOvnCrN1UWGooBp6ygEK60qHGVYKUGUlSDooo7ybLwvFNYuxsJpa4a061S6hbcKwB3vY+CC6dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=idhKrh8uUVc5yxt+j09UwoBoyIDMx5hoaetLDVaRBeU=;
- b=XVNvpT9l2Zt+0qAPq//HwrD27pJFsTlwKvARqNQm4w4nVHBipl1TBskD82vpMWj91h3a1Qe/pD6fe79t8m3uB4y/xSeoj1TFBvgD7eZXzfN4pgGiyhLXS+c2RwCO17XWC1BaQkKqr4Zw1L+XQGe4rY16wOCacqUy/tspMat1UAzzevEbT/onmwP8hgH2MHrhR4PSIjAn49i3ijfS+k0h05wliwWSwongPTa3XdZ0ddimOTMV3nx9A6rt476YP9f7K9ltw8dHO5rpZptidh8WUrMgj4jWgEp5Jcib5/Pvt1RBWKQZXEW/8BfxxpZYNOvqrTCdv9doTAEcguJxY233qQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=idhKrh8uUVc5yxt+j09UwoBoyIDMx5hoaetLDVaRBeU=;
- b=VEXv6wgdoOU4RESkgR+cWZ4U1aEhlmFsMAMfSroC1NlAi2Lij1ZgNLk+1XGaS+BtixZH5XZwxRpFuDKYlgl3wpt+2490MmNXUmf6kGkchjJZlAo6P4qcBIiIPzH6WYY5zOyxAl8SjVE6kgDBSPGUXRlNlLW+dVfa57TPVf/9GGs+eSWuDTCSF2u+tU93yBPwNu9bIYmB0zVDzwWanbdIShWMqrTukaBHKolkcPkV46DV69aBvkQBIs9FWl4gHT5NT04TpdbgAvBfRC68eYDfVUXWqT+dqxeD1lbDBhjHHHDkDp/Kxc1gSC80AYaEfDKgzlJvrO8K2kh+s+cBucOlOw==
-Received: from BN9PR03CA0798.namprd03.prod.outlook.com (2603:10b6:408:13f::23)
- by DS0PR12MB8813.namprd12.prod.outlook.com (2603:10b6:8:14e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 21:18:25 +0000
-Received: from BN3PEPF00022BD8.namprd03.prod.outlook.com
- (2603:10b6:408:13f:cafe::7) by BN9PR03CA0798.outlook.office365.com
- (2603:10b6:408:13f::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.12 via Frontend Transport; Thu, 5
- Nov 2026 21:18:25 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN3PEPF00022BD8.mail.protection.outlook.com (10.167.248.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Thu, 5 Nov 2026 21:18:25 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
- 2026 13:17:55 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 5 Nov 2026 13:17:55 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
- Transport; Thu, 5 Nov 2026 13:17:49 -0800
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Andrea Parri <parri.andrea@gmail.com>, Boris Pismenny <borisp@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, "Gal
- Pressman" <gal@nvidia.com>, Jeroen Massar <jmassar@nvidia.com>, Jianbo Liu
-	<jianbol@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, Leon Romanovsky
-	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
- Haddad" <phaddad@nvidia.com>, Prathamesh Deshpande
-	<prathameshdeshpande7@gmail.com>, Raed Salem <raeds@nvidia.com>, Roi Dayan
-	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net V3 8/8] net/mlx5e: Serialize TC and IPsec offload exclusion counters
-Date: Thu, 5 Nov 2026 23:16:36 +0200
-Message-ID: <20261105211637.1083978-9-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20261105211637.1083978-1-tariqt@nvidia.com>
-References: <20261105211637.1083978-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=okpsmsZg
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a206f0b95bso14785e9.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:27:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793914043; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KXa+NCvlAVfEX9WOYWJQV99PdgcZ0y+3ONhlMiYOPa4VLHUw3ADDeXy01/sZ+MjMFI
+         HV0kIr9Lx6zdAwXXO+iag4Qj1l5IxkPw8+bIpXLfPNJLj36slGYZtPos3bCZfE3fVvvO
+         9xObE60hpjT83EtKbmzIMpJwn4OiB3Mb7+EO13i4H8Itk/qjzuH+LkBtIvu84BAPcy0E
+         WZSV45QOKAaFUXhzw0j6UyVPjefKOer67y271qONG198ZqU1ecoYEPKVd00o192Sw2ox
+         REGvB6vVV0HDsOKnoIMrUdEPJUjaLuj6B9RbJBX1gxwyh2CvI+iEedFhX8r3RIFpDBiJ
+         S2Nw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=THABttIrCrQJ7hBmQ20KZf2AKE1jXHtkzAQnRjFVbLo=;
+        fh=pgyZhmIXCR4adQV6v6MpDEFjFCRMy0+3cO6aqiF96vY=;
+        b=PDSD0DTmWplWM3q7+MuW1vovOoG3Z3uNldkkJoVO1SPvsGm5971XnA4u6AKSR44D3X
+         CSryJsSGH/bv58aRicr/QS5OnWG807Oam/ZHE3Efn4f1EFljDvvSIw2obSDX/psgOkPd
+         dN5giQYQv2bPzOAHb+h+wGqm87pY6PYfnPEmRhyfHz1hTw78mb9Qu+qmTOI8w7OBie5e
+         d8GpdfFYpnE6oBG7kZrhzBwA7URT45SiQVW59ulaX5dOCLNqmW1WS6njdcQSz3l3fSsn
+         gcQGIO9/l+f77KYowTqS+LjZUgv9b5NWlL+UvyTzOoCD+E7MoIt2DUZDJnzdbE5ddTIL
+         zazw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793914043; x=1794518843; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=THABttIrCrQJ7hBmQ20KZf2AKE1jXHtkzAQnRjFVbLo=;
+        b=okpsmsZgVoz0nRQ0h+sRXdGBl00thWmGMFJ0aXIWgRDot6Y+w8XnNK0V3sqGL4uU38
+         MCZpG5rm8mIiUfwLcM91i6aSBCxvas3ef3nXddOAKo5frX2YqMasMbnve32upjW5u7Kg
+         zCImOdDpC5Rdqyz/3tbKUNzjyFNuoSl/8LLxk4UfJxjSja1YMQXibkiQg3cMtM3hISt3
+         /nxTMkGwhyJS0FeKItFdHQfdl+2IVMn+Abejt+Ch8FbE/27T+eFjyebYpLGk3t5gmysp
+         kqn48K7wf2Jp0/T5LsIlELHqUbwub1UdYRP0wPDv717etr2zRjKwLVqboPAc+Mhz1ajl
+         wA3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793914043; x=1794518843;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=THABttIrCrQJ7hBmQ20KZf2AKE1jXHtkzAQnRjFVbLo=;
+        b=G9luB/+gojnNMmHgYYHdCThWLgu36Ah8lWeOsxpKJ8R3Z/ziWL26JQPOuVFY/nl65H
+         V8b7xKo5Z9L8RTto7EK9X3ogCOTtOvmlBdR6K/jgw3AnFfuLBBEaZYlCrs8I/l0mPni0
+         nme068sdQaVGjuVWNro1xKrt0qXQcDzClBh47iRfcxfOWgSpEtLu+GbjB/VNHVwCE4Uh
+         Csfh2Ne3X8enJ75PvffSvlg6lSVUGPe3RwTWx8hZ4YxBF8YE3jB7BVGKmkK9YmOT9dPc
+         X9StlqyKYxndh2PlIseGXVuxYzSG0WBDdtZa3sSkrt/x87mM8ge8ntkOZHMGIoZQ5qwU
+         Ha/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwSVdhECoTfTo51qC+wyyLEkJ4zcSZG0yKDtLWuq+6EWLgndPRotpFXW1DTMCbYVslsxQ0P0bo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+YuwbaJjRYDP4h8mlQtTPZzMtLR1woiPGFepraRbKj9juTaosW
+	1iuNCy4t+CMb8hEAoPXuAGWGfdtVmio3rkgi8HIWtqkEVYNmU8V+4s0S+lo0bo2ssT+08uIZtAn
+	FmvZ/MeLGl5JEZQEkehddk2OJygkNtA3kQrV5eBKO
+X-Gm-Gg: AYBFou2GM+mDn23bH1CJGXbPAF8sz6Kr90hI6NfatAmASBHJY0gFUsiihSmpH/3NBW+
+	h35yZ/HEITTNzn4Gek8GlPMTNgdtFQY4rANnMFFYV9ywTMjya75leJhIfzjQ03MxXZjzE04Wsxz
+	6QJAiiIlXvAneaapSAtVYSIbNl0JYA/NcuNmkSW06WZbjwI4wR7X5KdMzUQeRxAvczVTDN26ofQ
+	Tf8Ey8NBTE1MjU57oKTYR6Vc+qQS6G80ZNqLqdkDB+J7criflsUEEuYnQ+WDqVTP/7KtQhQjO4t
+	+5SYIA77Cvr1QgdIlPr5vze1XOYv3BgazmyqRih/PQg4zbs0wuPrvGpDmvf7BVqdlRYZlu8P905
+	OYxLQtQRFPMF5lUoM51d93OFKnNHChXWR8bCKa/juNCjqIqWh2HC9m0jyuZuCbih4Pg==
+X-Received: by 2002:a05:600c:894:b0:4a1:a48c:17eb with SMTP id
+ 5b1f17b1804b1-4b702461a35mr16585e9.11.1793914042316; Thu, 05 Nov 2026
+ 13:27:22 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -125,208 +104,211 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BD8:EE_|DS0PR12MB8813:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0f32a77-3f73-487c-8e03-08df3b825423
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|36860700016|1800799024|82310400026|10067099003|11063799006|56012099006|261009223027099003|261022075727099003|261021123027099003|261022105027099003|261021121427099003|261102123227099003|261026140227099003|261028144727099003|22082099003|18002099003|6133799003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	0JMLc4s5MH70jEDELfG2FRyn21JAt5uBgTV4zQdxkWp7REgTMVe7r+Cgg0KASe6sKSJX8FpzzV5hpYEuKrU0hfTSDqSzkX4zj4id4vg+KPVoYJp4B2VQ8VbMPCWBrqgFLpjtR0t30kNN8eCdtwTC2RFt2xF5Dr4prHqAh2OnfkANSz2lVWj55+7KBXIH5jn8aIL5EXslSUnqB9VzLLVVd7SiawG+OtN+1TegXmVyzCBdomEImNSvl460lH31NuiJ4CAZ4rRC99P1EYLRHgTmE33ZHA2S6qRPJTkoVIFYLROsGBlZI5F3vPCg1YRWKikv4e6HEWhkiLdYVrDHE2qULAakaLTKCIvPl7V/rjoIbf9n26z1YMoObEoQ/0egoIeTXfvMMHEFB5VtP0+6xPdyOBrrCMt/GEYeT86hcp4VpvwafS9vlLIR7aTv5SBL9pEmIx66zOgyE/CH0SH4zU1re++6gY6YOjMHymm/9MmxidDsDcGuYpEB/GW55fCGd4p4O7ImekzD1dR4L/fuwlg7VVUCwuOZNwsJV/pvjlNVAzGKVVwVjwRcWzi4TWePJwBbbdiszRGp7FOd6cl2h/+2bJRRitYhI4B7oB3mN/AA5me8pYdMs4cF4YwWj9yHThdg3WezKljH2dgMqAa+JMeg0wa2LQj0e1UlIbI0lxWngYDIUgjVTwjXskHC8PqmmhISkII6Gp9FJUkGs2FN0H6Q1w==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(36860700016)(1800799024)(82310400026)(10067099003)(11063799006)(56012099006)(261009223027099003)(261022075727099003)(261021123027099003)(261022105027099003)(261021121427099003)(261102123227099003)(261026140227099003)(261028144727099003)(22082099003)(18002099003)(6133799003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	+hFIAKF1e9GuM8hPDKKAdjFZmnJL2SaqA929kK5LcmuY6SXf+kWI0sodpkbsavrYcpjxPhBTGgGphZqtTAnkAJU2Hh7Nh2Mz6uU8Phzeao2Us3M37UyJJ6MKYGndh+PI4/QJHUa5rwfl77O0Jf/JKImBkel2y6vej84T/BR67pI1+rDqFDYBYHB1GATVVdVDBjyw4ckJmUpQvNv1n73fyg1RQu7QE2WLFjyqp3ycOPieR5CfIzwgdYIzU6FK02zwzIgAG6tAu8KnaaXI2XOMhIkYJtsFpeNPUXX82F+1la8bAoE4ExEnELT6l1+oaWvyL6oDyhoW0rBzsEDlwOKPAS4yIUMdD1DIhipFgXKoGvBOKBalH07It+Jz5LQe1FUldXTiiL0WHis49OCcRW9pAk4KxqwaR/mZ2WQXC6ODkqymWaCxKWKZNoVlMNA/AVXq
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 21:18:25.1536
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0f32a77-3f73-487c-8e03-08df3b825423
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BD8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8813
+References: <20261105144543.1624238-1-edumazet@kernel.org>
+In-Reply-To: <20261105144543.1624238-1-edumazet@kernel.org>
+From: Naman Gulati <namangulati@google.com>
+Date: Thu, 5 Nov 2026 13:27:06 -0800
+X-Gm-Features: AclHuK-XnVgSnKXLvGKaUazPzyTUbyVGLonTKfNoll_RrWfiGnkHdq8T4bN8Ykk
+Message-ID: <CAMP57yWHhQEdTCut9MF1UnsqWGKR-19xzL=TO8x=9-jYyn6bjQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: wait for in-flight device unregistrations before
+ netns dismantle
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	stable@vger.kernel.org, syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com, 
+	Henry Martin <bsdhenrymartin@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+Thanks for the fix, much cleaner than the individual rebroadcast
+checks! Should we separately clean up the added checks as well? At
+least the netdev-genl check also protected userspace listeners from
+duplicate notifications beyond the null-ptr-deref protection, so it
+might be worthwhile to keep.
 
-The counters enforcing TC and IPsec packet offload mutual exclusion are
-not consistently serialized. IPsec admission conditionally takes
-mode_lock for writing, while TC admission holds it only for read.
-Neither release path takes the lock, and devices without an eswitch
-cannot rely on it at all.
+Reviewed-by: Naman Gulati <namangulati@google.com>
 
-These are per-core-device counters, separate from the eswitch mode and
-encapsulation reservations protected by mode_lock. Move them into
-mdev->offload_block and protect their checks, increments and decrements
-with a dedicated spinlock that is available even without an eswitch.
-A spinlock is used because some of these functions are called from
-atomic context and is a good fit because the critical sections are and
-will stay really short.
 
-IPsec admission then no longer needs mode_lock to update these counters.
-Add warnings for unbalanced releases. Keep mlx5_esw_lock() for eswitch
-operation admission and temporary mode/encapsulation reservations.
-
-This was found by upstream Sashiko during review of [1], and spun-off
-into a fix from the larger patch.
-
-[1]
-https://lore.kernel.org/netdev/178907726586.219967.4695695146458742597@kernel.org/
-
-Fixes: c8e350e62fc5 ("net/mlx5e: Make TC and IPsec offloads mutually exclusive on a netdev")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 43 ++++++-------------
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 18 +++++---
- .../net/ethernet/mellanox/mlx5/core/main.c    |  1 +
- include/linux/mlx5/driver.h                   |  8 +++-
- 4 files changed, 31 insertions(+), 39 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index dbe5547d7a49..55de9abbd72b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -2585,45 +2585,26 @@ void mlx5e_accel_ipsec_fs_read_stats(struct mlx5e_priv *priv, void *ipsec_stats)
- 	}
- }
- 
--#ifdef CONFIG_MLX5_ESWITCH
- static int mlx5e_ipsec_block_tc_offload(struct mlx5_core_dev *mdev)
- {
--	struct mlx5_eswitch *esw = mdev->priv.eswitch;
--	int err = 0;
--
--	if (esw) {
--		err = mlx5_esw_lock(esw);
--		if (err)
--			return err;
--	}
--
--	if (mdev->num_block_ipsec) {
--		err = -EBUSY;
--		goto unlock;
--	}
-+	int ret = 0;
- 
--	mdev->num_block_tc++;
--
--unlock:
--	if (esw)
--		mlx5_esw_unlock(esw);
--
--	return err;
--}
--#else
--static int mlx5e_ipsec_block_tc_offload(struct mlx5_core_dev *mdev)
--{
--	if (mdev->num_block_ipsec)
--		return -EBUSY;
-+	spin_lock_bh(&mdev->offload_block.lock);
-+	if (mdev->offload_block.num_block_ipsec)
-+		ret = -EBUSY;
-+	else
-+		mdev->offload_block.num_block_tc++;
-+	spin_unlock_bh(&mdev->offload_block.lock);
- 
--	mdev->num_block_tc++;
--	return 0;
-+	return ret;
- }
--#endif
- 
- static void mlx5e_ipsec_unblock_tc_offload(struct mlx5_core_dev *mdev)
- {
--	mdev->num_block_tc--;
-+	spin_lock_bh(&mdev->offload_block.lock);
-+	if (!WARN_ON_ONCE(!mdev->offload_block.num_block_tc))
-+		mdev->offload_block.num_block_tc--;
-+	spin_unlock_bh(&mdev->offload_block.lock);
- }
- 
- int mlx5e_accel_ipsec_fs_add_rule(struct mlx5e_ipsec_sa_entry *sa_entry)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 708b7987ea4c..9f97c9d680bb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -4836,16 +4836,19 @@ static bool is_tc_ipsec_order_check_needed(struct net_device *filter, struct mlx
- static int mlx5e_tc_block_ipsec_offload(struct net_device *filter, struct mlx5e_priv *priv)
- {
- 	struct mlx5_core_dev *mdev = priv->mdev;
-+	int ret = 0;
- 
- 	if (!is_tc_ipsec_order_check_needed(filter, priv))
- 		return 0;
- 
--	if (mdev->num_block_tc)
--		return -EBUSY;
--
--	mdev->num_block_ipsec++;
-+	spin_lock_bh(&mdev->offload_block.lock);
-+	if (mdev->offload_block.num_block_tc)
-+		ret = -EBUSY;
-+	else
-+		mdev->offload_block.num_block_ipsec++;
-+	spin_unlock_bh(&mdev->offload_block.lock);
- 
--	return 0;
-+	return ret;
- }
- 
- static void mlx5e_tc_unblock_ipsec_offload(struct net_device *filter, struct mlx5e_priv *priv)
-@@ -4853,7 +4856,10 @@ static void mlx5e_tc_unblock_ipsec_offload(struct net_device *filter, struct mlx
- 	if (!is_tc_ipsec_order_check_needed(filter, priv))
- 		return;
- 
--	priv->mdev->num_block_ipsec--;
-+	spin_lock_bh(&priv->mdev->offload_block.lock);
-+	if (!WARN_ON_ONCE(!priv->mdev->offload_block.num_block_ipsec))
-+		priv->mdev->offload_block.num_block_ipsec--;
-+	spin_unlock_bh(&priv->mdev->offload_block.lock);
- }
- 
- int mlx5e_configure_flower(struct net_device *dev, struct mlx5e_priv *priv,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 1a45474ce03d..0439fcfb9ce5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1814,6 +1814,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
- 	lockdep_register_key(&dev->lock_key);
- 	mutex_init(&dev->intf_state_mutex);
- 	lockdep_set_class(&dev->intf_state_mutex, &dev->lock_key);
-+	spin_lock_init(&dev->offload_block.lock);
- 	mutex_init(&dev->mlx5e_res.uplink_netdev_lock);
- 	mutex_init(&dev->wc_state_lock);
- 
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index abb99371ff13..84e9f6bdb7c1 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -789,8 +789,12 @@ struct mlx5_core_dev {
- 	u32                      vsc_addr;
- 	struct mlx5_hv_vhca	*hv_vhca;
- 	struct mlx5_hwmon	*hwmon;
--	u64			num_block_tc;
--	u64			num_block_ipsec;
-+	struct {
-+		/* Protects the fields below. */
-+		spinlock_t lock;
-+		u64 num_block_tc;
-+		u64 num_block_ipsec;
-+	} offload_block;
- #ifdef CONFIG_MLX5_MACSEC
- 	struct mlx5_macsec_fs *macsec_fs;
- 	/* MACsec notifier chain to sync MACsec core and IB database */
--- 
-2.44.0
-
+On Thu, Nov 5, 2026 at 6:45=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> w=
+rote:
+>
+> A device can be unregistered by a context other than the cleanup_net()
+> of its own netns, for instance a veth whose peer in another netns is
+> deleted. If references on it are still held, it stays in
+> netdev_wait_allrefs_any(), which rebroadcasts NETDEV_UNREGISTER every
+> second.
+>
+> Meanwhile its netns can be dismantled: default_device_exit_batch()
+> only takes care of devices still listed in the netns, then pernet exit
+> handlers free their state, and finally struct net is freed while the
+> device still points to it.
+>
+> The rebroadcasts then run notifiers against torn down pernet state, or
+> freed memory. Three instances were reported so far:
+>
+>  - netdev_genl_netdevice_event(): net->genl_sock is NULL [1]
+>  - nh_netdev_event(): net->nexthop.devhash is NULL [2]
+>  - nf_tables netdevice notifiers: use-after-free of the nftables
+>    pernet storage [3]
+>
+> but any notifier using dev_net(dev) is affected, as is
+> netdev_wait_allrefs_any() itself (__rtnl_net_lock(dev_net(dev)) with
+> CONFIG_DEBUG_NET_SMALL_RTNL=3Dy).
+>
+> This was prevented by rtnl_lock_unregistering() until I removed it
+> in commit 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()"),
+> considering only the loopback dependency, and missing the notifiers one.
+>
+> Restore a per-netns counter of devices sitting in netdev_run_todo(),
+> and make default_device_exit_batch() wait for it to reach zero, after
+> it has unregistered all devices of the dying netns(es). At this point
+> no new unregistration can be started for these netns.
+>
+> Unlike the old barrier, this only waits for devices of the netns being
+> dismantled and runs after their own devices are gone.
+>
+> Tested on a KASAN kernel with a debug-only hack holding a reference
+> on a veth device for 5 seconds after its unregistration: a nexthop
+> on the veth in netns X, delete its peer from init_net, then delete X.
+> Without this patch, the nexthop_flush_dev() null-ptr-deref from [2]
+> triggers. With it, no splat; netns churn and dismantle of a netns
+> whose own device is held still work.
+>
+> [1] https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE@googl=
+e.com/
+> [2] https://lore.kernel.org/netdev/20261105114707.3030737-1-bsdhenrymarti=
+n@gmail.com/
+> [3] https://lore.kernel.org/netdev/20261105114817.3033625-1-bsdhenrymarti=
+n@gmail.com/
+>
+> Fixes: 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()")
+> Cc: stable@vger.kernel.org
+> Reported-by: syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE@g=
+oogle.com/
+> Reported-by: Henry Martin <bsdhenrymartin@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20261105114707.3030737-1-bsdhenrym=
+artin@gmail.com/
+> Closes: https://lore.kernel.org/netdev/20261105114817.3033625-1-bsdhenrym=
+artin@gmail.com/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Cc: Naman Gulati <namangulati@google.com>
+> Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+> Cc: Florian Westphal <fw@strlen.de>
+> ---
+>  include/net/net_namespace.h |  1 +
+>  net/core/dev.c              | 35 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 36 insertions(+)
+>
+> diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+> index c29a22ca178fa678c0468247b9f85f53eec86184..4a4d72080acdc787797bffd3a=
+5a1bc0e6d4b46c7 100644
+> --- a/include/net/net_namespace.h
+> +++ b/include/net/net_namespace.h
+> @@ -72,6 +72,7 @@ struct net {
+>
+>         unsigned int            dev_base_seq;   /* protected by rtnl_mute=
+x */
+>         atomic_t                dev_mc_genid;   /* dev->mc membership cha=
+nges */
+> +       atomic_t                dev_unreg_pending; /* devices in netdev_r=
+un_todo() */
+>         u32                     ifindex;
+>
+>         spinlock_t              nsid_lock;
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index df1a840b033437a168d4290f19611e6a23507d08..5d25b65e20dc4dc012492970d=
+de42210808de17a 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -11101,6 +11101,14 @@ atomic_t dev_unreg_count =3D ATOMIC_INIT(0);
+>  static void net_set_todo(struct net_device *dev)
+>  {
+>         list_add_tail(&dev->todo_list, &net_todo_list);
+> +       atomic_inc(&dev_net(dev)->dev_unreg_pending);
+> +}
+> +
+> +/* Paired with net_set_todo(). @net must not be used after this call. */
+> +static void net_unreg_done(struct net *net)
+> +{
+> +       if (atomic_dec_and_test(&net->dev_unreg_pending))
+> +               wake_up(&netdev_unregistering_wq);
+>  }
+>
+>  static netdev_features_t netdev_sync_upper_features(struct net_device *l=
+ower,
+> @@ -12000,6 +12008,7 @@ void netdev_run_todo(void)
+>                 if (unlikely(dev->reg_state !=3D NETREG_UNREGISTERING)) {
+>                         netdev_WARN(dev, "run_todo but not unregistering\=
+n");
+>                         list_del(&dev->todo_list);
+> +                       net_unreg_done(dev_net(dev));
+>                         continue;
+>                 }
+>
+> @@ -12016,8 +12025,11 @@ void netdev_run_todo(void)
+>
+>         cnt =3D 0;
+>         while (!list_empty(&list)) {
+> +               struct net *net;
+> +
+>                 dev =3D netdev_wait_allrefs_any(&list);
+>                 list_del(&dev->todo_list);
+> +               net =3D dev_net(dev);
+>
+>                 /* paranoia */
+>                 BUG_ON(netdev_refcnt_read(dev) !=3D 1);
+> @@ -12038,6 +12050,8 @@ void netdev_run_todo(void)
+>
+>                 /* Free network device */
+>                 kobject_put(&dev->dev.kobj);
+> +
+> +               net_unreg_done(net);
+>         }
+>         if (cnt && atomic_sub_and_test(cnt, &dev_unreg_count))
+>                 wake_up(&netdev_unregistering_wq);
+> @@ -13486,6 +13500,17 @@ static void __net_exit default_device_exit_net(s=
+truct net *net)
+>         }
+>  }
+>
+> +static bool __net_exit netns_dev_unreg_pending(const struct list_head *n=
+et_list)
+> +{
+> +       struct net *net;
+> +
+> +       list_for_each_entry(net, net_list, exit_list) {
+> +               if (atomic_read(&net->dev_unreg_pending))
+> +                       return true;
+> +       }
+> +       return false;
+> +}
+> +
+>  static void __net_exit default_device_exit_batch(struct list_head *net_l=
+ist)
+>  {
+>         /* At exit all network devices most be removed from a network
+> @@ -13527,6 +13552,16 @@ static void __net_exit default_device_exit_batch=
+(struct list_head *net_list)
+>         unregister_netdevice_many(&dev_kill_list);
+>         rtnl_unlock();
+>
+> +       /* Devices of these netns unregistered from another context
+> +        * (e.g. a veth whose peer was deleted) can still be waiting
+> +        * in netdev_run_todo() for their last references, while
+> +        * NETDEV_UNREGISTER is rebroadcast for them. Wait for them
+> +        * before pernet exit handlers tear down the state used by
+> +        * netdevice notifiers, and before the netns is freed.
+> +        * No new unregistration can start: all devices are unlisted.
+> +        */
+> +       wait_event(netdev_unregistering_wq, !netns_dev_unreg_pending(net_=
+list));
+> +
+>         rtnl_net_flush_workqueue();
+>  }
+>
+> --
+> 2.53.0
+>
