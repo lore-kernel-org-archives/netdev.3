@@ -1,86 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.182
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793900540;
-	b=m41ogLlp2Vh1s+zHGinoH7TN/AA8N/dHS3XMYfgpAnQpqRIwUEQDcO3TE0GPqXr7qOYL
-	 tAznT0U1VPI0tfrV2JZ+FJ1+z24UVLGGqnUMcHNrtDwXjXH/rNQyhsg47xInCXR6Lk+tP
-	 4Tw2oI5X5cNpm6zuIoOf0eaOcBK2vXO196ILUHYXxL8m1UDW+Akk+SM2xQwMnVDjTr+H6
-	 KyCHaqnQQWDSJO0nC4660yCVIxD9WLcCioycQKn/Dw/ApTQcAtczouuHyLlvqE5GibTe1
-	 7SYES5pQrg5y3gnF6g/jXoKGzhuP1t+aj1Yvym3f2KyBEbOSjK/R2Zr4Uh+RvtK+3Xg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793900540;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=7mW/W2zUvZRbJ83TvA9tsndEDGm8qEAN4uyhPOEw0Pw=;
-	b=NeuTGMhWPCnJCzqPKMpBfoZrO7sgow7POyEiNNITXgcjpIfJSIx46SOaear1WMHfmonI
-	 dp9094uz/tV0EofVkt8mC6Ne4DHFu8yLIpM+u6jDLwCrEbilpu+oJTiEMy+oELr4iF7ED
-	 lEdBTOwXGjKslvD5emtHGUJ6Ztj2F5jVs6XUaNtiyBgDpS2VxCrKiYcM9VbRf9EPxxsIu
-	 MSuVRcj7ev2V47W30pwjl0+mzR5Uwtw1iAUiaGq2H4zMIvJJASpd4BIt9KwNo1Xht1sRJ
-	 DiVKi+aGtxa45DfY77HorTI79JzVvTvJQMEmyPks6VpQarJagJP1bgXePZWYK96WwrQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KG+S64On;
-	arc=none smtp.remote-ip=209.85.128.182
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.63
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793901009;
+	b=ybj6DXKpAuwfsw2oXOQ9eR63ZnkJ9Q9q663J/poYUYq8oT2qEqnp6DTnQ0RriVjoOym5
+	 H2bTOH4Nl8uYBm9DMN2GarK1WjBD9ht1+YYlngt6luqNt0Z0ChY0xzJFNWIpSd2yONif1
+	 mGAcF/s7S/dce3sHHYHkV5CI3631PrGJlSkqFH74VIDXshx/EmEyDxLsojMOR5BjaqLyA
+	 VBG9FnH4fjrrYk9lhKU2I5hmSUS+Q6XLgNXuSUv8XrFmANpnJK+HCAHLVmTYlBxTv4+kd
+	 dzvOW0aoCQhep2BCPIqoa2TkS2TSI1JwLe9aNQesQSaCMEAEG122eNEN8azC1wDeimA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793901009;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
+	b=5Yx7MO8re9Anmh3z3crCHAg1yFSGblkkDoVVV/T06gsVLE1ln8YzufgaPOZQ3gI4DrkK
+	 dhaRNl26CV/4yX0BGr86VO0TpZ1KN+2N46/oY0svCkUGJrQGG7ohC6mRCgRiDP++zDDg0
+	 y30jrbwjRz3vqRiI2kYrW5X4Ol+KJo01Ezg6BrJxLMb1wVIz6RU5ZBc3ZSM7bQn8ypNuc
+	 YjKocCHo2M/IV1z7yayy91a8ajjtYJCNyvoFUvou27/OUdL791mHD6D1WS7r7T3N9HOxe
+	 07xknQipIllfjov6uC6J9U5DNovuJNNcP60Lx5SOpIZMZLo4UoKqF94p9sTGSf6OhtQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AA3Vki6s;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.63
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010063.outbound.protection.outlook.com [52.101.61.63])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B259C606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:42:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B259C606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC915606A330;
+	Thu,  5 Nov 2026 17:50:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC915606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KG+S64On
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8b0d91601bdso7728017b3.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:42:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793900539; x=1794505339; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7mW/W2zUvZRbJ83TvA9tsndEDGm8qEAN4uyhPOEw0Pw=;
-        b=KG+S64OnRQhNJdrRc5VVrIRK3+SoA7zTQ5EbgjknSenrZM2eiyYZMO/r/TAj/d+Skj
-         gGo2gP5DbB2IeEzu+qNLnUHhkoYGnKNuw/bvaNrDCEBcwY7BnhxnWaEUs/emwJKiMDmd
-         yY3QJagIryIqNXdPI9SL+p3NysHQwappzMzT4XDR0aTRXEPpjPdRsrS6ifPXAr+fBvqJ
-         a17hi43V/wsqgvkNYcz9Ax+xRFGj0KexoF8Swy9UTQmA5K27NtNTpTC4QQuInu9RVyOh
-         yfpPjhIIF4qiYWZET622OR3UNiD03z1yA/U9Gou3p/MEiwYasQd06s2ijEpkg1DgSXG6
-         k92w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793900539; x=1794505339;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7mW/W2zUvZRbJ83TvA9tsndEDGm8qEAN4uyhPOEw0Pw=;
-        b=xcnDSv7nFxozJM71HI6dDhqZZMfFxJKxcd1Xmyk7tAq4z6gfL1KwmqnY0vfM+5cNNw
-         nwjXeEOCUrzjRU2Myq5+g2qRUyaSQBN6+U4FF9LNz3eAjVEDzjekT4n3L51Tj4Bj7rJa
-         AR9pKJlhUlURyRW8MJlJvfV100hMe2D0E+ePmfbBEA6QJgcYRD+QmHgyYj3mRtJfthot
-         2t2wE0U5Qm4dnDvLS6gqitANtISjepGNRQMlUuyjnfeJW6J5+8kl9n+a4r/c57e2gJ0k
-         9ycj1DyPhurF60QazFPm4FSpsEZj6o9DgPrrvNBJP+fbqn3Fsvn2vt5Q6dQVALB4Pe6R
-         26aw==
-X-Gm-Message-State: APuU4Z+ehkH90vGwex2SnD5waRicny7+2eYvfKBKdkJ2WLeLpOtgwi2m
-	iEGKj+vtaiREQyDda1Iu6j5RG2X27HDiFeDkaAc1w1T7tNcD3S/zpycj
-X-Gm-Gg: AYBFou2dfOrzd6NRtNuPNkSJQ1ZqKCUQAkj2aFqPCg+zWvRXmllcUpZVFtyw9alQXq3
-	VotztYaAu4X3z/BmbPDAzehaR8VXe9hG8DIjbm6dgY5qPvOWyLGJPKRhDMLhZe8gKdP+g1ktikU
-	9WX0j8kKtYpP+3lEqnAEPIoBKq8cRf8BzbdZyh3llFX/nD00cbIMoiXXeBRzjl9g4KuiD4gcMnw
-	uI3yVrr6PiEVaaDiBGCLksetXgz/nx5fuRrfqOu65HpKtddsyvOtS/+TdmhIpV2TOhqv21yGssD
-	11NbCs0+Xx09dYTZKNAqpb92/MI7xbto5K5srTbVpot3ZxAdlUa3eHKe014jKXTjzuBXsKYMAJW
-	IzZMdmvnjgwKHYz+riLeIMGeG5+fTvr/+IfZ4ZeFyPR3c1JcKEd+KeDQVEwbMcfNjpefpACKkAK
-	fVdoHyAEsktvqT1a/cTEFuUUvE8Y/A5wjtD+QnXIxmbFH1fQFDpfBMEhZ0uBnrZ6RIQfocoLUSZ
-	1qIgMtyruCUw8EECYTri7R7rRQvK52zXVJ5jruBDk7s93o8CMrN7ifmCMXyaU72JeWKpDaLLIWr
-	qr36EZIDyx4Afh8LFCJD66nUZ1YDPpBDHu79vfASUqniwMbzoA==
-X-Received: by 2002:a05:690c:a012:b0:8b0:e13c:2852 with SMTP id 00721157ae682-8b328db53bfmr17577147b3.7.1793900537616;
-        Thu, 05 Nov 2026 09:42:17 -0800 (PST)
-Received: from ?IPV6:2600:6c5c:6b00:316::23? ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f5f2e0fsm795357b3.4.2026.11.05.09.42.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 09:42:17 -0800 (PST)
-Message-ID: <2c861cd8-29b5-4779-98e0-0be49a04023c@gmail.com>
-Date: Thu, 5 Nov 2026 12:42:16 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AA3Vki6s
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UQljh2JRAZyyBBJjd3R0gEuwy2bQdxd6SzWoAgVVdOsr1nVPZBCWebq9zvY8LY52JcYVSH6B6ciGju8dDwau4/91W76qNqsNis+PC2j3eIjkk59228VOYdFE5kEjEC6dvTZR45emYNUeoy42VDy002r4R/+iaczCTe4LfEMx83LdoacK8U3o5Aa7030ybfj76HMlti4tOxTEr9zRUvKIGf6NU/8m3DfoJvxZJKB1peL0otr0xWpbXrnBRdJ6mGiZusBDbFSS6BOl9s6uN1U5dfqvKCeN+JFNi7FK10D1eEOrp6ZA9wXW1BEqra+fGfqWU/R3eslJH2v5FbF3YrmWJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
+ b=XnuKDJS9XaXzHGwiYf/Yqf2mcIwmij0PijVO8MC+nWdk1Te0iHyPdpR838BTsMMOZlBMYqyAZQWmWEglOtNv7J9EriOrXffSnJNIJcKwuvs9z/jcwsCSMseJkZORQFWbSCZGSZzDgp353cknVxrmsN5bmZvT1IkFXQxKsDh8IZYi13Y9kM5v60TFdI746+4Fe3aBeOtbZMfwuOB3Vo4bzhSFoStcpgQrMtQPpdPoGoskRaOKXj/XiQCN7LNTQT2o6Olac52vkH31lzNwF4E8toAsusRqdE+yLKgsNHehaymxrFZ//7ZvcYFwFF950tjNxgT9nUXG2z5NoLX+Zg/dDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
+ b=AA3Vki6s7mifgwcM0qDpICWIFhSzLErsbm9ANrGXG53zKYzMxXGshP1Ejp/YnPvsZI/2BXHqsdoVUfsvkI5uzmwrXwzQYigheN+Jos+RW2Dbu5aLqaz7fTMFPwfisgC2iQZ68wlzZRAlzdLFdyP5LXCHYaJ+ClZTD5bMOHUz9EZEs4AmKPVN/Dv0F1nX/4dzVBcsmRaqpH+xpQAyl/Zg/xNpXye5kdoP6YzIt676kRajeuF88cOn6NXMEUDNJHV0CSN6K8uBlSsazB5uCa6eEMDMONqAqhRe6UW58ujm44wdEcc0BpNZZC4xv9nLbgbTRFV6sZoFC/A9ObIInd+/YQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15) by IA1PR12MB8520.namprd12.prod.outlook.com
+ (2603:10b6:208:44d::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 17:49:38 +0000
+Received: from IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
+ ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 17:49:37 +0000
+Message-ID: <c27e8ceb-c0d6-4801-a53b-837545dc51f6@nvidia.com>
+Date: Thu, 5 Nov 2026 19:49:32 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when
+ enabling RX offload
+To: Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>,
+ Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
+ mbloch@nvidia.com, borisp@nvidia.com, witu@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
+ <20261029134019.GG257209@horms.kernel.org>
+ <53ba3677-af71-4d8e-b445-39e08eea8b2d@nvidia.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <53ba3677-af71-4d8e-b445-39e08eea8b2d@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TLZP290CA0014.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::13) To IA4PR12MB932075.namprd12.prod.outlook.com
+ (2603:10b6:207:12d::15)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -90,97 +104,179 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: reset transport_header for ndo_features_check
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
- Alexander Duyck <alexanderduyck@fb.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>
-References: <20261104175517.2395704-1-tactii@gmail.com>
- <CAL4WiiocQ1-jpdkYi1u_5T3J7oXK9qXnKDV+316Nd9KtDvsOKw@mail.gmail.com>
-Content-Language: en-US
-From: Matt Vollrath <tactii@gmail.com>
-In-Reply-To: <CAL4WiiocQ1-jpdkYi1u_5T3J7oXK9qXnKDV+316Nd9KtDvsOKw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|IA1PR12MB8520:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d1610b7-ae2c-406f-dee7-08df3b652924
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|6133799003|10067099003|4143699003|261026140227099003|11063799006|261026121527099003|261102123227099003|261028144727099003|261021123027099003|261021135927099003|56012099006|261022105027099003|261022075727099003|261009223027099003|261021121427099003;
+X-Microsoft-Antispam-Message-Info:
+	oifzpk3JiaJWWRYeN0+zkX6UpQ1sQ+BgxQAG0jCuZB+AHZG1f6yg4WVgbLfPCmaACUD5UTn7RUGk/MbGDbS4ZEYDuLbPz7FzDuoEp2sjOpycr4uGKgHe9ILFcWygyD8UfqZ1bT7YUaCkWbTfWfmm6McMMEGjG9ABJCn7ls9a1Uj0x+URQyHziB/P9iIggPJ+KS2OMWRk9Nfy5KjqKX1Bp/2kQW5ie4ZfH9Ap9dOS6SQqBLTejct+wrtEKe4hchUnxY4v2LYyQM2j9CzwRz08tHWBbUkTOqKFrXjryhQCxpCY8SynO/TIOI0dDCVGw1aZjSspeUrbFqneur8aJ3mXalHzkcJm4VXqaD5CgTB8KdKLf4NuPqFqePzArsHOiCcE1/Xwu7BCqbkCDTZ9oOSj94bhVU0p+iH312c/7RDWv/LCnvvSujKNfIHSfbonVF1Hn412uLrA1DshSZWUzjXhYHJ8nsj3xr85buVLU3nCBBWZJ6YMgY0+sE6X2B0Kgo5uG58B+PEZ1Zue/vSMNnduz3+M3H03zXrjLyQDw1GqCiS9LGepU/wtmUVw5i2NRzbKKjg9Wq6kSeknltZMaWhGuUp3U8UdEPWFYOgBajKGURkh9nlAyW2C8K4rLkU5gsBCFxvcYquVYpdmCqc2VoaeFDvpOL1l9FFldED2Dwv7NHA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(6133799003)(10067099003)(4143699003)(261026140227099003)(11063799006)(261026121527099003)(261102123227099003)(261028144727099003)(261021123027099003)(261021135927099003)(56012099006)(261022105027099003)(261022075727099003)(261009223027099003)(261021121427099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aEdtZ3BiYUZ3T3BuTzlCblhMWGxWQldZZ1dnOG5NOVRWNklnYmU3TWRPY04y?=
+ =?utf-8?B?bWlSRllIcllSaU1sUDloamJsZ0tTVnp5VktIRDRHWlgxeW16MUh6WVRkM1hX?=
+ =?utf-8?B?NlJEd1V0eU1JMHNTeGJnWndsSXptVkQ0UDg0MFk4eWVCVStHam11VHd5Q1ZL?=
+ =?utf-8?B?c2tkWmVHY3BjZEhOKy9UMkhNc3h3eHlUWGNZU0dlcXNmN2RIaWpMS2h0SkFx?=
+ =?utf-8?B?SWxEMEpNVXcxc2w5WGdCSHhVK2hSYmY4TFFOOGNQbkE0N3JsYjNBeG1Id3ln?=
+ =?utf-8?B?TnZTVU5rTFFEZXJQTXZZWjBtUlZwczRxdS9vTmpwMUhQUVVtd2VSQ1lGd29k?=
+ =?utf-8?B?RytHRVZUYzVVQi9CYlZCMkRnSHo3Sk04NnJPVjRXQnkrMU16UlVYOTBJZVVu?=
+ =?utf-8?B?aHpFcXpSNFpOYVc1RE1qcGVycXBSVkxqZUNxZUJxMnpsN2NBREZxa05NazdB?=
+ =?utf-8?B?YmNkWEsrUDZicm0vNHJlVzdFWmVEWWxkZDRQWmY2QllSRDQvUEJXRjVDSHRw?=
+ =?utf-8?B?OGlVOWRoMWV5aW5mbVVqdVNXSUZwYlBnMVV3SjRUQXpRVmVnaFdXU2dZYXdi?=
+ =?utf-8?B?djBieTJUczZDdDl2NjZKYmF6R2RtR2tNRi9YTDdkNFFtais0b01BL2dhRkth?=
+ =?utf-8?B?aHZIWkd3cEZUTFhabHNTeFVzdVA4Y3ZsVVFCNGplMWVnTmZQN0Z3aU45eXl2?=
+ =?utf-8?B?a1lmaXN3akg2OWlPcVlCRmlUeXJUTStzWWxpSGpETEhKN0x3YUxUT2xpcW0x?=
+ =?utf-8?B?Slh3Q1NKSWZhQU9MeGRjVzkxK094b0NRNyt2QU5uVE5qREdCOExZN2kzTEpx?=
+ =?utf-8?B?UU1XTkx0UFA3dkRxVWpBSGxESGdpdndtWHdDU0I4WDRucHBNSVhIeGQxdXd3?=
+ =?utf-8?B?Z2dMZm9YYlBJN0NFVU5EVVlGNDE5REFVMlhlay9nOEFuMHVPSldURkk0d0Zi?=
+ =?utf-8?B?TnUxS3Ywb25nSjQxZTlBMlRsYUZ4bVZranZLZmJ0Ni9tUEdOSVJJcVZWeEtZ?=
+ =?utf-8?B?Nnl6aGcva0d3SjEzSHdSKzk2MU1rdFc5dEFJNkN1MEJEOUFXZTZ3Z3VyS1JW?=
+ =?utf-8?B?NUoxSGE0SkZjRC92QU5hZ3c2YkJxbmFVT0ErcGdjaE00aCtiRG14V0haWTBk?=
+ =?utf-8?B?bmJ5ZjVLRDJPMUJjOTlxOTJvRDErdHZPWkhrVzNmbDArSnlkSng3bFcrdEhN?=
+ =?utf-8?B?L08rTDE5YUtWckQ1NTlvRHJ2R3R2WVUycHo3ZzRpNkFCbHVCZzVXbk5XQy9O?=
+ =?utf-8?B?TEt1MFV4VXlqMXV4N0FtYmRLK3NqVU1WUVlydUdvSkppa2F4d2IwVHFLRDQ5?=
+ =?utf-8?B?Ums0L1k0UXh6L2xJQVg1TXowM0twR3M0WE5jWlkrM2tTQUZla1ppcFh6ZjB0?=
+ =?utf-8?B?L296elhQeThKK0lJbGtCRjh4c0pIM2lUS1I1UDZNL2xTUXB5bVlCeFIramFN?=
+ =?utf-8?B?R0xUb3dxZEJsSHd0RFg2azJRRjBmVjM2aHV3OCtXUExnbjJLS3R5NGJoRWtG?=
+ =?utf-8?B?TTUzTHZGUktnWTRQMC9MSGxqOVhPNkRKLytwTlYyTjJRNUhDb1lwaUJvNEtP?=
+ =?utf-8?B?ZTdkOXlCeDdrdVdWQS82STVmbEE5WFVvcnZFaERWSTBJQ0ZCZm9tV3k4dDdh?=
+ =?utf-8?B?UGJYOWw5S3pML1YxWDZ2a0VEKzNVejdzcWNKN2lzdno5bk4ySkNlR3p1bHpM?=
+ =?utf-8?B?eGZYb1kxdEJoZDlmaldJQVRXQ1NXTjAyN1pSUTRmdUVJQm5qd1h2ZzBMVTJI?=
+ =?utf-8?B?OWk1SDVTUUFpeGdOSjI5U0M1dzVVekZvcFpuMU10dG5IWFdQOXNsYnlZZTdO?=
+ =?utf-8?B?RnEwV0h3MVJPYnZSRFhtZmF2KzRucXZvVGpMeGVmSVlSTERPK2hsNUVNbys0?=
+ =?utf-8?B?dVZqMkhTd0pzeDFqb2QzWEt3TzlTVW03WE9BQnQyQmVrTWRMYUJ2YUpNbUE4?=
+ =?utf-8?B?WEtTZE5XTTZtUTZadklQYmhuaTF0bmY4aGhzemN1TkpXK2oyblVBUE9ZSTNU?=
+ =?utf-8?B?VkRXNkJhNG0wNUxyL0ZUbDJKdG5nSUMxdHh5UTkrQStyaDZXU09Xd2ROL3Fo?=
+ =?utf-8?B?bWRtdkU2Q3lyRk5pemtzVjl4VEl1TTN6UHZrMjJudkZ4YzRFc0NtQlg5Sngy?=
+ =?utf-8?B?T2pPN0x3MGg2TUlTS2g4SW9PV1RpME5RUU1mWDNDNjM2bHhWajF3U1dMSHJZ?=
+ =?utf-8?B?UC9KSTRPamlJKzIyNlo4REN4OWhLUCtlU25RaHdUa2lhVmRXNk00bFhMckpX?=
+ =?utf-8?B?bk81b2VMNEJxUytKc2ZHRkxjUE5OZ0h2cjJBY3Z2cXZmajRWTDFqYURMaGdy?=
+ =?utf-8?B?Q0xrbmR1azVlRGlQUjhlVS8zcG1GVlpHTi9QYmp2L1B6SWR4Vm0yQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d1610b7-ae2c-406f-dee7-08df3b652924
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 17:49:37.8814
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kTtL21gBF3vw6PEscn7oxS2v0P/PXHwUfYCuFqXRH6ljR40lwyVO+jwhX8rYsRUBNtlQ68Y22gvmNOUtbZOzow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8520
 
-On 11/4/26 13:16, Eric Dumazet wrote:
-> Le mer. 4 nov. 2026 à 18:55, Matt Vollrath <tactii@gmail.com> a écrit :
->>
->> ndo_features_check() can see a transport_header that does not point at
->> the L4 header, while ndo_start_xmit() for the same skb sees the right
->> one.
->>
-> 
-> The change looks fine to me, but this is net-next material: the bug is
-> very old, there is no report from real hardware, and the patch changes
-> what every ndo_features_check() sees. Please drop the Cc: stable and the
-> Fixes: tag. For 6.1.y, send a backport of 5f0764cb1c81 to stable@
-> separately.
 
-I'll be proposing a different series which fixes transport_header at the
-source instead of patching one place where it matters that it's wrong. It
-turns out there is more than one place.
 
-I've sent the backport of 5f0764cb1c81 to stable.
+On 01/11/2026 12:41, Tariq Toukan wrote:
+> 
+> 
+> On 29/10/2026 15:40, Simon Horman wrote:
+>> On Mon, Oct 26, 2026 at 06:53:46PM +0900, Xuanqiang Luo wrote:
+>>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>>
+>>> Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
+>>> ICOSQ"), the async ICOSQ is only created when an XDP program is attached
+>>> or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
+>>> the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
+>>> the channels so that they get the queue, but it ignores the return value
+>>> of mlx5e_safe_reopen_channels().
+>>>
+>>> If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
+>>> which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
+>>> enabled. The next offloaded RX connection then dereferences the NULL
+>>> c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
+>>> not help, as the flag is already set and the reopen is skipped.
+>>>
+>>> Propagate the error, clear the flag and destroy the accel TCP flow
+>>> tables again, so that the feature stays disabled and the next attempt
+>>> retries the reopen.
+>>>
+>>> Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
+>>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>> ---
+>>> Found by code inspection while backporting commit abed42f9cd80 to a
+>>> downstream kernel. I do not have a crypto-enabled ConnectX NIC, so the
+>>> failure has not been reproduced and the fix is only compile-tested.
+>>>
+>>> The crash itself is the one described in the changelog of abed42f9cd80
+>>> ("async ICOSQ allocation is not triggered, causing a NULL pointer
+>>> crash"). This patch only covers the case where the reopen that should
+>>> create the queue fails. ktls.c is also the only caller that ignores the
+>>> return value of mlx5e_safe_reopen_channels(); the callers in health.c
+>>> and reporter_tx.c check it.
+>>>
+>>>   drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
+>>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> I agree that a minimal approach to addressing this problem is appropriate
+>> for net.
+>>
+> 
+> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+> 
+> 
+>> Reviewed-by: Simon Horman <horms@kernel.org>
+>>
+>> However, I do think the logic of this function is becoming somewhat
+>> convoluted and would benefit from:
+>>
+>> 1. Handling error paths in conditionals while leaving
+>>     the main thread of execution unconditional.
+>>
+>> 2. Use goto for unwind.
+>>
+>> This is approach is complicated by the function needing to
+>> handle the enable condition. But at any rate, maybe a follow-up patch 
+>> do do
+>> something like this would be worthwhile?
+>>
+> 
+> Agree.
+> 
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c 
+>> b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+>> index 3cc1213c2f68..0f5dcd1b822e 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+>> @@ -137,19 +137,22 @@ int mlx5e_ktls_set_feature_rx(struct net_device 
+>> *netdev, bool enable)
+>>       mutex_lock(&priv->state_lock);
+>>       if (enable) {
+>>           err = mlx5e_accel_fs_tcp_create(priv->fs);
+>> -        if (!err && !priv->ktls_rx_was_enabled) {
+>> -            priv->ktls_rx_was_enabled = true;
+>> -            err = mlx5e_safe_reopen_channels(priv);
+>> -            if (err) {
+>> -                priv->ktls_rx_was_enabled = false;
+>> -                mlx5e_accel_fs_tcp_destroy(priv->fs);
+>> -            }
+>> +        if (err || priv->ktls_rx_was_enabled)
+>> +            goto out_unlock;
+>> +
+>> +        priv->ktls_rx_was_enabled = true;
+>> +        err = mlx5e_safe_reopen_channels(priv);
+>> +        if (err) {
+>> +            priv->ktls_rx_was_enabled = false;
+>> +            enable = false;
+>>           }
+>> -    } else {
+>> -        mlx5e_accel_fs_tcp_destroy(priv->fs);
+>>       }
+>> -    mutex_unlock(&priv->state_lock);
+>> +    if (!enable)
+>> +        mlx5e_accel_fs_tcp_destroy(priv->fs);
+>> +
+>> +out_unlock:
+>> +    mutex_unlock(&priv->state_lock);
+>>       return err;
+>>   }
+>>
+>> ...
+> 
+> Makes sense.
 
->> Commit 663ead3bb8d5 ("[NET]: Use csum_start offset instead of
->> skb_transport_header") made csum_start authoritative because receive
->> processing overwrites transport_header, and resets it from csum_start
->> "just before we push a packet with partial checksums off into the device
->> driver". That reset, which now sets inner_transport_header instead for
->> encapsulated skbs, sits in validate_xmit_skb(), on the non-GSO path
->> only, after netif_skb_features() has called ndo_features_check().
->>
->> So the hook sees a wrong transport_header for a CHECKSUM_PARTIAL skb
->> (after GRO, or from a container or VM) when no stacked device (VLAN,
->> bond, tunnel) ran validate_xmit_skb() first and something earlier
->> pointed the header elsewhere:
->>
->> * IPv6 forwarding with a destination options or routing header:
->>    ip6_rcv_core() sets it just past the fixed header, and only hop-by-hop
->>    options are stepped over before forwarding.
->> * br_nf_pre_routing_ipv6() does the same for bridged IPv6.
->> * seg6 inline, rpl and ioam6 point it at the header they insert.
->>
->> A hook that bounds header lengths with transport_header can then leave
->> offloads enabled that the hardware cannot handle. For example,
->> i40e_features_check() limits IPLEN using skb_network_header_len(),
->> which returns 40, while i40e_tx_enable_csum() writes the real length
->> into the 7-bit IPLEN field, so more than 468 bytes of extension headers
->> overflow into L4_FC_LEN. Rather than make every driver measure from
->> csum_start, give the hook the headers the transmit path gets.
->>
-> 
-> Only from validate_xmit_skb(). ip_finish_output_gso(), some qdiscs and
-> netpoll still call netif_skb_features() without the reset.
-> 
-> The changelog is also too long, something like this would be enough
-> for v2:
-> 
->      net: reset transport header before ndo_features_check()
-> 
->      For CHECKSUM_PARTIAL skbs, validate_xmit_skb() resets
->      transport_header (inner_transport_header for encapsulated skbs)
->      from csum_start, but only after netif_skb_features() has called
->      ndo_features_check().
-> 
->      The hook can therefore see a transport_header left elsewhere by
->      the receive path, while ndo_start_xmit() sees the reset one. For
->      example, ip6_rcv_core() leaves it after the fixed header of
->      forwarded IPv6 packets with destination options or a routing
->      header, and seg6, rpl and ioam6 point it at the header they insert.
-> 
->      i40e_features_check() then bounds IPLEN with a 40 byte
->      skb_network_header_len(), while i40e_tx_enable_csum() programs the
->      real length, which can overflow the 7-bit field.
-> 
->      Move the reset before netif_skb_features(). Skbs that are not
->      segmented in software reach ndo_start_xmit() with the same headers
->      as before, and software GSO parses the headers itself.
-> 
-> pw-bot: cr
-
+Seems that we need a resend here.
+Let me know if you want me to do that.
