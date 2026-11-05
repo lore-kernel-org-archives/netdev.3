@@ -1,70 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887035;
-	b=HqSZ1vsyPgtdewRN+9fGAkIM69/I8CZj3FWsi7qX5r5qy+1QQC91gkgBtUv8udMLT/S8
-	 WTTKKDFBklH5wPaT7l8emz9MnsqSxh1BKm4r06IylBFj+md6jMiajRRfq9pClPOAff6nJ
-	 Jk72+JITaHuzYd0tbnybeZEIRgP8rDKFjfhZiogCnz1qaGsS81p72xnPY2LMPuPQ1tNkW
-	 PFhvzFt5Y5wLix4NgXbrcVD871NQdOjrWLDWtxQDyyOuVf3+jtSXI5AS6zE2rZ5dchuZU
-	 cBCYwGaJL6m6lb5oJ5TW1tuEMgGwOQ98kqBuUyYuDOL9ApQ4UMdSfxb+i96/KiOJqSw==
+	t=1793887042;
+	b=mWulXCB3fgPr+aLtKa4fgwrLScclGDNHINQbwjwgIxmsFBcUO46Y27zANH2flShaO/W4
+	 MIdG5btew/bHVtXx8YhHSdoD///F5aJwdNOd5n+vMXK1F0uuBeTKhtj/0i2/c0MPpRR/Z
+	 YtjEnHqXetJqC6Yd+l7/NQ6cacmglDqWN4RWhe+oQzX4nfdncX6FOsZTWPPaPJPi9hQhU
+	 YIewthfgu6ZuB0ZJTY9at97CgwExfDt6GCd4EgiLxOMyLCvqwFfv8BzVrjwJ6Y5a/A4ER
+	 Uyq+pmDvkGCuGHfr0+R+ZFKyZ9/A+Caa1D32x/0XMWDtoipqdxbug1f1utcPDc41d3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887035;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
-	bh=a0HHkVp0d1WzeTz261sm5snbyXfyONSeg+unLHJTh6M=;
-	b=hXG5YBgfHZtbl3XbZ3JBtAyh+CaJTaHWzAdgWU+pp9OTtfiMTJA8QS78TY7tM3qyu2h2
-	 m54J8IUJvN63GKW1wA5Su1Xn48ClTxqb4DDOSHtlo8A9H5tgW0BwTmuTxj1SlpLVrLs8o
-	 pdMRHDPS1fumpc1qNTo4lSIBw1BpHRlCh9pPhXPQewGkgN1xT8stnFWrvDUNz7fHXnvbs
-	 oBFOAp3w1vK6ZFnwGFPnTikQqntZNrlIEPQ28FfBvJW4M2uVtTeGWoKGPQMVBJB2kBHmD
-	 bBv8tw87VIQF1j+o9yr217nDlghTpshHF4oJ6n+j82yM0HU7yLEFNjmPyD/rA4Z/g8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887042;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=LugeZGb+Fl7OEGgjSES9UdL88IWgFCStcMs3asT+ykY=;
+	b=al2mVoiFwkmAY22wRyB94FS9PvgJ2X/lc8PBjp27CGTeCU+4M9Bzo4HTP7SSlmpsTvBH
+	 v0a1MY/BJXkLXpCxEe7Aywa2AJ2LLfaGFRVEjYoacYXmcCqdZJUir2Ac77Kik245HAGAe
+	 MZ05pgPvinGaI07X36j3H8Yh/X2jQ3Yev3eizxZpPBQys7py7tmWSOBVnbPpys5e4m79D
+	 bcYV758I50BR05lnBIB1UPyfyCSC+EtpURr366tgPZQvVSsgH61mKjFtUXmOIRVvuM8s8
+	 58eicLohKQ30iBXiWLPCn1Va/K2XRWmNPJocjVglm/MaQyyaEFqFkKB1S8mNC8aO+eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="K0JM/GUt";
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="R/WL+4qx";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U2Em1hJC;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB3F606A31B;
-	Thu,  5 Nov 2026 13:57:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EB3F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CE0606EE90
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 13:57:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3CE0606EE90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=K0JM/GUt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793887041; x=1825423041;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=wCGngij35oURRncYhXXCtXKKqEH2meAMlzZH8zHp+8A=;
-  b=K0JM/GUtdRriQ1S603wQu4zjuFHM9q9zEjV10W+BoTcVORIfgHhDfKvJ
-   0qG25P6iZqNNzzaA6JDdmDFkVSyzetLwI1JAKb/Ky4tagErfqyaIwPJyb
-   bwo7CpEfVl8HzDdDZMGvpvatvIzntOxVTd45XyNSNrFZB3N+nVAAUwkIv
-   GUqoMLL+bztc1zGa6UzhPtoRGpW5sCY02XN782VuahsBxDPCRWIxf6quQ
-   Mc1lXDiFbN+am3iURqbnP8zQMfv5a12mg97cva592wdlN6HWk/sOEbaAA
-   TmHAOg4MJFIgkKEHVSsGH7rrE+33rPOMxg3RHmIaTYdx14eArmvSVYqOv
-   Q==;
-X-CSE-ConnectionGUID: C9qMufzpTHWeg7pt1/Qu5A==
-X-CSE-MsgGUID: +c7t8/TvQBeJ/duBm4/KVw==
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="66320536"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 06:57:20 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Thu, 5 Nov 2026 06:57:13 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 5 Nov 2026 06:57:10 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Thu, 5 Nov 2026 14:56:40 +0100
-Subject: [PATCH net-next 5/9] net: sparx5/lan969x: size the FDMA buffers
- from the port MTUs
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R/WL+4qx;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U2Em1hJC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793887040;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LugeZGb+Fl7OEGgjSES9UdL88IWgFCStcMs3asT+ykY=;
+	b=R/WL+4qxRVGSNMsUvHj3KhfGQTljIUNgBbzdebtSvv7V8MHqaesQio7Dja1shp94xzElgU
+	jJcyO0XvoZqknYBclAZ2ctC8PWKfdkoLoQotO7QddOGgUYehTh11rbzLAURpZHl9P4kxf6
+	knaMi4Q90Zvfvdt4Genu9w2KPj+fkkU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-375-6Zv2HeXnN8-7GAiPsv1Dpw-1; Thu, 05 Nov 2026 08:57:18 -0500
+X-MC-Unique: 6Zv2HeXnN8-7GAiPsv1Dpw-1
+X-Mimecast-MFC-AGG-ID: 6Zv2HeXnN8-7GAiPsv1Dpw_1793887038
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-490c69dc02bso1130426f8f.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 05:57:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793887037; x=1794491837; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LugeZGb+Fl7OEGgjSES9UdL88IWgFCStcMs3asT+ykY=;
+        b=U2Em1hJCFVfRXkgj9mzgfMQoYYzaBAJvSWu17U/Jr8cUWtBJp+eeHEMlD1FpI/JpvB
+         kvt4QveGVLJ9kHjXFQ8xpPb0dF1AHrA0CyZP7bTme4ixhVqz1G0qPeOZ1RX6XsypOaKh
+         84OGkDCFItDVuyh5kfk0JNtYaFVL8Q/c7lW32EQ+Nd653Men4v/kBsU5LLk3c25DQVhM
+         fT4A1rvarEMFqGNEM0x2cf51xsqgizYMVprOknxjcE07YbT2xflEQ5bUK9AkDckLwZ54
+         tIOOaUmvnEfeG0bn455r6UoGyU99yuVB32grQvGSZdbelD9/dYlIByqIUBDzSxc+Wv+M
+         tdKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793887037; x=1794491837;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LugeZGb+Fl7OEGgjSES9UdL88IWgFCStcMs3asT+ykY=;
+        b=LggrRMnvYIvUTxDaWekpz1rmHRFIM8TZ5q2cjEjd6fq0L1AZSN3jAxz1U6Xcy31roz
+         Zi6041dekqC7lQH+W4wL5FidbsEkKDOZS8uj113Qjj5rD6yqqI4AQnGiM56dP9EmQTjp
+         1bZoZzaXDBNE7/9cRwA/iMLKkJuqQVDStf2PRSP+usWYtLvfPbHfVt27y13SJTlDTVny
+         thJqUa0NsuS7kA59zdVcnVvv8PikgX47A9mAayK0Z1wrxCTh5k/lk1sCO0PcEb9/hw7N
+         tpjCUfsKP8hLAuofVgM7GrMxbH7kkA/EikFmxLgcMVfocXUhdHJt3X2JImz51EYXNGLc
+         WCeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxV6fSN/rWECdxxJjNs1BxVrqhUT/+OUX7t1HUtcdFxSRkOaSEhbbrcdLc8LCW/us8TEoNb8Bw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9dUXcUxQJe+pAa1mm6Nr6RtgLAHwxn58fmi7P0mrvYvKSASKN4
+	epvgOfUSk8/M9tmHpH+4/MBvwuRCC2iMOO8rYJXSyUdONBTPnEY5GsvOaJ62RVysizyVdff9oTp
+	TDiR/bryOcBZyrI6JM+LrgUWK6WZf+hbPghbv/hSV/r/BMrz8fhzhq2UnqQ==
+X-Gm-Gg: AYBFou1uOGVpdtJin11k/fV599lEgDyfuy0n6iHX1OVm2s+cyRHwsJZ7hcojqV956sp
+	f8XcCrTFn+5uya0+w5u8br5lqdc/m9OoNOLfwuJ4l0q3pEhz5ivxUkemIAlGSvofpC8Ik0BZWx6
+	8Lpn1izOJVZjqb2CO7zV1H375SCw+kBc2nny166RE1dRBBjjJUtsXoGpNK6YLooG/5RTa2D0z4+
+	RNf6v2pVj0PkI+dWUg4KnZpX2A3OHDbSc5+MQZuFf7X4+1hkua16YXfdSC352t0ASbg5N3Xi8fT
+	GmibtyXyaGFF8ACTzbMCq9yQ2CQNMMNV+/duqyOVPORYTBINv/3tWsQgFqFn6dWpFSsCsENNvwb
+	MrBtvElNJsOFbLYR7NAhAZ/BDNsuSBfFkvaXxdo4H+RE1j8WzXxaVBaV+/FmTmsQB7tuQS5+4oV
+	Vxc0pmRmOPuabC7cT5PStQ97JAlW2CbZBtrX3eAqQKbh8=
+X-Received: by 2002:a05:6000:3c4:b0:491:273c:9649 with SMTP id ffacd0b85a97d-491273c9731mr4515071f8f.15.1793887037382;
+        Thu, 05 Nov 2026 05:57:17 -0800 (PST)
+X-Received: by 2002:a05:6000:3c4:b0:491:273c:9649 with SMTP id ffacd0b85a97d-491273c9731mr4515030f8f.15.1793887036899;
+        Thu, 05 Nov 2026 05:57:16 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed45d2bbsm10667066f8f.33.2026.11.05.05.57.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 05:57:16 -0800 (PST)
+Message-ID: <be1607db-4d7f-4a35-b1aa-0b0c35220407@redhat.com>
+Date: Thu, 5 Nov 2026 14:57:14 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,209 +112,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dpaa2-switch: fix port cleanup on probe errors
+To: Jaeyeong Lee <lee@jaeyeong.cc>, netdev@vger.kernel.org,
+ Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261102071310.3004332-1-lee@jaeyeong.cc>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261102071310.3004332-1-lee@jaeyeong.cc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261105-sparx5-mtu-change-v1-5-f27bab580463@microchip.com>
-References: <20261105-sparx5-mtu-change-v1-0-f27bab580463@microchip.com>
-In-Reply-To: <20261105-sparx5-mtu-change-v1-0-f27bab580463@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
- Cochran" <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>
-CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, Robert Marko <robert.marko@sartura.hr>
-X-Mailer: b4 0.14.3
 
-The FDMA buffers must hold the largest frame that can be received by the
-CPU, including the IFH, and on Sparx5 also the largest frame that is
-transmitted, as Sparx5 copies the frames into its TX buffers. On Sparx5,
-the RX buffers are skbs, and the TX buffers are a contiguous area. On
-lan969x, the RX buffers are page_pool pages, which are turned into skbs
-with build_skb(), and TX frames are mapped directly from the skbs. The
-buffers are currently fixed to a single page, which is not large enough
-to hold jumbo frames.
+On 11/2/26 08:13, Jaeyeong Lee wrote:
+> dpaa2_switch_probe() reuses i while probing ports, adding NAPI
+> instances, registering netdevs, and unwinding failures. Consequently,
+> the value reaching the port removal loop does not always represent the
+> number of successfully probed ports.
+> 
+> If IRQ setup fails, i is left equal to DPAA2_SWITCH_RX_NUM_FQS. A
+> switch with one interface then causes the unwind path to access
+> ports[1] out of bounds, while a switch with more than two interfaces
+> leaks all ports after ports[1].
+> 
+> If register_netdev() fails, the unregister loop consumes i down to -1.
+> The following port removal loop is therefore skipped, leaking every
+> port netdev and its MAC endpoint reference. The NAPI instances attached
+> to port 0 also remain linked while their enclosing ethsw is freed.
+> 
+> The issue was discovered by a static analysis tool and confirmed by
+> manually tracing the probe error paths.
+> 
+> Track successfully probed and registered ports independently. On
+> post-NAPI failures, unregister only successfully registered netdevs,
+> delete the NAPI instances, and then remove every successfully probed
+> port.
+> 
+> Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jaeyeong Lee <lee@jaeyeong.cc>
+As per Linus guidance issues in error paths in NIC setup/teardown
+do not qualifyfor net nor stable. Applying to net-next, with stable stripped.
 
-Instead, size the buffers from the largest MTU of the ports, plus the
-Ethernet header, FCS, IFH and two VLAN tags. On Sparx5, use this length,
-rounded up to the 128 byte granularity required by the FDMA, as the RX
-and TX buffer size. As the TX buffers can now be smaller than a page,
-make sparx5_fdma_xmit() drop frames that do not fit. On lan969x, use the
-page order needed to hold the frame and the skb_shared_info, as lan966x
-does, and limit the RX buffer size so that the FDMA never writes into
-the skb_shared_info at the end of the page.
-
-With the default MTU of 1500, the Sparx5 buffers become smaller, and the
-lan969x pages are unchanged.
-
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- .../microchip/sparx5/lan969x/lan969x_fdma.c        | 22 ++++++++++----
- .../net/ethernet/microchip/sparx5/sparx5_fdma.c    | 35 ++++++++++++++++++++--
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |  2 ++
- 3 files changed, 52 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-index 5a6521ff774d8..26a0815a0173b 100644
---- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
-@@ -131,7 +131,7 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
- 	if (WARN_ON(!port))
- 		goto free_page;
- 
--	skb = build_skb(page_address(page), fdma->db_size);
-+	skb = build_skb(page_address(page), PAGE_SIZE << rx->page_order);
- 	if (unlikely(!skb))
- 		goto free_page;
- 
-@@ -161,21 +161,27 @@ static struct sk_buff *lan969x_fdma_rx_get_frame(struct sparx5 *sparx5,
- 	return NULL;
- }
- 
-+/* Get the page order needed for a page to hold the largest frame */
-+static u8 lan969x_fdma_get_page_order(struct sparx5 *sparx5)
-+{
-+	return get_order(ALIGN(sparx5_fdma_get_max_frame(sparx5), 128) +
-+			 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
-+}
-+
- static int lan969x_fdma_rx_alloc(struct sparx5 *sparx5, struct sparx5_rx *rx)
- {
- 	struct fdma *fdma = &rx->fdma;
- 	int err;
- 
- 	struct page_pool_params pp_params = {
--		.order = 0,
-+		.order = rx->page_order,
- 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.pool_size = fdma->n_dcbs * fdma->n_dbs,
- 		.nid = NUMA_NO_NODE,
- 		.dev = sparx5->dev,
- 		.dma_dir = DMA_FROM_DEVICE,
- 		.offset = 0,
--		.max_len = fdma->db_size -
--			   SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
-+		.max_len = fdma->db_size,
- 	};
- 
- 	rx->page_pool = page_pool_create(&pp_params);
-@@ -238,7 +244,12 @@ static void lan969x_fdma_rx_init(struct sparx5 *sparx5, struct sparx5_rx *rx)
- 	fdma->n_dbs = 1;
- 	fdma->priv = sparx5;
- 	fdma->size = fdma_get_size(fdma);
--	fdma->db_size = PAGE_SIZE;
-+	/* Keep the FDMA from writing into the skb_shared_info at the end of
-+	 * the page. The DB size must be a multiple of 128 bytes.
-+	 */
-+	fdma->db_size = ALIGN_DOWN((PAGE_SIZE << rx->page_order) -
-+				   SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
-+				   128);
- 	fdma->ops.dataptr_cb = &lan969x_fdma_rx_dataptr_cb;
- 	fdma->ops.nextptr_cb = &fdma_nextptr_cb;
- 
-@@ -383,6 +394,7 @@ int lan969x_fdma_init(struct sparx5 *sparx5)
- 	struct sparx5_rx *rx = &sparx5->rx;
- 	int err;
- 
-+	rx->page_order = lan969x_fdma_get_page_order(sparx5);
- 	lan969x_fdma_rx_init(sparx5, rx);
- 	lan969x_fdma_tx_init(sparx5);
- 	sparx5_fdma_injection_mode(sparx5);
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-index 7ac5887abe6ee..3a74a305d55d4 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-@@ -18,7 +18,6 @@
- #include "sparx5_main.h"
- #include "sparx5_port.h"
- 
--#define FDMA_XTR_BUFFER_SIZE		2048
- #define FDMA_WEIGHT			4
- #define SPX5_FDMA_STOP_SLEEP_US		500
- #define SPX5_FDMA_STOP_TIMEOUT_US	10000
-@@ -218,6 +217,10 @@ int sparx5_fdma_xmit(struct sparx5 *sparx5, u32 *ifh, struct sk_buff *skb,
- 	struct fdma *fdma = &tx->fdma;
- 	void *virt_addr;
- 
-+	/* Drop frames that do not fit in the TX buffers */
-+	if (unlikely(IFH_LEN * 4 + skb->len + ETH_FCS_LEN > fdma->db_size))
-+		return -EMSGSIZE;
-+
- 	if (!fdma_db_is_done(fdma_db_get(fdma, fdma->dcb_index, 0)))
- 		return -EINVAL;
- 
-@@ -289,6 +292,33 @@ static int sparx5_fdma_tx_alloc(struct sparx5_tx *tx)
- 	return 0;
- }
- 
-+/* Get the size of the largest frame, including IFH and VLAN tags, that can be
-+ * received on any of the ports.
-+ */
-+u32 sparx5_fdma_get_max_frame(struct sparx5 *sparx5)
-+{
-+	u32 max_mtu = 0;
-+
-+	for (int i = 0; i < sparx5->data->consts->n_ports; i++) {
-+		struct sparx5_port *port = sparx5->ports[i];
-+
-+		if (!port)
-+			continue;
-+
-+		max_mtu = max(max_mtu, READ_ONCE(port->ndev->mtu));
-+	}
-+
-+	return SPX5_HW_MTU(max_mtu) + IFH_LEN * sizeof(u32) + VLAN_HLEN * 2;
-+}
-+
-+/* Get the DB size needed to hold the largest frame. The DB size must be a
-+ * multiple of 128 bytes.
-+ */
-+static u32 sparx5_fdma_get_db_size(struct sparx5 *sparx5)
-+{
-+	return ALIGN(sparx5_fdma_get_max_frame(sparx5), 128);
-+}
-+
- static void sparx5_fdma_rx_init(struct sparx5 *sparx5,
- 				struct sparx5_rx *rx, int channel, u32 db_size)
- {
-@@ -418,7 +448,7 @@ void sparx5_fdma_injection_mode(struct sparx5 *sparx5)
- 
- int sparx5_fdma_init(struct sparx5 *sparx5)
- {
--	u32 db_size = ALIGN(FDMA_XTR_BUFFER_SIZE, PAGE_SIZE);
-+	u32 db_size;
- 	int err;
- 
- 	/* Reset FDMA state */
-@@ -435,6 +465,7 @@ int sparx5_fdma_init(struct sparx5 *sparx5)
- 		 sparx5, CPU_PROC_CTRL);
- 
- 	sparx5_fdma_injection_mode(sparx5);
-+	db_size = sparx5_fdma_get_db_size(sparx5);
- 	sparx5_fdma_rx_init(sparx5, &sparx5->rx, FDMA_XTR_CHANNEL, db_size);
- 	sparx5_fdma_tx_init(sparx5, &sparx5->tx, FDMA_INJ_CHANNEL, db_size);
- 	err = sparx5_fdma_rx_alloc(&sparx5->rx);
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index 8dc3a500c1c91..18b3bd33c11a7 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -109,6 +109,7 @@ enum sparx5_feature {
- #define SPX5_BUFFER_CELL_SZ    184   /* Cell size  */
- #define SPX5_BUFFER_MEMORY     4194280 /* 22795 words * 184 bytes */
- #define SPX5_TAS_ENTRIES_PER_PORT 2 /* TAS lists per port */
-+#define SPX5_HW_MTU(mtu)       ((mtu) + ETH_HLEN + ETH_FCS_LEN)
- 
- #define XTR_QUEUE     0
- #define INJ_QUEUE     0
-@@ -479,6 +480,7 @@ int sparx5_fdma_xmit(struct sparx5 *sparx5, u32 *ifh, struct sk_buff *skb,
- irqreturn_t sparx5_fdma_handler(int irq, void *args);
- void sparx5_fdma_reload(struct sparx5 *sparx5, struct fdma *fdma);
- void sparx5_fdma_injection_mode(struct sparx5 *sparx5);
-+u32 sparx5_fdma_get_max_frame(struct sparx5 *sparx5);
- 
- /* sparx5_mactable.c */
- int sparx5_mact_learn(struct sparx5 *sparx5, int port,
-
--- 
-2.34.1
+/P
 
