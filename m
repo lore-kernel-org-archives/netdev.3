@@ -1,55 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793922490;
-	b=XCbyZk1StaDBeImKkg2MnQgw4xPonBJ7PbkgE2Wq4XU5rqo5VoZL/vk/lu7vIMiaQrKN
-	 io0X+4r+hWj6eg/5D7wvZ04dbv7cenJ4UtYlnUZPGjfrZcl07nTULkX6QKh+hPPbuPOjC
-	 F9KtQZ6GvcdYyQ7dduFApiSw+98h6Iq1y098dKDoLmGSKZDVHyHb7etbm+UzWGHZJY6gr
-	 XfgfOXEj8rXPMrWTE5gRVVX7Wv6U66gxM97GsqKQuusK8OL4oDVgNRIHlijtAythuLYDn
-	 3AxxLmUISx2K+NM4PxfoesrtxVYiWDweMb4sFuVLdU+97C5KWCKC9qnBPIHqAv/ZbWw==
+	t=1793922606;
+	b=xemLOdK1OJhgtKEwq9fRKNmzItvCIx2z7Un/3CkkGq5l8Ta+PI/xHE47mz6YUwD2kfbo
+	 1KA5KiH3a1y+Q/6WL8z3gv1NyJa+CB4AeUWRTqUssBF7C50Sm3m9oMy5F+oZOQHBNEts5
+	 5YoOpFRYzKB9mcKUR055YYeBXkC8Y/HGgwJpYlrllf4fAKJI4SutY/90Byr+Fz4k2vtFM
+	 je26LVVc/DO0ZoXV67YbLo6Ae6HrgC4iBMeotgk+EXXrn4Gwpr7YYhSpBMNww1wtn+fGt
+	 mUX8C+RA/wYHVG4mTbgvtfsI6OP/63wwhGwbL3NBWXJLIs1W0CMnFV6UXgEDhI7WAnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793922490;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=nrwWftTY0nW1OtVHwLcoMlFahm3Lvr8LEJONSYVihg4=;
-	b=3ljKhk+9VIT9SzvO6FTNtiAlKEZENADvq387edqSq2Y/a75hXWtL3fxrVzzJXcCJ+Ji4
-	 CPRdTVJ5Z+QT9c4rgeTI++M4XPr6MsmhuoR+pcFf6wc9j2XttR4B1Z8vg9Adbwn1053RV
-	 hRs4n501RIcSKZTflioPooID7p4bB4ojJsYoiMdTTooC/K8zxfAPkuvN2PKm/RBMzbNS2
-	 p3O8MqBVLK96XFTqeoNqM+cOjFxKAnPMMaiEajSokW22sP88l1txEhsJ3ZbsjvvQIQOiZ
-	 WC/DIeA4WZFTSE1EGTxv76NFm83fInAJRFtjdqhK1t9sMXAbYquwDrxBtQhAsW+ygPg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793922606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=7iiR35x4lGpNQ0avK+S/KIS1SfMoxbs/VtZHBn/dnVM=;
+	b=f9RtWqELcyQXq80KF248//coKJbkfocLnRKvO3J7W1MZm0vtDyxIo7fUKSwLOIpeJeq7
+	 c1hgwAbyy+scBbmSgAhssnvPs4FSq35qGQisw1zOfoK4RmU9bC6Nv2J7HHfnydfr0CO09
+	 2byFYbLofp153szL+gxLoSXNQZ4miD0VHHkXSFbe8lNhlzWsZPqE5Amu27Dt+uexmkCeA
+	 a6OPGA68REg8eVl9CRSfnPOAjVdhcZE+2eauKamqWwy03TNgDtma30CxzB+xVR6rACBA4
+	 mMLoJgJ4DodvCD+ixLzS9YaPJqcOU78h6L4BPNcPFHAhWVQgfCF+pMiK8uX/v90epFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwED+haR;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7keFfd2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9EB606D834;
-	Thu,  5 Nov 2026 23:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0073606A31B;
+	Thu,  5 Nov 2026 23:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwED+haR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BF81F0089F;
-	Thu,  5 Nov 2026 23:48:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7keFfd2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7E91F0089F;
+	Thu,  5 Nov 2026 23:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793922489;
-	bh=nrwWftTY0nW1OtVHwLcoMlFahm3Lvr8LEJONSYVihg4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kwED+haRkaS78y/e6PVfg34OVWh1hQ6tiDsJNQX4PVkQPf645GcbPlSz3ECYP5Klj
-	 npHJG/Ej6Z9PsOVcsFCejv1FPLnmfFaoAwQBdlnSV/0NMz/LtRzOL9a1oZOSfcR/m3
-	 wcgUlg3k7k3u4zAoCp5Sjc8ziM4aSzLiAacKt+m30o9pdVxPF73FLSsRWzOznKGQL2
-	 7p/+3uBknSZ9EOGgGjEwuqFmtBcsgEOoXSeYCGyrw1l3LKaOGO3LkcstFcsdCZx0XN
-	 bWUlgr376a/spy4UoVXwQ5ZtVNkRqXX/F/hLscj1b/vkOFgwotg4MYOp5uPiuRNEAR
-	 3VUXc0RCAnWMw==
-Date: Thu, 5 Nov 2026 15:48:08 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, pabeni@redhat.com, edumazet@kernel.org,
- horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net,v4 00/12] Netfilter/IPVS fixes
-Message-ID: <20261105154808.48fa2a97@kernel.org>
-In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
-References: <20261105124536.1009301-1-pablo@netfilter.org>
+	s=k20260515; t=1793922605;
+	bh=7iiR35x4lGpNQ0avK+S/KIS1SfMoxbs/VtZHBn/dnVM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=R7keFfd2mAjnWwzITb8UnetvkolU7SeLPQKiZ/wHTFAu+Z7TdhpwuZHcBNnU9O++x
+	 qhTl8dO2dCuqkw3QOmJTTVLNXwHOv2DLOetJF7dL3LStaB4uy/DYXP3RPNXAS7+6v8
+	 o28/pPrWz0LAObfWBRhkU41d0q4h79bPNnc6lW81XjtRIRBX8QiLVtgdEfGnKt2icI
+	 QVzf3Zt3lZeUWHRJZLVlg5vCCtwMBesth9v5YxfGPbAbB7ykUVybKGZELTIJNhycD4
+	 YFxBvPXOYpRuFMdmLeDpzCSMBCsLzRw2cu2rCcUjLgB1X/ABrRmSCwsBhA1xEgbPIu
+	 rlZ9tdtTegjsw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E1D6391B1AB;
+	Thu,  5 Nov 2026 23:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,48 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] net: ipa: Drop unused qmi_elem_info arrays
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179392260418.243275.9113410895242562474.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 23:50:04 +0000
+References: <20261102123653.151700-2-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20261102123653.151700-2-krzysztof.kozlowski@oss.qualcomm.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, elder@riscstar.com
 
-On Thu,  5 Nov 2026 13:45:24 +0100 Pablo Neira Ayuso wrote:
-> v4: - Drop "ipvs: do not create conns from packets with port 0".
-> 
->       This PR was already reviewed in its v2 by netdev-ai-bots.
->       I have dropped all the patches that LLM flagged as needing
->       more work even since.
-> 
->       But I really think v3 was good enough and a follow up for
->       "ipvs: do not create conns from packets with port 0"
->       was just fine to proceed.
-> 
->       Maybe patchbot will ban this pull request again, v3 was
->       blocklisted for not fulfulling the 24 hours rule, that is
->       why it was not reviewed.
-> 
->       But, as said, this was all reviewed in PR v2 already, this
->       is just keeping back 3 patches included in PR v1 needing
->       more work.
+Hello:
 
-netdev CI keeps hitting a kmemleak since this morning, lines up with
-this series, tho TBH I have done 0 investigating...
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-$ cat /sys/kernel/debug/kmemleak
-unreferenced object (percpu) 0xc0ffff86522458 (size 12):
-  comm "modprobe", pid 17854, jiffies 4295218150
-  hex dump (first 12 bytes on cpu 0):
-    00 00 00 00 00 00 00 00 00 00 00 00              ............
-  backtrace (crc 0):
-    pcpu_alloc_noprof+0x76b/0xd70
-    nf_flow_table_pernet_init+0x46/0x90 [nf_flow_table]
-    ops_init+0x187/0x570
-    register_pernet_operations+0x395/0x8e0
-    register_pernet_subsys+0x28/0x40
-    nft_masq_dump+0x66/0x190 [nft_masq]
-    do_one_initcall+0x124/0x4f0
-    do_init_module+0x2ad/0x8a0
-    load_module+0x154b/0x1d60
-    init_module_from_file+0x11f/0x1a0
-    idempotent_init_module+0x37b/0x7c0
-    __x64_sys_finit_module+0xdf/0x190
-    do_syscall_64+0x10e/0x570
-    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+On Mon,  2 Nov 2026 13:36:54 +0100 you wrote:
+> 'ipa_mem_array_ei' is not used anywhere, so can be dropped completely.
+> 'ipa_mem_bounds_ei' and 'ipa_mem_range_ei' are not used outside of their
+> units, so they can be narrowed to file-scope.
+> 
+> Reviewed-by: Alex Elder <elder@riscstar.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2] net: ipa: Drop unused qmi_elem_info arrays
+    https://git.kernel.org/netdev/net-next/c/303d91a15925
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
