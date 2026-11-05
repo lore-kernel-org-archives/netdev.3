@@ -1,53 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.154.197.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.155.80.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793865248;
-	b=xVFQx7d2o/F3SEoCAUV9Nn1oQUXfvo4ZYxblAA0fBQmhQQ19vflsBa2AZ4mQ1KsEwmUR
-	 vXNpN+HcN3XGkaPtmPBBbXia2WmESGxx37h8xMEWggsHlqE/cq0Tm+LZLyR4Kz/52yECg
-	 dSl96M53rA2FqytdrYWsVbirJyJpSMJPTNC3AqTpdCn43ifxKOL2ILkr2T4fTwq+I/W7Q
-	 oPpnmX8Kt19WZXZ9C73ZOj9Q8LZN41ZQTjAUhtVE0pwmiqMuIuAl9M7KyTloYQgCQUEgU
-	 51npVYl4PT8b4wfj8b4u9yuCMu2J7C/7htemBSAWQHAOOdXSZ3JjNEGQY++iL58T+8w==
+	t=1793865252;
+	b=SWKAycalfwAqh2PUFlAFWE8XsMr9YFJCMHqSSeHHsuwcvVIzV6I8vjo687eX6JiEZgEA
+	 euBvDZLhRMFLZ/IY2JvsCf2coKlO+bIR3Z+h3acIsGG0oc/7OMfzce7KT292HDP2dRWoK
+	 nWYF3rKbC4y7RuUaXx+zZws+ehHsbsbmF0rgyR72gg8T6KTTUlSW5nzJPd63rL63QbnMG
+	 jZQ4exin/gfaW+kAIu7/TuNldXRgnSsfyOUjhX0rfOULyA1B9QvjdcO/LS+RfLuk4vLbq
+	 bA63NQz866rUm6oESUbeJnRu+T8XS05IvlMlN2h9r0oM94DpSgtR9wr2r+9bO2kHhpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793865248;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793865252;
 	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
 	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-QQ-SENDSIZE:
-	 Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=XuTMD0+bWh8qdKbIHRtIOzKefAE+ZWunb2Md38v0VYk=;
-	b=rpLD0Y2RUPGiIhYQ6BMAe2I9HgxU5fYz06CSEjYZBqyLikrShMbCn+YvcaUbXHDABinq
-	 HaKhk7p7bEBhcXSpMEW0P36pT/2rU0tOY1AI2RoD2KCIl/IoQoO9ISYWjGR/nQ5u9DC/o
-	 Td8xN2Fb49Gd9qJL2s3GfyQonl1t/1TiNdwtsyH//yJwd3bhLMc7wrr4VfP54CTqicXMc
-	 7x06WttPLbjkP0vjkkdHuTe/lXc+swcbzTAwzjFgmKSYlBFfvQn0sp6el87tBcURR60KB
-	 DUY400iCIv6vuiYH4IBkysuzNrD1tTcJHdNfI4QlQTpHPIGw3XkVewHIt0F5w3zIw2Q==
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=FFx4OIdSXTZWskx/Uy8yfO6J0zmhLKOS04V+9fSvjN4=;
+	b=MMF0+UVooabxuW1cpqXLlG1aQSinaye+ZbM+BF+dPZr78HM62P0/gGXqVeN/ti0nXzja
+	 r3FL5ISFZJv0atxFkfS14ye5V4pwnmZdwUOqEb0tP63XjjL2KeXAcChXkjsDkoAOe18rc
+	 TsuBZDB/dn9VcoG5d5qbksnJTVvZE+miF50eI7mdwSN7xMxh0AbT2dYNndbl+HQ2djF8x
+	 zUMFB9luNZMg1GPZNghe0PmJTAmJBidPE/Y8Emq5Yn0IpmqAui3Y19PNMCwAiF1wyrSPO
+	 FrHbixINL5mIgcab4Q7VMXggjLkAgWTscbSlH0n+87HDBWml/IsKJyN4Cvwj/JI04/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=tencent.com;
 	spf=pass smtp.mailfrom=tencent.com;
-	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=uc0jfUJO;
-	arc=none smtp.remote-ip=43.154.197.177
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=J3vhJs6J;
+	arc=none smtp.remote-ip=43.155.80.173
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AF7606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 07:54:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9AF7606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED484606A329
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 07:54:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED484606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=uc0jfUJO
+	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=J3vhJs6J
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
-	s=s201512; t=1793865189;
-	bh=XuTMD0+bWh8qdKbIHRtIOzKefAE+ZWunb2Md38v0VYk=;
+	s=s201512; t=1793865195;
+	bh=FFx4OIdSXTZWskx/Uy8yfO6J0zmhLKOS04V+9fSvjN4=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=uc0jfUJOVAJOwY631GGLgnIt0AKRnBj3zc28M+rvVJLcrXdHOPsKZYFkEtubKZc0Z
-	 ouwPFDfxcrmykyL7mHxdraoqmMccpwmnYVHpFHMyDCuWxUqkc2P6PJI15BQNBEVRaI
-	 moHQPmCUwOOhCQ5b85ZWQOq7GwnJpYCg0lWAH3jQ=
-X-QQ-mid: esmtpgz13t1793865188te7642f86
-X-QQ-Originating-IP: 2Mtxe6CgveBcP1cAzBK8fIi7YkkUpuHpGgzMOZzPZQs=
-Received: from localhost ( [9.218.232.158])
+	b=J3vhJs6JqsT8NOl/l86BwMMn5gdXUkaiXCbcFb9wBpdY6AGd9Nix4jm3JeaOHxX2D
+	 Zm5fKMuzE3KMWAUXSWSmp+zs9C8HPKHifNIUBILJj6gAkscBK8UUFwuJ2iQaXmvFVS
+	 ZPdpsI29oOJ/CP7oFtMML+u8kI1wnh7BAf8amCe0=
+X-QQ-mid: esmtpgz13t1793865194tde8168a0
+X-QQ-Originating-IP: S43EqG484wwHP+JfAalG/F3VJ2a1mixugqgU0S4RBu4=
+Received: from localhost ( [9.218.232.237])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 05 Nov 2026 15:53:06 +0800 (CST)
+	id ; Thu, 05 Nov 2026 15:53:12 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14525464289534385858
+X-BIZMAIL-ID: 10312450623886067163
 From: "=?gb18030?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1Owssir?=
  =?gb18030?B?uau5stPKz+Qp?=" <tencentos_secure@tencent.com>
 To: netdev@vger.kernel.org
@@ -60,9 +61,12 @@ Cc: David Ahern <dsahern@kernel.org>,
  Steffen Klassert <klassert@kernel.org>,
  steffen.klassert@secunet.com,
  Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net v2 0/2] ipv4: fix fragment length accounting
+Subject: [PATCH net v2 2/2] net/ipv4: reject appends with negative
+ fragment copy
 Date: Thu, 05 Nov 2026 15:34:36 +0800
-Message-ID: <36C40B0A9C6336F3+ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
+Message-ID: <306E09760B4212AC+ipv4.6d58afc075934322860394a26ceaa2e8.2@tencent.com>
+In-Reply-To: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
+References: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,58 +80,84 @@ Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:tencent.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: MMnP0fEUKo/hkFgNFlyFu1AT2JiCICBUpZx0B8nIASRDxQXfXLyIiGnS
-	gL+J9Hcdg80c5t4XKDd8Ea2QdU/dWYFAySxXTs2q8MLoYNo12IJGZmNaEW33mjcQIzHEynW
-	QHARvKu3HTsipQXDPI5/i+c6ZP6g5spXgy+RwcGq+mX0J26jj+5s5Sc0bdXICWF9g70CylV
-	lsJ1ToS/ik3Hs5EyAKE9lThZmU1DwQT7m9NP2a4PdHL9kDTPvkfeiamIxcXoJYkH1+NFn8W
-	WcMoujOYIJscAAB6NNWYnAGmw5Jjf0FJHbzmSEuJqpE3y8nS9yt+cPeortmszKsQu4k3ghC
-	bPjgM5pcHkSW8a8TTHQaGe3WQXFL7mkaqfXFVEBKnRGNN52wxP+nsfe/3zTupJmHIC/ia32
-	t7ME+9pgvagM+Ot+GcnPYpogGgWCk9dkTFiysqZV961+rKKHeDkpsE0IYGa6/vTKinGq7oW
-	iQLRVNlZlMJ+Z3kYlQlqrOv7YZgfwd52/c1S9zYkFjPNLNOikSv/bsQC5fCdIN84OcVt4ww
-	RvDcFz2ucrSzkIYKEHF0PN8DSzAiQPlThsmCllqcrLfDibeUhMGGgn4UPtdGO6KS5f76KH8
-	VE/aY2V29zzaCZScecbU7n0LkKkfMQkGvrxiRQxt2XHiWq2tpDtHF8E4FXUN6kqKPvyYCIw
-	xLDwWCZEnRhoWwctB6J1HB0P8dircZFV7UnGb6FCwnzimo70Et3moQsOjN5EXkxrDkdld5+
-	woI7znJG1JltlEBQXkwgkb6ytiqDbCNjHBQKOQizRTBJsWRoFjVKpU4Hbs0c3juvM5gnlO/
-	vOmG3YspzFH4VqBnfUgTOQMvfEXXmd4VgrgFBikuxneNWFOX3V1msU3N0kNSRhrxLYMbZXG
-	tzUZf9bCug/v1bzYBlxSsVy2r00iMQMtjre8F9mBG4nEqlMZBvYvvVTUjoTpeKYMn1PNaps
-	ttzZnjKFHZ+imSA==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-XMAILINFO: M6x2tnEVru4eudxBaDfXjnCapx/vLeX6e7z0RxI9oU7qSmnXDI6InDiM
+	oGMyxI8JWUQVb05t69bBlk916mLDH6iFwYBBie4+b//9XOM0WQDpKq46L4Ejcq5ia/0Yj2S
+	VdnU1hfi+ddz1wz0BeeKjPrqAxbxnt0Zk4dfJvPaNZlOcuBS6shj89pKC9FOTEu7P73tAW1
+	CMfoKR528e1tn+v8Izt91xC87zmbJBVf7Af5zApJKsbxOWHiSrswMjsFxeVVYuT4FsI8WV+
+	6S+aOU9RVVIrvDhx0NN3ddnj0PDv1MHXP8P9qYv3cf1F94ExHyepWLY5U96UlvB3pVSOrWY
+	vmsPgpmCmJRHNcWKHCiEmFK4c/+2ZQ/TmKSgoHWILDNKcFWI4DdrfYMbby/0u+gl4ngDoL4
+	DbTUX9nGIepV4oJAJfFX78acghhyFmUZEC1mD6HqgNUeU1BDoQTCRLYtXqEm7hwZcOvWaam
+	MdPAXKAh0fMoUI3XlBi8jRjESv+0eaiMC8YYnuYoXffgTNbREp/lkBJLgGvwu+IHrs0OD+a
+	cM/nbhdOla/D+jalsvqXi8MR+M9+s8q4GmS7vVWA0Tt2VWELFvuT5keBIm2eTqym9mP75xR
+	gWRggmnzTRrSMrzYE3JKn5UZtLlEpmXAd8OVj9kVaOr/9kgcIKUAEZnBqPFLPKAaa17PrmT
+	9nRv0xXvPjYW6lfXUfH4FQURm3bhuEyzL5RWPl2F1m9Gx04zW+/NoanfCbe0ud13CkKmKED
+	EQMn6+OpXUl2VTbNJ4XIMwagy9I1iJyPu5tsU8Al6l/gWHS5RJJSQtA1HQG9PKS+rquJ91j
+	gtWoKoS1K4wU6/YyVopKEo7UQz3yye2IQlPJNq1Te1tEr3H+uqnlIrwWI5NII4lI0GEl1/a
+	EE1x/mxZXhvAz8m/4kfou+VsVBV4F6DS3mWWOnHkD/7KrX6JFpDWTiL0lrAmAcs6MOmz8F4
+	m0Mr5f7mtePKaSNTpYYzazhr3
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 X-QQ-RECHKSPAM: 0
 
-This series corrects fragment length accounting in __ip_append_data().
-Patch 1 reserves the XFRM bundle header space as headroom. Patch 2
-rejects an append when the transport header and moved tail do not fit;
-it also addresses the independently reachable ICMP Timestamp case.
+__ip_append_data() caps datalen at maxfraglen - fragheaderlen when more
+fragments are needed, and later computes
 
-Changes since the initial public posting:
-- Patch 1: correct the skb->len/fraggap explanation, clarify IPv6's
-  dst_exthdrlen terminology, and scope the layout comparison to the
-  same skb setup inputs. Add Willem's Reviewed-by.
-- Patch 2: describe the ICMP Timestamp corruption path, distinguish
-  negative copy from unsigned pagedlen wrap, update the subject and
-  Fixes tag, and remove the unrelated XFRM Reported-by.
-- No code changes in either patch.
+	copy = datalen - transhdrlen - fraggap - pagedlen;
 
-The patches remain based on v7.3-rc7 (f909e534f5e3). The unchanged code
-was previously tested on x86_64 and arm64. The relevant selftests/net
-subset on arm64 gave matching results on patched and pristine kernels,
-including the same failures in pmtu.sh, xfrm_state.sh and ipsec.c.
-For the ICMP Timestamp case, a patch-1-only kernel returned corrupted
-timestamps, whereas a kernel with both patches returned no reply during
-the receive timeout. No additional test run is claimed for this respin.
+If transhdrlen + fraggap exceeds datalen, copy goes negative in the
+non-paged allocation branches, where pagedlen is zero, invalidating
+the offset/length accounting. In the paged allocation branch,
+pagedlen = datalen - transhdrlen - fraggap wraps unsigned instead.
+The subsequent copy calculation cancels to zero, so checking copy
+alone does not catch this invalid fragment geometry.
 
-Previous posting:
-https://lore.kernel.org/netdev/v2-20261026-cover@tencent.com/
+This is reachable independently of the xfrm fraggap bug fixed by the
+preceding patch. icmp_timestamp() passes a 20-byte transport header.
+With a small MTU and IPv4 options, the capped datalen can be smaller
+than that header even when fraggap is zero. The negative copy then
+propagates a negative offset into icmp_glue_bits(), and a timestamp
+reply with corrupted timestamp fields can be emitted.
 
-Thanks for the review.
+For example, with MTU 68 and 40 bytes of IPv4 options, fragheaderlen
+is 60, maxfraglen is 68, datalen is capped at 8, and fraggap is zero,
+so the 20-byte transport header cannot fit.
 
-Anakin Zhang (2):
-  net/ipv4: reserve exthdrlen as headroom instead of counting it in
-    skb->len
-  net/ipv4: reject appends with negative fragment copy
+Reject this geometry before allocation with -EINVAL, covering all three
+alloclen branches and matching the existing __ip6_append_data() guard.
+A negative copy cannot produce a valid append, so this does not reject a
+send that could otherwise construct a correct packet. All callers flush
+the cork on append error, and returning -EINVAL in mid-cork state already
+happens in this function (MSG_ZEROCOPY ubuf mismatch).
 
- net/ipv4/ip_output.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anakin Zhang <tencentos_secure@tencent.com>
+---
+v2:
+- Document the independently reachable ICMP Timestamp corruption path.
+- Distinguish negative copy in non-paged allocation branches from
+  unsigned pagedlen wrap in the paged allocation branch.
+- Update the subject and Fixes tag accordingly.
+- Drop the unrelated xfrm Reported-by tag; no code changes.
 
+ net/ipv4/ip_output.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index b84d56c..5db8b06 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1105,6 +1105,11 @@ alloc_new_skb:
+ 			fraglen = datalen + fragheaderlen;
+ 			pagedlen = 0;
+ 
++			if (unlikely(transhdrlen + fraggap > datalen)) {
++				err = -EINVAL;
++				goto error;
++			}
++
+ 			alloc_extra = hh_len + 15;
+ 			alloc_extra += exthdrlen;
+ 
 -- 
 2.55.0
+
