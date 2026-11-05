@@ -1,47 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.202
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793858371;
-	b=WqqHWWIwsFD1RhVLuTjdXaqaS3aYTekupfJJ4F0Vem5ielVOtzbxKJCVODEsboZnSNc3
-	 DTdxvgjbCIp6e9rmj0ZnuKUmXhnWXVr2yVu3H+G20ZQhHP/Fqw33CZ0OwzSLqr8rzclVD
-	 b2GBE3T08MvNOZjm+izwkcyZnX0AIUeTEOo4y/bHwVyOObjoBameZAkDUzeoNzDeZNunW
-	 ZRcjcTli2N18LyEsHXqRN+HHz1RXvXjElQu4RVMxEMBsa/fkYOGW1UozOy1QKfIWcQn2d
-	 P1dI96ntF7uNwtmDIF+K7Qf4XzmF2wlWqpHob+jGYr5Bh+8UNPG4I6Slaex/UFPINxg==
+	t=1793858636;
+	b=NjXB3S22O1yxxjaV50Y1Wmihn0IGd2hjHsT+UeD9MewJ2SeO+HQrx90cxQvz90ciXvK5
+	 EXfA9tUYAqbs/DdwMWWyU7ib1895r830loZG6wdEF3M4vlgX0NpbCM+SqHEDKM2OG5X9y
+	 Y0P/XjyGJVaDug+ZCc8ubR8aYc94j0Dztt19ueEu/kKGWTNZsGzcvzqpk/9zqGbnDAmsU
+	 S965zH8BdV/C5QYHCpbyE9ezJyiEcqK44xIzhYEZGaGlswkHmC9W3N6FWiruickZDVSSt
+	 5LkAaoj95tAsDIQInlHzzk3e2AvvZUMrBK508fhzsnIhrX3L3Im283k44kRwWyHXsgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793858371;
-	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=zbh4wMZ9WUBs3S0LO6QMi4wquYaApdRMTQSw+mZIopg=;
-	b=LNUFP0Vk6e0fgMh9uvg9Aq+zW4e3OE+SCHf4sT18HQWgqDfJpso+aG/qrdOkZtST20D8
-	 QeuistDdsvOwmnHq/t+L0FDX5Me/GKON2+UVg7FQYfywHYgzJe1qB4Ft7UmUqC6ELg+KB
-	 vCFU6D+nW+39Fqy3Ik1D5/mcE7AlhaiAPDs45TXg+CGNehtMU1elTz7TH7GN5cmrJV+HS
-	 4BTpH9SNbMXfelflpeY8r+o+RU7IHIvAbkD8R2+lXIw03yccTFOmlCY0y2PHQqw0TZVht
-	 hQmnggZg6OHibjMTPzhgUTaPE+ZkKhsCiPDgIVtRIqMjGEW/8spiKZNQQj/ijJQgjbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793858636;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
+	b=h601LzMh89JaN4HA4UtZ1kFydMjB4mB7CvtGEwA98gEjflWjoCG69mJ/OB1JHcBGpxA7
+	 JiiK/2KGgW1oJbA+E9BKJdJu1ZAdBaoQMgQVhpZgfRVzNy9lG/X+oRuf9279iJcY5o77+
+	 tV2j/gIlzkPBHHee68keVSkjDOj2/Kkk7G4vvPwuC/WwznM3UoA2qrR9JcDoPdL0EnP2O
+	 r+Ghp5nZYHlq7HF/ys+FjWO3YA9+uhTZFzbSzup/6Hd4RdBluIVzXlGSTAZkjx5iCti5B
+	 ct+VUCswPnZvNf9oNQqD8QNfAgniK/7/SGY6ZV4gBhIziQfWOFj/nGWta+4yZKeFqEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Q8Ng1T+6;
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sITsORkr;
+	arc=none smtp.remote-ip=74.125.231.202
+Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BDD606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 05:59:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79BDD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0F606A329
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 06:03:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5A0F606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Q8Ng1T+6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=zbh4wMZ9WUBs3S0LO6QMi4wquYaApdRMTQSw+mZIopg=;
-	b=Q8Ng1T+6DzvL1LHDfwPgQEcyk9skcgqpY/XcXAV1rX9ejkkkIqM3vkZIXckwr9
-	7PXxCxWy1Skcmuqjd7Qxpv5sSon0A4RtTYQAUBvMQXej4j6DkaZ7hzG85FQgRXQL
-	jAK8LGOOcfXCjbu87/aoHOOi5b52/2TFXA6bhvF/XrBNA=
-Message-ID: <b7e35751-3947-4200-bc22-2d7b679d2c90@163.com>
-Date: Thu, 5 Nov 2026 13:58:41 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sITsORkr
+Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4c3bb46aaf0so715120b6e.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 22:03:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793858634; x=1794463434; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
+        b=sITsORkr/kUi1tLLm2LhV4O4MeBBZD5P42Mn7DMsbqXc1l0My7lI4VmgtVtnfCNRPm
+         F2K5ABd1e0VHSJ8v2yESdYDjTq4i63tkKEsmDkfU94JGf8/kaTIlpLIWCue9vT5bF1Nu
+         nuFchHwAR7Ftsz3TEZCXr+WCGl9OD/waFlfO7CL1Jilo/txk7zlc2begOhUWVb0h/j/R
+         TGbTC/6DEKgD1gf7luCdWPsrmDKhVsiH4PA2kU5S6CZ068gtUu1ny0pcnBfzdI1R8zjJ
+         BNwajppvpcVWWXsA70Yz5DddZP4BTQKmTeGOmnqBOD5ep97jZ1ZC4JL9FAWfb5NB8wJq
+         qSnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793858634; x=1794463434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
+        b=QkB29VwvvB9/0H1jmEKZYkVNjShCoAZogb8Qh2/Vcc00oIZ12apFk+dzb1vQ+ACsVu
+         txQncVYt1m9b13JU0Wm0RaQb6CqHy3BLZUkyLk17KyIK5H2S7WuFIja0nJ81CL561Tq7
+         hIcT5+LNjpNCOLpn6t7b+TQkPRY8GFxgKhO4ShSqJZGy6NQvr8AtkTqVsFb33k5XPyqS
+         B/wVH+w3JGaNi4g6c99YscnNIqi229ivPUI3GjjHPQ6zorQI3qSYcC8orr0+FIbcyOYl
+         KrSYSq1KJOBEshoj/76kNHa5qAdbItj6qCXW5baGlk5yvzXVQT+82dpIDKXmg0LqAjGo
+         UM1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzt497w+jaqV28ElpRW9mmTnLYvfyRx2v6zItLQfCEa55ro5yLtFHLGA3nZRxoIoonfyAjb3WI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z97JxnqTwtK8ACGG9i/bkw4hZf1VhmWu6lgNaueUAlYw5QU744K
+	dG1xV71qBjXS5s3fqrShOLkbPRt7XeVA5+85NhoLa5CQ1a20ZYI0J0Ro
+X-Gm-Gg: AYBFou1mbptqe0AhvzyXLgVkxXaZAc3nx0AaNgurgGhKkMTZVyH9lBqiu8VUDevtp23
+	kBUmqHJ8Tp+AAB4RW/VwvU0MrC/EcCz0LSOOIZKWc43CrAQ7+nw6TaPwJL67vFmXrfchK4Gw5ng
+	42V4mGBN1+V5QCwNr90fkrQr+nohgfX43+dQuCizdskqGj5AxsSOdUXcT1R9X0Fqfl8FIj90PoZ
+	yfhKpcaLonk3TjuvdJY1qEP0etkUSwpBnOEA3kQ04Fzc/lmhlNhGmA1ApxtNpfYt0upFHWqG6sE
+	uw0YWy853X8/5lGUI1ZDTjX+dtujg8G8ZDDCCQu7VwcRovXThC13Q8vcvgnKyxsVwETwk6axwTx
+	9g3MQVgCBMDoiPpCa2S7SCTYyMm0Q3IBINpv7wOYw3VhLl6paD1mO3xcN9zfHpUrsYzf6oGR7rx
+	X0thy6Fy6i/+If8LilPUSFh/oNRbXNlCwRU6ZuLgwJV24e80nY6DIbbTw6ANXKPJSxIZSM4yrb7
+	cKI6kCn8qrRNCVtDSPF8MxVjjfo9RIZQnBXhKQfTmC4TMgFls58k5kO8mYiTzqKzMYvpehA0los
+	eynZ4T5BntMoe48jNhwKf4uW34Da86tXGXlp04kv6IsLvOwtBp3mnCsXUiu4C8esTZQ=
+X-Received: by 2002:a05:6808:14d2:b0:532:963f:3118 with SMTP id 5614622812f47-5640d97353cmr12997705b6e.3.1793858634408;
+        Wed, 04 Nov 2026 22:03:54 -0800 (PST)
+Received: from localhost.localdomain ([14.22.11.161])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-567a9f41424sm3493476b6e.9.2026.11.04.22.03.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 22:03:53 -0800 (PST)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	john.fastabend@gmail.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>
+Subject: [PATCH] bpf: fix verifier model mismatch on __sk_buff.remote_port narrow read
+Date: Thu,  5 Nov 2026 14:03:31 +0800
+Message-ID: <20261105060331.1912252-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,86 +101,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5] bonding: 3ad: update transmit arrays without
- waiting for RTNL
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, hangbin.liu@linux.dev
-References: <20261104064409.281303-1-luyun_611@163.com>
- <CAL4Wiipu2VTRck9Es31krEKmYZuh9iCQu5fwqpOkWP6pQNqjvg@mail.gmail.com>
-Content-Language: en-US
-From: luyun <luyun_611@163.com>
-In-Reply-To: <CAL4Wiipu2VTRck9Es31krEKmYZuh9iCQu5fwqpOkWP6pQNqjvg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgDn0JMRG+xqvwlmEA--.54657S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCFyrCFyfWr43CFW5GF4fAFb_yoW5Wr18pa
-	ySyay0kFWqvw129r1q9a1xWrWru3y8KFW5JryFg348ArZ0qFyIvrW7KF1jgasrCrs3uw4j
-	vFWjk3sI93WqyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UIoGdUUUUU=
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/xtbC6xKgb2rsGxLnbAAA3y
 
+On little endian, the ctx access conversion for __sk_buff.remote_port
+loads the 16-bit skc_dport and shifts it left by 16, producing a
+4-byte value of up to 0xffff0000.  It reports its width through
+bpf_target_off() as 2, the member size.
 
-在 2026/11/4 17:31, Eric Dumazet 写道:
-> Le mer. 4 nov. 2026 à 07:44, Yun Lu <luyun_611@163.com> a écrit :
->> From: Yun Lu <luyun@kylinos.cn>
->>
->> During 802.3ad bring-up, packets can be dropped despite carrier being up
->> and LACP having enabled ports for distribution. This was observed on a
->> machine in real use.
->>
->> The LACP worker enables ports before queuing slave_arr_work to rebuild
->> usable_slaves. The transmit path keeps using that array, which can
->> remain empty while the array worker retries rtnl_trylock(). Unrelated
->> RTNL contention can therefore prolong the packet loss.
->>
->> Rebuild the arrays directly from the LACP worker after releasing
->> mode_lock and RCU, and remove the retry worker's RTNL dependency. Retain
->> delayed work to retry allocation failures.
->>
->> Use a per-bond mutex to serialize array allocation, filling and
->> publication, and walk the lower list under RCU. Keep upper link/unlink
->> notifications outside this mutex. Exclude new slaves from both arrays
->> until all fallible setup, including XDP propagation, succeeds and
->> commits array_ready under the same mutex. This keeps concurrently linked
->> slaves from overrunning arrays sized from an earlier slave count.
->> Release completes its final rebuild or allocation-failure skip under the
->> mutex before waiting for RCU readers and freeing a slave.
->>
->> Retry failed final updates for running bonds. Also rebuild broadcast
->> arrays on open and retry failed open updates. Protect the
->> peer-notification array reader with RCU now that RTNL no longer excludes
->> writers. Updating the shared arrays also covers XDP and lower-device
->> queries without changing their selection rules.
->>
->> Tests used an RTNL holder, userspace LACP peers, slow notifiers and
->> test-only allocation failures under KASAN and lockdep to check recovery,
->> concurrent member changes and teardown. All 16 bonding selftests passed.
->>
->> Fixes: ee6377147409 ("bonding: Simplify the xmit function for modes that use xmit_hash")
->> Signed-off-by: Yun Lu <luyun@kylinos.cn>
->> ---
-> I think this should target net-next. The rtnl_trylock() retry
-> has been there since v3.18, and this patch adds a new locking scheme
-> across enslave, release, open, uninit and the 3ad worker. With the
-> Fixes: tag it would be backported to every stable tree, which seems
-> risky for an issue that only shows up under RTNL contention. Please
-> resend against net-next without the Fixes: tag, and keep the problem
-> description in the changelog.
+A 2-byte read is a narrower load of this 4-byte ctx field, but the
+fixup pass only masks the result when the access size is smaller
+than the reported width, so the masking is skipped.  The verifier
+models the register as [0, 0xffff] while the runtime value is
+[0, 0xffff0000].  Arithmetic the verifier folds to a constant can
+therefore take any 16-bit port value at runtime, enabling
+out-of-bounds reads and writes relative to map values.
 
-Hi Eric,
+Report the real produced width (4) so the fixup pass applies the
+usual RSH/AND masking to narrow reads.  Full 4-byte reads are
+unaffected.
 
-Thanks for the review and the routing guidance.
+This issue was discovered by Tencent CodeBuddy Security.
 
-I will resend against net-next as v6, without the Fixes tag and with
-the problem description kept in the changelog, rebased on current
-net-next.
-
+Reported-by: zeroday zhao <zerodayzhao@tencent.com>
+Fixes: 8a31db5615667 ("bpf: add access to sock fields and pkt data from sk_skb programs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
-Thanks,
-Yun Lu
+ net/core/filter.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-> pw-bot: cr
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9245009d9f1eb..6eb4751441f39 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -10455,13 +10455,19 @@ static u32 bpf_convert_ctx_access(enum bpf_access_type type,
+ 	case offsetof(struct __sk_buff, remote_port):
+ 		BUILD_BUG_ON(sizeof_field(struct sock_common, skc_dport) != 2);
+ 
++		/*
++		 * The converted value is 4 bytes wide, not 2: on little
++		 * endian the 16-bit port is shifted into the high half.
++		 * Don't use bpf_target_off() here, it would report the
++		 * member size and the narrow-load masking in the fixup
++		 * pass would be skipped.
++		 */
++		*target_size = 4;
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(struct sk_buff, sk),
+ 				      si->dst_reg, si->src_reg,
+ 				      offsetof(struct sk_buff, sk));
+ 		*insn++ = BPF_LDX_MEM(BPF_H, si->dst_reg, si->dst_reg,
+-				      bpf_target_off(struct sock_common,
+-						     skc_dport,
+-						     2, target_size));
++				      offsetof(struct sock_common, skc_dport));
+ #ifndef __BIG_ENDIAN_BITFIELD
+ 		*insn++ = BPF_ALU32_IMM(BPF_LSH, si->dst_reg, 16);
+ #endif
+-- 
+2.43.7
 
