@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882752;
-	b=Ie1bvQv2jF9/nbjv+pJOUKK62Qq5+QQ5dLSXJkfQj5z/2/wsZvAX5214U5NVV84NcBJZ
-	 Z9Do0V31GVXOU8s0FgSUPd7boFfKhfQsW3kLvWhKnDASh7iIovZBfjr1XVZidQv0XY74U
-	 hPLiRRrDkgrs4mnWE9dXfJws6c9GeVnvITzHxIJT2IaDzkXFilbM5feehvzlQVA0zMm9o
-	 Bq3Un3FFOqdNgQWMrpVpMCpy7+yLJs4GPQZjSPUSBNYR8cb8jP2NZ7pPWbdGNi5n+FcNx
-	 b9/JoUzjeWwrDdMRfiR1X22im7HII1LFYXiTDSPh2u/RsnYkGnnhBxFBq59GxtTzmgg==
+	t=1793882756;
+	b=KKnr1QtoirKQmq5CyB8PtQYxRIT4ZXNoF6ke75rsjFqBnhkbM1ROIcVa8Xr0WG5PW+0P
+	 Naz7ofdUyGaTafwEbRIDLjKHmo6wxdAMwk1aZUlRI6zznPATKXMVLtoyfECdh76IzrJ7t
+	 xOfXn/5BTHqAfv2FQZ4SGUfYIzvWP6QsWs/EtJmb/OgZ9j29ukVDrvWKZUPKgGWXwjzmm
+	 gjVfsS9V8KEFwS7OxBYOaukegyM+ERKTlOWlu4MKjeXLrV4znJLeHgJ8p4GrLNseNg/eT
+	 hzy+38P9ffyh8qGUpr8rPblY4nkcUCym+yi11hFN5hBOFG/4ddXovW8bLApXffZp/AQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882752;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882756;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=XClvt/H6YMd9+Exyu1R4Oy60MLFqQ2fw95DTYxl2feU=;
-	b=gxjIr2UvUK7NE6r9wprvUg13eSP538VP3cgbjZasXpLW+BZWcYaLsl862ZMUMdYhciZE
-	 p+n5DXHvPQiYqJPLeWLGW61POvhqAf4f+YVxlrbo9/1Ci181zNNHEEeSXX0SqcqH1MqpM
-	 TRlZh5k5ZU165lrQAwX2YzFhvnuKLYvUMJSNqx9jA18Glp6C1EI4YGUUXSGliUcRj8V0M
-	 RMVpw8lCO3XAGUiZe9dpQnYHU3Idqm2NrUFsok2c1v3fDGY0asvxevXYakAWXiQp+KR/4
-	 CB8aLN7a1+U5xksfjH58xjIwBPNJq6iY94HM48lEgMIlsfahviZOvzYDPg7KtJ/ug5A==
+	bh=TaFMJ0UW3LigUoc0s6WNECoAhHhD44ITTyoS2M06BTs=;
+	b=dSp/ag4ehR52/sKG6r0qq1P34V9XHVN2+JZtlCciM8rWdMWl2HGOmnK304ScOG+rtY1S
+	 o9xSG7IFQvll8WXRpKaYCy7KQs3Cf+DmRwZdQ2i1DvgxPRIrqL9WLvXUEuuzCrhia+2R2
+	 qiXFISENImSx09an2hdaqGAJjJnWgsJt65yws3+m/jhaOfTLmP3wq9bbKSDKPl6dtdBBH
+	 lyyyj1l5ZgBRVL0oSmvWKTs51A/ullgRRqd9x4zmVmon2t9Mpl/PfqRoaYuXzGyB4B4/u
+	 Ixm2Cx4rRy0ytzXEm2V/0dQeFsp+NAJPIxboSRLqHw8bmD/1GYIRCo6z1VsLfRVfeVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=K+4jFZdi;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ty9wGFuP;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024C8606EE85;
-	Thu,  5 Nov 2026 12:45:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 024C8606EE85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DD7606D809;
+	Thu,  5 Nov 2026 12:45:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2DD7606D809
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=K+4jFZdi
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ty9wGFuP
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793882750;
-	bh=XClvt/H6YMd9+Exyu1R4Oy60MLFqQ2fw95DTYxl2feU=;
+	s=2025; t=1793882754;
+	bh=TaFMJ0UW3LigUoc0s6WNECoAhHhD44ITTyoS2M06BTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+4jFZdiO/6ai0708Xowj/K9p2ok61UKX5g7P13Y3ISXAOm+2a4WjqlB0uh4JjLx0
-	 KCr3LL9lyv+lB4E6rfprjQmD5eVUg53JxTlMst7yO0NkBPhiNFT1gVB1xVUd8efzpW
-	 OwccK7Dvf+Y7XEjrYdgBheUDYpt+79FAVetyZJoAJO2e2fDtE8rSiLx8T6fIi6AsOL
-	 nTT2g/LRmO/Jgu5pwL3OHRypAmnbm+JmfLZGjj2Y9AXn8Eakl/CScplTnU8cSfunX5
-	 KHPZLrnGCCp4PmURqeRpQ6fTq6pNIieuna9LZ9PWGOCE7OA2EwcqJzl9MJfH3MfFZD
-	 4bVG8JykZOmfA==
+	b=ty9wGFuPIZ3qbD5jyhaRfokULlv5wc93G6y5hwPNakSQ4asdJR8Mvmv+LQx6CVtTJ
+	 VN5OYaCruP9SLltlyyp3+NzmfZUNiwfO7XWdOY+JXVN8wmj5wNHTwVgjf1qxjbDFEu
+	 CSJKsJIGNWfnXANElUOnmctjMs9mfjkrI5LVhZZNU4CIxIrlUsFB4psuLpAHPnv7/j
+	 eLS4isGsZqxab+IIHcn81hEt3F0vj/jH9WFB+wjCDsn3NwcNkVj0MDUM5xou1voJj9
+	 tNN5WBbWH3+A48CTmp/6WrA7P0MccJZds5y2Vv11rv/lYxQXfC7t9RsUHse1Rv+Rxa
+	 xsLFUHro9t2PA==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 25D5560096;
-	Thu,  5 Nov 2026 13:45:50 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id BFB8560096;
+	Thu,  5 Nov 2026 13:45:53 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 08/12] netfilter: x_tables: check target name before accessing verdict
-Date: Thu,  5 Nov 2026 13:45:32 +0100
-Message-ID: <20261105124536.1009301-9-pablo@netfilter.org>
+Subject: [PATCH net 11/12] netfilter: xt_recent: do not call remove_proc_entry() under recent_lock
+Date: Thu,  5 Nov 2026 13:45:35 +0100
+Message-ID: <20261105124536.1009301-12-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
 References: <20261105124536.1009301-1-pablo@netfilter.org>
@@ -73,112 +73,80 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>
 
-Non-standard targets may contain only struct xt_entry_target.
-mark_source_chains() nevertheless reads the target as an
-xt_standard_target before checking its name, potentially reading four
-bytes beyond a header-only target.
+recent_proc_net_exit() removes the /proc/net/xt_recent/<name> entries of
+a dying network namespace while holding spin_lock_bh(&recent_lock).
+remove_proc_entry() may sleep: proc_entry_rundown() waits until every
+task that is still inside the entry's file operations has left. A reader
+of such an entry is counted in by proc_reg_read() before
+recent_seq_start() takes recent_lock. So if a read is in flight when the
+namespace is torn down, cleanup_net() sleeps in atomic context holding
+the spinlock that the reader is spinning on, and neither side can ever
+make progress.
 
-Check that the target is standard before reading its verdict.
-Non-standard targets remain handled as fallthrough rules.
+An unprivileged user can trigger this from a user namespace by adding a
+rule with the "recent" match and reading its proc file while the
+namespace is being destroyed. As recent_lock is global, every later
+attempt to take it spins forever too: the spinning can spread to all
+CPUs, and network namespace teardown stops system-wide.
 
-See the following KASAN trace:
+  BUG: sleeping function called from invalid context at
+    kernel/sched/completion.c:116
+   #3: (recent_lock){+...}-{3:3}, at: recent_net_exit+0x2b/0x140
+  Workqueue: netns cleanup_net
+  Call Trace:
+   proc_entry_rundown+0x185/0x1b0
+   remove_proc_entry+0x21a/0x520
+   recent_net_exit+0x7f/0x140
+   cleanup_net+0x414/0x8f0
+  ...
+  rcu: INFO: rcu_preempt self-detected stall on CPU
+  Call Trace:
+   queued_spin_lock_slowpath+0x313/0xc20
+   recent_seq_start+0x87/0x1b0
+   seq_read_iter+0x265/0x11e0
+   proc_reg_read+0x1ab/0x270
 
-BUG: KASAN: slab-out-of-bounds in translate_table+0x1660/0x1a40 [ip6_tables]
-Read of size 4 at addr ffff88800ed56ff8 by task rep/432
+Fix by taking recent_mutex instead of recent_lock. According to
+commit a0e889bb1bdc ("[NETFILTER]: recent match: fix "sleeping function
+called from invalid context""), recent_mutex is the lock to use here: it
+protects recent_net->tables and was introduced so that proc entries are
+created and removed without recent_lock held, because those calls may
+sleep. hashlimit_proc_net_exit() does the same for xt_hashlimit.
 
-Call Trace:
- kasan_report+0xfa/0x120
- translate_table+0x1660/0x1a40 [ip6_tables]
- do_ip6t_set_ctl+0x667/0xa76 [ip6_tables]
- nf_setsockopt+0x77/0xd0
- do_sock_setsockopt+0x118/0x490
- __sys_setsockopt+0xe4/0x160
- __x64_sys_setsockopt+0xbd/0x190
- do_syscall_64+0xde/0x4f0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Allocated by task 432:
- kasan_save_stack+0x2f/0x50
- __kasan_kmalloc+0x7f/0x90
- __kvmalloc_node_noprof+0x1b1/0x5c0
- xt_alloc_table_info+0x3c/0xa0
- do_ip6t_set_ctl+0x5ee/0xa76 [ip6_tables]
- nf_setsockopt+0x77/0xd0
- do_sock_setsockopt+0x118/0x490
- __sys_setsockopt+0xe4/0x160
- __x64_sys_setsockopt+0xbd/0x190
- do_syscall_64+0xde/0x4f0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: VEGA <vega@nebusec.ai>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Fixes: 665e205c16c1 ("netfilter: xt_recent: fix namespace destroy path")
+Cc: stable@vger.kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 5 +++--
- net/ipv4/netfilter/ip_tables.c  | 5 +++--
- net/ipv6/netfilter/ip6_tables.c | 5 +++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ net/netfilter/xt_recent.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index cf747e1e17a3..7ff3d1f0ffd4 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -371,11 +371,12 @@ static int mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
+diff --git a/net/netfilter/xt_recent.c b/net/netfilter/xt_recent.c
+index 55f1f2d89952..00cccf003cff 100644
+--- a/net/netfilter/xt_recent.c
++++ b/net/netfilter/xt_recent.c
+@@ -650,14 +650,15 @@ static void __net_exit recent_proc_net_exit(struct net *net)
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 809441cedced..b302bd77180a 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -422,11 +422,12 @@ mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
+ 	/* recent_net_exit() is called before recent_mt_destroy(). Make sure
+ 	 * that the parent xt_recent proc entry is empty before trying to
+-	 * remove it.
++	 * remove it. Use recent_mutex instead of recent_lock since
++	 * remove_proc_entry() may sleep.
+ 	 */
+-	spin_lock_bh(&recent_lock);
++	mutex_lock(&recent_mutex);
+ 	list_for_each_entry(t, &recent_net->tables, list)
+ 	        remove_proc_entry(t->name, recent_net->xt_recent);
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 313c4aac377a..010baaa60665 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -440,11 +440,12 @@ mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
+ 	recent_net->xt_recent = NULL;
+-	spin_unlock_bh(&recent_lock);
++	mutex_unlock(&recent_mutex);
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
+ 	remove_proc_entry("xt_recent", net->proc_net);
+ }
 -- 
 2.47.3
 
