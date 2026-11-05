@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873013;
-	b=XZyznBgU7ae+vsyse0jG4CqqdKamTHaS/kQn6vaiyDUTL4vDjm+eKcF2d/JjWaRZnX+2
-	 We7LOoiXASBqLhff33gTdYhF53+L8Jkd1B45DNwu42TaaJZpBanmCaFvJw5lC6Vhvflej
-	 /hoB6S86OnkVnk/YkR0Wxi+RqoO+f5R538io665XwalMxGMkr3pSujoUUvx4+5nPSjNvI
-	 DCltPP+SoVrn1aDeiRVOSfrRcBVD+ZvfFhrpjibXp5FVTKw9NGqZbKAA3ukTQD6YgTUmg
-	 5+MNl0R1KDFsy9vDcUyb1VeiTnVd4uOareXe9k5QK2DK03ULbofW0ez04C1vNDBcIAQ==
+	t=1793873015;
+	b=UtZuvM+MDz95DQj1SJrxFr3s+LOox7BEe5qlLCyCKCs57pSezjbemz5gsFWFxBsUFiA5
+	 hw40isFIFFD644BaYtekBVtJl/noyRzscZoqoveVW06XJVC2n6q8OajyGCbp2KP+q6AIL
+	 lIWdqiXGgT53pOa/vbNwTascLJcaGmJFsSYe3T+NsAlHjbKx1DWDRovwRbBoO/eMOMjq0
+	 oqvZyYDxKG6ZAjSH9EA5XkE7R9+JB2Mk9qBi0rNI9reBx4t3Fc1OYIomcP+Rrpv2D9iTf
+	 EA2nfAj17+q2cMJLxAIYgjtGfbhXxA5Nl3CT8e2chA3ZqN0E3TsrO7disqmfw798qWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873013;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793873015;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
-	b=HAu/L763n3IsV5+QEWQvnrtxOZYoFbTaSipBNhK3O3gizAvTYM4qSegmWEjKf9mqOQil
-	 zPN8wuC6ijxkeBIk84Va344FiAfykTuOyB1BhQIL10B1PblHAI57DfloJydNeUTa8Q0cg
-	 KyRHtroLyAtTuQcDM84R7ud1PKJh3vcpMVMhp00y1NRaN1u1hLXKvhjBCxB+amfINsG/q
-	 HKk6mDPXZfmFtbOFmcyktk9kq1opyMWlkLM9BzQQn1vWVexqtfsldr8YV2J3iZK3AzflS
-	 xsw/lbqW2w3oW1Guyl4PKPzbXvKuE1C7fvNbmW6OHUjwqdQzgMpR4VMO3zfNR96ZHxA==
+	bh=paduv/zXRliBqDWBFf1W5OOKpbqC02TK32FfMcPBmKs=;
+	b=a9ICCMBma09rHGIDhL0NY9rmQoNN/eOXqDq7l4cGvqw3asF2SzvxwX9qwHc/uchZuPGg
+	 WzIcf8MuiNH21WQExNdnoRE0t68IZBEcYO4HePuTL/OemhFu9kY8xFkY18+ywTfIdypnX
+	 ahdKX0Z1LmbskD4auWjbrTNSs1q1RIAEiV9KdQ5f0wGuKk1d1qvU/0IjIEryVWuPQ40PH
+	 xQ/H6OmSP3wNAiE4609c5gA/AvjaVtRySct3OHwlINCXUvyW8X3I9EDHwCwhd+jqL5eCM
+	 LMcEC6UCAJce2Ay7NPrXK8voIIEbZMhoYygN/gRIU+3Ge8OSlEhSyvmp2PZeDEj8Y7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=fail header.from=linux.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365B2606EE85
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:03:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 365B2606EE85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462D0606EEA1
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:03:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 462D0606EEA1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so12826985e9.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:03:32 -0800 (PST)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so11787775e9.2
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:03:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793873011; x=1794477811;
+        d=1e100.net; s=20260707; t=1793873013; x=1794477813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
-        b=C6YVtHRw0QLDB7Bwa8+Fk640sSbHJBnJvokPV/EOr5vCds/1zTouHFKYuaYcOjpNPi
-         kxhVMdrXlONRE6eARV7G9HJcHv8EHIJelgkAizegWiYBS+8XH8cDcliMkkm8wUT18pfX
-         qYXmp8Bam1r7Xnb+o2mjwjGkPgpd/l3HnrtH7XhNxmRQs/Y3lLmrV3zRktvPFjmr7eN6
-         Zyg0jumY1rySSMNRNrk/8vLb5Th52gn2VuqZ2ntD3bIIb+Mcc7uZxJnCyWn+X9KshxPO
-         jg3GMQlhq8RA4DiSZgq3Zi/KAzd3tSKEZNXZemTNzrsjtY+dUMl1ypOL1EKck8hZKzqO
-         WK8A==
-X-Gm-Message-State: APuU4Z/HVjVc/p7d3E9c5RriexHLknO8t9w9kwi15CoWSIKanwP/MpCd
-	1w842IplbwOL9Los13myVYGham2mritguXVYCBIt5jAfjAaVY/l0y2j8
-X-Gm-Gg: AYBFou1s26cexuPl7FcWN8j/EeK2xOdEyiajpJ2YnpdK6DW+CkuKNEw3oubwy0UFjeu
-	pGPMGBzwv/1PAkjF6Bda3IABXBruQ04vN8Qwzuh2qk0SZxENerA3tolBzSghAgrD5R3crufF+fC
-	bN4F+qRF5fH7Ufehcd+DlfTiDNijeKo7tsbK7qzHTb1u18usoV2cjphUgs+3k8Gc98H8NxiDR98
-	uSn1ruCkToQyVp/E7dNSuDU/6yWlqNs1XfJMPckFHXsIydi1wijd855rFgkqGunR2fMUvdL7WJg
-	5a58GvupWIqCLJtR9p+we1H5umq6wRk89SnVHA/d/iO0oxPoNFCY+4fNkGFJiL8889ABFS5EWUc
-	RKeYfzKOQbSwIv3mgMUdjjYYicHriUmAME/ZrXwQTuiq0CsKQWvcZ5Nhdzj4DVVXUMfHroiHs5N
-	c14MhKRXp3soZV4OWix4cpBPr8dKrssUwaAjnYVbEBrpeXzxAiOippC2S6qx6a1CPSM+VUbUUuy
-	7/k0fMKCzVR6twdbzzDNiH3rBSd/4XJ5SYA80WpVXcWcKe3TEWEtC8Q/3B0HyNzA4YVjUQbFx82
-	ie4cumdsZ17Ky63bAOnoldD/nsMJFBMKPVzoFGVBaiAs8JILAl8mhJlCSs85FbhUTWXryLTy+c2
-	9XFSbEth6TL1Y1AAmLrfKDDHlfg==
-X-Received: by 2002:a05:600c:1f93:b0:4a5:87b3:ddc1 with SMTP id 5b1f17b1804b1-4ac180f1ec7mr430949735e9.13.1793873011464;
-        Thu, 05 Nov 2026 02:03:31 -0800 (PST)
+        bh=paduv/zXRliBqDWBFf1W5OOKpbqC02TK32FfMcPBmKs=;
+        b=RXhwmpC9amxr6suPh77cs0F3s2xNk+Xfy3h/TKc22BpI0OjX1OrfKJt41EqYkXKDjh
+         Lkp3PN38ALkUOcjTyFNIchF/LmIdOkxuvGashkrzywEHaBkVQ1F0ZNw5GUWAUANmqg/X
+         XTXLUqCKdkCdl2zvWc0hYYk7ODPvh7hWbtGNf+CsFgfXCjXqfy3knDo9ITqE7+C+2igQ
+         JEf8WMXnYSIo9DzHQcxm0hAUjBMcyMwynF/OHgBAy4GV5KYOHkzjU9Rlm/RJHHrUmuZ0
+         xWdv6toTZzP5vXnxAgczV3o6UNqRK+CaqTFhpJNhHlxW1FuZ4VAz6N6CJ9zIi0kdJmRy
+         iYVQ==
+X-Gm-Message-State: APuU4Z9c1UJlGHhlwCd3ayg41+VTNarBu9105aOro7VVqb9ciud0BXlh
+	QEYVQQUKN71oFoOCMmaIqxxGMnp/rzDFRwLhOy/3SlJ32Zy2sOdSSA/U
+X-Gm-Gg: AYBFou1gNO66vR07FMTBnPrN2Cawd4upXPpTNqtzsiMdcRpBjEyX02VoZnoSlgi1sWW
+	D5Xjf2+rI4Dxf/Vr/nZ2yOh2j4ompy/j2R/TkfkUzFvDeWVyL0ENRWcjRgiShE9gL5dMQ/zgZS8
+	8IOPASPDYQkQcGRpseZ3E7RHpiaZ8Yv3VXj+ZyTviZxa7KwxBwJ2f0AYugWitDlr5heA/RFzXm0
+	GoXJcv+TEj/Q/fRPI40LmZz/tXK8S7N8wfaLJkFPSD4YL+aJgsA1pURdyfad94rR6+UXIdGqie/
+	UoDaxpWSwYwCCfTGxG8BDR84XZxXlfXQa8MNuPvSUfddUc6MafCBISd4r6uk4bGpr+9wqnqstrb
+	fiu1W6SNNTHfRUVpnQ0Iy3xNSpqeVYjIPdQRPCqBahUvr1QSFDRF0Iii7T5Sok8sLovYN2WwrEl
+	QEpwHxDAD1fnIOlZ8RWBX+fpKg+Mip+HMAnueEeYDY8TJL/H7sjuC6AIJZtTcgKa+VreJl8hFBG
+	/aiSk19He15tVY80kTrz+QTok6vvGD3cGwwUWEDjTzSmLioStrZI0EC0d0Eq/UWGu4hk5KGmHZV
+	8bb1R3Ims2+HES8xxyWh9h0rqXA5ItNFs3+Yl2fZwPX2YaI4v6tj2bl4C9wnVrcmushEZzx4xJs
+	zgyG9bkQCO2nilDzKwm2VXUNUjkg=
+X-Received: by 2002:a05:600c:6095:b0:49e:7c8c:361d with SMTP id 5b1f17b1804b1-4ac182dc30fmr364050625e9.22.1793873012541;
+        Thu, 05 Nov 2026 02:03:32 -0800 (PST)
 Received: from threads.localdomain ([90.254.187.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43342773esm53455775e9.4.2026.11.05.02.03.30
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43342773esm53455775e9.4.2026.11.05.02.03.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:03:31 -0800 (PST)
+        Thu, 05 Nov 2026 02:03:32 -0800 (PST)
 From: Lucas Tanure <tanure@linux.com>
 To: xianwei.zhao@amlogic.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -85,9 +85,9 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 5/7] arm64: dts: amlogic: t7: add the ethernet pinctrl nodes
-Date: Thu,  5 Nov 2026 10:03:20 +0000
-Message-ID: <20261105100322.37816-6-tanure@linux.com>
+Subject: [PATCH v6 6/7] arm64: dts: amlogic: t7: add the ethernet controller
+Date: Thu,  5 Nov 2026 10:03:21 +0000
+Message-ID: <20261105100322.37816-7-tanure@linux.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105100322.37816-1-tanure@linux.com>
 References: <20261105100322.37816-1-tanure@linux.com>
@@ -102,62 +102,105 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SoC brings its ethernet interface out on bank Z, but no pin groups
-were described, so a board had no way to hand those pins over to the
-MAC.
+The SoC has a Synopsys gigabit MAC, glue registers for the interface
+type and clock timing, and a multiplexer that points the management bus
+at the on-chip 100M PHY or the external pins. None of it was described.
 
-Describe them as the two sets a board actually needs: the nine pins the
-interface always uses, and the five extra ones RGMII adds for its wider
-data path.
+The controller reaches memory through a pipeline stage with a gate
+nothing else claims, so it is switched off as unused. The
+glue registers share a clock with the multiplexer, which probes after
+the controller has programmed them: unless the controller holds that
+clock, the writes are lost and the port keeps the
+bootloader's delays.
+
+The multiplexer and the on-chip PHY bus start disabled: a board enables
+the multiplexer with the controller, and the on-chip bus only when it
+uses that PHY.
 
 Assisted-by: LLM
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Lucas Tanure <tanure@linux.com>
 ---
- arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 30 +++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 60 +++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-index 6894c06a836b..7bd53ec16607 100644
+index 7bd53ec16607..f15fd8f6cdd2 100644
 --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
 +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-@@ -376,6 +376,36 @@ mux {
- 					};
- 				};
+@@ -250,6 +250,33 @@ gic: interrupt-controller@fff01000 {
+ 			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
+ 		};
  
-+				eth_pins: eth {
-+					mux {
-+						groups = "eth_mdio",
-+							 "eth_mdc",
-+							 "eth_rgmii_rx_clk",
-+							 "eth_rx_dv",
-+							 "eth_rxd0",
-+							 "eth_rxd1",
-+							 "eth_txen",
-+							 "eth_txd0",
-+							 "eth_txd1";
-+						function = "eth";
-+						drive-strength-microamp = <4000>;
-+						bias-disable;
-+					};
++		ethmac: ethernet@fdc00000 {
++			compatible = "amlogic,t7-dwmac",
++				     "snps,dwmac-5.10a",
++				     "snps,dwmac";
++			reg = <0x0 0xfdc00000 0x0 0x10000>,
++			      <0x0 0xfe024000 0x0 0x8>;
++			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			clocks = <&clkc_periphs CLKID_SYS_ETH>,
++				 <&scmi_clk CLKID_FCLK_DIV2>,
++				 <&mpll CLKID_MPLL2>,
++				 <&clkc_periphs CLKID_SYS_AMPIPE_ETH>,
++				 <&clkc_periphs CLKID_SYS_ETHPHY>;
++			clock-names = "stmmaceth", "clkin0", "clkin1", "pipeline",
++				      "pclk";
++			power-domains = <&pwrc PWRC_T7_ETH_ID>;
++			rx-fifo-depth = <4096>;
++			tx-fifo-depth = <2048>;
++			status = "disabled";
++
++			mdio0: mdio {
++				compatible = "snps,dwmac-mdio";
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
+ 		apb4: bus@fe000000 {
+ 			compatible = "simple-bus";
+ 			reg = <0x0 0xfe000000 0x0 0x480000>;
+@@ -645,6 +672,39 @@ gpio_intc: interrupt-controller@4080 {
+ 					<10 11 12 13 14 15 16 17 18 19 20 21>;
+ 			};
+ 
++			eth_phy: mdio-multiplexer@28000 {
++				compatible = "amlogic,g12a-mdio-mux";
++				reg = <0x0 0x28000 0x0 0xa4>;
++				clocks = <&clkc_periphs CLKID_SYS_ETHPHY>,
++					 <&xtal>,
++					 <&scmi_clk CLKID_FCLK_50M>;
++				clock-names = "pclk", "clkin0", "clkin1";
++				mdio-parent-bus = <&mdio0>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++				status = "disabled";
++
++				ext_mdio: mdio@0 {
++					reg = <0>;
++					#address-cells = <1>;
++					#size-cells = <0>;
 +				};
 +
-+				eth_rgmii_pins: eth-rgmii {
-+					mux {
-+						groups = "eth_rxd2_rgmii",
-+							 "eth_rxd3_rgmii",
-+							 "eth_rgmii_tx_clk",
-+							 "eth_txd2_rgmii",
-+							 "eth_txd3_rgmii";
-+						function = "eth";
-+						drive-strength-microamp = <4000>;
-+						bias-disable;
++				int_mdio: mdio@1 {
++					reg = <1>;
++					#address-cells = <1>;
++					#size-cells = <0>;
++					status = "disabled";
++
++					internal_ephy: ethernet-phy@8 {
++						compatible = "ethernet-phy-id0180.3301",
++							     "ethernet-phy-ieee802.3-c22";
++						interrupts = <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>;
++						reg = <8>;
 +					};
 +				};
++			};
 +
- 				i2c0_ao_d_pins: i2c0-ao-d {
- 					mux {
- 						groups = "i2c0_ao_sck_d",
+ 			uart_a: serial@78000 {
+ 				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+ 				reg = <0x0 0x78000 0x0 0x18>;
 -- 
 2.56.0
 
