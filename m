@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793879864;
-	b=EGavoLY95QGkD1TAw9jXi8PU232nj60yHaLu1UItx6pjvPrKrumPymSfcy/eZKsqIHfJ
-	 HI/wmU5CleOd9wob8PP3y7k2pqkehW8rIfA/s5B0roinht1z/Mus2mRoKYckeDz8BkG39
-	 FyBFiBfWlI0yM/xqYGgURcI2/I+bua3FVYjoZbxdd4vKvlNOL7+amK4KXGE5ZITxEnzev
-	 ngHOTzRkwOr3PynE4wk1d70ffdf5RjbR7BMuj3kV/TW5myz5oLuRW5GOWTefvMTAZI44x
-	 5QSoX/1HVuymGv3cp7FU0HlwgOv0RW9O02kQQkq4ptbJPNLOJ01teJJvc2BRVRzkqYg==
+	t=1793879855;
+	b=ZeK1IW0MAQGwdB5GTcbA0NcbYyvfn4BRBIWVX5wq3fXOJ8PZFO3LRG+yZ4H2q2zv6oB5
+	 NGpt5HSqh8YedQNAGMKPObqHuQWQvrJXwOmI4AA2BPA6giPvrh+WfvaJq5+u+H+5y6x9r
+	 5eukiDQXZT6LIY3tAKs/2UJcfHEaDoywTvDYN+L9WyZgt9SjxU+slMnaHWLWM9uqXO/T9
+	 WEwCN6k7PQxjXDIOF/OijIEC5khQUHgbPwQb+2eTZQr5jnfgwy+a72H0+uVchU3HPllA9
+	 jbXqa0hQ2r7xePf2W5MJz04ShSgKZ3JDL4c2AEGYCiikb4FaqxSkJVPyVgZjBA3Bp2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879864;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879855;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=ld+Wz8B/hJh48SUwyoUzJTM8MsH+YuxY8fpE45R4jQc=;
-	b=FjxIPzuwDjV4fN7HLH0tNi0y5bGaK92lQkoIw09Ik3XNMAQWwjCMjjmRFlEg4qxWxZdJ
-	 eONmCHbOIEG/Ahr40MkZozmaQZ4QDSOe8wyAkduWBhDlzztiFeL+q/IArF5trkKMd2Z8x
-	 pf/WQ4ltEUQ1uJD0pE5OyzarFn6Z+Fzk8jikOPOVBhWmHwUkW3gyuCSpuxn3/PhTfBACQ
-	 RengTM2hZY3wQ9eAFkjBA/BwODcED6IHSf0EhJDNUwlu9vgzbFLegKJC2k72MnTcUSiXE
-	 HxfavQVCvkRvgrRVwm5GBWmudr/NoQoytD0D6LOqvnvu/cn0G8SwKmUL75arr7z8uyg==
+	bh=Hjw8DiUQNkrtiCrrm5P0NEnsgV+5sYoiiW+A0BLmhA8=;
+	b=1+yL8GSlL/o7qqtihkU3PAT4sx+/BD5TBkEFQrIAe5NXcTr2UscHFrA5kel7e4MoZpP7
+	 fKHsspOTmkE50bjL2o99HfBwJH9gTchrV09Us9huvpCN+1liNVOe/6qjtrGpinBUe7M2v
+	 4knI23OY8kkcCXzhEeQROCbpyqRiXR2n8pYCfMjSLs1oaqKX9pC5sEVaIDd4YC/LCRMcg
+	 qGFuoMux0IQophL9Fl48lNSBnKu06e6fOuZOBunQtGenXS+jYQtSWQITfOGC0ce7AJTi/
+	 WykzmY7yBAcy+l4h8Bn+X0LNOpA9GOIQMuJ93IWMH/MxnZcpOfG4c+FBtohokIqG9gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVGdW6Ud;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cCRmAlr5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F215606A334;
-	Thu,  5 Nov 2026 11:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF2F606D803;
+	Thu,  5 Nov 2026 11:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BVGdW6Ud
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF901F00919;
-	Thu,  5 Nov 2026 11:57:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cCRmAlr5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D51F000C1;
+	Thu,  5 Nov 2026 11:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879863;
-	bh=ld+Wz8B/hJh48SUwyoUzJTM8MsH+YuxY8fpE45R4jQc=;
+	s=k20260515; t=1793879855;
+	bh=Hjw8DiUQNkrtiCrrm5P0NEnsgV+5sYoiiW+A0BLmhA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BVGdW6UdjOJyM0jkjog7cioSHKW6xzp0ZWcu5+7p5HhXiUaHOBNdC6ZWxn2Jo7teY
-	 9VFt5ss/dRBq9DWdBRq+bD9LWVXBPQVfmEo8mtJTfTQ1L0jXZZ4pmYBiRoTa+cb2oM
-	 QeLcEfl0+U9Qe9pNUjIuLFpy6yGPA8xqSzCC3MctDUhA06mjER/CG8SbG8mLpcKr6/
-	 5RZwOSheIJKyJXdY6i2Hjy+y10Q6gcIVsjAsoKzSZsLkOxoy6xF3QqZ4bCxRHFRwgI
-	 Jn8bd9Vh9vfbPWyzRjelFZNjPNavbuCsMvBndOG9IlUvzwD+Ee4XVykWYR3RvRW4hC
-	 B2qGQnGo0oDOg==
+	b=cCRmAlr5SU9Hv3wqG8aOdnyoGIwuVMaEimCnqg7m/0rRic1uTrKcq6abQ3LVCpBiV
+	 C1PVY08ZkgvQEaSZd8tk88M8TqMeCyLLBRRtpe9fxih+cfpqFhGA6tCYiM48ANXAag
+	 g+AXC/e32qtDrR4lwHgP8MhKGMr/HIsbuhbjwQ+R9F9kA3qX8hk413+F+YgISmOdpL
+	 AMzYoVCC3MeX9Rw4moUVBTaN7lh/Pu+VdGSVFWsnaYN5G0WogjmqJW5lxivZONbBeW
+	 E1J31Q6YCjdSU7cXv46lp9z95g8ROkHAbDuxyCCAwcJOfF5kna/lD1vnNcfXqn0rBL
+	 E3o4raD6jGsYg==
 From: Eric Dumazet <edumazet@kernel.org>
 To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
@@ -52,9 +52,9 @@ Cc: Eric Dumazet <edumazet@kernel.org>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Hassan Sultan <hassansultan@google.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v3 8/8] selftests: net: tuntap: write UDP tunnel offsets in little endian
-Date: Thu,  5 Nov 2026 12:57:15 +0100
-Message-ID: <20261105115715.1466924-9-edumazet@kernel.org>
+Subject: [PATCH net v3 5/8] selftests: net: tun: test outer protocol of UDP tunnel GSO packets
+Date: Thu,  5 Nov 2026 12:57:12 +0100
+Message-ID: <20261105115715.1466924-6-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261105115715.1466924-1-edumazet@kernel.org>
 References: <20261105115715.1466924-1-edumazet@kernel.org>
@@ -69,112 +69,315 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-outer_th_offset and inner_nh_offset of struct
-virtio_net_hdr_v1_hash_tunnel are __le16, and the kernel always reads
-them with le16_to_cpu(). build_virtio_net_hdr_v1_hash_tunnel() writes
-them in host order, and tun.c adjusts them with native arithmetic, so
-all UDP tunnel GSO tests fail on big-endian hosts: the kernel sees
-offsets such as 0x2200 and rejects the frames before the checks the
-tests target.
+Add tests writing single 4in4 Geneve GSO frames to tun devices with
+UDP tunnel offloads enabled.
 
-Write the offsets with htole16(), and add vnet_tnl_offset_add() to
-adjust them. csum_start stays in host order: it follows the tun vnet
-header endianness, which the tests do not change.
+tun_vnet_udptnl_proto uses a tap device:
 
-Fixes: a942fcd72e97 ("selftest: tun: Introduce tuntap_helpers.h header for TUN/TAP testing")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/179387332145.488856.1149073246990672028@kernel.org/
+- outer_proto_ok: an outer IPv4 header, with or without an 802.1Q tag,
+  is accepted.
+- outer_proto_bad: an outer ethertype that does not match the declared
+  tunnel type (IPv6 on an IPv4 tunnel, or NSH with or without a VLAN
+  tag) is rejected with EINVAL.
+
+tun_vnet_udptnl_proto_l3 uses an IFF_TUN device with a tun_pi header,
+so skb->protocol comes from userspace and there is no Ethernet header.
+The outer IPv4 header carries options, as virtio_net_hdr_tnl_to_skb()
+expects room for an Ethernet header before the outer transport header.
+
+- outer_proto_ok: tun_pi and the frame agree on IPv4, accepted.
+- outer_proto_bad: tun_pi claims IPv6, or the IP version of the frame
+  is not 4 while tun_pi claims IPv4: rejected with EINVAL.
+
+Without the first patch of this series, both outer_proto_bad tests fail
+because the kernel accepts the frames.
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- tools/testing/selftests/net/tun.c            | 10 +++++-----
- tools/testing/selftests/net/tuntap_helpers.h | 19 +++++++++++++++----
- 2 files changed, 20 insertions(+), 9 deletions(-)
+ tools/testing/selftests/net/tun.c | 269 ++++++++++++++++++++++++++++++
+ 1 file changed, 269 insertions(+)
 
 diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-index a135d3aa10d1..5f797a1bc604 100644
+index 34de2580e32e..81410afbbcc8 100644
 --- a/tools/testing/selftests/net/tun.c
 +++ b/tools/testing/selftests/net/tun.c
-@@ -738,8 +738,8 @@ static int build_udptnl_frame(uint8_t *buf, bool vlan, uint16_t l3proto,
- 
- 	cur += build_virtio_net_hdr_v1_hash_tunnel(cur, true, hlen, 1400,
- 						   AF_INET, AF_INET);
--	vh->outer_th_offset += vlan_len;
--	vh->inner_nh_offset += vlan_len;
-+	vnet_tnl_offset_add(&vh->outer_th_offset, vlan_len);
-+	vnet_tnl_offset_add(&vh->inner_nh_offset, vlan_len);
- 	vh->hash_hdr.hdr.csum_start += vlan_len;
- 
- 	if (vlan) {
-@@ -944,7 +944,7 @@ TEST_F(tun_vnet_udptnl_proto, outer_proto_bad_vlan_offset)
- 	int len, ret;
- 
- 	len = build_udptnl_frame(self->pkt, true, ETH_P_IP, 2800);
--	vh->outer_th_offset -= 4;
-+	vnet_tnl_offset_add(&vh->outer_th_offset, -4);
- 	ret = write(self->fd, self->pkt, len);
- 	ASSERT_EQ(ret, -1);
- 	ASSERT_EQ(errno, EINVAL);
-@@ -1031,8 +1031,8 @@ static int build_udptnl_l3_frame(uint8_t *buf, uint16_t pi_proto,
- 	cur = vnet + build_virtio_net_hdr_v1_hash_tunnel(vnet, false, hlen,
- 							 1400, AF_INET,
- 							 AF_INET);
--	vh->outer_th_offset += IPV4_OPT_LEN;
--	vh->inner_nh_offset += IPV4_OPT_LEN;
-+	vnet_tnl_offset_add(&vh->outer_th_offset, IPV4_OPT_LEN);
-+	vnet_tnl_offset_add(&vh->inner_nh_offset, IPV4_OPT_LEN);
- 	vh->hash_hdr.hdr.csum_start += IPV4_OPT_LEN;
- 
- 	/* Build the frame without options first: build_udp_packet_csum()
-diff --git a/tools/testing/selftests/net/tuntap_helpers.h b/tools/testing/selftests/net/tuntap_helpers.h
-index ecad83fae158..dc85cd9bc0ae 100644
---- a/tools/testing/selftests/net/tuntap_helpers.h
-+++ b/tools/testing/selftests/net/tuntap_helpers.h
-@@ -3,6 +3,7 @@
- #ifndef _TUNTAP_HELPERS_H
- #define _TUNTAP_HELPERS_H
- 
-+#include <endian.h>
- #include <errno.h>
- #include <linux/if_packet.h>
- #include <linux/ipv6.h>
-@@ -368,6 +369,7 @@ static inline int build_virtio_net_hdr_v1_hash_tunnel(uint8_t *buf, bool is_tap,
- 	struct virtio_net_hdr_v1_hash_tunnel *vh_tunnel = (void *)buf;
- 	struct virtio_net_hdr_v1 *vh = &vh_tunnel->hash_hdr.hdr;
- 	int outer_iphlen, inner_iphlen, eth_hlen, gso_type;
-+	int outer_th, inner_nh;
- 
- 	eth_hlen = is_tap ? ETH_HLEN : 0;
- 	outer_iphlen = (outer_family == AF_INET) ? sizeof(struct iphdr) :
-@@ -375,11 +377,14 @@ static inline int build_virtio_net_hdr_v1_hash_tunnel(uint8_t *buf, bool is_tap,
- 	inner_iphlen = (inner_family == AF_INET) ? sizeof(struct iphdr) :
- 						   sizeof(struct ipv6hdr);
- 
--	vh_tunnel->outer_th_offset = eth_hlen + outer_iphlen;
--	vh_tunnel->inner_nh_offset = vh_tunnel->outer_th_offset + ETH_HLEN +
--				     GENEVE_HLEN + sizeof(struct udphdr);
-+	outer_th = eth_hlen + outer_iphlen;
-+	inner_nh = outer_th + ETH_HLEN + GENEVE_HLEN + sizeof(struct udphdr);
- 
--	vh->csum_start = vh_tunnel->inner_nh_offset + inner_iphlen;
-+	/* The tunnel offsets are always little endian. */
-+	vh_tunnel->outer_th_offset = htole16(outer_th);
-+	vh_tunnel->inner_nh_offset = htole16(inner_nh);
-+
-+	vh->csum_start = inner_nh + inner_iphlen;
- 	vh->csum_offset = __builtin_offsetof(struct udphdr, check);
- 	vh->flags = VIRTIO_NET_HDR_F_NEEDS_CSUM;
- 	vh->hdr_len = hdr_len;
-@@ -395,4 +400,10 @@ static inline int build_virtio_net_hdr_v1_hash_tunnel(uint8_t *buf, bool is_tap,
- 	return sizeof(struct virtio_net_hdr_v1_hash_tunnel);
+@@ -683,6 +683,275 @@ TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum_64k)
+ 	ASSERT_EQ(ret, len);
  }
  
-+/* Add @delta to a little endian tunnel offset of the virtio header. */
-+static inline void vnet_tnl_offset_add(__le16 *off, int delta)
++#ifndef ETH_P_NSH
++#define ETH_P_NSH 0x894F
++#endif
++
++FIXTURE(tun_vnet_udptnl_proto)
 +{
-+	*off = htole16(le16toh(*off) + delta);
++	char ifname[IFNAMSIZ];
++	uint8_t *pkt;
++	int fd;
++};
++
++FIXTURE_SETUP(tun_vnet_udptnl_proto)
++{
++	int flags = IFF_TAP | IFF_NO_PI | IFF_VNET_HDR;
++	int features = TUN_F_CSUM | TUN_F_UDP_TUNNEL_GSO |
++		       TUN_F_UDP_TUNNEL_GSO_CSUM | TUN_F_USO4 | TUN_F_USO6;
++
++	self->fd = -1;
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
++	self->pkt = calloc(1, MAX_VNET_TUNNEL_PACKET_SZ);
++	ASSERT_NE(self->pkt, NULL);
++
++	memset(self->ifname, 0, sizeof(self->ifname));
++	self->fd = tun_open(self->ifname, flags, TUN_VNET_TNL_SIZE, features,
++			    param_hwaddr_outer_src);
++	ASSERT_GE(self->fd, 0);
 +}
 +
- #endif /* _TUNTAP_HELPERS_H */
++FIXTURE_TEARDOWN(tun_vnet_udptnl_proto)
++{
++	if (self->fd >= 0)
++		close(self->fd);
++	free(self->pkt);
++}
++
++/* Build a 4in4 Geneve GSO frame whose outer ethertype is @l3proto,
++ * optionally behind an 802.1Q tag.
++ */
++static int build_udptnl_frame(uint8_t *buf, bool vlan, uint16_t l3proto,
++			      int payload_len)
++{
++	struct virtio_net_hdr_v1_hash_tunnel *vh = (void *)buf;
++	int vlan_len = vlan ? 4 : 0;
++	int hlen = ETH_HLEN + vlan_len + UDP_TUNNEL_GENEVE_4IN4_HDRLEN;
++	uint8_t *outer_udph, *cur = buf;
++	int pktlen;
++
++	/* The buffer is reused: do not leave bytes from a previous frame. */
++	memset(buf, 0, TUN_VNET_TNL_SIZE + hlen + payload_len);
++
++	cur += build_virtio_net_hdr_v1_hash_tunnel(cur, true, hlen, 1400,
++						   AF_INET, AF_INET);
++	vh->outer_th_offset += vlan_len;
++	vh->inner_nh_offset += vlan_len;
++	vh->hash_hdr.hdr.csum_start += vlan_len;
++
++	if (vlan) {
++		uint16_t vlan_tag[2] = { htons(100), htons(l3proto) };
++
++		cur += build_eth(cur, ETH_P_8021Q, param_hwaddr_outer_dst,
++				 param_hwaddr_outer_src);
++		memcpy(cur, vlan_tag, sizeof(vlan_tag));
++		cur += sizeof(vlan_tag);
++	} else {
++		cur += build_eth(cur, l3proto, param_hwaddr_outer_dst,
++				 param_hwaddr_outer_src);
++	}
++
++	pktlen = UDP_TUNNEL_GENEVE_4IN4_HDRLEN - sizeof(struct iphdr) +
++		 payload_len;
++	cur += build_ipv4_header(cur, IPPROTO_UDP, pktlen,
++				 &param_ipaddr4_outer_dst,
++				 &param_ipaddr4_outer_src);
++
++	outer_udph = cur;
++	cur += build_udp_header(cur, UDP_SRC_PORT, VN_PORT,
++				pktlen - sizeof(struct udphdr));
++	cur += build_geneve_header(cur, VN_ID);
++	cur += build_eth(cur, ETH_P_IP, param_hwaddr_inner_dst,
++			 param_hwaddr_inner_src);
++	cur += build_ipv4_header(cur, IPPROTO_UDP,
++				 sizeof(struct udphdr) + payload_len,
++				 &param_ipaddr4_inner_dst,
++				 &param_ipaddr4_inner_src);
++	cur += build_udp_packet(cur, UDP_DST_PORT, UDP_SRC_PORT, payload_len,
++				AF_INET, false);
++	build_udp_packet_csum(outer_udph, AF_INET, false);
++
++	return cur - buf;
++}
++
++TEST_F(tun_vnet_udptnl_proto, outer_proto_ok)
++{
++	uint8_t *pkt = self->pkt;
++	int len, ret;
++
++	len = build_udptnl_frame(pkt, false, ETH_P_IP, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, len);
++
++	/* The outer IPv4 header can follow a VLAN tag. */
++	len = build_udptnl_frame(pkt, true, ETH_P_IP, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, len);
++}
++
++TEST_F(tun_vnet_udptnl_proto, outer_proto_bad)
++{
++	uint8_t *pkt = self->pkt;
++	int len, ret;
++
++	/* Outer ethertype does not match the declared IPv4 tunnel. */
++	len = build_udptnl_frame(pkt, false, ETH_P_IPV6, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	/* Outer header is not IP at all. */
++	len = build_udptnl_frame(pkt, false, ETH_P_NSH, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	/* Same, behind a VLAN tag. */
++	len = build_udptnl_frame(pkt, true, ETH_P_NSH, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++}
++
++/* IFF_TUN device with a tun_pi header: skb->protocol comes from
++ * userspace, and there is no Ethernet header.
++ */
++FIXTURE(tun_vnet_udptnl_proto_l3)
++{
++	char ifname[IFNAMSIZ];
++	uint8_t *pkt;
++	int fd;
++};
++
++FIXTURE_SETUP(tun_vnet_udptnl_proto_l3)
++{
++	int flags = IFF_TUN | IFF_VNET_HDR;
++	int features = TUN_F_CSUM | TUN_F_UDP_TUNNEL_GSO |
++		       TUN_F_UDP_TUNNEL_GSO_CSUM | TUN_F_USO4 | TUN_F_USO6;
++
++	self->fd = -1;
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
++	self->pkt = calloc(1, MAX_VNET_TUNNEL_PACKET_SZ);
++	ASSERT_NE(self->pkt, NULL);
++
++	memset(self->ifname, 0, sizeof(self->ifname));
++	self->fd = tun_open(self->ifname, flags, TUN_VNET_TNL_SIZE, features,
++			    NULL);
++	ASSERT_GE(self->fd, 0);
++}
++
++FIXTURE_TEARDOWN(tun_vnet_udptnl_proto_l3)
++{
++	if (self->fd >= 0)
++		close(self->fd);
++	free(self->pkt);
++}
++
++#define IPV4_OPT_NOP 1
++#define IPV4_OPT_LEN 16
++
++/* Build a tun_pi header carrying @pi_proto, followed by a 4in4 Geneve
++ * GSO frame whose outer IP header claims version @ip_version.
++ *
++ * virtio_net_hdr_tnl_to_skb() wants room for an Ethernet header before
++ * the outer transport header, even without one: pad the outer IPv4
++ * header with NOP options.
++ */
++static int build_udptnl_l3_frame(uint8_t *buf, uint16_t pi_proto,
++				 int ip_version, int payload_len)
++{
++	struct tun_pi *pi = (struct tun_pi *)buf;
++	uint8_t *vnet = buf + sizeof(*pi);
++	struct virtio_net_hdr_v1_hash_tunnel *vh = (void *)vnet;
++	int hlen = UDP_TUNNEL_GENEVE_4IN4_HDRLEN + IPV4_OPT_LEN;
++	uint8_t *cur, *outer_iph, *outer_udph;
++	struct iphdr *iph;
++	int pktlen;
++
++	/* The buffer is reused: do not leave bytes from a previous frame. */
++	memset(buf, 0, sizeof(*pi) + TUN_VNET_TNL_SIZE + hlen + payload_len);
++	pi->proto = htons(pi_proto);
++
++	cur = vnet + build_virtio_net_hdr_v1_hash_tunnel(vnet, false, hlen,
++							 1400, AF_INET,
++							 AF_INET);
++	vh->outer_th_offset += IPV4_OPT_LEN;
++	vh->inner_nh_offset += IPV4_OPT_LEN;
++	vh->hash_hdr.hdr.csum_start += IPV4_OPT_LEN;
++
++	/* Build the frame without options first: build_udp_packet_csum()
++	 * expects the IP addresses right before the UDP header.
++	 */
++	outer_iph = cur;
++	pktlen = UDP_TUNNEL_GENEVE_4IN4_HDRLEN - sizeof(struct iphdr) +
++		 payload_len;
++	cur += build_ipv4_header(cur, IPPROTO_UDP, pktlen,
++				 &param_ipaddr4_outer_dst,
++				 &param_ipaddr4_outer_src);
++
++	outer_udph = cur;
++	cur += build_udp_header(cur, UDP_SRC_PORT, VN_PORT,
++				pktlen - sizeof(struct udphdr));
++	cur += build_geneve_header(cur, VN_ID);
++	cur += build_eth(cur, ETH_P_IP, param_hwaddr_inner_dst,
++			 param_hwaddr_inner_src);
++	cur += build_ipv4_header(cur, IPPROTO_UDP,
++				 sizeof(struct udphdr) + payload_len,
++				 &param_ipaddr4_inner_dst,
++				 &param_ipaddr4_inner_src);
++	cur += build_udp_packet(cur, UDP_DST_PORT, UDP_SRC_PORT, payload_len,
++				AF_INET, false);
++	build_udp_packet_csum(outer_udph, AF_INET, false);
++
++	/* Then insert the options after the fixed outer IPv4 header. */
++	memmove(outer_udph + IPV4_OPT_LEN, outer_udph, cur - outer_udph);
++	memset(outer_udph, IPV4_OPT_NOP, IPV4_OPT_LEN);
++	cur += IPV4_OPT_LEN;
++
++	iph = (struct iphdr *)outer_iph;
++	iph->version = ip_version;
++	iph->ihl += IPV4_OPT_LEN / 4;
++	iph->tot_len = htons(ntohs(iph->tot_len) + IPV4_OPT_LEN);
++	iph->check = 0;
++	iph->check = build_ip_csum(outer_iph, iph->ihl << 2, 0);
++
++	return cur - buf;
++}
++
++TEST_F(tun_vnet_udptnl_proto_l3, outer_proto_ok)
++{
++	uint8_t *pkt = self->pkt;
++	int len, ret;
++
++	len = build_udptnl_l3_frame(pkt, ETH_P_IP, 4, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, len);
++}
++
++TEST_F(tun_vnet_udptnl_proto_l3, outer_proto_bad)
++{
++	uint8_t *pkt = self->pkt;
++	int len, ret;
++
++	/* tun_pi protocol does not match the declared IPv4 tunnel. */
++	len = build_udptnl_l3_frame(pkt, ETH_P_IPV6, 4, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++
++	/* tun_pi claims IPv4, but the frame says otherwise. */
++	len = build_udptnl_l3_frame(pkt, ETH_P_IP, 6, 2800);
++	ret = write(self->fd, pkt, len);
++	ASSERT_EQ(ret, -1);
++	ASSERT_EQ(errno, EINVAL);
++}
++
+ FIXTURE(tun_vnet_udptnl)
+ {
+ 	char ifname[IFNAMSIZ];
 -- 
 2.53.0
 
