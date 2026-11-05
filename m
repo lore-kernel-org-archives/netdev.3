@@ -1,97 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.202
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793858636;
-	b=NjXB3S22O1yxxjaV50Y1Wmihn0IGd2hjHsT+UeD9MewJ2SeO+HQrx90cxQvz90ciXvK5
-	 EXfA9tUYAqbs/DdwMWWyU7ib1895r830loZG6wdEF3M4vlgX0NpbCM+SqHEDKM2OG5X9y
-	 Y0P/XjyGJVaDug+ZCc8ubR8aYc94j0Dztt19ueEu/kKGWTNZsGzcvzqpk/9zqGbnDAmsU
-	 S965zH8BdV/C5QYHCpbyE9ezJyiEcqK44xIzhYEZGaGlswkHmC9W3N6FWiruickZDVSSt
-	 5LkAaoj95tAsDIQInlHzzk3e2AvvZUMrBK508fhzsnIhrX3L3Im283k44kRwWyHXsgQ==
+	t=1793860623;
+	b=YIIKCSGU621h7TTHMr0Uu+VQzvrnNC5OS1PP4t2h03e2Y8eXV7h2770xjzHDssfVqxwN
+	 ueMtPwtUW7/97R7FjV7ODLAIYZ7sm8sZKBZimYI1373IGHZ9BfYq+VHLaMiKZupMbqBdC
+	 HOcAY+RUcWZG4fgy0kmqQAHVBkAX7y8y4RhnAiqhDFA6X9M/GSBAfbON+H3CHtdXnppIP
+	 q1BZPPUJ5LFrdYOk6FxwB3B3V7+OR1vDxfrfjI1wGp3J16/NS10UcPoElnC9ID54g+LpI
+	 EH+AKeYzNKPNuKHhuL5q0Yl3UpWPfo8KfS2dBajYfthVlgzCxYAcg+b2Or/iKxGPs1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793858636;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793860623;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
-	b=h601LzMh89JaN4HA4UtZ1kFydMjB4mB7CvtGEwA98gEjflWjoCG69mJ/OB1JHcBGpxA7
-	 JiiK/2KGgW1oJbA+E9BKJdJu1ZAdBaoQMgQVhpZgfRVzNy9lG/X+oRuf9279iJcY5o77+
-	 tV2j/gIlzkPBHHee68keVSkjDOj2/Kkk7G4vvPwuC/WwznM3UoA2qrR9JcDoPdL0EnP2O
-	 r+Ghp5nZYHlq7HF/ys+FjWO3YA9+uhTZFzbSzup/6Hd4RdBluIVzXlGSTAZkjx5iCti5B
-	 ct+VUCswPnZvNf9oNQqD8QNfAgniK/7/SGY6ZV4gBhIziQfWOFj/nGWta+4yZKeFqEg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=V9c4JR1l1BlqJLMhXPHekxlcKPXrrtwIQDnuHY/ovTQ=;
+	b=LbF/8yBhRhRBF94m/i9SYEfeapdOlAm+GZ7sJpTIE1hhEgbBowQx1YkOHvInR5YWrG/K
+	 uY5pRUo6CTxoe2+DmcbF2MW9Wfo2BuzNezSIE5FKPdycEkmhk1eoWhvpw0C8LmLMtFDUA
+	 wvWnNwIJfpRYdxtoDR26QqEffloK9FelOBHEX+niGosV2Wh8rmyqHSjGQYf/7LJmSaE8H
+	 4SuDwuodIV55bW5eT+p2I1LdNEOCwoNVo2bwOMx7/Ux0L/t6mEWgU9NMrfDhgMLN3WBQ6
+	 AbYaIADLKdLrOJX9D7iXi7+3s7SyMpZWw7cndxHUSqUvLO8A9pBvaOcFfd9iHqUjELQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sITsORkr;
-	arc=none smtp.remote-ip=74.125.231.202
-Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zQbT2rru;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0F606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 06:03:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5A0F606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE839606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 06:37:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE839606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sITsORkr
-Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4c3bb46aaf0so715120b6e.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 22:03:55 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zQbT2rru
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3514b90bb89so2944474eec.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 22:37:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793858634; x=1794463434; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
-        b=sITsORkr/kUi1tLLm2LhV4O4MeBBZD5P42Mn7DMsbqXc1l0My7lI4VmgtVtnfCNRPm
-         F2K5ABd1e0VHSJ8v2yESdYDjTq4i63tkKEsmDkfU94JGf8/kaTIlpLIWCue9vT5bF1Nu
-         nuFchHwAR7Ftsz3TEZCXr+WCGl9OD/waFlfO7CL1Jilo/txk7zlc2begOhUWVb0h/j/R
-         TGbTC/6DEKgD1gf7luCdWPsrmDKhVsiH4PA2kU5S6CZ068gtUu1ny0pcnBfzdI1R8zjJ
-         BNwajppvpcVWWXsA70Yz5DddZP4BTQKmTeGOmnqBOD5ep97jZ1ZC4JL9FAWfb5NB8wJq
-         qSnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793858634; x=1794463434;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793860622; x=1794465422; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fl+RqVSy++c8t4D9ZLDA6qx49eqFU8GFdwgJMfJOyN4=;
-        b=QkB29VwvvB9/0H1jmEKZYkVNjShCoAZogb8Qh2/Vcc00oIZ12apFk+dzb1vQ+ACsVu
-         txQncVYt1m9b13JU0Wm0RaQb6CqHy3BLZUkyLk17KyIK5H2S7WuFIja0nJ81CL561Tq7
-         hIcT5+LNjpNCOLpn6t7b+TQkPRY8GFxgKhO4ShSqJZGy6NQvr8AtkTqVsFb33k5XPyqS
-         B/wVH+w3JGaNi4g6c99YscnNIqi229ivPUI3GjjHPQ6zorQI3qSYcC8orr0+FIbcyOYl
-         KrSYSq1KJOBEshoj/76kNHa5qAdbItj6qCXW5baGlk5yvzXVQT+82dpIDKXmg0LqAjGo
-         UM1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzt497w+jaqV28ElpRW9mmTnLYvfyRx2v6zItLQfCEa55ro5yLtFHLGA3nZRxoIoonfyAjb3WI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z97JxnqTwtK8ACGG9i/bkw4hZf1VhmWu6lgNaueUAlYw5QU744K
-	dG1xV71qBjXS5s3fqrShOLkbPRt7XeVA5+85NhoLa5CQ1a20ZYI0J0Ro
-X-Gm-Gg: AYBFou1mbptqe0AhvzyXLgVkxXaZAc3nx0AaNgurgGhKkMTZVyH9lBqiu8VUDevtp23
-	kBUmqHJ8Tp+AAB4RW/VwvU0MrC/EcCz0LSOOIZKWc43CrAQ7+nw6TaPwJL67vFmXrfchK4Gw5ng
-	42V4mGBN1+V5QCwNr90fkrQr+nohgfX43+dQuCizdskqGj5AxsSOdUXcT1R9X0Fqfl8FIj90PoZ
-	yfhKpcaLonk3TjuvdJY1qEP0etkUSwpBnOEA3kQ04Fzc/lmhlNhGmA1ApxtNpfYt0upFHWqG6sE
-	uw0YWy853X8/5lGUI1ZDTjX+dtujg8G8ZDDCCQu7VwcRovXThC13Q8vcvgnKyxsVwETwk6axwTx
-	9g3MQVgCBMDoiPpCa2S7SCTYyMm0Q3IBINpv7wOYw3VhLl6paD1mO3xcN9zfHpUrsYzf6oGR7rx
-	X0thy6Fy6i/+If8LilPUSFh/oNRbXNlCwRU6ZuLgwJV24e80nY6DIbbTw6ANXKPJSxIZSM4yrb7
-	cKI6kCn8qrRNCVtDSPF8MxVjjfo9RIZQnBXhKQfTmC4TMgFls58k5kO8mYiTzqKzMYvpehA0los
-	eynZ4T5BntMoe48jNhwKf4uW34Da86tXGXlp04kv6IsLvOwtBp3mnCsXUiu4C8esTZQ=
-X-Received: by 2002:a05:6808:14d2:b0:532:963f:3118 with SMTP id 5614622812f47-5640d97353cmr12997705b6e.3.1793858634408;
-        Wed, 04 Nov 2026 22:03:54 -0800 (PST)
-Received: from localhost.localdomain ([14.22.11.161])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-567a9f41424sm3493476b6e.9.2026.11.04.22.03.50
+        bh=V9c4JR1l1BlqJLMhXPHekxlcKPXrrtwIQDnuHY/ovTQ=;
+        b=zQbT2rru9bBYKGciF+LGs+SL/2P0O5Pz1jnsY0Wbxy0uWYPZ4nHVsnzEoGd/Hx+SuR
+         kdzhheEOykq1+jWx94FFifxG1h+uB36na4yB+Me0rGcz0CxGX5bZpyh8fBnMPf4w2uQW
+         ld/F8GGJYk4HRazfBRFBhJmcSwQRDsibTxJJAfaQ6Rw1B77d6xEXVkdlY2TUngnYbxFO
+         GE4aFtA1vpYYUm1SytHyUnotHnoIReS0BSMIWfNvRL7HgI/FPZZ3JoTvKyGrUW8w6zGc
+         S7Hr2yt7k0BsOgSD+0mfcAnoqRzHcrjum0L7Dx8JYFXD2TSYsX9fi0jtk9F5f9fnYJWd
+         9eEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793860622; x=1794465422;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V9c4JR1l1BlqJLMhXPHekxlcKPXrrtwIQDnuHY/ovTQ=;
+        b=SJCHMOClJ8CYmFu8korh1n99wuC4Lj6SGYAtCsvhGfgt/amU6XvhaDJ3xXuMq8v7nj
+         tJgd+Ko779RjAPexsV89pdRO6jmg4jiZq9B0dZGjx9dY67pQni/y8IuI5rY1IFblEYKZ
+         EKFxj2R+S+PUrFMSLc9MheyVi7qKSbloR/rhCKgigtbgSqyIC1L+fwgOYiOTUVUMugiM
+         1u2PgIwRyvpaBWLa3DJxQSZvoj/E9YmMRb1LVUEa58AJlnxSq4ltiWZn7MiqDo7iKYvH
+         uQYcB0r6T8g9/XHeYjbxiiztI4gWN2iLvY/s0y3DsSDhAmnr3I2PWdKYRc6IUvNX0dGP
+         bpYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxMSzQz1RnR334eHVwAsJXJkflSdU9BWnIlhc0b/khtUQ8Ua/xjGh2k4dO3aQVAsAyuQ2SN6kc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+7pj8cnvNbpfJXELP5kGE+8/HJYhuHxkHoqGP8sL+SnXwIccIx
+	MtM0v5Qd2N0VakdUMi8QI6D0UnS7AsRHewW1FDu7bJ1W6uPS3CChKLbf
+X-Gm-Gg: AYBFou3mix2M5kB6cHpXCZK66ZkRzdl+li9eMPIIlF6G10G9XU7rCULL49Pdo1Z/h/y
+	Xp3zWIA89WvOk82C8h7L2wdqeHGXwHzRbn6dBzsry7Nfv2TiRZomSvED061MQOZ1XK5EIUPKFIQ
+	+aQO1wVfLttS+/Z5Guo8tfMLc6UwFBQyqUqO0tSmbTstlSqEvbuy9PSVXqqN5YijYTTnQ+3okB/
+	Yc2Ac5UeYmz/0j2BDFSzBUPiBP/x+MuqHsMr2bO9/aADAMLyjnFkO0JsLMhjSsw/hnpDCkqXg8y
+	d6TgvOwBWVVjk+dJ/AIz86tdNdysBt55howLC4ZtnPMhA3IThBuTWM0K+WxCoaU5eBtJt8mBnsE
+	qOtB2lbt41ht7XDL9nsk6jPhcpwFg0Rc6zDlciQrpXk5BZ9EVjZot/vBT7Ht+2uH7z0Z2I2l4n+
+	Y+8wJXb0zGoNg1SYF4519zjtHRLU7PqQ92eT06C1tGkgJMLfImDILXYpgBheejb6S4fsXIA7n8G
+	sPJ7gl1btjpkzDBH3oDqeuaC83J3CdXKLTu48VA7WUDil6fD4RqQo6CY0TPzTYUu4mYwZnwF0Jd
+	E6zdgaAU7SrvkSbNMfkcmRTX8lEqxPGg/aZs2N1DYr++2mp/Vw886A==
+X-Received: by 2002:a05:7300:d58d:b0:369:e8b0:af85 with SMTP id 5a478bee46e88-36a4243a512mr30366093eec.36.1793860621499;
+        Wed, 04 Nov 2026 22:37:01 -0800 (PST)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36d34d5960esm13148900eec.5.2026.11.04.22.36.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 22:03:53 -0800 (PST)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	john.fastabend@gmail.com
-Cc: bpf@vger.kernel.org,
+        Wed, 04 Nov 2026 22:37:00 -0800 (PST)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Xiong Weimin <xiongweimin@kylinos.cn>
+Cc: virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>
-Subject: [PATCH] bpf: fix verifier model mismatch on __sk_buff.remote_port narrow read
-Date: Thu,  5 Nov 2026 14:03:31 +0800
-Message-ID: <20261105060331.1912252-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] vdpa: fix typos in comments
+Date: Thu,  5 Nov 2026 12:06:52 +0530
+Message-ID: <cover.1793860522.git.hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20261102043526-mutt-send-email-mst@kernel.org>
+References: <20261102043526-mutt-send-email-mst@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,60 +105,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On little endian, the ctx access conversion for __sk_buff.remote_port
-loads the 16-bit skc_dport and shifts it left by 16, producing a
-4-byte value of up to 0xffff0000.  It reports its width through
-bpf_target_off() as 2, the member size.
+v1 was a single patch touching both drivers/vdpa/alibaba/eni_vdpa.c and
+include/uapi/linux/virtio_net.h.  Michael asked for the uapi header to be
+split out, and pointed out that the eni_vdpa.c comment also says "ENI is
+build upon" where it means "built", so patch 1 now fixes that alongside
+the "specfication" it was sent for.
 
-A 2-byte read is a narrower load of this 4-byte ctx field, but the
-fixup pass only masks the result when the access size is smaller
-than the reported width, so the masking is skipped.  The verifier
-models the register as [0, 0xffff] while the runtime value is
-[0, 0xffff0000].  Arithmetic the verifier folds to a constant can
-therefore take any 16-bit port value at runtime, enabling
-out-of-bounds reads and writes relative to map values.
+Nothing outside comments changes in either patch.
 
-Report the real produced width (4) so the fixup pass applies the
-usual RSH/AND masking to narrow reads.  Full 4-byte reads are
-unaffected.
+v1: https://lore.kernel.org/all/20260904104440.18772-1-hemanth.selam@gmail.com/
 
-This issue was discovered by Tencent CodeBuddy Security.
+Hemanth Selam (2):
+  vdpa: alibaba: fix typos in comment
+  virtio_net: fix typo in the ANNOUNCE_ACK comment
 
-Reported-by: zeroday zhao <zerodayzhao@tencent.com>
-Fixes: 8a31db5615667 ("bpf: add access to sock fields and pkt data from sk_skb programs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- net/core/filter.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/vdpa/alibaba/eni_vdpa.c | 2 +-
+ include/uapi/linux/virtio_net.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 9245009d9f1eb..6eb4751441f39 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -10455,13 +10455,19 @@ static u32 bpf_convert_ctx_access(enum bpf_access_type type,
- 	case offsetof(struct __sk_buff, remote_port):
- 		BUILD_BUG_ON(sizeof_field(struct sock_common, skc_dport) != 2);
- 
-+		/*
-+		 * The converted value is 4 bytes wide, not 2: on little
-+		 * endian the 16-bit port is shifted into the high half.
-+		 * Don't use bpf_target_off() here, it would report the
-+		 * member size and the narrow-load masking in the fixup
-+		 * pass would be skipped.
-+		 */
-+		*target_size = 4;
- 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(struct sk_buff, sk),
- 				      si->dst_reg, si->src_reg,
- 				      offsetof(struct sk_buff, sk));
- 		*insn++ = BPF_LDX_MEM(BPF_H, si->dst_reg, si->dst_reg,
--				      bpf_target_off(struct sock_common,
--						     skc_dport,
--						     2, target_size));
-+				      offsetof(struct sock_common, skc_dport));
- #ifndef __BIG_ENDIAN_BITFIELD
- 		*insn++ = BPF_ALU32_IMM(BPF_LSH, si->dst_reg, 16);
- #endif
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-2.43.7
+2.48.1
 
