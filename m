@@ -1,91 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793864849;
-	b=MCwQkhkIvlfxZwCl57BfGQgXHK5rz0/YbXiTntVlB6mk9Cp7cW54HE91yz0g4nCYhcHp
-	 qQCA7wltLueep3TtK3mf1e2Om+14wLHe9F9HZwHvUqjoG8Mzlih0DT4QMkM+rHuWHCIVS
-	 LhwrUjopFi1H29UmnCxWyN7fg48yAoJJh0N23bGV8tQDlL4kTow6U7wzNJ0WH4ZcyIs/Q
-	 Q4k1jrdwg/0zVV7kLv0sMhB5YUiF0VyGsU2J7X5qkvui/Z91dfDE51GF1lQAQj+a3ul7i
-	 7p5kh7xzZKslVfQa3fueg1utyNElakZmtLWgXLmDButXix640bQCeVmwGtp/88IL5zQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793864849;
-	h=DMARC-Filter:X-RZG-CLASS-ID:DKIM-Signature:DKIM-Signature:X-RZG-AUTH:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=B/i98e4ur2MMIdQ2EmZkp+68byS444bR54VZZvlNhAo=;
-	b=P9hltK83Sd6eQBWI1Cm1RYVrmawD4G5FRrSKXSejEhU3UoE1wL3xYVOg86cBYD9dVOU7
-	 xfvWWdtoAI51K02DrTr4r+QTILkGiu2liVYmZST1zA2dURNfF2qXnZxVPhv8K8sqH350r
-	 W407jHyvpJ/1DFS7yIKStkhzbPbQV2weCG6lljqHsGzTDG2EiLp2/QnHUiSC7J4EUF4ff
-	 yeEH2aSffTqpsg8gHpTSo3ZgPq7ik0B7iq3ulczcXRi755JiCzwn5BbBmFnCktn5hoozp
-	 TRf7jl0gz1jNAWKypOlDTinWgblnfmEBQYfBazMrkDWRkpYWe/nz/ry42EvMIzoMlHg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hartkopp.net;
-	spf=fail smtp.mailfrom=hartkopp.net;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=GVUwDSju;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=fl54Nrhf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=85.215.255.50
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.154.197.177
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793865248;
+	b=xVFQx7d2o/F3SEoCAUV9Nn1oQUXfvo4ZYxblAA0fBQmhQQ19vflsBa2AZ4mQ1KsEwmUR
+	 vXNpN+HcN3XGkaPtmPBBbXia2WmESGxx37h8xMEWggsHlqE/cq0Tm+LZLyR4Kz/52yECg
+	 dSl96M53rA2FqytdrYWsVbirJyJpSMJPTNC3AqTpdCn43ifxKOL2ILkr2T4fTwq+I/W7Q
+	 oPpnmX8Kt19WZXZ9C73ZOj9Q8LZN41ZQTjAUhtVE0pwmiqMuIuAl9M7KyTloYQgCQUEgU
+	 51npVYl4PT8b4wfj8b4u9yuCMu2J7C/7htemBSAWQHAOOdXSZ3JjNEGQY++iL58T+8w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793865248;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-QQ-SENDSIZE:
+	 Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=XuTMD0+bWh8qdKbIHRtIOzKefAE+ZWunb2Md38v0VYk=;
+	b=rpLD0Y2RUPGiIhYQ6BMAe2I9HgxU5fYz06CSEjYZBqyLikrShMbCn+YvcaUbXHDABinq
+	 HaKhk7p7bEBhcXSpMEW0P36pT/2rU0tOY1AI2RoD2KCIl/IoQoO9ISYWjGR/nQ5u9DC/o
+	 Td8xN2Fb49Gd9qJL2s3GfyQonl1t/1TiNdwtsyH//yJwd3bhLMc7wrr4VfP54CTqicXMc
+	 7x06WttPLbjkP0vjkkdHuTe/lXc+swcbzTAwzjFgmKSYlBFfvQn0sp6el87tBcURR60KB
+	 DUY400iCIv6vuiYH4IBkysuzNrD1tTcJHdNfI4QlQTpHPIGw3XkVewHIt0F5w3zIw2Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=tencent.com;
+	spf=pass smtp.mailfrom=tencent.com;
+	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=uc0jfUJO;
+	arc=none smtp.remote-ip=43.154.197.177
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2DC606A31B;
-	Thu,  5 Nov 2026 07:47:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C2DC606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AF7606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 07:54:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9AF7606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hartkopp.net header.i=@hartkopp.net header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=GVUwDSju;
-	dkim=pass header.d=hartkopp.net header.i=@hartkopp.net header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=fl54Nrhf
-ARC-Seal: i=1; a=rsa-sha256; t=1793864828; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Y1Ml22gdy15eOJl1sqyVkoTpLjPQMQ1r3uHoUIee5+dT2+n9GmL4UNy3+LHghOlJuG
-    4RQK0Q2fU0om0No70n10lCiI3vNidA/X1GPs9wBDm1VGPeb33ZjSRxvOvWJam6sFolli
-    nTB58ViSfquPfntFyraypixnCchTQUbEMBPyC41S2kRgzd/Ru/UcR9b5NhG3lttoTaMc
-    +NhndgfMI87vJ6V7aKa98e8X/r8RIjwxL9uZJsJoEI9mqxlJ7+F+Sl9ThVyTRsC8HqVy
-    mRAQ8w25liPq5bjoW40z1A4pb+LNDrBLjoVAz32Ubz4j1K9wPXrUM2PQ2+Yhy2A0h5U7
-    QCnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1793864828;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=B/i98e4ur2MMIdQ2EmZkp+68byS444bR54VZZvlNhAo=;
-    b=mHAwii7LiPKK00JeIru7f+k/ZPUKE8r/Fq7nLqcMlNP/fl9iVVELnLdwLjzmBvdgyZ
-    bQIIH1ktilgUmT9N0k+JzhGa2Au/fU8kSk1oLLawX+zIJOWiZty3jHKVRA0Y1SI0nyJ8
-    n7HfScuQts4SqU+aFCICsBzcizmDi/KhCenuFc77FVbw+ZFucvhwELiHB5Kp5uaH0WlC
-    HD0p2FMJcpKDo4EUp4qmRN8H8/xiLG3Factaqyi0X3NsniDT9RzZfocdJkZ/4otkwVL7
-    2UXdajUPXJouHqo/CtEje7CQlDvvx0aGoedM8G3FrsR3c6a2A5OkV1MBJaKQ9IkM+Hl0
-    UXlg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1793864828;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=B/i98e4ur2MMIdQ2EmZkp+68byS444bR54VZZvlNhAo=;
-    b=GVUwDSjufuFRnedaQq9LAZ3Feixn1T/yl9JKSMsUrInJJ5HhnlyrirB+Ui/b2zR15K
-    ovj2RvlcojfZXeyuHlMNHJDrbT+VHS3L7bEDUB1ymZykq/beOquyN1xAwqyz1Z4DRzSz
-    eRKlsFoK3ttWDGrxXg+o0EolZ9s9wEEup96iIJ388+j8OF8LOwiTvEXXFiNcMC98TlZZ
-    aROdZu59ivBm3Hl+qZTKYdf2SHwHQKi54Vz6qbLqZy0q6R0e56ZyTsl64aQGi+wy6X1D
-    uZsX2l9cgKK2bMQ43+zBV+W9cDE7g0q07/HHvMVc4YMQ6lp0nlNSCZom2TD1zutVQ5C7
-    qhlw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1793864828;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=B/i98e4ur2MMIdQ2EmZkp+68byS444bR54VZZvlNhAo=;
-    b=fl54NrhfC7hXBtMFvkV52QC0cGeOA61lOHLU7A7AIkaVhk7WnlAPJa2mIDdYYKgKfr
-    I+vWYI9nVL3oLEf6vZBA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a2A57l8HNy
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 5 Nov 2026 08:47:08 +0100 (CET)
-Message-ID: <64f4dfcf-40ec-4838-85d3-a30c3912e242@hartkopp.net>
-Date: Thu, 5 Nov 2026 08:47:03 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=uc0jfUJO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
+	s=s201512; t=1793865189;
+	bh=XuTMD0+bWh8qdKbIHRtIOzKefAE+ZWunb2Md38v0VYk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=uc0jfUJOVAJOwY631GGLgnIt0AKRnBj3zc28M+rvVJLcrXdHOPsKZYFkEtubKZc0Z
+	 ouwPFDfxcrmykyL7mHxdraoqmMccpwmnYVHpFHMyDCuWxUqkc2P6PJI15BQNBEVRaI
+	 moHQPmCUwOOhCQ5b85ZWQOq7GwnJpYCg0lWAH3jQ=
+X-QQ-mid: esmtpgz13t1793865188te7642f86
+X-QQ-Originating-IP: 2Mtxe6CgveBcP1cAzBK8fIi7YkkUpuHpGgzMOZzPZQs=
+Received: from localhost ( [9.218.232.158])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 05 Nov 2026 15:53:06 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14525464289534385858
+From: "=?gb18030?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1Owssir?=
+ =?gb18030?B?uau5stPKz+Qp?=" <tencentos_secure@tencent.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Willem de Bruijn <willemb@google.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Steffen Klassert <klassert@kernel.org>,
+ steffen.klassert@secunet.com,
+ Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net v2 0/2] ipv4: fix fragment length accounting
+Date: Thu, 05 Nov 2026 15:34:36 +0800
+Message-ID: <36C40B0A9C6336F3+ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,229 +72,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 09/15] can: raw, isotp: copy socket options outside of
- lock_sock()
-To: netdev-bot+sashiko@kernel.org, mkl@pengutronix.de
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, liucj1228@outlook.com,
- s.grosjean@peak-system.fr, stable@vger.kernel.org
-References: <20261103204305.3211144-10-mkl@pengutronix.de>
- <179382520924.488856.15425235949830518760@kernel.org>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <179382520924.488856.15425235949830518760@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:tencent.com:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: MMnP0fEUKo/hkFgNFlyFu1AT2JiCICBUpZx0B8nIASRDxQXfXLyIiGnS
+	gL+J9Hcdg80c5t4XKDd8Ea2QdU/dWYFAySxXTs2q8MLoYNo12IJGZmNaEW33mjcQIzHEynW
+	QHARvKu3HTsipQXDPI5/i+c6ZP6g5spXgy+RwcGq+mX0J26jj+5s5Sc0bdXICWF9g70CylV
+	lsJ1ToS/ik3Hs5EyAKE9lThZmU1DwQT7m9NP2a4PdHL9kDTPvkfeiamIxcXoJYkH1+NFn8W
+	WcMoujOYIJscAAB6NNWYnAGmw5Jjf0FJHbzmSEuJqpE3y8nS9yt+cPeortmszKsQu4k3ghC
+	bPjgM5pcHkSW8a8TTHQaGe3WQXFL7mkaqfXFVEBKnRGNN52wxP+nsfe/3zTupJmHIC/ia32
+	t7ME+9pgvagM+Ot+GcnPYpogGgWCk9dkTFiysqZV961+rKKHeDkpsE0IYGa6/vTKinGq7oW
+	iQLRVNlZlMJ+Z3kYlQlqrOv7YZgfwd52/c1S9zYkFjPNLNOikSv/bsQC5fCdIN84OcVt4ww
+	RvDcFz2ucrSzkIYKEHF0PN8DSzAiQPlThsmCllqcrLfDibeUhMGGgn4UPtdGO6KS5f76KH8
+	VE/aY2V29zzaCZScecbU7n0LkKkfMQkGvrxiRQxt2XHiWq2tpDtHF8E4FXUN6kqKPvyYCIw
+	xLDwWCZEnRhoWwctB6J1HB0P8dircZFV7UnGb6FCwnzimo70Et3moQsOjN5EXkxrDkdld5+
+	woI7znJG1JltlEBQXkwgkb6ytiqDbCNjHBQKOQizRTBJsWRoFjVKpU4Hbs0c3juvM5gnlO/
+	vOmG3YspzFH4VqBnfUgTOQMvfEXXmd4VgrgFBikuxneNWFOX3V1msU3N0kNSRhrxLYMbZXG
+	tzUZf9bCug/v1bzYBlxSsVy2r00iMQMtjre8F9mBG4nEqlMZBvYvvVTUjoTpeKYMn1PNaps
+	ttzZnjKFHZ+imSA==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
+This series corrects fragment length accounting in __ip_append_data().
+Patch 1 reserves the XFRM bundle header space as headroom. Patch 2
+rejects an append when the transport header and moved tail do not fit;
+it also addresses the independently reachable ICMP Timestamp case.
 
+Changes since the initial public posting:
+- Patch 1: correct the skb->len/fraggap explanation, clarify IPv6's
+  dst_exthdrlen terminology, and scope the layout comparison to the
+  same skb setup inputs. Add Willem's Reviewed-by.
+- Patch 2: describe the ICMP Timestamp corruption path, distinguish
+  negative copy from unsigned pagedlen wrap, update the subject and
+  Fixes tag, and remove the unrelated XFRM Reported-by.
+- No code changes in either patch.
 
-On 04.11.26 21:46, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The patch does not remove the RTNL stall it describes.
-> 
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but CAN_BCM has
->    the same RTNL-stall problem through a sibling notifier, and the series…
-> 
-> --
-> 
-> can: raw, isotp: copy socket options outside of lock_sock()
-> 
-> This commit moves the user space copies for the CAN_RAW and CAN_ISOTP
-> socket options, including the CAN_RAW_FILTER filters, so they happen
-> before lock_sock(). raw_getsockopt() now duplicates the filters under
-> the socket lock and copies them to user space after release_sock(). The
-> goal is to stop a stalled user copy from holding lock_sock() and blocking
-> raw_notify()/isotp_notify() under RTNL.
-> 
-> Link: https://patch.msgid.link/20261027-can-rx-lock-v12-4-eb5afc2d8b9b@hartkopp.net
-> 
->> diff --git a/net/can/raw.c b/net/can/raw.c
->> index d6517f71cadeb..0926d5686e419 100644
->> --- a/net/can/raw.c
->> +++ b/net/can/raw.c
-> 
-> [ ... ]
-> 
->> @@ -795,17 +730,84 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
->>   			  sockptr_t optval, unsigned int optlen)
->>   {
->>   	struct sock *sk = sock->sk;
->> +	struct can_filter *filter = NULL;  /* dyn. alloc'ed filters */
->> +	struct can_filter sfilter;         /* single filter */
->> +	union {
->> +		can_err_mask_t err_mask;
->> +		int flag;
->> +		struct can_raw_vcid_options vcid_opts;
->> +	} val;
->> +	unsigned int size = 0;
->> +	int count = 0;
->>   	int err;
->>   
->>   	if (level != SOL_CAN_RAW)
->>   		return -EINVAL;
->>   
->> +	/* Copy the option values from user space before lock_sock(), so a
->> +	 * stalled copy can not block raw_notify() waiting for lock_sock()
->> +	 * under RTNL.
->> +	 */
-> 
-> [Severity: High]
-> The comment says a stalled copy can not block raw_notify() waiting for
-> lock_sock() under RTNL. Is that true for the socket as a whole?
+The patches remain based on v7.3-rc7 (f909e534f5e3). The unchanged code
+was previously tested on x86_64 and arm64. The relevant selftests/net
+subset on arm64 gave matching results on patched and pristine kernels,
+including the same failures in pmtu.sh, xfrm_state.sh and ipsec.c.
+For the ICMP Timestamp case, a patch-1-only kernel returned corrupted
+timestamps, whereas a kernel with both patches returned no reply during
+the receive timeout. No additional test run is claimed for this respin.
 
-No. The comment and the commit message refer to the CAN_RAW and
-CAN_ISOTP specific socket options. The commit message explicitly states
-that the generic SOL_SOCKET options in sk_setsockopt() are not affected
-by this patch.
+Previous posting:
+https://lore.kernel.org/netdev/v2-20261026-cover@tencent.com/
 
-The SO_ATTACH_FILTER copy under sockopt_lock_sock() is generic socket
-code and not specific to CAN. Before this series raw_setsockopt() even
-held RTNL itself during the copy of the CAN_RAW options. This patch
-removes the CAN specific part of the problem.
+Thanks for the review.
 
-Avoiding lock_sock() in raw_notify() and isotp_notify() under RTNL
-altogether would be a redesign of the notifier handling, which is not
-suitable for this fix and can be considered separately. The code
-comment can be made more precise ("a stalled copy of the CAN_RAW
-options") in a follow-up for can-next, if required. But I think the 
-commit message is enough.
+Anakin Zhang (2):
+  net/ipv4: reserve exthdrlen as headroom instead of counting it in
+    skb->len
+  net/ipv4: reject appends with negative fragment copy
 
-> 
-> The same bound CAN_RAW socket can still hold the socket lock during a
-> user copy through the SOL_SOCKET path. sk_setsockopt() takes the lock
-> before it handles SO_ATTACH_FILTER:
-> 
-> net/core/sock.c:sk_setsockopt() {
->      ...
-> 	sockopt_lock_sock(sk);
->      ...
-> 			ret = sk_attach_filter(&fprog, sk);
->      ...
-> }
-> 
-> and sk_attach_filter()->__get_filter() then copies the program from
-> user space:
-> 
-> 	if (copy_from_user(prog->insns, fprog->filter, fsize)) {
-> 
-> SO_ATTACH_REUSEPORT_CBPF goes down the same path. On the getsockopt
-> side, sk_get_filter() calls copy_to_sockptr() under sockopt_lock_sock().
-> That is the SOL_SOCKET equivalent of the CAN_RAW_FILTER copy this patch
-> moves after release_sock().
-> 
-> Suppose fprog.filter points into a FUSE or userfaultfd backed mapping
-> that never resolves. On NETDEV_UNREGISTER or a netns change of the
-> bound device, raw_notify() then waits under RTNL:
-> 
-> net/can/raw.c:raw_notify() {
->      ...
-> 	case NETDEV_UNREGISTER:
-> 		lock_sock(sk);
->      ...
-> }
-> 
-> As far as I can tell, net/can/ has no capability checks. That would
-> make this reachable by any local user who can create and bind a CAN_RAW
-> socket.
-> 
-> The commit message says "The generic SOL_SOCKET options in
-> sk_setsockopt() are not affected by this patch". It does not say that
-> the RTNL stall is still reachable on the same socket. No later patch in
-> the series changes net/core/sock.c or net/core/filter.c.
-> 
-> Would it be better to stop raw_notify() and isotp_notify() from blocking
-> on lock_sock() under RTNL? The other option would be to also move the
-> generic filter copies out of the socket lock.
-> 
->> +	switch (optname) {
->> +	case CAN_RAW_FILTER:
-> 
-> [ ... ]
-> 
->> +	if (size) {
->> +		if (optlen != size)
->> +			return -EINVAL;
->> +
->> +		if (copy_from_sockptr(&val, optval, size))
->> +			return -EFAULT;
->> +	}
->> +
->>   	lock_sock(sk);
->>   
->> -	err = raw_setsockopt_locked(sock, optname, optval, optlen);
->> +	err = raw_setsockopt_locked(sock, optname, &val, filter, count);
->>   
->>   	release_sock(sk);
-> 
-> [Severity: High]
-> This is a pre-existing issue and was not introduced by this patch, but
-> CAN_BCM seems to have the same RTNL stall through its notifier.
+ net/ipv4/ip_output.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Right, this is a pre-existing issue that is not introduced by this
-series. CAN_BCM does not use socket options at all. CAN_BCM (and 
-CAN_J1939) notifier handling will be looked at separately.
-
-> This series does not address or mention it.
-> 
-> bcm_sendmsg() takes the socket lock and then dispatches to
-> bcm_tx_setup(), bcm_rx_setup() and bcm_tx_send(). These copy the CAN
-> frames from the user iovec while the lock is held:
-> 
-> net/can/bcm.c:bcm_sendmsg() {
->      ...
-> 	lock_sock(sk);
->      ...
-> }
-> 
-> net/can/bcm.c:bcm_tx_setup() {
->      ...
-> 			err = memcpy_from_msg((u8 *)cf, msg, op->cfsiz);
->      ...
-> }
-> 
-> bcm_notify() takes the lock for every bcm socket in the netns under
-> RTNL. It does this before checking whether the socket is bound to the
-> vanishing device:
-> 
-> net/can/bcm.c:bcm_notify() {
->      ...
-> 	if (!net_eq(dev_net(dev), sock_net(sk)))
-> 		return;
-> 
-> 	switch (msg) {
-> 
-> 	case NETDEV_UNREGISTER:
-> 		lock_sock(sk);
->      ...
-> }
-> 
-> Say a BCM socket sends TX_SETUP, RX_SETUP or TX_SEND with the frame
-> data in a FUSE or userfaultfd backed mapping that stalls. Can any CAN
-> device unregistration in that netns then block RTNL indefinitely?
-> 
-> No later patch in the series changes these paths. The only bcm.c
-> changes are proc and can_rx_register naming.
-> 
->>   
->> +	/* on error free the filters allocated for CAN_RAW_FILTER above */
->> +	if (err && count > 1)
->> +		kfree(filter);
->> +
->>   	return err;
->>   }
-> 
-> [ ... ]
-> 
-
+-- 
+2.55.0
