@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887810;
-	b=T4+xY6Nt1tw07rQbO7vA+EAClDc0Qkvuly0qfMavu4qbaluydghAqOk7vtdd+zuBTV6j
-	 EFETwS1iTdbIFCwRFXcnWwYduOVRI0l0e2tPWbLF0uJ9cAewSV1sC4U0hSXiT/CvCROAn
-	 Q+KAQC/GoZ6qEwVcpDlX1lrpTd7PezdWDo4Mr02KD+47ZphzhzNor7fySrVQTu6y0ES1u
-	 ssADg2Wln6574pzl38lEciMjVwgyJf8erDexcmKRmSXmWiNtMlzSBZ9SxaWtXEjj698Lr
-	 MLw3y2mwRVemEeLEDQVuZZHF1bY653R6G9PDOvE+2n1nFDRMgLI1ZZbhdGD0olRGbwA==
+	t=1793887809;
+	b=bckYPhSeHd1RgKrIFJXq4tCEk9MdjzFyFKQdmsdG2WvgSF6Icd9aZGmZjruHiUNPsJUe
+	 IL6HpHrWl1GZhMMcyIhIOGiAt3j6F+hAEBCCExxTtOOsNWQs29Ho7hxDCfQfG1kt3UQq8
+	 V/cazQw65rvDNA7uGiImuScB0K7Q7O9GIZTKre54dnKygPq/fOGNnEQ4Viez8jglnI+d1
+	 d3fJA1vCW9GLSb3rdIW0FCLSCJtHeRFpYg8IvXETtfV0HmeiG7rH4/adSr2pCWH0znkv6
+	 uuA+pTOKXn31fhAygMHFxeUqeI7TW2BzUHPRLrLpirs+4lmoRPktogetLAw0pSnVgfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887810;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887809;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=EeFVB9+aKABo5zhfWltZXf40lvIe0vKfFaoEEhO2ISg=;
-	b=gvLDdIwq9H5HfMKYA0KXOiqKr+7NhYzjsoJCYOoNbEt1345SshhuLt3svtI/8gOkQIVm
-	 zXzL78E9NI+Z1GDnOn7Gg045lsmubQUZe5abirJI5bvmQpE8XKQeC7WFeioc0uzSF7B71
-	 wWcKtQEsz7JWhacXjQk+doEc8nyouwm1BBTrGfDWkEGGsyeBaZ8o5L0BmXogn9C8D5J7R
-	 tLxv43zw6BvVFgJw0yqnY01pISvOdqhqDdKgD8Uxh8r21HB3SrRO1/08kTYHiKL1ixPkW
-	 eHA/8Kf2S0TylSvW48WYSRQOsAnNqkkk27jYFgqk+2jUop7SdcLqx8P9ZhE2wMDJ/Mw==
+	bh=Xx+Vfh7jrF1gF05UlkMCvhnqxtebQEJe8YY7pG2KVRQ=;
+	b=4b8zXWK6EHz4HoIRVuqBfrPjS7ZnKKtf1rNMs2V5m7kLbJ9DLQG1S6IpZK0v/3sAI7j9
+	 9o++hvu0UlwYqz2XCmqz1KmA5g0UOIMhm/BZBXmZHlrrafVtgEOmGxsPGX/GFp93yH6un
+	 +C9heKsI71A1hQnxaZU3AZyuj14lMQQT55JhDtNPvU/ujozMlKXBiaDQ01HrTj0JejTi4
+	 pGV3gACxFa1u/vsmgn7kAPGJhMr/mc1dCGfw2zoTBg5wiJ5cbYrgAxZZ/6kU0eWyPpF9m
+	 jWmf8aNDkgZ02xBHxaSwS4XnMnk7Fp0XrZU9X5GKmCyUNrF01CcGTk1v2VEoLGL5unw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wr0AKzY4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fuZOjHBS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3576D606A33D
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4C6606A337;
+	Thu,  5 Nov 2026 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wr0AKzY4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20491F000C1;
-	Thu,  5 Nov 2026 14:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fuZOjHBS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EF01F000C1;
+	Thu,  5 Nov 2026 14:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793887809;
-	bh=EeFVB9+aKABo5zhfWltZXf40lvIe0vKfFaoEEhO2ISg=;
+	s=k20260515; t=1793887808;
+	bh=Xx+Vfh7jrF1gF05UlkMCvhnqxtebQEJe8YY7pG2KVRQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Wr0AKzY4iSgu7JFiqyDZTer4XwFDwp3P5pLKpcRN3wIHG+zTXmi4bcDcIe7w7Vydi
-	 gBqDpKnB1OxfWeZD/Bgh4x4ZSB7gE+mjbJf2Q+z7ZmSxPwggSRj5f3+wFP+z9vIv71
-	 DoJ9DMu3ZaTrPGGemgUKqE6+/wKZncHIlswrE/lmdxyHJhzxY9lVQX+4qIl7kD395u
-	 hMS8sejVF2csxZq+2H7mpP4YZSWYc4GpWGk2e+Ktb8SuBd0SPlMtz8xQ1qZ1V/rkra
-	 Vy6WxHBxs920AWHEyztEAVVNxP4URZHYb+lUBwLBObJQCNodzVe6v0LtGgSjMXts1e
-	 IOp5kzN5O97Qg==
+	b=fuZOjHBSN0waoccOPH10JIUAKsxtKMaNyx4WxthifG6/OvvyN4P+0jmSctffSAItf
+	 HQm2z7UUbfW6At1Ljj7e4vayJ9N5CdF1uhSu8z4HLzhD1f7tKQy6s8nxn5QxFx18yF
+	 8m2mjT1uXkupkko6AIXvMS/v+XnZRAcEAUuztZXdF3bmcjD6s51GduX18GAZpQLJcd
+	 wJG5JB+GPcZti6quyLeGNLoT0qWwfvj8WVRmYPgC4icfo2xpGE3Q/1sZ7jCPTKA7eg
+	 O8YC2rYIwp1Zz95VdtqsP2Pb5aO+21C5Arx91jCPfNRtjnsQxra4m4ic2w4LFpTlMK
+	 43TjxqPHGEBlA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA3F3391AF93;
-	Thu,  5 Nov 2026 14:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 58E9B391AF93;
+	Thu,  5 Nov 2026 14:10:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,39 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace
- period
+Subject: Re: [PATCH net] mptcp: pm: kernel: use RCU to free endpoint listeners
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179388780839.3729553.17307587914819291015.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Nov 2026 14:10:08 +0000
-References: <20261103090011.4128420-1-edumazet@kernel.org>
-In-Reply-To: <20261103090011.4128420-1-edumazet@kernel.org>
+ <179388780704.3729553.7318793746811801977.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 14:10:07 +0000
+References: <20261104125327.1041456-1-edumazet@kernel.org>
+In-Reply-To: <20261104125327.1041456-1-edumazet@kernel.org>
 To: Eric Dumazet <edumazet@kernel.org>
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
- netdev@vger.kernel.org, sashiko-bot@kernel.org
+ matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ horms@kernel.org, kuniyu@google.com, netdev@vger.kernel.org,
+ kylebot@openai.com, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Tue,  3 Nov 2026 10:00:11 +0100 you wrote:
-> ireq->ipv6_opt is only set by calipso_req_setattr(), when a CALIPSO
-> NetLabel mapping is configured.
+On Wed,  4 Nov 2026 13:53:27 +0100 you wrote:
+> From: Kyle Zeng <kylebot@openai.com>
 > 
-> Request socket migration (net.ipv4.tcp_migrate_req=1, or a
-> BPF_SK_REUSEPORT_SELECT_OR_MIGRATE program) clones the request
-> socket with inet_reqsk_clone(), so that the old request socket and
-> its clone share the same ipv6_opt, then reqsk_migrate_reset() clears
-> the pointer in the old one.
+> mptcp_pm_nl_create_listen_socket() starts the TCP listener directly
+> instead of going through mptcp_listen(). It consequently misses setting
+> SOCK_RCU_FREE on the parent MPTCP socket.
+> 
+> tcp_child_process() can invoke the listener's subflow_data_ready()
+> callback without holding the MPTCP parent lock or a reference to the
+> parent. An authenticated MP_JOIN racing with endpoint teardown can
+> therefore access the parent after its last reference has been dropped.
+> The ADD_ADDR error path can also close an already published listener.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tcp: ipv6: free ireq->ipv6_opt after an RCU grace period
-    https://git.kernel.org/netdev/net/c/fafbc4051123
+  - [net] mptcp: pm: kernel: use RCU to free endpoint listeners
+    https://git.kernel.org/netdev/net/c/49b09ae0bf57
 
 You are awesome, thank you!
 -- 
