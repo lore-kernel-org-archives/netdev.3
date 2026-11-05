@@ -1,80 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.185.31
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.83.209.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793892456;
-	b=ed5Ap+3QO4FTEeF24ghL89WTthYJ93H0/yjZJxBxUK7+EHOi7yIvoXjc/M2eL9rATMzT
-	 Q/S384Or2xaPI4O8mo0lMzy2vQqq/3YrHlMzWzyOvpr+mTM3Xf6x8Oj/hxLUdIZgwIMP4
-	 6AnwBt0jRnsQti0nsXcJlXSNwy7zplefOKqcIxUo8bqVuVk9rSdePfxKQ7m3pvoS5yRQT
-	 17WX7rafNbc7KQJAJVxsqRcqq3IDK2HPrnZHqY3kiF0JnESah3AkysbB1c4hCnUlpQVVW
-	 hsHrR3LLxp6Scy3rlpX5smXKCISEjIggLe75Z7ChXebw+/E4itgz5/0tsYwkNRz/yBQ==
+	t=1793892772;
+	b=3gJ4W2ukPqKHwn7xWhWH5a13n6mnZCDhlpA4VvFuk+KxC71icADiYupVDDZ1N648N/gn
+	 dA9S4bdzzjgDygRg9JIp/WI0Jtp10Lb7yTFkz7RuQ0woY6p6x494tlAWkCS59Jlck+V5c
+	 q9h6H6PMHIuqj+Y5VR+U9GSgS8E9qDYqCzgnMvRbCQRmVfwdO+CpdDVH8704HBCn41Ij0
+	 JJIvrHyYNT7kXciSWDUmfxiqufJQalQemi+YSP/qUu8y6FuNNgtFac20wvLStJTlgi06T
+	 DTk6Ct47okCl1marCZRFUe26Gx+2pT3QnlAYT4dN9LFnR9Ji3ME+qS/bkneKQdi7riw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892456;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=F25zbrRYQ8DfmWFmcox/lBxkdydxYVArfXbr72jFMJ4=;
-	b=yBIql13LRMdhw8HTQVa23PFGJHJGY3lxLgQ6YrU4fU3tDp/+VsQIR25SEwyTbPys/QQ8
-	 OB5Gnyhsre9rrG0zKvQX0YT4rzi5y7niCvMiyJcd3n5+BvWDJEbp2g1aqv0gTSfEHgJKc
-	 UmG8XJPGXXUOgFvNnAMgU5T7baofYplZlnuNA8QqSPA7OqTieFi7JvPgrRSu9zh1wjsXo
-	 DSawa8yliQUbIZIX0xEhPlphq7I88ZLEHYcpMXzzSxz+V8J30y/qqcVad171zjASKSCjO
-	 /r6GyfWWRj4ZvKYhb05Z9Zhm+uHhWPfrFBPw2Ral9GUFl7zDa0jF95IAXwE46K3l9wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892772;
+	h=DMARC-Filter:X-Sender-Id:Received:Received:X-Sender-Id:X-MC-Relay:
+	 X-MailChannels-SenderId:X-MailChannels-Auth-Id:X-Chemical-Abaft:
+	 X-MC-Loop-Signature:X-MC-Ingress-Time:Received:Received:
+	 DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent;
+	bh=l1y03LKwED8ZduwAbGwCiRWWK0EB6JTtYi+MQr5n6rc=;
+	b=p0X41uAFCdbZ1R2MTdG1nrz2wJxKruBnHxylKGVvrDTDRMGPmDm88stt5tiyZV7nkW9a
+	 L2/hkteTzgOQssAxaPQbr5fqbgDho/FxwnDOkvM2P7mZXF9UQhLhjKsaH87z10WAU8wsS
+	 e9mBDOPL1LQbs1upgTYJHbqroedSatH2AbF9BsZiRa1rs1ywmJeAbLMPpKiQOUP39gaZo
+	 prRwn7nIxvf5+jo4ecuLVNVxC4wEje8rYnX+//NK46p4eRtZ6waegPrrZF8NhOS55tAdE
+	 Tz0NoSpDGVJCvYgt8mOMbTG808cSRUIgZRmP3NE9MJNI8mvtge0GGefDshI7EtuHNaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.com;
-	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OiqEvvIA;
-	arc=none smtp.remote-ip=66.163.185.31
-Received: from sonic313-56.consmr.mail.ne1.yahoo.com (sonic313-56.consmr.mail.ne1.yahoo.com [66.163.185.31])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=stgolabs.net;
+	spf=fail smtp.mailfrom=stgolabs.net;
+	dkim=pass header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=qU1oqjtV;
+	arc=none smtp.remote-ip=23.83.209.151
+Received: from quail.birch.relay.mailchannels.net (quail.birch.relay.mailchannels.net [23.83.209.151])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC24D606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:27:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC24D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADF9606EE8A;
+	Thu,  5 Nov 2026 15:32:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7ADF9606EE8A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=stgolabs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OiqEvvIA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793892449; bh=F25zbrRYQ8DfmWFmcox/lBxkdydxYVArfXbr72jFMJ4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=OiqEvvIArU2s9y6QL9DhQomS2gtFi2lHpPe/LVO+Lf49ABGfA4ewXnxJMq3nSD2AmNvxYEQ6RpLzMtKvhSO5WHhorEx14J6jUpEfD5k6qzEXY0RHQ7aUKcGUqqYMYB1O0HCajWLYsbrXBHtoF8sA60UaFD8sv0EX+KYE6qMqwjBV2DQV8Rh2SnT3X1sv4ff0m3kH0TjZs74E9zGgg6LJ9hkSI1MJ3ADjjRwZDQKMoJ5G13Odd80IWcSHQnpkESYqZZ2kgm7ehrEzLE8OxJXx2SjKH8AF+WIwwtJanOBtKPb8pcPg8zJm0rbic0cktY2nbKXMvMQKd+EIM1g4CB8kIQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793892449; bh=02Paj9COAmDq8/NNdJC7OcDWLUscjr45yBqO6zmH0fw=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=oRIy52rYouS80bmELgWwePTdT3gGo0g6rvuRFQmdcs5/a2SzuZ64bIVPZ2S9pS6iwEBoBByFuOtBFwRd8D6LtJRJx0w5JPFNw5cHhTWN0+OsVZviaNK2TuQdjFxt+gHJc3CLEUQmT+2/SBnLepibyhfdBBo2naQcW6jBwPTAuklYdf07AAQXNeqSOQBnl9wgacZoy0U+hvtSCEic2802oABgh1cYgieErxxzO5CRC6GMZETZoizEGXQh1rC0TAD/gUrywHorGo7Ns3z2DHN5hMSVnxaRfnL8atnA+BlCEpNSAkYJ3hpL3Y/DqunwKD1NpeRrKdULzVmppY7rEwz3Tw==
-X-YMail-OSG: E.t3OUgVM1nzEL1C2tUlut1A0RXjkMqTqqDYPZdyoZBDdMc_V5DrWjn3vMb0_Fz
- itRasVl6n6xADHS7PHTrR7NuVnLQLqF4wV0rVOiTLMZ7huPDaHsoCvsfgNKG7R6Y6EMAshs6Ki3v
- ccQsFyt4Xwu2ZEjRQ4WEp26HIudD8h6W3mzH48mNDgTImNqqJlmbC2Opf_B2bjIDTR90z6cudua9
- 3ckHbhbtx3Y32bZD0Pr1XGhSgsIKZCmDOp4C.MA4M6uzG5cIJV9irmt1bsJsGCijTed590StpHzn
- eqUFQYQK2JV2X_PKstUpV3BR9DMt9yE72uZzB0hlyAHI4NRYTBm9le4g0EoOtNiN4v7_zHaXTxmV
- 2WyWxGAXWBqFj1VYKPCQHKxQfNeSqFrQztu3miI.9jtF5kH6l5b2kl2LntWIaD.aS89oPDTWbRU2
- cIbKbXIJk.yvZ8V5vuC2zlma5ilO7k4qOp8xeszqzPFLklQeAA_OsU1oiJ_0NymshyN3SERdwjbR
- hyc1yB0WsXkFLctnjePgxQYyhv27pg6wTQgEt8slWED2ChpgYyQnNYJ__rEZ6u9CXhmxatV167Tw
- pu3u.UH6LU8P0hyPTMTOnPu33aNid3fA_0AwmFM.CsgEzAPLd8k.RSE.xau8EntWEDIs06nS1gdr
- 38KLk7lp10YVo3AB0r_USPROf6KphEjzk03p6nhdi5VmTMo8rTdJ4LvEc8hZxVvJO.uxgspAsxDu
- DWmDbcsSltFAgBY83tXfHGvRhQkIRYzDqrEbrR1J0p4OVod5Q.PuPxbKWRtAhEeYt3bVy1Lsg4gj
- 6EZKjPQ8O3QRCSpx.__tkwHntVsmJ2JzTWtdvlE6xGOTwoy9xPnPKQfzjOtS8zBBbEsi4yP6dlYm
- C67iHUy7_U3_vHfMpRn6ZkpSDL_koRxfJKM_Y_KrvXoRWBGgr_S64KOlNX4M2dISNBH0Cdmc_NXk
- lXay_ahj2J04AdBWXtACoj_BAOi01BjYTeNK7SFqe7Ew7fhvbI3hCejs4K6UIbsWTgZk8knkm9XL
- P7gAtV6LgQdapvqRA8SL2knNN19HLDJtuPKJl5X3aGgeHUcmsNM3DM1w86Eoew2jzq3IuHFvBDtv
- MKISsbSNpzTPlQKw15AW5zQONYvQyg_QuaVUqyUyJB3z.XpUGtpLL0DQMtr0agELyaEw5d9D_tne
- zeFzbRsn1r2BxF1dZacs.ZreEDteuCm47A.heoBYxeAuzGxs1i58aHGgcShm2BSX_fZQzP.2DOIu
- SRJyZnsjXER0P0fa1ITzBKNrtVZ3cnwz0EdU0HQOKcMApv2mBgCZH1SISJfhR_VxqRV_KXGx_04L
- HAcq9l6Sfqu4vII_nT.qw3Y38DDDG7MbyxipiRSHHr8Iv2.CyC5b4Yp3HQ0Uwr0hGr2YtlKDjsrO
- _xvOnBsPsTn2oHd6jC_AJFhdXRKhWMrfalX2gP0AxYGYIyVEuZyDtY92uk7NQ72v7RlACmki2EDo
- U1oRfOS5MEnW94Mp4V4Yr0bl5.TmVlOflyMVvOupoZGn5axeDIWK8R8Q3JkyDzg_zmU4jSxPhFj8
- NM6DYMEljAXdQXHxztPQuePFz5SCY7WRxvO8R6EMcbT.gNigUD_he5JbmJ0ZTNxk4nLH.LtzGat_
- SAkCGOY8XR5mITEb1QgmT4cu11PQmbQNhF6VGvnOYqXWma_bKhsSJrJaOHWp_.MZQk7eWAwAX3c1
- etcxruNcFdgbnDji7wJtZk22vRW8uA4ERzT1HrYMlvHg4Lht_wwWImAs_gugUqJl0v0jRsZ8_6Vv
- EveBg9XGWRD_osH3gploItTaUjFcRUh8rbNi.DX5X_ckf4U8y3Pxo9HJKf6ic39qvjftxjbWs4HN
- DSP7MMHdrTTG1Uj8Fuph5gCqQiCX4JkEAv0X9WZT1W7PMrbgAeJDAA3FjRT6wusiuRyZHi1m3Ef2
- _ix1FoyTqeKPeV0oa7nxMy9X6Ug8D95sAN6fk44B09fC8Cc2M1M.dwRmeWy8jiABNKItcjmfJGCr
- 3a6Ep10jsHIeTVWRWR.f0eg7zLop7WgQotpREjzGNW_N6z5dDPRBua94xxEDXXF8tdRz9mTwSMaa
- 4TnemkmaQBViR.6U4cm.En6u3WShbHvPELltZhIhZ5GyuC8FbO97skXoSQ0HLZBkUgA1WRUoqUPz
- uOz8CZyQbVHIC0IRv75lozP8JExLeuVUMv6BPZ0NltgseLtt3ddkjlVsqOpd88QJDUhdPgs3nlHo
- .uh8jF_Z9cR0uEiutMhpYj3Hw7E1n.wULP3PzLfFSJA_frxrLTR64u6PjhRm.kFYaDpilKv0fE6f
- SoercykQgo4gj0kujDSgRmEjMwkTCxouT6FnXrwA-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: e0425162-394e-4926-9578-e60353190b5f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Thu, 5 Nov 2026 15:27:29 +0000
-Received: by hermes--production-ir2-5dd9bf4598-z289g (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8174fcee853681a34dc83a7ff3f9c0ff;
-          Thu, 05 Nov 2026 15:27:25 +0000 (UTC)
-Message-ID: <e66204e5-ac33-4a35-8d36-6f37372da97f@yahoo.com>
-Date: Thu, 5 Nov 2026 16:27:22 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=qU1oqjtV
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id BAD1A405ED;
+	Thu, 05 Nov 2026 15:32:45 +0000 (UTC)
+Received: from pdx1-sub0-mail-a210.dreamhost.com (trex-green-0.trex.outbound.svc.cluster.local [100.99.188.114])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 03E8640A73;
+	Thu, 05 Nov 2026 15:32:45 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Chemical-Abaft: 166461fe4d6674fb_1793892765466_11164343
+X-MC-Loop-Signature: 1793892765466:1908407538
+X-MC-Ingress-Time: 1793892765466
+Received: from pdx1-sub0-mail-a210.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.188.114 (trex/8.0.2);
+	Thu, 05 Nov 2026 15:32:45 +0000
+Received: from offworld (unknown [190.113.127.252])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a210.dreamhost.com (Postfix) with ESMTPSA id 4jL5sl3CQzzWW;
+	Thu,  5 Nov 2026 07:32:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1793892764;
+	bh=l1y03LKwED8ZduwAbGwCiRWWK0EB6JTtYi+MQr5n6rc=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=qU1oqjtV3XWLiUTZXJFfCY9ulHDxB7xdY0SIZP3nP1RKbbUFdRy69KJom6R6Qjh5u
+	 lnFl7Dbc9oMG811FQf0m5LW597SYjIykXKaIZ99q7CVoFEjXMSQ+nsP2+7QTca69/q
+	 7PXIvPdvwS/vXU+T6gtHVdVjPRxaYVWmHtHNROKpcuqLotiXYgAOjFAw49OFFFDzlk
+	 egPUd6+Kwa2m2P9xNuw6E3XsCpPZVWAr6Lbx8/GiDKoXIS12F+8jnXfXKVw6gADSZH
+	 CGSgC6BjLTa9+HOcBJ9eg2ptX3RGQ0aI8GC1nv6Q8DVRikHBuzhTNLkn+BkpdZ0Jpq
+	 bzKa+RMO+izjg==
+Date: Thu, 5 Nov 2026 07:32:39 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Simon Horman <horms@kernel.org>
+Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, kuba@kernel.org,
+	pabeni@redhat.com, anisa.su@samsung.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mctp: accept MSG_CMSG_COMPAT in recvmsg
+Message-ID: <20261105153239.qmqroxth43ncnln5@offworld>
+References: <20261101200331.1956836-1-dave@stgolabs.net>
+ <20261105135808.GS865646@horms.kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,79 +91,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 04/10] net: dsa: realtek: rtl8365mb: set RGMII
- mode for family D
-To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
- <2befac48-25eb-4c1b-9632-2f3237d68a3d@yahoo.com>
- <auskP2mSY4sCRa6x@analog.com>
- <82c96971-be5b-4c11-b20f-c4b074181515@yahoo.com>
- <aux1v3R-efbWF2GD@analog.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <aux1v3R-efbWF2GD@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261105135808.GS865646@horms.kernel.org>
+User-Agent: NeoMutt/20220429
 
-On Thu, Nov 05, 2026 at 01:39:53PM +0100, Alvin Šipraga wrote:
-> During your work on the D family, did you find that the vendor driver
-> is programming the same values?
+On Thu, 05 Nov 2026, Simon Horman wrote:
+
+>On Sun, Nov 01, 2026 at 12:03:31PM -0800, Davidlohr Bueso wrote:
+>> 32-bit userspace running on a 64-bit kernel is unable to receive MCTP
+>> messages on an AF_MCTP socket, even though sending succeeds. There is
+>> nothing for MCTP to do with it beyond not rejecting it, as af_packet,
+>> af_key and can/isotp already do, for example.
 >
-> One thing I'm wondering is: for the other C family chips, is some extra
-> RGMII TX delay being silently added by the jam table we already have?
-> [...]
+>Hi Davidlohr,
+>
+>Thanks for your patch.
+>
+>As prompted elsewhere by a bot, it would be good if the patch description
+>included some information about how this was found. And also to what
+>extent the fix has been tested. I know you answered that already but
+>I'm going to ask for a v2 for other reasons. And it would be good
+>to include that detail there.
 
-I did not diff the vendor family D init table against the family C one,
-so I cannot say they are identical. I only know this register: our table
-writes 0x0090 to 0x13f9, which leaves the EXT1 RGMII TX delay field at
-2, and the vendor RGMII setup for EXT1 on family D clears that field. I
-do not know what the field does on family C.
+Thanks for taking a look.
 
-> Anyway, if the jam table the vendor driver uses is indeed the same for
-> both families, maybe it's best to keep it explicit like you have
-> done.
+So I don't think the changelog should be mentioning random userspace
+programs for testing/verifying this - as the bot email suggested, just
+replying there should be enough.
 
-OK, I will keep it as it is.
+>
+>>
+>> Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+>> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+>
+>This seems to be a fix that effects users. Which I believe you have
+>reproduced. As such I'd lean towards this being for net, CCed to stable.
+>
+>Subject: [PATCH net v2] ...
+>
+>Otherwise, it should be for net-next.
+>
+>Subject: [PATCH net-next v2] ...
 
-> Do you have a datasheet I can look at? I couldn't find one.
+Will do.
 
-No, I do not have one either. Everything about family D comes from the
-vendor RTL8367D API.
+>
+>> ---
+>>  net/mctp/af_mctp.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+>> index 8af5e2b3c8d1..aa22c0860712 100644
+>> --- a/net/mctp/af_mctp.c
+>> +++ b/net/mctp/af_mctp.c
+>> @@ -292,8 +292,7 @@ static int mctp_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>
+>Strangely this patch has been mangled - the original code is 7 rather than
+>8 lines long. (s/,8/,7). Because of this it could not be applied by our
+>CI which then did not run the usual tests.
 
-> I'm also a bit confused by what it means for MAC4 to "own" EXT1. Are we
-> talking about physical pin muxing [...] or is this internal muxing? And
-> since you say MAC4 is a UTP port, I don't understand how it can also be
-> associated with EXT1 [...].
+Yeah I messed that up (noticed sashiko couldn't apply it either), not
+sure what happened.
 
-I cannot answer that. "Owns" was my shorthand for the bit. All I have is
-this check in the vendor RGMII setup for port 7:
-
-    /* Configure RGMII/MII mux to port 7 if UTP_PORT4 is not RGMII mode */
-    if ((retVal = rtl8367d_getAsicRegBit(RTL8367D_REG_TOP_CON0,
-            RTL8367D_MAC4_SEL_EXT1_OFFSET, &mux)) != RT_ERR_OK)
-        return retVal;
-
-I did not verify anything beyond it, so I do not know whether this is a
-physical or an internal mux.
-
-> Since MAC7_SEL_EXT1 is writable, I would guess that so is
-> MAC4_SEL_EXT1. Could we not instead keep it configurable, and do some
-> bookkeeping in the driver to see who has requested these pins? [...]
-
-The vendor code only reads MAC4_SEL_EXT1 in this path, and I have not
-verified that writing it is safe or what it does to UTP port 4. The
-driver has no code path that selects MAC4 for EXT1, so port 7 would be
-the only requester.
-
-I can implement the bookkeeping in v9, but I would need to know how you
-want the MAC4 side handled. Alternatively, I can read the bit once in
-rtl8365mb_setup() and refuse RGMII on port 7 when it is set.
-
-Kind regards,
-Mieczyslaw
+Thanks,
+Davidlohr
