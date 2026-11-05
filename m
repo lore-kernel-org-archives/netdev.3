@@ -1,98 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793915008;
-	b=YC2d3lxZ+xdYtYVIQ1Gets1P9uEhzTnPPB4autnz0zXaiZsBRWKpwzSz76fcHih0kKeA
-	 k6m1g18KWEU9FDJU1zbGXX0qZa2MPOWVujCYHiS10v025y4od05xwl9A9oD2FfDpSvki0
-	 A6hTXBQzLnDEmAmDaGoaQIUfnEP8T7vc+qw/pzoEDhfdGROi9cjzFKvmpNF91CyGgVs1u
-	 lf1v/w2SflXEohOkjNNrySEyswUOymoCZBzJVTkJn+9pOqtYqD19kTdS81sP5YUnjhd2Y
-	 WkGBfxccMBXSjxaen0vlxUHMRqWF0Sy6ywPUFQfcywo1pN4ASzSdU/dyYCmDo+OwOGw==
+	t=1793915030;
+	b=f6KNntH5p4XVL5F54Q7+AOib3I9QfQtUzWHmE0fi6UzfThbKtDMgSqK9aECripjWTBSr
+	 RkbxIysE96Vq3H+6YZtx8w98nXbu5jSPv3cTFx3boCAkXlo1toFoaAvv57TQ3VtRe+NEU
+	 cuqeN1c2Do1AAhPSsaoGW2aRkfnx+5RJkcLVOraOJIYsNU4l/9kiF5F3MsmsDNHRqluk7
+	 3sDUoLP9IAnxna0PW1YIoRtQHr/3tgZBT34dzakYYkbqx1D1bWJsX3BYPiEI+VqO8f8Fi
+	 1oPUuuXIlktQg4lGfuKOEQ4Wq+KWbIbVkn5KOcR8v8XwufLxBbxmfLNmppW+JFeBuQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793915008;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
-	b=eaXvzoqyiCBoR+f0jPBzGX9KQ428npqD2s7gfoAAZby0+JDtyN2kU3Nbw30MXUwutcHa
-	 biy23HSyPb2qDXtCAX2avu5V0EA5FKzY74A3dle++4ESh/2WOwr+3PpGuC+rCNO0nJqzh
-	 InQVF724oMGidILBy1+lzYWigoS4qW438260I/YDRUpSzbsFHWrUFsUDzaGMb+Hl/l20K
-	 aCDKFjuqdNXVpKbrdJAouL4igPR9fk5yOJ9TQIHIxzGCIIKUbvMoVn6tzrcxGL9IHf/0S
-	 6Nlg7wVbN+qZy9tc7vf4cLfMvFXwMovd0xKTKcxgroc09y9YNHKrpLIe+8XTCYLgp5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793915030;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=kxFI2GFVoJa97jcX7ipRojoEPGOqoDfgUs9THsIEv3E=;
+	b=YC61/4gSoR4At21tlbPpEcsXlvApYXTjKYMGEqt00ZGd89zuW8YtA3DbNoq6OfX6Mxvz
+	 kdy6xYrvtK07v59huMGZDqvJVOn3o4YLKVjEKuMBXXvasLusEuqgZjKYJCBhIgnU0YBZZ
+	 1PNYFtoVs+Nq7Z/RZW0eE71JiiO53BwxC4o7pOg/DgrB85I0Mcse/Y+bbIkQ/oAG5EyF1
+	 aN/O7hxPTd9pT4qVfH6ZGC8Hq58mYfIiKAylIemKjn+98z+0+CE9HvOEgDkbjsRWldd24
+	 wES8QfE6LYtES5VKowfK/5lajyLphCZLiWgrzEi2Zf6/NIIwe5YcA1C4RiNmHlfHmBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fUNscaPY;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 0B1DC606A326;
-	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAA6606A31B;
+	Thu,  5 Nov 2026 21:43:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CAA6606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KFA+ZicK
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0AE881F0089F;
-	Thu,  5 Nov 2026 21:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793915007;
-	bh=nnsNMtUi8B/PfO4GG0OW4lr6jLs4u50NUe2xEiA6RC0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KFA+ZicKHpTxqbxZeNU9rKNH0zDIw+G9WkxRcTelADPJIyDG9z+SV38MG0CjPlcEC
-	 1gjbq2m9ysrv8pBHAJrvqPnMERLZq6W4rxcogl2DlIDB44RylaSdblCTSEXNnxfcbK
-	 l3RbrI5Oxv1bkdw/nOHwLpMlw6rPe3TmPXrqXYMaHNImuFIqgFREHKoGTzOn5W2eUw
-	 HnogndejHth27NGEbdc3qPN/i0WWKweuYdEdmiZr5RDjCfk6/mEdy1F9Yu6XlveCU2
-	 QfoEW83U8XIbYRbkOdJsXHQEOAAPFI6k6EpuBWa/BFfpmagRIXSu+HdiZvkzWIUa8b
-	 kW/HsHhM4i4og==
-Date: Thu, 5 Nov 2026 23:43:23 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	Scott Branden <scott.branden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fUNscaPY
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=kxFI2GFVoJa97jcX7ipRojoEPGOqoDfgUs9THsIEv3E=; b=fUNscaPYoByuVDnvTWOJzI2t3P
+	tQfqYdoz8/jhSoNjaY448mxxGESPJHSlLJqdLbie+hgCqO1wCuvza/inNNzl7HXZ/zDVvxoxUb8/g
+	0/LAdYqf1l5U+cjyDNEW6UsawkqeNjcv7xRJBqN/tyPOufxVNNBCAD5WpgBCOHbTYaOo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xP5F3-00Edw8-No; Thu, 05 Nov 2026 22:43:29 +0100
+Date: Thu, 5 Nov 2026 22:43:29 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Joseph Telaak <joseph@telaak.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 05/14] x86/sgx: convert vepc mmap hook to mmap_prepare
-Message-ID: <auz4e81zm0mTMknq@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Chuanhong Guo <gch981213@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, linux-mips@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: Add Siflower SF19A2890
+ GMAC
+Message-ID: <7b4ab738-85c9-4747-bf89-1a5532af6901@lunn.ch>
+References: <20261104-sf19a2890-gmac-v1-0-a15965a49574@telaak.dev>
+ <20261104-sf19a2890-gmac-v1-1-a15965a49574@telaak.dev>
+ <e134193f-ba1b-47c1-9a06-419b1b796ea0@lunn.ch>
+ <CAPY4CJ74O1tFVCpcN9seoeWDF0VR9GNfKuE+rWODQamN2sjL3g@mail.gmail.com>
+ <ba32cd69-23a3-464f-a74b-68a29e7b8202@lunn.ch>
+ <CAPY4CJ6mCc5HgQUZd2Mq3C=Tsmwp=-acAV8dsWcpO_J87Pr6rg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,61 +86,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-5-c56aadfbab8a@kernel.org>
+In-Reply-To: <CAPY4CJ6mCc5HgQUZd2Mq3C=Tsmwp=-acAV8dsWcpO_J87Pr6rg@mail.gmail.com>
 
-On Thu, Nov 05, 2026 at 09:05:36PM +0000, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-> only checks that the mapping is shared and sets VMA flags, operations and
-> private data.
+On Thu, Nov 05, 2026 at 03:57:45PM -0500, Joseph Telaak wrote:
+> > Do you have access to another board which has a PHY connected, not a
+> > switch?
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  arch/x86/kernel/cpu/sgx/virt.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
+> No. The GL-SFT1200 is the only SF19A2890 board I have, and the only
+> other one I know of, the vendor's evaluation board in OpenWrt, also has
+> a fixed-link on this port.
 > 
-> diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-> index 6a1933ddc6fc..850990519ca5 100644
-> --- a/arch/x86/kernel/cpu/sgx/virt.c
-> +++ b/arch/x86/kernel/cpu/sgx/virt.c
-> @@ -98,17 +98,18 @@ static const struct vm_operations_struct sgx_vepc_vm_ops = {
->  	.fault = sgx_vepc_fault,
->  };
->  
-> -static int sgx_vepc_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int sgx_vepc_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	struct sgx_vepc *vepc = file->private_data;
-> +	struct sgx_vepc *vepc = desc->file->private_data;
->  
-> -	if (!(vma->vm_flags & VM_SHARED))
-> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
->  		return -EINVAL;
->  
-> -	vma->vm_ops = &sgx_vepc_vm_ops;
-> +	desc->vm_ops = &sgx_vepc_vm_ops;
->  	/* Don't copy VMA in fork() */
-> -	vm_flags_set(vma, VM_PFNMAP | VM_IO | VM_DONTDUMP | VM_DONTCOPY);
-> -	vma->vm_private_data = vepc;
-> +	vma_desc_set_flags(desc, VMA_PFNMAP_BIT, VMA_IO_BIT, VMA_DONTDUMP_BIT,
-> +			   VMA_DONTCOPY_BIT);
-> +	desc->private_data = vepc;
->  
->  	return 0;
->  }
-> @@ -315,7 +316,7 @@ static const struct file_operations sgx_vepc_fops = {
->  	.unlocked_ioctl	= sgx_vepc_ioctl,
->  	.compat_ioctl	= sgx_vepc_ioctl,
->  	.release	= sgx_vepc_release,
-> -	.mmap		= sgx_vepc_mmap,
-> +	.mmap_prepare	= sgx_vepc_mmap_prepare,
->  };
->  
->  static struct miscdevice sgx_vepc_dev = {
+> > There are unexplained delays here. Is it the switch, this MAC, or the
+> > PCB?
+> >
+> > We need to understand if tx-internal-delay 0 really means 0, or it
+> > actually means 1065ps.
 > 
-> -- 
-> 2.56.0
+> I can't tell that from this board. The sweeps measure the sum of the
+> MAC's delay line, the switch and the PCB, and I have no documentation
+> of the line's own delay at step 0.
 > 
+> What they do show, in the MAC's steps: the windows repeat every 8 ns,
+> which puts the start of both eyes about 4 steps (0.2 ns) below 0. TX
+> ends at step 51 and RX at step 28. So with every delay at 0 the link
+> works, but right at the early edge of both eyes.
+> 
+> Until that is known, how would you like v2 to describe this board?
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+The delay value makes no sense to me. It probably works because
+something is broken somewhere, either the MAC or the switch.
 
-Br, Jarkko
+We have to be careful with what we accept, because we generally
+consider DT blobs ABI, old blobs need to work with new kernels.
+
+When we find out what is actually broken and need to fix it, we would
+normally have to do that without break running boards. And that is
+often very difficult and messy.
+
+So i think we need a get out from backwards compatibility. We need to
+be able to break running boards with old DT blobs, in the future when
+we fix whatever is broken. Maybe the best way to do that it make the
+MAC glue driver and the DSA driver depend on BROKEN.
+
+    Andrew
