@@ -1,106 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793837222;
-	b=cneIKutjDMRS04qdqFRCsjQhK1jM2SxzOCi5+F2ahWxr2RC+P9eDFnD+0ylwh9VjMCeu
-	 C7xibXyJNd9gPsMkZi8XpM0iwde9RoduoPDY3x6McV9/HkREiwEJakwcYq51zpCbuyEXB
-	 x3K1A6h1hCR6uk9jqIxDJTkKQgieZfjdPjlBnR4VEH9efp06K/XIatnMxkPtG7urv+6mx
-	 qTsd+8K0SCobgxdnOCNPrvmqSYXd4iwqqzZ7JePfkSGkIoDM2Ou8KtlZAb0lvcmSQEnI+
-	 0ivU0SpsU6V1kglgTL7/sBFXJj294uaezNLjwuYXAHonxK1i1pGSbOzszZUGkc1Yb+w==
+	t=1793837970;
+	b=B8MHpP1B5Tn+qrZjnPx/3vCWuwhpb18A0yyPuSnMAkBvxJ/RoIwBtDKwWTJe2zFR5+BQ
+	 DETsyJTL6f7WFDbI4q4uByRMt9miBLAb7iL+dttdS6HUgVlA4BjL56YEw7DxV+50xlkR9
+	 ToxI/vOOQjg3zItsOD9WPfvH6Tja3+Tmhg4QIi/qt2AF2b7U932c/vo4O17f/RtBF2our
+	 Qek0QomjPUp64y//hiLmi0NmBkvzcrXcPNI3boDtHxldjME4+epKtRY0x6Ipc/QVo1tDi
+	 VJRZnDFjBZ5OlRd3rFyIqYIyoEbNgrAzDzs+xgGFoWNp795IrunBgozGXYML8N5R1Kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793837222;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=d1p/rD6sTNhuzYzSDYOdeVCwAUdWvLdNAWonA3aBGkk=;
-	b=xeU+CDhqOtdTt2Kvju1jO7nMC/7yidJRwXAHj3zWQToYLq8vbEkVHwkrPPLcjN5bOho7
-	 +GQ2KNTPZa7OUZfoBYlNPOd3Ytapj1GZXn3CnUBtx6DxADBhtWGjDEej0/zbriAY0YoNL
-	 bJxMenwF5cg/LYEAodazpa6jona4AzEZgiSup4mQBbXSenFE5Tk+Mca+S3EiG1tw0yAqM
-	 44bjN52qR4tYCTJBel5+aIH5CExwLhcVKWeQbFeA9f91Eh4m2ka1wDtUHvhfCB85vZsCU
-	 Ndwm4kfQFdu/ScqvSyi3RlD4SL+XzD1jKRXxt2rKe7E/A4Nimy+zP02pNgKCI9Egd0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793837970;
+	h=DMARC-Filter:Received:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
+	 MIME-Version:X-Spam-Status:X-Spam-Checker-Version;
+	bh=HN6TW/NKI9aCPvbwatGDME3QAnxBQ1uDv6eHyfYd4YM=;
+	b=EUIsLG5TJvn0UPTkU42O+SM3S8CoXtyth3g8z7/Glr33HewYz4wRD/ammedr7oKFBahz
+	 ubts3c2q68D9XoM1HkSMUUVzdEEniJsVGuuJU+j3MzwIfwivyGGgk70okPy4dv/dR3O8g
+	 UcwPpplgU/yxJ5O3BWlfiaqOu+hL1BqbBGL+VrTv2hEFbf7poC3cdXaeQItpLefGKzvMo
+	 FHvg0Iipzc3P2B3fsjxwXrk8YcPJbsOUxiO2DiZwsK6/0VlxzuNbmuZSBmckxjeiZl6vg
+	 v+STrHWNBRHcy4JrdM5o0sajm9TF25XkbE39mpmS/DhyMtwZQD4ZXM8Pc6UzCRIPHJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HBSvJJA7;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=linuxhacker.ru;
+	spf=none smtp.mailfrom=linuxhacker.ru;
+	arc=none smtp.remote-ip=159.69.87.85
+Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BA6606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 00:07:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1BA6606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HBSvJJA7
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49d05d51553so8038255e9.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 16:07:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793837220; x=1794442020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=d1p/rD6sTNhuzYzSDYOdeVCwAUdWvLdNAWonA3aBGkk=;
-        b=HBSvJJA7LE1rpkWl3EQlaKPvM+vmsGVv4Eo/eNaB2C5Xa3ZmFurERa2waV1z3Rbofm
-         BR54o4qXWgVU/Uqgpqru+uLVcm3iOhXeNvXXl6miESzC69Hprt7lgxQrIA6l3IJXtdmr
-         2shcTnrsIEJJ6eqk9cUzOnWCC4Iuc6JTudDOVnyC2F3RMHNmYirpvZ7A/KlY+DZEXSjP
-         GANFegY6laUwc9iKd+9K51CNwHJI2ZqjiWRy4T0ThK6yfkyr6hUtL/EX1EETTGs0n3BB
-         Rjc1jA3RNJzRMFvsx4+2X0PepDc02WblQAmfKJBhea+ceuJAjXsNnJJlvNmCHAcKGJHh
-         WYHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793837220; x=1794442020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d1p/rD6sTNhuzYzSDYOdeVCwAUdWvLdNAWonA3aBGkk=;
-        b=IBtpNutqj30JjZMngLUv/a6+ah8YuBNLp5LfywTspvK75bm90JCzAymlRq0zLr5LF/
-         LWZ+t5kDDy6KBa+dhm6zQB4AfoVq/C5T2bIYFrox7GX5oX48cE3asV+9RgFDGqECiRM4
-         OiER0PmhxtZ89GUXEmt2OLBvcxq/UCKCYbHVSsNRTe3vvUTng0Pc+hSsArRDa3dycRdK
-         Y4DzKFYepafPLNeDQ/BVrrTaDPBHc9fvBIvfsq9iKNTymitecdWteqqtsg0EjGa5r4qN
-         2urRZNoAaQ4aDGuw9cvtLnmYuSMUfj3hXgc9DgP7raxjv4AItEr9JVqk0eniYtFL36Qf
-         W/lQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzrWXoeJAvz4zUc0iSQ737FQpW6gyq0eAYsMXSH9x3le01g7XO0doHFpgoprpUjPuAj8eMcecY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/kE/x1LSlcsScj5RlPYjAKxTpj0wxvpcoZMOppqy0/aptC1mnp
-	FBRf5QDQtcmNymT+iYL0m5YvwFHsadDGI2tz8gvfiD+nL/CoW7+C1AC7
-X-Gm-Gg: AYBFou0Ec64H5inpu36gNXOqVG91ic1lxGG2evAto7HXRMh3Y3STbl7OWjEWXtrlI/K
-	DOsvtlkmyqSM8RC7odLDJxRx784hzoejok18O2Sa87QsfZZ/3v8vmdJX9IJieZOKPt9pdySjgdx
-	6WZRF6VZ2SsaIL3Ov6iLbWBnGaJYIkKw/vvPtIDE18gK7gbC5OZdvq8+fHDVpo/0ATH/5ur4IiU
-	W8i+sj8GR3sYEps2nWq+qgrdWwsiy9mySWheVCxD1qGSSaMIw1qWYusdE8hRgEExYhPeYWfpMVH
-	xNznKdBVNJOuVuQ02rJap9BRJTv2DPKJInNRJAeVkY76d3ct0LAhF86DxikuGi4hYmw96nvk6td
-	yNKYgShmhOSNjUMmYSBkLJmDxcjRIf49opt6ykFHq7T9Sj4a635N8bZ1MyH6pTkep+GiPTvALzu
-	C7jgPUrgnA8d1Mn7Lx9zOHjzB9j0mJ/5tAtyton32OWoKobtnlBd88rW+VDqLytgmRjnBsCFoFG
-	Ch4X5+Wg3OZ6efWOMcsWJSNnZ8/Vg/+qajTFo34DsCVqtjb1vVin1P4dPbsSnormXj/M0NehYvi
-	uRNlY+LyR/CZD/HuGk7N8EpM8pkdRG8/nPKn5QHbLGFr8m6+i5haEqRxps0JgXSpv7PadjqxxmY
-	BtNLdmOmUgrE1gIRrrfA=
-X-Received: by 2002:a05:600c:524c:b0:4a1:e6c5:e44c with SMTP id 5b1f17b1804b1-4ac17470f97mr398502555e9.10.1793837220243;
-        Wed, 04 Nov 2026 16:07:00 -0800 (PST)
-Received: from fedora.fritz.box ([93.93.22.191])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b5725061e1sm21403745e9.7.2026.11.04.16.06.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 16:06:59 -0800 (PST)
-From: Stefano Munari <stefanomunari.sm@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	o.rempel@pengutronix.de,
-	pabeni@redhat.com,
-	rmk+kernel@armlinux.org.uk,
-	stefanomunari.sm@gmail.com
-Subject: Re: [PATCH net] net: usb: lan78xx: resume phylink on non-reset USB resume
-Date: Thu,  5 Nov 2026 01:06:39 +0100
-Message-ID: <20261105000639.7070-1-stefanomunari.sm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179375001506.488856.4516083483989818643@kernel.org>
-References: <179375001506.488856.4516083483989818643@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4CA606A338;
+	Thu,  5 Nov 2026 00:19:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E4CA606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linuxhacker.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linuxhacker.ru
+Received: from [10.137.0.31] (unknown [162.81.204.199])
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 35268BEE42;
+	Thu,  5 Nov 2026 00:19:25 +0000 (UTC)
+Message-ID: <b449646e2bc75923e846ee72bee7d72774c48275.camel@linuxhacker.ru>
+Subject: Re: [PATCH net 0/3] vsock/virtio: bound what a peer can make the
+ host queue
+From: Oleg Drokin <green@linuxhacker.ru>
+To: netdev-bot+sinfo@kernel.org
+Cc: sgarzare@redhat.com, stefanha@redhat.com, mst@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
+	bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, 	pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, 	virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, 	linux-kernel@vger.kernel.org
+Date: Wed, 04 Nov 2026 19:19:23 -0500
+In-Reply-To: <179383703519.488859.4429490517306926733@kernel.org>
+References: <20261105000141.3617241-1-green@linuxhacker.ru>
+	 <179383703519.488859.4429490517306926733@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,43 +60,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Tue, 03 Nov 2026 23:53:35 +0000, Sashiko wrote:
-> - [Medium] RTNL self-deadlock.
+Hello!
 
-An open interface holds an autopm reference, so this requires a runtime
-resume with a *stale* EVENT_DEV_OPEN, i.e., a failed lan78xx_open().
-This error path is fixed separately, moved to net-next per Andrew's review
-since the failure is considered theoretical:
+   This was discovered while working on porting a project from
+   xen to kvm hypervisor. One of the llm security reviews
+   demonstrated it as valid, so it's not purely a static analysis,
+   It was also discovered that a partial patch exists that already
+   was included yesterday, by Daehyeon Ko independently posted the same
+core fix - Commit: d5e912448cd9 "vhost/vsock: size receive SKBs from
+declared payload".
 
-https://lore.kernel.org/netdev/20261102211119.8738-1-stefanomunari.sm@gmail.com
-https://lore.kernel.org/netdev/1449a6a1-670c-4d1d-bb98-51f92e32d848@lunn.ch
-
-On system resume lan78xx_resume() is not called with RTNL held, so
-taking rtnl_lock() is safe there.
-
-> - [Medium] Self-hang caused by re-entering runtime PM from inside the
->   USB resume callback.
-
-Same precondition as above. The hang needs lan78xx_resume() to run
-inside a runtime resume, with the interface still RPM_SUSPENDED. An
-open interface holds an autopm reference, so its runtime PM status stays
-RPM_ACTIVE across system sleep. On system resume the nested
-usb_autopm_get_interface() from the MDIO accessors therefore only bumps
-the usage count and returns immediately.
-
-> - [Medium] On a normal (non-reset) resume, phylink is now restarted
->   after the MAC datapaths are already enabled.
-
-Pre-existing on the reset_resume path, can be a follow-up.
-
-> - [High] This problem wasn't introduced by this patch, but
->   lan78xx_suspend() inverts the lock order.
-
-Pre-existing, can be a follow-up. An actual deadlock needs a
-non-freezable RTNL holder opening or closing this interface during
-system suspend: very unlikely in practice. In the commit message,
-"mirroring lan78xx_suspend()" refers only to the dev_open condition.
-
-Stefano
+>=20
+On Thu, 2026-11-05 at 00:03 +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+>=20
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>=20
+> =C2=A0- How the issue was discovered, e.g. hit in production, hit during
+> =C2=A0=C2=A0 development, syzbot report, manual code inspection, LLM or s=
+tatic
+> =C2=A0=C2=A0 analysis tool scan.
+>=20
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>=20
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
