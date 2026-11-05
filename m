@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871522;
-	b=otj7aXk5muLR23d0q2/Lj5f/hMa8v2gQtvi3loZvpqsdPXgbAwsGsZ0bKI6HpbgKFpXK
-	 /UbmyRa8VcqtA2wX9fa88zgGJVykiHPQyw8SOddlbVoX3EzNhuo0GQYuwNEi8tLky+GZv
-	 YMbau/HaY87bMQxCLrvZzjn+WeP1RQngJec6dECSRVUf9Mn+LGHiyLCD/7VYCH7hcI3zI
-	 uXM+5nUXVG0Jmzc90anOfz2VK60npwIH+HGZXFX2k3I8e5mjBLF69Afk+kLYNEqbXEI1t
-	 EgWMNv1yLvUV741dXTg0jSeVBoNsbJvXnho8rui7Sxx79H6vR2wce7HwHWrIqsOlrAA==
+	t=1793871543;
+	b=omY5aNGqj5b6y05jHKhrcIhWHGTFsuIpmJi9YOY4cwkyk34wLzwf7UaSBbwcNDdTzXH+
+	 uOTmb75xHzKRxCUJHuLyUTCaVf33tWXLoFpYnXBs/SOwddo4qQ0EwdvUCl00cex7kwOBt
+	 MCcZ1ZBm4lJJgIRcNHoB8Rdi0Mbdy5ybHA6BgaEmHCOQBm+KiwWyWF7ZPmYdl5iG2RXo4
+	 ifgblNXSWHh802TUHwwJeg3FSAccbjLZd9+bqrNdx4JFpi1zxwlC9igy4j13BGmqeityX
+	 r5l8ncm9orGpNFy67e/HdnvsmRjOGEK4WyznUhT+Y5I46yzPW3b1Ff0WpD8OBs6EFXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871522;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871543;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=NJOowqkaokprRQgrBwv7q6k2B3V31/vfYBmvVAJiIuQ=;
-	b=M2H7kVRvWbQX0XsTKXN2hLp961806YL+QPxB8Lbl813HOs0RzDutzEyRBrq9iU5lMxgk
-	 REFvfUqThp18T1Ik0gx/6yw+vtdV3r+/b4qnM2bYxexuGEhh2Fs9h37fkIxKKHF6yQ5db
-	 zQcvGSZAqabrFHBUEPRipcWonvrFG1F4Maq8b8W3cpLM6QYIS2RdnYrXSajvBpBwwoeQI
-	 VWJEZLid8M2tgt23mHKnhfM5gWQYzLVFR0b2IBFt5eS/RqvA08uORXEK7iPlmpn014W9H
-	 g8G7Zyfn2YV8s5HT/sfIdIZ5rGTYXTyBhFWwiDIBnRk5xB53qz2/dvLA5FZCkNBdoRA==
+	bh=nOWIFWh+1CEqipH8Zskds4nwG3GpkW/ipctC03Z2qdY=;
+	b=TzNkodtso0iqPm+KRPas2hi5uoAYYo4qR8zsZqAXpIbNtCw8+gmjEq7CpKK8+uJkKP8F
+	 D+S1xsQukvSPMSvJDaQj2OtPG13X8thcSYTfW21/sOJm0fT/seA5I31BpFnQ1phlPE84h
+	 38o9DyxJTiVKSmC4/EPl7lAFPNF+IToBftBxEexz/Ve6DV9TtIdbgAL0GrormloKC2hGC
+	 z5m1Vl/sg2owHqmQsYhDPsrXjutdFExLj7t2Nzj87R5EGiRDTSvoGE8LmMf2BZxozLfOL
+	 FPYlbfExgzA2T80nzFhJbN/qDTHcd3HOkuFT+kGLyBnczSsQqiIKYnX43xSx1JdTGeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AGiIuSRZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fEV2hKzx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AC1606A328;
-	Thu,  5 Nov 2026 09:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72D7606A339;
+	Thu,  5 Nov 2026 09:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AGiIuSRZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD9B1F000C1;
-	Thu,  5 Nov 2026 09:38:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fEV2hKzx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BF61F00A02;
+	Thu,  5 Nov 2026 09:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793871522;
-	bh=NJOowqkaokprRQgrBwv7q6k2B3V31/vfYBmvVAJiIuQ=;
+	s=k20260515; t=1793871542;
+	bh=nOWIFWh+1CEqipH8Zskds4nwG3GpkW/ipctC03Z2qdY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AGiIuSRZjtkgDkzwYrd+MlIl56rdYiiahaJWJ40fFXgqbnst4AsVLaRJPucmdhc7m
-	 Go3i3s1L2eOQxd9O1ybBzKHxsky2wNDSDeie31win1yg+n2RZgcCf/bPm1XEF55FFk
-	 rBcUYUK7pIZDWBxvHX+youFmzhveP0zwNvSitqouLvAtEgMZ3ptcTFtftxtDrM8s+3
-	 vDrz7UTdrOBC/KU1MSjxEJVFeWE1cCOs56XG86woADfZcCCclkC+f/5adDti31Spsd
-	 QFmyB/Mfiwt5eIVrVrB3jrAaADJQNFJxc7bbIu5qT+QM+yfDrcCndj8sFTqbOqN5u6
-	 kvcXmbXEygs6w==
-Subject: Re: [PATCH net v5 1/2] genetlink: Reject joining multicast groups no
- family owns
+	b=fEV2hKzxVlnyyzz/+Ijpzj8+tZwVIb3yoZP98/MQGep/idZoFnVjQyF866h1KWeVf
+	 fO0Sk7iLN3phAX28vLVafI/flF78fI/EcQ2Pb087tNuMdmsvLVt5H5m4Fz/gIzvZF9
+	 xpjpMzW6GGKnYc0gLAPw6jhTd3XmT43C1RopWEscevHp4XG7fDv3zspYIQLzCZ8i74
+	 a5UOxDRXcthsaEm2rAZ+3QOhGs7q0vx00eKqIhJkXL9CMcy1nJVyFBBtTbxcCmBL/a
+	 8lkOQNPEhnGsGFDx6w5umjDuFwhxeaNbDWw0Zi8PoBmnuST3BLYnYNukdesOhqWg1+
+	 o4irIM89ncIpA==
+Subject:
+ Re: [PATCH net v2 2/2] selftests: net: exercise SO_MARK on connected sockets
 From: netdev-bot+sashiko@kernel.org
-To: anilkaushikwireless@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, idosch@nvidia.com,
- nicolas.dichtel@6wind.com, jacob.e.keller@intel.com, jiri@resnulli.us,
- fw@strlen.de, martineau@kernel.org, v3rdant.xiang@gmail.com,
- aliceryhl@google.com, linux-kernel@vger.kernel.org
-Date: Thu, 05 Nov 2026 09:38:40 +0000
-Message-ID: <179387152067.488856.5027284112549941042@kernel.org>
-In-Reply-To: <20261104092125.211537-2-anilkaushikwireless@gmail.com>
-References: <20261104092125.211537-2-anilkaushikwireless@gmail.com>
-X-sashiko-severity: Medium
+To: yanxia@cmss.chinamobile.com
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, willemdebruijn.kernel@gmail.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, yana06070@163.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, willemb@google.com
+Date: Thu, 05 Nov 2026 09:39:01 +0000
+Message-ID: <179387154116.488856.7164246185525969593@kernel.org>
+In-Reply-To: <20261104092252.15712-1-yanxia@cmss.chinamobile.com>
+References: <20261104092252.15712-1-yanxia@cmss.chinamobile.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,141 +66,100 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says "Nothing is ever sent to such a group,
-  so joining it has no use." That is not true for the fixed legacy group…
-- [Low] The patch gives a reserved meaning to -ENOENT from the generic
-  `struct netlink_kernel_cfg::bind` callback…
+- [Low] The new "IPv$i $p connected mark 0" cases in
+  tools/testing/selftests/net/cmsg_so_mark.sh can never fail, so they…
 
 --
 
-genetlink: Reject joining multicast groups no family owns
+selftests: net: exercise SO_MARK on connected sockets
 
-This makes genl_bind() return -ENOENT for a multicast group ID that no
-family owns. Without this, the GENL_MCAST_CAP_* checks can be bypassed by
-joining a group before its family registers. netlink_bind() treats -ENOENT
-from the bind callback as "skip this group" and joins the rest of the mask,
-while setsockopt(NETLINK_ADD_MEMBERSHIP) returns the error.
+This adds a -k option to cmsg_sender that calls connect() before sending
+and leaves msg_name unset. It also adds 18 connected-socket cases to
+cmsg_so_mark.sh for IPv4 and IPv6 UDP, ping and raw sends. The
+per-message mark in these cases is the socket mark, the prohibited mark,
+or zero.
 
-Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
+[ ... ]
 
-> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> index 1281c42a3456a..136055764a006 100644
-> --- a/net/netlink/af_netlink.c
-> +++ b/net/netlink/af_netlink.c
-> @@ -1033,6 +1033,12 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
->  			err = nlk->netlink_bind(net, group + 1);
->  			if (!err)
->  				continue;
-> +			/* no one owns this group, still join the others */
-> +			if (err == -ENOENT) {
-> +				__clear_bit(group, &groups);
-> +				err = 0;
-> +				continue;
-> +			}
+> diff --git a/tools/testing/selftests/net/cmsg_so_mark.sh b/tools/testing/selftests/net/cmsg_so_mark.sh
+> index 772ad0cc26304..7a5e317bc4c94 100755
+> --- a/tools/testing/selftests/net/cmsg_so_mark.sh
+> +++ b/tools/testing/selftests/net/cmsg_so_mark.sh
+> @@ -68,6 +68,22 @@ for ovr in setsock cmsg both; do
+>      done
+>  done
+>
+> +# Check per-message marks after connect() has populated the route cache.
+> +for i in 4 6; do
+> +    [ "$i" = 4 ] && TGT=$TGT4 || TGT=$TGT6
+> +
+> +    for p in u i r; do
+> +	for mark in "$((MARK + 1))" "$MARK" 0; do
+> +	    expected=0
+> +	    [ "$mark" -eq "$MARK" ] && expected=1
 
 [Severity: Low]
-This is generic af_netlink code. For bind(2), -ENOENT from any protocol's
-bind callback now means "skip this group and report success". The other
-caller of the same callback, netlink_setsockopt(), still returns it as an
-error:
+Can the "connected mark 0" cases ever fail?
 
-net/netlink/af_netlink.c:netlink_setsockopt() {
-    ...
-		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind) {
-			err = nlk->netlink_bind(sock_net(sk), val);
-			if (err)
-				return err;
-		}
-    ...
-}
+Here cmsg_sender runs with -k -M 1001 -m 0. connect() caches a dst that
+was looked up with sk_mark 1001.
 
-The commit message says this difference is intended. Today only
-genl_bind() returns -ENOENT. rtnetlink_bind(), nfnetlink_bind(),
-sock_diag_bind(), audit_multicast_bind() and cn_bind() return only 0 or
--EPERM.
+opt.mark.ena is set, so ca_write_cmsg_u32() still sends an SO_MARK cmsg
+with value 0.
 
-Could the reserved meaning of -ENOENT be documented on the bind member of
-struct netlink_kernel_cfg in include/linux/netlink.h? Otherwise a later
-bind implementation that returns -ENOENT to mean "subsystem not present"
-would have its group silently dropped from bind(2) masks, while
-setsockopt(2) fails.
+The only policy rule in the script matches MARK:
 
->  			netlink_undo_bind(group, groups, sk);
->  			return err;
->  		}
-> diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-> index 5cc1037d4917e..f038f04ef4ead 100644
-> --- a/net/netlink/genetlink.c
-> +++ b/net/netlink/genetlink.c
-> @@ -1825,7 +1825,7 @@ static int genl_bind(struct net *net, int group)
->  {
->  	const struct genl_family *family;
->  	unsigned int id;
-> -	int ret = 0;
-> +	int ret = -ENOENT;
+ip -netns $NS rule add fwmark $MARK lookup 300
+ip -6 -netns $NS rule add fwmark $MARK lookup 300
+ip -netns $NS route add prohibit any table 300
+ip -6 -netns $NS route add prohibit any table 300
 
-[Severity: Medium]
-The commit message says:
+That means mark 0 and mark 1001 both go through the main table to the
+dummy0 route.
 
-    Nothing is ever sent to such a group, so joining it has no use.
+On IPv6, ip6_datagram_send_ctl() sets ipc6->mark_set for any SO_MARK
+cmsg. With mark_set, udpv6_sendmsg() does a fresh lookup:
 
-Does this hold for the group IDs that genetlink assigns as fixed values?
+    if (ipc6.mark_set)
+        dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, final_p);
+    else
+        dst = ip6_sk_dst_lookup_flow(sk, fl6, final_p, connected);
 
-genl_validate_assign_mc_groups() always gives NET_DM group ID 1, and that
-ID is exported as uAPI:
+If the zero-mark handling were missing or broken, say mark_set was only
+set for non-zero marks, the send would reuse the cached main-table dst.
+It would succeed either way. ping_v6_sendmsg() behaves the same.
 
-net/netlink/genetlink.c:genl_validate_assign_mc_groups() {
-    ...
-	} else if (strcmp(family->name, "NET_DM") == 0) {
-		first_id = 1;
-		BUG_ON(n_groups != 1);
-    ...
-}
+The IPv4 and raw mark 0 cases don't use a socket dst cache on this path,
+so they can't tell the two cases apart either.
 
-include/uapi/linux/net_dropmon.h:
-#define NET_DM_GRP_ALERT 1
+The paired kernel fix ("ipv6: fix cached route reuse for SO_MARK control
+messages") mentions "including an explicit zero". These cases expect 0
+in both situations, so they only check connectivity.
 
-VFS_DQUOT and PMCRAID also have fixed IDs. Registering a family only
-assigns the ID and resizes the bitmaps, so existing members stay members.
-The "NET_DM/events (ID 1): member" line in the Before output shows that an
-early join gets the group's messages once the family registers.
+Could a rule be added that prohibits mark 0 with a full mask, for example
+fwmark 0/0xffffffff lookup 300? A plain fwmark 0 gives a mark_mask of 0
+and matches everything.
 
-ret now starts as -ENOENT and is set to 0 only when a family owns the
-group. That means privileged callers get -ENOENT too. Take a CAP_SYS_ADMIN
-process that does this:
+With that rule, connect() with sk_mark 1001 would still succeed. The
+IPv6 UDP and ping mark 0 sends would then return 1 when the cached dst
+is bypassed and 0 when it is reused, so expected=1 would catch a
+regression.
 
-  bind(nl_groups = 1 << (NET_DM_GRP_ALERT - 1))
-    netlink_bind()
-      genl_bind(net, 1)          -> -ENOENT, drop_monitor not loaded
-      __clear_bit(0, &groups); err = 0;
-  CTRL_CMD_GETFAMILY "NET_DM"   -> request_module() loads drop_monitor
-  NET_DM_CMD_START
-
-Before this patch the socket was a member of group 1 and got the alerts.
-Now bind() returns 0, the socket is never a member, and the alerts are
-lost without any error.
-
-Is this regression intended for privileged callers? I couldn't find
-existing userspace that does this; dropwatch appears to resolve the
-family first.
-
-The commit message mentions the getsockname() change and the setsockopt()
--ENOENT. Could it also say that early subscription to fixed IDs stops
-working for privileged callers, and that NETLINK_LIST_MEMBERSHIPS output
-changes as well?
+> +
+> +	    ip netns exec "$NS" ./cmsg_sender -"$i" -p "$p" -k \
+> +		-M "$((MARK + 1))" -m "$mark" -s "$TGT" 1234
+> +	    check_result "$?" "$expected" "IPv$i $p connected mark $mark"
+> +	done
+> +    done
+> +done
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104092125.211537-1-anilkaushikwireless%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104092240.15649-1-yanxia%40cmss.chinamobile.com
