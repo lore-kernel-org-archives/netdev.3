@@ -1,76 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.16.241.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793915533;
-	b=5RybN6mNzhbZ1Plihhr96gjdOAWhZ9aWNayVR4BvQdxPOdt7lcka790qAtY/kOmF2rRV
-	 l8Njlb0OQU2S5HsWcczR3bWLY1z7aUeq/qnkxsTeaZf0Di62Dha6k6ao/9V943ixeAVOF
-	 jNRc6my4UAff7w9tR67eeG+NY/pFMeLgNpUczH5bgqwbpjRaAIxdA8PEEX68OwgbKR1VQ
-	 ztZwYO30OD8WvxoNbQmhXfABfwtd3I2/jIjMflnWy8ASEWFEeuTCRXBf+9VKQc5Y8OFW3
-	 QO7DjfCr8w4XMQ27jU5rmg2J+hWYSordMQJ0YYOxEIm4HkafyL0fF6Ka6+gQBT40vDQ==
+	t=1793915680;
+	b=lPSFSkMVHtqIYtrK24R6n4Df2ILWeQygjhxxeuuFiMRMj9IC4BBqTEVhWC9jtum1fZcV
+	 Kot8ZkmLmrW0/BAWLfDsgTniOGj6JInwD+WOjdwsDrV00y0+pJA4WSSOnjEq5e5ZvkSdx
+	 RYqR/76FQVKsAiL0XBl2HJYi4h2Ha9KWmGFUrOyTq6bBJNZ0ds+Xp7QunVb1OxWqqMlNn
+	 OPXhW4go4VjpJUdabpDtmbibjUcVdQ8pK6VSfCbW0voFTKf6DB3kNBsy+prRZ5dbGtj3m
+	 w69a1SJQE9/556O2C8IewnAXZuj4AKl2qzDQGP7hDAD8pG5IYLnq8KeHA/4trFFFkJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793915533;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=2nOPP03gnBdT5M1/cSkN1tNTvdrb6gjd5zrbYYhQ6Fw=;
-	b=iXlVUM26TU4qwQAgvll+EhssLCIasDUuUCMZBsTckLIxM9eCzOwGcIJIpPyVKkEw6119
-	 qUwoSIEIddaY/SCiId5NyVPuYSv/HAwMQ1zdQ/9C0HVtBcWWBj1Pt+shf4bfmGKIAMbVN
-	 vfqbtzLXvTSopDCubVbFX04c3Avz9x4N+keGCbk+3COpeoBIfdAxTylXcmjlwKkt9izQI
-	 WPHAnHkCul+CfvjhRwFBI4au2PUy8ChHCgQAfg8tPF0YQ1oEJZWYFOrgSg7QgvgWUrfv8
-	 W9DNSsujGcNdCA4XLjnHN25SFOWxngZMUpKszsN+5cRwKxL4OImxLIzAB0C0e+LWazA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793915680;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=UDf0ZD2mFU/9VOS9NrkMQ2SrgMQ/8BOQ9ZjvvF58EJ8=;
+	b=KeDmLDGhl8rZ+iqQ/Zz+ztCTTBg3Tl+tNjeC4LV/D3f0kej3kWaQoZVjmXma91JEx2hu
+	 2wGs4AB78kYDtMtaxpYpUoTeSvvfuuRF4bGSGU/kGxfy8XpPajuq/lktn77B0vOmSlMZe
+	 WscE/I6nH09LA831DbjbYac0mTUuEILkBZIAJhrJJeGGqpIFHrV9p0KfqkhtKLtevGTQ+
+	 agJoXFhID+AJhj6otrPRJStiKScD9vTLKL4Xs3FsNMAogxpnKm/zavdg7utv89y/k6j4G
+	 4PaBqvMXgc7PB9jQL8vFX0JG+XQbsl/WG2q8Zbint+B8icE4uPTSKl4h7DkBY+3qd1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MGIGaMX+;
-	arc=none smtp.remote-ip=209.85.216.71
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=svanheule.net;
+	spf=pass smtp.mailfrom=svanheule.net;
+	dkim=pass header.d=svanheule.net header.i=@svanheule.net header.a=rsa-sha256 header.s=mail1707 header.b=A5nstH6R;
+	arc=none smtp.remote-ip=84.16.241.116
+Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F98606A32D
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5F98606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A0E606A32D
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:54:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24A0E606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MGIGaMX+
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ad91787a1aso5274a91.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:52:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793915532; x=1794520332; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=2nOPP03gnBdT5M1/cSkN1tNTvdrb6gjd5zrbYYhQ6Fw=;
-        b=MGIGaMX+IRsnMi+j1KQCCNy2MIHC/zsd/PgmnUwNx4qlJy+UxZT0r6IUSPgGOJ1DRz
-         8RNkAphQkqCAbTza35eQ697rI1w7SiKKGPLL6tz+wqq9oP1CoDEmYoUGPEMfD1szybFa
-         AvcjXrMEnI+/9HDhTH4c2QnrtUb+5LYa8n/Qf5ekjLXR8lnaUSAHsEh81c3+S+QWC/qt
-         xeuJyEXHkh6JyPe3n6RxrNGn+HrYTFyq3Bob73aUZhwqVxunrTs/7eNgBzbG7QA2BFq5
-         em3ryB6hwHbfR3eJgixScybNdKehdiC7Snhl0KOaBdXzIEZL8fmPMHQj01cz2V+C18Cf
-         VnSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793915532; x=1794520332;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2nOPP03gnBdT5M1/cSkN1tNTvdrb6gjd5zrbYYhQ6Fw=;
-        b=MRD0bBaaBWLLaZeOl5guTU6mZpUVMCcW2gRFuw7xGYTZxv9xF4S0wqmwHMvZknmCEk
-         rJh26gAIUmhOgHws9H6pVi5HTB7EMDI6/aZjPNcMBMacbd0/ow54Navnlj9qotR2Nke1
-         MeXj6b6QNRNUKlvbmVjlvek9z2KU0uXzcuGQY4yyOCkOXt9gwwM0K3pWSyTZdvKDXn2c
-         OT4OIgGB3wF2ROtqDTzJR7NSFoFX8hg22JJMVTVUUbJyUkYqljrq4FZYKApG1WQDlmG8
-         7i2uStt7rqGhdiXyp9r/KW5ifuUzqGi3YLbBrTIPB0jv7nH9FlYkgaGFlhgPO2R3Y1mj
-         5KVg==
-X-Forwarded-Encrypted: i=1; AKwUvBx2G8zQBRTKGzjDGog4iClCCDA40qpJChQUs5h5WegXoHMc+VD4AtHD5d12EfdKGUw+xxUllk4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+iBkAURHtjV1coLXPaQl0t62fgpTKgNAMk7d7j05BtrJ3FRVf9
-	nIM42/RJYqq+pY4vbDey6W/0YHEXTaTtbYR7d77gkwpmteuccS6u8twKeU8cOri7osghfl6esrA
-	49XWA2Q==
-X-Received: from pjbrm13.prod.google.com ([2002:a17:90b:3ecd:b0:3ae:9bbb:7d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c8:b0:3ab:c80:9365
- with SMTP id 98e67ed59e1d1-3b0db717fb6mr294387a91.42.1793915531787; Thu, 05
- Nov 2026 13:52:11 -0800 (PST)
-Date: Thu,  5 Nov 2026 21:51:45 +0000
-In-Reply-To: <20261105215209.3160316-1-kuniyu@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=svanheule.net header.i=@svanheule.net header.a=rsa-sha256 header.s=mail1707 header.b=A5nstH6R
+Received: from [IPv6:2a02:1812:1620:5d00:3b08:a3e3:d87d:2eff] (2a02-1812-1620-5d00-3b08-a3e3-d87d-2eff.ip6.access.telenet.be [IPv6:2a02:1812:1620:5d00:3b08:a3e3:d87d:2eff])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	(Authenticated sender: sander@svanheule.net)
+	by polaris.svanheule.net (Postfix) with ESMTPSA id D253A9D45BC;
+	Thu,  5 Nov 2026 22:54:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
+	s=mail1707; t=1793915678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UDf0ZD2mFU/9VOS9NrkMQ2SrgMQ/8BOQ9ZjvvF58EJ8=;
+	b=A5nstH6R9AxornaFbk3UsYO8XlNim0DtyFZTX/wxXmLmqw5kxDYxl7Vp1rT0WkaJSalDkN
+	8EYZOO/vi/cpjE0hBzJ96TYeqXzs8Ugn3RENiq7oJYog9vadAQSEt6FsXRQOATBUKP9ePu
+	D8uzYyET6KCOMHBrt+wxN2kajv97L405LbjngitAtGlDrOQvIcl6zS8WxPO54XaVmtFeFx
+	4sN83+r0t3FTosgK1OJO8HcA/9zN/BLVaaPS4K3IqMM2dPxWvtW986GWyB8B9tAOGqs3EM
+	9M647qxE3EFF/0r1yYln20FbmsxUcUAaw80FRoNAp0LXZ/fhJD39DrscfnAaDg==
+Message-ID: <86b137d440c29b92ea56a69fa6ad27970090f126.camel@svanheule.net>
+Subject: Re: [PATCH net-next 3/4] net: pse-pd: realtek-pse-mcu: configure
+ global power budget
+From: Sander Vanheule <sander@svanheule.net>
+To: Kory Maincent <kory.maincent@bootlin.com>, Jonas Jelonek	
+ <jonas@jonasjelonek.de>, Oleksij Rempel <o.rempel@pengutronix.de>, Andrew
+ Lunn	 <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet	 <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni	 <pabeni@redhat.com>, netdev@vger.kernel.org, Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Russell Senior
+	 <russell@personaltelco.net>
+Date: Thu, 05 Nov 2026 22:54:37 +0100
+In-Reply-To: <357f6311-7f00-42c3-8eec-e0fd0c35749e@bootlin.com>
+References: <20261103220312.860629-1-jonas@jonasjelonek.de>
+	 <20261103220312.860629-4-jonas@jonasjelonek.de>
+	 <5e00fd7f-40f9-4041-8dfa-fff222b57b92@bootlin.com>
+	 <e0910567-999c-4c96-9b20-2e34434bec3d@jonasjelonek.de>
+	 <357f6311-7f00-42c3-8eec-e0fd0c35749e@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,142 +83,204 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261105215209.3160316-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261105215209.3160316-2-kuniyu@google.com>
-Subject: [PATCH v2 net-next 1/2] tcp: Don't call tcp_update_recv_tstamps() if
- not needed.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Geliang Tang <geliang@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-When RX HWtstamp is enabled on NIC, skb_hwtstamps(skb)->hwtstamp
-is set, which sets TCP_SKB_CB(skb)->has_rxtstamp to true.
+Hi Kory,
 
-In addition, TCP_SKB_CB(skb)->has_rxtstamp is also set from
-skb->tstamp, which is set when one socket (e.g. tcpdump, PTP
-daemon, etc) enables software RX timestamps (netstamp_needed_key).
-
-Then, tcp_recvmsg_locked() always calls tcp_update_recv_tstamps()
-and sets TCP_CMSG_TS to cmsg_flags so that later tcp_recvmsg()
-calls tcp_recv_timestamp() after release_sock().
-
-If a socket does not have SOCK_RCVTSTAMP in sk->sk_flags or any
-flags set in sk->sk_tsflags, tcp_recv_timestamp() does nothing.
-
-However, it is not free because sk->sk_tsflags shares the same
-cacheline with sk->sk_forward_alloc, which is always modified
-under lock_sock()/bh_lock_sock(), causing cacheline bouncing.
-
-   0.31 =E2=94=82 403:   test   %al,%al
-   0.02 =E2=94=82      =E2=86=93 je     4a0
-  12.40 =E2=94=82        test   $0x2,%bpl        ; if (cmsg_flags & TCP_CMS=
-G_TS)
-        =E2=94=82      =E2=86=93 je     48f
-  11.59 =E2=94=82        mov    0x60(%r14),%r15  ; sock_flag(sk, SOCK_TSTAM=
-P_NEW)
-  12.25 =E2=94=82        mov    0x170(%r14),%ebx ; READ_ONCE(sk->sk_tsflags=
-)
-  20.70 =E2=94=82        mov    0xd0(%rsp),%rdi  ; if (tss->ts[0]) {
-   0.39 =E2=94=82        test   %rdi,%rdi
-        =E2=94=82      =E2=86=93 je     44c
-
-Also, sk->sk_flags is on the cold cacheline in tcp_recvmsg().
-
-Commit f0e70409b7eb ("net: avoid unconditionally touching
-sk_tsflags on RX") introduced SOCK_TIMESTAMPING_ANY to avoid
-such false sharing.
-
-Let's check SOCK_RCVTSTAMP and SOCK_TIMESTAMPING_ANY under
-lock_sock().
-
-We still need to touch sk->sk_flags, but with this change,
-tcp_rr -T 128 -F 10000 gains ~3% more throughput on AMD EPYC
-7B12 Zen 2 Rome (2 sockets, 256 vCPUs).
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
-v2:
-  * Mention software tstamp
-  * s/sk_want_rx_tstamps/tcp_want_rx_tstamp_cmsg/ and
-    moved to include/net/tcp.h
-  * Use const in tcp_want_rx_tstamp()
----
- include/net/tcp.h |  7 +++++++
- net/ipv4/tcp.c    | 13 ++++++++++---
- 2 files changed, 17 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 3560adddf821..f265ae06bb55 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -517,6 +517,13 @@ int tcp_set_rcvlowat(struct sock *sk, int val);
- void tcp_set_rcvbuf(struct sock *sk, int val);
- int tcp_set_window_clamp(struct sock *sk, int val);
+On Wed, 2026-11-04 at 13:36 +0100, Kory Maincent wrote:
+>=20
+>=20
+> On 11/4/26 13:20, Jonas Jelonek wrote:
+> > Hi Kory,
+> >=20
+> > On 04.11.26 12:32, Kory Maincent wrote:
+> > >=20
+> > >=20
+> > > On 11/3/26 23:03, Jonas Jelonek wrote:
+> > > > Use the optional VMAIN regulator power budget to configure the MCU'=
+s
+> > > > aggregate PoE power limit during probe. Quantize the available budg=
+et to
+> > > > the protocol's 100 mW units and reserve exactly that amount through=
+ the
+> > > > regulator core.
+> > > >=20
+> > > > The regulator budget represents the usable PoE allowance. Program z=
+ero
+> > > > reserved power so the previous firmware guard band does not further
+> > > > reduce
+> > > > that allowance.
+> > > >=20
+> > > > Require a finite budget of at least one protocol unit when vmain-su=
+pply
+> > > > is
+> > > > provided. Program the budget before selecting dynamic power managem=
+ent
+> > > > and
+> > > > ungating the ports, so enforcement starts with the regulator-derive=
+d
+> > > > limit.
+> > > >=20
+> > > > Enable VMAIN before hardware initialization and register one manage=
+d
+> > > > cleanup
+> > > > action to free any reserved budget and release the enable reference=
+ on
+> > > > probe
+> > > > failure and driver removal. Record each successful reservation
+> > > > immediately
+> > > > so subsequent initialization failures are covered by this action.
+> > > >=20
+> > > > Read the current budget index before programming the MCU. Retain th=
+e
+> > > > programmed MCU limit on probe failure and driver removal, as reduci=
+ng
+> > > > that
+> > > > limit to zero would interrupt ongoing power delivery.
+> > > >=20
+> > > > Boards without vmain-supply retain their existing firmware-managed
+> > > > budget.
+> > > >=20
+> > > > Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
+> > > > ---
+> > >=20
+> > > ...
+> > >=20
+> > > > =C2=A0=C2=A0 +static void rtpse_mcu_cleanup_vmain(void *data)
+> > > > +{
+> > > > +=C2=A0=C2=A0=C2=A0 struct rtpse_mcu_ctrl *pse =3D data;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 if (pse->requested_budget_mW)
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 regulator_free_power_bu=
+dget(pse->vmain, pse-
+> > > > >requested_budget_mW);
+> > > > +=C2=A0=C2=A0=C2=A0 regulator_disable(pse->vmain);
+> > > > +}
+> > >=20
+> > > Following patch 4 logic, you might not want to disable the PSE contro=
+ller
+> > > power supply,
+> >=20
+> > I added it because of the requirement that regulator_enable() calls mus=
+t be
+> > balanced with regulator_disable() calls. Accepting that this may power =
+off
+> > the
+> > rail in theory, something outside of the driver would need to keep the
+> > supply
+> > enabled. Concretely, I'm thinking of "regulator-always-on". And all boa=
+rds
+> > I've seen so far which can use this driver do not provide a provide to
+> > really
+> > power off the PoE rail. Sure this is no finite guarantee.
+> >=20
+> > What is the correct way? I see either droping the enable call too, just
+> > relying on
+> > that it is correctly handled outside of this driver, or I keep enable +
+> > disable and
+> > the continued delivery is ensured with "regulator-always-on".
+>=20
+> Indeed if you use "regulator-always-on" it does not turn off the power=
 =20
-+static inline bool tcp_want_rx_tstamp_cmsg(const struct sock *sk)
-+{
-+	return READ_ONCE(sk->sk_flags) &
-+		((1UL << SOCK_RCVTSTAMP) |
-+		 (1UL << SOCK_TIMESTAMPING_ANY));
-+}
-+
- static inline void
- tcp_update_recv_tstamps(struct sk_buff *skb,
- 			struct scm_timestamping_internal *tss)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b9de7c302ba8..a1f89c1fa2ae 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1878,6 +1878,13 @@ void tcp_set_rcvbuf(struct sock *sk, int val)
- 	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
- }
+> supply when we call regulator_disable().
+> https://elixir.bootlin.com/linux/v7.3/source/drivers/regulator/core.c#L32=
+69
+>=20
+> Does the PSE controller needs this supply to start, or is it only=20
+> required to power the PSE PIs?
+>=20
+> If it is the first you will need to enable it in the driver.
+> If it's the latter, you could describe it as the PI's regulator parent=
 =20
-+static bool tcp_want_rx_tstamp(const struct sock *sk,
-+			       const struct sk_buff *skb)
-+{
-+	return TCP_SKB_CB(skb)->has_rxtstamp &&
-+		tcp_want_rx_tstamp_cmsg(sk);
-+}
-+
- #ifdef CONFIG_MMU
- static const struct vm_operations_struct tcp_vm_ops =3D {
- };
-@@ -2069,7 +2076,7 @@ static int tcp_zc_handle_leftover(struct tcp_zerocopy=
-_receive *zc,
- 		offset =3D *seq - TCP_SKB_CB(skb)->seq;
- 	} else {
- 		skb =3D tcp_recv_skb(sk, *seq, &offset);
--		if (TCP_SKB_CB(skb)->has_rxtstamp) {
-+		if (tcp_want_rx_tstamp(sk, skb)) {
- 			tcp_update_recv_tstamps(skb, tss);
- 			zc->msg_flags |=3D TCP_CMSG_TS;
- 		}
-@@ -2280,7 +2287,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 			if (!skb_frags_readable(skb))
- 				break;
-=20
--			if (TCP_SKB_CB(skb)->has_rxtstamp) {
-+			if (tcp_want_rx_tstamp(sk, skb)) {
- 				tcp_update_recv_tstamps(skb, tss);
- 				zc->msg_flags |=3D TCP_CMSG_TS;
- 			}
-@@ -2893,7 +2900,7 @@ static int tcp_recvmsg_locked(struct sock *sk, struct=
- msghdr *msg, size_t len,
- 			tcp_fast_path_check(sk);
- 		}
-=20
--		if (TCP_SKB_CB(skb)->has_rxtstamp) {
-+		if (tcp_want_rx_tstamp(sk, skb)) {
- 			tcp_update_recv_tstamps(skb, tss);
- 			*cmsg_flags |=3D TCP_CMSG_TS;
- 		}
---=20
-2.56.0.455.g6c5a503b38-goog
+> supply. An enable of any PI will enable this vmain regulator.
 
+I'm not sure if you've seen a diagram before, but allow me to add one to sh=
+ow
+what the binding currently models (for a UART controlled MCU):
+
+              =E2=96=B2Vdd     =E2=96=B2Vpwr                         =20
+        =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=90           =20
+        =E2=94=82     =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =
+  =E2=94=82           =20
+        =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=90   =E2=94=82       =E2=94=82=E2=94=8C=E2=94=80=
+=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=90 =E2=94=82           =
+=20
+      =E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=96=BA=E2=94=A4RX  SDA=E2=94=
+=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=AC=E2=94=80=E2=94=80=E2=94=BC=E2=94=A4      =E2=94=9C=E2=94=80=E2=94=
+=BC=E2=94=80=E2=94=80=E2=94=80=E2=96=BA PSE-PI0
+      =E2=97=84=E2=94=80=E2=94=BC-=E2=94=80=E2=94=A4TX  SCL=E2=94=9C=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=BC=
+=E2=94=80=E2=94=80=E2=94=BC=E2=94=A4      =E2=94=9C=E2=94=80=E2=94=BC=E2=94=
+=80=E2=94=80=E2=94=80=E2=96=BA PSE-PI1
+        =E2=94=82  =E2=94=82       =E2=94=82   =E2=94=82   =E2=94=82=E2=94=
+=82  =E2=94=82=E2=94=82      =E2=94=9C=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=96=BA PSE-PI2
+        =E2=94=82  =E2=94=82MCU    =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=BC=E2=94=BC=E2=94=80=E2=94=80=E2=94=BC=E2=94=A4PSE-0 =E2=94=
+=9C=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=96=BA PSE-PI3
+        =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98   =E2=94=82   =E2=94=82=E2=94=82  =E2=94=82=E2=
+=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =E2=
+=94=82           =20
+        =E2=94=82              =E2=94=82   =E2=94=82=E2=94=82  =E2=94=94=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=90     =E2=94=82           =20
+        =E2=94=82              =E2=94=82   =E2=94=82=E2=94=82   =E2=94=8C=
+=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=90 =E2=94=82  =
+         =20
+        =E2=94=82              =E2=94=82   =E2=94=82=E2=94=94=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=A4      =E2=94=9C=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=96=BA PSE-PI4
+        =E2=94=82              =E2=94=82   =E2=94=94=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=A4      =E2=94=9C=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=96=BA PSE-PI5
+        =E2=94=82              =E2=94=82        =E2=94=82      =E2=94=9C=E2=
+=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=96=BA PSE-PI6
+        =E2=94=82              =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4PSE-1 =E2=94=9C=E2=94=80=E2=
+=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=96=BA PSE-PI7
+        =E2=94=82realtek,pse-mcu-gen1   =E2=94=94=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =E2=94=82           =20
+        =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=98           =20
+
+
+The outer box is what is modeled by the binding, but really consists of at =
+least
+two chips on the board. The "vpwr-supply" (Vpwr) of the PSE PIs is controll=
+ed by
+the PSE-n ICs. The MCU doesn't use Vpwr and doesn't control it directly, bu=
+t has
+to do this via the PSE controllers. This is similar to a PD69200 setup.
+
+Like Jonas said, Vpwr is usually (always) an always-on power supply, which
+matches well with "regulator-always-on". Vdd is the supply that actually po=
+wers
+the logic, but that is normally also not a switchable supply and hence not
+modeled by the devicetrees describing these PoE switches.
+
+This proposal adds Vpwr as "vmain-supply" on the main DT node, but I suppos=
+e
+that also means it should not be used for "vpwr-supply" on the PI subnodes?
+
+Would it make sense to model realtek,pse-mcu as a regulator as well and hav=
+e
+"vpwr-supply" PI properties point there (instead of the fixed regulator)?
+AFAICT that's similar to the approach taken by the microchip,pd692x0 bindin=
+g,
+where the PI nodes point to a manager. But I also don't know if that offers=
+ any
+advantages here.
+
+Best,
+Sander
