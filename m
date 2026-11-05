@@ -1,68 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793866732;
-	b=DrqBIycndEfsb6d9aF+JotW5JtpYbG9D4tWsPihqZNh0r883Id7V3g+JuGQbkyZPaZQO
-	 8x1HQ0jMaOzDMIlJU2M98V0Qe6mx/CvpfoHI/wd830nO9CLbgXvn8g0O6U/EZq9GYXilI
-	 caxl5Ueihd/aZsLYQLRPKyv1ccpvWpe99ERAAPlxC+mYJB31sVJVrdGqwyd0WudPzEw3S
-	 jy4CYoO5bp0P56B/BjHFek5n+jZ/kdybvxgAq8sUhKCpMHd4RzCMtq4Ap4bGoIpI4GjBl
-	 Na8Fv5+P2CClMrtDUWh3XQtBEdLOa+x7cAwbKvGxcbSJx98xDMQ26PyJlyMZBsfk/hg==
+	t=1793866825;
+	b=ppab8hkfKSAImNB48+RrYmmZgVzs4yid/KJ9E3Gff68ALm4Ob6uqYzoPPj4KMilHsubN
+	 7PdMAVsys5etG06co7uxo6D+wq03aeHjGV+092WnJrzijEPXBIKFNGe8AX0tjcv8/Fnff
+	 v14ZQ0SkjFq6JUzXNGIiMclpFENYoUMl5dMzLrVOFAtpndKy4TE7LkT6WlwmGOujrdMoq
+	 Mz86g8bshBSKBWRgtb2DL1l9nSOWM+sQWk2V0tbHhPnLWqpDTAGNFnu+jbzgP48NwqIic
+	 0wSjJCakEaGSGnBhzRsRnTQrTSx0QOlNm11BfrGTvMJAiPgX5EBmG/6rBHuson2AY0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793866732;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=rRx7QTftZl4uD9/Vj2l2EmlBlFWwHvN6RD3Bmm1PGEI=;
-	b=oQmWHuxsXhfQcQ85v9K51A4dCBV9N+RasBoVOdhnpVsO/dAPhp04HjsbF3VFsAujGHsg
-	 sC3H7ovQDR1gI7cy+7olpR5pQ2A9A+fM+cflRZKtJexkKtubZltMjs/udoMnnx2+PFBI3
-	 eTjds16l1MdYTRlXA7yGDwFRnOgWUnjw0x9O2vhOVbELKRczOBwoMMFUXkD78I5bSlaRL
-	 4F1Uqcw6/tK02vSsAQzrBPy32ke/pfdQPOKNKkE47m90K3W/WPUaXMs2iGrYVNcGNzme5
-	 ZQovj9ECkKfk00OuCG5JjEEPKE/YG0Gl6VMVCYwh/tBiMyycgIQxEI4zfI8CQpu5QNw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793866825;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=7SqvBtUFCpw5NHA+FIMIJmAFl8K9I4MkTlXE+t2fvpg=;
+	b=KZvlU9LD4QulorsKUQrCCoAuGNlSNMbhJ3UkqNEeJx4x2K+cQ0eQJmqKg4zoEqCicPDe
+	 iG95xpzdzHvqiIOGIaw/74AI40HE4kICYU8gKBq+2kXk6i+y4Rj1hK6a7ZU2j3Wsi4dSN
+	 U9NTBexUcSq4AudpaiHTnSBekrRYXJ73euEqwedshMGSt0r+5cEi+PD+ot96UYaCeruqx
+	 pKQydPiD7wAjs4l+BL14x9cvJQl+a59j3Un9SjLdQQjAUEzex496q4sloptUsShDOnxY2
+	 bvl22aaMDHvUvhw+91DAiAl4fkmtY87MxcCq6AFyFTaZMd+cgO10Oea59zxQXl8e4Vw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IvXRymMj;
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vg22TDiB;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ERqhG0AN;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305E7606A33A;
-	Thu,  5 Nov 2026 08:18:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 305E7606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F81606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 08:20:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86F81606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IvXRymMj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=rR
-	x7QTftZl4uD9/Vj2l2EmlBlFWwHvN6RD3Bmm1PGEI=; b=IvXRymMjB1xd0yfS7i
-	CzKKwbQzu3/VBszTbAWxXB/rg+P0nVNcxaTrcf5L+8XltRI2k1EjPfDxYshpo4Tb
-	/VTXHKcQHe2JXMF8jBuUMEfIMk85CUyZ7UcZxwSkvmqVPkQfGEI4HaBQMmHe8bPU
-	CKZ3f6R7cic2wCj+JK/d/tiT8=
-Received: from shaos.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3nxifO+xqhsacFQ--.31530S2;
-	Thu, 05 Nov 2026 16:17:36 +0800 (CST)
-From: shaos <shawnq1@163.com>
-To: pablo@netfilter.org
-Cc: Sung Byeongchan <tjdqudcks0424@naver.com>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	coreteam@netfilter.org,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] netfilter: xt_dccp: reject short option lengths
-Date: Thu,  5 Nov 2026 08:17:35 +0000
-Message-Id: <20261105081735.749379-1-shawnq1@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <179251068646.3135.16276902372052104830@kernel.org>
-References: <179251068646.3135.16276902372052104830@kernel.org>
+	dkim=temperror header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vg22TDiB;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ERqhG0AN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793866823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7SqvBtUFCpw5NHA+FIMIJmAFl8K9I4MkTlXE+t2fvpg=;
+	b=Vg22TDiBJDnhHbZ7Pl+180HoaGvnB6m6FJ/VAyyBrGllE5U9k98zt7uvvlaS9OHHnC+fHJ
+	81Y19u7SE9PSwNqNOshnxrw5OSv7DPCenc1H3pRKFQX6Bze60zQIj6RMV+PrbJAI+QGZ2I
+	B5si15YiNPV2taO1ODQFHgNyEz6Dtr4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-253-Y08mQowGP8OLwiqrctXIEQ-1; Thu, 05 Nov 2026 03:20:22 -0500
+X-MC-Unique: Y08mQowGP8OLwiqrctXIEQ-1
+X-Mimecast-MFC-AGG-ID: Y08mQowGP8OLwiqrctXIEQ_1793866821
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a35e1d2dddso16848195e9.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 00:20:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793866821; x=1794471621; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7SqvBtUFCpw5NHA+FIMIJmAFl8K9I4MkTlXE+t2fvpg=;
+        b=ERqhG0ANIDuOTgPfookFk2oMxGQOH4n7cdFFXkfT3zus0ZW3ZegBiBZDWA8JU52AMC
+         LbWP4UAqvKvvDB9FSWz98JXI2uaIojfUamIG0nkq+ctWfbf7pD6WDG54tTTPv/TYR3xC
+         cfIjZYSsgspQuVAzv5F23bQHC+o+PUE73xLOuBKhMlrDwUNpMuMFetGTaGGRWYpmDJJr
+         qlSCCIqBy+kc63NOVVJYzqGC6Jm2g0mjftQrZ/lk8JGffS8Hd7dRWYG9cXFXgFjBkHuR
+         tIgTLqfniAgAfw6qeUtfJS3Q8hv+xYrY8e7H1Ky0y/RDDVgpX2tLKprcibvix2o0jBOE
+         hCaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793866821; x=1794471621;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7SqvBtUFCpw5NHA+FIMIJmAFl8K9I4MkTlXE+t2fvpg=;
+        b=Xz4Ybdffc31OP3cDglubFwlavrGeB1DLcN+XyGU/o/BeilvoONDfx5xK5MkG4EnTlf
+         KBxUcw7Mu2tLl47aYobEkudAr4zE05gsMKZIuiVGYfrBJDJzmvp3D9uMzuny53rNZRRF
+         XZflrQ11r4mHMx1J0bxFCSCBqI2xIPLutC+UEGHa32FftNJbnIXJArl46z+bmtuyG3nd
+         rCJatQJaN3t7mjuapu1U6Mse8FjTPvT/x73jvv1hioswKjLXohJwnYfUyvWqTrxtpUbn
+         QxhslVCKkNKonHqSrgEvz8sanw+fcWyJzWt+oQ8XVMqiopmdSSgBRJ3GgiEXBZISaaIZ
+         +N6g==
+X-Gm-Message-State: APuU4Z9NDbq4kqibKwNWlNdS+2XtQzQNk1Yvc8wyn4gE14ZI384iPhwr
+	H27rLQSYerci6USAFv89nHSDz6kTBBufCuZrRULohxREcatxRui7TCGiltalOXAUafnkPaNvfid
+	Gf09K+ZUIXYZASm/zTEvjYRDCcSMBA2xsq26TW0LcNwpuRaVbSapGQd4niw==
+X-Gm-Gg: AYBFou21k4a8ypKpMssjJQYFuoVVh2pSiyRJpnDUILMJIcTzFzViXoS/llySbi9oqJV
+	eC4jZ++FWBOPIdP9gAvmOD4MZzScUvQNBbUme6yioZXzCZqU6AAPrBPL9z4ukeHxBzwi1Bo2XMh
+	jVSiKxqFxjnaml1/3vsA67cUrrIulFzskaMyPd7c5KSrtzaC5Z6qmgOxbxQqM2QC/Ys/Q35p7bM
+	jjurJ98OZx2TGe0srFpSUYKZfMm7UpYkTPqT7yuoBo/9eVoRUJSxXaro1pEmTQU7X1JZm6ikESL
+	VH7V0KJPZJvNIm+nARjJ0kJIh0l5ndExebHWhwxU71gOK7bDjMN8h8k40R1I1plvPCmXQxCX1kH
+	7EvcVuElDXJ4sJ6vlOQ5u2mTOhvkPkgL4pPVSg4PK4qbnqYziuk+8qFx32u8YwV3kLovsaj3C9t
+	NCyVQ+TyA6rN/HUREnyzoKNPGe5jn/2MK2JXYN/IaTEI0=
+X-Received: by 2002:a05:600c:1c0f:b0:4a2:150f:1601 with SMTP id 5b1f17b1804b1-4ac1709a7bdmr421751175e9.12.1793866821344;
+        Thu, 05 Nov 2026 00:20:21 -0800 (PST)
+X-Received: by 2002:a05:600c:1c0f:b0:4a2:150f:1601 with SMTP id 5b1f17b1804b1-4ac1709a7bdmr421750595e9.12.1793866820846;
+        Thu, 05 Nov 2026 00:20:20 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fece99d67sm8729801f8f.24.2026.11.05.00.20.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 00:20:20 -0800 (PST)
+Message-ID: <ca189d78-e981-4e05-877d-8b4e4857c4af@redhat.com>
+Date: Thu, 5 Nov 2026 09:20:19 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,114 +111,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3nxifO+xqhsacFQ--.31530S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43Gr1DCr45XrWkJF1UJrb_yoWrXw1xp3
-	yYv398tFykKF48JrZrtr109r1rGrsxAFW5u3y5Xr40vanxWr4ak3y0krWY9Fy2vrykW3y3
-	ZFn09w10yw4DA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOGYdUUUUU=
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzwDM2mrsO6C0AAAA3w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 13/15] can: dev: can_fill_info(): don't wake up
+ controller if interface is down
+To: Marc Kleine-Budde <mkl@pengutronix.de>, netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, liucj1228@outlook.com,
+ s.grosjean@peak-system.fr, stable@vger.kernel.org
+References: <20261103204305.3211144-14-mkl@pengutronix.de>
+ <179382521036.488856.13184139645230625670@kernel.org>
+ <20261104-prudent-mottled-gharial-1bfbfa-mkl@pengutronix.de>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261104-prudent-mottled-gharial-1bfbfa-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 11/5/26 00:08, Marc Kleine-Budde wrote:
+> On 04.11.2026 20:46:50, netdev-bot+sashiko@kernel.org wrote:
+>> The commit message does say that the attribute is no longer reported.
+>> Could it also say that this applies to all CAN drivers, and that it
+>> replaces the per-driver support for down interfaces?
+> 
+> If we need to re-spin this series/PR we'll update the commit message.
+No need to re-spin: your replies make sense to me, and my understanding
+is that some follow-ups (on next) is the best course of action.
 
-The 20 October review of the reserved-option fix pointed out that
-`dccp_find_option()` can mistake a short TLV length for the next option
-type. The merged fix did not address that case. I reproduced it on
-top of commit 2edda78aa4eb (the reserved-option fix).
-
-With INPUT policy DROP and an ACCEPT rule for `--dccp-option 1`, an IPv4
-DCCP packet containing options `{32, 1}` is accepted. Option 32 is a
-multi-byte option, and length 1 is invalid. The walker advances by one
-byte and then treats that length byte as Mandatory option 1. The rule
-therefore accepts a malformed packet that does not contain option 1.
-This affects firewalls that use DCCP option matches as an allow-list.
-The match requires `CONFIG_NETFILTER_XT_MATCH_DCCP`; a remote sender
-needs reachability to a firewall that uses an option-based DCCP rule.
-
-The reproducer uses raw sockets and a local IPv4 DCCP packet. The QEMU
-runs show the false match on the original kernel and after the merged
-reserved-option fix. With this patch, the malformed packet is dropped.
-A packet with a real Mandatory option 1 is accepted; without option 1,
-it is dropped.
-
-The earlier review is here:
-https://lists.openwall.net/netdev/2026/10/20/477
-
-Tested source revisions:
-- Vulnerable: c03c1a14507dfaf8b856c2608f9ac216021fc222 (Linux 7.3)
-- Vulnerable tree: 30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-- Prior fix control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099
-- Patch control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099 plus this
-  patch
-
-Git tree at patch base: 8644625317c9d6e32244509e29387fb0c80af0f4
-Compiler: gcc 11.4.0, GNU ld 2.38
-QEMU: 6.2.0, x86-64 TCG, 1024 MiB, 2 CPUs
-
-Console output:
-https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/6a95ab42fd7f47c2e0113c55bc80a7e86002f222/console-output.txt
-Kernel config:
-https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/f60c4bca22a42434cac67478e74d6f7c5b28442c/kernel-config.txt
-PoC source:
-https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/3c45d0d340d804c236503cecf5ffe33f700245d0/poc.c
-
-Check out commit 2edda78aa4eb. From that tree root, copy
-`kernel-config.txt` to `.config` and run:
-
-    make ARCH=x86_64 olddefconfig
-    make ARCH=x86_64 -j"$(nproc)" bzImage
-
-Compile the PoC with:
-
-    gcc -static -O2 -Wall -Wextra -Werror -o poc poc.c
-
-Boot the kernel in a disposable QEMU guest with BusyBox,
-iptables-legacy, and `poc` available. Install this rule:
-
-    iptables-legacy -F INPUT
-    iptables-legacy -P INPUT DROP
-    iptables-legacy -A INPUT -p 33 -m dccp --dccp-option 1 -j ACCEPT
-
-Run `poc badlen1`, `poc present1`, and `poc absent1`. On the unpatched
-kernel, the malformed packet is delivered, the packet with a real
-Mandatory option is delivered, and the packet without option 1 is
-dropped. With this patch, the malformed packet is dropped and the two
-controls keep their expected results. The test needs CAP_NET_RAW to
-synthesize and receive the local packet.
-
-The option walker should reject a TLV length below two before advancing:
-
-Fixes: 1d3de414eb20 ("[NETFILTER]: New iptables DCCP protocol header match")
-Link: https://lists.openwall.net/netdev/2026/10/20/477
-Signed-off-by: shaos <shawnq1@163.com>
----
- net/netfilter/xt_dccp.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
-index 23a4e3e8df7d..e0d7f4374958 100644
---- a/net/netfilter/xt_dccp.c
-+++ b/net/netfilter/xt_dccp.c
-@@ -62,10 +62,15 @@
- 			return true;
- 		}
- 
--		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1)
-+		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1) {
- 			i++;
--		else
--			i += op[i + 1] ? : 1;
-+		} else {
-+			if (op[i + 1] < 2) {
-+				spin_unlock_bh(&dccp_buflock);
-+				goto invalid;
-+			}
-+			i += op[i + 1];
-+		}
- 	}
- 
- 	spin_unlock_bh(&dccp_buflock);
- 	return false;
--- 
-2.34.1
+/P
 
