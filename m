@@ -1,127 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881273;
-	b=bnaSvP4r3Po3mcQGZlIPPiCjz2IAfiQOaHA79m859UvUz1lDBLikh0npscbK4kSfPe4g
-	 23myTlI6AerhmfnyjfdoNs2aW6JgAXK9GBdIYVgPAYZNXLRjBy+Eit307Yg3zm5hpTgsf
-	 Y1kDtibqyqpVOhbVD8gyPKZ+1gxp4Maa74ABJRRCsaT2IcqHqKPZ1qa1MJVIkR6yMbP4v
-	 wyxlEXHuGEo2EFaRN+0N5M4zTDuDP8PH6C2IG02Q/hg9XR0yrfotfhCXpIIQZGWGjeGHT
-	 GXp6Ko0jS0ejBdM50FWtNmAO97AgV7jYG0XxJDLxxm5pmiAlk6TWgDjq2ra6F1tcN2w==
+	t=1793881345;
+	b=tASc17/UChmDO3LMRT0S0FRFSP9Qp0cKTa7om6KFaT1S1NJGAHX6+BImwitz34WtR3Tn
+	 cD7zexHrxVUwhELZ2hDLSPGkcEI1/Uhxy0u+BzJQPErd8xnSZJxfBLtrDh3J/MqXrsvmA
+	 I05p+7Q0f73PCwsbbgek5CpJzFE9ETd0SJMaFRZ8ef47pGSHEpJgqZcXipoOJvoxBky2T
+	 sYgdWecZWDJpBaontcnkvs8F+FRzjOCMHUrJyyFRHyrk1S5yMR2r4H+/VmP0MtfLCL87U
+	 ZRCWf3j4c8No8jP/FxEMYeyJ3DcHhWczEWqMGypA0ueBpEhLXArZEanQLIE0QsE4IQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881273;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
-	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
-	b=irLVa4Om/1MtLqK05TY68QusPcX+vrXn+PeKmnjdZym5OzeUOgP+UrlhWuqEuyTr0fGA
-	 sgCZtJlTXPHf5LSteNpHOJG5kLrTBKRrbWN0l3EoiqJQs/Ly8N5pa/h/d76m3G5n66x9u
-	 MK+TGS5Kn62hzrn8g0CxF2OltKaGLbdgxmszCODJQtuNkBw9+dDCf6etJT4eK5AfzMLog
-	 ZR9d4Nslo01wovKS1QVCSEiR0Xnp/Z3igGfbGFxrsG4oc9aetI2tMdxOTjZDF6DVwPE8t
-	 Qp9wjUjx9fmz59HrdWJxBl/HHPKtAvLmoyPtVTmvKvl7ZzrPBluqQxZQBhApNp00MDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793881345;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=yLhO2b9NPmhZ4KLmzmsWyTeeW08C0qwOWfqTw7Ia0xs=;
+	b=Ey/He8uH+ohRs7suSAjnqaShW1HTs5JM1fQEbg4XsbFdENqVdrCCxBcVMJt21ar5m7V1
+	 WZbg1mCElCc05UD/LSyKabo4utUpagB2zUXZKWPpBGBDQ1ZtvbTZnk36qPw/zbOqwCu3g
+	 +USdd/HWJ1+UgN4gU+Fl+Lex33ODpomGvttc+uzQQRgrCKPwybLp1aLuATwmJ2TMnGv68
+	 jITPsjJIKUJk1rAW0aI+3pqWzy5AmXxNkDECPOvXdRxBgzj4gIe/stzga+b1L1+CEl2lI
+	 Bgn7JDWXYw55AzoyKPPiDkGIY1tEX5ToCtKoc9R8nTHN2oyiteTglFvGiBxRlBag6QA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KhcIIhhy;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6n5z2yLa;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KhcIIhhy;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6n5z2yLa;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oElCJt5Q;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9454606D805;
-	Thu,  5 Nov 2026 12:21:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9454606D805
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C776606A332
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KhcIIhhy;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6n5z2yLa;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KhcIIhhy;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6n5z2yLa
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2479F1F78A;
-	Thu,  5 Nov 2026 12:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793881270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
-	b=KhcIIhhyXURXrxsFKNrS5/KQBWOxVAoWljoB38cQtiYrDrFV8sed3xw/zXNPMim53TtxIA
-	7ZbhM5diXv9jAcO7L3DVJNrAZi+K4lsRTnJWaMYMlYugOK16bRU+y/fGzxnSLhmlcVsvyG
-	csbL8slrND45GD1FIeOECoj0f7hJMwQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793881270;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
-	b=6n5z2yLaHgAEN7/Tcd0WzA7lHAxJSKkismyyu/ILXPkdtd7h0WOyyJxNx+8962qMQ9rlAn
-	/2Drg5p7a9P7WmBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793881270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
-	b=KhcIIhhyXURXrxsFKNrS5/KQBWOxVAoWljoB38cQtiYrDrFV8sed3xw/zXNPMim53TtxIA
-	7ZbhM5diXv9jAcO7L3DVJNrAZi+K4lsRTnJWaMYMlYugOK16bRU+y/fGzxnSLhmlcVsvyG
-	csbL8slrND45GD1FIeOECoj0f7hJMwQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793881270;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
-	b=6n5z2yLaHgAEN7/Tcd0WzA7lHAxJSKkismyyu/ILXPkdtd7h0WOyyJxNx+8962qMQ9rlAn
-	/2Drg5p7a9P7WmBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0198134F6;
-	Thu,  5 Nov 2026 12:21:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id r7UFIbV07Gp3IAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:21:09 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 1B713B6D8; Thu, 05 Nov 2026 13:21:05 +0100 (CET)
-Date: Thu, 5 Nov 2026 13:21:05 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
-	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
-	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
-	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 33/38] proc: sysctl: copy to and from userspace
- without holding the table
-Message-ID: <cbocsd4qe254dc7mgzk3jkieahrp5kfxpnfh5owopkulg5oo6l@jd5sw3l4nw5c>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
- <20261102-work-procfs-bugfixes-v1-33-59422ed3e465@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oElCJt5Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B201F0093A
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793881345;
+	bh=yLhO2b9NPmhZ4KLmzmsWyTeeW08C0qwOWfqTw7Ia0xs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oElCJt5Qpi5F0XbVyp5tG+UGIxl4E0K/Ms1JtRBERyJf4wmMRr37j13IXSEA3X/lf
+	 o3Eab33dZPtI8zflhvV8x9K7HNtFfvPzbm3w5FZjQOQEYgteuGpvjRbKQX+qQxba/c
+	 7ZNnJt9EoEpfjOMBJrKJ+vqD9e/ehmYqg0lYVMkCDYygg/aKbKkIZTR7bMXBXAq2dp
+	 5uey+3T9jUz5ygRLAs9J+8tvbyL9MIf8Jsb9873ZnngQiN34/NLNoCZBNYOZL7Eidx
+	 PJQEHzMaGlaB9BVF83Su0MVXovCWPrYHc/fuZhdk2ub2Daq6guJ92JTDGUBLi9bxOP
+	 S/31038KXn66Q==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-705cb6ceebaso1191845eaf.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:22:25 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwYwcoyQPLi2lBgCMXe9iXuV4lNy6X5V8BvjDpNwpxBtEY84QH1nqedBwZ2XAflW3O71ihxqPY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+mPk54XCha/DDguKkLGS9pmuxjXYUPR6XBJsdawVMbKgcQvowm
+	HRTb5Q/xZrguyDkC62BvTqnK4z/pEP39Ig39PA1EfK22LFQ1I6zpmnbATwLZ///9LHihoRzzYhx
+	lmB+CY89eixCmZ2FKD4fv/xswoSgOvgo=
+X-Received: by 2002:a05:6820:a283:20b0:70b:8148:94f with SMTP id
+ 006d021491bc7-716bde2405fmr2610039eaf.76.1793881344396; Thu, 05 Nov 2026
+ 04:22:24 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -131,157 +59,203 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-33-59422ed3e465@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-11.30 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[60];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.cz:email]
-X-Spam-Score: -11.30
+References: <auxx1bK0QJfUvcB7@v4bel>
+In-Reply-To: <auxx1bK0QJfUvcB7@v4bel>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 5 Nov 2026 13:22:12 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiir3EBEfr6JWxRnp5UM1+MSqsFQcu-8PMtMBxsrvoEkk8w@mail.gmail.com>
+X-Gm-Features: AclHuK8Afmgo3vQ3nRDJezgd_eM1mV4Q0Q4jkLPLXxVFMB7LPPqrW80gLpVe-3Q
+Message-ID: <CAL4Wiir3EBEfr6JWxRnp5UM1+MSqsFQcu-8PMtMBxsrvoEkk8w@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: do not coalesce segments after FIN
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, john.fastabend@gmail.com, sd@queasysnail.net, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon 02-11-26 15:21:48, Christian Brauner wrote:
-> proc_sys_call_handler() grabs the table, copies in what is written,
-> calls the handler and copies what it produced out to userspace before
-> it lets go of the table again. Unregistering a table waits until nobody
-> uses it anymore. So a reader or writer whose copy faults for as long as
-> it wants, with userfaultfd or a stalled FUSE mapping, keeps
-> unregister_sysctl_table() waiting, and its callers like to hold locks
-> while they do that. addrconf unregisters the ipv6 sysctls of a device
-> with RTNL held, so a stalled read of /proc/sys/net/ipv6/conf/<dev>/mtu
-> holds up every RTNL user until the reader gives up.
-> 
-> Copy in before grabbing the table and copy out after letting go of it,
-> like procfs and kernfs do for their files. The buffer is ours, nothing
-> needs the table for the copies.
-> 
-> That moves the allocation and the copy in before the permission check.
-> A write that can't be copied in, or a request that is too large, now
-> fails with -EFAULT or -ENOMEM where it used to fail with -EPERM.
-> 
-> Fixes: 330d57fb98a9 ("[PATCH] Fix sysctl unregistration oops (CVE-2005-2709)")
+Le jeu. 5 nov. 2026 =C3=A0 13:09, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9c=
+rit :
+>
+> A FIN consumes a sequence number. If another FIN segment is coalesced
+> into an skb that already carries FIN, end_seq advances to account for
+> the additional FIN, but tcp_flags still contains only one FIN bit.
+>
+
+Yeah, we have been working lately on this issue (initial report from
+Chris Mason)
+
+For some reason Kuniyuki has not sent his patch yet.
+
+> When the preceding gap is filled and tcp_ofo_queue() processes the
+> coalesced skb, rcv_nxt advances to the skb's end_seq. When the receive
+> path consumes all data in the skb, copied_seq advances by the data
+> length and one sequence number for FIN. If three or more FIN segments
+> have been coalesced into one skb, tcp_inq() can still return a positive
+> value after the receive queue becomes empty and the SOCK_DONE adjustment
+> is applied.
+>
+> Software kTLS receive is one consumer affected by this state. When
+> strp->copy_mode is false, tls_strp_msg_consume() calls the TCP helper
+> tcp_read_done() to consume the current TLS record. In the reproducer,
+> tcp_read_done() consumed the record data and one FIN before freeing the
+> receive skb.
+>
+
+TCP_ZEROCOPY_RECEIVE is another one: tcp_zerocopy_receive() takes its
+length from tcp_inq() and follows skb->next without checking for the
+end of the receive queue. Please mention it in the changelog.
+
+
+> When kTLS looked for the next record, tcp_inq() reported at least
+> TLS_HEADER_SIZE bytes even though the receive queue was empty.
+> tcp_recv_skb() returned NULL, so tls_strp_load_anchor_with_queue() hit
+> WARN_ON_ONCE() and returned without updating the anchor.
+>
+> Since tcp_inq() had reported at least TLS_HEADER_SIZE,
+> tls_strp_read_sock() proceeded to tls_strp_check_queue_ok().
+> skb_shinfo(strp->anchor)->frag_list still pointed to the freed receive
+> skb. tls_strp_check_queue_ok() then read TCP_SKB_CB(first)->seq through
+> the stale pointer, causing a use-after-free.
+>
+> The reproducer followed this call path:
+>
+>   tls_rx_rec_done()
+>     tls_strp_msg_consume()
+>       tcp_read_done()                       // frees the receive skb
+>     tls_strp_check_rcv()
+>       tls_strp_read_sock()
+>         tls_strp_load_anchor_with_queue()   // returns after WARN_ON_ONCE=
+()
+>           tcp_recv_skb() =3D=3D NULL
+>         tls_strp_check_queue_ok()
+>           TCP_SKB_CB(first)->seq            // reads the freed receive sk=
+b
+>
+> KASAN reported:
+>
+>   BUG: KASAN: slab-use-after-free in tls_strp_check_queue_ok.isra.0+0x5f/=
+0x100
+>   Read of size 4 at addr ffff888103169ca8 by task ktls-server/71
+>   ...
+>   Call Trace:
+>    <TASK>
+>    ...
+>    tls_strp_check_queue_ok.isra.0+0x5f/0x100
+>    tls_strp_check_rcv+0x2a9/0x400
+>    ...
+>    tls_sw_recvmsg+0x3ce/0xa10
+>    ...
+>    sock_recvmsg+0xea/0x100
+>    __sys_recvfrom+0x142/0x1f0
+>    ...
+>    __x64_sys_recvfrom+0x76/0x90
+>    do_syscall_64+0xdd/0x4a0
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>    ...
+>    </TASK>
+>   ...
+>   Freed by task 71:
+>    ...
+>    napi_skb_cache_put+0x24/0xf0
+>    skb_attempt_defer_free+0x183/0x3b0
+>    tcp_read_done+0x2d4/0x340
+>    tls_strp_msg_consume+0x45/0x80
+>    tls_sw_recvmsg+0x3c4/0xa10
+>    ...
+>
+> In tcp_ooo_try_coalesce() and tcp_add_backlog(), skip coalescing when
+> the destination skb already carries FIN. This still allows a FIN
+> segment to be coalesced into an skb without FIN when the other
+> coalescing checks pass.
+>
+> Fixes: e93a0435f809 ("tcp: allow segment with FIN in tcp_try_coalesce()")
+> Fixes: 4f693b55c3d2 ("tcp: implement coalescing on backlog queue")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
+> Assisted-by: LLM
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > ---
->  fs/proc/proc_sysctl.c | 50 ++++++++++++++++++++++++++++----------------------
->  1 file changed, 28 insertions(+), 22 deletions(-)
-> 
-> diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-> index 38b61887b59c..2150cf842919 100644
-> --- a/fs/proc/proc_sysctl.c
-> +++ b/fs/proc/proc_sysctl.c
-> @@ -602,14 +602,36 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
->  		int write)
+>  net/ipv4/tcp_input.c | 3 ++-
+>  net/ipv4/tcp_ipv4.c  | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index e1f2d9765f810..1f9f86028da73 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -5314,7 +5314,8 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
+>                              struct sk_buff *from,
+>                              bool *fragstolen)
 >  {
->  	struct inode *inode = file_inode(iocb->ki_filp);
-> -	struct ctl_table_header *head = grab_header(inode);
->  	const struct ctl_table *table = PROC_I(inode)->sysctl_entry;
-> +	struct ctl_table_header *head;
->  	size_t count = iov_iter_count(iter);
->  	char *kbuf;
->  	ssize_t error;
->  
-> -	if (IS_ERR(head))
-> -		return PTR_ERR(head);
-> +	/* don't even try if the size is too large */
-> +	if (count >= KMALLOC_MAX_SIZE)
-> +		return -ENOMEM;
-> +	kbuf = kvzalloc(count + 1, GFP_KERNEL);
-> +	if (!kbuf)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * Copy in before grabbing the table and copy out after letting go of
-> +	 * it. Unregistering the table waits for us and a copy that faults can
-> +	 * take as long as userspace wants.
-> +	 */
-> +	if (write) {
-> +		error = -EFAULT;
-> +		if (!copy_from_iter_full(kbuf, count, iter))
-> +			goto out_free_buf;
-> +		kbuf[count] = '\0';
-> +	}
-> +
-> +	head = grab_header(inode);
-> +	if (IS_ERR(head)) {
-> +		error = PTR_ERR(head);
-> +		goto out_free_buf;
-> +	}
->  
->  	/*
->  	 * At this point we know that the sysctl was not unregistered
-> @@ -624,28 +646,15 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
->  	if (!table->proc_handler)
->  		goto out;
->  
-> -	/* don't even try if the size is too large */
-> -	error = -ENOMEM;
-> -	if (count >= KMALLOC_MAX_SIZE)
-> -		goto out;
-> -	kbuf = kvzalloc(count + 1, GFP_KERNEL);
-> -	if (!kbuf)
-> -		goto out;
-> -
-> -	if (write) {
-> -		error = -EFAULT;
-> -		if (!copy_from_iter_full(kbuf, count, iter))
-> -			goto out_free_buf;
-> -		kbuf[count] = '\0';
-> -	}
-> -
->  	error = BPF_CGROUP_RUN_PROG_SYSCTL(head, table, write, &kbuf, &count,
->  					   &iocb->ki_pos);
->  	if (error)
-> -		goto out_free_buf;
-> +		goto out;
->  
->  	/* careful: calling conventions are nasty here */
->  	error = table->proc_handler(table, write, kbuf, &count, &iocb->ki_pos);
-> +out:
-> +	sysctl_head_finish(head);
->  	if (error)
->  		goto out_free_buf;
->  
-> @@ -658,9 +667,6 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
->  	error = count;
->  out_free_buf:
->  	kvfree(kbuf);
-> -out:
-> -	sysctl_head_finish(head);
-> -
->  	return error;
->  }
->  
-> 
-> -- 
-> 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> -       bool res =3D tcp_try_coalesce(sk, to, from, fragstolen);
+> +       bool res =3D !(TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN) &&
+> +                  tcp_try_coalesce(sk, to, from, fragstolen);
+
+Please put the check in tcp_try_coalesce() itself.
+
+The receive queue callers can not hit this today (tcp_fin() purges
+the ofo queue, and tcp_rcv_state_process() drops anything at or after
+rcv_nxt in CLOSE_WAIT/CLOSING/LAST_ACK), but the check costs nothing
+there, and it keeps the rule "nothing coalesces after a FIN" in one
+place.
+
+Also, since TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN should almost never
+be true, it should come after the more relevant tests, just before
+skb_try_coalesce():
+
+        if (TCP_SKB_CB(from)->seq !=3D TCP_SKB_CB(to)->end_seq)
+                return false;
+
+        if (!tcp_skb_can_collapse_rx(to, from))
+                return false;
+
+        /* Nothing follows a FIN. */
+        if (unlikely(TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN))
+                return false;
+
+        if (!skb_try_coalesce(to, from, fragstolen, &delta))
+                return false;
+
+
+>
+>         /* In case tcp_drop_reason() is called later, update to->gso_segs=
+ */
+>         if (res) {
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index a7f9242f1e429..ef01768292fbc 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -1949,6 +1949,7 @@ enum skb_drop_reason tcp_add_backlog(struct sock *s=
+k, struct sk_buff *skb)
+>         thtail =3D (struct tcphdr *)tail->data;
+>
+>         if (TCP_SKB_CB(tail)->end_seq !=3D TCP_SKB_CB(skb)->seq ||
+> +           (TCP_SKB_CB(tail)->tcp_flags & TCPHDR_FIN) ||
+
+
+Same remark: please move this after the other tcp_flags tests, with a
+short comment:
+
+            /* Nothing follows a FIN, see tcp_try_coalesce() */
+            (TCP_SKB_CB(tail)->tcp_flags & TCPHDR_FIN) ||
+
+Checking only the tail is the right thing to do. It keeps the common
+case where the last data+FIN segment is merged onto a data tail,
+which happens on every connection close while the socket is owned by
+the user.
+
+Separately, tls_strp_load_anchor_with_queue() hits WARN_ON_ONCE() and
+returns without telling its caller, which then uses a stale frag_list.
+kTLS should probably not trust tcp_inq() that much, but this can be
+handled in a follow-up patch.
+
+Thanks.
+
+>             TCP_SKB_CB(tail)->ip_dsfield !=3D TCP_SKB_CB(skb)->ip_dsfield=
+ ||
+>             ((TCP_SKB_CB(tail)->tcp_flags |
+>               TCP_SKB_CB(skb)->tcp_flags) & (TCPHDR_SYN | TCPHDR_RST | TC=
+PHDR_URG)) ||
+> --
+> 2.43.0
