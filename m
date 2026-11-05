@@ -1,70 +1,196 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793884793;
-	b=00uUHmIAZfFaG8rFY/abWCbX37lBic5y+st0DO9LAX3nta5K/DGm8u17qfxxiWMPVRWS
-	 CmrxRQgp2pZwRWeQ5h7UPzYqgzNwxQAQT3GSl0fyRmIa2+bmVuAEHeCks1JG6H7/1Bg4E
-	 S3l+4mpjhNgTZwtYfVeOeCWliklLos8vEkmvB8xeuVanYzgQQJ3wSB7lO1t9jx2wWamfg
-	 j2n/ashXCnr2wm1hWr04Cgqt5cSSq+AIn8TCAoa7DOBH6/knMZwN74wnfWBu+S1yXNt0J
-	 ybZ6+aOSjMsA/7HZbQG8BA6dfN3k+3FULcwp2CD7sqR3BfalEw4yGgz56Bd+Ozf+J0A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793884793;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.8
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793884844;
+	b=DnDnN0XECxYQ0E9CtHa4pb2ucBgUGnUWGjbxyr55jlAv5ZZM1FC1JOtTkCFV66bNlV1j
+	 J/mfbyBGE0UsRB3EHEmJaDPHWeoga4OWVJwud151ORbxTaD5FNdKMvMOhxRZa0urJH8cy
+	 v9ryu7zwi3cjW67Ld3YtpboDEGpv5Px8Idp7LrXjaDNXuW3o2WdxMPtBfTBXqpRxCR073
+	 9lqX4Saz91uJe/G4NCELlR4li2vUZ0PX3D+hHrkXvncm5JQqW4gcT3U2VZ2qCOjFRTWEr
+	 fEEhI7PbUjD46iz3QVsV3mg26Q62CanQ+rwi9+rjQ/ES7T9Qz1M5+DzRrWI8wM3oVnA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793884844;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
-	bh=jOzcNOCXsZw9GBo68EteljZLCQUWx+mYfOI1+N6fGLw=;
-	b=FeFeKyp+BNAZ7slQZYhyjq/F0YVZPpaGHtkZbrAAW0dUao6A5Z1X4jEs2GE+XrKWzgAR
-	 3WDy3byEsMAH91Q5UMPOKSBE7iXEmytifO7G4G1TJqymRsvIlfr1Vt0rYzjKX7+PZpFUs
-	 JOiSSMTU6A50pfpgZ0WZcvc0wW5z6rUGYe77VrQf8SGG1E8ruoGbUs42jDL++1DAe4X0v
-	 dbYpqsxnBxm8fGFdrSRuSp7AcG1Zkw+bQ/78Cv1kN3XqVAQ22OCOU5aVSleS17uhGWTQ1
-	 LOGzkTJ3vWvD4uHlXzEsqkMbRU2SeQOSFVkfKJxZN3oKJTI9kyVxuiWZwEaQW5KmJCg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=lfWArwRN;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=1x85ET5mc1i2HLEFBf9uOg3USJS0vxv6/D5h2dTdn0Y=;
+	b=lqrxITDwFs3xPufxLCDZltthldtbFCuPdJ7hJerCz6XaUsq7f9KSm+tTaHW2SCt+ok8/
+	 gcBYm1MpwitEPTE09C5YuzheM0ui8wAt+HtJ+K1unghKpq93Do+bvsBqdHcK+eKz8rPJr
+	 012UoKmD1e4rvW1O++PIukSNbFK+p8mdQZYffw1aIEQCkrF0p5QAzXixQ83znm0oY3g8+
+	 lCWY51ri5WWUd8tbCngYSrMqVJnN/9tzmJxlZp/Vq4HGzU3jMovc4tbxUfBBe/CsLpd9j
+	 BdAq7ePrHzK/mykknHvABhgzIGTNDteFk2L9KRgWokPGlVORlkPO/oxLXDtKCvO8i5Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OEsGzSQH;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE93606A332;
-	Thu,  5 Nov 2026 13:19:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EE93606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CD2606A31B;
+	Thu,  5 Nov 2026 13:20:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24CD2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=lfWArwRN
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OEsGzSQH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793884793; x=1825420793;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=9kKNX21gIxuuwn3cG5eWlinoOGPTdfcBaKnMy7wtyTg=;
-  b=lfWArwRNTLrSR8g9th4criD9gsLifEchhJTzZcVWsYUKjI4LHG6QIYtI
-   pFuiSsJWSWxIXXnNK5XhmUfiwxgoMdZsrv0cfbGCebiSzzQ79f/H09RRu
-   kCIFc6iGst3qdaZM/88b7r/24CWWhi31y+Q8kqZxqr2+lxUMwcB+TktcE
-   xEFnpawaxceNJEgJdKFD3faxNazS3Dzb0xfdvO+mHtabQm3CyX7ez4Xb0
-   EuHsbVv2fpo7h9PJV4Mn+Lhx2/fuA2fiKjHHoNIItA4olrLi2ewgG2pcK
-   aD6MzZJllqjuvqfkD0Qyyb2VsqwyPLmsk7gFZHaJzK1ZwK/EYlWr5lEYf
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793884843; x=1825420843;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=1x85ET5mc1i2HLEFBf9uOg3USJS0vxv6/D5h2dTdn0Y=;
+  b=OEsGzSQHaRREPKmGIJILG3NntOPbZeczN6t5fmG0FIPkETaK4RvxzY23
+   M8b8YzJGgZl9BAtqQABPJ6ERkRXtfXMhRY5SNcDRSlcUzVl4aj36ucgvB
+   DDCP3fJlcTGlYL9IYTkGaQD41US7Csfy9saHCu05v89IanjG01LqakGUC
+   m4vyWSwHQ6q6mD26fC01bw6+uBvGNQ6oJ0xp0YXlA1iL0NmtDf2UOxJhU
+   C0hDvWGcCGtzEYa5Ti/1xP2ZHeMUA89f/8QDAfxYqgDWThuVe5T3UltEe
+   Sn11ihmFQYcvTaHZWIJgq3awdMWarQkPtMFTwfik07Vm/+4AvVuhf6q+R
    Q==;
-X-CSE-ConnectionGUID: Zs7CKJcjQVOoY6yduItvYA==
-X-CSE-MsgGUID: Nr1lq1vJRLmuP167nOZUjw==
+X-CSE-ConnectionGUID: 2mkfdBjUTAS/dokHRryWig==
+X-CSE-MsgGUID: T6fzJWtwTD+arxYNWDI2wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2557309"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="65110995"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 06:19:52 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Thu, 5 Nov 2026 06:19:52 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 5 Nov 2026 06:19:49 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Thu, 5 Nov 2026 14:19:36 +0100
-Subject: [PATCH net-next v3 2/5] net: sparx5: Add registers used by the
- port policer
+   d="scan'208";a="2557309"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 05:20:42 -0800
+X-CSE-ConnectionGUID: GE5Gfgw6QnaD+2DZzOBBzA==
+X-CSE-MsgGUID: xnmIIDrYTVqKa3iS1fkPeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7417629"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 05:20:41 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 05:20:41 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 5 Nov 2026 05:20:41 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.55) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 05:20:40 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mT/rrNZpR6UB/7i8K1p5GOMGPYARhUmkzrHCnNjHnbM65HpblGhTbcC9H2ELxx07cQpYPkcPSkmSYIy/fXl72kwxCkMlz8T6s/y1z9rxtzqyojF3uzaKeD527waCi4Jy7RzkWGOVyUeNtXLbMx0jMuvFfbLMnEI9ZVfl0H49bdA2KfnDLWYsHb2xAiz+kJ4QD7OUqtTC3wbd+jtoBl8xeKQl6uYRgVOsC2xzFtWknfjzrdjKn4v53bl+Fx4xGi/7/CkBqR+6k/th4gMbPFn3jN38wfpZZpr6U62KkgR65b7oVgS8uQ+x6Lwtqu3KUQPcfZoEyi0cWqpJBf1iXsA3hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1x85ET5mc1i2HLEFBf9uOg3USJS0vxv6/D5h2dTdn0Y=;
+ b=emY92l+EjNFXnV8/xrGmKidEKn14cnyB92cTV+vKpKjubVLbnLKEa4ze0TxgpH7wYiqOlfXHed3xjolPXvkvH3fxdhgOjUL/jQBVsB5Hvg+dmK7SOWxyqGw4amjD9pK2/kdw+CqgrY1uWrIWm1AwNG0FKOTvjjHToFYuVq2TQLVe3NzDSDVOTTfmdWYdLYTgWTZrYk8duoWQc/emUJMnwkO2+8tDySvacZUSl6yTEtbtQnno9GTCD71hOtBAYgLbRDzmTSPsxRpi8Cy0fEh+xzuFROaAK8h8LyvjGKiNGNptb5gvD0iS/doycItD489Az4fqwG5CPszlnivUkqATew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
+ by SN7PR11MB6947.namprd11.prod.outlook.com (2603:10b6:806:2aa::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Thu, 5 Nov 2026
+ 13:20:38 +0000
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::a2b9:8e8:c48b:ea31]) by IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::a2b9:8e8:c48b:ea31%5]) with mapi id 15.21.0569.011; Thu, 5 Nov 2026
+ 13:20:37 +0000
+From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
+To: "Keller, Jacob E" <jacob.e.keller@intel.com>, Simon Horman
+	<horms@kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kubalewski, Arkadiusz"
+	<arkadiusz.kubalewski@intel.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"Machnikowski, Maciej" <maciej.machnikowski@intel.com>, "Neustadter, Marc"
+	<marc.neustadter@intel.com>, "Temerkhanov, Sergey"
+	<sergey.temerkhanov@intel.com>, "Olech, Milena" <milena.olech@intel.com>
+Subject: RE: [PATCH iwl-net 1/2] ice: ptp: serialize E825 PHY timer start with
+ PTP lock and incval
+Thread-Topic: [PATCH iwl-net 1/2] ice: ptp: serialize E825 PHY timer start
+ with PTP lock and incval
+Thread-Index: AQHdTT3/mw0oX4rl5kuPy79D8beTq7bhGAuAgCg2T4CAFmfWAA==
+Date: Thu, 5 Nov 2026 13:20:37 +0000
+Message-ID: <IA1PR11MB6219BE8C90BA9A3BC9E2A9F192772@IA1PR11MB6219.namprd11.prod.outlook.com>
+References: <20260925222824.270640-1-grzegorz.nitka@intel.com>
+ <20260925222824.270640-2-grzegorz.nitka@intel.com>
+ <20260926170543.GA13925@horms.kernel.org>
+ <a71ec0bd-bbce-4801-b79e-8b7d648aba6c@intel.com>
+In-Reply-To: <a71ec0bd-bbce-4801-b79e-8b7d648aba6c@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|SN7PR11MB6947:EE_
+x-ms-office365-filtering-correlation-id: 01708580-dd05-4f99-5723-08df3b3f94ac
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|10067099003|22082099003|18002099003|38070700021|56012099006|11063799006|261028144727099003|261026140227099003|261022105027099003|261022075727099003|261102123227099003|4143699003|261021123027099003|261009223027099003|261021121427099003;
+x-microsoft-antispam-message-info: rzMCbH94WmNdcwtknawPocMJEsWQ74I5hWH9vI+8dMSNEKhfGeQ0e5tr5AZPf8uYOD3aqhpMXCIAFsmWVGv0QWI6oSIibRsmcOG7Nt8X0BwZbrAXavalGCgUl7gO6IVHSO02ta/q2VmFwSFrSF4G1hqfh0XaXi/SI1h8E9MGSKmoDgTk0xPDTuyID8HPInL+nKX7FbRf+1sZfLEPfusmK+cH0iB/yUKJM0kcAll2O6EACVVVYAQFB9ZlRm2BWRQz+WGC8VUtwNa5QmZ925H3jNJtiJMQN+C0cdys46Z0nZvkKP23uvDtvU8hJHcBwuLmIHw7J1ZoSvpSUH/KFyCubH3IF9x/ggv6DZ66T6iH9e8OFk91kXvJbpnb0nhgkWKyYP4h4ywfNao4oS8viThWSgIPNSlmzgLGfPr1LTLy+DwTsHTpn6TUjWi/OtK2CCWq7dVFcVfEHkQ0d+ShLBT4+KHIf2SZqz+gM40+9Q32ZTnMPf+lp5zNNLDqDRIOjRY7rm+lTc1K0zFoQH5sCnIi+Nh87Tu2avVETUEmlYAV8U1vE6uNXYgI1gfk6ZDw/jaGpwRFFTlpnlrOmnmCpoFBzTHad7+5yXwyH47/NHhZLaL8lKC0K+QUqIyM6cakzaYQSPYKoDHEJZCooJ/7JuH3Oq7cn/YSlmBQG1Z+le95wWwtFgz8aKchnuaVfLysOfRJkE5+ftvGHdbWh0lKfpHkixWSBiBQaFyWAYw1oJNDFRw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(10067099003)(22082099003)(18002099003)(38070700021)(56012099006)(11063799006)(261028144727099003)(261026140227099003)(261022105027099003)(261022075727099003)(261102123227099003)(4143699003)(261021123027099003)(261009223027099003)(261021121427099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZVBRdzdCb1h4eUxiditobVo2djVsTXhEMXZ2VkZwM09UeHJIOUVFREtLY05y?=
+ =?utf-8?B?RDlwVlJPZkNSRHJrUFEvUklWMGlocW42K05Dcm0wSTJpWmU3UWdLOUFDdVFt?=
+ =?utf-8?B?eG9UZHV3T05jUTdQbHdkWFhYNVNHRXlqMGRvM1NHUWszRU81cUdwamthZGVo?=
+ =?utf-8?B?OWVKdkkzSVNMWU5XOTN2NXRLY2Jqa3B5ajlJbVJjUitqenVCUkwzMFhmL210?=
+ =?utf-8?B?YUJBVTlxL2U5YUxKVUw5RlR6T3I3aHd4RVpTeUdtam1BVy9ELzdGMnR5MC9k?=
+ =?utf-8?B?RXJaVjJOdy84QlkxM2xUTWxEWU9jTXUyZVQybVZYV2dBRlVYd3FTV0FJTGps?=
+ =?utf-8?B?THRKb2pVTVM2Z3hYUWpwRGxkc1Y5Vmk1L0dDM1JJNGJ6Y09ET2lNSi9hVmtP?=
+ =?utf-8?B?Y09wWGZORkdEdjZ5M0Y3R21jYTBwUWc4R0pRQUM1ME5MT3lYQWIwWXVLSXEx?=
+ =?utf-8?B?M1pIV2FBS1VIWXdsVlRVTGQ0azl3YzhYQ0FKOXI1NW5KU0VwZnBDZUI2RGp5?=
+ =?utf-8?B?aG1KL1dpZkhYa05wSUM0TkhITWJYSlA0cWdYZlBBVjN1YzdZNDNGSmIxQmpF?=
+ =?utf-8?B?ZzMvMithdUcwNEw1emtlbk1WYkVOVEpMaVFIWkZsdnFRWlhnZXlZbmQxZUJY?=
+ =?utf-8?B?Rjk4bk4xazRQM1lTcmhxNHJpUFZIMVlBRFA4YXl2MUxsMERwWVBzdU5FZmp5?=
+ =?utf-8?B?aStEOEI0S1V3eG9iZlFMOWYvbmFkc3c4UWRmV1pWQmZkWElMd1gvNVR1OXdC?=
+ =?utf-8?B?RlhHdHpxUzVHRm9vMGlFSllOaVFldnhiejdOa3pmMFFyWUFrVlJQQ09ZRmlz?=
+ =?utf-8?B?ZWJuKzlRR1g1bURVMGxjdUFHTnRXblhtMFFzQVNnZjRVUVZjbzA0WnA5L1I4?=
+ =?utf-8?B?N0RnU1dVRmJxZGd4N0xEQzROU29teThHTXYxZHp5L3RQYnU0NElYVFhoS2Nn?=
+ =?utf-8?B?QXNlaUNjTmw0ZVNzN0tzR3NPYmRKMmpSU080WHBaTzE5VzU4Y2dGUEJpdnQ3?=
+ =?utf-8?B?eG1KM0tJcDVHcjdkYTVZNTZXRVNGWEtKa3I3K1dSdERqT1F0ejk5UkxvVHRW?=
+ =?utf-8?B?UGZwT0kwc2NiTEgvSC9XV3dnTk42KzhpZHlFOEVXeXErUlMvOFIwTUtXTXov?=
+ =?utf-8?B?a0tzY3Y2blBYNFptdDJLcG40ZktidlYzVXppUXc4QWUyYkVGdjZBQzF5azFS?=
+ =?utf-8?B?eW82U0FSTWUxMDdQb0UrbCtYTk5Wc3Z4ZXFZVzh4YTFVckNBSTR6dDc5V3BM?=
+ =?utf-8?B?MlhBV2N4aGk1d1hGazMrSDJvQ2N0N2o5WVFmZWFlbEU4ejdSK2MrWkVmZDYy?=
+ =?utf-8?B?bWlNeUlpbVlINEFMaElObmNNRk5DUHBYanpjdWJic1IwRk5kV0NvckIwcGNE?=
+ =?utf-8?B?aC9ndmVwdWRuZ1VYTkJuTUVNZ0hzU2JMQktMbHFydUJmL2JIN3FaTDdoVjFL?=
+ =?utf-8?B?cERqZjJLZ2RuMWNKR2VGWC9nTHRDMFNPUTdEM2w4YmNxdEp3cFRuR0VoMk51?=
+ =?utf-8?B?cXRaTDB4WHJmSHc4Z09qb1JKRHFsNmF2UnQwQk9nT3BPcTJvNnBzdC9XeEJs?=
+ =?utf-8?B?Y0V5TVc4cEJKbXZFYVFoUkJtbUQ0N1YxWS9VdnVPa1ZEekM2OGNtdGNpZGtJ?=
+ =?utf-8?B?SzEvUjhIYVRJdkFsTmZEeG8vY3BJd01qemVoNUpzKzdTZjI1enVnRE0yUmVF?=
+ =?utf-8?B?NzJRV005ZzIxOXlUUkZmejFENlZJMTZ6eGtrVEZZU0pPalRPSDd5SFM2OGpt?=
+ =?utf-8?B?MzlGK1pvcTVlSVdaOGpKUUZoK2p0T1BkQ203TlpoK3VJNnhYb2VENGVhcWY3?=
+ =?utf-8?B?K00yOVpYYm9lT1E3VmZKenVYOVdHcE9BY2Fnc2NJbHBjVTBVcDZSbHJLZzlk?=
+ =?utf-8?B?MkdwYjlPV1dmYVoyU0cwZlJ3SC84L0hQekpodklTSUxxNnd5S2hWZWI2NHdw?=
+ =?utf-8?B?UHZUTUEvUEI4U3NFSGhpR2xoc3RsdkJpbHVBbjMvQkVuZnNUTXJJU0d6R1Vv?=
+ =?utf-8?B?NVJpQmRDZmV4MFh2aEV1anF5dm1yNlh0azVsbkE3Y1Qvckg2QkFwNG9lOTdP?=
+ =?utf-8?B?T0lVRTlQVXFDaGtWMENrbnNXSmJabWE5bW1CMDE4eWlmeStBMzhVWXQrVFcv?=
+ =?utf-8?B?cktWbDZnMmxWWTVnWTNsNjBrMXh0aGo0VldjbGJzLzFaN05lbEp0cndPRUlo?=
+ =?utf-8?B?b2JiYTBGOE9LM0pUR1hnYW1tRXluN3FnREZuN2NVdkwwd0h5QlRHdGozSlZI?=
+ =?utf-8?B?emtucFI0TUI3VjRyNG1TUE15RzhmNFNxUGllZTlQelZzSXEvVEJ0Z2RTMExR?=
+ =?utf-8?B?aDZYMmEyNzllUUIwMU5ZMEIyRURKK3FSWGVDYjM3bkNUSEdNeEIrQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,281 +200,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-2-b45a3a26bed5@microchip.com>
-References: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
-In-Reply-To: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>
-CC: <robert.marko@sartura.hr>, <netdev@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: b4 0.14.3
+X-Exchange-RoutingPolicyChecked: Kt4InSrKv8ckhN5BK+pksrbc7A0E+3/N9kQgpBZjXAvrff7JDPXVn06QTjFIymZvli+240Kt6xXeg7C9AgSgYcQJxBvg1mlluYlDrStqxuWbpRNB75ot1eGHfxr6Ri1n7iPTaNrGkZIFZ9bJxoJ2etqsy0E+3cTyZ5jVvjNdzFe7qZ82+zt8qpAwjPb0VmJlZq3WIF0jFRzpGQ9h34PXLchT9pgaUmYGv/Ne/ZoEMNv6TMhGbD3W3OC8fQ6KCmcNRe2I2zCJCS72ykzyvKtYLfaBEc3nplZCDXkXaoQVVzsKgDPlKs5udveMMcL3YzwMKJJBXP/lV6IsbXxq1oPxng==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01708580-dd05-4f99-5723-08df3b3f94ac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2026 13:20:37.2635
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7dL0D5hBwGOnuovswRxlMJ4GsulSCZ9kbmWo5kXhAAy4vFBPC+kzGKmmQhL4HkXu7mZL+kIYQixC77N/Q30J5+lreiTD4wSpawBmUdN3oMQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6947
+X-OriginatorOrg: intel.com
 
-Add the registers used to configure the ingress port policers and to
-read back their statistics, on both sparx5 and lan969x: the
-POL_PORT_CFG and POL_PORT_CTRL groups of ANA_AC_POL, the shared
-POL_ALL_CFG register, and the MSB part of the ANA_AC port statistics
-counters.
-
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- .../microchip/sparx5/lan969x/lan969x_regs.c        |   7 ++
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 105 +++++++++++++++++++++
- .../net/ethernet/microchip/sparx5/sparx5_regs.c    |   7 ++
- .../net/ethernet/microchip/sparx5/sparx5_regs.h    |   7 ++
- 4 files changed, 126 insertions(+)
-
-diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_regs.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_regs.c
-index 175fcf8bdd61c..5650550d4294d 100644
---- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_regs.c
-+++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_regs.c
-@@ -28,6 +28,9 @@ const unsigned int lan969x_rcnt[RCNT_LAST] = {
- 	[RC_ANA_AC_OWN_UPSID] = 1,
- 	[RC_ANA_ACL_VCAP_S2_CFG] = 35,
- 	[RC_ANA_ACL_OWN_UPSID] = 1,
-+	[RC_ANA_AC_POL_PORT_THRES_CFG_0] = 140,
-+	[RC_ANA_AC_POL_PORT_THRES_CFG_1] = 140,
-+	[RC_ANA_AC_POL_PORT_RATE_CFG] = 140,
- 	[RC_ANA_CL_OWN_UPSID] = 1,
- 	[RC_ANA_L2_OWN_UPSID] = 1,
- 	[RC_ASM_PORT_CFG] = 32,
-@@ -70,6 +73,8 @@ const unsigned int lan969x_gaddr[GADDR_LAST] = {
- 	[GA_ANA_ACL_CNT_B] = 4096,
- 	[GA_ANA_ACL_STICKY] = 10852,
- 	[GA_ANA_AC_POL_POL_ALL_CFG] = 17504,
-+	[GA_ANA_AC_POL_POL_PORT_CFG] = 0,
-+	[GA_ANA_AC_POL_POL_PORT_CTRL] = 16384,
- 	[GA_ANA_AC_POL_COMMON_BDLB] = 19464,
- 	[GA_ANA_AC_POL_COMMON_BUM_SLB] = 19472,
- 	[GA_ANA_AC_SDLB_LBGRP_TBL] = 31788,
-@@ -121,6 +126,7 @@ const unsigned int lan969x_gcnt[GCNT_LAST] = {
- 	[GC_ANA_ACL_KEY_SEL] = 99,
- 	[GC_ANA_ACL_CNT_A] = 1024,
- 	[GC_ANA_ACL_CNT_B] = 1024,
-+	[GC_ANA_AC_POL_POL_PORT_CTRL] = 35,
- 	[GC_ANA_AC_SDLB_LBGRP_TBL] = 5,
- 	[GC_ANA_AC_SDLB_LBSET_TBL] = 496,
- 	[GC_ANA_CL_PORT] = 35,
-@@ -186,6 +192,7 @@ const unsigned int lan969x_fsize[FSIZE_LAST] = {
- 	[FW_ANA_AC_TSN_SF_STATUS_TSN_SFID] = 8,
- 	[FW_ANA_AC_SG_ACCESS_CTRL_SGID] = 8,
- 	[FW_ANA_AC_PORT_SGE_CFG_MASK] = 17,
-+	[FW_ANA_AC_POL_PORT_RATE_CFG_PORT_RATE] = 19,
- 	[FW_ANA_AC_SDLB_XLB_START_LBSET_START] = 9,
- 	[FW_ANA_AC_SDLB_LBGRP_MISC_THRES_SHIFT] = 3,
- 	[FW_ANA_AC_SDLB_LBGRP_STATE_TBL_PUP_LBSET_NEXT] = 9,
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-index 219c7f0e516e9..1bf7dabf622e6 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-@@ -554,6 +554,17 @@ extern const struct sparx5_regs *regs;
- 	__REG(TARGET_ANA_AC, 0, 1, regs->gaddr[GA_ANA_AC_STAT_CNT_CFG_PORT], g,\
- 	      regs->gcnt[GC_ANA_AC_STAT_CNT_CFG_PORT], 64, 20, r, 4, 4)
- 
-+/* ANA_AC:STAT_CNT_CFG_PORT:STAT_MSB_CNT */
-+#define ANA_AC_PORT_STAT_MSB_CNT(g, r)                                         \
-+	__REG(TARGET_ANA_AC, 0, 1, regs->gaddr[GA_ANA_AC_STAT_CNT_CFG_PORT], g,\
-+	      regs->gcnt[GC_ANA_AC_STAT_CNT_CFG_PORT], 64, 36, r, 4, 4)
-+
-+#define ANA_AC_PORT_STAT_MSB_CNT_MSB_CNT         GENMASK(7, 0)
-+#define ANA_AC_PORT_STAT_MSB_CNT_MSB_CNT_SET(x)\
-+	FIELD_PREP(ANA_AC_PORT_STAT_MSB_CNT_MSB_CNT, x)
-+#define ANA_AC_PORT_STAT_MSB_CNT_MSB_CNT_GET(x)\
-+	FIELD_GET(ANA_AC_PORT_STAT_MSB_CNT_MSB_CNT, x)
-+
- /* ANA_AC:STAT_GLOBAL_CFG_ACL:GLOBAL_CNT_FRM_TYPE_CFG */
- #define ANA_AC_ACL_GLOBAL_CNT_FRM_TYPE_CFG(r)                                  \
- 	__REG(TARGET_ANA_AC, 0, 1, regs->gaddr[GA_ANA_AC_STAT_GLOBAL_CFG_ACL], \
-@@ -938,6 +949,35 @@ extern const struct sparx5_regs *regs;
- #define ANA_ACL_SEC_LOOKUP_STICKY_SEC_TYPE_MAC_ETYPE_STICKY_GET(x)\
- 	FIELD_GET(ANA_ACL_SEC_LOOKUP_STICKY_SEC_TYPE_MAC_ETYPE_STICKY, x)
- 
-+/* ANA_AC_POL:POL_ALL_CFG:POL_ALL_CFG */
-+#define ANA_AC_POL_ALL_CFG                                                     \
-+	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_ALL_CFG],\
-+	      0, 1, 1160, 1144, 0, 1, 4)
-+
-+#define ANA_AC_POL_ALL_CFG_PORT_FC_ENA            BIT(14)
-+#define ANA_AC_POL_ALL_CFG_PORT_FC_ENA_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_ALL_CFG_PORT_FC_ENA, x)
-+#define ANA_AC_POL_ALL_CFG_PORT_FC_ENA_GET(x)\
-+	FIELD_GET(ANA_AC_POL_ALL_CFG_PORT_FC_ENA, x)
-+
-+#define ANA_AC_POL_ALL_CFG_ACL_FORCE_INIT          BIT(4)
-+#define ANA_AC_POL_ALL_CFG_ACL_FORCE_INIT_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_ALL_CFG_ACL_FORCE_INIT, x)
-+#define ANA_AC_POL_ALL_CFG_ACL_FORCE_INIT_GET(x)\
-+	FIELD_GET(ANA_AC_POL_ALL_CFG_ACL_FORCE_INIT, x)
-+
-+#define ANA_AC_POL_ALL_CFG_LPORT_POLICE_ENA        BIT(1)
-+#define ANA_AC_POL_ALL_CFG_LPORT_POLICE_ENA_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_ALL_CFG_LPORT_POLICE_ENA, x)
-+#define ANA_AC_POL_ALL_CFG_LPORT_POLICE_ENA_GET(x)\
-+	FIELD_GET(ANA_AC_POL_ALL_CFG_LPORT_POLICE_ENA, x)
-+
-+#define ANA_AC_POL_ALL_CFG_FORCE_INIT              BIT(0)
-+#define ANA_AC_POL_ALL_CFG_FORCE_INIT_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_ALL_CFG_FORCE_INIT, x)
-+#define ANA_AC_POL_ALL_CFG_FORCE_INIT_GET(x)\
-+	FIELD_GET(ANA_AC_POL_ALL_CFG_FORCE_INIT, x)
-+
- /* ANA_AC_POL:POL_ALL_CFG:POL_UPD_INT_CFG */
- #define ANA_AC_POL_UPD_INT_CFG                                                 \
- 	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_ALL_CFG], \
-@@ -949,6 +989,71 @@ extern const struct sparx5_regs *regs;
- #define ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT_GET(x)\
- 	FIELD_GET(ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT, x)
- 
-+/* ANA_AC_POL:POL_PORT_CFG:POL_PORT_THRES_CFG_0 */
-+#define ANA_AC_POL_PORT_THRES_CFG_0(r)                                         \
-+	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_PORT_CFG],\
-+	      0, 1, 8192, 0, r, regs->rcnt[RC_ANA_AC_POL_PORT_THRES_CFG_0], 4)
-+
-+#define ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0   GENMASK(5, 0)
-+#define ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0, x)
-+#define ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0_GET(x)\
-+	FIELD_GET(ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0, x)
-+
-+/* ANA_AC_POL:POL_PORT_CFG:POL_PORT_THRES_CFG_1 */
-+#define ANA_AC_POL_PORT_THRES_CFG_1(r)                                         \
-+	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_PORT_CFG],\
-+	      0, 1, 8192, 2048, r,\
-+	      regs->rcnt[RC_ANA_AC_POL_PORT_THRES_CFG_1], 4)
-+
-+#define ANA_AC_POL_PORT_THRES_CFG_1_PORT_THRES1   GENMASK(5, 0)
-+#define ANA_AC_POL_PORT_THRES_CFG_1_PORT_THRES1_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_PORT_THRES_CFG_1_PORT_THRES1, x)
-+#define ANA_AC_POL_PORT_THRES_CFG_1_PORT_THRES1_GET(x)\
-+	FIELD_GET(ANA_AC_POL_PORT_THRES_CFG_1_PORT_THRES1, x)
-+
-+/* ANA_AC_POL:POL_PORT_CFG:POL_PORT_RATE_CFG */
-+#define ANA_AC_POL_PORT_RATE_CFG(r)                                            \
-+	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_PORT_CFG],\
-+	      0, 1, 8192, 4096, r, regs->rcnt[RC_ANA_AC_POL_PORT_RATE_CFG], 4)
-+
-+#define ANA_AC_POL_PORT_RATE_CFG_PORT_RATE\
-+	GENMASK(regs->fsize[FW_ANA_AC_POL_PORT_RATE_CFG_PORT_RATE] + 0 - 1, 0)
-+#define ANA_AC_POL_PORT_RATE_CFG_PORT_RATE_SET(x)\
-+	spx5_field_prep(ANA_AC_POL_PORT_RATE_CFG_PORT_RATE, x)
-+#define ANA_AC_POL_PORT_RATE_CFG_PORT_RATE_GET(x)\
-+	spx5_field_get(ANA_AC_POL_PORT_RATE_CFG_PORT_RATE, x)
-+
-+/* ANA_AC_POL:POL_PORT_CTRL:POL_PORT_GAP */
-+#define ANA_AC_POL_PORT_GAP(g)                                                 \
-+	__REG(TARGET_ANA_AC_POL, 0, 1,\
-+	      regs->gaddr[GA_ANA_AC_POL_POL_PORT_CTRL], g,                     \
-+	      regs->gcnt[GC_ANA_AC_POL_POL_PORT_CTRL], 32, 0, 0, 1, 4)
-+
-+#define ANA_AC_POL_PORT_GAP_PORT_PIPELINE_PT       GENMASK(11, 7)
-+#define ANA_AC_POL_PORT_GAP_PORT_PIPELINE_PT_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_PORT_GAP_PORT_PIPELINE_PT, x)
-+#define ANA_AC_POL_PORT_GAP_PORT_PIPELINE_PT_GET(x)\
-+	FIELD_GET(ANA_AC_POL_PORT_GAP_PORT_PIPELINE_PT, x)
-+
-+#define ANA_AC_POL_PORT_GAP_GAP_VALUE              GENMASK(6, 0)
-+#define ANA_AC_POL_PORT_GAP_GAP_VALUE_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_PORT_GAP_GAP_VALUE, x)
-+#define ANA_AC_POL_PORT_GAP_GAP_VALUE_GET(x)\
-+	FIELD_GET(ANA_AC_POL_PORT_GAP_GAP_VALUE, x)
-+
-+/* ANA_AC_POL:POL_PORT_CTRL:POL_PORT_CFG */
-+#define ANA_AC_POL_PORT_CFG(g, r)                                              \
-+	__REG(TARGET_ANA_AC_POL, 0, 1,\
-+	      regs->gaddr[GA_ANA_AC_POL_POL_PORT_CTRL], g,                     \
-+	      regs->gcnt[GC_ANA_AC_POL_POL_PORT_CTRL], 32, 4, r, 4, 4)
-+
-+#define ANA_AC_POL_PORT_CFG_TRAFFIC_TYPE_MASK      GENMASK(7, 0)
-+#define ANA_AC_POL_PORT_CFG_TRAFFIC_TYPE_MASK_SET(x)\
-+	FIELD_PREP(ANA_AC_POL_PORT_CFG_TRAFFIC_TYPE_MASK, x)
-+#define ANA_AC_POL_PORT_CFG_TRAFFIC_TYPE_MASK_GET(x)\
-+	FIELD_GET(ANA_AC_POL_PORT_CFG_TRAFFIC_TYPE_MASK, x)
-+
- /* ANA_AC_POL:COMMON_BDLB:DLB_CTRL */
- #define ANA_AC_POL_BDLB_DLB_CTRL                                               \
- 	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_COMMON_BDLB], \
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_regs.c b/drivers/net/ethernet/microchip/sparx5/sparx5_regs.c
-index 75c1bd4f0053c..ce5f0bbf0e65b 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_regs.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_regs.c
-@@ -28,6 +28,9 @@ const unsigned int sparx5_rcnt[RCNT_LAST] = {
- 	[RC_ANA_AC_OWN_UPSID] = 3,
- 	[RC_ANA_ACL_VCAP_S2_CFG] = 70,
- 	[RC_ANA_ACL_OWN_UPSID] = 3,
-+	[RC_ANA_AC_POL_PORT_THRES_CFG_0] = 280,
-+	[RC_ANA_AC_POL_PORT_THRES_CFG_1] = 280,
-+	[RC_ANA_AC_POL_PORT_RATE_CFG] = 280,
- 	[RC_ANA_CL_OWN_UPSID] = 3,
- 	[RC_ANA_L2_OWN_UPSID] = 3,
- 	[RC_ASM_PORT_CFG] = 67,
-@@ -70,6 +73,8 @@ const unsigned int sparx5_gaddr[GADDR_LAST] = {
- 	[GA_ANA_ACL_CNT_B] = 16384,
- 	[GA_ANA_ACL_STICKY] = 36408,
- 	[GA_ANA_AC_POL_POL_ALL_CFG] = 75968,
-+	[GA_ANA_AC_POL_POL_PORT_CFG] = 65536,
-+	[GA_ANA_AC_POL_POL_PORT_CTRL] = 73728,
- 	[GA_ANA_AC_POL_COMMON_BDLB] = 79048,
- 	[GA_ANA_AC_POL_COMMON_BUM_SLB] = 79056,
- 	[GA_ANA_AC_SDLB_LBGRP_TBL] = 295468,
-@@ -121,6 +126,7 @@ const unsigned int sparx5_gcnt[GCNT_LAST] = {
- 	[GC_ANA_ACL_KEY_SEL] = 134,
- 	[GC_ANA_ACL_CNT_A] = 4096,
- 	[GC_ANA_ACL_CNT_B] = 4096,
-+	[GC_ANA_AC_POL_POL_PORT_CTRL] = 70,
- 	[GC_ANA_AC_SDLB_LBGRP_TBL] = 10,
- 	[GC_ANA_AC_SDLB_LBSET_TBL] = 4616,
- 	[GC_ANA_CL_PORT] = 70,
-@@ -186,6 +192,7 @@ const unsigned int sparx5_fsize[FSIZE_LAST] = {
- 	[FW_ANA_AC_TSN_SF_STATUS_TSN_SFID] = 10,
- 	[FW_ANA_AC_SG_ACCESS_CTRL_SGID] = 10,
- 	[FW_ANA_AC_PORT_SGE_CFG_MASK] = 16,
-+	[FW_ANA_AC_POL_PORT_RATE_CFG_PORT_RATE] = 20,
- 	[FW_ANA_AC_SDLB_XLB_START_LBSET_START] = 13,
- 	[FW_ANA_AC_SDLB_LBGRP_MISC_THRES_SHIFT] = 5,
- 	[FW_ANA_AC_SDLB_LBGRP_STATE_TBL_PUP_LBSET_NEXT] = 13,
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_regs.h
-index 97d496ebb7508..17abaa5798cbe 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_regs.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_regs.h
-@@ -36,6 +36,9 @@ enum sparx5_rcnt_enum {
- 	RC_ANA_AC_OWN_UPSID,
- 	RC_ANA_ACL_VCAP_S2_CFG,
- 	RC_ANA_ACL_OWN_UPSID,
-+	RC_ANA_AC_POL_PORT_THRES_CFG_0,
-+	RC_ANA_AC_POL_PORT_THRES_CFG_1,
-+	RC_ANA_AC_POL_PORT_RATE_CFG,
- 	RC_ANA_CL_OWN_UPSID,
- 	RC_ANA_L2_OWN_UPSID,
- 	RC_ASM_PORT_CFG,
-@@ -79,6 +82,8 @@ enum sparx5_gaddr_enum {
- 	GA_ANA_ACL_CNT_B,
- 	GA_ANA_ACL_STICKY,
- 	GA_ANA_AC_POL_POL_ALL_CFG,
-+	GA_ANA_AC_POL_POL_PORT_CFG,
-+	GA_ANA_AC_POL_POL_PORT_CTRL,
- 	GA_ANA_AC_POL_COMMON_BDLB,
- 	GA_ANA_AC_POL_COMMON_BUM_SLB,
- 	GA_ANA_AC_SDLB_LBGRP_TBL,
-@@ -131,6 +136,7 @@ enum sparx5_gcnt_enum {
- 	GC_ANA_ACL_KEY_SEL,
- 	GC_ANA_ACL_CNT_A,
- 	GC_ANA_ACL_CNT_B,
-+	GC_ANA_AC_POL_POL_PORT_CTRL,
- 	GC_ANA_AC_SDLB_LBGRP_TBL,
- 	GC_ANA_AC_SDLB_LBSET_TBL,
- 	GC_ANA_CL_PORT,
-@@ -199,6 +205,7 @@ enum sparx5_fsize_enum {
- 	FW_ANA_AC_TSN_SF_STATUS_TSN_SFID,
- 	FW_ANA_AC_SG_ACCESS_CTRL_SGID,
- 	FW_ANA_AC_PORT_SGE_CFG_MASK,
-+	FW_ANA_AC_POL_PORT_RATE_CFG_PORT_RATE,
- 	FW_ANA_AC_SDLB_XLB_START_LBSET_START,
- 	FW_ANA_AC_SDLB_LBGRP_MISC_THRES_SHIFT,
- 	FW_ANA_AC_SDLB_LBGRP_STATE_TBL_PUP_LBSET_NEXT,
-
--- 
-2.34.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2VsbGVyLCBKYWNvYiBF
+IDxqYWNvYi5lLmtlbGxlckBpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBPY3RvYmVyIDIy
+LCAyMDI2IDk6MTAgQU0NCj4gVG86IFNpbW9uIEhvcm1hbiA8aG9ybXNAa2VybmVsLm9yZz47IE5p
+dGthLCBHcnplZ29yeg0KPiA8Z3J6ZWdvcnoubml0a2FAaW50ZWwuY29tPg0KPiBDYzogaW50ZWwt
+d2lyZWQtbGFuQGxpc3RzLm9zdW9zbC5vcmc7IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4
+LQ0KPiBrZXJuZWxAdmdlci5rZXJuZWwub3JnOyByaWNoYXJkY29jaHJhbkBnbWFpbC5jb207DQo+
+IGFuZHJldytuZXRkZXZAbHVubi5jaDsgS2l0c3plbCwgUHJ6ZW15c2xhdw0KPiA8cHJ6ZW15c2xh
+dy5raXRzemVsQGludGVsLmNvbT47IE5ndXllbiwgQW50aG9ueSBMDQo+IDxhbnRob255Lmwubmd1
+eWVuQGludGVsLmNvbT47IEt1YmFsZXdza2ksIEFya2FkaXVzeg0KPiA8YXJrYWRpdXN6Lmt1YmFs
+ZXdza2lAaW50ZWwuY29tPjsgZGF2ZW1AZGF2ZW1sb2Z0Lm5ldDsNCj4gZWR1bWF6ZXRAZ29vZ2xl
+LmNvbTsgTWFjaG5pa293c2tpLCBNYWNpZWoNCj4gPG1hY2llai5tYWNobmlrb3dza2lAaW50ZWwu
+Y29tPjsgTmV1c3RhZHRlciwgTWFyYw0KPiA8bWFyYy5uZXVzdGFkdGVyQGludGVsLmNvbT47IFRl
+bWVya2hhbm92LCBTZXJnZXkNCj4gPHNlcmdleS50ZW1lcmtoYW5vdkBpbnRlbC5jb20+OyBPbGVj
+aCwgTWlsZW5hIDxtaWxlbmEub2xlY2hAaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENI
+IGl3bC1uZXQgMS8yXSBpY2U6IHB0cDogc2VyaWFsaXplIEU4MjUgUEhZIHRpbWVyIHN0YXJ0IHdp
+dGgNCj4gUFRQIGxvY2sgYW5kIGluY3ZhbA0KPiANCj4gT24gOS8yNi8yMDI2IDEwOjA1IEFNLCBT
+aW1vbiBIb3JtYW4gd3JvdGU6DQo+ID4gT24gU2F0LCBTZXAgMjYsIDIwMjYgYXQgMTI6Mjg6MjNB
+TSArMDIwMCwgR3J6ZWdvcnogTml0a2Egd3JvdGU6DQo+ID4+IEZyb206IE1hY2llayBNYWNobmlr
+b3dza2kgPG1hY2llai5tYWNobmlrb3dza2lAaW50ZWwuY29tPg0KPiA+Pg0KPiA+PiBpY2Vfc3Rh
+cnRfcGh5X3RpbWVyX2V0aDU2ZygpIHByb2dyYW1tZWQgdGhlIFBIWSBpbmNyZW1lbnQgdmFsdWUg
+YW5kDQo+ID4+IHBlcmZvcm1lZCB0aGUgUEhZLXRvLVBIQyBwaGFzZSBzeW5jaHJvbml6YXRpb24g
+aW4gdHdvIHNlcGFyYXRlIFBUUA0KPiA+PiBzZW1hcGhvcmUgY3JpdGljYWwgc2VjdGlvbnMsIGFu
+ZCB0b3VjaGVkIHRoZSBzaGFyZWQgc291cmNlIGNvbW1hbmQNCj4gPj4gcmVnaXN0ZXIgKEdMVFNZ
+Tl9DTUQgdmlhIGljZV9wdHBfc3JjX2NtZCgpKSBhbmQgcmVhZCB0aGUgc291cmNlIGluY3ZhbA0K
+PiA+PiBiZWZvcmUgYWNxdWlyaW5nIHRoZSBzZW1hcGhvcmUgYXQgYWxsLg0KPiA+Pg0KPiA+PiBC
+ZWNhdXNlIEdMVFNZTl9DTUQgaXMgYSBzaW5nbGUgZ2xvYmFsIHJlZ2lzdGVyIGxhdGNoZWQgZm9y
+IHRoZSBzb3VyY2UNCj4gPj4gdGltZXIgYW5kIGFsbCBQSFkgcG9ydHMgYnkgR0xUU1lOX0NNRF9T
+WU5DLCBhIGNvbmN1cnJlbnQgYWRqdGltZQ0KPiAoc21hbGwNCj4gPj4gb2Zmc2V0LCA8PSBTMzJf
+TUFYKSBvciBhZGpmaW5lIGNvdWxkIGNsb2JiZXIgdGhlIHNvdXJjZSBjb21tYW5kDQo+IGJldHdl
+ZW4NCj4gPj4gdGhlIGluY3ZhbC1pbml0IGFuZCB0aGUgcGhhc2Utc3luYyBzdGVwcy4gSW4gdGhl
+IHdvcnN0IGNhc2UgdGhlIHNvdXJjZQ0KPiA+PiB0aW1lciBjb21tYW5kIHdyaXR0ZW4gYnkgaWNl
+X3B0cF9hZGpfY2xvY2soKSAoSUNFX1BUUF9BREpfVElNRSkgd2FzDQo+ID4+IG92ZXJ3cml0dGVu
+IGJ5IHRoZSB1bmxvY2tlZCBJQ0VfUFRQX05PUCBmcm9tDQo+IGljZV9zdGFydF9waHlfdGltZXJf
+ZXRoNTZnKCksDQo+ID4+IHNvIHRoZSBhZGp1c3RtZW50IHdhcyBhcHBsaWVkIHRvIHRoZSBQSFkg
+cG9ydHMgYnV0IG5vdCB0byB0aGUgUEhDLiBUaGlzDQo+ID4+IGxlZnQgdGhlIEU4MjUgUEhZIGNs
+b2NrIHBlcm1hbmVudGx5IG9mZnNldCBmcm9tIHRoZSBQSEMsIHNob3dpbmcgdXAgYXMNCj4gYW4N
+Cj4gPj4gaW50ZXJtaXR0ZW50IGNsb2NrIGRyaWZ0Lg0KPiA+Pg0KPiA+PiBIb2xkIHRoZSBQVFAg
+c2VtYXBob3JlIGFjcm9zcyB0aGUgZW50aXJlIHN0YXJ0IHNlcXVlbmNlOiBhY3F1aXJlIGl0DQo+
+ID4+IGJlZm9yZSB0aGUgZmlyc3Qgc2hhcmVkLXJlZ2lzdGVyIGFjY2VzcyAoaWNlX3B0cF9zcmNf
+Y21kKCkpLCBrZWVwIGl0IGhlbGQNCj4gPj4gdGhyb3VnaCB0aGUgaW5jdmFsIHJlYWQsIFBIWSBp
+bmN2YWwgaW5pdCwgYW5kIHRoZSBwaGFzZSBzeW5jaHJvbml6YXRpb24sDQo+ID4+IHRoZW4gcmVs
+ZWFzZSBpdCBvbmNlLiBTaW5jZSB0aGUgaGFyZHdhcmUgc2VtYXBob3JlIGlzIG5vdCByZWN1cnNp
+dmUsIHNwbGl0DQo+ID4+IHRoZSBwaGFzZS1zeW5jIGhlbHBlciBpbnRvIGljZV9zeW5jX3BoeV90
+aW1lcl9ldGg1NmdfdW5sb2NrZWQoKSwgd2hpY2gNCj4gPj4gYXNzdW1lcyB0aGUgY2FsbGVyIGFs
+cmVhZHkgaG9sZHMgdGhlIGxvY2ssIGFuZCBjYWxsIGl0IGRpcmVjdGx5IGZyb20NCj4gPj4gaWNl
+X3N0YXJ0X3BoeV90aW1lcl9ldGg1NmcoKS4gVGhlIGxvY2tpbmcgd3JhcHBlciBpcyByZW1vdmVk
+IGFzIGl0IG5vDQo+ID4+IGxvbmdlciBoYXMgYW55IGNhbGxlcnMuDQo+ID4+DQo+ID4+IEZpeGVz
+OiA3ODFmZjhmMmQ1NzUgKCJpY2U6IHB0cDogc2VyaWFsaXplIEU4MjUgUEhZIHRpbWVyIHN0YXJ0
+IHdpdGggUFRQDQo+IGxvY2siKQ0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBNYWNpZWsgTWFjaG5pa293
+c2tpIDxtYWNpZWoubWFjaG5pa293c2tpQGludGVsLmNvbT4NCj4gPj4gQ28tZGV2ZWxvcGVkLWJ5
+OiBHcnplZ29yeiBOaXRrYSA8Z3J6ZWdvcnoubml0a2FAaW50ZWwuY29tPg0KPiA+PiBTaWduZWQt
+b2ZmLWJ5OiBHcnplZ29yeiBOaXRrYSA8Z3J6ZWdvcnoubml0a2FAaW50ZWwuY29tPg0KPiA+PiBT
+dWdnZXN0ZWQtYnk6IE1hcmMgTmV1c3RhZHRlciA8bWFyYy5uZXVzdGFkdGVyQGludGVsLmNvbT4N
+Cj4gPj4gUmV2aWV3ZWQtYnk6IFNlcmdleSBUZW1lcmtoYW5vdiA8c2VyZ2V5LnRlbWVya2hhbm92
+QGludGVsLmNvbT4NCj4gPj4gUmV2aWV3ZWQtYnk6IE1pbGVuYSBPbGVjaCA8bWlsZW5hLm9sZWNo
+QGludGVsLmNvbT4NCj4gPg0KPiA+IFJldmlld2VkLWJ5OiBTaW1vbiBIb3JtYW4gPGhvcm1zQGtl
+cm5lbC5vcmc+DQo+ID4NCj4gPj4gLS0tDQo+ID4+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRl
+bC9pY2UvaWNlX3B0cF9ody5jIHwgNDggKysrKysrKysrLS0tLS0tLS0tLS0tDQo+ID4+ICAxIGZp
+bGUgY2hhbmdlZCwgMjEgaW5zZXJ0aW9ucygrKSwgMjcgZGVsZXRpb25zKC0pDQo+ID4+DQo+ID4+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX3B0cF9ody5j
+DQo+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9wdHBfaHcuYw0KPiA+PiBp
+bmRleCAyMGJkMTgxMzY1MGYuLmQzZTRhZWI3ZTQ5NiAxMDA2NDQNCj4gPj4gLS0tIGEvZHJpdmVy
+cy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9wdHBfaHcuYw0KPiA+PiArKysgYi9kcml2ZXJz
+L25ldC9ldGhlcm5ldC9pbnRlbC9pY2UvaWNlX3B0cF9ody5jDQo+ID4+IEBAIC0yMDQ1LDcgKzIw
+NDUsNyBAQCBzdGF0aWMgaW50DQo+IGljZV9yZWFkX3BoeV9hbmRfcGhjX3RpbWVfZXRoNTZnKHN0
+cnVjdCBpY2VfaHcgKmh3LCB1OCBwb3J0LA0KPiA+PiAgfQ0KPiA+Pg0KPiA+PiAgLyoqDQo+ID4+
+IC0gKiBpY2Vfc3luY19waHlfdGltZXJfZXRoNTZnIC0gU3luY2hyb25pemUgdGhlIFBIWSB0aW1l
+ciB3aXRoIFBIQw0KPiB0aW1lcg0KPiA+PiArICogaWNlX3N5bmNfcGh5X3RpbWVyX2V0aDU2Z191
+bmxvY2tlZCAtIFN5bmNocm9uaXplIHRoZSBQSFkgdGltZXINCj4gd2l0aCBQSEMgdGltZXINCj4g
+Pg0KPiA+IG5pdDogSSdtIG5vdCBlbnRpcmVseSBzdXJlIHJlbmFtaW5nIHRoZSBmdW5jdGlvbiBp
+cyB3YXJyYW50ZWQuDQo+ID4gICAgICBCdXQgaXQncyB5b3VyIGNhbGwuDQo+ID4NCj4gDQo+IEkg
+YWdyZWUsIHJlbmFtaW5nIHRoaXMgaXMgdW5uZWNlc3NhcnksIGFuZCBJIHRoaW5rIHNsaWdodGx5
+IGNvbmZ1c2luZyBhcw0KPiB1c3VhbGx5ICJ1bmxvY2tlZCIgc2hvdWxkIG1lYW4gInRoaXMgd2ls
+bCB0YWtlIHRoZSBsb2NrIiB3aGlsZSAiX2xvY2tlZCINCj4gbWVhbnMgInRoZSBjYWxsZXIgaXMg
+YWxyZWFkeSBsb2NrZWQuDQo+IA0KT0sgYW5kIGFncmVlLiBMZXQncyBrZWVwIHRoZSBvcmlnaW5h
+bCBmdW5jdGlvbiBuYW1lLg0KVGhhbmtzIQ0KDQo+ID4+ICAgKiBAaHc6IHBvaW50ZXIgdG8gdGhl
+IEhXIHN0cnVjdA0KPiA+PiAgICogQHBvcnQ6IHRoZSBQSFkgcG9ydCB0byBzeW5jaHJvbml6ZQ0K
+PiA+PiAgICoNCj4gPg0KPiA+IC4uLg0KDQo=
