@@ -1,84 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793885254;
-	b=XtOptqmvAPKbfSDERbXweLGnAYI6Y0l/giP0JNGM3pGbPRmuI0bI+0EwIXuxpn+y06tq
-	 83OxUYTzZ8Z1LYttnSjLdUNwv1GPwj0pPjRJ/wegTQI3iPl3LRmjbziFzxQqcAyeLyTUl
-	 /l6GjpInOgHNlnQZ9nGRVpi3HHNJCj5CBZQJ+mbO/npSOTywhcfbfKRTMQSGdJBvdMoD5
-	 68D5znBQBrKMpvaljmK7VD8XRICua8J84/fDf1DpwCWaBsW/9UgjCNDAM2yl4eHbVBTfq
-	 X7s0VnjEglBurqzOTuBUWOu8OgrIbz4yuPKX0u1IXZbEhI/KA5w3NM+yPMdr8age6LQ==
+	t=1793885459;
+	b=ddx3/Waonfh0V1Bk+zLN5+ARBQwRzi1Zv/2c3aA2zxN7HqWfMuty5JGUAebwMzSEcHD5
+	 a7mWO5lt+vP3ATpqj8JR3q9qasI0CRFM4QUFlc6fLjMT+VgTiwIwWmSjP+g4wdlYp6ExS
+	 kEr79lwDcVpDvxl7/G7EnwSHNBfXU6pzti+HtqgTdc85bYxXMOdBkPNBEgVTp2YdSJ6ow
+	 IHygTADJe6HZ7/r/ZWPmlut8xYZDVbXUnNscVBT8OpEq63wcDEmA2H6gv88/YVxJaQM69
+	 q8I7vrRXOQVmAw+6gDq9VWUYyd1RGPIufkMH3lp10YhrKhbnJqtzZ6oaT7bbTXXn1EQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793885254;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=XrBQYJBKmN4p93auIZi3LsTAkyZ/pnTV+pc9s6RclDY=;
-	b=JliHrWjXpNiORv2vpVcgmX5Zm4u+cQw+Q+6Rp/kemFSm+2zdoek/iY0CmtXyzAtXWWiu
-	 YWkIm+A3RCukWHUKl43X7bGf3EeDQwsK6+kU1496fbD5/aMEbe87VyTcBrQbuE/G2i2Be
-	 fVLtjp2IVHTKXsoiC5TmnfsNAj8Um0N0vh14jbQei/X8+RA5ZEiya74txkMglbWMI3D/m
-	 Gz2JcSIUA9H/cltJvipwvbXEcUsIQTyYxWyY6GTKtnulDALj+c2+PYDSLco8PuHJpdsAP
-	 sp9X0GHiUREV49h8CmGQT1zVCvLk3SL0SA6fJ9hsptEFiumbaThqf15wHFhQe6WtV0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793885459;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=zGgD8jFSgU9ZTP9p7BKM21Tg7V8OBfUDbvlCylduBuA=;
+	b=wLYxzs+VqEu39OCrVdd6Sz31XmkjL9UO+THftnpxhdzOrXmuiWcq4zkrirTJ5LjD6kdZ
+	 tbqBPWOzhSctZylGlu3Y58MzB4upqFJCTD4EAzTpaMQB4sIixR2UgIu8pgfNtl6fdVkcH
+	 VVuBi5eNRXoQ5j5a8pAMCO2TRtSLge9JkWldMKcImE8Q5lP7JK/VQTLhrSjGDs/GG61v+
+	 1nJq+e0VZGLn47Ti1eKU3eKHs45a4kRb6H+sUUKRd7aysZVFdI6pMC010V6gtr+D0FS9y
+	 kzvj1zszzFzm/ZJAek4B/XTLC/n2qUdEtCeZNhfaYp1K0MW+gXJnSz8QwoVBJ8OmjBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JK2Ti1jA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cDMa9Iwv;
+	arc=none smtp.remote-ip=209.85.208.42
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E7F606A326;
-	Thu,  5 Nov 2026 13:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA1606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 13:30:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19DA1606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JK2Ti1jA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817331F00919;
-	Thu,  5 Nov 2026 13:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793885253;
-	bh=XrBQYJBKmN4p93auIZi3LsTAkyZ/pnTV+pc9s6RclDY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JK2Ti1jA3utWAgrt6V4JUS7tslRWfNukRCd+/Vzfz7h/q0E1p8+7S8luP+VD4LAYD
-	 7SihzxrgOYXG8U0cQ7JZFx8YFxMoxO/yFemOAtRTazaDhuvYkS0K35sZZ0c3s+KU2o
-	 lM6rj29uyaswnmyP6F68EXwCsjKUiAKcRePanEbxomxutU+3yS3tkA3/QIf9brzDLh
-	 aiNB6ftZI1eeCWp3rSN9ZCx71+gQ3tsIMQUMJPinxAtG4Td8DrMeMVL0JEQVRFNoEM
-	 Rzz4qv5TtVwT799y7DIPLtMhY+Cx4FCS0D2NLbvyTBY2Aw7zKpeILiQrBovRfpIO9t
-	 OsoSWUhj/O7qA==
-Date: Thu, 5 Nov 2026 15:27:29 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 10/17] driver core: Expose device trust authorization
- through sysfs
-Message-ID: <20261105132729.GB8298@unreal>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
- <2026110514-bunkhouse-handset-6a3a@gregkh>
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cDMa9Iwv
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b58cb69927so328005a12.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 05:30:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1793885457; x=1794490257; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zGgD8jFSgU9ZTP9p7BKM21Tg7V8OBfUDbvlCylduBuA=;
+        b=cDMa9IwvPOyT3vhpOT3++hDSwtCIEIza18FdFLcHwzthwsi4C09ik/hsxCxR8NAel+
+         T5hGuhh3hvjQJs+hxaIsdczKblQj06e0ZNLVyKieH6LPJ+RyPqUJpP5/DEHGT4W1fvHX
+         NbdSD2jHtxxOR73lczf4ChnrQZ/53JfqSrRc1hOOno1s2EJM0+TVyRwor433+GJ3Ia1v
+         wDSrbVlJAD04FgWle9cJUsOpY1EPiPBG6HilIDJiPgsnRWOrz46XUNJUO+/pQR+W7s/2
+         XGyln919MqxaKZ1GhJ8R+5W2NYvEprm9GYHQSWLANm8mR4c9oVqGQitPaUCfkk9qMZ2Z
+         gl7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793885457; x=1794490257;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zGgD8jFSgU9ZTP9p7BKM21Tg7V8OBfUDbvlCylduBuA=;
+        b=BEh6uf+5jMIO/dXD6rYExz+FW2KTIWOs9lBWARuwyx5xtA6qdInJboTenXyFJWo0ka
+         tSewo9gVHZx16DkSzzcFdiVQtO/bE7TK++Z1cxgKU0PP38ONTe6iX7WURpWJdqseWj7s
+         LNE5DRHZZlgVSKkk+ozEyJbVXkhPOoOmyKr3/Ir78hL2UzhZVIqdG3r0dDxJ6Gdor3by
+         f/H0OYp1ZcUJk7JVilieVVFvm6V6lQJWCTqJZj0r4Cn5kjOREvP7GxrDw9N/kfL0IJom
+         /O4oVvYS3Ce5ZFyjKQ+0ARtvVCx+8iV19u32P38+ZpVkBDNXN0SQAZbhgxqKlR8hQ9Xt
+         tJ3Q==
+X-Gm-Message-State: APuU4Z/6uWBN9ifxGO6d6LsCAPqEsQ6AoDONpEkwKt3wMy3fBwYFJhax
+	nlI7SxH+PHYEBAJRzjifT480JTMEHrHvHVSk1hsYJY7wioiV62+h07K2hZLge756OYM=
+X-Gm-Gg: AYBFou0eADiZJe2IHdjiMlglzAfT2genMPLYKH6zrAmIrCUSuHMx8xQainqS2YLqF+O
+	0+qfThkr4I17BR74k2YWxqxY2c5cWWcIri/15i9RmxFf6Ym18A+XieTu2GuSJEzUKYV7Myn2iEz
+	DZdZOXJRSqA1hbmGdeuIb3gQdx8OcEjY2o3qKevIir5rVhA7YzYFlV/5/2XLTGVaAE3OijUvI5z
+	49jDPidZanqIOO8c6EzvTzG3EzJ605SOKletk7a2mrIaIDI7DLPWMGWBpqo7m7+ikbIVl7Nex3e
+	0L9j5EqnOckQ7OwvFg+1xCZdWB5kIVH80xkVhgmoRrp6Zep5KHS1DdaqEuMVOVsgn9LtzA7rOQW
+	Cx5SVNUoUt5E++x96AV8zZo+DbamTTSFQfrLnBB9AnHVUNVh6NVj+XbEaCmNf2LbKdH2uaO0skp
+	9/yxgkut+PWJXyh5MuHqixKq1ntvWwGJwowYyEJMbR+J0tuTvd3aR2/gDi74CsleHXWJPJ+OYbe
+	Ba1mm4pxJnnPaVRrg/IGc7g0uxQGSeolsANz5RLo2krIiCvbslAMFznRZvzqbNGDvXY/xdXEP8K
+	nYEmk9xDby9TvrraYxxFpb2yecDcruHIV7KzFN0+TmzV6O5vVTZwCUjz5llDgvkdUb9EDloNECQ
+	AnjTXlEwwHG7sBuE=
+X-Received: by 2002:a17:907:ea8d:b0:c49:c3f5:8bc with SMTP id a640c23a62f3a-c4d2065af79mr209949566b.10.1793885457372;
+        Thu, 05 Nov 2026 05:30:57 -0800 (PST)
+Received: from stephen-xps.local (93.224-78-194.adsl-static.isp.belgacom.be. [194.78.224.93])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d0e46a44esm172684266b.59.2026.11.05.05.30.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 05:30:56 -0800 (PST)
+Date: Thu, 5 Nov 2026 14:30:49 +0100
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ bpf@vger.kernel.org, dsahern@kernel.org, Willem de Bruijn
+ <willemb@google.com>
+Subject: Re: [PATCH net-next] docs: netdev: fix iproute2 process
+ documentation
+Message-ID: <20261105143049.51af15a1@stephen-xps.local>
+In-Reply-To: <willemdebruijn.kernel.a20ae72714a7@gmail.com>
+References: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
+	<20261103092226.2e8ab229@stephen-xps.local>
+	<willemdebruijn.kernel.a20ae72714a7@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,102 +102,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026110514-bunkhouse-handset-6a3a@gregkh>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 05, 2026 at 08:10:14AM -0500, Greg Kroah-Hartman wrote:
-> On Thu, Nov 05, 2026 at 01:42:23PM +0200, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > An initrd must authorize a disabled device after attestation even if a
-> > built-in driver already attempted to probe it.
-> > 
-> > Expose requested trust_policy and read-only active trust. Allow explicit
-> > disabled policy to advance once to adversary or full, fixing that decision
-> > immediately. Reject later policy changes, including for a device claimed
-> > before registration, while allowing same-value writes on live devices.
-> > Keep initial unrestricted selection separate from explicit authorization
-> > and bind-time commitment. Serialize writes with probing under the device
-> > lock. Include the attributes in device ownership changes.
-> > 
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-devices-trust |  51 +++++++++++++
-> >  MAINTAINERS                                   |   1 +
-> >  drivers/base/base.h                           |   6 ++
-> >  drivers/base/core.c                           |  15 +++-
-> >  drivers/base/trust.c                          | 102 ++++++++++++++++++++++++++
-> >  5 files changed, 174 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-devices-trust b/Documentation/ABI/testing/sysfs-devices-trust
-> > new file mode 100644
-> > index 0000000000000..97e07a174769c
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-devices-trust
-> > @@ -0,0 +1,51 @@
-> > +What:		/sys/devices/.../trust
-> > +Date:		September 2026
-> > +Contact:	driver-core@lists.linux.dev
-> > +Description:
-> > +		(RO) The active trust level for the device. The values are
-> > +		"disabled", "adversary", and "full". Driver core resolves
-> > +		the level before DMA configuration and probe, and retains it
-> > +		through removal and DMA cleanup. Outside a bind transaction
-> > +		the level is "disabled". This does not imply that policy is
-> > +		writable or that the device has never operated.
-> > +
-> > +What:		/sys/devices/.../trust_policy
-> > +Date:		September 2026
-> > +Contact:	driver-core@lists.linux.dev
-> > +Description:
-> > +		(RW) The requested trust policy for the device. The initial
-> > +		value may be selected by the bus before the device is
-> > +		registered; otherwise it is "default". The policy is resolved
-> > +		to an active trust level before the device is probed.
-> > +
-> > +		The values are "default", "disabled", "adversary", and
-> > +		"full". "default" lets the bus select the active trust level.
-> > +		"disabled" prevents a functional driver from binding.
-> > +		"adversary" requests operation with the restrictions that the
-> > +		bus and DMA layers can enforce for a potentially malicious
-> > +		device; it does not isolate DMA by itself. "full" requests
-> > +		normal operation.
-> > +
-> > +		Before an operating level is committed, policy may change
-> > +		freely until "disabled" is selected. Explicit "disabled"
-> > +		blocks binding while allowing a later write of "adversary" or
-> > +		"full". Repeated rejected probes preserve this opportunity.
-> > +		Authorization immediately fixes the requested policy.
-> > +		Returning to "default" or "disabled", or selecting another
-> > +		mode, fails.
-> > +
-> > +		Successful resolution to an allowed level commits policy
-> > +		and operating level before driver or DMA setup. Both remain
-> > +		fixed for the device object's lifetime, including through
-> > +		failed or deferred probes, unbind, reset, and driver reload.
-> > +		Later binds must resolve to the same level, including when
-> > +		the policy is "default". A resolver error or disabled result
-> > +		before commitment leaves the policy's writability unchanged.
-> 
-> I understand you are aproaching this from a PCI point-of-view, but many
-> busses do not care or have DMA at all, and need to actually talk to the
-> device before being able to even "add" it to the kernel.  So you are
-> making a driver core-specific policy based on mentioning DMA here, when
-> really that should only be a bus-specific thing, right?  Some busses
-> might require DMA to happen (i.e. USB needs their host controllers to
-> use DMA to even talk to the device at all).
-> 
-> So can this be written to be more vague and generic and then put the
-> specifics in the bus-specific portion?
+On Tue, 03 Nov 2026 09:44:53 -0500
+Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
 
-Yes, of course. The main point is that drivers must not communicate with
-or configure hardware before attestation is approved. DMA is the PCI
-way to communicate with hardware.
-
-Thanks
-
+> Stephen Hemminger wrote:
+> > On Mon,  2 Nov 2026 22:35:56 -0500
+> > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> >   
+> > > +
+> > > +Patches are tracked in patchwork under the netdevbpf project and delegated
+> > > +to 'shemminger' for further processing:
+> > > +  
+> > 
+> > Minor nit. David Ahern (dsa) handles the iproute-next patches.
+> > I stick to only iproute.   
 > 
-> thanks,
+> I know, but there is no separate delegation in patchwork to David.
 > 
-> greg k-h
+> I assumed all iproute2 patches would get delegated to your patchwork
+> component. Is this not correct?
+
+Right now we correct it manually. Often patches target the wrong tree.
