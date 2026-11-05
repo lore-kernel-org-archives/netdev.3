@@ -1,82 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793872225;
-	b=AImUQAGBpheUkZuiBjmIOzIo4bbHwqLEWRnGxSMPXK1G8JHgrBpweJLK0UUR3G4EMW5T
-	 0nB1gH76QiOeh0Wl7ydAT++OZspcBNUadFwlpVr/VeeTD8kA1NjzcpV4QWnEQrb5wJFDT
-	 LJZPMofUH0f1sejRRKMUBeViovhL3Q/3eSKAQTC+NVr2TZ7/6ANQ3cFiY5/Qx8yUaRxbo
-	 rHslhHSa/L7XVci4BkRMp1c65e+ulZaP29dJ17tmYPS1yWLDGCOi15QX8VXfYKeNSIcWE
-	 eLz8sPGaf1Gx6X9xExlxkuftXl+0YI03C3QCVM67mCquPS2swbDX6e9KDFH+6KXYDwQ==
+	t=1793872296;
+	b=mHOgnyPK1t9ijw635hN4JQU2+pbRP35TuO9YZGeMOZEHCKjgQ0T4mvy06AwqjPnHApof
+	 Y1TzB61yVvGJWv27IW4+qe/DXb/8GOFFItaojiUTMpZ6o2AYlCt+C1Amwg8M4IwVbKdXE
+	 Zj7T69PFVqH82Bq3RgZXMl8Nc3CLh7OuAt0DvSBrt4Adeqf8nVUEO8wshV9K+k4kjgLpp
+	 tHKdCKyhpKlnxGdOT828ozyEcvp5mbqam7ba9Yb6fgXsRJTnCQyDD6QIFVNlRD2ifAb2A
+	 Mfw0wDpBB/h/uMwHLgN58eoMpxFlxMC7AO4DjAQ3MdKdbFQthsF3HqJwbf8liz5Sv2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793872225;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:References:Content-Language:Cc:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=RXxdcpf1mi+lXR6AHit85Uc8DdIXrFeiJ/EvXtI9+wA=;
-	b=etwVTdasZQSk7OqwewH8c/ekkUrR4L0l/5UCdUQlya0pLhdqnIqmcvUQBnUCvi2ktotv
-	 D3kqED2LEZvYVWSdWccSh0VuAsb0bu202X8SNuJF8P9FmqXE+OSr68QI/7Y6Ejny4DyT4
-	 bj2lEnrPK1IkiOc6k1woV4JnXJnn/24KT4MWySGl1JVNCAgAoG4q3CagybGw9/Y/0obIF
-	 qlfxPimxIx3nbHvXEe62GD6rm+QdauDqXiSdCNMWdoFH0rR2WAq85TOCePbFaOdQKtmVS
-	 hCuNqixjSaaUkX85q87MXo/e7YV6wwxJop6mD0ykg7JefdHeN8cumTYR0rEcRb4Pp2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793872296;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
+	b=lw4mctycSzkUQPU8I6zmikvYdNdwWg+PRuQGZZuaJcirRZgEH6FRF1wFxTuCiOv9Spyx
+	 J1VtlcgnNAR9eJD/xuObzAaLe6YNk9ueldWpWzcNKXFcijgRCBIAfQgNsgVIIlkbWTQxc
+	 lqgYCdyy2zKXDy/xLrueiLII8XkfpoBHql5VEnftb0pn/wDPmqlgjcBLeRL6Gr9UX4zVr
+	 roGZcQscJYVk57XsybpOjZHiTBKDggy1Hso+Kn7FvR81MPMOQCMx3HAP3Rl8kyLmIv3aZ
+	 du4cYq0IZ77GzMsTNkz7ogt5QPMflmXsWe/mDzlVrdwnOoPl0qmHSiZ9+FqhhnrtAXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K+3VdS09;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="hkJd/cGT";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KBxm5ORs;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E06D606A33B;
-	Thu,  5 Nov 2026 09:50:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E06D606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890B3606A330
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:51:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 890B3606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K+3VdS09
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A56i55R3019705;
-	Thu, 5 Nov 2026 09:50:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=RXxdcp
-	f1mi+lXR6AHit85Uc8DdIXrFeiJ/EvXtI9+wA=; b=K+3VdS09/qvpRfbTh9TCyG
-	zD/hcJi0UJa4P2QlG6lbehNK4fGl0r/CSPMrcOTF7sE5cqRE+A7Ka7kdLjzLM2j9
-	YQIEzALUozhg91LRh0smbFcvaAgAd5VHEoSS8ysEAGbXE5+XsGmwzxSXkHKO12Cm
-	UnsESCvGhWY1Qo9xwvxFYoR+fWfixYxf5aAc1EoJ6V/BvG14bxxcqfy4Tts5nSbr
-	M6CCvAZTGC12SLbLtuvQ9TM9SJNdXBUFwHZ4vBFg93XEuPwFcaFoVMAbrSLe2Y8d
-	YVubOvnIA2FApoQnmxz+w5Izh0w3a+TDUVeTgTo6W9yuF3nXmWKAp8GWeyOZUenw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hn7u3set5-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 05 Nov 2026 09:50:17 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A56YwhT025909;
-	Thu, 5 Nov 2026 09:50:16 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hqsf5fr8v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Nov 2026 09:50:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A59oGpL11665990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Nov 2026 09:50:16 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D3CA58055;
-	Thu,  5 Nov 2026 09:50:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7418A5804B;
-	Thu,  5 Nov 2026 09:50:11 +0000 (GMT)
-Received: from [9.123.14.188] (unknown [9.123.14.188])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Nov 2026 09:50:11 +0000 (GMT)
-Message-ID: <78beaf8e-6357-4856-8464-717bb47d74a4@linux.ibm.com>
-Date: Thu, 5 Nov 2026 15:20:09 +0530
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hkJd/cGT;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KBxm5ORs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793872294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
+	b=hkJd/cGTXQf8gONRmfwGMkSqjAveIZ2oxKo788DmB8g8svaAgniC90naYOBMKiCvn1B6Mx
+	raORHnBkVLr43IxM4qE0lmHX2twwUd1EAqEkjUXAnyOSMmN26WdNdZkl9g67PDisED2uJQ
+	2HAvQLOv/S2WIdx9mE4acaLPG2JbjSE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-64-Ku5ILT3wPXa1kmBK5j1g4A-1; Thu, 05 Nov 2026 04:51:33 -0500
+X-MC-Unique: Ku5ILT3wPXa1kmBK5j1g4A-1
+X-Mimecast-MFC-AGG-ID: Ku5ILT3wPXa1kmBK5j1g4A_1793872292
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e29c25101so894059f8f.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:51:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793872292; x=1794477092; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
+        b=KBxm5ORsYSzevNZymCpImPIMAziH3zAdtOVBWYadIPwBFRJgSwQwekaClE4pxP0Mmr
+         ZivCvjByDkgCdV/L6wa97qihOlOBJkbMqtwQjFplZTRy3dYG/pUbATZCoxxL8kyL0AcI
+         SMYOGTI776enpJv6wMnbpKM/jChav7qhJF3gTxrNXxHz1QsirejANXR/Q3i/DoEBHn3M
+         PnPLIeKjCj7wtAnELTw1LdJ4uqhdLLDG2ktV6BttQFmuayzXWcNZZoDrEGizbksUtsHn
+         sWSJQOC2BWT1sY6henWes33721uWMTNiTsRkZ2uQGxRDkZsiSeSv2rEEpmHr3Y269WYR
+         hNAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793872292; x=1794477092;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
+        b=xQNI+wDUPOIQp10VmsARJGekv4a+xrOEYoWFVFXA+H8X+h0mhpTXTKgIecU8S+pqA8
+         iVpDjm9dBKoaMCriy3g5W4fY+N4/UNn8J4wc5lbxKD9Dg0OmDqwE4YfI/2W/iiv3u2n4
+         A0WvxDeAVDtMnRgbdPPVp2Dkscfnq36+jMBfwb/ewPgoGbOrDvjzFh+lbKwm73NTLM2f
+         OKVgbOv7Ucqk+lcU0tJP8fzGjM2cWNZK4wtsPMKp6Ph41tVJCTJ52c88BWLFVr+jtOz7
+         3vQr6uu+a9wIZHj8BjQETlk4MkE8I7ekhxKfo3pIxJznYiT33xs/cD0MdUeC/ENHJ2uQ
+         PJmQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzTZoS87ZrSp3lB471VAa/6hgTdtMaE2fgPosD2OKf6MPAKxgaQijOPzMobuDbL8gC7oxBVrCk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/SFSZtEyrm9Mws+gWdhC3i/ySy3lQ4bK9IHi4j6ceD0GeyfZWv
+	bflYwZhVj0EsvBRh+0nHnj23IfpUFTt2j7iUtEw9UPF+LFTVKlZsarEKmuyNJ0VyIVsiw1rLtHd
+	BU12SiwgkpXJ6nkmR3QerY8JW5/IUHIU5SOwSW7lmshyc8kISTK/6ZQBAvw==
+X-Gm-Gg: AYBFou30/3H41aHnRSdVMDJ8eWNgR0va6Kji6YA2mV0mlSlimJS6OIinVfQQaj1IbDH
+	JkHclfDGR/Y1JC0IJVgCOeJIC3p12DJIdZpt3+j1yCmd4fZm+dZ8jsGVIb9Vv2jV7S0CFA8mtz7
+	Szz2wcc+BgHm1FjBEitlJFouJnVIJEZtF1dtnTHDcaiqXXyaOz3DXgvnFj/SeheqlqaH1E+3cAq
+	uIMSFv7W3v7LUic63f6dJKBE7fPV95YgnNkf1BKXgYZWknoFzQKvex/CpFxBdhUnSwh4YNya9Vo
+	eLy2yDQ73r6YSAaf1bY5StCBiG0+w1Y47VA+vEHarFjM1wzBg1Qe+ti0o5ocjzD+ZgmXHNI6aUk
+	K/gXDwSHqWp5z3/p1jcJP9hEELmrGtMti29R19+1vG16RdcXkLQXHwjGcUfuruNVi/4/Ghh95Vq
+	wRMvbJvjeLYwEFW/BaKaFc9x08ukVm/OoazifEjmmtdnA=
+X-Received: by 2002:a05:6000:430d:b0:490:da85:7aee with SMTP id ffacd0b85a97d-490da857cbemr5409715f8f.24.1793872292018;
+        Thu, 05 Nov 2026 01:51:32 -0800 (PST)
+X-Received: by 2002:a05:6000:430d:b0:490:da85:7aee with SMTP id ffacd0b85a97d-490da857cbemr5409669f8f.24.1793872291556;
+        Thu, 05 Nov 2026 01:51:31 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea1811c4sm8980486f8f.3.2026.11.05.01.51.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 01:51:31 -0800 (PST)
+Message-ID: <6810d4c3-a3b9-4da5-97fe-27cfd92563c1@redhat.com>
+Date: Thu, 5 Nov 2026 10:51:30 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,97 +113,78 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/smc: deregister the MR when SG mapping fails
-To: Wentao Liang <vulab@iscas.ac.cn>, "D. Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond
- <sidraya@linux.ibm.com>,
-        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-References: <20261104022812.1484233-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH net-next v2 0/5] net: sparx5: add tc matchall port policer
+ offload
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com,
+ robert.marko@sartura.hr, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261102-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v2-0-3bd47ec1b227@microchip.com>
+ <679b8dcf-0aac-4674-a006-5af0156a82ae@redhat.com>
+ <20261105093905.ln6tdot26wyej7pi@DEN-DL-M70577>
 Content-Language: en-US
-Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20261104022812.1484233-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261105093905.ln6tdot26wyej7pi@DEN-DL-M70577>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Zsp4uN7G c=1 sm=1 tr=0 ts=6aec515a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=Ruwe0kKRUAsyMHfTDyMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: llxEXSJ92mwsL0YGbs24MbVE2Tb2cnFU
-X-Proofpoint-GUID: QBXzzbW26_VqFZhZxFxkn4K-9NLxyoG8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDAzOCBTYWx0ZWRfX/F+/mquu0ObP
- pKNJT3e5LACx4XtI7jMvXajAhTEx4ySfAo+jtLcZr5iwP8TRL1DJhp0fztiOog0S1SxsgnH69kC
- X2d0L9eBscWYfB2bsjaarZEB31NZCQ3NqBdlOLeVEp7GTlvbdzQrVKP4IcvrFiLYRLsQi6AAJ21
- WfzRawXtHxFgJxTuPW7ylY5RS2gwqOKNeOSnMutjpbPFZ63P2Btam/mtHZ3jkKhP1he0/NphzHO
- xzu/qTsqKi0f+8Afz5i6e1/CKQTsnmswUNDUDt73I/12+MEVqjvSDULULPoIbJ+eUO/Vybm4mV1
- uvhvajow0fq8zxM2AAW5AW+LrOMXBR3+Y9AwwEaz2yBfx+jYkC4ZbXHzRJ4eHn6u8UD903hsLqW
- FOY2DpggWBXa+GIpiW4XhR0Mbu1qj6dZnq3AYQxO0pajR0vZGNbXRtX605Mkoh6cDwWKgHAZ0JU
- trX85tXuS5VxK0N4crw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDAzOCBTYWx0ZWRfX7+W4sB5iOJlQ
- ShhOO2/FPzSAzw4FmKs/kLtWwYZ/LacEHuJNFwhZB3yN+dBZCW8U08YvPpjE045x8GLooD+1sK+
- 5+6lS5fecKpJ3Ip/LBJJ/yEj+0Tj7pg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-05_02,2026-11-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611050038
 
-Going forward Subject should mentioned PATCH net.
-
-On 04/11/26 7:58 am, Wentao Liang wrote:
-> When smc_ib_map_mr_sg() maps fewer entries than the SG table holds,
-> smc_ib_get_memory_region() returns -EINVAL with the memory region
-> still allocated and its pointer left in buf_slot->mr[link_idx].
-> The caller only undoes the DMA mapping and frees the SG table, and
-> because buf_desc->is_map_ib[] is set only after this function
-> succeeds, smcr_buf_unmap_link() later skips the buffer.  Both the
-> MR and the pd->usecnt reference taken by ib_alloc_mr() are lost.
+On 11/5/26 10:39, Daniel Machon wrote:
+>>> This series adds offload of tc matchall filters with a police action to
+>>> the ingress port policers of Sparx5 and lan969x, which are both served
+>>> by the sparx5 driver.
+>>>
+>>> In hardware, each ingress port has four single-rate leaky bucket
+>>> policers. A policer drops the frames that exceed its rate and burst.
+>>> The four policers of a port share the pass and drop statistics counters
+>>> of the port.
+>>>
+>>> The driver uses one policer per port, because with more than one, the
+>>> statistics reported to tc could not be attributed to the right policer.
+>>> This matches lan966x and ocelot. The policer meters each frame without
+>>> preamble and inter-frame gap, so the configured rate is a data rate, as
+>>> tc police expects and as on lan966x and ocelot.
+>>>
+>>> Since the policer meters all ingress frames on the port, only filters on
+>>> chain 0 with protocol all are offloaded, and filters on shared blocks
+>>> are rejected. A police action that is already offloaded as a port
+>>> policer on another port is rejected too, since in software it is a
+>>> single bucket for all of its users. Only drop is supported as the exceed
+>>> action, and the police overhead parameter is not supported.
+>>>
+>>> Patch #1 drops a redundant prefix from the existing POL_UPD_INT_CFG
+>>> register macros.
+>>>
+>>> Patch #2 adds the registers used by the port policer.
+>>>
+>>> Patch #3 tracks whether the ingress block of a port is shared, and adds
+>>> the per-port policer state.
+>>>
+>>> Patch #4 adds the hardware programming of the port policer.
+>>>
+>>> Patch #5 adds the tc matchall offload.
+>>>
+>>> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+>> I understand the following will be very frustrating, but for unknown
+>> reason AI review did not kick on this series.
 > 
-> The stale pointer is also harmful: a retry takes the "already done"
-> shortcut and treats a memory region that was never mapped as valid.
+> Yes, I noticed that. I thought you maybe had some magic button you could push,
+> in order to trigger the review manually.
+
+Unfortunately, I personally don't have it. AI review is sponsored by meta,
+only Jakub has direct access to that piece of the infra, and he is AFK for a bit.
+
+>> The changes looks sane to me, and addressing points raised on v1, but
+>> I think nowadays we need an explicit AI feedback.
 > 
-> Deregister the memory region and clear the slot before returning.
-> 
-> Fixes: 897e1c245773 ("net/smc: use separate memory regions for RMBs")
-> Cc: stable@vger.kernel.org
-> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+> Ack. I think the missing sashiko-nipa check is not isolated to this patchset
+> alone. Just FYI.
+Indeed I hit more patches/series without AI review. In some cases I can run
+the model locally (for single patch, due to many constraints).
 
-This is not required.
+Thanks,
 
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-
-> ---
->  net/smc/smc_ib.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-> index daaa8a72da90..fa21d269196e 100644
-> --- a/net/smc/smc_ib.c
-> +++ b/net/smc/smc_ib.c
-> @@ -735,8 +735,11 @@ int smc_ib_get_memory_region(struct ib_pd *pd, int access_flags,
->  	}
->  
->  	if (smc_ib_map_mr_sg(buf_slot, link_idx) !=
-> -			     buf_slot->sgt[link_idx].orig_nents)
-> +			     buf_slot->sgt[link_idx].orig_nents) {
-> +		smc_ib_put_memory_region(buf_slot->mr[link_idx]);
-> +		buf_slot->mr[link_idx] = NULL;
->  		return -EINVAL;
-> +	}
->  
->  	return 0;
->  }
+Paolo
 
