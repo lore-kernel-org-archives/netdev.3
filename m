@@ -1,132 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793896023;
-	b=X3uBosCh2Gl2EhL3NtEemOmkZUj+TWuLIjR/bgX3uoKU+c0psDI1uMiG5v4SbU0h5GgL
-	 4fUgjMgy2hQEMVYZ3UdfhaxPywTm+bNSdiaLPiqpWrSjXRsFWB/mo2fdIlwqd4meLKwYh
-	 S2941Ko1yy608BQnjTHP0MNzHiL1CzNvdwIc3syeAxf9F3g+4wCt/TrK96pcs/Wwjp51o
-	 S9i9gEs8x+cazQ38SLuB/Zk49eQH/OSKfTX78RkHqBzwFo/mKqBywJiTxk8fMgI1YT2Yp
-	 tkgasiYWEXPM7QKjhpmzjOJEZXeU9WyCF2aUrI7iohv/XNW260gvBJ/JHQQHVnEKqaw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793896023;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=auiIKhbmoRZT4mFY+NhWtro4ChWc0LCFT6CcONkj2hM=;
-	b=GYtAtZCcfvDJqdTPfzwkuBUo85ZnGZAz1xEBDgCe8r6xIXJ9YJ2tztw59aRRZDidviTp
-	 yRy6AZzbr14zkjWMrBvR3e9j5+vtXV2vGfJKvNof7Or2/91iZOKp0Wg2LRzSV/rkv61y1
-	 +X27wnf2budlVqaSlp9egQyhy85LgiYHQvYP/vGhzYHbladgirFR7kzk1x6MXRibQrKxB
-	 rMQ+6/eAMLBQmOGaCfackAC98w0BUkeaF7AvpGb6cyJDzysPsBdZ00vQdkTynfvl0HMrt
-	 WAXNOSxSjtANwlnsgDIGSkNYUiqYkG49Isuld9qIFc3ajyAijfvFNxUCuYheCgFGotQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=TH080M2b;
-	arc=none smtp.remote-ip=209.85.217.42
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793896241;
+	b=WZ7wi+Y7Zbd2C+CkHKb6AnmDZ96/DDhFRHb2kVNM1p58cx94UoBsrORMbR5oLXnwPlXe
+	 Gv5BR+89H5y2BPKsWV7Oo3OWbMGFKRW+XaFtfLENxKjh9fUtMaJOgCycFi303P/+YiJts
+	 V9u4CiU1nozPVc4p6Y0tW7IYTYW7ZmvEk91y/3T4gA+bmUf7qT9Av5yRw+iN2p2UvCCGA
+	 MAW14jXMd07gdaLE3NxyOhEIOWJC5XfwMLpPLBEae5VG7hpY4tCMLl0YU4q4nhMTIJn9E
+	 XSo/E92Wj+WQVg/cODIkx/xJrpYNwSz/5rBIjvyJo8SDgtVT8/WNCC+IqrDd4zCGu2A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793896241;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=uHeW0L5fyg8Btj14m4d28bKJ0EVxCTJiTa5I2SS1ptY=;
+	b=WU1ebxOySI+N1aoQklN+AHe7bDd00sjwr4aNK0U7LCH87kySJGkbMB0dtBMNuNyspER1
+	 ETJYQUGYnSdwTm7TdfSovr39k22G0Qiq+Bz+LUUBuTRqvFQwQsuOB8hVdcUgBjZoc79nZ
+	 MqcgcuhAcIA33JlcBogYYtWiaTNuLttrV3wVjbVvf3ij9+8heNmHb8C7YjBPnRao4hpQF
+	 qyXU5suwQ3H1J9rYoQ0HUGThv8JXx0dCu0Y1ZYsTzuYHCmeUQZZDvzuNSOvMq03Ws4qrQ
+	 ZXJgOTp21Cdw4daqZg1WSE+Ql3oll1QVZ/m27CVFmjMpAq+r2BMGwZWBG8q6awPFOgA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bXG4R/+J";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93401606A335;
+	Thu,  5 Nov 2026 16:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bXG4R/+J
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793896241;
+	b=KoLUwHmMTCF1R/Douvc9ZEF51HUHREaOuTLskhy3D6/p0pnAamAAp/GX/txyL/B1Z3py
+	 cEx6+ftIDiHZR/4inn5252U8+EquEPdTsQZnavzMeq3Nmt/rNZxtudOIgHkv2y1Jp7RP9
+	 Wlf5Dt5GZwTjJmlTRm8PRL7WPxzIYq0s8xRrWZdvtD7OH4BFZuKXpEFKA3R+NxA17BkjB
+	 Tr8RYWyvisH9t8MVNbKe/RxgNhgbxRKsbMk1J7kpVxNSPABnhmu7a4iKTxHjYmtdTNQqu
+	 MRlvyaguB4/PrjBfJ2WH5GE2t9ZM9TKHZe2SzyG13dO94aaM+cJGlumQInHozNUXW4Q==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793896241;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=uHeW0L5fyg8Btj14m4d28bKJ0EVxCTJiTa5I2SS1ptY=;
+	b=O9HM2O3wuQ5Zed2zWm3mzwQMSDth6Eo9Bhobyca6Nmm83EixU7tu/kZY+5drYRqvegKA
+	 sbaidaQsxdLcoYcqT+7ASvmhxk7gGejq0JHHLKOUZLZTaj2Bs0Sf7RC7aeo++yfXJEe5v
+	 /eIwQD49UmP0p55fXBACL8MCVCgdccZZV6rkDfso1pzNg2FYqkf9U75j8n+m3BW7tbQIo
+	 /Sli7Sm3eOfmZB52gP5GNegjlHn95pxJ/Pm7fyhpONnG5pK+w8YoeIoTMkoLMKbt2/2sA
+	 30mdOdGcZep+ZdTPPvtMApR0RIpiXH/mcVPadRRgYFdRn+ftfHgWupcqd6Y45jrazPw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8111C606A334
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 16:27:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8111C606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=TH080M2b
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-7cc3eb09dd2so738085137.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 08:27:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793896021; x=1794500821; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=auiIKhbmoRZT4mFY+NhWtro4ChWc0LCFT6CcONkj2hM=;
-        b=TH080M2b2W5GU83fC4bkAl8rc89cXnFJ2JUZ1DQM2E1G7nxV0uZ+iMHWJDX5M/hBR0
-         v8Q4S1dZz9e+Wy709/pkQPJoJ382ui88GBuCa7YwB1Pwv+V08ySzbQGdCs4et9sFRxVX
-         1a78LWa2r/qDmkC73yn92WJjnMydzWl2HaDmNekF7y5RHwsZB7YPGLTTr3xjjmuI4LbR
-         sgpTrG1DSTm++FzIJZEq0knZSmQ9xxE9IezNyVfi/1ZtU95O+iPlQHI5LWAc3/YmXStT
-         Vgy3IZE07Q/+XWoEa8k60w3BygO7yb8zhuyYBqBwOLPUaUevbalW8R2MAA5wjUpSFz6r
-         zz0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793896021; x=1794500821;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=auiIKhbmoRZT4mFY+NhWtro4ChWc0LCFT6CcONkj2hM=;
-        b=QfFZDtQs0vZMkj8LZdqs7905yZvGxjUs3fXutLMSc9fHXO2yzuq7TjDKa0ZY8+Xb4B
-         VuO4x4DgBG50Bj1hNvsfzcWcRQlmFahGhNHQMHVtfYhiCEM1gx2DwT6evNN8zAI2QKfG
-         MR4PAvaKrJg+HrXPeENY4B+gvVx7pR9SvVavgh1NnkZNOdI5Uph/RlzkkyqkZTohiRAi
-         y+gZuH8clo3AzRGeY852ZvVrPSRc+EoavJsKwBpqTNsoOlxom3f8T101sXVnPJ5OTgnw
-         aA5+CVl3IweRlp2Hql6cb2+qdBGTK9AXbRGyUkoGU8txwgXIELd39HnXYFEtGu5aglMd
-         aJdw==
-X-Forwarded-Encrypted: i=1; AKwUvBwK63X7hZB+gwY1cj6uMCHrHib6IiwxxWiuPgfig3ZuQXthwWMd+dCgzH/x5XdDpmMdLEauLqA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/IzPHJfWvbDZodJpZY90633bE8lEWoRwuDqeXLLTBcHJcI6NIh
-	7CWYlv3ABnpyoqsarAzGzjakg7d0oxPmotJ1w1neakd8+xA94/rWdi0D5wi+AC/PjlM=
-X-Gm-Gg: AYBFou22uD0kvhSzY9/zrRUYIYiknZAGfFyB+n2SsSvU07sQYQXYk5hTW+MH5Zgzyd4
-	WADu+B/wWADiItaJ4kiOHwE+pgcRc+72QCcjo7ikas9lSUxrgeooVkhUl+6KXP7yz0ye8M3o6Qj
-	ytD4eXdLgjUV3lMdAqrJ6ANSzArdDy3fFd+++YvfBCmM1ylPR/rzLbJmA/OBassiMSCzvbvhZHM
-	8vmj4gv1UhhHUggEGE0f+es8BNW9XNXLW8xzsWwYypPaKamEii+xq7KppDHMidi0cvUvZIFMdtM
-	AM47vstCH3Cw8zJG+xR9kjw1M+hgFZ6lfsmiKa/YQLyDabBB/fV1wtHKIjic9yIJRqdjttudCST
-	O26OZW33HZdKAMVoxrYJfwioYvW279fexfCYRoGLE/0e5TRnfXpQAKi4nLWNJeLvk9EKn3FzpT5
-	QPXEh5hAfoNfiJSA8ArLMV3Fjx/toI6NhI4jv5hIXnuBxr7ELYRgZ8KUpDaOeSpJBwefM6SY7/0
-	k1vvaXoiW1Zuo/m7klS9npwFTtQtH4hVKEmSXn1Pa0JZsCCtEvFbxiXhgGkFs6VbP+2Dq3zJ+pn
-	JcjdO3zz+Z3ZzD9bgipezRrbWeht47KKjKV7mwTPpxx1HPwYio5XdoHdglzmFZPuY3Fr0Ly3ggI
-	trmgpwSksB1xXKiFurmxTAQiVVagGlAM=
-X-Received: by 2002:a05:6102:3f9f:b0:7cc:174b:f7bc with SMTP id ada2fe7eead31-7d2a15715c3mr29296137.15.1793896021174;
-        Thu, 05 Nov 2026 08:27:01 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26fef4ed3sm4667110137.11.2026.11.05.08.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 08:27:00 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xP0Il-000000032XP-37xT;
-	Thu, 05 Nov 2026 12:26:59 -0400
-Date: Thu, 5 Nov 2026 12:26:59 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH 17/17] PCI: Replace untrusted state with device trust
-Message-ID: <20261105162659.GB663069@ziepe.ca>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-17-1e536825b4eb@nvidia.com>
- <2026110526-aerobics-correct-4c06@gregkh>
- <20261105131856.GA8298@unreal>
- <20261105140352.GF3889730@ziepe.ca>
- <2026110558-tartar-juicy-036a@gregkh>
+	by smtp.kernel.org (Postfix) with ESMTPS id 0532F1F00A02;
+	Thu,  5 Nov 2026 16:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793896241;
+	bh=uHeW0L5fyg8Btj14m4d28bKJ0EVxCTJiTa5I2SS1ptY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=bXG4R/+JqmAjTVr6r4iG+IpBmjAj7c/3gdabgTv7223FXmMCuvm/jx2V3q/lqRhcA
+	 wyT80NDFw2A65hGn1kXOwiJ3SxqWQLMABp60S+sHchKw+lKJ+gr+mUy6TdKjgD4Xe6
+	 IDGKFBBMRpcDLZqjQeJDf7AKzsUtX0NZSLH/lektl27MHcwq+F5CaZdvmRDBVysKOg
+	 dDAGwAt+vmg/lDuGCuxpZJVCXbg2uHaCfnIYWdz9H/sbze2BY18hl5003PRlGS8kuX
+	 yYDTUDNPTpzr6ZZ9esOVU6UX4QDd79YhJCyFcWyQ0MGnHZmuAXa98ID5WI2eBjom36
+	 0z+b7u+FQFLVg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 88CFF47328;
+	Thu,  5 Nov 2026 16:30:39 +0000 (UTC)
+From: Martin Belanger via B4 Relay <devnull+martin.nvme.dev.gmail.com@kernel.org>
+Date: Thu, 05 Nov 2026 11:30:39 -0500
+Subject: [PATCH net-next v6 3/6] tls: loop in tls_sw_splice_read() until it
+ has a record
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -136,31 +83,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026110558-tartar-juicy-036a@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261105-keyupdate-rfc-v6-3-99b695f9eb4f@gmail.com>
+References: <20261105-keyupdate-rfc-v6-0-99b695f9eb4f@gmail.com>
+In-Reply-To: <20261105-keyupdate-rfc-v6-0-99b695f9eb4f@gmail.com>
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org, 
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Martin Belanger <martin.nvme.dev@gmail.com>, 
+ Martin Belanger <martin.belanger@dell.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793896238; l=1113;
+ i=martin.nvme.dev@gmail.com; s=20261014; h=from:subject:message-id;
+ bh=4C9Djt7aw5YpZqtOVbGgX+iA/6jCePYUHtfq0NJMnQc=;
+ b=PUpT2o6XdjPzvShA6vVJWrZJeFssowmSFYNxIaJU+36VTv3EDdUhyKVVAOwGi2GHxA9geOAOb
+ 1Q5+oi1I8AaAMbR7m67cNCDQkXhNk5BAcAOSP9ddLnk7QFgx0XlRKnP
+X-Developer-Key: i=martin.nvme.dev@gmail.com; a=ed25519;
+ pk=4K+XXetGK35w2LzRRddd/bbHawZU222BN+YZRuSpN+k=
+X-Endpoint-Received: by B4 Relay for martin.nvme.dev@gmail.com/20261014
+ with auth_id=1176
+X-Original-From: Martin Belanger <martin.nvme.dev@gmail.com>
+Reply-To: martin.nvme.dev@gmail.com
 
-On Thu, Nov 05, 2026 at 10:43:00AM -0500, Greg Kroah-Hartman wrote:
+From: Martin Belanger <martin.belanger@dell.com>
 
-> > But I supposed Greg is asking about /sys/bus/usb/devices/DEVICE/authorized ..
-> 
-> Yes, that is exactly what I am asking about.
+tls_sw_splice_read() passes one record to the pipe. It takes the
+record from rx_list or decrypts the next record from the socket.
 
-It looks like that does the same basic idea of delaying driver binding
-that this series does. Hopefully Leon can harmonize it to use the
-shared trust level flag instead of a usb specific flag and retain all
-the uABI around it.
+The next patch lets the kernel consume a KeyUpdate record. splice()
+then has no record to pass on and must decrypt the next one. Make the
+decrypt step a loop that runs until splice() has a record.
 
-But, even with this v1 the user can choose to use the generic trust
-level and ignore the USB specific authorized and get the same
-functional outcome.
+No functional change: the loop sets skb on its first pass.
 
-> And I know there are other types of devices that will want to use this
-> type of thing (i.e. SPDM seems to be spreading to other new bus types),
-> so it's good to have and get right.
+Signed-off-by: Martin Belanger <martin.belanger@dell.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+---
+ net/tls/tls_sw.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Yes, we are investing alot of time right now in trying to get SPDM
-uAPI right when we bring the general framework into the
-kernel. Everyone needing SPDM should be able to re-use it.
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 771e02bff519..7f7a2f70b02a 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2023,9 +2023,8 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+ 	if (err)
+ 		goto splice_read_end;
+ 
+-	if (!skb_queue_empty(&ctx->rx_list)) {
+-		skb = __skb_dequeue(&ctx->rx_list);
+-	} else {
++	skb = __skb_dequeue(&ctx->rx_list);
++	while (!skb) {
+ 		struct tls_decrypt_arg darg;
+ 
+ 		err = tls_rx_rec_wait(sk, nonblock, true, false);
 
-Jason
+-- 
+2.53.0
+
+
