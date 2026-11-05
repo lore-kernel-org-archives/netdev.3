@@ -1,118 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.191.204
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793874171;
-	b=c+uzcIC5I9zAWuytzc+MmmzRGF/51JndqxkMxfhev0MdxNZUOXAiQJpN6SFjaTzh84wU
-	 v9TeyrfAyOLJ1UacfmUehF88cv2kMhTd9FBzw+udogu4VTGDiidSavTUTT41jBfgt8ydE
-	 rFXhD91//gxNc2HgaXTOuspbByExI/581cp87dT9gqAPxOhPbb+XF+cKi5Vi+qTYTmnQp
-	 i5wJSQ2+sojteb8xEaHnWCwpSlXMb3+AuO/d6/ELzXCIdK4FooXVcMgN5xRnTV7+4heOs
-	 JoEZDf665HJbVAKA2d++FKW/87pZivfsbOwKwVVaUik+JyDbZi1pS8PZi22ktH9Gr1g==
+	t=1793874245;
+	b=gZofUsiT90jJbENfTTGgOq5kMX4XaYlDYmyDEyZ9tWsS5wjLn8pm/ge0eRngDpq+d6Y9
+	 KytJP049FZLFHc6iWIDieQnPnPiKf64aUglB7TB18cs2r0GGi6F9o+85YK4Eb6HmT8Fwm
+	 1GBG3+iRpqbtf9GQzePyROZpD5GyZ9GOtRAdoVbQT2ixrQJjWiBSm+F0O5PAqLT5CXCdB
+	 W8BJyShdwC5yrZnTk7DQ/CjVRXAA3gPnp+hPKbFvqoua4K9j5VizhZtz2EulXJZRUiK9j
+	 7L0C58Sg20gRrLdqInFZAqjXyBXOLXWKL/SJvZ1Ea2bSA1hEzqSpt9UXiUmQBe2R+tA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793874171;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=mA0JUWIMJDLe3trqouiE/a4ohypc9UC+FqDIAXVqBsQ=;
-	b=oZ2+v4POJrkV1td7aowut/pJVd+DVYUKq4TJmcslqNcmLMI/MfrP8guagzkdIhgpJQY1
-	 w+BOp4FiBBQCnXo4DZiZatRz6vhOz6Gl7g6Wob0j2ugxIRbHAz+JTTBUi/GUnGRsdpxMX
-	 Dk75wTcL7J8Qt9pVsOiIZJqvwZ5VQJYOwJMp2qM/hHJvwITt7M8Rp++nh7CveCNqd3b99
-	 ui6rZLyKVdpkMqhK0VAfgQINOW+ILIB6KerTdU+fBY4JFwU2b8OBqvhDU2NMckkgPhSL0
-	 kBJSy7K6KoRUc5pbIEvbMegx/TyKaE4GIwLoK4JBypPYpZL6QPQEViXUtyhdmIOf8GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793874245;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=qipybyQ3wy6vyf7/dc2kyw3hG+D2vRp1Qd98an/qs0Y=;
+	b=qjgtpcpowgYVYvCIHqx0iS0KuKGeRWm5b1KKbg1vnCgfK0MCU3Di+vPKVvCmulelF7Rp
+	 CHQMFEaX5ur39salT8Y9PZYGm3Q3h/r1FKc5BBtD5X9YVMFfKM4MJWVoBp/y/id5fZT6a
+	 09PkkJ4fsOHy/UoCslmPDcN9FM/M4ktpKP2z60jQOy1FBrj0XmCvxOOeUgODpIMsxQWjf
+	 Q/1SRNdlNuHqmcj91AdRuGGfqRb+wPcF/sxwghrvViQgw1JEiLJ1OWdIgzoqOfbKzLE0u
+	 xTem5NTFrW9rFdJ/L1FAi+x030eR3/8FQ1lsgEf6cUgeCkJ0tCuFjoOCAxg2N2xR3/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UeONTUv0;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="qC/e/HgG";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OK9Ciafl;
+	arc=none smtp.remote-ip=66.163.191.204
+Received: from sonic312-23.consmr.mail.ne1.yahoo.com (sonic312-23.consmr.mail.ne1.yahoo.com [66.163.191.204])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97884606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:22:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97884606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8710606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:24:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8710606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UeONTUv0;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qC/e/HgG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793874164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mA0JUWIMJDLe3trqouiE/a4ohypc9UC+FqDIAXVqBsQ=;
-	b=UeONTUv0UgbS5IUIOd2M8qcgqpI9bup4ehO2VCa6ewq4x1MYJAwx6ft01Ive/vgQPmNKGi
-	B51756vtLbZspiZcqvueGLxArHlu9yOJClOBjaLP6vE4o1QQ0BOzwHKW5U1uCH7Pzjg5H8
-	g0ToCWbB9ajtcd6wwt8VLJXy45ul9hk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-ECPlV9GQNZOcyvYrZqpSJg-1; Thu, 05 Nov 2026 05:22:43 -0500
-X-MC-Unique: ECPlV9GQNZOcyvYrZqpSJg-1
-X-Mimecast-MFC-AGG-ID: ECPlV9GQNZOcyvYrZqpSJg_1793874162
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso19368155e9.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:22:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793874162; x=1794478962; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mA0JUWIMJDLe3trqouiE/a4ohypc9UC+FqDIAXVqBsQ=;
-        b=qC/e/HgGDYx/2Lh64K+89w43sgmoFIHWuFrBEhX60rDYwVSNtChRz09WqDqoa22QP3
-         e+RVTc/axkWchbGnZ3bhlpNKuPgym35DUljxtawDPCmFsmx777kOCV+ov8IzqAcZ/zCj
-         +m61HPAOhT4aaK+kunQ9lvKI9eb7DRq/zTkCF88XFdg8MfS59WYJv2wsJlIs17ttGDlZ
-         l04iU5g3LWp2lj1xaCjSfMW21OaWaWKSyNo/7BhXdOUfvHKpt/gxvo16mpMSe4BDPBED
-         6KeLgf6F0gh81FV1kkef3Co93QjgWMlUFqLJ2atYtMmUIreGL0IogeUNiQdWbznpjUJa
-         UwOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793874162; x=1794478962;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mA0JUWIMJDLe3trqouiE/a4ohypc9UC+FqDIAXVqBsQ=;
-        b=wtJpD6B7PT7p770MizegWI9X4ueR2CgEiJpIJ1rNro3CbTY9gXSmvDzixReFrQ4hQR
-         HoQGHT1J+LJPyNsxZi8b0DPRI8wSUYqyjZZz6kCa8ma6h/xgIFBmIWrtXWrnNc77rp0B
-         eEL1wJdO3ZxuMSg2MUB2mcEeg9bNPNt7OH3KVggNJolasV1Ipia8S+U5gsRNTt8WhkEg
-         XrREjjv95utoIIc5Y7kK4NzWjhcq4vO9rW4bhL5z0Hsn8dFChtkV1VnouWWFJ80umxJu
-         Rvat70v84DZoLX/tYJKk+cuEVZT8MqYJhYs8Spyrg38xPZ7r3IrFDzlDz2nj6/WUUUCg
-         fOdg==
-X-Forwarded-Encrypted: i=1; AKwUvBxG8odEykWYkYjalayG8OAWVo2A8MH8J0pXVC101qiOymiNRxkEnmQMHophTSiyl29PyGn2fks=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9mW8rVhbLIgK8/PYYvf+7NEhMbf5Zk8aT8EddjR+HlFVmBwBIA
-	RBH0qK5LObfXe/fIJdLBy8xJi/j0wiSOyLylumHUrR2TXiA9VuUn2LzdlEx7D2YlZkwkCeltE7H
-	92o1/X15SSCYdMXpOGMUL7VEShgelI4h58LXc5qz0bp5bd1CUNLDC/zagBw==
-X-Gm-Gg: AYBFou3Xr8uAZGPCQ51D5zgbrpc18KPDm6G4Qg0eWPEsq8dikPti8LwaRhmIYbDpycw
-	XUC5E7FGlwXjOnteYYMkgc9BphbbQOdXr6H1/SYVIlrvdcNoHLLqfDSoPwN24LzBti8uL+dJlqk
-	mCEC4Jke0VEeqKdVmx1kadhqqrcQNRuhv66e2sW4L8HyOXTkybJ0DjPMmMFoBJ68KWl9SkFFvpc
-	yWNLckxdtbGatWta09Kfjo+OM3ZWXKof9gXJEaPZuDNTdIMymdB8XrxZNO3vubbSI9llVVyfvsF
-	huedXW4Pp3J8ucACQh05aoeVS4s5TsMH97DL4zrvIokcl4FF0N+sM89NFNHHwYC7x8PwolsEY6f
-	KL4a6EnphlpTDr+qfntkWE2OLYCHoZyTIqZv4IBOIyPP/NZqxN4mq
-X-Received: by 2002:a05:600c:c87:b0:4a8:cb23:f71b with SMTP id 5b1f17b1804b1-4ac186b1a2amr423568285e9.18.1793874162237;
-        Thu, 05 Nov 2026 02:22:42 -0800 (PST)
-X-Received: by 2002:a05:600c:c87:b0:4a8:cb23:f71b with SMTP id 5b1f17b1804b1-4ac186b1a2amr423567735e9.18.1793874161708;
-        Thu, 05 Nov 2026 02:22:41 -0800 (PST)
-Received: from sgarzare-redhat ([80.116.143.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56f0237aesm56586085e9.9.2026.11.05.02.22.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:22:41 -0800 (PST)
-Date: Thu, 5 Nov 2026 11:22:36 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: jrmmhm.kernel@eldare.de
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/2] vsock/bpf: release sock lock while waiting
- for data in recvmsg
-Message-ID: <auxYWGV4l-xEAajy@sgarzare-redhat>
-References: <20261028-kbh3-1-022-fix-v2-v3-0-bc0752b2d3db@eldare.de>
- <20261028-kbh3-1-022-fix-v2-v3-1-bc0752b2d3db@eldare.de>
- <auSkQOU6qmj0NPEt@sgarzare-redhat>
- <179381093020.9.4719932034061956856.1746278795@eldare.de>
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OK9Ciafl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793874243; bh=qipybyQ3wy6vyf7/dc2kyw3hG+D2vRp1Qd98an/qs0Y=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=OK9Ciafl4fvKnnhj12MmIAGq8vTPjOUwkwZ841a8yha9L/jQER4UsLkarQe1QXlrLYAhRonRPu6QqU2zRZfgnDuEKXgE/uP/tYA8JsmXbb7p/J/WOidgHRK3hnGZ20EC0BFEHciUoxPKE/RGT7wReip6SrNJKCAM89Wcns2AzkOHUiHz2zHz+/isrmxbN6SrIOlXJMFRZullcPplX11YK00O6xkf634t9DXjRcsMd5whKRHfRvH/RZzoUH0nmv7BCIc0S5ILT0EoerEp3wrVeb096VxKOlRITD/JNGO7N7KU5yr4Lw2rKN355XNCeBlLF8K4C+TPz80cOxg/DGGWBA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793874243; bh=RJUNVbb67wMl+9vVRNOmYHxdu+wAIj8929v7yQBFNre=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=fc8Guy3H5QheeektZoSB4fX1/OWOjiOKi7hu3/HoFfvz+qJTr8TaZuociqIGNYjXV3Syu7c/tvQBtjjxaFVtkr2WOG/f2EF3XcBrkyxGaOAcYV0tGlgTa2HuaqJiViNh8TlXbrNNd6YrZ90kI+GpFcSXXMsZNO59FFygHWegwepjPidCegOh5ALOtGiFMr5Ot5ZUpKyotOuT/EpUsRAoJ4ODjKBIquOpjbeShO/q3dNZqhqljlsfBuTLVX0QmukDgWFKaTbbs8Ns+XUERVzR4jz2lvkP/xMC7q31QGO9npnxTd2HpyPKNLfD570nmJoj/qVbTWauDzN20k+2VeM6PA==
+X-YMail-OSG: 0eifEpEVM1lE4M0t_CY6KnN3bLOcGoWRec54AYRT07mMrKkUbVQsCTipUm.bIDG
+ aOT4m9Az_.J7PIEBH60MSXjENzlGB3ZQ9qhTE.L__sbEwo8wjFir51PbHNUHo0BvLBevBUmToVv8
+ vNGBPEK.oU2VlmgXF4o1e9YQb4kmh3OGO6I5lWoxM12zsB5CJ3CdLEUT2502z2O_XQ7CjwFqdlhv
+ Rb0EaPzZrhp_mWrDHN4xtGMLCnaC7FScItD4Fp6OfMVPOPH9IxG5a1.tevEFvT90ZT3f1GMGI4_9
+ TD_Ur3.86NkVRWyD.dJ9Uq6FncXa6PamEILVMwOROP4hWMb0Lq4AUHD7ZIvn7NpDio8C6XeuIwnd
+ vHkpFW47SW71z_r.jiEEhBgcGMBG7KrnxGx5w4pi0xa4eB82OK9HkB7ryXvDTwVowMbgff0dyTEN
+ v36hN1TP1V18o9J9eupsE.F4TuaxXGskyDT16D8XUSkYIwnPj5jihQ85Oe1YkCOAAZYTwSWIRd1.
+ uoQc_VsSG_rrPlxMxdIR6wCpYhxlRcjEb1HQ1QshUbE9kiIs0MdlPfLJY5k0_9EwzOr9FJeJ7dJ5
+ YoWHkE54uvW_LaLI931zI32iKf1Arpl6wRWMzhJwB9Ln1gandwV.jybCLYpDBdJV42tBG.Fwv7MC
+ iOw_zZXyEV2LsNkr22OVefAJmDgbpiPbkHVusiEKfRM7vXa.7ky5mDm_XvDCUQhAcNnsw61e6LPA
+ 4iwhsk93YTM4DGt0t8gFM41GDwLF9HGmhBcFl6sWsPbLYt11FUbNFJbQxHXndFfksgrGqr740EzM
+ A8P9eXVE3XPoeXAR6GJQyXwxvLlE20PJ36vhd9PHxvS5KNEqVQzvt0.8f5gOXz2lVgHm27zWLEup
+ zRBbzs7f_P1B0UAWnUp7s6LfI_V7_oOBalxIeukEwVrkFJyG4lx2Oj0psdMH9yW4lv0zO0K8s_z8
+ MYUP30jyGPtdRa9pBtuquDucuQmh493q4THeFUWRMf4fUhHICYgl1n.RN9lKOTyZNoRxxo4bjHoR
+ oYC0mIl2.9Fbil99dffJQS8JfJot.V5FLke4TYIGjBwBBHeiihfscS.94SAzmB8.ewBG9be0bPJV
+ JwGjIL.BLhZM8Ft.4NKJUC9Q0x4BA1UIfjxXCshb_.m2jflCmEgvIEMh19y3.2i5gWkCGMnG7ieE
+ eSvK6iMR8T4UGiGJcFBqXLmYzznBbLywp1EGUMnbTrbfTIxk3et5clO6vBfs4AkscBsOauOG.7ON
+ j9uAZbZ3x.V9UZ_hMfqXRskDMYjuJzYXJJ5v2IHJrnHF7WDD1akoQxYQyN1s5OihMAN.9h.K8sAL
+ YUV5vBtsqmsf6TfV9JOPQNWwrYDz1vzvIUuz9NZQlvMFJ7Lf1ARSoMLDZTpHjjoC4Zq60H2D71qh
+ 8lkTtiHy2hPG8bnhjSygqoabP8K1iIS1q76sP2qvIJPdmfz4xArgUyjOGcf87xjpXNqRCxS8_vUC
+ 1lWbtHE5L9Fcpk1SkUUZgO4BH4m81iITFxdZ_nbP2rctRJN45jhiMkix5.vY1oGFb.B0Tcxsqkt2
+ FczrUMXhx5ZFykfSER5C4nxTHDH1Npfp0llbutE_EM5WRRtN2DaikLa52kGVpXANk.OVdiL1W8xP
+ zWwHa0zcijqDtUOMTfjr0VwW6_FxmfzFGg25UsLLA7G3t0UZzrrOoWALVqnH.PxzVAJCXD0wINhH
+ ICR0GvMvwEQKtsOtH4EoKGvig1XkHJeMdPWSjoZ_VfKFirINs5yl_xiQzXBt3vkuKxy4Kl_CjnhX
+ sml_rIVDTkTcUdCiPfpQaLUDXrOjtJWvweG3UkggquDAOiZh4MGMIoRixfOgZskB3TmOKWnexbCm
+ 8A8PyhIDlHt_PNmkbwUyRetBoWhJ67zWMenxQ45DYNJTJWld0g80E.v4iunZ11.R3azPFyG2js.o
+ JshgOMTXCOu4_Dihid9oo.cxUuW7u49Yxx0KK1XWw1QulBXw_2yNSyf71AEL0CqAYXIc5.pim4CV
+ TnCE_fE5huCXBbi6IaxLcC8eqFxU6xrAuvByqouX6fJgEcrYePV0BKwws3LzouAhEcp0xo8u0UlP
+ YIc13hEDbUzqfNGDG3vP031Wsq9s80V5QVfFGAByBBX.G3g4zejSlOHJ56lt1m4_WQwuducDIWt3
+ dsG0oiKQah7lxiMpIj3vJpzP5ISOSwzjrdPS09qMwm8LI3xN50nyGJKFjUPU8mMpVPhcTry8c4WH
+ vq8OGeOKHNS.d.HoeNm5xlviToFYUNMSn0__AuffXdi3w_4Uop4yJi7X1dOqadnJBdoS_3EraDDW
+ AUfnBQJ0y5g--
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: cf6cac19-34cc-47b1-8cef-564e2369df50
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Thu, 5 Nov 2026 10:24:03 +0000
+Received: by hermes--production-ir2-5dd9bf4598-bbdwl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6200c68789ac75b7eee6c67eebb17167;
+          Thu, 05 Nov 2026 10:24:00 +0000 (UTC)
+Message-ID: <6460689d-ef3a-462c-a5b7-df3c2c843f86@yahoo.com>
+Date: Thu, 5 Nov 2026 11:24:08 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,90 +84,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <179381093020.9.4719932034061956856.1746278795@eldare.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 08/10] net: dsa: realtek: rtl8365mb: re-latch
+ the family D SerDes
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <3ecac0ea-830b-47a0-931a-67fea637f0c3@yahoo.com>
+ <ausrVrtHQHvac9bV@analog.com>
+ <e3036c42-8c31-49e2-8ab5-cbc5b8771e51@yahoo.com>
+ <auxDYMASk8J0SZRW@analog.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <auxDYMASk8J0SZRW@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Wed, Nov 04, 2026 at 04:48:44PM +0000, jrmmhm.kernel@eldare.de wrote:
->On Fri, Oct 30, 2026 at 03:18:10PM +0100, Stefano Garzarella wrote:
->> Ditto about commit message, please put more effort on writing something
->> readable by a human.
->
->Agreed, I'll rewrite both messages myself for v4, much shorter.
->
->> >+            if (sk->sk_err) {
->> >+                    ret = -sk->sk_err;
->>
->> Why?
->
->Same as vsock_connectible_wait_data(): an error that arrives during the
->wait is returned to recv(). Without the check the loop still ends, since
->every path that sets sk_err also closes the socket or sets peer_shutdown,
->but recv() then returns 0 or -ENOTCONN instead of the error.
+On Thu, Nov 05, 2026 at 09:52:53AM +0100, Alvin Šipraga wrote:
+ > On Thu, Nov 05, 2026 at 08:18:49AM +0100, Mieczyslaw Nalewaj wrote:
+ > > rtl8365mb_sds_write() and rtl8365mb_sds_read() now take
+ > > sds_lock with guard(mutex)(&mb->sds_lock), so the goto out_unlock paths
+ > > and the explicit mutex_unlock() are gone and every error path is a 
+plain
+ > > return.
+ >
+ > I've spent too much time out of netdev recently:
+ >
+ > https://kernel.org
+ >
+ > Andrew here gives some input on netdev maintainters' view of guard().
+ >
+ > So perhaps you can ignore my comment to this patch after all.
 
-Please add a comment with the reason.
+Thanks for the heads-up and for sharing Andrew's input.
 
->
->> >+            if (sk->sk_state != TCP_ESTABLISHED) {
->> >+                    ret = sock_flag(sk, SOCK_DONE) ? 0 : -ENOTCONN;
->> >+                    break;
->> >+            }
->>
->> I'm thinking if we should split this in multiple patches.
->
->From reading the code, it can be split without breaking bisect: first
->loop on all exit conditions with the lock still held, then drop the lock
->around wait_woken(). The order is fixed, since dropping the lock alone
->brings back the early -EAGAIN, and the loop alone does not fix the
->deadlock, so both would carry the Fixes tag. That is why I kept it as one
->patch, but I'm fine either way. Split it like that for v4, with the
->current 2/2 on top, or keep it as one?
+However, please note that guard(mutex) is already used for sds_cfg_lock 
+in several other functions within this patch, namely pcs_config(), 
+pcs_disable(), conduit_state_change(), and teardown().
 
-Okay, if the entire change is needed to fix the deadlock, then it makes 
-sense to have a single patch. Please make it clear in the commit 
-description.
+To maintain a consistent coding style across the whole patch, should I 
+keep guard(mutex) as it is, or would you prefer that I convert all of 
+them back to the classic mutex_lock()/mutex_unlock() pattern for v9?
 
->
->> >+            if (!timeo) {
->> >+                    ret = -EAGAIN;
->> >+                    break;
->> >+            }
->>
->> Is the move of this check changing some user visible error?
->> I mean before this patch it was one of the first checks, is this okay?
->
->Yes, for non-blocking reads, intentionally: -sk_err, 0 on peer shutdown
->and the not-connected result now come before -EAGAIN, as on the native
->recvmsg path. I'll say so in the commit message.
+Both rtl8365mb_sds_write() and rtl8365mb_sds_read() are very short and 
+the lock always spans until the final return, so they shouldn't suffer 
+from the over-protection issues Andrew mentioned, but I am happy to 
+change the whole file back to explicit locking if that is preferred for 
+netdev.
 
-Yes, please.
-
->
->> >+            if (signal_pending(current)) {
->> >+                    ret = sock_intr_errno(timeo);
->> >+                    break;
->> >+            }
->>
->> Why? Should be a separate patch?
->
->No, the loop needs it: with a pending signal wait_woken() returns at
->once, so without the check the loop spins until SO_RCVTIMEO expires, or
->forever if none is set. I checked it by removing the check: a signalled
->reader without SO_RCVTIMEO never returned and used a full CPU. The
->native path does the same.
-
-Okay, please explain this in the commit description or in a comment on 
-top of that check.
-
->
->> >+            if (data < 0) {
->>
->> Why not data <= 0  and void the other if?
->
->Right, will do in v4.
->
->Thanks,
->Jerome
->
->
+Best regards,
+Mieczyslaw
 
