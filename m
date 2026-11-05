@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793874008;
-	b=nOtVK2FGqmYhpr3w8wFORqePO+ug92TANeGPHWjTgW/4yK+jfX6qpZ2VPcuwrFDNPlnN
-	 b0uzTPaxuN7NwfFY107r+ZabEKS2JmqIobY8+fiqYRSDKAqbwoVtSycrAD0KHkp+CBahi
-	 4P/NJl8hWes3SiEUPMvj7any/ExpZcMqqgQW4Fkw8kjGkziG5LiaEyr2pjdGV3l7ylZIE
-	 9o00MaNpEMpXZBoYE/je7kRl/kyM2LBfQ+/bqP69yP6Q5SsrihiI3asBUPPdSpM/jHGMl
-	 J9OX5qZi61vZt/5EGp5HjLcylJY9j3cNFuU93apnyOI0DOmcRECDfZBsBGPIe4lowfQ==
+	t=1793874006;
+	b=IO+33+aFSKuVLUgnKx4W7TEyIBnUfA2yEBUe6W/uhyC9e4w3X1jDq1xe2FwR6xRpEJm+
+	 CLpQcFamyL6Ez7tuhZHhBB55gI0rUc5f63IT4u4mXmWQWBpAyxngWJgohYX/ELiBn0wml
+	 BBTVX0UxA6McCeIPrgfjmL+GpgqUZ8xOPbXqE/a4vHSgqe6stqLMEc1YWVdxItnonvhCW
+	 K428KCaZNJmsFu4MIEXeZsaQ5IIPSdDEuMHP4iXAlymZDgNmr6vHr+bgw1jKiwrM003N1
+	 MX7WIAzdXSHgkclE23Aaw6lhoxIBhP5sbCeRhWXD63F1s0KMJ2x0TBFGAVkH7JVi0pA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793874008;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793874006;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=/fjsOUXK6gh9UjxEanyLWiGOHJ5mrZq8jXGDtiDFfF8=;
-	b=Lgu99eXflOoomg+75RCnSiVQtUGKv5BWAxj5xkX91ceD/MuB0UXD4k+Oum+Kx0lajbGM
-	 pwmBw1MaLxbB3IluYLsrkjbRFzt9CI9wp5GT36yBkeSXNrDlKb2+hmVLUHamrtty3sDOx
-	 KfuZndDdOPYxvTSN2Eb3g3Qo5JIkoSlt22koeK7+4rEaBTEHd1bqjgQ0PtYJzrkqvINi3
-	 cfU1iNemjJ7vahVYQsNibWrgeR2f+htD7jey3R8qNYBzYwShYws1vvOTQD28GourrQX3E
-	 u4BZ4mVa73yOcNeh0sHK/iA4bcltYlmniFzOvFSKtW9IG+h0D2ca8NojGqzQySmPgfA==
+	bh=bHgUiRKVLZii57YQmx4ogKCKgX1QROM266kYzDsN21o=;
+	b=VWlPlSMlUMEaYHs4+rs8GDKJlBJXiYkWiQGQwHB8DbDGmrY19j6mlCqNy3Gvrp+fsEyD
+	 C6N6DPRr4TWzMtBRo4idNq6E+vzFsyyUUaZO+1oUFQuPeUj52V9TIgqnPGYLbS9uhCh2T
+	 Dh7lDE+ogdCm9NMRFsttAfXMlJ94eEFEq0dlwP4Z08GkaGxgszzXs2IAZAMp+s1nytSK3
+	 BT3+zbHr0JV6h9H26yyNBCTiFjcH1kHMD7fJEiVbH68AwZSj+HyZrUuAM3nb34uk5/xy2
+	 hGyhQvPDXE4aFUZ5yIfxeEQ7QfNYi3Dmx74E9EWm0/3Mpjox8qcYkkp5oorUUaZY+4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NZGkEUCy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JEjxd3iC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424FD606D815;
-	Thu,  5 Nov 2026 10:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16397606A326;
+	Thu,  5 Nov 2026 10:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NZGkEUCy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45161F00A2B;
-	Thu,  5 Nov 2026 10:20:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JEjxd3iC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D791F00A1A;
+	Thu,  5 Nov 2026 10:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793874007;
-	bh=/fjsOUXK6gh9UjxEanyLWiGOHJ5mrZq8jXGDtiDFfF8=;
+	s=k20260515; t=1793874005;
+	bh=bHgUiRKVLZii57YQmx4ogKCKgX1QROM266kYzDsN21o=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NZGkEUCy+Pi34O+oMFhH4oLsN4lAvstK0UVU9uJVnhje2A2eji/KX2Nuch8ODOsHH
-	 673hokhZhzxmlixstYxXS68kWu49o3fr7EIwmxlfBUQC5BuzHr8IXw4ATmPVrOtfHg
-	 wfFr730u4yzKdyPAPCT7IGPzwt/UGc5BG3yslc0ho1Epc32BWng1CAEA4YPPEKg93a
-	 3xP+7QYJnOIRb1mYdba8gU3BDLq5tLvzg1IlYtFkcCOQOe8f7nfVV9DpexsdexhDv7
-	 W9/S3fwa0SSx0iywceWqOpHE4n/9VZ4EDuaeGixmCQxdijNkFdekRhj+7db/L2sU6h
-	 MxPts7dwRYHCQ==
+	b=JEjxd3iCUhF+b13I/rUIfrZxqJJ7yMQOPr1gvRxNmhTaCyg14ABIYnJu88h3cN7OB
+	 0SW0y8GHNH7gF24KNGdq8mlKko3POwL2QzrT2zcSquYxgryQQeKm9kttEb5pKL7NlL
+	 WqnCAuXpUWz7drd1OqAN/TyJYDlhhtgGN7r/f8SIPkJ3E6aTf+2P98tuLru29EnnQm
+	 YQIt3IcatGuTxMifntAJlhs+A+4ABsLJ13MLjywy09tEVFtTxaj3j964wqOjrCP0VD
+	 RbL0LotP4I7SAtA/fAMIjgjd37N6rpo6dTm/dF0lZ1nLxL7x179QQ9n44VdOwx8D1h
+	 jwtb3jgH8CeJw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA421391AFB3;
-	Thu,  5 Nov 2026 10:20:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA285391AFB3;
+	Thu,  5 Nov 2026 10:20:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,53 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: 8139cp: keep Rx masked while NAPI is
- scheduled
+Subject: Re: [PATCH net] net: count last skb of each sk_backlog pass in
+ __release_sock()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179387400626.3571518.6125898624149671767.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Nov 2026 10:20:06 +0000
-References: <20261031-b4-8139cp-napi-v2-1-5824797c0fe6@gmail.com>
-In-Reply-To: <20261031-b4-8139cp-napi-v2-1-5824797c0fe6@gmail.com>
-To: Colton Pawielski <colton.pawielski@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@0x0f.com, geert@linux-m68k.org,
- kmehltretter@gmail.com
+ <179387400456.3571518.633147613195063738.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 10:20:04 +0000
+References: <20261101075145.698399-1-sgzhang@google.com>
+In-Reply-To: <20261101075145.698399-1-sgzhang@google.com>
+To: Ray Zhang <sgzhang@google.com>
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, kuniyu@google.com,
+ pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, decot@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sat, 31 Oct 2026 11:47:23 -0500 you wrote:
-> From: Colton Pawielski <colton.pawielski@gmail.com>
+On Sun,  1 Nov 2026 00:51:45 -0700 you wrote:
+> Running 500 concurrent TCPv6 streams (neper "tcp_stream -6 -T 1 -F 500")
+> on a 2-core Cortex-A53 (CONFIG_PREEMPT_NONE=y, HZ=1000, LATENCY_WARN)
+> triggers resched_latency_warn() in __release_sock():
 > 
-> cp_rx_poll() calls napi_complete_done() and only then takes cp->lock
-> with interrupts disabled to unmask the Rx interrupts. An interrupt
-> that is not masked while polling (TxOK, TxErr, ...) can arrive in
-> between. cp_interrupt() then sees the Rx status bits, which are still
-> set, finds NAPI no longer scheduled, masks Rx and schedules NAPI again.
-> cp_rx_poll() then carries on and unmasks Rx anyway.
+>   [ 3655.311821] sched: CPU 0 need_resched set for > 100006892 ns (100 ticks) without schedule
+>   [ 3655.311889] Call trace:
+>   ...
+>   [ 3655.311944]  resched_latency_warn+0x7c/0x88
+>   [ 3655.311958]  sched_tick+0x1c0/0x418
+>   ...
+>   [ 3655.312578]  net_rx_action+0x238/0x438
+>   ...
+>   [ 3655.312641]  do_softirq+0x4c/0x90
+>   [ 3655.312651]  __local_bh_enable_ip+0x84/0x90
+>   [ 3655.312663]  local_bh_enable+0x1c/0x28
+>   [ 3655.312674]  __dev_queue_xmit+0x4a8/0xb00
+>   ...
+>   [ 3655.312782]  tcp_v6_do_rcv+0x240/0x5f8
+>   [ 3655.312793]  __release_sock+0x9c/0x188
+>   [ 3655.312806]  release_sock+0x150/0x168
+>   [ 3655.312817]  tcp_sendmsg+0x4c/0x70
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: 8139cp: keep Rx masked while NAPI is scheduled
-    https://git.kernel.org/netdev/net/c/547b1ae5ec50
+  - [net] net: count last skb of each sk_backlog pass in __release_sock()
+    https://git.kernel.org/netdev/net/c/c4e4056b2135
 
 You are awesome, thank you!
 -- 
