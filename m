@@ -1,88 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793898546;
-	b=eFH03rMKO6sOreNyuBtzzzTnVEDjUThT4AHqjRSlVP9u6LtOkFc0TgjX8y+UY3KO5jqM
-	 WhxnDgB/K1m6vmjnU2Z6Ogc5me6H94rz0DMcEMaZnOk/fr+iTk3apgSuTz6FiiKVitoeB
-	 3riL8dCXUNJ2lU5kT1yY2RHtd9hqsOSLtKBIvZQokFHs621DGXE/Ij7h8UisIGXpf+aU0
-	 V0bzukiYfLmXzqQMTxHKqqYlA274stmYnUkyrLwqVjnmrpwTArwQ+DyDs3ZWcaLjkom68
-	 gUDiXAzHTKaXBO4ATXNaoEgHJVaPrMlHZbc7vDDlZAuriJ3reJxxpDbYgdrfsPtcNew==
+	t=1793898549;
+	b=pFIKNMajGe+9+yKhI+EhMZPAvxpYI4ut+vIXFf+1PDXMHuzQASFSU9HlvYH6cLqSStNA
+	 DXLzKYYuRlWs4VBi0knpJ9tdb19JZ/ggmQhJeMye/c47/oM/S6qVGVc+oF3PDpudWDwgG
+	 NLXksLtwter34CYjHXK+LcGbVmZGPSZ/RamEoGEAIDqWi0LCweOqidAGS0iyfXXxWGrUl
+	 sgY5kQftonk5VXYxNdWcphYxLo6E1bfBxh7C+rycRfZv4u8EprkenHstmcEZh+UINRDrI
+	 1fPu7K/M9M9EcawOx7CtnTeYjEmrzNshQT3x8jf8S2qdEy1FP56Q6d3/8Hk4CxW4tnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793898546;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=E6BV30veFVp7vAa8zjNCmhugAJtv5Cf8HFJzEFbMAY4=;
-	b=J7TtJLjpG70DW0wLmNYm7UN2x6P6Oa8+1Cfju9N8rIkvWyIoCf2hx6HJo6VQW8BUBIDt
-	 Wq74Kb0rm9zAnAqF40IF4wvK7mcayQBxzsiEeOVWqPF1s78XAEGkreIfBa/1HN0JcPEgj
-	 fxGp+vwOIZPjzWNLu3Ki24rPPswjZuNO/hV4qz2vFqmQE5yQ7t3jtEoHwKkOlBBZeJUyl
-	 b6zYOpArm6u5w3Yx7GtKdphqjzj6oqFT02g5TCNp6h9VGLRsMLVKQTrQ3UYv/TA2sx39W
-	 LFO5xTQNE4A4OhhjSy3yZ7lBpUI95tlX2RRWL2sEIUPqKpMRr+J2O5PhsgSIpiRpEiw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793898549;
+	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-malware-bazaar;
+	bh=9pcshHkbr1mkMc13IhC/TeO7WGUdu0MMea0JbyhMjVM=;
+	b=zWJWTOs5rXce1HUUgB6J8/lPz920iPvf35tINp8HkU/PA2VvdX68dt0F6YCLLx7bAWJQ
+	 WN5nfzEnarpolOCmPek77j0+TqqR6v761BWXOy3Zu6kG8rcCuCvGHMgs5s51IAzjTVw2x
+	 noiaGxDlM6D/lc1TkJyggnW8iycDP+J0e+uOSkSu2VKNoPyMcelvRVZitCN/P0a1MJFVK
+	 63LEtXpsAftXCRbrrkvNlesfVdc/pcW5JCurN2DJPmRxgXha0VdoCERvxEF+yf674oBp6
+	 3yEv9gStJ0cXJA7ckeRHYYOxzEBO6YndeBTVBDX7EpWY0FfLToNBHpf0+u23tlTGNLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DvNZZl8D;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=permerror header.from=sipsolutions.net;
+	spf=pass smtp.mailfrom=sipsolutions.net;
+	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=JoJLrkcF;
+	arc=none smtp.remote-ip=168.119.38.16
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964E6606A32E
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:09:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 964E6606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A63606A326;
+	Thu,  5 Nov 2026 17:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DvNZZl8D
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-353804b591eso4026369eec.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:09:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793898546; x=1794503346; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E6BV30veFVp7vAa8zjNCmhugAJtv5Cf8HFJzEFbMAY4=;
-        b=DvNZZl8DHCM+t5QbEFLP8gJaxizCxoWDmQWhhJ0985oCei1Da1pacOVjUKDHORo/JC
-         RTK8t5FgZTvNe65/3QVQRkC7D+Keowo/BjFxUfMLX3wHJEVyMbX7QU3eFyUYsE5hTEZw
-         HuAgZ+hsgOz/Qtzwl2CJeRRM8I1EAN3owgyByAq5pv1U/R+vPbnxuCpKRH0WK+MXaPjx
-         f8dcE7tkrP5DS/iyddaQwLxtoZ0HTzOZrquiAKhEcRzolib5NR0fGXM8XC2YOwv5NaDI
-         aJl92R6UWmdGpAIRgV5Js3QSPvJjbq+neD8w4xw9f+rvRaCJZjONRXLFJKa2LwKNqJPA
-         /9fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793898546; x=1794503346;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=E6BV30veFVp7vAa8zjNCmhugAJtv5Cf8HFJzEFbMAY4=;
-        b=ULv8HcoLKegoRKYQYwHuYpYPrSzblkTxj5z1H0zyRGRKTPVUZGtGWfpwSl+peQ9eb7
-         Q4HzIsA0fnhZ+IBIG3QBHEoIG48Es7wB+d2ohq5i0xbyxG3s8Cg4bIbKwAKeJAelSdMk
-         rSzp0rSU1FrrH+u2sXWwqn1iAWGe+Iba3wY6sJWv1SsVuqTojFRIUA6GMiXYE2kM1Rgm
-         sSsBJ6s0BXOzjLr8O+OVjrS2nVcoIH2kfAeu31fe7tj6uj7BdczQR5RSyT3PbpN8NG1l
-         moBDZRj4e8WTPjfQ9oYL6ckzpIVU4bg5JA6HT+jY/mKHcJssXjgNV2w3c+4rZ8qwVSHo
-         /IjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzAme36j5TuF2w4CC5fonSPhoNvOWO0YcbcXScurW+SkV3p59mE2qFlkpgrAi09M7LeKS80Ap4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/zweSg1LDrpFCY33dukJfgs8okEFeYOxqRVXNkeKLncdB9iMwn
-	BtGj/70H+XVASFuqHoTrosJfArtM1s3FIm++TrGFfqVw10xwll0Ev8D5
-X-Gm-Gg: AYBFou0+rimCwnmiogJ4sEXJqcYMoPkV6nZ/738VImqPudqi5kk/LH8inmox5+rGtfg
-	7y4YvQMMN35ZJxzSPqJycJByaMFugS9QIoTjEgKZwE7d4YzGJUOAcxFUlyU79YBTJH1f5xBwnfF
-	dylZgNVwi8iyJW0VHfxEhoL9fcfRSgFw8fOg2/pbHDdX5FRtjboLmr4Z4iW+jdgDfwfVLDb1wCu
-	cguMqXvVnst/VyPdc0nE3P0XQt6YFczCO1BCCLJ08Zcf/9oaMI3VZIuDwO0bO/Mp0saZJLT8Pry
-	tIilK9GKkXRse0A2amh3JsKgnTdS4BF5gC38R2PWECJNTAdLPwN/7dzxV3mOy1YQh1FxeBaGuQN
-	70Eaj2DVkLLXqf6eO15cJH/DFLpp/NRDKvIVW3vH/qgdDEEGuumqbkQqkqoBPuiJ7c3L6jjCVSi
-	0swUI5fBh4RnpXkbgWaZO6N3SWFs4UCuhOINVUCFMOqlU1h/GpBrZYd/xcshXk0wzS8Zz9fcwQL
-	SK+TYsoCrTHxjJJyApxE4SHhosBCYGzo1fM2k9+kzT/8gcXZRv5soh6j8XJ+6PQQtIkldrHXsuV
-	PCF89Mf7vCGC6pgyp2PQKKQhsVShv279OlcfNrFY8VEf4zY20hm5a6gKoXDFVAVE9Q==
-X-Received: by 2002:a05:7301:4306:b0:369:44b3:99c0 with SMTP id 5a478bee46e88-36a42340c9bmr28415945eec.8.1793898545495;
-        Thu, 05 Nov 2026 09:09:05 -0800 (PST)
-Received: from ?IPV6:2620:10d:c085:21c8::1368? ([2620:10d:c090:400::5:f848])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca394f297sm20589091eec.21.2026.11.05.09.09.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 09:09:05 -0800 (PST)
-Message-ID: <619a4027-0709-4b13-9367-866a06d2cd02@gmail.com>
-Date: Thu, 5 Nov 2026 09:09:03 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=JoJLrkcF
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=9pcshHkbr1mkMc13IhC/TeO7WGUdu0MMea0JbyhMjVM=;
+	t=1793898547; x=1795108147; b=JoJLrkcFuse/iyva04KR4VR29KyHuQCtfkXvF5HFZ3CvqIJ
+	XV8l2qRihc09po6OTywHz9SncdYIdtWAzE+NtfUp0vI3j0/kU4+YIhw1LjLaWg6AKCIcRDDhzpiXS
+	L5iJoIQKnbeeOmy2SKNjMXv2uIXYOzTTt8PwBkwGEnwtE8+mp36PDKFbzwwrNTHrNwYV3vbA2Vtef
+	4J+GONLshBK/Hv16o7agRqFISIEeDdSgvZp2OjoRi0kAgLkoOE1sQtAYUxpwM04v64zlqkwxgNgr9
+	IB+tNGTUTTXM+6HdOUsx68aHJ97HSOk4R3wjzhfVuFKp2e7FY35roi8WKBoXp2VA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xP0xR-00000008Eu8-1vkG;
+	Thu, 05 Nov 2026 18:09:01 +0100
+Message-ID: <69c7cb8d0567f96dd03c2f35abb12b41ffa09f59.camel@sipsolutions.net>
+Subject: Re: [PATCH v7 0/4] tracing: improve symbolic printing
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Ilya Maximets
+ <i.maximets@ovn.org>, Matthieu Baerts	 <matttbe@kernel.org>, Aaron Conole
+ <aconole@redhat.com>, Eelco Chaudron	 <echaudro@redhat.com>,
+ dev@openvswitch.org, Adrian Moreno <amorenoz@redhat.com>,  Antoine Tenart
+ <atenart@kernel.org>
+Date: Thu, 05 Nov 2026 18:09:00 +0100
+In-Reply-To: <20261105113857.4737cffb@gandalf.local.home>
+References: <20260922110955.363677-6-johannes@sipsolutions.net>
+		<20261105091216.7b91db5a@gandalf.local.home>
+		<8da2902c233de42ce756b3bfba5e5821f4dfa82b.camel@sipsolutions.net>
+		<20261105112444.7873d9c9@gandalf.local.home>
+		<ba474cdb3bb30c3eaf4aafc6534d0e77cfde64d4.camel@sipsolutions.net>
+	 <20261105113857.4737cffb@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,124 +78,202 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 4/5] net: sparx5: Add hardware programming for
- the port policer
-To: Daniel Machon <daniel.machon@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com
-Cc: robert.marko@sartura.hr, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
- <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-4-b45a3a26bed5@microchip.com>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-4-b45a3a26bed5@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
+
+On Thu, 2026-11-05 at 11:38 -0500, Steven Rostedt wrote:
+> On Thu, 05 Nov 2026 17:26:58 +0100
+> Johannes Berg <johannes@sipsolutions.net> wrote:
+>=20
+> > On Thu, 2026-11-05 at 11:24 -0500, Steven Rostedt wrote:
+> > > > Any objection to simply converting the __print_symbolic() sample? I=
+t
+> > > > would look something like this: =20
+> > >=20
+> > > Actually, keeping them both would be very useful. That way one can se=
+e how
+> > > to do it the other way. We can say, the old way is being deprecated s=
+o
+> > > please use the new way. =20
+> >=20
+> > What's the point? But OK, sure.
+>=20
+> I thought I mentioned the point? "That way one can see how to do it the
+> other way". Basically, seeing the equivalent way.
+
+You did say that, but I guess I don't really understand it - I see the
+point of the sample as the status quo ("how to do it"), not the
+evolutionary history ("how to convert it").
+
+But sure, whatever you say, I don't really care.
+
+> > > > +const char *sample_names2_lookup(unsigned long long value);
+> > > > +void sample_names2_show(struct seq_file *m); =20
+> > >=20
+> > > Are the above going to be defined somewhere? =20
+> >=20
+> > Well, it's a sample, and I wasn't even using "sample_names2" in the
+> > below, so I didn't actually define it. I can flesh that out even more,
+> > but I'm not sure it's worth it?
+>=20
+> It is, otherwise it is confusing. If it is in the sample code, people wil=
+l
+> think it's required.
+
+All of the sample code is optional though, you don't have to use any one
+of the methods, either this, or enum, or ... if you want to use the
+dynamic way of __print_sym() then it indeed is required.
+
+Anyway I'll flesh this out more.
+
+> Right, but if we want to deprecate the old way, we need to have the
+> simplest sample of it. That is, have one event that shows the simple way =
+to
+> do this (one that simply replaces the old way), and then have another
+> example of how to do it in a more complex and featureful way.
+>=20
+> Honestly, this is why I asked for this. Your updates use the complex
+> method, I wasn't sure from the code how to do it for the simple case. Tha=
+t
+> is, what wasn't needed for just replacing static __print_symbolic() lists=
+.
+
+The simple way changes from
+
+	__print_symbolic(foo, BRACED_LIST)
+
+to
+
+TRACE_DEFINE_SYM_LIST(foo_names, BRACED_LIST);
+...
+	__print_sym(foo, foo_names)
+
+
+so I'm not sure I see how it's really that much more complex?
+
+
+Anyway, how about below sample update?
+
+johannes
 
 
 
-> +int sparx5_add_port_policer(struct sparx5_mall_entry *entry,
-> +			    struct netlink_ext_ack *extack)
-> +{
-> +	struct flow_action_police *police = &entry->port_policer.police;
-> +	struct sparx5_port *port = entry->port;
-> +	struct sparx5 *sparx5 = port->sparx5;
-> +	struct sparx5_policer pol = { 0 };
-> +	int idx, err;
-> +
-> +	if (!entry->ingress) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer is not supported on egress");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (entry->port->tc.ingress_block_shared) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer is not supported on shared ingress blocks");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->exceed.act_id != FLOW_ACTION_DROP) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->notexceed.act_id != FLOW_ACTION_PIPE &&
-> +	    police->notexceed.act_id != FLOW_ACTION_ACCEPT) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->peakrate_bytes_ps || police->avrate ||
-> +	    police->overhead) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->rate_pkt_ps) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-
-Curious if we can have distinct messages for several unrelated checks 
-sharing the extack "Policer parameters are not supported";
-
-> +
-> +	if (!police->rate_bytes_ps) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer requires a rate");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->burst > ANA_AC_POL_PORT_THRES_CFG_0_PORT_THRES0 *
-> +			    SPX5_POLICER_BYTE_BURST_UNIT) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (police->rate_bytes_ps >
-> +	    div_u64((u64)ANA_AC_POL_PORT_RATE_CFG_PORT_RATE *
-> +		    SPX5_POLICER_RATE_UNIT, BITS_PER_BYTE)) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Policer parameters are not supported");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	idx = sparx5_alloc_port_policer_idx(port, entry->cookie);
-> +	if (idx < 0) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Only one port policer per port is supported");
-> +		return idx;
-> +	}
-> +
-
-Any reason why police->mtu isn't checked? In software, frames longer 
-than the police MTU always take the exceed action. Is this intentionally 
-skipped here?
-
-> +	pol.type = SPX5_POL_PORT;
-> +	pol.rate = police->rate_bytes_ps * BITS_PER_BYTE;
-> +	pol.burst = police->burst;
-> +	pol.idx = port->portno * SPX5_POLICERS_PER_PORT + idx;
-> +
-> +	sparx5_init_port_policer_stats(port, idx);
-> +
-> +	err = sparx5_policer_conf_set(sparx5, &pol);
-> +	if (err)
-> +		return err;
-> +
-> +	port->tc.port_policer[idx].policer = entry->cookie;
-> +
-> +	return 0;
-> +}
-> +
-
+--- a/samples/trace_events/trace-events-sample.c
++++ b/samples/trace_events/trace-events-sample.c
+@@ -11,6 +11,36 @@
+ #define CREATE_TRACE_POINTS
+ #include "trace-events-sample.h"
+=20
++/* functions for the dynamic __print_sym() example */
++static const struct {
++	unsigned long val;
++	char *name;
++} print_sym_dynamic_names[] =3D {
++	{ 0, "zero" },
++	{ TRACE_SAMPLE_FOO, "TWO" },
++	{ TRACE_SAMPLE_BAR, "FOUR" },
++	{ TRACE_SAMPLE_ZOO, "EIGHT" },
++	{ 10, "TEN" }
++};
++
++const char *sample_names_dynamic_lookup(unsigned long long value)
++{
++	for (int i =3D 0; i < ARRAY_SIZE(print_sym_dynamic_names); i++) {
++		if (print_sym_dynamic_names[i].val =3D=3D value)
++			return print_sym_dynamic_names[i].name;
++	}
++
++	return NULL;
++}
++
++void sample_names_dynamic_show(struct seq_file *m)
++{
++	for (int i =3D 0; i < ARRAY_SIZE(print_sym_dynamic_names); i++)
++		seq_printf(m, ", { %lu, \"%s\" }",
++			   print_sym_dynamic_names[i].val,
++			   print_sym_dynamic_names[i].name);
++}
++
+ static const char *random_strings[] =3D {
+ 	"Mother Goose",
+ 	"Snoopy",
+diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_eve=
+nts/trace-events-sample.h
+index 816848a456a2..38d6bf808de6 100644
+--- a/samples/trace_events/trace-events-sample.h
++++ b/samples/trace_events/trace-events-sample.h
+@@ -297,6 +297,33 @@ TRACE_DEFINE_ENUM(TRACE_SAMPLE_FOO);
+ TRACE_DEFINE_ENUM(TRACE_SAMPLE_BAR);
+ TRACE_DEFINE_ENUM(TRACE_SAMPLE_ZOO);
+=20
++/*
++ * define the names as { value, "name" } tuples for __print_sym() below,
++ * same as the inline list for __print_dynamic()
++ */
++TRACE_DEFINE_SYM_LIST(sample_names_static,
++	{ 0, "zero" },
++	{ TRACE_SAMPLE_FOO, "TWO" },
++	{ TRACE_SAMPLE_BAR, "FOUR" },
++	{ TRACE_SAMPLE_ZOO, "EIGHT" },
++	{ 10, "TEN" }
++);
++
++/*
++ * Alternatively, you could define a function for the names:
++ *
++ * The _lookup() function returns the string for the given value.
++ *
++ * The _show() function must
++ *	seq_printf(m, ", { %u, \"%s\" }", value, name);
++ * for each value that userspace should be able to parse.
++ */
++const char *sample_names_dynamic_lookup(unsigned long long value);
++void sample_names_dynamic_show(struct seq_file *m);
++TRACE_DEFINE_SYM_FNS(sample_names_dynamic,
++		     sample_names_dynamic_lookup,
++		     sample_names_dynamic_show);
++
+ TRACE_EVENT(foo_bar,
+=20
+ 	TP_PROTO(const char *foo, int bar, const int *lst,
+@@ -328,7 +355,7 @@ TRACE_EVENT(foo_bar,
+ 		__assign_cpumask(cpum, cpumask_bits(mask));
+ 	),
+=20
+-	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
++	TP_printk("foo %s %d %s %s %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
+ 		  __entry->foo, __entry->bar,
+=20
+ /*
+@@ -340,6 +367,9 @@ TRACE_EVENT(foo_bar,
+  *    the variable matches one of the values, then it will print the
+  *    string in that pair. If non are matched, it returns a string
+  *    version of the number (if __entry->bar =3D=3D 7 then "7" is returned=
+).
++ *
++ * NOTE: This variant is deprecated, it uses more space than the below
++ *	 __print_sym() which is identical to this for userspace.
+  */
+ 		  __print_symbolic(__entry->bar,
+ 				   { 0, "zero" },
+@@ -349,6 +379,21 @@ TRACE_EVENT(foo_bar,
+ 				   { 10, "TEN" }
+ 			  ),
+=20
++/*
++ *  __print_sym( variable, symbol_list_definition ),
++ *
++ *    The variable is tested against each value of the symbol list.
++ *    The symbol list can be built statically (sample_names_static) or
++ *    dynamically (sample_names_dynamic). If the variable matches one
++ *    of the values, then it will print the string in that pair. If
++ *    no entry matches, the number itself is printed (e.g. here if
++ *    if __entry->bar =3D=3D 7 then "7" is shown).
++ *
++ *    See above for the declaration of sample_names_{static,dynamic}.
++ */
++		  __print_sym(__entry->bar, sample_names_static),
++		  __print_sym(__entry->bar, sample_names_dynamic),
++
+ /*
+  *  __print_flags( variable, "delim", { value, "flag" }, ... ),
+  *
