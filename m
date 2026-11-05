@@ -1,54 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.250
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793917716;
-	b=KrWHy/i0nnqF0gli3iFlSowEXj/b7vvgVnPlW8Zjmt54E5GKsCraWQh1Pa19+BpVv3fr
-	 fF712chwf4UkM6Yr8hVWdAPdyW6PHzJZvkq3IeZRWOG3JYuXQDrWr5g6pyreMzZqfzXQV
-	 Eq0gvGHErKB5AqAPfol+b+yAlat/GS7m9BXRJq/MhL2k8XFjUkfgdek6efllgRWrBee/6
-	 8iL4HiAsyNnESBLnBe7lI77dnx4lk0RhXBmTmCtkvEXJ+uAzt2cnJ5OVQJ/qTdS5JzIQ5
-	 mUHI2dx5+7mgjTnK+zyxPa+nRbfjRgvlnkSr5EZr3XC4tgXHb8V23fwSP6tK4CyJvXg==
+	t=1793917750;
+	b=bMlLxf0wa9L+Os0EYMutgRe9Wbquf9Z7eEhSUtSz07jyTTqiPOPIfRfvGj5PpI75tHsL
+	 DQtGw9RjqeMhkxvpsZtYxkmW+b5LqF5n+o7jYDpTR2lX5uACM3GWA4WA97Zzq8ud2zWNP
+	 AM7q8SYPYwFTtrZndno7u1n6htCkTzizfRm6FSdHfNMmw1L/kac5K/CWXQ8f5rQDtdkdu
+	 pO3JA11q4jqPoKwXdUe/XL5MSv3jiODKOzgNF7ZGU2yOXPuUoDuCMG5BITcRxLOalgf9i
+	 V4hrz+0XFvEbkOjkl/fKS2GRvRQdJv98PpcSpSTpHq835JQ3hM2qogWzRtWCv0QfcVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793917716;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=teFZI5ZT0tF3baaZ5GsOyIljCJ7tSwWYOvxyzPD92zg=;
-	b=hPxFREOAXJ2JWW+77XWdJwAf25tpPS2eYGF8s275uzqdUAEwi5rxcq5lAa8X6NRq0Njl
-	 OcqfJFCXejgXQvhWMdTu0athwuwP+dfZDYfjevCs1Klv4LTGgQYbuHxipP0C9/Gtlrxbj
-	 0W62d6GXd5NLGlPOjC6rqYo1QIbgwnkWWvCAjjbj9Ohms8ulJ/xOEwGOrQlzJKoP480IW
-	 eFr5gCoSriGzM6znc3nj+BaKOD4Oip8TbLUMQftaOsluq+gC1IuWo9XjBd6iPh9V7HMd1
-	 wjX2BIXKqPg7k17Hs+nNEkJYOG7wLsVgGPm1c+/w9m9AUeSGdSmU6zK1MNPcdl23Odg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793917750;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=RDihrAvbt899nFV4qD5BU16ILjLzXvAuY9vU5B9lPIg=;
+	b=CwTSQVHVcZOGZDf/EW6nGKS0G2+alysmdXIFD8zX+pV2Ks/7rnOqWegkN52o9fD8014u
+	 KXIqDRAAn6jvDBVkBPIRIVSNXOivF03DSbyTl5OCV+L6LN8qsq4ngfs/t4KidlUffe3OG
+	 AeO/rH04Ju5KpFQl2HOh6E3qPgGMwWVjkupCs2WH5Ee6kVEQKOhfqDDmejW7fxsudi0uF
+	 Xb8Qo7rPNuBDWu8Lj6J30Y+rwqfRdc5ZGSDXdKChLb65XtLguFiHi/re1hL/HBV/6FfDo
+	 NB8K0UfqaoYFEqAgm2M5N1KKL9EU/IgT6AcBhM31HWEEpDCv6a1wucnzxbanStji3dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=k7n7M399;
-	arc=none smtp.remote-ip=95.215.58.250
-Received: from mta1.migadu.com (out-250.mta1.migadu.com [95.215.58.250])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tg6VW5do;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D2C606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 22:28:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2D2C606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D7606A31B;
+	Thu,  5 Nov 2026 22:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=k7n7M399
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=RMLKgoqWLv73HkP/fp6tsjHhZlyH0aziusIjVEhYzLc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793917714; v=1; x=1794522514;
- b=k7n7M399r7CdMfhJhF/pQNTZZqYvtpZ5ydqHsfEf5gRKfF0w1BwoyoTUp8hvxCpvWS/4D3Rf
- i1fTkZZUMvgSHD0rDEzCJjgyyMjFBfe+ITXArBI7XdY9xiOjdkRFyAR52IKEFBXRgiCAvjQwjzK
- AoklpAN/HvcQSj5OTb4mFcLY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 8774a739f2d0ed26;
-	Thu, 05 Nov 2026 22:28:33 +0000
-X-Mizu-Trace-ID: 8774a739f2d0ed26
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <6c36ec6d-5bc8-4ac3-8ad0-79eac7873b67@linux.dev>
-Date: Thu, 5 Nov 2026 23:28:31 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tg6VW5do
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB6E1F0089F;
+	Thu,  5 Nov 2026 22:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793917749;
+	bh=RDihrAvbt899nFV4qD5BU16ILjLzXvAuY9vU5B9lPIg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Tg6VW5do2xmY+b2XWSOyH4e3dxWRVhySRpcbJYakdxphVLBzPaQWQsZi5IX+lRgnv
+	 rDAljbpUShy819ayok3GGq9JACkjBH4XvioCagRQxB7el3yIWnG075jcjGCEbho5Ec
+	 y4THRMk9Puq5+BhVQQmJ1+Phjl86uIy1idjzBGUk6qJZV8P0mjRMGH3riTM1S882XY
+	 jlsH2MAyLXCbZ8q37PUJy/mPv2ltqNPm7B4Yw0zWa27ExSAItitZQJVs6uGi4jYlPT
+	 HgpjkYpjsBTgX49nh2R/LQNyGBqcNh8hw0jhuu5y4+jECxdgvXhpXZafZTR82/cpCX
+	 vmdj8MAY53Kbg==
+Date: Thu, 5 Nov 2026 14:29:08 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: microchip: drop the parent MDIO bus reference
+Message-ID: <20261105142908.69966b2a@kernel.org>
+In-Reply-To: <20261103100531.1309946-1-vulab@iscas.ac.cn>
+References: <20261103100531.1309946-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,52 +61,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
- emac_suspend()
-To: Breno Leitao <leitao@debian.org>, Ali Tariq <alitariq45892@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Yixun Lan <dlan@kernel.org>, Troy Mitchell
- <troy.mitchell@linux.spacemit.com>, Vivian Wang <wangruikang@iscas.ac.cn>,
- Chukun Pan <amadeus@jmu.edu.cn>, Siddharth Vadapalli <s-vadapalli@ti.com>,
- Tomas Hlavacek <tmshlvck@gmail.com>, Muhammad Bilal <meatuni001@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
- "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261105123441.2524171-1-alitariq45892@gmail.com>
- <auyG7hGJtMzV0Gbi@gmail.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <auyG7hGJtMzV0Gbi@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 05/11/2026 13:40, Breno Leitao wrote:
-> On Thu, Nov 05, 2026 at 05:34:37PM +0500, Ali Tariq wrote:
->> The emac_resume() calls the emac_open() and emac_suspend() calls
->> emac_stop() functions directly without holding the lock through
->> rtnl_lock(). These functions rely on phy_disconnect() which reads pointer
->> with rtnl_dereference(). But since no lock is being held,
->> rtnl_dereference throws a suspicious RCU usage on
->> Orange Pi RV2 (SpacemiT K1) warning when lockdep is enabled.
->>
->> WARNING: suspicious RCU usage
->> drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
->> Call Trace:
->> phy_detach_internal+0x490/0x5f2
->> phy_disconnect+0x90/0xc0
->> emac_stop+0x114/0x626
->> emac_suspend+0xac/0x126
->> platform_pm_suspend+0x72/0xe4
->>
->> Hold RTNL lock before emac_open() and emac_stop() with rtnl_lock() and
->> release the lock when functions return with rtnl_unlock().
-> 
-> This would work, but I am wondering if it would be possible to call rtnl
-> inside the _open function, when dealing with the PHY? in other words,
-> shrink the time rtnl is held.
+On Tue,  3 Nov 2026 10:05:31 +0000 Wentao Liang wrote:
+> ksz_mdio_register() obtains the parent MDIO bus with of_mdio_find_bus(),
+> which takes a reference on the embedded struct device, and stores it in
+> dev->parent_mdio_bus for the side MDIO accessors.  Nothing ever drops
+> that reference, so it is leaked on the probe error paths and when the
+> switch device is torn down.
 
-+1, especially in emac_open() rtnl is needed only in error path case
+Hi, since you're spamming the community with low-value fixes
+we would like to ask you to not post any further networking
+patches for the rest of this calendar year.
+-- 
+pv-ban: 2mo
