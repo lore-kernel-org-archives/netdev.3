@@ -1,95 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793879247;
-	b=K4nWyL5h+pfGs3aWi8t3zuujf2JgzeGvAny8V/v2GV/HTJH0ln2GSnrxVzh9J4JNcm7B
-	 DqdYkMeM7PnvR1bfc15g2cpU8rYJGwFzoP5she9Ea2IVjbp4zctWslfNE5IYJEMWUCVy9
-	 9tfIRn80M+O1sGKHoZQdFPQ/TeofUDHQqQlhBkEhLKja7mso6oCOCJwSPIcld+cIr6lcQ
-	 3XKBLjQxd/4NKT9EIghVYDXNQyv/Q31o1r5uGdfHNCrg8bqStrHACZB+o9LXY39C2CpsJ
-	 HX7QqLSu4ISCyT1Eij/zlX8JN4fBJ6pmmRKVM4LfuotHSeTx+P4HTRAuUrxkhaAL9Yw==
+	t=1793879309;
+	b=kDn6wfHO7ha2aAUnGyWoR+SNGoqmuupdle9feHKszWw8UqfhhnZ5wnKtXBXruIrOJeCg
+	 PtolLfQGNiF/8RNTRFHCqmn2g4QtmsZMNTO/Mpz9mxwlgNzvE/3PL7Eh7AHfefi2/GjFU
+	 r7w6TMvinuO/gnvzjmDtFslAgMOpEBIxKLDDaAEBu/4IGY0najOR5oBMz/VS6ISRzIKIe
+	 UaAMSZLQl/r2x8w/XZJIlR0ynt2MsaigyXzTS1IMqjpoVfLib90FY/cluX0iD93LdK+tl
+	 86Wdq7zoxU1TqCHXSHcLGBltMczXlWIZLittVIW4+DYX647M/IqRweLBsTLe0F2mm8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879247;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879309;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
-	b=OLnC4a0N2jjzcTJdAxuZjpBEqR4myHdqz9aidRmtto3bP3hVS7UMSWubEpQoEYVTuPd/
-	 xfKtn1FmWuPNkaZUQr6opmbM8/lOePvcWhMSKvUM+SQ8Z8AsgOOCFlTuMA86NYiPOQo0j
-	 PG/DpC0XSqGinDqYaISvS1Zd6WFTOxq/vXoAM2QRRV2A1QqxfRNeWmXE/AduKpMzdQ1+W
-	 oYVToaRmpWYZFQbbAqEFYncSFUs/e7QWi0nimNpEf8WOGm8UGNbF8GKAh8IkF3Ud5SNal
-	 /slp21tmGZpPppwLFHDt/QQp+lRp8n+oxob+9G3hqXFC1dKzjbip9hGXfxjT4KCd1pw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=hg7j3aQDkYF3jTcoB7Va9I6kezijOkG/5q0FsvMla1Q=;
+	b=M7D8Wk2uvRFuduGvavNAhRF+GM7v/mruz2Y9uOrF61GREkxWReaiwM6qDTL3jQ7CYoUP
+	 /CG9pVnuWYlp3DR6TE2q/yT5owHE55SchptEXX0CQ5r+QOWvDJ4fALyfcL1YzlZ7CSMsV
+	 SrbEDG7gUGUTHbRdM/M4oXTeeYIVKGS63kHn2R85WclKUlSvUVeMtVOzfcyj9O4tbsTli
+	 HU3QDNMjat+kTCkZ64NBtiovpM/sXqfyCh32xHVv6Dl4+gIP0ulkaQ2a+hQRixUrKFODO
+	 lHBJsodlfvTPFaOazoi+tCHMktswIjkxMOTCGKlJ2xk08agJTJd2bXO2N8lQIQaBVXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWeVK3LF;
-	arc=none smtp.remote-ip=74.125.231.138
-Received: from mail-oo2-f10.google.com (mail-oo2-f10.google.com [74.125.231.138])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PW8KOHRd;
+	arc=none smtp.remote-ip=74.125.231.198
+Received: from mail-oi2-f6.google.com (mail-oi2-f6.google.com [74.125.231.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5386D606A335
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:47:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5386D606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B398C606CE84
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:48:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B398C606CE84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWeVK3LF
-Received: by mail-oo2-f10.google.com with SMTP id 46e09a7af769-820ff812cd8so372553a34.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:47:27 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PW8KOHRd
+Received: by mail-oi2-f6.google.com with SMTP id 5614622812f47-550f311b527so811078b6e.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:48:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793879246; x=1794484046; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793879307; x=1794484107; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
-        b=eWeVK3LFJ67QiftlI+LA5YLEgkdaFNdTRJZrztVnh6C7RDAo44BhSxcxj4Uq3UsVcK
-         4mVxBxvQCy3s0aIt8tSYBTsEhlnYRW97lokXN7VOYA/M/cLhyBdK0WSjPJyAYJw9hHqr
-         VEzntUbo/Q2l2o3PS3Mkl5Pt3EG1eWo/X+BQxdThJaFnuAAVRVw/Xl7uQbJqWf+v39kZ
-         inOg1mTIR7wUCJ5i7bOFm1eOlgDUVGyaAzmamPKknll6xyyjeosf80xSo69Xq0Yq8sIi
-         zh62ZvvUlz7uWy2pic/AEW5PKX1UjCevVXfPBkfn2oVmiGmBoTS4v0c1r7bbaxb9ReRy
-         02fw==
+        bh=hg7j3aQDkYF3jTcoB7Va9I6kezijOkG/5q0FsvMla1Q=;
+        b=PW8KOHRdWbSwfyWxw+XKu/l+tmM288fhr1OYE5FJZVbxY5ulQxNFff0Jf6SiE/gFaQ
+         kbVQ0XqUg/v1s2B33XaTrmKPbrtM5Fg9qn7LHQHbGR7y/IOkRBew0BlcAeXBUgkxjdQ2
+         hXqub0fyoZBkGtRoB9djCFqwGMOvReGM/Asv8hNLv2j6h5ubRnri5KYbcLhB/bbCK3Ua
+         1mXyXFa6AWGyovLrO3TVrYlztFu6wte90iVz+bV2gQZ/43ZPki0FSGsKi1VvKmZOIFII
+         S+7hj+lurEb7FvmUcuDytAzT5TU8bD+xgrH7ot3UqY7EsjdIaRgeQsxVgxrJxpuw84Kl
+         xvVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793879246; x=1794484046;
+        d=1e100.net; s=20260707; t=1793879307; x=1794484107;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
-        b=BL89LDQCjoy1j2lENiYYrQIs3ZQdhnDR4nml8VmBEhkdrkg0J1M1/NyJ5xkavL1/YI
-         yQwI9+CeZ9d74uKqCTVtrV/PzKMpzqRzKwC8Gsi1AFi1yb5Gx02qXymdAKa9W7MX9X/M
-         znxfPdGL55CniyDH2zqn75IZTMIGM7zaxuu1Td+W0jo77RQOSy0LnLx5FHE/oUC2mW+L
-         VYZ1nYURmatwHj0g6qqbCrOyQFVWaR9LNdYvpBtP2aQ+HmMxKXwM3DFILEqjpiusSZLf
-         SFBhBdjckxP3IW2jZT2TkkUWKW84WVMktnftjSqJAERpM0I+GXcfrKrhrtEOSzPa6GmB
-         Kmpg==
-X-Gm-Message-State: APuU4Z+1NQBbXGkNiWtWLu7eLyb4q4T3Y4/DtQ3CeChbq09BarFpiIJX
-	dsyqy1tkj4rzGTSxIeIbZ0PzQvhqDCV3fJmmg18X6la7tvhlumQGMaqG
-X-Gm-Gg: AYBFou0zKarDaY3F4DDN6mLsVnwMoi9uvppSeQlLDqy3OSdC5FTfJu15di5rBQx5agP
-	UQjaeVC1d0/JZHWgYqP26ciX3JRP6PSZFR0b6kwoK6iCYFbWL/bsWzVKa4ZsjbqT3KqNmRlIX7l
-	aYZkYup1caXTxdad1t0JRqRt5RXZDoS8t1pjvM11CtVv0UUbm6siXjV2suEg1cR0gWEuCtFBG9T
-	Qf9Rxa/OEYB87XpPr3sLLh5eH1diEq/9ri4btVneBkoKntGlRcATyWXpexnB0a5aQm5D0u4aIs7
-	85sSiUNFY6EnYbBySKaOrd0tFh4nYGZ7Mqkeg0CrHZBr+fMeBx5HNtKDoSQFz3R84xME6gQ5u9x
-	n3bd9O0BHVlGGPdD/l3Z9vzY6ML5KdW3svFPrWScxcOIZdMUAiQZ0FpdMf3t+X/rn71Act9EMUQ
-	4mZM8P/+DTP0Vbm3oYeGDN1UlP2ScvQCXbn6qaLc2Y645sg6TCgHpafOiG470+hXpTFMSvz7K3g
-	WPgdMMjju3rhy3192DAR6K2U6Mh5RmwFUiq0t4xW6gMhY1tiThKT2M1XGXUgWGB/vDo8DQf0wHi
-	dJLHzQU3sGeLTvLHifNrxcLv5Cih6x7lNuthz1kU+2mvM/Te3lCmMT3q7H7x0EO8eSIC
-X-Received: by 2002:a05:6830:719f:b0:83b:3feb:4f04 with SMTP id 46e09a7af769-85d36298d84mr14347881a34.4.1793879246149;
-        Thu, 05 Nov 2026 03:47:26 -0800 (PST)
-Received: from localhost.localdomain ([14.116.239.33])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85ef37dc277sm4735727a34.0.2026.11.05.03.47.19
+        bh=hg7j3aQDkYF3jTcoB7Va9I6kezijOkG/5q0FsvMla1Q=;
+        b=L7CgDSQ3gp0xirIvOSwosFZzRhiWccv6KxFRdEWK0960bY4PSBdejauxOjBzEVPQE0
+         roHatL2F1qfxPRHb8WXU8eJ1zKGONANPBeWWdUnzrQ2mIgtsr8IQOElbjvDy0d+Up68T
+         3UBUGvzzoYCt3PMkBSIgh6TTfcg6WYmDICLtfBG/oF59TN91PLK/APJ/GqvwwwV0aBQ7
+         3HBgeLi8JvLEoaOb7UI7YWNvIWZT2/CsecqgUgHaXDgslxDzZP3Q3CD/jqJh3iFdjDk9
+         FPuLxWQqBMtfPEH/c1pDpAQ0pdPk9FLjBxnk65o/CM3pCiSV85V75GVZxKPDwbRjSzpg
+         Ac6w==
+X-Forwarded-Encrypted: i=1; AKwUvBwVdmV+00yxx6u6XnpnHh6lAfSxcsDfqGIn5j29m6B/ajS7LHiSr0/1irSwUKGUHH3hkKHfc20=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8XcPWXUHzbuHZFjFQaIl3LEiR5WyHZ8yAieL6Lq+pStsgXdj6c
+	qKbfBVIYcHqCkOggdAPIHPENlbnAZF5njzD74/KNPNJcHdxgwZ3vj0FY
+X-Gm-Gg: AYBFou0TccynMqRoVhl1QpcuQgy7fySasvceqGOas4reyYBoFSfzcTZ16xvndYN23Kb
+	bimkCGab15huT4SF9wj6bgySs+ugxoLgJkRgiaJslAaH31D/B31MuJfsda1BJ/jv4TEiscfflz3
+	7EHjQIweP3nJIQQJ0ytC+DMMpFSYTx9n7zX7DFnLnqbhaGsfQFizMlXFKFws3SijhzGEhf1XP1V
+	nCPlYlWsH6RXmF0ER15PcoDrqB5zvPUYPOemQ7RVTOjt5MdT566VvF5HS6l/U9cRRCVUOT/Wd2m
+	nSmXOBS+brcflK6FGAJTLu4OPsyEVeLKF0UraTw/1U/BVIAkvzeTzL5gNxJv+8KnDbVUsYlOrwY
+	ucIzlqA03Nj69h6P/hc63LIFOpNIwLSNk0oPHth/Xmx9kQrqXIjxbVOKIpnfjGZLy1pOReugq3F
+	Q5jPKUwmKLxB3I6C/+6Wr6MwWo2xrNKiliZ8ie0flAbFVfc+HYAJPobsAzjIQmfAqZIPchOtBr6
+	XaagNtMMhhkHP01euObSpmEQlygdGPA/T1HVRV9QundqKjJOmC4vqhcCsLZQ8xSl7EU0mwAhliC
+	jY65bE6lVIA4bFHS/Uj0S0+41VpLKCathHmjMPxzfgOqFYgfy8t32w9ytGpuMbjcpx3n
+X-Received: by 2002:a05:6808:1793:b0:553:66a3:d863 with SMTP id 5614622812f47-5640dc200damr13347009b6e.21.1793879307507;
+        Thu, 05 Nov 2026 03:48:27 -0800 (PST)
+Received: from localhost.localdomain ([14.116.239.41])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-567a9f93e30sm4054807b6e.13.2026.11.05.03.48.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 03:47:24 -0800 (PST)
+        Thu, 05 Nov 2026 03:48:26 -0800 (PST)
 From: Henry Martin <bsdhenrymartin@gmail.com>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
+To: pablo@netfilter.org,
+	fw@strlen.de,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	namangulati@google.com,
-	kuniyu@google.com
-Cc: netdev@vger.kernel.org,
+	pabeni@redhat.com
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
 	stable@vger.kernel.org,
 	Henry Martin <bsdhenrymartin@gmail.com>
-Subject: [PATCH] nexthop: fix null-deref in nexthop_flush_dev on UNREGISTER rebroadcast
-Date: Thu,  5 Nov 2026 19:47:07 +0800
-Message-ID: <20261105114707.3030737-1-bsdhenrymartin@gmail.com>
+Subject: [PATCH] netfilter: nf_tables: fix pernet use-after-free on UNREGISTER rebroadcast
+Date: Thu,  5 Nov 2026 19:48:17 +0800
+Message-ID: <20261105114817.3033625-1-bsdhenrymartin@gmail.com>
 X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,26 +106,25 @@ Content-Transfer-Encoding: 8bit
 
 A device unregistered outside its netns teardown can be stuck in
 netdev_wait_allrefs_any() while the pernet exit handlers of its
-netns run to completion.  nexthop_net_exit() frees devhash and
-sets it to NULL.  The rebroadcasts then hit nexthop_flush_dev(),
-which dereferences the NULL pointer, e.g. on mainline v7.4-rc1
-(KASAN build):
+netns run to completion.  The nftables pernet storage is freed on
+that path.  The rebroadcasts then hit the nf_tables netdev
+notifiers (base chain, flowtable, offload), which read the freed
+storage via nft_pernet() and take commit_mutex on it, e.g. on
+mainline v7.4-rc1 (KASAN build):
 
-    Oops: general protection fault, probably for non-canonical
-    address 0xdffffc0000000004: 0000 [#1] SMP KASAN NOPTI
-    KASAN: null-ptr-deref in range [0x0000000000000020-0x27]
-    RIP: 0010:nexthop_flush_dev+0xb8/0x240
+    BUG: KASAN: slab-use-after-free in nf_tables_netdev_event+0x17c
+    Read of size 8 at addr ffff88811061c980 by task ip/422
     Call Trace:
-     nh_netdev_event+0x250/0x330
-     netdev_run_todo+0xaa2/0xef0
-     rtnl_dellink+0x35f/0xa90
+     nf_tables_netdev_event+0x17c/0x1c0
+    Freed by task 62:
+     kfree+0x161/0x450
+     net_passive_dec+0xe5/0x180
+     cleanup_net+0x45a/0x780
 
-The faulting task holds RTNL, so the network stack is left wedged.
-
-Skip the rebroadcasts, which are the only NETDEV_UNREGISTER events
-delivered with reg_state == NETREG_UNREGISTERED.  This mirrors
-commit fd0909e963ed8 ("netdev-genl: ignore NETDEV_UNREGISTER
-rebroadcasts").
+Skip the rebroadcasts in all three notifiers, which are the only
+NETDEV_UNREGISTER events delivered with reg_state ==
+NETREG_UNREGISTERED.  This mirrors commit fd0909e963ed8
+("netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts").
 
 This issue was discovered by Tencent CodeBuddy Security.
 
@@ -131,30 +132,70 @@ Fixes: 8a4fc54b07d75 ("net: get rid of rtnl_lock_unregistering()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
- net/ipv4/nexthop.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/netfilter/nf_tables_api.c     | 9 +++++++++
+ net/netfilter/nf_tables_offload.c | 8 ++++++++
+ net/netfilter/nft_chain_filter.c  | 9 +++++++++
+ 3 files changed, 26 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 42e55b5a755ee..1eba7026abcae 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -3996,7 +3996,16 @@ static int nh_netdev_event(struct notifier_block *this,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 59ac623e6805f..e43a1b9fefc36 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9902,6 +9902,15 @@ static int nf_tables_flowtable_event(struct notifier_block *this,
+ 	    event != NETDEV_CHANGENAME)
+ 		return NOTIFY_DONE;
  
- 	switch (event) {
- 	case NETDEV_DOWN:
-+		nexthop_flush_dev(dev, event);
-+		break;
- 	case NETDEV_UNREGISTER:
-+		/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
-+		 * while waiting for the last references to be dropped; the
-+		 * netns and its nexthop pernet state may already be torn
-+		 * down by then.
-+		 */
-+		if (READ_ONCE(dev->reg_state) == NETREG_UNREGISTERED)
-+			break;
- 		nexthop_flush_dev(dev, event);
- 		break;
- 	case NETDEV_CHANGE:
++	/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
++	 * while waiting for the last references to be dropped; the
++	 * netns and its nftables pernet storage may already be torn
++	 * down by then.
++	 */
++	if (event == NETDEV_UNREGISTER &&
++	    READ_ONCE(dev->reg_state) == NETREG_UNREGISTERED)
++		return NOTIFY_DONE;
++
+ 	net = dev_net(dev);
+ 	nft_net = nft_pernet(net);
+ 	mutex_lock(&nft_net->commit_mutex);
+diff --git a/net/netfilter/nf_tables_offload.c b/net/netfilter/nf_tables_offload.c
+index 0ac3c26dfb3d1..d360e233d0366 100644
+--- a/net/netfilter/nf_tables_offload.c
++++ b/net/netfilter/nf_tables_offload.c
+@@ -672,6 +672,14 @@ static int nft_offload_netdev_event(struct notifier_block *this,
+ 	if (event != NETDEV_UNREGISTER)
+ 		return NOTIFY_DONE;
+ 
++	/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
++	 * while waiting for the last references to be dropped; the
++	 * netns and its nftables pernet storage may already be torn
++	 * down by then.
++	 */
++	if (READ_ONCE(dev->reg_state) == NETREG_UNREGISTERED)
++		return NOTIFY_DONE;
++
+ 	nft_net = nft_pernet(net);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	chain = __nft_offload_get_chain(nft_net, dev);
+diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+index e04e689f22284..b3cfe8d426753 100644
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -412,6 +412,15 @@ static int nf_tables_netdev_event(struct notifier_block *this,
+ 	    event != NETDEV_CHANGENAME)
+ 		return NOTIFY_DONE;
+ 
++	/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
++	 * while waiting for the last references to be dropped; the
++	 * netns and its nftables pernet storage may already be torn
++	 * down by then.
++	 */
++	if (event == NETDEV_UNREGISTER &&
++	    READ_ONCE(dev->reg_state) == NETREG_UNREGISTERED)
++		return NOTIFY_DONE;
++
+ 	nft_net = nft_pernet(dev_net(dev));
+ 	mutex_lock(&nft_net->commit_mutex);
+ 
 -- 
 2.43.7
 
