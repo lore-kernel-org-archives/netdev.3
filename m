@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793901717;
-	b=wNY2y9gvqSbzOa9D6iBnx+eybA+UqHVubILzSzQXX+KJy2A03Q1TEu+zQq91HsKHdt5A
-	 bqU6J0Sg/4w3zEsdv2rZSg6jxJsztdSZ/S7y0tfXvsWKamHFUGpl/ekQBuWo/UtgP8mrX
-	 f3fnz3k5lUJn+meN1YZLQMwJRaIpEiGsVq/3AjTJe5h3jVCuGB8+GGeU4Xg7t7ad/Ve3g
-	 pxQvNnQeTb28BAnb7A3fZGeTQpffAtBaYW8euzFer6+ArgwsM3dqdBwXGBByL4fYfPcak
-	 yOMGXVP/mfW3+AAA/Xzc8Sem+5BkRScGZUEHq+DPC+YUZKFGYlr+f1Cnb9/o5A1mWNg==
+	t=1793901725;
+	b=sMsbGVjda9hKGtrlAYRBPXKXbhaP+5S7mSmHdMAYwMGAA9DbUd9G54lth7lLTjAPGJaG
+	 Yn4xwkmvenH6d6KBJbROj7GkMp6csAROj6XRX3PtnUDHvKqUW4ubpbX4iMk463bI2+OIm
+	 R79loGDfKNzyGkt1AQbLpB/0J1bGjrgibFgPxMVPnYqw20e2m+PqYRKuNChM0cZ7otNNU
+	 NjFBK6NaQEHqOGQMuIqXfTaIJMSVuCyUhaFmoQ5v4LEPwFMT8OmhHXfXoP/yX+/zcFXFx
+	 NlByeonq+afr+l/2C7UFBjmpMyeo2H7HqnlrPksyZZD7jvxGsNX8TbNdytSzRdZ9Mkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793901717;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793901725;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=XRCSXklmvc1dWEYUzb6atLKgSJiBFRSmBAFbmXYYn8c=;
-	b=NVN+gI/YYw6n7e+IbjNd6RKQ3RH+S+zIDMrxzeJXANo1Fc6Rgf3S1Q1RhZx2UQ3W8u5v
-	 2wuBB9vK7t9hRB8ccmak2GRseUk5ARr0YGsqjAj6UFz+KoImeY4a61pG5jcoBrt+P2TfS
-	 PSVVSgBx+ryDtNhqD/Tmw2megYGOEiqGknYGn+zuBgrJv9lvTRK370WBiC3/ccRzz+7WF
-	 hSMNxhbr7pDFMnvjFOafMQLQ6/D43y2WdRJMjW9zOK8avopsTB6d7wRjGhAGY0FAsd23l
-	 /gcTTizCp6RjSIRu9XUkt9sgN27VZx21xw6bC+H/6Wfa9JonL5mbh4sBIy/i1V3jsQw==
+	bh=gtFRzP1ofQBr9FOavJvZ0YaWYxGW+VCIo/+DaZMZ574=;
+	b=fJCVEz/fM+fW1PxQQnZu24CS3TO0wBD3zwfuxzB2X08aemZlmvLCvwkB9GIbhDaYkDFB
+	 OB1SMtdc/a4cetSrPALCI05QI5BO9V4uFQsllZjiuH1QqdrmjyP9UzHucOPcRl0McUyNe
+	 ykfDEwvLliwelhwzb8Khn9/VvFDrkxkJX2Oxe/dKL9Av2xgF+TEuvAHkvV/VmtfTpCrX1
+	 r62FwsP2QrZrKdcmXXEZZecpD6vAZSkI60TT5FacRybsZDH3VVphUGquolHjnFNkQ+flB
+	 YHbb0J+hzfDTIZC7yKxogKIlSWjXk+aqEqp+TXzFdQVUPzO9SGOpXn3fz9wbk2Pqltg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=szelinsky.de;
 	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=ddW8XJf7;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=cwXow5bk;
 	arc=none smtp.remote-ip=85.214.127.56
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C79E606A336;
-	Thu,  5 Nov 2026 18:01:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C79E606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46781606A33C;
+	Thu,  5 Nov 2026 18:02:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46781606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=ddW8XJf7
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=cwXow5bk
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id C2381E8366E;
-	Thu, 05 Nov 2026 19:01:49 +0100 (CET)
+	by szelinsky.de (Postfix) with ESMTP id 6612AE8366E;
+	Thu, 05 Nov 2026 19:02:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1793901709;
+	s=mail; t=1793901723;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XRCSXklmvc1dWEYUzb6atLKgSJiBFRSmBAFbmXYYn8c=;
-	b=ddW8XJf7kDov9pEKU/fdHb1hbvVXLKk57QRL+lscAH4ID4yTMdm+u0vAjvW8ugasKPKnAX
-	kjwBXxOeLEJ3AWnlx/qiTsAtXq7ky5ecioHQzW0mcCaIQf46cPX3nVQiGcsqDgaS58182N
-	M2WbMwb0gUrGost87oQV15j7ZhrB7zKzAdAZgqBXcKMAkt/HMRQyOX5Hoi0yBDXcsAVRK5
-	CV4zHz7OAvr6peb3/CTPTSiUzNdhQh6qzRLVthVNjyYDYgSsiAIyeIyDhzgBd56pzbI77Y
-	jUFlKkhjUxGf1zLLCsso5XznU26DgReopRZedPbOcFtBC0uiOi4K9aSJKyoU6g==
+	bh=gtFRzP1ofQBr9FOavJvZ0YaWYxGW+VCIo/+DaZMZ574=;
+	b=cwXow5bk2zu425zcvqHNbP6WRScM5dDG2ZYo32x+qqY37uh9j2bAACYJGzAESHu7GWJJqh
+	TXH5TKj6ZvIMC7BRKvuZeE+0B0D3cCkeCp0ZkVFJ3ZflCejKLiTvdxIqO5wr1NvT9yXjUK
+	SDvi9z79w/jgGbewvrVR1AWh1US+iWlE2zK9xVHQRjRvLMXDIlBMMFHkJLOEv5O+Lp/l+Y
+	NqdGEfkMNVu+MspTsWsUv+5R1hHUa0dIGRCl22jyUqIkB4VxZ6tuYk1YJtSMNivir/1NhN
+	r/dSxrgOTUHt/RMK31iNTYoVR022Lj3x/Pt/L5vXvMF01yG+wqYQZthKOBdNjA==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id E-uieR51W0ag; Thu,  5 Nov 2026 19:01:49 +0100 (CET)
+ id 3V7vzW-TxMbh; Thu,  5 Nov 2026 19:02:03 +0100 (CET)
 Received: from p14sgen5.netbird.selfhosted (unknown [91.25.97.186])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Thu, 05 Nov 2026 19:01:49 +0100 (CET)
+	Thu, 05 Nov 2026 19:02:03 +0100 (CET)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: netdev-bot+sashiko@kernel.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
@@ -72,12 +72,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Ross Cawston <ross@r-sc.ca>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 06/14] net: pse-pd: check the PI state under the lock when setting a power limit
-Date: Thu,  5 Nov 2026 19:01:45 +0100
-Message-ID: <20261105180146.233418-1-github@szelinsky.de>
+Subject: Re: [PATCH net v3 10/14] net: pse-pd: keep the PI data until the PI regulators are gone
+Date: Thu,  5 Nov 2026 19:02:00 +0100
+Message-ID: <20261105180200.233479-1-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179387331403.488856.16797302256454828469@kernel.org>
-References: <179387331403.488856.16797302256454828469@kernel.org>
+In-Reply-To: <179387331728.488856.8945406807366704385@kernel.org>
+References: <179387331728.488856.8945406807366704385@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,31 +89,20 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Thu, 05 Nov 2026 10:08:34 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Does this check tell whether the PI is actually powered? Both flags can be
-> set while the port is off and pw_allocated_mW is 0, and no race is needed
-> to get there.
+On Thu, 05 Nov 2026 10:08:37 +0000, netdev-bot+sashiko@kernel.org wrote:
+> Should the commit message say that this patch depends on two earlier
+> patches in the series?
 
-No, and it did not before this patch either. The patch only moves the
-same check under the lock. That fixes the race in the commit message:
-a disconnect clears isr_pd_detected, and the check now sees it.
+Yes. v4 says that it needs patches 7 and 8.
 
-The pending and shed cases need their own fix. Kory and Oleksij do not
-want set_pw_limit to skip a pending PI, so it is not a one-line change.
-I keep it out of this series.
+> pcdev itself is freed in the same teardown. Can any ordering of the PI
+> array free close these paths? Would the existing pse_control objects have
+> to be revoked in pse_controller_unregister(), or pcdev refcounted, before
+> the consumer case is fixed?
 
-> Is previous_pw_allocated still valid when the rollback runs?
-
-> This is a pre-existing issue, but the return value of the rollback
-> pse_pi_update_pw_budget() call is ignored.
-
-> This isn't a bug introduced by this patch, but the budget update and the
-> hardware limit write still happen in separate pcdev->lock sections.
-
-All three come from the same thing: the budget update and the hardware
-limit write run in two lock sections. That was already the case before
-this patch. The real fix is to do both under one lock, as Oleksij
-suggested, and that needs a different structure. I leave it for a
-follow-up.
+No, this patch does not close them. A pse_control that outlives its
+controller is an older and bigger problem, and this patch does not
+change it. It needs its own fix in net-next, together with Kyle's rework
+of the PSE regulators.
 
 Carlo
