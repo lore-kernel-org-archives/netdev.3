@@ -1,105 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.145.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793839672;
-	b=vgFw7ZMSO/UTB7j5hn60TkVbudbzncHXGEaHLhtAIy1R7S6gqyciDMKqkIyZ6S/ZSPNZ
-	 NjbRledXruVyOsFfokF0AgCM04V1G8OUx7s++N0ryGqCkw9aaDMClGi/nMBDrrBy1BZtG
-	 +hCxwGlF8JKUgN1xq1oTunBinrWJpS8lnUvu5cV3V9WdapS/gwEq8QOVavpPKH9zsHRIE
-	 n11YmuT+jzsTfs+ZLi+N8D18FmClyol8N1qHqz0WFJBMKRWna8dqW9J56j+D/D2h9Zmiw
-	 Irc7NZ/JminEkzAj7VqFoYvwc0OMjf+HMOcwlrzUaOiYkvSnwMEPrUn+iaXq/acpFqg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793839672;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version;
-	bh=q2bMGTlU38WOqEBy2BRm4WnosFb6mvI8Tp4cHwPDAPE=;
-	b=Qie4620Rkrng5fa46BgFsmPJ8ECmiw+oSmZFo6FNUi2jsrfD4Rb4gBhTMOWz7MrzKt1F
-	 3A3bNV1m5jXNua8ZrMi5VeII/0WpF1MLgBHwZO+hdYYFPSxHoYhW7F7mLylt6hgYtnVaJ
-	 7HUGOqFJUvgnLAdiWdrskbpn8iucpNOVFgudBz5eAhQKqbZEO0uMcs6oE/bCc0PFAGBlT
-	 0UX95tLcw5og3JYOHcIWsbLhj/NMYdCOqD7oylXrmWjWF0dKy5Q3HUjyHe6mXpYD9gV8K
-	 53lGDMP6rK4iO/+OEfCVOqCbwMVpqtj594aIACyWRqZ3jfKAt+nGuLEp6wg9RjWBAIQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WOXujqGQ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793840000;
+	b=EgW++X8NSUHY8mYRujZStt1bOcf7ip/MEQxYTfNv8u1y2vObluumbo1/Pf05anmPD59B
+	 q9vobClNpiWpPOCMm6CKBaBdoBIO/t0xjQGuJ9Q/1Iwq3hYCUuAMIaQaclAIUI+UNYYln
+	 5skhrOXFTQa9ogqB0WIGr2sybBnAsS2DvMfBz0Wkuh6iVxVUk4wpb3dbbVzwoIeMRvd70
+	 bnLxSN0s2qv83jWgq0HbkeqlrFxDVaeESZHeN19YtD2XR7lwXqtxGImW60QznRUThBRTw
+	 tgimSunUxTwmxwYmic+feYZi4TT2Wj7gI1SHLDWyzMry3W5opVtkJ3I9Q3fapClKQ/w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793840000;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=VRz/fr2W5XuC5uSGQ1HwHlJlRaYB2g29XfbHOGVqqEg=;
+	b=pm5mI5cER6W4gFqZE9n1CroOs7wYCYqecSSkJjpb8Z68gaQWOkhCrZgijIDAExBhzlhX
+	 brnUF+e8VS6ltqWRds8oh/BaxqhDfk880TD87VUu350Z7rZ/B9HbMz/eg5oM4pWVeqHbZ
+	 4sSEp87GDM/Z7Ak5K2hOctJPyEzXGSdiKYHriuKQhE/6zDDkeQmA4eusomfnftFHfhy/9
+	 mwys7UAz9mMgu66vuq1KX279cigCug0SzqqwTioLrJYn//KSbF5u3fxKk3dcj9GBwg/Cq
+	 oIqx5SpLYAbev/qjFI8sfWCgbkCTsz2mratJS9CkqndBSXPx3tp6AuHcgWQHaAS365g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=biGpPmbr;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA445606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 00:47:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA445606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 514EC606A31B;
+	Thu,  5 Nov 2026 00:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=WOXujqGQ
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A4N2M3H2263960
-	for <netdev@vger.kernel.org>; Wed, 4 Nov 2026 16:47:51 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=q2bMGTlU38W
-	OqEBy2BRm4WnosFb6mvI8Tp4cHwPDAPE=; b=WOXujqGQBIWho3kTZpwEYK+MQqf
-	YZDPcu6SxbAWzCaJf6oW35PL8Q9BBvW02C8tWty9i2RfSiXdn5ek0kxJ/+iK4OS3
-	ARMSIlRl8M5aMQWhIjAAk8gMQPdmf9DD4pUWWwMfAhMO4ys2IxXffwDcBIQrjFUA
-	Au24UbQEVXURifRjWcVv1D+C09k6qevRb7nsivQ10vBVp7CaJKzLPGl5M7pj5PRU
-	T4jAi4iaPdSKbRC5Ma/gMKMwZued6QuoirgP4MfRFFx0vEf39OnQVL3+IQXDGZGR
-	QukslVSQ1jAw9Oa46o0Egmjm15mBmELbUEZaBxPqALeHQRJjuLBl/i+Yp+Q==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hrb4ea6ne-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 16:47:50 -0800 (PST)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-89e96c03cd0so1566014b3a.1
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 16:47:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793839670; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iqy55zssDPf1PzdtXhM/+R8kFi26A8EUNvaze5NBlpGtWNjJcGJml/AsrrWf01p+O2
-         rZNUGMHGCH663oYekZP4m1aUS1b7jICyjHzLFgw+dJ8Dq52W0IN+TU4U5e0q54cxtYjR
-         NCR10Ywmk9cXtlsBpCkLoWUMLj2bPkrJlpzBlqg44zjeYWgdZRjwEUeOnOmVtRnUlpgL
-         M+Nmfa51cesYA9AfqkvJrB8fP5DothSqDVOJ92rIfNE9yBddJ6ZMt14B2JnAehSQNfFQ
-         ukqx514D4kUHtpZ5Vq7MBVsqFOyLVJtbobjh5kIG0OB4nW581WBXFCbsIoWn3HBu0nXU
-         7t1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version;
-        bh=q2bMGTlU38WOqEBy2BRm4WnosFb6mvI8Tp4cHwPDAPE=;
-        fh=xxwFCtZ4YjG0FFbPSfg0hBw29cYwQ2uAyx9od4CEFgI=;
-        b=ruXm7ndbmCyl8ZFKIzVQesw7zuoTzB9cSQFozSk2Vp/r2LS0uOfoj81TQ3cleEZFy5
-         dMXVjD+7DO0TEYtCQU8uXDI4MTAvBd9NW5vWqYJCFZF1yCZQQzN9DtjsdcUOuHqrRyUZ
-         Hu+wFmh0m+LJGwT5qy+mK7wBoK0TNFzPN19+atyXfnwtmGD6mIgA6NznZ2VDdZC0Uofc
-         1EfM/IXisv631j8UC2h3QXb/FjySbjYRDNCYGAbF1DufQfC+9i6bnIeTW7Oq4E/D8AGr
-         dJQ6KFSSiee96Pns2TejQsKBsJ4ZEzS/9asMye9mtt/rULi+z0AR3CCOqclMFHP/g+R4
-         z4IQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793839670; x=1794444470;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=q2bMGTlU38WOqEBy2BRm4WnosFb6mvI8Tp4cHwPDAPE=;
-        b=swxZ6glUD4OzYoZDxhghAukrCKponM8QuRpoURM0JfSD4Y4DYzNqH2ho4sniB6pci7
-         I/o0V35NNfATczXJa7y5cJVF0poPC/kK5F+OwIDewcBET63ki9q1QgF+y6iCIbQhq8hI
-         D81koUCt5UZkgF7mDu2cMtQN3vfeV+LxCdBJUVG0UaUUOT0dkndJSQuHrRgCDwdeh00B
-         Tj+FtAS2otl5WmTOXDuabld5VNy1y/NxVhkTJ5ilhNV9kyc2+e+/bzdrzipBwpLPw/TZ
-         sEpRNi4nfn8/1WP84DIuPI2w3nDP4d1p8f64a/QRcPGlvHIkOe+vMbuEZ0D6DTS1w922
-         2RCQ==
-X-Gm-Message-State: APuU4Z9LtJYmYp+NEkzpYLUpK8uR88wXIu3l++2PSK0+3yxpUmHSpMwH
-	8M0FZmCmlrqanpXaqxqIglI5tMpHV42H9TVFT/xQQ8QfhY9zr+/Rq5hpSMV6OEzYhPDWwHvE5aw
-	CswtbgWQmGDgd1Z4FcIx1t3pGhZXRRo7Xn4sRpk4qthoE6To8WD2Yn9Bs/ml2Z7bDfmOU5CbomM
-	qsAWc/1X+Pztiiolww6nJTw/rEuLYldoU=
-X-Gm-Gg: AYBFou0s6JpoOUX5065desH5ddcQMUjRrW9tkbAYhFPT/fyPNsDFue/S5qiwVHqPILB
-	U1KYD32IWVKZjFjyzbEpqmzban9PDDQhMGhgbL2GVKLyoFlEeAbCa6iQ6dni88YLCx4HdLlasRO
-	DYs8n7ugD0j50xRprrcJEW5tPpd5AqXI0VVb9ZlTE6aWepRkaqUhIyyRkPqq6QiiaocN+9TXCHl
-	GA3S2y3VvN7zvKBXOlAhrNRdqo6Bkc4
-X-Received: by 2002:a05:6a00:4fd2:b0:8a0:3ed7:93a0 with SMTP id d2e1a72fcca58-8a9bfbf0a0amr14775279b3a.48.1793839670199;
-        Wed, 04 Nov 2026 16:47:50 -0800 (PST)
-X-Received: by 2002:a05:6a00:4fd2:b0:8a0:3ed7:93a0 with SMTP id
- d2e1a72fcca58-8a9bfbf0a0amr14775265b3a.48.1793839669754; Wed, 04 Nov 2026
- 16:47:49 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=biGpPmbr
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 240B21F000C1;
+	Thu,  5 Nov 2026 00:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793839999;
+	bh=VRz/fr2W5XuC5uSGQ1HwHlJlRaYB2g29XfbHOGVqqEg=;
+	h=From:To:Cc:Subject:Date;
+	b=biGpPmbr7mxbjpmYiMiR7S0h+DjiNBCcSJhGp65qcu7SPBIZ9i/YqIulnrwG0sr50
+	 jYlfxviw16RWhT/60c2g2iu69BB5l2NsJ9QRlw+Zhwnl5XFGSOodjTZ1887uKu6DuE
+	 yjvxfaOffAc0oDY6QPn6bZyXQEt8sCQr7BYNoXiQcfASKiwiNi9Yt//h5o4EZn7G9e
+	 RgU0RWTEmjjSIdxMgRHs5XmLlLfeDwl4pV5fDIp1JVmzna/j7b9ELvTf5UY2kQg2XO
+	 O8RgV4KPvvIEUAaV5nV7A97Ud9lo2sSix9k8hiJvfy0UgT2w6CoDWaKeUHfxDL67q6
+	 iZs3gcyLwkePA==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Morris <jmorris@namei.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [RFC PATCH v3 00/11] KEYS: Sanitize the garbage collector
+Date: Thu,  5 Nov 2026 02:52:59 +0200
+Message-ID: <20261105005311.804098-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,65 +91,130 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103001143.246081-3-toddfreed@meta.com> <179375308359.488856.7259635335257893530@kernel.org>
-In-Reply-To: <179375308359.488856.7259635335257893530@kernel.org>
-From: Todd Bert Freed <toddfreed@meta.com>
-Date: Wed, 4 Nov 2026 16:47:39 -0800
-X-Gm-Features: AclHuK8T1WOJzYaMW0E_U0iEs3j7pEqPqjrR-Cu0O1wmwkj-FUcUMKMe_4oDLbE
-Message-ID: <CADh2yMwzPWZa2x-9DbHpSsn8HbOwwwAefYKS4sPxFWOX3EmZ2w@mail.gmail.com>
-Subject: Re: [PATCH net v4 2/7] net: don't fragment decrypted skbs
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        sashiko-bot@kernel.org, kuba@kernel.org, bjorn@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-GUID: uGK6HU4mu5oBgJzKhk-Tdl2hMdItBYyM
-X-Proofpoint-ORIG-GUID: uGK6HU4mu5oBgJzKhk-Tdl2hMdItBYyM
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDAwMiBTYWx0ZWRfX3VdZuQPCmLUs
- Hc5MpIgOJNJ2lgb1vBtvwiWR++jsUuk91Upfml/SeiB1OeeUwnVrfqxbLvk4Bim1hgtsOO6qc7l
- Raa2vzJe5QX76Xb+o48fmgINXY00Wag=
-X-Authority-Analysis: v=2.4 cv=DJ8acCNb c=1 sm=1 tr=0 ts=6aebd236 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=tpM8CJlwf7uhpglF1g9U:22
- a=SxMiDcZ0BD2t3rXD7HEA:9 a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDAwMiBTYWx0ZWRfX2QqVJhTnZEGp
- 42HD8u/29Vny4OMPd+muL1hAy5l7lkyovdX2euZ64JesjFOYeU6p2yj73bziisP6/gIuU9Jur84
- dLCsES0JGNUeL93z9hr8ARLIz/gTFUNPSzGooc/x1ta3GhvbZ4upJsZYBPlOqscVcGYSNHGLxd6
- 6gatAy0wt+N0eP/4jVx1wCeoG7fiADJ5k6XAbsfTpQBARV11vaunQzRsOMavPKihxWN4LtM6qd9
- sK7wRZIlFKdJPVa9cDvbKzVwvhmxU3x8lVz9Uad4c8jSGb574KnI0gTTlpP51R6cdJyIG4gk/vt
- ko39aJDQ/7F83C5VXGOFf2PzgO4NKjri6auRss6B0SGHqyxO412STRZrhXY1mh/mlPfS5YdJphG
- 6zxodM0hMHZL+i1CJ0WCWGpUT6KUxvKZrzAzDZbCyecZKvuIGJgyWaKGFt0DRt/AQ+TmtnTkq+c
- M9kgbVpwn6Gpwu6GKNQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-04_05,2026-11-04_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-> [Severity: High]
-> Does ip6_fragment() need the same check? The commit message says:
->
->   an ipv6 tcp socket does not ever emit fragments. ip6_fragment() refuses
->   skbs bigger than the mtu unless ignore_df is set, which tcp doesn't set.
->
-> TCP doesn't set ignore_df itself, but IPVS sets it on locally generated
-> IPv6 skbs, for example in ip_vs_bypass_xmit_v6() and ip_vs_dr_xmit_v6():
->
-> ...
->
-> ip6_xmit()
->   NF_INET_LOCAL_OUT hook
->     ip_vs_dr_xmit_v6()          /* passes dst_mtu() check, sets ignore_df */
->       ip_vs_send_or_cont()
->         ip6_output()
->           __ip6_finish_output() /* skb->len > dev->mtu */
->             ip6_fragment()
->               ip6_frag_next()   /* alloc_skb() + ip6_copy_metadata() */
+1. Replace key_type_dead retyping with module reference pinning so live
+   keys and restrictions keep their backing key_type module loaded until
+   key_gc_unused_keys() or keyring_destroy() completes.
+2. Process serial-tree scans and graveyard destruction in fixed 64-key
+   chunks to a bound workqueue execution latency without hurting overall
+   throughput for a significant amount.
 
-I stand corrected, and I have reproduced this.
+The first part has a user-space visible effect: rmmod returns -EBUSY while
+keys or keyring restrictions still pin the backing module.
 
-Also, I think I've figured out why my local sashiko runs aren't
-providing as useful
-results as the ones coming from the list.
+Internal key caches or transport state bottlenecks are addressed by either
+clearing their private caches on last-client teardown or splitting key
+types into dedicated provider modules.
 
-I was planning to drop ipv6 fragments in the net-next series anyway ; I'll pull
-that into this series and post a v5.
+CHANGES
+=======
 
--Todd
+v3:
+- Split dns_resolver and rxrpc key types into dedicated provider modules
+  (dns_resolver_key.ko and rxrpc_keys.ko) instead of client refcounting,
+  so cached or retained keys do not pin dns_resolver.ko or rxrpc.ko.
+- Dropped the standalone nvme-keyring fix as it was picked up by the
+  subsystem maintainers.
+- Hardened key_gc_flush() to serialize against chunked key_gc_work
+  continuations, and fixed a restriction module reference leak on failed
+  keyring instantiation.
+
+v2:
+- Used v1 as a test probe for Sashiko to detect the corner cases instead
+  of trying to resolve even the known ones beforehand.
+- Converted the client subsystems to be compatible with the module
+  pinning semantics.
+
+VERSIONS
+========
+
+- v2:
+  https://lore.kernel.org/linux-integrity/20261103030226.2685251-1-jarkko@kernel.org/
+
+Cc: keyrings@vger.kernel.org
+Cc: linux-afs@lists.infradead.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-nfs@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: James Morris <jmorris@namei.org>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Marc Dionne <marc.dionne@auristor.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Sumit Garg <sumit.garg@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+
+Jarkko Sakkinen (11):
+  KEYS: Add key_gc_flush() for draining RCU callbacks
+  dns_resolver: Move the key type into a separate module
+  NFSv4: Clear idmap keyring cache when the last client unloads
+  smb: client: Clear idmap/SPNEGO caches when the last session is
+    unloaded
+  s390/cert_store: Start tracking subsystem keys
+  KEYS: trusted: TEE: Disable sysfs bind attributes
+  KEYS: trusted: TEE: Synchronize session lifetime
+  rxrpc: Move key types to their own module
+  KEYS: Pin the backing kernel module for a key type
+  KEYS: Remove key_type_dead
+  KEYS: key_garbage_collector(): process in chunks
+
+ arch/s390/kernel/cert_store.c             | 161 +++++-------
+ fs/nfs/nfs4idmap.c                        |  21 ++
+ fs/smb/client/cifs_spnego.c               |   6 +
+ fs/smb/client/cifsacl.c                   |   6 +
+ fs/smb/client/cifsproto.h                 |   8 +
+ fs/smb/client/misc.c                      |  19 +-
+ include/linux/key-type.h                  |   6 +-
+ include/linux/key.h                       |   2 +
+ net/Makefile                              |   4 +-
+ net/dns_resolver/Kconfig                  |  15 ++
+ net/dns_resolver/Makefile                 |   4 +-
+ net/dns_resolver/dns_key.c                |  65 +----
+ net/dns_resolver/dns_query.c              |  64 +++++
+ net/dns_resolver/internal.h               |   5 -
+ net/rxrpc/Kconfig                         |  20 ++
+ net/rxrpc/Makefile                        |   7 +-
+ net/rxrpc/af_rxrpc.c                      |  19 +-
+ net/rxrpc/ar-internal.h                   |  25 +-
+ net/rxrpc/key.c                           | 122 +++------
+ net/rxrpc/rxgk.c                          |  66 -----
+ net/rxrpc/rxkad.c                         |  47 ----
+ net/rxrpc/security.c                      | 184 ++++++++++++++
+ net/rxrpc/server_key.c                    | 260 ++++++++++++--------
+ security/keys/gc.c                        | 287 ++++++++++------------
+ security/keys/internal.h                  |   7 +-
+ security/keys/key.c                       |  61 +++--
+ security/keys/keyring.c                   |  88 +++----
+ security/keys/trusted-keys/trusted_core.c |  15 +-
+ security/keys/trusted-keys/trusted_tee.c  |  89 +++++--
+ 29 files changed, 906 insertions(+), 777 deletions(-)
+
+--
+2.47.3
+
