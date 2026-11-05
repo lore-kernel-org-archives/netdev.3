@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.32
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793904511;
-	b=sfV0HzxcfyGKQJMNfEGjDBgcBTOfk0HdvMtA19igbAv5N49LPb/GEPKkMWVQJxtawp7O
-	 8TC/KriDMYPzlFSBDCnQdsc/Bl9ZxDFLrEssLjhb/xST91Lzt5jsIzXk2CtXQPnlfkEJN
-	 CBHJOIj9YmAy8UQs5ms017nO62YUpmoB13RTSI8AOTnDK0T+9RoCxWwFjSv4GVfl90iDS
-	 GEGb6FoHnuCJ7eEVfjvvBdLoY9kAUR5C9rOBvJF4l1gEWwVAmdf5KLor/qSFje1QF2/0J
-	 DUX2+W1SUoS1Bj5ufgqJK3DBInxKcn7twVcJOsDF8uxoO3JzQeE03jqM9DJwWN1Mrow==
+	t=1793904827;
+	b=1WSzljBFTBXjAHFoMIl9QdOhGOd3gJ/GoBCo3q+jkMXPhXsXwL4mF6NNBj9TW8nJykmM
+	 JRC7GMWzdFpJOQv+G9+MiRsQ99nZP4suL8m86mfX9vnaRj/K0L7HKC66a7WKacy2xzTyJ
+	 iHRI0KLS2VR27ngG1eZlA/yZ/fljqrIYtF8SM1bv7c3azl3gaKatRRwOTuZkbNh9hCDhf
+	 u/0S4uLZDYCZ0cwuXnrA5ma/ALsw2hIWkUmnHUJq0ZYs207Ugd8EslpkUoIgta6TdsrgO
+	 eGtMJcce4fHggrjaKUGmkBEfSFIUnAlJ/W1PMn9AGIM9/YzLShdWQiDWzkkP5r5LJvg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793904511;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=Q1kRMNOS2g/T6CP/CKHGpVzLDLKUYfA3eewEiLLpqHA=;
-	b=nX49vWL3SwrjKueyXeacf2W/TYB7ZmfnnL7S+ds+/fbhdpCeQzgEl+w14/KLsrq+6XJ6
-	 xOBz4eYpfRLKfnkmUlduPw5lwsTy3+x3eVT4yRvXDygCO43IgEw04C8uTAkqLLYlPqsY8
-	 rN7GzXBUE+5P3JWjCTGgAmE0aItEtkbbPiLXw+K+fPiOSbRUSeyO8sBOKnG5M/6OF50bJ
-	 bgsnDnQ8V9uiItg6Vsg0EZxVvEwNF11gA2477vRKjl7EQzCIPHveWUQlTQeqCvoKk8tor
-	 Fapxh4OTvotuTva4RaACfi1Znue6Ti1j+nbHUaMdJUzi3r+QBpc62DxxLgcXQfet+0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793904827;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=zr+jPL093kMtPtVWReLyfcIydpRhCbpXeanMC9JcuXs=;
+	b=nXAHqEpzY+2To6KiL1WpYSzDh8u8xvhVGM+HZAg+o64P/6fQZbjcihTx7cq+4ls06zhO
+	 K6Sk6qBSgnFo0Xj9YKBFddVvbU+wgkB8cG1Bsg4Xbxdho4gtj36NE5/Ol6B50eMKGO/3k
+	 D+hWuGwjU8rFABBON6W2lejGqIXFOy+ScFQr+PNeXA6f5dzTYQ+ZUFnXJI8gHphLn1gcq
+	 zQn3Zx2tRS+ILVPLSvm0SKBPAbP6e4kWdbGWENPYm5suRPj5fDYiCrNrlxIeQ34IwpxVR
+	 lCrXmnDLrxjvlwNNNzQLEna7A37Gf66jOGwZYMCuzGr60gUpY23u2LBLCRZDfAGUPCg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jGNKY1tN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.32
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013032.outbound.protection.outlook.com [40.93.196.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=brMsclxQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DC3606A31B;
-	Thu,  5 Nov 2026 18:48:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79DC3606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4FE606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 18:53:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E4FE606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jGNKY1tN
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pquRiI97yw2IvfB+t9wmSrjrG+LmebKQnyK1hblAuGT9hO0yHnR9FhOcMWerefRT/QwxiU5oxvUuLrvO79rk4bBNvIpLlXo7bvmqVOeHKxbgORp2/4LAsSnQy8Z1QoMZnTF51EKr1yCmt7q3OtG0HH3wUtg0KLotulVpCpZFO8P/5YmvXlEHVn1ZmccYyPyJvEOHfw4n0R2JjSUzIg+jkQHlaXw3aNoorA9A55iAozo+BKA3UUuQGwiE7fXkLXz7cIzJYbW7KcZSS4u/sVKTrgaR/ao+fCfudMz8Z09iNGYz4AEwfv+Cg566nhq15QOY1gZrhOMN5gxya7ED2Z8OeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q1kRMNOS2g/T6CP/CKHGpVzLDLKUYfA3eewEiLLpqHA=;
- b=KwnPkSmzIq0/nDbU2UladuJeBaVh+k8CtOtO19yOnmqIQ2nSMhrNdg8AgiHnvsuu/Tpgj4ChFW++QoqSSsQYjs/XFl9NENOKlkkDbNSTkBtE9eseqBReMV6Wg4EFhNjihewXtQhLa6Ojv3fFVkTIBCidyfP5sUhXj8Wd8gbMnz/1MQ0bcb+hjlhQIzlfe3tLsxPwlAzw8LSI4sW4SsWDvIdbSTxooiI9YUP/1rBAn0yeOAAv/svPTl5hbrJe1+iXnYDQfb9/Kd5l2FzJ//Ldjh+yqTMjQ1T1GLCdxcqcHVc7cvxk4xoDLPn1bq2132BB/iDm8KVl7XNk4yuo61oxpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q1kRMNOS2g/T6CP/CKHGpVzLDLKUYfA3eewEiLLpqHA=;
- b=jGNKY1tNSFCpZXT8ZxM3tQUabgEp6QS4Y2RJhXPma85UdGhCXy8hcmP3x7bsbUyYg+eQGIRVLhmVfdUktt4TG8MShoUEw+99DbdHbAt5uNqDlxFJi8n7gg8gGm8hyK9deT4bJ8dOwtYDq7F74q5eHQ8CJXm+v2pAVMeldf9RZCTd2b/iv2sGoS0xTURyx0iWXf2RPz+Q+9tzZ1MP+MiOnRY58ggGSB98xZEOX90lSdatoKPr97BcrLALqen0fFHixHP3pxtiGfZBVqpkTcN8xBMs/Er0VbZARcAIukQrlDZKETp48SsFeBMCaIm7NpGH0WH5uGdRMh49guQACvDyfw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by BY5PR12MB4225.namprd12.prod.outlook.com
- (2603:10b6:a03:211::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 18:48:27 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
- 18:48:27 +0000
-Message-ID: <65b12759-48a6-4550-a847-de40cff176c0@nvidia.com>
-Date: Thu, 5 Nov 2026 20:48:21 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net/mlx5e: IPOIB, Fix QPN lookup race
-To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: dtatulea@nvidia.com, Carolina Jubran <cjubran@nvidia.com>,
- Cosmin Ratiu <cratiu@nvidia.com>, Erez Shitrit <erezsh@mellanox.com>,
- Alex Vesker <valex@mellanox.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261031225749.14214-1-prathameshdeshpande7@gmail.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20261031225749.14214-1-prathameshdeshpande7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0016.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::18) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=brMsclxQ
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a5036bbac7so14352295e9.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 10:53:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793904825; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WzoeniIqL05uzFbqFx+09UrKcN+JbinW2JB+/7TGq0eXhnAzSSZG1kpZBRCXNvRu3y
+         u71rmaI7iuZPJbeZf01Y56Ry0qvNT786WMvXP1uUrpyoaS8qQiITkmuZQaf8/20hC71z
+         c2BNEuXzSDGbvfHyREFmq5W1okq0DOifJrQrq2hoGREfu660DTNBjtiyvTo68h1glh3M
+         gkapR6kFFIcOoir1hPcl6f5WkQdl/s1n5vYPRzkzBC53OVOj8E00/ZGEVv7oiGijN0L9
+         5w3bQa8esmHLMHZ4QJ8hWF8pmWW0sUrPd3eOEhM5FQ74qXqD+DtgXR3PkZbd4ImdaIK8
+         mutQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zr+jPL093kMtPtVWReLyfcIydpRhCbpXeanMC9JcuXs=;
+        fh=dku5/iWinspiBmoyGtayKxRr9gENo8EIZr2w9v0tmps=;
+        b=leqdIe+TtSOSjkjp0OQ9NocUdTu8zIKyS1r4DU86h0wpPINFLbzpaFRU3YbqFxx/h1
+         6EImwjtkPQqW0b+paewJFVoXYWaTMVv2O19FHokMwZf4UdqxeKnFrArQnS8BVp878Ai7
+         q2k0qAEtzcSHQ/C/eddJ4sn2ACMYzwrFT7vq0TMQRw5h1A3yEHs2uzxMNvDMi1bdBE4u
+         hDBjK9A8hH2oFVotnJWYS/40zSuu+rOSbBlW0DAPplEMBDEqYsalxbS7ys9KC4uvj1Wk
+         2Fjj+qc7EZ1lJUuVg3q39cJ1IttXaGuE3Ibthr1F3n4zOzE8N7ce2OIKocy1Q0bAeYeX
+         J/iA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793904825; x=1794509625; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zr+jPL093kMtPtVWReLyfcIydpRhCbpXeanMC9JcuXs=;
+        b=brMsclxQlXABke9NWXnW7MfsiXT7zjc/bspNwv034x5SzL7P+VG8Sp/AT9UL+gokTQ
+         OzHCFKUbP6b7aIpJegYOoOr3lBuLygK2xD10wNuA2fOwOcgcxmJRSzd6eYWhDUgMh2nQ
+         BTaUtaqAVkzNKs2wWUNB2nwA6dfV5mpP91hzWxhVJOmdsDR6xRN1fIoB3XxDUgKMez0b
+         WA1vm/q+5PncLtLVKPR70SaI1df55rBTEGjbe1xw6C3WYhagbKhr1SnbiVkBGbqHL0bL
+         KtPSvgp7+h2xMd4uG+vDCDbHWOTP/hkNZessrSw4j/fyy3XVM800d/Afnb5RPKteWGSz
+         uEpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793904825; x=1794509625;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zr+jPL093kMtPtVWReLyfcIydpRhCbpXeanMC9JcuXs=;
+        b=qDA8hAMQK3NF96/JWCm1uLl/uBlZGC/35zpGObG77g6w9aiyo1UJ9dmxnI6vmYZYQv
+         B7eD3AC+Bon5uVXwLA3GGdbd4abHMiE9tXRe0y9VtlgLrBqUTtSVuBhFjO2Q7I3FyZdz
+         tPDiqJWPJDEIs5bQ/i7d3/EbplKge4nBpe7x8bKS4Asm3hMToCRchKg4af3V/B2eIgCA
+         0QL1Ug6GDTLdfwKNwXCjKMESKNAa55qhykCz//9qH5ITPdnbKK+gsPItYlRt0XtITmbh
+         +lT/k7/PuLJodgpqaNirQKcK6Al5I2KGM8sBhq//r4FnPu15CbetpUyHg7XieGXH81bl
+         Gn1g==
+X-Forwarded-Encrypted: i=1; AKwUvBzY+VqJzx62uhFuAwleDwy+H9ExJtGv5Bwmmp8zZHevEWCUZ9/AdbzQ+CuaItcqBnwbHv2dvh0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bvzBcqhnTcco7dONOF8UswA1gF0rxWdquWyQ/xxa0BI/4abFt
+	oXuYgbQ1SOi8dsqAyPys+xa1qecARCCRaIyJh1L4qRW+8XmdOgFp1MUblTy6/TGPseovv58WNhS
+	af5aLR0SzhHzKs9hz7EItt/oO4QeJaBY=
+X-Gm-Gg: AYBFou0tF2WEqRiEvrn5dwzRgyL+U0tu6frFEvaw9mJ6os06Gu31U0u3Xj4ff1TERWT
+	d4GHrnC0sumKrc9YsCMLnV9eAZ+UDit/NbT7ScwbSANWHgftCMDm+WeZwtHn24oJR72b9WKVHrG
+	0IDLhNARASXAZJ4Ah0Gaubd31TsFzEedfPsLeYgO+1+lI3Tdl8dLssvAaDIe+0QgGs9A5uIamUL
+	49D6/6ZZsUrTEQi8PfZgvtHpUUwC1m6we3MhgZ1tfQZRZE2CcLHS6B12guZI7ITKEwwenxvKRZ9
+	d0bwAj7TfSHKFe8UBMNYFjSgrxTSVKU0Bw+Jhx4rcmBye5KP9bCVf114Rj7tNI1D7O3FzlU6mQF
+	xOWI9aoWJYI6Lh0L0m3pMatY1oHcElhK6+AyjNnwdW173caYNUU3NrRBt7qved9gccIC7+vSnE2
+	II9Fl3OOzgouTPRaxc7eez5yhVd7EBiRKLfBCyVH00kEMJ4uHhLvGRvA==
+X-Received: by 2002:a05:600c:4fc9:b0:4a1:fcfa:2a07 with SMTP id
+ 5b1f17b1804b1-4b6e007beefmr79625e9.30.1793904825112; Thu, 05 Nov 2026
+ 10:53:45 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,94 +105,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|BY5PR12MB4225:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91a1440d-b9b6-46b8-c00f-08df3b6d60a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|921020|56012099006|11063799006|261021123027099003|261022105027099003|261009223027099003|261102123227099003|261021121427099003|261026140227099003|261028144727099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	drrnmDUBkNVYtQP2HwCsYdtwG4BiLoYTo56E+OPnCCq3UMCdpHgu7fhNBsLOrSDasjUVemvUxFFqwS1jgSzKxeE2PLLElM9LqlXHN+BBt2ZXd6kwLYJqwZ8kTfUquyLD6gnSKz2NttjrxQGH5Y0bwp9d/2q7K81/X8LUaog6dmHkD2vXM08fzxWmn2YZ48x2KhhS389XoOsqHFO2j1mbV1nVZbxV83dqmyqdGaPvrQsRWQMfBe2jZBdvrH0vFzr3qZYxHJBcoTLt/PhGJoycGxrUwKMLrGkzyjaL0yhHZLwp6xKC9InThtqotkTw+nBof6BdcqgQ7ZN5XJcBSVBH7pZoVSxyPRS5qYRoh2jT30c07z8wIHbodx1JAVQfdemrJaN0M+TLjJUaNXjDgyJjHad+7wvXaREAWzNtm7l7yA/s92Px0J2bX7gSdWZ6y5fT+icQwZRfPsyagAaslektb716FnrJiCwFiSodmUolV19QAeZ3S953l4qf4BTbVEBxUmnDw4vYB2Z0E6xRfO9SokQOl85orM/J6Bt0pD5o9g3XIOwc+m/4aTwvKobiZgnJuyrEwC5tGWh70+dAHU1Fk1elRCfONQWu7s9rejICmgPnE0I8MGs9F/1aCTV5AsSlnHbm3vLga97jLbDfwWXHrwKC9OOP9dxrnf51ndvdJItoBQhv9jLyauJSnjBmKZvQ3+vYcBo8hTcFZxjGVNMK6A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(921020)(56012099006)(11063799006)(261021123027099003)(261022105027099003)(261009223027099003)(261102123227099003)(261021121427099003)(261026140227099003)(261028144727099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aDEwa2dVWkJKYmV5aUwrZi9IeFJXYnNNMk5TYVVkMTJESVUyY0cwL3l4WGxH?=
- =?utf-8?B?MG5JblYvUVU2UmRWdUE2ZzNCVHduNDF0dGl1aVZRMHdZWDVhbkFrOEFjbFo3?=
- =?utf-8?B?b0xxOGRkYjNVZElhNkRVK0FnNTQzckR1VytGWHpOL1JhQkVaWm8wbjZ1Z3hr?=
- =?utf-8?B?eDR2TW14TjVsUitBSkdQQ3FpR3lORTFvdkVvR3NFVEp5ZGx3djRsckpDVzRy?=
- =?utf-8?B?VFlSM1JjQzdZOC8wek5FVHZHNkNUT3prV1VmVXVsQWloczh0UHZySGFkR2do?=
- =?utf-8?B?Q2puL3p6L1FoNjZGR1ByY0Z4SlNmaUc2cUMzelJwcFR3V1pESVZ1ZVlsZEo0?=
- =?utf-8?B?UVFvcXRTdlpXc1VwQUZGeThSUXBRc0w4YVFIeW52aDlzSUE2Q0hWN0YvYmpT?=
- =?utf-8?B?YjdPMm1SQzNCTEFleWZ6NHEyVnFRTFFiWG8zUFRMaDFieTNCYkVMN1JHRjdp?=
- =?utf-8?B?U0l1a1Y0aFZBVnFMamE0Y0pTQ0cwK05SdnpjdEx5Q3BhVTV3YTdXTGhoZWVX?=
- =?utf-8?B?RXhxUXBhMW15OXRqVzZsL05UbXRyWDQxcXBmTERjdHJKenY4MFQ1MHVleDJN?=
- =?utf-8?B?cHVlSFRGNVQ0akhFc3hka1VFbElKaW02ZEE3QytEOUN1OEQrTGd2WkdtRU1E?=
- =?utf-8?B?aXFZNTZlRm9SSUJrN29OM0RSYTgyZ2xpbTBqdGJxdWtNSVREYWozVWZueXRN?=
- =?utf-8?B?MXhJV2VwYmxtKzFRcW5JUlVaeHVZY0NtK3lITzY2di9MTHd3NFZVTjZ5UzZv?=
- =?utf-8?B?R3UyVTF3TGVHRXhUT2o0NEp1NkI3UHVDZ1hDNHJvNjNFUmdkZS9sQjIwc1JL?=
- =?utf-8?B?WWRLYUlFZ1lsclhNNWJGL3Y3dnBqbzVWU1pOYUFwKzhjZGFwN2I1RUVjUFpW?=
- =?utf-8?B?M1p0SlgyQUovZFBMNEtNK3g5WE8zRWordHJKWW9keXQvL0twa1RtdjB1bjl6?=
- =?utf-8?B?Zk5qaVp4bERhYnIxZGZJT25sNTJaZWVQUm5GYjZMS0ZNMDVGcmFjVWRGMmpu?=
- =?utf-8?B?NmJIOXNpTVI1N0dWQlpoeXBSb2VhM3Z6V01tZDhwTGhBZEFMbC95K3NNOTdz?=
- =?utf-8?B?OWNBczVtN0g5aVhQdytZOTBBY2lEZko3cTU0NzB6ZFBPVmpwMHg2Y011VytF?=
- =?utf-8?B?YUx0b3BkTWtkbStBcHFDZ2M0VVhMVDFLQjhtdkhtdUFmWEFySjNHUFpzRTJI?=
- =?utf-8?B?MU1oZENveEVrdmNmWTRId1JSclZGMDlXVEdjZXJnYk41Vy9wUXVwY0xzZEFN?=
- =?utf-8?B?Mm93V0sySDhMRUZSSWIyQ1BNY3pNSi9VbjU2QjZrZnJML1UyTCtTMHNMR3B2?=
- =?utf-8?B?MEp3eXhjRml0TFByNVNvbW1UWTBNckV3ZDJKZlVTM1ZSdlluNFRreTdIbFBx?=
- =?utf-8?B?MStkbXpmNXlkRkl4WTJtYUlDZjVybWNIQWlEMytjRE9PcGQrZHA2MFIxMGVF?=
- =?utf-8?B?ME5BdGRENUFXbFl6bHdNb1RVUzk4UWJqOWtacEhQc1NiSy9MdXJhaUZVTFoz?=
- =?utf-8?B?Z2tMRkRGTCtYMkNINktEQ0R0VWVKeUlhMDZBaTZQeFJnQllaR0o3UW1GUVp1?=
- =?utf-8?B?ZkpwaXZYYkdPcVE1cEtaTWMyMDZ2SHI2RXIyWkRydzdFRVlvRzQ0RUdoRmhy?=
- =?utf-8?B?OHh5Sm9wQ3o3UTFKMUxsNnVqakVxc1hNOXhqczlMdFY0TnkyR1E2M1hTa1BU?=
- =?utf-8?B?YUZuQUpTVGRLWGZXeTNKRkdpYm1lcklLZG9mWHNOOW5zSUc5cXhBZ3hETVVQ?=
- =?utf-8?B?UyszR2I4aTBqaWUxSTk0MEFwTkt6RjFuVlJYRnE0WU5OaWcyQ2FWM3hHTlpQ?=
- =?utf-8?B?VkhGbk5tdmtXaUZQWWVTdXFXWDd5L3ZReVpFL1IyUEZVbjBvSm5FYnJWZlVM?=
- =?utf-8?B?bFJOamlCOU1YdHY5alVjbU9VdCtabHRiME5PVHJiSGVwcjVhMXBoL0MxWjh0?=
- =?utf-8?B?U3IrRHI3MlJNd1J6Z1o3bHNhdDdQRG9UYVlmdHFFSkZKY2hPUURxSjFUT0Z5?=
- =?utf-8?B?eUU3alZYR3VLQ2RvVTlHeHdsV0VCY25WYXFOUEFwckVlL1hETnNsa0dobjd6?=
- =?utf-8?B?cTZtU2tUS3JSbm9aRUJVQTF6QUM5SjVrRjF1M00wM205N0pudkU1MDN0Rytk?=
- =?utf-8?B?ZFY0bk5scHAvYWg2MTJEWEVCVkU5S29zRGs2R1BVNVVBQ0dXUDN2VU5zQ0F3?=
- =?utf-8?B?NlVrUERmZ3AvNVplbFhMeFlyaHFEWmlUUFV3NFB2VE1JMnVOUWtJelVQM09y?=
- =?utf-8?B?M0FOMG1wYStSNnoyS2ZQY1ZpMThleGtWWFV5MytUQzNmQ0RsemJ3azJ6Sktr?=
- =?utf-8?B?UEVpb05PNkcxSUJtZFNrRi9JTGtEVUladGRBYnh1VUxGRHd0VGMxUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91a1440d-b9b6-46b8-c00f-08df3b6d60a8
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 18:48:27.0159
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6btohIRcpf2jQNembU/h4JRyVohusNpuDj3JssRheH+k1xf4EHW7rp1iU3W/pwt60aDdKsIoZ8aHuaKSJm4r8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4225
+References: <20261020143031.1829-1-qingfang.deng@linux.dev>
+ <CAL4Wiiptz1zyxRDKrCrnK2Q-qn0_1d1aSxuUPkJKWnODpjMp1g@mail.gmail.com> <c8be6713-2378-4dc5-9959-fc7eddd800e1@linux.dev>
+In-Reply-To: <c8be6713-2378-4dc5-9959-fc7eddd800e1@linux.dev>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Thu, 5 Nov 2026 10:53:08 -0800
+X-Gm-Features: AclHuK9CGtHlpEzyvf56PaHvDk9YYrC0X1uB83qunWer31KQBoOIypGlR3DOD_c
+Message-ID: <CAKgT0Uf_yYxp+tUJt4xYAnwqtK6LZY0KQYt0h4kt78=oQZxd3g@mail.gmail.com>
+Subject: Re: [RFC net] net: force software segmentation of PPPoE packets
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Eric Dumazet <edumazet@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin Liu <liuhangbin@gmail.com>, 
+	Martin Karsten <mkarsten@uwaterloo.ca>, Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Nov 5, 2026 at 5:33=E2=80=AFAM Qingfang Deng <qingfang.deng@linux.d=
+ev> wrote:
+>
+> Hi,
+>
+> On 10/20/2026 11:08 PM, Eric Dumazet wrote:
+> > Le mar. 20 oct. 2026 =C3=A0 16:30, Qingfang Deng <qingfang.deng@linux.d=
+ev> a =C3=A9crit :
+> >>
+> >> Ordinary TSO does not update the PPPoE payload length. A PPPoE GRO pac=
+ket
+> >> forwarded by a bridge can retain hardware GSO features and reach the
+> >> driver without software segmentation, if the egress Ethernet interface
+> >> advertises TSO.
+> >>
+> >> To force software segmentation, clear the GSO feature mask for
+> >> ETH_P_PPP_SES in harmonize_features().
+> >>
+> >> Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
+> >> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+> >> ---
+> >>   net/core/dev.c | 4 ++++
+> >>   1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/net/core/dev.c b/net/core/dev.c
+> >> index a6951ea08961..27483a2ad747 100644
+> >> --- a/net/core/dev.c
+> >> +++ b/net/core/dev.c
+> >> @@ -3831,6 +3831,10 @@ static netdev_features_t harmonize_features(str=
+uct sk_buff *skb,
+> >>          type =3D skb_network_protocol(skb, NULL);
+> >>          features =3D net_mpls_features(skb, features, type);
+> >>
+> >> +       /* Ordinary TSO does not update the PPPoE payload length. */
+> >> +       if (IS_ENABLED(CONFIG_PPPOE) && type =3D=3D htons(ETH_P_PPP_SE=
+S))
+> >> +               features &=3D ~NETIF_F_GSO_MASK;
+> >> +
+> >>          if (skb->ip_summed !=3D CHECKSUM_NONE &&
+> >>              !can_checksum_protocol(features, type)) {
+> >>                  features &=3D ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK)=
+;
+> >> --
+> >> 2.34.1
+> >>
+> >
+> > Ouch.
+> >
+> > harmonize_features() is called for every packet, GSO or not.
+> >
+> > This is a GSO-only problem, please do not add more protocol-specific
+> > tests in this path. gso_features_check() is only called for GSO
+> > packets, and the cost there is amortized over all segments.
+> >
+> > Devices without NETIF_F_HW_CSUM already lose GSO for ETH_P_PPP_SES
+> > because of the can_checksum_protocol() check in harmonize_features(),
+> > and fraglist GRO packets (the main use case for PPPoE GRO) are
+> > segmented in software anyway.
+> >
+> > This leaves bridged, non fraglist GRO PPPoE packets sent to a
+> > NETIF_F_HW_CSUM + TSO device. Have you hit this on real hardware?
+>
+> +Cc: Alexander Duyck
+>
+> I ran the real hardware test on Intel igc.
+>
+> igc_tso() requires skb_network_header() to point to the IP header, which
+> is not the case for PPPoE packets, so it won't work on an unmodified
+> driver. I therefore used a kernel module to inject PPPoE GSO skbs
+> directly to the driver's TX path, deliberately pointing
+> skb_network_header() to IP.
+>
+> Test results show that the hardware can still perform TCP segmentation,
+> but it cannot update the length field in the PPPoE header. So
+> theoretically, we might be able to make GSO_PARTIAL work in PPPoE.
+>
+> Kind regards,
+> Qingfang
 
+Is PPPoE being stacked similar to a VLAN or being ran as an L3? To be
+able to make it work for the GSO_PARTIAL on most these parts it would
+need to be inserted as part of the MAC/VLAN headers instead of as an
+L3/network header. The main problem is that the drivers normally need
+access to the L3 header in order to set the payload length and things
+like the IPv4 ID field.
 
-On 01/11/2026 0:57, Prathamesh Deshpande wrote:
-> The parent RX completion path can load a QPN hash entry before
-> mlx5i_pkey_del_qpn() unlinks and frees it, then dereference freed memory.
-> 
-> Use RCU hlist operations and defer freeing with kfree_rcu(). The existing
-> RCU read-side section in mlx5e_napi_poll() covers the lookup. Keep ht_lock
-> for writers and acquire it before looking up the entry to delete.
-> 
-> Fixes: 7e7f4780c340 ("net/mlx5e: IPoIB, Use hash-table to map between QPN to child netdev")
-> Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-> ---
-> 
-> Changes in v2:
-> - Replace the RX spinlock with RCU traversal and deferred freeing.
-> - Narrow the description to the parent CQE lookup race.
-> 
-> v1: https://lore.kernel.org/all/20261030002241.8508-1-prathameshdeshpande7@gmail.com/
-> Review: https://lore.kernel.org/all/ade46454-e575-43e4-85aa-eeb5ad79408a@nvidia.com/
-> 
-
-nit: Convention is IPoIB, not IPOIB. Maybe can be modified while applying.
-
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-
-Thanks.
+Really if you are going to support doing GSO with a PPPoE protocol in
+there you probably need to look at adding a new gso feature flag bit
+as any driver that will support it will need to know how to move the
+header out of the way.
