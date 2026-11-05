@@ -1,72 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.155.80.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.187.148
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793865252;
-	b=AFc613ZTQSBjGo+oPpYc/u+PrgXSTkdOhTUj1S5fhnTaVFhXJAv8wmwzXkI+mVMUQbU0
-	 OLEUwgpFSe2EOrscON/zs5KUY7p2hauMjpcR0orXShcm6XdHicRotj2VHRA0fbZEj5WS7
-	 MV1wbvlZKyYvsB1vYlN8y2UnDao2rA/0rwQji5d5Do5M7Chi4ZjKDPV66CQHRRsjuqVgC
-	 9A10x5zk1iK7iaoTtb8pR5mpdlwFwDSnQ9FukyP/ZGYYWvC0Q8twm9Q/wGhbntX69HilC
-	 Vs3TWtlVrqyqPDH3xjLKOhj8S/V8XhqWTG3+G0VBZn5o9btsswEHgACuD9B5AJrRBbw==
+	t=1793865362;
+	b=vjFQ+Xyfh3tskg7Lv3d0GRzOTfNhXGdEI9q+7D7R3PhFA8f4n3Nl4yeHd4XA4+lavzKK
+	 of/+/WQMzLRJ+g3AZyRUNZQnSIH7YEk8ypdirGknF9/AdWOehhzBvlxhHwkM3cTr7WKwB
+	 2THR4uSrV3YekiVhpxQrtKu958roHYMqPsJzi9SaMqu32eCSgfqd/QHdncJlS0fRBO55u
+	 ulIMe5wsRBTz2xF/oHVHzfz9dq2QvERECXv4LPrNSMJaQXktZLuZXR9KZsufpPShtHLyd
+	 omgCQMmRapL3wEVWLjE6VcwoRgc8vatqB2cWZNm5OT30t9hIP+5rEpYB8YcLsb+yGfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793865252;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
-	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=VsKhWyNvCl/Nrc06wipoFvOLNzc2IYtH87GxxhPlcpw=;
-	b=xZUxHINJkXH3jeUuC8QGT4QdGQsbI6ysmwx0jYbmbL+LYk6WKsBtRr8BgHdg9a+VqOy5
-	 h17a/mBkdrhPqjDzX8BZMxMG33oqHEvVnvlhMq9orxvP631Rn60T4QV7VndKpsY9uU8yF
-	 Ium1DOX1X1uSgUmUk1ujPDgWVz0RNLrORYFauywCLjubMHsEKWMNZdTkLEOpRdSpknxPH
-	 mmuypU7PCTf9hdfL83HIpTo7z7+BMBoeD19TnP8o2H40ZjJpv3AklR5YfsNgBQrzWSuGe
-	 2ufxR5qmPCte/gbT9VCI8On296U44P9GK/CxgVoKed71vG7ZAs7K4YCgVdCUe6XEJrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793865362;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=THkYLDB/2O+ui5t+rY9Tn3ksO+ZdfuSEdwuYNK1P9pY=;
+	b=es3wzxP7bBpl6AvQ+0fpawXA61SANbjtfpJ4eni2YIjX5lg2d4cN/ol8vB0rw3XBOe4u
+	 wNmpE7K4Mrf+OuN7vz0ED4aJajFhgGsAZ3/8287SOXHqd0xELYhAIxR3Ehv02JSJYrdQn
+	 1I31h8BgZE9P1DO1aX06FIbdLXRs/9VX1KiTozRRZGxT159OMgWQybiZMB4JNGLPMBCDB
+	 7yVazCeRJyVPza8Tazoq7q8MbtexpWdRR5e3VhJcjrMLNKzFN9Vi6izBRRZOVl8Ac4klG
+	 IZmenT0Lssf+e85QSiMqLbPL4CzmVb+1GwRBjeIEFygvYdm6+M6iWTCcFjLmtv68SBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=tencent.com;
-	spf=pass smtp.mailfrom=tencent.com;
-	dkim=pass header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=Cz9IwFmS;
-	arc=none smtp.remote-ip=43.155.80.173
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b="j/WcpRHP";
+	arc=none smtp.remote-ip=66.163.187.148
+Received: from sonic316-22.consmr.mail.ne1.yahoo.com (sonic316-22.consmr.mail.ne1.yahoo.com [66.163.187.148])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED588606A32C
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 07:54:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED588606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tencent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tencent.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A18606A32F
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 07:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55A18606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=tencent.com header.i=@tencent.com header.a=rsa-sha256 header.s=s201512 header.b=Cz9IwFmS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tencent.com;
-	s=s201512; t=1793865192;
-	bh=VsKhWyNvCl/Nrc06wipoFvOLNzc2IYtH87GxxhPlcpw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=Cz9IwFmSYy6o6A8M8Hit5y23wiU+Zf1F2+4ZeUC8nm1EaqeKEyok7xFoPw3xkBRDL
-	 qHy/NW6Ix1MZNkX0UfMNCcJq0NgVS2Rq+t9U3Bp3ewRlb8O5uubyAcLIPZY6khPRxc
-	 WZmJBIGDfM0H3xI5o6o3eXH/34J0DkZ4+4xOaExY=
-X-QQ-mid: zesmtpsz9t1793865191tb1e316ed
-X-QQ-Originating-IP: Endx8ZTOB/qSoCXvPzzTl8cjMsxFqaxZiNjEXQRWT7A=
-Received: from localhost ( [9.218.227.30])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 05 Nov 2026 15:53:09 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12639784493344106518
-From: "=?gb18030?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1Owssir?=
- =?gb18030?B?uau5stPKz+Qp?=" <tencentos_secure@tencent.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Steffen Klassert <klassert@kernel.org>,
- steffen.klassert@secunet.com,
- Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net v2 1/2] net/ipv4: reserve exthdrlen as headroom instead of
- counting it in skb->len
-Date: Thu, 05 Nov 2026 15:34:36 +0800
-Message-ID: <5D29E94EA59C941B+ipv4.6d58afc075934322860394a26ceaa2e8.1@tencent.com>
-In-Reply-To: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
-References: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=j/WcpRHP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793865360; bh=THkYLDB/2O+ui5t+rY9Tn3ksO+ZdfuSEdwuYNK1P9pY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=j/WcpRHPrABQXPdGQifU2iMrUwzoh5rTNrcbTYgtQWkUFJQV4I62JD+TCXLQ+O/WjZA89jrvxbUMfA/V2BZVzO/HuuCvMAzbKuiqzEop+2hN/0EIAWTHQGI14kK9jPwqw0dShcZpoRXVEbpOJucmrj+iLznQ/DGKasHkAV4o0g+BgN0HP56wEeoOPdSdJJk6qmBaxt5MMLn7dQkG6cma/bE6plY0S3X5s8A+oxtNfUGhLnpF3We4FW9Uk9umv/oUpHs/vImA0y9AaIYnfHVu56DWHbuEu1j36kR51eoergX6sEd7pSGjf0FqL19MQVui3s5xO6lsPdWVR1GvOIv94Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793865360; bh=0ux6bTrmB3RPE9gIqFTSfHffLX99f+iHI0QjXurItEH=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=IxFU2ebP3wqzpzQL350ZjzhL/cLv47EOJxM7WSR4axbvz4IU5TkVvRfeZfSU6zr1sGVHjKp0K0QTHpSjGzp6uCnKJaq2oKGeAIIHGw13dI7imPG27K1Ce7H5yB/vxYuTmObjTYrPyiQUEXsOisrXrmIO217vl4ftRRSvdQyYBOTH+6Qw3IAbEXR2VrZFWRIH2LjOy6H7BramkYwWa7WJJHhy2cP9uCXW6TQSuU4LFlmTYxZIA7hxxGbKjOSCYvpcleZCrgL4BAXQ8kxXrO1XCdsxYSGckxQ/EPw48ZPZdoj1nSg7DhgK0gSfwrfFM6Yg99CeBJCq63EX/ytdYplvRQ==
+X-YMail-OSG: L6nwUXIVM1lTP6KM6DLV4Hq1IfWhSJ1T1yk_fYnoucJgTzFe50ewSRYwXHU049A
+ PFTj1Ieq44xEsmBz5aBVRlu23lpKH5SeEbme4AcRrSOstFCwddJ.4ykHpTrLmJ3.Hy3_txAHckz.
+ LmzWjaa4HKIUtQdWCRIqTXb6wnX295Be103ceb2pq7hfft0S7qjVwSQ7Chwj6bIpCEqo6hHEOGZn
+ MKlJYWvxfkAumbGcgzxh7CmMIWRkay97GZLf_CVoyrVTKtWmadEgETsa.DU.bYnsd6Gbupu.mMye
+ qZJ6d6TWt0SdMECdEYtolaO4Ph0XkO2j4Ae9RL7jTjQkS_uGLJ0Y0yXFcHGcLRctty.XLyDRqoH3
+ f9v3MfO_emtErjuPuaqrG0gVdlU3SvFfCJo4HPDymB0yJAubt24NMSpWYh1Zp5pKm5uu9PRSxDQ9
+ Nup9HLmiv2nwYjO4My7tpHswt.ACQS4x.74PUDlsVYWFMcQPkuo4UKCWdeGCg9NWVTUKe3OJzvsY
+ 80eWv3iAPzCHHRvXWorV_l99R4XOkS.9giodojYcRSaGwIdvfMq6b2B6ABKwiYevAcUdAPyrrGZj
+ AvwomP9qNyKJxHCrDmI.kgBM7dnGTY.HwP68YKK7nKyvH5T6.8QVDezyw9QqM.g3P7lGfj66pekY
+ AuZzXSN0m6KfeGUdlY4meGaGH9Z7xC_NX8GtxTzB9Yfz3yJE5lsYJVlo.i13zhoDOeA99GjHSqCn
+ getlfyx9eoeAVl3yZUZerz4Ev2MsS4HWrbAeiSil6SOl_C6tszOEBB00Fq57hsXo.AzRXESciXkz
+ QrM0Rny6McDUSP4du3jpqLRNJqM_GJ3a.g_xU6Y84ykelphoeDa568g27o.iz3wxAnTUuM6ySSsM
+ bjP.fK8isC5Yf__w4A5lOYoF.it.CT00BChbYor84eC8rg2KEN8Ggk82WCmATexYEMKEhwm2H_1m
+ Tmj0tYKxApdtA4jbWLmIuRlOnmJ3nVELYfZQ14XyCb_LyU3T5QUxqscW3BNoWXuuwyzIFxRXStPv
+ ychk7whqwha93QfkMCIgIipPHb6L_.YvE6eNp6gR8rRIKmSm2E2f4eRgT_q8kckFconKHTyAoc7Y
+ LTA_QGsupLDBcGhhvCAMoRattDNWxuQpbE.KpSLyrCsm8jnsw7pD865O3IfpvcrhmVBcfE6jkhTg
+ dfUsMoQcOcZ6uQPDaMakTCv2tPiFNnLA496_cIwYkMOgY2PCo3aTWK6SqTNRkHQyfteROzs2yOLt
+ 1XTBkz87G7XiZ6.wDhVt2Q0AhOIaGOxJ1SKX3liDu.RKPlW8ykrIx7MVDzQO_s_rAwF8iBbwPkNR
+ LIMYuGN4AZWsL.ENdy9ilU2I7UQu1f_qC0flwQk2w81p5w9dY1iqRoT58wtdx1BO9OKGw0SprNem
+ SUQvGRNnbwQRBzgunPB0IAZXVjZ1gAII8Ehy4hIr1dVevSN7_C4VdxmKou6raNHOD3KK3bLeHfvv
+ RLK00QxpZ7LKZrGFzXXAy95mJ2TbzIWFhf6apGNB3lAkZ6xe_KjSY7SvIXqSMelB7O3J70oE3oHR
+ 4T3nyvvvSXGKMvkYCdBrjE84xnj.ZWw005UkZRpfEDARnGkzEv3zAQfdPGKlssED2PJFbE90dAL.
+ CdOgYTNXi7KgX77kvLNnfAveyp25ZYZnbMdLNBtOjWMKZjcZEMutoUqxRH7z03fCdbb9LQE0gfUS
+ LyuZxeFCl7.4NqJGkWgqZCHVgWkgj4d89APflWHQFbkmWhsYY44et2wbF_jfUXRFKTc3GzUNwCNo
+ KjFi5ZP_eIppFxYgPJ.QN1oLAIltMzLcdjfMbxqcvDU9jAZvEk9dbCj8TcXC1DKr32YJrV63trD2
+ rlXospx.qZiQDYPMRTjca8mIP7LRmS_J3i1TmQJfpVghJM3kuNIg64Y7eRRY970yj8qSYHEMmALu
+ W3IYsMKSxHBf0y21KkC25PCFek4elXkT9Wnk1SuEYgcmF1SV6uQk8wNW70KDbxlAWtgN88570w6K
+ pGBX5sgNgI3FQNUuVj.UabUp_vMToivAxOdvEfj5sJB0MhtFZohjCCy3BFT8RLSej_X9yZn3LD2L
+ CF1VeKXawk1cqXWtXj0ouWAARu2i8aQlAdaDLi2iJTN53bDlS3LxU0lZTvRFOiLCoFG8cbMbwc4P
+ f2GvZryLgRtTybO0TQgOZITT6FJTy0SqACYb3qLkAodLXA3XMmy7_04RlMpDy0uoRn3aMb9J42Og
+ jjvY1VCNBddNKPvZVziaSJ7.gMC77qXK.zBPWNBCDI17YvGxHCSnEOd3wmvPN80qUdnXyI9CLFtn
+ 1N187hInnvA--
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: fc9aa044-175e-4b69-ac1b-a54a3e718188
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Thu, 5 Nov 2026 07:56:00 +0000
+Received: by hermes--production-ir2-5dd9bf4598-zlkml (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b8e093b6a054ea83b64fa4d9bb0fe8c7;
+          Thu, 05 Nov 2026 07:55:56 +0000 (UTC)
+Message-ID: <82c96971-be5b-4c11-b20f-c4b074181515@yahoo.com>
+Date: Thu, 5 Nov 2026 08:56:04 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,115 +84,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:tencent.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: NRkWGnbnkwTmi8Gbz2Pomf12WCG69/inHdB8JF9nbQ2sBdTPRvh3fgFB
-	88EXNMlKmVQ4Qg10f+LDypqLuxMtUcFN20wLFFB4SgKgqr3KOBcrAGv9zx8LGG0QtlYFZ07
-	UpFXXR/1+mIay1M5/UwjLD5U4RDvpk6sve9cAyIGPucKxggArGLcpI+ga0SbLlrgiN5QA8D
-	OQ9NCkcctKFESFmCpGguQaCvwumSkGoUbCFhbMcHmORwJUA78wn2rZYnHwrd5wKZlkPHMbv
-	/MNKPrFPi2zxWzc4RVwrN5lbLGPC12irVe4Fy25GKFN6+1u6e//w27xrY6p/7L1e5TPjwBk
-	YrUNh7OEOUzaTxHcqr+t+P55JtfLF/YucmqKkMq/jjLzUOOqzp2Ty3dL4mSHvBGwyyhTgcB
-	jNcerLERtdS8tUhkDVJEr/wsJkC8VVgckMKgcZ7anncYqqPZ7+lEdqBIgPXbgWExaB1bhPW
-	4hFRQ7AxT1ZhFmyUzSt8/EH14rX5KOTW1sPhRHw4IFvtxFCMDhGW1Ei/vbbaHAe1FNkWYVj
-	dbOgsb2c/p2MTVNWn54LXEtsugpff6NWBEq628kiY3CZYo9kABzJQzsU1AwiLFhB8WDwnJZ
-	BuTKOdypPQ6cN6kBS1XuSeB0ccAtLFRzqHzRBlqvPIw9rqPBttDOBkk7trNpUjaVIBQiYWy
-	NnJ693k29LAk5I2Ipy0394PmJRMKDNkXtsPvTzqhT8vmqdPi9WpJwb23o8htcAS9Ee2LlI/
-	vcfFN8nRWHz2Pt5eAFZFoWBa9R9GcV+WbYVg8YUQQJtlmaFe0kQGkufG0RDngsoPaGQKAcH
-	CkME1DOACK/wGa2Th39IjgXiHC2MDsQCuK4U576DvfEuHReHlal0K2flGdTtmGIQ2fgMHJM
-	WcyxigOqYwVAAFTCpuQgyWgdY575zEh4Qtjp8agrtOLTEFb6AKcvDDGfFsln+k2efodBY4J
-	RgTM=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 04/10] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <2befac48-25eb-4c1b-9632-2f3237d68a3d@yahoo.com>
+ <auskP2mSY4sCRa6x@analog.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <auskP2mSY4sCRa6x@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-When sending through an xfrm route (rt->dst.header_len > 0),
-__ip_append_data() counts the bundle header space ("exthdrlen")
-into skb->len of the first fragment skb: the skb setup does
+On Wed, Nov 04, 2026 at 01:39:59PM +0100, Alvin Šipraga wrote:
+ > On Mon, Nov 02, 2026 at 03:39:47PM +0100, Mieczyslaw Nalewaj wrote:
+ > > On family D, RGMII on extension interface 1 needs two things that the
+ > > other families do not: the EXT1 RGMII TX clock delay field in
+ > > EXT_TXC_DLY (0x13f9, bits [5:3]) must be cleared, and the pin mux in
+ > > the top-level configuration register must be set up.
+ > >
+ > > The vendor RGMII setup for EXT1 clears the RGMII field of EXT_TXC_DLY
+ > > (0x13f9, bits [5:3]) in addition to programming TXDELAY in RGMXF.
+ > > Do the same. The init jam table writes 0x0090 to this register, which
+ > > leaves the field at 2, so without the clear an extra TX delay would be
+ > > applied on top of tx-internal-delay-ps. Clearing it makes
+ > > tx-internal-delay-ps the only source of TX delay.
+ >
+ > Should we not just clear it with the jam table then? It would save some
+ > code here, which is just undoing what the jam table did anyway. Or am I
+ > missing something? If you deviate from the vendor driver's jam table
+ > then a comment inline or in its own commit could be appropriate. But
+ > either way it seems it would save some code here?
 
-	skb_reserve(skb, hh_len);
-	data = skb_put(skb, fraglen + exthdrlen - pagedlen);
-	skb_set_network_header(skb, exthdrlen);
+The jam table rtl8365mb_init_jam_8365mb_vc is shared between family C
+and D. Changing the 0x13f9 entry from 0x0090 to 0x0080 would also
+change family C behaviour, which I cannot test. Duplicating the whole
+table for a single word seemed worse than two lines of code. Also, the
+vendor code clears this field only when configuring RGMII on EXT1, not
+on every init, so doing it in ext_config_rgmii() matches that.
 
-so a fully filled first skb has skb->len == maxfraglen + exthdrlen.
-Since commit 353e5c9abd90 ("ipv4: Fix IPsec slowpath fragmentation
-problem"), the next iteration's fraggap = skb_prev->len - maxfraglen
-therefore inherits the whole bundle header length instead of the
-intended alignment slop.
+If you would still prefer a separate table for D, family_info->jam_table
+already allows it and I can do that in v10.
 
-fraggap is relayed into the next skb by skb_copy_and_csum_bits().
-The MSG_MORE (alloclen = mtu) and linear (alloclen = fraglen) branches
-rely on datalen accounting for the moved tail. If datalen is capped
-below transhdrlen + fraggap, the copy can extend beyond skb->end and
-corrupt skb_shared_info. The paged-branch accounting introduced by
-commit eca856950f7c ("ipv4: account for fraggap on the paged
-allocation path") also relies on datalen being large enough for the
-transport header and moved tail.
+ > > If the internal MAC4 block occupies extension 1, do not advertise RGMII
+ > > for port 7 in phylink_get_caps(), so the configuration is refused 
+before
+ > > any EXT1 register is touched. [...]
+ > >
+ > > [...]
+ > > +    if (extint->supported_interfaces & 
+RTL8365MB_PHY_INTERFACE_MODE_RGMII) {
+ > > +        /* On family D the EXT1 pins are shared with MAC4 (UTP 
+port 4).
+ > > +         * If MAC4 owns them, RGMII on this port cannot work.
+ > > +         */
+ > > +        if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D &&
+ > > +            extint->id == 1) {
+ > > +            ret = regmap_read(priv->map, RTL8365MB_D_REG_TOP_CON0, 
+&data);
+ > > [...]
+ >
+ > I am a little confused about everything that's going on here, but it's
+ > probably just me. Could you perhaps explain the two scenarios and the
+ > order in which you expect things to happen? I'm sort of wondering when
+ > this warning might be emitted. Part of me also wonders if you can't
+ > avoid doing a regmap_read() here in phylink_get_caps.
 
-Fix the root cause by reserving exthdrlen as headroom, like IPv6 has
-done since commit 1f85851e17b6 ("ipv6: fix incorrent ipv6 ipsec
-packet fragment") in 2012:
+On family D the EXT1 pins are shared between MAC7 (the port described
+in the DT) and the internal MAC4 (UTP port 4). TOP_CON0 bit 12 tells
+which of them owns the pins. This comes from the vendor RTL8367D API,
+which refuses RGMII on port 7 when UTP port 4 uses the RGMII interface.
+The driver never writes bit 12 and I do not know what sets its value
+at reset (strap, EEPROM or bootloader); I do not have a board where
+it is set, so I could not test that case. That is why get_caps() reads
+the bit instead of assuming a value.
 
-	skb_reserve(skb, hh_len + exthdrlen);
-	data = skb_put(skb, fraglen - pagedlen);
-	skb_reset_network_header(skb);
+1) Bit 12 set (MAC4 owns EXT1):
+    - get_caps() does not advertise RGMII for port 7,
+    - phylink refuses an RGMII phy-mode for that port,
+    - ext_config_rgmii() is never reached, so no EXT1 register is
+      touched,
+    - the warning is printed from get_caps() when phylink is created
+      for the port.
 
-The corresponding IPv6 variable is dst_exthdrlen; IPv6 exthdrlen
-instead holds the IPv6 extension-header length.
+2) Bit 12 clear (MAC4 does not own EXT1):
+    - get_caps() advertises RGMII,
+    - ext_config_rgmii() clears the EXT1 TX delay field, binds the pins
+      to MAC7 (MAC7_SEL_EXT1 in TOP_CON0) and disables SerDes 1, all
+      before RGMII is selected, so the shared pins are never driven by
+      RGMII and SerDes 1 at the same time.
 
-With this, exthdrlen no longer contributes to skb->len or to the next
-iteration's fraggap. When fraggap is nonzero, it is bounded by
-mtu - maxfraglen <= 7, the alignment slop that the relay was designed for.
+You are right that the regmap_read() in get_caps() is not nice. It also
+means the warning is printed whenever get_caps() runs for that port,
+even if the DT does not use RGMII there.
 
-For the same inputs to the skb setup block, the allocation request and
-tail offset are unchanged (alloc_extra already carries exthdrlen).
-The network and transport header offsets from skb->head are unchanged
-as well. Excluding exthdrlen from skb->len intentionally changes the
-subsequent fragmentation calculations. When exthdrlen is zero, these
-skb setup changes have no effect.
+Since the driver never modifies the bit, reading it once in
+rtl8365mb_setup() should be sufficient. I could store it in
+struct rtl8365mb (e.g. bool ext1_owned_by_mac4) and have get_caps()
+only test that flag, so it no longer touches the regmap. The warning
+could then be moved to setup and printed only when the DT actually
+requests RGMII on port 7. Would you like me to do that in v10?
 
-Fixes: 353e5c9abd90 ("ipv4: Fix IPsec slowpath fragmentation problem")
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Anakin Zhang <tencentos_secure@tencent.com>
----
-v2:
-- Correct the too-strong skb->len/fraggap wording.
-- Clarify the IPv6 dst_exthdrlen terminology.
-- Describe the skb_shared_info corruption without claiming a write to
-  an adjacent slab object; qualify the local layout comparison.
-- Add Willem's Reviewed-by; no code changes.
-
- net/ipv4/ip_output.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index eaa6fab..b84d56c 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1150,16 +1150,16 @@ alloc_new_skb:
- 			 */
- 			skb->ip_summed = csummode;
- 			skb->csum = 0;
--			skb_reserve(skb, hh_len);
-+			skb_reserve(skb, hh_len + exthdrlen);
- 
- 			/*
- 			 *	Find where to start putting bytes.
- 			 */
--			data = skb_put(skb, fraglen + exthdrlen - pagedlen);
--			skb_set_network_header(skb, exthdrlen);
-+			data = skb_put(skb, fraglen - pagedlen);
-+			skb_reset_network_header(skb);
- 			skb->transport_header = (skb->network_header +
- 						 fragheaderlen);
--			data += fragheaderlen + exthdrlen;
-+			data += fragheaderlen;
- 
- 			if (fraggap) {
- 				skb->csum = skb_copy_and_csum_bits(
--- 
-2.55.0
-
-
+Kind regards,
+Mieczyslaw
