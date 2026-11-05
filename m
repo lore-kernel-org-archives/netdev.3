@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882747;
-	b=lzItkeAklfRuTon6qY4g69ZfWu7AFma+4hkWWsfQfe1iHLvD4axRON1jfHq9E09A0AHF
-	 c1Zzrn0KT0BSXkTiiOLIMC4zHe9aFv1CA7Uykhj0IjkeuAaJUs5TN/pBz8BsPF7IflABN
-	 iSZd0FUNy7WhieXeZ8ZeyUIbWXHymYpXSJLyGt7Dpw7Z37F+3wc8KsDsjyGqAZmKwA3k+
-	 Co6mGc7b25TqiV49hm+fe4PvHvGlTwevLzEbhkIVqfYo0+LthJSg+d/hFcWlbSwz6qhxa
-	 FpWJbqocFAsPTmcBQwYxu2XivFJ2q8ZKwtG5vqW41+8BSgJuzqKEnp8crZI36HZiGOA==
+	t=1793882749;
+	b=SNh6vuWPZ72Xa9BMrfPFKm10It9Fzf33XA+ZiimVOol98W3xMbLz6EugsMDIh0z2jf9n
+	 ElplqeAm9WAgDpou7gr72jB8ei7QYTxOnrcm42cMVcdk+ujHMS84mM2HuNmV1AqoAHlBK
+	 0+6j9w0UDcBu7ZHYPqlg5AgqnlogKHcPb3X0ptdBuG7kp166zm/hCgj6J45LdqAKi4sNu
+	 pYTB2kgZjp3vFuHD33vAyGUGjSfJGQjlvhBK3m7mG+7RwOOdFMsHQx3HeEsu3mQAgcZ+p
+	 jhgLa2CUrQ7Abz6xElnNDO8yMbHIO1mMcFRcX3Lbey3qG89zgAq+004Ue+dznNHzTbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882747;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882749;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
-	b=BJjzneHeq6e54mKFskgZEKRLXPlJLlFZAQ39ZDpDeKa4rHPUJLTAVtSmeKe6T/S1a4Tc
-	 OW6eQ8guRWonmgsPhHyli8mJhpCsC68K+091jxZwty5s9Dv9TUd3VcLim1HTo7N1W8Sdk
-	 VL2JovhYtqCZY8Qc2DLvAtoKUGgXyKng/UnIhDrsoQ7d4m5/Ia3InctRWuHU70vWtr+O1
-	 WMFPN+aVLzcCRT1cJMxgjSj5DNc8M/pFwLti9W997vRijJuNt87W9WUpyNYpQK9HpN5Ea
-	 GBeFZiBJ0+XueRs8x8WvPdc39599+ahStbOq0ZDSEh8Mce24U66/tWhVQ8+8Wv0GVZw==
+	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
+	b=BbDeXYGGB1r3s/23cH9HSjg305Yl5qCf3CUkisjyng9U69GBoPOERCwjIduJzpXpO52u
+	 SraoYQgqkw93zn1tDRdSjTIhmT4pCYfqm3iEogvjBZ9pHWic5S6sIFVBXq0uquJ9iSnec
+	 N4BvXi7GLPBqJzAubECNs7FjHRj2ng/xNdJA9A8yDJ3FGx1AMnbK5PwegYa1c1WBps4Ys
+	 /bjjI5Od+tLmf3g3/dR5b8D+8UA+vjSIlFCVbMBMl7QzWcEDKHKzpN/Xkh1o65wcwt7S+
+	 J6drxgYjyKDhygaPlXasaQLokdpGRLtZ+xXIo332UyAqX6pU2Qj95Aq0s7YPKYqY78w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EAyj1oZc;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DGsMmcdH;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AAE606A330;
-	Thu,  5 Nov 2026 12:45:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43AAE606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88212606D816;
+	Thu,  5 Nov 2026 12:45:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88212606D816
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EAyj1oZc
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DGsMmcdH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793882745;
-	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
+	s=2025; t=1793882746;
+	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAyj1oZcQNumuik1HHZTXFgqZfDDqAMHaDEFSCSMXIFwZsFUZGRCKZMbX/fFnqScT
-	 xxjovaAiK46OEE90079+2OChwGdg0vl7ZRJ34HQk/7g5PG67CHDJcKviApmHhxfrAG
-	 7UIUnLUsfg1742Y7G/7NhzwL+/zs4T88u0JhQQSPm3XLr0RHKZ9UlTL96oIcNfA3az
-	 6r0KN5vixstsGB60tsnnYyj66BPBoDm2HVf/NzefMNj252bvp9H5Em6TmIdwtyOqQ9
-	 kenCxZg3+bVtsvLZt3endNzIpVKKfdtKGzgKL7+ktRg2A7wYDw2nCvtkmKFAlfWRen
-	 cDSLnqy0lIE0w==
+	b=DGsMmcdHoKL8xVHG8+kp8ClMp8MkqdFzmUiSJJDQJfHjj68lC/Mkmg2M7EfsbRYc8
+	 PesgJpNGAhjpysoZoXxHXXT9OV12St377FffBejUvaLMvRrrMG9UY1/3xz717Ysk2v
+	 PwUu9+3pL8hzi05/4foZwBfg0Gaw3iYcA5jh8oXBLWY8YtOwFxDTpcVKat2acT25+L
+	 aJeXxfzkvNHCqvBp980pHjdE9iaU7vG6le+f5JkcxhNxTHn4dO19bQOrSp0zAH0HAd
+	 xGlmZcvaOct5HvO7Knd7jNVyeh8PHYlYABCOb9zqlEI1ItAUD8wWxgWHf8D+UmrpPb
+	 ACiQo0H9ZcJNA==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 3E01460097;
-	Thu,  5 Nov 2026 13:45:45 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 785AC60096;
+	Thu,  5 Nov 2026 13:45:46 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 04/12] netfilter: nf_dup: preserve guard across NFQUEUE reinjection
-Date: Thu,  5 Nov 2026 13:45:28 +0100
-Message-ID: <20261105124536.1009301-5-pablo@netfilter.org>
+Subject: [PATCH net 05/12] netfilter: flowtable: extend ct timeout of offloaded GRE flows
+Date: Thu,  5 Nov 2026 13:45:29 +0100
+Message-ID: <20261105124536.1009301-6-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
 References: <20261105124536.1009301-1-pablo@netfilter.org>
@@ -73,118 +73,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zihan Xi <zihanx@nebusec.ai>
+From: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
 
-NFQUEUE can suspend traversal of a duplicated packet while the task-local
-duplication guard is set. The output call then returns and clears the guard
-before a later verdict resumes hook traversal.
+Since commit 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn
+timeout extension logic"), the flowtable gc worker extends the timeout
+of an offloaded conntrack entry from nf_flow_table_extend_ct_timeout()
+once it falls below 5 minutes. That function only knows about TCP and
+UDP and hits WARN_ON_ONCE() for any other layer 4 protocol. However,
+GRE flows can be offloaded too, both via nft_flow_offload and act_ct,
+since commit 4e8d9584d154 ("netfilter: flowtable: Support GRE").
 
-Save the guard in the queue entry and restore it while reinjection
-continues hook traversal. Preserve and restore the verdict task's prior
-state, including nested synchronous reinjection.
+The timeout of an offloaded GRE entry drops below that threshold as soon
+as a packet of the flow still goes through conntrack. With ip6gre
+tunnels using the default encapsulation limit this is ordinary traffic:
+the flowtable does not parse the Destination Options header in front of
+GRE, so every packet of the flow takes the classic forwarding path. It
+also happens for a packet with ttl <= 1, which the flowtable fast path
+passes up to the classic forwarding path. nf_conntrack_gre_packet() then
+refreshes ct->timeout to the GRE stream timeout (180 seconds by default),
+and the next gc run triggers, as reported by syzbot:
 
-Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
+  WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout+0x1ee/0x2f0
+  Workqueue: events_power_efficient nf_flow_offload_work_gc
+  Call Trace:
+   nf_flow_offload_gc_step+0x545/0x7b0
+   nf_flow_table_iterate+0x13c/0x1f0
+   nf_flow_offload_work_gc+0x22/0x70
+   process_scheduled_works+0xc3d/0x1630
+   worker_thread+0xa47/0xfb0
+   kthread+0x38b/0x480
+
+Besides the splat, which panics the machine with panic_on_warn, the
+default branch sets the new timeout to 1 jiffy, so the conntrack entry
+expires right away and the offloaded flow is torn down.
+
+Handle GRE like UDP and extend the timeout to NF_CT_DAY. GRE conntrack
+has no protocol state to take into account, and NF_CT_DAY is also what
+flow_offload_add() already sets for every offloaded entry, GRE included.
+This also restores the behaviour from before commit 03428ca5cee9, when
+the conntrack gc worker extended offloaded entries of any protocol to
+NF_CT_DAY.
+
+Fixes: 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn timeout extension logic")
+Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=521f7e7e2b974abde99a
 Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
 Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- include/net/netfilter/nf_queue.h |  1 +
- net/netfilter/nf_queue.c         |  1 +
- net/netfilter/nfnetlink_queue.c  | 17 ++++++++++++++---
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ net/netfilter/nf_flow_table_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index 86021c55ba3c..4a8cefd8398d 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -23,6 +23,7 @@ struct nf_queue_entry {
- 	struct net_device	*physout;
- #endif
- 	struct nf_hook_state	state;
-+	bool			in_nf_duplicate;
- 	bool			nf_ct_is_unconfirmed;
- 	u16			size; /* sizeof(entry) + saved route keys */
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 0d72dc8ae47a..2aa2647ed9df 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -544,6 +544,7 @@ static void nf_flow_table_extend_ct_timeout(struct nf_conn *ct)
  
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 166d05e994ac..bd603e3a99a5 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -219,6 +219,7 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
- 	*entry = (struct nf_queue_entry) {
- 		.skb	= skb,
- 		.skb_dev = skb->dev,
-+		.in_nf_duplicate = current->in_nf_duplicate,
- 		.state	= *state,
- 		.hook_index = index,
- 		.size	= sizeof(*entry) + route_key_size,
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 90d887546f7d..a8aa7ad832c3 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -44,6 +44,7 @@
- #include <net/sock.h>
- #include <net/tcp_states.h>
- #include <net/netfilter/nf_queue.h>
-+#include <net/net_debug.h>
- #include <net/netns/generic.h>
- 
- #include <linux/atomic.h>
-@@ -365,21 +366,30 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	const struct nf_hook_entry *hook_entry;
- 	const struct nf_hook_entries *hooks;
- 	struct sk_buff *skb = entry->skb;
-+	bool old_in_nf_duplicate;
- 	const struct net *net;
- 	unsigned int i;
- 	int err;
- 	u8 pf;
- 
-+	DEBUG_NET_WARN_ONCE(current->in_nf_duplicate &&
-+			    !entry->in_nf_duplicate,
-+			    "%s called with unexpected duplication guard",
-+			    __func__);
-+	local_bh_disable();
-+	old_in_nf_duplicate = current->in_nf_duplicate;
-+
- 	net = entry->state.net;
- 	pf = entry->state.pf;
- 
-+	current->in_nf_duplicate = entry->in_nf_duplicate;
- 	hooks = nf_hook_entries_head(net, pf, entry->state.hook);
- 
- 	i = entry->hook_index;
- 	if (!hooks || i >= hooks->num_hook_entries) {
- 		kfree_skb_reason(skb, SKB_DROP_REASON_NETFILTER_DROP);
- 		nf_queue_entry_free(entry);
--		return;
-+		goto out;
- 	}
- 
- 	hook_entry = &hooks->hooks[i];
-@@ -402,9 +412,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	switch (verdict & NF_VERDICT_MASK) {
- 	case NF_ACCEPT:
- 	case NF_STOP:
--		local_bh_disable();
- 		entry->state.okfn(entry->state.net, entry->state.sk, skb);
--		local_bh_enable();
- 		break;
- 	case NF_QUEUE:
- 		err = nf_queue(skb, &entry->state, i, verdict);
-@@ -418,6 +426,9 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	}
- 
- 	nf_queue_entry_free(entry);
-+out:
-+	current->in_nf_duplicate = old_in_nf_duplicate;
-+	local_bh_enable();
- }
- 
- /* return true if the entry has an unconfirmed conntrack attached that isn't owned by us
+ 		switch (l4proto) {
+ 		case IPPROTO_UDP:
++		case IPPROTO_GRE:
+ 			new_timeout = NF_CT_DAY;
+ 			break;
+ 		case IPPROTO_TCP:
 -- 
 2.47.3
 
