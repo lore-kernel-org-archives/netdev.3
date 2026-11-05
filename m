@@ -1,108 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793870338;
-	b=0GAgv9CSnzG5aA5FyjU1rr6cQ5uRfIHFgf5s8OXKAkk8L0u4ZjXq+7dixzQfCPWhgSwx
-	 +iwB55NIYdrmQh9lgCFB6+XpyxhZBLfWDFoIJ3gD15h38b46hOdVyhoTc2TjakkwxIhEF
-	 vTUBkXD0SFcI34jW04cvYL085tyJQSbA338DxNDKKCzk93Bl7LpCKNdCjFF9oNOu7Vn7K
-	 vrlsyubCyon0zEL1pZGW/+8nVURpG2a/eQNADxPwzUKmpW9F90IFKl9WQ+rk54PJLj4iB
-	 YhYQ5obzzjLYW+7Ncam/2LhxieHXJJafBufda8OWc2Ki/QpmlYWNB1plvIeI5xHz+oA==
+	t=1793870350;
+	b=Q9uFSBmZ78UWtsU5GWwLd9xyUq2CQysY3nb44G41g6RlaXISQt1GUeFKXHdWqDUGoCrG
+	 eEWcp7yzX6w/4gvQtvBCwgY9Mdrw871bOOEMG3YYS5jlGa2z0XkMiRpdwDvwGpIToPBv9
+	 +n11vKfgBV6QLKZDSaUuyr3MHVO9qMkq+ebjqC4oempBmA+YiGgX8FVzu0iDwL8U1+MBQ
+	 LtHYa/rTXcJD+4+8rLxMh4bxLygR7k29pW7lamU1a9RmazCUNhl3b+3TUmh9Tigry2Dd3
+	 vmIzZ4u0nXGNEbppq/YpFtGKTBRxnKG0jNW1xUuG82oy8J1+ai2ijN67Xv/MQl+LNPg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793870338;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=srnkzjaOG7BDN2bpeLlegl6CQK8Ql2ZPBafTe9mh37E=;
-	b=xqmHAXJrjWIFdqYjh7hfEiHkhmX1XWTx8+w+T/6HmrNzFCdbyeu18nS2jFjbfPLzCZur
-	 4+M0bPLAtC+tboqwbXUAST3FU7F6LcCMlZXnZdjofDLwQej/NS3htjGvQXCEFnzIRSs7p
-	 GRLpdmgWUWi1TS3ccgn/tZQZCj6h7jf6/NL/ArjErY8DNWlpLq4QSiJEdt8gqwKjplRmU
-	 8NbLo1vgwFdKtmUJBUtAtDfJx/SNA+ik0ii9O1NEPU1+FFvRnY0it8bKJdkfw8kdaid4a
-	 ZqLOpxZp0GrJVwnkkSGqk9A2QKdGkLiyVHXqJ5wt1FVjwRnW3dXqe8QGQ3saReXKZMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793870350;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=4iB3l+nANELB6PJ3BfIsvhn+F1Wqb6s+BqDllbjxY54=;
+	b=HIznHHeiIGR2u86uU4chKE0xNcY46iuoPQ19RCqn9uKwwKk4BGGboYrd4eMK33Jjs3tX
+	 DC6MhHAi+rnMhWjVHmWYuMAqmARxczRNszXpgOh63uV8G8gXK4psivcxG64SHRbbqN5y8
+	 xcxmDd2FacxPiM1YI9PJbc8zj1pedFWjogRTj201WioB7DY0ps01Ke9mC9z1b8KTwxtXg
+	 F9tYKokzmzfzxuucOcOrgmfEyMWvzcxWl3xdNHZxCgdoIWP+KVmOIks0rX1IqEQnnri+v
+	 sLyv2rzeKUCkBFy4FUVT9XSaxfl0JjOX9NVBrXbTyOuFwuDfWNZIMv7x80QLX7BBzog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BzJo6rGM;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qfaIZpA+;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jzQhbmRs;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1F606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:18:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81D1F606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8641606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BzJo6rGM;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=qfaIZpA+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793870336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=srnkzjaOG7BDN2bpeLlegl6CQK8Ql2ZPBafTe9mh37E=;
-	b=BzJo6rGMIPyByDDkxPuYk4ik9mnbT2Fi0SbPNb53VlmlVGR4o+LMk9e7aKqFkrCMJAxKCv
-	LC6Rno1V9d7yTkCYY2uSSvvQtMc7QXwb+WDrKemW65Gx2l1nlzq8IjWPNj0xhgUcXj8PLR
-	90VXsebeXZsCwmWzF8pnPz8OjNVsa3I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-52P3-PmJNU2YsmwvzQVuBQ-1; Thu, 05 Nov 2026 04:18:55 -0500
-X-MC-Unique: 52P3-PmJNU2YsmwvzQVuBQ-1
-X-Mimecast-MFC-AGG-ID: 52P3-PmJNU2YsmwvzQVuBQ_1793870334
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4903fc8537aso1040357f8f.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:18:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793870334; x=1794475134; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=srnkzjaOG7BDN2bpeLlegl6CQK8Ql2ZPBafTe9mh37E=;
-        b=qfaIZpA+7xLqCsQxWZ5qFqIpLat51mVHlpsSoIu1/8YdTOXVzCw9LkgJSm2Bop4wIs
-         5EYpPAm2moMyqlfNypDPKR1GpJlFkP9gb45622Sui5Z+yUQsbCEZ/FFdkIJqMLoNLBlr
-         jDAfaZam5XmtdnGRVnrDJKweTmTAuIxGIB15cRU8lnoxwJkHcAtEzN9Zaupy/phsoWz6
-         d+KgHwSXXhvTiqDwBnm1ikelKx15V/bsA2kjgUMvMYhClcX4JnpHQ1N9vvu/p12PV8qL
-         eljcWU8JmC0ZbcryXTczuyYKkaLeUvBFXau505mTc4HoKpxvyT+pkvEvz+5lnFK6I5sW
-         6tFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793870334; x=1794475134;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=srnkzjaOG7BDN2bpeLlegl6CQK8Ql2ZPBafTe9mh37E=;
-        b=ZMkohxoPwbd+OYO3eG0+0p6prFY1vH3g5u+871zRv7RLQJnB/p2xPV2XLTDxTr5gVO
-         jGVEGKzLIaRJA8iFk8f7tAiaNFjNrEPm8p2IJtL1ZGx8nVZVWIP8deAcU+9sJHwgwr9k
-         Qv5Ex0/r7iMZVB/lgo1PxI3auClinC21Ozc0yvBPMzr8J2nFQbuiX8UnRFmR/kXNx7BK
-         LXyOXPydEBJAiIRrwQj9Ew00y/XuOFz/XmigkDy3hZzwZV8NQSvtWSGvyf4Y3v7ccRZW
-         8uP7UxwnmUo2R1wsIqtHrTwwuUk70Md2tfGQMzS7dSIubCba01iLwLZPKdFKyfyx3Vuw
-         cS7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBx9fLqmoTkpMxfGVGdxG6wYGgahEG7O0yVKw/Y63v1CmCsfLlBhbhjuPV51mOybHC8cYKEspU0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/9W0kpNMnCHoazaU0PemmcbYXrAI8qH1+E43ogAxRS/ELtJNfb
-	z/+nA+p19q3eSb+cWZelvRnZQ23T6IkZQLSHqXhMzaQ/e99kDuXo094qaxaTQxqEciauNSqjUgu
-	Pf7f1tJtixLxHyAIh+skjMdyrr0hj8UWvMmxlExebdQ0ud3enBEcwIIEbPw==
-X-Gm-Gg: AYBFou3ypVn/1tlwZY50c/gV337xOEM/O0EHKknEccYwh8VPly6dOK/zB6C0gtUFhQj
-	UK0rCzFSptHQU7M07qurnODncrpi2FfbXZUB8b4TpzEcWPc3Mj8SWEJcJU2KKmXquOdv1x6EIh2
-	/cajoo191TPENCnY7iU5JeWc50y3plC5hwnw5MMs7YFiJly/3Zp0rOXhHkYNa2qBvvlrN0k4Ess
-	dnpPNWrlbRMr7JnvBKwnfTKCYv+2lLF9m5ZmGuu2CSiv843tNb3BBNu+/jjMGxtYnR2R1DYClDy
-	VfWxT/84enS3aTfKjfzBOqYO8nH6VrO7Eo3kWIFvJ+MGg1VF3DBx08fYxeIrrimmzMd7YaKhpgN
-	9yWKU3UeB6UkmBVfp4cgsx9YoDGy0YU92me7RpOYJxDUPbX9PL2hIzCCsX+dsbdhetrr8ODO27W
-	cZO26REli6q1HDZ0vzv1gsdCtk2NvrgzHoJOX6JBX+Xuw=
-X-Received: by 2002:a05:6000:2904:b0:48d:b75d:30f6 with SMTP id ffacd0b85a97d-48e6e308d92mr41690806f8f.35.1793870334119;
-        Thu, 05 Nov 2026 01:18:54 -0800 (PST)
-X-Received: by 2002:a05:6000:2904:b0:48d:b75d:30f6 with SMTP id ffacd0b85a97d-48e6e308d92mr41690741f8f.35.1793870333456;
-        Thu, 05 Nov 2026 01:18:53 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea18104bsm9317500f8f.6.2026.11.05.01.18.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 01:18:52 -0800 (PST)
-Message-ID: <deb337e3-f7aa-447b-8227-fca872b8cbd7@redhat.com>
-Date: Thu, 5 Nov 2026 10:18:51 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jzQhbmRs
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A79E1F00A17
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:19:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793870349;
+	bh=4iB3l+nANELB6PJ3BfIsvhn+F1Wqb6s+BqDllbjxY54=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jzQhbmRs4nW7SN91lZ4bHzkhB9gbcfEFIJGBRGL/Dd48DFH3hgJ4eN23pcpcvxXwD
+	 3aU+rMr5QZGCsLp73pPsYAvF3ruecWluggOy5o5uezkMrR3J8gnZeja9ilUHsWJcdI
+	 EinNoJOniFTrolIuejrSWc1t9uYQGNFwB/V9jKm6ORQtSnKkwjlHBA/cvO5401PC5P
+	 lZ6s+TvzMtiYgfOk6PclBeTBc+FxSsiaC4oS7NB+9T72PnMUIwLBm1NZLznlTL+lRK
+	 d9pkf0keuuD+rG7nwIaqaW3gwdrJW8XwTqC0MkkTiS+uMAAb/1s8R16skm5+Tf2B9Z
+	 bucl88LT1maqw==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5bccb867d6fso1305886e87.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:19:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwBBoXhH9BjL2v3kV/CchCRULFo2YgI/NtGmzHz5liV7S9H5wgBBvDbZ1OBImY2rcXBJ7qewsQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/TUg4uYq36FQTkeEfyFhXT1wAOqNBwDL1ykhyCf/3Tg35UJI3Q
+	A2DwTrRKKytDWdARBJJ8tgvh1kDJ3vvvGB9u+FibvLk2sTdftzAPqV0Cksf72O0SLbtgUx2FY5k
+	dPRXWj0mI2ErIGy9nOy/eUgtIHhSF9LU=
+X-Received: by 2002:a05:6512:15a0:b0:5bf:c045:964a with SMTP id
+ 2adb3069b0e04-5bfd957b6bamr6675117e87.18.1793870348384; Thu, 05 Nov 2026
+ 01:19:08 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,42 +59,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5e: TC, Fix double free of branch in failure
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Oz Shlomo <ozsh@nvidia.com>,
- Roi Dayan <roid@nvidia.com>,
- "open list:MELLANOX ETHERNET DRIVER (mlx5e)" <netdev@vger.kernel.org>,
- "open list:MELLANOX MLX5 core VPI driver" <linux-rdma@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20261028145805.54595-3-fourier.thomas@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261028145805.54595-3-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com> <5f0dd56f-b6e0-4341-853d-6ac69632350a@yahoo.com>
+In-Reply-To: <5f0dd56f-b6e0-4341-853d-6ac69632350a@yahoo.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 5 Nov 2026 10:18:54 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmvkF4JokBx9LcwaEX_F0rhAjGMCQ8-UQ1gZ94tdSh4Vg@mail.gmail.com>
+X-Gm-Features: AclHuK_0OCgFWn8ghSua9Xl4cgQv6m1ahyj_OtFwTzjPu2Tjz7Zo_YE5wbnRMxs
+Message-ID: <CAD++jLmvkF4JokBx9LcwaEX_F0rhAjGMCQ8-UQ1gZ94tdSh4Vg@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 10/11] net: dsa: realtek: rtl8365mb: make
+ L2/LUT access work on family D
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
+	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/28/26 15:57, Thomas Fourier wrote:
-> When allocating the false branch fails in parse_branch_ctrl(), the
-> already allocated true branch is freed but attr->branch_true is left
-> pointing to it. The caller parse_tc_actions() fails the flow, and
-> free_flow_post_acts(), mlx5_free_flow_attr_actions() which calls again
-> free_branch_attr() on attr->branch_true.
-> 
-> Clear the pointer after freeing it.
-> 
-> This bug is theoretical and was compile tested only.
-> 
-> Fixes: f86488cb4685 ("net/mlx5e: TC, initialize branch flow attributes")
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Given the lack of H/W testing I would appreciate an explicit ack
-from the mlx crew.
+On Wed, Nov 4, 2026 at 12:36=E2=80=AFAM Mieczyslaw Nalewaj <namiltd@yahoo.c=
+om> wrote:
 
-Thanks,
+> The L2 lookup table on family D switches (e.g. RTL8367S-VB) differs
+> from family C in ways that make the current FDB/MDB code misbehave:
+>
+>  - An L2 entry is 5 words instead of 6, with a different field layout
+>    in words 3 and 4 (port, age, static and multicast member bits).
+>  - There is no EFID and no per-bridge FDB isolation. The register at
+>    0x0A32, used as the per-port EFID register on family C, is the LUT
+>    aging timer on family D, so writing an EFID there corrupts it.
+>  - In the table access interface, the SPA field is 3 bits wide and the
+>    address register is 12 bits wide, with no address extension bit.
+>  - Only ports 0..7 are present in the LUT and there is no
+>    FLUSH_PORT_EXT register.
+>
+> Teach the table and L2 code about these differences, selecting the
+> layout at runtime with rtl8365mb_is_d(). Family C behavior is
+> unchanged.
+>
+> Specifically:
+>
+>  - rtl8365mb_table: use the family D port mask and address width, and
+>    read the hit address from status bits [11:0].
+>  - rtl8365mb_l2: add family D unicast/multicast entry (de)serializers
+>    and dispatch to them from the rtl8365mb_l2_*() helpers, pass the
+>    proper entry size to the table layer, reject ports above 7, report
+>    SVL (FID) entries with VID 0. Use age 6 for static unicast entries
+>    as the vendor code does, and look an entry up before deleting it so
+>    that a missing entry is not allocated by the delete.
+>  - rtl8365mb_main: make port_set_efid() a no-op on family D, add a LUT
+>    init step that clears IPMC_HASH and BCAM_DISABLE and programs the
+>    aging timer, and do not advertise fdb_isolation or
+>    max_num_bridges. Traffic between bridges is then isolated by the
+>    port isolation masks only.
+>
+> Register layouts were taken from the family D register description;
+> the code itself is an independent implementation.
+>
+> No chip uses family D before the last patch of the series, so this code
+> is unreachable until then.
+>
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-Paolo
+LGTM
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
+Yours,
+Linus Walleij
