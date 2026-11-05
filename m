@@ -1,63 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793844753;
-	b=KRXtrmVV8awT8rLhg5UWPCvQfJhefsmwLFehqH2VWcK1b80n68JhNp5wamBZc7DftgOY
-	 JfhD9tQBV/Yt/fknWQvjjNwhWf9FOsu6Y8x84LMPmox2AUPfJ5MyO7KRtTfN39PB9asu+
-	 YHacE/NaTVczTNwCb0GjaT5mdfjQlbaJH1Q/iymEhg34MaSr04Rh0LSk5FhNA7bliQ4py
-	 s4DMelWodKEfhcp1xMc9NU+ffnSYKaKapxxjUShXYaCP+T0BFxAGe1BcO+h8aLcQK3EFQ
-	 8WFPd5Q/dEVhbX2cZ42DKYG72LnpEoeBQaH7mamUv71smBHtmSRT5YY3jbDOzmScVKQ==
+	t=1793844847;
+	b=c1GyCZBNXNWxMeid7VHrv86+FFMZnq/inaGmUyzz0Kryigts8igljmhlFzrZQDKnhhkN
+	 5FgrkjWXrpIrgCkKYOaxpHB6cQoOZsMRe6Zx8hXt0/7GVsdyO/xXRKhuVr6+5lxmzjSLE
+	 IJ+yuq0dQHL5eUFNSsW4y23Vyuaf06ACT+H7sp3wK6SMM494QQhXZZ6jAEdzCkqPQvGDI
+	 oAOWF/HDKeOEiRYCVytigTo+/sjV9tiyOI0IJ7Rrl232/N9zdFDzjgHA0wssFVyV2xcfJ
+	 APts+oS/f9Wtq9LHS0TL643KNU5ubw19c33mMUn+2VOAOo25cI1V47nCPvrYqr5TlRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793844753;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844847;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=QaEwYVK0QRwa1prVIMD7IJ4FVuOtJkVN57HHtraLvXc=;
-	b=jL1IUBV+6buTXiWWDKDw0LAUry/5B/sZVHuEVaQUzvf96tJMojxAkHJt+AExpPDi0cYI
-	 EadCyQ27mCPo04Ijx0qOHj9hj1oRqjZsB0I6jh4iFnpCqEE0m/CPZKKxPIgdDeKFW7VtM
-	 8SFWDuZ+b3x9bCONZ57snZUOdlhyVvg8tjRwiKBEihT9HJyvrF0gIUntEnWElqLJm18b2
-	 zrzomwZDcwIOoQrhTy44r8mdrW65XZDnskX137mnPK+742prkplynZxAVbVq2FSgIofvA
-	 CmaueeV4cJ67qm6kZFnS7wvNPehdM4DmuTJWdGmOb60kNeU+4fLPYBMSOnJGKAL78OA==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=tXeq94tKXH8bHOz1amsH5XRU51n2PYOOTkgxfF1PjyI=;
+	b=t8Es9FRArnOREvxyKNItjBzxGe8wpCI8TzziuzCzgbjuD/fuNRkfWcN89VzrBehYq7d6
+	 65zSndLqfqnk+LUtCy0Bexibj/hLmkx1h8U2rcIfqN5GQq41Q70ztgEdwe+f7BRgki8Lz
+	 bAZhKkdfcxBPkujy5xH88TNPBZ5tp0Yy4aY8wihjNesz1Vx5CEy7B+wFVD3tZFSqEr9/p
+	 oNT9dfzXmRo479WUmL4h26VcTzfRCil+ALCLumNCkHxXR08+DVTTgJ2Jh84Dgxf4oqoL/
+	 v95UOAIwZVpoTvv85BlPbhAYwT1wD4wYL2/YVF1m9pjs6IadToyTfbvREIwHmW/lY3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UsUqcTDX;
-	arc=none smtp.remote-ip=95.215.58.52
-Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j2sTp789;
+	arc=none smtp.remote-ip=95.215.58.108
+Received: from mta1.migadu.com (out-108.mta1.migadu.com [95.215.58.108])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBE3606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:12:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDBE3606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A61606A338
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:14:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31A61606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UsUqcTDX
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j2sTp789
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=pBrfotY9+XE+xLOo6ESNM23xl8EfAZ2RsF5WJxQ1HQg=;
+DKIM-Signature: a=rsa-sha256; bh=l5hRS8qgzR0WOCPLF0tQbQ+of37lp1oZsgw+XUQqwhg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793844749; v=1; x=1794449549;
- b=UsUqcTDXiUIUDjy7EsYATTiTE4U6RjuH70yVSspKepTCWFqrC/x3yt0UZgU75x1/nKu1mAnD
- Hk9Ko34P03qH2vXk1TZ87alHQ0PdewiOAmMEK2PuaqC4at6pOlyIV1CTYIBiQUivv/pbCKiY32n
- ScIr6xmD26QRN+0a3WoBlGEQ=
+ t=1793844844; v=1; x=1794449644;
+ b=j2sTp789TAzH4+lGZ7lYWfaDwj4tzc9cwnz9VymVYz+93eIx1j2P1wIewQP0NcIfVbJQKLyf
+ 0DO8NIIghKzDouBSBnDym1wAnQyGpqJsD9irj2dQSZrGObeDZJB96QtjMGxheDIwPErfv1cfpzT
+ zdnAQ3fG/Xx2Ge3hDWonFfXo=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id d7e254c367df15f0;
-	Thu, 05 Nov 2026 02:12:29 +0000
-X-Mizu-Trace-ID: d7e254c367df15f0
+Received: by smtp.migadu.com with ESMTPS id 7ce234fbb2517b84;
+	Thu, 05 Nov 2026 02:14:03 +0000
+X-Mizu-Trace-ID: 7ce234fbb2517b84
 X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 10:12:15 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
-	weiwan@google.com, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] ipv6: ignore link state in gateway check
-Message-ID: <auvl_644NtfQVWrW@fedora>
-References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
- <20261104195655.1406837-2-aroslavdudkov622@gmail.com>
+Message-ID: <fc4939cc-84ec-4c5c-88a7-658ca800377d@linux.dev>
+Date: Thu, 5 Nov 2026 10:15:13 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,99 +58,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104195655.1406837-2-aroslavdudkov622@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 01/51] alloc_tag: don't remove /proc/allocinfo
+ under the codetag module lock
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>,
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>,
+ Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados
+ <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>,
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>,
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ coreteam@netfilter.org, kexec@lists.infradead.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org,
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org,
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>,
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>,
+ stable@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 04, 2026 at 07:56:54PM +0000, Yaroslav Dudkov wrote:
-> IPv6 route cannot be added in table when all
-> following conditions are true:
-> - gateway is not link-local address
-> - ignore_routes_with_linkdown=1 on device
-> - nexthop has no carrier
-> - gateway is not present or covered by any route in table already
-> Also multipath routes addition is invalidated by kernel even
-> if only one of added nexthops satisfies all above conditions.
+Cc Suren
+
+Hi Christian
+
+On 2026/11/5 03:06, Christian Brauner wrote:
+> codetag_alloc_module_section() takes the codetag type's mod_lock for
+> writing and calls reserve_module_tags() with it held. When that can't
+> reserve the tags, because the section's alignment doesn't fit, because
+> there are too many tags for the page flag bits or because the memory
+> for them can't be allocated, it shuts memory allocation profiling down
+> and removes /proc/allocinfo, still with mod_lock held.
 > 
-> Reproducer:
+> remove_proc_entry() waits until every reader of the entry has let go of
+> it, and a reader of /proc/allocinfo takes mod_lock for reading in
+> allocinfo_start() while it holds the entry. So a module load that hits
+> one of those paths while /proc/allocinfo is being read waits for the
+> reader and the reader waits for the module load, for good.
 > 
->   ip netns add t
->   ip -n t link add va type veth peer name vb
->   ip -n t link set va up
->   ip -n t addr add fd00::1/64 dev va nodad
->   ip netns exec t sysctl -w \
->     net.ipv6.conf.va.ignore_routes_with_linkdown=1
->   ip -n t -6 route add 2001:db8::/64 via fd00::2 dev va
->   # added
->   ip -n t -6 route add 2001:db8::/64 table 100 via fd00::2 dev va
->   # RTNETLINK answers: No route to host
->   ip -n t -6 route show table all
->   ip netns del t
+> Let a work item remove the entry in that case. The profiling is shut
+> down right away like before, the file just goes a moment later.
 > 
-> Route should be added because:
-> - RT6_LOOKUP_F_IGNORE_LINKSTATE in commit d5d32e4b7668
-> ("net: ipv6: Do not consider link state for nexthop validation")
-> was added for this
-> - the same route is valid in main table (when no specifying table id
-> while adding route)
-> - fib6_nh_init() initializes nexthops with no carrier
-> - IPv4 already does this (fib_check_nh_v4_gw() ignores link state
-> using the FIB_LOOKUP_IGNORE_LINKSTATE flag)
-> 
-> Before commit b2c709cce682 ("ipv6: Convert gateway validation to
-> use fib6_info") rt6_lookup() was used for checking if nexthop is
-> valid, rt6_lookup called rt6_device_match() which does not check the
-> link state. After change rt6_lookup() to fib6_lookup()
-> find_match() under fib6_lookup() started to invalidate linkdown
-> devices, because RT6_LOOKUP_F_IGNORE_LINKSTATE is not passed to it.
-> 
-> Adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags for ip6_route_check_nh()
-> solves the problem. RT6_LOOKUP_F_IGNORE_LINKSTATE is already used
-> inside the first search ip6_nh_lookup_table() and fixes the
-> bug in second search fib6_lookup(). Also RT6_LOOKUP_F_IGNORE_LINKSTATE
-> isn't read inside fib6_select_path().
-> 
-> Fixes: b2c709cce682 ("ipv6: Convert gateway validation to use fib6_info")
-> Signed-off-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
-> ---
-> IPv4 example of this situation:
->   ip netns add t
->   ip -n t link add va type veth peer name vb
->   ip -n t link set va up
->   ip -n t addr add 192.168.0.1/24 dev va
->   ip netns exec t sysctl -w \
->     net.ipv4.conf.va.ignore_routes_with_linkdown=1
->   ip -n t route add 192.0.2.0/24 table 100 via 192.168.0.2 dev va
->   # added
->   ip -n t route show table all
->   ip netns del t
-> 
-> Also when adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags of
-> ip6_route_check_nh() makes adding this flag inside of
-> ip6_nh_lookup_table() unnecessary for this call, making another call in
-> ip6_route_check_nh_onlink() with flags=0 the only place where it is
-> needed.
-> ---
->  net/ipv6/route.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> index 94e5ef1c4f83..73d8a2c95602 100644
-> --- a/net/ipv6/route.c
-> +++ b/net/ipv6/route.c
-> @@ -3424,9 +3424,9 @@ static int ip6_route_check_nh(struct net *net,
->  			      netdevice_tracker *dev_tracker,
->  			      struct inet6_dev **idev)
->  {
-> +	int flags = RT6_LOOKUP_F_IFACE | RT6_LOOKUP_F_IGNORE_LINKSTATE;
->  	const struct in6_addr *gw_addr = &cfg->fc_gateway;
->  	struct net_device *dev = _dev ? *_dev : NULL;
-> -	int flags = RT6_LOOKUP_F_IFACE;
->  	struct fib6_result res = {};
->  	int err = -EHOSTUNREACH;
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+
+Thanks.
+
+is this a problem you have hit in practice?
+Sashiko discovered this issue earlier and reported it as follows:
+
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 2070e682fe106..112a014d4b890 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -950,10 +950,12 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>  		int grow_res;
 >  
-> -- 
-> 2.54.0
-> 
+>  		module_tags.size = offset + size;
+> -		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
+> +		if (!tags_addressable()) {
+>  			shutdown_mem_profiling(true);
+This is a pre-existing issue, but does this shutdown_mem_profiling(true) call
+introduce an AB-BA deadlock between /proc/allocinfo file readers (pde->in_use)
+and module loading (cttype->mod_lock)?
+A user reading /proc/allocinfo acquires the procfs in_use reference in
+use_pde(), then blocks on down_read(&alloc_tag_cttype->mod_lock) in
+allocinfo_start().
+Concurrently, if a module loads and tags_addressable() fails,
+codetag_alloc_module_section() holds down_write(&cttype->mod_lock) and calls
+shutdown_mem_profiling(true), which removes the proc entry. This removal waits
+indefinitely for the in_use reference to drop to zero, hanging both procfs
+reads and module loading.
+> -			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+> -				mod->name, NR_UNUSED_PAGEFLAG_BITS);
+> +			pr_warn_once("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+> +				     mod->name, NR_UNUSED_PAGEFLAG_BITS);
+> +			release_module_tags(mod, false);
+> +			return ERR_PTR(-EAGAIN);
+>  		}
+>  
+>  		grow_res = vm_module_tags_populate();
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+I previously sent a patch with a comparable idea, though Sashiko remained unconvinced.
+
+[patch]: https://lore.kernel.org/all/20260817062726.106511-3-hao.ge@linux.dev/
+
+[Sashiko's objections]: https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@linux.dev
+
+Could this patch perhaps wait for mine? No worries if this is inconvenient.
+
+Best regards                                                                                                                                                                                                                                                                  
+Hao
+
+> ---
+>  mm/alloc_tag.c | 27 ++++++++++++++++++++++++---
+>  1 file changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 82e2c3448dcf..7d7ad6704953 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/seq_file.h>
+>  #include <linux/string_choices.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/workqueue.h>
+>  #include <linux/kmemleak.h>
+>  #include <uapi/linux/alloc_tag.h>
+>  
+> @@ -604,6 +605,26 @@ static void shutdown_mem_profiling(bool remove_file)
+>  	mem_profiling_support = false;
+>  }
+>  
+> +static void remove_allocinfo_file(struct work_struct *work)
+> +{
+> +	remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+> +}
+> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
+> +
+> +/*
+> + * A module's tags are reserved with the codetag module lock held for
+> + * writing, and a reader of /proc/allocinfo takes that lock with the entry
+> + * pinned. Removing the entry there would wait for that reader for good, so
+> + * let a work item do it.
+> + */
+> +static void shutdown_mem_profiling_async(void)
+> +{
+> +	if (!mem_profiling_support)
+> +		return;
+> +	shutdown_mem_profiling(false);
+> +	schedule_work(&remove_allocinfo_work);
+> +}
+> +
+>  void __init alloc_tag_sec_init(void)
+>  {
+>  	struct alloc_tag *last_codetag;
+> @@ -855,7 +876,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>  		align = 1;
+>  
+>  	if (!ensure_alignment(align, &prepend)) {
+> -		shutdown_mem_profiling(true);
+> +		shutdown_mem_profiling_async();
+>  		pr_err("%s: alignment %lu is incompatible with allocation tag indexing. Memory allocation profiling is disabled!\n",
+>  			mod->name, align);
+>  		return ERR_PTR(-EINVAL);
+> @@ -905,14 +926,14 @@ unlock:
+>  
+>  		module_tags.size = offset + size;
+>  		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
+> -			shutdown_mem_profiling(true);
+> +			shutdown_mem_profiling_async();
+>  			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+>  				mod->name, NR_UNUSED_PAGEFLAG_BITS);
+>  		}
+>  
+>  		grow_res = vm_module_tags_populate();
+>  		if (grow_res) {
+> -			shutdown_mem_profiling(true);
+> +			shutdown_mem_profiling_async();
+>  			pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
+>  			       mod->name);
+>  			return ERR_PTR(grow_res);
+> 
