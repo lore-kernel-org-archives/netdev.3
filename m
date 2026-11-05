@@ -1,97 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.222.175
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793897306;
-	b=nOxQaHD2Sw9iD1F0W3viDC/SBDEVrfo7L6zOBekkq6aIllqpwlN+oXlyF2RZmFc/HTqK
-	 EjTmysi83yLAK21xfLws6yrRGPC4tLU8ZmfzVI+uiFkK5v10zFMq3uCx5Gyh2RL2fdUhH
-	 ZLC+LNpGzcrv1fNnWtXSjVNoP9ZIkEDe0gmnFyIeIoJNmwAlOEF0QPtiMadyCjoA8HcC0
-	 oMNDpJOMdUX8kU7Gx/Mmn58ydOZT8FjT989xI3p+yshi4mZmP2/SFe+IHPy8CMZ5fJz9W
-	 c7BBLwj5M0uLgBHv8RBH4xGUShC1arppz+gl9j/Yu0nz98c8rjq9Yv2mb7mWiWtfQlg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793897306;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=VqiTrc04lJztf2dyTmHN89oGm1bJ8PUHM0btmGHDZmI=;
-	b=yRX6edYDtrAhaA7wz5LFhP0OLKbxfgj5qKA6nJgWf+EKcCaMK7YpZRK9YpSjEwVQDgj2
-	 raGsACm1vN6rdJBvlVIv7LYnDRXIhVo10R//x8enevGo1XP3MRY4LHQmnT7OPSQk/1TQu
-	 JfZsQ4aiw4S0/2lNd9P4aSGsgJ+s9qM1bgqk6z9vKaqAhPPUEjFOjJcFptOB7jl0kCcrr
-	 jzOZkFTWq4tW5b/OMNfm937KzkMv2bLchCL0Ztjnuxqiawg2af7JWwfoYJB8VW1iRkeou
-	 VbiI0LM33hnA2ePIlcsHhmdfYevrEdeSzNY0Vil3NsBkPmDVwsd1dE9LPDF4ytdocXg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=amacapital.net;
-	spf=pass smtp.mailfrom=amacapital.net;
-	arc=fail smtp.remote-ip=209.85.222.175
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793897316;
+	b=wdWLzWujP13jfYxe/7eJ9FBT+nQaafU2P/HavzhTuj4GOsVw5yFwgxF05xzt28NVONuV
+	 Ctv3rIO1ciFjElglHi05qaJZikynImlyIELUYRXHjXOqpFqniLR/URz7XCb7mpCDFVmAZ
+	 AmMUJwxXs4042YUPDz+yzxEAxbuZX/dgXtM1jRUI0GlWYxgCVI4WPQ3uVDLEFkxPfS+LE
+	 SuXxG5YHmPyvwxKxZMbGvB503csxW8jM86Dlg9zOad9YzIWwg9un8Yfou6RU0STPjMmM9
+	 G6T+j+0thfX4+1x8mUjiy376ZNTBYLi4iM5/lagNB8s7VXyxT3nSh9PSHIA9sbnY9EQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793897316;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ufeqZ6OrxWy/uS8N9+yHglk0bsq8gg6HXoz25xjhh6g=;
+	b=eADeKTD7FaAl3Xrra9n3zcipXon76crDM4IVsKChTDo9vaDWifjyemJXlDpwAJSR55fb
+	 yzktRaSVvCH7S2fAXLotoQnDZeohm8tIsIlHAu9kOQB4Z3W++ULyVuhaAhy3ADAWU/1gc
+	 PZxmtTiC38mLakmR2LZ1wCOrAv4W6NmPmhs60kqhbfjmwrXrfAHI4arRAAido+B+X4jmp
+	 oISw4ECY93z/K9Pph9KBhgPSRhfpjDY0oXEzLgMC+GNxb1k4xZf1cCh9lB1NQT9Nlkm2o
+	 H9C6FKIcUROqvFKfY/gIvm1kF4v/l/C7dUfCc/InnBNBtg/z9M0JL2ON9i47HdqrB2w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjf+kF3s;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FBC606A333
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 16:48:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39FBC606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-93e7ad9f78dso249304285a.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 08:48:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793897300; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eKq5EFfrgf2jdH5mfcGskQ1Cv244o3vFbp1Ozoul+im8eqP2pA4ghivGct7sB2elDu
-         AhcTOScpua25v1UfQUu80LdqyAHQ4NUyqp44C/hL3wDZ8mmD+dC8e1DSzf2u2vKA1FZa
-         FzLeJq5ZlsB2ANEJ423AMrqP9KtzxpwDfUOOwHpZIYz3R0p4kn9OSJ/Bc4GdolVg8wLG
-         NRNA4+OqJH2vrwB6k/2K1jSGKqFkSYazaOZJMuFWUhLaOumhs+fN3cdTpkbDND7Wud4D
-         vFob8MJdJm6ZMQysA7qJaCjeLFBHo5E4/po4TjHSE+N4vMeIeIgSg59I3gG8YrnaxFeL
-         9POg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VqiTrc04lJztf2dyTmHN89oGm1bJ8PUHM0btmGHDZmI=;
-        fh=Y+ZoTvpjS896T2qTSPOnazmvOX9MPPsO+GsVEop5aLc=;
-        b=OyZqupUq8DlDuPz2PKWvzgPlkUYYVxOKNO3sppkssELnyzAG8vXI4eA9q9eRSeTi9k
-         CTpPrmUVDEMwmu62Kdyq/c1sW3L2579cEh07Nr48vmp0U20m9oHeuq8caAamODm8C8Sh
-         g528o2x4e4dUfjI0IBYr0yHLQH4hjWgDIGVuMVgaL6rH1YOj8s/fZJfAJg9TVmXhWiQf
-         2NgVlch99QIqG2egzENRXQFGZyzpxYWOvwRetDUexbfDjGv+SlZXcw5MDzCnVO+E6oZA
-         DUedMNwxXRCXBldmpHc38wXg1G23NLNPiRkAyIIxOFBqHm0ALAFlvgK0f0OXQ2xLH4qB
-         b5EA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1793897300; x=1794502100; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VqiTrc04lJztf2dyTmHN89oGm1bJ8PUHM0btmGHDZmI=;
-        b=PD82jKo7jigK4yo/BsC4mL9gzNaCyQCuN/kPVJGkjQjdLI8tYXff0Yq6V8OcVaJvNy
-         weurqZPZmulH0qGSg5NbPVImgWJ+FnTdb3j3Ry4nbirmi+Rj3QFivs4ORBwQaFRqCGqf
-         QEUbVI/SqDEMT+7UGhcd921nGG7eTyZrIMcUrpbYcHWgfkjlc4bKSqYZEDRPXgz7lXtH
-         DqeNW77psjBaqljc2mahGE9h0G2f7KashF5X4+pB5RTZgitOtmNbn03q4nK6XwgY7JUH
-         dHKc7aq+4G8SSRybkD5tRl+j5GVa6fgvquMcqs4nqsv6V0mQuY3Plyf9y99pCk1OO04q
-         xdcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793897300; x=1794502100;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VqiTrc04lJztf2dyTmHN89oGm1bJ8PUHM0btmGHDZmI=;
-        b=RKa0N2B7YwB7P55aHQiWEr1bZVpuMUIJZu/Hlggu/ysbJVPjUbqqZL70OYggvVFsad
-         QNfHdKBK92DMtv1uDTaN+j2NKnvrnguXq7ux4cMcRxvShqLUBhcqShAsfcCAqW1CuHj4
-         hdoG7SWXD84Ukwc7+MD7F249XKlsI/9Vw/mb3q3GB3ZrvbRiA0MDG/A91GxuJLThrFby
-         awcXtOukb+KzIQOs1++53Pdon+kbWaX47vgN4WahEJgvs0bVvwW4u+D6UYqWakXNnlLy
-         lYyetniCt+2xglcQM/6eKQa+tfsYLDNOSb//izlbTKuMwipwXCobk2uuWiY0BfI/FMXb
-         LzUQ==
-X-Forwarded-Encrypted: i=1; AKwUvByhEMwJfUt+LUumv0YiiTgS3Buo2hLyxE877Vrj+cCZ3BV/2TZFnt1FXAvrVtgtYGbpy/1EGJ8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Ib48fY3GpFzm0SaJDudpvAzuBX7Cja00k78wwc+32vcsuPQD4
-	VVX6V8cOdG4XvtnNWsDUzfWh12UyNiYwhoRE4YWQNSc+A4RPskQULkcvn5PD23KFJJgE6OKKhYO
-	qzYNDQdv7QOCyUN2bGG3eLXn+al49diiI0PR7PMw9
-X-Gm-Gg: AYBFou3adg0RFCSnyHFZOBQK/mQhu2aDr3BOLbcEHZ/ZsX4Evfr8m0kzCPDq8CjwptA
-	hVV3s1lVtoSSAisWHKgtGgOV76yxx1uuiFZ5reNOpwKMOYZ8ze9TcQljGyIt3c0mg/8BG+UYRRX
-	bG/4XG1sB4wGYvxNLK5R8Da64rjclDZSCbMuhl7TTOF/W7yYKrHbEYZRXcB2DpyiFc2phQvGOkJ
-	zOA0XOJFhRTcEHCIxKBf+EgTQigpY3XWMvYH2mir++Ifdn16cUflGCNiREHLezxVS7twZTgqFdn
-	tP3fSovMMaIqIUfWngAIaNwL3YqDAgPEmc88DRWUMahLuQfI1kthfMLvgNIdKOEJfOJsNMDytZT
-	uKZ24M3CYPFwYoAevHVxsYqDqvlAIpRKE9tZfbUSOqUQsXGtNVyCevAY=
-X-Received: by 2002:a05:620a:29c1:b0:93f:334e:df25 with SMTP id
- af79cd13be357-9442175b2f6mr3556460685a.41.1793897300081; Thu, 05 Nov 2026
- 08:48:20 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A67606A336
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 16:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjf+kF3s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047CC1F000C1;
+	Thu,  5 Nov 2026 16:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793897316;
+	bh=ufeqZ6OrxWy/uS8N9+yHglk0bsq8gg6HXoz25xjhh6g=;
+	h=From:To:Cc:Subject:Date;
+	b=hjf+kF3sbYbv9uDNgf3PJvxR/b1LTcneFpF/9O/UDYefqGIvjegtrr8x6yZ+Bb4xu
+	 N12+yYdwasTb/QVK3g40beLo/biqZgZk95b5Vbef/7tPzdEOhXWXEZLHdUXeisfhOo
+	 DhJDJMZMsnkCzD7A5Zg1SbVJsywSNVHr/51miGMhwqgmQsZbyWdPNndtZ2PjUGAGkb
+	 LYnT+IyWzsyNxpxwd3blfbm5RGePRvH2zTdNXSitYkAOS1UBr/yNK4EdN/ebKX6oSi
+	 kuuCFCyUAmtBoJaVmb+X6T3AtXyfP65fP6gHf21CLFiT/iA0Hw782bOoi1Xb/L5P0C
+	 wmQVH4CWY3sZg==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
+Date: Thu,  5 Nov 2026 17:48:30 +0100
+Message-ID: <20261105164830.1682714-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,154 +62,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028221705.3915340-1-halg@google.com> <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
- <auM32mOlBLu6ZUlt@google.com> <CALCETrUD4vh_iSHV7G0bprUFU8=c+ECo701-tXcbQ3UXBWC1ig@mail.gmail.com>
- <ausXFWLgHabezE7R@google.com>
-In-Reply-To: <ausXFWLgHabezE7R@google.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Thu, 5 Nov 2026 08:48:07 -0800
-X-Gm-Features: AclHuK8CUFetL3KNjWElY9pamqV4vOzKRAOdGaRShI4zykg0vul-u3a1dyx4v8I
-Message-ID: <CALCETrXrdQRWTVdCq-V_AVpZG7g=1aCpeyNP3jLXT7VDW=OaVw@mail.gmail.com>
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-To: "Hallgrimur H. Gunnarsson" <halg@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	KP Singh <kpsingh@kernel.org>, Jonathan Calmels <jcalmels@3xx0.net>, 
-	Casey Schaufler <casey@schaufler-ca.com>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 4, 2026 at 3:30=E2=80=AFAM Hallgrimur H. Gunnarsson <halg@googl=
-e.com> wrote:
->
-> On Tue, Nov 03, 2026 at 10:37:48AM -0800, Andy Lutomirski wrote:
-> > On Thu, Oct 29, 2026 at 5:11=E2=80=AFAM Hallgrimur H. Gunnarsson
-> > <halg@google.com> wrote:
-> > >
-> > > On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
-> >
-> > > >
-> > > > Why should the task's cap masks affect this?  *Maybe* cap_bset make=
-s
-> > > > sense, but I'm struggling a bit to see why cap_permitted and
-> > > > cap_effective should matter.
-> > >
-> > > Sorry, the phrasing here may have been misleading. Just to clarify:
-> > > none of the creating task's capability sets (cap_bset, cap_permitted
-> > > or cap_effective) are used to restrict the new user namespace.
-> > >
-> > > When I wrote "reusing the existing task cap_bset, cap_permitted and
-> > > cap_effective sets on namespace entry", I was contrasting this with
-> > > the prior series from 2024 [1], which proposed adding a 6th per-threa=
-d
-> > > capability set to struct cred.
-> > >
-> > > In this series, when a task creates or enters a user namespace, we
-> > > simply initialize its new cred->cap_{bset,permitted,effective} in
-> > > that namespace to user_ns->cap_bset instead of CAP_FULL_SET.
-> > >
-> >
-> > Okay, this makes *more* sense, but I think it's too weak.
-> >
-> > I have a sort-of goal of having the creation of unprivileged
-> > namespaces be allowed in most contexts by default, *even in Docker*
-> > (which would involve the Docker team changing their default seccomp
-> > rules, but that bridge can be crossed later).  (In furtherance of this
-> > goal, I fixed an ancient bug in newuidmap that gets us quite a bit
-> > closer a couple weeks ago.)
-> >
-> > But tying this mitigation to a parent userns means that it's
-> > completely unusable in the single-deep case.
->
-> To clarify, this mitigation isn't exclusively tied to the parent userns.
-> If a system administrator wants a host-wide policy, like trimming
-> CAP_NET_ADMIN for all unprivileged user namespaces, including
-> single-deep Docker containers, then the host-wide sysctl handles this
-> seamlessly. Any unprivileged process in init_user_ns calling CLONE_NEWUSE=
-R
-> is subjected to the sysctl ceiling, effectively stripping CAP_NET_ADMIN
-> upon creation.
+After listen() + shutdown(), a TCP socket is moved to the closed
+section of its reuseport group, while TCP_NEW_SYN_RECV requests
+can still reference it as rsk_listener.
 
-Seems reasonable, but see below.
+If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
+reuseport_attach_prog() calls reuseport_alloc(), which resurrects
+it into the listening section of a new group, even though the
+socket is still in TCP_CLOSE.
 
->
-> Where the single-deep case falls short in this series is per-container
-> granularity. For flexible configuration on a per-container basis, this
-> patch series assumes that containers run in their own user namespace,
-> allowing the runtime to bound capabilities at creation time via clone3()
-> and have that bound persist down the namespace hierarchy across any neste=
-d
-> userns creation.
+After close(), the socket stays in that group and the pending
+requests keep it allocated. When the final ACK arrives,
+reuseport_migrate_sock() can select this dead socket and
+inet_csk_clone_lock() clones it. With a ULP like espintcp installed
+while in TCP_CLOSE, the child inherits icsk_ulp_data and sk_destruct
+after tcp_cleanup_ulp() cleared icsk_ulp_ops, leading to a
+use-after-free in espintcp_destruct().
 
-There are plenty of cases of *privileged* user namespaces (i.e.
-created by privileged users) that would nonetheless want this.  Or
-unprivileged user namespaces on systems that will not have this
-restriction set that still want to apply it in their own container.
+As done in commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions
+between ehash and lhash2."), deny this transition instead of adding
+checks to the fast path.
 
+Only an unhashed former listener is affected. Applications can still
+attach a reuseport prog to a socket that never listened, or to a
+listener (including one that called listen() again after shutdown()).
 
+Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ net/core/sock_reuseport.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
->
-> If a container runs in init_user_ns (as in standard Docker) and we want
-> to restrict userns capabilities for that specific container without
-> relying on a host-wide sysctl, then you are exactly right. We would need
-> some kind of cred-based mechanism to pre-configure a restriction for any
-> future CLONE_NEWUSER calls within that container.
->
-> > I do have a question about this whole scheme, though: are we talking
-> > *just* about CAP_NET_ADMIN?  That is, is there any other bit that has
-> > anywhere near enough security relevance to make this kind of thing
-> > worthwhile?  Because if it's really just a single bit control, maybe
-> > we can come up with a nicer scheme.
->
-> Yes, primarily CAP_NET_ADMIN, and to a lesser extent CAP_NET_RAW.
->
-> If we look at submissions to Google's kernelCTF VRP [1], 90% of the
-> exploit submissions in 2026 require CAP_NET_ADMIN (and about 70%
-> across all submissions since the program started in 2023).
->
-> Restricting these network capabilities when they are not strictly needed
-> (e.g. for sandboxing) is the primary motivation behind the series.
-> However, I wrote the userns capability bounding as a generic mask so it
-> could restrict arbitrary capabilities down the hierarchy, but if the
-> preference is to narrow the scope more specifically to trimming
-> CAP_NET_ADMIN and CAP_NET_RAW, that's completely fine by me.
->
-> If we go that route and want to support the single-deep Docker case, a
-> per-task inheritable securebit might be one way to do it, e.g.
-> SECBIT_NO_USERNS_NET and SECBIT_NO_USERNS_NET_LOCKED. Docker could then
-> set and lock that bit on a container in init_user_ns without needing a
-> parent userns.
+diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+index fccbdd0430b05984e82c19b17b6b723b0a3a03a1..41a25be1bfff6aa486f33ed563a093a264c49344 100644
+--- a/net/core/sock_reuseport.c
++++ b/net/core/sock_reuseport.c
+@@ -6,6 +6,7 @@
+  * selecting the socket index from the array of available sockets.
+  */
+ 
++#include <net/inet_connection_sock.h>
+ #include <net/ip.h>
+ #include <net/sock_reuseport.h>
+ #include <linux/bpf.h>
+@@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct bpf_prog *prog)
+ 		if (!sk->sk_reuseport)
+ 			return -EINVAL;
+ 
++		/* Do not put a shutdown()ed TCP listener back into the
++		 * listening section of a reuseport group while it is in
++		 * TCP_CLOSE: requests can still migrate to it.
++		 */
++		if (sk->sk_protocol == IPPROTO_TCP &&
++		    inet_csk(sk)->unhashed_state == TCP_LISTEN)
++			return -EINVAL;
++
+ 		err = reuseport_alloc(sk, false);
+ 		if (err)
+ 			return err;
+-- 
+2.53.0
 
-This seems perhaps better.  But maybe a bit that applies the
-restriction to a userns created by someone who doesn't have
-CAP_NET_ADMIN in their own userns?
-
-IMO what we really want is a generic mechanism for sysctl-like
-settings that are scoped to a userns.  And we would want the API not
-to be filesystem-based (or at least not require *mounting* a
-filesystem) because then we would just make everything messier.  This
-would solve many problems.
-
->
-> On userns creation, create_user_ns() could record this restriction on
-> struct user_namespace. That could either feed into the userns capability
-> bounding set proposed in this series (clearing CAP_NET_ADMIN and
-> CAP_NET_RAW from user_ns->cap_bset when the bit is set on the creator),
-> or be stored as a single boolean in struct user_namespace if we want to
-> keep the mechanism minimal and drop the generic capability mask UAPI.
-> In the latter case, we would still need to replicate some of the
-> userns capability bounding functionality, e.g. strip CAP_NET_ADMIN and
-> CAP_NET_RAW in set_cred_user_ns() on namespace entry, and bound the
-> parent-owner check in cap_capable_helper().
->
-> [1] https://github.com/google/security-research/tree/master/pocs/linux/ke=
-rnelctf
