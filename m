@@ -1,100 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.215.174
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793920457;
-	b=HKUyH43JKXDUcBMNGSc5psh0ykiHFA9oI5qrCK6IS6K+OlPYdoBCBHpCFDrOJkABFsjw
-	 U3B6IUoasg+wp9nc5Jd7qxHwr8Hqc8IyrwijOL6IdiCxF16KmCEMAfd22tvLiHK1+zqQL
-	 l/uOX5UuFIsTSGQZhBQy7rKpvlOzJ4Row27PHn+eQpH+eCYnRlEjdthE+Gj2avP/EU8Ud
-	 k4oEhibx11I0SBU12eXb8yaTjJ1Fm4zP9/wxe+DCYR4DanI+DQD0F0NYSc/KOcVQloyfi
-	 x7IAIZ9XxuB5EQbRMKAyrixyQ1fyBe02VNXQ0y/Wn/e/KI6KP6rsjlXwqFJrjLZrExw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793920457;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793920463;
+	b=VIIoVRABreMpisDOFvymfWVrGRtjLlfBfXlrJi1aBMUqaUM3TmCxBFOb2hCXpjX4QY93
+	 Biyeo5X3uYJj3gtuMGd1RL0pBfHZ3TVS1D78v7YwAVdigI0g6VXnYwcCwgC2LMW77NAfo
+	 xzJF0H9ExSNpMWuBr2E4IEl0MnZPCN6kt9EKALh2fzivaQU6atcsc3YYAvl1EPR/uZH5a
+	 3Wpf6vq3BtfY+6VAFxYmlCfYt36E2JXBaLjlLsLOwXH70H6eMKSynGcqxRTiT8OMhmVMP
+	 8GQHurob4cc31dYHRxWGPde8PDENZxTbrMDi3BC7GI4ggMIGcn/ToxggS6t8lvkGSYA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793920463;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=mGiD8zQqMuzCkGXAZBtgumh8HlT9rNPiWNa35MXqkeQ=;
-	b=ktCpqzeCTwz7Dd2d8GeauSppjCYPYmdkuqkqr9Dy8riv5H7mtqYt//yioZk2KLk4W2b4
-	 Q55KiY8JhpRwWFPUtl3k5/eqOtvSpCBYHOPRtgNM5Wfblu7bM5l0CyfhT+ubu+EcDjMk+
-	 dqhW+ICpBFd0fD3j2crAskLAxBAaXrAj5OrKnenV6YT04yObJ9RF2dcEbgxQmzRpIjjUk
-	 QZp4xORXt4af3g2Z4uVajWhu883MfPwHJxeg9Xg0OioUGxPyBszn6JeEHhXtbwSI3PLlh
-	 gVAMmDZkPtcDUtKshF/xTzBgHY0MTqPKX6/WEwY1SkN+2qKJQACmLDny9+YdJA5w5NA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=IU6i1Fwv;
-	arc=fail smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=/Jd0PA3ZQtl80LdCM2qOuOMwv75gekRWvfPbCbyLuKQ=;
+	b=XZAmWeQMbWjz4Co5aDMb7Cu6tPI2WrET4zh5QN4dnJUeaZOW8uz8e/gWJ5UwFzoTyMNN
+	 pzV+SXDdTAc6W/lhkrhcvI25SPORLvUi9c6tyFRQ8Fc+6YrlW+r/Ge3rireyVe3Iui7xm
+	 1tMavGXa/NV+RiyJ1NX7sGTSGIyG3h5Zdbml8qo9s8/+aYa6HTE3Vrf0tgUKMNulrS5sF
+	 Yfbj8WWA6OM78a5t4OsYAncEMIkV9BR48pb6jMXGO4abxv7OZbPU8WSA62tWuEJ0NaxZ/
+	 Vx415fQXKw83F1B7bhxHEPD1fbmeBOfoxzjVyBWsL/zpe3R4fkLDidscfuiRyjsD6Ig==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="iW5CLI/H";
+	arc=none smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F09606A32E
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 23:14:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46F09606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE164606A32F
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 23:14:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE164606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=IU6i1Fwv
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc758830601so23317a12.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 15:14:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793920456; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R9UxkbzpUxCCHRP44j2y0c6jcRLbd1fENW2Xpsk3lj26qcktkBVhN68VH6njy11IgM
-         jrMPE1CMOru5jyq7FoDA7pLhaC5nn+NSaactLVb8Lf0IloC/VDduoY3GJkce76OxvQBZ
-         I3B30YCaxSwLitlS4+jOWfP3FdzKwd9Dm0mWRJQ2buK/FBQcCmr23pAN9oev1UsGXPHY
-         CsfAVhceGjL6P0Rv+JJKpco0aSp8YGDaW6DlkbZuAUJhWoCXnzxCjlsLkez9UhY7tOvz
-         zgkRMHfXXj0BSr6TXXt5KpSVGNyhwEHfCbb/W8HHAk7VmPZd/nH9SspymMUx9qN/2Mgb
-         RWgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mGiD8zQqMuzCkGXAZBtgumh8HlT9rNPiWNa35MXqkeQ=;
-        fh=LvEpFEHflYRnhRJG4qqEcFkkiYYUQTGkBWjqTRW1uN0=;
-        b=Vc1nzNA5INDAFTDVT8oiW8Xxr4JcCp7Pj0xe4Q7JK0Vu3HVEwOVgV/tMfEigrTYNQq
-         jKo24d4nElaTwOV3uOVkH1Xv9JuwZPnc5dOWUYjlPfVv2Ewoiuj8kXRQivJER9DOS7/L
-         YTu17Eo0DYpW5d/Mwey9z3lfQKLNZkmilAanZ3ePVlFxS+YDXHwylykPvsQTo23BL8f2
-         WRTU4Oyn+vEEiLuLjDM8nNxGbuLkdJHIkD4bfW1bntFV+FW9O9H9LIUc7+wG/PeD19lm
-         zu9YtbAQj4q563qMtzCYO2rI4Y5Q/A1vwjb1Nx1X4R4QsNpuCsQs2281Qwg32R/ipWoW
-         VIcw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iW5CLI/H
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b29049d80dso1225b3a.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 15:14:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793920456; x=1794525256; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mGiD8zQqMuzCkGXAZBtgumh8HlT9rNPiWNa35MXqkeQ=;
-        b=IU6i1Fwv/0w/cks1e2nfs6t6sk022zL/8GvQwys2lPo33xKyfU4+rlcYd/DQAZEHG/
-         pOKIazGTVuNB5nr366kMh62Z8mKuK+0wykvjpk6nMnF62dQEPqXhVYv3AiAUQh2yheQg
-         Wv57SCnVaPWXfP0Spf5ZrgQ+6Qros/0dGKzT5Ct8KPvTnGxmERS9srU07KlGSKT3u7rc
-         WSDGWK1HJ7ZHGpFoQ0kLcdKEj3NsCe6oNqECA6Dmye2YgKsYtmlI/U8g/CwAwltsgKHy
-         7lk6f9CpVk0uzXD9qAsG8lDByv90XfisBUHNR3hzhw22DDDhGO8biMGoTBxSg1pPVUNx
-         pPJw==
+        d=gmail.com; s=20260707; t=1793920462; x=1794525262; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/Jd0PA3ZQtl80LdCM2qOuOMwv75gekRWvfPbCbyLuKQ=;
+        b=iW5CLI/HGouFfECuUHv3NqRUkfTa84kur5CJa4/4a/qiDcm1Z3dqdRmihBuk8P3mWr
+         V1lbmYBFlYLbgPTlTrtGXLTCyVTeiaejkhgfYHlNJvS8iRkKJjNkQ4CGCsKWH8ChcJEF
+         ERlSpDm6bbHL8j3Y6FdSp9TlnLMeV/pqStGat/HAKTAde56kkE3N8RqDr2xKS8CfBdlp
+         PtMM5kbrgvGQ1a4qDaFJQYNy+/HDgmWafOy/RWWpYFCHGlR/U8Ou0qYUQY4Gs+a+Q7Et
+         dqX1ALEcaYxONAIP9QeKdeM5Z3fWhG10XKhEDTAGHJ62U9yK6nMsMsZ6UePIYugB699h
+         B2Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793920456; x=1794525256;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mGiD8zQqMuzCkGXAZBtgumh8HlT9rNPiWNa35MXqkeQ=;
-        b=PzQZ/Ok+BpIPn3twygX3+/6lvnQHUk5wET0+CmWzimFXEiq8abBY7+umt02ATaslWB
-         VP2YvGV67a8cF9yqPz0+7CaV/de9axZtwFp0nXfcpD8AGbuwFW+N/im3uBkoKG3ZDs6L
-         SocvYvWZ1HHgIEQUcAUSx6diRA8AdsMl4uT/p8LaPf37wVI9vLkmSKe40C1wR1ilIm+l
-         gOb2MkIILpk4kR7zYwiyV/ZNyE6NLLSkKDnOmLM+CqSjdZa2ik65pwtWCGcXnp0On1+K
-         awbJUubHycHTtu8qE+8DQWZpX+9CdzrtnHHQ9iNLJo5P6kFgb9jH4VBfL5SB5oI6i/Of
-         cj8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxDmr07nUnMXM/YP1wMw5wwtqv/dtEaPIfbtjtf50DRscc4AmtuznJajqePFMhLb4yJdawl93s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+IIuT5g0PYZN60bidzoesiNHObpIoFTrJl3Vwf20YoOAXXYrlk
-	vJQEXlCs2juNRFkFnbBeyoHbyCg2sYlHHfibmTKCzTZIP4LM+qxuzugzkMFtyz3xPaWvHTLJR/D
-	lauiTG74rLyFKyLP+NVVDaq0EB3xY4VNbhEx9Pf/S
-X-Gm-Gg: AYBFou0k/VgCXC9SDjI17oZO7HTMXVgjwI1FeDLQzN3Lm1OkCmhYDsBQNskYWdc2ByT
-	+8Ai5fU4ZBYKCIsCPCxKrQxNcxaJ4hb/Cx2Kmj1CYDJpE0CMbzH18pRbw0a9MTj3Q9lE+PNKFYd
-	qcq3FZyBxeBuLwK7TNFgfTwTCcAc0JGdHzdo9k0nr2E0+Kyz6QoTrXQhUKEuxGN7bp+J7xeCZGy
-	sXvaka9MCw58tM16GRPUKTgRgzUPpxRe6qxcKHpWuwB0pawhz0fCrNBA0qFITlyzmsNsMIzDzY4
-	/0osocMik89VrckKrn9rkgKAA1tebFr/lP0/jLoIw1EH3m3YoeUyVS1yWDMT9DgBPhP2G4waNAn
-	2zcX0e29ORQaVcHntM5jX9+ifat/HIlGV5s6SEhPxhLadtYglTjuEdzfgP9Ki0RkSljqK
-X-Received: by 2002:a17:90b:48cf:b0:3ad:a462:f07f with SMTP id
- 98e67ed59e1d1-3b0db6e8ca3mr534231a91.45.1793920456567; Thu, 05 Nov 2026
- 15:14:16 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793920462; x=1794525262;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/Jd0PA3ZQtl80LdCM2qOuOMwv75gekRWvfPbCbyLuKQ=;
+        b=1pfEiu+dFlQXrJjighKSzZqyLEjpsiZIdEoCIoSK6X4fgRe4TMyySdlA1g/Mg6sPQ0
+         ApdSyDNvSglxAMBZkGe0iLGTNHllbal0Z/yQJM70PSRv+suGobJveSu5AH/SJiVTCeE8
+         91nE78dORjuimnfIxuBdsTMjQr85uTAxLAFUC+CBdw8rXQETOCTEMc29J+FVisIaY/yc
+         IlDjKddz2TlmyS6E5iR37XgfVdjLtSPpBmmz+3Yk3EXmrMWPJA2TQ1CjDaccKqhxvWSx
+         UiaVQQrWfWfZ/LjeN4xro2N8o2jrdPlpY3/dBV7xZ84Wy/mGpWYi2fDc92Scb1OcAC2q
+         Jq0w==
+X-Gm-Message-State: APuU4Z/lEIl0Qhc1kIG254DsNR/sEfCKVdFLbNVb+e3TusS3sAaNms3p
+	xl9stAUQwGNG+U24RNK3xSMUx3to/Z64bZFi2vRMky2Q4yo4GLG3mOyzwQmtWg==
+X-Gm-Gg: AYBFou382lh/P9iV8jRlm8XXVhUx9ieIfBLSXQvIlBDIalKUmZdefHVlQPmJ3j5XEuO
+	yino/MiFVA+hH0kr5N9i1M7HVRvnqfKYVnu270w+GkH3ev0k8UykPub8V+R90BXm7Onh9r7q+77
+	NeudgodpgA1pYvJ4/hcKFsEhXDKiFMZgTN/Wqubu5g9zstvTMcyJCHBJAjvn+/N81FovtYC7Ww4
+	2GshjGG3ODUoJox7Qe9rDfHZ8j7PaivT8kiXueN/JxiyemFMqFZ/ixpexjCCc3Nm/3NAB6JI/Ws
+	nrvhoTnTUe9iN+c12dgPRssInLPLELTOuSE5eaVkB7Xbi2WMZukWh5y3IxMzK2lVaQE3ccUtI0F
+	OHCOYRYSPVkXf0sus4XQwzDQsmB+oISGzqJ3rNiBse71h+KqvJemEBQ1AlIhaUicOxe+6G6bWY6
+	/9pB3k6WxNBDrW0aIRuQDMfE6zQAwyBidesmCyH9atwDAGFauTe7IJ7rIf0doPGWP6l8U+1XuaT
+	gis1yHgOphmDnu4mau9re6Xnre3b2ig8x/FT+wkMGS2LcRxO+yU5CwFsHKuEEH3tBQNozNjD5uf
+	mT4+3NoJoBNCLmDwklvSAvd5lJomL5786koP+jtfBsM6Nk9UzH3LnGvoqAqomQK50d8/sKcZNJp
+	hrluNiwuiO+yWxrjPN6vRkb4CNkiJ7z9bE93R/IDkktcLV8xlD+db4rw+yzR9qIgoy1fN6Tx9qn
+	/3Kg==
+X-Received: by 2002:a05:6a21:644c:b0:3cd:7ba2:e669 with SMTP id adf61e73a8af0-3ebb275c5b6mr1016971637.10.1793920462121;
+        Thu, 05 Nov 2026 15:14:22 -0800 (PST)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb70a73c99sm14382a12.20.2026.11.05.15.14.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 15:14:20 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jeff Garzik <jeff@garzik.org>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: ibm: emac: fix MR0 write in emac_rx_enable()
+Date: Thu,  5 Nov 2026 15:14:17 -0800
+Message-ID: <20261105231417.119930-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,67 +100,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org> <20261105-late-2026-mmap_prepare-v1-7-c56aadfbab8a@kernel.org>
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-7-c56aadfbab8a@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 5 Nov 2026 18:14:04 -0500
-X-Gm-Features: AclHuK-Yq9Ya_gmjsTlhf760be1vg51BQVbAOtNinoyo6VpZvAmG2k73A1wV2Mc
-Message-ID: <CAHC9VhQcmX09Do8BmY-HYJEWKiw7Tf-ZB=EEr9K6t5dBzk0SSQ@mail.gmail.com>
-Subject: Re: [PATCH 07/14] selinuxfs: convert mmap hooks to mmap_prepare
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>, 
-	Sumit Garg <sumit.garg@kernel.org>, Scott Branden <scott.branden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran <richardcochran@gmail.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
-	op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 5, 2026 at 4:07=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> Move from the deprecated mmap hook to the new mmap_prepare hook for the
-> policy and status files.
->
-> The policy file only sets VMA flags and operations. The status file remap=
-s
-> a single page, so use the PFN remap mmap action to do so.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  security/selinux/selinuxfs.c | 24 +++++++++++-------------
->  1 file changed, 11 insertions(+), 13 deletions(-)
+When an asynchronous RX disable is still in progress, emac_rx_enable()
+waits for MR0[RXI] with
 
-See my comment in the cover letter.  I'd prefer to take this via the
-SELinux tree so it can be included in all of our SELinux testing for
-v7.5, but if this has to go through a single tree with the rest of the
-changes, here is my ACK.
+	while (!(r = in_be32(&p->mr0) & EMAC_MR0_RXI) && n)
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+which assigns only the RXI bit to r, as & binds tighter than =. The
+following write of r | EMAC_MR0_RXE then clears every other MR0 bit,
+including TXE, and TX stays stopped until the watchdog resets the EMAC.
 
---=20
-paul-moore.com
+This path is taken when RX is restarted after an RX descriptor error.
+
+Tested on a Cisco Meraki MX60.
+
+Fixes: 1d3bb996481e ("Device tree aware EMAC driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/ethernet/ibm/emac/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index 640618c0a09e..b676b286e339 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -249,7 +249,7 @@ static void emac_rx_enable(struct emac_instance *dev)
+ 		if (unlikely(!(r & EMAC_MR0_RXI))) {
+ 			/* Wait if previous async disable is still in progress */
+ 			int n = dev->stop_timeout;
+-			while (!(r = in_be32(&p->mr0) & EMAC_MR0_RXI) && n) {
++			while (!((r = in_be32(&p->mr0)) & EMAC_MR0_RXI) && n) {
+ 				udelay(1);
+ 				--n;
+ 			}
+-- 
+2.56.0
+
