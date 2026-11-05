@@ -1,55 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881345;
-	b=tASc17/UChmDO3LMRT0S0FRFSP9Qp0cKTa7om6KFaT1S1NJGAHX6+BImwitz34WtR3Tn
-	 cD7zexHrxVUwhELZ2hDLSPGkcEI1/Uhxy0u+BzJQPErd8xnSZJxfBLtrDh3J/MqXrsvmA
-	 I05p+7Q0f73PCwsbbgek5CpJzFE9ETd0SJMaFRZ8ef47pGSHEpJgqZcXipoOJvoxBky2T
-	 sYgdWecZWDJpBaontcnkvs8F+FRzjOCMHUrJyyFRHyrk1S5yMR2r4H+/VmP0MtfLCL87U
-	 ZRCWf3j4c8No8jP/FxEMYeyJ3DcHhWczEWqMGypA0ueBpEhLXArZEanQLIE0QsE4IQw==
+	t=1793881358;
+	b=IL0AlQPpMGiLro0NghOc8f0Ikde7kr0AJ8hUzI7infpP7VThxuLbM4/Oz1NuHHrncTtf
+	 MupMHxHQ1TeZpWC3mIIG7Ox6oxQ26/T1F3xzdr6+FPsTiBCQoP4xp0HfGwbcxC0DpRQ18
+	 pZ6GdxQJF4dbPrqZGNVwzZm1iefzcPqGWiEzQiN8f+66kJbi2LaV6w4PEW6fx7a/8gK1c
+	 NQg4CKvCgP9QCIn2eGuz3YjodL2fgJgu1jSdFINmnfcJZAoqHJukKOVNufiieGp41LtCg
+	 aaHdDB/NKudw3q9S/BXPz/CoYjmz0fzm6qGYmjqvgpsKilwjPpG0XReWIOCJ55UOq2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881345;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=yLhO2b9NPmhZ4KLmzmsWyTeeW08C0qwOWfqTw7Ia0xs=;
-	b=Ey/He8uH+ohRs7suSAjnqaShW1HTs5JM1fQEbg4XsbFdENqVdrCCxBcVMJt21ar5m7V1
-	 WZbg1mCElCc05UD/LSyKabo4utUpagB2zUXZKWPpBGBDQ1ZtvbTZnk36qPw/zbOqwCu3g
-	 +USdd/HWJ1+UgN4gU+Fl+Lex33ODpomGvttc+uzQQRgrCKPwybLp1aLuATwmJ2TMnGv68
-	 jITPsjJIKUJk1rAW0aI+3pqWzy5AmXxNkDECPOvXdRxBgzj4gIe/stzga+b1L1+CEl2lI
-	 Bgn7JDWXYw55AzoyKPPiDkGIY1tEX5ToCtKoc9R8nTHN2oyiteTglFvGiBxRlBag6QA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793881358;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=1EU7UaZlGv3MYPyW1OJGQPqiReGZO/NDUPkcBrKmkuM=;
+	b=tY0WoYp/vk3Q7c5dSk2WolOq3aAYxZKXB6ljvi6Za4iHJajddCGmGWUQjO+cxrHJKxN6
+	 C9rdqT9evv9IB3NXihtsMEWgurPzaHRY5nNcovsjlLQpSnKntyN7LT4hTuJASIhpYR7GI
+	 j6Sm7HtKIXYb1EsExP4jevEpH01vgXBOz7gtGWIiAZsSkyhDtylqfn2Dti4us6XWzhFpC
+	 Ap0ylcXxz+LJJMyDRuO/VZI//Eq60xRGPA8GwpYV7Oy45M07yHLGuYqkjWAK9Vx9YoQqi
+	 3+dNhWQrYNn4x4CzhIV4eX3hs97WvrMhv6go7UM6yrbCC37q06Zs5eJmI3i8TFWD+LA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oElCJt5Q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="g2Mz9/0T";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C776606A332
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0A606D80C;
+	Thu,  5 Nov 2026 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oElCJt5Q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B201F0093A
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:22:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2Mz9/0T
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E201F00A02;
+	Thu,  5 Nov 2026 12:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793881345;
-	bh=yLhO2b9NPmhZ4KLmzmsWyTeeW08C0qwOWfqTw7Ia0xs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=oElCJt5Qpi5F0XbVyp5tG+UGIxl4E0K/Ms1JtRBERyJf4wmMRr37j13IXSEA3X/lf
-	 o3Eab33dZPtI8zflhvV8x9K7HNtFfvPzbm3w5FZjQOQEYgteuGpvjRbKQX+qQxba/c
-	 7ZNnJt9EoEpfjOMBJrKJ+vqD9e/ehmYqg0lYVMkCDYygg/aKbKkIZTR7bMXBXAq2dp
-	 5uey+3T9jUz5ygRLAs9J+8tvbyL9MIf8Jsb9873ZnngQiN34/NLNoCZBNYOZL7Eidx
-	 PJQEHzMaGlaB9BVF83Su0MVXovCWPrYHc/fuZhdk2ub2Daq6guJ92JTDGUBLi9bxOP
-	 S/31038KXn66Q==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-705cb6ceebaso1191845eaf.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:22:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwYwcoyQPLi2lBgCMXe9iXuV4lNy6X5V8BvjDpNwpxBtEY84QH1nqedBwZ2XAflW3O71ihxqPY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+mPk54XCha/DDguKkLGS9pmuxjXYUPR6XBJsdawVMbKgcQvowm
-	HRTb5Q/xZrguyDkC62BvTqnK4z/pEP39Ig39PA1EfK22LFQ1I6zpmnbATwLZ///9LHihoRzzYhx
-	lmB+CY89eixCmZ2FKD4fv/xswoSgOvgo=
-X-Received: by 2002:a05:6820:a283:20b0:70b:8148:94f with SMTP id
- 006d021491bc7-716bde2405fmr2610039eaf.76.1793881344396; Thu, 05 Nov 2026
- 04:22:24 -0800 (PST)
+	s=k20260515; t=1793881357;
+	bh=1EU7UaZlGv3MYPyW1OJGQPqiReGZO/NDUPkcBrKmkuM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=g2Mz9/0TtXe1zBF1uxpxNKmwbjIeT+8WUB/2nmEDfPQlSFa1bmX01qkd3cgKoR/d6
+	 SPOvmUbAqHy5Y/k0uaujNjJHfK7+RtTKf1rtRNBRUpR/Day9UZM+5bB6KEhR3+sgGN
+	 b5/SbL2sDtPHSHFqedyrmAGkL7vXBrIPtIVBBL0EJHnCj47hV7xvpO2VN3vZlfZu5m
+	 9rSy83XyBMpv4K+6IuVLRfi2PLv1nerSo21Uc6gAnxRWd/7t3MLCMjc/4SLp2ntV4V
+	 3uMRtqKY4R/KWSmAElM1hzHUIEs/GMU08+nlT/INtP7JErxq3uoY9mI/XNyVGrmT0r
+	 ofeIJoU7xbAwA==
+Subject:
+ Re: [PATCH net v2 3/3] selftests: net: add ioam6 ECMP test (RFC 9486 C2)
+From: netdev-bot+sashiko@kernel.org
+To: hangbin.liu@linux.dev
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ justin.iurman@gmail.com, shuah@kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ liuhangbin@kylinos.cn
+Date: Thu, 05 Nov 2026 12:22:36 +0000
+Message-ID: <179388135633.488856.7838660673411502138@kernel.org>
+In-Reply-To: <20261103-ipv6_ioam_ecmp-v2-3-6ef0318bdb5e@kylinos.cn>
+References: <20261103-ipv6_ioam_ecmp-v2-3-6ef0318bdb5e@kylinos.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,203 +65,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <auxx1bK0QJfUvcB7@v4bel>
-In-Reply-To: <auxx1bK0QJfUvcB7@v4bel>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 5 Nov 2026 13:22:12 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiir3EBEfr6JWxRnp5UM1+MSqsFQcu-8PMtMBxsrvoEkk8w@mail.gmail.com>
-X-Gm-Features: AclHuK8Afmgo3vQ3nRDJezgd_eM1mV4Q0Q4jkLPLXxVFMB7LPPqrW80gLpVe-3Q
-Message-ID: <CAL4Wiir3EBEfr6JWxRnp5UM1+MSqsFQcu-8PMtMBxsrvoEkk8w@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: do not coalesce segments after FIN
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, john.fastabend@gmail.com, sd@queasysnail.net, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le jeu. 5 nov. 2026 =C3=A0 13:09, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9c=
-rit :
->
-> A FIN consumes a sequence number. If another FIN segment is coalesced
-> into an skb that already carries FIN, end_seq advances to account for
-> the additional FIN, but tcp_flags still contains only one FIN bit.
->
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Yeah, we have been working lately on this issue (initial report from
-Chris Mason)
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-For some reason Kuniyuki has not sent his patch yet.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> When the preceding gap is filled and tcp_ofo_queue() processes the
-> coalesced skb, rcv_nxt advances to the skb's end_seq. When the receive
-> path consumes all data in the skb, copied_seq advances by the data
-> length and one sequence number for FIN. If three or more FIN segments
-> have been coalesced into one skb, tcp_inq() can still return a positive
-> value after the receive queue becomes empty and the SOCK_DONE adjustment
-> is applied.
->
-> Software kTLS receive is one consumer affected by this state. When
-> strp->copy_mode is false, tls_strp_msg_consume() calls the TCP helper
-> tcp_read_done() to consume the current TLS record. In the reproducer,
-> tcp_read_done() consumed the record data and one FIN before freeing the
-> receive skb.
->
+- [Medium] check_tunnel() (lines 276-281) decides whether ip6_tunnel is
+  available from two checks: `lsmod | grep ip6_tunnel`, and `ip a | grep…
+- [Low] The header of tools/testing/selftests/net/ioam6_ecmp.sh (lines
+  8-9) says there are "Two scenarios, matching the two places where IOAM…
+- [Low] The header (line 44) says "The filters match the exact
+  measurement packets".
 
-TCP_ZEROCOPY_RECEIVE is another one: tcp_zerocopy_receive() takes its
-length from tcp_inq() and follows skb->next without checking for the
-end of the receive queue. Please mention it in the changelog.
+--
 
+selftests: net: add ioam6 ECMP test (RFC 9486 C2)
 
-> When kTLS looked for the next record, tcp_inq() reported at least
-> TLS_HEADER_SIZE bytes even though the receive queue was empty.
-> tcp_recv_skb() returned NULL, so tls_strp_load_anchor_with_queue() hit
-> WARN_ON_ONCE() and returned without updating the anchor.
->
-> Since tcp_inq() had reported at least TLS_HEADER_SIZE,
-> tls_strp_read_sock() proceeded to tls_strp_check_queue_ok().
-> skb_shinfo(strp->anchor)->frag_list still pointed to the freed receive
-> skb. tls_strp_check_queue_ok() then read TCP_SKB_CB(first)->seq through
-> the stale pointer, causing a use-after-free.
->
-> The reproducer followed this call path:
->
->   tls_rx_rec_done()
->     tls_strp_msg_consume()
->       tcp_read_done()                       // frees the receive skb
->     tls_strp_check_rcv()
->       tls_strp_read_sock()
->         tls_strp_load_anchor_with_queue()   // returns after WARN_ON_ONCE=
-()
->           tcp_recv_skb() =3D=3D NULL
->         tls_strp_check_queue_ok()
->           TCP_SKB_CB(first)->seq            // reads the freed receive sk=
-b
->
-> KASAN reported:
->
->   BUG: KASAN: slab-use-after-free in tls_strp_check_queue_ok.isra.0+0x5f/=
-0x100
->   Read of size 4 at addr ffff888103169ca8 by task ktls-server/71
->   ...
->   Call Trace:
->    <TASK>
->    ...
->    tls_strp_check_queue_ok.isra.0+0x5f/0x100
->    tls_strp_check_rcv+0x2a9/0x400
->    ...
->    tls_sw_recvmsg+0x3ce/0xa10
->    ...
->    sock_recvmsg+0xea/0x100
->    __sys_recvfrom+0x142/0x1f0
->    ...
->    __x64_sys_recvfrom+0x76/0x90
->    do_syscall_64+0xdd/0x4a0
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->    ...
->    </TASK>
->   ...
->   Freed by task 71:
->    ...
->    napi_skb_cache_put+0x24/0xf0
->    skb_attempt_defer_free+0x183/0x3b0
->    tcp_read_done+0x2d4/0x340
->    tls_strp_msg_consume+0x45/0x80
->    tls_sw_recvmsg+0x3c4/0xa10
->    ...
->
-> In tcp_ooo_try_coalesce() and tcp_add_backlog(), skip coalescing when
-> the destination skb already carries FIN. This still allows a FIN
-> segment to be coalesced into an skb without FIN when the other
-> coalescing checks pass.
->
-> Fixes: e93a0435f809 ("tcp: allow segment with FIN in tcp_try_coalesce()")
-> Fixes: 4f693b55c3d2 ("tcp: implement coalescing on backlog queue")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  net/ipv4/tcp_input.c | 3 ++-
->  net/ipv4/tcp_ipv4.c  | 1 +
->  2 files changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index e1f2d9765f810..1f9f86028da73 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -5314,7 +5314,8 @@ static bool tcp_ooo_try_coalesce(struct sock *sk,
->                              struct sk_buff *from,
->                              bool *fragstolen)
->  {
-> -       bool res =3D tcp_try_coalesce(sk, to, from, fragstolen);
-> +       bool res =3D !(TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN) &&
-> +                  tcp_try_coalesce(sk, to, from, fragstolen);
+This adds ioam6_ecmp.sh. Under hash policy 0, it checks that a packet
+carrying IOAM options takes the same ECMP nexthop as the same packet
+without them. It covers transit input hashing after inline IOAM
+insertion, and the re-lookup on a node that encapsulates with IOAM over a
+multipath route, with a plain ip6ip6 tunnel as the baseline.
 
-Please put the check in tcp_try_coalesce() itself.
+> diff --git a/tools/testing/selftests/net/ioam6_ecmp.sh b/tools/testing/selftests/net/ioam6_ecmp.sh
+> new file mode 100755
+> index 0000000000000..35a11f94c4223
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/ioam6_ecmp.sh
+> @@ -0,0 +1,348 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0+
+> +#
+> +# Verify RFC 9486 C2 for ECMP: with hash policy 0 (the default), the ECMP
+> +# nexthop chosen for a packet carrying IOAM options must be the same as for
+> +# the identical packet without them.
+> +#
+> +# Two scenarios, matching the two places where IOAM changed the hashed
+> +# IPv6 nexthdr:
 
-The receive queue callers can not hit this today (tcp_fin() purges
-the ofo queue, and tcp_rcv_state_process() drops anything at or after
-rcv_nxt in CLOSE_WAIT/CLOSING/LAST_ACK), but the check costs nothing
-there, and it keeps the rule "nothing coalesces after a FIN" in one
-place.
+[Severity: Low]
+Is "the two places" accurate here? The series patch "ipv6: ioam6: use
+transformed packet nexthdr for ECMP re-lookup" changes a third place too:
+the inline path (and the AUTO path with !skb->dev) of ioam6_output() on
+the node that inserts the IOAM option.
 
-Also, since TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN should almost never
-be true, it should come after the more relevant tests, just before
-skb_try_coalesce():
+net/ipv6/ioam6_iptunnel.c:ioam6_output() {
+    ...
+		if (ilwt->mode == IOAM6_IPTUNNEL_MODE_INLINE ||
+		    (ilwt->mode == IOAM6_IPTUNNEL_MODE_AUTO && !skb->dev)) {
+			dst = orig_dst;
+    ...
+}
 
-        if (TCP_SKB_CB(from)->seq !=3D TCP_SKB_CB(to)->end_seq)
-                return false;
+Before that change, a dst cache miss re-ran ip6_route_output() with
+fl6.flowi6_proto = hdr->nexthdr. After inline insertion that is
+NEXTHDR_HOP, so the inserting node itself could pick a different ECMP
+sibling.
 
-        if (!tcp_skb_can_collapse_rx(to, from))
-                return false;
+In this test the inserting node is alpha (set_alpha_ioam()). Alpha only
+gets single-path routes from setup_topology():
 
-        /* Nothing follows a FIN. */
-        if (unlikely(TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN))
-                return false;
+	ip -netns "$ns_alpha" -6 route add 2001:db8:2:1::/64 \
+		via 2001:db8:1::1 dev veth0
 
-        if (!skb_try_coalesce(to, from, fragstolen, &delta))
-                return false;
+Wouldn't this test still pass if the orig_dst reuse branch regressed?
+Could a scenario with an ECMP route on the inserting node be added? If
+not, could the comment be reworded so it doesn't suggest every affected
+place is covered?
 
+[ ... ]
 
->
->         /* In case tcp_drop_reason() is called later, update to->gso_segs=
- */
->         if (res) {
-> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-> index a7f9242f1e429..ef01768292fbc 100644
-> --- a/net/ipv4/tcp_ipv4.c
-> +++ b/net/ipv4/tcp_ipv4.c
-> @@ -1949,6 +1949,7 @@ enum skb_drop_reason tcp_add_backlog(struct sock *s=
-k, struct sk_buff *skb)
->         thtail =3D (struct tcphdr *)tail->data;
->
->         if (TCP_SKB_CB(tail)->end_seq !=3D TCP_SKB_CB(skb)->seq ||
-> +           (TCP_SKB_CB(tail)->tcp_flags & TCPHDR_FIN) ||
+> +check_tunnel()
+> +{
+> +	if ! lsmod 2>/dev/null | grep -q "ip6_tunnel" && \
+> +		! ip a 2>/dev/null | grep -q "ip6tnl0"; then
+> +		modprobe ip6_tunnel &>/dev/null
+> +		lsmod 2>/dev/null | grep -q "ip6_tunnel" || \
+> +			ip a 2>/dev/null | grep -q "ip6tnl0" || return 1
 
+[Severity: Medium]
+Can this heuristic skip scenario 2 even when ip6ip6 tunnels work?
 
-Same remark: please move this after the other tcp_flags tests, with a
-short comment:
+With CONFIG_IPV6_TUNNEL=y, ip6_tunnel never appears in lsmod.
 
-            /* Nothing follows a FIN, see tcp_try_coalesce() */
-            (TCP_SKB_CB(tail)->tcp_flags & TCPHDR_FIN) ||
+The ip6tnl0 fallback device is also missing from the runner's netns in
+two cases: net.core.fb_tunnels_only_for_init_net=2, or the sysctl is 1
+and the runner is not in init_net.
 
-Checking only the tail is the right thing to do. It keeps the common
-case where the last data+FIN segment is merged onto a data tail,
-which happens on every connection close while the socket is owned by
-the user.
+include/linux/netdevice.h:net_has_fallback_tunnels() {
+    ...
+	return !fb_tunnels_only_for_init_net ||
+		(net_eq(net, &init_net) && fb_tunnels_only_for_init_net == 1);
+    ...
+}
 
-Separately, tls_strp_load_anchor_with_queue() hits WARN_ON_ONCE() and
-returns without telling its caller, which then uses a stale frag_list.
-kTLS should probably not trust tcp_inq() that much, but this can be
-handled in a follow-up patch.
+In that setup modprobe ip6_tunnel does nothing and both greps fail again.
+check_tunnel() then returns 1 before it reaches the ip link add probe
+below, which would work (and would also autoload a modular ip6_tunnel).
 
-Thanks.
+Main then calls log_test_skip() for scenario 2. ksft_exit_status_merge()
+ranks skip above pass, so the whole test exits with SKIP even after
+scenario 1 passed.
 
->             TCP_SKB_CB(tail)->ip_dsfield !=3D TCP_SKB_CB(skb)->ip_dsfield=
- ||
->             ((TCP_SKB_CB(tail)->tcp_flags |
->               TCP_SKB_CB(skb)->tcp_flags) & (TCPHDR_SYN | TCPHDR_RST | TC=
-PHDR_URG)) ||
-> --
-> 2.43.0
+Could check_tunnel() rely on the ip link add probe instead?
+
+> +		ip6tnl_loaded=1
+> +	fi
+> +
+> +	ip -netns "$ns_beta" link add name ip6tun0 type ip6tnl \
+> +		mode ip6ip6 encaplimit none \
+> +		local 2001:db8:2:1::1 remote 2001:db8:2:1::2 \
+> +		2>/dev/null || return 1
+> +	set_beta_ioam_encap || return 1
+> +}
+
+[ ... ]
+
+> +if check_tunnel; then
+> +	# Scenario 2 counts the outer ip6ip6 packets: the echo request is
+> +	# not visible to flower (outer headers only), so match the pinned
+> +	# tunnel addresses instead. No need to check return value again as
+> +	# we have done it at scenario 1
+> +	set_measure_filters "src_ip 2001:db8:2:1::1 dst_ip 2001:db8:2:1::2"
+
+[Severity: Low]
+The header comment says "The filters match the exact measurement
+packets". Does this filter match only the ip6ip6 packets, though?
+
+It matches any IPv6 packet from beta's veth1 address to gamma's veth0
+address. Beta's unicast NUD probes use that same pair, because
+ndisc_solicit() takes the source address from the queued skb:
+
+net/ipv6/ndisc.c:ndisc_solicit() {
+    ...
+	if (skb && ipv6_chk_addr_and_flags(dev_net(dev), &ipv6_hdr(skb)->saddr,
+					   dev, false, 1,
+					   IFA_F_TENTATIVE|IFA_F_OPTIMISTIC))
+		saddr = &ipv6_hdr(skb)->saddr;
+    ...
+		ndisc_send_ns(dev, target, target, saddr, 0);
+    ...
+}
+
+Beta's Neighbor Advertisements to gamma also match. Gamma sends
+solicitations when it has traffic for 2001:db8:2:1::1, for example
+ICMPv6 errors for ip6ip6 packets it cannot decapsulate.
+
+These packets add to the veth0 count in measure_link():
+
+	if [ $((da + db)) -lt "$PKTS" ]; then
+		echo "LOST:$da:$db"
+
+With PKTS=3, two tunnel packets plus one ND packet already reach the
+threshold, so a lost tunnel packet goes unreported. The stray packets
+also count in the A/B majority vote.
+
+Could the filter also match the encapsulated protocol, or otherwise
+exclude ICMPv6/ND, so it is as exact as the comment says?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103-ipv6_ioam_ecmp-v2-0-6ef0318bdb5e%40kylinos.cn
