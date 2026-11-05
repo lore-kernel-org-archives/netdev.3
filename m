@@ -1,101 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793848436;
-	b=D3XwPQIK7r5HMndjhl34p/UQIrZe9cweqDwasm+uRRYVcRF4ui+dR7uWnPIJuuJ9mXui
-	 fWdQ8Du7CuE7Cx+6fV4wHrQg0le/xl3YA6soFPJKPOOkhcR7q6MjKNQYi/Z2GPyRDAFI+
-	 8ujF0TB9CFAzXlZPy9kJ6mMcGejnjRj7W/c9/ExmesxGnfoubU+ISKGOF0cKkLBSm69fD
-	 60u1Jp/Vw0NnxLekykWOMXjgzQUy11PPAwDjBL878Q+Faqi3r4Xm9DFsrhoM+7UwEbrce
-	 FVFdBBW7Npycmenm/wwcwwcfVM8jIkGSp+4SPXt1SKeOL+gLKJHSoCVXSM7KkykOnZQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793848436;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=APb1zxIAvX78bkBqgur/Yfvw9HDOt3nX0NcaiIPyRNA=;
-	b=yYQFv/DBxJmFxSztv5s6i978QXzY2FWUaWDvCVGtzD6vm3t9U68+pPv60GTUCAON45vM
-	 MvMe2qQLzVCftvnYZEC6XfhKHbU8MCTogDBj6nTF29rSHLvFnBGuliCmrjMuILi5SoAqn
-	 HCihT39n5btzn2AIo/e3P8/IiPpA0Gqv5LIc6VLlDEAjKwT8vTJJQpb7zl7AsvfFvAyv8
-	 PAnU1s4fHQpzg4UDI1Zqj0JtFw/nBjTixv6lVadsIyrIqU838Se5VbbBAySkF+7ALAlMp
-	 NjA3+xzaBCCSLECMWMy6A7Mvfx1ea2wqGW70zBlRfofG9tFI3tjdHNElMvCAPwlYpXg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SotK8+sm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.175
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793848490;
+	b=SArVxdUlmlpGUb0BqO5KTCLkC4x1xslWcfbQfGJACl65pi/ydpjPSZerS8Bq6WFaQfHL
+	 bSD3SJE/LQcCLUXl3gCwTdYEqNdxEAMoj/Gpx9H9V6uDQ8Bt1hjmxArsnz+IbIOxFOLy2
+	 ul77skfpxwZrU5FiEIp18nUjo4/+AwYOx9Si7mdcSOzAFKhBorchPnYWZTG6612wg+VnV
+	 OlN+6KPKyK5Kd5TsOE3DpFR21qWsG5Fb93InsndSFL+ytM/ZLmDd39WBe0WyI8YF3K92b
+	 9Rgs7gxZxK9orzqajHm5a0XO7XzjaRdbEDG2OCxneKHSkwJ6XUktmwcAUyI52WOW2dw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793848490;
+	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=e+ufwWTqe/yOyThkZLCwuXirSaPEZ6SPf/o4r9Bdnd0=;
+	b=0yljwcw6gMd/EytNlhWC3RtXVQtrc3YHT5xcyqLTI86vupghqFrP86K7XTTIofOyLKsP
+	 I9ika3uCOxvamZwU//t68nryc4XOoHzyPJTzv4+vbOoFEMUcIMRuW4bmAMejtrN+lwWKT
+	 lQmdp/gzXt8trmjVFp9O5Aih6zYd1w0Zua7t5eoDYfLohp1YXtxgLrdevpfbeM9gHKEaK
+	 Uh+ONHeaXbtJA7CvbzpdfQ4e46+Qa5mzHYdAGM1Wud7KSLbeRkmE3HckjlYVsT8WXTxYV
+	 7I89+DP0gxth7R55gM6Rj3grwCD0W58LJ+1rR72YCcy5BUV4dC36jwnlCunvPZ5+CjQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7InAYm7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B70606A32C
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:13:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27B70606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD149606A332;
+	Thu,  5 Nov 2026 03:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SotK8+sm
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8a05da1cc1fso605805b3a.2
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 19:13:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793848435; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SIlO2tIN01iMRUuc9bEDaJ9HMyu6Zi/04FpyEht4XBVrR/ExKNC12BWTUvGMsYzUnd
-         u13gP5kV19OIfFNXdV3TiFSXHCwwMk9ybwLQF6Kijok3iRY3j8B730nTEjZccNZ0Y/ku
-         yNsWO69ITVVgPFrd5RN4abmkqqP3TEHXDuUroVNStgMgiv/K5sloWLBQdYm2c2k7vBdL
-         IRVC0XOQ+riV6iY2UvkNJEVIcKXYCsmXhILCYNMJjYlemCF3Q0kVRNaIrAMW3B83htGH
-         +NlkNod4hUZDM0OfxaydO7dL9SCgmbt9C5FpcqtniWV5O1BUnkwAyuKPz30Je7LmOxz+
-         expA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=APb1zxIAvX78bkBqgur/Yfvw9HDOt3nX0NcaiIPyRNA=;
-        fh=81yl3yXAc0MbVPn6muatVnOdHnuiUXkL+VgUdFXkBsA=;
-        b=qgxdcQIe8rdSU1By2nk9NNeMM4uX4Jqy9Wi/DF2UoX6L2DvudVsuft3xKJTMB+3vDz
-         ItwPWaoenwtqMUdoK5ff8WkRAxYdeWvGL96LBKFioIhBRixjbKjPk1TaTtSUhpe2Q2bQ
-         yRJh7/j6jfr+wD05/+dUDyAVlpct9RcIVCJTRIFcfoPMP4Wu2Sst06plRgPOHAMqITWd
-         yzGtM5DVkuSMGPKe7UYh2XF0xZGPqRNTkoJ3OidklYv8rEm3BMtX5eJxCrhA88wWkEAL
-         6Z0A4efWYbgUmHcjIbQv4A+0YqNI6++7BD1Hn7C9JK1UwOmf774B4hJJ2g6JTl+q8UgG
-         GBbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793848435; x=1794453235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=APb1zxIAvX78bkBqgur/Yfvw9HDOt3nX0NcaiIPyRNA=;
-        b=SotK8+smhvTUz4PSDyKGGwKHQT37/ySX4O669vPZw3Y0ELWARihuFr6hV9JHo02O85
-         iFWoIXL4q+fSWCkcxBGA9m2vH9VxdwGkgF3MXMMNfDINB72d4WbWc2+9pPo5lOD/BOCE
-         94aDCIN7y/RrwVkylu5ixdn++P7o0COea4HsYz8D6+77TVIcN9SJ458yU38AMgDT7NIj
-         0byKk/5SP5GYBHFIZ9ObiSyP7x6kBUbTeQMSkqaU+2IaQMqVkQDda/GaEcbETx5NW201
-         VoMLJAQPmg3xOvRyA+7eYXE/mbUCc+nMXESjC9WD7nJu3X9PXQvQKGrnPVUwEj3921E+
-         CC4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793848435; x=1794453235;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=APb1zxIAvX78bkBqgur/Yfvw9HDOt3nX0NcaiIPyRNA=;
-        b=qySPSdq9UAd4FGzDD7EhaMMzgD8P2C+9UUNns9b3DuihQQLNE+DgN221FwtaiMP/CX
-         77TehFHED3a+btEgkumdT07qomAEXnycrVu1LDwn50GllbdiV92O2YplB6MXOLxbqt+p
-         6bz7JWouRh9M3vdBjAnQj7RMk0ty+lFtGSUBlw19kUnVpumfpx/6I/xDm6c4Aragb1Uz
-         ZASUPrAyi/FCT8L0r+7pipYgR1G1/DXsbwT3l+cZHEpnpNu31mC8GS2J8Uzvmb003BOT
-         mWx4kQaNGhj4pqZ5RPRfKf3vsxRMMDIFDOOesFmAEr+8UEJNEJvSOnjsChU6GbYpBjzZ
-         5LOA==
-X-Forwarded-Encrypted: i=1; AKwUvBxTlWZtXODF5Ou4HusbOseaS3253h/215fHUokrVNF0iSh8+3hZKJ5VfO/mbmnuo4N2ibh+25Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9zxanYJVK8wIcqRRjb75QrHb7pCV+8t87ehL2+seEv4qfLD3hR
-	FMTwr9xhI9ksmiFYHxIPIi0aIbeCXSt8xUhrqDG8VNS7RWFKXDcpe/Otn2G6J9HpwdE1gb0GAop
-	XRuKUZK+o0bIpE62UJBTd6Y6uYhCRpCk=
-X-Gm-Gg: AYBFou16o8d1FnwokvJmSTK0/TFfzV9fe2wBW25tEudIX8bv5d+kweN8pzArNQKv0ti
-	J1c1z0OR4qV8nOMTndhASRzqZpQN27zmmsqBQnQokTsOPburdeKw0vfJLhjJxEQVfLiBDpkNBNy
-	HX5rfm4jYFIjFaNnyGTW78dz27n4AUX5Kg3A/5qTSgOO3ra+c4tDt1OHH4A7K2V1JBB5mQILePy
-	ewNBsXJs9ahLuUg/NMJ6ZRa2zZ8G557LDlwFRqytWurNFzxxkKiZL8llh4pyYJPo/05zQh4ESKc
-	UI6OI9W3YsSl0u4X/lvixjw1MyHsHtdmNFTo4np8YDfJZwdlX3gaOG4Zx25w5LtgqeESwufLnhW
-	5KKc4Tel33a4uzC0GSf+AhNySM8D/+YhKB2eTr4WqbntKBPDX7LulEHB/UYcYSiHtuqReMyjfWp
-	ZN0uSeoDSUu8Ile0OzC0US9cDswPEUTSRKKQ==
-X-Received: by 2002:a05:6a21:4e03:b0:3de:79fe:13f with SMTP id
- adf61e73a8af0-3e928d4d2bdmr15266438637.38.1793848435284; Wed, 04 Nov 2026
- 19:13:55 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M7InAYm7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7391F00919;
+	Thu,  5 Nov 2026 03:14:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793848489;
+	bh=e+ufwWTqe/yOyThkZLCwuXirSaPEZ6SPf/o4r9Bdnd0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=M7InAYm77dKIVcWYkI0QwI4a5poNlKZD2yypYJkz0tsN5gwC5SnYQgy/LJqVD8aIN
+	 GLSCxtg85siA7dVYl/qNRIGtD33W7voYPdNSEOvBFNT4LCIwWjLYDiL5p9nOodqvkA
+	 2/2ci4WaYUb/yOdSDQI3wvp2EWHuHtD/UtAr8KMzx18dzp/GxLZcoHexHDpW4ODP0G
+	 uqUQNpXvLLLE/1/tylT2hmErAqzHSuu7PQ0dTaRwcvixj2tVSPIPl9p5I40qZPurzt
+	 V6TDYJKDTpi55vIxqkcIjB6MGWztQfryfjy8VD/v1fHAqaUYXMv11kOTTzLuQH8DBU
+	 u4+aZ5cFclBtw==
+Message-ID: <681354cdb85b67410793908d9aa4ee37a06408d2.camel@kernel.org>
+Subject: Re: [PATCH v2 1/2] SUNRPC: add request-scoped disconnects when
+ cancelling tasks
+From: Trond Myklebust <trondmy@kernel.org>
+To: tmenninger@purestorage.com, anna@kernel.org
+Cc: cel@kernel.org, ebadger@everpuredata.com, jcurley@everpuredata.com, 
+	jlayton@kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, 	netdev@vger.kernel.org,
+ slingappa@everpuredata.com, Tim Menninger	 <tmenninger@everpuredata.com>
+Date: Wed, 04 Nov 2026 22:14:47 -0500
+In-Reply-To: <20261105020249.2607367-2-tmenninger@purestorage.com>
+References: <20261105020249.2607367-1-tmenninger@purestorage.com>
+	 <20261105020249.2607367-2-tmenninger@purestorage.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.62.1 (3.62.1-1.fc45) 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,194 +65,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <6ae3d50b.9c6421ad.36baac.0003.GAE@google.com> <6aeabca9.fc50a118.dd1b.0001.GAE@google.com>
-In-Reply-To: <6aeabca9.fc50a118.dd1b.0001.GAE@google.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 4 Nov 2026 22:13:43 -0500
-X-Gm-Features: AclHuK-yj_RUDHyp9Y1n7HDYnVb1Clcvxnwwl_T_i4pkmkAMpXWxuQiWBKy17_s
-Message-ID: <CADvbK_cMBZbgujcxnj+rvwthSdNQzxEFXvr5jKr4HweQZbHZ+A@mail.gmail.com>
-Subject: Re: [syzbot] [sctp?] kernel BUG in __pskb_pull_tail (2)
-To: syzbot <syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 4, 2026 at 12:03=E2=80=AFAM syzbot
-<syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com> wrote:
->
-> syzbot has found a reproducer for the following issue on:
->
-> HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kerne=
-l..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D162b8add58000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D1cf189394a856=
-f11
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Df15a6eff7a53f6e=
-b7dc3
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for D=
-ebian) 2.44
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D11b49b29580=
-000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D15b49b2958000=
-0
->
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d=
-900f083ada3/non_bootable_disk-05441d69.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/0edd3964be19/vmlinu=
-x-05441d69.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/84d6d8dd5648/b=
-zImage-05441d69.xz
->
-> AI-generated root cause summary:
-> When receiving an SCTP packet that is nonlinear (such as an SCTP GSO pack=
-et
-> constructed with fragments in frag_list), sctp_rcv attempts to linearize =
-the
-> packet using skb_linearize() if the sk_buff is cloned (e.g., tapped by a =
-packet
-> socket or shared) or not recognized as GSO. During linearization via
-> __skb_linearize() and __pskb_pull_tail(), skb_copy_bits() fails with -EFA=
-ULT due
-> to a discrepancy in frag_list fragment lengths or readable offsets, trigg=
-ering a
-> BUG_ON assertion failure. In production builds, this BUG() results in an =
-invalid
-> opcode oops and kernel panic, causing an immediate denial of service.
->
-> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=3Df15a6ef=
-f7a53f6eb7dc3
->
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com
->
-> ------------[ cut here ]------------
-> kernel BUG at net/core/skbuff.c:2903!
-> Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-> CPU: 2 UID: 0 PID: 6002 Comm: syz.0.20 Not tainted syzkaller #0 PREEMPT(f=
-ull)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.=
-16.3-2 04/01/2014
-> RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-> Code: 5b f8 48 89 df e8 2b 03 fe ff 31 ff 41 89 c4 89 c6 e8 7f 58 5b f8 4=
-5 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 5c 5e 5b f8 90 <0f> 0b e8 54 5e=
- 5b f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-> RSP: 0018:ffffc90000648870 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-> RDX: ffff88802ce60000 RSI: ffffffff89b30684 RDI: 0000000000000005
-> RBP: ffffc900006488f0 R08: 0000000000000000 R09: 00000000fffffff2
-> R10: ffff888046a12f77 R11: 0000000000000000 R12: 00000000000000e4
-> R13: 0000000000000180 R14: 0000000000000000 R15: ffff888030406780
-> FS:  000055558120b500(0000) GS:ffff8880d467c000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000020000001a000 CR3: 00000000385f5000 CR4: 0000000000352ef0
-> Call Trace:
->  <IRQ>
->  __skb_linearize include/linux/skbuff.h:4025 [inline]
->  skb_linearize include/linux/skbuff.h:4037 [inline]
->  sctp_rcv+0x143e/0x3cc0 net/sctp/input.c:120
->  ip_protocol_deliver_rcu+0x44c/0x4d0 net/ipv4/ip_input.c:207
->  ip_local_deliver_finish+0x3fb/0x6e0 net/ipv4/ip_input.c:241
->  NF_HOOK include/linux/netfilter.h:325 [inline]
->  NF_HOOK include/linux/netfilter.h:319 [inline]
->  ip_local_deliver+0x1a3/0x200 net/ipv4/ip_input.c:262
->  dst_input include/net/dst.h:481 [inline]
->  ip_rcv_finish net/ipv4/ip_input.c:492 [inline]
->  NF_HOOK include/linux/netfilter.h:325 [inline]
->  NF_HOOK include/linux/netfilter.h:319 [inline]
->  ip_rcv+0x33a/0x3c0 net/ipv4/ip_input.c:612
->  __netif_receive_skb_one_core+0x197/0x1e0 net/core/dev.c:6433
->  __netif_receive_skb+0x1f/0x120 net/core/dev.c:6546
->  process_backlog+0x487/0x1600 net/core/dev.c:6897
->  __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7966
->  napi_poll net/core/dev.c:8029 [inline]
->  net_rx_action+0xa40/0xf20 net/core/dev.c:8186
->  handle_softirqs+0x216/0xa20 kernel/softirq.c:669
->  do_softirq kernel/softirq.c:569 [inline]
->  do_softirq+0xaf/0xf0 kernel/softirq.c:556
->  </IRQ>
->  <TASK>
->  __local_bh_enable_ip+0xff/0x120 kernel/softirq.c:473
->  local_bh_enable include/linux/bottom_half.h:33 [inline]
->  ipt_do_table+0xd71/0x1b10 net/ipv4/netfilter/ip_tables.c:357
->  nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
->  nf_hook_slow+0xbf/0x220 net/netfilter/core.c:633
->  nf_hook include/linux/netfilter.h:280 [inline]
->  __ip_local_out+0x541/0xb80 net/ipv4/ip_output.c:120
->  ip_local_out+0x2a/0x1f0 net/ipv4/ip_output.c:129
->  __ip_queue_xmit+0x876/0x1f50 net/ipv4/ip_output.c:533
->  sctp_v4_xmit+0x91a/0x1070 net/sctp/protocol.c:1061
->  sctp_packet_transmit+0x22fe/0x30b0 net/sctp/output.c:659
->  sctp_outq_flush_transports net/sctp/outqueue.c:1174 [inline]
->  sctp_outq_flush+0xb2b/0x3380 net/sctp/outqueue.c:1222
->  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1826 [inline]
->  sctp_side_effects net/sctp/sm_sideeffect.c:1211 [inline]
->  sctp_do_sm+0xce1/0x5c30 net/sctp/sm_sideeffect.c:1182
->  sctp_assoc_bh_rcv+0x392/0x740 net/sctp/associola.c:1048
->  sctp_inq_push+0x25c/0x320 net/sctp/inqueue.c:91
->  sctp_backlog_rcv+0x169/0x590 net/sctp/input.c:331
->  sk_backlog_rcv include/net/sock.h:1194 [inline]
->  __release_sock+0x39d/0x440 net/core/sock.c:3341
->  release_sock+0x1e5/0x280 net/core/sock.c:3940
->  sctp_sendmsg+0x1166/0x22e0 net/sctp/socket.c:2091
->  inet_sendmsg+0x11c/0x140 net/ipv4/af_inet.c:864
->  sock_sendmsg_nosec net/socket.c:800 [inline]
->  __sock_sendmsg net/socket.c:818 [inline]
->  ____sys_sendmsg+0xa23/0xc30 net/socket.c:2715
->  ___sys_sendmsg+0x190/0x1e0 net/socket.c:2769
->  __sys_sendmmsg+0x20c/0x440 net/socket.c:2858
->  __do_sys_sendmmsg net/socket.c:2885 [inline]
->  __se_sys_sendmmsg net/socket.c:2882 [inline]
->  __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2882
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7ff80879fb19
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f=
-7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff=
- ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fff70bcd848 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-> RAX: ffffffffffffffda RBX: 00007ff808a25fa0 RCX: 00007ff80879fb19
-> RDX: 0000000000000001 RSI: 0000200000000e40 RDI: 0000000000000004
-> RBP: 00007ff808837b70 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007ff808a25fac R14: 00007ff808a25fa0 R15: 00007ff808a25fa0
->  </TASK>
-> Modules linked in:
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:__pskb_pull_tail+0x1335/0x1920 net/core/skbuff.c:2903
-> Code: 5b f8 48 89 df e8 2b 03 fe ff 31 ff 41 89 c4 89 c6 e8 7f 58 5b f8 4=
-5 84 e4 0f 84 1c f2 ff ff e9 84 f2 ff ff e8 5c 5e 5b f8 90 <0f> 0b e8 54 5e=
- 5b f8 48 8b 54 24 30 48 b8 00 00 00 00 00 fc ff df
-> RSP: 0018:ffffc90000648870 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: 00000000fffffff2 RCX: 0000000000000101
-> RDX: ffff88802ce60000 RSI: ffffffff89b30684 RDI: 0000000000000005
-> RBP: ffffc900006488f0 R08: 0000000000000000 R09: 00000000fffffff2
-> R10: ffff888046a12f77 R11: 0000000000000000 R12: 00000000000000e4
-> R13: 0000000000000180 R14: 0000000000000000 R15: ffff888030406780
-> FS:  000055558120b500(0000) GS:ffff8880d467c000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 000020000001a000 CR3: 00000000385f5000 CR4: 0000000000352ef0
->
->
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+On Thu, 2026-11-05 at 02:02 +0000, tmenninger@purestorage.com wrote:
+> From: Tim Menninger <tmenninger@everpuredata.com>
+>=20
+> rpc_cancel_tasks() allows callers to cancel a selected set of RPC
+> tasks,
+> but callers that also need to tear down the connection currently have
+> to
+> disconnect at the rpc_clnt level.
+>=20
+> That is broader than necessary for clients with multiple transports.
+> A
+> cancelled request is associated with a specific rpc_xprt and records
+> the
+> connection generation on which it was transmitted in
+> rq_connect_cookie.
+>=20
+> Add rpc_cancel_tasks_and_disconnect() to cancel matching tasks and
+> mark
+> matching requests that remain on the transport transmit or receive
+> queues
+> for conditional transport disconnect when the request is released.
+>=20
+> Store the disconnect indication in struct rpc_rqst rather than struct
+> rpc_task. An RPC task can release one request and later acquire
+> another,
+> so task-scoped state could otherwise be consumed by a successor
+> request
+> and disconnect the wrong transport generation.
+>=20
+> After cancelling matching tasks, walk the client's transports and
+> mark
+> matching requests belonging to that client that remain on the
+> transmit
+> or receive queues. An rpc_xprt may be shared by multiple rpc_clnt
+> instances, so requests belonging to other clients are left untouched.
+>=20
+> When a marked request is released, use xprt_conditional_disconnect()
+> with
+> its saved rq_connect_cookie. This disconnects the transport only if
+> it is
+> still using the same connection generation on which the request was
+> sent,
+> and leaves a replacement connection untouched.
+>=20
+> Requests that were never transmitted do not require a disconnect.
+>=20
 
-Thanks for the reproducer.
+I'm all for optimising where it makes sense, however this is adding
+another spinlock protected section in xprt_release() for something that
+is clearly a rare corner case.
 
-The issue was caused by iptables TEE target (`pskb_copy`), where the new
-skb doesn't copy the skbs in frag_list, so modifying the skbs from frag_lis=
-t
-in sctp stack is not safe.
+So how about something like the following change instead?
 
-I will prepare a patch for this.
+8<---------------------------------------------------------------
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout=
+/flexfilelayout.c
+index 7fe8b91fa47c..42b0b04de659 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -2459,6 +2459,12 @@ static bool ff_layout_match_io(const struct rpc_task=
+ *task, const void *data)
+ =09return false;
+ }
+=20
++static bool ff_layout_match_untransmitted_io(const struct rpc_task *task,
++=09=09=09=09=09     const void *data)
++{
++=09return !RPC_WAS_SENT(task) && ff_layout_match_io(task, data);
++}
++
+ static void ff_layout_cancel_io(struct pnfs_layout_segment *lseg)
+ {
+ =09struct nfs4_ff_layout_segment *flseg =3D FF_LAYOUT_LSEG(lseg);
+@@ -2484,6 +2490,9 @@ static void ff_layout_cancel_io(struct pnfs_layout_se=
+gment *lseg)
+ =09=09=09clnt =3D ds_clp->cl_rpcclient;
+ =09=09=09if (!clnt)
+ =09=09=09=09continue;
++=09=09=09rpc_cancel_tasks(clnt, -ECANCELED,
++=09=09=09=09=09 ff_layout_match_untransmitted_io,
++=09=09=09=09=09 lseg);
+ =09=09=09if (!rpc_cancel_tasks(clnt, -ECANCELED,
+ =09=09=09=09=09      ff_layout_match_io, lseg))
+ =09=09=09=09continue;
+
+--=20
+Trond Myklebust
+Linux NFS client maintainer, Hammerspace
+trondmy@kernel.org, trond.myklebust@hammerspace.com
