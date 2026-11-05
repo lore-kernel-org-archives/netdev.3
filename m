@@ -1,60 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=216.40.44.16
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887944;
-	b=jbvJuezn99nvhS3iBbdYTCFU2KMZIuxZYPykQmUeujW4VVYG6bt7ZLDUC9W7NYq/cgfd
-	 UJ6owJVcqrl/zVysw/aXvtfLUzsJYDGCoJFUxDWbO5k0kfPA3kx9EE7+UUt6QC+QqAZaU
-	 0bsz8NbQwUysZiJeTOlCVBw/1Ps5lVMGAX4/F+Ak8lZFPkkzBxFUPdis4OujwOMSjCWc6
-	 7whez2+l6hmprq0Hno2nO1Ot6ct9r2p3Cl/dwK9IqRGvGl7P1dcNS3t2hKGz1N1ELBRYP
-	 kIMMnoxHAYsHiPSQWAJnYSGeZJSC1B+MdukDgH9J4Rbl5X6W58aBGLkC4v0L1Tok83w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887944;
-	h=DMARC-Filter:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Rspamd-Server:X-Rspamd-Queue-Id:
-	 X-Stat-Signature:X-Spam-Status:X-Session-Marker:X-Session-ID:
-	 DKIM-Signature:X-HE-Tag:X-HE-Meta;
-	bh=ZuyZA80OhXsTCt9eMx+qhWTC4yMPIt4JU/oWRmBa8MY=;
-	b=K1YyZ1ZXNIJY0U0UUSePj7E0nw/8zyNtFktWoOn03KNCqwvS4btMBs+YHQiKkM25flFY
-	 qGA8SASi+b1nY+R78qpLL2rm/NUo1HXmuDR3Ls/z5hbDLi2W4FCv+xDFkVjC7VBqkVlk8
-	 IlLS4nWsla5Osaz8nnWo/b0/i/EQvh5UUsGX1YiFrDQDevU4NR/TaWEzuaU2E4cdzqosI
-	 +ZGxS2cojpQ0sFJmANVtcTeHknRyJCwryrkg9DyJO8V1WE2W0onacKvPyfurHudM7Bggg
-	 IsRLu/3PyBvKcyjUICZozRIypPYYdQXY+yqRz3wBUosqsmFjHm1L1o0hGUs+pOIQJgw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=goodmis.org;
-	spf=pass smtp.mailfrom=goodmis.org;
-	dkim=pass header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=CoEvBoFU;
-	arc=none smtp.remote-ip=216.40.44.16
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.31
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793888083;
+	b=Vf1RWFvcCV2yLPP9NI3imtSAfx9cZEWRdVOEuCOtp/YO2VzrpytAyzSAXFRYbvFXtYBh
+	 zoO3mBt9TuKJaw2FEP+hYtcZ1E9ADYDSVMLv7q/BIxWud6YAHB/H73KI3YFwTOPS8PWlV
+	 OI+Tg90jUE6sSp5sqcpxg7XMZQDWKXI1YtofgzcBqDkdJsZVj5WbpsRab/daFjDL6Jx6K
+	 U30jNIVXdJEUInSQuzds7naEp4YFldYljs9HXORcEZQge7wSBdBbjuRwbXL1nBsfpPBce
+	 4eh9MR223/eQiqzwULwd4yKZNBJ2DQY0vGycJj16BhhH95ReJE3CuEwI7s6EdDSpcvg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793888083;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:From:To:Cc:References:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=DkGKsPRHK0MTZIU3lFFqvcn2CknRuZqD+J7fYHDCZNI=;
+	b=V5K+S6pOZhGastdtxEuxrfPLrnR32e4scfeGRRNYY1usvrhTC8rbuYyDXeU3i5QEGsxO
+	 dsVOkgUiiiJcTVi4cLkBeclz4a/LJLOCt3xrbSd2R1La5neqmi+SMQaKgR+5cws5ytl/G
+	 NbWu6yaTYrhbmCOhPiH12enWavkSipKhRhVvwr+oIHtTLkHARmUy/JJzikrVea2jK6mso
+	 AzoHUEM13d0qBIUZRl01aq6shEvfNhNrUG3vgQXrRHQIkICZGSQkrNbsYKzaaLppIiPZS
+	 KU37fS7JEnx1DzFjAvStyCVLGNPHxkfBX815/MR/3XovCyzD06G6kePzcxzPccOjmiA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=mtSdQG2E;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.31
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012031.outbound.protection.outlook.com [40.107.200.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30D5606A31B;
-	Thu,  5 Nov 2026 14:12:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F30D5606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AC46083611;
+	Thu,  5 Nov 2026 14:14:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86AC46083611
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=goodmis.org header.i=@goodmis.org header.a=rsa-sha256 header.s=dkim1 header.b=CoEvBoFU
-Received: from omf12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8CC92C0A0F;
-	Thu,  5 Nov 2026 14:12:20 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id A0FA617;
-	Thu,  5 Nov 2026 14:12:17 +0000 (UTC)
-Date: Thu, 5 Nov 2026 09:12:16 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ilya Maximets
- <i.maximets@ovn.org>, Matthieu Baerts <matttbe@kernel.org>, Aaron Conole
- <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- dev@openvswitch.org, Adrian Moreno <amorenoz@redhat.com>, Antoine Tenart
- <atenart@kernel.org>
-Subject: Re: [PATCH v7 0/4] tracing: improve symbolic printing
-Message-ID: <20261105091216.7b91db5a@gandalf.local.home>
-In-Reply-To: <20260922110955.363677-6-johannes@sipsolutions.net>
-References: <20260922110955.363677-6-johannes@sipsolutions.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=mtSdQG2E
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FADLxZ3FhX683EZFnKW9O1L4R7PzDLQGyH1BvLCR9XKcX/FKLPQrlu5s1GrtTv2F8SO5jNc/2Kzrh4JY+66zMDGJWi4GsGiJDMb6loRDa8KzIBV7UPjGDOssi60Oy58CMNfIfQuWrZ7gSmIpgsEYMwidsPWK8rB0gSCkem+aJ7casDIBjNvjuJkOhusKiucB2LX1rLfhG0arjb7Jg1OesyniKcdYp5GKpB5k6ehNh+nF7dsTSVC7/T+bvAKhzAIjf2ANgwODB2LGu1B0TogPiWYA/ZZLUscoUlh5U+yxsYB86XNXPm1NLuDGDP7j0KKmNiI2LnZ4JIjwSmfZB/Wbfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DkGKsPRHK0MTZIU3lFFqvcn2CknRuZqD+J7fYHDCZNI=;
+ b=yuhR6juOtVC3QxnTy5cIIxwaenoqwxK6t/6QpMMLfylx6I9Vf7eADybRH1hjgulio7d0ZLACnFRVL0JnZJNDKVKatahBK/Xbowud5fLdxE0vMaG6GBLtEeNBBslEdYX4p+p/wlpBC2mFJ+usj2Lfm9fyIkvIOhgeuYjiTQFUQMJl71L+wNKLhH4A1wLneWFG1yM3hxckyJi+q36lKh/lSMAYP1QEpPRZMdlyO956MsQ0vswTMDkl9DPkkAGlKB5szDmclLQ2drTVO4D4yMPHa6LAn9dqqrAAiCyvH+yIxSf2wlZfr2qyLpn7hywNBXA1XHwAEjKOiqwyLFwz2PtKWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DkGKsPRHK0MTZIU3lFFqvcn2CknRuZqD+J7fYHDCZNI=;
+ b=mtSdQG2E0VQ/CCUvp4BA9Y3djx9ZcQX8K2o9p541uwIhGFobrTlC2GbWL1GrVvqtSRZXqjTa7CW8EOwSZTDS/5KQBY0lluT9ZbfQTJMJSdpBFX0wXEUPHZLJYYDQXkTTkoEPdJjGfGbazA9Aa5fkdv3drXTVZCRrfnyUBIX0oFcNwX2Ce+s1S5q5zkSz/uewM846JaHuco3TqlB+n1xnWPO1/mg7yV1lT2tPEDmL6n+O7TVS799gACzSbZOy0R5TeTJnug3gRu/U/CiInznQj+qBOqJzuPPVOc/5JYjf6pkhy/QxqMH7/a6rJAYW5UjoQYFOC5IOyJjVYLknq333GA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22) by BY5PR12MB4242.namprd12.prod.outlook.com
+ (2603:10b6:a03:203::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 14:14:37 +0000
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205]) by CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205%6]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
+ 14:14:36 +0000
+Message-ID: <4cd75251-fbc4-402f-8939-1f6133f3b40a@nvidia.com>
+Date: Thu, 5 Nov 2026 15:14:32 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: mlx5e:zero-prefix corruption during TCP DMA-BUF RX - help
+ requested
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: jiabin deng <dengjiabin2023@gmail.com>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, linux-kernel@vger.kernel.org
+References: <CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com>
+ <e4054f5a-e60c-4253-bccf-d05cc7c615b7@nvidia.com>
+ <CAFxp=AapgUYLUhipVjR8oM0fRDSLDX60AQf0UP8=U4M1ASqmOA@mail.gmail.com>
+ <e6a557b3-2986-486d-9679-e7a4fd1cee5c@nvidia.com>
+ <CAFxp=AbmdmTsj4ugjxdKhRR=LJuuC1yr7DFnLCSgOpC2g9470g@mail.gmail.com>
+ <atZKOtjrb9HKSNHF@dtatulea-c5.nvidia.com>
+ <CAFxp=AYqVgR_Eahz2QsC=cCdxo5GmTwdHcgBdXRGf9P+v0OJxQ@mail.gmail.com>
+ <d6c14ede-1cfd-4800-a8bf-5093ab8c000a@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <d6c14ede-1cfd-4800-a8bf-5093ab8c000a@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0054.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:93::8) To CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,99 +105,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamout05
-X-Rspamd-Queue-Id: A0FA617
-X-Stat-Signature: 9993ajdnkirqqfjgyiomy5txnkn16gat
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX191ERUTatcYnoDmb5aynzKQhqeeWSoD2RY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=goodmis.org; h=date:from:to:cc:subject:message-id:in-reply-to:references:mime-version:content-type:content-transfer-encoding; s=dkim1; bh=ZuyZA80OhXsTCt9eMx+qhWTC4yMPIt4JU/oWRmBa8MY=; b=CoEvBoFUueQ3s0mIEHKt46mqrflONFVjmmGg+zX6vv/BfOfO8LdoAL4s3r2saFOQLG8D6fxNi2pc9U6aBgQLyEKkxyzMEdmBOQXPfwVBsTMLwAOnnNGceL5vlHEToRsYXZD99dUWQWA6MpjLsDzYG0fOcodpoy7/lnnfQWybRpo=
-X-HE-Tag: 1793887937-685124
-X-HE-Meta: U2FsdGVkX1/3Wbpykymbkbb57VjYh0s2galJtG36rRIQW8TFwF+7E1IJjuw5NQAe25/iGWZNNQkyWT+a8422ISmZr96XK0nrAaQEFQ31qsZFoK0bMu8VBRYn6VvL73Iw7iM4mAs1x7vNeYUjyjDL3c/1373Vt3UVfuGBr/aheInp1BwjeQU4qskhLGjIZGxpuN+otXBJyaLAJMwU6vzQo+EBFJb7W1XoOglfKzxERKt0tKBVJ/xeoz5nURvKfDVGujYLXLVXYpN//WLEhk/vitnw4QDZ/T+mJ5xxRO8fWuMWQYYJurNrpktl9UUR14fwSJm2i229vjqGi5htXXN/jNCATliHKrTLZR9dxCLPnqYqpd0721dllAu7XYl6dDQKXFCyDNzz0Bkbs5xaOdHP9A==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHAPR12MB999248:EE_|BY5PR12MB4242:EE_
+X-MS-Office365-Filtering-Correlation-Id: 581e04c4-b54f-443d-af5e-08df3b471f54
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|261022105027099003|56012099006|11063799006|4143699003|261021121427099003|261026140227099003|261028144727099003|261102123227099003|261026121527099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Au1k/DDPy0oCNIpAOxXqDl7/fN6tn10TBnLm7LXHlV7507wGCiTjs0i9Mqcwpt3oCFx0ykBREi7QDmrjndYkbP6v44YSXYusWNqp4pf7o0zzcJ9FSYooovZIkjSrIgs6DltDcVdZNhHt/DD/kb52KgG/qzw4ss/nNsCaZ0BkExBLwoB+ZNdLuqx4ndFxQqkNE5jiVZMqyTsf3E22mYPmQGigzfinsgXgUO3HD74yMWVNynVjMbahsNPraie2B+Oncv0iHJaDX9MQmhteMNqF1T0K1OUy0ST+wjlsmhsaN730B0JysoKY7UN/rixOBW5z4x4StKqmHQiFU8T1Lvwc8Cv3NmiU8V3lyAVPMPxX3TYZkQH/83KjaBmib8algBeo5GuvXnGphdwxIOeOkkali4GSep6ky/nWfnhxZPQ8SQKh7o1x2TLFiGzE3ehASr8MhLzonzDgXMyuay5A3AQRl4N6qQywGirirC3l4C53d92zUc8Lnkno+e8LAqRap3eRkA6Br64q26UIAY5GuuOzj6y7xNB3tCL/4moOuE8xwojElEwfAZcabjV45f1vUqmLivQM42WBLLbgCxdUd/PjdvZLD4PeUvKkSJiJjTj/RWBgiHm1sRH4ytW+anF6GIL2Qxm0HGeCt1Y2uAp5H2HgGL8DWlFXxif9twvfRdPATwQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHAPR12MB999248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(261022105027099003)(56012099006)(11063799006)(4143699003)(261021121427099003)(261026140227099003)(261028144727099003)(261102123227099003)(261026121527099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VXdOMDdnc2VGV0dYTTUvQllqZGIzNjRBYVpVQ1B1TldNVlhzdGlNQSs4dHc1?=
+ =?utf-8?B?YUwxWnJnYXFGTTNPUnhob29VYXBLQ0ljU1NYM3BtSlVEV0RhMDBZdGNiQXVh?=
+ =?utf-8?B?WTJwcHlzYmExT0d1SGlMUFZjaXJKSlgwdWV4NE5Gd0ZUTVhJYlVIYm83QlNy?=
+ =?utf-8?B?VnlYQVJjeFJxUDErSlNzVCt6UEIwaUV6TVNqQ0pFb3ZMS3krSzRia3A3UkZt?=
+ =?utf-8?B?ZWJYWWt3MUtRc3RvM0R4SWxLUlhlTUdlQ1Z3dFpyRmxmQU5sb1IyYkxHV0lN?=
+ =?utf-8?B?UVhBWVRNVU94eCtUVnBzQlpkem9FQlY3cHhqbFphVHpiSDJhK0NaU1FtSWti?=
+ =?utf-8?B?cmRBblVTcEhsYmZadGU2bVRFR3hkWXZXMU9FUW5mQVdpaTNFTVU0eWdaeUF3?=
+ =?utf-8?B?K3Mzcm8zOGQxRm9Wekd6WlQ0bWtnY2twaXJwUnhJTG5xdGFYRHZ5Y3pySDBX?=
+ =?utf-8?B?RGEwS0hzNmUyWERNRm5ibG5HaXh6SDEvU05vM2MrdklacnRUc2VXamN2Ri9z?=
+ =?utf-8?B?azljdGJmZUt0RWJrVnpjVnBzUGJYd2pSall5NXBiMXR0TCtpRUxoNlJpN1ha?=
+ =?utf-8?B?eFExWld2RzVaRmk5dG5XK0tac2RreTVaVFByTG52b28rNFRaRDZ2bW1lZExK?=
+ =?utf-8?B?ZXN2UjNFZzRFZmFHOEZ4cENpWm9pRTNMd3RlMXhSS3JPK2RuTnhIck9GODd6?=
+ =?utf-8?B?dkswRHdTZ1JJUy9rNDhSbGY4WHllQUpWQ0hWUGNFZkFQQWdIUXFCaFRyQXpq?=
+ =?utf-8?B?aDZRcjdab2NBY082WGFveTFoOEtmMnUySTY0d1Q1aVVsYjRnQUI4emEydlll?=
+ =?utf-8?B?QTBrSldDZFlvWGJwQzhScWNYWFVmNHM5N0dGa2Yra1pmWm5jZFVQWDB4dFFv?=
+ =?utf-8?B?NGlMcmZ3Y2trajFFV0N2cndGcnV6eXpML2ZlVTV4cGdBMXF0S0lTUk9TeC9G?=
+ =?utf-8?B?dVNvdFdxMlhHMWpUdkkrQzEvR004YnlhQTU1Y1pwNFRRUU5nZnVZVzd6UDJJ?=
+ =?utf-8?B?azBYbzlPQm5LUkVnL1dsUkNmZUpXYlQ1cS9YLzJTQnF2d2FpVVM5L0xGaitY?=
+ =?utf-8?B?Rno1TERFNitqNTduZ3pQMXl5RWFEbCtnQU5IaDEvblIwZ1dVbGFRS0h1RTc0?=
+ =?utf-8?B?S2lxZWU2TGNqS1lyclJUd3NWaThJeXZCOFZkNllqOWFOWDJWZ1lUWnJ5aXl0?=
+ =?utf-8?B?V0JRa1l2WHJsK2ZXY2FPT2NacFN1VC9Pa2ZDakVhMGI3a0YwaGpjay9QQUZI?=
+ =?utf-8?B?d2FsQ0p0UHV2MWMxQzl2ZFZJU2hUcDJ3bTV0dU94akxqYmRhUWZ4WHZ3WmlR?=
+ =?utf-8?B?L2EwdUVRYzNxZTczVHlaUzNzbnVFcGhtNFhQN0JCVjFrQzUyU1lTbHRWUzBC?=
+ =?utf-8?B?ZXF5bmN5eVZnc3NTYk5nRXFiMXFkeTdWUEhIalVGTlZyajNGdmpQNnoreFBW?=
+ =?utf-8?B?VzFjdllkSjRjVDBqT0QyMzRnU0toV0hTVDJLbnU1bW1aQ0JXV0U2MktjSUxB?=
+ =?utf-8?B?THBpRjV4UjQwNlpiTzF0Qlh5eFRIbmdhclo1NTB0bFROZXZYN3ZuSi9lTWox?=
+ =?utf-8?B?K280emdrb245dER2QnZhQ3IwSUdqQ0pzSDUyTnBac292MTFDdmRMV3oxalYv?=
+ =?utf-8?B?NW1QZFhEZmJBc0xNcTdOcTRLdytlaUtRay9hZmxYMkhJWFpjQkpqWXd3Ym1w?=
+ =?utf-8?B?aU04aFQ2bVZNSVN6dDk4YnhBT3Y5aFNKSEtsUFh4OW1OY3R3MHo0WndYUjY4?=
+ =?utf-8?B?ZG5Bc3FDc2JiYzg2SDJBaXY5R0orVzRzRWk4aHhDRVhSWGZBMEhWMTR4SmYx?=
+ =?utf-8?B?clJqT20yN0c5bS8rRE9LeXY5aG43RWYySUMrOHZJcG5Ya1R1OGlUa2t2RHlP?=
+ =?utf-8?B?eVFPN0FNUlovVkdnbGxmMm9pcmRCc1E0cXd2Q25YQkZleFkwR0JRL0FGLzMw?=
+ =?utf-8?B?QWlnaFlKWEp4ZE1zbDcwUTdqa0Y3MHJ1OFRjOGJabG5jTWtLWUxVZkFHK2Mr?=
+ =?utf-8?B?Q2FpVTNmMUFzUHk2T0lIdngxbXZyNUxodWQ1TXNxSFJkdjdsbHEzcnRmRmhV?=
+ =?utf-8?B?VXFaY2pnbHYvdEU2RXNwTldJZDlSUkFpeFdGSnpWUmxDbDV3SzZjNFlObVhV?=
+ =?utf-8?B?NEdUU0tCaDVLYVNmKzh6VzQzTklTL01sckl5YW1HdExmYW9BcmRIdUk0QnQ0?=
+ =?utf-8?B?Nkp0bW9yTEdyNEFaSEZoaGxEbUo4UXN5YnpTTlF5YWM4NDBTYmpjb0NqalNu?=
+ =?utf-8?B?QXhRUUdXc0hZVnduVzJhc3JpY3M3Q2VQaVR1eER5bTVLZkFuQ1k5OGJodkJy?=
+ =?utf-8?B?eVF2MmVpSUtDTG5CZkRhZ1dlSStsQXhGZ3VPQVNqTE55Tnh4aFR4dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 581e04c4-b54f-443d-af5e-08df3b471f54
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999248.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 14:14:36.6288
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UdP4W16v2ZJbzotYelwx+yw1+aJ4YCTVvADLSJvlXt31S5pWSagjPocN2w1iAi6guKLehQFQ4EJEXcuSIuDUow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4242
 
-On Tue, 22 Sep 2026 13:08:39 +0200
-Johannes Berg <johannes@sipsolutions.net> wrote:
-
-> Hi,
+On 23.10.26 15:14, Dragos Tatulea wrote:
+> On 21.10.26 07:19, jiabin deng wrote:
+>> Hi Dragos,
+>>
+>> [...]
+>> Thank you for continuing to investigate this issue and for suggesting
+>> the fix. I also greatly appreciate the time and effort you and the
+>> other maintainers dedicate to the open-source community. As a student,
+>> I am excited to have the opportunity to contribute to the community
+>> and to learn from this process.
+>>
+> Thank you for your good analysis and fast response!
 > 
-> Resend with the selftests and the two sashiko findings.
-
-Hi Johannes,
-
-Could you also add code in the samples/trace_events directory. Perhaps add
-a new event?
-
-This will make it easier to understand exactly how to add new __print_sym()s.
-
-FYI, this series did pass all my tests.
+>> I would be happy to help prepare a formal patch with the test results.
+>> Would you prefer to submit the fix yourself, or would it be helpful
+>> for me to prepare and submit it based on your suggested change?
+>>
+> I am still waiting for input from the HW folks to understand if this
+> change is needed for all SHAMPO cases or only specific P2P DMA
+> cases.
+> 
+> I think you should submit the fix as you did most of the work. Just
+> give me some time to check the above. I'll ping you hopefully next
+> week.
+> 
+I got my answers. Feel free to go ahead send a fix. If you won't get
+to, let me know so that we do it.
 
 Thanks,
-
--- Steve
-
-
-> 
-> v2 was:
->  - rebased on 6.9-rc1
->  - always search for __print_sym() and get rid of the DYNPRINT flag
->    and associated code; I think ideally we'll just remove the older
->    __print_symbolic() entirely
->  - use ':' as the separator instead of "//" since that makes searching
->    for it much easier and it's still not a valid char in an identifier
->  - fix RCU
-> 
-> v3:
->  - fix #undef issues
->  - fix drop_monitor default
->  - rebase on linux-trace/for-next (there were no conflicts)
->  - move net patches to 3/4
->  - clarify symbol name matching logic (and remove ")" from it)
-> 
-> v4:
->  - fix non-module build and possibly dynamic event handling
-> 
-> v5: (https://lore.kernel.org/all/20240614081956.19832-6-johannes@sipsolutions.net/)
->  - fix build warning in non-module build
-> 
-> v6: (https://lore.kernel.org/linux-trace-kernel/20260921101538.97286-6-johannes@sipsolutions.net/)
->  - rebase
->  - fix nit from Paolo (I hope, I don't remember changing it
->    but it looks fixed!)
->  - fix crash due to wrong data placement
-> 
-> v7: (this version)
->  - update ovs selftest
->  - don't ifdef drop_reason_lookup() prototype
->  - fix section alignment
-> 
-> 
-> To recap, it's annoying to have
-> 
->  irq/65-iwlwifi:-401   [000]    22.790000: kfree_skb:  ...  reason: 0x20000
-> 
-> and much nicer to see
-> 
->  irq/65-iwlwifi:-401   [000]    22.790000: kfree_skb:  ...  reason: RX_DROP_MONITOR
-> 
-> but this doesn't work now because __print_symbolic() can only
-> deal with a hard-coded list (which is actually really big.)
-> 
-> So here's __print_sym() which doesn't build the list into the
-> kernel image, but creates it at runtime. For userspace, it
-> will look the same as __print_symbolic() (it literally shows
-> __print_symbolic() to userspace) so no changes are needed,
-> but the actual list of values exposed to userspace in there
-> is built dynamically. For SKB drop reasons, this then has all
-> the reasons known when userspace queries the trace format.
-> 
-> I guess patches 3/4 should go through net-next, so not sure
-> how to handle this patch series. Or perhaps, as this will likely
-> not cause conflicts (in fact I've been rebasing it for years now),
-> go through tracing anyway with an Ack from netdev? But I can
-> also just wait for the trace patch(es) to land and resubmit the
-> net patches after. Assuming this looks good at all :-)
-> 
-> Thanks,
-> johannes
-
+Dragos
