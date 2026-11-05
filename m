@@ -1,108 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793872296;
-	b=mHOgnyPK1t9ijw635hN4JQU2+pbRP35TuO9YZGeMOZEHCKjgQ0T4mvy06AwqjPnHApof
-	 Y1TzB61yVvGJWv27IW4+qe/DXb/8GOFFItaojiUTMpZ6o2AYlCt+C1Amwg8M4IwVbKdXE
-	 Zj7T69PFVqH82Bq3RgZXMl8Nc3CLh7OuAt0DvSBrt4Adeqf8nVUEO8wshV9K+k4kjgLpp
-	 tHKdCKyhpKlnxGdOT828ozyEcvp5mbqam7ba9Yb6fgXsRJTnCQyDD6QIFVNlRD2ifAb2A
-	 Mfw0wDpBB/h/uMwHLgN58eoMpxFlxMC7AO4DjAQ3MdKdbFQthsF3HqJwbf8liz5Sv2g==
+	t=1793872348;
+	b=AMKcMLeeXYb7mJ2sGDoMvZYAdbpN92FKm0pBpVj0yEAgaXyZ8xKfN3LhoNKDoKooZj9S
+	 +iExcPRCM6y+BpysJjfNdsj2rP5HmN+MVuWBMC8/omslnV0YYIc2R+R5g+fo+a2l34hxN
+	 BLF2yNwjXYs/5g6cn2ezezTDEcWpVu63eI1XC2H1jmnJMM0hGQOMzLoN2k/sUgOMM+/7W
+	 gRqXnzEg4RNEYsZuSh8N4lBWWAaz9kWqJ824nTG74UrLaQauP6t3YtMYsotL6Zefpcj/k
+	 jeTom3P3BfbqdSHaN2MzxJ5XhR+d2GypGwdGyaDlBao6l9rDjQT3V1iAavROpTqes1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793872296;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
-	b=lw4mctycSzkUQPU8I6zmikvYdNdwWg+PRuQGZZuaJcirRZgEH6FRF1wFxTuCiOv9Spyx
-	 J1VtlcgnNAR9eJD/xuObzAaLe6YNk9ueldWpWzcNKXFcijgRCBIAfQgNsgVIIlkbWTQxc
-	 lqgYCdyy2zKXDy/xLrueiLII8XkfpoBHql5VEnftb0pn/wDPmqlgjcBLeRL6Gr9UX4zVr
-	 roGZcQscJYVk57XsybpOjZHiTBKDggy1Hso+Kn7FvR81MPMOQCMx3HAP3Rl8kyLmIv3aZ
-	 du4cYq0IZ77GzMsTNkz7ogt5QPMflmXsWe/mDzlVrdwnOoPl0qmHSiZ9+FqhhnrtAXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793872348;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=E+qJ0z0fXRRbniKVccRo08SFzpNX7/DEea7wwix12bk=;
+	b=GpHU0Bgdct1em5tXVc0NGuMihC6qU7et/dsC0TndNgNaWcFrrGtuqfFx6Vyi6PtktuSj
+	 lHpwKdlgWsU0bTpGto7VaL8d+GcWDgqMD6dIegVNo9uwEMspiYnKVQ/vrbtCqlrWTUtin
+	 ojo58pdPvb8Zyq0hOU68dWPnsZHCu2GJ1bFmaYUS/nEdgwPmABmOJIV/UnZmqJYK+noYZ
+	 4U9O0BCxcY6RECehbBjRvsYuqjs5wnoMZNZyWFKK0yJbWigZNGa5QWNl8FoPoWGVHDc7u
+	 40xJCIheXUr54MXX/JMzfa8gyH1BMRlOgVUL26J6UMgf8ozG4eL+5hgGQ3/Cse3q01w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="hkJd/cGT";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KBxm5ORs;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=hUpRSQHQ;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fIWDuhCA;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890B3606A330
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:51:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 890B3606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E403606A32F
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:52:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4E403606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hkJd/cGT;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KBxm5ORs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793872294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
-	b=hkJd/cGTXQf8gONRmfwGMkSqjAveIZ2oxKo788DmB8g8svaAgniC90naYOBMKiCvn1B6Mx
-	raORHnBkVLr43IxM4qE0lmHX2twwUd1EAqEkjUXAnyOSMmN26WdNdZkl9g67PDisED2uJQ
-	2HAvQLOv/S2WIdx9mE4acaLPG2JbjSE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-64-Ku5ILT3wPXa1kmBK5j1g4A-1; Thu, 05 Nov 2026 04:51:33 -0500
-X-MC-Unique: Ku5ILT3wPXa1kmBK5j1g4A-1
-X-Mimecast-MFC-AGG-ID: Ku5ILT3wPXa1kmBK5j1g4A_1793872292
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48e29c25101so894059f8f.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:51:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=hUpRSQHQ;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fIWDuhCA
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A56Tps43223036
+	for <netdev@vger.kernel.org>; Thu, 5 Nov 2026 09:52:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=E+qJ0z0fXRRbniKVccRo08SF
+	zpNX7/DEea7wwix12bk=; b=hUpRSQHQNYfzfC83FLjaF9kiN+vrTNClTs2yMHLr
+	V6U3/TFCDDuLfmA0v8TEcFYuBIc82veg0J/8uS8cQlbl7w7xhbaq5SNZVoA5PmWu
+	dqi7rikyjTxN1viRfD7UGdZLuBBBa7t6Yv/mdF5kBHYjQ9kOczrzWlmcifJmnQBv
+	nHZ3aHFDDIc7X0HnsSGD8Sl8VTl0roeSJuBw96nLMc2j0iLQw7OYGxUS9KPZD9+y
+	TMZ/vajwlTI5PHq/BkyRlVH4sDSfcKvOiYkjM/LYrBi3JsTTj2iyazdeWcC010Gq
+	gf39GtswjHYrSwOH71Q/qInyj2dBsdIcjU3DL5asIJXFeg==
+Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com [209.85.221.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hrj43he7p-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:52:27 +0000 (GMT)
+Received: by mail-vk1-f200.google.com with SMTP id 71dfb90a1353d-5ecb636b587so121740e0c.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:52:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793872292; x=1794477092; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
-        b=KBxm5ORsYSzevNZymCpImPIMAziH3zAdtOVBWYadIPwBFRJgSwQwekaClE4pxP0Mmr
-         ZivCvjByDkgCdV/L6wa97qihOlOBJkbMqtwQjFplZTRy3dYG/pUbATZCoxxL8kyL0AcI
-         SMYOGTI776enpJv6wMnbpKM/jChav7qhJF3gTxrNXxHz1QsirejANXR/Q3i/DoEBHn3M
-         PnPLIeKjCj7wtAnELTw1LdJ4uqhdLLDG2ktV6BttQFmuayzXWcNZZoDrEGizbksUtsHn
-         sWSJQOC2BWT1sY6henWes33721uWMTNiTsRkZ2uQGxRDkZsiSeSv2rEEpmHr3Y269WYR
-         hNAQ==
+        d=oss.qualcomm.com; s=google; t=1793872346; x=1794477146; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=E+qJ0z0fXRRbniKVccRo08SFzpNX7/DEea7wwix12bk=;
+        b=fIWDuhCA2AMYcb+vBM1haVMFRfz0srQFqfhmiFkjTElnDCZZHxmLQbcpM6f+kww00C
+         UpxMG0qFcKToFwI/Q9hGVrHEcdwiSTc1zbxuqbugR6YibOkhufOql30t914oSZyTNyT7
+         y1jkUkkOAKWLTC67cp5Jp2B0FGtLzlxjZ8VCeMlSCGhk3PaYyMJmCq5Zb38qIbyvpJfT
+         OX0+xPL/Cj89nBD2xbASNOoGt6WdRbIMT8W7a/GKyxkeO+YyBmWot8inQcX1HAPONTNq
+         oVrXZp7z275jWoHrAlhw9hnn9nVfOdgaz3UGIabSre1JbKYNc0qkL6vhMr06LlP/RLBE
+         AXnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793872292; x=1794477092;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ntbAVzKKszvhnnecyjPK9p4OIP/hmO9ZcKNX919vInk=;
-        b=xQNI+wDUPOIQp10VmsARJGekv4a+xrOEYoWFVFXA+H8X+h0mhpTXTKgIecU8S+pqA8
-         iVpDjm9dBKoaMCriy3g5W4fY+N4/UNn8J4wc5lbxKD9Dg0OmDqwE4YfI/2W/iiv3u2n4
-         A0WvxDeAVDtMnRgbdPPVp2Dkscfnq36+jMBfwb/ewPgoGbOrDvjzFh+lbKwm73NTLM2f
-         OKVgbOv7Ucqk+lcU0tJP8fzGjM2cWNZK4wtsPMKp6Ph41tVJCTJ52c88BWLFVr+jtOz7
-         3vQr6uu+a9wIZHj8BjQETlk4MkE8I7ekhxKfo3pIxJznYiT33xs/cD0MdUeC/ENHJ2uQ
-         PJmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzTZoS87ZrSp3lB471VAa/6hgTdtMaE2fgPosD2OKf6MPAKxgaQijOPzMobuDbL8gC7oxBVrCk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/SFSZtEyrm9Mws+gWdhC3i/ySy3lQ4bK9IHi4j6ceD0GeyfZWv
-	bflYwZhVj0EsvBRh+0nHnj23IfpUFTt2j7iUtEw9UPF+LFTVKlZsarEKmuyNJ0VyIVsiw1rLtHd
-	BU12SiwgkpXJ6nkmR3QerY8JW5/IUHIU5SOwSW7lmshyc8kISTK/6ZQBAvw==
-X-Gm-Gg: AYBFou30/3H41aHnRSdVMDJ8eWNgR0va6Kji6YA2mV0mlSlimJS6OIinVfQQaj1IbDH
-	JkHclfDGR/Y1JC0IJVgCOeJIC3p12DJIdZpt3+j1yCmd4fZm+dZ8jsGVIb9Vv2jV7S0CFA8mtz7
-	Szz2wcc+BgHm1FjBEitlJFouJnVIJEZtF1dtnTHDcaiqXXyaOz3DXgvnFj/SeheqlqaH1E+3cAq
-	uIMSFv7W3v7LUic63f6dJKBE7fPV95YgnNkf1BKXgYZWknoFzQKvex/CpFxBdhUnSwh4YNya9Vo
-	eLy2yDQ73r6YSAaf1bY5StCBiG0+w1Y47VA+vEHarFjM1wzBg1Qe+ti0o5ocjzD+ZgmXHNI6aUk
-	K/gXDwSHqWp5z3/p1jcJP9hEELmrGtMti29R19+1vG16RdcXkLQXHwjGcUfuruNVi/4/Ghh95Vq
-	wRMvbJvjeLYwEFW/BaKaFc9x08ukVm/OoazifEjmmtdnA=
-X-Received: by 2002:a05:6000:430d:b0:490:da85:7aee with SMTP id ffacd0b85a97d-490da857cbemr5409715f8f.24.1793872292018;
-        Thu, 05 Nov 2026 01:51:32 -0800 (PST)
-X-Received: by 2002:a05:6000:430d:b0:490:da85:7aee with SMTP id ffacd0b85a97d-490da857cbemr5409669f8f.24.1793872291556;
-        Thu, 05 Nov 2026 01:51:31 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea1811c4sm8980486f8f.3.2026.11.05.01.51.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 01:51:31 -0800 (PST)
-Message-ID: <6810d4c3-a3b9-4da5-97fe-27cfd92563c1@redhat.com>
-Date: Thu, 5 Nov 2026 10:51:30 +0100
+        d=1e100.net; s=20260707; t=1793872346; x=1794477146;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=E+qJ0z0fXRRbniKVccRo08SFzpNX7/DEea7wwix12bk=;
+        b=ooX+fpscf9rbu/3LxmQ/WZ4yT1U+REpRkUVdQtyZe5VyCSbZuiSIxMvxMhx3096vY+
+         filFBe2BJvyaa5JSHpvZ4bpKtPuTt3K6PL3Tk3bw5B9K+9oH+LhfK115MvS9Sud6p0eu
+         vzibfCQ243UYgav/kVZkQDyUlgQEqwnH7yAK4OoRLkMrIiMt6ap2YuaGVgrZWCF/cOTe
+         eEg5NE7MPmzl+roPRW2Sxg0nBpu8sSr9oSR08brwXuDXB8oHBEZ4wbSnE1LzOe7/trhY
+         oUDcgAO8x1jD4d87IuPAia4583d08N105vmfPvcistIbOioTkoPqdEWbzpc9w+IMKnYb
+         uIkg==
+X-Forwarded-Encrypted: i=1; AKwUvBxisegdtBLJp7KQE0+vdTZOoFAAOIIOHPXOqin1CrRwzBVi5rCBsG3CjUBCNVOXszzdymweeos=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8DXVa7cgYZxNwuYhFfNwqg+7OU2D62MxGOvYyE8TZbCdVJBM7d
+	62ffNA7B9yEDuF0R/6o61LZEQFYjpBzqOVHGEEZBsCekVyF+z3Wyry5M46thTruir9pwLZyk9Tm
+	DdNW97t6pnGLsmJpUeQgxcWGUFS/l5N0xsHJMn6ykoW/w/Y9n0tV+QIFfeJQ=
+X-Gm-Gg: AYBFou154nHBLXzAwFDS+9GYuYGrXTn1u3lMxyR+AEtzdNu/EefMWkVj5FjDJrfJuEl
+	GvDiyfyuErSDpu0pYtncaU8PltlU7QGPKVg16pNqs1THujFBv7YVk8pNRq5CjdpWyMWt3bOr563
+	fevCwVYcSo0kig+GC8jV0i0fI1jNbA+7Aiv0JADVbMJJwlgB2+LacgPbjkTcqj6Eu9gQS/JL0ty
+	dqlAlbH417EQsqk+/e1IHL/tPqlFO0ElqQEKeCc5nm4SKALye6wDdn7u1A1ulwB/RHrbn3ZF5SN
+	+pKavvrA/b1J7BqqoV1vDbQmD1CAcpqbrfto+ZTlH8RbAFB5UvpAH4W+228WuotrzK3Kg4dwmM1
+	8rfSWmpMR95vrBR8vHb42mkh0fCD/RWv/tAMLIriyUUc5RA88ES9psr198WNXeg==
+X-Received: by 2002:a05:6102:32d4:b0:7d0:3ed0:c61d with SMTP id ada2fe7eead31-7d07227ce39mr7822340137.2.1793872346267;
+        Thu, 05 Nov 2026 01:52:26 -0800 (PST)
+X-Received: by 2002:a05:6102:32d4:b0:7d0:3ed0:c61d with SMTP id ada2fe7eead31-7d07227ce39mr7822312137.2.1793872345655;
+        Thu, 05 Nov 2026 01:52:25 -0800 (PST)
+Received: from localhost ([93.66.104.131])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fee968763sm8898539f8f.56.2026.11.05.01.52.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 01:52:24 -0800 (PST)
+Date: Thu, 5 Nov 2026 10:52:23 +0100
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net] net: stmmac: keep est_lock across PTP clock
+ adjustment
+Message-ID: <auxR19bfAdOc288M@lore-desk>
+References: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+ <b7102713-8bc6-4a5a-bf33-b79a646f4126@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,79 +126,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/5] net: sparx5: add tc matchall port policer
- offload
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com,
- robert.marko@sartura.hr, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261102-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v2-0-3bd47ec1b227@microchip.com>
- <679b8dcf-0aac-4674-a006-5af0156a82ae@redhat.com>
- <20261105093905.ln6tdot26wyej7pi@DEN-DL-M70577>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261105093905.ln6tdot26wyej7pi@DEN-DL-M70577>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rMRGzwt2sRAw4qTo"
+Content-Disposition: inline
+In-Reply-To: <b7102713-8bc6-4a5a-bf33-b79a646f4126@bootlin.com>
+X-Proofpoint-ORIG-GUID: 6PFa9ho82BzTYQR-8d4RlCpFhTKDDrzj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDAzOSBTYWx0ZWRfX15SG8+IGOVay
+ dMXN49cbQPLsEfxxdGSe0bLdz5iZg+nfcnnapN1QZkSoyhQza3QJ/syS04CGeptINE4FU7xbOJg
+ gYcU2XZuS4q20WNnB8/mPAtP5blKI31nkDhAXO2ZueHcZ8xmkvt2fJiVXUtX7d4bqqlAig14Xh/
+ o3F9fdE2OpB30gxp5zN296kGwi2VXeJto/hV3NIk8NzDA0erI4HEijHyddKqwgv6U0SP1gk5vhz
+ HRuwQHTb/RU4XyiDWiULWuLXpwZXKBlyc2XuEJlYEpqeUNHuEoCjlbN/ypKrhN2TBPe7jYF0uDQ
+ 05EFF1QlJjgCg7vDru38BBohvlr0XengvWu2WP0aIfrAiyGe1MDUpqo4TMSpY/abhduUwLvEzeY
+ myDtztRkQDc8yGLJs+kmQoOGFmr+rUOe6qnRu5ixsv8ULcedpl2t1YdSuRZKslXEsdYZUbbi5jd
+ 93Voo8DBbVyZu79hdig==
+X-Proofpoint-GUID: 6PFa9ho82BzTYQR-8d4RlCpFhTKDDrzj
+X-Authority-Analysis: v=2.4 cv=SZdi5fRu c=1 sm=1 tr=0 ts=6aec51db cx=c_pps
+ a=wuOIiItHwq1biOnFUQQHKA==:117 a=cAAIdyqZgEis9HJxay2Blw==:17
+ a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
+ a=P-IC7800AAAA:8 a=yEE8vCkc6EYpfAGo-GYA:9 a=CjuIK1q_8ugA:10
+ a=bkY8HCoThClCxJ_FmXcA:9 a=XD7yVLdPMpWraOa8Un9W:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDAzOSBTYWx0ZWRfX4zw63Io1TYSs
+ uKkMq8lILB2ki4Mv+qKemK8K7o/MxlzxEuHX9MnC+TATVGwWSJiDNwbwPEcTPvLsz+TFyY2E6Av
+ +0hANOcq42PamUH0WAH+SIgfFT4mH3A=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-05_02,2026-11-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 spamscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611050039
 
-On 11/5/26 10:39, Daniel Machon wrote:
->>> This series adds offload of tc matchall filters with a police action to
->>> the ingress port policers of Sparx5 and lan969x, which are both served
->>> by the sparx5 driver.
->>>
->>> In hardware, each ingress port has four single-rate leaky bucket
->>> policers. A policer drops the frames that exceed its rate and burst.
->>> The four policers of a port share the pass and drop statistics counters
->>> of the port.
->>>
->>> The driver uses one policer per port, because with more than one, the
->>> statistics reported to tc could not be attributed to the right policer.
->>> This matches lan966x and ocelot. The policer meters each frame without
->>> preamble and inter-frame gap, so the configured rate is a data rate, as
->>> tc police expects and as on lan966x and ocelot.
->>>
->>> Since the policer meters all ingress frames on the port, only filters on
->>> chain 0 with protocol all are offloaded, and filters on shared blocks
->>> are rejected. A police action that is already offloaded as a port
->>> policer on another port is rejected too, since in software it is a
->>> single bucket for all of its users. Only drop is supported as the exceed
->>> action, and the police overhead parameter is not supported.
->>>
->>> Patch #1 drops a redundant prefix from the existing POL_UPD_INT_CFG
->>> register macros.
->>>
->>> Patch #2 adds the registers used by the port policer.
->>>
->>> Patch #3 tracks whether the ingress block of a port is shared, and adds
->>> the per-port policer state.
->>>
->>> Patch #4 adds the hardware programming of the port policer.
->>>
->>> Patch #5 adds the tc matchall offload.
->>>
->>> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
->> I understand the following will be very frustrating, but for unknown
->> reason AI review did not kick on this series.
-> 
-> Yes, I noticed that. I thought you maybe had some magic button you could push,
-> in order to trigger the review manually.
+--rMRGzwt2sRAw4qTo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Unfortunately, I personally don't have it. AI review is sponsored by meta,
-only Jakub has direct access to that piece of the infra, and he is AFK for a bit.
+> Hi,
+>=20
+> On 11/2/26 18:37, Lorenzo Bianconi wrote:
+> > stmmac_adjust_time() disables EST, drops est_lock to step the PTP clock,
+> > and then reacquires the lock to reprogram EST using a base time computed
+> > from the new clock value.
+> >=20
+> > That leaves a window where a concurrent tc_taprio_configure() can progr=
+am
+> > EST enabled with a base time derived from the pre-step clock.  The gate
+> > schedule then runs across the PTP step with a stale base time until
+> > stmmac_adjust_time() reprograms it.
+> >=20
+> > Keep est_lock held for the whole disable/step/reprogram sequence so no
+> > other EST user can program the block while the clock is being stepped.
+> >=20
+> > This does not introduce a new lock ordering: __stmmac_setup_est() alrea=
+dy
+> > takes ptp_lock through gettimex64() while holding est_lock, and
+> > stmmac_adjust_systime() uses readl_poll_timeout_atomic(), so it does not
+> > sleep under ptp_lock.
+> >=20
+> > Fixes: 23d96de472f7 ("net: stmmac: re-apply taprio offload in __stmmac_=
+open() and stmmac_resume()")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>=20
+> I couldn't really figure out why the lock was released in the first
+> place, LGTM :)
 
->> The changes looks sane to me, and addressing points raised on v1, but
->> I think nowadays we need an explicit AI feedback.
-> 
-> Ack. I think the missing sashiko-nipa check is not isolated to this patchset
-> alone. Just FYI.
-Indeed I hit more patches/series without AI review. In some cases I can run
-the model locally (for single patch, due to many constraints).
+same here :)
 
-Thanks,
+>=20
+> Do you plan on addressing the sashiko pre-existing stuff ? seems to be
+> rare conditions but still :( sorry you end up having to deal with these...
 
-Paolo
+yes, I am planning to post a fix for it, I am just awaiting to avoid to post
+new patches on the ML before these ones are applied.
 
+Regards,
+Lorenzo
+
+>=20
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>=20
+> Maxime
+>=20
+
+--rMRGzwt2sRAw4qTo
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCauxR1wAKCRA6cBh0uS2t
+rE67AP4p7uxcDSU+u+UHizM3E7eioXxcsdqqYLpWaO+hcHviZgD9HdVMiBiy8Iav
+M8tJFGknKjS0Sl1s04n16G8Y29tblwI=
+=6ZuU
+-----END PGP SIGNATURE-----
+
+--rMRGzwt2sRAw4qTo--
