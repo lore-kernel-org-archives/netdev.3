@@ -1,93 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.231.138
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793879014;
-	b=YFdpshcpMDbzcpJmUsa0VS4BtT2y0gZUH4soKwtgvsFWAXBjd0Pa1x4071TctDKRF91v
-	 pkzGobdRU801lAj0NHqzzigeqboUcgE6l+gEBokCJTApHgjNyX2L/e4NX783/uviWPPLn
-	 5cuiBDy4Gj4I5AUw03/v3K54QOp0kIxdudaGoWHtEyOsyCekkRM337nMn57lTgCoa6kMg
-	 W/TVr3Gf+93m7mDd17Xms/4yHbYLCeibkYWG8ucLNvwqRqeu62lXYcpiqyp5Sw1ZmHxJy
-	 hTAH0vMbM+R7jfHNNAilMn5DSzSwiPDD+aSJHu2KGr4AvcNz/7RNkV0SfGbcEF8GWZQ==
+	t=1793879247;
+	b=K4nWyL5h+pfGs3aWi8t3zuujf2JgzeGvAny8V/v2GV/HTJH0ln2GSnrxVzh9J4JNcm7B
+	 DqdYkMeM7PnvR1bfc15g2cpU8rYJGwFzoP5she9Ea2IVjbp4zctWslfNE5IYJEMWUCVy9
+	 9tfIRn80M+O1sGKHoZQdFPQ/TeofUDHQqQlhBkEhLKja7mso6oCOCJwSPIcld+cIr6lcQ
+	 3XKBLjQxd/4NKT9EIghVYDXNQyv/Q31o1r5uGdfHNCrg8bqStrHACZB+o9LXY39C2CpsJ
+	 HX7QqLSu4ISCyT1Eij/zlX8JN4fBJ6pmmRKVM4LfuotHSeTx+P4HTRAuUrxkhaAL9Yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879014;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
-	 Content-Transfer-Encoding;
-	bh=HVj6l3UydzXkgX5b5Nv8SsmCm86UwO2uKscetvhcHxs=;
-	b=TVLMJYwmwKE6XigbuRMGrKT4V6CjTdVpLpnjc92YrbRz3heq+//LOcardWfaME06DEEA
-	 VmI0wrJkZXnNfzCHZvu7H+KfBvNTqSZlGByovpfVgIyKjTJgGgcbL7dIkazPyjVxsvYuB
-	 ZZeIQAm2ImzfyZdMURS5WsKr5mGqusV0xr4xWup6cQ4JAf3BYi5L9Ms6ze+mGga46tGTU
-	 Z1y2cjKkUWJvulcnBIFEs4feMEIdOuvtyyE93uSAitZUccWlti3InBkg8Bx+YVPIT8IrS
-	 kiRGPN01Mv8L0A6aYrLKsQe6OAi7Q9io+TbmyGc4r7b3yC61YMW2uLIMlo+YbOy31Sg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879247;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
+	b=OLnC4a0N2jjzcTJdAxuZjpBEqR4myHdqz9aidRmtto3bP3hVS7UMSWubEpQoEYVTuPd/
+	 xfKtn1FmWuPNkaZUQr6opmbM8/lOePvcWhMSKvUM+SQ8Z8AsgOOCFlTuMA86NYiPOQo0j
+	 PG/DpC0XSqGinDqYaISvS1Zd6WFTOxq/vXoAM2QRRV2A1QqxfRNeWmXE/AduKpMzdQ1+W
+	 oYVToaRmpWYZFQbbAqEFYncSFUs/e7QWi0nimNpEf8WOGm8UGNbF8GKAh8IkF3Ud5SNal
+	 /slp21tmGZpPppwLFHDt/QQp+lRp8n+oxob+9G3hqXFC1dKzjbip9hGXfxjT4KCd1pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="OlF/vFbM";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWeVK3LF;
+	arc=none smtp.remote-ip=74.125.231.138
+Received: from mail-oo2-f10.google.com (mail-oo2-f10.google.com [74.125.231.138])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82F1606CEAB;
-	Thu,  5 Nov 2026 11:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5386D606A335
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:47:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5386D606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlF/vFbM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7734A1F00A16;
-	Thu,  5 Nov 2026 11:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879013;
-	bh=HVj6l3UydzXkgX5b5Nv8SsmCm86UwO2uKscetvhcHxs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OlF/vFbMqHhOlnVgXEDiOnXUZv2d23YcbiXuuNoglNRKpbkPITpWwaZyCfFCmNQ4i
-	 N+o9NvmyJd4ylmXFA2w7KGEWqqLCjnG+/+Fzzyu18PMCzWeCTjd1pOD4eRc17fBkdh
-	 luPVTzBrvG/LuZcGJRIMpAr4e4/fAHPffn1LaJA666p/vR2b2kNR9qpfK1VdDOg18d
-	 AxCnhkzdE9+uNJ8LLOgkjQPC8v4USZVu4YdVjIpRlMILr0+q4yp770BttPPkBakBDf
-	 kNFA81zQ3AMB7iMqMBzVNpLwe2AduH8RVW3DDi48/XTxkpGXFYLmBXsOkt2bL2UoFM
-	 fdD3k0Ie6rlPw==
-From: Leon Romanovsky <leon@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
-Cc: linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH 13/17] driver core: Preserve trust commitment beyond driver binding
-Date: Thu,  5 Nov 2026 13:42:26 +0200
-Message-ID: <20261105-device-trust-core-v1-13-1e536825b4eb@nvidia.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eWeVK3LF
+Received: by mail-oo2-f10.google.com with SMTP id 46e09a7af769-820ff812cd8so372553a34.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793879246; x=1794484046; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
+        b=eWeVK3LFJ67QiftlI+LA5YLEgkdaFNdTRJZrztVnh6C7RDAo44BhSxcxj4Uq3UsVcK
+         4mVxBxvQCy3s0aIt8tSYBTsEhlnYRW97lokXN7VOYA/M/cLhyBdK0WSjPJyAYJw9hHqr
+         VEzntUbo/Q2l2o3PS3Mkl5Pt3EG1eWo/X+BQxdThJaFnuAAVRVw/Xl7uQbJqWf+v39kZ
+         inOg1mTIR7wUCJ5i7bOFm1eOlgDUVGyaAzmamPKknll6xyyjeosf80xSo69Xq0Yq8sIi
+         zh62ZvvUlz7uWy2pic/AEW5PKX1UjCevVXfPBkfn2oVmiGmBoTS4v0c1r7bbaxb9ReRy
+         02fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793879246; x=1794484046;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gvWI/tdBBMelOS87owt2y2j7vRTweXagYLYewMb7XOg=;
+        b=BL89LDQCjoy1j2lENiYYrQIs3ZQdhnDR4nml8VmBEhkdrkg0J1M1/NyJ5xkavL1/YI
+         yQwI9+CeZ9d74uKqCTVtrV/PzKMpzqRzKwC8Gsi1AFi1yb5Gx02qXymdAKa9W7MX9X/M
+         znxfPdGL55CniyDH2zqn75IZTMIGM7zaxuu1Td+W0jo77RQOSy0LnLx5FHE/oUC2mW+L
+         VYZ1nYURmatwHj0g6qqbCrOyQFVWaR9LNdYvpBtP2aQ+HmMxKXwM3DFILEqjpiusSZLf
+         SFBhBdjckxP3IW2jZT2TkkUWKW84WVMktnftjSqJAERpM0I+GXcfrKrhrtEOSzPa6GmB
+         Kmpg==
+X-Gm-Message-State: APuU4Z+1NQBbXGkNiWtWLu7eLyb4q4T3Y4/DtQ3CeChbq09BarFpiIJX
+	dsyqy1tkj4rzGTSxIeIbZ0PzQvhqDCV3fJmmg18X6la7tvhlumQGMaqG
+X-Gm-Gg: AYBFou0zKarDaY3F4DDN6mLsVnwMoi9uvppSeQlLDqy3OSdC5FTfJu15di5rBQx5agP
+	UQjaeVC1d0/JZHWgYqP26ciX3JRP6PSZFR0b6kwoK6iCYFbWL/bsWzVKa4ZsjbqT3KqNmRlIX7l
+	aYZkYup1caXTxdad1t0JRqRt5RXZDoS8t1pjvM11CtVv0UUbm6siXjV2suEg1cR0gWEuCtFBG9T
+	Qf9Rxa/OEYB87XpPr3sLLh5eH1diEq/9ri4btVneBkoKntGlRcATyWXpexnB0a5aQm5D0u4aIs7
+	85sSiUNFY6EnYbBySKaOrd0tFh4nYGZ7Mqkeg0CrHZBr+fMeBx5HNtKDoSQFz3R84xME6gQ5u9x
+	n3bd9O0BHVlGGPdD/l3Z9vzY6ML5KdW3svFPrWScxcOIZdMUAiQZ0FpdMf3t+X/rn71Act9EMUQ
+	4mZM8P/+DTP0Vbm3oYeGDN1UlP2ScvQCXbn6qaLc2Y645sg6TCgHpafOiG470+hXpTFMSvz7K3g
+	WPgdMMjju3rhy3192DAR6K2U6Mh5RmwFUiq0t4xW6gMhY1tiThKT2M1XGXUgWGB/vDo8DQf0wHi
+	dJLHzQU3sGeLTvLHifNrxcLv5Cih6x7lNuthz1kU+2mvM/Te3lCmMT3q7H7x0EO8eSIC
+X-Received: by 2002:a05:6830:719f:b0:83b:3feb:4f04 with SMTP id 46e09a7af769-85d36298d84mr14347881a34.4.1793879246149;
+        Thu, 05 Nov 2026 03:47:26 -0800 (PST)
+Received: from localhost.localdomain ([14.116.239.33])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85ef37dc277sm4735727a34.0.2026.11.05.03.47.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 03:47:24 -0800 (PST)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	namangulati@google.com,
+	kuniyu@google.com
+Cc: netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>
+Subject: [PATCH] nexthop: fix null-deref in nexthop_flush_dev on UNREGISTER rebroadcast
+Date: Thu,  5 Nov 2026 19:47:07 +0800
+Message-ID: <20261105114707.3030737-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,117 +100,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-18f8f
 Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+A device unregistered outside its netns teardown can be stuck in
+netdev_wait_allrefs_any() while the pernet exit handlers of its
+netns run to completion.  nexthop_net_exit() frees devhash and
+sets it to NULL.  The rebroadcasts then hit nexthop_flush_dev(),
+which dereferences the NULL pointer, e.g. on mainline v7.4-rc1
+(KASAN build):
 
-IOMMU state can outlive a functional driver, including after failed setup
-and unbind. The active trust level becomes disabled in those states, so
-it cannot describe the authorization governing persistent translation
-state. Infrastructure needs the immutable commitment to avoid treating
-an unbound, previously authorized device as newly untrusted.
+    Oops: general protection fault, probably for non-canonical
+    address 0xdffffc0000000004: 0000 [#1] SMP KASAN NOPTI
+    KASAN: null-ptr-deref in range [0x0000000000000020-0x27]
+    RIP: 0010:nexthop_flush_dev+0xb8/0x240
+    Call Trace:
+     nh_netdev_event+0x250/0x330
+     netdev_run_todo+0xaa2/0xef0
+     rtnl_dellink+0x35f/0xa90
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+The faulting task holds RTNL, so the network stack is left wedged.
+
+Skip the rebroadcasts, which are the only NETDEV_UNREGISTER events
+delivered with reg_state == NETREG_UNREGISTERED.  This mirrors
+commit fd0909e963ed8 ("netdev-genl: ignore NETDEV_UNREGISTER
+rebroadcasts").
+
+This issue was discovered by Tencent CodeBuddy Security.
+
+Fixes: 8a4fc54b07d75 ("net: get rid of rtnl_lock_unregistering()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
- drivers/base/base.h          |  2 --
- drivers/base/trust.c         | 17 +++++++++++++++--
- include/linux/device.h       |  3 +++
- include/linux/device/trust.h |  1 +
- 4 files changed, 19 insertions(+), 4 deletions(-)
+ net/ipv4/nexthop.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index b4441242496f7..dd78857abf74f 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -113,7 +113,6 @@ enum device_trust_state {
-  *			   dev_err_probe() for later retrieval via debugfs
-  * @device: pointer back to the struct device that this structure is
-  *	    associated with.
-- * @trust_committed_level: operating level retained across bind transactions
-  * @trust_state: policy admission state
-  * @trust_initialized: bus and boot policy have initialized admission state
-  * @trust_policy_override: explicit policy prevents deferred driver boot policy
-@@ -133,7 +132,6 @@ struct device_private {
- 	const struct device_driver *async_driver;
- 	char *deferred_probe_reason;
- 	struct device *device;
--	enum device_trust_level trust_committed_level;
- 	enum device_trust_state trust_state;
- 	u8 trust_initialized:1;
- 	u8 trust_policy_override:1;
-diff --git a/drivers/base/trust.c b/drivers/base/trust.c
-index b38f69e440eae..4bcda888591a5 100644
---- a/drivers/base/trust.c
-+++ b/drivers/base/trust.c
-@@ -88,10 +88,10 @@ int device_trust_prepare(struct device *dev, const struct device_driver *drv)
- 	if (level != DEVICE_TRUST_ADVERSARY && level != DEVICE_TRUST_FULL)
- 		return -EINVAL;
- 	if (dev->p->trust_state == DEVICE_TRUST_COMMITTED &&
--	    dev->p->trust_committed_level != level)
-+	    dev->trust_committed_level != level)
- 		return -EINVAL;
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 42e55b5a755ee..1eba7026abcae 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3996,7 +3996,16 @@ static int nh_netdev_event(struct notifier_block *this,
  
--	dev->p->trust_committed_level = level;
-+	WRITE_ONCE(dev->trust_committed_level, level);
- 	dev->p->trust_state = DEVICE_TRUST_COMMITTED;
- 	WRITE_ONCE(dev->trust_level, level);
- 	return 0;
-@@ -119,6 +119,19 @@ enum device_trust_level device_get_trust_level(const struct device *dev)
- }
- EXPORT_SYMBOL_GPL(device_get_trust_level);
- 
-+/**
-+ * device_get_committed_trust_level - Return the lifetime trust commitment
-+ * @dev: device to inspect
-+ *
-+ * Return: %DEVICE_TRUST_DISABLED before admission, otherwise the level fixed
-+ * before driver setup. The commitment survives setup failure and unbind.
-+ */
-+enum device_trust_level device_get_committed_trust_level(const struct device *dev)
-+{
-+	return READ_ONCE(dev->trust_committed_level);
-+}
-+EXPORT_SYMBOL_GPL(device_get_committed_trust_level);
-+
- /**
-  * device_is_adversarial - Test whether a device is operated as an adversary
-  * @dev: device to inspect
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 5bd0cee874731..65ea07c9ac35b 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -699,6 +699,8 @@ enum struct_device_flags {
-  * @trust_policy: Requested operating policy, resolved before driver probe.
-  * @trust_level: Active trust level while a driver is bound, see
-  *		device_get_trust_level().
-+ * @trust_committed_level: Operating level retained across bind transactions,
-+ *		see device_get_committed_trust_level().
-  * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
-  *
-  * At the lowest level, every device in a Linux system is represented by an
-@@ -804,6 +806,7 @@ struct device {
- 	enum device_removable	removable;
- 	enum device_trust_policy trust_policy;
- 	enum device_trust_level trust_level;
-+	enum device_trust_level trust_committed_level;
- 
- 	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
- };
-diff --git a/include/linux/device/trust.h b/include/linux/device/trust.h
-index 552af3e73d4fc..19052e3301729 100644
---- a/include/linux/device/trust.h
-+++ b/include/linux/device/trust.h
-@@ -42,6 +42,7 @@ void device_trust_init(struct device *dev);
- bool device_trust_may_claim(const struct device *dev,
- 			    const struct device_driver *drv);
- enum device_trust_level device_get_trust_level(const struct device *dev);
-+enum device_trust_level device_get_committed_trust_level(const struct device *dev);
- bool device_is_adversarial(const struct device *dev);
- 
- #endif /* _DEVICE_TRUST_H_ */
-
+ 	switch (event) {
+ 	case NETDEV_DOWN:
++		nexthop_flush_dev(dev, event);
++		break;
+ 	case NETDEV_UNREGISTER:
++		/* netdev_wait_allrefs_any() rebroadcasts NETDEV_UNREGISTER
++		 * while waiting for the last references to be dropped; the
++		 * netns and its nexthop pernet state may already be torn
++		 * down by then.
++		 */
++		if (READ_ONCE(dev->reg_state) == NETREG_UNREGISTERED)
++			break;
+ 		nexthop_flush_dev(dev, event);
+ 		break;
+ 	case NETDEV_CHANGE:
 -- 
-2.56.0
+2.43.7
 
