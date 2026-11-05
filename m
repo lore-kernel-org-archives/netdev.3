@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793920809;
-	b=J4aLJ+wDM+zeEWoHUEvHLPhDT4EkFv0xmZblTMz2l84uxa7uw9X95XoL6nfl+OJConQF
-	 OLT2uCKaXwhzu6HPH4kGc7m64JCG11xzoPZ29So5Nj7pzSw4HnmDHIToUT9unthV0Qbsp
-	 V4gZf+wEo6TUqg2hd/F4u1U9u1HS+njPSWcIs1NDJPkdyl5nK8yfu1Lc0ARKM7wKh44tl
-	 LfD/jN853qBdg86wpWqvha+eW3ozv5KLp3Z8DSLteQ5IC7qyEpSYSpkxwOkefkGn/cenc
-	 lvtuzQJSmUxsbrIreuOVGdFdM17NVe4DgEzPDAGsAuZzNDXP+INbnoD/qj75GtKTvhg==
+	t=1793920810;
+	b=oty8uy1KVwNsKSmMhqaj2EkUpDIE6uuT6ru+hJVeH+EyDgJYL960HY/SClHWVjnrPnI5
+	 3f1Yxa7Qq30se33zDBepZZ+jDe6Jt/DlKK2TXDLmiFOQhuoHJ6IOodt9C3o1H7dRnvzlX
+	 oRnCh7JJKq/mWqS6g2rFmv8GJ5qbBJThPCYtmGTB3cH8aSy03D1v1OGWjxwuEODlj+l1t
+	 hkAP16hp1sqHDdvFt2DxKRNr+bwMb2pi5XH3Y41QcvXwOUxcFwMl2DTO13pNlRuaQWWWt
+	 kOCtXVQv7C4L8xHcEp9VGf78f7TC8TB/vVSjPIsyt64GnaN45RfU/IDp/6zJE0IM8ug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793920809;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793920810;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=zq9Swcff8lhyhFk7jolnkD6DEE09C+6F+9QpZgW9m7Y=;
-	b=a0KmnbJaOU3ai+8SYux6r/EbhsX43NRSqV/20HErvY1HHeJI6qiNHPQKJeEhjQ7yxbyC
-	 pXrqtCpUm3XfzVvrwBUBByQ4ymbty7O8NzRuQqWwVtW58bOQVNxVquubqSZQhwObROaWg
-	 /CVpelFuM65dkgfkMIUtGrUE9IGNhHWbwP0KBcWJlH0QRBLLV5XdbnuU3rYxP1EgPu+ih
-	 Si8dP2MJBRbEqcBvdZsMKgA36+f2rVrmu5VDK4AQZ9UAfnBHhn0AsafJlp8Ar+43fysYd
-	 KfgPS+OEJ8ogxOY9BFK63zy6UxFWDV13PACJ7HFvE2X5TCmhiEOFIW49YOF+3bSUq4g==
+	bh=I3LriLqt5gfNkaS3ODQStGRNo7oBu1IRuFacVbTR7Sk=;
+	b=eAYSTB7yjpexYf5YonOtcvKojbIIKIt8v+L9Ui50Xw2GDReqFBvSybMpUPQpEgcN9Lp0
+	 WwyNT3nDeuE00aURcr1BqWxqb2VYcpOBzYIvGRQgDEqfE0y+zcpfxcLxggys0t20TAl6i
+	 lPmjDgoeNnWuk3WatCT6pkzw3Wtk0uhHCGfHyqa+iBJl348PXM0XvDbzY2BqanHPwICJW
+	 YsNkvzLAqfH3Yh0WEFkMM6m/hPptPH63dIzm3+vPg7xZyJM3Mx7innNH11hBCh6oipGa0
+	 u1ZUJcwcLllVI496HjU8WsJ5gONLTygBrb+hAZMu9Tp6kwgkz9H1NfwlhvtXcOj3MAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LMKYUgSX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cazbQAW2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2367606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 23:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AB8606A332;
+	Thu,  5 Nov 2026 23:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LMKYUgSX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691291F0089F;
-	Thu,  5 Nov 2026 23:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cazbQAW2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A631F0089F;
+	Thu,  5 Nov 2026 23:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793920808;
-	bh=zq9Swcff8lhyhFk7jolnkD6DEE09C+6F+9QpZgW9m7Y=;
+	s=k20260515; t=1793920809;
+	bh=I3LriLqt5gfNkaS3ODQStGRNo7oBu1IRuFacVbTR7Sk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LMKYUgSXLlINkjDthegEATNH5O94tzwkoa+Lrox1lvhy9Ko32MabMeKOEmGHOtp6h
-	 p4NJgCwJj62cUGFkNyckw5vj5y5g3farAcCGQJ0HofYGyMldbJxVCTIEmlM1Lco3vX
-	 TKgQn0q9kV+rfQlT94MlXzrZDsFHPJqmWY0oREvJ+2lEh9W/h4Dc5V6FYhzGHK3QmU
-	 IEaUyib5IpskeEOrAq7PJHhz7egBP+4jSEXN8wQ0RSOL64pk0ah5V9ALBRdRRbZ8Ct
-	 ndjH8mHG5O3Hy1pvwjN8m0R5hu/NKQA3HcPeyspXhgSzIYVyABD3eZSgcLXMrUWfB0
-	 dAc1EHiWI+T/A==
+	b=cazbQAW2XKEPN8Q76nPW8PkF45tZBYwYH7TyB4enSr+6rPfO8NBgC0KvaWkZhqvC0
+	 HoT0+/uPKEIxMUEW2mwy20b0G5AA58hXZfvZHFYU6noRaQpldXB+Sas5Y4cn+V4A6x
+	 xu0cldn3SOCOJOTjbwjNe0V3PXMH9Cqa/HE6hFyhUdphG6bRQqAGmmOQg0A1/mIS1+
+	 fC5ORl3+r/8XFYCi5ewYlBMOTfi6IXLSaKhwFQR3C1f0CsGhnviSKZfQGmT8cCfkcG
+	 N/uOecMmZk1LJ4VLGdPNYW9at92fHQ6yG0jjgGOaMeLbc6UAveVdifqqw4OEILQVyE
+	 4AiUvXEx0VA8w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E1B7391B1AB;
-	Thu,  5 Nov 2026 23:20:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D837A391B1AB;
+	Thu,  5 Nov 2026 23:20:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,54 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] ice: E825: PHY restart fixes
+Subject: Re: [PATCH net-next v2] netdevsim: reject port addition and clean up
+ ports after a failed reload
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179392080717.233492.8399420640184326961.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Nov 2026 23:20:07 +0000
-References: 
- <20261029-jk-e825c-critical-timestamping-fixes-v1-0-72128d1dd928@intel.com>
-In-Reply-To: 
- <20261029-jk-e825c-critical-timestamping-fixes-v1-0-72128d1dd928@intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, poros@redhat.com,
- netdev@vger.kernel.org, grzegorz.nitka@intel.com,
- aleksandr.loktionov@intel.com, alexander.nowlin@intel.com,
- anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
- przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
- arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
+ <179392080842.233492.7945739633569188610.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 23:20:08 +0000
+References: <20261030001444.289973-1-omermetekaya0@gmail.com>
+In-Reply-To: <20261030001444.289973-1-omermetekaya0@gmail.com>
+To: =?utf-8?q?=C3=96mer_Mete_Kaya_=3Comermetekaya0=40gmail=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, jiri@resnulli.us,
+ syzbot+88435e204734072bf39a@syzkaller.appspotmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 29 Oct 2026 11:55:00 -0700 you wrote:
-> This is a subset of the timestamp processing logic fixes that were
-> previously posted at [1] and [2]. It focuses specifically on the E825 timer
-> restart procedure, including three fixes which we have deemed the most
-> critical for reaching customer deployments due to recently reported issues.
+On Fri, 30 Oct 2026 03:13:20 +0300 you wrote:
+> nsim_drv_port_add() does not check devlink_is_reload_failed(), so ports
+> can be added via new_port after a failed reload.  nsim_dev_reload_destroy()
+> returns early in that state, leaving them behind.  nsim_drv_remove() then
+> hits WARN_ON in bpf_offload_dev_destroy() and a subsequent use-after-free.
 > 
-> First, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
-> register. This register controls whether a captured timestamp will have its
-> "valid" bit set. A timestamp captured while this register still increments
-> the internal counter. However, since the valid bit is clear, reads of this
-> timestamp will not trigger the internal counter decrement, leading to an
-> off-by-one error in the hardware logic. Instead of clearing the offset
-> ready register, disable timestamp requests purely in software and mark
-> outstanding timestamps as stale to prevent reporting timestamps that should
-> be considered valid.
+> Block port creation with -EIO when reload has failed, and delete any
+> leftover ports on the early-return path as a safety net.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/3] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
-    https://git.kernel.org/netdev/net-next/c/ee1aa5830674
-  - [net,2/3] ice: E825: clear PHY_TSTAMP memory prior to soft reset
-    https://git.kernel.org/netdev/net-next/c/dbc36cb5c8d7
-  - [net,3/3] ice: E825: perform a soft reset when starting the PHY timer
-    https://git.kernel.org/netdev/net-next/c/24e335fff462
+  - [net-next,v2] netdevsim: reject port addition and clean up ports after a failed reload
+    https://git.kernel.org/netdev/net-next/c/39c23556e79f
 
 You are awesome, thank you!
 -- 
