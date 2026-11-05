@@ -1,54 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793913452;
-	b=PPLfcFFKj4Pmr4D4bdhBofX1Mib3Ql1wv6GllgTppcgDyQgqKTUvDC+SiUPe7KPIqV/h
-	 ISsKjo5ZJsKNPjlaLKyY0kKiPIp9ujF2cSn6TdDzExtEpHL7kYZmhFs2T8oo59C1+e3yI
-	 hGuoS60rWtyaTUdLJxUAqBOcYswyLOUECX+tc2Kvn+mM8ElkfqCKxlstb5qT/HnjGQuX2
-	 OBsiBDfo+5Pwnw1YR067+wKhbezWwfkQDErKbw07n7XGYU5Dzlr6FDsF5BHmOkE7c+a/p
-	 t2nQ5Al3xecOQzlQc9WBgprjQxe0ZV9yVwazN8CTNY1WH0k+U392LFfft8/sIlAF/ow==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793913452;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=kKvT1WZP63DDiif92MikpmY+JmPHkMKG8ncW+5LMjTE=;
-	b=mljm0Pr2JfebsxhcF0l8kylT2v7uUQMHWnnPCDZV43RKMzvboBZ8sTHwJstOs1Z+91J7
-	 sFMchWhzrTjUNfXXoJSPLRTLEckPAhp0rUFCnAkdS3NqQZ8q02GuOWbFBT94qrheNxOOQ
-	 3mU1EhwfUyZG/dK9Ukfq/gXgeM6azm6CHLvy6jwvleRSlElHoROvxsP5oi2TNGdND7GWz
-	 tEmCNaU6OxpGU37xGKNYritP50zha+5aKN+9bgJE9xnvKBcXprHCebtLk90wSrlDMTbXj
-	 3AmBcZ3qDdkQhKCLfXxr0EDz3QVahmFjNWOxBbh6UtU0zE5joKqIqJb83zeWLQi0tIw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.199
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793913459;
+	b=qlF5wTx0un+Yprc82JyUg8sf5W9DQXO+qvoU/FJcepI5XLtVe5xinUVnBy4lxq8MWnIe
+	 DQ3WI+Sw2gejIwW697dRub8Cm+5YaSauJwkSN0DvDeobkB76xt5No9LFVNnawNDt3Gbta
+	 Xo5fYmnVAISQYq+Z8Mkvyejhqi/zzPJFu9dC9GGV0dxVoW8RxY8r0t1UzVSXwv+Y6zZ4W
+	 ZY0b0pu6Y3798AhUlZBoeda/P+w8GSmavkzUBw1zUFhAzPZUwlHHeM7cPpKAfAnFtBch5
+	 2dNlqTbfzKSqP3CIyD/VyNJeENzfdleJCPUJdabtPPtNOW+wGXVklgfz0dDKyRJpB6g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793913459;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type:X-NV-OnPremToCloud:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=WDCMr7D7H+hnRy6Hx7D7IU0YogpJvB1INW2oxBpsZOA=;
+	b=HOisCjhjFUUjf/oQkGa1ScPoccjC1TH3/iciNRG1pYsRA9sC9oIzVBy90ZKT0vjp8HLX
+	 WwLHnq+HqvjasaVxuXSkTOWRpcf8UMHebcG9q4SVOJBWBX/y20/Dvpd+vLvFYLY9GsCNv
+	 4psFFs8LA1bMBzF3NlkmjYozsK77fnpwTzLuNp1C3E5IOrmjHElWUEgqAmZ+NphGk7CP5
+	 9XMfjIzas095Igs9KvCX5e8pufYoUEqdeh5S/2Ficqj/p6ywB4zHSTMw3ksaBYGDlUyoG
+	 1gnU8AzsydpLl/F1dTNgNDKywDck4JxKZvFO/bDPHcwPjgc9EgfUWXrK+b6JiFh12WQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="p2iumcs/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.21
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013021.outbound.protection.outlook.com [40.107.201.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF7606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:17:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FBF7606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab4f652f9bso1832763b6e.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:17:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793913451; x=1794518251;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kKvT1WZP63DDiif92MikpmY+JmPHkMKG8ncW+5LMjTE=;
-        b=J2Snr+uIwFvM0NEFA3PEKDyQ+t7rRdQGM5oY79aCFtA+y0dD98W6UOikjw8UFPj9PL
-         4HU01bJ7OJuoRvQ7ROrwgI292RiL7j76oE9EjjR7d5d4EPs/VXxN/Z8Mj6N0ZQzS0lKc
-         orfRlN/BtyPbAE/pDcrsjxagNDI0ApDl84jSG2QNmtMNrtvyHDI9FysCpYGI1TujKfxv
-         NDtyFXx0BOVWi2GU+ANGaW7SFFRO0kjzW7iNKGKV77hB+PsIVaGe1hI3hp6gGQ4Jr/mO
-         jZbFYCm0TybkQQXy0Vgj6HNDxp35DsmVs9M8M6QOi3is0iPH4GDcKZ1BPmxLfUbp0M9y
-         nEjg==
-X-Forwarded-Encrypted: i=1; AKwUvByFNJabGc4KfwcjJvu15NZcgYrSrJF9TPWLUdUOojCA6+TUHeYw5Heo1VmQ5X1mKbc6RFqqPU4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9Z8BLrREGA0eg3Z3gnsJBsRfByxXcOOWofKxN3BxTRLan+ET7X
-	7sec8cuiaKB3Uvpv7/dyzbMSv1ix/aztQZU2DEabhNqH/3+KhNic95rS8bIDks8iEe2GJR9t9x1
-	GVIzPjBz1txfkmxAJ55BoYBl/Vtk4ndaaKcQ0OFwvZa8hzltd6Ws//6xp6Po=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54683606D806;
+	Thu,  5 Nov 2026 21:17:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54683606D806
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=p2iumcs/
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K6rpsb9RUm2+bgyE8+AYJp9Pb2hg1sa2h7xXaM7qlM9/cgKG44Ah1ybV7hMEQLAdu0kQXAuOPDmbQSxkORHTfaD4MvSa/5WTHkBVH059kQvv34zDYs5bLixMSrwYJeXPupykL0Ge21JiIMXtmKF3p7lxZx6kN96Q7ZiDcrdseio+jCTQeRtBxbEQjCTaAb+QWjQce656hLPvUmdjJl7Xm3yI3/O2QpCyav+bZxJxK56/RgSP1xc9NAAAgWjI17PEHTclmuUjbEdgVLPItEUqk4MkC5K/BFOrkO3DShZzDqNOxuQy2J5HEAHQoNa8rma8NHYVWLExZbgxB1B2rVzSzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WDCMr7D7H+hnRy6Hx7D7IU0YogpJvB1INW2oxBpsZOA=;
+ b=F4r/1D9OmrMAZNVsGkfgCU4kq1hh2InDJTiIZNjerM4hEl0hzlV/x39hOMdNNe9YSecgCnTBjfx+8SxB+Pg5ln/Oc8MuOBLfzVNdxf97R+4etXsrWOIkLaP5E1cAhXEadVPFiyP412KL+yPgFOaHbUA30KLGtIqQAPhTG87fycu9pKwG347nKxxJOUldSkso+LowhPlTcp8V0OQuxSAJM2Dr8eHZifuNSUhWl0D7BoWShclb0T8Vy4bLK8gi/kbvYOYrfuiqLzULTkBgiDO7igJMgK0WIwoKQnXBVWm4qu+JhRUoWEt903bzAPydtMVW9cXJW4R7r4564vjceRrw/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WDCMr7D7H+hnRy6Hx7D7IU0YogpJvB1INW2oxBpsZOA=;
+ b=p2iumcs/rkCig4q66V5sH4T78fJRsz/DVIXQD265k6HMOsUdN7MwLE2FhMAnyQirSrN88IkziuL+l1xB/+Kvza4tcvrCbiR+Xw132tpAJGy1ALocpp+H0P3DM/hlCe+V1HY6gRuyYXdWtZUZ7KwOlKAXzoQnm8po9XsKV7zVDzEVB9Wjh7apoRjcoZpH8VVyUMtbzVjJYWwmQT+bNAMEQGpCMacD2ZZFkt7WLteMFmXsi+oYFnenfTw+IayAiHdwRO/k488spFQyw1RHI8o2QFeC04+LRDPOImXcBXJVTp94yXhTrl6sPv+u3SLBfjvKxsQ26bO3gAHYNyRkpN/ilQ==
+Received: from CH0PR13CA0037.namprd13.prod.outlook.com (2603:10b6:610:b2::12)
+ by CH3PR12MB7569.namprd12.prod.outlook.com (2603:10b6:610:146::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Thu, 5 Nov 2026
+ 21:17:32 +0000
+Received: from CH2PEPF000166BF.namprd04.prod.outlook.com
+ (2603:10b6:610:b2:cafe::4a) by CH0PR13CA0037.outlook.office365.com
+ (2603:10b6:610:b2::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4 via Frontend Transport; Thu, 5
+ Nov 2026 21:17:32 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH2PEPF000166BF.mail.protection.outlook.com (10.167.252.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Thu, 5 Nov 2026 21:17:30 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
+ 2026 13:17:09 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 13:17:08 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
+ Transport; Thu, 5 Nov 2026 13:17:02 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Andrea Parri <parri.andrea@gmail.com>, Boris Pismenny <borisp@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, "Gal
+ Pressman" <gal@nvidia.com>, Jeroen Massar <jmassar@nvidia.com>, Jianbo Liu
+	<jianbol@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, Leon Romanovsky
+	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
+ Haddad" <phaddad@nvidia.com>, Prathamesh Deshpande
+	<prathameshdeshpande7@gmail.com>, Raed Salem <raeds@nvidia.com>, Roi Dayan
+	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drory
+	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net V3 1/8] net/mlx5e: Release IPsec root table reference on RX setup failure
+Date: Thu, 5 Nov 2026 23:16:29 +0200
+Message-ID: <20261105211637.1083978-2-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20261105211637.1083978-1-tariqt@nvidia.com>
+References: <20261105211637.1083978-1-tariqt@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,155 +125,163 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1985:b0:55c:8ee:a9c4 with SMTP id
- 5614622812f47-567e115e036mr383926b6e.43.1793913451254; Thu, 05 Nov 2026
- 13:17:31 -0800 (PST)
-Date: Thu, 05 Nov 2026 13:17:31 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aecf26b.382bd2ce.33e041.0002.GAE@google.com>
-Subject: [syzbot] [netfilter?] WARNING in xt_dnat_target_v2
-From: syzbot <syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com>
-To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF000166BF:EE_|CH3PR12MB7569:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ae467eb-40cb-43c2-7d72-08df3b8233cd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|36860700016|82310400026|7416014|376014|18002099003|22082099003|11063799006|56012099006|261009223027099003|261028144727099003|261026140227099003|261021121427099003|261022075727099003|261021123027099003|261022105027099003|261102123227099003|10067099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	ckCs3E+Ej+2qfx5xOd2FVIltV9fO9TGNiAQ5UVkErgCBU4LygKMjNYeVu0x69y4g+c4DGw5/zSLrRt9/ZSotzxEyW5+364oLpRfuMwjgF29w6hUfcCLmc5cbCDznpDviZngbwIRGU/YfxZHZwnGEknn09tg6P1Pdx4dJc5edcs+0W04c4aq77wxZwOE0RjtRg8kxqi094hIvdlDeZeJaVbyB1byEzlyEsvzkwjjl+KEAEWK1CslVY8u0jVZPbcHORquB0+EkK/g+wZB6JrGGBUnrbEll9DFIPsvnJIY/d6ICDT25o1gC+d+vWE16DjLdGo94Tx/xOHfg6cmQl+Aqmv67JSNIcNpUTqOn/hjH7ctvLz10rcoXefP/ywy4FJcmehqJfRyOKX8oRQbUkAQVqR+hoXoCrF5MWip2x4HPhS7LGkYS4mLBV5CSA7RCVw00LxdQhtd7CYBJdz/AO/u9tedGnCcXvyG7zm11wTYhDX69mYYJBuXTXTjmqtxvsX6Olm22qGcFF4BVP1Nevc/xSgnVxz2yQwzKF/oz4hva9rMMrq1g5+wYop294YvQuuvZQDZzOqliu13tAjSPJJiNy09/SZRkBMy7lStP7q+8S9aHwGVYh4JMa3nVWgMAne/a8u38Jo5V1nG1L77i1P/4rMa6O80F3buAB583uXOumYVl3fK31sJs+NM5chyqh6P4F65fthBUBe03s2bjS1C1pw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(36860700016)(82310400026)(7416014)(376014)(18002099003)(22082099003)(11063799006)(56012099006)(261009223027099003)(261028144727099003)(261026140227099003)(261021121427099003)(261022075727099003)(261021123027099003)(261022105027099003)(261102123227099003)(10067099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	OeU9+TTcIeR/OKrb+kCxcqtWz9v0tLmK40E5OBNJzGko6wlTvsKMDktBw6a2B+5dceFjr6ebTNfXPYRQcNmRd61GftKzkBPTzbEg8wnVrWIsc6h31FcQnNmTX/xgtGlMu8kJuC3WIrzMFO19Ru9Btg1C0kjPupOFPZAx49cPg5nX3eJlHwN3nYBbK4QiP7omzFCO6p1jE4Cxl+8nBEFv7Rtt6ivlIvJbvxrCRXceTrVpfTWoN/KnNC0e2VPSVcOrrH25Q0fGF07hgOxN+NXbhVGoU7QGYb2MaYoXCoZxLx/LX/ddrTkNSydLwe3RmpWmNvWlo3V0GxiFoA7Ggrq4RIcLlPhf59A+TFJCpLx1g/TU5Fh5k30shB6Ew5Xm9bDHiMqwTfhrFaT7p7Y7dMzu9LPtzMg7RO8LqbKDOBJWw1VfSUML1zskfNnbqAIfMz8B
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 21:17:30.9324
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ae467eb-40cb-43c2-7d72-08df3b8233cd
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF000166BF.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7569
 
-Hello,
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-syzbot found the following issue on:
+Switchdev RX setup takes a root-chain table reference before creating
+its flow tables. If creation fails, rx_get() returns without
+incrementing the RX reference count, so rx_destroy() never releases the
+chain reference.
 
-HEAD commit:    787268686c64 ipmr, ip6mr: queue netlink route queries out ..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=170b444e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d30e1495ee3ac817
-dashboard link: https://syzkaller.appspot.com/bug?extid=2e819f6641708bb6ab9d
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=108b444e580000
+Extract the cleanup logic in a counter-partner to the function acquiring
+the root table ref, and call it on error to properly release everything.
+Also call it from the normal destroy path to reduce code duplication.
 
-AI-generated root cause summary:
-When an incoming TCP packet is rejected by an nftables reject rule
-(nft_reject_ipv4_eval), nf_send_reset() creates a TCP RST reply and attaches the
-original packet's conntrack entry via nf_ct_attach(), marking its ctinfo as
-IP_CT_RELATED_REPLY. As the RST packet traverses the NF_INET_LOCAL_OUT hook,
-nf_nat_ipv4_fn() passes it to nf_nat_inet_fn() because it is not an ICMP packet.
-In nf_nat_inet_fn(), IP_CT_RELATED_REPLY falls through to evaluation of
-uninitialized NAT mappings, executing rules in the LOCAL_OUT NAT chain. If the
-chain includes an xtables DNAT target (evaluated via nft_compat),
-xt_dnat_target_v2() triggers WARN_ON because its assertion checks only for
-IP_CT_NEW or IP_CT_RELATED, omitting IP_CT_RELATED_REPLY.
+mlx5_esw_ipsec_rx_status_pass_dest_get() ignored chain table acquisition
+errors, returning success with an error pointer as the destination. The
+new unwind could then release a reference that was never taken.
+Propagate the error so cleanup only runs after a successful get.
 
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=2e819f6641708bb6ab9d
+Discovered by Sashiko. Not triggered as it's an unlikely error path.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-!(ct != NULL && (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED))
-WARNING: net/netfilter/xt_nat.c:154 at xt_dnat_target_v2+0x97/0xc0 net/netfilter/xt_nat.c:153, CPU#0: syz-executor145/6031
-Modules linked in:
-CPU: 0 UID: 0 PID: 6031 Comm: syz-executor145 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/15/2026
-RIP: 0010:xt_dnat_target_v2+0x97/0xc0 net/netfilter/xt_nat.c:153
-Code: 74 22 41 83 e7 07 41 83 c7 fd bf fe ff ff ff 44 89 fe e8 ac 1e 90 f7 41 83 ff fe 72 25 e8 91 19 90 f7 eb 09 e8 8a 19 90 f7 90 <0f> 0b 90 4c 89 f7 48 89 de ba 01 00 00 00 5b 41 5e 41 5f e9 21 17
-RSP: 0018:ffffc90000006de0 EFLAGS: 00010246
-RAX: ffffffff8a38fc64 RBX: ffff8880614cd418 RCX: ffff88807c979f40
-RDX: 0000000000000100 RSI: 0000000000000100 RDI: 00000000fffffffe
-RBP: ffffc90000006ed0 R08: 0000000000000100 R09: 0000000000000000
-R10: ffffc900000070b0 R11: ffffffff8a38fbb0 R12: ffffffff919e5438
-R13: 1ffff92000000dc4 R14: ffff8880247c8900 R15: 0000000000000001
-FS:  0000555563505400(0000) GS:ffff88812361d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe16ab8280 CR3: 0000000034dea000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- nft_target_eval_xt+0x1ad/0x2b0 net/netfilter/nft_compat.c:100
- expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
- nft_do_chain+0x48d/0x1b10 net/netfilter/nf_tables_core.c:285
- nft_nat_do_chain+0x360/0x4b0 net/netfilter/nft_chain_nat.c:32
- nf_nat_inet_fn+0x5de/0xb50 net/netfilter/nf_nat_core.c:931
- nf_nat_ipv4_fn net/netfilter/nf_nat_proto.c:583 [inline]
- nf_nat_ipv4_local_fn+0x18c/0x570 net/netfilter/nf_nat_proto.c:738
- nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
- nf_hook_slow+0xc5/0x220 net/netfilter/core.c:633
- nf_hook+0x22a/0x3a0 include/linux/netfilter.h:280
- __ip_local_out+0x558/0x6a0 net/ipv4/ip_output.c:120
- ip_local_out+0x2a/0x190 net/ipv4/ip_output.c:129
- nf_send_reset+0xd8d/0x1530 net/ipv4/netfilter/nf_reject_ipv4.c:339
- nft_reject_ipv4_eval+0xf6/0x230 net/ipv4/netfilter/nft_reject_ipv4.c:30
- expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
- nft_do_chain+0x48d/0x1b10 net/netfilter/nf_tables_core.c:285
- nft_do_chain_ipv4+0x195/0x290 net/netfilter/nft_chain_filter.c:24
- nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
- nf_hook_slow+0xc5/0x220 net/netfilter/core.c:633
- nf_hook include/linux/netfilter.h:280 [inline]
- NF_HOOK+0x21f/0x3c0 include/linux/netfilter.h:323
- __netif_receive_skb_one_core net/core/dev.c:6433 [inline]
- __netif_receive_skb net/core/dev.c:6546 [inline]
- process_backlog+0xa6b/0x18b0 net/core/dev.c:6897
- __napi_poll+0xaa/0x330 net/core/dev.c:7977
- napi_poll net/core/dev.c:8040 [inline]
- net_rx_action+0x61d/0xf50 net/core/dev.c:8197
- handle_softirqs+0x265/0x8d0 kernel/softirq.c:669
- do_softirq+0x77/0xd0 kernel/softirq.c:569
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
- __dev_queue_xmit+0x1efb/0x3920 net/core/dev.c:5121
- neigh_output include/net/neighbour.h:554 [inline]
- ip_finish_output2+0xc4b/0x10b0 net/ipv4/ip_output.c:236
- NF_HOOK_COND include/linux/netfilter.h:314 [inline]
- ip_output+0x29f/0x450 net/ipv4/ip_output.c:437
- __ip_queue_xmit+0x10df/0x1b10 net/ipv4/ip_output.c:533
- __tcp_transmit_skb+0x2d06/0x47b0 net/ipv4/tcp_output.c:1773
- tcp_transmit_skb net/ipv4/tcp_output.c:1790 [inline]
- tcp_connect+0x1a7e/0x4990 net/ipv4/tcp_output.c:4451
- tcp_v4_connect+0x1264/0x1b20 net/ipv4/tcp_ipv4.c:348
- __inet_stream_connect+0x28c/0xf50 net/ipv4/af_inet.c:684
- inet_stream_connect+0x66/0xa0 net/ipv4/af_inet.c:755
- connect_socket net/socket.c:2143 [inline]
- __sys_connect_file net/socket.c:2168 [inline]
- __sys_connect+0x316/0x450 net/socket.c:2185
- __do_sys_connect net/socket.c:2191 [inline]
- __se_sys_connect net/socket.c:2188 [inline]
- __x64_sys_connect+0x7a/0x90 net/socket.c:2188
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f81c24b2ff7
-Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007ffe16aca280 EFLAGS: 00000202 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000555563505400 RCX: 00007f81c24b2ff7
-RDX: 0000000000000010 RSI: 00007ffe16aca300 RDI: 0000000000000005
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00000000d2040002
-R13: 00007f81c24eed50 R14: 00007ffe16aca300 R15: 00007f81c24ec06c
- </TASK>
-
-
+Fixes: 1762f132d542 ("net/mlx5e: Support IPsec packet offload for RX in switchdev mode")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 20 +++++++++++--------
+ .../mellanox/mlx5/core/esw/ipsec_fs.c         | 15 ++++++++++++--
+ .../mellanox/mlx5/core/esw/ipsec_fs.h         |  6 ++++++
+ 3 files changed, 31 insertions(+), 10 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 8ffa8068e90a..fd9fbf359333 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -720,6 +720,16 @@ static void ipsec_rx_sa_selector_destroy(struct mlx5_core_dev *mdev,
+ 	mlx5_destroy_flow_table(rx->ft.sa_sel);
+ }
+ 
++static void
++ipsec_rx_status_pass_dest_put(struct mlx5e_ipsec *ipsec,
++			      struct mlx5e_ipsec_rx *rx,
++			      u32 family)
++{
++	mlx5_ipsec_fs_roce_rx_destroy(ipsec->roce, family, ipsec->mdev);
++	if (rx == ipsec->rx_esw)
++		mlx5_esw_ipsec_rx_status_pass_dest_put(ipsec);
++}
++
+ static void rx_destroy(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
+ 		       struct mlx5e_ipsec_rx *rx, u32 family)
+ {
+@@ -739,13 +749,7 @@ static void rx_destroy(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
+ 
+ 	ipsec_rx_policy_destroy(rx);
+ 
+-	mlx5_ipsec_fs_roce_rx_destroy(ipsec->roce, family, mdev);
+-
+-#ifdef CONFIG_MLX5_ESWITCH
+-	if (rx == ipsec->rx_esw)
+-		mlx5_chains_put_table(esw_chains(ipsec->mdev->priv.eswitch),
+-				      0, 1, 0);
+-#endif
++	ipsec_rx_status_pass_dest_put(ipsec, rx, family);
+ }
+ 
+ static void ipsec_rx_create_attr_set(struct mlx5e_ipsec *ipsec,
+@@ -1115,7 +1119,7 @@ static int rx_create(struct mlx5_core_dev *mdev, struct mlx5e_ipsec *ipsec,
+ err_fs_ft_sa_sel:
+ 	mlx5_destroy_flow_table(rx->ft.status);
+ err_fs_ft_status:
+-	mlx5_ipsec_fs_roce_rx_destroy(ipsec->roce, family, mdev);
++	ipsec_rx_status_pass_dest_put(ipsec, rx, family);
+ 	return err;
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+index ab50d2c734ed..f8c97954b6ea 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+@@ -34,12 +34,23 @@ void mlx5_esw_ipsec_rx_create_attr_set(struct mlx5e_ipsec *ipsec,
+ int mlx5_esw_ipsec_rx_status_pass_dest_get(struct mlx5e_ipsec *ipsec,
+ 					   struct mlx5_flow_destination *dest)
+ {
+-	dest->type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
+-	dest->ft = mlx5_chains_get_table(esw_chains(ipsec->mdev->priv.eswitch), 0, 1, 0);
++	struct mlx5_flow_table *ft;
++
++	ft = mlx5_chains_get_table(esw_chains(ipsec->mdev->priv.eswitch),
++				   0, 1, 0);
++	if (IS_ERR(ft))
++		return PTR_ERR(ft);
+ 
++	dest->type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
++	dest->ft = ft;
+ 	return 0;
+ }
+ 
++void mlx5_esw_ipsec_rx_status_pass_dest_put(struct mlx5e_ipsec *ipsec)
++{
++	mlx5_chains_put_table(esw_chains(ipsec->mdev->priv.eswitch), 0, 1, 0);
++}
++
+ int mlx5_esw_ipsec_rx_setup_modify_header(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 					  struct mlx5_flow_act *flow_act)
+ {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
+index 514c15258b1d..bb6f2423078b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
+@@ -12,6 +12,7 @@ void mlx5_esw_ipsec_rx_create_attr_set(struct mlx5e_ipsec *ipsec,
+ 				       struct mlx5e_ipsec_rx_create_attr *attr);
+ int mlx5_esw_ipsec_rx_status_pass_dest_get(struct mlx5e_ipsec *ipsec,
+ 					   struct mlx5_flow_destination *dest);
++void mlx5_esw_ipsec_rx_status_pass_dest_put(struct mlx5e_ipsec *ipsec);
+ int mlx5_esw_ipsec_rx_setup_modify_header(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 					  struct mlx5_flow_act *flow_act);
+ void mlx5_esw_ipsec_rx_id_mapping_remove(struct mlx5e_ipsec_sa_entry *sa_entry);
+@@ -32,6 +33,11 @@ static inline int mlx5_esw_ipsec_rx_status_pass_dest_get(struct mlx5e_ipsec *ips
+ 	return -EINVAL;
+ }
+ 
++static inline
++void mlx5_esw_ipsec_rx_status_pass_dest_put(struct mlx5e_ipsec *ipsec)
++{
++}
++
+ static inline int mlx5_esw_ipsec_rx_setup_modify_header(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 							struct mlx5_flow_act *flow_act)
+ {
+-- 
+2.44.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
