@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793854523;
-	b=kjl24dGGeg+ZsBZRe9kxeArY+6lfAlysHPmsQxseZx61+6QYf3B1L68gO2R9l05Q2D5J
-	 uGB6ye/avYsDXfNqUZ1M16uI+dYMq3OIZdwgw4JARvif/oC5PpdRDLit9xib08Dml0385
-	 g3KhDbo2G/QdVSkPtn7pdOiECPLehilwnb/LFL1FRZhkaWThJY5nUYsVE2JRLOfO4AP4o
-	 rKzPNeg0JpuEk79VvzNOmJ9mMHCOXtk78wNnCClCt7bkD9/KF51BCOY2pGh97igE2ZOxJ
-	 NG/DzHcwQZzilfNjPioaSMe37MhIKyjK2f2rAvWu88p1ME7sLMpFDC1Eph7ijiUDG5Q==
+	t=1793854967;
+	b=zqUhN5pWoVc8z85JEogR2r8ZaX0H9p/sHN9SdOMBpi3q7GL6fDARyY9LMQJWiOQ7rGz2
+	 bUrPfCjDbUOqrmJ92maCY9Th13um9pv1O/54b+uyNEd1rIRPNQzczGaULSYEFYMC2x5YN
+	 Kw2vpaoG3MjGNc6IwBA5l3O5vRgj0yCy2BC3dub5/0k/6OiGGfE/d3DsLcGOa0YjHAhSy
+	 XG6KedR23w8UZqMAKDSzFaTqf3cBqKk3O8TMpxeK2LG8AfWBWLqLtB1KN/CeKQIl5qdiH
+	 A5QQOnx7oc5JWBSIe3K4QdSg7vZ5PZ+QCYLzQPUJ8dvO8jtvLcv4YdeKhgU9RskiLZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793854523;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793854967;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
-	b=FqAiWuu/OWYjFGAjVupHmTj0HnzLKuWIioUfxSyRZQVMuOO6ofu2MeGL66RK4yEz039f
-	 1PdbyTvGqwReyKyOKopba+2/+sBIB2Pxn5krJfofOpycHSKZcrg4G/po6FIEwippY0RtP
-	 gZUUN6knqUqC8EDz4oOVBSAdFLzbLlKviH7EHXbbgxFuiCHPv6xI4c1RDYdAAqxZ/7Tj9
-	 HPBrMGy1DNgjXqbogE45w/rn5VG03U5geEGc0xiMqPVnpwBs64hvdlbBIyOAV1lYkvWik
-	 vJdno5xDEnDCQBk6zQLcLYjadkEl9q3Ef9Gx1xxqfKBR8KP2elNuD1AV8HPXG0cj1eQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=LO7efjMzYzRkjGuKwYuy78sqey9ql9fr/9N15oGP1+E=;
+	b=eIqCkBjLep9HsI3WrFqs3PXFvZnc5l+rK827S3D/7kR5Z9SN4PUHDfVqNQfzVFWPsMlc
+	 k6YQWkIJ/rmOM7NfH+nE8K6vxopl8uHfox9gN758HIcdGBrw2ZCB92UfEZTCvyCHw0tmx
+	 pqflHJ1NNXH85hLYz3rHd6dgvZ7IU71M3rV62fU72ZGp1p2qA3YOo0EBxxuNZMrkEmJam
+	 FX20p5loPngNOoHaqQlRr61Bk3SpwZlk1cGDmwcTGjyLXWo/3ZDSXRdIMEufjJSpffDO4
+	 1ZyXaSjrSQNo0+qSkPKVTm0IAWs7PrXWyXhFXhqb3yNIrMi9T7c2nSboIPOjJv/v5nQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mTKYyYeV;
-	arc=none smtp.remote-ip=209.85.216.43
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jF7FxoT5;
+	arc=none smtp.remote-ip=74.125.82.42
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B236606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 04:55:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B236606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157B4606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 05:02:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 157B4606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mTKYyYeV
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ae1a9e187aso221248a91.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 20:55:22 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jF7FxoT5
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-15dd124bbe7so601288c88.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 21:02:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793854522; x=1794459322; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
-        b=mTKYyYeVr7uxttrPBh/zbgdicB4GtUsAEPY7xWdW42ONQLpFWniKAVmHzgolRVnz1R
-         7cGjdcpTCPUuQy/A64lwRFiyY3CHLGj3nlqbK6AEQwT2zG7biKPOWYGbyqYZoXfGRvF9
-         VMNjEFP/372eFVw5FbTuSsi8X8vRwpvlmPjZMD5VyyudE8jzRBB7z6J5DpdMGoY7Hq5p
-         KRhkUg8+WaJVVEcdue/XWCVzhYJgAPz+7SROTuyUkDUJZGvY0euOB/3t+nKtd4g2liXU
-         30ygp2YrQxS3ncCjh2vsNdYieq6M3aMH+1rBdw0W/ieO4AuFjVJakOI9Kr5nAz8+hS5n
-         ycYQ==
+        d=gmail.com; s=20260707; t=1793854965; x=1794459765; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LO7efjMzYzRkjGuKwYuy78sqey9ql9fr/9N15oGP1+E=;
+        b=jF7FxoT5DUg01XPIQKoII/OIFbtaJhSE+kxslDbtQi8ukCE5stYLsOAhskPoTIgNV4
+         KPiGf4+2+3TUevvlXRzzG2m0TVoBuh59xEyZV8LnWMjKra/CdRtmUOV3UdwebYef+P6H
+         q/o7DrNDs2VQ+OQTqtHTJDZt/ovdO081CU0+rVWeAFMTewQq4GuCWnBbiVGe9TwO4oWB
+         EzpfIDj3EfODbbmeob+53wJwIZiffNjxyLfRuyMLZi86bYlmRCEHziFhzmpLpWID7rit
+         AlZ6igJ+iLGQ90COXYesZV8tOfofedFcGr6Y1iQRiedMROzO5vqnQU3e3rfN//wYTyvV
+         Jqtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793854522; x=1794459322;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
-        b=eh3K4Del1AmZMvypkeHaVZ7vysQejWOpIYVLxaxJI1CbqxF1og/MzXATn0DFC5VUxA
-         Z4sTj+5ntELnqCn8pMcYNXZCLbZIYm5fomSsWTewfiMCYi0hmZLZFYYb1eyhxrh/jiXF
-         AZ7lCetG/11QLcJu/qVzeek1XdNBotRrWo63iQq+PeoMSjl80KK4lt/wtNucPXwYMKfz
-         pKdVtk7/YG0dFdmOT/jAFK54KPp5+3+bwr0CRt3jFiNWLyt07wn7M8DZWijOqQOItiiQ
-         7RskBqs0NHaH+bpB+Nu8SRsXmqf4N6PvJaRBg+DSKFqbQtMJAMQG4/uM9g8awvOIbsZj
-         AtPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx2KcoYcenPyDpRP1ymrV4pn//m/H9+oHfY5C2+MmVswFNtHq1YWbXLcXKnJjd2Ul/nrrWAueI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+9wem0MSDqggWRPcPodoKZi5sIHY5VTgdAKkXTCk6ek60bGsm5
-	jU4wpYFTcVb/hl1S924M0PyEAQFEcOvA9vZ6COgoOldGBFfP9WdfWlKb0KOR7DVW
-X-Gm-Gg: AYBFou192ghlK4dEqRHgWPa+AnNISb+bOjhRwNyDAD5UVr3YVq4kkfpyZwNvYDgMhd4
-	5S+OwT/02t9tJXALDYscB/FouzWAfP+JNW9ZumXWA5/Z++JKXdhrE7MO5L3BvVxtbcBsf/K18Kz
-	N4BIblswYh54irhy8DuWkz8KT3K0sHDbo9PzsDrTZ2kI9pQzs7NtaRGXW9o/XvxxdbJ8k/Yc01W
-	Aum9P9wTUTK+NDLSofDOkG2lkQNVJYKiyvsTbn7TThK5IlsNiy3xpD9jvIT8yH01krnSOk6Ajp+
-	LwqcAf3qaqiZqnPSewvHvv23VV21qEF804I+iOsCsSy6Caqb2CduQtbawp0AasQYIL4Zgz4wVqk
-	iCOjO8hdPDHG6rtDnO1GKNjkS7XDBy83YMWttvBBwqv4v78rheZnrXhaqPuqkQuOUapcBKtQ6OL
-	kFvHDd2SNsmOTmcKbE3QQjuPeZZR6VANcPdaavPlNoRrEnJ4zOZajU9dYefxZOPCIUwLyBCGWxq
-	XeWmwzPOsYe3pfo265+7Wgt6Y9KBn3JFK6YPXvzJxN6aDTLbKH6N52xaV19EaK5q+4rQQScS3sa
-	a2lvW8SPlsDJ5r9AQIAm5bR7yOG5Blw3F9RRZOKKh+LDxO6g6BR6cDsPVXiV
-X-Received: by 2002:a17:90b:4487:b0:3ac:9c37:9422 with SMTP id 98e67ed59e1d1-3ae89626108mr25602011a91.2.1793854521680;
-        Wed, 04 Nov 2026 20:55:21 -0800 (PST)
-Received: from localhost.localdomain ([189.1.242.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm3726000a91.0.2026.11.04.20.55.18
+        d=1e100.net; s=20260707; t=1793854965; x=1794459765;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LO7efjMzYzRkjGuKwYuy78sqey9ql9fr/9N15oGP1+E=;
+        b=tuRtnEFjzNrO7ZfPz602oF0rTi4z73ftm4qQFTVSkyD7LnVWlnh7mEF9MpAZxCwODz
+         tOwMkQRtV6UqRLfSgtE/dzAWSWpRDC9RujuajhGbKvaKpP98QyBr75njvh9wBxKj5rYY
+         lP25QP/B+lrQR2TN5Z084G+I8tqOOm/SVZQEjYffioxLQ9vkqm0PBZp2+0Tx/MNhHOGz
+         0tn3OJabalTsLo8lJwOBvLkaXX6XgbopCxB2ZCEyKttTCeb43gstg9XK/Lm+1OBikiUU
+         TkG2Dxm1jC+5NyK0ZKJEJUjWoagNTxo3ZDBTJCGDOpkfi9F8LFqjpFvCWIV6Qa4nvpgH
+         k/ww==
+X-Gm-Message-State: APuU4Z8UXjcL4RxmMkyW7aO01/1o89XZUIlYQP0BRZM3r8p1/zdEpGZk
+	gJ+meCBqOo1KXsbQML0xan2ILReOIo1PFTxmd+/CcP7zErBc9r6uvc5cg5DIK2yZing=
+X-Gm-Gg: AYBFou1kPakJyZEWd/g67rcLvRKeTSjRvAvRHpKj0XpecPkKKgSfiFbDqixPYkHsWgG
+	U6vCHQkJ8wrZjp/iusC0ubQ2sMlv2AU++wfdaD7KbxSILBrUX+n58GXMnqRn4L9zgNoD+61xOgu
+	Q2d4MD2G/0jKrVkS78wffyudchRiTSbwyhaK9rR+Ya6WQOQ1IeiV1Saf/nEF1dT6BTDDTnyBNBo
+	F3hhJWBMP3y4xyh24zX2ZgmKeAe9i6kan+NIjFJCVw1dFGKoqsiFiknWx5Pe67MllbuFSvXGt17
+	Dx1P4mRmkpEiaKiHP9Wi1vjrG8ZJQVaI1yWYlbvD10igLQId7sa0US584vLwCrGodk+XV/KZ+qG
+	ypFt59PkHoMNfEdC5mqq4XtJ1xUTBseudFvgHm721CQuDhSCcwMxx0SlVViMqujnIrEWE7RnGse
+	cDJiiWYJueIB26oBx1piu3ZyHNXgHhcmajagsxHxFd9X/h2K0o1qaWyB+xI+MC4wo+C3pHGRx0F
+	0wzH+yEb2uAcKSrkKPD6TyHhyt5pA8U1Rdn+L2EFDDkzhz6OgkUMi/upZbsoJnSbsUTLWevd2Fx
+	y7DuMBoVnTLRJffxDIm1YKRxvEoxeayrfpYHp3dHFw411CQ8ssywAIjrdseOH83MvmXlz+N5qOI
+	=
+X-Received: by 2002:a05:701b:2084:20b0:153:21e5:4328 with SMTP id a92af1059eb24-1ac5a9670abmr29178715c88.17.1793854964836;
+        Wed, 04 Nov 2026 21:02:44 -0800 (PST)
+Received: from localhost.localdomain ([136.25.42.214])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c283sm13626735c88.4.2026.11.04.21.02.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 20:55:20 -0800 (PST)
-From: Yiqi Sun <sunyiqixm@gmail.com>
-To: fuchen.dust@gmail.com
-Cc: coreteam@netfilter.org,
-	fw@strlen.de,
-	kadlec@netfilter.org,
+        Wed, 04 Nov 2026 21:02:44 -0800 (PST)
+From: Tim Budding <tim.budding@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-sctp@vger.kernel.org
+Cc: lucien.xin@gmail.com,
+	marcelo.leitner@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	pablo@netfilter.org,
-	phil@nwl.cc,
-	stable@vger.kernel.org
-Subject: Re: [PATCH nf v3] netfilter: ipset: fix double free on kernel-side delete during resize
-Date: Thu,  5 Nov 2026 12:52:10 +0800
-Message-Id: <20261105045210.1179991-1-sunyiqixm@gmail.com>
+	Tim Budding <tim.budding@gmail.com>
+Subject: [PATCH net v2 0/4] sctp: fix I-FORWARD-TSN handling with user message interleaving
+Date: Wed,  4 Nov 2026 21:02:21 -0800
+Message-Id: <20261105050225.49292-1-tim.budding@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261026102957.5530-1-fuchen.dust@gmail.com>
-References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com> <20261026102957.5530-1-fuchen.dust@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,68 +105,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+With user message interleaving (RFC 8260), fragments of messages on
+different streams share the TSN space. When a PR-SCTP message is
+abandoned, the receiver still frees queued fragments by the
+I-FORWARD-TSN's New Cumulative TSN, which loses fragments of messages
+still being received on other streams:
 
-I discovered the same double-free during ipset hash resize
-and confirmed its exploitability by successfully exploiting it
-in my test environment.
+  TSN  stream  MID
+    0    0      0    B   64KB reliable message on stream 0
+  ...
+    5    0      0
+    6    1      0    BE  PR-SCTP message on stream 1, lost, abandoned
+    7    0      0
+  ...
+  I-FORWARD-TSN new_cum=6 skip=[sid=1 mid=0]
 
-While reviewing this fix, I noticed two remaining issues with the
-deferred operations in net/netfilter/ipset/ip_set_hash_gen.h:
+The stream 0 fragments with TSNs 0-5 are freed with the abandoned
+message, are never retransmitted, and stream 0 stays blocked.
 
-1. Failure-path replay can resurrect a deleted element.
+Patch 3 frees fragments by the skip entries instead of by TSN, and no
+longer treats an I-FORWARD-TSN that reaches the highest TSN seen as a
+reset. Such an I-FORWARD-TSN is then handled by sctp_intl_skip() alone,
+which has two partial delivery bugs of its own: an unordered partial
+delivery is not aborted when its own message is skipped, and
+PARTIAL_DELIVERY_ABORTED reports the highest skipped MID rather than
+the one being delivered. Patches 1 and 2 fix these first, so the three
+fixes should be backported together and in order. Patch 4 adds a
+selftest.
 
-In mtype_resize(), cleanup clears orig->resizing before reaching the new
-drain path. Packet-path operations can then modify the original table
-directly, while earlier operations are still waiting in the backlog.
+Patch 3 has a cost, as discussed on v1 [2]: an unordered fragment of an
+abandoned message that first arrives after the last I-FORWARD-TSN
+naming that message is no longer freed by a later, unrelated
+I-FORWARD-TSN. It keeps its rwnd and receive buffer charge until a
+later unordered skip on its stream, a reset, or teardown. Dropping such
+fragments on arrival needs new per-stream state and is left to a
+follow-up [3].
 
-For example, starting with A absent:
+Changes since v1 [1]:
+ - Fold "sctp: don't treat an I-FORWARD-TSN as an association reset"
+   into the purge patch, now patch 3, as Xin suggested [3].
+ - New patch 2, from Sashiko's review of v1 patch 3.
+ - Move the unordered partial delivery fix first.
+ - Selftest: add leading_edge_nopd, reset_pending_srv/cli and
+   pdapi/pdapi_uo; wait for conditions rather than fixed times,
+   including all data being acked before the queue check.
 
-  - During resize, a packet-path ADD inserts A into the original table
-    and also queues an ADD in orig->ad.
-  - A bucket allocation in the resize copy loop fails. cleanup clears
-    orig->resizing and waits for an RCU grace period.
-  - Before drain replays the backlog, a later packet-path DEL removes A
-    from the original table and returns success without queuing a DEL.
-  - drain replays the earlier ADD, inserting A again.
+Tested with the new selftest, sctp_vrf.sh and the lksctp-tools
+functional tests, also on a kernel with KASAN, lockdep and kmemleak.
+W=1 and sparse show no new warnings.
 
-The final state therefore contradicts the later successful DEL. Before
-this change, the failure path discarded the queued ADD, so this sequence
-left A absent.
+Initial bug observed in use, root cause identified with AI-assisted code
+inspection. Related bugs found and fixes implemented with AI assistance.
+All reviewed and tested by me.
 
-The set->lock around list_splice_init() protects the list, but does not
-serialize replay with packet-path updates under the region locks. The
-RCU grace period does not prevent new updates either. Could failure-path
-replay preserve ordering with those updates as well as within the backlog?
+[1] https://lore.kernel.org/all/20261024120627.837568-1-tim.budding@gmail.com/
+[2] https://lore.kernel.org/all/20261026052706.187296-1-tim.budding@gmail.com/
+[3] https://lore.kernel.org/all/CADvbK_du=-oT19kKBKYSjFKYscnQSH1mekRKMXgmLPMXTEH_=w@mail.gmail.com/
 
-2. The new deferred-ADD branch can return success without queuing the ADD.
+Tim Budding (4):
+  sctp: abort unordered partial delivery when its message is skipped
+  sctp: report the partially delivered MID in PARTIAL_DELIVERY_ABORTED
+  sctp: fix I-FORWARD-TSN handling of fragments on other streams
+  selftests: net: add SCTP I-FORWARD-TSN tests with message interleaving
 
-In mtype_add(), the new branch for an existing element sets ret = 0 and
-jumps to resize. If allocation of struct mtype_resize_ad fails there,
-the existing "Don't bother" path goes to out with ret still zero.
+ net/sctp/stream.c                           |   2 +
+ net/sctp/stream_interleave.c                |  38 +-
+ tools/testing/selftests/net/.gitignore      |   1 +
+ tools/testing/selftests/net/Makefile        |   2 +
+ tools/testing/selftests/net/sctp_ifwdtsn.c  | 699 ++++++++++++++++++++
+ tools/testing/selftests/net/sctp_ifwdtsn.sh | 233 +++++++
+ 6 files changed, 951 insertions(+), 24 deletions(-)
+ create mode 100644 tools/testing/selftests/net/sctp_ifwdtsn.c
+ create mode 100755 tools/testing/selftests/net/sctp_ifwdtsn.sh
 
-For example, starting with A present:
 
-  - During resize, a packet-path DEL queues a deletion of A, leaving A
-    in the original table.
-  - A subsequent packet-path ADD of A, without IPSET_FLAG_EXIST, takes
-    the new branch.
-  - Backlog allocation fails, but the ADD returns success.
-  - Replaying the queued DEL leaves A absent because no ADD was queued.
+base-commit: 6baae996ecf6a3f57b08ea6f6786e29af9260f51
+-- 
+2.34.1
 
-This branch relies entirely on the backlog to preserve the ADD after
-the pending DEL. Allocation failure should at least return -ENOMEM for
-this deferred-only case, consistent with the deferred-DEL path.
-
-Validation of the two review findings above used a userspace harness
-containing the extracted add/delete functions and failure-path replay
-code, with lock/RCU stubs. Both sequences produced the incorrect final
-state with v3; the corresponding unpatched baseline cases did not.
-The baseline was mainline commit 05441d697f7f ("Merge tag 'cocci-7.4-rc1'
-of git://git.kernel.org/pub/scm/linux/kernel/git/jlawall/linux"). These
-are deterministic control-flow checks, not reproductions on a running
-kernel.
-
-This review and the harness were prepared with AI assistance.
-
-Thanks.
