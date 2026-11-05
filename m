@@ -1,100 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793844202;
-	b=VbFT484xzOakOqgqBSlmkC9StdlhLKbLs9T74RfQryJb9Hd4QoC2KvAoHc3zTv6TfD+H
-	 OCRTLixzGUf5R7ZtuLo3Buj/LkmmaKiSV1wqxpgbjqe8Ua7uic7iZjy0CbaIc9X9neDjH
-	 gzGY4tp3lcivz6N3lUo3sFzjc3DQg6XZ979EoRf6ZJOfd6Ywkjonye4FjUJmqduBe8g5G
-	 woKLubOkofJuhCl1qLyjKMv7WypNKW7gFkCP0MClMgC4kcXLU5MMZ+UQ9BiJvge/H3BNZ
-	 iPjes9roqTDioozHObC9ZUiPhT6SzE24Q9JNPs5J93vHgNiRJZk2Z7lnPqFzy4QAJkw==
+	t=1793844753;
+	b=KRXtrmVV8awT8rLhg5UWPCvQfJhefsmwLFehqH2VWcK1b80n68JhNp5wamBZc7DftgOY
+	 JfhD9tQBV/Yt/fknWQvjjNwhWf9FOsu6Y8x84LMPmox2AUPfJ5MyO7KRtTfN39PB9asu+
+	 YHacE/NaTVczTNwCb0GjaT5mdfjQlbaJH1Q/iymEhg34MaSr04Rh0LSk5FhNA7bliQ4py
+	 s4DMelWodKEfhcp1xMc9NU+ffnSYKaKapxxjUShXYaCP+T0BFxAGe1BcO+h8aLcQK3EFQ
+	 8WFPd5Q/dEVhbX2cZ42DKYG72LnpEoeBQaH7mamUv71smBHtmSRT5YY3jbDOzmScVKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793844202;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 X-Relaying-Domain:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=EQfIAOrQJdusvyYnUH0bVt07oZDCi/o3NqYD4NHITMs=;
-	b=jyQuN19hwlqpJFAMY9+zkYta8kPjTfTVyx+spJ0l2jDNayZ8r+yjp6xoicsGPPb8M/Et
-	 7E7mOyL1wBMtHJ89FvPzHTt573ziaCrDnv90Kh79xYr2p5hfLPx+NgLH/Z2P6fGOXwqks
-	 R0Sd49cCezTd3tIZwq3Uw5wEjPekprST94R6OLr7nUdB5T6eSEQ0X4rULgkLkHXLPx64y
-	 ifEixMG8CpAOyem82/wOQ8SzgTK/zDByVcESKRkS9Leb5LmXYsYWBCKB1qpVEsFIJvHmg
-	 ojllJf+6/zBj5+pmVPaTjPPrikt+itaK/X6U3ASHhICAnQsFts0o2/uJwU8XgkjpikA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844753;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=QaEwYVK0QRwa1prVIMD7IJ4FVuOtJkVN57HHtraLvXc=;
+	b=jL1IUBV+6buTXiWWDKDw0LAUry/5B/sZVHuEVaQUzvf96tJMojxAkHJt+AExpPDi0cYI
+	 EadCyQ27mCPo04Ijx0qOHj9hj1oRqjZsB0I6jh4iFnpCqEE0m/CPZKKxPIgdDeKFW7VtM
+	 8SFWDuZ+b3x9bCONZ57snZUOdlhyVvg8tjRwiKBEihT9HJyvrF0gIUntEnWElqLJm18b2
+	 zrzomwZDcwIOoQrhTy44r8mdrW65XZDnskX137mnPK+742prkplynZxAVbVq2FSgIofvA
+	 CmaueeV4cJ67qm6kZFnS7wvNPehdM4DmuTJWdGmOb60kNeU+4fLPYBMSOnJGKAL78OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=purestorage.com;
-	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=GkW1ZmRS;
-	arc=none smtp.remote-ip=209.85.215.228
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UsUqcTDX;
+	arc=none smtp.remote-ip=95.215.58.52
+Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C0606D806
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:03:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 504C0606D806
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBE3606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:12:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDBE3606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=GkW1ZmRS
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cd6acc50b8dso562903a12.3
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 18:03:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1793844201; x=1794449001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EQfIAOrQJdusvyYnUH0bVt07oZDCi/o3NqYD4NHITMs=;
-        b=GkW1ZmRSpSFfkokdZSUjXrT1WnzmH4jmdbE5YxNIOWGzejsxgAzJ+QcbgMaYBr/TcY
-         y/9DTwSGT2OAqkiPA9DO3xjoeDMNWq/cglIDmENrAsciQv2pHOjPeTvYheYhniVp8Vws
-         0jTFpd5+218Tf2l9uj9L4a3jJ+AT69WnxcI5nshMC0GZjbQ3flZrbHoukEUHFZ5lX7na
-         tQj0YP0umvFSqQKkqgLRYSXR2lnXTHCFzGEi07kLXxEOUM4wceSpGSKGerical0TWjqa
-         eQAus6mWnUAJZ455DpUBGUPG/pnAKEcoRdKZ4TvNUZhMDcdHJNF8jUZ7zEdfv9zTa0Bz
-         bOTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793844201; x=1794449001;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EQfIAOrQJdusvyYnUH0bVt07oZDCi/o3NqYD4NHITMs=;
-        b=WmSzfCyV96KnEUdqZEzB4LyfNYQNxaUVJv6etq240XP1UKjapvZK1w3mGd7fHouhWu
-         aaMoSh4riFulUPDc3owzJ3VHcOhtLsbkw3n1wKlL189ejAs0zByPe0utRiT0mn6qHFyB
-         GBbuOdlN6zJPk1N1/NdnUVntFAiqukpDdp7JqOiBPjgMQTHfNO7xhF6XDyzw320u+iPH
-         toHWQRQFG/TP7FxVJyt5+bjMaonsoZxsGgV5yVCZdk4vTe46xTuDpk6iBbgCsJlWkrxi
-         eECFK43ZWaAyI889dt7cWvKsapAi8z7uj9sOEtEGFOxsjr/XJM8+DhaTl+o+lhejxCY/
-         bnGA==
-X-Forwarded-Encrypted: i=1; AKwUvBxXUGZSqY/VaC7i19AQ7Kx6biGf5/uuZ3zxMyc95RjnuXVTelIY5GHKzgm7lqcidhSHGXkCcQA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+FzFUbmRyNylyn5FakRyWBtdKaCiUMbXtHjPvWztekmCfk2pcP
-	hKiZVQ1fH2Qt0AkqWPdjueglx0tz6k+G47a7w+7GRh00YWBA5dGDO3Pf3Re0t4mwk2CebyEs9OM
-	ktN9g6icH9MJNXNJZBcZ/DVEPIZTDEGYzfCFM
-X-Gm-Gg: AYBFou35hVUQijECy6nWZeb6ftnI25TGxYxnVV5AjYpSG4dgVx340Ww1rbss+mirnAs
-	s4SUriNrjXE26DcxOAVB4fzLJATboZXrgLGNF8gxO0mLGtJaDSyFBGLeSBvJ93MumQfzof2o2Vw
-	ridz7XCHq7MJboaDHnf6UV29fKBe4hac2ciUMF/pRSLP8WDjuizK61mlt3e/uKR+cpolsP128od
-	BO/mzWEkKlQ8/szZs0m+NsGMZsxl3W14nAl/1Etv/jeck5zboLz3h9HsNSIyxhxLYoNvmTTiqu2
-	o97IqsTjN2+EGgHELDMYX5JFhnXAFARcr4dEaqldgjsDicHuUCKy0f10NtwYWHbrzS7LEZpwJpl
-	Bh287cPn4CuTeU22pdUrtx3H8s+5u5FLU2/f63Q==
-X-Received: by 2002:a17:90b:2d84:b0:3b0:9a1b:b708 with SMTP id 98e67ed59e1d1-3b09a1bb881mr3168053a91.62.1793844200546;
-        Wed, 04 Nov 2026 18:03:20 -0800 (PST)
-Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.128])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b0b31f880fsm824975a91.7.2026.11.04.18.03.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 18:03:20 -0800 (PST)
-X-Relaying-Domain: purestorage.com
-Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
-	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id 943B534014E;
-	Wed,  4 Nov 2026 18:02:49 -0800 (PST)
-From: tmenninger@purestorage.com
-To: anna@kernel.org,
-	trondmy@kernel.org
-Cc: cel@kernel.org,
-	ebadger@everpuredata.com,
-	jcurley@everpuredata.com,
-	jlayton@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
-	slingappa@everpuredata.com,
-	Tim Menninger <tmenninger@everpuredata.com>
-Subject: [PATCH v2 0/2] SUNRPC/NFS: limit transport disconnects when cancelling flexfiles I/O
-Date: Thu,  5 Nov 2026 02:02:47 +0000
-Message-ID: <20261105020249.2607367-1-tmenninger@purestorage.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UsUqcTDX
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=pBrfotY9+XE+xLOo6ESNM23xl8EfAZ2RsF5WJxQ1HQg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793844749; v=1; x=1794449549;
+ b=UsUqcTDXiUIUDjy7EsYATTiTE4U6RjuH70yVSspKepTCWFqrC/x3yt0UZgU75x1/nKu1mAnD
+ Hk9Ko34P03qH2vXk1TZ87alHQ0PdewiOAmMEK2PuaqC4at6pOlyIV1CTYIBiQUivv/pbCKiY32n
+ ScIr6xmD26QRN+0a3WoBlGEQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id d7e254c367df15f0;
+	Thu, 05 Nov 2026 02:12:29 +0000
+X-Mizu-Trace-ID: d7e254c367df15f0
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 10:12:15 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	weiwan@google.com, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] ipv6: ignore link state in gateway check
+Message-ID: <auvl_644NtfQVWrW@fedora>
+References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+ <20261104195655.1406837-2-aroslavdudkov622@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,128 +67,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104195655.1406837-2-aroslavdudkov622@gmail.com>
 
-From: Tim Menninger <tmenninger@everpuredata.com>
+On Wed, Nov 04, 2026 at 07:56:54PM +0000, Yaroslav Dudkov wrote:
+> IPv6 route cannot be added in table when all
+> following conditions are true:
+> - gateway is not link-local address
+> - ignore_routes_with_linkdown=1 on device
+> - nexthop has no carrier
+> - gateway is not present or covered by any route in table already
+> Also multipath routes addition is invalidated by kernel even
+> if only one of added nexthops satisfies all above conditions.
+> 
+> Reproducer:
+> 
+>   ip netns add t
+>   ip -n t link add va type veth peer name vb
+>   ip -n t link set va up
+>   ip -n t addr add fd00::1/64 dev va nodad
+>   ip netns exec t sysctl -w \
+>     net.ipv6.conf.va.ignore_routes_with_linkdown=1
+>   ip -n t -6 route add 2001:db8::/64 via fd00::2 dev va
+>   # added
+>   ip -n t -6 route add 2001:db8::/64 table 100 via fd00::2 dev va
+>   # RTNETLINK answers: No route to host
+>   ip -n t -6 route show table all
+>   ip netns del t
+> 
+> Route should be added because:
+> - RT6_LOOKUP_F_IGNORE_LINKSTATE in commit d5d32e4b7668
+> ("net: ipv6: Do not consider link state for nexthop validation")
+> was added for this
+> - the same route is valid in main table (when no specifying table id
+> while adding route)
+> - fib6_nh_init() initializes nexthops with no carrier
+> - IPv4 already does this (fib_check_nh_v4_gw() ignores link state
+> using the FIB_LOOKUP_IGNORE_LINKSTATE flag)
+> 
+> Before commit b2c709cce682 ("ipv6: Convert gateway validation to
+> use fib6_info") rt6_lookup() was used for checking if nexthop is
+> valid, rt6_lookup called rt6_device_match() which does not check the
+> link state. After change rt6_lookup() to fib6_lookup()
+> find_match() under fib6_lookup() started to invalidate linkdown
+> devices, because RT6_LOOKUP_F_IGNORE_LINKSTATE is not passed to it.
+> 
+> Adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags for ip6_route_check_nh()
+> solves the problem. RT6_LOOKUP_F_IGNORE_LINKSTATE is already used
+> inside the first search ip6_nh_lookup_table() and fixes the
+> bug in second search fib6_lookup(). Also RT6_LOOKUP_F_IGNORE_LINKSTATE
+> isn't read inside fib6_select_path().
+> 
+> Fixes: b2c709cce682 ("ipv6: Convert gateway validation to use fib6_info")
+> Signed-off-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+> ---
+> IPv4 example of this situation:
+>   ip netns add t
+>   ip -n t link add va type veth peer name vb
+>   ip -n t link set va up
+>   ip -n t addr add 192.168.0.1/24 dev va
+>   ip netns exec t sysctl -w \
+>     net.ipv4.conf.va.ignore_routes_with_linkdown=1
+>   ip -n t route add 192.0.2.0/24 table 100 via 192.168.0.2 dev va
+>   # added
+>   ip -n t route show table all
+>   ip netns del t
+> 
+> Also when adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags of
+> ip6_route_check_nh() makes adding this flag inside of
+> ip6_nh_lookup_table() unnecessary for this call, making another call in
+> ip6_route_check_nh_onlink() with flags=0 the only place where it is
+> needed.
+> ---
+>  net/ipv6/route.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 94e5ef1c4f83..73d8a2c95602 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -3424,9 +3424,9 @@ static int ip6_route_check_nh(struct net *net,
+>  			      netdevice_tracker *dev_tracker,
+>  			      struct inet6_dev **idev)
+>  {
+> +	int flags = RT6_LOOKUP_F_IFACE | RT6_LOOKUP_F_IGNORE_LINKSTATE;
+>  	const struct in6_addr *gw_addr = &cfg->fc_gateway;
+>  	struct net_device *dev = _dev ? *_dev : NULL;
+> -	int flags = RT6_LOOKUP_F_IFACE;
+>  	struct fib6_result res = {};
+>  	int err = -EHOSTUNREACH;
+>  
+> -- 
+> 2.54.0
+> 
 
-This series narrows the transport disconnects performed when flexfiles
-cancels I/O for a recalled or revoked layout segment.
-
-Today ff_layout_cancel_io() first cancels matching RPC tasks and then
-calls rpc_clnt_disconnect() if any tasks matched. rpc_clnt_disconnect()
-operates on the entire rpc_clnt, so for a data server client using
-multiple transports it disconnects transports that may have had no I/O
-associated with the affected layout segment.
-
-I encountered this while testing pNFS over RPC/RDMA during data server
-recovery. Restarting the NFS service on a data server while sustained
-direct-read I/O was active could cause repeated reconnect activity and a
-large throughput drop. The client-wide disconnect from
-ff_layout_cancel_io() amplified the disruption by tearing down otherwise
-unaffected transports.
-
-The first patch adds a SUNRPC helper that combines task cancellation with
-request-scoped conditional disconnects. Matching tasks are cancelled as
-before. A subsequent transport-queue pass marks matching requests
-belonging to the same rpc_clnt that remain on the transmit or receive
-queues so that, when released, xprt_conditional_disconnect() is called
-using the request's saved connection cookie.
-
-The disconnect state is stored on struct rpc_rqst rather than struct
-rpc_task. A task can release one request and later acquire another, so a
-task-scoped indication could otherwise be consumed by a successor
-request and applied to the wrong transport generation.
-
-The request-marking pass also preserves the rpc_clnt selection used by
-rpc_cancel_tasks(). An rpc_xprt may be shared by multiple rpc_clnt
-instances, so requests belonging to other clients sharing the same
-transport are not marked.
-
-The second patch switches flexfiles to the new helper, preserving its
-I/O cancellation behavior while avoiding client-wide transport
-disconnects.
-
-Testing:
-
-The code in this series does not depend on:
-
-    https://lore.kernel.org/all/20261105000131.2512336-1-tmenninger@everpuredata.com/
-
-However, I used that change while collecting the results below because,
-without it, the client enters the earlier recovery livelock before the
-transport-disconnect behavior can be observed cleanly.
-
-As a control experiment, I also tested skipping the
-ff_layout_cancel_io() task-cancellation and client-disconnect path
-entirely for RPC/RDMA. Doing so eliminates the reconnect pathology. This
-shows that the pathology depends on the cancellation/disconnect path
-introduced by commit b739a5bd9d9f ("NFSv4/flexfiles: Cancel I/O if the
-layout is recalled or revoked"), but simply opting RPC/RDMA out of that
-behavior would also remove the cancellation that is intended to drain
-I/O associated with a recalled or revoked layout segment.
-
-This series instead preserves that cancellation while limiting transport
-disconnects to matching requests that remain in flight.
-
-I have repeated the data-server restart test many times and the behavior
-is consistent. The counters below are intentionally collected after the
-restart event, once throughput has partially recovered and the client has
-entered the post-recovery state in which it remains until the workload
-completes.
-
-This distinction matters because some transport activity during the
-data-server restart itself is expected. The problem addressed here is
-the continued reconnect activity after that transition has completed:
-once recovery has settled, the client should not continue cycling
-otherwise healthy RPC/RDMA connections.
-
-Over a 30-second post-recovery sampling window, this series reduces
-sunrpc events from 4,526 to 289, a roughly
-16-fold reduction. RPC/RDMA disconnect and connect events fall by about
-6.6-fold. During the same interval, read throughput improves from
-approximately 0.4-1.1 GB/s to 1.9-2.2 GB/s.
-
-Before (throughput: approximately 0.4-1.1 GB/s):
-
-    Performance counter stats for 'system wide':
-
-                 4,526      sunrpc:xprt_disconnect_force
-                 1,911      rpcrdma:xprtrdma_disconnect
-                 1,909      rpcrdma:xprtrdma_connect
-
-          30.021267692 seconds time elapsed
-
-After (throughput: approximately 1.9-2.2 GB/s):
-
-    Performance counter stats for 'system wide':
-
-                   289      sunrpc:xprt_disconnect_force
-                   289      rpcrdma:xprtrdma_disconnect
-                   291      rpcrdma:xprtrdma_connect
-
-          30.080790959 seconds time elapsed
-
----
-Changes in v2:
-- Rebase onto v7.4-rc1.
-- Adapt to the device-ID-aware ff_layout_cancel_io() interface,
-  preserving device-node reference cleanup.
-- No functional changes to the SUNRPC implementation.
-
-v1: https://lore.kernel.org/all/20260924204525.3381590-1-tmenninger@everpuredata.com/
-
-Tim Menninger (2):
-  SUNRPC: add request-scoped disconnects when cancelling tasks
-  NFSv4/flexfiles: limit transport disconnects when cancelling I/O
-
- fs/nfs/flexfilelayout/flexfilelayout.c |  7 +-
- include/linux/sunrpc/sched.h           |  4 ++
- include/linux/sunrpc/xprt.h            |  5 ++
- net/sunrpc/clnt.c                      | 94 +++++++++++++++++++++-----
- net/sunrpc/sunrpc.h                    |  5 ++
- net/sunrpc/xprt.c                      | 76 +++++++++++++++++++++
- 6 files changed, 170 insertions(+), 21 deletions(-)
-
--- 
-2.53.0
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
