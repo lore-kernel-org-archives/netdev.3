@@ -1,86 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793910413;
-	b=v2k4f0P1G2DMWXTnIAjFQI7e60wMmjFpipY04E6Y1QR9p4lrd1p6ciLhmcIubg+C0q2z
-	 p81RAZAah+4eSO4aaQXrSeKA58QemhPkGTFJk7GGM1Xyo2WP17RqMQGYMJv3sPjsXYcqr
-	 CsYL83Q5JG+/iNz+RUztCRP2VpQeCawW0t02Jf/WYFIxtxSHNiRbe99azy3whVmbfv1cZ
-	 RdTci1sWZyu3mphBg1aVPLcpNlYrOeY50to8jgcJC6fIjygNRHtjRO/rG2r2l7kThqXdX
-	 UpmKBKw03oRUbx/H95OywezO3woRwoGLUbZHviCQfviVoMlk3qJeMVfdVt/emPJiUAQ==
+	t=1793910513;
+	b=hTr2VoVNvxLw2nrktGZYpPQKTYGQScUX1pd9daoffO76nwC7Na4tTy/K6/RU0gSMzx8f
+	 67qsHPvH7AuxkQN2sW1h2pOv60HkTDySFp/3hn0k7fFW4DYumV5jpA2UYFl2N4VeRuzOg
+	 EwFtAc9CJ9J0uXj5qW5UlO8n17f77s1VxTyrL2z6NxfUZErt+aslHP2T8HAk1tudfB91i
+	 ii5aTirKywbLtUROD4SIFTEXbQCuVJwu1JvpM7NeeTSBPcA716+KJFxwrGJSvJo0cKqZQ
+	 cw23q7f5N53S6rvidNhh5DvLWhGmsTBMpH2zbr/w03j/ieopBsOkrbdKBOXIn80iuWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793910413;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793910513;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=bWiBz7DURXvu8uqsHcneVE3/VyQZ46GnJTalrUsgw9Y=;
-	b=axTgtoxuFSkWJXaVjpOSjLu7NR47Nkvts0xyS4SBJS4EO7wbTrpGgBvKHahsB4DHj92H
-	 JybNNXtLJiRK3RNC5jR7xC9l/J6DxkL1npol3L5v3ARQ1CPZ1tJKB2Rx8TvNq9CdZMD5A
-	 +bZ5QdkR9KRglFpXXzE2R1hws7Ill6GXTRVZ9bXNHz/qqTZngZppzeLYtwZzf29UDuVJy
-	 ZpOIozcNX6xkZArMwxJw9w2JRg8QF3QDRGPbL0NGUmkqcq52PW8ZAKJEv+7IVIrVcLRW/
-	 KSV/RDYLk/YEGvmy7qRx/ZUM7JjAg2ZhHiBB7EE996v6+CpJeBddOuOZ58hbCUHdADA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=R2bDHLUAsY5ANQjjsP8u82fVSG+atwQzzewhrRI9VEE=;
+	b=a3cENqKiYzSdESYA0jv4x+6KnjU2KADbyAMl+8FF8lVrXyfZgRjXR+s7gf/R5n1YBw0+
+	 kAt0nUArhJpHmaefTbEKDynq20yI9ra5IkpVECAEY2ntjk7taQ3JWfo00PHs9elNiNNlI
+	 QX/QfzhaRo//NBt/GfS4SqS4Isbx4loQXWcGtDLEJeNIc3K9lfF6s+oRrFODnZXJG6VN9
+	 u/ohSOBQUJ/1LnlxoApvI595HSc2yLKf8CtTx8C2NW67u00U0b87CWEGkm6FzElJkyUK6
+	 3N3YSvcI1+ua0zKvE4XwOmAytrHgD0XyCPWRq7PtwzVkf75gTP0JCrNOaCYMlri/sUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AcMmzOIF;
-	arc=none smtp.remote-ip=74.125.82.50
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZDw3Fv08;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B3606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:26:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C6B3606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFA5606A330
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:28:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAFA5606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AcMmzOIF
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1931ff67a29so48460c88.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:26:52 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZDw3Fv08
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed34e33913so4312575ad.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793910412; x=1794515212; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793910512; x=1794515312; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bWiBz7DURXvu8uqsHcneVE3/VyQZ46GnJTalrUsgw9Y=;
-        b=AcMmzOIFC/emVcPgVyfmvzyc+Y+l/c5+ZYXd9fwf82DR1RhknDSNnG9biCknz+gm/u
-         zVYTtyjdslcSfc9oJ6wCcGR5GnDWXWCSufltD3FC66J9cIhoIW7dfoSobQFMT7U6IoF/
-         DgE+w68ql/vK1NpX8T7nHBQUMVVhMft/UxI7aY64t7u/8SepGr8/vm9NWxptz5rnHO3r
-         /a+UkbnZdKZZkrN00UvGzH/j6aLI9REYTB1VkcCfm4VnW326Za5ORaI/+LcF0JBD/0YW
-         MA+6fxMzn/DIli53IZYM3kBi5i3n8+QnkUNLRmNpW3lrp/2ODZI/wKkGM3Qz1suL57UB
-         yBbA==
+        bh=R2bDHLUAsY5ANQjjsP8u82fVSG+atwQzzewhrRI9VEE=;
+        b=ZDw3Fv08GbIaELfQzU2lVdkQzsG9SYeT4IhmThqkd0r+ivmudLFKo32ZK9wCysH0WP
+         M/KZNAZ9MwUAqawzOeNP7MaZ57AhY2PYMb2Bsndo8bifLcQPCNmM8PWn8jWqOA5HmeGy
+         XwHFQYZCOfBRCCCwKTW4XlKkc4zmg4RDGdRflN898KkviHKTVj6UlaiCvOVcVWRn3DAc
+         rTGnh91U09sSZ3sECmmSmgq9AbPkSIbP3EdcsmDmJoYYd+2KE00LdZNXx6wg3p8XvRKL
+         ugk0j8iM5rFN/osJa10R5v3GXShTUIUJKJwSR2WezX0htSEDwwbppSxPwXscKdN04D1Z
+         X+Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793910412; x=1794515212;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793910512; x=1794515312;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bWiBz7DURXvu8uqsHcneVE3/VyQZ46GnJTalrUsgw9Y=;
-        b=KqbAIpIeNH+boO//E3/bvUr4BQ9QrHmH0Ea9oqoPiA6cGEJT0xI8lC21R8ykqm0S98
-         0uofyOONd5xm9PGGiAssX7NksOYhBr4cMD4HRg2mnerVNdRydWPczmuK5wXp7x7eOJs5
-         SfIey4C1H9zUvUU98VR57j1+l1/iwyulpJOSlIzGkXOjCtzjFk/4MpARzEjh+fiMD9Id
-         vFqbQDD4ytGErVWEcsHomux+baax1vz5kT5dU7pWzzHP2q51q38qLMmmRyWNGF96OKCY
-         JzwwAq2Gqalg/YS1YxFMgRQytj53GMTtB9a3QOmSYdRC7hOj/935A8gfX95nwg0MTbd6
-         +5RQ==
-X-Gm-Message-State: APuU4Z92/kpKy+1r7PK67u4GlK44XWDgaIG/Ppp/7jPD/N5oiKwI29Fc
-	0XbL12NUh93Pi2fMvQT1wZcNQ/V9D4d1l+niJ82MyXZMHe7apVtKSfWz
-X-Gm-Gg: AYBFou2VvOASBgJfIprdq9qqgstrwPXIreO/mOqpWGoHaWrxYILd7vxRe6SlDACO8gB
-	Jtsv4ZxKwuinRXA5+3GhSphBFYtfgzepTZbxWk3hfwpAO0xOkIrlWhfvHsOBu4GukIO2Y5N0pyd
-	qVJJ7PXOj1OjueAt30fTe6xpyTfO+7EL0rqT9cMEaRw/nSlKik36BHHpiT+N3q+CsRnDg6xCPxF
-	3Z0JFYJu1yFTXuUv+rLWgx3W+2KNq/NkSb2c/jhxZQ3PJ/17bk8BMlEyun2P9gg7vua9ptl/3LD
-	oJzHf0VWkULpeKx6h8+fpSGEljwhvzG2up5IaRmajVllZPNoiWmnDTGbGvD+2HBFavgzcP7mbwE
-	5dH1LNBaOJuPh5+qmSyr+HUbu2SfV9I0nXUfCQ+YwhXo6YNTq8p1VSYB4ucPANglnVtWpokzNAc
-	nXX8J9wRM8o3poge1yorVUA3Q7plDKGYQSPzE38qLTHlQbSFag4quJ0NsjO5y2JFk4Eywb1q1sZ
-	e5SxPH3u0Q6B519j3Z3/s7iiWGSaub2Y5yLEJBdBDblCehX/Gj4+GbuOkiGQ+LIhO01a1U8dOb5
-	xc/bkoA6b+uRvpTDht1HlOJ9D9sh9n2nzf8RExiy9QM5FxEnEoZl/Ad4chWF5uu8yabxi2U=
-X-Received: by 2002:a05:701b:2505:b0:181:ccdd:ed2a with SMTP id a92af1059eb24-1b25d38077bmr111415c88.43.1793910412091;
-        Thu, 05 Nov 2026 12:26:52 -0800 (PST)
-Received: from ?IPV6:2600:6c5c:6b00:316::23? ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36f733b0905sm564712eec.8.2026.11.05.12.26.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 12:26:51 -0800 (PST)
-Message-ID: <e0cdface-0e8d-44c0-912d-0a96bc4032fd@gmail.com>
-Date: Thu, 5 Nov 2026 15:26:48 -0500
+        bh=R2bDHLUAsY5ANQjjsP8u82fVSG+atwQzzewhrRI9VEE=;
+        b=q9QsAyAqDDYzROce01LLgNQxnxoNlQ60QfM4auyqTmt3ZeDkFN28I+rgAc1tVDXNPJ
+         ERitXt/YzCAtpLKKcRVM0DXUozxhDhKCTB9HOAZm0/r7O3MlMr635MabnPo2u84LOe16
+         vMpOONXknpR7Br4C5MVwnY7ik3cfgxFBhMLFoAqcLhfWZOYbk4mE/Ik5vggNkyVz2ZbS
+         S/UaTtLdMMqf4Cy72933WFFKGUFbcpBH6xEE9jb3TEFfwM7Hzxmtp9kxMqYmRJpOOWRh
+         a7jALSpMC3SZ7LrXQt8NnzGLrMo5Lrm3IiJDN/BE0nI+4yF81ujkL48lVnGGC1FZFkqn
+         xTpQ==
+X-Forwarded-Encrypted: i=1; AKwUvByppKzWtS/uvvr8xYzYaWOh7bITswHTKwVgI4q0qg6m4EJHQiMaHGHWJ0JO2iQUNflczU0gnyA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/GinaY238JJAyALNkpXGZnMRNMD+tIyCHBZpfnfJBBtpoRPWx/
+	neNCgO8j9o/ccHZCxYNAWYGGhJZ/KyH0w6VLMej15qWPCg7vZ7dv4SNVLym5V0gTEZAbHN46S4z
+	VKoRbFg==
+X-Received: from pjnx22.prod.google.com ([2002:a17:90a:8a96:b0:3ac:df91:33d6])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3b48:b0:3a0:cbe2:9e0c
+ with SMTP id 98e67ed59e1d1-3b0db725ccfmr125374a91.63.1793910511945; Thu, 05
+ Nov 2026 12:28:31 -0800 (PST)
+Date: Thu, 5 Nov 2026 20:28:31 +0000
+In-Reply-To: <217109d64f0cdcba1db9569ee6ff7304754c47a4.1793793623.git.petrm@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,50 +77,108 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/4] ipv6: fix stale transport header of GSO
- packets with extension headers
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Andrea Mayer <andrea.mayer@uniroma2.it>,
- Justin Iurman <justin.iurman@gmail.com>,
- Alexander Aring <aahringo@redhat.com>, Willem de Bruijn
- <willemb@google.com>, Alexander Duyck <alexander.duyck@gmail.com>
-References: <20261105201309.3182307-1-tactii@gmail.com>
- <179390983837.488859.4719265601441033954@kernel.org>
-Content-Language: en-US
-From: Matt Vollrath <tactii@gmail.com>
-In-Reply-To: <179390983837.488859.4719265601441033954@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <217109d64f0cdcba1db9569ee6ff7304754c47a4.1793793623.git.petrm@nvidia.com>
+Message-ID: <auzmIrtt_gMVjWhs@google.com>
+Subject: Re: [PATCH net-next] net: neighbour: Avoid sending RTM_NEWNEIGH for a
+ dead neighbor
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Petr Machata <petrm@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>, 
+	Andy Roulin <aroulin@nvidia.com>, mlxsw@nvidia.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 11/5/26 15:17, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On Wed, 04 Nov 2026 14:56:56 +0100, Petr Machata wrote:
+> During the processing of neighbor timer, in neigh_timer_handler(),
+> when the number of probes for an unresolved neighbor is exceeded, a
+> non-ext_validated neighbor is marked as failed. To send the ICMP /
+> ICMPv6 destination unreachable diagnostic, neigh_invalidate() unlocks,
+> and gives opportunity for a concurrent update to mark the neighbor as
+> dead and send an RTM_DELNEIGH notification. After the lock is
+> regained, neigh_timer_handler() proceeds to send its own RTM_NEWNEIGH
+> notification, this time on a dead neighbor.
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Sending an RTM_NEWNEIGH after the corresponding RTM_DELNEIGH has the
+> obvious semantics of recreating the neighbor, which is not what we want to
+> convey here.
 > 
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
-
-This was encountered while working on an ndo_features_check
-implementation to fix a bug in e1000e[1]. An LLM found that there
-were more affected consumers of transport_header, so I expanded
-the scope of a different fix[2].
-
-[1] https://lore.kernel.org/netdev/20261028170239.28606-1-tactii@gmail.com/
-[2] https://lore.kernel.org/netdev/20261104175517.2395704-1-tactii@gmail.com/
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+> Userspace can in theory recognize these faulty RTM_NEWNEIGH reports by
+> the state, which will be NUD_NONE, but there is no reason why it
+> should.
 > 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> The following diagram, which illustrates the issue, comes from Andy
+> Roulin:
+> 
+> timer handler (softirq)                neigh_flush_dev() (linkwatch)
+> write_lock(n->lock)
+> nud_state = NUD_FAILED
+> neigh_invalidate():
+>   write_unlock(n->lock)
+>   error_report()
+>                                        write_lock(n->lock)
+>                                        unlink, n->dead = 1
+>                                        refcnt != 1 -> nud_state = NUD_NONE
+>                                        write_unlock(n->lock)
+>                                        RTM_DELNEIGH
+>   write_lock(n->lock)
+> write_unlock(n->lock)
+> RTM_NEWNEIGH: state 0, no lladdr, ndm_refcnt 0   <- stale
+> neigh_release() -> neigh_destroy()
+> 
+> Fix the problem by refusing to send any notification other than
+> RTM_DELNEIGH when the neighbor is dead.
+> 
+> The issue comes from a user report and was obseved in the wild. It was
+> reproduced on a vanilla kernel by extending the race window by inserting an
+> mdelay for neighbors on a device with a hardcoded name.
+> 
+> It is tricky to track down where the issue was actually introduced, and
+> practically speaking, it may have been present "always". At least as far
+> back as 5.10, which is currently the oldest LTS-supported kernel release,
+> the code still looks substantially the same: neighbor timer causes neighbor
+> invalidation, which unlocks to send ICMP, which a flush can then race. Even
+> 2.6 has elements that look like they could combine into the same race. I am
+> therefore not citing any particular Fixes tag.
+> 
+> Assisted-by: LLM
+> Co-developed-by: Andy Roulin <aroulin@nvidia.com>
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+> Signed-off-by: Petr Machata <petrm@nvidia.com>
+> ---
+>  net/core/neighbour.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index d6e9c7c59a89..6fa490f7652a 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -3593,6 +3593,13 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+>  	int err = -ENOBUFS;
+>  	struct net *net;
+>  
+> +	/* An attempt to send anything but RTM_DELNEIGH on a dead neighbor
+> +	 * indicates that the neighbor was marked dead while another update
+> +	 * gave the lock up for a bit. Do not send such notifications.
+> +	 */
 
+I'd remove the comment, it's apparent from ->dead that there
+was a race and the rest is just repeating the condition bleow.
+
+Otherwise looks good.
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+
+
+> +	if (n->dead && type != RTM_DELNEIGH)
+> +		return;
+> +
+>  	rcu_read_lock();
+>  	net = dev_net_rcu(n->dev);
+>  	skb = nlmsg_new(neigh_nlmsg_size(), GFP_ATOMIC);
+> -- 
+> 2.56.0
+> 
