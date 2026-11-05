@@ -1,49 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793869814;
-	b=UlT3MoilpoVE2d7jQRvSoY0mQwY95+Hk3cFzN6C1lfL2tCHBkKTlG1gn022lFEocGvM5
-	 v1myuM05h3epYyVByija4OCpuuXn+rf/ZNdIigtYdp8iNGgOsHCaQGJ8Dmuo12H6vcDFY
-	 k9/RUT5cTtEeXSdvI+/xQB5yHMWYaPIhvg8xOrYcPEI3UbdmVgETHVa1xrcZv4ZeArWwh
-	 P65/aaLTuvjHK+oGLrk8vujmkv6b7Gu8q/GF1jXCvFMviuMgrYZJXU6rhLIvI/tZ5qqnn
-	 dzbb7++Zho8gztqACE1QldC1ydy+IpLJ5J24hmYlNUb8rbaeo32TxsjJPb0tTgl+lsA==
+	t=1793869865;
+	b=jGKibtqOVyvyP4xfwE9KPl4CM/FSCS/2lLF2vJOTGP5sjYqcGIW/ZcPdgtTI1GF6XlZF
+	 vYlUJiSZnAqQKiieXLmfF48KB5OgSPi/GmeUQiO7Q97xhvXXMEZ1EERwzlTHxCb1Lkpa8
+	 PkiFSHiXEjYJeHxuSlCKCDfRa9Z35dxG/S4wJbgOeXGHXLPeXRR21LKTSVSlO7326fNis
+	 l4jgMmhHKSoEGh/lLpPnjT3jUs97uy0RB76DIOVLy9p+l9ngT7KRyQXtO2rgHm/QIO15S
+	 taQ67VikeQ4/xxaZqxDMX2aNxZRhZxs88cGj/VWRcHuYaHuaNrQYoRIwff1gWtUSSPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793869814;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=XUtq8qWZBzsRZgFiEIjZ4AQV2UqPpDHNXpMykqYphTw=;
-	b=zr9GE36IQAE6kPTsb9dRINpbZE+SjnKTm+ZQQ3v2J06+/Q591Jk7Ko22Y8c3JFwzozMj
-	 U+b4obeVT3n0TIn3IlgqDJfVVJtRxpeCBl3eHnMGlT3SZqvScf/doNJbfLlbKfiZCRFZF
-	 dfmSc6e+gt7MotlXWQngLLllWTynJVe+lnMTOyc7QICqOHM+Q5ej37G3lCobC1F22jJPa
-	 lOfyEg+S2gGSxgg+SX1jb9odXipXob+sdfkEioScKgJ6+jZg3y/dvDzqnMblsBccEA9O9
-	 b/YF5eUFPaiuWmzPkUrAhG86V4wUFesb9t1xVoufNBQGuYGT1Mgc+gH4paSFgv7HrLw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793869865;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=4+ZqNO1Uua075MEzu4+jAJNvV66dGvERxAz2lyx10y0=;
+	b=n1NexJ/tHVVjlG6nOoZCY88QFCbcl0ld+tYlmUcPLtC2bju57gVpkxjZWrVxO7nikfGC
+	 iT/tuNsrU6VE6m0hJyKReJEniLPcihG21GcDrKbJjEkPdsbH+jxKzEtlzqGQ149nzHGH2
+	 rHkKgCokuB2Cw6QpRydm80BD8VBLd5KnDyf+ZYQakoX0ETElCRm9tww4ISTKVLsnGmDx3
+	 8McOlQvmA4/t4Ehby4CTo3RTFO65I0pMwq0QEwVuFQENYXuC6MbfHQrRNBujqsJ37wwYi
+	 i3i1uR3hqtIqYMD0joE3dQ4RpnuZFD5m2XbM3PFm8e3f/9NuR+m9t3Bvyxj45K+Wz0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WEAsVhXr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UUyuMllB;
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F87606A31B;
-	Thu,  5 Nov 2026 09:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2DF606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:11:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B2DF606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WEAsVhXr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FFD1F000C1;
-	Thu,  5 Nov 2026 09:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793869813;
-	bh=XUtq8qWZBzsRZgFiEIjZ4AQV2UqPpDHNXpMykqYphTw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WEAsVhXrZjMr9iXlAFtOIcVk7EYBYDA9ipugAjWvmoV3mvrpsWaTLuEslEVtd523P
-	 7pA0EJo2pyIBfr+Pq4/Vka2aYAx+QSG3RCG2FKHVDwLLzQup7+stMHw0QLDQI4mIcG
-	 GD17MDImSm7N5WgAm/BI4HHymoTgF19EAOqayDQov4kxTWLO/KN9nZjQjckLh3J6RN
-	 xdwYTWp3Lh8K4Cu1JZ1+qbGG4uWiJvmMoQnmsy8hVfgM8HF2bwTuzugxPDVfvRhxOq
-	 jmPG/7sX9vQs7J2k/R3/EV45LTWRQgf4T6NKd8wFABnBrYNNxKa3b82zf2KAWHm2/n
-	 KjWbGvE6+VoOw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D46A391AFA5;
-	Thu,  5 Nov 2026 09:10:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UUyuMllB
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ad41b47541so1241990a91.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:11:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793869864; x=1794474664;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4+ZqNO1Uua075MEzu4+jAJNvV66dGvERxAz2lyx10y0=;
+        b=Mk3lMh3MpxYjFB3uSBJVpubSTivisxk5IDIgFFP2Y2U5j1v3RrZ0U7/gJ+KWnQV31t
+         NjHFXG6H7IbJbDvN7LV6uhzdpkZH0WYQ341YoEjRk+4LWwAQJ5cCJEddzF9g8gny4XA9
+         YBVyuMDYzEY4eymtnjy8np+RuhgZaoOgH3D8dfvSdjHWy1w1CoRvGW4C8f32v8pxp8WW
+         gWMe7v6ZCVbjkwIvYirXcCf9IMmKqRoXgLQCk8Q4JgQdafLCI7+XNkvwtNixu2XMWI2J
+         MbK9vlNEW/GnAHCyNuZ+pO/QGpLJb4WqXzZxHn3ZnpxwPjl55+ukw2LI7DMlnjBePShr
+         KvmA==
+X-Gm-Message-State: APuU4Z8Flbnykc/wJogvAhxDkbGRiGcJ1pQk+Y4JjFZKlXS+oI04l8Bi
+	PKKVzMShmlD8BlOhyDWb+jCkv7yAGS8EM6Fj0GwHRHLTHmNRlhTLlBPILGcKTIfIWxPqJB0/QTo
+	TiYOk+61kjvM0Q2IDFbJeY2ujvmRJ3bOLyglffPU7gAdq2ajaQaK2BdnrtOHC32ggo5wP30EoLG
+	nIpynHLisIIKqDVklCElOuER2DOrv8K/GMmy14rlr5IZU82HmENmv/CaSSkRzx4baFIeGipQhxr
+	FlubhfaR3AL
+X-Gm-Gg: AYBFou14HGgaFaadd2yAqvU64QV3PxZP+crDdFxj9vEDU3WoPQfqWEPqvUeJEllyJ2m
+	AswSS5YqIvgrK3wP01WkkRbn93VY61jSYhyOUsL3w8EV9NPnzRcjj+Qi7rVNBcX98eOVUqfA6Ri
+	LtU/anC7JrCbrzvOArjAfeajFkNAHkeNJyGbnH6UfJ0OzhEg+SRC8bRZT8VvfR1jBWuX5kOKuWp
+	MkXRhzoyEZvk3LpYwSa/IXZovurg6saHU21pmeIkC5az1qfo+mYB04FgoPNCay8MsLW3sH8gDQy
+	xr90uuqJu59SnCVE6xxFfWDHPIl1B2teG98KHvFwLD8fG13YijAVIKfQ2CGbfSoGIIscTCPIFJn
+	Phlr9OczT0vOZpyqSKhdUcF4puDiJoXEUX6P01AS2KSs+WrZKgIRqrf6UFJfBe1O+yMid0bcr/G
+	QliHBwbsbMAJUGMH/aIyxqvxpc+zkbX5449w==
+X-Received: by 2002:a17:90b:4b10:b0:3a8:185:cf40 with SMTP id 98e67ed59e1d1-3ae89724b06mr15979673a91.10.1793869864160;
+        Thu, 05 Nov 2026 01:11:04 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b0b93e8cf1sm1044070a91.8.2026.11.05.01.11.03
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 05 Nov 2026 01:11:04 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-535066512b0so46152581cf.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:11:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793869863; x=1794474663; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4+ZqNO1Uua075MEzu4+jAJNvV66dGvERxAz2lyx10y0=;
+        b=UUyuMllBWNBMjTXRRyz6Qq4H52mR0Hs6nSMXb+lB8GRVNLKQMVBrig3wiG9HGZoBe3
+         Dq4PcCK4y39gG88HV2JIJ6BdIEqra5PL/gfz5nmgW5pzEQ5k4KFkjLlDUpFMgt9TcMyG
+         bQTdkTSUeB4ashXuB8cm5+i30COn54ZyzFqK0=
+X-Received: by 2002:a05:622a:1a97:b0:537:b9f5:e05 with SMTP id d75a77b69052e-542b82fa50fmr318543361cf.69.1793869863165;
+        Thu, 05 Nov 2026 01:11:03 -0800 (PST)
+X-Received: by 2002:a05:622a:1a97:b0:537:b9f5:e05 with SMTP id d75a77b69052e-542b82fa50fmr318543191cf.69.1793869862721;
+        Thu, 05 Nov 2026 01:11:02 -0800 (PST)
+Received: from mgmt5.dhcp.broadcom.net ([192.19.222.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54b100af507sm47298591cf.6.2026.11.05.01.10.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 01:11:02 -0800 (PST)
+From: Siva Reddy Kallam <siva.kallam@broadcom.com>
+To: leonro@nvidia.com,
+	jgg@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	vikas.gupta@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	dharmender.garg@broadcom.com,
+	sachin.holla@broadcom.com,
+	Siva Reddy Kallam <siva.kallam@broadcom.com>
+Subject: [net-next v3 0/3] bnge changes for RoCE driver
+Date: Thu,  5 Nov 2026 01:01:51 -0800
+Message-ID: <20261105090154.1293846-1-siva.kallam@broadcom.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,74 +119,44 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 01/15] can: dev: can_dropped_invalid_skb: drop CAN XL
- frames on non-CAN XL devices
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179386981230.3522571.13202967143712215658.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Nov 2026 09:10:12 +0000
-References: <20261103204305.3211144-2-mkl@pengutronix.de>
-In-Reply-To: <20261103204305.3211144-2-mkl@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, mailhol@kernel.org,
- stable@kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hello:
+Add bnge specific changes needed for RoCE MPC channel
+support.
 
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
+v2->v3:
+- Addressed Shasiko review comments
 
-On Tue,  3 Nov 2026 21:30:22 +0100 you wrote:
-> From: Vincent Mailhol <mailhol@kernel.org>
-> 
-> Sending a PF_PACKET bypasses the CAN framework logic and can directly
-> reach a CAN driver's xmit() function. The PF_PACKET framework only
-> checks that skb->len does not exceed the net_device MTU.
-> 
-> For a CAN device that is not CAN XL capable, anything above CANFD_MTU
-> (72 bytes) is therefore dropped before it reaches the driver. However,
-> CAN XL frames are variable length. can_is_canxl_skb() accepts lengths in
-> the range CANXL_HDR_SIZE + CANXL_MIN_DLEN up to CANXL_MTU, i.e. 13 to
-> 2060 bytes.
-> 
-> [...]
+v1->v2:
+- Created pull request for RoCE MPC channel changes
+  of bnge driver 
+- Addressed Shasiko review comments
 
-Here is the summary with links:
-  - [net,01/15] can: dev: can_dropped_invalid_skb: drop CAN XL frames on non-CAN XL devices
-    https://git.kernel.org/netdev/net/c/0fce44e29fce
-  - [net,02/15] can: isotp: check the frame type, not just the length
-    https://git.kernel.org/netdev/net/c/933bf0fcb325
-  - [net,03/15] can: skb: make echo skb freeing safe in any IRQ context
-    https://git.kernel.org/netdev/net/c/d74307196492
-  - [net,04/15] can: skb: make CAN skb allocation failure paths IRQ-safe
-    https://git.kernel.org/netdev/net/c/d4b616a38118
-  - [net,05/15] can: dev: can_put_echo_skb(): free skb on invalid echo index
-    https://git.kernel.org/netdev/net/c/b4ebcbbf66ba
-  - [net,06/15] can: replace ARPHRD_CAN type checks with can_get_ml_priv()
-    https://git.kernel.org/netdev/net/c/962947b69589
-  - [net,07/15] can: isotp: check the return values of can_rx_register() in isotp_bind()
-    https://git.kernel.org/netdev/net/c/874f5f14cf62
-  - [net,08/15] can: protect the receive lists with a per-device lock
-    https://git.kernel.org/netdev/net/c/0f3ad9ab40e3
-  - [net,09/15] can: raw, isotp: copy socket options outside of lock_sock()
-    https://git.kernel.org/netdev/net/c/43c973a0887d
-  - [net,10/15] can: proc: reset pkg_stats atomics individually
-    https://git.kernel.org/netdev/net/c/12297f855bbd
-  - [net,11/15] can: proc: skip stats calculation after reset in can_stat_update()
-    https://git.kernel.org/netdev/net/c/01b19ed9fa03
-  - [net,12/15] can: proc: remove pointers from CAN specific proc output
-    https://git.kernel.org/netdev/net/c/b98179a6e194
-  - [net,13/15] can: dev: can_fill_info(): don't wake up controller if interface is down
-    https://git.kernel.org/netdev/net/c/75332c410c81
-  - [net,14/15] can: dev: can_tdc_fill_info(): don't read automatic TDCV if interface is down
-    https://git.kernel.org/netdev/net/c/f5128a767261
-  - [net,15/15] can: peak_usb: pcan_usb_fd_decode_buf(): accept short uCAN end-of-list records
-    https://git.kernel.org/netdev/net/c/2d4c272e816a
+The following are changes since
+commit 05441d697f7f ("Merge tag 'cocci-7.4-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/jlawall/linux")
+   Merge tag 'for_linus' in Linus's tree
+and are available in the git repository at:
+  https://github.com/siva-kallam/linux bnge-roce-v3
+for you to fetch changes up to
+commit d60317882851 ("bnge: Reserve ring resources for
+upcoming RoCE MPC support")
 
-You are awesome, thank you!
+Sachin Holla (1):
+  bnge: Reserve ring resources for upcoming RoCE MPC support
+
+Saswati Das (2):
+  bnge: Pass BAR1 doorbell mapping to RoCE auxiliary device
+  bnge: Update HSI
+
+ .../net/ethernet/broadcom/bnge/bnge_auxr.c    |   1 +
+ .../net/ethernet/broadcom/bnge/bnge_auxr.h    |   1 +
+ .../net/ethernet/broadcom/bnge/bnge_core.c    |   9 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |   3 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |  56 +++++-
+ include/linux/bnge/hsi.h                      | 161 ++++++++++++++++++
+ 6 files changed, 224 insertions(+), 7 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.5
 
