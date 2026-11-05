@@ -1,105 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793879658;
-	b=K4O6qMoEheYziHEvcloyu0S/g8h69aqxRq+NEiBl3E0lE4Sbg+05oWCNoiMBrsfQY/sH
-	 4YmOOuPoTDQdX5gm5M0rzqksXmwXxj7IOQDU/YhCMDzsBgcMmvaFm2ve37GIKJD3D0mjh
-	 U+ChymbJGbqTt56GT0cxjH1lmdSSm/OuqrfjTZ/C1uVjlgRC9cWZK0T5V57AXZD5GAlT5
-	 LOcLmtAL6L22KnmJnSCnOoXUik5PyzK28kwiLJBBPl1g2h2Fs7a0xce4a1CJ/sId7RM8K
-	 VGtkfKLaDt+bZcWqnwUZYC2uI52bOyJEwMx9xFH+S+8qp3TADbYmPBA1vTLTD8JKjAw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879658;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:In-Reply-To:
-	 References:MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding;
-	bh=N+3m3vZOzUEGlHuUM9OVDnQH8LQ3Rban+sBZHH4tE00=;
-	b=RvJ0+Oc7b5PcS3X7ujpQOlLA2c2MPZIpYvEh4sJjk1Qa0p8Xssf23MwPfoSbKggtww11
-	 eaxl/ZZ6rPSsSMrur8kRRLZ26TC85jXKfdcmmScAduuAaZenO7Cf9jLeWr96veo2jL5hx
-	 e1Z7EWPZqZSTtVNv7e/4ke68VpTjjCl1cKH9CxgCG7ai6VlC6xX4dm1b4bz9Os+6+eCuk
-	 Cwndr6Dey9yJXMxWc4Ke/SDx/o5449HmLfzKz/Nd4j+BiUzVO6wrKvtE5A3WrpzGAITBs
-	 npEtuo16csrQsoWcOnNZKMGJjpsCzhcqMs4vKFEjBE8h1A+48lYvuTEm34wlTsnzx3w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DCdUCa5x;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.172
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793879669;
+	b=uHfdmpBguN2xed/T+QyALDZW5/OeVcoj2n1XYnpUDT/5PpAvsf/CUbRUAVOdU+1cqmPB
+	 YLFPApk5+vOUowvnyU7NTaMapT7ptnnH0fsbvh8wNDonljp5S7y4GTbiutqitPcqoZcAU
+	 gBmfGNa94LnwNPIBI+8VB0JQbyVaEqJrGRjn0o/MME+NK+sGOhUq0SfCYu/Br4yv2qupt
+	 KQcYkouDYdD+FeNnjnwne5tyloBWVfdg193LDwxeQTyKXPQmykVOr9W6xjhcFlCRZzEmo
+	 lRTff2mZQO4USTlwwp+EOBaw7ezjByZI4nT5gFSaMuyyqybPY7iWKUkwfIF3VQNXYdg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879669;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=9QbVFt2hlPhcZEm3mRTztj/H+Fc6Cn/Nf/eAUAf8Ebs=;
+	b=NfgRAhPYX6kxZaSERJk/G5dxIQMbSwjnamqz7+Vq6nksHB8kyeGbNVU6sLbA3hUJnG3j
+	 8IOwQKuPJ+Bv2lR4euG9WVuMjzqIEELx7YrmkM4RvbsKc0o+KUuSyS3iXXRiC1rVbyt8K
+	 NhmmB8c+yr86Zm98MNxP9SLiJyvOq4xmDUxuU9/UL9wPeCfzRdxyZfTnA7PgO3S54F1b0
+	 o4QozP82rlVersGyc6GRNjtBDGOyZ0iz4FmXP4+TN9dNGjfOnMsiARw+Qz86J6lqXr1q1
+	 RlvIYduurUz9F6YfAezdYlXJuHHgLjrpL1CPfb0Ufp9/Pqa2klEfJy2hX+92YXEh3ow==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkvK9xJR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879B606A900
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:54:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D879B606A900
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F3D606A33E
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DCdUCa5x
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3ac99992373so14988191fa.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:54:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793879656; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JX0kLuWoLTJq8pLCVqEHpzGjis0bJYZVgpcXEek9ocpTNdBjx6dXCLAclRjL8Zs/8d
-         aluEa9DIPDGBHx2C9jhoJBCpwhAdPSeBcByqzjXaxuFnGSVwK/I9NJPqrG1dzcRm0/mX
-         r9oqBSMw0WD59HRmqR4Q2XlHOpF20jVn2lBpd6YdRPZQ8ck6IdTUmW90oDMDbKY9b+yr
-         bXJy4Y93u99p+HrOo+fM4LkYyYDztc2ELDylkjkOs0635zTVEj9oBT3gbZLW3wIlEpdg
-         IrD4V6GwVSty5+ncZF2N95aOxGXQMrOqCfezGYj4hRdothKCeXDV2U3CwLCIyIyF+77N
-         T2/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:references:in-reply-to:dkim-signature;
-        bh=N+3m3vZOzUEGlHuUM9OVDnQH8LQ3Rban+sBZHH4tE00=;
-        fh=p4H8V/H/uxIefnKjtAGdgFVIvte+I7obBdsLpOSyMOg=;
-        b=nJn6j+JIpikycVBa3U1Olg1BzccHPBEubDr/jPWUj21xTWGm8emLndA1WbhAzJ6Yja
-         uXkxBGelJrlT/LdL4STsX4egCbANr4hKrKY1Wkgl03GJENE45pdBMYV1CjUmHEZ6ECil
-         0LUxWxS/oAlpm1fSqU2/xHp+q9mb+rrOYpQGbcLbhMA4phWT2nfd5qgT8CBkzlvEuPPv
-         qbvqo7GYJh8zASIGlfbuhbAF69XYeWxyA7AT9bDohfId8gJt3ZW7ZyY4Wc26zl1sByCs
-         xOnuLaU8Z1LemnvpSu6mQHdaN6KlyLb+NPP3oyRL5DwtdhDrvptumN8+c5037cLlgG/g
-         q29w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793879656; x=1794484456; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:references:in-reply-to:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=N+3m3vZOzUEGlHuUM9OVDnQH8LQ3Rban+sBZHH4tE00=;
-        b=DCdUCa5x+yRyAT31lbAmXtahG9EYq+8GeSZ2wi+IICNAOBf8dX1U6ipm+s/3EOWK6U
-         5QJpiGFoERvOY9EG8R2CO91TqBTxi2u9/LDA2LvEbZMW8Ghx2TN9MZO08C2KSZ2Z2ROE
-         Wsp7/FjKDIojzbRGUXD2Q+waYDYnIzUzDCf8uJsINq8cy6gM+n0IKGgqVBQXxp6k6voT
-         OyWTC1xUYlfTvXUv5yGFRx5JQ3dUuuCoxSuepwClZSKVki4+nRPrLcR4oSc8Vp1XXAaU
-         Pk8jPE0c0hBm3oVXvLGO9Z8ssVKs1D4rljEjFvjpeqIux5npT2Yy7OuB2IwG/mWDQ8BR
-         hRiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793879656; x=1794484456;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:references:in-reply-to:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N+3m3vZOzUEGlHuUM9OVDnQH8LQ3Rban+sBZHH4tE00=;
-        b=ncV1km8jxpu2+aY4bmn2EibX0xL1zul9UvqsuoNmud9+njVWT/YYvhUEYrF5ZMqB9+
-         b/GuFMEQpnCojWHKODfA4Sq0ST2BWB15uEoeNydSKjJ6Bnl5lh+gFEhKrJDB3BQUZPPn
-         irWFYjx5mAUWWA5cCd88Y0O5+sADXeYmoqOvAyKtSn04yTOl01S8rUjflJjn6G1CzNbm
-         RlzufNEj+yy/8NzDyxU4CoVK7aUXTThNSlnaHKun5XEHZqJOAhuObOekClcN7BT5gDcD
-         4Lt7qXngS5q8MIc5Ull9KHiRFjOoqr116zj6Qn8faH58kuNWix9iqd2OYQVNomPKiows
-         oa9Q==
-X-Gm-Message-State: APuU4Z9Of+/XitZy/Nw52XEDIaj7NIKkFlsuL6TbwhpZ8jlHC7KfwjiP
-	aSoAtfeeN9qAOCXilyLAIGu5ScOsCJOSAuZ0zaWuqVnDIM3w8FNtUriwbAdeLxOjFy8Ob5OPsXb
-	RYN+ZVV1a/2FUrTEJZCNK+erx0bTnLXjILXlF
-X-Gm-Gg: AYBFou1mQsIeYX5ehlL3cNu6SUAvarv2ohstiJ+9IrX9VQHXgb3l0e16IPcA4TYqG4b
-	5ivG88hvkZyRYqDmHpBXnGhdAT8saoedCs0MfVw/d4heOd5swDdJcOLl8OrCV47L3qugPItw0hA
-	lqRxGvC3aTPPP/Pn/+wBU00MNKoYdP277ScrXaJN/MetfaFf2WAEx+6Hc7tPQvLnWgt4jq5GokB
-	aoR8+mHEMTqda5ti9UtrjhRkza6gsulq9Mn9qsyKraoQKi48k41JdUX9t4nXnn2C72gqvZlGXQY
-	e1dRGwzl5F38FLGxJR9RyLXTSoKzcMwLtSsQaPx60i1ffT3tUUGi46SgDOGrJugm0dRd0dIUKsq
-	bK2FCMF8uJS3dAbJkmYRXS1QPk+AYTjmBOKM3aun0yt478zQNL4MC+HCt/MEydPdDCw==
-X-Received: by 2002:a2e:a809:0:b0:3ab:4a7c:7a65 with SMTP id
- 38308e7fff4ca-3acb7883d20mr40938051fa.0.1793879655702; Thu, 05 Nov 2026
- 03:54:15 -0800 (PST)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Nov 2026 06:54:15 -0500
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Nov 2026 06:54:15 -0500
-In-Reply-To: <179387271921.488856.11043838083216323158@kernel.org>
-References: <179378590950.74297.14503648624087894519@gmail.com> <179387271921.488856.11043838083216323158@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kkvK9xJR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439DD1F00A02
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793879668;
+	bh=9QbVFt2hlPhcZEm3mRTztj/H+Fc6Cn/Nf/eAUAf8Ebs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kkvK9xJRShfJ5INlF6DkKs4ae3tUVWLFJZCWoy/ibAMHaZUQXzz+yq493D8r2NoTT
+	 0x4+9ZG/PxVHLN4cl4bSX2GgRUlmvMKCY1cNjebacYfjRgvAP4fTcSeOi3yn5Hm+jR
+	 JuJYTyJSeRdXOymmT1iCeHZ/2ruzphDpVXSgFlH4882gcAfWy4Tb9iqclR0Z2BhpaS
+	 BW6hbBVScJJ1JljH1Aa/WmAXRiQu8G/hsC1EgABO7sI81XXprzIaGkmeZdwLvt8TMj
+	 xChAJIEnR59D2COtkB/N6ElTtN6d5UFDrR7UmXrH1Bc0MZUssXIG4pIAR0OfRiGFPx
+	 K/yIGsV9W7NXQ==
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-8479f46ecd8so786151a34.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:54:28 -0800 (PST)
+X-Gm-Message-State: APuU4Z/gL2nNGUbpPCRt31d2oG4H8hLxHec/QX3MUt5L2NMj5txCeIB2
+	+PO6hhyK80RyA8f9MQJME7GdSVXw7niJ5mCbmAKKMTKNfrAdhb7MXB+SZXP/MUJYD32gBaJQGGG
+	DlfpSbfIzR9jlc7rE3GdDLEo0eHl43RE=
+X-Received: by 2002:a05:6830:4424:b0:83f:f24d:fe19 with SMTP id
+ 46e09a7af769-85d362ea353mr15326377a34.3.1793879667558; Thu, 05 Nov 2026
+ 03:54:27 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,56 +58,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: zhang san <shunsheng1218@gmail.com>
-Date: Thu, 5 Nov 2026 06:54:15 -0500
-X-Gm-Features: AclHuK_PjOfwrGU7V8tuY37Lm8UZo8c9leNmigz8_H-PCKcm9vybXrcGuzeOckY
-Message-ID: <CAGTEBTZztQcrwJC0pECO=vmn5xZv-cY_OZnSLVBL_9Kt0OzfVQ@mail.gmail.com>
-Subject: Re: [PATCH] nfc: rawsock: prevent TX work requeue after socket shutdown
-To: netdev@vger.kernel.org
-Cc: oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	netdev-bot+sashiko@kernel.org
+References: <20261104050131.629967-4-edumazet@kernel.org> <179387332145.488856.1149073246990672028@kernel.org>
+In-Reply-To: <179387332145.488856.1149073246990672028@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 5 Nov 2026 12:54:15 +0100
+X-Gmail-Original-Message-ID: <CAL4WiiqNYh-FQziPMhg0jeAZ+tCGEwr49mtypAz+QoVfNzPtNA@mail.gmail.com>
+X-Gm-Features: AclHuK-Uaf0JVD2MbKUpokQNMNsj34pabP7ciYh30gRs4WUQbUX3FXhmYMX5luA
+Message-ID: <CAL4WiiqNYh-FQziPMhg0jeAZ+tCGEwr49mtypAz+QoVfNzPtNA@mail.gmail.com>
+Subject: Re: [PATCH net v2 3/3] selftests: net: tun: test outer protocol of
+ UDP tunnel GSO packets
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com, 
+	eperezma@redhat.com, hassansultan@google.com, virtualization@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-I am resending my response in plain text because my earlier Gmail
-reply contained an HTML part and was rejected by the netdev,
-linux-kernel, and oe-linux-nfc mailing lists.
-
-The issue was identified during AI-assisted source-code review and
-investigated with a KASAN-enabled kernel and a deterministic
-timing-injection harness using a virtual NFC device in QEMU. No
-physical NFC hardware was used.
-
-The High-severity finding on v1 is valid. rawsock_release() set
-SEND_SHUTDOWN without holding sk_write_queue.lock, allowing a delayed
-completion to requeue tx_work after cancel_work_sync() had returned.
-In v2, release sets SEND_SHUTDOWN under the same lock used by
-rawsock_data_exchange_complete() for the shutdown check and
-schedule_work().
-
-The Low-severity Fixes-tag finding is also valid. V2 uses Fixes:
-d793458c45df ("nfc: rawsock: cancel tx_work before socket teardown").
-
-The timing-injection test produced seven slab-use-after-free reports
-with the v1 locking and none with the revised locking under the same
-conditions. We do not claim that this patch eliminates all potential
-data races involving sk_shutdown.
-
-V2 was already sent as a separate thread:
-https://lore.kernel.org/r/20261105113812.969651-1-shunsheng1218@gmail.com/
-
-Best regards,
-Yaohan Li
-
-pw-bot: changes-requested
-
-On Thu, 05 Nov 2026 09:58:39 +0000, netdev-bot+sashiko@kernel.org wrote:
+Le jeu. 5 nov. 2026 =C3=A0 11:08, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
+rit :
+>
 > Thank you for your contribution! Sashiko AI review found 2 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 1
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -168,126 +90,180 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [High] The fix is still racy, so the use-after-free it claims to close
-> remains reachable.
-> - [Low] The patch only works on top of commit d793458c45df2a ("nfc:
-> rawsock: cancel tx_work before socket teardown", 2026-03-03), and the=E2=
-=80=A6
+> - [Medium] The new tun_vnet_udptnl_proto and tun_vnet_udptnl_proto_l3
+>   tests do not work on big-endian hosts.
+> - [Low] The new comment in virtio_net_l4_start()
+>   (include/linux/virtio_net.h) says the code does something it does not.
 >
 > --
 >
-> nfc: rawsock: prevent TX work requeue after socket shutdown
+> selftests: net: tun: test outer protocol of UDP tunnel GSO packets
 >
-> The patch makes rawsock_data_exchange_complete() check SEND_SHUTDOWN
-> under sk_write_queue.lock before it reschedules tx_work. The goal is to
-> stop a delayed data-exchange completion from requeueing the work after
-> rawsock_release() has started tearing the socket down.
+> This adds tun selftests that write single 4in4 Geneve GSO frames to tap
+> and IFF_TUN devices with UDP tunnel offloads enabled. They check that
+> frames with a matching outer IPv4 header are accepted. They also check
+> that a mismatched outer ethertype, tun_pi protocol or IP version is
+> rejected with EINVAL.
 >
-> > diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-> > index f7d7a599fade7..efdbd512d4600 100644
-> > --- a/net/nfc/rawsock.c
-> > +++ b/net/nfc/rawsock.c
-> > @@ -168,7 +168,13 @@ static void rawsock_data_exchange_complete(void *c=
-ontext, struct sk_buff *skb,
-> > goto error_skb;
-> >
-> > spin_lock_bh(&sk->sk_write_queue.lock);
-> > - if (!skb_queue_empty(&sk->sk_write_queue))
-> > + /*
-> > + * The release path sets SEND_SHUTDOWN before cancel_work_sync():
-> > + * once it is set, do not requeue tx_work - the socket may be freed
-> > + * right after the cancel returns.
-> > + */
+> > diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftest=
+s/net/tun.c
+> > index 34de2580e32ec..81410afbbcc8d 100644
+> > --- a/tools/testing/selftests/net/tun.c
+> > +++ b/tools/testing/selftests/net/tun.c
+> > @@ -683,6 +683,275 @@ TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum_64k)
+>
+> [ ... ]
+>
+> > +static int build_udptnl_frame(uint8_t *buf, bool vlan, uint16_t l3prot=
+o,
+> > +                           int payload_len)
+> > +{
+> > +     struct virtio_net_hdr_v1_hash_tunnel *vh =3D (void *)buf;
+> > +     int vlan_len =3D vlan ? 4 : 0;
+> > +     int hlen =3D ETH_HLEN + vlan_len + UDP_TUNNEL_GENEVE_4IN4_HDRLEN;
+> > +     uint8_t *outer_udph, *cur =3D buf;
+> > +     int pktlen;
+> > +
+> > +     /* The buffer is reused: do not leave bytes from a previous frame=
+. */
+> > +     memset(buf, 0, TUN_VNET_TNL_SIZE + hlen + payload_len);
+> > +
+> > +     cur +=3D build_virtio_net_hdr_v1_hash_tunnel(cur, true, hlen, 140=
+0,
+> > +                                                AF_INET, AF_INET);
+> > +     vh->outer_th_offset +=3D vlan_len;
+> > +     vh->inner_nh_offset +=3D vlan_len;
+> > +     vh->hash_hdr.hdr.csum_start +=3D vlan_len;
+>
+> [Severity: Medium]
+> Do these new tests work on big-endian hosts? In struct
+> virtio_net_hdr_v1_hash_tunnel, outer_th_offset and inner_nh_offset are
+> __le16. Here they get native-endian arithmetic, applied on top of the
+> host-order values that build_virtio_net_hdr_v1_hash_tunnel() in
+> tuntap_helpers.h already wrote:
+>
+>     vh_tunnel->outer_th_offset =3D eth_hlen + outer_iphlen;
+>     vh_tunnel->inner_nh_offset =3D vh_tunnel->outer_th_offset + ETH_HLEN =
++
+>                                  GENEVE_HLEN + sizeof(struct udphdr);
+>
+> The kernel always decodes the tunnel offsets as little-endian. csum_start=
+,
+> on the other hand, follows the tun vnet endianness:
+>
+> include/linux/virtio_net.h:virtio_net_hdr_tnl_to_skb() {
+>     ...
+>     inner_th =3D __virtio16_to_cpu(little_endian, hdr->csum_start);
+>     inner_nh =3D le16_to_cpu(vhdr->inner_nh_offset);
+>     outer_th =3D le16_to_cpu(vhdr->outer_th_offset);
+>     if (outer_th < outer_l3min ||
+>         inner_nh < outer_th + sizeof(struct udphdr) ||
+>         inner_th < inner_nh + inner_l3min)
+>         return -EINVAL;
+>     ...
+> }
+>
+> tun_open() never issues TUNSETVNETLE. On s390x or BE ppc64, csum_start is
+> therefore read in host order, but outer_th 34 is read as 0x2200 and
+> inner_nh 64 as 0x4000. The offset check above then returns -EINVAL before
+> virtio_net_tnl_offsets_ok() is reached.
+>
+> Wouldn't outer_proto_ok then fail on BE? And wouldn't outer_proto_bad
+> pass there without ever reaching the new outer protocol validation?
+>
+> build_udptnl_l3_frame() does the same:
+>
+>     vh->outer_th_offset +=3D IPV4_OPT_LEN;
+>     vh->inner_nh_offset +=3D IPV4_OPT_LEN;
+>
+> The helper's host-order writes predate this patch, and the existing
+> tun_vnet_udptnl tests share the problem. Could these fields be converted
+> with htole16()/le16toh() here and in the helper?
+
+
+Right. build_virtio_net_hdr_v1_hash_tunnel() writes the tunnel offsets
+in host order since commit a942fcd72e97 ("selftest: tun: Introduce
+tuntap_helpers.h header for TUN/TAP testing"), so all UDP tunnel tests
+in tun.c are broken on big-endian hosts, not only the new ones.
+
+v3 adds a patch converting the offsets with htole16() in the helper,
+and le16toh()/htole16() where the tests adjust them.
+
+
+>
+> > +
+> > +     if (vlan) {
+> > +             uint16_t vlan_tag[2] =3D { htons(100), htons(l3proto) };
+>
+> [ ... ]
+>
+> The following is about the first patch in this series, commit
+> fca58b5faf90 ("net: virtio: validate outer protocol of UDP tunnel GSO
+> packets"), which adds the code that the outer_proto_bad tests exercise.
+>
+> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> > index d6466f96cdd00..b9c8babb1fd73 100644
+> > --- a/include/linux/virtio_net.h
+> > +++ b/include/linux/virtio_net.h
+>
+> [ ... ]
+>
+> > +     if (proto =3D=3D htons(ETH_P_IPV6)) {
+> > +             const struct ipv6hdr *iph;
+> > +             int flags =3D IP6_FH_F_AUTH;
+> > +
+> > +             if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
+> > +                     return false;
+> > +             iph =3D (const void *)(skb->data + nhoff);
+> > +             if (iph->version !=3D 6)
+> > +                     return false;
+> > +             *thoff =3D nhoff + sizeof(*iph);
+> > +             *ip_proto =3D iph->nexthdr;
+> > +             if (*ip_proto !=3D IPPROTO_TCP && *ip_proto !=3D IPPROTO_=
+UDP) {
+> > +                     *thoff =3D nhoff;
+> > +                     /* Find the transport header behind any
+> > +                      * extension headers, AH included.
+> > +                      */
+> > +                     *ip_proto =3D ipv6_find_hdr(skb, thoff, -1, NULL,
+> > +                                               &flags);
 >
 > [Severity: Low]
-> This comment relies on the SEND_SHUTDOWN / cancel_work_sync() block in
-> rawsock_release(). That block was added by commit d793458c45df2a ("nfc:
-> rawsock: cancel tx_work before socket teardown"). Before that commit,
-> rawsock_release() did not set SEND_SHUTDOWN and did not cancel tx_work.
+> This isn't a bug, but does this comment in virtio_net_l4_start() match
+> what ipv6_find_hdr() does with these arguments?
+
+Same as for patch 1: the comment is wrong, I will fix it in v3.
+
+
+>With flags =3D IP6_FH_F_AUTH
+> and target =3D -1, it stops at the AH header instead of walking past it:
 >
-> The patch only carries:
->
-> Fixes: 23b7869c0fd08 ("NFC: add the NFC socket raw protocol")
->
-> The lines it changes date back to 2011. It would apply cleanly to a
-> stable tree that lacks d793458c45df2a, and there the new check would do
-> nothing during release.
->
-> Should this have a Fixes: tag for d793458c45df ("nfc: rawsock: cancel
-> tx_work before socket teardown"), or at least name it as a prerequisite?
->
-> > + if (!skb_queue_empty(&sk->sk_write_queue) &&
-> > + !(sk->sk_shutdown & SEND_SHUTDOWN))
-> > schedule_work(&nfc_rawsock(sk)->tx_work);
->
-> [Severity: High]
-> Is this check actually serialized with the release path? Only the
-> completion side takes sk_write_queue.lock here. rawsock_release() sets
-> the flag and cancels the work without holding that lock:
->
-> net/nfc/rawsock.c:rawsock_release() {
-> ...
-> if (sk->sk_state =3D=3D TCP_ESTABLISHED) {
-> ...
-> sk->sk_shutdown |=3D SEND_SHUTDOWN;
-> cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-> rawsock_write_queue_purge(sk);
+> net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
+>     ...
+>     } else if (nexthdr =3D=3D NEXTHDR_AUTH) {
+>         if (flags && (*flags & IP6_FH_F_AUTH) && (target < 0))
+>             break;
+>     ...
 > }
 >
-> sock_orphan(sk);
-> sock_put(sk);
-> ...
-> }
+> So for an outer IPv6 header followed by AH, ip_proto comes back as
+> NEXTHDR_AUTH and virtio_net_tnl_offsets_ok() rejects the frame. The commi=
+t
+> message says this is intended:
 >
-> Release only takes the lock later, inside rawsock_write_queue_purge().
+>   Unlike the original helpers, ipv6_find_hdr() stops at an AH header,
+>   as Willem suggested in the review of that series.
 >
-> Can the following interleaving still happen? CPU0 holds the reference
-> taken by sock_hold() in rawsock_tx_work():
+> Could the comment say that the walk stops at AH?
 >
-> CPU0 (rawsock_data_exchange_complete) CPU1 (rawsock_release)
-> spin_lock_bh(&sk->sk_write_queue.lock)
-> queue non-empty, sk_shutdown =3D=3D 0
-> sk->sk_shutdown |=3D SEND_SHUTDOWN
-> cancel_work_sync(&tx_work)
-> tx_work idle, returns at once
-> schedule_work(&tx_work) succeeds
-> spin_unlock_bh()
-> sock_put(sk)
-> rawsock_write_queue_purge(sk)
-> sock_orphan(sk)
-> sock_put(sk)
-> last ref, socket freed
->
-> If tx_work is neither pending nor running, cancel_work_sync() returns
-> right away. __cancel_work_sync() also calls enable_work() before it
-> returns, so the later schedule_work() can still queue the work.
->
-> rawsock_destruct() does not cancel tx_work, and the queued work holds no
-> socket reference. When the worker runs, rawsock_tx_work() would read
-> freed memory:
->
-> struct sock *sk =3D to_rawsock_sk(work);
-> struct nfc_dev *dev =3D nfc_rawsock(sk)->dev;
-> u32 target_idx =3D nfc_rawsock(sk)->target_idx;
-> ...
-> if (sk->sk_shutdown & SEND_SHUTDOWN) {
->
-> Would it close this window to set SEND_SHUTDOWN under sk_write_queue.lock
-> in rawsock_release(), before cancel_work_sync()? Then either the
-> completion sees the flag, or its schedule_work() ran before release took
-> the lock, and cancel_work_sync() will cancel or wait for that work.
->
-> Separately, the unlocked read-modify-write of sk->sk_shutdown in
-> rawsock_release() races with the plain read here. It also races with the
-> plain store in rawsock_report_error():
->
-> sk->sk_shutdown =3D SHUTDOWN_MASK;
->
-> KCSAN would likely report this as a data race. The rest of the
-> networking stack accesses sk_shutdown with READ_ONCE()/WRITE_ONCE().
+> > +                     if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
+> > +                             return false;
+> > +             }
+> > +             return true;
+> > +     }
 >
 > [ ... ]
 >
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/179378590950.74297.14503648624087894519%40gmail.com
+set/20261104050131.629967-1-edumazet%40kernel.org
