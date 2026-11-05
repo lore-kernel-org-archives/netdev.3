@@ -1,100 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.37
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793890137;
-	b=AoZo0Xo2bhFrw+pwDMmsRPSts1wAefm2pQvzgCDgdTfsp1D1uJnLlaQUv9igFsQ4KkMj
-	 ScYDnKyHE9UslUkWDB9AHFaki8q3D3ZoTodYjw8u9LoPjwGX46rFnVZuXVrW2zDaTkCod
-	 1gjlBo+TQSNuAT3lpNI+quYTpaN5b9M+hrfHpgfpjfDaHR2S2hcLLbWXxJxPtNQ8BBEnJ
-	 CeTJfaDBfmejk4PnIVocoE095pYhryZovXaXuL38JjAW8DZ0qEt1GHuujaxHvXFXDEMPm
-	 FHblUko2P5F03GHE65T9WcDFVr1ABYitre/nPPEvoY2W2fHzEQFpWFTahpvn8N2nJ3w==
+	t=1793890181;
+	b=fL1/fA+MfGAFggx03iI+eMfMCFD9Xu13cfCKDGdP1ZL9T94VhoONdrccA8kDiE/sUbkm
+	 7ujsAbT33PAb1B9BFug00jYvHrOuwnKz6ZJQX4zfG78BPVQynuRwk84RPuBpugkUbSI+N
+	 POBom6pYhQzaHHgSPIYulsCaqQa3C2yVkofZR9wy2OHCk06DlaXh+OUAHIY6T0RZTOf/H
+	 32Vw9Giw5LAyzRjBP3+SvkfhdxHeb+11DRvlq6mY6EmNeyQGSma97hSacNHJ2qv6jHCug
+	 zzSAmKxEKV9WpFyWTFlVlGHAA+wAnpASRsa9D7Xfxh0Fmhbvkg+LePwnKLVIqEjbwTQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890137;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
-	b=nBml1aDG8HtjLIACXAQhSrvHIPJ8gBE0JrSFZd59UQ/4fMP6+opKVQTlQ6Jin6usM32m
-	 kkPcEvi6FaCfBpAZW4GZSnsDTmu63h/vsH+AzIpKLwEcffN8sl3fkWsXwMnwIFXZF3OqD
-	 lsrJU57O+dtQuw1Foow0bGCDLQiY7r2SzevCdQCbeQjDpKvUDtB3luwba2h53L5YzeDGN
-	 fublhogzFINFL6XCS5afX3eSEVJxFYiUFtIZQbCX2TtmhOl2ZwhbO5uJRVVNiD6wPMSyp
-	 DvCNjG/HdeL1i0DOjhZj+ckMyUMB/bXFSET55bplNJZA15O+sSrEECrLvuVxhS5jeTA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890181;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=p85Yxae7x6uQ0y0pOx+k5+t7SNvzpqYbmyDsjlwtMYY=;
+	b=e2i8pbvF3JfrgaCuAuXEqqg0790bemLM9SemRRSZLyzrJqJ4kS5vFv+fjR16OtiAjPQ/
+	 KAuxOC0O5J7D4040fJmIdiQTr4E6BCT5MuzTuNjSEXb4eRF99MLxeIhfwNXMnntfTVwj9
+	 No4bNFVa12WFHUc2FdPQU0mkuLpPTgXhJYdeawdekZLnYT5mKhRsPtysZqPKldg5O6Drs
+	 cRdY8L5TJhFe0odT8lBsLfv/VzBYWP3eZaMkK76nYdQMC5MiTAuZxvgSRocDl+HH7nF1T
+	 8bxgnPdgiFtEwXAdCgg5xCAOgR/aAmKY15TlZqMxPUczRXybSqGp99I59axKre/haiQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=n8OC4dpU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.37
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011037.outbound.protection.outlook.com [52.101.57.37])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kj7wK8Gh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7DD606A31B;
-	Thu,  5 Nov 2026 14:48:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E7DD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53632606A329;
+	Thu,  5 Nov 2026 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=n8OC4dpU
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CC6F5NH3N/QeoiegI7vRnP4i2O2Ms6ZBwDTwacN/LTfZJbwo9yUZdtKeBxVBSKiLom2wOWkELLBX5WNcGX3nHWyb/eoj9YiO8gZog/HEYSUxqXwINWxRwC4B9tz76CWngXMWqGt5b0sy7q5W7r/6dHc2QfbtIkQ+7Z5htCVJtIgWt792wFtAIpi1+t81LqjJZ/9bB6KCIQt1/NX61u4bfL7cly/VOvKLPgZjkjm6ofsvZHXSkU0avctKhXp9kb/QCG5ScuU//XL3AG285Ql5zrN+RXxfE5SbZnDfcuGUqIO+ckaBTzz3FgmsZTRDCODjwsPbo67v2WS8UCGnVXPBrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
- b=YpZbA91zcdFBcq2r4ib8KtIxx4PP6+K2wZd8/a9mnoizYGQDLwRb/SFDtNpli+M/DfTfcEX5Cd9BDmOoFqRc9V1ImReG9x+1HvmkYhhWC/0bUjIYKbLpiEqJtT4TNb7H628D+GxzKtwYRlpYFFydDqK7hz7DT8ILNgqYDFXYpMnFS6Dp3AvwoYHv8cENqF4Q3RFCarVN2VzfK1afTYghrl1QLx1LXPobyBYjFcEaYqRt476E7IaL9hr4Zf+af/LoWveeo8sH8G2jwueShiERtfxOuZaNx8Z/uQ5YO64jrvo8vAeVlO4xYUfJjQvanLVaMNIbetaSd3/mpSjJF10L+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=59mzC/SUaq+dWNv6foVeZK1IWurnNKFJ5YtzJpKMSIA=;
- b=n8OC4dpUQBQP2A2Abrk7dpwZvURS/8b1fWx5gi7P384OUwk8CAgGgd4sOox0cj/fti3MdwJoIT/Fuu7KDvpwdlO6xq7sCp3u75WtXgmryi7RHCuTpvmNKzcDEKp9AcAQrUqGPc9wjm4w+d1cBORti9wA03Arx7wn1GLn5P1DCcvHjH0rLCqJgywoJI4BrLq7QyXF4JL/yRg9g/TMTqhOhWb+nxW3vvdE9eSTkrnd4rZCR+uFJK7x11Ex+Uk+D9kAIUwebuU/xI47jmMb7GA7ZloTUio7hUmDopEyBDweRDeIk6Djgx+5uERJWylLzNZ49pE1YYcq0ym8cmkKkeVjiw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB6393.namprd12.prod.outlook.com (2603:10b6:510:1ff::15)
- by IA1PR12MB6482.namprd12.prod.outlook.com (2603:10b6:208:3a9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 14:48:45 +0000
-Received: from PH7PR12MB6393.namprd12.prod.outlook.com
- ([fe80::6562:4ede:3d29:f036]) by PH7PR12MB6393.namprd12.prod.outlook.com
- ([fe80::6562:4ede:3d29:f036%2]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
- 14:48:45 +0000
-From: Wojtek Wasko <wwasko@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mtosatti@redhat.com,
-	pbonzini@redhat.com,
-	cjubran@nvidia.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wojtek Wasko <wwasko@nvidia.com>
-Subject: [PATCH net] ptp: kvm: report paired cycles for the active clocksource
-Date: Thu,  5 Nov 2026 15:48:21 +0100
-Message-ID: <20261105144821.5299-1-wwasko@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0127.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:40::6) To PH7PR12MB6393.namprd12.prod.outlook.com
- (2603:10b6:510:1ff::15)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kj7wK8Gh
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793890181;
+	b=X5/aLzQ2VvlwzYHVzzgGSOl8UnpY/SB9vXxTM6m7hzUFVd6mr1D6MqJk8AjCdE+KXuW8
+	 We8mVTgdYjdyHWDoJF8CMESIJ80nWgC60m28/jrSDzGxDd7IIq0zkd/nZpWDXk9AeYaAk
+	 r5Cwgdq2GrVGQJqxzTNjj2QsE12OlTgk7Ocq7w52A50KlazVfyJUOATVIRIlGC1hugrMp
+	 9yqDrkqgHE5wreJnENaZb6sPVS2H3N6Kt6aoSw62738nINwytSGHb/2KtocgjJ6lZyUK3
+	 6MtRC/S7o8PS9eBCM/NrS1WAXjPACmhUkEGGml7JtZTHhHoMjdVEAVVXcFr3L+cNNeQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793890181;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=p85Yxae7x6uQ0y0pOx+k5+t7SNvzpqYbmyDsjlwtMYY=;
+	b=XNCMG0sZ9MX7G3ySDT5aNz6AYy1/eckYNgesmtysY/8PcWzEuyw7Vwkd2x+zjTpEbuT/
+	 xTlx0wFuVwXX35qtnMLvEic4sDG/edSYBNiklSbpe+4fWm12a/YsuwSS2y5Rba6dTWwPc
+	 w2wxEqkhxfpvddSrAQDA1x1X4hsNESIYr3VUplj3js3LAb048MRgTTD8Z9dOwjj+8ulEu
+	 Yu6fX38/7CangoMzaMuIzKil7Gbx3ZVHwSQdy+QMFpL7OTfM8u+G22q7aH0VF7oLQLcrk
+	 h+SjkiAugcHg5WzqlEzWQb4UfmRt4iIJtzcwHd7AZQ3lQnP0mhKDAOE4SKxMiKxds2w==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 50E371F000C1;
+	Thu,  5 Nov 2026 14:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793890181;
+	bh=p85Yxae7x6uQ0y0pOx+k5+t7SNvzpqYbmyDsjlwtMYY=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=kj7wK8GhjPeB69z+UVJYvvXdGIdeB1Vb6VLNJQR7vUthOMWNAw3eRgOmCEKJfEBfK
+	 QLVQ4FM5MOxgXxTk4YB09XtoG+Al3KgTjKS/lR4nOnbokJEX3+egPWMNgcJHditGhu
+	 0tJWxoKJu2SPleMSERGFhSDOHzgP3Aidbr4wo1bdQISjLLELFJV9htZm816TNpg6zJ
+	 WCysZ0oWPtNSQx58URMv9KiIefvORC7DCTD5fuPAKgEcKFn6z3IHnQABFz4G5oFcKi
+	 l3EjjQmUDRj5xFJ3nEldk5DIGMmQBSlFhIANZlvyo2uvQjX37OIkFI6EQ8Di3ERsbU
+	 ojMW7CURJilxw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id A749C472DB;
+	Thu,  5 Nov 2026 14:49:39 +0000 (UTC)
+From: Agustin Santiago Isasmendi via B4 Relay <devnull+isasmendi.agus.gmail.com@kernel.org>
+Date: Thu, 05 Nov 2026 15:49:40 +0100
+Subject: [PATCH net-next] net: phy: add driver for the ZTE ZX279128S
+ internal Gigabit PHY
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,166 +83,288 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6393:EE_|IA1PR12MB6482:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f8ca964-2895-4780-b73b-08df3b4be48b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|261022105027099003|261028144727099003|10067099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261102123227099003|11063799006|56012099006|18002099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	j7MAiWhLGuumf3n8kV0WW3z1tM+wGVJcvVgjfs1PZT1hnPolp7SE6C2x92y7vAulsTVlFAxV743JfeopvXXJCBRiT/r4hSuOkDkAjey0YOsH+NX/UKl/0yc770JnvWTmXz12AJy1oCLmMtPxBYpTQKw7pyrXbRj5Fx2WivTsX/Jan22b9DRsy1Jid5u+MubvByoiwi/7UFTR+kF4qMIGAUGsWYwrIkqzu3UhQBgKFl0WiOQc8lXMmQxsAFAditfcbXvc2pRmbbL3iwu0lXSqEMZgZ//K0G/aJp5bhrVcYXNrEaIQlWy7Gta/BD3hbR+AOaFZb9OVZhTY1ztsxSJ90tcvVyy0J8VaIV3PVK/hThsxJnN1yrDGm8v03RggjEMOwf2vm0nih7AGEiMrKTS+igx/Elj0nqOgPlOSd6E8sEoWwycd8lHC2CglKJiJLGbktj0CLHfM2IuFe4hjGXk7Z9an/F3NHsWHRsgTaah/QpaVZefXr0ulJ62J6j1X2kLBhX4pDwXxVnSyX/0/4APxMh39V5oTvCdB11kg3F2FWqIhc1VOeQuf9E5MBU3sBkz3sWpgTkrCLv+hV8/beZRrk5Vae8QWtxU8JEPikxbM8BCueB/aRSKD6Z91I6kOs4n4aqq5AHKAnhQPuTwrDF1/ZE9L3wfGwygcyA+23mJ1lRc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6393.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(261022105027099003)(261028144727099003)(10067099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261102123227099003)(11063799006)(56012099006)(18002099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+bz2yPW7sa4ZIok9DZNZW4VRqsXfdZ3CFezY2rMDL5QMDQCm/HDbZGs8E8ro?=
- =?us-ascii?Q?WZkjKynxNIVRAg1BFsw98I48/1GAe5WqWAMRtv/z40wTJn0/4dzK+jLFsn/I?=
- =?us-ascii?Q?VRiYarSQ6Y9zWOFCQLeg0vBQvDbCWSGSxmhTeTksC7Ro3ONXTt8L1b0pOmO6?=
- =?us-ascii?Q?on2noRibkIEb+wrmHTz3139Lnee/qG++LY5UDrlHPub4GUqm5BWsMmpmEkhy?=
- =?us-ascii?Q?XP/H2Bsx1jXQ6v8j+c6lLOEU92D6ypHuULqE5y89/CgS0YWl3UplONGpavdl?=
- =?us-ascii?Q?Vyrh8L+ia0yxXBfe8T7H/hDGhV0pujbSxbraDN/zQt8+bjioo68gkiuLCEBO?=
- =?us-ascii?Q?9ZiOzN+H5qH8LesXNq+rNVU7XSla5GkKYHlXXTyXMpOrNRtqPqmHR5R8/gCy?=
- =?us-ascii?Q?7hMlpoLEiGy23SbSbFOVN1Cf6lsB3uZWQPfHUv2lG5vz9GVLbsWUCSDwIP0R?=
- =?us-ascii?Q?a39hPfoxxHst91IulrMEiUQDtwKVcNArW4QSpC/dng61GhcBTfAQvQE3ftfH?=
- =?us-ascii?Q?U04W1NW3urMU6p8loR04Bf9+rQnzBogtPf9Du5y7ZjCfDyZk1DBZaQITvKJe?=
- =?us-ascii?Q?GvROxb+d9R6ziFVdPKtqgnkiD7xJBLuV3KgertYe5snUKklkYxYaySj4zeW1?=
- =?us-ascii?Q?0enWo2NgnXTutgUnvzb7opd3dPGp5Aign41n9dcGVJSQjp+hOHMHcJV2ldXG?=
- =?us-ascii?Q?MPX+WYNdsuC5c51LbKSmx2K5KlpzVZKM0C6VXhy5/LidfmkkyHmOGNgp5ITF?=
- =?us-ascii?Q?mwRV/fuZYLnGXWsvM0myMqdUr2gvbQQa+eE/66IyXC7fS3I0req3hjFDSpKY?=
- =?us-ascii?Q?o+G7DmOCBwXpos8LBrlZUqk8J34qRSPeEhg0ayRIVskR9hwgB9H4uO/unum8?=
- =?us-ascii?Q?aWDHnRIpFVYPfmAc69cT1uWbyZfJI6Wq88LwEfhIhBguxnX++tM1vI6e1kIw?=
- =?us-ascii?Q?D6fsdnZuWzuPj+UpeTvYznp/JpoLhWwyu6azraAA8uM/OLCfp8rULxAbwoRG?=
- =?us-ascii?Q?RJ+uPcEqU9p63ACWr6puPxYzzpEACeRPtIiK62odjT4uZk5Xl3o2JgDl0M9F?=
- =?us-ascii?Q?BBzT8wBFGVWBO4CTj8/dzOax8/rzNw9sp51l9tdM6j5cRHKpRfNlTawi2BUD?=
- =?us-ascii?Q?ZtxRyJx8j6wZ6aFtyJ/YTdmpbup94QWb3oOqxNEV5Wy4Nxel5EJP0q5qCje9?=
- =?us-ascii?Q?/LBJxK2BufaL9aXf5xChn4iCqka5KYMafRaim549+/J0P6UTQd3AoSsVm3XO?=
- =?us-ascii?Q?OIrm3vK2JeK13OlsaY8iBj88zw+qnnotXiOAygaXtMhadgeAMey8wV7LLrMc?=
- =?us-ascii?Q?OPaatt3WzTSlTy6ZPUWxRyyhWGKgHVG7adF4IqalT9Uxg016ykBC54RcxXkS?=
- =?us-ascii?Q?2tYWnuUIFh8l6IZovteL3gOL8/KgJ4YweNOzYXN4omX4+8j5YzZQH1yjwwwG?=
- =?us-ascii?Q?X03fNrKxP1AuBN8mXzNSQXoSaGuTcfhpj/3RUiGnhGnDBS4CIzkKU+GTkodp?=
- =?us-ascii?Q?1t3qGzM60A0NHQDsjQL0S/lKZUU9rdCBLIfjG52UP+YfNVFmWYpHSBfQm9T4?=
- =?us-ascii?Q?dLQvGfgH3dmvYXP8CSCn/Ea3r72cWzE/Qoq0/KfRrOQx5ISluoXgttmBbA9r?=
- =?us-ascii?Q?dRf6thIYnwgIgvO6AwVXSgsSXlMSawqyGdkVOanXS5gmUSqHUdLRYG6rTayR?=
- =?us-ascii?Q?UuWYJBw9LuVTzzgl7aaKYe2vnv7wkrrTuENkkLjGzim08gpr9W2A/ModlBft?=
- =?us-ascii?Q?Jdk/y2Z8MQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f8ca964-2895-4780-b73b-08df3b4be48b
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6393.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 14:48:45.5360
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T5TIA4Wwo6UCiJwe99Udf8JpQAQYnmTNLebZzrQ1E2370ZEX2bMudYXue/dx3ZyP46NSQyUBvo/5GtvNzfwvrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6482
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261105-phy-submit-v1-1-eb382681a76a@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIOX7GoC/yWMQQqDMBQFryJv3Q9GsdBepXQR41N/oakkaVHEu
+ 5vqchhmVkQGZcS9WBH406gfn8FcCrjR+oGiXWZUZXU1pmxkGheJ3/atSWzd29q1vJEdcjAF9jo
+ fswc8k3jOCc/T5OZFl/4vbNsOWYDOb3gAAAA=
+X-Change-ID: 20261105-phy-submit-a3fa3cbe9eed
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793890179; l=9306;
+ i=isasmendi.agus@gmail.com; s=20261105; h=from:subject:message-id;
+ bh=buQMSpEZoOkRLoT9KDEdGhDKcAMPcAhBidPxPbKe87w=;
+ b=nivCFy8KQVGLRy+eDC7yWdE4+/XmsBkKFTnZCggGTJRDIvPAcRN2IVhA5xls796fsjcg71nw8
+ ljAbLxCesywD+v9dRIqjyjlJ/byI3/KeTRYQKc0VRvC8laAWEnq9sH8
+X-Developer-Key: i=isasmendi.agus@gmail.com; a=ed25519;
+ pk=QIk41j89qSxlagpY51o20QegtDwsmrs5yGga3To1GzU=
+X-Endpoint-Received: by B4 Relay for isasmendi.agus@gmail.com/20261105 with
+ auth_id=1421
+X-Original-From: Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
+Reply-To: isasmendi.agus@gmail.com
+Content-Transfer-Encoding: 7bit
 
-The KVM clock-pairing hypercall returns host wall time paired with a
-guest TSC value. Cross-timestamping needs that counter expressed in the
-guest's active clocksource domain.
+From: Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
 
-ptp_kvm always converts the paired TSC value to kvm-clock units and
-reports it as CSID_X86_KVM_CLK, so precise cross-timestamping
-(PTP_SYS_OFFSET_PRECISE) fails on guests with TSC clocksource.
+The ZTE ZX279128S is a dual Cortex-A9 xPON home-gateway SoC, used in
+the ZTE ZXHN H3600 router. It integrates four Gigabit copper PHYs, one
+per LAN port of its on-chip switch, on the SoC's MDIO bus at addresses
+10..13. They identify as 0x84b95031 (the low nibble is the revision).
 
-Return the paired TSC value directly when TSC cycles are requested and
-convert it to kvm-clock units otherwise. If get_device_system_crosststamp()
-rejects the counter with -ENODEV and the active clocksource differs from
-the requested one, retry once using the active clocksource.
+There is no public datasheet. The registers and values come from the
+PHY initialisation in the vendor's platform module shipped in the
+router firmware (no source available); the function names below are
+that module's symbols.
 
-Fixes: a0e136d436de ("PTP: add kvm PTP driver")
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+  - Registers 0x10/0x11 give indirect access to extended registers:
+    address in 0x10, data in 0x11. The pair is done with the MDIO bus
+    lock held. It is not a page select, so phy_*_paged() does not fit.
+  - Register 0x17 and extended register 0xb640: the PHY's LDO.
+    gephy_ldo_init() writes 0x17 = 0x2448, then 0xb640 = 0x001f, on
+    every PHY. The meaning of the 0x17 fields is unknown.
+  - Extended registers 0xb667..0xb6c2: the copper TX DAC drive.
+    gephy_tx_dac_drv_force_enable() has a "force" and a reduced
+    pattern; the driver applies the force pattern. Without it the PHY
+    links and receives but does not drive the line: the MAC counts the
+    transmitted frames and the link partner sees none.
+
+The LDO is only armed when 0xb640 does not already read 0x001f: arming
+it again power-cycles the PHY's analog domain, which the switch sees as
+a link bounce. When nothing has armed it before, the driver does.
+
+The board's boot firmware leaves the PHYs with BMCR_PDOWN set, hence
+.resume = genphy_resume(). There is no .suspend: powering the analog
+domain down and up at runtime has not been tested.
+
+Not implemented: interrupts, since the per-PHY lines have not been
+seen to fire on a cable change on this board, so phylib polls. Also
+not implemented are two runtime policies of the vendor module. One
+lowers the LDO setting (0xb640 = 0x001c) at or above 60 C die
+temperature and restores it at or below 50 C; it needs a driver for
+the SoC temperature sensor first. The other switches the TX DAC
+between the two patterns from the link state.
+
+Tested on a ZTE ZXHN H3600 with net-next: the four PHYs bind, lan0
+links at 1000, 100 and 10 Mb/s full duplex with traffic, link down/up,
+warm boots.
+
+Signed-off-by: Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
 ---
- drivers/ptp/ptp_kvm_common.c | 28 +++++++++++++++++++++++++---
- drivers/ptp/ptp_kvm_x86.c    | 13 +++++++++++++
- 2 files changed, 38 insertions(+), 3 deletions(-)
+This is the first piece of mainline support for the ZTE ZX279128S
+(ZTE ZXHN H3600 router). The SoC's MDIO controller, its on-chip switch
+(DSA) and packet-processor drivers will be posted separately; this PHY
+driver is matched by PHY ID and does not depend on them.
 
-diff --git a/drivers/ptp/ptp_kvm_common.c b/drivers/ptp/ptp_kvm_common.c
-index 15ccb7dd2ed0..e11fcf961758 100644
---- a/drivers/ptp/ptp_kvm_common.c
-+++ b/drivers/ptp/ptp_kvm_common.c
-@@ -23,12 +23,13 @@ struct kvm_ptp_clock {
- };
+No datasheet is available. Every vendor-specific value in the driver
+comes from the vendor's PHY initialisation (function names in the
+commit message), and its observed effect is described where known.
+---
+ MAINTAINERS                     |   6 ++
+ drivers/net/phy/Kconfig         |  11 ++++
+ drivers/net/phy/Makefile        |   1 +
+ drivers/net/phy/zte-zx279128s.c | 136 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 154 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 09713dc4c6..6102772886 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -30906,6 +30906,12 @@ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	drivers/net/ethernet/zte/
  
- static DEFINE_SPINLOCK(kvm_ptp_lock);
-+static enum clocksource_ids kvm_ptp_cs_id = CSID_GENERIC;
++ZTE ZX279128S ETHERNET PHY DRIVER
++M:	Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/phy/zte-zx279128s.c
++
+ THE REST
+ M:	Linus Torvalds <torvalds@linux-foundation.org>
+ L:	linux-kernel@vger.kernel.org
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 30e9d22c8d..7a5d984b8c 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -503,4 +503,15 @@ config XILINX_GMII2RGMII
+ 	  the Reduced Gigabit Media Independent Interface(RGMII) between
+ 	  Ethernet physical media devices and the Gigabit Ethernet controller.
  
- static int ptp_kvm_get_time_fn(ktime_t *device_time,
- 			       struct system_counterval_t *system_counter,
- 			       void *ctx)
- {
--	enum clocksource_ids cs_id;
-+	enum clocksource_ids cs_id = *(enum clocksource_ids *)ctx;
- 	struct timespec64 tspec;
- 	u64 cycle;
- 	int ret;
-@@ -58,8 +59,29 @@ static int ptp_kvm_get_time_fn(ktime_t *device_time,
- static int ptp_kvm_getcrosststamp(struct ptp_clock_info *ptp,
- 				  struct system_device_crosststamp *xtstamp)
- {
--	return get_device_system_crosststamp(ptp_kvm_get_time_fn, NULL,
--					     NULL, xtstamp);
-+	enum clocksource_ids cs_id = READ_ONCE(kvm_ptp_cs_id);
-+	struct system_time_snapshot snapshot;
++config ZTE_ZX279128S_PHY
++	tristate "ZTE ZX279128S internal Gigabit PHY"
++	help
++	  Support for the four Gigabit Ethernet PHYs integrated in the ZTE
++	  ZX279128S SoC (PHY ID 0x84b95031), found in the ZTE ZXHN H3600
++	  router. The driver powers the PHY's LDO and enables the copper
++	  TX DAC drive, without which the PHYs link but do not transmit.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called zte-zx279128s.
++
+ endif # PHYLIB
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 579066a638..29bd283e7e 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -103,3 +103,4 @@ obj-$(CONFIG_TERANETICS_PHY)	+= teranetics.o
+ obj-$(CONFIG_VITESSE_PHY)	+= vitesse.o
+ obj-$(CONFIG_XPOWERS_ACX00_PHY)	+= xpowers/
+ obj-$(CONFIG_XILINX_GMII2RGMII) += xilinx_gmii2rgmii.o
++obj-$(CONFIG_ZTE_ZX279128S_PHY)	+= zte-zx279128s.o
+diff --git a/drivers/net/phy/zte-zx279128s.c b/drivers/net/phy/zte-zx279128s.c
+new file mode 100644
+index 0000000000..bd5049e871
+--- /dev/null
++++ b/drivers/net/phy/zte-zx279128s.c
+@@ -0,0 +1,136 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Driver for the gigabit Ethernet PHYs integrated in the ZTE ZX279128S SoC.
++ *
++ * Copyright (C) 2026 Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
++ *
++ * The SoC has four of these PHYs, one per LAN port of its on-chip switch,
++ * on the SoC's MDIO bus at addresses 10..13. There is no public datasheet:
++ * the vendor-specific registers and values below are the ones the vendor's
++ * own PHY initialisation uses.
++ *
++ * Extended registers are reached indirectly: the extended address is
++ * written to register 0x10, then the data is read or written through
++ * register 0x11. This is an address/data pair, not a page select (nothing
++ * to read back or restore), so the phy_*_paged() helpers do not apply; the
++ * pair is done with the MDIO bus lock held instead.
++ */
++
++#include <linux/bits.h>
++#include <linux/module.h>
++#include <linux/phy.h>
++
++#define ZTE_GEPHY_PHY_ID		0x84b95031
++
++#define ZTE_GEPHY_EXT_ADDR		0x10
++#define ZTE_GEPHY_EXT_DATA		0x11
++/* Written before the LDO is armed; the field layout is unknown. */
++#define ZTE_GEPHY_LDO_CTRL		0x17
++#define   ZTE_GEPHY_LDO_CTRL_VAL	0x2448
++
++/* Extended registers */
++#define ZTE_GEPHY_EXT_LDO		0xb640
++#define   ZTE_GEPHY_EXT_LDO_ON		0x001f
++
++/* Copper TX DAC drive: the vendor's full-drive ("force") pattern. Without
++ * it the PHY links and receives, but does not drive the line. The
++ * individual fields are not documented.
++ */
++static const struct {
++	u16 addr;
++	u16 val;
++} zte_gephy_tx_dac[] = {
++	{ 0xb676, 0x0003 },
++	{ 0xb677, 0x0003 },
++	{ 0xb667, 0x0003 },
++	{ 0xb668, 0x0003 },
++	{ 0xb6c2, 0x0003 },
++	{ 0xb6c1, 0x0003 },
++	{ 0xb678, 0x000f },
++	{ 0xb669, 0x0000 },
++};
++
++static int __zte_gephy_ext_write(struct phy_device *phydev, u16 addr, u16 val)
++{
 +	int ret;
 +
-+	ret = get_device_system_crosststamp(ptp_kvm_get_time_fn, &cs_id, NULL,
-+					    xtstamp);
-+	/*
-+	 * The paired counter value is not in the units of the current
-+	 * clocksource. If the clocksource differs from the one this request
-+	 * asked for, ask for the counter in the new units and retry once.
-+	 */
-+	if (ret == -ENODEV) {
-+		ktime_get_snapshot_id(CLOCK_REALTIME, &snapshot);
-+		if (snapshot.valid && snapshot.cs_id != cs_id) {
-+			cs_id = snapshot.cs_id;
-+			WRITE_ONCE(kvm_ptp_cs_id, cs_id);
-+			ret = get_device_system_crosststamp(ptp_kvm_get_time_fn,
-+							    &cs_id, NULL,
-+							    xtstamp);
-+		}
-+	}
++	ret = __phy_write(phydev, ZTE_GEPHY_EXT_ADDR, addr);
++	if (ret < 0)
++		return ret;
++	return __phy_write(phydev, ZTE_GEPHY_EXT_DATA, val);
++}
++
++static int zte_gephy_ext_read(struct phy_device *phydev, u16 addr)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	ret = __phy_write(phydev, ZTE_GEPHY_EXT_ADDR, addr);
++	if (ret >= 0)
++		ret = __phy_read(phydev, ZTE_GEPHY_EXT_DATA);
++	phy_unlock_mdio_bus(phydev);
 +
 +	return ret;
- }
- 
- /*
-diff --git a/drivers/ptp/ptp_kvm_x86.c b/drivers/ptp/ptp_kvm_x86.c
-index 6cea4fe39bcf..4dd55c60d2ce 100644
---- a/drivers/ptp/ptp_kvm_x86.c
-+++ b/drivers/ptp/ptp_kvm_x86.c
-@@ -92,6 +92,11 @@ int kvm_arch_ptp_get_clock(struct timespec64 *ts)
- 	return 0;
- }
- 
-+/*
-+ * *cs_id selects the clocksource @cycle is reported in: CSID_X86_TSC returns
-+ * the paired TSC value as is, anything else converts it to kvm-clock units.
-+ * On return, *cs_id holds the clocksource actually used.
-+ */
- int kvm_arch_ptp_get_crosststamp(u64 *cycle, struct timespec64 *tspec,
- 			      enum clocksource_ids *cs_id)
- {
-@@ -99,6 +104,14 @@ int kvm_arch_ptp_get_crosststamp(u64 *cycle, struct timespec64 *tspec,
- 	unsigned int version;
- 	long ret;
- 
-+	if (*cs_id == CSID_X86_TSC) {
-+		ret = kvm_arch_ptp_get_clock(tspec);
-+		if (ret)
-+			return ret;
-+		*cycle = clock_pair->tsc;
-+		return 0;
++}
++
++static int zte_gephy_config_init(struct phy_device *phydev)
++{
++	int ret, i, ldo;
++
++	ldo = zte_gephy_ext_read(phydev, ZTE_GEPHY_EXT_LDO);
++	if (ldo < 0)
++		return ldo;
++
++	phy_lock_mdio_bus(phydev);
++
++	/* Power the PHY's LDO, unless it already is: arming it again
++	 * power-cycles the analog domain, which the switch sees as a link
++	 * bounce.
++	 */
++	if (ldo != ZTE_GEPHY_EXT_LDO_ON) {
++		phydev_dbg(phydev, "arming LDO (was %#06x)\n", ldo);
++		ret = __phy_write(phydev, ZTE_GEPHY_LDO_CTRL,
++				  ZTE_GEPHY_LDO_CTRL_VAL);
++		if (ret >= 0)
++			ret = __zte_gephy_ext_write(phydev, ZTE_GEPHY_EXT_LDO,
++						    ZTE_GEPHY_EXT_LDO_ON);
++		if (ret < 0)
++			goto out;
 +	}
 +
- 	src = this_cpu_pvti();
- 
- 	do {
++	for (i = 0; i < ARRAY_SIZE(zte_gephy_tx_dac); i++) {
++		ret = __zte_gephy_ext_write(phydev, zte_gephy_tx_dac[i].addr,
++					    zte_gephy_tx_dac[i].val);
++		if (ret < 0)
++			goto out;
++	}
++	ret = 0;
++out:
++	phy_unlock_mdio_bus(phydev);
++	return ret;
++}
++
++static struct phy_driver zte_gephy_driver[] = {
++	{
++		PHY_ID_MATCH_MODEL(ZTE_GEPHY_PHY_ID),
++		.name			= "ZTE ZX279128S Gigabit PHY",
++		.flags			= PHY_IS_INTERNAL,
++		.config_init		= zte_gephy_config_init,
++		/* The boot firmware hands over with BMCR_PDOWN set. No
++		 * .suspend: powering the analog domain down and up at runtime
++		 * has not been tested.
++		 */
++		.resume			= genphy_resume,
++	},
++};
++module_phy_driver(zte_gephy_driver);
++
++static const struct mdio_device_id __maybe_unused zte_gephy_tbl[] = {
++	{ PHY_ID_MATCH_MODEL(ZTE_GEPHY_PHY_ID) },
++	{ }
++};
++MODULE_DEVICE_TABLE(mdio, zte_gephy_tbl);
++
++MODULE_AUTHOR("Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>");
++MODULE_DESCRIPTION("ZTE ZX279128S internal Gigabit PHY driver");
++MODULE_LICENSE("GPL");
 
-base-commit: 57889a8f6d49fc153aa0017d13086ab736567f8a
--- 
-2.43.0
+---
+base-commit: 0822d2fe38262e8b55c5ea55c970022bca8dd2a9
+change-id: 20261105-phy-submit-a3fa3cbe9eed
+
+Best regards,
+--  
+Agustin Santiago Isasmendi <isasmendi.agus@gmail.com>
+
 
