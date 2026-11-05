@@ -1,108 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793872012;
-	b=KxRDjsne6TuCuD4aV2q4S67yUziP3HcCiq1Tvt0QadDXicPHbFO9papBx8I+cT63kJVo
-	 59CJ25v78JuD6gOgpZiiHnuccQObcdrvSqMm4EHUcCh9J78cjCqhVUDMJIKNShHBuFQOm
-	 fkeT/fdud2Ia/lMWyYa094eqZJNa/NnKj+Ib6Wbl/nLM8QrTiR1xmRxE24JKL+XmrnGCI
-	 OcuvN/sPAyrGekc3BuCxpE7vZsTvC3XrDLGgVg5teGRz2ge5jQW037m+lVXVbbbuz8SEg
-	 y8XM4Py8BhvoDTj+itx77Ri7cz+44/GQFiArMb5IaEiZ/bgYzCq4FVhiHMEHlDwD7bA==
+	t=1793872062;
+	b=g9p9xkHkZdliBzW4hLsndJmewi9aVpvnByh0alJe9Vkiw5mnq1F+iXYSavC+bPxTZlIa
+	 WPAUNmdzymCRXQxkABxqUHzsJFlCBPGMQfj5bITApjf29Qb/uhIgeWxjA3OPvaaVFWssE
+	 h/f/51k9cvriD/db84ol02HFaxGn07ckgKNqZFx1jMeG4AOIzvxDkpu6KHYVre4rjO0P5
+	 JKNmkw4RThibyXgMa90Bc6+ns08xDZaNVjemGfIjpctxF5dbeJu3l5QQjSvLDGCR/SHZO
+	 DinLc2b1iXAFEgYD64Dvx/IWRosW+YrqW+uBHcB4oimza73DibZ9EIHZHK3Bu8plDhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793872012;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=iyLm2JJ7Bha5k7fF1WN/RBaS9++WFeK4ddT2bao+YYA=;
-	b=JA3xf22kjLxANf8Fsn3EhLTv/zdhMRumrmyrFBHrtbvali/f1cuNR9bRJkaEGK+s/Rmr
-	 7vHUP58dIhgfKPKJG97InW5ev1BI7V+a+buiks+0gHmyEHtCZKM5+goxKRR55+nyRehhg
-	 hN+/s52ui/hbGlh4gNsq/tD2KxdpV9oFNHWCchZA8tIq2PEJYVR8qPZ0jA4DlnQBMWGgS
-	 3XxCtKOsesaalr5qVM8wg55yfVdIyg59RcJ53oGfmodA8811MFe0FDueHWeZBBngX+WPS
-	 SpLFX6u5pm5Onen9lij19CjobpxYJwNk2QiUh5xmBg3CYnZOUvPAVvtVSxogbTjionQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793872062;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=l7Os9ez/f2nG03fyXsvnvcHKNao5k86xMqMGxwTc8as=;
+	b=kt5Szg6CB86aMikBvQn4EBsF2JWMHcp2wzEHjNvgI0buz9H5gwAMtMt1zo4oguQn5c0M
+	 WfPjQ/kIO+mQesmgkGvGujQlMSmQHbUl4gW7TX7xkY8/uzeJT++5wHkftPXnQSAueDuyJ
+	 SEjl7trOzc4hTuXdXL8BnRr9aTogwMQtsiFcEKBMkGYeugIo+olFOvlwlEMnsybl2kPB7
+	 RS75YDdWkHwbELQ37W8nha0uo4EDCmX9Ip9MGGS4Qy3fE79q4bZo3L6NBw38OdHd6K6AH
+	 3/stVJA6iFOGhQ3pUUynjv9EJh1qk4sQoAT4FwKjf/239jRI9iviGFT8itO7rYiHt4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SDbEXYtD;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=IPe7dai3;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=jE8oY2mN;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF7A606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:46:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAF7A606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEAD606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:47:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CEAD606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SDbEXYtD;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=IPe7dai3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793872010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iyLm2JJ7Bha5k7fF1WN/RBaS9++WFeK4ddT2bao+YYA=;
-	b=SDbEXYtDBFy+nN/VLO/p7fNZ9zQd79FDJSaSgWTNvnSAiAm7lzG979eOakNO9FK3PorFqy
-	vRZmOf8r2sJoOCBbNMjKr3wjSK1G6e5NTi8dTMF5oVsLu6e9jYDCFa/+tPmYq3Eek1NCcv
-	IDt8qER22bTswxN+Hxih39VvH3j+7zE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-X4esOdK0PeWcaAh_iQ4enA-1; Thu, 05 Nov 2026 04:46:49 -0500
-X-MC-Unique: X4esOdK0PeWcaAh_iQ4enA-1
-X-Mimecast-MFC-AGG-ID: X4esOdK0PeWcaAh_iQ4enA_1793872008
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a359b714f8so12738325e9.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:46:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793872008; x=1794476808; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iyLm2JJ7Bha5k7fF1WN/RBaS9++WFeK4ddT2bao+YYA=;
-        b=IPe7dai3A3TwSaQxmblHBD5Q4Q/rWHpStHnErIm77+s6Yc5s9qvi766wpSRCdtPWTX
-         t4YpOqsSaNYxQIB62IuEpsghxR2yP/0Dadunp4d8kHLfXbyqLR6vj3pS6fee+9MRpGeq
-         2arlYDjKzVJQB4zjAWNYzIRHnNiG+t4j3c942+OTR5sdgAx0QToEvm1pF9N5n5/Av8uY
-         +e8tyDO9hO3WCJToAEElH0YZ/vIi3Ha5vxb3kItfdutfSRYhhkowAPz6S6jJ7ckm1BZp
-         1hSJWq43riqIxkBaOsLQ5f8hEteYXx6j3oG0yb/LniWnX0nlwQ4Bf6+q2Yi2pPnpe2yV
-         grRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793872008; x=1794476808;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iyLm2JJ7Bha5k7fF1WN/RBaS9++WFeK4ddT2bao+YYA=;
-        b=AcqdZ+qLd9oFVLh9f5aPnxV29UUGiYfiTi1ly4gj/Ey+MrYuqIQl3svOATbjWpl01Y
-         j4oCz/0nmYyVgHAKYmCJ5keaH2io5knbmAcPWKnD7NWQFU2+Z7E/KAhwux/2AI7YPfuS
-         MDKILlBxdihzDd6hGM0mFcHy9JFTEXeeqDNOmGqwAFktA+4D3dG4XRnY6/TttF17gu7z
-         UzL+vatlKnvPmGFF30VpXXd16VHY6znhVtOzv42d5rj9Kbo2ISPA3eax+SuonaVrItyK
-         A3Ajzk3JuMtaV1leLiRFFIeqZaJeDoqIJ4gMpH6FzjfzVwNf+U521BeYEwFeG+W/Lv03
-         o22Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw2iZmW0iWiHctGv+ql86KdQNIAA3Ocxqtk9nIHV3a4J8kY84TcI68MnvfVLsucMvhLUwCkxoQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/YjxBlSgPY+YTACAIb5jTMbYXYmTzSJqrKNpkrByGY2O0D3010
-	mwfxOoRDUDFkO/agylOJukS7wMAf/out3irqcKQsE2D3S5aQ/myJSRsVCeU40IZGQRaamqz5bJO
-	o5RaknpTQXsf8+8y7wQb8k4BAFsy2uxDd7lhqhVVH/bqbsytTdmIotT51tSKisHGHWg==
-X-Gm-Gg: AYBFou3bWVkTn7hSgppm3l8Dp7ysh3WrSZP4LXz5qovRTelLLXrkgl9TJ22wOYjwbxV
-	0TmocO4uAIEV/mdZMzVHvJ8ilNKOqb3YnPbk9KsJyBQx+Jln3LhxuMg/k3CUshyl+M3alTqQX9c
-	gXvQ2jY5vp0drhKJ7gmatdDX9nKnaREvxHE9Oxo1K2U/Az658cLLuvXN+hBru66wcUltVHlL439
-	HH9NmhwBfCM4OC6BwEBibKdwgcZhyBBIN9LTIZJmlI0G56J2waO6DQxHUoc64e1ypj7xyK5FdQY
-	RUwFYTM6YVw9VwAWs3Wlx1hy+61xed27+xRYVXfcCVQw9FcAWechhFW8nxYarMQyyQ+GD0+ixat
-	6eRn2jYsPt7H/xq2qXV0iUOh4/2R8udaj2Pl1tIz4fXpQacJwgpSfhwkHpR7ixZ/BxrYRwXUZ66
-	fv438UPQ5tUKB3ni/Zw0ADtiHSfp+39ljPXq1iP6XaLVc=
-X-Received: by 2002:a05:600c:848c:b0:4a5:dc5d:20f7 with SMTP id 5b1f17b1804b1-4ac175669d8mr452190155e9.14.1793872008401;
-        Thu, 05 Nov 2026 01:46:48 -0800 (PST)
-X-Received: by 2002:a05:600c:848c:b0:4a5:dc5d:20f7 with SMTP id 5b1f17b1804b1-4ac175669d8mr452189745e9.14.1793872007952;
-        Thu, 05 Nov 2026 01:46:47 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b411de95b4sm84246655e9.0.2026.11.05.01.46.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 01:46:47 -0800 (PST)
-Message-ID: <51aa2527-0a99-4d67-845a-a8b28f822efb@redhat.com>
-Date: Thu, 5 Nov 2026 10:46:46 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=jE8oY2mN
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 800111A0830;
+	Thu,  5 Nov 2026 09:47:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4EAF55FF85;
+	Thu,  5 Nov 2026 09:47:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F01C210329267;
+	Thu,  5 Nov 2026 10:47:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793872057; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=l7Os9ez/f2nG03fyXsvnvcHKNao5k86xMqMGxwTc8as=;
+	b=jE8oY2mN4nKEq03VZBxogYPKnuGNkPH/G7LfkQJVWaRMDIJxjesNGFQOdQHVg0pE4ypf1+
+	u1AD0n00GJIz9nUMGD+FetwWYZyAB6lmvfIsK50lOD46qW+7mgNjLUX6xNQ2xUpMY2af3E
+	6T5JyRoqJdOb4E82aF1mkem4MqTYz65XxKRVKDvAsNC2WbPPbmOXunFMQae/3g/XoXCxV+
+	Vyj4CG+zzOXYY1o2r2PWrkOTMts1n9NdM2LIyDOXcGpnIiWvYWmfqNOLRzD9pGT4n+U+CG
+	w6BeDO4XocWGJBZ3p3d2K/M62PKTod9FEAYDxCTJFg10ejcCTlGVgaCn/Uw3aA==
+Message-ID: <b7102713-8bc6-4a5a-bf33-b79a646f4126@bootlin.com>
+Date: Thu, 5 Nov 2026 10:47:31 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,32 +63,54 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net,v3 00/13] Netfilter/IPVS fixes for net
-To: Pablo Neira Ayuso <pablo@netfilter.org>, netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
- edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-References: <20261104090224.750548-1-pablo@netfilter.org>
+Subject: Re: [PATCH net] net: stmmac: keep est_lock across PTP clock
+ adjustment
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261104090224.750548-1-pablo@netfilter.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 11/4/26 10:02, Pablo Neira Ayuso wrote:
-> v3: keep back two patches in the series with sashiko reports that
->      suggest they need a bit more work.
+Hi,
 
-I *think* Julian additionally suggested dropping/changing patch
+On 11/2/26 18:37, Lorenzo Bianconi wrote:
+> stmmac_adjust_time() disables EST, drops est_lock to step the PTP clock,
+> and then reacquires the lock to reprogram EST using a base time computed
+> from the new clock value.
+> 
+> That leaves a window where a concurrent tc_taprio_configure() can program
+> EST enabled with a base time derived from the pre-step clock.  The gate
+> schedule then runs across the PTP step with a stale base time until
+> stmmac_adjust_time() reprograms it.
+> 
+> Keep est_lock held for the whole disable/step/reprogram sequence so no
+> other EST user can program the block while the clock is being stepped.
+> 
+> This does not introduce a new lock ordering: __stmmac_setup_est() already
+> takes ptp_lock through gettimex64() while holding est_lock, and
+> stmmac_adjust_systime() uses readl_poll_timeout_atomic(), so it does not
+> sleep under ptp_lock.
+> 
+> Fixes: 23d96de472f7 ("net: stmmac: re-apply taprio offload in __stmmac_open() and stmmac_resume()")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-ipvs: do not create conns from packets with port 0
+I couldn't really figure out why the lock was released in the first
+place, LGTM :)
 
-but it looks untouched ?!?
+Do you plan on addressing the sashiko pre-existing stuff ? seems to be
+rare conditions but still :( sorry you end up having to deal with these...
 
-Also AI review did not kick on this revision, likely because
-the bot is confused by the mismatch between cover letter prefix
-"net,v3" and the patches prefix "net".
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-I think a new revision may be needed?
-
-/P
+Maxime
 
