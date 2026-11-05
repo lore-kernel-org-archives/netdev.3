@@ -1,55 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793870350;
-	b=Q9uFSBmZ78UWtsU5GWwLd9xyUq2CQysY3nb44G41g6RlaXISQt1GUeFKXHdWqDUGoCrG
-	 eEWcp7yzX6w/4gvQtvBCwgY9Mdrw871bOOEMG3YYS5jlGa2z0XkMiRpdwDvwGpIToPBv9
-	 +n11vKfgBV6QLKZDSaUuyr3MHVO9qMkq+ebjqC4oempBmA+YiGgX8FVzu0iDwL8U1+MBQ
-	 LtHYa/rTXcJD+4+8rLxMh4bxLygR7k29pW7lamU1a9RmazCUNhl3b+3TUmh9Tigry2Dd3
-	 vmIzZ4u0nXGNEbppq/YpFtGKTBRxnKG0jNW1xUuG82oy8J1+ai2ijN67Xv/MQl+LNPg==
+	t=1793870481;
+	b=wLp1r9COLVS9Il4YKinrwnSNEVSI1uYBEGX8OVpC6LeDB6NNZnc9laqANruB1h6AE8g3
+	 OZg9K8nEUNON3+M5c729AQnS05ezVGHh2qofiloDlfQ3bCg2FU8ac42DmmFJt3utmsyxq
+	 hxkMpm8W1r6mVimUvNChJ7EXCODEfcOoklzejkgMoPfTaUfrxubzgtlhwd/cvfVgFQoUG
+	 D+FEbWKoUEzVK20Tt6+2nK4OrOGsQeTz74ufwEEx5pKLsHlEwXLqtJtsAPND3YzLq9nQ4
+	 gfH43e9s2jilTNutAAfeXbsaYOwRegpW6gzzTgBO0KYN0ZGs6wWdtNBE3MtqXZoSKuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793870350;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=4iB3l+nANELB6PJ3BfIsvhn+F1Wqb6s+BqDllbjxY54=;
-	b=HIznHHeiIGR2u86uU4chKE0xNcY46iuoPQ19RCqn9uKwwKk4BGGboYrd4eMK33Jjs3tX
-	 DC6MhHAi+rnMhWjVHmWYuMAqmARxczRNszXpgOh63uV8G8gXK4psivcxG64SHRbbqN5y8
-	 xcxmDd2FacxPiM1YI9PJbc8zj1pedFWjogRTj201WioB7DY0ps01Ke9mC9z1b8KTwxtXg
-	 F9tYKokzmzfzxuucOcOrgmfEyMWvzcxWl3xdNHZxCgdoIWP+KVmOIks0rX1IqEQnnri+v
-	 sLyv2rzeKUCkBFy4FUVT9XSaxfl0JjOX9NVBrXbTyOuFwuDfWNZIMv7x80QLX7BBzog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793870481;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=coFe23yWIjr3rWL1bT0oW9dpEwkMZ8FlItLtkhGEJxY=;
+	b=g5QWJSvEey/B5m1QeCHLNVCrG+YiWbEOjHf/ORxRpy2zSM9lvzkJGaFLrepVMb8LQ1C6
+	 huAE92Kh1eq64JlKUYA07yst46EiATGIGy+APa4Xl7W5kbYhRLIJ1mWZiPNP7IHkw6O3N
+	 boBEdzTxxDnScuRyBkzjOyrhaEzPxMP+ZIr/EvxKw3Q7Y2SmIYmWUQJDoUEqJVIugi9Vq
+	 gxq7I//pwGee4/9cUc4yCxZywEKV/yBY5fLrcmDHqrm9JMc6IK2rZFZPk+GMg3q8gaMgH
+	 O4dADg+4RTkbp/oy+nwaMj8urtwEOuKrdzIJVR2lJGa0Vi+1xy4ABSt988yv/lAC/MQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jzQhbmRs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hT8koiwh;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Zgt1TAG9;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8641606A326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4B2606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:21:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB4B2606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jzQhbmRs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A79E1F00A17
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 09:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793870349;
-	bh=4iB3l+nANELB6PJ3BfIsvhn+F1Wqb6s+BqDllbjxY54=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=jzQhbmRs4nW7SN91lZ4bHzkhB9gbcfEFIJGBRGL/Dd48DFH3hgJ4eN23pcpcvxXwD
-	 3aU+rMr5QZGCsLp73pPsYAvF3ruecWluggOy5o5uezkMrR3J8gnZeja9ilUHsWJcdI
-	 EinNoJOniFTrolIuejrSWc1t9uYQGNFwB/V9jKm6ORQtSnKkwjlHBA/cvO5401PC5P
-	 lZ6s+TvzMtiYgfOk6PclBeTBc+FxSsiaC4oS7NB+9T72PnMUIwLBm1NZLznlTL+lRK
-	 d9pkf0keuuD+rG7nwIaqaW3gwdrJW8XwTqC0MkkTiS+uMAAb/1s8R16skm5+Tf2B9Z
-	 bucl88LT1maqw==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5bccb867d6fso1305886e87.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:19:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwBBoXhH9BjL2v3kV/CchCRULFo2YgI/NtGmzHz5liV7S9H5wgBBvDbZ1OBImY2rcXBJ7qewsQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/TUg4uYq36FQTkeEfyFhXT1wAOqNBwDL1ykhyCf/3Tg35UJI3Q
-	A2DwTrRKKytDWdARBJJ8tgvh1kDJ3vvvGB9u+FibvLk2sTdftzAPqV0Cksf72O0SLbtgUx2FY5k
-	dPRXWj0mI2ErIGy9nOy/eUgtIHhSF9LU=
-X-Received: by 2002:a05:6512:15a0:b0:5bf:c045:964a with SMTP id
- 2adb3069b0e04-5bfd957b6bamr6675117e87.18.1793870348384; Thu, 05 Nov 2026
- 01:19:08 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hT8koiwh;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Zgt1TAG9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793870479;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=coFe23yWIjr3rWL1bT0oW9dpEwkMZ8FlItLtkhGEJxY=;
+	b=hT8koiwhdclTGRFjf0NSnIW7eC71ZjzQCvE8fw4lkBbIG9UfxAGtY4gDhSQ03mElgJxYbQ
+	DKH0G183caQnVHJCUWIDQbo9cGQq4qyzD+EdAP8pkQWYWdudfdhgzUtysWOVkWRq21GP6Y
+	0cbZZ6C2TdrQTrGwtMLdB9LdF2SNm5s=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-JUu_YepnOS6GiXZ6hzqHKA-1; Thu, 05 Nov 2026 04:21:18 -0500
+X-MC-Unique: JUu_YepnOS6GiXZ6hzqHKA-1
+X-Mimecast-MFC-AGG-ID: JUu_YepnOS6GiXZ6hzqHKA_1793870477
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4918bc20249so306714f8f.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 01:21:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793870477; x=1794475277; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=coFe23yWIjr3rWL1bT0oW9dpEwkMZ8FlItLtkhGEJxY=;
+        b=Zgt1TAG9YOfsnRZRQzHKoGDecqL7ZTki+5Gszt8Yypo4/ZGNAbLZe1nqc1HL4Yq/ov
+         dJbFK/ipbkgZc42gdMN40JQ8cBH93hiAQGEMXwLyLh0c8597l/NI1CZSNRcmZeB8cAv+
+         eq4BYLd8RtKE/MYCGKGMJCgq9LqEsyWH3h1Emd/cPESvicJDM8AJkKqTuqWCaF1Qb+qp
+         nPArat/cz+Xb8DXv2FJZoE9x05rT9DxHZKVIkAIYFfGT42Qe1CjKpi1zZN6MoMNOfXlA
+         /dZUx0ZR0+/PQ4FyIv1d4K5GnGg9i86dX34/sDS/mXP1yIzm3V0FNuMm4xlr4EcXSore
+         zhXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793870477; x=1794475277;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=coFe23yWIjr3rWL1bT0oW9dpEwkMZ8FlItLtkhGEJxY=;
+        b=TFPH/AzCMjJPgkU31ZdcnF2EPBFdB0mu2PlpBfmi20WY/Tdj+1h4OQxdK3DR8/PdJx
+         vHAnJLSTfiNc2aDd10f0o0romPT7a4IKaWDB23OW3ecojgT3lQgc6laxTJwo9NKXmJ9K
+         YcsI+aymscJQ2c1zjqxECvhFwllR9JBW7wtlUVk2e+36KbKiGG3GHRtnlWAlofA+fh//
+         9mbyp2BSqJDy7+DUVsGxQ2d2iyqjCZadJfyU/Q9zyV33DJgeFn4uztAbaqR5uIoReJga
+         Ypy0HtieJIQh661ApxeFtVo6LRdqA/1MD7Oeuf+z5A9zxMziBN47v91ermgPoHhzYxQB
+         9T4g==
+X-Gm-Message-State: APuU4Z8gw1mCRKlQiEH0tfTK2TqSlwy9Rj1F8qdWKEeSA6QuxQNF0KUa
+	uojtM+WMZ5yJW04+Sg/p+tEFTDXz4fF1npvtgffsMGuvXlSRR6Zn9PNHVie3Zh17fZFCEMdghy2
+	puDwGMFk8ymFg41ZGZuYTPsxxxBw9xiYVjHyGvn6y7hxVDQ2FdHJDmVSpcQ==
+X-Gm-Gg: AYBFou0UuIUwh1mIK6lpHWndCXVcLD7l4yyysxGPS5m9MOAwPTl4ba7W5ZAAsnNOGOy
+	WoWtQfEjudLp5jtq76f3kRYtLkx7+fY/M+wfNJz2thBmspZsMTy2x3M8MhOMZRMTKF+eqk9tQOx
+	5DFL5kDpJjKghB03nid6k04Wkog17Qqa8v63MuL6Cvxkz1ZXAbqRu5Dutm0qCd1FRCjHmFeNIKS
+	7riwg8MZWhfjnqPie51XbIo/kVOovcF6YDSVAu+TsiHwgkG/Y2qoCsgLHko23K4ncgULaJsPcj9
+	6ZtbFRPsOqnJfZo5mV/Kd160iEpxHOli7lMpMtI8PW2gqehqgW4Cw22fqZUbNdTCu46CsXvQTwD
+	kFn867LFfCMp7S/2Y6WGN/TytW9hATSBwmYUgcBX31KnBfo/Qb18B1wsSM+fMHxWKiJM8a3caRx
+	I0ntFpd3wOq0gQ4BsuauDL6r9zc38nJ5HPhfUGgpBEH80=
+X-Received: by 2002:a05:600c:198c:b0:4a1:fc98:1cb1 with SMTP id 5b1f17b1804b1-4ac15584c05mr425346825e9.2.1793870477372;
+        Thu, 05 Nov 2026 01:21:17 -0800 (PST)
+X-Received: by 2002:a05:600c:198c:b0:4a1:fc98:1cb1 with SMTP id 5b1f17b1804b1-4ac15584c05mr425346215e9.2.1793870476675;
+        Thu, 05 Nov 2026 01:21:16 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fece99b33sm8317482f8f.23.2026.11.05.01.21.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 01:21:16 -0800 (PST)
+Message-ID: <5abaf2a2-73b5-4400-a585-0955556a01a5@redhat.com>
+Date: Thu, 5 Nov 2026 10:21:15 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,69 +111,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com> <5f0dd56f-b6e0-4341-853d-6ac69632350a@yahoo.com>
-In-Reply-To: <5f0dd56f-b6e0-4341-853d-6ac69632350a@yahoo.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 5 Nov 2026 10:18:54 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmvkF4JokBx9LcwaEX_F0rhAjGMCQ8-UQ1gZ94tdSh4Vg@mail.gmail.com>
-X-Gm-Features: AclHuK_0OCgFWn8ghSua9Xl4cgQv6m1ahyj_OtFwTzjPu2Tjz7Zo_YE5wbnRMxs
-Message-ID: <CAD++jLmvkF4JokBx9LcwaEX_F0rhAjGMCQ8-UQ1gZ94tdSh4Vg@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 10/11] net: dsa: realtek: rtl8365mb: make
- L2/LUT access work on family D
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
-	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 2/2] bonding: give a slave that starts UP a full
+ arp_missed_max window
+To: Ramses de Norre <ramses@well-founded.dev>, Jay Vosburgh
+ <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jiri Bohac <jbohac@suse.cz>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Hangbin Liu <hangbin.liu@linux.dev>
+References: <20261030-bonding-last-rx-v5-0-0b9b653f2f94@well-founded.dev>
+ <20261030-bonding-last-rx-v5-2-0b9b653f2f94@well-founded.dev>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261030-bonding-last-rx-v5-2-0b9b653f2f94@well-founded.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 4, 2026 at 12:36=E2=80=AFAM Mieczyslaw Nalewaj <namiltd@yahoo.c=
-om> wrote:
+On 10/30/26 15:51, Ramses de Norre wrote:
+> The ARP monitor marks an UP slave DOWN once jiffies passes
+> last_rx + arp_missed_max * arp_interval + arp_interval/2. bond_enslave()
+> seeds last_rx one arp_interval (plus a tick) in the past, which brings
+> the down deadline of a slave that starts UP forward by one interval
+> compared to what arp_missed_max promises.
+> 
+> Active-backup mode hides this with a grace period after enslavement in
+> bond_ab_arp_inspect(). Load-balance mode has no grace period after
+> enslavement. With arp_missed_max=1 the deadline is half an interval
+> after enslavement, and the first monitor run checks the slave before it
+> sends the first probe. If that run lands in the second half of the
+> interval, a healthy slave is reported "interface is now down" and comes
+> back UP on the next run.
+> 
+> Seed a slave that starts UP with last_link_up instead, so it gets a full
+> arp_missed_max window for its first reply. bond_arp_rcv() and
+> bond_na_rcv() only trust ARPs seen on backup slaves once the active
+> slave's last_rx is after its last_link_up. A seed equal to last_link_up
+> keeps that check false until a real reply arrives, as it is today.
+> 
+> This only covers a slave enslaved while the ARP monitor is running.
+> When the monitor starts later, from bond_open() or when arp_interval is
+> set at runtime, the seed is still as old as the time since enslavement,
+> as it was before this patch.
+> 
+> Fixes: 5944b5abd864 ("Bonding: add arp_missed_max option")
+> Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
+> ---
+>   drivers/net/bonding/bond_main.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 2f5638f4d3a78..84eafb607c370 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2158,9 +2158,13 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>   		new_slave->last_rx = jiffies -
+>   			(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
+>   	} else {
+> +		/* Give a slave that starts UP a full arp_missed_max window.
+> +		 * Not seeding it later than last_link_up keeps bond_arp_rcv()
+> +		 * from trusting ARPs on backup slaves before the active one
+> +		 * got a reply.
+> +		 */
+>   		new_slave->last_link_up = jiffies;
+> -		new_slave->last_rx = jiffies -
+> -			(msecs_to_jiffies(bond->params.arp_interval) + 1);
+> +		new_slave->last_rx = new_slave->last_link_up;
+>   	}
+>   	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
+>   		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
+> 
 
-> The L2 lookup table on family D switches (e.g. RTL8367S-VB) differs
-> from family C in ways that make the current FDB/MDB code misbehave:
->
->  - An L2 entry is 5 words instead of 6, with a different field layout
->    in words 3 and 4 (port, age, static and multicast member bits).
->  - There is no EFID and no per-bridge FDB isolation. The register at
->    0x0A32, used as the per-port EFID register on family C, is the LUT
->    aging timer on family D, so writing an EFID there corrupts it.
->  - In the table access interface, the SPA field is 3 bits wide and the
->    address register is 12 bits wide, with no address extension bit.
->  - Only ports 0..7 are present in the LUT and there is no
->    FLUSH_PORT_EXT register.
->
-> Teach the table and L2 code about these differences, selecting the
-> layout at runtime with rtl8365mb_is_d(). Family C behavior is
-> unchanged.
->
-> Specifically:
->
->  - rtl8365mb_table: use the family D port mask and address width, and
->    read the hit address from status bits [11:0].
->  - rtl8365mb_l2: add family D unicast/multicast entry (de)serializers
->    and dispatch to them from the rtl8365mb_l2_*() helpers, pass the
->    proper entry size to the table layer, reject ports above 7, report
->    SVL (FID) entries with VID 0. Use age 6 for static unicast entries
->    as the vendor code does, and look an entry up before deleting it so
->    that a missing entry is not allocated by the delete.
->  - rtl8365mb_main: make port_set_efid() a no-op on family D, add a LUT
->    init step that clears IPMC_HASH and BCAM_DISABLE and programs the
->    aging timer, and do not advertise fdb_isolation or
->    max_num_bridges. Traffic between bridges is then isolated by the
->    port isolation masks only.
->
-> Register layouts were taken from the family D register description;
-> the code itself is an independent implementation.
->
-> No chip uses family D before the last patch of the series, so this code
-> is unreachable until then.
->
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+@Jay, @Hangbin: can you please have a look here?
 
-LGTM
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Thanks!
 
-Yours,
-Linus Walleij
+Paolo
+
