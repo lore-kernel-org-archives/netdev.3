@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873011;
-	b=Ejr/MaajBHO+74mF364aUtd7Hsq1t8G9sk2olPfR7bH4+7HeV6azxfmdjikIuz2gaUq/
-	 sKbTYftbcbToW06g17yDJoPni2iwDSAZ1Bjdup6hal0IZTkq4JXvDVRytlkb72teyb9wF
-	 lUKDYyLCLXUVxGES1uEY/8aXfM/VPz21shXhFbHeMgbKdyGshDTLESPpjBSBlPBKYFXCf
-	 myggQFE0khvEPMMK05e4/58qRSWzHfrh8zVVICvOcg0JfP6fKPWf8k+yu6OqKbh1whJd6
-	 WSEUDLbyZbAhmF2bk2YwI5uUWRwaxgy2m44HbQ2iPYQnEVJePXlbMgE8B3aUrmavZrw==
+	t=1793873013;
+	b=XZyznBgU7ae+vsyse0jG4CqqdKamTHaS/kQn6vaiyDUTL4vDjm+eKcF2d/JjWaRZnX+2
+	 We7LOoiXASBqLhff33gTdYhF53+L8Jkd1B45DNwu42TaaJZpBanmCaFvJw5lC6Vhvflej
+	 /hoB6S86OnkVnk/YkR0Wxi+RqoO+f5R538io665XwalMxGMkr3pSujoUUvx4+5nPSjNvI
+	 DCltPP+SoVrn1aDeiRVOSfrRcBVD+ZvfFhrpjibXp5FVTKw9NGqZbKAA3ukTQD6YgTUmg
+	 5+MNl0R1KDFsy9vDcUyb1VeiTnVd4uOareXe9k5QK2DK03ULbofW0ez04C1vNDBcIAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873011;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793873013;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=puIm5drKvsAtTzpQuwSkW9RuuhHt2CPtr5r817ZaEWU=;
-	b=D1Ao6FYQ0x4zRrIuah5tuN+3TDAFl2lA5+XsOZNDrHwjI+KVG7PX3VRNXk3kebUHqeI4
-	 kzTR5kuwTvcyR+AC7ljYaqmlss8uso46fur9omlcTgcwACUIejNbGgV6gfiqGzgm3KZUg
-	 OjIKhWSpge+KsG/3zJwwS4x8YVas87u1IAgqo3vPy1EJj16rZeZJcQROaIXW0Po+cZKVj
-	 i0GiAap/D0xnGVX/uP6wAyGC4+sudeLt6uKJXas1o1H1b/3bTNygB0u6yOnjm2pLgQB4W
-	 deu3fdtXlEn+WRWoBNPXkbMcKLYfi7mbhYnItluAtyXVyshDLqsB0xAhFvB4XBUIWJQ==
+	bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
+	b=HAu/L763n3IsV5+QEWQvnrtxOZYoFbTaSipBNhK3O3gizAvTYM4qSegmWEjKf9mqOQil
+	 zPN8wuC6ijxkeBIk84Va344FiAfykTuOyB1BhQIL10B1PblHAI57DfloJydNeUTa8Q0cg
+	 KyRHtroLyAtTuQcDM84R7ud1PKJh3vcpMVMhp00y1NRaN1u1hLXKvhjBCxB+amfINsG/q
+	 HKk6mDPXZfmFtbOFmcyktk9kq1opyMWlkLM9BzQQn1vWVexqtfsldr8YV2J3iZK3AzflS
+	 xsw/lbqW2w3oW1Guyl4PKPzbXvKuE1C7fvNbmW6OHUjwqdQzgMpR4VMO3zfNR96ZHxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=fail header.from=linux.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C111606D804
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:03:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C111606D804
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365B2606EE85
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:03:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 365B2606EE85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a215e64962so15574545e9.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:03:31 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so12826985e9.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:03:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793873010; x=1794477810;
+        d=1e100.net; s=20260707; t=1793873011; x=1794477811;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=puIm5drKvsAtTzpQuwSkW9RuuhHt2CPtr5r817ZaEWU=;
-        b=Jo1SuH9o1qHU2Q9rIFEsY/gU3OlGnvGGXTu0TmDFX0fWylsaJp0Rhke5rWa4Kpp0X2
-         bHm+5CZy9gQxeFMwrPkBWbPFfVT/jgJwGwvflMMziGyt9GqigdV61yRuw1KtDj7Kfv/2
-         v4uh56OVmVabN68XYrp8aCUdRWvW2WvJL84A64x/TQ4RQQvEyLylddhYaBMs2k0UDHlq
-         U4EJUdSb0spNXb9kSzqYiMlU4PHAAClgc3H3lZtq3aaaetjXlX6QUOeYkG/aRU+SuBYZ
-         ZIBK7DrJhdf8zBvQVrNqB9+/hRFv/GfnafLgJ1CsphGB3Og8QQflGIzleSynu8IP+t+2
-         VkZw==
-X-Gm-Message-State: APuU4Z/Buyhsk7zP15caPNglDx1DC8xSfXNGP5ED4Qg/l3rSsLJAeAey
-	HRuTycPTbpNB2ak5Tkbq8A2dOZzfNuWREDnMlPw72xlGfB/xM6yfDIZM
-X-Gm-Gg: AYBFou0JaZHbwVoLBTtHLD+KjHmmVOTK5h0vdK+aU+IaDJbwRyPHqJShWQEjtztSBge
-	e9J/He4qEAxSzSFwEg1zQTG9aiQScOpSjb/IO4mOBaGWFY/BF9a/VQ5YavbyCNV+2NT+puW9LqG
-	lsP1wySF9D5pOQ88I61Gpr1GgqIT6iADxzAkKiFdWaaPLfAu7DMn/76/H0pRJoz9UoyrG+XWVL4
-	+wEU+63DTzkXOwDfoK8drzVu03kXeE7hnMWmnrG3781nOCSG1umU+4OVI4xG6TQvHhqvx9KgZuD
-	l/BXrihvx9myiyJp8jhJu0iNVwCQsn7ihyDh+NoXhXtEhkv7Gdui0Hw9jULN56roatSmnoCkRhh
-	vmMl2HNg9s3hjdCUzrjKJ60U5FJD9eIUeuSPW4hpYR15JkQt/LfnppgI23O+hO0FHbhSST4EXlX
-	LPs4TdUK8BQtUM/QxLMzlu6HHCAJuOk/FANlgeNAXEdMZpt8OV72MVKReCtu6Ctg6/6Ev0UG2x1
-	KR3zD+L3iYMgrLSIGyMoWMQt+rcyGkEP+44+L/V0JLFD/m1qT7Io10SNosBXMdKvTXzUhV5+GnL
-	mO6OYRkUDkoLlTW6aFmPc1ouNQavm//J0Gy6XYJKYgDrrNm9XslG750MuTkSfLs02HR69243APO
-	rlTIdWnXC1i37BoRoTlub4c3BLw==
-X-Received: by 2002:a05:600c:34d4:b0:4a2:d7e:5ccb with SMTP id 5b1f17b1804b1-4ac182dca99mr455243555e9.15.1793873009584;
-        Thu, 05 Nov 2026 02:03:29 -0800 (PST)
+        bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
+        b=C6YVtHRw0QLDB7Bwa8+Fk640sSbHJBnJvokPV/EOr5vCds/1zTouHFKYuaYcOjpNPi
+         kxhVMdrXlONRE6eARV7G9HJcHv8EHIJelgkAizegWiYBS+8XH8cDcliMkkm8wUT18pfX
+         qYXmp8Bam1r7Xnb+o2mjwjGkPgpd/l3HnrtH7XhNxmRQs/Y3lLmrV3zRktvPFjmr7eN6
+         Zyg0jumY1rySSMNRNrk/8vLb5Th52gn2VuqZ2ntD3bIIb+Mcc7uZxJnCyWn+X9KshxPO
+         jg3GMQlhq8RA4DiSZgq3Zi/KAzd3tSKEZNXZemTNzrsjtY+dUMl1ypOL1EKck8hZKzqO
+         WK8A==
+X-Gm-Message-State: APuU4Z/HVjVc/p7d3E9c5RriexHLknO8t9w9kwi15CoWSIKanwP/MpCd
+	1w842IplbwOL9Los13myVYGham2mritguXVYCBIt5jAfjAaVY/l0y2j8
+X-Gm-Gg: AYBFou1s26cexuPl7FcWN8j/EeK2xOdEyiajpJ2YnpdK6DW+CkuKNEw3oubwy0UFjeu
+	pGPMGBzwv/1PAkjF6Bda3IABXBruQ04vN8Qwzuh2qk0SZxENerA3tolBzSghAgrD5R3crufF+fC
+	bN4F+qRF5fH7Ufehcd+DlfTiDNijeKo7tsbK7qzHTb1u18usoV2cjphUgs+3k8Gc98H8NxiDR98
+	uSn1ruCkToQyVp/E7dNSuDU/6yWlqNs1XfJMPckFHXsIydi1wijd855rFgkqGunR2fMUvdL7WJg
+	5a58GvupWIqCLJtR9p+we1H5umq6wRk89SnVHA/d/iO0oxPoNFCY+4fNkGFJiL8889ABFS5EWUc
+	RKeYfzKOQbSwIv3mgMUdjjYYicHriUmAME/ZrXwQTuiq0CsKQWvcZ5Nhdzj4DVVXUMfHroiHs5N
+	c14MhKRXp3soZV4OWix4cpBPr8dKrssUwaAjnYVbEBrpeXzxAiOippC2S6qx6a1CPSM+VUbUUuy
+	7/k0fMKCzVR6twdbzzDNiH3rBSd/4XJ5SYA80WpVXcWcKe3TEWEtC8Q/3B0HyNzA4YVjUQbFx82
+	ie4cumdsZ17Ky63bAOnoldD/nsMJFBMKPVzoFGVBaiAs8JILAl8mhJlCSs85FbhUTWXryLTy+c2
+	9XFSbEth6TL1Y1AAmLrfKDDHlfg==
+X-Received: by 2002:a05:600c:1f93:b0:4a5:87b3:ddc1 with SMTP id 5b1f17b1804b1-4ac180f1ec7mr430949735e9.13.1793873011464;
+        Thu, 05 Nov 2026 02:03:31 -0800 (PST)
 Received: from threads.localdomain ([90.254.187.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43342773esm53455775e9.4.2026.11.05.02.03.27
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b43342773esm53455775e9.4.2026.11.05.02.03.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:03:28 -0800 (PST)
+        Thu, 05 Nov 2026 02:03:31 -0800 (PST)
 From: Lucas Tanure <tanure@linux.com>
 To: xianwei.zhao@amlogic.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -85,9 +85,9 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 3/7] net: stmmac: dwmac-meson8b: add support for the Amlogic T7
-Date: Thu,  5 Nov 2026 10:03:18 +0000
-Message-ID: <20261105100322.37816-4-tanure@linux.com>
+Subject: [PATCH v6 5/7] arm64: dts: amlogic: t7: add the ethernet pinctrl nodes
+Date: Thu,  5 Nov 2026 10:03:20 +0000
+Message-ID: <20261105100322.37816-6-tanure@linux.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105100322.37816-1-tanure@linux.com>
 References: <20261105100322.37816-1-tanure@linux.com>
@@ -102,85 +102,62 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The glue registers on the T7 are laid out exactly as the G12A ones, RX
-delay field included, so the T7 can reuse the G12A settings.
+The SoC brings its ethernet interface out on bank Z, but no pin groups
+were described, so a board had no way to hand those pins over to the
+MAC.
 
-What it does not share is how the controller reaches memory. That path
-runs through a pipeline stage with a gate of its own, and no other
-device has any use for that gate. Nothing claims it, so it is switched
-off as unused and a transfer that has started can never finish.
-
-Without that gate the controller cannot do DMA at all, so it is
-required rather than optional: a clear probe failure beats an
-undiagnosable hang later.
+Describe them as the two sets a board actually needs: the nine pins the
+interface always uses, and the five extra ones RGMII adds for its wider
+data path.
 
 Assisted-by: LLM
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 Signed-off-by: Lucas Tanure <tanure@linux.com>
 ---
- .../ethernet/stmicro/stmmac/dwmac-meson8b.c   | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 30 +++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-index e4d5c41294f4..450f7b4b29a6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-@@ -81,6 +81,7 @@ struct meson8b_dwmac;
- struct meson8b_dwmac_data {
- 	int (*set_phy_mode)(struct meson8b_dwmac *dwmac);
- 	bool has_prg_eth1_rgmii_rx_delay;
-+	bool has_pipeline_clk;
- };
+diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+index 6894c06a836b..7bd53ec16607 100644
+--- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
++++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+@@ -376,6 +376,36 @@ mux {
+ 					};
+ 				};
  
- struct meson8b_dwmac {
-@@ -384,6 +385,7 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct stmmac_resources stmmac_res;
- 	struct meson8b_dwmac *dwmac;
-+	struct clk *pipeline_clk;
- 	int ret;
- 
- 	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
-@@ -443,6 +445,13 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
- 	if (IS_ERR(dwmac->timing_adj_clk))
- 		return PTR_ERR(dwmac->timing_adj_clk);
- 
-+	if (dwmac->data->has_pipeline_clk) {
-+		pipeline_clk = devm_clk_get_enabled(dwmac->dev, "pipeline");
-+		if (IS_ERR(pipeline_clk))
-+			return dev_err_probe(dwmac->dev, PTR_ERR(pipeline_clk),
-+					     "missing pipeline clock\n");
-+	}
++				eth_pins: eth {
++					mux {
++						groups = "eth_mdio",
++							 "eth_mdc",
++							 "eth_rgmii_rx_clk",
++							 "eth_rx_dv",
++							 "eth_rxd0",
++							 "eth_rxd1",
++							 "eth_txen",
++							 "eth_txd0",
++							 "eth_txd1";
++						function = "eth";
++						drive-strength-microamp = <4000>;
++						bias-disable;
++					};
++				};
 +
- 	ret = meson8b_init_rgmii_delays(dwmac);
- 	if (ret)
- 		return ret;
-@@ -479,6 +488,12 @@ static const struct meson8b_dwmac_data meson_g12a_dwmac_data = {
- 	.has_prg_eth1_rgmii_rx_delay = true,
- };
- 
-+static const struct meson8b_dwmac_data meson_t7_dwmac_data = {
-+	.set_phy_mode = meson_axg_set_phy_mode,
-+	.has_prg_eth1_rgmii_rx_delay = true,
-+	.has_pipeline_clk = true,
-+};
++				eth_rgmii_pins: eth-rgmii {
++					mux {
++						groups = "eth_rxd2_rgmii",
++							 "eth_rxd3_rgmii",
++							 "eth_rgmii_tx_clk",
++							 "eth_txd2_rgmii",
++							 "eth_txd3_rgmii";
++						function = "eth";
++						drive-strength-microamp = <4000>;
++						bias-disable;
++					};
++				};
 +
- static const struct of_device_id meson8b_dwmac_match[] = {
- 	{
- 		.compatible = "amlogic,meson8b-dwmac",
-@@ -500,6 +515,10 @@ static const struct of_device_id meson8b_dwmac_match[] = {
- 		.compatible = "amlogic,meson-g12a-dwmac",
- 		.data = &meson_g12a_dwmac_data,
- 	},
-+	{
-+		.compatible = "amlogic,t7-dwmac",
-+		.data = &meson_t7_dwmac_data,
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, meson8b_dwmac_match);
+ 				i2c0_ao_d_pins: i2c0-ao-d {
+ 					mux {
+ 						groups = "i2c0_ao_sck_d",
 -- 
 2.56.0
 
