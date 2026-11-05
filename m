@@ -1,74 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793898549;
-	b=pFIKNMajGe+9+yKhI+EhMZPAvxpYI4ut+vIXFf+1PDXMHuzQASFSU9HlvYH6cLqSStNA
-	 DXLzKYYuRlWs4VBi0knpJ9tdb19JZ/ggmQhJeMye/c47/oM/S6qVGVc+oF3PDpudWDwgG
-	 NLXksLtwter34CYjHXK+LcGbVmZGPSZ/RamEoGEAIDqWi0LCweOqidAGS0iyfXXxWGrUl
-	 sgY5kQftonk5VXYxNdWcphYxLo6E1bfBxh7C+rycRfZv4u8EprkenHstmcEZh+UINRDrI
-	 1fPu7K/M9M9EcawOx7CtnTeYjEmrzNshQT3x8jf8S2qdEy1FP56Q6d3/8Hk4CxW4tnQ==
+	t=1793898718;
+	b=OOgyN6J2Q55SOE1LihrzNtN6ab4grpP0vraCa8v2DO7vxGLGZ0+e3UhfLQhycUEyU5+B
+	 Ak4PWp1SCGuBZXdprMrVxhU2ExMdmlddiZVdMB8UqhqwLte+MpHBUokhqt8fV3Sy+MqQM
+	 BReopd1BYeGyte/sveMtNZip1XObzwuYuAmvI+niP4cKfxatj25E1PR13R0ySkg3LI4DD
+	 r5SmR39kwOMglG+kXHqJCFgRFr69r6FMtvnKvlOLXO9QHEUPKmjxBorT5KZ11vsCDt7sO
+	 MtZwxf/YLGTwiBIDWBGv0uVi9rD1GIT6kFGaNC7ZFGi/cEJXyhD9xIT+TtRFZgUpFQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793898549;
-	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-malware-bazaar;
-	bh=9pcshHkbr1mkMc13IhC/TeO7WGUdu0MMea0JbyhMjVM=;
-	b=zWJWTOs5rXce1HUUgB6J8/lPz920iPvf35tINp8HkU/PA2VvdX68dt0F6YCLLx7bAWJQ
-	 WN5nfzEnarpolOCmPek77j0+TqqR6v761BWXOy3Zu6kG8rcCuCvGHMgs5s51IAzjTVw2x
-	 noiaGxDlM6D/lc1TkJyggnW8iycDP+J0e+uOSkSu2VKNoPyMcelvRVZitCN/P0a1MJFVK
-	 63LEtXpsAftXCRbrrkvNlesfVdc/pcW5JCurN2DJPmRxgXha0VdoCERvxEF+yf674oBp6
-	 3yEv9gStJ0cXJA7ckeRHYYOxzEBO6YndeBTVBDX7EpWY0FfLToNBHpf0+u23tlTGNLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793898718;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=13d2ij5dViFrjhoQvQxDCRQxF9jfntf8UhmPYjNCyEQ=;
+	b=C5/K/pqyejMQ49BWUyaVOcv/s4tfoXdfigdSPrWRJ7P8AD/gwXWSKzt6WBoDEkW9b+zi
+	 9SyE8BB85BlrhAc+WJfE0L/QK7KqOT1f0+jvtbgE4WJjOqfeSxOZjoNeiNNxkMl4SpEoQ
+	 Dfgj99S0SWdS7e1ysAcFCpZh3w1bVgDJtcwsnccpm2Ca9oMImtY2cQwU2o0dTj3IpMoMq
+	 g1ddRRfzt32ZrzKZ5gJXV40LI8a7qx+qlA+x0mwpDi62sOpShHs2pu4EVC8+fiuddowNE
+	 87pYikQjf83URLPTKvovLjo8vuZv4MAz1FXkefKENyW3xUC99Kplu9ae3TzbpJCS0Rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=permerror header.from=sipsolutions.net;
-	spf=pass smtp.mailfrom=sipsolutions.net;
-	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=JoJLrkcF;
-	arc=none smtp.remote-ip=168.119.38.16
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyEP7z3k;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A63606A326;
-	Thu,  5 Nov 2026 17:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF279606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=JoJLrkcF
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=9pcshHkbr1mkMc13IhC/TeO7WGUdu0MMea0JbyhMjVM=;
-	t=1793898547; x=1795108147; b=JoJLrkcFuse/iyva04KR4VR29KyHuQCtfkXvF5HFZ3CvqIJ
-	XV8l2qRihc09po6OTywHz9SncdYIdtWAzE+NtfUp0vI3j0/kU4+YIhw1LjLaWg6AKCIcRDDhzpiXS
-	L5iJoIQKnbeeOmy2SKNjMXv2uIXYOzTTt8PwBkwGEnwtE8+mp36PDKFbzwwrNTHrNwYV3vbA2Vtef
-	4J+GONLshBK/Hv16o7agRqFISIEeDdSgvZp2OjoRi0kAgLkoOE1sQtAYUxpwM04v64zlqkwxgNgr9
-	IB+tNGTUTTXM+6HdOUsx68aHJ97HSOk4R3wjzhfVuFKp2e7FY35roi8WKBoXp2VA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xP0xR-00000008Eu8-1vkG;
-	Thu, 05 Nov 2026 18:09:01 +0100
-Message-ID: <69c7cb8d0567f96dd03c2f35abb12b41ffa09f59.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 0/4] tracing: improve symbolic printing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ilya Maximets
- <i.maximets@ovn.org>, Matthieu Baerts	 <matttbe@kernel.org>, Aaron Conole
- <aconole@redhat.com>, Eelco Chaudron	 <echaudro@redhat.com>,
- dev@openvswitch.org, Adrian Moreno <amorenoz@redhat.com>,  Antoine Tenart
- <atenart@kernel.org>
-Date: Thu, 05 Nov 2026 18:09:00 +0100
-In-Reply-To: <20261105113857.4737cffb@gandalf.local.home>
-References: <20260922110955.363677-6-johannes@sipsolutions.net>
-		<20261105091216.7b91db5a@gandalf.local.home>
-		<8da2902c233de42ce756b3bfba5e5821f4dfa82b.camel@sipsolutions.net>
-		<20261105112444.7873d9c9@gandalf.local.home>
-		<ba474cdb3bb30c3eaf4aafc6534d0e77cfde64d4.camel@sipsolutions.net>
-	 <20261105113857.4737cffb@gandalf.local.home>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyEP7z3k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23C31F00919;
+	Thu,  5 Nov 2026 17:11:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793898717;
+	bh=13d2ij5dViFrjhoQvQxDCRQxF9jfntf8UhmPYjNCyEQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dyEP7z3kpfZ7VfFti4+PhQ2B4wvDjV1BEc7pf8W+MhVLCGo7Ev9LCqOWkUrFUtcB6
+	 x/UbGzplKz6+guqhENf/WWHjduqbIFixV+Xro3rgFJMwDDAoqXw3Ig7T/reSo8ziiV
+	 KWi5Qo9j/XOqRLnqVBEhnv8UHhduEc17ZooutLAnWibH9ntBx1aLCTDB+adu1BGA4x
+	 5sfDFuojDFn+sXwxLsz/EQ8clA9pMut1exgHgEehCLn0F9KGdAYDnvQoF52DeihLiS
+	 EZbWAkvNvUDKU/7x+2/7jHsd9qNiJZE3d64j7qrfXVD9bHObqPjcD3ExN0vFKj/6sF
+	 uO5wC/uo40Awg==
+Subject: Re: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other than
+ fraglist
+From: netdev-bot+sashiko@kernel.org
+To: alexander.duyck@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
+ pabeni@redhat.com, tactii@gmail.com
+Date: Thu, 05 Nov 2026 17:11:56 +0000
+Message-ID: <179389871649.994134.5339648334633501825@kernel.org>
+In-Reply-To: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
+References: <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,202 +63,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-On Thu, 2026-11-05 at 11:38 -0500, Steven Rostedt wrote:
-> On Thu, 05 Nov 2026 17:26:58 +0100
-> Johannes Berg <johannes@sipsolutions.net> wrote:
->=20
-> > On Thu, 2026-11-05 at 11:24 -0500, Steven Rostedt wrote:
-> > > > Any objection to simply converting the __print_symbolic() sample? I=
-t
-> > > > would look something like this: =20
-> > >=20
-> > > Actually, keeping them both would be very useful. That way one can se=
-e how
-> > > to do it the other way. We can say, the old way is being deprecated s=
-o
-> > > please use the new way. =20
-> >=20
-> > What's the point? But OK, sure.
->=20
-> I thought I mentioned the point? "That way one can see how to do it the
-> other way". Basically, seeing the equivalent way.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-You did say that, but I guess I don't really understand it - I see the
-point of the sample as the status quo ("how to do it"), not the
-evolutionary history ("how to convert it").
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-But sure, whatever you say, I don't really care.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> > > > +const char *sample_names2_lookup(unsigned long long value);
-> > > > +void sample_names2_show(struct seq_file *m); =20
-> > >=20
-> > > Are the above going to be defined somewhere? =20
-> >=20
-> > Well, it's a sample, and I wasn't even using "sample_names2" in the
-> > below, so I didn't actually define it. I can flesh that out even more,
-> > but I'm not sure it's worth it?
->=20
-> It is, otherwise it is confusing. If it is in the sample code, people wil=
-l
-> think it's required.
+- [Medium] In validate_xmit_skb() (net/core/dev.c), a non-fraglist
+  CHECKSUM_UNNECESSARY GSO skb is relabelled CHECKSUM_NONE before…
 
-All of the sample code is optional though, you don't have to use any one
-of the methods, either this, or enum, or ... if you want to use the
-dynamic way of __print_sym() then it indeed is required.
+--
 
-Anyway I'll flesh this out more.
+net: Segment CHECKSUM_UNNECESSARY GSO skbs other than fraglist
 
-> Right, but if we want to deprecate the old way, we need to have the
-> simplest sample of it. That is, have one event that shows the simple way =
-to
-> do this (one that simply replaces the old way), and then have another
-> example of how to do it in a more complex and featureful way.
->=20
-> Honestly, this is why I asked for this. Your updates use the complex
-> method, I wasn't sure from the code how to do it for the simple case. Tha=
-t
-> is, what wasn't needed for just replacing static __print_symbolic() lists=
-.
+This commit changes validate_xmit_skb() to relabel any non-fraglist
+CHECKSUM_UNNECESSARY GSO skb, such as a hardware LRO aggregate sent out
+through tc mirred, as CHECKSUM_NONE. The stated intent is that
+netif_needs_gso() then segments these skbs in software. Without the
+change, drivers that only set up TSO for CHECKSUM_PARTIAL send one
+oversized frame with a bad checksum.
 
-The simple way changes from
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index f32353b0467cd..28b4a652d037f 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4207,6 +4207,17 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+>  	if (unlikely(!skb))
+>  		goto out_null;
+>  
+> +	/* Only fraglist GSO, whose segments already carry valid checksums,
+> +	 * can be handed to a device as CHECKSUM_UNNECESSARY. Any other GSO
+> +	 * skb has no csum_start for the device to segment from. NONE means
+> +	 * the same on transmit, and has netif_needs_gso() segment it in
+> +	 * software.
+> +	 */
+> +	if (unlikely(skb->ip_summed == CHECKSUM_UNNECESSARY &&
+> +		     skb_is_gso(skb) &&
+> +		     !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
+> +		skb->ip_summed = CHECKSUM_NONE;
+> +
+>  	features = netif_skb_features(skb);
 
-	__print_symbolic(foo, BRACED_LIST)
+[Severity: Medium]
 
-to
+On a TSO-capable egress device, does this path actually reach software
+segmentation?
 
-TRACE_DEFINE_SYM_LIST(foo_names, BRACED_LIST);
-...
-	__print_sym(foo, foo_names)
+ip_summed is already CHECKSUM_NONE when netif_skb_features() runs, so
+the driver's ndo_features_check() sees a non-PARTIAL skb.
+i40e_features_check(), ice_features_check() and fbnic_features_check()
+all return early in that case and leave NETIF_F_GSO_MASK set:
 
+drivers/net/ethernet/intel/i40e/i40e_main.c:i40e_features_check() {
+	if (skb->ip_summed != CHECKSUM_PARTIAL)
+		return features;
+    ...
+}
 
-so I'm not sure I see how it's really that much more complex?
+harmonize_features() also skips its can_checksum_protocol() test for
+CHECKSUM_NONE.
 
+netif_needs_gso() then returns true, and __skb_gso_segment() runs with
+NETIF_F_TSO/TSO6 still in features. tcp4_gso_segment() (and
+tcp6_gso_segment()) turns the skb back into CHECKSUM_PARTIAL:
 
-Anyway, how about below sample update?
+net/ipv4/tcp_offload.c:tcp4_gso_segment() {
+	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+		...
+		th->check = 0;
+		skb->ip_summed = CHECKSUM_PARTIAL;
+		__tcp_v4_send_check(skb, iph->saddr, iph->daddr);
+	}
 
-johannes
+	return tcp_gso_segment(skb, features);
+}
 
+Since the device can do TSO, tcp_gso_segment() then returns NULL:
 
+net/ipv4/tcp_offload.c:tcp_gso_segment() {
+    ...
+	if (skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
+		...
+		segs = NULL;
+		goto out;
+	}
+    ...
+}
 
---- a/samples/trace_events/trace-events-sample.c
-+++ b/samples/trace_events/trace-events-sample.c
-@@ -11,6 +11,36 @@
- #define CREATE_TRACE_POINTS
- #include "trace-events-sample.h"
-=20
-+/* functions for the dynamic __print_sym() example */
-+static const struct {
-+	unsigned long val;
-+	char *name;
-+} print_sym_dynamic_names[] =3D {
-+	{ 0, "zero" },
-+	{ TRACE_SAMPLE_FOO, "TWO" },
-+	{ TRACE_SAMPLE_BAR, "FOUR" },
-+	{ TRACE_SAMPLE_ZOO, "EIGHT" },
-+	{ 10, "TEN" }
-+};
-+
-+const char *sample_names_dynamic_lookup(unsigned long long value)
-+{
-+	for (int i =3D 0; i < ARRAY_SIZE(print_sym_dynamic_names); i++) {
-+		if (print_sym_dynamic_names[i].val =3D=3D value)
-+			return print_sym_dynamic_names[i].name;
-+	}
-+
-+	return NULL;
-+}
-+
-+void sample_names_dynamic_show(struct seq_file *m)
-+{
-+	for (int i =3D 0; i < ARRAY_SIZE(print_sym_dynamic_names); i++)
-+		seq_printf(m, ", { %lu, \"%s\" }",
-+			   print_sym_dynamic_names[i].val,
-+			   print_sym_dynamic_names[i].name);
-+}
-+
- static const char *random_strings[] =3D {
- 	"Mother Goose",
- 	"Snoopy",
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_eve=
-nts/trace-events-sample.h
-index 816848a456a2..38d6bf808de6 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -297,6 +297,33 @@ TRACE_DEFINE_ENUM(TRACE_SAMPLE_FOO);
- TRACE_DEFINE_ENUM(TRACE_SAMPLE_BAR);
- TRACE_DEFINE_ENUM(TRACE_SAMPLE_ZOO);
-=20
-+/*
-+ * define the names as { value, "name" } tuples for __print_sym() below,
-+ * same as the inline list for __print_dynamic()
-+ */
-+TRACE_DEFINE_SYM_LIST(sample_names_static,
-+	{ 0, "zero" },
-+	{ TRACE_SAMPLE_FOO, "TWO" },
-+	{ TRACE_SAMPLE_BAR, "FOUR" },
-+	{ TRACE_SAMPLE_ZOO, "EIGHT" },
-+	{ 10, "TEN" }
-+);
-+
-+/*
-+ * Alternatively, you could define a function for the names:
-+ *
-+ * The _lookup() function returns the string for the given value.
-+ *
-+ * The _show() function must
-+ *	seq_printf(m, ", { %u, \"%s\" }", value, name);
-+ * for each value that userspace should be able to parse.
-+ */
-+const char *sample_names_dynamic_lookup(unsigned long long value);
-+void sample_names_dynamic_show(struct seq_file *m);
-+TRACE_DEFINE_SYM_FNS(sample_names_dynamic,
-+		     sample_names_dynamic_lookup,
-+		     sample_names_dynamic_show);
-+
- TRACE_EVENT(foo_bar,
-=20
- 	TP_PROTO(const char *foo, int bar, const int *lst,
-@@ -328,7 +355,7 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
-=20
--	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
-+	TP_printk("foo %s %d %s %s %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
- 		  __entry->foo, __entry->bar,
-=20
- /*
-@@ -340,6 +367,9 @@ TRACE_EVENT(foo_bar,
-  *    the variable matches one of the values, then it will print the
-  *    string in that pair. If non are matched, it returns a string
-  *    version of the number (if __entry->bar =3D=3D 7 then "7" is returned=
-).
-+ *
-+ * NOTE: This variant is deprecated, it uses more space than the below
-+ *	 __print_sym() which is identical to this for userspace.
-  */
- 		  __print_symbolic(__entry->bar,
- 				   { 0, "zero" },
-@@ -349,6 +379,21 @@ TRACE_EVENT(foo_bar,
- 				   { 10, "TEN" }
- 			  ),
-=20
-+/*
-+ *  __print_sym( variable, symbol_list_definition ),
-+ *
-+ *    The variable is tested against each value of the symbol list.
-+ *    The symbol list can be built statically (sample_names_static) or
-+ *    dynamically (sample_names_dynamic). If the variable matches one
-+ *    of the values, then it will print the string in that pair. If
-+ *    no entry matches, the number itself is printed (e.g. here if
-+ *    if __entry->bar =3D=3D 7 then "7" is shown).
-+ *
-+ *    See above for the declaration of sample_names_{static,dynamic}.
-+ */
-+		  __print_sym(__entry->bar, sample_names_static),
-+		  __print_sym(__entry->bar, sample_names_dynamic),
-+
- /*
-  *  __print_flags( variable, "delim", { value, "flag" }, ... ),
-  *
+validate_xmit_skb() treats NULL as "not segmented" and passes the
+original skb to the driver as a CHECKSUM_PARTIAL TSO request.
+
+If so, the new comment ("has netif_needs_gso() segment it in software")
+and the commit message ("The netif_needs_gso function then segments it
+in software") don't match what happens on most real NICs. fbnic
+advertises NETIF_F_TSO/TSO6. Did the MSS-sized frames in the QEMU test
+come from the emulated device's TSO rather than from software GSO?
+
+A further concern is that the driver's TSO validation never sees the
+skb in the form that is finally offloaded. i40e and ice drop GSO when
+gso_size < 64 ("We cannot support GSO if the MSS is going to be less
+than 64 bytes"). fbnic checks L2/L3 header length, alignment and
+csum_offset limits. All of these checks are skipped for these skbs.
+
+mlx5 LRO sets gso_size to an average over the aggregated segments:
+
+drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:mlx5e_build_rx_skb() {
+    ...
+	skb_shinfo(skb)->gso_size = DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg);
+    ...
+}
+
+Could a remote peer that sends small segments produce an aggregate that
+gets redirected to i40e or ice as a TSO request with an MSS below 64?
+
+DODGY CHECKSUM_NONE GSO skbs already take this bypass. This patch sends
+every LRO-style CHECKSUM_UNNECESSARY TCP GSO skb through it as well.
+
+Would one of these options give the documented behaviour?
+
+- Clear NETIF_F_GSO_MASK from features for the converted skbs after
+  netif_skb_features().
+- Before netif_skb_features(), turn the skbs into proper
+  CHECKSUM_PARTIAL skbs (cow the header, set csum_start and
+  csum_offset, write the pseudo-header checksum). Then
+  ndo_features_check() validates what is actually offloaded.
+
+>  	skb = validate_xmit_vlan(skb, features);
+>  	if (unlikely(!skb))
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179372577673.49909.11253315483074546903.stgit%40ahduyck-xeon-server.home.arpa
