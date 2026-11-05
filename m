@@ -1,88 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793899006;
-	b=i0aVVChW4db09VD4uLV46FEmqZddDrPsbtps9MmXqA5yJWXd6+bYHZb3vcMJXLV2WbU0
-	 jhM8N9AEVxyqLXWAa7un3p8Y8Ja1Wf05DgBpv4vuagx38nrWuyoXmMlz4jDRS5FAAoEYM
-	 JdDIOh10XomS83m4WiAJXJp/xvnM3eUrdF2Q3FMyIPf7KumHQ+scDdiEtkMbci2NhGdkP
-	 vy3pcjulcDMEkIHoLCHS1o3Ylcvhqz5pHtqm2MSt6RYRoEV7Zu4whs+MLvpdrel/HLtYc
-	 EY4x+uK0enZvUBvoBW10xWtWzt4jXgj6jY0GWa/vyvE8ubi0o8mMXZjE0BWRjR+VV8w==
+	t=1793899480;
+	b=qIFkzcozWplfKKdEDfD4MP112PGmHi3ojDf+w55LxyXFqD3METAwMKhM4wfXdtxb4s5l
+	 YLzeI9QDYMz2Y/Gqavx87UCnE+UD05wGQetVL6SvEXdmZ7cKk/hQsT6KVJc3UKut4O6Ag
+	 u2KNgnYOoj3Q6CfqhT+HAlRFuyyTSvT8+t0vsNeTdMWsb/mAs0FgBD4Y3z1sN6fVo9Hyz
+	 4MGTMU2VV76qYSkSxlwuGamJmAR4FH59RHSh7khTwzawOgjPJeYDZZDGcatUIkJp0KC8P
+	 0ktG3EtL5N4umWwSTBOeDaXd6l5vHaSFuCHn6Q5s8OmyDq/4flf9eImznBUxqSkTyeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793899006;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793899480;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=8TTgnEslfhmARTzLvGf2WXLm6wVd1Tp4w50+BJAZBOw=;
-	b=vZ552r2mY5MwZg7jMXMW85OR/CBOwJRFvsZYu47AET+hClqQ0JQQjZhQjz9zSRD6bzdp
-	 gsAI20DDcTB9o3V4vhyiyIIMWpnizmsfTOoOn5zVHAyBgffiuTO+JtJapfqKX1ViTrVp1
-	 y3hR9MOVJFwiY0Gt3n5oYF1vgiPuFybAtfF5MkS1yGYakSHdV7rAZpthzk6nnEazjMAts
-	 Z0eGJSRCguqudA55hukP0erPUpxfXoESEMmnVsob3AduVTsIycK0UNtS7TIBI61QqITTL
-	 rjCSR1ZG8/+gBF0xYgwd8/gyRJxcgwgbdPQcPpYAwMTMeKdigIFuo2vpuSY5dh4golw==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=+Sc9yPGaNTmoDAc39XzEsbXpXvtl7Fk3dFBI/g/ZPmw=;
+	b=R2KGk/tmUVxoyu6Q1Gt3eR5ln3DR6CRIEnFGiFT58KCJI5yOSK7gKZSnFpwPaAJXzB3j
+	 px10A9WLZty2CLdDJiGhH/cv0P6ASpjlnYHZPFMgSu/RfoqL+3dvntrl5A6FAI2SswaTT
+	 D46HuYL7QjefeQ0M1onGr7XCWBCp/HnaGMcJgEum6SuWztulZWPFWCLozSBgELlQRoiDm
+	 +RnLIXNJpnFBX7CaZpUxv1sviG2/bOUOi6djBPF1GoB+TRagcw/38jIMz0aMY0uk5RtoE
+	 /F7OdxnHSupVcv43AGoWJ5CH+z8f/5ascZMN8HAN1bwMwQVOGIlKN+DwTC8ynuMTnaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wgl02OB7;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	dmarc=pass header.from=rowland.harvard.edu;
+	spf=fail smtp.mailfrom=g.harvard.edu;
+	dkim=pass header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.a=rsa-sha256 header.s=google header.b=OXXcUxth;
+	arc=none smtp.remote-ip=209.85.160.175
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D1C606A336
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:16:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45D1C606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D77606D838
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:24:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76D77606D838
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wgl02OB7
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso3531573eec.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:16:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.a=rsa-sha256 header.s=google header.b=OXXcUxth
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-53c4b82919fso26189991cf.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:24:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793899005; x=1794503805; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8TTgnEslfhmARTzLvGf2WXLm6wVd1Tp4w50+BJAZBOw=;
-        b=Wgl02OB7DEB2aqh4WoP3ufq9IDXvCofH/DMsCDWp1WDM0rdOnmn3824ZqMlg/EqUQu
-         yeE44JmA3wk7cCyKNW1hteK5g+IIPU4vj/+k5nCK7zySs/0T327QSf+PLhcpfZYeEX8t
-         TQRwRone9aanZ333rHcWPYHvLh6Feqa/a+P/7439n7mMiAOqoT6gmSrGCcsbz5tk0r8H
-         au9MlKszGg4Yr+oTK94ASBKqxphjXbWn4L1s3DPH12NXkfrOKgfMWrzuh6h/Nnbf9Ri4
-         5DXkOW0jwrHSx0t94eTi236hzFRPDsJo7lCPblPjrCPe0YKDy6gcQyGkuBxYj9HWPNkS
-         ihTw==
+        d=rowland.harvard.edu; s=google; t=1793899478; x=1794504278; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+Sc9yPGaNTmoDAc39XzEsbXpXvtl7Fk3dFBI/g/ZPmw=;
+        b=OXXcUxthtyymPU3fwfbcr40/daOdZ4UuV0IOhK3r7k3BfuoZd0x2qWahN2YNfUretu
+         Tvwnl0KFWoKOeZb7Eb3uBsqzIqq8J25exR7V5CgkLuEPZfnZT4ED35Z0b9rlaw575Jgj
+         FQy6EYxV5onXU0wpKN8YyESt8CkDTpTTkNBn9V25Xj56jakQJCIeQ+jbdgqM3xEfnuQB
+         l6A1FG/uOsFRxdidxCtIsyNflhv6dRW8a6chHrMU0u2dgaNP3KFe01+lBZywKoRsUbeP
+         mAwXyFk8XjT9tW3AtUvUEUaho7CfMrUWwbB5j2cn7aptAgB87xrCSo1TqcjbSZYZh8xc
+         JpZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793899005; x=1794503805;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8TTgnEslfhmARTzLvGf2WXLm6wVd1Tp4w50+BJAZBOw=;
-        b=q8MMxtnpstA5xXv9FlnoUVw8ERZ+Ny7N1/cc/fohsrKsFmFWwfG6GsUDrAsYNRw2Za
-         0gwzhm9avLzIHPRGiD6t4ELnIPYwKD3oi9/nzNXmyrV6aC80sr6pA4taOfMUiF/HWxFh
-         pcXmvQwLwohDrLUQScsRf5M3wvgPSOld08Qn6IzUppUPBQ2EW+uXZMsSPdwdfeNHvR82
-         PGP/NnO7wk2iee7aEXi4pgscxUnxeC0/xLSaKC97sbyqNAfWONVbMNGGM1rcGTll6kfC
-         BX+8HavubXGPv1qPA/GEek2VFxYAnfvmUkXCrWaohK/d2RKezx+UfNjoVhxR+yI1Co3z
-         ISbw==
-X-Forwarded-Encrypted: i=1; AKwUvByoaDk2ben4AqAUnRX27VnnU7ba2VgBtg0eTDa1kK+YXqCmNGDOR3SyzqxJK0LFjaIdUROrSh8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z87F2b07GINr0dbCDYOEABrZ7JQ3s5huTvm2AeYwCZ94rgJM8/r
-	Fhe8vS6oentMWkOk9CIUftZtnpujZN8Ft7qY5yFfuH8HIjhe7dNfL1j3FHKPYb1Y
-X-Gm-Gg: AYBFou2x8cGKTJPQYcZ6bcqe0tajmub933WQ+GCmFvwUS5eY/J8/X6ZLq8DhM6QR4oy
-	GUn+o7hkrBYuK3VjXZx2HdHHB+4S03dD7smluoGyVSgcxf9utonb0qENz3MWUkWNDDDH5NJKU3G
-	EhQHf4xpAjKhS0mlD0gi/1BMezoRFIuWJ5Dm71RbC78hdwihwJD75vQz8OVVFnHWDJUH/0qWo/O
-	ofVcZmRAa8eRCkscExY4pkJMgdYs+k5FGe15DzqhalRqRIl8GQdlz/WaCNWj0lQQoJ8jMvf52m+
-	qtM/I1RHu5v57JI+wEwroma9gxDuOCBuNh7SKmBhNGtXbmJKNnsTmX7KN2VkuyUlcdM869GBucm
-	F7b8ZX4UNnFVgl6fMHhz2ZH4bA37eSSvGYzF0ty2XsEFEBuFV8Px4X3LAAwvhghMSMwnn1GRkau
-	PYMqplYKoGPiOoWsMV+siVAjotXt7JV5oX6Ie2mSFdOIQv6dDtHsV6/kjOW0aAx3Fj3S+yd5fG/
-	QQEDSNk0eZ4H1+Phgx4WWU8i28y7UfN99eM40v5uRpnW5nadMe9gQmSrL+diFS5RU+VBtxYSnkz
-	xH4brQ+zPumCBEmwFJFGn4FSKodqfxo4ipQjZ8YvEQNVAdMuuhQbbWl3K3Waew4gRg==
-X-Received: by 2002:a05:7300:cc96:b0:36e:b3e6:ebe7 with SMTP id 5a478bee46e88-36eb3f677e5mr2158998eec.26.1793899005312;
-        Thu, 05 Nov 2026 09:16:45 -0800 (PST)
-Received: from ?IPV6:2620:10d:c085:21c8::1368? ([2620:10d:c090:400::5:f848])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm24181600eec.27.2026.11.05.09.16.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 09:16:44 -0800 (PST)
-Message-ID: <2376d06b-80b4-46d9-8540-8baf065b0326@gmail.com>
-Date: Thu, 5 Nov 2026 09:16:43 -0800
+        d=1e100.net; s=20260707; t=1793899478; x=1794504278;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Sc9yPGaNTmoDAc39XzEsbXpXvtl7Fk3dFBI/g/ZPmw=;
+        b=znDNjLIklQYaNu6v3KS8flWOV0aoZfk9ZhIEp5bylF8M2iOtdpK/Nx6aIV4kPD/uTW
+         UKVnZ8vaD5ElSbqF9NkJmBmKW1NCEG7L663jzc35KfsxqQC3jHuWhTOfTmzB+uOflUs7
+         VXwrc0MYwReKGJ2+JkwuRQaQwtIiTw+6Y/Dm501euuQJPnGsepTqU3Z/7kuCOqcdnwvB
+         CSRqjeuQxaxJSfg6/fJsCcsxfsb6C7dW6rzPinZtmVt/rB2KEcnCHEaKX1Ax+xEyog/h
+         fJz2D/KUMQlzOQsPBFC3pimb1kGsbXwyxnR/Kl+fsjTRp+/co1Lw2Xod2iUbeuc/hwku
+         uB8g==
+X-Forwarded-Encrypted: i=1; AKwUvBxUeT4O66F/OkQ2EcaR8/eJewx4QZ1TuwdWUrAI1GyTNsFPp5PsuVJ27bPsDhKphzMSjaIA3MA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8TK45b0n+DPWEvclAYxyQvN0CnD/8H6tCHt1GjjRLltb2YqUrQ
+	atlOtNOSnAt8i5jpEQb12cZ1ukuw0LEyeHyBGpw4aC36+/3qVDCMyDBBqxEXaU9gsg==
+X-Gm-Gg: AYBFou3WSGEgY1z8b7yFiTQejGYkp95gL1JC6dI8+mMFj2USFt3jF0TeXx+jVMGlJPy
+	QQV/OrKsMkyem4KmJ5mRhx+VKKC5hyhw+KPYhg/Pi7cdgCM1dfFNm5OUpCT2Fl1xwgS0B3XRPcF
+	n91yhWc/Y7Hbz3O7nH7Oc7i0eUCu/FGZiIb8hBlDnTYKr/tvHeYDNqKgRZzv1ugT8f/AJ00CMvd
+	vU5w48BzMCYwCNKj+UOMLWOwAykziDGy8kuJGqlnIXNmy72a/cpJpWBKeF+B4nS8ZWx6zYYJ5HN
+	Oyf/mV0F3KKZkFxQ4Wi6MUqMFtLsLUZl2HbpHEdG94ERsgGF0UM25l0/VrlRV/juD7jzqkND9y4
+	w6rAhIznnY+q8/yRtB2oaxknN8cHanC47bULpIyc4YJt1NE+ycgn+a22Vfpb18yyPVlfFFuEfPI
+	9g/UlyeewyNgyWuM+no5KSt/BGkXS7IoOd6LrmTwY77d8qhZTXVYq27YwlUBSzMblBH9ZQDiFTH
+	HAeR4QRFtXWDWVv8sSZJwHp6voSUKWg9xs2Ant0ZrqK6s/UwH8g8N1vu4zStMtPE4+GldrEhqMR
+	bRvOir+nPY8oXzkxfrcKw4KMWmAz
+X-Received: by 2002:a05:622a:2515:b0:536:52ae:d92c with SMTP id d75a77b69052e-542b6e55bebmr328898701cf.35.1793899478212;
+        Thu, 05 Nov 2026 09:24:38 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210::66b0])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54b10a6ca24sm57130131cf.14.2026.11.05.09.24.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 09:24:37 -0800 (PST)
+Date: Thu, 5 Nov 2026 12:24:33 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 05/17] USB: Lock registered interfaces during manual
+ driver binding
+Message-ID: <bb83fe3c-cebb-4bc8-bfc9-24df1cf72b0b@rowland.harvard.edu>
+References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+ <20261105-device-trust-core-v1-5-1e536825b4eb@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,86 +128,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 1/5] net: sparx5: Drop redundant POL_ prefix
- from POL_UPD_INT_CFG
-To: Daniel Machon <daniel.machon@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com
-Cc: robert.marko@sartura.hr, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-0-b45a3a26bed5@microchip.com>
- <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-1-b45a3a26bed5@microchip.com>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20261105-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v3-1-b45a3a26bed5@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-device-trust-core-v1-5-1e536825b4eb@nvidia.com>
 
+On Thu, Nov 05, 2026 at 01:42:18PM +0200, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> Interface claims hold the USB device lock, but device_bind_driver()
+> requires the target interface lock. Without it, trust-policy writes can
+> race admission.
 
+This says nothing about usb_driver_release_refused_claim() and the code 
+related to it.  It is an incomplete description of the patch.
 
-On 11/5/26 5:19 AM, Daniel Machon wrote:
-> The macros for the ANA_AC_POL:POL_UPD_INT_CFG register are named
-> ANA_AC_POL_POL_UPD_INT_CFG*, repeating the POL_ prefix that is already
-> part of the target name.
-> 
-> Rename them to ANA_AC_POL_UPD_INT_CFG*, so that the port policer
-> registers added in the next patch can use the same short form.
-> 
-> No functional change.
-> 
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-> ---
->   drivers/net/ethernet/microchip/sparx5/sparx5_main.c      |  6 +++---
->   drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h | 12 ++++++------
->   2 files changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> index e039f5369b95e..68c80c63f9087 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-> @@ -616,10 +616,10 @@ static int sparx5_init_coreclock(struct sparx5 *sparx5)
->   		 sparx5,
->   		 HSCH_TAS_STATEMACHINE_CFG);
->   
-> -	spx5_rmw(ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT_SET(pol_upd_int),
-> -		 ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT,
-> +	spx5_rmw(ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT_SET(pol_upd_int),
-> +		 ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT,
->   		 sparx5,
-> -		 ANA_AC_POL_POL_UPD_INT_CFG);
-> +		 ANA_AC_POL_UPD_INT_CFG);
->   
->   	return 0;
->   }
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-> index 1464fd1a1d447..219c7f0e516e9 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
-> @@ -939,15 +939,15 @@ extern const struct sparx5_regs *regs;
->   	FIELD_GET(ANA_ACL_SEC_LOOKUP_STICKY_SEC_TYPE_MAC_ETYPE_STICKY, x)
->   
->   /* ANA_AC_POL:POL_ALL_CFG:POL_UPD_INT_CFG */
-> -#define ANA_AC_POL_POL_UPD_INT_CFG                                             \
-> +#define ANA_AC_POL_UPD_INT_CFG                                                 \
->   	__REG(TARGET_ANA_AC_POL, 0, 1, regs->gaddr[GA_ANA_AC_POL_POL_ALL_CFG], \
->   	      0, 1, 1160, 1148, 0, 1, 4)
->   
-> -#define ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT   GENMASK(9, 0)
-> -#define ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT_SET(x)\
-> -	FIELD_PREP(ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT, x)
-> -#define ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT_GET(x)\
-> -	FIELD_GET(ANA_AC_POL_POL_UPD_INT_CFG_POL_UPD_INT, x)
-> +#define ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT       GENMASK(9, 0)
-> +#define ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT_SET(x)\
-> +	FIELD_PREP(ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT, x)
-> +#define ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT_GET(x)\
-> +	FIELD_GET(ANA_AC_POL_UPD_INT_CFG_POL_UPD_INT, x)
->   
->   /* ANA_AC_POL:COMMON_BDLB:DLB_CTRL */
->   #define ANA_AC_POL_BDLB_DLB_CTRL                                               \
-> 
+Note that nothing prevents drivers from using an interface they claim 
+before that interface is registered.  For your scheme to work properly, 
+you should make sure the claim is authorized when 
+usb_driver_claim_interface() is called, not when the interface is 
+registered.
 
-Reviewed-by: Mohsin Bashir <hmohsin@meta.com>
+Alan Stern
+
+> +/*
+> + * The driver core refused to bind an interface that a sibling claimed before
+> + * it was registered, and dropped the claim. Let the claimant release the
+> + * interface instead of operating it with a bound interface but no driver.
+> + */
+> +void usb_driver_release_refused_claim(struct usb_interface *iface,
+> +				      struct device_driver *claimant)
+> +{
+> +	struct device *dev = &iface->dev;
+> +
+> +	device_lock(dev);
+> +	if (!dev->driver && iface->condition == USB_INTERFACE_BOUND) {
+> +		dev->driver = claimant;
+> +		usb_unbind_interface(dev);
+> +		dev_set_drvdata(dev, NULL);
+> +		dev->driver = NULL;
+> +	}
+> +	device_unlock(dev);
+> +}
+> +
+>  /* returns 0 if no match, 1 if match */
+>  int usb_match_device(struct usb_device *dev, const struct usb_device_id *id)
+>  {
+> diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+> index a738d03c23eac..d35a7710c8ef4 100644
+> --- a/drivers/usb/core/message.c
+> +++ b/drivers/usb/core/message.c
+> @@ -2264,6 +2264,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+>  	 */
+>  	for (i = 0; i < nintf; ++i) {
+>  		struct usb_interface *intf = cp->interface[i];
+> +		struct device_driver *claimant;
+>  
+>  		if (intf->dev.of_node &&
+>  		    !of_device_is_available(intf->dev.of_node)) {
+> @@ -2277,7 +2278,14 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+>  			dev_name(&intf->dev), configuration,
+>  			intf->cur_altsetting->desc.bInterfaceNumber);
+>  		device_enable_async_suspend(&intf->dev);
+> +		claimant = intf->dev.driver;
+> +		if (claimant && !try_module_get(claimant->owner))
+> +			claimant = NULL;
+>  		ret = device_add(&intf->dev);
+> +		if (!ret && claimant && !intf->dev.driver)
+> +			usb_driver_release_refused_claim(intf, claimant);
+> +		if (claimant)
+> +			module_put(claimant->owner);
+>  		if (ret != 0) {
+>  			dev_err(&dev->dev, "device_add(%s) --> %d\n",
+>  				dev_name(&intf->dev), ret);
+> diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
+> index a9b37aeb515be..293340a48b6c5 100644
+> --- a/drivers/usb/core/usb.h
+> +++ b/drivers/usb/core/usb.h
+> @@ -49,6 +49,8 @@ extern int usb_set_isoch_delay(struct usb_device *dev);
+>  extern int usb_get_bos_descriptor(struct usb_device *dev);
+>  extern void usb_release_bos_descriptor(struct usb_device *dev);
+>  extern int usb_set_configuration(struct usb_device *dev, int configuration);
+> +void usb_driver_release_refused_claim(struct usb_interface *iface,
+> +				      struct device_driver *claimant);
+>  extern int usb_choose_configuration(struct usb_device *udev);
+>  extern int usb_generic_driver_probe(struct usb_device *udev);
+>  extern void usb_generic_driver_disconnect(struct usb_device *udev);
+> 
+> -- 
+> 2.56.0
