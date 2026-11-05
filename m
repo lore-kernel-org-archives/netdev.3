@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882749;
-	b=SNh6vuWPZ72Xa9BMrfPFKm10It9Fzf33XA+ZiimVOol98W3xMbLz6EugsMDIh0z2jf9n
-	 ElplqeAm9WAgDpou7gr72jB8ei7QYTxOnrcm42cMVcdk+ujHMS84mM2HuNmV1AqoAHlBK
-	 0+6j9w0UDcBu7ZHYPqlg5AgqnlogKHcPb3X0ptdBuG7kp166zm/hCgj6J45LdqAKi4sNu
-	 pYTB2kgZjp3vFuHD33vAyGUGjSfJGQjlvhBK3m7mG+7RwOOdFMsHQx3HeEsu3mQAgcZ+p
-	 jhgLa2CUrQ7Abz6xElnNDO8yMbHIO1mMcFRcX3Lbey3qG89zgAq+004Ue+dznNHzTbA==
+	t=1793882745;
+	b=N6GPd4RZJbsEyH52UPQG8xOy/wkQQQDrGGM7z+eQa/BVeJuP/27byw7/SCphZXtsF11l
+	 ZrsnMrnN0xf/Cb5g5+Dhqie9D9XfRVWhd7QFrgypQvrJi92SAlY9leWTx/scbU8oRHDHS
+	 XZYH2Z4pSPcoCZiaBG0YkzIexcZRpqopuyJ8ujJO2qwQXi6IiWcDBLbzTi3czH1GELZOi
+	 /y6l7aS9aTnXsXKefXYty/BP/NsEOaxv+IY2apiNtbZ2iqjZilZYWyLOJGLW6hQ90nEO1
+	 8yZOKTZVaHjJI6FhXy48+nzOuQXf4k4LitFgkvfyvL/Wu3vlbg9VHQOI81tYlahgYwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882749;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882745;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
-	b=BbDeXYGGB1r3s/23cH9HSjg305Yl5qCf3CUkisjyng9U69GBoPOERCwjIduJzpXpO52u
-	 SraoYQgqkw93zn1tDRdSjTIhmT4pCYfqm3iEogvjBZ9pHWic5S6sIFVBXq0uquJ9iSnec
-	 N4BvXi7GLPBqJzAubECNs7FjHRj2ng/xNdJA9A8yDJ3FGx1AMnbK5PwegYa1c1WBps4Ys
-	 /bjjI5Od+tLmf3g3/dR5b8D+8UA+vjSIlFCVbMBMl7QzWcEDKHKzpN/Xkh1o65wcwt7S+
-	 J6drxgYjyKDhygaPlXasaQLokdpGRLtZ+xXIo332UyAqX6pU2Qj95Aq0s7YPKYqY78w==
+	bh=svm7yixRXtyszjfWrFTUagcpLvrETnPBpTtC9/J/nhY=;
+	b=KxPQPUMLnBhfZ9q2C1zx/7Ttvmg6cxbp7TWsbW7HU2uaQO22ktspZTEaUmBacu0Vbl3x
+	 VgRv7q2p4iQIdH0Uhj0P8RAd+qcKIOp6MR9oRl8UWaWkaf8OUa3uuRcGeX+Pjev4xV836
+	 E4Zl0RtkRljZG/440aLdzrF+zNL9RAVE+rRnVz0mFIYPN3TnTcD6rb5xAeBWFMSSY8d4V
+	 PG7QSrisd7dKezP5MGDijcTchY2dJRiYqvD6VEa4SHpLeQUVZ27A9+5/tn6+db0DlR1jR
+	 FA6KRuYXN7p83CQJvjRA/reo2iXmPSohuRHEYwqGgKstuu4y4zMefad1QqSD+j0hqhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DGsMmcdH;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=g+V2ZHEy;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88212606D816;
-	Thu,  5 Nov 2026 12:45:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88212606D816
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D1606A32F;
+	Thu,  5 Nov 2026 12:45:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D55D1606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DGsMmcdH
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=g+V2ZHEy
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793882746;
-	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
+	s=2025; t=1793882741;
+	bh=svm7yixRXtyszjfWrFTUagcpLvrETnPBpTtC9/J/nhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGsMmcdHoKL8xVHG8+kp8ClMp8MkqdFzmUiSJJDQJfHjj68lC/Mkmg2M7EfsbRYc8
-	 PesgJpNGAhjpysoZoXxHXXT9OV12St377FffBejUvaLMvRrrMG9UY1/3xz717Ysk2v
-	 PwUu9+3pL8hzi05/4foZwBfg0Gaw3iYcA5jh8oXBLWY8YtOwFxDTpcVKat2acT25+L
-	 aJeXxfzkvNHCqvBp980pHjdE9iaU7vG6le+f5JkcxhNxTHn4dO19bQOrSp0zAH0HAd
-	 xGlmZcvaOct5HvO7Knd7jNVyeh8PHYlYABCOb9zqlEI1ItAUD8wWxgWHf8D+UmrpPb
-	 ACiQo0H9ZcJNA==
+	b=g+V2ZHEyzIdwBjKBp+F03HQHn4qcBhrtxMfT91B2Xx1m1cxMB6IFcqaAEvkuZid6K
+	 CiJi5RtpEb4FVYluGdRrKqvSfFSLDnkCFjQ3LZLC7umRrbrFwH5mUe9TeeQuojwicJ
+	 uA+56pQhWvKhOEwZ3El0peLCQzylw/X8jlkEXVdtw8TgoDWq8LgAaidNRJ8GpFYe1I
+	 TM5/KFqX3LFESf+QOAfyAzg5r5GQoNbUn/eNYH7Df/ubgWYJtRScUk3HC8I3M79i+4
+	 EtNDpGisIK0tZj0lUMNIIvT/8wkbTavM2L3/ONXQtpy+DhHCPO+rAAOuRvZpIpRp1c
+	 QTm7H4bY2+Msw==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 785AC60096;
-	Thu,  5 Nov 2026 13:45:46 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 552C660097;
+	Thu,  5 Nov 2026 13:45:41 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 05/12] netfilter: flowtable: extend ct timeout of offloaded GRE flows
-Date: Thu,  5 Nov 2026 13:45:29 +0100
-Message-ID: <20261105124536.1009301-6-pablo@netfilter.org>
+Subject: [PATCH net 01/12] netfilter: nft_reject: prevent unbounded recursion in output hooks
+Date: Thu,  5 Nov 2026 13:45:25 +0100
+Message-ID: <20261105124536.1009301-2-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
 References: <20261105124536.1009301-1-pablo@netfilter.org>
@@ -73,70 +73,239 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Since commit 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn
-timeout extension logic"), the flowtable gc worker extends the timeout
-of an offloaded conntrack entry from nf_flow_table_extend_ct_timeout()
-once it falls below 5 minutes. That function only knows about TCP and
-UDP and hits WARN_ON_ONCE() for any other layer 4 protocol. However,
-GRE flows can be offloaded too, both via nft_flow_offload and act_ct,
-since commit 4e8d9584d154 ("netfilter: flowtable: Support GRE").
+nftables payload-mangling rules can rewrite packet contents (such as TCP
+flags) before they are evaluated by reject targets. This defeats the
+content-based loop guards, allowing unbounded hook recursion that leads
+to kernel stack exhaustion and panics.
 
-The timeout of an offloaded GRE entry drops below that threshold as soon
-as a packet of the flow still goes through conntrack. With ip6gre
-tunnels using the default encapsulation limit this is ordinary traffic:
-the flowtable does not parse the Destination Options header in front of
-GRE, so every packet of the flow takes the classic forwarding path. It
-also happens for a packet with ttl <= 1, which the flowtable fast path
-passes up to the classic forwarding path. nf_conntrack_gre_packet() then
-refreshes ct->timeout to the GRE stream timeout (180 seconds by default),
-and the next gc run triggers, as reported by syzbot:
+Fix this by extracting the per-CPU xmit recursion limit previously used
+by the netdev duplication/forwarding paths into a shared header, and
+apply it to the inet and inet6 reject transmit functions. It disables BH
+while transmitting the skb to address a possible migration to different
+CPU leading to imbalanced decrementation of the recursion counters.
 
-  WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout+0x1ee/0x2f0
-  Workqueue: events_power_efficient nf_flow_offload_work_gc
-  Call Trace:
-   nf_flow_offload_gc_step+0x545/0x7b0
-   nf_flow_table_iterate+0x13c/0x1f0
-   nf_flow_offload_work_gc+0x22/0x70
-   process_scheduled_works+0xc3d/0x1630
-   worker_thread+0xa47/0xfb0
-   kthread+0x38b/0x480
+Note that the dev_queue_xmit() path used when CONFIG_BRIDGE_NETFILTER is
+enabled does not require this recursion guard. In that scenario, the
+generated reset packet is transmitted directly at Layer 2. Because the
+packet egresses from a different hook, it cannot synchronously loop. In
+addition nf_send_unreach() and nf_send_unreach6() are safe as the ICMP
+transmit functions are protected against recursion by the
+icmp_xmit_lock() and icmpv6_xmit_lock() guards.
 
-Besides the splat, which panics the machine with panic_on_warn, the
-default branch sets the new timeout to 1 jiffy, so the conntrack entry
-expires right away and the offloaded flow is torn down.
-
-Handle GRE like UDP and extend the timeout to NF_CT_DAY. GRE conntrack
-has no protocol state to take into account, and NF_CT_DAY is also what
-flow_offload_add() already sets for every offloaded entry, GRE included.
-This also restores the behaviour from before commit 03428ca5cee9, when
-the conntrack gc worker extended offloaded entries of any protocol to
-NF_CT_DAY.
-
-Fixes: 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn timeout extension logic")
-Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=521f7e7e2b974abde99a
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
+Reported-by: Yu Junzhe <junzheyu1@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260921061320.543-1-junzheyu1@gmail.com/
+Fixes: bee11dc78fc8 ("netfilter: nft_reject: support for IPv6 and TCP reset")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/nf_flow_table_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/netdevice_xmit.h        |  4 +--
+ include/net/netfilter/nf_dup_netdev.h | 35 ----------------------
+ include/net/netfilter/nf_recursion.h  | 42 +++++++++++++++++++++++++++
+ net/ipv4/netfilter/nf_reject_ipv4.c   | 12 ++++++++
+ net/ipv6/netfilter/nf_reject_ipv6.c   | 13 +++++++++
+ net/netfilter/nf_dup_netdev.c         |  1 +
+ net/netfilter/nft_fwd_netdev.c        |  1 +
+ 7 files changed, 71 insertions(+), 37 deletions(-)
+ create mode 100644 include/net/netfilter/nf_recursion.h
 
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 0d72dc8ae47a..2aa2647ed9df 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -544,6 +544,7 @@ static void nf_flow_table_extend_ct_timeout(struct nf_conn *ct)
+diff --git a/include/linux/netdevice_xmit.h b/include/linux/netdevice_xmit.h
+index cc232508e695..286ae5a6101e 100644
+--- a/include/linux/netdevice_xmit.h
++++ b/include/linux/netdevice_xmit.h
+@@ -18,8 +18,8 @@ struct netdev_xmit {
+ 	u8			sched_mirred_nest;
+ 	struct net_device	*sched_mirred_dev[MIRRED_NEST_LIMIT];
+ #endif
+-#if IS_ENABLED(CONFIG_NF_DUP_NETDEV)
+-	u8 nf_dup_skb_recursion;
++#if IS_ENABLED(CONFIG_NETFILTER)
++	u8 nf_xmit_skb_recursion;
+ #endif
+ };
  
- 		switch (l4proto) {
- 		case IPPROTO_UDP:
-+		case IPPROTO_GRE:
- 			new_timeout = NF_CT_DAY;
- 			break;
- 		case IPPROTO_TCP:
+diff --git a/include/net/netfilter/nf_dup_netdev.h b/include/net/netfilter/nf_dup_netdev.h
+index f6b05bd80c3f..a39411264614 100644
+--- a/include/net/netfilter/nf_dup_netdev.h
++++ b/include/net/netfilter/nf_dup_netdev.h
+@@ -9,41 +9,6 @@
+ void nf_dup_netdev_egress(const struct nft_pktinfo *pkt, int oif);
+ void nf_fwd_netdev_egress(const struct nft_pktinfo *pkt, int oif);
+ 
+-#define NF_RECURSION_LIMIT	2
+-
+-#ifndef CONFIG_PREEMPT_RT
+-static inline bool nf_dev_xmit_recursion(void)
+-{
+-	return unlikely(__this_cpu_read(softnet_data.xmit.nf_dup_skb_recursion) >
+-			NF_RECURSION_LIMIT);
+-}
+-
+-static inline void nf_dev_xmit_recursion_inc(void)
+-{
+-	__this_cpu_inc(softnet_data.xmit.nf_dup_skb_recursion);
+-}
+-
+-static inline void nf_dev_xmit_recursion_dec(void)
+-{
+-	__this_cpu_dec(softnet_data.xmit.nf_dup_skb_recursion);
+-}
+-#else
+-static inline bool nf_dev_xmit_recursion(void)
+-{
+-	return unlikely(current->net_xmit.nf_dup_skb_recursion > NF_RECURSION_LIMIT);
+-}
+-
+-static inline void nf_dev_xmit_recursion_inc(void)
+-{
+-	current->net_xmit.nf_dup_skb_recursion++;
+-}
+-
+-static inline void nf_dev_xmit_recursion_dec(void)
+-{
+-	current->net_xmit.nf_dup_skb_recursion--;
+-}
+-#endif
+-
+ struct nft_offload_ctx;
+ struct nft_flow_rule;
+ 
+diff --git a/include/net/netfilter/nf_recursion.h b/include/net/netfilter/nf_recursion.h
+new file mode 100644
+index 000000000000..1ac65f7793f1
+--- /dev/null
++++ b/include/net/netfilter/nf_recursion.h
+@@ -0,0 +1,42 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _NF_RECURSION_H_
++#define _NF_RECURSION_H_
++
++#include <linux/netdevice.h>
++
++#define NF_RECURSION_LIMIT	2
++
++#ifndef CONFIG_PREEMPT_RT
++static inline bool nf_dev_xmit_recursion(void)
++{
++	return unlikely(__this_cpu_read(softnet_data.xmit.nf_xmit_skb_recursion) >
++			NF_RECURSION_LIMIT);
++}
++
++static inline void nf_dev_xmit_recursion_inc(void)
++{
++	__this_cpu_inc(softnet_data.xmit.nf_xmit_skb_recursion);
++}
++
++static inline void nf_dev_xmit_recursion_dec(void)
++{
++	__this_cpu_dec(softnet_data.xmit.nf_xmit_skb_recursion);
++}
++#else
++static inline bool nf_dev_xmit_recursion(void)
++{
++	return unlikely(current->net_xmit.nf_xmit_skb_recursion > NF_RECURSION_LIMIT);
++}
++
++static inline void nf_dev_xmit_recursion_inc(void)
++{
++	current->net_xmit.nf_xmit_skb_recursion++;
++}
++
++static inline void nf_dev_xmit_recursion_dec(void)
++{
++	current->net_xmit.nf_xmit_skb_recursion--;
++}
++#endif
++
++#endif /* _NF_RECURSION_H_ */
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 7cb33af671e2..4082fa184af8 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -10,6 +10,7 @@
+ #include <net/dst.h>
+ #include <net/dst_metadata.h>
+ #include <net/netfilter/ipv4/nf_reject.h>
++#include <net/netfilter/nf_recursion.h>
+ #include <linux/netfilter_ipv4.h>
+ #include <linux/netfilter_bridge.h>
+ 
+@@ -336,7 +337,18 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		dev_queue_xmit(nskb);
+ 	} else
+ #endif
++	{
++		local_bh_disable();
++		if (nf_dev_xmit_recursion()) {
++			local_bh_enable();
++			goto free_nskb;
++		}
++
++		nf_dev_xmit_recursion_inc();
+ 		ip_local_out(net, nskb->sk, nskb);
++		nf_dev_xmit_recursion_dec();
++		local_bh_enable();
++	}
+ 
+ 	return;
+ 
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 5e08d8529cc8..7c9464184517 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -10,6 +10,7 @@
+ #include <net/ip6_checksum.h>
+ #include <net/dst_metadata.h>
+ #include <net/netfilter/ipv6/nf_reject.h>
++#include <net/netfilter/nf_recursion.h>
+ #include <linux/netfilter_ipv6.h>
+ #include <linux/netfilter_bridge.h>
+ 
+@@ -409,7 +410,19 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 		dev_queue_xmit(nskb);
+ 	} else
+ #endif
++	{
++		local_bh_disable();
++		if (nf_dev_xmit_recursion()) {
++			local_bh_enable();
++			kfree_skb(nskb);
++			return;
++		}
++
++		nf_dev_xmit_recursion_inc();
+ 		ip6_local_out(net, sk, nskb);
++		nf_dev_xmit_recursion_dec();
++		local_bh_enable();
++	}
+ }
+ EXPORT_SYMBOL_GPL(nf_send_reset6);
+ 
+diff --git a/net/netfilter/nf_dup_netdev.c b/net/netfilter/nf_dup_netdev.c
+index c6bd5c29bed6..918716629c15 100644
+--- a/net/netfilter/nf_dup_netdev.c
++++ b/net/netfilter/nf_dup_netdev.c
+@@ -12,6 +12,7 @@
+ #include <net/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_offload.h>
+ #include <net/netfilter/nf_dup_netdev.h>
++#include <net/netfilter/nf_recursion.h>
+ 
+ static void nf_do_netdev_egress(struct sk_buff *skb, struct net_device *dev,
+ 				enum nf_dev_hooks hook)
+diff --git a/net/netfilter/nft_fwd_netdev.c b/net/netfilter/nft_fwd_netdev.c
+index a48c2f765bba..7447da931a95 100644
+--- a/net/netfilter/nft_fwd_netdev.c
++++ b/net/netfilter/nft_fwd_netdev.c
+@@ -14,6 +14,7 @@
+ #include <net/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_offload.h>
+ #include <net/netfilter/nf_dup_netdev.h>
++#include <net/netfilter/nf_recursion.h>
+ #include <net/neighbour.h>
+ #include <net/ip.h>
+ 
 -- 
 2.47.3
 
