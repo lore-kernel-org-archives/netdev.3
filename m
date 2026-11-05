@@ -1,21 +1,21 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=12.32.117.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793850322;
-	b=ziWVa6hSgsYf5m79omRMdRZRB1a0vMlAi0H1bp8nL+C7KFxgNGpUB4N/Hq2t5ELxyMzi
-	 iBk1ivsdQl3qxKuSD22YU19ds3QQMvfxAqe3n2bhL1f95fB+1pxZYp6Tg/pCwWyfmd4KQ
-	 58EVRCfbQcWk1r5AMO0NfRcMz/WzfEFTq52yPIIViQfKPb71fgPvBn8V31JA7BDzX5Gv1
-	 pGSF1uTJw1+kvQJhdBo3SGhyL+KDYj+oxz5igiUqTgRx4FoTTA3Q/vGyUFfRGF2n0Pz+s
-	 dl/cHaINh+50Q8M8YxAHLDlsvgN6mYVCSo4kY2srbJswONp2P3i5Yj56grM1J/8xHvA==
+	t=1793850333;
+	b=DGXPdJ6R3ATOmMflWtnoO7VF9uOag0mjDUdekrq+4ByX/i2BLYWHfMIE1UVMSChBOagj
+	 apUYB/b0TV11XSUszgDfhEfSrD5tqybsJ77kLvDG378EE+IAQ7g2iKLHuJuYfbCU3E9Bn
+	 3vOn+PwPyAkmOWmwAkxqpAFrF0/p8oHBE/jYEusp1hvk43lmmD6cagQraCh8lUte7yl25
+	 mit7aRHVyvWO2ZFTgfYBaCPET0MBDiCQHtwG6MMQi+gLzrj1ap1+LQU9J+n0IvBw9Rjro
+	 7zlvtEJU6mzJ+MtefYb1OI6Rzf4tvMzqT+Wk1qUHGBDaO3uJi3GDFtZ9pAwIEvVDF8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793850322;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793850333;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=IDxRGNGz0YjnXi+jLYlxg1F6TuStgL9eYp4V9snUFVA=;
-	b=ipPJRCRBYM7AfKU6VSzLt8aTDwnN4qKAOd0usRXNu9sZ5oICq2UcS/nOptqEWJA/BA0l
-	 FeQ2+wVGk20Uc2ib0qkavc+B5Q7XC+hFFHQrKJfsy9z4BJWB72cTdlFiBR9LJIqlg1GH6
-	 xB7aUhfekjzde3JYnksQ8jACO8V+PK8PBx5ST1/3FAnHlC3TiAx5RUNgw7Z94XbJLqaqj
-	 K+VjoRaOSYVJnpgdtOhFmbUOgZam/2gxf1Zg5xZ8oRwfgTuGnhps8rmgbsH6ZchNL08Gf
-	 N0wLsUmJyFs+tBrk7yIq3x2L8evTA0Lpq6ISOzzv2rZ2qKvX41LrCYKaMZRlTK2HU2g==
+	bh=jyUni9Ogd36X62770ub4Xzk9Dy/vtE1wQbdy1SpAsoU=;
+	b=F9c8usURuHXTAqV1VKPKiUz10NpJmFH/tGqwxyfiK5sf3iNSy0Rg1QJBBSzBn1/8z9XH
+	 9WxA+EtI1Ig0zBTSCYR3k6Kh6EQv0A3DVyHavydn1cz87kvW9W/jLfvjK41OVTyQg/e8q
+	 lWZjPymgNGznjDxpacYqunQE9dP3ipIbhO2wOXJ+o1h4phjYtMJIyIaI2QARMHAzW8FMX
+	 rS3lGoWSrQE9Nhj9GRwNIuxaqYm6ks5vcixGRyQlJdEQZHHYw2E9rLOfG9eJoKqsxrVBJ
+	 FjNxZdITRxsf1jUOyBwhmFwBGitM/8yxp/J+v+Hy1P7NJcAJVP/V29EYa7oa+q2dFFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=chelsio.com;
 	spf=pass smtp.mailfrom=chelsio.com;
@@ -23,22 +23,22 @@ ARC-Authentication-Results: i=1; smtp.subspace.kernel.org;
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86827606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:45:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86827606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C11B606A32C
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:45:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C11B606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 6A53hj3u002480;
-	Wed, 4 Nov 2026 19:45:07 -0800
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 6A53hj3v002480;
+	Wed, 4 Nov 2026 19:45:19 -0800
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com,
         harshitha.vr@chelsio.com
-Subject: [PATCH net-next v5 REPOST 08/12] cxgb4: Add T7 support to the filter infrastructure.
-Date: Thu,  5 Nov 2026 08:15:45 -0500
-Message-Id: <20261105131549.547554-9-bharat@chelsio.com>
+Subject: [PATCH net-next v5 REPOST 09/12] cxgb4: Add indirect register definitions for T7
+Date: Thu,  5 Nov 2026 08:15:46 -0500
+Message-Id: <20261105131549.547554-10-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261105131549.547554-1-bharat@chelsio.com>
 References: <20261105131549.547554-1-bharat@chelsio.com>
@@ -53,340 +53,1191 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-T7 introduces a number of changes in filter-related register fields,
-firmware work request formats and CPL definitions. Update the filter
-code to use the appropriate T7-specific encodings while preserving
-existing behavior on earlier adapters.
+Add indirect register definition headers used by the CUDBG
+infrastructure.
 
-The changes include:
-- Use T7 reply channel and queue number encodings in filter-related
-  CPL requests.
-- Add T7-specific filter capability validation using the new TP filter
-  field definitions.
-- Enable validation and programming of the SYN-only filter field,
-  which is supported on T7.
-- Adjust FW_FILTER_WR construction to match T7 semantics where the
-  RX channel is no longer programmed through the legacy field.
-- Add support for T7 active-open filter requests using the T7 CPL
-  layout and T7 filter tuple encoding.
-- Update filter resource handling to work correctly across T6 and T7
-  devices.
+Introduce cudbg_indir_reg.h and cudbg_indir_reg_t7.h containing the
+indirect registers required for cudbg register collection.
+
+These headers will be used by subsequent patch that add indirect
+register handling support to cudbg.
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../net/ethernet/chelsio/cxgb4/cxgb4_filter.c | 214 ++++++++++++------
- 1 file changed, 141 insertions(+), 73 deletions(-)
+ .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
+ .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++++++++++++++++
+ 2 files changed, 1156 insertions(+)
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-index 657d96b9e2f6..c9182c69cc7e 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-@@ -66,9 +66,14 @@ static int set_tcb_field(struct adapter *adap, struct filter_entry *f,
- 
- 	req = (struct cpl_set_tcb_field *)__skb_put_zero(skb, sizeof(*req));
- 	INIT_TP_WR_CPL(req, CPL_SET_TCB_FIELD, ftid);
--	req->reply_ctrl = htons(REPLY_CHAN_V(0) |
--				QUEUENO_V(adap->sge.fw_evtq.abs_id) |
--				NO_REPLY_V(no_reply));
-+	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
-+		req->reply_ctrl = htons(T7_REPLY_CHAN_V(0) |
-+					T7_QUEUENO_V(adap->sge.fw_evtq.abs_id) |
-+					NO_REPLY_V(no_reply));
-+	else
-+		req->reply_ctrl = htons(REPLY_CHAN_V(0) |
-+					QUEUENO_V(adap->sge.fw_evtq.abs_id) |
-+					NO_REPLY_V(no_reply));
- 	req->word_cookie = htons(TCB_WORD_V(word) | TCB_COOKIE_V(ftid));
- 	req->mask = cpu_to_be64(mask);
- 	req->val = cpu_to_be64(val);
-@@ -249,32 +254,53 @@ static int validate_filter(struct net_device *dev,
- 			   struct ch_filter_specification *fs)
- {
- 	struct adapter *adapter = netdev2adap(dev);
--	u32 fconf, iconf;
-+	u32 fconf, iconf, chip_ver;
- 
-+	chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
- 	/* Check for unconfigured fields being used. */
- 	iconf = adapter->params.tp.ingress_config;
- 	fconf = fs->hash ? adapter->params.tp.filter_mask :
- 			   adapter->params.tp.vlan_pri_map;
- 
--	if (unsupported(fconf, FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
--	    unsupported(fconf, PORT_F, fs->val.iport, fs->mask.iport) ||
--	    unsupported(fconf, TOS_F, fs->val.tos, fs->mask.tos) ||
--	    unsupported(fconf, ETHERTYPE_F, fs->val.ethtype,
--			fs->mask.ethtype) ||
--	    unsupported(fconf, MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
--	    unsupported(fconf, MPSHITTYPE_F, fs->val.matchtype,
--			fs->mask.matchtype) ||
--	    unsupported(fconf, FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
--	    unsupported(fconf, PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
--	    unsupported(fconf, VNIC_ID_F, fs->val.pfvf_vld,
--			fs->mask.pfvf_vld) ||
--	    unsupported(fconf, VNIC_ID_F, fs->val.ovlan_vld,
--			fs->mask.ovlan_vld) ||
--	    unsupported(fconf, VNIC_ID_F, fs->val.encap_vld,
--			fs->mask.encap_vld) ||
--	    unsupported(fconf, VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
--		return -EOPNOTSUPP;
--
-+	if (chip_ver >= CHELSIO_T7) {
-+		if (unsupported(fconf, T7_FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
-+		    unsupported(fconf, T7_PORT_F, fs->val.iport, fs->mask.iport) ||
-+		    unsupported(fconf, T7_TOS_F, fs->val.tos, fs->mask.tos) ||
-+		    unsupported(fconf, T7_ETHERTYPE_F, fs->val.ethtype,
-+				fs->mask.ethtype) ||
-+		    unsupported(fconf, T7_MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
-+		    unsupported(fconf, T7_MPSHITTYPE_F, fs->val.matchtype,
-+				fs->mask.matchtype) ||
-+		    unsupported(fconf, T7_FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
-+		    unsupported(fconf, T7_PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
-+		    unsupported(fconf, T7_VNIC_ID_F, fs->val.pfvf_vld,
-+				fs->mask.pfvf_vld) ||
-+		    unsupported(fconf, T7_VNIC_ID_F, fs->val.ovlan_vld,
-+				fs->mask.ovlan_vld) ||
-+		    unsupported(fconf, T7_VNIC_ID_F, fs->val.encap_vld,
-+				fs->mask.encap_vld) ||
-+		    unsupported(fconf, T7_VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
-+			return -EOPNOTSUPP;
-+	} else {
-+		if (unsupported(fconf, FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
-+		    unsupported(fconf, PORT_F, fs->val.iport, fs->mask.iport) ||
-+		    unsupported(fconf, TOS_F, fs->val.tos, fs->mask.tos) ||
-+		    unsupported(fconf, ETHERTYPE_F, fs->val.ethtype,
-+				fs->mask.ethtype) ||
-+		    unsupported(fconf, MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
-+		    unsupported(fconf, MPSHITTYPE_F, fs->val.matchtype,
-+				fs->mask.matchtype) ||
-+		    unsupported(fconf, FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
-+		    unsupported(fconf, PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
-+		    unsupported(fconf, VNIC_ID_F, fs->val.pfvf_vld,
-+				fs->mask.pfvf_vld) ||
-+		    unsupported(fconf, VNIC_ID_F, fs->val.ovlan_vld,
-+				fs->mask.ovlan_vld) ||
-+		    unsupported(fconf, VNIC_ID_F, fs->val.encap_vld,
-+				fs->mask.encap_vld) ||
-+		    unsupported(fconf, VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
-+			return -EOPNOTSUPP;
-+	}
- 	/* T4 inconveniently uses the same FT_VNIC_ID_W bits for both the Outer
- 	 * VLAN Tag and PF/VF/VFvld fields based on VNIC_F being set
- 	 * in TP_INGRESS_CONFIG.  Hense the somewhat crazy checks
-@@ -793,9 +819,12 @@ static int del_filter_wr(struct adapter *adapter, int fidx)
- int set_filter_wr(struct adapter *adapter, int fidx)
- {
- 	struct fw_filter2_wr *fwr;
-+	unsigned int chip_ver;
- 	struct filter_entry *f;
- 	struct sk_buff *skb;
- 
-+	chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+new file mode 100644
+index 000000000000..a33e003c78d5
+--- /dev/null
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
++ */
 +
- 	if (fidx < adapter->tids.nhpftids)
- 		f = &adapter->tids.hpftid_tab[fidx];
- 	else
-@@ -883,8 +912,10 @@ int set_filter_wr(struct adapter *adapter, int fidx)
- 	if (f->fs.newsmac)
- 		fwr->smac_sel = f->smt->idx;
- 	fwr->rx_chan_rx_rpl_iq =
--		htons(FW_FILTER_WR_RX_CHAN_V(0) |
--		      FW_FILTER_WR_RX_RPL_IQ_V(adapter->sge.fw_evtq.abs_id));
-+		htons(FW_FILTER_WR_RX_RPL_IQ_V(adapter->sge.fw_evtq.abs_id));
-+	if (chip_ver <= CHELSIO_T6)
-+		fwr->rx_chan_rx_rpl_iq |=
-+			htons(FW_FILTER_WR_RX_CHAN_V(cxgb4_port_e2cchan(f->dev)));
- 	fwr->maci_to_matchtypem =
- 		htonl(FW_FILTER_WR_MACI_V(f->fs.val.macidx) |
- 		      FW_FILTER_WR_MACIM_V(f->fs.mask.macidx) |
-@@ -993,7 +1024,9 @@ void clear_filter(struct adapter *adap, struct filter_entry *f)
- 		t4_free_encap_mac_filt(adap, pi->viid,
- 				       f->fs.val.ovlan & 0x1ff, 0);
- 
--	if ((f->fs.hash || is_t6(adap->params.chip)) && f->fs.type)
-+	if ((f->fs.hash ||
-+	     (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T6)) &&
-+	     f->fs.type)
- 		cxgb4_clip_release(f->dev, (const u32 *)&f->fs.val.lip, 1);
- 
- 	/* The zeroing of the filter rule below clears the filter valid,
-@@ -1296,20 +1329,16 @@ static void mk_act_open_req6(struct filter_entry *f, struct sk_buff *skb,
- 			     unsigned int qid_filterid, struct adapter *adap)
- {
- 	struct cpl_t6_act_open_req6 *t6req = NULL;
-+	struct cpl_t7_act_open_req6 *t7req = NULL;
- 	struct cpl_act_open_req6 *req = NULL;
-+	u32 chip_ver;
-+	__be32 opt2;
-+	__be64 opt0;
- 
--	t6req = (struct cpl_t6_act_open_req6 *)__skb_put(skb, sizeof(*t6req));
--	INIT_TP_WR(t6req, 0);
--	req = (struct cpl_act_open_req6 *)t6req;
--	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ6, qid_filterid));
--	req->local_port = cpu_to_be16(f->fs.val.lport);
--	req->peer_port = cpu_to_be16(f->fs.val.fport);
--	req->local_ip_hi = *(__be64 *)(&f->fs.val.lip);
--	req->local_ip_lo = *(((__be64 *)&f->fs.val.lip) + 1);
--	req->peer_ip_hi = *(__be64 *)(&f->fs.val.fip);
--	req->peer_ip_lo = *(((__be64 *)&f->fs.val.fip) + 1);
--	req->opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
--					f->fs.newvlan == VLAN_REWRITE) |
-+	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
++#ifndef __CUDBG_INDIR_REG_H__
++#define __CUDBG_INDIR_REG_H__
 +
-+	opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
-+				   f->fs.newvlan == VLAN_REWRITE) |
- 				DELACK_V(f->fs.hitcnts) |
- 				L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
- 				SMAC_SEL_V((cxgb4_port_viid(f->dev) &
-@@ -1319,52 +1348,90 @@ static void mk_act_open_req6(struct filter_entry *f, struct sk_buff *skb,
- 				ULP_MODE_V(f->fs.nat_mode ?
- 					   ULP_MODE_TCPDDP : ULP_MODE_NONE) |
- 				TCAM_BYPASS_F | NON_OFFLOAD_F);
--	t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs,
--								      f->dev)));
--	t6req->opt2 = htonl(RSS_QUEUE_VALID_F |
--			    RSS_QUEUE_V(f->fs.iq) |
--			    TX_QUEUE_V(f->fs.nat_mode) |
--			    T5_OPT_2_VALID_F |
--			    RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
--			    PACE_V((f->fs.maskhash) |
-+	opt2 = cpu_to_be32(RSS_QUEUE_VALID_F |
-+			   RSS_QUEUE_V(f->fs.iq) |
-+			   TX_QUEUE_V(f->fs.nat_mode) |
-+			   T5_OPT_2_VALID_F |
-+			   RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
-+			   PACE_V((f->fs.maskhash) |
- 				   ((f->fs.dirsteerhash) << 1)));
++enum cudbg_indir_type {
++	CUDBG_INDIR_TYPE_CIM_CTL,
++	CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL,
++	CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL,
++	CUDBG_INDIR_TYPE_TP_MIB_INDEX,
++	CUDBG_INDIR_TYPE_TP_PIO_ADDR,
++	CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR,
++	CUDBG_INDIR_TYPE_UP,
++	CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG,
++	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG,
++	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG,
++	CUDBG_INDIR_TYPE_MAX, /* New members need to be added at end */
++};
 +
-+	if (chip_ver >= CHELSIO_T7) {
-+		t7req = (struct cpl_t7_act_open_req6 *)__skb_put(skb, sizeof(*t7req));
-+		INIT_TP_WR(t7req, 0);
-+		req = (struct cpl_act_open_req6 *)t7req;
-+		t7req->opt0 = opt0;
-+		t7req->opt2 = opt2;
-+		t7req->params = cpu_to_be64(T7_FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
-+	} else {
-+		t6req = (struct cpl_t6_act_open_req6 *)__skb_put(skb, sizeof(*t6req));
-+		INIT_TP_WR(t6req, 0);
-+		req = (struct cpl_act_open_req6 *)t6req;
-+		t6req->opt0 = opt0;
-+		t6req->opt2 = opt2;
-+		t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
-+	}
++struct cudbg_indir_reg {
++	u32 addr;
++};
 +
-+	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ6, qid_filterid));
-+	req->local_port = cpu_to_be16(f->fs.val.lport);
-+	req->peer_port = cpu_to_be16(f->fs.val.fport);
-+	req->local_ip_hi = *(__be64 *)(&f->fs.val.lip);
-+	req->local_ip_lo = *(((__be64 *)&f->fs.val.lip) + 1);
-+	req->peer_ip_hi = *(__be64 *)(&f->fs.val.fip);
-+	req->peer_ip_lo = *(((__be64 *)&f->fs.val.fip) + 1);
- }
- 
- static void mk_act_open_req(struct filter_entry *f, struct sk_buff *skb,
- 			    unsigned int qid_filterid, struct adapter *adap)
- {
- 	struct cpl_t6_act_open_req *t6req = NULL;
-+	struct cpl_t7_act_open_req *t7req = NULL;
- 	struct cpl_act_open_req *req = NULL;
-+	u32 chip_ver;
-+	__be32 opt2;
-+	__be64 opt0;
++struct cudbg_indir_type_entry {
++	struct cudbg_indir_reg *reg_arr;
++	u32 nentries;
++};
 +
-+	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
++#include "cudbg_indir_reg_t7.h"
 +
-+	opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
-+				   f->fs.newvlan == VLAN_REWRITE) |
-+			   DELACK_V(f->fs.hitcnts) |
-+			   L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
-+			   SMAC_SEL_V((cxgb4_port_viid(f->dev) &
-+				       0x7F) << 1) |
-+			   TX_CHAN_V(f->fs.eport) |
-+			   NO_CONG_V(f->fs.rpttid) |
-+			   ULP_MODE_V(f->fs.nat_mode ?
-+				      ULP_MODE_TCPDDP : ULP_MODE_NONE) |
-+			   TCAM_BYPASS_F | NON_OFFLOAD_F);
-+	opt2 = cpu_to_be32(RSS_QUEUE_VALID_F |
-+			   RSS_QUEUE_V(f->fs.iq) |
-+			   TX_QUEUE_V(f->fs.nat_mode) |
-+			   T5_OPT_2_VALID_F |
-+			   RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
-+			   PACE_V((f->fs.maskhash) |
-+				  ((f->fs.dirsteerhash) << 1)));
-+	if (chip_ver >= CHELSIO_T7) {
-+		t7req = (struct cpl_t7_act_open_req *)__skb_put(skb, sizeof(*t7req));
-+		INIT_TP_WR(t7req, 0);
-+		req = (struct cpl_act_open_req *)t7req;
-+		t7req->opt0 = opt0;
-+		t7req->opt2 = opt2;
-+		t7req->params = cpu_to_be64(T7_FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
-+	} else {
-+		t6req = (struct cpl_t6_act_open_req *)__skb_put(skb, sizeof(*t6req));
-+		INIT_TP_WR(t6req, 0);
-+		req = (struct cpl_act_open_req *)t6req;
-+		t6req->opt0 = opt0;
-+		t6req->opt2 = opt2;
-+		t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
-+	}
- 
--	t6req = (struct cpl_t6_act_open_req *)__skb_put(skb, sizeof(*t6req));
--	INIT_TP_WR(t6req, 0);
--	req = (struct cpl_act_open_req *)t6req;
- 	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ, qid_filterid));
- 	req->local_port = cpu_to_be16(f->fs.val.lport);
- 	req->peer_port = cpu_to_be16(f->fs.val.fport);
- 	memcpy(&req->local_ip, f->fs.val.lip, 4);
- 	memcpy(&req->peer_ip, f->fs.val.fip, 4);
--	req->opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
--					f->fs.newvlan == VLAN_REWRITE) |
--				DELACK_V(f->fs.hitcnts) |
--				L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
--				SMAC_SEL_V((cxgb4_port_viid(f->dev) &
--					    0x7F) << 1) |
--				TX_CHAN_V(f->fs.eport) |
--				NO_CONG_V(f->fs.rpttid) |
--				ULP_MODE_V(f->fs.nat_mode ?
--					   ULP_MODE_TCPDDP : ULP_MODE_NONE) |
--				TCAM_BYPASS_F | NON_OFFLOAD_F);
--
--	t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs,
--								      f->dev)));
--	t6req->opt2 = htonl(RSS_QUEUE_VALID_F |
--			    RSS_QUEUE_V(f->fs.iq) |
--			    TX_QUEUE_V(f->fs.nat_mode) |
--			    T5_OPT_2_VALID_F |
--			    RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
--			    PACE_V((f->fs.maskhash) |
--				   ((f->fs.dirsteerhash) << 1)));
- }
- 
- static int cxgb4_set_hash_filter(struct net_device *dev,
-@@ -1663,7 +1730,7 @@ int __cxgb4_set_filter(struct net_device *dev, int ftid,
- 	if (ret)
- 		goto free_tid;
- 
--	if (is_t6(adapter->params.chip) && fs->type &&
-+	if (chip_ver >= CHELSIO_T6 && fs->type &&
- 	    ipv6_addr_type((const struct in6_addr *)fs->val.lip) !=
- 	    IPV6_ADDR_ANY) {
- 		ret = cxgb4_clip_get(dev, (const u32 *)&fs->val.lip, 1);
-@@ -2140,12 +2207,13 @@ void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
- 
- void init_hash_filter(struct adapter *adap)
- {
--	u32 reg;
-+	u32 reg, chip_ver;
- 
-+	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
- 	/* On T6, verify the necessary register configs and warn the user in
- 	 * case of improper config
- 	 */
--	if (is_t6(adap->params.chip)) {
-+	if (chip_ver >= CHELSIO_T6) {
- 		if (is_offload(adap)) {
- 			if (!(t4_read_reg(adap, TP_GLOBAL_CONFIG_A)
- 			   & ACTIVEFILTERCOUNTS_F)) {
++static inline struct cudbg_indir_type_entry *
++cudbg_get_indir_reg_info(u32 chip_ver, enum cudbg_indir_type type)
++{
++	if (chip_ver >= CHELSIO_T7)
++		return &t7_indir_type_arr[type];
++
++	return NULL;
++}
++
++#endif /* __CUDBG_INDIR_REG_H__ */
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+new file mode 100644
+index 000000000000..a246009ffb8d
+--- /dev/null
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+@@ -0,0 +1,1113 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
++ */
++
++#ifndef __CUDBG_INDIR_REG_T7_H__
++#define __CUDBG_INDIR_REG_T7_H__
++
++static struct cudbg_indir_reg t7_cim_ctl[82] = {
++	{ .addr = 0x2000 },
++	{ .addr = 0x2040 },
++	{ .addr = 0x2044 },
++	{ .addr = 0x2050 },
++	{ .addr = 0x2054 },
++	{ .addr = 0x2060 },
++	{ .addr = 0x2064 },
++	{ .addr = 0x2068 },
++	{ .addr = 0x206c },
++	{ .addr = 0x2094 },
++	{ .addr = 0x2098 },
++	{ .addr = 0x209c },
++	{ .addr = 0x20a0 },
++	{ .addr = 0x20a4 },
++	{ .addr = 0x20a8 },
++	{ .addr = 0x20ac },
++	{ .addr = 0x20b0 },
++	{ .addr = 0x20b4 },
++	{ .addr = 0x20b8 },
++	{ .addr = 0x20bc },
++	{ .addr = 0x20c0 },
++	{ .addr = 0x20c4 },
++	{ .addr = 0x20c8 },
++	{ .addr = 0x20cc },
++	{ .addr = 0x20d0 },
++	{ .addr = 0x20e0 },
++	{ .addr = 0x20e4 },
++	{ .addr = 0x20e8 },
++	{ .addr = 0x20ec },
++	{ .addr = 0x20f0 },
++	{ .addr = 0x20f4 },
++	{ .addr = 0x20f8 },
++	{ .addr = 0x20fc },
++	{ .addr = 0x2500 },
++	{ .addr = 0x2504 },
++	{ .addr = 0x2508 },
++	{ .addr = 0x250c },
++	{ .addr = 0x2510 },
++	{ .addr = 0x2514 },
++	{ .addr = 0x2518 },
++	{ .addr = 0x251c },
++	{ .addr = 0x2520 },
++	{ .addr = 0x2524 },
++	{ .addr = 0x2528 },
++	{ .addr = 0x252c },
++	{ .addr = 0x2530 },
++	{ .addr = 0x2534 },
++	{ .addr = 0x2538 },
++	{ .addr = 0x253c },
++	{ .addr = 0x2540 },
++	{ .addr = 0x2600 },
++	{ .addr = 0x2604 },
++	{ .addr = 0x2608 },
++	{ .addr = 0x260c },
++	{ .addr = 0x2610 },
++	{ .addr = 0x2614 },
++	{ .addr = 0x2618 },
++	{ .addr = 0x261c },
++	{ .addr = 0x2620 },
++	{ .addr = 0x2624 },
++	{ .addr = 0x2628 },
++	{ .addr = 0x262c },
++	{ .addr = 0x2630 },
++	{ .addr = 0x2634 },
++	{ .addr = 0x2638 },
++	{ .addr = 0x263c },
++	{ .addr = 0x2640 },
++	{ .addr = 0x26fc },
++	{ .addr = 0x2700 },
++	{ .addr = 0x2704 },
++	{ .addr = 0x2708 },
++	{ .addr = 0x270c },
++	{ .addr = 0x2710 },
++	{ .addr = 0x2714 },
++	{ .addr = 0x2718 },
++	{ .addr = 0x271c },
++	{ .addr = 0x2720 },
++	{ .addr = 0x2724 },
++	{ .addr = 0x2728 },
++	{ .addr = 0x2780 },
++	{ .addr = 0x2784 },
++	{ .addr = 0x2788 },
++};
++
++static struct cudbg_indir_reg t7_hmat6_local_debug_cfg[32] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa001 },
++	{ .addr = 0xa002 },
++	{ .addr = 0xa003 },
++	{ .addr = 0xa004 },
++	{ .addr = 0xa005 },
++	{ .addr = 0xa006 },
++	{ .addr = 0xa007 },
++	{ .addr = 0xa008 },
++	{ .addr = 0xa009 },
++	{ .addr = 0xa00a },
++	{ .addr = 0xa00b },
++	{ .addr = 0xa00c },
++	{ .addr = 0xa00d },
++	{ .addr = 0xa00e },
++	{ .addr = 0xa00f },
++	{ .addr = 0xa010 },
++	{ .addr = 0xa011 },
++	{ .addr = 0xa012 },
++	{ .addr = 0xa013 },
++	{ .addr = 0xa014 },
++	{ .addr = 0xa015 },
++	{ .addr = 0xa016 },
++	{ .addr = 0xa017 },
++	{ .addr = 0xa018 },
++	{ .addr = 0xa019 },
++	{ .addr = 0xa01a },
++	{ .addr = 0xa01b },
++	{ .addr = 0xa01c },
++	{ .addr = 0xa01d },
++	{ .addr = 0xa01e },
++	{ .addr = 0xa01f },
++};
++
++static struct cudbg_indir_reg t7_ma_local_debug_cfg[238] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa001 },
++	{ .addr = 0xa002 },
++	{ .addr = 0xa003 },
++	{ .addr = 0xa004 },
++	{ .addr = 0xa005 },
++	{ .addr = 0xa006 },
++	{ .addr = 0xa007 },
++	{ .addr = 0xa008 },
++	{ .addr = 0xa009 },
++	{ .addr = 0xa00a },
++	{ .addr = 0xa00b },
++	{ .addr = 0xa00c },
++	{ .addr = 0xa00d },
++	{ .addr = 0xa00e },
++	{ .addr = 0xa00f },
++	{ .addr = 0xa010 },
++	{ .addr = 0xa011 },
++	{ .addr = 0xa012 },
++	{ .addr = 0xa013 },
++	{ .addr = 0xa014 },
++	{ .addr = 0xa015 },
++	{ .addr = 0xa016 },
++	{ .addr = 0xa400 },
++	{ .addr = 0xa401 },
++	{ .addr = 0xa402 },
++	{ .addr = 0xa403 },
++	{ .addr = 0xa404 },
++	{ .addr = 0xa405 },
++	{ .addr = 0xa406 },
++	{ .addr = 0xa407 },
++	{ .addr = 0xa408 },
++	{ .addr = 0xa409 },
++	{ .addr = 0xa40a },
++	{ .addr = 0xa40b },
++	{ .addr = 0xa40c },
++	{ .addr = 0xa40d },
++	{ .addr = 0xa40e },
++	{ .addr = 0xa40f },
++	{ .addr = 0xa410 },
++	{ .addr = 0xa412 },
++	{ .addr = 0xa413 },
++	{ .addr = 0xa414 },
++	{ .addr = 0xa415 },
++	{ .addr = 0xa416 },
++	{ .addr = 0xa417 },
++	{ .addr = 0xa418 },
++	{ .addr = 0xa419 },
++	{ .addr = 0xa41a },
++	{ .addr = 0xa41b },
++	{ .addr = 0xa41c },
++	{ .addr = 0xa41d },
++	{ .addr = 0xa41e },
++	{ .addr = 0xa800 },
++	{ .addr = 0xa801 },
++	{ .addr = 0xa802 },
++	{ .addr = 0xa803 },
++	{ .addr = 0xa804 },
++	{ .addr = 0xa805 },
++	{ .addr = 0xa806 },
++	{ .addr = 0xa807 },
++	{ .addr = 0xa808 },
++	{ .addr = 0xa809 },
++	{ .addr = 0xa80a },
++	{ .addr = 0xa80b },
++	{ .addr = 0xa80c },
++	{ .addr = 0xa80d },
++	{ .addr = 0xa80e },
++	{ .addr = 0xa80f },
++	{ .addr = 0xa810 },
++	{ .addr = 0xa811 },
++	{ .addr = 0xa812 },
++	{ .addr = 0xa813 },
++	{ .addr = 0xac00 },
++	{ .addr = 0xac01 },
++	{ .addr = 0xac02 },
++	{ .addr = 0xac03 },
++	{ .addr = 0xac04 },
++	{ .addr = 0xac05 },
++	{ .addr = 0xac06 },
++	{ .addr = 0xac07 },
++	{ .addr = 0xac08 },
++	{ .addr = 0xac09 },
++	{ .addr = 0xac0a },
++	{ .addr = 0xac0b },
++	{ .addr = 0xac0c },
++	{ .addr = 0xac0d },
++	{ .addr = 0xac0e },
++	{ .addr = 0xac0f },
++	{ .addr = 0xac10 },
++	{ .addr = 0xac11 },
++	{ .addr = 0xac12 },
++	{ .addr = 0xac13 },
++	{ .addr = 0xac14 },
++	{ .addr = 0xac15 },
++	{ .addr = 0xac16 },
++	{ .addr = 0xac17 },
++	{ .addr = 0xac18 },
++	{ .addr = 0xac19 },
++	{ .addr = 0xb000 },
++	{ .addr = 0xb001 },
++	{ .addr = 0xb002 },
++	{ .addr = 0xb003 },
++	{ .addr = 0xb004 },
++	{ .addr = 0xb005 },
++	{ .addr = 0xb006 },
++	{ .addr = 0xb007 },
++	{ .addr = 0xb008 },
++	{ .addr = 0xb009 },
++	{ .addr = 0xb00a },
++	{ .addr = 0xb00b },
++	{ .addr = 0xb00c },
++	{ .addr = 0xb00d },
++	{ .addr = 0xb00e },
++	{ .addr = 0xb00f },
++	{ .addr = 0xb010 },
++	{ .addr = 0xb011 },
++	{ .addr = 0xb012 },
++	{ .addr = 0xb013 },
++	{ .addr = 0xb014 },
++	{ .addr = 0xb015 },
++	{ .addr = 0xb016 },
++	{ .addr = 0xb017 },
++	{ .addr = 0xb018 },
++	{ .addr = 0xb019 },
++	{ .addr = 0xb400 },
++	{ .addr = 0xb401 },
++	{ .addr = 0xb402 },
++	{ .addr = 0xb403 },
++	{ .addr = 0xb404 },
++	{ .addr = 0xb405 },
++	{ .addr = 0xb406 },
++	{ .addr = 0xb407 },
++	{ .addr = 0xb408 },
++	{ .addr = 0xb409 },
++	{ .addr = 0xb40a },
++	{ .addr = 0xb40b },
++	{ .addr = 0xb40c },
++	{ .addr = 0xb40d },
++	{ .addr = 0xb40e },
++	{ .addr = 0xb40f },
++	{ .addr = 0xb410 },
++	{ .addr = 0xb411 },
++	{ .addr = 0xb412 },
++	{ .addr = 0xb413 },
++	{ .addr = 0xb414 },
++	{ .addr = 0xb415 },
++	{ .addr = 0xb416 },
++	{ .addr = 0xb417 },
++	{ .addr = 0xb418 },
++	{ .addr = 0xb419 },
++	{ .addr = 0xe400 },
++	{ .addr = 0xe420 },
++	{ .addr = 0xe440 },
++	{ .addr = 0xe460 },
++	{ .addr = 0xe480 },
++	{ .addr = 0xe4a0 },
++	{ .addr = 0xe4c0 },
++	{ .addr = 0xe4e0 },
++	{ .addr = 0xe500 },
++	{ .addr = 0xe520 },
++	{ .addr = 0xe540 },
++	{ .addr = 0xe560 },
++	{ .addr = 0xe580 },
++	{ .addr = 0xe5a0 },
++	{ .addr = 0xe5c0 },
++	{ .addr = 0xe5e0 },
++	{ .addr = 0xe600 },
++	{ .addr = 0xe640 },
++	{ .addr = 0xe660 },
++	{ .addr = 0xe680 },
++	{ .addr = 0xe6a0 },
++	{ .addr = 0xe6c0 },
++	{ .addr = 0xe6e0 },
++	{ .addr = 0xe700 },
++	{ .addr = 0xe720 },
++	{ .addr = 0xe740 },
++	{ .addr = 0xe760 },
++	{ .addr = 0xe780 },
++	{ .addr = 0xe7a0 },
++	{ .addr = 0xe7c0 },
++	{ .addr = 0xe800 },
++	{ .addr = 0xe820 },
++	{ .addr = 0xe840 },
++	{ .addr = 0xe860 },
++	{ .addr = 0xe880 },
++	{ .addr = 0xe8a0 },
++	{ .addr = 0xe8c0 },
++	{ .addr = 0xe8e0 },
++	{ .addr = 0xe900 },
++	{ .addr = 0xe920 },
++	{ .addr = 0xe940 },
++	{ .addr = 0xe960 },
++	{ .addr = 0xe980 },
++	{ .addr = 0xe9a0 },
++	{ .addr = 0xe9c0 },
++	{ .addr = 0xe9e0 },
++	{ .addr = 0xec00 },
++	{ .addr = 0xec20 },
++	{ .addr = 0xec40 },
++	{ .addr = 0xec60 },
++	{ .addr = 0xec80 },
++	{ .addr = 0xeca0 },
++	{ .addr = 0xecc0 },
++	{ .addr = 0xece0 },
++	{ .addr = 0xed00 },
++	{ .addr = 0xed20 },
++	{ .addr = 0xed40 },
++	{ .addr = 0xed60 },
++	{ .addr = 0xed80 },
++	{ .addr = 0xeda0 },
++	{ .addr = 0xedc0 },
++	{ .addr = 0xede0 },
++	{ .addr = 0xee00 },
++	{ .addr = 0xee20 },
++	{ .addr = 0xee40 },
++	{ .addr = 0xee60 },
++	{ .addr = 0xee80 },
++	{ .addr = 0xeea0 },
++	{ .addr = 0xeec0 },
++	{ .addr = 0xeee0 },
++	{ .addr = 0xef00 },
++	{ .addr = 0xef20 },
++	{ .addr = 0xf000 },
++	{ .addr = 0xf020 },
++	{ .addr = 0xf040 },
++	{ .addr = 0xf100 },
++	{ .addr = 0xf101 },
++	{ .addr = 0xf102 },
++	{ .addr = 0xf103 },
++	{ .addr = 0xf104 },
++	{ .addr = 0xf105 },
++	{ .addr = 0xf106 },
++	{ .addr = 0xf107 },
++	{ .addr = 0xf108 },
++	{ .addr = 0xf120 },
++	{ .addr = 0xf140 },
++	{ .addr = 0xf160 },
++};
++
++static struct cudbg_indir_reg t7_ma_local_debug_perf_cfg[4] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa1e0 },
++	{ .addr = 0xe000 },
++	{ .addr = 0xe1e0 },
++};
++
++static struct cudbg_indir_reg t7_pm_rx_dbg_ctrl[57] = {
++	{ .addr = 0x10013 },
++	{ .addr = 0x10014 },
++	{ .addr = 0x10015 },
++	{ .addr = 0x10016 },
++	{ .addr = 0x10019 },
++	{ .addr = 0x1001a },
++	{ .addr = 0x1001b },
++	{ .addr = 0x1001c },
++	{ .addr = 0x1001d },
++	{ .addr = 0x10020 },
++	{ .addr = 0x10021 },
++	{ .addr = 0x10022 },
++	{ .addr = 0x10023 },
++	{ .addr = 0x10024 },
++	{ .addr = 0x10025 },
++	{ .addr = 0x10026 },
++	{ .addr = 0x10027 },
++	{ .addr = 0x10028 },
++	{ .addr = 0x10029 },
++	{ .addr = 0x1002a },
++	{ .addr = 0x1002b },
++	{ .addr = 0x1002c },
++	{ .addr = 0x1002d },
++	{ .addr = 0x1002e },
++	{ .addr = 0x1002f },
++	{ .addr = 0x10030 },
++	{ .addr = 0x10031 },
++	{ .addr = 0x10032 },
++	{ .addr = 0x10033 },
++	{ .addr = 0x10034 },
++	{ .addr = 0x10035 },
++	{ .addr = 0x10036 },
++	{ .addr = 0x10037 },
++	{ .addr = 0x10038 },
++	{ .addr = 0x10039 },
++	{ .addr = 0x1003a },
++	{ .addr = 0x1003b },
++	{ .addr = 0x1003c },
++	{ .addr = 0x1003d },
++	{ .addr = 0x1003e },
++	{ .addr = 0x10049 },
++	{ .addr = 0x10060 },
++	{ .addr = 0x10061 },
++	{ .addr = 0x10062 },
++	{ .addr = 0x10063 },
++	{ .addr = 0x10070 },
++	{ .addr = 0x10071 },
++	{ .addr = 0x10072 },
++	{ .addr = 0x10073 },
++	{ .addr = 0x10074 },
++	{ .addr = 0x10075 },
++	{ .addr = 0x10076 },
++	{ .addr = 0x10077 },
++	{ .addr = 0x10078 },
++	{ .addr = 0x10080 },
++	{ .addr = 0x10081 },
++	{ .addr = 0x10082 },
++};
++
++static struct cudbg_indir_reg t7_pm_tx_dbg_ctrl[38] = {
++	{ .addr = 0x10000 },
++	{ .addr = 0x10001 },
++	{ .addr = 0x10002 },
++	{ .addr = 0x10003 },
++	{ .addr = 0x10004 },
++	{ .addr = 0x10005 },
++	{ .addr = 0x10006 },
++	{ .addr = 0x10007 },
++	{ .addr = 0x10008 },
++	{ .addr = 0x10009 },
++	{ .addr = 0x1000a },
++	{ .addr = 0x1000b },
++	{ .addr = 0x1000c },
++	{ .addr = 0x1000d },
++	{ .addr = 0x1000e },
++	{ .addr = 0x1000f },
++	{ .addr = 0x10010 },
++	{ .addr = 0x10011 },
++	{ .addr = 0x10012 },
++	{ .addr = 0x10013 },
++	{ .addr = 0x10014 },
++	{ .addr = 0x10015 },
++	{ .addr = 0x10016 },
++	{ .addr = 0x10017 },
++	{ .addr = 0x10018 },
++	{ .addr = 0x10019 },
++	{ .addr = 0x1001a },
++	{ .addr = 0x1001b },
++	{ .addr = 0x1001c },
++	{ .addr = 0x1001d },
++	{ .addr = 0x1001e },
++	{ .addr = 0x1001f },
++	{ .addr = 0x10020 },
++	{ .addr = 0x10021 },
++	{ .addr = 0x10022 },
++	{ .addr = 0x10023 },
++	{ .addr = 0x10024 },
++	{ .addr = 0x10025 },
++};
++
++static struct cudbg_indir_reg t7_tp_mib_index[130] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x1 },
++	{ .addr = 0x2 },
++	{ .addr = 0x3 },
++	{ .addr = 0x4 },
++	{ .addr = 0x5 },
++	{ .addr = 0x6 },
++	{ .addr = 0x7 },
++	{ .addr = 0x8 },
++	{ .addr = 0x9 },
++	{ .addr = 0xa },
++	{ .addr = 0xb },
++	{ .addr = 0xc },
++	{ .addr = 0x10 },
++	{ .addr = 0x11 },
++	{ .addr = 0x12 },
++	{ .addr = 0x13 },
++	{ .addr = 0x14 },
++	{ .addr = 0x15 },
++	{ .addr = 0x18 },
++	{ .addr = 0x19 },
++	{ .addr = 0x1a },
++	{ .addr = 0x1b },
++	{ .addr = 0x1c },
++	{ .addr = 0x1d },
++	{ .addr = 0x1e },
++	{ .addr = 0x1f },
++	{ .addr = 0x20 },
++	{ .addr = 0x21 },
++	{ .addr = 0x22 },
++	{ .addr = 0x23 },
++	{ .addr = 0x24 },
++	{ .addr = 0x25 },
++	{ .addr = 0x26 },
++	{ .addr = 0x27 },
++	{ .addr = 0x28 },
++	{ .addr = 0x29 },
++	{ .addr = 0x2a },
++	{ .addr = 0x2b },
++	{ .addr = 0x2c },
++	{ .addr = 0x30 },
++	{ .addr = 0x31 },
++	{ .addr = 0x32 },
++	{ .addr = 0x33 },
++	{ .addr = 0x34 },
++	{ .addr = 0x35 },
++	{ .addr = 0x36 },
++	{ .addr = 0x37 },
++	{ .addr = 0x38 },
++	{ .addr = 0x39 },
++	{ .addr = 0x3a },
++	{ .addr = 0x3b },
++	{ .addr = 0x3c },
++	{ .addr = 0x3d },
++	{ .addr = 0x3e },
++	{ .addr = 0x3f },
++	{ .addr = 0x40 },
++	{ .addr = 0x41 },
++	{ .addr = 0x42 },
++	{ .addr = 0x43 },
++	{ .addr = 0x44 },
++	{ .addr = 0x45 },
++	{ .addr = 0x46 },
++	{ .addr = 0x47 },
++	{ .addr = 0x48 },
++	{ .addr = 0x49 },
++	{ .addr = 0x4a },
++	{ .addr = 0x4b },
++	{ .addr = 0x4c },
++	{ .addr = 0x4d },
++	{ .addr = 0x4e },
++	{ .addr = 0x4f },
++	{ .addr = 0x50 },
++	{ .addr = 0x51 },
++	{ .addr = 0x52 },
++	{ .addr = 0x53 },
++	{ .addr = 0x54 },
++	{ .addr = 0x55 },
++	{ .addr = 0x56 },
++	{ .addr = 0x57 },
++	{ .addr = 0x58 },
++	{ .addr = 0x59 },
++	{ .addr = 0x5a },
++	{ .addr = 0x5b },
++	{ .addr = 0x5c },
++	{ .addr = 0x5d },
++	{ .addr = 0x5e },
++	{ .addr = 0x5f },
++	{ .addr = 0x60 },
++	{ .addr = 0x61 },
++	{ .addr = 0x62 },
++	{ .addr = 0x63 },
++	{ .addr = 0x64 },
++	{ .addr = 0x65 },
++	{ .addr = 0x68 },
++	{ .addr = 0x69 },
++	{ .addr = 0x6a },
++	{ .addr = 0x6b },
++	{ .addr = 0x6c },
++	{ .addr = 0x6d },
++	{ .addr = 0x6e },
++	{ .addr = 0x6f },
++	{ .addr = 0x70 },
++	{ .addr = 0x71 },
++	{ .addr = 0x72 },
++	{ .addr = 0x73 },
++	{ .addr = 0x80 },
++	{ .addr = 0x81 },
++	{ .addr = 0x82 },
++	{ .addr = 0x83 },
++	{ .addr = 0x84 },
++	{ .addr = 0x85 },
++	{ .addr = 0x86 },
++	{ .addr = 0x87 },
++	{ .addr = 0x88 },
++	{ .addr = 0x89 },
++	{ .addr = 0x8a },
++	{ .addr = 0x8b },
++	{ .addr = 0x90 },
++	{ .addr = 0x91 },
++	{ .addr = 0x92 },
++	{ .addr = 0x93 },
++	{ .addr = 0x94 },
++	{ .addr = 0x95 },
++	{ .addr = 0x96 },
++	{ .addr = 0x97 },
++	{ .addr = 0x98 },
++	{ .addr = 0x99 },
++	{ .addr = 0x9a },
++	{ .addr = 0x9b },
++};
++
++static struct cudbg_indir_reg t7_tp_pio_addr[191] = {
++	{ .addr = 0x1c },
++	{ .addr = 0x1d },
++	{ .addr = 0x1e },
++	{ .addr = 0x1f },
++	{ .addr = 0x20 },
++	{ .addr = 0x21 },
++	{ .addr = 0x22 },
++	{ .addr = 0x23 },
++	{ .addr = 0x24 },
++	{ .addr = 0x25 },
++	{ .addr = 0x26 },
++	{ .addr = 0x27 },
++	{ .addr = 0x28 },
++	{ .addr = 0x29 },
++	{ .addr = 0x2a },
++	{ .addr = 0x2b },
++	{ .addr = 0x2c },
++	{ .addr = 0x2d },
++	{ .addr = 0x2e },
++	{ .addr = 0x2f },
++	{ .addr = 0x30 },
++	{ .addr = 0x31 },
++	{ .addr = 0x32 },
++	{ .addr = 0x33 },
++	{ .addr = 0x34 },
++	{ .addr = 0x35 },
++	{ .addr = 0x36 },
++	{ .addr = 0x37 },
++	{ .addr = 0x38 },
++	{ .addr = 0x39 },
++	{ .addr = 0x3a },
++	{ .addr = 0x3b },
++	{ .addr = 0x40 },
++	{ .addr = 0x41 },
++	{ .addr = 0x42 },
++	{ .addr = 0x43 },
++	{ .addr = 0x44 },
++	{ .addr = 0x45 },
++	{ .addr = 0x46 },
++	{ .addr = 0x47 },
++	{ .addr = 0x48 },
++	{ .addr = 0x49 },
++	{ .addr = 0x50 },
++	{ .addr = 0x51 },
++	{ .addr = 0x52 },
++	{ .addr = 0x53 },
++	{ .addr = 0x54 },
++	{ .addr = 0x55 },
++	{ .addr = 0x56 },
++	{ .addr = 0x57 },
++	{ .addr = 0x58 },
++	{ .addr = 0x59 },
++	{ .addr = 0x60 },
++	{ .addr = 0x61 },
++	{ .addr = 0x62 },
++	{ .addr = 0x63 },
++	{ .addr = 0x64 },
++	{ .addr = 0x65 },
++	{ .addr = 0x66 },
++	{ .addr = 0x67 },
++	{ .addr = 0x68 },
++	{ .addr = 0x69 },
++	{ .addr = 0x6a },
++	{ .addr = 0x6b },
++	{ .addr = 0x6c },
++	{ .addr = 0x6d },
++	{ .addr = 0x6f },
++	{ .addr = 0x70 },
++	{ .addr = 0x71 },
++	{ .addr = 0x72 },
++	{ .addr = 0x73 },
++	{ .addr = 0x74 },
++	{ .addr = 0x75 },
++	{ .addr = 0x80 },
++	{ .addr = 0x81 },
++	{ .addr = 0x82 },
++	{ .addr = 0x83 },
++	{ .addr = 0x84 },
++	{ .addr = 0x85 },
++	{ .addr = 0x86 },
++	{ .addr = 0x87 },
++	{ .addr = 0x88 },
++	{ .addr = 0x89 },
++	{ .addr = 0x8a },
++	{ .addr = 0x8b },
++	{ .addr = 0x8c },
++	{ .addr = 0x8d },
++	{ .addr = 0x8e },
++	{ .addr = 0x8f },
++	{ .addr = 0x90 },
++	{ .addr = 0x91 },
++	{ .addr = 0x92 },
++	{ .addr = 0x93 },
++	{ .addr = 0x94 },
++	{ .addr = 0x95 },
++	{ .addr = 0x96 },
++	{ .addr = 0x97 },
++	{ .addr = 0x98 },
++	{ .addr = 0x99 },
++	{ .addr = 0x130 },
++	{ .addr = 0x131 },
++	{ .addr = 0x132 },
++	{ .addr = 0x133 },
++	{ .addr = 0x134 },
++	{ .addr = 0x135 },
++	{ .addr = 0x136 },
++	{ .addr = 0x137 },
++	{ .addr = 0x138 },
++	{ .addr = 0x139 },
++	{ .addr = 0x13a },
++	{ .addr = 0x13b },
++	{ .addr = 0x13c },
++	{ .addr = 0x13d },
++	{ .addr = 0x13e },
++	{ .addr = 0x13f },
++	{ .addr = 0x140 },
++	{ .addr = 0x141 },
++	{ .addr = 0x145 },
++	{ .addr = 0x146 },
++	{ .addr = 0x147 },
++	{ .addr = 0x148 },
++	{ .addr = 0x149 },
++	{ .addr = 0x14a },
++	{ .addr = 0x14b },
++	{ .addr = 0x14c },
++	{ .addr = 0x14d },
++	{ .addr = 0x14e },
++	{ .addr = 0x14f },
++	{ .addr = 0x150 },
++	{ .addr = 0x151 },
++	{ .addr = 0x152 },
++	{ .addr = 0x153 },
++	{ .addr = 0x154 },
++	{ .addr = 0x155 },
++	{ .addr = 0x156 },
++	{ .addr = 0x157 },
++	{ .addr = 0x158 },
++	{ .addr = 0x159 },
++	{ .addr = 0x15a },
++	{ .addr = 0x15b },
++	{ .addr = 0x160 },
++	{ .addr = 0x161 },
++	{ .addr = 0x162 },
++	{ .addr = 0x164 },
++	{ .addr = 0x165 },
++	{ .addr = 0x166 },
++	{ .addr = 0x168 },
++	{ .addr = 0x169 },
++	{ .addr = 0x230 },
++	{ .addr = 0x231 },
++	{ .addr = 0x232 },
++	{ .addr = 0x233 },
++	{ .addr = 0x234 },
++	{ .addr = 0x235 },
++	{ .addr = 0x236 },
++	{ .addr = 0x237 },
++	{ .addr = 0x238 },
++	{ .addr = 0x239 },
++	{ .addr = 0x23a },
++	{ .addr = 0x23b },
++	{ .addr = 0x23c },
++	{ .addr = 0x23d },
++	{ .addr = 0x23e },
++	{ .addr = 0x23f },
++	{ .addr = 0x240 },
++	{ .addr = 0x241 },
++	{ .addr = 0x242 },
++	{ .addr = 0x243 },
++	{ .addr = 0x244 },
++	{ .addr = 0x245 },
++	{ .addr = 0x246 },
++	{ .addr = 0x247 },
++	{ .addr = 0x248 },
++	{ .addr = 0x24a },
++	{ .addr = 0x24b },
++	{ .addr = 0x24c },
++	{ .addr = 0x24d },
++	{ .addr = 0x24e },
++	{ .addr = 0x24f },
++	{ .addr = 0x250 },
++	{ .addr = 0x251 },
++	{ .addr = 0x252 },
++	{ .addr = 0x253 },
++	{ .addr = 0x254 },
++	{ .addr = 0x255 },
++	{ .addr = 0x256 },
++	{ .addr = 0x257 },
++	{ .addr = 0x258 },
++	{ .addr = 0x259 },
++	{ .addr = 0x260 },
++	{ .addr = 0x8c0 },
++};
++
++static struct cudbg_indir_reg t7_tp_tm_pio_addr[14] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x1 },
++	{ .addr = 0x2 },
++	{ .addr = 0x3 },
++	{ .addr = 0x4 },
++	{ .addr = 0x5 },
++	{ .addr = 0x6 },
++	{ .addr = 0x7 },
++	{ .addr = 0x8 },
++	{ .addr = 0x9 },
++	{ .addr = 0xa },
++	{ .addr = 0xb },
++	{ .addr = 0xc },
++	{ .addr = 0xd },
++};
++
++static struct cudbg_indir_reg t7_up[245] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x4 },
++	{ .addr = 0x8 },
++	{ .addr = 0xc },
++	{ .addr = 0x10 },
++	{ .addr = 0x80 },
++	{ .addr = 0x84 },
++	{ .addr = 0x88 },
++	{ .addr = 0x8c },
++	{ .addr = 0x90 },
++	{ .addr = 0xc0 },
++	{ .addr = 0xc4 },
++	{ .addr = 0xc8 },
++	{ .addr = 0xcc },
++	{ .addr = 0xd0 },
++	{ .addr = 0xd4 },
++	{ .addr = 0x100 },
++	{ .addr = 0x104 },
++	{ .addr = 0x108 },
++	{ .addr = 0x10c },
++	{ .addr = 0x110 },
++	{ .addr = 0x114 },
++	{ .addr = 0x118 },
++	{ .addr = 0x11c },
++	{ .addr = 0x120 },
++	{ .addr = 0x130 },
++	{ .addr = 0x140 },
++	{ .addr = 0x144 },
++	{ .addr = 0x14c },
++	{ .addr = 0x200 },
++	{ .addr = 0x204 },
++	{ .addr = 0x208 },
++	{ .addr = 0x20c },
++	{ .addr = 0x210 },
++	{ .addr = 0x214 },
++	{ .addr = 0x218 },
++	{ .addr = 0x21c },
++	{ .addr = 0x220 },
++	{ .addr = 0x224 },
++	{ .addr = 0x228 },
++	{ .addr = 0x22c },
++	{ .addr = 0x230 },
++	{ .addr = 0x234 },
++	{ .addr = 0x238 },
++	{ .addr = 0x23c },
++	{ .addr = 0x240 },
++	{ .addr = 0x244 },
++	{ .addr = 0x250 },
++	{ .addr = 0x254 },
++	{ .addr = 0x260 },
++	{ .addr = 0x264 },
++	{ .addr = 0x270 },
++	{ .addr = 0x274 },
++	{ .addr = 0x400 },
++	{ .addr = 0x404 },
++	{ .addr = 0x408 },
++	{ .addr = 0x40c },
++	{ .addr = 0x410 },
++	{ .addr = 0x414 },
++	{ .addr = 0x418 },
++	{ .addr = 0x41c },
++	{ .addr = 0x420 },
++	{ .addr = 0x424 },
++	{ .addr = 0x428 },
++	{ .addr = 0x42c },
++	{ .addr = 0x430 },
++	{ .addr = 0x434 },
++	{ .addr = 0x438 },
++	{ .addr = 0x43c },
++	{ .addr = 0x440 },
++	{ .addr = 0x444 },
++	{ .addr = 0x448 },
++	{ .addr = 0x44c },
++	{ .addr = 0x450 },
++	{ .addr = 0x454 },
++	{ .addr = 0x458 },
++	{ .addr = 0x45c },
++	{ .addr = 0x460 },
++	{ .addr = 0x464 },
++	{ .addr = 0x468 },
++	{ .addr = 0x46c },
++	{ .addr = 0x470 },
++	{ .addr = 0x474 },
++	{ .addr = 0x478 },
++	{ .addr = 0x47c },
++	{ .addr = 0x480 },
++	{ .addr = 0x484 },
++	{ .addr = 0x488 },
++	{ .addr = 0x48c },
++	{ .addr = 0x490 },
++	{ .addr = 0x494 },
++	{ .addr = 0x498 },
++	{ .addr = 0x49c },
++	{ .addr = 0x4a0 },
++	{ .addr = 0x4a4 },
++	{ .addr = 0x4a8 },
++	{ .addr = 0x4ac },
++	{ .addr = 0x4b0 },
++	{ .addr = 0x4b4 },
++	{ .addr = 0x4b8 },
++	{ .addr = 0x4bc },
++	{ .addr = 0x4c0 },
++	{ .addr = 0x4c4 },
++	{ .addr = 0x4c8 },
++	{ .addr = 0x4cc },
++	{ .addr = 0x4d0 },
++	{ .addr = 0x4d4 },
++	{ .addr = 0x4d8 },
++	{ .addr = 0x4dc },
++	{ .addr = 0x4e0 },
++	{ .addr = 0x4e4 },
++	{ .addr = 0x4e8 },
++	{ .addr = 0x4ec },
++	{ .addr = 0x4f0 },
++	{ .addr = 0x4f4 },
++	{ .addr = 0x4f8 },
++	{ .addr = 0x4fc },
++	{ .addr = 0x500 },
++	{ .addr = 0x504 },
++	{ .addr = 0x510 },
++	{ .addr = 0x514 },
++	{ .addr = 0x520 },
++	{ .addr = 0x524 },
++	{ .addr = 0x530 },
++	{ .addr = 0x534 },
++	{ .addr = 0x540 },
++	{ .addr = 0x544 },
++	{ .addr = 0x550 },
++	{ .addr = 0x554 },
++	{ .addr = 0x560 },
++	{ .addr = 0x564 },
++	{ .addr = 0x570 },
++	{ .addr = 0x574 },
++	{ .addr = 0x580 },
++	{ .addr = 0x584 },
++	{ .addr = 0x590 },
++	{ .addr = 0x594 },
++	{ .addr = 0x5a0 },
++	{ .addr = 0x5a4 },
++	{ .addr = 0x5b0 },
++	{ .addr = 0x5b4 },
++	{ .addr = 0x5c0 },
++	{ .addr = 0x5c4 },
++	{ .addr = 0x5d0 },
++	{ .addr = 0x5d4 },
++	{ .addr = 0x5e0 },
++	{ .addr = 0x5e4 },
++	{ .addr = 0x5f0 },
++	{ .addr = 0x5f4 },
++	{ .addr = 0x600 },
++	{ .addr = 0x604 },
++	{ .addr = 0x608 },
++	{ .addr = 0x60c },
++	{ .addr = 0x610 },
++	{ .addr = 0x614 },
++	{ .addr = 0x618 },
++	{ .addr = 0x61c },
++	{ .addr = 0x620 },
++	{ .addr = 0x624 },
++	{ .addr = 0x628 },
++	{ .addr = 0x62c },
++	{ .addr = 0x630 },
++	{ .addr = 0x634 },
++	{ .addr = 0x638 },
++	{ .addr = 0x63c },
++	{ .addr = 0x640 },
++	{ .addr = 0x644 },
++	{ .addr = 0x648 },
++	{ .addr = 0x64c },
++	{ .addr = 0x650 },
++	{ .addr = 0x654 },
++	{ .addr = 0x658 },
++	{ .addr = 0x65c },
++	{ .addr = 0x660 },
++	{ .addr = 0x664 },
++	{ .addr = 0x668 },
++	{ .addr = 0x66c },
++	{ .addr = 0x670 },
++	{ .addr = 0x674 },
++	{ .addr = 0x678 },
++	{ .addr = 0x67c },
++	{ .addr = 0x680 },
++	{ .addr = 0x684 },
++	{ .addr = 0x688 },
++	{ .addr = 0x68c },
++	{ .addr = 0x690 },
++	{ .addr = 0x694 },
++	{ .addr = 0x698 },
++	{ .addr = 0x69c },
++	{ .addr = 0x6a0 },
++	{ .addr = 0x6a4 },
++	{ .addr = 0x6a8 },
++	{ .addr = 0x6ac },
++	{ .addr = 0x6b0 },
++	{ .addr = 0x6b4 },
++	{ .addr = 0x6b8 },
++	{ .addr = 0x6bc },
++	{ .addr = 0x6c0 },
++	{ .addr = 0x6c4 },
++	{ .addr = 0x6c8 },
++	{ .addr = 0x6cc },
++	{ .addr = 0x6d0 },
++	{ .addr = 0x6d4 },
++	{ .addr = 0x6d8 },
++	{ .addr = 0x6dc },
++	{ .addr = 0x6e0 },
++	{ .addr = 0x6e4 },
++	{ .addr = 0x6e8 },
++	{ .addr = 0x6ec },
++	{ .addr = 0x6f0 },
++	{ .addr = 0x6f4 },
++	{ .addr = 0x6f8 },
++	{ .addr = 0x6fc },
++	{ .addr = 0x700 },
++	{ .addr = 0x704 },
++	{ .addr = 0x710 },
++	{ .addr = 0x714 },
++	{ .addr = 0x720 },
++	{ .addr = 0x724 },
++	{ .addr = 0x730 },
++	{ .addr = 0x734 },
++	{ .addr = 0x740 },
++	{ .addr = 0x744 },
++	{ .addr = 0x750 },
++	{ .addr = 0x754 },
++	{ .addr = 0x760 },
++	{ .addr = 0x764 },
++	{ .addr = 0x770 },
++	{ .addr = 0x774 },
++	{ .addr = 0x780 },
++	{ .addr = 0x784 },
++	{ .addr = 0x790 },
++	{ .addr = 0x794 },
++	{ .addr = 0x7a0 },
++	{ .addr = 0x7a4 },
++	{ .addr = 0x7b0 },
++	{ .addr = 0x7b4 },
++	{ .addr = 0x7c0 },
++	{ .addr = 0x7c4 },
++	{ .addr = 0x7d0 },
++	{ .addr = 0x7d4 },
++	{ .addr = 0x7e0 },
++	{ .addr = 0x7e4 },
++	{ .addr = 0x7f0 },
++	{ .addr = 0x7f4 },
++};
++
++static struct cudbg_indir_type_entry t7_indir_type_arr[CUDBG_INDIR_TYPE_MAX] = {
++	[CUDBG_INDIR_TYPE_CIM_CTL] = {
++		.reg_arr = t7_cim_ctl,
++		.nentries = ARRAY_SIZE(t7_cim_ctl),
++	},
++	[CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG] = {
++		.reg_arr = t7_hmat6_local_debug_cfg,
++		.nentries = ARRAY_SIZE(t7_hmat6_local_debug_cfg),
++	},
++	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG] = {
++		.reg_arr = t7_ma_local_debug_cfg,
++		.nentries = ARRAY_SIZE(t7_ma_local_debug_cfg),
++	},
++	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG] = {
++		.reg_arr = t7_ma_local_debug_perf_cfg,
++		.nentries = ARRAY_SIZE(t7_ma_local_debug_perf_cfg),
++	},
++	[CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL] = {
++		.reg_arr = t7_pm_rx_dbg_ctrl,
++		.nentries = ARRAY_SIZE(t7_pm_rx_dbg_ctrl),
++	},
++	[CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL] = {
++		.reg_arr = t7_pm_tx_dbg_ctrl,
++		.nentries = ARRAY_SIZE(t7_pm_tx_dbg_ctrl),
++	},
++	[CUDBG_INDIR_TYPE_TP_MIB_INDEX] = {
++		.reg_arr = t7_tp_mib_index,
++		.nentries = ARRAY_SIZE(t7_tp_mib_index),
++	},
++	[CUDBG_INDIR_TYPE_TP_PIO_ADDR] = {
++		.reg_arr = t7_tp_pio_addr,
++		.nentries = ARRAY_SIZE(t7_tp_pio_addr),
++	},
++	[CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR] = {
++		.reg_arr = t7_tp_tm_pio_addr,
++		.nentries = ARRAY_SIZE(t7_tp_tm_pio_addr),
++	},
++	[CUDBG_INDIR_TYPE_UP] = {
++		.reg_arr = t7_up,
++		.nentries = ARRAY_SIZE(t7_up),
++	},
++};
++
++#endif /* __CUDBG_INDIR_REG_T7_H__ */
 -- 
 2.39.1
 
