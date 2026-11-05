@@ -1,74 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793911012;
-	b=XJUncblVQyXE+Y0BUEIRGZKQdQS6XD0AdMmbsbatrJOWfluOoCyYnZAZojG9nmD3Rsdz
-	 OUDFBlq5gJdWD1mm+QSHrkKbS+tTzuPSON4H3mf3XmkWfwjfrSrRI1yrrwuaT4KZb2zLm
-	 jeWYYw5tcyDEQeTjAXyJQ1fDH21Hev+Ju1NvEyXxglVkX8vmsv/wmdWZNUyJevP+fyBu8
-	 31hr4Cle+dqDcNcCWsGwOh6u16lAGFMZ061kSM27/g0GfRmnsTUSJ49KjHRfNB1QX3zP9
-	 KzgCaqohjMZkWA5lRSgdvhJyw8oMDCf+qLXk4v5y6+sdIyzS2ApuNBoAAbV476wzYyg==
+	t=1793911427;
+	b=pvjyUtyNLDMCAgK7Rfurc3jZTo9Yyc8srU8bhzJmPUyoxiSc9Y++SixrGlM0MSzQY9Hw
+	 uY+LOXZ25jkBno+QotUOyDoO7DJR83Zc8NAiyq2/yB92OSKcsDgh1c8Mth7Om9qHsFe63
+	 ZOIK4b4nYc50Bw75DYNlwfBaJvdSwde6XpGX76n3Ie6dVkr8lSNSR/l8yXfNNtpU7L7Fg
+	 8mM965r8OdRLBY1Yz5flcW7/dOFWMF+Jy7SQKLFrJZxUPoFxRnLSxeP9j/A2Dy+KHajjJ
+	 +SUgoIkX9l5OmjTUH89/oebCQ+LfVW6xRjcQQnpG1lcc0aOur2CLnLhwTkuKI40mFGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793911012;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793911427;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=Ho0ssxdcOFZYydNEqXR/HyGk3gfggTzWbAzroYVX1OE=;
-	b=eaaB+DvwJ02ccMXD7vyPOnPA/HRxP8Vnwq1z90fmejjqF5Cr2uluHAqAO5NBKwF9KOPY
-	 M7wz1RGF4OohqJUELaDuMffGhrP8+DhCKDdb/C2rUh0N4ZdtJhEaQR34Cx5GkkJ/9hPnU
-	 HoCWMUGaJiH4ljo4h38hTAQLE/DCwZGypojxgAWoRfr1200/rsmW34KUcyXLgq2GSUuEu
-	 k7433Ww4ygx077iFUZor3MO+UQ/VGr9KYQdfevqtZzpk/W5qSs8dreRPd8JNVS3fYLe2s
-	 8VEcnvAu0lyIi9mZqofr8fRatahIOZmsmyR/Rl5uEwFYHvl1vtbCIRSYTGqgOIv7JVg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=ZO0lbTyAXJ9HHsEghEBA7TDSpduDUgDR7hn4G1aE2mE=;
+	b=SXykrHFRbGbfTbo/pIkF3Elx6gYQ2UtTuCuCMilKCo3i7IoE0yCxux6uzvpbb+fVnLOz
+	 g8W+vfDhiD2ynsKUAsk8eefre3CpG/opEzKxCa+JRajYwEe0lzz9qqg2snDds0MhJRJ/A
+	 v4nP6FxOKyooRMwuF8MbJtpecPzhohZPD/JXOSz/56lhINTTgIcQEaj2v4v00imd8PsV7
+	 UHTGpMlX7MFhcSDv53sXw06ZRHIPPcDJpUinpWM4/3X4MeUEb3ccQXL4hIPEVuNvXJ643
+	 8NQVn1anoDZia6S9lfCv2Nfn4Yk5BVmmhEgMLxhXJNYMLYqAqZIp08jmSe4PAr+V8ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ww0Od+k6;
-	arc=none smtp.remote-ip=209.85.215.200
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jb3k82YL;
+	arc=none smtp.remote-ip=74.125.229.5
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C512606D81B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:36:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C512606D81B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC10606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:43:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AC10606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ww0Od+k6
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cdb4c49e52fso2064657a12.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:36:51 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jb3k82YL
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-3535a54c09bso1403109eec.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:43:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793911011; x=1794515811; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ho0ssxdcOFZYydNEqXR/HyGk3gfggTzWbAzroYVX1OE=;
-        b=Ww0Od+k6WA74rbnGWCyPafAGJwjeDn1zHh7oJWkaWumgIa6Wy+e5IlIqTWjI7w6GYd
-         C6cJe85FRieOS64oVYv5URhTugXLp52pjBylTbvV8WcaB4AbgqHDVzvCWQdRa0xE6vi1
-         YxjurHWH1nWasxOOJVPy7eyMiUu7PfoPd/5mTJOeSx0z4LVN7sqL+W+B+HdigvItufdV
-         CXaTu0ebmA3QFMUvX5aTAXUf2zufir0N/4WAoE5QL7GnTqnAIWYzFM+1UoqZbSElpcbI
-         dr1NZzihgJNWbVrSgE/0TihQHwfsphK2MjMQZpwIcEP7jS6DRCk2Wz9nPUc/H94c4Q/2
-         LYsA==
+        d=gmail.com; s=20260707; t=1793911426; x=1794516226; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZO0lbTyAXJ9HHsEghEBA7TDSpduDUgDR7hn4G1aE2mE=;
+        b=jb3k82YLQGrUO/jXd9XOcyZHKpx0mVDH63niIjZOL+7hDWYpQZ25ndPdJ37zfewjSj
+         5vCFgyBQnyk1t0oBiU4Wc645iccqIQm2z1G3qXYTOA9s4wUlLbjSCd5QFBJ8HqhRQO91
+         NJjJAWgfRZWW3AexIl/vzKOQjdZkh3/JCSeyftDY+pbTo9RF3/skmQnt8y3RcbIz/L7/
+         YibxMzj1tTVB2Lfbg2pD/TArzJ9AHnUw2fS4SlhcKvel3QeQw34C4p1R/itXcURfghl/
+         PE/0RwwjFGgwR17uR6gfq8d1fDeyN9iJpW7Q+1qYlZ9zCbBp8OVlklciseQLWpEV8xAu
+         RDLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793911011; x=1794515811;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ho0ssxdcOFZYydNEqXR/HyGk3gfggTzWbAzroYVX1OE=;
-        b=vNdLJJ6Dp6HmLuVhcfep+/HmaXwnCey8ETT31+v+0jyNNbXZCcJwGUjnrshi/cIEPV
-         dstCrRoKgERpWNKPuXduD2iXr7JYfU3pkLgi2sW4LzmzvhEPBgAlus/skucXyjoALlNk
-         v5Y6ESgo8n2fayXSqbYol0mUo+yV7njcwnCPsv5VHX9kMexmohypDDAiF04xrV34icWI
-         84HmLrW1nfJZuq9dYELH41f7VAH2y2GyN4i+xc+FQLTF2kHQa+eHbR2U1nWpOrmUL577
-         p7SWYRRx1CeHAeQts/C3rIPIBRZxliBSCt1/Oh1sXDyPlXIKABerneJdyM/jwayw5cjt
-         Qviw==
-X-Forwarded-Encrypted: i=1; AKwUvByUF/brXmPSWR+usoh8XsgdDHuC+ysfH7ZeyYrcZJv/nBM/5wcXfwhLLedgtKp0grwg8OlZjp8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+11tTfOF1MJ0yXSHtin79zWdKMneVLC/UUgNgaOkp8mwQDtyiR
-	2M+q1DYmKbJJ9l4TZsfVqEYCRtsUhgDsvZl/nKre0NxCJewgDzyRFY0UqFeNcKz+8U3NWNdzflt
-	7zmSsDw==
-X-Received: from pgca13-n1.prod.google.com ([2002:a05:6a02:638d:10b0:cd8:5a84:95f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:db09:b0:3e2:7c10:d46b
- with SMTP id adf61e73a8af0-3ebb29af117mr653557637.13.1793911010709; Thu, 05
- Nov 2026 12:36:50 -0800 (PST)
-Date: Thu, 5 Nov 2026 20:36:50 +0000
-In-Reply-To: <38fa9f2cc476502e9b1c1fef09ebba1df5dd5901.1793795528.git.x-professor@outlook.com>
+        d=1e100.net; s=20260707; t=1793911426; x=1794516226;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZO0lbTyAXJ9HHsEghEBA7TDSpduDUgDR7hn4G1aE2mE=;
+        b=yDpvy1qUzZ2s0VHLwldevR67AhULAp+XQfUIVbX+5nkT/cRjz0s/8X1mKdpaBosZhN
+         mcCY1JxAvQCo42LYmNkuNxweaxTNJQTI9On+Ku0jlTZt/CSWABcSCWbdeoHTJ1tFjAQK
+         ZiBXlKsDe3MN1X+TIMl9YFPQoJvr2pk1NJ0fm6DO6/aZzmdaNKzwScRCEnKQUitksibh
+         WqGKpdy+QETeQJoKgba6yuGmrGK6uyIEBCVg/i+ExGTVLx3R0MmixvLf8wRoXRCpGyec
+         T5ADyqIGbj1s7id4uD7ai+3dX7DaN2+/KZ9ubZpoLC6AyclwhOdQvh3+rMqQIugD8BsS
+         ZxjQ==
+X-Gm-Message-State: APuU4Z+uyp7hsDFD1UlziaeR8km0cEkwwUyfebMfmYqjvIKl9EQFPjV2
+	yyHoF/bpZuCtZ9SqauP5RfMLu431MNfl7H8VxfXB6m+Ii/BncZEetUMm
+X-Gm-Gg: AYBFou23/S9Wz6eKtLRj3FxBn8uYu92/wmk6VHYQ0c/mU7QC4aiQX0uAESEcqDX4Q2z
+	NhrryNA7yVq0UTPDf+0zHNbtHPD/x39uOnfXFZ+RsEMUjXHMNYizVANUaHYdHnXIgJCQE5emq6S
+	K2bA5fCDwgDnUneuS7c5FCuo+TUmODz3GGK4Vcv56tWLbmABfEHkeqRaEDdjYLAb8i0dxhU0s9T
+	2geb7d6tSEyOkjfBbNH3kOACenSnNJqfPMImJayTjJAE8nn8sQrKWlzvYtpzwsVDfZd7YlSk1j+
+	kRNDlvsnDNDofkYA/uUE2Rtax3MT9YIcgsVnBecvSHbGWw8v2iuUOtGGZxR90xulJU5hJW6WYyy
+	NM+RBfs17UzGPMGNDTlaic/xWMoPbDQZjst2rBNraRjrScCmiW2W61k2ajtU1iiY7dSMSSFsnPj
+	Ux9jSnPmWaLPeIk9cLP9pv0pEhCCpEXxembBJWALhuAsLLQPEly+UDexArDn51xEm8G0NiJorQx
+	IUMctNnC66oySX52Dydhhbs7tUPb0/58zyw0+7EGEqtepfQn+aMT493ZSehCvNyQflK04dhVqWt
+	I+drYgWmcWXcBHJia/PfQA==
+X-Received: by 2002:a05:7022:288:b0:15e:9126:c60f with SMTP id a92af1059eb24-1b25d35f3d1mr160621c88.29.1793911425862;
+        Thu, 05 Nov 2026 12:43:45 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:64::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c30521sm20459016c88.13.2026.11.05.12.43.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 12:43:45 -0800 (PST)
+Date: Thu, 5 Nov 2026 12:43:36 -0800
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com, 
+	stfomichev@gmail.com, kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com, 
+	kerneljasonxing@gmail.com, bjorn@kernel.org
+Subject: Re: [PATCH net-next 0/4] selftests: move the AF_XDP test suite from
+ bpf to net
+Message-ID: <auzqcm1YLsTvUU7S@devvm16445.scu0.facebook.com>
+References: <20261105134117.977655-1-maciej.fijalkowski@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,68 +96,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <38fa9f2cc476502e9b1c1fef09ebba1df5dd5901.1793795528.git.x-professor@outlook.com>
-Message-ID: <auzo2EcG7UWMVdtn@google.com>
-Subject: Re: [PATCH net v3] tcp: free saved_syn after an RCU grace period
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Yingjie Wang <x-professor@outlook.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261105134117.977655-1-maciej.fijalkowski@intel.com>
 
-On Wed, 04 Nov 2026 12:32:19 +0000, Yingjie Wang wrote:
-> tcp_reqsk_record_syn() allocates saved_syn separately from its request
-> socket. bpf_sock_ops_get_syn() can load that pointer while processing a
-> retransmitted SYN under RCU.
+On 11/05, Maciej Fijalkowski wrote:
+> Hi,
 > 
-> There are two ownership transfers which can let another CPU reclaim the
-> allocation while such a reader is still using it.
+> As the maintainers asked, this series is the first step of moving the
+> AF_XDP selftests from selftests/bpf to selftests/net: the code moves and
+> builds from its new location, without changing what the tests do. The
+> rework [0] posted as "selftests: net: migrate AF_XDP test suite over to
+> net" (v4) will follow on top of this move.
 > 
-> First, tcp_move_syn() transfers req->saved_syn to a newly created child
-> socket. The child can be closed and tcp_saved_syn_free() can reclaim the
-> allocation before a reader of the old request finishes.
+> Patch 1 drops the test_progs wrapper of the AF_XDP tests, patch 2 adds a
+> generic BPF skeleton rule to net/bpf.mk, patch 3 moves xskxceiver, its
+> library and test_xsk.sh to selftests/net, and patch 4 (new, not covered
+> at [0]) moves xdp_hw_metadata, which is built from the same library.
 > 
-> Second, inet_reqsk_clone() shallow-copies request_sock during request
-> migration. After reqsk_migrate_reset() clears the old request pointer, the
-> migrated clone owns it. However, a reader which already loaded the pointer
-> from the old request can still be using it when the clone is released.
+> The xdp_metadata test stays in test_progs: it covers BPF core
+> behaviour, and moving it would mean rewriting it for the kselftest
+> harness. It keeps using xsk.c from net/lib/xsk.
 > 
-> I found this through LLM-assisted concurrency fuzzing.
+> xskxceiver and xdp_hw_metadata are the first users of bpftool at build
+> time in selftests/net. NIPA has bpftool, but 0-day and KernelCI build
+> net without it, so both tools are skipped with a warning when bpftool
+> is missing or does not run.
 > 
-> Mark the request-socket saved_syn pointer as RCU protected and use RCU
-> accessors for its reads and updates. Keep the full-socket pointer plain
-> because all of its accesses hold the socket lock. Embed an rcu_head in
-> struct saved_syn and use kfree_rcu() in both teardown paths. This lets a
-> request-side reader which loaded the object before an ownership transfer
-> finish.
+> test_xsk.sh is installed but not run by run_tests, so NIPA does not pick
+> it up: it runs every case, including flaky ones, and some cases leak
+> page_pool pages after skb_pp_cow_data() in generic XDP mode on
+> veth-based runs. Until a later step makes the suite fit for NIPA, no CI
+> runs the AF_XDP tests. test_xsk.sh is being removed by [0] but it is
+> kept here as there is no other feasible way to run the test suite (if
+> needed) until we come up with an upstreamable Python runner.
 > 
-> This follows commit e3f33b0a1d89 ("ipv4: free inet_opt and ireq_opt
-> after an RCU grace period"), which fixed the same ownership-transfer
-> pattern for IPv4 options.
+> Thanks,
+> Maciej
 > 
-> The issue was confirmed with KASAN on v7.3-16007-g36aad21d50d1 using
-> temporary kernel instrumentation to widen the reader and request-migration
-> window. KASAN reported a slab-use-after-free read in
-> bpf_sock_ops_get_syn(), with the allocation freed by __reqsk_free() from
-> reqsk_timer_handler(). The same explicit migration test completed without
-> a report with deferred reclamation. A patched kernel without the delay
-> instrumentation also completed a successful migration and seven saved-SYN
-> reads without a KASAN report.
+> [0]: https://lore.kernel.org/bpf/20261016174338.787135-1-maciej.fijalkowski@intel.com/
 > 
-> Fixes: 0813a841566f ("bpf: tcp: Allow bpf prog to write and parse TCP header option")
-> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
+> Maciej Fijalkowski (4):
+>   selftests/bpf: drop the test_progs AF_XDP wrapper
+>   selftests: net: add a generic rule for BPF skeletons
+>   selftests: xsk: move the AF_XDP test suite to selftests/net
+>   selftests: net: move xdp_hw_metadata from selftests/bpf
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
