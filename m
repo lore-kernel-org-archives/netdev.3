@@ -1,65 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793891977;
-	b=R4O6g+rXhsnpePQndYIEtSsGnDiYP86Dfz0SPWadGJVTpYHUUsgyj5/ACeGntkkw0ssy
-	 XiqLh09bJJsa8fEr88t5ZluKArTBd+SrkqwpECU/SVFL1Zl7+vCmcOcyRE3DkGK5KCJen
-	 RNUSrrDugAgX7AHzYi/vtUo06KbEy+t6WmFhyjuFMX0ZRmhfTvm7CDFQYKZe78YhPDNeU
-	 7JtLyryqlbsvIqMOOl9xoArxUbUap6pOaTTl/6Jtedc2cTBBm0GfvP9MjfCLC+xtAh4/3
-	 58Jr+oRRUTDrSv1gHq84mo6n+ZEPokiiClXesJXMZibfP2gzvbL1sZzFymHlJNhN13g==
+	t=1793891987;
+	b=nNS+65p2Lgu9JnLAWU2Mr7TgEtoX8JKLa1Q78KTQRVQJJ7lAvSi7DihPsXyu47jhp0gA
+	 7vrEhpW3m1DA18mJhLmCUqUFpFSqU63eVvet8l7tXaNxECr0JNf3GkR+DtgqroSILSTCr
+	 Amcxfh9a0X2jC8hBZeEOKEQtKDRmv7YWfAH5fFwmWTVeGsBqEZOTH79ATS2OikhrbRlQ9
+	 NkXRIdKEjOSdDy1phRZaldo3e83MOmsUYo6SsAjR9r4en9L5WOWIZJxTuvVp2/3ryxsSI
+	 jaaaYwkm9CmedhyHxsZMBv5wzo+n1u8skdiVnxs/uwRr7dirS4r4uofbkHNnAP+dfwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793891977;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793891987;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=gsfTIYG6DvjHPxbAO/LZnJxlbsOGTE8p94YdknJis+w=;
-	b=raSQP2vXtrLipMBxs+Tri1AlAVNZPV+UWBSmsZhB86ZfZ9FWdkb4oibm5jDIDn6QYkfM
-	 7JcTUeUNdVkYLLTS56TOeiGh9D8vOB97aieG0Fjs7zDgOFL7Yb53GITAwlgNUOp0VK4/3
-	 tYXhyt2YEI3wp55VkGddl4//7mjP3IjOaO1YBbThaDpeILwxwZ0TS+e7gcHNKoQx7paU0
-	 nTRG08Z9Lca7F7BvKcKDlgyTObqOOygPncVZIA6ZrD0ZHCJbPt1DZCsbDCd27Co5p5p1i
-	 IeoOJlqCijxtDFdc/4w5HLQD6l0O5nSj2l6rYz04mJwnoNsjw6IyDK9urKqhnndA53g==
+	bh=h+L9ibdOMNJx+pkmvkFkeAKNcyRvaFz5Po7XP8W8d2Y=;
+	b=OwvDOSLKG5SuE+hQihsxDzk9nEHwqx5vYxI0Gws+5RnamG89rN9aL4ob4ZOldj0wDsMv
+	 bVa75PCnWSxxFUpS2yATgSCoi9+O2iPvhb3F7aLkyCy8k0mi5YvOPvUmcNzxpPmawZ8jm
+	 b6FWqJGi/QNiz7tCvDlHKdRcNPtU8ndSbRrzZST7zRi8aDsivA+2L2EdgxOURyMTIuwwp
+	 NbXGRwYWHaAF7pcG8YzS8YwwwawOU3vssZn4Lzt7PYP5athzH4MrpNoDepMITmCSp7ttc
+	 u187k9DDNs8TmxHVM7eIWJGq8iVJF4CTCH0Mn/S8oO/dFpA/KYgd6yVD8W8YyXVVNjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FhrGfGTr;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRkny6QQ;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6886082BCA
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:19:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD6886082BCA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1BA6082BD4
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:19:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D1BA6082BD4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FhrGfGTr
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRkny6QQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793891975;
+	s=mimecast20190719; t=1793891986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gsfTIYG6DvjHPxbAO/LZnJxlbsOGTE8p94YdknJis+w=;
-	b=FhrGfGTrOw2zqoRwprM16Gr2lS0U+P5qHDPGhWqsv7Amqn7u8t/Fo5wU2HhfTbcj7AJE1T
-	dhGzC+7PNlpExxaPX2K+rnE2+Ud2p8mi/QFkwsYou014f8xsiuTXla30MHp/gnahJIjlDB
-	jmL3uKT+C1jwkKFTz+0wnvHvomULBvs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=h+L9ibdOMNJx+pkmvkFkeAKNcyRvaFz5Po7XP8W8d2Y=;
+	b=VRkny6QQBLubFkSFE8Bukx76llpUxi2iIqQL+ZIvCIkfg6te0zBbYrHCsbIv7Bpkp/327N
+	oM262aSjjO1scCtw6nDhh2W7pnAACJbSX+nRCZe6CS8nT2My+zQOxMqaQ25nYB/AMZlApT
+	5XK7wFHFOHbxwLluE4qvkaCz6dRBNP4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-cFd3yrVrOc62KHgk0pinZA-1; Thu,
- 05 Nov 2026 10:19:32 -0500
-X-MC-Unique: cFd3yrVrOc62KHgk0pinZA-1
-X-Mimecast-MFC-AGG-ID: cFd3yrVrOc62KHgk0pinZA_1793891969
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-9CGf1FU5PtWW7gPodsIllw-1; Thu,
+ 05 Nov 2026 10:19:42 -0500
+X-MC-Unique: 9CGf1FU5PtWW7gPodsIllw-1
+X-Mimecast-MFC-AGG-ID: 9CGf1FU5PtWW7gPodsIllw_1793891978
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42ACC1955DC6;
-	Thu,  5 Nov 2026 15:19:29 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF3D11800594;
+	Thu,  5 Nov 2026 15:19:38 +0000 (UTC)
 Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5202F195608C;
-	Thu,  5 Nov 2026 15:19:24 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 663B71956089;
+	Thu,  5 Nov 2026 15:19:34 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -79,9 +79,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 05/14] dpll: dpllsim: Add support to set input pin state
-Date: Thu,  5 Nov 2026 16:18:43 +0100
-Message-ID: <20261105151852.1844305-6-poros@redhat.com>
+Subject: [PATCH net-next v2 07/14] dpll: dpllsim: Add support to get/set priority on input pins
+Date: Thu,  5 Nov 2026 16:18:45 +0100
+Message-ID: <20261105151852.1844305-8-poros@redhat.com>
 In-Reply-To: <20261105151852.1844305-1-poros@redhat.com>
 References: <20261105151852.1844305-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
@@ -96,35 +96,144 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add support for setting the state of input pins on the device.
-Implement the state_on_dpll_set callback for input pins and advertise
-the state-can-change capability for them, so that userspace can move a
-pin between connected, disconnected and selectable. The driver stores
-the requested state and reports it back unchanged, it does not act on it
-yet. Output pins keep reporting their state only.
+Add support for getting and setting the priority of input pins.
+Implement the prio_get and prio_set callbacks and advertise the
+priority-can-change capability for input pins, which includes the MUX
+type pins since those are always inputs.
+
+The initial priority of a pin is configured through a new prio
+attribute of the pin directory, which takes a value between 0 and 255
+and defaults to 128, so that a test can lay out the reference order
+before the device goes live. Like the other pin attributes it is
+writable only while the device is not live. Priority changes made over
+netlink are stored and reported back, they will drive the automatic
+reference selection once the simulation loop exists. The setter
+rejects a value above 255 with EINVAL and an extack message. A priority
+is meaningful for input pins only, so live fails with EINVAL when an
+output pin was given a priority other than the default, next to the
+frequency validation.
 
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- drivers/dpll/dpllsim/dpll.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ Documentation/driver-api/dpllsim.rst |  5 ++++
+ drivers/dpll/dpllsim/core.c          | 31 +++++++++++++++++++
+ drivers/dpll/dpllsim/dpll.c          | 45 ++++++++++++++++++++++++++--
+ drivers/dpll/dpllsim/dpllsim.h       | 10 ++++++-
+ 4 files changed, 88 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/driver-api/dpllsim.rst b/Documentation/driver-api/dpllsim.rst
+index e7c5ee93392c21..5109d67325f140 100644
+--- a/Documentation/driver-api/dpllsim.rst
++++ b/Documentation/driver-api/dpllsim.rst
+@@ -36,6 +36,9 @@ Pin directory ``/sys/kernel/config/dpllsim/<dev>/pins/<pin>/``:
+                (default 0, which is rejected)
+ ``direction``  ``input`` or ``output`` (default ``input``), a ``mux`` pin
+                must be an input
++``prio``       Priority 0-255 used for automatic reference selection,
++               input pins only, output pins must keep the default
++               (default 128)
+ =============  ===============================================================
+ 
+ The pin directory name becomes the board label of the pin. Pins are
+@@ -53,8 +56,10 @@ output, then make it live::
+     mkdir pins/gnss0
+     echo gnss > pins/gnss0/type
+     echo 1 > pins/gnss0/frequency
++    echo 0 > pins/gnss0/prio
+     mkdir pins/ext0
+     echo 10000000 > pins/ext0/frequency
++    echo 1 > pins/ext0/prio
+     mkdir pins/out0
+     echo 10000000 > pins/out0/frequency
+     echo output > pins/out0/direction
+diff --git a/drivers/dpll/dpllsim/core.c b/drivers/dpll/dpllsim/core.c
+index 97b3cf48772e7f..ee728a7f0c21bc 100644
+--- a/drivers/dpll/dpllsim/core.c
++++ b/drivers/dpll/dpllsim/core.c
+@@ -132,10 +132,40 @@ static ssize_t dpllsim_pin_frequency_store(struct config_item *item,
+ }
+ CONFIGFS_ATTR(dpllsim_pin_, frequency);
+ 
++static ssize_t dpllsim_pin_prio_show(struct config_item *item, char *page)
++{
++	struct dpllsim_pin *pin = to_dpllsim_pin(item);
++
++	guard(mutex)(&pin->dev->lock);
++	return sysfs_emit(page, "%u\n", pin->prio);
++}
++
++static ssize_t dpllsim_pin_prio_store(struct config_item *item,
++				      const char *page, size_t count)
++{
++	struct dpllsim_pin *pin = to_dpllsim_pin(item);
++	u32 val;
++	int err;
++
++	err = kstrtou32(page, 10, &val);
++	if (err)
++		return err;
++	if (val > DPLLSIM_PIN_PRIO_MAX)
++		return -EINVAL;
++
++	guard(mutex)(&pin->dev->lock);
++	if (dpllsim_dev_frozen(pin->dev))
++		return -EBUSY;
++	pin->prio = val;
++	return count;
++}
++CONFIGFS_ATTR(dpllsim_pin_, prio);
++
+ static struct configfs_attribute *dpllsim_pin_attrs[] = {
+ 	&dpllsim_pin_attr_type,
+ 	&dpllsim_pin_attr_direction,
+ 	&dpllsim_pin_attr_frequency,
++	&dpllsim_pin_attr_prio,
+ 	NULL,
+ };
+ 
+@@ -178,6 +208,7 @@ static struct config_item *dpllsim_pins_make_item(struct config_group *group,
+ 	pin->dev = sim;
+ 	pin->type = DPLL_PIN_TYPE_EXT;
+ 	pin->direction = DPLL_PIN_DIRECTION_INPUT;
++	pin->prio = DPLLSIM_DEFAULT_PIN_PRIO;
+ 	list_add_tail(&pin->list, &sim->pin_list);
+ 
+ 	return &pin->item;
 diff --git a/drivers/dpll/dpllsim/dpll.c b/drivers/dpll/dpllsim/dpll.c
-index a1d5921fb8d017..2b0c053a7b6087 100644
+index 2b0c053a7b6087..8a302c2537c880 100644
 --- a/drivers/dpll/dpllsim/dpll.c
 +++ b/drivers/dpll/dpllsim/dpll.c
-@@ -104,10 +104,23 @@ static int dpllsim_pin_state_get(const struct dpll_pin *pin, void *pin_priv,
+@@ -116,11 +116,43 @@ static int dpllsim_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
  	return 0;
  }
  
-+static int dpllsim_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
-+				 const struct dpll_device *dpll,
-+				 void *dpll_priv, enum dpll_pin_state state,
-+				 struct netlink_ext_ack *extack)
++static int dpllsim_pin_prio_get(const struct dpll_pin *pin, void *pin_priv,
++				const struct dpll_device *dpll,
++				void *dpll_priv, u32 *prio,
++				struct netlink_ext_ack *extack)
 +{
 +	struct dpllsim_pin *sim_pin = pin_priv;
 +
 +	guard(mutex)(&sim_pin->dev->lock);
-+	sim_pin->state = state;
++	*prio = sim_pin->prio;
++	return 0;
++}
++
++static int dpllsim_pin_prio_set(const struct dpll_pin *pin, void *pin_priv,
++				const struct dpll_device *dpll,
++				void *dpll_priv, u32 prio,
++				struct netlink_ext_ack *extack)
++{
++	struct dpllsim_pin *sim_pin = pin_priv;
++
++	if (prio > DPLLSIM_PIN_PRIO_MAX) {
++		NL_SET_ERR_MSG_FMT(extack, "Pin priority must be in range 0-%u",
++				   DPLLSIM_PIN_PRIO_MAX);
++		return -EINVAL;
++	}
++
++	guard(mutex)(&sim_pin->dev->lock);
++	sim_pin->prio = prio;
 +	return 0;
 +}
 +
@@ -132,23 +241,77 @@ index a1d5921fb8d017..2b0c053a7b6087 100644
  	.frequency_get = dpllsim_pin_frequency_get,
  	.direction_get = dpllsim_pin_direction_get,
  	.state_on_dpll_get = dpllsim_pin_state_get,
-+	.state_on_dpll_set = dpllsim_pin_state_set,
+ 	.state_on_dpll_set = dpllsim_pin_state_set,
++	.prio_get = dpllsim_pin_prio_get,
++	.prio_set = dpllsim_pin_prio_set,
  };
  
  static const struct dpll_pin_ops dpllsim_output_pin_ops = {
-@@ -149,6 +162,12 @@ static void dpllsim_pin_props(struct dpllsim_pin *pin,
- 		prop->freq_supported_num = ARRAY_SIZE(dpllsim_freq_ext);
- 		break;
- 	}
-+
-+	/* Capabilities follow the ops the pin is served by */
-+	if (dpllsim_pin_select_ops(pin) == &dpllsim_input_pin_ops)
-+		prop->capabilities = DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
-+	else
-+		prop->capabilities = 0;
+@@ -165,7 +197,8 @@ static void dpllsim_pin_props(struct dpllsim_pin *pin,
+ 
+ 	/* Capabilities follow the ops the pin is served by */
+ 	if (dpllsim_pin_select_ops(pin) == &dpllsim_input_pin_ops)
+-		prop->capabilities = DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
++		prop->capabilities = DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE |
++				     DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE;
+ 	else
+ 		prop->capabilities = 0;
+ }
+@@ -191,6 +224,13 @@ static bool dpllsim_pin_direction_valid(const struct dpllsim_pin *pin)
+ 	       pin->direction == DPLL_PIN_DIRECTION_INPUT;
  }
  
- static bool dpllsim_pin_frequency_valid(struct dpllsim_pin *pin)
++/* Priority is meaningful for input pins only */
++static bool dpllsim_pin_prio_valid(const struct dpllsim_pin *pin)
++{
++	return pin->direction == DPLL_PIN_DIRECTION_INPUT ||
++	       pin->prio == DPLLSIM_DEFAULT_PIN_PRIO;
++}
++
+ static void dpllsim_pin_reset(struct dpllsim_pin *pin)
+ {
+ 	pin->ops = dpllsim_pin_select_ops(pin);
+@@ -205,7 +245,8 @@ static int dpllsim_order_pins(struct dpllsim_dev *sim)
+ 
+ 	list_for_each_entry(pin, &sim->pin_list, list) {
+ 		if (!dpllsim_pin_frequency_valid(pin) ||
+-		    !dpllsim_pin_direction_valid(pin))
++		    !dpllsim_pin_direction_valid(pin) ||
++		    !dpllsim_pin_prio_valid(pin))
+ 			return -EINVAL;
+ 		count++;
+ 	}
+diff --git a/drivers/dpll/dpllsim/dpllsim.h b/drivers/dpll/dpllsim/dpllsim.h
+index 73b846b66f79c7..f9fced337dc881 100644
+--- a/drivers/dpll/dpllsim/dpllsim.h
++++ b/drivers/dpll/dpllsim/dpllsim.h
+@@ -12,6 +12,9 @@
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+ 
++#define DPLLSIM_DEFAULT_PIN_PRIO		128
++#define DPLLSIM_PIN_PRIO_MAX			255
++
+ #define DPLLSIM_MAX_PINS			128
+ 
+ struct dpllsim_dev;
+@@ -21,10 +24,15 @@ struct dpllsim_pin {
+ 	struct list_head list;
+ 	struct dpllsim_dev *dev;
+ 
+-	/* Configuration, writable only until dpllsim_dev_frozen() */
++	/*
++	 * Configuration, set through configfs only until
++	 * dpllsim_dev_frozen(). The netlink prio setter changes prio at
++	 * runtime under dev->lock.
++	 */
+ 	enum dpll_pin_type type;
+ 	enum dpll_pin_direction direction;
+ 	u64 frequency;
++	u32 prio;
+ 
+ 	/* Resolved at live=1 */
+ 	int idx;
 -- 
 2.56.0
 
