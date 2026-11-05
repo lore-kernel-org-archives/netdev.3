@@ -1,82 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793883020;
-	b=MwHr1YEdPZ7vaNrTRnKdk1HvdynjzbSmF0++ZwIafeqg3sHCxlqROJnyeP949Y5+Yqxk
-	 5x33XWNmv6yPDTLBJ0Ls1sPtNp68OtbLzrtpDP0dI8OdV5T08VGlH50erjDeOGzGnlDNC
-	 VC+pq2FRMghjYxI3BxZOwboPcDfxovprwiuC93aitNF1YFRsgnYo4n7bwuaoCoQDfflb9
-	 UHeBw8UQVDxrkSEniWZSZqC/NHxEH3MhG5oK4s0tJQvyEpHrQ0YG0cfktkb23kVAY9MZe
-	 1iIoduEciHh26Z63csdOptxMSsRUfO274ZsIGW37oUwN93PF3ShDCpDBG3EFvlukivw==
+	t=1793883016;
+	b=hd3ZLVSj0PASMkj/RHZ/Jgpb+1pizv/heZzD4ll7uIXV0OTH+8HIspcmdK2nMUgsLoeR
+	 J6+xz78L86MYx1V3DObDQTL5jm74t7KKdIiRm/pxGpktyHYAN/PgTIi3p91xNd5by1m2C
+	 HcwW9KNfMD/sTZdrSdKNVnQ+9O4Z0e1AT10n/jIw2GgzxZyzMbGhjaOfNwZZjXvcZMVx2
+	 e7fHjzbHSc+cwZ4tUpz+SzUDT3Pk8Y0q9HSgCsO8s0B2id5xLmK/QAMzlAj2PscOZ1SZb
+	 vQA5+HqWkQOV1EelNd1Ep0CphUfY5YWrsHDL07bp80atyDaRui2BBUXtJJ8//XdNRYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793883020;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793883016;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=EMyF93eU2YKIrSl7+R9jg9v5qd941Zg8klEalBJ3ZmA=;
-	b=3Hk9sZqIth8PzxW6qgfDBLZWn7STHgKUI51QxNjAX2k0VkPyLRoxRclnqWQYGcosPcHq
-	 aYYE+l9+ZUtpNsqP0z3yXIJGYqO3CXGwpjmaPOFWtFRQcaCrg97e5GbG9FG4amHFDrZVQ
-	 qs6CzWDsZsrJB5kqHNbPCfAEtU/63L3mDmPOyoCbZpvweAOWtygCwCvooqX0O37aA+0Tt
-	 l5L4BQP+Ceb6JoPLzk0s4OKh6FpOVTm/d058hSea8Ts1aRQVOwHvV012hWhMJk062qm0B
-	 kYW8MWoqnTx5Aj3ITfJGHXv166Qpedh7lqQw3v2vAcR6E3EixnFtGE1OMib3IR2/CqA==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=RelRpHTTIUBHZAk4EQyLEmZyhVHOpEokc+ctiSQX2Wo=;
+	b=wlNdrpcCIxEL3Sq+NTRdBI9ubKc346CZWOC2KGDd3vpAg/HFdYjsLlVd3Fv2GvaxLRGr
+	 SXmbaTNTQ05+QreDD3ILicME9a4IJeCz4bULDIOAt0SnZFkA3s+dL1Cd7/2ieNdSl8A0X
+	 jqitQfhvOkU/DuWr7po+gvIvkZO58Um7+csM/G0uWEuIRPW9MSolISBPaM4kD8HtSA6Wg
+	 e3mpNc8DmYquNXCMAGNDqRAV4FUBCjHlX40yJ8mC2DByxzhI1SpjQbzRv+oBzPrAZ6Y2p
+	 A76ldq/IU7PVPUapL1ohN1Un0Md7o+FJh7OWfiQEsVZlhP0DAk6cZh0B6aG3UNix/Qw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=blockcast.net;
 	spf=pass smtp.mailfrom=blockcast.net;
-	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=rheF2w3r;
-	arc=none smtp.remote-ip=74.125.82.174
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=CDMyAeUq;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F24B606D83B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:50:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F24B606D83B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021ED606A329
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:50:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 021ED606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=rheF2w3r
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-353804b591eso3488542eec.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:50:20 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=CDMyAeUq
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3514b90bb89so3468174eec.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:50:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1793883020; x=1794487820; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EMyF93eU2YKIrSl7+R9jg9v5qd941Zg8klEalBJ3ZmA=;
-        b=rheF2w3rHVKSU3m9yREGEtg3QCfJwxZZeo5XUy2EyOfA2WeNqo+/XB1nhfsx4swJqy
-         C8mxmxv0vtG72CpXhb3DpQChnwG0rBhz7GeDgKSuvFCHAPXpwuxDU25NG185Hcd3tjpI
-         1TCiwmiW2kGXAg0L45Kvhayg0oos3G7se6x5QzLf4zPmfcTSBPK7hmPAcZ3j2SfKm8de
-         usIcPoVwK7Lq7zp/4qp2+wAsmXKMbL0MdFrUA/LLeCpvYuUqUB1NQjL1bqzBSOr35NT8
-         EnfWvRc0A1IKDf5DRQ4TOe0E+OXyFqOqL4MSIyqj8ID/gwV0Itnh7ymp6QGUmkPAaQh+
-         iEXA==
+        d=blockcast.net; s=google; t=1793883014; x=1794487814; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RelRpHTTIUBHZAk4EQyLEmZyhVHOpEokc+ctiSQX2Wo=;
+        b=CDMyAeUqIe7jsC7YScgY7JnZ3+LJwvaxTk4uhpiJFoYJe9pdC9n5sVAj/NTaF94LNL
+         wtNXWAdEzqLg2VLyOg3jDgrf1/cXdIKveFPKsAM3W+Zz2DJUBd1o2UDI/6yebYXQJG8a
+         l47jCAJ7MWLdrKUCMHTCRtHwiIVZ6+L3WArIVoQGBVytD0SFp0eb3pKvA62TVv98EWz5
+         VgEQ3gzMKpwYBlZ0hdbXSv8cER3MJh6Qz0iSD9wFk8+sVIBiMoWS5onks6bNf/P84kfq
+         kliJWTzK/vAYi2Aa3gqTrtGUBMWWvZWjMnfYVBbvwTANUa8n2vQmHLynUFJeFbwgh3sB
+         1XWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793883020; x=1794487820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EMyF93eU2YKIrSl7+R9jg9v5qd941Zg8klEalBJ3ZmA=;
-        b=sfI0ONScbnuyo5fEVxUZBMYdb7TACPaRxdEwG5Ehj3A5Fe6/0O4sNvA5RMZaCIM3qa
-         MZYti+SIl9nUnJKV7YEDDpnDrUY9RuGIiirfLRiy8k+qqYF2/Bt3mDDo5MP5sqbm6dub
-         JsWOl6K3j8cD70y8ZCuVRDzryC1Bdqwyaz3OLO4QsmwbkcJyOdKbtb416e711w7HhCK4
-         Tw4DGNrHPiiOwM6qMZhhfNjGkrbum33D8blExCHGrO48KAs3tIv0bdqgwmMHxljl3rOn
-         Mshl83wHCV4KKbUEOflmwsj5YDmQ9EdDNds2bJqcYdUEA7Hl33sd8y+rnNqQmzhEIKlW
-         czwg==
-X-Gm-Message-State: APuU4Z+3eBuV0dMvajD/fkcglpIKxmHi5GNlbTfCY7CVkC/HFKdf3OIV
-	jZDdvSeuasF4LGK7rB8/9ab13IaAh5Zl6QEqwTwtnFNpGAGOqeQ79D3Vb/Nr03ctVj4=
-X-Gm-Gg: AYBFou0cRjk+iB5B0rKRpz2/PQTfXeiEoYz8cyw/9rCedvonOVyhV+n7EbIAXk0MFcO
-	Y194czCshfiqbuorXDcKrLXgptsbvgkLtfsxGBjlJY95WDYZMeTFvIFa1PXaC6A4gZtqsa5qI2L
-	CVyXxTby9FnVR2x79DRJ4FQ82ngyEFHjgFUeNC2X8ELIA44RqvbYbMmOTmGj5BcHnuSrgBIgqGH
-	vz1nFM7TjH8Fex0A82i667dpPhVnafMFSC8P0ta0bL1Pza9t5DopAgRfz+kQYfHSt45iAcx5zU4
-	7SDxSWeSByeDOeekbkZjYBNXLzfhJz5LX4CpW0GSb63+dlIDaKjkNBEfIe9eHurFPRNvUmUzvbj
-	T/8E5jL0RgtGCLs5BnsZDb1C2A5QxwCzD45hfR/uexjhG2xjkw9kGSxmUmWbnZA9tKHcLUGLO/h
-	AIHRzmPrhwmLuMZi+jHeRlHU1QmhfeEe7CKJJeFRj4xfM8OhT+trULQTRp9kZmRataRpAi/2qnV
-	BK3pLedgD4S89HkP1jJPJOR+DIRCOo9L9SsNckYYhdVSqnZEFTv+n9GiAVZPJbdPcU6V3uK69zc
-	gdBi99rJqvnRn/hpfbTRcJDUo26AnQIsNzTGFdffsPaJNowDpETU7v+b8vJ+wwcyGAzYOyc=
-X-Received: by 2002:a05:693c:69cf:b0:369:daea:812a with SMTP id 5a478bee46e88-36a423fae73mr25902658eec.30.1793883019358;
-        Thu, 05 Nov 2026 04:50:19 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793883014; x=1794487814;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RelRpHTTIUBHZAk4EQyLEmZyhVHOpEokc+ctiSQX2Wo=;
+        b=pR79gBvjerBRbW7/krEUZHOzOwvUikwyB2MJSN7IbConu8gnSKjutrCBm/WJQtvufP
+         kzWD1QRN80ykL2uSppHYB71ePV9hCNYvq2rx2wWarTj6uCpPFP6/D44OUN5FZbomBY17
+         TS0w147QE2bhoL2aIrKDTiCnOqTLe8OpK67TtO6i58BZGHOjztDow9suAta86osxh7O4
+         bZa/uKyC7Ge7pK2lvLykS8k3WVM48JVd3qOYCFtipfj51lm+zH8AbGfNuByR6Uv6st9O
+         KQGeXXAKHVAuGK3cahEI/236M6uu/1xDSSaYNQgx+H1Ga4J7AeZw5sepRvzt1UEgVA3O
+         zHRA==
+X-Gm-Message-State: APuU4Z/G4jvwL9sGi0rniDSiBxSyDvBtBPtQkbaWAk5HESoG0RL5s6uy
+	Sal56wuOccc4Fazx4tjrwwB7rZeB1qsyqnkao2YQ84EggjeX+el3ujSD2U3vxOFNwPg6e9JPemK
+	Q/3qH495H4n+i
+X-Gm-Gg: AYBFou1AGn5x9tiihofoqa5DBdkmfupLG0TKydgrClSeBLRr0o9E0fMWAF8A7FDKOri
+	0V01pJQ8LhygqrVkB0yl/ZB64rD/A6Gw99vdpXZ0QIfDniPbF2h5GsyNAq534S/Yp8JOub+EaCx
+	jx9kEI3xrRgV0y4KUL3XPALX7e75E4rVkvjiWgsEBURkBantE66iZW1cfq7rxFhX4X7p+wU6Bvq
+	NW1BHH/NV4PWj73xjgRAsLVdTxa42Qnnc7LOw9aYqjPC0dVyGuGiJLn80t8RVgX6u+8LNCPgCO1
+	kA5tb8urF4jxaeFu+w1bd0V6cI+qePDX3R4VaV6YTEmOyCVcHtVS5/t4sRPjgXc1RlvtRg3fBqx
+	HMC9o6Uc+FB/Q/lY46TtMI0v1Y/db6+HdXtgdsLU2l/7txPEFXC6JerOtiPzw917x5VG1cmnbfQ
+	d4wT8hdD8G4yRBbYb8EK4UAhyz6wLsKzrAPLrtx8JfKanmTZbYGrEG5QX4ChB3qso7RyNmndwQj
+	cyzSSseRd8ReIR/G0siXSMGU8Pp2O6BIEG/sPx2j++CbVgbOmPnF9OeWcGxWDe+LFwyMPkenHY0
+	PqmHE5YWtN3BOW+HE3mf2Fjwl6Anu7tUYFCMMGHCKGL0utAwhRAX/WkZYZubZqS8k6GjO5yh
+X-Received: by 2002:a05:7301:2a24:b0:36d:48e:82de with SMTP id 5a478bee46e88-36d049e0895mr9351265eec.12.1793883013470;
+        Thu, 05 Nov 2026 04:50:13 -0800 (PST)
 Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm22527257eec.27.2026.11.05.04.50.17
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm22527257eec.27.2026.11.05.04.50.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 04:50:18 -0800 (PST)
+        Thu, 05 Nov 2026 04:50:12 -0800 (PST)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -91,12 +90,10 @@ Cc: netdev@vger.kernel.org,
 	Clark Williams <clrkwllms@kernel.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH net v5 4/5] amt: make pre-query report drops visible
-Date: Thu,  5 Nov 2026 12:50:09 +0000
-Message-ID: <20261105125010.1107546-5-omar@blockcast.net>
+Subject: [PATCH net v5 0/5] amt: relay tunnel lifetime, validation and request-path hardening
+Date: Thu,  5 Nov 2026 12:50:05 +0000
+Message-ID: <20261105125010.1107546-1-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261105125010.1107546-1-omar@blockcast.net>
-References: <20261105125010.1107546-1-omar@blockcast.net>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,195 +105,95 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A gateway cannot forward an IGMP or MLD report until it has received the
-relay's Membership Query for that family.  The Query supplies the
-response MAC the Update echoes, so dropping an early report is required,
-but doing so silently leaves operators with a dark multicast path and no
-indication why the join never happened.
+This series hardens AMT relay tunnel lifetime, validates gateway input, and
+keeps unauthenticated Requests from consuming relay state. The problems
+fixed by patches 2-4 were found during the AMT IPv6 outer transport
+work, which is not included here.
 
-Emit a family-specific debug message before taking the drop path.
+I am using the existing IPv4 AMT relay and gateway implementation in a
+multicast delivery network, where gateways on access networks send IGMP/MLD
+membership state through a relay to reach downstream receivers.
 
-tx_dropped could not show these drops either: amt_dev_xmit() reaches the
-same tx_dropped increment after amt_send_membership_update() has handed
-the report to the tunnel, so in gateway mode every forwarded report was
-also counted as a drop.  Return NETDEV_TX_OK directly once the report has
-been sent, so tx_dropped counts only reports that were discarded.
+The first patch closes the gc_wq re-arm use-after-free and makes teardown
+safe for RCU readers and delayed group/source workers. The second rejects
+Queries and Data from 0.0.0.0 before relay discovery and revalidates deferred
+Queries. The third requires exactly four bytes for IPv4 netlink address
+attributes. The fourth makes pre-Query drops visible, avoids counting
+successful reports as drops, and uses concurrent-safe TX statistics. The
+fifth keeps Requests stateless, authenticates Membership Updates before
+allocation, keys state by address and port, bounds per-source admission, and
+silently drops failed endpoint admission.
 
-The device is LLTX, so amt_dev_xmit() can run on several CPUs at once;
-use DEV_STATS_INC() for its tx_dropped and tx_errors updates so
-concurrent increments are not lost.
+Each commit message now says how its problems were found. The problem in
+patch 3 was triggered while writing an IPv6 selftest; the others were
+found by review or code inspection.
 
-Found by code inspection while debugging an IPv6-in-IPv6 forwarding
-failure in a selftest for the AMT IPv6 outer transport. This drop can
-leave one address family dark, so it was a suspect, but that was not
-confirmed: the failure was later traced to the selftest, which sent a
-single datagram without waiting for the relay's multicast routes to
-converge. The drop has not been observed in production, and there is
-no oops or trace. Review of v3 found the tx_dropped miscount and the
-non-atomic counter updates.
+My reply to Jakub on 2026-10-20 said I had reproduced the lifetime,
+authentication, teardown and input-validation issues. That overstated
+it: only the problem in patch 3 was triggered at runtime.
+https://lore.kernel.org/netdev/20261020105410.7dccf739@kernel.org/
 
-Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+The 2026-10-20 posting was mislabelled v4 in its subjects; its changelog
+already read "v5 changes". This posting is the next revision of it.
+
+Changes since the 2026-10-20 posting:
+- Patch 1: flush the deferred group/source GC with flush_delayed_work()
+  instead of cancel_delayed_work_sync(). Both GC works re-arm only
+  themselves, so cancelling them on tunnel expiry or device stop stopped
+  periodic GC for good after the first expiry. The flush only reclaims
+  promptly; lifetime rests on RCU and the cleared owner pointers, and the
+  comment and changelog now say so.
+- Patch 1: clear snode->gnode and gnode->tunnel_list with WRITE_ONCE().
+  Neither pointer is __rcu, so RCU_INIT_POINTER() drew two new sparse
+  errors.
+- Patch 1: keep amt_group_work()'s single out: exit and move
+  rcu_read_unlock() below the label, instead of open-coding
+  rcu_read_unlock() and dev_put() at three exits. Every exit still
+  drops RCU and then the timer's device reference.
+- Patch 5: drop the paragraph about tunnel liveness checks, which moved
+  to patch 1 in the previous revision, and fix one continuation-line
+  alignment.
+- Patch 5: copy the secret generations in the Update path under a
+  seqcount, amt->key_seq, rather than under amt->lock, as the Sashiko
+  AI review of the 2026-10-15 posting suggested. Forged Updates now
+  take amt->lock only on PREEMPT_RT, to wait for a writer. Requests
+  still read key[0], nr_tunnels and max_tunnels in one O(1) amt->lock
+  section.
+- Patch 5: say in the commit message why one address may hold at most
+  16 tunnels.
+- All: state how each issue was found, and put Signed-off-by above the
+  "---" separator (it was below it in the previous posting, so git am
+  dropped it).
+
+Testing: on base-commit below, each patch builds without new warnings
+with W=1 C=1 (sparse) for IPv6=y and IPv6=n.
+With KASAN and lockdep enabled, tools/testing/selftests/net/amt.sh
+passes (6/6) with no splats.
+
+v4 (mislabelled, 2026-10-20): https://lore.kernel.org/netdev/20261020002557.3984927-1-omar@blockcast.net/
+v4 (re-posted 2026-10-15): https://lore.kernel.org/netdev/20261015220648.1545576-1-omar@blockcast.net/
+v4: https://lore.kernel.org/netdev/20261013175407.947606-1-omar@blockcast.net/
+v3: https://lore.kernel.org/netdev/20261012125943.558629-1-omar@blockcast.net/
+v2: https://lore.kernel.org/netdev/20261009201455.1904698-1-omar@blockcast.net/
+v1: https://lore.kernel.org/netdev/20261008003606.3666617-1-omar@blockcast.net/
+
 Assisted-by: LLM
-Signed-off-by: Omar Ramadan <omar@blockcast.net>
----
- drivers/net/amt.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 68f08f5f6..26a942c2a 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -701,7 +701,7 @@ static void amt_send_discovery(struct amt_dev *amt)
- 				   IPPROTO_UDP, 0,
- 				   amt->stream_dev->ifindex);
- 	if (IS_ERR(rt)) {
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -711,7 +711,7 @@ static void amt_send_discovery(struct amt_dev *amt)
- 	skb = netdev_alloc_skb_ip_align(amt->dev, len);
- 	if (!skb) {
- 		ip_rt_put(rt);
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -756,7 +756,7 @@ static void amt_send_discovery(struct amt_dev *amt)
- 	ip_send_check(iph);
- 	err = ip_local_out(amt->net, sk, skb);
- 	if (unlikely(net_xmit_eval(err)))
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 
- 	amt_update_gw_status(amt, AMT_STATUS_SENT_DISCOVERY, true);
- out:
-@@ -792,7 +792,7 @@ static void amt_send_request(struct amt_dev *amt, bool v6)
- 				   IPPROTO_UDP, 0,
- 				   amt->stream_dev->ifindex);
- 	if (IS_ERR(rt)) {
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -802,7 +802,7 @@ static void amt_send_request(struct amt_dev *amt, bool v6)
- 	skb = netdev_alloc_skb_ip_align(amt->dev, len);
- 	if (!skb) {
- 		ip_rt_put(rt);
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -849,7 +849,7 @@ static void amt_send_request(struct amt_dev *amt, bool v6)
- 	ip_send_check(iph);
- 	err = ip_local_out(amt->net, sk, skb);
- 	if (unlikely(net_xmit_eval(err)))
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 
- out:
- 	rcu_read_unlock();
-@@ -871,7 +871,7 @@ static void amt_send_igmp_gq(struct amt_dev *amt,
- 
- 	skb_pull(skb, sizeof(struct ethhdr));
- 	if (amt_send_membership_query(amt, skb, tunnel, false)) {
--		amt->dev->stats.tx_dropped++;
-+		DEV_STATS_INC(amt->dev, tx_dropped);
- 		kfree_skb(skb);
- 	}
- }
-@@ -915,7 +915,7 @@ static struct sk_buff *amt_build_mld_gq(struct amt_dev *amt)
- 
- 	if (ipv6_dev_get_saddr(amt->net, amt->dev, &ip6h->daddr, 0,
- 			       &ip6h->saddr)) {
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		kfree_skb(skb);
- 		return NULL;
- 	}
-@@ -959,7 +959,7 @@ static void amt_send_mld_gq(struct amt_dev *amt, struct amt_tunnel_list *tunnel)
- 
- 	skb_pull(skb, sizeof(struct ethhdr));
- 	if (amt_send_membership_query(amt, skb, tunnel, true)) {
--		amt->dev->stats.tx_dropped++;
-+		DEV_STATS_INC(amt->dev, tx_dropped);
- 		kfree_skb(skb);
- 	}
- }
-@@ -1319,7 +1319,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		group.ip6 = ipv6_hdr(skb)->daddr;
- #endif
- 	} else {
--		dev->stats.tx_errors++;
-+		DEV_STATS_INC(dev, tx_errors);
- 		goto free;
- 	}
- 
-@@ -1332,12 +1332,21 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 		/* Gateway only passes IGMP/MLD packets */
- 		if (!report)
- 			goto free;
-+		/* A validated report can only be forwarded after the relay's
-+		 * family-specific Membership Query supplies the state echoed
-+		 * by the Membership Update. Log this readiness failure before
-+		 * the shared drop path accounts it.
-+		 */
- 		if ((!v6 && !READ_ONCE(amt->ready4)) ||
--		    (v6 && !READ_ONCE(amt->ready6)))
-+		    (v6 && !READ_ONCE(amt->ready6))) {
-+			netdev_dbg(dev, "drop %s report: waiting for Membership Query\n",
-+				   v6 ? "MLD" : "IGMP");
- 			goto free;
-+		}
- 		if (amt_send_membership_update(amt, skb,  v6))
- 			goto free;
--		goto unlock;
-+		/* Sent: the tunnel consumed the skb.  Not a drop. */
-+		return NETDEV_TX_OK;
- 	} else if (amt->mode == AMT_MODE_RELAY) {
- 		if (!data)
- 			goto free;
-@@ -1366,8 +1375,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- free:
- 	dev_kfree_skb(skb);
--unlock:
--	dev->stats.tx_dropped++;
-+	DEV_STATS_INC(dev, tx_dropped);
- 	return NETDEV_TX_OK;
- }
- 
-@@ -2730,7 +2738,7 @@ static void amt_send_advertisement(struct amt_dev *amt, __be32 nonce,
- 				   IPPROTO_UDP, 0,
- 				   amt->stream_dev->ifindex);
- 	if (IS_ERR(rt)) {
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -2740,7 +2748,7 @@ static void amt_send_advertisement(struct amt_dev *amt, __be32 nonce,
- 	skb = netdev_alloc_skb_ip_align(amt->dev, len);
- 	if (!skb) {
- 		ip_rt_put(rt);
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 		goto out;
- 	}
- 
-@@ -2786,7 +2794,7 @@ static void amt_send_advertisement(struct amt_dev *amt, __be32 nonce,
- 	ip_send_check(iph);
- 	err = ip_local_out(amt->net, sk, skb);
- 	if (unlikely(net_xmit_eval(err)))
--		amt->dev->stats.tx_errors++;
-+		DEV_STATS_INC(amt->dev, tx_errors);
- 
- out:
- 	rcu_read_unlock();
+Omar Ramadan (5):
+  amt: fix use-after-free when a Membership Update re-arms a freed
+    tunnel
+  amt: reject a gateway Query or Data from 0.0.0.0 before a relay is
+    learned
+  amt: require an exact IPv4-sized IFLA_AMT_{LOCAL,DISCOVERY}_IP
+  amt: make pre-query report drops visible
+  amt: harden relay authentication and teardown
+
+ drivers/net/amt.c | 550 +++++++++++++++++++++++++++++++++++-----------
+ include/net/amt.h |  33 ++-
+ 2 files changed, 450 insertions(+), 133 deletions(-)
+
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
 -- 
 2.47.3
 
