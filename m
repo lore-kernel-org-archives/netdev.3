@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793878995;
-	b=wlj4Xy1T7kPEYjLnJ7d4fiGkv6fdztbZPrIfY5amkkOjl00MEv4W3jPQ7DVA2PtAASEH
-	 O79D4qd+yRhtLqtzD1LVtm/J1YAp/nZ0vHAKswIhQJfDm8IkYpsj1xdF5v5K39b1xQ4Gk
-	 P3aiH7Dk9IxHdHtRWuyRh/4xYcgrL9x3g/AQ0mO+n8oy0cVlZb97AGnK77UpctnrTtfWt
-	 BdOZX0HTtd3h7kVgadJPrPgBGHwxByEV1/OhWvmYC0mCxI+xf4Umlc3miqPKrnpgst13o
-	 PzuJJq1v/MWtyz21VwzGH3PTjvaf9mRJb1biumHjgCe+JGpJNzJBo6OcWe2WvPZTjmA==
+	t=1793878965;
+	b=E23y5Dh0LvlTYSlflk1cfaRgsrBPIv9+AZEhejhMvfnKAfqAoVAyvRIgGErSxFWx/vkj
+	 +st3i3PxPs4XEkTfiFD/cxKdufe3nIpF64fmUAyY63sMm147/0TLp4kyVsvQcDNv8zN64
+	 kyu9v0JRfm3v0SjBOA3LLzYAo2E8JGiulJSUcGW3CS5izJj8K2ZQpH1Ql5RjwVr/zLBKX
+	 gvmTAcGmhh35JdBtKWhja5EhjWs8b9G+olBA6nW8JcwIgkPqPg5dp9/6/WiLWl4S++Hp1
+	 6gVWmn8wXwb+y3SpCMeoSnZ3w9MUE3WAnnmipYpAJfIUJkIYRdCWmRsNWVcsRpIuzYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793878995;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793878965;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
 	 Content-Transfer-Encoding;
-	bh=gaNFsq01nxojVQZO824AFivnqlGF9+tE3dhV8mgf0eU=;
-	b=TE9HV7GhFT/9/cw9ah6wgDeRhvGMvAKVJz7dnHOwaHMhwSpKhd4XN0Jj/fRXPTizxij7
-	 792FsCdqwVjvi58JgZn4EnOKXsdZXbA5kQFewixFE64kJQtZwAlu75X4Wy51xbVvJU7kB
-	 fJ1LYKnjKQdjPT1aUDUqQajaD0Dtif27wo6GuXIBb5MNRrad1F8GfIu0C6F8CrTAI0FXh
-	 jB4FmN5+MEg0UdAv/pwtyO5mBN/5jFoapBz7cMSvPGqcfXat1sS90hOFMgSG9ba4LmKPP
-	 /nP5V7tjDLLlBDamRMNJYRSVCKB5+e6vqST1vp+MMyhKoNGXKhvwTPo+fKkTEy1uQfw==
+	bh=Uf1oZV9pQvGrEUvi8XtIeuSa56tR9ySw+fDX7XP+CMk=;
+	b=mjBxzr0IRfTuHjOkaAF+dqa4VF6+2oTOm7oWlTM4Cnp/PBIG+aHEsTieoRVjaPPzLszR
+	 pD51WD6LFjcNcZVy2owVjEEK//i1cuhxkOK8EHOK0Oi/FMbOJsWOROo+oyu6S3MUUZWVy
+	 w4iaH6xwp21r4bFdttQpmYj2PgcYvMwYIhDqqriKEs5WlG5D1mwOKHNNC87sbXyzhD5qr
+	 VZMExZaVcs75Xy4GWV1Y+8ugUc2Pa9hxMjxQ4JE/45waLL0dhouX0s+DjWI4TQ+8kNODg
+	 GRH1N+ZzyDaYRECYWrTl90Hxzx7UM00k99yKVBhZf7oqXp/0O36sjn9qnkEND5wIcLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ktoaPP4+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RnInfvfx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F85E60A5BC6;
-	Thu,  5 Nov 2026 11:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA9606D809;
+	Thu,  5 Nov 2026 11:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ktoaPP4+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68861F000C1;
-	Thu,  5 Nov 2026 11:43:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RnInfvfx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A431F000C1;
+	Thu,  5 Nov 2026 11:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793878994;
-	bh=gaNFsq01nxojVQZO824AFivnqlGF9+tE3dhV8mgf0eU=;
+	s=k20260515; t=1793878965;
+	bh=Uf1oZV9pQvGrEUvi8XtIeuSa56tR9ySw+fDX7XP+CMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ktoaPP4+NaFWiX019juh4oJ2h/91Nfjhnwow3WxUWL6nWj0ms/ohZP715F++yTsQi
-	 /Yu4HGtAFUGPF5FcTmBw1K1DJqOYvWM2yHiJ25TAI8JnFRkDHICEwlWE4slFGqX84o
-	 +fxIZZZEq5BOn46+UwPm5bWtNo6w5DBpOllGrnQJzG3BKfVCREkRfyzHWsvm/J76tJ
-	 9LixfW3aQjmVrIyCs6i5Llc3cQrFvPJFcf9AGpC+mUhL1YD+38WZOzkNzb1SCOrr9x
-	 0CwzPkGBdbsMPKX2kHV8PNkhWak6V3P3F76N4M7lehBTgWVMisuRe60tG6tZbFXpU9
-	 weEj/puhF9w7Q==
+	b=RnInfvfxHXtvO4dD2rpgLRRjDe8FtQGLLRwQ8XylHDziicCqsNVQ5WQrmbaLGX6vY
+	 zCXyGQq/kPlFlMojAMi9XImf5AAA8FMsyc8xKVMxzmLW5CKJzFa+SCHdWImWnC50wO
+	 twOGlGdhGEOOmy8M7brqom2qCMFDApBMHYhcTP1rns8FA7AtPo3HgR+JWHD36IHylV
+	 VfgZjUiISKYbQeQTkbTweQ3xkeHCT/DWFVYl5hFXfmVJ0XG1MAvJbjghyIEDJsZXMF
+	 ekz3UjPPpd4mHzRAGT6qzsEjrEhh0pw6QnVTjASyaukekBZzUdAF0/whpYf2ASVRmf
+	 xp4H1OKTG4jkQ==
 From: Leon Romanovsky <leon@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -82,9 +82,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	iommu@lists.linux.dev,
 	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH 11/17] driver core: Accept device trust policy on the kernel command line
-Date: Thu,  5 Nov 2026 13:42:24 +0200
-Message-ID: <20261105-device-trust-core-v1-11-1e536825b4eb@nvidia.com>
+Subject: [PATCH 03/17] net: phy: Attach generic PHY drivers through the driver core
+Date: Thu,  5 Nov 2026 13:42:16 +0200
+Message-ID: <20261105-device-trust-core-v1-3-1e536825b4eb@nvidia.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
 References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
@@ -103,231 +103,226 @@ Content-Transfer-Encoding: 8bit
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-Built-in drivers can probe before initrd policy agents start. Fresh
-attestation therefore requires disabled policy before those attempts.
+The generic PHY fallback probes directly before publishing its binding,
+bypassing driver-core admission and supplier checks.
 
-Add device_trust=<bus>:<device>=<policy>[,...] to initialize requested
-policy before registration. Apply PCI overrides during discovery so IOMMU
-and ACS decisions use the same initial policy as binding. Retain rules for
-hotplug, preserve admission history when a device object is reused, and
-leave unlisted devices unchanged.
+Attach through the driver core so admission precedes functional setup.
+Callers hold RTNL, which a concurrent bind of a specific driver may wait
+for with the device lock held, so for this flow let's add
+device_driver_try_attach() so the attachment never waits for that lock.
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- Documentation/ABI/testing/sysfs-devices-trust   |  2 +
- Documentation/admin-guide/kernel-parameters.txt | 25 +++++++
- drivers/base/base.h                             |  2 +
- drivers/base/core.c                             |  1 +
- drivers/base/trust.c                            | 90 +++++++++++++++++++++++++
- drivers/pci/probe.c                             |  1 +
- include/linux/device/trust.h                    |  1 +
- 7 files changed, 122 insertions(+)
+ drivers/base/dd.c            | 65 +++++++++++++++++++++++++++++++++++++-------
+ drivers/net/phy/phy_device.c | 39 +++++++++++++++++---------
+ include/linux/device.h       |  2 ++
+ 3 files changed, 83 insertions(+), 23 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-trust b/Documentation/ABI/testing/sysfs-devices-trust
-index 97e07a174769c..87d3410f6bd90 100644
---- a/Documentation/ABI/testing/sysfs-devices-trust
-+++ b/Documentation/ABI/testing/sysfs-devices-trust
-@@ -17,6 +17,8 @@ Description:
- 		value may be selected by the bus before the device is
- 		registered; otherwise it is "default". The policy is resolved
- 		to an active trust level before the device is probed.
-+		A matching device_trust= kernel command-line entry overrides
-+		the initial requested policy before registration.
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 52123251965de..01026e02de92e 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1046,6 +1046,25 @@ static void __device_driver_lock(struct device *dev, struct device *parent)
+ 	device_lock(dev);
+ }
  
- 		The values are "default", "disabled", "adversary", and
- 		"full". "default" lets the bus select the active trust level.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 0b3c140babd94..ed307427a5ca4 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1259,6 +1259,31 @@ Kernel parameters
- 	dell_smm_hwmon.fan_max=
- 			[HW] Maximum configurable fan speed.
- 
-+	device_trust=	[KNL]
-+			Set requested device trust policy before driver probing,
-+			including for drivers built into the kernel.
-+			Format: <bus>:<device>=<policy>[,...]
-+			The bus and device names must match exactly, as in
-+			/sys/bus/<bus>/devices/<device>. The first colon separates
-+			the bus name; further colons belong to the device name.
-+			Policies are default, disabled, adversary, and full.
-+			Entries override bus-initialized requested policy;
-+			unlisted devices retain their existing policy.
-+			The last entry for a device wins. If specified more than
-+			once, the last valid list replaces all earlier lists.
-+			Malformed lists are warned about and ignored in full.
-+			Names containing whitespace, control characters, commas,
-+			equals signs, or double quotes cannot be specified.
-+			Rules also apply to devices added after boot.
-+			Explicit disabled blocks early binding but permits later
-+			authorization by writing adversary or full to trust_policy.
-+			Rejected disabled probes leave this opportunity intact.
-+			Authorization fixes the policy before probing; adversary
-+			or full at boot permits early probes without attestation.
-+			Example:
-+			device_trust=pci:0000:01:00.0=adversary,pci:0000:02:00.0=disabled
-+			See Documentation/driver-api/driver-model/device-trust.rst.
-+
- 	dfltcc=		[HW,S390]
- 			Format: { on | off | def_only | inf_only | always }
- 			on:       s390 zlib hardware support for compression on
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index c88b3302969f2..a286f48a69747 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -184,6 +184,8 @@ extern const struct attribute_group device_trust_attr_group;
- 
- #if IS_ENABLED(CONFIG_KUNIT)
- int device_trust_set_policy(struct device *dev, enum device_trust_policy policy);
-+int device_trust_parse_cmdline(const char *options, const struct device *dev,
-+			       enum device_trust_policy *policy);
- #endif
- 
- /* All active trust level transitions are serialized by the device lock. */
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index dca0179714c82..bd96d84c2ac2c 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3688,6 +3688,7 @@ int device_add(struct device *dev)
- 	if (error)
- 		goto name_error;
- 
-+	device_trust_init(dev);
- 	device_trust_init_state(dev);
- 
- 	pr_debug("device: '%s': %s\n", dev_name(dev), __func__);
-diff --git a/drivers/base/trust.c b/drivers/base/trust.c
-index 884e7c2dfbbb6..246d2516fb3af 100644
---- a/drivers/base/trust.c
-+++ b/drivers/base/trust.c
-@@ -1,8 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/ctype.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/export.h>
-+#include <linux/init.h>
-+#include <linux/string.h>
- #include <linux/sysfs.h>
- #include <kunit/visibility.h>
- 
-@@ -224,3 +227,90 @@ static struct attribute *device_trust_attrs[] = {
- const struct attribute_group device_trust_attr_group = {
- 	.attrs = device_trust_attrs,
- };
-+
-+static const char *device_trust_cmdline __ro_after_init;
-+
-+VISIBLE_IF_KUNIT int device_trust_parse_cmdline(const char *options,
-+						const struct device *dev,
-+						enum device_trust_policy *policy)
++/*
++ * __device_driver_trylock - __device_driver_lock() without sleeping
++ *
++ * Returns true if the locks were taken.
++ */
++static bool __device_driver_trylock(struct device *dev, struct device *parent)
 +{
-+	enum device_trust_policy selected = DEVICE_TRUST_POLICY_DEFAULT;
-+	const char *entry = options;
-+	bool matched = false;
-+
-+	if (!entry || !*entry)
-+		return -EINVAL;
-+
-+	for (;;) {
-+		const char *end = entry + strcspn(entry, ",");
-+		const char *bus_end, *name, *level, *p;
-+		unsigned int i;
-+
-+		bus_end = memchr(entry, ':', end - entry);
-+		if (!bus_end || bus_end == entry ||
-+		    memchr(entry, '=', bus_end - entry))
-+			return -EINVAL;
-+		name = bus_end + 1;
-+		level = memchr(name, '=', end - name);
-+		if (!level || level == name || level + 1 == end)
-+			return -EINVAL;
-+
-+		for (p = entry; p < end; p++)
-+			if (isspace(*p) || iscntrl(*p) || *p == '"')
-+				return -EINVAL;
-+
-+		for (i = 0; i < ARRAY_SIZE(device_trust_policy_names); i++)
-+			if (strlen(device_trust_policy_names[i]) == end - level - 1 &&
-+			    !strncmp(level + 1, device_trust_policy_names[i],
-+				     end - level - 1))
-+				break;
-+		if (i == ARRAY_SIZE(device_trust_policy_names))
-+			return -EINVAL;
-+
-+		if (dev && dev->bus && dev_name(dev) &&
-+		    strlen(dev->bus->name) == bus_end - entry &&
-+		    !strncmp(dev->bus->name, entry, bus_end - entry) &&
-+		    strlen(dev_name(dev)) == level - name &&
-+		    !strncmp(dev_name(dev), name, level - name)) {
-+			selected = i;
-+			matched = true;
++	if (dev->type && dev->type->need_parent_lock && parent) {
++		if (!device_trylock(parent))
++			return false;
++		if (!device_trylock(dev)) {
++			device_unlock(parent);
++			return false;
 +		}
-+
-+		if (!*end)
-+			break;
-+		entry = end + 1;
++		return true;
 +	}
-+
-+	if (matched)
-+		*policy = selected;
-+	return matched;
++	return device_trylock(dev);
 +}
-+EXPORT_SYMBOL_IF_KUNIT(device_trust_parse_cmdline);
 +
-+static int __init device_trust_setup(char *str)
-+{
-+	if (device_trust_parse_cmdline(str, NULL, NULL) < 0) {
-+		pr_warn("device_trust: ignoring invalid policy list '%s'\n", str);
-+		return 1;
+ /*
+  * __device_driver_unlock - release locks needed to manipulate dev->drv
+  * @dev: Device we will update driver info for
+@@ -1195,19 +1214,17 @@ void device_initial_probe(struct device *dev)
+ 	subsys_put(sp);
+ }
+ 
+-/**
+- * device_driver_attach - attach a specific driver to a specific device
+- * @drv: Driver to attach
+- * @dev: Device to attach it to
+- *
+- * Manually attach driver to a device. Will acquire both @dev lock and
+- * @dev->parent lock if needed. Returns 0 on success, -ERR on failure.
+- */
+-int device_driver_attach(const struct device_driver *drv, struct device *dev)
++static int __device_driver_attach(const struct device_driver *drv,
++				  struct device *dev, bool trylock)
+ {
+ 	int ret;
+ 
+-	__device_driver_lock(dev, dev->parent);
++	if (trylock) {
++		if (!__device_driver_trylock(dev, dev->parent))
++			return -EBUSY;
++	} else {
++		__device_driver_lock(dev, dev->parent);
 +	}
-+
-+	/* The command-line buffer survives init. */
-+	device_trust_cmdline = str;
-+	return 1;
-+}
-+__setup("device_trust=", device_trust_setup);
+ 	ret = __driver_probe_device(drv, dev);
+ 	__device_driver_unlock(dev, dev->parent);
+ 
+@@ -1218,8 +1235,36 @@ int device_driver_attach(const struct device_driver *drv, struct device *dev)
+ 		return -EAGAIN;
+ 	return ret;
+ }
 +
 +/**
-+ * device_trust_init - Apply boot policy before registration or bus policy use
-+ * @dev: unregistered device with its bus, name, and default policy set
++ * device_driver_attach - attach a specific driver to a specific device
++ * @drv: Driver to attach
++ * @dev: Device to attach it to
++ *
++ * Manually attach driver to a device. Will acquire both @dev lock and
++ * @dev->parent lock if needed. Returns 0 on success, -ERR on failure.
 + */
-+void device_trust_init(struct device *dev)
++int device_driver_attach(const struct device_driver *drv, struct device *dev)
 +{
-+	if (dev->p && dev->p->trust_initialized)
-+		return;
-+
-+	if (device_trust_cmdline)
-+		device_trust_parse_cmdline(device_trust_cmdline, dev,
-+					   &dev->trust_policy);
++	return __device_driver_attach(drv, dev, false);
 +}
-+EXPORT_SYMBOL_GPL(device_trust_init);
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 9a178e0e5f7f4..5b6960bbb35bc 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2083,6 +2083,7 @@ int pci_setup_device(struct pci_dev *dev)
- 	set_pcie_cxl(dev);
+ EXPORT_SYMBOL_GPL(device_driver_attach);
  
- 	set_pcie_untrusted(dev);
-+	device_trust_init(&dev->dev);
++/**
++ * device_driver_try_attach - attach a specific driver without waiting for locks
++ * @drv: Driver to attach
++ * @dev: Device to attach it to
++ *
++ * Like device_driver_attach(), for callers that hold a lock which the holder
++ * of the @dev or @dev->parent lock may wait for. Returns -EBUSY, before any
++ * probing, if one of those locks is contended.
++ */
++int device_driver_try_attach(const struct device_driver *drv, struct device *dev)
++{
++	return __device_driver_attach(drv, dev, true);
++}
++EXPORT_SYMBOL_GPL(device_driver_try_attach);
++
+ static void __driver_attach_async_helper(void *_dev, async_cookie_t cookie)
+ {
+ 	struct device *dev = _dev;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 5d4508bcfbe99..8cc0de755bd08 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1912,7 +1912,9 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	struct device *d = &phydev->mdio.dev;
+ 	struct module *ndev_owner = NULL;
+ 	struct module *drv_owner;
++	struct device_driver *drv;
+ 	int irq = phydev->irq;
++	bool bind_genphy;
+ 	int err;
  
- 	/* "Unknown power state" */
- 	dev->current_state = PCI_UNKNOWN;
-diff --git a/include/linux/device/trust.h b/include/linux/device/trust.h
-index dccc47c3b4960..b8f5514cacec3 100644
---- a/include/linux/device/trust.h
-+++ b/include/linux/device/trust.h
-@@ -37,6 +37,7 @@ enum device_trust_policy {
- 	DEVICE_TRUST_POLICY_FULL,
- };
+ 	/* For Ethernet device drivers that register their own MDIO bus, we
+@@ -1939,16 +1941,16 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	/* Assume that if there is no driver, that it doesn't
+ 	 * exist, and we should use the genphy driver.
+ 	 */
+-	if (!d->driver) {
++	drv = d->driver;
++	bind_genphy = !drv;
++	if (bind_genphy) {
+ 		if (phydev->is_c45)
+-			d->driver = &genphy_c45_driver.mdiodrv.driver;
++			drv = &genphy_c45_driver.mdiodrv.driver;
+ 		else
+-			d->driver = &genphy_driver.mdiodrv.driver;
+-
+-		phydev->is_genphy_driven = 1;
++			drv = &genphy_driver.mdiodrv.driver;
+ 	}
  
-+void device_trust_init(struct device *dev);
- enum device_trust_level device_get_trust_level(const struct device *dev);
- bool device_is_adversarial(const struct device *dev);
+-	drv_owner = d->driver->owner;
++	drv_owner = drv->owner;
+ 	if (!try_module_get(drv_owner)) {
+ 		phydev_err(phydev, "failed to get the device driver module\n");
+ 		err = -EIO;
+@@ -1956,11 +1958,20 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	}
+ 	phydev->drv_owner = drv_owner;
  
+-	if (phydev->is_genphy_driven) {
+-		err = d->driver->probe(d);
+-		if (err >= 0)
+-			err = device_bind_driver(d);
+-
++	if (bind_genphy) {
++		/*
++		 * RTNL is held, and a concurrent bind of a specific driver may
++		 * wait for it with the device lock held. Never wait for that
++		 * lock, and let the caller retry.
++		 */
++		err = device_driver_try_attach(drv, d);
++		if (err == -EBUSY) {
++			/* Another bind owns the PHY, so nothing was probed here. */
++			irq = phydev->irq;
++			err = -EPROBE_DEFER;
++		} else if (err == -EAGAIN) {
++			err = -EPROBE_DEFER;
++		}
+ 		if (err)
+ 			goto error_module_put;
+ 	}
+@@ -2071,8 +2082,6 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	module_put(phydev->drv_owner);
+ 	phydev->drv_owner = NULL;
+ 	phydev->irq = irq;
+-	phydev->is_genphy_driven = 0;
+-	d->driver = NULL;
+ error_put_device:
+ 	put_device(d);
+ 	if (ndev_owner != bus->owner)
+@@ -3813,6 +3822,8 @@ static int phy_probe(struct device *dev)
+ 	int err = 0;
+ 
+ 	phydev->drv = phydrv;
++	phydev->is_genphy_driven = phydrv == &genphy_driver ||
++				 phydrv == &genphy_c45_driver;
+ 
+ 	/* Disable the interrupt if the PHY doesn't support it
+ 	 * but the interrupt is still a valid one
+@@ -3949,6 +3960,7 @@ static int phy_probe(struct device *dev)
+ out_reset:
+ 	/* Re-assert the reset signal on error */
+ 	phy_device_reset(phydev, 1);
++	phydev->is_genphy_driven = 0;
+ 
+ 	return err;
+ }
+@@ -3977,6 +3989,7 @@ static int phy_remove(struct device *dev)
+ 	phy_device_reset(phydev, 1);
+ 
+ 	phydev->drv = NULL;
++	phydev->is_genphy_driven = 0;
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 429e39f647cf9..4cf62d69eac4f 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1314,6 +1314,8 @@ static inline void *dev_get_platdata(const struct device *dev)
+  */
+ int __must_check device_driver_attach(const struct device_driver *drv,
+ 				      struct device *dev);
++int __must_check device_driver_try_attach(const struct device_driver *drv,
++					  struct device *dev);
+ int __must_check device_bind_driver(struct device *dev);
+ void device_release_driver(struct device *dev);
+ int  __must_check device_attach(struct device *dev);
 
 -- 
 2.56.0
