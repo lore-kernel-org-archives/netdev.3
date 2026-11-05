@@ -1,57 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793917340;
-	b=ji1KlZdbmv0Uay3rUlgnr9dhmch3YKE61mEqyXgJMGe2xaZz9t9nmjSlmGPM/p2ckf1q
-	 TFmmylbZsLVlTld4Zp8ZuAz02N3UPtGVc7+sjA96/3/jfnuzH6mSt6wp0WhE74BFK8ObC
-	 BVKzPEEAq4ZcvHVUduOyJDM7q88Fqqz0saC9sISY7+4uqxTTI36WfD4oXNorDLk1aUffy
-	 BWOBQs1vFnXNRpgsALXMynLLTLrciu2Bz4py5gCM8rGLDG8DePEcNPGoj0GMkiX9gG26l
-	 +nAdUTumze+mr2AwSpdS5LLtIhJSPHHpCo09PoL3QOmJQCIeablAtQqJihx55rQ0EkQ==
+	t=1793917605;
+	b=kKWcdI92so119SlAdDL3gCEX/ac9xhsurNK6gzseJanS+JfJJldvZ8HU8B2/t1pceIt/
+	 aGQClh/ryl7pAif6mDSd+Hc9s6vZ9On2QwW+y5ntt+o9Pgy8Yq/mYy71i1QVvacneHfNQ
+	 fN2Tu30XtA5UcXXKoaBe+6RjYcRFzDjPg4Id9jiyAP8quXB2fCilqB+RwbtxWydwtsXKG
+	 fpdtTwhWTrvw9zKCgXLLWwelxoJ4KUmdmXtVe/kVartP4MHauirZ9gTuNdSSqjUVZ5Il5
+	 fJbPBTvFaGYBpeih1gvOvWBUKMQtTKf/mwqX9Obx6AqAhsKudOg/IZJlMACzzhG3FpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793917340;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=I2UCmZDII7TZlJUdlHoHQguMZYmeF/P0Y0rUuVe9MTQ=;
-	b=4im/Y4XkpMvLAZdk+kl4JbW/bGg9+SYe43P4mjxMeDXY0790x7mVRlbkAxJ9nHKo0nGQ
-	 wTvj6iBs9wW/o9OrgaEg+D385lO4/sk5QNOLD9tqXp1mVtA8SxYIjFJrd15lOegj7Ypdm
-	 fbXZ7+iF/xahSQ61L3kCOA9VX0SqQi5nAiYxSQxKm4uceV7fwEe9T2BVR/6SGyhHz/Ou4
-	 L/0ISbw1duou7ft9MvfiR1nZCQQeuscEiG6Vz1dStCYgPaxKJNc8AuoOAKduInuC0zUNM
-	 6ptP6k5hiDa1c7iUfcLCQJqyg6Kb2S7KlEwhSnmCRNPO35y4qriDfwsf3lprlrKzT+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793917605;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=Ub4KS0c67znfqPuuGGrCdZPsAUTqtjypyv5in5APvsk=;
+	b=a+MlNjcn0uUiFvPe9H75gYUOftXCMBMbpvaSD/fAr3Rw+K4DZfTG2jLVhxqxyZDNs833
+	 OfNPD5FMoRy9ttNu8+X2phDIrzIXvXYXjYpIMaNvdjIBnY8fTagpfc7m2nxJSC6Twv8tk
+	 v0b75/cxcrq7WKYIsiIgwoLulpmJ+vp78eZyT5TF9KwHFs+Qax/fkKyvaG5MTI5Fwsnb6
+	 R8Ivmg9LiqFuczoWt2TvxBRwAgjKBOnnknbuMhbJk3KAn+NSWTD+JreG2MdUkDPl8Jjn7
+	 rbKFp7Cb8O2b2u+rUIyPyqoTkcbGfeZ3RjOvDhHEKak6bW7C96Fjix5seSiz4q2vQ5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFJnWLTN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=QtZXyt44;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86833606A31B;
-	Thu,  5 Nov 2026 22:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74283606A31B;
+	Thu,  5 Nov 2026 22:26:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74283606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFJnWLTN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC321F0089F;
-	Thu,  5 Nov 2026 22:22:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793917340;
-	bh=I2UCmZDII7TZlJUdlHoHQguMZYmeF/P0Y0rUuVe9MTQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CFJnWLTN8Hdn81KBHt5b4aPAyQJVP6ghpvhL11RGgs3whi/pcGSEbFet1RPf+MX2l
-	 9Flkk9NhvfG1ANLCfKLUEhOTvadYLb02HyEENq4ctLzpXHH2gRpobNwln8qERA6Mbu
-	 /0CTAx/YFazA3PRiFkzenEKw1ngCxA+Gv1PplWZ89aJZhMJZmBXo0DZRNhVMIbOCTR
-	 +cSvVmJhMiOeu48/gIasQDWh9XOSzJYvwOpyweQjclKwkWIiTvD6O0+gnlXnjVk975
-	 Cxf8ebCn8Pphkhz5tVbGinl2tlD2tQayRUsttKM9/V3BXf63WwcvdnvAb7Z2K6Dybx
-	 DmL1hBF8QnXTw==
-Date: Thu, 5 Nov 2026 14:22:09 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sandeep Haemoon <sandeeph@loljews.com>
-Cc: netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
- <lorenzo@kernel.org>, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] net: ethernet: mtk_eth_soc: add 9K jumbo
- frame
-Message-ID: <20261105142209.06d93e77@kernel.org>
-In-Reply-To: <patch-f1b04513b0fe3fb0a35ac744799fb0f3@loljews.com>
-References: <patch-4f863a941889f0bceca1c082f2d79624@loljews.com>
-	<patch-f1b04513b0fe3fb0a35ac744799fb0f3@loljews.com>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=QtZXyt44
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Ub4KS0c67znfqPuuGGrCdZPsAUTqtjypyv5in5APvsk=; b=QtZXyt44cZ6WYIR4u51L9qY8QV
+	8U5nIyigKIP/Xj5h+Vv79DO+7rFc2OjaMkpkcyMJkubmBwA8X588eHyenyiC5IKZeUHMaYMt1xbkV
+	eFSO6Tbbl24nXwHJFjL/79ZuhHJsyoRr21nF7jBw4VOg/oSZwxdqnIvzb/B7vwP8DE30=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xP5uj-00EeBs-9g; Thu, 05 Nov 2026 23:26:33 +0100
+Date: Thu, 5 Nov 2026 23:26:33 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: tommy shih <tommy.shih92@gmail.com>
+Cc: netdev@vger.kernel.org,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	"Lucien . Jheng" <lucienzx159@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: air_an8801: add WAKE_PHY Wake-on-LAN
+ support
+Message-ID: <1779e3fa-08a0-4726-af42-bcb8a64d769a@lunn.ch>
+References: <20261102132903.713908-1-tommy.shih92@gmail.com>
+ <7e1ac14e-b306-4921-84fa-8266b3263f2d@lunn.ch>
+ <CABXpiCoUqhq_Jt8AWcZRQWue-pTvoYSGxNkbz7e5MLvw0Mjh2Q@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,15 +72,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABXpiCoUqhq_Jt8AWcZRQWue-pTvoYSGxNkbz7e5MLvw0Mjh2Q@mail.gmail.com>
 
-On Mon, 2 Nov 2026 00:48:45 +0200 Sandeep Haemoon wrote:
-> +static void mtk_set_mcr_max_rx(struct mtk_mac *mac, u32 val);
+> I don't have a concrete use case for it. Waking on link change does
+> not seem to be a common way to wake a system over Ethernet; magic
+> packet is the usual method.
 
-Avoid the forward declarations, please.
+I'm tempted to reject this, because you don't seem to need it, and it
+is not clear if it is even correct usage of the API.
 
-When you repost make sure that patch 2 is in reply to the cover letter,
-not chained off patch 1.
--- 
-pw-bot: cr
+   Andrew
