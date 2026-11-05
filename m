@@ -1,60 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793876238;
-	b=jjgaWIJtGSm3C05U9fQEV2jaKadRe6Wm7XTYo2BKcxGKlLwGWNeEsiATxzbhw7wMpKtf
-	 AQSXPvOaKemj4slTnvYT+IeL3Nbmn8K8GmfCwHdEB5s9Z3oFwAoYzo/lIJrJLtYnV4vJK
-	 nzxBMiOv1zWwJUozMzZtfTdEcOOlbTQFyIOaXzuqNCEfPE452Yz3DYaH4i2PJBYF6Kic8
-	 +//aTc9deRtDL+18eYR2qA40JVvTw+bg1Fgj8l2c4pk1JZoWCvR0Iq7tWyhUD/S/JF2rK
-	 V0/xxyPgyytH+0KkStAWe/trldOtjnrLhYQ4//0xBKujsjWTQU7FESFe+ZpwViCQVlg==
+	t=1793876297;
+	b=E+kMH3Yht9zOxtFI+wXdLSKcoDLTlBvBGi7eLx9mlPuCky+fGqZ+Iq/uAj9V3visSvgh
+	 CuuEfIcq0mVkExrcKVXcMgnpnEuvoNy1xUqDtTU62Ncl1pz2vGAEEnjhRVSpiCpN73IUs
+	 ehiVdzT5eRdADb8QMHK51VF/FeOsiFq31rUYljzvjDmWG5w/KHJB2n50Dcx4oD2MIHyJg
+	 hcmUJl8RJWf/QLIEx3BQM0K1bm9tS9hxJ7qgG/fny8GYsLpoTYLZyAntvnfhzZ/SEPbFr
+	 5UUnMCg+54NM+sjaXw4LQhE7RvRfRMtxeZTk9Psn5x+pPWBVNEu50qhhfG4llwc23PQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793876238;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Yk0NNrYkQ4N4ccgY8kCGM4zul3wjbpL9JfKMdme0vGg=;
-	b=EgWRCJVEWazN//bJJqFMnxohZmcRACtDSdiafi6uuPMYQom39nt70q6+tbLptJsgQxcm
-	 FWtPd4rV+RRFXWOdMjiAL11nloHbg+6V/qL1M8Qd+YURATW1VNdLGHqqsdIMxvK1NefAo
-	 x9q/R7lVbV2ammoUXNElBsziLufWB3tg9zXXFrYCVvEsSRNWr17PFpJF1C00ebqakH0TD
-	 AUGp3lvuaYwYPx82kiC0sZVQXe+EXlSC6IPjxrORuFvR1jgKNEV0taA3WuDqhE2UodKRB
-	 aoYhkPUOwoMGbtiQ9sxj8I1gCV+LgnJ7Xt+CeSvrtoWW5/P43vB0aKzvkJieEcr6O2g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793876297;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
+	b=qPSkNOw+6VQZ7AuvtooRTpLlv3pEMXuA3f+noAHKJAkEk3E91RLRhMqnZzhmp6IISlSF
+	 1F0Dy+S+UJCTXYdpQmOSDAEh3xXalaXaz7n/bZZpmHAILo6KtYMaF57PKaoVArv0+DHtu
+	 R0x238NxNSfHHg6KwBz+bP4V2HP1rXYlT8iVZN/U95C+rQ/PtoSx5db8bO279CSbnlaQL
+	 p8XH/Z31kF4ELf4PRjQBVUqZiBYzE50vcFAmofgZ7ZAEj6zMCDtkgbMO5bTtstkqbH1qv
+	 qx/ePTbJ9a5HVyo4gI3fXVE3FiVBEowItEyKGP5sPSPeXcgfThPLCQnjMG9T00TdWMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c29mcl8f;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="K71ocXZ/";
+	arc=none smtp.remote-ip=209.85.216.53
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F38606D802;
-	Thu,  5 Nov 2026 10:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812E606A329
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:58:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E812E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c29mcl8f
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF521F000C1;
-	Thu,  5 Nov 2026 10:57:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793876237;
-	bh=Yk0NNrYkQ4N4ccgY8kCGM4zul3wjbpL9JfKMdme0vGg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=c29mcl8fed+UyMQAwVDV/KKGo0bpd/gzY4E1d1+KmBRGnBUWsYd3w9P/SKdkim34X
-	 k9aNTl+lNGFX0yDpLqnlVXFyZfqr9ulIptBzI0V/xs6nHmla21wVoMAQ2Urc/ihXb4
-	 J/agQno5SSjy3RrG5jdMjKlBGuQoY1yzicvcwSj1tmXpoXBW3Q03ZWJRrm1FTOxfkG
-	 kuMyScKaHUXNj5H7Nz6WL+v7kCLjpapTLSGXUuvv6s8DaMvL2nb4IQ7JjqZ4GJ/88D
-	 nzw5hbFvBy4sWl/Wx2gU9np3+UI7fpuNX1ETlf/H/6h+mkjoF+67fEB19ez3IDNXMb
-	 othShHJbUiWmQ==
-Subject: Re: [PATCH net] tipc: fix division by zero in perc()
-From: netdev-bot+sashiko@kernel.org
-To: tristmd@gmail.com
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- richard.alpe@ericsson.com, ying.xue@windriver.com, erik.hugne@ericsson.com,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org, tristan@talencesecurity.com
-Date: Thu, 05 Nov 2026 10:57:16 +0000
-Message-ID: <179387623625.488856.16993950481980996538@kernel.org>
-In-Reply-To: <20261103225433.2663943-1-tristmd@gmail.com>
-References: <20261103225433.2663943-1-tristmd@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K71ocXZ/
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac77270fbfso1045819a91.2
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:58:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793876296; x=1794481096; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
+        b=K71ocXZ/HS49uXPUvftmHhF6iKBXr20U2JrbygokCE2ws0bmPHGf31dFDsS4e7vYBc
+         kSuozUaxk9asDfi4t2/Ux/IkhEG8uqRsxrbJly3oQTEWxu3Nsq1+tKv2FJO2Wk0lURai
+         bFuhYa4q7U1qi+zB3Oj+st3oMFSydBcfOv1QFkO/wb6Fx0IyndGwbtQNTlQYqhILV/qh
+         EqjP6HeieKytlaUU2OmmHKBfeuKEFg3LjpvkGiXYTaFdrgdao9hygCU9DVztjYRvk2LP
+         rFbb7HrHCcnOUFlZC53KkxG6+2jt2tGFAkzvXdABUjmdvkPgsnnvf9/lrvsW2F79q+Pi
+         vsAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793876296; x=1794481096;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
+        b=HUb2ycK7ZFxIun/45TYRNoHsUyRoUSfSnGNP9ZogkPdm8VswcHvEMCPjEj6Z92a1yS
+         fOmSORt+1GMNlNDCCSV0S09J0uQPxV7jicqXFx0mfWvFScnbcf25v0U5abhnACISQlv6
+         GHO+lMo3EG9lsyBvs+VxwreffV8AWc+g6/7z16DLrRDpziq+cvPso+FTHoM+5CknQm8d
+         /JN4EsUxBq80/PqOh+G4CL9pudCPunfEyZ8gaeoPcfrVi7uT6pRD4Nx1Cu0qt28tbMKh
+         UJfAnK6+i6mdwyKFIYDzRd87Snm6nKKVMWqGCaF/mh+FMPsM9I+z60Wl6QkNjjNuUdB1
+         tolQ==
+X-Forwarded-Encrypted: i=1; AKwUvByAu5xh34FAny25zuz7zGAVEGg2QS3sDjjcPZbCsRxyGhAiIJHQcBRCG/s7nQKu7WSRRm/ELuY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z99J8UiR7tLdYghkuDZSkkDV0956h6U6Rweh1zg5K0Sc6k/Ksuo
+	N4ot00ftvLYHhu/0CUuNQUYr1rvy5VaUNzMgx+wqtpG77nbF2EmwMezd
+X-Gm-Gg: AYBFou0UVI1JSC2ZdpJuX2Wln4pa1wNg09NZXEYV2XhqhPwBTw9cmkYqw2s2prkl2MC
+	bKHKbJw/bRX8Lt4qIgDy1xVNZIvlqUHdYLKxd+2dEjup161wOezVpV35OSJJD7Yq4isSP1BmVDz
+	NEVBYfnssdgOpSebTk1tEmZsp5M+Rk+BLZk1tpChYJmWpiOgioj0NLLDNitplT9/UxNrYxh2Tmg
+	2TKwkEZfiE0azLiPYNWvhE7rIKPkOoU8EY8PJi495gl3vbdSwcoqp0uqgiRZik88hGI6MYShFel
+	XrOfkK2fYE3JJ3XVJy+ErM9/kNjL4LzGI/rQDf14hUHFwKR4lU6rnppHXx56JmZzPw18O0PcR3w
+	1uB7lrs7HPiK+Y0PZY4jhBp/yBtY9VoJbAI0L1ZyjlXHUe7Pn28vd50dyWh3cQUprFJu/z9k/SS
+	vRGHebHaUBZg75ZnGnKEDAL+VYp2N8K+lTWwVeE+zUj8jNWIJc2iqOloljatRdukJ47e3Zc3eg0
+	SS9BRUkbyvRn/QXSTySaibevrOo21LNmiP8Qc6kXDVmsTO0qBPDu5J0nZT6lSP11y3fhVEw0lnp
+	xYqXRmP1yfZT6293ZKnWYZscwmFBnrLt7kyLH1895069+I1a
+X-Received: by 2002:a17:90b:518b:b0:3ac:ea3b:f28b with SMTP id 98e67ed59e1d1-3ae897b6653mr14961496a91.24.1793876296249;
+        Thu, 05 Nov 2026 02:58:16 -0800 (PST)
+Received: from hj.. ([163.239.22.29])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b32b6507sm3777513a91.16.2026.11.05.02.58.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 02:58:15 -0800 (PST)
+From: hyunjungg <hj351016@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hyunjung Ko <hj351016@gmail.com>
+Subject: [PATCH] nfc: pn533: validate response length before parsing DEP ATR_RES
+Date: Thu,  5 Nov 2026 19:58:05 +0900
+Message-ID: <20261105105805.1450120-1-hj351016@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,122 +96,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Hyunjung Ko <hj351016@gmail.com>
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+pn533_poll_dep_complete() and pn533_in_dep_link_up_complete() cast
+resp->data to a struct pn533_cmd_jump_dep_response and read its fixed
+17-byte header (status, tg, nfcid3t[10], didt, bst, brt, to, ppt)
+without first checking that resp->len covers that header.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On a short or truncated response the handlers read bytes beyond the
+received frame:
 
-- [Medium] The commit message's premise is wrong.
-- [Medium] Judged by its own premise, the fix is incomplete.
+  - rsp->status is dereferenced with no minimum-length check;
+  - for a success status, memcpy(nfc_target.nfcid1, rsp->nfcid3t, 10)
+    copies 10 bytes from offset 2, so for resp->len < 12 it reads past
+    the valid response data. Those bytes are then handed to userspace
+    via nfc_targets_found() (netlink), which can disclose stale buffer
+    contents.
 
---
+target_gt_len = resp->len - 17 additionally underflows (it is u8) when
+resp->len < 17. That path is mitigated downstream --
+nfc_set_remote_general_bytes() -> nfc_llcp_set_remote_gb() rejects the
+resulting out-of-range length -- so the subtraction does not by itself
+over-read rsp->gt[]; the fixed-field reads above are unguarded
+regardless.
 
-tipc: fix division by zero in perc()
+A valid ATR_RES always carries the full 17-byte fixed header (the
+general bytes, if present, start at offset 17), so reject any response
+shorter than sizeof(*rsp) before parsing it. pn533_rf_complete()-style
+handlers in this file already length-check resp->len before use (e.g.
+the ATR_REQ_GB_OFFSET check in pn533_init_target_complete()).
 
-This commit adds a zero check to perc() in net/tipc/netlink_compat.c so
-that it returns 0 when total is zero. The commit message says this
-prevents a division by zero in tipc_nl_compat_link_stat_dump() when link
-statistics are queried on a fresh link.
+Found by code review; not reproduced.
 
-> The perc() function divides count by total without checking whether
-> total is zero. When link statistics are queried on a freshly
-> established link that has not yet exchanged messages,
-> TIPC_NLA_STATS_MSG_PROF_TOT is zero, causing a division by zero
-> in tipc_nl_compat_link_stat_dump().
+Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
+---
+ drivers/nfc/pn533/pn533.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-[Severity: Medium]
-Can TIPC_NLA_STATS_MSG_PROF_TOT actually be zero here?
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1309,7 +1309,12 @@ static int pn533_poll_dep_complete(struct pn533 *dev, void *arg,
+ 	memset(&nfc_target, 0, sizeof(struct nfc_target));
 
-This attribute is only produced by __tipc_nl_add_stats() in
-net/tipc/link.c, and that function already clamps the value to 1:
+ 	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
 
-net/tipc/link.c:__tipc_nl_add_stats() {
-    ...
-		{TIPC_NLA_STATS_MSG_PROF_TOT, (s->msg_length_counts) ?
-			s->msg_length_counts : 1},
-    ...
-}
++	if (resp->len < sizeof(*rsp)) {
++		rc = -EINVAL;
++		goto error;
++	}
++
+ 	rc = rsp->status & PN533_CMD_RET_MASK;
+ 	if (rc != PN533_CMD_RET_SUCCESS) {
+ 		/* Not target found, turn radio off */
+@@ -1929,7 +1929,12 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
+ 	}
 
-So a link with no profiled messages reports 1, not 0. If msg_length_counts
-wraps back to 0, it is also clamped to 1.
+ 	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
 
-User space can't supply these attributes either. __tipc_nl_compat_dumpit()
-allocates a kernel skb with nlmsg_new(), fills it through cmd->dumpit, and
-passes the parsed attributes to cmd->format:
-
-__tipc_nl_compat_dumpit()
-    tipc_nl_node_dump_link()
-        __tipc_nl_add_link()
-            __tipc_nl_add_stats()
-    tipc_nl_compat_link_stat_dump()
-        perc()
-
-Broadcast links use __tipc_nl_add_bc_link_stat() and return early through
-__fill_bc_link_stat(), before any perc() call.
-
-The clamp came in with commit 7be57fc69184 ("tipc: add link get/dump to
-new netlink api"), which is older than the Fixes: target f2b3b2d4ccbf
-("tipc: convert legacy nl link stat to nl compat").
-
-If so, the described division by zero has never been reachable. Could the
-commit message describe this as hardening instead? Could the Fixes: tag
-also be dropped, so stable doesn't pick this up as a crash fix?
-
-> diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
-> index d9a4f94ea2d43..75f3193a2a6cf 100644
-> --- a/net/tipc/netlink_compat.c
-> +++ b/net/tipc/netlink_compat.c
-> @@ -497,6 +497,9 @@ static int tipc_nl_compat_bearer_disable(struct tipc_nl_compat_cmd_doit *cmd,
->  
->  static inline u32 perc(u32 count, u32 total)
->  {
-> +	if (!total)
-> +		return 0;
-> +
->  	return (count * 100 + (total / 2)) / total;
->  }
-
-[Severity: Medium]
-If the premise in the commit message were true, would this check ever be
-reached?
-
-tipc_nl_compat_link_stat_dump() also divides by the same attribute with no
-guard. That division is in a tipc_tlv_sprintf() call that runs before any
-perc() call:
-
-net/tipc/netlink_compat.c:tipc_nl_compat_link_stat_dump() {
-    ...
-	tipc_tlv_sprintf(msg->rep,
-			 "  TX profile sample:%u packets  average:%u octets\n",
-			 nla_get_u32(stats[TIPC_NLA_STATS_MSG_LEN_CNT]),
-			 nla_get_u32(stats[TIPC_NLA_STATS_MSG_LEN_TOT]) /
-			 nla_get_u32(stats[TIPC_NLA_STATS_MSG_PROF_TOT]));
-
-	tipc_tlv_sprintf(msg->rep,
-			 "  0-64:%u%% -256:%u%% -1024:%u%% -4096:%u%% ",
-			 perc(nla_get_u32(stats[TIPC_NLA_STATS_MSG_LEN_P0]),
-			      nla_get_u32(stats[TIPC_NLA_STATS_MSG_PROF_TOT])),
-    ...
-}
-
-If TIPC_NLA_STATS_MSG_PROF_TOT were zero, the divide error would hit in the
-average calculation. The new check in perc() would never run.
-
-In practice, the clamp in __tipc_nl_add_stats() keeps both divisions safe.
-That makes the patch unnecessary if the clamp is relied on, and incomplete
-if it isn't.
-
-Would it be better to drop the crash claim? Alternatively,
-TIPC_NLA_STATS_MSG_PROF_TOT could be checked once in
-tipc_nl_compat_link_stat_dump(), which would cover both the average and
-the perc() calls.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103225433.2663943-1-tristmd%40gmail.com
++	if (resp->len < sizeof(*rsp)) {
++		rc = -EINVAL;
++		goto error;
++	}
++
+ 	rc = rsp->status & PN533_CMD_RET_MASK;
+ 	if (rc != PN533_CMD_RET_SUCCESS) {
+ 		nfc_err(dev->dev,
