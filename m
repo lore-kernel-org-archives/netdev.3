@@ -1,92 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793907182;
-	b=Bp3zmzOvkX+dLedniSJpWxlRCHr5a4UlaKQ3WwURU5kyNqiQIFIjzW5dgfTVS3NWGit/
-	 4m/N/DYnG2/aSBou+940oKuQDj0mMgn+LzTHhb/3UmARdd1rj1tQypxK8+yxpyh+kJdNe
-	 QZBxeynzIb5KDjiljmEg7USSho1JW5qpi8j56eCG83oOQNdaMN/OESVUZfNmTa4mq42QY
-	 tRXAClULSKnD7a2H1ioWbiRAkhX3ne798Aw3kxSafR6ock270M0H22QTRyR+1RNB5vysh
-	 y+yDGaFXj+xKi2ItQo54ol8TjWMK9RZ/+huFxvTdtHizgSWwv4og88vvMsmjulI09DA==
+	t=1793907287;
+	b=0Ajqqvl2K/87144lTBX+NBybviRFMQUkePVeWnUlo/u4CE+SbeYLyrx3RD4YygRbuy/P
+	 HSfbdp33wYOHBNe6jxO2CpIg4Kvw32DmlLJT+xSju2XZUoW5/8ny67zcUBuSdwj51aTdw
+	 b0Cf6hNnGJQ8FaipcLHmp9jWRnlYG8MJzIn5Ib4JwUxbjB/w1zP3rje/Hea8Pjhj6MD5L
+	 8b+6rXL7xq4N/Y6KE8mm+PymNZVPgOp3nx3aD9SmpJ7MWRJbePzDhjWV7/pUDvmvxFVHo
+	 qXgU/2dg/dXObUAFmeFa7neUk86djXVhyeb9UCAQkMe1aeWGZiGjNv3i+HT4CJ0ghCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793907182;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=KxYRMKoqQ5TnAo9ahTf6HCh0udvu+2ZmgUNQu1zf6ms=;
-	b=xgxv6uNmQ3G2sXWbfrWpL7Rj9U1cbuE4pM+S2npdHblahYpuHmPcL3MSvY7MX7Gv/B6c
-	 I5NCOjpQ/W27pJ2D2z+rPafm+oDi9Ui293zI1vWvAOw9Ne1HY8K+uRbgnD073c7WcIIBT
-	 z55z/wL93dPSMhUsSzQ2z96lfcDP1YC9vokBLLOjrMjFzY7yF/5yw3n9RDGeVC9mSF2cV
-	 5Cfi9yCYsyMi/hBjReNNG+a4rdJhiz0AmY+SYXNlUvTaLJ4yOdWUGxrxGrcycNQxQnq0s
-	 +cQ2W6W0NIuiauhXPMpBnzcY7/cSA22BNedSqMrbgwWrx52Dp02PmDSZ1/vGF9t3cbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793907287;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Svx2OB+5F/Y9K9wuzVYoysQj3wgGVFkM/gP/phcnBkc=;
+	b=YSaLN4RyZja8Uj4surh+nFEGiOqnuv7Z/USDhd60U6xuVzHKdvpmK/G+Ank8ytMN4LTp
+	 eS8ABeSkLJgbp4Tygug50MIl8HjNR4L6SNrBigaU9Z4lE4KCUqWUQ4Zc9n+j9EO67i4me
+	 MvwENRVazAw6ggxM0L5xqylH6mrIafPaaC4xJFJjfcBkZcSZG76FXhZGVcOG7Vwh0Vw6Q
+	 81EKgR5UBwGyMdmjnOGFQRWqygPwyfiK+nf3mRnypbaHrq+hXq5UUvyUBqTOCt4+/T/SL
+	 2HvYtniC7QTzEZVh0oawkk7v/TEJpiz7tW9o6eQx/IqF1/bQbsNbWnf5nhHGN8d1s8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jOfpmpLY;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xfLzh0l2;
+	arc=none smtp.remote-ip=74.125.82.54
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5181606A6C2;
-	Thu,  5 Nov 2026 19:33:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5181606A6C2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0666C6072C61
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 19:34:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0666C6072C61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jOfpmpLY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793907181; x=1825443181;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=U2hJrtx423sVNdvYtSAVrbMHTJILFCRiIFLpGmwhIKM=;
-  b=jOfpmpLYYZtpthv0VTaFjtFt1hdu7pV3MIZvIvV0CsgsTeA1SMSrncnU
-   G2nRfRU+wHLrDW33z0gletbIA7AhM91tT1ACCux/bFU51yDtty9VU9FF4
-   Wb8ozw4kGzWJCNFmaZjPLaAV6+eSZCc/Gh0CSBr563oe+3YniJS9XvXTX
-   7gwSjmvw//5/aJAmaC6ji47sXxFuaxeuzBBOgHNj8239Frxk6ms2UbRi8
-   feDCUEJiIzXSVtBSVaz9fQlRoHHdk5fNlivOk+yTVRnEOYlsoZHV57S/d
-   nIf4YdoBs62DdYkyz5Tf88XCkaNAmLFXnwbd+upEtkOfDyeuVqZ0kbgi+
-   w==;
-X-CSE-ConnectionGUID: +MBlz0aFQeajoIomjma54Q==
-X-CSE-MsgGUID: UK48iO1RT2+tJoZh/kRbEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2612782"
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2612782"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 11:33:01 -0800
-X-CSE-ConnectionGUID: GZhcWmofSJua3QNT4LoHNg==
-X-CSE-MsgGUID: ndfzCq+qR/y14KywqvrBUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="8854806"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa011.fm.intel.com with ESMTP; 05 Nov 2026 11:32:56 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xP3Ce-00000000ml8-3B51;
-	Thu, 05 Nov 2026 19:32:52 +0000
-Date: Fri, 6 Nov 2026 03:32:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Marangi <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xfLzh0l2
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1b1ce85287aso2038340c88.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 11:34:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793907286; x=1794512086; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Svx2OB+5F/Y9K9wuzVYoysQj3wgGVFkM/gP/phcnBkc=;
+        b=xfLzh0l2vsCqCCdPQRfMs1ZN4FSXDvC+ZpFAda9llXVG46mE0arY6MvudKimUQHZJX
+         5VDvlM2X6G2oGV15e4gxJkHk9m3LBdq3i7GpwUCgIfyCsL7aivloXlQ2+xLPF+sVvAUY
+         KQdu9UK1zX9asOCqCsQngZeOElDrLw2C/kiXW49mGECA2/uwIcmMQS3jSp15FAQlcqy6
+         VqJ0uhGBNvqesROQK2Rg4AOTtwUxyON4ZzbibkinXYgG7N0wQbl9BCGaF/YIL6osVxlC
+         hd2HRWRNWJF4USO791FelnXoH3ikp7Kul4PMG2A9VREKPYUYR7xullxIOixCTL5qT9vB
+         QfDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793907286; x=1794512086;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Svx2OB+5F/Y9K9wuzVYoysQj3wgGVFkM/gP/phcnBkc=;
+        b=fISL3MDNYgeUSioqlMCqAEpmY2H7d4v1v+SuLwa9rQVGNRD0u9m4gNuS8buuktg3c2
+         h13N8LOwF7/4vXOYDfkZN+VSS2M/3L0zkhlJ0UGVuQz8F212HY69tC7Nn2zYYI4toYUn
+         wabbpq9gO5Z1rUXx8QBy33CdhrF1xZtiqPwfCCULFuWuLBDHUV39xFRHO7nHtmfJIM/B
+         fVV/U75WxbhB4I7BlUS73rANhSb+FM9Vzw3OIYEUAsAFh5jTB/oqaRLI7aw/Rlsi6rQe
+         cbaY8n/UjtTVsQb24pNbmJJ7Kj0tULp/+5dyXxShWjZp9doXnB+Bkz+RPce1JeBblm1w
+         T3pA==
+X-Gm-Message-State: APuU4Z9yXU9QG0NmzVm1m5GGMzSEpUA8YBbDkZj1LFnZkDdM2VrZpTOk
+	YSzea+Csgw77BAnKIC/Pz30/xrQ0RabMjckySFXVy9/szvV/RfIC5pl1mKEZ7g==
+X-Gm-Gg: AYBFou2fbCciC8KVaq9LbK6LSNgq3jc5GIORfEYyreP6aa5kKLkbBT0MoHgrE7A2GvJ
+	W64DXwPz2Ue+7AHCbCFGioVZb6Cdo1AfuqUcY7hCTULoBzMOUQcJyp6s6cV3YXZ5fGA7llJbKdD
+	v1TESQdMvlQpzSDwS5KdDplskn2gytWzQGtr8uBa8Dbd8MoU0WgsdPHj4B7HPa8OLXSJ1R6TPP6
+	B0x1jFMn61oSZorj/pwUqCVkO8CvahM7EOwwk5mxscEcTusNX6QFAxu+W+pT4/yfMeSP8ifkldj
+	unWMYuO6XVoyq//I6hPkrzdJbxevP7gyzsXeQkQKXh4TCPFAv56Hf/F0rHtzaU9BQt9CJ2K9xAa
+	dZxS+FJwaPB0tSzqyc4ziwQ2G9dPnLcAAt7usVEVi1i724r4Oe3rsrgB3Fk6LVxCglBZzt1foEA
+	POUWZYpKWgqiaWM3+6iyXNEtUYHSI0pzmoqz39xY6bLl4ylOyJXOShtFqQyYFyjwTuqeoB8OWNU
+	Z0uH/t/azvWt9PSAkvntRPfnQYmHFeM9EW0a4pjHucU5XEhwyCoYTqEr+fnDxoEXn5rfnu5sp3u
+	WRoHqEVXNEW/OAOVxcdX08m5IAacT/M=
+X-Received: by 2002:a05:701b:42c3:20b0:1b2:366a:e7d1 with SMTP id a92af1059eb24-1b2366ae854mr16753451c88.32.1793907285921;
+        Thu, 05 Nov 2026 11:34:45 -0800 (PST)
+Received: from eldorado ([2600:8802:b00:1f88::287])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c127sm18023186c88.6.2026.11.05.11.34.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:34:43 -0800 (PST)
+From: Florian Fainelli <f.fainelli@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joris Vaisvila <joey@tinyisr.com>,
-	Ahmed Naseef <naseefkm@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v5 3/6] net: phy: add additional helper for PHY
- package
-Message-ID: <202611060219.OYeac0uG-lkp@intel.com>
-References: <20261105105504.1024-4-ansuelsmth@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list),
+	macro@orcam.me.uk
+Subject: [PATCH net-next 0/3]: net: sb1250-mac: ethtool link updates
+Date: Thu,  5 Nov 2026 11:34:32 -0800
+Message-ID: <20261105193435.2050321-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,33 +98,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105105504.1024-4-ansuelsmth@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+This patch series addresses a few minor issues:
 
-kernel test robot noticed the following build warnings:
+- Running ethtool against an sb1250-mac backed interface would not
+  return any link information, although all of it is there
+- There was no support for restarting auto-negotiation, also there for
+  "free" with PHYLIB
+- The kernel driver reports enabling RX Checksum offload but does not
+  report it through the NETIF_F_* feature bits
 
-[auto build test WARNING on net-next/main]
+Florian Fainelli (3):
+  net: sb1250-mac: Add ethtool link settings support
+  net: sb1250-mac: Advertise and honor RX checksum offload
+  net: sb1250-mac: Add ethtool autonegotiation restart support
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Marangi/net-phy-mediatek-export-__mtk_tr_write/20261105-115457
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20261105105504.1024-4-ansuelsmth%40gmail.com
-patch subject: [PATCH net-next v5 3/6] net: phy: add additional helper for PHY package
-config: sh-randconfig-1000-20261105 (https://download.01.org/0day-ci/archive/20261106/202611060219.OYeac0uG-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261106/202611060219.OYeac0uG-lkp@intel.com/reproduce)
+ drivers/net/ethernet/broadcom/sb1250-mac.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611060219.OYeac0uG-lkp@intel.com/
+-- 
+2.53.0
 
-All warnings (new ones prefixed by >>):
-
->> Warning: drivers/net/phy/phy_package.c:82 expecting prototype for phy_package_unlock(). Prototype was for phy_package_offset() instead
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
