@@ -1,66 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793861048;
-	b=vJYhVgk8FmyfVCDABnJKFx27Z3XympWzKdqJbI/hs5hIWQv8gnArbdLdoE7SgoJ94Nlm
-	 c527o7knz6lHUoWRnydIr0rlxgnvGvXooMKBZ+czesqXogsHP/CHftik85CHo+qOsCNoZ
-	 LxhX/RmonZ+5+zn8l3hGuv6n8/FrW/1c/uUr8YuqLCi/0tL0Kb23y6v5DaI0ZeR3hkfuT
-	 lLj8dMpJ3ZnZlA5FRWyMzPgMzcyWKbY3hO1woHU1ZJTIAcPuLiEtsuJjwVIHXRN5vJjIu
-	 WKCzMBwaGDrEZ4ujZD/J2L2iHDdu9F8sRgrMglakoQy6+q21FisRHcu9OsxNEe7W0wA==
+	t=1793861722;
+	b=aX+tFqiFLKsgEc5mvUcyWZFUfSJexAvAuawPh5pDSJDJltCh7rQOB9+hLBrBvQGFGAX9
+	 IBcv7861swrqawQi378r7ApERW52TKP1+ATkRRZS5UoG1wYM48/2f/h2uYUxab6ywyeL2
+	 323P94go8nY9+n4/5QfQwnk5HfI76lDMMYqoDWbT+CgWFP/lxQAVulnMFemh8iK+ajjW4
+	 gQljCEuMN5qSllNkZm4uYCu+jkZyWH1LL83YWeKYsjz5lfoP8RFzKFvk7cTSTHeR6j6Yz
+	 cbL9KOFKGoQjMpW1fHPmTW9EX5URRKcuELJt1T/1q1Gozg5TZziBjOTvmzGeIy1vNnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793861048;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=CrKc9DfO0oB6G1+crXqAff0+L0ilSXeK3hIK0jKgHi8=;
-	b=XZFa7rbkwMNs3SWS//ByoKlLuW1MZhJW0NF8ri0CtPVNW9Y0gQCmyhqQkg4mUXNFk/fn
-	 LQwCep4o5TAQhr1/PcJzdzYqB7tIR858JcDdA/ADsx4rvi2rQ9wD4TR38m/A29WIX/zZf
-	 SKsndMvgAKD78yypjzIUYORGlJNV8UU9d/tgPRyCBABO0NH1tdsQrIP3xzBc5ZNv2PQJv
-	 7cSIC1hLCEztq6OdezGJ0iqucmjvBJoqA+Sv4rKk2FAVTai8aMNC9XkqJxbb4nLxZXPSX
-	 dw31C2NwlWFhQQTkD517KLQKZSVdliW5f63eGSQGhLIB+4a2j65k/38mcE4raWBHDNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793861722;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=LQW85bAVVPCdOOgk1XApSwydrJwSt71hzV9a95J//68=;
+	b=c9zcyVyZ4tAGG0QF1TqO3a+jXW/LQMD2vJoW1pVoH+O0rwjR2OohmWBeLz/N7lu93/Xm
+	 VVJjwpDXYm2/10VsMfmhpHIm7cpkYTpqnFg5uhN6C2buSLAUkSFG71uWph9/UQemYaFHr
+	 /r7bsnSXlwY73Ze9WEZIIKx5Jsqn8D8tPCkMdz0Y6nWKOeR0Ebf/3Mnq+L+qphsJn2XMM
+	 H4XesXe2Ibndqa7bnQc3Ky52qn+tEVXW3VRnTnms16wSzI+iKLXQVV6BJM3eL96Ptgkr4
+	 uH6bJXPfFbpj//98/LNMMA2lk7Oa2+XSco+emY3uQW4cEv7Nr4EosGqaLKWatlGW94A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BoztfJzN;
-	arc=none smtp.remote-ip=95.215.58.71
-Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CYBJgBxn;
+	arc=none smtp.remote-ip=209.85.216.52
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6EE606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 06:44:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC6EE606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50970606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 06:55:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50970606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BoztfJzN
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AJvSBmpuKsm2r9LIYiiIAUw+HB9piFiuKi7K/Txgm7k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793861045; v=1; x=1794465845;
- b=BoztfJzNPiVh+7x92vF4NWxOwffKnY+NxmzoebKLg2ETMEZH02hgpbQjKkL7kDxH5K5GAfhq
- dtbEMSxr1cwYrTApsARnNj1Qa2S9hV57KAi/Hc2BOOygnYTJBKuFJWcsYI2XdruGSTd89QoET0q
- xIMlsP69PW7IBKyM3vLxcJ/Q=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 0b95db6ca7641e0f;
-	Thu, 05 Nov 2026 06:44:05 +0000
-X-Mizu-Trace-ID: 0b95db6ca7641e0f
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 14:43:52 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Timur Stukan <timur.stukan.linux@gmail.com>
-Cc: netdev@vger.kernel.org, Nikolay Aleksandrov <razor@blackwall.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] bonding: fix missing down path on speed/duplex
- failure after FAIL->UP
-Message-ID: <auwlqK01oV5jfwWW@fedora>
-References: <20261101150240.66292-1-timur.stukan.linux@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CYBJgBxn
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3b09cc7ed1aso157164a91.2
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 22:55:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793861721; x=1794466521; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LQW85bAVVPCdOOgk1XApSwydrJwSt71hzV9a95J//68=;
+        b=CYBJgBxn0EY06zA58v4VQ98AJISJdeEknofMoU64gnuZ15tc2TFF0OTo5Fzl4zSzo3
+         mhT/LynFJYsIEns4tggxcXTPmQ6Nko6WFvaXl1W5UYcc3UQAqg7Ok89mjPM/SpJGH4pu
+         kDXTZACy8zKkPTzkF6NKDIH3ZYiPaudqcLKV3owpnK1JRphfrneXYqliOtGINHTe4Feb
+         0W/PVlOo7wC5BAJu6Hy+fxqRp8o3nwllJeRPj+UoR+fkte0KcDaGc00yPbv8DFzf/fly
+         ZzL6qAJ7t9FEgjteU9nqFtJ+uoBKYhCEK7WlVmAZIfx2g9V5tLcbAtWOVAI1E3GwB+sP
+         8J1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793861721; x=1794466521;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LQW85bAVVPCdOOgk1XApSwydrJwSt71hzV9a95J//68=;
+        b=ZMsukF9uB+v0z80DiwN8U9V/WkXfoOdJA1uBWaY6gnE5jZ2g1UxTITKInd/AkqQxdB
+         ft/mzHn9p7gm2tEDil1SvO24uBAQBGFa7NX1y59Gkl+K/U+XP4tTpJtlDuvis5Q4r2SD
+         qAr5/LpMzoFH4+rXofPshmjJZXs9ZYlznAbnwS4W6RJU82tB4IpfZMDj79NdwTHgJ5vw
+         m/Ejtlqk2sNtmhADl4tphP4eb3ECZAnpKIWGOHB3F+Py6Rd1fO4SeOe1CWh3im8IEKlj
+         BJbqQgBEF6Uy+AYEDqabhiimOxTDJEo5RGIh1idb+KdT0cAy1Ip+sES6QjPr/S5kZE+3
+         SRZg==
+X-Forwarded-Encrypted: i=1; AKwUvByDlvGCGQScLwrotQqZvwiCm2gEGRsy3M+STQ8DT5LVL6DMeZmdbiC+oDMGvZ6ur97jUhP3WtM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+4pVI5HJfUrdtGM6vLRgJUvoEDsKsj5cf/JXuYkm6t7Dv1rvYD
+	8/TSAFZxxlKwNqHawCqAe/G8Iu9BOKB5WMdgWi6VWJm6sPfkdpyFNcOG
+X-Gm-Gg: AYBFou2nbmuVpsZERmfP9Nw5Qv6k0CT8/NOOTxGOLkcZ8AMarx4oZFsqNj2FbC0eS1i
+	SM06AFdvA4mg5L/OmwYGWN9Qolp32xDdFiQ/ZtdUZGOcdyGhdcy5ctIv3dKjdoCW+rvSNKGnB9T
+	yonZoBKaMk4537j56cj4/Gs6MTvtwMAI3ugPqAvwL5bsyPTrOy+4ZH7YfhdgfLdblXRHd0ThBI0
+	2FC3THlVOPPxPVXww7snrEmjVsZVVyzFW1Wq6dXTpPPkok9pz20HNmiNLIWa0+ybj/hh04oNBWd
+	uSItz4C+bwB+lbaueb9lu/jtqVFD3N9GsYm/+t78dHvKAgvaPzVtmGwh9XSM+CztEyxz6mEAzo4
+	KLkNhoLLXi6798KN5QF5xS36XlZ+E79APdP+gY3l7D5O1gfS0MmBM5mfSuXmPCdXfDpJn1nrJhR
+	RGFRh5H12kvm7hKg9E7A9LQeiGZoYeJpTIix6uunusq7l+rgIBdUIINKHD3aES55KmJY09LKWpa
+	8j8qd1BAPvcUT20mF0uHe+UN6wrrhBO2sgWcHYQQqsgkyVI9dhTShvyxoxX+NatcWThNH3RndIU
+	PhJ7tTPcvhm0CX2U2gm7T6Wy31qIv06iaD45hKwUgj07m67uy4zHUyqX0G8Fcug8+sHYi3ILgjT
+	41qfQnPlalxFPr6Z/
+X-Received: by 2002:a17:90b:2e51:b0:3a0:c1b1:45fb with SMTP id 98e67ed59e1d1-3ae89282cf6mr26913916a91.0.1793861720549;
+        Wed, 04 Nov 2026 22:55:20 -0800 (PST)
+Received: from localhost.localdomain ([139.159.170.72])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31f8804sm2322929a91.17.2026.11.04.22.55.13
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 04 Nov 2026 22:55:20 -0800 (PST)
+From: Qihang <q.h.hack.winter@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: phil@nwl.cc,
+	vladbu@nvidia.com,
+	ozsh@nvidia.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qihang <q.h.hack.winter@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] netfilter: nf_flow_table: defer pernet stats release to last flowtable teardown
+Date: Thu,  5 Nov 2026 14:55:09 +0800
+Message-ID: <20261105065509.94627-1-q.h.hack.winter@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,193 +103,184 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261101150240.66292-1-timur.stukan.linux@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 01, 2026 at 05:02:39PM +0200, Timur Stukan wrote:
-> In bond_miimon_commit(), when a slave is proposed as BOND_LINK_UP but
-> bond_update_speed_duplex() fails in bonding mode that needs speed/duplex
-> (802.3ad, tlb, alb), the slave is set to BOND_LINK_DOWN directly. This
-> bypasses bond_set_slave_link_state(), bond_miimon_link_change() and
-> failover.
-> 
-> This is fine for slave that coming from BOND_LINK_BACK, which was never
-> brought up and is not in use. But since commit 1899bb325149 ("bonding:
-> fix state transition issue in link monitoring") the commit phase also
-> handles BOND_LINK_FAIL -> BOND_LINK_UP which means a slave that is still
-> in use and may be curr_active_slave.
-> 
-> If the link recovers within downdelay and goes down again before the
-> commit phase reads speed/duplex, the slave is silently marked down while
-> remaining the active slave in worst cases. In alb/tlb the bond MAC stays
-> on the dead port, no failover happens and TLB/RLB state is not cleaned,
-> so the bond stops passing traffic until that link comes back even though
-> other slaves are up. A non-active slave is affected too, in alb, RLB
-> clients assigned to it are not reassigned and become unreachable.
-> 
-> Reproduced in tlb and alb mode with miimon=100 and downdelay=10000 by
-> flapping a slave within downdelay and dropping it again before commit
-> (a longer delay was added between inspect and commit to make window
-> wider and easier to test):
->   bond0: (slave enp0s3): link status down for interface, disabling it in 10000 ms
->   bond0: (slave enp0s3): link status up again after 3400 ms
->   bond0: (slave enp0s3): failed to get link speed/duplex
-> 
-> procfs then shows the active slave with "MII Status: down" and "Link
-> Failure Count: 0", and all traffic is lost.
-> 
-> Fix this by dropping the loop in bond_mii_monitor() that applied all
-> proposed link states before bond_miimon_commit(). bond_miimon_commit()
-> now applies each state itself: UP after the speed/duplex check, as it
-> already did, DOWN in the down path, and FAIL/BACK directly. So when the
-> speed/duplex check runs, slave->link still holds the previous state. If
-> the check fails for a slave that is FAIL or UP, take it through the
-> regular down path, including failover. DOWN and BACK slaves were
-> never brought up and are still just reverted to DOWN. The down path is
-> moved into bond_miimon_slave_down() so both callers share it.
-> 
-> After the fix:
->   bond0: (slave enp0s3): failed to get link speed/duplex
->   bond0: (slave enp0s3): link status definitely down, disabling slave
->   bond0: (slave enp0s4): making interface the new active one
-> 
-> Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
-> Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
-> ---
-> 
-> Notes:
->     Changes in v3:
->     - Drop the loop in bond_mii_monitor() and apply FAIL/BACK in
->       bond_miimon_commit() with bond_commit_link_state() (Jay, Hangbin)
->     - Also take the full down path for a slave that is already UP when
->       the speed/duplex update fails (Sashiko)
->     - The 802.3ad notifier issue reported by Sashiko is fixed separately:
->       https://lore.kernel.org/netdev/20261101145653.63648-1-timur.stukan.linux@gmail.com/
->     - v2: https://lore.kernel.org/netdev/20261028104758.299129-1-timur.stukan.linux@gmail.com/
->     
->     Changes in v2:
->     - Drop link_prev_state. Instead, don't commit UP proposals in
->       bond_mii_monitor() and let bond_miimon_commit() commit them after
->       the speed/duplex check, so no extra state is needed (Jay)
->     - v1: https://lore.kernel.org/netdev/20261022103821.89552-1-timur.stukan.linux@gmail.com/
-> 
->  drivers/net/bonding/bond_main.c | 63 +++++++++++++++++++--------------
->  1 file changed, 37 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 7019e5d8fdc8..d6b6c125470f 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -2779,6 +2779,27 @@ static void bond_miimon_link_change(struct bonding *bond,
->  	}
->  }
->  
-> +static bool bond_miimon_slave_down(struct bonding *bond,
-> +				   struct slave *slave)
-> +{
-> +	if (slave->link_failure_count < UINT_MAX)
-> +		slave->link_failure_count++;
-> +
-> +	bond_set_slave_link_state(slave, BOND_LINK_DOWN,
-> +				  BOND_SLAVE_NOTIFY_NOW);
-> +
-> +	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
-> +	    BOND_MODE(bond) == BOND_MODE_8023AD)
-> +		bond_set_slave_inactive_flags(slave,
-> +					      BOND_SLAVE_NOTIFY_NOW);
-> +
-> +	slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
-> +
-> +	bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
-> +
-> +	return slave == rcu_access_pointer(bond->curr_active_slave);
-> +}
-> +
->  static void bond_miimon_commit(struct bonding *bond)
->  {
->  	struct slave *slave, *primary, *active;
-> @@ -2807,10 +2828,22 @@ static void bond_miimon_commit(struct bonding *bond)
->  			err = bond_update_speed_duplex(slave);
->  			netdev_unlock_ops(slave->dev);
->  			if (err && bond_needs_speed_duplex(bond)) {
-> -				slave->link = BOND_LINK_DOWN;
->  				if (net_ratelimit())
->  					slave_warn(bond->dev, slave->dev,
->  						   "failed to get link speed/duplex\n");
-> +				/* Coming from FAIL/UP, the slave may still be
-> +				 * in use and may be curr_active_slave, so take
-> +				 * it through the full down path. Coming from
-> +				 * DOWN/BACK, it was never brought up, so just
-> +				 * revert it to DOWN.
-> +				 */
-> +				if (slave->link == BOND_LINK_FAIL ||
-> +				    slave->link == BOND_LINK_UP) {
-> +					if (bond_miimon_slave_down(bond, slave))
-> +						do_failover = true;
-> +					continue;
-> +				}
-> +				slave->link = BOND_LINK_DOWN;
->  				continue;
->  			}
->  			bond_set_slave_link_state(slave, BOND_LINK_UP,
-> @@ -2839,28 +2872,13 @@ static void bond_miimon_commit(struct bonding *bond)
->  			continue;
->  
->  		case BOND_LINK_DOWN:
-> -			if (slave->link_failure_count < UINT_MAX)
-> -				slave->link_failure_count++;
-> -
-> -			bond_set_slave_link_state(slave, BOND_LINK_DOWN,
-> -						  BOND_SLAVE_NOTIFY_NOW);
-> -
-> -			if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
-> -			    BOND_MODE(bond) == BOND_MODE_8023AD)
-> -				bond_set_slave_inactive_flags(slave,
-> -							      BOND_SLAVE_NOTIFY_NOW);
-> -
-> -			slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
-> -
-> -			bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
-> -
-> -			if (slave == rcu_access_pointer(bond->curr_active_slave))
-> +			if (bond_miimon_slave_down(bond, slave))
->  				do_failover = true;
-> -
->  			continue;
->  
->  		case BOND_LINK_FAIL:
->  		case BOND_LINK_BACK:
-> +			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
->  			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
->  				  slave->link_new_state);
->  			continue;
-> @@ -2894,8 +2912,6 @@ static void bond_mii_monitor(struct work_struct *work)
->  {
->  	struct bonding *bond = container_of(work, struct bonding,
->  					    mii_work.work);
-> -	struct list_head *iter;
-> -	struct slave *slave;
->  	unsigned long delay;
->  	bool commit;
->  
-> @@ -2917,13 +2933,8 @@ static void bond_mii_monitor(struct work_struct *work)
->  			goto re_arm;
->  		}
->  
-> -		if (commit) {
-> -			bond_for_each_slave(bond, slave, iter) {
-> -				bond_commit_link_state(slave,
-> -						       BOND_SLAVE_NOTIFY_LATER);
-> -			}
-> +		if (commit)
->  			bond_miimon_commit(bond);
-> -		}
->  
->  		if (bond->send_peer_notif)
->  			bond_peer_notify_may_events(bond, true);
-> -- 
-> 2.43.0
-> 
+The pernet flowtable statistics (net->ft.stat) are released when the
+netns exits, but the flowtables attached to a dying netns are torn down
+asynchronously afterwards: the tc conntrack action frees its flowtable
+from an RCU-delayed workqueue item (tcf_ct_flow_table_cleanup_work()),
+and nf_tables releases flowtables from the transaction release work.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+nf_flow_table_free() ends with a garbage-collection pass that queues
+offload works; flow_offload_queue_work() increments the pernet counters
+when scheduling them and the handlers decrement the counters again once
+they complete.  The flushes in nf_flow_table_free() only drain those
+workqueues when hardware offload is in use, so after free_percpu() the
+stray workers still this_cpu_inc()/this_cpu_dec() into freed percpu
+memory.
+
+Account flowtables at init time and defer the release of the statistics
+to the last nf_flow_table_free() of a dismantled netns, after draining
+the offload workqueues.  A netns without flowtables keeps the
+synchronous release.
+
+Fixes: b038177636f8 ("netfilter: nf_flow_table: count pending offload workqueue tasks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+---
+ include/net/netfilter/nf_flow_table.h |  1 +
+ include/net/netns/flow_table.h        | 11 +++++++
+ net/netfilter/nf_flow_table_core.c    | 44 ++++++++++++++++++++++++++-
+ net/netfilter/nf_flow_table_offload.c |  7 +++++
+ 4 files changed, 62 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index 5b22d31cb1407..91ffa3072a0cc 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -376,6 +376,7 @@ void nf_flow_offload_stats(struct nf_flowtable *flowtable,
+ 
+ void nf_flow_table_offload_flush(struct nf_flowtable *flowtable);
+ void nf_flow_table_offload_flush_cleanup(struct nf_flowtable *flowtable);
++void nf_flow_table_offload_drain(void);
+ 
+ int nf_flow_table_offload_setup(struct nf_flowtable *flowtable,
+ 				struct net_device *dev,
+diff --git a/include/net/netns/flow_table.h b/include/net/netns/flow_table.h
+index 1c5fc657e2675..6d2dc0d1f06c7 100644
+--- a/include/net/netns/flow_table.h
++++ b/include/net/netns/flow_table.h
+@@ -2,6 +2,9 @@
+ #ifndef __NETNS_FLOW_TABLE_H
+ #define __NETNS_FLOW_TABLE_H
+ 
++#include <linux/spinlock.h>
++#include <linux/types.h>
++
+ struct nf_flow_table_stat {
+ 	unsigned int count_wq_add;
+ 	unsigned int count_wq_del;
+@@ -9,6 +12,14 @@ struct nf_flow_table_stat {
+ };
+ 
+ struct netns_ft {
++	/* Protects nr_ft and exiting. */
++	spinlock_t		lock;
++	/* Number of flowtables attached to this netns. */
++	int			nr_ft;
++	/* Set at netns exit; the statistics are then released by the
++	 * last flowtable teardown.
++	 */
++	bool			exiting;
+ 	struct nf_flow_table_stat __percpu *stat;
+ };
+ #endif
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 0d72dc8ae47a1..de0a9f0e4f7b9 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -715,6 +715,7 @@ EXPORT_SYMBOL_GPL(nf_flow_dnat_port);
+ 
+ int nf_flow_table_init(struct nf_flowtable *flowtable)
+ {
++	struct net *net;
+ 	int err;
+ 
+ 	INIT_DELAYED_WORK(&flowtable->gc_work, nf_flow_offload_work_gc);
+@@ -733,6 +734,13 @@ int nf_flow_table_init(struct nf_flowtable *flowtable)
+ 	list_add(&flowtable->list, &flowtables);
+ 	mutex_unlock(&flowtable_lock);
+ 
++	net = read_pnet(&flowtable->net);
++	if (net) {
++		spin_lock(&net->ft.lock);
++		net->ft.nr_ft++;
++		spin_unlock(&net->ft.lock);
++	}
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(nf_flow_table_init);
+@@ -771,6 +779,8 @@ EXPORT_SYMBOL_GPL(nf_flow_table_cleanup);
+ 
+ void nf_flow_table_free(struct nf_flowtable *flow_table)
+ {
++	struct net *net;
++
+ 	mutex_lock(&flowtable_lock);
+ 	list_del(&flow_table->list);
+ 	mutex_unlock(&flowtable_lock);
+@@ -781,19 +791,51 @@ void nf_flow_table_free(struct nf_flowtable *flow_table)
+ 	nf_flow_table_iterate(flow_table, nf_flow_table_do_cleanup, NULL);
+ 	nf_flow_table_gc_run(flow_table);
+ 	nf_flow_table_offload_flush_cleanup(flow_table);
++
++	/* The gc pass above can still queue offload works whose handlers
++	 * decrement the pernet statistics.  Drain them all.
++	 */
++	nf_flow_table_offload_drain();
+ 	rhashtable_destroy(&flow_table->rhashtable);
++
++	net = read_pnet(&flow_table->net);
++	if (net) {
++		bool release;
++
++		spin_lock(&net->ft.lock);
++		release = net->ft.exiting && !--net->ft.nr_ft;
++		spin_unlock(&net->ft.lock);
++
++		/* Released by the last flowtable teardown, see
++		 * nf_flow_table_fini_net().
++		 */
++		if (release)
++			free_percpu(net->ft.stat);
++	}
+ }
+ EXPORT_SYMBOL_GPL(nf_flow_table_free);
+ 
+ static int nf_flow_table_init_net(struct net *net)
+ {
++	spin_lock_init(&net->ft.lock);
+ 	net->ft.stat = alloc_percpu(struct nf_flow_table_stat);
+ 	return net->ft.stat ? 0 : -ENOMEM;
+ }
+ 
+ static void nf_flow_table_fini_net(struct net *net)
+ {
+-	free_percpu(net->ft.stat);
++	bool release;
++
++	spin_lock(&net->ft.lock);
++	net->ft.exiting = true;
++	release = !net->ft.nr_ft;
++	spin_unlock(&net->ft.lock);
++
++	/* Pending flowtables still update the statistics from workqueue
++	 * context; the last one releases them, see nf_flow_table_free().
++	 */
++	if (release)
++		free_percpu(net->ft.stat);
+ }
+ 
+ static int nf_flow_table_pernet_init(struct net *net)
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 4365859220e6a..6ac28802ef632 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -1180,6 +1180,13 @@ void nf_flow_table_offload_flush(struct nf_flowtable *flowtable)
+ 	}
+ }
+ 
++void nf_flow_table_offload_drain(void)
++{
++	flush_workqueue(nf_flow_offload_add_wq);
++	flush_workqueue(nf_flow_offload_del_wq);
++	flush_workqueue(nf_flow_offload_stats_wq);
++}
++
+ static int nf_flow_table_block_setup(struct nf_flowtable *flowtable,
+ 				     struct flow_block_offload *bo,
+ 				     enum flow_block_command cmd)
+-- 
+2.54.0 (Apple Git-157)
+
