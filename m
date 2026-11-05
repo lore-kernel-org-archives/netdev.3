@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793909603;
-	b=Yd708FV4qZd2Kxd+ng3msRc10RpB+yc6lsFmO5VK+a3SVN48a+wgpGjSJ9jRNN8H641l
-	 nUlCoMrBjg1JzI+lYv5uo5/GhKvLr5yQvqj474g7RtMmZTIG7A23pvWtOl9sbPPvT5FeR
-	 AHI0VWzeT9qFGHNn21Ptnh9qAQtxspdp2QqsznK21NfBtMXZZ/1Xe2F2qLp7tjS74n2Na
-	 Yrd2pQixUbEnGyAQ07XRPC0P1nemxwJzOMeBe6Be4Y2w8iqiML653WF+YScAPqjgDQcYC
-	 LF+qsMew/y7UuR62gThXeP8aoA/ZsfXEtapfaZlwGCrWagxdPcf4A/594as+EQCN+2g==
+	t=1793909605;
+	b=kkKckNKbRdQKXv+YAvEK92hKtz/c2sb3+UccwW52dKROrZCqLk8pOf2Qud/m3Zrgt6XJ
+	 wgm0qHxjXQynFMJTSL9V8lsj2Z+dHB43PnRPaC0e46rCBf7Gog5SgQ5JIFv2Z+VJH0Wfx
+	 x1T/pgXrAbD3+Ga6nyLeJ0MC9dpNdeh86vPyw913qD2yDxIIrhYwLQgpJlxCyccPsekEG
+	 hDFhxUHZIGUtMVklY6mxzpgL0CrRh57HvAXb1KYmD+NXGjM01KI1JCs2e8hbkOHx4C8Y0
+	 kEi0Dq47n/weLmQUUiitZU3qYd2jY0/CBga3r76g1stmTqrea98ukU1c3dqzRyrmAOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793909603;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793909605;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=yVXIU0tINtNyRykkZu1Es+JOorB8e6iDSm9KoMw2Dks=;
-	b=clJJ597eD2CbYDZev7zd6lR6qSy9XnQbxCuM/NBiMCuBDqu+6OfxDstU779qRrShQPgY
-	 pbBD1VH1qDljc7sk8qyIBXY5nJ1EeCaA2wGfym91XmIDRYRcU7tJ1XH3yDygJxXtgjJc5
-	 TKkW6q1/fwqltbOvc6e2sFqoMnnI2nvjA393aOUXut+kP0Q9WaHhkgpusuCITE2cmhHEq
-	 x1VaKLI1MoX2UH8x38GfAtOHVpcSIuCyNWrolYGW1BnIU/zGxqUeeELDXdR3joKw+mN8+
-	 JlQuPgzpj4yO9ZQxVHcTrRm7N9gpg/FtZFCZSpxDnp2UwidM6W30pmFAwFBb8PRVONw==
+	bh=ryZaGDx8x3a69Rl5DLQy2dlizJwtAjr+7G9khhFuLno=;
+	b=pt4FzXDmbG0MSs2frAVbjO3L7nTkNsvXVayKPlZWSSY/wXywwt/6i/AECLXjFuBEBKAP
+	 DO3RTeUAHX1KZnIFjMgTk/cz84Wo57A5BJjjeJTB6XRU+TLBRcyDWl4cIhMh54RrY661S
+	 zBN8lJfldalKCcCBkh8dlfT6uSbc2+NMfvy3xYwYFdNNW/C2bqTowcQ0WjWoKQGPQyw8l
+	 mDUtLLd/u+K72ngiiTo+1G8IvNjzirlQPtn1/kXdJgGYi/SixZ/Oo5r6JEPzSwE2cFw9Q
+	 H+wXKhON/zlB2cl1wdmdndXSWD3Maq7aB5mJjpiJkWKYQTH0jN248FCBx14XUNucVlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nGL7QiNh;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K8i7d1Vr;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17084606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:13:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 17084606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616E3606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:13:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 616E3606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nGL7QiNh
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3535a54bed9so3061134eec.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:13:22 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K8i7d1Vr
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-36dbde64409so2225196eec.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:13:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793909602; x=1794514402; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793909604; x=1794514404; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yVXIU0tINtNyRykkZu1Es+JOorB8e6iDSm9KoMw2Dks=;
-        b=nGL7QiNhOOT36bJGQ9yRP8GnCb+g6VkzTUkHZ/AYcnt5Es6fxhxwhLnY2AzUdBNx/+
-         e4Wm+IWhhQrWZ6V/wX3Z9so98xDzz+xW6pC9L/BP7xYtHxgXaD7jG3/x1fpyVhnJLbBc
-         zI9G5FsZZ/CjXpCRaQB9U7ueSGxT24g7v5bI+g0KWx+w3jUkVEPJToJNkF1GlS8CvN8u
-         84MAr/9uSCxzlBn4kmuA/sYZYR//QdKRJ45qDfASFb6we5DvA6uqBvvIzs7QCGDo2zsA
-         HDwyAM1YrHRPfeEybqphPLUnJ/oq2m/HN/SrivF7L/KVnMbVQspm9mIIw5rbZA/TXUdB
-         s/Fw==
+        bh=ryZaGDx8x3a69Rl5DLQy2dlizJwtAjr+7G9khhFuLno=;
+        b=K8i7d1VrkroBnkNc8zQUxWBfEJTpZWK/wExpNTghloqtlCEraSKnSfrretlhwNS4ML
+         icFROYQINC7ZQaYPZOqF/lZFgfRkPhQOkmiYecGHpEE66ltNn5zFtL9fqHEQXDdqfSql
+         Hg1BhMEu6xO4paZ6Z61zQdanU+2F85CvBDjw6T5qAM2dBZpeVSgS9KYFUBZ8YSTpU3Gi
+         YNfFsLfI898tNKNsref4CTXeRkNhA1QCGI+XvtF6v0dhyIft8k70W9ERy2/P/WDTzTWr
+         dMdxcRBxzIB6gfyNfNbV0EeMSHDkJbp5RYtgMHhhHRBRo4pDLeFXgMLyny4g8zZPTcov
+         AQ3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793909602; x=1794514402;
+        d=1e100.net; s=20260707; t=1793909604; x=1794514404;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yVXIU0tINtNyRykkZu1Es+JOorB8e6iDSm9KoMw2Dks=;
-        b=K6qEbziASKWvK0/396wIQ+lcedINvHvIxOS7GbJ4kHg9/IOZgfarHTInUPNxpLS9Pn
-         cYlSHjKX6fPhzdQ/lq40XsVzRcy/VFDQk5ef0/IHAtd93K4JS1Sa+gyoE2VT269yvnJm
-         o4tKnLGGG/TTB4H0VMJY5MbTiEahbYBka9Q3IdoD5GR3SbO5V4uiWzgW2V9c96B1ockN
-         d4cA8+GqghgmMJWgUeAFKcrFPTHpZunPkjmbn616IUI6PCB77AgXu1CRVorWG++JvB0q
-         Hx373TC3ZMcBOFFEtzcC6MNmu9Ng2WKNcmm4u0+WvmZVkfnpls1cwxfSKpbQXYCvhrry
-         iogw==
-X-Gm-Message-State: APuU4Z8zxpmdHcxsfl/eJaSJ+6RgY9AcbgB0QUGmhOO9uY2r6H/M9Ikk
-	pim9ocOiuMpCR4zvZqNoZO23iJCKURn00qbHG4ZOFdEj1lpgPC4rrxNCw6z1FvoS
-X-Gm-Gg: AYBFou1kXPY0XG2DWZLlypJg3v2hG+MEeFiwV9qkp3tmtNh0rP99jRw/dx4d4pIOD4T
-	mJDrNUfqa85+nUsRXfVGX/Uq8GYpssFSp9A6GLgvm2uk/i1wSwEnVKLE7IKJ2w1cWPRqhfiLQa/
-	WDKoHX05fnyYnMoJJTAvQEqLfF1tEJblq6nm/ri8ZIQeCxRaVpWyrmUEJIHm9Cy/WFd+xl/ECDB
-	uOuwxUA1uKFzgh/Ney1xbM3suGndOOQHKsl60fKaCs6pQOpRT453QxEQrLYDucL04+aUQqP0jHb
-	vuVnwJ/3YtJ0gAIHOVxKzqPiuMWDEcBTJPweZz7uaQoPFY7Gc1VUL6rKeJZ/8KN8T70Hfq1IQgI
-	NrHcjCIDMI0D3pdGWQngKP0nKB8O8ev5dKsf856F+KSR6BD8Xz1Kcjg6mJWtYKYp285TO2Fsnwp
-	J4EFgFO7Fc+SbksVsFDoMu3icM9lwaipX4EhrnSP5zkazqNrrcGe8JAnhCkw0i3eMAnWW1uqhCM
-	huKSAh7hJ1VGc76CM5vLcgbhPFkQ0HjWCe2EerpHDpE1+Excyyc9vWBkH0LWo9cMHsPhlZlk24N
-	17mew9yMcD8xJJ0qVvDszuYMXRRugg==
-X-Received: by 2002:a05:693c:881b:10b0:351:1bdb:e3b7 with SMTP id 5a478bee46e88-36f75b2c6e8mr275702eec.15.1793909601973;
-        Thu, 05 Nov 2026 12:13:21 -0800 (PST)
+        bh=ryZaGDx8x3a69Rl5DLQy2dlizJwtAjr+7G9khhFuLno=;
+        b=evnBz3JmMX7hGaWZobmtTMV721NkiYR3CwCe46mUOG92x7o8ceOR2bOSDrKz0i0wz1
+         B+5YQP8P+5oeZusi+3V9aRZUH9yF/0vcosdvEp1RhvsRNy6Nfjz/OhjMbZMr4ArQE88Q
+         LcdF72x/sebbtb0j7FbSjO8IvhWibEY0Va5/F4WTec20c9ojRj6wRaPLLsDJgbIXdx++
+         Sin5mah1xTLUKEJWFlEK2yYV4BzCSgNHbDn9cxUPUf7FQUfQLMd2ViDmwKAwAd7jau/h
+         pcJKZLxHSx3eeLwA9mQru7e79x2/woX2xBDspVuXYYNyBv5EFEcwBsRICXhxtYZDf54n
+         9qxQ==
+X-Gm-Message-State: APuU4Z8fBez+1Ixh9OkH8MjUVEV8IEEYsaj/speD6rQB9USuR9agEYFo
+	Kn5afk/wqE30CGeJ8VCP4B2rgdfP7T9GTYkq45b8yO+R8XEqtsni/TqZnmG7BHxk
+X-Gm-Gg: AYBFou1tfOM9hsyIXF5VTmNQmFZXAxaMHlvuN4DJixe1tKty2w+1BK8FNT5F1xFA4RT
+	QEi0m8844v1Uv24XScGI0cYyjldcMOgSyVv97T1iF7j4hm7Yk2OnwcImI9XQYAQYrse1rdlVeI1
+	ux5+972wzjW4b2esL5FXZtSn63CL9/pLsR6dTVy/f30aTCeWFXzqHdEVzh9dmveNyuD+V5wpLt7
+	t8XXSCf0fcw1M2HKFXLycZcnDIAhJjfeBhEDBEd7mLhL2uXj80D0eUxIYCgLDgI409soKjDMcdx
+	I7qxT+p1/3rlCvxVME1AFXiphby3/4uTCBonyAHvYGE/XycECB569V6RJ+AJ/UQFoJJpQF2HMxc
+	E7M21C4qPTagrtFRWaaWqRT3rPGZTwhJprGDYN5pl4GMk1ScmvP1PMvjCHV88k/MTg+petvONou
+	49GozlTyUfyXUfCsCN34Q2tkW9wfPmo2mZMGQj624D6bY+xZpQ3Ix2UhwmIoFCm20tVRqJmVIDz
+	GN0boKeVUuLp0PRvit8YKCx8fbLW0l1r60s8SRn0N1NnrdNG/T3HvqAp1htOygXeWQ2RUCpK6Gc
+	HejlxPntHyGF/vHBqr0+IYRn+KuWBQ==
+X-Received: by 2002:a05:7301:460f:b0:36d:5102:9974 with SMTP id 5a478bee46e88-36f723e76b7mr336421eec.2.1793909604349;
+        Thu, 05 Nov 2026 12:13:24 -0800 (PST)
 Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36f722ed312sm590869eec.19.2026.11.05.12.13.19
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36f722ed312sm590869eec.19.2026.11.05.12.13.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 12:13:21 -0800 (PST)
+        Thu, 05 Nov 2026 12:13:23 -0800 (PST)
 From: Matt Vollrath <tactii@gmail.com>
 To: netdev@vger.kernel.org,
 	"David S . Miller" <davem@davemloft.net>,
@@ -91,9 +91,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	Alexander Aring <aahringo@redhat.com>,
 	Willem de Bruijn <willemb@google.com>,
 	Alexander Duyck <alexander.duyck@gmail.com>
-Subject: [PATCH net-next 1/4] ipv6: fix transport header of forwarded GSO packets
-Date: Thu,  5 Nov 2026 15:13:06 -0500
-Message-ID: <20261105201309.3182307-2-tactii@gmail.com>
+Subject: [PATCH net-next 2/4] ipv6: sr: keep transport header after inline SRH insertion
+Date: Thu,  5 Nov 2026 15:13:07 -0500
+Message-ID: <20261105201309.3182307-3-tactii@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261105201309.3182307-1-tactii@gmail.com>
 References: <20261105201309.3182307-1-tactii@gmail.com>
@@ -108,59 +108,56 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip6_rcv_core() sets transport_header just past the fixed IPv6 header,
-and local input advances it over each extension header. Forwarding
-skips that walk, so a GSO packet with a destination options or routing
-header reaches ip6_forward() with transport_header at an extension
-header. So does a packet forwarded again after the router processed its
-routing header.
+In inline mode, seg6_do_srh() leaves transport_header at the inserted
+SRH, although the L4 header has not moved. GSO length checks then read
+the SRH as TCP, and since commit 7fb4c1967011 ("net: pull headers in
+qdisc_pkt_len_segs_init()"), a bogus doff below 5 there makes
+__dev_queue_xmit() drop each GSO packet of the flow as SKB_BAD_GSO.
 
-skb_gso_validate_network_len() then reads a bogus TCP header length. An
-overestimate makes ip6_forward() answer with Packet Too Big at the
-current MTU, and the flow stalls. Since commit 7fb4c1967011 ("net: pull
-headers in qdisc_pkt_len_segs_init()"), a bogus doff below 5 also makes
-__dev_queue_xmit() drop the packet as SKB_BAD_GSO.
-
-Before the MTU check, set transport_header from csum_start for
-CHECKSUM_PARTIAL packets without encapsulation. Otherwise, if the
-packet has extension headers, skip them with ipv6_skip_exthdr().
+On output, restore transport_header from its distance to the end of the
+packet, which the insertion does not change. The input path keeps it at
+the SRH, where local input parses extension headers from.
 
 Signed-off-by: Matt Vollrath <tactii@gmail.com>
 ---
-The Packet Too Big stall dates back to commit fe6cc55f3a9a ("net: ip,
-ipv6: handle gso skbs in forwarding path").
+transport_header has pointed at the inserted SRH since commit
+6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection
+with lwtunnels"), where qdisc length accounting and ndo_features_check()
+read it.
 ---
- net/ipv6/ip6_output.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/ipv6/seg6_iptunnel.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 25fe0ba98b1a..60ac56afbd06 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -662,6 +662,23 @@ int ip6_forward(struct sk_buff *skb)
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 0d39a38a5dd2..942704eca8db 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -676,6 +676,7 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
+ 	struct seg6_lwt *slwt;
++	int tail_len = -1;
+ 	int err;
  
- 	__IP6_INC_STATS(net, ip6_dst_idev(dst), IPSTATS_MIB_OUTFORWDATAGRAMS);
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+@@ -684,10 +685,17 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	dst = dst_cache_get(&slwt->cache_output);
+ 	local_bh_enable();
  
-+	if (skb_is_gso(skb)) {
-+		if (skb->ip_summed == CHECKSUM_PARTIAL && !skb->encapsulation) {
-+			skb_set_transport_header(skb,
-+						 skb_checksum_start_offset(skb));
-+		} else if (ipv6_ext_hdr(hdr->nexthdr)) {
-+			u8 nexthdr = hdr->nexthdr;
-+			__be16 frag_off;
-+			int thoff;
++	if (slwt->tuninfo->mode == SEG6_IPTUN_MODE_INLINE &&
++	    skb_transport_header_was_set(skb))
++		tail_len = skb->len - skb_transport_offset(skb);
 +
-+			thoff = ipv6_skip_exthdr(skb, skb_network_offset(skb) +
-+						 sizeof(*hdr), &nexthdr,
-+						 &frag_off);
-+			if (thoff >= 0)
-+				skb_set_transport_header(skb, thoff);
-+		}
-+	}
+ 	err = seg6_do_srh(skb, dst);
+ 	if (unlikely(err))
+ 		goto drop;
+ 
++	if (tail_len >= 0)
++		skb_set_transport_header(skb, skb->len - tail_len);
 +
- 	mtu = ip6_dst_mtu_maybe_forward(dst, true);
- 	if (mtu < IPV6_MIN_MTU)
- 		mtu = IPV6_MIN_MTU;
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
 -- 
 2.43.0
 
