@@ -1,65 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793891965;
-	b=m5NKEyZQmQe/S9jSdmLuqQ15bu49OsNC+U17b6FU1xgzj/Ag2Aw79TBf85OS7L96bEMQ
-	 9hF2FRGtvbX8LhbSEDIqspoknJCKoZzcOtucCeDr8CdxlifsdwWEiR8FOSYRyQ7Enimbs
-	 Hr6aDfJakt0QRNpd0DH1U1Mi5+ccMyZTbmFlK5CqnNOMoZm5AWnR+YQ3Nen4jQkqSRSCt
-	 QbhQk2ZHb+z32tJMcNoP7cxAckj/LxKCWebZSDkRWNSwlnV3qy7LrNESVbVuvvX14gca+
-	 HVVkDl0CNGL24Fch0AW6vy6yKWQVUhgHe6W1+QEf3pjoDzipY++BUkWkEIRKHkGXLQg==
+	t=1793891974;
+	b=3fGX7WfflkTfD3Uw0CA7+MGUweRlvRdpymc9MAzSg9HRE0MI/SDYpVvq+R9VW3w7Ju70
+	 KHCxITn2dd0L0G8R+GNCiq0bQHV7smiCd6RQGTDiWb6ejpSPks38g95V7fo8/qKCsLRNw
+	 amk+bMAbRDnlF34t2qWD9p1jHZI/C0F5DjB9uCzdY+WH/Mfpq51i4Ppcz1L+TlNQlZMoT
+	 ZlOKdGOCk/4WsI3OVbB/Uw/pIYO2u+y651W39SUEco57Ougn5handBeq15KwTGuduDkup
+	 XacJPS7OM+xNXndUVhg0ydRV6havvW49Uy4qooyVcWADUswR5CczqIO52EuvJtPWNXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793891965;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793891974;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=Jd8s614DPs2rz60nnaKlPOi9rlTbba7oykSyjoeRH4M=;
-	b=ZVKiBzL4v8hBQ0c/W++sQs+jf9EwJpoewMdmGTNvT4S4/Zt04WYMcYVoga6lI8tQEaTd
-	 hLOiiCa4dWgol+fTjdFIUizHkx7V5648gOObI3ogeasSs8Aj7S/VeZn32z9FLpO2Yl8Af
-	 PjiKPDAS0lIqXkBi/a9Hzw6yksLWOgUnQX4dAMOGfChXbJD0otB7WLpFsozDP3c3ZMlJH
-	 04X9ISIOi1D42hvX9UC/5gBj4Qo98Zt+m+K8i+ExKluVHdbdQBQKbU/10VIUJHy3dVrdH
-	 kw499IboOMtODy/xNAvOF6RYcR6OVVBm0xgDzOKWJo0btYGQgbyhkMux5vUpfoH7l3w==
+	bh=vInqNfGpm8mF0iHZjosVBo3FdRXN75okHFBMY7jdKHE=;
+	b=O7hZJay6zYBi0UVZ9NPtAIhh2LFhGdLwOFYXs+8P7tmDM7A5hqJrMLMqVO6YzG7+eMdt
+	 bLMuTCIUcky0P5O65qBPnU7dOcX//KY+Z8Fz9iQdQj+PFFPAWYdfCvKH2IJ11kF9+TwyQ
+	 w6W2kYGuthFYsQF10jBFNQc7UJhWp3RDgr3XBx8L0aoPhl+iRp4nRD7W+S1W1QeJKt5Sa
+	 t2tHKYrUzTAebUWjUQIQVdy+d/amw7v5GQjlTArg5qA7kJgTKTpo/7e27jeQ8ZiPb+IDM
+	 RmiEBO/k9PtRGFpOoOQ197Fwxm8HqulGu4Pz6GLIerF88mU0GESYix2E1AK7dotKoaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ERuIREiF;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b5tME2eQ;
 	arc=none smtp.remote-ip=170.10.133.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66968606A331
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:19:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66968606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67B8606EE8A
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:19:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D67B8606EE8A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ERuIREiF
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b5tME2eQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793891963;
+	s=mimecast20190719; t=1793891973;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Jd8s614DPs2rz60nnaKlPOi9rlTbba7oykSyjoeRH4M=;
-	b=ERuIREiFRG4VvvtBUr2WMZjQhtucE1OB1kYk3lQJ5CtIq9fUQ5NSt3Ps1Q1L3B2MDHbLST
-	LE7nYmHaCvMkRxnhDcbFApBnM26cZRphpiAJFIdu/Jt1zQvUP5w8bECmRJSmENDLi2hh75
-	lnjuSSGQ5q7pu6iyoctU2+aTj9rdW8o=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=vInqNfGpm8mF0iHZjosVBo3FdRXN75okHFBMY7jdKHE=;
+	b=b5tME2eQF0ukX8p6AmpBuk/JURaZ/Q/bZcxBKTgWRIfWMDMBbTtfVfULP/Ek5VcuhKmXmK
+	2yzgvEniC2QJF319IK0PJABzcNxURBOovnq3bqrfZ5OadqA8yn5eu3yZPssavlXXP5Geth
+	iwEZQXLmGmH1j7RjMh/0YOk8oqvufzY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-gAvus_6ON-y1jgNbg_SK-Q-1; Thu,
- 05 Nov 2026 10:19:17 -0500
-X-MC-Unique: gAvus_6ON-y1jgNbg_SK-Q-1
-X-Mimecast-MFC-AGG-ID: gAvus_6ON-y1jgNbg_SK-Q_1793891953
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-604-QjRu1sZNOeamJroYjfV7aQ-1; Thu,
+ 05 Nov 2026 10:19:26 -0500
+X-MC-Unique: QjRu1sZNOeamJroYjfV7aQ-1
+X-Mimecast-MFC-AGG-ID: QjRu1sZNOeamJroYjfV7aQ_1793891964
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B42F4180063B;
-	Thu,  5 Nov 2026 15:19:13 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E4B2D1802179;
+	Thu,  5 Nov 2026 15:19:23 +0000 (UTC)
 Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EFF441956089;
-	Thu,  5 Nov 2026 15:19:07 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 926821956044;
+	Thu,  5 Nov 2026 15:19:19 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -79,9 +79,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 02/14] selftests: dpll: add test library and device lifecycle tests
-Date: Thu,  5 Nov 2026 16:18:40 +0100
-Message-ID: <20261105151852.1844305-3-poros@redhat.com>
+Subject: [PATCH net-next v2 04/14] selftests: dpll: add pin enumeration and property tests
+Date: Thu,  5 Nov 2026 16:18:42 +0100
+Message-ID: <20261105151852.1844305-5-poros@redhat.com>
 In-Reply-To: <20261105151852.1844305-1-poros@redhat.com>
 References: <20261105151852.1844305-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
@@ -96,733 +96,583 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add a shell library for DPLL selftests with wrappers around the iproute2
-dpll tool and around the dpllsim configfs interface, and the first two
-test scripts built on it. The library resolves devices by the clock ID
-chosen at creation time, since netlink ids depend on what else exists
-on the system, and the dpllsim helpers restrict the lookup to their
-module, so that a device of another driver with the same clock ID is
-never picked up. Every query runs the tool first and jq on what it
-printed, so that a failed query is told apart from a missing attribute.
-The library mounts configfs when nothing else did, and the exit trap of
-each script undoes that, removes the devices the script created and
-runs on INT and TERM as well, so that a timeout imposed by the harness
-still cleans up.
+Extend the library with pin queries. Pins of a device are collected
+from the full pin dump with jq, since older iproute2 lacks the device
+filter of "pin show", and the fields that live in the parent-device
+nest are read through a helper that selects the nest of the device
+under test. The helpers that work on the full dump normalize its shape
+the same way the id-based ones do, so that a tool printing a flat
+object instead of the dump wrapper works with all of them. Like the
+device queries, every pin query runs the tool first and jq on what it
+printed, so that a query which fails returns the status of the tool
+instead of the empty output a missing attribute produces too. The
+prerequisite check now also requires a tool that knows "pin show", so
+that a tool too old for the pin queries is a skip up front rather than
+a failed query in every test. The dpllsim helpers gain
+dpllsim_add_pin, which creates a pin directory and writes its type,
+frequency and direction, and the standard device grows a GNSS input,
+an external input and an external output.
 
-Two runs of scripts that create dpllsim devices would share the one
-dpllsim directory and could draw the same clock IDs, so every such
-script takes a lock before it mounts or creates anything and skips when
-another run holds it. The lock file lives under /run rather than in
-/tmp, since the scripts run as root and open the file for writing, and
-a symlink planted in the world-writable /tmp would redirect that open.
-
-dpll_basic.sh checks that a device reports the mandatory attributes
-over netlink. It runs against the device named by DPLL_DEV_ID or the
-first device that is not a dpllsim one, and creates a dpllsim device
-when there is none, so the same script serves the simulator and real
-drivers. dpll_stress.sh is simulator only and exercises the lifecycle
-paths of the core by creating and deleting devices in a loop and by
-cycling one device through repeated register and unregister
-transitions. The dpllsim MAINTAINERS entry covers the new directory
-and the shared library.
+dpll_basic.sh checks that the enumeration yields a numeric id for every
+pin of the device, the ids are taken from the dump as they are and jq
+prints null for a pin without one, that every pin has an id and a type
+and carries the direction in the parent-device nest, and that an input
+pin reports a valid state. The property test does not go on to query
+pins by an id that is not one, and reports a pin it cannot query at all
+as one failure rather than as one per attribute. The frequency is not
+required, a pin without a frequency callback does not report one. The
+device the script created has the standard pins, so an empty pin list
+or a missing input pin on it means a failed query or broken tooling
+rather than a pinless device. The library gains
+dpll_log_test_skip_or_fail for such conditions, which fails on the
+device the script created, recorded in DPLL_CREATED_DEVICE next to
+DPLL_DEV_ID, and skips on a device the user provided. The stress script
+creates its devices with a random set of pins of every type and both
+directions, MUX pins always as inputs, and the deploy cycle test runs
+with the standard pin set.
 
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
 v2:
-- sort the config file alphabetically (netdev CI check_selftest)
-- quote the ksft_skip and ret expansions and add shellcheck directives
-  for the globals read by the scripts, for ksft_skip, which comes from
-  net/lib.sh, and for the optional argument of
-  dpllsim_setup_standard_device() (netdev CI shellcheck)
+- quote the ksft_skip and ret expansions (netdev CI shellcheck)
 
-v1: https://lore.kernel.org/all/20261103093910.596225-3-poros@redhat.com/
+v1: https://lore.kernel.org/all/20261103093910.596225-5-poros@redhat.com/
 ---
- MAINTAINERS                                   |   2 +
- tools/testing/selftests/Makefile              |   1 +
- .../selftests/drivers/net/dpll/Makefile       |  14 +
- .../testing/selftests/drivers/net/dpll/config |   3 +
- .../selftests/drivers/net/dpll/dpll_basic.sh  |  93 +++++
- .../selftests/drivers/net/dpll/dpll_stress.sh | 164 +++++++++
- .../selftests/drivers/net/dpll/settings       |   1 +
- .../selftests/drivers/net/lib/sh/dpll_lib.sh  | 334 ++++++++++++++++++
- 8 files changed, 612 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/dpll/Makefile
- create mode 100644 tools/testing/selftests/drivers/net/dpll/config
- create mode 100755 tools/testing/selftests/drivers/net/dpll/dpll_basic.sh
- create mode 100755 tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
- create mode 100644 tools/testing/selftests/drivers/net/dpll/settings
- create mode 100644 tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+ .../selftests/drivers/net/dpll/dpll_basic.sh  | 146 +++++++++++++-
+ .../selftests/drivers/net/dpll/dpll_stress.sh |  46 ++++-
+ .../selftests/drivers/net/lib/sh/dpll_lib.sh  | 189 ++++++++++++++++--
+ 3 files changed, 357 insertions(+), 24 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 147a5466902bc7..d4e0a7e97d3808 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8076,6 +8076,8 @@ L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/driver-api/dpllsim.rst
- F:	drivers/dpll/dpllsim/
-+F:	tools/testing/selftests/drivers/net/dpll/
-+F:	tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
- 
- DPLL SUBSYSTEM
- M:	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 6c77beba0956ef..d8991f43c70e46 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -24,6 +24,7 @@ TARGETS += drivers/ntsync
- TARGETS += drivers/s390x/uvdevice
- TARGETS += drivers/net
- TARGETS += drivers/net/bonding
-+TARGETS += drivers/net/dpll
- TARGETS += drivers/net/netconsole
- TARGETS += drivers/net/team
- TARGETS += drivers/net/virtio_net
-diff --git a/tools/testing/selftests/drivers/net/dpll/Makefile b/tools/testing/selftests/drivers/net/dpll/Makefile
-new file mode 100644
-index 00000000000000..7752fb518b6e9b
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/dpll/Makefile
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+TEST_INCLUDES := \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
-+	../lib/sh/dpll_lib.sh \
-+	../../../net/lib.sh \
-+# end of TEST_INCLUDES
-+
-+TEST_PROGS := \
-+	dpll_basic.sh \
-+	dpll_stress.sh \
-+# end of TEST_PROGS
-+
-+include ../../../lib.mk
-diff --git a/tools/testing/selftests/drivers/net/dpll/config b/tools/testing/selftests/drivers/net/dpll/config
-new file mode 100644
-index 00000000000000..e2c90b6970bd43
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/dpll/config
-@@ -0,0 +1,3 @@
-+CONFIG_CONFIGFS_FS=y
-+CONFIG_DPLL=y
-+CONFIG_DPLLSIM=m
 diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_basic.sh b/tools/testing/selftests/drivers/net/dpll/dpll_basic.sh
-new file mode 100755
-index 00000000000000..0d823fbc943a84
---- /dev/null
+index 0d823fbc943a84..d83eac86551347 100755
+--- a/tools/testing/selftests/drivers/net/dpll/dpll_basic.sh
 +++ b/tools/testing/selftests/drivers/net/dpll/dpll_basic.sh
-@@ -0,0 +1,93 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Basic DPLL subsystem test. Read-only validation of the device properties
-+# exposed over netlink. Runs against a hardware DPLL device when one is
-+# present (or when DPLL_DEV_ID is set), otherwise against a freshly
-+# created dpllsim device.
-+#
-+# Copyright (c) 2026 Red Hat, Inc.
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "$SCRIPTDIR/../../../net/lib.sh"
-+source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
-+
-+ALL_TESTS="
-+	test_device_properties
-+"
-+
-+test_device_properties()
+@@ -1,10 +1,10 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ #
+-# Basic DPLL subsystem test. Read-only validation of the device properties
+-# exposed over netlink. Runs against a hardware DPLL device when one is
+-# present (or when DPLL_DEV_ID is set), otherwise against a freshly
+-# created dpllsim device.
++# Basic DPLL subsystem test. Read-only validation of device and pin
++# enumeration and of the properties exposed over netlink. Runs against a
++# hardware DPLL device when one is present (or when DPLL_DEV_ID is set),
++# otherwise against a freshly created dpllsim device.
+ #
+ # Copyright (c) 2026 Red Hat, Inc.
+ 
+@@ -15,8 +15,29 @@ source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
+ 
+ ALL_TESTS="
+ 	test_device_properties
++	test_pin_enumeration
++	test_pin_properties
++	test_pin_state
+ "
+ 
++# Fail on every entry of a pin id list that is not a number. The ids are
++# taken from the dump as they are, so a pin without one shows up as the
++# "null" jq prints for a missing field, not as an empty line. Return 1
++# when any entry is invalid.
++check_pin_ids()
 +{
-+	local json
++	local id ret=0
 +
-+	RET=0
-+
-+	# A device that cannot be queried at all would be reported as one
-+	# that misses every attribute, so bail out on that first.
-+	if ! json=$(dpll_device_json "$DPLL_DEV_ID") || [ -z "$json" ]; then
-+		check_err 1 "device query failed"
-+		log_test "DPLL device properties"
-+		return
-+	fi
-+
-+	local field
-+	for field in '.id' '.["module-name"]' '.["clock-id"]' '.type' \
-+		     '.mode' '.["lock-status"]'; do
-+		if ! jq -e "$field" <<< "$json" &> /dev/null; then
-+			check_err 1 "device is missing the $field attribute"
++	for id in "$@"; do
++		if ! [[ "$id" =~ ^[0-9]+$ ]]; then
++			check_err 1 "invalid pin id '$id'"
++			ret=1
 +		fi
 +	done
-+
-+	log_test "DPLL device properties"
-+}
-+
-+##############################################################################
-+
-+cleanup()
-+{
-+	# A second signal must not abort the teardown half way.
-+	trap '' INT TERM
-+
-+	if [ -n "$CREATED_DEVICE" ]; then
-+		dpllsim_delete_device "$CREATED_DEVICE" ||
-+			log_info "cannot delete device $CREATED_DEVICE"
-+	fi
-+	# The device whose creation a signal interrupted is recorded by the
-+	# library alone, a double delete of a tracked one is harmless.
-+	if [ -n "$DPLLSIM_CREATED_NAME" ]; then
-+		dpllsim_delete_device "$DPLLSIM_CREATED_NAME" ||
-+			log_info "cannot delete device $DPLLSIM_CREATED_NAME"
-+	fi
-+	dpll_lib_cleanup
-+}
-+
-+dpll_lib_check_prereqs
-+# Another run would find the devices of this one left behind, see the
-+# lock in the library.
-+dpll_lib_lock
-+dpll_lib_init
-+
-+CREATED_DEVICE=""
-+# The module check may mount configfs, so the exit trap that unmounts it
-+# again has to be in place before. INT and TERM exit through it as well,
-+# so that a timeout imposed by the harness still removes the device.
-+trap cleanup EXIT
-+trap 'exit 1' INT TERM
-+
-+if [ -z "$DPLL_DEV_ID" ]; then
-+	dpllsim_check_module
-+	if ! dpllsim_setup_standard_device; then
-+		echo "SKIP: cannot create dpllsim device"
-+		exit "$ksft_skip"
-+	fi
-+	CREATED_DEVICE=$DPLLSIM_CREATED_NAME
-+	DPLL_DEV_ID=$DPLLSIM_DEV_ID
-+	DPLL_MODULE_NAME="dpllsim"
-+fi
-+
-+log_info "testing DPLL device $DPLL_DEV_ID (module $DPLL_MODULE_NAME)"
-+
-+tests_run
-+
-+exit $EXIT_STATUS
-diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
-new file mode 100755
-index 00000000000000..74bb6e8b3a8ed4
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
-@@ -0,0 +1,164 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# DPLL subsystem stress test. Uses dpllsim to exercise rapid device
-+# registration/unregistration, concurrent operations from multiple
-+# processes, pin state change flooding and notification load, then
-+# verifies via ref_tracker that no references leaked.
-+#
-+# Copyright (c) 2026 Red Hat, Inc.
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "$SCRIPTDIR/../../../net/lib.sh"
-+source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
-+
-+ALL_TESTS="
-+	test_rapid_create_delete
-+	test_deploy_cycle
-+"
-+
-+STRESS_ITERATIONS=${STRESS_ITERATIONS:-20}
-+
-+CREATED_DEVICES=()
-+
-+track_device()
-+{
-+	CREATED_DEVICES+=("$1")
-+}
-+
-+untrack_device()
-+{
-+	local name=$1 dev
-+	local remaining=()
-+
-+	for dev in "${CREATED_DEVICES[@]}"; do
-+		[ "$dev" = "$name" ] || remaining+=("$dev")
-+	done
-+	CREATED_DEVICES=("${remaining[@]}")
-+}
-+
-+cleanup()
-+{
-+	local dev
-+
-+	# A second signal must not abort the teardown half way.
-+	trap '' INT TERM
-+
-+	for dev in "${CREATED_DEVICES[@]}"; do
-+		dpllsim_delete_device "$dev" ||
-+			log_info "cannot delete device $dev"
-+	done
-+	# The device whose creation a signal interrupted is recorded by the
-+	# library alone, a double delete of a tracked one is harmless.
-+	if [ -n "$DPLLSIM_CREATED_NAME" ]; then
-+		dpllsim_delete_device "$DPLLSIM_CREATED_NAME" ||
-+			log_info "cannot delete device $DPLLSIM_CREATED_NAME"
-+	fi
-+	dpll_lib_cleanup
-+}
-+
-+# Create a device named after the given clock-id and deploy it. Sets
-+# DPLLSIM_CREATED_NAME.
-+create_stress_device()
-+{
-+	local clock_id=$1
-+	local name="st$clock_id"
-+
-+	dpllsim_create_device "$name" "$clock_id" || return 1
-+
-+	if ! dpllsim_deploy "$name"; then
-+		dpllsim_delete_device "$name"
-+		return 1
-+	fi
-+}
-+
-+##############################################################################
-+
-+test_rapid_create_delete()
-+{
-+	local i clock_id name
-+
-+	RET=0
-+
-+	for i in $(seq 1 "$STRESS_ITERATIONS"); do
-+		dpllsim_alloc_clock_id; clock_id=$DPLLSIM_CLOCK_ID
-+
-+		if ! create_stress_device "$clock_id"; then
-+			check_err 1 "failed to create device (iteration $i)"
-+			break
-+		fi
-+		name=$DPLLSIM_CREATED_NAME
-+		track_device "$name"
-+
-+		if ! dpllsim_delete_device "$name"; then
-+			check_err 1 "failed to delete device (iteration $i)"
-+			break
-+		fi
-+		untrack_device "$name"
-+	done
-+
-+	log_test "DPLL rapid create/delete ($STRESS_ITERATIONS iterations)"
-+}
-+
-+test_deploy_cycle()
-+{
-+	local clock_id name i
-+
-+	RET=0
-+
-+	dpllsim_alloc_clock_id; clock_id=$DPLLSIM_CLOCK_ID
-+	name="cycle$clock_id"
-+	if ! dpllsim_create_device "$name" "$clock_id"; then
-+		check_err 1 "cannot create device"
-+		log_test "DPLL deploy/undeploy cycling"
-+		return
-+	fi
-+	track_device "$name"
-+
-+	for i in $(seq 1 "$STRESS_ITERATIONS"); do
-+		if ! dpllsim_deploy "$name"; then
-+			check_err 1 "deploy failed (iteration $i)"
-+			break
-+		fi
-+		if ! dpll_device_wait_by_clock_id "$clock_id" dpllsim \
-+		     > /dev/null; then
-+			check_err 1 "device not on netlink (iteration $i)"
-+			break
-+		fi
-+		if ! dpllsim_undeploy "$name"; then
-+			check_err 1 "undeploy failed (iteration $i)"
-+			break
-+		fi
-+		if ! dpll_device_wait_gone_by_clock_id "$clock_id" dpllsim; then
-+			check_err 1 "device still on netlink (iteration $i)"
-+			break
-+		fi
-+	done
-+
-+	if dpllsim_delete_device "$name"; then
-+		untrack_device "$name"
-+	else
-+		check_err 1 "cannot delete device $name"
-+	fi
-+
-+	log_test "DPLL deploy/undeploy cycling"
-+}
-+
-+##############################################################################
-+
-+dpll_lib_check_prereqs
-+# Another run would find the devices of this one left behind, see the
-+# lock in the library.
-+dpll_lib_lock
-+
-+# The module check may mount configfs, so the exit trap that unmounts it
-+# again has to be in place before. INT and TERM exit through it as well,
-+# so that a timeout imposed by the harness still removes the devices.
-+trap cleanup EXIT
-+trap 'exit 1' INT TERM
-+dpllsim_check_module
-+
-+tests_run
-+
-+exit $EXIT_STATUS
-diff --git a/tools/testing/selftests/drivers/net/dpll/settings b/tools/testing/selftests/drivers/net/dpll/settings
-new file mode 100644
-index 00000000000000..a62d2fa1275c6b
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/dpll/settings
-@@ -0,0 +1 @@
-+timeout=600
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-new file mode 100644
-index 00000000000000..fc81f149d1d0b7
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-@@ -0,0 +1,334 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Helpers for DPLL selftests. Provides wrappers around the iproute2 dpll
-+# tool and around the dpllsim configfs interface for creating virtual DPLL
-+# devices. Sourcing this file has no side effects; call
-+# dpll_lib_check_prereqs and dpll_lib_init explicitly. net/lib.sh must be
-+# sourced first, it provides ksft_skip, busywait and log_info.
-+#
-+# Copyright (c) 2026 Red Hat, Inc.
-+#
-+# shellcheck disable=SC2034,SC2154 # the globals set here are read by the
-+# scripts and ksft_skip is defined by net/lib.sh
-+
-+CONFIGFS_DIR="/sys/kernel/config"
-+DPLLSIM_CFG="$CONFIGFS_DIR/dpllsim"
-+
-+# Next clock-id handed out by dpllsim_alloc_clock_id. The lookups of the
-+# dpllsim helpers match on the module name as well, which is what keeps
-+# the tests away from the devices of other drivers whatever clock-id
-+# those use. The random start only avoids collisions between runs, as
-+# the devices are named after their clock-id in configfs.
-+DPLLSIM_NEXT_CLOCK_ID=$((96000 + RANDOM))
-+
-+##############################################################################
-+# Prerequisites and device selection
-+
-+dpll_lib_check_prereqs()
-+{
-+	if [ "$EUID" -ne 0 ]; then
-+		echo "SKIP: must be run as root"
-+		exit "$ksft_skip"
-+	fi
-+
-+	local cmd
-+	for cmd in jq dpll; do
-+		if ! command -v "$cmd" &> /dev/null; then
-+			echo "SKIP: $cmd not found"
-+			exit "$ksft_skip"
-+		fi
-+	done
-+
-+	if ! dpll device help 2>&1 | grep -q "show"; then
-+		echo "SKIP: dpll tool too old, missing 'device show'"
-+		exit "$ksft_skip"
-+	fi
-+}
-+
-+# The scripts that create dpllsim devices share the one dpllsim directory
-+# and cannot run alongside each other, so each takes a lock on
-+# DPLL_LOCK_FILE before it mounts or creates anything and skips when
-+# another run holds it. The file lives under /run rather than in the
-+# world-writable /tmp, where a planted symlink could redirect the open.
-+DPLL_RUN_DIR="/run/dpll-selftest"
-+DPLL_LOCK_FILE="$DPLL_RUN_DIR/lock"
-+DPLL_LOCK_FD=""
-+
-+# Create DPLL_RUN_DIR when it is missing, skip when that fails.
-+dpll_lib_run_dir()
-+{
-+	mkdir -p "$DPLL_RUN_DIR" 2>/dev/null
-+	if ! [ -d "$DPLL_RUN_DIR" ]; then
-+		echo "SKIP: cannot create $DPLL_RUN_DIR"
-+		exit "$ksft_skip"
-+	fi
-+}
-+
-+dpll_lib_lock()
-+{
-+	if ! command -v flock &> /dev/null; then
-+		echo "SKIP: flock not found"
-+		exit "$ksft_skip"
-+	fi
-+	dpll_lib_run_dir
-+	if ! { exec {DPLL_LOCK_FD}> "$DPLL_LOCK_FILE"; } 2>/dev/null; then
-+		echo "SKIP: cannot open $DPLL_LOCK_FILE"
-+		exit "$ksft_skip"
-+	fi
-+	if ! flock -n "$DPLL_LOCK_FD"; then
-+		echo "SKIP: another dpll selftest run is in progress"
-+		exit "$ksft_skip"
-+	fi
-+}
-+
-+# Detect the DPLL device to test. DPLL_DEV_ID may be set by the user to
-+# force a specific device; an empty value means auto-detect, which takes
-+# the first device that is not a dpllsim one, so that an instance of the
-+# simulator left behind by an earlier run is not mistaken for hardware.
-+# Sets DPLL_DEV_ID (may end up empty) and DPLL_MODULE_NAME.
-+dpll_lib_init()
-+{
-+	DPLL_MODULE_NAME=""
-+
-+	if [ -n "${DPLL_DEV_ID:-}" ]; then
-+		if ! dpll device show id "$DPLL_DEV_ID" &> /dev/null; then
-+			echo "SKIP: DPLL device \"$DPLL_DEV_ID\" not found"
-+			exit "$ksft_skip"
-+		fi
-+	else
-+		DPLL_DEV_ID=$(dpll device show -j 2>/dev/null | \
-+			      jq -r '[.device[]? |
-+				      select(.["module-name"] != "dpllsim")
-+				     ][0].id // empty')
-+	fi
-+
-+	if [ -n "$DPLL_DEV_ID" ]; then
-+		DPLL_MODULE_NAME=$(dpll_device_get_module "$DPLL_DEV_ID")
-+	fi
-+}
-+
-+##############################################################################
-+# Device queries
-+#
-+# "dpll device show id X -j" may print either a flat object or a dump-style
-+# {"device":[...]} wrapper depending on the iproute2 version, so normalize
-+# with (.device[0]? // .) before extracting fields. The tool is run first
-+# and jq only on what it printed, so that a failed query returns its
-+# status instead of the empty output a missing field produces too.
-+
-+dpll_device_json()
-+{
-+	local dev_id=$1
-+	local out
-+
-+	out=$(dpll device show id "$dev_id" -j 2>/dev/null) || return 1
-+	jq '(.device[0]? // .)' <<< "$out"
-+}
-+
-+__dpll_device_field()
-+{
-+	local dev_id=$1; shift
-+	local out
-+
-+	out=$(dpll device show id "$dev_id" -j 2>/dev/null) || return 1
-+	jq -r "(.device[0]? // .) | $1 // empty" <<< "$out"
-+}
-+
-+dpll_device_get_module()
-+{
-+	__dpll_device_field "$1" '.["module-name"]'
-+}
-+
-+# Look up the netlink device id by the clock-id chosen at create time,
-+# restricted to the devices of the given module when one is named. The
-+# clock-id is the only reliable handle on a device the test created, as
-+# netlink ids depend on what else exists, and the module name keeps a
-+# lookup for a dpllsim device from returning a device of another driver
-+# that happens to use the same clock-id. The clock-id is compared as a
-+# string, so that it does not matter whether the tool prints it as a
-+# JSON number or as a string. Return 1 when the dump itself failed, a
-+# caller must not take that for a device that is gone.
-+# $1: clock-id, $2: module name (optional)
-+dpll_device_get_id_by_clock_id()
-+{
-+	local clock_id=$1
-+	local module=${2:-}
-+	local out
-+
-+	out=$(dpll device show -j 2>/dev/null) || return 1
-+	jq -r --arg cid "$clock_id" --arg mod "$module" \
-+	   '[.device[]? |
-+	     select((.["clock-id"] | tostring) == $cid and
-+		    ($mod == "" or .["module-name"] == $mod))
-+	    ][0].id // empty' <<< "$out"
-+}
-+
-+# The two checks below fail when the lookup itself failed, so that a
-+# failed dump neither counts as a device that is present nor as one
-+# that is gone, the wait helpers keep polling instead.
-+__dpll_device_present_by_clock_id()
-+{
-+	local dev_id
-+
-+	dev_id=$(dpll_device_get_id_by_clock_id "$@") || return 1
-+	[ -n "$dev_id" ] && echo "$dev_id"
-+}
-+
-+__dpll_device_absent_by_clock_id()
-+{
-+	local dev_id
-+
-+	dev_id=$(dpll_device_get_id_by_clock_id "$@") || return 1
-+	[ -z "$dev_id" ]
-+}
-+
-+# Wait until a device with the given clock-id (and module, when given) is
-+# visible on netlink and print its netlink id. Callers must check the
-+# exit status rather than the output, busywait prints the output of the
-+# last failed check when it times out.
-+dpll_device_wait_by_clock_id()
-+{
-+	busywait "$BUSYWAIT_TIMEOUT" __dpll_device_present_by_clock_id "$@"
-+}
-+
-+dpll_device_wait_gone_by_clock_id()
-+{
-+	busywait "$BUSYWAIT_TIMEOUT" __dpll_device_absent_by_clock_id "$@"
-+}
-+
-+##############################################################################
-+# dpllsim configfs interface
-+#
-+# Each directory under $DPLLSIM_CFG is one simulated device. Writing 1 to
-+# <dev>/live registers the device with the DPLL core, writing 0
-+# unregisters it. The structure (clock_id) can only be changed while the
-+# device is not live.
-+#
-+# dpllsim_available mounts configfs when nothing else did, which is the
-+# one side effect the library has outside the dpllsim directory. Scripts
-+# call dpll_lib_cleanup last from their exit trap to undo it.
-+
-+DPLLSIM_MOUNTED_CONFIGFS=0
-+
-+dpllsim_available()
-+{
-+	[ -d "$DPLLSIM_CFG" ] && return 0
-+
-+	modprobe dpllsim &> /dev/null
-+	if ! mountpoint -q "$CONFIGFS_DIR"; then
-+		mount -t configfs none "$CONFIGFS_DIR" &> /dev/null &&
-+			DPLLSIM_MOUNTED_CONFIGFS=1
-+	fi
-+	[ -d "$DPLLSIM_CFG" ]
-+}
-+
-+# Unmount configfs again when dpllsim_available mounted it. Call after
-+# the devices of the script are gone. A dpllsim device the script could
-+# not remove keeps the mount, so that what is left can be looked at.
-+dpll_lib_cleanup()
-+{
-+	local dev_path name
-+
-+	[ "$DPLLSIM_MOUNTED_CONFIGFS" -eq 1 ] || return 0
-+	DPLLSIM_MOUNTED_CONFIGFS=0
-+
-+	for dev_path in "$DPLLSIM_CFG"/*/; do
-+		[ -d "$dev_path" ] || continue
-+		name=$(basename "$dev_path")
-+		log_info "device $name left behind, $CONFIGFS_DIR kept mounted"
-+		return
-+	done
-+	umount "$CONFIGFS_DIR" 2>/dev/null ||
-+		log_info "cannot unmount $CONFIGFS_DIR"
-+}
-+
-+dpllsim_check_module()
-+{
-+	if ! dpllsim_available; then
-+		echo "SKIP: dpllsim module not available"
-+		exit "$ksft_skip"
-+	fi
-+}
-+
-+# $1: device name, $2: clock-id. Sets DPLLSIM_CREATED_NAME as soon as the
-+# directory exists, so that the cleanup handler of a script can remove a
-+# device whose creation a signal interrupted before the script recorded
-+# it. The name stays set once the device is complete.
-+dpllsim_create_device()
-+{
-+	local name=$1
-+	local clock_id=$2
-+	local dev_path="$DPLLSIM_CFG/$name"
-+
-+	# Record the name before the directory exists, so that a cleanup
-+	# run by a signal between the two still finds it.
-+	DPLLSIM_CREATED_NAME=$name
-+	if ! mkdir "$dev_path" 2>/dev/null; then
-+		DPLLSIM_CREATED_NAME=""
-+		return 1
-+	fi
-+	if ! echo "$clock_id" 2>/dev/null > "$dev_path/clock_id"; then
-+		rmdir "$dev_path" 2>/dev/null
-+		DPLLSIM_CREATED_NAME=""
-+		return 1
-+	fi
-+}
-+
-+dpllsim_deploy()
-+{
-+	echo 1 2>/dev/null > "$DPLLSIM_CFG/$1/live"
-+}
-+
-+dpllsim_undeploy()
-+{
-+	echo 0 2>/dev/null > "$DPLLSIM_CFG/$1/live"
-+}
-+
-+# Take the device offline and remove it. Every step is attempted even
-+# when an earlier one failed, the return value is non-zero when any did.
-+# A device that does not exist counts as deleted.
-+dpllsim_delete_device()
-+{
-+	local dev_path="$DPLLSIM_CFG/$1"
-+	local ret=0
-+
-+	[ -d "$dev_path" ] || return 0
-+
-+	dpllsim_undeploy "$1" || ret=1
-+	rmdir "$dev_path" || ret=1
 +
 +	return "$ret"
 +}
 +
-+# Set DPLLSIM_CLOCK_ID to a clock-id unique within this test run. Must
-+# not be called from a subshell (the counter increment would be lost);
-+# derive per-worker id ranges in the parent instead.
-+dpllsim_alloc_clock_id()
+ test_device_properties()
+ {
+ 	local json
+@@ -42,6 +63,114 @@ test_device_properties()
+ 	log_test "DPLL device properties"
+ }
+ 
++test_pin_enumeration()
 +{
-+	DPLLSIM_CLOCK_ID=$((DPLLSIM_NEXT_CLOCK_ID++))
++	local pin_ids
++
++	RET=0
++
++	mapfile -t pin_ids < <(dpll_pin_get_ids "$DPLL_DEV_ID")
++	if [ "${#pin_ids[@]}" -eq 0 ]; then
++		dpll_log_test_skip_or_fail "DPLL pin enumeration" \
++		    "no pins found"
++		return
++	fi
++	check_pin_ids "${pin_ids[@]}"
++
++	log_test "DPLL pin enumeration (${#pin_ids[@]} pins)"
 +}
 +
-+# Create a device, deploy it and resolve the netlink device id. Sets
-+# DPLLSIM_CREATED_NAME, DPLLSIM_CLOCK_ID and DPLLSIM_DEV_ID.
-+# shellcheck disable=SC2120 # the argument is optional
-+dpllsim_setup_standard_device()
++check_pin_properties()
 +{
-+	local clock_id name
++	local pin_id=$1
++	local json field
 +
-+	dpllsim_alloc_clock_id
-+	clock_id=$DPLLSIM_CLOCK_ID
-+	name="std$clock_id"
-+	dpllsim_create_device "$name" "$clock_id" || return 1
++	# A pin that cannot be queried at all would be reported as one
++	# that misses every attribute, so bail out on that first.
++	if ! json=$(dpll_pin_json "$pin_id") || [ -z "$json" ]; then
++		check_err 1 "pin $pin_id query failed"
++		return
++	fi
 +
-+	if ! dpllsim_deploy "$name"; then
++	# Frequency is optional, a pin without a frequency callback such
++	# as a recovered clock pin does not report it.
++	for field in '.id' '.type'; do
++		if ! jq -e "$field" <<< "$json" &> /dev/null; then
++			check_err 1 \
++			    "pin $pin_id is missing the $field attribute"
++		fi
++	done
++
++	# The parent-device nest is not present for all pin types, but when
++	# the device under test is in it, that entry must carry the
++	# direction. A pin can be registered on more than one device, so
++	# match on parent-id instead of taking the first entry.
++	if jq -e --argjson dev "$DPLL_DEV_ID" \
++		'[.["parent-device"][]? | select(.["parent-id"] == $dev)] |
++		 length > 0' <<< "$json" &> /dev/null; then
++		if ! jq -e --argjson dev "$DPLL_DEV_ID" \
++			'.["parent-device"][]? |
++			 select(.["parent-id"] == $dev) | .direction' \
++			<<< "$json" &> /dev/null; then
++			check_err 1 \
++			    "pin $pin_id parent-device is missing direction"
++		fi
++	fi
++}
++
++test_pin_properties()
++{
++	local pin_ids pin_id
++
++	RET=0
++
++	mapfile -t pin_ids < <(dpll_pin_get_ids "$DPLL_DEV_ID")
++	if [ "${#pin_ids[@]}" -eq 0 ]; then
++		dpll_log_test_skip_or_fail "DPLL pin properties" "no pins found"
++		return
++	fi
++	if ! check_pin_ids "${pin_ids[@]}"; then
++		log_test "DPLL pin properties"
++		return
++	fi
++
++	for pin_id in "${pin_ids[@]}"; do
++		check_pin_properties "$pin_id"
++	done
++
++	log_test "DPLL pin properties (${#pin_ids[@]} pins)"
++}
++
++test_pin_state()
++{
++	local pin_id state
++
++	RET=0
++
++	pin_id=$(dpll_pin_find_by_direction "$DPLL_DEV_ID" input | head -1)
++	if [ -z "$pin_id" ]; then
++		dpll_log_test_skip_or_fail "DPLL pin state" "no input pin"
++		return
++	fi
++
++	# The pin was found through its parent-device nest for this device
++	# and the state is mandatory there, so an empty value is a failed
++	# query rather than a state.
++	state=$(dpll_pin_get_state "$DPLL_DEV_ID" "$pin_id")
++	case "$state" in
++	"")
++		check_err 1 "cannot read the state of pin $pin_id"
++		;;
++	connected|disconnected|selectable)
++		;;
++	*)
++		check_err 1 "pin $pin_id reports invalid state '$state'"
++		;;
++	esac
++
++	log_test "DPLL pin state"
++}
++
+ ##############################################################################
+ 
+ cleanup()
+@@ -49,9 +178,9 @@ cleanup()
+ 	# A second signal must not abort the teardown half way.
+ 	trap '' INT TERM
+ 
+-	if [ -n "$CREATED_DEVICE" ]; then
+-		dpllsim_delete_device "$CREATED_DEVICE" ||
+-			log_info "cannot delete device $CREATED_DEVICE"
++	if [ -n "$DPLL_CREATED_DEVICE" ]; then
++		dpllsim_delete_device "$DPLL_CREATED_DEVICE" ||
++			log_info "cannot delete device $DPLL_CREATED_DEVICE"
+ 	fi
+ 	# The device whose creation a signal interrupted is recorded by the
+ 	# library alone, a double delete of a tracked one is harmless.
+@@ -68,7 +197,6 @@ dpll_lib_check_prereqs
+ dpll_lib_lock
+ dpll_lib_init
+ 
+-CREATED_DEVICE=""
+ # The module check may mount configfs, so the exit trap that unmounts it
+ # again has to be in place before. INT and TERM exit through it as well,
+ # so that a timeout imposed by the harness still removes the device.
+@@ -81,8 +209,8 @@ if [ -z "$DPLL_DEV_ID" ]; then
+ 		echo "SKIP: cannot create dpllsim device"
+ 		exit "$ksft_skip"
+ 	fi
+-	CREATED_DEVICE=$DPLLSIM_CREATED_NAME
+ 	DPLL_DEV_ID=$DPLLSIM_DEV_ID
++	DPLL_CREATED_DEVICE=$DPLLSIM_CREATED_NAME
+ 	DPLL_MODULE_NAME="dpllsim"
+ fi
+ 
+diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
+index 74bb6e8b3a8ed4..e5a1c4d88da580 100755
+--- a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
++++ b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
+@@ -58,15 +58,47 @@ cleanup()
+ 	dpll_lib_cleanup
+ }
+ 
+-# Create a device named after the given clock-id and deploy it. Sets
+-# DPLLSIM_CREATED_NAME.
++# Pin type and a frequency the simulator supports for it.
++STRESS_PIN_KINDS=(
++	"gnss 1"
++	"ext 10000000"
++	"ext 25000000"
++	"synce-eth-port 10000000"
++	"int-oscillator 25000000"
++	"mux 2048000"
++)
++
++# Create a device named after the given clock-id with the given pin count
++# and deploy it. Sets DPLLSIM_CREATED_NAME.
+ create_stress_device()
+ {
+ 	local clock_id=$1
++	local num_pins=$2
+ 	local name="st$clock_id"
++	local i type freq dir
++	local dirs=(input output)
+ 
+ 	dpllsim_create_device "$name" "$clock_id" || return 1
+ 
++	# Always have at least one plain input pin, then random ones
++	if ! dpllsim_add_pin "$name" ext0 ext 10000000 input; then
++		dpllsim_delete_device "$name"
++		return 1
++	fi
++	for i in $(seq 1 $((num_pins - 1))); do
++		read -r type freq <<< \
++			"${STRESS_PIN_KINDS[RANDOM % ${#STRESS_PIN_KINDS[@]}]}"
++		# A MUX pin is an input selector, the simulator rejects an
++		# output one
++		dir=${dirs[RANDOM % 2]}
++		[ "$type" = mux ] && dir=input
++		if ! dpllsim_add_pin "$name" "pin$i" "$type" "$freq" \
++				     "$dir"; then
++			dpllsim_delete_device "$name"
++			return 1
++		fi
++	done
++
+ 	if ! dpllsim_deploy "$name"; then
+ 		dpllsim_delete_device "$name"
+ 		return 1
+@@ -84,7 +116,7 @@ test_rapid_create_delete()
+ 	for i in $(seq 1 "$STRESS_ITERATIONS"); do
+ 		dpllsim_alloc_clock_id; clock_id=$DPLLSIM_CLOCK_ID
+ 
+-		if ! create_stress_device "$clock_id"; then
++		if ! create_stress_device "$clock_id" 5; then
+ 			check_err 1 "failed to create device (iteration $i)"
+ 			break
+ 		fi
+@@ -116,6 +148,14 @@ test_deploy_cycle()
+ 	fi
+ 	track_device "$name"
+ 
++	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input ||
++	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input ||
++	   ! dpllsim_add_pin "$name" out0 ext 10000000 output; then
++		check_err 1 "cannot add pins"
++		log_test "DPLL deploy/undeploy cycling"
++		return
++	fi
++
+ 	for i in $(seq 1 "$STRESS_ITERATIONS"); do
+ 		if ! dpllsim_deploy "$name"; then
+ 			check_err 1 "deploy failed (iteration $i)"
+diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+index fc81f149d1d0b7..ade1ac65f98b46 100644
+--- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
++++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+@@ -44,6 +44,10 @@ dpll_lib_check_prereqs()
+ 		echo "SKIP: dpll tool too old, missing 'device show'"
+ 		exit "$ksft_skip"
+ 	fi
++	if ! dpll pin help 2>&1 | grep -q "show"; then
++		echo "SKIP: dpll tool too old, missing 'pin show'"
++		exit "$ksft_skip"
++	fi
+ }
+ 
+ # The scripts that create dpllsim devices share the one dpllsim directory
+@@ -108,14 +112,39 @@ dpll_lib_init()
+ 	fi
+ }
+ 
++# Name of the dpllsim device a script created as the device under test,
++# set by the script next to DPLL_DEV_ID. Empty when the user provided
++# the device.
++DPLL_CREATED_DEVICE=""
++
++# The layout and the capabilities of the device a script created are
++# known, so a missing pin, attribute or capability on it can only mean a
++# failed query or broken tooling. Report such a condition as a failure
++# on the created device and as a skip on a device the user provided,
++# where it is a property of the hardware.
++# $1: test name, $2: reason
++dpll_log_test_skip_or_fail()
++{
++	local name=$1
++	local reason=$2
++
++	if [ -n "$DPLL_CREATED_DEVICE" ]; then
++		check_err 1 "$reason on the device created by the test"
++		log_test "$name"
++	else
++		log_test_skip "$name" "$reason"
++	fi
++}
++
+ ##############################################################################
+ # Device queries
+ #
+ # "dpll device show id X -j" may print either a flat object or a dump-style
+ # {"device":[...]} wrapper depending on the iproute2 version, so normalize
+-# with (.device[0]? // .) before extracting fields. The tool is run first
+-# and jq only on what it printed, so that a failed query returns its
+-# status instead of the empty output a missing field produces too.
++# with (.device[0]? // .) before extracting fields, same for pins. The
++# device helpers run the tool first and jq only on what it printed, so
++# that a failed query returns its status instead of the empty output a
++# missing field produces too.
+ 
+ dpll_device_json()
+ {
+@@ -197,12 +226,110 @@ dpll_device_wait_gone_by_clock_id()
+ 	busywait "$BUSYWAIT_TIMEOUT" __dpll_device_absent_by_clock_id "$@"
+ }
+ 
++##############################################################################
++# Pin queries
++#
++# Attributes of the pin itself are read by pin id alone. Attributes that
++# live in the parent-device nest (state, prio, ...) take the device id in
++# addition, to select the nest of the device under test. The helpers
++# that work on the full pin dump normalize its shape like the id-based
++# ones do, with (.pin? // [.]), so that a flat object would work too.
++# Like the device queries, every helper runs the tool first and jq only
++# on what it printed, and returns 1 when the tool failed.
++
++dpll_pin_json()
++{
++	local pin_id=$1
++	local out
++
++	out=$(dpll pin show id "$pin_id" -j 2>/dev/null) || return 1
++	jq '(.pin[0]? // .)' <<< "$out"
++}
++
++__dpll_pin_field()
++{
++	local pin_id=$1; shift
++	local out
++
++	out=$(dpll pin show id "$pin_id" -j 2>/dev/null) || return 1
++	jq -r "(.pin[0]? // .) | $1 // empty" <<< "$out"
++}
++
++# Fields living in the parent-device nest matching the given device
++__dpll_pin_dev_field()
++{
++	local dev_id=$1
++	local pin_id=$2; shift 2
++	local out
++
++	out=$(dpll pin show id "$pin_id" -j 2>/dev/null) || return 1
++	jq -r --argjson dev "$dev_id" \
++	   "(.pin[0]? // .) | .[\"parent-device\"][]? |
++	    select(.[\"parent-id\"] == \$dev) | $1 // empty" <<< "$out"
++}
++
++# Print ids of all pins belonging to the device, one per line: pins
++# registered on the device directly plus pins registered on those pins
++# (MUX children), followed recursively so that children of children are
++# included too. Older iproute2 lacks the "pin show device <id>" filter,
++# so filter the full dump with jq.
++dpll_pin_get_ids()
++{
++	local dev_id=$1
++	local out
++
++	out=$(dpll pin show -j 2>/dev/null) || return 1
++	jq -r --argjson dev "$dev_id" '
++		(.pin? // [.]) as $pins |
++		def children($ids):
++			[$pins[] | select(any(.["parent-pin"][]?;
++					     .["parent-id"] as $p |
++					     $ids | index($p))) | .id];
++		def closure($ids):
++			(($ids + children($ids)) | unique) as $n |
++			if ($n | length) == ($ids | length) then $ids
++			else closure($n) end;
++		closure([$pins[] |
++			 select(any(.["parent-device"][]?;
++				    .["parent-id"] == $dev)) | .id])
++		as $all |
++		$pins[] | select(.id as $i | $all | index($i)) | .id' \
++		<<< "$out"
++}
++
++# Print ids of all non-MUX pins of the device with the given direction
++# (input/output), one per line. Direction lives in the parent-device nest.
++dpll_pin_find_by_direction()
++{
++	local dev_id=$1
++	local dir=$2
++	local out
++
++	out=$(dpll pin show -j 2>/dev/null) || return 1
++	jq -r --argjson dev "$dev_id" --arg dir "$dir" \
++	   '(.pin? // [.])[] | select(.type != "mux") |
++	    select(.["parent-device"][]? |
++		   (.["parent-id"] == $dev and .direction == $dir)) |
++	    .id' <<< "$out"
++}
++
++dpll_pin_get_frequency()
++{
++	__dpll_pin_field "$1" '.frequency'
++}
++
++dpll_pin_get_state()
++{
++	__dpll_pin_dev_field "$1" "$2" '.state'
++}
++
+ ##############################################################################
+ # dpllsim configfs interface
+ #
+-# Each directory under $DPLLSIM_CFG is one simulated device. Writing 1 to
+-# <dev>/live registers the device with the DPLL core, writing 0
+-# unregisters it. The structure (clock_id) can only be changed while the
++# Each directory under $DPLLSIM_CFG is one simulated device; its pins are
++# directories under <dev>/pins/. Writing 1 to <dev>/live registers the
++# device and its pins with the DPLL core, writing 0 unregisters them. The
++# structure (pins, clock_id, pin attributes) can only be changed while the
+ # device is not live.
+ #
+ # dpllsim_available mounts configfs when nothing else did, which is the
+@@ -275,6 +402,28 @@ dpllsim_create_device()
+ 	fi
+ }
+ 
++# $1: device name, $2: pin name (becomes the board-label), $3: type (gnss,
++# int-oscillator, ext, synce-eth-port, mux), $4: frequency in Hz,
++# $5: direction (input/output)
++dpllsim_add_pin()
++{
++	local dev=$1
++	local pin=$2
++	local type=$3
++	local frequency=$4
++	local direction=$5
++	local pin_path="$DPLLSIM_CFG/$dev/pins/$pin"
++
++	mkdir "$pin_path" 2>/dev/null || return 1
++
++	if ! echo "$type" 2>/dev/null > "$pin_path/type" ||
++	   ! echo "$frequency" 2>/dev/null > "$pin_path/frequency" ||
++	   ! echo "$direction" 2>/dev/null > "$pin_path/direction"; then
++		rmdir "$pin_path" 2>/dev/null
++		return 1
++	fi
++}
++
+ dpllsim_deploy()
+ {
+ 	echo 1 2>/dev/null > "$DPLLSIM_CFG/$1/live"
+@@ -285,17 +434,22 @@ dpllsim_undeploy()
+ 	echo 0 2>/dev/null > "$DPLLSIM_CFG/$1/live"
+ }
+ 
+-# Take the device offline and remove it. Every step is attempted even
+-# when an earlier one failed, the return value is non-zero when any did.
+-# A device that does not exist counts as deleted.
++# Take the device offline and remove it together with all its pins.
++# Every step is attempted even when an earlier one failed, the return
++# value is non-zero when any did. A device that does not exist counts as
++# deleted.
+ dpllsim_delete_device()
+ {
+ 	local dev_path="$DPLLSIM_CFG/$1"
+-	local ret=0
++	local pin_path ret=0
+ 
+ 	[ -d "$dev_path" ] || return 0
+ 
+ 	dpllsim_undeploy "$1" || ret=1
++	for pin_path in "$dev_path"/pins/*/; do
++		[ -d "$pin_path" ] || continue
++		rmdir "$pin_path" || ret=1
++	done
+ 	rmdir "$dev_path" || ret=1
+ 
+ 	return "$ret"
+@@ -309,8 +463,12 @@ dpllsim_alloc_clock_id()
+ 	DPLLSIM_CLOCK_ID=$((DPLLSIM_NEXT_CLOCK_ID++))
+ }
+ 
+-# Create a device, deploy it and resolve the netlink device id. Sets
+-# DPLLSIM_CREATED_NAME, DPLLSIM_CLOCK_ID and DPLLSIM_DEV_ID.
++# Create a device with the standard 3-pin layout, deploy it and resolve
++# the netlink device id. Sets DPLLSIM_CREATED_NAME, DPLLSIM_CLOCK_ID and
++# DPLLSIM_DEV_ID.
++#   gnss0: GNSS, 1 Hz, input
++#   ext0: EXT, 10 MHz, input
++#   out0: EXT, 10 MHz, output
+ # shellcheck disable=SC2120 # the argument is optional
+ dpllsim_setup_standard_device()
+ {
+@@ -321,6 +479,13 @@ dpllsim_setup_standard_device()
+ 	name="std$clock_id"
+ 	dpllsim_create_device "$name" "$clock_id" || return 1
+ 
++	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input ||
++	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input ||
++	   ! dpllsim_add_pin "$name" out0 ext 10000000 output; then
 +		dpllsim_delete_device "$name"
 +		return 1
 +	fi
 +
-+	if ! DPLLSIM_DEV_ID=$(dpll_device_wait_by_clock_id "$clock_id" \
-+							  dpllsim); then
-+		dpllsim_delete_device "$name"
-+		return 1
-+	fi
-+}
+ 	if ! dpllsim_deploy "$name"; then
+ 		dpllsim_delete_device "$name"
+ 		return 1
 -- 
 2.56.0
 
