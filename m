@@ -1,62 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793837037;
-	b=gd3Kc0C7eYE28FQ8g3+NgYR+vOifFBBRkksqq0kCvxBk0AFVFe1rRLKFrpah0S37Y2fK
-	 u3afypuu2LHphMWsgDJ/65+sBB43R5niTjFP90RKmWZKMeea6YjO2wcpEN8rgKZlCBNED
-	 JmPmP6Vrk2eIjl77NHyBI/HScsFGGQPH58WXMAAVshCZSGqywS85+rD7WqhY9ApowdnLl
-	 aU8MEowgpOR+5zY2aXy2xqhxQZJcxGPVnHdyg/j+1YHRHgBWojaxtwOD4dCDi7fT9nerr
-	 IDFhFhEei0pLJKdV1Yr6VbhPLdpKYgUg7w365mK4ua21fBBe+BDuV9UvbuKZG+ELi6A==
+	t=1793837172;
+	b=l8aS6VkDiAKNl0K15i2gbA+7EwpDSdmsy+XTC55zoFszNqEAcejq8eeP1r05kCIIQ9F1
+	 FbonVbbKNvmM7KNOz64W93/Hs5NOC0Ds2h1ppEywAPt6a3Mdf6piZSxy5y//Qls0U2y1C
+	 3JyjiR/NnfqrSPKKOT4E99j7v8cmRFC3i1DLzwOghjr1fTF5mA1OXxJHei2PlAqagMIUG
+	 bmQPOzLWnRLRfTPAcd4ISeLVQtlzkc8rv1ftEIOmaqJxSz7fAXM5OYDBOAiLDX8Iv9E/o
+	 7Ta2wc8HHT6Oa2dGDDXj7UEknWjBu/tfHv6kkWbL4O7X/stK/RCn0XNlMMXiDwVdhPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793837037;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=w4volzdkQ4CAvX2QNfSoP47O++Y3rt5cp4l6Pqyv/DJQQxpuXjt+xipGputYk05eD+7m
-	 8IqVF8vHH8xy677NDakFjee8+sT4hszsxIOgtmLayhu6Igpayy5p2gGPHIzvBg572SDMR
-	 nU2725UPc66vwHQZwrrRp3is1FYk0uNxEIa9ugwxy1o0io73mqZGaj4/nz6LyZ+9qxQcP
-	 ypI0ysfJ0zchHyDfIvYPseSbEq03FyQdReeELryDEQnXDyXbCREg138rCQw7mHbcKMY2B
-	 lEE4P6d2rSDYEXGdVV+8C3TbnTuBoy0I/HU9xpBy+Fd2R02v5rnuONgy/esfL+9j90A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793837172;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=rOcIn02aUhenw1f2b3Qbp+NkAFopxxVHtJ3Yf6T/4SA=;
+	b=eIN6wtS0PWskEkbmJAsmw2mPXkM7ZWciuMY6TvibBl6u+CYfbo6fddogL8bxd2a+dHpl
+	 tOJEEQzZhrnKfIM7jNlKL+g/UO4jIXEpjYKb7pDFgryGdXzMhTnPWj/oK9WVFT/PrxvB2
+	 Bf6ql62c8CwsXatsI1ltlh7HksUCn1+jy8T4JOErMPi+f4St5uqqumNAQXFRyEg7U0AKi
+	 paBBg2hDwlReuDKYrSuOvc3/z4Nt34G2BaWX57ihEXJyLJnJL4b8C+f5G60B7/A/RZMP6
+	 sYIUmyNpVE1LxXzXL0A0p7xx6RU1AaomEB/Nc5f5idLQ+zIUmh6gGEW0oMB7TDbclkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzRAKHE+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iMISf4Ft;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F8F606A32D;
-	Thu,  5 Nov 2026 00:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32136606A32E
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 00:06:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32136606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzRAKHE+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5111F000C1;
-	Thu,  5 Nov 2026 00:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793837036;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XzRAKHE+7ZiibyjQF+cOdZmpp5lFyoytcPXo+EOkn4KFNgfQkeLP5ZT33Qdy2PsOQ
-	 Ttf1piDWilLBKNhkYJB4BtYdNLX9JOKRPTkuhY+F7IJAHAPrnrRPaqMwZQPp4RYIFD
-	 nAsPwJk7v4W1fUwIo1InI1l0QIkdvJfvyEBemNR0miBK+L1mS2u7mHSOxvFxuQJYZV
-	 d1K7M+5bsy1pf2X3P2JCpKLpMrwHI9kwa8CONz8DuCSeHW20VX00MzTWYKe9Ill66P
-	 YMyBrDnWI4t46FTYj5rNrEW4GQixZ29mxd8tluRz6BuCTzuecjI2pWzb/i4pYLkf9M
-	 guBTuuY5DeB7w==
-From: netdev-bot+sinfo@kernel.org
-To: Oleg Drokin <green@linuxhacker.ru>
-Cc: sgarzare@redhat.com, stefanha@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net 0/3] vsock/virtio: bound what a peer can make the host queue
-Date: Thu, 05 Nov 2026 00:03:55 +0000
-Message-ID: <179383703519.488859.4429490517306926733@kernel.org>
-In-Reply-To: <20261105000141.3617241-1-green@linuxhacker.ru>
-References: <20261105000141.3617241-1-green@linuxhacker.ru>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iMISf4Ft
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793837170; x=1825373170;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=lECegV1ACTKkuiZR56LBYMXL83kUihP66t8EmA5cxs0=;
+  b=iMISf4Ft0PI/eQhNF2rexXiHk6O+ueVY2nmEJJRXvLS83niPs8W3tKmK
+   k0ESzSbOo5mhrzCpIlfZN+WM7MNzohVFidEazigCl92oW9coV2FZIEZWx
+   MkmVsHI8rD6yEEUVwy0Qgpc4jopVpEcZo3IWv21NPfzsH+Ib2ZtcbHpGm
+   TjbjPxqjdXEyCTBu/Q/2a4YyzRP08dIeITnbwQUEVZ+bW4C+bhT6Ld6GT
+   yt7o8126OmDpcItxNzGI8mepFhWoE4GBB4+KpeUwEFyR+tiXuPfxD3BY9
+   1oPDGcTo6nZdqri/zybPubsKkvvsATazBKR3pL59lL42mYKbfaCoMRVgy
+   Q==;
+X-CSE-ConnectionGUID: c6Q0LUeUS0OsHXWRrnSYYw==
+X-CSE-MsgGUID: vKnrd8qjQwWDscOqS9li3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2628667"
+X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
+   d="scan'208";a="2628667"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 16:06:09 -0800
+X-CSE-ConnectionGUID: aHaseNclSeaUBeT3aAGEFw==
+X-CSE-MsgGUID: kjQBSO02RHiTpR30FX8qBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
+   d="scan'208";a="6864307"
+Received: from vcostago-desk.jf.intel.com (HELO vcostago-desk) ([10.98.24.84])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 16:06:10 -0800
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Riley <security@copperfault.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net] net/sched: etf: propagate dequeue drops to parents
+In-Reply-To: <20261104135707.725-1-me@riley.kitchen>
+References: <20261104135707.725-1-me@riley.kitchen>
+Date: Wed, 04 Nov 2026 16:06:09 -0800
+Message-ID: <87v76cuopa.fsf@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,21 +77,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Hi!
+> From: Riley Kitchen <security@copperfault.com>
+>
+> etf_dequeue_timesortedlist() drops expired packets via
+> timesortedlist_drop(), but that path only decrements ETF's own qlen and
+> backlog. It never calls qdisc_tree_reduce_backlog(), so a classful
+> parent keeps accounting packets that no longer exist.
+>
+> With ETF installed below QFQ, this leaves QFQ with a nonzero qlen after
+> its last active aggregate has drained. qfq_dequeue() then skips its
+> empty-queue early return, qfq_choose_next_agg() returns NULL, and
+> qfq_peek_skb() dereferences the NULL aggregate, panicking the kernel. An
+> unprivileged (uid 1000) process can trigger this deterministically after
+> creating user and network namespaces; no race and no modified kernel are
+> required.
+>
+> Count the packets and bytes dropped in timesortedlist_drop() and call
+> qdisc_tree_reduce_backlog() once the local queue state is consistent, so
+> classful ancestors see the removal.
+>
+> The issue was found and the fix developed with AI assistance. A
+> standalone C reproducer, run as uid 1000 with no kernel changes,
+> panicked v7.3 and mainline d135ab453a74 under KASAN; with this fix the
+> reproducer exits cleanly and parent and child backlogs both reach zero.
+> The reproducer is available privately on request.
+>
+> Fixes: 25db26a91364 ("net/sched: Introduce the ETF Qdisc")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Riley Kitchen <security@copperfault.com>
+> ---
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+It seems that ETF under QFQ won't work well, as ETF can drop packets and
+is not work conserving. But the patch looks good:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Cheers,
+-- 
+Vinicius
