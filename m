@@ -1,60 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793890485;
-	b=f5LdA68DlCoRc+Zzn2tH2/ATGYxM+pk2ETx6QrR2F78A5a6/wcOUkUuI4KqtMoowbMBZ
-	 J0uZrmCAQx39qy1LefyoLXy8xujHM37BAxQ8hxNPZrWVD4GhUiCNEagU7I+rOVNWuXa9+
-	 Se50qSnnAPyU2n/423RzyW4G5LjPQyUOIVscqxvpbC4LKlNaAyPdijJMABLl0edH7D203
-	 lyX/OLrfW6V71vx2l/P9F387HcPqFBwTaw9YwsqatyVB1GfJna6E5BTc6yv8crgveriY1
-	 Q4SPnapNL63ul7Itx/FIDFk7h33hg3zXYZIbu+a4py8NUU1+rNtUC7f51mv8FRLbcEA==
+	t=1793890609;
+	b=uc8tQTGuds4ah65Bu2irLe02xX1agvq6u/glv/BRiMFUanYmovk0Yg7eyKanzxPjKsg4
+	 sW51pfRAgG3y8oybjqKXtK8iGufmrywhHCz6L6ryFlhVLB6siNksEw9QD1oeBt4VNyfnG
+	 1pIWkdacCPNCZyb8DbP6f647jak2VeAWlPYgk91OxDxXfekPzTbHKIrO5OtISkJZe78Zx
+	 6aGz41Iq9wXlG67D9thy8P7rWxukdIMc4Gxcw5NgyRGjb3rCp+4gTpb6OACHVy9bYEZo/
+	 AmY1o5w3UxFzcKwKLAcdW1+uT8AD8qjsu/Ysuj8txQghaSWEw9aRrCocw/PllLGyr6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793890485;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=O0tTV/LxO1caisWems9pMF6bXByXS9sZ02w4o7mP319dwQ84rb0t5rUZCwoGDMj4G9IG
-	 KqMpSSCBjM3hnmq2vCdRLjX4bxR0Pf+sMTAFVa5vXjAVVKsd8nMKW6IdYlfYpWgT9+dNH
-	 DtoVe+QzbfSsOpgawt1wbGAXyrsLzRFsQROkuriGUBqMd1+vX2EJ4/NhxsUvS58gGg4aR
-	 O2oJ2m1Dp1HUh6jXwZyeT6Fw1EDEgwZhXG21S0Hqox7qiW+17xWs4fAsegN7t/uiIzGTx
-	 ixQpU2seEfskFyq4nrGUuxtFJFJI1ze3MRU3r2V/HTVrsB+Mt8FXbQpctWzayJugt5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793890609;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
+	b=3pwHTPJNgLbewhX3PDtBPrd/z3827cAPG/m79giadbW0R3h5sqds3dz7hnw3GHHtnatl
+	 zqqIiRRlfyAknCSvLUUmXz1l5jt86Ia/mRlkBjL/JFBRO0AIzFF/xdp0v+nfLv5VUw4u+
+	 lF88VjcB5QhNZwGzhgAXCWTN2SARr3hAXnH56CQ3ASfq1+yPMbXl/i99xXSHB4n3sYNbX
+	 PqbrylauBH4X8H7cDA0+FV+2TlndgC63biJKDO2fLCHCy27s74NpDlNCsHc+ujsnBbRgb
+	 uTWzvwHkNCx11kyu1bwyWypR1ykvzNswkPiEyXdgdIAI8+P4MYOrHGkcR2m4hO8OCiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Ka/n6n6S";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iw3o4sxl;
+	arc=none smtp.remote-ip=209.85.221.173
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35162606A31B;
-	Thu,  5 Nov 2026 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25C6606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:56:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C25C6606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ka/n6n6S
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7F71F000C1;
-	Thu,  5 Nov 2026 14:54:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793890484;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ka/n6n6SUkO8FUJIgBHv48WOD0oWPcUaYm3OIfHydr7leKmNS1cXXgvy1BCOmzY7X
-	 A3tB+MYRX0nV0bvMd9epbeGw29jOY5BfHmOvmuwk53qPWemsE8+QLe5pAsppxy+tJ+
-	 pS6oQFHfyw+dqwZPQ7CwhZIG3iTw9gkPW64piez2I5m1kEFYSPdNh/00Mlta5eHjfk
-	 N+k0wMhBnIpt18dpkqTZqQlugv7lrmSAEsUbVGnnQi/9V8ZlrKfg6xu57tXmQl41P2
-	 3fjLNCfvtHW+rtdKu280/u2x+b/xQpxJybzMK6S++k/+fV1ce5qz5yeN8bC49FKhNp
-	 zxd1TCPEqj9aQ==
-From: netdev-bot+sinfo@kernel.org
-To: Wojtek Wasko <wwasko@nvidia.com>
-Cc: netdev@vger.kernel.org, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mtosatti@redhat.com, pbonzini@redhat.com, cjubran@nvidia.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net] ptp: kvm: report paired cycles for the active clocksource
-Date: Thu, 05 Nov 2026 14:54:43 +0000
-Message-ID: <179389048363.488859.14886385431417257658@kernel.org>
-In-Reply-To: <20261105144821.5299-1-wwasko@nvidia.com>
-References: <20261105144821.5299-1-wwasko@nvidia.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iw3o4sxl
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eac319a6c2so735177e0c.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:56:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793890608; x=1794495408; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
+        b=Iw3o4sxlhm+moLG+aWbh3F5bLzfTYJo29Wwgj+PWL3gtGOa3bF9YHXs/ByMsrm5avV
+         XQZRtXkikmf9IhrNGlqQOg2WM5LlJu8k2HeoEZsS+f/0oyebZKGE5Wqr9Vs4ct6XVLBf
+         r27X+4Af0hvwxE+0RvtcJwtNXiB8LxOCS2r8ANhoDKqDCA3FIgfH1aEuLdp5apI6oHiY
+         hgSWCqx8f2Al/GaaenmCGOTyFFL8Z7iPBt3g/NJEKoWGbaE0ooG/5TMDeiw1ZEZLkOTI
+         FDjS5VAkQwDcZCxZ1QvEHEOPpB2asrwJnBz94ojPKmg5FxPar3LS2aOjQ0Dbq8mc0rRi
+         km3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793890608; x=1794495408;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XdIGjSypKUaCNpXtgJvDoI2MzXbGDdXv7M653onSpWM=;
+        b=CSV78JKnbXXEJvDTFPruwfmr8XysNuC1crvWFr04RI8PIdfc8YlsKxUaLKk8vNkJzF
+         3AXgD/F1KQinLDj/Ku/tHTT4NCDuDAvgSBcdmaIvi6stOOj/HrEBvGgO3ugNtemkcYXe
+         5HS2gNOk273NZEAOAkL1w7QwspjoXfWcfXrd5a1qavD3VLGnhVAqECmQMb4o4rKgusV6
+         aFT2KSFJ55tSztM/XUKkmsMX2EfBhAkdThgncUZbgNk3JSQgOz06dZo93IHRVMv96wik
+         1MvgPEfPLoYoN/qqHfvnHxTud+3SzXNbLhThja0FPED9wpxhVJL6ohR+g7FJr5jdkIkA
+         bQDA==
+X-Gm-Message-State: APuU4Z/YTiPhjux7i51QZhgvIhRCs6+hakOUUoay3BCUU+jpM+Taivb3
+	XoAi8K8cMnxIagVDqmqKVGh6NRtqbUeccyrMvBB7M/oc5yLCrC/YMQwg
+X-Gm-Gg: AYBFou211NdUx/rJRCxO25oOd83dzblabHLhmecFDKP4y+aoTpMYNlMjJYUE0GWoaeo
+	bLipVHHUdUMPdGrW8mhbOUYWxssqe+JgfUAWSVfeiJXlnZi18qjFrKIMGV+mFx0WoKII4z1hRoQ
+	miBxjB6L5kxO950myiVYAYOrPaGlKKvWEuGtneufVCBfpT3jASJSHEts4ER5b/z/EapzC3jbkTy
+	Fj5hqgAEWajpjoZKzqCDPzEvvoOJ7KxETyI12ftBr6E+bEOcUHPq5d277BUS+GHb8oEYSz0lsGD
+	TDXqCLcbmzU27Rn0dzI5gpCtUjCeo/umNtgVgD26APy9XPbxNuLQiHCZwOItC8krzh96hc6Q6wT
+	u0xLpzAgDk4vj2OPJn4Jd95hoj6FZKK0uC3jPkLWSn/w0co0rYF9qpYpSEiV1Dl1hsueGNEJ96b
+	xWVjuoHUw65km/NpVrzqlG6td5/uRMr4ObLZVoms51zwQ0zqDcj0BipHaX4nbRyxi1o/NXmjKUZ
+	1pPOjAtYqS+mOr8cN10o+rPsUuUTcOVeqixYSbzY9WmP/zTaxqfC8I0bCpFlkxK+LfqJd69sqX0
+	k5iZwbBgYixk3shGnJl/Nz96J+Dm58Rzq8ygkPzkAbO8p9dtLum6ExUzNPeYz2JOXKGB93d/qOP
+	UzwyZZu19PAbGek7JTBB2YYZuTj1wcuxZ4eVo/1qLNDk34wHKRjDzlF78o+MlQpBMt1b/D7A=
+X-Received: by 2002:a05:6122:e248:b0:5ea:d2de:eff4 with SMTP id 71dfb90a1353d-5ec689edd4emr9688175e0c.22.1793890607584;
+        Thu, 05 Nov 2026 06:56:47 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d774dcsm4395072e0c.5.2026.11.05.06.56.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 06:56:45 -0800 (PST)
+Date: Thu, 05 Nov 2026 09:56:45 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Stephen Hemminger <stephen@networkplumber.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ bpf@vger.kernel.org, 
+ dsahern@kernel.org, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <willemdebruijn.kernel.192ba63c82bdd@gmail.com>
+In-Reply-To: <20261105154509.1cedd84b@stephen-xps.local>
+References: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
+ <20261103092226.2e8ab229@stephen-xps.local>
+ <willemdebruijn.kernel.a20ae72714a7@gmail.com>
+ <20261105143049.51af15a1@stephen-xps.local>
+ <willemdebruijn.kernel.213e1d84478e4@gmail.com>
+ <20261105154509.1cedd84b@stephen-xps.local>
+Subject: Re: [PATCH net-next] docs: netdev: fix iproute2 process documentation
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,21 +110,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Stephen Hemminger wrote:
+> On Thu, 05 Nov 2026 08:46:22 -0500
+> Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> 
+> > Stephen Hemminger wrote:
+> > > On Tue, 03 Nov 2026 09:44:53 -0500
+> > > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> > >   
+> > > > Stephen Hemminger wrote:  
+> > > > > On Mon,  2 Nov 2026 22:35:56 -0500
+> > > > > Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+> > > > >     
+> > > > > > +
+> > > > > > +Patches are tracked in patchwork under the netdevbpf project and delegated
+> > > > > > +to 'shemminger' for further processing:
+> > > > > > +    
+> > > > > 
+> > > > > Minor nit. David Ahern (dsa) handles the iproute-next patches.
+> > > > > I stick to only iproute.     
+> > > > 
+> > > > I know, but there is no separate delegation in patchwork to David.
+> > > > 
+> > > > I assumed all iproute2 patches would get delegated to your patchwork
+> > > > component. Is this not correct?  
+> > > 
+> > > Right now we correct it manually. Often patches target the wrong tree.  
+> > 
+> > This is not about the trees, but delegate on patchwork. There is no
+> > delegate dsahern in the dropdown menu.
+> 
+> David is dsa in patchwork
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Ah. I assumed that stood for Distributed Switch Architecture.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+A convenient homonym perhaps? :)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Will send a v2 with that part revised. Thanks!
