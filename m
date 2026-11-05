@@ -1,82 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793907299;
-	b=YQkD4vJNdw0uHNYp2BAUa6NG8ebQMNyBOsaY1Fvuz8+6rM1/MYtx9QKjoxj30iqjE9l6
-	 A/22ARySrJ7WfmViT1or6Ygq0Xr8Gdk2kylvSkzezO9PuvILzhsEFW73mcw7dUXkD32sw
-	 eZfaBZ1BA2B7w9VDenglbqK5r2hR2X5HhRWKtxpTszvr84LL5SBl+RyNAivtFZIYZr2Ky
-	 I8BOenCz/UNQcLzxw3HoobAoaTrK3O1vipyHP7ODK6kRTthCtEv9nJS4mQzGm0k8Z6S7K
-	 KCdVMOiwNrPQFDGo1Kx8R3gGdK2vIISUK+2ULKKbwChqkCBy00Q1aj8M22WktWZlfiQ==
+	t=1793907304;
+	b=Zk6cDLt1mpPUdoFukHNpBxEXgz62mDXZRZvUnUmKzd6QE+/iumKz2m7F9X/9ZaExYcA6
+	 Le8mT4OQZfiTGwoD0L2QblFtVBcKxRwizifF4qIxWgfKrk87Lc7XIY2N1XjFZXQ2sgapZ
+	 yLkU9wz+5yAxDu52wFsz2KR8/pY/vbe45QUISyiCBVvjiYEccpnIjB6DDFqEvqceTFyoB
+	 n+JBQmRGQP0Gc7KTok7Axf+EmjiwZxu7T3TPiEZ9xkyliLXSLfc5E4bmYRlh+nkTL8dAJ
+	 M79quhrvYE7iaGhUb+Q1/uE8KDmpiVP7ybpuBap01WjfEcM0NS2Vk+jZGhmB2RTSfDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793907299;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793907304;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=FIPamNjyg5pldJb53DytGiQm4S1qvSpofPwo92Sk8fU=;
-	b=ho74pr7BMfYVnamw0ijprje5LfHiWNSES+huaNFB1haTHgv/hbv59woZHIg871JR2nHq
-	 Ius+LgIsHwrcrkLmuFXgSOUNDM+tQZCOgxwWvDF6NZtDnsjMfH0N3A3OplwqUoyfLfys/
-	 ymNeugXeyIsOrSFLMvF4H0aUnVBPHKJ6a+xwIl9XmF/MgUETk4kZq+HaAvn1XyNkLSFXP
-	 N0wyJxuBVVs6GTlaHx4pHsw5v7aM+qcC/MIDVMbPu/2QR2Od4FeDaheCe8sAezqw9VYDD
-	 UywzwcF5jxe7/y2ukj3RcvOCUHbMXX0/sdlUYDketbXSjgGJDATTQaPYEUjC4FF2PeA==
+	bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
+	b=uun9nCu2uiuk1uhjP+nyML/YnzJJG/K9w+TZ1snoFkmNIHRTJdoheytrrC3fMxk6FyBe
+	 R6VfRCh8fRiYEyjhgYDUI+xkA84BRCT73rf5jbAwOwau4bohYtohMoXUGb+0qbqH1VdIE
+	 YLcaVNXLjnhkh2AyeVCNNkcm+T/2xO4kpK9/mmkVhjCQObWyVhtK94nlHLNUtAxzhAGV+
+	 IcdRvTyzCJDImbRE1KCSanr5E4Fke/tJCWzcwmxCBadGBvI4HMrJUiJbpZyko8ybPE72k
+	 UxWGa3hY1AMBqMEWQ9MNoeB2TX82q0N6NBP6VeNrjFYjbhWRIgYXuYw1LJDo2nZdMbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HddFjLZ0;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gF2H0qML;
 	arc=none smtp.remote-ip=74.125.82.53
 Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41D8606D515
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 19:34:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D41D8606D515
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7EB6075326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 19:35:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB7EB6075326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HddFjLZ0
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1adbf62dd31so3054926c88.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 11:34:58 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gF2H0qML
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-19305bcb72cso2095155c88.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 11:35:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793907298; x=1794512098; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793907303; x=1794512103; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FIPamNjyg5pldJb53DytGiQm4S1qvSpofPwo92Sk8fU=;
-        b=HddFjLZ0joAH1TGB8j7WeybL0a5slle7Di2adqqb9AGZjlK9DWcfKRaPTh971V7efr
-         KZQcjWW60p6WvsC2Ntgq1Rv6ZwKnhmI4yLIpiItnP0GoasFfLqOLIgR7f3oe3EmttkyQ
-         yWN3StvUNA6SGqrXedBLJXBtejcATvmfqiVThqXexkxHZYaHEuNABQpFga+V3t4d3Iml
-         LTY9U21M8KdbKQXSTOqGc1faZYnRScBw9YGY43k5MbR7WNcseNSaE+rFiqfrRK1W+NZA
-         QeG0nsNvsoKpoeyMCpJgecmNKHXhfYnPLwy5glyBAEvRhkPLt9i9BfE9fwx6xTk+B/5L
-         inLQ==
+        bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
+        b=gF2H0qMLqJEILl2WdYpdXO/kF4o/xA+zA11jGsk7q3DYsSiVSR4QAvQ4vNa8mrlh4T
+         2PViehKuLqppi/478eA40zl39pgH9MZIfHzlgQqNuwY9J9Vpn2rJbUAAW0OIOpsDag38
+         Cf2BEGqBCqhcr1Phfk9FSyg7cSv7ghsJX2sB4iF7m0JkqWJKYhadaDRqWeiJ6RCDfpV9
+         S0XrT0JWFCMmCZskgEcesX0AJUGVCJ0UX76I7jBWE4rjK0rAYZHICCCqPG9/mUQMcy6b
+         FZDlNrbQjfZimM3eqBJy7l9hijgjz0cseq5LkQyXt8hCmEqxuIDbJieVioSE0u9uAUfJ
+         XuDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793907298; x=1794512098;
+        d=1e100.net; s=20260707; t=1793907303; x=1794512103;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FIPamNjyg5pldJb53DytGiQm4S1qvSpofPwo92Sk8fU=;
-        b=kptkTJy3h7hzU+tbo207yFPeUmWroazaH/IA/6wlfYovdnkLKXs83KUpqygBfS/AoL
-         crrX0GlgQQgAvqKJjq7jXpztF0grqCFp48loJ7fwKr2ecPLPRymKvK1zDjS1JC7mNa84
-         HWaizMkuxwzgUMLzXQMeChm7TGP2Zt4zRb2AOiEqKNL3C3XcDfLfTv4bHZkl2wgC4St/
-         rVAQL5g3Y/FyvUT7TtqkQ3nUl48xfoqBWtnpTtmuHKIa8mQbBy8BV9pQPBIR6mZh+xwI
-         i4MaU5d6U7pWu4J4rVJxvvAF7hVkTKcFko4XTJJ5vN3Uz/qJQgMmWkRTWOdjpJFZlmxh
-         F40g==
-X-Gm-Message-State: APuU4Z+EoFH55ILBkoNCk48n/8LSDjqE60FeNswZPNH7QpQKq5IMZNyQ
-	96bf6UwgRDj3pTxo49waelBpIsmJk04z6haBpOzLJFldDgTsdQUZ5Mz54FXCdQ==
-X-Gm-Gg: AYBFou1lUe69Jdr5k1yk4/mEZH3wMoe1pq0gJMbR+L/zPR3o8ZyZ2LldZ6IZ0bVttI4
-	CBtAXH1G1x8QgMbtkcLYrTnsXaXRoymoqgnI1FrBmCIt0KM1/joG5QzRiKab3hiBf7lXBb45nte
-	3RlbGnUY1Acg5BLn3YJDh1dMuh6fQcbwcO4mWZ7tdI8vk0k1d1LvnMCUqeztJi/m+qEmn2dFrBz
-	Iv3bV1hDrzc0MYEfE2GvhcTKgBzawTfb3DXiThcnn1+w8IAgS6O4UHwCumyo9mY5IkElnRAb8QJ
-	9hv5YmQqwwvjbOGF/H7cZP73LcgQbIJH1sTOs1LgcUB3jUYKKiXD7JdxBPsLj0CeLpd4QeR7IwM
-	l0I4JYT8GWUGgU9wrhQm8kBAufkqIRUvaR+lODGq4VdmOusDJ4eDfy6BDxC98GNreXy0Cqj9CoI
-	lKDeEnvKAGJbCd+b5HT9b4YD/XUXIXqjEpoL8NE10eGWL3H/fk4Lf4zimXf8yughXvTv069TEYc
-	v+n4iojfK1s+ejugVZr3GGPL4AAr1d0iWV5dfDST/UDhJ1RDkt0yEicfOyrzhz1WahbA0XxOM2e
-	ykYj0w71x2scVNXDK83CQhXn3e31kw==
-X-Received: by 2002:a05:7022:3b81:b0:1ae:59d6:91cd with SMTP id a92af1059eb24-1ae59d694e9mr27788548c88.38.1793907297913;
-        Thu, 05 Nov 2026 11:34:57 -0800 (PST)
+        bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
+        b=K72uCxkhCdSvdfj/icYRItL0MLCzxhDXYT85Bzbi8WxMSFBNsQGCa6XZDPmryBuKh2
+         mNPMiKgHTw3xT5Cv1mkFogjoE+QRrqy2CD8cEDYJR3BIOrAgUmrz52Uey4uRMqpBLwDq
+         BXrRKWuPIZCl8kbxH2WPQ5zgrkH52/I9Rkb/22RGwdSJBlu/tVjyAX9oGZZ4yBVNB26V
+         ICHZYkmI46FgQZy07Tylv8RPcbqDbdil/0AFznY7LLjmfQj498cPnIAr2Ongx5tlzGcs
+         gjj7TON8LmCL/V1WdDr7JxXVViYpTGhyd1M2hB7u5nKbIvEGvZ2Oz4X6SVCj27jJ6J3t
+         Wi2Q==
+X-Gm-Message-State: APuU4Z8TrAGNWj/PccrcKDg8dEAddvYHZ5wbTN3HBsIewFuY+qwMJ3bL
+	VN/BmIXMW+41xRo7vVY+cxGhxBclznMTOfa/IsiRiLgDxUNafKVbeBG12MPkuQ==
+X-Gm-Gg: AYBFou228VT/md2MHVnIedyKGPkd9jwqH0tds1Ygd54grYJ9cp9C3wTGgj8UuDA3KhB
+	6tTf1v6c7WDVLYzDbpKTa7TdizuGbVgR4xa905Nbe9/4zcplFovzylQ2wxX/JDGX7ujQMDidCqz
+	gVVjjGg8asCT7DSKJk4mplUDl5gBYdh6BUwh0Y/yrmIP2grUeYN8ycBt5IpFvgVpvVjMvTphp7L
+	BH/B/6Qh3RQiUwj0vBHH9dKrhsQXZrn7kG26CYEXsdYQMbYpbV/KhquXWQPGH/DvITDP4mbzlGO
+	eXl1cia4wRM6y2/euUIVh+3cPciZCrw4hPCt2qLJ7JxgztM/88utSvQboS0FqLpDmlLjcSFT9Gv
+	D5RpnIjT8AiuLpTwROtgVnYG4lUl7xLbbn9mO1hAur0Gzehxhu2A78fr0GTseUibXP+ergY1g0o
+	4oZCcbdm+D/qfGSRN270yxKzF7QjcDl9X/ren7MXkbRVsfo3JSI5n1zV7zrZh50OuG3SeKxQPee
+	UOF0fWajodlIuP/I37l+B3DJjBC1gk4c3dtHjGAIPxtA46SKH0+irsYFR9WlKKpjdjxgS/1dKri
+	9n1EzI06x/cgaG9shni7X/dkZ46elw==
+X-Received: by 2002:a05:701b:4513:10b0:1b2:490b:6fdd with SMTP id a92af1059eb24-1b2490b7174mr7487167c88.24.1793907303014;
+        Thu, 05 Nov 2026 11:35:03 -0800 (PST)
 Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c127sm18023186c88.6.2026.11.05.11.34.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c127sm18023186c88.6.2026.11.05.11.34.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 11:34:53 -0800 (PST)
+        Thu, 05 Nov 2026 11:34:58 -0800 (PST)
 From: Florian Fainelli <f.fainelli@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <f.fainelli@gmail.com>,
@@ -87,9 +87,9 @@ Cc: Florian Fainelli <f.fainelli@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org (open list),
 	macro@orcam.me.uk
-Subject: [PATCH net-next 2/3] net: sb1250-mac: Advertise and honor RX checksum offload
-Date: Thu,  5 Nov 2026 11:34:34 -0800
-Message-ID: <20261105193435.2050321-3-f.fainelli@gmail.com>
+Subject: [PATCH net-next 3/3] net: sb1250-mac: Add ethtool autonegotiation restart support
+Date: Thu,  5 Nov 2026 11:34:35 -0800
+Message-ID: <20261105193435.2050321-4-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261105193435.2050321-1-f.fainelli@gmail.com>
 References: <20261105193435.2050321-1-f.fainelli@gmail.com>
@@ -104,51 +104,27 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The driver already trusts hardware RX checksum status on supported
-chip revisions, but does not advertise NETIF_F_RXCSUM. Consequently,
-ethtool does not report the offload or allow it to be disabled.
-
-Advertise RX checksum offload in hw_features and enable it by default
-when the existing hardware revision check reports support. Test the
-active feature bit in the receive path before marking a packet as
-CHECKSUM_UNNECESSARY, so disabling RX checksum offload restores software
-verification. Hardware can continue computing checksums while their
-results are ignored.
-
-BCM1250 pass 1 does not support the offload and retains the existing
-software checksum behavior.
+Wire up the nway_reset callback to phy_ethtool_nway_reset() so that
+ethtool -r can restart PHY autonegotiation. The phylib helper handles
+PHY locking and returns -ENODEV when the interface has no attached PHY.
 
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 ---
- drivers/net/ethernet/broadcom/sb1250-mac.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/sb1250-mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
-index 1843b52e96f5..546415d3134c 100644
+index 546415d3134c..433aa1e24439 100644
 --- a/drivers/net/ethernet/broadcom/sb1250-mac.c
 +++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
-@@ -1142,8 +1142,8 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
- 				 * the kernel
- 				 */
- 				sb->protocol = eth_type_trans(sb,d->sbdma_eth->sbm_dev);
--				/* Check hw IPv4/TCP checksum if supported */
--				if (sc->rx_hw_checksum == ENABLE) {
-+				/* Honor the RX checksum offload feature setting. */
-+				if (dev->features & NETIF_F_RXCSUM) {
- 					if (!((dsc->dscr_a) & M_DMA_ETHRX_BADIP4CS) &&
- 					    !((dsc->dscr_a) & M_DMA_ETHRX_BADTCPCS)) {
- 						sb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -2214,6 +2214,10 @@ static int sbmac_init(struct platform_device *pldev, long long base)
+@@ -2129,6 +2129,7 @@ static void sbmac_setmulti(struct sbmac_softc *sc)
+ }
  
- 	/* This is needed for PASS2 for Rx H/W checksum feature */
- 	sbmac_set_iphdr_offset(sc);
-+	if (sc->rx_hw_checksum == ENABLE) {
-+		dev->hw_features |= NETIF_F_RXCSUM;
-+		dev->features |= NETIF_F_RXCSUM;
-+	}
- 
- 	sc->mii_bus = mdiobus_alloc();
- 	if (sc->mii_bus == NULL) {
+ static const struct ethtool_ops sbmac_ethtool_ops = {
++	.nway_reset		= phy_ethtool_nway_reset,
+ 	.get_link		= ethtool_op_get_link,
+ 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
 -- 
 2.53.0
 
