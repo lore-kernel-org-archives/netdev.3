@@ -1,89 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.185.31
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793892027;
-	b=ARWZG11WnldHfax5E9sFK/p1qB0N8Zs1NG1EDOiynpSqLQyr41d+PMIOLcHOxLwCfVxx
-	 22T2+fr58q7vCMyiPbB5W9Dve3NGemsgbC/OL3m173FJNll4ujNmbWPfeMANrl7euYVZz
-	 oLLKk7r7/F3V4rvnfGetuq0UFN1k50jci25CPUnBLkhNQFWZo62JEiYIa+0og4NFNzFIX
-	 SvsJfcbA1yZCMMOMnOyuaCnsU3HsERyc5pjPanRL9tt2UvfRzhhjC6Hvjdf2ShRAkSxZb
-	 p0+sgHJViDXW84JX8sB/SCwr8cmYakVAEylO/nwtx/UXe7nqG6yu/ZPOUi81laTGBbA==
+	t=1793892456;
+	b=ed5Ap+3QO4FTEeF24ghL89WTthYJ93H0/yjZJxBxUK7+EHOi7yIvoXjc/M2eL9rATMzT
+	 Q/S384Or2xaPI4O8mo0lMzy2vQqq/3YrHlMzWzyOvpr+mTM3Xf6x8Oj/hxLUdIZgwIMP4
+	 6AnwBt0jRnsQti0nsXcJlXSNwy7zplefOKqcIxUo8bqVuVk9rSdePfxKQ7m3pvoS5yRQT
+	 17WX7rafNbc7KQJAJVxsqRcqq3IDK2HPrnZHqY3kiF0JnESah3AkysbB1c4hCnUlpQVVW
+	 hsHrR3LLxp6Scy3rlpX5smXKCISEjIggLe75Z7ChXebw+/E4itgz5/0tsYwkNRz/yBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892027;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=BeXk2KCmptBGAzeFCGFewoq5mV8g7WS0T+Ws2XLjQ64=;
-	b=jOAyVT1ieCaPMtNEi7U0LAyN886Fy46l+ihBkjUz9KSRQt57ozUID4nvACKcjNXfVqGO
-	 L4c2sELFt0NySyn5wgokaeFbp6GBp3TIz9yCflmOCppfrrHRHo34h58ex9CWz2NMz9FsB
-	 16uJZ5oL8j55MkEmPdnH+um6uZ84S6APbMI6+zu35t6yf+9csmFuWQXbggEcBRrojcPq7
-	 1RHWx20mY4BktodsV+XEbXD7h0nwF2GHpGNnrXDZXEk+bCsDlGadY9gYDmdvc0y5kHAV8
-	 cGFEhKU5UIQKeLtwhWK4ELPTvnSxu3BHkrHh5r0m+zYd9UUNT02FaX9o06++9i+Zgjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892456;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=F25zbrRYQ8DfmWFmcox/lBxkdydxYVArfXbr72jFMJ4=;
+	b=yBIql13LRMdhw8HTQVa23PFGJHJGY3lxLgQ6YrU4fU3tDp/+VsQIR25SEwyTbPys/QQ8
+	 OB5Gnyhsre9rrG0zKvQX0YT4rzi5y7niCvMiyJcd3n5+BvWDJEbp2g1aqv0gTSfEHgJKc
+	 UmG8XJPGXXUOgFvNnAMgU5T7baofYplZlnuNA8QqSPA7OqTieFi7JvPgrRSu9zh1wjsXo
+	 DSawa8yliQUbIZIX0xEhPlphq7I88ZLEHYcpMXzzSxz+V8J30y/qqcVad171zjASKSCjO
+	 /r6GyfWWRj4ZvKYhb05Z9Zhm+uHhWPfrFBPw2Ral9GUFl7zDa0jF95IAXwE46K3l9wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MXXs6sgw;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OiqEvvIA;
+	arc=none smtp.remote-ip=66.163.185.31
+Received: from sonic313-56.consmr.mail.ne1.yahoo.com (sonic313-56.consmr.mail.ne1.yahoo.com [66.163.185.31])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26323606A330
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:20:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26323606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC24D606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:27:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AC24D606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MXXs6sgw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793892025;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeXk2KCmptBGAzeFCGFewoq5mV8g7WS0T+Ws2XLjQ64=;
-	b=MXXs6sgwh533hgcJ8PdpBqq6nksyF6lYByrlHEHN2ELV2Lh8r3pqAETYOhhe0Jq5m/D02t
-	saV9gekEuC6eNHYuMdIXPSqRdIowxG07rf7GHik9/8es/vTs4hseFerxf6gPNZzNcguZi+
-	rZm0Q2EopeIjTjx6zlwX8TOmOxijcVU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-rNfsnL2dPG6m9q2f0VBhAg-1; Thu,
- 05 Nov 2026 10:20:20 -0500
-X-MC-Unique: rNfsnL2dPG6m9q2f0VBhAg-1
-X-Mimecast-MFC-AGG-ID: rNfsnL2dPG6m9q2f0VBhAg_1793892015
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27CF41955F6D;
-	Thu,  5 Nov 2026 15:20:14 +0000 (UTC)
-Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D8B0195608C;
-	Thu,  5 Nov 2026 15:20:08 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 14/14] selftests: dpll: add reference leak tests
-Date: Thu,  5 Nov 2026 16:18:52 +0100
-Message-ID: <20261105151852.1844305-15-poros@redhat.com>
-In-Reply-To: <20261105151852.1844305-1-poros@redhat.com>
-References: <20261105151852.1844305-1-poros@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=OiqEvvIA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793892449; bh=F25zbrRYQ8DfmWFmcox/lBxkdydxYVArfXbr72jFMJ4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=OiqEvvIArU2s9y6QL9DhQomS2gtFi2lHpPe/LVO+Lf49ABGfA4ewXnxJMq3nSD2AmNvxYEQ6RpLzMtKvhSO5WHhorEx14J6jUpEfD5k6qzEXY0RHQ7aUKcGUqqYMYB1O0HCajWLYsbrXBHtoF8sA60UaFD8sv0EX+KYE6qMqwjBV2DQV8Rh2SnT3X1sv4ff0m3kH0TjZs74E9zGgg6LJ9hkSI1MJ3ADjjRwZDQKMoJ5G13Odd80IWcSHQnpkESYqZZ2kgm7ehrEzLE8OxJXx2SjKH8AF+WIwwtJanOBtKPb8pcPg8zJm0rbic0cktY2nbKXMvMQKd+EIM1g4CB8kIQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793892449; bh=02Paj9COAmDq8/NNdJC7OcDWLUscjr45yBqO6zmH0fw=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=oRIy52rYouS80bmELgWwePTdT3gGo0g6rvuRFQmdcs5/a2SzuZ64bIVPZ2S9pS6iwEBoBByFuOtBFwRd8D6LtJRJx0w5JPFNw5cHhTWN0+OsVZviaNK2TuQdjFxt+gHJc3CLEUQmT+2/SBnLepibyhfdBBo2naQcW6jBwPTAuklYdf07AAQXNeqSOQBnl9wgacZoy0U+hvtSCEic2802oABgh1cYgieErxxzO5CRC6GMZETZoizEGXQh1rC0TAD/gUrywHorGo7Ns3z2DHN5hMSVnxaRfnL8atnA+BlCEpNSAkYJ3hpL3Y/DqunwKD1NpeRrKdULzVmppY7rEwz3Tw==
+X-YMail-OSG: E.t3OUgVM1nzEL1C2tUlut1A0RXjkMqTqqDYPZdyoZBDdMc_V5DrWjn3vMb0_Fz
+ itRasVl6n6xADHS7PHTrR7NuVnLQLqF4wV0rVOiTLMZ7huPDaHsoCvsfgNKG7R6Y6EMAshs6Ki3v
+ ccQsFyt4Xwu2ZEjRQ4WEp26HIudD8h6W3mzH48mNDgTImNqqJlmbC2Opf_B2bjIDTR90z6cudua9
+ 3ckHbhbtx3Y32bZD0Pr1XGhSgsIKZCmDOp4C.MA4M6uzG5cIJV9irmt1bsJsGCijTed590StpHzn
+ eqUFQYQK2JV2X_PKstUpV3BR9DMt9yE72uZzB0hlyAHI4NRYTBm9le4g0EoOtNiN4v7_zHaXTxmV
+ 2WyWxGAXWBqFj1VYKPCQHKxQfNeSqFrQztu3miI.9jtF5kH6l5b2kl2LntWIaD.aS89oPDTWbRU2
+ cIbKbXIJk.yvZ8V5vuC2zlma5ilO7k4qOp8xeszqzPFLklQeAA_OsU1oiJ_0NymshyN3SERdwjbR
+ hyc1yB0WsXkFLctnjePgxQYyhv27pg6wTQgEt8slWED2ChpgYyQnNYJ__rEZ6u9CXhmxatV167Tw
+ pu3u.UH6LU8P0hyPTMTOnPu33aNid3fA_0AwmFM.CsgEzAPLd8k.RSE.xau8EntWEDIs06nS1gdr
+ 38KLk7lp10YVo3AB0r_USPROf6KphEjzk03p6nhdi5VmTMo8rTdJ4LvEc8hZxVvJO.uxgspAsxDu
+ DWmDbcsSltFAgBY83tXfHGvRhQkIRYzDqrEbrR1J0p4OVod5Q.PuPxbKWRtAhEeYt3bVy1Lsg4gj
+ 6EZKjPQ8O3QRCSpx.__tkwHntVsmJ2JzTWtdvlE6xGOTwoy9xPnPKQfzjOtS8zBBbEsi4yP6dlYm
+ C67iHUy7_U3_vHfMpRn6ZkpSDL_koRxfJKM_Y_KrvXoRWBGgr_S64KOlNX4M2dISNBH0Cdmc_NXk
+ lXay_ahj2J04AdBWXtACoj_BAOi01BjYTeNK7SFqe7Ew7fhvbI3hCejs4K6UIbsWTgZk8knkm9XL
+ P7gAtV6LgQdapvqRA8SL2knNN19HLDJtuPKJl5X3aGgeHUcmsNM3DM1w86Eoew2jzq3IuHFvBDtv
+ MKISsbSNpzTPlQKw15AW5zQONYvQyg_QuaVUqyUyJB3z.XpUGtpLL0DQMtr0agELyaEw5d9D_tne
+ zeFzbRsn1r2BxF1dZacs.ZreEDteuCm47A.heoBYxeAuzGxs1i58aHGgcShm2BSX_fZQzP.2DOIu
+ SRJyZnsjXER0P0fa1ITzBKNrtVZ3cnwz0EdU0HQOKcMApv2mBgCZH1SISJfhR_VxqRV_KXGx_04L
+ HAcq9l6Sfqu4vII_nT.qw3Y38DDDG7MbyxipiRSHHr8Iv2.CyC5b4Yp3HQ0Uwr0hGr2YtlKDjsrO
+ _xvOnBsPsTn2oHd6jC_AJFhdXRKhWMrfalX2gP0AxYGYIyVEuZyDtY92uk7NQ72v7RlACmki2EDo
+ U1oRfOS5MEnW94Mp4V4Yr0bl5.TmVlOflyMVvOupoZGn5axeDIWK8R8Q3JkyDzg_zmU4jSxPhFj8
+ NM6DYMEljAXdQXHxztPQuePFz5SCY7WRxvO8R6EMcbT.gNigUD_he5JbmJ0ZTNxk4nLH.LtzGat_
+ SAkCGOY8XR5mITEb1QgmT4cu11PQmbQNhF6VGvnOYqXWma_bKhsSJrJaOHWp_.MZQk7eWAwAX3c1
+ etcxruNcFdgbnDji7wJtZk22vRW8uA4ERzT1HrYMlvHg4Lht_wwWImAs_gugUqJl0v0jRsZ8_6Vv
+ EveBg9XGWRD_osH3gploItTaUjFcRUh8rbNi.DX5X_ckf4U8y3Pxo9HJKf6ic39qvjftxjbWs4HN
+ DSP7MMHdrTTG1Uj8Fuph5gCqQiCX4JkEAv0X9WZT1W7PMrbgAeJDAA3FjRT6wusiuRyZHi1m3Ef2
+ _ix1FoyTqeKPeV0oa7nxMy9X6Ug8D95sAN6fk44B09fC8Cc2M1M.dwRmeWy8jiABNKItcjmfJGCr
+ 3a6Ep10jsHIeTVWRWR.f0eg7zLop7WgQotpREjzGNW_N6z5dDPRBua94xxEDXXF8tdRz9mTwSMaa
+ 4TnemkmaQBViR.6U4cm.En6u3WShbHvPELltZhIhZ5GyuC8FbO97skXoSQ0HLZBkUgA1WRUoqUPz
+ uOz8CZyQbVHIC0IRv75lozP8JExLeuVUMv6BPZ0NltgseLtt3ddkjlVsqOpd88QJDUhdPgs3nlHo
+ .uh8jF_Z9cR0uEiutMhpYj3Hw7E1n.wULP3PzLfFSJA_frxrLTR64u6PjhRm.kFYaDpilKv0fE6f
+ SoercykQgo4gj0kujDSgRmEjMwkTCxouT6FnXrwA-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: e0425162-394e-4926-9578-e60353190b5f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Thu, 5 Nov 2026 15:27:29 +0000
+Received: by hermes--production-ir2-5dd9bf4598-z289g (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8174fcee853681a34dc83a7ff3f9c0ff;
+          Thu, 05 Nov 2026 15:27:25 +0000 (UTC)
+Message-ID: <e66204e5-ac33-4a35-8d36-6f37372da97f@yahoo.com>
+Date: Thu, 5 Nov 2026 16:27:22 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,704 +84,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 04/10] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <2befac48-25eb-4c1b-9632-2f3237d68a3d@yahoo.com>
+ <auskP2mSY4sCRa6x@analog.com>
+ <82c96971-be5b-4c11-b20f-c4b074181515@yahoo.com>
+ <aux1v3R-efbWF2GD@analog.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <aux1v3R-efbWF2GD@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-With CONFIG_DPLL_REFCNT_TRACKER the DPLL core keeps the stack traces of
-unreleased device and pin references in debugfs. The entries do not
-name their owner, so add library helpers that snapshot the entries
-present before a test creates its devices and fail when an entry that
-is not in the snapshot still holds references afterwards. An entry in
-the snapshot belongs to an object of another driver and is ignored
-even when its content changed, since other drivers take and drop
-references while the tests run. A concurrent dump holds references for
-a moment, so the check waits for the candidates to drain. Attributing
-by name means that a leak of an earlier run goes unnoticed and that an
-object reusing the address of a freed one from the snapshot can hide a
-leak, which is accepted, the entries carry nothing better to go by. A
-second run alongside would have its devices attributed to this one,
-which is one more reason for the lock every script takes.
+On Thu, Nov 05, 2026 at 01:39:53PM +0100, Alvin Šipraga wrote:
+> During your work on the D family, did you find that the vendor driver
+> is programming the same values?
+>
+> One thing I'm wondering is: for the other C family chips, is some extra
+> RGMII TX delay being silently added by the jam table we already have?
+> [...]
 
-Whether the tracker works is probed with a throwaway device, which has
-to show entries while it is live and to drain them once it is deleted,
-so that a kernel without the tracker is told apart from a broken
-simulator and from a leak. The probe runs as the first test of the
-stress script, which gains a final leak check, and of the new
-dpll_reftrack.sh, which registers a device, removes it and verifies
-that no reference survived. The snapshot file lives next to the lock
-file under /run, for the same reason the lock file does not live in
-/tmp. The library mounts debugfs when nothing else did, like it does
-for configfs, and the selftest config enables the tracker together
-with CONFIG_DEBUG_KERNEL, which it depends on, and debugfs.
+I did not diff the vendor family D init table against the family C one,
+so I cannot say they are identical. I only know this register: our table
+writes 0x0090 to 0x13f9, which leaves the EXT1 RGMII TX delay field at
+2, and the vendor RGMII setup for EXT1 on family D clears that field. I
+do not know what the field does on family C.
 
-Signed-off-by: Petr Oros <poros@redhat.com>
----
-v2:
-- keep the config file sorted and quote the ret expansions (netdev CI
-  shellcheck)
+> Anyway, if the jam table the vendor driver uses is indeed the same for
+> both families, maybe it's best to keep it explicit like you have
+> done.
 
-v1: https://lore.kernel.org/all/20261103093910.596225-15-poros@redhat.com/
----
- .../selftests/drivers/net/dpll/Makefile       |   1 +
- .../testing/selftests/drivers/net/dpll/config |   3 +
- .../drivers/net/dpll/dpll_reftrack.sh         | 184 +++++++++++++
- .../selftests/drivers/net/dpll/dpll_stress.sh |  91 +++++-
- .../selftests/drivers/net/lib/sh/dpll_lib.sh  | 260 ++++++++++++++++--
- 5 files changed, 517 insertions(+), 22 deletions(-)
- create mode 100755 tools/testing/selftests/drivers/net/dpll/dpll_reftrack.sh
+OK, I will keep it as it is.
 
-diff --git a/tools/testing/selftests/drivers/net/dpll/Makefile b/tools/testing/selftests/drivers/net/dpll/Makefile
-index 7cb42c93b0c9a1..2e8128dac8fa65 100644
---- a/tools/testing/selftests/drivers/net/dpll/Makefile
-+++ b/tools/testing/selftests/drivers/net/dpll/Makefile
-@@ -9,6 +9,7 @@ TEST_INCLUDES := \
- TEST_PROGS := \
- 	dpll_basic.sh \
- 	dpll_features.sh \
-+	dpll_reftrack.sh \
- 	dpll_stress.sh \
- # end of TEST_PROGS
- 
-diff --git a/tools/testing/selftests/drivers/net/dpll/config b/tools/testing/selftests/drivers/net/dpll/config
-index e2c90b6970bd43..71931de5cfdb2e 100644
---- a/tools/testing/selftests/drivers/net/dpll/config
-+++ b/tools/testing/selftests/drivers/net/dpll/config
-@@ -1,3 +1,6 @@
- CONFIG_CONFIGFS_FS=y
-+CONFIG_DEBUG_FS=y
-+CONFIG_DEBUG_KERNEL=y
- CONFIG_DPLL=y
-+CONFIG_DPLL_REFCNT_TRACKER=y
- CONFIG_DPLLSIM=m
-diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_reftrack.sh b/tools/testing/selftests/drivers/net/dpll/dpll_reftrack.sh
-new file mode 100755
-index 00000000000000..8e624e8631776a
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/dpll/dpll_reftrack.sh
-@@ -0,0 +1,184 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# DPLL reference tracking test. With CONFIG_DPLL_REFCNT_TRACKER=y the DPLL
-+# core tracks device and pin references through ref_tracker; the debugfs
-+# files dpll_device@<ptr> / dpll_pin@<ptr> list the stack traces of
-+# currently unreleased references. This test records the entries that
-+# exist before it starts, registers dpllsim devices and verifies that
-+# every entry that appeared since is released again after unregistration.
-+#
-+# Copyright (c) 2026 Red Hat, Inc.
-+
-+SCRIPTDIR=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
-+
-+source "$SCRIPTDIR/../../../net/lib.sh"
-+source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
-+
-+ALL_TESTS="
-+	test_ref_tracker_probe
-+	test_basic_reftrack
-+	test_final_leak_check
-+"
-+
-+CREATED_DEVICE=""
-+
-+# The device stays recorded when its removal fails, so that the cleanup
-+# handler tries again.
-+destroy_device()
-+{
-+	[ -n "$CREATED_DEVICE" ] || return 0
-+
-+	dpllsim_delete_device "$CREATED_DEVICE" || return 1
-+	CREATED_DEVICE=""
-+}
-+
-+cleanup()
-+{
-+	# A second signal must not abort the teardown half way.
-+	trap '' INT TERM
-+
-+	defer_scopes_cleanup
-+	destroy_device || log_info "cannot delete device $CREATED_DEVICE"
-+	# The device whose creation a signal interrupted is recorded by the
-+	# library alone, a double delete of a tracked one is harmless.
-+	if [ -n "$DPLLSIM_CREATED_NAME" ]; then
-+		dpllsim_delete_device "$DPLLSIM_CREATED_NAME" ||
-+			log_info "cannot delete device $DPLLSIM_CREATED_NAME"
-+	fi
-+	if [ -n "$DPLLSIM_PROBE_DEVICE" ]; then
-+		dpllsim_delete_device "$DPLLSIM_PROBE_DEVICE" ||
-+			log_info "cannot delete device $DPLLSIM_PROBE_DEVICE"
-+	fi
-+	[ -n "$REF_SNAPSHOT" ] && rm -f "$REF_SNAPSHOT"
-+	dpll_lib_cleanup
-+}
-+
-+##############################################################################
-+
-+# Probe for the reference tracker and record the entries that exist
-+# before the first test that creates devices, so that every entry that
-+# appears from here on is attributed to this script. A probe device
-+# that cannot be created says nothing about the tracker, the simulator
-+# is broken. A probe device whose references do not drain is the kind
-+# of leak the tests look for, found before the first test. One that
-+# cannot be deleted is a failure too, it stays recorded for the cleanup
-+# handler to try again. The tests skip when REF_TRACKER is 0 afterwards.
-+test_ref_tracker_probe()
-+{
-+	RET=0
-+
-+	REF_TRACKER=0
-+	if ! dpll_debugfs_available || ! [ -d "$DPLL_REF_TRACKER_DIR" ]; then
-+		log_test_skip "DPLL ref_tracker probe" \
-+			      "ref_tracker debugfs not available"
-+		return
-+	fi
-+
-+	# The snapshot file doubles as the scratch file of the probe, so
-+	# it is needed before anything is recorded.
-+	if ! REF_SNAPSHOT=$(dpll_ref_tracker_snapshot_file); then
-+		check_err 1 "cannot create a temporary file for the snapshot"
-+		log_test "DPLL ref_tracker probe"
-+		return
-+	fi
-+
-+	dpll_ref_tracker_probe "$REF_SNAPSHOT"
-+	case $? in
-+	0)
-+		REF_TRACKER=1
-+		;;
-+	1)
-+		log_test_skip "DPLL ref_tracker probe" \
-+			      "CONFIG_DPLL_REFCNT_TRACKER not enabled"
-+		return
-+		;;
-+	3)
-+		REF_TRACKER=1
-+		check_err 1 "references of the probe device not released"
-+		;;
-+	4)
-+		check_err 1 "cannot delete the dpllsim probe device"
-+		;;
-+	*)
-+		check_err 1 "cannot create dpllsim probe device"
-+		;;
-+	esac
-+	dpll_ref_tracker_snapshot "$REF_SNAPSHOT"
-+
-+	log_test "DPLL ref_tracker probe"
-+}
-+
-+test_basic_reftrack()
-+{
-+	RET=0
-+
-+	if [ "$REF_TRACKER" -eq 0 ]; then
-+		log_test_skip "DPLL basic reference tracking" \
-+			      "DPLL reference tracker not available"
-+		return
-+	fi
-+
-+	if ! dpllsim_setup_standard_device; then
-+		check_err 1 "cannot create dpllsim device"
-+		log_test "DPLL basic reference tracking"
-+		return
-+	fi
-+	CREATED_DEVICE=$DPLLSIM_CREATED_NAME
-+
-+	destroy_device
-+	check_err $? "cannot delete device $CREATED_DEVICE"
-+
-+	if ! dpll_device_wait_gone_by_clock_id "$DPLLSIM_CLOCK_ID" dpllsim; then
-+		check_err 1 "device still on netlink after delete"
-+	fi
-+
-+	dpll_ref_tracker_check_leaks "$REF_SNAPSHOT"
-+	check_err $? "leaked references after device removal"
-+
-+	log_test "DPLL basic reference tracking"
-+}
-+
-+test_final_leak_check()
-+{
-+	RET=0
-+
-+	if [ "$REF_TRACKER" -eq 0 ]; then
-+		log_test_skip "DPLL final ref_tracker check" \
-+			      "DPLL reference tracker not available"
-+		return
-+	fi
-+	# A device an earlier test could not remove still holds its
-+	# references, the failure to report is that one.
-+	if [ -n "$CREATED_DEVICE" ]; then
-+		log_test_skip "DPLL final ref_tracker check" \
-+			      "device from an earlier test still present"
-+		return
-+	fi
-+
-+	dpll_ref_tracker_check_leaks "$REF_SNAPSHOT"
-+	check_err $? "leaked DPLL references at end of test"
-+
-+	log_test "DPLL final ref_tracker check"
-+}
-+
-+##############################################################################
-+
-+dpll_lib_check_prereqs
-+# Another run would find the devices of this one left behind and see
-+# them as leaks, see the lock in the library.
-+dpll_lib_lock
-+
-+REF_SNAPSHOT=""
-+REF_TRACKER=0
-+# The module check and the probe test may mount configfs and debugfs, so
-+# the exit trap that unmounts them again has to be in place before. INT
-+# and TERM exit through it as well, so that a timeout imposed by the
-+# harness still removes the device.
-+trap cleanup EXIT
-+trap 'exit 1' INT TERM
-+dpllsim_check_module
-+
-+tests_run
-+
-+exit $EXIT_STATUS
-diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
-index 2a6813871f34ea..9db6583ccfa938 100755
---- a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
-+++ b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
-@@ -14,11 +14,13 @@ source "$SCRIPTDIR/../../../net/lib.sh"
- source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
- 
- ALL_TESTS="
-+	test_ref_tracker_probe
- 	test_rapid_create_delete
- 	test_concurrent_workers
- 	test_pin_state_flooding
- 	test_max_devices
- 	test_deploy_cycle
-+	test_ref_leaks
- "
- 
- STRESS_ITERATIONS=${STRESS_ITERATIONS:-20}
-@@ -153,6 +155,11 @@ cleanup()
- 		dpllsim_delete_device "$DPLLSIM_CREATED_NAME" ||
- 			log_info "cannot delete device $DPLLSIM_CREATED_NAME"
- 	fi
-+	if [ -n "$DPLLSIM_PROBE_DEVICE" ]; then
-+		dpllsim_delete_device "$DPLLSIM_PROBE_DEVICE" ||
-+			log_info "cannot delete device $DPLLSIM_PROBE_DEVICE"
-+	fi
-+	[ -n "$REF_SNAPSHOT" ] && rm -f "$REF_SNAPSHOT"
- 	dpll_lib_cleanup
- }
- 
-@@ -208,6 +215,60 @@ create_stress_device()
- 
- ##############################################################################
- 
-+# Probe for the reference tracker and record the entries that exist
-+# before the first test that creates devices, so that the final check
-+# attributes every entry that appears from here on to this script. A
-+# probe device that cannot be created says nothing about the tracker,
-+# the simulator is broken. A probe device whose references do not drain
-+# is the kind of leak the final check looks for, found before the first
-+# test. One that cannot be deleted is a failure too, it stays recorded
-+# for the cleanup handler to try again. REF_TRACKER tells the leak
-+# check whether the tracker was seen at work.
-+test_ref_tracker_probe()
-+{
-+	RET=0
-+
-+	REF_TRACKER=0
-+	if ! dpll_debugfs_available || ! [ -d "$DPLL_REF_TRACKER_DIR" ]; then
-+		log_test_skip "DPLL ref_tracker probe" \
-+			      "ref_tracker debugfs not available"
-+		return
-+	fi
-+
-+	# The snapshot file doubles as the scratch file of the probe, so
-+	# it is needed before anything is recorded.
-+	if ! REF_SNAPSHOT=$(dpll_ref_tracker_snapshot_file); then
-+		check_err 1 "cannot create a temporary file for the snapshot"
-+		log_test "DPLL ref_tracker probe"
-+		return
-+	fi
-+
-+	dpll_ref_tracker_probe "$REF_SNAPSHOT"
-+	case $? in
-+	0)
-+		REF_TRACKER=1
-+		;;
-+	1)
-+		log_test_skip "DPLL ref_tracker probe" \
-+			      "CONFIG_DPLL_REFCNT_TRACKER not enabled"
-+		return
-+		;;
-+	3)
-+		REF_TRACKER=1
-+		check_err 1 "references of the probe device not released"
-+		;;
-+	4)
-+		check_err 1 "cannot delete the dpllsim probe device"
-+		;;
-+	*)
-+		check_err 1 "cannot create dpllsim probe device"
-+		;;
-+	esac
-+	dpll_ref_tracker_snapshot "$REF_SNAPSHOT"
-+
-+	log_test "DPLL ref_tracker probe"
-+}
-+
- test_rapid_create_delete()
- {
- 	local i clock_id name
-@@ -462,16 +523,36 @@ test_deploy_cycle()
- 	log_test "DPLL deploy/undeploy cycling"
- }
- 
-+test_ref_leaks()
-+{
-+	RET=0
-+
-+	# The probe test found the tracker inactive or could not run.
-+	if [ "$REF_TRACKER" -eq 0 ]; then
-+		log_test_skip "DPLL stress ref_tracker check" \
-+			      "DPLL reference tracker not available"
-+		return
-+	fi
-+
-+	dpll_ref_tracker_check_leaks "$REF_SNAPSHOT"
-+	check_err $? "leaked DPLL references after stress"
-+
-+	log_test "DPLL stress ref_tracker check"
-+}
-+
- ##############################################################################
- 
- dpll_lib_check_prereqs
--# Another run would find the devices of this one left behind, see the
--# lock in the library.
-+# Another run would find the devices of this one left behind and see
-+# them as leaks, see the lock in the library.
- dpll_lib_lock
- 
--# The module check may mount configfs, so the exit trap that unmounts it
--# again has to be in place before. INT and TERM exit through it as well,
--# so that a timeout imposed by the harness still removes the devices.
-+REF_SNAPSHOT=""
-+REF_TRACKER=0
-+# The module check and the probe test may mount configfs and debugfs, so
-+# the exit trap that unmounts them again has to be in place before. INT
-+# and TERM exit through it as well, so that a timeout imposed by the
-+# harness still removes the devices.
- trap cleanup EXIT
- trap 'exit 1' INT TERM
- dpllsim_check_module
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-index ada10ee4394fd5..d851237bdac440 100644
---- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-+++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-@@ -15,6 +15,8 @@
- 
- CONFIGFS_DIR="/sys/kernel/config"
- DPLLSIM_CFG="$CONFIGFS_DIR/dpllsim"
-+DEBUGFS_DIR="/sys/kernel/debug"
-+DPLL_REF_TRACKER_DIR="$DEBUGFS_DIR/ref_tracker"
- 
- # Next clock-id handed out by dpllsim_alloc_clock_id. The lookups of the
- # dpllsim helpers match on the module name as well, which is what keeps
-@@ -52,12 +54,12 @@ dpll_lib_check_prereqs()
- }
- 
- # The scripts that create dpllsim devices share the one dpllsim directory
--# and cannot run alongside each other, so each takes a lock on
--# DPLL_LOCK_FILE before it mounts or creates anything and skips when
--# another run holds it. The workers a script forks inherit the open file
--# and keep the lock until they exit. The file lives under /run rather
--# than in the world-writable /tmp, where a planted symlink could
--# redirect the open.
-+# and the leak check attributes every new ref_tracker entry to the run,
-+# so each takes a lock on DPLL_LOCK_FILE before it mounts or creates
-+# anything and skips when another run holds it. The workers a script
-+# forks inherit the open file and keep the lock until they exit. The
-+# files live under /run rather than in the world-writable /tmp, where a
-+# planted symlink could redirect the open.
- DPLL_RUN_DIR="/run/dpll-selftest"
- DPLL_LOCK_FILE="$DPLL_RUN_DIR/lock"
- DPLL_LOCK_FD=""
-@@ -438,9 +440,10 @@ dpll_pin_set_phase_adjust()
- # structure (pins, clock_id, pin attributes) can only be changed while the
- # device is not live.
- #
--# dpllsim_available mounts configfs when nothing else did, which is the
--# one side effect the library has outside the dpllsim directory. Scripts
--# call dpll_lib_cleanup last from their exit trap to undo it.
-+# dpllsim_available mounts configfs when nothing else did, like
-+# dpll_debugfs_available below does for debugfs, which are the only side
-+# effects the library has outside the dpllsim directory. Scripts call
-+# dpll_lib_cleanup last from their exit trap to undo them.
- 
- DPLLSIM_MOUNTED_CONFIGFS=0
- 
-@@ -456,24 +459,38 @@ dpllsim_available()
- 	[ -d "$DPLLSIM_CFG" ]
- }
- 
--# Unmount configfs again when dpllsim_available mounted it. Call after
--# the devices of the script are gone. A dpllsim device the script could
--# not remove keeps the mount, so that what is left can be looked at.
-+__dpll_lib_umount()
-+{
-+	umount "$1" 2>/dev/null || log_info "cannot unmount $1"
-+}
-+
-+# Unmount configfs and debugfs again when the library mounted them. Call
-+# after the devices of the script are gone. A dpllsim device the script
-+# could not remove keeps both mounted, so that what is left can be
-+# looked at, the device in configfs and the references it still holds
-+# in the ref_tracker entries of debugfs.
- dpll_lib_cleanup()
- {
--	local dev_path name
-+	local dev_path name dir kept
-+	local mounted=()
- 
--	[ "$DPLLSIM_MOUNTED_CONFIGFS" -eq 1 ] || return 0
-+	[ "$DPLLSIM_MOUNTED_CONFIGFS" -eq 1 ] && mounted+=("$CONFIGFS_DIR")
-+	[ "$DPLL_MOUNTED_DEBUGFS" -eq 1 ] && mounted+=("$DEBUGFS_DIR")
- 	DPLLSIM_MOUNTED_CONFIGFS=0
-+	DPLL_MOUNTED_DEBUGFS=0
-+	[ "${#mounted[@]}" -gt 0 ] || return 0
- 
- 	for dev_path in "$DPLLSIM_CFG"/*/; do
- 		[ -d "$dev_path" ] || continue
- 		name=$(basename "$dev_path")
--		log_info "device $name left behind, $CONFIGFS_DIR kept mounted"
-+		kept=${mounted[*]}
-+		kept="${kept/ / and } kept mounted"
-+		log_info "device $name left behind, $kept"
- 		return
- 	done
--	umount "$CONFIGFS_DIR" 2>/dev/null ||
--		log_info "cannot unmount $CONFIGFS_DIR"
-+	for dir in "${mounted[@]}"; do
-+		__dpll_lib_umount "$dir"
-+	done
- }
- 
- dpllsim_check_module()
-@@ -622,3 +639,212 @@ dpllsim_setup_standard_device()
- 		return 1
- 	fi
- }
-+
-+##############################################################################
-+# ref_tracker leak checking
-+#
-+# With CONFIG_DPLL_REFCNT_TRACKER=y the DPLL core creates regular files
-+# named dpll_device@<ptr> / dpll_pin@<ptr> under the ref_tracker debugfs
-+# dir. Reading one prints the stack traces of currently unreleased
-+# references; an empty (or removed) file means no leaks.
-+#
-+# The entries do not name their owner, so leaks are attributed by
-+# snapshot, a non-empty entry whose name is not in the snapshot taken
-+# before the test created its devices is a leak, an entry that is in it
-+# belongs to another driver and is ignored even when its content changed.
-+
-+DPLL_MOUNTED_DEBUGFS=0
-+# The snapshot files are kept in DPLL_RUN_DIR, see the lock above for
-+# why that is not /tmp, as refsnap.<pid>.<random>.
-+DPLL_REF_SNAPSHOT_PREFIX="$DPLL_RUN_DIR/refsnap"
-+# Name of the probe device while it exists, so that the cleanup handler
-+# of a script can remove it when the probe could not.
-+DPLLSIM_PROBE_DEVICE=""
-+
-+# Create the file a snapshot is recorded in and print its name. The
-+# scripts take the lock first, which creates DPLL_RUN_DIR. A run that
-+# is killed with SIGKILL cannot remove its file, so the files of earlier
-+# runs whose process is gone are removed first, the pid of the run is
-+# the component after the first dot of the name. A pid that was reused
-+# by a process that lives long would keep such a file forever, so files
-+# older than a day are removed whatever their pid is. Return 1 when the
-+# file cannot be created.
-+dpll_ref_tracker_snapshot_file()
-+{
-+	local file pid
-+
-+	find "$DPLL_RUN_DIR" -maxdepth 1 \
-+	     -name "${DPLL_REF_SNAPSHOT_PREFIX##*/}.*" -mmin +1440 -delete \
-+	     2>/dev/null
-+	for file in "$DPLL_REF_SNAPSHOT_PREFIX".*; do
-+		[ -f "$file" ] || continue
-+		pid=${file#"$DPLL_REF_SNAPSHOT_PREFIX".}
-+		pid=${pid%%.*}
-+		[[ "$pid" =~ ^[0-9]+$ ]] || continue
-+		[ -d "/proc/$pid" ] || rm -f "$file"
-+	done
-+	mktemp "$DPLL_REF_SNAPSHOT_PREFIX.$$.XXXXXX"
-+}
-+
-+# Mount debugfs when nothing else did, so that the ref_tracker entries
-+# can be read, and remember that for dpll_lib_cleanup. Return 0 when
-+# debugfs is mounted afterwards, whether the tracker dir exists is for
-+# the caller to check.
-+dpll_debugfs_available()
-+{
-+	if ! mountpoint -q "$DEBUGFS_DIR"; then
-+		mount -t debugfs none "$DEBUGFS_DIR" &> /dev/null &&
-+			DPLL_MOUNTED_DEBUGFS=1
-+	fi
-+	mountpoint -q "$DEBUGFS_DIR"
-+}
-+
-+__dpll_ref_tracker_hash()
-+{
-+	printf '%s' "$1" | md5sum | cut -d' ' -f1
-+}
-+
-+# Write "<name> <content hash>" for every existing dpll_device@* /
-+# dpll_pin@* entry to the given file, one entry per line. The file ends
-+# up empty when the tracker dir is missing.
-+dpll_ref_tracker_snapshot()
-+{
-+	local file=$1
-+	local entry content
-+
-+	for entry in "$DPLL_REF_TRACKER_DIR"/dpll_device@* \
-+		     "$DPLL_REF_TRACKER_DIR"/dpll_pin@*; do
-+		[ -f "$entry" ] || continue
-+		content=$(cat "$entry" 2>/dev/null)
-+		echo "$(basename "$entry")" \
-+		     "$(__dpll_ref_tracker_hash "$content")"
-+	done > "$file"
-+}
-+
-+# Print the leak candidates, the non-empty entries whose name is not in
-+# the snapshot, each followed by its content. Prints nothing when there
-+# is no candidate.
-+__dpll_ref_tracker_new_entries()
-+{
-+	local file=$1
-+	local entry name content
-+
-+	for entry in "$DPLL_REF_TRACKER_DIR"/dpll_device@* \
-+		     "$DPLL_REF_TRACKER_DIR"/dpll_pin@*; do
-+		[ -f "$entry" ] || continue
-+		name=$(basename "$entry")
-+		grep -q "^$name " "$file" && continue
-+		content=$(cat "$entry" 2>/dev/null)
-+		[ -n "$content" ] || continue
-+		echo "Unreleased references in $name:"
-+		echo "$content"
-+	done
-+}
-+
-+# Return 0 when there is no leak candidate. Otherwise print the
-+# candidates and return 1, busywait hands the output of its last failed
-+# check to the caller when it times out.
-+__dpll_ref_tracker_settled()
-+{
-+	local leaks
-+
-+	leaks=$(__dpll_ref_tracker_new_entries "$1")
-+	[ -z "$leaks" ] && return 0
-+
-+	echo "$leaks"
-+	return 1
-+}
-+
-+# Log the entries of the snapshot whose content changed since and record
-+# the new content, so that the same change is logged once.
-+__dpll_ref_tracker_note_changed()
-+{
-+	local file=$1
-+	local entry name content hash changed=""
-+
-+	for entry in "$DPLL_REF_TRACKER_DIR"/dpll_device@* \
-+		     "$DPLL_REF_TRACKER_DIR"/dpll_pin@*; do
-+		[ -f "$entry" ] || continue
-+		name=$(basename "$entry")
-+		grep -q "^$name " "$file" || continue
-+		content=$(cat "$entry" 2>/dev/null)
-+		hash=$(__dpll_ref_tracker_hash "$content")
-+		grep -qx "$name $hash" "$file" && continue
-+		sed -i "s/^$name .*/$name $hash/" "$file"
-+		changed="$changed $name"
-+	done
-+
-+	[ -n "$changed" ] && log_info \
-+		"references of another driver changed (ignored):$changed"
-+	return 0
-+}
-+
-+# $1: snapshot file written by dpll_ref_tracker_snapshot before the
-+# objects under test were created. Return 0 when no reference to an
-+# object created since the snapshot is held any more. A concurrent dump
-+# holds references for a moment, so wait for the candidates to drain. A
-+# timeout means the references never drained, the candidates seen by the
-+# last check are then printed and count as leaked.
-+dpll_ref_tracker_check_leaks()
-+{
-+	local file=$1
-+	local leaks ret=0
-+
-+	[ -d "$DPLL_REF_TRACKER_DIR" ] || return 0
-+
-+	if ! leaks=$(busywait "$BUSYWAIT_TIMEOUT" __dpll_ref_tracker_settled \
-+			      "$file"); then
-+		echo "References not released within $BUSYWAIT_TIMEOUT ms:"
-+		echo "$leaks"
-+		ret=1
-+	fi
-+	__dpll_ref_tracker_note_changed "$file"
-+
-+	return "$ret"
-+}
-+
-+# Probe whether the kernel tracks DPLL references with a throwaway
-+# dpllsim device, the entries that exist before it are recorded in the
-+# scratch file $1. Return 0 when the tracker works, 1 when no entry
-+# appeared (no CONFIG_DPLL_REFCNT_TRACKER), 2 when the probe device
-+# could not be created or deployed, 3 when its entries did not drain
-+# after its deletion and 4 when it could not be deleted, its name then
-+# stays in DPLLSIM_PROBE_DEVICE for the cleanup handler to retry. Must
-+# not be called from a subshell, it allocates clock-ids.
-+dpll_ref_tracker_probe()
-+{
-+	local file=$1
-+	local name attempt ret=2
-+
-+	dpll_ref_tracker_snapshot "$file"
-+
-+	# A directory of that name left behind by an earlier run takes a
-+	# fresh clock-id, anything else is a broken simulator.
-+	for attempt in 1 2 3; do
-+		dpllsim_alloc_clock_id
-+		name="probe$DPLLSIM_CLOCK_ID"
-+		dpllsim_create_device "$name" "$DPLLSIM_CLOCK_ID" && break
-+		[ -d "$DPLLSIM_CFG/$name" ] || return 2
-+		[ "$attempt" -lt 3 ] || return 2
-+	done
-+	DPLLSIM_PROBE_DEVICE=$name
-+
-+	if dpllsim_add_pin "$name" ext0 ext 10000000 input &&
-+	   dpllsim_deploy "$name"; then
-+		ret=1
-+		[ -n "$(__dpll_ref_tracker_new_entries "$file")" ] && ret=0
-+	fi
-+
-+	if dpllsim_delete_device "$name"; then
-+		DPLLSIM_PROBE_DEVICE=""
-+	else
-+		log_info "cannot delete device $name"
-+		return 4
-+	fi
-+	if [ "$ret" -eq 0 ] &&
-+	   ! busywait "$BUSYWAIT_TIMEOUT" __dpll_ref_tracker_settled "$file" \
-+		      > /dev/null; then
-+		ret=3
-+	fi
-+	return "$ret"
-+}
--- 
-2.56.0
+> Do you have a datasheet I can look at? I couldn't find one.
 
+No, I do not have one either. Everything about family D comes from the
+vendor RTL8367D API.
+
+> I'm also a bit confused by what it means for MAC4 to "own" EXT1. Are we
+> talking about physical pin muxing [...] or is this internal muxing? And
+> since you say MAC4 is a UTP port, I don't understand how it can also be
+> associated with EXT1 [...].
+
+I cannot answer that. "Owns" was my shorthand for the bit. All I have is
+this check in the vendor RGMII setup for port 7:
+
+    /* Configure RGMII/MII mux to port 7 if UTP_PORT4 is not RGMII mode */
+    if ((retVal = rtl8367d_getAsicRegBit(RTL8367D_REG_TOP_CON0,
+            RTL8367D_MAC4_SEL_EXT1_OFFSET, &mux)) != RT_ERR_OK)
+        return retVal;
+
+I did not verify anything beyond it, so I do not know whether this is a
+physical or an internal mux.
+
+> Since MAC7_SEL_EXT1 is writable, I would guess that so is
+> MAC4_SEL_EXT1. Could we not instead keep it configurable, and do some
+> bookkeeping in the driver to see who has requested these pins? [...]
+
+The vendor code only reads MAC4_SEL_EXT1 in this path, and I have not
+verified that writing it is safe or what it does to UTP port 4. The
+driver has no code path that selects MAC4 for EXT1, so port 7 would be
+the only requester.
+
+I can implement the bookkeeping in v9, but I would need to know how you
+want the MAC4 side handled. Alternatively, I can read the bit once in
+rtl8365mb_setup() and refuse RGMII on port 7 when it is set.
+
+Kind regards,
+Mieczyslaw
