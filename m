@@ -1,74 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=12.32.117.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793849035;
-	b=ul0SemTZehlfDv2wMlXClyxn1wtDncGBv6Uyp8H2ASnP/BOkMFFWZ0CvkyHE6ryNDBZU
-	 3PsYwS3usRwJ3X9/OswJ/CEsqPyOSMiA4EQ5vP0HpEI2GNyhRoj9JfJHqudAirQG9sAB5
-	 bjWpzwOvduHygQA9zwTUQdgS3O3f7fbPcXopJRdCHxf9Jahbn3mC4D0xrxbVXbzEPLGHA
-	 5KvjnZPxLv+v5KUuTE33UntbZk6lqvYfrB7v18ox/BG1z16+vBzN00Xt4gKPWT5IdjaiP
-	 sx4Mid4IEwMcFa3fHIgn55w9Xa34iiHC6GIdC9ir0LUv5j/5fZoeHArPR/3p8SVj3tg==
+	t=1793850255;
+	b=Q3VzImhINabecJlfE4ZNZbGcxHx5KThw28lq/RoZvijJK+LM9Le9+fOcmkWpzQeOEUUO
+	 YOStaHin4I7PrzHuBMnyRduSe7KdEgX7lrmfdOe30bbhhbJUYeJaIg1armWMx5Qv2YKN/
+	 kB+UERbfz4BlKNgjujnfOCFC4PG4MRWHPq8GQ47YAkzvpaTgqAiD0+Ci2bcNV83+o/8Tt
+	 iLjrG+v9NDU8sx4BKZmRgpRGcR4s/2uEIoeyEuraI+W4vg4JG8kH7ciAmWRhfdnGelVC/
+	 q2Md7fgBb8LXHu1GifHn29HtIEpiTsehtEjm7/41TrONxganhZYmhRNsJBBytSKynew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793849035;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=RMhQUIdBSBohHBv0s+jn+92qXMfv8S1VzeMvLzZBnBQ=;
-	b=jQPJDomF/im2XbiK3xYd6/okzmgW1AHfAiLL96Z+mjBqdKYS2kNT684TC0XmRs5yhhr/
-	 dY6akhbaAaT2Acgs5W4WLogTiOugEIIfeWCN58F1DB/0LArNNmpWp35VamMcNOA+N9BzQ
-	 y1J+jHcDtIlQsj3asLGU2nvkboRiYvpJWix6LU48TSw6jd35wLWuRCWzqc0biLjo/NAAA
-	 E/Akq8rkoBYr1Cvb0dwSciCzAOphoCuPJMjeu10sm2BkfFAPP3yQGBX4re1vQmuZI5Pal
-	 acFnJVZE1/6YwQIOIu2JnGZyz3j0PlcL0sSuG3CF/HOzht3Ghtec2M267sAHzkOVrYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793850255;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=/4ZDS7kBrSzd6pt0ETyWRju/FCd0D8nG1pYJX7OfriA=;
+	b=O7Kw1ryK4oigg7v5iWN4tKZ5G6J0Vp2/TNDxK9njxGjwZynwYrMzA6hCV99csyfBFgLb
+	 5DBx9PsEbeIrb2B427PvjhGklADpndL6HCSwvi7IN0mgPCR59lmlUdu/1u0V/QSstKJ5S
+	 PIKRSVNva+eOZB+H9hfRuk2kaBKteH96Dowr2BAXJxvN2TuiM0pfMbOvan78PV8ytGd+8
+	 vte4PcdpRfeKxc+WikibpzRYMu44vQVDmrEprN3RfEv38ungnPi9sAm+7PbiamdnURIFE
+	 Y1a5MZMQB1SIbYZudqqKTuxLE0LgaBcqmZ8eTaCGZzeJra43TF4xmPJ3FaydUhByUFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OawRORAq;
-	arc=none smtp.remote-ip=91.218.175.21
-Received: from mta0.migadu.com (out-21.mta0.migadu.com [91.218.175.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=chelsio.com;
+	spf=pass smtp.mailfrom=chelsio.com;
+	arc=none smtp.remote-ip=12.32.117.8
+Received: from stargate.chelsio.com (unknown [12.32.117.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD6B606A32D
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:23:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AD6B606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OawRORAq
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9TwfhhyQYL6sezbrnoxAIpd4i92BRlemNb9m/b/o/JM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793849032; v=1; x=1794453832;
- b=OawRORAqIlGTqBo4KxA1Lm4jZSUfwHAKiWD8M//FYWY455xbcu2ExiDH2R9qu/gNYkTydUOy
- FKpSYpD/B8wuVw7h0v8MdES5u2d7Uw78QEQrlgUrDabfYDyis0MqYWNVVxgEXU86B8ZIJDvUO9q
- 7h+GpM8hJkvG3TJqJD617K10=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 195ef7053fc6f30c;
-	Thu, 05 Nov 2026 03:23:52 +0000
-X-Mizu-Trace-ID: 195ef7053fc6f30c
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 11:23:43 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Mathieu Xhonneux <m.xhonneux@gmail.com>,
-	David Lebrun <dlebrun@google.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>,
-	Andrea Mayer <andrea@common-net.org>
-Subject: Re: [PATCH net 5/6] seg6: account for the MAC header in skb checksum
- on L2 encapsulation
-Message-ID: <auv2v3HH4xX5nyNP@fedora>
-References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-6-andrea.mayer@uniroma2.it>
- <aulI7pl1oWRKzXgt@fedora>
- <20261104212546.1222c4cfcccaecf68f326cdf@uniroma2.it>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0417B606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:44:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0417B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
+Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 6A53hj3m002480;
+	Wed, 4 Nov 2026 19:43:46 -0800
+From: Potnuri Bharat Teja <bharat@chelsio.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com,
+        harshitha.vr@chelsio.com
+Subject: [PATCH net-next v5 REPOST 00/12] cxgb4: Add T7 adapter support
+Date: Thu,  5 Nov 2026 08:15:37 -0500
+Message-Id: <20261105131549.547554-1-bharat@chelsio.com>
+X-Mailer: git-send-email 2.39.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,75 +49,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104212546.1222c4cfcccaecf68f326cdf@uniroma2.it>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 04, 2026 at 09:25:46PM +0100, Andrea Mayer wrote:
-> On Tue, 3 Nov 2026 10:37:34 +0800
-> Hangbin Liu <hangbin.liu@linux.dev> wrote:
-> 
-> > [snip]
-> > >  		skb_mac_header_rebuild(skb);
-> > > -		skb_push(skb, skb->mac_len);
-> > > +		skb_push_rcsum(skb, skb->mac_len);
-> > >  
-> > >  		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
-> > >  			err = __seg6_do_srh_encap(skb, tinfo->srh,
-> > > -- 
-> > > 2.43.0
-> > > 
-> > 
-> > Should we put the skb_push_rcsum() inside of __seg6_do_srh_encap() and
-> > seg6_do_srh_encap_red()? They all do skb_mac_header_rebuild() again.
-> > [snip]
-> 
-> Hi Hangbin,
-> 
-> I am not sure where exactly you would like to put skb_push_rcsum() in
-> these two functions. I can read it in two ways.
-> 
-> 1) Right after skb_mac_header_rebuild(), for example in
->    __seg6_do_srh_encap():
-> 
->  	skb_push(skb, tot_len);
->  	skb_reset_network_header(skb);
->  	skb_mac_header_rebuild(skb);
-> +	if (proto == IPPROTO_ETHERNET)
-> +		skb_push_rcsum(skb, skb->mac_len);
->  	hdr = ipv6_hdr(skb);
-> 
->    Here the outer headers are already pushed, and skb_mac_header_rebuild()
->    moves the MAC header in front of them, outside skb->data. The push then
->    makes the packet start with that MAC header, instead of the outer
->    IPv6 header.
-> 
-> 2) Before the outer headers are pushed, for example in
->    __seg6_do_srh_encap():
-> 
-> +	if (proto == IPPROTO_ETHERNET)
-> +		skb_push_rcsum(skb, skb->mac_len);
-> +
->  	inner_hdr = ipv6_hdr(skb);
->  	flowlabel = seg6_make_flowlabel(net, skb, inner_hdr);
-> 
->    This can work, with the push removed from seg6_do_srh(), but the L2
->    case in seg6_do_srh() would still keep the skb_mac_header_was_set()
->    check and the headroom for the MAC header, and part of the L2 handling
->    would move into __seg6_do_srh_encap() and seg6_do_srh_encap_red().
->    __seg6_do_srh_encap() is also used by the ENCAP mode, End.B6.Encaps
->    and bpf_push_seg6_encap(), and seg6_do_srh_encap_red() by the
->    ENCAP_RED mode.
-> 
-> So the first way does not work. In the second one I do not see a real
-> advantage, and it would split the L2 handling between three functions.
-> For this reason I would like to keep the change as it is in the patch.
-> 
-> What do you think? If you meant something else, please let me know.
-> 
+This series adds support for Chelsio T7 adapters to the cxgb4 driver.
 
-Oh, I miss-read the change. This is rcsum is only for inner header. The
-outer header will be updated via later skb_postpush_rcsum().
+The series extends the driver core to recognize and initialize T7
+devices, adds support for T7-specific hardware resources and firmware
+interfaces, updates PCI initialization and resource management, and
+enables adapter operation through the existing networking stack.
 
-Thanks
-Hangbin
+In addition, the series updates several auxiliary components to support
+the T7 architecture, including PTP, ethtool, filter management, CUDBG,
+and debugfs. Support is also added for T7 multicore debugging and
+diagnostic infrastructure.
+
+Testing:
+  1. Each patch compiled individually
+  2. Driver probe and initialization on T7 adapters
+  3. Link bring-up
+  4. ping
+  5. NIC tx and rx traffic (using neperf and iperf)
+  6. Reload the driver multiple times
+
+checkpatch.pl:
+- Patch 4: "missing sentinel in ID array" and "Macros with complex
+  values should be enclosed in parentheses" warnings are reported for
+  the macro-generated PCI device ID table. The generated table includes
+  the required terminating entry. This error is a false-positive.
+- Patch 7: Several "Avoid CamelCase" warnings are reported for standard
+  ethtool link mode identifiers (e.g. 1000baseKX_Full,
+  100000baseCR4_Full), which are kernel-defined names and cannot be
+  renamed.
+ 
+
+
+Potnuri Bharat Teja (12):
+  cxgb4: add T7 hardware definitions and firmware interfaces
+  cxgb4: rework the interrupt handling framework
+  cxgb4: add T7 hardware management support
+  cxgb4: move PCI device management into cxgb4_pci.c and rework driver
+    helpers
+  cxgb4: add T7 support to the main driver
+  cxgb4: update PTP register access for T7
+  cxgb4: extend ethtool support for T7 adapters
+  cxgb4: Add T7 support to the filter infrastructure.
+  cxgb4: Add indirect register definitions for T7
+  cxgb4: extend CUDBG support for T7 adapters
+  cxgb4: extend debugfs support for T7 adapters
+  cxgb4: select ULD Tx and control queues by TID on T7
+
+---
+v4 -> v5
+- fixed the build error reported by the Kernel Test Robot.
+---
+v3 -> v4
+- fixed buildbot errors
+---
+v2 -> v3:
+- rebase the patches to tot
+- add ULD multicore support changes
+v1 -> v2:
+- split the v1 hardware management patch in two; the interrupt
+  handling rework is not T7 specific and now lands first
+- merged the PCI management patch into the one that wires it up, so
+  each commit builds what it adds, then split off the T7 changes
+- fixed per patch build failures reported by the kernel test robot
+- fixed: shared static intr_info structures mutated per adapter;
+  t4_handle_intr() clearing only enabled cause bits; IPv4 address
+  byte order in mk_act_open_req(); cxgb4_read_tpte() sleeping under
+  xa_lock_irq(); missing CAP_NET_ADMIN on the cudbg ioctl read
+  commands; CXGB4_DEV_ENABLED set too late in probe
+- dropped the SYN-only filter field and the unused cxgb4_pci helpers
+---
+
+ drivers/net/ethernet/chelsio/cxgb4/Makefile   |    2 +-
+ drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c |   10 +-
+ .../net/ethernet/chelsio/cxgb4/cudbg_entity.h |  114 +-
+ drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h |   56 +-
+ .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
+ .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.c    | 1088 ++-
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.h    |   60 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |  148 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c  |   20 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_dcb.c    |   19 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.c    | 1031 ++-
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.h    |   17 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    |  381 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_filter.c |  214 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   | 1183 +--
+ .../net/ethernet/chelsio/cxgb4/cxgb4_pci.c    |  332 +
+ .../net/ethernet/chelsio/cxgb4/cxgb4_pci.h    |   23 +
+ .../net/ethernet/chelsio/cxgb4/cxgb4_ptp.c    |   82 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_uld.c    |  140 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_uld.h    |    5 +
+ drivers/net/ethernet/chelsio/cxgb4/sge.c      |  182 +-
+ .../net/ethernet/chelsio/cxgb4/t4_chip_type.h |   10 +
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c    | 6579 ++++++++++++---
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.h    |  140 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_msg.h   |  109 +-
+ .../ethernet/chelsio/cxgb4/t4_pci_id_tbl.h    |   21 +
+ drivers/net/ethernet/chelsio/cxgb4/t4_regs.h  | 7285 ++++++++++++++---
+ drivers/net/ethernet/chelsio/cxgb4/t4_tcb.h   |   16 +
+ .../net/ethernet/chelsio/cxgb4/t4_values.h    |   11 +
+ drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h |   88 +-
+ .../net/ethernet/chelsio/cxgb4/t4fw_version.h |    9 +
+ 32 files changed, 17042 insertions(+), 3489 deletions(-)
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cxgb4_pci.c
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cxgb4_pci.h
+
+-- 
+2.39.1
+
