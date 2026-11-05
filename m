@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793892005;
-	b=O/CdZLnhCJb75t6dZMV9NgBZZGqPTojHUp5+AWCpXGCZbnyP0RFucl1kjIrt3Jhr9bz5
-	 Uzs4sm2r4SpVLAycqM/WT38AmggKPtcZgT/acLCLL7bZi2QOzvSUHXNEWQItrZdeQuiBN
-	 an05sYyX0QoJPCkZMvb5xt10iCeO5gCus0Li3EZJN/jWkEq7x53GG4rRupJU2G5fvnRud
-	 iQ9l/+4qMki5DghWIx+zBCXasx2o9llzuCXLyT9gd4eh4sBTM7S9dmYBR+2ksB/QF9a9o
-	 mGhLRU3CoTGuWVhkdG+5o2OjXgFUhrxci3N6HiJquyBQUQouQdkKr33lGJ8hD7G470g==
+	t=1793892014;
+	b=M5ayeGoIWjYUUWRt9F/CL+OEqQraw5pQSB908UD9i6AQyIaKCHN8jZDRS3e5HVr6qF3O
+	 lKxBzzsDh7YF05WaIWBnYBHxAquATblA4HEt7gb7XgqWM1Ao7nAUh7xodJKbRkRMIn8j1
+	 Va3HKk0Q2PQUP/HQLVI6QvjBiSw//BAkny7n8NnPfCrnF10sQ+YkIIXRIh/zuREEAjQT3
+	 3jfzjQFDIFShKuqav7dlf4j9DVlpTRf8qttCp0MqZxXbrdduxOZe4hq1mrebk9A5I+fAr
+	 BOfDMLZXtBARsXZ4Yq7W2oIQlL8Iuq4q8uwtmmeFWIRK1cnVTFp89WIqSCoUdSk0KYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793892005;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793892014;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=3MW0rTCF9/lwATmo/NUcvwVLcZQiqcLUOk6UXMNMCRU=;
-	b=OBFf3XW6nBFJYJSUUwXJegcPDaNoCPUGjy1rC56UgVFNWn9oPyjQA7u5uJ8Mqdy9pBj5
-	 aAWfOZvFdXeaAAqDTz4+FPDNNxGSCV4yCkCre+SEUnKLMj8MYtFgtix8Yo4w22A5ySWq1
-	 8wVqQ7u4n8l+ESNoULoiOldJqncldCufMsph1EBqXRIk1qcZ3ixLwoC8FlT5mur2KE6gQ
-	 W3dOMCQYRP8NfiCSZb7CZsbQWQLqrbqWhbgLcKcm6nZWoefLwBLXc0c6og8UaphA9Tgxc
-	 xRqsuhAdYjVSB5ioyIgLZte23UgxElH9JRmfNVWr8A+PuoDM94UF7fi3NxzHJa6kS5g==
+	bh=gZYKwWmACWE2pCi/f3kBHmuV3zAc2HhpJzJ88i8S/g4=;
+	b=wnavNiwFq+PjpMnvORDkw/DejIdPB2lDaHBDVcvXVP7si0FxdL+TzwIBmBnO6KHbitOd
+	 bZilmlJKBvG+TZ3p7oKOvYMtD7Juug2q15OcvUZO8Fpz4kTiSziVFrdLX5IzcFb41kat3
+	 z7TAmhfezo+Nxzqo22Cv1YBCUKcp37kiWktswPBasVQCQAgJaPCTLsAWg6IpDhryYQs06
+	 Z27XnwwmqxFjq6W69LRvHf8bYRPlQiYV40upLG/3jgrXa1bDkf9jnV5Cyf6bWQnV1Xhz1
+	 6ro8zgBB+WWpUvEopH35o9N7adkvDKNq9zPYERfMSuE2z3tM++78ndSCM0hoh6h0c/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FdqCaqhT;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FePcEX7E;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C624606A336
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:20:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C624606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A1A606EEA5
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 15:20:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83A1A606EEA5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FdqCaqhT
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FePcEX7E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793892003;
+	s=mimecast20190719; t=1793892012;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3MW0rTCF9/lwATmo/NUcvwVLcZQiqcLUOk6UXMNMCRU=;
-	b=FdqCaqhTzuwj9xpJuSdf5oDT/hezxS+4b3kcYKRhZlW55w8nYSLBWatX7y54OjHvT+borL
-	+eV1Z8ILIl5Q8ljuQEGJiGowfoUbw2EZRNkge9eGhXP/kWRyltggH1Z0xPqRqg2J2QEeSu
-	zaoTm+4Z85bYie0dzUJMJ5vqf/yUi00=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=gZYKwWmACWE2pCi/f3kBHmuV3zAc2HhpJzJ88i8S/g4=;
+	b=FePcEX7E2Z3VCoEW9y4UrKJ+TT5GYJuXyko/ZeJzieizGYxiKcma8SmXkW/FoBDnwMYs5C
+	F5dDHAy6l3qWlt1wF0CXnLyxWzCF41+3pthbAiz/g3CZRbhSiPc4GykzKig1Ii4IU/7urA
+	rfXov4j45QHnmeuKh+pZfAt5+pJQ3xc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-352oMjbtM5enz2hfH5JBSg-1; Thu,
- 05 Nov 2026 10:19:57 -0500
-X-MC-Unique: 352oMjbtM5enz2hfH5JBSg-1
-X-Mimecast-MFC-AGG-ID: 352oMjbtM5enz2hfH5JBSg_1793891993
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-385-QsdvjPR1OUywDsBfYr4kkA-1; Thu,
+ 05 Nov 2026 10:20:06 -0500
+X-MC-Unique: QsdvjPR1OUywDsBfYr4kkA-1
+X-Mimecast-MFC-AGG-ID: QsdvjPR1OUywDsBfYr4kkA_1793892004
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C85711955EAA;
-	Thu,  5 Nov 2026 15:19:53 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F404E1955F1F;
+	Thu,  5 Nov 2026 15:20:03 +0000 (UTC)
 Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D125195608C;
-	Thu,  5 Nov 2026 15:19:49 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 49A9B1956089;
+	Thu,  5 Nov 2026 15:19:58 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -79,9 +79,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 10/14] selftests: dpll: add pin frequency test
-Date: Thu,  5 Nov 2026 16:18:48 +0100
-Message-ID: <20261105151852.1844305-11-poros@redhat.com>
+Subject: [PATCH net-next v2 12/14] selftests: dpll: add pin phase adjust test
+Date: Thu,  5 Nov 2026 16:18:50 +0100
+Message-ID: <20261105151852.1844305-13-poros@redhat.com>
 In-Reply-To: <20261105151852.1844305-1-poros@redhat.com>
 References: <20261105151852.1844305-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
@@ -96,126 +96,163 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add a test that picks a supported frequency other than the current one
-from the frequency-supported list of an input pin, sets it, reads it
-back and restores the original value. Both ends of every advertised
-range are candidates, so that a pin advertising a single range wider
-than one value still has one. It skips when the dpll tool lacks the
-frequency keyword of pin set, and the restore is deferred right after
-the original value is read so that an interrupted run restores it too.
-A pin that reports no frequency or advertises a single frequency only
-is a skip on a device provided by the user and a failure on the device
-the script created, whose pins advertise several.
+Add a test that reads the phase adjustment range and granularity a
+pin advertises, picks the largest multiple of the granularity inside
+the range, or the smallest one when that is already the current value,
+sets it, reads it back and restores the original value. It skips when
+the dpll tool lacks the phase-adjust keyword of pin set and when the
+range is too narrow to pick a different value. A pin that reports no
+phase adjustment or no range is a skip on a device provided by the user
+and a failure on the device the script created, whose pins report
+both.
 
-The driver may refuse the candidate. A driver without a frequency
-setter refuses every value with EOPNOTSUPP, and a driver with
-constraints of its own refuses values the advertised ranges allow,
-zl3073x for instance wants the frequencies of an output pair to divide
-each other. On a device provided by the user a refused set is a skip
-that names the reason the tool reported, which the setter keeps in
-DPLL_LAST_ERR, on the created device the simulator accepts every
-advertised value and the refusal is a failure. Once the set went
-through, a refused restore is a failure on either.
+The core refuses a value that is not a multiple of the granularity a
+driver reports, the current value included, so a pin that sits at such
+a value could not be put back. The test bails out on that before it
+schedules the restore, which is deferred right after so that an
+interrupted run restores the value too.
+
+The granularity is only reported by drivers that have the core enforce
+one. Without it the target is computed with a granularity of 1, and a
+driver may refuse it for a granularity of its own or for any other
+constraint the interface does not advertise. A refused set is therefore
+a skip on a device provided by the user, with the reason the tool
+reported, and a failure on the device the script created, whose
+simulator accepts every value its range and granularity allow. The
+test ends there, a value that was not set has nothing to read back.
 
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- .../drivers/net/dpll/dpll_features.sh         | 64 +++++++++++++++++++
- .../selftests/drivers/net/lib/sh/dpll_lib.sh  |  5 ++
- 2 files changed, 69 insertions(+)
+ .../drivers/net/dpll/dpll_features.sh         | 85 +++++++++++++++++++
+ .../selftests/drivers/net/lib/sh/dpll_lib.sh  | 10 +++
+ 2 files changed, 95 insertions(+)
 
 diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_features.sh b/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
-index 61003ba280d658..a39098fbf73135 100755
+index a39098fbf73135..1466ddd6538348 100755
 --- a/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
 +++ b/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
-@@ -17,6 +17,7 @@ source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
- ALL_TESTS="
+@@ -18,6 +18,7 @@ ALL_TESTS="
  	test_pin_state_transitions
  	test_pin_priority_get_set
-+	test_pin_frequency_set_get
+ 	test_pin_frequency_set_get
++	test_pin_phase_adjust_set_get
  "
  
  ##############################################################################
-@@ -165,6 +166,69 @@ test_pin_state_transitions()
+@@ -166,6 +167,90 @@ test_pin_state_transitions()
  	log_test "DPLL pin state transitions"
  }
  
-+test_pin_frequency_set_get()
++test_pin_phase_adjust_set_get()
 +{
-+	local before target after reason
++	local before target after json min max gran reason
 +
 +	RET=0
 +
 +	if [ -z "$PIN_TUNE_ID" ]; then
-+		dpll_log_test_skip_or_fail "DPLL pin frequency set/get" \
++		dpll_log_test_skip_or_fail "DPLL pin phase-adjust set/get" \
 +		    "no spare input pin"
 +		return
 +	fi
-+	if ! dpll_pin_set_supports frequency; then
-+		log_test_skip "DPLL pin frequency set/get" \
-+		    "dpll tool lacks pin set frequency"
++	if ! dpll_pin_set_supports phase-adjust; then
++		log_test_skip "DPLL pin phase-adjust set/get" \
++		    "dpll tool lacks pin set phase-adjust"
 +		return
 +	fi
 +
-+	before=$(dpll_pin_get_frequency "$PIN_TUNE_ID")
++	before=$(dpll_pin_get_phase_adjust "$PIN_TUNE_ID")
 +	if [ -z "$before" ]; then
-+		dpll_log_test_skip_or_fail "DPLL pin frequency set/get" \
-+		    "frequency not reported"
-+		return
-+	fi
-+	defer dpll_pin_set_frequency "$PIN_TUNE_ID" "$before"
-+
-+	# Pick a supported frequency different from the current one. Both
-+	# ends of every supported range are candidates, so a pin with a
-+	# single range still has an alternative unless it is one value wide.
-+	target=$(dpll_pin_json "$PIN_TUNE_ID" | \
-+		 jq -r --argjson cur "$before" \
-+		    '[.["frequency-supported"][]? |
-+		      .["frequency-min"], .["frequency-max"] |
-+		      numbers | select(. != $cur)][0] // empty')
-+	if [ -z "$target" ]; then
-+		dpll_log_test_skip_or_fail "DPLL pin frequency set/get" \
-+		    "no alternative supported frequency"
++		dpll_log_test_skip_or_fail "DPLL pin phase-adjust set/get" \
++		    "phase adjust not reported"
 +		return
 +	fi
 +
-+	# A driver without a frequency setter or with constraints of its own
-+	# may refuse the candidate, a skip on a device the user provided, the
-+	# simulator accepts every advertised value.
-+	if ! dpll_pin_set_frequency "$PIN_TUNE_ID" "$target"; then
++	# Pick a target inside the advertised range different from the
++	# current value, a multiple of the granularity, which is taken as 1
++	# when the driver reports none.
++	json=$(dpll_pin_json "$PIN_TUNE_ID")
++	min=$(jq -r '.["phase-adjust-min"] // empty' <<< "$json")
++	max=$(jq -r '.["phase-adjust-max"] // empty' <<< "$json")
++	gran=$(jq -r '.["phase-adjust-gran"] // empty' <<< "$json")
++	if [ -z "$min" ] || [ -z "$max" ]; then
++		dpll_log_test_skip_or_fail "DPLL pin phase-adjust set/get" \
++		    "no adjust range"
++		return
++	fi
++	# A current value that is not a granularity multiple could not be
++	# written back, so bail out before the restore is scheduled.
++	if [ -n "$gran" ] && [ $((before % gran)) -ne 0 ]; then
++		dpll_log_test_skip_or_fail "DPLL pin phase-adjust set/get" \
++		    "current phase adjust not a granularity multiple"
++		return
++	fi
++	[ -n "$gran" ] || gran=1
++	defer dpll_pin_set_phase_adjust "$PIN_TUNE_ID" "$before"
++
++	# Shell division truncates towards zero, so round the bounds towards
++	# the inside of the range explicitly, which matters for negative ones.
++	target=$((max / gran * gran))
++	[ "$target" -gt "$max" ] && target=$((target - gran))
++	if [ "$target" = "$before" ]; then
++		target=$((min / gran * gran))
++		[ "$target" -lt "$min" ] && target=$((target + gran))
++	fi
++	if [ "$target" = "$before" ] || [ "$target" -gt "$max" ] ||
++	   [ "$target" -lt "$min" ]; then
++		log_test_skip "DPLL pin phase-adjust set/get" "range too narrow"
++		return
++	fi
++
++	# A driver may enforce a granularity it does not report or another
++	# constraint, a skip on a device the user provided, the simulator
++	# accepts every value its range and granularity allow.
++	if ! dpll_pin_set_phase_adjust "$PIN_TUNE_ID" "$target"; then
 +		reason=${DPLL_LAST_ERR%%$'\n'*}
-+		dpll_log_test_skip_or_fail "DPLL pin frequency set/get" \
-+		    "cannot set frequency=$target${reason:+, $reason}"
++		dpll_log_test_skip_or_fail "DPLL pin phase-adjust set/get" \
++		    "cannot set phase-adjust=$target${reason:+, $reason}"
 +		return
 +	fi
-+	after=$(dpll_pin_get_frequency "$PIN_TUNE_ID")
++	after=$(dpll_pin_get_phase_adjust "$PIN_TUNE_ID")
 +	if [ "$after" != "$target" ]; then
-+		check_err 1 "frequency expected $target, got '$after'"
++		check_err 1 "phase-adjust expected $target, got '$after'"
 +	fi
 +
-+	dpll_pin_set_frequency "$PIN_TUNE_ID" "$before"
-+	check_err $? "cannot restore frequency"
-+	after=$(dpll_pin_get_frequency "$PIN_TUNE_ID")
++	dpll_pin_set_phase_adjust "$PIN_TUNE_ID" "$before"
++	check_err $? "cannot restore phase-adjust"
++	after=$(dpll_pin_get_phase_adjust "$PIN_TUNE_ID")
 +	if [ "$after" != "$before" ]; then
-+		check_err 1 "frequency not restored, got '$after'"
++		check_err 1 "phase-adjust not restored, got '$after'"
 +	fi
 +
-+	log_test "DPLL pin frequency set/get"
++	log_test "DPLL pin phase-adjust set/get"
++}
++
+ test_pin_frequency_set_get()
+ {
+ 	local before target after reason
+diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+index 9718d73c60b444..8fa2a9936a0eb2 100644
+--- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
++++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+@@ -381,6 +381,11 @@ dpll_pin_get_prio()
+ 	__dpll_pin_dev_field "$1" "$2" '.prio'
+ }
+ 
++dpll_pin_get_phase_adjust()
++{
++	__dpll_pin_field "$1" '.["phase-adjust"]'
 +}
 +
  ##############################################################################
- 
- cleanup()
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-index 1c3e27eb09775d..9718d73c60b444 100644
---- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-+++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-@@ -412,6 +412,11 @@ dpll_pin_set_prio()
- 			     prio "$prio" 2>&1 >/dev/null)
+ # Pin setters
+ #
+@@ -417,6 +422,11 @@ dpll_pin_set_frequency()
+ 	DPLL_LAST_ERR=$(dpll pin set id "$1" frequency "$2" 2>&1 >/dev/null)
  }
  
-+dpll_pin_set_frequency()
++dpll_pin_set_phase_adjust()
 +{
-+	DPLL_LAST_ERR=$(dpll pin set id "$1" frequency "$2" 2>&1 >/dev/null)
++	DPLL_LAST_ERR=$(dpll pin set id "$1" phase-adjust "$2" 2>&1 >/dev/null)
 +}
 +
  ##############################################################################
