@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793836932;
-	b=YzaQxATNGXY5RKwydItbXLRFFsXbGYCG89lTgmPu9CfJBOKLuAd90rGTrz7enFnA5ifn
-	 mk8kblBYTveAmliebHfcQsX8Y9fi3Z4L81R9jMz4Z84iFQm9NsqxUouFSuQ+GMuVAmR+X
-	 59rQ+ry1mgfDyeNx82B/Qy9HQGmSOwFsAVtF6h1dl+hoO51MSRbBlZHXXXiA/bU2vxyB/
-	 4br2+a4iH40Z7Bikf9KC2O9bq4oFxPzVXBD2nAtfANg507UnXoarzh0EpV7CCa+B5ZdZI
-	 9lUw1Vo67UAt7ZAGh+mTDzR8v7tOrWcbmGq1A/fQV4FpbVkRGGYLve2oMqZUhXac/iw==
+	t=1793836929;
+	b=MLJ8JkFqEtzX9z6Y8ZLt+hjMfkPl6u7EwRzSDkRCq/ckjFOyAa6/nbuHN1QzUTvUxm6X
+	 Fpc87f0PEqp1/oPBXTBk2qaymFpPkmzDfL4znYOppvaCPdtQ0CfUsj0AbE+rPjhcZKWTw
+	 ZC+wOtF405DVJxP7bDszQgrMH/3KXsEx60umVlaF1rTpypz6nO4NTOkRjpKa200ZKBo3H
+	 kRxz9k2xI53nVo5+LcPT2bnmodFaOv9qu79lsS7Gh7S50CaL1sQWUwaT4WCF43tTx0y9C
+	 oORut80CWMxmGWhsmg9Q/8/2Pzruamb9ulN8W1F7SUqA+pEg65PJBCLQs+QjhC76EFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793836932;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793836929;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
 	 X-Spam-Status:X-Spam-Checker-Version;
-	bh=LohI0OFoxJxkaEB+sGEh3geC60v7lkZMH4lAoeF1VKI=;
-	b=o/vVpt2uRPH4B1XzJm9eNcwkfGAA4HSs9N80tflXTBkPhg/tkKAd/w/ZlIVNEoxU283M
-	 ZFBndw4YMcFVsIxq2XsJi/4Rg3tH/lJfs1V/d7DfMf0JHonrDyiAuElhHQsObO50i7CSJ
-	 /qRC+FekDgF75SV/DeDcdiSCi7l/vSpLgvoAP9siPBd5BNlCS+RVbYFCWOzf9g3i08CUD
-	 2mrX4xnAk0yyXDY/dG2sNmjDtgg/xUbmNcLnBI/OsdNfj+IRWt9b5HhgRrxe/gHBRLQFt
-	 LgUhcaxSyVo8U9uuU6AlczoXXOtx3bW7RX7v5PHGxv740/pPkXBvPApFDPQ+6k52yrg==
+	bh=gvXZud60WW8KOHt3CUZkR9JbkQ/A5YVK6z5NEHxZryM=;
+	b=XEHIv7rrckRq0egX+2K86c6LgBImxyMEYbZPtguXPOFDvJvelzNQ7dtQycdGWbT0CT4r
+	 TDTD9/ubCa0d3mubRu1JzUdn/2hwHylPjLH7flDUC5/YaLxEMSPWvdWPEFgE/c2CSbArK
+	 AY87TtftK7P7l66wMZxaxok0m+3mQ/gerUTUPMzoCNVMIAmFDaTNb5RCoR/lEvXSLh1p8
+	 3fl1O8e53VQdASmzJRbwILot5/yIPKygR+NR+yAtBXCulbXyvHlU8HjxkEL4UpT9IwGMo
+	 Ws1JjfpmHBdSo1bQ7oiv/s/Tthvc9fooCUsLeY0iFse+4QxpZuIEX7ABiD8wCqsz9ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=linuxhacker.ru;
 	spf=none smtp.mailfrom=linuxhacker.ru;
@@ -25,14 +25,14 @@ Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBE1606D839;
-	Thu,  5 Nov 2026 00:02:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FBE1606D839
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33657606A330;
+	Thu,  5 Nov 2026 00:02:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33657606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linuxhacker.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linuxhacker.ru
 Received: from intelbox1.virtnet (unknown [162.81.204.199])
-	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id BB0E7BEE80;
-	Thu,  5 Nov 2026 00:02:07 +0000 (UTC)
+	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id BAE43BEE69;
+	Thu,  5 Nov 2026 00:02:04 +0000 (UTC)
 From: Oleg Drokin <green@linuxhacker.ru>
 To: sgarzare@redhat.com,
 	stefanha@redhat.com,
@@ -50,9 +50,9 @@ Cc: jasowangio@gmail.com,
 	virtualization@lists.linux.dev,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/3] vsock/virtio: queue at most one credit update per socket
-Date: Wed,  4 Nov 2026 19:01:41 -0500
-Message-ID: <20261105000141.3617241-4-green@linuxhacker.ru>
+Subject: [PATCH net 2/3] vsock/virtio: bound the send credit by bytes not yet consumed by the transport
+Date: Wed,  4 Nov 2026 19:01:40 -0500
+Message-ID: <20261105000141.3617241-3-green@linuxhacker.ru>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105000141.3617241-1-green@linuxhacker.ru>
 References: <20261105000141.3617241-1-green@linuxhacker.ru>
@@ -67,228 +67,77 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A credit update carries no data, so the send credit never limits it,
-and the peer can solicit one at will: with OP_CREDIT_REQUEST, or by
-sending data that a local reader drains (a read that empties the
-receive queue sends one). A peer that posts no rx buffers can therefore
-make the other side queue credit updates without limit, about 1 KiB of
-unaccounted slab each for a 44-byte packet.
+The send credit is
 
-Do not queue a credit update while the socket's last queued packet is
-already one. Every packet carries fwd_cnt and buf_alloc, so a packet
-queued later makes the queued update redundant and lets a new one be
-queued after it. When a transport puts a queued update on the wire
-(vhost once it has an rx buffer for it, the guest driver when it adds
-it to the tx virtqueue, loopback when it delivers it) and nothing has
-been queued after it, it refreshes the update's fwd_cnt and buf_alloc
-and releases the socket. So a suppressed update always reaches the
-peer, either in the queued one or in a later packet, and the fwd_cnt
-the peer sees never goes back.
+    min(peer_buf_alloc, buf_alloc) - (tx_cnt - peer_fwd_cnt)
 
-connect() can move a socket to another transport, freeing its
-virtio_vsock_sock, while packets are still queued in the old one. So a
-tracked update holds a reference on the virtio_vsock_sock, and its skb
-destructor clears the socket's pointer to it and drops the reference,
-however the skb is freed: sent, purged or dropped.
+where peer_fwd_cnt is taken unchecked from every header the peer sends.
+A peer that never consumes what it is sent but keeps reporting
+fwd_cnt == tx_cnt gets unlimited credit: every send() is accepted and
+the skbs pile up in the transport's queue (on a host, vhost's
+send_pkt_queue, for a guest that posts no rx buffers). The skbs are
+GFP_KERNEL allocations charged to no memory cgroup. The peer learns
+tx_cnt easily when the host side relays a stream it also controls.
 
-A peer can thus make a connection queue at most one credit update, plus
-one per packet the socket itself queued after it.
+Commit 8ee784fdf006 ("vsock/virtio: cap TX credit to local buffer size")
+bounded peer_buf_alloc, but not peer_fwd_cnt.
 
-Counting credit updates in queued_replies instead would not work: most
-of them are sent by local reads, not in answer to the peer, and under
-bidirectional traffic vhost would stop reading the guest's tx queue
-while the guest stops reading its rx queue, each waiting for the other.
+bytes_unsent (maintained for SIOCOUTQ) counts what was handed to the
+transport and not yet consumed by the device. It is local knowledge, so
+bounding it by the same window limits a lying peer to one window of
+queued data per socket.
+
+For an honest peer, bytes_unsent can exceed tx_cnt - peer_fwd_cnt only
+by data the peer already has but the transport has not yet released:
+
+ - on a host, the delivered part of an skb that vhost splits across rx
+   buffers smaller than the skb: the peer acknowledges the pieces, but
+   bytes_unsent drops only once the whole skb is delivered, so at most
+   one skb (64 KiB);
+ - in a guest, tx buffers the host has consumed but
+   virtio_transport_tx_work() has not reaped yet: vhost passes the
+   packet to the host socket before it marks the buffer used, so the
+   host's credit update can arrive first.
+
+Either way the window shrinks only until the transport catches up;
+nothing stalls and nothing changes on the wire. The writer is woken when
+bytes_unsent drops (sock_wfree() calls sk_write_space()).
+
+With a user-space vhost-vsock "guest" that posts no rx buffers and
+acknowledges everything, one host socket queued 256 MiB in under 2 s
+(SIOCOUTQ 268304384, where the test stops); with this patch it stays at
+one window (SIOCOUTQ 262144).
 
 Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
 Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
 ---
- drivers/vhost/vsock.c                   |  2 +
- include/linux/virtio_vsock.h            |  5 ++
- net/vmw_vsock/virtio_transport.c        |  2 +
- net/vmw_vsock/virtio_transport_common.c | 62 ++++++++++++++++++++++++-
- net/vmw_vsock/vsock_loopback.c          |  1 +
- 5 files changed, 71 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index b0004cb48999..f1b47a826ca4 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -176,6 +176,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
- 			break;
- 		}
- 
-+		virtio_transport_credit_update_xmit(skb);
-+
- 		if (out) {
- 			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
- 			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index f91704731057..6c3fc8faca0b 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -13,6 +13,7 @@ struct virtio_vsock_skb_cb {
- 	bool reply;
- 	bool tap_delivered;
- 	u32 offset;
-+	struct virtio_vsock_sock *vvs;
- };
- 
- #define VIRTIO_VSOCK_SKB_CB(skb) ((struct virtio_vsock_skb_cb *)((skb)->cb))
-@@ -167,6 +168,9 @@ struct virtio_vsock_sock {
- 	u32 buf_used;
- 	struct sk_buff_head rx_queue;
- 	u32 msg_count;
-+	struct sk_buff *credit_update;
-+
-+	refcount_t refcnt;
- };
- 
- struct virtio_vsock_pkt_info {
-@@ -283,6 +287,7 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
- void virtio_transport_recv_pkt(struct virtio_transport *t,
- 			       struct sk_buff *skb, struct net *net);
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
-+void virtio_transport_credit_update_xmit(struct sk_buff *skb);
- u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
- void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
- void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 4f9aa9c4c3aa..82cd52249de3 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -104,6 +104,8 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
- 	int ret, in_sg = 0, out_sg = 0;
- 	struct scatterlist **sgs;
- 
-+	virtio_transport_credit_update_xmit(skb);
-+
- 	sgs = vsock->out_sgs;
- 	sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
- 		    sizeof(*virtio_vsock_hdr(skb)));
 diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 74a8fdf825d5..65d6e0790e72 100644
+index 1e762a480df4..74a8fdf825d5 100644
 --- a/net/vmw_vsock/virtio_transport_common.c
 +++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -604,18 +604,68 @@ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
- 	vvs->fwd_cnt += bytes_dequeued;
- }
+@@ -1031,14 +1031,17 @@ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
  
-+static void virtio_transport_put_vvs(struct virtio_vsock_sock *vvs)
-+{
-+	if (refcount_dec_and_test(&vvs->refcnt))
-+		kfree(vvs);
-+}
-+
-+static void virtio_transport_credit_update_destruct(struct sk_buff *skb)
-+{
-+	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	if (vvs->credit_update == skb)
-+		vvs->credit_update = NULL;
-+	spin_unlock_bh(&vvs->rx_lock);
-+
-+	virtio_transport_put_vvs(vvs);
-+	sock_wfree(skb);
-+}
-+
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb)
+ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
  {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	bool track = le16_to_cpu(hdr->op) == VIRTIO_VSOCK_OP_CREDIT_UPDATE &&
-+		     skb->destructor == sock_wfree;
++	s64 tx_buf_size = virtio_transport_tx_buf_size(vvs);
+ 	s64 bytes;
+ 
+ 	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
+ 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
+ 	 * does not underflow.
+ 	 */
+-	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
+-		(vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = tx_buf_size - (vvs->tx_cnt - vvs->peer_fwd_cnt);
 +
-+	/* The skb pins vvs, which connect() may detach from the socket. */
-+	if (track) {
-+		refcount_inc(&vvs->refcnt);
-+		VIRTIO_VSOCK_SKB_CB(skb)->vvs = vvs;
-+		skb->destructor = virtio_transport_credit_update_destruct;
-+	}
++	/* peer_fwd_cnt is peer-controlled, bytes_unsent is not. */
++	bytes = min_t(s64, bytes, tx_buf_size - (s64)vvs->bytes_unsent);
+ 	if (bytes < 0)
+ 		bytes = 0;
  
- 	spin_lock_bh(&vvs->rx_lock);
- 	vvs->last_fwd_cnt = vvs->fwd_cnt;
- 	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
- 	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-+	vvs->credit_update = track ? skb : NULL;
- 	spin_unlock_bh(&vvs->rx_lock);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
- 
-+/* Called by the transports when @skb is put on the wire. */
-+void virtio_transport_credit_update_xmit(struct sk_buff *skb)
-+{
-+	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+
-+	if (!vvs)
-+		return;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	/* Still the socket's last packet: carry what was suppressed. */
-+	if (vvs->credit_update == skb) {
-+		vvs->credit_update = NULL;
-+		vvs->last_fwd_cnt = vvs->fwd_cnt;
-+		hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
-+		hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-+	}
-+	spin_unlock_bh(&vvs->rx_lock);
-+}
-+EXPORT_SYMBOL_GPL(virtio_transport_credit_update_xmit);
-+
- void virtio_transport_consume_skb_sent(struct sk_buff *skb, bool consume)
- {
- 	struct sock *s = skb->sk;
-@@ -667,11 +717,20 @@ EXPORT_SYMBOL_GPL(virtio_transport_put_credit);
- 
- static int virtio_transport_send_credit_update(struct vsock_sock *vsk)
- {
-+	struct virtio_vsock_sock *vvs = vsk->trans;
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_CREDIT_UPDATE,
- 		.vsk = vsk,
- 		.net = sock_net(sk_vsock(vsk)),
- 	};
-+	bool queued;
-+
-+	spin_lock_bh(&vvs->rx_lock);
-+	queued = vvs->credit_update;
-+	spin_unlock_bh(&vvs->rx_lock);
-+
-+	if (queued)
-+		return 0;
- 
- 	return virtio_transport_send_pkt_info(vsk, &info);
- }
-@@ -1086,6 +1145,7 @@ int virtio_transport_do_socket_init(struct vsock_sock *vsk,
- 	spin_lock_init(&vvs->rx_lock);
- 	spin_lock_init(&vvs->tx_lock);
- 	skb_queue_head_init(&vvs->rx_queue);
-+	refcount_set(&vvs->refcnt, 1);
- 
- 	return 0;
- }
-@@ -1276,8 +1336,8 @@ void virtio_transport_destruct(struct vsock_sock *vsk)
- 
- 	virtio_transport_cancel_close_work(vsk, true);
- 
--	kfree(vvs);
- 	vsk->trans = NULL;
-+	virtio_transport_put_vvs(vvs);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_destruct);
- 
-diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
-index 8068d1b6e851..84342a97a513 100644
---- a/net/vmw_vsock/vsock_loopback.c
-+++ b/net/vmw_vsock/vsock_loopback.c
-@@ -134,6 +134,7 @@ static void vsock_loopback_work(struct work_struct *work)
- 	spin_unlock_bh(&vsock->pkt_queue.lock);
- 
- 	while ((skb = __skb_dequeue(&pkts))) {
-+		virtio_transport_credit_update_xmit(skb);
- 		/* Decrement the bytes_unsent counter without deallocating skb
- 		 * It is freed by the receiver.
- 		 */
 -- 
 2.56.0
 
