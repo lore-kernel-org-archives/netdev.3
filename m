@@ -1,62 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793917246;
-	b=BPeIGyzBVF5/ZDD7yg5GPXXMNc0AiO7KhsmfJXTY3LW+YPqVFJw1VtBKTTUbVVmLGLzg
-	 cCjMw9tzq2T2DrPTPhFAJmHU08UPVJPcZLJz7dVSezQFYoy/v/ExtC/NAl+Qb30dgfq8+
-	 cjaOgm8IKD7eOuq28BHNJwh35KDcPKkM0RL5Wy5qu8Kfr/w8uvbO4IJ6Epb0XLsdeSmr2
-	 QXF/6torTBPMWRCdie8l1iIG4AYQmB8zr4vDrlpos4vSmkBhZn5rW0IKm2xqBjzHzy51n
-	 ktadzmmoACfJ5H+jS/NUN9upXB6+6J1S6s5ZKPa3ugExk2iUSxJGlNmYqEoUx2vdPng==
+	t=1793917261;
+	b=j4z8jRfNv+vrnZVORIrUfQgmybhqUL3BPlENSykpX6gSkpGBkRNqom75wuQ5Kjo62LpD
+	 JOyOCHFCDXJLCiwwD14TdJCmNVeRXANppz/Aype6s5yQcDTSSkAkudm04zfuVfgoTiqsY
+	 cOup9FbSkkpEDagh0rRxbvdfEj80VG1scqVNB5CND8tVF78Q657fiBMosql+ML9AslRJa
+	 PUUXiBDHr8LlyVR25YH285ymMUkNrGiFb0OCbr1rdGRycss9jN5Ge5H1Yqgla/3AHrCYB
+	 jAx2kufPzm5zaZvXuSHdEbUD/5QGF2mhCeeeH/tv4zHOd/WnimwGIG9bPSltpxrYg9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793917246;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=fJJlCMoNQLt0YAspu0FY49lYMN1jzY5kSPkVivJbaXk=;
-	b=AEpOUVGkygmFR0QpAUx6Emq9QeZ54ZVS6bLIxZ1CQ6w6aBSwE6mPQGhJ8f6u2lAg26wf
-	 xX7gYy30HxMXORXcwGWQiKkgSGQGzmeVe/aoLZDoYhsSGl2ONiCVlzDHkzwTIySfycmNw
-	 vkbaDIQBY1fCwNcsF4PD5sI/ABZUCi0WhjAIMVVn+EvQkiaHNK4jbrW7OvPNTF7Ovx5Gk
-	 rAdijLKHXZ0F922Uy76ClH9jZgO0UGiaa2cYgh48uhB2to8kN6yatEsFDhyr1pvH1cO0d
-	 9q1swogcmhiG2ke3WE3OzIf47BogEQhJNOTLxLA2eLyADKSg9O9XRFCo1sehMECw22g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793917261;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
+	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=kZvRQk8qYOltAbKUxNkYwyZeXDB5dZ+BBtBT4hJ905c=;
+	b=xWtFdrMiuDZqItwhzueZCGuZ8NTEr4SbsVTTnLwythp44G3DPRFgeo68HA1LZP9aieT1
+	 M8TiupzZd+KhVkKJ6vCgEBZDDRiRqRCSZ1sdPU4lglQmOqo0Mxk2/ID3IVEV2bAdgSeTs
+	 vA2De/+sLgjnmGOSdhLne0bIZ0aD+0SUWzmaIAbcYMaOeoRY4DZl422/NknaItT8WB3Y2
+	 i4eqVQH/wmTCDYDu50+GBshMoShDe3f/k9Y0VMGkQB5uJIM6F6ToKb3fcQO+DLORU5Nic
+	 gqZT99sRuCl3Frtefj6lGZVfRm2Ntu83o2Bwpk6othxbjgk/s6HPmC23x1ozx629QbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ql9d55NN;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=obvqlox2;
+	arc=none smtp.remote-ip=74.125.229.137
+Received: from mail-dl2-f9.google.com (mail-dl2-f9.google.com [74.125.229.137])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7FA606A31B;
-	Thu,  5 Nov 2026 22:20:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD7FA606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA158606A330
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 22:21:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA158606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ql9d55NN
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fJJlCMoNQLt0YAspu0FY49lYMN1jzY5kSPkVivJbaXk=; b=Ql9d55NNEnSRMqwx3Z1hogRDKW
-	x6RGfbD1aFt6VCaX8qZj7bFKQOzHPu4ui0GKI3t08sMPphSYemFjBUtCTF97Fu2KA9PROQZ9fTXLh
-	7MzNN3zPpDknrLxNVAu0T0MbfFz9guFJiRS8YutTidS2GryHxWT0Dys8MsLnpDqf/sz0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xP5oz-00Ee66-1U; Thu, 05 Nov 2026 23:20:37 +0100
-Date: Thu, 5 Nov 2026 23:20:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/4] net: dsa: motorcomm: Fix extack message on
- unsupported TC actions
-Message-ID: <a1d44a84-d180-407f-b312-ef29eeaeecd5@lunn.ch>
-References: <20261102071119.3435180-1-mmyangfl@gmail.com>
- <20261102071119.3435180-2-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=obvqlox2
+Received: by mail-dl2-f9.google.com with SMTP id a92af1059eb24-19305bcb6d5so38002c88.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 14:21:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793917260; x=1794522060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kZvRQk8qYOltAbKUxNkYwyZeXDB5dZ+BBtBT4hJ905c=;
+        b=obvqlox2baCnA3JMUIrvbt0d7DdsKdabHK7z6YwvqrDPqNNZGm6+LEmE29FLBrXUSN
+         xfWpLTfkrYg+qFBP3rvKTBRIx/amuIUtOxV3DtWxkosqeIo81ByIqbEmwdFCmeusXv8G
+         x6nyGWLEU4qkom+beG0+3G8BmFBqjhvVbDMZdoMm4k1/+K7aDIdQFrNZh4Ek6qC2NNCk
+         8Hm3o52rP4oPPBIwniUZs6fynaDYP5wRwUBBd4Qtv4S4EIFvH9cx6oiN0I2ZF9dxAknx
+         G4p2cm//p0z1ftCZZeR9jR+IXuUc539iGLsY48DWW19vAtuyIvzFrhZf6rBVIO/ReNDP
+         83Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793917260; x=1794522060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kZvRQk8qYOltAbKUxNkYwyZeXDB5dZ+BBtBT4hJ905c=;
+        b=DrSINsNbBc4elmtdJyPMuv67tA7TVMuCB9OAuFFgprz5HLDld7gv93j1OfKI72b/4g
+         J8fttQCym//xpFz49Go7N7MNftbahTvLxXVvYlXZl+lEYJwwZqeDlGMQfXN8GyoFO/Jb
+         Y5ja0yzo0xDhtq/v3SG7K57Wk3zRKxrieV8rV4H3nxsq5BWTk5Z/m1xB5DFZ2CK0ZxOb
+         Jfbq6GiiQt6ucweGV9YSaVknWf+FnRxb2hEcubg0rRfLXTjkXyGoazCK49OOZPD39gF4
+         ET10uvE7f3Gum0qWsjE1CPJdWPIfnCVnaf8qbOCo9G3f2M3mDCLHroPyksmRN/pIuoWc
+         gTeg==
+X-Gm-Message-State: APuU4Z9nGLRCW7h/gIBe1AkQWErcT1qqLMDOtFUKUMEyl5MCEKEp4qz9
+	w9+DZ6xSkdPI3IFR0oQsgzkOiCOBEn/uUaoHlXnqc2oY3nTjt/mMPL6UzKcRwkwQTYY=
+X-Gm-Gg: AYBFou2zBCNgyXhDoy/wefzw2Snf/qXpqRoRqf1kZfRYThGRsaR5NqEKOuVomKBmi6r
+	XiWjx10TgRrle/nLSd4UYG1rUgIRyipJQjcFZoTLre+TNXTkKZ7qrjqibNyyL0C5ScbAYomTA3b
+	UD9ng2b9VWRc4OFvfP+boZh4BO+Q+pXakO4fcNcpW2VucbjteXMZIj+wpsxH9rR/jeKCHy6ayzS
+	BK/nJOw8WASwa2LZk+w1bh3aeKcwp8Nwth0T68B5h6nXMjHAqK7AxYJsjzxLGnVG7JJihRyl/Nm
+	wE6MmoFmiHedrP2HqrwDVCRB2MFMqwskK68mYKJrKY6c0cHs3SbgaKjinijcI+TM/9ACpgI+kr0
+	hnK9rC/O0D5XfokSdlxpG++Tv0llq0BWPwYBwl7TTz++FwPr0jEG6xNUbjF0gaHaTG6Tx9ZzASq
+	BPgGutZZT0CMpbxn2CwadRBGIGELDc8URIrqAIJi1eiKQN8f+a3zqR405Jmr1CJPHISsVe5gYbD
+	6PAYdgJwqZ2aIL7Emtjfd175rpihkIqohdb/gHtKtn+F87wvn6tuKcdIgV9OHJ2wjUT4sRY+fX6
+	hj4MF7SwTwhF4rKwhgRHh5w=
+X-Received: by 2002:a05:693c:6096:b0:368:d0b6:b231 with SMTP id 5a478bee46e88-36f752511a5mr890910eec.10.1793917259665;
+        Thu, 05 Nov 2026 14:20:59 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:74::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa651eccdsm117955eec.1.2026.11.05.14.20.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 14:20:59 -0800 (PST)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	alexanderduyck@fb.com,
+	kernel-team@meta.com,
+	sdf@fomichev.me,
+	dimitri.daskalakis1@gmail.com,
+	almasrymina@google.com,
+	dtatulea@nvidia.com,
+	bobbyeshleman@meta.com,
+	asml.silence@gmail.com,
+	daniel@iogearbox.net,
+	razor@blackwall.org,
+	leitao@debian.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	leon@kernel.org
+Subject: [PATCH net-next v3 0/9] net: devmem: size TX net_iovs from the dmabuf layout
+Date: Thu,  5 Nov 2026 14:20:49 -0800
+Message-ID: <20261105222058.944293-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,41 +123,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102071119.3435180-2-mmyangfl@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 02, 2026 at 03:11:13PM +0800, David Yang wrote:
-> No extack reasons were given to unsupported TC actions. Fix it.
-> 
-> Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
-> ---
->  drivers/net/dsa/motorcomm/tc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-> index 9dbd61e48fee..8835907366bf 100644
-> --- a/drivers/net/dsa/motorcomm/tc.c
-> +++ b/drivers/net/dsa/motorcomm/tc.c
-> @@ -1122,6 +1122,7 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
->  			break;
->  		}
->  		default:
-> +			reason = "Unsupported by HW";
->  fallback:
->  			if (cls->common.skip_sw) {
->  				NL_SET_ERR_MSG_FMT_MOD(extack,
+TX bindings use PAGE_SIZE net_iovs, so a frag covers at most a page.
+A 64KB skb needs 16 frags, and MAX_SKB_FRAGS caps devmem skbs at about
+68KB, which makes BIG TCP ineffective for devmem TX.
 
-Maybe also change:
+This series picks the TX net_iov size from the dmabuf sg table instead:
+the largest power of 2, up to 2MB, which aligns every DMA segment. With
+a 2MB hugepage-backed udmabuf a BIG TCP skb takes a few frags. There's
+no UAPI change since TX addresses are dmabuf offsets.
 
-const char *reason = NULL;
+TCP still bounds skbs by size_goal, so frags get larger, skbs don't.
+Devmem TX frags are capped by a new per-device limit, PAGE_SIZE by
+default, so drivers opt in to larger frags:
+- mlx5: no limit, 32-bit length per data segment
+- bnxt, fbnic: 32KB, 16-bit TX descriptor length
+- gve keeps PAGE_SIZE frags
 
-to
+Tested on two mlx5 400Gb/s hosts with kperf (udmabuf, 32KB RX
+net_iovs, 2MB hugepage-backed TX buffer), series backported to a 7.1
+kernel on the sender only. 1 flow, MTU 4200, receiver tcp_rmem capped
+at 16MB so it doesn't drop, median of 5 x 60s runs:
 
-const char *reason;
+                              before    after
+  frags per skb (sender)       16-17      1-2
+  throughput (Gb/s)            208.6    211.2
+  sender sendmsg CPU (sys)     40.8%    19.5%   (-52%)
 
-That way, the compiler is likely to warn you if reason is used but not
-set.
+The receiver's CPU is the bottleneck, so the gain is CPU, not
+throughput. More of the transmit runs from the ACK path, so the
+sender's softirq grows (52% -> 59%), but sys + sirq still drops by 16%.
 
-	Andrew
+kperf output (sender side) of runs near the median, before:
+
+  client: == Source <sender>
+  client:   Tx213.826 Gbps (1603901849600 bytes in 60007723 usec)
+  client:   Rx  0.000 Gbps (0 bytes in 60007723 usec)
+  client:   TCP retrans reord rtt rttvar d_ce snd_wnd cwnd
+  client:             0     0 633      2    0 15556608 7657
+  client:   net CPU 49: usr: 0.01% sys: 0.10% idle:44.13% iow: 0.00% irq: 3.21% sirq:52.53%
+  client:   app CPU 50: usr: 0.05% sys:41.55% idle:53.88% iow: 0.00% irq: 1.40% sirq: 3.10%
+
+after:
+
+  client: == Source <sender>
+  client:   Tx211.242 Gbps (1584440279040 bytes in 60004741 usec)
+  client:   Rx  0.000 Gbps (0 bytes in 60004741 usec)
+  client:   TCP retrans reord rtt rttvar d_ce snd_wnd cwnd
+  client:             0     0 556      3    0 15499264 7650
+  client:   net CPU 13: usr: 0.01% sys: 0.08% idle:37.75% iow: 0.00% irq: 3.87% sirq:58.26%
+  client:   app CPU 14: usr: 0.06% sys:19.48% idle:77.23% iow: 0.00% irq: 1.19% sirq: 2.02%
+
+The bnxt patches (1 and 5) were tested on two 50Gb/s bnxt hosts with
+CONFIG_MAX_SKB_FRAGS=45 (with 17 the check in patch 1 compiles out).
+kperf devmem TX from a 2MB hugepage-backed udmabuf runs at line rate
+(46.4Gb/s, payload validated) with 2-3 frags per skb, none above 32KB.
+ncdevmem sending 1KB chunks builds skbs with up to 45 frags, the stack
+segments them and the data arrives intact. The fbnic patch is
+build-tested only.
+
+Patches:
+- 1: bnxt: segment GSO skbs with too many frags in the stack
+- 2-3: devmem TX prep (truesize, niov_shift in the TX lookup)
+- 4-7: per-device netmem TX frag size limit, PAGE_SIZE by default,
+  opt-ins for bnxt, fbnic and mlx5
+- 8: pick the TX net_iov size from the sg table
+- 9: selftest for TX from a hugepage-backed dmabuf
+
+v3:
+- default the netmem TX frag size limit to PAGE_SIZE, opt in bnxt,
+  fbnic and mlx5 (Mina)
+
+v2: https://lore.kernel.org/netdev/20261103235152.1904727-1-sdf@fomichev.me/
+- reword the TX truesize commit message (Mina)
+- explain why the TX net_iov size ignores the device limit (Mina)
+- use 1 flow results in the cover letter (Mina)
+
+v1: https://lore.kernel.org/netdev/20261102191438.1059771-1-sdf@fomichev.me/
+
+Stanislav Fomichev (9):
+  bnxt_en: let the stack segment GSO skbs with too many frags
+  net: devmem: charge the frag length to TX skb truesize
+  net: devmem: use niov_shift in net_devmem_get_niov_at()
+  net: devmem: add a per-device netmem TX frag size limit
+  bnxt_en: set the netmem TX frag size limit to 32KB
+  eth: fbnic: set the netmem TX frag size limit to 32KB
+  net/mlx5e: lift the netmem TX frag size limit
+  net: devmem: size TX net_iovs from the dmabuf sg table
+  selftests: drv-net: devmem: TX from a hugepage-backed dmabuf
+
+ .../networking/net_cachelines/net_device.rst  |  1 +
+ Documentation/networking/netmem.rst           |  7 +++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  6 +++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  1 +
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  1 +
+ include/linux/netdevice.h                     |  2 +
+ net/core/datagram.c                           |  3 +-
+ net/core/dev.c                                |  1 +
+ net/core/devmem.c                             | 37 +++++++++++++---
+ net/core/devmem.h                             |  1 +
+ net/core/netdev-genl.c                        |  2 +-
+ .../selftests/drivers/net/hw/devmem.py        | 10 ++++-
+ .../selftests/drivers/net/hw/devmem_lib.py    | 43 +++++++++++++++++--
+ .../selftests/drivers/net/hw/ncdevmem.c       |  8 +++-
+ .../selftests/drivers/net/hw/nk_devmem.py     | 11 ++++-
+ 15 files changed, 118 insertions(+), 16 deletions(-)
+
+-- 
+2.53.0-Meta
+
