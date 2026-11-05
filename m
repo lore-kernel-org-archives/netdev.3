@@ -1,65 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.22
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793845166;
-	b=KOxbdSLOcALWZQrqNm2AXyVrdes8kNNh2dZUpcLKITZBCmqm+DC0W753psvtE3/5MALL
-	 T7ZwCIbTCFiytSyZJXwSxXyohgdob62jMNWzFkdgo6GbWGgVOUUdmWeLqYYNCK7VuFI44
-	 GcTFuFLhqvBq3MM0huqKZE++2E6WIJnBfHG2icFUEA/SI/kgKcFxm7QxbkhApBbky/NbV
-	 sKLa6Wp9u2eRfr5BIX82s2us97NCPVpFaZ2GIGeOnHplUVVILs2WbgWUH3H2gye9Scxsf
-	 K1pF4RFwUqESvXAS0xSy9kalSBCOu0RtvHKyPPn08hAHyDRgZr1WozzFVKRTeOowNfw==
+	t=1793845283;
+	b=UOoxFiKV5BYU6IT+smrZGHcf34LvemVe5zGzPZ+76fuw3mkpYluVAAyk7ZjZj3WMvwSk
+	 HuY9g2yp/1bsCky0zi7p95hHswTtRKxNd3aVI8v2T6zN2xFTrgfaGNiznSWbfteWxk5GO
+	 Fl/ZmmsBD4o4TYf1BmRtkpKgRBdF0UmpyXHU+gAW0bHtqGi61SsVnTtbVeZJ+y7NtTrox
+	 CgKf2T5OyK9jPX1LLy7+g7wzjFZXbI0OACsgpSIhlcnX3TyccZpFP1Pk8OBNSs2cpYR2C
+	 dQ8wovPrzieXn7Yr/laq1NRjgk4SZToUTqSeeJl1U3JTO6RNJ3rahG9gArANdUBNyBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793845166;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=vCAogybCaVTsP1wOzLL4HrNOiDNKINH4T30RdYUbjCY=;
-	b=dRfXTuC+oVG66P/Y1nXqbgDyJN4iMBDdKl6HvVQItg6Xqm4DkvWvzFdCB83BfyEc8Kl+
-	 lIudI1YTtug4EbDaQ4eeVmAehCBWemDFqJxbpsYSCce2XCJYLVaPjLE8ZbRZ5Sl8Sdxn/
-	 vO7c/IIuXwBq3uzWZh9f7BRsF+9r5mDVll/uUpFzQIQw0UJCz06K0bd+u9hMo7tlQM/iX
-	 msXsj9aQ7qdo3FOGAUVfzUA7FCybEinRzDYK7k07rhBb1EBDT0VIjVYJT1HTIZ0Qhu2yB
-	 J+G/H3JjEKTOsStJCdiYf4W3fdPNLRvEKBFtLyYyCWj3A9GFoR3ZDxHYTbcS7eVapeg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793845283;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=CPWvCpHCYoWPM5p3/a4KEe4RRG4SBGN/TGqMoA1qGPw=;
+	b=uItRIKz9GDQoCBoyCyhvPwpRiPY9ZGo26cOy2Mf62mOYc4aIXjQ4KGyw6/r6ebj2ZLzz
+	 y93ck1uvMU84oaXema69OX+59prqPk99t6i4xqdaaMc2BzoDZueMhCnBQ52rHFWWhowVB
+	 Kwl1BvXgH2kDe2bHbCHPuk8i/rTKAdu4syGQ2gsqZqxud3vcjT2HqXDXWNfQX8aLkn4JS
+	 C815vkViKmgqYL+8lNMnWAbHT2UHqD/H5/RuJehkRFtHFbW+alQQzWAUwOeeM5RL8IPSU
+	 ku9DMBv8eQk9CeGckxAu+T/0XGU9BfS/V9UjwZv2ExrhJpuNLm1i8SF8MxA+r29eqaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cMjLdVAx;
-	arc=none smtp.remote-ip=91.218.175.22
-Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=upYHlsIT;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E30606A32D
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:19:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00E30606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4578606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 02:21:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4578606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cMjLdVAx
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=vq/2PwFpnYdqp7NYMLzjiV/QsikQgp5SP9E8rhZNyQ0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793845164; v=1; x=1794449964;
- b=cMjLdVAxCh4bj12YhMneUevGO4LeZ2PZgAyGoGtwCTtP5NJjPjxFrzCUCxgh22GA115GIjCL
- Tg6vaRK9+GALurt6WErLFeq7mGRQaZ7c4MzSaTj8lm6ccEOKt7eBiWKqha+5EZD7MQCCcwT8dUB
- /OMrLFFcpV/HTBG4UykurtLE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 1851632e6d4801f8;
-	Thu, 05 Nov 2026 02:19:23 +0000
-X-Mizu-Trace-ID: 1851632e6d4801f8
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 10:19:08 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Bjoern Doebel <doebel@amazon.de>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=upYHlsIT
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3535a54bed9so1829816eec.1
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 18:21:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793845282; x=1794450082; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CPWvCpHCYoWPM5p3/a4KEe4RRG4SBGN/TGqMoA1qGPw=;
+        b=upYHlsITZy9Egx9YYgwt7G5l8ujPMJ2sprITqpQJ8YYIF0KpweIe0Y2XL8zE9ilu1i
+         xs6ZGv/606sHvwgPSm0UCFDE6d2pAwyyxqzFkBRIITXNTMfbgZlbro5Kacp0ggGLCnDS
+         77GIfh8EkEwq6VzYFJleOyqMPviwuHP8aHndDfCs2NtRl6xWHqJst+FFAZJR+bTFkUt4
+         MNWK5iYz6b7T/q7rwNg0zLbbh8xRucO3mrtYT7bJv40h1kyRmQ3R8H3qg3s7Wxjeik3w
+         4nvrJHb1DQdzPLxeqCDKUNIr6B2PETw3tQZku/Tzw1AuqnKQpvSPVkUHb8zIZWNaZX7o
+         Pe8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793845282; x=1794450082;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CPWvCpHCYoWPM5p3/a4KEe4RRG4SBGN/TGqMoA1qGPw=;
+        b=hX/Uc5cFdz4X6cMBdqmTiSxnv3WeAHCRpwggoZDq6zbsaA9+ALvpe99WVk37haPY5K
+         2xFmvd8XLciY8n8FwKfwM3JnpebjWK88FS1yrgwSBuyVj+agbIhz1s9e54qjNi4HdHPT
+         X39yLAq+XyNjyEcfQ9r7/oNOkboHk4sK5D6gF53N84DWsviYmx7viMI/Jy4tZh30mYVO
+         RkA6v5W9BEzGj78oQc4hB10zs7eTMGYZTkNbEdcwmDnCkcY7lYHdY/YhaC5HeiAhMdwm
+         gexZtVhOFJDJL95V2e+TQQvcjCz6/gnDtIbZ5d6xxPUYSYRv3Q5u7PGIRVpLbsgstm35
+         h1wA==
+X-Forwarded-Encrypted: i=1; AKwUvBxuU/MCosWMgUyxubNFDR8heuWTqSyTsIFJ20+ClwmULNgl8+oEe69pUow0us2pXG4S/J7ts0U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/h1PGYnPqp8ki6jZFzLuiOxGQhyGPTpS/2Q7Tx8oePzDh5INde
+	snPIqwQOO5RyXcNR8fZND9iK8KH+7gst064Jw/N4VClgC4zuvzKxTbFw
+X-Gm-Gg: AYBFou21zJgd2OL6LqjK0HT461+fiFua2szk9QlSFcEvCpqVzcIblhm5Ogl0bf4AIMO
+	CNVE81UPWeF/AQ7O23sZRElTF/X4noeC5VVx0Zlxj45S20+5araeYwUC4AeuS1crkYpFNF49Y97
+	xcXBFZZFOIVcnWNY868qO/qcke2LITd5maPOkfTcuvVnuDNsEAd2+gK9QZdeCE+0IGD0MVxmg3F
+	VV0laiaXJg6zQGV52yS27hxTaJpL3Y/DKhPESjs/niCgeX1Nm9DH3dKWk7jIdWzLAkC+HkXNR1i
+	8gfl6cP4SEzPcL7+sTtFJ/ReKHzmx3wqXIBd0PRh0CIDOfJ1z6WwBigN9jnqmMfDtMXLypGVGA4
+	B5psunxT+eOWb7rjTob+i+gBiIzVmF4gOAHHmEiiF2e1yGK+dz48A5jr4Y0GlFvZRqH/emte2tR
+	yZ5j0iORklGDKIKq/BQ2gwHhy7yVCE/MCP4spOQciPmKvxlVs8cmZOzRRa0LigcjMpRjvbgYfRU
+	qlbV+TiM6/3Rn0HYZ3e5sOdPSb503N+M3sa16CcMAmYcQvqr5Giv3Ix2VSne48fmIxwFTcRrrUF
+	m2ZnPr3WMK9CsTgO0MZdi+p9Splt
+X-Received: by 2002:a05:701b:4186:10b0:137:5b9d:cf87 with SMTP id a92af1059eb24-1ac4f91ee96mr27294468c88.0.1793845281828;
+        Wed, 04 Nov 2026 18:21:21 -0800 (PST)
+Received: from gmail.com ([2a03:2880:9ff:71::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c272sm11719698c88.8.2026.11.04.18.21.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 18:21:21 -0800 (PST)
+Date: Wed, 4 Nov 2026 18:20:49 -0800
+From: Narcisa Vasile <narcisav.kernel@gmail.com>
+To: Peter Morrow <pdmorrow@gmail.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Hangbin Liu <liuhangbin@gmail.com>,
-	Liang Li <liali@redhat.com>, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] selftests: bonding: feed link monitor to deflake
- prio_test
-Message-ID: <auvnnIXQV2zufxtF@fedora>
-References: <20261104142018.552135-1-doebel@amazon.de>
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net/mlx4: drop the unused is_supported callback
+Message-ID: <auvoAYT/rwFrzoSH@gmail.com>
+References: <20261103122109.1798144-1-pdmorrow@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,65 +104,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104142018.552135-1-doebel@amazon.de>
+In-Reply-To: <20261103122109.1798144-1-pdmorrow@gmail.com>
 
-Hi Bjoern,
-On Wed, Nov 04, 2026 at 02:20:18PM +0000, Bjoern Doebel wrote:
-> With the bond idle between test steps, the arp/ns link monitor can
-> declare a healthy slave down (~300ms without RX/TX). If this hits a
-> failover step, the bond picks a different active slave than expected,
-> and primary_reselect=failure/better never reverts it:
+On Tue, Nov 03, 2026 at 12:21:08PM +0000, Peter Morrow wrote:
+> Since commit 557d80138618 ("net/mlx4: always create the eth and ib
+> auxiliary devices"), both is_supported callbacks return true, so the
+> checks in add_drivers() and delete_drivers() no longer decide
+> anything. Drop the callbacks and keep the aux device table as an array
+> of suffixes.
 > 
->   TEST: prio (active-backup ns_ip6_target primary_reselect 2) [FAIL]
->       Current active slave is eth0 but not eth2
-
-
-Thanks for the fix. I also saw this issue but haven't checked it yet.
-
+> Tested with this change applied to 6.12.113 on an Azure VM with two
+> ConnectX-3 VFs: both auxiliary devices are created at boot, and
+> removing mlx4_ib, mlx4_en and mlx4_core deletes them cleanly.
 > 
-> Reproducible when running tests under load (2-4 / 100 runs).
-> 
-> Fix by pinging a non-existent neighbor for the duration of the test to
-> keep traffic coming. 100 runs under the same load with the patch
-> applied: 0 failures.
-> 
-> Fixes: 42a8d4aaea84 ("selftests: bonding: add bonding prio option test")
-> Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+> Suggested-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
 > ---
->  .../selftests/drivers/net/bonding/bond_options.sh   | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  drivers/net/ethernet/mellanox/mlx4/intf.c | 44 ++++-------------------
+>  1 file changed, 6 insertions(+), 38 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> index 187b478d0ddf2..f599a2a8ef156 100755
-> --- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> +++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-> @@ -74,6 +74,16 @@ prio_test()
->  
->  	# create bond
->  	bond_reset "${param}"
-> +
-> +	# Keep the arp/ns link monitor fed for the duration of the test:
-> +	# ping a non-existent neighbor, which generates steady broadcast
-> +	# ARP requests sourced from the bond's own address. These egress on
-> +	# the active slave and are flooded onto the backup slaves' links,
-> +	# where they validate as RX activity. Without traffic, idle slaves
-> +	# are declared down by the monitor between test steps and the
-> +	# failover checks below race with the monitor.
-> +	ip netns exec ${s_ns} ping -i 0.1 -W 1 192.0.2.99 &> /dev/null &
-> +	local ping_pid=$!
->  	# set active_slave to primary eth1 specifically
->  	ip -n ${s_ns} link set bond0 type bond active_slave eth1
->  
-> @@ -157,6 +167,9 @@ prio_test()
->  		check_active_slave "eth0"
->  		bond_check_connection "change slave prio"
->  	fi
-> +
-> +	kill $ping_pid 2>/dev/null
-> +	wait $ping_pid 2>/dev/null
 
-If the kill fails for some reason, will we wait here forever and hang the
-entire test?
-
-Thanks
-Hangbin
+Reviewed-by: Narcisa Vasile <narcisav.kernel@gmail.com>
