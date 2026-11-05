@@ -1,67 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871556;
-	b=e6IJnoR277VzMHyKQNKlI/rUYBRhrxS6D7YKrDrFsctqJkQxXh52ayueU9DGO28tqbwm
-	 BJJOtnwn2Th1XzlF+WIex/zyYsTaPEHxi2eS4s8Bkl80Z1QiMtoxTfan5pmJd/lzC5BYt
-	 zrb1f0R3yjK0ccMioHd0XdDAhDMAWBeIQZwV4nGOCdiQiKosFmHF0TkjTRuKDd9E3dhjk
-	 K+dAy56tpPAAg718b/xwgS1LWYDs2bwnZ3+w+R/vZDxA56d0WebnDZAMNtt99pILne9KI
-	 j1GParfauDdGZ0CTTAwJpd6R+9j5+0gifOpgyIiQ+kcRSTl1ZSTd8f2VTPECg2T+hSg==
+	t=1793871611;
+	b=2mpn51kR7S+Yg1Zcz0iD28q233hNcrpZQH+oLZhpD3jKj0lakUCozuEu7bmC/ub8tiR8
+	 qg6JIMNMbsIZrfaQb42AMlj2PtYOAdP0lebmeC3P7i/ixopWlhsdDhJqdZNp0+uQEG1D3
+	 zkbNQCCd3DqF5Rn77uUcD1fvW3J7AnAovhyaLWERxuD3tpPHYou/1Z9jqxOUd76zCenBl
+	 MpqZV41UAlmMSvIgnvCyFbGVofVKbWTxueLv9BfamNqM6KbY0PNr6XxOw85aYmY7VGaLu
+	 Yuu7WN5TxtF0eSD6wxUTFuNPEvsMZ95GQrtZ4sw1A3sQToX9T9EAeaZWzJ7X/7YAQjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871556;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871611;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=7R2UOvgn9PI8GoXBAsiFuJshfeF1YzTCjF9GuawHyn4=;
-	b=x8zaIttYY6bmy5GQSKuApcAG9/l3D+PTzTkot3WFqlywQHEjcskDau80IKY/AxHgSnqV
-	 +n02E+J4tclHCxht1t5JKpYcz9LWH4JH5r9ebQVZYC6kuWCIep09U+dEsHXiKD3+vQCy0
-	 okMI8VRUs3MYVfJHTNAYuNn8+YncFp8gXGtcRtrxrTbfEfemV6TIuNwBw1HIAdHCFhuun
-	 c7sMmhlrR4seQxxJ1L6U690zVuIMNLsNpyWykxbaouo5P3qP5TyB1sJVZzMHk4pcoRHqR
-	 jjq626IigAimehU2TTxhzWxeKktVw6Q1k37sj9MPkYSY7HjJwptKwFkQBRXubdFbRWQ==
+	bh=IAkDT+xOxuplCH0DU1qbjq1v0CAsiM+XsgikQ8pVRS0=;
+	b=Q+gKxrtz/sSpUdH8hpZRb/Q2pJyTx3aALEMBKAOXmzP3noCa6lSR9VgltWtsXBf+1EYe
+	 sZnPJtwp38cA8Eo5xBDII+TodFvKp6x/26SaFV6emIPbbWVzGDVHornmorpqdF/k2EKPq
+	 njgR8b5UdvNWeubGdPajJAV7XIptLFtmPdY3AB1XaBcJKvoogtL5vziRBVZEE49MY9K/b
+	 8814afW5/lC4BX/OOp5R780IQYMBpP2UzUjgqaS1P/k0fFRKMJ8rklbZUtzmVeCY5t8xr
+	 wDrz+rX4DpWFsFB4oEhJoOoFrgBtzYjVvz8fbGVef2qsLPB9aBixLnHG+uOZBVyYe+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=NvW9ava0;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=ixG24aBT;
+	arc=none smtp.remote-ip=68.232.153.233
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A43606D819;
-	Thu,  5 Nov 2026 09:39:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92A43606D819
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC021606A31B;
+	Thu,  5 Nov 2026 09:40:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC021606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=NvW9ava0
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=ixG24aBT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793871562; x=1825407562;
+  t=1793871611; x=1825407611;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=cb0qXMc4wguc0QQCdheJz92gBP+uNeydJh/Nj2aUfIk=;
-  b=NvW9ava0pFJmacjE/IY2OEp6R4QMGfARBgjw9rKenVEOTnJ1mCtJzhYH
-   kV5KYLKNE/F4peiB/RIIcspNzBr3IpzRSF3ZEcL5mpUD6qT1TaKslLPpx
-   qPUQml7j1f28QAnydzsdJg3f8rymX1RVywE1FrBb6x3EI/8XZRbAA0z44
-   g2XxHeZPzPo8tqQDYP+C/2xjJATeo6+M6M7PhyJ9xx4GLmhyOo3+Oz7BR
-   WZ7V3qHu6NCOTHfbvjizq/mov0vjYzWFN+3Bvn9MB7Bzq80nwaEsc/1go
-   nFDzZaA9PpsgeLHJFJIEc33Q2xiJbU18Fw4r9rcxwGq+TYqG01cRGqabk
+  bh=0zMxg5jJREjnB3ChtK0twT9anfZvUFbnTRKAGFoCWSM=;
+  b=ixG24aBTLgWMaK+mBBLg0mi7CS45KfmfDovzFzkmu6HA2kyz98XLeLSw
+   HI5NdLXfgxwUW09lWFHOEatdcT0MXrbo9potOjCOJrl4AXvGz9VZ55mkO
+   raloo0s+3IGmfMlZ+SHs3Uu9zFe6z5gt65sq+GM+pZc/03jXiL2c5hyPp
+   i2qyTwGOs5/UoMY7HjC4/TLT/9d7Mfq2SpaW6x+4UhMNEiCcayNZxERLV
+   TriwjvQ2uUzAaq1q0JtqWpe1STHgJlyp2BPEkjZNbRoBB3NWqKfJOs7rB
+   zeSCAXnkEAudIgCAi75p282uJZk9HzY1+naHo1JZdyOD5lOepB9B/xmCa
    Q==;
-X-CSE-ConnectionGUID: uOkjWd00SQKHHMxTU88xVA==
-X-CSE-MsgGUID: KkZQKROvQzuPrPC+15rDBA==
+X-CSE-ConnectionGUID: /4wbJlm7S2GHsXCNxkp7Ng==
+X-CSE-MsgGUID: qIHMoxitTvqGuLVkkg26/g==
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="66311469"
+   d="scan'208";a="297491437"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Nov 2026 02:39:15 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Nov 2026 02:40:04 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 5 Nov 2026 02:39:08 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 5 Nov 2026 02:39:06 -0700
-Date: Thu, 5 Nov 2026 10:39:05 +0100
+ 15.1.2507.58; Thu, 5 Nov 2026 02:40:03 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 5 Nov 2026 02:40:01 -0700
+Date: Thu, 5 Nov 2026 10:40:01 +0100
 From: Daniel Machon <daniel.machon@microchip.com>
 To: Paolo Abeni <pabeni@redhat.com>
 CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -72,7 +72,7 @@ CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH net-next v2 0/5] net: sparx5: add tc matchall port
  policer offload
-Message-ID: <20261105093905.ln6tdot26wyej7pi@DEN-DL-M70577>
+Message-ID: <20261105094001.dqcpzra54a2okwc6@DEN-DL-M70577>
 References: <20261102-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v2-0-3bd47ec1b227@microchip.com>
  <679b8dcf-0aac-4674-a006-5af0156a82ae@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
@@ -125,17 +125,9 @@ In-Reply-To: <679b8dcf-0aac-4674-a006-5af0156a82ae@redhat.com>
 > > Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 > I understand the following will be very frustrating, but for unknown
 > reason AI review did not kick on this series.
-
-Yes, I noticed that. I thought you maybe had some magic button you could push,
-in order to trigger the review manually.
-
 > 
 > The changes looks sane to me, and addressing points raised on v1, but
 > I think nowadays we need an explicit AI feedback.
-
-Ack. I think the missing sashiko-nipa check is not isolated to this patchset
-alone. Just FYI.
-
 > 
 > Could you please re-submit the series?
 > 
@@ -144,4 +136,4 @@ alone. Just FYI.
 > Paolo
 >
 
-/Daniel
+pw-bot: cr
