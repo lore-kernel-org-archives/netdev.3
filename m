@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882746;
-	b=AeF3cfucrEMS2HaSxkLKFyAlHh6FTMTIz9EaVGdCagH4Gwz0A5vQxQQIcp6mfL5iQHyW
-	 Tk5cycRSK2N+r7hyRqU539gMD4W69m6VtqyqHTmUwsAyOrp/NPliSAEo8gssAMIrtsSA6
-	 AWdeUmL5YYiEKauxlZECkFFOCmyVdGUZ7y0hF1AWp1V3u/WzroV9DfjTJ90EY3HVCblUt
-	 QtHalZaliQPhbpT6qfDhTg4IoCYN56PhasQ7LnayBifGRxUM27y47WM0kedLo4+Lxl8dt
-	 Mj1GJF+iKbmvx5ZLwcEOxmH+nm+D8py3pjrLCiNBADxAr92kOxV+9HMXV9/g8Q9gL8w==
+	t=1793882747;
+	b=lzItkeAklfRuTon6qY4g69ZfWu7AFma+4hkWWsfQfe1iHLvD4axRON1jfHq9E09A0AHF
+	 c1Zzrn0KT0BSXkTiiOLIMC4zHe9aFv1CA7Uykhj0IjkeuAaJUs5TN/pBz8BsPF7IflABN
+	 iSZd0FUNy7WhieXeZ8ZeyUIbWXHymYpXSJLyGt7Dpw7Z37F+3wc8KsDsjyGqAZmKwA3k+
+	 Co6mGc7b25TqiV49hm+fe4PvHvGlTwevLzEbhkIVqfYo0+LthJSg+d/hFcWlbSwz6qhxa
+	 FpWJbqocFAsPTmcBQwYxu2XivFJ2q8ZKwtG5vqW41+8BSgJuzqKEnp8crZI36HZiGOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882746;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882747;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=ACw4Crf3hJuHvBnGGimGcJkB6r441MIl6lESNzI1wQ8=;
-	b=IzZbkgoepD0XSgNmqqteCY2Kc3YJM15UiYjsqebv5fF7qM/4h1/ngqcLkknRkj0p5v+g
-	 d4+VFl/FQdR1jq0e01amH9pJh+LMVkbidREw3pQqiD2nVeRXauAZSUZgX0gIAG8xHntrU
-	 m+vZdiXnKhNWODBZYyyZWB48SH8OfjLXbgwGydGyM+6phAjbeD/T+ZGTOwVTbqJ6oMjJ6
-	 2hDMeqzNtfDdDxbFJ6LZGuotnqS9+SXF15V+V6CrhNyyiJs7BYQMgcPu3VhNMqfdhzZn9
-	 MRuIPxZlTd82+MqFfnyrxS3MGSBYxjpoRx28QBdpVSMTgIHRJ0KtdaEvsCvFXIC4l8Q==
+	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
+	b=BJjzneHeq6e54mKFskgZEKRLXPlJLlFZAQ39ZDpDeKa4rHPUJLTAVtSmeKe6T/S1a4Tc
+	 OW6eQ8guRWonmgsPhHyli8mJhpCsC68K+091jxZwty5s9Dv9TUd3VcLim1HTo7N1W8Sdk
+	 VL2JovhYtqCZY8Qc2DLvAtoKUGgXyKng/UnIhDrsoQ7d4m5/Ia3InctRWuHU70vWtr+O1
+	 WMFPN+aVLzcCRT1cJMxgjSj5DNc8M/pFwLti9W997vRijJuNt87W9WUpyNYpQK9HpN5Ea
+	 GBeFZiBJ0+XueRs8x8WvPdc39599+ahStbOq0ZDSEh8Mce24U66/tWhVQ8+8Wv0GVZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vtKnT0Of;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EAyj1oZc;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46753606A32C;
-	Thu,  5 Nov 2026 12:45:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46753606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AAE606A330;
+	Thu,  5 Nov 2026 12:45:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43AAE606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=vtKnT0Of
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=EAyj1oZc
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793882744;
-	bh=ACw4Crf3hJuHvBnGGimGcJkB6r441MIl6lESNzI1wQ8=;
+	s=2025; t=1793882745;
+	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vtKnT0OffbbQB+UdkwWfOi5+dQWip8oHsnLW1OabTFgzSclERkHzi+o/LHMq+5Jnx
-	 ZvdUglDnRlqd+INNUWGUlm5bCfbuAUg3+EIqmogluHAhkZN01TuVi8VzUU8zbP6sXk
-	 oDUjZx8TlnwNXONmcwTNVsu32qfO6Gqg0fISfF32ixDDjGd4V596/9rTwKRxKuXp8w
-	 z6gUnjKBbxjGpdb6ke7IxG2uocDn5ye+g8tyxa/eAKFZTWvp/ui/0Ih1NY8LqRpcRB
-	 Ab3cRY33exfgErRZkCjr7UUPD+o92mmBgAE0rVHn48kibRiIfxdl4K5Mi2EX/G1X9C
-	 +A76RmUKdhc+Q==
+	b=EAyj1oZcQNumuik1HHZTXFgqZfDDqAMHaDEFSCSMXIFwZsFUZGRCKZMbX/fFnqScT
+	 xxjovaAiK46OEE90079+2OChwGdg0vl7ZRJ34HQk/7g5PG67CHDJcKviApmHhxfrAG
+	 7UIUnLUsfg1742Y7G/7NhzwL+/zs4T88u0JhQQSPm3XLr0RHKZ9UlTL96oIcNfA3az
+	 6r0KN5vixstsGB60tsnnYyj66BPBoDm2HVf/NzefMNj252bvp9H5Em6TmIdwtyOqQ9
+	 kenCxZg3+bVtsvLZt3endNzIpVKKfdtKGzgKL7+ktRg2A7wYDw2nCvtkmKFAlfWRen
+	 cDSLnqy0lIE0w==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 08A9E60082;
-	Thu,  5 Nov 2026 13:45:43 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 3E01460097;
+	Thu,  5 Nov 2026 13:45:45 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 03/12] ipvs: fix protocol data lifetime during namespace teardown
-Date: Thu,  5 Nov 2026 13:45:27 +0100
-Message-ID: <20261105124536.1009301-4-pablo@netfilter.org>
+Subject: [PATCH net 04/12] netfilter: nf_dup: preserve guard across NFQUEUE reinjection
+Date: Thu,  5 Nov 2026 13:45:28 +0100
+Message-ID: <20261105124536.1009301-5-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
 References: <20261105124536.1009301-1-pablo@netfilter.org>
@@ -73,90 +73,118 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
+From: Zihan Xi <zihanx@nebusec.ai>
 
-IPVS frees its per-net protocol data before control cleanup cancels
-defense work and unregisters the sysctl table. A defense worker can load
-a protocol data pointer, then namespace cleanup can unlink and free that
-object before the worker dereferences pd->pp or pd->next. The worker's
-securetcp_lock does not serialize with protocol cleanup. A concurrent
-defense-mode sysctl write can reach the same timeout update path.
+NFQUEUE can suspend traversal of a duplicated packet while the task-local
+duplication guard is set. The output call then returns and clears the guard
+before a later verdict resumes hook traversal.
 
-KASAN reported:
+Save the guard in the queue entry and restore it while reinjection
+continues hook traversal. Preserve and restore the verdict task's prior
+state, including nested synchronous reinjection.
 
-  BUG: KASAN: slab-use-after-free in ip_vs_protocol_timeout_change
-  Workqueue: events_long defense_work_handler
-  Call Trace:
-   ip_vs_protocol_timeout_change+0x1b4/0x1e0
-   update_defense_level+0x63e/0xd80
-   defense_work_handler+0x1e/0xc0
-  Allocated by task 125:
-   ip_vs_protocol_net_init+0xda/0x2f0
-   __ip_vs_init+0x16b/0x240
-   setup_net+0xfc/0x310
-  Freed by task 12:
-   ip_vs_protocol_net_cleanup+0x1d6/0x2e0
-   __ip_vs_cleanup_batch+0x7d/0x100
-   cleanup_net+0x38c/0x770
-
-Run control cleanup before protocol cleanup so that defense work and
-active sysctl handlers have finished before their protocol data is freed.
-Initialize protocols before exposing the control interface, and unwind
-in reverse order, to enforce the same lifetime on initialization failure.
-Protocol initialization and exit do not depend on control state.
-
-Fixes: 9330419d9aa4 ("IPVS: netns, use ip_vs_proto_data as param.")
+Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipvs/ip_vs_core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/netfilter/nf_queue.h |  1 +
+ net/netfilter/nf_queue.c         |  1 +
+ net/netfilter/nfnetlink_queue.c  | 17 ++++++++++++++---
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-index fd503f0efb57..8a3c880fdb26 100644
---- a/net/netfilter/ipvs/ip_vs_core.c
-+++ b/net/netfilter/ipvs/ip_vs_core.c
-@@ -2502,12 +2502,12 @@ static int __net_init __ip_vs_init(struct net *net)
- 	if (ip_vs_estimator_net_init(ipvs) < 0)
- 		goto estimator_fail;
+diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
+index 86021c55ba3c..4a8cefd8398d 100644
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -23,6 +23,7 @@ struct nf_queue_entry {
+ 	struct net_device	*physout;
+ #endif
+ 	struct nf_hook_state	state;
++	bool			in_nf_duplicate;
+ 	bool			nf_ct_is_unconfirmed;
+ 	u16			size; /* sizeof(entry) + saved route keys */
  
--	if (ip_vs_control_net_init(ipvs) < 0)
--		goto control_fail;
--
- 	if (ip_vs_protocol_net_init(ipvs) < 0)
- 		goto protocol_fail;
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 166d05e994ac..bd603e3a99a5 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -219,6 +219,7 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
+ 		.skb_dev = skb->dev,
++		.in_nf_duplicate = current->in_nf_duplicate,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 90d887546f7d..a8aa7ad832c3 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -44,6 +44,7 @@
+ #include <net/sock.h>
+ #include <net/tcp_states.h>
+ #include <net/netfilter/nf_queue.h>
++#include <net/net_debug.h>
+ #include <net/netns/generic.h>
  
-+	if (ip_vs_control_net_init(ipvs) < 0)
-+		goto control_fail;
+ #include <linux/atomic.h>
+@@ -365,21 +366,30 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	const struct nf_hook_entry *hook_entry;
+ 	const struct nf_hook_entries *hooks;
+ 	struct sk_buff *skb = entry->skb;
++	bool old_in_nf_duplicate;
+ 	const struct net *net;
+ 	unsigned int i;
+ 	int err;
+ 	u8 pf;
+ 
++	DEBUG_NET_WARN_ONCE(current->in_nf_duplicate &&
++			    !entry->in_nf_duplicate,
++			    "%s called with unexpected duplication guard",
++			    __func__);
++	local_bh_disable();
++	old_in_nf_duplicate = current->in_nf_duplicate;
 +
- 	if (ip_vs_app_net_init(ipvs) < 0)
- 		goto app_fail;
+ 	net = entry->state.net;
+ 	pf = entry->state.pf;
  
-@@ -2527,10 +2527,10 @@ static int __net_init __ip_vs_init(struct net *net)
- conn_fail:
- 	ip_vs_app_net_cleanup(ipvs);
- app_fail:
--	ip_vs_protocol_net_cleanup(ipvs);
--protocol_fail:
- 	ip_vs_control_net_cleanup(ipvs);
- control_fail:
-+	ip_vs_protocol_net_cleanup(ipvs);
-+protocol_fail:
- 	ip_vs_estimator_net_cleanup(ipvs);
- estimator_fail:
- 	net->ipvs = NULL;
-@@ -2547,8 +2547,8 @@ static void __net_exit __ip_vs_cleanup_batch(struct list_head *net_list)
- 		ipvs = net_ipvs(net);
- 		ip_vs_conn_net_cleanup(ipvs);
- 		ip_vs_app_net_cleanup(ipvs);
--		ip_vs_protocol_net_cleanup(ipvs);
- 		ip_vs_control_net_cleanup(ipvs);
-+		ip_vs_protocol_net_cleanup(ipvs);
- 		ip_vs_estimator_net_cleanup(ipvs);
- 		IP_VS_DBG(2, "ipvs netns %d released\n", ipvs->gen);
- 		net->ipvs = NULL;
++	current->in_nf_duplicate = entry->in_nf_duplicate;
+ 	hooks = nf_hook_entries_head(net, pf, entry->state.hook);
+ 
+ 	i = entry->hook_index;
+ 	if (!hooks || i >= hooks->num_hook_entries) {
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_NETFILTER_DROP);
+ 		nf_queue_entry_free(entry);
+-		return;
++		goto out;
+ 	}
+ 
+ 	hook_entry = &hooks->hooks[i];
+@@ -402,9 +412,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	switch (verdict & NF_VERDICT_MASK) {
+ 	case NF_ACCEPT:
+ 	case NF_STOP:
+-		local_bh_disable();
+ 		entry->state.okfn(entry->state.net, entry->state.sk, skb);
+-		local_bh_enable();
+ 		break;
+ 	case NF_QUEUE:
+ 		err = nf_queue(skb, &entry->state, i, verdict);
+@@ -418,6 +426,9 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	}
+ 
+ 	nf_queue_entry_free(entry);
++out:
++	current->in_nf_duplicate = old_in_nf_duplicate;
++	local_bh_enable();
+ }
+ 
+ /* return true if the entry has an unconfirmed conntrack attached that isn't owned by us
 -- 
 2.47.3
 
