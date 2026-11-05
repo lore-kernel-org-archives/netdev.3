@@ -1,69 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882695;
-	b=2OXbzTSVYdkEo2yF3s7o68JHsrwfXLbe6IDutRjbWKi6xQC7+rg/VIQIh6hp08COxBJE
-	 O7StrlWXn9SZTWHd1xqFxacYbTcEyb0Si1+ik5spwltgzTmrdeDI+CKJIaQX6L7QHDaZ9
-	 z3pwje8FkWxGf5Cyj5PoJeVfE7QbSIbkU9AKSYXw6m/JZ8mIlDj225j7NdFTRSCAP4L8U
-	 HB49OMmIOe0muqDmJS+KfgmdmhNFeIxM7Y0FDJ4lzU6uvEV1KYVvRb/xSqwl0k5T/0iZz
-	 B76z1l2xgLBU2xwekBx7Sv0bzdACNmDIdow1P+5AZnBpVzyjknsV4aUm5Uh0JMp0hUQ==
+	t=1793882743;
+	b=IKa31BNFpRQHWtHNXpz9TmoaQM78X1AXppFBvzNY0fkHd3UpsiBTKcLioxVb9jX8Th+W
+	 lrPGnH3Wjypv5GVSsL7lGALgoYXAhSHdEArX7qI250f/4YRFgw3XBcm0k++wDGr1OJKzD
+	 NkSyZzRGjwDiCF/RD+w1lqXMyeHBrTE5hQgYN19PtfPaxXtvcZVhYegtr7cFBGuJPo7dm
+	 Y1YQzzhgqvQlx5Uvef67nNp53G5/F8XKMHh2bqhXmQ/Atm62tCzQ+wh+CfRPDyfEeY0N4
+	 PFy/WDXBasNe+9SHCHSfckPf2FRXkSVo2bY0X7zjo11fcY5firccekhpweXYr7T++dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882695;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 Mail-Followup-To:MIME-Version:Content-Type:Content-Disposition;
-	bh=EN58icMFCpbcVLH6YKbY/a+m/VHBVy+6pu1Ggzd7pvo=;
-	b=EwK6+ndqLoOlTG0WVhxy9/7/0OY1Uic6QKELgJ0+2s1aLILc9/oMHmC3zrTo+kqsE3MU
-	 9sLvy0j3d8tPxhVnpQIa8HD0RUazSH9ucmls7tnvxX1W4yQQS5wQVSTpxw4BQ93C3CvnO
-	 +sfEVLLj8YzWu7cLqPinuUgWPhiFWTE0XZEcnqdIc06PcHQ7+fycKLseSEcOdtOYvjR82
-	 58AQsBZTvDHT3T1nDRbg0tM7IAqXu75zHtbATko3sNrfwFMGJjr+zTAkodqxvIbbby8Jy
-	 CDOWRrVnPL5YVinWYsrUzetzmsKD0+TA1LCmxCjNZWlm9W554QnP84q5OH412eAkDfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882743;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Spam-Status:X-Spam-Checker-Version;
+	bh=3yj6avl1hgRLvpVkxyEnWdK250pZvSjfL6HyI1vCCNE=;
+	b=nnUx9ean3KAXVpr3+/Ux2m0D4gkIRUiwsjpUyo6M6MAzze+61LevA5uDYakuvF90G/Fx
+	 NDsmLl1u9ta/tzZa8hSDgzeW1jo0n0EEOnlYqtXKpLr4BxdLKmT0gytoCqcX+arU+oiuA
+	 S0hzW1xm/434go91YVU3/6Fi4JyZjRfokg+1DqNTtJQt3s+wRPEbnFhp4APtXlCCWejxL
+	 m+IpQQRlDpEZemRF/uM+T7DXaFYvAwNDOoiUvZ11I7Ce483HSgd8yre2ruw2NspVSQzHj
+	 bfZVkFghTubmZj7bJmepqjfbM3LPoZs3aQNOFdZK132mlyBrxi6h21OQj96trz4P4jA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6+5Jcub;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=hsyk7EkE;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E099D606A326;
-	Thu,  5 Nov 2026 12:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4577606A326;
+	Thu,  5 Nov 2026 12:45:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4577606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6+5Jcub
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191831F000C1;
-	Thu,  5 Nov 2026 12:44:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793882694;
-	bh=EN58icMFCpbcVLH6YKbY/a+m/VHBVy+6pu1Ggzd7pvo=;
-	h=Date:From:To:Cc:Subject;
-	b=J6+5JcubBALvPUrzdrPf7+R0a9S1DLd9B9DjYk0DtTAR1REeJL+WecF2jhOZwQ6Cl
-	 raG9mDucYtphh2EFJQnxex9vFIX+R8L7Ehx5Q+m+07xdKACa8vqF8WNj4j07z/w4CN
-	 C+GSJzEFT9+d8tySRlnwJybXDG4iTk4j4klX76a1rd5JjvuI7LqxW4D8z/cufweYGj
-	 +j8tDQe0TEIexYkYmO7JPJ/RA5Ah8WrK7FAJv1JU+fF8XItJcHPgfhdi2pD9o95IqV
-	 zxftZFGHg6S2GhksRqXNUdBN7ARciL8uM+NiQXDuI/T0u/NXKl6mOXHY1IGrpLNZSL
-	 SyBpF8Mu9Rcpg==
-Date: Thu, 5 Nov 2026 12:44:49 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	Wireless <linux-wireless@vger.kernel.org>
-Cc: Aditya Garg <aditya.garg@linux.dev>, David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Jason Perlow <jperlow@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Michael Reeves <michael.reeves077@gmail.com>,
-	Networking <netdev@vger.kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: linux-next: manual merge of the wireless-next tree with the net tree
-Message-ID: <aux6QaenW3Eqb3vu@sirena.org.uk>
-Mail-Followup-To: Johannes Berg <johannes@sipsolutions.net>,
-	Wireless <linux-wireless@vger.kernel.org>,
-	Aditya Garg <aditya.garg@linux.dev>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Jason Perlow <jperlow@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Michael Reeves <michael.reeves077@gmail.com>,
-	Networking <netdev@vger.kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=hsyk7EkE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793882740;
+	bh=3yj6avl1hgRLvpVkxyEnWdK250pZvSjfL6HyI1vCCNE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hsyk7EkEFbZo0lwE+8XsHcrvj1RAEZKpkhqclpQfUQx30mcI+RsKg97E9JsiY9/fs
+	 BNKz64aoHQo4U5FWftJ9jKU9BFBYWYsSx6Tp8hDPrTKgiZY/AH0Lw8HTZbKWdolI2n
+	 zhLAaEOWmOzlxu6KXKhwqcX5Vb3BwXPD2pzFC1ol8ThqYAWjFQ+ypi3ao9AD6Vis+C
+	 /gdbONhQbzvZxZ2LrIPurWhhW1xeLCrxNuOlATLS1FGWCyvo6FpjeoZ6s4ar/ORhX3
+	 3Skvpze5U1yzjogYVMm5EMlcrPOfmvSiZr0TOiq8eVC0cbdJPkh5aLGiPxYK1HE9uw
+	 vYc1xJiwpgscw==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id A6EC660082;
+	Thu,  5 Nov 2026 13:45:39 +0100 (CET)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net,v4 00/12] Netfilter/IPVS fixes
+Date: Thu,  5 Nov 2026 13:45:24 +0100
+Message-ID: <20261105124536.1009301-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,183 +69,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IKYemmpn/JXyMcDm"
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+v4: - Drop "ipvs: do not create conns from packets with port 0".
 
---IKYemmpn/JXyMcDm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+      This PR was already reviewed in its v2 by netdev-ai-bots.
+      I have dropped all the patches that LLM flagged as needing
+      more work even since.
 
-Hi all,
+      But I really think v3 was good enough and a follow up for
+      "ipvs: do not create conns from packets with port 0"
+      was just fine to proceed.
 
-Today's linux-next merge of the wireless-next tree got a conflict in:
+      Maybe patchbot will ban this pull request again, v3 was
+      blocklisted for not fulfulling the 24 hours rule, that is
+      why it was not reviewed.
 
-  drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+      But, as said, this was all reviewed in PR v2 already, this
+      is just keeping back 3 patches included in PR v1 needing
+      more work.
+-o-
+ 
+Hi,
+ 
+The following batch contains Netfilter/IPVS fixes for net, this batch
+addresses LLM findings, several of these fixes has been reproduced by
+syzbot:
+ 
+1) Add recursion count to nf_reject infrastructure to prevent stack
+   overflow, from Fernando F. Mancera.
+ 
+2) Use kfree_rcu() to release IPVS parent application to fix UaF,
+   from Chengfeng Ye.
+ 
+3) Fix UaF in IPVS netns removal path due to releasing per-net protocol
+   data too early, from Chengfeng Ye.
+ 
+4) Preserve recursion count on nfqueue reinjection, from Zihan Xi.
+ 
+5) Restore GRE timeout in the flowtable, otherwise, WARN_ON_ONCE()
+   is reachable, from Michail Andreas Michalopoulos.
+ 
+6) Check non-null gc transaction in nft_rbtree before queuing it for
+   processing, from Xingyuan Mo.
+ 
+7) Replace WARN_ON_ONCE() by DEBUG_NET_WARN_ON_ONCE() in
+   nf_conntrack_bridge which is reachable if the protocol of the tag
+   of a frame differs from the vlan_protocol of the bridge.
+   From Laveesh Bansal.
+ 
+8) Check x_tables target name is non-null before accessing it when
+    building a new table, from Fernando F. Mancera.
 
-between commit:
+9) Fix out-of-bound memory read in nf_conntrack_sip, from
+   Joas Antonio Dos Santos.
+ 
+10) Fix a memleak in nf_tables hardware offload when double deleting
+    the same rule, in the same batch.
+ 
+11) Use a mutex in xt_recent netns exit path instead of spinlock,
+    since proc unregistration might sleep. From Cen Zhang.
+ 
+12) Zero the nf_nat_range2 struct before filling it up, to avoid
+    using stale uninitialized stack data to configure NAT with
+    an esoteric NAT flags combination. From Florian Westphal.
 
-  7ed5dce55fa83 ("wifi: brcmfmac: map msgbuf RX packet IDs bidirectional")
+Please, pull these changes from:
 
-=66rom the net tree and commit:
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-05
 
-  09063ccd75da0 ("wifi: brcmfmac: Add BCM4388 support")
+Thanks.
 
-=66rom the wireless-next tree.
+----------------------------------------------------------------
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+The following changes since commit cb284914e749388eef402938bdb3115fe1f6d337:
 
-diff --combined drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-index ff47d4827722e,5ad46d7ec663f..0000000000000
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
-@@@ -12,6 -12,7 +12,7 @@@
-  #include <linux/netdevice.h>
-  #include <linux/etherdevice.h>
- =20
-+ #include <brcm_hw_ids.h>
-  #include <brcmu_utils.h>
-  #include <brcmu_wifi.h>
- =20
-@@@ -47,9 -48,11 +48,11 @@@
-  #define MSGBUF_TYPE_RX_CMPLT			0x12
-  #define MSGBUF_TYPE_LPBK_DMAXFER		0x13
-  #define MSGBUF_TYPE_LPBK_DMAXFER_CMPLT		0x14
-+ #define MSGBUF_TYPE_H2D_MAILBOX_DATA		0x23
-+ #define MSGBUF_TYPE_D2H_MAILBOX_DATA		0x24
- =20
-  #define NR_TX_PKTIDS				2048
-- #define NR_RX_PKTIDS				1024
-+ #define NR_RX_PKTIDS				2048
- =20
-  #define BRCMF_IOCTL_REQ_PKTID			0xFFFE
- =20
-@@@ -218,6 -221,19 +221,19 @@@ struct msgbuf_flowring_flush_resp=20
-  	__le32				rsvd0[3];
-  };
- =20
-+ struct msgbuf_h2d_mailbox_data {
-+ 	struct msgbuf_common_hdr	msg;
-+ 	__le32				data;
-+ 	__le32				rsvd0[7];
-+ };
-+=20
-+ struct msgbuf_d2h_mailbox_data {
-+ 	struct msgbuf_common_hdr	msg;
-+ 	struct msgbuf_completion_hdr	compl_hdr;
-+ 	__le32				data;
-+ 	__le32				rsvd0[2];
-+ };
-+=20
-  struct brcmf_msgbuf_work_item {
-  	struct list_head queue;
-  	u32 flowid;
-@@@ -315,7 -331,6 +331,6 @@@ brcmf_msgbuf_init_pktids(u32 nr_array_e
-  	return pktids;
-  }
- =20
--=20
-  static int
-  brcmf_msgbuf_alloc_pktid(struct device *dev,
-  			 struct brcmf_msgbuf_pktids *pktids,
-@@@ -1319,6 -1334,15 +1334,15 @@@ brcmf_msgbuf_process_flow_ring_delete_r
-  	brcmf_msgbuf_remove_flowring(msgbuf, flowid);
-  }
- =20
-+ static void brcmf_msgbuf_process_d2h_mailbox_data(struct brcmf_msgbuf *ms=
-gbuf,
-+ 						  void *buf)
-+ {
-+ 	struct msgbuf_d2h_mailbox_data *d2h_mb_data =3D buf;
-+=20
-+ 	brcmf_bus_d2h_mb_rx(msgbuf->drvr->bus_if,
-+ 			    le32_to_cpu(d2h_mb_data->data));
-+ }
-+=20
- =20
-  static void brcmf_msgbuf_process_msgtype(struct brcmf_msgbuf *msgbuf, voi=
-d *buf)
-  {
-@@@ -1362,6 -1386,10 +1386,10 @@@
-  		brcmf_dbg(MSGBUF, "MSGBUF_TYPE_RX_CMPLT\n");
-  		brcmf_msgbuf_process_rx_complete(msgbuf, buf);
-  		break;
-+ 	case MSGBUF_TYPE_D2H_MAILBOX_DATA:
-+ 		brcmf_dbg(MSGBUF, "MSGBUF_TYPE_D2H_MAILBOX_DATA\n");
-+ 		brcmf_msgbuf_process_d2h_mailbox_data(msgbuf, buf);
-+ 		break;
-  	default:
-  		bphy_err(drvr, "Unsupported msgtype %d\n", msg->msgtype);
-  		break;
-@@@ -1500,6 -1528,35 +1528,35 @@@ void brcmf_msgbuf_delete_flowring(struc
-  	}
-  }
- =20
-+ int brcmf_msgbuf_h2d_mb_write(struct brcmf_pub *drvr, u32 data)
-+ {
-+ 	struct brcmf_msgbuf *msgbuf =3D (struct brcmf_msgbuf *)drvr->proto->pd;
-+ 	struct brcmf_commonring *commonring;
-+ 	struct msgbuf_h2d_mailbox_data *request;
-+ 	void *ret_ptr;
-+ 	int err;
-+=20
-+ 	commonring =3D msgbuf->commonrings[BRCMF_H2D_MSGRING_CONTROL_SUBMIT];
-+ 	brcmf_commonring_lock(commonring);
-+ 	ret_ptr =3D brcmf_commonring_reserve_for_write(commonring);
-+ 	if (!ret_ptr) {
-+ 		bphy_err(drvr, "Failed to reserve space in commonring\n");
-+ 		brcmf_commonring_unlock(commonring);
-+ 		return -ENOMEM;
-+ 	}
-+=20
-+ 	request =3D (struct msgbuf_h2d_mailbox_data *)ret_ptr;
-+ 	memset(request, 0, sizeof(*request));
-+ 	request->msg.msgtype =3D MSGBUF_TYPE_H2D_MAILBOX_DATA;
-+ 	request->msg.ifidx =3D 0xff;
-+ 	request->data =3D cpu_to_le32(data);
-+=20
-+ 	err =3D brcmf_commonring_write_complete(commonring);
-+ 	brcmf_commonring_unlock(commonring);
-+=20
-+ 	return err;
-+ }
-+=20
-  #ifdef DEBUG
-  static int brcmf_msgbuf_stats_read(struct seq_file *seq, void *data)
-  {
-@@@ -1638,8 -1695,10 +1695,8 @@@ int brcmf_proto_msgbuf_attach(struct br
-  						     DMA_TO_DEVICE);
-  	if (!msgbuf->tx_pktids)
-  		goto fail;
- -	/* BCM4388 firmware also reads from posted RX buffers. */
-  	msgbuf->rx_pktids =3D brcmf_msgbuf_init_pktids(NR_RX_PKTIDS,
- -			drvr->bus_if->chip =3D=3D BRCM_CC_4388_CHIP_ID ?
- -			DMA_BIDIRECTIONAL : DMA_FROM_DEVICE);
- +						     DMA_BIDIRECTIONAL);
-  	if (!msgbuf->rx_pktids)
-  		goto fail;
- =20
+  net: ipa: Fix double free of the interrupt structure on config error (2026-10-30 19:04:37 -0700)
 
---IKYemmpn/JXyMcDm
-Content-Type: application/pgp-signature; name="signature.asc"
+are available in the Git repository at:
 
------BEGIN PGP SIGNATURE-----
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-05
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrsekAACgkQJNaLcl1U
-h9CExgf/U7n395A/1Og2jsPGJ/6oSYaK2Pefz9mRtyHE1To3P2n64rDEkQAaS/sy
-V0Kv0ldqEb5UfneN4cnfEUgIrMzsnQ8jUXq/tFEFxZJwubV0U/PUUnliGXNrYdwE
-cihRmJS7KuaQxAIuSsEaCaMZn3yGxUE0zvgBg4tJIyfI4Gs3rQdfkwN9yV0rh1hj
-Ce0vUzpIaTmyu0sQ1epVMTL/5RnIKtROk0PnJBKFfZf6vHZGR55dFY9GQXJA/gqb
-XJzUpdLNJJeteD1Rn+8fwythv8vyj4x7VsgpIzU2fXkD7SzlSy8gBHv/duZHWFWQ
-S8bdwMVTgsVFzHhDZ1TJcV50+i1VrA==
-=+e1x
------END PGP SIGNATURE-----
+for you to fetch changes up to d1bb235aa409a4e5aeba6c748d953d948625b1e9:
 
---IKYemmpn/JXyMcDm--
+  netfilter: nat: zero newrange before filling it in (2026-11-05 13:31:11 +0100)
+
+----------------------------------------------------------------
+netfilter pull request 26-11-05
+
+----------------------------------------------------------------
+Cen Zhang (Microsoft) (1):
+      netfilter: xt_recent: do not call remove_proc_entry() under recent_lock
+
+Chengfeng Ye (2):
+      ipvs: Defer application parent freeing until after RCU readers
+      ipvs: fix protocol data lifetime during namespace teardown
+
+Fernando Fernandez Mancera (2):
+      netfilter: nft_reject: prevent unbounded recursion in output hooks
+      netfilter: x_tables: check target name before accessing verdict
+
+Florian Westphal (1):
+      netfilter: nat: zero newrange before filling it in
+
+Joas Antonio dos Santos (1):
+      netfilter: nf_conntrack_sip: fix OOB read in ct_sip_parse_transport()
+
+Laveesh Bansal (1):
+      netfilter: bridge: use DEBUG_NET_WARN_ON_ONCE in nf_ct_bridge_refrag()
+
+Michail Andreas Michalopoulos (1):
+      netfilter: flowtable: extend ct timeout of offloaded GRE flows
+
+Pablo Neira Ayuso (1):
+      netfilter: nf_tables: fix memleak when rule deletion fails with hardware offload
+
+Xingyuan Mo (1):
+      netfilter: nft_set_rbtree: check catchall_sync return before queue_done
+
+Zihan Xi (1):
+      netfilter: nf_dup: preserve guard across NFQUEUE reinjection
+
+ include/linux/netdevice_xmit.h             |  4 +--
+ include/net/netfilter/nf_dup_netdev.h      | 35 -------------------------
+ include/net/netfilter/nf_queue.h           |  1 +
+ include/net/netfilter/nf_recursion.h       | 42 ++++++++++++++++++++++++++++++
+ net/bridge/netfilter/nf_conntrack_bridge.c |  2 +-
+ net/ipv4/netfilter/arp_tables.c            |  5 ++--
+ net/ipv4/netfilter/ip_tables.c             |  5 ++--
+ net/ipv4/netfilter/nf_reject_ipv4.c        | 12 +++++++++
+ net/ipv6/netfilter/ip6_tables.c            |  5 ++--
+ net/ipv6/netfilter/nf_reject_ipv6.c        | 13 +++++++++
+ net/netfilter/ipvs/ip_vs_app.c             |  2 +-
+ net/netfilter/ipvs/ip_vs_core.c            | 12 ++++-----
+ net/netfilter/nf_conntrack_sip.c           |  4 +--
+ net/netfilter/nf_dup_netdev.c              |  1 +
+ net/netfilter/nf_flow_table_core.c         |  1 +
+ net/netfilter/nf_nat_masquerade.c          |  4 +--
+ net/netfilter/nf_queue.c                   |  1 +
+ net/netfilter/nf_tables_api.c              | 21 +++++++--------
+ net/netfilter/nf_tables_offload.c          |  3 +++
+ net/netfilter/nfnetlink_queue.c            | 17 +++++++++---
+ net/netfilter/nft_fwd_netdev.c             |  1 +
+ net/netfilter/nft_set_rbtree.c             |  3 ++-
+ net/netfilter/xt_NETMAP.c                  |  4 +--
+ net/netfilter/xt_recent.c                  |  7 ++---
+ 24 files changed, 129 insertions(+), 76 deletions(-)
+ create mode 100644 include/net/netfilter/nf_recursion.h
