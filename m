@@ -1,79 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793878485;
-	b=skbQAsf3a6t8WLsPYjmzDjD9udiSjwSJS9csEiEE/FkcFme7vH8VN/yP74qcta+n+rN+
-	 SyA/oVzRrPBPs1mBN0vNS8p5/0WYIunIr7bMtcvSSsodeIZh/5R7ws6011MbexaF+qY+G
-	 BTgBWfHneMR9fbthSbUkBzyWGDUQTzlql2g5gaezQ57+LDxgJdT4ZMiGkDxMihYwzjUqc
-	 luJ5dy30qaX6uZMiL7LGnjxvsoIy71cFBOLK1QeulKX0o8/vUka7N8MZphIchA/QhFYkX
-	 ylafnn/zNgN0pjufBedceWQp1P/NBlLaKY+18S6bfrtZnKq9EYVB2rVLD3kaHXJG/fA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793878485;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=veU5eEJmhmisKZ128nDh455BlbaM+6zSk3sEeUBzebc=;
-	b=FjtAj4TAENmLWgWLeO1FbENgAv2VQIgYQo2XdbpPbgNUfy6zQD0l1SkPAfyViNnyDyn+
-	 uSgi+ZENB/SuB/hSpoRwmIdkNtfDiwtRMIyGWUi5tkaTbZxOaTsNlZlctDIbFJd/yhLUn
-	 MSPcwhJYMfXBgFpyzJqJlbsa3lN6RFQgX7Ir+3SxdrVDyypoaCgLvMF1wdWcI4N+3ECsY
-	 X7L0PPu0kSPmqzFJHTpwYIMjtpf/q/28WicuO/hAm/qNX0of6TQ1rihz0CgijhjpXFr8A
-	 2lIoBFxbPGnYFEA0vChgEHMCDkQI0SVxVdpfBMI/CHB184kUBlAxY9hhAptPv7nTWrw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nCiWJDDx;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793878599;
+	b=LU4Lw8iw3L4t8K/n9Hh6UJocvA+pzDOKA0VqDcJycGal9N9qVKv7jP40LTqCwmsDG66c
+	 GWerN5hzcQ+OcZNSUwp/UMiVhb4fXgnfGvP3sq8ArzqS60SepQ0IEOYh8eqyhMw+WdAHb
+	 xuhmdYlauENK5eAJsb4pjzkK9ziARyy8yFo+zbPd/4qvbxWMXT6dcmpey5FJuaTVwiTPy
+	 G7GetQSk5HEVd1DPBc2+4IddUJAVrFzwgoeYeBH4TsiBk2Nm6Ji/RB48GKXb6p72Ie8Mm
+	 ZLf3qzjHDrsWGIxEZth9e/Mbx6UQd/vShHRA42fUoWDV12vA+zsCez3IUmJSNvEmu1w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793878599;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=30J4sbOlYJiNq7Z4tRszcjWu8hBcWrg7tEn3jlctPwo=;
+	b=xRxzWa8Xy4evAl6NaL+mYks4IQacTnLfihp+tzxY8uHo+NLYRbz3tSNSLnEL+1FfvDD2
+	 D3UZh7Sdoe6MocHg6nC5GUObrjQ/GPDZebN/rvGlBt+1pRd49aXzeOiCNfAVhObDYPjqo
+	 SYF5bSg2fqmzfE6lfpcNInuPiYYpxbPm5jQMqdiSoPLRyOvQtnFWh3lLz86ILih1SIJts
+	 zAyaf9Iz+mUIYRg/rSH7RZB2uaEGoZgCQ8tPkFM8HvoH9nbKCfxaFijqflQL51ChPlssy
+	 7VDNqq3k9XuUeQNw96pJK2OJHqW/ogIy4nTJ9Ufw8pEGM3hW82pHdNSrea78h3Z3XpQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kH6kTpAi;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5985606A31B;
-	Thu,  5 Nov 2026 11:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79418606A336;
+	Thu,  5 Nov 2026 11:36:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79418606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nCiWJDDx
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793878484;
-	b=w1+Wc8ketNGIniacIdaKo9vmWGkwbSWY9ub7eoIO9xfrf2tVf1dTuDsyBLOQENLzcC1p
-	 KuiDb6A3tcdquq/oXBYRUFpX6CICJxufcA9bM0D0kaXdme4MEruWMXh/jswgwRS+eNoMd
-	 uvk62FprwNR3cE3ASanTgwqtYov5WJ+PeNT/i5W53NbktYaX4iKiEoTSVCEClD1R+WUgG
-	 qTk9NizPTcRRtPB1HPebIP//ERFNuaX5+begrGfzpXEBrlsmmWRPozBGy2fAp2FWQdSmL
-	 dqHUH2dtLtv1PS9s438smA0ejsasN4CYUMTC4R9M+Qrqj9xgcNXAdusMFrcHPmkgxqA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793878484;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=veU5eEJmhmisKZ128nDh455BlbaM+6zSk3sEeUBzebc=;
-	b=rOEwyPVamgJXHhogrmnm257A4z9xK32wh64WvUEvk6a37pXB1y1nONQREfP7KE9Eh6em
-	 9VIYkwtpniCFJRUxzhauaQoW4RslDZCRvCFRbEDtymSL4lgfUdSChXAtRVamYhwsnE5aT
-	 vw3tysc2UYUrQN66KKLsfD6NKdUMliWe8M24T2j563xsNeUQq1+SEi7HXGHcRxIDq1UK3
-	 adUb1IrQb7h8XvjPU5OP3EFg6TOEH2WOWOSRwsN/bNn+XXpgaylN71m1S4S1qP+Rxjeg5
-	 2EKLQEpocBV+UfGxQ+drWB9wPQII6uAL5f4vKEKSO90d34i8kFFybewYh8StMrbNOLg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id CA1771F000C1;
-	Thu,  5 Nov 2026 11:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793878484;
-	bh=veU5eEJmhmisKZ128nDh455BlbaM+6zSk3sEeUBzebc=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=nCiWJDDx14qVQveQy3N0T5dE7AoeeLKk97yFZfcJXVZ2W2peDungSoatQIPw1MzkQ
-	 aIfrXWuzQmNa84q9kGhePxqrMGuBVMaHKse56VMpPMMEVOkoaw7pdmDJFQOEY4FW2e
-	 jWdRPFXOolgm4kl88K4Snec3rJ4WFNdxSC+4zi2lwzniLNwvCatCGMn+V77p+qqrFB
-	 6vFi0QNl/dFQiL7WmgHbC+eVGrmEPS8SynPnKLWcjdf3rBz7YlroP1dXHXze/81soK
-	 j2GpG5EcVna/RNltFukqb1c8SQR1VMfpLgat/SFo60pu/20S+WhwCpUxCn9dJSK+so
-	 ZbCMY77ug76IA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5D9FD4721B;
-	Thu,  5 Nov 2026 11:34:43 +0000 (UTC)
-From: =?utf-8?q?Jo=C3=A3o_Silva_via_B4_Relay?= <devnull+jgc3silva.gmail.com@kernel.org>
-Date: Thu, 05 Nov 2026 11:34:41 +0000
-Subject: [PATCH nf-next v2] netfilter: flowtable: do not clear the offload
- bit twice
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kH6kTpAi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793878598; x=1825414598;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=J9dOmPMshDIpYmZ/TrqPMjz7mHsp3Z6+Ou1qHQ88q2c=;
+  b=kH6kTpAiQCWPXNnHfol4Ir8+s9VJjZqKUrEiOYYXZ519D9v6B5xP2gry
+   GnxiwbeLFhRczydH6mZJ0OLOiGGGZE6rGnuWsdi7YptLDmfnzWYK9ipH0
+   dFC+58sXrURL/5et1b81u3MYRwTIazl4W9H6PFyG6JrBjGDynR8P86946
+   XGW7UEKjEwT0v0iPok/BKikScign00RZapSIvNNIiIqAoLcjFjvBcwcNF
+   mL/HcsTXXDUec0Erc9ynncQVAqW6Z3TJ/1Z9sXlIVcBTPVZLkkuPAbbCG
+   vltsW6FpoPg9oXfRHm1xluCStSwpy0jt6Dfl66lBwsO3byRFQOjk4dw6n
+   g==;
+X-CSE-ConnectionGUID: cQ8hzN4ESnqlamJQ6T0ujw==
+X-CSE-MsgGUID: KjYgmGU8SNG9TKQz2y0m6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2547422"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2547422"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 03:36:37 -0800
+X-CSE-ConnectionGUID: NU49M+y7SoqJQQ7rq8Z1Cw==
+X-CSE-MsgGUID: /gbM1bnkQwynnPU6B2caeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7163862"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 05 Nov 2026 03:36:29 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xOvlZ-00000000m7v-0S9w;
+	Thu, 05 Nov 2026 11:36:25 +0000
+Date: Thu, 5 Nov 2026 19:35:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <chris.mason@fusionio.com>,
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org, kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 01/51] alloc_tag: don't remove /proc/allocinfo
+ under the codetag module lock
+Message-ID: <202611051923.pLSSWWkA-lkp@intel.com>
+References: <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,104 +100,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261105-flowtable-offload-bit-v2-1-0e38b5d818f9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQqDMBBFryKz7pRMxNJ21XuIi2gmOqBJSYK1i
- Hdv8ALd/cfnv79D4iic4FntEHmVJMEX0JcKhsn4kVFsYdBK34hUjW4On2z6mTG4ko3FXjI6anp
- nydZ3tlC278hOttPbgnfoecvQlWKSlEP8nn8rnfUf9UpIqJVrHo0elDL0Ghcj83UIC3THcfwAM
- E4JiMMAAAA=
-X-Change-ID: 20261103-flowtable-offload-bit-f15bfd1d38ed
-To: Pablo Neira Ayuso <pablo@netfilter.org>, 
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Sven Auhagen <sven.auhagen@voleatech.de>, 
- Oz Shlomo <ozsh@nvidia.com>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Jo=C3=A3o_Silva?= <jgc3silva@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2370;
- i=jgc3silva@gmail.com; h=from:subject:message-id;
- bh=pEeE/GOhABOG0gOkY8kg/Fa2OJZnNxzdRF0CXVgKbts=;
- b=owEBbQKS/ZANAwAKAfy6ZkDxTpFsAcsmYgBq7GnSsF7Oc/qXwmo77JFHxyKBRPHsGsH174XCB
- f2VCSD8p/6JAjMEAAEKAB0WIQROyCimFhnPgEUkNBX8umZA8U6RbAUCauxp0gAKCRD8umZA8U6R
- bI1MD/9a3V58iCD2EZFvmAZ0I8a9ZY98MNDh0FzDTxu14SVg5Bi4pduRDFy2gY8iB+he+JiobME
- hSMANSCsOkoYFJfd9Wpi/pDSfkFpX3fgBIZ3kBHrTq7QfzsfoqoxTjg41A1TbU6VwYwpqJwcWTX
- T6DaBsvxHNWJVVr36eBotFCFZDfHwSVZR0/fcuqzuNcmqMvf7Xu7B4Ksymn3e0qQeqMPwMfOXns
- rPjAlKFWfT2NNULYq2YILMXT0FBH2vHSEDil7wc1WRWXMq7n7vF5ie7Mb7lgFSjOonn2D7jMCxf
- wqSaSEJKMzVEB9WucEtEucdu1XV2p8QM+paGAggoyvifam1VE9H2VAr3mQrAC0r50vvXY3T7sol
- ee+z4yIblBCQ6D4SmuIdtm+NzVSHbFtSBaU5pi4U17Gg5wlfnUjBAp3H/pu4tVSFsdH1jwk8zoa
- Ip9BIigLFn4vdA1znCdOrT6uF9FrjgXL5fVikrUudAVeuO5drXP50DyktnuRqTVu6eounzZZIx7
- EXztkW1UgWKEU4PM022SoFF0ehRMJc40t8P1HPFSnU2JNIlK6w6coVpK16LR6N7cUq1h+ArhVof
- YzK4Ku/QydDO+zk2If3Ke0QS4h/gjahIvzSzD3Xy+UjB8v0AP7xjxgSgvbBbgH5KQbYtIeE8Gbz
- ZUpf/uXoFxlNjCw==
-X-Developer-Key: i=jgc3silva@gmail.com; a=openpgp;
- fpr=4EC828A61619CF8045243415FCBA6640F14E916C
-X-Endpoint-Received: by B4 Relay for jgc3silva@gmail.com/default with
- auth_id=1392
-X-Original-From: =?utf-8?q?Jo=C3=A3o_Silva?= <jgc3silva@gmail.com>
-Reply-To: jgc3silva@gmail.com
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
 
-From: João Silva <jgc3silva@gmail.com>
+Hi Christian,
 
-An expired hardware flow remains in the flowtable until its asynchronous
-hardware deletion completes. Teardown clears IPS_OFFLOAD_BIT, so a packet
-can create a replacement flow referencing the same conntrack entry while
-the old flow is still waiting for deletion.
+kernel test robot noticed the following build warnings:
 
-The next GC pass calls flow_offload_teardown() on the expired old flow
-again, clearing the replacement's offload bit. More packets can then
-create additional flows for the same conntrack entry. A pending hardware
-work item can also delay deletion and expose the same repeated teardown.
+[auto build test WARNING on 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4]
 
-Commit d2d31ea8cd80 ("netfilter: conntrack: fix erronous removal of
-offload bit") closed this window for software flows by unlinking them in
-the same GC pass and made the conntrack state fixup one-shot, but
-hardware flows stay linked until NF_FLOW_HW_DEAD is set.
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Brauner/alloc_tag-don-t-remove-proc-allocinfo-under-the-codetag-module-lock/20261104-200606
+base:   6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+patch link:    https://lore.kernel.org/r/20261104-work-procfs-bugfixes-v2-1-021c84d852e0%40kernel.org
+patch subject: [PATCH RESEND v2 01/51] alloc_tag: don't remove /proc/allocinfo under the codetag module lock
+config: sh-randconfig-1001-20261105 (https://download.01.org/0day-ci/archive/20261105/202611051923.pLSSWWkA-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261105/202611051923.pLSSWWkA-lkp@intel.com/reproduce)
 
-Make clearing IPS_OFFLOAD_BIT part of the existing one-time teardown
-transition, alongside the conntrack state fixup. Subsequent teardown calls
-must not alter the offload state now owned by a replacement flow.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611051923.pLSSWWkA-lkp@intel.com/
 
-Fixes: e5eaac2beb54 ("netfilter: flowtable: fix TCP flow teardown")
-Signed-off-by: João Silva <jgc3silva@gmail.com>
----
-Changes in v2:
-- Retarget nf-next instead of nf: the only known affected user is an
-  out-of-tree hardware offload driver (RTL930x, OpenWrt).
-- No code changes.
-- Link to v1: https://lore.kernel.org/r/20261103-flowtable-offload-bit-v1-1-20f5952c00a1@gmail.com
----
- net/netfilter/nf_flow_table_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+All warnings (new ones prefixed by >>):
 
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 0d72dc8ae47a..709b55b74cc7 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -398,9 +398,11 @@ static void flow_offload_del(struct nf_flowtable *flow_table,
- 
- void flow_offload_teardown(struct flow_offload *flow)
- {
-+	if (test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
-+		return;
-+
- 	clear_bit(IPS_OFFLOAD_BIT, &flow->ct->status);
--	if (!test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
--		flow_offload_fixup_ct(flow);
-+	flow_offload_fixup_ct(flow);
- }
- EXPORT_SYMBOL_GPL(flow_offload_teardown);
- 
-
----
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-change-id: 20261103-flowtable-offload-bit-f15bfd1d38ed
-
-Best regards,
--- 
-João Silva <jgc3silva@gmail.com>
+>> mm/alloc_tag.c:620:13: warning: 'shutdown_mem_profiling_async' defined but not used [-Wunused-function]
+     620 | static void shutdown_mem_profiling_async(void)
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+vim +/shutdown_mem_profiling_async +620 mm/alloc_tag.c
+
+   613	
+   614	/*
+   615	 * A module's tags are reserved with the codetag module lock held for
+   616	 * writing, and a reader of /proc/allocinfo takes that lock with the entry
+   617	 * pinned. Removing the entry there would wait for that reader for good, so
+   618	 * let a work item do it.
+   619	 */
+ > 620	static void shutdown_mem_profiling_async(void)
+   621	{
+   622		if (!mem_profiling_support)
+   623			return;
+   624		shutdown_mem_profiling(false);
+   625		schedule_work(&remove_allocinfo_work);
+   626	}
+   627	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
