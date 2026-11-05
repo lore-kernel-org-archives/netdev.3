@@ -1,98 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793907304;
-	b=Zk6cDLt1mpPUdoFukHNpBxEXgz62mDXZRZvUnUmKzd6QE+/iumKz2m7F9X/9ZaExYcA6
-	 Le8mT4OQZfiTGwoD0L2QblFtVBcKxRwizifF4qIxWgfKrk87Lc7XIY2N1XjFZXQ2sgapZ
-	 yLkU9wz+5yAxDu52wFsz2KR8/pY/vbe45QUISyiCBVvjiYEccpnIjB6DDFqEvqceTFyoB
-	 n+JBQmRGQP0Gc7KTok7Axf+EmjiwZxu7T3TPiEZ9xkyliLXSLfc5E4bmYRlh+nkTL8dAJ
-	 M79quhrvYE7iaGhUb+Q1/uE8KDmpiVP7ybpuBap01WjfEcM0NS2Vk+jZGhmB2RTSfDw==
+	t=1793909064;
+	b=q3R+OhZ1IwNN71BOSri6hkKv66yygW/NVwvmYPiOHapxl9Vp5XSW2AWMmGhk0jiEMM/n
+	 T7ASFAKrd7zV8Wdoid3SMKfOF9aSb296cJCALTGL97C0VjX0ssm0mHE4fpOdbL6pk0xHA
+	 udteUyra+YtrnHwd4zNdUykMZl6i44hKQtyDdFOqD15Z/TVttXgm8SUmz2Zm3m1kK9IsR
+	 Wmi57/F7GQQOCbEGIqWnLAcRNyYnITG3RAjeWwG9fKsfS1JiW5d/d+fMwP9i1JIGcrA1C
+	 O/QmacB45oq2xo/r0EsHGk1fhAMwhBkB3uRkV++xTacoGAh4l1IIAU+RSQ/35KXCqbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793907304;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793909064;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
-	b=uun9nCu2uiuk1uhjP+nyML/YnzJJG/K9w+TZ1snoFkmNIHRTJdoheytrrC3fMxk6FyBe
-	 R6VfRCh8fRiYEyjhgYDUI+xkA84BRCT73rf5jbAwOwau4bohYtohMoXUGb+0qbqH1VdIE
-	 YLcaVNXLjnhkh2AyeVCNNkcm+T/2xO4kpK9/mmkVhjCQObWyVhtK94nlHLNUtAxzhAGV+
-	 IcdRvTyzCJDImbRE1KCSanr5E4Fke/tJCWzcwmxCBadGBvI4HMrJUiJbpZyko8ybPE72k
-	 UxWGa3hY1AMBqMEWQ9MNoeB2TX82q0N6NBP6VeNrjFYjbhWRIgYXuYw1LJDo2nZdMbw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Aw5degZrQHo3V3rpws5+g22RRHe/seP3Fa1C54u6MN0=;
+	b=rCSkMPtS4fNhf3aOHCtgNPcPxo9jtHgiCb7KNGItRBHweau8Rl526jcr7GqIXgOkwVg7
+	 x8pKWM8gJpRkeifth3QSIXMLfWOzpC8ffZzyGxdLe5/hmTuenTdFG9k2hDcQr+zpGgBfU
+	 8s6XO0pbMnObuCoYKl0U+zuiLM+qaIg6m1/kambz1w5jG30ZvdFgS6Fx7dKA6TF3UqgSg
+	 P47ssbJi0c3BqUfPr9y++2PSNBI1thvirVQVFP6BAFaHtfuazWR98BD5YeJK3ZrCnN59Q
+	 74y8nD/hO1B6d1ZHpyciCIfOGzaqsHcOm2B9l5XlEtftA73K5/4h4RyszYUE1Sz8+GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gF2H0qML;
-	arc=none smtp.remote-ip=74.125.82.53
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	dmarc=pass header.from=rowland.harvard.edu;
+	spf=fail smtp.mailfrom=g.harvard.edu;
+	dkim=pass header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.a=rsa-sha256 header.s=google header.b="l7XvB/r0";
+	arc=none smtp.remote-ip=209.85.160.179
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7EB6075326
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 19:35:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB7EB6075326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCB2606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 20:04:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DCB2606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gF2H0qML
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-19305bcb72cso2095155c88.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 11:35:03 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.a=rsa-sha256 header.s=google header.b=l7XvB/r0
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-53664b4860bso23550871cf.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 12:04:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793907303; x=1794512103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
-        b=gF2H0qMLqJEILl2WdYpdXO/kF4o/xA+zA11jGsk7q3DYsSiVSR4QAvQ4vNa8mrlh4T
-         2PViehKuLqppi/478eA40zl39pgH9MZIfHzlgQqNuwY9J9Vpn2rJbUAAW0OIOpsDag38
-         Cf2BEGqBCqhcr1Phfk9FSyg7cSv7ghsJX2sB4iF7m0JkqWJKYhadaDRqWeiJ6RCDfpV9
-         S0XrT0JWFCMmCZskgEcesX0AJUGVCJ0UX76I7jBWE4rjK0rAYZHICCCqPG9/mUQMcy6b
-         FZDlNrbQjfZimM3eqBJy7l9hijgjz0cseq5LkQyXt8hCmEqxuIDbJieVioSE0u9uAUfJ
-         XuDQ==
+        d=rowland.harvard.edu; s=google; t=1793909062; x=1794513862; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Aw5degZrQHo3V3rpws5+g22RRHe/seP3Fa1C54u6MN0=;
+        b=l7XvB/r0EAsfmkvKwLXi9U+FCv4znlZ1uWBgyBwXXZBCaUNdokUJy53RUHWJ+2kEWT
+         BpwprXNHONWGHOvIsaDTpZHtcB6XsAeWhewDJaNhuiB2euiyoU1AbjQlFtg5R3UAb8Zl
+         j9ild+5nUdzM5UZbj7mYag8Dctagcxk6YhEm1Nh61f0Vznb26vlUpjb7sFwe3CVlNOPl
+         SyOS6Mi1UVvjAAp7m7mMB3CBgWNbht54CQ+BOwi4rfm1nRGeYFie5joT1aagUt7j+5ki
+         VjKs1rKf0ER8mcU7zk1mritepu2DeojMvspSrsP6rAbky9P1uX094nTddzM3XtqlzsCQ
+         csmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793907303; x=1794512103;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6waUMbBW3PMNNkalcsbpj+noxC1InsPmZ1SepMjhk0E=;
-        b=K72uCxkhCdSvdfj/icYRItL0MLCzxhDXYT85Bzbi8WxMSFBNsQGCa6XZDPmryBuKh2
-         mNPMiKgHTw3xT5Cv1mkFogjoE+QRrqy2CD8cEDYJR3BIOrAgUmrz52Uey4uRMqpBLwDq
-         BXrRKWuPIZCl8kbxH2WPQ5zgrkH52/I9Rkb/22RGwdSJBlu/tVjyAX9oGZZ4yBVNB26V
-         ICHZYkmI46FgQZy07Tylv8RPcbqDbdil/0AFznY7LLjmfQj498cPnIAr2Ongx5tlzGcs
-         gjj7TON8LmCL/V1WdDr7JxXVViYpTGhyd1M2hB7u5nKbIvEGvZ2Oz4X6SVCj27jJ6J3t
-         Wi2Q==
-X-Gm-Message-State: APuU4Z8TrAGNWj/PccrcKDg8dEAddvYHZ5wbTN3HBsIewFuY+qwMJ3bL
-	VN/BmIXMW+41xRo7vVY+cxGhxBclznMTOfa/IsiRiLgDxUNafKVbeBG12MPkuQ==
-X-Gm-Gg: AYBFou228VT/md2MHVnIedyKGPkd9jwqH0tds1Ygd54grYJ9cp9C3wTGgj8UuDA3KhB
-	6tTf1v6c7WDVLYzDbpKTa7TdizuGbVgR4xa905Nbe9/4zcplFovzylQ2wxX/JDGX7ujQMDidCqz
-	gVVjjGg8asCT7DSKJk4mplUDl5gBYdh6BUwh0Y/yrmIP2grUeYN8ycBt5IpFvgVpvVjMvTphp7L
-	BH/B/6Qh3RQiUwj0vBHH9dKrhsQXZrn7kG26CYEXsdYQMbYpbV/KhquXWQPGH/DvITDP4mbzlGO
-	eXl1cia4wRM6y2/euUIVh+3cPciZCrw4hPCt2qLJ7JxgztM/88utSvQboS0FqLpDmlLjcSFT9Gv
-	D5RpnIjT8AiuLpTwROtgVnYG4lUl7xLbbn9mO1hAur0Gzehxhu2A78fr0GTseUibXP+ergY1g0o
-	4oZCcbdm+D/qfGSRN270yxKzF7QjcDl9X/ren7MXkbRVsfo3JSI5n1zV7zrZh50OuG3SeKxQPee
-	UOF0fWajodlIuP/I37l+B3DJjBC1gk4c3dtHjGAIPxtA46SKH0+irsYFR9WlKKpjdjxgS/1dKri
-	9n1EzI06x/cgaG9shni7X/dkZ46elw==
-X-Received: by 2002:a05:701b:4513:10b0:1b2:490b:6fdd with SMTP id a92af1059eb24-1b2490b7174mr7487167c88.24.1793907303014;
-        Thu, 05 Nov 2026 11:35:03 -0800 (PST)
-Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c127sm18023186c88.6.2026.11.05.11.34.58
+        d=1e100.net; s=20260707; t=1793909062; x=1794513862;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Aw5degZrQHo3V3rpws5+g22RRHe/seP3Fa1C54u6MN0=;
+        b=JnD8TTuPHUusKijoki/LObHKiFWGPKD9JgglyMoJLUdsJdKbVZCBN0DqPeYzUXX1Hy
+         EawZu3KmzoLrwlEUO3CJu126oLLjg+9AJ4EImzhrt+6pMrswJ6OPFF3lnOSdFkValIQj
+         T39aMOIeRL4TilX6lrIC55b5E2u8K1wQ1d6Vul5jOzZ2PB0tscHoakDp4bX/ZZKSOoNN
+         JESzS0lGs1LBXibfvwCddG8RsdbVpsF+UQ0/ZGgM0m4RekGsklRrDiHSYMDiOLfZe+Bb
+         VED+Rlys2IWpGKt2UJjUJgDZhz5nTCSgUjnWl26JY+ep/xIAZnrxDaMGp8CBkWeCaQhP
+         oi3w==
+X-Forwarded-Encrypted: i=1; AKwUvBx3L8PvbOv6tEkty9ZR8WMjkshUbS07gPzVtWB2tvvjoiaX5R3DI0FWBIwt07HOHuK0u4IhXGw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+a9OZcZL3fLtCJKYv+JLf5TLOXYL0bt4pLJRZU1DSkUUuW/ZlD
+	5akxyMTZL01In1H+KFU7JuKCjmRNwg5FaS27MF7AoyV0Ewdf/9iXUthEdOICfHSNGQ==
+X-Gm-Gg: AYBFou1aRV/YZp+v2eGyb2RzjIXKc3LC3iBw8rf7PeRxSxnFboDzPXf9kgDkAFZ+z0d
+	+D1Dpr50vxyqOCe5tlmYGvekFTYtfJVots2AjDnPANz79vXCBaw5U14RJjUOah7V3QtGC79NZGB
+	qG0J2n5dOSOw6ZBadXOJgYfcbS9f4biDQHLoNFIeMbv/C3U6e+qhrCnWADATlzRGHz1kSOUXj66
+	aKEmxKomj9N4xJ+7+QooJYhqOyBZcPM4oSDvfdwtyHbmcS1YJGpaL9Bm5BV0nJ/Suu6LL3tRsHs
+	VMCfDdkUurPmHwTYMt9Ay7rqKEPzQMj19w6HE+MoIdT5P8pMQmz7T1g0cPg+vhVexrrdGLp3HgV
+	ct7nVIuVW/YPpKkR7yM3bCmdhvoRDOR71xBjA7cuOZhIdZ5YAq0ABxr8uuL0P/loKWXJi0PBkTH
+	7SMEOOdK/Uelf88WR40g/dkxuYHBZ0d4RHIAd+gP6DiTAhfdMV/8fx8AzZgWLl865G+BAJcK3iH
+	9Jr2A2PjrFtNHqMD0o+jhLYejkd+PiB3joDQdxaxRzSZ4HAp2NGI0yRHlxlGVRTD6ypHxbQrDHQ
+	WbOEBPrZyu8b2I7r83d+Y+IbUYUo
+X-Received: by 2002:a05:622a:418d:b0:536:60e1:c87d with SMTP id d75a77b69052e-54e14266a2dmr6509601cf.35.1793909061778;
+        Thu, 05 Nov 2026 12:04:21 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210::66b0])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e270167afsm1403061cf.25.2026.11.05.12.04.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 11:34:58 -0800 (PST)
-From: Florian Fainelli <f.fainelli@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+        Thu, 05 Nov 2026 12:04:21 -0800 (PST)
+Date: Thu, 5 Nov 2026 15:04:18 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list),
-	macro@orcam.me.uk
-Subject: [PATCH net-next 3/3] net: sb1250-mac: Add ethtool autonegotiation restart support
-Date: Thu,  5 Nov 2026 11:34:35 -0800
-Message-ID: <20261105193435.2050321-4-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261105193435.2050321-1-f.fainelli@gmail.com>
-References: <20261105193435.2050321-1-f.fainelli@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 05/17] USB: Lock registered interfaces during manual
+ driver binding
+Message-ID: <bf756e50-c77e-40f2-916d-e88887426806@rowland.harvard.edu>
+References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+ <20261105-device-trust-core-v1-5-1e536825b4eb@nvidia.com>
+ <bb83fe3c-cebb-4bc8-bfc9-24df1cf72b0b@rowland.harvard.edu>
+ <20261105184442.GF8298@unreal>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,29 +130,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105184442.GF8298@unreal>
 
-Wire up the nway_reset callback to phy_ethtool_nway_reset() so that
-ethtool -r can restart PHY autonegotiation. The phylib helper handles
-PHY locking and returns -ENODEV when the interface has no attached PHY.
+On Thu, Nov 05, 2026 at 08:44:42PM +0200, Leon Romanovsky wrote:
+> On Thu, Nov 05, 2026 at 12:24:33PM -0500, Alan Stern wrote:
+> > On Thu, Nov 05, 2026 at 01:42:18PM +0200, Leon Romanovsky wrote:
+> > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > 
+> > > Interface claims hold the USB device lock, but device_bind_driver()
+> > > requires the target interface lock. Without it, trust-policy writes can
+> > > race admission.
+> > 
+> > This says nothing about usb_driver_release_refused_claim() and the code 
+> > related to it.  It is an incomplete description of the patch.
+> > 
+> > Note that nothing prevents drivers from using an interface they claim 
+> > before that interface is registered.  For your scheme to work properly, 
+> > you should make sure the claim is authorized when 
+> > usb_driver_claim_interface() is called, not when the interface is 
+> > registered.
+> 
+> This patch is unrelated to authorization;
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- drivers/net/ethernet/broadcom/sb1250-mac.c | 1 +
- 1 file changed, 1 insertion(+)
+I meant "authorization" in its generic sense.  When you don't trust 
+something, you don't authorize it to do anything.  Pretend I had written 
+"the interface being claimed is trusted" in place of "the claim is 
+authorized" above.
 
-diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
-index 546415d3134c..433aa1e24439 100644
---- a/drivers/net/ethernet/broadcom/sb1250-mac.c
-+++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
-@@ -2129,6 +2129,7 @@ static void sbmac_setmulti(struct sbmac_softc *sc)
- }
- 
- static const struct ethtool_ops sbmac_ethtool_ops = {
-+	.nway_reset		= phy_ethtool_nway_reset,
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
--- 
-2.53.0
+>  it ensures that the lock is
+> acquired when the driver is bound.
 
+That may have been your intention when the patch was created, but if you 
+read the patch you'll see that it includes a whole bunch of material 
+not related to locking during binding.  Namely, this part:
+
+> > > +/*
+> > > + * The driver core refused to bind an interface that a sibling claimed before
+> > > + * it was registered, and dropped the claim. Let the claimant release the
+> > > + * interface instead of operating it with a bound interface but no driver.
+> > > + */
+> > > +void usb_driver_release_refused_claim(struct usb_interface *iface,
+> > > +				      struct device_driver *claimant)
+> > > +{
+> > > +	struct device *dev = &iface->dev;
+> > > +
+> > > +	device_lock(dev);
+> > > +	if (!dev->driver && iface->condition == USB_INTERFACE_BOUND) {
+> > > +		dev->driver = claimant;
+> > > +		usb_unbind_interface(dev);
+> > > +		dev_set_drvdata(dev, NULL);
+> > > +		dev->driver = NULL;
+> > > +	}
+> > > +	device_unlock(dev);
+> > > +}
+> > > +
+> > >  /* returns 0 if no match, 1 if match */
+> > >  int usb_match_device(struct usb_device *dev, const struct usb_device_id *id)
+> > >  {
+> > > diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+> > > index a738d03c23eac..d35a7710c8ef4 100644
+> > > --- a/drivers/usb/core/message.c
+> > > +++ b/drivers/usb/core/message.c
+> > > @@ -2264,6 +2264,7 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+> > >  	 */
+> > >  	for (i = 0; i < nintf; ++i) {
+> > >  		struct usb_interface *intf = cp->interface[i];
+> > > +		struct device_driver *claimant;
+> > >  
+> > >  		if (intf->dev.of_node &&
+> > >  		    !of_device_is_available(intf->dev.of_node)) {
+> > > @@ -2277,7 +2278,14 @@ int usb_set_configuration(struct usb_device *dev, int configuration)
+> > >  			dev_name(&intf->dev), configuration,
+> > >  			intf->cur_altsetting->desc.bInterfaceNumber);
+> > >  		device_enable_async_suspend(&intf->dev);
+> > > +		claimant = intf->dev.driver;
+> > > +		if (claimant && !try_module_get(claimant->owner))
+> > > +			claimant = NULL;
+> > >  		ret = device_add(&intf->dev);
+> > > +		if (!ret && claimant && !intf->dev.driver)
+> > > +			usb_driver_release_refused_claim(intf, claimant);
+> > > +		if (claimant)
+> > > +			module_put(claimant->owner);
+> > >  		if (ret != 0) {
+> > >  			dev_err(&dev->dev, "device_add(%s) --> %d\n",
+> > >  				dev_name(&intf->dev), ret);
+> > > diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
+> > > index a9b37aeb515be..293340a48b6c5 100644
+> > > --- a/drivers/usb/core/usb.h
+> > > +++ b/drivers/usb/core/usb.h
+> > > @@ -49,6 +49,8 @@ extern int usb_set_isoch_delay(struct usb_device *dev);
+> > >  extern int usb_get_bos_descriptor(struct usb_device *dev);
+> > >  extern void usb_release_bos_descriptor(struct usb_device *dev);
+> > >  extern int usb_set_configuration(struct usb_device *dev, int configuration);
+> > > +void usb_driver_release_refused_claim(struct usb_interface *iface,
+> > > +				      struct device_driver *claimant);
+> > >  extern int usb_choose_configuration(struct usb_device *udev);
+> > >  extern int usb_generic_driver_probe(struct usb_device *udev);
+> > >  extern void usb_generic_driver_disconnect(struct usb_device *udev);
+
+Was this meant to be two separate patches that somehow got combined into 
+one?
+
+Alan Stern
