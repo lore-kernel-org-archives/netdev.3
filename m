@@ -1,61 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793872721;
-	b=Pr2IaOhKjmEuU959hSt1POJan+ueZ+/jShl2baWqSF6oHaHyVU2WRhn8cGF/Tniuzl7o
-	 HSyQO9QAsE3PUmjud7hbUm3IRiwAc6Dap7L19voaEncEITrgAHXyVNiurDhdbnQObVqJx
-	 HzqOLg0AhEcjRHKxcLCzZ7IKdXZm4SR5chBfAe/Go4b9sVEbdt6sjLLzlX2ZW5h2szFax
-	 LNucUPZPWehnMEYmw0VCA/KY4FCGS6ElhkvnuGkrdARSDKbsojsaJH/agqmyLBj9snV6J
-	 hEw15Y4AlExpaV/cDSipjS8NYzPW2IdBiLcU0HKuSxJjqBaJFE2nEcibUGziefHwvRw==
+	t=1793872780;
+	b=1Ow0zzz7Wyhw5eCCz7KQkhiJOOs3l2KECSHkTGyUaneJLHX2/pd8adsQHNP0jk85pGoM
+	 Vm2xadkjbT2t2G5jxfJTgsejFG/HfVa8VUN9+NF58z9aTnTNy9LQIP8aMzEov5m4A3tcX
+	 e1tVs/u+wS/yC26k4dFVs8trMFmQzk6fgaXkYm79GVVqhBwcXSvVECvy9Po7smXRH6Tn0
+	 MZAHAj7M7EAI3qcgQzMyawMeZN4APdblo3Pn2DnqhFe5m742CehfmDHzXLxkVNXZ1+DDV
+	 tB4R6SsR2w1Pq+1TaKvzAq3BpTEH22GiPGr2cnPf4JczxdNB75qOIiSF1puiSbrU0RA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793872721;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=muRVNtpHPN8u6TD6ZpfYVyyB4/5pebiG/RBZ2qZUbIA=;
-	b=AfE9SFxa595g7hWYZcayBGy2vKnkRicQ6abRprQRYGH+9sArxW5YCrDsD4vuVghpqEmU
-	 QsOcGJBZK1N8zn0mJeQe5B1gs3jib5YVxda6xJsRTAokSjilElY3+TA94SlDVYD/ZC1tR
-	 TgtsQVGrQXJsRZ0U+eTD4i5ZUGL8OyC8iIA7gIsSDit6WFJogoEs0JS12JqLXbg83aAx3
-	 NotZO2U1SJ/KqZFa9e5hFvqwElJXENgPISZo/E6kcxKSbZPq3eN7CsLxHgdd1W9UevP8r
-	 GAyxZXDgl5qoRYR14ftkj6tgeN+miHBOLYhBhcd+9werF6eNWuu6oz/mY4mXGWQBojg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793872780;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=DFynwRQzUygtrqE+QHjdbW9aoarxVpxVGzFfqPEgWug=;
+	b=VxNRi+pnMBtgycTBoSknQ6p9BnCkj4g9U+i1KWD3GSKRjnEALuteQQAKcN4GU59Cv/zN
+	 bIzR63t+1Nx2YMw0OgSc+Fpdxp2UYgD1qy2zDRHS51jdnjFyUmeQ/FReLn4Tkd40HHYw9
+	 LXBkqvs16P5bo5B5fZw2MB0XUzxIB6F2lM0tPRkOU0NStg43wmJ6xjQbGagxol+A4Gcpr
+	 MaEMsboKq7AzoVbZ8sfSoRTozFjcU2xwRh9ch2ZNkn71IafCPdfvxsLUW0aJYPbmkUUbZ
+	 5Tgw/zdBsbRievCsV/q4UQIPxcd5yjLe4osEwu0OjoET7kaLZgb3ajKVSRTEmicH3dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dTKJMCls;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LnApAkbW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6832606A326;
-	Thu,  5 Nov 2026 09:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C5606A326;
+	Thu,  5 Nov 2026 09:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dTKJMCls
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B216F1F000C1;
-	Thu,  5 Nov 2026 09:58:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LnApAkbW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB481F000C1;
+	Thu,  5 Nov 2026 09:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793872720;
-	bh=muRVNtpHPN8u6TD6ZpfYVyyB4/5pebiG/RBZ2qZUbIA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dTKJMClsYHnp06jclLbts2Q4zCBaBIqZ4Yc2s92swYekKBG1ruRI0th2GBOll7rxl
-	 AIeYkYXYfD6x+Porhrg5HdPLmndCLYBDT5WuCYwcXf+oat8DZAtEOiOV1DlnI3hmOn
-	 vrWDalfzkPln0aEk6OkFLzwwOLMuMHnR4jCFAoVcmkvSYj7zmTqRrK5D+/Qtzq78Jh
-	 Qcgcg8C0Gph8m5XDmKpSScmir+OC+RkO1cdLzSwjEkOb5fM/bXfhiL9Oh6Zt3ZZxbi
-	 PxvwGlGFPw93PR0FLhO8xw+KMrEJk00O0+oSbLOpUhi8kLdqaSOTbmSLfGktuWufBS
-	 H2ZDSzOSQ+rpQ==
-Subject:
- Re: [PATCH] nfc: rawsock: prevent TX work requeue after socket shutdown
-From: netdev-bot+sashiko@kernel.org
-To: shunsheng1218@gmail.com
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, lauro.venancio@openbossa.org,
- sameo@linux.intel.com, linville@tuxdriver.com, aloisio.almeida@openbossa.org,
- oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 05 Nov 2026 09:58:39 +0000
-Message-ID: <179387271921.488856.11043838083216323158@kernel.org>
-In-Reply-To: <179378590950.74297.14503648624087894519@gmail.com>
-References: <179378590950.74297.14503648624087894519@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793872780;
+	bh=DFynwRQzUygtrqE+QHjdbW9aoarxVpxVGzFfqPEgWug=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LnApAkbWfIGnF9Whko+YqQC0EYPDHDdMbqIKDsR+QoiyOcol1rAVwCFi2+s5vcoC5
+	 3aepn9+5lv/GLJejO/RHud648OqqmhJIBx2qDgSS+OabJyGaMdkqLqf+2IWARJWfKJ
+	 f8Ua9mRFVKPchgEiq67H+wNd/+HM1fjXZG7NTFsP7dOJThiCgi2pqD3+uPG4L88aXD
+	 udzc9sTWXQi9uweVeAioCtlS/5f96NWxLSGHJwXnwAnaDMUkzy8/tt+21zAizMfiRq
+	 KK2a9tQO0amZGP8GRarVnB5DXKr0D6YyEPDx2h3lqJzMkYVFsQBVHDHlhTD+SreR2r
+	 5WeM7rRBn78GQ==
+Message-ID: <833b2ebf-ac7c-42b1-bb75-2fc56e0f0fbe@kernel.org>
+Date: Thu, 5 Nov 2026 10:59:34 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,135 +51,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 bpf 0/3] xdp: fix page_pool leaks
+To: Slawomir Stepien <sst@poczta.fm>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+ kuba@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ aleksander.lobakin@intel.com, ilias.apalodimas@linaro.org, toke@redhat.com,
+ lorenzo@kernel.org, ihor.solodrai@linux.dev, tavip@google.com,
+ Tianyi Gao <tianyi@cloudflare.com>
+References: <20261104121316.1155680-1-sst@poczta.fm> <ausorQSZn/tuxUWg@boxer>
+ <auw7ofYYYwOoGH2d@nr200>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <auw7ofYYYwOoGH2d@nr200>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 11/5/26 09:17, Slawomir Stepien wrote:
+> On lis 04, 2026 13:44, Maciej Fijalkowski wrote:
+>> On Wed, Nov 04, 2026 at 01:13:13PM +0100, Slawomir Stepien wrote:
+>>> v1:
+>>> https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
+>>> v1->v2:
+>>> - add skb to xdp_buff converter (Jakub)
+>>> - postpone restoration of veth's xdp_rxq_info mem model (AI)
+>>>
+>>> v2:
+>>> https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
+>>> v2->v3:
+>>> - make skb->xdp_buff conversion agnostic of current skb->data position
+>>>    (Toke)
+>>> - do not pull mac header in veth (Toke)
+>>> - use virt_to_head_page() when checking if xdp->data comes from
+>>>    page_pool (Olek)
+>>> - add ack from Toke
+>>>
+>>> v3:
+>>> https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
+>>> v3->v4:
+>>> - include skb->head when calculating packet length (Toke, lkp)
+>>>
+>>> v4:
+>>> https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
+>>> v4->v5:
+>>> - rely again on sk_buff::pp_recycle when setting mem type on rxq
+>>>    (Jesper, Jakub)
+>>> - add ack from Toke on patch 2 and restore it on patch 1
+>>>
+>>> v5:
+>>> https://lore.kernel.org/bpf/20251029221315.2694841-1-maciej.fijalkowski@intel.com/
+>>> v5->v6:
+>>> - rebase onto bpf/master
+>>> - patch 1: set MEM_TYPE_PAGE_POOL unconditionally in
+>>>    xdp_convert_skb_to_buff(); mem type only matters for frags consumed
+>>>    by the program, and those always come from skb_pp_cow_data() (Jakub)
+>>> - patch 1: add DEBUG_NET_WARN_ON_ONCE() for a non-linear skb without
+>>>    pp_recycle and document the expectation in kdoc (Jakub); the warning
+>>>    is limited to non-linear skbs since linear ones legitimately skip
+>>>    the CoW
+>>> - new patch 2: veth_xdp_rcv_one() ran the program on an xdp_frame with
+>>>    whatever mem type the previous packet left on rq->xdp_rxq; use the
+>>>    frame's mem type instead, as cpumap and devmap do. With patch 3 alone
+>>>    veth sends page_pool frames to its peer and the peer's program
+>>>    trimming frags crashed the kernel, so this comes first
+>>> - patch 3 (was 2): veth turns the buff into an xdp_frame on
+>>>    XDP_{TX,REDIRECT}, so the head is released through mem type too;
+>>>    keep the queue's original model unless the buffer was copied into
+>>>    rq->page_pool (Jakub)
+>>> - patch 3: take page_pool refs on compound heads via netmem helpers
+>>> - patch 3: do not restore the rxq mem model after XDP_{TX,REDIRECT}
+>>>    and on the error path; with patch 2 every path sets its own mem type
+>>> - patch 3: veth can now redirect MEM_TYPE_PAGE_POOL frames, which needs
+>>>    commit b3ca872947ef ("bpf: Use the frame mem type in devmap egress
+>>>    XDP") in devmap; list it as a stable prerequisite
+>>> - drop Reviewed-by/Tested-by tags as patches 1 and 3 changed
+>>
+>> I mentioned the changes [0] that were developed after v5 revision yet you
+>> decided to go with what you had - that might be okay but to be transparent
+>> it would be worth stating *why* you chose not to pursue further or explore
+>> approach where __do_xdp_generic() is called from veth.
+>>
+>> Was it due to semantics change pointed out by Bjorn? Or is it too big a
+>> hammer for fixing page_pool leaks and should be implemented as a
+>> follow-up?
+> 
+> That. For me, at this point in time it is easier to reason about the fix first rather than refactor.
+> 
 
-- [High] The fix is still racy, so the use-after-free it claims to close
-  remains reachable.
-- [Low] The patch only works on top of commit d793458c45df2a ("nfc:
-  rawsock: cancel tx_work before socket teardown", 2026-03-03), and the…
+I like approach where __do_xdp_generic() is called from veth.
+Look at patch link[0] below - how much (ugly) code is removed from veth.c
 
---
+>> Regardless, thank you for reviving this work, I am to blame for not
+>> dedicating further effort here.
+> 
+> No worries Maciej! You did a great job and I think it is worth pushing.
+> 
+>> [0]: https://lore.kernel.org/bpf/20260509084858.773921-5-maciej.fijalkowski@intel.com/
+>>
+I like how much code this [0] patch removes. Especially removing the
+ugly veth_xdp_get() function that manipulate the refcnt directly on pages.
 
-nfc: rawsock: prevent TX work requeue after socket shutdown
+Thanks for working on this, much appreciated!
 
-The patch makes rawsock_data_exchange_complete() check SEND_SHUTDOWN
-under sk_write_queue.lock before it reschedules tx_work. The goal is to
-stop a delayed data-exchange completion from requeueing the work after
-rawsock_release() has started tearing the socket down.
+--Jesper
 
-> diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-> index f7d7a599fade7..efdbd512d4600 100644
-> --- a/net/nfc/rawsock.c
-> +++ b/net/nfc/rawsock.c
-> @@ -168,7 +168,13 @@ static void rawsock_data_exchange_complete(void *context, struct sk_buff *skb,
->  		goto error_skb;
->  
->  	spin_lock_bh(&sk->sk_write_queue.lock);
-> -	if (!skb_queue_empty(&sk->sk_write_queue))
-> +	/*
-> +	 * The release path sets SEND_SHUTDOWN before cancel_work_sync():
-> +	 * once it is set, do not requeue tx_work - the socket may be freed
-> +	 * right after the cancel returns.
-> +	 */
+Cc. Tianyi Gao <tianyi@cloudflare.com> whom is working on improving veth
+for Cloudflare use-cases.
 
-[Severity: Low]
-This comment relies on the SEND_SHUTDOWN / cancel_work_sync() block in
-rawsock_release(). That block was added by commit d793458c45df2a ("nfc:
-rawsock: cancel tx_work before socket teardown"). Before that commit,
-rawsock_release() did not set SEND_SHUTDOWN and did not cancel tx_work.
 
-The patch only carries:
-
-    Fixes: 23b7869c0fd08 ("NFC: add the NFC socket raw protocol")
-
-The lines it changes date back to 2011. It would apply cleanly to a
-stable tree that lacks d793458c45df2a, and there the new check would do
-nothing during release.
-
-Should this have a Fixes: tag for d793458c45df ("nfc: rawsock: cancel
-tx_work before socket teardown"), or at least name it as a prerequisite?
-
-> +	if (!skb_queue_empty(&sk->sk_write_queue) &&
-> +	    !(sk->sk_shutdown & SEND_SHUTDOWN))
->  		schedule_work(&nfc_rawsock(sk)->tx_work);
-
-[Severity: High]
-Is this check actually serialized with the release path? Only the
-completion side takes sk_write_queue.lock here. rawsock_release() sets
-the flag and cancels the work without holding that lock:
-
-net/nfc/rawsock.c:rawsock_release() {
-    ...
-	if (sk->sk_state == TCP_ESTABLISHED) {
-		...
-		sk->sk_shutdown |= SEND_SHUTDOWN;
-		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-		rawsock_write_queue_purge(sk);
-	}
-
-	sock_orphan(sk);
-	sock_put(sk);
-    ...
-}
-
-Release only takes the lock later, inside rawsock_write_queue_purge().
-
-Can the following interleaving still happen? CPU0 holds the reference
-taken by sock_hold() in rawsock_tx_work():
-
-CPU0 (rawsock_data_exchange_complete)   CPU1 (rawsock_release)
-spin_lock_bh(&sk->sk_write_queue.lock)
-queue non-empty, sk_shutdown == 0
-                                        sk->sk_shutdown |= SEND_SHUTDOWN
-                                        cancel_work_sync(&tx_work)
-                                          tx_work idle, returns at once
-schedule_work(&tx_work) succeeds
-spin_unlock_bh()
-sock_put(sk)
-                                        rawsock_write_queue_purge(sk)
-                                        sock_orphan(sk)
-                                        sock_put(sk)
-                                          last ref, socket freed
-
-If tx_work is neither pending nor running, cancel_work_sync() returns
-right away. __cancel_work_sync() also calls enable_work() before it
-returns, so the later schedule_work() can still queue the work.
-
-rawsock_destruct() does not cancel tx_work, and the queued work holds no
-socket reference. When the worker runs, rawsock_tx_work() would read
-freed memory:
-
-	struct sock *sk = to_rawsock_sk(work);
-	struct nfc_dev *dev = nfc_rawsock(sk)->dev;
-	u32 target_idx = nfc_rawsock(sk)->target_idx;
-	...
-	if (sk->sk_shutdown & SEND_SHUTDOWN) {
-
-Would it close this window to set SEND_SHUTDOWN under sk_write_queue.lock
-in rawsock_release(), before cancel_work_sync()? Then either the
-completion sees the flag, or its schedule_work() ran before release took
-the lock, and cancel_work_sync() will cancel or wait for that work.
-
-Separately, the unlocked read-modify-write of sk->sk_shutdown in
-rawsock_release() races with the plain read here. It also races with the
-plain store in rawsock_report_error():
-
-	sk->sk_shutdown = SHUTDOWN_MASK;
-
-KCSAN would likely report this as a data race. The rest of the
-networking stack accesses sk_shutdown with READ_ONCE()/WRITE_ONCE().
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179378590950.74297.14503648624087894519%40gmail.com
