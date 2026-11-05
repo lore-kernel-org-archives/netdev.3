@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793882755;
-	b=g/iE8YXoVQq0gMTlCjqSTHGJkCqmq8oGM6TJcONtPtAd8Jra06SfSJNmNHxWNmB3ANT1
-	 aG8+U6FWTBmDj0ALX9QgFbNLQWt1h1bD52YX1QS4xBKBpgUIXhMKWaojauN+51iMw6FyF
-	 J4GN6lHojqdsiiv60k9sTYhndETzZvTm3BHur9oNMs6jOGIC8Hk/ii91x3WKqelBP1MFP
-	 G6bPJj217FKVNnzX9qB+qQT8Asc2HolkcxBq/C3vtRFYgkxPQxw4BRo7NCM79eeoL7tOB
-	 UWV0C1YWaV7F4wmHDlfD+RMnS19rvoIzzi2jd2uC1kw6EEwF4Dgfmj/MLZHoAJDBgFw==
+	t=1793882757;
+	b=LgMx3jN/bR5zc4fHiErvRGAaXUt713n9/QuzCNRDMfgRMHpuEWgEfr3h7vLaSN80NCWq
+	 t18YpNbzi9X/kZeSZltMI78RN2HxQMCIHekBjbgYhqUECEukDlSmoUaaeAcqjTKmwIBo7
+	 eqiOMXbd2qUPXoZ5r1wEnEdRkOO9dWXxj4yygWhPoAZKOhRQA7flovA91e4eGOBJXxWmt
+	 jwvnRMIlNIdqqUXG6pFyvuyJ8mrqYhp76QOeXsEq9mFAtfvU6N2qVvYUuHyiX7rpS9y/l
+	 4cJJZyi8gytfQAd5Equt3Ep8YrpCJpenkTpMO4HGm4qAsqemyT/UGDTUaL4FY60rqfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793882755;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882757;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=ERbJJjui3uMopKOsLz17s2PXsaNLTajEI06p8Pfiz/I=;
-	b=XbCoDVkwh3qjt8gSmtPkkbFNs0NdoxDrc7Zip8X6NPmCDY8IqNewf0b83W2iinAZwczr
-	 LwflgOuP42smqsgPfP4eUjy8ZqaE+Djx3wzhDvn9CW0LyD+QQf7ZSLlkVF7jnuNRCyDQi
-	 O2GFs7Mq1SCapYCij6fSmj7Di1yLm6zGSaMd0f1Hi/RzRnzgJcjts6Tk1ZIhLUbJajxol
-	 k8sj7jSAmcB1/hUvOqewcK9KdwVNcbkrqRqWmKFyR6GvvvleWlPgkjPhNWocsODk9uWXR
-	 JvEJMqx/essfTNznHYBeSYq1JfqI5ZQAzlzIJU+/ybqPhqz7t6+CxGytULBJo4QVEAw==
+	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
+	b=gEkmHKZgpHX1wns3426NYfGl7RA8FHbuhN9Ru5jMy5ZvOLfoiw2KbpJ9Vba8Swap682B
+	 OsOE4o1IJnb224ZdhEiDPQmDga1kkeJDyDrt4zQiiBEjnf+Oc2ybnTqTveAJkyxSZidR5
+	 XYbPbDezylTB4X+HV+2RBQRfMOw0yTkb1ZeVzPtJDUWanlJ0lVyTNmvEkNAeS8TLZEBXG
+	 cspF6hdeVb/5ys9DuyNnU1/gJ3mgzmUpnNZtqU8pnZ5Zk3m59aLhU9uzTjWbyJXKMTiSa
+	 i/VE0h/QfHU1Qh9iQBPEjLIwUFSvDng5LiW38GVgdHFv3hSTCAydrXefTUDu4c+Le2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=WNevKHfc;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=QB2MCrNL;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E9C606EE9C;
-	Thu,  5 Nov 2026 12:45:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93E9C606EE9C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F6A606EEAE;
+	Thu,  5 Nov 2026 12:45:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42F6A606EEAE
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=WNevKHfc
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=QB2MCrNL
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793882752;
-	bh=ERbJJjui3uMopKOsLz17s2PXsaNLTajEI06p8Pfiz/I=;
+	s=2025; t=1793882755;
+	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WNevKHfcIT2pyBGKl3KhXZasICkCQixCCag1skr8wtkNb4Utx8UvVoTaI+r7TZ4iv
-	 6zoBxPXq7XPfgJS7TK6s9pPAvvisd+uNMl+AAipW9EELV+ue/gsB/C+w3BKkw18vXC
-	 3mEx+6fHNxPMDdSWux61+q/gS7Myfvxgm+4hdmVbXPa78j/EuqfaGIuCu4hbEPUV9T
-	 1CeRtMA9PE8Sl+foRXpT4N2AKrfjyjKNB6PjfRTDwoUv/jXoAmcocq2hRuadwWrshk
-	 3v4lHDwipdqRAdhsBIu2SupXb4sqmsUZ6AYOMX3XqCvFzjqOsWv56AVp9627Y9Hud1
-	 SRNKtVFK5S8TA==
+	b=QB2MCrNL5E+DeADD7tq0SR8sB8YlNxMCcf7Epz5cXpXWw6OPri1BHLpwV4FEgftEy
+	 vqqmkaLRtpNERZeit7pySxndHNT2rD5HFQn07eob7gVE1K5aUOa1LrgkM4OHdNGiEf
+	 bQDtP63ZSLF7fBUyyR8znwPLdPeNSxWvrrRkkp3FRB7vb7AyLbZrbeR3Q8dwFVJ6tp
+	 DaG+HvDTC17vwE/mj5RbVnCYehxoD/MJHq0vrNr698Eg8LetuDbdK2qpHxscQOhggX
+	 5TeHHuQBp2jHr3lgxrL8H44hV8OjDkn6v2cBxSPeBLaew8YGs1w2/e5O9+xRsphTZa
+	 Ymbvt7aX22fmg==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 811DD60097;
-	Thu,  5 Nov 2026 13:45:52 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id EFBF460082;
+	Thu,  5 Nov 2026 13:45:54 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 10/12] netfilter: nf_tables: fix memleak when rule deletion fails with hardware offload
-Date: Thu,  5 Nov 2026 13:45:34 +0100
-Message-ID: <20261105124536.1009301-11-pablo@netfilter.org>
+Subject: [PATCH net 12/12] netfilter: nat: zero newrange before filling it in
+Date: Thu,  5 Nov 2026 13:45:36 +0100
+Message-ID: <20261105124536.1009301-13-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261105124536.1009301-1-pablo@netfilter.org>
 References: <20261105124536.1009301-1-pablo@netfilter.org>
@@ -73,84 +73,87 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allocate flow rule object after transaction has been allocation and rule
-deactivation has been performed, otherwise memleak is possible.  Let the
-transaction unwind the existing rule deactivation from the abort path,
-this needs to update nft_flow_rule_destroy() to skip release if
-flow_rule is null.
+From: Florian Westphal <fw@strlen.de>
 
-While at this, remove check for non-null flow_rule in newrule error path
-now that nft_flow_rule_destroy() is skipped if flow_rule is null.
+nf_nat_masquerade_ipv4(), nf_nat_masquerade_ipv6(), netmap_tg4() and
+netmap_tg6() each build a stack-local struct nf_nat_range2 from the
+caller-supplied range, inheriting range->flags unmodified. Two of them
+only memset() the min_addr/max_addr members, the other two don't
+memset() anything at all, so newrange.base_proto is left as stack
+garbage.
 
-Fixes: 63b48c73ff56 ("netfilter: nf_tables_offload: undo updates if transaction fails")
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Link: https://patch.msgid.link/20261028062204.1079089-1-hdthky0@gmail.com/
+If the inherited flags include NF_NAT_RANGE_PROTO_OFFSET,
+nf_nat_l4proto_unique_tuple() reads range->base_proto.all to compute
+the NAT port offset. Neither the NETMAP nor the MASQUERADE targets
+mask the flags field in their checkentry callback, so this
+uninitialized stack value can end up feeding the NAT port selection.
+
+The per-member memset()s are not enough: they have to enumerate every
+field that must be cleared, and base_proto was missed when
+NF_NAT_RANGE_PROTO_OFFSET/base_proto was added to the struct. memset()
+the whole struct instead, so every member is covered regardless of
+which ones get explicitly assigned afterwards.
+
+There are other places that miss this, but those hardcode .flags so
+nat core won't read from the uninitialized fields.
+
+C99 initializers would be preferrable, but this is a more intrusive
+change.  Lets followup in nf-next and convert others as well.
+
+This is an LLM finding.
+
+Fixes: 2eb0f624b709 ("netfilter: add NAT support for shifted portmap ranges")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/nf_tables_api.c     | 21 +++++++++------------
- net/netfilter/nf_tables_offload.c |  3 +++
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ net/netfilter/nf_nat_masquerade.c | 4 ++--
+ net/netfilter/xt_NETMAP.c         | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 59ac623e6805..8b94b5e7dbdb 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -760,16 +760,6 @@ static int nft_delrule(struct nft_ctx *ctx, struct nft_rule *rule)
- 	if (trans == NULL)
- 		return -ENOMEM;
+diff --git a/net/netfilter/nf_nat_masquerade.c b/net/netfilter/nf_nat_masquerade.c
+index 4de6e0a51701..c2a85bd84af1 100644
+--- a/net/netfilter/nf_nat_masquerade.c
++++ b/net/netfilter/nf_nat_masquerade.c
+@@ -62,8 +62,7 @@ nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
+ 		nat->masq_index = out->ifindex;
  
--	if (ctx->chain->flags & NFT_CHAIN_HW_OFFLOAD) {
--		flow = nft_flow_rule_create(ctx->net, rule);
--		if (IS_ERR(flow)) {
--			nft_trans_destroy(trans);
--			return PTR_ERR(flow);
--		}
--
--		nft_trans_flow_rule(trans) = flow;
--	}
--
- 	err = nf_tables_delrule_deactivate(ctx, rule);
- 	if (err < 0) {
- 		nft_trans_destroy(trans);
-@@ -777,6 +767,14 @@ static int nft_delrule(struct nft_ctx *ctx, struct nft_rule *rule)
+ 	/* Transfer from original range. */
+-	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
+-	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags       = range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.ip = newsrc;
+ 	newrange.max_addr.ip = newsrc;
+@@ -242,6 +241,7 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
+ 	if (nat)
+ 		nat->masq_index = out->ifindex;
+ 
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags		= range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.in6	= src;
+ 	newrange.max_addr.in6	= src;
+diff --git a/net/netfilter/xt_NETMAP.c b/net/netfilter/xt_NETMAP.c
+index 7da065a472e0..8bcb3f716d68 100644
+--- a/net/netfilter/xt_NETMAP.c
++++ b/net/netfilter/xt_NETMAP.c
+@@ -44,6 +44,7 @@ netmap_tg6(struct sk_buff *skb, const struct xt_action_param *par)
+ 				   netmask.ip6[i];
  	}
- 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_PREPARE);
  
-+	if (ctx->chain->flags & NFT_CHAIN_HW_OFFLOAD) {
-+		flow = nft_flow_rule_create(ctx->net, rule);
-+		if (IS_ERR(flow))
-+			return PTR_ERR(flow);
-+
-+		nft_trans_flow_rule(trans) = flow;
-+	}
-+
- 	return 0;
- }
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags	= range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr	= new_addr;
+ 	newrange.max_addr	= new_addr;
+@@ -91,8 +92,7 @@ netmap_tg4(struct sk_buff *skb, const struct xt_action_param *par)
+ 		new_ip = ip_hdr(skb)->saddr & ~netmask;
+ 	new_ip |= mr->range[0].min_ip & netmask;
  
-@@ -4570,8 +4568,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- err_destroy_flow_rule:
- 	nft_use_dec_restore(&chain->use);
- err_destroy_flow:
--	if (flow)
--		nft_flow_rule_destroy(flow);
-+	nft_flow_rule_destroy(flow);
- err_release_rule:
- 	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
- 	nf_tables_rule_destroy(&ctx, rule);
-diff --git a/net/netfilter/nf_tables_offload.c b/net/netfilter/nf_tables_offload.c
-index 0ac3c26dfb3d..48b9e58e0c44 100644
---- a/net/netfilter/nf_tables_offload.c
-+++ b/net/netfilter/nf_tables_offload.c
-@@ -148,6 +148,9 @@ void nft_flow_rule_destroy(struct nft_flow_rule *flow)
- 	struct flow_action_entry *entry;
- 	int i;
- 
-+	if (!flow)
-+		return;
-+
- 	flow_action_for_each(i, entry, &flow->rule->action) {
- 		switch (entry->id) {
- 		case FLOW_ACTION_REDIRECT:
+-	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
+-	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags	     = mr->range[0].flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.ip = new_ip;
+ 	newrange.max_addr.ip = new_ip;
 -- 
 2.47.3
 
