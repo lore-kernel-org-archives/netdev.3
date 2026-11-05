@@ -1,63 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.80.4.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793843999;
-	b=XEqscHAcRDNvQOf6m8nBSLW7qnDCpAi8SyX/cE/XrHRIEqwCci1vIX05CV9PJzT1Wqhn
-	 HWJUgVdIGamJ3R2Ni4yST2XKZi5lknf4dC1/llonHVBRi5ITU9qI8iUR3RNovXjhoqcKS
-	 KZAHX6VavAtR7+75MHsRdNsLeiLJ3fvYN71Zr/XG6y0QGj7wH4lEDqso7i1GR1L7eAjU4
-	 sYjp7gTB8HCXMz/B6CqjDH6GtV9i3yG5OappdhKvcNDon76ig/cNtyBJe0tGf+ZwTQTjB
-	 JgmNoITiOfc/q+UcJHmTfSq3LEqJu6Bge08R2Vqvymz3nAc7wHdP/LWZWzdvPfYTXCQ==
+	t=1793844003;
+	b=vPWF9ljLxZH1v+56w/4BNec6h6aPSW+Y9raVXQjr2akMLa9fVtxVWyvLxqGCvWbIDsZt
+	 FqAB0REbgz6JGqjVVTJws8WvTUo9OQOyzbe3vHrtUOEdzbumblo9BLzFIG0XeHX3KGlkS
+	 fo3tn3Su7TVj+DcZIxJcA4X/X1ovtCrfNtHk3STw08PmVvceV6eq/DA15txgkh1N/nImk
+	 eGXeimGQ0qrmx9QBHC+Q+7Rt2xA2z+Hbkp2dmZIG8kCORmALIe5rTjYhRP6auKb51NVTl
+	 CTezbVuJBPr+gHIdznL1KKlHAhEVn4PL9gWKlsAzT24VT06P41br9J98XrqXiyoQDxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793843999;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793844003;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:From:To:
 	 Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:X-Virus-Scanned:
 	 X-Virus-Status;
-	bh=0uFUiNBADWLsVyespJGX9TFCNxcnQ1X32FvqWfAy6qA=;
-	b=gHf3kyWY9jDfJpZWa4p/OxsSd5HwAWdZxuNgZs5u4mc+lwZvD200YQ4rObCpoVhdqtef
-	 VPXUFyEi6WwaPONQ+63DFF8XCY0cVoGxAy/Ze++Wua+R9lRoi4XzCK/ANFfZwBN6kbl1D
-	 xk3qH30uVc6ybTMIIGMyuHM13v3h/4Z2Z9FAuvg472xvf4vJtHrGEbit3ZKGj2qkusETD
-	 zrcyuFXF8jLRybOuFkNj6TYOoizVVO00IVouXmEA37RLBB1SwYYJcCvBXuEOCNaxWARqN
-	 8aKjoEMBO7H2MD/qdBYvksBV1sQBWRRamn66vnwUAfyhJyEftnY7eAnnh0uPuf5pthQ==
+	bh=DmQXE3CaAVl0Zz6o4LK0xCYillIz77fI97ndvt560Sg=;
+	b=brnlEg9apV4SC8qlkbSKBPzqyV2AwiwV31hYeR/iFoHw3c/BJp5PKFru/hypZaFRa6Zs
+	 2bxAw5qOnl5PW7yKmaq+GQdKYLa7qOqBH+Al9HMVTYYjKyYvyAT5FubVKV0xouC8z9JWb
+	 HxapnRfLrV3SNMcv+MI9uGbVCUi0is0gHJ9K8yethTlUK9GDnZ1UH1b9x5+Zq+k9hUWqd
+	 b9lZWM5Q1NjPerviwcxSzaEh4LtGx167LKBeg63SgsMnTBCUcpALR/jWxyTkD+bfziHg1
+	 xPwwDbzElBKZI5kjudoJnt0mqKdQK6DUiXQyVdtJPPLv2biViH+kDt2SSHID4YJi+/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=uniroma2.it;
 	spf=pass smtp.mailfrom=uniroma2.it;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=D0NoUqyj;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=d9Mi9COX;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=voiLsuYs;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=IB+17Crj;
 	arc=none smtp.remote-ip=160.80.4.35
 Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.35])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8842F606A329;
-	Thu,  5 Nov 2026 01:59:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8842F606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFDC606D82B;
+	Thu,  5 Nov 2026 02:00:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EFDC606D82B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=D0NoUqyj;
-	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=d9Mi9COX
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A51xC7J001498;
+	dkim=pass header.d=uniroma2.it header.i=@uniroma2.it header.a=ed25519-sha256 header.s=ed201904 header.b=voiLsuYs;
+	dkim=pass (2048-bit key, unprotected) header.d=uniroma2.it header.i=@uniroma2.it header.a=rsa-sha256 header.s=rsa201904 header.b=IB+17Crj
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6A51xCDK001497;
 	Thu, 5 Nov 2026 02:59:17 +0100
 Received: from localhost.localdomain (unknown [160.80.105.87])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 0133812294E;
-	Thu,  5 Nov 2026 02:59:08 +0100 (CET)
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id DE621122926;
+	Thu,  5 Nov 2026 02:59:07 +0100 (CET)
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1793843948; h=from:from:sender:reply-to:subject:subject:date:date:
+	s=ed201904; t=1793843947; h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0uFUiNBADWLsVyespJGX9TFCNxcnQ1X32FvqWfAy6qA=;
-	b=D0NoUqyjm5QCmVNYW+kHed2EXGo25ym2KcxtSiTGSfA3qhhjiMM0ahlfmPpNZoLg7niDjA
-	lpy/R2fDkePuZUDw==
+	bh=DmQXE3CaAVl0Zz6o4LK0xCYillIz77fI97ndvt560Sg=;
+	b=voiLsuYshGeijyireJryolwAubAGQ10sSwmMGmU7dB79SnlN0eB5GqR+tal9pYEU/YNQMR
+	zj58J3hI3z4/r4CQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1793843948; h=from:from:sender:reply-to:subject:subject:date:date:
+	t=1793843947; h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0uFUiNBADWLsVyespJGX9TFCNxcnQ1X32FvqWfAy6qA=;
-	b=d9Mi9COX8dsnbov/p9nz8ZaP2FbUfn2yFtSZnVNUt/I5uMPtCDMBM5enL7UT2aAp6C0XXQ
-	Zq6XWH6yj2qR4rYcQq3JLADj0W4gQA3SjGW1enmO1ypmsNDIxkK2AWjqLgQVAvQxaae7sO
-	nC2foog+P2OACEsmFr7QHodfudFdDryCu3kpUqs0YrFKc7FP6DemiifO9tkdYMIIMrY6VP
-	//TyK88wOytZCsmYhqZhtPhqr3bUuO1/d7VXIPUW/dsQgl9pLUKqXgkwYgX6oH848MR2Is
-	UfQQVeVWaBU5LYAm2y88uErmQHUWKaRZylJ16DtjlMHitiaUl6W5aIlTxvCJ0g==
+	bh=DmQXE3CaAVl0Zz6o4LK0xCYillIz77fI97ndvt560Sg=;
+	b=IB+17Crjh5ZQc3meNHUcXGnQAZsuIMWdhhMFL+DwjMCHa6JuTLdP2DOPHpzAKmVZ4/OTrl
+	UuNwUqXPeasCcQfdgQ0kEHu0l043j47+X27vv1yLBF7mhonsbBRQjQEf3C7F6i6VBXTPh5
+	v3oScZm+h7MEaPKZjNHA9OEa6tvlXml9jFXMn72RbCcnFGyfAdsFZW8TMVaLaZgRAiPdXO
+	3dCLHwzuikwIRwlSgbUKF+9z6kdx4RnCTSjuvn6zcBfLie6TvEI7MEsJgCl2Ilz3hoQstA
+	DqoRkI8wMKBOfHz8uckF+bm1SzlNDcLJG6smJtxORIfTs34C0kCGkqTvKwb0+A==
 From: Andrea Mayer <andrea.mayer@uniroma2.it>
 To: "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
@@ -72,9 +72,9 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Stefano Salsano <stefano.salsano@uniroma2.it>,
         Andrea Mayer <andrea.mayer@uniroma2.it>, andrea@common-net.org,
         Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: [PATCH net-next v2 3/5] seg6: apply the PSP flavor together with NEXT-C-SID in SRv6 End
-Date: Thu,  5 Nov 2026 02:57:13 +0100
-Message-Id: <20261105015715.57-4-andrea.mayer@uniroma2.it>
+Subject: [PATCH net-next v2 2/5] seg6: handle a consumed SRH in SRv6 End with the PSP flavor
+Date: Thu,  5 Nov 2026 02:57:12 +0100
+Message-Id: <20261105015715.57-3-andrea.mayer@uniroma2.it>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20261105015715.57-1-andrea.mayer@uniroma2.it>
 References: <20261105015715.57-1-andrea.mayer@uniroma2.it>
@@ -91,123 +91,107 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
 X-Virus-Status: Clean
 
-Since commit bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End
-behavior"), an SRv6 End route can be set up with both the NEXT-C-SID and
-the PSP flavors, e.g.:
+With the seg6 inline mode, a packet can carry more than one SRH. The
+SRHs with Segments Left 0 are considered consumed SRHs, and they can
+come before the SRH to process (Segments Left > 0), as in this packet:
 
-  ip -6 route add fcbb:0:100::/48 encap seg6local action End \
-          flavors next-csid,psp lblen 32 nflen 16 dev dum0
+  +------+----------------------+----------------------+---------+
+  | IPv6 | SRH, Segments Left 0 | SRH, Segments Left 1 | payload |
+  +------+----------------------+----------------------+---------+
 
-In RFC 9800, the NEXT-C-SID flavor (NEXT-CSID in the RFC) changes the
-End processing only when the Argument is not zero [1]. With a zero
-Argument (i.e. when the IPv6 DA carries no further C-SID), End is
-processed as in RFC 8986, and the PSP flavor (when set) applies
-unchanged [2]. If the packet arrives with Segments Left 1, PSP must
-then remove the SRH.
+End without flavors skips the consumed SRH and processes the next
+one [1]. With the PSP flavor, End should do the same. When the SRH to
+process arrives with Segments Left 1, as in the diagram, End with PSP
+should then also remove it [2]. However, End with PSP alone currently
+looks only at the first routing header of the packet, finds Segments
+Left 0 there, and drops the packet.
 
-However, on a route with both the NEXT-C-SID and PSP flavors,
-input_action_end() always uses the NEXT-C-SID processing. The
-NEXT-C-SID processing handles a packet with a zero Argument as End
-without flavors, ignoring PSP. Therefore, if this packet arrives with
-Segments Left 1, the SRH is not removed.
-
-Fix this by using the NEXT-C-SID processing only when the Argument is
-not zero or the route has no RFC 8986 flavor. Otherwise, the packet is
-processed as End with its RFC 8986 flavors, in end_flv8986_core(). With
-a zero Argument and Segments Left 1, PSP now removes the SRH before the
-packet is forwarded. If seg6_pop_srh() cannot remove the SRH, the packet
-is dropped, as on a route with the PSP flavor alone.
+Make End with PSP alone skip the consumed SRHs, and any other routing
+header with Segments Left 0, and process the SRH that follows them. If
+there is no SRH to process, the packet is dropped as before. When the
+SRH to process arrives with Segments Left 1, End with PSP now removes
+it even if consumed SRHs come before it.
 
 Found by manual code inspection and reproduced in a VM without kernel
 changes or error injection. A following commit adds tests for this case
-to srv6_end_flavors_test.sh. The tests reproduce the issue: they fail
-without this change and pass with it.
+to srv6_end_flavors_test.sh. Without this change, the new tests with a
+consumed SRH fail for End with PSP alone. With this series, all tests
+pass and KASAN reports no error.
 
-[1] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.1
-[2] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.7
+[1] - https://datatracker.ietf.org/doc/html/rfc8986#section-4.1
+[2] - https://datatracker.ietf.org/doc/html/rfc8986#section-4.16.1.2
 
 Fixes: bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End behavior")
 Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
 Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 ---
- net/ipv6/seg6_local.c | 50 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 3 deletions(-)
+ net/ipv6/seg6_local.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
 diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 26cd4facbe36..427d12fedfc3 100644
+index da8225591fe3..26cd4facbe36 100644
 --- a/net/ipv6/seg6_local.c
 +++ b/net/ipv6/seg6_local.c
-@@ -551,6 +551,47 @@ static bool seg6_next_csid_enabled(__u32 fops)
- 	return fops & SEG6_F_LOCAL_FLV_NEXT_CSID;
+@@ -775,11 +775,14 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+ 		skb_set_transport_header(skb, thoff);
+ 
+ 	iph = ipv6_hdr(skb);
+-	if (iph->nexthdr == NEXTHDR_ROUTING) {
++	if (srhoff == sizeof(*iph)) {
+ 		iph->nexthdr = srh_nexthdr;
+ 	} else {
+ 		/* we must look for the extension header (EXTH, for short) that
+-		 * immediately precedes the SRH we have just removed.
++		 * immediately precedes the SRH we have just removed, i.e. the
++		 * EXTH that ends at srhoff. We find it by its position and not
++		 * by its nexthdr, since another routing header (e.g. an SRH
++		 * with SL = 0) may come before the removed SRH.
+ 		 * Then, we update the value of the EXTH nexthdr with the one
+ 		 * contained in the SRH nexthdr.
+ 		 */
+@@ -807,7 +810,7 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+ 				break;
+ 			}
+ 
+-			if (hp->nexthdr == NEXTHDR_ROUTING) {
++			if (off == srhoff) {
+ 				hp->nexthdr = srh_nexthdr;
+ 				break;
+ 			}
+@@ -823,6 +826,24 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+ 	return true;
  }
  
-+static bool seg6_flv8986_enabled(__u32 fops)
-+{
-+	return fops & SEG6_LOCAL_FLV8986_SUPP_OPS;
-+}
-+
-+/* check whether the NEXT-C-SID processing has to be used for the packet,
-+ * instead of the RFC8986 flavors set for the given SRv6 End* behavior
-+ * instance.
-+ *
-+ * This function returns:
-+ *  - true, when the packet has to go through the NEXT-C-SID processing;
-+ *  - false, when NEXT-C-SID is not configured or the packet has to be
-+ *    processed on the basis of the RFC8986 flavors.
++/* look up the SRH to be processed by the RFC8986 flavors. As End does, a
++ * routing header with SL = 0 is skipped (e.g. an SRH already consumed).
++ * This function returns NULL when no valid SRH is found.
 + */
-+static bool seg6_use_next_csid(struct sk_buff *skb,
-+			       const struct seg6_flavors_info *finfo)
++static struct ipv6_sr_hdr *seg6_flv8986_get_srh(struct sk_buff *skb)
 +{
-+	const struct in6_addr *addr;
-+	__u32 fops = finfo->flv_ops;
++	struct ipv6_sr_hdr *srh;
 +
-+	if (!seg6_next_csid_enabled(fops))
-+		return false;
++	srh = seg6_get_srh(skb, IP6_FH_F_SKIP_RH);
++	if (srh)
++		return srh;
 +
-+	addr = &ipv6_hdr(skb)->daddr;
-+
-+	/* NEXT-C-SID and the RFC8986 flavors combine according to the
-+	 * DA.Argument (see RFC9800, sections 4.1.1 and 4.1.7):
-+	 *
-+	 *       DA.Argument   RFC8986 flavors   processing
-+	 *   (1) != 0          any               NEXT-C-SID only, SL unchanged
-+	 *   (2) == 0          none              the behavior, e.g. End
-+	 *   (3) == 0          one or more       the behavior with its flavors,
-+	 *                                       e.g. End with PSP
-+	 *
-+	 * In (2), the packet still goes through the NEXT-C-SID processing,
-+	 * which runs the behavior (e.g. End) when the DA.Argument is zero.
++	/* we take the first routing header without skipping it. In this way,
++	 * seg6_get_srh_pktinfo() reports SL = 0 and not a missing SRH.
 +	 */
-+	return !seg6_flv8986_enabled(fops) ||
-+	       !seg6_next_csid_is_arg_zero(addr, finfo);
++	return seg6_get_srh(skb, 0);
 +}
 +
- /* Processing of SRv6 End, End.X, and End.T behaviors can be extended through
-  * the flavors framework. These behaviors must report the subset of (flavor)
-  * operations they currently implement. In this way, if a user specifies a
-@@ -865,7 +906,10 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
- 	if (srh && !seg6_hmac_validate_skb(skb, srh))
- 		goto drop;
- #endif
--	flvmask = finfo->flv_ops;
-+	/* NEXT-C-SID, when configured, has already been evaluated by the
-+	 * caller. Only the RFC8986 flavors are left here.
-+	 */
-+	flvmask = finfo->flv_ops & ~SEG6_F_LOCAL_FLV_NEXT_CSID;
- 	if (unlikely(flvmask & ~SEG6_LOCAL_FLV8986_SUPP_OPS)) {
- 		pr_warn_once("seg6local: invalid RFC8986 flavors\n");
- 		goto drop;
-@@ -919,8 +963,8 @@ static int input_action_end(struct sk_buff *skb, struct seg6_local_lwt *slwt)
- 	if (!fops)
- 		return input_action_end_core(skb, slwt);
+ /* process the packet on the basis of the RFC8986 flavors set for the given
+  * SRv6 End behavior instance.
+  */
+@@ -837,7 +858,7 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+ 	__u32 flvmask;
+ 	int srhoff;
  
--	/* check for the presence of NEXT-C-SID since it applies first */
--	if (seg6_next_csid_enabled(fops))
-+	/* NEXT-C-SID is evaluated first, when configured */
-+	if (seg6_use_next_csid(skb, finfo))
- 		return end_next_csid_core(skb, slwt);
- 
- 	/* the specific processing function to be performed on the packet
+-	srh = seg6_get_srh(skb, 0);
++	srh = seg6_flv8986_get_srh(skb);
+ 	srhoff = srh ? ((unsigned char *)srh - skb->data) : 0;
+ 	pinfo = seg6_get_srh_pktinfo(srh);
+ #ifdef CONFIG_IPV6_SEG6_HMAC
 -- 
 2.43.0
 
