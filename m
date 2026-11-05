@@ -1,57 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873323;
-	b=hJB2XbMXTExszyuhJwyRnDsRJnmhXipCOMTYl7LYlhHIrz+vMnXXvPkFWXGH1MIXJFcW
-	 htBP8ollc7GSmUXw+BWATSrTNel0wc23Os4/xyu+YHjuVZjvvb9/F7of6vWbkScqYFgN6
-	 EQoy4UXxBPoiCoJh6aktD3bYzUmwGF67Wa6LFQvF7eGLaAfHwxktH5bGNkF5/t8713kXo
-	 tMJqF52KKyeIWZClB1mq2PWWx7WEY1CpE23N8yrDGPNVHqt660uRigbNXePyNLUw8bXd8
-	 GnPu/Ogq8I2dOmsTArLpsnScdIKwswvnu6coxjbQaZ02hiqXXo6R1cg2Aw5x5WjKtoA==
+	t=1793873319;
+	b=PdmLJcgcfHVIa2EyCGipfGTEe81pk6fln4syTQsOLAK2M5G3pLb3sYt57KvM2pK6TbUC
+	 sKJ7aocBI4cR1YBGQdbVSbHnByIKOoxEZKr2Fe38KSaN1jbcEnMS5tqs5nTPOp60yfG9U
+	 RmNK2d/h5IsUFPZCFX1RfpNzgCZ0qtny+5tHtPl9ctYDyIh/q7Vmhxxfp+ggSr1niu6Tn
+	 DwAXXxjZCzx9ZO8jNXxbDrtC51i38SIOPV3SKaJNXpbIbygIP0KapnTnQYDYqpEmu2LS6
+	 W1L3LgWr9vxwg3DJo8X3Ra7ez42Lc3ZXA7phsNCAwv+Ue37M2Z2GRgty2dL97Uyjtwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873323;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793873319;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=1m2BkGSmJW9g/I7g3XHucs0qjlE/laWWEx9Emt7M2sI=;
-	b=qYNcp41UDx5nJ3nfWWhjmo8hwIpNwWRGS+W49TwpA/ECMIoqmkZpYD1c65gDR5JdvzGI
-	 6/KyChMHr+CPWO9PaAJ7J8c1QbCydZYooS3TwVvTelvPfiddfs7vrFMMH3G5ihZxlUhPv
-	 qkAsm+mE7GuLiAqlWv9cFEtTqwlQmf6PvuA7wkuBL1OTZshvgCczqwNCDWd14bS+aECqc
-	 P3QkhUoljo/jgtAW09eYCSSChgZe20R86hOz7BMkAwUtrWR2nEp3n25y9G/Ov/TjSODiX
-	 7/6Njq8goMakYqUJXoWGdjmNw09qRMKlrwwL6uW7xe7F0yVuN5pN7MzRI1vMX2m9r3w==
+	bh=OdwrZcbYsRV+5ZTU+xWngMpTg+lnAb5qG+LNLsQLWls=;
+	b=ebh/W0iZj4kNtjnvPv2o3//yvQliLqZvezIvyLYeqFzyt5gXPinybfGH10oZR5m4nnji
+	 e8PNqtYOYoVfneKEpBN9saxS2w5X0g68oCsM2usQXWAPqJ3vJKq2fLL9TaGwIu1JOkpTW
+	 Z3OZyzQ6bG+cVjXCENTQxlaTcD62Ps0PIH/NNewChrzLrpMthixAAJB95gBEidNTBlg7H
+	 +wQjiqzheapJLm7Dtxd86b19pgFPe7H4/Fwfsg3CpBGez5ivcKbzneKi2PqNGE8jLddU9
+	 f8t8k/ojMzpT4dQmOtdK0K7qv0yalyVfNDVhoaChZP83g60Uju+AJ0N9DZ7BMoeX46g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VFFnh7MF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Puam2CQm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28F0606EE86;
-	Thu,  5 Nov 2026 10:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247B16083638;
+	Thu,  5 Nov 2026 10:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VFFnh7MF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05831F000C1;
-	Thu,  5 Nov 2026 10:08:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Puam2CQm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABA01F00919;
+	Thu,  5 Nov 2026 10:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793873322;
-	bh=1m2BkGSmJW9g/I7g3XHucs0qjlE/laWWEx9Emt7M2sI=;
+	s=k20260515; t=1793873318;
+	bh=OdwrZcbYsRV+5ZTU+xWngMpTg+lnAb5qG+LNLsQLWls=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VFFnh7MFZMGhqhdw6TWxETCDX6K6hGqGYOWmD9HR1XxbnwvWLflaO7BjNpG8cMSuG
-	 XT/sSCcg1xNli6cgNQGW7GO2yD1HXtBy9WQb/dKBqNYOCYc+pAQ0DGFpIDhjnZw08Z
-	 VPvCjrae3AqzvwlVcul/ov5YuTq4mZCt5iHPgDv+pjvBAli0G0Kaw1NPfJfQv+djMS
-	 IpJR3YLPPR7xJtkPxFBbVh8rY4/eYWxP8ucksLqoqRD+j+dkhDHmWWj3KRhSGblP6x
-	 NoJld2OsnhjmVARXpgJvQjkySnr7fjVzGIUMkVLsjVK1MtLmzLkl/lb+eWs/CkxHyn
-	 AeTDUOozYq7sQ==
-Subject: Re: [PATCH net v2 3/3] selftests: net: tun: test outer protocol of
- UDP tunnel GSO packets
+	b=Puam2CQmtzryM1xU82tRqOD1E1mcOY3rTPDXuSj8qPWbbkJyU5uMsTnPToxZqBSlW
+	 slJX+9JS0SlYtuMfwbeZTNkPwrOEsrO3VGkNEupST7gsDHxOEZ+JeW52XZGbIUiEXK
+	 6ZRJGD0P7xXWR4DTqpvRyBgRYoC86CWYklBviNodkKBa+9zXGCXnl4i1OoPXc/F1RJ
+	 I+BBHuzI3apMazWYa4LqaIifo+ON3ETggmGmriRGb7B9dF0lkbKHrzCO34eXCGYQlj
+	 vqtaekfBz+sZdGa7kyjjhjgRnoHwJMmMyPOZOH4Wfm3qwM8fr2UPrP6HMjQ7hiWtoP
+	 jJLjX8BVz/5Ug==
+Subject: Re: [PATCH net v3 10/14] net: pse-pd: keep the PI data until the PI
+ regulators are gone
 From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com,
- eperezma@redhat.com, hassansultan@google.com, virtualization@lists.linux.dev
-Date: Thu, 05 Nov 2026 10:08:41 +0000
-Message-ID: <179387332145.488856.1149073246990672028@kernel.org>
-In-Reply-To: <20261104050131.629967-4-edumazet@kernel.org>
-References: <20261104050131.629967-4-edumazet@kernel.org>
-X-sashiko-severity: Medium
+To: github@szelinsky.de
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, broonie@kernel.org, lgirdwood@gmail.com,
+ maxime.chevallier@bootlin.com, kyle.swenson@est.tech, ross@r-sc.ca,
+ netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 05 Nov 2026 10:08:37 +0000
+Message-ID: <179387331728.488856.8945406807366704385@kernel.org>
+In-Reply-To: <20261103220217.1131971-11-github@szelinsky.de>
+References: <20261103220217.1131971-11-github@szelinsky.de>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,7 +70,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,155 +78,130 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new tun_vnet_udptnl_proto and tun_vnet_udptnl_proto_l3
-  tests do not work on big-endian hosts.
-- [Low] The new comment in virtio_net_l4_start()
-  (include/linux/virtio_net.h) says the code does something it does not.
+- [High] This patch frees pcdev->pi from a devm action.
+- [Low] The commit message has only 'Fixes: d83e13761d5b' and does not
+  mention that the fix depends on two earlier patches in the series:…
 
 --
 
-selftests: net: tun: test outer protocol of UDP tunnel GSO packets
+net: pse-pd: keep the PI data until the PI regulators are gone
 
-This adds tun selftests that write single 4in4 Geneve GSO frames to tap
-and IFF_TUN devices with UDP tunnel offloads enabled. They check that
-frames with a matching outer IPv4 header are accepted. They also check
-that a mismatched outer ethertype, tun_pi protocol or IP version is
-rejected with EINVAL.
+This patch stops freeing the PSE PI array in pse_controller_unregister().
+The array is now freed from a devm action that is registered before the
+PI regulators, so devres frees it after the regulators are unregistered.
+This also fixes a leak of the PI array when registration fails.
 
-> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-> index 34de2580e32ec..81410afbbcc8d 100644
-> --- a/tools/testing/selftests/net/tun.c
-> +++ b/tools/testing/selftests/net/tun.c
-> @@ -683,6 +683,275 @@ TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum_64k)
-
-[ ... ]
-
-> +static int build_udptnl_frame(uint8_t *buf, bool vlan, uint16_t l3proto,
-> +			      int payload_len)
-> +{
-> +	struct virtio_net_hdr_v1_hash_tunnel *vh = (void *)buf;
-> +	int vlan_len = vlan ? 4 : 0;
-> +	int hlen = ETH_HLEN + vlan_len + UDP_TUNNEL_GENEVE_4IN4_HDRLEN;
-> +	uint8_t *outer_udph, *cur = buf;
-> +	int pktlen;
-> +
-> +	/* The buffer is reused: do not leave bytes from a previous frame. */
-> +	memset(buf, 0, TUN_VNET_TNL_SIZE + hlen + payload_len);
-> +
-> +	cur += build_virtio_net_hdr_v1_hash_tunnel(cur, true, hlen, 1400,
-> +						   AF_INET, AF_INET);
-> +	vh->outer_th_offset += vlan_len;
-> +	vh->inner_nh_offset += vlan_len;
-> +	vh->hash_hdr.hdr.csum_start += vlan_len;
-
-[Severity: Medium]
-Do these new tests work on big-endian hosts? In struct
-virtio_net_hdr_v1_hash_tunnel, outer_th_offset and inner_nh_offset are
-__le16. Here they get native-endian arithmetic, applied on top of the
-host-order values that build_virtio_net_hdr_v1_hash_tunnel() in
-tuntap_helpers.h already wrote:
-
-    vh_tunnel->outer_th_offset = eth_hlen + outer_iphlen;
-    vh_tunnel->inner_nh_offset = vh_tunnel->outer_th_offset + ETH_HLEN +
-                                 GENEVE_HLEN + sizeof(struct udphdr);
-
-The kernel always decodes the tunnel offsets as little-endian. csum_start,
-on the other hand, follows the tun vnet endianness:
-
-include/linux/virtio_net.h:virtio_net_hdr_tnl_to_skb() {
-    ...
-    inner_th = __virtio16_to_cpu(little_endian, hdr->csum_start);
-    inner_nh = le16_to_cpu(vhdr->inner_nh_offset);
-    outer_th = le16_to_cpu(vhdr->outer_th_offset);
-    if (outer_th < outer_l3min ||
-        inner_nh < outer_th + sizeof(struct udphdr) ||
-        inner_th < inner_nh + inner_l3min)
-        return -EINVAL;
-    ...
-}
-
-tun_open() never issues TUNSETVNETLE. On s390x or BE ppc64, csum_start is
-therefore read in host order, but outer_th 34 is read as 0x2200 and
-inner_nh 64 as 0x4000. The offset check above then returns -EINVAL before
-virtio_net_tnl_offsets_ok() is reached.
-
-Wouldn't outer_proto_ok then fail on BE? And wouldn't outer_proto_bad
-pass there without ever reaching the new outer protocol validation?
-
-build_udptnl_l3_frame() does the same:
-
-    vh->outer_th_offset += IPV4_OPT_LEN;
-    vh->inner_nh_offset += IPV4_OPT_LEN;
-
-The helper's host-order writes predate this patch, and the existing
-tun_vnet_udptnl tests share the problem. Could these fields be converted
-with htole16()/le16toh() here and in the helper?
-
-> +
-> +	if (vlan) {
-> +		uint16_t vlan_tag[2] = { htons(100), htons(l3proto) };
-
-[ ... ]
-
-The following is about the first patch in this series, commit
-fca58b5faf90 ("net: virtio: validate outer protocol of UDP tunnel GSO
-packets"), which adds the code that the outer_proto_bad tests exercise.
-
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index d6466f96cdd00..b9c8babb1fd73 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-
-[ ... ]
-
-> +	if (proto == htons(ETH_P_IPV6)) {
-> +		const struct ipv6hdr *iph;
-> +		int flags = IP6_FH_F_AUTH;
-> +
-> +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
-> +			return false;
-> +		iph = (const void *)(skb->data + nhoff);
-> +		if (iph->version != 6)
-> +			return false;
-> +		*thoff = nhoff + sizeof(*iph);
-> +		*ip_proto = iph->nexthdr;
-> +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
-> +			*thoff = nhoff;
-> +			/* Find the transport header behind any
-> +			 * extension headers, AH included.
-> +			 */
-> +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
-> +						  &flags);
+> Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
 
 [Severity: Low]
-This isn't a bug, but does this comment in virtio_net_l4_start() match
-what ipv6_find_hdr() does with these arguments? With flags = IP6_FH_F_AUTH
-and target = -1, it stops at the AH header instead of walking past it:
 
-net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
-    ...
-    } else if (nexthdr == NEXTHDR_AUTH) {
-        if (flags && (*flags & IP6_FH_F_AUTH) && (target < 0))
-            break;
-    ...
-}
+Should the commit message say that this patch depends on two earlier
+patches in the series?
 
-So for an outer IPv6 header followed by AH, ip_proto comes back as
-NEXTHDR_AUTH and virtio_net_tnl_offsets_ok() rejects the frame. The commit
-message says this is intended:
+  "net: pse-pd: do not tie a shared power domain to its creator's devres"
+  "net: pse-pd: stop async event sources before freeing PI data in
+  unregister"
 
-  Unlike the original helpers, ipv6_find_hdr() stops at an AH header,
-  as Willem suggested in the review of that series.
+On the baseline, pse_flush_pw_ds() does not clear pcdev->pi[i].pw_d. The
+domain is allocated with devm_kzalloc() in pse_register_pw_ds(), and that
+runs after the PI regulators are registered. So devres frees the domain
+before it unregisters the regulators.
 
-Could the comment say that the walk stops at AH?
+Suppose this patch is backported without the power domain patch. The
+reproducer in the message would then still go through:
 
-> +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
-> +				return false;
-> +		}
-> +		return true;
-> +	}
+pse_pi_is_enabled()
+  pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)
+
+It would read pw_d->budget_eval_strategy from freed devm memory, so the
+use-after-free would just move from pi[] to pi[].pw_d.
+
+The unregistering gate has the same kind of dependency. Without it, a
+consumer enable after unregister would get past the pi[] access and into
+pse_disable_pi_pol(). That function uses the kfifo and the work item,
+and unregister has already torn both down.
+
+Both prerequisites have their own Fixes tags (50f8b341d268 and
+ffef61d6d273), so this only matters for a partial stable backport.
+
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 43f6e304fe5e6..eccbdb3acbee8 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
 
 [ ... ]
 
+> @@ -1123,6 +1128,13 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+>  	if (ret)
+>  		return ret;
+>  
+> +	/* The PI regulator ops use pcdev->pi until devres unregisters the
+> +	 * regulators, so free it from devres too, after them.
+> +	 */
+> +	ret = devm_add_action_or_reset(pcdev->dev, devm_pse_release_pis, pcdev);
+> +	if (ret)
+> +		return ret;
+> +
+
+[Severity: High]
+
+Does this devres ordering cover the case where a consumer enables or
+disables the PI, which the commit message also mentions?
+
+regulator_unregister() does not take the rdev lock and does not wait for
+consumer calls that are already running. If consumers still hold handles,
+it only does WARN_ON(rdev->open_count).
+
+pse_control_get_internal() takes the PSE consumer handle with the
+non-devm regulator_get_exclusive():
+
+    psec->ps = regulator_get_exclusive(pcdev->dev,
+                       rdev_get_name(pcdev->pi[index].rdev));
+
+The PHY only drops that handle in phy_device_remove()->pse_control_put().
+pse_controller_unregister() never walks pcdev->pse_control_head, so these
+handles survive the controller unbind.
+
+I can see two ways to hit this. The first is a consumer disable racing
+with the unbind:
+
+CPU0 (for example ethtool PSE admin-disable)
+pse_ethtool_set_config()
+  regulator_disable(psec->ps)
+    pse_pi_disable()
+      pi = &pcdev->pi[id];
+      mutex_lock(&pcdev->lock);
+      _pse_pi_disable()
+        ops->pi_disable()   /* sleeps on I2C */
+
+CPU1 (unbind)
+devres release
+  regulator_unregister()
+  devm_pse_release_pis()
+    kfree(pcdev->pi)        /* without pcdev->lock */
+  frees the driver priv that embeds pcdev
+
+When CPU0 returns from ops->pi_disable(), it runs:
+
+      pi->admin_state_enabled = 0;
+      mutex_unlock(&pcdev->lock);
+
+Would that write into freed memory? pse_pi_disable() has no
+pcdev->unregistering check.
+
+The second needs no race. If the PHY is removed after the controller has
+unbound, __pse_control_release() runs:
+
+    if (psec->pcdev->pi[psec->id].admin_state_enabled)
+        regulator_disable(psec->ps);
+
+That reads the freed pi array through the freed pcdev. regulator_disable()
+then reaches pse_pi_disable(), which uses the same freed data.
+
+pcdev itself is freed in the same teardown. Can any ordering of the PI
+array free close these paths? Would the existing pse_control objects have
+to be revoked in pse_controller_unregister(), or pcdev refcounted, before
+the consumer case is fixed?
+
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104050131.629967-1-edumazet%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103220217.1131971-1-github%40szelinsky.de
