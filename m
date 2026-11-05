@@ -1,95 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793902914;
-	b=allWg6IeQ0J9OhtX3p/ZWjTwx2rWrq+gjiyr5Ni7Y7ylFT4HYEuoenZOUzGEkzpRr2wx
-	 K8c+SFGlJLlKpYjV6jfzaVEnlARGKt0q5NZATSezceZT9qwXiue5hC2tNSL+Sa0dTGBPj
-	 j5aP5k8zZURCRrI/l8UQ1vv44OzG7A7Iiu48sF8t3XSLXATIwV/3th8HS2twLnhScmbA1
-	 XfldWGoi4T3Y71tbcaqNNnvf60h4J2D2tNuBzayiljxQfsEzKuY+dUbk0YNi+qqdHhJTz
-	 awGJ0YrV+CKDhbP1BjnWGarYLvbl1RQpLD2T6q0WSUSxr7jK9jWHgLLPDpXi0pWWOrA==
+	t=1793903188;
+	b=cFM0+pzysVFTp+ZQ5cSZTjmmpwFyMz3EpbFRkvFuDpyCin/F5No5Ml/nEDhIeer/MV6J
+	 po2TvQq+RHCW+nZEBYxCUfbbkyEF8xpaWCPnAV0MxID6+fBFZg6d6QnC5qDrPLg0vpLeX
+	 Mli8SmHCE66PPt1WLy/wBeAc+srP2oURiQBTYhS0pUeuqczi/V0IlhguDu2DE390Tl4DA
+	 XMcmHnKdBW8VvT6FJD0GbEEXs2jhBAmHlKpb+dhJ7bT6dv7X1JHpy9ZFgmhDM6+mrBZYO
+	 lQpYA6SifEHIy4IoCYtqCHDxq0mSEVzcadB7DYdPxkIuBKR1z5VkbuWyAuO2ZDOXhww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793902914;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Xe5bXUoSjdyUS5Z/rgEUMSGbH/+ArslOY+WPxBZy8QA=;
-	b=sShQVmAlOcUIVG0/lcYZ+Fe632s8LIIgjMJoqdM2GytgtKXfcUIUiufsoXPiCRFexfKH
-	 itaxSDImnvjxegMyrb1XlP09B9W8INr9lKPDPt5dsVL/CtxHdihMx+PbA0S5grgrJtarh
-	 vmp5CuV7sQpX6eDvRWLDbv6cyxTRz1LhaVatrMKXualCYhfO7f9w8zST3KhmBQ3KEb7oM
-	 CY19VZ1JAqqkgocNAhQHhqPKdIsUKRIOErID0cw4jgEcPrVk4wzI9cQVTQInyBcCWQwio
-	 GSDGRfkFV6/MMzA2IvpemcLXxNmpWKDbdjQUButQjfhb/RvMZ7zRzxOeg2IIwYqqO+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793903188;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=/R0hL4pC4E1+M4yPEUjAb9DEswCGIx3z9hc5cmLnrn8=;
+	b=RYbn3/hxRfDGlhYufbFPel9k+IJBb/WkzM6TuPi74pX12Y/kSUV5CDcdqK8c3kzBx71Z
+	 TYIrcpzOQpzdxPcOSpEHVq16URrYuDRVOGWqeSEv3NQEmKnzU9iTCqMmkzWkofnbCB/5+
+	 AJTrFn+5nOXPdEo1aenNb7O/W7T5Gt6MvndMHAZvsFBvVXta3q4sNDnNX2QyqSMCKpFwR
+	 dpPyPm6M7QaH6/RP/veODloWicMlvhHqzrJw9CIBj7UkrzxafIgFw4qoXaI4P6GT1rLbo
+	 aP0irO+QEPK2WP/WDHgYoGn308x6xFAFKODSynwujMSV+1Yr7vIzAXeoQQzL2lreKuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T2h0DhmR;
-	arc=none smtp.remote-ip=209.85.128.176
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WSADaA2/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC82606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 18:21:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BC82606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D977D606A31B;
+	Thu,  5 Nov 2026 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T2h0DhmR
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b0a921ee46so22091567b3.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 10:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793902913; x=1794507713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xe5bXUoSjdyUS5Z/rgEUMSGbH/+ArslOY+WPxBZy8QA=;
-        b=T2h0DhmR02KOcmPE3YSD3Y18dAo1C69YstjJVJS3mpOsZgFM0hiT0zJagopeMurV4s
-         GKfG+7h8mU4t12KFU+dSIRGQhSKjfRX3zLKEFKB5kK9JCGQKDNm6iqBr/d+1R017glvl
-         UGZIrRfWrMGhkno2kGGr0FleUY43JQdOCx28g/W+lezrqyPTldeTrq7Vkj0+MNkgeeyG
-         wxIKpxytgEeY7Hubcpo8l6VkECHQuFLvnSO7cGtkRbfLhamCQSUdRPdQWW/dJk4eOVpB
-         e2wN+OIY2gCwwGR6wPMF+99UjlqIgnmh3ji07XoaG57SZb3AKC3QweXNbObTGDb3M47K
-         Za7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793902913; x=1794507713;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xe5bXUoSjdyUS5Z/rgEUMSGbH/+ArslOY+WPxBZy8QA=;
-        b=olces0XuuNKwGYlvUMBE8IMkkxSmH4ohD7ocqlMnxgW4tJoR6Kva7rWpwV5NTQM+W4
-         3Po3IFyoitcTbao154CfaUUTC2dSVYwa63p6ueOKgA7t/Nr4J6trsaPjGzF+utHTScse
-         56pElqDfYGRT/9OeMylaIxlokpmnY9ZLWUudHZi0ucJiPQsypG1KdKwcChazSf8rsPhN
-         AXBsCRoJ+5F54pQnTMOCCesEh4xB+9l6gn1BcGBnRF8id745ME4HW2p3ST9Ze5Tjd+SF
-         XsmIRfleXQBrctTbedyxbyl5LecnGgzrGAMXMgWMkpJujndq1OdH0JdeHy2aqxsmpwop
-         eD3g==
-X-Gm-Message-State: APuU4Z968Egy6pg5/2vbHVs7rr0dfbpKGEOSGS/bRa8IlnITz743ubfj
-	72fOdbX/hWtJqmIGc6Xs0I99qtEcC++P0uM5oDdc5E2BKwH28MBsuTARpIjqd+Qv
-X-Gm-Gg: AYBFou3s0JhBlj795cQpndWJRYRxDZV1dhdNSh61S1TiDnpk/PsMMZPlMMckdLya99d
-	IBZx77VcLBUEgaepv+7FOUHmolI+UHSHKZQMD1itK0wAZW9Cqt7jjVVVRnC5KL6cQ8+UiZGLoCH
-	x3l8Vk0ATC7XT8Li53meSvLo2FmRFfHVpJfqgOAl99uKREpTDflkeAWgSOJiOUAaDw4aKNX4wXl
-	H9Az+EkvuhGSjLB00qwAeHyY5thftmDojjocfMTVRXVP2ktraQWmuqxfra3fRWR7f43XI/NMzmd
-	W5fly82WXHvtrzR9Qp65jQv6RasLsZcwrSO2dDn9Chko4UC+EfMpOy5BSCybRcWMI0zLIJN+VDl
-	JcBY4VUc8RA80xJZVQ5lIOz1SNC5KdDUReKejEfwdHFUJ1pgleoMHlxdP+a/4R6ddcEjHb/zZIK
-	Cekv62Zos3czR51YiQYldQWNw4JOuPqtYJjsbRI7HONifslNDw2MRkleWH+2lHf/t5WGioQRaWs
-	DDvHERJDgq9R6KeJR/Q4upMZSWGKq0Q1FS+FfYf5onwpdfsJJtblNDCOlBdhTzkewjeLpv35Biw
-	cAcvx0H0ZZxtc5SVF3pj4cpEDf0/EKP5y+LOzJYo3BTcYsPpb2wdJTXTybes5tOtU7qzBqspECN
-	Ns9RGBSK/p2HB/sQM0tJIp4XaZqRTjnMxMvBhfuRV6A8vjB4/GyHDThiePjtKrjxy1wjF3iS3BK
-	KnVuRDC4QBRMOYmPRO
-X-Received: by 2002:a05:690c:e3ce:b0:8b3:343d:af6 with SMTP id 00721157ae682-8b3343d0bcemr9671047b3.91.1793902913216;
-        Thu, 05 Nov 2026 10:21:53 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f7f084fsm1284817b3.20.2026.11.05.10.21.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 10:21:52 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	linux-sctp@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Subject: [PATCH net] sctp: linearize GSO skb when frag_list skbs are shared
-Date: Thu,  5 Nov 2026 13:21:51 -0500
-Message-ID: <9997493edadfe9faa713c73de9c70e36cee9ffea.1793902911.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WSADaA2/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AEC1F000C1;
+	Thu,  5 Nov 2026 18:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793903187;
+	bh=/R0hL4pC4E1+M4yPEUjAb9DEswCGIx3z9hc5cmLnrn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WSADaA2/B0njymg1oF8Zt+aQWjkjZp7YNB/CPyp9J98Lqyl4v6ZjN9fdw7/g/aDHs
+	 chIL9JCou1TsxyZomGHv2ZBjLQZ9Z1DMWTUjRpmHis5a1j1jVyAEUyc+4ePcQsFPhd
+	 OPBs016zO1yFXnt4RNHofu1Kp5EDvzii20mg9cT1xiXd9rLrrVGa/442/RYi2She4m
+	 EYJhTmYBt2Rvig1iLH8Imhje9jvJRWYRfaZbM8Jt178SF2ils406aYXkle+Zdk/FLn
+	 gDUCaggZAfj1BLbk+EODCjDPXj1SZjVg3T1elHfRmQ6s3AYErm9i4G5kIxtD/aXjgb
+	 Fehrul5E5Cuyg==
+Date: Thu, 5 Nov 2026 20:26:22 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH 17/17] PCI: Replace untrusted state with device trust
+Message-ID: <20261105182622.GD8298@unreal>
+References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+ <20261105-device-trust-core-v1-17-1e536825b4eb@nvidia.com>
+ <2026110526-aerobics-correct-4c06@gregkh>
+ <20261105131856.GA8298@unreal>
+ <20261105140352.GF3889730@ziepe.ca>
+ <2026110558-tartar-juicy-036a@gregkh>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,47 +90,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026110558-tartar-juicy-036a@gregkh>
 
-When the iptables TEE target copies an SCTP GSO packet with pskb_copy(),
-the new skb shares the frag_list skbs by reference (their refcounts are
-bumped but they are not deep-copied). The SCTP receive path skips
-linearization for uncloned GSO packets, so it later operates directly on
-the shared frag_list entries. If skb_copy_bits() encounters a length
-discrepancy or invalid offset in such a shared frag_list skb, it returns
--EFAULT, which triggers a BUG_ON in __pskb_pull_tail().
+On Thu, Nov 05, 2026 at 10:43:00AM -0500, Greg Kroah-Hartman wrote:
+> On Thu, Nov 05, 2026 at 10:03:52AM -0400, Jason Gunthorpe wrote:
+> > On Thu, Nov 05, 2026 at 03:18:56PM +0200, Leon Romanovsky wrote:
+> > > On Thu, Nov 05, 2026 at 08:12:51AM -0500, Greg Kroah-Hartman wrote:
+> > > > On Thu, Nov 05, 2026 at 01:42:30PM +0200, Leon Romanovsky wrote:
+> > > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > > > 
+> > > > > Convert the PCI specific untrusted to use the common device trust
+> > > > > level. Adversarial means the same thing untrusted does.
+> > > > 
+> > > > What about for USB?  Will that "move" to use this common trust level?
+> > > > If not, I don't think it's very "common" :)
+> > > 
+> > > It supposed to work for all buses out-of-the box, at least this is the
+> > > intention.
+> > 
+> > You mean DISABLED/FULL should work with this patch series on USB
+> > right? Meaning the core code will not bind a USB driver when DISABLED?
+> > 
+> > I was wondering if some of the broader things we are doing on PCIe
+> > also apply to USB, like device authentication. I don't know alot about
+> > USB, but I got AI to help me find some relavent spec information.
+> > 
+> >  https://usb.org/authentication
+> > 
+> > This looks like the parallel to PCIe SPDM device authentication. I
+> > would expect it to work broadly the same way as PCIe if anyone wanted
+> > to implement it:
+> 
+> No real need to as no one actually made a USB device with that spec :)
+> 
+> There was some patches on the linux-usb list 6 months or so ago to try
+> to implement it, but it stalled due to there not even be any devices to
+> test it for.
+> 
+> > 1) USB discovery discovers authentication support and creates an
+> >    attestation subsystem device for it
+> > 2) The struct device starts up with trust = DISABLED
+> > 3) Userspace runs the crypto flow through attestation subsystem. This
+> >    is extremely similar looking to PCIe SPDM:
+> >     1. GET_DIGESTS -> device returns a hash for each certificate chain
+> >        slot it has.
+> >     2. GET_CERTIFICATE -> device returns its certificate chain, read
+> >        in pieces.
+> >     3. CHALLENGE (nonce) -> device returns CHALLENGE_AUTH: the chain
+> >        hash, a salt, a hash of its descriptors, and a signature over the
+> >        challenge and the response.
+> > 4) Userspace inspects the above and approves the device
+> > 5) trust = FULL, driver is probed.
+> > 
+> > But I supposed Greg is asking about /sys/bus/usb/devices/DEVICE/authorized ..
+> 
+> Yes, that is exactly what I am asking about.
 
-Extend the linearization condition to also cover GSO packets whose
-frag_list head is shared, so SCTP obtains an exclusive, contiguous
-copy of the data before processing it.
+I used AI assistance to create the conversion, which produced two patches.
+The first exports `device_trust_set_policy()` to support
+`/sys/,,,/authorized` and `/sys/.../interface_authorized_default`.
+The second adds calls to the `device_trust_*()` functions.
 
-Fixes: 4c2f24549644 ("sctp: linearize early if it's not GSO")
-Reported-by: syzbot+f15a6eff7a53f6eb7dc3@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
----
- net/sctp/input.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/commit/?h=device-trust-core-v2&id=98f5d11580d736a7878323dfb7238cd08c6c76af
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/commit/?h=device-trust-core-v2&id=f10f8e448540982699438dce369fef6cbfabcba5
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 9494cfa51106..db3c7818724b 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -117,8 +117,13 @@ int sctp_rcv(struct sk_buff *skb)
- 	 * it's better to just linearize it otherwise crc computing
- 	 * takes longer.
- 	 */
--	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
--	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
-+	if (!is_gso || skb_cloned(skb) ||
-+	    (skb_has_frag_list(skb) && skb_shared(skb_shinfo(skb)->frag_list))) {
-+		if (skb_linearize(skb))
-+			goto discard_it;
-+	}
-+
-+	if (!pskb_may_pull(skb, sizeof(struct sctphdr)))
- 		goto discard_it;
- 
- 	/* Pull up the IP header. */
--- 
-2.47.1
-
+Thanks
