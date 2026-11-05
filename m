@@ -1,106 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793874348;
-	b=27zfwCDkucSh/79n0uRmXuaV54bf3o1nbINgF66Wh/iQ9fVB8/sWZE88Eata7BzaEJYe
-	 rNR9y0/8LTBWqN3OeRUJf7nUgakItVkClO5P3+lRf5uT3F/nfMRI5uWqX7S4HQ+xlwfmu
-	 h/MjoCwTPuFqH6nR3ubP7vo0kWRDdf2fxTED2aD1qzhOULUI+ngyWSBwhE5kfHxr/Ni5u
-	 0tLYSXrenviUu4ZWL5xg6Uwq3WHmhC+nIFvqtcrhcjrQeJrq9vJEKYs5SVTw3RMJphQMT
-	 ymOywJNfCoZ2JAyS42At5vjMJnwN2AxP796yFmAXLBdl1RNa3oZvcCeO//rsv56BfVA==
+	t=1793874617;
+	b=TfC1LDvXw0jFC6jWlXza9AGz6Iyndwsa+XNr9dTdIb2NPjxzOZzlSNJwISibdJ3WYxoQ
+	 rK6zFctXWFez+2SkYAmLD0a7ScO4IEHmxlJvgPbTD11eGcfce5rTOwNoUwPnz3YTLoWZs
+	 RR+YRLTKInRn4rGTDrtsXU4UGcTycmrPnFBMipYP6mv3E3gVoqin7uBFITq5CTeOfvOKr
+	 y37aUkyrFUo0FJs4tKDyuwVAaHUn75F5LxxOJbpj/KBVC4OiHSL8j7J0WEGVuELyRq3bs
+	 F+d7jZDdc9kJ8kaVBeyTE3FZbF3nA6Jy4Fb6XbQw5kyHseMDJPO6GNtjunocURjv1GQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793874348;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=l2bEp5N3wkDM5hvlXu/q4Wh+Pcm/FLJu3KnOMv2gYeU=;
-	b=tTzb97EiARBNbYCDrDc+1ki4Om1czNDGDnbqWoTyfrARhWLTHJLNGVCT2yRY4/Fn7I5x
-	 bXT7qbM7yrmEn2GoX4esMfp1xWud+YjvHJtNxIQzafvYGPyP+u54xXueewbg6Pjd+6Y9+
-	 FlKPvDe5Tu4VGpynPbPgFnVgF6pN1SIjKK33NECAIzGY0zcxRZY/ASoVYpAVx2lB9SOue
-	 JWF854j5J5C4NW+QfmrQM+dVrw7I7hkTInOrxNUk6/pn5sXlJpFYcbjV4yVR5xpYFFfHp
-	 hzdWrF39AZ1j3Lvl8DDh3VWIC7/G/ZgHC9LM25iugvxscmWR/NfqVUnBipOCoUPJCLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793874617;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=aY4AUfbfJDpppsRiExRd+4IldJoEWi704rjSVmMKD7A=;
+	b=BQ8gccL4hP+D1VN7dKAtIS5QuzxvaFVoFizN5lEZg58OdHmwhhAdibpfsHpwoZkgO20o
+	 OIkehxRSoFzehD/Wnfp+JcxMkGqH/vDIMF327e3n7qUOxax/uadpTSF7y7YMRWQWfB7z/
+	 208g425QwK5mnkO0yrKMwwtG/TV/GM1t4cetduP9zcgEXjX0f38W//EWumDU31A2EnKuW
+	 JbVi9lDANH7QXo0z/LIZfWfVGmwTEikdrwvQ/ILVhivTRPYuwxhcbcpMBitw7w/yUVG5u
+	 YUvkVOBM+8VPbRlF4l66PZYQaGyu4dXhH6cAQieS1Q4auUTfNpFSnddYCKE7X24tF7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jclark.com;
-	spf=pass smtp.mailfrom=jclark.com;
-	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Gg25pHSS;
-	arc=none smtp.remote-ip=209.85.214.179
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HttCFaqY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63D5606A31B
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:25:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C63D5606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9DE606A329;
+	Thu,  5 Nov 2026 10:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Gg25pHSS
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e977109392so10288565ad.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:25:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1793874347; x=1794479147; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l2bEp5N3wkDM5hvlXu/q4Wh+Pcm/FLJu3KnOMv2gYeU=;
-        b=Gg25pHSSDudyY139JVOUsD69eHT7HHezYXjUrUY32x3lKhC8vM78K5hc5RX/Ag6rcL
-         Re+BKi+m8a/yoeNc9zo1St5mobFD7sWIi5/iAlD/h5ZaW+fZX+KRMf1Ma7wjQFb0zWyi
-         pedUerNElELODu5cAE3jmk/1bg7vr/1GINuFSx6v4DwVBOB/L4IHa3gVxS/I3wrhWzTk
-         VoETcKad+y0WNDzTLgy4iJihXafFnnyX4Rz4XXfpSe/qzIcoQJJM4NZZk0LU9qevkiNW
-         BAX/78ieS42amsLSPCXVHshWFdvNYX/feNL/E+HOVLOV1DzrPZ/nOEGH9Yvw0vbAOiO5
-         QRdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793874347; x=1794479147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l2bEp5N3wkDM5hvlXu/q4Wh+Pcm/FLJu3KnOMv2gYeU=;
-        b=n1U/6QxoWpk89pgq2W3Qo04uwc0JNTCSAI7fnyMlpuP9kaq00CWKuz1MloHkQLpwXD
-         O8c7JgPKFXMc/+ruMk40EH8tcLCTmBmmxBpBJocI19xi/oAb2YyqAD6Z5TEMlJeB9sn1
-         MewbcX76nRSlflasHZljLk5UxiqB/Z8RTqIMs6xYvLGoeG7BnkO5J30S0LSbb+C2eRqq
-         J6aQs1eys2O4yP0Jj7LM/tqBYjkb9BJ5k60YrMSOA/816DwZzqo6BsXpU51L/SdDEvFf
-         89BEcj/6m+l8Mv3v55FAfaeKMh7b5bbj4jyunqmoGS1JGhwEzqnAbiq7WjcamNBpJ+S+
-         CORQ==
-X-Forwarded-Encrypted: i=1; AKwUvByJo+9dzXAeaKTy3iW+yYJN3oBoA3tZzZahnha3paqNao0AI8A39J/qSvMLi25+okzfmviZ3ic=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8wH28FeYiK7m3F5T89k1lP7VS9q0JcYQM2H/Ohi8zSLkuifg0n
-	YTKgMpMWzIVbRs6Nu+FgF0REU8BKwJsLueR5xnCX7xZNfRAB9h3Gmgyer720dDDI0A==
-X-Gm-Gg: AYBFou0YA8CyXRk8TCSiG2QG2h8IOrN3TOgCuEOxDYINiGw8/E2wZ89zxFkcrNO+Yzf
-	UNov8ZMZHbKNlL6aWDCgfTrL2UwYgklUntCnvatbqghJxRDgxxTDYcrbCxBaSmopTIzeWtFmHPF
-	XNhU+F6qe7idmSQVe6ElkLQs9t+C+1KVJ3J+W1G98qm9gLPfCvFqVcagF0U/ZKISQ8DP92jSQW7
-	zDrYDPz+FN9MYKvm753aAY/CkFmYWAezDlgsznlVtue9x4PMNR7TeGTeSTJqT5s7sFxOYtBop02
-	WgUvJe4cfz8FnmGMn+z3Nr9+JqjDiyHh/jt8WIlxUwcezck+G+Ur3boi6rqx8cR3Eoq/eFC/j6i
-	6ceUnLhoeHW/C8Sr3Un8THsYxDJ4HAGK40MD5V0+3968D2de5ZIC8Fw/I2ah3ceJ4fkQCNPFvMW
-	kqr9YLEdxuBja3cuUvzU3HBLypBU8Tm9vkfKeY7fwdClJBx/jQSYEtoAZrthOhGoMOwQc7gKI43
-	Iw3Fq3CkKrAzh/hFMZWTGbf8i7fUGs20qbErpDGku4orzGLD6LEbklN9e7XhkNp8VMRpL5vm18u
-	gCXjBxMe/KwxWsXyElxTUbjMGh8xcCM2T1kjyIviFD5lE9pCKw/lqOy1WIO65oBtlBHjkorDr1/
-	AhVFnIKElxjB6woqZ0yI=
-X-Received: by 2002:a17:902:dace:b0:2e5:78b1:33fc with SMTP id d9443c01a7336-2eb364835bdmr184698585ad.53.1793874346953;
-        Thu, 05 Nov 2026 02:25:46 -0800 (PST)
-Received: from cantal.lan ([58.136.77.237])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed09127cbfsm16133795ad.50.2026.11.05.02.25.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:25:46 -0800 (PST)
-From: James Clark <jjc@jclark.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: ptp: fix support for PTP_EXTTS_REQUEST2 ioctl
-Date: Thu,  5 Nov 2026 17:25:40 +0700
-Message-ID: <20261105102540.2273912-1-jjc@jclark.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <179387332308.488856.2315265262072517836@kernel.org>
-References: <20261104052504.1886335-1-jjc@jclark.com> <179387332308.488856.2315265262072517836@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HttCFaqY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498F21F000C1;
+	Thu,  5 Nov 2026 10:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793874616;
+	bh=aY4AUfbfJDpppsRiExRd+4IldJoEWi704rjSVmMKD7A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=HttCFaqYkoYo+r4yowGWKstYxuZRqG4osY6wLCMgMjdb6cw1CBBX8vmv7kNfTkCzM
+	 lR1WNwl+8RWzxPbCxY65CzmOBP2y0BFhKb4irPF4z48XwFBtz+PVWqFrLPja/dEPZD
+	 JLE7jtAN+DGyf9rDaQw1LtPgeq7TDIj9+aQV74Tda18G4kWRhxvWJYgrn7XrAND0Zn
+	 mQjr/z4qNVyqu3icq+JJHZyQXlWCQxF9qaWiTnfIh8fNzzBseRgTKdOB8UA/qs8WgO
+	 iOQmdQI62IjMR2rwYOyA1dVX/7DZhg/kCIRMrtI70Pj/VKgX0MPYNCfF3mvNqlQ4JV
+	 7q25Gi6lf0rpA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4013D391AFB4;
+	Thu,  5 Nov 2026 10:30:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,16 +54,53 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: ethernet: ti: am65-cpsw-nuss: Enable
+ timestamping of
+ unicast PTP packets
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179387461505.3576987.13427871090312904727.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 10:30:15 +0000
+References: <20261102135117.419539-1-jjc@jclark.com>
+In-Reply-To: <20261102135117.419539-1-jjc@jclark.com>
+To: James Clark <jjc@jclark.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, c-vankar@ti.com,
+ s-vadapalli@ti.com, horms@kernel.org, daniel.zahka@gmail.com,
+ bigeasy@linutronix.de, oss@vassilevski.com, nora.schiffer@ew.tq-group.com,
+ grygorii.strashko@ti.com, robertcnelson@gmail.com, mlichvar@redhat.com,
+ linux-kernel@vger.kernel.org
 
-On Thu, 05 Nov 2026 10:08:43 +0000, netdev-bot+sashiko@kernel.org wrote:
-> The commit message says:
->
->     Only the PTP_EXTTS_REQUEST ioctl still works.
->
-> That suggests v1 behaviour is unchanged. Could the commit message
-> describe the v1 change explicitly, since the patch is tagged for stable?
+Hello:
 
-Sashiko made the same point on the equivalent am65-cpts fix, which was
-applied unchanged as e3aaeebbef56. My reply there applies here too:
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-https://lore.kernel.org/all/20261022035226.1388675-1-jjc@jclark.com/
+On Mon,  2 Nov 2026 20:51:17 +0700 you wrote:
+> On a BeagleY-AI (J722S), ptp4l as a unicast master (unicast_listen) logs
+> "received DELAY_REQ without timestamp" for each unicast Delay_Req, and
+> its port goes to FAULTY after "timed out while polling for tx timestamp"
+> for the first unicast Sync.
+> 
+> am65_cpsw_nuss_hwtstamp_set() does not set the TS_UNI_EN bit (bit 24) of
+> the port's TS_CTL_LTYPE2 register. According to the TRM (J722S TRM
+> SPRUJB3D, 12.2.1.4.7.13.5.1 Ethernet Port Receive Event and
+> 12.2.1.4.7.13.5.2 Ethernet Port Transmit Event), this bit must be set
+> for the port to timestamp PTP event messages over UDP sent to a unicast
+> address; without it, only messages sent to the PTP multicast addresses
+> selected by the TS_107 and TS_129 to TS_132 bits are timestamped. TI's
+> netcp_ethss driver for the Keystone 2 Ethernet switch, which has the
+> same timestamping registers, always sets TS_UNI_EN.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: ethernet: ti: am65-cpsw-nuss: Enable timestamping of unicast PTP packets
+    https://git.kernel.org/netdev/net/c/6887a8f98244
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
