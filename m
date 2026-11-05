@@ -1,47 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.249
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793842989;
-	b=QHyNr1hXORRJzRNtYYZ+rKsD6zL6hemAgKcaI9OcZ+RO6AJdh6TSXJ8tQtixeH5DunEw
-	 KAf6YEtD458AQMpMG/Glom6GWunUdiGUKwhYr01bJOUsM9T6FzceOEUvkJ/jonUq1AwpR
-	 V+vEEUCbwDNfnj/euBU+bzwtRyT3mpEvbizCqwNHCAOs+QfF/vcYDBjnLkR+BwrKwfseX
-	 LN7WGWJDHah6YAjQGSrCKZKhIVoNwnJbZip1ltAR6rFLdDHM3avC+EZw2wbQMsJXIxzl4
-	 zLFdJZ7FzE33gU+ddc8TNb+pGvqHr+vIjiAHExDnot8IyaEIh0Jo9wqjgM0qX/N+Ynw==
+	t=1793843505;
+	b=Ye+Wb6UdF4gFFrfj0wC+RNH451P1eppo2FG8rHaUPmSSAOVx5/46d373YMaC99grpyQN
+	 xkyhTM1VDf/NzU2GTYL4jcvxzpbI/ZD+CGvwjSAjzCnp63wJNWlBaHWhoemF4idAPjjux
+	 sSHWYMJESE+Lp5xsLZ3liAikJNoqAyVc3N4Z/lfN9jZZ46xV/3ks12qP0fbj98cFRiBuC
+	 AQPa2u58qUjBXhTTVdh6eWLe9fi0QW1u4DXd+5UqJjIXCktDZK4WLR+WcvKZMeVLlEAQi
+	 W1ZQsVyQpjU/v7YHLSyHdnu+Gd+B0hjFHHhtFhRz973Pt/HKhQe26uwMR5M7levjDxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793842989;
-	h=DMARC-Filter:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=4BSqxRTgSb3vt/CKXrrFj6KaX5f+yk4qmxSo/6uB+PI=;
-	b=4CBf/kZDcsiqi08fjthJHmbtbG9lEmsF8IZJbyh6Csn2v4BZxz9maIlCHEdJgrwZan/u
-	 CZgMtIf2yLLkfHrDqm7apP+c9h97p/ceJXa9Q+qA5wcwafZ86wXFkBTA3eOnxSYKdIMM1
-	 HPKisRbgVMlk2DGpQ9tnrpYOPIUETeu+zyQGBQ/h1+BdKYgD7qmTcPyQs54gilqlitUsP
-	 WoFkReXzlQkzG44JPysWHgVmFTw+mcErNf3YKhUgueaLAMpkQLW7sZSnCS0+YSVtNWK4v
-	 y1ocmSrFskBna3vif1sLXrFHfClVMUkoCc5hu9lWeekzDUq+bJCPx1/mcC23uzA5BYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793843505;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ky38IXx52DEGULXMrnA5tjdm39nZcAMBNJmvwXh3cTI=;
+	b=ImNkXRYDigUTvxHR9i7kX1/z8p6spzMgHtsC2ONCTQp1T2b8RicXvO2ihpNvfAQA+T8e
+	 AWYhbKPddtjgwX55bqVrZwrnhaulxUrX47F/g4Iau6xGTz+o4gIMUhpbmGKoB0YIB9Rx6
+	 WrnYl9pr9B24+S1SQ/EgVRwIkfJPIH78Ln4X4WSv02dfK0PEoCloUmctoLO3HoxLbkuyL
+	 qbZeX3sNmf4Akf86z0s3HlqNSk4IP2aAQgSGKFiWo9ZCYzHK6sKA+19M/cIBS4UfXEV2X
+	 JMWIFKDPSilxEJ0CsfOYSgsrSMbfJ1Pm2VWK0i/VhokZ3fFuS63FVsVn/GrW/WLPB1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=dVWoeXXm;
-	arc=none smtp.remote-ip=117.135.210.3
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PbgEo1at;
+	arc=none smtp.remote-ip=91.218.175.249
+Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D085E606A31B;
-	Thu,  5 Nov 2026 01:43:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D085E606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA55A606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 01:51:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA55A606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=dVWoeXXm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=4BSqxRTgSb3vt/CKXrrFj6KaX5f+yk4qmxSo/6uB+PI=;
-	b=dVWoeXXmkS6ZuUMhVbBIA90KZzRWEgOUM3BiNEE7K6NBfeluWjygDEWevKbB8Z
-	WoEIFb0AjUl3QB4H5FWmaGGUSKMwscaokWFKVNTIDflZKXViboExCQTHmUEI3RWi
-	LO5OFzP3zACmHPcc0SEXlXjwDkp5vOvCuVy5qyhOeR0Ak=
-Message-ID: <ae0f64d6-af0c-4c1b-9066-4cff7bbd8d35@163.com>
-Date: Thu, 5 Nov 2026 09:41:50 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PbgEo1at
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DW+azq6/SBvy/V6tvbvsVQb5ifMLNmZz6ayEqb3qh9w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793843501; v=1; x=1794448301;
+ b=PbgEo1atnLArh5Odi3UeSK0+CEj2+3t5Y+yIK8VJYNNdvRv6APy7KfWiFgN0ubfwkQ6oes67
+ pRALqBo63uJo/BNF9mI/bLb5wqdhCT7DdSsH5nl/1tT/ne8MFdbuCYDFGNQ3+PHPD7Exi5mnEGM
+ dyBSzprJkBN9bMShLwlG3wXY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 3f261ba619c0a795;
+	Thu, 05 Nov 2026 01:51:41 +0000
+X-Mizu-Trace-ID: 3f261ba619c0a795
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 09:51:30 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	weiwan@google.com, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] selftests: fib_tests: Add carrier gateway test
+Message-ID: <auvhInnH7ESZj5Xr@fedora>
+References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+ <20261104195655.1406837-3-aroslavdudkov622@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,82 +67,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] netfilter: conntrack: avoid secs-to-jiffies
- overflow in SIP helper
-To: netdev-bot+sinfo@kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Patrick McHardy <kaber@trash.net>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261104085925.773471-1-l1138897701@163.com>
- <179378310288.488859.5501372329923288019@kernel.org>
-From: luoqing <l1138897701@163.com>
-Content-Language: en-US
-In-Reply-To: <179378310288.488859.5501372329923288019@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3X6fi3utqiL+2FA--.37895S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CFW3ArykCF18Jr48KrWktFb_yoW8uw15pa
-	y3K397AF98JFyFkF4vvw4Iq3WrtrZ3GF4UWr1UKry0v3Z8CFy8trsFgr4kCa4DGFyxJ3W0
-	qrWUKrn8ZFyqvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR573PUUUUU=
-X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC+gWGymrr3uU8QwAA32
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104195655.1406837-3-aroslavdudkov622@gmail.com>
 
-Hi,
+On Wed, Nov 04, 2026 at 07:56:55PM +0000, Yaroslav Dudkov wrote:
+> Test adds routes with a gateway while the nexthop device
+> has no carrier and ignore_routes_with_linkdown is enabled on it. The
+> routes are added to the main table and to a non-main table, with and
+> without a device, for both IPv4 and IPv6. Routes are expected to be
+> accepted disregarding the link state.
+> 
+> Without the previous patch, the IPv6 non-main table cases fail:
+> 
+> Without fix:
+> Gateway validation with carrier down
+>     TEST: IPv4 route in main table                                [ OK ]
+>     TEST: IPv6 route in main table                                [ OK ]
+>     TEST: IPv4 route in non-main table                            [ OK ]
+>     TEST: IPv6 route in non-main table                            [FAIL]
+>     TEST: IPv4 route in non-main table without device             [ OK ]
+>     TEST: IPv6 route in non-main table without device             [FAIL]
+>     TEST: IPv4 linkdown flag set                                  [ OK ]
+>     TEST: IPv6 linkdown flag set                                  [FAIL]
+> 
+> With fix:
+> Gateway validation with carrier down
+>     TEST: IPv4 route in main table                                [ OK ]
+>     TEST: IPv6 route in main table                                [ OK ]
+>     TEST: IPv4 route in non-main table                            [ OK ]
+>     TEST: IPv6 route in non-main table                            [ OK ]
+>     TEST: IPv4 route in non-main table without device             [ OK ]
+>     TEST: IPv6 route in non-main table without device             [ OK ]
+>     TEST: IPv4 linkdown flag set                                  [ OK ]
+>     TEST: IPv6 linkdown flag set                                  [ OK ]
+> 
+> Suggested-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+> ---
+>  tools/testing/selftests/net/fib_tests.sh | 40 ++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+> index 7c47d7fe250d..d7ac3c727f70 100755
+> --- a/tools/testing/selftests/net/fib_tests.sh
+> +++ b/tools/testing/selftests/net/fib_tests.sh
+> @@ -406,10 +406,50 @@ fib_carrier_unicast_test()
+>  	cleanup
+>  }
+>  
+> +fib_carrier_gw_test()
+> +{
+> +	echo
+> +	echo "Gateway validation with carrier down"
+> +
+> +	setup
+> +
+> +	set -e
+> +	$NS_EXEC sysctl -qw net.ipv4.conf.dummy0.ignore_routes_with_linkdown=1
+> +	$NS_EXEC sysctl -qw net.ipv6.conf.dummy0.ignore_routes_with_linkdown=1
+> +	$IP link set dev dummy0 carrier off
+> +	sleep 1
+> +	set +e
+> +
+> +	$IP route add 203.0.113.0/25 via 198.51.100.2 dev dummy0 &> /dev/null
+> +	log_test $? 0 "IPv4 route in main table"
+> +	$IP -6 route add 2001:db8:10::/64 via 2001:db8:1::2 dev dummy0 &> /dev/null
+> +	log_test $? 0 "IPv6 route in main table"
+> +
+> +	$IP route add 203.0.113.0/25 table 100 via 198.51.100.2 dev dummy0 &> /dev/null
+> +	log_test $? 0 "IPv4 route in non-main table"
+> +	$IP -6 route add 2001:db8:10::/64 table 100 via 2001:db8:1::2 dev dummy0 &> /dev/null
+> +	log_test $? 0 "IPv6 route in non-main table"
+> +
+> +	$IP route add 203.0.113.128/25 table 100 via 198.51.100.2 &> /dev/null
+> +	log_test $? 0 "IPv4 route in non-main table without device"
+> +	$IP -6 route add 2001:db8:11::/64 table 100 via 2001:db8:1::2 &> /dev/null
+> +	log_test $? 0 "IPv6 route in non-main table without device"
+> +
+> +	$IP route show table 100 203.0.113.0/25 | \
+> +		grep -q "linkdown"
+> +	log_test $? 0 "IPv4 linkdown flag set"
+> +	$IP -6 route show table 100 2001:db8:10::/64 | \
+> +		grep -q "linkdown"
+> +	log_test $? 0 "IPv6 linkdown flag set"
+> +
+> +	cleanup
+> +}
+> +
+>  fib_carrier_test()
+>  {
+>  	fib_carrier_local_test
+>  	fib_carrier_unicast_test
+> +	fib_carrier_gw_test
+>  }
+>  
+>  fib_rp_filter_test()
+> -- 
+> 2.54.0
+> 
 
-Thank you for the reminder. I appreciate the automated check and the time
-taken to review this series. I would like to provide the missing information
-below. I apologize that it was not sufficiently clear in the original commit
-messages.
-
-- How the issue was discovered:
-   The issue was noticed while I was studying this module with AI-assisted
-   learning. The AI assistance helped me spot a suspicious code path, and I
-   then verified it through manual code analysis / code inspection. It was
-   not hit in production or during development, was not reported by syzbot,
-   and was not found by an automated static analysis tool scan. The final
-   conclusion is based on my own manual code analysis.
-
-- Whether the issue was actually triggered:
-   The issue has not been triggered in practice. It is currently a
-   theoretical issue found by code inspection, so there are no stack traces
-   or error messages to report. I understand this is different from a
-   reproduced failure.
-
-I am not reposting the series just to add this information. Please take
-this reply into account during your review. If another revision is needed
-for other reasons, I will include this information in the commit messages
-then.
-
-Thanks again for pointing this out.
-
-Best regards,
-
-luoqing
-
--------- 原始消息 --------
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
->
->   - Whether the issue was actually triggered, or is only theoretical
->     (e.g. found by code inspection). If it was triggered please include
->     the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
-
+Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
