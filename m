@@ -1,58 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873308;
-	b=WeMachhU0kYT8d/Iq3Px5D+nJOx1Pt1aGcH/hwiG8z6OqJH2rnKcDs0+B20Zsdymhns2
-	 9mYE/21ybGlmcJrDgnqrVSn0kX5pjlvfnBsUi6VmkTxddMDP+46glSIwdZK1aD4L8cKe+
-	 6p3+laFVxEf/gnGdOFF8qLm74uwbZTNZtV3JuGCm5JsptiF3EKuYXNBFrPGvcAHr6/+PG
-	 XzUu/QiZqkQd8WZu1BAztrHOPgz0jnxWzCO4rNwCmjvYYnzZEzYhXn047M+olpa+Ubnd4
-	 tobV60oFhiVZkrmpZ3BCbxKIIIm0Mk75Gp/BURXUFwYlPTwXkUrWlveHHYkNTN5l+Xw==
+	t=1793873314;
+	b=mfg7A3RpyaiEWOpYbI4vpoRH78d6ZRCnoqVdozkGmFg6KedHC3Y69yqrLaWQjkog71XZ
+	 cfEo3ZW7yT6m07Ux7cJOnpK3psYeBsgVvVKbBsVEWGG6vywbJ4jbaHZc0R/27NwQIrX14
+	 3bSV/59HU8QpI51gpKqwQ15t3NM5IcihnMnUcxhyk1HUStMZ41RThq98aar+kBHl3vvSA
+	 LJnp+icy4lSfLOm7Gvg3DPTtNZdjPDk4RK4bIrHmaCzWK2jjErFmVw2cH3SLo9wKWCdDt
+	 LdZzvKYfMk9YIPGKSlF8TR/SJsQTqipZdXLqVYfdDg4Sdar/LQqoxjvj7ZDCr/zkyVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873308;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793873314;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=0+bSVnye4AoypsNrx6qUnH37BwoJnOF78GglImy6ss8=;
-	b=d8N3PTneSYVKxh7N/Cxacck+8zon1AZETvmsxwhn3JStQTKuYyHl2J71gcaOX7MzyDOP
-	 P5ANEw0xaa1YmbvZNz/7WTkvM78S9Tr2AfQvURgRbD9i/ji4w+azD0VGFvdvRqafG0PS5
-	 tA0sGZkal+qeV16Ou132LpMpxbg6LvBfHhtmqjnqRAjilSsWePCZ7NbqhpdU7gNzxWwIy
-	 RqL/pTKu9SBD+oZ7Gj1ulWHZ1o1b2JrfBVZLHvTFJ9W8A0SABlHAiqx3q708SCdp9ssKQ
-	 Z+oWE5ooQiEGwdw7VnCP6ETtOm/COox+tWmzbfzyscqjsJXdCbnak/0k49hNQpBMZ8g==
+	bh=TEM5oG0EbwSOS98Fx4qqr6WHxDPmtVe3raulzRfg0YI=;
+	b=tmtFIKM6AF/ZGVxGWhAeSrVbvzrE/G950IIITHgWSNBW63Txs9wbCX9j9yRdcLge57oi
+	 yHSWL+vKAhphh5NFRxWFbAxiJ4xwpj8zH//2kNk+VweVs7dVVFOO2DqhdA+zckey1rkKm
+	 LnT7jy++UGN3SUAuCSiVPuUSSgWXxtx1NUjHhFAQ8Tq2JuqBOgRrEYUjh8nvCgbbdfhva
+	 v4ZBFHDkkW9tdSWLiO2QmR6oGf1CDAXqryDC8VW6I7DwlKvjyHB2Ed/AEOQlCDQ1T4OBG
+	 jnQTZvsY0WQVBAfXn4zq8fjnZAigFNRWUJW0Fgw7wAlz8CTPfqvK7FfQx/ziDIY229A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MqUuHBUC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XVw1Ne30;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD85C606EE83;
-	Thu,  5 Nov 2026 10:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5B3606EE86;
+	Thu,  5 Nov 2026 10:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MqUuHBUC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAE01F00A27;
-	Thu,  5 Nov 2026 10:08:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XVw1Ne30
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9D1F00919;
+	Thu,  5 Nov 2026 10:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793873307;
-	bh=0+bSVnye4AoypsNrx6qUnH37BwoJnOF78GglImy6ss8=;
+	s=k20260515; t=1793873313;
+	bh=TEM5oG0EbwSOS98Fx4qqr6WHxDPmtVe3raulzRfg0YI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MqUuHBUCKTlByTkVzwsdawugv0c+T9VpornOia5XgXH2VvTdw749N5AKsfzIZ3Iw1
-	 vAuBZvNNNBJlTtYxDQ039bhj90K4Z0tsZiwom+26ivKnLoe989eMw6952vLxqhnIxB
-	 XLE6aKRonh0i1iUi4ilyMbOHlPTIvEOOyKvRLzZ+NST7QUFSFIEE5s6+1CUb2I95Ke
-	 lmkedZT4DyqLJfsuCx41jfnHkXgUHsEyA551iEf2cHZd3dFP9DdFNUZgreAw5FCdtC
-	 dvuRP2NNZdv/Pz0xGlrEGzoYRD91aaI0YUrNdf6Zsy/zuxfoF6an+hBHPFNvGsHeR7
-	 mADhTr2KN32WA==
-Subject: Re: [PATCH net v2] selftests: drv-net: pause: Avoid cleanup failures
- for unsupported link settings
+	b=XVw1Ne30HCouQB1rwdBXS0bjIUenJoHnpLT80ZPc+Mc82gb3zxipikX7c7XaP8zTY
+	 Hdlthv/tBNDBl3pwdCGK3UCM1Jv6O/IXCuhmnAXDxp95tY2xz5RN3dgGbw5IDsnRIG
+	 0PGLpKaNEQpc7N9yYFCiHDR8ArS1Igmst9EZlJE3MekyXmkcFAP04HdP64RyZPq1AU
+	 XgI5mGV1LqHwBc6vdArl4jSbQICyS+xGzfWUc5sHbezomj1Q5bi1vy7Rbs/LqrpEY/
+	 748dFmw0C7esiu3ykmfoKH2bP8eq9fgxMAB5mpS1m1KRXNGveP1m0p82XKBTy+NTWG
+	 ftiw1w+ecs+pA==
+Subject: Re: [PATCH net v3 05/14] net: pse-pd: do not reach a freed PHY from
+ the notification worker
 From: netdev-bot+sashiko@kernel.org
-To: mohsin.bashr@gmail.com
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
- maxime.chevallier@bootlin.com
-Date: Thu, 05 Nov 2026 10:08:26 +0000
-Message-ID: <179387330655.488856.2246156256257342362@kernel.org>
-In-Reply-To: <20261103190622.3981970-1-mohsin.bashr@gmail.com>
-References: <20261103190622.3981970-1-mohsin.bashr@gmail.com>
-X-sashiko-severity: High
+To: github@szelinsky.de
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, broonie@kernel.org, lgirdwood@gmail.com,
+ maxime.chevallier@bootlin.com, kyle.swenson@est.tech, ross@r-sc.ca,
+ netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 05 Nov 2026 10:08:32 +0000
+Message-ID: <179387331238.488856.9819726671704590547@kernel.org>
+In-Reply-To: <20261103220217.1131971-6-github@szelinsky.de>
+References: <20261103220217.1131971-6-github@szelinsky.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,108 +67,137 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] The patch changes what `pse_control::attached_phydev` means and
+  how it must be locked, but the kernel-doc was not updated to match.
 
-- [High] The fix is incomplete: the same cleanup failure still happens on
-  the link-autoneg-on branch of pause_setup() in…
-- [Low] In pause_setup()
-  (tools/testing/selftests/drivers/net/hw/pause.py, local lines 410-414,…
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  `pse_send_ntf_worker()` uses the net_device without holding a…
 
 --
 
-selftests: drv-net: pause: Avoid cleanup failures for unsupported link settings
+net: pse-pd: do not reach a freed PHY from the notification worker
 
-This patch changes pause_setup() so that the forced-link restore is queued
-only after setup has successfully enabled link autonegotiation. The goal is
-to avoid EOPNOTSUPP cleanup failures on devices such as fbnic. It also makes
-pause_test_support() fall back to checking forced MAC pause on the current
-link when no link configuration change is accepted.
+With this patch, pse_send_ntf_worker() looks up the pse_control and reads
+attached_phydev under pse_list_mutex. It no longer relies on a reference
+to the pse_control, so a removed PHY can no longer be reached. It also
+clears attached_phydev and warns when a second PHY takes the same PI.
 
-> diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
-> index ca4a55e59c30f..99ce6a59dfcd6 100755
-> --- a/tools/testing/selftests/drivers/net/hw/pause.py
-> +++ b/tools/testing/selftests/drivers/net/hw/pause.py
-> @@ -404,14 +404,14 @@ def pause_setup(cfg):
->  
->      if link["auto-negotiation"]:
->          defer(cmd, f"ethtool -s {cfg.ifname} autoneg on")
-
-[Severity: High]
-Can the same cleanup failure still happen on this branch?
-
-This restore is still queued whenever the device reports link autoneg on,
-even when setup never changes the link. The remote interface has the same
-unconditional defer further down in pause_setup().
-
-When the driver has no set_link_ksettings, ethnl_set_linkmodes_validate()
-rejects every LINKMODES_SET before it checks for a no-op:
-
-net/ethtool/linkmodes.c:ethnl_set_linkmodes_validate() {
-    ...
-	if (!ops->get_link_ksettings || !ops->set_link_ksettings)
-		return -EOPNOTSUPP;
-    ...
-}
-
-That means a restore to the same autoneg on value also fails with
-EOPNOTSUPP.
-
-Some in-tree drivers report autoneg on and provide only get_link_ksettings.
-nicvf_get_link_ksettings() sets cmd->base.autoneg = AUTONEG_ENABLE.
-be_get_link_ksettings() does the same when auto speeds are supported.
-fbnic also has get_link_ksettings and no set_link_ksettings.
-
-On these devices pause_test_support() takes the new "current link"
-fallback. The deferred "ethtool -s <if> autoneg on" then fails in
-ksft_flush_defer() and the test ends in a cleanup failure. The subject
-line says the patch avoids exactly this.
-
-Every other test that calls pause_setup() would hit it too, because the
-defer is flushed even when the test skips.
-
-Dropping the autoneg on restore isn't an option, since pause_test_support()
-and pause_autoneg_link_autoneg() force the link and rely on it. Would it
-work to queue the restore only where a link change is accepted? One place
-is after a successful "autoneg off {forced}" in pause_test_support().
-Another option is to let the restore tolerate EOPNOTSUPP.
-
->  
->      # Local interface admin up, link aneg on
->      ip(f"link set {cfg.ifname} up")
->      if link["supports-auto-negotiation"] and not link["auto-negotiation"]:
->          ethtool(f"-s {cfg.ifname} autoneg on")
-> +        if "speed" in link and "duplex" in link:
-> +            defer(cmd, f"ethtool -s {cfg.ifname} autoneg off speed {link['speed']} "
-> +                       f"duplex {link['duplex'].lower()}")
-
-[Severity: Low]
-Could this leave a forced link in autoneg state if the ethtool call fails
-partway through?
-
-ethtool() raises on a non-zero exit. With the defer now registered after
-the call, nothing restores the original forced speed/duplex if the driver
-commits part of the change and then returns an error.
-
-bnxt_set_link_ksettings() is one example. It sets
-link_info->autoneg |= BNXT_AUTONEG_SPEED before calling
-bnxt_hwrm_set_link_setting(), and returns that call's error without
-rolling back.
-
-This branch only runs when the device supports autoneg. Would queuing the
-restore just before the ethtool call still avoid the fbnic cleanup
-failure? The same ordering applies to the remote interface later in
-pause_setup().
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index eab7e25f2039b..af9eb29792706 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
 
 [ ... ]
 
+> @@ -268,6 +266,7 @@ pse_control_find_by_id(struct pse_controller_dev *pcdev, int id)
+>  static struct net_device *pse_control_get_netdev(struct pse_control *psec)
+>  {
+>  	ASSERT_RTNL();
+> +	lockdep_assert_held(&pse_list_mutex);
+>  
+>  	if (!psec || !psec->attached_phydev)
+>  		return NULL;
+
+[Severity: Low]
+This isn't a bug, but should the kernel-doc be updated to match the new
+rules?
+
+pse_control_find_by_id() got a "Must be called with pse_list_mutex held"
+note. The kernel-doc of pse_control_get_netdev() still only says:
+
+ * Return: netdev pointer or NULL
+
+The struct pse_control doc in pse_core.c also still describes the field as:
+
+ * @attached_phydev: PHY device pointer attached by the PSE control
+
+After this patch, pse_control_get_internal() sets attached_phydev to NULL
+as soon as a second PHY shares the PI. It stays NULL while PHYs still hold
+the pse_control.
+
+The field can also now only be read under pse_list_mutex. That rule is
+written down only in the block comment inside pse_send_ntf_worker().
+
+Could the struct doc and the pse_control_get_netdev() doc mention the
+locking requirement and the shared-PI NULL case?
+
+[ ... ]
+
+> @@ -1015,13 +1014,23 @@ static void pse_send_ntf_worker(struct work_struct *work)
+>  		struct net_device *netdev;
+>  		struct pse_control *psec;
+>  
+> -		psec = pse_control_find_by_id(pcdev, ntf.id);
+> +		/* If attached_phydev is set, it names the only PHY that
+
+[ ... ]
+
+> +		 */
+>  		rtnl_lock();
+> +		mutex_lock(&pse_list_mutex);
+> +		psec = pse_control_find_by_id(pcdev, ntf.id);
+>  		netdev = pse_control_get_netdev(psec);
+>  		if (netdev)
+>  			ethnl_pse_send_ntf(netdev, ntf.notifs);
+
+[Severity: High]
+This is a pre-existing issue, but is the net_device itself still left
+unprotected here?
+
+The new locking keeps the phy_device alive. No reference is taken on
+psec->attached_phydev->attached_dev, though.
+
+ethnl_pse_send_ntf() dereferences that pointer in ethnl_fill_reply_header()
+(dev->ifindex, dev->name) and in ethnl_multicast() (dev_net(dev)). Both
+calls come after genlmsg_new(GFP_KERNEL), which can sleep.
+
+Neither rtnl nor pse_list_mutex appears to keep the netdev alive. The
+comment in phy_detach_internal() says:
+
+		 * Drivers may detach without RTNL while dev is unregistered,
+
+Also, free_netdev() asserts RTNL only while reg_state is
+NETREG_UNREGISTERING. For a device that is already NETREG_UNREGISTERED it
+goes straight to put_device().
+
+As an in-tree example, hisi_femac_drv_remove() does:
+
+	unregister_netdev(ndev);
+
+	phy_disconnect(ndev->phydev);
+	clk_disable_unprepare(priv->clk);
+	free_netdev(ndev);
+
+The last two calls there run without rtnl. Can this sequence happen?
+
+worker                                 hisi_femac_drv_remove()
+                                       unregister_netdev(ndev)
+                                         (rtnl released)
+rtnl_lock()
+mutex_lock(&pse_list_mutex)
+pse_control_get_netdev()
+  returns attached_dev (still set)
+ethnl_pse_send_ntf()
+  genlmsg_new(GFP_KERNEL) sleeps
+                                       phy_disconnect()
+                                       free_netdev()
+                                         put_device() frees the netdev
+  ethnl_fill_reply_header(skb, netdev, ...)
+    reads the freed netdev
+
+The old worker also passed a netdev it held no reference to into
+ethnl_pse_send_ntf(), so this predates the patch. The commit message only
+covers the phy_device, and the code is unchanged at the end of the series.
+
+Does the lifetime of the net_device need to be pinned here as well, in
+addition to the phy_device?
+
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103190622.3981970-1-mohsin.bashr%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103220217.1131971-1-github%40szelinsky.de
