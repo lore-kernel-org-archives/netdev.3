@@ -1,58 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793897316;
-	b=wdWLzWujP13jfYxe/7eJ9FBT+nQaafU2P/HavzhTuj4GOsVw5yFwgxF05xzt28NVONuV
-	 Ctv3rIO1ciFjElglHi05qaJZikynImlyIELUYRXHjXOqpFqniLR/URz7XCb7mpCDFVmAZ
-	 AmMUJwxXs4042YUPDz+yzxEAxbuZX/dgXtM1jRUI0GlWYxgCVI4WPQ3uVDLEFkxPfS+LE
-	 SuXxG5YHmPyvwxKxZMbGvB503csxW8jM86Dlg9zOad9YzIWwg9un8Yfou6RU0STPjMmM9
-	 G6T+j+0thfX4+1x8mUjiy376ZNTBYLi4iM5/lagNB8s7VXyxT3nSh9PSHIA9sbnY9EQ==
+	t=1793897571;
+	b=f5QR7FO86bfDwtVOn4/0ZHtCrMOeqIKKmHqC2KC/MzzKuv90WVGKkOy0YxZLdfU1glrJ
+	 GgWQaTHkuaAfrb6lvvVLxWDJ3ob1evs7gJZLtQxR7xOrcDOw6qITy67tOWv4IQOoLDuxI
+	 AgKdrZgZ7h8K2kjaoExA+ONsQA7qYQXKVV8XUGTybS9HZoNV7XrVH4RBnDpuQMzXZDiUk
+	 LBRiaGlJgQI3ZhEyplt1TDPNgbay11IvX4gHht+PqC6T8R6MV9KNldpyXOUzqR6FimBUj
+	 WCC4N/S+nninYJF2Skyvdxk5kyrfZqkwQ0nf5Xw/Nq7ZO7OQjDn+gfAQoexpO0tGH6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793897316;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=ufeqZ6OrxWy/uS8N9+yHglk0bsq8gg6HXoz25xjhh6g=;
-	b=eADeKTD7FaAl3Xrra9n3zcipXon76crDM4IVsKChTDo9vaDWifjyemJXlDpwAJSR55fb
-	 yzktRaSVvCH7S2fAXLotoQnDZeohm8tIsIlHAu9kOQB4Z3W++ULyVuhaAhy3ADAWU/1gc
-	 PZxmtTiC38mLakmR2LZ1wCOrAv4W6NmPmhs60kqhbfjmwrXrfAHI4arRAAido+B+X4jmp
-	 oISw4ECY93z/K9Pph9KBhgPSRhfpjDY0oXEzLgMC+GNxb1k4xZf1cCh9lB1NQT9Nlkm2o
-	 H9C6FKIcUROqvFKfY/gIvm1kF4v/l/C7dUfCc/InnBNBtg/z9M0JL2ON9i47HdqrB2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793897571;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=UdyfdI6SGZqMgENgr6ZUeYV4atAIFdHQ6SNcYsQfijic3LnwpLf8lrQEg2tJ09RuPXcN
+	 1yWAhvBg4lz5r4rpvmpUxVC47+p6waOBLU7KsqqvwgPpTstuQrnQ4ezBwqO9sFKh0n+ya
+	 adiQTTJ6cRezPmd6SBYzHCCNQEnN3VAbMRBTjpiASKHJtHYEQYGcf60Q4ujVtGvQJIpVB
+	 nHDa0x1ec+w2pW7ChMgMelEHysEm5UIAt9hg97XP9w8z/FOx41xSMKfY2vpJdwslZc+nL
+	 ScGrfZlDS8UpnH8TK2bpf1r48ukYxVqb9tT2x0GbpWUbMueJtOheqEnln5i5pxTQiVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjf+kF3s;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dfvaeL+6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A67606A336
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02AD606A335
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 16:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hjf+kF3s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047CC1F000C1;
-	Thu,  5 Nov 2026 16:48:33 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dfvaeL+6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283421F00A1B;
+	Thu,  5 Nov 2026 16:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897316;
-	bh=ufeqZ6OrxWy/uS8N9+yHglk0bsq8gg6HXoz25xjhh6g=;
-	h=From:To:Cc:Subject:Date;
-	b=hjf+kF3sbYbv9uDNgf3PJvxR/b1LTcneFpF/9O/UDYefqGIvjegtrr8x6yZ+Bb4xu
-	 N12+yYdwasTb/QVK3g40beLo/biqZgZk95b5Vbef/7tPzdEOhXWXEZLHdUXeisfhOo
-	 DhJDJMZMsnkCzD7A5Zg1SbVJsywSNVHr/51miGMhwqgmQsZbyWdPNndtZ2PjUGAGkb
-	 LYnT+IyWzsyNxpxwd3blfbm5RGePRvH2zTdNXSitYkAOS1UBr/yNK4EdN/ebKX6oSi
-	 kuuCFCyUAmtBoJaVmb+X6T3AtXyfP65fP6gHf21CLFiT/iA0Hw782bOoi1Xb/L5P0C
-	 wmQVH4CWY3sZg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Kyle Zeng <kylebot@openai.com>
-Subject: [PATCH net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
-Date: Thu,  5 Nov 2026 17:48:30 +0100
-Message-ID: <20261105164830.1682714-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793897570;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dfvaeL+65A9o7CggaSQZ6f8GwVE1xnOo+1BrnUjBWKga98Nr+G9dkNqkFy4mlJYNM
+	 FmJmd+ltqGdDJTjKXj81iZdNCt8yR3KX+8LPxtZC/w94SJJ4eJ/BmmwpkPtsqmivun
+	 puN/c338qvTiMyQK/ow3w/K/zwvMb7ueYeCQ4xF+LATScjZ9Be9d96rcUSy0XZgNBz
+	 IE3ANZ8n/5b73wqXpuI3uJWxg4VxdJ/ZCFxw8LacHIHWSIhfmOdc3tUYgCeEbvFTvp
+	 IdApPyIsz6CWeiQcF2n4Xm5vUuZYU6pnKUdIkSid6MZTEe519JNXwJU0XaGcc7ce/q
+	 BhV6qai6G+y6A==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
+Subject: Re: [PATCH net] tcp: do not resurrect a former listener with
+ SO_ATTACH_REUSEPORT_[CE]BPF
+Date: Thu, 05 Nov 2026 16:52:49 +0000
+Message-ID: <179389756967.488859.18255444203780437873@kernel.org>
+In-Reply-To: <20261105164830.1682714-1-edumazet@kernel.org>
+References: <20261105164830.1682714-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,67 +64,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-After listen() + shutdown(), a TCP socket is moved to the closed
-section of its reuseport group, while TCP_NEW_SYN_RECV requests
-can still reference it as rsk_listener.
+Hi!
 
-If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
-reuseport_attach_prog() calls reuseport_alloc(), which resurrects
-it into the listening section of a new group, even though the
-socket is still in TCP_CLOSE.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-After close(), the socket stays in that group and the pending
-requests keep it allocated. When the final ACK arrives,
-reuseport_migrate_sock() can select this dead socket and
-inet_csk_clone_lock() clones it. With a ULP like espintcp installed
-while in TCP_CLOSE, the child inherits icsk_ulp_data and sk_destruct
-after tcp_cleanup_ulp() cleared icsk_ulp_ops, leading to a
-use-after-free in espintcp_destruct().
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-As done in commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions
-between ehash and lhash2."), deny this transition instead of adding
-checks to the fast path.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Only an unhashed former listener is affected. Applications can still
-attach a reuseport prog to a socket that never listened, or to a
-listener (including one that called listen() again after shutdown()).
-
-Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- net/core/sock_reuseport.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
-index fccbdd0430b05984e82c19b17b6b723b0a3a03a1..41a25be1bfff6aa486f33ed563a093a264c49344 100644
---- a/net/core/sock_reuseport.c
-+++ b/net/core/sock_reuseport.c
-@@ -6,6 +6,7 @@
-  * selecting the socket index from the array of available sockets.
-  */
- 
-+#include <net/inet_connection_sock.h>
- #include <net/ip.h>
- #include <net/sock_reuseport.h>
- #include <linux/bpf.h>
-@@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct bpf_prog *prog)
- 		if (!sk->sk_reuseport)
- 			return -EINVAL;
- 
-+		/* Do not put a shutdown()ed TCP listener back into the
-+		 * listening section of a reuseport group while it is in
-+		 * TCP_CLOSE: requests can still migrate to it.
-+		 */
-+		if (sk->sk_protocol == IPPROTO_TCP &&
-+		    inet_csk(sk)->unhashed_state == TCP_LISTEN)
-+			return -EINVAL;
-+
- 		err = reuseport_alloc(sk, false);
- 		if (err)
- 			return err;
--- 
-2.53.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
