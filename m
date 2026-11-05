@@ -1,82 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793886009;
-	b=riNk18jN0Uk9EyG+K8oSXzTQLQ9shgoQIjRFQZxs52gpv3PTtUXPhRhwSVIpSC1o2yPX
-	 1dz/88EKBqjfOOZ1YbFpJrl+YXkkK9HHuMVBfc39b/iLbpXTFBxBVYA2DB0QUpKrjHmY0
-	 MjsljcKJV14SSp6EVPASUl329SLwzmEUpK3Pr66p6qvnf5QrOMLSOCYmuSuyK7Xti0y7+
-	 nfJVUQqCHoToaAJWdghqZfjuE/keA5n7TyM4nN5yyy54yTOuxfuLecPaD3XFdRBgN8II8
-	 X4tjowkBDiXZvXeVu2X68dfqPvMQc97LwF67seTZX4zaNa/lUSFBIch/C4B72Y3696w==
+	t=1793886055;
+	b=zQyu+zs8Ar0U0vfvVO4A7HTgPBhepdTs45yRH7waqQSISMBdYHtzodPMjkpBzkqhxR7s
+	 oPYlzHACEjvemgGCYtptxAJfLAcmvegiiXlevmgq/Olbf6R/zAiaaDD/67MeFidSsAKVt
+	 Y79JQWKLKWRTLGvIxlik9qlp3WtbGt3N7lh2H8o8Vh/E1gMzAJGb8FXYBCl6mcKIcGl4I
+	 jso3xX6RlyVhjmWt0kvxtFJLI9Gn6338nqug6T4FQMb6nIHWX+Z6UE20HO0repw+vT3Fm
+	 elY8v4glmGDzzE06WPB+AfbtD56hB4KvAOChf3px+XfeqmgqWN7I7elrn7/hSB3H5EQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793886009;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=9+UbOEVQarBwBm6b5bYOw2XOpuvruf9mn1tJnCVUVIk=;
-	b=i6hFQe9727tBFAOnHmvxx4Z0kIbp+TQsWkgNqVfawWqVbrEOCD3wEd5MpSmLkn6SrkQU
-	 V6snaUxdP4rGlIGtau03mYhW40PojMesO3csZSzZ48o9dzT6VE1skuC4jJNq0SR9Sx3j9
-	 oj5E8M31DYb7PF1ft6ar55s42m7fJMrhf/Q6v+GhFDmo3SjKzITonu2ceSHoqJjnCR+V+
-	 Rb8SAspNf8AdeXpVSo04VEs90ahihxrYqPv6H5cKaJCkIutGFgcAJ7cvBJusju4mCtiBO
-	 krJnoCM2Q0gGFqmd3ObfijlrUObgVSNCJRWWEjO4CT17Gpe7CZOmFvzGomR+AJjJ5EA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793886055;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=cayOl+ah2VntGuMKSFZe0/sOYOLHGMSfHTljLp1hqos=;
+	b=rSp03ynUxv7cbh+2J9GjOxnOxJwWO/UwqgBkXiMXVUq2OO8X9ZWJ/zjvDaMdzma7s+Rc
+	 0aj2tRRB7j7mOrEqat0+RgquBNdHgPlhW7JOUv9Lbg/IZrqz5G19Xqd3FOx5mQpzs1lpq
+	 zh1rNRTLDsxJrVl5Ol5iAmXPw6Wc1jCj/OHkLzL9BljEEpkDD0Rn4IzVMvRaO+2L0FGbB
+	 5cSQ/4GsHTjLElukQ3wrUkrnQ+TTwzP+iBF+16ZTQqhrTIJoXShtvgvlSZtCtZlWgxNxS
+	 iVcmpL77qq25lqAVM4zAohniYJ0U4WjPrpOQxeccGTbnKHa+SG2/JlJpl3zA6see0fQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VBz8uxXN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=BcsHNlT1;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B08606A329;
-	Thu,  5 Nov 2026 13:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40915606A335;
+	Thu,  5 Nov 2026 13:40:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40915606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VBz8uxXN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BDE1F00919;
-	Thu,  5 Nov 2026 13:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1793886007;
-	bh=9+UbOEVQarBwBm6b5bYOw2XOpuvruf9mn1tJnCVUVIk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VBz8uxXNwa7SsiEgUvH+3f/5pzMeAXzuPJfJv7a3TMn+66NkgpJ44A/orn0fkJ2QS
-	 yZw9C9UyZ7tniVuDeilS+rbpMsw5k/+W7UGEkOXOJlA1XIA0ZbDi+IvcuUobwIP7Pg
-	 7XGWYDm0VJNw9T3Ljld4cEE/QGUaahpZg4+sR1RQ=
-Date: Thu, 5 Nov 2026 08:40:06 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 10/17] driver core: Expose device trust authorization
- through sysfs
-Message-ID: <2026110535-engulf-precut-cf10@gregkh>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
- <2026110514-bunkhouse-handset-6a3a@gregkh>
- <20261105132729.GB8298@unreal>
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=BcsHNlT1
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=cayOl+ah2VntGuMKSFZe0/sOYOLHGMSfHTljLp1hqos=; b=BcsHNlT12nA+YrSs/yRQfTMO5p
+	C1AEYURjocvZzLl7GjwphDEfRVdYqCD9RQ4WSY1RRadoooX7PEBQd2njIbSf0/8jAi5D8GScOyO0Z
+	nQzofL3rkkHavZNegA2NJpWPSzvkTW65cBDV5gGUBpYYF1At8PsL5E957J0wG74iUl78HgOMgRWVd
+	8krpw4mt0iFi6G3+l0/amB2R9RxV3H1IsBL4A7HUApVc9x8AdTicgmu3Kzm8VOt3JFnGSCilpsRyr
+	TBApv+jFdlfxpHhRB+A8nXol+C281WEVBnrOR1udOBkiuXEDHDjppxGjcjT8697ze2O3nyo2UcxNm
+	RKs+KCLQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xOxhk-008XWA-2g;
+	Thu, 05 Nov 2026 13:40:37 +0000
+Date: Thu, 5 Nov 2026 05:40:31 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Ali Tariq <alitariq45892@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Yixun Lan <dlan@kernel.org>, 
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>, Vivian Wang <wangruikang@iscas.ac.cn>, 
+	Chukun Pan <amadeus@jmu.edu.cn>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+	Tomas Hlavacek <tmshlvck@gmail.com>, Muhammad Bilal <meatuni001@gmail.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>, 
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+Message-ID: <auyG7hGJtMzV0Gbi@gmail.com>
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,111 +76,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105132729.GB8298@unreal>
+In-Reply-To: <20261105123441.2524171-1-alitariq45892@gmail.com>
+X-Debian-User: leitao
 
-On Thu, Nov 05, 2026 at 03:27:29PM +0200, Leon Romanovsky wrote:
-> On Thu, Nov 05, 2026 at 08:10:14AM -0500, Greg Kroah-Hartman wrote:
-> > On Thu, Nov 05, 2026 at 01:42:23PM +0200, Leon Romanovsky wrote:
-> > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > 
-> > > An initrd must authorize a disabled device after attestation even if a
-> > > built-in driver already attempted to probe it.
-> > > 
-> > > Expose requested trust_policy and read-only active trust. Allow explicit
-> > > disabled policy to advance once to adversary or full, fixing that decision
-> > > immediately. Reject later policy changes, including for a device claimed
-> > > before registration, while allowing same-value writes on live devices.
-> > > Keep initial unrestricted selection separate from explicit authorization
-> > > and bind-time commitment. Serialize writes with probing under the device
-> > > lock. Include the attributes in device ownership changes.
-> > > 
-> > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > > ---
-> > >  Documentation/ABI/testing/sysfs-devices-trust |  51 +++++++++++++
-> > >  MAINTAINERS                                   |   1 +
-> > >  drivers/base/base.h                           |   6 ++
-> > >  drivers/base/core.c                           |  15 +++-
-> > >  drivers/base/trust.c                          | 102 ++++++++++++++++++++++++++
-> > >  5 files changed, 174 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/Documentation/ABI/testing/sysfs-devices-trust b/Documentation/ABI/testing/sysfs-devices-trust
-> > > new file mode 100644
-> > > index 0000000000000..97e07a174769c
-> > > --- /dev/null
-> > > +++ b/Documentation/ABI/testing/sysfs-devices-trust
-> > > @@ -0,0 +1,51 @@
-> > > +What:		/sys/devices/.../trust
-> > > +Date:		September 2026
-> > > +Contact:	driver-core@lists.linux.dev
-> > > +Description:
-> > > +		(RO) The active trust level for the device. The values are
-> > > +		"disabled", "adversary", and "full". Driver core resolves
-> > > +		the level before DMA configuration and probe, and retains it
-> > > +		through removal and DMA cleanup. Outside a bind transaction
-> > > +		the level is "disabled". This does not imply that policy is
-> > > +		writable or that the device has never operated.
-> > > +
-> > > +What:		/sys/devices/.../trust_policy
-> > > +Date:		September 2026
-> > > +Contact:	driver-core@lists.linux.dev
-> > > +Description:
-> > > +		(RW) The requested trust policy for the device. The initial
-> > > +		value may be selected by the bus before the device is
-> > > +		registered; otherwise it is "default". The policy is resolved
-> > > +		to an active trust level before the device is probed.
-> > > +
-> > > +		The values are "default", "disabled", "adversary", and
-> > > +		"full". "default" lets the bus select the active trust level.
-> > > +		"disabled" prevents a functional driver from binding.
-> > > +		"adversary" requests operation with the restrictions that the
-> > > +		bus and DMA layers can enforce for a potentially malicious
-> > > +		device; it does not isolate DMA by itself. "full" requests
-> > > +		normal operation.
-> > > +
-> > > +		Before an operating level is committed, policy may change
-> > > +		freely until "disabled" is selected. Explicit "disabled"
-> > > +		blocks binding while allowing a later write of "adversary" or
-> > > +		"full". Repeated rejected probes preserve this opportunity.
-> > > +		Authorization immediately fixes the requested policy.
-> > > +		Returning to "default" or "disabled", or selecting another
-> > > +		mode, fails.
-> > > +
-> > > +		Successful resolution to an allowed level commits policy
-> > > +		and operating level before driver or DMA setup. Both remain
-> > > +		fixed for the device object's lifetime, including through
-> > > +		failed or deferred probes, unbind, reset, and driver reload.
-> > > +		Later binds must resolve to the same level, including when
-> > > +		the policy is "default". A resolver error or disabled result
-> > > +		before commitment leaves the policy's writability unchanged.
-> > 
-> > I understand you are aproaching this from a PCI point-of-view, but many
-> > busses do not care or have DMA at all, and need to actually talk to the
-> > device before being able to even "add" it to the kernel.  So you are
-> > making a driver core-specific policy based on mentioning DMA here, when
-> > really that should only be a bus-specific thing, right?  Some busses
-> > might require DMA to happen (i.e. USB needs their host controllers to
-> > use DMA to even talk to the device at all).
-> > 
-> > So can this be written to be more vague and generic and then put the
-> > specifics in the bus-specific portion?
+On Thu, Nov 05, 2026 at 05:34:37PM +0500, Ali Tariq wrote:
+> The emac_resume() calls the emac_open() and emac_suspend() calls
+> emac_stop() functions directly without holding the lock through
+> rtnl_lock(). These functions rely on phy_disconnect() which reads pointer
+> with rtnl_dereference(). But since no lock is being held,
+> rtnl_dereference throws a suspicious RCU usage on
+> Orange Pi RV2 (SpacemiT K1) warning when lockdep is enabled.
 > 
-> Yes, of course. The main point is that drivers must not communicate with
-> or configure hardware before attestation is approved. DMA is the PCI
-> way to communicate with hardware.
+> WARNING: suspicious RCU usage
+> drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
+> Call Trace:
+> phy_detach_internal+0x490/0x5f2
+> phy_disconnect+0x90/0xc0
+> emac_stop+0x114/0x626
+> emac_suspend+0xac/0x126
+> platform_pm_suspend+0x72/0xe4
+> 
+> Hold RTNL lock before emac_open() and emac_stop() with rtnl_lock() and
+> release the lock when functions return with rtnl_unlock().
 
-That's a very vague statement of "must not communicate with".  Busses
-HAVE to talk to the device to determine what the device even is before
-it can add it to its internal bus list.  That's just how the hardware
-works, you can't say "no talking at all" otherwise that means that you
-never even know if a device is there (and for some busses, you'll miss
-the device entirely as they can only be found when the "host controller"
-tells the kernel that a device showed up, not later by manually
-scanning.)
-
-Think about reading PCI device ids, or USB configuration information,
-that's a bus-core thing.  Are you really thinking that non of this can
-be read from a device under this "policy"?
-
-thanks,
-
-greg k-h
+This would work, but I am wondering if it would be possible to call rtnl
+inside the _open function, when dealing with the PHY? in other words,
+shrink the time rtnl is held.
