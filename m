@@ -1,92 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793876297;
-	b=E+kMH3Yht9zOxtFI+wXdLSKcoDLTlBvBGi7eLx9mlPuCky+fGqZ+Iq/uAj9V3visSvgh
-	 CuuEfIcq0mVkExrcKVXcMgnpnEuvoNy1xUqDtTU62Ncl1pz2vGAEEnjhRVSpiCpN73IUs
-	 ehiVdzT5eRdADb8QMHK51VF/FeOsiFq31rUYljzvjDmWG5w/KHJB2n50Dcx4oD2MIHyJg
-	 hcmUJl8RJWf/QLIEx3BQM0K1bm9tS9hxJ7qgG/fny8GYsLpoTYLZyAntvnfhzZ/SEPbFr
-	 5UUnMCg+54NM+sjaXw4LQhE7RvRfRMtxeZTk9Psn5x+pPWBVNEu50qhhfG4llwc23PQ==
+	t=1793876410;
+	b=YWXLUsKGFFdINoDe8wZYt5zI7ALVPbm/nzpPW9yHtk9GFCa+TNQlWU9WXu0oK25dwDxs
+	 axPDSbnit/iB1SC5OcN/xxP78XkUkVtswki2nVDJbSSe6diTWNGa8KqNngMqi47masvlJ
+	 virryOMnIlHHK92ql62kz0kVt6WF97rOr9UjVJO9xkL5oYM8ZQu0ceRxAKIBkOjs/CxQL
+	 qKRrEjQJVa4AgqerIvEJ8uID4dDfDv+m8umb3O/0Myc9WHohM4wCykkuF5PMm0dUcM8Wh
+	 V9feU2IzUWwoWWLnANdrlrX6d+PJFA8/0CSLUmIMSGLEApRkiT50poX9ZIlfpDlElqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793876297;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
-	b=qPSkNOw+6VQZ7AuvtooRTpLlv3pEMXuA3f+noAHKJAkEk3E91RLRhMqnZzhmp6IISlSF
-	 1F0Dy+S+UJCTXYdpQmOSDAEh3xXalaXaz7n/bZZpmHAILo6KtYMaF57PKaoVArv0+DHtu
-	 R0x238NxNSfHHg6KwBz+bP4V2HP1rXYlT8iVZN/U95C+rQ/PtoSx5db8bO279CSbnlaQL
-	 p8XH/Z31kF4ELf4PRjQBVUqZiBYzE50vcFAmofgZ7ZAEj6zMCDtkgbMO5bTtstkqbH1qv
-	 qx/ePTbJ9a5HVyo4gI3fXVE3FiVBEowItEyKGP5sPSPeXcgfThPLCQnjMG9T00TdWMw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793876410;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=soHoKIJD8GZb4y0nvq88n/hT4e+HgEdbmBAc2lwIcEs=;
+	b=nAgWR3W1Lyy+V8VkAWXrIWSwfEPfz1h2y66fl/J2J0+hVDrtqA9jeu3F+Kd3Pg5pozIZ
+	 A5uqnoWgEYsDdR1hrHZel0uNn+rRQoUEpCOLLGtlnzFqOLczpZv1K8mA0V8RdryHLTA5H
+	 Ec2lDrDgNENGyreSdfxi+xjKb23wej0s3kUxXiiYNPW8+C1At4+7WBliFFnTM7mvR3qwY
+	 RakI0kSVEpTIS14AgnFdYk8q6Vj88H7aAVuT3hwe0gJUnRvU0hMdTYbNsgNBtrO5bYtl6
+	 H3dB94IVvsMabMMY1MK7T3Q3yenENv1CA9aRIh59rJ6tbM4UmO/VUrnKMYnNL0Nzw5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="K71ocXZ/";
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EF7iGI22;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812E606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:58:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E812E606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1696606EE82;
+	Thu,  5 Nov 2026 11:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=K71ocXZ/
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3ac77270fbfso1045819a91.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:58:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793876296; x=1794481096; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
-        b=K71ocXZ/HS49uXPUvftmHhF6iKBXr20U2JrbygokCE2ws0bmPHGf31dFDsS4e7vYBc
-         kSuozUaxk9asDfi4t2/Ux/IkhEG8uqRsxrbJly3oQTEWxu3Nsq1+tKv2FJO2Wk0lURai
-         bFuhYa4q7U1qi+zB3Oj+st3oMFSydBcfOv1QFkO/wb6Fx0IyndGwbtQNTlQYqhILV/qh
-         EqjP6HeieKytlaUU2OmmHKBfeuKEFg3LjpvkGiXYTaFdrgdao9hygCU9DVztjYRvk2LP
-         rFbb7HrHCcnOUFlZC53KkxG6+2jt2tGFAkzvXdABUjmdvkPgsnnvf9/lrvsW2F79q+Pi
-         vsAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793876296; x=1794481096;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lNM3+b6l7cj+vrA9YlqTwqxAWDbif1TufQothTfjcdI=;
-        b=HUb2ycK7ZFxIun/45TYRNoHsUyRoUSfSnGNP9ZogkPdm8VswcHvEMCPjEj6Z92a1yS
-         fOmSORt+1GMNlNDCCSV0S09J0uQPxV7jicqXFx0mfWvFScnbcf25v0U5abhnACISQlv6
-         GHO+lMo3EG9lsyBvs+VxwreffV8AWc+g6/7z16DLrRDpziq+cvPso+FTHoM+5CknQm8d
-         /JN4EsUxBq80/PqOh+G4CL9pudCPunfEyZ8gaeoPcfrVi7uT6pRD4Nx1Cu0qt28tbMKh
-         UJfAnK6+i6mdwyKFIYDzRd87Snm6nKKVMWqGCaF/mh+FMPsM9I+z60Wl6QkNjjNuUdB1
-         tolQ==
-X-Forwarded-Encrypted: i=1; AKwUvByAu5xh34FAny25zuz7zGAVEGg2QS3sDjjcPZbCsRxyGhAiIJHQcBRCG/s7nQKu7WSRRm/ELuY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z99J8UiR7tLdYghkuDZSkkDV0956h6U6Rweh1zg5K0Sc6k/Ksuo
-	N4ot00ftvLYHhu/0CUuNQUYr1rvy5VaUNzMgx+wqtpG77nbF2EmwMezd
-X-Gm-Gg: AYBFou0UVI1JSC2ZdpJuX2Wln4pa1wNg09NZXEYV2XhqhPwBTw9cmkYqw2s2prkl2MC
-	bKHKbJw/bRX8Lt4qIgDy1xVNZIvlqUHdYLKxd+2dEjup161wOezVpV35OSJJD7Yq4isSP1BmVDz
-	NEVBYfnssdgOpSebTk1tEmZsp5M+Rk+BLZk1tpChYJmWpiOgioj0NLLDNitplT9/UxNrYxh2Tmg
-	2TKwkEZfiE0azLiPYNWvhE7rIKPkOoU8EY8PJi495gl3vbdSwcoqp0uqgiRZik88hGI6MYShFel
-	XrOfkK2fYE3JJ3XVJy+ErM9/kNjL4LzGI/rQDf14hUHFwKR4lU6rnppHXx56JmZzPw18O0PcR3w
-	1uB7lrs7HPiK+Y0PZY4jhBp/yBtY9VoJbAI0L1ZyjlXHUe7Pn28vd50dyWh3cQUprFJu/z9k/SS
-	vRGHebHaUBZg75ZnGnKEDAL+VYp2N8K+lTWwVeE+zUj8jNWIJc2iqOloljatRdukJ47e3Zc3eg0
-	SS9BRUkbyvRn/QXSTySaibevrOo21LNmiP8Qc6kXDVmsTO0qBPDu5J0nZT6lSP11y3fhVEw0lnp
-	xYqXRmP1yfZT6293ZKnWYZscwmFBnrLt7kyLH1895069+I1a
-X-Received: by 2002:a17:90b:518b:b0:3ac:ea3b:f28b with SMTP id 98e67ed59e1d1-3ae897b6653mr14961496a91.24.1793876296249;
-        Thu, 05 Nov 2026 02:58:16 -0800 (PST)
-Received: from hj.. ([163.239.22.29])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b32b6507sm3777513a91.16.2026.11.05.02.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:58:15 -0800 (PST)
-From: hyunjungg <hj351016@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hyunjung Ko <hj351016@gmail.com>
-Subject: [PATCH] nfc: pn533: validate response length before parsing DEP ATR_RES
-Date: Thu,  5 Nov 2026 19:58:05 +0900
-Message-ID: <20261105105805.1450120-1-hj351016@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EF7iGI22
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313E51F00919;
+	Thu,  5 Nov 2026 11:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793876410;
+	bh=soHoKIJD8GZb4y0nvq88n/hT4e+HgEdbmBAc2lwIcEs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=EF7iGI22jNvAG/hwRR0bKU1JlRJxfpze+DtATqCjdXSOWK3nF0flhnjmtzdoIozFq
+	 jhtL8jptl/94oIpBMnEbDmQdg9soti03njEm8SsExsjY2+61ynI8Jay63ia5QUNuIl
+	 wXBAuBO6OPJ6BFugGc43AyP+Qzsbt/Ay9XCOqv8UJTv7MltVCPvYpe3/Z2nesTrQKU
+	 +2qpzUv7XLt+YkoMmwuMAMRcTfgys0oVGhxaV31sgeSPpG02548/kxhrN8qhv8uNy5
+	 K2tHPZnQssjE7CyVrACyCvorIGvNMMO9/oZON3LXO71DreqnCW0YKRanzVeB5aSKyz
+	 +tIZy4XbnyYyg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 27143391AFBF;
+	Thu,  5 Nov 2026 11:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,70 +54,48 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] bonding: fix missing down path on speed/duplex
+ failure
+ after FAIL->UP
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179387640882.3593676.11672441638791431727.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Nov 2026 11:00:08 +0000
+References: <20261101150240.66292-1-timur.stukan.linux@gmail.com>
+In-Reply-To: <20261101150240.66292-1-timur.stukan.linux@gmail.com>
+To: Timur Stukan <timur.stukan.linux@gmail.com>
+Cc: netdev@vger.kernel.org, hangbin.liu@linux.dev, razor@blackwall.org,
+ fmancera@suse.de, jv@jvosburgh.net, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
 
-From: Hyunjung Ko <hj351016@gmail.com>
+Hello:
 
-pn533_poll_dep_complete() and pn533_in_dep_link_up_complete() cast
-resp->data to a struct pn533_cmd_jump_dep_response and read its fixed
-17-byte header (status, tg, nfcid3t[10], didt, bst, brt, to, ppt)
-without first checking that resp->len covers that header.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-On a short or truncated response the handlers read bytes beyond the
-received frame:
+On Sun,  1 Nov 2026 17:02:39 +0200 you wrote:
+> In bond_miimon_commit(), when a slave is proposed as BOND_LINK_UP but
+> bond_update_speed_duplex() fails in bonding mode that needs speed/duplex
+> (802.3ad, tlb, alb), the slave is set to BOND_LINK_DOWN directly. This
+> bypasses bond_set_slave_link_state(), bond_miimon_link_change() and
+> failover.
+> 
+> This is fine for slave that coming from BOND_LINK_BACK, which was never
+> brought up and is not in use. But since commit 1899bb325149 ("bonding:
+> fix state transition issue in link monitoring") the commit phase also
+> handles BOND_LINK_FAIL -> BOND_LINK_UP which means a slave that is still
+> in use and may be curr_active_slave.
+> 
+> [...]
 
-  - rsp->status is dereferenced with no minimum-length check;
-  - for a success status, memcpy(nfc_target.nfcid1, rsp->nfcid3t, 10)
-    copies 10 bytes from offset 2, so for resp->len < 12 it reads past
-    the valid response data. Those bytes are then handed to userspace
-    via nfc_targets_found() (netlink), which can disclose stale buffer
-    contents.
+Here is the summary with links:
+  - [net,v3] bonding: fix missing down path on speed/duplex failure after FAIL->UP
+    https://git.kernel.org/netdev/net/c/a76ab5e733b4
 
-target_gt_len = resp->len - 17 additionally underflows (it is u8) when
-resp->len < 17. That path is mitigated downstream --
-nfc_set_remote_general_bytes() -> nfc_llcp_set_remote_gb() rejects the
-resulting out-of-range length -- so the subtraction does not by itself
-over-read rsp->gt[]; the fixed-field reads above are unguarded
-regardless.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-A valid ATR_RES always carries the full 17-byte fixed header (the
-general bytes, if present, start at offset 17), so reject any response
-shorter than sizeof(*rsp) before parsing it. pn533_rf_complete()-style
-handlers in this file already length-check resp->len before use (e.g.
-the ATR_REQ_GB_OFFSET check in pn533_init_target_complete()).
 
-Found by code review; not reproduced.
-
-Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
----
- drivers/nfc/pn533/pn533.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1309,7 +1309,12 @@ static int pn533_poll_dep_complete(struct pn533 *dev, void *arg,
- 	memset(&nfc_target, 0, sizeof(struct nfc_target));
-
- 	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
-
-+	if (resp->len < sizeof(*rsp)) {
-+		rc = -EINVAL;
-+		goto error;
-+	}
-+
- 	rc = rsp->status & PN533_CMD_RET_MASK;
- 	if (rc != PN533_CMD_RET_SUCCESS) {
- 		/* Not target found, turn radio off */
-@@ -1929,7 +1929,12 @@ static int pn533_in_dep_link_up_complete(struct pn533 *dev, void *arg,
- 	}
-
- 	rsp = (struct pn533_cmd_jump_dep_response *)resp->data;
-
-+	if (resp->len < sizeof(*rsp)) {
-+		rc = -EINVAL;
-+		goto error;
-+	}
-+
- 	rc = rsp->status & PN533_CMD_RET_MASK;
- 	if (rc != PN533_CMD_RET_SUCCESS) {
- 		nfc_err(dev->dev,
