@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793876110;
-	b=bmYIcBnqwLXFlwgMjqefIRRFLLhHWuBtaz+d1ltYgdp77c2lOrmeggSt1K3DFrjcBjnS
-	 SO/3dJS0g9ecoB2PAjBR+QsQzvb351ZTyEeDOH7IE1bI+co9XEDqnZmhnOEVWCEpRJdDS
-	 lQB8TAsOveJ1Xk9yw9bqzpVkvs9ibvl3bXAELoCKPy8cjpJgClvA50JvgXv8hWySxek7b
-	 Bk9jxpU6+HeJYzZNOQpOk5AJ1E+y24vgAacUTpbO8EpR7lh6dFr4CwkgjpFZQPqOEA0dy
-	 HkFf6Zbt01WAQlHG85+0Y2/SiSalnQXtJ6wyvP0Spjegp91HjpSY2iL4sEM5BEDqT+Q==
+	t=1793876117;
+	b=rw6/cQ0I3GDG1Ly8mseN9xEAmGWlswEIsP9Abf/Zf5mB8m7cOPj10rnSCxFCpPFpViIT
+	 sck43BQkXGYZuvCfp9uuO+KzBDBvBKwwm1iJkhcLJvzhItMt9aPdYYGdl8u1acwAo8yS8
+	 oMuL8R6othW3K1AduYlWnIwnEfc1z2Q0MVX0BWC07n5z+yIYamKoYWTHAP2yzHrkazcio
+	 svjRJyT7NuF0KwIn3rikK8i8ql0Lpsr2Ax4tW9kHaULsfBITpCZyRspmvAchV11PEgzkU
+	 YjLBcqLcmI1gmAjAD7LDoZe3XqhttqVhVQTzth+7/CWnMFsldGZAcmxi94yXI1PTi5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793876110;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793876117;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=S3kBGMpJUDqyGZZ/3EY9QtmjH3XQ/06sMAWybkANdok=;
-	b=pRCcNGtCO+UQ53auflsV/6UEcqNfvsVVtwcVAHvIrNGrZVW1WPLWbPITGnMWWrBX4fvF
-	 oTP4czFG1ShIHf7Jbk3Y8rUIxpTMNa786Dgw1KyN/aUTXAiELw3pwTemagZxU5B4Z6Drv
-	 3mfGH87v9XIWWjuUSYPhLRpA8MGFbcvTDEyS0IKjKz/H2k8S4akESKZmxJ7VuTOTnByDO
-	 GijX6q1GiUfQgnw3eeWasCSzBIsF5fYOosvhxYWBYhCfErpJMYHuseP4CUQXtrzRkKweW
-	 Nh0bvIO6U1z+Djnx+NOZHAcrAqzCX8eu4CCGTJzSeblllGH2GEk5EFYAggv9V6BPNjQ==
+	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=cuiQvGpP7mIIWVfV20CnrfdS2Zo6gYEGGpYZV+wdVCM=;
+	b=j4zS5Psh+mYH4CSKFCKXOIVGh7Gy61xcehbR5h2Gi7rhKT5SHqSATkrFZQGIWJuSqczd
+	 //pDZsW2XaXpF1uZxXnUDkYvl0wTFj9OBsUeEz2G+1J6I16l5jn5VSOH9U40kW2zXuekJ
+	 bx7DqUzQdU3i8faSmNggqtRSnFmGiFj8fpWLvJmO/aeC9iHRPBIp+AwfDpE7chKP0JNsM
+	 hbvJgCnfqf8KC+sVwGBQK2ha7F36JrjmFnPaHvungALhKsXbEF9WdL1Iev6D5nZ/+PHaQ
+	 STyfT+SvsXsCFYrsT4FuWgB9FINGxDJgxE1ZJ1I5ptDoFnXg7ry58lrxkd81srdfGYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u2Mckaf7;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="zt5/TkBh";
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A750606A333
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:55:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A750606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CD606EE9C
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 10:55:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A6CD606EE9C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u2Mckaf7
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso11514135e9.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:55:10 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zt5/TkBh
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48fd2e38825so1161948f8f.2
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 02:55:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793876109; x=1794480909; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S3kBGMpJUDqyGZZ/3EY9QtmjH3XQ/06sMAWybkANdok=;
-        b=u2Mckaf72MIFO28Q8RwfK/lbM5uktuJE64/vY3ti6Vu2yRYVEk3NoKZqDkWoJ982A/
-         XJRnrA2u7LoZ/G7Y21kthouyeGcNCUv9NtRa5kdATIQj662s4BW49MNSqu0IrDgQ45X8
-         iCBHrHr9b4+cC/w28QMebSAET2czFcRanHMQX86qtIXWI4uh+3otxo1J8Q35iqXL+eXj
-         6wYZIDDPzNOc/2rCS87HRpYjja+srroLYbmp7Q91pvHKNrkqZBXjuKGLoZ99QtncLYZ/
-         L9RsOXu9+W98X31RMtoTuJz59NE7I0os5Z+iPTwYyLB8YnEiLu/hO6wGDP6Fmdvvn43a
-         MmhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793876109; x=1794480909;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20260707; t=1793876115; x=1794480915; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=S3kBGMpJUDqyGZZ/3EY9QtmjH3XQ/06sMAWybkANdok=;
-        b=a0iJBKo5wtf50nItNp/y0nAxx29Z7jGxBe4SvuUly7Eu7oWD9i/SPuUhJ9oCFS+b1K
-         4+1QBkFSRru/veEailijlA9ThsZVgWoNzMtW56nNq0LOsV5OG5uMKuAnvdfb1KLoyZxS
-         P/DZM29xcrtg2NWLEGKuGycTXgZDXENCSMwQs5RdXBp2d7Pmlic7Rio74fDvCDpeWxJT
-         m6a5IwhGmIXyNG5zVQZlRiXUAgYFNdYTQPiqnHPzkNZ1ZvfOwS7gdX8+XfOYcXtuoxCU
-         qmpinPkq+vh7TA8XuBl75PZxJWYL1p3gfQrFR/mhk4jrhJ3RBCjVuFbNuBJacGke2LIz
-         f+Eg==
-X-Forwarded-Encrypted: i=1; AKwUvBztUQzphLlSHhxLylk34ksILuYmlKbb2O9lHcmY1zrg2nhDxTvjEpDgjZmkEcsyDSBFytjk/q8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/HZjxSUSxdrmkGqpqS2PKZ+7wlA11nlmmHLSOFv2GiAfC5AMMi
-	Qp7pfbMcDeE9DcNWiOJnIbKanm3X8877g/0citcIclIsNMCMf/H6w7/b
-X-Gm-Gg: AYBFou2ofjbDnAgEQyZe6IClYIe9o7bVg+n6izZiUGvC8JoLfBJdh/ERmaYgVCc+3nC
-	yr8OftYH/XCWsizmIIg6uOh6uS8Q8hrbSqCctbyRWC5yHsrod805uUAjS5I1qdABSEb4XQ1uZek
-	MDvd0h5WSya8PkD+MgnS7ox6JzUYH0+hT95docbCGI4X4FK5HcMxg5SAVN9EuQPhDMmhrWXDZvY
-	JELq7vQllVxV0uqVlLEdZWHhrJCJy3FImCE33+2yjRZSUK34YGVIbMq7uVynQP7mLAnwDd5gUtL
-	UiWwceaN3nhfsICHlGnNXvhuzOSVIok5kpiCfWbINFAv+qWifOr8FH661v5EdhfZUg6tUQhBaDP
-	QCMoThTB928RgU1wcgtZcn1fggxc2nuK72L7J+kunCuBh8VfOKSLappTNdAekf/rHEDp03R8E5I
-	Q4R2Dqe+kNV4TUdpmLqkDmkOK9pdPIM0jGGb6TZPRRtDiuL+xlnVYMFbrzUl1yhBXvgCtn8XD1m
-	A45LK1CQ++l82VwgrCJsMgb28JYURlG7fb3/FgA5qar/wxtc3LNYjBYDcqrfXDm8ZK5eic5THCj
-	phwqCPfrh5P9Eyfv4uPrIgy/R5GcX+BISyA6JDe30Q4EAmpAHgpnyaVpggNov0JE2GeVwbrm8uy
-	kVj2HLjb4NPJhpdXkTipqHnQM
-X-Received: by 2002:a05:600c:5397:b0:4a4:7a8d:c736 with SMTP id 5b1f17b1804b1-4ac16acfceamr398713475e9.9.1793876108729;
-        Thu, 05 Nov 2026 02:55:08 -0800 (PST)
+        bh=cuiQvGpP7mIIWVfV20CnrfdS2Zo6gYEGGpYZV+wdVCM=;
+        b=zt5/TkBhtsZ+63HynqgQyCcH4E/2OpSCmqY0Q0aIQHmgg3yB7Kun2GwXmQQ/3qi3qT
+         mH4hog2M85g3xZ+pxpSwrVYnarLJhhypY/RAHfhqcmq5MbXF0F+5go+UrvLKF2lpPxeQ
+         fWa0fRfJT6YBClsScl5Umf2CrsRBrF5gZzCVVOr6Lru15/1Im5Bl6YmHLw5FamkCz+lH
+         butD5XMk7beNNwWDZFqrnbJF+E6xTspCnfUMdoKjJgYfkrFi08vTiWyFF3YYm7elWs6b
+         XkQxbauO+GS4il4pz/kRAOtSCNhTwhE5tYufnc4PfCxyzRmI1FU1ZUBlqR3znaINC+wn
+         dzjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793876115; x=1794480915;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=cuiQvGpP7mIIWVfV20CnrfdS2Zo6gYEGGpYZV+wdVCM=;
+        b=Frbm26EZg7Fuhrzz5SWwRHHaefcMo9R+nDSZf0l4BgwEB/57YHvRecEQ6oPKgJo3Ym
+         yEVKxYrZxm19e1njMzfoaJ8HrtBmAkUV8evoCUFEyxEl1tRV76eGHPUGWJ62qSxNZ4fh
+         0hIfEROWKY7emaQWtbYdbJICbhV2UCqVuqTUASOsqUloVxePXxXaIvW0CoQX1bpJsnWZ
+         //GVl5Rcaidz+r3hI3bvszWpAYBERevpIepf97+5vwJ1a9ivYFCHczEpUC+cEQo7PdN5
+         UQQ8jMbLhB5ZFGvUDlnNc4BZ6ouguAs86TBgs0P4oiOVw8lOLTTC4LTNMkUIcS9gbBBf
+         EcZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxdFDzbYXBiCgeVJFmsXf+XLVs+gFmCAxgRXTXzoYvsijZAZsAcvzsM2+m3ZNiGom5Ua65O/jg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/qUOABmU3+CEVX8M2mqaehH2q9sLmdXB21Ag0pL9JWKqflpXAi
+	tiYkih/6boB3v7pdvZ7nnyKqEc7VUEpj4ZGd56LKKVBhKxvs0yN6T9Ht
+X-Gm-Gg: AYBFou2GI4zy7kJo+rb1Z1VB5TKxplCXp08ByCYd/WTIP8SAjZktSxp0pmslDVkGVkg
+	4JlzXS2BnjbV+9FUrBYzH/EJDivkT3DRvajNRS8tDKwfFcTWizot2Ke+3tOz6UKXLQLY7gq5n9u
+	kMA1bk01VdluXlyoON9t0FGYIUjaz1BphmpKOM7itdbhu3pS9L3xR4d1W6simr4knTZAQ4SkrSc
+	YaHPewrNRAxk0G4tpKgy7FjUyVOccC5BehjhJ3vq4V0Au+Zzm0bLGmLUGuzpJd2AKbWol0W25yv
+	zzeedwri8RygI1ppumBqhYuIyCmehIuTQehrPj4gH+0ZECk28yX5D/qIuDghABSd2qNBN+Fj2GG
+	FGmjiRLu6nLMqMZSyYucHYLxV8DNlWQEi4CqaTfW2AA4lUTlBTUhytI5o4KpW71m8fxX7iNtunB
+	y2BWv0htLlkBnZMWyd9yIDmAKbuoQpBkOgiJ7O4XA+LtfXYHSm8ZUiagn4JjzIuUgPq/bHz7Bio
+	BK4wq7bV/t5essrCuO64O8Cp0oGmXlGU56C04LoZ7b1aVBcwlN8dwT0hFCShi+8YX1gpor42ooX
+	aPvqfAMfJCCYKmOrHYcyiwBR3Q6CigHgSfLmiIsS++CEGfm/8vPCYhHwxtztLQ67dLUy4QXDdZr
+	KvmhlGFaV4zkj5SOD605fwjhW
+X-Received: by 2002:a05:600c:1385:b0:4a3:5991:718 with SMTP id 5b1f17b1804b1-4ac182dc0a1mr445409305e9.16.1793876114784;
+        Thu, 05 Nov 2026 02:55:14 -0800 (PST)
 Received: from Ansuel-XPS24.lan (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b57317cb8esm59576355e9.13.2026.11.05.02.55.07
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b57317cb8esm59576355e9.13.2026.11.05.02.55.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 02:55:08 -0800 (PST)
+        Thu, 05 Nov 2026 02:55:14 -0800 (PST)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -98,10 +99,12 @@ To: Andrew Lunn <andrew@lunn.ch>,
 	netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v5 0/6] net: phy: mediatek: calibration for AN7581/3
-Date: Thu,  5 Nov 2026 11:54:56 +0100
-Message-ID: <20261105105504.1024-1-ansuelsmth@gmail.com>
+Subject: [PATCH net-next v5 4/6] net: phy: mediatek: split Airoha code to dedicated source
+Date: Thu,  5 Nov 2026 11:55:00 +0100
+Message-ID: <20261105105504.1024-5-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261105105504.1024-1-ansuelsmth@gmail.com>
+References: <20261105105504.1024-1-ansuelsmth@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,82 +116,554 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This small series adds calibration support for Airoha AN7581 and
-AN7583 integrated PHYs.
+In preparation for Airoha PHYs software calibration support, split the
+Airoha code to dedicated source following Mediatek naming pattern of
+"ge-soc".
 
-The calibration logic is quite big so I decided to split
-the driver from the mediatek one to keep things organized.
+This is to tidy things up and not overload the mediatek driver of specific
+Airoha code and ship a bigger PHY kernel module with dead code.
 
-Minor change were needed and just additional symbol to use what
-is common between mediatek and airoha PHYs.
+Move the shared LEDs function to mtk-phy-lib to permit the split instead of
+duplicating the code.
 
-I followed the naming pattern of mtk by calling the new source
-airoha-ge-soc and related config.
+Also add myself as MAINTAINER of the now new airoha-ge-soc driver.
 
-The calibration use lots of static table and software calibration
-at runtime instead of using efuse to calibrate.
-
-There is one pecularity where some register and calibration needs
-to be done on port0 first and then with the related port.
-
-This is O.K. as port0 presence is mandatory for the functionality
-of the integrated switch and it's assumed to be always present
-on the MDIO bus.
-
-MAINTAINERS is updated to reflect the changed code.
-
-(this was tested from a long time and also verified by Airoha for
-correct order of calibration)
-
-Changes v5:
-- Add review tag
-- Add additional helper for phy package
-- Use __phy_package helper instead of phydev_p0
-- Better use lock and unlock for phy package
-- Configure base address for the phy package
-
-Changes v4:
-- Fix typo in Kconfig
-- Prevent out-of-bounds for zcal_ctrl
-- Protect concurrent rext_sw_calib_done
-- Validate port 0 presence for calibration
-- Correctly set shared local variable
-- Use phy_package_init_once for shared tables
-- Better handle early exit restore
-- Better handle phy_select_page
-
-Changes v3:
-- Address comments from sashiko bot
-- Apply review and suggested changes from Airoha
-- Rebase on top of net-next
-
-Changes v2:
-- Split header register patch from cal_cycle part
-- Fix missing EXPORT_SYMBOL_GPL
-
-Christian Marangi (6):
-  net: phy: mediatek: export __mtk_tr_write
-  net: phy: mediatek: move MTK GE SoC registers define to dedicated
-    header
-  net: phy: add additional helper for PHY package
-  net: phy: mediatek: split Airoha code to dedicated source
-  net: phy: mediatek: add calibration logic for AN7581
-  net: phy: mediatek: add calibration logic for AN7583
-
- MAINTAINERS                              |    9 +
- drivers/net/phy/mediatek/Kconfig         |   18 +-
- drivers/net/phy/mediatek/Makefile        |    1 +
- drivers/net/phy/mediatek/airoha-ge-soc.c | 1917 ++++++++++++++++++++++
- drivers/net/phy/mediatek/mtk-ge-soc.c    |  521 +-----
- drivers/net/phy/mediatek/mtk-ge-soc.h    |  374 +++++
- drivers/net/phy/mediatek/mtk-phy-lib.c   |   77 +-
- drivers/net/phy/mediatek/mtk.h           |   15 +
- drivers/net/phy/phy_package.c            |   57 +
- drivers/net/phy/phylib.h                 |   73 +
- 10 files changed, 2537 insertions(+), 525 deletions(-)
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ MAINTAINERS                              |   8 ++
+ drivers/net/phy/mediatek/Kconfig         |  18 ++-
+ drivers/net/phy/mediatek/Makefile        |   1 +
+ drivers/net/phy/mediatek/airoha-ge-soc.c | 128 +++++++++++++++++
+ drivers/net/phy/mediatek/mtk-ge-soc.c    | 172 -----------------------
+ drivers/net/phy/mediatek/mtk-ge-soc.h    |   6 +-
+ drivers/net/phy/mediatek/mtk-phy-lib.c   |  72 ++++++++++
+ drivers/net/phy/mediatek/mtk.h           |  12 ++
+ 8 files changed, 239 insertions(+), 178 deletions(-)
  create mode 100644 drivers/net/phy/mediatek/airoha-ge-soc.c
- create mode 100644 drivers/net/phy/mediatek/mtk-ge-soc.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8add8b8cd306..8a3e84d7eff3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -771,6 +771,14 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
+ F:	drivers/net/ethernet/airoha/
+ 
++AIROHA ETHERNET PHY DRIVER
++M:	Christian Marangi <ansuelsmth@gmail.com>
++L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++L:	linux-mediatek@lists.infradead.org (moderated for non-subscribers)
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	drivers/net/phy/mediatek/airoha-ge-soc.c
++
+ AIROHA PCIE PHY DRIVER
+ M:	Lorenzo Bianconi <lorenzo@kernel.org>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+diff --git a/drivers/net/phy/mediatek/Kconfig b/drivers/net/phy/mediatek/Kconfig
+index 3b9cf82c0cb2..5abf78202991 100644
+--- a/drivers/net/phy/mediatek/Kconfig
++++ b/drivers/net/phy/mediatek/Kconfig
+@@ -1,4 +1,17 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++config AIROHA_GE_SOC_PHY
++	tristate "Airoha SoC Gigabit Ethernet PHYs"
++	depends on ARM64 || ECONET || COMPILE_TEST
++	depends on ARCH_AIROHA || ECONET || COMPILE_TEST
++	select MTK_NET_PHYLIB
++	select PHY_PACKAGE
++	help
++	  Supports Airoha SoC built-in Gigabit Ethernet PHYs.
++
++	  Include support for built-in Ethernet PHYs which are present in
++	  the AN7581 and AN7583 SoCs. These PHYs will dynamically
++	  calibrate during startup.
++
+ config MEDIATEK_2P5GE_PHY
+ 	tristate "MediaTek 2.5Gb Ethernet PHYs"
+ 	depends on (ARM64 && ARCH_MEDIATEK) || COMPILE_TEST
+@@ -32,9 +45,8 @@ config MEDIATEK_FE_SOC_PHY
+ 
+ config MEDIATEK_GE_SOC_PHY
+ 	tristate "MediaTek SoC Gigabit Ethernet PHYs"
+-	depends on ARM64 || ECONET || COMPILE_TEST
+-	depends on ARCH_AIROHA || (ARCH_MEDIATEK && NVMEM_MTK_EFUSE) || \
+-		   ECONET || COMPILE_TEST
++	depends on ARM64 || COMPILE_TEST
++	depends on (ARCH_MEDIATEK && NVMEM_MTK_EFUSE) || COMPILE_TEST
+ 	select MTK_NET_PHYLIB
+ 	select PHY_PACKAGE
+ 	help
+diff --git a/drivers/net/phy/mediatek/Makefile b/drivers/net/phy/mediatek/Makefile
+index 6f9cacf7f906..5594057f51d0 100644
+--- a/drivers/net/phy/mediatek/Makefile
++++ b/drivers/net/phy/mediatek/Makefile
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_AIROHA_GE_SOC_PHY)		+= airoha-ge-soc.o
+ obj-$(CONFIG_MEDIATEK_2P5GE_PHY)	+= mtk-2p5ge.o
+ obj-$(CONFIG_MEDIATEK_FE_SOC_PHY)	+= mtk-fe-soc.o
+ obj-$(CONFIG_MEDIATEK_GE_PHY)		+= mtk-ge.o
+diff --git a/drivers/net/phy/mediatek/airoha-ge-soc.c b/drivers/net/phy/mediatek/airoha-ge-soc.c
+new file mode 100644
+index 000000000000..e40e4597cd94
+--- /dev/null
++++ b/drivers/net/phy/mediatek/airoha-ge-soc.c
+@@ -0,0 +1,128 @@
++// SPDX-License-Identifier: GPL-2.0+
++#include <linux/pinctrl/consumer.h>
++#include <linux/phy.h>
++
++#include "mtk.h"
++#include "mtk-ge-soc.h"
++
++#define AIROHA_PHY_MAX_LEDS			2
++
++static int an7581_phy_probe(struct phy_device *phydev)
++{
++	struct mtk_socphy_priv *priv;
++	struct pinctrl *pinctrl;
++
++	/* Toggle pinctrl to enable PHY LED */
++	pinctrl = devm_pinctrl_get_select(&phydev->mdio.dev, "gbe-led");
++	if (IS_ERR(pinctrl))
++		dev_err(&phydev->mdio.bus->dev,
++			"Failed to setup PHY LED pinctrl\n");
++
++	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	phydev->priv = priv;
++
++	return 0;
++}
++
++static int an7581_phy_led_polarity_set(struct phy_device *phydev, int index,
++				       unsigned long modes)
++{
++	u16 val = 0;
++	u32 mode;
++
++	if (index >= AIROHA_PHY_MAX_LEDS)
++		return -EINVAL;
++
++	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
++		switch (mode) {
++		case PHY_LED_ACTIVE_LOW:
++			val = MTK_PHY_LED_ON_POLARITY;
++			break;
++		case PHY_LED_ACTIVE_HIGH:
++			break;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, index ?
++			      MTK_PHY_LED1_ON_CTRL : MTK_PHY_LED0_ON_CTRL,
++			      MTK_PHY_LED_ON_POLARITY, val);
++}
++
++static int en7528_phy_config_init(struct phy_device *phydev)
++{
++	/* The LED controller of the EN7528 powers up with its external
++	 * control disabled, leaving the LED pins dark regardless of what is
++	 * programmed into the LED control registers. Hand the pins over to
++	 * the LED control registers the same way the air_en8811h driver
++	 * does; the mode field of this register is already set out of reset.
++	 */
++	return phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, MTK_PHY_LED_BCR,
++				MTK_PHY_LED_BCR_CLK_EN |
++				MTK_PHY_LED_BCR_EXT_CTRL);
++}
++
++static int an7583_phy_config_init(struct phy_device *phydev)
++{
++	/* BMCR_PDOWN is enabled by default */
++	return phy_clear_bits(phydev, MII_BMCR, BMCR_PDOWN);
++}
++
++static struct phy_driver mtk_socphy_driver[] = {
++	{
++		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_EN7528),
++		.name		= "EcoNet EN7528 PHY",
++		.config_init	= en7528_phy_config_init,
++		.probe		= an7581_phy_probe,
++		.led_blink_set	= mt798x_phy_led_blink_set,
++		.led_brightness_set = mt798x_phy_led_brightness_set,
++		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
++		.led_hw_control_set = mt798x_phy_led_hw_control_set,
++		.led_hw_control_get = mt798x_phy_led_hw_control_get,
++		.led_polarity_set = an7581_phy_led_polarity_set,
++	},
++	{
++		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7581),
++		.name		= "Airoha AN7581 PHY",
++		.config_intr	= genphy_no_config_intr,
++		.handle_interrupt = genphy_handle_interrupt_no_ack,
++		.probe		= an7581_phy_probe,
++		.led_blink_set	= mt798x_phy_led_blink_set,
++		.led_brightness_set = mt798x_phy_led_brightness_set,
++		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
++		.led_hw_control_set = mt798x_phy_led_hw_control_set,
++		.led_hw_control_get = mt798x_phy_led_hw_control_get,
++		.led_polarity_set = an7581_phy_led_polarity_set,
++	},
++	{
++		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7583),
++		.name		= "Airoha AN7583 PHY",
++		.config_init	= an7583_phy_config_init,
++		.probe		= an7581_phy_probe,
++		.led_blink_set	= mt798x_phy_led_blink_set,
++		.led_brightness_set = mt798x_phy_led_brightness_set,
++		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
++		.led_hw_control_set = mt798x_phy_led_hw_control_set,
++		.led_hw_control_get = mt798x_phy_led_hw_control_get,
++		.led_polarity_set = an7581_phy_led_polarity_set,
++	},
++};
++
++module_phy_driver(mtk_socphy_driver);
++
++static const struct mdio_device_id __maybe_unused airoha_socphy_tbl[] = {
++	{ PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_EN7528) },
++	{ PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7581) },
++	{ PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7583) },
++	{ }
++};
++
++MODULE_DESCRIPTION("Airoha SoC Gigabit Ethernet PHY driver");
++MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
++MODULE_LICENSE("GPL");
++
++MODULE_DEVICE_TABLE(mdio, airoha_socphy_tbl);
+diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.c b/drivers/net/phy/mediatek/mtk-ge-soc.c
+index 2b1e9923db98..239190678f6d 100644
+--- a/drivers/net/phy/mediatek/mtk-ge-soc.c
++++ b/drivers/net/phy/mediatek/mtk-ge-soc.c
+@@ -877,73 +877,6 @@ static int mt798x_phy_config_init(struct phy_device *phydev)
+ 	return mt798x_phy_calibration(phydev);
+ }
+ 
+-static int mt798x_phy_led_blink_set(struct phy_device *phydev, u8 index,
+-				    unsigned long *delay_on,
+-				    unsigned long *delay_off)
+-{
+-	bool blinking = false;
+-	int err;
+-
+-	err = mtk_phy_led_num_dly_cfg(index, delay_on, delay_off, &blinking);
+-	if (err < 0)
+-		return err;
+-
+-	err = mtk_phy_hw_led_blink_set(phydev, index, blinking);
+-	if (err)
+-		return err;
+-
+-	return mtk_phy_hw_led_on_set(phydev, index, MTK_GPHY_LED_ON_MASK,
+-				     false);
+-}
+-
+-static int mt798x_phy_led_brightness_set(struct phy_device *phydev,
+-					 u8 index, enum led_brightness value)
+-{
+-	int err;
+-
+-	err = mtk_phy_hw_led_blink_set(phydev, index, false);
+-	if (err)
+-		return err;
+-
+-	return mtk_phy_hw_led_on_set(phydev, index, MTK_GPHY_LED_ON_MASK,
+-				     (value != LED_OFF));
+-}
+-
+-static const unsigned long supported_triggers =
+-	BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
+-	BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
+-	BIT(TRIGGER_NETDEV_LINK)        |
+-	BIT(TRIGGER_NETDEV_LINK_10)     |
+-	BIT(TRIGGER_NETDEV_LINK_100)    |
+-	BIT(TRIGGER_NETDEV_LINK_1000)   |
+-	BIT(TRIGGER_NETDEV_RX)          |
+-	BIT(TRIGGER_NETDEV_TX);
+-
+-static int mt798x_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
+-					  unsigned long rules)
+-{
+-	return mtk_phy_led_hw_is_supported(phydev, index, rules,
+-					   supported_triggers);
+-}
+-
+-static int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
+-					 unsigned long *rules)
+-{
+-	return mtk_phy_led_hw_ctrl_get(phydev, index, rules,
+-				       MTK_GPHY_LED_ON_SET,
+-				       MTK_GPHY_LED_RX_BLINK_SET,
+-				       MTK_GPHY_LED_TX_BLINK_SET);
+-};
+-
+-static int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
+-					 unsigned long rules)
+-{
+-	return mtk_phy_led_hw_ctrl_set(phydev, index, rules,
+-				       MTK_GPHY_LED_ON_SET,
+-				       MTK_GPHY_LED_RX_BLINK_SET,
+-				       MTK_GPHY_LED_TX_BLINK_SET);
+-};
+-
+ static bool mt7988_phy_led_get_polarity(struct phy_device *phydev, int led_num)
+ {
+ 	struct mtk_socphy_shared *priv = phy_package_get_priv(phydev);
+@@ -1080,71 +1013,6 @@ static int mt7981_phy_probe(struct phy_device *phydev)
+ 	return mt798x_phy_calibration(phydev);
+ }
+ 
+-static int an7581_phy_probe(struct phy_device *phydev)
+-{
+-	struct mtk_socphy_priv *priv;
+-	struct pinctrl *pinctrl;
+-
+-	/* Toggle pinctrl to enable PHY LED */
+-	pinctrl = devm_pinctrl_get_select(&phydev->mdio.dev, "gbe-led");
+-	if (IS_ERR(pinctrl))
+-		dev_err(&phydev->mdio.bus->dev,
+-			"Failed to setup PHY LED pinctrl\n");
+-
+-	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
+-		return -ENOMEM;
+-
+-	phydev->priv = priv;
+-
+-	return 0;
+-}
+-
+-static int an7581_phy_led_polarity_set(struct phy_device *phydev, int index,
+-				       unsigned long modes)
+-{
+-	u16 val = 0;
+-	u32 mode;
+-
+-	if (index >= MTK_PHY_MAX_LEDS)
+-		return -EINVAL;
+-
+-	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
+-		switch (mode) {
+-		case PHY_LED_ACTIVE_LOW:
+-			val = MTK_PHY_LED_ON_POLARITY;
+-			break;
+-		case PHY_LED_ACTIVE_HIGH:
+-			break;
+-		default:
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, index ?
+-			      MTK_PHY_LED1_ON_CTRL : MTK_PHY_LED0_ON_CTRL,
+-			      MTK_PHY_LED_ON_POLARITY, val);
+-}
+-
+-static int an7583_phy_config_init(struct phy_device *phydev)
+-{
+-	/* BMCR_PDOWN is enabled by default */
+-	return phy_clear_bits(phydev, MII_BMCR, BMCR_PDOWN);
+-}
+-
+-static int en7528_phy_config_init(struct phy_device *phydev)
+-{
+-	/* The LED controller of the EN7528 powers up with its external
+-	 * control disabled, leaving the LED pins dark regardless of what is
+-	 * programmed into the LED control registers. Hand the pins over to
+-	 * the LED control registers the same way the air_en8811h driver
+-	 * does; the mode field of this register is already set out of reset.
+-	 */
+-	return phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, MTK_PHY_LED_BCR,
+-				MTK_PHY_LED_BCR_CLK_EN |
+-				MTK_PHY_LED_BCR_EXT_CTRL);
+-}
+-
+ static struct phy_driver mtk_socphy_driver[] = {
+ 	{
+ 		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7981),
+@@ -1180,43 +1048,6 @@ static struct phy_driver mtk_socphy_driver[] = {
+ 		.led_hw_control_set = mt798x_phy_led_hw_control_set,
+ 		.led_hw_control_get = mt798x_phy_led_hw_control_get,
+ 	},
+-	{
+-		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_EN7528),
+-		.name		= "EcoNet EN7528 PHY",
+-		.config_init	= en7528_phy_config_init,
+-		.probe		= an7581_phy_probe,
+-		.led_blink_set	= mt798x_phy_led_blink_set,
+-		.led_brightness_set = mt798x_phy_led_brightness_set,
+-		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
+-		.led_hw_control_set = mt798x_phy_led_hw_control_set,
+-		.led_hw_control_get = mt798x_phy_led_hw_control_get,
+-		.led_polarity_set = an7581_phy_led_polarity_set,
+-	},
+-	{
+-		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_AN7581),
+-		.name		= "Airoha AN7581 PHY",
+-		.config_intr	= genphy_no_config_intr,
+-		.handle_interrupt = genphy_handle_interrupt_no_ack,
+-		.probe		= an7581_phy_probe,
+-		.led_blink_set	= mt798x_phy_led_blink_set,
+-		.led_brightness_set = mt798x_phy_led_brightness_set,
+-		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
+-		.led_hw_control_set = mt798x_phy_led_hw_control_set,
+-		.led_hw_control_get = mt798x_phy_led_hw_control_get,
+-		.led_polarity_set = an7581_phy_led_polarity_set,
+-	},
+-	{
+-		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_AN7583),
+-		.name		= "Airoha AN7583 PHY",
+-		.config_init	= an7583_phy_config_init,
+-		.probe		= an7581_phy_probe,
+-		.led_blink_set	= mt798x_phy_led_blink_set,
+-		.led_brightness_set = mt798x_phy_led_brightness_set,
+-		.led_hw_is_supported = mt798x_phy_led_hw_is_supported,
+-		.led_hw_control_set = mt798x_phy_led_hw_control_set,
+-		.led_hw_control_get = mt798x_phy_led_hw_control_get,
+-		.led_polarity_set = an7581_phy_led_polarity_set,
+-	},
+ };
+ 
+ module_phy_driver(mtk_socphy_driver);
+@@ -1224,9 +1055,6 @@ module_phy_driver(mtk_socphy_driver);
+ static const struct mdio_device_id __maybe_unused mtk_socphy_tbl[] = {
+ 	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7981) },
+ 	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7988) },
+-	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_EN7528) },
+-	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_AN7581) },
+-	{ PHY_ID_MATCH_EXACT(MTK_GPHY_ID_AN7583) },
+ 	{ }
+ };
+ 
+diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.h b/drivers/net/phy/mediatek/mtk-ge-soc.h
+index 008efd148a2c..bcc4d0a435ef 100644
+--- a/drivers/net/phy/mediatek/mtk-ge-soc.h
++++ b/drivers/net/phy/mediatek/mtk-ge-soc.h
+@@ -7,9 +7,9 @@
+ 
+ #define MTK_GPHY_ID_MT7981			0x03a29461
+ #define MTK_GPHY_ID_MT7988			0x03a29481
+-#define MTK_GPHY_ID_EN7528			0x03a29491
+-#define MTK_GPHY_ID_AN7581			0x03a294c1
+-#define MTK_GPHY_ID_AN7583			0xc0ff0420
++#define AIROHA_GPHY_ID_EN7528			0x03a29491
++#define AIROHA_GPHY_ID_AN7581			0x03a294c1
++#define AIROHA_GPHY_ID_AN7583			0xc0ff0420
+ 
+ #define MTK_EXT_PAGE_ACCESS			0x1f
+ #define MTK_PHY_PAGE_STANDARD			0x0000
+diff --git a/drivers/net/phy/mediatek/mtk-phy-lib.c b/drivers/net/phy/mediatek/mtk-phy-lib.c
+index 3e4fb899a85b..dc4abd95d73f 100644
+--- a/drivers/net/phy/mediatek/mtk-phy-lib.c
++++ b/drivers/net/phy/mediatek/mtk-phy-lib.c
+@@ -339,6 +339,78 @@ void mtk_phy_leds_state_init(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(mtk_phy_leds_state_init);
+ 
++int mt798x_phy_led_blink_set(struct phy_device *phydev, u8 index,
++			     unsigned long *delay_on,
++			     unsigned long *delay_off)
++{
++	bool blinking = false;
++	int err;
++
++	err = mtk_phy_led_num_dly_cfg(index, delay_on, delay_off, &blinking);
++	if (err < 0)
++		return err;
++
++	err = mtk_phy_hw_led_blink_set(phydev, index, blinking);
++	if (err)
++		return err;
++
++	return mtk_phy_hw_led_on_set(phydev, index, MTK_GPHY_LED_ON_MASK,
++				     false);
++}
++EXPORT_SYMBOL_GPL(mt798x_phy_led_blink_set);
++
++int mt798x_phy_led_brightness_set(struct phy_device *phydev,
++				  u8 index, enum led_brightness value)
++{
++	int err;
++
++	err = mtk_phy_hw_led_blink_set(phydev, index, false);
++	if (err)
++		return err;
++
++	return mtk_phy_hw_led_on_set(phydev, index, MTK_GPHY_LED_ON_MASK,
++				     (value != LED_OFF));
++}
++EXPORT_SYMBOL_GPL(mt798x_phy_led_brightness_set);
++
++static const unsigned long supported_triggers =
++	BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
++	BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
++	BIT(TRIGGER_NETDEV_LINK)        |
++	BIT(TRIGGER_NETDEV_LINK_10)     |
++	BIT(TRIGGER_NETDEV_LINK_100)    |
++	BIT(TRIGGER_NETDEV_LINK_1000)   |
++	BIT(TRIGGER_NETDEV_RX)          |
++	BIT(TRIGGER_NETDEV_TX);
++
++int mt798x_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
++				   unsigned long rules)
++{
++	return mtk_phy_led_hw_is_supported(phydev, index, rules,
++					   supported_triggers);
++}
++EXPORT_SYMBOL_GPL(mt798x_phy_led_hw_is_supported);
++
++int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
++				  unsigned long *rules)
++{
++	return mtk_phy_led_hw_ctrl_get(phydev, index, rules,
++				       MTK_GPHY_LED_ON_SET,
++				       MTK_GPHY_LED_RX_BLINK_SET,
++				       MTK_GPHY_LED_TX_BLINK_SET);
++};
++EXPORT_SYMBOL_GPL(mt798x_phy_led_hw_control_get);
++
++int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
++				  unsigned long rules)
++{
++	return mtk_phy_led_hw_ctrl_set(phydev, index, rules,
++				       MTK_GPHY_LED_ON_SET,
++				       MTK_GPHY_LED_RX_BLINK_SET,
++				       MTK_GPHY_LED_TX_BLINK_SET);
++};
++EXPORT_SYMBOL_GPL(mt798x_phy_led_hw_control_set);
++
+ MODULE_DESCRIPTION("MediaTek Ethernet PHY driver common");
+ MODULE_AUTHOR("Sky Huang <SkyLake.Huang@mediatek.com>");
+ MODULE_AUTHOR("Daniel Golle <daniel@makrotopia.org>");
+diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
+index 3565e39b96a8..bc46646a95fd 100644
+--- a/drivers/net/phy/mediatek/mtk.h
++++ b/drivers/net/phy/mediatek/mtk.h
+@@ -103,4 +103,16 @@ int mtk_phy_hw_led_blink_set(struct phy_device *phydev, u8 index,
+ 			     bool blinking);
+ void mtk_phy_leds_state_init(struct phy_device *phydev);
+ 
++int mt798x_phy_led_blink_set(struct phy_device *phydev, u8 index,
++			     unsigned long *delay_on,
++			     unsigned long *delay_off);
++int mt798x_phy_led_brightness_set(struct phy_device *phydev,
++				  u8 index, enum led_brightness value);
++int mt798x_phy_led_hw_is_supported(struct phy_device *phydev, u8 index,
++				   unsigned long rules);
++int mt798x_phy_led_hw_control_get(struct phy_device *phydev, u8 index,
++				  unsigned long *rules);
++int mt798x_phy_led_hw_control_set(struct phy_device *phydev, u8 index,
++				  unsigned long rules);
++
+ #endif /* _MTK_EPHY_H_ */
 -- 
 2.55.0
 
