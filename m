@@ -1,63 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793879852;
-	b=VWuXLcMP1Rmgt54VClRbDqe793DaqwT/4TIukJcwcv+CcSwTNxxwmieRoJlC1BSMHO4R
-	 x+bbZ2ofHabpndGtM0Iea1JDZhvGis+kYT9HE3N1kvvn2w72wxab/YCr1VgK3+aN15fQv
-	 Q9NzyAxPEgRaVbHNecWE07tUhPF9AuLPHOatuaIOwfZYWL9SXfbyYLuGhk5wikImgKIBY
-	 gdsJapO8Djs5H+eMo0qp8yis3brysUDxkqH7qV5mTfNZ1b1K/44pr3B+ZnihX4bAxwU5h
-	 PGY1TQzzr42liUHgckhk1b5IlLqA4pWHtnrQp+q+zTNhCaCTVIHp+UH56/ps3z37YEQ==
+	t=1793879836;
+	b=MOlnyHjhCuAb5pSvVLx7d8cKhlGC71r9E8HbiR1e8e1p3xixLCsdohJwIgPclTl3o0w7
+	 6hF31YyFOyoXMh6SyR70Sx7YjUmRFxcJECvKtXlEp0GJJIIjH9qSHaRw7yCHWlZIGiTwZ
+	 PlR4zGQHA4qf5lm8ay8X/Rroe8hLjMyliksJscBbYiWKnBR1rOwITe0BDmBh08ATEapKF
+	 ejy/d/Bp9yk3Ry8W9ytx0S2FPYW3UIMlTBLyFC3GG8puHPG2kpUMIvVQqJfZGGZytHRrv
+	 TY4SkbDDmu/v0D+1eOQpbribDXETH4eVDIGhr70hwjMBZW7F0nkwdk1ugDjzrujALRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793879852;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=5GMAqY7FM6ZAQr9W6BNb+fX/DcRpx409vq4+uvPz0kM=;
-	b=nbmJT0Eug1P/xkTzETA7xp6jPvsQvxz7F7gmVkK/NpCjJtTuz1QESVyieWKWfvSzi3/6
-	 gQJEkY/vc2okwagbVtkwMB8+MAjcgRxEtnaY2dMFoxLWhw5b1TiqhWpFXYh1jCwdWtbBP
-	 kP8UEvZGeGd5TyZbvBwZy0IUaxAFotM5IO6GeByhJxJgn8y4zaCKyBUnlSi1LSPjt2Ep7
-	 wOhiSWwucYq1RuVJFCFy/2R7LvAsThhVEHH2X9ch08+s+X48n4gLdx6/i0/4+/KgNnYXd
-	 cg9o3jOyhuMm//tcHH1U7M53jIHZJ5NZy/bwdcoNtN4Q4UqduzYYVPLCpkzTGQaOklA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793879836;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=r6Zmr2w7yD8Ip+j9uCT09/R1QkyDYQmRF/et5N9k+lg=;
+	b=sRz2CwF+UjY+5SjmBJRTbbPR6gQ63rPtbWjbPpyX9x8Bw6lTQrIRCrHoh/Cmcce4wfcS
+	 u0WJNaTtZNhV7/kd0D+m45wNaRiAb0jkbPE/x2FbFlc1AlgstJtyAaA8d2SV4KtJGGzV2
+	 qBuLYHet18Fq0jQJqonMEc/UteECtTYlsibvCroFYqIECKor2r8Qk+A/+ccrFQjjCnly/
+	 JR4maYkJMs59UP1Yof/071VA7gRAIGG5WiLELlJtDfHekcEH3dqcxOdgSkQtE9Gt1oUJr
+	 HBAxU2B9Z4G5kM7raVTV8VbYhqNRjvWbyi2+EhY75Fhii2urSTxxBLeHdbRQ1nRl+hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=La0ow71c;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MTkmDUel;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1A8606D801;
-	Thu,  5 Nov 2026 11:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06461606A33B;
+	Thu,  5 Nov 2026 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=La0ow71c
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E9B1F0093A;
-	Thu,  5 Nov 2026 11:57:29 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MTkmDUel
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D883C1F00919;
+	Thu,  5 Nov 2026 11:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879852;
-	bh=5GMAqY7FM6ZAQr9W6BNb+fX/DcRpx409vq4+uvPz0kM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=La0ow71c/c7XYBluF2qRAhPZIWRij2839XlrQiQy94qLDeBhk8knhpNdo1TMXMc9W
-	 z40UBp+m/aupTlC+czkll/ZnPlSnh5ANFHckNAreMDIV6NYE5QcT+ll/5tFjAzIINl
-	 s8KO2VEgjp9RUVXWJ6Pla4N9FaPbfjnH9uGv0QVtwx88p9V6DL9hHwT/btTmXN4YU4
-	 g5uOSYFD3S3N56TUHlLnO1oGq0r9s+CM1WA3tR3uF3rb2H+A92T+4S9quc19AAzyjJ
-	 s+CZGKYeIO1qDcyCalURE3vhc4lbV/ADarRmHqpjIZlzhUXyyH8PeSLyOL9U7jphy3
-	 /2PH4cd1Halhw==
-From: Eric Dumazet <edumazet@kernel.org>
-To: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Hassan Sultan <hassansultan@google.com>,
-	virtualization@lists.linux.dev
-Subject: [PATCH net v3 4/8] selftests: net: tuntap: fix UDP checksum length in build_udp_packet_csum()
-Date: Thu,  5 Nov 2026 12:57:11 +0100
-Message-ID: <20261105115715.1466924-5-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261105115715.1466924-1-edumazet@kernel.org>
-References: <20261105115715.1466924-1-edumazet@kernel.org>
+	s=k20260515; t=1793879835;
+	bh=r6Zmr2w7yD8Ip+j9uCT09/R1QkyDYQmRF/et5N9k+lg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MTkmDUel1hF5mX4WG1FDvygwC/sBvJsmKJkN64N5mS8ZMC5a+f8oTJ3ISN3ZVOWL4
+	 mTwQMwzNLuNL7ibPktJ939U+6EknlJPb0RQVm9fvpkbNjMuxnqCH7Z+5s3SKedkLpT
+	 tswdGkv5+25IksudFLaP9sdC1WSzb8JDtPh7MzFwtmHvzKcXsA1dA8Ay8B8ABMhFWG
+	 SBQloVwIXjSJYDGz//5Ki3wtQ1USwZTIyRLvva27DNrEnEtZbQdtOQyP1+Ys7fKuq5
+	 odxSGWc/CcDNvfIH+EqM0668iEdTHRVt8TUj1HyDVWyCpAIp4XxyD68l97DnZ8xdfK
+	 kovsJbSrlHQGw==
+Date: Thu, 5 Nov 2026 12:57:12 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Lucas Tanure <tanure@linux.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	davem@davemloft.net, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/7] dt-bindings: net: amlogic,meson-dwmac: add
+ amlogic,t7-dwmac
+Message-ID: <20261105-stoic-cricket-of-tolerance-cb3014@quoll>
+References: <20261103163715.385394-1-tanure@linux.com>
+ <20261103163715.385394-3-tanure@linux.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,56 +65,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261103163715.385394-3-tanure@linux.com>
 
-build_udp_packet_csum() passes udph->len, which is in network byte
-order, as the number of bytes to checksum. On little-endian hosts this
-reads up to 64KB past the UDP header and computes a wrong checksum.
+On Tue, Nov 03, 2026 at 04:37:10PM +0000, Lucas Tanure wrote:
+> 
+> Assisted-by: LLM
 
-Existing callers did not crash only because they use packet buffers
-of MAX_VNET_TUNNEL_PACKET_SZ bytes.
+Drop this one.
 
-Use ntohs(udph->len), as tap.c does in its own build_udp_packet().
+> Signed-off-by: Lucas Tanure <tanure@linux.com>
+> ---
+>  .../bindings/net/amlogic,meson-dwmac.yaml     | 59 +++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> index e769c9bb70d8..6de013e3e8f6 100644
+> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> @@ -23,6 +23,7 @@ select:
+>            - amlogic,meson-gxbb-dwmac
+>            - amlogic,meson-axg-dwmac
+>            - amlogic,meson-g12a-dwmac
+> +          - amlogic,t7-dwmac
+>    required:
+>      - compatible
+>  
+> @@ -57,6 +58,59 @@ allOf:
+>              - const: clkin1
+>              - const: timing-adjustment
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: amlogic,t7-dwmac
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: GMAC main clock
+> +            - description: First parent clock of the internal mux
+> +            - description: Second parent clock of the internal mux
+> +            - description:
+> +                clock of the pipeline stage inserted in the bus path between
+> +                the controller and the DRAM. Without it, the controller cannot
+> +                complete DMA transfers.
+> +            - description:
+> +                clock of the register block holding PRG_ETH0 and PRG_ETH1.
+> +                Without it, the block reads as zero and ignores writes.
 
-While at it, clear udph->check before summing instead of relying on
-the caller, and send 0xffff instead of a computed zero checksum, as
-the kernel does with CSUM_MANGLED_0.
+This sounds like you take clock from other block. That's wrong, that
+device should take its own clock.
 
-Fixes: a942fcd72e97 ("selftest: tun: Introduce tuntap_helpers.h header for TUN/TAP testing")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- tools/testing/selftests/net/tuntap_helpers.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/tuntap_helpers.h b/tools/testing/selftests/net/tuntap_helpers.h
-index d6c0437136ec..ecad83fae158 100644
---- a/tools/testing/selftests/net/tuntap_helpers.h
-+++ b/tools/testing/selftests/net/tuntap_helpers.h
-@@ -330,14 +330,22 @@ static inline void build_udp_packet_csum(uint8_t *buf, int family,
- 	size_t ipalen = ip_addr_len(family);
- 	uint32_t sum;
- 
-+	udph->check = 0;
-+
- 	/* No extension IPv4 and IPv6 headers addresses are the last fields */
- 	sum = add_csum(buf - 2 * ipalen, 2 * ipalen);
- 	sum += htons(IPPROTO_UDP) + udph->len;
- 
- 	if (!csum_off)
--		sum += add_csum(buf, udph->len);
-+		sum += add_csum(buf, ntohs(udph->len));
- 
- 	udph->check = finish_ip_csum(sum);
-+
-+	/* A zero UDP checksum means no checksum: send 0xffff instead,
-+	 * as the kernel does with CSUM_MANGLED_0.
-+	 */
-+	if (!csum_off && !udph->check)
-+		udph->check = 0xffff;
- }
- 
- static inline int build_udp_packet(uint8_t *buf, uint16_t sport, uint16_t dport,
--- 
-2.53.0
+> +
+> +        clock-names:
+> +          items:
+> +            - const: stmmaceth
+> +            - const: clkin0
+> +            - const: clkin1
+> +            - const: pipeline
+> +            - const: pclk
+> +
+> +        # The PHY adds the 2ns RGMII delays, see ethernet-controller.yaml.
+> +        # The RX delay line of this glue is fine tuning in 200ps steps,
+> +        # added on top of what phy-mode describes. The TX side has no fine
+> +        # tuning: its only step is a quarter of the clock period, the full
+> +        # 2ns at 1Gbit/s, so the TX property is not accepted.
+> +        tx-internal-delay-ps: false
+> +
+> +        # Deprecated: new SoCs use the standard *-internal-delay-ps
+> +        # properties instead.
+> +        amlogic,tx-delay-ns: false
+> +        amlogic,rx-delay-ns: false
+> +
+> +  # Delay definitions for Meson8b and newer
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - amlogic,meson8b-dwmac
+> +              - amlogic,meson8m2-dwmac
+> +              - amlogic,meson-gxbb-dwmac
+> +              - amlogic,meson-axg-dwmac
+> +              - amlogic,meson-g12a-dwmac
+> +    then:
+> +      properties:
+>          amlogic,tx-delay-ns:
+>            enum: [0, 2, 4, 6]
+>            default: 2
+> @@ -106,6 +160,7 @@ allOf:
+>            contains:
+>              enum:
+>                - amlogic,meson-g12a-dwmac
+> +              - amlogic,t7-dwmac
+>      then:
+>        properties:
+>          rx-internal-delay-ps:
+> @@ -142,6 +197,10 @@ properties:
+>        - items:
+>            - const: amlogic,meson6-dwmac
+>            - const: snps,dwmac
+> +      - items:
+> +          - const: amlogic,t7-dwmac
+> +          - const: snps,dwmac-5.10a
+> +          - const: snps,dwmac
+
+I see no such hunk in the code, so not sure how to review this.
+
+Best regards,
+Krzysztof
 
