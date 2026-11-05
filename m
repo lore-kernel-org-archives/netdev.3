@@ -1,63 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793922049;
-	b=m5SR4QmUYEoY8Bhbv6dCw2NAfQhQY2y9h1cv53hu3m96DPknkoJiV0BGbxLl20WUvlM6
-	 3MbOciLMThwMWQ7Y86S8eCwuPUUUomNaPtxjwU0aDUZ+Y98OGTKBqcOFf59r1NJRm61U/
-	 T19mMkiJZ7espGd7UPlVMfgwgcLxTCkfXDYzoxeYL9dBrsf7Etmq+rYUWmFDsNyeEjwn4
-	 yCsYEUyw1hqzxjhmzeN+nBCpOqn0SQIUH9PGqfvXoqnZCu6z8gk5lvq5q6QJbzTeOUSOt
-	 yKDTIdV1yHXfWT/Wq/l4XpFRNEX7FILa1ZXLCtWfkCsKKh0nyFHVP4ILpJET2xf4JHg==
+	t=1793922065;
+	b=SmNTWHATyobhxAOP7RQmagE7XCE7G77Q/9QJ5DoMNbnPAK6BVZonuewaRFX5AnMQFagO
+	 hrpiCwXce4Bz6026G+Zg9qzmszoWYPxl5tQkZhIJhLICK8ghxAPLcoL9FE4BhASv3AjnW
+	 aflsJF75xVEH8njY7+cCNP9IXDBE+MDjNeI+N8gzwzVS9Vod4MJyLhojwwvVsBHAHBeH3
+	 bxwxJDP+HvkGVR5f03HlzJRKJANJ7IFtVQsMTutCOuPHpFQSeexklbx7HZMxzjQId6vr1
+	 i/kiqIOo2uhlmzOWLqx8KSparheBKtDf4zTQ3pkRed6vvm7RG4ovZlKBTGGf1/QavXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793922049;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793922065;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=DALcyRp0vjX3To2DbsLGpJo7XYxiod9b2pPkFTmQfLk=;
-	b=kzcbwWAoJDcbCtY2Y0W8j+rkXY4+CtLVXvcFcT9rGHiVQew43JoD3kjF2TEXWeRBHgtW
-	 VSRa5S5OZ/JLTm0G9hrDN1IlRPWIat3CSMNJgJbxorPkd0CC2Sv6bKSx7kOjEk9DcxZ0w
-	 4HSSLXKLQuPLSsBWPU8hEo9/pJOm4aLtvtkWDTZ3yovw8lVjZcrd7kvIKX8Nq9wkFsQnR
-	 LltxHyPyrP8ISGDfkcpy9C/dQVqSAaPObF8fBh6U0QkZcwzmEaAeCtyPdl6keR/SMCjah
-	 MY20klZif3xlaTOvYWRyVCZUi37E6lEzwmVqR93B8C3iNGlfr1kD0xcRVc3K0mWujEw==
+	bh=mpNNvS3px6ys5AOGViIx/mWfJk8yX+CKrJZwmVMd1M8=;
+	b=rRIjQ10vCvwiGRFICc1boYC/575WxepLS/peP7ulaiX1GjX2p9j9lzxXYfAAN0JBvE2Q
+	 IZGqda9Vija0kzYVdj0RlEw6tV95CgKazTOy5DNR4v5O/7lFC1hnXWLdu7RMUCJINVLuU
+	 VvPTsmL1vZbk66XKMolWSA2QKoL7djeeTPdFdKhxXj8OJKJ6AdwsHxtDiTcTtiR6caPbO
+	 Cd4f39SsGtRxOEsnG2Na4njctt9acCoSzgiu5dr8Ubj9RNyQrLqB8dFi/5SGjrVI6m+WA
+	 vp8Xe6K8mmU8Ux64PJMaIaJ4TwgK7AcTq/yqxzJ2hDQMLx6aHXvBKYtt9ERvwjXzZKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BCm4NjP2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mFpnovPQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEED606A31B;
-	Thu,  5 Nov 2026 23:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1B6606A335;
+	Thu,  5 Nov 2026 23:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BCm4NjP2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4A31F0089F;
-	Thu,  5 Nov 2026 23:40:47 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mFpnovPQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958E31F008AB;
+	Thu,  5 Nov 2026 23:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793922048;
-	bh=DALcyRp0vjX3To2DbsLGpJo7XYxiod9b2pPkFTmQfLk=;
+	s=k20260515; t=1793922064;
+	bh=mpNNvS3px6ys5AOGViIx/mWfJk8yX+CKrJZwmVMd1M8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BCm4NjP2zzmaYQx55nDTiQotiZ0+FHR5odVzEn4z99P23s+3u9VzGxonfB4eoH0XA
-	 JaF3F08tmQfJK6/YdAkOMkyWnj2v9T5KPud/rUx4E4TG9kMBZE0+A4qYHoIWlzRYsk
-	 pYlg00lhrz+D1WXDg+jAanxy3Bodf/rKe8UdAxXevAQVYPDZxNp3TOJzDg2juGV6bS
-	 4mwTbwhPXtKAD5OzKhGNKUyM3JW0MM7tIUe7Nkwtzc2BYR+l0piz5q7AspMbKeeKtt
-	 XL/i/rnwksQ0EPyJsg4T4nvNjulAUFF3dozdsT33aKtsin6UzrBLNJn09dmFJQmZz1
-	 BniPbdkSVVZzw==
-Date: Thu, 5 Nov 2026 15:40:47 -0800
+	b=mFpnovPQgLhzcLrYd3EygLnzv/d3AnzcyuyVDaItFg6fm1txA1MFdlw6xYTVcTSPm
+	 aiwtBhSVRG/2WMRncyFmb6Y+YWgA9AcXa0BAkYuMt1QBwdH3CcQAq43Qla9B21MhxH
+	 F9RZMKt61ovI5XULjkGhs+0UmbWYcOCx7A1rrlRs7y2FIIJ108SziXesSZE2Xga0My
+	 xaq59w6wOn+p4ar12TM/jUPuBp5PTdfv0Cb5/N2qJZrTQ0fEiy7I69q7cGkY6j9mCH
+	 ZpW6UIuAyyEGxOQLWUQNBAVUzWH3qnAMXY4kt3H57TNgamDu0RyUPreLjzuR0zYTiY
+	 Mbvtv0zi5Eq/w==
+Date: Thu, 5 Nov 2026 15:41:04 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Akhila Kavi <akavi@axiado.com>
-Cc: Sammai Chakravarthy <schakravarthy@axiado.com>, Prasad Bolisetty
- <pbolisetty@axiado.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Tzu-Hao
- Wei <twei@axiado.com>, Karthikeyan Mitran <kmitran@axiado.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>, Matt Johnston <matt@codeconstruct.com.au>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- openbmc@lists.ozlabs.org
-Subject: Re: [PATCH net-next 0/2] net: mctp: Add MCTP transport for the
- Axiado AX3005 IRoT
-Message-ID: <20261105154047.079c5eae@kernel.org>
-In-Reply-To: <20261101-mctp-transport-irot-ax3005-v1-0-36ceb822f01e@axiado.com>
-References: <20261101-mctp-transport-irot-ax3005-v1-0-36ceb822f01e@axiado.com>
+To: "illusion.wang" <illusion.wang@nebula-matrix.com>
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ pabeni@redhat.com, edumazet@google.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v33 net-next 0/8] nbl driver for Nebulamatrix NICs
+Message-ID: <20261105154104.18f24322@kernel.org>
+In-Reply-To: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
+References: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,25 +63,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 01 Nov 2026 06:00:56 -0800 Akhila Kavi wrote:
-> The Axiado AX3005 SoC has an integrated root-of-trust (IRoT)
-> co-processor next to the application processor. Security protocols such
-> as SPDM and PLDM run between the two over MCTP. This series adds a
-> transport for that link, so the host side uses ordinary AF_MCTP
-> sockets.
-> 
-> The link is built from two channels of the AX3005 mailbox controller,
-> which is already supported (drivers/mailbox/axiado-mailbox.c, in the
-> base of this series), and a no-map reserved-memory carve-out. The
-> mailbox carries small doorbell and ACK messages. The packets
-> themselves go through two windows in the carve-out, one per direction,
-> which the IRoT firmware allocates and reports at probe time. Each
-> direction has one packet in flight, and every packet is acknowledged
-> with a counter.
-> 
-> Patch 1 adds the devicetree binding and a MAINTAINERS entry.
-> Patch 2 adds the driver.
+On Mon,  2 Nov 2026 15:54:01 +0800 illusion.wang wrote:
+> This series continues and refines the previous v28 NBL NIC driver patch
+> set for Nebula-matrix m18110/m18000 (SNIC s1000) Ethernet adapters.
 
 net-next was still closed when you posted this. It only opened after:
 
 https://lore.kernel.org/all/66b35989-9195-4e96-99bb-df383a52aa5d@redhat.com/
+-- 
+pw-bot: defer
