@@ -1,107 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.225.128
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793881953;
-	b=TejoV5EaOSbLx1KM2wG7nigebrJkRoAh6apV0+G1GRbtzeF9u3rKWGlG0H66huRej+Ao
-	 6IN13WPm8JJWWuCFUW4EUHw4H+f498sufjE6RBXx0RckZIHm+wZKy15qaCFWrqQVZ1/Wf
-	 +f6xaBJv692R8q5Jz/ps3qT2mwLYfWRYAD4gPsXdmbyz2VY+dctagkio/TvZqEHhzMYnL
-	 eFOKBaxMPmvVOjr9Df5gPckNxWJ373C69enp25xsVorIawhTL351pIkpP//xpBo9eGveL
-	 h/MiO5iJl/d3Yq1dadAz+NUT0Zf7CDtLSWpY8MSHOw2qOb5ecqRG5yTf4nNj6mpLjkA==
+	t=1793882154;
+	b=VX5DM80kZkGPArIEZzkIYXHZRjx5rLsQve/FTYMxGCb+Oqn2SHOY3PCgnA1yFCPup/ck
+	 ceG+9q/knxonPEotkkp/eBFe+roJ6pEFd06OsEv3yBpsk1i0iVU36WbtJ7tg0yOD+GJEI
+	 j65BYn37xzFCXd7PzSRe7DBoluOXLetwCbpLeydZMzkzwEEuIAMqF4M/VV5DdD/fJGC6Q
+	 eHxftEGf06q2r+lDcX69AhwofYJa99l4GobvSbGTinW+XsStWflUv7ezFqRNDQOlp9kqR
+	 WLeWzNSAR5V4eeeVQVHnm/qSnBDDH0uiMfzomlyvzyVHx3Epb0W04irlyiw0f7nlKFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793881953;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=bhW8bgTEwMPwLTiCb1KEBA42lBnDT9eGZiSGg8XBodg=;
-	b=DiXGPaXzjMDYP1KTaG3/YIScF9xpDJWK4HYI1yuKwiYNFMPHzE5S4Ss31+DpvXIzGSTG
-	 rcTHCdSzhi0Ux/dFIK/AP4A4jbx5LMi/UaSUb44W8RV8n8bVTMNdMDziXSDhjBna1mgbC
-	 LYFa7wKaqaZQGtWWuuKBvpPC4RZr37NRgLVSk1/euEmaeQ2CLXBjKzCydJ/ic75AXnEKX
-	 U8fZYRS/iN2kSOf2Fi3yb+W+/9FR1b9LoThDD/c6PUV1p4h/R1+noDEwwg3ga+jQItVQ6
-	 Tpp5AaOed3zY0PwhsdbYLLGqn6wW+eDq1CPNUjUCI4j3pAXrpKxcFFLJ3G3kcTte+Gg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793882154;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=C/jFN8eJhh5ybkPCJN1GH5EEF9QQtG/kp2iWAhig7A8=;
+	b=dbtff/z5FCJUSkniVHHpaswb+pm3mwPDD3tAaX2Pm4dSOcvu50KFi18GpxaVWT7AcQbC
+	 6pUp099zFZItalEhHDY6tV8teq3i5LGCtLA35xCAGeHblikhPj2HpBu86FJg4x+dEhJ5m
+	 AMzd6GN1pShyE+E4TexHRgGJAT2H4Zeu44if35V4u9n/3IMM/h62Jk/wAd5nMD9cUGE93
+	 zeceKGXwhOR56KD1G68da+Q3YCi6Dju2eWLfga9BqFese96yPI1S1xcxc3mrPBee7I7ZK
+	 tBG6ywaFZtbDVCDIBiI/2KERnjVzxUY/BHteXZby5BOqfW9L9zqFzp8KzK7u0hROiwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XtYGf1W9;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KTr4haOe;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dxNeF09D;
+	arc=none smtp.remote-ip=74.125.225.128
+Received: from mail-wm2-f0.google.com (mail-wm2-f0.google.com [74.125.225.128])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB108606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:32:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB108606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1D6606A33D
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 12:35:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC1D6606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XtYGf1W9;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KTr4haOe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793881950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bhW8bgTEwMPwLTiCb1KEBA42lBnDT9eGZiSGg8XBodg=;
-	b=XtYGf1W9bBNUiNdVGmgGcmGQd/CTx7I8my0rflxtHeV7EGFnucp4eF0bEgyeh//ywQ3nso
-	rIoXEtrOADru9g6pwvyamQXkUKdLjFfFInIsKjgjF0taWEz8mDoD0FxN/QDO8cdG/obUOx
-	E0akaBWUNiS4uxuYmqT7joMpOi7RvlE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-x9bUjXzzO66iwMM9F9Vc4A-1; Thu, 05 Nov 2026 07:32:29 -0500
-X-MC-Unique: x9bUjXzzO66iwMM9F9Vc4A-1
-X-Mimecast-MFC-AGG-ID: x9bUjXzzO66iwMM9F9Vc4A_1793881948
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4afef353dd2so26015595e9.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:32:29 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dxNeF09D
+Received: by mail-wm2-f0.google.com with SMTP id 5b1f17b1804b1-4a2d6bfe8d6so6354475e9.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 04:35:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793881948; x=1794486748; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bhW8bgTEwMPwLTiCb1KEBA42lBnDT9eGZiSGg8XBodg=;
-        b=KTr4haOegaA3Jpyzhjf04TmHcXImXFzzrfo1/QXl3+rSGpcMj9LXnWc7qzQxL2wk56
-         KDb/jWbyRyRQpeGb0T5Z6e7Wjd9R2RztyJDxexRdL+JS7W7bz/R6uHNn3YEQYNXAvC/t
-         B4VNYfKb4EkNJj5FOA3Mh9cCveZOpvpUfecOwYudFRYg0x8YX2Nv6S7eCFLJVUbvSKuw
-         RxLL5pyERNblWFAq4ptYqEZaDpdv7xyVYYNkFn8Cgi6auLyinBUaX1MN/1kzW16gI/Ar
-         iGA2Kqek0dRvXbJ6brTsBW2k9HeNFmeBkNZII8ST/RwxCFoIK2fxDP71bxO6CibSliOL
-         kuxA==
+        d=gmail.com; s=20260707; t=1793882152; x=1794486952; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=C/jFN8eJhh5ybkPCJN1GH5EEF9QQtG/kp2iWAhig7A8=;
+        b=dxNeF09Drx7SP+/EAEAAySXQDWD+PZ5Bs+gCemajEGb8/AqPnDNXfGIkUodmf0BQPv
+         7PmPDF1I2XU79FVq8IXE3booYtLfQl9sGtuzPtkhpa0HVn4iZOeN7+u95wSPjMZwlWZ9
+         Xzs7srFlcYWXThszNe2wDs/0kfSdBynxYErtbdEkU41Dp+IE/flGo2UzpRXSDv5LGSjN
+         sWIcLOHi+8W845oloqgpSLcjIsKjzUzATme8gdez03xmriLdbGHRGcdBHfWrwXTgB5r4
+         IgZsz3RM6qEolQbne6/IWafy2Sh9gXPoRyhVc5FI6COB5A21e5GjePyJcx2pM4ii44XT
+         ni3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793881948; x=1794486748;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793882152; x=1794486952;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bhW8bgTEwMPwLTiCb1KEBA42lBnDT9eGZiSGg8XBodg=;
-        b=IuXtDKhBGh0AGCdstEbW+csEmgnSWWc6MFMhd33GuvufNzNy0qtddn1D1J4lkneBH1
-         m7+pOU4N31/0EpDU9ZiMRaHj7tJaB5lAOF37pC8Zbqk0iEvWZSGKFrVxKVR25y/BC9I7
-         BeAsu9Whv/aqSviaJr+J9s4mSuMeGEW1EhlQ9OaPsVYS3ffV2cYFJGaMREzn9/tUGoop
-         5AyM2ynnqb2AAw/Mo/TzOEU7fzZPU3MaMC1BCGfbd7UP4pAQnp24kl7YW4ob80ZXxzPZ
-         M4cADpv6TPE3Hidtm+3ETGZNeH5ywwnGdEZm1RabO9Npard1Q6lqJ2feGQhsejfskNhz
-         BVeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwR8CrWLCONgh42MU5PUlARfGFZdLXetrw9GjIOhTgyjtT1tCgE46YJUqPMCQceua3SHZcNe34=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9O2M+Qsn+qobY9cS8cxFYOGAqzWngmNJgC3V+HCtGY4X/7PWxd
-	WIheZIIcxNaOuPwxodhe+95gr0HBbM+RAMG+KXIr/0zDrygMr4pwKOkskK8EjLP9gmllS3e7kgk
-	pdOzGEc0cByonCV034srx4jigWXlU3Q78dFMXvzIyYe0QjhQnuSCgNaz6fA==
-X-Gm-Gg: AYBFou2A2zw7XBwpJmVBhxqbTu0eOQ9NcRUzIJ8Hj6H+kVdA2nRW005W89lJYnTIP7z
-	cELdSt0zcm45EbowDLXYrosI7OahPEfGRHqm2EIn8AHOSgEB90ee2IGKtDYU2d7DOpfab7Vt0mb
-	VWz1Y0eVBjGPYrQORFDtoDT71ucyNA9tYWH3PbaH4pGuPLIdKmohMkWC9dgJJssqF8/7mq/kSLP
-	dYgIbWRS30hTOUDnC+O7ursVVECFJmBxwrN/lNSp5CNaW1tLfOq4pFYoggd9Qxh4cMNyRR3D5uS
-	z9cX2HBpdOSc0aaYV2tQLwbnjsRT9oHx1rQeKZyEmKptHf7pyWKPv3tFGYX+4060CjY1PZYKJ0u
-	Kpm69GmnbpCJYgNbvixOXwx7OQJARmv06QU4z3jjWDdcSGEw28vTU+L/D0Qj0M8yjgJG5pcUd4U
-	CHuIYM8Lq1PC5/WTyxMDjdpfR5Yb29Pp/PtAk4eAMQU8w=
-X-Received: by 2002:a05:600c:524d:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4ac18993ca7mr427334025e9.32.1793881948074;
-        Thu, 05 Nov 2026 04:32:28 -0800 (PST)
-X-Received: by 2002:a05:600c:524d:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4ac18993ca7mr427333405e9.32.1793881947627;
-        Thu, 05 Nov 2026 04:32:27 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56f5e59d3sm69153765e9.10.2026.11.05.04.32.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 04:32:27 -0800 (PST)
-Message-ID: <8e63cfcc-6120-4db5-ac2f-8214db2c1fe0@redhat.com>
-Date: Thu, 5 Nov 2026 13:32:26 +0100
+        bh=C/jFN8eJhh5ybkPCJN1GH5EEF9QQtG/kp2iWAhig7A8=;
+        b=Zs1jz9W2ClgjFLBmCQt40H5blLz5hK/QhnZpadR+ALTxyeAYOI7gejA82NYBP0WMov
+         N9zNBTQnb1ZAIo/2xu/nablPO9ovGIJSx2IAsbhj10kZIKW4Iq81QGRc3X1bUZ/wI1u7
+         uOlsl4+7TsohAelvHy2/4IEW+iYEF//o2a6MlT48P7zVDPFSY0Rld/o4gmuhSWfy55yE
+         qJFnkQe5taFXq4lyXmT4NwwKsg6Wi3otFA6tTSGpkTmrsMTLDK2btFKwdrMOwxikMPYc
+         zQOBSaHkRt27brawth6Y/bSeP1nyAMdu7WlTuGhvmmV6rmYiMFxgFwrqKaUPSUk022jV
+         q5lQ==
+X-Gm-Message-State: APuU4Z92unnZlb9F7GzGazYHigt0DdCPDoxf5c6YympfZjdkKzZfKCaB
+	edRUpC0W6u/2UzeM2g/WiUUo5EGmFG9hA/4DeZdp7rWHTBxDc4KkU2EswLMAJF+uHcc=
+X-Gm-Gg: AYBFou1ZSihMavUUJ6Bj7PqOkXnd+/3AP9IIaekMcKc9Ju/FPQPntVOKMyR29XTgyTq
+	v9pX5AyXGubEicH8AlTttYwdenmQ/lASK+fgkdkgfc9Ejq7BPsYU6kvvPYtrGLoLTZzeLF1T7XE
+	rRqnuQwxaksiMnWyfMIyM4xVBePeYQL5fj0Quh6J9AmL+iUOo7y3rfXeKeWWlKaLQG1ZAwzRs3P
+	OkUKu5pgyjlDcyI+KWPz4N33cYA939K4auglSoH+FiTI2RHXyrAtEd1Hn1QKrxlQTr9h6nI1pdr
+	IdpXFkohevjdYE7RWSwxpeXvW7zjZWyJzRUJPPBSMpZEmHRUzEMwjgO1g2bbRfCwGB4fcgFvAuF
+	wWfNM6Ya+0E0EWkiLLAYDNF6d4dwo+iB5w72Ud7Zcj3jEIUz4GDUHEiHGifExHUunSCW6tQ+u+q
+	q3cL3Zsg+79Ey9jPWEzLJSQQpmsrFc51oUHfRCk+arB8roYx3Le8q+AUW8j+0SmEmoRFrybSdiO
+	MK46VHwzI/S66GPGgSFqmlE8SBMOBziyqHrtEq7RTjYusOPxnQK7mTpZVBQzsD8cLbYfKfTw1NN
+	Sr7/DX1mYKb9wJP546Ez4NsJXhcQMapcH69e
+X-Received: by 2002:a05:600c:3547:b0:4a1:e69d:90e8 with SMTP id 5b1f17b1804b1-4ac1889d442mr421740485e9.22.1793882152080;
+        Thu, 05 Nov 2026 04:35:52 -0800 (PST)
+Received: from workstation.. ([182.180.105.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b433ebd278sm114419535e9.3.2026.11.05.04.35.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 04:35:51 -0800 (PST)
+From: Ali Tariq <alitariq45892@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ali Tariq <alitariq45892@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Tomas Hlavacek <tmshlvck@gmail.com>,
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-riscv@lists.infradead.org (open list:RISC-V SPACEMIT SoC Support),
+	spacemit@lists.linux.dev (open list:RISC-V SPACEMIT SoC Support),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and emac_suspend()
+Date: Thu,  5 Nov 2026 17:34:37 +0500
+Message-Id: <20261105123441.2524171-1-alitariq45892@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,53 +108,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] ppp: remove SC_MUST_COMP
-To: Qingfang Deng <qingfang.deng@linux.dev>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Tristan Madani <tristan@talencesecurity.com>,
- Norbert Szetei <norbert@doyensec.com>, Andrew Morton <akpm@osdl.org>,
- Paul Mackerras <paulus@ozlabs.org>, Matt Domsch <Matt_Domsch@dell.com>,
- Brice Goglin <Brice.Goglin@ens-lyon.org>, linux-ppp@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261103015615.2704-1-qingfang.deng@linux.dev>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261103015615.2704-1-qingfang.deng@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/3/26 02:56, Qingfang Deng wrote:
-> SC_MUST_COMP accidentally shares the same value with SC_DC_ERROR.
-> PPPIOCGFLAGS combines configuration flags with transmit and receive
-> state, so userspace cannot distinguish them, and a read-modify-write
-> sequence can promote a decompression error into SC_MUST_COMP.
-> 
-> With SC_MUST_COMP set, intentional or not, a fatal decompression error
-> (SC_DC_FERROR) causes the receive path to silently drop the failed
-> packet before delivering it to userspace. pppd therefore cannot detect
-> the error and reset the compressor's state. Subsequent incoming IP and
-> CCP packets hit the same check and are also dropped, preventing normal
-> recovery.
-> 
-> The flag entered Linux in 2005 with commit b3f9b92a6ec1 ("[PPP]: add PPP
-> MPPE encryption module"). The original patch submission [1] said pppd
-> would set it when CCP came up with MPPE enabled. That intended
-> integration [2] appears never to have landed upstream.
-> 
-> Remove the broken and unused SC_MUST_COMP from SC_MASK and SC_FLAG_BITS,
-> and remove its transmit and receive drop checks. Keep the uAPI macro and
-> mark it as obsolete. PPPIOCSFLAGS will discard this bit while
-> PPPIOCGFLAGS can still report it as SC_DC_ERROR.
-> 
-> [1] https://lore.kernel.org/netdev/20050814141046.GB20944@lists.us.dell.com/
-> [2] https://lore.kernel.org/netdev/20050814190529.GA26802@lists.us.dell.com/
-> Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Given the 'broken from beginning' status and the hopefully low impact, I'm
-applying this to net-next.
+The emac_resume() calls the emac_open() and emac_suspend() calls
+emac_stop() functions directly without holding the lock through
+rtnl_lock(). These functions rely on phy_disconnect() which reads pointer
+with rtnl_dereference(). But since no lock is being held,
+rtnl_dereference throws a suspicious RCU usage on
+Orange Pi RV2 (SpacemiT K1) warning when lockdep is enabled.
 
-/P
+WARNING: suspicious RCU usage
+drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
+Call Trace:
+phy_detach_internal+0x490/0x5f2
+phy_disconnect+0x90/0xc0
+emac_stop+0x114/0x626
+emac_suspend+0xac/0x126
+platform_pm_suspend+0x72/0xe4
+
+Hold RTNL lock before emac_open() and emac_stop() with rtnl_lock() and
+release the lock when functions return with rtnl_unlock().
+
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+---
+Warning Log: https://kernelci.cloud-v.co/scheduler/job/549#L2168
+Fixed Log: https://kernelci.cloud-v.co/scheduler/job/557
+---
+ drivers/net/ethernet/spacemit/k1_emac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index 71a80838bffd..aca25a9e1e9e 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -2033,7 +2033,10 @@ static int emac_resume(struct device *dev)
+ 	if (!netif_running(ndev))
+ 		return 0;
+ 
++	rtnl_lock();
+ 	ret = emac_open(ndev);
++	rtnl_unlock();
++
+ 	if (ret) {
+ 		clk_disable_unprepare(priv->bus_clk);
+ 		return ret;
+@@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
+ 		return 0;
+ 	}
+ 
++	rtnl_lock();
+ 	emac_stop(ndev);
++	rtnl_unlock();
+ 
+ 	clk_disable_unprepare(priv->bus_clk);
+ 	netif_device_detach(ndev);
+-- 
+2.34.1
 
