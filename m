@@ -1,101 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793852126;
-	b=22dqrKVdwmxTjc/0yDwQN70SM8H5vbbU6QCGHsOIPPfhYeTa+QgtyzTG1eZx7/BQ650O
-	 ZRFvQTmcHO0305C7xrsfwQT89rXBKZAfnl/n1MNBSQsopdIucj5LtJdlkoIO/+t/cjUYo
-	 RRIrGgWv4nRAsT1vyQKO7X4sIVSypdLN1Lu0nF7PpAltFAA2TXSfpofyeMeWm2NRFMVHy
-	 /oKMq1CDxyUzsBa50pM255e4Aebmg5QRp7HYnFJdy77k+me9tlEOJ1I89wo8qPeDz6gwt
-	 Y2IWVN2trk6JvZT8esmZSK0U3Cjh/5C0+0/5krc7HiFcrYdSeS9jL3zMnsQSD5Q1x8A==
+	t=1793854523;
+	b=kjl24dGGeg+ZsBZRe9kxeArY+6lfAlysHPmsQxseZx61+6QYf3B1L68gO2R9l05Q2D5J
+	 uGB6ye/avYsDXfNqUZ1M16uI+dYMq3OIZdwgw4JARvif/oC5PpdRDLit9xib08Dml0385
+	 g3KhDbo2G/QdVSkPtn7pdOiECPLehilwnb/LFL1FRZhkaWThJY5nUYsVE2JRLOfO4AP4o
+	 rKzPNeg0JpuEk79VvzNOmJ9mMHCOXtk78wNnCClCt7bkD9/KF51BCOY2pGh97igE2ZOxJ
+	 NG/DzHcwQZzilfNjPioaSMe37MhIKyjK2f2rAvWu88p1ME7sLMpFDC1Eph7ijiUDG5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793852126;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793854523;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=v/dD+gCFKnFrY8PCehbOuNAzOY6DsEVbOoYKofj71BM=;
-	b=aS6bul4ahqc/4e4A5KXpWBiicwJZR0bqbpj3VFE41zNODIDIHiXTMh1cHV485pRvdD/j
-	 vus379CzxGCr5nliG5ftFqwuAhtBFohWogh6PouJq6+pcD35djc7N53f12T1sJCtAs3OR
-	 cGVO5jTqIA+OTvFlbYRMnxsB7LA1U/ofUcre9Ym9zsKh55IpFAnzgPtzkBrzzN10jE+DJ
-	 7OKzv3+mlhBDRhn9aXJLM1sczzpT1pOms0G92HHiNbw2poaQTd64SR+z1LXl/UjnV4VIu
-	 Ocr/bFjVTivM5/iAyYADZoyrUVwjFcDDiXOZyP0cuOL72FLvg2z1aVYKrrg+DX7CuEQ==
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
+	b=FqAiWuu/OWYjFGAjVupHmTj0HnzLKuWIioUfxSyRZQVMuOO6ofu2MeGL66RK4yEz039f
+	 1PdbyTvGqwReyKyOKopba+2/+sBIB2Pxn5krJfofOpycHSKZcrg4G/po6FIEwippY0RtP
+	 gZUUN6knqUqC8EDz4oOVBSAdFLzbLlKviH7EHXbbgxFuiCHPv6xI4c1RDYdAAqxZ/7Tj9
+	 HPBrMGy1DNgjXqbogE45w/rn5VG03U5geEGc0xiMqPVnpwBs64hvdlbBIyOAV1lYkvWik
+	 vJdno5xDEnDCQBk6zQLcLYjadkEl9q3Ef9Gx1xxqfKBR8KP2elNuD1AV8HPXG0cj1eQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0KJOhIdc;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mTKYyYeV;
+	arc=none smtp.remote-ip=209.85.216.43
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75576606A32D
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 04:15:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75576606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B236606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 04:55:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B236606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0KJOhIdc
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab41538192so1217269a91.0
-        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 20:15:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mTKYyYeV
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ae1a9e187aso221248a91.3
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 20:55:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793852126; x=1794456926; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v/dD+gCFKnFrY8PCehbOuNAzOY6DsEVbOoYKofj71BM=;
-        b=0KJOhIdcNUHNh+hpMXflfbO1b2pSAtdJ4Yxe1HdD3RiIbZgv5eF9L95iNtGkRefRG+
-         xhRfJsG7UPsTxI8aOUc6LjGjNi8dWWq1jJKUb8Bq+QbuLWVuvv3SrTPVVvsxPoqW1gf7
-         rU4v3DCJ/luDVStaJHpRseR0cz4KnSX5ZoZYw8CwZJO6vAIKVaLfZti006GIcsBJjt/4
-         jxigIcNr5xPTDyPadQQIDWPkzDfAImALT6hkCPegisUNo4pWSqdSREZ2pHjH3DEAmLcr
-         it7bazSZqAVe9TWf4VDdAusFcpyIvb7/vdUTTKOphfMTEENlLWyq4UVd0crxlBGA8mOI
-         9lsg==
+        d=gmail.com; s=20260707; t=1793854522; x=1794459322; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
+        b=mTKYyYeVr7uxttrPBh/zbgdicB4GtUsAEPY7xWdW42ONQLpFWniKAVmHzgolRVnz1R
+         7cGjdcpTCPUuQy/A64lwRFiyY3CHLGj3nlqbK6AEQwT2zG7biKPOWYGbyqYZoXfGRvF9
+         VMNjEFP/372eFVw5FbTuSsi8X8vRwpvlmPjZMD5VyyudE8jzRBB7z6J5DpdMGoY7Hq5p
+         KRhkUg8+WaJVVEcdue/XWCVzhYJgAPz+7SROTuyUkDUJZGvY0euOB/3t+nKtd4g2liXU
+         30ygp2YrQxS3ncCjh2vsNdYieq6M3aMH+1rBdw0W/ieO4AuFjVJakOI9Kr5nAz8+hS5n
+         ycYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793852126; x=1794456926;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=v/dD+gCFKnFrY8PCehbOuNAzOY6DsEVbOoYKofj71BM=;
-        b=S2zeeiyvHz1s5zJ4EJEEt2RsLBtuTyPknwP3axrB5ZTopPeRvvRicpuH3u396KrNPG
-         /80j+AekDnhIP5a/+oyRYI7hYLJ/3dwFuWVGRaZxs3IfmyqV53AG0jN7ogcr1m/mIDSE
-         Mod3gZlE/fgQzjvTj9viHmhM2idEZMNEmstdD8HDIZ5cP3h02hacMj0lQV7LxwO2OjqI
-         BVj99k2SP0Lgipc3LLNsAhAL2AYHWJ51rtfA9G+GjElkvfaWrNFJG6jUihOHAbnvLeAa
-         0WtQXUOttOstoI+c32hBY2q568ZCmK9ZuLRVsDqwLKvo9KRR+1qLShPZc0u6ywuH+V5Z
-         J+xA==
-X-Forwarded-Encrypted: i=1; AKwUvBzgW/kdFJEaPmwpqYO1pHbq0YaMVuzajdJNU9eb4l5WTpAGgfgRze8KSLeKvHp1JLTSB4NJKoo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+mL9OC6GKwFg8p3tahHomUVNtLET0P6U4HtnAIx+54vd33/Z3P
-	yxEzYbkq6aYWVGHnLU6YOI57Tj+ogoDI6WeUGW7EsKsydgvteFDI9byp
-X-Gm-Gg: AYBFou0c5QGYoqOuYaa8VUtju/CIXV5USXyBdAww4ccDlriFxYf85zJKm/s4biwu1Cp
-	OPz6UBmTb04diaQascJ8XVXDBBX99L6hwGBopk2ITLm+A2G1jG8xjALj+Ou09+b5+cdXQOK+/Wd
-	L8nIpJ54yo5cjh3PdsfCvRoXGMlRnff1EFITpwsIrvIpyhSgakbGmcHMJ4rTNrDNEclbfdlNeBQ
-	RtZnrFlWDmcPcnViIlsMXfx3tVbUnCv7r8RSkQ1rz6EUuxpDSE2ta8rGeDhhtss5dHO6jLzoJLy
-	UQiWZyG2G0pNoevlY0LPeOU+5Y2E3DpzhKL8QBnV+vfG+WhDxjpVCNwWpqUGCNDe8oFnIysGuio
-	GdYoBG8CiGNh/ntTa0G50eqfp3JobLEw0Pm8wXgbtiTb3efgCkgB+c6TR6TAwLuqy0FVK4vo/XR
-	Tftppw4PJ77ChzwJPpfMhYF0XYizjOD4sF3evxMyQA1PTxN50tAv4AIhVAkj46YEncdV0BXnRD6
-	pjXFYKvFyTkkgAO2oYti7109gBjIWV7fE98kpQof72vdf72nC5/jmJ/7gGq6X/UV59o3DH6QHrc
-	nARV3kw0NVhIbqkkk4OSxSdFXRtfSY7yqt5T7L46AHDdwciSFeosy1iFot5u5Y/0/Ufz
-X-Received: by 2002:a17:90b:280c:b0:3ac:9669:846b with SMTP id 98e67ed59e1d1-3ae895746f6mr15584115a91.9.1793852125571;
-        Wed, 04 Nov 2026 20:15:25 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b3163383sm1625591a91.7.2026.11.04.20.15.21
+        d=1e100.net; s=20260707; t=1793854522; x=1794459322;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0K/OpJSJDyeiHFgRi2dD4j6fShhHweBIMHEcvs+4Jvc=;
+        b=eh3K4Del1AmZMvypkeHaVZ7vysQejWOpIYVLxaxJI1CbqxF1og/MzXATn0DFC5VUxA
+         Z4sTj+5ntELnqCn8pMcYNXZCLbZIYm5fomSsWTewfiMCYi0hmZLZFYYb1eyhxrh/jiXF
+         AZ7lCetG/11QLcJu/qVzeek1XdNBotRrWo63iQq+PeoMSjl80KK4lt/wtNucPXwYMKfz
+         pKdVtk7/YG0dFdmOT/jAFK54KPp5+3+bwr0CRt3jFiNWLyt07wn7M8DZWijOqQOItiiQ
+         7RskBqs0NHaH+bpB+Nu8SRsXmqf4N6PvJaRBg+DSKFqbQtMJAMQG4/uM9g8awvOIbsZj
+         AtPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx2KcoYcenPyDpRP1ymrV4pn//m/H9+oHfY5C2+MmVswFNtHq1YWbXLcXKnJjd2Ul/nrrWAueI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+9wem0MSDqggWRPcPodoKZi5sIHY5VTgdAKkXTCk6ek60bGsm5
+	jU4wpYFTcVb/hl1S924M0PyEAQFEcOvA9vZ6COgoOldGBFfP9WdfWlKb0KOR7DVW
+X-Gm-Gg: AYBFou192ghlK4dEqRHgWPa+AnNISb+bOjhRwNyDAD5UVr3YVq4kkfpyZwNvYDgMhd4
+	5S+OwT/02t9tJXALDYscB/FouzWAfP+JNW9ZumXWA5/Z++JKXdhrE7MO5L3BvVxtbcBsf/K18Kz
+	N4BIblswYh54irhy8DuWkz8KT3K0sHDbo9PzsDrTZ2kI9pQzs7NtaRGXW9o/XvxxdbJ8k/Yc01W
+	Aum9P9wTUTK+NDLSofDOkG2lkQNVJYKiyvsTbn7TThK5IlsNiy3xpD9jvIT8yH01krnSOk6Ajp+
+	LwqcAf3qaqiZqnPSewvHvv23VV21qEF804I+iOsCsSy6Caqb2CduQtbawp0AasQYIL4Zgz4wVqk
+	iCOjO8hdPDHG6rtDnO1GKNjkS7XDBy83YMWttvBBwqv4v78rheZnrXhaqPuqkQuOUapcBKtQ6OL
+	kFvHDd2SNsmOTmcKbE3QQjuPeZZR6VANcPdaavPlNoRrEnJ4zOZajU9dYefxZOPCIUwLyBCGWxq
+	XeWmwzPOsYe3pfo265+7Wgt6Y9KBn3JFK6YPXvzJxN6aDTLbKH6N52xaV19EaK5q+4rQQScS3sa
+	a2lvW8SPlsDJ5r9AQIAm5bR7yOG5Blw3F9RRZOKKh+LDxO6g6BR6cDsPVXiV
+X-Received: by 2002:a17:90b:4487:b0:3ac:9c37:9422 with SMTP id 98e67ed59e1d1-3ae89626108mr25602011a91.2.1793854521680;
+        Wed, 04 Nov 2026 20:55:21 -0800 (PST)
+Received: from localhost.localdomain ([189.1.242.96])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm3726000a91.0.2026.11.04.20.55.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 20:15:24 -0800 (PST)
-Date: Thu, 5 Nov 2026 13:15:19 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, ncardwell@google.com,
-	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org,
-	horms@kernel.org, martin.lau@linux.dev, john.fastabend@gmail.com,
-	weiwan@google.com, sd@queasysnail.net, jiayuan.chen@linux.dev,
-	netdev@vger.kernel.org, stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v5 2/2] net: restore refcount ordering for lockless
- socket access
-Message-ID: <auwC161B4g61ptG4@v4bel>
-References: <20261029214219.1035176-1-imv4bel@gmail.com>
- <20261029214219.1035176-3-imv4bel@gmail.com>
- <CAL4WiioDoAT-50wStYDOy0b7f972QivB=Zk_7TCDrVPfOY665A@mail.gmail.com>
- <auqJOj7RVCWn7Ucl@v4bel>
- <7f8bd24d-7538-423d-b2a9-f5b0eae99d41@redhat.com>
+        Wed, 04 Nov 2026 20:55:20 -0800 (PST)
+From: Yiqi Sun <sunyiqixm@gmail.com>
+To: fuchen.dust@gmail.com
+Cc: coreteam@netfilter.org,
+	fw@strlen.de,
+	kadlec@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	pablo@netfilter.org,
+	phil@nwl.cc,
+	stable@vger.kernel.org
+Subject: Re: [PATCH nf v3] netfilter: ipset: fix double free on kernel-side delete during resize
+Date: Thu,  5 Nov 2026 12:52:10 +0800
+Message-Id: <20261105045210.1179991-1-sunyiqixm@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261026102957.5530-1-fuchen.dust@gmail.com>
+References: <20261025090609.v2reply.4093.fuchen.dust@gmail.com> <20261026102957.5530-1-fuchen.dust@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,54 +104,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f8bd24d-7538-423d-b2a9-f5b0eae99d41@redhat.com>
 
-On Wed, Nov 04, 2026 at 08:59:50AM +0100, Paolo Abeni wrote:
-> On 11/4/26 02:24, Hyunwoo Kim wrote:
-> > On Tue, Nov 03, 2026 at 03:49:40PM +0100, Eric Dumazet wrote:
-> > > Le jeu. 29 oct. 2026 à 22:42, Hyunwoo Kim <imv4bel@gmail.com> a écrit :
-> > > > 
-> > > > Before commit fb041bb7c0a9 ("locking/refcount: Consolidate implementations
-> > > > of refcount_t"), default builds implemented refcount_inc_not_zero() using
-> > > > atomic_add_unless(), which provided full memory ordering on success. The
-> > > > commit removed that ordering on weakly ordered architectures, allowing
-> > > > accesses after a successful reference acquisition to be reordered before
-> > > > it.
-> > > > 
-> > > > Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
-> > > > lookups and in inet_twsk_purge(), where the socket is validated again
-> > > > after taking a reference.
-> > > > 
-> > > > bpf_sk_assign() can receive a socket pointer obtained through BTF
-> > > > without a reference. Use acquire ordering when it takes its own reference
-> > > > for a refcounted socket.
-> > > > 
-> > > > Use refcount_set_release() when setting refcounts in the SYN cookie,
-> > > > TCP Fast Open, request migration, and TIME_WAIT paths. Keep the existing
-> > > > TIME_WAIT smp_wmb(), which separately orders the refcount store before
-> > > > ehash publication.
-> > > > 
-> > > > Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of refcount_t")
-> > > > Fixes: 27e5203bd9c5 ("bpf: Change bpf_sk_assign to accept ARG_PTR_TO_BTF_ID_SOCK_COMMON")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > > > ---
-> > > 
-> > > Lack of links to prior versions is rather annoying.
-> > 
-> > Is the cover letter alone insufficient?
-> > 
-> > Should the changelog be in each patch?
-> 
-> Ideally the cover letter should include a very quick/short overview of the
-> changes, and a per patch changelog should include a more detailed list
-> (no entry added when the patch is unmodified).
+Hi,
 
-Understood. I'll do that from now on.
+I discovered the same double-free during ipset hash resize
+and confirmed its exploitability by successfully exploiting it
+in my test environment.
 
+While reviewing this fix, I noticed two remaining issues with the
+deferred operations in net/netfilter/ipset/ip_set_hash_gen.h:
 
-Best regards,
-Hyunwoo Kim
+1. Failure-path replay can resurrect a deleted element.
+
+In mtype_resize(), cleanup clears orig->resizing before reaching the new
+drain path. Packet-path operations can then modify the original table
+directly, while earlier operations are still waiting in the backlog.
+
+For example, starting with A absent:
+
+  - During resize, a packet-path ADD inserts A into the original table
+    and also queues an ADD in orig->ad.
+  - A bucket allocation in the resize copy loop fails. cleanup clears
+    orig->resizing and waits for an RCU grace period.
+  - Before drain replays the backlog, a later packet-path DEL removes A
+    from the original table and returns success without queuing a DEL.
+  - drain replays the earlier ADD, inserting A again.
+
+The final state therefore contradicts the later successful DEL. Before
+this change, the failure path discarded the queued ADD, so this sequence
+left A absent.
+
+The set->lock around list_splice_init() protects the list, but does not
+serialize replay with packet-path updates under the region locks. The
+RCU grace period does not prevent new updates either. Could failure-path
+replay preserve ordering with those updates as well as within the backlog?
+
+2. The new deferred-ADD branch can return success without queuing the ADD.
+
+In mtype_add(), the new branch for an existing element sets ret = 0 and
+jumps to resize. If allocation of struct mtype_resize_ad fails there,
+the existing "Don't bother" path goes to out with ret still zero.
+
+For example, starting with A present:
+
+  - During resize, a packet-path DEL queues a deletion of A, leaving A
+    in the original table.
+  - A subsequent packet-path ADD of A, without IPSET_FLAG_EXIST, takes
+    the new branch.
+  - Backlog allocation fails, but the ADD returns success.
+  - Replaying the queued DEL leaves A absent because no ADD was queued.
+
+This branch relies entirely on the backlog to preserve the ADD after
+the pending DEL. Allocation failure should at least return -ENOMEM for
+this deferred-only case, consistent with the deferred-DEL path.
+
+Validation of the two review findings above used a userspace harness
+containing the extracted add/delete functions and failure-path replay
+code, with lock/RCU stubs. Both sequences produced the incorrect final
+state with v3; the corresponding unpatched baseline cases did not.
+The baseline was mainline commit 05441d697f7f ("Merge tag 'cocci-7.4-rc1'
+of git://git.kernel.org/pub/scm/linux/kernel/git/jlawall/linux"). These
+are deterministic control-flow checks, not reproductions on a running
+kernel.
+
+This review and the harness were prepared with AI assistance.
+
+Thanks.
