@@ -1,80 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793884221;
-	b=UPLg6g2ltIMiRpvhfztZYE18Mxc5D46qrv6HuY5GJTKOshS9lKgU6hXHU8mcFjIKRo+Z
-	 JTl1HYH/DO2k5fseJXrCxqLwscHbJSOLbVYaoqMCZhUf1Tp55fZSlZFnhNc/tPOItJu0Q
-	 kjvzr0m2TeORMNIJaNlIDukHiMhzWudVyrm7SAYiKVR2oYN68H7lWeDEHc5vFmpkdRk/e
-	 DLQiOVWJm9Ua7gc/xmkaPKOPqJOuEvtFzDQ3iW1bglkWfJBCn2qBfhwSyDO23FW3cN6G5
-	 tlRR8M8Yf9sayXjD2oB9JAVVQ5/QlhYQCdjmopLG32UcFwJFK6QiK1uJw+aLgcM7j0Q==
+	t=1793884315;
+	b=PyXr5IvEpoTO4ffeIcxktrmxFnvQ1F3c16EaLOKGbW/3zXcwx5MOVTNp3Tlhwo/nwoTJ
+	 rh2tIw5b0Gm252/20JYTllzPREE5iuAIYt0GhDaAbzEL0VN/el2ZTX0orjjf7jJC2utSK
+	 lqRUvGMRZFBqGJyZC4pBy4EbPL5jPm+cdWm8pkBdrnKGBuLsEmVvrDIR9T3i2xYop6Orw
+	 qVaR1CPUML2vK0tyCK7jSPVDAMPfE56Q+nYHNwLMzyfM+VMxtYDAYeD1lCTlawji38+a2
+	 mf328udNKgO0aDW1/pzZrUghPonRa37WUmlCeQG01K1Hu3LS6Owpzh5wHcDvkyvYBsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793884221;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Fvb4JO7ZDYHlLGwkUVgcr7dfex0gx0tUQH0jioa0NDA=;
-	b=poz81lvvCUMh/D3nOwnDcivO6bf5Ar7gh+UXsmmErYLpMp3LAFONvrIKpYABL9Yaf/Aj
-	 argVOX7ZZuvJiHQeStNdPGeDO2utjaGO/mVRi77EePooDPHyGGpy8+ZrdUeTSxNSVrjdL
-	 ozdfxG0JQRTZ8U4WYGRQSU+Ove136c5/Zg6wRHfo7Rtb9kpOjW6udLdEs57czT0WgxJIv
-	 GMfZJPp2uxb44NJmYjojRHb0kOSOD152KKmlPZyalKVrCT7deZVmAS+veaWo2auN6Znya
-	 4Ca6NFSKKZYdZTUR6T5q9fjM8UvzW2macqf4fLwyrkY+W9a+he2vRHVNzxjRzK+9pgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793884315;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
+	bh=KUYsZhGyE5SdfciTMq7iOAS9xFl5J1m3SL9fvIb7dyE=;
+	b=HRKk0w+kEdaruFbfuh0Smx0Xh7QDDURRGGwXePfewhNu9IDceEaNJU//BbJuyt8YXTIi
+	 01SgIhkLl7HpuGxgHGnyw6jH9rjyDOlPHQBNWQo5LUlEOrVfN0+G/ztvJC9HzBRY/BLCw
+	 acwXKlq8qE6YzjR5Blc/z8h9YAWm6GqP62ZAYnASEg39AHCLK98MQbPruYMsnP0HRxYJT
+	 nSbUZUKs4ZerqlQTbcZeDsX/02+20YYwkcEy7WBsljOm4Ib2uT7vNyxin4gbuliS0ehvM
+	 5pn191qsfqZK17ZSvo77mloCBUuXtQpT2p3ANKs2Q9mInkmw7mgr62vliOwjaYcJsyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=dPTZXbna;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XkJw8IJf;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D452606A32D;
-	Thu,  5 Nov 2026 13:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571DC606A326
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 13:11:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 571DC606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=dPTZXbna
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200571F000C1;
-	Thu,  5 Nov 2026 13:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1793884219;
-	bh=Fvb4JO7ZDYHlLGwkUVgcr7dfex0gx0tUQH0jioa0NDA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dPTZXbnaU0ZHJ8FXpQSQDG9e4qeWzONxeoXKumor/CArasmlPPtNdWtmhxu7uzEck
-	 P1eEVY+hTIjDdP1uoDY8SaA9+TzLagQcJY2fIYcdYnBWSsIF+ScTQhOg6vLFtQOCdW
-	 fUjFfWCK7KWSrfvRHCvIG9d6xYwqBgHyE1Nr1kEA=
-Date: Thu, 5 Nov 2026 08:10:14 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XkJw8IJf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793884313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KUYsZhGyE5SdfciTMq7iOAS9xFl5J1m3SL9fvIb7dyE=;
+	b=XkJw8IJfuZHW2wwBXqcpxQqMS0xgmvcHLPm/6hGgQZB44nCikScMbuz8yOQJAOYtpU9sDR
+	o0/riw3LNJzfr1NuLsKcwuzITFxynqxD5AyR6Ibu7nD00fxEDF561SA5TkS5STiLYACFlp
+	uKKYVYhVTnyJf54bxoSNDrKjB0y1vj0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-9BGVyJFtMP-52fwvodH0LQ-1; Thu,
+ 05 Nov 2026 08:11:51 -0500
+X-MC-Unique: 9BGVyJFtMP-52fwvodH0LQ-1
+X-Mimecast-MFC-AGG-ID: 9BGVyJFtMP-52fwvodH0LQ_1793884310
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D5931955F3C;
+	Thu,  5 Nov 2026 13:11:49 +0000 (UTC)
+Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7164D3001DA3;
+	Thu,  5 Nov 2026 13:11:46 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Milena Olech <milena.olech@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 10/17] driver core: Expose device trust authorization
- through sysfs
-Message-ID: <2026110514-bunkhouse-handset-6a3a@gregkh>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
+	Michal Michalik <michal.michalik@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] dpll: fix a false notification and report interrupted dumps
+Date: Thu,  5 Nov 2026 14:11:43 +0100
+Message-ID: <20261105131145.1010406-1-ivecera@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,94 +81,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Thu, Nov 05, 2026 at 01:42:23PM +0200, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> An initrd must authorize a disabled device after attestation even if a
-> built-in driver already attempted to probe it.
-> 
-> Expose requested trust_policy and read-only active trust. Allow explicit
-> disabled policy to advance once to adversary or full, fixing that decision
-> immediately. Reject later policy changes, including for a device claimed
-> before registration, while allowing same-value writes on live devices.
-> Keep initial unrestricted selection separate from explicit authorization
-> and bind-time commitment. Serialize writes with probing under the device
-> lock. Include the attributes in device ownership changes.
-> 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  Documentation/ABI/testing/sysfs-devices-trust |  51 +++++++++++++
->  MAINTAINERS                                   |   1 +
->  drivers/base/base.h                           |   6 ++
->  drivers/base/core.c                           |  15 +++-
->  drivers/base/trust.c                          | 102 ++++++++++++++++++++++++++
->  5 files changed, 174 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-trust b/Documentation/ABI/testing/sysfs-devices-trust
-> new file mode 100644
-> index 0000000000000..97e07a174769c
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-devices-trust
-> @@ -0,0 +1,51 @@
-> +What:		/sys/devices/.../trust
-> +Date:		September 2026
-> +Contact:	driver-core@lists.linux.dev
-> +Description:
-> +		(RO) The active trust level for the device. The values are
-> +		"disabled", "adversary", and "full". Driver core resolves
-> +		the level before DMA configuration and probe, and retains it
-> +		through removal and DMA cleanup. Outside a bind transaction
-> +		the level is "disabled". This does not imply that policy is
-> +		writable or that the device has never operated.
-> +
-> +What:		/sys/devices/.../trust_policy
-> +Date:		September 2026
-> +Contact:	driver-core@lists.linux.dev
-> +Description:
-> +		(RW) The requested trust policy for the device. The initial
-> +		value may be selected by the bus before the device is
-> +		registered; otherwise it is "default". The policy is resolved
-> +		to an active trust level before the device is probed.
-> +
-> +		The values are "default", "disabled", "adversary", and
-> +		"full". "default" lets the bus select the active trust level.
-> +		"disabled" prevents a functional driver from binding.
-> +		"adversary" requests operation with the restrictions that the
-> +		bus and DMA layers can enforce for a potentially malicious
-> +		device; it does not isolate DMA by itself. "full" requests
-> +		normal operation.
-> +
-> +		Before an operating level is committed, policy may change
-> +		freely until "disabled" is selected. Explicit "disabled"
-> +		blocks binding while allowing a later write of "adversary" or
-> +		"full". Repeated rejected probes preserve this opportunity.
-> +		Authorization immediately fixes the requested policy.
-> +		Returning to "default" or "disabled", or selecting another
-> +		mode, fails.
-> +
-> +		Successful resolution to an allowed level commits policy
-> +		and operating level before driver or DMA setup. Both remain
-> +		fixed for the device object's lifetime, including through
-> +		failed or deferred probes, unbind, reset, and driver reload.
-> +		Later binds must resolve to the same level, including when
-> +		the policy is "default". A resolver error or disabled result
-> +		before commitment leaves the policy's writability unchanged.
+Two small fixes for the DPLL core, both found by code review:
 
-I understand you are aproaching this from a PCI point-of-view, but many
-busses do not care or have DMA at all, and need to actually talk to the
-device before being able to even "add" it to the kernel.  So you are
-making a driver core-specific policy based on mentioning DMA here, when
-really that should only be a bus-specific thing, right?  Some busses
-might require DMA to happen (i.e. USB needs their host controllers to
-use DMA to even talk to the device at all).
+- Patch 1 stops sending a pin change notification when adding a reference
+  sync pair fails. Reproduced on a ZL30732A board.
+- Patch 2 sets NLM_F_DUMP_INTR on pin and device dumps that a registration
+  or unregistration interrupted. Such dumps can silently miss an object.
+  Reproduced with a test module.
 
-So can this be written to be more vague and generic and then put the
-specifics in the bus-specific portion?
+Ivan Vecera (2):
+  dpll: notify about a reference sync pair only if it was added
+  dpll: report dumps interrupted by topology changes
 
-thanks,
+ drivers/dpll/dpll_core.c    | 22 +++++++++++++++++++++-
+ drivers/dpll/dpll_core.h    |  1 +
+ drivers/dpll/dpll_netlink.c |  4 ++++
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-greg k-h
+
+base-commit: 6baae996ecf6a3f57b08ea6f6786e29af9260f51
+-- 
+2.56.0
+
