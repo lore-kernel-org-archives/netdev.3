@@ -1,215 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=2 smtp.remote-ip=40.107.159.18
-ARC-Seal: i=3; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793900023;
-	b=0gxEYyHIc3wLuINZ+WiKx1TQ6XMGfap8A3MlDIZ77Xvg0JpmqE1fBduVGZHiTWV/PHwQ
-	 D3nOJqQ/LNVdbHsuGB4YNKKAXjioo9F5Kt+wBHUiNoTQ3L6R5V4whwRyXIiMNTC4V3wRQ
-	 CkE4rue1+YAgDmYSq5ttZE4+1uSA/YUmfweU+H6n58Ji236wVbd0ti/1K09hCVkAE2/DC
-	 VZPFBi2IlndSmdQXkMR2uMw+4WnTOq08o2P/boU6wl6U9UKeSZZAfuk6IQ/sAlV4ri1Lc
-	 S1rNO+DFaf9YQGTf8vGCFpjDOGdwqKY+ZsDNFGE2cjRDAbawYqkJuO7oLK4wN+h5WTA==
-ARC-Message-Signature: i=3; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793900023;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:
-	 DKIM-Signature:Authentication-Results-Original:Received:Received:From:
-	 Subject:Date:Message-Id:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-ClientProxiedBy:
-	 MIME-Version:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:x-checkrecipientrouted:
-	 NoDisclaimer:X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam-Untrusted:
-	 X-Microsoft-Antispam-Message-Info-Original:
-	 X-Forefront-Antispam-Report-Untrusted:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-EOPAttributedMessage:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
-	 X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eTpVa0KXLbeyN7w0naRmQVXV/ayHx+u2by3c7Xc6o7k=;
-	b=N6hL9VhoGLs/6q6V8yc9qz6e99X6QHRziGOtn/MVqY9O5qFStoXaWie/buw9GcCM5JuV
-	 loLnYrE7eOXg903SfBVY3ueVYPrdeMPMdoy+siZey27frauqctr7bTZg1o9UnObs+aDZA
-	 GaRjdxiWhUYdOqMAeh40y1+ic2OkP+H3H52rCkg4hN3xEY5iKvTMHx6eFrNrlBQq+f44/
-	 czo+07whVgTUsxyFroV9wZT0VoPprVufyP18aQUuPA17X3nnFz1e3ugRJSICeTzTPOFOI
-	 GL3RUOvY4v7H1ritEwfLGL0/Fs8aE36Vap7Fjh8OZAUGsNYOlenE/HcwKROzk+vD9oQ==
-ARC-Authentication-Results: i=3; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=CaIAN5N4;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=CaIAN5N4;
-	arc=pass header.oldest-pass=2 smtp.remote-ip=40.107.159.18
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013018.outbound.protection.outlook.com [40.107.159.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793900040;
+	b=rTNPMc0mHYDOKjor3tkNFuXVRjhqf1gmfC1bU1MVc6VDsROwaa9+afuwl31BRETc30+L
+	 tSBkfX95obG6aQnHB41YZQVnT8sHjUPGzS15lVtVT+RaDqqVjKLdRjzu2Tx8gb0E35Bkx
+	 5HQB+lKKar98PTTQfVkFi37Lqxg9jwl0koaDKfAEEqBkwI+cL01vkpKIT+6vKl5wO82X0
+	 m4oHRzMmb9g2qWqeP+MwQ+4WySWxSHKm2ULIKoJU5BmUBd3B/Ayfxc0Yu3IxEOfaeGFQV
+	 poYuTCFidg129g6Du3kaSgbBr8WWYpqxHzQiVRSVljg+RMTKGjeheCbkheEm4rphK1A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793900040;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=fHbz90ILaaCOBKWqIHRp1aZbsJQSwVFsjChRBvgZnSQ=;
+	b=LzdCzjmfniDPr4Dfc48WKqv+1bW1hECL9bYn5r5DVXFsUhZzJCp/NyeJlwfStBilMk6R
+	 liOieSXKTdkLXiPjhczGCjR4PZD5DyrUSGie5o3e8LKCmbVXHt5OFDFTGJ4DNX5KdK73f
+	 +XlaYJi+nnEM/4Lb2vZMTxvFDkbSDcaDeVrvIIVO5Hs5o4L26ucmutJwe1rv37FJFlIUv
+	 GAPhoG2nuPkSydgj8OoPtTZ+w4aYYC6N5VYbz1wEp0xs936iCVYZ3IDIU/m7CcKTs8Nki
+	 XrCDfXsgbo57n8icr6su6wN0ewQ6K3XjCaLMsptFoBb7KczCOv4XLEEjU4DsBQy9TgA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NawCArld;
+	arc=none smtp.remote-ip=74.125.229.5
+Received: from mail-dy2-f5.google.com (mail-dy2-f5.google.com [74.125.229.5])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A847D606A328;
-	Thu,  5 Nov 2026 17:33:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A847D606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3984606D80F
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:33:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3984606D80F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=CaIAN5N4;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=CaIAN5N4
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=mXG4kSQGTEH3swGQhEJHb0f/ckEq8/ezy6NyWb8GXpfA+ibROciibs4IE7E1Tqg7Qiut088qRoSY51ySVHf+2amyP6Mmrz1VI/V6QKxkslFOO9tqRbNhErH+N3fTw0RiAVCFJd1dnSRU/SbcFdplJkQAjeozkWKolIoAtrBFNJ+rIV+fuQ7pzuQv9XhPATTCBSqmwBchDEIjZfC7FVfAk/ZokPYP4KwfWmHkhD/xQuEKb2PkEjedu34cWaSbFARP5S7s1H7mGmHLqc5oXPYc5hKgKTJcc6frSQJRjK7Q3cuaM1LxRW/CeW7XiIUCUVfsoCl1xDDAHvJTtEBmPXX0fw==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eTpVa0KXLbeyN7w0naRmQVXV/ayHx+u2by3c7Xc6o7k=;
- b=fqH+9bIB0/hpHdoOW0P0ve8UTPUib9sKojWkiU9RBP2wqPHLzjakihr0rM8mLsbHGmuCptriNGgodn06NaMMuThiozxcqd06yqMh6EbnR5B78/Fm2RlAmkSWONeAhhcIBQfQjrqaFAdYyv5/CV1rrslIu1VVRhUwWhFy6qBlyjCkWEatVMPiuijCRsKNqkWHlG6mmTpDdka7OfsUViiajjCAfWe88VfcNTMn3pLIKiUABgWfYJCKXvPEWZ5yenenBvP0odwlOEEVAzPH15T+Ny1/KsB84SLFDZ2z7gVpWM3pczZ3IY4UxHWWF1Jm81AL3PSAnursQNwetZmsbLyeUQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=ffwll.ch smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eTpVa0KXLbeyN7w0naRmQVXV/ayHx+u2by3c7Xc6o7k=;
- b=CaIAN5N4KxHcigNOYRbk45xUO2LtjBwP1RcO6UocUwkLmLngtuH1PFm1W9qK070H8wGK+EAIvCMy1FmK+zskIqBAKkq1NYRD5QCr8KNA3xlgrYx00+WqKHZJ58CIKLbEGAkmo8kXeQNKaP/QVgTyeLDwpYmBJ5kP9HAUZ3Gm4Ds=
-Received: from AS9PR06CA0263.eurprd06.prod.outlook.com (2603:10a6:20b:45f::17)
- by GV1PR08MB10838.eurprd08.prod.outlook.com (2603:10a6:150:16a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Thu, 5 Nov 2026
- 17:33:30 +0000
-Received: from AMS0EPF00000569.eurprd02.prod.outlook.com
- (2603:10a6:20b:45f:cafe::a7) by AS9PR06CA0263.outlook.office365.com
- (2603:10a6:20b:45f::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Thu, 5
- Nov 2026 17:33:30 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS0EPF00000569.mail.protection.outlook.com (10.167.242.119) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.5
- via Frontend Transport; Thu, 5 Nov 2026 17:33:29 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VEZqCzho2/q+WM4A/n/O5lZPad5M03fWy6PydBnZ+pgD8xakqpjqKQ6yzLSqS9y1voz9C507lcDMwxeFMrZqYVA9Y4uxrld5ti01yE8ZMNkbbCd22kFKAy8CQbf0RXVo2BwPcwBX6ddkjgNINH3xiS3fhu7+Y4BnGPKZ61ukK31rrhDPeStjlKxEd5wwfYIZdto9ZqhnuyeKaZA/75PveSmb2cxOuRXr7L7sTPtX5kMapSYQ1d1BVkF8oOKJ5MVvk6ZvdWpLly4n6t8b5mu9U/Inzq06hBTh00rOMrwCa2/IhYypvdQ3fCeO0lchqdGchcHNya0LH1g14nFz+cQSBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eTpVa0KXLbeyN7w0naRmQVXV/ayHx+u2by3c7Xc6o7k=;
- b=cKmvEXKhg2kB4cgWM1cpqYzakFjRONndSFcXHpgnMGuwnfzUv/M2tx4fHwtGpMYEQrc1CJaVjdLszML62Xnh7RioTbXTZg3WfmVbj5+FYwXAiy6VBLWdKMWKlt7diBrXfStOI1+aLZAXIQBwl82A0KCpj6hA3RHcbX2tA3tZFGGijFRAoEbBypnHobn4JE6+bb+fOF9WRg6ssIspwaDJn/b2WUTKNOEeW/X3u5taONOZIeJlq66U4NQDi+Ru80g4kX6odBHezS/tEVY9iEn3A3srZlTIWpWv+r1k8GguIkQBUEU5cZVI9EOFNdngJ9r/+nf9Mysywjxr1kl/jfTTgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eTpVa0KXLbeyN7w0naRmQVXV/ayHx+u2by3c7Xc6o7k=;
- b=CaIAN5N4KxHcigNOYRbk45xUO2LtjBwP1RcO6UocUwkLmLngtuH1PFm1W9qK070H8wGK+EAIvCMy1FmK+zskIqBAKkq1NYRD5QCr8KNA3xlgrYx00+WqKHZJ58CIKLbEGAkmo8kXeQNKaP/QVgTyeLDwpYmBJ5kP9HAUZ3Gm4Ds=
-Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
- signed) header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AS8PR08MB10291.eurprd08.prod.outlook.com
- (2603:10a6:20b:629::15) by PAWPR08MB11487.eurprd08.prod.outlook.com
- (2603:10a6:102:509::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 17:17:02 +0000
-Received: from AS8PR08MB10291.eurprd08.prod.outlook.com
- ([fe80::9f01:508:17aa:279c]) by AS8PR08MB10291.eurprd08.prod.outlook.com
- ([fe80::9f01:508:17aa:279c%6]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
- 17:17:02 +0000
-From: Bence Csokas <bence.csokas@arm.com>
-Subject: [PATCH 0/3] Add offsetofp() and offsetofendp() for pointer
- arithmetic
-Date: Thu, 05 Nov 2026 18:16:15 +0100
-Message-Id: <20261105-offsetof-v1-0-4153f5c10edc@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN+57GoC/yWM0QoCIRBFf2WZ5wS1kuhXoofRnWknSMOxCJb99
- 7Qez+Wcu4JSFVI4TytUeotKyR3cboK0YL6RkbkzeOuDc/ZoCrNSK2w4eMSwP5zYztD1ZyWWz+/
- qcv2zvuKdUhv9MCIqmVgxp2VMD9RGFbbtC8SiO6aFAAAA
-X-Change-ID: 20261105-offsetof-f62aa6348f0d
-To: Chengchang Tang <tangchengchang@huawei.com>, 
- Junxian Huang <huangjunxian6@hisilicon.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Leon Romanovsky <leon@kernel.org>, 
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
- Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>, 
- Johannes Berg <johannes@sipsolutions.net>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
- =?utf-8?q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Vineet Gupta <vgupta@kernel.org>, 
- Marcel Holtmann <marcel@holtmann.org>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Philipp Stanner <phasta@kernel.org>, Sudeep Holla <sudeep.holla@kernel.org>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Jani Nikula <jani.nikula@linux.intel.com>, 
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, 
- Tvrtko Ursulin <tursulin@ursulin.net>, Lyude Paul <lyude@redhat.com>, 
- Danilo Krummrich <dakr@kernel.org>, Zack Rusin <zack.rusin@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Selvin Xavier <selvin.xavier@broadcom.com>, 
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Hans de Goede <hansg@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
- Guenter Roeck <groeck@chromium.org>, Nilesh Javali <njavali@marvell.com>, 
- GR-QLogic-Storage-Upstream@marvell.com, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Paulo Alcantara <pc@manguebit.org>, Namjae Jeon <linkinjeon@kernel.org>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
- Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
- Bharath SM <bharathsm@microsoft.com>, Carlos Maiolino <cem@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
- Davidlohr Bueso <dave@stgolabs.net>, 
- =?utf-8?q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>, 
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "Geoffrey D. Bennett" <g@b4.vu>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-wireless@vger.kernel.org, bpf@vger.kernel.org, netdev@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
- linux-bluetooth@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
- linux-hyperv@vger.kernel.org, chrome-platform@lists.linux.dev, 
- linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
- linux-xfs@vger.kernel.org, linux-sound@vger.kernel.org, 
- Bence Csokas <bence.csokas@arm.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: PA7P264CA0148.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:377::20) To AS8PR08MB10291.eurprd08.prod.outlook.com
- (2603:10a6:20b:629::15)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NawCArld
+Received: by mail-dy2-f5.google.com with SMTP id 5a478bee46e88-36caa19b0ffso1314263eec.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:33:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793900039; x=1794504839; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fHbz90ILaaCOBKWqIHRp1aZbsJQSwVFsjChRBvgZnSQ=;
+        b=NawCArld5mDlRaHTnohEFmR3qAMd9eBT/BbnogqCVMr5UMLgEENuWsKJhoTahYsyub
+         VU2C1J3DG553LT420QqDfFVza6EhS6gxAnF++LztO5WOM1cOiWoLKUMTHHX3GMKeK+wC
+         d6VGOQd1Oq3stKTsbpyjO/lwmlpcAWydLMWoNFbKvykZYfVGGUPw1aBY94V5nGhunoFc
+         ST1llR8uhamQQc5v0FKxSWvPVI/GGdUokITzEU9WQxBNiXclOX0vDmphAB7y1AEpfm2d
+         jsHA8KJ742Nzm+THKcpaGu5/8aY7+BB/xG/q3d9f1GSaylz8gynyEQR5gltBXDNE6jmG
+         ERNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793900039; x=1794504839;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fHbz90ILaaCOBKWqIHRp1aZbsJQSwVFsjChRBvgZnSQ=;
+        b=hv5QXAaNKiU066hMS6mCSk0eCCwDyQ/2+otJNbbCnMoNUHn4xmLAHT+4tES6uGXI8Y
+         4Ts/gn8h9w1uNhfP4K7e6ty5bW2sGyeGlIyqk5SZq3MQYKpGYQrnJ1gh9ljVq+WRCH9b
+         FYkc1aAY9oG8Q/92V3qiYmskT7LErJ4aUb2G2HQQSMaTGWgFwQLD5DGAn3yimwQpyj7I
+         8OFQYG9NxAP7nQC+84bWybo1Z6xrawu/sNlhCaVlCR8GAZn+KprxjMK9Rrpug/Rn2Gfm
+         47iakW9D2cBc+O/8PNnRWsVRBDuAhC+XmF1lUd6eoJdrNlrMFAuLxfKuNDgB6rl3YzPB
+         uwgw==
+X-Gm-Message-State: APuU4Z9esj/qAKXxmgtLZmNxCSTkOoNvnDb2TPA1lMfKtCJmBdeCLw6H
+	wgB54bpJjM0blP/xD/z9eBRnk8P9xQP8RuOjBIcuM3xtkL4DoWzhWnoc
+X-Gm-Gg: AYBFou3Wme62PEWZeyMrxkkVfsI8NymDd74b83Bv6u16XqI55McY5C9mYRfXAnditF7
+	2MdXV9IlewFFPiYtdPzeKOZi3Yvi5v17wXNWDI6abx4Vgq5iSbeDjtv18vZcqNhvHBRWGsS+1o7
+	tfTEdmCKtWk2Tc5xt2XuGRr7ln7IyB0jMxAIegeoG3Z054shK9bqZJomY5M8roi6O5VvzclC8jC
+	/hgfm3KYG3c8EK4qcXAnZUTR+FayQ3krgVGbVfGczN15M+xFg4UpVuEwEm9TjdtK6td9WoruGw5
+	s+HUPMs/BIlUh9BL8ahpH3FyAMYwQRtgGyg+0ylrT+1GG2RM5rEDJxc7YWSWnN5WssmKkh3o8hb
+	dAVcm8dDhDsgfnCuTWLm7xtkXOlsjX6Se1uPkg/j+KsS3JAz2FkpTDfsVKO7qHJBdv807m6aKsH
+	U6yKrSCZArg/QqYmeUUjyUyPRmsRqtKvSDdFiYxwFTmnT5DFb3EyESpgOfQdq9428a7sgwoXHmM
+	tDpQc2r1yD31XR/d1bRUARJqe4ZwiJtX7UrzKIYeLhGSeABbI6bSWvhcyyy74OFPURvrGMsDilS
+	S1QSHYECW9DwGEhQt95rO5yNWUPFoKOtLBe0tqR0+N/bHX60TQ==
+X-Received: by 2002:a05:7022:1104:b0:19d:6484:869f with SMTP id a92af1059eb24-1ac5c369c59mr25098320c88.7.1793900038915;
+        Thu, 05 Nov 2026 09:33:58 -0800 (PST)
+Received: from AERO17.taila7786d.ts.net ([152.175.97.38])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c1c272sm17925023c88.8.2026.11.05.09.33.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 09:33:58 -0800 (PST)
+From: Pufan Jin <cyan2254650260@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4] net: phy: realtek: Add support for JLSemi JL2101 and JL2121 PHYs
+Date: Fri,  6 Nov 2026 01:33:50 +0800
+Message-ID: <20261105173350.159060-1-cyan2254650260@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -219,121 +98,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AS8PR08MB10291:EE_|PAWPR08MB11487:EE_|AMS0EPF00000569:EE_|GV1PR08MB10838:EE_
-X-MS-Office365-Filtering-Correlation-Id: faa86ff3-27f0-4743-2be9-08df3b62e851
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|921020|11063799006|261022105027099003|56012099006|261026140227099003|261021123027099003|261009221727099003|261009223027099003|261009220027099003|261102123227099003|261009223327099003|261009221227099003|261021121427099003|261028144727099003|18002099003|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info-Original:
- VVFJelSxgClgHU9Gtoq4Np58blMsVJiYNVkaIgBD3Kda8p7uFES7uDdvskqBfhvNllgGw/qAtW12NPqaBVdvk4ZYFfnQe8laSo4WN2wZcLuV+6Ls+MvKPlHwMhcfL1RbKgblJo4i2rUS4jjtMhyz9qo2xvragkBFn34kbxM0iTHnsaN+gPhD67b/IcF3r6HVLcTNOnHRFMUpcf0+iLjkpRnYRUbrab/PHeOmbGtNro95TN9UsPvdhO6PldzlHPKf7ZZNJlpOSOh7OwLdtD0zysxFHY/C+b+ylXuYjsxqMQp9b+9BaEY0xf0L/3c4iA24o34oyh+UQi6dBvRJrDf6sW65Bz+VcdQqeUAkV0fGA6G10BtY8jy14IU1qHwZRGJm81pK4CX/E/o/7Amv2GxssrvtcJxbffPt37eOt+KSCMhp2CiUH5XN1+ZBilitXmoJivb5+2OWAoS6HLj95IdkmifoK+ovvckzuZXk/tavkwbXj5IakXLNZKy0L0r8lbrSQHC1Jy7nsmCQzJ2YWOamUbE8RA1sTgFPOpaCWWY5f1bL+jIPUHlEJpp791vLT/aQpcpVxHyR3vrpDYKvtgzfMu9aQaV+owbl9mB/ToTaBlQPYyEwiDcHLU+UHpbFGGdh/O1LYM9NItuCQfFZYumxpmoXSIDncDmWCUStHnEWJgFdqQxNQg1EcyeceAdb8xthdWSjR5qTTNbbstdKE8Al0w==
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR08MB10291.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(921020)(11063799006)(261022105027099003)(56012099006)(261026140227099003)(261021123027099003)(261009221727099003)(261009223027099003)(261009220027099003)(261102123227099003)(261009223327099003)(261009221227099003)(261021121427099003)(261028144727099003)(18002099003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- i5Kdf4NVZB3qcEAKDEN8z3u/rEwYL5shrfrJ1u4X4MdMG+lv2DetnqLTnq31fZAnRYwiGzTgsf1oSpi6saZ75HkcUyx/3h98hXWOJlEPjrXUxg3OOBcysY7P3N55lMhG1Z2fNqG6Lak8blwYov+ix693fusE9l2kYOOApblXSbjK2x9WPTbcqM3wNFzOHQdk7H40neNVxiHnw60Ipx4+wODymJasqclub/qBHqK5Ml65fFKx36twCtDVU8LAtOt18dKbnZ0OUi7tvrv1F/Lty2sqVckwZdsOrP3RcW2owtVjVO0adkKnEIafdOw9MKYaTfJCIErf6dFsSeTV9WbIGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB11487
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS0EPF00000569.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	3915e4d8-3158-4aa3-5d0f-08df3b609ba5
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|1800799024|35042699022|23010399003|7416014|376014|82310400026|36860700016|261102123227099003|11063799006|56012099006|261009221727099003|261009220027099003|261009223327099003|261021121427099003|261009223027099003|261009221227099003|261021123027099003|261026140227099003|261028144727099003|261022105027099003|10067099003|18002099003|921020|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	TiC57Jp1OiF7musqhydqmi8Oi2+2zKmDGjKLJetYzaPgbv+lD43Rn1mjloNe6QgPqzmVjl8hXEUT3JlaI2ggAHBjD3xM+Xoy7dhTJduw9FEPbO3MvfVvSXQA6RXLfUvrnUZ7a7MQVJaz6TxnheumbdO0yIBy/vKyC7Jd/PowNBazkK7xHm/hg4nOHLZu5G3LX11VVqHxWjDxhUm0mXIQ8b5lr7QUUEXah7ktfF/yCS/PuKNlmAsqXf+qRUn2JugMEfFg6zhbjbBKPDMJplm+jLGgoRFw8lHMxWymVAWJ0zURkEOF3aXWsYR4nJML0g61Boe7No6xW/Y+ZCdkTS27xZ+fHZRmVomeq98cQmYH1S8VaTHlnvA77db9QMNzKmhA/GbPCxPZ3wAiS3KobkO+esOsOMgMrPOjJXJK1mBuBwFtcB69d4jiXa7QdKhfLGsbzMcNILh0XXI16CPQ/8XOROt4AQk4n5KeEse6TpJxZpSXfI56aDxYt0psG4IVDBBfAsM+Cx5/+uDOxNJNFhpNBTz6gdvP5+6PVjN0RGNMjRZ2V9dGpdE9qtVXQ2ND43hqrZ9Q/WvWDjFrWER7xCJgx8aOuVG//x5J6SoyrWmc7zT8eBV84ldU1VNbKwgwy1A934KUTPG0dqSnNNszKO/EmaQc3ZbUAF4ORosrHtYh5ioAhr2qnpb5H5dnEdKL6L57luOMTnsWqX5Jzxl98z9ZKArZB1II3R7qibwJUTEIisY71N4QWx39BSCxJR2sE5uk
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(1800799024)(35042699022)(23010399003)(7416014)(376014)(82310400026)(36860700016)(261102123227099003)(11063799006)(56012099006)(261009221727099003)(261009220027099003)(261009223327099003)(261021121427099003)(261009223027099003)(261009221227099003)(261021123027099003)(261026140227099003)(261028144727099003)(261022105027099003)(10067099003)(18002099003)(921020)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FjljGvFdDw2Jwzqeu1MA55V9hP8p5UO5QuV5ikByrZ4os2BxZ9QEbok/YJzGlwzo7P2IuLEpttPoE3ollD0qdkhopi0VUe3VLBHiDGiKR3lExI4NlS5cCtoKYDV3/WzXX2pEkq80o/VefEUBV/5So0MjPreGe1Wb41EylLdI1jjVRmPMWx10B2NuyHOawNWkqWikVsfyCdQWaas+o+fVUElVI+pwOSaSFmcp+cVG3nrgseqhKF3C4LVcOZzTkd7XlD8xv4EMBsAhWmpKnuaapHaYDERZ5dHBoJtXFW4UO44Mx/jVGHfphNehP/Sh5Eoqkns1mBa8PFTkALCyb/1vqkVB5+iagPQ/p7eqaaQV6gPWkgQTqDp/M1YDeEpoY+mi3TQNQMZ/iVZWnqqOu2PK9P2jyljbnthWCmSvZXheYdoa2oS0r98jRzMAMF1qLXMt
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 17:33:29.9334
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: faa86ff3-27f0-4743-2be9-08df3b62e851
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF00000569.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB10838
+Content-Transfer-Encoding: 8bit
 
-A common usage pattern for offsetof() is the following:
+JLSemi (JingLue Semiconductor) JL2101 and JL2121 Gigabit Ethernet PHYs
+are register-compatible second-source alternatives to the Realtek
+RTL8211F. They share the same paged register layout (page select at
+register 0x1f), RGMII TX/RX internal delay registers (page 0xd08
+regs 11/15), specific status register (0x1a), and LED control registers
+(page 0xd04 reg 0x10).
 
-  offsetof(typeof(*ptr), member)
+In the IEEE 802.3 PHY ID allocation, JL2101 (0x937c4032) and JL2121
+(0x937c4030) share the same Model number 0x03 (bits [9:4] of register 3),
+differing only in revision number bits [3:0] (0x2 vs 0x0). Both chips
+share identical operational characteristics. Consolidate them under a
+single PHY_ID_MATCH_MODEL(0x937c4030) entry covering all revisions of
+this model.
 
-Condense this operation to one macro for a more maintainable code base.
+Unlike RTL8211F where PHYSR (0x1a) can be read directly on page 0,
+JL21xx requires reading PHYSR from page 0xa43 via phy_read_paged().
+Reading 0x1a on page 0 yields 0x0000, which causes rtlgen_decode_physr()
+to erroneously downshift to 10Mbps half duplex. Introduce
+jlsemi_read_status() to read PHYSR from page 0xa43.
 
-Signed-off-by: Bence Csokas <bence.csokas@arm.com>
+Extend the Realtek PHY driver to bind JLSemi JL21xx by its Model ID to
+the RTL8211F-compatible driver operations, using the generic rtl821x
+probe and suspend/resume routines to avoid touching unverified WoL
+registers. Add the ID to the MDIO module device table.
+
+Signed-off-by: Pufan Jin <cyan2254650260@gmail.com>
 ---
-Bence Csokas (3):
-      stddef: Add offsetofp() and offsetofendp() for pointer arithmetic
-      treewide: Use offsetofendp()
-      treewide: Use offsetofp()
+Changes in v4:
+- Consolidate JL2101 and JL2121 into a single PHY_ID_MATCH_MODEL entry
+  since both share Model 0x03 in IEEE 802.3 PHY ID allocation. (Andrew Lunn)
+- Drop unverified WoL callbacks (.set_wol, .get_wol) and switch .probe to
+  rtl821x_probe and .suspend/.resume to rtl821x_* to avoid touching unverified
+  WoL registers (page 0xd8a). Tested on hardware: page 0xd8a/0xd8c read back
+  as 0x0000 on JL2121. (Andrew Lunn)
+- Retain hardware LED callbacks (.led_hw_*) after thorough validation on
+  hardware (ALINX AX7Z020B): Mode B page 0xd04 reg 0x10 bitfields verified
+  via single/dual LED blinking tests and netdev trigger hardware offload.
 
- arch/arc/kernel/unwind.c                           |  4 ++--
- drivers/bluetooth/btmrvl_main.c                    | 12 +++++-----
- drivers/dma-buf/dma-resv.c                         |  2 +-
- drivers/firmware/arm_scmi/base.c                   |  2 +-
- drivers/gpu/drm/drm_edid.c                         | 26 +++++++++++-----------
- drivers/gpu/drm/i915/gem/i915_gem_object.c         |  4 ++--
- drivers/gpu/drm/i915/i915_active.c                 |  2 +-
- drivers/gpu/drm/i915/i915_sw_fence_work.c          |  2 +-
- .../gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c  |  2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c            | 12 +++++-----
- drivers/infiniband/hw/bnxt_re/qplib_fp.c           |  2 +-
- drivers/infiniband/hw/hns/hns_roce_cq.c            |  4 ++--
- drivers/infiniband/hw/hns/hns_roce_qp.c            |  6 ++---
- drivers/media/usb/uvc/uvc_v4l2.c                   |  4 ++--
- drivers/net/hyperv/rndis_filter.c                  |  2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c     |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c        |  2 +-
- .../net/wireless/intel/iwlwifi/pcie/ctxt-info-v2.c |  5 ++---
- drivers/net/wireless/realtek/rtl8xxxu/core.c       |  2 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |  2 +-
- drivers/net/wireless/realtek/rtw89/core.c          |  2 +-
- drivers/net/wireless/realtek/rtw89/fw.c            |  8 +++----
- drivers/net/wireless/virtual/mac80211_hwsim_main.c |  4 ++--
- drivers/platform/chrome/cros_ec_lightbar.c         |  4 ++--
- drivers/scsi/qla2xxx/qla_gs.c                      |  2 +-
- drivers/scsi/qla2xxx/qla_mbx.c                     |  2 +-
- drivers/scsi/qla2xxx/qla_os.c                      |  2 +-
- drivers/scsi/qla2xxx/qla_tmpl.c                    |  4 ++--
- drivers/scsi/scsi_transport_fc.c                   |  2 +-
- fs/readdir.c                                       |  2 +-
- fs/smb/client/cifssmb.c                            |  4 ++--
- fs/smb/client/reparse.c                            |  2 +-
- fs/xfs/scrub/attr.c                                |  4 ++--
- fs/xfs/scrub/attr_repair.c                         |  4 ++--
- fs/xfs/scrub/dir.c                                 |  4 ++--
- fs/xfs/scrub/dir_repair.c                          |  4 ++--
- include/linux/stddef.h                             | 16 +++++++++++++
- kernel/futex/core.c                                |  2 +-
- net/bpf/test_run.c                                 |  2 +-
- net/ipv4/ip_output.c                               |  4 ++--
- net/ipv4/udp.c                                     |  4 ++--
- net/ipv6/udp.c                                     |  4 ++--
- net/key/af_key.c                                   |  2 +-
- net/mac80211/agg-rx.c                              |  3 +--
- net/mac80211/agg-tx.c                              |  3 +--
- net/mac80211/parse.c                               |  2 +-
- net/mac80211/tdls.c                                |  4 ++--
- net/wireless/nl80211.c                             |  2 +-
- net/wireless/reg.c                                 |  2 +-
- net/wireless/scan.c                                |  2 +-
- security/landlock/net.c                            |  4 ++--
- sound/usb/mixer_scarlett2.c                        |  2 +-
- 53 files changed, 113 insertions(+), 100 deletions(-)
----
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-change-id: 20261105-offsetof-f62aa6348f0d
+Changes in v3:
+- Drop standalone driver drivers/net/phy/jlsemi.c and extend the Realtek
+  PHY driver directly as suggested by Andrew Lunn.
+- Add jlsemi_read_status() to read PHYSR (0x1a) from page 0xa43, avoiding
+  erroneous downshift to 10Mbps half duplex (verified on physical ALINX AX7Z020B).
 
-Best regards,
---  
-Bence Csokas <bence.csokas@arm.com>
+Changes in v2:
+- Drop redundant phy_interface_is_rgmii() check in jlsemi_config_init() (Andrew Lunn)
+- Check device_can_wakeup() and configure wakeup capability and wake IRQ in probe()
+  when 'wakeup-source' is present (Andrew Lunn)
+- Drop redundant .features = PHY_GBIT_FEATURES (Andrew Lunn)
+- Use PHY_ID_MATCH_VENDOR() for generic driver and mdio table (Andrew Lunn)
+ drivers/net/phy/realtek/realtek_main.c | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 4927ee838..355135143 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -270,6 +270,9 @@
+ #define RTL_8261CE_CG				0x001cc899
+ #define RTL_8261D_VM				0x001cc89a
+ 
++#define JLSEMI_JL21XX_PHYID			0x937c4030
++#define JLSEMI_STATUS_PAGE			0xa43
++
+ #define RTL8261C_CE_MODEL		0x00
+ #define RTL8261D_MODEL			0x81
+ #define RTL8261X_INT_AUTONEG_ERROR	BIT(0)
+@@ -1755,6 +1758,23 @@ static int rtlgen_read_status(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int jlsemi_read_status(struct phy_device *phydev)
++{
++	int ret, val;
++
++	ret = genphy_read_status(phydev);
++	if (ret < 0 || !phydev->link)
++		return ret;
++
++	val = phy_read_paged(phydev, JLSEMI_STATUS_PAGE, RTL_PHYSR);
++	if (val < 0)
++		return val;
++
++	rtlgen_decode_physr(phydev, val);
++
++	return 0;
++}
++
+ static int rtlgen_read_vend2(struct phy_device *phydev, int regnum)
+ {
+ 	return __mdiobus_c45_read(phydev->mdio.bus, 0, MDIO_MMD_VEND2, regnum);
+@@ -3283,6 +3303,23 @@ static struct phy_driver realtek_drvs[] = {
+ 		.led_hw_control_get = rtl8211f_led_hw_control_get,
+ 		.led_hw_control_set = rtl8211f_led_hw_control_set,
+ 		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
++	}, {
++		PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID),
++		.name		= "JLSemi JL2101/JL2121 Gigabit Ethernet",
++		.probe		= rtl821x_probe,
++		.config_init	= &rtl8211f_config_init,
++		.read_status	= jlsemi_read_status,
++		.config_intr	= &rtl8211f_config_intr,
++		.handle_interrupt = rtl8211f_handle_interrupt,
++		.suspend	= rtl821x_suspend,
++		.resume		= rtl821x_resume,
++		.read_page	= rtl821x_read_page,
++		.write_page	= rtl821x_write_page,
++		.flags		= PHY_ALWAYS_CALL_SUSPEND,
++		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
++		.led_hw_control_get = rtl8211f_led_hw_control_get,
++		.led_hw_control_set = rtl8211f_led_hw_control_set,
++		.disable_autonomous_eee = rtl8211f_disable_autonomous_eee,
+ 	}, {
+ 		.name		= "Generic FE-GE Realtek PHY",
+ 		.match_phy_device = rtlgen_match_phy_device,
+@@ -3527,6 +3564,7 @@ module_phy_driver(realtek_drvs);
+ 
+ static const struct mdio_device_id __maybe_unused realtek_tbl[] = {
+ 	{ PHY_ID_MATCH_VENDOR(0x001cc800) },
++	{ PHY_ID_MATCH_MODEL(JLSEMI_JL21XX_PHYID) },
+ 	{ }
+ };
+ 
+-- 
+2.56.0
 
