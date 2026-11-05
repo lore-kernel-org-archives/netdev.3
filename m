@@ -1,119 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793913447;
-	b=k4ZJ9LZEFRm+rLWFE4B8tPPh3hU7pbh7IbZUlEfHuO8EfruMlhEHJWKmjddKUQxiWPH4
-	 /o33CiUEJ16USYASBqujlXGiqy4ReExYNehegrhgFmJMenI4hrsK7ulIWWnY+SWYxDLyl
-	 P8q04PXdE4LN0IxDaTTVRr9elaodnK1fCscXlbtA+9YFhUImfSpTmc2jODgqLSY8Wcz6d
-	 2PUFN+2uQLh/mkk/h2uaZVEmZTtOS+L4rulOLIKLZ/+7s6Ghr3lT0KetpUvHufL8nWAuh
-	 Pe7Y5WMXhYzFfpeJKjA38tM3iLktiGW/UrD/EnWtl8txK2Yj1baPgQjPDDK2unpkkvg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793913447;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=1VklHjx2ocvTTItGNBIiBpHKD6IbgdMlWISL/fVNAQI=;
-	b=SkI1cNsBLopTYxJQOL3L+0HiuWsQVZCrAJrwhBYT53O7c4v9AR91ukDz2iIrcu7rhfxm
-	 fRXYoYJbKQ9Mpg183TViHyu2WP91OWayN3g60CBdgoQcVNSwx2+mcXVaGh/Cdd1EVSWsF
-	 hRnuZiynT/M+RNAl7lQPaKS1SuYcrnMrnQHoFExUIljjiCy815klVKf7ADofdag4QntyZ
-	 5rW2toEMfsGBikG8DiByhvIV4vq0J8Q1wrg4gT+AdVFnQb7/ThQrABKAb0SoKbcb2ElkK
-	 xTJjwzHAk8J6PmIlxQNj0BXYPgvhsatzTc68BnIzec8Bj/ndJQ+/kkCLcvO7b2gMjlg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lrlGEIDc;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.50
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011050.outbound.protection.outlook.com [40.107.208.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793913452;
+	b=PPLfcFFKj4Pmr4D4bdhBofX1Mib3Ql1wv6GllgTppcgDyQgqKTUvDC+SiUPe7KPIqV/h
+	 ISsKjo5ZJsKNPjlaLKyY0kKiPIp9ujF2cSn6TdDzExtEpHL7kYZmhFs2T8oo59C1+e3yI
+	 hGuoS60rWtyaTUdLJxUAqBOcYswyLOUECX+tc2Kvn+mM8ElkfqCKxlstb5qT/HnjGQuX2
+	 OBsiBDfo+5Pwnw1YR067+wKhbezWwfkQDErKbw07n7XGYU5Dzlr6FDsF5BHmOkE7c+a/p
+	 t2nQ5Al3xecOQzlQc9WBgprjQxe0ZV9yVwazN8CTNY1WH0k+U392LFfft8/sIlAF/ow==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793913452;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=kKvT1WZP63DDiif92MikpmY+JmPHkMKG8ncW+5LMjTE=;
+	b=mljm0Pr2JfebsxhcF0l8kylT2v7uUQMHWnnPCDZV43RKMzvboBZ8sTHwJstOs1Z+91J7
+	 sFMchWhzrTjUNfXXoJSPLRTLEckPAhp0rUFCnAkdS3NqQZ8q02GuOWbFBT94qrheNxOOQ
+	 3mU1EhwfUyZG/dK9Ukfq/gXgeM6azm6CHLvy6jwvleRSlElHoROvxsP5oi2TNGdND7GWz
+	 tEmCNaU6OxpGU37xGKNYritP50zha+5aKN+9bgJE9xnvKBcXprHCebtLk90wSrlDMTbXj
+	 3AmBcZ3qDdkQhKCLfXxr0EDz3QVahmFjNWOxBbh6UtU0zE5joKqIqJb83zeWLQi0tIw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFBD606A31B;
-	Thu,  5 Nov 2026 21:17:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5EFBD606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lrlGEIDc
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YyTc8b+smMk4+KldRah+m/FfkWJjVsNObhjB+hL5f/uZ78aw8ZkN/S3nbOZgQezErK1eZ85rFveVY6pXowZDYTbhkb95grSvYuUNjpwCl+z9m2IkG6cVfaFsTm9H9Mn7BuEfrMus62e3nUhqflEZPrsMwzSZ10MsXFIoVfX0Gw2Mbog7wbT3EYQyXAZyVFDqjeVjHjVJL8NBIlzuIZlOea5REYwEHaE5n4313+EYeug+Zw3l0JDoSWJcE16lZtjWW9MS1xgOjsXtEf9p4XSNH7jLfyShdShEOyV2wyQe9reTU0BRrCwo0/3J0DwVBM2Hy7AWcM+DnenVjFMtvF92Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1VklHjx2ocvTTItGNBIiBpHKD6IbgdMlWISL/fVNAQI=;
- b=nYTg73nd+VJMoK239daI27abL8CQv2HfcN0c84Nw4BypjpbODoF8OpTuTj5L/seEhcdNvkaGokDLuSIh06lUUdPBmgLoDfdY3fW7Z4+Rms1pfSrNKcPveww00CLpx4NNgS2jnDriE3bsJ/qxVR55ffTMb3u5mNQo76j2MaYm1Vzw2d912hD123+t16bQj/aJzKY4H/CpP9VreKKlY1eBW9WI88xMi5Wb5cCKylzIthWnapY0g7PDbvfAUmPkmAR2yzpOEfPGwlRgOMao9OwYoYJjddWeFNeMoytn1RwpnY1c8Sow73l9xi6o05TGsYgOoi6Ev3fxBn0bUZnIrW8qKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1VklHjx2ocvTTItGNBIiBpHKD6IbgdMlWISL/fVNAQI=;
- b=lrlGEIDc3eXQB5MORNxMHfrt6OvD9tlkq44UqFdwAx88QE47yT6j/rsoecUhKcc52UlySZvflwNEUpMFMob+5Aqot/6UUxLIWJYm4kHkvni4WScNNeIw3BzBfYtTlMq3dCkOxig1K10jmspm7duFWcyxJ+0eAcqC/h0I03kvrIFQQgZzcNCCjBDUwzaGIjXXpvAXDcnpOZljcr2z08KJOyoXwBrn29Ot7x3FQZW/1QLVIDM6Qp4ECFjxuPtg63MCb8CqItLMPmTbRMLUF33UPcjAhX7czW0EPZUQuqWwCrZpi1JQ6S0KTNBZYNQNMBultSD9iuQgp0c46nLd03Jq1A==
-Received: from CH0PR03CA0303.namprd03.prod.outlook.com (2603:10b6:610:118::16)
- by IA1PR12MB6235.namprd12.prod.outlook.com (2603:10b6:208:3e5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Thu, 5 Nov
- 2026 21:17:20 +0000
-Received: from CH2PEPF000166C1.namprd04.prod.outlook.com
- (2603:10b6:610:118:cafe::99) by CH0PR03CA0303.outlook.office365.com
- (2603:10b6:610:118::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.10 via Frontend Transport; Thu, 5
- Nov 2026 21:17:20 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH2PEPF000166C1.mail.protection.outlook.com (10.167.252.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Thu, 5 Nov 2026 21:17:19 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
- 2026 13:17:02 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 5 Nov 2026 13:17:02 -0800
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.56 via Frontend
- Transport; Thu, 5 Nov 2026 13:16:56 -0800
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Andrea Parri <parri.andrea@gmail.com>, Boris Pismenny <borisp@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, "Gal
- Pressman" <gal@nvidia.com>, Jeroen Massar <jmassar@nvidia.com>, Jianbo Liu
-	<jianbol@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, Leon Romanovsky
-	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, "Patrisious
- Haddad" <phaddad@nvidia.com>, Prathamesh Deshpande
-	<prathameshdeshpande7@gmail.com>, Raed Salem <raeds@nvidia.com>, Roi Dayan
-	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net V3 0/8] net/mlx5e: Fix offload lifetime and exclusion bugs
-Date: Thu, 5 Nov 2026 23:16:28 +0200
-Message-ID: <20261105211637.1083978-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF7606A329
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:17:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FBF7606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ab4f652f9bso1832763b6e.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:17:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793913451; x=1794518251;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kKvT1WZP63DDiif92MikpmY+JmPHkMKG8ncW+5LMjTE=;
+        b=J2Snr+uIwFvM0NEFA3PEKDyQ+t7rRdQGM5oY79aCFtA+y0dD98W6UOikjw8UFPj9PL
+         4HU01bJ7OJuoRvQ7ROrwgI292RiL7j76oE9EjjR7d5d4EPs/VXxN/Z8Mj6N0ZQzS0lKc
+         orfRlN/BtyPbAE/pDcrsjxagNDI0ApDl84jSG2QNmtMNrtvyHDI9FysCpYGI1TujKfxv
+         NDtyFXx0BOVWi2GU+ANGaW7SFFRO0kjzW7iNKGKV77hB+PsIVaGe1hI3hp6gGQ4Jr/mO
+         jZbFYCm0TybkQQXy0Vgj6HNDxp35DsmVs9M8M6QOi3is0iPH4GDcKZ1BPmxLfUbp0M9y
+         nEjg==
+X-Forwarded-Encrypted: i=1; AKwUvByFNJabGc4KfwcjJvu15NZcgYrSrJF9TPWLUdUOojCA6+TUHeYw5Heo1VmQ5X1mKbc6RFqqPU4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Z8BLrREGA0eg3Z3gnsJBsRfByxXcOOWofKxN3BxTRLan+ET7X
+	7sec8cuiaKB3Uvpv7/dyzbMSv1ix/aztQZU2DEabhNqH/3+KhNic95rS8bIDks8iEe2GJR9t9x1
+	GVIzPjBz1txfkmxAJ55BoYBl/Vtk4ndaaKcQ0OFwvZa8hzltd6Ws//6xp6Po=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -123,105 +58,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF000166C1:EE_|IA1PR12MB6235:EE_
-X-MS-Office365-Filtering-Correlation-Id: 893ad6e3-076e-4606-c4d0-08df3b822d06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|82310400026|1800799024|36860700016|376014|23010399003|56012099006|10067099003|261102123227099003|13003099007|18002099003|261009223027099003|261021121427099003|261021123027099003|261022105027099003|261022075727099003|11063799006|261028144727099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	EFe8EoHYjzOYimxFYSamxJsY+WWLHhhnYAGPHOk2YziZUMdZeiX6frj+xh75wAptSVOhAw5w9UwK8G0uCyEXMqWjiXG6MUK25yAteUYvv0vDdUvJ2TpgwJ5Dg0EaSrBvsKFjo4lzT+ieqA/m7ggGYV9azdrKv3OMRBq2RBTTjGUNLBZ8CMM8V58efc6U2nSb6ZkTlZE7eN0N8+1rhuaohKBEV/1W6U14gcZ5WShBQHEz9D/Hz8IAxGquk/1U9+kqkBaMBKCw8XkbNa4nUgcgn2pnLho+Mi3QBOXgffoLwX4CS4ux7j2JVIFyMX+WW+HJT6iEHzp3VfRjRWqH6VumEC3HZNcKFZRPGz2HvzNynlNPypIguD2DV/AwTKhmakOkpOFZh7ydWuG053/+A84jCvMTxIamDGmga5GW3q52hn5EF6/xy429Zg/xAQQ7AmBGo2kUAknsthUNAeyuSenkhbQi+1vVgOIgwZDCwhC6Ny7MX0pgMYcKvr0aorsKZwAffjI5m1up98PQr5ieA+4cHSKm9QzHjRD1kson1sQ6902TrdawbPMBsOb/k9vzUKHELlGmVWFgEI7zaCJGrCyUcGOobQfASBTr4XqwQj/tu0xwVny3P8id0CsnXveKDPMnLgzhT2BWaLQsGMSylId3hD9s8UPFqFWXugqVqWcFAsnrU1sErCvvbFTlxZFcr95QfAg/IsjurrFP6mRaN8FdQQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(56012099006)(10067099003)(261102123227099003)(13003099007)(18002099003)(261009223027099003)(261021121427099003)(261021123027099003)(261022105027099003)(261022075727099003)(11063799006)(261028144727099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	BbEqEZ01GY9JRx8CWsIlzTG4Vc+T6zlw9LpGi1dxKgAMf3cQQQGI7qUnhQZp6Doj+Q9i7KWVpnyPTRziGkMt0a67uYvjCcV1f45vLb3GzdbC0d6gC1ZPIBaM8Fx0YdAkqSljABC1U5wyn46uVyGyRkpjVIdEg11F+wtJcgMXd1SioISN23qRc2ieLJlUFIU7A11XqtQm1HqYMw35bN0tuZbnWMKTeRR3Pm7pkMdP9iNoPD4lO63ycPvOx3e9acMByuFF9PfJ59Y/NeghLRNFPEU7f1izwdukT+cMuP2Irm/edCfz3vy5NL13BJiaGcZBueTzf4TbJgb+JQ9F23n9ir2iAYqZNKdolDs3cNhesRi9KhoEStiQD4RDPd4tnOCaJQSVTxyDS5IVb4hmZenvpnK8bNK4Z0hSY8c1wDU97Ul9hU3HPQwuQtwSvy36j+Xf
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 21:17:19.5660
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 893ad6e3-076e-4606-c4d0-08df3b822d06
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF000166C1.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6235
+X-Received: by 2002:a05:6808:1985:b0:55c:8ee:a9c4 with SMTP id
+ 5614622812f47-567e115e036mr383926b6e.43.1793913451254; Thu, 05 Nov 2026
+ 13:17:31 -0800 (PST)
+Date: Thu, 05 Nov 2026 13:17:31 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aecf26b.382bd2ce.33e041.0002.GAE@google.com>
+Subject: [syzbot] [netfilter?] WARNING in xt_dnat_target_v2
+From: syzbot <syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com>
+To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello,
 
-This series by Cosmin fixes several mlx5e offload issues.
+syzbot found the following issue on:
 
-1.   Fix fs root table cleanup bug.
-2.   Fix IPsec encap serialization bugs.
-3.   Fix a deadlock between HCA devcom lock and mode_lock.
-4.   Fix uplink unbind deadlocks by not holding mode_lock across
-     removal. All eswitch operation initiators wait for ongoing ones to
-     finish first. Unblocked by 3.
-5.   Fix races between profile cleanup/init and IPsec policy/state add.
-     Unblocked by 4.
-6+7. Block eswitch mode changes before accessing the IPsec context
-     during policy and SA creation. Unblocked by 5.
-8.   Serialize TC/IPsec exclusion counters with a per-device spinlock.
-     Unblocked by 6+7.
+HEAD commit:    787268686c64 ipmr, ip6mr: queue netlink route queries out ..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=170b444e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d30e1495ee3ac817
+dashboard link: https://syzkaller.appspot.com/bug?extid=2e819f6641708bb6ab9d
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=108b444e580000
 
-Regards,
-Tariq
+AI-generated root cause summary:
+When an incoming TCP packet is rejected by an nftables reject rule
+(nft_reject_ipv4_eval), nf_send_reset() creates a TCP RST reply and attaches the
+original packet's conntrack entry via nf_ct_attach(), marking its ctinfo as
+IP_CT_RELATED_REPLY. As the RST packet traverses the NF_INET_LOCAL_OUT hook,
+nf_nat_ipv4_fn() passes it to nf_nat_inet_fn() because it is not an ICMP packet.
+In nf_nat_inet_fn(), IP_CT_RELATED_REPLY falls through to evaluation of
+uninitialized NAT mappings, executing rules in the LOCAL_OUT NAT chain. If the
+chain includes an xtables DNAT target (evaluated via nft_compat),
+xt_dnat_target_v2() triggers WARN_ON because its assertion checks only for
+IP_CT_NEW or IP_CT_RELATED, omitting IP_CT_RELATED_REPLY.
 
-V3:
-- Added several new fixes, all found by internal Sashiko.
-- Addressed a few Sashiko comments from V2.
-- Renamed V2 patches 1-2 to "Block E-Switch mode changes during IPsec
-  policy creation" and "... during IPsec state creation".
-- Dropped V2 patch 4, "net/mlx5e: tc: Tie esw & accel blocking refs
-  to the flow's lifetime", to be submitted separately.
-- Exclusion counters: use a spinlock instead of a mutex, as some
-  callers run in atomic context.
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=2e819f6641708bb6ab9d
 
-V2:
-https://lore.kernel.org/netdev/20260930121119.141953-1-tariqt@nvidia.com/
-- Use mlx5_esw_lock() in mlx5_eswitch_block_mode() (Sashiko)
-- Clarified the fix split across first two patches (Sashiko)
-- More careful dereferencing priv->mdev in mlx5e_xfrm_add_state() (Sashiko)
-- Avoided spurious error message during IPsec SW fallback (Sashiko)
-- Harmonized check_users arg for policy & state add (Sashiko)
-- Clarified the scope of the "tc: tie..." fix (Sashiko)
-- Moved macsec patches into a separate series.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com
 
-V1:
-https://lore.kernel.org/netdev/20260917175433.4090878-1-tariqt@nvidia.com/
+------------[ cut here ]------------
+!(ct != NULL && (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED))
+WARNING: net/netfilter/xt_nat.c:154 at xt_dnat_target_v2+0x97/0xc0 net/netfilter/xt_nat.c:153, CPU#0: syz-executor145/6031
+Modules linked in:
+CPU: 0 UID: 0 PID: 6031 Comm: syz-executor145 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/15/2026
+RIP: 0010:xt_dnat_target_v2+0x97/0xc0 net/netfilter/xt_nat.c:153
+Code: 74 22 41 83 e7 07 41 83 c7 fd bf fe ff ff ff 44 89 fe e8 ac 1e 90 f7 41 83 ff fe 72 25 e8 91 19 90 f7 eb 09 e8 8a 19 90 f7 90 <0f> 0b 90 4c 89 f7 48 89 de ba 01 00 00 00 5b 41 5e 41 5f e9 21 17
+RSP: 0018:ffffc90000006de0 EFLAGS: 00010246
+RAX: ffffffff8a38fc64 RBX: ffff8880614cd418 RCX: ffff88807c979f40
+RDX: 0000000000000100 RSI: 0000000000000100 RDI: 00000000fffffffe
+RBP: ffffc90000006ed0 R08: 0000000000000100 R09: 0000000000000000
+R10: ffffc900000070b0 R11: ffffffff8a38fbb0 R12: ffffffff919e5438
+R13: 1ffff92000000dc4 R14: ffff8880247c8900 R15: 0000000000000001
+FS:  0000555563505400(0000) GS:ffff88812361d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe16ab8280 CR3: 0000000034dea000 CR4: 00000000003526f0
+Call Trace:
+ <IRQ>
+ nft_target_eval_xt+0x1ad/0x2b0 net/netfilter/nft_compat.c:100
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ nft_do_chain+0x48d/0x1b10 net/netfilter/nf_tables_core.c:285
+ nft_nat_do_chain+0x360/0x4b0 net/netfilter/nft_chain_nat.c:32
+ nf_nat_inet_fn+0x5de/0xb50 net/netfilter/nf_nat_core.c:931
+ nf_nat_ipv4_fn net/netfilter/nf_nat_proto.c:583 [inline]
+ nf_nat_ipv4_local_fn+0x18c/0x570 net/netfilter/nf_nat_proto.c:738
+ nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
+ nf_hook_slow+0xc5/0x220 net/netfilter/core.c:633
+ nf_hook+0x22a/0x3a0 include/linux/netfilter.h:280
+ __ip_local_out+0x558/0x6a0 net/ipv4/ip_output.c:120
+ ip_local_out+0x2a/0x190 net/ipv4/ip_output.c:129
+ nf_send_reset+0xd8d/0x1530 net/ipv4/netfilter/nf_reject_ipv4.c:339
+ nft_reject_ipv4_eval+0xf6/0x230 net/ipv4/netfilter/nft_reject_ipv4.c:30
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ nft_do_chain+0x48d/0x1b10 net/netfilter/nf_tables_core.c:285
+ nft_do_chain_ipv4+0x195/0x290 net/netfilter/nft_chain_filter.c:24
+ nf_hook_entry_hookfn include/linux/netfilter.h:165 [inline]
+ nf_hook_slow+0xc5/0x220 net/netfilter/core.c:633
+ nf_hook include/linux/netfilter.h:280 [inline]
+ NF_HOOK+0x21f/0x3c0 include/linux/netfilter.h:323
+ __netif_receive_skb_one_core net/core/dev.c:6433 [inline]
+ __netif_receive_skb net/core/dev.c:6546 [inline]
+ process_backlog+0xa6b/0x18b0 net/core/dev.c:6897
+ __napi_poll+0xaa/0x330 net/core/dev.c:7977
+ napi_poll net/core/dev.c:8040 [inline]
+ net_rx_action+0x61d/0xf50 net/core/dev.c:8197
+ handle_softirqs+0x265/0x8d0 kernel/softirq.c:669
+ do_softirq+0x77/0xd0 kernel/softirq.c:569
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
+ __dev_queue_xmit+0x1efb/0x3920 net/core/dev.c:5121
+ neigh_output include/net/neighbour.h:554 [inline]
+ ip_finish_output2+0xc4b/0x10b0 net/ipv4/ip_output.c:236
+ NF_HOOK_COND include/linux/netfilter.h:314 [inline]
+ ip_output+0x29f/0x450 net/ipv4/ip_output.c:437
+ __ip_queue_xmit+0x10df/0x1b10 net/ipv4/ip_output.c:533
+ __tcp_transmit_skb+0x2d06/0x47b0 net/ipv4/tcp_output.c:1773
+ tcp_transmit_skb net/ipv4/tcp_output.c:1790 [inline]
+ tcp_connect+0x1a7e/0x4990 net/ipv4/tcp_output.c:4451
+ tcp_v4_connect+0x1264/0x1b20 net/ipv4/tcp_ipv4.c:348
+ __inet_stream_connect+0x28c/0xf50 net/ipv4/af_inet.c:684
+ inet_stream_connect+0x66/0xa0 net/ipv4/af_inet.c:755
+ connect_socket net/socket.c:2143 [inline]
+ __sys_connect_file net/socket.c:2168 [inline]
+ __sys_connect+0x316/0x450 net/socket.c:2185
+ __do_sys_connect net/socket.c:2191 [inline]
+ __se_sys_connect net/socket.c:2188 [inline]
+ __x64_sys_connect+0x7a/0x90 net/socket.c:2188
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f81c24b2ff7
+Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+RSP: 002b:00007ffe16aca280 EFLAGS: 00000202 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 0000555563505400 RCX: 00007f81c24b2ff7
+RDX: 0000000000000010 RSI: 00007ffe16aca300 RDI: 0000000000000005
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00000000d2040002
+R13: 00007f81c24eed50 R14: 00007ffe16aca300 R15: 00007f81c24ec06c
+ </TASK>
 
-Cosmin Ratiu (8):
-  net/mlx5e: Release IPsec root table reference on RX setup failure
-  net/mlx5e: Serialize ipsec encap reservations with eswitch operations
-  net/mlx5e: Take HCA devcom lock before esw->mode_lock
-  net/mlx5e: Fix E-Switch races in uplink unbind
-  net/mlx5e: Fix ipsec core device access during profile changes
-  net/mlx5e: Block E-Switch mode changes during IPsec policy creation
-  net/mlx5e: Block E-Switch mode changes during IPsec state creation
-  net/mlx5e: Serialize TC and IPsec offload exclusion counters
 
- .../mellanox/mlx5/core/en_accel/ipsec.c       | 95 +++++++++++++------
- .../mellanox/mlx5/core/en_accel/ipsec.h       |  2 +-
- .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 88 ++++++++---------
- .../net/ethernet/mellanox/mlx5/core/en_main.c |  4 +-
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 18 ++--
- .../mellanox/mlx5/core/esw/ipsec_fs.c         | 15 ++-
- .../mellanox/mlx5/core/esw/ipsec_fs.h         |  6 ++
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 24 +++++
- .../net/ethernet/mellanox/mlx5/core/eswitch.h | 15 ++-
- .../mellanox/mlx5/core/eswitch_offloads.c     | 88 +++++++++--------
- .../net/ethernet/mellanox/mlx5/core/main.c    |  1 +
- include/linux/mlx5/driver.h                   |  8 +-
- 12 files changed, 231 insertions(+), 133 deletions(-)
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-base-commit: fafbc4051123d5459ea6950899cec08ed946e278
--- 
-2.44.0
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
