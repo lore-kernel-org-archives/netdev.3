@@ -1,78 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.201
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793840696;
-	b=kRZOrBMW9JMIAd5IZdjEpQHbEAtCS6EU0Ee84ljwSOeGIA5/ilieJ018NVpb/0ZfUAsT
-	 GUzReFzRoGLAG/IRfcdNo8c796iIya4FxXtq8jFh9WP0pwFT/mOBq2b0GGw9nPyGfLHTv
-	 VKCIE14Qo525+We32A5jib5gpQDFwJl/mSJGk3zPjNnV6jgIP1xwp6YLod77uDTab0IAG
-	 /kckm81mzN7z0WWKf0zQrG5VECM6nsu5otj/NOlKTtTPOPmlDmIjBgkiST8chyQ+kpFPS
-	 vOGbeHMwHlV39aC970acA50g9in6ow72QK4s93v+t0339OeppQwUZl8wfn9Gu8JL2aw==
+	t=1793841538;
+	b=muO5HDj4fJ6AH8oQ4V5s1BoMUtYGvJ+zzqvoFW/D/pVYFN1byLM0sSx8wEAwOwas0UEK
+	 dqsHhivtmPJqJilFCHw10G7/19JONlZNih7suO5cW2TCSKD8BPrxmKHOJsk7KA+GRsfUU
+	 8qQPDuwbZIlzQTALpb1fTifVMYaCv25fpND2IjnNdZz41f1IubcKWsREaGM7CI+tVH6di
+	 cer3B7e5qj59WpMtzzONomkiYnaswGkHXsNGKSt9tlRcEd5XnP+6agxEcK266J7OP0gSh
+	 T/bImO4ir7j91hbxETj3XOEuJGxLU9ZwvmzucUOevcAo/VoaJz1facdUVUAppvL2NXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793840696;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=vbOSiDhOXUNUobJKPavDdEMcKzCZkS+5o8EgPhWPvSM=;
-	b=J6lEkPz2XIaZaMQKpmsLgkaQK8BkUIWoHoXfGt1soINL9st1zxJ2feIXFWzC1yRnzQ6s
-	 b5JjqH7icHXrZ9lMwhLpfS57ofPq2gLG3lABbtjmxbPY4WNPeS2FBlJ8oAIF39RuTbfyR
-	 NWF+DAFW9xSA67Ch00mYpYxmKxRW4BFUgimVpWIvDSBR/qTe+m5opVmUYvq+brK2XMzcl
-	 sr8aXRg45R0wAI/BUYdWDCsWHYXRbdonZGGvYaVJp3ZgJG+yujlCf31Y7sD/tpADdWA03
-	 4AkZAgI9KwVb2q0C1Hc9xJ0u6Vq8yI1g3EYqILPXfBvWQ13JoPlUxWF9Gq6cv6v8LiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793841538;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=33qkpdf9ukGrCIlvtoK0XJPAVaX1fyfDnYWQ0CErckU=;
+	b=xovsKPREkTTGdwmvJvX76noavgjlRrfQGXclgovLTyeMgOP52Eq6vlXxnMJWLI7+cfZa
+	 EGr7YoCiZL7nGPn8XdgevYn9BO5TNUp8Y6iPRdBH0sqwzJipMtpQ7dqg3xE5PXUCJKOcS
+	 0ELPtpBgRcfroRFfBuYy3JojFrzOdvDLXEvGDVwmyrv2IjE4S8jKAzdma2HPrLsXwT+y6
+	 qcAZEnJh1ZakS9kqEtbPQg2X7ahzM5C5LdtTKwQMuW55PmwE8ydqNJbHsRanx4UhPaO0M
+	 3u/rBtUT5usDND1M+S3Ql9rcqcjFVPIfsXQaRLyvgB9VDHLku60o7R8esrCC2/1YMbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0HcvLYM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vnr9+srx;
+	arc=none smtp.remote-ip=95.215.58.201
+Received: from mta1.migadu.com (out-201.mta1.migadu.com [95.215.58.201])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id A83A2606A333;
-	Thu,  5 Nov 2026 01:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF80606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 01:18:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FF80606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m0HcvLYM
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9CBFF1F0093A;
-	Thu,  5 Nov 2026 01:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793840695;
-	bh=vbOSiDhOXUNUobJKPavDdEMcKzCZkS+5o8EgPhWPvSM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m0HcvLYMYkaoJF/gyIeviUk7vKDG8LTeM8GuuNUPrh2+PwPwMJg+KMAmLfie04lgC
-	 uWiY1m196LFoEPr4UN4ILRCQTYO2qpihIQA73wRtKJP8bFtmoCsmNsC1vPneuxMySZ
-	 Ydury5Fz95YrhAwGRTsW9IaxkAyYp0+eCGdLrKyYlb0kLOIfNmyUFV2qUWZ0rhXkPe
-	 0lrkYKGcQE6OgI2K9JypGhcV9aAwBy6qS3gU7t0+e+TarrhTm4FBRyHwvM1/KlS8YK
-	 WqqFgSJMDgdhOLXDZOYkDvGyJFfth79kqcDkB0Cg7V9N3Ac8qewmwBukARuOwjjYyP
-	 a65Ed+F9uQSLg==
-Date: Thu, 5 Nov 2026 03:04:51 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org, samba-technical@lists.samba.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	James Morris <jmorris@namei.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Paul Moore <paul@paul-moore.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Simon Horman <horms@kernel.org>, Sumit Garg <sumit.garg@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>, Tom Talpey <tom@talpey.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [RFC PATCH v3 00/11] KEYS: Sanitize the garbage collector
-Message-ID: <auvWM6zn1MSP5C5b@kernel.org>
-References: <20261105005311.804098-1-jarkko@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vnr9+srx
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=947IAn6HJ0NYIh2PUSsj5Xo94bVXq8zCjrEMI77rPVM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793841534; v=1; x=1794446334;
+ b=vnr9+srxP6uif1XsIm7JqKFtPy3wgG0j7IQgAomqziWT3eRowu7koyLM91/TPftpnlL4ifc5
+ Ul8MyFyK4Ga1t0Ab59el6oN6dok94Vie/uKaXFHY3nvdLPn5di3PlBsHmoD+7+1jgAtB5ecDbhs
+ OKNz1bXmdiEVgcW08yezFBXM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id c6f158b26a90fa81;
+	Thu, 05 Nov 2026 01:18:53 +0000
+X-Mizu-Trace-ID: c6f158b26a90fa81
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 5 Nov 2026 09:18:45 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Yun Lu <luyun@kylinos.cn>
+Subject: Re: [PATCH net] bonding: fix slave_cnt leak on XDP enslave failure
+Message-ID: <auvZdcFK5yW-bIW7@fedora>
+References: <20261104092851.688361-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,43 +67,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261105005311.804098-1-jarkko@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261104092851.688361-1-edumazet@kernel.org>
 
-On Thu, Nov 05, 2026 at 02:52:59AM +0200, Jarkko Sakkinen wrote:
-> 1. Replace key_type_dead retyping with module reference pinning so live
->    keys and restrictions keep their backing key_type module loaded until
->    key_gc_unused_keys() or keyring_destroy() completes.
-> 2. Process serial-tree scans and graveyard destruction in fixed 64-key
->    chunks to a bound workqueue execution latency without hurting overall
->    throughput for a significant amount.
+Hi Eric,
+On Wed, Nov 04, 2026 at 10:28:51AM +0100, Eric Dumazet wrote:
+> bond_enslave() increments bond->slave_cnt before setting up XDP on the
+> new slave. If that setup fails (slave has no XDP support, already has
+> an XDP program, or dev_xdp_propagate() fails), the error path jumps to
+> err_sysfs_del, which never decrements slave_cnt.
+
+
+I think this is a same fix with my previous patch.
+
+https://lore.kernel.org/netdev/20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn/
+
+ince you posted it, it looks like you agree with my fix.
+
+Regarding the XDP and promiscuous/allmulti issues Sashiko reported, I think
+those need a separate fix. The `bond_enslave()` function is over 500 lines
+long and its logic is tangled. I’m working on refactoring it to make the
+control flow and error paths clearer. Hopefully this refactoring will resolve
+most of these problems.
+
+For this patch, do you think if I can re-post it?
+
+Thanks
+Hangbin
+
 > 
-> The first part has a user-space visible effect: rmmod returns -EBUSY while
-> keys or keyring restrictions still pin the backing module.
+> Each failed enslave therefore leaves slave_cnt one too high:
+> - SIOCBONDINFOQUERY reports a wrong num_slaves,
+> - balance-rr picks slave ids beyond the end of the slave list, so
+>   bond_get_slave_by_id() falls back to the first usable slave and
+>   transmit is skewed toward it.
 > 
-> Internal key caches or transport state bottlenecks are addressed by either
-> clearing their private caches on last-client teardown or splitting key
-> types into dedicated provider modules.
-
-<samba-technical@lists.samba.org>: host
-    lists-mx.samba.org[2a01:4f8:192:486::1:0] said: 550-Please subscribe the
-    address jarkko@kernel.org to the samba-technical 550-mailing list before
-    posting. See <https://lists.samba.org/mailman/listinfo/samba-technical>.
-    550-You can also write a mail to samba-technical-owner@lists.samba.org and
-    ask 550 to get on the list of accepted non-members to be able to send mail
-    here. (in reply to end of DATA command)
-
-This was accidentally pulled by:
-
-	./scripts/get_maintainer.pl \
-		--nogit \
-		--nogit-fallback \
-		--norolestats v3-00?[1-9]-*.patch | \
-		awk '{print "Cc: " $0}' | \
-		sed -i '/^Subject:/r /dev/stdin' v3-0000-cover-letter.patch
-
-I'll address this in the next version but perhaps that email should be
-removed from MAINTAINERS? 
-
-Br, Jarkko
+> Reproducer:
+> 
+>   ip link add bond0 type bond mode balance-rr
+>   ip link set bond0 xdpdrv obj xdp_dummy.bpf.o sec xdp
+>   for i in 0 1 2; do
+>     ip link add d$i type dummy
+>     ip link set d$i master bond0   # fails: Slave does not support XDP
+>   done
+> 
+> num_slaves read via SIOCBONDINFOQUERY is 3 before this patch, 0 after.
+> 
+> Add an err_dec_slave_cnt label ahead of err_sysfs_del and use it from
+> the three XDP failure paths, which are the only failures after the
+> increment.
+> 
+> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Yun Lu <luyun@kylinos.cn>
+> ---
+> Discovered while reviewing https://lore.kernel.org/netdev/20261104064409.281303-1-luyun_611@163.com/
+> 
+>  drivers/net/bonding/bond_main.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 7019e5d8fdc8..7a394d0eb186 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>  			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+>  				     "Slave does not support XDP");
+>  			res = -EOPNOTSUPP;
+> -			goto err_sysfs_del;
+> +			goto err_dec_slave_cnt;
+>  		}
+>  	} else if (bond->xdp_prog) {
+>  		struct netdev_bpf xdp = {
+> @@ -2319,14 +2319,14 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>  			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+>  				     "Slave has XDP program loaded, please unload before enslaving");
+>  			res = -EOPNOTSUPP;
+> -			goto err_sysfs_del;
+> +			goto err_dec_slave_cnt;
+>  		}
+>  
+>  		res = dev_xdp_propagate(slave_dev, &xdp);
+>  		if (res < 0) {
+>  			/* ndo_bpf() sets extack error message */
+>  			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
+> -			goto err_sysfs_del;
+> +			goto err_dec_slave_cnt;
+>  		}
+>  		if (bond->xdp_prog)
+>  			bpf_prog_inc(bond->xdp_prog);
+> @@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>  	return 0;
+>  
+>  /* Undo stages on error */
+> +err_dec_slave_cnt:
+> +	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
+> +
+>  err_sysfs_del:
+>  	bond_sysfs_slave_del(new_slave);
+>  
+> -- 
+> 2.53.0
+> 
