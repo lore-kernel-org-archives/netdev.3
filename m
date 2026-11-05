@@ -1,113 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.135.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.139.74
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793914847;
-	b=sHYzc7eGRvN1nz66mInKKti+fxlOgyI3gtGiob0in87OKxVybYwK/lTgmWGKV6reCTjd
-	 TFwatqZq0TMysJleXf7k3Alxlt61BStG2xxuR0YCNtdaAOZ9sNRfJCg1o9Az15BQIidVZ
-	 geHou95Fqt9smnNjZmp7/dyzGzqvM/kyRqvrZWfzQzkxrYI7t0eWc1Do4e/wke7yFeJP5
-	 zZCXcb5v9qfnlX7RdRgcp15KL+KI2/1PDkwi8JdmVCJdHtjQA136Cx0jHja6w6+Al1hmR
-	 9rY9ky1SX0T/W24nR5I37umGPNWfnY1pPqU+4gb/4GxyZSgNDpNQ8kPwP+5G65sOp3g==
+	t=1793914993;
+	b=ObVL4yXASxJLGXiwCh0+b4CsZRMk0d6OHrq5LYb9PYRnqjeuo4TyfDrVkxU1Hevx1V9T
+	 yHCPg86xanWDNZdV9jPHLsWX3/YE2hosqrmT2F59dyLQQ1gOI6qYCUdDSkHkHnyTh1bqy
+	 6XbXEOtlTwAkCRRwTwvfaH1YtdPX2u7Z29HgmSzmXe8S11pR8E6cq2r6GOwFpiiZyq7ED
+	 Gfl+YoNMa3IGV8ehYnJnwOD04haGjnh8lWzgQB/olObp9qclWDOqG+IxNfgeXh1purT2l
+	 o5ToiHXbUGHNvZBV+vuyMhfxapUT8tosyhR86RHoWO9dlD9zSgUlH1DmR591rhU9q5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793914847;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793914993;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
 	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=TiL2IkZn0wEC7iD+jl10xXWMOQDsgAhBHuaMbQTkHAI=;
-	b=BMbHF3Ix4HT5KjxaTte2jcA5PSTgDLSaGtnRlwCSiL/CveYrdj5DyzxpbjsPFvUi4C9w
-	 JS8FkRTiJCRc7zNV7mYqgD5DfZlzvjUMD+yf/FGRkf4Jnocqo5SH1+V0aJCVLzWhv4TwL
-	 UjMutmkxCXpuDv3jgDuyAXlw9TMPx0TwCon5sopY03hS7qzVNBNxwPkBScbR+2r9y7IQs
-	 uRjxq89XFQRPbk8ZCqCpp/v/LBKRaKV6C9ECU8puJr+Ws52IbBNc+r75OQOplrj7utby2
-	 9XaUv09/Ao46xGBCN7cdJThqdxV1LQf2uAbFfq5lGq0wyvIJ8DKkSZ03ZkU17x2tFqw==
+	bh=7PpH8CFYlHnNxARQXs8IGL2UM+NxdPruNFdu22N3C0U=;
+	b=hBBGSytpEuDEEgRQlhyK5PeBhzPR3QFSWS6JxgyUy72lkco2gx/0kknkf4WOhPWyqVHI
+	 XcVyW8+21zg9uBbgc1jV6mq7qyGm+f6PrSByqJSkv/hkVBhLIpUmPI6PnBaumgLj6EZhE
+	 cgwNcp41HtjD7r+PrypPEUxqVIXyXb/BIWzpDU/osAr2XpWNgKiPqbTIa66iVizVLmJSU
+	 /9fRlzqlYinPjnynuTC4rr0FOxRR87SotElfXEkTfb6EbqH+/hLQpU1Q0MCEuiQflfEzW
+	 uk4eqdCRqekr3BhzZ3CjwdMzdSljdyQBxVx63X1pqF/JIDfoDu+lT/0EoZG4Hz8n1/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=columbia.edu;
 	spf=pass smtp.mailfrom=columbia.edu;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=gSEe04W0;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=ixdOxXeu;
-	arc=none smtp.remote-ip=148.163.135.74
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=t8T9AI1V;
+	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=AEi9x9En;
+	arc=none smtp.remote-ip=148.163.139.74
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E831D606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:40:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E831D606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A8606A328
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 21:43:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 001A8606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=columbia.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=gSEe04W0;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=ixdOxXeu
-Received: from pps.filterd (m0167070.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5LYFqr3533785
-	for <netdev@vger.kernel.org>; Thu, 5 Nov 2026 16:40:46 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=t8T9AI1V;
+	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=AEi9x9En
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A5LY6Lj4118728
+	for <netdev@vger.kernel.org>; Thu, 5 Nov 2026 16:43:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=TiL2
-	IkZn0wEC7iD+jl10xXWMOQDsgAhBHuaMbQTkHAI=; b=gSEe04W09Z+Nh8ZHcttV
-	bnd4AF4WkzrRlwZafrX5JoEzr5CxThBeF3xKEZOIBcZf19OnJMHqvzml/CUUpRp7
-	hIctJ0EZsgo+t93Nfw/HGZ7RF6zupDHhTHC7r7lBTWanUitvkGm/v6aK5dPekwsV
-	8g4hY5qW70hw3BqJb+UcrTZIkWQfrbdqFYu0SgROjPeKsQKMlzvhzPn3pw3aCFS6
-	qH+ubESFeDDgm5P8F1wFuYtYRe7NKtOchPSI/8U8xHRLTOwgr/bZ/tdVpFpQueX8
-	Mmemd7/RyEzyyUvD7mLL4SXRSAq11zfPe0tCuhterVH5lvwXtNwemmeYxToFA+if
-	ow==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hs0wfrmyx-1
+	:message-id:mime-version:references:subject:to; s=pps01; bh=7PpH
+	8CFYlHnNxARQXs8IGL2UM+NxdPruNFdu22N3C0U=; b=t8T9AI1Vd7hp7houkyi/
+	GYfcLUwnU4sZfiJvctTAZwu9l062POejIyMNEIQrj3kPhrWVQjnju5GxNZddOoGn
+	7D5Q4ugEm0U3FeZ7TugSQ6rCqBRjC5P29vRfG+D0YXd0g4976jbCcFG9yjQG1QZp
+	WAb9M2Su4wz1BsfncLD0mgPp+tqD0KFrEY1tUZblbveKwfTwNsIqTtypVhzeLANn
+	54tiWbS69pUJsbX/FF6aU3dQfQNON1UZ8kwIPGB/wnWuCFYzYBvlsE8qjDvibXwK
+	inTDKwdZ4OtVcxUITJd1QJc5iX2cpaD6hJ5qaR6goC5nxDFL8hOcTWePGWrajTPj
+	8A==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4hruw2v74s-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:40:45 -0500 (EST)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9440b27c1feso495079785a.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:40:45 -0800 (PST)
+	for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:43:11 -0500 (EST)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-944101e6367so1917685a.1
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 13:43:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1793914845; x=1794519645; darn=vger.kernel.org;
+        d=columbia.edu; s=lionmail; t=1793914991; x=1794519791; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TiL2IkZn0wEC7iD+jl10xXWMOQDsgAhBHuaMbQTkHAI=;
-        b=ixdOxXeuQ6bjUfzLRCLvJWlLpU0w6m+xj6I4VCuvdLxTkTF1Jf09PtGGgxU006mWFg
-         Fi/aIMVS8sEwnPoRnT9cJbuyb+3FzijAceFvzpexP6ikZllK81NbYC5JFeEEQrU3zkCb
-         V5VcOmMDn9NRMGN/yVCtte7ASePnpZbRs9VtClQ21jDkDZ7qe0aRtFmwOEpmGqVfi9CI
-         bp04iUjc4qxOt9FJA/N2QO9fbwxoZAm4EwEz076r1dG1NeGMHR9I2i0QLlTgFW90qhbz
-         0cY9cWaFjuSedMDSuvXnpPVEmLxnQQHUUlRHND7522mfiR4P/gQPr+FnqWrU5jn1IqN1
-         F+Og==
+        bh=7PpH8CFYlHnNxARQXs8IGL2UM+NxdPruNFdu22N3C0U=;
+        b=AEi9x9EnboVaht8lN4QQTZWLR125/O9AbZnH4Cq1qfR4aYdOVCSJJvtU/YiicWGrYz
+         iJh6bJH2RZzyAJrO1+bnCPtb5hd6yH3Or9goq4GIwMoMmK0JOatA7M/KX1pW/77fc7px
+         HpFPxHpOj3A6WSwOoBzc1IrZLlEg2y86xZJvc3rlfz+xJ7ftJhVYU5xTlbEhEoRhrkp5
+         B44sR/IaBQqxm0FiPnNEwVijQ1f7Xy0FlVYmZV+K3vAI5v48XOeX+2WLHRXN5K+mqbNC
+         d88CxIwZ0uyTuIZUlw/c66JCT3Rgnej5kTfKHfMNMo+MdtRfKkgSpe63C9B35oCYJPKp
+         yHnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793914845; x=1794519645;
+        d=1e100.net; s=20260707; t=1793914991; x=1794519791;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TiL2IkZn0wEC7iD+jl10xXWMOQDsgAhBHuaMbQTkHAI=;
-        b=1nhrnG+XCby4uc0h+3o3YuvsoQL62Q3inSLS6YVnZ6rmYd6CumA6NTs3zbwLQAkBCC
-         NzoNJnKC41x4azVAQ07TdyQ/6HaTNeEFDtSTknVtPgmmgm2Mn/RsYfvXdxj5bG7LA+iq
-         k4J8pBjrQ0GP5Vz6rcuLniz5kMMikPdzxpYpNp7TP/eStbs55lqgU4FQfr7rp0zS2jgI
-         DSqgicmzQ9ZqFY/gBzLmMbwSnaFMgh83uCo/DyIcgFito6f6yGvBbaTw2uWvSIQx6zA9
-         VVHaQWraQMo5uCPwneMCvw1Qir4XvzyRAwwHurNj+5mxvqc9K792moDL7IgknXweXaBU
-         EnLQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxBTzQF98ty739ssQI62ItM7F/b9vyS0tYh3nfzYMqU2OlVeVQfVkPUNbvxkOoAXAWOmgLSaB0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8j/kEGWZsad9K9c1qr9ExwnxE4ZvhvQ5r2rKCLShmjvCVFWamd
-	g2BqGETyPOwCeyp21LiuI1ALPrSNqVqsr+uemLkrMeAMsmXsWA7Ncr1MyM7FgeQF0AyN6LSPoF1
-	EYFOgcOEyakrXNsHbH3A7eVep6BoPSMhG02+et8j0ZH+ckickaWGeEg==
-X-Gm-Gg: AYBFou0b8f1LgaLSwXMRYcdTwyDTqV1iPd6BlBYrM4z4VMs9/PuoKBtfKyFyWRf9YgD
-	I1W8wxcprheinUFNSjNE0qQremKVRNOh5pIPdG7SbqvPw1z8SEFeGiGb05ANz1RQa6zohFiYrRw
-	l0HORCFA3b75Oa3OeCb7FvwAw/9znuGAN0+YEicUgkSXhynHBIrwxZi1owsJRQnrcaP831fQ1cy
-	ZRCaAV31CfTG2sXxRfdxsqXrYK+1CsuQMXlnPYC1E9Z2aAoeMUFhEJ9KZCvErGc7TMhIEYykoK9
-	m2i4ppLrYyY1HjvABsKdt9JUUAUGXFodqVitxFJY6pgsUA7+YVawv5HynBgciLXNYhGQWk1dKBQ
-	kL10C+SS5uEwYEyqFQy+kZUKhECVMU7fRIYiFxtA9fMz2Dvwx/X5K8Y1oRat2rdNQ7vXj3uqnuM
-	sDQmOgRjInHCtEx/PoKo21dbFCiO0XhZ4yT/ZwUJRZutI3D0QrPpfEghSJhkMyXu3L5m4xoxrok
-	uNiAGf0hCaTrDLEtyIMlP8nShR+Oa3c1yCI+eP0owj/SO93lYlUlOmpes4Zz9H2
-X-Received: by 2002:a05:620a:1d05:b0:93f:3f86:c4e9 with SMTP id af79cd13be357-945f3632eb7mr58660885a.79.1793914845030;
-        Thu, 05 Nov 2026 13:40:45 -0800 (PST)
-X-Received: by 2002:a05:620a:1d05:b0:93f:3f86:c4e9 with SMTP id af79cd13be357-945f3632eb7mr58658785a.79.1793914844728;
-        Thu, 05 Nov 2026 13:40:44 -0800 (PST)
+        bh=7PpH8CFYlHnNxARQXs8IGL2UM+NxdPruNFdu22N3C0U=;
+        b=Sft9YAaZPlunb27KTlpzXSU6NBrweMDyfS/FE3bCfQscXPA3/UpT0AGu9huGIhOToc
+         z2Mq6Pq8SWoqQ5vYImm63u92CeFvrsaHDIVz0njQxJDSS5cyrSPXp/2HGfz4ermmvuKp
+         7X+kQhYvMoHvKOJnoFZcAeqYYaHGoOPkbwKF5bHOVfnlEwXWcKhC2E8zIeemzEUENOgv
+         IW+rd3OFVKrAeVcF1FGAbOSKJIFrht025mgfUXFPVHXi6N7uCHvB2uc9XfGy6BScw+Eu
+         PFPKiVY2xVDFc3y8hsx9Y43rFj7UCFiZA7+MZejEc/kUpx4z+9zadcxjRj7bCsf01fOS
+         uRCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxdSN23dvyz0s/eWUzjqyqhlDXGkVKz/79aupMFSIK+wlWnkbd7If/Zyq0gUYMYNjkXrQ1cB54=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/dWf1toFxicoR24NiFGzWePvpTrNNPVS6k4Q+SNsRyZNQ1BYPp
+	Qie4GcDsEIRxMlqTQWDuaI3S0rwZyxQkwp0SbTVuC9imZBIpuD05AOuofX1/5HJ9AAg79i8M/oa
+	rdqOmHrBmiqfaugeGOABCGYzNTuiQnBIAaQsfnAGUqw5doFBw9pdP7w==
+X-Gm-Gg: AYBFou2N08MqDZ3qHcL9g0006hdLxixqfiFZ43TXw0mpjFHGuX6BGJj+Gb9fQQaQrv7
+	yKsk9ZG458GQlZVNE47jrbC994Iz6xjMIaB28kVIYPwqUx675dCtssQ2z9PiIu7TqTHpQTOvUi4
+	1tghTT86yI7ihunWh9QFOqdlgm05CggbhPPqrQk9BwdmPOjc5oTXrq5DqtYyfD1COiEAxkCm4hm
+	mFPQ+LzQQ0/UEha77brq2sqyelXreVqfyEvjdt2iiVOzyJracvEhZ0Be7mis2UxAETZya4L++Cq
+	iW2YwW9ss/Xcd/AbqxdUBRnTPM/MQeZSMA9Jbg/9r7Wd4KZCrZAeNZK4MYQZ3XF7v6psuCvDffx
+	IVHS5AddKxbF4gSkypoQaMM/oUOS9XgncQWL/3wSUNhte3MsNLLicACBSLOlhOvNsXb5ppe1pw9
+	p8e/xEB2KVkH8OYrpiUW9W+scNygvncofHVVrEQ1xxac9CNRemrsRJ9bGw3+fWMpDErthmkvNpe
+	HCwxzF5VXizuy1El98zaWxkMUjlusgs1OtZkLgIeGnFVfE9WsvlPrUc5gZgdK+m
+X-Received: by 2002:a05:620a:600f:b0:945:e177:895b with SMTP id af79cd13be357-945f346873dmr64369085a.7.1793914991152;
+        Thu, 05 Nov 2026 13:43:11 -0800 (PST)
+X-Received: by 2002:a05:620a:600f:b0:945:e177:895b with SMTP id af79cd13be357-945f346873dmr64366885a.7.1793914990883;
+        Thu, 05 Nov 2026 13:43:10 -0800 (PST)
 Received: from [10.206.221.57] ([129.236.229.247])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d48577ebsm547093585a.33.2026.11.05.13.40.43
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d488e442sm546673885a.40.2026.11.05.13.43.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 13:40:44 -0800 (PST)
-Message-ID: <74882357-55f7-4569-8aae-789a464748da@columbia.edu>
-Date: Thu, 5 Nov 2026 16:40:43 -0500
+        Thu, 05 Nov 2026 13:43:10 -0800 (PST)
+Message-ID: <06ca7638-85a6-4fb6-9cac-b495d213ac05@columbia.edu>
+Date: Thu, 5 Nov 2026 16:43:09 -0500
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,12 +120,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH net] net: cancel napi->timer after the grace period in
  netif_napi_del()
-To: Eric Dumazet <edumazet@kernel.org>
+To: Martin Karsten <mkarsten@uwaterloo.ca>, Eric Dumazet <edumazet@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
  <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Martin Karsten <mkarsten@uwaterloo.ca>, Joe Damato <joe@dama.to>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, Joe Damato <joe@dama.to>,
         Dragos Tatulea <dtatulea@nvidia.com>,
         Kuniyuki Iwashima <kuniyu@google.com>,
         Stanislav Fomichev <sdf.kernel@gmail.com>,
@@ -135,56 +134,48 @@ Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
         linux-kernel@vger.kernel.org, tz2294@columbia.edu
 References: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
  <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
+ <ae3e5838-6985-48be-bd99-fa5a21143942@uwaterloo.ca>
 Content-Language: en-US
 From: Mani Tofigh <mt4022@columbia.edu>
-In-Reply-To: <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
+In-Reply-To: <ae3e5838-6985-48be-bd99-fa5a21143942@uwaterloo.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=eo9KXYpX c=1 sm=1 tr=0 ts=6aecf7dd cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=JerxfvFqMz+qeRdZ4jtV1Q==:17
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDA4NSBTYWx0ZWRfX0FBupJZnee9n
+ 6cp2o9ojzbt9iU+7UhoaPf4nNnYXA8NkvlceqbnlfxZArNrHU+dGQ7rcJMsFfeRIfy/E3B3wIfL
+ xcVYm90SJyI0x0UnI9t07jfkCnO54aNxuqlKFsCQ5/JkZjAnGVyL
+X-Authority-Analysis: v=2.4 cv=SJnXx+vH c=1 sm=1 tr=0 ts=6aecf86f cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=JerxfvFqMz+qeRdZ4jtV1Q==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=svvvyxlR1OQQkelhaPoB:22
- a=0-2_M6cSbhsvEd0Ws-sA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: KT_auzVCfrJbWd8J0yP9WIWLmh1L5bNh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDA4NSBTYWx0ZWRfX0uRyQOYOpIgJ
- 0qoRYGB5fYdYz4ZCJRJsrFOvFOO0d+LdO6/0ZWtXvxH8pe3J5fU8s6mfvMNGzC4CnYjD95Y5bLq
- joB+cX3ejXV+tTcwz2N4Xp21y1SmgnjUdawdHVkh6ZRyltHRwNmCQwUbfkaM9ehcy4bAmEkFB7A
- 4ydRg6H5uwWo/yFrq4hkDSYV/pJ5JzhjTk9tRf1pAHtYWXxlzlKno6sik591V1R2+DHT8aRm1pM
- EHHTtKIuMlbtctTrmby9q7Stri8qpV6ocXqN3uBaCWTU+x5iVzCrgWwAm8cALyvXwIjBKmrqybX
- m+uDnbduX8u5WdBMrAbopYI9/lyUOV14fXbMAwmwaC6lb3S046Q+FKXUbQbrebUERZ8ahMIOKRr
- P7WgU+Bso3szUreszaXnDuMY273NROOc3dC6xkduqt37fCCKAH66hJGeat7ncSGFtC7OJ25gBAW
- VNK4/N+7yr0Z2dgeHRQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDA4NSBTYWx0ZWRfX85f58He8eFPs
- +ThWxEXEivpu5asTXkj9E3E7yDZprhphbW+4eL4TcMKzsi4yYI8jzzPiMDTiqtQ9HOcV7aewg92
- tQWcDO9ndpIkpK6DdGaMyn6NBx9TWna4pfKYFlJpVpNllFJZsgJh
-X-Proofpoint-GUID: KT_auzVCfrJbWd8J0yP9WIWLmh1L5bNh
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=Xv8004Xbw9qiBDHpymQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: c9z0d8qPAq-iLhxrrNRXYpbyfGyLUYD6
+X-Proofpoint-ORIG-GUID: c9z0d8qPAq-iLhxrrNRXYpbyfGyLUYD6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDA4NSBTYWx0ZWRfXw76tSPM/FuUK
+ m49hqszHmdDylPhLr/cSBBtabMoxTlco4AwzqvWqn+BwjwbJgPhg7BaCWQ0Ge1Ruuugk0Syi2rA
+ 9I1ZdQO0vPI7aWGmmYZmyd3pQl3Zodcxanb5bxJJz7YFevVwH7QOgVpa6NbfQWPBSawTkhp7AM0
+ sO09UM8+X+B6nWq87M0KVBS7k1XM3mOeKyLWjq6wI/R16oOzEq6TFXdOKdk1T/0k7yY22oP01si
+ Q1iGzU7fv3hZKg0YGsqr8drW4JoiAOEW1JMvXGIPqx49x/Zc8QBDPJY9u1qK0uQqR9BcWk03MAy
+ dqhZPfnrjBmwwSC0IOKqGDDOuwZoNSfhgysHDQ27sy/r0wsqx+OgESy+DskU7YiYCMqNjAZKWmS
+ M7pHLp3kb/gnlvIFyfu66b8ATtUznMkPvSnwLlezwkdtKYaHKA+9dk1oYMD9GDa/807Nka72fpA
+ MVO5UIAmdXa+Wcj8c+Q==
 X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11957
  signatures=596817
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 impostorscore=10 spamscore=0 priorityscore=1501
- lowpriorityscore=10 phishscore=0 suspectscore=0 bulkscore=10 clxscore=1011
+ suspectscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 spamscore=0
+ impostorscore=10 phishscore=0 adultscore=0 bulkscore=10 lowpriorityscore=10
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611050085
 
-On 11/3/26 1:37 PM, Eric Dumazet wrote:
->                  hrtimer_try_to_cancel(&n->timer);
+On 11/3/26 7:55 PM, Martin Karsten wrote:
+>      if (unlikely(napi_is_scheduled(n)))
+>        hrtimer_cancel(&n->timer);
 
 
-One case I'm not sure about.  If napi_watchdog() is running when
-hrtimer_start() is called, the timer is queued again and
-hrtimer_try_to_cancel() returns -1 without dequeuing it.  With
-preemptible RCU two napi_suspend_irqs() callers could both end up there
-after the delete.  None of the callers run in hard irq or from
-napi_watchdog() so would hrtimer_cancel() be ok there?
-
-> Can you give this a try with your reproducer ?
-> 
-
-
-Yes, it works.
-
-I'll send v2 with your approach.
-
+This worked here too, but I think the cancel could hit a timer that a
+new owner just armed (e.g., a busy poller that clears SCHED and arms
+its own timer right before our check). I'll go with Eric's version.
 
 Thanks!
 Mani
+
