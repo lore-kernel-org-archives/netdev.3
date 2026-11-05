@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.136
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793917271;
-	b=Wup3UUhudiyIglGfEwC2DMcU2bmkjIG455E9BTHaRFwQzdWmo+371EGQNu4JqJpbMvbN
-	 InEPwYrYztJ2yCHS5FAiszx2sm2W7ic51fZpc16cYJK2dT4xT4rpW4MRAbmxFvnGPOIs0
-	 KPwlR24UuQziH3tYD1F2JlHfO0nmotfdMDI0U74EVfVlACV27wk5xtkV1cifCY3O2yxHZ
-	 IKIZ4SD0nqnnQoOYP/WOYu3UL7hsNWNqBXhpwzy/0EX+oOMmBgAhlcGEiJpTL6dR6v6NS
-	 96FiAQAneXBtCyPO99o+3H+rUa/aTw+Of5hXQGRsoxrYIDXR2AM9KjNbiZxumBX/uUg==
+	t=1793917265;
+	b=ho/pyK+KGACbsSXCcEF5sZVa0BHSESXgc4cY0WEdAOAeY1Rh9Jlk24PF1IbHCcpWrSby
+	 hUqg2c77CIC8mLs0KScBfeEuBqngjms0KLGuADrsr7ezczeywfupc3d18AkAJXz+UqYd1
+	 sHQizxGFOEbCQwDpIsIGNyIc3j4S9sqPk9hdQ1sEiPy31STfoyZNR3EcVTPIOM7i5G2Yg
+	 qc8vzyXY9FaCZGefMSz+iACBvUrqkzztbL44VlGLbsuLsFuQW1uWS32UrsbHqrR5j6KAB
+	 KTLXakYEu5AhDCiLtptOOFTJN95sRwLFLlT+2o501xO6iznJv7tpAdOnePPmWbW3sWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793917271;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793917265;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
 	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=SeK2ptx5a0hAbgEAKy9F6rfb5PgJz2u6yxoaC4Xui3Q=;
-	b=3jmzYs3QWCb+4gIlWpTQSJ7i5kI6IFHRAA91/wf2Rj4A6hFxk3sBciqxO3earGw6SlJI
-	 g9LO7KQ/h/8OmZ02f+4zpPSveDZrFik5qL9uIHDQesT0hRWjaxnFUM0xov7Ng2695l9T2
-	 wwAxVnxJL/sdqTllDNZYA0cjwTUFb/AXN5pkg08hjAiaO3fXl6XRG52PjaNCUCjLgeCqE
-	 CefZ99TkNWnSXAj9e/CoHSsv2PCfDYiTM3BvAZzx4fah1qMvG3amtrv9K7x1G4Wo8v1EP
-	 E9FnT6cHe2Lzd124TKf4dYN6HSocmZSx+0S4hE1hRe+PefgpBf/rCYsgoP7XcJRdAAg==
+	bh=bZjDWOUD0tAJxtZMll1Q64xr0BqB/ZpzoZmoV9J+vc0=;
+	b=eXfzU6sPiN+1MnfgnaxLI1kw58BtpzOauFSUKnuwfoe2Rw+NzO5/SS4UjQfq3ql3BwGf
+	 qcKkUhQm7rKbKf9UypVbcuqjpaDOs9WcP1Gc26FXcvju006UlCpox2UkTYjiK0IfaxU58
+	 dcWWbXM0A9U6/Czux9qX76nZSpdPynxVJthKphz8EGHAXzKTl6nW4NCBHMJzJoMV4HmF7
+	 3TzNoDRhX1MA/0BOeaJOvH1qOg93eQKdfOjvTgAklkIBB7q2Eusgq2+AQ1W4czde6JzSQ
+	 1nenFmtsmN59HBD60XtI1bKHJEcJAnElGcCWOQ25x5l0Ja/Vu37jNVBgLYF0sDjffOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tXK09pbb;
-	arc=none smtp.remote-ip=74.125.229.136
-Received: from mail-dl2-f8.google.com (mail-dl2-f8.google.com [74.125.229.136])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tTmCPrmV;
+	arc=none smtp.remote-ip=74.125.229.7
+Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3294606D808
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 22:21:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3294606D808
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE35606A337
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 22:21:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAE35606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tXK09pbb
-Received: by mail-dl2-f8.google.com with SMTP id a92af1059eb24-1379d236149so80317c88.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 14:21:09 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tTmCPrmV
+Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-36c9b5c6faaso5866eec.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 14:21:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793917269; x=1794522069; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793917264; x=1794522064; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SeK2ptx5a0hAbgEAKy9F6rfb5PgJz2u6yxoaC4Xui3Q=;
-        b=tXK09pbbOwh8AP9jNlpQhqDpUJfAjAae6Ku58Zgm44oOrfeRgdSy3UqYDB78OGEkcU
-         +7aiH8UB+U/cTYuBSbGlhDQoEbs9Vjmeyf3p9O/kparVcGyxuc93925WNTKkW6a3BEzO
-         kK/Sp3YdmtVRiF09ADY4T1DxgRws8BeCuiAIpg2IYjHqryzRmvfWPHfU/TX0kerBTqqP
-         Z9XvevicmbaLbeiorRF3IL8ubRSPGIbqOCg8Q6r+m7CUkeDrHjJ0xWcSXEoZeV3ileAK
-         XGTP86A9kpQXIAKr1zaON1csyIQLpcAgryipH13EsnYOQnbNlmrL/xzxbLANwK/Q5qrd
-         5YDw==
+        bh=bZjDWOUD0tAJxtZMll1Q64xr0BqB/ZpzoZmoV9J+vc0=;
+        b=tTmCPrmVRUAllLERaiIgEGzgA/3GcfFM2ivaSUFN58HhzdGttxq7aMEdu5wFU88DN3
+         BGADzbE+V/rwCP47nlsBPiPbimmbqXpsm0MTO8By3xg3KpXoEoJg/xdT0VlsAlDt1Qws
+         XBiuk012JlHh4nvmFh9c91uBbDK3j/UegZ3ClICJVHL+CXJJZhjeWkC20o45Z6amYY7z
+         nX+4m+6F9NRf2a/BOP4r7rY3hLk2InUAbIHtQrptWriCeAuG1hD3EmLPQ5n/AzeXrwZE
+         86vRSdPo2JBAI0tzU8eJWVzWY5nCMyI+JmMTbfHCkbdmBgZJIqVl2SVZdWy0kwxDGHPq
+         +gVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793917269; x=1794522069;
+        d=1e100.net; s=20260707; t=1793917264; x=1794522064;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SeK2ptx5a0hAbgEAKy9F6rfb5PgJz2u6yxoaC4Xui3Q=;
-        b=NgpnOkVeka0ngmYxDKG9nkD5kDGcl8YtuMf7uQCRi00HMwIE6HCRF/oaqVA+qrvHWc
-         M01ZQAihIQ5qo12V1ie/cmgTl7s+OhSzPhMbiELhDyUcrCw6AVdE7o0ReA/b2fuPZ83v
-         eEp2idc9Q67vfwqYlQx78AlYk5xY7fUh65Y4q5FeeeEPDMNvVBVDfSS71lz8dDwXCHzW
-         CYwmbr1ISJQvDKu5iFSys6eOI+AUKBRvNBrMG0N98+Vf5qc79VHcYZgmYOKd8gEIUdYQ
-         yRai7NieD++/MrGR3cRQEIUHhQxedwVVOvbUjjFazsvYA1oVSGKH6pnbNZT/A8OppzHd
-         TDfg==
-X-Gm-Message-State: APuU4Z/4wtdj1zroyrEFiuCWK7oelc4WdilegMaax5ij6l3TEzvVumS6
-	vt3g6E3NHovyB9X0Sm9X3vC0VwcEiWS++df8xTgF0G578feSbbmT/f7J6tM3LeRuSSs=
-X-Gm-Gg: AYBFou22dKuTjMrwQ+TEJRasckQzeZW8Iy7197We49UJyYtgeKi3SgcUMfY//PRF7G7
-	/uW0I45tA/UPb05yC35GSu6uh1IVvqvF1pnqSICdvH8IozWqIaCGzoADpC24DZd9Xu3V2x2jgSt
-	/OhU0DNrCcRfawZfAY6GFJmTscZ2tRW+ogPMQAY9XXs2V+dPsieH9xwGYXoSYJF/GjI3xozXx0a
-	si4/9hhZBru47bHzVyQAlkbz3VEWR3MMqq+COaqOhSvJJtWvHNjj5XUDyem2DOgEOnKnwkS3OW/
-	CWrg9ZIpcoQmSXqANSjqKIzHP0WTMk8wvs61Y3gyLMLP5bW5ipUfqgMSwknQdnpcaiFrgZ2EJFN
-	uEZ68tdnv7C9/Le9fkE4Fd5FdHGeNRdvMFgrmpEDVHZ2CiGILjDcVY84OGEcyZYF1AfXyS66usY
-	xeI4IfwXkqAJGqynoU4xFgtiierITla1EUPnEgvSAH0EuKKUFRnQ81SXk456UFxFJK+e9f3XO0Z
-	2SszZrWUZ6yQdhdsmDAZN/lk9g8/2mwFbsY0scfsBSBS0rl6h7H5OfNJElXkH2LW+nGgpUFOPY7
-	lbSTAS1Nsppr/COB4Zyr1Is=
-X-Received: by 2002:a05:701b:4292:20b0:15a:4155:3d9d with SMTP id a92af1059eb24-1b25d37e36dmr449336c88.31.1793917268955;
-        Thu, 05 Nov 2026 14:21:08 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:68::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c6f0dcsm26931552c88.21.2026.11.05.14.21.08
+        bh=bZjDWOUD0tAJxtZMll1Q64xr0BqB/ZpzoZmoV9J+vc0=;
+        b=xGUCBZrBFtUMYiZDIe7Zu82PUQ/JEU5Cqi28K07gwD4tqGkSovrLpquG0SFo+NMIeY
+         7HBaZl1fgWXq+JI0GEneqeLgC/OS4to0Xk906BvKz4dQ5UWXp1VG0VIKtJZjzN73r3WB
+         jQ4dDxnn/WclHJ9oeHEyODgtntYMCC5W2SZCxBVKRpq1jUYpojiLpEEKjbw/dx9dfiwQ
+         NNsQCelfOvbUMJFBe/Jx2mwjrX1XKwHdgV8qWzlMTo3Wh+bwSUnPOCvjQd8AaJEgh/2p
+         xyuMe0DlUMmoZtCKAGicYcyq7lbyl7Dl1GJPoatKTKaCddVMrtwHrVTyaRh2YaTotfD6
+         gY0w==
+X-Gm-Message-State: APuU4Z84ruZtIWlg8DpUAwrI1w4p166YXVVAAitZZu9UKXRWz2ZmkZnG
+	NITe7T/oquJS39fTG1m/oUx5GoQiQblFA+Cufm1pvSxcNUaYyxyvZVQBpoD+5WraSfc=
+X-Gm-Gg: AYBFou1kgyV3PkZB98cx5GiFNHXizUb3iFhD/01LeesilJHQiDoF6+Ks5xUrHJRXhs2
+	WTNTmegKHiGwKkbSqyOuz0KQC30azT0PCZ6vc0BDYxokiWuP9WbKXI1Wiq0BSIwZLfcmpn+t3D7
+	/CKCrSCnl95TxSEnYieAd5mvKGDVmm5K/QvvLv6LWUxBCllNxYQLr8PB3zlh9zvhMvEgrmZnahZ
+	5U1wmMEROEmt7cJlOC2Y3dwcEx20847Rgv9xWWi3Fs5DYmVYysI7Wz/O4zPKanurhpcpcocfPSF
+	w76AMYJNXRIM/MmiLH7vH/yn0OQLpF4DEXKc/lbI+AfboDE9M2CU0LeKkCjn0eRbtrncdXRVKMh
+	poccAvuRiXwlP3p7E+ieVC+T2hsziGLPXtOp+fTT3tsnBmJxySPpPO89w/3ag7i3HLEqIYgpnRq
+	6dGPssBTZXW8UGHVNKQPBzxynLrIzV8k2FE7iD2xu1B3Kq/PuqkHsy5P0lr9w80YeTc0SW+7J0Q
+	iEWckHb8vkBr3khg8ZSlXvLB00oqNFrhSxi/Llp3VywGO3XPuiSuW1mknVzTBgC66x/iKmvRJYb
+	+2W6v+wLlPK6gw+MLbPE/uo=
+X-Received: by 2002:a05:7300:f586:b0:36e:2b8b:a09e with SMTP id 5a478bee46e88-36f76c1875amr631599eec.34.1793917263769;
+        Thu, 05 Nov 2026 14:21:03 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:42::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9aea414sm47741eec.16.2026.11.05.14.21.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 14:21:08 -0800 (PST)
+        Thu, 05 Nov 2026 14:21:03 -0800 (PST)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -111,9 +111,9 @@ Cc: davem@davemloft.net,
 	linux-rdma@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	leon@kernel.org
-Subject: [PATCH net-next v3 7/9] net/mlx5e: lift the netmem TX frag size limit
-Date: Thu,  5 Nov 2026 14:20:56 -0800
-Message-ID: <20261105222058.944293-8-sdf@fomichev.me>
+Subject: [PATCH net-next v3 3/9] net: devmem: use niov_shift in net_devmem_get_niov_at()
+Date: Thu,  5 Nov 2026 14:20:52 -0800
+Message-ID: <20261105222058.944293-4-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261105222058.944293-1-sdf@fomichev.me>
 References: <20261105222058.944293-1-sdf@fomichev.me>
@@ -128,26 +128,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TX data segments have a 32-bit byte count, so devmem TX frags don't
-need a size limit. Set netmem_tx_max_frag_size to U32_MAX.
+TX bindings use PAGE_SIZE net_iovs, and the TX lookup hard-codes it.
+Derive the index and offset from binding->niov_shift instead, so TX
+bindings can use larger net_iovs. No functional change, TX bindings are
+still created with PAGE_SHIFT.
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/devmem.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index c3c2c5720c6f..28ba04bd5f4a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5967,6 +5967,7 @@ static void mlx5e_build_nic_netdev(struct net_device *netdev)
- 	netdev->priv_flags       |= IFF_UNICAST_FLT;
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 32fafbfa1359..6339f221bc82 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -455,13 +455,15 @@ struct net_iov *
+ net_devmem_get_niov_at(struct net_devmem_dmabuf_binding *binding,
+ 		       size_t virt_addr, size_t *off, size_t *size)
+ {
++	size_t niov_size = 1UL << binding->niov_shift;
++
+ 	if (virt_addr >= binding->dmabuf->size)
+ 		return NULL;
  
- 	netdev->netmem_tx = NETMEM_TX_DMA;
-+	netdev->netmem_tx_max_frag_size = U32_MAX;
+-	*off = virt_addr % PAGE_SIZE;
+-	*size = PAGE_SIZE - *off;
++	*off = virt_addr & (niov_size - 1);
++	*size = niov_size - *off;
  
- 	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
- 	mlx5e_set_xdp_feature(priv);
+-	return binding->tx_vec[virt_addr / PAGE_SIZE];
++	return binding->tx_vec[virt_addr >> binding->niov_shift];
+ }
+ 
+ /*** "Dmabuf devmem memory provider" ***/
 -- 
 2.53.0-Meta
 
