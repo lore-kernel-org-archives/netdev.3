@@ -1,47 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=12.32.117.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793850356;
-	b=ATO4O2ZhXNpcln7cKXGqoRGLRieKQUS3+eDRwRtKxY8bAlyPrp2KB3ajKHLoOEmFL1Fc
-	 UXcyOonnXW9A7H8l7D4zYX9smeYd+PN8KAGeFmmBdgyItqi7gmi72LN+aRTt/jFXZTQF6
-	 Xv4fI7taVq6PYg8db86jZbyjkWdZlLPnld1gPrt0BC6t6QRtCfaMpoKokl8fPF67yrB8F
-	 MPNX+0IJQw0K+DEdyJvJR1bNBkLIh6BR+E/7BI551L7x3EyM0UVsb0K6Z4qn/DZ4Vb3nr
-	 Fu+iyeuHc9qhpcs1GyTS7H2XVng3kr//npoE/+MNKgGCZdrR6QEUbBbfzXkuMYySjig==
+	t=1793850748;
+	b=yX4UiJ8OlJZ+zH+XRzWKrbuue6dwfTwV7wC9sFQfhJDdhxIvCuBdL6NjpQSGek1EMsXg
+	 nzljwp/g6wAryv1QDzmEremz84k3tkwkONZREXDzkeYxd7MdVrd3M6WNylXaQa7QZ64ht
+	 FIwhUUzwnTZuIjaMOZgL4F3vrqpYcYDQfhGIOwYIua5EdaoKM/pia5jjkpf18v1mU88sG
+	 DIhRyk7q0NsWcBUF6pPRXgZaOZDLkVEdJW6/XmhpxkIcfKF2Ptt6qgRYgWjydiPGlsfA3
+	 HX/wcLurznPuwy92hpyiU61wRnERC9tRReRDPkXVLRJ/UIC6ZJaZfLhDPmXgNmSRumw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793850356;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=LmG9Jbv5SahHA5VeOcSR1QY0RwFCc5jQA5Dh0iL0UAE=;
-	b=5fFpBBY5ir79rc31E/SiWGFoGTBmBICrg7DtAxW8d9x4RsfoYZcC3rd16H6clss82bqy
-	 4jN+Mp7T8hqTPIimbJHZBRzw46Umjtbq8FUpsKVzF6rRg5auenR0XfwAvJMkmy8bmJouj
-	 ee+maftaUHnzkAC0Pqe7FCnAkSKpCkMV6snIenRXl71yxp4xUaM2OXYAZlosAa7mAM+mu
-	 YM9MPZAdEr3J91jwV5BBEzrtV/tQWgKnr/D45uwWSLGy/AeiKlsxUyCt7I6Ihc1b0ZDtm
-	 5IDLDWcXS3DIVQmNJW6jpU5d7Yy4bp89FRsPyNoGV/vsU9tST8BE8HmZZylQZKdCsaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793850748;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=U1zK/j3nQe//jLT6fU+HYeKZW9OkzfFh9k5JA3v3KL4=;
+	b=Zoa6W6HRnAeBvjbAOfsrQtBfx5BNI4pZ6kWPsUPdLYeBPHXU2kOwy+gS3wWktLhxKH3m
+	 QnKPHqctaH5F7c1LSMOMw+Y9+nDMPQukjzqFnMsXoDl4/kvHGueCIK3UQV8+VKe5XWpt+
+	 GhAsIYOkfriLxLNewjUbbgY4QeqMEVCSiH5eVYjTRTAt+JwPhJQjwxKai3CbIL579kijX
+	 3EwUqZHl/9EhKeG99POM0YSjxIa0uTcXfBS+ZjAeyjytdPM0wWLxvM4Yfw4dSHz/sUIE4
+	 MXiUN3tXA0ssvVEna9uE3LWKpQG0Pa3Yu1wGEBMsx1dZxPUkZL458nNC/3x8riZ5svA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chelsio.com;
-	spf=pass smtp.mailfrom=chelsio.com;
-	arc=none smtp.remote-ip=12.32.117.8
-Received: from stargate.chelsio.com (unknown [12.32.117.8])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dQv0o1YH;
+	arc=none smtp.remote-ip=209.85.222.45
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F01606A329
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:45:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83F01606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
-Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 6A53hj40002480;
-	Wed, 4 Nov 2026 19:45:42 -0800
-From: Potnuri Bharat Teja <bharat@chelsio.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com,
-        harshitha.vr@chelsio.com
-Subject: [PATCH net-next v5 REPOST 12/12] cxgb4: select ULD Tx and control queues by TID on T7
-Date: Thu,  5 Nov 2026 08:15:49 -0500
-Message-Id: <20261105131549.547554-13-bharat@chelsio.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20261105131549.547554-1-bharat@chelsio.com>
-References: <20261105131549.547554-1-bharat@chelsio.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC15606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 03:52:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FC15606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dQv0o1YH
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-99ac154431bso5006241.0
+        for <netdev@vger.kernel.org>; Wed, 04 Nov 2026 19:52:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793850747; x=1794455547; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=U1zK/j3nQe//jLT6fU+HYeKZW9OkzfFh9k5JA3v3KL4=;
+        b=dQv0o1YHW8Aiy5C/OY6EMRooPaI4ZMNf8wUcgz0lYexi2mdSCVIQKSsULoTSSbT81b
+         GQlLce/QNMOzvO1GNoJiqGvPxIjX2HrBv026FxInqe5v9L+c/3SAqXX0Pnf6pzKMKssa
+         1sTFVU5rHekpzAw2asIwbA74M+4rHf1l4s10V4sGkv2UlumA4XrqOXbKdOSpjXPWEpxP
+         EBEtZIOp/y4e7A24e/Go5TIYIZA2bBAgnCLCfaofDZEVDv1Z5jo49LTogafdOSm+ECP4
+         QKgD3xM9ROyoq/gilv9BJZylDnAfl1IbF0p9Io8Ul5fTuQz2Yunyad0bK3kUlTjdNXX9
+         HMqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793850747; x=1794455547;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U1zK/j3nQe//jLT6fU+HYeKZW9OkzfFh9k5JA3v3KL4=;
+        b=1BGoPCQW2Bzuz/iJ0xWj9KaBtifHhZ6L9s9PaKRj/OvDAqoR0DYLvzGhllD2qRTWnq
+         88sCh7+MzgFjtU8y6nl/wnOxo4U2JINR8oyt7waA08R5SrMuNAGFQaz/o9HMeW/gT3er
+         8ro8xCzUkWb0YPaIPelipE7C+WRk5UWEH5oW+278UoZWMb3Qoy9xPonaK9MR8+rUxnLl
+         sJEEksH/bTKG+hs1ktDS4m1PjVJUjpUTTanBeBiqdzuVy7xTyQYDnla2/zQ2Mc4bgQ62
+         hNv5+rsyyF6LBIoQejauIR8LtoYVxBanO0WH0IqnqtioHfTVifF/hM0w4AkShcqByQ3M
+         dP8A==
+X-Forwarded-Encrypted: i=1; AKwUvBxrpcQUdZ3XdDOkYmykNLKjzzaIfXjdp2pCOFcgdvvprgxwAZGzbiPAwqp/vYSRacviMYPGFEI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/y060PY5IGzX8ylgALg5stGDC84JtC14UTsLV3Vdp6Gpi0aZzR
+	e2zQYID54G5ilJk0uwcYAREixox+Gqo2IVLoy2XdVxuF0liAl5yGhhbiKpL+dg==
+X-Gm-Gg: AYBFou2MlDmoVocnpuIodPD/9ca2AcP1AOXeBuzh5rje9WrdRXTY6P4ZDiGLX1vF49w
+	l2XoI5BXynlyM7jsZBY4rpAzQnQIQA3ONKOdCQOA3FpmeCottjESVV5iXg1U02cFjCEVYG7cGuJ
+	Dly/tSdxOpIsPoKv9bYcI86E/l2uZ7bLH9W0puE+tzWwjijQK1ph3K6qHVkYaqn6q/6nlH9LsS0
+	jEyQ+Z/U+73hAkNOywqY3tQI24kQEhtbX6g4OSHxKGz4DDFvRqeVYT0kMCD/+TPY4JM3IQqoVD1
+	i3Y5U4YOgwfh1d4S4emrQJv+sU1nNJ1C61TftyrgIdiFsErS7cvLKXEe41JQf9A/zuDe7J+NPUg
+	xLnb0xS/MSpgyYsoVYDV62m1nCPdf6KIf11f9ac3hsvNrasGql9flSYv7qbDVyldC+fwAHiC0Xr
+	rG5eGSK6rnwAeQXHVOzb9OZ5AA9DLY9rsIU77NCbqegTtb0zxJ6Uci6S/M1z71tgYcJhQGr+ddq
+	fvn2b3DQNgKW6LzVpYc/WWXdb5CL9PUihx5OX2gNM2L2kNlHk+hziBMDNQ/EI/0cLFrK5Bqt/rx
+	NpqERhNlVEbJR9CLMt13gHANhijtPFBxkqFELBG8KRn+wQrmkb3ZouuNqlCpTg9T1JEMHzwMyaZ
+	Ef9VyOVnGJ0CLNFls39G9I32Z0ShpV5K0H3MmE2GDkv7oMGwSIRU30iQoMXEIFeCWtNwyry8=
+X-Received: by 2002:a05:6102:50a5:b0:7c3:9b8d:5124 with SMTP id ada2fe7eead31-7d072c2da67mr6339184137.18.1793850746779;
+        Wed, 04 Nov 2026 19:52:26 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d8afc268sm3608356241.4.2026.11.04.19.52.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 19:52:26 -0800 (PST)
+Date: Wed, 04 Nov 2026 22:52:25 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Daniel Zahka <daniel.zahka@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Thaison Phan <thaisonphan@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Kuniyuki Iwashima <kuni1840@gmail.com>, 
+ netdev@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.36bf497dccb17@gmail.com>
+In-Reply-To: <20261103000712.658501-3-kuniyu@google.com>
+References: <20261103000712.658501-1-kuniyu@google.com>
+ <20261103000712.658501-3-kuniyu@google.com>
+Subject: Re: [PATCH v1 net-next 2/2] tcp: Subtract psp_sk_overhead() in
+ __tcp_mtu_to_mss() and tcp_mss_to_mtu().
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,487 +112,142 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On T7 adapters with more than one uP core, TIDs are distributed over
-core groups and a work request carrying a TID must be sent on an egress
-queue allocated in the core group owning that TID. Firmware reports the
-TID bits selecting the group through the TID_QID_SEL_MASK device
-parameter.
+Kuniyuki Iwashima wrote:
+> Currently, psp_sk_overhead() is added to icsk->icsk_ext_hdr_len.
+> 
+> __tcp_mtu_to_mss() subtracts icsk->icsk_ext_hdr_len from mss
+> after clamping to tp->rx_opt.mss_clamp, which comes from the
+> peer's MSS option configured via advmss.
+> 
+> Since PSP is upgraded after TCP_ESTABLISHED, PSP and non-PSP
+> flows share the same route mtu and advmss.
+> 
+> This makes it impossible to configure a route so that both PSP
+> and non-PSP flows achieve 4K MSS for TCP_ZEROCOPY_RECEIVE.
+> 
+> With mtu 4220 and advmss 4108 (4096 + 12 TS), non-PSP flows
+> get 4K MSS, but PSP flows are clamped to 4108 first and then
+> reduced by 40 bytes to 4056, breaking TCP_ZEROCOPY_RECEIVE.
+> 
+> With mtu 4220 and advmss 4148 to compensate for PSP, PSP flows
+> get 4K MSS, but non-PSP flows get 4136 bytes, spilling over
+> 4K page and also breaking TCP_ZEROCOPY_RECEIVE.
+> 
+> Let's subtract psp_sk_overhead(sk) before clamping in
+> __tcp_mtu_to_mss() and add it in tcp_mss_to_mtu() and
+> to icsk->icsk_mtup.search_high.
+> 
+> Note that tp->rx_opt.mss_clamp now bounds only the inner TCP
+> segment rather than the outer PSP packet, which is consistent
+> with xfrm and assumes that the peer's MTU is at least as large
+> as the local route MTU or that PMTUD is enabled.
+> 
+> Also, in psp_sock_set_tx_key(), icsk->icsk_mtup.search_high is
+> simply incremented by psp_sk_overhead(sk) because PSP is upgraded
+> right after TCP_ESTABLISHED before any MTU probe fails in practice.
+> 
+> Reported-by: Thaison Phan <thaisonphan@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
- - Query TID_QID_SEL_MASK on T7 adapters with multiple cores and add
-   helpers returning the number of core groups and the group of a TID.
- - Allocate the shared ULD offload Tx queues of each port round robin
-   over the core groups, passing the group to firmware in
-   FW_EQ_OFLD_CMD, with at least one queue per group and port.
- - Add cxgb4_uld_tid_qid_sel_update() and
-   cxgb4_uld_tid_ctrlq_id_sel_update() for ULDs to move a connection's
-   Tx and control queue to the TID's core group once the TID is known.
-   Tx queues of a group are used round robin.
- - Send CPL_TID_RELEASE on the control queue of the TID's group.
-   cxgb4_remove_tid() keeps taking a port, so ULDs that do not select
-   queues by TID release TIDs on the right queue as well.
- - Control queues are now allocated num_up_cores per port. Route the
-   completions of all of them to the RDMA response queue, stopping at
-   the first failure, and pass num_up_cores to ULDs.
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-Without TID based queue selection, on T4 - T6 and single core T7, all
-queues stay in group 0, the number of queues is unchanged and the
-helpers leave queue indexes unchanged.
+> ---
+>  net/ipv4/tcp_output.c    | 14 +++++++++-----
+>  net/ipv6/ipv6_sockglue.c |  2 --
+>  net/psp/psp_sock.c       |  2 +-
+>  3 files changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index cf3ddc055d48..08d0d4a639fe 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -2060,6 +2060,8 @@ static inline int __tcp_mtu_to_mss(struct sock *sk, int pmtu)
+>  	 */
+>  	mss_now = pmtu - icsk->icsk_af_ops->net_header_len - sizeof(struct tcphdr);
+>  
+> +	mss_now -= psp_sk_overhead(sk);
+> +
+>  	/* Clamp it (mss_clamp does not include tcp options) */
+>  	if (mss_now > tp->rx_opt.mss_clamp)
+>  		mss_now = tp->rx_opt.mss_clamp;
+> @@ -2088,9 +2090,10 @@ int tcp_mss_to_mtu(struct sock *sk, int mss)
+>  	const struct inet_connection_sock *icsk = inet_csk(sk);
+>  
+>  	return mss +
+> -	      tp->tcp_header_len +
+> -	      icsk->icsk_ext_hdr_len +
+> -	      icsk->icsk_af_ops->net_header_len;
+> +		tp->tcp_header_len +
+> +		psp_sk_overhead(sk) +
+> +		icsk->icsk_ext_hdr_len +
+> +		icsk->icsk_af_ops->net_header_len;
 
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
----
- drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |  28 +++-
- .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   |  27 +++-
- .../net/ethernet/chelsio/cxgb4/cxgb4_uld.c    | 140 +++++++++++++++---
- .../net/ethernet/chelsio/cxgb4/cxgb4_uld.h    |   5 +
- drivers/net/ethernet/chelsio/cxgb4/sge.c      |  14 +-
- drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h |   5 +
- 6 files changed, 186 insertions(+), 33 deletions(-)
+nit: some unnecessary indentation changes.
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-index e6250e031609..ca208164a9c3 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-@@ -903,6 +903,7 @@ struct sge_uld_txq {               /* state for an SGE offload Tx queue */
- 	struct tasklet_struct qresume_tsk; /* restarts the queue */
- 	bool service_ofldq_running; /* service_ofldq() is processing sendq */
- 	u8 full;                    /* the Tx ring is full */
-+	u8 tid_qid_group_id;        /* uP core group of the queue */
- 	unsigned long mapping_err;  /* # of I/O MMU packet mapping errors */
- } ____cacheline_aligned_in_smp;
- 
-@@ -928,6 +929,7 @@ struct sge_uld_txq_info {
- 	struct sge_uld_txq *uldtxq; /* Txq's for ULD */
- 	atomic_t users;		/* num users */
- 	u16 ntxq;		/* # of egress uld queues */
-+	atomic_t *tid_qid_rr;	/* per port, per core group round robin */
- };
- 
- /* struct to maintain ULD list to reallocate ULD resources on hotplug */
-@@ -1503,6 +1505,30 @@ struct filter_entry {
- 	struct ch_filter_specification fs;
- };
- 
-+static inline unsigned int cxgb4_tid_qid_ngroups(const struct adapter *adap)
-+{
-+	if (!adap->params.tid_qid_sel_mask)
-+		return 1;
-+	return (adap->params.tid_qid_sel_mask >>
-+		adap->params.tid_qid_sel_shift) + 1;
-+}
-+
-+static inline unsigned int cxgb4_tid_qid_group(const struct adapter *adap,
-+					       u32 tid)
-+{
-+	return (tid & adap->params.tid_qid_sel_mask) >>
-+	       adap->params.tid_qid_sel_shift;
-+}
-+
-+static inline u16 cxgb4_tid_ctrlq_idx(const struct adapter *adap,
-+				      unsigned int port, u32 tid)
-+{
-+	if (port >= adap->params.nports)
-+		port = 0;
-+	return port * adap->params.num_up_cores +
-+	       cxgb4_tid_qid_group(adap, tid);
-+}
-+
- static inline int is_offload(const struct adapter *adap)
- {
- 	return adap->params.offload;
-@@ -1662,7 +1688,7 @@ int t4_sge_mod_ctrl_txq(struct adapter *adap, unsigned int eqid,
- 			unsigned int cmplqid);
- int t4_sge_alloc_uld_txq(struct adapter *adap, struct sge_uld_txq *txq,
- 			 struct net_device *dev, unsigned int iqid,
--			 unsigned int uld_type);
-+			 unsigned int uld_type, u8 group);
- int t4_sge_alloc_ethofld_txq(struct adapter *adap, struct sge_eohw_txq *txq,
- 			     struct net_device *dev, u32 iqid);
- void t4_sge_free_ethofld_txq(struct adapter *adap, struct sge_eohw_txq *txq);
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index 563a0ee1ce2c..7a004b2de9c1 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -1749,13 +1749,15 @@ EXPORT_SYMBOL(cxgb4_free_stid);
- 
- /*
-  * Populate a TID_RELEASE WR.  Caller must properly size the skb.
-+ * @chan is the port whose control queues are used.
-  */
--static void mk_tid_release(struct sk_buff *skb, unsigned int chan,
--			   unsigned int tid)
-+static void mk_tid_release(const struct adapter *adap, struct sk_buff *skb,
-+			   unsigned int chan, unsigned int tid)
- {
- 	struct cpl_tid_release *req;
- 
--	set_wr_txq(skb, CPL_PRIORITY_SETUP, chan);
-+	set_wr_txq(skb, CPL_PRIORITY_SETUP,
-+		   cxgb4_tid_ctrlq_idx(adap, chan, tid));
- 	req = __skb_put(skb, sizeof(*req));
- 	INIT_TP_WR(req, tid);
- 	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_TID_RELEASE, tid));
-@@ -1806,7 +1808,7 @@ static void process_tid_release_list(struct work_struct *work)
- 					 GFP_KERNEL)))
- 			schedule_timeout_uninterruptible(1);
- 
--		mk_tid_release(skb, chan, p - adap->tids.tid_tab);
-+		mk_tid_release(adap, skb, chan, p - adap->tids.tid_tab);
- 		t4_ofld_send(adap, skb);
- 		spin_lock_bh(&adap->tid_release_lock);
- 	}
-@@ -1847,7 +1849,7 @@ void cxgb4_remove_tid(struct tid_info *t, unsigned int chan, unsigned int tid,
- 
- 	skb = alloc_skb(sizeof(struct cpl_tid_release), GFP_ATOMIC);
- 	if (likely(skb)) {
--		mk_tid_release(skb, chan, tid);
-+		mk_tid_release(adap, skb, chan, tid);
- 		t4_ofld_send(adap, skb);
- 	} else
- 		cxgb4_queue_tid_release(t, chan, tid);
-@@ -5453,6 +5455,21 @@ static int adap_init0(struct adapter *adap, int vpd_skip)
- 		adap->vres.ddp.size = val[4] - val[3] + 1;
- 		adap->params.ofldq_wr_cred = val[5];
- 
-+		/* On T7 with multiple uP cores, each TID is owned by one core
-+		 * group and TID bound work requests must be sent on an egress
-+		 * queue of that group.
-+		 */
-+		if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7 &&
-+		    adap->params.num_up_cores > 1) {
-+			params[0] = FW_PARAM_DEV(TID_QID_SEL_MASK);
-+			ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 1,
-+					      params, val);
-+			if (!ret && val[0]) {
-+				adap->params.tid_qid_sel_mask = val[0];
-+				adap->params.tid_qid_sel_shift = ffs(val[0]) - 1;
-+			}
-+		}
-+
- 		if (caps_cmd.niccaps & htons(FW_CAPS_CONFIG_NIC_HASHFILTER)) {
- 			init_hash_filter(adap);
- 		} else {
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
-index 23244cdfc1bc..2be70ccb6a96 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.c
-@@ -170,6 +170,28 @@ static int alloc_uld_rxqs(struct adapter *adap,
- 	return err;
- }
- 
-+/* Route the completions of all control queues of @port to @cmplqid.
-+ * Control queues are allocated num_up_cores per port.
-+ */
-+static int uld_set_ctrlq_cmplqid(struct adapter *adap, int port, u32 cmplqid)
-+{
-+	struct sge *s = &adap->sge;
-+	int k, idx, ret = 0;
-+	u32 param;
-+
-+	for (k = 0; k < adap->params.num_up_cores; k++) {
-+		idx = port * adap->params.num_up_cores + k;
-+		param = (FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DMAQ) |
-+			 FW_PARAMS_PARAM_X_V(FW_PARAMS_PARAM_DMAQ_EQ_CMPLIQID_CTRL) |
-+			 FW_PARAMS_PARAM_YZ_V(s->ctrlq[idx].q.cntxt_id));
-+		ret = t4_set_params(adap, adap->mbox, adap->pf, 0, 1,
-+				    &param, &cmplqid);
-+		if (ret)
-+			break;
-+	}
-+	return ret;
-+}
-+
- static int
- setup_sge_queues_uld(struct adapter *adap, unsigned int uld_type, bool lro)
- {
-@@ -182,18 +204,11 @@ setup_sge_queues_uld(struct adapter *adap, unsigned int uld_type, bool lro)
- 
- 	/* Tell uP to route control queue completions to rdma rspq */
- 	if (adap->flags & CXGB4_FULL_INIT_DONE && uld_type == CXGB4_ULD_RDMA) {
--		struct sge *s = &adap->sge;
--		unsigned int cmplqid;
--		u32 param, cmdop;
--
--		cmdop = FW_PARAMS_PARAM_DMAQ_EQ_CMPLIQID_CTRL;
- 		for_each_port(adap, i) {
--			cmplqid = rxq_info->uldrxq[i].rspq.cntxt_id;
--			param = (FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DMAQ) |
--				 FW_PARAMS_PARAM_X_V(cmdop) |
--				 FW_PARAMS_PARAM_YZ_V(s->ctrlq[i].q.cntxt_id));
--			ret = t4_set_params(adap, adap->mbox, adap->pf,
--					    0, 1, &param, &cmplqid);
-+			ret = uld_set_ctrlq_cmplqid(adap, i,
-+						    rxq_info->uldrxq[i].rspq.cntxt_id);
-+			if (ret)
-+				break;
- 		}
- 	}
- 	return ret;
-@@ -214,18 +229,10 @@ static void free_sge_queues_uld(struct adapter *adap, unsigned int uld_type)
- 	struct sge_uld_rxq_info *rxq_info = adap->sge.uld_rxq_info[uld_type];
- 
- 	if (adap->flags & CXGB4_FULL_INIT_DONE && uld_type == CXGB4_ULD_RDMA) {
--		struct sge *s = &adap->sge;
--		u32 param, cmdop, cmplqid = 0;
- 		int i;
- 
--		cmdop = FW_PARAMS_PARAM_DMAQ_EQ_CMPLIQID_CTRL;
--		for_each_port(adap, i) {
--			param = (FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DMAQ) |
--				 FW_PARAMS_PARAM_X_V(cmdop) |
--				 FW_PARAMS_PARAM_YZ_V(s->ctrlq[i].q.cntxt_id));
--			t4_set_params(adap, adap->mbox, adap->pf,
--				      0, 1, &param, &cmplqid);
--		}
-+		for_each_port(adap, i)
-+			uld_set_ctrlq_cmplqid(adap, i, 0);
- 	}
- 
- 	if (rxq_info->nciq)
-@@ -428,10 +435,15 @@ alloc_sge_txq_uld(struct adapter *adap, struct sge_uld_txq_info *txq_info,
- 	j = nq / adap->params.nports;
- 	for (i = 0; i < nq; i++) {
- 		struct sge_uld_txq *txq = &txq_info->uldtxq[i];
-+		u8 group = 0;
-+
-+		/* Spread the queues of each port over all uP core groups */
-+		if (uld_type == CXGB4_TX_OFLD)
-+			group = (i % j) % cxgb4_tid_qid_ngroups(adap);
- 
- 		txq->q.size = 1024;
- 		err = t4_sge_alloc_uld_txq(adap, txq, adap->port[i / j],
--					   s->fw_evtq.cntxt_id, uld_type);
-+					   s->fw_evtq.cntxt_id, uld_type, group);
- 		if (err)
- 			goto freeout;
- 	}
-@@ -451,6 +463,7 @@ release_sge_txq_uld(struct adapter *adap, unsigned int uld_type)
- 
- 	if (txq_info && atomic_dec_and_test(&txq_info->users)) {
- 		free_sge_txq_uld(adap, txq_info);
-+		kfree(txq_info->tid_qid_rr);
- 		kfree(txq_info->uldtxq);
- 		kfree(txq_info);
- 		adap->sge.uld_txq_info[tx_uld_type] = NULL;
-@@ -487,6 +500,9 @@ setup_sge_txq_uld(struct adapter *adap, unsigned int uld_type,
- 	} else {
- 		i = min_t(int, uld_info->ntxq, num_online_cpus());
- 		txq_info->ntxq = roundup(i, adap->params.nports);
-+		/* Each port needs at least one queue per uP core group */
-+		i = cxgb4_tid_qid_ngroups(adap) * adap->params.nports;
-+		txq_info->ntxq = max_t(int, txq_info->ntxq, i);
- 	}
- 	txq_info->uldtxq = kzalloc_objs(struct sge_uld_txq, txq_info->ntxq);
- 	if (!txq_info->uldtxq) {
-@@ -494,7 +510,18 @@ setup_sge_txq_uld(struct adapter *adap, unsigned int uld_type,
- 		return -ENOMEM;
- 	}
- 
-+	if (tx_uld_type == CXGB4_TX_OFLD && adap->params.tid_qid_sel_mask) {
-+		i = cxgb4_tid_qid_ngroups(adap) * adap->params.nports;
-+		txq_info->tid_qid_rr = kcalloc(i, sizeof(atomic_t), GFP_KERNEL);
-+		if (!txq_info->tid_qid_rr) {
-+			kfree(txq_info->uldtxq);
-+			kfree(txq_info);
-+			return -ENOMEM;
-+		}
-+	}
-+
- 	if (alloc_sge_txq_uld(adap, txq_info, tx_uld_type)) {
-+		kfree(txq_info->tid_qid_rr);
- 		kfree(txq_info->uldtxq);
- 		kfree(txq_info);
- 		return -ENOMEM;
-@@ -601,6 +628,7 @@ static void uld_init(struct adapter *adap, struct cxgb4_lld_info *lld)
- 	lld->mtus = adap->params.mtus;
- 	lld->nchan = adap->params.nports;
- 	lld->nports = adap->params.nports;
-+	lld->num_up_cores = adap->params.num_up_cores;
- 	lld->wr_cred = adap->params.ofldq_wr_cred;
- 	lld->crypto = adap->params.crypto;
- 	lld->iscsi_iolen = MAXRXDATA_G(t4_read_reg(adap, TP_PARA_REG2_A));
-@@ -783,6 +811,74 @@ void cxgb4_uld_enable(struct adapter *adap)
- 	mutex_unlock(&uld_mutex);
- }
- 
-+/**
-+ * cxgb4_uld_tid_ctrlq_id_sel_update - select the control queue for a TID
-+ * @dev: net device of the adapter
-+ * @tid: TID the work requests will carry
-+ * @ctrlq_index: in: any control queue index of the port, normally the base
-+ *		 index port * num_up_cores; out: the port's control queue in
-+ *		 the uP core group owning @tid. Calling it again on the result
-+ *		 is harmless.
-+ *
-+ * Work requests carrying a TID must be sent on a control queue of the
-+ * core group owning the TID. Without TID based queue selection the index
-+ * is left unchanged.
-+ */
-+void cxgb4_uld_tid_ctrlq_id_sel_update(struct net_device *dev, u32 tid,
-+				       u16 *ctrlq_index)
-+{
-+	struct adapter *adap = netdev2adap(dev);
-+
-+	if (!adap->params.tid_qid_sel_mask)
-+		return;
-+
-+	*ctrlq_index = cxgb4_tid_ctrlq_idx(adap,
-+					   *ctrlq_index / adap->params.num_up_cores,
-+					   tid);
-+}
-+EXPORT_SYMBOL(cxgb4_uld_tid_ctrlq_id_sel_update);
-+
-+/**
-+ * cxgb4_uld_tid_qid_sel_update - select the offload Tx queue for a TID
-+ * @dev: net device of the adapter
-+ * @uld: ULD type
-+ * @tid: TID the work requests will carry
-+ * @qid: in: an index into the ULD offload Tx queue array of the port;
-+ *	 out: the index of a queue of the port in the uP core group owning
-+ *	 @tid. This is an index into the uldtxq[] array, as used by
-+ *	 cxgb4_ofld_send(), not a hardware queue context id.
-+ *
-+ * The queues of a port in the TID's core group are used round robin.
-+ * Without TID based queue selection the index is left unchanged.
-+ */
-+void cxgb4_uld_tid_qid_sel_update(struct net_device *dev, enum cxgb4_uld uld,
-+				  u32 tid, u16 *qid)
-+{
-+	struct adapter *adap = netdev2adap(dev);
-+	struct sge_uld_txq_info *txq_info;
-+	unsigned int ngroups, per_port, port, group, n;
-+
-+	if (!adap->params.tid_qid_sel_mask)
-+		return;
-+
-+	txq_info = adap->sge.uld_txq_info[TX_ULD(uld)];
-+	if (!txq_info || !txq_info->tid_qid_rr)
-+		return;
-+
-+	ngroups = cxgb4_tid_qid_ngroups(adap);
-+	per_port = txq_info->ntxq / adap->params.nports;
-+	port = *qid / per_port;
-+	if (WARN_ON_ONCE(port >= adap->params.nports))
-+		port = 0;
-+	group = cxgb4_tid_qid_group(adap, tid);
-+
-+	/* Queue i of a port is in group i % ngroups, see alloc_sge_txq_uld() */
-+	n = atomic_inc_return(&txq_info->tid_qid_rr[port * ngroups + group]);
-+	n %= DIV_ROUND_UP(per_port - group, ngroups);
-+	*qid = port * per_port + group + n * ngroups;
-+}
-+EXPORT_SYMBOL(cxgb4_uld_tid_qid_sel_update);
-+
- /* cxgb4_register_uld - register an upper-layer driver
-  * @type: the ULD type
-  * @p: the ULD methods
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.h
-index d7713038386c..fd48886603d7 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_uld.h
-@@ -433,6 +433,7 @@ struct cxgb4_lld_info {
- 	unsigned short nciq;		     /* # of concentrator IQ */
- 	unsigned char nchan:4;               /* # of channels */
- 	unsigned char nports:4;              /* # of ports */
-+	u8 num_up_cores;                     /* # of control queues per port */
- 	unsigned char wr_cred;               /* WR 16-byte credits */
- 	unsigned char adapter_type;          /* type of adapter */
- 	unsigned char fw_api_ver;            /* FW API version */
-@@ -500,6 +501,10 @@ struct cxgb4_uld_info {
- void cxgb4_uld_enable(struct adapter *adap);
- void cxgb4_register_uld(enum cxgb4_uld type, const struct cxgb4_uld_info *p);
- int cxgb4_unregister_uld(enum cxgb4_uld type);
-+void cxgb4_uld_tid_ctrlq_id_sel_update(struct net_device *dev, u32 tid,
-+				       u16 *ctrlq_index);
-+void cxgb4_uld_tid_qid_sel_update(struct net_device *dev, enum cxgb4_uld uld,
-+				  u32 tid, u16 *qid);
- int cxgb4_ofld_send(struct net_device *dev, struct sk_buff *skb);
- int cxgb4_immdata_send(struct net_device *dev, unsigned int idx,
- 		       const void *src, unsigned int len);
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 2171db2f201a..07537bd0768f 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -4779,7 +4779,8 @@ int t4_sge_mod_ctrl_txq(struct adapter *adap, unsigned int eqid,
- }
- 
- static int t4_sge_alloc_ofld_txq(struct adapter *adap, struct sge_txq *q,
--				 struct net_device *dev, u32 cmd, u32 iqid)
-+				 struct net_device *dev, u32 cmd, u32 iqid,
-+				 u8 group)
- {
- 	unsigned int chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
- 	struct port_info *pi = netdev_priv(dev);
-@@ -4807,7 +4808,8 @@ static int t4_sge_alloc_ofld_txq(struct adapter *adap, struct sge_txq *q,
- 			    FW_EQ_OFLD_CMD_PFN_V(adap->pf) |
- 			    FW_EQ_OFLD_CMD_VFN_V(0));
- 	c.alloc_to_len16 = htonl(FW_EQ_OFLD_CMD_ALLOC_F |
--				 FW_EQ_OFLD_CMD_EQSTART_F | FW_LEN16(c));
-+				 FW_EQ_OFLD_CMD_EQSTART_F |
-+				 FW_EQ_OFLD_CMD_COREGROUP_V(group) | FW_LEN16(c));
- 	c.fetchszm_to_iqid =
- 		htonl(FW_EQ_OFLD_CMD_HOSTFCMODE_V(HOSTFCMODE_STATUS_PAGE_X) |
- 		      FW_EQ_OFLD_CMD_PCIECHN_V(pi->tx_chan) |
-@@ -4836,7 +4838,7 @@ static int t4_sge_alloc_ofld_txq(struct adapter *adap, struct sge_txq *q,
- 
- int t4_sge_alloc_uld_txq(struct adapter *adap, struct sge_uld_txq *txq,
- 			 struct net_device *dev, unsigned int iqid,
--			 unsigned int uld_type)
-+			 unsigned int uld_type, u8 group)
- {
- 	u32 cmd = FW_EQ_OFLD_CMD;
- 	int ret;
-@@ -4844,7 +4846,7 @@ int t4_sge_alloc_uld_txq(struct adapter *adap, struct sge_uld_txq *txq,
- 	if (unlikely(uld_type == CXGB4_TX_CRYPTO))
- 		cmd = FW_EQ_CTRL_CMD;
- 
--	ret = t4_sge_alloc_ofld_txq(adap, &txq->q, dev, cmd, iqid);
-+	ret = t4_sge_alloc_ofld_txq(adap, &txq->q, dev, cmd, iqid, group);
- 	if (ret)
- 		return ret;
- 
-@@ -4853,6 +4855,7 @@ int t4_sge_alloc_uld_txq(struct adapter *adap, struct sge_uld_txq *txq,
- 	skb_queue_head_init(&txq->sendq);
- 	tasklet_setup(&txq->qresume_tsk, restart_ofldq);
- 	txq->full = 0;
-+	txq->tid_qid_group_id = group;
- 	txq->mapping_err = 0;
- 	return 0;
- }
-@@ -4862,7 +4865,8 @@ int t4_sge_alloc_ethofld_txq(struct adapter *adap, struct sge_eohw_txq *txq,
- {
- 	int ret;
- 
--	ret = t4_sge_alloc_ofld_txq(adap, &txq->q, dev, FW_EQ_OFLD_CMD, iqid);
-+	ret = t4_sge_alloc_ofld_txq(adap, &txq->q, dev, FW_EQ_OFLD_CMD, iqid,
-+				    0);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h b/drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h
-index 7bd0c0d8a73c..778b2341e74a 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h
-@@ -1346,6 +1346,7 @@ enum fw_params_param_dev {
- 	FW_PARAMS_PARAM_DEV_NUM_TM_CLASS = 0x2B,
- 	FW_PARAMS_PARAM_DEV_FILTER = 0x2E,
- 	FW_PARAMS_PARAM_DEV_KTLS_HW = 0x31,
-+	FW_PARAMS_PARAM_DEV_TID_QID_SEL_MASK = 0x33,
- };
- 
- /*
-@@ -2139,6 +2140,10 @@ struct fw_eq_ofld_cmd {
- #define FW_EQ_OFLD_CMD_EQSTART_V(x)	((x) << FW_EQ_OFLD_CMD_EQSTART_S)
- #define FW_EQ_OFLD_CMD_EQSTART_F	FW_EQ_OFLD_CMD_EQSTART_V(1U)
- 
-+#define FW_EQ_OFLD_CMD_COREGROUP_S	16
-+#define FW_EQ_OFLD_CMD_COREGROUP_M	0x3f
-+#define FW_EQ_OFLD_CMD_COREGROUP_V(x)	((x) << FW_EQ_OFLD_CMD_COREGROUP_S)
-+
- #define FW_EQ_OFLD_CMD_EQSTOP_S		27
- #define FW_EQ_OFLD_CMD_EQSTOP_V(x)	((x) << FW_EQ_OFLD_CMD_EQSTOP_S)
- #define FW_EQ_OFLD_CMD_EQSTOP_F		FW_EQ_OFLD_CMD_EQSTOP_V(1U)
--- 
-2.39.1
+>  }
+>  EXPORT_SYMBOL(tcp_mss_to_mtu);
+>  
+> @@ -2103,7 +2106,7 @@ void tcp_mtup_init(struct sock *sk)
+>  
+>  	icsk->icsk_mtup.enabled = READ_ONCE(net->ipv4.sysctl_tcp_mtu_probing) > 1;
+>  	icsk->icsk_mtup.search_high = tp->rx_opt.mss_clamp + sizeof(struct tcphdr) +
+> -			       icsk->icsk_af_ops->net_header_len;
+> +		psp_sk_overhead(sk) + icsk->icsk_af_ops->net_header_len;
+
+same
+
+>  	icsk->icsk_mtup.search_low = tcp_mss_to_mtu(sk, READ_ONCE(net->ipv4.sysctl_tcp_base_mss));
+>  	icsk->icsk_mtup.probe_size = 0;
+>  	if (icsk->icsk_mtup.enabled)
+> @@ -2643,7 +2646,8 @@ static inline void tcp_mtu_check_reprobe(struct sock *sk)
+>  		icsk->icsk_mtup.probe_size = 0;
+>  		icsk->icsk_mtup.search_high = tp->rx_opt.mss_clamp +
+>  			sizeof(struct tcphdr) +
+> -			icsk->icsk_af_ops->net_header_len;
+> +			icsk->icsk_af_ops->net_header_len +
+> +			psp_sk_overhead(sk);
+>  		icsk->icsk_mtup.search_low = tcp_mss_to_mtu(sk, mss);
+>  
+>  		/* Update probe time stamp */
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index 4b3536571c98..ea03fcffd147 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -48,7 +48,6 @@
+>  #include <net/xfrm.h>
+>  #include <net/compat.h>
+>  #include <net/seg6.h>
+> -#include <net/psp.h>
+>  
+>  #include <linux/uaccess.h>
+>  
+> @@ -109,7 +108,6 @@ struct ipv6_txoptions *ipv6_update_options(struct sock *sk,
+>  			struct inet_connection_sock *icsk = inet_csk(sk);
+>  
+>  			icsk->icsk_ext_hdr_len =
+> -				psp_sk_overhead(sk) +
+>  				opt->opt_flen + opt->opt_nflen;
+>  			icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
+>  		}
+> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+> index a6b1c42dd626..f2cba3fa3a23 100644
+> --- a/net/psp/psp_sock.c
+> +++ b/net/psp/psp_sock.c
+> @@ -243,7 +243,7 @@ psp_sock_set_tx_key(struct sock *sk, struct psp_dev *psd, struct psp_assoc *pas,
+>  	pas->upgrade_seq = tcp_sk(sk)->rcv_nxt;
+>  
+>  	icsk = inet_csk(sk);
+> -	icsk->icsk_ext_hdr_len += psp_sk_overhead(sk);
+> +	icsk->icsk_mtup.search_high += psp_sk_overhead(sk);
+>  	icsk->icsk_sync_mss(sk, icsk->icsk_pmtu_cookie);
+>  
+>  	return err;
+> -- 
+> 2.56.0.385.gac671c819a-goog
+> 
+
 
