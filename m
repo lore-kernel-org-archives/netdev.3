@@ -1,86 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793893547;
-	b=blZ8EntqAG2AAdKtM5z4kj1AbeUCAh6gVRbnx5Do/8ZwANky1L11bIfoCL85hw8Jq9Kf
-	 9VHcTRToGwr8sNJRNGR06XNDzFkZFvKdWrYrd+AUywf45gWCpWkQSiV3YXoEx8GOcJJgv
-	 qrBTsLvJ5ATe/ciaoyH7qUawXYsNjhoq7cCrnDOn+kCNtZOsFfvI7Jt9JExC20twkInbT
-	 bSAeYH2Tv5ezlRDDkuKQ41EVkiN3eGNMWOMRjLZsi/b4dz1/YseIm49qJLSJGQlPYuz88
-	 fMz+BYyXIndJSJOCdx82EqqrDPzHCnnWQ3LMtrzAMZJ7ni9GQrayv8qbzJHBeHhATVQ==
+	t=1793893654;
+	b=3OqgoicLDW5sdGcc2FN3Jgvk8nm1vKD3uUuWzu94eazQaLZMuLImZfQX9o73I1//BC+a
+	 lyXQhGeevfCXi/J71sjTLBUCcbWQfDyRl3qgJFCXDs72MrsgbUyKK+pEXFxwIAOs7wHhv
+	 qXo6zMyBUuPWlJIpfMIAPo096bgSnN6GNCsLkhxnntk1fku+y1fqTO38XzxHfVLM/l41N
+	 HIjAikcaFuX3o+7HjIOPdUx+iTmDGqvjWj0vYiUAla0ftEIhGuEQV9dVp5MxQT1Oxik/C
+	 l1gcwH0wHuzznECNavuLPne2vCyjZj3hZ5V2WXq8RZVrDW5ukV87u6iG1pOzKhIvJHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793893547;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=r8nVCxRr/caFl0VvSs+H/hiL0jp8irU+aVqqr+Vt2CA=;
-	b=5rCkrfhqEUdRWyn1iIXmwQgrtgT4LbKFpJ60UfX6syAKo/04RngVzk06VfhkSXDuB7ry
-	 wPhnmbLnNwB1Cw5cHK0gGR34q01sCk+cYJhkmQ+a9EMxOhBoYg1hMxaJop1u5SaaHa2RR
-	 8bsfmYlx9gvnM9cfVtTrzMyl9SQVrdPpwPG4x8aANRxEme7mH/hqPGZLgosAjTL6fsOoK
-	 Vc/VrXoNGN3k87v96D1Cu6/xiC8bgmrYPzT9u4JDVLMhlU8bJ33bmzBjE2wuO0auVT4cB
-	 nviGlB66VcV/5eqlByb5AxZmDQUpnxn7/oDVGfOKVmUdyMPQanGJVaG7vBUemXgWIgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793893654;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=uKgCwPx0XcVlKQatI7uQ08zv+nNRGJomiJbLaZj7TUg=;
+	b=BdmU8K/Bt1Jn8bOKmCf0SgRHziH3cM/yd1mEgNFtQnVEqaz66/tgKin4OqrwLX7ckrA9
+	 cyRZdy+0t0C0h8ncHhgQRq9HZTWtVMraQGbpvBdwbBVqHyK+kSIlthYoXX4iAg7kRtASD
+	 V+ci4+Jx3E64XkAOjFADyj14/fZsS1Jz57lk9U8Z4SBALjvVSp8Pqwo4No4k2Q8oRPklj
+	 na38dEnFt07DTa8nac6BPL9v96gwnCyGviHKvJqjWyQzBbBa1eHCBtHSkJ5nLljw97Bn1
+	 mZeGyXkCTauRigusQq3+md11MUyH8Q7qX17KxofzCS7K08cDSa1svJ+Qh3+ZEYNbjdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=meaN+OhO;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ceyf4Xm5;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD15606A33E;
-	Thu,  5 Nov 2026 15:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B737B6082BFF;
+	Thu,  5 Nov 2026 15:47:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B737B6082BFF
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=meaN+OhO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B873B1F00A20;
-	Thu,  5 Nov 2026 15:45:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1793893546;
-	bh=r8nVCxRr/caFl0VvSs+H/hiL0jp8irU+aVqqr+Vt2CA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=meaN+OhOvNMzUiSpkbxD6EVBd0OEbPvrP1jGl/qwyY0z+wE5jdB+PgyFec94YPgqy
-	 S4EvLxBoXRhzFxyRbbnsnlivK8Ca0AftS8DmC7SltX8mquIL1iPg+W2fY6Ru9PmF2d
-	 q5KtVgSP6lw2tQlIVqFt0mj9cI6SeYB7128uF+1w=
-Date: Thu, 5 Nov 2026 10:45:44 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ceyf4Xm5
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=uKgCwPx0XcVlKQatI7uQ08zv+nNRGJomiJbLaZj7TUg=; b=Ceyf4Xm52NX4OwB72Ect2eiM7X
+	1cEqc5wfLUp+UwbStmw7W94MMj2xX13JYiLLorkfN0fR+GhozHAGoPdi+DgbQ9OMRkg6JxXq4D7Ls
+	EL8ryhx0XKBwFa7SNFMLfLXQ30fKrjmBG76UpjTsnfWNXeR6GFS1HfZvfr78O8vJkxKw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOzgG-00EbAL-VP; Thu, 05 Nov 2026 16:47:12 +0100
+Date: Thu, 5 Nov 2026 16:47:12 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lucas Tanure <tanure@linux.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net, Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 10/17] driver core: Expose device trust authorization
- through sysfs
-Message-ID: <2026110540-blazing-wifi-5082@gregkh>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-10-1e536825b4eb@nvidia.com>
- <2026110514-bunkhouse-handset-6a3a@gregkh>
- <20261105132729.GB8298@unreal>
- <2026110535-engulf-precut-cf10@gregkh>
- <9d896ebb-6892-4cac-a7c5-41def47f0be0@arm.com>
- <2026110556-sculpture-immovable-ca8b@gregkh>
- <0438755d-dc1f-4c8c-b274-5555ef3d49a3@arm.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 4/7] net: stmmac: dwmac-meson8b: follow the generic
+ RGMII delay rules on the T7
+Message-ID: <f0925b45-26b2-4d79-9da7-e73a7a852efa@lunn.ch>
+References: <20261103163715.385394-1-tanure@linux.com>
+ <20261103163715.385394-5-tanure@linux.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,150 +79,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0438755d-dc1f-4c8c-b274-5555ef3d49a3@arm.com>
+In-Reply-To: <20261103163715.385394-5-tanure@linux.com>
 
-On Thu, Nov 05, 2026 at 02:26:39PM +0000, Robin Murphy wrote:
-> On 2026-11-05 2:03 pm, Greg Kroah-Hartman wrote:
-> > On Thu, Nov 05, 2026 at 01:59:20PM +0000, Robin Murphy wrote:
-> > > On 2026-11-05 1:40 pm, Greg Kroah-Hartman wrote:
-> > > > On Thu, Nov 05, 2026 at 03:27:29PM +0200, Leon Romanovsky wrote:
-> > > > > On Thu, Nov 05, 2026 at 08:10:14AM -0500, Greg Kroah-Hartman wrote:
-> > > > > > On Thu, Nov 05, 2026 at 01:42:23PM +0200, Leon Romanovsky wrote:
-> > > > > > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > > > > > 
-> > > > > > > An initrd must authorize a disabled device after attestation even if a
-> > > > > > > built-in driver already attempted to probe it.
-> > > > > > > 
-> > > > > > > Expose requested trust_policy and read-only active trust. Allow explicit
-> > > > > > > disabled policy to advance once to adversary or full, fixing that decision
-> > > > > > > immediately. Reject later policy changes, including for a device claimed
-> > > > > > > before registration, while allowing same-value writes on live devices.
-> > > > > > > Keep initial unrestricted selection separate from explicit authorization
-> > > > > > > and bind-time commitment. Serialize writes with probing under the device
-> > > > > > > lock. Include the attributes in device ownership changes.
-> > > > > > > 
-> > > > > > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > > > > > > ---
-> > > > > > >    Documentation/ABI/testing/sysfs-devices-trust |  51 +++++++++++++
-> > > > > > >    MAINTAINERS                                   |   1 +
-> > > > > > >    drivers/base/base.h                           |   6 ++
-> > > > > > >    drivers/base/core.c                           |  15 +++-
-> > > > > > >    drivers/base/trust.c                          | 102 ++++++++++++++++++++++++++
-> > > > > > >    5 files changed, 174 insertions(+), 1 deletion(-)
-> > > > > > > 
-> > > > > > > diff --git a/Documentation/ABI/testing/sysfs-devices-trust b/Documentation/ABI/testing/sysfs-devices-trust
-> > > > > > > new file mode 100644
-> > > > > > > index 0000000000000..97e07a174769c
-> > > > > > > --- /dev/null
-> > > > > > > +++ b/Documentation/ABI/testing/sysfs-devices-trust
-> > > > > > > @@ -0,0 +1,51 @@
-> > > > > > > +What:		/sys/devices/.../trust
-> > > > > > > +Date:		September 2026
-> > > > > > > +Contact:	driver-core@lists.linux.dev
-> > > > > > > +Description:
-> > > > > > > +		(RO) The active trust level for the device. The values are
-> > > > > > > +		"disabled", "adversary", and "full". Driver core resolves
-> > > > > > > +		the level before DMA configuration and probe, and retains it
-> > > > > > > +		through removal and DMA cleanup. Outside a bind transaction
-> > > > > > > +		the level is "disabled". This does not imply that policy is
-> > > > > > > +		writable or that the device has never operated.
-> > > > > > > +
-> > > > > > > +What:		/sys/devices/.../trust_policy
-> > > > > > > +Date:		September 2026
-> > > > > > > +Contact:	driver-core@lists.linux.dev
-> > > > > > > +Description:
-> > > > > > > +		(RW) The requested trust policy for the device. The initial
-> > > > > > > +		value may be selected by the bus before the device is
-> > > > > > > +		registered; otherwise it is "default". The policy is resolved
-> > > > > > > +		to an active trust level before the device is probed.
-> > > > > > > +
-> > > > > > > +		The values are "default", "disabled", "adversary", and
-> > > > > > > +		"full". "default" lets the bus select the active trust level.
-> > > > > > > +		"disabled" prevents a functional driver from binding.
-> > > > > > > +		"adversary" requests operation with the restrictions that the
-> > > > > > > +		bus and DMA layers can enforce for a potentially malicious
-> > > > > > > +		device; it does not isolate DMA by itself. "full" requests
-> > > > > > > +		normal operation.
-> > > > > > > +
-> > > > > > > +		Before an operating level is committed, policy may change
-> > > > > > > +		freely until "disabled" is selected. Explicit "disabled"
-> > > > > > > +		blocks binding while allowing a later write of "adversary" or
-> > > > > > > +		"full". Repeated rejected probes preserve this opportunity.
-> > > > > > > +		Authorization immediately fixes the requested policy.
-> > > > > > > +		Returning to "default" or "disabled", or selecting another
-> > > > > > > +		mode, fails.
-> > > > > > > +
-> > > > > > > +		Successful resolution to an allowed level commits policy
-> > > > > > > +		and operating level before driver or DMA setup. Both remain
-> > > > > > > +		fixed for the device object's lifetime, including through
-> > > > > > > +		failed or deferred probes, unbind, reset, and driver reload.
-> > > > > > > +		Later binds must resolve to the same level, including when
-> > > > > > > +		the policy is "default". A resolver error or disabled result
-> > > > > > > +		before commitment leaves the policy's writability unchanged.
-> > > > > > 
-> > > > > > I understand you are aproaching this from a PCI point-of-view, but many
-> > > > > > busses do not care or have DMA at all, and need to actually talk to the
-> > > > > > device before being able to even "add" it to the kernel.  So you are
-> > > > > > making a driver core-specific policy based on mentioning DMA here, when
-> > > > > > really that should only be a bus-specific thing, right?  Some busses
-> > > > > > might require DMA to happen (i.e. USB needs their host controllers to
-> > > > > > use DMA to even talk to the device at all).
-> > > > > > 
-> > > > > > So can this be written to be more vague and generic and then put the
-> > > > > > specifics in the bus-specific portion?
-> > > > > 
-> > > > > Yes, of course. The main point is that drivers must not communicate with
-> > > > > or configure hardware before attestation is approved. DMA is the PCI
-> > > > > way to communicate with hardware.
-> > > > 
-> > > > That's a very vague statement of "must not communicate with".  Busses
-> > > > HAVE to talk to the device to determine what the device even is before
-> > > > it can add it to its internal bus list.  That's just how the hardware
-> > > > works, you can't say "no talking at all" otherwise that means that you
-> > > > never even know if a device is there (and for some busses, you'll miss
-> > > > the device entirely as they can only be found when the "host controller"
-> > > > tells the kernel that a device showed up, not later by manually
-> > > > scanning.)
-> > > > 
-> > > > Think about reading PCI device ids, or USB configuration information,
-> > > > that's a bus-core thing.  Are you really thinking that non of this can
-> > > > be read from a device under this "policy"?
-> > > 
-> > > Yup, and that's true even in the PCI TDISP case - there's a major amount of
-> > > "communication" and "configuration" involved in that. The principle which
-> > > should (hopefully) generalise is that a bus/host controller driver can
-> > > always interrogate its child device to perform whatever attestation and
-> > > general configuration is appropriate, but we won't hand off any _control_ of
-> > > that device to a specific device driver (nor enable potentially-impactful
-> > > bus-level features like DMA, interrupts, etc. if relevant) without the
-> > > requisite agreement between the bus code and the user.
-> > 
-> > I agree, that's fine, the bus core should always be able to talk to the
-> > device, the "barrier" is where the device is handed to a driver for that
-> > bus.  That's what I'm trying to say here, DMA is often needed before
-> > that can ever happen, so no claims of "no dma is happening" should be
-> > here.
+On Tue, Nov 03, 2026 at 04:37:12PM +0000, Lucas Tanure wrote:
+> The delay code reads phy-mode as the list of delays this glue has to
+> add, falls back to a 2ns transmit delay when no property asks for one,
+> and takes the vendor delay properties. ethernet-controller.yaml says
+> the opposite: the PHY adds the 2ns delays, and the MAC properties only
+> hold small fine tuning added on top. Every board in the tree depends on
+> the old reading, so it stays as it is.
 > 
-> For the case of USB and co. it's also still fine - just perhaps wants some
-> clearer wording - since the endpoint itself is not performing DMA
-> operations. It might send some message which causes the host controller
-> device to DMA to/from a buffer owned by the host controller driver, but
-> that's perfectly OK since the host controller itself is not on its own bus,
-> and must have already been accepted by the PCI/platform/whatever code to get
-> to that point.
+> No T7 board uses this glue yet, so the T7 gets a path of its own that
+> follows the generic rules: the receive delay line is fine tuning in
+> 200ps steps, and the transmit side, a quarter-period phase step, offers
+> none, so the transmit property is refused.
 > 
-> Now if we had some bonkers kind of bus where the only way to identify an
-> endpoint was to give it DMA addresses to have it read a command descriptor
-> and write out its own data directly, then indeed there would be little hope
-> of being able to enforce much of a trust model for that...
+> Assisted-by: LLM
+> Signed-off-by: Lucas Tanure <tanure@linux.com>
 
-Look at how USB typec code handles many parts of the device discovery
-process.  Lots of data is read and written for loads of different things
-that the device provides and the kernel has to "trust" to be correct.
-It's very very complex and DMA and other buffers and resources are quite
-involved here.  We have tried to "harden" most of these paths now, but
-odds are we haven't found them all...
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-thanks,
-
-greg k-h
+    Andrew
