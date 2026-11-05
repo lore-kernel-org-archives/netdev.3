@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793862207;
-	b=nVNQYbYbqe/iDsLTn8zb9sE7CuVien7T/x0ZL5h9SfUD6/MDmCzek+Fzwqi4E02MEY9S
-	 CWdaXLRz6WajqfDqiD+CLbDlGA1QLuaKJGekmgS9Wba4xdxHuxN/snm/NcP0bk+v2fX6n
-	 +S77zrYyAjGXlaibFiPidkPpA0IqGx0MgJt+Jlyc/z2S7DQvPfqMbhTEU0BGo50z0TlDX
-	 CTW83++9WV1oys6uUAoKLXKJ0YVIKaBlPjkoB1J4JB3mwFXRtNjxjDOruQ5pCy3QN2C+Z
-	 jXmgzN8NSgDKpbLHc3ZjsMXfn7GcAg9YXZpuivQOKcvyJnurYd6skSJkjbNWtdx2aAA==
+	t=1793862386;
+	b=F8WZQsRIZTSorsGodEmT1DKgLieMkIFrjDuCtcQ4RRAitlEqvBIyGd4KS+KvsVtPt/ZI
+	 8AUNjmUixshzTfxGAq194l0jMBxMm4ID6sIGiRyuY5EsdoMInj0FzQv2nlVmUQXywFsPf
+	 MRZU42npr5agk3ZwhvAWGIYyNRA2pHKFqa1ZwkrR4zArVmD7jDYUk/cJROae17AE8N8gH
+	 9yAXkLxexJDf/TzbsZMSxVm0Fchg0NfMuurKBj5ByOih0SAB+wXt5m9Y5kCCmILqOsBxF
+	 SYAaMqydpVVf0OnlTW2hWOJF0iJo2U533c2kMR9HIBK6t7QtxCJZskBmN2Ti8/6NH/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793862207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793862386;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=H9npzdh5j2yeI2tYxNqPA+Ts5joV+rRU0ZcWosngAaYbXDioS0bwo25F9fcwBC4PefyS
-	 Q6vE5ZZOL6OX/tfZsUdfNG7a4aML3fL7dFyvjEHiVZPwIY53G5ImQvxSFgw3bF3CphL6k
-	 xak4fL2xDRKzkhhkk+pZ2M0ivbUYzaoGk2/1bGkqxN+s0ac+TjvjRDQg8mQJx2RzNO3Ii
-	 VCVWH28TIDook6AcTg4rPusDEaXYKVC/kSUlMeHcKbs9m1FYA9311wk29M1aG/3diqk4f
-	 y7I2H1zIfmjqCVk1EKvG1QYtoZsMHZUyneU6V7KNQzjOtJxDp3of1Zz+hjmzUt8sayA==
+	b=XpFPKGXTmUXwSH2ovEh0PxqeB+ze/6Xt/p3R3W/ZdsonmvUwnuUUz7M0QbHy3kRwBIoE
+	 DV6u4lXmH6oepCSpz+Q2bwBNhezwouba8kYQdrtd5FYYvCNkrxZ2FjZ9wbOQDe6AN/2be
+	 Z5RSPrAi3xsW06SWFo0C9VvPVSSEpYje4XRnQQRpabRWLzpEBaRf1bzP5/O6wUBkOyqfm
+	 2jbu6Od26FZ4lA/o0qjfhdmru/lKFJuIEq0WHZQvNSon1ujl15vGxh6WsykpykeT1v6IF
+	 uSr8YtellqKNrTQH4MOsbeBDJpYVPWe66WXJyHBQjtdRcg1YJiKjFqOf7O9+wRmEXbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzTGrmi9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6zTV3Mr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5522F606A326;
-	Thu,  5 Nov 2026 07:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB994606A328;
+	Thu,  5 Nov 2026 07:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzTGrmi9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA961F000C1;
-	Thu,  5 Nov 2026 07:03:26 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6zTV3Mr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00C81F000C1;
+	Thu,  5 Nov 2026 07:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793862206;
+	s=k20260515; t=1793862385;
 	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TzTGrmi9xfsJumawMXwsx5Sm0b3u3LyMFsY/ejO7spi4+LnmiO4Di+HtGY8nYYaUm
-	 Aqomukvj4KaH3aZiEG5cT2ngBz5Vf0CxNWkBbDUxXnpIIxUmLGgJfyziyM8B6F8Rx7
-	 0z/ar7lcnMlELn1l90bnt0nkl0VlRSpLa5YbjdlUnQbwNhdH9/EHJLhEag8G7h6Z4y
-	 JZ0z1A+rndT3ZfhYZIDRRq0DlTVN15ljANTbugvJ00C+Xy/DdySWjPpAQx0w3B00Qr
-	 iU1sN9wIBPegZhfArstXcLF977sengRkfibdcYwBxHqO8NAUaXMAO6Dot6XOJR6iVS
-	 9HpG/+RQfyYgg==
+	b=J6zTV3Mr9FH2F5X28UpBb5j8YnlswoBc2K0NIUTiq0IBV6/+KNuUlb+t47aR04bOR
+	 2+qpwIVNdrWKnw4tSw4efMy06vpqEhtrL652hz+3lREUSSxoa97hDZyrzfNR5uaCiK
+	 e+/XBXQnxSgIfmA6y/90aQ9UCso/OOLJSqK5S9/924gEGIYmqmb73uy23/s11M5NRs
+	 xGTN5D0QdD8D4v5GLfNKs8B0X7l4/bBg61bTdnLMhV1/FceL+H9nBoaYcXSbO5QkA2
+	 aIs2pbE0r9w7rUceoM8YtAlAK3kh+REESLVSTdf1KyZCkAqMNotMp4+3FjWVqRaxaI
+	 QREBnyxcXzuTg==
 From: netdev-bot+sinfo@kernel.org
-To: Qihang <q.h.hack.winter@gmail.com>
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, vladbu@nvidia.com,
- ozsh@nvidia.com, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: nf_flow_table: defer pernet stats release
- to last flowtable teardown
-Date: Thu, 05 Nov 2026 07:03:25 +0000
-Message-ID: <179386220573.488859.7780877584306117605@kernel.org>
-In-Reply-To: <20261105065509.94627-1-q.h.hack.winter@gmail.com>
-References: <20261105065509.94627-1-q.h.hack.winter@gmail.com>
+To: Sun Yiqi <sunyiqi2@huawei.com>
+Cc: robin@protonic.nl, o.rempel@pengutronix.de, kernel@pengutronix.de,
+ socketcan@hartkopp.net, mkl@pengutronix.de, linux-can@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
+ luoxiaoxing@huawei.com
+Subject: Re: [PATCH net] can: j1939: transport: validate the DPO packet offset
+Date: Thu, 05 Nov 2026 07:06:24 +0000
+Message-ID: <179386238443.488859.15787411674340454987@kernel.org>
+In-Reply-To: <20261105065931.1302-1-sunyiqi2@huawei.com>
+References: <20261105065931.1302-1-sunyiqi2@huawei.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
