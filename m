@@ -1,65 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793876528;
-	b=B76i8nPRmfdzbK5iEaqKbn/V1LSmNrLplgz/XJLu8vF5SxYcJh+dh+iOAiH4C8x5g8q2
-	 BhD+uxrhFbZQLErkYMdPpP7cUl2NrE5WYY0+SD19KszMn8LHFiAqKYzOdeEYBNSAJwQnT
-	 6z5AEErD6ngXYR0Igu0u0ecMfdTK5J9B6sZYrcwKQvhyfzfGqFms7ardyuUIiI/dxmnac
-	 fpXbxDwuIVMgJOr5H1+SoX58FsEqv+Ny1fFZ8VnXqsBtMojGAiKJRjqeATsKN6mVLUq8R
-	 Y3bzEolYkxAnbDFpwS/3reJOYuGB2JeVq6tc0tfELNbxHQqGNjbfhRqA3dR9e7gXkWw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793876528;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=R7DP1uNG35Sbet4cB2t9/UcoHOaIPaPI2vgXOPccRTQ=;
-	b=p39WJjEUwV13z46A93SGBioOfbx5kPiQpgyELycW6G5niD1RfBNUs6cjxH4kN1fvH5Iz
-	 0xi6RtLR7Gnf7eU6ypfWhYs1E8UpFoY/mmd2zACcechEvj4EEp0cB/wcXb3ydBXQDRLII
-	 vye+4/b6ymcNe0QCUoUgj9X2QJ0k5a7IJLbvkIJvDjMmiKEIrACbc0jSZzSbcS38QeRGy
-	 oDxfEeI7fctr/YdB/q8PngCG/nNrFy9WL4NqRm7dFF1gEWiuqbN//krKHwcJ+SiJ3MVvZ
-	 VqUd2499ns6lIHnc8PP88DdCfJnqU1fCiYbEvJdOeD/5A/IY1Ep0LJvyfGARU9H5waQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fOXl741e;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793876668;
+	b=u071VdEIFJNf8TBB8OF/Ss7B6Rmbjr/fT9vcPirhZY5vUn3GJRmQCZAoEyIvwBBxdtD8
+	 igV3gpn9whpAJriKXyaGozKZbHxiGg3iHUstB+UuRmH1mX6SPrBSExa7FHrnEaG5cTAep
+	 QwS1XqIcRZ87/tL1YPCuAGm1SySHPutty87vGcydxtzOxs/LnwfUFFEPtHyFaLOKLCcu1
+	 AweJBJy8VqiEX0icjgKvqosUNWRPrRp8XQuem/P8qd5UfCalt3RBZ8pHT8sErk/kmVqEw
+	 KJiCaNMwOa+cv5b9l371LDFMCmlUxcqTG0eTgw26NAmhDJKOp7Zc9H+IdLIR199lokA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793876668;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
+	 Received:Received:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=ckdVqbZ+XEiDBjZjIcTqcZqx2pMHFmdH+FxX3UjOWxI=;
+	b=lEoWeIbLLPYVYLuuUOkREILj3SmYOnyACvg8td+yhZCxIIQs+zVdR9/MBwIT+tacRaDT
+	 DlA46ZAFu6YSI0P7WwyIlAdxt4DI0UpezQTpH1mw4s1HEE7EHPpCO1P2Gk8FhqvXJNnKG
+	 Bb0MAyhnncgThgoggoKXU9WK1ttWt5bDiNRAXt0HlvzZtiJCYZDUT19/9ZV1JbfV9PoJT
+	 5pFhhBtd2398WP350EJ1Iq3+9mfuVigZ4PrWkUZRQgQI3n4nKeuV1+ALDaqdAn0wD0kg5
+	 ggwwVyLBqAGU5e23tiH1oAFVJFa7RPGophtpnHSrVCZ5tWRTV9Mbj5WtvR83ecUXCNg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kQOnU6vb;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 687FA606A31B;
-	Thu,  5 Nov 2026 11:02:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 687FA606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA453606A32D
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 11:04:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA453606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fOXl741e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793876517;
-	bh=R7DP1uNG35Sbet4cB2t9/UcoHOaIPaPI2vgXOPccRTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fOXl741eoELUKMQc1lZC5pnhMimVXWLtINBvV7WTCQDw4mmyXrBLXbfWaRp57bsGj
-	 i745Xk/VKMGj3IpVQbfzIANPd0oqH8YqJytL2YPGbKs1DNpoITEXUr4n3llP2qQlVG
-	 dkMn4obIYPXO9uZtCfKfzYzx3GSLdEFD50QcuMZCpJE0Fwkxill6WJp+B1Oa4Y4MGn
-	 eBSChWjQzF2R2bAxoABKpygAMlFfpUQvNsX8A46CJtaVfwI7hXtcC9yrpW7cEZ2riG
-	 wyW9ZFKEQpLmo7eWIXkRiEYMT+nzppwSFzvRLTaVT50LxHmtu7z1QPAz7Bb7UZTaX+
-	 eRDeuT71GaHrg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6FE3660052;
-	Thu,  5 Nov 2026 12:01:57 +0100 (CET)
-Date: Thu, 5 Nov 2026 12:01:55 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: shaos <shawnq1@163.com>
-Cc: Sung Byeongchan <tjdqudcks0424@naver.com>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>,
-	coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: xt_dccp: reject short option lengths
-Message-ID: <auxiI-Jl7ctXoSZO@chamomile>
-References: <179251068646.3135.16276902372052104830@kernel.org>
- <20261105081735.749379-1-shawnq1@163.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kQOnU6vb
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b579003f29so946823a12.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 03:04:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793876665; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Vg3tWTcJ1dMBRzeZAg01WIRwG50ESTSt4A69mUKv7Apg97Nz52Ls4YASdw/Ptp71L+
+         aonGoYtBaV+iSO21xq2WsjOa1WSKoRciNprqiRljTZRlT7LkltttVvmSqsS9QDAasvio
+         2n/sLiv4uBMQMJGLwCT1+VIYlv8E1T5t8j0pGBRbd+dCRkUwAiBa/ShLV2OVw909xno5
+         Ea7qJoh17DoySZGIQh60LvTN/iVqJxv8DY386clXE/XPs0f7HndA3NnLaBaO5IhjPv9n
+         TwkB56ahXRgH6+DyqN01cBngovJP7kRYhNjEbuX8RXusDQqM+6aS0KDyMplN39pUntdf
+         Clxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=ckdVqbZ+XEiDBjZjIcTqcZqx2pMHFmdH+FxX3UjOWxI=;
+        fh=3uxnc4YJKEAqGzVVJx4hfPlDdx+K8Ub/ebS49UFwIe0=;
+        b=K/4k8JW7J2sEs2gtUbIus9+du60PEFCKNwNvxR3nwbjeq3UaTymJYtmOsp8ZmsSk95
+         +XsOpOujC+NOk5bmOq40i9w0h4us8dcoB3e6Xl+Ynm9jHzgGA0CzAMFZdH6MPBHuh3YD
+         a10J4FCCTgm8Bw1ET4weHX3dBTcsCF0xg8O6VqjJDxMxOc2GpsRVkJoKkK5pekJyWC+w
+         mR2970VkvJOk+x4Uvya/9Da9JCO/L0VNEz6oeFoXbFxUYU4kJye/RGWvSBKQrwX7Q51R
+         iTsdrcqG+SKobaJo8ecsab/4w3JvH8h99s401APj8n3od+0wlI+o5Rr4cH1L1yxS6R4/
+         +TMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793876665; x=1794481465; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ckdVqbZ+XEiDBjZjIcTqcZqx2pMHFmdH+FxX3UjOWxI=;
+        b=kQOnU6vbvBlzv2wUJZDtjXRES4K22AB+2nCtRX+9Xrj9zVV7catumRxrq4w97sScb+
+         D0b/k0GCpvaD2/yHptMwAWWemtEc2miD9yMmOdPGKZyoXQRWrb7rVbK3AYMZ9Rc3Jash
+         KgMuYB3j70JjdeTrhGL/vU25V+8nNDgBITbzwCtnf2tErJXYLI46v62dA1BU+HGThpGN
+         1G/kJTSyYfH6nbzUhhKlwieUnsmdxAu/4jcsFZbJljniPT/49bgCMotpjT5vdZc6YsYs
+         hv2N69uuAr7wFzNj7MmI7Em1zZl+SqYMwevSeUFgqwJLDwbzaYuVMlfPGPxr94IdTClQ
+         pmgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793876665; x=1794481465;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ckdVqbZ+XEiDBjZjIcTqcZqx2pMHFmdH+FxX3UjOWxI=;
+        b=Xnpjp2pGygA4Hq60Ip7GXPdIOPqaVms5GCQ/aDd/+oQp39Jv7hsZb0j39fP43oMq/f
+         UGtLdunSu2VNsTJ+kBMcZKYOIZINQE/Z+20DBBZfYfPyamCfkIHoEaLMbL1/NN9DJlYb
+         YHJP+cOMq8Ig4h6FH0Gxys0bmCXSyuoI2t1ty28Qrvd7H9XYT0mLGf03TykqS/n9+ctr
+         hX71Mv65B7A/xGi3AX3FH64sAPODavYlOaYwg83AgYSQvTZ19klCHfSj5xAtosPPNFtS
+         3N9vVzitGNU7zWgq0Yayg+uKWGnZHNqSvE84zh88MoTn0y6/hDWUanFM/66mnVlrhMGJ
+         A63A==
+X-Gm-Message-State: APuU4Z9ei/Zn+3uqxCDmZi11xft9ra41cE8Uow+opjRR3pFPTyawrve9
+	WyDXvWqUlC723083bm3CogGV591KoWmr6HkhKcA6Mihcu/NYPpmk2TzWKQBcy++UVb33RIoJNZo
+	m4rkviqoEpT+cofpQ1tgM7ZbjPVzQYmZ/GQ==
+X-Gm-Gg: AYBFou365olfXFLG3Pvx8vcUL9I8gVBOX3dmevtQGzlRzMS4vtpTWILCBD/+FXKTULw
+	TYkuNq8N2RDtYcddgGCJP3noFGY6tLRFT3wxcx8eJ2IvGMO6KEll+HwMBnV9Fg0uy5BIxM5y5J/
+	GyMUGf4kyPRKoq/5+zAFJkCf88yKfXiaKddDh6OISqeoVtignFWREt+8OHsVwtCfswpWwuY0yh4
+	LmPsED1MrTGMZFj4hENKFlRdoRZhnxK7UcSbOp0paon9pxbqiF96y94YjWXjE35RUsagupuFFbT
+	sAwwVkUeRBojUsaF0yac3jLLxWRggdLyDAzDeJXD04wd8xtPmN2uzUdl7olxFIXFI4D+NhKgb+o
+	22uWYGeBvJ5UGBqUn5LxaruduVq7YbmPaL2sf31J6vinJcTfy8+f0LYxKbH17LcKPFpcF/i4pDs
+	9zvhwkrydI3/+wjJV+LDGEAkqWDyQc3ALvk7ZJOg/c3h4gmZEuYIrIQzfCaakC4919/EbFt8xrc
+	Y9VVi7yabeTtZyZ8w==
+X-Received: by 2002:a05:6402:5007:b0:6b1:da03:d01d with SMTP id
+ 4fb4d7f45d1cf-6b4d553643amr14135108a12.34.1793876665167; Thu, 05 Nov 2026
+ 03:04:25 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Nov 2026 03:04:23 -0800
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Nov 2026 03:04:13 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,114 +106,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261105081735.749379-1-shawnq1@163.com>
+Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
+ Thu, 5 Nov 2026 05:59:25 -0500
+Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
+ Thu, 5 Nov 2026 19:57:54 +0900
+From: Florin Badita-Nistor <baditaflorin@gmail.com>
+Date: Thu, 5 Nov 2026 03:04:23 -0800
+X-Gm-Features: AclHuK-4Nom9RDl4FW6BHaQMolk43Eurezlxzr6YWIJOrxIPsqAN2ihEbuJFFYo
+Message-ID: <CADnh+D0zSzAyYCLo5cXU56o9X-P3RG3N2ix7ARPrP95d8sBXmg@mail.gmail.com>
+Subject: [PATCH net 0/2] tcp: fix false exhaustion of odd-sized bind port ranges
+To: netdev@vger.kernel.org
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Nov 05, 2026 at 08:17:35AM +0000, shaos wrote:
-> Hello,
-> 
-> The 20 October review of the reserved-option fix pointed out that
-> `dccp_find_option()` can mistake a short TLV length for the next option
-> type. The merged fix did not address that case. I reproduced it on
-> top of commit 2edda78aa4eb (the reserved-option fix).
-> 
-> With INPUT policy DROP and an ACCEPT rule for `--dccp-option 1`, an IPv4
-> DCCP packet containing options `{32, 1}` is accepted. Option 32 is a
-> multi-byte option, and length 1 is invalid. The walker advances by one
-> byte and then treats that length byte as Mandatory option 1. The rule
-> therefore accepts a malformed packet that does not contain option 1.
-> This affects firewalls that use DCCP option matches as an allow-list.
-> The match requires `CONFIG_NETFILTER_XT_MATCH_DCCP`; a remote sender
-> needs reachability to a firewall that uses an option-based DCCP rule.
-> 
-> The reproducer uses raw sockets and a local IPv4 DCCP packet. The QEMU
-> runs show the false match on the original kernel and after the merged
-> reserved-option fix. With this patch, the malformed packet is dropped.
-> A packet with a real Mandatory option 1 is accepted; without option 1,
-> it is dropped.
-> 
-> The earlier review is here:
-> https://lists.openwall.net/netdev/2026/10/20/477
-> 
-> Tested source revisions:
-> - Vulnerable: c03c1a14507dfaf8b856c2608f9ac216021fc222 (Linux 7.3)
-> - Vulnerable tree: 30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-> - Prior fix control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099
-> - Patch control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099 plus this
->   patch
-> 
-> Git tree at patch base: 8644625317c9d6e32244509e29387fb0c80af0f4
-> Compiler: gcc 11.4.0, GNU ld 2.38
-> QEMU: 6.2.0, x86-64 TCG, 1024 MiB, 2 CPUs
-> 
-> Console output:
-> https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/6a95ab42fd7f47c2e0113c55bc80a7e86002f222/console-output.txt
-> Kernel config:
-> https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/f60c4bca22a42434cac67478e74d6f7c5b28442c/kernel-config.txt
-> PoC source:
-> https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/3c45d0d340d804c236503cecf5ffe33f700245d0/poc.c
-> 
-> Check out commit 2edda78aa4eb. From that tree root, copy
-> `kernel-config.txt` to `.config` and run:
-> 
->     make ARCH=x86_64 olddefconfig
->     make ARCH=x86_64 -j"$(nproc)" bzImage
-> 
-> Compile the PoC with:
-> 
->     gcc -static -O2 -Wall -Wextra -Werror -o poc poc.c
-> 
-> Boot the kernel in a disposable QEMU guest with BusyBox,
-> iptables-legacy, and `poc` available. Install this rule:
-> 
->     iptables-legacy -F INPUT
->     iptables-legacy -P INPUT DROP
->     iptables-legacy -A INPUT -p 33 -m dccp --dccp-option 1 -j ACCEPT
-> 
-> Run `poc badlen1`, `poc present1`, and `poc absent1`. On the unpatched
-> kernel, the malformed packet is delivered, the packet with a real
-> Mandatory option is delivered, and the packet without option 1 is
-> dropped. With this patch, the malformed packet is dropped and the two
-> controls keep their expected results. The test needs CAP_NET_RAW to
-> synthesize and receive the local packet.
-> 
-> The option walker should reject a TLV length below two before advancing:
-> 
-> Fixes: 1d3de414eb20 ("[NETFILTER]: New iptables DCCP protocol header match")
-> Link: https://lists.openwall.net/netdev/2026/10/20/477
-> Signed-off-by: shaos <shawnq1@163.com>
+TCP and MPTCP can reject an automatic bind with EADDRINUSE while an
+eligible port is still free in an odd-sized local port range. For a
+three-port range with its first two ports occupied, automatic binding
+always fails although explicitly binding the final port succeeds.
 
-This needs a real name.
+Patch 1 keeps the complete range length in inet_csk_find_open_port().
+Patch 2 adds regression coverage for each free-port position in three-
+and five-port ranges, with both lower-bound parities and all existing
+protocol/IP fixture variants.
 
-> ---
->  net/netfilter/xt_dccp.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
-> index 23a4e3e8df7d..e0d7f4374958 100644
-> --- a/net/netfilter/xt_dccp.c
-> +++ b/net/netfilter/xt_dccp.c
-> @@ -62,10 +62,15 @@
->  			return true;
->  		}
->  
-> -		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1)
-> +		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1) {
->  			i++;
-> -		else
-> -			i += op[i + 1] ? : 1;
-> +		} else {
-> +			if (op[i + 1] < 2) {
-> +				spin_unlock_bh(&dccp_buflock);
-> +				goto invalid;
-> +			}
-> +			i += op[i + 1];
-> +		}
->  	}
->  
->  	spin_unlock_bh(&dccp_buflock);
->  	return false;
-> -- 
-> 2.34.1
-> 
+The issue was triggered while extending port-range tests with Codex
+assistance, then isolated using userspace reproducers on unmodified
+kernels. No kernel instrumentation or fault injection was used.
+Codex assisted with analysis, reproducers, patch/test code and commit
+messages. The task was to find a small networking contribution relevant
+to high-concurrency workloads; the missed-port case emerged during that
+investigation. An independent model review found no correctness blocker.
+
+Built and booted the exact net base below and that base with the fix in
+separate x86-64 KVM guests using the same configuration and binaries:
+
+  New regression test: 4 failures before, 0 afterwards (8 cases).
+  Full port-range suite: 4 failures before, 0 afterwards (80 cases).
+  Two existing SCTP late_bind XPASS outcomes are unchanged.
+  Go net.Listen with a three-port namespace range and two listeners:
+    IPv4: 100/100 failures before, 0/100 afterwards.
+    IPv6: 100/100 failures before, 0/100 afterwards.
+  Explicitly listening on the free final port succeeds in both kernels.
+
+Even-sized candidate sequences are unchanged. This is a correctness fix
+for odd-sized ranges, without a general throughput claim.
+
+The userspace selftests were compiled with -Wall. The boot-tested kernel
+builds used W=1. The changed allocator object also compiled with W=1
+under allyesconfig and allmodconfig (object builds, not full builds of
+those two configurations). The baseline W=1 build emitted an existing
+Synaptics input-driver format warning outside these changes; the changed
+allocator object compiled without diagnostics. Both emails were sent
+through a self-only transport test,
+read back as raw messages and applied with git am, reproducing the exact
+expected tree with preserved author identity and threading.
+
+Florin Badita-Nistor (2):
+  tcp: avoid false bind exhaustion with odd-sized port ranges
+  selftests/net: cover odd-sized local port ranges with one free port
+
+ net/ipv4/inet_connection_sock.c               |  2 -
+ .../selftests/net/ip_local_port_range.c       | 67 ++++++++++++++++++-
+ 2 files changed, 64 insertions(+), 5 deletions(-)
+
+
+base-commit: c6b41de4dd9f2d6856d8d8d292348f7961034152
+-- 
+2.51.0
