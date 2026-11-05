@@ -1,100 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.63
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793901009;
-	b=ybj6DXKpAuwfsw2oXOQ9eR63ZnkJ9Q9q663J/poYUYq8oT2qEqnp6DTnQ0RriVjoOym5
-	 H2bTOH4Nl8uYBm9DMN2GarK1WjBD9ht1+YYlngt6luqNt0Z0ChY0xzJFNWIpSd2yONif1
-	 mGAcF/s7S/dce3sHHYHkV5CI3631PrGJlSkqFH74VIDXshx/EmEyDxLsojMOR5BjaqLyA
-	 VBG9FnH4fjrrYk9lhKU2I5hmSUS+Q6XLgNXuSUv8XrFmANpnJK+HCAHLVmTYlBxTv4+kd
-	 dzvOW0aoCQhep2BCPIqoa2TkS2TSI1JwLe9aNQesQSaCMEAEG122eNEN8azC1wDeimA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793901009;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
-	b=5Yx7MO8re9Anmh3z3crCHAg1yFSGblkkDoVVV/T06gsVLE1ln8YzufgaPOZQ3gI4DrkK
-	 dhaRNl26CV/4yX0BGr86VO0TpZ1KN+2N46/oY0svCkUGJrQGG7ohC6mRCgRiDP++zDDg0
-	 y30jrbwjRz3vqRiI2kYrW5X4Ol+KJo01Ezg6BrJxLMb1wVIz6RU5ZBc3ZSM7bQn8ypNuc
-	 YjKocCHo2M/IV1z7yayy91a8ajjtYJCNyvoFUvou27/OUdL791mHD6D1WS7r7T3N9HOxe
-	 07xknQipIllfjov6uC6J9U5DNovuJNNcP60Lx5SOpIZMZLo4UoKqF94p9sTGSf6OhtQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AA3Vki6s;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.63
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010063.outbound.protection.outlook.com [52.101.61.63])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.0
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793901356;
+	b=jPnIo7jMEFnMVg+NSPhWieddbsk0UP2DoCtVQHkp/qmnhjd9zT7KMlEAAWsB7liyzWc/
+	 8S3dzK4wxFQI2cgttTrASkFrhG3q1+Z9+NlKzN4ZRLNCsZfWfTjFWGnxMo0+1d855PzUW
+	 2Q/3hIg1y3EO1OalnjAVznD58P/uUCrbQtJYD/xRAFJSVKUuCkFZfynpudC5LF+kyHrqH
+	 BKocQdDB+f5qcYcg+BeIB/glmBMAcuvvEv9LD5lpX+lqcJLS83FIyhGR+ckpmRCLha7pt
+	 jzsAu9TVG5th/72EGBGsZzn5CYLixHlhsAaawEL9d4oKgcejEg9I94yLQYr9Q8lFNKw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793901356;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=KJPkIDOAYDK93RB/9c0VDv3wKCD+7XkZXq4Nusu/JJ0=;
+	b=1RQVdjU9xojPISv5QcJfg5e+s+wrdSw1NYxpk5d/XMP3zJ9lt3xxcNsuDYY3nuSVWYPX
+	 G1DZwhlsrJWLlv6rs34iPuwUgaAn1n6Di6xC/WOGu8fwW1IKZ8o8Hh/64hlpSv9hFOwKi
+	 JRo47SLFo9eghmHbKpT6qeBcREeVq7hfjTSFY79Q7DXkZSgf2i6chrw6rkX+zjGdAnz/O
+	 NN4Bn24wIpDkHfxBwCGO93Wn0txQDwRh39kOhgeiePiIH4pF16skeemGPQgZhZEUdonxr
+	 sgd6gKaDM7+vS55b6+0ZGJxCggkUJbeBoSCpVXtPqe/s1nlKL4xTCHJjnI8a+Qsxqaw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N1kTwUwv;
+	arc=none smtp.remote-ip=74.125.229.0
+Received: from mail-dy2-f0.google.com (mail-dy2-f0.google.com [74.125.229.0])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC915606A330;
-	Thu,  5 Nov 2026 17:50:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC915606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592B606A31B
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 17:55:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E592B606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AA3Vki6s
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UQljh2JRAZyyBBJjd3R0gEuwy2bQdxd6SzWoAgVVdOsr1nVPZBCWebq9zvY8LY52JcYVSH6B6ciGju8dDwau4/91W76qNqsNis+PC2j3eIjkk59228VOYdFE5kEjEC6dvTZR45emYNUeoy42VDy002r4R/+iaczCTe4LfEMx83LdoacK8U3o5Aa7030ybfj76HMlti4tOxTEr9zRUvKIGf6NU/8m3DfoJvxZJKB1peL0otr0xWpbXrnBRdJ6mGiZusBDbFSS6BOl9s6uN1U5dfqvKCeN+JFNi7FK10D1eEOrp6ZA9wXW1BEqra+fGfqWU/R3eslJH2v5FbF3YrmWJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
- b=XnuKDJS9XaXzHGwiYf/Yqf2mcIwmij0PijVO8MC+nWdk1Te0iHyPdpR838BTsMMOZlBMYqyAZQWmWEglOtNv7J9EriOrXffSnJNIJcKwuvs9z/jcwsCSMseJkZORQFWbSCZGSZzDgp353cknVxrmsN5bmZvT1IkFXQxKsDh8IZYi13Y9kM5v60TFdI746+4Fe3aBeOtbZMfwuOB3Vo4bzhSFoStcpgQrMtQPpdPoGoskRaOKXj/XiQCN7LNTQT2o6Olac52vkH31lzNwF4E8toAsusRqdE+yLKgsNHehaymxrFZ//7ZvcYFwFF950tjNxgT9nUXG2z5NoLX+Zg/dDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eZnWirRlMHSgoXB/QOID12hIWlHPwcyU7qgwfHS5iWg=;
- b=AA3Vki6s7mifgwcM0qDpICWIFhSzLErsbm9ANrGXG53zKYzMxXGshP1Ejp/YnPvsZI/2BXHqsdoVUfsvkI5uzmwrXwzQYigheN+Jos+RW2Dbu5aLqaz7fTMFPwfisgC2iQZ68wlzZRAlzdLFdyP5LXCHYaJ+ClZTD5bMOHUz9EZEs4AmKPVN/Dv0F1nX/4dzVBcsmRaqpH+xpQAyl/Zg/xNpXye5kdoP6YzIt676kRajeuF88cOn6NXMEUDNJHV0CSN6K8uBlSsazB5uCa6eEMDMONqAqhRe6UW58ujm44wdEcc0BpNZZC4xv9nLbgbTRFV6sZoFC/A9ObIInd+/YQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by IA1PR12MB8520.namprd12.prod.outlook.com
- (2603:10b6:208:44d::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 17:49:38 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
- 17:49:37 +0000
-Message-ID: <c27e8ceb-c0d6-4801-a53b-837545dc51f6@nvidia.com>
-Date: Thu, 5 Nov 2026 19:49:32 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when
- enabling RX offload
-To: Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>,
- Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
- mbloch@nvidia.com, borisp@nvidia.com, witu@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
- <20261029134019.GG257209@horms.kernel.org>
- <53ba3677-af71-4d8e-b445-39e08eea8b2d@nvidia.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <53ba3677-af71-4d8e-b445-39e08eea8b2d@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TLZP290CA0014.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::13) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=N1kTwUwv
+Received: by mail-dy2-f0.google.com with SMTP id 5a478bee46e88-3117f9b9e64so275655eec.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 09:55:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793901355; x=1794506155; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KJPkIDOAYDK93RB/9c0VDv3wKCD+7XkZXq4Nusu/JJ0=;
+        b=N1kTwUwvpB9XGiNqY3oRRDkzMFpGtl/3/7auXAzY2if4gWRYBUHuPntVBU4+TUujkG
+         W7jJELMjM/8dRVIN8nB3i2Rq/SIHnr6VLrFzvLb7rxQHGkwUoZZY33BfAt41D5M89+jH
+         hxgRIA2vm1sRoXNbc5lwnZBzfH/NSIr0NAITPAVv7u5S7aeArsy8IefaR/+uMyx3XMBq
+         mLyXgvolIQ8QbxRTvlRYD2RpHFWsFLg502wzz0gs2+mflVzlv1OyU2xJSxhpqsRql6JQ
+         lzH3vQurUPNHdCD4wqRjKVppVCXRrwDctcJyqVt8TV+Bp7zj6pzbUE4ZfVvOb1N06HOI
+         0JWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793901355; x=1794506155;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KJPkIDOAYDK93RB/9c0VDv3wKCD+7XkZXq4Nusu/JJ0=;
+        b=BZhEEQR5jzI2rPGFNJDLy5GOK8VPMA3eXc5Gl7fAbIXR/16JXxxKjQJi5uFja1zEXV
+         i2Nz4iAUp+7ZngsgF/ClZKdSE78hfTXXEEl9jSSk0cC/5AbAbVjsCP/Z3ZQd1+8+rhYu
+         0UiWV3dOMjkqb4cR7tq+mkmLrqpbdaVjzOw9E9X+Ra1iCaCCnOOfJJqMT1wjg4ga2Fjy
+         saD4GjIQd4ymKsDi264cqqnoZnAzDz0cyHwHWBbOErfzXlnCP/veO8oUCG9CaWVRgR+L
+         u7c8mkrZxvnQFvXMIYc9oPxiJL61RWriBCpsUsKYWNb20/yu8mjP2YiCfyvJ8dj7vYcp
+         34SQ==
+X-Gm-Message-State: APuU4Z9OBwqyL6yzK+fEwHjX9+BYjuE7eo8WDf+CmDR1K0rQUVFRnRox
+	LsGeoZRE91zV7jsqKjnythxIAalKlVZuPCktNZote0fZ1Bpta1MJu+mg
+X-Gm-Gg: AYBFou3QJXiR21DWdRHv+wp5JDPFKnPtwwAvj/cZTc91HXZg6+eRpwE2JIcdrYBrKAr
+	RhiLrLle0wd9112KHLKROU5/vIM6/+auXgUOv0ve2ZRtVFhH2VRxw1pL4b0laOK21EAe7fKFgOC
+	TF/qGiWZE2pgIP8bK08VkHRs03Egjm/JO8BC4bQp1ODEg9g5cFyzoTI+Il21GD60izHBFCW7Q4/
+	ZOl5ukQOHHtr9YN+Qub5fzTz4r9zl+cEWcjya2mMVNnaUf6+oIQD0OwHb2ZcOAIkZXBQUBbXZ6s
+	lTqYbKVkc4jAaQKQUSe984EUxxM9z7n0IGyjOBHcr/ez86z/Vc8/0JpfPmqyfxPCyjzLAxjDHz7
+	jq44W5U3+V9pwYM771Q1qkJYX+LBEqNcqZK+MDLukg3L7fgSa6oJjDEa+Dkp202SDz97vcE5aWW
+	4mQy4MzlDSxzq69CHrW6ZK0iPjVIolXa4UVH1CGTukN9Bo0eEd/8abrSuSCxYZvRKgXJNE9tOou
+	4fWon75qyCqDgMbQ3sVnqQV5YNHSriWZHrSYvQFhDrIllD12G4VweUeoiwkHZjKNDNznHFZYcgt
+	JONT2iVheOI8PZQMwgLelA==
+X-Received: by 2002:a05:7023:a5c:10b0:1a9:4d51:8c33 with SMTP id a92af1059eb24-1b24f460f1dmr4221448c88.18.1793901354912;
+        Thu, 05 Nov 2026 09:55:54 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:65::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245b86fbesm18947609c88.1.2026.11.05.09.55.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 09:55:54 -0800 (PST)
+Date: Thu, 5 Nov 2026 09:53:41 -0800
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, edumazet@kernel.org, 
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, 
+	michael.chan@broadcom.com, pavan.chebbi@broadcom.com, sdf@fomichev.me, 
+	bobbyeshleman@meta.com, asml.silence@gmail.com, razor@blackwall.org, 
+	daniel@iogearbox.net, leitao@debian.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2 4/7] net: devmem: add a per-device netmem TX
+ frag size limit
+Message-ID: <auzCRJidvMSIOcKc@devvm16445.scu0.facebook.com>
+References: <20261103235152.1904727-1-sdf@fomichev.me>
+ <20261103235152.1904727-5-sdf@fomichev.me>
+ <18e4e1daa184cadc.3137322e32382e36372e3935.ceab9.0000sendgmr@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,179 +103,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|IA1PR12MB8520:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d1610b7-ae2c-406f-dee7-08df3b652924
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|18002099003|22082099003|6133799003|10067099003|4143699003|261026140227099003|11063799006|261026121527099003|261102123227099003|261028144727099003|261021123027099003|261021135927099003|56012099006|261022105027099003|261022075727099003|261009223027099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	oifzpk3JiaJWWRYeN0+zkX6UpQ1sQ+BgxQAG0jCuZB+AHZG1f6yg4WVgbLfPCmaACUD5UTn7RUGk/MbGDbS4ZEYDuLbPz7FzDuoEp2sjOpycr4uGKgHe9ILFcWygyD8UfqZ1bT7YUaCkWbTfWfmm6McMMEGjG9ABJCn7ls9a1Uj0x+URQyHziB/P9iIggPJ+KS2OMWRk9Nfy5KjqKX1Bp/2kQW5ie4ZfH9Ap9dOS6SQqBLTejct+wrtEKe4hchUnxY4v2LYyQM2j9CzwRz08tHWBbUkTOqKFrXjryhQCxpCY8SynO/TIOI0dDCVGw1aZjSspeUrbFqneur8aJ3mXalHzkcJm4VXqaD5CgTB8KdKLf4NuPqFqePzArsHOiCcE1/Xwu7BCqbkCDTZ9oOSj94bhVU0p+iH312c/7RDWv/LCnvvSujKNfIHSfbonVF1Hn412uLrA1DshSZWUzjXhYHJ8nsj3xr85buVLU3nCBBWZJ6YMgY0+sE6X2B0Kgo5uG58B+PEZ1Zue/vSMNnduz3+M3H03zXrjLyQDw1GqCiS9LGepU/wtmUVw5i2NRzbKKjg9Wq6kSeknltZMaWhGuUp3U8UdEPWFYOgBajKGURkh9nlAyW2C8K4rLkU5gsBCFxvcYquVYpdmCqc2VoaeFDvpOL1l9FFldED2Dwv7NHA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(18002099003)(22082099003)(6133799003)(10067099003)(4143699003)(261026140227099003)(11063799006)(261026121527099003)(261102123227099003)(261028144727099003)(261021123027099003)(261021135927099003)(56012099006)(261022105027099003)(261022075727099003)(261009223027099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aEdtZ3BiYUZ3T3BuTzlCblhMWGxWQldZZ1dnOG5NOVRWNklnYmU3TWRPY04y?=
- =?utf-8?B?bWlSRllIcllSaU1sUDloamJsZ0tTVnp5VktIRDRHWlgxeW16MUh6WVRkM1hX?=
- =?utf-8?B?NlJEd1V0eU1JMHNTeGJnWndsSXptVkQ0UDg0MFk4eWVCVStHam11VHd5Q1ZL?=
- =?utf-8?B?c2tkWmVHY3BjZEhOKy9UMkhNc3h3eHlUWGNZU0dlcXNmN2RIaWpMS2h0SkFx?=
- =?utf-8?B?SWxEMEpNVXcxc2w5WGdCSHhVK2hSYmY4TFFOOGNQbkE0N3JsYjNBeG1Id3ln?=
- =?utf-8?B?TnZTVU5rTFFEZXJQTXZZWjBtUlZwczRxdS9vTmpwMUhQUVVtd2VSQ1lGd29k?=
- =?utf-8?B?RytHRVZUYzVVQi9CYlZCMkRnSHo3Sk04NnJPVjRXQnkrMU16UlVYOTBJZVVu?=
- =?utf-8?B?aHpFcXpSNFpOYVc1RE1qcGVycXBSVkxqZUNxZUJxMnpsN2NBREZxa05NazdB?=
- =?utf-8?B?YmNkWEsrUDZicm0vNHJlVzdFWmVEWWxkZDRQWmY2QllSRDQvUEJXRjVDSHRw?=
- =?utf-8?B?OGlVOWRoMWV5aW5mbVVqdVNXSUZwYlBnMVV3SjRUQXpRVmVnaFdXU2dZYXdi?=
- =?utf-8?B?djBieTJUczZDdDl2NjZKYmF6R2RtR2tNRi9YTDdkNFFtais0b01BL2dhRkth?=
- =?utf-8?B?aHZIWkd3cEZUTFhabHNTeFVzdVA4Y3ZsVVFCNGplMWVnTmZQN0Z3aU45eXl2?=
- =?utf-8?B?a1lmaXN3akg2OWlPcVlCRmlUeXJUTStzWWxpSGpETEhKN0x3YUxUT2xpcW0x?=
- =?utf-8?B?Slh3Q1NKSWZhQU9MeGRjVzkxK094b0NRNyt2QU5uVE5qREdCOExZN2kzTEpx?=
- =?utf-8?B?UU1XTkx0UFA3dkRxVWpBSGxESGdpdndtWHdDU0I4WDRucHBNSVhIeGQxdXd3?=
- =?utf-8?B?Z2dMZm9YYlBJN0NFVU5EVVlGNDE5REFVMlhlay9nOEFuMHVPSldURkk0d0Zi?=
- =?utf-8?B?TnUxS3Ywb25nSjQxZTlBMlRsYUZ4bVZranZLZmJ0Ni9tUEdOSVJJcVZWeEtZ?=
- =?utf-8?B?Nnl6aGcva0d3SjEzSHdSKzk2MU1rdFc5dEFJNkN1MEJEOUFXZTZ3Z3VyS1JW?=
- =?utf-8?B?NUoxSGE0SkZjRC92QU5hZ3c2YkJxbmFVT0ErcGdjaE00aCtiRG14V0haWTBk?=
- =?utf-8?B?bmJ5ZjVLRDJPMUJjOTlxOTJvRDErdHZPWkhrVzNmbDArSnlkSng3bFcrdEhN?=
- =?utf-8?B?L08rTDE5YUtWckQ1NTlvRHJ2R3R2WVUycHo3ZzRpNkFCbHVCZzVXbk5XQy9O?=
- =?utf-8?B?TEt1MFV4VXlqMXV4N0FtYmRLK3NqVU1WUVlydUdvSkppa2F4d2IwVHFLRDQ5?=
- =?utf-8?B?Ums0L1k0UXh6L2xJQVg1TXowM0twR3M0WE5jWlkrM2tTQUZla1ppcFh6ZjB0?=
- =?utf-8?B?L296elhQeThKK0lJbGtCRjh4c0pIM2lUS1I1UDZNL2xTUXB5bVlCeFIramFN?=
- =?utf-8?B?R0xUb3dxZEJsSHd0RFg2azJRRjBmVjM2aHV3OCtXUExnbjJLS3R5NGJoRWtG?=
- =?utf-8?B?TTUzTHZGUktnWTRQMC9MSGxqOVhPNkRKLytwTlYyTjJRNUhDb1lwaUJvNEtP?=
- =?utf-8?B?ZTdkOXlCeDdrdVdWQS82STVmbEE5WFVvcnZFaERWSTBJQ0ZCZm9tV3k4dDdh?=
- =?utf-8?B?UGJYOWw5S3pML1YxWDZ2a0VEKzNVejdzcWNKN2lzdno5bk4ySkNlR3p1bHpM?=
- =?utf-8?B?eGZYb1kxdEJoZDlmaldJQVRXQ1NXTjAyN1pSUTRmdUVJQm5qd1h2ZzBMVTJI?=
- =?utf-8?B?OWk1SDVTUUFpeGdOSjI5U0M1dzVVekZvcFpuMU10dG5IWFdQOXNsYnlZZTdO?=
- =?utf-8?B?RnEwV0h3MVJPYnZSRFhtZmF2KzRucXZvVGpMeGVmSVlSTERPK2hsNUVNbys0?=
- =?utf-8?B?dVZqMkhTd0pzeDFqb2QzWEt3TzlTVW03WE9BQnQyQmVrTWRMYUJ2YUpNbUE4?=
- =?utf-8?B?WEtTZE5XTTZtUTZadklQYmhuaTF0bmY4aGhzemN1TkpXK2oyblVBUE9ZSTNU?=
- =?utf-8?B?VkRXNkJhNG0wNUxyL0ZUbDJKdG5nSUMxdHh5UTkrQStyaDZXU09Xd2ROL3Fo?=
- =?utf-8?B?bWRtdkU2Q3lyRk5pemtzVjl4VEl1TTN6UHZrMjJudkZ4YzRFc0NtQlg5Sngy?=
- =?utf-8?B?T2pPN0x3MGg2TUlTS2g4SW9PV1RpME5RUU1mWDNDNjM2bHhWajF3U1dMSHJZ?=
- =?utf-8?B?UC9KSTRPamlJKzIyNlo4REN4OWhLUCtlU25RaHdUa2lhVmRXNk00bFhMckpX?=
- =?utf-8?B?bk81b2VMNEJxUytKc2ZHRkxjUE5OZ0h2cjJBY3Z2cXZmajRWTDFqYURMaGdy?=
- =?utf-8?B?Q0xrbmR1azVlRGlQUjhlVS8zcG1GVlpHTi9QYmp2L1B6SWR4Vm0yQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d1610b7-ae2c-406f-dee7-08df3b652924
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 17:49:37.8814
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kTtL21gBF3vw6PEscn7oxS2v0P/PXHwUfYCuFqXRH6ljR40lwyVO+jwhX8rYsRUBNtlQ68Y22gvmNOUtbZOzow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8520
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <18e4e1daa184cadc.3137322e32382e36372e3935.ceab9.0000sendgmr@google.com>
 
+On 11/04, Mina Almasry wrote:
+> On Tue, Nov 3, 2026 at 3:51 PM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> >
+> > Devmem TX frags are bounded only by the net_iov size, which is about
+> > to grow up to 2MB, more than some devices can describe in a single TX
+> > descriptor.
+> >
+> > Add netmem_tx_max_frag_size, U32_MAX by default, and cap devmem TX
+> > frags to the limit of the device the binding is attached to.
+> >
+> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> > ---
+> >  Documentation/networking/net_cachelines/net_device.rst | 1 +
+> >  Documentation/networking/netmem.rst                    | 6 ++++++
+> >  include/linux/netdevice.h                              | 2 ++
+> >  net/core/datagram.c                                    | 1 +
+> >  net/core/dev.c                                         | 1 +
+> >  net/core/devmem.c                                      | 1 +
+> >  net/core/devmem.h                                      | 1 +
+> >  7 files changed, 13 insertions(+)
+> >
+> ...
+> > diff --git a/net/core/dev.c b/net/core/dev.c
+> > index 3ac700d37e59..ba2f887dcd39 100644
+> > --- a/net/core/dev.c
+> > +++ b/net/core/dev.c
+> > @@ -12350,6 +12350,7 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
+> >         dev->gro_ipv4_max_size = GRO_LEGACY_MAX_SIZE;
+> >         dev->tso_max_size = TSO_LEGACY_MAX_SIZE;
+> >         dev->tso_max_segs = TSO_MAX_SEGS;
+> > +       dev->netmem_tx_max_frag_size = U32_MAX;
+> 
+> I wonder if netmem_tx_max_frag_size should default to PAGE_SIZE instead
+> of U32_MAX, and have drivers opt in by raising it after verification
+> (e.g. SZ_32K for bnxt and U32_MAX for mlx5 in this series)?
+> 
+> With U32_MAX as the default, large frags are enabled on all NETMEM_TX
+> drivers unless they opt out. For example, fbnic also has a 16-bit TX
+> descriptor length (FBNIC_TWD_LEN_MASK) and only avoids hitting
+> dma_error here because its tso_max_size happens to be 64KB today, and
+> gve hasn't been tested with >PAGE_SIZE devmem TX frags yet. Defaulting
+> to PAGE_SIZE (similar to tso_max_size = TSO_LEGACY_MAX_SIZE above) seems
+> safer for existing and future drivers.
 
-
-On 01/11/2026 12:41, Tariq Toukan wrote:
-> 
-> 
-> On 29/10/2026 15:40, Simon Horman wrote:
->> On Mon, Oct 26, 2026 at 06:53:46PM +0900, Xuanqiang Luo wrote:
->>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>>
->>> Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
->>> ICOSQ"), the async ICOSQ is only created when an XDP program is attached
->>> or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
->>> the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
->>> the channels so that they get the queue, but it ignores the return value
->>> of mlx5e_safe_reopen_channels().
->>>
->>> If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
->>> which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
->>> enabled. The next offloaded RX connection then dereferences the NULL
->>> c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
->>> not help, as the flag is already set and the reopen is skipped.
->>>
->>> Propagate the error, clear the flag and destroy the accel TCP flow
->>> tables again, so that the feature stays disabled and the next attempt
->>> retries the reopen.
->>>
->>> Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
->>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>> ---
->>> Found by code inspection while backporting commit abed42f9cd80 to a
->>> downstream kernel. I do not have a crypto-enabled ConnectX NIC, so the
->>> failure has not been reproduced and the fix is only compile-tested.
->>>
->>> The crash itself is the one described in the changelog of abed42f9cd80
->>> ("async ICOSQ allocation is not triggered, causing a NULL pointer
->>> crash"). This patch only covers the case where the reopen that should
->>> create the queue fails. ktls.c is also the only caller that ignores the
->>> return value of mlx5e_safe_reopen_channels(); the callers in health.c
->>> and reporter_tx.c check it.
->>>
->>>   drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
->>>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> I agree that a minimal approach to addressing this problem is appropriate
->> for net.
->>
-> 
-> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-> 
-> 
->> Reviewed-by: Simon Horman <horms@kernel.org>
->>
->> However, I do think the logic of this function is becoming somewhat
->> convoluted and would benefit from:
->>
->> 1. Handling error paths in conditionals while leaving
->>     the main thread of execution unconditional.
->>
->> 2. Use goto for unwind.
->>
->> This is approach is complicated by the function needing to
->> handle the enable condition. But at any rate, maybe a follow-up patch 
->> do do
->> something like this would be worthwhile?
->>
-> 
-> Agree.
-> 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c 
->> b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
->> index 3cc1213c2f68..0f5dcd1b822e 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
->> @@ -137,19 +137,22 @@ int mlx5e_ktls_set_feature_rx(struct net_device 
->> *netdev, bool enable)
->>       mutex_lock(&priv->state_lock);
->>       if (enable) {
->>           err = mlx5e_accel_fs_tcp_create(priv->fs);
->> -        if (!err && !priv->ktls_rx_was_enabled) {
->> -            priv->ktls_rx_was_enabled = true;
->> -            err = mlx5e_safe_reopen_channels(priv);
->> -            if (err) {
->> -                priv->ktls_rx_was_enabled = false;
->> -                mlx5e_accel_fs_tcp_destroy(priv->fs);
->> -            }
->> +        if (err || priv->ktls_rx_was_enabled)
->> +            goto out_unlock;
->> +
->> +        priv->ktls_rx_was_enabled = true;
->> +        err = mlx5e_safe_reopen_channels(priv);
->> +        if (err) {
->> +            priv->ktls_rx_was_enabled = false;
->> +            enable = false;
->>           }
->> -    } else {
->> -        mlx5e_accel_fs_tcp_destroy(priv->fs);
->>       }
->> -    mutex_unlock(&priv->state_lock);
->> +    if (!enable)
->> +        mlx5e_accel_fs_tcp_destroy(priv->fs);
->> +
->> +out_unlock:
->> +    mutex_unlock(&priv->state_lock);
->>       return err;
->>   }
->>
->> ...
-> 
-> Makes sense.
-
-Seems that we need a resend here.
-Let me know if you want me to do that.
+Hmm, I did not see fbnic :-/ That sounds fair, let me switch to an opt in,
+should be safer, agreed... Will only option mlx/bnxt and most likely fbnic.
