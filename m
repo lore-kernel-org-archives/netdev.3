@@ -1,127 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793887436;
-	b=C7jcf+l5C+DH5yI4Gmy4p+RgdI6atI9JyE8TTRrsN9mJKr+aHWquvoxBZNxcHrWqU6Hh
-	 4rsGS1bRZ3O1qlpyIF8gEOyIn3WsZexOL6RqAyEothvCeWx5FbRcAUrcQsJD0la7NdOvx
-	 Z2BBH1r6/Do+xAEzUUqRh3cSGTHe7aqtF6mCEsBAs2W72OCazQqKkBPeB2Tn9AYc6Rv1e
-	 7TMRSxB23MnefC5fEm6JY3Fw2eYtCS5ZEer32Yvpq3W9U7fvfnWo5FyiYT1pCmIGHINlJ
-	 SRFo0H6AnbH+wmcgHtinwBfbLGuR9XOsDprcDfTJWUvONeLgScn2uTDlhX3YIj/dPXw==
+	t=1793887578;
+	b=bQ5d+lnd0C535Z80/R6V2qKATEBwH8WkBBmKMmWwDdiSWg6nGuKljLEdU3ioXGhFxzvc
+	 d/f652rqo8PHGcTjfiqIONtdBseZQkWM2qDPThgC6K1h+Bs4IbCL7MEnxg7SqSBx9sJVD
+	 CsvZP8xS5/COdrs30VxuRcH4Q+ApdRv4MmfSq0Vwa5GOMKUU9jmmvdlFey4011ry5SHTF
+	 SuF9xFu0MvQDP4rQF+hWS5xdw6V3NEoQssRDEdqZt88vI+elERUG427sHl2e7tr3vCztk
+	 C+PU5fs1gk1x9rmeDbD3Qdyuv0QnZ7F8UxauCW2AYxeQSOI2Z6Ccm511eqzqzkH0hKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793887436;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793887578;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=aHvVt/C+p86HW0thhKORyrpJuSX9G1Rk+ExvThy6OxA=;
-	b=zqqhZPiLPe1Gfy39/eN/d+xZdSdwnsC5Xk0jzsq15x6FxF6kyTsRIwyjYDMkt3j/EEkU
-	 X6kuzFPniVJlDYPX0ksE9FLzqKtXQ54jpIvYnZoSaZPf2OowqGmQ5KaIqqdbieYyGtUI7
-	 PTBYOqRkkp5hhwBdMqHYMrqIxSxZj/Z9CsMsNkCD6rP7Ba7UEJjvsU4BRUJPNHAT6XuLJ
-	 i2/+KHsQR7cOcPkg/cFZ+Cz8tRmntDY2F0k0jNldmHl68RUwAJQsknM4fwfutDH5J7yMz
-	 d5KDsz8/7lnGiAVC5kDbFFwaagnbybvAlAdsW9iFYv+lZRFaNKL60Wk1hcmbqK17BLg==
+	bh=UJCvvH2LVzLLKKiKlCpu1moOiFoxJyhCDFLz6en74v0=;
+	b=Es1tC2eAZa+i5kc8vI1qV+pNVBKerwqtQLRfT2jHlc1Nq1AJgNxtxay35fF0SlC74FcA
+	 U8Lmo8NvIroqtTcbmmHGU0EzgxEd67Z9f+6zDSkQNu2HcY4U1UDfotqyK6yZQZevnsU1P
+	 +oKvgAawZnGzEiKIuQDfgI2XbzcdPr+6j2NfdZrwhVI4/VVmzdxubDtI1kDwFD9MXxfXP
+	 dqehAAgoQHO0LEm8/b6bdJJkz7mnxSyKgRvAkF7Yhn2SiUwVANKgoPtEen0gxxwergeA6
+	 oTEe2h14JD/6LXZierKvfcLfJRtfsQdNE7cO2lm5wrnY9y7c1VWm3C9Gtt+0nNIuVmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	arc=none smtp.remote-ip=209.85.222.47
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	dmarc=pass header.from=riscstar.com;
+	spf=pass smtp.mailfrom=riscstar.com;
+	dkim=pass header.d=riscstar.com header.i=@riscstar.com header.a=rsa-sha256 header.s=google header.b="fOD/4HlG";
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57279606A333
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:03:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57279606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-990fbae94f5so1174502241.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:03:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3985606EE96
+	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 14:06:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3985606EE96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=riscstar.com header.i=@riscstar.com header.a=rsa-sha256 header.s=google header.b=fOD/4HlG
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a20bde60a0so17424445e9.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 06:06:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793887434; x=1794492234; darn=vger.kernel.org;
+        d=riscstar.com; s=google; t=1793887576; x=1794492376; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=aHvVt/C+p86HW0thhKORyrpJuSX9G1Rk+ExvThy6OxA=;
-        b=kz1XgIBbrvBVV82jfLwzl2boDjAIVUbeNVQas9Wo1Dk5Xdi6H+C3KcpCevzEdclNJ0
-         lzsSeS+uRFo6w/gIJIYGLA5nYX/ZA7GDEfg8ye+MEqBYoDAQ+XWmrXIScd3vjjxi3P0s
-         TM9V8bmM9C1gt69mu+eIyGDX/aC+cI4xa87K7AUD6ZNwyr7bJjPSJ34eRy3oL+DhO4T4
-         z9GIW8q+b2I5fYq6rzeAUUwY6D1cOnVfqLouPYFCQGVgJUGlc0n72Hhgr3e5/i+LRsW4
-         Jqs+IOHbUmP6UlpI+ifiIR6Yqw/evL4R0NFbQH8ocPPe+5gcxWg4oty37gZrialLDEod
-         LNXw==
+        bh=UJCvvH2LVzLLKKiKlCpu1moOiFoxJyhCDFLz6en74v0=;
+        b=fOD/4HlGPz3p6ReV4CfAWtPZfVdjBTvS80aQFytCHG+6jvIftCSh6f33hBH74qDKMD
+         ftCb2VZnl35ODwucMVWosLYjOo+gqKLVsfL4wRp+2ScgKMOo4xVnCgqfr8/3m8l+r9/B
+         kC2ereSHyGhSuzM9TwXN52enpcQLEgnTub3nyrkWfpPQWnf+4jt6m9gFA7NjfG3ZXmlA
+         NYhJmxex+zpzci+DTQCBHdH1/s5ASBB7wxqC0XO8zKYB6o4ySvfD4DC6PLVDtU69CbjI
+         8siL3N2z7ShBjJzbX7zhb9ks3cqC79+P2To5mG7LESNlNW+mdoKOvw+RX/ntmvhwfP6S
+         0Z4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793887434; x=1794492234;
+        d=1e100.net; s=20260707; t=1793887576; x=1794492376;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aHvVt/C+p86HW0thhKORyrpJuSX9G1Rk+ExvThy6OxA=;
-        b=Ew64id9ktIzFz3fn2eRhqkzT9yxvN0rfBMKIelLUW9N1AYsasobHDElyAl5JeUMct8
-         il+x7zxpO6y6uGhRpkzndqWgI33dFuWuZfbqXEu7DnOcZEYgrjwPpPp+xQVp2zj/KAoE
-         mduk6i+/f7YTQ6FRf/3pXalNhdeiPbJQFtoMoAn6BAiSBaQ9YSzpA2ycTtEgogw5bylA
-         SJfuotRkNKPYDzDS0AQYXaFXkfmTot7AVxR7rZuL1DY2w5vKriJ+1b6PX51aZvv75r0h
-         PVmyoCtzQTT+9zAFWDO/YD0iDdmAP6zi9OItuMNCn3laOuYKUmZoWG1H3NvQLq0AQo4o
-         qazQ==
-X-Forwarded-Encrypted: i=1; AKwUvByusu7wHqCiEndUZmL7B1aQ/S20WB6R0BshKrteMG3eVazmCCp858OA0r7GxU9Qi1lDp2c9Jgo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9UUnuKfK3/BCj2tr4MujoGkq5X4lI3P1zw3rODGDoE9R/NcEau
-	HXrT5sYR9e0btNrG5IYYlmeNTVSYKihHjz2A/hFx21E7m86UxP6jFYG3PGX5SFEI0Sk=
-X-Gm-Gg: AYBFou2XK3PMANkFkXdWvfZdRmjVy/HtlMHx0T9weRv59HDZOW7dVkBoxe3sj5olxW9
-	2WH614hPH10iG4JXmTeR9jbjx31qfs3vSOWM1FmjUPX3YOZZHcisLPhCaQy70j3kTuLxAQcdHGx
-	qXX1bnMNArGwYHBFsxQY3eGMLO/MJsr5BPSM8VaJ/eQhLe1TlEH4uslZmXYU0W35DyHukg5qo4c
-	txsmA7S4J13oixRZLW9o+xonCwtJSxdwfvYM47PmOqeH1jO0JvWIBx11rIUMVVyOR5AY5KIJh78
-	WeHnd8XwUJMn4FkOCBcX1gDBc4IWA/litIpYPG83c6s50iXqgc5lE33ZN7aa6kiIFRnVInyI744
-	TdXuO+UPQLUfQhuFbOenciZkMQgwUbHKcPGsZFJEs+whQLT2KlGlx8ZhZudtpw2hO2zxMTHqT96
-	cNty4WOxsXeC47xnfqZHqSUu5BKNl3pMny0gXMVcUumFmDqBLH7iwlmtwA/e3yANfgviZ6RdaPk
-	G/toOw+WlJ7mx/7LeiodCs2IWKf8QRu8TT6fuLFx0kqEGs6I9Q2IAhodJJMG41VhNBUTTuK3gpn
-	5d+NUxejEoXE4/ioYatBvZh8AsPTqJmHORyp+RPCikhXmIZGBsfBN6n5fjnz8X7a0LWd4/NpzZ/
-	8t0Z3809l6Q==
-X-Received: by 2002:a05:6122:8f88:b0:5ea:cfd9:8fbd with SMTP id 71dfb90a1353d-5ec689b0f30mr9760208e0c.17.1793887433885;
-        Thu, 05 Nov 2026 06:03:53 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8de4908sm4235128e0c.15.2026.11.05.06.03.52
+        bh=UJCvvH2LVzLLKKiKlCpu1moOiFoxJyhCDFLz6en74v0=;
+        b=w/O253ak2UeNaKeq2Kg9uWNSJIHQDsS/PN1KTzLMwSW/BTeGMKhkfA28E6CEj7GbhD
+         OPOUg8fyJuVMTt4KsfniH12JFu0fNBat/prpzv4XXQqkAnBN6a1KIjnsUKOmOJ7FQ6KN
+         /FBHj/6uUJg80GepQRS/rlMtX078HR/bpiKm4vp0+vLUvEiwfdPmkTxLvS2bgngQTH7r
+         39cOvwJX4WxZdCk0ws8WrljZBTN86spORcXx8Hf4gyS4h5oDq/DTCYxb2MHi95yH5dT2
+         bSqL8DuJmgORREGqDUzxRx+13ClKud9n2MziJKPgoNHc6szZEtpMgTs0U489zvDX/7VS
+         OyTA==
+X-Forwarded-Encrypted: i=1; AKwUvBx2u6rZZWqzLXWRD9oJs+dw8AE/RIaFa9q8T5kPo9nAqDW0rfad8FXY2S4Eow0QlKr9PtzeR84=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/3/BjQIT/krg/Kv/tDTsDXTZXftfFre+jViTnU0eIu75vEJED4
+	sDX+swWHrRbcTZ17MJtMzzIVCCbor+NVpWhCcNulzPzfHvtaemhu0VhOwOcVtm9iKYM=
+X-Gm-Gg: AYBFou1yeWX42/FCUA80Wc67TYotuZ4DjHF0Y4WIO/eoJCnAXmNU8Xd6aiwqlcGkTIr
+	8Tz5rVNwCioIuasvj16Ini8PESP4VgFJck/fz0BYJw2TYxdMnhbQrDgZ8OdqrS8t4CdwxC27GMS
+	M2rxYKSLPjFM9Ylk8dSY53bUXpzeOJdKE0X128hZULDSyNvBMB5RXnnHvmLB0LCAIMxff+oxfu1
+	PLdjsGmjyTVXz4JtiGI7b548WimYzKZPhIUi05GggEXKCceHGcWObeeiGGydQrRe90AkgUisgKQ
+	UDM5yfr4WDi7C1ykKEgIFacwGojJOWm78k3DThOFOLpJ36guCIxhJOkqQV+KLS8e7NGV7zFf36m
+	U0i0lg+Yob90CeSRARwbK2qa6Ng3DLzd1ZVAqOFIaJ4496SkMBrAtGh8WNs73HSG/yEY5BezO75
+	eGzLW1sfCrH7BnJO/zMucajdvUwCrCWDxb/k7+XGNKjgxDziZBzF/ITZPeofQHumMobjmE16MTM
+	L1p29eA3BupQWT1PVkDQq5btu7PV4St/YruWahQP9duvst1NTM14g81LMCaGfCB53pkef9nWB2N
+	vWDQDDwcSlYM3KXzTg3acwJStsC9nDblbh2VE/zZ/xYJIVyaGYXb8dhS1t3CDOdCmqph7Rn4o3z
+	gkoiHKaNgSot4qDfpS+AdsSzjNqKwy1nCZtPzJh79zwAV1X/uKzDkAr2XCiRKGOb2e+2OwlBSz8
+	VD21wRQaVNHbUn
+X-Received: by 2002:a05:600c:83c5:b0:4a2:148b:c88c with SMTP id 5b1f17b1804b1-4ac17191017mr399753615e9.8.1793887575774;
+        Thu, 05 Nov 2026 06:06:15 -0800 (PST)
+Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b57203a98fsm59048765e9.4.2026.11.05.06.06.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 06:03:53 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xOy4G-00000002ecj-0pCb;
-	Thu, 05 Nov 2026 10:03:52 -0400
-Date: Thu, 5 Nov 2026 10:03:52 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH 17/17] PCI: Replace untrusted state with device trust
-Message-ID: <20261105140352.GF3889730@ziepe.ca>
-References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
- <20261105-device-trust-core-v1-17-1e536825b4eb@nvidia.com>
- <2026110526-aerobics-correct-4c06@gregkh>
- <20261105131856.GA8298@unreal>
+        Thu, 05 Nov 2026 06:06:15 -0800 (PST)
+Date: Thu, 5 Nov 2026 14:06:12 +0000
+From: Daniel Thompson <daniel@riscstar.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Alex Elder <elder@riscstar.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, richardcochran@gmail.com,
+	p.zabel@pengutronix.de, peppe.cavallaro@st.com,
+	joabreu@synopsys.com, mohd.anwar@oss.qualcomm.com,
+	lorenzo.bianconi@oss.qualcomm.com, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] net: stmmac: support the TC9564 SoC
+Message-ID: <auyNVNo2I_Xunxi-@aspen.lan>
+References: <20261019030129.1470307-1-elder@riscstar.com>
+ <20261019030129.1470307-6-elder@riscstar.com>
+ <3d0b17c6-3b94-4e36-b7bc-700211c83273@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -133,50 +112,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105131856.GA8298@unreal>
+In-Reply-To: <3d0b17c6-3b94-4e36-b7bc-700211c83273@bootlin.com>
 
-On Thu, Nov 05, 2026 at 03:18:56PM +0200, Leon Romanovsky wrote:
-> On Thu, Nov 05, 2026 at 08:12:51AM -0500, Greg Kroah-Hartman wrote:
-> > On Thu, Nov 05, 2026 at 01:42:30PM +0200, Leon Romanovsky wrote:
-> > > From: Leon Romanovsky <leonro@nvidia.com>
-> > > 
-> > > Convert the PCI specific untrusted to use the common device trust
-> > > level. Adversarial means the same thing untrusted does.
-> > 
-> > What about for USB?  Will that "move" to use this common trust level?
-> > If not, I don't think it's very "common" :)
-> 
-> It supposed to work for all buses out-of-the box, at least this is the
-> intention.
+Hi Maxime
 
-You mean DISABLED/FULL should work with this patch series on USB
-right? Meaning the core code will not bind a USB driver when DISABLED?
+Actually, this might be more for Alex to find when he works through the
+review feedback but...
 
-I was wondering if some of the broader things we are doing on PCIe
-also apply to USB, like device authentication. I don't know alot about
-USB, but I got AI to help me find some relavent spec information.
 
- https://usb.org/authentication
+On Mon, Oct 19, 2026 at 09:52:58AM +0200, Maxime Chevallier wrote:
+> > +static struct tc9564_mac_speed mac_speed[] = {
+> > +	{ PHY_INTERFACE_MODE_2500BASEX,	SPEED_2500,  SP_SEL_2500BASEX },
+> > +	{ PHY_INTERFACE_MODE_SGMII,	SPEED_1000,  SP_SEL_SGMII_1000M },
+> > +	{ PHY_INTERFACE_MODE_SGMII,	SPEED_100,   SP_SEL_SGMII_100M },
+> > +	{ PHY_INTERFACE_MODE_SGMII,	SPEED_10,    SP_SEL_SGMII_10M },
+> > +};
+> <snip>
+> > +static int tc9564_mac_speed_select(struct tc9564_data *td,
+> > +				   phy_interface_t interface, int speed)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i = 0; i < ARRAY_SIZE(mac_speed); i++) {
+> > +		if (mac_speed[i].phy_interface != interface)
+> > +			continue;
+> > +
+> > +		if (speed == mac_speed[i].speed || speed == SPEED_UNKNOWN)
+> > +			return mac_speed[i].sp_sel;
+> > +	}
+> > +	dev_err(td->dev, "%s/%d unsupported\n", phy_modes(interface), speed);
+>
+> Is that "mac_speed" lookup table actually needed ? maybe a simpler switch/case
+> based on the speed alone would be enough, or do we really need to validate
+> the phy_interface_t each time ?
 
-This looks like the parallel to PCIe SPDM device authentication. I
-would expect it to work broadly the same way as PCIe if anyone wanted
-to implement it:
+Once we add 10G PHY support I don't think it can be based on link speed
+alone (for 10G PHY we have to write the same value to SP_SEL regardless
+of link speed).
 
-1) USB discovery discovers authentication support and creates an
-   attestation subsystem device for it
-2) The struct device starts up with trust = DISABLED
-3) Userspace runs the crypto flow through attestation subsystem. This
-   is extremely similar looking to PCIe SPDM:
-    1. GET_DIGESTS -> device returns a hash for each certificate chain
-       slot it has.
-    2. GET_CERTIFICATE -> device returns its certificate chain, read
-       in pieces.
-    3. CHALLENGE (nonce) -> device returns CHALLENGE_AUTH: the chain
-       hash, a salt, a hash of its descriptors, and a signature over the
-       challenge and the response.
-4) Userspace inspects the above and approves the device
-5) trust = FULL, driver is probed.
+However even when that happens we could still code it up using switch/case
+and ifs.
 
-But I supposed Greg is asking about /sys/bus/usb/devices/DEVICE/authorized ..
 
-Jason
+Daniel.
