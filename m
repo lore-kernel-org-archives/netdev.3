@@ -1,70 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793891073;
-	b=Pd6Y2Xa/mHzC8XMMpGazXgKJ+C6yMfZgXSnNf/ObGizzJ4VBhAlBcyUvmIuGMPxf8OcG
-	 iDCVsoxftIdMibOfzHhhxTsgIe/GBLc/waTtcIOYz6Sf7ZBX2GiUWuIPJiSQVL+dgQ06b
-	 6pH+ZiRQIut5yQo3SlIHXPgLBj2q0lGoDhvdLRnOPfznxja8y5WWxJJCtuBIteTcAEhz4
-	 btUHzbIWL6iVW8rX1nF62Ee2xMkoGMjJFYWILOCsrieDh2Awz4ONYcEZV1KfkxJhgCSv8
-	 7bj6822PQTJhZrWcn+bQa5fk+G9NK8f5uvKyA6v92n4oeW24w7s6dELGoYsu4+CzJag==
+	t=1793891245;
+	b=O9N2d/C6uJyxf69cGPxA5Nwx+47PTuxC0uq4phVVz7IGm9mFoyZijDS9rqqUmnjM9T/V
+	 BbN/kI2UXG6zZx0Kdsk6t9ZR9Zp3X7kCgLomPj8MLg/vnD36xHLVdi+Auga87yYFNsiEO
+	 w2wa41QptBqF5tTWO1G2cdMUMlxNKgCTFTrd/QX1SAo58h3OTndLPvZ1XP+xN78r53OTL
+	 82zwbLQFxS/9yn4V2CdrD3XFUnIY4/zCjxrWSCG7zT6+Jb73r8iqrKA1MFd5r/rPidzDb
+	 YNb9opzPSoPC9E7KccWmh4I7yQsWEDRtXQhMcbskFnTfIvLd0574hCsphvKJHfHcNwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793891073;
-	h=DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:Date:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-malware-bazaar;
-	bh=5hdPZuerhWgKlWAPIqm6pL4yyIFyw2APmpiX9MIpxVM=;
-	b=KCjmd7ElXctlYJqvWVjAUvWt4EU0Zse8iUt3X5VyZfAerhki0eZ5OGe67lFftgeum8fx
-	 cBwVgOBbv1TtSVMcbDsmURrAL1da3dCDRJ+q8YP9vLReMhIfNgpNc0X71CK/R27fwUjGx
-	 lrG+Wjt79ROeObQEOdZyKI9FtNNYjN2pkE7478CMZ+m5Z5aLcXg+N5CFCJpcaK7yp7T0N
-	 vhMxG/5EJ7eP+FwCrjZH4CZ2hK7Vgf9mjiWex1P8wxGMRrmlBIQ4QH6CksNpG8TJ8viHo
-	 s7pjX41vlFiNk3d+F6DmV3KmIXyNMp3PHSsuzNJPkrU/dcM28+1Or5JEAG1TX4kBZww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793891245;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=/LZVYkE9SzcHKEGbGD/UnXJb3GHGzdlrPARxMed/c3c=;
+	b=b8xprGCeOYKqBOIxWN48Pxk2nlyNeom+HzT5YpV+hGx1FvonYRxxCaVgCHuVrBXffRZ2
+	 zcO7e/jLfGTpbssPGHDbi0FKi2tIhBKHrV5yyMLt3cN5q20TdMS/0LZaHB6XMyJsrrHjI
+	 q0bTyGnLd0GgO7XT/LPeS6/Tg8k7i18AEkPL9KUGAgFxrJAiL//b1MxFRecG0c46LoMPE
+	 oF//L146c9XV58QOiCIZW2BRABZp4Us7+XpJR9G6Glvcd/KgdvVaH6l4GuGOIgtU+PnVu
+	 3Z55HMt0ZRnw2lKwxt44IR8mpxcYTb86dhXwEUO+FtIMGRR9MJC/K8APWvpRxIcAheQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=permerror header.from=sipsolutions.net;
-	spf=pass smtp.mailfrom=sipsolutions.net;
-	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=e9j7ywGo;
-	arc=none smtp.remote-ip=168.119.38.16
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=cd5XF6gB;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E818E606A31B;
-	Thu,  5 Nov 2026 15:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211D4606A31B;
+	Thu,  5 Nov 2026 15:07:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 211D4606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=e9j7ywGo
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=5hdPZuerhWgKlWAPIqm6pL4yyIFyw2APmpiX9MIpxVM=;
-	t=1793891072; x=1795100672; b=e9j7ywGoXsw2DPAC5YiiaZRaZXvqiFUwS4XSED/zRWqgS7b
-	TUQFWGenjmITERDEgYOrX7q4t4uTUhN4h4s/5xz782/4YClQvGiDL06AtGKAPWrKKdM7bURFOnLFp
-	t5viHWtdD3YrqTRCSowTWoCq+RUU+eGrkRGS5bW25hImbYo9nrKNQcMTbG/NjVNBfxmUWXKo4W354
-	dm3BKc+4wprU7pWmKJyrcMbA9QXil0W5EE/22joP704VN9iIQk/ToxV6CsxJAijkbjJ2CEyPUUp57
-	GamS+eJYO/K4w8uAqPr4rOPAuN9Bd/C2SjB7oNWTQGfmzlkl2wqQ9NjzN/jvqy7g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xOz0o-000000080jP-0X49;
-	Thu, 05 Nov 2026 16:04:22 +0100
-Message-ID: <8da2902c233de42ce756b3bfba5e5821f4dfa82b.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 0/4] tracing: improve symbolic printing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Ilya Maximets
- <i.maximets@ovn.org>, Matthieu Baerts	 <matttbe@kernel.org>, Aaron Conole
- <aconole@redhat.com>, Eelco Chaudron	 <echaudro@redhat.com>,
- dev@openvswitch.org, Adrian Moreno <amorenoz@redhat.com>,  Antoine Tenart
- <atenart@kernel.org>
-Date: Thu, 05 Nov 2026 16:04:21 +0100
-In-Reply-To: <20261105091216.7b91db5a@gandalf.local.home>
-References: <20260922110955.363677-6-johannes@sipsolutions.net>
-	 <20261105091216.7b91db5a@gandalf.local.home>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=cd5XF6gB
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/LZVYkE9SzcHKEGbGD/UnXJb3GHGzdlrPARxMed/c3c=; b=cd5XF6gBDAaFibb32JHXh71irU
+	eV4fR1YrT8BEZN6OjopseAnf1YIy96cpaqk5lqFpr9OsRCUnalkJyirs2jKLpM34yvIYpg22vlmoo
+	nP4xkXhN9iMxVhFcV+7ZnKPz5KhZeOgASBcsz9W9ix/zn+6pgGVRXzEjkpZ88qK/ClHo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOz3b-00EalB-SD; Thu, 05 Nov 2026 16:07:15 +0100
+Date: Thu, 5 Nov 2026 16:07:15 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: isasmendi.agus@gmail.com
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: add driver for the ZTE ZX279128S
+ internal Gigabit PHY
+Message-ID: <b38a7a97-c88c-44fa-ab0f-89d1e809e21e@lunn.ch>
+References: <20261105-phy-submit-v1-1-eb382681a76a@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,85 +66,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-phy-submit-v1-1-eb382681a76a@gmail.com>
 
-On Thu, 2026-11-05 at 09:12 -0500, Steven Rostedt wrote:
-> Could you also add code in the samples/trace_events directory. Perhaps ad=
-d
-> a new event?
->=20
-> This will make it easier to understand exactly how to add new __print_sym=
-()s.
+> +static int zte_gephy_config_init(struct phy_device *phydev)
+> +{
+> +	int ret, i, ldo;
 
-I guess so. I was kinda hoping to simply convert all the others - it
-clearly has advantages this way.
+Given how minimal this driver is, there are some potential traps we
+could fall into later when we find out more about the device. To
+reduce the risk a bit, please could you add a test here:
 
-Any objection to simply converting the __print_symbolic() sample? It
-would look something like this:
+       if (phydev->interface != PHY_INTERFACE_MODE_INTERNAL)
+         	  return -EINVAL;
 
+> +static struct phy_driver zte_gephy_driver[] = {
+> +	{
+> +		PHY_ID_MATCH_MODEL(ZTE_GEPHY_PHY_ID),
+> +		.name			= "ZTE ZX279128S Gigabit PHY",
+> +		.flags			= PHY_IS_INTERNAL,
+> +		.config_init		= zte_gephy_config_init,
+> +		/* The boot firmware hands over with BMCR_PDOWN set. No
+> +		 * .suspend: powering the analog domain down and up at runtime
+> +		 * has not been tested.
+> +		 */
+> +		.resume			= genphy_resume,
 
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -297,6 +297,28 @@ TRACE_DEFINE_ENUM(TRACE_SAMPLE_FOO);
- TRACE_DEFINE_ENUM(TRACE_SAMPLE_BAR);
- TRACE_DEFINE_ENUM(TRACE_SAMPLE_ZOO);
-=20
-+/* define the names as { value, "name" } tuples for __print_sym() below */
-+TRACE_DEFINE_SYM_LIST(sample_names,
-+	{ 0, "zero" },
-+	{ TRACE_SAMPLE_FOO, "TWO" },
-+	{ TRACE_SAMPLE_BAR, "FOUR" },
-+	{ TRACE_SAMPLE_ZOO, "EIGHT" },
-+	{ 10, "TEN" }
-+);
-+
-+/*
-+ * Alternatively, you could define a function for the names:
-+ *
-+ * The _lookup() function returns the string for the given value.
-+ *
-+ * The _show() function must
-+ *	seq_printf(m, ", { %u, \"%s\" }", value, name);
-+ * for each value that userspace should be able to parse.
-+ */
-+const char *sample_names2_lookup(unsigned long long value);
-+void sample_names2_show(struct seq_file *m);
-+TRACE_DEFINE_SYM_FNS(sample_names2, sample_names2_lookup, sample_names2_sh=
-ow);
-+
- TRACE_EVENT(foo_bar,
-=20
- 	TP_PROTO(const char *foo, int bar, const int *lst,
-@@ -340,14 +362,10 @@ TRACE_EVENT(foo_bar,
-  *    the variable matches one of the values, then it will print the
-  *    string in that pair. If non are matched, it returns a string
-  *    version of the number (if __entry->bar =3D=3D 7 then "7" is returned=
-).
-+ *
-+ *    See above for the declaration of "sample_names".
-  */
--		  __print_symbolic(__entry->bar,
--				   { 0, "zero" },
--				   { TRACE_SAMPLE_FOO, "TWO" },
--				   { TRACE_SAMPLE_BAR, "FOUR" },
--				   { TRACE_SAMPLE_ZOO, "EIGHT" },
--				   { 10, "TEN" }
--			  ),
-+		  __print_sym(__entry->bar, sample_names),
-=20
- /*
-  *  __print_flags( variable, "delim", { value, "flag" }, ... ),
+It looks odd with just resume, it makes it look like a workaround.
 
+Why not have config_init() take it out of power down?
 
-
-It did show a bug because TRACE_SYSTEM isn't a C var in that file (and
-perhaps only in that file?), so I'll have to resend with that fixed
-anyway.
-
-
-> FYI, this series did pass all my tests.
-
-Cool. Sorry the earlier (long time ago) version had the __init_data
-issue, I'd mostly tested on UML and that wasn't protected there.
-
-johannes
+    Andrew
