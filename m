@@ -1,70 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.161
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793866687;
-	b=3ReWvUvou9mj/OjCcxiRjD3WYemOMEeVo7MhvbQFY1N4anCbxPv3F7OFZXXLnDmFpy4o
-	 f8hybCmnhwup4zlJGQqCT7/eKIRoBndEFmxmALYZ1W8xloLmVScZCJUG4Qe1xtO3NmQdj
-	 Zl1m5IKxB//vwY7LzzTkXQ4BYoKKIo9GHISh7AEm1f4GvW1mjtpG5eVFWPnqgLpnqL4Ad
-	 UPJhfrixfXfl8ZflMRItIJmJ4+p37G9JYI1msBOfwZ27clt0BUCqqnqX+PfeHdr5a8yar
-	 835pzIF+16pRqoY4DJP2IaMk5hM/KbCjXHQ+PDCVynXDIoAYNsF7/o2lZpLOtOCxYvw==
+	t=1793866732;
+	b=DrqBIycndEfsb6d9aF+JotW5JtpYbG9D4tWsPihqZNh0r883Id7V3g+JuGQbkyZPaZQO
+	 8x1HQ0jMaOzDMIlJU2M98V0Qe6mx/CvpfoHI/wd830nO9CLbgXvn8g0O6U/EZq9GYXilI
+	 caxl5Ueihd/aZsLYQLRPKyv1ccpvWpe99ERAAPlxC+mYJB31sVJVrdGqwyd0WudPzEw3S
+	 jy4CYoO5bp0P56B/BjHFek5n+jZ/kdybvxgAq8sUhKCpMHd4RzCMtq4Ap4bGoIpI4GjBl
+	 Na8Fv5+P2CClMrtDUWh3XQtBEdLOa+x7cAwbKvGxcbSJx98xDMQ26PyJlyMZBsfk/hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793866687;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=mkeKijkZJAb32Xidxy1cWIRtF5ltLYzkBnezIwTR2i8=;
-	b=U++mMRpUyjbLhg3DuHjMtnNUm3ZvHIGdc4RmjjJECZm9I75Xp5fDHDX/YlYxQ+azks/V
-	 93zA3u0Xdqfn0iU1N1KNoDA00PTpuZ3scE6lY1Q5bQZqHbuSYpoOvibWc9b1ZgAehfgnx
-	 LU6VsSTn/aa5BK6QrBxzelRe6kZOKJqnc3Cr4ihw1KX8aBVJ5lUBptU49QV2XgN49isPk
-	 HQk8UE3/AH3GffcV9+YXP6H5/b6W1LQCZrs29JdzhKtk+iXeMb/xhCC/XfsguveaEV1RQ
-	 jxBJyETW2ZmEENa+hqBLhUXzn3+RWcFlpYRTf89ke+OED4DAZv8HSxrsU6SeTjdMRKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793866732;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=rRx7QTftZl4uD9/Vj2l2EmlBlFWwHvN6RD3Bmm1PGEI=;
+	b=oQmWHuxsXhfQcQ85v9K51A4dCBV9N+RasBoVOdhnpVsO/dAPhp04HjsbF3VFsAujGHsg
+	 sC3H7ovQDR1gI7cy+7olpR5pQ2A9A+fM+cflRZKtJexkKtubZltMjs/udoMnnx2+PFBI3
+	 eTjds16l1MdYTRlXA7yGDwFRnOgWUnjw0x9O2vhOVbELKRczOBwoMMFUXkD78I5bSlaRL
+	 4F1Uqcw6/tK02vSsAQzrBPy32ke/pfdQPOKNKkE47m90K3W/WPUaXMs2iGrYVNcGNzme5
+	 ZQovj9ECkKfk00OuCG5JjEEPKE/YG0Gl6VMVCYwh/tBiMyycgIQxEI4zfI8CQpu5QNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fMfgocFw;
-	arc=none smtp.remote-ip=95.215.58.161
-Received: from mta1.migadu.com (out-161.mta1.migadu.com [95.215.58.161])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IvXRymMj;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495EC606A328
-	for <netdev@vger.kernel.org>; Thu,  5 Nov 2026 08:18:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 495EC606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305E7606A33A;
+	Thu,  5 Nov 2026 08:18:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 305E7606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fMfgocFw
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=qwrMdxVPnM+5ZppQDh0ezd2BTYb3+ptUjf9aMMr/HGQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793866684; v=1; x=1794471484;
- b=fMfgocFwzY6akGVpgl5ADZEuP5nOW+JyLD/ib5wT6AvwmFalE4CDGtIN+ydzyFu/pHtqGvLG
- Sf4PAjnLLSPgElJVT0yBoh5UpnX/nmU4ZeQ4BE1uw38V+L/E8F69KYPRinqn/u4mMWEba3zopnu
- /LvtkxJ2uXW7tq3iQ/rCErsQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 292388bdccba3920;
-	Thu, 05 Nov 2026 08:18:04 +0000
-X-Mizu-Trace-ID: 292388bdccba3920
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 16:17:46 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=IvXRymMj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=rR
+	x7QTftZl4uD9/Vj2l2EmlBlFWwHvN6RD3Bmm1PGEI=; b=IvXRymMjB1xd0yfS7i
+	CzKKwbQzu3/VBszTbAWxXB/rg+P0nVNcxaTrcf5L+8XltRI2k1EjPfDxYshpo4Tb
+	/VTXHKcQHe2JXMF8jBuUMEfIMk85CUyZ7UcZxwSkvmqVPkQfGEI4HaBQMmHe8bPU
+	CKZ3f6R7cic2wCj+JK/d/tiT8=
+Received: from shaos.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3nxifO+xqhsacFQ--.31530S2;
+	Thu, 05 Nov 2026 16:17:36 +0800 (CST)
+From: shaos <shawnq1@163.com>
+To: pablo@netfilter.org
+Cc: Sung Byeongchan <tjdqudcks0424@naver.com>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Ahmed Abdelsalam <ahabdels@cisco.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>,
-	andrea@common-net.org
-Subject: Re: [PATCH net-next v2 5/5] selftests: seg6: add tests for PSP with
- a consumed SRH
-Message-ID: <auw7qq8vayCbOWMM@fedora>
-References: <20261105015715.57-1-andrea.mayer@uniroma2.it>
- <20261105015715.57-6-andrea.mayer@uniroma2.it>
+	Simon Horman <horms@kernel.org>,
+	coreteam@netfilter.org,
+	netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] netfilter: xt_dccp: reject short option lengths
+Date: Thu,  5 Nov 2026 08:17:35 +0000
+Message-Id: <20261105081735.749379-1-shawnq1@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <179251068646.3135.16276902372052104830@kernel.org>
+References: <179251068646.3135.16276902372052104830@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,233 +72,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105015715.57-6-andrea.mayer@uniroma2.it>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3nxifO+xqhsacFQ--.31530S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43Gr1DCr45XrWkJF1UJrb_yoWrXw1xp3
+	yYv398tFykKF48JrZrtr109r1rGrsxAFW5u3y5Xr40vanxWr4ak3y0krWY9Fy2vrykW3y3
+	ZFn09w10yw4DA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOGYdUUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzwDM2mrsO6C0AAAA3w
 
-On Thu, Nov 05, 2026 at 02:57:15AM +0100, Andrea Mayer wrote:
-> Extend srv6_end_flavors_test.sh with tests for the SRv6 End behavior
-> with the PSP flavor, alone and together with NEXT-C-SID, on packets that
-> carry a consumed SRH in front of the SRH to process.
-> 
-> Each test sends a ping along an existing SRv6 Policy, and a router on
-> the path inserts an extra SRH in front of the Policy's SRH. An End
-> behavior on another router consumes the extra SRH, and the router
-> connected to the host must then remove only the Policy's SRH.
-> 
-> These tests set seg6_enabled to 1 on the hosts, which must accept the
-> extra SRH, and set it back to 0 at the end. With seg6_enabled set to 1,
-> a host also accepts the packet when the Policy's SRH is not removed, or
-> when the extra SRH is removed in its place. For this reason, the
-> receiving host accepts the echo request only when its first SRH is the
-> extra SRH, with Segments Left 0 and followed by the ICMPv6 header. Any
-> other echo request is dropped, including one without any SRH. The extra
-> SRH is recognized by its last segment, which is the SID that triggered
-> its insertion.
-> 
-> The check on the receiving host uses the ip6tables srh match. Without
-> it, these tests are skipped. A test fails if the route that inserts the
-> extra SRH, or the rules on the receiving host, cannot be added.
-> 
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  tools/testing/selftests/net/config            |   1 +
->  .../selftests/net/srv6_end_flavors_test.sh    | 280 +++++++++++++++++-
->  2 files changed, 279 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-> index 7a89e2618d4c..d5d2382b0b01 100644
-> --- a/tools/testing/selftests/net/config
-> +++ b/tools/testing/selftests/net/config
-> @@ -27,6 +27,7 @@ CONFIG_IP6_NF_IPTABLES=m
->  CONFIG_IP6_NF_IPTABLES_LEGACY=m
->  CONFIG_IP6_NF_MANGLE=m
->  CONFIG_IP6_NF_MATCH_RPFILTER=m
-> +CONFIG_IP6_NF_MATCH_SRH=m
->  CONFIG_IP6_NF_NAT=m
->  CONFIG_IP6_NF_RAW=m
->  CONFIG_IP6_NF_TARGET_REJECT=m
-> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> index 0355149bb7d6..157baa8ecb0b 100755
-> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+Hello,
 
-[...]
+The 20 October review of the reserved-option fix pointed out that
+`dccp_find_option()` can mistake a short TLV length for the next option
+type. The merged fix did not address that case. I reproduced it on
+top of commit 2edda78aa4eb (the reserved-option fix).
 
-> +# In a network namespace, accept the echo requests whose first SRH has the given
-> +# SID as last segment (Segment List[0]), SL=0 and the ICMPv6 header after it,
-> +# and drop any other echo request, including one without any SRH.
-> +# args:
-> +#  $1 - network namespace in which the rules are added
-> +#  $2 - expected last segment of the first SRH
-> +add_srh_check_rules()
-> +{
-> +	local nsname="$1"
-> +	local sid="$2"
-> +
-> +	ip netns exec "${nsname}" ip6tables -A INPUT \
-> +		-p ipv6-icmp --icmpv6-type echo-request \
-> +		-m srh --srh-lsid "${sid}" --srh-segs-left-eq 0 \
-> +		--srh-next-hdr 58 -j ACCEPT &&
-> +	ip netns exec "${nsname}" ip6tables -A INPUT \
-> +		-p ipv6-icmp --icmpv6-type echo-request -j DROP
-> +}
-> +
-> +# On a host, check that the echo requests carry the extra SRH alone.
-> +# args:
-> +#  $1 - host on which the rules are added
-> +#  $2 - expected last segment of the first SRH
-> +setup_hs_srh_check()
-> +{
-> +	local hs="$1"
-> +	local sid="$2"
-> +	local hsname
-> +
-> +	hsname="$(get_hsname "${hs}")"
-> +
-> +	add_srh_check_rules "${hsname}" "${sid}"
-> +}
-> +
-> +cleanup_hs_srh_check()
-> +{
-> +	local hs="$1"
-> +	local hsname
-> +
-> +	hsname="$(get_hsname "${hs}")"
-> +
-> +	ip netns exec "${hsname}" ip6tables -F INPUT
-> +}
-> +
-> +# Test a Policy with a consumed SRH: a router inserts the extra SRH on the
-> +# packets towards a SID, and another router consumes it. The destination host
-> +# accepts only the echo requests that carry the extra SRH alone.
-> +# args:
-> +#  $1 - router that inserts the extra SRH
-> +#  $2 - SID that triggers the insertion
-> +#  $3 - router with the SRv6 End behavior that consumes the extra SRH
-> +#  $4 - source host
-> +#  $5 - destination host
-> +#  $6 - suffix of the address on the loopback of the destination host
-> +#       (i.e. cafe::<host>:<suffix>), if any
-> +check_and_log_consumed_srh()
-> +{
-> +	local rt="$1"
-> +	local sid="$2"
-> +	local end_rt="$3"
-> +	local hssrc="$4"
-> +	local hsdst="$5"
-> +	local suffix="$6"
-> +	local msg
-> +
-> +	if ! ${HAS_SRH_MATCH}; then
-> +		msg="IPv6 Hosts connectivity: hs-${hssrc} -> hs-${hsdst}"
-> +		if [ -n "${suffix}" ]; then
-> +			msg="${msg} (${IPv6_HS_NETWORK}::${hsdst}:${suffix})"
-> +		fi
-> +		log_test_skipped "${msg}"
-> +		return
-> +	fi
-> +
-> +	if ! setup_rt_consumed_srh "${rt}" "${sid}" "${end_rt}"; then
-> +		log_test 1 0 "Extra SRH on rt-${rt} for ${sid}"
-> +		return
-> +	fi
-> +
-> +	if ! setup_hs_srh_check "${hsdst}" "${sid}"; then
-> +		log_test 1 0 "SRH check on hs-${hsdst} for ${sid}"
-> +	elif [ -n "${suffix}" ]; then
-> +		check_and_log_hs_lo_addr_connectivity "${hssrc}" "${hsdst}" \
-> +			"${suffix}"
-> +	else
-> +		check_and_log_hs_connectivity "${hssrc}" "${hsdst}"
-> +	fi
-> +
-> +	cleanup_hs_srh_check "${hsdst}"
-> +	cleanup_rt_consumed_srh "${rt}" "${sid}"
-> +}
-> +
-> +host_srv6_end_flv_consumed_srh_tests()
-> +{
-> +	local sid
-> +
-> +	log_section \
-> +		"SRv6 connectivity test hosts (h1 <-> h2, PSP with a consumed SRH)"
-> +
-> +	if ! ${HAS_SRH_MATCH}; then
-> +		echo "SKIP: ip6tables srh match not available"
-> +	fi
-> +
-> +	set_hs_seg6_enabled 1
-> +
-> +	# Policy (i.a): rt-4 inserts the extra SRH consumed by rt-3
-> +	sid="${LOCATOR_SERVICE}:2::${END_PSP_FUNC}"
-> +	check_and_log_consumed_srh 4 "${sid}" 3 1 2
-> +
-> +	# Policy (i.b): rt-2 inserts the extra SRH consumed by rt-3
-> +	sid="${LOCATOR_SERVICE}:1::${END_PSP_FUNC}"
-> +	check_and_log_consumed_srh 2 "${sid}" 3 2 1
-> +
-> +	# Policy (i.c): rt-4 inserts the extra SRH consumed by rt-3
-> +	sid="$(build_csid_container 2 "${END_CSID_PSP_FUNC}")"
-> +	check_and_log_consumed_srh 4 "${sid}" 3 1 2 "${END_CSID_PSP_FUNC}"
-> +
-> +	# Policy (i.d): rt-3 inserts the extra SRH consumed by rt-4
-> +	sid="$(build_csid_container 1 "${END_CSID_PSP_FUNC}")"
-> +	check_and_log_consumed_srh 3 "${sid}" 4 2 1 "${END_CSID_PSP_FUNC}"
-> +
-> +	set_hs_seg6_enabled 0
-> +}
-> +
->  test_iproute2_supp_or_ksft_skip()
->  {
->  	local flavor="$1"
-> @@ -1102,6 +1354,28 @@ test_kernel_supp_or_ksft_skip()
->  	ip netns del "${test_netns}"
->  }
->  
-> +# Before enabling the tests with a consumed SRH, make sure that the rules they
-> +# use can be added.
-> +check_srh_match_support()
-> +{
-> +	local srhm_ns
-> +
-> +	if [ ! -x "$(command -v ip6tables)" ]; then
-> +		return
-> +	fi
-> +
-> +	if ! setup_ns srhm_ns; then
-> +		return
-> +	fi
-> +
-> +	if add_srh_check_rules "${srhm_ns}" "${IPv6_TESTS_ADDR}" \
-> +		&>/dev/null; then
-> +		HAS_SRH_MATCH=true
-> +	fi
-> +
-> +	cleanup_ns "${srhm_ns}"
-> +}
-> +
->  test_dummy_dev_or_ksft_skip()
->  {
->  	local test_netns
-> @@ -1145,6 +1419,7 @@ test_dummy_dev_or_ksft_skip
->  # supports PSP also supports NEXT-C-SID.
->  test_iproute2_supp_or_ksft_skip psp
->  test_kernel_supp_or_ksft_skip psp
-> +check_srh_match_support
->  
->  set -e
->  trap cleanup EXIT
-> @@ -1156,5 +1431,6 @@ router_tests
->  host2gateway_tests
->  host_srv6_end_flv_psp_tests
->  host_srv6_end_flv_next_csid_psp_tests
-> +host_srv6_end_flv_consumed_srh_tests
->  
->  print_log_test_results
-> -- 
-> 2.43.0
-> 
+With INPUT policy DROP and an ACCEPT rule for `--dccp-option 1`, an IPv4
+DCCP packet containing options `{32, 1}` is accepted. Option 32 is a
+multi-byte option, and length 1 is invalid. The walker advances by one
+byte and then treats that length byte as Mandatory option 1. The rule
+therefore accepts a malformed packet that does not contain option 1.
+This affects firewalls that use DCCP option matches as an allow-list.
+The match requires `CONFIG_NETFILTER_XT_MATCH_DCCP`; a remote sender
+needs reachability to a firewall that uses an option-based DCCP rule.
 
-Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+The reproducer uses raw sockets and a local IPv4 DCCP packet. The QEMU
+runs show the false match on the original kernel and after the merged
+reserved-option fix. With this patch, the malformed packet is dropped.
+A packet with a real Mandatory option 1 is accepted; without option 1,
+it is dropped.
+
+The earlier review is here:
+https://lists.openwall.net/netdev/2026/10/20/477
+
+Tested source revisions:
+- Vulnerable: c03c1a14507dfaf8b856c2608f9ac216021fc222 (Linux 7.3)
+- Vulnerable tree: 30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
+- Prior fix control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099
+- Patch control: 2edda78aa4eb04cd8f112a81897510ee0cdd7099 plus this
+  patch
+
+Git tree at patch base: 8644625317c9d6e32244509e29387fb0c80af0f4
+Compiler: gcc 11.4.0, GNU ld 2.38
+QEMU: 6.2.0, x86-64 TCG, 1024 MiB, 2 CPUs
+
+Console output:
+https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/6a95ab42fd7f47c2e0113c55bc80a7e86002f222/console-output.txt
+Kernel config:
+https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/f60c4bca22a42434cac67478e74d6f7c5b28442c/kernel-config.txt
+PoC source:
+https://gist.githubusercontent.com/shaos26/a39f036057ddd1c1b78ce2da114b8f3a/raw/3c45d0d340d804c236503cecf5ffe33f700245d0/poc.c
+
+Check out commit 2edda78aa4eb. From that tree root, copy
+`kernel-config.txt` to `.config` and run:
+
+    make ARCH=x86_64 olddefconfig
+    make ARCH=x86_64 -j"$(nproc)" bzImage
+
+Compile the PoC with:
+
+    gcc -static -O2 -Wall -Wextra -Werror -o poc poc.c
+
+Boot the kernel in a disposable QEMU guest with BusyBox,
+iptables-legacy, and `poc` available. Install this rule:
+
+    iptables-legacy -F INPUT
+    iptables-legacy -P INPUT DROP
+    iptables-legacy -A INPUT -p 33 -m dccp --dccp-option 1 -j ACCEPT
+
+Run `poc badlen1`, `poc present1`, and `poc absent1`. On the unpatched
+kernel, the malformed packet is delivered, the packet with a real
+Mandatory option is delivered, and the packet without option 1 is
+dropped. With this patch, the malformed packet is dropped and the two
+controls keep their expected results. The test needs CAP_NET_RAW to
+synthesize and receive the local packet.
+
+The option walker should reject a TLV length below two before advancing:
+
+Fixes: 1d3de414eb20 ("[NETFILTER]: New iptables DCCP protocol header match")
+Link: https://lists.openwall.net/netdev/2026/10/20/477
+Signed-off-by: shaos <shawnq1@163.com>
+---
+ net/netfilter/xt_dccp.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
+index 23a4e3e8df7d..e0d7f4374958 100644
+--- a/net/netfilter/xt_dccp.c
++++ b/net/netfilter/xt_dccp.c
+@@ -62,10 +62,15 @@
+ 			return true;
+ 		}
+ 
+-		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1)
++		if (op[i] <= DCCPO_MAX_RESERVED || i == optlen - 1) {
+ 			i++;
+-		else
+-			i += op[i + 1] ? : 1;
++		} else {
++			if (op[i + 1] < 2) {
++				spin_unlock_bh(&dccp_buflock);
++				goto invalid;
++			}
++			i += op[i + 1];
++		}
+ 	}
+ 
+ 	spin_unlock_bh(&dccp_buflock);
+ 	return false;
+-- 
+2.34.1
+
