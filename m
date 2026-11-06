@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793965586;
-	b=VgMldWhTqwlPEzuY2Y65IApmmmk2Kv0VN87/aaZMhr3L6eeTqixF5irS1pRhP/9uDv3c
-	 X+YtiMIKR4Ts7i3X2vp46K4w9ZfLm1zU8jaIS25oWEXoMH/mibZoaGrez9cG6RGRPVs4D
-	 FUrfvE1uXww+0bmgitk33xQtTuo/Qq8wd9O5WLD5WzqpB1xzdqIeg4avTFlAZoIAWkLgr
-	 +uTxLlzDXsVkNhdSpvFIbb2Ux4zPOh47DV3OBuVKn/4GKAE3nCUom4ppQcOTjsQxMZqNw
-	 LCgTOUFFbBiD4OxlrrFjnoJPvl7TL08UQU+tqgM03rz/KS7onYoqKvTfDIS0e549rrg==
+	t=1793965595;
+	b=Bg8XNs7X3ixus9sk2G/zrLvBlBWurHzRQwSjWyrUFDV7n36ru6yvR511CR4YpbgwsPj7
+	 TDITLbxxx6D1UMLW8NcYrlqwxl3IqPckieC9/FMZ8CMch0Pu53YbXLsjwk4Jpiw7WYiqk
+	 G5hQqR/tZY0PIi5haNTC93w52r9uQnk4kAqc81ZWucQvRGiyzzWowVopZSKuje6i6rFlS
+	 ihoCawib0J3kaRcbzpBr98xEXko1UojKFTm5OqbKXexx+pT2XzulcyV+GYvD97KanZdD9
+	 xo21qzxCznnkdAVk6Sq+Ba8wu+V7RaWsMEZcqPSNnVDrUkcLVb5G/nOW1yAA3+4z9sg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793965586;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793965595;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=YLGfYC71OScNX4P7b0Ywj1iP8vp//hNbWZvlIRGfX1E=;
-	b=llcqOCAFR2g49tdKiaxPt+L/J8idkZF0H9gYhHx/eUtqVFbWPE0iAkN4siQaHMAn65ae
-	 PbMYC/EVC/0W8ALXmAbyGyy7W5KH8nhtB3SvilDeyxQ0AUM/WqIjYOTlSPrSEOwON/6id
-	 t/K4uhhiUgEbaREDeWvcPcPVEyXkUaKdS5de/vijW+bFTHDlFRHlFin4riRKBOazlUyWR
-	 oeBIsISlAFTx9WoiYAbrKj10ccc4XcGdAKjhPrsJ3QyX8+cUZjpYVZOPpYCBMLi8snjmN
-	 q8wzfejcFQhYknX3PpqQVBSfbPl3+679ZC0gF7+qc4Qb8EVJqG+pwCScAY1vlyBw1HA==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=PW7RojDyoN5co1CXu90PKl7ieBhUmfH8TTR5WzS4o3I=;
+	b=zWWTDedEdQkEcx/T9oQ05qXJay19N9V13jXQ20tqCchhItQ/Y0fpo1QTxyu8BVFLsgR3
+	 xTxmKyxuAOU/mDrxIcfYzhpeXwj0ZN/loqaC36n5t39lNCXwD/J+DYl97s5ykrjc8ClWz
+	 RCGe0tA+rN/L5bXAcMFGGrAylYxnZkn3LwHeb1q4BpnY80RFZs9vZ1vF2uH/B5dtjPYQw
+	 x/w78zwnAJIubE/s/WZSCyIncUNHzwDh496765yf3PHmKfbfuhuHs9dqDTT+bQN+QXuA6
+	 FNr252s9lt3DvICaMZyvZ/O/madWIbxBno7ax6rc6XhcOGTz8smswFTyV2il8kHRsqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="mKG/AQ/S";
-	arc=none smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Vh0eTN7/";
+	arc=none smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77D7606A931
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 11:46:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B77D7606A931
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CC7606BD5A
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 11:46:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25CC7606BD5A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mKG/AQ/S
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-36e795af1d4so483445eec.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 03:46:25 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Vh0eTN7/
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36e99cf7bb3so870604eec.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 03:46:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793965585; x=1794570385; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YLGfYC71OScNX4P7b0Ywj1iP8vp//hNbWZvlIRGfX1E=;
-        b=mKG/AQ/SA4Y2X8gh0hGyM4oubFdXoBqxMnh8G6XQzKaP0lPmU4nsMkWYHLmJ7XTPkl
-         AX+JFGVxQ0NaRb95p9vzR3WUlvDZwSQzZgppzMG/kekQCPd+H17mg7rvpOXLLRodpzy3
-         n0QkzjwOhxjvebmwM67xU7qvGWJ0YuYjgfYdDVBsthfsAxfXbN7Rx96QSCjNv5Px5aZQ
-         eTIP4ej33VY0gmC2lD9Wk/E+CYxOjLrj3U7WXf96lZlHh2WQopOxMnRo+WRzZWYeBtpt
-         2rc0uV+y0aKF3Gwk2G3Mb48I3UfLeG5bVn4Ijw2ASqMgm4Zvd28ccxxkWGET6rY5iMWl
-         znCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793965585; x=1794570385;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793965594; x=1794570394; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YLGfYC71OScNX4P7b0Ywj1iP8vp//hNbWZvlIRGfX1E=;
-        b=T9vSTPKJLQPUqfpe2lUKj2Nz+u4eJ65Um+16oYp6I0PQ9DLNY2aL5fFkFvJBwyRBNM
-         jccmmLC4I/GSooJzs+vUToPj1LimKtjwqlJRLqiHrepeS/KEKITjxNPuz1xxNK8qfJjk
-         Gu4c7jaadG2aPbiJw0eY1uddgg/n9Gko8lyB+JyAtFRq+9txEUYLaiWhu1Fy7CpdCprl
-         /F4Rf9VPEIcNe/xRw4tI5mo5gDE3TKsBz5k5w8xMUv1wMq0Z/EzqwCvUk9XAXscyeK1R
-         4LkJnqA3knaSJey/O/lu2orOQEvp0/T9hWaelOiA1cXuI2VXbLB6tZKJ8own18d13E4V
-         0BRw==
-X-Gm-Message-State: APuU4Z/2BlMEo7KiWJWFpMKVk6zZzG9T7juaciqQzqXx8OYJ5Vs4TGwk
-	wUQABC1x/ZVSEpPeD5l+EuFP3Oq1DZE3zECDQBlkiscRvnNN5EoT/n+ao0OGf8Zj
-X-Gm-Gg: AYBFou29KF7FeM4Ni0RcNf1URP4HI+yTNevFRF+8eKHFHPWCOPA9rqE/5SO4ajFcpKz
-	T73GjTXuTV9hpKvDWWPcUQmiMRUtzmUngf382tIc1oepIQgMDzXiAmh7YKUVyqaCrKyu+XfpvZT
-	pFcTKBNJiclgH8HtC0NhtIlM4USI47kBLe72NLWKqJMAIur4ena18HCwO/5Z/ewPq2Pid20tD7L
-	+a/NtKyMoGamDx0w6zW/bPBZJx/jmuze15Yl1wD2oWljuLyynXQn1wDbO0v8TUweB5tK4+RMia1
-	xulAgiC2QUfzoqGvYhHhgW5YdIAZl7VeL7ZKGR8BN75RvdPjz33lbKfvecs7OwEzAUOiJ0fvobh
-	3f4i1RFEvb5q+YnL6i194Q8FeUHep0YIaX0d0Q35geNTeCATh4c+iF0SezBm/RR50HOL2PGgpha
-	Py4xv2TKdIfqTqOtM3usHDDDUSCJ58xAbWU5ktiyJE5tVHD20Vphpx9fzVt98oXgWrNR5rR3kaY
-	woNurxsc1FmUvqJb634gkXMKLKxj01Br6AamS0bZg0HfEAhGELtl69Rtde816bntBbgAp6aOOIB
-	MIBJzB+TFF8xZ46e2ssTd9nZirxPAalC8PqZfy9vF4jS
-X-Received: by 2002:a05:7301:190c:b0:361:a195:c46e with SMTP id 5a478bee46e88-36de39af458mr6879740eec.1.1793965584700;
-        Fri, 06 Nov 2026 03:46:24 -0800 (PST)
+        bh=PW7RojDyoN5co1CXu90PKl7ieBhUmfH8TTR5WzS4o3I=;
+        b=Vh0eTN7/JxSWLK60P1Mlw0WMnnGjwEufQsnkS/70TwLqJyiLgyjfzu0TzMvysjSjxb
+         9A4tdCkcJWiifGJ91fFW39s6dbSNrbCvQyrf5OL23e3lOErtHxyivpLEJmJ5mFXKDOes
+         POZmcdujx1Jwpwg4sGQMNAwTOCQntkckNVJ4LyUhdlLmIMadXQ+iit9qCyrnXMwJgvQj
+         TFaRTCi/P5HVLdhMrSQCgRuUiQIXKOTnThoMYbiaC68EwADTAubRICeVz+ElrEmVQlSh
+         w2Xv3sCTm/XOt/dvB0+SzqmwhAYSZrwLmHPLVWTMgmI1sGl/2xc9z9yAZKgSGzpsPx+i
+         7A0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793965594; x=1794570394;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PW7RojDyoN5co1CXu90PKl7ieBhUmfH8TTR5WzS4o3I=;
+        b=JTUx+WKdrUHg+7Ew4jHpKFcqtyQbgxLbvrl+wiHyOlZiJkBTB3Sz9hn+x9UOY1F3CO
+         5WlwZxdRe6rZeTisYASkXUfFNGSXFXcFClWCIi5zg2BuBybthOVUTXfj/dlxtn0jEQRD
+         Khebyx6SknmC3I99/UcpaSAVnq1V7/d1E7bMf1ZVOi/emA9Snk9C8CzO3Bhoh1SwRIKh
+         k+gmlNUB3TQWq1yUUaJPbto1PrTtHtli9IAdVohPn52sgFdk5NO1JSa2c46HSa9sEsY9
+         UgfsLI9MaKphf7d1JWldZ+TLtiUDOVWjjINW+1eDqiBLPTayNA2MmvE3xHlrj7cEW10G
+         eTIQ==
+X-Gm-Message-State: APuU4Z8Aq7UuW/rc2vhk49Hk/rlkGTGfHo+GzO5O9EfYWedkFAI/pBb1
+	NVpdRBZb/KzckOFH1djalLDtp0X+VNKytYx3//WyG1zY5/klehw4mcHjMJKY9oiF
+X-Gm-Gg: AYBFou2aE40PwUG6uNrVL5K+YqbiMlUl4TsLvN8efK1s6uOmEnxnegMj4hBmUSuG8pK
+	hcqIklSNQ9SevvyMTph6/JW5B7zPLL0QhBfBxVjqUqqRe4voqkwUUZjt3IjGY+J82JK2Wo8munA
+	TtEhcYeKjiH7ciRenQdk5NfacVo4i6/Q3zYmConKLkq35384pWJtZHX2PiXaEJvszlbUMJQK9Ok
+	4hIdVVCWXbO7WB6hlU8xXzjjsXX6VPGjk3dHi7d+xOPcxNoTy+5f9TsbmT/m12JtE7OodDeViDX
+	QLIZwSAD7+Lek9YWOwdmyrfLkI+kQEjaenjhBJOmRdpnrvJAWODrJzpMRwyHH/Ja/C74gE4fl+5
+	t+HKTZWVrc/THr6oK31ubgwu4XkqAYDs5udcws9Do7hx8RL91Fn5nGSA6aazGT5hjmV9R/CeXjm
+	EJeaOpgTFDGpY9ZwMwjwjDqIGhScwm7fyBQboIdln3Vhb1XVgnbBd8FwyI0uD/dURlgYIyZu+BL
+	R3SyqxOPDCpl93drE075a2nRRA2rn9cnTs5vTzz7YBT8OIRzE6m8J9yuBIQuQl8TOAM0TeeOqOu
+	w484axDJbPFsAI+rpJ2vfRgmEvFA/afqmayb4BLIIGXK
+X-Received: by 2002:a05:7301:1522:b0:35d:4e41:d2c2 with SMTP id 5a478bee46e88-36f77eda447mr2941017eec.33.1793965594008;
+        Fri, 06 Nov 2026 03:46:34 -0800 (PST)
 Received: from localhost.localdomain ([2406:7400:51:1d31:c2b6:f9ff:fe77:10a0])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9be7077sm6167055eec.17.2026.11.06.03.46.15
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9be7077sm6167055eec.17.2026.11.06.03.46.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 03:46:24 -0800 (PST)
+        Fri, 06 Nov 2026 03:46:33 -0800 (PST)
 From: Amaan Cheval <amaan.cheval@gmail.com>
 To: netdev@vger.kernel.org
 Cc: joshwash@google.com,
@@ -107,10 +109,12 @@ Cc: joshwash@google.com,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Amaan Cheval <amaan.cheval@gmail.com>
-Subject: [PATCH net v4 0/2] gve: fix RX page refcount overflow with the pagecnt bias
-Date: Fri,  6 Nov 2026 17:15:49 +0530
-Message-ID: <20261106114551.212675-1-amaan.cheval@gmail.com>
+Subject: [PATCH net v4 1/2] gve: block XDP on the DQO-QPL queue format
+Date: Fri,  6 Nov 2026 17:15:50 +0530
+Message-ID: <20261106114551.212675-2-amaan.cheval@gmail.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261106114551.212675-1-amaan.cheval@gmail.com>
+References: <20261106114551.212675-1-amaan.cheval@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,49 +126,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-gve's GQI and DQO-QPL RX paths bias every RX page's refcount to INT_MAX,
-so a single get_page() from the stack, e.g. splice() of received data,
-overflows it: splice/tee fail with EIO/EFAULT and GQI can reset the
-NIC. Patch 2 lowers the bias to USHRT_MAX, as other drivers do.
+Commit d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ
+RDA") enabled XDP on DQO-RDA by dropping the queue_format check from
+verify_xdp_configuration(), which until then refused every format but
+GQI-QPL. Nothing replaced it for DQO-QPL: gve_set_netdev_xdp_features()
+advertises no XDP features there and gve_xdp_xmit() rejects it, but the
+core only checks that ndo_bpf exists, so a native XDP program, and an
+AF_XDP socket on top of it, can still be attached on DQO-QPL.
 
-With the smaller bias the driver gives up its last reference on a page
-once every USHRT_MAX handoffs instead of once every INT_MAX, which is
-only safe while every consumer holds its reference until the buffer is
-recycled. That is not the case for an XDP_REDIRECT from DQO-QPL to an
-AF_XDP socket in copy mode, a path the driver never meant to support:
-commit d8a8ca14c937 dropped the queue_format check that used to refuse
-it. Patch 1 restores that check for DQO-QPL, so patch 2 depends on it.
-Trees before 6.17 still have the old check, so there patch 2 stands
-alone.
+The DQO-QPL RX path was never written for that. Its page accounting
+assumes the driver keeps a reference of its own across every handoff:
+gve_xdp_done_dqo() passes the buffer to xdp_do_redirect() and then
+recycles it with gve_reuse_buffer(), so a redirect target that releases
+the buffer synchronously, such as an AF_XDP socket in copy mode, can
+drop the page's last reference when pagecnt_bias runs out. The page is
+then freed while it is still DMA-mapped and registered in the QPL, and
+the driver posts it back to the device.
 
-Harshitha mentioned on v2 that Google would send a patch blocking XDP
-on DQO-QPL; if one is already in flight I'm happy to drop patch 1 in
-its favour.
+Refuse XDP program setup on DQO-QPL in gve_verify_xdp_configuration(),
+matching the features the driver advertises. A zero-copy XSK pool bind
+is already refused by the core for the same reason, and a copy-mode
+bind never reaches the driver and is harmless without a program.
 
-v4:
- - Add patch 1/2 blocking XDP on DQO-QPL (Sashiko).
- - Say "overflow" instead of "headroom"; use USHRT_MAX directly instead
-   of a macro (Maciej).
- - Say which trees need patch 1, for stable.
-v3: https://lore.kernel.org/netdev/20261103090651.35399-1-amaan.cheval@gmail.com/
-v2: https://lore.kernel.org/netdev/20261102112613.18334-1-amaan.cheval@gmail.com/
-v1: https://lore.kernel.org/netdev/20261031173449.2439047-1-amaan.cheval@gmail.com/
+Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ RDA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Amaan Cheval <amaan.cheval@gmail.com>
+---
+ drivers/net/ethernet/google/gve/gve_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-
-Amaan Cheval (2):
-  gve: block XDP on the DQO-QPL queue format
-  gve: fix RX page refcount overflow from the pagecnt bias
-
- drivers/net/ethernet/google/gve/gve.h                |  2 +-
- .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c    |  4 ++--
- drivers/net/ethernet/google/gve/gve_main.c           |  6 ++++++
- drivers/net/ethernet/google/gve/gve_rx.c             |  8 ++++----
- drivers/net/ethernet/google/gve/gve_utils.c          | 12 ++++--------
- drivers/net/ethernet/google/gve/gve_utils.h          |  2 +-
- 6 files changed, 18 insertions(+), 16 deletions(-)
-
-
-base-commit: 21f57ec673a1917547c808cfa81890485fffa03b
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 2437cd8ba633..4e9e692a0ed0 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct net_device *dev,
+ 	struct gve_priv *priv = netdev_priv(dev);
+ 	u16 max_xdp_mtu;
+ 
++	if (priv->queue_format == GVE_DQO_QPL_FORMAT) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "XDP is not supported in DQO QPL queue format.");
++		return -EOPNOTSUPP;
++	}
++
+ 	if (dev->features & NETIF_F_GRO_HW) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "XDP is not supported when HW-GRO is on.");
 -- 
 2.47.3
 
