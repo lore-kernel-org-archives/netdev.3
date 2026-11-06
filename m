@@ -1,63 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793956812;
-	b=zJBUwGaFFuJY+aZd4XD9Q0IO97NwpYTHTrAMm5HQfqJYc6XjXdJqbfgPwUZqHVQlgk1F
-	 ceu7tPXeQYaqvmNrfATABrXX/evktKv0r6RzksE+jBDc3Dx0ZODLXrJJKGehYOpUXQ8Ly
-	 E74ALnx5RphonlVlpGpo1DB2hAdvtaWUWConfElb3Sw52u9kWSJoLWd8NMTVhKh9fHf77
-	 inUqT+vmQiubf6/IwcJ7jY2PRlbLoC1dP1EQ5bJg6Zc5J3BFLMXZB8ykWgIkvXXOq9Ha3
-	 RYRTCMcARw4vvO6lZavsrv/qVaSDexmgybrc/Tz2uNr4KUQp944U/pZl4QlMitZryPg==
+	t=1793956930;
+	b=q7qzg+LbQY/9pVGNgJerw/vlGcizpwJJgy2IgsnP9FKQc1G5uzFdm1j8dsCrUcsyu2/7
+	 ZrUy/dLQJ3MWccwrS2XdnHrgdflcXR5C/ng+tRVNztr4BwJhrO6bSJ3jFtMa9Eg/jibQm
+	 SM7WbrQSqjnI2BtE5H4x8NubpEmdr9R9fvSrqrcv0vm0Zm7spQyVZVa/OUVXLJlCeBpeJ
+	 hKG8mMEZGa7fI3OO1/jBb5rP0/awvyfSC9d1Cq6odPK+77OGfxyEfYpntgSUiF4gNKz6d
+	 MbcJgEufW/KaZQaIbPD899MBo6VHXd9hPDcyquuv+TU3xuC6I7vF3Bhei01jQPNc/Nw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793956812;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=9f7UCeUaSEyen1wvt0ZlaFv00Ygi0CKlI2RIzn6svjM=;
-	b=jrLoP5qV2VbBm+za8uMFzhSHHcsBJq94FeXxdvqXphJ7wvpqqNpYjxRrA1ShB3gZIxuI
-	 nYTTFRtLupjLI5WJGnx5vLUnLHlGom6iM2MxYIIRcCkZMnHkbP+N4JjoTFysW+I+xo9qf
-	 VCFEgPuMgH0lGuwhm1rQqPqMWpAoiZxshbri5CQAI/1Q3y+KX8PhD6HH+qVPjzJdPgQzz
-	 OBJphHNoppB82p09H+cmhUMtjEf/UyXKhQ5jvI57mwIA1XyzUSvsDf9m3OfLbSfd0dgWC
-	 4zWXriuHs2zG3FGS5tCQEfqdnEb9QOZ9+AnfEKqWje90YuCdf3YIU71wFPBACn7UnwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793956930;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=H5CjfeVA3mUY0uSq+fsrIIyDJlP0gdm/blQLa1Hn9rU=;
+	b=v3z+BAHbvmS7U4MYftSpYZWLOERyIW6N5TC1ySQghTazcYsTfBi5aRkFoo7HRVm7yM6O
+	 p1itGX1XU6qvabC46z9W9Xv0qxjflkFqFwxcEoMUxLLqNMbVIMEN5Seu91eD8fb8iHAQs
+	 uegfx/zKL4aVS8mNZdhm+5yYCPFLEwmlM6DyM9PpajRFXg2g7uc4D0spE2bHBL/ma4BPi
+	 KU6Q4/pmNnMMMZT6TEzrafxJMLVcRoiEomVLCumMKlg0u3Cgn3TZ2Wgtf/RdZbWHRkIUr
+	 Vq0HIMwWKvSbYUOSS1KvdjZJ+vdU+lTA7gCIUYk2lMVygtibj9ctE0FaWACLsQ09Mdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=njoGhZ0D;
-	arc=none smtp.remote-ip=220.197.31.4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Su62/2aQ";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567B0606A32D;
-	Fri,  6 Nov 2026 09:20:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 567B0606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308F0606D80F;
+	Fri,  6 Nov 2026 09:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=njoGhZ0D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=9f
-	7UCeUaSEyen1wvt0ZlaFv00Ygi0CKlI2RIzn6svjM=; b=njoGhZ0DHk923ZImYI
-	4jmx2s7jFRacsjQto5P5GiW5769QMRYo3r9KcXhVS5Zsxrm9nEoH1tzQY1RX9boz
-	FGB8jMrtZcIPOHgNQz0iuawXeIHdOIHhRNEx8R9Qm7PDQj0hZ6sEm5+NiFeJcqCy
-	2ZDbQnh2smyXNCPofx0qco53w=
-Received: from colol4bi5.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3X_+sm+1qq0VFFQ--.340S2;
-	Fri, 06 Nov 2026 17:19:42 +0800 (CST)
-From: Binbin Deng <18983559317@163.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Binbin Deng <18983559317@163.com>
-Subject: [PATCH v1] sctp: fix race between addr_wq timer handler and backlog draining
-Date: Fri,  6 Nov 2026 17:19:38 +0800
-Message-ID: <20261106091938.112942-1-18983559317@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Su62/2aQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDA81F008A1;
+	Fri,  6 Nov 2026 09:22:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793956929;
+	bh=H5CjfeVA3mUY0uSq+fsrIIyDJlP0gdm/blQLa1Hn9rU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Su62/2aQBxnZrr1i6jyzyC3y4e2EW+C8De7AXEVlygdFkravRFfh6wpA/wnep96cO
+	 Ll+A+wg2fDo0bD9ftuymAYxAKkUHOtKOn3XHhVeazCKX/tntrQpcSXib0q4vyqkK1Y
+	 9arEoew/pfiZbzLlyjFnnhdEE6fCEXCKdnJNDZ7706h/m63w+ZrvmQeLQ0VLRbFhFB
+	 aLCuR+J3o00AEBUf9tz8RLWZsfgXjBw/xiIahb1kDQ3QuqCDjv7dPw3JTp1deiEoU/
+	 pDu07IESpwZ9CFUEQrJRic4d+phQtZd6D1UHL6cZjFgLY445fiGA1n4LWKHgniesWU
+	 GP7bpwYSMA1Fg==
+Subject: Re: [PATCH net] net: cancel napi->timer after the grace period in
+ netif_napi_del()
+From: netdev-bot+sashiko@kernel.org
+To: mt4022@columbia.edu
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ mkarsten@uwaterloo.ca, joe@dama.to, dtatulea@nvidia.com, kuniyu@google.com,
+ sdf.kernel@gmail.com, sridhar.samudrala@intel.com, cratiu@nvidia.com,
+ tariqt@nvidia.com, wang.zhan@smartx.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, tz2294@columbia.edu
+Date: Fri, 06 Nov 2026 09:22:08 +0000
+Message-ID: <179395692828.994134.14864803219795314130@kernel.org>
+In-Reply-To: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
+References: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,82 +66,180 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3X_+sm+1qq0VFFQ--.340S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw1UKF17Ww1kJw13Xw1kKrg_yoW5Cr4xpF
-	WYgrWYyF4DJry5ZFn5AF48Wryrur4rW3y7Ga42ganYywsFqrnavFy8Kw4YqF4UKFsFqay7
-	Zr1qgw45Ar4DtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimhF7UUUUU=
-X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC-A4oDGrtm678ewAA3j
 
-sctp_addr_wq_timeout_handler() walks net->sctp.auto_asconf_splist and,
-holding only bh_lock_sock(), calls sctp_asconf_mgmt() on every
-auto-asconf socket. Unlike every other asynchronous SCTP entry point
-(sctp_rcv() queuing packets to the backlog, and the timer handlers in
-sctp_sm_side_effect()), it does not check sock_owned_by_user() to defer
-its work while a user context owns the socket.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-While a user thread owns the socket (e.g. recvmsg() blocked in a copy
-to user, or release_sock() draining the backlog), sk_lock.owned is set
-but the socket spinlock has been dropped, so bh_lock_sock() succeeds
-and the timer enters
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-    sctp_asconf_mgmt() -> sctp_send_asconf_add/del_ip() -> sctp_do_sm()
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-concurrently with the backlog drain path
+- [High] The fix only adds the post-grace-period hrtimer_cancel() to the
+  inline wrappers netif_napi_del() and netif_napi_del_locked()…
+- [Medium] netdev_napi_exit() (net/core/dev.c:12453-12461) runs
+  hrtimer_cancel(&p->timer) before __netif_napi_del_locked() and before…
 
-    release_sock() -> __release_sock() -> sk_backlog_rcv()
-      -> sctp_assoc_bh_rcv() -> sctp_do_sm()
+--
 
-Two state machines then run on the same association with no common
-serialization and mutate shared state concurrently: the outqueue
-control chunk list, transport->packet.chunk_list and packet->auth, and
-the transport/dst lifetime.
+net: cancel napi->timer after the grace period in netif_napi_del()
 
-The bug was found by code review of this timer entry point against the
-sock_owned_by_user() avoidance used by all other SCTP asynchronous
-entries, and confirmed with a reproducer that races an RTM_DELADDR
-address event against a user-owned auto-asconf socket. It triggers the
-following, observed with KASAN and refcount debugging:
+This patch adds a second hrtimer_cancel() of napi->timer after the
+synchronize_net() in netif_napi_del() and netif_napi_del_locked(). It
+targets a timer re-armed by napi_complete_done(), busy_poll_stop() or
+napi_suspend_irqs() after napi_disable() has cancelled it. It also
+cancels the timer in netdev_napi_exit(), relying on unregister having
+already waited for a grace period.
 
-  - rcuref "imbalanced put()" from dst_release() in
-    sctp_transport_route() racing the timer's transport routing,
-  - a GPF in sctp_packet_transmit() dereferencing a chunk pointer
-    corrupted by concurrent packet/chunk list use, and
-  - associations dying silently (ETIMEDOUT, GET_PEER_ADDRS failure).
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 435be7880d7e5..ad3685caf8147 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -3013,8 +3013,13 @@ static inline void __netif_napi_del(struct napi_struct *napi)
+>  
+>  static inline void netif_napi_del_locked(struct napi_struct *napi)
+>  {
+> +	bool listed = test_bit(NAPI_STATE_LISTED, &napi->state);
+> +
+>  	__netif_napi_del_locked(napi);
+>  	synchronize_net();
+> +	/* napi->timer can be started until a grace period after napi_disable() */
+> +	if (listed)
+> +		hrtimer_cancel(&napi->timer);
+>  }
 
-Defer the work like the other entries do: if the socket is owned by
-the user, drop both locks, leave the addr_waitq entry queued and
-re-arm addr_wq_timer to retry after SCTP_ADDRESS_TICK_DELAY. Sockets
-processed earlier for the same address event will see a duplicate
-ASCONF on retry; the peer reports that in an ASCONF-ACK error
-indication, which the association tolerates.
+[Severity: High]
+Does this close the bug for callers that call __netif_napi_del() or
+__netif_napi_del_locked() directly and then run their own grace period?
+The new cancel only exists in the two inline wrappers. Those direct
+callers can still free or re-initialise the napi while napi->timer is
+queued.
 
-Fixes: 9f7d653b67ae ("sctp: Add Auto-ASCONF support (core).")
-Signed-off-by: Binbin Deng <18983559317@163.com>
----
- net/sctp/protocol.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+The netdevsim driver used by the reproducer is one of them, in
+nsim_del_napi():
 
-diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
-index 27c26e12f95d..7528a40a87f5 100644
---- a/net/sctp/protocol.c
-+++ b/net/sctp/protocol.c
-@@ -645,6 +645,14 @@ static void sctp_addr_wq_timeout_handler(struct timer_list *t)
- 			if (!sctp_is_ep_boundall(sk))
- 				continue;
- 			bh_lock_sock(sk);
-+			if (sock_owned_by_user(sk)) {
-+				bh_unlock_sock(sk);
-+				spin_unlock_bh(&net->sctp.addr_wq_lock);
-+				/* Try again later. */
-+				mod_timer(&net->sctp.addr_wq_timer,
-+					jiffies + msecs_to_jiffies(SCTP_ADDRESS_TICK_DELAY));
-+				return;
-+			}
- 			if (sctp_asconf_mgmt(sp, addrw) < 0)
- 				pr_debug("%s: sctp_asconf_mgmt failed\n", __func__);
- 			bh_unlock_sock(sk);
+drivers/net/netdevsim/netdev.c:nsim_del_napi() {
+    ...
+		napi_disable_locked(&rq->napi);
+		__netif_napi_del_locked(&rq->napi);
+	}
+	synchronize_net();
+    ...
+}
+
+Nothing cancels the timer after that synchronize_net(). Later,
+nsim_queue_free() only cancels rq->napi_timer before kfree(rq). On
+reopen, netif_napi_add_config_locked()->hrtimer_setup() runs on a timer
+that may still be queued.
+
+The same pattern shows up in veth_napi_del_range() and in
+virtnet_free_queues(), which is followed by kfree(vi->rq). It also shows
+up in bnxt, enic, bnx2x, myri10ge, dpaa and bnge.
+
+Two callers have no synchronous point after the grace period at all:
+
+net/core/gro_cells.c:gro_cells_destroy() {
+    ...
+		napi_disable(&cell->napi);
+		__netif_napi_del(&cell->napi);
+		__skb_queue_purge(&cell->napi_skbs);
+	}
+    ...
+		call_rcu(&defer->rcu, percpu_free_defer_callback);
+    ...
+}
+
+ixgbe_free_q_vector() is similar: __netif_napi_del() followed by
+kfree_rcu(q_vector, rcu). The note below the --- line suggests sending
+the same cancel separately, but there is nowhere to put it in these two
+paths. Would they need a different approach?
+
+All of these paths share the window described in the commit message.
+napi_complete_done() clears SCHED in its try_cmpxchg() before it calls
+hrtimer_start(). busy_poll_stop() calls clear_bit(NAPI_STATE_SCHED)
+before hrtimer_start(). napi_suspend_irqs() re-arms a napi it found
+only through napi_by_id() under RCU.
+
+The kernel-doc for __netif_napi_del() also still says:
+
+ * Warning: caller must observe RCU grace period before freeing memory
+ * containing @napi. Drivers might want to call this helper to combine
+ * all the needed RCU grace periods into a single one.
+
+That contradicts the new comment above, and the driver comments in
+virtio_net, ixgbe and bnxt repeat it. Should the documented contract be
+updated as well?
+
+The remaining gap is only described below the --- line, so it won't be
+in git history. That note also leaves out ixgbe, enic, bnx2x, myri10ge,
+dpaa and bnge.
+
+[ ... ]
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index f32353b0467cd..6d6384522a1bb 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -12450,9 +12450,12 @@ static void netdev_napi_exit(struct net_device *dev)
+>  	if (!list_empty(&dev->napi_list)) {
+>  		struct napi_struct *p, *n;
+>  
+> +		/* unregister has waited for a grace period after napi_disable() */
+>  		netdev_lock(dev);
+> -		list_for_each_entry_safe(p, n, &dev->napi_list, dev_list)
+> +		list_for_each_entry_safe(p, n, &dev->napi_list, dev_list) {
+> +			hrtimer_cancel(&p->timer);
+>  			__netif_napi_del_locked(p);
+> +		}
+>  		netdev_unlock(dev);
+>  
+>  		synchronize_net();
+
+[Severity: Medium]
+Does the premise in this comment hold for every device that reaches
+free_netdev()? Here the cancel runs before this function's own
+synchronize_net(). That is the reverse of the order used in
+netif_napi_del_locked().
+
+unregister_netdevice_many_notify() calls synchronize_net() after close
+and after ndo_uninit, so napis disabled in ndo_stop or ndo_uninit are
+covered. However, free_netdev() also calls netdev_napi_exit() for
+devices that were never unregistered. These include
+NETREG_UNINITIALIZED probe-failure unwinds and NETREG_DUMMY devices
+from alloc_netdev_dummy().
+
+For example, mal_remove() in drivers/net/ethernet/ibm/emac/mal.c does:
+
+		napi_disable(&mal->napi);
+	...
+	free_netdev(mal->dummy_dev);
+
+There is no grace period in between. A registered device has the same
+gap if its driver calls napi_disable() in the remove path after
+unregister_netdev() and leaves the napi listed for free_netdev() to
+delete.
+
+On those paths, an in-flight start can arm the timer after this early
+cancel:
+
+  napi_complete_done() between its try_cmpxchg() and hrtimer_start()
+  busy_poll_stop() between clear_bit() and hrtimer_start()
+  a napi_suspend_irqs() reader
+
+The synchronize_net() below then only waits for that start to finish,
+and the napi is freed with its timer queued.
+
+In practice, the timeouts default to 0 on unregistered and dummy
+devices, and netlink napi-set requires NETREG_REGISTERED. The realistic
+trigger is a registered device with gro_flush_timeout, defer_hard_irqs
+or irq_suspend_timeout set. I couldn't find an in-tree driver that hits
+this today.
+
+Could netdev_napi_exit() do the grace period itself, for example a
+synchronize_net() before the loop, instead of relying on the caller?
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103-napi-timer-cancel-v1-1-55c631ad5286%40columbia.edu
