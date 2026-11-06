@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793995953;
-	b=5UBvZiZ7SaAj61Tidz24839MTUVLKMmn2gNGLsmJBtAUKi5XdW/45UYu3wmfdJoUT8ie
-	 OAu2evk4JdArkdRpbg5OGdOjFNMThORVlL3PEYQcHyMXY43ZZmc4GVu5pkGVM9VEGwsV0
-	 V5DkvUpCWDVy/9JDuzLCTC/WFqpBu0m5ndPlCWEkA+lEwI9nSm2RSVT+XYIKNclsdz6J/
-	 8VVSSLxlWdeZyaASPKzx5BfqYngvGHBcfa7vhfIj+fzbqa1WzRV5P7Y5/OBfF/BNoQG08
-	 3iGSN4Q3wLnn/aJA8zw1MzqZl1pFR56dOp/FYHU8Q+aG8f6DLQH5SBKbyFg5LCmMQsA==
+	t=1793995960;
+	b=StEgdS1pINoliawtknypswcVpj2UJV4OEoQsvp7V1/RTscgvDWBflK7sRhmlxqqqPZJv
+	 EoKczWaMbOiAladNPZs/2R9YRGUkCs+B5grAtq/0xIfMdhf2tVlMAerqK8oEdlKUqa07N
+	 PPeU8w6uIqptPunM2RMWVfIYkCVwcW7YGh9CMQwrjbvowyBpa1r7FqrfZDuxWzGGRC1mN
+	 OFrERVvj7bYc4SSGeHwzrTOXsuYJXHdXxqzApFtC2/g+2MhMimd7j5RjIwanYZC58sH0X
+	 QrIM49Ib+3TNik79tBWiEG6sWC/Xi3uYjYz8ENBw0fRZxlR2DuIaXM7zxVFBHB98R/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793995953;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793995960;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=oOfZCMI5ngNYmdXqC7XJhLxkkVb5xUwyBIYfVDc8tTc=;
-	b=PJ8fWNmMa1zGpoCXbNtOhzF7KSiyVKVZBYxQuHHMVTm1l5AHwmoRtOnaXiJ/zwCElAI7
-	 60swrL1s11hzotY43aPpzra8U6kV8F88brlb1F7LURyMbA919v0/d8w0wOjQYnT1A2xNP
-	 EpVQrk3GdxCrr6LUtqWlZ5JQCjWQOIZNxZ8vprfJAAZX65f2O6kpe50tUj5olg5sq6RqX
-	 OjMmnAQhomelqwMjU46S7WTNrcfXYyGeD65bzOv8jsFJKhmtceSjmu/6vpifKHoEklCCI
-	 yDNoJCBW05e0G3f7jJaKIeGANIuAXlppE7+z/e9aapq+F4BHRbG6Qqo4Z2wdLcsJbeg==
+	bh=ew7E1f5KeCzBIQRa8bgmL8F5+wG2gJUY5b9RGgICLtE=;
+	b=oI9DJgxvn9siW63mVcfTkzxsKeOxk2Kz07lSNH+wesrLduhGv+5hWHCDRdvk3Sp2A8JZ
+	 OI7wPWALqWNAPQFj90SaVYINwlxRvilcnc3EcBbxVNhbPnYI4vzzgi0o4rdjhafBO3XAJ
+	 ahaQQ07PxCxSdI4LSeAbimB8Nv2JlVEzWBAiuULiOSE/z109xwmnog+vt0J9ULVLNs2Iq
+	 Ci856suQO3sD8fMRm3/0qURkawYfXXbILbevITM48uIfJoR/XVCJVOegbmYgxj0gEhBhW
+	 26UEW4eQCvnxA3Nb7lZ7lBiN1i5iWQcrHrnoPMn4M4cwXYft3GD8q1FPfwNdDlJnpoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ikWLRPym;
-	arc=none smtp.remote-ip=209.85.128.178
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yFyqFmbS;
+	arc=none smtp.remote-ip=74.125.224.53
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50184606D803
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 20:12:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50184606D803
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C554606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 20:12:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C554606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ikWLRPym
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-8b0d63f60bcso13035807b3.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 12:12:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yFyqFmbS
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-67be9601f31so847954d50.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 12:12:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793995952; x=1794600752; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793995954; x=1794600754; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oOfZCMI5ngNYmdXqC7XJhLxkkVb5xUwyBIYfVDc8tTc=;
-        b=ikWLRPym+CXh2hOPVfo/chiUpWWaHRZ2hIfQIslg6xXvtjSLhqNZWELMt4Sy5XNVdX
-         WBRzpwXrV9Fla5MjIlhba7sZ0xBgfntILu80J//np/Hnbq8/5h7P61kij/hle9/oQbWq
-         ecBtxI7lGojJ1iFM+X1TXBMulgTT9+bV7jYPFS42u1PjUO3ThLK9GKBeLXOLCiDrcERb
-         lOoD4Bn6+FNNcJB0dbOuTrPVDTfpXG6c3eKzYgUKpbg+CIX23s5Cz9ny1lTWKHU9ohJk
-         vZ6OiNy8HUlNwYshPlB6+Ag4OBvPf57aFhWBNYq6ThWeMnlB3ejPPzGeagGRCFxmU4hK
-         KzOg==
+        bh=ew7E1f5KeCzBIQRa8bgmL8F5+wG2gJUY5b9RGgICLtE=;
+        b=yFyqFmbSPRDyOjlucTFvD3ofba1IvyWA5YmoIUekjlPTb/5GGl8xvZ1VjuQr14GTRa
+         qBUiiSAYL7X7wWIEQSg1iR8foFnRdrf+ujPbUcLSh1nRt81DXcvzC74V9DQFqqtz84mn
+         3rVjC70F1cK4RJ4cMtw76bDMpfhViJyRB1tti+Y6QsImD0OHMjMgluujo8W5yOAOYk7P
+         Qu+pw3S8ZwzsTGHgn54UtC0A/5QTlltGtI0yVk2pgdzJzfonCQMjvZpkdSfRL4etGPdX
+         cqkQ1Oh9OQnXgoxwxIMfeIm/Ci9gWKeRd5Xtah8RhX1c+oAznr0d6jxcjwU7qNadK0Hs
+         I2rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793995952; x=1794600752;
+        d=1e100.net; s=20260707; t=1793995954; x=1794600754;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oOfZCMI5ngNYmdXqC7XJhLxkkVb5xUwyBIYfVDc8tTc=;
-        b=zsphhBWwv4YMV0p71+LZPDkt9R6qfpQaet+iYLy7iMD58tLPlNsl6WxH72cQNQos/R
-         Qf/06z0Ax2hbD6J3Z4I+kTfmw6v35H5mh+xn3NP0QneI1r2NJFACYIytPtoTHlMa3Um1
-         739SZMoXhdUFlw5TA++C+zQmDnZttgx3O0YMMTUTZwBwaoTrc+CBqFe0ybVbPdKmwUK+
-         1G4PVWbTv5MF3B6+AeT52/uFohlzlwbuNKBWWAIrIdHtRsbUpMKBmZ5sUMF4PTN8NLW8
-         gRCtlGoR87+cQex2VsCAc/3wHOh4fP+IFNF8CRV837cY4WHIYvzGC63hQvsrCBppZMyF
-         ziPQ==
-X-Gm-Message-State: APuU4Z9lPgaxo4OFBxn2xwyl6SJd/OEK+csYUPvFyqpE8pXVxLQy0Pvs
-	kHRDXpsAfuaRdeFWCSASTIJQDjpOnV20WOuKCcmmQJjApB9C5hs+UWwh
-X-Gm-Gg: AYBFou2o98Xz7HDQ5Z2MQSe7p9aLDf4Rlt6zaxmp8nLsVntDgNF6w8mxnHKJeOR8lv6
-	UDKGc+GKGwOInA8M7T3oyYKUsFgnNzRUOQ6aXJgNfCpn/NQd/SRx/mNS0jAfn+cwlhCcbg0WXcI
-	sQcDd85U++rw4+JKUGLFBbdB3e/zpNMHkDDBirGQBigQH3vLjI29VWYKtZpoUlGBxTuRxqLPrv1
-	HAEepOldjgcpieTX86iKnSgYs62nVz3f/n6/IFcbJqUq0gY7hBDoN3/jKeHbQwsKPRJh54q1AZe
-	8lmCsF8j1rmb9NfXVuePaYXWaeTKwf61iKGZFewF0Ksd9CgtrtLXkpqf8D69ZBqULKw2BukRJVM
-	TiVYTwzP4tF+W+jkau8u/oq6OcsVFgmssXo3Tlz4dVMvCRmKGqlgyC18QmbzV3tCPgZjhoEynaB
-	uxmf9wNQb402qppkcaiUTNwdj+XWBR0yJStW1OnzCaZ8MXIi2FR49PK83a4+OVNFClo+OIU3cVP
-	MFy6UpV01RyI6JgUGsXRTlNTqKXjcZnxfNJ92LEaaQiRzOUtglWN4B/dtfBaXelk3RSQPIdcFY5
-	N0/73ZMBDjPD5dv3rGxWV4D/NA==
-X-Received: by 2002:a05:690c:83:b0:8b0:881d:aadb with SMTP id 00721157ae682-8b3419601a4mr20510377b3.32.1793995951957;
-        Fri, 06 Nov 2026 12:12:31 -0800 (PST)
-Received: from localhost ([2a03:2880:30ff:7::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f7f084fsm26937877b3.20.2026.11.06.12.12.30
+        bh=ew7E1f5KeCzBIQRa8bgmL8F5+wG2gJUY5b9RGgICLtE=;
+        b=zOjxN58gQHOt9o73sWxDsFPbrvbPUZZlHEzNTlnhYIqzZxqwxeFb35Nw5N1ruCXO38
+         p/eoj1jiaicVoEaE2WjVDl7dArLpfFrFRJHmHHgjzb0Pv5UseTr6uju6tfyPAct1BXQn
+         cYMbxRNxpTh30pjOsW1szWk2JWCOxxgdQ0796U7IqyMmT8Vp1FmMHs2F4ZUxWF85cjZq
+         W3GRPrHBEBEPp6Bi7wP+kziKc4bCRAVcaVPcmLJsRdhODbxcjdEK/4fud4VKdFM16JOY
+         YHdmiYFHNPk1Vg6eeHi4EE5DdHn1uypp/xYnn5KAK6eJ1e15wbgIvhOvuXVRDk8UI/D/
+         JjJQ==
+X-Gm-Message-State: APuU4Z/NIQQESVHwtnRUe/j2e5gMt64Eoq3CM6+OSf5PWyA+XLh9SyOi
+	rNcLINpkzphCWlMkMk+3CGOh6Sxs/wQwzHzZPDs9WhP/8dH0WHCSaH6G
+X-Gm-Gg: AYBFou2GLHpwvGCwEg5sLxFdzNmSR7bBcYcMTXhAWZdb5auE1yHRF3pIcX0iu/P6Opf
+	+0kbWXzzV+zilfouT6vSNcx288OCK3ySOldVi3+eIH8XHwnvBRBX8QnVN2/a51YzI7OFP2/isFk
+	fJk5WZE/aYN5MM7MLk6DfQhrAWjdHDhb7dZN4cnYp5HuOJn4zf/d3ITHJMZr5dV9+WAiN04cy2n
+	hAvZ0VCGKCHTZUyOk22YohAxFRQ1i3uH9eKcTjOtwvvGgxIt3zAuBcQFgv0F0y7CyOHHNQ2aTIE
+	dCC/qEX1T7Z+zpoF+jFhcMbLVjC4xCIJiMO6zbWlTJJqHIsC9w7GH4u1Y9d5gwXherFyY7BTJSr
+	EMlKN6iz2/WwtLPlkfTdi+Kd35eQm8U8TFXA/w0u31Ky1yVT5Ki4jvp2paoH0ol4Ags+5PvlByO
+	TVUbPI1DswOu1NyXPE287mrmACZBIYcO6phywIRtQsIGedboWKuHpsqNLWKR50NIfu0Gkp5w9Ya
+	ec4sV1NCKDLYSutzLodo/nLaTZcaP1zczc55CWEljBik6TY/hxs0vtcErbTxrymZscVPfLoobxO
+	+I+4gpbDsIRxNp2cOvbKP96MTGZyxFmHGtV5VEtfMZFC
+X-Received: by 2002:a05:690e:788:b0:679:bb48:692b with SMTP id 956f58d0204a3-67c1455b60dmr1240896d50.59.1793995954318;
+        Fri, 06 Nov 2026 12:12:34 -0800 (PST)
+Received: from localhost ([2a03:2880:30ff::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c13635f25sm2601355d50.23.2026.11.06.12.12.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 12:12:30 -0800 (PST)
+        Fri, 06 Nov 2026 12:12:33 -0800 (PST)
 From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Fri, 06 Nov 2026 12:12:11 -0800
-Subject: [PATCH net-next v3 3/5] psp: defer tx key deletions for SADB
- drivers
+Date: Fri, 06 Nov 2026 12:12:12 -0800
+Subject: [PATCH net-next v3 4/5] selftests: drv-net: psp: factor out psp
+ connection setup
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,7 +93,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-psp-v3-3-a8dd38f5a727@gmail.com>
+Message-Id: <20261106-psp-v3-4-a8dd38f5a727@gmail.com>
 References: <20261106-psp-v3-0-a8dd38f5a727@gmail.com>
 In-Reply-To: <20261106-psp-v3-0-a8dd38f5a727@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>, 
@@ -108,556 +108,182 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-Devices that store tx keys in an SADB can hold references to key
-handles in tx descriptor state. PSP core needs to make sure all of
-these tx descriptors have been completed before calling
-psp_dev_tx_key_del(). Before rekeying, this was ensured by skbs
-holding references to skb->sk, and sk->psp_assoc being cleared only in
-the socket destructor.
+Lift out connection setup and PSP assoc uapi code in psp.py and
+responder, so that the key exchange sequence can be used in other test
+cases that start with a key exchange, but might choose to perform
+additional tx/rx assoc calls afterwards.
 
-Rekeying introduces a code path where a psp_assoc is detached from its
-socket and may be freed while the socket is still alive. This means
-skbs may exist in the driver ring that were rendered into descriptors
-using that old psp_assoc. We cannot delete the key from the SADB until
-we know these descriptors have been completed.
-
-After a psp_assoc has all references drained (refcount and rcu), PSP
-core records the BQL queued count for each active TX queue and starts a
-descriptor grace period. It then polls the queued and completed byte
-counts until all data outstanding at the start of the grace period has
-completed. After that point, any keys queued for deletion before the
-start of the grace period can be deleted from the SADB.
-
-Make CONFIG_INET_PSP depend on CONFIG_BQL.
-
-Drivers which install Tx keys must meet the requirements in
-Documentation/networking/psp.rst.
-
-Regarding lock ordering: the order of taking psp_dev::lock before
-net_device::lock was established in commit 1e6e0cec0dab ("net/mlx5e:
-psp: Make PSP steering config dynamic"). SADB drivers must not call
-psp_dev_unregister() with the netdev instance lock held.
-
-Adding a time based rate limit per socket for tx-assoc to prevent
-wasting SADB or deferred deletion queue space is possible for future
-work. For now, users should avoid presenting PSP devices to users they
-don't trust to abuse this.
+The caller of conn_setup_psp() not handling errors was preexisting. Here
+we are adding some more error paths, so we just handle errors by closing
+the data sock to make the code a bit more robust.
 
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 v3:
-- document that Tx descriptors must be completed or discarded
-  before psp_dev_unregister()
-
-v2:
-- move grace period mechanism to use bql instead of driver callback.
-- allow tx rekey on SADB devices
+- take key lengths from the kernel's rx-assoc reply instead of a
+  per-version table
+- close the data socket in psp_responder if conn_setup_psp() fails
 ---
- Documentation/networking/psp.rst |  42 +++++++
- include/net/psp/types.h          |  18 +++
- net/psp/Kconfig                  |   1 +
- net/psp/Makefile                 |   2 +-
- net/psp/psp.h                    |   5 +
- net/psp/psp_deferred_del.c       | 231 +++++++++++++++++++++++++++++++++++++++
- net/psp/psp_main.c               |  22 +++-
- net/psp/psp_sock.c               |  13 ++-
- 8 files changed, 325 insertions(+), 9 deletions(-)
+ tools/testing/selftests/drivers/net/psp.py         | 14 +++-
+ .../testing/selftests/drivers/net/psp_responder.c  | 78 ++++++++++++++--------
+ 2 files changed, 63 insertions(+), 29 deletions(-)
 
-diff --git a/Documentation/networking/psp.rst b/Documentation/networking/psp.rst
-index 43f222b38d3d..ceb1e232317f 100644
---- a/Documentation/networking/psp.rst
-+++ b/Documentation/networking/psp.rst
-@@ -202,6 +202,48 @@ Drivers must use ``psp_skb_get_assoc_rcu()`` to check if PSP Tx offload
- was requested for given skb. On Rx drivers should allocate and populate
- the ``SKB_EXT_PSP`` skb extension, and set the skb->decrypted bit to 1.
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 473500901879..71eeade62ad2 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -447,10 +447,11 @@ def assoc_twice(cfg):
+             ksft_eq(len(tx), 0)
  
-+Deferred Tx key deletion
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Drivers which implement ``tx_key_add`` and ``tx_key_del`` may hold key
-+references in their Tx rings, so PSP core waits until descriptors
-+containing these references are completed before removing the key from
-+the underlying device. PSP core uses accounting based on Byte Queue Limits
-+(BQL) to wait for a suitable grace period before asking the driver to
-+remove the key.
-+
-+Drivers which implement the Tx key callbacks must meet the following
-+requirements:
-+
-+* The driver must be "ops locked"
-+  (see Documentation/networking/netdevices.rst).
-+* A PSP skb accepted by ``ndo_start_xmit()`` must remain socket-owned until
-+  every Tx descriptor referencing its PSP key has been completed or otherwise
-+  made incapable of using the key. The driver must not orphan the skb before
-+  that point. Otherwise, the socket destructor may free the Tx key while key
-+  references remain in the Tx ring.
-+* Every PSP packet accepted by ``ndo_start_xmit()`` must be included in BQL
-+  queued bytecount before the function returns.
-+* Completion bytecounts must exactly match enqueue bytecounts and preserve
-+  queue order. A later packet must not be reported as completed while an earlier
-+  packet can still reference its key.
-+* Before calling ``dql_reset()`` on a queue, the driver must ensure that all
-+  outstanding descriptors containing key references have been completed or
-+  discarded. If called under the netdev instance lock, then descriptors can
-+  remain outstanding after the reset as long as they are completed or
-+  discarded before the instance lock is released.
-+* When decreasing ``real_num_tx_queues``, the driver must ensure that every
-+  outstanding descriptor on the queues at or above the new Tx queue count
-+  has been completed or otherwise made incapable of using its PSP key
-+  before the netdev instance lock is released.
-+* The BQL state of a queue below ``real_num_tx_queues`` must reflect all
-+  bytes completed or be reset after the queue has been quiesced. Failure to
-+  do so will stall the grace period algorithm.
-+* Before calling ``psp_dev_unregister()``, the driver must ensure that all
-+  outstanding Tx descriptors containing key references have been completed
-+  or discarded. PSP core deletes all remaining Tx keys during
-+  unregistration without waiting for a grace period.
-+
- Kernel implementation notes
- ---------------------------
  
-diff --git a/include/net/psp/types.h b/include/net/psp/types.h
-index 9eb89d2d680c..f3e1fe97224e 100644
---- a/include/net/psp/types.h
-+++ b/include/net/psp/types.h
-@@ -6,6 +6,7 @@
- #include <linux/bits.h>
- #include <linux/mutex.h>
- #include <linux/refcount.h>
-+#include <linux/workqueue.h>
- #include <net/net_trackers.h>
+-def _data_basic_send(cfg, version, ipver):
+-    """ Test basic data send """
+-    _init_psp_dev(cfg)
++def _establish_psp_conn(cfg, version, ipver=None):
++    """Establish a PSP connection and return after key exchange
  
- struct netlink_ext_ack;
-@@ -81,6 +82,11 @@ struct psp_assoc_dev {
-  *			device key
-  * @stale_assocs:	associations which use a rotated out key, or were
-  *			superseded by a rekey
-+ * @tx_del:		deferred TX key deletion state
-+ * @tx_del.active:	TX keys to be deleted after the current grace period
-+ * @tx_del.next:	TX keys queued for deletion during current grace period
-+ * @tx_del.work:	delayed work item for periodic grace period checking
-+ * @tx_del.txq_state:	TX queue state for deferred deletion grace periods
-  *
-  * @stats:	statistics maintained by the core
-  * @stats.rotations:	See stats attr key-rotations
-@@ -110,6 +116,13 @@ struct psp_dev {
- 	struct list_head prev_assocs;
- 	struct list_head stale_assocs;
++    Requires _init_psp_dev() to have been called first.
++    """
+     # Version 0 is required by spec, don't let it skip
+     if version:
+         name = cfg.pspnl.consts["version"].entries_by_val[version].name
+@@ -475,7 +476,14 @@ def _data_basic_send(cfg, version, ipver):
+                         "version": version,
+                         "tx-key": tx,
+                         "sock-fd": s.fileno()})
++    return s
++
++
++def _data_basic_send(cfg, version, ipver):
++    """ Test basic data send """
++    _init_psp_dev(cfg)
  
-+	struct {
-+		struct list_head active;
-+		struct list_head next;
-+		struct delayed_work work;
-+		struct psp_txq_state *txq_state;
-+	} tx_del;
-+
- 	struct {
- 		unsigned long rotations;
- 		unsigned long stales;
-@@ -158,9 +171,14 @@ struct psp_key_parsed {
-  * enum psp_assoc_flags - flags of struct psp_assoc
-  * @PSP_ASSOC_SKIP_TX_KEY_DEL: Do not delete Tx key from psp_dev. It was
-  *	copied to a newer psp_assoc during an Rx rekey.
-+ * @PSP_ASSOC_DEFER_TX_KEY_DEL: Send Tx key to psp_dev's deferred deletion
-+ *	queue. This psp_assoc was detached from its socket during a Tx rekey
-+ *	and requires device descriptor state referencing this key to be
-+ *	drained.
-  */
- enum psp_assoc_flags {
- 	PSP_ASSOC_SKIP_TX_KEY_DEL	= BIT(0),
-+	PSP_ASSOC_DEFER_TX_KEY_DEL	= BIT(1),
- };
++    s = _establish_psp_conn(cfg, version, ipver)
+     data_len = _send_careful(cfg, s, 100)
+     _check_data_rx(cfg, data_len)
+     _close_psp_conn(cfg, s)
+diff --git a/tools/testing/selftests/drivers/net/psp_responder.c b/tools/testing/selftests/drivers/net/psp_responder.c
+index a26e7628bbb1..14b179e1aec8 100644
+--- a/tools/testing/selftests/drivers/net/psp_responder.c
++++ b/tools/testing/selftests/drivers/net/psp_responder.c
+@@ -37,20 +37,15 @@ static struct {
+ 	unsigned char rx;
+ } psp_vers;
  
- struct psp_assoc {
-diff --git a/net/psp/Kconfig b/net/psp/Kconfig
-index 84d6b0f25460..36c12493784f 100644
---- a/net/psp/Kconfig
-+++ b/net/psp/Kconfig
-@@ -5,6 +5,7 @@
- config INET_PSP
- 	bool "PSP Security Protocol support"
- 	depends on INET
-+	depends on BQL
- 	select SKB_DECRYPTED
- 	select SKB_EXTENSIONS
- 	select SOCK_VALIDATE_XMIT
-diff --git a/net/psp/Makefile b/net/psp/Makefile
-index eb5ff3c5bfb2..40decd8fe050 100644
---- a/net/psp/Makefile
-+++ b/net/psp/Makefile
-@@ -2,4 +2,4 @@
+-static int conn_setup_psp(struct ynl_sock *ys, struct opts *opts, int data_sock)
++#define PSP_MAX_KEY_LEN		32
++
++static int
++rx_assoc(struct ynl_sock *ys, __u32 *spi, char *key, unsigned int *key_len,
++	 int data_sock)
+ {
+ 	struct psp_rx_assoc_rsp *rsp;
+ 	struct psp_rx_assoc_req *req;
+-	struct psp_tx_assoc_rsp *tsp;
+-	struct psp_tx_assoc_req *teq;
+-	char info[300];
+-	int key_len;
+-	ssize_t sz;
+-	__u32 spi;
  
- obj-$(CONFIG_INET_PSP) += psp.o
+-	dbg("create PSP connection\n");
+-
+-	// Rx assoc alloc
+ 	req = psp_rx_assoc_req_alloc();
  
--psp-y := psp_main.o psp_nl.o psp_sock.o psp-nl-gen.o
-+psp-y := psp_main.o psp_nl.o psp_sock.o psp_deferred_del.o psp-nl-gen.o
-diff --git a/net/psp/psp.h b/net/psp/psp.h
-index 92d7b92acaed..0cfc82c6c711 100644
---- a/net/psp/psp.h
-+++ b/net/psp/psp.h
-@@ -18,6 +18,11 @@ int psp_dev_check_access(struct psp_dev *psd, struct net *net, bool admin);
- bool psp_has_assoc_dev_in_ns(struct psp_dev *psd, struct net *net);
- int psp_attach_netdev_notifier(void);
- 
-+int psp_deferred_del_init(struct psp_dev *psd);
-+void psp_deferred_del_stop(struct psp_dev *psd);
-+void psp_deferred_del_uninit(struct psp_dev *psd, bool unpublished);
-+void psp_deferred_del_queue(struct psp_dev *psd, struct psp_assoc *pas);
-+
- void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd);
- void psp_nl_notify_disassoc(struct psp_dev *psd, struct net *net);
- 
-diff --git a/net/psp/psp_deferred_del.c b/net/psp/psp_deferred_del.c
-new file mode 100644
-index 000000000000..cfbac72577e9
---- /dev/null
-+++ b/net/psp/psp_deferred_del.c
-@@ -0,0 +1,231 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/bitmap.h>
-+#include <linux/jiffies.h>
-+#include <linux/list.h>
-+#include <linux/netdevice.h>
-+#include <linux/slab.h>
-+#include <net/netdev_lock.h>
-+#include <net/psp.h>
-+
-+#include "psp.h"
-+
-+#define PSP_TX_GRACE_POLL_MS	1000
-+
-+struct psp_txq_state {
-+	unsigned int num_tx_queues;
-+	unsigned long *drained_queues;
-+	unsigned int to_complete[];
-+};
-+
-+static void psp_txq_state_free(struct psp_txq_state *state)
-+{
-+	if (!state)
-+		return;
-+
-+	bitmap_free(state->drained_queues);
-+	kvfree(state);
-+}
-+
-+static struct psp_txq_state *
-+psp_txq_state_alloc(unsigned int max_tx_queues)
-+{
-+	struct psp_txq_state *state;
-+
-+	state = kvzalloc_flex(*state, to_complete, max_tx_queues);
-+	if (!state)
-+		return NULL;
-+
-+	state->drained_queues = bitmap_zalloc(max_tx_queues, GFP_KERNEL);
-+	if (!state->drained_queues) {
-+		psp_txq_state_free(state);
-+		return NULL;
-+	}
-+
-+	return state;
-+}
-+
-+static void psp_tx_grace_start(struct psp_dev *psd)
-+{
-+	struct psp_txq_state *state = psd->tx_del.txq_state;
-+	struct net_device *dev = psd->main_netdev;
-+	unsigned int i;
-+
-+	netdev_assert_locked(dev);
-+
-+	/* Any instances of ndo_start_xmit() that observed these keys through
-+	 * psp_skb_get_assoc_rcu() must already be accounted in BQL's queued
-+	 * byte count. ndo_start_xmit() runs with BHs disabled, which forms an
-+	 * implicit RCU read-side critical section, and we are now at least one
-+	 * grace period after any of these psp_assocs have been cleared from
-+	 * sk->psp_assoc.
-+	 */
-+	state->num_tx_queues = dev->real_num_tx_queues;
-+	bitmap_zero(state->drained_queues, state->num_tx_queues);
-+	for (i = 0; i < state->num_tx_queues; i++) {
-+		struct netdev_queue *txq = netdev_get_tx_queue(dev, i);
-+
-+		state->to_complete[i] = READ_ONCE(txq->dql.num_queued);
-+	}
-+}
-+
-+static bool psp_tx_grace_done(struct psp_dev *psd)
-+{
-+	struct psp_txq_state *state = psd->tx_del.txq_state;
-+	struct net_device *dev = psd->main_netdev;
-+	bool all_completed = true;
-+	unsigned int i;
-+
-+	netdev_assert_locked(dev);
-+
-+	if (dev->real_num_tx_queues < state->num_tx_queues)
-+		state->num_tx_queues = dev->real_num_tx_queues;
-+
-+	for (i = 0; i < state->num_tx_queues; i++) {
-+		struct netdev_queue *txq = netdev_get_tx_queue(dev, i);
-+		unsigned int completed;
-+		unsigned int queued;
-+
-+		if (test_bit(i, state->drained_queues))
-+			continue;
-+
-+		/* Drivers must meet the requirements documented in
-+		 * Documentation/networking/psp.rst to guarantee forward
-+		 * progress and avoid ending the grace period prematurely.
-+		 *
-+		 * We snapshotted num_queued in psp_tx_grace_start() and need
-+		 * to determine whether num_completed has since reached or
-+		 * passed that mark. For a given queue, we can consider first
-+		 * whether or not dql_reset() was called at any point between
-+		 * when we read num_queued until we read num_completed and
-+		 * num_queued here and then separate the space of possible
-+		 * states based on that.
-+		 *
-+		 * Not reset: num_queued and num_completed only increase, and
-+		 * dql keeps num_queued - num_completed <= INT_MAX at all
-+		 * times. We can form three exhaustive sub cases:
-+		 *
-+		 * (int)(to_complete - completed) <= 0: completion reached or
-+		 * passed the mark. At the time to_complete was read,
-+		 * completed was in [to_complete - INT_MAX, to_complete].
-+		 *
-+		 * (int)(to_complete - queued) > 0: to_complete and queued are
-+		 * both snapshots of num_queued, so queued has advanced more
-+		 * than INT_MAX + 1 past to_complete. num_completed lags
-+		 * queued by at most INT_MAX, so num_completed must have
-+		 * crossed to_complete.
-+		 *
-+		 * Otherwise the mark may still be in flight, so poll again.
-+		 *
-+		 * Reset: By the driver conditions laid out in
-+		 * Documentation/networking/psp.rst, if a dql_reset()
-+		 * occurred, and we are holding the instance lock, then we
-+		 * know the actual state of the queue is drained. The check
-+		 * below is then conservative because there is no risk of
-+		 * falsely declaring the queue drained. As long as dql makes
-+		 * forward progress the check should eventually report
-+		 * drained.
-+		 */
-+		completed = READ_ONCE(txq->dql.num_completed);
-+		queued = READ_ONCE(txq->dql.num_queued);
-+
-+		if ((int)(state->to_complete[i] - completed) <= 0 ||
-+		    (int)(state->to_complete[i] - queued) > 0)
-+			__set_bit(i, state->drained_queues);
-+		else
-+			all_completed = false;
-+	}
-+
-+	return all_completed;
-+}
-+
-+static bool psp_tx_grace_active(struct psp_dev *psd)
-+{
-+	return !list_empty(&psd->tx_del.active);
-+}
-+
-+static void psp_deferred_del_work(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct psp_assoc *pas, *tmp;
-+	bool need_reschedule;
-+	struct psp_dev *psd;
-+	LIST_HEAD(to_free);
-+
-+	psd = container_of(dwork, struct psp_dev, tx_del.work);
-+
-+	mutex_lock(&psd->lock);
-+	netdev_lock(psd->main_netdev);
-+
-+	if (psp_tx_grace_active(psd) && psp_tx_grace_done(psd))
-+		list_splice_init(&psd->tx_del.active, &to_free);
-+
-+	if (!psp_tx_grace_active(psd) && !list_empty(&psd->tx_del.next)) {
-+		psp_tx_grace_start(psd);
-+		list_splice_init(&psd->tx_del.next, &psd->tx_del.active);
-+	}
-+
-+	netdev_unlock(psd->main_netdev);
-+
-+	list_for_each_entry(pas, &to_free, assocs_list)
-+		psp_dev_tx_key_del(psd, pas);
-+
-+	need_reschedule = psp_tx_grace_active(psd);
-+	mutex_unlock(&psd->lock);
-+
-+	if (need_reschedule)
-+		mod_delayed_work(system_percpu_wq, &psd->tx_del.work,
-+				 msecs_to_jiffies(PSP_TX_GRACE_POLL_MS));
-+
-+	list_for_each_entry_safe(pas, tmp, &to_free, assocs_list) {
-+		list_del(&pas->assocs_list);
-+		psp_dev_put(psd);
-+		kfree(pas);
-+	}
-+}
-+
-+int psp_deferred_del_init(struct psp_dev *psd)
-+{
-+	INIT_LIST_HEAD(&psd->tx_del.active);
-+	INIT_LIST_HEAD(&psd->tx_del.next);
-+	INIT_DELAYED_WORK(&psd->tx_del.work, psp_deferred_del_work);
-+
-+	if (!psd->ops->tx_key_del)
-+		return 0;
-+
-+	psd->tx_del.txq_state =
-+		psp_txq_state_alloc(psd->main_netdev->num_tx_queues);
-+
-+	return psd->tx_del.txq_state ? 0 : -ENOMEM;
-+}
-+
-+void psp_deferred_del_stop(struct psp_dev *psd)
-+{
-+	disable_delayed_work_sync(&psd->tx_del.work);
-+}
-+
-+void psp_deferred_del_uninit(struct psp_dev *psd, bool unpublished)
-+{
-+	struct psp_assoc *pas, *next;
-+
-+	lockdep_assert(unpublished || lockdep_is_held(&psd->lock));
-+
-+	psp_txq_state_free(psd->tx_del.txq_state);
-+	psd->tx_del.txq_state = NULL;
-+
-+	list_splice_init(&psd->tx_del.active, &psd->tx_del.next);
-+	list_for_each_entry_safe(pas, next, &psd->tx_del.next, assocs_list) {
-+		list_del(&pas->assocs_list);
-+		psp_dev_tx_key_del(psd, pas);
-+		psp_dev_put(psd);
-+		kfree(pas);
-+	}
-+}
-+
-+void psp_deferred_del_queue(struct psp_dev *psd, struct psp_assoc *pas)
-+{
-+	lockdep_assert_held(&psd->lock);
-+
-+	list_move_tail(&pas->assocs_list, &psd->tx_del.next);
-+	schedule_delayed_work(&psd->tx_del.work, 0);
-+}
-diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 273b010d2355..e118b8019e7e 100644
---- a/net/psp/psp_main.c
-+++ b/net/psp/psp_main.c
-@@ -3,8 +3,10 @@
- #include <linux/bitfield.h>
- #include <linux/list.h>
- #include <linux/netdevice.h>
-+#include <linux/slab.h>
- #include <linux/xarray.h>
- #include <net/net_namespace.h>
-+#include <net/netdev_lock.h>
- #include <net/psp.h>
- #include <net/udp.h>
- 
-@@ -70,7 +72,8 @@ psp_dev_create(struct net_device *netdev,
- 		    !psd_ops->rx_spi_alloc ||
- 		    !psd_ops->get_stats ||
- 		    (!psd_ops->tx_key_add != !psd_ops->tx_key_del) ||
--		    (psd_caps->assoc_drv_spc && !psd_ops->tx_key_add)))
-+		    (psd_caps->assoc_drv_spc && !psd_ops->tx_key_add) ||
-+		    (psd_ops->tx_key_add && !netdev_need_ops_lock(netdev))))
- 		return ERR_PTR(-EINVAL);
- 
- 	psd = kzalloc_obj(*psd);
-@@ -89,13 +92,16 @@ psp_dev_create(struct net_device *netdev,
- 	INIT_LIST_HEAD(&psd->stale_assocs);
- 	refcount_set(&psd->refcnt, 1);
- 
-+	err = psp_deferred_del_init(psd);
-+	if (err)
-+		goto err_free_psd;
-+
- 	mutex_lock(&psp_devs_lock);
- 	err = xa_alloc_cyclic(&psp_devs, &psd->id, psd, xa_limit_16b,
- 			      &last_id, GFP_KERNEL);
- 	if (err) {
- 		mutex_unlock(&psp_devs_lock);
--		kfree(psd);
--		return ERR_PTR(err);
-+		goto err_uninit_deferred_del;
+ 	psp_rx_assoc_req_set_sock_fd(req, data_sock);
+@@ -64,29 +59,28 @@ static int conn_setup_psp(struct ynl_sock *ys, struct opts *opts, int data_sock)
+ 		return -1;
  	}
- 	mutex_lock(&psd->lock);
- 	mutex_unlock(&psp_devs_lock);
-@@ -111,6 +117,12 @@ psp_dev_create(struct net_device *netdev,
- 	mutex_unlock(&psd->lock);
  
- 	return psd;
-+
-+err_uninit_deferred_del:
-+	psp_deferred_del_uninit(psd, true);
-+err_free_psd:
-+	kfree(psd);
-+	return ERR_PTR(err);
- }
- EXPORT_SYMBOL(psp_dev_create);
+-	// SPI exchange
+-	key_len = rsp->rx_key._len.key;
+-	memcpy(info, &rsp->rx_key.spi, sizeof(spi));
+-	memcpy(&info[sizeof(spi)], rsp->rx_key.key, key_len);
+-	sz = sizeof(spi) + key_len;
++	*key_len = rsp->rx_key._len.key;
++	memcpy(spi, &rsp->rx_key.spi, sizeof(*spi));
++	memcpy(key, rsp->rx_key.key, *key_len);
  
-@@ -133,6 +145,8 @@ void psp_dev_unregister(struct psp_dev *psd)
- 	struct psp_assoc_dev *entry, *entry_tmp;
- 	struct psp_assoc *pas, *next;
+-	send(data_sock, info, sz, MSG_WAITALL);
+ 	psp_rx_assoc_rsp_free(rsp);
  
-+	psp_deferred_del_stop(psd);
-+
- 	mutex_lock(&psp_devs_lock);
- 	mutex_lock(&psd->lock);
- 
-@@ -145,6 +159,8 @@ void psp_dev_unregister(struct psp_dev *psd)
- 	xa_store(&psp_devs, psd->id, NULL, GFP_KERNEL);
- 	mutex_unlock(&psp_devs_lock);
- 
-+	psp_deferred_del_uninit(psd, false);
-+
- 	list_splice_init(&psd->active_assocs, &psd->prev_assocs);
- 	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
- 	list_for_each_entry_safe(pas, next, &psd->stale_assocs, assocs_list) {
-diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-index d497f41c483e..48bffe088c79 100644
---- a/net/psp/psp_sock.c
-+++ b/net/psp/psp_sock.c
-@@ -114,8 +114,14 @@ static void psp_assoc_free(struct work_struct *work)
- 
- 	mutex_lock(&psd->lock);
- 	if (psp_dev_is_registered(psd)) {
--		if (psp_assoc_needs_tx_key_del(pas))
-+		if (psp_assoc_needs_tx_key_del(pas)) {
-+			if (pas->flags & PSP_ASSOC_DEFER_TX_KEY_DEL) {
-+				psp_deferred_del_queue(psd, pas);
-+				mutex_unlock(&psd->lock);
-+				return;
-+			}
- 			psp_dev_tx_key_del(psd, pas);
-+		}
- 		list_del(&pas->assocs_list);
- 	}
- 	mutex_unlock(&psd->lock);
-@@ -287,10 +293,6 @@ psp_sock_tx_rekey(struct sock *sk, struct psp_dev *psd, struct psp_assoc *pas,
- 	struct psp_assoc *new;
- 	int err;
- 
--	if (psp_dev_has_sadb(psd)) {
--		NL_SET_ERR_MSG(extack, "Tx rekey not supported on this device");
--		return -EOPNOTSUPP;
+-	sz = recv(data_sock, info, sz, MSG_WAITALL);
+-	if (sz < 0) {
+-		perror("ERROR: failed to read PSP key from sock");
+-		return -1;
 -	}
- 	if (!pas->peer_tx) {
- 		NL_SET_ERR_MSG(extack, "Socket PSP state is not fully established");
- 		return -EBUSY;
-@@ -322,6 +324,7 @@ psp_sock_tx_rekey(struct sock *sk, struct psp_dev *psd, struct psp_assoc *pas,
- 	list_move(&pas->assocs_list, &psd->stale_assocs);
+-	memcpy(&spi, info, sizeof(spi));
++	return 0;
++}
++
++static int
++tx_assoc(struct ynl_sock *ys, __u8 version, __u32 spi, char *key,
++	 unsigned int key_len, int data_sock)
++{
++	struct psp_tx_assoc_rsp *tsp;
++	struct psp_tx_assoc_req *teq;
  
- 	rcu_assign_pointer(sk->psp_assoc, new);
-+	pas->flags |= PSP_ASSOC_DEFER_TX_KEY_DEL;
- 	psp_assoc_put(pas);
+-	// Setup Tx assoc
+ 	teq = psp_tx_assoc_req_alloc();
  
+ 	psp_tx_assoc_req_set_sock_fd(teq, data_sock);
+-	psp_tx_assoc_req_set_version(teq, psp_vers.tx);
++	psp_tx_assoc_req_set_version(teq, version);
+ 	psp_tx_assoc_req_set_tx_key_spi(teq, spi);
+-	psp_tx_assoc_req_set_tx_key_key(teq, &info[sizeof(spi)], key_len);
++	psp_tx_assoc_req_set_tx_key_key(teq, key, key_len);
+ 
+ 	tsp = psp_tx_assoc(ys, teq);
+ 	psp_tx_assoc_req_free(teq);
+@@ -99,6 +93,35 @@ static int conn_setup_psp(struct ynl_sock *ys, struct opts *opts, int data_sock)
  	return 0;
+ }
+ 
++static int conn_setup_psp(struct ynl_sock *ys, struct opts *opts, int data_sock)
++{
++	char info[sizeof(__u32) + PSP_MAX_KEY_LEN];
++	unsigned int key_len;
++	ssize_t sz;
++	__u32 spi;
++
++	dbg("create PSP connection\n");
++
++	if (rx_assoc(ys, &spi, &info[sizeof(spi)], &key_len, data_sock))
++		return -1;
++
++	// SPI exchange
++	memcpy(info, &spi, sizeof(spi));
++	sz = sizeof(spi) + key_len;
++
++	send(data_sock, info, sz, MSG_WAITALL);
++
++	sz = recv(data_sock, info, sz, MSG_WAITALL);
++	if (sz < 0) {
++		perror("ERROR: failed to read PSP key from sock");
++		return -1;
++	}
++	memcpy(&spi, info, sizeof(spi));
++
++	return tx_assoc(ys, psp_vers.tx, spi, &info[sizeof(spi)], key_len,
++			data_sock);
++}
++
+ static void send_ack(int sock)
+ {
+ 	send(sock, "ack", 4, MSG_WAITALL);
+@@ -282,7 +305,10 @@ run_session(struct ynl_sock *ys, struct opts *opts,
+ 				/* nothing to do */
+ 			} else if (accept_cfg == ACCEPT_CFG_PSP) {
+ 				dbg("new data sock: psp\n");
+-				conn_setup_psp(ys, opts, data_sock);
++				if (conn_setup_psp(ys, opts, data_sock)) {
++					close(data_sock);
++					data_sock = -1;
++				}
+ 			} else {
+ 				fprintf(stderr, "WARN: new data sock but no config\n");
+ 			}
 
 -- 
 2.52.0
