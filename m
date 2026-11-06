@@ -1,52 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793974232;
-	b=LZLVl1P2FqA0YY2orXY2GvCHgQi0rGimZ/lw2RYSQSsLCzDvR8Hk1xp5bgjsyBfydJ3o
-	 ABSPhjxs3hjqHW9VFetodTIVsrm4NVQz+Ve1lNijI2hYwUBkHVPDk+e7HdtdqvI3IQWoq
-	 8Lda5tQXGxFuaVd5jhOPVKhTVjSXh7p9xFIWJMFuz7z4YBc2UxxLkgY+0FrI9AzTc/9bX
-	 g8ialMnIbvtpPKlKqzKtAoW0sybDXzJhF5NfhQ02hIDnmXICAjnq9PjhMt9C2fQRGdYor
-	 xG5RAGJROT3g6yf2mTpIw7mksbrubXXSMcZuSwHzT4ZZL9Dwt6YyJerWOeQBYA+99Tg==
+	t=1793974652;
+	b=PcuYomvT6hu/Q70sZ8uJcJ7XA/rmT2NAbtBlIOlZb+P7Sdlq1+sTro1+YLF4pLOepFqE
+	 FOH2qN0njJmcVIcRGqRx8Z0hAkSmKqxT9qt9k4tUAHG1EbcEkDvKEsOU8TiLapyqKG54y
+	 8NzEroq1lomP8uobwAQ18Q40/7MNz+zZE0dl6HwXZg40Dhd8pw5pU2tdyTSfwc94NBeQL
+	 amLgL28pzj0zoDfoEvB1Zl0wYFVFxw2vD7WiGMmZojGqs19APUwFObHV1VO7A5Qqmv7xV
+	 oMJPdnHmV00FdY0kjVtk2nZDVFii3wAeDRB37vsAHFUwGHUJHviG+DrlILMTapijTOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793974232;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=b/cEUCLQXzPxV9G+iZB5C+37LxfrcLwhmYVvdlt5C/Q=;
-	b=y+FOuVTlJqZUeamog4uo0SvJAoashpvQu0Xosc0ap+0683bFgubH+B44DK1erIR+ZtCO
-	 WbVDsF+1/SGV4MkbePe7Rc39XG63C2LjnW/g+AX8eB8GoFPdcSGMIF95p0c4WnUJU2zbM
-	 sPPNzRyh4yN0qGUXAam3DQBP39v/NhtIov/ODhAs0OT9rlOm7U/5bqubrYbFyAPwhREgm
-	 cpxiIMDq7cd7xUE0ivUTA5SDz3ERSOCTgYJLI1lYfBc3ZTsraR50AOB0EHY5rb/NJOgaE
-	 h9LV/xWptdBPmLlFEy1O2Suc+t6NzXUb3BL11/9AhwitD4RP+6VK01UN4Ppijzl0Vzg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793974652;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=dgU4K6jypQRq1j+ccJv6VGA6lIRv41Ji69kDadDpuPo=;
+	b=jLrzlWujySUHhITTyYLtLaa/aUwcPt+lDJ1RvMXAC/Vx349sIZ0sYFA3x8ZQdxdX8KM9
+	 9l2rol4rj5t5FyNrLhLudGG5afaQsau2BhihKAeYWT2OcMMCzK6gZgscFkwzBSufOoLDb
+	 KzShGJDebSQwlZekibXO5VQJsvhmiadHA0dkYclpLRpxzEMLSw11CWUaMT14GhD79T7Al
+	 p04NRa5p2zz+Fvm3UTEGbJohcWE+DVCFKR/56lQgI4jXK2oFachHxX6W18vz45jfdSn1W
+	 yLhGlnvJ7f1RsYWs7jL9YEEN3t5EThPsvNpYSq4VOukVA2a1uoOeny6zRJ14xseZErg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=nDfjqpBp;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=crkkAHmX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12771606A333;
-	Fri,  6 Nov 2026 14:10:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 12771606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1419D606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 14:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=nDfjqpBp
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B5F1DA05A5;
-	Fri, 06 Nov 2026 15:10:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793974228; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=b/cEUCLQXzPxV9G+iZB5C+37LxfrcLwhmYVvdlt5C/Q=;
-	b=nDfjqpBpERelMXmqVMyHtKYwd6qPIOENe43ukwRPzEOLFUbOdfr7ar1aCfcQeaQlzCJyxP
-	2+nhegvKvrNkYkoCPaQZIO2LdHOmHQCPv+kI7Zwf52CHIOrHpKMDif2vAEvQs8bTcDQrLp
-	rakaeGVSz4MzALlMeU10gOSHZIf1uq8FTW0SzgVlF5P7Hn1XgGHapvDfrRd2ocU2ndjnCh
-	hPlg/zQM4Ro3DIZ3ufrEc/OK9jgK3nfo7EnX5dpy+maO4Dma6jRzDHskPGX52geTjmSb+9
-	QVXLb+paI0KA0pqsJy/UpLj8IeXw/H7bZGVqAWYq+k6uTKYpGBrCBcECRxocjw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Fri, 06 Nov 2026 15:10:18 +0100
-Subject: [PATCH net] net: bcmgenet: cap the Tx queue threshold at the ring
- size
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=crkkAHmX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031E81F008A1;
+	Fri,  6 Nov 2026 14:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793974651;
+	bh=dgU4K6jypQRq1j+ccJv6VGA6lIRv41Ji69kDadDpuPo=;
+	h=From:To:Cc:Subject:Date;
+	b=crkkAHmXuYFacvKzL9mhWCffs5WnubNXiTwhe0v9aTpvUhs7sDJfQyKrG2cyZyvcv
+	 T+81N6e7ND+Ar1ieq5BLym/0ySLo9kxDq9d87HplM/hhdQXMjw1B67QkhD9Sv+ZaCZ
+	 Mz89g++i+fwJWH3RKnOLA3ounpXvAzT4maA+lsMoAvSiAvX+7kr/UpywL7DZt61k00
+	 2f9Rsv/tLWvNTYV3PgblEKtnn/w5/R8lazwG+14POhmjxhvqX1BK7uS+Ugxjpt5e+i
+	 u4SoBPI9sVdDa6GggSZiRaxzEZvaEoD838S40iLeoZkhWUvzUESMo3UfPzsgykD9n9
+	 NfVHYZLTcBCWQ==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] udp: check frag_list IP family before using skb_segment_list()
+Date: Fri,  6 Nov 2026 15:17:27 +0100
+Message-ID: <20261106141727.2303218-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,101 +61,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71@tipi-net.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0Q6CMBAEf4Xss5e0pzbEXzE+AD3giKnaFkJC+
- HeLPs5mZzYkiSoJt2pDlEWTvkIBe6rQjU0YhNQXBht21hpHoaVBgmTK64fy+PR0gJjaXXo+Xz0
- zivuO0uv6695RDnj8xzS3k3T5KGLfvxre38F+AAAA
-X-Change-ID: 20261106-nb-genet-txq-thld-net-e0864f235d22
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Justin Chen <justin.chen@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-A Tx queue stops when MAX_SKB_FRAGS + 1 or fewer descriptors are free and
-wakes once there are more. Queues 1 to 4 hold 32 descriptors, so with
-CONFIG_MAX_SKB_FRAGS at 31 they would need 33 to wake. As a result the
-first packet stops the queue and it stays stopped:
+From: Kyle Zeng <kylebot@openai.com>
 
-  eth0: NETDEV WATCHDOG: CPU: 0: transmit queue 3 timed out 2004 ms
-  eth0: NETDEV WATCHDOG: CPU: 1: transmit queue 4 timed out 2004 ms
+UDP fraglist GRO uses SKB_GSO_UDP_L4 for both IPv4 and IPv6.
 
-On a Raspberry Pi CM4 only queue 0 carried traffic afterwards. The other
-four counted an error on nearly every packet.
+__udp_gso_segment() reuses the frag_list skbs when the geometry of
+the head skb was not modified. skb_segment_list() keeps the network
+header of each frag_list skb as it was at GRO time and only adjusts
+the transport header offset.
 
-Fix this and cap the threshold at what the ring can free.
+Nothing guarantees that the head skb still has the IP family of the
+frag_list skbs: helpers like skb_mpls_pop() let the caller choose
+the new protocol. In that case __udpv6_gso_segment_list_csum()
+handles the 20 byte IPv4 header of each frag_list skb as a struct
+ipv6hdr, and can write IPv6 addresses beyond its linear part.
 
-Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Check the IP version of the first frag_list skb. All skbs in the
+list belong to the same flow, so they share the same IP family.
+Use the skb_segment() fallback on a mismatch. Regular fraglist GRO
+traffic keeps the fast path.
+
+Fixes: b936a9b8d4a5 ("net: ipv6: fix UDPv6 GSO segmentation with NAT")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+[edumazet: simplified the fix, rewrote the comment and the changelog]
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
-Found this while fixing the clashiko findings on v6 of my MTU series. After
-those fixes this bug would be easier to hit. At the moment it needs a
-larger CONFIG_MAX_SKB_FRAGS than the default.
+This was found by an AI code review agent.
+The issue was not triggered, no reproducer was provided.
+The fix was tested with tools/testing/selftests/net/udpgro_fwd.sh.
 
-Everything was tested on a Raspberry Pi CM4 (BCM2711, genet v5).
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 ++++--
- drivers/net/ethernet/broadcom/genet/bcmgenet.h | 1 +
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ net/ipv4/udp_offload.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4d2be2a21ed1b..186d17781b890 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2030,7 +2030,7 @@ static int bcmgenet_tx_poll(struct napi_struct *napi, int budget)
- 
- 	spin_lock(&ring->lock);
- 	__bcmgenet_tx_reclaim(ring->priv->dev, ring);
--	if (ring->free_bds > (MAX_SKB_FRAGS + 1)) {
-+	if (ring->free_bds > ring->stop_thld) {
- 		txq = netdev_get_tx_queue(ring->priv->dev, ring->index);
- 		netif_tx_wake_queue(txq);
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index cf07c3c6611a22c29b57a72420f2f940609f5e9a..802365b4780fdf7dc19ea7374d51d713e4eb736a 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -514,9 +514,14 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
  	}
-@@ -2235,7 +2235,7 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 	netdev_tx_sent_queue(txq, GENET_CB(skb)->bytes_sent);
+ 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
+-		 /* Detect modified geometry and pass those to skb_segment. */
++		/* Detect modified geometry and pass those to skb_segment.
++		 * SKB_GSO_UDP_L4 is used by both IPv4 and IPv6: also make sure
++		 * the frag_list skbs still have the IP family we segment for,
++		 * as their network headers are not rebuilt.
++		 */
+ 		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
+-		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
++		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY) &&
++		    ip_hdr(skb_shinfo(gso_skb)->frag_list)->version == (is_ipv6 ? 6 : 4))
+ 			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
  
--	if (ring->free_bds <= (MAX_SKB_FRAGS + 1))
-+	if (ring->free_bds <= ring->stop_thld)
- 		netif_tx_stop_queue(txq);
- 
- 	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
-@@ -2742,6 +2742,8 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
- 	ring->index = index;
- 	ring->cbs = priv->tx_cbs + start_ptr;
- 	ring->size = size;
-+	/* A ring smaller than that would never wake */
-+	ring->stop_thld = min_t(unsigned int, MAX_SKB_FRAGS + 1, size - 1);
- 	ring->clean_ptr = start_ptr;
- 	ring->c_index = 0;
- 	ring->free_bds = size;
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index e48ce39d3e7c8..6ab3f73475550 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -546,6 +546,7 @@ struct bcmgenet_tx_ring {
- 	unsigned int	index;		/* ring index */
- 	struct enet_cb	*cbs;		/* tx ring buffer control block*/
- 	unsigned int	size;		/* size of each tx ring */
-+	unsigned int	stop_thld;	/* queue stops at this many free bds or fewer */
- 	unsigned int    clean_ptr;      /* Tx ring clean pointer */
- 	unsigned int	c_index;	/* last consumer index of each ring*/
- 	unsigned int	free_bds;	/* # of free bds for each ring */
-
----
-base-commit: 19a227903e65c7a9c179156485660a4e017575fe
-change-id: 20261106-nb-genet-txq-thld-net-e0864f235d22
-
-Best regards,
---  
-Nicolai Buchwitz <nb@tipi-net.de>
+ 		ret = __skb_linearize(gso_skb);
+-- 
+2.53.0
 
