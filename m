@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793998812;
-	b=GonG3KdfLzNPTllQdQPoYAUy2tTGmYXA0XwnxMNACG1U35ZIYN4YRP3B6rqwP+/l3tgX
-	 GHmO68ThXI2Kb4uETUZVVqV6AoyZ7TWM5MbjjScEL0VZzta1nJmxoYImmQ2nHlbb4zMiB
-	 e4w5AbJgHviDXAMImX1iIvWRURcCCanLmGRmZSEeatw4UXkFPnmZAC65rmZVGI9SA0JgU
-	 2dAe7SclMR+Ya+dZAkYR9TQ9kEs5g8nMCw5exVlQvPrNiV7ySNluLcr8B01ML4TNt4UZl
-	 TNdUDLFi6wlne50ZtDE1uxsoyk7wl3PnPN+NOUIporlHCPUCCYFJFGfk8QB2aAslXww==
+	t=1793999017;
+	b=ygH0uD1DYiySP5pdKKrKIsEVAFMjwGVzfbyGasFsKcPusN+DQBqhXy446vS5+TQ894mr
+	 q3OIZGmpBeeVM9qfWE5FkHBGgOClkuIsBUXLdlLQ+3QEnxOakV3LHKRBHj/3N+785eUCk
+	 tsCcNOGoJFE/Wkzg8HQXYtqwLBTMXHVllhC4J7Zay8kpf66m6UiOs8QMdVDSCLl3X8Niq
+	 Qgsz+Kq3N3ja2H2k2Ntf8DViAqAAsBzNLGC362ScrQ8SRUkhr+HQa5uBLOYqWw41iGGax
+	 BjFG2bhT5bwEUrDDs09yo+vmy7Yf9k1uFEJ/DMspTWmj+AyVtRXOer8AS4O1N9sBHKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793998812;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=6RqsR257TmrFrvV2AMqgQxs7+trJZ5nLhwY+PPk9b+g=;
-	b=vBLAuR89Qu+MRsvNw7ED4fbwK1/m5QKEeHZKKfGMhj7ld9e2GawP9uxgBavUDwRnxZQA
-	 HsB5aQ7dEHB5vZdhu0UCifk+w8RFN/9doSp6CJTb06v9jzfWu+7bBEGda6bpGv/evb8za
-	 aIshBTvhuF1Ec5GjTVaWhPVJQr122YNvGRs9Pru6meiqsj3jOFv/j6+dhj3tUZrQg2ZRt
-	 HykB/JFNmr+2JmoCtabslRZjN3GPxR5q6Je//+SJB9KqZM0R69Oks5QM1BiF0N3iJtBq/
-	 jKjw/Br0PvS2t8KkGFtLqRlaOJEaUl/RpY8NdDFeWWOevZiQt1F92gLFg/eUkR4JWvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793999017;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=gV6xwDZ9w0hHJs47+VeebrJn1QU3mACMhc25E6qrRMc=;
+	b=JCISgMrXBDcTbuSQdaFOoz6zra0EPdS4ds6pWcZOAZB06buKuHKj7n45ANulM1c7G2dj
+	 Tv7yA+9yqYCFTtvc0DGnlng9t73hjEB9E6qijygMUlacuQRpwOZrkqSmNFqTaajd/x5BM
+	 T/b7HBQihYV1jA3arEfJFD26/WfTVV3nlGgdsEGs9h/j3Zn/CjfWeLxfNZoOey5IgvXGn
+	 kI9z9qeMKnnyeMqq83o9ay04APYjIvQihdWWQyErOMZ8Cdg7jfvvZEbM2wrb9zmxldQqe
+	 Inctk3EYipJNsoeKJPgTXdgu7M+iF4YpP9qZZ5GVyydaGosJSystNI9QX+pWJcpsKgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nz6iVCAF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Eb+Uxxso;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207A0606A32F;
-	Fri,  6 Nov 2026 21:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56594606A326;
+	Fri,  6 Nov 2026 21:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nz6iVCAF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70821F008A3;
-	Fri,  6 Nov 2026 21:00:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Eb+Uxxso
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B191F008A2;
+	Fri,  6 Nov 2026 21:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793998811;
-	bh=6RqsR257TmrFrvV2AMqgQxs7+trJZ5nLhwY+PPk9b+g=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Nz6iVCAF+6b72Oo1qe4T79oRBJQnjofu2cyX86Fjb9Fktkxk5+NgtuiG0dBrkUCN+
-	 M9KHO8nNjvKaLNcpXbdXUbn/bAvC7LZgGj5JS+8hMHFwwLL3Dys6y8apt7mfz+9kP6
-	 T7VYNpBlpczMg9L9+hZlfkj2V7J6rZjMVu1unheoIs74oqu7zcWOx/SL9xAm7Mg5Bx
-	 bjOD9qkHSco3TTjYLeTFeOcgre8x1q2O19j3fQOMedMO+9eYyMsU7p2zjntQjCmeHQ
-	 mujbCAUC0E+zAMmV6XfUAiTSt4xurAyBD65f8rqV+l5UGDrxxaosmL3ZGwDfds4vi5
-	 ewwCWglNbxaKw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B3183A549A5;
-	Fri,  6 Nov 2026 21:00:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793999016;
+	bh=gV6xwDZ9w0hHJs47+VeebrJn1QU3mACMhc25E6qrRMc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Eb+UxxsoLgTEe+s0wkGq+l34usyaycfMkdXpqfOLgMZyVlcnoIZugd966EnoiRFEk
+	 /5uLtOUfWuURKa83UqFQCgoByfaU5NMjlkwt32OTWb4emK4qg8AXS+qKcGwyaji/Xj
+	 yB0Qp5k11pL9G/db7POi2TU4wNxrqk/hgpTLMb2q88MyUfag00OXFEAmZVm8mnEodL
+	 mw6bMzO1Y/APTRDwpuNOZVpQ18fX4M6X49eFMVJCmRt0tnPBgCKWNqquX9cI/4dyrd
+	 3/PREcsXMA1T2NLgVcAX72hwUvGwRv2LnYygEvRJbj2sPWpskmapM2rnfhz+yY+2pe
+	 3g+OMsSTI9DYg==
+Date: Fri, 6 Nov 2026 13:03:33 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Romit Sagu" <romit@romitsagu.com>
+Cc: <netdev@vger.kernel.org>, <linux@armlinux.org.uk>, <andrew@lunn.ch>,
+ <hkallweit1@gmail.com>, <davem@davemloft.net>, <edumazet@kernel.org>,
+ <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] [PATCH net-next] net: sfp: add quirk for OEM
+ SFP+ONU-XGSPON
+Message-ID: <20261106130333.05261ed7@kernel.org>
+In-Reply-To: <20261103011849.181392-1-romit@romitsagu.com>
+References: <20261103011849.181392-1-romit@romitsagu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +60,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] devlink: do not dereference a missing
- param
- item or shared buffer
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179399881016.868572.6139366787589932780.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 21:00:10 +0000
-References: <20261102131505.611343-1-xiaolinkui@126.com>
-In-Reply-To: <20261102131505.611343-1-xiaolinkui@126.com>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue,  3 Nov 2026 01:18:42 +0000 Romit Sagu wrote:
+>  	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
+>  
+> +	// OEM SFP+ONU-XGSPON is a XGS-PON ONT stick with broken TX_FAULT
+> +	// and slow startup, just like potron.
+> +	SFP_QUIRK_F("OEM", "SFP+ONU-XGSPON", sfp_fixup_potron),
+> +
+>  	// HORACO HC-10GE-113C uses Rollball protocol to talk to the PHY.
+>  	SFP_QUIRK_F("OEM", "HC-10GE-113C", sfp_fixup_rollball),
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  2 Nov 2026 21:15:03 +0800 you wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> Two devlink helpers look an object up by id or index, warn when the
-> lookup fails, and then pass the NULL result to code that dereferences
-> it. A driver mistake (a param_id that was never registered, an sb_index
-> that was never registered or is unregistered twice) therefore costs an
-> oops instead of a warning.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v2,1/2] devlink: param: do not dereference a missing param item
-    https://git.kernel.org/netdev/net-next/c/944f5b9f00f7
-  - [net-next,v2,2/2] devlink: sb: do not dereference a missing shared buffer
-    https://git.kernel.org/netdev/net-next/c/0e729906cfee
-
-You are awesome, thank you!
+The quirks seem to have been sorted alphabetically once upon a time.
+And the OEM section is starting to look very randomly order.
+Please put this in a better place?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
