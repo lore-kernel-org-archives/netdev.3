@@ -1,82 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793988772;
-	b=o1ZocyT3gT0eDR8vomIDIQr5eCtszRwmCbILtLvFc9S/xBy0ZrKjWsYEFmVjPaPP2Uow
-	 e+h9FQc0jPPDIDvi8rIe3Q//5kCyrlx4KUSazAHGe1qVbsUi4rSnLLeCyGqejXezGe1Ts
-	 n4rJ3vp/nbv+Ch8/mgoSBUQBAiBNqhbqnsnacsr7s9FbekF3F8TFL85yo5bCgpucA/wir
-	 TFVZBssSbsYMbrmTvMcn7ifNGklcTTPvUbEBZRcJIDJv0pQoBvvJwoQNdUzTMX9aQcVSy
-	 7XjzA8OIBDFelVkMb2q8EoQ6Gw/m6gj+qD3Vp1i+edUGj5kuZi7AyLDv0dD9CpRwCfQ==
+	t=1793988786;
+	b=ENlNRplp0wILK/RbG29diDQJXKmZrusCsD+SXqS0xgDT51PgpnsZMBispseP2mjRP7ss
+	 HxWizHJmbVWdsJIw/QRnS4wKGZGpB9shFdqZXbsBOpFySV1kZ5n5CJyglA7o2RxfiXRZ4
+	 gQu+CRjbw4IvV1NTAmR+hR55tbYDp8ookHuCgNqBM7fhG5Rc28xNfcxPQBBd29snx3KF9
+	 VK8z/sot/w21Eb3eTFf/+VYcEDW+dzKOh+75+driGMEeZ5XVCpfv/YrBN2SKyeZtBGYZH
+	 rTsHvbOiCQpu338wNBp3J2efV6ecFOUUQtCBDD4iy9RQGZv378+vA8rszZxBDum+bRA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988772;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:
-	 X-Proofpoint-Reinject:X-QCInternal:X-QCInternal:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=HjDGqDaci2eRrPFVvGFecTGt1syzyMZ+l7OOtX2jdKc=;
-	b=L+c/ks72hgU9JxEbPtUglP3pPRNQn3s75kodA4bWwFZgoddvkkf03ZOvfKum0VkpFR0S
-	 J7diIEJ4ayeYN/+1clTZOoSEQKc8ic5QOsEm8IfECiAkLpxBcO4H18wfRfAntML33VuuU
-	 G2HuSh2sxL7HHubVA8QDSvXEjoZiOtPrAA2GRbBccuti+rAQvdcfOfx4BIhFtk4hiep3w
-	 aTj+/p/o9lheIzGfbai2iU8vo9+bhw/uAojGOKbnJF4uTg3QD7VomE8a6cObK4ObXYRkC
-	 1mK/V+EIFABTrPdw2KeMHpZQGFVDbUPB3B9+KDm7aMdAlCLRbAMs1M8wWt8Zi9V/ZQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988786;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=5uW9Ehp+A9D3eXSKYh46ELliQ8ORQGcIYpLoOSQ/VQw=;
+	b=dZ+y4NEFeIOG0cKR+1UXGqgBbu7AKmUSaFrRxT1ApomjFGBazq8AXj0CHpNFZ4ew8ZK4
+	 6aBRQF3lMBMNb7rUtk+KS2HUVFLu7s0SsPda2PykNbbAv9XAE7yqCU8lLWqCvot7yqh4z
+	 XvkPzgDq/3OYq4HYFZbdUPDNSJWV221INRLRINHEkoMbZZkGlJ9j6UHCD01UbSYktMru0
+	 jykDFte23veoGxsSrouydgAL2DTysfYS+HUu0/+Nf6Br720P4qgjHFe8nEG29Fim8pKa8
+	 cX5JUU8uqKPZi2L7LhR8QNL0MlHvlZIVl61Vl4hy0ZafU+mXI1ARWjTTuzEy1h02qGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=auX5tk2z;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bjfx1BE+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0FF606D80A
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:12:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A0FF606D80A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7B1606A326;
+	Fri,  6 Nov 2026 18:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=auX5tk2z
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6HtP033570512;
-	Fri, 6 Nov 2026 18:12:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=HjDGqDaci2e
-	RrPFVvGFecTGt1syzyMZ+l7OOtX2jdKc=; b=auX5tk2zraAlgwz/hQ/9E/WvZ/H
-	7EsYGt1ZZhrdTwVJQVVbhBpiWzq/0MZrvoaIhu5c90gQYasdP4vyRKNhqB3sYEjj
-	ka6IOcdX7T8ZQnjTuPKNiYABH+gy+/Ql3XeBjkl4seRfQtJZSznP1KU1vPX91GOo
-	4zfBCvhQ7q0NIqnSAvsFXkaEBw4RLmvSJ8ccq/LYCXz9djzzOJvL17nq7u2ZK39r
-	6u9JCFryiDOALpS9NKlV2X1xfmwl66ybjtxNF1guMY9F6OThFD3x0UydtcMCXmgr
-	FnAlUIjxFhOiVQkB+R5cjZSitkYQ5maVKm/mMnDRZqNL4XMCMqCUm2V9l3w==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hs3pac1tv-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 18:12:36 +0000 (GMT)
-Received: from pps.filterd (nalasppmta02.qualcomm.com [127.0.0.1])
-	by NALASPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6ICZLs752658;
-	Fri, 6 Nov 2026 18:12:35 GMT
-Received: from hu-devc-lv-u24-a.qualcomm.com (hu-zmckevit-lv.qualcomm.com [10.81.84.220])
-	by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 6A6ICYED752644
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 18:12:35 +0000 (GMT)
-Received: by hu-devc-lv-u24-a.qualcomm.com (Postfix, from userid 4696302)
-	id CC00C215E7; Fri,  6 Nov 2026 10:12:34 -0800 (PST)
-From: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
-To: dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-        riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
-        rodrigo.vivi@intel.com, raag.jadav@intel.com, simona.vetter@ffwll.ch,
-        airlied@gmail.com, kuba@kernel.org, ogabbay@kernel.org,
-        lizhi.hou@amd.com, karol.wachowski@linux.intel.com
-Cc: jeff.hugo@oss.qualcomm.com, carl.vanderlip@oss.qualcomm.com,
-        troy.hanson@oss.qualcomm.com, youssef.abdulrahman@oss.qualcomm.com,
-        Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
-Subject: [PATCH v3 1/3] drm/drm_ras: Remove admin-perm flag from list-nodes operation
-Date: Fri,  6 Nov 2026 10:12:23 -0800
-Message-ID: <20261106181225.3333260-2-zachary.mckevitt@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
-References: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bjfx1BE+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D901F0089F;
+	Fri,  6 Nov 2026 18:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793988785;
+	bh=5uW9Ehp+A9D3eXSKYh46ELliQ8ORQGcIYpLoOSQ/VQw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Bjfx1BE+rETzh/Pvou9EtopRmr6k9H4YPXvWhTJoTTJVIfUjsRy+PUIKIyJfTFZak
+	 ury3s+gPOLNjHl7x626rAPkNW//X9y6xVzGHa1PmpmQqdll1hJe4dVh8zlqxLttGUh
+	 aiVode3Hgr8mi3vApurA7n06cNCdM9sGYWwBthQ+/lHRcoyZGHBWKMuj2Cp8GRnvit
+	 jjVioC8PmZaZ3SAsUYx6Heb1NZMYEr7qBui6pDDm8pzUKtGwzNxffnA9uYzWhnq5tu
+	 znj/3NavQz9vMxbpJQQa1++SIzXizIOavM1UWmR1JBb6sKt3fJZjehoQH2JryzJ2tr
+	 t3IhGTnqFB5Lw==
+From: Simon Horman <horms@kernel.org>
+To: qingfang.deng@linux.dev
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	manizada@pm.me,
+	ericwouds@gmail.com,
+	nbd@nbd.name,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 2/2] pppoe: queue unbound packets directly
+Date: Fri,  6 Nov 2026 18:12:49 +0000
+Message-ID: <20261106181250.1264364-1-horms@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261103111711.28202-2-qingfang.deng@linux.dev>
+References: <20261103111711.28202-2-qingfang.deng@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,98 +68,65 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-GUID: MziZ_b_AQkE1hLsqK6BOwa0GUabMc6kN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX01sjbgADHMNe
- ezFjqGQpZxcCujMslUnyhuxF8fMnFW8nVUXsYYYBuhRszvcNjI49xuvBi8sGQbrFtevtWS8AtNj
- w6i9ukw1EDri1jkUSAgHH0WoSiXj3blxB+x52Wlk2WSDNsjhX8fyncBYEtg99Dv9AwOUBcC82Ad
- HrsTUpTyfJPQoUjQ52c7l0wfOD7BZNHfUBd9mExH730GC8nhO8JI/YAOeQZVxnELRcI4v1A0YBG
- g6fbwPfqKrvpfT5Wt5aq3wpDOqV8MXwF5jhoZMiK2nakjJt3fUyZzidTk81L0CcQxe5iyz1Q20O
- 2euAifAQqBLAWKiNxl86OfdBTR6zKJytGgCRlu0wEnDANXqn1g5eilR5cDFagVI8Yf7Qcf4qG39
- eA0slYz8hzBF8qd69f/P5xfKtYYB17kt/dhArU9TpOCGVk6xkf39OTo/YWlUJVYKdok/dqnq6uT
- cuyO6qPgoN3fmHEmQPw==
-X-Proofpoint-ORIG-GUID: MziZ_b_AQkE1hLsqK6BOwa0GUabMc6kN
-X-Authority-Analysis: v=2.4 cv=X7rHu2Te c=1 sm=1 tr=0 ts=6aee1894 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yx91gb_oNiZeI1HMLzn7:22 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8
- a=YBg2WiTZAUqtoXgWkzMA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX4ABgrLa2Osyc
- 5n0FCoQlbI+prLZx/DLhlR+3dxrS7m4UWquwEEyeAL4Dku83MTMZxwKAfPcpwUaF3oq39d79Phf
- tXio5QFzd3n3nKHfEyJtHHoa8hW8d5M=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-06_06,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 impostorscore=0 phishscore=0 malwarescore=0
- bulkscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060072
 
-Drivers may want to avoid requiring CAP_NET_ADMIN for subsequent
-drm-ras operations. However, userspace must still be able to access
-the list of RAS nodes to determine the node IDs. So, drop the
-CAP_NET_ADMIN requirement for dumping RAS nodes so that drivers
-with different permission requirements are still able to use the
-interface.
-
-Additionally, initialize the return value to zero in
-drm_ras_nl_list_nodes_dumpit to avoid leaking uninitialized kernel
-memory (especially now that this function no longer requires admin
-permissions).
-
-This prepares the interface to be used for telemetry by the qaic
-driver.
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103111711.28202-1-qingfang.deng@linux.dev?part=2
 ---
- Documentation/netlink/specs/drm_ras.yaml | 1 -
- drivers/gpu/drm/drm_ras.c                | 2 +-
- drivers/gpu/drm/drm_ras_nl.c             | 2 +-
- 3 files changed, 2 insertions(+), 3 deletions(-)
+pppoe: queue unbound packets directly
 
-diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
-index 4c2ac9a1ba3f..a88fdab7a1c7 100644
---- a/Documentation/netlink/specs/drm_ras.yaml
-+++ b/Documentation/netlink/specs/drm_ras.yaml
-@@ -112,7 +112,6 @@ operations:
-            the node IDs. These IDs are required for all subsequent
-            operations on nodes, such as querying error counters.
-       attribute-set: node-attrs
--      flags: [admin-perm]
-       dump:
-         reply:
-           attributes:
-diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
-index b099eb67836e..4f4777060a4e 100644
---- a/drivers/gpu/drm/drm_ras.c
-+++ b/drivers/gpu/drm/drm_ras.c
-@@ -130,7 +130,7 @@ int drm_ras_nl_list_nodes_dumpit(struct sk_buff *skb,
- 	struct drm_ras_node *node;
- 	struct nlattr *hdr;
- 	unsigned long id;
--	int ret;
-+	int ret = 0;
- 
- 	xa_for_each_start(&drm_ras_xa, id, node, ctx->restart) {
- 		hdr = genlmsg_iput(skb, info);
-diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
-index c9f5e0ceb3b5..ff0dc406c27c 100644
---- a/drivers/gpu/drm/drm_ras_nl.c
-+++ b/drivers/gpu/drm/drm_ras_nl.c
-@@ -46,7 +46,7 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
- 	{
- 		.cmd	= DRM_RAS_CMD_LIST_NODES,
- 		.dumpit	= drm_ras_nl_list_nodes_dumpit,
--		.flags	= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
-+		.flags	= GENL_CMD_CAP_DUMP,
- 	},
- 	{
- 		.cmd		= DRM_RAS_CMD_GET_ERROR_COUNTER,
--- 
-2.43.0
+This patch makes pppoe_rcv() queue unbound packets directly with
+sock_queue_rcv_skb() instead of going through __sk_receive_skb(). It also
+removes the now unused pppoe_rcv_core() backlog callback. Ordering with
+PPPIOCGCHAN now depends on the synchronize_net() added in commit
+92c1bf630abf ("pppox: drain queued packets on channel handoff").
 
+> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+> index 5d5187e4976b3..51445fddb4d31 100644
+> --- a/drivers/net/ppp/pppoe.c
+> +++ b/drivers/net/ppp/pppoe.c
+
+[ ... ]
+
+> @@ -417,11 +389,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+>  
+>  	skb->dev = NULL;
+>  
+> -	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
+> +	if (likely(po->sk.sk_state & PPPOX_BOUND))
+>  		ppp_input(&po->chan, skb);
+> -		return NET_RX_SUCCESS;
+> -	}
+> -	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+> +	else if (sock_queue_rcv_skb(&po->sk, skb))
+> +		goto drop;
+
+[Severity: Low]
+This isn't a bug, but with this change PPPoE no longer calls
+__sk_receive_skb() anywhere. A comment in ppp_bridge_gso_segment() in
+drivers/net/ppp/ppp_generic.c still says it does:
+
+drivers/net/ppp/ppp_generic.c:ppp_bridge_gso_segment() {
+    ...
+	/* skb->dev is NULL here (cleared by __sk_receive_skb() for PPPoE),
+	 * and some GSO handlers (tunnels, IPv6 UFO) dereference it.
+	 */
+    ...
+}
+
+The NULL skb->dev precondition still holds. The explicit skb->dev = NULL
+in pppoe_rcv() above provides it, and __sock_queue_rcv_skb() also clears
+it on the queued path.
+
+Should that comment be updated to say pppoe_rcv() clears skb->dev? As
+written, it points at a function PPPoE no longer uses. Someone relying on
+it could drop the assignment in pppoe_rcv() and bring back the NULL-dev
+problem the comment warns about.
+
+> +
+> +	return NET_RX_SUCCESS;
+>  
+>  drop:
+>  	kfree_skb(skb);
+
+[ ... ]
