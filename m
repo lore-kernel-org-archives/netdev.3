@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793973062;
-	b=s5KKLhBnlTaZabKbUY/D3ADQhwyzGXMCTf/PIaSv4ob6Kto/Gqppwk6vB5doMNYjHSDy
-	 OjUy70NCLNrpCMpAW+fsGWYFR+Pn+Yzbm8B2RMsnQDWppqe32/8PeYZfilhL9iGd4NVv+
-	 codbvzOl6HaBEELpa/98AfS8wnxkGddJD170OYnjsh+0mCwDbgtvejgfwUmiybA4c9r+C
-	 8I7H0DCcRqAI8W6j6LiXHEz+HqGDjABwa7PMTOhYWCHLx2034UueL5g/pjmDJhLr7nq15
-	 xo5F2EY4MqJvHtGzFcZdWlBt7iqGIVUxkvWkSAQ7tmtaPAcw1w4A2dbcpna63MTqoXg==
+	t=1793973086;
+	b=EpLg5nB207g2OiG6n8WQB539UDHHMye9HFFGE+1fCZu9DQFUCOX5+kjuJ7ClkQ27fKQn
+	 C17S/wjiHxEKJ/NCH2LnByqRWJ75HirFmiCtFfIvEx6jKQhrpUqTOvHz+HXp2YkhWDV8y
+	 CF+pr21GhPULGna1njO/dmPELB8tSJNe3gc+Sebtdzz1WlBurLnc3TvN20KQSKzKI63KB
+	 vr+DnGjxHjC0A+IXLGPJetkU+wNU6NZWKyjwYlIrMKqG40WQwe3GBsy/GS8IpcsgGzwHF
+	 8ebn0AdGI2NCj22tOrvyLT+cAAPPQnheOuhCjp4PbUVKyRH8tWZEvLpPoIUAY1G8lNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793973062;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=SvbdRNqL/8qCTDSGCTb8M0taIrstvBniNfZYFufgM5Y=;
-	b=t/3kMgbIUXtvUXjpUxyV+DzKhmgg+cN3lpB298/6+lZtoGk2wCCmjmpgExTludiOvNJy
-	 rf35bbBfBMcshbo8ZtFBMqVvWAaaexR9mC/wBpaN1JevPLx+LlJLfs96S+ET2j4aIuv/c
-	 mmb/8Jbo7zh/dT/XrRVsMahPRmybxZprWzts2IIOcAvxiPr9EOqmjqIhlb8DW4uw1d/FG
-	 KqxMtMtJwvM/u6JsTm9WZybBdLj/5P7KjrhDKcL/d5ReQ4avFyTCoSa74+elxKCLUHYph
-	 P6gM+aiLudKlY5r8YjGFCmDRo5qt70ZDIdu43dXH1hw5KMa6yUqSoDFBcEBYPRISg4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793973086;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=qeICje2YNdfsBQRYsbfVR7niizvYHczhtYbtuMr6CdQ=;
+	b=v+m4E/71P+AsC95DGpyw0yBEzwucX90njHuTapWrRCERQegdkjaXLpJ4RduurbE9yPZ4
+	 pRCV7vG2NdaQRE5uIamwmtZ9Ope1sQkXX35LI1gQ7p0t1UgA9f7GG7PD89EvcPamqUJWJ
+	 RpaXhfrRHosJhwfBNNcRhdMk8eRgvZ6JzK8B+88wvogKYR2cm/56OmGE1MgBvnOxGvcuk
+	 aL3rDp5b6sjeyM75tFCPbeXe4OJ1EA0+VjGC0SsGBfRX1ngKfKT0WRQmg+GWD1QF3xZEX
+	 6Vq5qLZ5iC1ZPoBiASxfL+LeW0tXgnuu6pAm6W/Vct3T5vJhcaFhRyQMYlfLLx6mvSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L33pwgZS;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aV4csmfn;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id EFC62606A329;
-	Fri,  6 Nov 2026 13:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79365606A326;
+	Fri,  6 Nov 2026 13:51:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79365606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L33pwgZS
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 257841F0089F;
-	Fri,  6 Nov 2026 13:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793973061;
-	bh=SvbdRNqL/8qCTDSGCTb8M0taIrstvBniNfZYFufgM5Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=L33pwgZSVggirArZ13tgig1B1UCQKbjbxP46ClHAA2P14xrsBYu6ITrSuDWxD75nm
-	 951iQE/lYInSkLK7zdv01x692IZ8EISZoenRxG8xR7Tk2E4p6mjAl59/Ld/fabYaci
-	 0O0y4X0ZqJB89xAkdhFcg47FJX/vGN9YxDmynA2wfSj58zxVe28UDKojH8xPKB9pkm
-	 JrmLw6sGmd3K1zoXLZ0badUqpxNhCbLlgu742muYZwUmimGIDQRTbhteYmZgvMqpeS
-	 Vw7E7CJ3LK4waVWLimdiYEbfq546n85vZyX7ijnIUWr58UPgYMuJVskiiDeWqRCa4Y
-	 8e/9k+FsTIHQw==
-Date: Fri, 6 Nov 2026 15:50:57 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	Scott Branden <scott.branden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 00/14] mm: convert further simple mmap hooks to
- mmap_prepare
-Message-ID: <au3bQYYHRxR9VRfh@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <CAHC9VhQvpFeEJaEyPDaqj8_S752puSaNe0Rn-hxjh=ugCoFsxA@mail.gmail.com>
- <au2odtvEhpLJY4eD@gremlin>
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aV4csmfn
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=qeICje2YNdfsBQRYsbfVR7niizvYHczhtYbtuMr6CdQ=; b=aV4csmfnKuakOW6TFXoLC9Ktu0
+	bIBLZe+STOBIT5HyekpVuWK+ge/O30bQ4Mn/eTJN2e7E8YtVPyRBBSaNF56VvujedbFIYnf+GnNmu
+	Com3q+B15IT5KrR6rFA1UrK3HW+eGmCzA4zI0CgJbZTyfafsmyvnK4IniSYjjeG8JLBU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xPKLe-00EmL2-Og; Fri, 06 Nov 2026 14:51:18 +0100
+Date: Fri, 6 Nov 2026 14:51:18 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thilo Zirnstein <thi.zirnstein@gmail.com>
+Cc: linux@armlinux.org.uk, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: phylink: keep initial advertising
+ settings
+Message-ID: <fb28453b-9df6-49a1-8c01-543e7bfceeab@lunn.ch>
+References: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,24 +65,34 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <au2odtvEhpLJY4eD@gremlin>
+In-Reply-To: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
 
-On Fri, Nov 06, 2026 at 10:18:06AM +0000, Lorenzo Stoakes (ARM) wrote:
-> > Granted I've only properly looked at the SELinux patch (7/14), the
-> > rest I've just skimmed through, but these are all independent patches,
-> > right?  Is there any reason why individual subsystem maintainers
-> > shouldn't just pick up their associated patch?  Yes, perhaps chasing
-> > down individual maintainers is a bit more work, but isn't that the way
-> > this should work?
+On Wed, Nov 04, 2026 at 01:55:09PM +0100, Thilo Zirnstein wrote:
+> If the net device is phylink based,
+> consists of a mac with a phy connected and the
+> mac driver does add the phy while the ndo_open callback,
+> initial advertising settings of the link may be overwritten
+> during phylink_bringup_phy.
 > 
-> I've no objection to people taking patches independently, the concern is people
-> lagging on that and holding up a key conversion which is entirely mechanical, +
-> generally tree-wide stuff like this has been via the mm tree.
+> The mode of action is as follows:
+> 
+> * The link was not up yet - no phy connected
+> * the user configures the advertisement of the interface
+> * the mac driver delegates the call to phylink_ethtool_ksettings_set
+>     * here we are not configuring the phy - it does not exist yet
 
-This is probably the best way forward, as for a subsystem this is just a
-different API for doing the exact same thing (and that way "idempotent").
+If it does not exist, it is not possible to validate the user request
+is actually supported by the PHY.
 
-And looking at the intersection points overall, the changes are neither
-likely to cause any major merge conflicts...
+> * the user set up the interface
+> * the mac drivers calls phylink_connect_phy
 
-Br, Jarkko
+At this point, is the previously configured value sanitised by what
+the PHY can actually do?
+
+Take the example of a MAC which can do up to 2500BaseX, but it is
+connected to a PHY which only supports SGMII. Before up, the user
+could request 2.5GBaseT, but at admin up that needs to be reduced down
+to 1G.
+
+	Andrew
