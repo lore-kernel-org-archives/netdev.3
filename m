@@ -1,123 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793990499;
-	b=S1cHxizWabo3QwyxFv94vjhi/MWk5XHKuGz/p3ps9xeYZTxXMVIyyVTzfAwfkFq/QumR
-	 awjCGhoE1oCJ92dEi9W7Is5qpNXtXM7pdTkcZlVUJ3i0cOnMb85fHKZddnSUhlzlzGd9h
-	 9U3Khx4wH/cHmZrtjVkEe4vSwq7H0aauHJz028Qz57Lp6SoUyzQHhCh779z/JlNGcps+B
-	 kEUxMGxIfTQTIlCve9aaXK4KG/bFUbJXbSU8AMzYYnJfmUihdl7UXuN5dE9XHQklANVCt
-	 bHsOXs2mvOrQkNt25qBtnj7XohIjlLJ0h4UphXrLHtg+4XR52HX9dyPRKF0lNZmQHPw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793990499;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=CUMcAVyOirUSnIO4z8+9Oid/43N5zWiqbL31INqDBvs=;
-	b=Y9lcWsuQLVEwMr4byGSWtg5te1lnXLIUnOehi1Y38kGil/GQLICnvbZy7wsVvOrkq/eu
-	 JkJG/MqvnS/FmIaoqwqCde8S7hfiLYBbmzhW/Kf3riYmDdETtt2PEjVy1ZqXxzw60k/pd
-	 ls4qguxLaCsAzR8MCrRhKKe0dzF80V/GSN+qO6RoVppd852epBNz+XNtuFm5Ad/Jkpys3
-	 X1Ln49oOIETgyy+jXSSSBwcaZvN8Wzdp6UexMyAhQIqtPvCUdhlrUK+P3+yD8FORbG4bZ
-	 UXvDh7J9Rl0x6vseBJT8MPEpIZgRqhAebxvoZDrcRrSh+G4Pak1uOymobdTKocdizag==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=c7OqdLX3;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=f7DVpUc7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793990629;
+	b=ukM6SoS62pYx5udOWln7Up1WIsEn4mK1uxrq7vxWM3OJKJPekQVKVk6mvYSw+B3wBYjD
+	 lJwew54jvHxXMxU4mLwglBo542Vx1nFt8OkebkQbTUnSke18dChHCkkoywAkEPb8S2J8z
+	 u9UmSZLrKb3315AAtG5NPmxlwxch1/lOoWGRozq7mxIZk7sHK8lxbd/I3sn71BJKcvLKm
+	 sX+XG8XmsW8OuBoQHJoTbh6rRCRwmOa5mydo4pXrqLMM3h6MFpJluBxyjw5lQNCepqOdV
+	 q4DPRYBDETJXw/vFikRv5N7XBQlQVt1xoE/cICaKFz26mimeheFGhKl2w313+2u7QVg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793990629;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+	b=LdkkvGU51iuRraUNylkoedy+IRNEqgLYVZ2iYGPm0f5E8MCjCHiIR/UF91wlAgfYPRol
+	 55FDtse/9CrxKufegKzlQANzdClKQF5wCbp7cMobMydcEI5o8OrNZn1Fp97+TQJUHeujF
+	 N8+GArE/k1mhWf+vK+SIai66T2wa/qtGqMyMAYY1DW7ac4JhvCebku3WBWBK2HCkBIGLh
+	 DXdDCV0rx387BF5Tqcb5U6V7gIJENphja3OnlPw4oPWpxL1aYPQEkoe/onLp4ErOqINKF
+	 otFhxlqcjrOpKaNAgI6kcBrMmt+ddSBC7QkRv7zwuYM9Z0WhVqY0WyMUfzf+SQGLgug==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HGDygtS8;
+	arc=none smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95FA606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:41:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B95FA606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8934606A33A
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:43:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8934606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=c7OqdLX3;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=f7DVpUc7
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6IRXac1512563
-	for <netdev@vger.kernel.org>; Fri, 6 Nov 2026 18:41:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CUMcAVyOirUSnIO4z8+9Oid/43N5zWiqbL31INqDBvs=; b=c7OqdLX3Uj+TBpdC
-	oqL865Tb2uVszHJk3qkJYH6kLQvGw/yVPe6PI9eIRv15udAcLLqG6UR0v9x34VPd
-	rqOFHoWdX+ilvD3r5k7pEYe1VI5n7B3aAYZKqLOE6Up552R/UgXhV6aSMi9iR0yA
-	yXzoSy3dAHKYFyDGYsjF0bFbKFzX4bSWKc4hAqH+2ALaFsFQFLjcpV1DtQ72eo+9
-	qTjYx7a+EgbYBZorVurnW67Rzb+RnfTxqD2C91mr/i5oAQvuO5qVl3Xc774QSeV5
-	+Vgo10VEpHJG4XtK3CxlUVQaishxG9jh3seF7r1am1bVcchbbT5EwlshXAn8bfsy
-	ytBfMA==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsm6m81w7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 18:41:36 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a06da65d92so714004b3a.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:41:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793990496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ni8HB+drceJ7gwAWRhIBrJZMa8aqSJhaI7GT7ucDQOLyWfHhmdQ28AgP2rPnfOygmD
-         4nHyXEkIg7O+HjATJiseTv17K5c8L6At/IOdcJ21ulgLyh1TUungnBnQZX8kqMKIg5j0
-         FBGXe8g1neZwjBBHzZJ+F75iDk2orfSASt3ZOH0icryHEsAJcxNCsdQC4YC/QpEN44co
-         /zytqZ5HI0OsCHHoLF2Q1dPJqYyjkd8h6b6+lsDPqf+iJ7g2Uo5V6r8LMaUDI+iq5As5
-         xCLdg8eSEcxzyZTuXm61YGsJav3nNhleF2DQORSFCW+QvV5QXDyQAaIdiXj06K8CHK6+
-         8RyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CUMcAVyOirUSnIO4z8+9Oid/43N5zWiqbL31INqDBvs=;
-        fh=55VHtqqQnWJVBtvT5iObwhtZFQod+XWMYBo7870bxaM=;
-        b=EKrUJeS3U2qh2IhdXbBHCTsfavMCvoLO96+y3cMBqrPkyGazfsAQcuaGN7EYnKs1bd
-         wLwcZsEkb3s6Oe9XuD8DM84hHXwoRSs4XZHN5+Bq/R7bIxPjClVau0rdMUPQd+yvIRXY
-         Uq3Yc3DyrrV9KXseU36evO9pWoxt1AvFI9cmsIkFLFkf8kw4fEptizyCXbibCvT87JGw
-         uWiIzg2Hn9XiFWMOlsf908/J8a7+ou6clkuvRnbm3KwjQ7scmtVzY+OV7Ndm70tuwjd+
-         Mp2oBxbhcOfKZmM8WkM2fXhpvxV8kOjLVjTzOwCs2ApcJNhiSZWNiwr74uygLJSVgW9R
-         mudA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HGDygtS8
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5363c8de563so9472471cf.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:43:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793990496; x=1794595296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CUMcAVyOirUSnIO4z8+9Oid/43N5zWiqbL31INqDBvs=;
-        b=f7DVpUc7TvmBk/GlEqTwwF5Fjd0F4WISWb4EdXmwCQ3SX5+AXNnFeMkj8RJ4/yPZ/M
-         I+v+Jzl2ngCP3dDtqTEHahs53ZsHjSlKehAizG8Mq7zaEa2nQYmJYrjg22Q5tRmxiqs3
-         +SVNV52HhmqFWTWFAkE3T6INy2CvS90tNzfemE3XP0p2UhhaQcoQjbzi0Y6yfAbGQ/El
-         +0BKjYm2pEPgG0u0J9394c7qY84rOVDrrpJ8/eat5vRrR4x/TcAqf38hD3s5idnK/VXy
-         PKFGjmzFBKCWO1FAW+0SfezAoWr+Lbj/yUAxak44wk1to3/WoJMd+r2MUHPB7ez4nRU3
-         RGOA==
+        d=ziepe.ca; s=google; t=1793990628; x=1794595428; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+        b=HGDygtS8PIhtf9IE/TizOpDFPkRZ98JXWj8eT4E4Yhq2816KF4cYzaNMNDlA2GUJom
+         EwHj/VjdIR7VABdV6Zp2h8871UlmV++e2EY9F4DXOFfJ8S6YfHRSeY1siEWlm6kSEjNb
+         WHEVmvE5ym6L4Xbyfhx3R1pGRXcL6Aqfsxb7/Z41VHVoAGWgx2nMjVhtD/9r8VVZEHKV
+         fuqENBryhstWSfUkfZL5E2WV6tyiKsE+RaCM7VtpgPf7m8u4rD/SWo3hkc3ArsoY50NQ
+         hRIXBkTRQ/dwI/34PymqxrQamBJmjQo3jk08WmMbsEic9zfD+Rz8rL/et2s9wCBYJ+SE
+         4TWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793990496; x=1794595296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CUMcAVyOirUSnIO4z8+9Oid/43N5zWiqbL31INqDBvs=;
-        b=fVy6TrkFQ5nlb0p0X0Gzo1NLJ6H8jVT41LeagdJt2d44jq7ILLwSMKtbzclkj75SdQ
-         /GJl9vSSaD2tg3CKgjpeZxhv93Vz5oLhrvc88xEl2aztAdgt7EHOAiu87EWCm/Cy+nqj
-         0aFxl7Wj+JfbKVGjtG5OfJeJvEDTtdJSis8Eb+LLS4XcdJeYksX0Wz9tWgR9BuLDl8we
-         2UoPxSKp3c39H/OFt0VdCPv+iRt3MVOv9w4K0DVNL+bTqGn27jtHGFkU0BpGbMvI5Bnc
-         yWBB6yKCuTsOiP9SJJ0/YvXtfUEEcIIO7oNVcaGGHLeP1sdOcPyiQ/pZZPPUWVSo7nR6
-         3EOg==
-X-Forwarded-Encrypted: i=1; AKwUvBxW69XzkssTfYg7JN931Dv1u4FkiCGN3JfVPKQOdwcKS2xM8cD7EMyM2zUk9jqkn11v1Gzm5ag=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+LRxz5JTqpK3kI8xHQlz8ZrrK2zL0Ysg/aiozrvyjB1OEUwm/U
-	FYzu1EAO3Cy36oGLevUstdmdVgFTotSPlmu4oOlA3NfpJzfJ2w5VlhUfcExaK2kiNbOarmLpQVZ
-	+mQXieQX0tHS0ZdO/D2uI4JyfKTfBiXpv6yrl+ESmqe50RM8A94/OOxtQ9Fxm97/9mPwF7BuLN4
-	LN7CcTko2FTWrH3zhlmmXEHb1PUZgWWxvpdA==
-X-Gm-Gg: AYBFou1+0DEyT0AWlqA9tBF/yE4CPSq6j4nBS+OwiULmTVg7Pf9FbvzEWQeIV+ZhD+n
-	veLcXZdGGGB6ogSnA7pC2vhxCCtWPK22+SSSqofw7dkfyDTX1/Zapai5iakzpowF/t7l7addTjH
-	97D6UJ+8RJOIjQg8N3LnLZ9/+yYUNl51Fz8lfUzlSAd9I8PkLKdI59DDsSEA==
-X-Received: by 2002:a05:6a00:3d0b:b0:881:9f52:ca00 with SMTP id d2e1a72fcca58-8b37bd5461emr2936022b3a.42.1793990496150;
-        Fri, 06 Nov 2026 10:41:36 -0800 (PST)
-X-Received: by 2002:a05:6a00:3d0b:b0:881:9f52:ca00 with SMTP id
- d2e1a72fcca58-8b37bd5461emr2935994b3a.42.1793990495661; Fri, 06 Nov 2026
- 10:41:35 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793990628; x=1794595428;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+        b=KvP/TCoAD+019wlfOzj/7x8Px6zEsHxmVZgQYAb3oT05yHcxkVi9VeNlX7BZlYEYiX
+         qgHvN3+27rN8/SBop/5QOPVVl/+Tn54KNfMYh8uJki2ZczlXFtb8hDlq8gy/S3DIsINv
+         2e+Toma642JqcmTagYLAsdGEstnts06xGckknYhTXv6GYX3/keMik/VM34H6R940Mkfa
+         Ot2X5HKLBkQINDEowxLRaUp9Cb2eTPfpovJyi4eVpVSjVhtPzZLbt5LHXDdEWI6an3Pl
+         p5rZ/oJGxwJ2Ic4RDt+PbMiGMpfIsHpHKLpDb/ozpCu6q2wM8Auix5jl/tubiLohrMK+
+         s+JA==
+X-Forwarded-Encrypted: i=1; AKwUvBwtpb2Wd24RY5plok355n1Uzr3htLbFrMUmzTrjP1IiCWSAMFvY7i0Q/QXzeLg0gWU4B3XD028=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+hUTyI6kaqDFQ4I+ymT/9P7dl/G0eTbJJP3KByeLNTmcgsig9A
+	MFesImfsZM0Q8l188yPAz74j0RXI+q5WuozfaK7IuJuyulNm/r4fPGOx7abE9zwHrEY=
+X-Gm-Gg: AYBFou2pVS6Qxdny2DsaPcIao3AHdeRVvW5Z3oIVbz+rFKumtc80yQ9oHQtFOaNeW2o
+	Pzmq5VKCtW2k2JFolLG7L3hKttaxeXyQM5NnmNGMOG+rSRxxFC0x62XXPcq6l+MnudDokz/tNOq
+	7XXkAslEOiIENSL8nB1mh6nNfNdrm+q2yiH+tr14SVe+xSM1/GteMCYPtWcl4/BsdIcliOc0YB9
+	eOtOpjlAri6eaRP4zi54Pj4QLV4vFgnfUVRNeluyjYJ41suttVvpc404eO0RmctZtVrGwoxWCot
+	HoBlEiivXFPPTB/8i/wxm8JjtgNh5FYITJpPA00N0xY1Iyfvhu2fEIycltQu6PgI8yu2AngZn+S
+	XvSVPEX1BV9/+O57YqvlKCsRWrl6gkO3J7A+Sr1zOc46hhqum2y/pdvbrm3AmYK1zhD/rb4HpAG
+	r6VcP7/WdkN3TwyNz5oNKMblAo1vmYM568ElHEiNSJ3QuMt1uNfRrvBb/qQRkzvloshPx/De7MD
+	sRmYoV/tXJtjb7mFzHdAnq7ijblBkOXKum46SVFdnRqWFqGK0cabGQ+a9JhrUp8fBjRnrNyPVW6
+	8iq+8b/5ezujk3T8hJAdTuii5+mKrKfq75S+bRVWE+M2M85uD5GFULce7wGB9aK/IYAlndQSHt0
+	7iU6qbKbpHQ==
+X-Received: by 2002:a05:622a:47cd:b0:536:764e:1527 with SMTP id d75a77b69052e-54e14a6c486mr53004081cf.44.1793990627606;
+        Fri, 06 Nov 2026 10:43:47 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e25785f14sm26823821cf.5.2026.11.06.10.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 10:43:47 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xPOug-00000007JdL-0xGY;
+	Fri, 06 Nov 2026 14:43:46 -0400
+Date: Fri, 6 Nov 2026 14:43:46 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Naman Gulati <namangulati@google.com>
+Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+Message-ID: <20261106184346.GJ663069@ziepe.ca>
+References: <20261023140107.GC3977851@ziepe.ca>
+ <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca>
+ <20261103080933.GA4213@lst.de>
+ <20261103151021.GK3889730@ziepe.ca>
+ <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
+ <20261106173054.GH663069@ziepe.ca>
+ <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
+ <20261106180714.GI663069@ziepe.ca>
+ <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,238 +139,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102-block-as-nvmem-v12-0-f4a2a681087d@oss.qualcomm.com> <20261102-block-as-nvmem-v12-1-f4a2a681087d@oss.qualcomm.com>
-In-Reply-To: <20261102-block-as-nvmem-v12-1-f4a2a681087d@oss.qualcomm.com>
-From: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Date: Fri, 6 Nov 2026 19:41:24 +0100
-X-Gm-Features: AclHuK9emUwSj3_sGAuhi1FbbmSEvMQZ92eVANQc1PZljiIDDYIawbYL0H56MVQ
-Message-ID: <CAPx+jO9Hwqn__vdZn_2yCAy9nuMHR2=8shjjQdWQ4S9JWUknQQ@mail.gmail.com>
-Subject: Re: [PATCH v12 1/2] block: partitions: of: Attach partition fwnode to
- the block device
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Cc: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org,
-        netdev@vger.kernel.org, daniel@makrotopia.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA3NCBTYWx0ZWRfX2Vhx3obhZghS
- M/XZsa8jVrbbEHwv/+DdzeS8TNA1u8q04tr2+taV1MTOFbDmVCymosUS0OqH0KLCenB2BeTXFwK
- LM24an9A4RQzPlmPYlS7iTuE9feTwsY=
-X-Proofpoint-GUID: 2-nARIdps-b3m0ekTNb6Nz_qxLZWG_wY
-X-Authority-Analysis: v=2.4 cv=S7NMU4sP c=1 sm=1 tr=0 ts=6aee1f60 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
- a=YqnSXwVskR_DcSjeyREA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA3NCBTYWx0ZWRfX+6zuMHwarN1+
- EQ2y29oGY366ZePvc/kZ70txDh1uj1shQVtnoaFzWNVH1Qzoz7tZUMnk1RF/etKwm+a7Vmukkk1
- 2YRnUpvY6zb5JLBe2tthLR0A+s7f2ucyxdwoWiGpRBXJ0k6BuUSdb1GEASIn7Apghnm3vwRgEvM
- teefzcxF3Km6ydxsqTsnNiAo2NDCpH56VKpmp3pjp2BzEu+SYJjOq9OrAg6a8P5hVtGkApDL7F9
- Ueh5L2RVV942+hyCEGjcmWRH+wdokqM12VCvk3heVIF7LnulO1EKb7v92/CfLzoRyQDugwaZ23e
- G+7eFebh97Ome88+AgbSaJKd4HmE4D1IQkT5eGu7bk/0WivriNvx1vf71j+ytcWJUCJ/DfIvwuh
- vIpU7jxEtuTP9wgWQyhaVCj+bg8HxUpZ0WU0XGb3WqIX6bzEVNFOG9vreE0u+SjgTY+O6VvZpRZ
- Dx12R3OuBEHZ2yOfMKw==
-X-Proofpoint-ORIG-GUID: 2-nARIdps-b3m0ekTNb6Nz_qxLZWG_wY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-06_06,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611060074
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
 
-On Mon, Nov 2, 2026 at 5:27=E2=80=AFPM Loic Poulain
-<loic.poulain@oss.qualcomm.com> wrote:
->
-> The OF partition parser reads offset, size and label from each
-> "fixed-partitions" child node but does not associate that node with the
-> resulting partition block device. As a result a partition has no
-> of_node, unlike the whole-disk device which gets its firmware node via
-> add_disk_fwnode().
->
-> Carry the partition's device tree node through the parser and attach it
-> to the partition's block device with device_set_node(), mirroring the
-> whole-disk case. This lets consumers describe per-partition properties
-> in the device tree (for example an NVMEM layout on a partition node) and
-> look them up through the partition device.
->
-> No functional change for existing users, partitions without a matching
-> device tree node simply get a NULL fwnode.
->
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+On Fri, Nov 06, 2026 at 10:17:38AM -0800, Naman Gulati wrote:
+> On Fri, Nov 6, 2026 at 10:07 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
+> > > On Fri, Nov 6, 2026 at 9:31 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > > >
+> > > > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
+> > > > > I drafted an implementation [1] for premapped TX and RX buffers on top
+> > > > > of the existing networking page_pool. It is implemented entirely in
+> > > > > the networking layer and extends page_pool as the default RX
+> > > > > allocator, to the TX path. There are no hooks in the IOMMU, DMA or
+> > > > > page allocator code. I wanted to understand if this implementation
+> > > > > correctly captured the feedback on this thread. Key components of this
+> > > > > design:
+> > > > >
+> > > > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but each
+> > > > > chunk is mapped once per opted-in device through the DMA API and
+> > > > > records its IOVA for each device, rather than using a shared IOVA
+> > > > > window.
+> > > > >
+> > > > > - TX: page_pool accepts a memory provider for pools that are not bound
+> > > > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunks
+> > > > > of their NUMA node; TCP copies sendmsg() data into them through the
+> > > > > task page_frag and allocates its skb heads from them.
+> > > > >
+> > > > > - RX: an instance of the same memory provider, sharing the chunk code,
+> > > > > backs RX queue page_pools. RX chunks of order-0 pages belong to one
+> > > > > device and NUMA node, and are shared by that device's queues on the
+> > > > > node.
+> > > > >
+> > > > > [1] https://github.com/torvalds/linux/compare/master...NamanGulati:linux:netdev_dma_pool
+> > > >
+> > > > IMHO the netstack should never read from shared/decrypted memory. If
+> > > > you put it in a SKB you have to be sure the only touch after that
+> > > > point will be a DMA read from an untrusted device on the TX side
+> > > > (sending it to a trusted device would be a fail) and the final copy to
+> > > > userspace on the RX side.
+> > >
+> > > That's likely a fair callout. TBH I'm not very familiar with CoCo and
+> > > will spend some time understanding the constraints. I kept CoCo out of
+> > > my implementation as I approached this solution from the overcommitted
+> > > VM problem where we are trying to overcommit memory in VMs and use
+> > > these pre-mapped pages to avoid using bounce buffers.
+> >
+> > Why does overcomitted VM use bounce buffers? Do you mean this is
+> > about getting better memory clustering in page pool since the VM
+> > paging granule is 2M?
+> 
+> Not exactly, we are trying to use VFIO passthrough NICs in
+> overcommitted VMs. Since the guest memory is overcommitted we can't
+> dma-map the entire guest address space (as non-overcommitted VMs do).
 
-Reviewed-by: Ulf Hansson <ulfh@kernel.org>
+?? I understood you could and this was implemented under the
+virtio-iommu by pinning the memory under active DMA?
 
-Kind regards
-Uffe
+Where in upstream does the DMA API force bounce buffering for this
+case?
 
-> ---
->  block/partitions/check.h |  1 +
->  block/partitions/core.c  | 20 +++++++++++++++++---
->  block/partitions/of.c    |  3 +++
->  3 files changed, 21 insertions(+), 3 deletions(-)
->
-> diff --git a/block/partitions/check.h b/block/partitions/check.h
-> index b0997467b61a54a8a621b9c155c8329289649460..326081499d9a6be730dbd659c=
-110449cfa06921f 100644
-> --- a/block/partitions/check.h
-> +++ b/block/partitions/check.h
-> @@ -17,6 +17,7 @@ struct parsed_partitions {
->                 int flags;
->                 bool has_info;
->                 struct partition_meta_info info;
-> +               struct fwnode_handle *fwnode;
->         } *parts;
->         int next;
->         int limit;
-> diff --git a/block/partitions/core.c b/block/partitions/core.c
-> index b5c59b79ca7cbb28d4d93478ee1c80908f76ee9f..eee954df1ac6ef7dd4f02ad5c=
-9d49aed778bf015 100644
-> --- a/block/partitions/core.c
-> +++ b/block/partitions/core.c
-> @@ -11,6 +11,7 @@
->  #include <linux/sysfs.h>
->  #include <linux/ctype.h>
->  #include <linux/vmalloc.h>
-> +#include <linux/property.h>
->  #include <linux/raid/detect.h>
->  #include "check.h"
->
-> @@ -110,8 +111,17 @@ static struct parsed_partitions *allocate_partitions=
-(struct gendisk *hd)
->         return state;
->  }
->
-> +static void drop_partitions_fwnodes(struct parsed_partitions *state)
-> +{
-> +       for (int i =3D 0; i < state->limit; i++) {
-> +               fwnode_handle_put(state->parts[i].fwnode);
-> +               state->parts[i].fwnode =3D NULL;
-> +       }
-> +}
-> +
->  static void free_partitions(struct parsed_partitions *state)
->  {
-> +       drop_partitions_fwnodes(state);
->         vfree(state->parts);
->         kfree(state);
->  }
-> @@ -139,6 +149,7 @@ static struct parsed_partitions *check_partition(stru=
-ct gendisk *hd)
->
->         i =3D res =3D err =3D 0;
->         while (!res && check_part[i]) {
-> +               drop_partitions_fwnodes(state);
->                 memset(state->parts, 0, state->limit * sizeof(state->part=
-s[0]));
->                 res =3D check_part[i++](state);
->                 if (res < 0) {
-> @@ -247,6 +258,7 @@ static const struct attribute_group *part_attr_groups=
-[] =3D {
->
->  static void part_release(struct device *dev)
->  {
-> +       fwnode_handle_put(dev_fwnode(dev));
->         put_disk(dev_to_bdev(dev)->bd_disk);
->         bdev_drop(dev_to_bdev(dev));
->  }
-> @@ -294,7 +306,8 @@ static const DEVICE_ATTR(whole_disk, 0444, whole_disk=
-_show, NULL);
->   */
->  static struct block_device *add_partition(struct gendisk *disk, int part=
-no,
->                                 sector_t start, sector_t len, int flags,
-> -                               struct partition_meta_info *info)
-> +                               struct partition_meta_info *info,
-> +                               struct fwnode_handle *fwnode)
->  {
->         dev_t devt =3D MKDEV(0, 0);
->         struct device *ddev =3D disk_to_dev(disk);
-> @@ -343,6 +356,7 @@ static struct block_device *add_partition(struct gend=
-isk *disk, int partno,
->         pdev->class =3D &block_class;
->         pdev->type =3D &part_type;
->         pdev->parent =3D ddev;
-> +       device_set_node(pdev, fwnode_handle_get(fwnode));
->
->         /* in consecutive minor range? */
->         if (bdev_partno(bdev) < disk->minors) {
-> @@ -449,7 +463,7 @@ int bdev_add_partition(struct gendisk *disk, int part=
-no, sector_t start,
->         }
->
->         part =3D add_partition(disk, partno, start, length,
-> -                       ADDPART_FLAG_NONE, NULL);
-> +                       ADDPART_FLAG_NONE, NULL, NULL);
->         ret =3D PTR_ERR_OR_ZERO(part);
->  out:
->         mutex_unlock(&disk->open_mutex);
-> @@ -564,7 +578,7 @@ static bool blk_add_partition(struct gendisk *disk,
->         }
->
->         part =3D add_partition(disk, p, from, size, state->parts[p].flags=
-,
-> -                            &state->parts[p].info);
-> +                            &state->parts[p].info, state->parts[p].fwnod=
-e);
->         if (IS_ERR(part)) {
->                 if (PTR_ERR(part) !=3D -ENXIO) {
->                         printk(KERN_ERR " %s: p%d could not be added: %pe=
-\n",
-> diff --git a/block/partitions/of.c b/block/partitions/of.c
-> index 53664ea06b6540e3d1155141adaafac7286f2d21..4fc7c80c407de42b2b31be2c8=
-2e0e6bc2a30c9e3 100644
-> --- a/block/partitions/of.c
-> +++ b/block/partitions/of.c
-> @@ -3,6 +3,7 @@
->  #include <linux/blkdev.h>
->  #include <linux/major.h>
->  #include <linux/of.h>
-> +#include <linux/property.h>
->  #include <linux/string.h>
->  #include "check.h"
->
-> @@ -62,6 +63,8 @@ static void add_of_partition(struct parsed_partitions *=
-state, int slot,
->                 partname =3D of_get_property(np, "name", &len);
->         strscpy(info->volname, partname, sizeof(info->volname));
->
-> +       state->parts[slot].fwnode =3D fwnode_handle_get(of_fwnode_handle(=
-np));
-> +
->         seq_buf_printf(&state->pp_buf, "(%s)", info->volname);
->  }
->
->
-> --
-> 2.34.1
->
+> So overcommitted VMs can use bounce buffers to have a set of
+> pre-mapped buffers to bounce traffic in and out. We're trying to use
+> this solution to map pages dynamically with virtio-iommu and recycle
+> them via page-pool to avoid traps on each TX/RX and avoid the copy
+> cost of bounce buffers.
+> 
+> This problem extends to generally reducing IOMMU overhead in
+> networking - taking the dma map/unmap cost out of the hot-path and
+> avoiding IOTLB thrashing.
+
+Sure, that makes sense, but just having a pool of entirely normal
+pre-dma-mapped memory is quite a different problem from what launched
+this thread...
+
+Jason
