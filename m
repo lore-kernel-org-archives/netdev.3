@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793934977;
-	b=tzfqt9nczLU/A1R3ZDV3FxoGLwmOBOLBOVqR41iIiMvaP3TuHzFTEhGnylQzcBv3h3Z6
-	 HwOgF8Oq/rY/JkR1Adv8bwHnlt3yIxoz/bgSv5CylsJoUtF2S5Bw2xKi9qbmztrsx83Sw
-	 Amy33+xIU8EC+sUrBo6gnA6fMb2hiQ98TGVcRuWboqnBXwlgn3tmR5sR3hd4no3ZSEO39
-	 Totv2IHYkSX0S5lJl73I241A4ivoD6ZBkAkSCWekB4lLsbdKPULkeSN9e6W8HvjomOZFq
-	 xAbMzI26YHnccMdhkb53QU/gMElDa+CwE+UO7eBzugOEyCK38JdMvtch12hkxdHfhjw==
+	t=1793934982;
+	b=L0P2YdoYGEarRiAZZT8WdFggYmMnDMRGMr7Na5gkDs+UXhkFiCfZ8MbN9eeWZMVYPcjk
+	 tjTOOivRkjOIm+EonktIsTrqU8zMeaaH4qoOeiRmm+kBmGnyOh6qkXCgL2uZcMvMg+EbL
+	 MMQvh+CwHT0Ot04n3QBrdk+FDKjgNKGNUzm1k3o86iu5cZvVtXO9N0aKAojRldRo5XWmk
+	 AwwwXf+9K9Mg8kJD5GRQWNqloR+f8AVPnVVV333Wn4/III7uvs+yLOowvPyRTHSOUS058
+	 ZO3TwX+Yr/KSM+3e4NwDRr3VZFhf6teoc0qM0FZAEfI+RRROHAsHoceZHd11eWsoa5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793934977;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793934982;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=rS9yH2pHSUpZGvEI4bVkQ6rj4vMCLHWI7UEuhf1xYFU=;
-	b=virWn0ZA/ZIpGnbfDZattTnlG6FC/3kUK7N08b/Fo1Ftc8SDsuc4DAtT597bBIRgu60B
-	 3c/M8xf5sC/qNY/+J7hSMJ348B5cPm/u6w7kgy/w4pzoXa6pdkF95LfRfqOiKUwvq5b3i
-	 VqVAga0lfGuKQpU5N8OhD5veh7g6QWk0mFD7J0NVrdmZUx9uaep/dkFVtRy7XBXxxDtMj
-	 D4G+wFT8azM0hz876OSar8DkPadmV5lEk1oLx+uo5qastUGVYmW6Nn2AqVFvZeVnACgaV
-	 x1yPbZce8FyyM1KbFVAVPqJ6UOcCWp7wsUMHrJAx3IsX2EYkx3BF54HVwzVHdhM4HHw==
+	bh=tLs7sq8fCRLLrdT/gEe1SepPWhq1CHzc5Xvo92KzSEU=;
+	b=1CW6wBK9mw91GxmiIU8U3lxEAf4Iz70g6kUkDbbhzldrQ5AKpHYlRcGNh2k4cD9Cp3Lk
+	 W9ysWTMeiZvml0bgjfJQ/OEgGS94wzCtIFiYx801zTHoTYF9217WtEyyXIgySTO6QcqQE
+	 Lf9mICqOMStG86NL+1hHxudkYWy7AF7AxVjyghPXu8JYLGrs8aEWAvWqJLsKR1CXQefeI
+	 pIw6oGNFftS7OHQVzvfbcO73nOCQPjbWoqr/Q2/hD3EUuMybg3HrJ8YLzg39P07C/xYin
+	 of3vitogfxKIzrbdN9Y0Ck3dJP97Yw2EEQTenQUcArmkNpHW6TnxuuVQSN74d07ywkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdKkYj3q;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHOBs4CT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2F3606A328;
-	Fri,  6 Nov 2026 03:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3641606A33F;
+	Fri,  6 Nov 2026 03:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdKkYj3q
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9160E1F008A3;
-	Fri,  6 Nov 2026 03:16:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lHOBs4CT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FDA1F0089F;
+	Fri,  6 Nov 2026 03:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793934977;
-	bh=rS9yH2pHSUpZGvEI4bVkQ6rj4vMCLHWI7UEuhf1xYFU=;
+	s=k20260515; t=1793934981;
+	bh=tLs7sq8fCRLLrdT/gEe1SepPWhq1CHzc5Xvo92KzSEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LdKkYj3qhQ6u3C61mXA87n+Lye0p4WKM4+/YJoa7mbmx5h4FiI4Mw9M1TO1rvQADz
-	 lheEjZMFuSThT6fumUtHOt4B0FDkILvPrwEsU50y4YRX5h40WMTAs3eG0HVDVVaIqA
-	 tjALL1NQlWmOCzAJR2PZrmvQYxPwZe35TIqiBNIHJ9ddsiJu3eXJ7weXQE8uFTDagQ
-	 AL/0g43MAyWyR5jGm4o3DKcvxf+B6Vy9KIdQdLStglWWp2yhZCxoGJsS9pfxxpoU/Y
-	 yYarI+sH6IF1zk+F8MVIbUrcIgduGGkFUAsWR8AIwDa97pDGmOnEKwJFcTplD99JpH
-	 +e2j7XD4/AKmw==
+	b=lHOBs4CTzNbEzUyiwI8SsTfrSD71quxGq38fpe7f9aXu6M5rzZI3Aa88fmMiR5Sxp
+	 X7AUl5UBNvZlAWUN0c+ub+U1Tex5mjkT+WoGZpgMOq4CbStESZrsrVr4yvs1HfcUVn
+	 3BZ8hAN2PNli0qLhDI5e5J/tyFhcozHIC/GrbdVAKCL0FZXE7TiIAHptWyuvpD0oE2
+	 O+TX1QFaLfel5tahZSxPy/3dNmJFqwpSb6YsxcLz4OpKOBQXetZCyKigImo0EJpkEY
+	 /mdu07rlX2L86OW1PeH+h7wEcU/JMOq9a6M2HRlSKncxXaj6I6u5gqjyq55GF0uGv0
+	 1WasR9xCiHrvg==
 From: Allison Henderson <achender@kernel.org>
 To: netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
@@ -47,9 +47,9 @@ To: netdev@vger.kernel.org,
 	kuba@kernel.org,
 	horms@kernel.org
 Cc: achender@kernel.org
-Subject: [PATCH net-next v11 01/12] net/rds: undo conn_alloc() the same way on every __rds_conn_create() exit
-Date: Thu,  5 Nov 2026 20:16:04 -0700
-Message-ID: <20261106031615.1047052-2-achender@kernel.org>
+Subject: [PATCH net-next v11 08/12] net/rds: hold a connection reference from struct rds_incoming
+Date: Thu,  5 Nov 2026 20:16:11 -0700
+Message-ID: <20261106031615.1047052-9-achender@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261106031615.1047052-1-achender@kernel.org>
 References: <20261106031615.1047052-1-achender@kernel.org>
@@ -64,83 +64,278 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-trans->conn_alloc() may allocate transport data for every path of a
-multipath connection - rds_tcp_conn_alloc() does - which is why the
-lost-creation-race exit of __rds_conn_create() loops over all npaths
-when it frees the connection it just built.  The passive-connection
-exit right above it frees only path 0.
+struct rds_incoming->i_conn stores a pointer to the connection a message
+it belongs to, for both received messages and messages the socket sends.
+But without taking a reference, nothing keeps that connection alive.
+Embedded as the messages m_inc, an inc routinely outlives the connection
+it points at, by sitting in the socket's receive queue until the
+application reads it, while the connection is destroyed under it - and
+every dereference of i_conn after that point touches freed memory. Netns
+teardown and unloading rds.ko cannot do that to a live socket, which
+pins both, but a transport unload can: rds_find_bound() does not check
+the transport, so a socket bound with one transport (SO_RDS_TRANSPORT)
+can hold incs that arrived over another transport's connection, and
+unloading that other transport destroys the connection while the socket
+stays open.
 
-That is not a leak today: a passive twin is only created for an IB
-loopback connection (an incoming TCP connect to a local address is
-refused with -EOPNOTSUPP before it gets here), and the IB transport is
-not multipath, so npaths is 1 on that exit.  But the two exits express
-the same "undo conn_alloc()" step in two different ways, and the
-following patches add another exit of the same kind.  Move the loop
-into a helper and use it everywhere, so that the step cannot silently
-diverge if a multipath transport ever grows a passive twin.
+Chengfeng Ye reported one way to reach it, where the socket info
+callbacks walk a receive queue after rmmod freed the connections:
 
-Assisted-by: Claude-Code:claude-fable-5
+  BUG: KASAN: slab-use-after-free in rds6_inc_info_copy+0x459/0x530 [rds]
+  Read of size 1 at addr ffff888106031c50 by task poc/101
+  Call Trace:
+   rds6_inc_info_copy+0x459/0x530 [rds]
+   rds6_sock_inc_info+0x2b9/0x3c0 [rds]
+   rds_info_getsockopt+0x19d/0x380 [rds]
+   do_sock_getsockopt+0x2ac/0x480
+   __sys_getsockopt+0x128/0x210
+  Freed by task 102:
+   kmem_cache_free+0x1b5/0x3d0
+   rds_conn_destroy+0x484/0x600 [rds]
+   rds_loop_exit_net+0x32/0x50 [rds]
+   unregister_pernet_device+0x2c/0x50
+   rds_conn_exit+0x13/0xa0 [rds]
+   rds_exit+0x1a/0xc40 [rds]
+   __do_sys_delete_module+0x30a/0x4d0
+
+That report has rds.ko itself unloading with an RDS socket still open,
+which the socket's module reference would normally prevent, so the
+reproduction appears to rely on a forced unload; the cross-transport
+case above needs none. Closing the socket gets there too, with no reader
+of i_conn other than RDS itself: freeing an IB inc dereferences i_conn
+to hand the inc and its fragments back to the connection's recycle
+cache, so draining the receive queue of a socket whose connection is
+gone crashes in the transport:
+
+  panic
+  ...
+  rds_ib_recv_cache_put (net/rds/ib_recv.c:703)
+  rds_ib_inc_free (net/rds/ib_recv.c:207)
+  rds_clear_recv_queue (net/rds/recv.c:909)
+  rds_release (net/rds/af_rds.c:212)
+  __sock_release (net/socket.c:649)
+  sock_close (net/socket.c:1336)
+
+with the freed connection confirmed by its now-zero reference count:
+
+  -trace[9]["inc"].i_conn.c_refcount
+  (struct kref){
+          .refcount = (refcount_t){
+                  .refs = (atomic_t){
+                          .counter = (int)0,
+                  },
+          },
+  }
+
+Now that connections are reference counted, make every holder of i_conn
+own a reference.  The pointer is assigned in six places - rds_inc_init()
+and rds_inc_path_init() for received messages, rds_recv_incoming() when
+it re-points an inc at the connection it arrived on, and
+rds_send_queue_rm(), rds_send_probe() and the congestion-map path of
+rds_send_xmit() for m_inc - and each of them now takes a reference.  The
+references are dropped from rds_inc_put() and rds_message_put(), which
+are the points where the last user of the pointer goes away.
+rds_recv_incoming() takes the new reference before dropping the old one,
+so re-pointing an inc at the connection it already refers to cannot free
+it.  rds_inc_put() drops its reference through a local copy, since
+inc_free() may free the memory the inc lives in.
+
+This keeps a connection allocated for as long as messages that arrived
+over it are queued on sockets, which is longer than before.  What
+lingers is the quiesced connection, its per-path workqueues (idle,
+every work cancelled) and the transport's per-connection state,
+including an IB connection's receive caches: rds_conn_destroy() still
+quiesces the connection synchronously, so nothing runs on any of it.
+It also means the transport cannot unload while such a datagram is
+unread - rds_conn_wait_conns_freed() waits, warning every ten seconds,
+until the application reads or closes.  That is the intended
+behaviour: teardown does not discard queued data, and unloading over a
+live reference would be a use-after-free in the transport's text.
+
+The final rds_conn_put() runs the free path, which destroys the per-path
+workqueues and therefore may sleep, so the last reference has to be
+dropped from process context.  It always is.  While a connection is
+alive its hash-table entry holds the initial reference, so a put from a
+completion handler or tasklet can never be the last one; that reference
+is dropped by rds_conn_destroy(), from process context, after the
+connection has been quiesced and its queued messages freed.  The
+references that survive that point are the ones held by incs on socket
+receive queues and by messages on socket send queues, and those are
+dropped from recvmsg and from close - process context in both cases.
+
+This is not a stable candidate, and is marked for the stable tooling to
+skip so that it is not picked up without the patches it depends on:
+reaching the use-after-free requires freeing a connection out from under
+a live socket, which needs CAP_SYS_MODULE, and the fix depends on the
+connection reference counting introduced earlier in this series.
+
+Based on the Oracle UEK commit "net/rds: fix crash by
+expanding kref coverage to rds_incoming.i_conn".
+
+Fixes: 39de8281791c ("RDS: Main header file")
+Cc: <stable+noautosel@kernel.org> # depends on the connection reference counting earlier in this series
+Reported-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+[achender: port to net-next: same six assignment sites, but upstream
+ splits the message free across rds_message_unpin_worker(), so the
+ m_inc reference is dropped from a shared rds_message_free() helper
+ that both paths call; rds_recv_incoming() takes the new reference
+ before dropping the old; rewrite commit message]
+Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Allison Henderson <achender@kernel.org>
 ---
- net/rds/connection.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ net/rds/message.c | 16 ++++++++++++++--
+ net/rds/recv.c    | 27 +++++++++++++++++++++++----
+ net/rds/send.c    |  4 ++++
+ 3 files changed, 41 insertions(+), 6 deletions(-)
 
-diff --git a/net/rds/connection.c b/net/rds/connection.c
-index c752a8623cfc..95ff50f31d1e 100644
---- a/net/rds/connection.c
-+++ b/net/rds/connection.c
-@@ -161,6 +161,22 @@ static void __rds_conn_path_init(struct rds_connection *conn,
- 	cp->cp_flags = 0;
+diff --git a/net/rds/message.c b/net/rds/message.c
+index 47d5e9ab9b10..cea48ad745ca 100644
+--- a/net/rds/message.c
++++ b/net/rds/message.c
+@@ -182,6 +182,18 @@ static void rds_message_purge(struct rds_message *rm)
+ 		kref_put(&rm->atomic.op_rdma_mr->r_kref, __rds_put_mr_final);
  }
  
-+/* Undo trans->conn_alloc(): it may have allocated transport data for
-+ * every path of a multipath connection, not just for path 0.
-+ */
-+static void rds_conn_free_transport_data(struct rds_connection *conn,
-+					 int npaths)
++static void rds_message_free(struct rds_message *rm)
 +{
-+	struct rds_conn_path *cp;
-+	int i;
++	/* get in rds_send_queue_rm(), rds_send_probe() or the congestion
++	 * map path of rds_send_xmit().  Messages that were never queued on
++	 * a connection have no reference to drop.
++	 */
++	if (rm->m_inc.i_conn)
++		rds_conn_put(rm->m_inc.i_conn);
 +
-+	for (i = 0; i < npaths; i++) {
-+		cp = &conn->c_path[i];
-+		if (cp->cp_transport_data)
-+			conn->c_trans->conn_free(cp->cp_transport_data);
-+	}
++	kfree(rm);
 +}
 +
- /*
-  * There is only every one 'conn' for a given pair of addresses in the
-  * system at a time.  They contain messages to be retransmitted and so
-@@ -322,7 +338,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
- 	if (parent) {
- 		/* Creating passive conn */
- 		if (parent->c_passive) {
--			trans->conn_free(conn->c_path[0].cp_transport_data);
-+			rds_conn_free_transport_data(conn, npaths);
- 			free_cp = conn->c_path;
- 			kmem_cache_free(rds_conn_slab, conn);
- 			conn = parent->c_passive;
-@@ -338,18 +354,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
- 		found = rds_conn_lookup(net, head, laddr, faddr, trans,
- 					tos, dev_if);
- 		if (found) {
--			struct rds_conn_path *cp;
--			int i;
--
--			for (i = 0; i < npaths; i++) {
--				cp = &conn->c_path[i];
--				/* The ->conn_alloc invocation may have
--				 * allocated resource for all paths, so all
--				 * of them may have to be freed here.
--				 */
--				if (cp->cp_transport_data)
--					trans->conn_free(cp->cp_transport_data);
--			}
-+			rds_conn_free_transport_data(conn, npaths);
- 			free_cp = conn->c_path;
- 			kmem_cache_free(rds_conn_slab, conn);
- 			conn = found;
+ static void rds_message_unpin_worker(struct work_struct *work)
+ {
+ 	struct rds_message *rm = container_of(work, struct rds_message,
+@@ -192,7 +204,7 @@ static void rds_message_unpin_worker(struct work_struct *work)
+ 	if (rm->atomic.op_unpin_deferred)
+ 		rds_atomic_op_unpin_page(&rm->atomic);
+ 
+-	kfree(rm);
++	rds_message_free(rm);
+ }
+ 
+ void rds_message_put(struct rds_message *rm)
+@@ -217,7 +229,7 @@ void rds_message_put(struct rds_message *rm)
+ 			return;
+ 		}
+ 
+-		kfree(rm);
++		rds_message_free(rm);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(rds_message_put);
+diff --git a/net/rds/recv.c b/net/rds/recv.c
+index 00ab60f2d996..e4cae82c1681 100644
+--- a/net/rds/recv.c
++++ b/net/rds/recv.c
+@@ -46,6 +46,7 @@ void rds_inc_init(struct rds_incoming *inc, struct rds_connection *conn,
+ {
+ 	refcount_set(&inc->i_refcount, 1);
+ 	INIT_LIST_HEAD(&inc->i_item);
++	rds_conn_get(conn);	/* put in rds_inc_put() */
+ 	inc->i_conn = conn;
+ 	inc->i_conn_path = NULL;
+ 	inc->i_saddr = *saddr;
+@@ -61,6 +62,7 @@ void rds_inc_path_init(struct rds_incoming *inc, struct rds_conn_path *cp,
+ {
+ 	refcount_set(&inc->i_refcount, 1);
+ 	INIT_LIST_HEAD(&inc->i_item);
++	rds_conn_get(cp->cp_conn);	/* put in rds_inc_put() */
+ 	inc->i_conn = cp->cp_conn;
+ 	inc->i_conn_path = cp;
+ 	inc->i_saddr = *saddr;
+@@ -81,9 +83,19 @@ void rds_inc_put(struct rds_incoming *inc)
+ {
+ 	rdsdebug("put inc %p ref %d\n", inc, refcount_read(&inc->i_refcount));
+ 	if (refcount_dec_and_test(&inc->i_refcount)) {
++		struct rds_connection *conn = inc->i_conn;
++
+ 		BUG_ON(!list_empty(&inc->i_item));
+ 
+-		inc->i_conn->c_trans->inc_free(inc);
++		/* inc_free() can free the memory @inc lives in, so the
++		 * connection reference has to be dropped through the
++		 * copy taken above.
++		 */
++		conn->c_trans->inc_free(inc);
++		/* get in rds_inc_init(), rds_inc_path_init() or
++		 * rds_recv_incoming()
++		 */
++		rds_conn_put(conn);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(rds_inc_put);
+@@ -325,6 +337,13 @@ void rds_recv_incoming(struct rds_connection *conn, struct in6_addr *saddr,
+ 	unsigned long flags;
+ 	struct rds_conn_path *cp;
+ 
++	/* every caller initialized @inc with rds_inc_init() or
++	 * rds_inc_path_init() first, so i_conn already holds a reference.
++	 * Take the new one before dropping the old, so that re-pointing an
++	 * inc at the connection it already refers to cannot free it.
++	 */
++	rds_conn_get(conn);
++	rds_conn_put(inc->i_conn);
+ 	inc->i_conn = conn;
+ 	inc->i_rx_jiffies = jiffies;
+ 	if (conn->c_trans->t_mp_capable)
+@@ -408,8 +427,9 @@ void rds_recv_incoming(struct rds_connection *conn, struct in6_addr *saddr,
+ 	 * rds_find_bound() uses a global (netns-agnostic) hash table.
+ 	 * An RDS connection created in netns A can match a socket bound
+ 	 * in the init netns, delivering inc cross-netns with inc->i_conn
+-	 * pointing into netns A.  When cleanup_net() then frees that conn,
+-	 * any subsequent dereference of inc->i_conn is a use-after-free.
++	 * pointing into netns A.  Cross-netns delivery is wrong on its
++	 * own, and the inc's connection reference would keep a
++	 * connection of a dead netns around, with a stale c_net.
+ 	 * Drop the inc if the receiving socket lives in a different netns.
+ 	 */
+ 	if (!net_eq(sock_net(rds_rs_to_sk(rs)), rds_conn_net(conn))) {
+@@ -484,7 +504,6 @@ static int rds_still_queued(struct rds_sock *rs, struct rds_incoming *inc,
+ 	if (!list_empty(&inc->i_item)) {
+ 		ret = 1;
+ 		if (drop) {
+-			/* XXX make sure this i_conn is reliable */
+ 			rds_recv_rcvbuf_delta(rs, sk, inc->i_conn->c_lcong,
+ 					      -be32_to_cpu(inc->i_hdr.h_len),
+ 					      inc->i_hdr.h_dport);
+diff --git a/net/rds/send.c b/net/rds/send.c
+index 9c3890c124a0..518ac69b68b7 100644
+--- a/net/rds/send.c
++++ b/net/rds/send.c
+@@ -290,6 +290,8 @@ int rds_send_xmit(struct rds_conn_path *cp)
+ 			}
+ 			rm->data.op_active = 1;
+ 			rm->m_inc.i_conn_path = cp;
++			/* put in rds_message_put() */
++			rds_conn_get(cp->cp_conn);
+ 			rm->m_inc.i_conn = cp->cp_conn;
+ 
+ 			cp->cp_xmit_rm = rm;
+@@ -947,6 +949,7 @@ static int rds_send_queue_rm(struct rds_sock *rs, struct rds_connection *conn,
+ 		/* The code ordering is a little weird, but we're
+ 		   trying to minimize the time we hold c_lock */
+ 		rds_message_populate_header(&rm->m_inc.i_hdr, sport, dport, 0);
++		rds_conn_get(conn);	/* put in rds_message_put() */
+ 		rm->m_inc.i_conn = conn;
+ 		rm->m_inc.i_conn_path = cp;
+ 		rds_message_addref(rm);
+@@ -1532,6 +1535,7 @@ rds_send_probe(struct rds_conn_path *cp, __be16 sport,
+ 	list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
+ 	set_bit(RDS_MSG_ON_CONN, &rm->m_flags);
+ 	rds_message_addref(rm);
++	rds_conn_get(cp->cp_conn);	/* put in rds_message_put() */
+ 	rm->m_inc.i_conn = cp->cp_conn;
+ 	rm->m_inc.i_conn_path = cp;
+ 
 -- 
 2.50.1
 
