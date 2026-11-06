@@ -1,60 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793990699;
-	b=Kd+Ryx3uPx0gN8L9I8skXto/o+kykX7k4PC5RT/C8qUrpKHuuE5BTeW6v+PiCqLwG7RA
-	 o06WQ2Oo7dXYpwZB3umVIRGNWuOTD5gTTzkGEmkzO/yHu0ByDAuHnTRXxCwtB+yiqQbmb
-	 dlwOnCw6cKGfqCywNJoTsf3i6cfynEhmUn/D7qoqnD9177Yexmdpsadz3r9lJ92vezSiz
-	 4tsGsHMUaWbTlrdCBbpY9f2dFh35w16l5LV8CH5X01JiG7hUlpK0glG2gxPEugZmiz/xI
-	 YZl6FTbNNwnWa2AmmXo1AGtqvPieQlr4nD7ZBo/C1y+ZxXhZEzQun0bf66ewAo1kBFQ==
+	t=1793990910;
+	b=PTuWJu3GP9nI4P2jdZrVl1wJOXJsTWyQtzvXfDT1HCtGmK7vyGinVMQ6KsgYvJMODDv/
+	 SpW/oiKFruk4vgO3IYOcSpMn3rK4riE79LphZYfrgWkxLHqDhFDPkpdhUOGp3p4XW+7pO
+	 VYyJxZv5MdanMBWmHsHjSEyZsbmGuOtk4GNj173Mu/nzpaYkz61e88R+tnGpqD2uFZQp2
+	 Gvo9c4bKhc1A07FI7IgCi/jvT8Dqm+zxW/MX6IxhXeqtz3b5vS0FFW1WLUSsD5t/CdLN5
+	 vXBzjH36fIKB5JnNBI7ahiMrZ5JGdsRHG15w8H0SpFz7ZchVqp/UGNSDEUgxT01lQYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793990699;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=kPu9zlaOpsGhBCdiCw4x8hBWWTKqD97knAMD93CJnKk=;
-	b=SgOMEKlBwXTXH34vx7twE9lfttVdEN0SRZfeTwotkI4bt/WXBsbE0UtTVDxAhQKSYWtP
-	 bf0Ldn9olt2Lelrdlev8deMm9H3vAsSeK09WTYdmyB4j45aT161HQSSDIaDuTmf+oHLJx
-	 eKvEOFZ6Y24fncWlx2h6bu0+xo826vAoRPsTYLRamIJ48gGbn8T3cDczTEmdjRW5Z4fvz
-	 aRqwhsJaFnq8u+qQqkLZ/o9g51z2qQ3wElSm9BeKZi7SetAAqLhqGdAOTCJPA8SGAopUO
-	 czSrECKSFj4NShyXvnJEYg1kh4UNVh0BesdXNZPeGUvMhJBBkzPvQrl/12Ymi8RFnHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793990910;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=DVgDWv3VD/ui3HBKkgpjgxEmwBxnrXvFZzEKOZanqwY=;
+	b=UVP29LZ1FTN/F7POCrI9ZlpLHCMkggVrlr7NjlFgKP9JsLaCTtG1fzxTCRWRbwcPiqgy
+	 fIg/15VmRznPbdsgxdRKFGuGWxEIXm8gmPvsoisk66LI3iGX5UhZ+8Snz6K8tladvp9mk
+	 3Mk1/vDSWVsIhEfqZTkpNH/12FtPcDOVyUnrHhA5IzNOKS6K5wPmjmGI3Ue26jzNcbnlR
+	 7n+taZBMShVCFT7U8INiD8LsEew3pQ5Rt070UErRlwtT2/LgQ8aHJvAqPw3uIF5ih4op7
+	 P3CdYTUzivNDMGPSrpvkFKEqghV5eHLoHjlMCWFruiPy79t1pcTB/DbQa2Mo3QH3Z+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evcRYVbI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FRc+cgD0;
+	arc=none smtp.remote-ip=209.85.215.182
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00ED606A33C;
-	Fri,  6 Nov 2026 18:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB34606A338
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:48:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DB34606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=evcRYVbI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0F01F0089F;
-	Fri,  6 Nov 2026 18:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793990698;
-	bh=kPu9zlaOpsGhBCdiCw4x8hBWWTKqD97knAMD93CJnKk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=evcRYVbIoiOGFsQLD/L4PvvpYFLdXNSFEq5eajYUYFLgRd69yOx5t01vWGlSOAIGw
-	 560JIEKheggrDncLYFPwc55053EXla72rvB3fJjRKYgzIz2Uq9mSgnRQ5kUBQrFczl
-	 vL+GjdO9QFY3Z5ZV0TV7T5BSnmwNbyPltoMRnh+z4T2KcuUJVm53/4qAsSC5DxUmoS
-	 1OCN/R1iznfgbglpwqPTL3PfQ0r2odBk31hQZZqdhHc6uHqT3/prWayM2N3VOtPBh2
-	 aA/8Zae0Qr28bO6IInpaskqlzg7ZGqc8uUdetpQy+M8ab2ZLV0Dn0zXmD1V4MZxOix
-	 lsD9cFr9urPbw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: robin.murphy@arm.com,
-	m.szyprowski@samsung.com
-Cc: netdev@vger.kernel.org,
-	iommu@lists.linux.dev,
-	joro@8bytes.org,
-	will@kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FRc+cgD0
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cdaefe02d5dso586037a12.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:48:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793990909; x=1794595709; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DVgDWv3VD/ui3HBKkgpjgxEmwBxnrXvFZzEKOZanqwY=;
+        b=FRc+cgD0sIAfcmtcLNakdeROnktdrMH3HQMBnntP+qo9DD0PAz0Be1jkr+iEsVxs0J
+         L9DAwLOWMkQKNeN4o0Ut6mLDZZwg3KiK6lHh51yBdMKq/Ctw/E+RsisQBLlwJUfzpjEd
+         aU/0665XmvbKlhTRU2PUfpDtrGoEPz6MfuGRQ+830BUcnL+trlHt+tC//pCNkwlLvca6
+         DxfseBjzDn9pcOh6Oodn3983my35PkNL71JQsbP/dPzZNU4FeG5KikE/2qgOxXBWs8c7
+         nIDAKZiiEh6nPA5Pw8BMBqqmRzoOaPLKvdgLlmy/SybaK0JQC6hniYM3HJBiZ7AEeajs
+         KNzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793990909; x=1794595709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DVgDWv3VD/ui3HBKkgpjgxEmwBxnrXvFZzEKOZanqwY=;
+        b=1qtZXJd29kOAbFqH4v39lTZuolDSTsM7QENWuW1pzW2b5IMtZ3VOjYzgq74LYYUI/O
+         MQoNpJRKr1Ub5c0+XIuSd6u+z1KYMmcKv9xaJfHLztOTPT+8lkRy2atzmE+JSZ0g5iFf
+         h5EA5g/nXCadpG/s5Qq/5iSICeFrRxRRaww/b0od4QOTOTi9OdfttBQwRFrRIEQ9rnY9
+         3gew0O2pGYLJApoPm9PU1b/yV13uGLyxPtt6EAkswxp5BejqV/wFdkURf7EpL1xZCP19
+         m4+lTUR6qx83HAcZ2JQOg8afbStpz08YH61JugGIY7X9jjR15lwlAvxmFqSGi6o3yS3r
+         xURg==
+X-Gm-Message-State: APuU4Z9fjtU8mp9G90AXT8CLZMvLJWy2msUVijskhO/C1/H+QDlwnoAE
+	0j2r53+33W+Y6DzGHUf1HuMePMmei3G1vaLFnKrEjy+7bIjLO7ghHG50SfIvvrPN
+X-Gm-Gg: AYBFou2IAybHX0TrIQDWObGOF4LBCmVsC5NRbtzDCc7yTKeTINBCOdpFk3xizonhH6F
+	00IbGNtMXCx9G41223G5BqAOknSfy+hB8TUoXWxr4hO5H+xd8tG639NIQAdXx/ePRLKtW2UWfYF
+	8GjBmlQVtq1lTS78Ba7Jl7dWqMDCjD+pxBcKGNAiQ6I9IRCKvclKWRpRJKize4GYJXnGpUMdMg1
+	7oRsSyL7s9Zj0HtK2DouTPpdoqhr8dylpaivcWzGQIBVY60z1FFWVNlPf1w2z+0et5XHREth6XD
+	gqsdy4MoxYmm7ULzRNHLx+yuWqWtkF3ufK/3M5NrYFfbxIWmBVYF/638a8GMfEiP1AxT5+kt3qQ
+	uKUxvHYJ5++Yul6H0jwQ7O5j/iVhFy8tNjq39IRXFfJIKb/7t6zuh/QkObXmR+u3oA5N5ojco2m
+	weGAaUhFJiIX1587hB+mVUrxQbUvTRlcUq3+5LCNz1XobcyT/l1nQTZbuBw/GKfpn09vkoP9cxj
+	W5nZbUthJ93uO1/LGiRWmBCvzJAzT1i1J3/GFOQBrMEDhggIRS6P6IP6dfVjWPPcRY2+MbwgVE2
+	is4TQWdhyml+Gh0iD0D34Tliq9hE6drbCx1nBcxsOpVxRUW/Ql8e+TVQn/bZsQPQHgxuKmbfZik
+	=
+X-Received: by 2002:a17:90b:268a:b0:3ac:a204:aa27 with SMTP id 98e67ed59e1d1-3b0db70e107mr3411850a91.66.1793990908850;
+        Fri, 06 Nov 2026 10:48:28 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1054a53e4sm45036a91.0.2026.11.06.10.48.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 10:48:28 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
-Subject: [PATCH 09/11] eth: fungible: use dma_alloc_coherent_node()
-Date: Fri,  6 Nov 2026 10:44:31 -0800
-Message-ID: <20261106184433.761422-10-kuba@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261106184433.761422-1-kuba@kernel.org>
-References: <20261106184433.761422-1-kuba@kernel.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/2] net: dsa: motorcomm: Add devlink info and resources
+Date: Sat,  7 Nov 2026 02:48:06 +0800
+Message-ID: <20261106184811.350700-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,51 +99,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Use dma_alloc_coherent_node() in fun_alloc_ring_mem() to place the
-rings on the requested node, instead of temporarily changing the node
-of the device. NUMA_NO_NODE keeps meaning the device's node.
+Add basic devlink support: expose the ASIC id through .devlink_info_get,
+and register devlink resources for the hardware blocks, reporting ACL,
+FDB (with unicast/mcast/static occupancy) and meter usage.
 
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-v1: no change
-rfc: https://lore.kernel.org/20261027022528.633359-10-kuba@kernel.org
----
- drivers/net/ethernet/fungible/funcore/fun_queue.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+David Yang (2):
+  net: dsa: motorcomm: Report error when FDB fails to add
+  net: dsa: motorcomm: Add devlink info and resources
 
-diff --git a/drivers/net/ethernet/fungible/funcore/fun_queue.c b/drivers/net/ethernet/fungible/funcore/fun_queue.c
-index 0eca751a9534..17c8eba1bc34 100644
---- a/drivers/net/ethernet/fungible/funcore/fun_queue.c
-+++ b/drivers/net/ethernet/fungible/funcore/fun_queue.c
-@@ -21,21 +21,19 @@ void *fun_alloc_ring_mem(struct device *dma_dev, size_t depth,
- 			 int numa_node, dma_addr_t *dma_addr, void **sw_va,
- 			 volatile __be64 **wb_va)
- {
--	int dev_node = dev_to_node(dma_dev);
- 	size_t dma_sz;
- 	void *va;
- 
- 	if (numa_node == NUMA_NO_NODE)
--		numa_node = dev_node;
-+		numa_node = dev_to_node(dma_dev);
- 
- 	/* Place optional write-back area at end of descriptor ring. */
- 	dma_sz = hw_desc_sz * depth;
- 	if (wb)
- 		dma_sz += sizeof(u64);
- 
--	set_dev_node(dma_dev, numa_node);
--	va = dma_alloc_coherent(dma_dev, dma_sz, dma_addr, GFP_KERNEL);
--	set_dev_node(dma_dev, dev_node);
-+	va = dma_alloc_coherent_node(dma_dev, dma_sz, dma_addr, GFP_KERNEL,
-+				     numa_node);
- 	if (!va)
- 		return NULL;
- 
+ drivers/net/dsa/motorcomm/Makefile  |   1 +
+ drivers/net/dsa/motorcomm/chip.c    |  45 +++++-
+ drivers/net/dsa/motorcomm/chip.h    |   3 +
+ drivers/net/dsa/motorcomm/devlink.c | 208 ++++++++++++++++++++++++++++
+ drivers/net/dsa/motorcomm/devlink.h |  16 +++
+ 5 files changed, 266 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/devlink.c
+ create mode 100644 drivers/net/dsa/motorcomm/devlink.h
+
 -- 
-2.56.0
+2.53.0
 
