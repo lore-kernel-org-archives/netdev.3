@@ -1,99 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.43
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793987600;
-	b=i47YTehGEZKGnpPwL9qXdQeStCHnYmZuN2l4RkmmdaJE234o/YO6TZ33EL9+x8zSPx54
-	 gXmAlGu1i+/VnNfV0r5gWCHLxhS2eRDbg9gaXG0syy3Wp0BrI7zHbL2yKyV4Er4A4fHHY
-	 b58CjyLqVxkdKOty0QkpX89Blj7iV++1rBH4D/xNQ/gQp6fb8Wo726QWEOZQ3qSlT6H30
-	 1S13hAv+0ix+DAkPedMdixQX6Modnv5HeR5Q4T5RPGaSa6fEDZ4KBi8r1wbL4Sxol9nNs
-	 e2dZ0uwphk2ZhG7dDfdaaTB2OQLmKl4WQ/mm3/9yN+Z3cV4NguWSiu1ypQZnqrNTi6w==
+	t=1793988051;
+	b=0m8ib+AhXfoieshU8QMOPZwqt6WNyTy0nuhc5jQtcPIfX+hUzdDeRvHR81pEvCcr+SHk
+	 WGGrXC9hwUhPh/dYLMHL4d5bh7mjQj2PttLDf7yO6y57VQeg2SLzYkayPrt1uHO92w2v0
+	 Wgvl9sA0sO1WAOdOUPVxrMlrzGxiId6KEqOETOQPcmzB9gRhTpWXqA/s4xWKMI2DzZ9oj
+	 0cF8duF2YPDBih1jwgFPiP/QsyFMgqagSFd7mZiJ4gOHD7pb9/3npPlY5yUE3FHOQtEpd
+	 KGrja0aSN1ioaV2FzKUag5iZLkf4yIKDDqc90Kl8IFk6Hww2VA5dhHStDwnb33Re0OA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793987600;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988051;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=5pDupBwR2/7t1JImpr59IJwI8nCk2i1PzTMP7JDf060=;
-	b=AnWzL46fc7BuMO2eDMotd1IvMUUYYp7uoklg7EoMhRjK8aiurSmU4jJpzbCIeT/wjH3p
-	 DUtefZGLUQ97OzvaHIYg0f81Tkj+buMaC56GmBV0etFK7evqsjNTANrdW3b8H0YTMADkW
-	 PvQzTuC1+6oREe7cu6Jfjx1yfW1yBXNtXWZ11mgJrvqmB6rh+j1RefWbb4gZUCpoUhGJn
-	 uaRphAMJTzGinaDGnT0BqXYtxP6yGQpDyoYrvyt2cXdBGYK28OpdLq2hEdAUaZZxXRZuI
-	 /BdPs52Z7ey1Ch8K9hbCQffkv559qg/jA9i5xV1GajmjRVN3Y9BJX2DpupQhuV6L9zg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=YnPe9jMocBvynbA9CNTJ1Pl6eniz/8su5Gj2vJyxmpg=;
+	b=ICJ1K2SvO9/Xf5TSoMpGuLHnhasf9GHuNeZJu6BhioL2T+n/UGjWrXa7uYT0IpZsG9vt
+	 5fMic8wMYjawQQu/4UN0zS5hUIBjgpNQNcbaJiVkTtlYADGQlUuZ8OYrqP7c8aDaL9XoH
+	 aNPA8WKOkO7184XLv1jWKD/Uccir8qLzdU02Mt7l86eaLFwRU8Xp0JlOgmvm55JyV11QC
+	 Gjij+FOW+Mi9aczeWxbVgmXSW8s1F1OqheXBum7wrXeNZeZn6mKJzYuDSSjnQg98fKmQ9
+	 aaTUU8+fZcPcz1ZXnEbGVikVT6gofyza175SXBzLTaWMGqj6/eCRgvbFyRRADyVJadQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jlcDAy1q;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QoecesZE;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52654606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 17:53:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52654606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5329F606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:00:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5329F606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jlcDAy1q
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b6966d9508so762a12.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 09:53:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793987599; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QoecesZE
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4b6266b5bc4so3245e9.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:00:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793988050; cv=none;
         d=google.com; s=arc-20260327;
-        b=HnQ4ucDD7+Tbc5zjUI4AjXqkzswOL6sst7wHRiyivPQcydCrnQ1EmOvKkWHB6C1Jle
-         WgrwZ5wkVUZ42Pj+qYH0fIjgwVdREfcNNpDSZDkWtRNZdebIdsNla1cfCj3P4ke+bfyQ
-         0UvW7wj2YacVnZnjVz27h9tm8naIT+FqjOqAeaz4wUf7xoYj6HZd6A4wR35fMWs48Dq9
-         /zLz80oHwFwNA2oC9w3V+0S9Ywh+WJP0Siz03JrS95OWi8PsKacW7Cl0dSD7LYm2dwli
-         ecqpy11H1tYQ6uuS+zoWekwkGpGTICzeFT4OUwYwjO48L3nCpT3cz4B75ewrIBKsCQXF
-         61Ug==
+        b=QN6hge5hE/6bIZnq81BgFwd/ucxXekqVCnQAfBB7gP0pyTqIR1x3tRFe9JSrrB0PQ6
+         ii5H2i29BF5AHLR8/eH4RjIQx/ElQkjr/l3nMAnrJtJHwTZWzpTwExD8gapYS0uRKONR
+         +rWCDIw+cOhSgujPYzlpBnlwfblQzXPyK0SOlZDovCFNNVe5/3vadN2lRtaezAmgZhdH
+         khRKaL3nBQBs/9TT8dleAXM210QlLrQ0lNhI+7Q7KyysS8i/88LW7qDGB7RaubPcldqV
+         XBoIfJ5+I11RLIK/8teok4rEi1AMGyZ8kd41iNPnP28OHH+4eqp/SRAr1pZfkNdqDqeY
+         0I7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=5pDupBwR2/7t1JImpr59IJwI8nCk2i1PzTMP7JDf060=;
-        fh=wBIJiGJwTUhxr8TPCw3Nt9DZfEXBubj+JM7Fw/FMsPg=;
-        b=oGblMxUGXcl3eUDXJ/fkySfpXk99aMjUeNPYK1Zs8P+cyCQkY0N1akj9eq8n4yLSL7
-         xugfBQQ64uyDPhkILc9AQxJ4TxRgm1nZy4/5Nexbh0jRpaj1T1StsVNuAnzv6F2vQ6/z
-         gVK2VFVu5ikJw24lzL9/3oosy3HjjJ6J1knnrphy7DhmYVR1yPsJsmoe6RoHWvXhF9ZV
-         r1585Lu/1XMWr0AiUwy6FrT2It18htdVQ0hW7h+RolxOp9o0ODuTQjdncTvjeOmdHrIO
-         uy07wWHMw20MSLFtau3DHZDMCJltjnXr74pem/ZIbhc8fgIKMpyO0H/ye8XOxWXLLNPP
-         6xxA==;
+        bh=YnPe9jMocBvynbA9CNTJ1Pl6eniz/8su5Gj2vJyxmpg=;
+        fh=hepLqXJ4uAE6wAiYeglNGidXa/vn/rL2uuWLiLpGYf4=;
+        b=qmJRAQVjcZBK8T7D1CmW2oXKajWCzcOR2dQYAOrL6gX+LMaq/i/71Zt5iWqxNEyKeB
+         B20YdDauOUlZdAbLpSMk7lFenMuXoh/+P8Ae9DmUJHNVokSI0Tz23ZqlY9tfwUm6BSo+
+         eLePBtwuHGps/geZB6hb82OM0JFS7GqK+CgCUcnHxYa9ueCOpagk1RnIc0Sgftp8UQF2
+         T6yBRe8ohPVS2oxT6nlVjofHskMlFwWhZTYsTyijFdq7SDW8cDQYPgl5lyCUyD2ukPQ1
+         9jD8N3lFST70+J8B4YXp0zKsslRmffi1zg08yvlhviMJ28XXLYYe8oNhJJ8FNSCpqHiN
+         Xezg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793987599; x=1794592399; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793988050; x=1794592850; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5pDupBwR2/7t1JImpr59IJwI8nCk2i1PzTMP7JDf060=;
-        b=jlcDAy1qwlP8CV/J8ziGOhM7zgiwe1Yqasgt18zZ9BLFfbdjvFbOPJHelnnlWn7/NF
-         Iv0y6BvcfswTFEAK+vaTKFWw4pm1SC9i7SkbSqJgyIWek4Oq+yCZaP0CXyGrm6BTXeAy
-         PMZhXc8r+FCA+Uan8Tn54ozp3MQPEOEFZdVxBH5ggJzVX08faCYPNZDo3xsJ3VF8tmEg
-         pX3urwYaX0msYCvMLpruaNTx6NxqPVTVZ/iC58DSiI1w9TNgPQSmlsdvsWkpbFzggva5
-         DeXnKd9qGJxbmFLWSsqwsQR8pJQE3NG/l6oFkjRU8+PfaF5R3/yJ38vi2guHN24z+b5U
-         +fdg==
+        bh=YnPe9jMocBvynbA9CNTJ1Pl6eniz/8su5Gj2vJyxmpg=;
+        b=QoecesZEWdYh3VkL5qejF7mvJeTIRcWMeBzM7OpHnLqetsCHZK3GbCb4NGmtB8nhMW
+         2GjUkRjQdN2500zoQiAqGqwF23J3T/2CHnerTz9RVr6QAUZgl+7r5vDGroRMzWI0jlrB
+         8CriSf8HgaZn7WcDdIwuhMGmKtVOP0ATgA/mdAXS/Q36ZtmwST7JHinv5NS4feWIjfKH
+         aEY7TmDxa0fVv+OxA5nKSDUpPZFrvNz8ky9qr9+I4JUMhbKKOIS5bKCfm9UGE3vTupcL
+         eMNRQBsbdVMRtNrGOpudi4H+DFAwNJX6aTunShMWsRuI842LARoXphuXJ+Y1RamLrtkb
+         vadw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793987599; x=1794592399;
+        d=1e100.net; s=20260707; t=1793988050; x=1794592850;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5pDupBwR2/7t1JImpr59IJwI8nCk2i1PzTMP7JDf060=;
-        b=xwe9CqHVrkeE8Q86am94tqXRP7uKDH7cnhkR0X+UeAtdHhxlC+jqTS7UXJlZyQbBYJ
-         ubAtB5bOxOZS53N9zDrrCivepJggSbO+/8WRePDUBAhllm695/XA2dToFRYJRqoRx7CP
-         L0K8/cid5H+iiSo/pqL0qZVv71K6PxY885rCwfFTTdzCrFrVOsmDzMroLixqI/p3xXtL
-         /yP7Vr73Lww2xpfAaCoKi9yPb5g6FyK8y7/AlZWM0rDVmoyKirkYFdWArJdwZuU5aQ89
-         KuBbo14lG4jDD2U6gMrDlmX1eJpF6YhwxI+cVtUojeawy5rI2qwQkI0If5Niguo1g55w
-         8ZIA==
-X-Gm-Message-State: APuU4Z/C3Cr5GjYGjTYPldg3MwnX8gRNb6ZApA9eDz7wIgTbLkuxBoo0
-	1XiWM+HOnzTJF7ZDktXck8wr15T1ZUOHrfGb0bwD5M7qoNo8Eg8S21f9zvza3QaB2S9UEaEEFvD
-	GP8zXCMixClQYYmYYrtyMr0uO1LzlcnlvQvIy1dRt
-X-Gm-Gg: AYBFou3TzrFNE0DHQHOw+T01b/ER9L0MNbVo/QdxO6GdOfAX8psesVUFx/1NDLyj/st
-	2I1WDOOpqT9/014j7d5K1gBlnL+aF8abMrMn19Rjfg6Xthcb7cSeK91jbIDDw8h+zSg92IWq7lq
-	9aWI8bXGyDguxpos8SgE4fNZhpdoSdQM6QdYYxqTrzFsLryQ7yf0mYo+TWqYoR4Fbw0L0yD+BS2
-	iG8fWovIAwCQAimwdirBul1nU7PbbLXKs+TRn0daWkVNeKAUyemQ0nZUBKD1lxZX3JxK5ZfbZsl
-	B15tK1kpPonn24xDu7/nJ4fE+0fJQWQGrbjWBTZwVnNYtAftUm2+WQt8yWwAwKd6LzHXSw6n5Iq
-	kZOj+TQNu6l2RIlzwMG2JPsTKxvic1qat2KSxS05VOt34cey+YQkQtRE9/TAn/yNuK/Q=
-X-Received: by 2002:a05:6402:20d2:10b0:6af:97c0:ce51 with SMTP id
- 4fb4d7f45d1cf-6b6f84514ccmr6722a12.13.1793987598073; Fri, 06 Nov 2026
- 09:53:18 -0800 (PST)
+        bh=YnPe9jMocBvynbA9CNTJ1Pl6eniz/8su5Gj2vJyxmpg=;
+        b=e5HNSytK1f3hs+DKVU43M4Qnt/POrBuvnbdG/Na4VcLldahz+mgOFG9Jsr83uqhc/f
+         uaXxrPasZ/3T1sxDSsmSYFuxAj9EI4I3IfwByHqsj+RQFqixcYfmi6cmA3VyWIGIcsPP
+         VgBYaCGNEF2RLGHxR3W2HrIrgNySrfi3ww1UwAxoEjPpreqAb8T9bf+fsYOy+M1dcOsU
+         6UKGDy+UbOauMejozRgoPUE9hI1P52JNYr3tlgvViivCrrFHjRoo3vpqb+oo0Ge/Ez0B
+         /8JQk/8JUgd5yjIRMthOxDPa/PkBUCjSZE0CZT1BZFjqR7zhSZfRWMy3raTiPqIEKjPO
+         ifbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzk30bKr6jI2gZF9yIrCTDnJqn6yMy0ZhsvVn4lriVaOOwuxLEvtgB2eGk9QUafXCl11QiD3SU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/dTOF9CuKJzgFGJv0/R5NTMYXi9kAmCzUjPdkt3QFCrTxPFB0Q
+	h7RrOie9/Z+BDw66ASLABgZEKzB2Qm5KAlcUO2G3GmHrWDeHir2QfDQ1x+Cb9b6+THO+qN2CAwN
+	99JotqT6VWDxQLQQS30TPhpZmP+Xbjv0SSIGQTCg7
+X-Gm-Gg: AYBFou3HNJDMlqS/cY1toc+PwdLPzdzG2f/g7JFT6jiuEf801W3eU4bjLcV2Bhp5dg1
+	iasDNtmtyD/G9rzMVFM7MrOPEiW6iTn2c72GEdZtndGj2Iq1iReq5HX6K3XJ0IbJ3qwy7q7b7Xy
+	dHrsstFWtlatPlYUa5VQqeErl4lsprndadZQ5tqLEAJhjj6MBiwJ+4n4Vh6HUseAcgisJDnSq2b
+	Gi7/FCegTjzXDeqo4Cgntq6eIvDEE6FMQLUJR5amQ9RL7F1q5RmcUjYhchNPeanm8v0gVKVABBP
+	YkbQH0OVvmOZfLSNfNrCRjXu3+9ZikFxzY8fqkuvl3fjmTOr2PZvtWZFpualsoVKyPUFQoeIUd9
+	x3Fgit1V7bjrP1pZKAioxgNg6MiMcLMttnCh+pgat/oTdfZLWTUFQlJpS4fELwE37mAdZOw==
+X-Received: by 2002:a05:600c:c3db:20b0:4a1:fb0b:1c9c with SMTP id
+ 5b1f17b1804b1-4b78a30d10emr50205e9.10.1793988049366; Fri, 06 Nov 2026
+ 10:00:49 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,120 +104,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103211424.127627-1-almasrymina@google.com> <cf2e3292-d591-42a4-bf6e-76f4567604c6@kernel.org>
-In-Reply-To: <cf2e3292-d591-42a4-bf6e-76f4567604c6@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 6 Nov 2026 09:53:06 -0800
-X-Gm-Features: AclHuK9NbTvBEPfZwCm6iqd7sXh-jqNYXp8FMPv7QJO9bGGBVmf4WllHJrUhzyo
-Message-ID: <CAHS8izO7QmD1qp=QfUsCq-R+p7OuOVUtqPJZh1k+u7H1J3KnoQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 0/5] net: deprecate skb->pp_recycle and skb_mark_for_recycle()
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-doc@vger.kernel.org, 
-	bcm-kernel-feedback-list@broadcom.com, imx@lists.linux.dev, 
-	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Willem de Bruijn <willemb@google.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Johannes Berg <johannes@sipsolutions.net>, 
-	Byungchul Park <byungchul@sk.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Wen Gu <guwen@linux.alibaba.com>, 
-	Philo Lu <lulie@linux.alibaba.com>, Justin Chen <justin.chen@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Vikas Gupta <vikas.gupta@broadcom.com>, 
-	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	Doug Berger <opendmb@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>, Satish Kharat <satishkh@cisco.com>, 
-	Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+References: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+ <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca> <20261103080933.GA4213@lst.de>
+ <20261103151021.GK3889730@ziepe.ca> <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
+ <20261106173054.GH663069@ziepe.ca>
+In-Reply-To: <20261106173054.GH663069@ziepe.ca>
+From: Naman Gulati <namangulati@google.com>
+Date: Fri, 6 Nov 2026 10:00:35 -0800
+X-Gm-Features: AclHuK8x57W7AnFw360PBbTWaHMwGgtNX68cpPd5ipqmMu4tcyLJQyWTDt3UxIA
+Message-ID: <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
 	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
-	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>, 
-	Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, 
-	Subbaraya Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, 
-	Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Daniel Machon <daniel.machon@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>, 
-	Brett Creeley <brett.creeley@amd.com>, Justin Lai <justinlai0215@realtek.com>, 
-	Larry Chiu <larry.chiu@realtek.com>, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
-	Paul Barker <paul@pbarker.dev>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
-	MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>, 
-	Mengyuan Lou <mengyuanlou@net-swift.com>, Ronak Doshi <ronak.doshi@broadcom.com>, 
-	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
-	Sean Wang <sean.wang@mediatek.com>, Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>, Eric Joyner <eric.joyner@amd.com>, 
-	Mohammad Heib <mheib@redhat.com>, Prabu Thayalan <prabu.ponrajthayalan@amd.com>, 
-	Chintan Vankar <c-vankar@ti.com>, Nora Schiffer <nora.schiffer@ew.tq-group.com>, 
-	Alexander Sverdlin <alex@sverdlin.org>, Kevin Hao <haokexin@gmail.com>, 
-	Karl Mehltretter <kmehltretter@gmail.com>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Meghana Malladi <m-malladi@ti.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 5, 2026 at 8:36=E2=80=AFAM Jesper Dangaard Brouer <hawk@kernel.=
-org> wrote:
+On Fri, Nov 6, 2026 at 9:31=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrote=
+:
 >
->
->
-> On 11/3/26 22:14, Mina Almasry wrote:
-> > Remove the per-SKB skb->pp_recycle bitfield and skb_mark_for_recycle()
-> > helper, and reference-count netmems directly by their underlying type
-> > via netmem_is_pp() inside netmem_inc_ref() and netmem_dec_ref().
+> On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
+> > I drafted an implementation [1] for premapped TX and RX buffers on top
+> > of the existing networking page_pool. It is implemented entirely in
+> > the networking layer and extends page_pool as the default RX
+> > allocator, to the TX path. There are no hooks in the IOMMU, DMA or
+> > page allocator code. I wanted to understand if this implementation
+> > correctly captured the feedback on this thread. Key components of this
+> > design:
 > >
-> > This series simplifies SKB and netmem reference counting:
-> > - Reclaims 1 bit from struct sk_buff (skb->pp_recycle).
-> > - Unifies reference counting of SKB fragment netmems and regular netmem=
-s
-> >    under netmem_inc_ref() and netmem_dec_ref(), eliminating the separat=
-e
-> >    skb_netmem_ref(), skb_netmem_unref(), and skb_mark_for_recycle() API=
-s.
+> > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but each
+> > chunk is mapped once per opted-in device through the DMA API and
+> > records its IOVA for each device, rather than using a shared IOVA
+> > window.
+> >
+> > - TX: page_pool accepts a memory provider for pools that are not bound
+> > to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunks
+> > of their NUMA node; TCP copies sendmsg() data into them through the
+> > task page_frag and allocates its skb heads from them.
+> >
+> > - RX: an instance of the same memory provider, sharing the chunk code,
+> > backs RX queue page_pools. RX chunks of order-0 pages belong to one
+> > device and NUMA node, and are shared by that device's queues on the
+> > node.
+> >
+> > [1] https://github.com/torvalds/linux/compare/master...NamanGulati:linu=
+x:netdev_dma_pool
 >
-> Part of the performance gain from page_pool was to completely avoid the
-> atomic refcnt operation, when we can see that page refcnt=3D=3D1.
-> Are you removing this?
+> IMHO the netstack should never read from shared/decrypted memory. If
+> you put it in a SKB you have to be sure the only touch after that
+> point will be a DMA read from an untrusted device on the TX side
+> (sending it to a trusted device would be a fail) and the final copy to
+> userspace on the RX side.
+
+That's likely a fair callout. TBH I'm not very familiar with CoCo and
+will spend some time understanding the constraints. I kept CoCo out of
+my implementation as I approached this solution from the overcommitted
+VM problem where we are trying to overcommit memory in VMs and use
+these pre-mapped pages to avoid using bounce buffers.
+
 >
-
-I am not, and this is a very sharp observation, because retaining that
-optimization was one of the things I struggled with my LLM to come up
-with a way to retain that optimization without pp_recycle. Patch 4
-includes verification from pp-bench that the fast path remains just as
-fast:
-
-   - no-softirq-page_pool01 (fast path): 37 cycles (18.7 ns) baseline
-vs      36-37 cycles (18.5 ns) patched.
-   - no-softirq-page_pool02 (ptr_ring): 77-78 cycles (38.9 ns)
-baseline vs      76-77 cycles (38.4 ns) patched.
-
-But the sashiko comments indicates there is at least 1 race related to
-this we missed. It looks like a smp_rmb() after checking the page is
-exclusively owned may fix it. Let me see if that works.
-
---=20
-Thanks,
-Mina
+> Everything else is very security questionable.
+>
+> It is unclear to me how any of these page pool proposals meet that
+> requirement since page pool typically provides memory that ends up
+> widely used in the netstack.
+>
+> Jason
