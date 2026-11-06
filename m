@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793985288;
-	b=p8ybR7tG1pUgJJ7eg2I9HhDg0yl8wTAGADTUL63Qbc4SBJ5etBplNQfqdepwowXHZFUw
-	 y4VQMSBkUShbD9CudzzTo/QIbzJOflvknA95lnBGQ+zZnp99Uvm5i1bEVXo7SJon7T8TT
-	 DJQsIO6ODBGWbPU+4L4Hrq77RzxTedUB74e6744gMTShQu5MGx4LYpVgW32eu5v8BWv9l
-	 +3TJNBFJRkpg1GJDDQK3EcpF5uvOi5mMv0AcrWL9pwFXFW3O4o8hu6wUDHOCUFViahoIr
-	 jiPIlX5qrRrlIb3g96xKWqFHQb6GagA5KiqbdEqRBDf7K9aiQT0CO6t0DU8TwQpDTAw==
+	t=1793985303;
+	b=JmsHdAj24eU0HLwcfeY+qq5F9ifQqxDe2xlhgVO7GbfUStNGUNCfbWMPmK7gscJkhBOI
+	 XFzvxvYH2/XL0YdC9nqv4s87jz5nkFyAC/ooJW8VI7uwtMoZsKW62QjIRcYvyXSfjq5qI
+	 eFk9qsyzLlVq182HXZbJe9JjW1xznY5CFRFeAgiWk4Bp1U6e8rvzvANnr2H/v0r1QCMen
+	 H+Vsey+98X0qjiI/ZliMZEvSY/BSVvpFims0oDjYuX/gY2k8Cd3+HI/3D3NQKHcsjE6sd
+	 8/4ReAw2sGplIBCrpCcQJ73PuIrx5ADNx4WCj5nKPBjGcsq2F897/0qSXQ9xQ8zCUAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793985288;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793985303;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=npSSNgqjeDjy8yeV7j2uv0PIl6Tg9TTaL41tLSP/LLk=;
-	b=F3pHRzTWn9t0dLRStgOqZGX3OnuFRzvRw7b/cJwHpB7IKwlDLCsMAnyHobMRFFO4owhm
-	 Kx45mQr7LkX8N6qNQbFLHfoO46dBU5dWuqSiYzAdiq1wAot6hjWwi9aIUwksw0TUCI/7h
-	 INbtZr5DJ1JVnpzb66aZWodZHDs4lVynEHWA/sc79F9cwPoAYVdWoKjymHJEnL9fYi7BO
-	 HXHFTq/P4YFo1aRifacYvIAGcDf9505085NVakXCQIvz9jha/v9NfCNde4woKYuOwIAsb
-	 68MZrXwzvgpju2AlmQdHqnStPIX6cKNfF9XshbeltBzDyZUSXO9Nw0V9GIKly9RU6Bg==
+	bh=1S4mR0QPoC6nO8yYpDVgFwSwnBHCQTPEsHvUyW429Rc=;
+	b=U0PG7yPyisbDwFpe8dA+Lyc6hsu35FwnBpbfoUpLXTJPiPznZHktbDYytK6wJpJXUAWS
+	 eq1g28X3RH7d7cUKaTkUR7xng7qDUTHWF+GsU/w7hdhl7POMBX/yYTu6K9p3T54S+5ywd
+	 EdRFHHZTwrjrY2yVrgTXSHG/NDWATSSSKkPa1vSqqRMEXvkhuuanOb5mL81D3TsPJbQxo
+	 TJBYfGms2CuPOYvUXk+XobN5IuNo9YltF4dPkdOGOsgE6VtgbDgI3VuE5KzU4iCVIw8B/
+	 o2ecvpmHquXxHtUJHc3a5AoA+Pnvz4/jW8ALog1KY8Zsyg5D67X+r9c7aiJ05kRbNFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fzybGRN7;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WCX3loN9;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0A8606A337
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 17:14:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B0A8606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04B8606D804
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 17:14:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F04B8606D804
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fzybGRN7
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a2d6d01ecbso5733385e9.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 09:14:47 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WCX3loN9
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4b7252a32c8so7728385e9.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 09:14:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793985286; x=1794590086; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793985287; x=1794590087; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=npSSNgqjeDjy8yeV7j2uv0PIl6Tg9TTaL41tLSP/LLk=;
-        b=fzybGRN7Vrij7P5ZSgvy+kjz2qjkPQLHTUD+avlpUTUi+3GXQwFtpab7vPsfLxMvY/
-         7G/t5jTCVR6KSoLIERkw6KsBaX5X1B017xkHIFQBVTi9QwVMS6d4O/GJE8WjL0w8fQyN
-         F6lpO994JG1Saksrnbk0vIO01qesDJ1IK2z4astuNkvPORb7ElXGnXztH0yt9DiD7DNL
-         HajcbBhwT53x0XMnEfNWA0uzRagFhJR+bXvl3QUoUD7RpAPMrRyHGLF4fesvG3AaHIAw
-         IJHdHsAWxj80QNhhZ5VxyoqSS+LrZBMsjhhc0SQ/Y8bYjyxAi31m9TsdllbkzSolTel0
-         YSvQ==
+        bh=1S4mR0QPoC6nO8yYpDVgFwSwnBHCQTPEsHvUyW429Rc=;
+        b=WCX3loN9CbTwZTJ3fT8dhK2OpMhEDhmrTp2p+I4v9aNr8BkWSbNAPaDAUFis2zb37H
+         dAg0nJlkO8mtwFqgAobQdD1+1LDKdkMmwY2Xy2kyV1wrMDBaSyTWnaV12noKRyXcayzM
+         WoKEEMwtX6aHJa8pQJiw7uM2lxsuZdxDwtS8OaFod3k1RtJsOtNq5Hr3jmcFL3Ldkp9j
+         Kqyryy0Vy2FSm0KC5CJ3PdExVN+4OSRHdWUtAAILX+McR+hr1Wrxw1xAXGR1wDY9x9aW
+         xLYnyP8RhwYUD4/tepKFDph2R7AAzbhsiND64uLFXv1mUCOMIOgc5fcPD/HooHX+68o0
+         KR8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793985286; x=1794590086;
+        d=1e100.net; s=20260707; t=1793985287; x=1794590087;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=npSSNgqjeDjy8yeV7j2uv0PIl6Tg9TTaL41tLSP/LLk=;
-        b=B03ofQAtttkipYhbgMoafeVXcJdRt0XBL1eavm7WPPUoUuXQdY+nL7N/N5pS190UTe
-         2LjVbCxAK5s6UHUOUbsPltDbsWNamGnoTPYAjZxLo4hLIxwhkNzP//QWUyMCfz5aG+m/
-         PEEy/DmqKE9gzgjGhHmx1fmSWI9qMvOCr+h/9n/MHd4jOaDbhvPqKj1CczqgIIjc7ffm
-         ROPeucuGPQISX2sUPC7zptCJy12Z0ByyLDl5cak0QJmX82gDrPjYAYBj8hfMHht/ZCTH
-         hi4z3orZWMnKLqliOS9J1E8Kvg5nmo7fSXdAcdlPfj4vdu2Dg47CXsWl6w70wvqMAqtb
-         9OXw==
-X-Gm-Message-State: APuU4Z/R479uumD1GAdmWLNPQJ3DiTp7fBJCbfZfXErtZizLA9F1G0SA
-	Q1zi2KBOOcl4y68ZMEZ7IZ14h7QxLHYND8ZOgTAORvxm7ZuUmkDrXDgf4Bpy6FJz
-X-Gm-Gg: AYBFou3JJNgw2JizgTiyE7zBVvltrDdPPB81JSbyzLHBTBiGs/9gjidKSD9ms6nYsnJ
-	JH2tqGKmDcMNMoCprUqfnq7bTc+wnRdFkNEuyJ8KNf+jGDm4nprrUzgTFjFQVIT86gsrxHIeIFq
-	Z+2+z3uLLQSfu0YJXi50OLJpYRxHn7JSbyG0KrSOPo8EohHhNVvlDQ9bM1KxInzJHpklV3ru0AV
-	NoZKuik9PkZB6yBxf31wlp0UDysIB1+0z1g9ZZB2QO6aMpypYEau5l9YTkLfDQ/9KQkJiWsYeOO
-	MtkAw7QSQX0ezcQSVFCLsU6eD+6jg5KSJtTwFdbcs5++FQ0dYaYzE8kSZpAjbcL9q51GPOt8yxF
-	jt1ihA6yfl0wEGhf9ONolBEM5NGq2K4KgRj2ErVcS8/FltNFsjtTLIqXj8+jqCIGRPjLjCkEsLM
-	4YJvsI2F8BKZt4daBpfFCw63ymSchtm/5sBNa9vFfo8FuQ/64AEk9pB5Fw8UjTvUtjBDxS/bgkV
-	xdyc+ebbbz/2AGX0T+2h8g1ugwEjQMut5QxXFcHGhSBvaGCr50A3KI2cEPg1C90ZxkY+NHsW3i4
-	QEV2PubWK/igPwhgvYWBJVBeRfA7Hd/FouDTH5SrbEe8cxFOX+kudt9M4UD5Yh9zE0AvJx4+7zI
-	TFGMTNTU4szFYa9P74WHd0Y+6UicjB+AvayNFQQmw5hMQWhbdJV0AobMoE3ZMfQO9HWDsQZF1P3
-	NR4gflks7kf7eBjV5m4G4+pZdOdpfbxeRItx3NeeFeVxGbquJCzSHlsm/zlEktSA==
-X-Received: by 2002:a05:600c:c172:b0:4a3:59c9:a747 with SMTP id 5b1f17b1804b1-4b6df5e88admr49637345e9.17.1793985285709;
-        Fri, 06 Nov 2026 09:14:45 -0800 (PST)
+        bh=1S4mR0QPoC6nO8yYpDVgFwSwnBHCQTPEsHvUyW429Rc=;
+        b=ZKw6dWVZ5iRFoGYjrKlmfpEamkC6AgUHu8jw3lvyRaV3KXz5diCrrVns4wOIE72tYp
+         FXZ2C9T2LSytNe4qweDJQgB7eIZfWA+u77gA/7dRbMldjm7WjmND84L3O5EMxJsc4OOl
+         jbDuRc6Xo7zHFba06UH2OtdLwsxEZmfkyVLPhebkk+XVudF98KvOAK1CNPEihuxzjeE9
+         vVjXnpc3PKmP8UugFUVGNRm7IrERPPsL/tipKhWGWyfW4xpb5G5SJWbIgAnApjhe9ykO
+         z9K6ocpUjA0L44sR7a9qD690hYtVmrchqDrl1iFVDVbpWNpFZQHUWSjfuksOVXnSauBm
+         cdaA==
+X-Gm-Message-State: APuU4Z+G3h4jQqoTVUab+R04pWzTWSLL3LgJXgqw8FvfyERA+w56exSz
+	f3DHt+MgZR3DjQb8F/hOm5lSfu87rU4TM9wMh/6EzL5p3ZjS7SAljLWSVj2UiB/2
+X-Gm-Gg: AYBFou1cfQr7ZT/kyb0NffEbGqXrnmDi2xvBWvTIW/g6fGiiCYMYnpeS7RE35mspDIZ
+	y4jSl6ciQjAI46F/hgPWAGnny4LNLmqAlxUhBoytJ/WS0U4kGUGydaGu3ZnxLRbXbl3OP9pz6AS
+	Y9VJdez8vhPHyEP5VKT1rboKW6YBT6S2yFVxJgAtxf49ASaN/FaphTCNT2B+GquXy3IgncFKJee
+	1C3AnmMrKql8p5FYI/9zLQOFa9sVJTTWM1+nASvUE2KI4BLa7KF9W8zk3A0xDy5NACZhuZjG8DT
+	FBZ1FhangOPSTOypEwu9n2xBx0lDULChNmvCWwwBqzSkbzT17EXxvdgeoL2xQlPB9zR7qTFqcsA
+	PhIOsBc5lxk5RqvPpr7BWrgoyHY1HOoqctQOkmRc1ihbu2f0o8y5d+br9hvXS+Ky2aOB89De7Mh
+	rCSuyADXQS8Xt+Juz+b5pSJo5yKrOh6N21fy/GTnbzpwwBevK0oZC3wRO2IcadsLk4snOhCezrK
+	bDufzyZdEkZ2ll2sh3ncpoBU0NIPQQx8FQP/+poFhuUNhedZHBuztLjfdKhGwNFUikUu9T95YNC
+	7ztsor+I/G4U8owDzmp6LBw7vtlDXGi1MTrI2LubPQtU73BQmLEpQpQFuP/Oas66c/heRJfew/1
+	n9G1vDN0VC8IvmzO4tJrtBnha3nh3F81KBpqNcf2IhVCY/RLQywQN6VWFq1EsT4N/4B+PXXmbdE
+	vFni6i1NVKGCr2kP4zBfbJiRTvQcLuwfn96q78+2Vj
+X-Received: by 2002:a05:600c:818e:b0:4b3:9540:47a6 with SMTP id 5b1f17b1804b1-4b6dff86e38mr52698025e9.28.1793985287188;
+        Fri, 06 Nov 2026 09:14:47 -0800 (PST)
 Received: from localhost.localdomain ([90.95.39.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b571f46489sm148071985e9.3.2026.11.06.09.14.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b571f46489sm148071985e9.3.2026.11.06.09.14.45
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 09:14:45 -0800 (PST)
+        Fri, 06 Nov 2026 09:14:46 -0800 (PST)
 From: Florin Badita-Nistor <baditaflorin@gmail.com>
 To: netdev@vger.kernel.org
 Cc: edumazet@kernel.org,
@@ -91,9 +91,9 @@ Cc: edumazet@kernel.org,
 	shuah@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] tcp: avoid false bind exhaustion with odd-sized port ranges
-Date: Fri,  6 Nov 2026 19:14:41 +0200
-Message-ID: <20261106171442.31811-2-baditaflorin@gmail.com>
+Subject: [PATCH net-next v2 2/2] selftests/net: cover odd-sized local port ranges with one free port
+Date: Fri,  6 Nov 2026 19:14:42 +0200
+Message-ID: <20261106171442.31811-3-baditaflorin@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261106171442.31811-1-baditaflorin@gmail.com>
 References: <20261106171442.31811-1-baditaflorin@gmail.com>
@@ -108,60 +108,135 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-inet_csk_find_open_port() rounds the range length down to an even
-number but keeps the original exclusive upper bound for wrapping.
-For an odd-sized range, the two scans can therefore miss a valid port
-and return EADDRINUSE while an eligible port remains free.
+Leave each port in three- and five-port socket-local ranges as the only
+available candidate and verify that bind(..., 0) can allocate it. Cover
+both lower-bound parities and repeat allocation to vary the random
+starting offset. Use the existing IPv4/IPv6 TCP, UDP, SCTP and MPTCP
+fixture variants.
 
-For example, restrict a TCP socket to IP_LOCAL_PORT_RANGE [40000, 40002]
-and hold explicit binds on 40000 and 40001. bind(..., 0) always fails,
-although an explicit bind to 40002 succeeds. Both IPv4 and IPv6 TCP and
-MPTCP are affected. A namespace-wide odd-sized ip_local_port_range can
-also trigger the failure without a per-socket range setting.
+This catches the false EADDRINUSE caused by rounding an odd-sized range
+down during TCP port allocation. Without the preceding fix, the TCP
+and MPTCP variants fail on both IP versions when the last port in a
+three-port range is the only free one. With the fix, all eight variants
+pass.
 
-Keep the full length for the scan bound and wrapping. The two scans
-then cover every candidate in an odd-sized range, with at most one
-repeated candidate when exhausted. Even-sized candidate sequences
-remain unchanged.
+Allow the loopback bind helper to take a port so the test can hold
+explicit binds on every other candidate. Retain the existing helper for
+automatic binding and run under the existing isolated-network-namespace
+wrapper.
 
-For odd-sized ranges, subtracting an odd remaining value when wrapping
-flips parity. The first scan can therefore also select offsets of the
-parity preferred by __inet_hash_connect(). Namespace-wide ranges with
-same-parity endpoints already trigger a sysctl warning, while connect()
-uses step 1 for a per-socket IP_LOCAL_PORT_RANGE.
+The regression test was developed with Codex assistance and exercised
+on booted x86-64 KVM kernels before and after the fix.
 
-This only fixes bind() allocation. The rounding in __inet_hash_connect()
-for namespace-wide ranges is unchanged, so connect() can still miss a
-port in an odd-sized namespace range.
-
-The issue was triggered while developing port-range selftests with
-Codex assistance, then confirmed using userspace reproducers on
-unmodified kernels. No kernel instrumentation or fault injection was
-needed. Booted x86-64 KVM kernels were tested against the regression
-selftest, the full ip_local_port_range suite, and a Go net.Listen
-reproducer. The Go reproducer fails 100/100 times per IP version before
-the fix and 0/100 afterwards with a three-port namespace range and two
-listeners occupying its first two ports.
-
-Fixes: ea8add2b1903 ("tcp/dccp: better use of ephemeral ports in bind()")
 Signed-off-by: Florin Badita-Nistor <baditaflorin@gmail.com>
 ---
- net/ipv4/inet_connection_sock.c | 2 --
- 1 file changed, 2 deletions(-)
+ .../selftests/net/ip_local_port_range.c       | 67 ++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index e56beec43..755fcea35 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -343,8 +343,6 @@ inet_csk_find_open_port(const struct sock *sk, struct inet_bind_bucket **tb_ret,
- 			low = half;
- 	}
- 	remaining = high - low;
--	if (likely(remaining > 1))
--		remaining &= ~1U;
+diff --git a/tools/testing/selftests/net/ip_local_port_range.c b/tools/testing/selftests/net/ip_local_port_range.c
+index 3d32b33cb..c17d95045 100644
+--- a/tools/testing/selftests/net/ip_local_port_range.c
++++ b/tools/testing/selftests/net/ip_local_port_range.c
+@@ -44,7 +44,7 @@ static int get_so_domain(int fd)
+ 	return domain;
+ }
  
- 	offset = get_random_u32_below(remaining);
- 	/* __inet_hash_connect() favors ports having @low parity
+-static int bind_to_loopback_any_port(int fd)
++static int bind_to_loopback_port(int fd, __u16 port)
+ {
+ 	union {
+ 		struct sockaddr sa;
+@@ -57,13 +57,13 @@ static int bind_to_loopback_any_port(int fd)
+ 	switch (get_so_domain(fd)) {
+ 	case AF_INET:
+ 		addr.v4.sin_family = AF_INET;
+-		addr.v4.sin_port = htons(0);
++		addr.v4.sin_port = htons(port);
+ 		addr.v4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+ 		addr_len = sizeof(addr.v4);
+ 		break;
+ 	case AF_INET6:
+ 		addr.v6.sin6_family = AF_INET6;
+-		addr.v6.sin6_port = htons(0);
++		addr.v6.sin6_port = htons(port);
+ 		addr.v6.sin6_addr = in6addr_loopback;
+ 		addr_len = sizeof(addr.v6);
+ 		break;
+@@ -74,6 +74,11 @@ static int bind_to_loopback_any_port(int fd)
+ 	return bind(fd, &addr.sa, addr_len);
+ }
+ 
++static int bind_to_loopback_any_port(int fd)
++{
++	return bind_to_loopback_port(fd, 0);
++}
++
+ static int get_sock_port(int fd)
+ {
+ 	union {
+@@ -301,6 +306,62 @@ TEST_F(ip_local_port_range, single_port_range)
+ 	}
+ }
+ 
++/* Leave each port in turn as the only available one. An odd-sized range
++ * must not report exhaustion while a port at either end is still free.
++ */
++TEST_F(ip_local_port_range, odd_port_range)
++{
++	const struct {
++		__u16 low;
++		__u16 high;
++	} ranges[] = {
++		{ 40000, 40002 },
++		{ 40001, 40003 },
++		{ 40000, 40004 },
++		{ 40001, 40005 },
++	};
++	int i, j, port, free_port, fd, err;
++	__u32 range;
++	int fds[5];
++
++	for (i = 0; i < ARRAY_SIZE(ranges); i++) {
++		range = pack_port_range(ranges[i].low, ranges[i].high);
++		for (free_port = ranges[i].low; free_port <= ranges[i].high; free_port++) {
++			for (port = ranges[i].low; port <= ranges[i].high; port++) {
++				j = port - ranges[i].low;
++				fds[j] = -1;
++				if (port == free_port)
++					continue;
++				fd = socket(variant->so_domain, variant->so_type,
++					    variant->so_protocol);
++				ASSERT_GE(fd, 0) TH_LOG("socket failed");
++				fds[j] = fd;
++				err = bind_to_loopback_port(fd, port);
++				ASSERT_EQ(err, 0) TH_LOG("bind(%d) failed", port);
++			}
++
++			/* Exercise different random starting offsets. */
++			for (j = 0; j < 16; j++) {
++				fd = socket(variant->so_domain, variant->so_type,
++					    variant->so_protocol);
++				ASSERT_GE(fd, 0) TH_LOG("socket failed");
++				err = setsockopt(fd, SOL_IP, IP_LOCAL_PORT_RANGE,
++						 &range, sizeof(range));
++				ASSERT_EQ(err, 0) TH_LOG("setsockopt(IP_LOCAL_PORT_RANGE) failed");
++				err = bind_to_loopback_any_port(fd);
++				ASSERT_EQ(err, 0) TH_LOG("range %d-%d, free port %d",
++						       ranges[i].low, ranges[i].high, free_port);
++				ASSERT_EQ(get_sock_port(fd), free_port);
++				ASSERT_EQ(close(fd), 0);
++			}
++
++			for (j = 0; j <= ranges[i].high - ranges[i].low; j++)
++				if (fds[j] >= 0)
++					ASSERT_EQ(close(fds[j]), 0);
++		}
++	}
++}
++
+ #define REUSEADDR	0x1
+ #define REUSEPORT	0x2
+ 
 -- 
 2.51.0
 
