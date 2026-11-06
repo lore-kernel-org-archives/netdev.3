@@ -1,78 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793931229;
-	b=IMUuvlRSHBULsZOPIMRPUg6XQQTZEf3/yxFfFGQxJWX0OFK7wn1/c/EMV/5t8SHcKnTr
-	 Rr0n88XLEM2XusXYMu83VLaNBFLwjiFwJyuNGvYwQtRZ8AsoJ24CL0Rc+k2TGPKzVDLac
-	 fzWnNJUA5n2cT/0BiLMxurD/w6lgx9YH1qsbfW7LFEHdceEhRUN4z9+oa9zd2Ah0l7ors
-	 mh8IRa9aVhimwJ0lY3xDfbc3e3VvaYjl0zPPD/PyhUzkTegzUb22SCzdKj+FQ8Wu36e/2
-	 1Knx8bydvOkoexdfHAx1ZCOk0VUWtlPzYNETF4pMwkRC7Gxkq7W0y4AHBnJFngaiiug==
+	t=1793932600;
+	b=gsmQnzVh6jwu5Rnz3wWUnF7htLi4XP2NxZtZ6DLPTvCEti0vXPWNcp39CGzZjLkDvByE
+	 SEDxVbe2aCKaqwKm6oce4AJOMNs/6Owq3PKdwR3ly/a5sgvkA4FKWc++QRhk1KWUpZ/td
+	 lmZXIs0o6RRvzrZvoRQAQr6NGxxZVWN/OGBbZtxFR7V9L2708+MtcWp6oELaHLVov++xv
+	 XpiprEtrspqEb1xWKUBXBY44Oaz2bmDUDXYH8cJWYGm15zv09wuxpHND0VTtJL01YSjb4
+	 TSnWBiY56AcAOgzgDZ5K3ph/UNQCVg3s/2cVkPmvzePKoPz/tZMXHppPgI/OUwpU09A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793931229;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=yBKPSv9wPtgQc2D10+KX9vKSUfiTfJxDfSRld3KeklA=;
-	b=d3TiDhl2gMFXnDdL9STit6T08Wh+qMvugNb970CJ7iKyKgEr8zmNz9AEocsbrtycmVUp
-	 4yCbdXSsTlz9R7hsyu8WRnF1mU6IN6+UNgn0Bmr3W/xxvq9DdC1LY3EW4wu/3NX6kO56M
-	 DCpIYpFFBJc6VQa2ogHYYZXkWa2ACpoOtjUysrxIkX6hkL7McVwHn6G0d0zh9VG9QDtxq
-	 26xCkL2FtdbNE4QEVmm+fXL8YNcL7n/ISRMN3jcPWlViXtqQUpG84LuNaqQET6PSLe7h4
-	 0cQ5q+IC+bdl8/QbE3+/UVq21TPAjXU1I1iAgjuJpJ2K904hp8ihLEThwZW8jaCEa+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793932600;
+	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
+	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
+	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
+	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
+	bh=U5JMnvk3LBaHsVvV8Hg86I6jBCuf1ypUiL3oXeSy/+s=;
+	b=Hvx3KTlEjK3TzbkDl9qnh1Hh/ZqJT/x49/1zycV9QoosbUwDW6noW4joXQtKYBv/UaG9
+	 vR/sLNCMoF/PnJebWZun4Vn0risfXUiKuCcWep01ZShywovWu89xftdXerd6w0uJdjoMs
+	 9IOfHheWEcqa+yjs653liBQT7c/+CKsgcCPrSiSYuN84tq0L1mFYm2idpm4+b7iyAtzty
+	 G/An+7AxOkmFo1O5Z1wb4ixtP9XZUdK9nssbu6VtQWaiJwQxJCGIfiMFRfuoQX5N3fUPZ
+	 0+DWXQ1tYUegd3YbS0ozRxYziY+MXv5W/7LwFfIknzTnI23p8F/VlrJiIPCP+HVa64Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tHl8gJ+0;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4486606A31B;
-	Fri,  6 Nov 2026 02:13:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4486606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aRbnt7X0;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154BD606A328;
+	Fri,  6 Nov 2026 02:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tHl8gJ+0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=tHl8gJ+0qX1w8HAaEWi7zluGSRQ37eZ1Y1z03LcoMKFskjvakFRX09I0hAif/JlxOIlswIt+aDbNb
-	 xYj+3ZZMPi14vA+dvYWKbGRWDx8r4zB17CN3ccTHlvUYV6opRag1fpiZV7bsWmh7gYjrgBeTb59dsE
-	 Hu4CtypZtwl1M+es=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66aed37d9fdf-77866;
-	Fri, 06 Nov 2026 10:13:45 +0800 (CST)
-X-RM-TRANSID:2ee66aed37d9fdf-77866
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.97])
-	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96aed37d798a-0dae7;
-	Fri, 06 Nov 2026 10:13:45 +0800 (CST)
-X-RM-TRANSID:2ee96aed37d798a-0dae7
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: willemdebruijn.kernel@gmail.com,
-	netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	willemb@google.com,
-	tpluszz77@gmail.com
-Subject: Re: [PATCH net v2 1/2] ipv6: fix cached route reuse for SO_MARK control messages
-Date: Fri,  6 Nov 2026 10:13:33 +0800
-Message-ID: <20261106021245.246267-1-yanxia@cmss.chinamobile.com>
-In-Reply-To: <179387153949.488856.16266299848614841295@kernel.org>
-References: <20261104092240.15649-1-yanxia@cmss.chinamobile.com> <179387153949.488856.16266299848614841295@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aRbnt7X0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37061F0089F;
+	Fri,  6 Nov 2026 02:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793932599;
+	bh=U5JMnvk3LBaHsVvV8Hg86I6jBCuf1ypUiL3oXeSy/+s=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=aRbnt7X0R7tjvtfnQBy4R8U5LjeEzuRmJNEr2v4I2quvZUowcLuvriIQwjDrJJb+k
+	 RO2lmYD5LU3UuniaBl1uFeuim/D3UOycsO16i9aOmFot4J2wOArqLaohIvLYmqB4yp
+	 6af80bQ7ODHybfy/J+3RkzO+HFLBvxmq21NqHP9qndf0IoNpL/YRmdZVLU6SBwHrni
+	 DudjgknFmjGPGv2P9PGHmOVUWjFfphPzozH9O7Gxn8k5ue7X/K6RGxEuGVPH6YtVlC
+	 uroqCX7SxIwrWl7YRgMwERaCvhtJRNpIzilUakAKyDQYnpdoMnyhkHrYxdvqUUrwvg
+	 WwJjGOw/VXUHg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D828C391B1BA;
+	Fri,  6 Nov 2026 02:36:39 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v7.4-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20261105153315.213214-1-pabeni@redhat.com>
+References: <20261105153315.213214-1-pabeni@redhat.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20261105153315.213214-1-pabeni@redhat.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.4-rc2
+X-PR-Tracked-Commit-Id: fafbc4051123d5459ea6950899cec08ed946e278
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f66469d9905b39d2c260a15d7d6db450f4db67c1
+Message-Id: <179393259831.304043.4367804557327058471.pr-tracker-bot@kernel.org>
+Date: Fri, 06 Nov 2026 02:36:38 +0000
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,31 +67,16 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-Hi,
+The pull request you sent on Thu,  5 Nov 2026 16:33:15 +0100:
 
-Thanks for the review. v2 fixes SO_MARK sends, including the concurrent
-sk_mark case that came up during the v1 review. Sends without an SO_MARK
-cmsg keep the current behavior.
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.4-rc2
 
-Willem, you also raised the flowlabel and dscp cases in the v1 review:
-https://lore.kernel.org/netdev/willemdebruijn.kernel.6ba984cf38a@gmail.com/
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f66469d9905b39d2c260a15d7d6db450f4db67c1
 
-I'd like to keep the SO_MARK fix targeted at net and handle the
-remaining cache issues separately in net-next. Does that split make
-sense to you?
+Thank you!
 
-I'll wait for your feedback on the scope before posting v3.
-
-v3 will also add a fwmark 0/0xffffffff prohibit rule to the
-connected-socket selftest, so reusing the cached route instead of doing
-a fresh lookup fails the explicit-zero cases.
-
-Thanks,
-Xia Yan
-
-pw-bot: cr
-
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
