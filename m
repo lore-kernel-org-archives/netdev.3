@@ -1,65 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793959017;
-	b=zt+vcOs2SGieqSvaOB4CpfnDEMe7ME79/NZCDBLskKvTAno9OEV7X6/AeqVvnMGoop0m
-	 BLL39AosUKRJnrbSPYUCjnZr6yZ0dOhC5WFyu30YmpQfyHoHIj2iu6dgA416lr2W7nI1P
-	 Hywcvi8LSl3G4DJMQW1xLbt2m3ZEUlwoBteppPN3ctcQIGpO2MIpj1q3NNU8n2XnVmhko
-	 K+Ptejla2oh4LmIGMDkDd6jt57M3Ih9BSOmTdKun8WG8lBneuzSdZaw5qZOxMbGenebF+
-	 MhmVeOMM1/KCvXC9L5HOY5+v/YfqkUWbemmbhzn/PGvP8llTlfRmLHCI+UtkZPnjhtg==
+	t=1793959147;
+	b=u9Yw1vFytkRSin4NI1CjrcsxjQ7QuqdVPMjXVsbq8ifl2w09JA8X8hizZX8wXXe7Bgvh
+	 NU8KVJxhks3KZu5h8Q0FfypkRoLVK51FY6YzsA5TlBNYzDrslAXJ3G/nADXe3VNbLbMt4
+	 bMC0TzOF3/G1d+M+wA++dMr99rrNCBdToY8/B8xTlP5ispuv68Ueyuxhdzaq7UbZmHN4f
+	 Q8uu09aH1W9/JHTcLv6NCqWpOniwAvLQFj5SDEgyr1heQUWOLUv+7b9YVIaaU7q78NDjs
+	 h5yR/u59zzCtk/LbOCqNxr8aaS9xS+9CMYNKPsMVVrTlD7GyuHqAaCRLsk0NAgRq1yw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959017;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=EshULAsB+qGkuxyBRGHV+fcTIV3hUxTmA5rU2C9/N6o=;
-	b=YBaIuSYkT84PlWT3tz7pVa5rmLrnnKYXe9qlk+BEIhHQd4WklaUFYru0okGNMlIHGpSL
-	 aZ6JXeEBGeUr3gXSw2ry+woRbGE4VcvsgZR3UCkT6J9GLJ13MmD7mNYhJBBI8KQLb6d2y
-	 U0auv0G6kzSaoqcls8smTQTRkFTWJJKrDR4YvlybG9JX7GHHK3zIOPf7jHILqbOeEogUd
-	 Oc1B+uRC8VduELD31e0eGEiCFkupOT9FtmNGqMVqeMmX2pqSqlZ13QtfrcT8fiklq2SIp
-	 JE7uaxD+RjZbonbGt+I5JdlX6z0ds/UuwmSgDwXQD8OsxyQfT9qxnVA1EUuZJIqbZyg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793959147;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=6Z4qm8iGrcg0h1wWqhDGb3PQdYmH33RZGG9ZTChRwd0=;
+	b=ezBAA20Dr904dqOOkfIut8jSVfc34nlCjpE9ThQQd3rL1drCOuYtEx7tcFFqmKBZO7hi
+	 Aec2qZPxw5/a6SlnCaQUeu1NNKygTWFOWyaHSD1ILEkKG7uLEDjMevv+E1NhampC7yJ5U
+	 5NICw8oSSyMeeplk3vEDZ5mcx6VTTWX6DHWVTrRb+1tOpeKWaoNrvyHG0z4Sc90VzNn+4
+	 lZ5XHxH5fP3vpFuYH/5YucDR8rUpgjIS8jMzGP1lDdH9FECsnwrsQyre7gcOIq8rMc8wY
+	 hxZirWVQhOZ5N12uoQED3BgL855VtAxoZEuW6MIchW90KKaDMXk6jAMC0iekdlg+1Fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=nKcC1rdn;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C33606EE96;
-	Fri,  6 Nov 2026 09:56:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47C33606EE96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gcTBi0Ka;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB62E606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=nKcC1rdn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=nKcC1rdnYc6YvlXlDFcL9eKIGnxU4ZEbHdw40+WruBOn0PI3vs6tw2oB9JczW6C4y6wJ2NskfAubd
-	 Tj2UE1sApyaleDSFt/yl7SxA147LyxVZHsMMGfPfdb7LLnfaKYXwXaas2XM5Ch5k3goDyB9SWskmUz
-	 hmOOoNmhUdh++H38=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16aeda46595f-8cbeb;
-	Fri, 06 Nov 2026 17:56:53 +0800 (CST)
-X-RM-TRANSID:2ee16aeda46595f-8cbeb
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aeda462b7f-1c0fe;
-	Fri, 06 Nov 2026 17:56:53 +0800 (CST)
-X-RM-TRANSID:2ee56aeda462b7f-1c0fe
-From: tongzhiwei <tongzhiwei@cmss.chinamobile.com>
-To: Jiri Pirko <jiri@resnulli.us>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: tongzhiwei@cmss.chinamobile.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] lib: objagg: Fix stats imbalance on hinted-parent error path
-Date: Fri,  6 Nov 2026 17:55:58 +0800
-Message-ID: <20261106095621.143-1-tongzhiwei@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.45.0.windows.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gcTBi0Ka
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183841F0089F;
+	Fri,  6 Nov 2026 09:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793959146;
+	bh=6Z4qm8iGrcg0h1wWqhDGb3PQdYmH33RZGG9ZTChRwd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gcTBi0Kak3cWqjM4MQ4BfWPcXmCeSd63AwW/p81yRqXqqHDP82cnMlt6t3PJ/beRk
+	 LMuqGCn/6jHhmhvZs7O+emLpEWTGPlfStn3cTrSzCgpmk/eGg00ICKAZBndiUwmjpg
+	 afmGRXu8bjyOChWMhKZGHc2X5qfoK/Q1dZz3R7F+PAFTafiJJFUpIqCV6DY4NWlChX
+	 5gst7plg84SV7TmkyFJJ+LILABziR0e86q2kAdr9H/6SSmQ3SyWPGsi6pg60/LbToF
+	 k0zLeMqd+GkdP2zqHZbraZ89Ldwcts0+5ptzmojVJie0awcXEdbOt6cHpxLQymAmzH
+	 HlSlKANFEh23w==
+Date: Fri, 6 Nov 2026 09:59:02 +0000
+From: Simon Horman <horms@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net-next] net: Shrink skc_reuse:4 to 2 bits.
+Message-ID: <20261106095902.GE865646@horms.kernel.org>
+References: <20261103044213.1336347-1-kuniyu@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,45 +59,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103044213.1336347-1-kuniyu@google.com>
 
-NOTE: this commit is worked by llm completely
+On Tue, Nov 03, 2026 at 04:42:06AM +0000, Kuniyuki Iwashima wrote:
+> skc_reuse now consumes 4 bits.
+> 
+> However, SK_NO_REUSE, SK_CAN_REUSE, and SK_FORCE_REUSE
+> are mutually exclusive and fit in 2 bits.
+> 
+> Let's reclaim 2 bits.
+> 
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-In objagg_obj_init_with_hints(), the parent is obtained via
-__objagg_obj_get() which increments only the refcount without
-touching stats.  The matching release for internal references is
-__objagg_obj_put() (no stats adjustment), as used in the success
-path in objagg_obj_parent_unassign().
-
-However, the error cleanup at err_parent_assign calls the public
-objagg_obj_put(), which additionally runs objagg_obj_stats_dec(),
-decrementing user_count and delta_user_count with no prior
-increment.  This corrupts the parent stats, leading to
-under-reporting and potential user_count underflow.
-
-Use __objagg_obj_put() to match the internal __objagg_obj_get().
-
-Assisted-by: LLM
-Signed-off-by: tongzhiwei <tongzhiwei@cmss.chinamobile.com>
----
- lib/objagg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/objagg.c b/lib/objagg.c
-index 23c7105a3f9f..6c4144213eb8 100644
---- a/lib/objagg.c
-+++ b/lib/objagg.c
-@@ -327,7 +327,7 @@ static int objagg_obj_init_with_hints(struct objagg *objagg,
- 	return 0;
- 
- err_parent_assign:
--	objagg_obj_put(objagg, parent);
-+	__objagg_obj_put(objagg, parent);
- 	return err;
- }
- 
--- 
-2.43.0
-
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
