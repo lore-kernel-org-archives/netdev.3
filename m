@@ -1,102 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793955789;
-	b=Pqnk6O8+gfLw7QR0Te5CXZD9JYRlUQTF9ZL+DWFKOtJwF6n/wGOz8/0PvQjvFOOKSKnW
-	 +D/9sdcvDjJvElq3I/YvPfjtpXVDESFKLxDikfkEoEzGwURJaZJgV/vbtIyFc0eCyj3tO
-	 QfrvsBvCCbXVC9grwqu2JI5zvnoWu+l50za9uN97w/IIfnSQI7qbhMhvqUpxxDX5EKkcy
-	 Sl+Qv9rWQQeI8KBtOTXtEB/mk+MIh7YjuXV0GiXthQAnk4yzvMm9pJNJgJmtN2XnfX2X8
-	 SCJNFbXhhDgtvOye25coPdvVnVT2pOocKV45mK9g8NoO8TLTkefGXQAEPqsEj6+GKAA==
+	t=1793955992;
+	b=mnnEmbM+wLJlo7g1bQnIZUogh9TNggc76iGhydv8xvpS39aQFLsXO9ZSBN4FWhfUwHVq
+	 aY+IWUQnXhGGyl0tccgGQWX0Fzn5hi7c+VqZfy4NZUXv+b/nics31aUdlJCIp/INqTubI
+	 wheULOWy1H87wev2oRebNfrwTNZo/OqHcHGTx/gY9BIgIQV1QTTyS1UBJ6I6cdxhH50vv
+	 w6upzPRtNEZCcEdTK/+MZ180iIWQh9SoUPNpULisqm3qCiKJDxh9tnfm4rCFHC1H7+UIk
+	 nrXIxHFTIxcAN0grrud2MiBGjHRH0Mhz79muE7ZuC4q8NkxXDaM/feSSHGs+kkH3xjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793955789;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=EXNC/yEXHIj1HlxQV7csoTqtdlBlzm5qOJ21PtIjgSk=;
-	b=YAmC8d7QQN41WktvMZ/aOaAtEarxW2e7HKgVOEentZsITMw5HDxbQgDRUgEO53eu9Fg0
-	 Hf6SrHnJa5QStZHN40KeIsoLBhxRmDp+qyptlWRVJJbbbd/dGaz1sdLmEzNUEtY/Z5CxZ
-	 ME5ZuWqsK1xIPayloZaqCvLyLtwaTw7U99+5nr55FWjXIpwwIYH71NWXsAexsAaqQA0a0
-	 McYvdBmloL9GzKX3QhAqok+fvrqEc9AMwa/V9UDONXH30cJdnbU4a3RiFs5U7ByHprml6
-	 iuxGX6hAECx6iro28tNeArIv5TZnlOjX2MNZ3GYXrZETAGYGOyA7yQdLQojH6ynPCnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793955992;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=q1H95/3jUArP09V4hzLaUE0XBUgQ2k28lsOurBPd7c8=;
+	b=PB0ol/5m+0uH+dpLYAhaDrZp9B5LxQp0XuA/rDo5NdnitAHtej75Ov/TG/029akJR8CW
+	 Npi66aAqK+kEF50j77j2u2kACY5dk5uiN1bFvOZBUFcmpKGWSyWZCmsc/TtfKu46OMKCc
+	 318TN86LcULv4ToGKWEsHfbQtxXLrUpc9oBO6IYRPSh/Y1yFSLw4cfmW/u2s8iXqeKXTC
+	 oCML2VdholnS7UDCUsyFGuannpXC5A68R3PTJXd3CWehH/qx6TR+MbmoXhN30tKNQz7vD
+	 9TyIzp+iJA+2C0AL8FqiZp4xuVZzn40YZSoXhNvQIx4zFzJhz30ScRCRFKR/Lhn7xpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gBg0U11K;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="ETUQ/8Er";
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7501D606A328
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:03:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7501D606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EAA606A328;
+	Fri,  6 Nov 2026 09:06:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8EAA606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gBg0U11K
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso1970145ad.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 01:03:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793955789; x=1794560589; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EXNC/yEXHIj1HlxQV7csoTqtdlBlzm5qOJ21PtIjgSk=;
-        b=gBg0U11KTiX0N3F9mHlO7Z/+qgqmr81SkqtKHSUci8lydqxQxZfDEAgszA4UqQcKog
-         wruQgI9lRtXHI5eZPgacD+VzcFYUa6+tQHnjnpr9akreRu92jFXt6v/PC0K0kFyj3teb
-         b+eb7THPSqAhTIsicdF03t9VzylSf5d3Q7m1QNTEwcc2/vs5gqsHihszh+5LZvXv591/
-         muV2FkG9eLe3zs+Qz1nDBpy8cN2tJm0fK8tUt6iKUzJbipm22ajzuTdHby0M8vFNif0p
-         jvj+0Pgks/rdzJMkpgKa0sCOnsJJEKETt/StjH5kV5sw4p3xpig0x+k1IcQxWkPE9M24
-         eOSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793955789; x=1794560589;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EXNC/yEXHIj1HlxQV7csoTqtdlBlzm5qOJ21PtIjgSk=;
-        b=lqFjLhK6M1lL1ccRzKokmT9p5fWjSerNpr4F/FDNuyIo36lZvEoSnZ4zup0i394RKT
-         vqdNCpRK5sH56S8pk/XdyfklNf2FryVuxXlcK3aw2WOxJtkKgKAVGDiwtRILvExV82Cw
-         12rMJLPIc7gmaurw1ovZY3E2VpAI2rFaGYTHIdbAYFG0dtL50F1zik7jWZLTu/Ky4YhV
-         20oD5Hq8DGyzKK7roq1KCXq9NGz6k4Ao2awva57rS6gK+P00+lvcW8sRrLvrb4aOrkiI
-         a+LLU/jhBbgbQ7n8ykgE2OXNp6WvdhCkvXDFaP1CEv5m5TDXUArdwlZ7OZWxJfBnkDFR
-         fyQw==
-X-Forwarded-Encrypted: i=1; AL+hErF33mb/W3ugW6dVkt0JZyOfjB7PsZ4xhmI1CxZH7zic6Ix55MAtIkKlFYU+H0QCp+8Hc0lgwbM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8FjtH3zOFUaSSPuKp/18kO/rz57JBzC+KjGp54jopPV1kenhPu
-	jyMBVX7Xc1O7hhdum478JQ0dUi5oW5dalKyBwd3vKPcYF+hPCJjPab0h
-X-Gm-Gg: AYBFou2stiXQmghwAOVoXVsTtx7dN4h977fCpmYVN9GIs4fxwMyp2G9aP3KulrTuuNU
-	32Q3OHpyTLkA+NnShjUWo3RL5So6eD9r2lte/Cnfam07MZvsxvsKV6wWh7VmoZnmLWxh/06KKlI
-	qYrpDXB0VeBNL+/aWcL3VVaskZS8c1i/DmEzIQX+hRv7Ar+xJRkrbtJgIKzC6UB4mTWM8r1ujPZ
-	JuFNMtESHqSGNcBNlGc+Xu/XiEvxN8Jc3PIIvuLU0VlEr1VSTFAneWHZ5C95mIeui3xQy/b+0Y9
-	mMUjRDuonBeuPuDebIH9ukvI7sIFT1vzYwv3GpicN9B2lENANuy4QqSuXhrlziAI/P+VSINfi10
-	a/dPKfaj8rsuzRVUJlhPYefR5T1A0vxY9PTsHhTGWEWt/Ft6+QYz/EWYHghsLho3Ba+7QWAxOIv
-	HBrtFiyTwOjLXLf+0sPZWlv/K6Fw57b8H9yH85sVXgcVeWDFMgcM43QPxn+5IvoVP57y9aYiVa8
-	noKy5CWIh2A3CHdEFzI2zt/2gEcvg8jxCaujG/zoIRpHYA4F78dDBhGEqEGFSqYDL979LcfscwR
-	buq3oJVygu/eqJkIDzzR3LIIsR2rEOt702gyKb4mFSxIvE6my2qdH+9JJxUfJOhGOFklqvWiVtV
-	G5hgr2PKn08Y/pA==
-X-Received: by 2002:a17:902:d507:b0:2e4:4eed:5cc5 with SMTP id d9443c01a7336-2ed40c56037mr25613185ad.38.1793955788271;
-        Fri, 06 Nov 2026 01:03:08 -0800 (PST)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47d409acsm3435745ad.39.2026.11.06.01.03.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 01:03:07 -0800 (PST)
-From: Jun Yang <juny24602@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shinta.sugimoto@ericsson.com,
-	yoshfuji@linux-ipv6.org,
-	nakam@linux-ipv6.org,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] xfrm: delete migrated old states before dropping their references
-Date: Fri,  6 Nov 2026 17:02:56 +0800
-Message-ID: <20261106090300.29203-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ETUQ/8Er
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=q1
+	H95/3jUArP09V4hzLaUE0XBUgQ2k28lsOurBPd7c8=; b=ETUQ/8ErmweduNzLfe
+	rBILfqHyBPbKH7HUgdKY5q+xKHcf1aBazRi6DbR0smOY5pWsx2QSQRJ2+1reOgku
+	iDDigAjh0gNv9MeHsaNl7AOCF/Fu1A+0ZvnY130/XT3nsKFBgniz6R/kMuZ6mjTA
+	QHvinM241W6gEIo/jrAdYhfFc=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_7hJmO1qqwdQFQ--.15084S2;
+	Fri, 06 Nov 2026 17:05:28 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org (open list:STMMAC ETHERNET DRIVER),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: dinghui@lixiang.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com,
+	liuxuanjun@lixiang.com
+Subject: [PATCH net-next v6 RESEND 0/4] net: stmmac: fix DMA descriptor ring cleanup issues
+Date: Fri,  6 Nov 2026 17:05:02 +0800
+Message-Id: <20261106090507.1020751-1-dinghui1111@163.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,42 +73,104 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_7hJmO1qqwdQFQ--.15084S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw4UAF4kKw15XrW5JF1DZFb_yoWrGw1Dpa
+	yfKan8tryDXr18JwsxCw4xWF18Aa1fCF4Ygr17Jw1fua15uryF9rWS9rWYgFyDCryqkw1j
+	qF15ZasrAF1UAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jayxiUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0RlSfmrtmFlPrAAA3B
 
-From: Jun Yang <junvyyang@tencent.com>
+From: Ding Hui <dinghui@lixiang.com>
 
-xfrm_migrate_state_find() returns a referenced old state, but
-xfrm_migrate() drops the references in x_cur[] before deleting those
-states. If an expiry timer or another concurrent deletion has already
-removed a state from the table, the put can release its last reference,
-leaving xfrm_state_delete() to access a freed state.
+Hello,
 
-Delete the old states before dropping their lookup references, so they
-remain alive throughout xfrm_states_delete().
+This is a resend of v6, originally posted on October 24, 2026,
+when net-next was closed. The four patches are unchanged.
 
-Fixes: 80c9abaabf42 ("[XFRM]: Extension for dynamic update of endpoint address(es)")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
+Previous posting (v6):
+https://lore.kernel.org/netdev/20261024071319.875921-1-dinghui1111@163.com/
 
- net/xfrm/xfrm_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This series fixes the NULL pointer dereferences in the stmmac TX/RX
+DMA resource cleanup paths and the associated error path issues,
+found on a DWMAC platform whose descriptor ring allocation may fail
+under memory pressure.
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 9ea60c7717ff..5d818c1ec9e4 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4722,8 +4722,8 @@ int xfrm_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 
- 	/* Stage 4 - delete old state(s) */
- 	if (nx_cur) {
--		xfrm_states_put(x_cur, nx_cur);
- 		xfrm_states_delete(x_cur, nx_cur);
-+		xfrm_states_put(x_cur, nx_cur);
- 	}
- 
- 	/* Stage 5 - announce */
--- 
-2.43.7
+Patch 1 adds NULL guards in the free helpers and makes them clear
+the pointers they free, so that a NULL pointer reliably means "not
+allocated" for the long-lived priv->dma_conf.
+
+Patch 2 makes the per-queue allocation functions undo their own
+allocations on error, instead of leaving the cleanup to the outer
+error paths that would then walk partially-initialized queues.
+
+Patch 3 releases the descriptor resources through priv->dma_conf
+when __stmmac_open() fails after copying the temporary dma_conf, so
+the long-lived configuration stays consistent with the resource
+cleanup.
+
+Patch 4 holds RTNL around the descriptors_status debugfs reader and
+skips queues whose rings are not allocated.
+
+The original v6 series was based on net-next commit
+734bef548a96 (Merge tag 'net-next-7.4' of
+git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next).
+This resend retains the same base.
+
+Changes in v6:
+  - Split the single patch into a four-patch series as requested
+    during review: NULL guards and pointer clearing, allocation
+    error paths, descriptor resource release through priv->dma_conf
+    on open failure, and the descriptors_status debugfs locking.
+  - Merge the descriptor resource release with the ptp_error unwind
+    from 8181678a92f0 and rebase on top of the current net-next.
+  - Use the "net-next" subject prefix, which was requested back in
+    v1 but mistakenly kept as "net" in all previous revisions.
+  - Link to v5:
+    https://lore.kernel.org/netdev/20261012142458.2845385-1-dinghui1111@163.com/
+
+Changes in v5:
+  - Release the descriptor resources through priv->dma_conf when
+    __stmmac_open() fails, avoiding stale pointers in the
+    long-lived configuration.
+  - Hold RTNL while descriptors_status reads the descriptor rings.
+  - Link to v4:
+    https://lore.kernel.org/netdev/20261001035045.3305816-1-dinghui1111@163.com/
+
+Changes in v4:
+  - Free the RX resources in alloc_dma_desc_resources() when the TX
+    allocation fails.
+  - Skip queues whose descriptor rings are not allocated in
+    stmmac_rings_status_show() and print a hint instead.
+  - Link to v3:
+    https://lore.kernel.org/netdev/20260919121436.1642724-1-dinghui1111@163.com/
+
+Changes in v3:
+  - Use addr directly in __alloc_dma_rx_desc_resources() error path
+    instead of the if/else block on rx_q->dma_erx/dma_rx.
+  - Clear the freed pointers in __free_dma_rx_desc_resources() and
+    __free_dma_tx_desc_resources().
+  - Link to v2:
+    https://lore.kernel.org/netdev/20260905154654.1725313-1-dinghui1111@163.com/
+
+Changes in v2:
+  - Instead of only adding NULL checks in the free helpers, also fix
+    __alloc_dma_rx_desc_resources() and
+    __alloc_dma_tx_desc_resources() to clean up their own
+    allocations on error, as suggested by Andrew.
+  - Link to v1:
+    https://lore.kernel.org/netdev/20260830040610.1156008-1-dinghui1111@163.com/
+
+Ding Hui (4):
+  net: stmmac: guard against NULL pointers when freeing TX/RX buffers
+  net: stmmac: clean up partially allocated DMA rings on error
+  net: stmmac: release descriptor resources through priv->dma_conf on
+    open failure
+  net: stmmac: hold RTNL when reading descriptor rings in
+    descriptors_status
+
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 115 +++++++++++++++---
+ 1 file changed, 98 insertions(+), 17 deletions(-)
+
+--
+2.34.1
 
