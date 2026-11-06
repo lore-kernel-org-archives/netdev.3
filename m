@@ -1,96 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.80
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793927755;
-	b=lLVgjWLJEXD5rx1et7ylYkj361562he+kwKoJCduS8yGX9Hg2rFHsn+Fmz8wmAPJctQp
-	 0SltrKKSebV30i0ruMVowfWWh6bPeZZ6ItXOUNFxx8MXI0MPs247oMCVXmxFT2IeZpvPM
-	 tzMD2AVy7Xma/mGmTWcuTcWd/dvYnPPIWRGj9HYruutbXxi/RPF1LmpUhewfdNPGhggHu
-	 x7PqSXrtAUzoZehCSTWxpvNjQOKVCl5QPqwTo8zyOFQ+F0rwk6jASlydeY+GFPtOgMc0I
-	 /Z3Y951htTFBNr0fijJ6ycMeos923+guiT9yKeMzpRzu8BP3aIoAOqtglmRHMw3DqMA==
+	t=1793928894;
+	b=htX7eYiUQHlPbD4iQ3Ev0UGVoOmfRwwvmIZH3CA0i22qRxHvib3Kk2yUR0E6JMhD4F1Q
+	 VDhSVD1hEfOHlorA91BJvtfhEuNYtV0HB7U6KLswkBDmS46WBPYvWGmnQbOfo52GLFdct
+	 IUMdaxCP+iDxZ24SM2XLFIh+xcE9/PZUpiG/mbTTCnLu11ptzJTnfnsLRMGLUF07VVg8I
+	 z6DInmAq91OWoeZXVV3s9dCyzS84hWoDOMxGyvC4r5MvIBD9R60oMghAgmrFzGuKpJray
+	 yQOffuvAgG1krfegWEGMcjtGS9kLN8T+WjX+FY00/KLEwoqr/yRjSFCBOL9KPvwqOZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793927755;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=alLL1aRZfj6wt40HSFYb5SB8NlHrXFN4c0xYy1pcLT8=;
-	b=BYB03fZIlTEEoG+dS00gGaX8kxLlSA+ixa0p51L0tIWWLS6hTQfC6nlOkDvRcA0uN0E7
-	 wZLQ2dNm+zeWqyfMsZsZ1coREwLR/fG6RLFRiiDnahx/Z+xL9qRUKWok7xTIpLr7g6dk6
-	 ZcQSkkXxQbLRgJz9VJfvHwxRFjx3llzE1UNFKj25RTXkLChxSKBinYpSKMVtJ9IjsGDXg
-	 mlswW/Y7ISaP0Ehg97IntDoX1f3ikbn29MwtXHZsxzmUwbDAeFEEhuJ6HVDNfeIwABK/a
-	 K4039fkSBp46/geAL6Yj43c8i6xTYTWnbp1+7HDwNc75r9ZWhbhOwxASMgr6rOWeVYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793928894;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=37zF0J9YNQQfNg00zUsp96qSKKkGdLAWq7jkYoSVkEw=;
+	b=d4jSpR2co8DRH6ibYHwl2+Rr0N1s+nOWfiFHmlD4Qc/yOTyzRwJoYdkegvIeY9CqB4ai
+	 274i9hpccyfzYDzD9+MrUAW+T76tYgvmHk2uPwckShDILGZISQn2hmKzkcchWNWnZ96TR
+	 CDM93F4Sl0iJ8RRjbmMs2RsIcW/x9ZB1Q2MIMUCHF6VaKGp+nlak5hcU5LqQezJyNKs/t
+	 WP8mQVsvqQvQokM/3NnPNqM+gZYaUZlni4ZSlqILHEp7lLTRByiE7L6Py1W5eR2u0hV+J
+	 YJ04Y6ON+XFqm0vuhhCLokS0r1OdGR9ktV9nw/41uYOl31KM7v+9WoQXuKmTQN9ZSpg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P8IFIrWJ;
-	arc=none smtp.remote-ip=209.85.128.172
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e3YSw8Ew;
+	arc=none smtp.remote-ip=95.215.58.80
+Received: from mta1.migadu.com (out-80.mta1.migadu.com [95.215.58.80])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F27606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 01:15:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2F27606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFC1606A31B
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 01:34:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FFC1606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P8IFIrWJ
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b3299aed39so365397b3.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 17:15:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793927754; x=1794532554; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=alLL1aRZfj6wt40HSFYb5SB8NlHrXFN4c0xYy1pcLT8=;
-        b=P8IFIrWJKzcIslrm1VEd1vQmHhWOwjik1vgKMosMn2cVAasyQLrSdQOCyWtd6A5AgJ
-         l2Ix/ysD3Bjrv6ONnAGyTawfQ104cCSJuxF6MOOiEOlnM2jvtmGzUTCu1g8iGYGCGmoO
-         7ssKSX2Z49ZqQXHf5uzA71r4AXg5yVy8+whe8RfuKr28ol/Gx6ziV9QqgoVvTJyGH+Wd
-         IL6j/kRtk+WxECFfS2ypGBEtvaZ/Ju8fsCBq1zyfT4Ag+BdZOO9epNGmojJwYQ2+WY2i
-         qaaZwfLSPnIHuScJQyWHCTqWFM2cM6B4JnM41zrSFL5ryl1yYY5JQeCCpezXSIJldnFG
-         zf/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793927754; x=1794532554;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=alLL1aRZfj6wt40HSFYb5SB8NlHrXFN4c0xYy1pcLT8=;
-        b=EJxHOl7ZJxlbBtRvaINdbSMwHg2tBZCvdvK1KgiCHtWvppqNeIGDhU+xHCsD3QC6in
-         QxOLb81aLXvQ98t12XLO0TP/pygsMOHOuNuJ8yM5mqs3W61HAFBywNhtPRuRMMOBzZSX
-         x4+BM7EwCMxZiOJFcagqoekD9lBJJVFmnSKdXxHTVj79ZBXeXJNQ3GlnZGL8rRwfQZbu
-         hctxabScBCxoxIA7OpQgqFKKJ2P+/cXiXhH18Pd0Fmyk0e1P4toj4N5NVt0zL1wpbP3e
-         zIwi+/vP9BDUkAQwx9nAKd+LyiU5/LyEwc2Bhyv7rlKq9BRWNVgzQyCtTeJIQwtE7SeW
-         0tVw==
-X-Gm-Message-State: APuU4Z9QTfkvyB5+KhSrm4Z4tCyvsk5u1c59cWaBg4jVq3giQ3FEO1fO
-	Kycngp95cfwUJDLYZWKTEOyMzn+qhY1TI/5I1yLNslBqn/+XLisn1F6ZNMgpa+oLVeI=
-X-Gm-Gg: AYBFou2d9Ijj2HIDVX5H6HilZy6n/yKNHWx0viYq5kt0QdKKC231COO9VNqxuC9jZhS
-	VkPw4u/b1xHKnqYZP/iBHM9mbLi07413ZeZttaFwpgKPG6JRluULjDBCHsKsGoIOtRxjjM4wFdn
-	z/jcs3T1AtDP9jREr20Pgahac0ogkN9NjAmxam60r9XP6rCZ9CJpySX8yp5GuVqsa3HpvcIHkri
-	cytDnt4qROOqLfotDUjMe3xfutrZ4UjM2W+gzb8NjsArybRUCOQecq35xe08R54biUXReYW25VB
-	Agi+1OVkC6uzWwgESEMc8kjiAdWu2pOn3gjniQDPzn8zIIjKXDfmWfplXdBD7uq5krCk5kG4kdk
-	VByDErN4vM+g7dGCCFHUphZ6h7X+7G4M+tBRRjtb0x/bSPaVbyRndub6tSTrtOLbIoma6GCFyAe
-	IXDX/kisRyBr9xYZKQiTmYL1cwI8OsrI27KgMq94XhCPpwqeyZVRicoT1xLMHE7L1qUVFbgVhBM
-	LxzIqjJQy95zez6vB4ASpk1nnFA08/4QetTNc2na/f2pxZNan9Xi7ci6VK/Z/Z9z4z9ntjUvZBz
-	L0DxrrxvTQd9xLSD+bi37ARoN4kRXgeim53SqDwKOLNovznnJvTDuA==
-X-Received: by 2002:a05:690c:f03:b0:8b0:db26:88be with SMTP id 00721157ae682-8b341921355mr4114727b3.19.1793927753513;
-        Thu, 05 Nov 2026 17:15:53 -0800 (PST)
-Received: from VPN-156-173.vpn.usf.edu ([2607:fe50:0:f802::4046])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f7721ddsm8307427b3.7.2026.11.05.17.15.51
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 05 Nov 2026 17:15:53 -0800 (PST)
-From: Juan Agustin Niccolini <juanagusnicco@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-afs@lists.infradead.org
-Cc: dhowells@redhat.com,
-	marc.dionne@auristor.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	horms@kernel.org,
-	jaltman@auristor.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] rxrpc: Fix rxrpc_sock UAF caused by missing poke in rxrpc_abort_eproto()
-Date: Thu,  5 Nov 2026 20:15:50 -0500
-Message-ID: <20261106011550.59902-1-juanagusnicco@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e3YSw8Ew
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=YOPsIY4Tuyad8OkdA/iv+lBNUq8frqmfosXKiJVdAj4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793928890; v=1; x=1794533690;
+ b=e3YSw8EwtMVJjgbTlXMguKv8bj5d1A7SL9MNQ4ZICLgvMkJBXAC+F0IS6vbsvXjXMQGhZlLK
+ wQNXvKWBwZMYcOI3CIUBUjJIy99LFhumPQFKsZioBIYA5pFYy62jcLHotcEoL9IkMSQOzqucl/c
+ ys2p2/Ev/tMtOH6H8/tSkHzk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 81f11a3f24812833;
+	Fri, 06 Nov 2026 01:34:50 +0000
+X-Mizu-Trace-ID: 81f11a3f24812833
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Fri, 06 Nov 2026 09:34:32 +0800
+Subject: [PATCH net RESEND v5] bonding: fix slave_cnt leak on XDP error
+ paths
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,89 +60,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261106-bond_slave_cnt-v5-1-40857a722b6c@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XPwW7DIAwG4FepOI8JMCFkpx3W6w7rcaoqIGZFq
+ 8gUItSqyruXccrGzbb8/ZbvJOEcMJGX3Z3MmEMKUyxN97Qj7mziF9Iwlp4IJhTTrKd2iuMpXUz
+ Gk4sL1Rp77TrPjB1IQT8z+nCtgZ8k4vI7+9gf9u9v5FjKc0jLNN/quczrUk0emPifnDnlFBQOn
+ fXSKO9fv2+XEKf07GLNymLrofGieCZQ9MCkM6AaD1vffJah+K4fPVhwXjjbeLnxXDZeFj9yqZU
+ 0MKBif/y6rg8NFsCzfAEAAA==
+X-Change-ID: 20260807-bond_slave_cnt-88e78c5f0ab9
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jussi Maki <joamaki@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.16.0
 
-Since commit 03fc55adf876 ("rxrpc: Only disconnect calls in the I/O
-thread"), only the I/O thread disconnects a call from its connection
-channel, and hence, code that completes a call elsewhere must poke it
-with rxrpc_poke_call(), which queues the call for the I/O thread.
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-rxrpc_abort_eproto(), which aborts a call when a DATA packet fails
-security verification in recvmsg() or rxrpc_kernel_recv_data(), marks
-the call as complete but doesn't poke it.  The call is then never
-disconnected, not even when its socket is closed, because
-rxrpc_propose_abort() skips calls that are already complete.  It stays
-in conn->channels[], and its call->socket pointer, which holds no
-reference on the socket, dangles once the socket is closed and freed.
+When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
+already incremented. If XDP setup subsequently fails, the error paths
+jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
 
-If the peer then sends an rxgk CHALLENGE on that connection,
-rxrpc_post_challenge() finds the call and reads the freed socket's
-flags.  If the socket had enabled RXRPC_MANAGE_RESPONSE, the call is
-then passed to rxrpc_notify_socket_oob(), which takes the freed
-socket's lock:
+This causes slave_cnt to drift upward on each failed enslaving attempt,
+which would lead to unbalanced traffic distribution with round-robin
+mode.
 
-  BUG: KASAN: slab-use-after-free in rxrpc_input_conn_packet+0x3b2/0x820
-  Read of size 8 at addr ff1100011b343328 by task krxrpcio/21029/1030
-  ...
-  BUG: KASAN: slab-use-after-free in _raw_spin_lock_irq+0x72/0xe0
-  Write of size 4 at addr ff1100011b343308 by task krxrpcio/21029/1030
-  Call Trace:
-   _raw_spin_lock_irq+0x72/0xe0
-   rxrpc_notify_socket_oob+0x54/0x3f0
-   rxrpc_input_conn_packet+0x682/0x820
-   rxrpc_input_packet_on_conn.part.0+0x5f4/0xc30
-   rxrpc_input_packet.constprop.0+0x8a2/0xea0
-   rxrpc_io_thread+0x944/0x1570
+Add an error out to make sure slave_cnt gets decreased correctly.
 
-rxrpc_post_challenge() doesn't appear in the reports because the
-compiler inlined it into rxrpc_input_conn_packet().
-
-Depending on the freed socket's contents, rxrpc_notify_socket_oob()
-can also call a function pointer obtained from it (sk->sk_data_ready()
-or rx->app_ops->notify_oob()).  The use-after-free is deterministic, an
-unprivileged process can trigger it, and since the attacker controls
-when the CHALLENGE is sent, they can reclaim the freed memory first.
-These conditions make the bug reliably exploitable to hijack kernel
-control flow and escalate privileges.
-
-Note that without rxgk the stranded call still leaks.  A client call
-pins its connection, so destroying the local endpoint hits the BUG()
-in rxrpc_destroy_client_conn_ids(); and for any stranded call, netns
-teardown hangs in rxrpc_destroy_all_calls() waiting for it to be
-freed.
-
-Fix this by poking the call from rxrpc_abort_eproto(), as
-rxrpc_abort_calls() already does.
-
-Fixes: 03fc55adf876 ("rxrpc: Only disconnect calls in the I/O thread")
-Cc: stable@vger.kernel.org
-Signed-off-by: Juan Agustin Niccolini <juanagusnicco@gmail.com>
+Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
-A deterministic reproducer for the KASAN report above is available on
-request.  A working privilege escalation exploit was sent to
-security@kernel.org on 20 October, and I can share it with the rxrpc
-and netdev maintainers upon request.  The bug was first reported to
-the rxrpc maintainers and the security team on 11 October.  rxrpc
-autoloads on Ubuntu, Fedora, and Arch when any process opens an
-AF_RXRPC socket.
+This issue is found during code review. The reproducer is from
+Eric's patch
 
- net/rxrpc/ar-internal.h | 1 +
- 1 file changed, 1 insertion(+)
+  ip link add bond0 type bond mode balance-rr
+  ip link set bond0 xdpdrv obj xdp_dummy.bpf.o sec xdp
+  for i in 0 1 2; do
+    ip link add d$i type dummy
+    ip link set d$i master bond0   # fails: Slave does not support XDP
+  done
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 865f05fe37ab..31528b5e34cb 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1455,6 +1455,7 @@ static inline int rxrpc_abort_eproto(struct rxrpc_call *call,
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+num_slaves read via SIOCBONDINFOQUERY is 3 before this patch, 0 after.
+
+For Sashiko:
+
+This patch only focuses on fixing the bond_slave_cnt leak issue.
+
+1. `bond_xdp_xmit()` may call the slave's `ndo_xdp_xmit` before checking
+whether `slave->netdev_ops->ndo_xdp_xmit` exists. This is a separate issue
+and I will address it in another patch.
+2. `bond_slave_ns_maddrs_add()` and device promiscuous/allmulti error
+handling are also separate issues, which I will fix separately.
+
+PS: I'm working on a restruct of bond_enslave to fix all these issues.
+---
+Changes in v5:
+- Re-post, no code change.
+- Link to v4: https://lore.kernel.org/r/20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn
+
+Changes in v4:
+- Revert to v1 version as the bond_select_active_slave() just under
+  slave_cnt increase also calls bond_update_slave_arr() (sashiko)
+- re-run all bonding selftests with debug kernel, all passed.
+- Link to v3: https://lore.kernel.org/r/20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn
+
+Changes in v3:
+- move the slave_cnt increasement before bond_update_slave_arr() (selftest)
+- run all bonding selftests on debug kernel to make sure no regression (Jakub)
+- Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
+
+Changes in v2:
+- move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
+- balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
+- Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
+---
+ drivers/net/bonding/bond_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index a1c156c145b2..34f1b8083fbb 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+ 				     "Slave does not support XDP");
+ 			res = -EOPNOTSUPP;
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
+ 	} else if (bond->xdp_prog) {
+ 		struct netdev_bpf xdp = {
+@@ -2319,14 +2319,14 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+ 				     "Slave has XDP program loaded, please unload before enslaving");
+ 			res = -EOPNOTSUPP;
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
  
- 	rxrpc_abort_call(call, sp->hdr.seq, abort_code, -EPROTO, why);
-+	rxrpc_poke_call(call, rxrpc_call_poke_abort);
- 	return -EPROTO;
- }
+ 		res = dev_xdp_propagate(slave_dev, &xdp);
+ 		if (res < 0) {
+ 			/* ndo_bpf() sets extack error message */
+ 			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
+ 		if (bond->xdp_prog)
+ 			bpf_prog_inc(bond->xdp_prog);
+@@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	return 0;
+ 
+ /* Undo stages on error */
++err_slave_cnt:
++	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
++
+ err_sysfs_del:
+ 	bond_sysfs_slave_del(new_slave);
  
 
+---
 base-commit: fafbc4051123d5459ea6950899cec08ed946e278
--- 
-2.53.0
+change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
 
