@@ -1,99 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793952946;
-	b=h+TdkKexs+1hDuOo2P7MbguebsdHXQ94gGpKD8rYSI7oq7Glv2fKFyWp3jKD1PGOXCu7
-	 z5xhzmPthGHg9E1Y2jyOdQgUMWamHW63uv1EUyM4gU746gjaACoKNc0hJkm/M7CAcM6IF
-	 LiBlaGpKUTMluMXwb74UAzjfnj3ht5RN8y8Gj3HQ4WboMZVxMY2FXc0b7bA4SeAEMibJt
-	 4fOxSsg10Cvp907PlbnusZzzYAw7vvuFBuIArdZiWhBFv5n8NWpxgYrs9kqy8f6n4G5qF
-	 8SOQm7KwSeVR+Qoe17TV4U2toDx8/zxxlPAituEvmF/g4GBNj5j6Wkiyg+zTlaYGGIA==
+	t=1793953082;
+	b=K6O4+v47VKpykgN94NFvOs62/70kFpNGL/U2kJ4HmXZkWGs0jGoouO1mPEh58suFXBsW
+	 YfXSopsOVYNlVDHqd7H24ilx4SGODvxthe8nzfIxFJgm5TfingJsCQC4DOv7WT4CvippB
+	 mUg5iGhOSq0J03zAC6yMbv58ojQNpPhe4WTVcOM8ktxmMn1L4+3H7KX8qzh7BIRGx6LPs
+	 okcXj/kPtLGswgdWsFrtQvhgwRMVZNY5ShKtC0ZzzshRFGKNH5PL6GyRMkfXZLWxQ+8w3
+	 pQDSvhhMMxETK/zIaQdZavmfGm0lJUstxNuiJqVBLjhoy+pxIqQUR7iHKBs4QqP/1KA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793952946;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793953082;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=Yjrd5/AaZ2KwuSGRJZ8wqDYRBz8IJBU1ScARgfXbQgI=;
-	b=5GW0JcWZj9hDmd+YZph/B8ZeIt2xHM52xIpW6HN8OTeD2rxTYhpqLxP+TyFOd+a4oyLL
-	 yStNvoxn8tyNj3UeqLhVK8iYfYrJDu0WpiVjJrO8eGMmIts0Isv8z9Iex4oRGxd6q2BnR
-	 PO6b/Mn3lnuzTqQNkAa80Rwr/k7Iqi3NHx416GYA+fspJFi0oqgiUEOhMTOkDd3Ugvz6R
-	 NvYkXQtqV07EP1AEbUxko+ybMFayk4NWA3opvv5/OotzzJiYNBVeiYhcJ4nY3rh/HwH5A
-	 rnXb3dK8RpqvhC/JWIEmeovXrOOYHqAKs8S9IplVMw+EDWs25rhsR64CZyB/lAETyHw==
+	bh=IhoDejnLT0dqcygxtJi6cYqFmAuk66FRNmBCl2akNUM=;
+	b=ySzunDCrhHrvQ9wocPAa7OfIc7AlgkKxiWlkCEyFpYN5KdNxAAKi8AHXE++MIC2bYa6A
+	 j/a2nSi9htAF8v8yWz6IGLLsIca/bWMqtU7+wEzDd/m+/Uc8fqZ8eMP9gVINzWqN8VYVn
+	 HwaIbejVEIckMMRzvCTmTm88sUVTy4rAn+hiUNFBIniPeJkZg1dlrnM82GMtT02OhGyMR
+	 5OpYdhJojdqmEEmIy6ddF/OKWFTmuAgsFG6l3LY+errq6T3vcrBtz6qE6/OPN8ris7rwu
+	 yw3eVyx2t5Er5rZWbTN7pY+8S0n9ptMjDTKkF5zYSLeiBsxXB3schgpQP5jYijBNZbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gLVhk4Og;
-	arc=none smtp.remote-ip=209.85.215.171
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=urmPU7lK;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8514606A32F
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:15:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8514606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54591606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:18:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54591606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gLVhk4Og
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cdaefe02d5dso216232a12.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 00:15:45 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=urmPU7lK
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so2428505e9.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 00:18:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793952945; x=1794557745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Yjrd5/AaZ2KwuSGRJZ8wqDYRBz8IJBU1ScARgfXbQgI=;
-        b=gLVhk4OgUMig+8O+Cdc/qC5Ka7fWw25GTnnEGlvg9UhPMDlNSVpXBbl8rr91ELnZYa
-         dkU+n4Qt28dG8AXQlKU+OChgQ0EhjvHpU6sOIra8nIeA2hxeMvVzCr+fFBoSmCcMy6zQ
-         9XBAkzjy75dGIygyvhH1XR7+gs99FFuzzYjcs0GKg+XwnHfDHlDyRspOlOPIclh+dcQv
-         IPuYM1k/N/iy9i5HdcThX0BYahRd4wWa8b96hpCztru8AR/DD5FYH7y/IpEkJokFKipN
-         2ySqpzBhmwFQLC9fY1Y8HTPfHX9qayqNc4nkATdlIxpO14yPNAtVe6i86YM8unPH0lxB
-         o8lw==
+        d=gmail.com; s=20260707; t=1793953081; x=1794557881; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IhoDejnLT0dqcygxtJi6cYqFmAuk66FRNmBCl2akNUM=;
+        b=urmPU7lKCRuR/zE5gSzypnBu2L7s2A7Am1JVkWuaOrfp+GaQq3jk253zvk1SL0aH0x
+         ooZS2EcI9Mpo6733mc1+7mCNDfARa347IINKr+SQfxcxy3dAtN3+8K2HqCJC/+RNIXO1
+         MU42yp1Zg6AOKeowdYqXm9G3jzJPpuOvT+g+jY9+QxKoLpsi9M9HhEZ+qrO6jl4m+SyX
+         IuKIISK3/jprJuwVbyJBQAo2D/hSVUXrEvuwO9fHjEqhEj4NENAlGHLl4z9IdNL/EwuN
+         g8Dwn5X81UuMC9GD/C0vQzi3aMejrGY0taakbzimzFDuC6rXLgoIfg9hLhS3Xcy8LRlK
+         SusA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793952945; x=1794557745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793953081; x=1794557881;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Yjrd5/AaZ2KwuSGRJZ8wqDYRBz8IJBU1ScARgfXbQgI=;
-        b=z0/OUhxZtuXCYqzP41vMHyH5oAq4BTAvubyb96dQIRNiVJ9BM0pqhHcDrni7sx3xf4
-         QvuvYcaBw09BNj2Yjd2E9w3gLdr+H2sA6qt3EHrnezWA9JJFkOEFFtqXOnzWNYi0LQzN
-         3zBGj/CRT1O4HcSuDsMbEd7jU5tJ0Nb3kGIXJ2gRlY3FHwrYi7319H6p9gjoSn8KQKWA
-         v4drkaD4TYdhSQoSB2cGZJI/W7ua4IF5GtZRyCGRm49Vt4PzYXQWgA0qk11ZV+7ECUCO
-         T1xrXd5f62yiM322WxdQ1YVTgPlNTuX2HA/klD4GkfeDaEC1Z+OHQpU8deO7aFyLbO5W
-         8ViA==
-X-Forwarded-Encrypted: i=1; AL+hErH0ziP8BSaP1ohSbCyQhBNcDPy/9Ef094EHWLphZa2ScdxHQkQ2Z7X4IaMmb/9N7wzIBnGqsbU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/nVG9e1/m6KlXV79UNoP12YucdHIj6HRU/B/6Tn6BrJVjcWqm2
-	ks2ZfKgUQ7o6lxbu6Q2NF0+/B68CCQMGRym8GfrLAKYJfiPLDRNrdLMm
-X-Gm-Gg: AYBFou3qV+GRbDjq9blfPA2Oen4bs3vd7BARMWCK0i9UATuy6fBt3L63G6tOGq9OirR
-	OR0wJXyNLDmy0S3cqRBRpi0DyConiqFxV3RBCaJV54L5VBd7yTH1+qDjVQm5mfgEW6NY90v2xXr
-	lVCxx7U0VZ5w57yUUeL2gsxigzRROaEer6YmssSlG08QrVkHnkHEW8lrdanbSXnmZgBQgeRIjKw
-	95aiCzLly2zuKfq7xYe6XXJmu7+6Xgzo3ibtvDbgDdRmjcEeQ5feeoSOk7yUWHxUctJMp9zE+Uv
-	AWWFinR0W8aWqxxnTcsH3mH4QyRjxV9tlb4wWQKspUaQpObrZ3su42OFDlNJijyeYAjWGfse5v9
-	wIhN7WxRbfbb90LKvq+D+oAvLmnx0QyvYnkZ+53WE8QoBGXKDaG0LPzc4TttjmiKOOpep5Jj5Oa
-	wpGImdJdlfVCx04LeFZYhViqajz/Cjcjw4krA2jvRKDHzvOgWQVTqQu5HdHfC3A3ZM+g6zwS7Oc
-	TRhNRyqSEw3FI0gddhSXyvO05NncN/0YkwTux50r+RQrEz426VStzBr4shD7pvdBLrMgkb0c4IM
-	NJR+rC1qHxryWHxs+jr04cM17VCoWk4LLKT4tjRg8Hcc8v6VXWQ1/C/Fu4njaQwCzPcx0Z2s25n
-	XVxmo/D/h7Z6c
-X-Received: by 2002:a17:90b:3f4b:b0:3ad:eb34:4c6c with SMTP id 98e67ed59e1d1-3b0db6b196bmr2024337a91.13.1793952944965;
-        Fri, 06 Nov 2026 00:15:44 -0800 (PST)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47d4034asm3082275ad.41.2026.11.06.00.15.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 00:15:44 -0800 (PST)
-From: Jun Yang <juny24602@gmail.com>
-To: Jason@zx2c4.com,
-	andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] wireguard: flush endpoint dst cache when a peer is removed
-Date: Fri,  6 Nov 2026 16:15:17 +0800
-Message-ID: <20261106081538.69465-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        bh=IhoDejnLT0dqcygxtJi6cYqFmAuk66FRNmBCl2akNUM=;
+        b=SdGw/nUoY+FW/ry4aaWNZKZSxeaPr1ogLwCKk/Xfn8+L+mxOd23fZ2mXW6hM5Rw24V
+         GNfKCYNM5QHbEddRE4KsJzJEJRzGsuHbEQqDtT6gGdi06jpgXMsGs2gd0PxwcijBvP9k
+         nlmG6KRsVTTLwycc9QjTvceIlSZUH+ia+QO4OCVK2dNrSmElLPW+i9t3s0+Uc69cOUmb
+         ExtQhUzoGzaSBSVN4RqDSlT2y8J3CCt1tJK7BZz3ZoGouEvKQ0M6fP4rMw7CaPbFRuqO
+         rg+d8qAsDg8B+ZUylWmdt21UOmJED7cMu/nbr6tfMUBF/s+WfAwWT6hdR8kVTiwfmFSj
+         R2JA==
+X-Forwarded-Encrypted: i=1; AKwUvBz37DdwCTBYDPTI9SAvEZr7fetwCetra7sSHFrdssiQb0qzhv+uS4P/8CUPD+Tloes5CqvBQCs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ChJ2PG5J+zRDEmzl068Akosxf66obbWEXklqeCFbwRgLUfxIj
+	8yGdNWiwDyMoYthSbOmgSccz1BrTQs1cpzOG06lXAW32bZsIs4ov2FGJ
+X-Gm-Gg: AYBFou3TZr4dqrJE3lpPKeX+4h1aOfl010hCN8q05tf7/Ej/IdenNRGO6aqCOKP2j0K
+	DjA28ODDbJ9dPsm1zPPSQcllGX0Ur4SPaDZInKfsWVQ7G/NpX6nEIFus7bu2+tW/mpacy6DZVOT
+	Q+Zq0DvbI/ceu2t3yX91cXL/yF+HZxU1Pz6tV0APS3INfogbSp+eSCEfJ26Vdz5Y0ud4Bk2oEdS
+	jlCROWsUwXoTZwOVrtV33eDE25UNx0cWwOPoaLo1PESnzgeZSIFTTc51qMQJci8qSlLOI8xM4yL
+	gDiw4q19HdnNkQL4kSMnVBP44QIwbmmQmzMz0G7XcSrDyoF6gfudjEaUKX4bjwo5xMXv9YoN5dL
+	drRjdwhcBYXESFnGeGw3WSmI6+0arEm8wdy/qxYGl3HSR4eFa5N1z1ZB+n3Pq07v8g92Ycyn4MM
+	d1NebyzD3AqzIvjXRRlZc3YGaS6TVZtM15X/hDVKIRzv6LTQ9yZ1LJ3XvKgcf8s5lLqf1AYLESJ
+	xHY2A2iNju7O5Q3TnCxsHvm9IsmFKJo8Joi9haSHElotaqjITYD0Gd6jSRgyK9R/lRYxMPrJiRz
+	lUjU02QQaymwBimjanYSQXsL6OaXts+ai3ZO0RM=
+X-Received: by 2002:a05:600c:6992:b0:4a1:992f:d0e7 with SMTP id 5b1f17b1804b1-4b6de4a6c7amr23740735e9.16.1793953080551;
+        Fri, 06 Nov 2026 00:18:00 -0800 (PST)
+Received: from [10.44.66.133] ([86.127.229.203])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7402d84a8sm23501215e9.5.2026.11.06.00.17.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 00:17:59 -0800 (PST)
+Message-ID: <d909ed3e-8613-4a9d-ab59-f59187d734df@gmail.com>
+Date: Fri, 6 Nov 2026 08:17:58 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,74 +92,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: phy: add driver for the ZTE ZX279128S
+ internal Gigabit PHY
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20261105-phy-submit-v1-1-eb382681a76a@gmail.com>
+ <b38a7a97-c88c-44fa-ab0f-89d1e809e21e@lunn.ch>
+Content-Language: en-US
+From: Agustin <isasmendi.agus@gmail.com>
+In-Reply-To: <b38a7a97-c88c-44fa-ab0f-89d1e809e21e@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Thanks for the review.
 
-peer_make_dead() removes a peer from wg->peer_list, but a netlink device
-dump can keep it alive through ctx->next_peer. If the WireGuard device
-has moved to another network namespace, wg_netns_exit_rtnl() skips the
-removed peer when flushing endpoint caches for the original namespace.
-A cached IPv6 RTF_CACHE dst can then survive ip6_route_net_exit(), and
-its later release from rcu_release() accesses the destroyed per-netns
-dst counter.
+Before sending a v2 I went back to the bench, and the result changes the 
+picture, with the generic PHY driver and only what the boot firmware 
+sets up, the four LAN PHYs link and pass traffic at 1000, 100 and 10 
+Mb/s with no errors, across cold and warm boots and repeated renegotiation.
 
-Mark the peer dead and flush its endpoint cache under endpoint_lock.
-Bypass the cache for dead peers in the send path so an in-flight sender
-cannot repopulate it after the flush.
+The TX DAC registers already hold the values this driver writes, and the 
+PHY adjusts them itself with the link speed. It turned out to be a bug 
+in our MAC driver (frames were sent to the wrong egress port), not 
+anything in the PHY. That leaves only an LDO level and one undocumented 
+register, with no measured benefit, so I'm withdrawing this patch. This 
+is also consistent with Navid's ZX279128S series, which uses the generic 
+driver for these PHYs. If I find a case where the vendor settings make a 
+difference, I'll come back with data.
 
-Fixes: 20ae1d6aa159 ("wireguard: device: reset peer src endpoint when netns exits")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
+Sorry for the noise, and thanks again.
 
- drivers/net/wireguard/peer.c   | 5 ++++-
- drivers/net/wireguard/socket.c | 6 ++++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireguard/peer.c b/drivers/net/wireguard/peer.c
-index 1cb502a932e0..c8d9396b1f13 100644
---- a/drivers/net/wireguard/peer.c
-+++ b/drivers/net/wireguard/peer.c
-@@ -85,8 +85,11 @@ static void peer_make_dead(struct wg_peer *peer)
- 				     &peer->device->device_update_lock);
- 	wg_pubkey_hashtable_remove(peer->device->peer_hashtable, peer);
- 
--	/* Mark as dead, so that we don't allow jumping contexts after. */
-+	/* Mark as dead and flush the cache before the peer's netns exits. */
-+	write_lock_bh(&peer->endpoint_lock);
- 	WRITE_ONCE(peer->is_dead, true);
-+	dst_cache_reset_now(&peer->endpoint_cache);
-+	write_unlock_bh(&peer->endpoint_lock);
- 
- 	/* The caller must now synchronize_net() for this to take effect. */
- }
-diff --git a/drivers/net/wireguard/socket.c b/drivers/net/wireguard/socket.c
-index 0028ef17dc71..0cd916d480b2 100644
---- a/drivers/net/wireguard/socket.c
-+++ b/drivers/net/wireguard/socket.c
-@@ -167,15 +167,17 @@ out:
- int wg_socket_send_skb_to_peer(struct wg_peer *peer, struct sk_buff *skb, u8 ds)
- {
- 	size_t skb_len = skb->len;
-+	struct dst_cache *cache;
- 	int ret = -EAFNOSUPPORT;
- 
- 	read_lock_bh(&peer->endpoint_lock);
-+	cache = READ_ONCE(peer->is_dead) ? NULL : &peer->endpoint_cache;
- 	if (peer->endpoint.addr.sa_family == AF_INET)
- 		ret = send4(peer->device, skb, &peer->endpoint, ds,
--			    &peer->endpoint_cache);
-+			    cache);
- 	else if (peer->endpoint.addr.sa_family == AF_INET6)
- 		ret = send6(peer->device, skb, &peer->endpoint, ds,
--			    &peer->endpoint_cache);
-+			    cache);
- 	else
- 		dev_kfree_skb(skb);
- 	if (likely(!ret))
--- 
-2.43.7
-
+On 11/5/26 15:07, Andrew Lunn wrote:
+>> +static int zte_gephy_config_init(struct phy_device *phydev)
+>> +{
+>> +	int ret, i, ldo;
+> Given how minimal this driver is, there are some potential traps we
+> could fall into later when we find out more about the device. To
+> reduce the risk a bit, please could you add a test here:
+>
+>         if (phydev->interface != PHY_INTERFACE_MODE_INTERNAL)
+>           	  return -EINVAL;
+>
+>> +static struct phy_driver zte_gephy_driver[] = {
+>> +	{
+>> +		PHY_ID_MATCH_MODEL(ZTE_GEPHY_PHY_ID),
+>> +		.name			= "ZTE ZX279128S Gigabit PHY",
+>> +		.flags			= PHY_IS_INTERNAL,
+>> +		.config_init		= zte_gephy_config_init,
+>> +		/* The boot firmware hands over with BMCR_PDOWN set. No
+>> +		 * .suspend: powering the analog domain down and up at runtime
+>> +		 * has not been tested.
+>> +		 */
+>> +		.resume			= genphy_resume,
+> It looks odd with just resume, it makes it look like a workaround.
+>
+> Why not have config_init() take it out of power down?
+>
+>      Andrew
