@@ -1,96 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793957811;
-	b=EKIWsNjomuP++0CjOwRtF7SEUrcrx8USG/2VwT2EWh2fuVLSlz/EX0HAvjm1n0TDVprk
-	 bJvUTpKmI1SpDJX3UvQ0dSE/opbpkB70tPfV6KbIoOGMiMabsLTdJttMO/CSNwxqpQCIl
-	 4hzsMFx7zJJhN5grcWZJC7QNEF9CXpVgEQB4vjwcwqbLUrHXUKtpRZvN8xdwyQB8FutFI
-	 U+Ui18VfeFcbQs9xT2xYaxsac+I2TNONVaDChLuvLd6exseQ2+aCt7ebvLkhEOOkjKiVw
-	 mjsby+iMXodKJMRRXqsKRR/4GlmjwPu0syflf46BnihqoqdNwEeBy2com2K9+LOcK+A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793957811;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=S9LGaEXB1E1wvy0Af1RCtMcyHpRCTnV7LkNTlfEWfg4=;
-	b=g/e78qUb6/iDsV+8hFhEzmB39yRZyLUf4MiZXB0BHwdP3iawYPTt/XUGBFmmgdj1dmuX
-	 CVHsMjJ7FpoYit1aMGqOErdGrYHnjFD1TTBCVT3cFmiUog1lCb5xCwSh22wquPGQ7OiuW
-	 98BRcj3VsOteGwE0iuWIiDiO7Q5pf5W0gr16aJ+2VonsZiMv5m1fjbfwzztoYgXHW3mbS
-	 RuE5eygrcZBQY15s+C9XnwnxAknigXTKiWlyZQrpm/5YX2MP2G81msZ2DtG2j9D3NbgT3
-	 htvQzvC32dFKotFUxWf9PXKWZLSnKM/zHOCrC1S3j+UycN+IepXRfp2+RnpyosRGv1w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=JIayTWax;
-	arc=none smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793957855;
+	b=BFpusBmYoMZyOMpg9Ih6e+Be5ovJMi4uEfKRmtKS6PwiTugpEmSbHuIE22dLL2kbxOpO
+	 0rTmPhkzJ7dxIzu0Bx/fcPKpcgNoYHWeP4DXdOHwFXiWTFPf6YXrEDP8qyox7U8SQbo59
+	 zTvzq6GFnpe5ZGkn1E2RTU327f340FM5W/bUdB9av+VySjXj5yO6yhwe7RuiD97lsI0l+
+	 SEuXEN9JYsWqsD1FBK955eWUoIUIRW5W9mpR3vQaUCgNmaJJXVHRNfBHkZ7361shjfIW5
+	 48u9WGF7lNpPnvupSsBkSJRuRWTaLE0oN/4+D8u26h36D48g85yKFy8ZAFHGz1iSeSg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793957855;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=MjAT6tcxdQUYupMnJ6VDsN2Krtta9HnVtSCs1NLKAM4=;
+	b=PdMup7HEE8e17i35OJD7xyP+MmuLSILZBZJqYzPc2ozK/S6epUxAFbgXdPfGEroEgnbu
+	 0m3oC7dX/9hiBgDe+LQnnGk2tzDDIWUfu0+VEtgU/5it7ariECJOoKjyB9UBUPXXItABo
+	 Lm32i/CP1KOdx6e9UCcdZGK+H6bLwq9MDRbXnfl5Uue80NmEp+mIID0ctvXv6ZwGGFe6g
+	 e3QKgzJi1CeZw461z2qBKbbCT6+sFobExUzBcH0a6DrcNbqI24j//dyk/+kPkt+qL+3t8
+	 1tW/scHbdvmwgIPGhoeYBZj1ofubvvpv0VSzmbAJK4tPKLmodteZbrLuqW1CQ5nvuOA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q7UJLD0n;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFC606D80C;
+	Fri,  6 Nov 2026 09:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q7UJLD0n
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793957855;
+	b=Ad36THbRFS7mkmraIQBfRKKRrZR6qcizMHZzUE4Nlhw5+Sqd4m1WVxZtTH6cB8LogtXC
+	 tDo/4k5fNKm11p2mA925rlREy8246WAIb7yrL0EJvELdL1u7GPbtXF5M5g3unF7soE4t3
+	 nMmjzd1jaLc6Stdx/S1uUot4Zm/zTVWcUHvTCzcvzMucUwW1TKhiklZjOczoBOzHqQTau
+	 GlER2+vVJGiRzQ8warolRhV64t6AwAHcaw8ui/EZog4NXx9xGrZCXjer6PzKk8qz26I8g
+	 cN+JzFzSisjgPOoCHYitgbxRMZxnOQDfwzYUrSz9JDcGGbZcn4wa2a40Y4+gVnNRd9w==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793957855;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=MjAT6tcxdQUYupMnJ6VDsN2Krtta9HnVtSCs1NLKAM4=;
+	b=KZZDUgWaTCxRBikdUQQNmLvr7fhSqHN6OQKC1n+j6DCXzWjKwKh8wMGrjUov651onLm3
+	 gmSCPcdKIbWivWTyV6/coF9e7eOBF/iwTsGt15ehDG/Z0n9JZOo/29uiqy30vPK31fCcW
+	 ztX+DrJ17zBzL7R4GEkSROrHQUsNa+pk36YZOfSpf6BZlcUy84yc2GpLIITSn+9ANCTx/
+	 vK+pqHsniZT/0xWxIbJlJyuOwg6ikXQcsx9hacghfl50zY+c7MANHx+bD28nIG6aTVA1W
+	 5Gr/HQfCZmxClsKG05la2hMzEl1gLBI3PXeO8TwVb7h9+Eq38rilylQEoeWyuJWoOzw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C8A606C3FA
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:36:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99C8A606C3FA
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=JIayTWax
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b596569640so642465a12.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 01:36:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1793957809; x=1794562609; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=S9LGaEXB1E1wvy0Af1RCtMcyHpRCTnV7LkNTlfEWfg4=;
-        b=JIayTWaxp2ytSTWPaIY6LO9yPsbjTs0kZxLTxn3inu0yeGhmu0yciWY1nbphfxnkU2
-         Som7MY8RIwdSxC69B2JzvMXw0aRXC1uUGW/HGPcfP4BM5tlp05yekHtfe0EmxLIlfFfw
-         8Rq3y3hGojW4ToTct9lVzPzCpvmmMr32VJ51oPVny/RvV5Oq6kWz5Ie3xfqS8iGsWkvN
-         ciDqEfwsta+BxSRaW4V2MUExt7EMPxo+Si84KMTZCa6wWKM1SMCUO8FhcFifSUC7VPkw
-         Zwlj5aCbo0a1hfgNFg/cYBldyznyK0rH2+wki7bM+BNnhtDannIz3zriJi4icxf8eFbD
-         lsBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793957809; x=1794562609;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S9LGaEXB1E1wvy0Af1RCtMcyHpRCTnV7LkNTlfEWfg4=;
-        b=jAVzgrO2WnmYYnDyMQuG/wmgmzugo/MPsghGLJfTQhBCkhqX2Q/zYB6QpF8o78xsQz
-         s+cmK62DBVv4hYdNGurN+3Sm6vwHTmHernL9lzoIhf7YE64a9YOVLewZG2ED1PwwDVjR
-         jN5cNPk+7h5plxFVM0i3luv7hHznQIAZ679WGiDZKn5FPKQ+hAzq9q4AhM+sQbIqf9pn
-         0N7Iw5RBrybJIz1YL9l8TCVglhhArRP9hEMCbgkoa1Afo3UKCyHcNJ+hwWXM+lvrKjvx
-         Gqm791N+WUpwV8KYmbod/8OUpcNCpRW9mHMQsfFZqb8QpDa362DQ+W6jdf/D2qo/Hz3L
-         GktA==
-X-Gm-Message-State: APuU4Z/LFNAROZix54DTCqkgLznxP95ThfiiF1bbXI3w3U2Sd5z5JVMZ
-	ZNzEtyX+llGW6MPRa+fvDHvpMuionJVgbLXPYCSKXrbZ+iT+1Q2SMl2FvNfC99BvZH8=
-X-Gm-Gg: AYBFou3G2dt/XSMjXaQ5a8Dq0LNEDpeUoAEwezXSnk75NggawMiOvXQIrtwI7eOJBM+
-	xZg8iwzCZb5pZPM/h1D6vglk1CACSOrpOZLvyn7DD3Tt3c4+PFV46+zSIeLfXbFI+o7k1v7oHOM
-	Qkb3IELPRGmbVXXtOgz/2DSnNb4IHMaAm8NL3WV/sIalu64feXBBsVdJK+Og2nBN9/nPEHHODcR
-	2ZoUwJ8f5I7Oe7ZK01ztb1qn2oXgEX/+e0S7ivC0oRL7k/mwkeiaQK+So1Zxc9Z5x+Fcl1HaiRR
-	a4Knbot0uVNa3S8Jj4iBMZyfyDP0+cav+aJ/s7zUKUbJ4VOOJfIuADs/8oNZuErvAJgd48kF39s
-	tpQSe5TZtqcf0zCvnqTzJJkwCjL/XYrUldDlTla/TTIzxAJhqeENeF6ymDuIETTrgHtKfIBOh/i
-	DpQOxCqhenPFlTgw2Xp3m0GS6oD33HRaOD3hCP81dZJGqeRD34qsdVWbVN9kKhZG/xwD6tC/unT
-	VvWyDAZoq5R2aDvrlAKrvO/f/BXwlceiX8etNaZgKv6vrq9xmHzppmpkpFT8JBtq6P3MialIjRa
-	bjovJIDKYBQ7EU8AIzPGeV6DRdLT1jlUsrSDn8Q7NvBT72gx/AXxpfYz+CJtUPYx/x7fB6dfzop
-	6/yfUZOZS8CdIGA==
-X-Received: by 2002:a05:6402:5d5:b0:6b1:c521:ebda with SMTP id 4fb4d7f45d1cf-6b5977f69bamr1395049a12.14.1793957808889;
-        Fri, 06 Nov 2026 01:36:48 -0800 (PST)
-Received: from stephen-xps.local (93.224-78-194.adsl-static.isp.belgacom.be. [194.78.224.93])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b65d6b3a1csm523809a12.2.2026.11.06.01.36.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 01:36:48 -0800 (PST)
-Date: Fri, 6 Nov 2026 10:36:46 +0100
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>, Stefano
- Garzarella <sgarzare@redhat.com>, <virtualization@lists.linux.dev>, Bobby
- Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH RFC iproute2-next 2/2] ip: add "ip vsock" to move the
- guest vsock device to a netns
-Message-ID: <20261106103646.41a0f13a@stephen-xps.local>
-In-Reply-To: <20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
-References: <20261105-vsock-guest-ns-v1-0-b1c11b3b69c7@meta.com>
-	<20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id EE4EA1F00934;
+	Fri,  6 Nov 2026 09:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793957854;
+	bh=MjAT6tcxdQUYupMnJ6VDsN2Krtta9HnVtSCs1NLKAM4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=Q7UJLD0nuLpE73sXSGLQWSlwSFEn3rIt+DrKv4r8+Bc2fNCrRl+1wFogPogYlTtPS
+	 G97hekswK9d+FM++zlN0HSL3ImYK5lDvHW+FLA8ZZatkALTzaF1yOkqPGOU+OIQQq1
+	 spA6H0S7GS1epJD22If/uoddCe8C4pLYmC/nRJGivgXWSws8K/tTtkBznuz0SJm/lV
+	 R++4DOM2qIiGBGZEzI1PKQzcOf3mT1z/ZpvokGMdklluorEooewGsQTgapa5fCmoM+
+	 ZxG7G6CojabAtPnOAlGL40p8Y3Zs6QiFzV0PNb8f1LNwERrEGkyTAkcb4IAzkJMpgM
+	 d2G/BobWjVmcQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 696F245CAD;
+	Fri,  6 Nov 2026 09:37:33 +0000 (UTC)
+From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
+Date: Fri, 06 Nov 2026 17:37:21 +0800
+Subject: [PATCH net v7 2/7] can: dev: add
+ close_candev_cancel_restart_sync()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,140 +83,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261106-rockchip-canfd-restart-close-v7-2-accdb11bc845@qq.com>
+References: <20261106-rockchip-canfd-restart-close-v7-0-accdb11bc845@qq.com>
+In-Reply-To: <20261106-rockchip-canfd-restart-close-v7-0-accdb11bc845@qq.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Wolfgang Grandegger <wg@grandegger.com>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, kernel@pengutronix.de, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: Cunhao Lu <1579567540@qq.com>, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793957851; l=2772;
+ i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
+ bh=46cXQFJirAOhSlbZ8ElaP0fZTVygGkjM0w80cYNhAoQ=;
+ b=DnHalpqOJ4fjdDJOTVPErxSULYsdITzqWxiZ9nJLJcozYxvDNT2xgYBBs79aXg/wvEDpva39y
+ wrzlIEpUQ+wBF/uejafyC4jB1dVTIUlDWnJ2UUBu/w2uJkvlJnOSBwn
+X-Developer-Key: i=1579567540@qq.com; a=ed25519;
+ pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
+X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
+ auth_id=1177
+X-Original-From: Cunhao Lu <1579567540@qq.com>
+Reply-To: 1579567540@qq.com
 Content-Transfer-Encoding: 7bit
 
-On Thu, 5 Nov 2026 11:30:36 -0800
-Bobby Eshleman <bobbyeshleman@meta.com> wrote:
+From: Cunhao Lu <1579567540@qq.com>
 
-> The guest's vsock device is not a netdev, so rtnetlink cannot move it
-> between network namespaces. Add an "ip vsock" object that goes through
-> the "vsock" generic netlink family instead:
-> 
->   ip vsock set netns { PID | NETNSNAME | NETNSFILE }
->   ip vsock show
-> 
-> "set" issues VSOCK_CMD_DEV_NETNS_SET from inside the target namespace,
-> since the kernel moves the device to the namespace the request was sent
-> from. "show" issues VSOCK_CMD_DEV_NETNS_GET and prints where the device
-> is, relative to the current namespace.
-> 
-> Link: https://lore.kernel.org/all/20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com/
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> ---
+Drivers may need to wait for bus-off recovery before tearing down the
+IRQ and hardware resources used by their restart callback. Calling
+close_candev() at that point also flushes echo skbs, which belongs after
+the driver has quiesced the users of those buffers.
 
-Semi-automated review using review-prompts for iproute2
+Add close_candev_cancel_restart_sync() in linux/can/dev.h so drivers can
+cancel the core restart work separately, without accessing can_priv's
+work item directly. The helper only cancels restart work; callers must
+still stop its producers and call close_candev() for the final cleanup.
+
+Use the helper in close_candev(), preserving its existing cancellation
+and echo cleanup order.
+
+The following Rockchip fix uses the helper at the start of rkcanfd_stop()
+to wait for recovery before IRQ teardown, leaving echo cleanup to
+close_candev().
+
+Signed-off-by: Cunhao Lu <1579567540@qq.com>
+
+---
+Changes in v6:
+- Describe the helper's use by the following Rockchip fix.
+---
+ drivers/net/can/dev/dev.c |  4 +---
+ include/linux/can/dev.h   | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index a893a49a3381..39271a3ef0fa 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -537,9 +537,7 @@ EXPORT_SYMBOL_GPL(of_can_transceiver);
+  */
+ void close_candev(struct net_device *dev)
+ {
+-	struct can_priv *priv = netdev_priv(dev);
+-
+-	cancel_delayed_work_sync(&priv->restart_work);
++	close_candev_cancel_restart_sync(dev);
+ 	can_flush_echo_skb(dev);
+ }
+ EXPORT_SYMBOL_GPL(close_candev);
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index 6d0710d6f571..1b08ee263b1f 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -22,6 +22,7 @@
+ #include <linux/can/skb.h>
+ #include <linux/ethtool.h>
+ #include <linux/netdevice.h>
++#include <linux/workqueue.h>
+ 
+ /*
+  * CAN mode
+@@ -115,6 +116,22 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
+ 
+ int open_candev(struct net_device *dev);
+ void close_candev(struct net_device *dev);
++
++/**
++ * close_candev_cancel_restart_sync() - cancel bus-off restart synchronously
++ * @dev: CAN network device
++ *
++ * Call before tearing down resources used by the restart callback.
++ * The driver must quiesce restart work producers before calling
++ * close_candev() for the final cleanup.
++ */
++static inline void close_candev_cancel_restart_sync(struct net_device *dev)
++{
++	struct can_priv *priv = netdev_priv(dev);
++
++	cancel_delayed_work_sync(&priv->restart_work);
++}
++
+ void can_set_default_mtu(struct net_device *dev);
+ void can_set_cap_info(struct net_device *dev);
+ int __must_check can_set_static_ctrlmode(struct net_device *dev,
+
+-- 
+2.34.1
 
 
-On Thu, 5 Nov 2026 11:30:36 -0800, Bobby Eshleman wrote:
-
-Thanks, this is mostly in good shape. A few things to fix before it
-goes beyond RFC.
-
-> +#include <linux/vsock_netlink.h>
-
-This depends on a uapi header (and kernel series) that is not yet
-merged. iproute2-next can only take this once the kernel side is in
-net-next; the header update should then come from the normal uapi
-sync rather than a hand-added copy in patch 1/2.
-
-> +static int vsock_talk(__u8 cmd, struct nlmsghdr **answer)
-> +{
-> +	GENL_REQUEST(req, 128, 0, 0, VSOCK_FAMILY_VERSION, cmd, NLM_F_REQUEST);
-> +	struct rtnl_handle grth = { .fd = -1 };
-> +	int family = -1;
-> +	int ret;
-> +
-> +	if (genl_init_handle(&grth, VSOCK_FAMILY_NAME, &family)) {
-> +		fprintf(stderr,
-> +			"Cannot resolve the \"%s\" netlink family, the kernel may not support moving the vsock device.\n",
-> +			VSOCK_FAMILY_NAME);
-> +		return -1;
-> +	}
-
-genl_init_handle() leaves the socket open when genl_resolve_family()
-fails, so this leaks grth.fd. Harmless today since ip exits, but not
-under "ip -batch". Add rtnl_close(&grth) on this path.
-
-Also genl_resolve_family() already prints "Error talking to the kernel"
-on failure, so the user gets two messages. Not a big deal, just be aware.
-
-> +static void vsock_print_netnsid(int id)
-> +{
-> +	char *name;
-> +
-> +	if (is_json_context()) {
-> +		print_int(PRINT_JSON, "netnsid", NULL, id);
-> +		return;
-> +	}
-
-This copies the IFLA_LINK_NETNSID pattern from ipaddress.c, which is
-fine for consistency, but note that JSON users never get the netns
-name and get -1 for "unknown". Consider also emitting
-print_string(PRINT_JSON, "netns", NULL, name) when a name exists.
-
-> +int do_ipvsock(int argc, char **argv)
-> +{
-> +	if (argc < 1)
-> +		return vsock_dev_netns_show();
-> +
-> +	if (matches(*argv, "show") == 0 ||
-> +	    matches(*argv, "list") == 0) {
-...
-> +	if (matches(*argv, "set") == 0)
-...
-> +	if (matches(*argv, "help") == 0)
-> +		usage();
-
-and in vsock_set():
-
-> +		} else if (matches(*argv, "help") == 0) {
-
-New code must use strcmp(), not matches(). Abbreviation matching has
-caused repeated breakage when keywords are added later (e.g. "s" here
-already matches both "show" and "set"; order decides which wins).
-Please convert all of these to strcmp().
-
-> +	ret = rtnl_talk(&grth, &req.n, answer);
-> +	rtnl_close(&grth);
-> +
-> +	return ret < 0 ? -2 : 0;
-
-The -2 propagates out as the exit status of ip (254). Other ip
-subcommands return -1/1 on failure; either is fine but please be
-consistent with vsock_dev_netns_set() which returns -1 for its own
-errors and -2 for a kernel error.
-
-> +		"Usage:	ip vsock set netns { PID | NETNSNAME | NETNSFILE }\n"
-> +		"	ip vsock show\n");
-
-Literal tabs in the usage string; the rest of ip uses spaces for
-alignment here ("Usage: ip vsock ...\n       ip vsock show\n").
-Also "ip vsock help" should be listed.
-
-> +static int vsock_dev_netns_set(const char *netns)
-> +{
-...
-> +	if (setns(netns_fd, CLONE_NEWNET) < 0) {
-
-Design note, more for the kernel side than this patch: because
-VSOCK_CMD_DEV_NETNS_SET has no target attribute, userspace has to do a
-setns() dance, and "ip -n foo vsock set netns bar" ends up depending on
-which namespace the genl socket was opened in. rtnetlink and devlink
-both take an explicit NETNS_FD / NETNS_PID / NETNS_ID attribute for
-this; doing the same for vsock would make the tool trivial and avoid
-needing setns() (and the privileges to enter the target ns) at all.
-Since this is RFC on both sides it seems worth reconsidering now.
-
-If the kernel API stays as is, the setns/restore logic looks correct.
-
-> +ip vsock set netns 1
-> +.RS 4
-> +Move the device back to the initial network namespace, undoing the assignment.
-
-That only holds if ip is run in the initial pid namespace; "1" is a
-PID, not "the initial netns". Maybe say so, or use /proc/1/ns/net.
-
-Minor: the man page says "Nothing follows vsock when the device is in
-the current namespace" -- worth also showing an example of the
-"netnsid unknown" output so users know what it means.
