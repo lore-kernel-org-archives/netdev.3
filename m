@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794007137;
-	b=qDOZlfbxQq8kwbufteO1IItnA/oXQClKarFUs4fTKX7/sVapCZ3dDYl5GDaAKVW+Fh18
-	 JbhYd7uE5pwRAjwlmqz3iKsQJcu0sXxS1P8dJn2gaaf9r59OOrzBO5cwiI2QuB9POxboh
-	 w3O8SCI64VeM9gHlAOOBrQEiVErC44irywQMIiesIGz8WoTrpJpy0RG0ENdhcMPiCJHgz
-	 BjWAXQ47/bpEOgOUVG6JQ19XNZz8js1KE7RlfsXRChT9bWiiwCMmwJI/0BJqyCarZ5tVy
-	 IHI+omTKMXKubfn3isf35zUGSETb92g84GQ+5WTOc4O+1+R7wGeJP3VjvQ02mv8osIg==
+	t=1794007138;
+	b=ArLrcRipVtWwllSEubcj9/x7dFiaUwTs0FSHLR6/yhGdwv1Pp4VzjnmIraa0cuAhrdje
+	 tA9B6YbvC60rfYIjsHuTv1+DHwtJYKDzMvkIfMNsSHda585i0j3S8MeCa6fj8EhVZkIzT
+	 CBLB0O5vWW+eM4o2Rvo/5sUhRVGPiKeJnl1NZVDbAolUZlNQHezCbTjAVcVoKxAHtgGYc
+	 NKXhv9yEiqp7hcj7fe+RVNkrKb5Ywrpp73Jj/1DAVkYRiRZdEF88OqbNtjHXVkeT8etox
+	 ML0lg9Bcd4oxKqYOoAPuSdcSBmrxK9Mk6gXFUMaUCuk1FIxe8NIpdE5WhOiOniGiAKA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794007137;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794007138;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=gEdNJ0jr/S+uoVMQc1990sja3kz7rJbT28ZTYcXrXp8=;
-	b=elv+7bPPK3tAXdqQ6SM1iIu/ClrZ1OoMX4aFsZdJvk9NQciMzEnsoJ3F+R/2ckXD8BQn
-	 VCH4rDLUoDENywvBeovNdM7uyokpem7XqDI/I2LC4D1AJFD3Np6XKG0Acxlrk5tTH3Hnx
-	 qyKlH4mGkpOfmC6umfTH2pZwWvZ3xO7r5p1I38PHf41Kl9LVT4ZnMswwuF7Kgi/Buz+UD
-	 XSrs9spseWse1kXwNqmx2Xp5Z1p4aP0gEY9LpeHlFw4PhhUDg3Ti8vZEuEuQFMD0EJu/P
-	 rq4s7C4dTe3DVQ4S4dfG6eZ6wRtmXWP2wxd1j9+sdUczPmz64MtNUUJKTFj7V8V9Gzg==
+	bh=uJNCoUVExvuKNiPDQyCb5bV/6Yj4WKaOmCisg4WPENs=;
+	b=aKXFGflEd5rBI3JVk3+R+0cKOcAH4dZCIKUZONzsU0jLuv0btnx/COvJdeLfZGq6GFRS
+	 wcp4YuKTGfl88Qhy+fcpGIn6KZ7gAnhODF4XBemS6uY6yP+lJ4EI/pd1DKXIm8ACFkhd2
+	 7Mu1xHQR+UG/Nrl4sx1w6bfeaJwC0SuXf5UnuUUMrBWybWW4gd8HI/4QZUNodj+JHhmY0
+	 LuAio/v273FPWKN51R9qDl/mog1dAWJJi48hEolxJw5LnoEi6NHehdAX17Qx3MPsY3HTb
+	 tELEItbINVl89ACFBH4/1pW/OFPY9+DF/vpaMRPQ+KTRbQWZhDapsaI8DryQLcMFikA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZhcLF5w;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UaUIW0po;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DB6606A331;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F71606A33C;
 	Fri,  6 Nov 2026 23:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aZhcLF5w
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UaUIW0po
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794007136;
-	b=MKrxg0oJKNUtt82cPQuO69YegtDq1mVts+32Yt9UgjfTRTTL5Cr973EGyRPy2+iUryDa
-	 fYxQ86UGq9RFXSO+erMu94xCY+B9K1+SBxJyn3AA9+cgUBJK9b1Cui8YxvS+M2JLLP2/k
-	 YjgKjoovbP1EpvT8ctAVfYML7YfngaiIvHysk1yBZunQLr0cHlYrVUWOHVt+lRswbHSWE
-	 VrYmTlqkHyVg39ufYTCYt2fj4/C8fLQKMoXN1DQidHYQUam3+hXUnGQ92EHMWUovdW+FJ
-	 fS3sq7ZLKBQ5VU7qPL5n7s80rL4CjNDCZFuGcCdWCULF8L75rRhZQ+xvyt73PvVka1A==
+	t=1794007137;
+	b=xMhp1RM9B8lPAuj4FzlgIGBzibuPZ4oIGdN119Yy6Y1NeCfKCg0fi+m5HfIGuwcxGyFm
+	 /AKIguXJVYxY3u5Hg9UnO2eT1v9w2IPA39eifsGL6rhcKHNirxf49IfjnxQ45/gYj69Et
+	 mozZq9TX3ujrP5z85QqKQsffLM6e3tf2qEXfiOrWsfpPXGij+UT7zQ/VInl3qw9tfBBIU
+	 OGv9wZ41RFIIp4a2maW7y6+MpBWKQ3JV7NUEpHMv+8kP++2wy0miHS9KLTJuHwCjmymma
+	 7H5wMnai2NpcvOUqEgXJWYMMQ4Dw2aqnNuUPdTa9LjgxEgVUqECzNEik3xSRad30E5w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794007136;
+	c=relaxed/relaxed; t=1794007137;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=gEdNJ0jr/S+uoVMQc1990sja3kz7rJbT28ZTYcXrXp8=;
-	b=ZfJ9IEU2jiFh0vMWESMxRJqiGBQpazmH/urcwn4gFDZv69rgHQwb+NI1tl17fQ0G2PdJ
-	 Nt9I3oM9xp9IMCAj9N2CopO7hR4lnBi2cwWOUeJy6uOZ1oqu9vgz83gYr//Y94GVnukQ0
-	 rZbd2UjWBLaaTsUTw6zguyzANUZ8+4kPNs3mny3fW2jM6D5n0Un5AMsisOHGkf9N1nMLw
-	 C/ZS8CEacnp4FG9hDokFWXhtwENSYmP/g+ftviwIAYHV2DaSvGRPJmnWqQdVKVZ1rtYVH
-	 SRp1pU67ltxcMIgueL+h8LVq03NFuB917rHFHKMvMYYtl+bQgGyAUjlmI1NTBPnk2VA==
+	bh=uJNCoUVExvuKNiPDQyCb5bV/6Yj4WKaOmCisg4WPENs=;
+	b=3b6vtqFaaPlXuVCskt1zlkH3ogvk++u5+DIWbSZZ8Mt9nrnQ0GuIYyqkBneqcp4K/ztQ
+	 i1hhRrbgIpAgsS4FpXYTeTxz8SqJAkY8nTMkseAGKWEJnC1ZAYDSuV7J5WZq3RkB6LpMI
+	 8bpPZFAXooh1fME9C3IZpoSJ4PowzqzKTpZ2EIY7dsypMOquJLFpsW22LvdcwscouULAP
+	 rOz1EiA+vYIAR5KB/xvq5Pu/aeM/EFMqnr05IyHNK12lZLAUR19KoEOK79pY3GAqN/UVP
+	 CVrXeWFOMHxQ7easYTkr12biqykASF4BM9nZ7eqSdbf9oguWpuHpFfQyw+ME4FKiQVw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6F5C81F008A4;
+	by smtp.kernel.org (Postfix) with ESMTPS id 7A0A01F008A5;
 	Fri,  6 Nov 2026 23:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794007136;
-	bh=gEdNJ0jr/S+uoVMQc1990sja3kz7rJbT28ZTYcXrXp8=;
+	s=k20260515; t=1794007137;
+	bh=uJNCoUVExvuKNiPDQyCb5bV/6Yj4WKaOmCisg4WPENs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=aZhcLF5wakRsFz4L7mQwrGXDa8oIvuMHcvcJNUDKahY4/xnp4fsZDrcDWtxh3AmtD
-	 7Y0elnmGQ0VkbWWKjucs50cBhkyZRnnFwuorCL8K7Dpns7nr7JTyXfp/0BClhew/N/
-	 H04ISLNnFIDv0ZdK0GB+iI+Ej08Rh557mY2ggj8c9AQCy169pUZ1bkpSzmJzNoYmkW
-	 HXH9xTn6b2IjDp2A4d7omJVNHJ+ugnZy82qRvoz5NgdNVmgaFU7nJzJw6yv7gqAvmt
-	 bxUeqxUqidag4p2BE8ao5gH/CR6nebJZtg0Ebpqi4PaDadrZRUi47uNwI7g+fXKUky
-	 bi7s2uwlPmq9Q==
+	b=UaUIW0po47vdkrYDJYqB1Ym8MGOxxau4+0iFjTsEIsAbeTa1OGRO+V7v9c+RY7RXi
+	 g1GglCqKXg2Eef9OSm6m+18uYu/mAGM8lqk4qkV4PSzolQLro2z54Jfcld3y0o5J7j
+	 87F68mmsuz6Y0OS7hPSeB4YqgslyijKAeuYdGerEGrDh9CagT07W1dSQ1DMpcfmi+I
+	 KbBYU404NVPl2amUvLwmnwuu8ptjuan7QByml6st5rU1gixNqs+iV9iWS9m+jfy4gu
+	 tj1/35e5gaPd695Xxw95BJsHtGONVFJ5oqnlDmPPWm+qs3JAaiGtI7E00ingX0/AxS
+	 0DvT+zp4xH1mQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id E8E93478E0;
-	Fri,  6 Nov 2026 23:18:54 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 04FE3478E4;
+	Fri,  6 Nov 2026 23:18:55 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 06 Nov 2026 15:18:48 -0800
-Subject: [PATCH net-next v10 02/11] Documentation: networking: Add
- timestamp related APIs to OA TC6 framework
+Date: Fri, 06 Nov 2026 15:18:49 -0800
+Subject: [PATCH net-next v10 03/11] net: ethernet: oa_tc6: Move oa_tc6.c to
+ its own directory
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-s2500-mac-phy-support-v10-2-31b5a69b85b7@onsemi.com>
+Message-Id: <20261106-s2500-mac-phy-support-v10-3-31b5a69b85b7@onsemi.com>
 References: <20261106-s2500-mac-phy-support-v10-0-31b5a69b85b7@onsemi.com>
 In-Reply-To: <20261106-s2500-mac-phy-support-v10-0-31b5a69b85b7@onsemi.com>
 To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
@@ -108,11 +108,11 @@ Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>,
  Jerry Ray <jerry.ray@microchip.com>, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794007133; l=4371;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794007133; l=5162;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=TQj40MeAfK84m72QQS7RSa38NlrNMy9ApV5T0s5visI=;
- b=4OYGPPSqrERH6DAaH2muaEdqBSZ3FYtlooNSuR+kO8QC5WYL7AvDWfE6Z3XWsbjnJV12l5n02
- kliUxLsXHbmBKceHUqairhkPf0mnr9HwixzMubSpUgL1USoh/cNjEj/
+ bh=s4sA1nhnY21OlMJemCo3DnG6S+9E75VEi5MOHg8r9KY=;
+ b=Wpr44rXg5NyiyPEO+0Jed7YuekH3DZ0SqTbkHqLNnM+oDgdyQkOGwd/xPTHr7SSxuBu9R76Yx
+ UuWvcTMcNB+CzosMAn878g2n8iZBuV6E7hlUZFfiVRpAzrnBxD34iKO
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -123,112 +123,145 @@ Content-Transfer-Encoding: 7bit
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Added new APIs to support hardware timestamp feature as defined in
-OPEN Alliance 10BASE-T1x MAC-PHY serial interface specification.
+Moving oa_tc6.c to its own directory, drivers/net/ethernet/oa_tc6. This
+will facilitate adding more files to support other features
+defined by OPEN Alliance 10BASE-T1x Serial Interface specification
 
-Added the newer read/write APIs that takes MMS as one of its parameters
-as these were not documented so far.
+This patch series is adding two files, one for hardware
+timestamp related functions and one for PTP related APIs.
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
 changes in v10
-  - Added new API oa_tc6_tx_credit_threshold_set
-  - Vendor introduced APIs to vendor support patch
+  - Kernel module restored to oa_tc6.ko from oa_tc6_mod.ko
 changes in v9
-  - Added Reviewed tag
+  - Changed MAINTAINERS to add "all files" under oa_tc6
+  - Added the missing "if COMPILE_TEST"
+  - Added Reviewed by tag
 changes in v8
-  - Updated the the order of the parameters in oa_tc6_read_register_mms
-    and oa_tc6_write_register_mms apis.
-  - Removed the reference to ioctl
+  - No change
 changes in v7
   - No change
 changes in v6
   - No change
 changes in v5
-  - Fixed "no blank line" issues in four places
+  - No change
 changes in v4
-  - Added information for new APIs in OA TC6 framework
+  - Removed reference to onsemi in Kconfig files
 changes in v3
-  - Added more information for documentation
-changes in v2
-  - Removed the changes to the existing API
-  - Updated information about newly added APIs
-changes in v1
-  - Added changes to an existing API
-  - Added documentation to new hardware timestamp related APIs
+  - Moved oa_tc6.c to its own, oa_tc6 directory under ethernet.
+  - First patch
 ---
- Documentation/networking/oa-tc6-framework.rst | 52 +++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ MAINTAINERS                                             |  2 +-
+ drivers/net/ethernet/Kconfig                            | 12 +-----------
+ drivers/net/ethernet/Makefile                           |  2 +-
+ drivers/net/ethernet/oa_tc6/Kconfig                     | 16 ++++++++++++++++
+ drivers/net/ethernet/oa_tc6/Makefile                    |  7 +++++++
+ drivers/net/ethernet/{oa_tc6.c => oa_tc6/oa_tc6_main.c} |  0
+ 6 files changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
-index 2545ef694016..23856c4bfd69 100644
---- a/Documentation/networking/oa-tc6-framework.rst
-+++ b/Documentation/networking/oa-tc6-framework.rst
-@@ -153,6 +153,10 @@ OPEN Alliance TC6 Framework
- - Forwards the received Ethernet frame from 10Base-T1x MAC-PHY to n/w
-   subsystem.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 92053fd89bb2..7cf0e33a8be9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21029,7 +21029,7 @@ M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/networking/oa-tc6-framework.rst
+-F:	drivers/net/ethernet/oa_tc6.c
++F:	drivers/net/ethernet/oa_tc6/*
+ F:	include/linux/oa_tc6.h
  
-+- If supported by the hardware and enabled, updates hardware timestamp
-+  in skb, when indicated by one of the three timestamp capture registers
-+  through TSC fields of the header.
-+
- Data Transaction
- ~~~~~~~~~~~~~~~~
+ OPEN FIRMWARE AND FLATTENED DEVICE TREE
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index c2b0161d0bec..5758e0fbbca5 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -135,6 +135,7 @@ source "drivers/net/ethernet/netronome/Kconfig"
+ source "drivers/net/ethernet/8390/Kconfig"
+ source "drivers/net/ethernet/nvidia/Kconfig"
+ source "drivers/net/ethernet/nxp/Kconfig"
++source "drivers/net/ethernet/oa_tc6/Kconfig"
+ source "drivers/net/ethernet/oki-semi/Kconfig"
  
-@@ -496,3 +500,51 @@ the MAC-PHY.
- Zero align receive frame feature can be enabled to align all receive ethernet
- frames data to start at the beginning of any receive data chunk payload with a
- start word offset (SWO) of zero.
+ config ETHOC
+@@ -147,17 +148,6 @@ config ETHOC
+ 	help
+ 	  Say Y here if you want to use the OpenCores 10/100 Mbps Ethernet MAC.
+ 
+-config OA_TC6
+-	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
+-	depends on SPI
+-	select PHYLIB
+-	help
+-	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
+-	  Serial Interface protocol for supporting 10BASE-T1x MAC-PHYs.
+-
+-	  To know the implementation details, refer documentation in
+-	  <file:Documentation/networking/oa-tc6-framework.rst>.
+-
+ source "drivers/net/ethernet/pasemi/Kconfig"
+ source "drivers/net/ethernet/pensando/Kconfig"
+ source "drivers/net/ethernet/qlogic/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index a306dae23bcb..e0e86c249e42 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -72,6 +72,7 @@ obj-$(CONFIG_NET_VENDOR_NETRONOME) += netronome/
+ obj-$(CONFIG_NET_VENDOR_NI) += ni/
+ obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
+ obj-$(CONFIG_LPC_ENET) += nxp/
++obj-$(CONFIG_OA_TC6) += oa_tc6/
+ obj-$(CONFIG_NET_VENDOR_OKI) += oki-semi/
+ obj-$(CONFIG_ETHOC) += ethoc.o
+ obj-$(CONFIG_NET_VENDOR_PASEMI) += pasemi/
+@@ -105,5 +106,4 @@ obj-$(CONFIG_NET_VENDOR_XILINX) += xilinx/
+ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+ obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+ obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+-obj-$(CONFIG_OA_TC6) += oa_tc6.o
+ obj-$(CONFIG_NET_VENDOR_ZTE) += zte/
+diff --git a/drivers/net/ethernet/oa_tc6/Kconfig b/drivers/net/ethernet/oa_tc6/Kconfig
+new file mode 100644
+index 000000000000..657567276030
+--- /dev/null
++++ b/drivers/net/ethernet/oa_tc6/Kconfig
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# OA TC6 10BASE-T1x MAC-PHY configuration
++#
 +
-+.. c:function:: int oa_tc6_ptp_register(struct oa_tc6 *tc6, \
-+                                        struct ptp_clock_info *info);
++config OA_TC6
++	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
++	depends on SPI
++	select PHYLIB
++	help
++	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
++	  Serial Interface protocol for supporting 10BASE-T1x MAC-PHYs.
 +
-+Registers the PTP hardware clock related functions with the kernel.
-+This API simply registers. Initialization of the fields in the
-+ptp_clock_info structure are left to the vendor as programming hardware
-+timer is expected to be vendor dependent. The fields max_adj, owner,
-+and all the functions for the clock operations, like adjfine, gettimex64,
-+settime64, adjtime are expected to be initialized in the structure before
-+calling the registering the hardware clock.
++	  To know the implementation details, refer documentation in
++	  <file:Documentation/networking/oa-tc6-framework.rst>.
 +
-+.. c:function:: void oa_tc6_ptp_unregister(struct oa_tc6 *tc6);
+diff --git a/drivers/net/ethernet/oa_tc6/Makefile b/drivers/net/ethernet/oa_tc6/Makefile
+new file mode 100644
+index 000000000000..c51621fae8be
+--- /dev/null
++++ b/drivers/net/ethernet/oa_tc6/Makefile
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Makefile for OA TC6 10BASE-T1x MAC-PHY
++#
 +
-+Unregisters the PTP hardware clock related callbacks.
-+
-+.. c:function:: int oa_tc6_get_ts_info(struct oa_tc6 *tc6, \
-+                                       struct kernel_ethtool_ts_info *info);
-+
-+Provides timestamp related settings that are supported to ethtool.
-+
-+.. c:function:: void oa_tc6_hwtstamp_get(struct oa_tc6 *tc6, \
-+                                         struct kernel_hwtstamp_config *cfg);
-+
-+Returns hardware timestamp configuration. Part of net_device_ops callbacks.
-+
-+.. c:function:: void oa_tc6_get_ts_stats(struct oa_tc6 *tc6, \
-+                                         struct ethtool_ts_stats *ts_stats);
-+
-+Provides hardware timestamp related traffic statistics for ethtool.
-+
-+.. c:function:: int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6, \
-+                                        struct kernel_hwtstamp_config *cfg);
-+
-+Helper to set hardware timestamp configuration. Part of net_device_ops
-+callbacks.
-+
-+.. c:function:: int oa_tc6_write_register_mms(struct oa_tc6 *tc6, \
-+                                              u8 mms, u16 address, \
-+                                              u32 value);
-+
-+Write a single register addressed by @mms and @address in the MAC-PHY.
-+
-+.. c:function:: int oa_tc6_read_register_mms(struct oa_tc6 *tc6, \
-+                                             u8 mms, u16 address, \
-+                                             u32 *value);
-+
-+Read a single register addressed by @mms and @address in the MAC-PHY.
++obj-$(CONFIG_OA_TC6) += oa_tc6.o
++oa_tc6-objs := oa_tc6_main.o
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
+similarity index 100%
+rename from drivers/net/ethernet/oa_tc6.c
+rename to drivers/net/ethernet/oa_tc6/oa_tc6_main.c
 
 -- 
 2.43.0
