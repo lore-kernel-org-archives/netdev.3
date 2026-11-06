@@ -1,101 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.146
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793983341;
-	b=oiEPY3ZD4/dPPVTVJ8FdcKppuEsP8g/DVXvOUzsjU9r2pcW1K8CiH+gxjz3pxbL80W8h
-	 BfHUSsarbXWRGu0SMRCSxv+C03p4wKzIcmEMUjg57uCIu0ZNJZJYVMIkOrDhLCsOUlkSR
-	 j00gtGqs7GQsFgBl2zSbl7IxnIbBpe9vrDxb3pnhtsVaSJ70NSAY8bF4UQzSX6scLTKiW
-	 Fcm1zzkDn35Sq8nfQsShg4/lqFQFM8mSivme0vZqxraa+bdziUfse86WyDwMtsU5CgZRY
-	 FzHyvbSe1au5LmVJaAcRu3R0Gxu+vcfxpbwmOvzXSjOFF9bu9RJivJQT2pHynyWhz1g==
+	t=1793983397;
+	b=NedZjp3mrTJsMZio6EtWFmBMJViTikVML0Qo7vQ+mMD8UxDo1OFGxwFnoL6hblC1XErW
+	 8MRvL8wq3AfxRbQQLIPNvTIQlYNFSfmr45yueGTqpyJxxl0A1A6YU3CD7eQCKRCsJGxV9
+	 /x1/IZO1OZHe1/V8qDB+HMBWRsQCA1XCMgtBhglB4PXMRqBhHldKOIi7hLxxhlznhGPUa
+	 cYrww9kTK+7AIofRDQOutggKpZrJmJWvYzPWC/WGG7WYLVRSB1ltFt3EiZgVmszxy/KsB
+	 SWrTJX77pJ415du5AKppYyTJZoTHdUeQfn1Q0a6QncuWGz3bZVEgOBohbugRX5tfrsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793983341;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=ZFwjx2a4XFS7Rn2YuTa88Hakuqp97j+Wt0wSAdayRf8=;
-	b=qFLKXZwNwmwfwr1cgB3/vAYy1LEFjZdxddDjp06EnhqKLpHilY+PfTnwHq75HE5mYoxt
-	 SGCHe7IB7/PK9yJDAy5UeSpKTamxDOXSJT7w4iQ+/7DL6ms9+otmFqJsVCIBF8PW2p/N2
-	 bExGFZXMbgXbLlMwdbaBM6UM9coMNfGcgqNWjC0GI6Kqd1MazqhJh6NhpLLqzuMDGy8GM
-	 HndBTGK3qFCJWoM2oAO4l9LwBIFjq9d319bz5vGy9jYzsFK2E4eTHJctI06l7PTKgz+Gh
-	 PC9QPXu4Ez8JMHh+8TE0YSwoaHR+D9nztHLdhQo5ZGmINb0XjhgzFkCzqOOkev0kmjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793983397;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=lHtWxeOu+Vjsidq/9GE7H1E4u5AgSxusjUPdoEWHkm4=;
+	b=tTYevPZsXK9a94SqOu5CMn3ZLQcmU4G1JFOvH+pVWcZE17QigUo+W1GUdkAsOOJr2XgR
+	 hPHyLtIvPyhVFOv9B8dbc21KY+DXc+ghdrakRc70RMzZvh4ya5LCm1e1LCcnTMLtAnXj2
+	 KvW2d+aONqCvoCW2syaJm/28bPegt4yVekxGVs2JQdbUfEAdabvIJrBdnz2RsPJKjofUq
+	 pqR6UR2h0VAIwe3E8jU3+dWh9a64Pa2Te0TVNqooOOujHhk3rI17KCEE8ypM36Fk1bNyz
+	 lhCDGrbdPXmek9h2mO8j/BuO5zwtqMdBft2aNMTlznZpU4a0QgyS3b2dA0pO7KJVEwg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tIm+4z6p;
-	arc=none smtp.remote-ip=209.85.222.48
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b="k4eXN/Uo";
+	arc=none smtp.remote-ip=66.163.189.146
+Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E0B606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 16:42:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3E0B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C14606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 16:43:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59C14606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tIm+4z6p
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-992f6d8cb51so189932241.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 08:42:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793983340; x=1794588140; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZFwjx2a4XFS7Rn2YuTa88Hakuqp97j+Wt0wSAdayRf8=;
-        b=tIm+4z6pfPwnRLbU9gYmyuLFjCyXjg/BiieXPDepbVRjYKLmWXY2JkXTNqBOIHsWpJ
-         /HWzQmnZiah2Kiaeq2aoBNsrAeRKkrNM6UeVS4JrX3lnvclUKC5ZkgRrQ4tSuMalhVw9
-         +ZrG2rQ196qC2QDtm3KWQ0ZxKtK2k5kjjqCF5p4N3wso04l7AnAa3QwI4ma3JZYGIrJf
-         smJQew5/zGzZJRGNAwSx7Fw8DTTCl04DC5qc0u30/tdi5rkGGMCsHCSwPlwhWf3t0w/i
-         r3Aw/Vkb/uLV7qiJLJ6xrmecOr4U38Vt9diCJOO4KKgimy9l83QKk4RFqKNvMsbUCg/5
-         PMKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793983340; x=1794588140;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZFwjx2a4XFS7Rn2YuTa88Hakuqp97j+Wt0wSAdayRf8=;
-        b=fn+2bGbcAuyiAycNPiyusz9k1BQzQR1Ga1pP5bP6zVPxNommN0+ZP03WuAtqs6WTCe
-         Wylm3BWpEcacRKGAVgrE5u+Ruh3iktfbY36qZVS3hxxa4RxHRwLTvQRmUssPxyhMDLq9
-         PS7Y2+zEOBnN9773siDTKIDDGTxzlAGaIZz07O4u6f0c5aVfsyEJuTZYoW4o4mGIcxLX
-         eAWRZBdVbA2EEAbRiAY0Y+RnvrrXGnqWdf31kP7mV5cUfPXl6sD7goAhWYpxXZV7uU+T
-         X3yQFQ8iTyYW0Wx0kGFellBT8fSTMnbQKgN2XpDy/yhtw6g1eUgaqHDZhG1puCMumjkR
-         GJyg==
-X-Forwarded-Encrypted: i=1; AKwUvBxwBgpZc4ql5PRrymawhSgYL51KeP4i8gciFQe1in6u2eNePHqSgkbVJ5sqGOwoOPIX/n6LKrM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+hjCSJ7i6TFgAmK8dxUCmNoT3p8o5AdfXZ09FpJCqdMZpHy54h
-	Szd0D/LVIgvNqa7TD2Mn66S+8s5fF5OyrOnCAvh9FFIUVn1KxyDfKpfb
-X-Gm-Gg: AYBFou2hhTHk4h50l5sQFA2FoMqtJLJNwYZThr0jrKx49Y1pVm5DlmJt/LtGjVz6uNz
-	xHj9v5ezLtErNQtpcVrBWK3gJZciMmwE4wa0tPQFOFyJuanSe9ySdAg4zUZL9fNWPgTcj0e+fXo
-	cZc6xgdo7OvJJ8hH4JFpH+mWlGZYohAxRnLuOs0mqKHCxOVsC4q3CZ56BhOtx08n7UJuAX7W2SJ
-	weMW+NqWLHVsesy+KE1NGxiu1asBYCIOolMXcpLOnW6LzNZiJhii2zWjhyWwIlBPEUYeQogJSOK
-	prObT6w1Av8H8hotiQZRm83tr3suep0lSXS1ZbW/jFPLlXGeOi+MJxp11+2VtFF7/uNFb64iHlL
-	/t1qZ2Ki7sCDhfVKAMs8jyAxHZzLrTMK/6fXXep0uhgfkvnEdd+4NZxJLKkn7o9pe8jrYsmQCq4
-	QHjee/QCerrck2F0Rc1JZkCrTiXNYDZgVAroAlUkba9KMUqAj70SXMvtuO2VMCr3bkBnBFdhN8A
-	ry6bZEDiNLHxAro1E2sKNHPM5O3C1iQnOx0J6IXP3Xj3MQnHVxIAptGUdH2i5jummXo2dpX/8Zj
-	4O4PZK3JRfgxea7EgS52AYQRYkIRrHjpVHmQJleWPTyGUNX6rhn9DF7Z+NEtzyCYs3ox7JUfrn+
-	/5oEZiWnTq2OYlqGjrnPUlkRdDFjzblTPUOT120keg6h/4osJGN5fWYLyo9iNwrl7dCxuTPg=
-X-Received: by 2002:a05:6102:509f:b0:7cb:bc5e:7dad with SMTP id ada2fe7eead31-7d2a1509353mr1381811137.10.1793983339652;
-        Fri, 06 Nov 2026 08:42:19 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d2a89abee6sm1700897137.6.2026.11.06.08.42.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 08:42:19 -0800 (PST)
-Date: Fri, 06 Nov 2026 11:42:18 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- Kyle Zeng <kylebot@openai.com>, 
- Eric Dumazet <edumazet@kernel.org>
-Message-ID: <willemdebruijn.kernel.2909f4c55db0f@gmail.com>
-In-Reply-To: <20261106141727.2303218-1-edumazet@kernel.org>
-References: <20261106141727.2303218-1-edumazet@kernel.org>
-Subject: Re: [PATCH net] udp: check frag_list IP family before using
- skb_segment_list()
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=k4eXN/Uo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793983395; bh=lHtWxeOu+Vjsidq/9GE7H1E4u5AgSxusjUPdoEWHkm4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=k4eXN/UoC+3L1x6z0LGjcncS91d+I0jc8r6sBacjlb7hKXyS3ubpIKk961953+qqLIqdL63lzNoAIrGtIHUfZ8WyjJGUamW3IXCOy0DyjEDykFEADZ5dYIoXE7KKPiIj1Vva3FuIjj7kRFTFRcDdBS+FTAx4YKcEeJ8AaFAzccwO/mh+kGatMA5VRxhpoF0etJ0VycIRgllOLIWb6Xg7D6PQ6HdHDqbonXukLSY8CdgsKVAbvuk/nlRUOg/qXXr28fvlxPTxrL/dUhsrix+W+qXNM4pjKgDI3Bf5WYQO+c8y1Kg92Ir7jZO5wImspf64j7LyKB7UjOe0P281cM2eFQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793983395; bh=xeGXEN7xVuIfZ+ZQdgxXxQeg3Nn1ehlJr7QQJbMrz50=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=gaUFAvAlsYIpP0fvEZxuY+/sWCny307gGq55Ez/xdbob/Ykzg22qlPZ1kd/owK74tN5ko0kfIWAW2OxMaCofq0pb8iDUX7Zqn8BhojMAaYY9BDx5ixWzawJRMeGG8r52jab/wlLMNGX+IutAzq5if1zghI+NAnrfXFlbtofjiYjiCvjsugWchKvyaJA/3PGA8EGLcFdJurpcurWslKG72kiLT8geaPzgf0eXjlffcDOGXRk0dKpMFH2TjpfOw4IJ0F4N+tMg7spt1wwHRSV3NqocFZnmvRwI0KTOiB844Ax2SsswaQt4oT7+vgzcyJdRP5Yx+Y7lRjKvhWen/dh2AQ==
+X-YMail-OSG: OIdV4lwVM1lPmZAovyYZP5BgZ8acuGF1ApxlFCYkwNXE2BMQd85mdoHC9KwKreH
+ WuCdBA_4i2NPC1nAeW84lkg5t1Ibn7tlSEYn_dommb8N0OqBHfguNVgPT7QdmoJkq.RmbnlSkr_I
+ X.bFTHpqlN6PXjCCqiOLBV5DiauNdXmTmwdZHzdrlnG2Dm8PaI9x2Afauy6gKuGNSkInsWdCL_To
+ nL5pQNn8op2NHLswzYR8RQhdTJ0bPMhXBbMBovUHlfMj.y.ztfsqggYpfP5u4hva5jqveMPfRTWZ
+ NcP5yDgLOnz4Ay5uRPcB2Ye3dXjGcq3W1TAye4CsnHa9Xrck2RXCXgCc6_n_O6FvUEWk.zN.Hicc
+ a3A9qbnpcdz4br18N6V9MSsNIECWcbcsbrkgk4CJHbT0yIepqG7TN_Vw8fMfaUoY9uJ7qOgsTYE2
+ WFvNtg.Sdho9ez57ybQP2qtGVXQR3ZSswsAWzyL.VZdMCCCvSgCfsqgvxTLw_Duzp_y8HB0JxyZ3
+ yZaoZgf.IEfXKE0xXa3ewA.I3LZLRIAw9Gxgn8S2XwDqCrQzzzw_PRpw0wylPjQUCd5zGy0t16tI
+ 5Y8gEmOENMK3XwvUDJF8YKIilLlD.GHV.NUl80ENQITlEA155ZGmjuV11.LcEaeFt6oRTkEbnErC
+ 1sDM1rUZqPhO5JEFIn4INzr0DpSukFkdrDVs6ZkDHEQpMihOLBUFOcYKU3hnfPDiKVzO_eIWX8yi
+ QCJVeHtKMyJS2w8wAzatAe5h_zoKnegkJjj9nf63DQntlVKFeJYSY.YHv5Hibg5rIzfCSNa0pzm.
+ QYuj.svWqNmbfSUXIsn6Plp4ACe1e5.5i9wF7ZZAiCCjMuw2pTOBKFB7NaYXWNWApY_Va5S2LpKT
+ SoHFLM4B5eJlhxZE0SgndQw1hlAzOVFxh1jAgC3y61GmySzrOnta9O2rNZNI0qZW5gaSBSrq7u4N
+ SRKpe5dBqFnd4jy5ow3K2qINws_aEUJuatLp_yQK51.wSMi5aE4ueFHwMLrNBFLH1cXAqiuH.P2R
+ h8LBvJAxrwSvt6eqbnc01TvAmhj9iEfUZsLyZ1JG8OM2FyL.DEYXORf8obNR1klxDsTc4poLvBy7
+ j8UbyjNIJ_ImTdOFHniQsKyufwibh2lekKyaiMfbEnfis6W96RI0GGDbzq01OcnVl59Wp9__D0xx
+ kXbstQi9e6q90l3n9N_QdAneqbgW83w0jyeRpUeBueVo7UJO78jGBPrTZ.iBnq6ykAPFRrc632Eq
+ GsF8ywISpQKFUUAx3P5xgWogJM5gA4BLexuYb_Aq6ggdSHpzQ.gtz0QTNn9B6sQsJGUmcQUDzNpB
+ OWcH.D8I7MjUZTU6bnekSYonIn9YqSK7bun1wHQbi3lmbAJVsyOVnQ52tJQdWm_ewWqf9M8IGStt
+ peoUD5P2DX0VAVr8rMezeji8PzlywaiCjgVZUDtX.QfuqXU0jTSaqhJoSDPtwLZBLsd7Apvu5mM_
+ gnbPODsl3sP5_9uDt3UtdIT1zE3RGf0jdj1azU5QyCyuiZ6llyQ_YOj9LQ.fsep5lzHevSr.xlx5
+ 2UJE2penUPvka0heqdBR7leVfAFk.OcU7Tkn9o3TxNhFBlPaY1L4ojEmfMa.JaHJMd8bX9XOWWzB
+ Bcf1hO_uYepwSy.JSLfDA9jSYjzfIPf4YNXKYHPbOnxNXIxe8_AI5f28170p5MWOoRfjM1te6HWP
+ R4FvwPUNaIRsTaN7YqVg0PhoO3XZR78UPQdb1no6VTrmAOS5.FRpyXdVwZyW6vSSo9bdT5vzI1Vg
+ B0neQ_oSA3UoP3ODNvAFJR_HCzaP.8cspcpHzjo5h1Zoac86N9pf_ajv8fFGjhLzmvONMRWir7Pl
+ I1V0_WcBSjw7KFH1l4WizDGAxPX0O3dco.yeqfL7DIhqRE7kSwL1wZzEYUCQznkkI5F5Xl_9rxYl
+ n2BEnYJ.BM1onjH6n_ijRyPgcF38h48cwSfPkqsT57MZLYfycXkSuP6q4tR85Gx00.8sscXNV58E
+ DFqMu_cJQHlYI4SwCS9PN0ztetrY2_NlUShDfuC5KbF0.Hg_6_iBO.Av2U9G7zFtBq3YXLcULuIr
+ DxEU14.0qC2DBCIPJ6R8a_ZOkCUqOLXYSL2jMVYg8VvLme0HL.j6JP7TyAkvtOUiEkz3YdnXSrRu
+ DLZlvtU72SWxqAcjdAZqNS9fKTDMRI6lz7a6Htg7DWWjO7ff6rrvpSzE1Fpn38UCK6GF1cAr31Po
+ IyU3ibCiGU359fEjTjs_Hfv8Qlv.5Y0MOuWeTdP0FR28SaTzTD3vBPX.zhAq7ZEFi58F3b0Q.5RF
+ CCx2ciawjDSeiHy2Pt8xpOcZSNnQ_a4E4D.b4Iko-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: c1d3fb05-0050-4afb-8b7c-fa4c4a0a3348
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Fri, 6 Nov 2026 16:43:15 +0000
+Received: by hermes--production-bf1-6d6877594b-clgz5 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8dc6823223f8f1de6ed049ff776f8c37;
+          Fri, 06 Nov 2026 16:43:11 +0000 (UTC)
+Message-ID: <29bfb266-8bd4-4c59-868a-cc27259c1f16@yahoo.com>
+Date: Fri, 6 Nov 2026 17:43:06 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,74 +84,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 04/10] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <2befac48-25eb-4c1b-9632-2f3237d68a3d@yahoo.com>
+ <auskP2mSY4sCRa6x@analog.com>
+ <82c96971-be5b-4c11-b20f-c4b074181515@yahoo.com>
+ <aux1v3R-efbWF2GD@analog.com>
+ <e66204e5-ac33-4a35-8d36-6f37372da97f@yahoo.com>
+ <au3WTtBo3qk4nQvf@analog.com>
+ <014d5582-8ce2-46dc-911b-397862492421@yahoo.com>
+ <au3t3XC2b0ZGLN4A@analog.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <au3t3XC2b0ZGLN4A@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Eric Dumazet wrote:
-> From: Kyle Zeng <kylebot@openai.com>
-> 
-> UDP fraglist GRO uses SKB_GSO_UDP_L4 for both IPv4 and IPv6.
-> 
-> __udp_gso_segment() reuses the frag_list skbs when the geometry of
-> the head skb was not modified. skb_segment_list() keeps the network
-> header of each frag_list skb as it was at GRO time and only adjusts
-> the transport header offset.
-> 
-> Nothing guarantees that the head skb still has the IP family of the
-> frag_list skbs: helpers like skb_mpls_pop() let the caller choose
-> the new protocol. In that case __udpv6_gso_segment_list_csum()
-> handles the 20 byte IPv4 header of each frag_list skb as a struct
-> ipv6hdr, and can write IPv6 addresses beyond its linear part.
-> 
-> Check the IP version of the first frag_list skb. All skbs in the
-> list belong to the same flow, so they share the same IP family.
-> Use the skb_segment() fallback on a mismatch. Regular fraglist GRO
-> traffic keeps the fast path.
-> 
-> Fixes: b936a9b8d4a5 ("net: ipv6: fix UDPv6 GSO segmentation with NAT")
+On <DATA>, Alvin Šipraga wrote:
+> On Fri, Nov 06, 2026 at 03:56:18PM +0100, Mieczyslaw Nalewaj wrote:
+> > I do not have the hardware, so I cannot read the reset default of
+> > MAC4_SEL_EXT1 myself. [...]
+>
+> If you don't have the HW, how are you testing these patches...?
 
-optionally older
+The code was tested by users of RTL8367S-VB devices from the OpenWrt
+GitHub and the OpenWrt forum, who built it and reported back to me.
+These were basic functionality tests only. I do not test it myself, and
+I should have said so in the cover letter.
 
-Fixes: c3df39ac9b0e ("udp: ipv4: manipulate network header of NATed UDP GRO fraglist")
+> I think we will need a Tested-by: tag from someone(s) with both a family
+> C and D to get this series in, if you are unable to test things
+> yourself.
 
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> [edumazet: simplified the fix, rewrote the comment and the changelog]
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Understood. I have already asked those users to respond on this mailing
+list and give their Tested-by tags, 
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Please also do not submit anything if it has not been tested. Maybe it
+> was, but then please get that person's Tested-by and put them on
+> CC. Otherwise maintainers might merge this assuming it was tested, if
+> you got the reviews... It is a basic assumption that non-RFC stuff has
+> been tested when posted to the list.
 
-> ---
-> This was found by an AI code review agent.
-> The issue was not triggered, no reproducer was provided.
-> The fix was tested with tools/testing/selftests/net/udpgro_fwd.sh.
-> 
->  net/ipv4/udp_offload.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index cf07c3c6611a22c29b57a72420f2f940609f5e9a..802365b4780fdf7dc19ea7374d51d713e4eb736a 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -514,9 +514,14 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
->  	}
->  
->  	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-> -		 /* Detect modified geometry and pass those to skb_segment. */
-> +		/* Detect modified geometry and pass those to skb_segment.
-> +		 * SKB_GSO_UDP_L4 is used by both IPv4 and IPv6: also make sure
-> +		 * the frag_list skbs still have the IP family we segment for,
-> +		 * as their network headers are not rebuilt.
-> +		 */
->  		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
-> -		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
-> +		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY) &&
-> +		    ip_hdr(skb_shinfo(gso_skb)->frag_list)->version == (is_ipv6 ? 6 : 4))
->  			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
->  
->  		ret = __skb_linearize(gso_skb);
-> -- 
-> 2.53.0
-> 
+Noted, and sorry for the confusion.
 
-
+Kind regards,
+Mieczyslaw
