@@ -1,135 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793988438;
-	b=BISWOfYpLp0+bTyQYPyEL4iFNI4lOHOy3I3Z5IfCqam5YPT2u91pZObtmcuaRFPLQNiZ
-	 zaoZ/Qe2qggatYJH7JqMgdSYr4JkOX6/djupcM2RPgVhIuWNQdYH8AVtYqYvpwXeltqQE
-	 7yJwMx8av41mbDE5piATf3keSTMqhE8Y/VgpJYOJjBXs6075sC4n6gDV85VwOrr4WS5CJ
-	 BPGQcILKmPpJQ2TckMGrHPFOJTUfa/4aDsYR3W9oIZ0NnVY7w4i27DAuqz5Cl0Jsg3zyq
-	 MLoCWNJZW5CDP5MDGQKQdxo+HKAMk8mFUxwFcvEPpFYjJKBgsQsyl0MII2pPRsz5V2g==
+	t=1793988447;
+	b=E03SBi8sAPd6nYDwAq4LYWFuJBDwh+/0h/+42Jf7I7aNMUZNiCLgKTSy8MJ9kTVzveBZ
+	 pdLJaihvVG3kuNG0DS/bWLhqui/eepfz+OEE6oPeWWP2xreZwLVglComn2PfcEyyU9TId
+	 I/ri5ax3EFLS2kwwBVn+bFeszeIZYPce1ayhy7ka2iko084hatxtu4OE7HJ7klBe8HyEJ
+	 jsnAtmqJhj6eU7ljbKvE96bgh+bFV6nRZL3s/naOkvd1hlUit/ESV/xpYGgJ5ZhWue4bM
+	 zD1QYKjISWlhgKiOUkNLmZaCc2ceX655QGB6hC5KVZGDece84JB8pBIQ0+AePdzGSpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988438;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988447;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=xsa9e6MH9/SVm3In7oNjUcANbgdM5Ae2hGRi/O5LwW0=;
-	b=i8syIh/c4Qap+CKCFAKPpBxsBt9KD23gum+G7nTUZk89yuQPEi267EBMzWRfhL6lMDX+
-	 FSWay1xxntUUNB72RSDKoqM8O0tkBrcVmwl+YXQJO5oOoaFjhhX5KtP4GM8do26D50K8p
-	 9F0UbUhzX5VBc6mFWcbIli5XLa4Fl2c1ehxreX2K4NffSb5UGnIcsqB5/hyqMQXblQq1u
-	 k4sJPglmdn+oLinz68p0MMIP4DKBghBS58mEyzH+VimWeO+4td3o1o/CxIkZEhRfiDZs0
-	 asmHVG4HVOZimPbsz+yxy62AHaV2+XwJSwbuVxhuNvS7w5r9hp8NHD66MVJsFGJvwEw==
+	 Message-ID:X-Google-Original-Message-ID:Date:From:To:Cc:Subject:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=aTv8lkvWYYtmkfaYVZ3RQ1F7LBmnW9Tpy7fJ2ahU4OA=;
+	b=nw29dfv1+4Bhw3ctIDcPJ/3HAsD1fd9fU2Hnu5vAsK7szROCWxmN6A4yB6ROFdWnJeIG
+	 I/J9VJ64L1BdVxKvefWpVidHzHW7b/lwOHdT5RFg9BbqTE/P/CJPStZkkFoQ4ZkQ9cZb8
+	 BY6uC9qGNS0tfgRkKxjmD0Lh5ad00eeL2g8WHyvrORzqopodEwwTc/WdjH/Fhs9S/h24p
+	 62oPCMIKiyyHIb3iRd4Tx8F18Vd+mgOvjCjFL0nGpQyjYATb7TBO8avhZX4/ddY2++Am5
+	 uxaN4YXhc4RuNwV0wUbXbG52T57oVPGGlWS6UBVyNWVElzBKcSFDN4n+OvUtloXjD/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=BYMekOj0;
-	arc=none smtp.remote-ip=209.85.160.175
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KbUnUMSQ;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90489606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:07:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90489606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A40606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:07:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1A40606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=BYMekOj0
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-53cd0c8614eso6715491cf.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:07:17 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=KbUnUMSQ
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so8250415e9.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:07:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793988436; x=1794593236; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xsa9e6MH9/SVm3In7oNjUcANbgdM5Ae2hGRi/O5LwW0=;
-        b=BYMekOj0YLKZhnr+iVGVAmGRIyI1upa42CJ2T3XGuUPONpzfjEizxnMAOBorEIuOvt
-         V1tD4WtF3cdKq7HNBr+RNQzsb/8dpXv7Slwh9yjySJem6KxDRha+0toC3mRIxyf/ljjW
-         KZVIvbK6BTagUCEHSISTBvF6BQZ1G4UOX7ZODh58bbOrYjUZMTNeHuP01AJnpvZgj4nC
-         0Z3i98k+Z9rwCS13pUoGAc4M0umoAHIDKl1uiYTToR1e5fna9zpBJhou0SOh7EuCwmDM
-         RqgKGYL21aCr4GwV4a0eIUgUtZLCX9ixOJnCJIOFwdUIPE9ou9ndCwK0k8YaQCIV4E+d
-         +zTQ==
+        d=gmail.com; s=20260707; t=1793988445; x=1794593245; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aTv8lkvWYYtmkfaYVZ3RQ1F7LBmnW9Tpy7fJ2ahU4OA=;
+        b=KbUnUMSQd5t/j3E8RLeWdRCbRs0NdNgN8nMaCA7IO68kJqdioMqCpQLNMJH4H0g87o
+         jrPY6IFoGXEboP6vHxQjNYNzF8wXguVzdux3dzoziKp74LeuS5qIi65/5nKsvDqnDH/V
+         FrX+vrC/I2hrZB/I3gF5ojm6t88sjkIBy/sOBiD8CngKhW5TUJKilJA33nUQlKrhJqNv
+         wk0D35TrgHIRvrHGAUuHvuroitlxoKWC9QkhURo47BzCXoGHGZ3hvKmNC2OoxMoWDKrT
+         gE7vAnH+LFd5qAX8P9ueSn3H031ktjAbRGYmVIs7FywSivan/EUkuilJsIYtv/wc/0WC
+         dnFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793988436; x=1794593236;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xsa9e6MH9/SVm3In7oNjUcANbgdM5Ae2hGRi/O5LwW0=;
-        b=HgcJxk3qn2g5RTVkfX1OPu/sLMhpBIR/UmjvHNQJ6zqCm9Mcm+IlLIAZkkf9H7ZG/l
-         yWYDwEL1Gf+EHkoyggqkYKNwPvu75xlWu1eRztTPpz5CVfIkX2EGQWDFShi/RqBfdfRG
-         CEbWzbwdV1pFuCiSDr8ArEsuCPwfR539NSaeszx4xapw90VCHKYb90rHQlQWDnPzXXl8
-         CbS7lQMspHjl6QqYPd//FWcoC+kmk3Zprn5ZRMZ3iHK8LQgMc/1zsEJJAcil6Iqxy1st
-         UBB6+Q1H4RScqfNa00mmWBVo1N6QqIMlyTTKLnEHyIZw+p86jGILlvNWyS7pmEpia7b9
-         GzRA==
-X-Forwarded-Encrypted: i=1; AKwUvBzBlZcvdlN7JMNX5VnSp39HUW6k/ssXz9WUiuhpkXi8ozwK9YvNAXeS9o/C7peFF9f2HXSm5jA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8XphFoPCKwG19qMMcAUZYB4AF9/xWZQlyFvgSjD0bBhFpIfAm6
-	pelhu8r7RDxlhR2pcYdpEm4OVw1Q8iiNt2IS05UHR+TIUQiqez2kMfAW3dtznJ+CJy0=
-X-Gm-Gg: AYBFou1gBfIDymyKkcdulMR/Ux7DMxcXf+CGSHv9eR8g1q6/6bclY8qGxMBpODNIQEO
-	i335TlNvZOUjVpgFZg5PlQjcGvGXm/t8eFgs2OvXE2G5IGGlSfEuc0Z3OHAJGjUJd1+/VqDJOXi
-	x/XJBeowBXLMAyUbuAivBopLIFzvZkLIuYT3CniuefC0ryg58mpN7RqRGRt14VkYWFYYr/v/LBc
-	MP+ucBqu1TA3TpNR9VT8kHgjVA27tAFnz2chjlAVWz4ZJ8DWmpxoGBSPe+qeBJH3dgM8LPG2HZI
-	OgB1NBHCO42QlCTlplyVJMOFek+/HtLrnTzenLLpgN90vx8sV34by30nnbQR9n3vSkJMKtGUv/G
-	tVZZIEjQJUZjFMck3V+TVzhzaTl5aWn7UteY6x8HhkJmgGshbQRlvWQsJkjEr/DG60mVefemNaq
-	ll6iBmZH6DFQgFVIOQzzAGBlLs1it1pO/jgURXoalxcMqNCOK9QgrMgegDmUoE/iGelfnkduPoe
-	BM/CsN8L6WCbDakyHhct5tNi8oC/ovvClQyVeCXMlezr1ApHrj9kAKf5ksYNyB3lFSh8luHqx5V
-	mQYZlOa4f/5I+b+9hf+1rUcNyh6JMVHfjuRQ8YJjbJhjd3BJJ0g/fUytoCbhbEZ8Yc6ELDLrC2o
-	kGGOyGUxxIw==
-X-Received: by 2002:a05:622a:480c:b0:535:a5fa:edff with SMTP id d75a77b69052e-54e15b63c63mr47814391cf.63.1793988436090;
-        Fri, 06 Nov 2026 10:07:16 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e231d0710sm26555871cf.2.2026.11.06.10.07.15
+        d=1e100.net; s=20260707; t=1793988445; x=1794593245;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aTv8lkvWYYtmkfaYVZ3RQ1F7LBmnW9Tpy7fJ2ahU4OA=;
+        b=yGrOXGzerKLOIoTVinm9SiE8U8G+gTe8Qy7VYFwr4A2x52TID4fAzmILwUVQq5UKbq
+         PIHJsWYsSM0hIwpXGvevlBAK2KFcEPCc6H3M6misQ9uWcP2IOzeEpaypELq/twLb29h+
+         +ldJpNhAdYzMLQ/kfEmcppiZBDi5Zbecu1I6HIIzbDJ+vdjEib4CNmlH+PE016/q6yuh
+         H31CvkeqGlvCGE0UtzoapJ7Q8swkq3EAgUFkmQrVzmqrz68ZTyGcSE8kMsTIiqlJpML/
+         SIuUCwlcd3iX4nMp0dDdUu3Ec4P9+f8xCjIoSnI52Df4kLgykM2ljt7eKGW5hgbZL+2V
+         +3vg==
+X-Forwarded-Encrypted: i=1; AKwUvBwpvhpgNtL7/sJmIuIW7wYijj47mAhNtGq4Trf+rIwYmn2OjhxCyqzsZTCCfwCtrjRjS9GLHQ0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8wn5+j+3trnkh8bx1y80yZmIo/tYmntWeheBfg2KrppAPLCx61
+	jE6ke3zB0BzeMuQnBRgH0gkOwx+usPWvp7qiEZ3c2l3XafUaORxxyXEb
+X-Gm-Gg: AYBFou2xb3unJmZpjBPVP1EBvo35LBCVws+f4MEn2QOxR21hAFS3Snz7jK7CpDju7f5
+	sxrj5J0PHTj7DwLi0JPSUEkYnwgU0l9eKXooGQE6EF2g231stSmF8VRnytw1cDV+8lta9dq/TeX
+	qP0m4JEqWqO2EUKLXL+pPEfDHNAO7o5HLuUoCVifIsULe7l1jMvSpEyHGds+8wBCcq8HJmD7Kp3
+	Lw4Lazcra0OkTI004ZEYN7Bf11kMxFN8Pqpq9AyOkxi7fekrAR0rjosTuX0qZolpc3ytmkP3A3u
+	3a1e8MhbejeHd5CghGXIa9dc9hEf+Ymnu3JUA5RxeUd6Qm1HTdRnl+QRhd2xv4/tbuvSrZrmjuu
+	lIFXdqW5oIrmDGcscMj1ksZHSD5bhHEoWoAr5J6fvmf5vFtSMMNxYyeci87fXvYe8lgP0CYZXxK
+	ELuuMQm3mTWbRcPgivUZZIXn8xQhN6G4WUFbvtIdE54ymxZGCY/Jg63p5jJOFXoBLyqdVJIj24h
+	dPUWe4Y35n8LKi7vlyxD/C6UBw7POFSjo5V0Bd8Yv6Kz49gc6M9JMsIuNZia4LDIBdvMQ4IIEQb
+	VH+tixab/DzisCTmk0z3ZSyf9IJPO/e5jsYQBfLquNLxANSpe9vMCc2JqUKbo/rY39CbqvFtfj4
+	hIC75VTT09cb7NcQ=
+X-Received: by 2002:a05:600c:348f:b0:4a1:f377:5c6c with SMTP id 5b1f17b1804b1-4b6de788f12mr56588375e9.10.1793988445013;
+        Fri, 06 Nov 2026 10:07:25 -0800 (PST)
+Received: from Ansuel-XPS. (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7c8a01afbsm64905e9.12.2026.11.06.10.07.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 10:07:15 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xPOLK-00000007CW0-3s9S;
-	Fri, 06 Nov 2026 14:07:14 -0400
-Date: Fri, 6 Nov 2026 14:07:14 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Naman Gulati <namangulati@google.com>
-Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+        Fri, 06 Nov 2026 10:07:23 -0800 (PST)
+Message-ID: <6aee175b.f01aa0c8.37eba4.18ea@mx.google.com>
+X-Google-Original-Message-ID: <au4XV3gQmbXyvqIA@Ansuel-XPS.>
+Date: Fri, 6 Nov 2026 19:07:19 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Yongzhao Chen <yongzhao.derek@gmail.com>, netdev@vger.kernel.org,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261106180714.GI663069@ziepe.ca>
-References: <20261022201229.GH3381610@ziepe.ca>
- <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca>
- <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
- <20261023145023.GH3977851@ziepe.ca>
- <20261103080933.GA4213@lst.de>
- <20261103151021.GK3889730@ziepe.ca>
- <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
- <20261106173054.GH663069@ziepe.ca>
- <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-kernel@vger.kernel.org, Ziyang Huang <hzyitc@outlook.com>,
+	Stanislaw Pal <kuncy7@gmail.com>
+Subject: Re: [PATCH net-next v8 1/2] net: dsa: qca8k: let regmap serialize
+ register access
+References: <20261104120130.48455-1-yongzhao.derek@gmail.com>
+ <20261104120130.48455-2-yongzhao.derek@gmail.com>
+ <6aca850a-ef67-4451-aaf2-977be884d1b0@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -139,54 +109,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
+In-Reply-To: <6aca850a-ef67-4451-aaf2-977be884d1b0@lunn.ch>
 
-On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
-> On Fri, Nov 6, 2026 at 9:31 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> >
-> > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
-> > > I drafted an implementation [1] for premapped TX and RX buffers on top
-> > > of the existing networking page_pool. It is implemented entirely in
-> > > the networking layer and extends page_pool as the default RX
-> > > allocator, to the TX path. There are no hooks in the IOMMU, DMA or
-> > > page allocator code. I wanted to understand if this implementation
-> > > correctly captured the feedback on this thread. Key components of this
-> > > design:
-> > >
-> > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but each
-> > > chunk is mapped once per opted-in device through the DMA API and
-> > > records its IOVA for each device, rather than using a shared IOVA
-> > > window.
-> > >
-> > > - TX: page_pool accepts a memory provider for pools that are not bound
-> > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunks
-> > > of their NUMA node; TCP copies sendmsg() data into them through the
-> > > task page_frag and allocates its skb heads from them.
-> > >
-> > > - RX: an instance of the same memory provider, sharing the chunk code,
-> > > backs RX queue page_pools. RX chunks of order-0 pages belong to one
-> > > device and NUMA node, and are shared by that device's queues on the
-> > > node.
-> > >
-> > > [1] https://github.com/torvalds/linux/compare/master...NamanGulati:linux:netdev_dma_pool
-> >
-> > IMHO the netstack should never read from shared/decrypted memory. If
-> > you put it in a SKB you have to be sure the only touch after that
-> > point will be a DMA read from an untrusted device on the TX side
-> > (sending it to a trusted device would be a fail) and the final copy to
-> > userspace on the RX side.
+On Fri, Nov 06, 2026 at 02:38:37PM +0100, Andrew Lunn wrote:
+> On Wed, Nov 04, 2026 at 01:01:28PM +0100, Yongzhao Chen wrote:
+> > From: Stanislaw Pal <kuncy7@gmail.com>
+> > 
+> > The regmap is created with .disable_locking, on the ground that the
+> > qca8k read and write callbacks do their own locking. They only lock the
+> > bus transaction, though. Since the driver moved to the regmap
+> > read/write API, regmap formats the register and parses the value in the
+> > map's shared work_buf, outside of the callbacks, so two concurrent
+> > users can swap or corrupt each other's register and value.
+> > 
+> > Most register access runs under rtnl, but not all of it: phylink's
+> > resolve work (mac_link_up/down) and the LED class callbacks do not, so
+> > a link change can race with an ethtool or LED access and write the
+> > wrong switch register or read back the wrong value.
 > 
-> That's likely a fair callout. TBH I'm not very familiar with CoCo and
-> will spend some time understanding the constraints. I kept CoCo out of
-> my implementation as I approached this solution from the overcommitted
-> VM problem where we are trying to overcommit memory in VMs and use
-> these pre-mapped pages to avoid using bounce buffers.
+> Do any of these operations which don't take RTNL do an open coded
+> read/modify/write? Does the regmap read/modify/write operations hold
+> the regmap mutex over the entire operation?
+> 
 
-Why does overcomitted VM use bounce buffers? Do you mean this is
-about getting better memory clustering in page pool since the VM
-paging granule is 2M?
+Maybe I'm just tired from destroying board from my HW project but... I'm a
+bit confused of when read/write are not serialized.
 
-Jason
+Operation of the LED and on the port have their own dedicated register per
+port and for shared stuff, there is a dedicated mutex for it.
+
+So I'm not sure what case this patch is fixing...
+
+Both mgmt and mdio operation locks at the start and unlock at the end of
+the read/write or rmw operation.
+
+Using the regmap lock seems redundant and this is why I disabled
+originally. 
+
+I would like to have more explaination for the 
+
+"regmap formats the register and parses the value in the
+map's shared work_buf, outside of the callbacks, so two concurrent
+users can swap or corrupt each other's register and value."
+
+case.
+
+-- 
+	Ansuel
