@@ -1,59 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793925682;
-	b=ewRihQKSn9NExCw3jteq8sVlcLMO/FgQQ6rq/EcRVWVllsKY+vEH2vhcnseZaUamD8FY
-	 716r7RRwscylNUsU9raJdD2UDtcpMcK1OyiAATnylaOIaLBlbjRVgH4LI5aSRfc4jx4ic
-	 fW3JaUxR1ZcmS9Iv6lORKQcw+r2fAZjGw5nQxmzyuBfe0ULAImwXWRRzNE9TlhxpXtJsi
-	 jABmqsyf0kKFMWg71HgoVCvLTCEH3l+aEPQajDLRxyFR/YBE7VZncKI2G1bMzHz8KFspe
-	 IvwxgiPEdSoP5GGHxdGNGmirwlrB5LmLe0ycTagzCMAqwfjVHcw2LUaltMC1EmFzncA==
+	t=1793926203;
+	b=Xi9oMTeiN7DBAvevNOSZAUo0HorXT0xLmJm3gDSXd0wkox23lZeQtdX2biGngaFg74iK
+	 WNR/ApfsSm8xcmq99XA7qyLrdbQv+bX84fzaaAxb70L1gxWlZnFLgNCl41oSqIl6Dhv4u
+	 NKdE5hdYgaR+jumJ6y/yXWC0DVoirRdZBhEZnlJ4Ln1wEnx5fdGCIy4NUWWVaGRi47v46
+	 //m3XT/cqowsJFSwIxOEDEoV+2WdcHDwKGtUuypWjfGgenxVC7rv/xzfexdIOGriEwo7I
+	 KjIce6BDNhzgfI+GS47YqbVx3y2JnVK3AQnyjLCq6e/aNIHnMMNQg+Qraz0bK9xWrtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793925682;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=FQaVjs4v70n+bS3vcX4oAwE1bNgr2EOseGURkgoTqdLnRnHD4beWwbVJqozzCPAf8Xil
-	 ld1ymd6FaLVoR6JxmZe1ZNbRk8Ia50WSw6RoUayGM2HPwdZIcCdq83fgnF9MGUqvxKo9Y
-	 bwt1If6+Q3/41MHqauddPnGTEO6zzhfBTV5mUFe7eSh5E98wfzK6KBsStjuNlLpabzJgO
-	 Q1+kO8uEjVNLW5kdp3emiBbn6E3IEcvGLOwzbmJ0DIxr4Bf8GVP3g6i+qEPmXqVUlhhaE
-	 wpF7bjzWgfrLzQ2kEmwNo67vxPtea5klTuFlc7eSGtUFNtps2NUyhycDTvrA9v0v4YA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793926203;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=li0w6gdCJPAXfcZnkZrCMDKNOMXUju5VRPPg+VyiW3Y=;
+	b=IrHKrwgSq7nwOAcnVP/Abeq9H0D4erhbuw890h0h48FngZyeHSX82c26AXRWlvvJJ1sH
+	 ORIeoW0nA9q0LanEP3swLNzJT/WgJ9vnb1aZyFrbMJJzTIqbagbMgcRPhvZ27QayGNsxW
+	 u8S9R3k95sxxWij8U3bwHWFkOjPRXZPCQUesng+MyBUp42NZPrPoXn/6yI5muyNOtt5cR
+	 CN6gPCgyY0KJJD3f9pDMjCwMrOq5/DBjY9qnShE3mEA5iyZQPzyTRor04x06BlBM1nWPJ
+	 epO/tyEmso2KNxwLOKQQKyG3mree29VYSKMMeVbkRkVm/FOv50TCgjMygukznjXENKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I20IEdUd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBwX3tiS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96D3606A326;
-	Fri,  6 Nov 2026 00:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1E4606A31B
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I20IEdUd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305EB1F008A1;
-	Fri,  6 Nov 2026 00:41:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBwX3tiS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9CC1F008A1
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793925681;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I20IEdUdk3YBQo8Pk5BIWm8+qQcp+RYlqIQLRcGi1T3WsxpOoml+A5yWgioV0ZNhD
-	 3F7kVfaVizzlxevZqhOxi1qNcgcdiucV5CL9TMsfmkEmZT1/UVx63Eo3tuAxlHuQ5H
-	 AsRVYTkXGzKttmIDqWj0gw1L20nR+MyO1CUPRVoYcr9ipzj88p51gE/biPjR2ouvH3
-	 dmsCIqyyHSeXWVQ6t/ya+4SsqfWlIf1u+uyKet/SS6uesko0ioMaFPcpa//1Zxjl6B
-	 fgnPTcygnaqbI0U//Mol0r7GpIR+tdo4ArUtBeQtoL/Sof6XWU3KtdFlguhE9jFD2b
-	 UQsGFjAc5h/ag==
-From: netdev-bot+sinfo@kernel.org
-To: alireza@asgari.net
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org,
- netdev@vger.kernel.org, kunit-dev@googlegroups.com
-Subject: Re: [PATCH RFC net 0/3] netfilter: nfnetlink_queue: handle packet ID
- reuse and large gaps
-Date: Fri, 06 Nov 2026 00:41:20 +0000
-Message-ID: <179392568074.488859.5206432862209354305@kernel.org>
-In-Reply-To: <20261106-nfqueue-review-v1-0-b6c933f44943@asgari.net>
-References: <20261106-nfqueue-review-v1-0-b6c933f44943@asgari.net>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793926202;
+	bh=li0w6gdCJPAXfcZnkZrCMDKNOMXUju5VRPPg+VyiW3Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JBwX3tiSFVz/SCekdDd1xZteE2je6TCPRWCwHiiSLjEN7Y0A/1bkMbssSXyVdf0iz
+	 zHQgL1+4ps43I4bZ3xp23SQXtbxQ6HXtCCnWjmmTceyTb9LqpBu391iElcG24drXTV
+	 Pum4uP+9FgqYbVxobLO4Y8bQb2DzXJY0OsYQVe8l9E13wPg1FCI3TKxWbaS3MhHRdj
+	 Og2zGGwq3GUPk5MP6SwLjRLjPJxvzExuqJ6v+j9fet6x3Y8HiA6EHzLWcMgnHTmMEF
+	 HGKuVupyGbtYpEOPjFoQJxHHrB/0L216vjQPzn/tD7f1F5W9x/5VRTvdajorBhn9PX
+	 aJ6Y3u3yHAyjQ==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-7143451981fso106297eaf.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:50:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwimnPYLHxWAKBSYiudNr1D7Y+0hwIdpTUH3JHK7UYM9z9Mpe0Kx6rCgBnurs2cJYnVm+JNWU4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9YeBhx8IjQWQv9wkqEG47pa3g1/ZenYLa31BTM0M0nb3+OjZlI
+	HS/ve/TR5WYYEsnMbDvhgaCRgY3sJJiM7FXTcRFr3JDgqWxpGf+qJOEc52oSodI03nPkoluyGtQ
+	Bk8gs7K3iyWkDPlxRHVHPddcYisBQ+8M=
+X-Received: by 2002:a05:6820:f015:b0:715:2954:68e4 with SMTP id
+ 006d021491bc7-716e7942d56mr812677eaf.76.1793926201626; Thu, 05 Nov 2026
+ 16:50:01 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,21 +59,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261104150318.1156620-1-edumazet@kernel.org> <CAHC9VhTSCSV-Lic03yzqU=z6OgVZGKUfdUBfYAHnezkTLqOETg@mail.gmail.com>
+In-Reply-To: <CAHC9VhTSCSV-Lic03yzqU=z6OgVZGKUfdUBfYAHnezkTLqOETg@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 6 Nov 2026 01:49:50 +0100
+X-Gmail-Original-Message-ID: <CAL4WiirhHK5=CC9=c=XLR5dFgU_EAH6W5tZfcvgBsXdrzRjhgg@mail.gmail.com>
+X-Gm-Features: AclHuK-cUj6ktjY8HuBn4RvzP7D70TC4okO5iksryY4sTrtwiKEXTCYutGdCBV0
+Message-ID: <CAL4WiirhHK5=CC9=c=XLR5dFgU_EAH6W5tZfcvgBsXdrzRjhgg@mail.gmail.com>
+Subject: Re: [PATCH net] calipso: do not charge request socket options to the listener
+To: Paul Moore <paul@paul-moore.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Le ven. 6 nov. 2026 =C3=A0 01:10, Paul Moore <paul@paul-moore.com> a =C3=A9=
+crit :
+>
+> On Wed, Nov 4, 2026 at 10:03=E2=80=AFAM Eric Dumazet <edumazet@kernel.org=
+> wrote:
+> >
+> > calipso_req_setattr() and calipso_req_delattr() allocate ireq->ipv6_opt
+> > with ipv6_renew_options(), which charges the listener sk_omem_alloc
+> > through sock_kmalloc().
+> >
+> > tcp_v6_reqsk_destructor() frees ireq->ipv6_opt without uncharging it,
+> > so each request socket leaks its options size from the listener
+> > budget. Once sysctl_optmem_max is reached, sock_kmalloc() fails,
+> > calipso_req_setattr() returns -ENOBUFS, and tcp_v6_route_req() drops
+> > all subsequent SYN packets. __sk_destruct() also reports an optmem
+> > leakage when the listener is destroyed.
+> >
+> > Uncharging in tcp_v6_reqsk_destructor() would not be correct: after a
+> > migration, req->rsk_listener is no longer the socket that was charged.
+> >
+> > These options belong to the request socket, there is no reason to
+> > charge them to the listener. Change ipv6_renew_options() to use
+> > kmalloc() when its sk argument is NULL, and use this from
+> > calipso_req_setattr() and calipso_req_delattr(),
+> > like cipso_v4_req_setattr() which uses kzalloc().
+> >
+> > Note:
+> >
+> > After this patch, calipso_req_setattr() and calipso_req_delattr()
+> > no longer need the listener. Commit 10876da918fa ("calipso: Fix
+> > null-ptr-deref in calipso_req_{set,del}attr().") could be reverted
+> > in net-next (also removing the then unused sk variables), so that
+> > CALIPSO works with SYN cookies.
+>
+> That would be great, are you planning to submit a follow-up patch for
+> that once this lands?  Or is that left for others?  Either answer is
+> fine, just trying to get ahead of any duplicated effort.
+>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I will provide the follow-up patch, thanks !
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+> Otherwise, this looks good to me, thanks Eric.
+>
+> Acked-by: Paul Moore <paul@paul-moore.com>
+>
