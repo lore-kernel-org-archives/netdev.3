@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.217
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793945689;
-	b=128p8qyFXhl8XFmzUBeUrZHbRIfuSrmlZtBALkxLf1PNm02PK+5dkRW0b6+mAu/YOZ+2
-	 7cXYX5uAAKZJMyCAvZJ7u9rLvfKwFjl//GIwEreWC7kT16dlJxL7A5/42gDhxyKXNyqCt
-	 7t03Oq3biX6+8nO9w+fynoxFT/QQx+lW31TvQ2V7EEZHEzujLDF+Mn8mkWYUelwOju37s
-	 B5X2PZcHYloAY3MaGLPKZ+tp2xToqc6CI0SL/WmPUvmuBeQ359n4S2hM+SCTZRvucoTV8
-	 GQ8105B13JBbIDL+hVKeb11rRpUPDfkjNWvYvd/XaITMMmci1K9xsPjObmGOTCZc5jw==
+	t=1793945695;
+	b=N1FZRS3WljaJUTBJhW3lMwpODdWTw3A0pIZU9OPqY0tscQFP9juXUiTw/lqWlzgPklbI
+	 +LFysu6VoxBYxpQLWUMhkxcsEFjVZvasijXuYqBb3o97HOo0y78FfQfHTI6wJEGW1p2V2
+	 5tQLL1sDHtCorCYLQP2mGGqRXmlQha0KbkTJAeXcxxgGMi+/m1dwzgQqQs4wX/yGncr/6
+	 3pnDXNu5RuDETXt3uZf55ne7X0DxF5UrBXUUPbv0YIg/H2e9E/7I2UeRN/O6KSgeSQueS
+	 YxwqNbbYZ1DsrvOh7FbMUvD5UNyelXuB0Be/PXkQ7kQAGBuXzJfZ4gPmBw0Ie8CGTwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793945689;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793945695;
 	h=DMARC-Filter:dkim-signature:Received:Received:Received:Received:From:
 	 To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-ClientProxiedBy;
-	bh=8H4BiAzL9XZzDteByBJrPGAy9cQmcdMJFtoFmH4ZVmQ=;
-	b=TpIyt0KsuntCaAprhYJnXHFj0XdEcwkiCs/ZDSN8ZKp0gQt7O9W9784dlDwVLIPBJY+u
-	 ecIz6yUysILreQB8qtG4ZltZFfqbq7VXWwxy6Xr1XAnhxAn1dsu4DyCm8PYj6BtXjPZBj
-	 +PpATfC2pIIU0lL0isIJYcnZMq7ekTyEy/34pq9BP7TSPGdCuB7jSXBjBkm2P/q2sujKk
-	 XmqWlvzJ3/wCiLyIclKvm/+2IsO+ySVpptsHjHJO1DeR/pe1ry1rUBHdtTvAnEreqI7jd
-	 42D6UzRC+20i3Jk7aM70KRO8JKuDYlEWgVkReOFomaV3AGzqoaDzPM8cWh0SOGuqatQ==
+	bh=e7knqyg+MQ9CfNG60ixCD1kzHXPnfmQw4mzjFXvAiMg=;
+	b=dILUy0q6xT3KLsyRd1rQNjDCvzePgNEUaFU+YTidYuVX+hHhCb97LeqF6UicRLsiN9w5
+	 rp0KNGOZyKovkJym6gsDO8qZnHoxKAyZETF7qguQ0xjkcKl1gLradfjln9U5hSBpbjZnI
+	 IBLZ1KfQkLFBI5o33iRO2L6GWTj7xHdjCr9PUmGHy4w9gRZXdoxsJC/EdSQNAzVgC+AN5
+	 W4HvGKX2RDmXbmyMy+DJo82UsnMYUF+J72SK8jiK6buxUFheskQAGKNc0MzurLTZrviOj
+	 xmxHpKZAnQncrJhiLkhxe0SF8ivkVMeP7H+1p8JLLBz/KaUuUvTMp6IhLXH8/K+K62A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=huawei.com;
 	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=5gK0O8x2;
-	arc=none smtp.remote-ip=113.46.200.226
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LnJEw0FK;
+	arc=none smtp.remote-ip=113.46.200.217
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FB8606A331;
-	Fri,  6 Nov 2026 06:14:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31FB8606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D33606A329;
+	Fri,  6 Nov 2026 06:14:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8D33606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=5gK0O8x2
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LnJEw0FK
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=8H4BiAzL9XZzDteByBJrPGAy9cQmcdMJFtoFmH4ZVmQ=;
-	b=5gK0O8x26QeXWexMiNyCAkgm2z90c9zzMHBOuRyZIoz9pAhKlatVpS5t30kzCstUPmBqlCrJM
-	frs0s5S2yDjI0AS8406TFnziv+jHqpsZ5OgL9OSNgV7B1yb8SH6NpwN7RhFgeMDUURha9xI2gmp
-	749zlE6tCFN1S2+B8+dvsj8=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jLTRJ2dzMzKm8R;
-	Fri,  6 Nov 2026 14:14:36 +0800 (CST)
-Received: from dggpemr200009.china.huawei.com (unknown [7.185.36.18])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2B6B54056C;
-	Fri,  6 Nov 2026 14:14:43 +0800 (CST)
+	bh=e7knqyg+MQ9CfNG60ixCD1kzHXPnfmQw4mzjFXvAiMg=;
+	b=LnJEw0FKsAInVyYKxDKYmXXB5kbjn5tfbHWvM2TTZcDhiXn1Mw9DuHKHaJcRn0RSSP2ETGruU
+	b6v6zXrgniHwmKPUhU7IKawmZo0OSFTdDqyMeS3HHFYVsETjuIQpthkNwhWbRGZ4C19sE8QpRom
+	dTqalFN4wi1Cw7ukvVITCqg=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jLTQv4BGzzcb0J;
+	Fri,  6 Nov 2026 14:14:15 +0800 (CST)
+Received: from dggpemr200010.china.huawei.com (unknown [7.185.36.16])
+	by mail.maildlp.com (Postfix) with ESMTPS id C4B4C40538;
+	Fri,  6 Nov 2026 14:14:45 +0800 (CST)
 Received: from whupemq100015.china.huawei.com (7.152.185.230) by
- dggpemr200009.china.huawei.com (7.185.36.18) with Microsoft SMTP Server
+ dggpemr200010.china.huawei.com (7.185.36.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 6 Nov 2026 14:14:42 +0800
+ 15.2.2562.46; Fri, 6 Nov 2026 14:14:45 +0800
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.38) by
  whupemq100015.china.huawei.com (7.152.185.230) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 6 Nov 2026 14:14:40 +0800
+ 15.2.2562.46; Fri, 6 Nov 2026 14:14:43 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
 	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
@@ -68,9 +68,9 @@ To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
  Fedorenko" <vadim.fedorenko@linux.dev>
 CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>
-Subject: [PATCH net-next v01 1/4] Fixes: Solve an LRO stall issue
-Date: Fri, 6 Nov 2026 14:14:28 +0800
-Message-ID: <6b3a98338e27fbfa923069686b7cd472f30f5033.1793946318.git.gongfan1@huawei.com>
+Subject: [PATCH net-next v01 2/4] Fixes: Avoid concurrent updates on 32-bit systems.
+Date: Fri, 6 Nov 2026 14:14:29 +0800
+Message-ID: <bebc65bd3d1af9d6f3cb0c8dcf9421bd6a432c58.1793946318.git.gongfan1@huawei.com>
 X-Mailer: git-send-email 2.50.1.windows.1
 In-Reply-To: <cover.1793946318.git.gongfan1@huawei.com>
 References: <cover.1793946318.git.gongfan1@huawei.com>
@@ -90,19 +90,17 @@ X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
 
 As noted in the subsequent review.
 
-This changes the return value when the loop exits on the LRO
-replenish threshold. It used to return nr_pkts and now returns budget.
-In hinic3_poll():
-	work_done = hinic3_rx_poll(irq_cfg->rxq, budget);
-	busy |= work_done >= budget;
-	if (busy)
-		return budget;
-As a result, the threshold exit now skips napi_complete_done(),
-hinic3_net_dim() and the MSI-X re-enable. NAPI keeps polling instead
-of waiting for the next interrupt.
-This seems unrelated to statistics, and the commit message does not
-mention it. Was it intended? If it fixes an LRO stall, could it go in
-a separate patch with its own explanation and a Fixes: tag?
+In hinic3_get_stats64() in hinic3_netdev_ops.c, the reader retry loops
+accumulate txq_stats and rxq_stats using '+=':
+    do {
+        start = u64_stats_fetch_begin(&txq_stats->syncp);
+        bytes += txq_stats->bytes;
+        ...
+    } while (u64_stats_fetch_retry(&txq_stats->syncp, start));
+If the loop retries due to concurrent updates on 32-bit systems,
+the counters are added multiple times. This was previously benign
+since the fields weren't populated by the driver, but these new
+updates will cause incorrect statistics on 32-bit platforms.
 
 Co-developed-by: Wu Di <wudi234@huawei.com>
 Signed-off-by: Wu Di <wudi234@huawei.com>
@@ -110,38 +108,73 @@ Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
 Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- drivers/net/ethernet/huawei/hinic3/hinic3_rx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../huawei/hinic3/hinic3_netdev_ops.c         | 35 ++++++++-----------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-index 309ab5901379..9c4ab88998d4 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.c
-@@ -555,6 +555,7 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(rxq->netdev);
- 	u32 sw_ci, status, pkt_len, vlan_len;
- 	struct hinic3_rq_cqe *rx_cqe;
-+	bool poll_again = false;
- 	u32 num_wqe = 0;
- 	int nr_pkts = 0;
- 	u16 num_lro;
-@@ -581,12 +582,14 @@ int hinic3_rx_poll(struct hinic3_rxq *rxq, int budget)
- 
- 		rx_cqe->status = 0;
- 
--		if (num_wqe >= nic_dev->lro_replenish_thld)
-+		if (num_wqe >= nic_dev->lro_replenish_thld) {
-+			poll_again = true;
- 			break;
-+		}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+index da73811641a9..474ea81f1750 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+@@ -795,45 +795,38 @@ static void hinic3_get_stats64(struct net_device *netdev,
+ 	packets = 0;
+ 	dropped = 0;
+ 	for (i = 0; i < nic_dev->max_qps; i++) {
+-		if (!nic_dev->txqs)
+-			break;
+-
+ 		txq = &nic_dev->txqs[i];
+ 		txq_stats = &txq->txq_stats;
+ 		do {
+ 			start = u64_stats_fetch_begin(&txq_stats->syncp);
+-			bytes += txq_stats->bytes;
+-			packets += txq_stats->packets;
+-			dropped += txq_stats->dropped;
++			bytes = txq_stats->bytes;
++			packets = txq_stats->packets;
++			dropped = txq_stats->dropped;
+ 		} while (u64_stats_fetch_retry(&txq_stats->syncp, start));
++		stats->tx_packets += packets;
++		stats->tx_bytes   += bytes;
++		stats->tx_dropped += dropped;
  	}
+-	stats->tx_packets = packets;
+-	stats->tx_bytes   = bytes;
+-	stats->tx_dropped = dropped;
  
- 	if (rxq->delta >= HINIC3_RX_BUFFER_WRITE)
- 		hinic3_rx_fill_buffers(rxq);
- 
--	return nr_pkts;
-+	return poll_again ? budget : nr_pkts;
+ 	bytes = 0;
+ 	packets = 0;
+ 	errors = 0;
+ 	dropped = 0;
+ 	for (i = 0; i < nic_dev->max_qps; i++) {
+-		if (!nic_dev->rxqs)
+-			break;
+-
+ 		rxq = &nic_dev->rxqs[i];
+ 		rxq_stats = &rxq->rxq_stats;
+ 		do {
+ 			start = u64_stats_fetch_begin(&rxq_stats->syncp);
+-			bytes += rxq_stats->bytes;
+-			packets += rxq_stats->packets;
+-			errors += rxq_stats->csum_errors +
+-				rxq_stats->other_errors;
+-			dropped += rxq_stats->dropped;
++			bytes = rxq_stats->bytes;
++			packets = rxq_stats->packets;
++			errors = rxq_stats->other_errors;
++			dropped = rxq_stats->dropped;
+ 		} while (u64_stats_fetch_retry(&rxq_stats->syncp, start));
++		stats->rx_packets += packets;
++		stats->rx_bytes   += bytes;
++		stats->rx_errors  += errors;
++		stats->rx_dropped += dropped;
+ 	}
+-	stats->rx_packets = packets;
+-	stats->rx_bytes   = bytes;
+-	stats->rx_errors  = errors;
+-	stats->rx_dropped = dropped;
  }
+ 
+ static void hinic3_nic_set_rx_mode(struct net_device *netdev)
 -- 
 2.43.0
 
