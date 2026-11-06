@@ -1,132 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794001226;
-	b=O8GZdtMXn01yYm+yeRQHgB4pSONK//7/ZgZ3nlelWhd7f2e/dz4ZbUG73tWlIbJv9jt8
-	 1hwasuwjA//t0hhBPlNE/POHxH0e1T+UHa0smw2inA29oX4PGjEL+KYkOynMy4bigJDP1
-	 AF5eDBCJ7ehKpRanvixa7f6oli1uVWeEo2X8A0SdHNF4dOUb/kE6n0PKk3SVTmYr8RZax
-	 FAyZ/XLPsxF605CwDWot18MXgQl3j/eCW6jU2QZ/zkeoyFmheAWEx4OtreicJqydQAZZJ
-	 JVxsXOqBFfswn8XXW4QLafb9hR4n99x4dhCYuRWaJ35pXtZX7rkodzlTP3bbRLydp6Q==
+	t=1794001248;
+	b=P8wHNuvA4j/eTzqU6/5D33hDrSFjbf0H0W3atxxWaA+koljuVF8k4wyOtqemFj9CVJkA
+	 FeY4WCifK9HsPVf/KBykulwm18L7zOtIMm3rvtOfBXlD7cxhgrQA10NgzEbA6LZOLXcPp
+	 pnoNLKKuuzMZGkWCwRk4FKQgQ2mYmeHnNQRvBKVnYCnjZDi9n5FvZwa71qtMJtG6m+hNk
+	 nXengCA0XHQPxpDtgiPR0OTn3H5l6wDLvweji2yxGSuza7rw8jvMgJP8Lh0TxiIL1aQpx
+	 BSHjyHmNvCt78bP0AvFL3AHGehC5vX2Yk1H9JN2JutwUbz5l5jxpI0sj7jKsCwkjErg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794001226;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=NJjSZ6byjU0nT7L6gaConqvJnvZsIcsiEJ1Ekt21ztw=;
-	b=KZuR5T5MchKBvllBHQZLLFF7vPs6vWVRFUhd9Gwpdg8zVT/jOLSWVvO3vLINBRR/hBp/
-	 WCKSOScjZmZqiUaMOQoSLlUst2aaBh6xt/UasR1FAJHQ+/XIWqgPb9Zokoib3vv8Mm0GR
-	 /yBCPd+6tFc5SXkjk2cWJ6yqnJTFIKSTX4lkAQo+yT+DOfPKEe4aoWwiHvc80dqTvWc/d
-	 okjS7iYUauKggWegM+YRoGTv7GeRczc3SfSfIIPMizFytAtk6Y+PXRe5rFTobTE98+T72
-	 QObbaEbNdk7OIj0HgiR5zeyGGtBznZ0F5hhJ0YQ26axp41OwweLkvTdyopTRiczGtCw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794001248;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key;
+	bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
+	b=n4ReMPtx0ehh9Raoc7tDfmddIfGCQH9y3KSSmuNBvabRhbMuoiMEIk5Pk0d90IEWgOzO
+	 D70Q9YSwjCwE48zs4vWEM5jNbKsBKKu8iKrktSu7nGUCW7VZ4wanyqT8nFPpFLtD1M5d7
+	 1k1SZBJ1azONco+we3kgWaAQWHBePbxrbFAsZOI+xUYff4LI5iy8sPm72+Hk1tx9YEDvP
+	 MCOMc1fKYsWhxfRLuLzFGtsl//kFlKBED6XTw4S3a8NvMAQ/taHTAvSwAJ4B26OxIvSet
+	 LtzSQAOHs84SgBfS1zkXcZNwNFdPNqQkzo36kkuoA+nPbNdIXs2sqLmTocU+zZZUabA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=queasysnail.net;
-	spf=pass smtp.mailfrom=queasysnail.net;
-	dkim=temperror header.d=queasysnail.net header.i=@queasysnail.net header.a=rsa-sha256 header.s=fm1 header.b=VbXKoh6X;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=HrZFzyHX;
-	arc=none smtp.remote-ip=202.12.124.138
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lk7q8SwX;
+	arc=none smtp.remote-ip=209.85.128.50
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76AC606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 21:40:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E76AC606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB34606A32D
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 21:40:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CB34606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=queasysnail.net header.i=@queasysnail.net header.a=rsa-sha256 header.s=fm1 header.b=VbXKoh6X;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=HrZFzyHX
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailflow.stl.internal (Postfix) with ESMTP id 37DAD1302AFD
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 16:40:20 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 06 Nov 2026 16:40:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1794001217; x=
-	1794008417; bh=NJjSZ6byjU0nT7L6gaConqvJnvZsIcsiEJ1Ekt21ztw=; b=V
-	bXKoh6XdJyGq+d0PHagyU/VO7NO43A/j4OxLLPiPkWXoAckGZs0jaQPVkCUnALtg
-	jzpmF0Q3YDY9izjVrhSh4rci58x9KXUY5m2mMkdeKuutH240OFML8ePMUyrE3j/d
-	qk/o5CRfe72f2JEq9e3HErJ3D98F49jDyWj+BqDlrGM4V/GJWAQXibMfgKaM8zFH
-	aKVOiP79t7OBSg1Cyem/60G5GvmoUr1xp8zIjGC1OVVlOWRhmR6cWfXkaGXPVsef
-	LYZX2YuM9L5i9btS8BZ4kKjOFRMDBmou/u/MloGcFrNNfEop8oFfUFQY/rJbly3f
-	kghkXB6Df5jJxei9OhojA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1794001217; x=1794008417; bh=NJjSZ6byjU0nT7L6gaConqvJnvZsIcsiEJ1
-	Ekt21ztw=; b=HrZFzyHXLxxGiwjM2/JxHjs7v5CI89BrAoFsjwT/ROQXeSF7QQ3
-	ypzII+RA7DcpW3+EH6N8+K8gy14E2vecH8bf8b69/lCmaMC/9X59GNs8qskIt85l
-	+LFXwtOq+MavnpjqH46vYdZlBuZrJy21FnABeULSbGNv/3v6HEyGV21+pyQcJN4V
-	RfXMLzZ4QR+6KyFq/HDI4/BGWAdnVUwZ2HY1M2shj6dI6Wu5KqdGfi6MitanbSt4
-	U/ayL0mFo7JXGWwNibevlM/JHoRax7ykhSUaBS+ZIZTqDmVo4xBc+S4bv4sbNOJn
-	VZIs45IFZctIYm7TxhTjEMAuCAS3K3kt1Dw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=queasysnail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794001217; d=queasysnail.net;
-	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm1:rsa-sha256:Voxrx92+6o7nDoYxemkFDf+Lju9A28wtIlgvmb4V3GQ7zwL
-	QlGSCrx8JFbqbQJCnRZiI0YLxCh+BSutmb6GCHA6WqQJ4W2C7VYC49xwheyDiH9Y
-	etQYnou61QSfaPxw7El9BEogrvsCmHNP576PlDk0Dk2ejHYrg1K7YN1apkx65HX6
-	57z9ff5++I2eios1oRs+vQ1z7a/3K4rYSqtQV83bMGcizeyPy1uKErNKtzK688Yf
-	TkizYARyXYtFvkN/UKJFSId/hSv+dgKULlKnDjRZa+d0MNDZ+QOcC09jLxG3egfa
-	/+NPOjKPIB+wkWrVHHnvNTTGdYB1ipwLCLANU0Q==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:5uTqlFLn19dD44/gE58Slrwi5vVzLuLCOhbMiki6nmM=:xLnDSRjbvnVpHAU9sGg0qmA1gw9coIREWUdi5megVz4=;
-X-ME-Sender: <xms:QUnual3N6gXDSunVHf5kPWqX6zSV_da-OP2ZQzq_EKpVUp6nLurF9w>
-    <xme:QUnuatsFAIcNhZxLzCkJB4dkuaiIvwVBvYRSNj6cxCaAYzHJ7LVArAGTzF5KhkOe3
-    hI1q1cDUlGruJqlL0kNKsMMVd65fwdKVw_GvE6fUmxFJI5mR73xyEc>
-X-ME-Received: <xmr:QUnuap8l6zZZ6ADu7UbQHFD6tdiSPw4hctckQxZFwEwqHh8hmIITjRKZHeI>
-X-ME-Proxy-Cause: dmFkZTFgaUn+qN8zY/WvD249UuGoto6ZaA1UpOS6Y/NjMRSGTpdPvTJQdB1AGpCs1OAohV
-    2FiWGqFD14+gKwJTds2Sqtgp2lyBLEl9dUH0DroKrJNwldmZGFO9OA8AxcIwXn78XvwCl6
-    UTxjcYbkwNdt6C9Xp2Lfwmc+GqJnjkrfpfxXaPL/ejhTIIhm2xYDmhKo0q6/6JBTIJhVZm
-    7ilSkX0MPkqaD/DtEj6cW4Tk2X+3uGEns+NC6qfPegvcWFo89T/ajLEZwgfYQkrJEr0Dtz
-    d9IEH/0NWR19s46M3lJMIByJMb/W+fGe+POAqIaETGM/ZXb60cJKie9pltbrmiZLtmxumI
-    Ok9C3loa+YL1IFfCgD9++ADmdAS7sYFV4dOUjzJYOEPur80bnaOIVIfJd9SW+NTv6+ck5Q
-    V7O64kPt3dQJzDlNDUxChCaQ1qfJgjIVrnqcPgTw7WzNRpuyqAAyUSoqfhV0jbTQ5P2oGn
-    j8mHWs6EHVsInTLRlumkzHDykZfK/EY0DK5IZPxzzCpdkcHZ8+qqSBRT4jJQPsw00nnMhe
-    i2YBjI32K3DdIRZ7QG2U03cXPrVLXiEf6AENnYbCrqELP0zN3SPOnA6cITlk/WGP7z5Tvk
-    jBO7gz2Fz0JIBG6rpICLMEv9V6fNUx4PEYNcA77VNNYxATCGUhMZwTOiDpOA
-X-ME-Proxy: <xmx:QUnuapSFkfzL10W_gr3DOflIRgsXs-pUI2NOADwxVnfi8hdzEYKl5w>
-    <xmx:QUnuanB0Y5J8Md6yyA_kZ44bUjfl69FqF4Q2AsvnLf8u3UuJBfN5Kg>
-    <xmx:QUnuaiYnhigLuiX0jK_iCpPIJxFwryOwsArNS1yz7Acig1mLcYv8WQ>
-    <xmx:QUnuagLgfiuZ5qhm9y3E1UPowuQMQLPjOEIeMwEtAfTe9pgt6bPEQQ>
-    <xmx:QUnuaifxf6jGg0L2AC3BnoMgezqV2djxGuWsC8FF0F-5VKJCmM9KN4sS>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 16:40:17 -0500 (EST)
-Date: Fri, 6 Nov 2026 22:40:15 +0100
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Martin Belanger <martin.nvme.dev@gmail.com>
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
-	kernel-tls-handshake@lists.linux.dev,
-	linux-nvme@lists.infradead.org,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Martin Belanger <martin.belanger@dell.com>,
-	Daniel Pereira <danielmaraboo@gmail.com>
-Subject: Re: [PATCH net-next v6 0/6] tls: perform TLS 1.3 KeyUpdate in the
- kernel
-Message-ID: <au5JP__7P_PzwDUe@krikkit>
-References: <20261105-keyupdate-rfc-v6-0-99b695f9eb4f@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lk7q8SwX
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a206f0b95bso8365e9.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 13:40:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794001245; x=1794606045; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
+        b=lk7q8SwXuna/HE2iiiMlyVcoL7yI2SAWKVqoxClIP/wSAqDxTRgly2E+zFPvHr47IN
+         xD8FNxo+ibPoOO6WkHJajZj5eDdJujEBcelV2iDO1JTxHN2X0uM3r5CTxDpAfSOO2Afd
+         nGd+Z28R6QnWNYZTZC+MLnIS5Y2/Kbfkj3Dye/BagbNF8FHfoBoskvSIT0KnYxCsHNMD
+         brYEou7p+RVeB/Km3pDNSUECAxgxLeUSrXzMDUxiweSGez+kWIAAOq14qcPfJaacHnnA
+         N2CF4Rq80fnpiBd9satdmiIv0Nf1jfKrNakIKToAL85O+z9SXhb+Y07D41X7SxIGUqW+
+         YlTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794001245; x=1794606045;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
+        b=kfCuaSutpnz/Etjon9Q2cZ81icBCr+xEB/tYevXvKR7N9L1T8xs6NnaC55Mdfn0KpR
+         tjPEwyJOUmBFWv0ARkOqpQxqjfej33N/6NL2jBnCImDlpkFxXLCPr76HrzCZXFrMCV2U
+         ES1NOnotP0owK50WYe/uiE7W3PITgx2WcYLmrWBAG8V7rpH4pKRUTsTRQvQMMJ0+6PNB
+         s8rFlxYn2WuzZGa6cH/5jNAV4V/84Uba+Zl5Wa68C6a+fyKMI0bmzSklHrKNUbGkvIYs
+         cmRT3rWssMaV1/wpAkTYDG3CePjoHGVonvNUVK92YFKLhOaeoRmP5ieZxw3e7sWCRAX5
+         NYfg==
+X-Forwarded-Encrypted: i=1; AKwUvBxDxAEU6r1BRe0fhk3UjgPn0NKXsB2B3OrUrgI9TxNnQzekGWJwSXNNvR3SCiZ1KkFCkLMCHJ0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+nw2vpXxBWgdHo/Qnpm4wYDnv5vy8m/a7oIlxJ5WWSZHpzU/24
+	DP817yldwwD0jR8RMegqYZ7CPsHQdl5wiOLmoHuKv40BNwlf5ngZVmHfxCXI0J9XeQ==
+X-Gm-Gg: AYBFou1xpJGrDh1BVn4g9mXzOo5LVNnRhf5bYlhdxLFlmxHYaaRsQi6372nuys9w3/o
+	LszXkSMiDwAWFjfrghK8KJBQgrt6vtjWKsWcUF2vxP2XwFn0TXMOEid8fgYWobLX+56H/74IIdA
+	3pGoMjJkoUBYrhxkgqVVqnVJ5pJQmbRtOU4GL6J9gxsBempmI6TEoD3FaJMQEQNqNdBALwO+Rsj
+	D81n+6r34i7ni1NH3MZWmK/3ee800Tw76tEPwYDS/UqFGzCdZxeyyt5KGisANR7pK02bswGf4gm
+	f14hkVWID3Cc/PP4j1sVFToyUOxdo6QpHN3KAKig4ITroBhjaA/1iYYcaKKudNP9ZG/CN16cb8h
+	b92TqAiEe3zCPljwzsdOJoNhlThK8J6IH+ZgkPyUgyyUQH6MkqfhcjHHCgeFAqajoBRbBxV11z5
+	gZ0fs8S9uL/6GOlCCDUFvqUbcn5/kmNb/+W3Z8J5xkrSqyevGQCQvTOx9elw40ph2qz0KoTGdHy
+	GBYMN+VQDCbnw5A27VzjWDTzbHuQ/4+sly5lH3DRN48uBAwbhD8jUS6qTH0q/tdE3rGDOLfUvEx
+	13ROHI//YZRsooqKjhvOJu11YA/NbyvxLPhcEg/QXJ9iPY07iMcrSv7xYWReVHllaWQffY53f20
+	lD0S/Yvvj2Ez/z0+wP82gpQkBkqNu4pIYEEo=
+X-Received: by 2002:a05:600c:8b31:b0:4a1:d7fa:ae36 with SMTP id 5b1f17b1804b1-4b8190f3b55mr98285e9.4.1794001245067;
+        Fri, 06 Nov 2026 13:40:45 -0800 (PST)
+Received: from localhost ([2a00:79e0:288a:8:476d:4cff:b13d:f028])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701bfasm5887936f8f.40.2026.11.06.13.40.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 13:40:44 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Date: Fri, 06 Nov 2026 22:40:31 +0100
+Subject: [PATCH net] cipso: stop modifying live ip_options_rcu
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -136,112 +92,372 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261105-keyupdate-rfc-v6-0-99b695f9eb4f@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
+X-B4-Tracking: v=1; b=H4sIAE5J7moC/yWMQQrDIBQFrxLeukK0rZBcJXRh7Lf9Xaj4TQiE3
+ L02Xc7AzA6hwiQYux2FVhZOsYG+dPBvF1+k+NkYpjdW694qz1mSKn5JuYoiY0Nwt/t8HQxakws
+ F3s7fhEgVj7+UZf6Qr78TjuML9iD+83YAAAA=
+X-Change-ID: 20261106-cipso-rcuopts-e26ffa45b392
+To: Paul Moore <paul@paul-moore.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ Casey Schaufler <casey@schaufler-ca.com>, netdev@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ selinux@vger.kernel.org, stable@vger.kernel.org, 
+ Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794001239; l=11224;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=sFzK60Ujof6oKkoUevi0RWgNEC3MXkp1co13ojYs7hk=;
+ b=ej7CqHV2tcGY7zGDHHLVd8mlD+53sVeZqHB/LxVS7JAqkBTxC9XWBqz93yNoSe62PFZyDBayT
+ 2629yyXmgJ9CUPFiQcovKdF2pBDFI4WKrcPwToXC3u6z9XjHzAG4Zc2
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-Hi Martin,
+cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
+socket, and tries to remove CIPSO options from the middle by moving all
+subsequent options.
+That's not allowed - ip_options_rcu can be read locklessly and must always
+be consistent. For example, ip_options_undo() reads trusted offsets and
+length values from the options buffer.
+Fix it by doing the modification in a copy.
 
-I'm on a medical break so I won't be able to give this a proper review
-for another week or two, but since it keeps landing in my inbox, I
-want to make a comment.
+The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
+propagate memory allocation failures.
 
-Note: I haven't been following the discussions, and I can't give this
-the attention it deserves for now (the cover letter is already a bit
-much).  So this is kind of a "can we slow down until we agree that we
-really want that?"
+Triggering this bug requires that the system is configured to use CIPSO.
+(Setting up CIPSO requires privileges in init_user_ns.)
 
+Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+I've sent a separate mail with a reproducer to Paul Moore.
+---
+ include/net/cipso_ipv4.h     | 11 ++++++-----
+ include/net/netlabel.h       | 11 ++++++-----
+ net/ipv4/cipso_ipv4.c        | 16 +++++++++++++---
+ net/netlabel/netlabel_kapi.c | 24 ++++++++++--------------
+ security/selinux/netlabel.c  |  5 +++--
+ security/smack/smack_lsm.c   | 14 +++++++++-----
+ 6 files changed, 47 insertions(+), 34 deletions(-)
 
-2026-11-05, 11:30:36 -0500, Martin Belanger via B4 Relay wrote:
-> kTLS does not currently handle TLS 1.3 KeyUpdate. It never sends a
-> KeyUpdate.
+diff --git a/include/net/cipso_ipv4.h b/include/net/cipso_ipv4.h
+index d6780d7903f4..b41672221797 100644
+--- a/include/net/cipso_ipv4.h
++++ b/include/net/cipso_ipv4.h
+@@ -185,12 +185,12 @@ int cipso_v4_sock_setattr(struct sock *sk,
+ 			  const struct cipso_v4_doi *doi_def,
+ 			  const struct netlbl_lsm_secattr *secattr,
+ 			  bool sk_locked);
+-void cipso_v4_sock_delattr(struct sock *sk);
++int cipso_v4_sock_delattr(struct sock *sk);
+ int cipso_v4_sock_getattr(struct sock *sk, struct netlbl_lsm_secattr *secattr);
+ int cipso_v4_req_setattr(struct request_sock *req,
+ 			 const struct cipso_v4_doi *doi_def,
+ 			 const struct netlbl_lsm_secattr *secattr);
+-void cipso_v4_req_delattr(struct request_sock *req);
++int cipso_v4_req_delattr(struct request_sock *req);
+ int cipso_v4_skbuff_setattr(struct sk_buff *skb,
+ 			    const struct cipso_v4_doi *doi_def,
+ 			    const struct netlbl_lsm_secattr *secattr);
+@@ -221,8 +221,9 @@ static inline int cipso_v4_sock_setattr(struct sock *sk,
+ 	return -ENOSYS;
+ }
+ 
+-static inline void cipso_v4_sock_delattr(struct sock *sk)
++static inline int cipso_v4_sock_delattr(struct sock *sk)
+ {
++	return 0;
+ }
+ 
+ static inline int cipso_v4_sock_getattr(struct sock *sk,
+@@ -238,9 +239,9 @@ static inline int cipso_v4_req_setattr(struct request_sock *req,
+ 	return -ENOSYS;
+ }
+ 
+-static inline void cipso_v4_req_delattr(struct request_sock *req)
++static inline int cipso_v4_req_delattr(struct request_sock *req)
+ {
+-	return;
++	return 0;
+ }
+ 
+ static inline int cipso_v4_skbuff_setattr(struct sk_buff *skb,
+diff --git a/include/net/netlabel.h b/include/net/netlabel.h
+index 02914b1df38b..f896b9d52ed1 100644
+--- a/include/net/netlabel.h
++++ b/include/net/netlabel.h
+@@ -477,7 +477,7 @@ int netlbl_sock_setattr(struct sock *sk,
+ 			u16 family,
+ 			const struct netlbl_lsm_secattr *secattr,
+ 			bool sk_locked);
+-void netlbl_sock_delattr(struct sock *sk);
++int netlbl_sock_delattr(struct sock *sk);
+ int netlbl_sock_getattr(struct sock *sk,
+ 			struct netlbl_lsm_secattr *secattr);
+ int netlbl_conn_setattr(struct sock *sk,
+@@ -485,7 +485,7 @@ int netlbl_conn_setattr(struct sock *sk,
+ 			const struct netlbl_lsm_secattr *secattr);
+ int netlbl_req_setattr(struct request_sock *req,
+ 		       const struct netlbl_lsm_secattr *secattr);
+-void netlbl_req_delattr(struct request_sock *req);
++int netlbl_req_delattr(struct request_sock *req);
+ int netlbl_skbuff_setattr(struct sk_buff *skb,
+ 			  u16 family,
+ 			  const struct netlbl_lsm_secattr *secattr);
+@@ -626,8 +626,9 @@ static inline int netlbl_sock_setattr(struct sock *sk,
+ {
+ 	return -ENOSYS;
+ }
+-static inline void netlbl_sock_delattr(struct sock *sk)
++static inline int netlbl_sock_delattr(struct sock *sk)
+ {
++	return 0;
+ }
+ static inline int netlbl_sock_getattr(struct sock *sk,
+ 				      struct netlbl_lsm_secattr *secattr)
+@@ -645,9 +646,9 @@ static inline int netlbl_req_setattr(struct request_sock *req,
+ {
+ 	return -ENOSYS;
+ }
+-static inline void netlbl_req_delattr(struct request_sock *req)
++static inline int netlbl_req_delattr(struct request_sock *req)
+ {
+-	return;
++	return 0;
+ }
+ static inline int netlbl_skbuff_setattr(struct sk_buff *skb,
+ 				      u16 family,
+diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+index e65a3f29d2ca..ee0c72fbc877 100644
+--- a/net/ipv4/cipso_ipv4.c
++++ b/net/ipv4/cipso_ipv4.c
+@@ -2004,11 +2004,16 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+ 	if (!opt || opt->opt.cipso == 0)
+ 		return 0;
+ 	if (opt->opt.srr || opt->opt.rr || opt->opt.ts || opt->opt.router_alert) {
++		struct ip_options_rcu *old_opt = opt;
+ 		u8 cipso_len;
+ 		u8 cipso_off;
+ 		unsigned char *cipso_ptr;
+ 		int optlen_new;
+ 
++		/* ip_options_rcu must not be modified in place, use a copy */
++		opt = kmemdup(opt, sizeof(*opt) + opt->opt.optlen, GFP_ATOMIC);
++		if (!opt)
++			return -ENOMEM;
+ 		cipso_off = opt->opt.cipso - sizeof(struct iphdr);
+ 		cipso_ptr = &opt->opt.__data[cipso_off];
+ 		cipso_len = cipso_ptr[1];
+@@ -2036,6 +2041,8 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+ 
+ 		memset(&opt->opt.__data[optlen_new], IPOPT_END,
+ 		       opt->opt.optlen - optlen_new);
++		rcu_assign_pointer(*opt_ptr, opt);
++		kfree_rcu(old_opt, rcu);
+ 	} else {
+ 		/* only the cipso option was present on the socket so we can
+ 		 * remove the entire option struct */
+@@ -2055,7 +2062,7 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+  * Removes the CIPSO option from a socket, if present.
+  *
+  */
+-void cipso_v4_sock_delattr(struct sock *sk)
++int cipso_v4_sock_delattr(struct sock *sk)
+ {
+ 	struct inet_sock *sk_inet;
+ 	int hdr_delta;
+@@ -2068,6 +2075,7 @@ void cipso_v4_sock_delattr(struct sock *sk)
+ 		sk_conn->icsk_ext_hdr_len -= hdr_delta;
+ 		sk_conn->icsk_sync_mss(sk, sk_conn->icsk_pmtu_cookie);
+ 	}
++	return (hdr_delta < 0) ? hdr_delta : 0;
+ }
+ 
+ /**
+@@ -2078,9 +2086,11 @@ void cipso_v4_sock_delattr(struct sock *sk)
+  * Removes the CIPSO option from a request socket, if present.
+  *
+  */
+-void cipso_v4_req_delattr(struct request_sock *req)
++int cipso_v4_req_delattr(struct request_sock *req)
+ {
+-	cipso_v4_delopt(&inet_rsk(req)->ireq_opt);
++	int hdr_delta = cipso_v4_delopt(&inet_rsk(req)->ireq_opt);
++
++	return (hdr_delta < 0) ? hdr_delta : 0;
+ }
+ 
+ /**
+diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
+index 3583fa63dd01..c0eddb6afef3 100644
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -1045,18 +1045,18 @@ int netlbl_sock_setattr(struct sock *sk,
+  * ensuring that @sk is locked.
+  *
+  */
+-void netlbl_sock_delattr(struct sock *sk)
++int netlbl_sock_delattr(struct sock *sk)
+ {
+ 	switch (sk->sk_family) {
+ 	case AF_INET:
+-		cipso_v4_sock_delattr(sk);
+-		break;
++		return cipso_v4_sock_delattr(sk);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
+ 		calipso_sock_delattr(sk);
+ 		break;
+ #endif /* IPv6 */
+ 	}
++	return 0;
+ }
+ 
+ /**
+@@ -1156,8 +1156,7 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		case NETLBL_NLTYPE_UNLABELED:
+ 			/* just delete the protocols we support for right now
+ 			 * but we could remove other protocols if needed */
+-			netlbl_sock_delattr(sk);
+-			ret_val = 0;
++			ret_val = netlbl_sock_delattr(sk);
+ 			break;
+ 		default:
+ 			ret_val = -ENOENT;
+@@ -1185,8 +1184,7 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		case NETLBL_NLTYPE_UNLABELED:
+ 			/* just delete the protocols we support for right now
+ 			 * but we could remove other protocols if needed */
+-			netlbl_sock_delattr(sk);
+-			ret_val = 0;
++			ret_val = netlbl_sock_delattr(sk);
+ 			break;
+ 		default:
+ 			ret_val = -ENOENT;
+@@ -1234,8 +1232,7 @@ int netlbl_req_setattr(struct request_sock *req,
+ 						       entry->cipso, secattr);
+ 			break;
+ 		case NETLBL_NLTYPE_UNLABELED:
+-			netlbl_req_delattr(req);
+-			ret_val = 0;
++			ret_val = netlbl_req_delattr(req);
+ 			break;
+ 		default:
+ 			ret_val = -ENOENT;
+@@ -1255,8 +1252,7 @@ int netlbl_req_setattr(struct request_sock *req,
+ 						      entry->calipso, secattr);
+ 			break;
+ 		case NETLBL_NLTYPE_UNLABELED:
+-			netlbl_req_delattr(req);
+-			ret_val = 0;
++			ret_val = netlbl_req_delattr(req);
+ 			break;
+ 		default:
+ 			ret_val = -ENOENT;
+@@ -1280,18 +1276,18 @@ int netlbl_req_setattr(struct request_sock *req,
+ * Remove all the NetLabel labeling from @req.
+ *
+ */
+-void netlbl_req_delattr(struct request_sock *req)
++int netlbl_req_delattr(struct request_sock *req)
+ {
+ 	switch (req->rsk_ops->family) {
+ 	case AF_INET:
+-		cipso_v4_req_delattr(req);
+-		break;
++		return cipso_v4_req_delattr(req);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
+ 		calipso_req_delattr(req);
+ 		break;
+ #endif /* IPv6 */
+ 	}
++	return 0;
+ }
+ 
+ /**
+diff --git a/security/selinux/netlabel.c b/security/selinux/netlabel.c
+index d51dfe892312..24b11d1891d8 100644
+--- a/security/selinux/netlabel.c
++++ b/security/selinux/netlabel.c
+@@ -557,9 +557,10 @@ static int selinux_netlbl_socket_connect_helper(struct sock *sk,
+ 	 * is set to AF_UNSPEC, if that is what is happening we want to reset
+ 	 * the socket */
+ 	if (addr->sa_family == AF_UNSPEC) {
+-		netlbl_sock_delattr(sk);
++		rc = netlbl_sock_delattr(sk);
++		if (rc)
++			return rc;
+ 		sksec->nlbl_state = NLBL_REQSKB;
+-		rc = 0;
+ 		return rc;
+ 	}
+ 	secattr = selinux_netlbl_sock_genattr(sk);
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 28a8e12603ce..3a4a33568297 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -2656,22 +2656,26 @@ static int smack_netlbl_add(struct sock *sk)
+  *
+  * Remove the outbound smack value from a socket
+  */
+-static void smack_netlbl_delete(struct sock *sk)
++static int smack_netlbl_delete(struct sock *sk)
+ {
+ 	struct socket_smack *ssp = smack_sock(sk);
++	int rc;
+ 
+ 	/*
+ 	 * Take the label off the socket if one is set.
+ 	 */
+ 	if (ssp->smk_state != SMK_NETLBL_LABELED)
+-		return;
++		return 0;
+ 
+ 	local_bh_disable();
+ 	bh_lock_sock_nested(sk);
+-	netlbl_sock_delattr(sk);
++	rc = netlbl_sock_delattr(sk);
+ 	bh_unlock_sock(sk);
+ 	local_bh_enable();
++	if (rc)
++		return rc;
+ 	ssp->smk_state = SMK_NETLBL_UNLABELED;
++	return 0;
+ }
+ 
+ /**
+@@ -2711,7 +2715,7 @@ static int smk_ipv4_check(struct sock *sk, struct sockaddr_in *sap)
+ 		 * Clear the socket netlabel if it's set.
+ 		 */
+ 		if (!rc)
+-			smack_netlbl_delete(sk);
++			rc = smack_netlbl_delete(sk);
+ 	}
+ 	rcu_read_unlock();
+ 
+@@ -4548,7 +4552,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
+ 	if (hskp == NULL)
+ 		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+-		netlbl_req_delattr(req);
++		rc = netlbl_req_delattr(req);
+ 
+ 	return rc;
+ }
 
-Because it isn't meant to handle any part of the handshake at all,
-just the record layer. The user gives us data, we stuff that into
-records and send the records down the TCP socket. That's it.
+---
+base-commit: a91337fb5e8e0127c8b5be87be9f3027f95b48bc
+change-id: 20261106-cipso-rcuopts-e26ffa45b392
 
-So what you're proposing is a very fundamental change to how kTLS
-works, I'm not convinced we want to go this way.
+Best regards,
+--  
+Jann Horn <jannh@google.com>
 
-> And when it receives one, it blocks the socket until the
-> application installs the next key. kTLS also does not enforce the key
-> usage limit on transmit.
-> 
-> This applies to TLS libraries in user space as well as kernel users such
-> as NVMe/TCP or sunrpc:
-> 
-> - GnuTLS sends a KeyUpdate after 2^24 records when it runs its own
->   record layer. With kTLS, the record layer is handled in the kernel and
->   GnuTLS therefore never runs the check. OpenSSL never sends a KeyUpdate
->   on its own.
-
-If userspace libraries don't do the right thing, we can fix the
-libraries. They will anyway have to be fixed to behave correctly with
-only the "old" uAPI, since they can't rely on this new stuff being
-present in the running kernel. Or they'd have to completely disable
-ktls if the kernel doesn't support this new uAPI, which would suck.
-
-> - NVMe/TCP and sunrpc don't have a mechanism to install a new key. A
-
-And that can't be handled with the existing handshake subsystem? (I'm
-not that familiar with it, nor with QUIC or NVMe/TCP and sunrpc)
-
->   conforming peer that sends a KeyUpdate ends or stalls their
->   connection.
-> 
-> RFC 9846 (July 2026), which obsoletes RFC 8446, makes the limit
-> mandatory (section 5.5): "Implementations MUST either close the
-> connection or do a key update as described in Section 4.7.3 prior to
-> reaching these limits." Long-lived connections with small records reach
-> the limit quickly. One NVMe/TCP queue sends at least one record per
-> command, and more with large I/O. Depending on the load and link speed,
-> the 2^24 limit can be reached in less than 10 minutes in many cases.
-
-My math says that's 28k records/second, it's a lot.
-
-
-> Why the record layer
-> ====================
-> 
-> KeyUpdate must be handled where the records are built.
-> 
-> The 2^24 limit is a record count, and only the record layer can see the
-> count precisely as it changes. A user sitting above kTLS can only read
-> the count with getsockopt(TLS_TX) after each write. A kTLS user writes
-> bytes, and the kernel splits and merges those bytes into records. I
-> counted send calls in an NVMe/TCP prototype trying to guesstimate the
-> 2^24 limit. The count was correct with 4 KB I/O, but was 21 times too
-> low with 1 MB I/O. Each send call translates into a different number of
-> records. It's simply not possible to precisely guess the number of
-> records based on the number of send calls.
-> 
-> The KeyUpdate must also go at a precise place in the record stream
-> (section 4.7.3). It is encrypted with the old key, and every record
-> after it with the new key. When the peer sets update_requested, our
-> KeyUpdate must go out before the next Application Data record. The key
-> can only change between two records. Only net/tls has control over that.
-> Fixing this in one driver or library would leave other drivers or
-> libraries to re-implement their own (imperfect) solution.
-
-I'm not yet convinced this is a strong enough argument to justify
-changing the model under which ktls operates with a change of this
-size and that also requires 500L of new selftests.
-
-
-> What the series does
-> ====================
-> 
-> - Two new socket options, TLS_TX_TRAFFIC_SECRET and
->   TLS_RX_TRAFFIC_SECRET, are used to register the application traffic
->   secrets. The secret is passed as raw bytes. The kernel derives the
->   hash (SHA-256 or SHA-384) from the cipher installed with TLS_TX or
->   TLS_RX. The TX secret must be set first because the RX secret needs
->   the TX secret in case a received KeyUpdate asks for a reply.
-> - A third socket option, TLS_TX_KEY_UPDATE, can be used to send a
->   KeyUpdate now. It can also optionally ask the peer to update too.
-
-Why does this need to be a socket option? It feels wrong to use a
-socket option to trigger sending data, why not hook on sendmsg()?
-
--- 
-Sabrina
