@@ -1,117 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793977465;
-	b=1HqbJZ2Pi8jobJSDWGe0usBa+8lJMcSUeKSIhtmprn9OI4ST6WiLgVSJVOa+x92cSnNS
-	 NuxdZz91XXQtaheC66UD030gDgJHjgbC2ncE/uzLfooGBW+H83tATtn7E/xnT5X8yVoqp
-	 34lK7qYVUQaawwpIaTo8NoWJ+f5H4bQ0bmj18msGTLkJtGntLcCxDCeo1y2e0tmvh3oaC
-	 9H6YLWiyPOyDhY2PIscXc/iCO+iWcEWnw7wcKZAXl4cOhqjgMUR9jhMAilMABuYS2O5w4
-	 AyyqiDQgqSDAbm5ur39O0IohD4WO0Uo/B2NgobGQ4WFiVRprrBLevkjRIWndVJpwDCA==
+	t=1793977517;
+	b=MrChAOQ+GMHkAGKXVQP7qIJmejxzaNLuIstPSE6lsDjPU562yF+aKgONy4FOMiEMa4tB
+	 m4HvEhdEMHtonIv/0fijl8VjpMcO5jJ+nQVbYpwMpSNOfr2V2It39d/T0SRZDR4zvJp5A
+	 ygDV6+vghdwIOOlLfF3XM48PNpDUKMUt6VnahVFjyTCHVjP7btVx823hbJTDiVj/0IOBf
+	 bxjwEKMFg7xQL7wHjvHPBc68+ZAgjcX+PQ0efYOPoVweDMZGnSV6+lOEkSCJ7Rx8C/G5u
+	 DKIlBs4apytsGj+snkQQbyJb4qgpyPWtrkbGybeK96bpqiqtJV3IW2nFmEujkMQ2OuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793977465;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=VFHEfM7uSHxmbeEDYFc714iPr6SLeYV/p8Cpk1n20G0=;
-	b=c7afriQ6rKZYUe0mxSh+jcnQ6aKzBloII7txd4ZLUShY/DVV6GYd0mEM7x8UKCPxoEqa
-	 scZWegTS1s4ijozutqNaw1igGViEcs20BwZCQ6UWpuQ7McMj8O5AsXBhzxPiB/BM+aFcG
-	 avjdjjfvBSTRgGQf0fjWfh+86cxpQw3QNC1zhXBCYMew/T9n8ebrFfoAEFmixqCqrK3v3
-	 +NmivJZjw0Eoe9/MZOPwHZfoy8ixe5PIFVNKh6Bhli1zQ6jq6AJYxw9u9YODk6oXx7G7T
-	 JyCDI3eYnMFHNBtCZn9Gk9zHb5xqDFKNIDZdL599VvINptcsrfAyZOt8zDLGJv5OXiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793977517;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
+	b=sRWHQcttaj6MjjTXZrYc5hMuHSJG754CNBI6J3R7FwU4ELA/0xKiqjzI8kQi7clw5fu0
+	 ZKssplKGNuZ76DgkLHQw87QrfQMKDjQubYssYoXCRQWEKo7aW+Y4Gykj4fWezhi9+MifN
+	 nPP/LOkNQTos8wFcE51BlP9S+M2qDlvSMO8SZkYw5dHSIXGlrhlOL5/S/cOiRf2ieuPYG
+	 P8/YJ/ZHXozcPQ1dYkamDNqL6iSttmzRAeQ7hAm8Vox91GtUnCiajJQfp53qHMVKaPPpO
+	 923cxSIa5jYlavnLTDLUJN84PbzQzgINEuYtfau0kRK11hhTRvE3dpm7ZgEIE47EP3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WWK8mNFL;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=S6xiJ5wq;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rwgv8l4Y;
+	arc=none smtp.remote-ip=209.85.128.46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A104D606A334
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 15:04:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A104D606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3209606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 15:05:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3209606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WWK8mNFL;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=S6xiJ5wq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793977463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VFHEfM7uSHxmbeEDYFc714iPr6SLeYV/p8Cpk1n20G0=;
-	b=WWK8mNFLyxjC2j45krxL8GA94iDaW8S15uiC9+1WBaG7x73VUQEAmMAuKCzRsZsRdaTK+g
-	1k2eorJfUNkTsLpGqbF+ZpSpEQgEaFRobpU/hibCOzwzCPTqDrvZjJr+QZXG1FtPZ3r4Un
-	oYzpYEx1zYQeeCH0q6qA3D0owybM+70=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-0h5U-VigP_-UeITxobCEpQ-1; Fri, 06 Nov 2026 10:04:21 -0500
-X-MC-Unique: 0h5U-VigP_-UeITxobCEpQ-1
-X-Mimecast-MFC-AGG-ID: 0h5U-VigP_-UeITxobCEpQ_1793977460
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4916bd6e3baso787568f8f.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 07:04:20 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rwgv8l4Y
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a59ffacb51so780625e9.2
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 07:05:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793977460; x=1794582260; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VFHEfM7uSHxmbeEDYFc714iPr6SLeYV/p8Cpk1n20G0=;
-        b=S6xiJ5wqA/od7IZeJKfPCBCmLGnEDEfekLmT15O1Ac+R9YG0Aw0ZvJzxQjJPtRHpsL
-         o1APzKoVg6LEr1p8ZDdWgP4NhMgVdovYLS6OB2R3Zn0BKKFo0VX84vpYZgejxXTackc+
-         ONSCixlpOKR7RORqTMhBOOzLuFYBJsc7pCNkqS6CkLESwD6CsLEjyya50G6ZNUAkkTHH
-         Jx6jdsD9/TPpXQGP/SIQDji8sWl+5c3hxCDFQ9i/Wy+OUbUrNL3es3PNYxvYnabwaulN
-         epOf4U6AvYLKS7xhkc7+rOl2+JKpGmKEj+2ZeotAWLctJNwlUl+MktF15EncOy+LKERg
-         XUZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793977460; x=1794582260;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793977515; x=1794582315; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VFHEfM7uSHxmbeEDYFc714iPr6SLeYV/p8Cpk1n20G0=;
-        b=Ldxjin8h7G6HrYBKrcGD72LS+8afo1PQzgXFYmOQtazGct9WT+j/JHhWuyHTw7kMfb
-         wa3hBaknRnJ3KgWj5J9PricR5P/MC6VLKpkO6jklCZhfekWv4sOeLvInpOW9HbsFGdoP
-         WsbreiRim/aw+xaKgWCfhDNxzf6lqxjz7ARSJUrdBpV7Rcqx+nER4OoSsxLPmzZVuH9h
-         R1Nv9B8FVUAekHXtgNWL/KvTQzg/AEI9CGXldiv9D1OMnpKhb+9MOyCFTPS7HE8QAyzs
-         aIkWcAPbPwJfSnmQB9xPozbVEMQytHILJR1VsS4oAqP1iWiy6g6XVAaYSBc3n2zNiE+c
-         MlCA==
-X-Forwarded-Encrypted: i=1; AKwUvBzyrK4AoqyBrtuvra30NqdyESuJuH0VvcO8OC9+/nYSuLRbLrN7504wClnTeV4kMpzVIcvD7+E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8q5BvNtbA7hIL+qpCjf79rViRG2k2jXmJQDwTSwX5DwBZ/Y1O5
-	QVvVzc/sEgl+nAceleteDLwY+pfi44g6s4CZT5dnE87rv00a0eI5ehHaRYR3bqCOZSSMMHGUTSj
-	cMDFTyUKfD6fzAUIqggzXeBv7O/UujXxjIk5reaR4kuELuIK74RRNy+EfrA==
-X-Gm-Gg: AYBFou2z96dAyemY2fydvb37c62duOYQksyv/j89aZUems8wD4R26KQGwjyJ1n+LQfc
-	V+q5ZPzkrSgNLiLYLm7PdrI0B/d3Ehkx0H+RxpiJlBAS367qoYxl8piguVpdqLjmeAGeH2YvyNI
-	G2KMom4w4BqVYoPxnRannMQtgRhhCqo4bB0Agb1TsvstITlIHQ+ZHQMBufYVQBZVPAQL+wHqcJ3
-	yxq2+J5ap4l2Ytj7ypw8rV66muS6taBQ/WKvdIHNSm+KmFH/GAOLjnvmy/gngwcEi4T16xionk3
-	2UR5SviX9PpIo5UOdmA0TWPJKVN+5cg4cDbqaok9YWZ3RiHS0l0RtBwQzwhwygplWb6WYKsFeux
-	OAfcihkYm2lbXtdYAeR9uqOEWG19QEU0nBhPmfueBTnD7fIAfewgYGpb7pTNaN/0Fe9SLmbLkFT
-	UbDCUIX2zN
-X-Received: by 2002:a05:600c:37c9:b0:4a1:e0d5:293e with SMTP id 5b1f17b1804b1-4b6df8c9cbbmr42830165e9.21.1793977459573;
-        Fri, 06 Nov 2026 07:04:19 -0800 (PST)
-X-Received: by 2002:a05:600c:37c9:b0:4a1:e0d5:293e with SMTP id 5b1f17b1804b1-4b6df8c9cbbmr42829535e9.21.1793977459116;
-        Fri, 06 Nov 2026 07:04:19 -0800 (PST)
-Received: from leonardi-redhat ([176.206.36.131])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7626a2804sm29251095e9.4.2026.11.06.07.04.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 07:04:17 -0800 (PST)
-Date: Fri, 6 Nov 2026 16:04:15 +0100
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Andrea Parri <parri.andrea@gmail.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Simon Horman <horms@kernel.org>, 
-	Xuewei Niu <niuxuewei.nxw@antgroup.com>, linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] hv_sock: Report no unread data before a channel is
- available
-Message-ID: <au3sW3i2qjKDLMzq@leonardi-redhat>
-References: <20261106123920.162131-1-parri.andrea@gmail.com>
+        bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
+        b=rwgv8l4YyYaxXg7OKRyBgrec81Wj2XRwnaT2rX8+mqtfax8O3c03Ic+U6aSBpJFY/y
+         nEX6ZIKAh8Hy0TtrYwI42iVJNpvaZ2IIV5tUt4HtUnH+sT1wC7AQ0iNp3EAyp3Gmr8GP
+         l8YnNTZXAS1lYleXsSzw1Y0s3hmfDNFcfEbZYItGu7ifEmssnowHZydjvWZX0E6QMr4r
+         A5F0ujiGz5jePPpCxhU2Si9nuQnGXmtB6kcC8Yof08dPSbjmd3mykchA0YN71qFfuGmn
+         PGihV1cs315CtZkT5pUcmSSGN6hc+qN7LbHV3x852jEyiFM9Tm5dBKKa5SgZmjcnFSTg
+         VHlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793977515; x=1794582315;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
+        b=L0LhsY6WXz8XGcRy8KP6BPXhnUpx/3DkzOJB2VPvR3PyuVV1kYd164dvQxILaEhuUg
+         XrFuJ1k92CNfMKzU7u8Ad239KY5WXlhZPMOWt3Aqgns1Y9NuM5YYxijc609v/ex3OMO/
+         MyhCi0HCxmC3RC5gD1qdkt1TuPX6Tws0UP9+C5HoucqqLnGpaM2FX07dOLvuNPLyHAVj
+         KQdfMRU6Zbdg7QShUA8Lo0OTvummh4ywPHS57FRZv8WrnfKXD9lK92G8DL639f3Mf6XP
+         jzDzE1ikUnRHDVMIUay9SyGUrpuc+hQwy+oIlIN1KrWp/sWCDrkktK7rDwZygE2qCy7O
+         8tBg==
+X-Gm-Message-State: APuU4Z/sqGi/ZGTvHhqrwsHmrZqf7bcKns7MGMuFb8asmoB8No91/yHg
+	2ynN/RyhvtivemGeZfz1vilmtKe9fzjFRNbYmqgLxUxd/ObO2t/2kng2d3XvcyKH
+X-Gm-Gg: AYBFou0OIH4Ys5i8204OVXTYVYcWSd3Q3/4TqSOxCw7h+Ym1m+5a70CvipFL5Wss5Ri
+	FPcmoIeomDeXX6lUmKCDYuWn58BdTHW55MT6yPGgA2nhOoENP6jbByggl3Iyt9fZ1H+b8oU1dT/
+	SQLExUK+B0fLJEGVhxDxMdy41rLk+3tTggX5388yPFbvGqRM8eZEj26Ww7HF2l+M3RQPBvj5z7E
+	HyChDfYsKOg83Ep1olr9EHn7aq/id9FLCr8Qc1A0tpyaDz19Kzx1Bmu7T7ev5yXk0CwoprKu0FY
+	pvibcBURZICo/Dk0cvMrWt6JZ1cDGpTozT+cnBdYHaP0aUAd3oVJRMdLLGLAgXB8GP6nxZz2YTb
+	2okvkC8MVtPJ7QAVS4kfzAvBL1PfVco3jL6Pvuv5TyMUktUnfiBUjammBG/XV4mJMysUKgW/Qks
+	V+Mwuukxq4a0US4bD4O6/uD/dFtieZc6qA17PQyEzfo1N6cJD1iP/Uk9TbcPYgmTaCK6tVvJVqH
+	yKkHkHbW6vLbqDVHHLhlGLw1nlrnC0g8pDUpoTSJRQ56NyjzOPMOWYbMmx7aAGOgpzBhPo3Q2Vb
+	Vc8TMz4/b9i/I+T1yLFJ8rI04w8la6LtU6kRLra8hIohFucp+bS+v0dVBL3kuCbIvOzuJAED
+X-Received: by 2002:a05:600c:c111:b0:4a1:715d:1913 with SMTP id 5b1f17b1804b1-4b6dcf861ebmr36412065e9.1.1793977514681;
+        Fri, 06 Nov 2026 07:05:14 -0800 (PST)
+Received: from localhost.localdomain ([193.255.169.14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56e58fcc6sm260950305e9.2.2026.11.06.07.05.13
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 07:05:14 -0800 (PST)
+From: =?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	hmohsin@meta.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
+Subject: [PATCH net 0/2] selftests: drv-net: ring_reconfig: handle devices without channel config
+Date: Fri,  6 Nov 2026 18:05:07 +0300
+Message-ID: <20261106150509.30458-1-ahmetbilalyazicioglu@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,52 +102,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261106123920.162131-1-parri.andrea@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 01:39:18PM +0100, Andrea Parri wrote:
->The Hyper-V transport is assigned before the asynchronous VMBus channel
->offer completes.  Its zero-initialized hvsock therefore has a NULL chan
->until hvs_open_connection() associates the channel with the socket.
->
->SIOCINQ can query the assigned transport while the socket is connecting,
->or after connect() fails once the transport has been assigned.  Unlike
->poll(), that path does not check stream_is_active() before calling the
->transport's stream_has_data callback.  hvs_stream_has_data() then passes
->the NULL channel to hvs_channel_readable_payload(), and any user in the
->guest can trigger an oops:
->
->  BUG: kernel NULL pointer dereference, address: 0000000000000178
->  RIP: 0010:hvs_stream_has_data+0x23/0x120
->  Call Trace:
->   <TASK>
->   ? vsock_ioctl+0x74/0xf0
->   sock_do_ioctl+0x42/0xf0
->   sock_ioctl+0x27d/0x310
->   do_vfs_ioctl+0x700/0x810
->   __x64_sys_ioctl+0x7d/0xf0
->
->Return zero unread bytes when no channel is available, before accessing
->the receive state or ring.  Leave the existing channel-backed receive
->handling unchanged.
->
->The oops was reproduced on an unmodified v7.4-rc1 kernel in a WSL2
->guest with a small user-space program, available on request.  With this
->patch, the program reports zero unread bytes and the kernel logs nothing.
->Other vsock_test cases were not run, as most of them need a host-side
->peer.
->
->AI assistance was used to identify the issue and develop the fix.
->
->Fixes: f7c722659275 ("vsock: Add support for SIOCINQ ioctl")
->Cc: stable@vger.kernel.org
->Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
->---
+ring_reconfig.py assumes that a device which supports ring parameters
+also supports the ethtool channel query. Drivers without a
+get_channels op, such as e1000e, return -EOPNOTSUPP for it, and the
+resulting NlError makes all three tests fail.
 
-oops, thanks!
+On a ThinkPad T480 with an I219-V (e1000e) "ethtool -g" works while
+"ethtool -l" returns "Operation not supported", and running the test
+functions through the in-tree YNL library against the device shows
+the three failures.
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Patch 1 skips channels() and lets ringparam() continue without the
+optional channel reduction, patch 2 skips reconfig_tx_stall(). Only
+EOPNOTSUPP is handled; any other error still fails. The patches are
+split because the affected code came from two different commits.
 
-Luigi
+Testing: there is no remote endpoint for the T480, so the full test
+was not run. The test functions were run against the real device
+under ksft_run with a stub environment and all ethtool set requests
+blocked: before the series all three fail, after it two are skipped
+and the channel helper returns after the query. They were also run
+against an emulated ethtool family (unsupported channels, other
+errors, devices with combined or separate rx/tx channels, failing
+channel set and restore) to check that other errors still fail and
+that behaviour with channel support is unchanged. pylint and ruff
+report nothing new. Not tested: the full test with NETIF and a remote
+endpoint, and the rest of ringparam() on e1000e (see the note in
+patch 1 about ring size clamping).
+
+I found this while looking for kernel tests I could validate on my
+ThinkPad T480. I investigated and validated the issue on that
+hardware, defined the scope of the fix, reviewed and refined the
+implementation, and extended the regression tests used to validate
+it.
+
+This work was AI-assisted: OpenAI Codex helped with the initial
+source analysis, and Claude Code drafted the implementation,
+changelogs and test tooling. I take responsibility for the submitted
+changes.
+
+Bilal Yazıcıoğlu (2):
+  selftests: drv-net: ring_reconfig: handle devices without channel
+    config
+  selftests: drv-net: ring_reconfig: skip tx stall test without channel
+    config
+
+ .../selftests/drivers/net/ring_reconfig.py    | 24 ++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+
+base-commit: 19a227903e65c7a9c179156485660a4e017575fe
+-- 
+2.56.0
 
