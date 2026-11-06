@@ -1,49 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793956206;
-	b=eTjVW04nkHi9vRfS7dz6pofpHujuLT3IbO16Ad1o0natEI6GMh3+LxTpEvb5KyjvzMlP
-	 GENe8fVPe+7x/rYX8ywwfiZ+rPDGY9Agp0IVG6x+2ybV47fmG/wENEBZXyzYZknNR9h96
-	 +QlhbmoB08tUX8GbVvJCIyb4d2H15siiF1VorgccK2QVFQxPplnN4gFHcL1WwFbwFdgGN
-	 kkwW3esUVbSiXptWECxgiVcSko+E72J+MhkswGQiXx+6thOb75z6LbhVnBtkFxVtZ8+Tq
-	 JFUJG9sX7Ogm23tv6XIkjiRDxSwMV3PBEuXzOaHYpgXAI/CrKey/dr124Vsy/rJDySg==
+	t=1793956309;
+	b=TRmKeWstGYgq7CT7hY/lUq4E41PHUcAMGPpDw7xmc9W+Zc+F3cYIlD1XTJEw/wH8xEWb
+	 WS3iJtHZIoIbBj0MYufpgQHdfenPYB5XQDxJGbUFf1wE4kIkh+YHwSzZTlIaL6W8n+5oz
+	 7lFP+Wqjzjo/l3WW4ZReveg0QxiRENta1ZswWtZv7JZH8e0wZLMd8/8P+a0UgOrDC6U+4
+	 kLBi6FT2zWm5m/8jW01uhzXNj/46q+G9rvr2VnGF3GrnjY1QMUgCsguxrXti3T1rxBhjw
+	 hZXX/jPrMcaoiv5Y35BrC8EgDZ6LlgeumtASt0WOu349vWgMbhTgWBCnsIkRW5QIA6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793956206;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=WT7UUO2qRTyZeJPJSJo20gRPQbQTkOuKSKT9x7Ux1m0=;
-	b=4C3W6MkhorUJ/fsT6OGAjCNZ/CuxlxZ89B+Yg2VkrTT/WkTWY+6qlUWWnHFyIZwVZPnU
-	 QoRbog8SScR3iwufBigd5UVohh97TrCX2T4aa081t4Cv6Q+veiXtDus+NG7s9Lxuotl5m
-	 p0AKs4XAu2davi0q5lUK4uFoVLEAfXcBKu0MKe1EL93g/2VkJAdiGcXHXKjssJiHE7t7M
-	 ic+TDlKvuiFRd+stH55w4ERq+fT6QTDmfvFmmRY1AFwNqS48/iOHaSvoXYFtZc1sVtbUE
-	 SKFJDwnrrsGSOsfCFun33wO3v5DfUZwmRd/eicNFAlNc0E4AHFUMd6hqI8XISiYnTNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793956309;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	b=Jf18l1IGlMqetL2mYxMuzRF8dySzLjesGajEOdzqOGv1W1AZTq/UymTwUcysZ99GCnE/
+	 YyfGsavLexjk1XqdFyP/5NjEbY+KnjLE+6aN4/jP+p44oCJUhj21ixf4VHclJPsEXlkDo
+	 CJMlV7SKaXVXVfLmPU3+H34v6nRdwXnzuTef7+lMJs5M7pgnbuZiTP0+FaLOhfPc+2KL7
+	 IuWm2JCrLtTycX6G51ES+UIQcHZS/LeTPbJzpWdvFd4SbX646hCkX4dMwZIa88dqGRH3x
+	 NUFKkICM+Pff/fSFyBLRa6RAV85CJjJ3wB2wsATQpdZ3j+TxBqFNh3KH+MLNNfDvBiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYxmEhe+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C4ZcNPkS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893CD606A326;
-	Fri,  6 Nov 2026 09:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AAE606A328;
+	Fri,  6 Nov 2026 09:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYxmEhe+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D22E1F0089F;
-	Fri,  6 Nov 2026 09:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C4ZcNPkS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D7E1F0089F;
+	Fri,  6 Nov 2026 09:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793956206;
-	bh=WT7UUO2qRTyZeJPJSJo20gRPQbQTkOuKSKT9x7Ux1m0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dYxmEhe+4b0Ast43BVBf3uxZiTx8LwFtUI3T/z/ZQ8feeJBSVpkH8VS6tGSWDRml3
-	 2aW+wYepKNJeqPEdwyAHN7ge+TJwSGynvpsJ3Jn52QptML1DPcScBosLoXZn7mq8pA
-	 iBhx3sgCQWv/HcbpXr8/vxjqYfZt3WkiG+YxIkvnaLCVdZOOdJWoUtGE99g0tCoQYU
-	 +4J4D6X8wTeL4BPTxqAkazxNcliknJrsCy40rq2lZXE5OOmkFftgp8nQw3HGLhHtxa
-	 8B466rW3iifOaQ42Z9wHgalPDM5OKkWJXm9v0PIRueulr5ijWXwY09Mhwq3g9+dhvB
-	 g4VUySpNHb5ig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2102F3924475;
-	Fri,  6 Nov 2026 09:10:06 +0000 (UTC)
+	s=k20260515; t=1793956309;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=C4ZcNPkSyRQJZ0ssAxyOMZ6NFqyoKY/VDCujA8FssoHINi3z2X3hPbUHDPdeXI9vc
+	 eYCG814CQSAlEICIRTKLQ0GM88EyBjkhZ+qdk4fqN1/egDjG9IK4Zp64lxEV87Gdu0
+	 IBCJIeac5mBite0gVy9eUWdY2B1MMyUR3VlVGaV1L6dpHIgEK8MUeBC4zv73EQ/PK6
+	 TPtzgyakdQ21r3JF8eZQQOHd+Us4Xo6p0ETmPwXoY578Lvmkt/svBechSexZLD+tLv
+	 4jlJugHLDXDXRx9e0giw3MySAaf8XEcHaych+oiYGidzNOERGrbfvMgXTeLgmMUGKq
+	 frDF3t+wXlFWw==
+From: netdev-bot+sinfo@kernel.org
+To: Ding Hui <dinghui1111@163.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ dinghui@lixiang.com, xiasanbo@lixiang.com, yangchen11@lixiang.com,
+ liuxuanjun@lixiang.com
+Subject: Re: [PATCH net-next v6 RESEND 0/4] net: stmmac: fix DMA descriptor
+ ring cleanup issues
+Date: Fri, 06 Nov 2026 09:11:47 +0000
+Message-ID: <179395630778.488859.15565408556126944757@kernel.org>
+In-Reply-To: <20261106090507.1020751-1-dinghui1111@163.com>
+References: <20261106090507.1020751-1-dinghui1111@163.com>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,43 +69,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] openvswitch: advance by the real header length in
- get_ipv6_ext_hdrs()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179395620493.468896.4953310434961799726.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 09:10:04 +0000
-References: <20261102-ovs-exthdrs-v2-1-21ceef6a243d@gmail.com>
-In-Reply-To: <20261102-ovs-exthdrs-v2-1-21ceef6a243d@gmail.com>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
+Hi!
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-On Mon, 02 Nov 2026 01:45:35 +0000 you wrote:
-> From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> 
-> get_ipv6_ext_hdrs() walks the IPv6 extension header chain to fill
-> key->ipv6.exthdrs, but advances to the next header with ipv6_optlen()
-> whatever the current header is.  That is only right for Hop-by-Hop,
-> Destination Options and Routing headers:
-> 
-> [...]
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Here is the summary with links:
-  - [net,v2] openvswitch: advance by the real header length in get_ipv6_ext_hdrs()
-    https://git.kernel.org/netdev/net/c/dbce972650ed
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
