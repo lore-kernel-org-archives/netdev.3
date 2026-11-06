@@ -1,84 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794001870;
-	b=GKgkulfcLi9F/vobR6hkuE5gyNTNO0m3sdRKA6Cw4p7SWuP5a6LSC3PZL4SreohXBY3R
-	 5gUEBiwcO4GPgPUvzBl3ytPoQa8ok8KlOufUVulxagqZVCzgNlJJGeGvNn6EaGuhLhsjF
-	 0af4smTlbHe8CzvyUx9ILcNPUi7lqVKjnnWsZKA2W+g1Nb0pmAlqPrVcz0k0HmAa8AroH
-	 sWjthHa3WB6Ih1WVVvimVhqPm7/lpSPD9McEIO2vD2YH4W2Xg8a49uavSyiOjckGJwg64
-	 R4thmDAnCmbESIyZ6REBCQTS5M5X4+ZHFNewjwtMrKUjRKswJtaV/MtVxLPrQkWYmxg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794001870;
-	h=DMARC-Filter:Message-ID:DKIM-Signature:DKIM-Signature:Subject:From:
-	 To:Cc:Date:In-Reply-To:References:Organization:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
-	b=A9s/7mndhOwyB3FlOdWAQHcozUUoMmuQxrqn7QDGKT7fQFt0CP8kd+yorknOtHzuj1jK
-	 XOYP3maxyMC0kkMCcigKSrOzn5cZP9v1oFgfFg2WBrMZgcXDwG3uOtXJdJlXrTuSf6DCk
-	 cgu7pilPf9Hdn55//anFfPz20ua842lZtF9AzahrwZO/hyXm0CO7ZJlfjCBnS3OafxpX3
-	 6dT7upWGyWO1PzITnoB27zqRF9ag2W/trDAxD1FOeWxB+p5XxGmaAKhvHMlQwMA+UxHFG
-	 47T4dQTDSlIvVk4T9SxyhJm7jamW23q5WXHuzFAZhJhL5CDW85rcbSbficvGc4dQ78Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Qr+zythi;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57L2AJeo;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794002245;
+	b=BmaQRmd+ASxwyQ1jz7u6xpg5nC5CbwhcBedxOliYbxwtdPOhGX3nsmBqUVsWS0oimsyU
+	 pcQsXa0yxmsl8EM2ZItdoIk7uai5dwkN8ouDwJnveHW+yMkJekde+O76qSJVzbRBOh2wZ
+	 sI4ikxsP9w6uOSy7S5EKBMV582IIlPbLSvlGwXTfPDLvjS+J8x8eOpDj501GrRwomhuJt
+	 ALSIYT8MboBbUWJOLMjB01SNjfs/FdwJE1xwadvqXvL2kF+pTwU393zwNGecrEGI5wZ/f
+	 +eTJqRH+gyOtHEczHuaIHzIXbbIzWuL0whpifC0DDtHtMJU97qS1emlzwdUzvUkTHXA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794002245;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=uJnC3E5LSZQKM5Vic0qZdHZV/eCxeajn03COeeAIM5w=;
+	b=qAZQ7hQbqtJLKzjEMrSzcCQTDfwnc0TecTPhCw1IOy8K+4gTjGf5VhuIsZkmVHbzS2fE
+	 8tQ3xyEU70oVlhIT6nTdvFhnxeErUj9pFQ/356PCHxSUWa6fM6OUhOv9pqSCtRpbOI7tH
+	 9Lq3ehmzZMlDjbWJAglRb75JVSOOGvZ+AsLQTLk2nKVZmQlz5Dv/Dyb21E7WN1b/pJ7Ji
+	 Z8xOI9D+Uzba9LlotdeStrK+eaAAcqtm8PGjdS64BH+1q10pKxygSuD5oUv9ExbXihxkP
+	 ccamStqxeuFSpWe+w8h4rPkTXhw9qzoHSxfA8DhDhNEHK2e+rqotReJ2lDTcXrC8aaw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BUgFrV7s;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C10606A32C;
+	Fri,  6 Nov 2026 21:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BUgFrV7s
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794002245;
+	b=OjlMyTJzUD8nqrnvbrCMdB1iRHJMUuirtQUqTvdk9zGDsffC98Mvju3mPAeihhiuiLya
+	 PQqgVqE15HIODJgKV9IckZegLXU85g3LDuVdjcPPqfPGtw/IX7UEKEApq3D9ktrF50C4w
+	 Z8Cx+d3H7sWE9YA1HNG/Jce1ZJVtNoP1h7P6G/HZyZtD5sqJj2FBipVmmUTev6p2mxZeA
+	 5mrezzSlSsWuW/SdENrl9+HDSA8cHLzODlZX+u6/hNjFSzxPETq05tCO3Q4VHJIYmMBIY
+	 5nzqF7H4QL06MD80aQGamRPt+deUH9EzYgb7bu/jEbwGIn2zmTOdz6ZnTBZgmtNOrsg==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794002245;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=uJnC3E5LSZQKM5Vic0qZdHZV/eCxeajn03COeeAIM5w=;
+	b=jVbxYwMzgHAlAQ6fjEjfhZTZxGCoOXU1HFliZiRbQAg7j250PJAwgazLFEuzzFjTF99n
+	 ABxvzhXDQhHj3y/hLltnqPmKQgBmjc5ofP8VzFKXfBcvr83ZxIWoQhzumqH1018Reqaru
+	 pGM3DbDUhoiIL3KOt74TF1oL8TSngDzLbqOUtbAuUDy2uLapLbXD16VxLZosB2kDEljvN
+	 B6jXVy7ShwzXU9gZfRCGuAwS2fRigj5ry1DPFvqmxgZwIsAq2I/b09M+N+b6I+XqAX5ZA
+	 4pQWQQ8FtdOQfgfNVE/5TOjMElDa+qUAS7YDSsL4NSkFne+Vl3dC8Rd8+YQH3Sc3fMQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771DA606A32F;
-	Fri,  6 Nov 2026 21:51:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 771DA606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Qr+zythi;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57L2AJeo
-Message-ID: <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794001867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
-	b=Qr+zythi7fd/WCMR/wC1lIwE26rtLXt2OGzMpWM7UzIMevSXxu0wb7MdigNzhn5jlurEQP
-	eKImHUsS0sH9Yoz3/1yMKgzB+uT0Fa3tsUp040h6x8bGtwwk/MJZL3d2I2n94v9Y+0tn50
-	XxfbSlqtzfCpltoqdh6xJWCUHQmKS3jqCH15dLCL8geld7+0GF9Cv2XtA/whES2lhOtFa0
-	Rdez2AbnhPofdvz2K5MM+uDPfsv+7vZ0xpxU89RTJkJ8wtClYlAuWI/vOWTh/ylrgxcTDC
-	2wwn60Jbhr282GJjbcWc+Bd5ISTMmn/dmZpANyjXbVuW7i71W86opPwMAH2qRA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794001867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
-	b=57L2AJeoNrxbbDcFsBAzZ/DFjdkvyDKP3GnGuqadUE36FX+Fv2BzCEN4iw/VSR8EzIzB2O
-	K3q3DWu42nW1QqDQ==
-Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
- Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Eric
- Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, mfd@lists.linux.dev,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Fri, 06 Nov 2026 22:51:04 +0100
-In-Reply-To: <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
-References: 
-	<20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
-	 <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
-	 <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.kernel.org (Postfix) with ESMTPS id 069141F008A3;
+	Fri,  6 Nov 2026 21:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794002245;
+	bh=uJnC3E5LSZQKM5Vic0qZdHZV/eCxeajn03COeeAIM5w=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=BUgFrV7sPcMJWKgGRACQVDniM09V1FgZXrXU7NddC6hiqGlmdVe/m9uuvli8iMQwN
+	 /GBJN3eV+a9BdzAc6zdH4FGRORxDmqkLKeZO6etMuyAcw1A4RM6Rd7Xy/Z4MeK/H3F
+	 GlOlU78uygyBx7HGUNAlEHVC7HpRlBMM4SK7Nu4acG0e4dqkGq3Ni/3fRztQorYqwe
+	 fB+S9ig+f5Y4JuRPALIa1EiLr0sue0hY7L/XLnAjlL3N9yeUc4Ff/yWiq0hrw2WGeI
+	 OY8yxls3iDjsKFiaaIdtWLUhKB0A8Ize1qOkns57LppliiUAnYNjH7KI9uN8Q5y+Ir
+	 aq6CH5vo9Am5g==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 6F3BD478A9;
+	Fri,  6 Nov 2026 21:57:23 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Fri, 06 Nov 2026 22:57:21 +0100
+Subject: [PATCH net v4 1/2] vsock/bpf: release sock lock while waiting for
+ data in recvmsg
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,131 +83,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
+References: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de>
+In-Reply-To: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Luczaj <mhal@rbox.co>, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794002242; l=4767;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=tMncr/t2BZDCVu+DkSDka364ua2a05eGFszh7At9iJI=;
+ b=AYg1/w4e3WXm2lKA1GWiOSiVmfBY81KRkcGtQraSUK/I77t97ELFZHMRkMqAmkZdyUrfpA9pF
+ h8X5oc7IjtJDad5dcC3ygPR5QHkyl9yFm+Qqi4sswW66P7Mw3RnGoSq
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2026-11-06 at 12:13 +0100, Krzysztof Kozlowski wrote:
-> On Thu, Nov 05, 2026 at 03:16:48PM +0100, Vasilij Strassheim wrote:
-> > Add a binding for the SoC-e SWIP multifunction FPGA IP core.
-> >=20
-> > Describe the shared MMIO address space and address translation for
-> > the required Ethernet switch child and the optional integrated MDIO
-> > controller and MMIO-controlled MDIO multiplexer.
-> >=20
-> > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
-> > ---
-> >  .../devicetree/bindings/mfd/soce,swip.yaml         | 137 +++++++++++++=
-++++++++
-> >  1 file changed, 137 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/mfd/soce,swip.yaml b/Doc=
-umentation/devicetree/bindings/mfd/soce,swip.yaml
-> > new file mode 100644
-> > index 000000000000..625be299e262
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
-> > @@ -0,0 +1,137 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/mfd/soce,swip.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: SoC-e SWIP multifunction Ethernet switch FPGA IP core
-> > +
-> > +maintainers:
-> > +  - Vasilij Strassheim <v.strassheim@linutronix.de>
-> > +
-> > +description:
-> > +  SoC-e Switch IP (SWIP) cores integrate Ethernet switching logic, an
-> > +  MDIO controller, and an MDIO bus multiplexer in one memory-mapped de=
-vice.
-> > +  The MDIO bus multiplexer is wired to the integrated MDIO controller.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: soce,swip
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 1
-> > +
-> > +  ranges: true
-> > +
-> > +  mdio@204:
-> > +    $ref: /schemas/net/soce,swip-mdio.yaml#
-> > +    unevaluatedProperties: false
-> > +
-> > +  mdio-mux@202:
-> > +    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
-> > +    unevaluatedProperties: false
-> > +
-> > +  ethernet-switch:
->=20
-> Why are you mixing children with and without bus addresses? This is
-> discouraged and shows that device is not correctly represented, e.g. if
-> the ethernet-switch does not have resources, then THIS device is the
-> ethernet switch.
->=20
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-There is no hardware reason for leaving the switch child unaddressed.
-Just an error that occurred while converting the binding to the MFD
-model.
-I will describe the switch function as an ethernet-switch@0 child node
-with a reg property for it's register resources, like the ocelot MFD
-binding.
+vsock_bpf_recvmsg() holds lock_sock() while vsock_msg_wait_data() sleeps
+in wait_woken(). The transport delivers data in
+virtio_transport_recv_pkt(), which takes the same lock, so the reader
+and the delivery worker deadlock: recv() hangs until a signal or
+SO_RCVTIMEO, and all vsock rx handled by that worker stops.
 
-> > +    $ref: /schemas/net/dsa/soce,swip-switch.yaml#
-> > +    unevaluatedProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> > +  - ranges
-> > +  - ethernet-switch
-> > +
-> > +dependentRequired:
-> > +  mdio-mux@202:
-> > +    - mdio@204
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    ethernet-switch@80020000 {
-> > +        compatible =3D "soce,swip";
-> > +        reg =3D <0x80020000 0x10000>;
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <1>;
-> > +        ranges =3D <0x0 0x80020000 0x10000>;
-> > +
-> > +        mdio_parent: mdio@204 {
-> > +            compatible =3D "soce,swip-mdio";
-> > +            reg =3D <0x204 0xc>, <0x200 0x2>;
-> > +            reg-names =3D "data", "control";
-> > +            #address-cells =3D <1>;
-> > +            #size-cells =3D <0>;
-> > +        };
-> > +
-> > +        mdio-mux@202 {
->=20
-> Nodes are ordered by unit address.
+Release the lock around wait_woken(), as unix_bpf and tcp_bpf release
+theirs. That alone ends the deadlock but makes a blocking recv()
+return -EAGAIN early: the reader is also woken without data, for
+example by a credit update. So the wait also loops until data arrives
+or one of the native exits applies: a socket error, a local or peer
+shutdown, a socket that is no longer connected, the timeout or a
+pending signal. The loop alone, with the lock still held, keeps the
+deadlock, so the fix needs both halves and stays one patch.
 
-I will fix that.
-Sashiko mentioned scripts/dtc/dt-check-style to find this. I wasn't
-aware of this before and will use it more often in the future
-additionally to dt_binding_check.
+For a non-blocking read, a socket error, a peer shutdown and a socket
+that is not connected are now reported before -EAGAIN, as on the native
+path. A blocking read interrupted by a signal returns sock_intr_errno()
+instead of -EAGAIN. A recv() that starts after a virtio transport reset
+returns -ECONNRESET until SO_ERROR has read the error, where the native
+path returns -ENOTCONN.
 
->=20
-> Best regards,
-> Krzysztof
->=20
+The deadlock was found with the help of Anthropic's Claude; Sashiko
+reviews of two earlier sockmap patches had already noted it as a
+pre-existing issue. The other cases were reported by the netdev Sashiko
+review. Each was reproduced in a VM with a vsock socket in a sockmap,
+without kernel changes or error injection; the reset case unbinds the
+guest's virtio-vsock device. With the series applied they behave as on
+a native socket, except for the reset case above, and the vsock
+vmtest.sh single-VM tests and the BPF sockmap test_progs pass.
 
-Thanks,
-Vasilij
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+ net/vmw_vsock/vsock_bpf.c | 68 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 54 insertions(+), 14 deletions(-)
+
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index 9049d2648646..6d96ff03f28c 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -34,24 +34,63 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
+ 	return vsock_sk_has_data(sk, psock);
+ }
+ 
+-static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
++/* Returns 1 if data is ready, 0 on EOF/shutdown, or a negative error. */
++static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
+ {
+-	bool ret;
++	struct vsock_sock *vsk = vsock_sk(sk);
++	int ret;
+ 
+ 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+ 
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
+-		return true;
+-
+-	if (!timeo)
+-		return false;
+-
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+-	ret = vsock_has_data(sk, psock);
+-	if (!ret) {
+-		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
+-		ret = vsock_has_data(sk, psock);
++	while (1) {
++		if (vsock_has_data(sk, psock)) {
++			ret = 1;
++			break;
++		}
++
++		/* Stop on a socket error, as vsock_connectible_wait_data()
++		 * does, so that recv() returns it; the checks below would
++		 * end the wait with 0 or -ENOTCONN instead.
++		 */
++		if (sk->sk_err) {
++			ret = -sk->sk_err;
++			break;
++		}
++
++		if ((sk->sk_shutdown & RCV_SHUTDOWN) ||
++		    (vsk->peer_shutdown & SEND_SHUTDOWN)) {
++			ret = 0;
++			break;
++		}
++
++		/* virtio_vsock_reset_sock() sets no shutdown bits, and
++		 * SO_ERROR clears sk_err: check the state the way
++		 * __vsock_connectible_recvmsg() does.
++		 */
++		if (sk->sk_state != TCP_ESTABLISHED) {
++			ret = sock_flag(sk, SOCK_DONE) ? 0 : -ENOTCONN;
++			break;
++		}
++
++		if (!timeo) {
++			ret = -EAGAIN;
++			break;
++		}
++
++		release_sock(sk);
++		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
++		lock_sock(sk);
++
++		/* With a signal pending, wait_woken() returns at once, so
++		 * without this check the loop would spin until the timeout,
++		 * or forever without one.
++		 */
++		if (signal_pending(current)) {
++			ret = sock_intr_errno(timeo);
++			break;
++		}
+ 	}
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+@@ -101,9 +140,10 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
+ 	while (copied == 0) {
+ 		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
++		int data = vsock_msg_wait_data(sk, psock, timeo);
+ 
+-		if (!vsock_msg_wait_data(sk, psock, timeo)) {
+-			copied = -EAGAIN;
++		if (data <= 0) {
++			copied = data;
+ 			break;
+ 		}
+ 
+
+-- 
+2.56.0
+
 
