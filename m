@@ -1,84 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=52.12.53.23
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793991482;
-	b=lkHMYTn4Uh2dlo0TWuHAZvoxF3p1lcxqT4OihC2ZM8YQSiyXR02DaxPvWf/WxEetXyIO
-	 23DT1keREbF8Z+TeKCmkvB+i8yI4Y3Jk4cLBqTBwKwQDWZCXimLZVs+oGInILyHEOpICF
-	 WDIbsfBCxfsaYpK84PSHOTHVv7FtOCfzoOZc7rGpSlaJ51IfvI4ob9nbzpiYghsKrkj7k
-	 53oaybwPRqRq3buROjeg79k2UvXdLNpLebIweI4vGax28tLgeZaWQf5zpJ2hQENvTZFJp
-	 CUrk5U1LAH6Xj48rcH73WW0cf2eY3yNIKoUe4LBDORqiY7hHKeOVCWXqqQe+MXISycQ==
+	t=1793991651;
+	b=iD8Cr1LghzOlLEVm9yFdRfr0U2+1KWgg68VEc1IO9WCjf2gjvjbeR9gauzmvCx4sg9yO
+	 YWe2FVDBTSoxsk/hY57Z5qRopWGPAtHkkKvWzmVWR6J1gUD77AB8wPHEGEnK3rI6SI7BO
+	 NxOvNGrmYIHnZhZO5EFVi0cQSX0c4uAvybDPpB/aKNywepLPhOLf30Fa7lxHIBB1HJ3kq
+	 SuUz/lmm53IdnUCoBwYONZoyMZGc4+kz59924O2l+p8CK4qbY7myQGvbZyIjqxosLV907
+	 QwAB3BidWBK5DqXrPniQmKOj3f/3spVX4DaSh0YeVsU4gUACV5wzW+Pwda1jFQeCJsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793991482;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=/MMk4dpDTUnL+JeGvHAKWol8stlyFONQgS4qXzOKLhA=;
-	b=1ivKQRGPRKcuamiv5f5TomDehH7iQYNmsxYyBz01ve6zTTbmfFuzJjqETVFqbH5PN440
-	 nURd4GqcyKadLBd+CiKPcrTQsgz/jUwdbAuTphYoYmubCsrT8fonKr2DYegF2vD4iIX9u
-	 02gLY8iaUVlHN3ZOTYL42h02X/QsrxnC9yysgSphH4SLqe2WFsYibuuO3BdjQklVn6Nb5
-	 T5tQKiK6CdDp97oTksopPqCr8IIrms9o6H2rOdTX1NL8dZpV4IrnZh9EkAh+eDo5YFU8S
-	 d98j353wa8cZM+2Lyz/QON83E4Sk169tmddt58ohwJ84SG5kIFnTUeIx3Jn37X62O2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793991651;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
+	 Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=01wU+Zz1r6+jd+0/l3DROTIWKZT4+ev+ThVsQQdlTP0=;
+	b=IPaqHolJOjcq2Z6ISt86PBXLApEbIl2KQpiqsB6HKv7ggAneTeh4Sg1b9/IlINT1+Bur
+	 dK7u5TDd7hHqNVRP1VhWQANuJAAzoDu2XYPqOrqfjlCy+njNRaWu2nko8gBHcaUfO/J0N
+	 OiMRwB1argNByz68PzNoDGqqRI4jLdjqNrOzevM0WrMRA72z4JXbMLNB5a1gvTBNVzgD5
+	 9gb8x70aQSg7OTiwfxH5PngZDnPJu35gTjX3liLiMYWDH7h3rEG3owKii6s7iDbSwUYxn
+	 aN+I1Ijz016vSySkP+8Y1Lygz/qKPFiIpHYlVv1ICvqzXqMM6CjnTFD8mKZE6YeuOhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g2dlm1z7;
-	arc=none smtp.remote-ip=209.85.222.180
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amazon.com;
+	spf=pass smtp.mailfrom=amazon.com;
+	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=DxPXVrQK;
+	arc=none smtp.remote-ip=52.12.53.23
+Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE79606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:58:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4FE79606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299C0606A326;
+	Fri,  6 Nov 2026 19:00:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 299C0606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g2dlm1z7
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9441591aa5cso256704885a.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:58:02 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=DxPXVrQK
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793991481; x=1794596281; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/MMk4dpDTUnL+JeGvHAKWol8stlyFONQgS4qXzOKLhA=;
-        b=g2dlm1z7R8dRmnPuJheXLtnTivnrhc+b2GrWjANEhjh9Ksp5Mr9TfeuOSWzqgp9kZz
-         52cHo3yCTgNEqmD4dDy0mY7KMi64/zBtcjCerYQTcWedSg7ggnGF2oowk1AMZJIVRo6O
-         2Qhg1pUHAtyWFMrib4mmJ0Mkc/RhcjTddE8NtA0q99cgq5Blq3A6oo2laEYQyKwNJUyQ
-         547EOet4UgqoLGR7NjgVu7HEHpc0Vqp+tGr0lHMgrj9ndfUh0/BSEAQhHypbq3hvPcS6
-         TWO0Lt6psS2GXpI9XZye69soOq9Nu9Y6Ywn/SQlSirhsK70U/sth30l7aamOOhDZga8+
-         eE4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793991481; x=1794596281;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/MMk4dpDTUnL+JeGvHAKWol8stlyFONQgS4qXzOKLhA=;
-        b=q02QajYz5zja7vkQgq1bqdHsaIlYnZWV0cnY7q53Tia04pRJBob4ig290kNGDnz7P9
-         FP+2y5tcg3VIsJmHL6uA4x3CxynUBa0AjGE1tspjfTttGOjaxYQZVvv6naNDWnbdRPRM
-         Z8cyG8EgbQE8XXKx3MERM71+Zeziao9cQdso8DQowTTktgEmHAprI0rmF4nQiEKpqe+2
-         Y9aIZM8kyE+yjEFsIfHmJLoI1V9ox6dlWQOZzIMWuHV07O/UJv87VV2KSJHhd9fTc0FC
-         XmyQxIBQ1GsE9fOgLmrkhIdTRBa7n4u1yYaW5bk6GOc2zweSbrsVBfWPSdRNVILqhZsu
-         PkqQ==
-X-Forwarded-Encrypted: i=1; AKwUvByfzJSGJ0KZaNl0V278g2RKoKTVPTYjqvMqNrpiLuGzFiqoWSNWtkJer1Duhm6uMMWV+JYm7gE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8yGm+CW41kOxqf3mwVLs1MVR2xvUsa5FZNiLEZTFC5T9v/S9et
-	GtDLph350tY9aPG4Uda7k/ph/wEvaId8JUfkIwnmCwrBe1vMq4la8wve
-X-Gm-Gg: AYBFou0K4OHcUV/T9InpuOERUmvb4FAJnrwQlS4hBy2u7Ovf/a7Q4VBYIf9axoaXLS5
-	5W9AYLhYbPoeouq7MGAYZ5oDxJ/qDpACae4pVMrP8+HYiDSWempAOfM/OaFvxb5u69tRkx8cw/j
-	xjuTfyjKsBb4LZ5vgu32DpFOTGlcyu2IqTa7QuOk8wLmhmxlzfuvvTr4yECQVEtOVjGlpIJDzCm
-	mq+R3UokBYUaHNqSUiXsB55Kq5xscwn4Jhj4fGXkH3mtUOOh85fG/teZLdW1Yw89jm6qrVU0rrx
-	oh1J2Vll802JXDI1QY50cwrZ4LLpGM3x/BRfh/9oyL0pEvpo/JzsIA3VpbLcEh3JPAPnlCiP0tc
-	SXyZPzI9+00WACK7KchQNRrzCrWCPm8phU3lE8+jMBksNQFiyEEI1UxOcqP6MW/UQ7UyW0cyEcE
-	lH8HByy+fKf6Nr/gyPilfv+zISfQRPRWg+NBzW7WnOSS9SPQRAnl/6gHNbuEX8vH9qdCkRQmHvR
-	t5QRiu8CPzt/1Y38hgZ9J3Bw1LMZnpsj3+yci5O0iUa/9gWqSi7rwTlwNcC5uf4BFj+31JKCkIW
-	43YbnCbTiF2ioPZK2/ZJe+YiiwhbdnWEZKOFCQ==
-X-Received: by 2002:a05:620a:45a6:b0:93f:59b8:e29d with SMTP id af79cd13be357-945f3512c78mr506798085a.26.1793991480829;
-        Fri, 06 Nov 2026 10:58:00 -0800 (PST)
-Received: from localhost ([2620:10d:c091:500::5:81c8])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-945f599baa2sm207605985a.15.2026.11.06.10.57.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 10:57:59 -0800 (PST)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1793991651; x=1825527651;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=01wU+Zz1r6+jd+0/l3DROTIWKZT4+ev+ThVsQQdlTP0=;
+  b=DxPXVrQKJnaeUPmmH8TbrFN0qnxKLwLkHb2MWVW3v68WLvVAJXXXYPd4
+   UHapvbnPn5IzRozwaGw4ZWGREmtNf6KUBTrA0hQ65M4R0KxtfjFVou7HY
+   5MNoVSGkvLMSPduH6AebD/3jQLXyzRi/JTvkJSdE02xwjYhwwKFidYUpO
+   vp+jD+JqlDuxSHvpm28e512f5s3tdoe30WaCktzVkAEvSMTxBdORs0xZE
+   /nLLYSFRBoBy1nRU+cRTaoIeDxL07PMAgvawNsXrV4yF8asm/VRK2zVEe
+   5aj4dNyyFYbhjruLPVWvxUFgg9p8z9BfkX8RbDk4a8Rfkcm29NoG5k7gI
+   Q==;
+X-CSE-ConnectionGUID: hZ6i3u4WRh6rI8tthZwIwQ==
+X-CSE-MsgGUID: YSU9M6zTT9e94jvb8ET6LA==
+X-IronPort-AV: E=Sophos;i="6.27,199,1787011200"; 
+   d="scan'208";a="33212643"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 19:00:48 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:27931]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.238:2525] with esmtp (Farcaster)
+ id 99508936-c187-4210-b7fe-ec1167405487; Fri, 6 Nov 2026 19:00:48 +0000 (UTC)
+X-Farcaster-Flow-ID: 99508936-c187-4210-b7fe-ec1167405487
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Fri, 6 Nov 2026 19:00:48 +0000
+Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
+ (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56; Fri, 6 Nov 2026
+ 19:00:47 +0000
+Date: Fri, 6 Nov 2026 19:00:42 +0000
+From: David Keogh <dkeogh@amazon.com>
+To: Tianyi Gao <tianyi@cloudflare.com>, Jesper Dangaard Brouer
+	<hawk@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Dragos Tatulea
+	<dtatulea@nvidia.com>, David Woodhouse <dwmw2@infradead.org>,
+	<netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, Alasdair McWilliam
+	<alasdair@mcwilliam.dev>, "open list:BPF [RINGBUF]" <bpf@vger.kernel.org>
+CC: Nimrod Oren <noren@nvidia.com>, <nh-open-source@amazon.com>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [RFC net-next 0/6] net: configurable extra TX headroom for local
+ egress
+Message-ID: <au4j2nQdOwr90ffh@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+References: <20261015235335.4162993-1-dkeogh@amazon.com>
+ <b8914a523b4a6b80424c5001d3d8012c6a98fd04.camel@infradead.org>
+ <bba453eb-769e-458b-88f7-8cc9bcafc1db@nvidia.com>
+ <a8f2f84e-7dc0-473d-afb1-af710d621f69@iogearbox.net>
+ <atW00dwVpYS4WO5a@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,100 +92,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Nov 2026 13:57:58 -0500
-Message-Id: <DMOCWJTNK6BR.3AS3IC9QSWXTE@gmail.com>
-Cc: "Simon Horman" <horms@kernel.org>, "Jakub Sitnicki"
- <jakub@cloudflare.com>, "Willem de Bruijn" <willemb@google.com>,
- <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH net v3 2/2] selftests/net: psp: test bidirectional data
- transfer
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Daniel Zahka" <daniel.zahka@gmail.com>, "Wei Wang" <weiwan@google.com>,
- "David S . Miller" <davem@davemloft.net>, "Jakub Kicinski"
- <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "Shuah Khan" <shuah@kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261106182007.374660-1-weiwan@google.com>
- <20261106182007.374660-3-weiwan@google.com>
- <DMOCEM7IQVOS.I2QH7FT8FT8S@gmail.com>
-In-Reply-To: <DMOCEM7IQVOS.I2QH7FT8FT8S@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <atW00dwVpYS4WO5a@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com>
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Fri Nov 6, 2026 at 1:34 PM EST, Daniel Zahka wrote:
-> On Fri Nov 6, 2026 at 1:20 PM EST, Wei Wang wrote:
->> _data_basic_send() and _data_basic_send_netkit_psp_assoc() currently
->> only verify unidirectional data transmission from the test socket to
->> psp_responder. As a result, they do not exercise the receive path for
->> PSP-encrypted TCP data segments arriving at the test socket (such as
->> packets redirected across a netkit interface associated via dev-assoc,
->> which relies on SKB_EXT_PSP surviving packet scrubbing).
->>
->> Use the existing "data echo" command in psp_responder to verify that the
->> test socket can also receive PSP-encrypted data from the peer in both
->> _data_basic_send() and _data_basic_send_netkit_psp_assoc().
->>
->> Signed-off-by: Wei Wang <weiwan@google.com>
->
-> Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
->
->> ---
->>  tools/testing/selftests/drivers/net/psp.py | 22 ++++++++++++++++++++++
->>  1 file changed, 22 insertions(+)
->>
->> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/=
-selftests/drivers/net/psp.py
->> index 473500901879..c114d2245135 100755
->> --- a/tools/testing/selftests/drivers/net/psp.py
->> +++ b/tools/testing/selftests/drivers/net/psp.py
->> @@ -120,6 +120,26 @@ def _check_data_rx(cfg, exp_len):
->>      ksft_eq(read_len, exp_len)
->> =20
->> =20
->> +def _recv_careful(s, target, timeout=3D2):
->> +    """Read exactly target bytes, tolerating short reads"""
->> +    data =3D b''
->> +    end =3D time.monotonic() + timeout
->> +    while time.monotonic() < end:
->> +        try:
->> +            data +=3D s.recv(target - len(data), socket.MSG_DONTWAIT)
->> +            if len(data) =3D=3D target:
->> +                return data
->> +        except BlockingIOError:
->> +            time.sleep(0.001)
->> +    raise KsftFailEx(f"short read, got {len(data)} of {target} bytes")
->> +
->> +
->> +def _req_echo(cfg, s):
->> +    """Ask the peer to echo, and check the reply arrives intact"""
->> +    _send_with_ack(cfg, b'data echo\0')
->> +    ksft_eq(_recv_careful(s, 5), b'echo\0')
->> +
->> +
->>  def _check_data_outq(s, exp_len, force_wait=3DFalse):
->>      outq =3D 0
->>      for _ in range(10):
->> @@ -478,6 +498,7 @@ def _data_basic_send(cfg, version, ipver):
->> =20
->>      data_len =3D _send_careful(cfg, s, 100)
->>      _check_data_rx(cfg, data_len)
->> +    _req_echo(cfg, s)
->>      _close_psp_conn(cfg, s)
->> =20
->> =20
->> @@ -726,6 +747,7 @@ def _data_basic_send_netkit_psp_assoc(cfg, version, =
-ipver):
->> =20
->>          data_len =3D _send_careful(cfg, sock, 100)
->>          _check_data_rx(cfg, data_len)
->> +        _req_echo(cfg, sock)
->>          _close_psp_conn(cfg, sock)
->> =20
->> =20
+Tianyi, Jesper (added to Cc),
 
-It occurs to me now that we could have just changed the key exchange
-protocol used here to have a psp encrypted "start of psp" message that
-each side sends and blocks waiting to receive like psp.rst suggests. Not
-worth respinning, but maybe a future cleanup worth doing.
+Tianyi got in touch off-list offering to help get this series merged,
+and sent a draft v1 built on the comments in this thread. Thanks, and
+sorry for the slow reply. I would be glad to work on it together, and
+I would like to keep the discussion on the list from here so everyone
+can follow it.
+
+Tianyi, you have a second use case for this: an XDP program on a veth
+peer. Please describe it here, as it bears directly on the points
+raised above.
+
+I suggest you post v1, with patches 1-4 from me and 5-8 from you, and
+the cover letter under your own name, since the veth XDP case and the
+new measurements are yours. Please drop my Co-developed-by and
+Signed-off-by from patch 5. It is your test, and little of the RFC test
+it replaces is left.
+
+I rebased your draft on net-next 0822d2fe3826 and ran it on x86_64 and
+arm64. tx_extra_headroom.py passes on both, and with patch 2 reverted
+the push and XDP cases fail as expected. A few things to fold in before
+posting:
+
+- The note below the --- that native XDP on veth still copies belongs
+  in the body. The motivation says veth copies every packet, and this
+  series only removes the copy for generic XDP.
+
+- checkpatch --strict reports "Macro argument reuse 'dev'" twice on
+  patch 1, for LL_ALLOC_SPACE_EX(). It is the same pattern as
+  LL_RESERVED_SPACE_EX() and I am fine leaving it, but NIPA will flag
+  it, so a line under the --- may save a question.
+
+- The comment above main() in xdp_helper.c still says the helper does
+  not process packets. Something like "with -t it sends one frame
+  through the TX ring and exits once the frame completes" would match
+  patch 6.
+
+- The iproute2 patch does not build against iproute2-next yet, because
+  its uapi copy has no IFLA_TX_EXTRA_HEADROOM. Worth saying in that
+  patch that it depends on the kernel side and a header sync.
+
+On the questions you raised:
+
+1. Should removing LL_RESERVED_SPACE_EXTRA() go in patch 1? Yes. The
+   reason it cannot be reused is tied to the new macro, so it reads
+   well there.
+
+2. Should new fragments from ip_do_fragment() and ip6_fragment() also
+   get the extra headroom? No, leave them. A larger value would send
+   more packets to the slow path, which copies them.
+
+3. Is patch 5 fine with you as author and my Co-developed-by? As
+   above, please drop my trailers from patch 5.
+
+4. Should there be a test that TCP is not reallocated? Yes, I have
+   one. It runs one TCP connection over IPv4 and one over IPv6 with
+   tx_extra_headroom 0 and 512, and checks that the headroom of the
+   TCP packets is the same. With ip_finish_output2() changed to use
+   LL_ALLOC_SPACE(), the IPv4 case fails (headroom 246-254 becomes
+   566-574). It applies on top of your patches, so I will send it as a
+   reply to v1.
+
+Daniel, Dragos, David: unless you see a reason to hold off, the plan is
+for Tianyi to post v1, addressing the comments in this thread.
+
+Thanks,
+David
