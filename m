@@ -1,59 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793945858;
-	b=wyPGwdUZ6J9M7PeA0Bs5wfgGmeCzmhc3ihnimD3piTyCtquyQy4x9oXjZ567gh4uc0c3
-	 W1WvMEjV6uYrJimDie8yctZSH5mVgcPtbix/LonuAUVIIShI/EkmUpi+h3gH8Le02s6eI
-	 eva95CUAXmnVmbXz7dW2iRQHrfHj2dDL0HDWUm43ISNkK/ancwlDVAOsyeEpVFOty7cPK
-	 eSszNrcalVoUQkjzSUX5+nCacwQKJPva7hraPi8MXg/xEclENte6KKjY05/PUuAOMcLAg
-	 8xNsL4pHRjwSKRQRy7QqPbuJsPBSdowktli/yVCGIGEbi99rWmbKCk2MukvgGSL36ng==
+	t=1793945889;
+	b=ufJFpD1f8oG9j0Zn4x1XOMBcV5fYGu6I6fqVF2BLzYhqiWJ1wM5GfqqTaSWfXhVjMkuZ
+	 nRrPKibMZrdrT0JQ+zN5YnP9Rx6ZYTgSpSntEcK3XVlE4ZZ8K7+cJZF2PqLnIPJEw78ZK
+	 SfUlEJ9HFQBZKmltRfiENAIYefiTsmhIeIY6kijQtogbdgID2QsHv7F57x+/D+cr9vmN6
+	 xafgbUkY9z0UG5dti+vt9b/RvwWVrzt3Patd3+tunYtw11ufBHSFcHBQaEJfqfcIijegs
+	 i/kqqE/hy0G1xWrw5mWxCUNa2jwn4bqL+4Kd0Mpe1m1m90C59T+ywRgjmdts5YPfi9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793945858;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793945889;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=dy/d2GC7QK09QgoZlz5nxNi8qXIn97lfPrkg+wuH/2ZFWoD3d7eSIbU7X4BSUEqGIXzC
-	 mGe+mHlz0OWerWyFPbGZmLVwecCiqZMJOB7XwRpfggiQJukHtbAhab9V+dYvVmIAIj8Ur
-	 N93GvjxnyQo4N6p+fhdfYLDKGl0cL4uaVjfs5ZpWlXSbmA8O8n0FZk01NiU5e1cKdkwJM
-	 pUAB3d7RkUAIfXxBadBbDNLx2NhOIL8Xf7VrYcZZm45zpglZRohdsog972BMKpRJNacyQ
-	 pg4w/t1iwMgbdzZY5FVouR0Y7uEB2WcnnRcA2mb+cdN5CSUHl8BVh5cWxdMwlpxvjoQ==
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
+	b=IgK88CFwAxb3EJNEWPjrcmCoYDCSlXtyqeEKeoPMhV9HR30IA4l0wVUrxXSTlYOAn8WS
+	 /W1m31P3lGGBvu+YSPtbtuOhmRk8HY2dM/P0KNp+uRZOYhIYb/b8m57lN+4hipSwzxx5d
+	 j4maq5gvUD1Vca8VORdPtYaUQmWNeDxvw7sS5O29ooTCuojf+bEAk4edQPL/MTBcpMljf
+	 gC7bT9kZ6MwkkJ+dDBEfjLAKQVmyxyX3t+ifhkHb7ZmLb7HlHtKSNiEeA1EOcyPTE9n+6
+	 mrtXwzL7BfiP+hT55/cZaeTPEI136u03evsbkdDDa0zETsK13peWCzlJBk+iVqH6JWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="S/uMwMUV";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="UnL/Z1Ur";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892D5606A326;
-	Fri,  6 Nov 2026 06:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FF5606A326;
+	Fri,  6 Nov 2026 06:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S/uMwMUV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACE01F0089F;
-	Fri,  6 Nov 2026 06:17:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UnL/Z1Ur
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879761F0089F;
+	Fri,  6 Nov 2026 06:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793945858;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	s=k20260515; t=1793945888;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S/uMwMUVN92cqSAfa5+mJl5DcgM+LIr/SYOqYSl7WG5zmqFrUZboJS90oWkNQVyB/
-	 gp1Y3uDf8GOHDW7tFSB+VMzLPcrHZtZHseMJMLf6I/voWmSIt6KOPEU4/Uc8XaCZng
-	 x3cNDi2EOKZWQYz9Vx4up/NrToAE7GvPEGUNRvKGZ3+rQ/4gbfQQPKacyv+FWY/mM/
-	 wFT6fIqSynznv7T77HiP/pfmZB6iBADNCdlIO7zPHBbRHOnSYPD5vhcClxbEZ2MGXo
-	 sCAPtGl8QGlMgN3V8IdMf8AGSJJdb+XN220zI+Jn/oA72K8QwJLe3dufkp8/F2XCXI
-	 gz29n3KGK0oPw==
+	b=UnL/Z1Urfj4X76rNw03knXm01F7GGoLDKgmB4JrzSJr83GzPyGBnQklsnO6OQvcbi
+	 JUBMG6QFXaAStUtQC+EuGCx13pHY3kYX4G8aOH4I1TZQnRBljivrR5BlGF/TiOiv4l
+	 TnHMD3NVCpxHjZ2yIw9qZX4/vaNtajt1q9/DQZLy5BpGyzXfyFcQuHxWdmXzt+zb90
+	 x0EemoZtZP0rEjkwumElPRWoVvOeEIbkgbDdwir4mSi+bsbl/Ir4ApEt+rHV4jL38X
+	 N5vWebA/VXmwdwj4tv4bu5G5oLC+2/QqosTZeindJF7rdk+iHZMMng7vxq8Td2EQSq
+	 fevy20UDRCCAg==
 From: netdev-bot+sinfo@kernel.org
-To: luoqing <l1138897701@163.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+To: Fan Gong <gongfan1@huawei.com>
+Cc: Wu Di <wudi234@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
+ netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Patrick McHardy <kaber@trash.net>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 1/2] netfilter: conntrack: avoid secs-to-jiffies
- overflow in SIP helper
-Date: Fri, 06 Nov 2026 06:17:36 +0000
-Message-ID: <179394585680.488859.7199354601021880079@kernel.org>
-In-Reply-To: <20261106060948.540233-1-l1138897701@163.com>
-References: <20261106060948.540233-1-l1138897701@163.com>
+ Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Mohsin Bashir <mohsin.bashr@gmail.com>,
+ Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Larysa Zaremba <larysa.zaremba@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Zhou Shuai <zhoushuai28@huawei.com>,
+ Wu Like <wulike1@huawei.com>
+Subject: Re: [PATCH net-next v01 0/4] net: hinic3: Bugfix for later patch-set.
+Date: Fri, 06 Nov 2026 06:18:07 +0000
+Message-ID: <179394588711.488859.3460474784447366028@kernel.org>
+In-Reply-To: <cover.1793946318.git.gongfan1@huawei.com>
+References: <cover.1793946318.git.gongfan1@huawei.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -72,13 +78,13 @@ Hi!
 This is an automated message. This series looks like a fix, but its
 commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
  - Whether the issue was actually triggered, or is only theoretical
    (e.g. found by code inspection). If it was triggered please include
    the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
