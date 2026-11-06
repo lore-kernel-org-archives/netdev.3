@@ -1,105 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793997381;
-	b=ucidKvdYqrhAtgS2aeXW+GSIpIqL0Y8uT5V96WJZLEkKK3fWjLnbVtCX2InXwOZsRvG/
-	 oq9K3x3vuxLMZm2q2K5ACEsApgDohnK7T8pwRte1sj5fIqMoNT1RxaYiSn01gYOtdwsDL
-	 FTJ1Am+u6FlliHlhldkROfGZplMshFQwPxBBC7BEW2PvbX0R1WztjiZW4wOt5pfbyh1m+
-	 qci5m2cdfuwxNJk7wOs6/x1QNuCdfefUpqereShvJKt642zhz48BNVzcbDs82APalp0tx
-	 2xlMKcJ20wyvqPXl6tlcmHc2csYDqeTjDZ7xm093DdlPaKEyblpcVEhaZKXti3B6hNg==
+	t=1793997618;
+	b=jyzr40O8MyZeT5/dXvNSKUrPZ0NJjcm7ICF/ewUacWu+tEkJiw2PWeW4bVmpZrz+LI5k
+	 sGmOajcA28pzLoCETYrmEvDVMDRfGfjDR+KgfygiLVjVr/mv/nthQIuP/3qMO5YumLFrM
+	 7rA2SokBt1JBxGpa/FEFA680ARVlxyrOPOWhmABi/iPwBYDkMPhRk1/V5R5S5ta25C5/k
+	 qNaV6PXH3zbOWYXmk5uniZ0vj5gL3sX8fl2BNfNbV0x5qmdSvxSdDpR/u3jvK72OxR+eh
+	 2ABfM4T0dJ6pCedfgdRwN+TioNWshf1vO7BO67KCHPw3Q80zBadq12aigEeHIF+7SQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793997381;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=YdwH6MbSdlsrCf4YgApBgw3WaVWl4RE7XPNP1oLH4co=;
-	b=dbKPGX6uNd9bUWUEksUw6MUwPBmcT70P9AASL1/2y3Ieoqd4ZQE7suzcuDtLEBEu5F7B
-	 whGhK9ij8id1a2dUgTNWtDtrDPQw1fl4PeX1Hyvtt7SsgPh7K8KqRGwDXwl9AGiyuUZcI
-	 iePRKsVQl6O9SbamYE43WK0R84zdRBPAzPLlZHCdfbogMAsT+p9bvngxn4TkONsaoREdm
-	 0AShM1RNE5NTc+tDdUo9+f8G9sBucWK4M7skYeoTduF/nF5yTWO5AV2+K1vzl2HAvjGtE
-	 XJjCLe4GLeUnJTR3okvLowhZhpImijyOK6SMBqpSTdsb6rF2JcBbxMoCexYVRaDyGlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793997618;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=mIUbe6fcF91HcT1UswK+wMpzvR7MDuAa6exAKta0fKQ=;
+	b=R7+YgUZ8czWqzkdmJe3r/fiKTKhsFYIAtquEj5ke/B9yrdbzo7VSc+XpEIHa12CZd/fY
+	 IsLxlI/uMjTOA9IUCW+xgqWLHOvatNYJ2UBUbPNS7ZZTYVBXVW8GJIa1f5ET6LNU/Y30q
+	 yWjf8nI0k4e8/iqoRcF4EHHLcsYt4uDp9OEclByrBfq6OEbLL4qLHfameM8TtIQ5RdTvn
+	 rZ5X5+C791ghxwWPTbTYPxUb/TD98325Hf0eHAlctBnr6lRTYyyI61DUoETev0dwzqVYz
+	 YvS4F7lZL/3+Iu1N3ZSB75Qu8ZymfLYQoH6cft6mVhbWRRaGauiNa5uF53YnwvEZN7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w1qn420f;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="GS//Ttmx";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0CD606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 20:36:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC0CD606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55455606A326;
+	Fri,  6 Nov 2026 20:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w1qn420f
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a5036bbac7so6970285e9.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 12:36:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793997379; x=1794602179; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YdwH6MbSdlsrCf4YgApBgw3WaVWl4RE7XPNP1oLH4co=;
-        b=w1qn420fLHO7PyujizRYZqZsJNPZgFZ86LIOQCgn518ex5BIAShd77wXlnZh7jW7oQ
-         w0tTutzajHzCYrREnzMMP9n5NTOlXdGxFc10GdxfELvR/nbDOhtkeUx3maaDEiyJYsM2
-         SOWAIXqbqKIY4rfyS2YNSASKW+9xlurrfExXLjk4cHJzGxZCX/yn5mmv6Dyv2SEMwep2
-         mGILuCFzrX57pZucbVrQKhj+o4eckBQvY5ZLEpAqqG6wmnZdbP1QIzTnMzHBNOOhNde/
-         TMawIMJZKr8kqiA+/zuwlyAS6eupqzdMUIm7Tf9Xeh4n9BaFxLLtdu/VqpFjLV9m+EIw
-         NFSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793997379; x=1794602179;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YdwH6MbSdlsrCf4YgApBgw3WaVWl4RE7XPNP1oLH4co=;
-        b=UM0cILOWmIiKDtpZXGR8LSiGvvAiw11GjE6j91sAkiwOJisJnOACs4ffAi72CZDW9o
-         J15XxJNEc56+DJBzn0kreP5By8M3oJewpVTxgJnMasiHEizGTgkW38oaygE1/TfXCQjz
-         G0mSr6z9qPZFE87YnQB2/OFjWVSiRsKMa+OHvOnflsMci4OJS3Tjf/9gJEqV3FXoPdhg
-         9xYV0hFQmWatjiw4AL99MDnH9F3PnGJrhozr15fnbkKjUepGMVaJe6mMenKpW6b1RMln
-         8l8Q2q//m43mzIEIg/LvkM+l3DdmUb4R2QFwHipd/nFsIx98KIhols5nfGpO65rtUx4Y
-         7j9w==
-X-Forwarded-Encrypted: i=1; AKwUvBxqIm11HQgyH9aC5lnjRjLfxnk9Cp2jFYjyG+8LC49ioyyZeun3dcKQwORKrKYkATPlJu1tsK4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/IN7ACyFFMc4DkRo4YjvQ3tVaKVT3RrnXNgy+0cDTOoqA9+4Tl
-	CGGRX3EPTQWf0mWX7BthfT8lVPG/4DRWh8PsmqD8+k3zBAg9ry9elELy
-X-Gm-Gg: AYBFou3866WfjELxFkp6npmrk0l5e8jhtOiHYUF0jYdkC86QBsIvSFkCqkAp1J/m3zL
-	I9l/jrYqe+BFqa8F4+IkKlEwXs5AKce7ZjFO+vP3DD/oUljcpr3j8zp8GC4LuvoLjvPMhhS3i67
-	dK+LSVdgFSYTbKnKMFSH8TgFRnqos0tj9GdIvejh1aBUgf7tp+X2gIaX8iQgtAjFpFcMpjSoRN+
-	qBDKrkUL2V8t/8xquKjoBHjZLKtPeDtLEwUc3BhZwyIgpVsQkh87euwgNCZWzWAEPMMoPPTZV5/
-	KGYjw+dGrg8PbMPywcuGnn9ld28/XhzXe+X/HQSAxSrZuO7jTqeebjYGTHouG/m0snw6gRTblIw
-	APOWZ4qn+Dq4AhQHXbsb4P2bzX5OWisYhSDQixC7ryJ1kBKC7pYQWRrbfaM3pb8rIKaoP4+Muwn
-	k0dKS+Gn/vJdgpHENuCw4bTl6al8kllWmMHN/6BCepLevQeSHdgqKjzcqYTQNDsi1vtxzs15SIE
-	IeqCpigzC8c3cr80gXSSoHSJyJxRWz3uQvyXbTU+PuhCvVeSm2Ih1RxHlg+zJ8sSeYfJCyLlbZ6
-	MZHgzNOjf9qVbljlGhsKjq5e7UB5NxsAWxe88VxWtwxRZgdz1v9/2KSXwxzGhtmBTh8SfLPfqMc
-	5TZs=
-X-Received: by 2002:a05:600c:4fc7:b0:4a3:5a42:b2a4 with SMTP id 5b1f17b1804b1-4b6dea69b10mr67372135e9.12.1793997379131;
-        Fri, 06 Nov 2026 12:36:19 -0800 (PST)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs171435.centertel.pl. [46.134.8.236])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7efb1547fsm10183925e9.11.2026.11.06.12.36.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 12:36:18 -0800 (PST)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Cc: Yongzhao Chen <yongzhao.derek@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ziyang Huang <hzyitc@outlook.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 1/2] net: dsa: qca8k: let regmap serialize register access
-Date: Fri,  6 Nov 2026 21:36:15 +0100
-Message-ID: <20261106203615.19274-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6aee175b.f01aa0c8.37eba4.18ea@mx.google.com>
-References: <20261104120130.48455-1-yongzhao.derek@gmail.com> <20261104120130.48455-2-yongzhao.derek@gmail.com> <6aca850a-ef67-4451-aaf2-977be884d1b0@lunn.ch> <6aee175b.f01aa0c8.37eba4.18ea@mx.google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GS//Ttmx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CF31F0089F;
+	Fri,  6 Nov 2026 20:40:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793997617;
+	bh=mIUbe6fcF91HcT1UswK+wMpzvR7MDuAa6exAKta0fKQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=GS//Ttmxj9mGEbvdlQMSJhepK5bPm/9ZLH1H6t+UqagEknDOYJBC4lxtcIzVDpwYB
+	 HJS5Xy88lDBgd8ZaZwUjvQbCI1Di/VTbgWTznwUPozWMJhg+YtUvRI2e/uji+TJ0hb
+	 A8XbFTw3UP/gM/4DAdxKhYFxbX5xYW9aFWEDSUbPUYe9dhywLgGYExZhc776tNW47l
+	 iaO6J/fU37OOA7+Aoi2OgxXGxTLYy4VuvL70zF+/YAIXGxPnKi3gow1Hw/FqgUy98g
+	 lGvyz2jcq5BrxnOQDm0KVhgZzIfyLE0Tb+K4f7GwJGz5vc4afhtshOnxQBZFFMdg+e
+	 UT2N5lJEhl/5g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D830B3A5499A;
+	Fri,  6 Nov 2026 20:40:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,73 +54,64 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 01/12] netfilter: nft_reject: prevent unbounded
+ recursion
+ in output hooks
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179399761642.859444.1171675852948516756.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Nov 2026 20:40:16 +0000
+References: <20261105124536.1009301-2-pablo@netfilter.org>
+In-Reply-To: <20261105124536.1009301-2-pablo@netfilter.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
 
-On Fri, Nov 06, 2026 at 07:07:19PM +0100, Christian Marangi wrote:
-> Both mgmt and mdio operation locks at the start and unlock at the end of
-> the read/write or rmw operation.
-> Using the regmap lock seems redundant and this is why I disabled
-> originally.
-> I would like to have more explaination for the
-> "regmap formats the register and parses the value in the
-> map's shared work_buf, outside of the callbacks, so two concurrent
-> users can swap or corrupt each other's register and value."
-> case.
+Hello:
 
-The qca8k locks cover what runs inside the callbacks, but since the
-map uses .read/.write, part of every access runs in the regmap core
-before and after them, in map->work_buf, which there is one of per
-map:
+This series was applied to netdev/net.git (main)
+by Pablo Neira Ayuso <pablo@netfilter.org>:
 
-- regmap_read() goes through _regmap_bus_read() and _regmap_raw_read():
-  format_reg() writes the register into map->work_buf, ->read() is
-  called with reg_buf = map->work_buf and val_buf = work_buf +
-  reg_bytes, and after it returns parse_val() reads the value back
-  from work_buf + reg_bytes.
-- regmap_write() goes through _regmap_bus_raw_write() and
-  _regmap_raw_write_impl() (no format_write for 16-bit registers with
-  32-bit values): format_val() puts the value into map->work_buf
-  behind the register bytes, format_reg() puts the register in front
-  of it, and ->write() is called on map->work_buf as one buffer.
+On Thu,  5 Nov 2026 13:45:25 +0100 you wrote:
+> From: Fernando Fernandez Mancera <fmancera@suse.de>
+> 
+> nftables payload-mangling rules can rewrite packet contents (such as TCP
+> flags) before they are evaluated by reject targets. This defeats the
+> content-based loop guards, allowing unbounded hook recursion that leads
+> to kernel stack exhaustion and panics.
+> 
+> [...]
 
-qca8k_bulk_read() takes reg = *(u16 *)reg_buf before it locks
-anything, and the value it stores is parsed after it has unlocked;
-qca8k_bulk_write() likewise takes the register and the value out of
-work_buf before its lock. With .disable_locking nothing orders two
-callers around those steps, so caller A can format its register,
-caller B format its own over it, and A's callback then reads or
-writes B's register; or A's value is overwritten in work_buf before A
-parses it.
+Here is the summary with links:
+  - [net,01/12] netfilter: nft_reject: prevent unbounded recursion in output hooks
+    https://git.kernel.org/netdev/net/c/d6c18cadfc6c
+  - [net,02/12] ipvs: Defer application parent freeing until after RCU readers
+    https://git.kernel.org/netdev/net/c/1e0808008e44
+  - [net,03/12] ipvs: fix protocol data lifetime during namespace teardown
+    https://git.kernel.org/netdev/net/c/832aa3e89e80
+  - [net,04/12] netfilter: nf_dup: preserve guard across NFQUEUE reinjection
+    https://git.kernel.org/netdev/net/c/82052e5b5ec3
+  - [net,05/12] netfilter: flowtable: extend ct timeout of offloaded GRE flows
+    https://git.kernel.org/netdev/net/c/46ecda278f6e
+  - [net,06/12] netfilter: nft_set_rbtree: check catchall_sync return before queue_done
+    https://git.kernel.org/netdev/net/c/1cec19d70bc2
+  - [net,07/12] netfilter: bridge: use DEBUG_NET_WARN_ON_ONCE in nf_ct_bridge_refrag()
+    https://git.kernel.org/netdev/net/c/683ff28ab18a
+  - [net,08/12] netfilter: x_tables: check target name before accessing verdict
+    https://git.kernel.org/netdev/net/c/364b200285bb
+  - [net,09/12] netfilter: nf_conntrack_sip: fix OOB read in ct_sip_parse_transport()
+    https://git.kernel.org/netdev/net/c/7af52bda65c0
+  - [net,10/12] netfilter: nf_tables: fix memleak when rule deletion fails with hardware offload
+    https://git.kernel.org/netdev/net/c/e95b3be75ae0
+  - [net,11/12] netfilter: xt_recent: do not call remove_proc_entry() under recent_lock
+    https://git.kernel.org/netdev/net/c/17c2e41736b6
+  - [net,12/12] netfilter: nat: zero newrange before filling it in
+    https://git.kernel.org/netdev/net/c/d1bb235aa409
 
-Two callers that can meet there without rtnl: phylink's resolve work,
-which holds only phylink's own mutexes when it calls
-qca8k_phylink_mac_link_up() -> qca8k_write(PORT_STATUS), and the LEDs,
-e.g. activating the netdev trigger, which calls ->hw_control_get() ->
-regmap_read() under the trigger's locks only. ethtool -S and the bridge
-callbacks hold rtnl, but the two above do not.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-On Fri, Nov 06, 2026 at 02:38:37PM +0100, Andrew Lunn wrote:
-> Do any of these operations which don't take RTNL do an open coded
-> read/modify/write? Does the regmap read/modify/write operations hold
-> the regmap mutex over the entire operation?
 
-No open-coded RMW that I found: the phylink callbacks do plain writes
-(and regmap_set_bits/clear_bits on link down), the LEDs use
-regmap_update_bits() or plain reads. Whether regmap_update_bits() holds
-a lock over the whole operation depends on the path. With REGCACHE_NONE
-every register is volatile, so it goes to qca8k_regmap_update_bits().
-Over MDIO that holds the bus lock across the read and the write. Over
-the management frames it does not: qca8k_regmap_update_bits_eth() is
-qca8k_read_eth() followed by qca8k_write_eth(), each taking
-mgmt_eth_data->mutex on its own, so two updates of the same register
-can interleave between the read and the write and one loses its bits.
-The LED control registers hold the rule bits of ports 0-3 and port 4
-in one register, and the LED callbacks run without rtnl, so two LEDs
-can meet there. With the map lock enabled, regmap_update_bits_base()
-holds it around the whole update, which closes that one too.
-
-To be clear about where this comes from: I found it reading the regmap
-path, not from corrupted registers on a board, and I have not seen it
-happen. If that changes the case for net-next versus a lighter fix, I'm
-happy to rework the commit message, or the patch, whichever you prefer.
-
-Stanislaw
