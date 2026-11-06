@@ -1,48 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793947329;
-	b=Cmz2L+UriXqdw5K4hiXgAF3pwcna0O9O3WjDKueFY75Lh5/BgwF9qtwq5rrZ9LBtD1Tj
-	 OO7/BrnMsYl3BtoSmOaWyCyZWk9qECS4H3uuCdhaP0gVHrDBsB2AiXMyO2hZk87GwEhVd
-	 Y81UjxFqXmW2N4++74SeCMZNgw/yrpl2kU4GG2L03IfZa2Ber5B1E8daMp/xFayRstmmN
-	 Ld5qXSTP8CkF6MA4fcVP0BDi8UC1hX9cDFFcsQmyI2XreHqb9AsR/wkaSg+HzOfpsM2Eg
-	 rIpqErnaJn4U6iRrUL3lAYNPpiGbUlXb0jrPNtpCw7gw1eVMAZ2HEomYGcpI8i0TScQ==
+	t=1793947331;
+	b=wnG/s6Ch1ch98rOvCjbzy6seDZAWOCKyPeIxPi0HheKUNbD04hiyo7BPPRsKDHCslLQ5
+	 jiaAAeZr7OHBb1EXfb3+hRfJbgXmVqpcz0g8KEq28pmS4SLs0QV9WPL6zaBfySNf+/O31
+	 bvqjwvqNuGzOrcN6OV1nIsYJUA09+uPbuDPiJLO9an5j33BbwRaGaMV3ICrGcC0hiC96e
+	 NBoChhCuv0zT57dript9e8Aubu0KyFN6ZlRv6k70d8nCG5UXSVV8SZw5oZueZvjhzwzJ9
+	 ykGEdJQeJCwGtt7A49WPotwXtqOLS3bmYmST2fJQpubyxS+xyh6qI5R89fUUqP1Sikg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793947329;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793947331;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=KL5V+v3cUK42avBygg/NokDd0cEzHSdupAtDovHJxz0=;
-	b=h3OvxF4zrjAUmUUQVwXNSZcm0ZdbpvVob0JXcWT24FXbO/91Lj6h3FZDm4Y9IZ8Ij9+U
-	 VDX76/gy454ff/u2+jXx0N+crcmAsszdL+md/v4JZk1mo9OS1zWS5oEbCX5CmE4Wf8AYI
-	 CUeUr/Q5tMdHkoijMF8yFrNFMWCZpPERv4J9/64CW0fBTfmqOUHszQSponybdYnZqUKpu
-	 Xmd39lTRg3HgAkVclU0vDQDfHCOJwhXzvww62nWsKt8ZMJuadSphxZRU3HPmIk/Jyn14I
-	 ukDdvib8cIg3Fbq7Tv5qoykOVDX92vnw+yoEr3slwoPJWuVun8u8d7FTvMESrYvWaOA==
+	bh=0bUMKH9d0uJfnXeq5eKB6jEiDxTQUE7bE1foO+3EmWM=;
+	b=QEPGovWYBvkra2wDsviS59jSBMkcTeQ22KAYIBtuy1CWWBHpWvBYqFHiGpoDrYQ7iEhW
+	 0q63WmdSkuCfKmCbYC6Oaus2HOTB77FwZZUtTFw8jr27Y5HeWJIBlBls0IJh2eRrrIite
+	 qmIyD0JrVTBIZTb53tTB/2Ym9p1gn1ifDP62ge1JqGYE7IdkCRNM8bCukz6vE4OZKnhjz
+	 iQ7tsU3rM6aieTIXxgfFSl/Xb5HrYvQfmWGuoUNrWEggOhbsLjHZN9BFHPYGA9wxLfyQh
+	 PTcLwbiRLWyZwu1lwPDUYKbUC5mihkQWl7yToY9PigOnAbHjTYycefmYLALWNSJKY4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=126.com;
 	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fGhQ7jXb;
-	arc=none smtp.remote-ip=220.197.31.8
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=mghFzSbn;
+	arc=none smtp.remote-ip=117.135.210.8
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03640606A335;
-	Fri,  6 Nov 2026 06:42:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03640606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1A0606A33B;
+	Fri,  6 Nov 2026 06:42:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F1A0606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fGhQ7jXb
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=mghFzSbn
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=KL
-	5V+v3cUK42avBygg/NokDd0cEzHSdupAtDovHJxz0=; b=fGhQ7jXbQHVw0UGkPC
-	ssOlfF5LBueH95TOQYsjOaGHMMpbXCISFsP/+Z7tqQCM0fgbDDDo8ZpQOhnC8reB
-	w/LlG8i5BSQAXfGBUQk0nDJGO/5BJWBoGsbEyOVk539RR2Vjy2g5c/9srhtCG2XY
-	TCWIGy+qmQE2+mYYgUPSnrnsw=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0b
+	UMKH9d0uJfnXeq5eKB6jEiDxTQUE7bE1foO+3EmWM=; b=mghFzSbnoNlsdG8RNe
+	XIydCP3Dx2KP8tXBKzzyI43XCX0+mRWfJgP9IlErvNRb+NU6UaNNrtu6s6UGphFr
+	82AFzZL608UdUDxueycuFFgsvnWgbJ4tUOq5xxwufCKtozdpnoN2G7nKIvOCzdHZ
+	LStG2AuN6umz4scWX2lyT9X1c=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnR+uMdu1qZ7kzCw--.3170S3;
-	Fri, 06 Nov 2026 14:41:19 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnR+uMdu1qZ7kzCw--.3170S5;
+	Fri, 06 Nov 2026 14:41:23 +0800 (CST)
 From: Linkui Xiao <xiaolinkui@126.com>
 To: jhs@mojatatu.com,
 	jiri@resnulli.us,
@@ -54,9 +54,9 @@ To: jhs@mojatatu.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net-next 1/3] net/sched: act_gact: size TCA_GACT_PROB unconditionally
-Date: Fri,  6 Nov 2026 14:41:12 +0800
-Message-Id: <20261106064114.3592670-2-xiaolinkui@126.com>
+Subject: [PATCH net-next 3/3] selftests: tc-testing: add gact probability dump tests
+Date: Fri,  6 Nov 2026 14:41:14 +0800
+Message-Id: <20261106064114.3592670-4-xiaolinkui@126.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261106064114.3592670-1-xiaolinkui@126.com>
 References: <20261106064114.3592670-1-xiaolinkui@126.com>
@@ -70,83 +70,140 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnR+uMdu1qZ7kzCw--.3170S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWFWkZFWfGrWDWFWrXrWUJwb_yoW5tFWkpF
-	Z8WayDCr1ktry7Xw48uw4xZa4S93s5CF4UWryakw1Fkr4kWwnxtFyrK3y3Cry7Grs3G3s5
-	Zr1qqr17GF9ruaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U9AwsUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqA-WrWrtdo924QAA31
+X-CM-TRANSID:_____wDnR+uMdu1qZ7kzCw--.3170S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGr4ruF1Dury3tF1xAryfXrb_yoWrXF4rpr
+	ySyF1Yyrn8tr97Aw1UurWrXF4a93WkCw4UJry5JrW7u3WUKa4ktFZ7tF4Iva4jyrZYvw43
+	ZFn093Z7ZrZrA3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQa9fUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRPXrmrtdpN4mgAA3D
 
 From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-tcf_gact_get_fill_size() reads tcfg_ptype with neither tcfg_lock nor
-READ_ONCE(), and budgets TCA_GACT_PROB only when that read happens to be
-non-zero.  Both halves are wrong.
+gact probability attributes are emitted by tcf_gact_dump() only when
+tcfg_ptype is set, and budgeted for by tcf_gact_get_fill_size().  The
+only gact cases that look at a probability today are 8e47 and ca89, and
+both check it through `tc actions list`, which is served by the netlink
+dump machinery and never consumes the get_fill_size() budget.  The one
+case that uses `tc actions get`, 525f, runs against an action with no
+probability, so the RTM_GETACTION reply path -- tcf_get_notify(), which
+does size its skb from get_fill_size() -- is never exercised with a
+probability, and the netrand random type is not exercised anywhere.
 
-The bare read is a data race.  tcf_gact_init() writes tcfg_ptype under
-spin_lock_bh(&gact->tcf_lock) when an action is replaced,
-tcf_gact_dump() re-reads it under the same lock, and tcf_gact_act()
-reads it with READ_ONCE().  get_fill_size() is the only accessor of the
-field with neither.  act_bpf hit the same problem and solved it by
-taking tcf_lock in tcf_bpf_get_fill_size(), with a comment explaining
-why.
+Add three cases: adding an action with a netrand probability and getting
+it back; replacing a probability-less action with a deterministic one
+and getting it back, covering the tcfg_ptype 0 -> non-zero transition
+that the unconditional TCA_GACT_PROB budget in patch 1 has to cover; and
+getting a probability-less action, whose dump must report no probability.
 
-The conditional budget breaks the rule that commit 4ba61bfd4998
-("net/sched: add get_fill_size() to the five actions that lack one")
-spells out: "Size every optional attribute
-unconditionally: reading the current flags to size it conditionally
-would race a concurrent replace, which can flip the attributes between
-sizing and dumping."  A replace that turns tcfg_ptype from zero into
-non-zero between the two calls leaves tcf_gact_dump() writing a
-TCA_GACT_PROB attribute -- nla_total_size(sizeof(struct tc_gact_p)) ==
-12 bytes -- that was never budgeted.
+These are coverage for the dump and sizing paths that nothing tested
+before, not reproducers: RTM_NEWACTION, RTM_DELACTION and RTM_GETACTION
+all take
+rtnl, so sizing and dumping always run in the same critical section
+and a replace cannot interleave between them from userspace.  They pass
+both before and after patches 1 and 2.
 
-Size TCA_GACT_PROB unconditionally.  The budget becomes an upper bound
-again and the bare read goes away, so unlike act_bpf this needs no lock.
+Verified by running the tdc gact suite (38 cases, including these
+three) against a kernel with CONFIG_GACT_PROB=y and this series
+applied; all passed.
 
-Nothing overflows today, so this is locking hygiene plus conformance to
-the rule above rather than a live bug.  All four consumers of the value
--- tcf_get_notify(), tcf_del_notify_msg(), tcf_add_notify_msg() and
-tcf_reoffload_del_notify_msg() -- allocate at least
-max(attr_size, NLMSG_GOODSIZE), and the delete and add paths add
-tcf_action_warn_attr_size(extack) on top.  NLMSG_GOODSIZE is
-SKB_WITH_OVERHEAD(PAGE_SIZE), so a batch has to carry enough actions for
-attr_size to grow past roughly 3.7 KiB before a 12-byte shortfall
-matters -- which is the failure mode that commit 8e2efb3f45a5
-("net/sched: add get_fill_size callbacks for actions missing them")
-fixed for other actions.  A replace cannot interleave between sizing and
-dumping either: RTM_NEWACTION, RTM_DELACTION and RTM_GETACTION all take
-rtnl, and the classifier path, which can run without rtnl, computes
-attr_size in tcf_exts_validate_ex() and discards it.
-
-Tested by building with CONFIG_GACT_PROB=y so that the code being
-changed is actually compiled; net/sched builds with W=1 and no new
-warnings.  Patch 3 adds TDC cases for the gact dump and get paths.
-
-Fixes: 9c5c9c573700 ("net sched actions: implement get_fill_size routine in act_gact")
 Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 ---
- net/sched/act_gact.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/actions/gact.json | 83 +++++++++++
+ 1 file changed, 83 insertions(+)
 
-diff --git a/net/sched/act_gact.c b/net/sched/act_gact.c
-index 565860cccba6..ec9a65dfc442 100644
---- a/net/sched/act_gact.c
-+++ b/net/sched/act_gact.c
-@@ -233,9 +233,10 @@ static size_t tcf_gact_get_fill_size(const struct tc_action *act)
- 	size_t sz = nla_total_size(sizeof(struct tc_gact)); /* TCA_GACT_PARMS */
- 
- #ifdef CONFIG_GACT_PROB
--	if (to_gact(act)->tcfg_ptype)
--		/* TCA_GACT_PROB */
--		sz += nla_total_size(sizeof(struct tc_gact_p));
-+	/* tcfg_ptype may be set by a concurrent replace after this budget has
-+	 * been computed, so account for TCA_GACT_PROB unconditionally.
-+	 */
-+	sz += nla_total_size(sizeof(struct tc_gact_p));
- #endif
- 
- 	return sz;
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/gact.json b/tools/testing/selftests/tc-testing/tc-tests/actions/gact.json
+index 0fcd52742939..94f032aeab68 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/actions/gact.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/actions/gact.json
+@@ -761,5 +761,88 @@
+                 1
+             ]
+         ]
++    },
++    {
++        "id": "b4f8",
++        "name": "Add gact action with random netrand and get it",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++           "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ]
++        ],
++        "cmdUnderTest": "$TC actions add action pass random netrand drop 20 index 91",
++        "expExitCode": "0",
++        "verifyCmd": "$TC actions get action gact index 91",
++        "matchPattern": "action order [0-9]*: gact action pass.*random type netrand drop val 20.*index 91 ref",
++        "matchCount": "1",
++        "teardown": [
++            "$TC actions flush action gact"
++        ]
++    },
++    {
++        "id": "e3d7",
++        "name": "Replace gact action without probability with random determ and get it",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++           "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ],
++            "$TC actions add action pass index 92"
++        ],
++        "cmdUnderTest": "$TC actions replace action pass random determ drop 5 index 92",
++        "expExitCode": "0",
++        "verifyCmd": "$TC actions get action gact index 92",
++        "matchPattern": "action order [0-9]*: gact action pass.*random type determ drop val 5.*index 92 ref",
++        "matchCount": "1",
++        "teardown": [
++            "$TC actions flush action gact"
++        ]
++    },
++    {
++        "id": "c2a9",
++        "name": "Get gact action without probability",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++           "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ],
++            "$TC actions add action pass index 93"
++        ],
++        "cmdUnderTest": "$TC actions get action gact index 93",
++        "expExitCode": "0",
++        "verifyCmd": "$TC actions get action gact index 93",
++        "matchPattern": "action order [0-9]*: gact action pass.*random type none.*index 93 ref",
++        "matchCount": "1",
++        "teardown": [
++            "$TC actions flush action gact"
++        ]
+     }
+ ]
 -- 
 2.25.1
 
