@@ -1,58 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793972273;
-	b=PqIcY0+xE+cSuNH+6CwALJVsxFnNF8NUPPZ1VhxaoHU4Ppjx/STEkoGTVURawdbgLwQN
-	 yOrgzYNmvsphGwzyVTpfQA4S6V/Sn7++Mk2/LKt1NftqE2KebH4EVOH2BWQcTlOrMADCR
-	 ax9rd/mvogLmSSrZixNRfxQXPHduPx6AtNXQVYUmrbMLe/wK+z64FitVNF4fdhqUuh0GW
-	 qrde4xFm98ItKQ7T8kOyc23E/yGHrTmt8qnVl6cWU2fYAs4GdhtmcblIt2XawVNGdHKaz
-	 prdhjgi5kOmsIykt8L7Q4V576u0/ifvd3ZAGMT8S/F7j2bO9FchupZoS+MGRxDQyLrg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793972273;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=RulP2pumuJDdQ6qGczFOD8MSveffDIBuVeKLG1nOIoE=;
-	b=SEpD8LQd0YyryClxAenTGfw8xhq10lhSsOe70c1KOhg6aRcLr7SC2naEDbK1c5vjKnfO
-	 TndL1FhoDN0c/dC+q63A4a/9T8w41NxbjrCJ7+df6IOoYEAau/fXshYpxp3u5erM2VRFA
-	 p0KUOweWWj7orvuDWAo7IyEKL0oE16Mw26kE4Uv0l7BTb9raIwG9mDle049QPwDSo1sMx
-	 Ao77bI710M59SHVdapKARD1Vm3syItRYVRULk0BnqiH+ZVtIuNhXLI23mOfQ165FdtA0x
-	 CFUDpHG8vsPKYubqugBmTLrK++5R8rDXuldNfEtefhiUs3Hf/fN+4tFu7EK4eIIUU7Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Dhl1/tjj";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.66.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793972297;
+	b=TNPwmo/K9cXRLE2XsRvV4lBetVZ4oHpvTTLjV2k9eC2JO3vjxeaC2AVMIeTMMgeJhbsq
+	 zFBjUohvdBQ3QfqEAWyGykibhfQLaagKD5j+huLKGrhalvsZTmX1CdQF/JakFw9//ShIr
+	 rHJEIFGi2K0g0ESQy5EMV02xN9rS63ThnDhEOMO/WmWF6LTyTdG4mdlh6R03d9R2nkxOl
+	 j/tDBgyLdLF8TfU1ICblTp41D/9l4vySYgzsyfH1SczcrtTHyuobIJfcAwOssHyHGDYI/
+	 O9Z4j2LdteZUv6vkkLtQxiW1lwxzCtii/7MblV4ylNUjmDkeil2A5RwipCrb1+hh5XQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793972297;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:To:Cc:References:Subject:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:
+	 X-Microsoft-Original-Message-ID:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=wvWrzoYWQi9jfDhbSHT/2btNiRwk1TNbvGUu4kNoeBA=;
+	b=cF4YoWuBTySGseMvlHIBtJ1ALQjJiUEt6RjvvJfV4l4C7WjULgzrPk0JbJe87tzThy/r
+	 3xsDMjtWUN97Uhn3Ja7kpbCMUJoNQZo2YQ94OfYxiorf0VZdlLRN33BzT4gAXnd+medYK
+	 oV61j7QkcYvtPd0KrbsxAqxLi/5kUeEv4KjcsnPdZTQUTnBC2FjaV7m3DDvKeEOkXRVkK
+	 L2Zl32i5G62pLAv/a5p0cu2v73CecUD1wmbv9WojVPVRBl+RFsIgF9qB3bFM3iMsMg+Eh
+	 /KGAQjZTytoXYAyJlVGeWBAyyq1T4hibfhXxhlzOTF4fQibKHRVTZN1fahAEsXuozaA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=outlook.com;
+	spf=pass smtp.mailfrom=outlook.com;
+	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b="lh5T/1sy";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.66.18
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazolkn19010018.outbound.protection.outlook.com [52.103.66.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E91606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 13:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B25E606A326;
+	Fri,  6 Nov 2026 13:38:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B25E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dhl1/tjj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB71B1F0089F;
-	Fri,  6 Nov 2026 13:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793972272;
-	bh=RulP2pumuJDdQ6qGczFOD8MSveffDIBuVeKLG1nOIoE=;
-	h=From:To:Cc:Subject:Date;
-	b=Dhl1/tjj19WpPD/mLjqi7JdfUPUtq7vdrL8kbEyR7jOOKt9feVGHOZ3JQNJ+UQ4iU
-	 dS/4kltchi1a7NxRNlzlJ0nAVbTH94JiIb4F2Uav/aWPd/NC5Fhs2wTcOmA7yR2FVp
-	 JWL49qzUZd3nQ1pXi/lHDttvUp4bfbuM+PsEIu3RZ5PsapSYZgw2r9aL0K+uy02J2Q
-	 MENK6pSYB4hP1vuhSLlzftEJIPSCyOP/RU2VTGgRSvp64b0Bor6KD6EYFvw82res3b
-	 e8EXUCQGmXya8HF+VFcIOoyaOLuYp6WRNAEJImwiQM+ckjvgPishE+EB3s72NmUgK9
-	 Xb9JTU5OVul+w==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Neal Cardwell <ncardwell@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net] tcp: cubic: do not trust snd_cwnd set by BPF congestion controls
-Date: Fri,  6 Nov 2026 14:37:48 +0100
-Message-ID: <20261106133748.2181133-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=lh5T/1sy
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XFtB6Aiil2J4qry1TwoJg30I7kdNUsdGxQIerUg1N3vs2yEjoY8WsdzFi/sq8ieu0a8QrVR0fh/tfqeeiQ1B71M7a8jRD3Z95JWxErgYN6NPrOoLLIB/DKLr0KrqEufuHv9ATUAfyKo0HTicanl0vyxgUKwhRwgosDWyz2SNqsEJVGjaXzq/ItiLp3vBlPlzRmkNkW6y+1PfWbCJFkZi+4CHHzUkdoLW3rMdRoXChIfKVsm6gefgTY31QNt08ZJZxFvgZE0nvuyt4h/VacSPBKPmn/ZCvbwlD3g92HQhvvXITUSkOgy0duYRLbd7FmX3+wZDiBceNjbuWbXwTMg7qA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wvWrzoYWQi9jfDhbSHT/2btNiRwk1TNbvGUu4kNoeBA=;
+ b=g2dD1yaci6taVr31I7EL2fyD1pz3ktasc/EotaFBKVrmCIAJ8fiyTlW5yO4udg/4QuVNeuLyUYUP38xt2mp5apv1Q9uE65gCrJfW8OBmq2DZtuBsPS9t+SG8btN+odRxjDlT5mCssgjxwHyNyAIrmf1HltRk2R3cnugXmuPtcoXWybGqXNnqcXs4PmQ/hbOTGPnVJoUckClFxk4ST+0Kn/6ip0ruMqWp3xAu16xZqgFz3eWxqbqspXn4BQ2vIIA5pWOcYXQekLC3DdxoBlnQDod6pX9Io0jeuS4feUC5zr4YHnmI+Xd3Mv0JTcquar2Sunk0i/RZZkAt1P1kOmqUzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wvWrzoYWQi9jfDhbSHT/2btNiRwk1TNbvGUu4kNoeBA=;
+ b=lh5T/1sytuqEPc9yktg7r4SBWJiBW434+rGF1WG9jJaZsKfAIo9QtyNttFGiiErxHr07JWgtOh4+3mZsaCxe1JNROlePmqb+wyCQGHCCQKqJIJ4xqfAM7p9d+rXt1q3ZcHQ8T6t2f8O1m6owtFna5UEE7kEHSCR3on3y5T9JGNCnZGEYRMdWPp6+cea7FmN9cAtANPaU/lEiDCJ+Pkxr42bBfZAie/ajwWlENABS+F3LncRJHIrW5qi01Nmb2NKVjEHQpgYvjokDN7Vp30M6uQrjIjcBKzRVyeXER4F/D1B0BHTW7kYtxUjf3ezXnibV0+u8sIGvDumg0VRMVHJP5Q==
+Received: from TYCPR01MB11008.jpnprd01.prod.outlook.com (2603:1096:400:3aa::9)
+ by TYRPR01MB12666.jpnprd01.prod.outlook.com (2603:1096:405:1b4::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
+ 2026 13:38:12 +0000
+Received: from TYCPR01MB11008.jpnprd01.prod.outlook.com
+ ([fe80::d61c:732e:48f9:fb9f]) by TYCPR01MB11008.jpnprd01.prod.outlook.com
+ ([fe80::d61c:732e:48f9:fb9f%5]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
+ 13:38:12 +0000
+Message-ID:
+ <TYCPR01MB1100852BD6000EFAFDF14A418CA762@TYCPR01MB11008.jpnprd01.prod.outlook.com>
+Date: Fri, 6 Nov 2026 21:37:52 +0800
+User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
+To: ralf@mandelbit.com
+Cc: antonio@mandelbit.com, davem@davemloft.net, dxld@darkboxed.org,
+ edumazet@kernel.org, horms@kernel.org, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
+References: <20261024092532.172005-12-ralf@mandelbit.com>
+Subject: Re: [RFC net-next v2 11/18] net: ipxlat: add IPv4/IPv6 header and
+ transport translation
+From: Xavier HSINYUAN <XavierHsinyuan@outlook.com>
+In-Reply-To: <20261024092532.172005-12-ralf@mandelbit.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SL2P216CA0087.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2::20) To TYCPR01MB11008.jpnprd01.prod.outlook.com
+ (2603:1096:400:3aa::9)
+X-Microsoft-Original-Message-ID:
+ <ca98e2b5-d94a-466d-ac76-182a67fb5156@outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,122 +98,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB11008:EE_|TYRPR01MB12666:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4fed7c36-2948-41d9-9932-08df3c0b333b
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|41001999006|25010399006|24021099003|19110799012|8022599003|23021999003|5072599009|15080799012|12121999013|8060799015|6090799003|25031999004|3071699003|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Vm1PNXFscHJRZU9mb0l6TytEaDMxTGwwQnJ5OUtOdVQ3aldJSS9kZzRwMUND?=
+ =?utf-8?B?aTBwNnRBQWI2dlk3ZVpmQ015alE4cG1VU3JkTG1xcXZFV3F4MENxbytnQlF5?=
+ =?utf-8?B?U25oYnZYN2dHNS9tRWVOMTd6bzhnMDlNb3NaclZrNytCYUZTWVFacmFBdUlN?=
+ =?utf-8?B?b2cxaElKbDUxNGxzWmd5RnBac20reVVxUkgzZ3FvSHJMcDFBTm8xUEtxbXNQ?=
+ =?utf-8?B?MnR3a2RQb2hHdTNMY21ja20zVkFMTGFpQTdPcXIrbmVBdlYvQnJjRmNvazlo?=
+ =?utf-8?B?N2NPRHN4ekt4UHRPUnpmWnJDelJxK1l4T3QxRDFmejZReFBvYUhScnJ6UnU1?=
+ =?utf-8?B?T09GM1hxQTFkWkQ5SHBmSW1JcWh3NDZMcFpwQjNndzgxUWhLdHYrYzdnRjI0?=
+ =?utf-8?B?Ym5POHRpOG84bEJ6U1VMbm1FTGFISDVxTlN3NG5Ha0lLejFVd2d5bWRma3Qv?=
+ =?utf-8?B?RFg1TG9aYlJXa2VNbmZnZFhRVk1jWlY3cXpiVVFwRFBGSFVINi9nVUpsbXZp?=
+ =?utf-8?B?QXc0Z1FJMDd5WFZpQ0RzZThLWGZ0UW9rZTZVbGMwV1NNTi91OUZSWHVrM0Nr?=
+ =?utf-8?B?dlJvNldSazQ0dW5TZndoMkFqZmZnWHluUjJIazBQMmlNRDB5NXNyOU1XdEU1?=
+ =?utf-8?B?MkpUOEJLRTRLY3ZrRi9GSG53T2Rhcm9HRDRveDZCRExXMTNtQjQvbDRpTDk5?=
+ =?utf-8?B?dVp1ak5POTRXdVYvLzAwSzdRTmovazl4V3ZYK1BucGc3NUZmdFB3bERWYm50?=
+ =?utf-8?B?UlNXVWMwK2FIT1hJQnFHdjE1SUdmOFM5R3B0SXpzeVBuQ3J1NVJhYzhadm1U?=
+ =?utf-8?B?dndxV0RSSS9kQ1JodzJvbENPR2NvY3QxM3Fxajk3K0JFWTBEZ3h2RXpkdjVv?=
+ =?utf-8?B?emphcFppSzBEREtCcHpOMFlHN1NXMkdIdk90d0xGaTZhUWRqd3puYTFySHNy?=
+ =?utf-8?B?YXNPbm8wbWY3cFBwWmN1MU9Kb3ZESEZHQUtQTkdwWFFEUkxxTjlHdG54a3ZH?=
+ =?utf-8?B?YTlIWUVaQ3RxdWFhYm5wZjk3UUtLVjMyMm5IZTRVRkNXa3p0VWc1VTdqOVpV?=
+ =?utf-8?B?MTM3NnJaVGxpN1dld1FuM1BKZkN0R2dDNUUvRVZZVTUwZEZPUVJNOThna3RZ?=
+ =?utf-8?B?T1U5Z2R2K1hVK0F0YTloM01RK04weXJLdkJtZ3p4TjJqQWx4LzRGTllyeTBi?=
+ =?utf-8?B?c0pOL0h6S3lJUlpaVHpxYkpSNzNRL3FjQ1lrRS95U0Q1MWk4VkNPM0ZYSDJP?=
+ =?utf-8?B?QWVRVXI3ZjBBeHNRTGVhRDB1T2xiZ2ZSci9TL2V5L3JhbCtja3pmNEdyUmky?=
+ =?utf-8?B?SVFkMDJ4TzFmQWhDQlArMlhhYm05YWJCREtGZ1RvY0pWWUlMeWdveHpVZ3Zx?=
+ =?utf-8?Q?PTdPfCNzGD/m76HNBN4TXW7yXuSVR8i0=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFRYNEJUWWRLYndJOXp0Z3lUUENPK1ZVNHE4TUtwRHptSlpIeVpkMjYwSXFx?=
+ =?utf-8?B?MFpuNnN0aU1kaVFqeWpYd1ZNbmtZYklKRXJVS1U4V0pyOHd3c2Y2VXlzOVZt?=
+ =?utf-8?B?eHJWZXpHRy85YnBNUS96R1BOSENqdVY2MHZWMENOeDdtVmhORjdBRUpyNExO?=
+ =?utf-8?B?ZXhkK0IrMXhpdFJJTDRGdUhwZWpDQjlUUFdzOWEvNjd1WkF0WW5rOTIycmQw?=
+ =?utf-8?B?SEgxUzdSK053VnNmWURlT1JocFM2azNtYUhKZkxxVDZOdE4vWm5zR3MrdU1X?=
+ =?utf-8?B?NGp0bHFxbUVHbWJ0TGgvTmRkU2l3SVJKQnRBZkVLMllQSEpWM3BzMTA0Q0t5?=
+ =?utf-8?B?d1Z3di9JWElSKzFnTjJVMFpZOHJrVy9JbllyVmFDSlZYd2dQN3ZQUC8zdFlC?=
+ =?utf-8?B?M2ZYdm1ZOTdITTBNUjg3K0hqK3lkaHVhMUpCQUdNNTFCallDZ2ZOVno4aERt?=
+ =?utf-8?B?UFBVRWtvdFZ4VkcweVE0ZmMwZmlIaTJ0K3BJOHN1eDkxL1RhUGVZa1pYamNx?=
+ =?utf-8?B?ZE5MRlpmek4yMTFILzRoYVdZbmwzdHdEMEVEMUg4ZTU2WC8yYkp0NW5ZVWxT?=
+ =?utf-8?B?TVIzZ3VaSXlmTEJsQStwbFNmZ0IxdHhlejRSaU5uSGJZWnF1NVMzWGJQRDlz?=
+ =?utf-8?B?emJMRDdGa0kwa3NDbG85bHFhbFU5VElXcmdTd3dNcFBKMVM1WFg1dlRJQWhS?=
+ =?utf-8?B?NHZsRGJMZStuSmMyK2ZGazJvZGRRTGR4Q0YrUnFjbnRSQlQwVTl2Y0MzdW52?=
+ =?utf-8?B?YkxjaDE0a3JHbGgydGFzbFBkbFZ6MXcrS1pCVDdRME9WblN5SDluSEtGZkRL?=
+ =?utf-8?B?YkRUdVFFTVFveVljWHpkL1RCc0FKS1pOVHl4T0hCbjBBRGpJblh2TnZVOUpz?=
+ =?utf-8?B?YW5TS3d0SmVneG40VTNRdXRJK1NkQWZJOWhwQTFBb0FOanFpbzJLMzRWQ2hm?=
+ =?utf-8?B?S2pJZ3RMR281YU5EYXVBYzhwaWk0WkloYkd2eGNSSzRMSWRYTEhCaFBSTXU2?=
+ =?utf-8?B?TWQ4WkNlODdtcVFyRmJiQlZ6aStlUE85WmNDUVowQU85TGdmY0hVckFrQTZr?=
+ =?utf-8?B?WllyV1MzR05oeEl0cXlBR3Bmd3NKSTM2bjFXVnBoTjIyUjFoRVU0MnRjemVZ?=
+ =?utf-8?B?dnRmbTJkZ245T1RmanJkUUhkelFPTUdwZnphcjFld1lYc01pQmlSODNFaDUr?=
+ =?utf-8?B?WW9uZnM0WUs0eGxuNTRUZExGKy9rc2tPOG9jUElScENsNWpwKzdJdVZkU2Uv?=
+ =?utf-8?B?d1RVTElodi92UXZPakdTRVhrbHh2aGxSdkgwZis2c1hyOXBnb0h2UWQ0K1cz?=
+ =?utf-8?B?VkFEUnoyYi82R1luYnZVL0F2SU54ZCt2ck1CZHVCUmZGb0gzVXg3M2VLRUpu?=
+ =?utf-8?B?QlAwaGRJS2x6SkZoOXdUUWlHQjZRSzNNczBhRXl3N25pSEdjNjFzU09oMENJ?=
+ =?utf-8?B?QXkzWVlXVzlrdDhSWDFXR1M5c1I4a2RZTXF5M3p4aTRBSUxta2Q5ZCtqeUlF?=
+ =?utf-8?B?OC9lV3NaaTJ4LzYrS3lWNWRERnduOXU5eGw5T2h4TmRjaDJicGYrZWdweHpG?=
+ =?utf-8?B?VXNYZHg3L2ZtS3kwRzk5Z3FFcGd4aThiTHVvVXA5dUQ2QjNyZkRrWXNabWRk?=
+ =?utf-8?B?SHRicmhZKzhaWko2aFJ3SVV6MHZhcDJjRHZHVFdEaGZxbGVQbGNBb3Jod1Fm?=
+ =?utf-8?B?UG5KdEVIeElVbzE5c1JXaVZnNGRJWDl3KzNTSHRYL01UL1h5NTBtZ1NodTh3?=
+ =?utf-8?B?S05WUzZ2bnFRZGJ4cFk3S3lmaDhXa1FJTXZGeThFYy9xUTZSU2ZQWHk4Nlor?=
+ =?utf-8?B?eCtKTU1HUFJDSkNpRzJnWlZaN0VJbU1YZ1RXSWxEaXZRelZuVVhWZ2doTGpj?=
+ =?utf-8?B?ek5KUjRpZ3JsVys5akVPV1BSSjVtZVpMM0xKSFNoVXgwaTRpTW8wcEdSTFVP?=
+ =?utf-8?B?c0lMZ2Y5R2FjQXREaXB1NndlZFBYUVAxUG5SemFzWHBVWktBYW1PSFJvRE5X?=
+ =?utf-8?B?Rk1wSUZubWFBPT0=?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4fed7c36-2948-41d9-9932-08df3c0b333b
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11008.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 13:38:12.0168
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB12666
 
-Follow up of 475ff14ba558 ("tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND")
+Hi Ralf,
 
-The TCP friendliness part of bictcp_update() does:
+> +static int ipxlat_46_translate_tcp_csum(struct sk_buff *skb,
+> +					const struct iphdr *in4)
+> +{
+> +	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
+> +	const struct ipv6hdr *out6 = ipv6_hdr(skb);
+> +	struct tcphdr *tcp = tcp_hdr(skb);
+> +
+> +	/* CHECKSUM_PARTIAL contains a pseudo-header seed rather than a final
+> +	 * checksum. Replace it with the translated IPv6 pseudo-header and
+> +	 * leave completion to the later output path.
+> +	 */
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+> +		tcp->check = ~tcp_v6_check(ipxlat_skb_l4_seg_len(skb, cb),
+> +					   &out6->saddr, &out6->daddr, 0);
+> +		return ipxlat_set_partial_csum(skb,
+> +					       offsetof(struct tcphdr, check));
+> +	}
+> +
+> +	tcp->check = ipxlat_46_update_l4_csum(tcp->check, in4, out6);
+> +	skb->ip_summed = CHECKSUM_NONE;
+> +	return 0;
+> +}
+> +
+> +static int ipxlat_46_translate_udp_csum(struct sk_buff *skb,
+> +					const struct iphdr *in4)
+> +{
+> +	const struct ipxlat_cb *cb = ipxlat_skb_cb(skb);
+> +	const struct ipv6hdr *out6 = ipv6_hdr(skb);
+> +	struct udphdr *udp = udp_hdr(skb);
+> +
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+> +		udp->check = ~udp_v6_check(ipxlat_skb_l4_seg_len(skb, cb),
+> +					   &out6->saddr, &out6->daddr, 0);
+> +		return ipxlat_set_partial_csum(skb,
+> +					       offsetof(struct udphdr, check));
+> +	}
+> +
+> +	udp->check = ipxlat_46_update_l4_csum(udp->check, in4, out6);
+> +	if (unlikely(!udp->check))
+> +		udp->check = CSUM_MANGLED_0;
+> +	skb->ip_summed = CHECKSUM_NONE;
+> +	return 0;
+> +}
 
-	delta = (cwnd * scale) >> 3;
-	while (ca->ack_cnt > delta) {
-		ca->ack_cnt -= delta;
-		ca->tcp_cwnd++;
-	}
+Pseudo-header seed in CHECKSUM_PARTIAL uses per-segment length instead
+of the aggregate length, resulting in bad checksums for almost every
+segments.
 
-beta_scale is at least 8, so delta is 0 only if cwnd is 0,
-or if the u32 product cwnd * scale wraps. Native paths keep
-cwnd in [1, TCP_MAX_SND_CWND], where this can not happen,
-even with the largest valid beta (beta_scale = 5458).
+How about updating {tcp,udp}->check with a pseudo-header diff like
+inet_proto_csum_replace_by_diff() to preserve the existing seed?
 
-A BPF congestion control (struct_ops) can store any u32 value
-in tp->snd_cwnd and tp->snd_ssthresh, then:
-
-- call the cubictcp_cong_avoid() kfunc.
-
-- switch the socket to CUBIC with TCP_CONGESTION,
-  as tcp_reinit_congestion_control() keeps snd_cwnd.
-
-With snd_cwnd = 0 (or 0x88888889 with the default beta_scale of 15)
-and snd_ssthresh low enough to leave slow start, delta is 0 and
-the loop never ends, hanging the CPU in ACK processing.
-
-Adding a check in bictcp_update() would cost native CUBIC a
-conditional branch in its fast path.
-
-Instead, fix the two entry points:
-
-- The cubictcp_cong_avoid() kfunc becomes a wrapper ignoring
-  calls with a cwnd outside [1, TCP_MAX_SND_CWND].
-  Native CUBIC uses __cubictcp_cong_avoid(), marked noinline
-  so that its generated code does not change.
-
-- tcp_reinit_congestion_control() bounds snd_cwnd to
-  [1, snd_cwnd_clamp]. This also protects other native
-  congestion controls, whose ->ssthresh() handlers do u32
-  multiplications on cwnd.
-
-Fixes: 0baf26b0fcd7 ("bpf: tcp: Support tcp_congestion_ops in bpf")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/netdev/179363987528.3131.2987776489427079887@kernel.org/
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- net/ipv4/tcp_cong.c  |  7 +++++++
- net/ipv4/tcp_cubic.c | 18 ++++++++++++++++--
- 2 files changed, 23 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index e3f462f161dd6c3f4e9eeae99b45a93391c87079..2c20524489168da0062bf7ff1b8bfc69e2c8b6de 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -251,8 +251,15 @@ static void tcp_reinit_congestion_control(struct sock *sk,
- 					  const struct tcp_congestion_ops *ca)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
-+	struct tcp_sock *tp = tcp_sk(sk);
- 
- 	tcp_cleanup_congestion_control(sk);
-+
-+	/* A BPF congestion control could have stored any value
-+	 * in tp->snd_cwnd. Native ones expect a sane value.
-+	 */
-+	tcp_snd_cwnd_set(tp, clamp(tcp_snd_cwnd(tp), 1U, tp->snd_cwnd_clamp));
-+
- 	WRITE_ONCE(icsk->icsk_ca_ops, ca);
- 	icsk->icsk_ca_setsockopt = 1;
- 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
-diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
-index a88e4bf86150f06eb3c0d3da99761e5d45c8f6a3..9595bdc9589c255b673744ce501f50c418d82e2b 100644
---- a/net/ipv4/tcp_cubic.c
-+++ b/net/ipv4/tcp_cubic.c
-@@ -318,7 +318,7 @@ static inline void bictcp_update(struct bictcp *ca, u32 cwnd, u32 acked)
- 	ca->cnt = max(ca->cnt, 2U);
- }
- 
--__bpf_kfunc static void cubictcp_cong_avoid(struct sock *sk, u32 ack, u32 acked)
-+static noinline void __cubictcp_cong_avoid(struct sock *sk, u32 ack, u32 acked)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	struct bictcp *ca = inet_csk_ca(sk);
-@@ -335,6 +335,20 @@ __bpf_kfunc static void cubictcp_cong_avoid(struct sock *sk, u32 ack, u32 acked)
- 	tcp_cong_avoid_ai(tp, ca->cnt, acked);
- }
- 
-+/* BPF congestion controls can store any value in tp->snd_cwnd.
-+ * bictcp_update() would loop forever with cwnd == 0, or with a cwnd
-+ * large enough for cwnd * beta_scale to wrap.
-+ * Native callers do not need this check.
-+ */
-+__bpf_kfunc static void cubictcp_cong_avoid(struct sock *sk, u32 ack, u32 acked)
-+{
-+	u32 cwnd = tcp_snd_cwnd(tcp_sk(sk));
-+
-+	if (unlikely(!cwnd || cwnd > TCP_MAX_SND_CWND))
-+		return;
-+	__cubictcp_cong_avoid(sk, ack, acked);
-+}
-+
- __bpf_kfunc static u32 cubictcp_recalc_ssthresh(struct sock *sk)
- {
- 	const struct tcp_sock *tp = tcp_sk(sk);
-@@ -475,7 +489,7 @@ __bpf_kfunc static void cubictcp_acked(struct sock *sk, const struct ack_sample
- static struct tcp_congestion_ops cubictcp __read_mostly = {
- 	.init		= cubictcp_init,
- 	.ssthresh	= cubictcp_recalc_ssthresh,
--	.cong_avoid	= cubictcp_cong_avoid,
-+	.cong_avoid	= __cubictcp_cong_avoid,
- 	.set_state	= cubictcp_state,
- 	.undo_cwnd	= tcp_reno_undo_cwnd,
- 	.cwnd_event_tx_start = cubictcp_cwnd_event_tx_start,
--- 
-2.53.0
-
+Best regards,
+Xavier
