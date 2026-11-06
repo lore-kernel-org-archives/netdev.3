@@ -1,76 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793951482;
-	b=lRfxFlHhcLSWkSTNFiCJ3jKXajYGnm4CLjydRROirjRXBBHkEZISz1Xd7mOMY6TIUGPh
-	 +SuE+qME/rh/4qacfX/ibu+FVsfduPcTH9D7mfYIlSSei5XsUJH2BWN1coAYcesLX4EwQ
-	 Q9Um40vhRIndCe/0zQOLzgM4aClQoFQDUVP/VedRqKEc79HmGMqccOQLyKE1SNyQvHJOM
-	 XGTLpekQ7eM4SadggYTYQu23hSoas5GLVdc6y0se8zyiNI2lO8GCrnmmMZsFOnIpENF34
-	 0cMQCgLnyDNkrITepdlVxO0PGmOHRpo/JaLetT/SdF+gtj9QlF8CZdPujIorCNLMe6Q==
+	t=1793951590;
+	b=K1LSHXZjjP6v/BP7A3gDoCpvNjX9qIll6tewJSakjoMfytj4lSCb0IHpDQ6ZXnEq/95V
+	 ajpQFYA9tH8R8ayPx+dD8cMZS97juqrkpQ8Xja3KqbIDri9vbmuZoJahB9vzqVXGdfCjO
+	 +4tEvO/QJdCI9Fzm6gFZ+YwaxBzmmlLUCn1JGJa6cr++C1nOJ+7/+9W9qh8jqAMbWBXSQ
+	 EG6yO6+hJl9ZwWMSaiKZX6eYBA/F4dJbO7Qsp+hjbAButq1NpnWWKs6vlrFVP8j/jydN3
+	 qFBV2N3zfjpBDdhrsB4Ma8Nz8Z1eK68lHhX7ecuOBKutVBvDoDpA0JGVzrZl0ymC0lw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793951482;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
-	 DKIM-Signature:Received:Received:Date:From:To:CC:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-ClientProxiedBy;
-	bh=ZHr7cnKxJ5lZjyr/KeuRcLqoFP/w9L5fnd5tVVZvABY=;
-	b=g8CSdEl3tGuJbM0HnDCY2rzmpnqUXsAqcH2RzxmRu+picashM/qNni5IIhGy2gpkU6z/
-	 JgCuarBfMH9Zx52tEapErycnRL9L6yVv4W1k9azMYJSzc/AA+Xr3Ia4obfh7b5chPgzjc
-	 rYkkGxNKo7I2Ktk2Xu1jbkcML2wgAiDdbuo0H631gJ/98wz0zUbgpfipRNwl4A6huriIl
-	 ESwU14DHLkW8Jrf1yg2sONdg5xSqEOchezLn8/a2kRdU15VKbtdjddL9JwwDwtN5BNXLr
-	 +fUswKRVJ9JMOaZ6pgsfBPPVwBXaQL4kdkgey7tlwrmScfxxzlB9tKWwkDlIHeZybQg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793951590;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=kur3oCIADPik00ww6Op7p8ctt5qcVWiVMu2HCk2DBAA=;
+	b=uTwLIRxFyQ/8SdSRFAvaqLSnRoFN+wP14VldZQ8wzstUis2vfVytEPKvrTnJl+Pb1jlC
+	 Fx/EMVlImU0LX0K9KrISR4K6trAvtIgkvbgBG/Be6XcAsqMYTi2fayM+Jax84N4QgSpUf
+	 7DlZHzREq62sIuQDbs05v1/oNxNascPnvtA1FWb1HHr2qAT7FNpvtvpo7vK+DjTSFTCU4
+	 Zq3l+zDgW+YwHQa9EQMob05Lg8kEv2+QNwfnVD9R+kTV8MRYCAmVkQflo3ZeroMYTY5MI
+	 lvPz0+MDgK+pzHxGox8EqhLVMYC5Dbe5K6/cuV5EoTk7pNmoCTJoFU4bFOryWyHweHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=secunet.com;
-	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=zG3tmDTz;
-	arc=none smtp.remote-ip=62.96.220.36
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F59606A326;
-	Fri,  6 Nov 2026 07:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0F59606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=bsNIcf7U;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F888606A326;
+	Fri,  6 Nov 2026 07:53:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F888606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=zG3tmDTz
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 46E2F20870;
-	Fri,  6 Nov 2026 08:51:20 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id NBNz1GUpEhDM; Fri,  6 Nov 2026 08:51:19 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 7A79A2074F;
-	Fri,  6 Nov 2026 08:51:19 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7A79A2074F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1793951479;
-	bh=ZHr7cnKxJ5lZjyr/KeuRcLqoFP/w9L5fnd5tVVZvABY=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=zG3tmDTz6wF4lMqixwlVM5xP6/ewlFBU2tcncbhm+Ok851o4sCZST/2tI31u0cpCM
-	 oUJOx7Fup94LhjtX2xLC2R1dOR3iZgYaPr/L8M2h8cRL9l+dCjQ4/7MWWY2j3sKk71
-	 gpPWUmkM8z5+iKZ2S/PgSAL3hiVlOORYALLZUh6mLTFieVPAhGWRVNbd1fkkCFurph
-	 LurDBdOIvLNeUdzTNKXIoLFKZSLQh1DKV/P1Jp97ZQo27QJ90lSpjwSQJwgY2pIrMM
-	 Wyarm4zPiRac0RvVC0KKCoe8v8BE1ldsl7lkJst6W272xY40iNnwKsB7I10MRgQkCt
-	 SrPS2P+N6Mslw==
-Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 6 Nov
- 2026 08:51:18 +0100
-Received: (nullmailer pid 3072074 invoked by uid 1000);
-	Fri, 06 Nov 2026 07:51:18 -0000
-Date: Fri, 6 Nov 2026 08:51:18 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Kyle Zeng <kylebot@openai.com>
-CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, <linux-kernel@vger.kernel.org>,
-	<outbounddisclosures@openai.com>
-Subject: Re: [PATCH] xfrm: serialize SA activation with state deletion
-Message-ID: <au2G9iC524N1gOjI@gauss4>
-References: <20261030042353.74606-1-kylebot@openai.com>
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=bsNIcf7U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=bsNIcf7U6SmZMfz5/dJXiO/7iwMdPzJDDmuQL292m6KtvL2Mh6QYlslXzuYUNgP6MWap97tVkbsSf
+	 y9YmTXRc1QEpvNKOJe/vQjclFjsszjUNPIxqi6IK0EeDpw0ksgjU61Xd/1t5SSZSKdlT7fKISaWjS4
+	 8O/bCq+iwoN3WGUQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66aed8761cfd-7b6a5;
+	Fri, 06 Nov 2026 15:53:05 +0800 (CST)
+X-RM-TRANSID:2ee66aed8761cfd-7b6a5
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.104] (unknown[223.108.79.97])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16aed875f96d-17b71;
+	Fri, 06 Nov 2026 15:53:05 +0800 (CST)
+X-RM-TRANSID:2ee16aed875f96d-17b71
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@kernel.org>, David S. Miller <davem@davemloft.net>,
+ Alexandru Tachici <alexandru.tachici@analog.com>,
+ Ciprian Regus <ciprian.regus@analog.com>,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, Heiner Kallweit <hkallweit1@gmail.com>,
+ linux-kernel@vger.kernel.org, yana06070@163.com
+Subject: Re: [PATCH net-next] net: ethernet: adi: adin1110: Fix phy_device
+ leak in probe_netdevs()
+Date: Fri, 06 Nov 2026 15:53:04 +0800
+Message-ID: <1793951584000.347526.5074428569945602767@cmss.chinamobile.com>
+In-Reply-To: <179395006518.488859.7603845397469844366@kernel.org>
+References: <1793949783000.333861.5224091507677300156@cmss.chinamobile.com>
+ <179395006518.488859.7603845397469844366@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,29 +75,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261030042353.74606-1-kylebot@openai.com>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 29, 2026 at 09:23:53PM -0700, Kyle Zeng wrote:
-> xfrm_add_sa() publishes a newly constructed state and arms its lifetime
-> timer before marking it VALID. The final VOID-to-VALID test and store
-> are not serialized with state deletion. If hard expiry deletes the state
-> between the test and the store, the store resurrects the unlinked state.
-> 
-> An input lookup which found the state before it was removed can then add
-> it to the per-CPU cache after deletion has removed the cache entries.
-> Once the remaining references are dropped, the cache points to freed
-> memory.
-> 
-> Take x->lock around the conditional transition, with bottom halves
-> disabled as in xfrm_state_delete(). This preserves DEAD if expiry won
-> the race. The same protection covers UPDSA when it installs a replacement
-> for an ACQ state.
-> 
-> Fixes: cc01572e2fb0 ("xfrm: Add SA to hardware at the end of xfrm_state_construct()")
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+On 11/6/26 15:27, netdev-bot+sinfo wrote:
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+>
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 
-Applied, thanks a lot!
+Hi,
+
+The leak was not hit at runtime. I found it by code inspection while
+reviewing the MDIO attach paths, as the commit message notes. There is
+no stack trace: the effect would be one struct phy_device allocated
+per port on every probe and never released.
+
+I don't have ADIN1100 or ADIN2111 hardware, so the change is
+compile-tested only, with CONFIG_ADIN1110 enabled on x86_64.
+
+Thanks,
+Xia Yan
+
+
