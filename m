@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793998807;
-	b=sjLHWD4GanUaALKFjYUJvy17cVQI9tW8A4yEd7c4rHnT3xoTExEI9TPt5uwkureKMTpc
-	 oFGeyXIWSrDJPs0nqF0G4Xrj4XmMcEp1jn/epLJbhQnOuw3+i6d3l/rtnB6IbnLyt2hkT
-	 +h4V8FfLR+ADqIw8oA9wCvD+PP2jtsbYMYUMaCXuCnSGDsJi3JQGTrrOT6lRlPC9yZswb
-	 nZcWg4LlDIn/aoBpBG0+29MUNxSeyew2oQO9noG5UqO+RbP38/Pmxin0g0fIMO5N+uUfN
-	 rGrowL9tgGoPMgPqqsT55aUwbzyT1uFs4lW1htXZcvf56MKl22xINJLdSpoKwLv118A==
+	t=1793998814;
+	b=bKt/2+DLJanraCEJs92Nd4Z5NitwyKpySws2yQEo0PPlqyISslmhdMsrC+RPCRSEyTWX
+	 Brr1P7M+njKx0tBojs89DXPUly0RsDZqg/V725WwdAwEK3ZjHz31K91BHT+Hy28xc7QvS
+	 cBYpebyOdoDh5XLUCq1y0UcaVj7BA69S0iX+06wpafTGFlTk0+lz6QGyMbidhEZzZVqAO
+	 Wm6DOT8XnFd8LXgeoBiubfrOAs3EPsTIbjXWAk4QeaIxMT54bMtMAHCaXu07L95aVFqy+
+	 Zqa/9NHRD1YS1KUN3rmChrDHQ4arz6hWtsJSjVoyuYrwcXC5Hnj4OUcyk+oapdsj5pA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793998807;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793998814;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=VZPLtbjG956BLbDUCM34QjUZeBu6jMBP0p7YG8UyO2Q=;
-	b=gM8+jNyWaX4e60T+5i4GBsm9if9QHKWF00CCllmCBkxfhMyRQSrxkRbFXqYk3xLEsuVy
-	 GvJZHKwWzwLxnhzqKlHMKK21CP0CId/QMxGBc1/IahaUna4qkJyR5vZgX4LE6fGs8Bese
-	 QCZaRKzwRJou8/z+Mb7rHDBxhw2XxP+HLeNdiHht2SkawJkQuGKAt8kHkb26VaSumxb0d
-	 PSMXVv3I0BskmoCK2taR4JBbZ9LdbT6pv9jS5XOxKDbGCLK/upQM7tjXwRkfW2WL2/rT9
-	 yOum3QsBY7gSpogAI4YwhhCTeJ6LHIqzGs+bf1uer28C04xQlGy5CZeudPWcx8WPzog==
+	bh=gaT6CRNJ/3j4xb/truYjQh4f0ordYI4g6zwRXZjIxaE=;
+	b=lCUcZm4xI6tvId6Y3EU9TUBHLQdcgaT1LD8UNvIHE1zBdEo7i+IChcG4IJmsckyDkQyW
+	 INEk4iIrBbFkVGB2OtDcSnQyj0ZYgee6s4jcRmgn8gku7RxbZd9Czt7SuB2oN4X4/kPLC
+	 XqtRFyZ3fuYgrhxNx21eLiReepbAfXdwslZSQcwF0Zsqi3d0aLIcqto+7Rf6lR5aS0/XL
+	 jvjy36hlnmWwdM6W3CEiuefStrEaVZmLk5DDc14H7yYbse4aGmPfF1EObNyYnjenFrYli
+	 4Za4zJH3vaovtx4c+t0IXUN+9QNgQKaGabLpbYSCZLM25eJ39789iuG479msjJdF+1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GBgHSWVt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mfe8EQSl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A106606A334;
-	Fri,  6 Nov 2026 21:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63A0606A33A;
+	Fri,  6 Nov 2026 21:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GBgHSWVt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363691F0089F;
-	Fri,  6 Nov 2026 21:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mfe8EQSl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3D31F008A1;
+	Fri,  6 Nov 2026 21:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793998807;
-	bh=VZPLtbjG956BLbDUCM34QjUZeBu6jMBP0p7YG8UyO2Q=;
+	s=k20260515; t=1793998813;
+	bh=gaT6CRNJ/3j4xb/truYjQh4f0ordYI4g6zwRXZjIxaE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GBgHSWVtRM5OjnwcOu+fr7fbDr/83x4gUDzrUdt/McmdvpdNE02l9X78pJIceVxrD
-	 POi8HUJ7bbY1TX56VunTQ4yotbavYrWh5q67kylklbrEDCjec2cZ8QARjz6kLrw1dd
-	 rcZ4gW4kZg8wjU1ZZoryn4Ep0e5yR87aL/njDmxAm648cWEb77MWY8VVAUmWWe/Jnw
-	 3lfT9AHKXOEZsbWDrZ2pKyVfjQMQol2Ln3vBN66HClmR8wDRRzeQjgpAdlBIBWJeQk
-	 KPasrEbNxfbEze7OZ9Xvfo2Cv008IIR26oHT7AklSJgwimh+mNm46Zck7q+IpxasVs
-	 MRiLBnzQTSZKg==
+	b=mfe8EQSlNIFHPbJAPd6HiFfLbfIGSLTGLZpxlJgYt2XNLJ9LE/m0AqmFq5DEoJYRh
+	 hGY9WTq7hkC+pjPAHILQ/u0bAlxqab8ikcmY6eJzMCt4sJXvQviJ7/ykewaL1xrUjg
+	 BxRIVsJUteETIttUrq0nRURnDG2Dbh2RjkNuELOGWVoQAJD1Gp/RAjAJTXDvQHGObn
+	 0tvTdp7CA59PcQJ1gQ59OAZvp/X6iZhoFLN7yLQfXOUfrQi4/OmPvyzmLI2i445KLw
+	 7cYt+bGvGz4ULALtN8PEovF0MPWc9J1vjC/p/Gxlpcv7yDkgmJZbPBgjAYi5/PTo/u
+	 i9BtggkYIK+Yg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210C73A549A5;
-	Fri,  6 Nov 2026 21:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210463A549A5;
+	Fri,  6 Nov 2026 21:00:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,44 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netlink: Do not call the unbind callback with the
- table
- locked
+Subject: Re: [PATCH net v4] net/packet: account user-triggered allocations to
+ memcg
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179399880568.868572.9395837242230797060.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 21:00:05 +0000
-References: <20261102120929.4077030-1-anilkaushikwireless@gmail.com>
-In-Reply-To: <20261102120929.4077030-1-anilkaushikwireless@gmail.com>
-To: Anil Kaushik <anilkaushikwireless@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- nicolas.dichtel@6wind.com, linux-kernel@vger.kernel.org
+ <179399881167.868572.2096486828284345042.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Nov 2026 21:00:11 +0000
+References: <20261101094847.664612-1-ahmadag1001@gmail.com>
+In-Reply-To: <20261101094847.664612-1-ahmadag1001@gmail.com>
+To: Ahmad AG <ahmadag1001@gmail.com>
+Cc: willemdebruijn.kernel@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable+noautosel@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Nov 2026 12:09:29 +0000 you wrote:
-> When netlink_bind() fails to insert the socket, it calls
-> netlink_undo_bind() with the table locked. genl_unbind() then takes
-> cb_lock, while genl_unregister_family() and genl_register_family() take
-> cb_lock for writing and then wait in netlink_table_grab() for the table
-> users to go away:
-> 
->   netlink_bind()                 genl_unregister_family()
->     netlink_lock_table()           down_write(&cb_lock)
->     netlink_insert() fails
->     netlink_undo_bind()            netlink_table_grab()
->       genl_unbind()                  waits for nl_table_users == 0
->         down_read(&cb_lock)
+On Sun,  1 Nov 2026 12:48:47 +0300 you wrote:
+> A packet socket makes allocations whose size or count its user chooses
+> without charging them to the user's memory cgroup: the blocks and block
+> array of a PACKET_RX_RING or PACKET_TX_RING ring and the rx_owner_map
+> of a TPACKET_V1/V2 RX ring, the PACKET_FANOUT group (about 1 MB with
+> max_num_members = 65536), and one packet_mclist per
+> PACKET_ADD_MEMBERSHIP entry. CAP_NET_RAW in a user namespace is enough
+> to pin memory far beyond memory.max this way.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] netlink: Do not call the unbind callback with the table locked
-    https://git.kernel.org/netdev/net/c/a36b9e205cb3
+  - [net,v4] net/packet: account user-triggered allocations to memcg
+    https://git.kernel.org/netdev/net-next/c/f356e90de854
 
 You are awesome, thank you!
 -- 
