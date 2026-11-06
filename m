@@ -1,80 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.146
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793983397;
-	b=NedZjp3mrTJsMZio6EtWFmBMJViTikVML0Qo7vQ+mMD8UxDo1OFGxwFnoL6hblC1XErW
-	 8MRvL8wq3AfxRbQQLIPNvTIQlYNFSfmr45yueGTqpyJxxl0A1A6YU3CD7eQCKRCsJGxV9
-	 /x1/IZO1OZHe1/V8qDB+HMBWRsQCA1XCMgtBhglB4PXMRqBhHldKOIi7hLxxhlznhGPUa
-	 cYrww9kTK+7AIofRDQOutggKpZrJmJWvYzPWC/WGG7WYLVRSB1ltFt3EiZgVmszxy/KsB
-	 SWrTJX77pJ415du5AKppYyTJZoTHdUeQfn1Q0a6QncuWGz3bZVEgOBohbugRX5tfrsA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793983397;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=lHtWxeOu+Vjsidq/9GE7H1E4u5AgSxusjUPdoEWHkm4=;
-	b=tTYevPZsXK9a94SqOu5CMn3ZLQcmU4G1JFOvH+pVWcZE17QigUo+W1GUdkAsOOJr2XgR
-	 hPHyLtIvPyhVFOv9B8dbc21KY+DXc+ghdrakRc70RMzZvh4ya5LCm1e1LCcnTMLtAnXj2
-	 KvW2d+aONqCvoCW2syaJm/28bPegt4yVekxGVs2JQdbUfEAdabvIJrBdnz2RsPJKjofUq
-	 pqR6UR2h0VAIwe3E8jU3+dWh9a64Pa2Te0TVNqooOOujHhk3rI17KCEE8ypM36Fk1bNyz
-	 lhCDGrbdPXmek9h2mO8j/BuO5zwtqMdBft2aNMTlznZpU4a0QgyS3b2dA0pO7KJVEwg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.com;
-	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b="k4eXN/Uo";
-	arc=none smtp.remote-ip=66.163.189.146
-Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793983973;
+	b=NPynARzRrcZoCAhnHlA2NxW2D5KC2r+AqpEusGT04E6GDoj2q3NYQy7ryf/YieFE5ZCm
+	 jHjZ8Mgtdf77Y1o5znGvTxWXKkaIlSsLzJin5u14u0f1MIBDN1mPI5CX90RDI/mFtPPDB
+	 2kmWJ/i/x4M56gTssCX+hifsgdS2xlvwosANQU6bvZj8M8nDKm0uTneRlUh+6Dtv+Rfg5
+	 sfgy1idCjJQRgA9rMbZeDnf94lzx+/Yg3bMHa93dgRIX6HJwKel3o6uPPjrIXuYb2BaJ9
+	 jEymnhwx2W3ql22GszeZFda2YmDodaiLXe0k7x90wIeFUjeHeLKAvCshmgmF7lbR77w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793983973;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=YBkkwCMF7E0Jrr0hGSDv7wIrrEuUI75SMkeEZ3MS910=;
+	b=YPCvIzoMlL5FVFFUcPX64d7uV9v2Z2L11uEosZYee0OOATfc8wsSBruYdcehxnXbitI5
+	 3qaG1anO11LeV0eLTLEIlzA4FkK+9CXzPrLoi78yENnZSdwdovmk4mCQxKxhKePT+e8QZ
+	 f/5F+I2uWKk8xrazgiy8u8TifqxMt4UPOVsvt9DKfviXTxs5eE8G3JuTeclCxs7eDPVQE
+	 rGySdtT18inWh2IqwIbivW2dvR91INWc0kd8wsMe6NE03QwVVqqGKMrdayhO+fuH4JMNn
+	 4yH1sSkUgHoz8GDbZ8NZXqNfeO13FlW0Pr75thqQlLRN7fU5xdbQeq5hETp+ZMEXm9Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dL6TY56i;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.171
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C14606A329
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 16:43:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59C14606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034ED606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 16:52:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 034ED606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=k4eXN/Uo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793983395; bh=lHtWxeOu+Vjsidq/9GE7H1E4u5AgSxusjUPdoEWHkm4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=k4eXN/UoC+3L1x6z0LGjcncS91d+I0jc8r6sBacjlb7hKXyS3ubpIKk961953+qqLIqdL63lzNoAIrGtIHUfZ8WyjJGUamW3IXCOy0DyjEDykFEADZ5dYIoXE7KKPiIj1Vva3FuIjj7kRFTFRcDdBS+FTAx4YKcEeJ8AaFAzccwO/mh+kGatMA5VRxhpoF0etJ0VycIRgllOLIWb6Xg7D6PQ6HdHDqbonXukLSY8CdgsKVAbvuk/nlRUOg/qXXr28fvlxPTxrL/dUhsrix+W+qXNM4pjKgDI3Bf5WYQO+c8y1Kg92Ir7jZO5wImspf64j7LyKB7UjOe0P281cM2eFQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793983395; bh=xeGXEN7xVuIfZ+ZQdgxXxQeg3Nn1ehlJr7QQJbMrz50=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=gaUFAvAlsYIpP0fvEZxuY+/sWCny307gGq55Ez/xdbob/Ykzg22qlPZ1kd/owK74tN5ko0kfIWAW2OxMaCofq0pb8iDUX7Zqn8BhojMAaYY9BDx5ixWzawJRMeGG8r52jab/wlLMNGX+IutAzq5if1zghI+NAnrfXFlbtofjiYjiCvjsugWchKvyaJA/3PGA8EGLcFdJurpcurWslKG72kiLT8geaPzgf0eXjlffcDOGXRk0dKpMFH2TjpfOw4IJ0F4N+tMg7spt1wwHRSV3NqocFZnmvRwI0KTOiB844Ax2SsswaQt4oT7+vgzcyJdRP5Yx+Y7lRjKvhWen/dh2AQ==
-X-YMail-OSG: OIdV4lwVM1lPmZAovyYZP5BgZ8acuGF1ApxlFCYkwNXE2BMQd85mdoHC9KwKreH
- WuCdBA_4i2NPC1nAeW84lkg5t1Ibn7tlSEYn_dommb8N0OqBHfguNVgPT7QdmoJkq.RmbnlSkr_I
- X.bFTHpqlN6PXjCCqiOLBV5DiauNdXmTmwdZHzdrlnG2Dm8PaI9x2Afauy6gKuGNSkInsWdCL_To
- nL5pQNn8op2NHLswzYR8RQhdTJ0bPMhXBbMBovUHlfMj.y.ztfsqggYpfP5u4hva5jqveMPfRTWZ
- NcP5yDgLOnz4Ay5uRPcB2Ye3dXjGcq3W1TAye4CsnHa9Xrck2RXCXgCc6_n_O6FvUEWk.zN.Hicc
- a3A9qbnpcdz4br18N6V9MSsNIECWcbcsbrkgk4CJHbT0yIepqG7TN_Vw8fMfaUoY9uJ7qOgsTYE2
- WFvNtg.Sdho9ez57ybQP2qtGVXQR3ZSswsAWzyL.VZdMCCCvSgCfsqgvxTLw_Duzp_y8HB0JxyZ3
- yZaoZgf.IEfXKE0xXa3ewA.I3LZLRIAw9Gxgn8S2XwDqCrQzzzw_PRpw0wylPjQUCd5zGy0t16tI
- 5Y8gEmOENMK3XwvUDJF8YKIilLlD.GHV.NUl80ENQITlEA155ZGmjuV11.LcEaeFt6oRTkEbnErC
- 1sDM1rUZqPhO5JEFIn4INzr0DpSukFkdrDVs6ZkDHEQpMihOLBUFOcYKU3hnfPDiKVzO_eIWX8yi
- QCJVeHtKMyJS2w8wAzatAe5h_zoKnegkJjj9nf63DQntlVKFeJYSY.YHv5Hibg5rIzfCSNa0pzm.
- QYuj.svWqNmbfSUXIsn6Plp4ACe1e5.5i9wF7ZZAiCCjMuw2pTOBKFB7NaYXWNWApY_Va5S2LpKT
- SoHFLM4B5eJlhxZE0SgndQw1hlAzOVFxh1jAgC3y61GmySzrOnta9O2rNZNI0qZW5gaSBSrq7u4N
- SRKpe5dBqFnd4jy5ow3K2qINws_aEUJuatLp_yQK51.wSMi5aE4ueFHwMLrNBFLH1cXAqiuH.P2R
- h8LBvJAxrwSvt6eqbnc01TvAmhj9iEfUZsLyZ1JG8OM2FyL.DEYXORf8obNR1klxDsTc4poLvBy7
- j8UbyjNIJ_ImTdOFHniQsKyufwibh2lekKyaiMfbEnfis6W96RI0GGDbzq01OcnVl59Wp9__D0xx
- kXbstQi9e6q90l3n9N_QdAneqbgW83w0jyeRpUeBueVo7UJO78jGBPrTZ.iBnq6ykAPFRrc632Eq
- GsF8ywISpQKFUUAx3P5xgWogJM5gA4BLexuYb_Aq6ggdSHpzQ.gtz0QTNn9B6sQsJGUmcQUDzNpB
- OWcH.D8I7MjUZTU6bnekSYonIn9YqSK7bun1wHQbi3lmbAJVsyOVnQ52tJQdWm_ewWqf9M8IGStt
- peoUD5P2DX0VAVr8rMezeji8PzlywaiCjgVZUDtX.QfuqXU0jTSaqhJoSDPtwLZBLsd7Apvu5mM_
- gnbPODsl3sP5_9uDt3UtdIT1zE3RGf0jdj1azU5QyCyuiZ6llyQ_YOj9LQ.fsep5lzHevSr.xlx5
- 2UJE2penUPvka0heqdBR7leVfAFk.OcU7Tkn9o3TxNhFBlPaY1L4ojEmfMa.JaHJMd8bX9XOWWzB
- Bcf1hO_uYepwSy.JSLfDA9jSYjzfIPf4YNXKYHPbOnxNXIxe8_AI5f28170p5MWOoRfjM1te6HWP
- R4FvwPUNaIRsTaN7YqVg0PhoO3XZR78UPQdb1no6VTrmAOS5.FRpyXdVwZyW6vSSo9bdT5vzI1Vg
- B0neQ_oSA3UoP3ODNvAFJR_HCzaP.8cspcpHzjo5h1Zoac86N9pf_ajv8fFGjhLzmvONMRWir7Pl
- I1V0_WcBSjw7KFH1l4WizDGAxPX0O3dco.yeqfL7DIhqRE7kSwL1wZzEYUCQznkkI5F5Xl_9rxYl
- n2BEnYJ.BM1onjH6n_ijRyPgcF38h48cwSfPkqsT57MZLYfycXkSuP6q4tR85Gx00.8sscXNV58E
- DFqMu_cJQHlYI4SwCS9PN0ztetrY2_NlUShDfuC5KbF0.Hg_6_iBO.Av2U9G7zFtBq3YXLcULuIr
- DxEU14.0qC2DBCIPJ6R8a_ZOkCUqOLXYSL2jMVYg8VvLme0HL.j6JP7TyAkvtOUiEkz3YdnXSrRu
- DLZlvtU72SWxqAcjdAZqNS9fKTDMRI6lz7a6Htg7DWWjO7ff6rrvpSzE1Fpn38UCK6GF1cAr31Po
- IyU3ibCiGU359fEjTjs_Hfv8Qlv.5Y0MOuWeTdP0FR28SaTzTD3vBPX.zhAq7ZEFi58F3b0Q.5RF
- CCx2ciawjDSeiHy2Pt8xpOcZSNnQ_a4E4D.b4Iko-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: c1d3fb05-0050-4afb-8b7c-fa4c4a0a3348
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Fri, 6 Nov 2026 16:43:15 +0000
-Received: by hermes--production-bf1-6d6877594b-clgz5 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8dc6823223f8f1de6ed049ff776f8c37;
-          Fri, 06 Nov 2026 16:43:11 +0000 (UTC)
-Message-ID: <29bfb266-8bd4-4c59-868a-cc27259c1f16@yahoo.com>
-Date: Fri, 6 Nov 2026 17:43:06 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dL6TY56i
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8b2382bf051so394092b3a.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 08:52:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793983972; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DUGrLfeNTY8JgbvtvN87Esml7A59CqUFQdwDgjClBx87k8RZvmjA7+aFaaUZAi2tbQ
+         kFlHV1HkRo8st2/zyphXFg4cgIUP+CBXNvlcAtZmO2W5V+rI30mSFTAnOUzBg0dkmaea
+         shyS4v7lSg0Plo/CtGYecPW4z0qSqd+qDftSau3/Xfz7v+jplbA8TzeU6Av9+UCWP4Gu
+         rq/KUj6YHF0hcQYobUaZt2I0ndMbdPHv28tvv1pYUSBu03ObT/l06N1FImKfY73N89Xc
+         DocjICRDa8UFIPzE3/btW6PN09NRlAqxncfDF7phw3kWBmEDQT9rgRyFZNsW8eAFoKA0
+         WzvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YBkkwCMF7E0Jrr0hGSDv7wIrrEuUI75SMkeEZ3MS910=;
+        fh=jh6dO4Fw3OVKv38heGfW5wur2/p8Z9REhgwz2A3HzmU=;
+        b=kZERRE21UjkYfUKi3Y0ij3yblRD/hLGC2M3ohsNWI4yTAC9squUB9j30DPsq3prOWC
+         jXv3LhVxLxqJUzMeGUzy/0r+h/HeA+32DmP0pfIm7gp5torbs7zuQdLw/XqCCp7ZZHWU
+         UBEhwjIUJqrD5OPPOWVlantvkRqSm1RxmM5McVxX28PLg6rcxYuad4W0Xh9esgyFLxCv
+         nzBNQcUqwmZa2tIMaIItJmKL6p1YtSuNBMuauCt1ErHU3Rnec8J2ee8VbH5iH/6OiHhN
+         2yaxMcMHj+d2/cZNkOwDRbbldZz1q+2Vyix313jRhCbcjPp62YooFrcJYLE/YuPDeo+5
+         XJpg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793983972; x=1794588772; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YBkkwCMF7E0Jrr0hGSDv7wIrrEuUI75SMkeEZ3MS910=;
+        b=dL6TY56iWpuzVc7nEVJB/x0qGy9+4rTnmHP0Lkj8oQQUEI4PMurPzQTMRoD1feFOac
+         qkcbp8QHG0pFmzPO6oJO/ESGRQfCM/OF4Gh00a4s3z6n+5LF5c9pB8AMzWkv89YNiUYC
+         IwPAKbcREGxQkfHjNo1zZZGU4oMhqcPhcA3kH5xKSzsClm8DMhTO/+1DhWoSDn1X4Iif
+         B44ee27mIf9/7QzSGmLjHbtIR0PQtnOUxNu1TChGUvroDil4A1h3OCef4QNr/nnv49cY
+         8IgbchaB3CAgGt/TvHeQjPttvRTgQKhNV8Wu9eF6d9e3JmAAECdlzn3vSjXLhbc2SkRQ
+         0cXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793983972; x=1794588772;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YBkkwCMF7E0Jrr0hGSDv7wIrrEuUI75SMkeEZ3MS910=;
+        b=0Hy/ELRzpboNofRtGlOS8CH/9cz3srxCvwNgpCA5qOCPRgrD1CZ7BI2PgiVoUZb6Iw
+         VWBIfPTHm7K2SXpJkHr0TXDyGseEZsYsH+erhlVwqFdcZRyXFWujr3hTVmppeXkVlsdF
+         6jgIQZOHYOLNBoOHZp2S+v9N1hk2YYNMKhlpmH/gK3PTasXZ1MdoGT9iY3XQtS2RXxOb
+         YXz8GEwFPl72mkUVmlUd1462+odSDtiE8eR41P7hwKlTRghf3qwrkeh3FZvxc5Djs6U8
+         5tBSZzd5406zkfyBSDNEBR/DtQvpyiV0kwx7/jOb2nOuzkb6dumpsvQcIbTaEJVpbADP
+         6FrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBycPxKp5g32bxSBGnHCvOyE9WWW6V0y72Nsg+6djDxUUXowrc3v5r6gEi/EdaEdCZTUYSpFFiM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+XBqKJqtRD/iuW5jk/1eouwv8I2n28d8wfqZDmxVzrnnOs+lDI
+	MaCIuiFUuYMESFIom/L9dedrrUtbHq1GGw4vG3TzCjMzDehp5A277+CDauFqS51p5okv5NQt3Ox
+	REhPABdS1I5PI0hSEX47/bEHqoolNfmo=
+X-Gm-Gg: AYBFou2a/wypjsoVrGZ4wEDmnL5u/qH4EN+BwB9kNHrKtY8fAgluSk+TKySHNJkI/Eg
+	v8ATNCF+WqsjM9kqUfxLj8g9zpUP4JuK2x1rM7bCkRQpn7yylFXw+wqC4Tcvlp31iryCA6RKEj7
+	B0OTeS0inNj/YGBj0JYbIXRaUpBoAnKiaWz3XSJpaf4jQHOn5cLQ1lPbQZey6+ue3k/fIFVhSpd
+	qQgm6i+Br+pKD7jZE8c+DkcuBNI170z3hfTkzDmLzV0O/50Qu+mjEmNI/U3CJGbu+IEO5Ntxt4J
+	QDob6nzI/pl4cprtpInewL271ldEdrpXpOhfR3R0PFT5SmiMFGlO+mtDhgX9WZIeBbaiGdhUWYB
+	SWwEzLcefwo8pVjh6BxMI2jYX/sRzZP+k/XeQGYNpQhsOSwEvU8iBqmYRHpFvzbcIeBsY28Dk5D
+	G7B3YA1o4VEv1wcOIzi+mF4eGshvOOPZlcNFw=
+X-Received: by 2002:a05:6a00:2e9a:b0:89e:261c:447a with SMTP id
+ d2e1a72fcca58-8b377f7fbedmr3041044b3a.7.1793983972138; Fri, 06 Nov 2026
+ 08:52:52 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,56 +105,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 04/10] net: dsa: realtek: rtl8365mb: set RGMII
- mode for family D
-To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
- <2befac48-25eb-4c1b-9632-2f3237d68a3d@yahoo.com>
- <auskP2mSY4sCRa6x@analog.com>
- <82c96971-be5b-4c11-b20f-c4b074181515@yahoo.com>
- <aux1v3R-efbWF2GD@analog.com>
- <e66204e5-ac33-4a35-8d36-6f37372da97f@yahoo.com>
- <au3WTtBo3qk4nQvf@analog.com>
- <014d5582-8ce2-46dc-911b-397862492421@yahoo.com>
- <au3t3XC2b0ZGLN4A@analog.com>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <au3t3XC2b0ZGLN4A@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+References: <20261104105507.62743-1-juny24602@gmail.com>
+In-Reply-To: <20261104105507.62743-1-juny24602@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 6 Nov 2026 11:52:40 -0500
+X-Gm-Features: AclHuK_1KtwGRGoHNYyrNVGPMWykc4PtFpxqqos5XP8fO0mNLCVDVrBCDTDX7UE
+Message-ID: <CADvbK_eH6jY2GmpDKH-1+KtHHG_wERJtBezYCn83nPQ6Pm3mTA@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: preserve stream scheduler across outq teardown
+To: Jun Yang <juny24602@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	Jun Yang <junvyyang@tencent.com>, stable@kernel.org, 
+	TencentOS Corvus AI <corvus@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On <DATA>, Alvin Šipraga wrote:
-> On Fri, Nov 06, 2026 at 03:56:18PM +0100, Mieczyslaw Nalewaj wrote:
-> > I do not have the hardware, so I cannot read the reset default of
-> > MAC4_SEL_EXT1 myself. [...]
+On Wed, Nov 4, 2026 at 5:55=E2=80=AFAM Jun Yang <juny24602@gmail.com> wrote=
+:
 >
-> If you don't have the HW, how are you testing these patches...?
+> From: Jun Yang <junvyyang@tencent.com>
+>
+> sctp_outq_teardown() reinitializes a live outqueue with sctp_outq_init(),
+> which clears q->sched before calling sctp_sched_set_sched(). This makes
+> sctp_sched_set_sched() skip sctp_sched_free_sched(), although the
+> association's streams still retain their scheduler-private state. If the
+> socket's default scheduler differs from the installed one, the new
+> scheduler interprets that stale state through the shared union in
+> struct sctp_stream_out_ext.
+>
+> Preserve q->sched across the reset so sctp_sched_set_sched() can free the
+> old scheduler's per-stream state and clear the union before installing
+> a different scheduler.
+>
+> Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+> Cc: stable@kernel.org
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> ---
+> A KASAN reproducer for this issue is available if requested.
+>
+>  net/sctp/outqueue.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
+> index e92fb9da4647..6cb4b4339d8b 100644
+> --- a/net/sctp/outqueue.c
+> +++ b/net/sctp/outqueue.c
+> @@ -190,9 +190,13 @@ static inline int sctp_cacc_skip(struct sctp_transpo=
+rt *primary,
+>   */
+>  void sctp_outq_init(struct sctp_association *asoc, struct sctp_outq *q)
+>  {
+> +       const struct sctp_sched_ops *sched =3D q->sched;
+> +
+>         memset(q, 0, sizeof(struct sctp_outq));
+>
+>         q->asoc =3D asoc;
+> +       /* Retain the scheduler to allow freeing its per-stream state. */
+> +       q->sched =3D sched;
+>         INIT_LIST_HEAD(&q->out_chunk_list);
+>         INIT_LIST_HEAD(&q->control_chunk_list);
+>         INIT_LIST_HEAD(&q->retransmit);
 
-The code was tested by users of RTL8367S-VB devices from the OpenWrt
-GitHub and the OpenWrt forum, who built it and reported back to me.
-These were basic functionality tests only. I do not test it myself, and
-I should have said so in the cover letter.
+This doesn't look nice.
+Can you try initializing the necessary members one by one instead of
+memset(q, 0, sizeof(struct sctp_outq));? like:
 
-> I think we will need a Tested-by: tag from someone(s) with both a family
-> C and D to get this series in, if you are unable to test things
-> yourself.
+          q->out_qlen =3D 0;
+          q->error =3D 0;
+          q->outstanding_bytes =3D 0;
+          q->fast_rtx =3D 0;
+          q->cork =3D 0;
 
-Understood. I have already asked those users to respond on this mailing
-list and give their Tested-by tags, 
-
-> Please also do not submit anything if it has not been tested. Maybe it
-> was, but then please get that person's Tested-by and put them on
-> CC. Otherwise maintainers might merge this assuming it was tested, if
-> you got the reviews... It is a basic assumption that non-RFC stuff has
-> been tested when posted to the list.
-
-Noted, and sorry for the confusion.
-
-Kind regards,
-Mieczyslaw
+Thanks.
