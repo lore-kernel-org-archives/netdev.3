@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793977517;
-	b=MrChAOQ+GMHkAGKXVQP7qIJmejxzaNLuIstPSE6lsDjPU562yF+aKgONy4FOMiEMa4tB
-	 m4HvEhdEMHtonIv/0fijl8VjpMcO5jJ+nQVbYpwMpSNOfr2V2It39d/T0SRZDR4zvJp5A
-	 ygDV6+vghdwIOOlLfF3XM48PNpDUKMUt6VnahVFjyTCHVjP7btVx823hbJTDiVj/0IOBf
-	 bxjwEKMFg7xQL7wHjvHPBc68+ZAgjcX+PQ0efYOPoVweDMZGnSV6+lOEkSCJ7Rx8C/G5u
-	 DKIlBs4apytsGj+snkQQbyJb4qgpyPWtrkbGybeK96bpqiqtJV3IW2nFmEujkMQ2OuA==
+	t=1793977520;
+	b=DvV/3Cmq4sHXQOeDV0K2gv/PizhgRGj6+iF/145940M2hY9feVFnc/m4AYwGvDeWFSZP
+	 wrW6EM9+an442PydUaT6k7ANn/ZVJsh+fqrOvIgFm6FKnArIS5Gzy3OtjF+hu6YF/SP2/
+	 pJJG3eQIJbn2Y0Pk+NTCe1QbSLVpvq6MlTSh1bMAhI3e7jvMybhbeBtT2XOikWYATt50e
+	 UVR9sPemXCKfePofK5ZI650xKcnHKj2ZrwdAQ2oEv9DXy49CuRpaFIE3CQiFGQvDJEe+4
+	 I+H1VsrnLeHL8U1BDtn+KzzG43VY89ZUYQzoGBNrAtGJ7a5Cpooj552XKmJJeSum8RQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793977517;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793977520;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
-	b=sRWHQcttaj6MjjTXZrYc5hMuHSJG754CNBI6J3R7FwU4ELA/0xKiqjzI8kQi7clw5fu0
-	 ZKssplKGNuZ76DgkLHQw87QrfQMKDjQubYssYoXCRQWEKo7aW+Y4Gykj4fWezhi9+MifN
-	 nPP/LOkNQTos8wFcE51BlP9S+M2qDlvSMO8SZkYw5dHSIXGlrhlOL5/S/cOiRf2ieuPYG
-	 P8/YJ/ZHXozcPQ1dYkamDNqL6iSttmzRAeQ7hAm8Vox91GtUnCiajJQfp53qHMVKaPPpO
-	 923cxSIa5jYlavnLTDLUJN84PbzQzgINEuYtfau0kRK11hhTRvE3dpm7ZgEIE47EP3w==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=U82LHASiAr83JwdwBGkkuU7MAKcYuAuWVXjLgmwYJF8=;
+	b=b6xFsD08Fyt+oRy7Kpbzr9Oi/rslsgmZ9Dq1O1jUE9MW25nZT7l66tzVgVGFbi4wN2HM
+	 SMPSMm2JH2NToBnuRJWA9+f4IQQbNj1/Xufw+n40XYI4rNan4bO7P7FHPO67PFnZoGt+G
+	 U9hcEuyTQlQLgYWLrELDgg2HDd3QmL3XMU19s8ox/NAQKjNlEZbk+JZC5GI5EoCf86Og/
+	 SJK+fT/chttsgPdkfKHjRw4ANuXIM/P+3CS0Pg8H+FhnB+CXXUoV672PgjxwK/GibzQCQ
+	 rmbOVoJXeNgRhPHp00zQL9QugVgKPPdr7fuYqPH0Wp2hpfMtSVtAqIXSckyDb89LuPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rwgv8l4Y;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wnMN4v8I;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3209606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 15:05:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3209606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90205606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 15:05:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90205606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rwgv8l4Y
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a59ffacb51so780625e9.2
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 07:05:16 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wnMN4v8I
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4af520023fdso1796535e9.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 07:05:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793977515; x=1794582315; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
-        b=rwgv8l4YyYaxXg7OKRyBgrec81Wj2XRwnaT2rX8+mqtfax8O3c03Ic+U6aSBpJFY/y
-         nEX6ZIKAh8Hy0TtrYwI42iVJNpvaZ2IIV5tUt4HtUnH+sT1wC7AQ0iNp3EAyp3Gmr8GP
-         l8YnNTZXAS1lYleXsSzw1Y0s3hmfDNFcfEbZYItGu7ifEmssnowHZydjvWZX0E6QMr4r
-         A5F0ujiGz5jePPpCxhU2Si9nuQnGXmtB6kcC8Yof08dPSbjmd3mykchA0YN71qFfuGmn
-         PGihV1cs315CtZkT5pUcmSSGN6hc+qN7LbHV3x852jEyiFM9Tm5dBKKa5SgZmjcnFSTg
-         VHlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793977515; x=1794582315;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793977519; x=1794582319; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x4ebrvmdLU6EKPb4ZWVcguXHkQGxBYos3/0gbpsvT5k=;
-        b=L0LhsY6WXz8XGcRy8KP6BPXhnUpx/3DkzOJB2VPvR3PyuVV1kYd164dvQxILaEhuUg
-         XrFuJ1k92CNfMKzU7u8Ad239KY5WXlhZPMOWt3Aqgns1Y9NuM5YYxijc609v/ex3OMO/
-         MyhCi0HCxmC3RC5gD1qdkt1TuPX6Tws0UP9+C5HoucqqLnGpaM2FX07dOLvuNPLyHAVj
-         KQdfMRU6Zbdg7QShUA8Lo0OTvummh4ywPHS57FRZv8WrnfKXD9lK92G8DL639f3Mf6XP
-         jzDzE1ikUnRHDVMIUay9SyGUrpuc+hQwy+oIlIN1KrWp/sWCDrkktK7rDwZygE2qCy7O
-         8tBg==
-X-Gm-Message-State: APuU4Z/sqGi/ZGTvHhqrwsHmrZqf7bcKns7MGMuFb8asmoB8No91/yHg
-	2ynN/RyhvtivemGeZfz1vilmtKe9fzjFRNbYmqgLxUxd/ObO2t/2kng2d3XvcyKH
-X-Gm-Gg: AYBFou0OIH4Ys5i8204OVXTYVYcWSd3Q3/4TqSOxCw7h+Ym1m+5a70CvipFL5Wss5Ri
-	FPcmoIeomDeXX6lUmKCDYuWn58BdTHW55MT6yPGgA2nhOoENP6jbByggl3Iyt9fZ1H+b8oU1dT/
-	SQLExUK+B0fLJEGVhxDxMdy41rLk+3tTggX5388yPFbvGqRM8eZEj26Ww7HF2l+M3RQPBvj5z7E
-	HyChDfYsKOg83Ep1olr9EHn7aq/id9FLCr8Qc1A0tpyaDz19Kzx1Bmu7T7ev5yXk0CwoprKu0FY
-	pvibcBURZICo/Dk0cvMrWt6JZ1cDGpTozT+cnBdYHaP0aUAd3oVJRMdLLGLAgXB8GP6nxZz2YTb
-	2okvkC8MVtPJ7QAVS4kfzAvBL1PfVco3jL6Pvuv5TyMUktUnfiBUjammBG/XV4mJMysUKgW/Qks
-	V+Mwuukxq4a0US4bD4O6/uD/dFtieZc6qA17PQyEzfo1N6cJD1iP/Uk9TbcPYgmTaCK6tVvJVqH
-	yKkHkHbW6vLbqDVHHLhlGLw1nlrnC0g8pDUpoTSJRQ56NyjzOPMOWYbMmx7aAGOgpzBhPo3Q2Vb
-	Vc8TMz4/b9i/I+T1yLFJ8rI04w8la6LtU6kRLra8hIohFucp+bS+v0dVBL3kuCbIvOzuJAED
-X-Received: by 2002:a05:600c:c111:b0:4a1:715d:1913 with SMTP id 5b1f17b1804b1-4b6dcf861ebmr36412065e9.1.1793977514681;
-        Fri, 06 Nov 2026 07:05:14 -0800 (PST)
+        bh=U82LHASiAr83JwdwBGkkuU7MAKcYuAuWVXjLgmwYJF8=;
+        b=wnMN4v8IicuRoOIY+cQIWmgkEU28aZVziS3NC9QX2/q9eLFG1CRwLpF9XQ0cTigo+K
+         LzD/MAi6gvXsC0SV21woKwsiIVE8TcwjPXo+bRBLrA1LYpEG9dZTimRP0YkcI2ODKFhn
+         JHsVyd278vsE/CSs3PdIbtZY9FDbzU9glU1/y0+/XkzBZq0jk4PEJQoU5LGwN5dm9Ga6
+         F5xqrM/I/jsosBM3Rkj+kZKeDXmwCoziF4yMFBKR2SeMApHPIbh7QmI0qH8jN29/k3d+
+         7r1l8upBf5B9nw+QB2Jd8ZLYyE4aLh/691SJ9UP/Opug284K8H4EoqLzZWuvPTJ7TUFW
+         NYXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793977519; x=1794582319;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U82LHASiAr83JwdwBGkkuU7MAKcYuAuWVXjLgmwYJF8=;
+        b=QoUYv/Tia1wdyVzbyRKtQvMqKfdP6K07CwB0kaJEAndMsPz/ziD0q0QQ42P/Ab0mEW
+         OIGwk9JFITgT2m74dwurWovczMC0O8DXY0CUzKYxsopF4yCDI4dephGxsViKCCAdNe6W
+         lIesQ0ZpCZWLW7FOsUvnAQWa4pEIooWDknGPfnqoEqY9rwAxFB5rVu7Jr2eGY8K9DiG0
+         aC/7Em0tgNVojUzq9ZTg10tw8PNqYHn4VyOrsvdZGg2e4MfgH2rH1YONbgFtCYFhMQm4
+         +L3oYmPgt4N7IVOKWaGXQJT+1yrhTXj9idES4Oy/svMLYYA4Neh9l4dcE3CYQcwmVqcR
+         ujfA==
+X-Gm-Message-State: APuU4Z9DfK/UKxTZc6MH1lWjAFlYgfmfnuHJGwbjo/IRdCkwINAzru+F
+	PWWuRPPgdi6PTta64x8x9xxhiURbSm2FBKUWCPgE0jnLgz7Us71qNACrgOhPKsOW
+X-Gm-Gg: AYBFou2oVyF9B4/dh5p1zbQz/4fYECKUbvq/6KlRM0qbteCoLMLiZIsZvI+rqWmY+ea
+	hHdKC2X1k5sysRMCg56J5O038gwEJqf0DcLZv+ig+zvRyGqL/F2ttJwMfH/PTZF8vLPWNrpr04G
+	2YAFx2qmzThULJve1zRRJFCw89p3p740tlm15yb18TZHmuWs8wDiEjRmXR8fHK9I0KIJ6KVOQgj
+	xABX0iZRU1nDlMyRpPrx1/LRxG87GrIl+wwOQ1UOSARbMB7WPcoz4OQnGCMUciG/JH1xo3oGek7
+	PTu+AAoo6h+oJAMyAj+zr0dMtlhTMBx3ZWNaz6CjKeOL18VQrLgWdWjCbxnNWBuVumUcOYoTGoF
+	9MHdvTrdpyWYe1XKk3lxe7lFDJ8/7BRoTXIpHQqi+/gfF+BQwRzlQBBFpnkr1+Jmo7ud8AFvtve
+	x9Xf3GLPYEr86KJ1si+btflG1PvYtoY+ahByJVXBKs+GX8zl0Gg2GQUTeLwKQfGiaqz6UQePW6j
+	RfFyyp3tzPbb/aDFI/KrqAqPYjVtz5oRe2Q9IETtxqUrBeNuah7YlDYsRso+Fi8RhkukZWCu4Wg
+	B3fIoEqoUnXkm+7w17XKgwUW6RBa5Qby9d2czR8iv3v124U1Yy93NOIx3hZeYyShxHoeqfnV
+X-Received: by 2002:a05:600c:6d8f:b0:4b6:2242:d0be with SMTP id 5b1f17b1804b1-4b6d82b2c85mr38024365e9.0.1793977518886;
+        Fri, 06 Nov 2026 07:05:18 -0800 (PST)
 Received: from localhost.localdomain ([193.255.169.14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56e58fcc6sm260950305e9.2.2026.11.06.07.05.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56e58fcc6sm260950305e9.2.2026.11.06.07.05.17
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 07:05:14 -0800 (PST)
+        Fri, 06 Nov 2026 07:05:18 -0800 (PST)
 From: =?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -89,10 +90,12 @@ Cc: andrew+netdev@lunn.ch,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Bilal=20Yaz=C4=B1c=C4=B1o=C4=9Flu?= <ahmetbilalyazicioglu@gmail.com>
-Subject: [PATCH net 0/2] selftests: drv-net: ring_reconfig: handle devices without channel config
-Date: Fri,  6 Nov 2026 18:05:07 +0300
-Message-ID: <20261106150509.30458-1-ahmetbilalyazicioglu@gmail.com>
+Subject: [PATCH net 1/2] selftests: drv-net: ring_reconfig: handle devices without channel config
+Date: Fri,  6 Nov 2026 18:05:08 +0300
+Message-ID: <20261106150509.30458-2-ahmetbilalyazicioglu@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261106150509.30458-1-ahmetbilalyazicioglu@gmail.com>
+References: <20261106150509.30458-1-ahmetbilalyazicioglu@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,56 +108,106 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-ring_reconfig.py assumes that a device which supports ring parameters
-also supports the ethtool channel query. Drivers without a
-get_channels op, such as e1000e, return -EOPNOTSUPP for it, and the
-resulting NlError makes all three tests fail.
+Drivers which don't implement the ethtool get_channels op (e.g.
+e1000e) make ETHTOOL_MSG_CHANNELS_GET fail with -EOPNOTSUPP. YNL
+raises that as an NlError, so ring_reconfig reports two failures on
+such devices:
 
-On a ThinkPad T480 with an I219-V (e1000e) "ethtool -g" works while
-"ethtool -l" returns "Operation not supported", and running the test
-functions through the in-tree YNL library against the device shows
-the three failures.
+ - channels() fails on its first channels_get call, although there
+   is nothing to test;
+ - ringparam() fails in _configure_min_ring_cnt() before any ring
+   size is tested. The helper only reduces the channel count to
+   speed up the reconfiguration, ringparam() does not depend on it.
 
-Patch 1 skips channels() and lets ringparam() continue without the
-optional channel reduction, patch 2 skips reconfig_tx_stall(). Only
-EOPNOTSUPP is handled; any other error still fails. The patches are
-split because the affected code came from two different commits.
+Skip channels() and return early from _configure_min_ring_cnt() when
+the channel query is not supported, logging that the channel count
+was left unchanged. Other netlink errors are still reported as
+failures.
 
-Testing: there is no remote endpoint for the T480, so the full test
-was not run. The test functions were run against the real device
-under ksft_run with a stub environment and all ethtool set requests
-blocked: before the series all three fail, after it two are skipped
-and the channel helper returns after the query. They were also run
-against an emulated ethtool family (unsupported channels, other
-errors, devices with combined or separate rx/tx channels, failing
-channel set and restore) to check that other errors still fail and
-that behaviour with channel support is unchanged. pylint and ruff
-report nothing new. Not tested: the full test with NETIF and a remote
-endpoint, and the rest of ringparam() on e1000e (see the note in
-patch 1 about ring size clamping).
+The issue was found through AI-assisted source code analysis
+(OpenAI Codex) and confirmed on a ThinkPad T480 with an Intel I219-V
+(e1000e, 8086:15d8): "ethtool -l" fails with "Operation not
+supported" while "ethtool -g" works, and running the test functions
+with the in-tree YNL library against the device fails with NlError
+95 (EOPNOTSUPP).
 
-I found this while looking for kernel tests I could validate on my
-ThinkPad T480. I investigated and validated the issue on that
-hardware, defined the scope of the fix, reviewed and refined the
-implementation, and extended the regression tests used to validate
-it.
+No remote endpoint was available, so the full test was not run. On
+the same machine the test functions were run under ksft_run with a
+stub environment and all ethtool set requests blocked: channels() is
+now skipped and _configure_min_ring_cnt() returns after the channel
+query. Behaviour on devices which support channels was only checked
+against an emulated ethtool family.
 
-This work was AI-assisted: OpenAI Codex helped with the initial
-source analysis, and Claude Code drafted the implementation,
-changelogs and test tooling. I take responsibility for the submitted
-changes.
+Fixes: ecca75ae5ae6 ("selftests: drv-net: replace the nsim ring test with a drv-net one")
+Signed-off-by: Bilal Yazıcıoğlu <ahmetbilalyazicioglu@gmail.com>
+---
 
-Bilal Yazıcıoğlu (2):
-  selftests: drv-net: ring_reconfig: handle devices without channel
-    config
-  selftests: drv-net: ring_reconfig: skip tx stall test without channel
-    config
+Notes:
+    Note, not part of this fix: with this patch ringparam() gets past
+    _configure_min_ring_cnt() on e1000e and reaches the ring size loop.
+    e1000e clamps ring sizes below 64 instead of rejecting them, so the
+    check that the requested minimum was applied is expected to fail on
+    that driver. I could not run that part (it needs a remote endpoint),
+    and whether the test or the driver should change is a separate
+    question.
 
- .../selftests/drivers/net/ring_reconfig.py    | 24 ++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ .../selftests/drivers/net/ring_reconfig.py    | 22 +++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-
-base-commit: 19a227903e65c7a9c179156485660a4e017575fe
+diff --git a/tools/testing/selftests/drivers/net/ring_reconfig.py b/tools/testing/selftests/drivers/net/ring_reconfig.py
+index 6682d4badfb..baac20e8d3e 100755
+--- a/tools/testing/selftests/drivers/net/ring_reconfig.py
++++ b/tools/testing/selftests/drivers/net/ring_reconfig.py
+@@ -5,6 +5,7 @@
+ Test channel and ring size configuration via ethtool (-L / -G).
+ """
+ 
++import errno
+ import socket
+ import struct
+ import time
+@@ -26,6 +27,16 @@ MIN_TX_RING = 32
+ MAX_TX_RING = 1024
+ 
+ 
++def _channels_get_or_skip(cfg, ehdr):
++    """ Get the channel config, skip the test if the device has none. """
++    try:
++        return cfg.eth.channels_get(ehdr)
++    except NlError as e:
++        if e.error == errno.EOPNOTSUPP:
++            raise KsftSkipEx("device does not support channel config") from e
++        raise
++
++
+ def channels(cfg) -> None:
+     """
+     Twiddle channel counts in various combinations of parameters.
+@@ -33,7 +44,7 @@ def channels(cfg) -> None:
+     if the config is accepted and crashes.
+     """
+     ehdr = {'header':{'dev-index': cfg.ifindex}}
+-    chans = cfg.eth.channels_get(ehdr)
++    chans = _channels_get_or_skip(cfg, ehdr)
+ 
+     all_keys = ["rx", "tx", "combined"]
+     mixes = [{"combined"}, {"rx", "tx"}, {"rx", "combined"}, {"tx", "combined"},
+@@ -88,7 +99,14 @@ def channels(cfg) -> None:
+ def _configure_min_ring_cnt(cfg) -> None:
+     """ Try to configure a single Rx/Tx ring. """
+     ehdr = {'header':{'dev-index': cfg.ifindex}}
+-    chans = cfg.eth.channels_get(ehdr)
++    try:
++        chans = cfg.eth.channels_get(ehdr)
++    except NlError as e:
++        # Reducing the channel count is only an optimization
++        if e.error == errno.EOPNOTSUPP:
++            ksft_pr("Channel configuration unsupported; continuing ring test")
++            return
++        raise
+ 
+     all_keys = ["rx-count", "tx-count", "combined-count"]
+     restore = {}
 -- 
 2.56.0
 
