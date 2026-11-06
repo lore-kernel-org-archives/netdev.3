@@ -1,58 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793957992;
-	b=y8LVh90YBR+k2UBThTpmjUyWZuUnTCVnZlXEGh6YPf+0cH1MnmDlh0fEStpHZClwLfCo
-	 KPNxhLlYG47l0r9NCyVSaR7XpYYL+yEMtcKwiRdP13CIgv2phP0CHA9IwNqNUveCtYmU3
-	 vnpp2WtnCXsdZBTre65/veFX4MdMdKk5bixFFsncSH4dvpTphLFQY21/43Dleufu/HacP
-	 IkglSy7SaK9p4GH7CKKI5jqBj0/VYS+xRlDAZViU3OPdD1v09LzDs55P98uYYoqGBAJTr
-	 9I6W6og2QF9VhQE7TUObtqBxZgfuKiKJLqg3x/CoLywjLmgeAflAw5ULgGLrNFHoHEw==
+	t=1793958023;
+	b=abZVx7deO9josr7CLKJ13/q6AMNbdzeBSO5BvqkN/HLGgXnyofuC+HIicvBFoaVbBzPk
+	 BJNb6OSiDbJLkbo53+XEpChuZ1tYkI+9VA1YtrQ2pOg+1PPNl68pr6n/5Wr2sp6PkKZmB
+	 DhWXqrOIxsUSI1JyOkcou3u9I0DorkZ6p74ekbDmFeP6ByojS0VKRVLVRtxyODzwx5lP7
+	 lNXtIn4eLW4nYXH6F1bXdjJa3eqKtcgCIuONoKDQi/szIe0tbv7QksKotUWE50fKG/L72
+	 LWmErkohWFNPHLMMHAg0fO9vRHzxUeE2PFofts+OzGpkic7PiqmBeuYoA3zRk5eZzPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793957992;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=W0M+W1Y+h5TJqnxENtVRn6tD83rqY3lGCO0UuVf5Wd4=;
-	b=1Of2VWGD73m/QmQpDJj1rXpBeCfh+1PFb72okUhedmqtzgWVlOQPWKq/FsIJeHaDdoX8
-	 8zSA5CTYrr0/HtaehPRbRNSOPHr8BAGjoXWlyqMK2cf9FerA3d9L4Gl3mAz4sChOg5BFn
-	 lkCgGIqDT05yBQxVvk5Ml6+yoAsUXy9a3YJ8d3iYKaJiXaOPejvdkl4EN2gyA/6wEwHDK
-	 vKRNNLccqglWn79iCrmQ19D4Zx9RGxEzkehnzZ1wbC2Le3nf76xXrZPSdgR6TOuaCu6Vd
-	 LiAA8Tng0sjVKWbTzf6JLbwkJifRVNTPTkBMdEKC/6UyByjbOp3OzxILDIVh1oKEZLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793958023;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=VJy/31DrL9o7BAtBd/bUoeYF+vPcq5nyrybnUYKjAG8=;
+	b=ZdNoY8iXc9ubwgGcnF1BUljGZ2sSPAfeBTP46LUvulEGd8UaCO0CeN7ikyziMkyiy9vX
+	 XNzdz7spTJ2VxkN3GStqgw5mjARjK/R6a3EKXQ3p2zNkTQqFNIGv9gfWFDtDB/KLTJIt7
+	 mBGfFm2mMoLSjR1P8jY7YW8IvnHAKHjnBIBcCn6ciuenrjRd2LEJzD/jWX0/aOfVLxZK0
+	 BsCwSFRrKwJKY17oaD0Yda8q9f5eU4SLUYU5EvfKJfKY/cDsCoawsxbfTd8LicKyxOvO5
+	 7DPU8oEucFqLvjas9vB9MiOuZe/2eEsWqIxBB1zSWYkPrStSvBgYpkvr3a36Rs1ARvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gPSP9Enh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyCDJDu6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81CC606A906;
-	Fri,  6 Nov 2026 09:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9C606A920
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gPSP9Enh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01021F008A1;
-	Fri,  6 Nov 2026 09:39:50 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyCDJDu6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505431F0089F;
+	Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793957992;
-	bh=W0M+W1Y+h5TJqnxENtVRn6tD83rqY3lGCO0UuVf5Wd4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gPSP9EnhmMBjsw+izdfuQkKP0nh2klj/EyKTgtwrLvvkgCwe6BORfynI/+bBhe8Zv
-	 C2KOPhNQbflaIkKDL0L+aeNfXDpEOIwOUYEwv3wFY3GjCg0ze3yrpOJLOBGirUY4rE
-	 iwBj4OklkwQ4gMSv88JVIZ72l0hwemOsj9RTVTxC8cLMLegyF3a516Dr18YdlIVF1U
-	 04D8L9B/azY0EKPBj02B8FqpoV+P+uTMLzbgd5KlNQL4HyQsNC90/4f6SioB/lNzH6
-	 H2SjEs38oQEJjrE/Y9TreVwyLzQGA0FcgzcTiZoEGzi/VOh8kFHjhEI4hTRm4g/jmW
-	 5bclEZm3+Cilg==
-Date: Fri, 6 Nov 2026 09:39:48 +0000
-From: Simon Horman <horms@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org,
-	=?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: bgmac: stop advertising TX checksum offload
-Message-ID: <20261106093948.GD865646@horms.kernel.org>
-References: <20261102215806.13723-1-rosenp@gmail.com>
+	s=k20260515; t=1793958022;
+	bh=VJy/31DrL9o7BAtBd/bUoeYF+vPcq5nyrybnUYKjAG8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=CyCDJDu64khWqNvki1ZO1K7A5zpbPWM+PYeIVV9vCqA2qfRqgqdethRzgSJnt8NIF
+	 6U5hfF43t6oxRoElI4V9E8+35dHay2049pdQ4U5eZZD5LYZY2TdlIRJm5s4EQKk2H3
+	 sOgoY+EJOCPVPKACP9BmyOrTWmiR8aGj3erhpfTdFHntUiMtftVJvrd4how8dab5IO
+	 jG5zmgaw8ySHN1bpIEkuIFo2x0HDmrfb3ZVm3Q4FCe/EtefZgEA4erLx5KwepjGUMk
+	 Fglhx9RXIPKQMOblgHlcvwfeR8/uTtlWqjBAjUM9HdsCf+k65/bqxt2Y2IUTjA752R
+	 0MVA+nhn0Rx9w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 45E9F392447B;
+	Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,22 +53,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102215806.13723-1-rosenp@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179395802105.491229.7639452799219614935.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Nov 2026 09:40:21 +0000
+References: <20261030111528.2850082-1-edumazet@kernel.org>
+In-Reply-To: <20261030111528.2850082-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, mason@kernel.org
 
-On Mon, Nov 02, 2026 at 01:58:06PM -0800, Rosen Penev wrote:
-> The driver advertises NETIF_F_IP_CSUM and NETIF_F_IPV6_CSUM, but
-> bgmac_dma_tx_add() calls skb_checksum_help() on every CHECKSUM_PARTIAL
-> skb, so the checksum is always computed in software anyway. The return
-> value is ignored too, so if skb_checksum_help() fails the frame is sent
-> with a bad checksum.
-> 
-> Remove the feature flags and the fallback. The stack then computes the
-> checksum before handing the skb to the driver.
-> 
-> Tested on an ASUS RT-N16.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Hello:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 30 Oct 2026 12:15:28 +0100 you wrote:
+> snd_cwnd has no practical upper bound: snd_cwnd_clamp defaults to ~0,
+> and RTAX_INITCWND, a locked RTAX_CWND metric, TCP_BPF_IW and
+> TCP_BPF_SNDCWND_CLAMP accept any positive value.
+> 
+> Congestion control modules do u32 arithmetic on cwnd that assumes
+> much smaller values. For instance, ssthresh() handlers compute:
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+    https://git.kernel.org/netdev/net/c/475ff14ba558
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
