@@ -1,65 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.192
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793947327;
-	b=F2Kf3nyA71gZG1pb+Iw2Tf1vV2S7uwmWe9VHWoj6b/A5XNiO90GdFpqpN6sH281k5dm0
-	 O916iAvP5qu19RHBmsPPW/mtPpSX7bL3zf1x7niIU+NeVkYwxwk5FotagaOKXC3Jyicfy
-	 q8P2eKIp+Y1c5Y7k+7L0RN4FvlMoaAKr5Isa9tXEggi8offAsbzgPVtXn3KCZGRac+hnW
-	 ZcO9YkYIWjraBX2clWQkFuxSYTEv6WVfwFsiM+ArtfAlPVuQluxoli6g8hRQp2s9w1ZR0
-	 qYLPvsML5ktdpbEPcLYaXU1xf8eATliXV22EZ9MnsTRccf9uJ+p9iwqS75fhZIb7n/A==
+	t=1793947453;
+	b=EQMIzhNF44R7wLFKQyAFGgs2Jfh0L5PMu06uSHrWfC9e/5abKOmMl0Oj1ZrVgEsQD+zi
+	 WxpbHIZxqA0Rg2fYlYtY0w7NYwpU/8oMnV/p8SYmwKJN+8VTFpQH2fp11F5idXzw6GKYL
+	 CsXqnylWSvV6B0OqACaKi1KO0CgNwMFQi1ynfcHdycVS+EQ/n8qVemhJu8Dg5sBRuTyw4
+	 nz3O6wsiVbsfAxmatw3U+fbdlxEcpCyY3+O1P63LBWnpOd31MdX33iVdS3jgoF9y39Rh8
+	 bkRgEsVa1GGhlbjwh6jMCcGWEQIOb06rDZuOxq/ri55+W/733sMVwWlsfKgVhIjou8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793947327;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=ht+KGDq4apws2pxXUS2+kqpptXwtJfA+zxTTVVaGiZQ=;
-	b=VeSXs1q6QiGZgQAsr4IG5NAUr6dUc1gyStDY2lKA7fy4g3s1rBPmNiFx45Tq6iO9LzuZ
-	 um9dUXHnvMClhvpL0k1EJBT6UHoOqV2Pd5D9wQKbPwEJm/zx3p6fnk/T/51ZUM2TSPiYr
-	 78YneHPDrml/5YX4yDHELdeO+BWMrcg/2NS1XQUI6jpa2t1DpK+OfN9yGaYZgn2qyVzuI
-	 2Ue+sliC9tqzD/wNLKBptacOI9bNtfCopRygjCVh9RVgSjRkBDKXfTqMcTXWZdXFwUr9F
-	 b1RbE5iMcBr08C6U1DaGjuNAAWgBLq8YVeUh+K4EGYtc7RKT47F7dDWjTOyjfjJyzpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793947453;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=AxmgrFG83FeLWnQ3yZIR//9+V61aHtkG9YgvMh4psmU=;
+	b=rlN2FFAgDsw425EdAIQZisy9rdtSFmTsXnPyNCuZA5utzenKSnlPmdsbKcznh4bhYFhe
+	 A+WENM2lCYVH0ERQmMlkwPdIZ2xqTO0hdvqeGHXI0Tnx5w1p6dfPce/i1kRLRzk9rJ1GR
+	 EsbEWvmWw6pEqI4wcM+cRGOaoz/zcvRBujQGrjULC5GFcaX7nd+obji8vgVcdQj+DeRaO
+	 /HHnGcOO5RBJVbeUaI4CBhLhITGwpifmBIs1BiByKbIQWzXzeUTcX+uTlcGuVkuM6wlnK
+	 MGcmijeshOzdKZ5rS7BWnRx2PLP+TsRUY4ijvzglrz+qVdLrmPsZwUKJgs/vV4bSY0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=iRX6sOQH;
-	arc=none smtp.remote-ip=220.197.31.7
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="NoaZGc/B";
+	arc=none smtp.remote-ip=91.218.175.192
+Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20667606A32D;
-	Fri,  6 Nov 2026 06:42:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20667606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69989606A328
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 06:44:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69989606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=iRX6sOQH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ht
-	+KGDq4apws2pxXUS2+kqpptXwtJfA+zxTTVVaGiZQ=; b=iRX6sOQHLkmpDmG02Q
-	66jvepKN/lwB1Ug6wXwTkBUq0EPvAHTT2LvdUmkiPbpuS+RJCGdyQJ0T3X9+DLln
-	qYiE+ncCSlS5lruRsKfdYY7Ax11mpm+jcgMlhtqDooNLHrSHqf/cHHwVfihHDfAV
-	EtC28qkTDxM5eMd8FjfJRTbQI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnR+uMdu1qZ7kzCw--.3170S4;
-	Fri, 06 Nov 2026 14:41:21 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net-next 2/3] net/sched: act_vlan: size push_eth in get_fill_size
-Date: Fri,  6 Nov 2026 14:41:13 +0800
-Message-Id: <20261106064114.3592670-3-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261106064114.3592670-1-xiaolinkui@126.com>
-References: <20261106064114.3592670-1-xiaolinkui@126.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NoaZGc/B
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=GCAoN3VusxFuVpLq/129rE2eMDtJcAzX0AsYm3Y6aUg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793947450; v=1; x=1794552250;
+ b=NoaZGc/BKTFw2PyRMJ8hUdOQGd54h25LZIn6H1Ht257OHK/xr+9ZH4/gMz/9eqqXMJf5WuDl
+ x2JpvA0N4qGA+ZcyX8Fz7A7CxyOh50xd1Y5JX1SOD8HoxVzF6JifDpoQQXpxC81U86BkYHhWMma
+ I0JLIzX7enCVbcMNNxINEPoE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 67bba967dcfb60c5;
+	Fri, 06 Nov 2026 06:44:10 +0000
+X-Mizu-Trace-ID: 67bba967dcfb60c5
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
+Date: Fri, 6 Nov 2026 14:44:03 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,77 +58,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnR+uMdu1qZ7kzCw--.3170S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr1fZryUJry7Cw4fury8Zrb_yoW5uw45pr
-	yDuFZ5Cr1DJr9rXrWktF48ua95WFn3Jr4UWryqk34fAr15Kwn2kFW7Kay29w17Ars5Cryr
-	AryqgFnrWr4Duw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UPPEhUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBHXrmrtdpF28gAA3k
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: do not resurrect a former listener with
+ SO_ATTACH_REUSEPORT_[CE]BPF
+To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ Kyle Zeng <kylebot@openai.com>
+References: <20261105164830.1682714-1-edumazet@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261105164830.1682714-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-tcf_vlan_dump() emits TCA_VLAN_PUSH_ETH_DST and TCA_VLAN_PUSH_ETH_SRC for
-every action installed with TCA_VLAN_ACT_PUSH_ETH, but
-tcf_vlan_get_fill_size() budgets only TCA_VLAN_PARMS plus the push VLAN
-id, protocol and priority.  Commit 19fbcb36a39e ("net/sched: act_vlan:
-Add {POP,PUSH}_ETH actions") put the two Ethernet addresses in the dump
-without putting them here.
+On 11/6/26 12:48 AM, Eric Dumazet wrote:
+> After listen() + shutdown(), a TCP socket is moved to the closed
+> section of its reuseport group, while TCP_NEW_SYN_RECV requests
+> can still reference it as rsk_listener.
+>
+> If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
+> reuseport_attach_prog() calls reuseport_alloc(), which resurrects
+> it into the listening section of a new group, even though the
+> socket is still in TCP_CLOSE.
+>
+> After close(), the socket stays in that group and the pending
+> requests keep it allocated. When the final ACK arrives,
+> reuseport_migrate_sock() can select this dead socket and
+> inet_csk_clone_lock() clones it. With a ULP like espintcp installed
+> while in TCP_CLOSE, the child inherits icsk_ulp_data and sk_destruct
+> after tcp_cleanup_ulp() cleared icsk_ulp_ops, leading to a
+> use-after-free in espintcp_destruct().
+>
+> As done in commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions
+> between ehash and lhash2."), deny this transition instead of adding
+> checks to the fast path.
+>
+> Only an unhashed former listener is affected. Applications can still
+> attach a reuseport prog to a socket that never listened, or to a
+> listener (including one that called listen() again after shutdown()).
+>
+> Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+>  net/core/sock_reuseport.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+> index fccbdd0430b05984e82c19b17b6b723b0a3a03a1..41a25be1bfff6aa486f33ed563a093a264c49344 100644
+> --- a/net/core/sock_reuseport.c
+> +++ b/net/core/sock_reuseport.c
+> @@ -6,6 +6,7 @@
+>   * selecting the socket index from the array of available sockets.
+>   */
+>  
+> +#include <net/inet_connection_sock.h>
+>  #include <net/ip.h>
+>  #include <net/sock_reuseport.h>
+>  #include <linux/bpf.h>
+> @@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct bpf_prog *prog)
+>  		if (!sk->sk_reuseport)
+>  			return -EINVAL;
+>  
+> +		/* Do not put a shutdown()ed TCP listener back into the
+> +		 * listening section of a reuseport group while it is in
+> +		 * TCP_CLOSE: requests can still migrate to it.
+> +		 */
+> +		if (sk->sk_protocol == IPPROTO_TCP &&
+> +		    inet_csk(sk)->unhashed_state == TCP_LISTEN)
+> +			return -EINVAL;
+> +
 
-get_fill_size() is the per-action term of the budget that
-tcf_action_fill_size() returns to the core, which uses it to size the
-netlink skb carrying the action, so it has to bound what dump() can write
-rather than describe one particular instance.  Commit 4ba61bfd4998
-("net/sched: add get_fill_size() to the five actions that lack one")
-states the convention: "Size every optional attribute unconditionally".
-act_vlan already follows it for TCA_VLAN_PUSH_VLAN_ID,
-TCA_VLAN_PUSH_VLAN_PROTOCOL and TCA_VLAN_PUSH_VLAN_PRIORITY, all of which
-are sized even though a PUSH_ETH instance emits none of them; the
-push_eth attributes are simply missing.
 
-This does not overflow today, and only by coincidence.  A PUSH_ETH dump
-writes nla_total_size(sizeof(struct tc_vlan)) + 2 *
-nla_total_size(ETH_ALEN) == 28 + 24 == 52 bytes, and the current budget
-is also exactly 52 bytes, because the three PUSH_VLAN_* attributes that
-a PUSH_ETH instance never emits happen to add up to the same 24 bytes the
-two MAC addresses need.  That leaves zero slack, and nothing keeps it
-that way: the moment any PUSH_VLAN_* attribute is made conditional --
-precisely the change the convention quoted above forbids -- a push_eth
-dump no longer fits the budget, and building the notification fails with
--EMSGSIZE.
+I think sk_is_tcp() is better. raw socket still can reach here and inet_csk(sk) is invalid.
 
-Account for the two attributes the way the rest of the function already
-does.  Nothing changes at runtime: the budget already equals or exceeds
-what dump() writes for every instance, and all four consumers of it --
-tcf_get_notify(), tcf_del_notify_msg(), tcf_add_notify_msg() and
-tcf_reoffload_del_notify_msg() -- allocate at least
-max(attr_size, NLMSG_GOODSIZE), which is SKB_WITH_OVERHEAD(PAGE_SIZE)
-and dwarfs a 24-byte difference.  The RTM_GETACTION dump path sizes its
-skb from the netlink dump machinery instead.
 
-Tested by building with CONFIG_NET_ACT_VLAN=y; net/sched builds with W=1
-and no new warnings.
-
-Fixes: 19fbcb36a39e ("net/sched: act_vlan: Add {POP,PUSH}_ETH actions")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- net/sched/act_vlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/sched/act_vlan.c b/net/sched/act_vlan.c
-index 6a375fdc63dd..e666004bb919 100644
---- a/net/sched/act_vlan.c
-+++ b/net/sched/act_vlan.c
-@@ -348,7 +348,8 @@ static size_t tcf_vlan_get_fill_size(const struct tc_action *act)
- 	return nla_total_size(sizeof(struct tc_vlan))
- 		+ nla_total_size(sizeof(u16)) /* TCA_VLAN_PUSH_VLAN_ID */
- 		+ nla_total_size(sizeof(u16)) /* TCA_VLAN_PUSH_VLAN_PROTOCOL */
--		+ nla_total_size(sizeof(u8)); /* TCA_VLAN_PUSH_VLAN_PRIORITY */
-+		+ nla_total_size(sizeof(u8)) /* TCA_VLAN_PUSH_VLAN_PRIORITY */
-+		+ 2 * nla_total_size(ETH_ALEN); /* TCA_VLAN_PUSH_ETH_{DST,SRC} */
- }
- 
- static int tcf_vlan_offload_act_setup(struct tc_action *act, void *entry_data,
--- 
-2.25.1
-
+>  		err = reuseport_alloc(sk, false);
+>  		if (err)
+>  			return err;
