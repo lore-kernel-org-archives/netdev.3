@@ -1,57 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793954442;
-	b=BE9rx9OLlK6/W9s/96HmuIxw0vOyqA9+sZ2PbEeiaCxg7JIb8loX+7fAJ7alNlNXfPU3
-	 0rAGDwHI/LiNh9I8z1vrPIomYgjwPICtnsC8lTPkzISH65MEkDvFpguFd/9x8WAc3w29o
-	 rOW38U3FeamGL18b91VZUHBfgb5KM6YxUC/9z+ioPNwhZmrxqRKfTYMjU7DjnidqReMWX
-	 7dbZVg7TCVqp5hg1tHne8ygR8vOpk2G5iw0OXJ8/YdHRXfMH9my7tSyD/9wOHmcg8OT7O
-	 Xe3zORcnfko7p8d4mi4ikOiKlZulG4YtnzqvJoxMfS45bHTY+0mB+noDuXAv3TW3UDA==
+	t=1793954467;
+	b=d0qMSrdfDIQnkUGhayOmruSDXRakaQ5o+k/h2uxsPc1DdRa0qg+wlMA30wVoYzQsOcPE
+	 7nLWMEUIlqd/fsZmDzQ3F02Uy8oOmn2krtd03EASfiTjKcgPTkZn2VUVB9DBDJ5+9EPeQ
+	 aMhKjp5Rp3H2ftA/+ol5A7e//grvaOEqN9VGCcAEFM88m+Eu+IZp1qlUh1yBtAb55cB8B
+	 rOEm7/f/5yV4ASy/YxHwXsXU/E0x6H1OIte0bBFB8OYcNhUKVZYSKnH/8uRa6QUmWMQ2Y
+	 KeuzJJBGuJNIAHkR126Rkau8p28600Mmcqwzf+k/Acsw7tqC489Dn2Y/rv6uZif7+lg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793954442;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/55Dkn2zgwsP+rRdZdivaJ+Q4DO3a0dA94mr7obYiso=;
-	b=ZZDG5EY0tFtl7oiYrp0zbtDw9j7QQfWtCPdVtdpjt52S4ViJiUypAoQiJ4C99arfrmtG
-	 Np6fo8pbyWayGG0cblWc0t5opZb4zBHpuga/fNztPe/Njx41CVMY8bR+ziMUhsGrtNNC9
-	 JpgmxTvjLMNTm2jcq4rO+KyLNLqeWwyglSBTYaAiC0NnoSzuRPnrGUwFT6vikPh0DYy+d
-	 /anKjfKfUMcNTybiD8RiVYklJFu/5fai3UKfKUW1JxqLrZVT8cDCqpQVUgdCf45I+jTJx
-	 6FDr1w41yiyYEXv8SSNvefr26XwgBNW8gmJUiPFlFiTdbaCkjTeRqSeGZNn91vWEo6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793954467;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=V/NE8i04XGGDBZHwLHKxl5naETcb1vdCKlMJnr5aX0A=;
+	b=gb4sRM7RIDbu2dljT9KtPlsLJDHyQdzOApuBCr2ZqYgdv5Fm6VA459bci8R+U1d5HiMq
+	 HJ3PyPQNAGAUTNqBMW/gbxMHkNJE6NCQrIzFM/a/edP0BrI912Y8Krjn2rwgHQBroTgaM
+	 aaAwLcJDAmcKtSjV7KgJXl63HOXaOhklmBQsIupnSjCITE3RhN0M99C51eJqnvN1QypY6
+	 uslWc8ow+Sl5mj92yjbHxjURZIYoqpebTwo2yIRMeyaekI4KgyABCBmXYB2ygm9QVYrVO
+	 iz8FtU1/oB4a2UB0rpGyfcs8O0hl4UTlBVKgBDrD+Eq/IqfCmfvjnshj4ZOKt6NrM0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ccTflIib;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bDiCSnYr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF99606A326;
-	Fri,  6 Nov 2026 08:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A4C606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ccTflIib
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74D41F0089F;
-	Fri,  6 Nov 2026 08:40:41 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bDiCSnYr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359F91F008A4
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793954442;
-	bh=/55Dkn2zgwsP+rRdZdivaJ+Q4DO3a0dA94mr7obYiso=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ccTflIibXrpGdVo7tJurhvDJ01Sq1lQfBhwS8mFsurogFtzNR91NFv2UlnJqYYZPS
-	 Xx14iDYNyd1i6lH0WAPJ9lu6Vj6shM2lDcwtmZqV97dN4UB9neq8Jx4wm9zxnPm3Ds
-	 ejE4+EdIWqz2NcZEEqGBiQhpYvp4/QJQqsB39A3C4qhF6ILqbtfpw7E7+Ex+IY7iNr
-	 oJcko4KR9pkCLEBO5fWNlQD3NSZotNJy9cJPlTXPFFm2NuKXYlYhvxXlKyeL5Wsxga
-	 sUC9Cl5+iAjmlFrn0vbm7DKvy+/lOO2YOKVxh+9RmShxdWhejFBt1mRjY/8YkJKIR/
-	 hvgu4B/i/I7DQ==
-Subject: Re: [PATCH] net/sched: reset sch_plug epoch state
-From: netdev-bot+sashiko@kernel.org
-To: shawnq1@163.com
-Cc: jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Fri, 06 Nov 2026 08:40:41 +0000
-Message-ID: <179395444115.994134.1488731096234208258@kernel.org>
-In-Reply-To: <6AEA1C24.11E1A7.00008@m16.mail.163.com>
-References: <6AEA1C24.11E1A7.00008@m16.mail.163.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793954467;
+	bh=V/NE8i04XGGDBZHwLHKxl5naETcb1vdCKlMJnr5aX0A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bDiCSnYr63y02vQdmq06M/fpcXlYIOMzEKXawyY07jU3a64GhkHpyrN25DT4Va7Bw
+	 bRQ7rYUIPevXM/xXMRPKrmzLo7eYbDW15N6PGsqmhZnM+0KrQExSnJEUeTaQKtdAGv
+	 Hb5ffZdXymurXDJTaRQMdYSk21LXw4pXR1p3DtiTh3L5CefC5nnKqFAY40OR4OPfXB
+	 cTreiFgwMDUPdXjyS16KOuLUNhARLNlLc46F/dQwVGAjDHPchub2HyjpUN1MpxPjD6
+	 tXdyF2AL24YA9KjOn9xC3n7uvQv9wYPkKTEeaGvYOfofn+pzw3uMkv3iK2JU1OpE9M
+	 n/Ox1/UnFSkfw==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4f55a53898cso182178b6e.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 00:41:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzB1hUEH6T5cqiaeoh5tZk/t+bygXxoSEAGROfrkrQW6FoUrqBmsJ1gntkRk40PnSUQOAoyveA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/0ffdoTLe7n+4R6uh3Y7mAv8b0ff+RaZgjzuIt/OnoAuAEbl1E
+	4NwodaXu2By+QiVaI1Qv73Htw4b3nrGvLm4g9Q++QTNZl0QzSATKPtyJ4Y8fO7ix8zxYU3SJml7
+	okTeHO0E2OzhScva2Y93AI8Y9uiSPFPQ=
+X-Received: by 2002:a05:6808:15a5:b0:55c:928:69d1 with SMTP id
+ 5614622812f47-567e16594e8mr1161490b6e.56.1793954466385; Fri, 06 Nov 2026
+ 00:41:06 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,137 +59,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261105164830.1682714-1-edumazet@kernel.org> <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
+ <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
+In-Reply-To: <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 6 Nov 2026 09:40:55 +0100
+X-Gmail-Original-Message-ID: <CAL4WiipSczMAqpkxm0GQ2QLqi1kgkoheLM0+5QhAuBOOd=krWg@mail.gmail.com>
+X-Gm-Features: AclHuK-XaBSRE1j5mz-WAmw9EKZn4lB1ENNX2ol9LDRp71Y0xPgdHMJVIHLcm7o
+Message-ID: <CAL4WiipSczMAqpkxm0GQ2QLqi1kgkoheLM0+5QhAuBOOd=krWg@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Kyle Zeng <kylebot@openai.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Le ven. 6 nov. 2026 =C3=A0 09:10, Eric Dumazet <edumazet@kernel.org> a =C3=
+=A9crit :
+>
+> Le ven. 6 nov. 2026 =C3=A0 07:44, Jiayuan Chen <jiayuan.chen@linux.dev> a=
+ =C3=A9crit :
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> > I think sk_is_tcp() is better. raw socket still can reach here and inet=
+_csk(sk) is invalid.
+>
+> Yes sashiko reported that. And had the same 'suggestion'.
+>
+> https://sashiko.dev/#/patchset/20261105164830.1682714-1-edumazet%40kernel=
+.org
+>
+> SO_ATTACH_REUSEPORT_[CE]BPF does not make any sense for anything other
+> than TCP or UDP.
+>
+> I can switch to sk_is_tcp() for net tree, and perform the real fix in net=
+-next.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I forgot:
 
-- [Medium] plug_reset() (net/sched/sch_plug.c:205-215) always sets
-  `q->unplug_indefinite = false` and `q->throttled = true`.
-- [Low] The commit log is a bug-report email pasted in as-is: - It opens
-  with 'Hello,'.
-
---
-
-net/sched: reset sch_plug epoch state
-
-This patch replaces sch_plug's reset callback, qdisc_reset_queue, with a
-new plug_reset(). The new function purges the queue, clears the epoch
-counters, clears unplug_indefinite and sets throttled. The aim is to stop
-a stale pkts_last_epoch from being used as release credit by a later
-TCQ_PLUG_RELEASE_ONE after a link reset.
-
-> Hello,
-
-[Severity: Low]
-This isn't a bug, but the commit log looks like a bug report email pasted
-in as-is. It opens with a salutation and carries reporter environment
-metadata:
-
-> HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
-> Git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
-> Source version: Linux 7.3
-> Compiler:       gcc 11.4.0, GNU ld 2.38
-
-It also has five external Gist URLs and a multi-step clone/build/run
-script. None of this describes the change itself, and the external links
-may not stay available.
-
-Could the log be cut down to a self-contained description of the problem
-and the fix?
-
-The log also doesn't mention that plug_reset() now clears
-unplug_indefinite and forces throttled to true, which users can see (see
-below).
-
-> diff --git a/net/sched/sch_plug.c b/net/sched/sch_plug.c
-> index b60ddfee6a68a..def95e8243ba9 100644
-> --- a/net/sched/sch_plug.c
-> +++ b/net/sched/sch_plug.c
-> @@ -202,6 +202,18 @@ static int plug_change(struct Qdisc *sch, struct nlattr *opt,
->  	return 0;
->  }
->  
-> +static void plug_reset(struct Qdisc *sch)
-> +{
-> +	struct plug_sched_data *q = qdisc_priv(sch);
-> +
-> +	qdisc_reset_queue(sch);
-> +	q->pkts_current_epoch = 0;
-> +	q->pkts_last_epoch = 0;
-> +	q->pkts_to_release = 0;
-> +	q->unplug_indefinite = false;
-> +	q->throttled = true;
-
-[Severity: Medium]
-Is it intended that plug_reset() also takes the qdisc out of pass-through
-mode? Fixing the stale epoch credit described in the commit message only
-needs the three counters cleared.
-
-After TCQ_PLUG_RELEASE_INDEFINITE, plug_change() already zeroes every
-counter:
-
-	case TCQ_PLUG_RELEASE_INDEFINITE:
-		q->unplug_indefinite = true;
-		q->pkts_to_release = 0;
-		q->pkts_last_epoch = 0;
-		q->pkts_current_epoch = 0;
-		q->throttled = false;
-
-plug_enqueue() doesn't count packets while unplug_indefinite is set, so
-release credit can't go stale in that mode. With the old
-qdisc_reset_queue callback, pass-through mode survived a reset.
-
-With this change, a reset on carrier loss goes through this path:
-
-linkwatch_do_dev()
-  dev_deactivate(dev, true)
-    dev_deactivate_many()
-      dev_reset_queue()
-        qdisc_reset()
-          plug_reset()
-
-The same happens on ifdown/up or a parent qdisc reset. In each case the
-qdisc is left throttled with unplug_indefinite cleared. dev_activate()
-reattaches the same qdisc instance and doesn't restore these fields.
-
->From then on plug_dequeue() returns nothing:
-
-	if (q->throttled)
-		return NULL;
-
-plug_enqueue() counts new packets into pkts_current_epoch and buffers
-them up to q->limit. After that, qdisc_drop() tail-drops the rest.
-
-Doesn't this contradict the uAPI comment in
-include/uapi/linux/pkt_sched.h?
-
-	 * TCQ_PLUG_RELEASE_INDEFINITE: Dequeue all packets from queue.
-	 *   Stop buffering packets until the next TCQ_PLUG_BUFFER
-	 *   command is received (just act as a pass-thru queue).
-
-If the controller has only ever used TCQ_PLUG_RELEASE_INDEFINITE, or has
-exited, would egress traffic stay stalled after a link flap until another
-release command is sent?
-
-Would it work to leave unplug_indefinite unchanged and set
-q->throttled = !q->unplug_indefinite, or to leave both fields alone?
-plug_dequeue() already re-throttles on its own when pkts_to_release is 0.
-
-The reproducer described in the commit message only exercises
-TCQ_PLUG_RELEASE_ONE epoch mode, so it wouldn't catch this.
-
-> +}
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/6AEA1C24.11E1A7.00008%40m16.mail.163.com
+pw-bot: cr
