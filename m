@@ -1,54 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794008218;
-	b=pD7deFBOnZ8M58U7WIk/9F9l/kxGZ0ENJITDhUoTzr7TzxypJkGfcQzQiGwq7oU84534
-	 MKDVzo5LzWkauMqoODz7R8YPfAxgHinaiR+KpNaIHwcDGj12PEyl7MxwqnPnSB4mumjrt
-	 qL2M/Th8DZyzxZbz6E6Bmdt6idn+U2vqAPwVbqWRVSCqo2P7Ls3/Cbe9vhSTUFI/v/nN7
-	 IUiGX9fK0lzWPAhfMFOSedPPYn9TU+UiRu8nnqNnA5iA2w07IxgtUAFjVqDasAC+g8zhC
-	 ckjUn881WfYhPzR9WIpCA4YuMYnyqY/PY73IHYpQt8y9NQN6UrLECc9OwOepdjcRt4Q==
+	t=1794008302;
+	b=O6H+YDEQbPULUYdEfwGMla2tobp4y6r7CuE/XKwr1gLdqVscrmpWjqcVLimfL6Be8nN3
+	 BwhPCB3KvCmHyDAQdiXvlK8OxDqNSKzSLV/xBizGrgoQoZxGhPQ62iYrXkThjDUfzz8XG
+	 mC/mkQGpR1HJybaeUnrXd4xTyExfT1yKwtc6rYWke9tjNFP6zFTPrNob8IW2zmkMKyT2r
+	 OIYnVyNySv3kfyIXXiw2AW4glAGCh5u+Th/KG9ulaAuf+fd2v1CaX8zFQIiG0vrh/A3+A
+	 6iFPju+yLtlEJZcLjKAe9UH1cVQqcRjxGyHPOj5YkJXUSCa7vLotdS5xcq6NvXt87dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794008218;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=JSoyUd22ElUNlUfJBu1nXtrz5TuJsyXI6flKPi5TA3I=;
-	b=PaZotF6dbzfbrxeW2EZF0ZcdjpXw1i/UD7ACKXG44ZuqlXtRoLRvPn/4f0pU8b84iMQ3
-	 eMt1ECo95jku2PyUXEa4ifCW9WYppV4J9d6DZIIqXME89DgLcyccPEd+F8ix1L08zfnDx
-	 JHss7aijSjsx2IXzMp53IBsE0ENcCNIltVzpcgvsK7o/gR3S7R5rqfPvFdZ3u2u0xd+4d
-	 B4Paxfjx3J7mwtl5nAGJO+mjoU08LrxodF7lbj3MKTbPTgUvWcNwrYH+FZ5SdaUKLFtzC
-	 aJOxT6M8C9Guo1Yh5Ar9KX+pkeBEr1i2TNmZzlg1d6BqLQXJoBh9DIKqqIcGV/00jWw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794008302;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 X-Relaying-Domain:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=N4DPvPiEv18XL9E0HU5NSnRDXM9pLl3JEb1r3sKAKNM=;
+	b=hKIOBS9O+7meERttjCWCmEjeqwj+d0W0GEC1YCVZ1zRUTZZfjQ2DUtiTzsKZy309Jg+v
+	 L4HgtdKNLccxTCT6eBKwBh61siDWatqAbtiF5OxvQbKpPNEH64W473yhG5L6phJt8LILy
+	 MasQKwEtENRz2YZkNFsXQDoq+gJnrH35REQulIPYZHkcmrmZFzxrcOBluo+tRMEXo6jlt
+	 PxFZW4aCKMRB/WNBECo0VGsjTBGbi9ReXD2FW+Jv2MRJClE5tXiIgWy2uGgr32/8lZ19s
+	 EzLKjjk/TI3RFr8VnOyYzK8d8BkI2aQqOa72lKTZ+T5rl/Y51tYntwDbIdgkyFerG7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DLOUqlsK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=everpuredata.com;
+	spf=pass smtp.mailfrom=everpuredata.com;
+	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b="uft3M/kZ";
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B7A606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB03606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:38:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8EB03606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DLOUqlsK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB4D1F008A1
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:36:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794008217;
-	bh=JSoyUd22ElUNlUfJBu1nXtrz5TuJsyXI6flKPi5TA3I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DLOUqlsKi2Pxgq9FZ/JJnVDxVI96n45KgqVrVyY/Qp0eV1TgYlb9mXzaYw7SoxiRT
-	 sbgg31DKlApWxHMGiKTluWxBnzb6QqARzpi7IfKA1W5i2tkY8J9yJ9b31S88l2mGmB
-	 0LAL6Knpi+z8QgfW+q1TjQj5y8OvbyJ6FSe9cOKTNw2hDCbR28GaElhDXBZw+7iWAv
-	 tu8TV0OylnE7NNGaPXJv2NbMq8yrvzjM26dTG7hUBMaaWG2uzkqRWK3h+AturGIzUZ
-	 ibPTjfHaRlIcouZY1k/SqwClaX6YLtVgX19ddSF9Qb1O4SxviIcGQ01z9QUKKtvBYI
-	 s0DXuwwKcaqJw==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-48ed0b68895so758368fac.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:36:57 -0800 (PST)
-X-Gm-Message-State: APuU4Z/PihSXNlBtqrFG/cjx9R0DFEAT+IOlbrQOhmpbdN+liw02YPDr
-	mcTzS4wAJuNyOaF1KH/G9X3oFPwETFqmVmHhuAlSaA3R7xqsbFy/jjmm1nlGBJVKCLxsKpUPtcv
-	MDxR4lIht5khlL/tCki5eLDcPvEm0hEI=
-X-Received: by 2002:a05:6870:b524:b0:448:c946:9ae1 with SMTP id
- 586e51a60fabf-4ad98ac871amr2890812fac.18.1794008216716; Fri, 06 Nov 2026
- 15:36:56 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=uft3M/kZ
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso569345a91.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:38:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=everpuredata.com; s=google; t=1794008302; x=1794613102; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N4DPvPiEv18XL9E0HU5NSnRDXM9pLl3JEb1r3sKAKNM=;
+        b=uft3M/kZNtWMfwjzHoEKEfcv0xeGY1LFpaLGdGijed3dylbSlMh+emOTfhlOLh9Zq7
+         nRMyZWZfjTGaYcPX06pV0RViMhCeTv8CWuIbhw4/6gVn/bAtaz2dytdvNQkNPQzEi1eR
+         KJ1vTeL5wSX8wMJkHUrNB2uDIaD4LVcxIZ1D7OVRGudzTX6qPX4I8Pnihx7TY6G9gs2K
+         yj4u4DHfb7ZVkZS0LemR7LfNMhynMHLYil9YIsnRFPzFo5/usB1LpGMPhb+jwerJwIBk
+         zqFTppoT9BI3Qz2q7fEeWTnYDxr8eHrOxbhwyV4M3Ui4UKUawhy/7UkCMCGBFotUEzRz
+         pfVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794008302; x=1794613102;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N4DPvPiEv18XL9E0HU5NSnRDXM9pLl3JEb1r3sKAKNM=;
+        b=UrJwCPu2nhZbhJ0DmCJnwa/NpWpEXS1jZIaqFfArzyeoGWU+OuSA08S48tl4xufZQe
+         iDVQhSnbc9cjwRlz1ZakIaMF0D23q5fd3BUyq0WpbQE22F0JMo3khHvs9j0BAeXllidl
+         QwTgXPvtCLT2K6NL8p4jtrbWGhxNQT8l+RpSyt5qlZlSPZm9XvASbHy7qwZD19gUVFTP
+         EPx5BXDcCl+egKeDXOod2shgXh5JPja4vCb/zKk1tCXJatYDxF2yKzVR21+SVcCpcwq9
+         v1ykvAfDg3LMJztEiW3CFPDFsiSB0nr9nIBQkcyhJc0mN2sO8EynbPd6Kk/pQq5+jgVm
+         a3Kw==
+X-Forwarded-Encrypted: i=1; AL+hErHDfxVqujSICI6olS6GP/CknvT+pkCLderB0jZjMShTEqFU//HUIwNnlmWLsPsGH6cKq3OEPO4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+hr5w27CgUiGsUBg6xi5GlwCpdFEy4JOlhe3YpSlr73vdLsPs7
+	G7jwOWC3wQi+DPNM3Yi5krmNq0I74Zxn/YBAqEkz5f1gWzOI3fUEDukutw5CCD6BsA14wFzI4MQ
+	nlyzUf1m+YNLizWCw5q3FxeW+dlz40ZwWPno6
+X-Gm-Gg: AYBFou3omRRQ/rB2Ym8UglU1fdPPIuR4edEi+3IQ99SOVnuCZ+JveQHUFHk4y1S9csV
+	UqVh1tQHSFOrvbjLK9yd6ENiSCRMcuiqWwqzLM8iZl4skA6ykouGzG1rXZc9V5hSxwuY1dt8Vy/
+	3aUql7hVURWQGy+tTA9hefJ3O05KaQHsG2TC20Tsum0ZeWedNsZsQAqemhl5UOv300hpZuIEXyp
+	JKGw5sWkTSYZ2rvY+lXclSLGvqg5xyfXL4gl4NvwLcp1fc53k8Wt/XZvGHzj6nPJJE5YsxlMJEI
+	5thkTMgWJEL0YvsKdxf4nZbgjlBDWC0Lc1eKF2qxg9cMMGflBlqXW4KXF8Nvg6/43e8e6I4Ymgm
+	aNWD0BjR7H78aWaXgUj92Fo5bEGXt+FzdcOtfSxk=
+X-Received: by 2002:a17:90b:1c0f:b0:3a4:b8dd:1447 with SMTP id 98e67ed59e1d1-3b0db6f69aamr3787723a91.34.1794008301864;
+        Fri, 06 Nov 2026 15:38:21 -0800 (PST)
+Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.129])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1058d66absm412329a91.4.2026.11.06.15.38.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 15:38:21 -0800 (PST)
+X-Relaying-Domain: everpuredata.com
+Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
+	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id 1C11634039C;
+	Fri,  6 Nov 2026 15:38:21 -0800 (PST)
+From: Tim Menninger <tmenninger@everpuredata.com>
+To: trondmy@kernel.org,
+	anna@kernel.org
+Cc: cel@kernel.org,
+	ebadger@everpuredata.com,
+	jcurley@everpuredata.com,
+	jlayton@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	slingappa@everpuredata.com
+Subject: Re: [PATCH v2 1/2] SUNRPC: add request-scoped disconnects when cancelling tasks
+Date: Fri,  6 Nov 2026 23:38:20 +0000
+Message-ID: <20261106233820.2182993-1-tmenninger@everpuredata.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261105170653.3200815-1-tmenninger@everpuredata.com>
+References: <20261105170653.3200815-1-tmenninger@everpuredata.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,69 +107,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <f084de67-85b0-4759-845f-513879ebee5f@kernel.dk>
-In-Reply-To: <f084de67-85b0-4759-845f-513879ebee5f@kernel.dk>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Sat, 7 Nov 2026 00:36:45 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiips_uVD45bC2DpG5BqywmueUBB_wiNCnd64hNUe8YsH2w@mail.gmail.com>
-X-Gm-Features: AclHuK__eDki7Wxo-XbWR5HbF1W2HkFdH4esbYzWFhMVnanxY9PUSb18OlJtPXo
-Message-ID: <CAL4Wiips_uVD45bC2DpG5BqywmueUBB_wiNCnd64hNUe8YsH2w@mail.gmail.com>
-Subject: Re: [PATCH] net: leave O_NONBLOCK to the sendmsg and recvmsg syscalls
-To: Jens Axboe <axboe@kernel.dk>
-Cc: netdev <netdev@vger.kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le sam. 7 nov. 2026 =C3=A0 00:19, Jens Axboe <axboe@kernel.dk> a =C3=A9crit=
- :
->
-> ____sys_sendmsg() and ____sys_recvmsg() turn O_NONBLOCK on the socket
-> into MSG_DONTWAIT. That is right for the system calls, but io_uring uses
-> __sys_sendmsg_sock() and __sys_recvmsg_sock() for a blocking attempt
-> from io-wq as well, after the non-blocking attempts with MSG_DONTWAIT
-> have failed. On an O_NONBLOCK socket that attempt can't block either and
-> the request completes with -EAGAIN, unlike IORING_OP_SEND and RECV,
-> which call sock_sendmsg() and sock_recvmsg() directly and don't look at
-> O_NONBLOCK at all.
+> Would retaining the request/connection-generation scope, while removing
+> the additional unconditional lock acquisition from xprt_release(), be a
+> reasonable direction?
 
-Makes sense. The socket.c side looks fine to me: all syscall paths
-(sendmsg, sendmmsg, recvmsg, recvmmsg, compat) go through ___sys_sendmsg()
-or ___sys_recvmsg(), and the copy_msghdr helpers only care about
-MSG_CMSG_COMPAT, so setting MSG_DONTWAIT earlier is harmless.
+I've posted v3 with the additional unconditional lock acquisition
+removed:
 
-Fixes: tags? And please tag the subject [PATCH net] if this is
-meant as a fix.
+    https://lore.kernel.org/all/20261106232844.2176820-1-tmenninger@everpuredata.com
 
-Fixes: 0fa03c624d8f ("io_uring: add support for sendmsg()")
-Fixes: aa1fa28fc73e ("io_uring: add support for recvmsg()")
+There is still a broader question about when we should cancel I/O in the
+first place. This series does not change those cancellation decisions. I
+still think the narrower disconnect scope is useful independently of how
+we resolve that broader question. Where cancellation does require a
+disconnect, it should not also tear down unrelated transports or a
+replacement connection generation that did not carry the affected
+requests.
 
->
-> Move the O_NONBLOCK handling to ___sys_sendmsg() and ___sys_recvmsg(),
-> which the sendmsg, sendmmsg, recvmsg and recvmmsg system calls go
-> through. The io_uring helpers then pass the flags the caller asked for.
->
-> Reported-by: Luk?? Lalinsk? <lukas@lalinsky.com>
-
-The name lost its accents (Luk=C3=A1=C5=A1 Lalinsk=C3=BD). A Closes: or Lin=
-k: to the
-report would be nice too.
-
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
->
-> ---
->
-> diff --git a/net/socket.c b/net/socket.c
-> index 2e3b5737c481..08658a9b8065 100644
-> --- a/net/socket.c
-> +++ b/n
-
-This header got truncated, so the patch does not apply as posted.
-
-> @@ -2697,8 +2697,6 @@ static int ____sys_sendmsg(struct socket *sock, str=
-uct msghdr *msg_sys,
->         flags &=3D ~MSG_INTERNAL_SENDMSG_FLAGS;
->         msg_sys->msg_flags =3D flags;
->
-
-pw-bot: cr
+I posted v3 to put that narrower change forward for review, not to
+suggest that the cancellation-policy question is settled.
