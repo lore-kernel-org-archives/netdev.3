@@ -1,49 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794003008;
-	b=wJJJ+/yjKt57yFACrCzOL8sM9K2tKx8dwKUhzpoE4vqr7bRute+vAqnSsMKJ0Zqp2St9
-	 mTmEGX+7vLPuR6Dyh0yDdPVKfI+WUCCIGaHWYdqz90oi+Y8iTLN9stja7ZteHYZYQYqqI
-	 XAzwi6fyw27SaxPbeC7FhH1KZAIPO4Qi0RZFXeH4pTUqA+99nJqAPkh7HoQoznH0DUXRH
-	 haoQR8i/bplWH6TyS9bgfT8AlxhmMFqJ8pgCKqmpjrfJfnrlB7XNjhgdP0WETY5l/yG99
-	 bPURmfuKEOVYeaQYZB+rWMKHLLVCTqhnxkETXoa67s/kYkXQoRDhcB3+3Aj0oJya76g==
+	t=1794003373;
+	b=RHEsB+vzAP5mk0O5x3HN654FDa60+ITUpgeWY6mGjjBbtokkKl5DArudCBB8wfN3ZbPF
+	 kC3BRNsysR7cEKfmUIaqNVDGA0POjer6IqzJc5QcdgiwkJtAI9ubh99k3eHT3roL0n8Rj
+	 0OCedZqhU8rE46Peg+toppz8EmGAkeoJyaJUgSEXe7ZPOn8m01LqZakIJxkqIMdsO0l0m
+	 igndU+Ai8z1+NAEJFEBMxZFHIh0f1BDruL9zEKTbfgNLy3zb4onGvbVAT9/SQssQo04AJ
+	 qZMd2j+VPd+EWtqtNbtLF9gTQBJFSVjf/oNsRzww17qlwD0YbeR9j/F6CgpRZ2sNTxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794003008;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=A0IxIZ7KNidKyG0DlMEYje+e0uCxo2CsIGqyQc1x5R0=;
-	b=lfHIiDRn6bl1T4p7Ay4T+CnsbYuULQjKeluynb6rItDEYooa+11OpjyRrWOPI0B2564d
-	 bVc+aMMa7PdEBVMS03aQAy5rDgI+uT0vfkKvm9Z+zQVDwOGFcE49gBgeeM8krTX6mVJrd
-	 ps3MOr9DEEK/HxPZzH5YOylfnCyXQoUBA9OFI09mT0oA1Psg7cZv3wNG0UwZmE/q32RVf
-	 hlAGgil+4ldPXN1ZcZof3iCM43ll7l93ceCgjJ3GH80N+E+eT6YUIz/FifMIgb8GLdd39
-	 NcTRaDKzBGlxKOQxF9zvEJNMdqg0+ZGFDcMke4PXXJ7OMJki3+n8g5x5Hj/B25dtWZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794003373;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=laRzMMYDJxkaw25Allc7O+S/jwUBfxfqJWPXHy4lzgc=;
+	b=uB5Uh2tRlHm0Y7QXfeoR6EjJSOen1LWRW6cMtJGdTxQqt/JbWtCqp3kEmkrmlbcTdiDu
+	 ROqbvejKvadjFMgSk67dDWtkq63Zzk9s+CvDj+rjlMVddp1rRXZ2Zup/5O4R7nn3HY45F
+	 jHAA5hFhRzePlsUM6SoU044bJy+uLKSodQ34JRefc/YhEWdacr93BbnZpxUfwN6Nf6t48
+	 z9NHkbatQ9y0Ny3wZwTRwb8WUVatAjIv7jCeHM7RC769xgcmD+SUOtO3ueWuB1w4ooCSx
+	 1KP5PHl0FbnMbXWL3oJJZSD/UGruz1VS2y10+a+v8KNIVwrBWLJ6y1EO2GVNxZM6XGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhLTd+y9;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gQvBDgbF;
+	arc=none smtp.remote-ip=74.125.82.172
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79C0606A326;
-	Fri,  6 Nov 2026 22:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A24606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 22:16:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6A24606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhLTd+y9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698221F0089F;
-	Fri,  6 Nov 2026 22:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794003007;
-	bh=A0IxIZ7KNidKyG0DlMEYje+e0uCxo2CsIGqyQc1x5R0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HhLTd+y9JTzWARnWMjkNk1CQO5DlniPtnPu0R+wFOX991Ukn1h1UeJcrPmGMth/7s
-	 QE4HCypaghnUqoTo+1R3MNz+Dpxjf7k20ecycng9T06z8HLd3CsWQ6Srxo8thomCIB
-	 Dj58EzY0En4Jkdz+OnmQMisctbtpdS/rMDh06l4aMo2IfkzhHf/Lf8yXmRW0B3Kuph
-	 AkX1Gi2JgopWe+xRILA+Q4fiqWUSpwxEi3XO1m4+Lx0uOJ9fXCDxKHSdtvWenI5Hq1
-	 4V4J5c0eCt7F8Hc66b/b4PnbsCMJFGAbuDBUjN7AbceTYNrpE5GKMZ6lAxkhzn46tM
-	 45EE0aF2VK4tQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5E35C3A549BC;
-	Fri,  6 Nov 2026 22:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gQvBDgbF
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-36ff9c9da34so1465215eec.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 14:16:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794003372; x=1794608172; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=laRzMMYDJxkaw25Allc7O+S/jwUBfxfqJWPXHy4lzgc=;
+        b=gQvBDgbFA/4j7YiasxpWEVpB7LYJeUQ/608Smr5g2DvH+4wlTZbamMoh/jom5eH60v
+         7BUPKgySkmsEwxedP9Ln5xYvxRy9RA5ntDOuslgf+6PaV5oxmPqlkDmop6XQ+CmCjX9J
+         w+M70TPMLFKiw85O6wmXSCoaCvINfkD6T/gjdRz24Naq2W+A3ib+9liMdZ17PfbFZQTu
+         eZPbWOI6gxdKvLOlUWQJxTRYKwlJj8nnCcbUVcTsywbFwEtwodL783omRdr4HwM3TE1u
+         DAKGmtbCjRtE4LGk5gYflfLh/OKzyabNe0XJx2vyd87u65ecHLu1fDD+U/3CeBEVu3QX
+         tEvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794003372; x=1794608172;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=laRzMMYDJxkaw25Allc7O+S/jwUBfxfqJWPXHy4lzgc=;
+        b=jf3AKMNqY32XBi+w/ni2veG9l9OCnIFFFCbAUMuW9ciTABaYLoxYplBW6SYY/fi5uI
+         033ov3l+t3r5aEtTGV2y0ygzNB2zZYIs4j6Na3xgIO/u4jjeYc8FW3KwiEVMvFPX0vhs
+         jsk1wvgMbsLxt1TtprI/uG05az8mCWDDl9VSx7IcD6iCT6DifbWwiJbY9Pf9mWVEwNqo
+         fSpJP+0mgdKuH+V2bCd3ravys2fmHZu8QZRVVm7iz8dvfBxayfe8MH6jWwmsodqZ1Vf0
+         /ivAxYWTZlGo/6WdUKuopmZXq93LamOxLfBk6F6wAXbsOYjdNl+CvpVVOUYtnSW+8VfH
+         7TDg==
+X-Gm-Message-State: APuU4Z+dxfEe0u1Cy5qx/HmuNklQ17PjyFGJ//+pJHXD4EWsRYyxQmmK
+	43iaH1w11ORSZ60x0cX3bLLDoU2TCS/ZkaWGaHcJSTbbgYvh13NcuEZzRyE2XQ==
+X-Gm-Gg: AYBFou1F9nZzTN3Npaai9K0y83RUiMpTEkGKuiemeZCcYCBMeBqvIzPfI//HWyCfVBc
+	8YmeD10gbsOBqTOIYRD8SSFCgDYiFBs34ETwvlDrScwwyfEZX8enAeq0OiMoPAhLhwKQRfPEq9y
+	tVMBXWZZTaDjYHNV2GmbMRfX+nyb+Se4J1CZibk+n7iOOqpQ5GaglrG9hrtl8h6zpnAa9H3SIdJ
+	rBAQ6crc62AiFwGpp9RsucvxXn2yPlDkH7kfFV0WLJWsgRAYHPLdsoujuLeFtvC2FPJJD35wDRN
+	wKEZdzkmT/fn1wofTegcULTsYmg52+5wWr9oKlBMLwvj3/vvtPa0q5pVxTktLf3wP6d7++Lhz0T
+	qIxSQSmveN9ubOXsR8qGeO/GVb7wxxWIocXgt1kcgWaho21mRMMKJjFLYv1e3RjhIB7be1E7DAE
+	xhY1s3Q4ojGx3Iwn0tzMFv7sNLVtl8WcHQCy5+8xj8832HphL7NSZv4A6bQoE+MCHAzvKRW3P94
+	T+Jj4XaTIP8Jq403/0f7Nb45a3Jxyn1UioCbtlE7JtzEkPsnKRbCOGmguadPegPnAks/BBb1VP6
+	FyF1R4q8mnflKpWf1QMRmvPYMCd30tBF0K6oTwPN6FSXD8KxyttpStzRqGkEyQI1KzQ6ck5H/pP
+	MqPPcIWujjDn8R8FjtzjnQHTaPZIt48STTVi4zKPDWxRKVHY419J7dv78w5PkfrMW4zi1A07uMc
+	6g6Q==
+X-Received: by 2002:a05:7300:ce92:b0:36f:14ef:ad08 with SMTP id 5a478bee46e88-36f75253a9dmr4860666eec.9.1794003370707;
+        Fri, 06 Nov 2026 14:16:10 -0800 (PST)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa5afffasm11333663eec.25.2026.11.06.14.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 14:16:09 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: ag71xx: let both QCA9550 MACs use MII, RGMII and SGMII
+Date: Fri,  6 Nov 2026 14:16:07 -0800
+Message-ID: <20261106221607.16215-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,49 +102,55 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5 0/4] netconsole: fix target enable race and
- configfs
- read locking
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179400300617.899981.1200767278484963659.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 22:10:06 +0000
-References: <20261102-netcons-fixes-v5-0-bdada2f03563@gmail.com>
-In-Reply-To: <20261102-netcons-fixes-v5-0-bdada2f03563@gmail.com>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- stephen@networkplumber.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
 
-Hello:
+The GE0_SGMII bit of the QCA955x ETH_CFG register selects which GMAC
+gets the SerDes (QCA9558 datasheet, 10.8.1): when it is clear, GMAC0
+connects as RGMII/MII and GMAC1 as SGMII, and when it is set, the other
+way around. The driver only allows the second layout, with SGMII on
+GMAC0 and RGMII/MII on GMAC1, but boards like the TP-Link Archer C7
+use the first one, with GMAC0 on RGMII.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Allow MII, RGMII and SGMII on both MACs.
 
-On Mon, 02 Nov 2026 19:54:48 +0000 you wrote:
-> While looking into the sashiko report about local_ip_show() and
-> remote_ip_show() missing proper locking [1], I noticed a couple other
-> places that need locking:
-> 
-> Patch 1 fixes a null-ptr-deref when enabling a target races against a
-> NETDEV_UNREGISTER event.
-> 
-> [...]
+Tested on Archer C7 v2. RGMII on port 0 of the switch works.
 
-Here is the summary with links:
-  - [net,v5,1/4] netconsole: finish enabling the target before releasing RTNL
-    https://git.kernel.org/netdev/net-next/c/f94b9640bcf2
-  - [net,v5,2/4] netconsole: read np.dev under target_list_lock in local_mac_show()
-    https://git.kernel.org/netdev/net-next/c/3733db02b88e
-  - [net,v5,3/4] netconsole: recheck device registration after waiting for carrier
-    https://git.kernel.org/netdev/net-next/c/6891cd198752
-  - [net,v5,4/4] netconsole: stop waiting for carrier once the device is unregistered
-    https://git.kernel.org/netdev/net-next/c/a2b4d25e4ddf
+Fixes: 0767ec042897 ("net: ag71xx: extend link validation to support other SoCs")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/ethernet/atheros/ag71xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 16434a7139bc..b2d78819a0a2 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1079,7 +1079,7 @@ static int ag71xx_phylink_setup(struct ag71xx *ag)
+ 	if ((ag71xx_is(ag, AR9330) && ag->mac_idx == 0) ||
+ 	    ag71xx_is(ag, AR9340) ||
+ 	    ag71xx_is(ag, QCA9530) ||
+-	    (ag71xx_is(ag, QCA9550) && ag->mac_idx == 1))
++	    ag71xx_is(ag, QCA9550))
+ 		__set_bit(PHY_INTERFACE_MODE_MII,
+ 			  ag->phylink_config.supported_interfaces);
+ 
+@@ -1089,7 +1089,7 @@ static int ag71xx_phylink_setup(struct ag71xx *ag)
+ 		__set_bit(PHY_INTERFACE_MODE_GMII,
+ 			  ag->phylink_config.supported_interfaces);
+ 
+-	if (ag71xx_is(ag, QCA9550) && ag->mac_idx == 0)
++	if (ag71xx_is(ag, QCA9550))
+ 		__set_bit(PHY_INTERFACE_MODE_SGMII,
+ 			  ag->phylink_config.supported_interfaces);
+ 
+@@ -1098,7 +1098,7 @@ static int ag71xx_phylink_setup(struct ag71xx *ag)
+ 			  ag->phylink_config.supported_interfaces);
+ 
+ 	if ((ag71xx_is(ag, AR9340) && ag->mac_idx == 0) ||
+-	    (ag71xx_is(ag, QCA9550) && ag->mac_idx == 1))
++	    ag71xx_is(ag, QCA9550))
+ 		__set_bit(PHY_INTERFACE_MODE_RGMII,
+ 			  ag->phylink_config.supported_interfaces);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.56.0
 
