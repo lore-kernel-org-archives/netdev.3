@@ -1,75 +1,151 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.69.87.85
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793941393;
-	b=L8PXwS2yw/U1qF67KA5F+BVxjbvCtM3why60y8QSkuQxglfTF18MzFvzy3XjP9uLRlx2
-	 kX/4G2DzGs9xp41hM/vQm4YGupAaOl+5kMOGaXL6jvMbUGXNeVSMWtLixbwjocburLe3M
-	 uJ8yRBRjqlOIjkkr3mMOn/O6oatxv8//0wIDh7+bKAfaf8vkaDVWvg/LwkvKzbAwOPY/3
-	 NgzWIBgDSOVRORYLT9KJ80loQQrRgumLnhLiueUUkPSxp8h2vIaZ20eAoEh2Mb0q0kUa9
-	 F3HVYHsSVhkUeRNnZavJ+x5349RREmvRQO7klsn4x7s9gbQZbL2SWmdR5Ttf2pFwUmQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793941393;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Y9mIycYuVHTutNHVFEKXIvRSytv+OKQ1oS9xSpsMonc=;
-	b=UviHaWZO8cwz9sjc67V/25LbHoX2ulEbTt1av8OEClfmcFZoffqQWqhj7WWfbogGy4J6
-	 3Fc4cpboEPQSyGrnNKguIQcS8CTp5IKvs2In/zpjnTi7YORNvG6k7MNPOG63PHQShpWGW
-	 m0QPm7EtdVkOdC+5I1gVcNmPGh61rOv8IuVk2UgQsWWHytRPMsldO7Cj1GSqNMfLuGrpH
-	 rQIAJG4QyGc6kuJkTFAlJJ/YVAW74gy5FAvOO+RCKFiZ+AUc3r/TELEym0qicygj8GRbz
-	 itwidtTaKRZWAh+8PxFyiofbnTldI2cWr+ftnLv4Su+Sk3dyBhZ2DtvioXwgGCqn4GA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linuxhacker.ru;
-	spf=pass smtp.mailfrom=linuxhacker.ru;
-	dkim=pass header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=dXFFgIs3;
-	arc=none smtp.remote-ip=159.69.87.85
-Received: from eagle.linuxhacker.ru (linuxhacker.ru [159.69.87.85])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.69
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793941747;
+	b=3xvJwJWaz936n0rpH9PYlmnVyhlkBmokJCaHhNGzslNLxi39CNtMYxzuWXhpXvrJDtjD
+	 Ir+MCd1+R1aAbW0q3keiWFqyCQiRGhZnuYMKQxv0p0kKc3fqZnOohMdvPf/Q660BlhQ89
+	 i20MH0nhtdm6YdiTT0mRLnM7O4sEyRuGza/FlOgsmYBVqsythpXcrNyt//RTtF168DNnN
+	 7Kx7UZ5xc0L3YaPv0OiSs4V6K2pVDsreqQwZdRFDPYlELuMGVPIlvVob/rXQWwZnpjPv9
+	 GneWU2AI0/uR2+3mlIt3Z+7cPZC97dieYSZmXT5KLbqUMo2uk0S9xeFk6/eqep4gbdQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793941747;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=MBHbLslr389j//83MkfywuyGralPV80DViS8tU9jTlo=;
+	b=Z+2SClaHdqLPh4F0slG/33Eyr6EV00Qr0IVdmxO+w3D4SH8Ba7bS2rJZOIWvYWSP+rqW
+	 DNrxYvYiDS4WYEJf7kKXaAeLFBq8DU/e9rmtsplaldIUOQG4XI3Fq60LNe9UiZcAPxQjh
+	 VN1I9j+3eua3djB1ST3NJTiyy6wlcv8n66Azrn8amqoFqu+SGyZChaRp47P7lXP+mphhp
+	 USofcw01YDCR7R0BatcX7mYSAqYxmKQfBUFsJp78bS5zunU3HzP8fBCVkQyU3plIAs+VK
+	 dLqX08llPMwkE9deWcCDCLWj6nr6WxxxaW0RJWZrs1gZ47uPJxUmZgiskqHSP6DDa+w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=E7li3ePP;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.69
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010069.outbound.protection.outlook.com [52.101.56.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711C5606A326;
-	Fri,  6 Nov 2026 05:03:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 711C5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxhacker.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxhacker.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2257606A31B;
+	Fri,  6 Nov 2026 05:09:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2257606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linuxhacker.ru header.i=@linuxhacker.ru header.a=rsa-sha256 header.s=mail header.b=dXFFgIs3
-Received: from intelbox1.virtnet (unknown [162.81.204.199])
-	by eagle.linuxhacker.ru (Postfix) with ESMTPSA id 54ED5BEE42;
-	Fri,  6 Nov 2026 05:03:09 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 eagle.linuxhacker.ru 54ED5BEE42
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxhacker.ru;
-	s=mail; t=1793941391;
-	bh=yKlnf7yWRqd7XJLar8zLqK798z/Xes6QlUr9QH1V8qo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXFFgIs3V45+hHDyrOFzAKC8vXooTvShDzdWybCpRkhGajdI/6TQ2dluwdtidfhst
-	 L5c766MSgaDONA0C8NXHaFgiXgzjackunUIZ3R9FFiD0HE7A0CodpYXSUfVApCs0NW
-	 A8YBRHmRwAGFi01jMuF5+X93yAaCYsH42gsaU3ShqeZ3sF4/668IZEGOy+l/UrDjnY
-	 wLCd+AbLjrk/X1MJJEvXd8tYhERkolg3HgC5rcCxoalCAxADfAdecu3LueumoSPTbs
-	 gRJsMhUezrPORwEyDv9qgCXKQV3+mWKIej99V2dcdWM2KZeTgGRPSHgWp1oqK6Qp4m
-	 LLahUzSKK/OPw==
-From: Oleg Drokin <green@linuxhacker.ru>
-To: sgarzare@redhat.com,
-	stefanha@redhat.com,
-	mst@redhat.com
-Cc: jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	bobbyeshleman@meta.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/3] vsock/virtio: fold credit updates into the one a socket has queued
-Date: Fri,  6 Nov 2026 00:02:44 -0500
-Message-ID: <20261106050244.602625-4-green@linuxhacker.ru>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261106050244.602625-1-green@linuxhacker.ru>
-References: <20261106050244.602625-1-green@linuxhacker.ru>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=E7li3ePP
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IAgop6elOKTKAHD9rWtZr4d+yV5IqDlTLFGiY4tyYDHvB4AdZNhescqcMbvwEKtRQif3b+bH4sXFvUZvwSTVk0E7xbooh24nm7fi+e1vnIoxt8iAc8sTcRlWS6QS1YUMeIVz/OCWM7NLCPKySwccKst2zMuQacuOmT32myk36xsBVlj/EJNaJZSrQyUMkGw5v5Zr8cmNF8i5nTzgnfugWAvX0rAoa25DXd7ukI79lSEgvMIDcGiC0Max8Ut3V5sXqkDFeCaF2eoiSF1bCikLyKXdgFdW656PAIZRVMnwilapLUaQRvhe4AnWRKOzIKldKRmVILjorbM52++QRx1+vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MBHbLslr389j//83MkfywuyGralPV80DViS8tU9jTlo=;
+ b=N2v1rIUCpIRhwjDmOj8LkiBo6t5H8ftJgkoKLyn+tP+nvLaGxUDtJS45JDoH0MOfrQf5l60OXcCRGl7NU92CMX1xn54FHlAASB+rGH233jjsaNTw0BJlxU48rCYmIl8/2gM7u/d43Wxp1a2V+IIaXhkWxH2i4bU9uL2NRCwPRzvpHOU5XDbuXn7yTMVsFy2PSWJhrjnc7So3fI/OPVmVGXFe5XCs7ZojbMpGojkrVfM6DuqZ7JJ4WYfh4xKt/6U6CFveNSIRUue428d5sbByDmJF6a2x7J1+AX8Qx8m2acUoRumCfn1BY+/8pA6omgP7lxcAqDKGQ/ul6MHHivnPdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MBHbLslr389j//83MkfywuyGralPV80DViS8tU9jTlo=;
+ b=E7li3ePPwT7EP6iZD0e485GRrnbGhhSlw0s+IGsbwfuAIkQtxL0340AEcofjVuHqDwRP3hy+pvRUp0ZdKG9HyhNGXYhQK6DIY7PZXsNLrn0Xo7OfOdq5YjaesVGkSK+l2v0zfTMCfqM8o9I0ceVqeEBgpB+5gq0hXD4w5AjtcTpPirvGftysGL/bl4BFf/tpUjA1KsMxxtjLRyCwRyyX5GUqoAm56M9dghJvGBczz18YJVzAM9JZIe1NnVqyjKWEHDuciAsehR3HA0r5w46MeKBWCfdm3GisIhSBejy3R/eQxHy4xVMpW/CzQSufq1pOEhKzRcTdZYwmvruQSJ+Wlg==
+Received: from PH7PR12MB8794.namprd12.prod.outlook.com (2603:10b6:510:27d::22)
+ by SN7PR12MB6715.namprd12.prod.outlook.com (2603:10b6:806:271::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
+ 2026 05:09:02 +0000
+Received: from PH7PR12MB8794.namprd12.prod.outlook.com
+ ([fe80::275a:bcb7:918e:7313]) by PH7PR12MB8794.namprd12.prod.outlook.com
+ ([fe80::275a:bcb7:918e:7313%3]) with mapi id 15.21.0569.011; Fri, 6 Nov 2026
+ 05:09:02 +0000
+From: Daniel Trujillo <datrujillo@nvidia.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "dsahern@kernel.org" <dsahern@kernel.org>, Ido Schimmel
+	<idosch@nvidia.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "alexander.h.duyck@redhat.com"
+	<alexander.h.duyck@redhat.com>
+Subject: Re: [PATCH net v2] ipv4: fib_trie: prevent speculative out-of-bounds
+ child access
+Thread-Topic: [PATCH net v2] ipv4: fib_trie: prevent speculative out-of-bounds
+ child access
+Thread-Index: AQHdWHl1kW8JApKlHk2ofqWtKk1FMbb32KkAgCjP51I=
+Date: Fri, 6 Nov 2026 05:09:02 +0000
+Message-ID:
+ <PH7PR12MB8794FE0E2AE05E38AB9EAA81B2762@PH7PR12MB8794.namprd12.prod.outlook.com>
+References: <20261010-fib-trie-nospec-v2-1-30319b4db8d0@nvidia.com>
+ <179169799489.434549.6127227149225091641@kernel.org>
+In-Reply-To: <179169799489.434549.6127227149225091641@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR12MB8794:EE_|SN7PR12MB6715:EE_
+x-ms-office365-filtering-correlation-id: ba44fbc1-380a-4fd7-b0b0-08df3bc412ee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|10067099003|18002099003|22082099003|38070700021|4143699003|56012099006|11063799006;
+x-microsoft-antispam-message-info:
+ JUCkoV4OQqUnZgNW91Ibq90v91bRYvtKAUgqfmHdZOWTklwdpeEOydFebp5/TKPnyRtODtIMIYL/KfhjZCCwraVn6kk00t3EkHezQEDx3zwNdvUlQREwCcjSm4I0zzo41lSjlkgRrqqh8p4PCpYJZzvm7ccXK+LiW+hvB65Wd1306bWSFfHw3yIcSukxmcQ0EYvGRGhqXF5tn/M/c4qv40enjnF1NU1unGE1vvAzBnDbCoM3AElq8tYoNl0N/nmDbMoX2rUdSHDIQJRtRwJ12wy0P6Fa1f4BUzSJYCXifyipWO6QfNYMs8bUI/6hUV+ueaXNYewmHV5ckw4Ee6XNliroKC8E7vaOLJDUJYqCWTe9ZSEKDeyelOR7HlFDn1+Fes5CsLVS2YoV2aS3PL1SThwWHKniWKtjd32ralH/mObWb1jALI2M1ZB96Yc4yENRu9eSANFzDMRXUvIYlFkPTPXyJ5i9BvG80yjze+MErMcN9irGS0U1OBmIV1BLM8OTgaYNhgqEuAi56ht356Nb3eW+iDNZUVN8LiohxRGDuCZh5oilhpUUqPvnVjUgsADZD7BucD+uAFShdidaAumV5dAsfQWTUChB600NBEL/ROLPmDFSoyVhhRSYMj1ruZlJC/yd2TPhGMqoFgi4qHyjJxCvQ05/ebpdo6Gg3jozigE8dOpX7dWlvvZhtWMG4dVu+u5iNEG8pOXalv5rKRCEmzYLuYVCES6A4Zm9dPk4lGc=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8794.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(10067099003)(18002099003)(22082099003)(38070700021)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?WiCiL9CImPNUJguIeTI8guC6J/530pbdJ3KV+aLchs67KSIY9WN5IaC5nR?=
+ =?iso-8859-1?Q?CeduXyKpo1vkoxIzb2Q0BOdK1bnFp/cCqi4gjW+vS357SqwmJ2S2/x/zqC?=
+ =?iso-8859-1?Q?V50gVhtU0PaD3Rrxbd53V43jY+LYz3+loduGY35ybOGPXw9u4tVOtv7Rv6?=
+ =?iso-8859-1?Q?fW/pFlJVYWQNpzQGBIvCuhyvPz09uZ6Oi98gAO8IpRRhEUzKphnwzrQyBN?=
+ =?iso-8859-1?Q?SA8ESFRNnj8rMs403M/X+ERga2RqREoGNRomujD52TiWc5NzqU1Vz668Qc?=
+ =?iso-8859-1?Q?jMDsjYw1iIjkW/xyXq3GhFmhlF27iXXsjbjQre0Iw5cac7qfRWxu4ldHUQ?=
+ =?iso-8859-1?Q?KD1K/+CWM7GXm150kFBokwd8q/6JO4vgmTFAo/tv4T0Qy7719tFUNMCu4n?=
+ =?iso-8859-1?Q?CacExaSoBvzNNI7MWoLwcou+uEFEJLKk2Im5qDsUY0JddCK/kvXCvPjLHq?=
+ =?iso-8859-1?Q?U+mo0r13WY42kjlALVX0Jf6BycyQnogyxKUPFA1NcCcFpIAqPGxPMaQkmC?=
+ =?iso-8859-1?Q?QYHAqkqPLn+d8V/e72wbWg+ILk+fpxEdJJ8AOEIWrrmAj6ClNb6vrFFyzc?=
+ =?iso-8859-1?Q?9yZ13p8kmyzfdbo+fQd327+MeiTntmCJvlymo1H5EKVv0OriwRhvdsDTyI?=
+ =?iso-8859-1?Q?bUI+RNbJVDyoP8y+MhQK0gREZJRQAC75YR/YsRNonRHJsrhuWzvIGByshM?=
+ =?iso-8859-1?Q?63Tx4m3Cb6e9ORzhSiirxIma5vRHTlqyIQ6FF/2baWECYW//CTwV+60Txj?=
+ =?iso-8859-1?Q?KJc7yHaRQIXGZbDZeq49BbFVkD20Fd3t0Nx8wG5q8zjWM/JwRyxghVV2J0?=
+ =?iso-8859-1?Q?cxI84ZSADEyMqxz3shII2YYT8JYZtmi8p/wy++kv6aAU5qmXx3XJ9qRiNy?=
+ =?iso-8859-1?Q?9XePlGRM/7OYq++LckfNjBvAiVpPdBSsbS7GSi5OI7RGRjAu0lfXe7VYwe?=
+ =?iso-8859-1?Q?IaLcKPfVBEPEKvZtxwyrZNGj3RjvKcBdQl5MSV1nmSI7Ce29i8mfHbHZ5e?=
+ =?iso-8859-1?Q?1M69IPEW42KtrcsVdjp1h9eYej0AhjvSi/Q5XHlGfz/9+xGB1M6qB5Ojw9?=
+ =?iso-8859-1?Q?pfRAl9KAyEadvAHFj/guRZcWrNf5QHoPG9T2BhKJueWQPSs1EvFP/n/nYO?=
+ =?iso-8859-1?Q?qi1zDUYN67Nq1mwtVuSxFrHZ58pF3Qv20v23JmbhHH+1eK195SMuL5dzQo?=
+ =?iso-8859-1?Q?h9EHnsHubt/5zW7eS/UIC7OFW6KgiD7nCa3fR55IPzgbbMBhOvUqHYedBC?=
+ =?iso-8859-1?Q?RwY0kpsG+XSKmFfySwhRTzvtDDdevr+bS4e8mzqgY9fYWQoJuCEolP2AKg?=
+ =?iso-8859-1?Q?2V2v4lqAF/9tuIVWhnAHdxkRYZQe3l4HYu14F6Tp4RYoxdeySXpT3x8s1k?=
+ =?iso-8859-1?Q?JOE7vynhEtWMPhpXCx3qmSEcQ9vI4zNKI0krR1JAxaOEJIgEUyA5RZKulM?=
+ =?iso-8859-1?Q?WqlNYOO9OAm0orNIXL/kn/37gXlvIucAQwnnMW8wziwslxyR1HFsUJ7wE4?=
+ =?iso-8859-1?Q?fzVttH2vmemjV8RXN4iXvygxCe8R/IJ/3m2E9vaxYWkYAsmvTbsxLrglm2?=
+ =?iso-8859-1?Q?HSuwVhxGG6cqVwjpSt2cBXkhPdiAedIrmus8uxySOaFKMyExH2xIzFNrNl?=
+ =?iso-8859-1?Q?4n1g4qySUoYm0M1P9w0iFhQZWmx7KDBQey1dzPc8TuvQ/8aB5/Ujbdr9xf?=
+ =?iso-8859-1?Q?0hGqi4MafbrPfksYqJTjVPSAzrd1e0SGuyqYzyhJt50UooyVokIZgk5l/M?=
+ =?iso-8859-1?Q?a57J2dNSMcGhJxEK0OMoP71BaqltVTN8jRCOSpxcOL1mseDiWRiwYxJYlh?=
+ =?iso-8859-1?Q?b/e+VJc4yA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,203 +155,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8794.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba44fbc1-380a-4fd7-b0b0-08df3bc412ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2026 05:09:02.6623
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PIbU2fcAa0Mpf6ytSIqBZgIpSBJxZvz+S70oqQZh5hEMg1p4VUlJjkop5AyDlWMIG5jvXbofc8PXiLvmsg9S+Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6715
 
-A credit update carries no data, so the send credit never limits it,
-and the peer can solicit one at will: with OP_CREDIT_REQUEST, or by
-sending data that a local reader drains (a read that empties the
-receive queue sends one). A peer that posts no rx buffers can therefore
-make the other side queue credit updates without limit, about 1 KiB of
-unaccounted slab each for a 44-byte packet.
-
-Every packet carries fwd_cnt and buf_alloc, so while the socket's newest
-packet in a transport's send queue is a credit update, a new one adds
-nothing but newer counters. Record that packet, and the queue it is in,
-in vsock_sock. When another credit update for the socket is queued to
-the same queue, copy its fwd_cnt and buf_alloc into the queued one,
-under the queue lock, and free it. Queuing any other packet of the
-socket clears the record, and so does removing the recorded packet from
-the queue (dequeue, purge, loopback's splice), under the same lock and
-before the transport reads the header. So the counters are only ever
-written into a packet that has not gone out, and the fwd_cnt the peer
-sees never goes back.
-
-The queue has to be recorded because vhost has one per device, and a
-socket's packets can sit in two of them at once (a guest restarted with
-the same CID). The send queues are shared by every connection on a
-device, so looking only at the tail is not enough: a peer with two
-connections can alternate its requests so that the tail is always the
-other connection's update.
-
-A packet that a transport dequeues and puts back at the head (vhost
-with no rx buffer, the guest driver with a full tx virtqueue) is not
-recorded again, as the socket may have queued packets after it. A peer
-can thus make a connection queue at most two credit updates in a send
-queue, plus one per packet the socket itself queues. The folded updates
-are not sent, so vsockmon does not see them.
-
-Counting credit updates in queued_replies instead would not work: most
-of them are sent by local reads, not in answer to the peer, and under
-bidirectional traffic vhost would stop reading the guest's tx queue
-while the guest stops reading its rx queue, each waiting for the other.
-
-With a user-space vhost-vsock "guest" that posts no rx buffers, 20000
-OP_CREDIT_REQUEST made the host queue a credit update for each
-(+18.5 MiB of slab); with this patch it queues two. A guest whose
-device stops reading its tx virtqueue queued one per request (200 for
-200); with this patch, two.
-
-Found by an LLM-assisted security review of vhost-vsock, done while
-porting a project from Xen to KVM, and reproduced as above.
-
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
----
- include/linux/virtio_vsock.h            | 66 ++++++++++++++++++++++++-
- include/net/af_vsock.h                  |  6 +++
- net/vmw_vsock/virtio_transport_common.c |  1 +
- net/vmw_vsock/vsock_loopback.c          |  2 +
- 4 files changed, 74 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index f91704731057..0a5477a0443c 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -99,12 +99,70 @@ virtio_vsock_skb_queue_head(struct sk_buff_head *list, struct sk_buff *skb)
- 	spin_unlock_bh(&list->lock);
- }
- 
-+/* Called with list->lock held. Returns true if @skb, a credit update, was
-+ * folded into the socket's newest packet in @list and must be freed.
-+ */
-+static inline bool
-+__virtio_vsock_skb_fold_credit_update(struct sk_buff_head *list,
-+				      struct sk_buff *skb)
-+{
-+	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	struct virtio_vsock_hdr *old_hdr;
-+	struct vsock_sock *vsk;
-+	struct sk_buff *old;
-+
-+	if (!skb->sk)
-+		return false;
-+	vsk = vsock_sk(skb->sk);
-+
-+	if (le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_CREDIT_UPDATE) {
-+		WRITE_ONCE(vsk->credit_update, NULL);
-+		return false;
-+	}
-+
-+	old = READ_ONCE(vsk->credit_update);
-+	if (!old || READ_ONCE(vsk->credit_update_queue) != list) {
-+		WRITE_ONCE(vsk->credit_update_queue, list);
-+		WRITE_ONCE(vsk->credit_update, skb);
-+		return false;
-+	}
-+
-+	old_hdr = virtio_vsock_hdr(old);
-+	if ((s32)(le32_to_cpu(hdr->fwd_cnt) - le32_to_cpu(old_hdr->fwd_cnt)) >= 0) {
-+		old_hdr->fwd_cnt = hdr->fwd_cnt;
-+		old_hdr->buf_alloc = hdr->buf_alloc;
-+	}
-+	return true;
-+}
-+
-+/* Called with the lock held of the queue @skb is being removed from. Every
-+ * removal from a send queue must call it, as the helpers below do.
-+ */
-+static inline void __virtio_vsock_skb_untrack(struct sk_buff *skb)
-+{
-+	struct vsock_sock *vsk;
-+
-+	if (!skb->sk)
-+		return;
-+	vsk = vsock_sk(skb->sk);
-+	if (READ_ONCE(vsk->credit_update) == skb)
-+		WRITE_ONCE(vsk->credit_update, NULL);
-+}
-+
-+/* May free @skb: the caller must not touch it afterwards. */
- static inline void
- virtio_vsock_skb_queue_tail(struct sk_buff_head *list, struct sk_buff *skb)
- {
-+	bool folded;
-+
- 	spin_lock_bh(&list->lock);
--	__skb_queue_tail(list, skb);
-+	folded = __virtio_vsock_skb_fold_credit_update(list, skb);
-+	if (!folded)
-+		__skb_queue_tail(list, skb);
- 	spin_unlock_bh(&list->lock);
-+
-+	if (folded)
-+		consume_skb(skb);
- }
- 
- static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list)
-@@ -113,6 +171,8 @@ static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list
- 
- 	spin_lock_bh(&list->lock);
- 	skb = __skb_dequeue(list);
-+	if (skb)
-+		__virtio_vsock_skb_untrack(skb);
- 	spin_unlock_bh(&list->lock);
- 
- 	return skb;
-@@ -120,7 +180,11 @@ static inline struct sk_buff *virtio_vsock_skb_dequeue(struct sk_buff_head *list
- 
- static inline void virtio_vsock_skb_queue_purge(struct sk_buff_head *list)
- {
-+	struct sk_buff *skb;
-+
- 	spin_lock_bh(&list->lock);
-+	skb_queue_walk(list, skb)
-+		__virtio_vsock_skb_untrack(skb);
- 	__skb_queue_purge(list);
- 	spin_unlock_bh(&list->lock);
- }
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index e8481f12312e..7ef6f0c8dd55 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -70,6 +70,12 @@ struct vsock_sock {
- 	u64 buffer_max_size;
- 	bool recvmsg_inq;
- 
-+	/* virtio: queued credit update to fold into, and its send queue.
-+	 * Here, as connect() may free trans while packets are queued.
-+	 */
-+	struct sk_buff *credit_update;
-+	struct sk_buff_head *credit_update_queue;
-+
- 	/* Private to transport. */
- 	void *trans;
- };
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 74a8fdf825d5..ba814e1c0344 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1911,6 +1911,7 @@ int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *queue)
- 			continue;
- 
- 		__skb_unlink(skb, queue);
-+		__virtio_vsock_skb_untrack(skb);
- 		__skb_queue_tail(&freeme, skb);
- 
- 		if (virtio_vsock_skb_reply(skb))
-diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
-index 8068d1b6e851..bffdc0b1321c 100644
---- a/net/vmw_vsock/vsock_loopback.c
-+++ b/net/vmw_vsock/vsock_loopback.c
-@@ -131,6 +131,8 @@ static void vsock_loopback_work(struct work_struct *work)
- 
- 	spin_lock_bh(&vsock->pkt_queue.lock);
- 	skb_queue_splice_init(&vsock->pkt_queue, &pkts);
-+	skb_queue_walk(&pkts, skb)
-+		__virtio_vsock_skb_untrack(skb);
- 	spin_unlock_bh(&vsock->pkt_queue.lock);
- 
- 	while ((skb = __skb_dequeue(&pkts))) {
--- 
-2.56.0
-
+Agreed that this access can be hardened as well for consistency. I've added=
+ array_index_nospec() to fib_trie_get_next() in v3.=0A=
+=0A=
+pw-bot: cr=
