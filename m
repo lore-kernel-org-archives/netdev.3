@@ -1,54 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793950541;
-	b=aZGnvf9sIwssiOMwZrEFjIZmg0JTuK9FfuEVupAkO4ztndTcO3mquxoX1xTPj91LdLe0
-	 9xXdJY8mkpVnOFziFXx7IPUXTgOIPPAXUlf1qDCbWCd0eKvEZXgzDKcA6GkHwZCzrUqPp
-	 /RjqXV+IvZL9Ph9TtSGgG1Lv/DsCdEfPTUO+XPhSkSP68ZZKxqti8l0KoIQBL6+G5Eq2j
-	 3HbPoy+XhOiMoa7GXC3cvAPr1HCMddsXGzIylqCTPqrnFxT3gP9fdlK/Ric8O14KvwSt5
-	 bPJIJilzSxV0syeGzlFnb/HYynNlURtLAZSgd7RiT/et7X0McEns4mm94bpZTfcfNsA==
+	t=1793950707;
+	b=jvl2paODaqOv8SlduJbGbR03bbMKLFrhKnU17SHAYws9usTxZJcpEgBtC9To3+RdVboT
+	 gAfRU8DQIcKiY9f7WLwzjfPFMpKQIl2TZ/jhLcgw2AFsh++dbRPrlOFJrCBFkBBhym89H
+	 zoNAxB49or6dpClei3hwC2dunmXVI9/mr6vX4GrEmieOeq0FFZ4aSdzc5iBhJuAJ6uSFP
+	 qiM2MPTJCDBzeh0ii+dx1tqQQtjGfs88VFpbQ7qOrmUT6sE2yACPft0fsGstJPTKrnJk/
+	 vz2YJsRqWL1Yj0VjCIjzMi2cWOOjSMI4nWmETRVBsqSNFNksGcsxIfwO/6pjbHWlozQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793950541;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=i/988GRYLNIQ+m9ZryVFkUgt23XkOKZYFqEEbEyt0zM=;
-	b=H/ZutaqZRlbjegdIFp6yktst94p5ZIoN4jL7ZzYyV8kbhvFar5hfLi1XxdEiZTGl1GMj
-	 E8BepsciyYyOMqASa6dyMNgVMUzyxcfgekZQUr0akZMx5iC94Bb+2O6/OD9zPPZuAE6Ds
-	 EgVl5SONj/nHSSOAKnG7KIJ6J7roSGYyq5P4ZGP3T0cnyYq/L0f7ZkY0+1hEv6mRlkGjJ
-	 dINpOxLoRP0EPfX+zvKZFpd1+y4SY6Ozg209z5PGTnyGNDGamHWrmgYe7VqlhD0DMEIef
-	 25aQbbjHym8dbRJG/X7yjiZ0A7PTA3WjC7u9Y3ZsWcDh6bcR0zh/z8Lh3yMyykydQmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793950707;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=yqj2X60t6GkEB0Hd3slamrcdw7uuMt8wIZvLf0iaHgw=;
+	b=zPtmQV/wJCdQ2Cxox/tQGWSRC+CfeePY7MF9rhhsXV8ik9yJJ8S2rBoS/L1lrutqN0AX
+	 cvVEMoRoHVxVWfc34QLAm9pQDQZxiRger0msmCB5IFwZfX+9S9DBY8zYccnAQK8Qkfohl
+	 NP9pqc+/Cf7vapHFFI4+L1kajkCFR6N7K8MLnl5rmRw3qJ/GV/8eG5NapIUXRj6tmz0i1
+	 bvlcyxFy1CMfXAH7WUvQiFhb2ICsVH7K7qAA8hfgyO829WKSf0deY3DyXGdqY0T0OkPQD
+	 5G71w1f2DhAkLjKucLptClrMYClc/HHWyH++QDPslsjr8L/N93mhjQygMeWGbucaDlw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tH0ObvQ3;
+	arc=none smtp.remote-ip=95.215.58.124
+Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B449606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 07:35:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B449606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b2d1eb484aso410520b6e.2
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 23:35:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793950540; x=1794555340;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i/988GRYLNIQ+m9ZryVFkUgt23XkOKZYFqEEbEyt0zM=;
-        b=xFzdBUTH5KnEfa27OJ/9+lmqDpi9SCMwQ29mbvjgw6AWhzir6mlUQxL201F1wd5pN1
-         bZVLlQuSV81EbiZVwMcES6S+Du8AKv4Uy2qfHE/1umOzXGYwFIgPoYW6pTJVRel3St5h
-         hS8J/VFWgitb8qajiHI4oZjLuuLDOqQYVyucN6AhXa45lzLaSKyqvFZTCZxtMoloFL7e
-         J70RC5kojgrEHpeJh/xBwcG0Q1mdtt2NUkV9qMQVLB3S77Q48jL8E6HMHMgp+k8xQqIf
-         Muqp+hokIFYXh4OJgge0hTlTmxP1dToW2VP5cAEOZBj9xFa0/HL7zkaLItvbmjHbhSSm
-         0VYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxlzIc4wKbkcfUbwaIf8Yp7RohDgqOZus8x4b1ZOSNWDf+5aOP3pVjbyLbarSi4OHh/2s9UG8E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/H4MSxPEiWEdMT4JULljIDXMdnyguTI2XcapIb7hTBeHEYtm2l
-	cKiKs7Nk3ynmboNBZxaAa5oRXsNimY4HrBtT6r0oRLfHWJEdH045jKRiOW3idX6ieKbIoCay/Ev
-	H8I5m9lJ25yR0Mz9JrG2NTH6puU13crmpqsbcWT/tvV2p/Rj/NnwTo7WGx6o=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EE8606A335
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 07:38:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04EE8606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tH0ObvQ3
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=vxGWNLncSlcQs4swV+6nfyQ5Qh5FfXbxSfHWmDFVw98=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793950705; v=1; x=1794555505;
+ b=tH0ObvQ3DbFZNgYhD58A1r3joh7DYzbyq4OiGkSuCFTqclMOsVruo3MDEVMb/Zo26y+DDasD
+ LtuQLIAhVuby9stJeel9e+Q8keyCsV2cULbgZ+u2eH6trynM1duQEfE0ICZs7OoFyrZ1JngDrtA
+ OmoEorLIQV2H9Gy/q8A/vQeA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 288db3607269e5ae;
+	Fri, 06 Nov 2026 07:38:24 +0000
+X-Mizu-Trace-ID: 288db3607269e5ae
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 6 Nov 2026 15:38:14 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, justin.iurman@gmail.com, shuah@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, liuhangbin@kylinos.cn
+Subject: Re: [PATCH net v2 2/3] ipv6: ioam6: use transformed packet nexthdr
+ for ECMP re-lookup
+Message-ID: <au2D5hjp0U1ilXEI@fedora>
+References: <20261103-ipv6_ioam_ecmp-v2-2-6ef0318bdb5e@kylinos.cn>
+ <179388135485.488856.15442544337186327982@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,371 +69,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:120a:b0:4ab:230c:5faa with SMTP id
- 5614622812f47-567e14c930emr1056164b6e.18.1793950540289; Thu, 05 Nov 2026
- 23:35:40 -0800 (PST)
-Date: Thu, 05 Nov 2026 23:35:40 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aed834c.dadc8e63.45095.0004.GAE@google.com>
-Subject: [syzbot] [nfs?] possible deadlock in nfsd_file_cache_shutdown
-From: syzbot <syzbot+e6bb7c8bc275dfed69c1@syzkaller.appspotmail.com>
-To: Dai.Ngo@oracle.com, cel@kernel.org, jlayton@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, neil@brown.name, 
-	netdev@vger.kernel.org, okorniev@redhat.com, syzkaller-bugs@googlegroups.com, 
-	tom@talpey.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179388135485.488856.15442544337186327982@kernel.org>
 
-Hello,
+On Thu, Nov 05, 2026 at 12:22:34PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 2 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The encap cache-miss path in ioam6_output()
+>   (net/ipv6/ioam6_iptunnel.c:439) now sets `fl6.mp_hash =…
+> - [High] In IOAM6_IPTUNNEL_MODE_AUTO, local packets (inline, !skb->dev)
+>   and forwarded packets (encap, skb->dev set) share one per-CPU…
+> - [Medium] The new call `rt6_multipath_hash(net, &fl6, skb, NULL)` in
+>   ioam6_output() (net/ipv6/ioam6_iptunnel.c:439) passes an output-path…
+> 
+> --
+> 
+> ipv6: ioam6: use transformed packet nexthdr for ECMP re-lookup
+> 
+> This commit changes the dst_cache miss path in ioam6_output(). For inline
+> insertion it now reuses orig_dst and caches the fake null_rt. For
+> encapsulation it re-looks up the route with flowi6_proto taken from the
+> HBH next header and with fl6.mp_hash precomputed from the skb, so that
+> the ECMP hash matches the identical packet without IOAM (RFC 9486 C2).
+> 
+> > diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+> > index cfb2c41634a0b..246533276be82 100644
+> > --- a/net/ipv6/ioam6_iptunnel.c
+> > +++ b/net/ipv6/ioam6_iptunnel.c
+> > @@ -405,34 +405,61 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+> >  
+> >  	if (unlikely(!dst)) {
+> >  		struct ipv6hdr *hdr = ipv6_hdr(skb);
+> > -		struct flowi6 fl6;
+> 
+> [ ... ]
+> 
+> > +		if (ilwt->mode == IOAM6_IPTUNNEL_MODE_INLINE ||
+> > +		    (ilwt->mode == IOAM6_IPTUNNEL_MODE_AUTO && !skb->dev)) {
+> > +			dst = orig_dst;
+> > +			dst_hold(dst);
+> > +
+> > +			local_bh_disable();
+> > +			dst_cache_set_ip6(&ilwt->cache, &ilwt->null_rt.dst,
+> > +					  &hdr->saddr);
+> > +			local_bh_enable();
+> 
+> [Severity: High]
+> In AUTO mode, can local and forwarded packets end up using each other's
+> cached dst? The miss path is now mode aware. The hit path at the top of
+> ioam6_output() still reads one per-CPU cache, whatever the mode:
+> 
+> 	dst = dst_cache_get(&ilwt->cache);
+> 	...
+> 	if (dst == &ilwt->null_rt.dst) {
+> 		dst_release(dst);
+> 
+> 		dst = orig_dst;
+> 		/* keep refcount balance: dst_release() is called at the end */
+> 		dst_hold(dst);
+> 	}
+> 
+> Suppose a local packet misses first, so null_rt is cached. A later
+> forwarded packet on that CPU then gets dst = orig_dst and is encapsulated
+> with daddr = tundst. Because dst is non-NULL, it skips the tundst
+> re-lookup. Because the lwtstates match, it leaves through
+> orig_dst->lwtstate->orig_output(). That uses the inner destination's
+> route and nexthop, not the route for tundst.
+> 
+> Now suppose a forwarded packet misses first. The encap branch caches the
+> tundst route:
+> 
+> 	dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+> 
+> Later local packets on that CPU hit this entry and are processed inline.
+> They are then sent through the tundst route instead of orig_dst:
+> 
+> 	if (orig_dst->lwtstate != dst->lwtstate) {
+> 		skb_dst_drop(skb);
+> 		skb_dst_set(skb, dst);
+> 		return dst_output(net, sk, skb);
+> 	}
+> 
+> The shared cache existed before this patch. However, the commit message
+> says inline will "reuse orig_dst and cache the fake null_rt, keeping the
+> sibling from the original lookup", and that encapsulation "still
+> re-looks up". In AUTO mode with mixed traffic, neither seems to hold.
+> null_rt is DST_OBSOLETE_NONE, so the stale entry stays until the cache is
+> reset.
+> 
+> Does the hit path need to be mode aware too, for example with separate
+> caches for the inline and encap cases?
+> 
+> > +		} else {
+> > +			/* Encapsulation may change the destination (tundst);
+> > +			 * re-lookup with the transformed packet keys so the
+> > +			 * outer hash matches the identical packet without IOAM.
+> > +			 */
+> > +			const struct ipv6_opt_hdr *hhdr;
+> > +			struct flowi6 fl6;
+> > +
+> > +			hhdr = (const struct ipv6_opt_hdr *)skb_transport_header(skb);
+> > +
+> > +			memset(&fl6, 0, sizeof(fl6));
+> > +			fl6.daddr = hdr->daddr;
+> > +			fl6.saddr = hdr->saddr;
+> > +			fl6.flowlabel = ip6_flowinfo(hdr);
+> > +			fl6.flowi6_mark = skb->mark;
+> > +			fl6.flowi6_proto = hhdr->nexthdr;
+> > +			fl6.mp_hash = rt6_multipath_hash(net, &fl6, skb, NULL);
+> 
+> [Severity: High]
+> Does computing mp_hash from the skb break the C2 equivalence that the
+> comment above claims? When fl6->mp_hash is non-zero, fib6_select_path()
+> uses it as is, so this skb-based value chooses the sibling.
+> 
+> The comment says the outer hash "matches the identical packet without
+> IOAM". A plain ip6ip6 tunnel, ip6_tnl_xmit(), routes with
+> ip6_route_output(net, NULL, fl6) and no skb, so it hashes the outer fl6
+> keys. With an skb, rt6_multipath_hash() behaves differently for each
+> policy.
+> 
+> Policy 1 returns the inner flow's hash early. ioam6_do_encap() never
+> clears that hash:
+> 
+> 	if (skb->l4_hash)
+> 		return skb_get_hash_raw(skb) >> 1;
+> 
+> Policy 2 dissects through the ip6ip6 header and hashes the inner
+> addresses, flowlabel and proto:
+> 
+> 	skb_flow_dissect_flow_keys(skb, &keys, 0);
+> 
+> Policy 3 calls rt6_multipath_custom_hash_skb(), which returns
+> jhash_2words(mhash, mhash_inner, 0). Plain ip6ip6 goes through
+> rt6_multipath_custom_hash_fl6() instead.
+> 
+> For policy 0 with flowi6_proto = 41, the skb result looks the same as
+> the fl6-only hash, so the precompute appears to do nothing there.
+> Without the companion patch "ipv6: route: consider IOAM options in ECMP
+> hash policy 0", it would hash ip_proto = NEXTHDR_HOP and undo the
+> flowi6_proto = 41 change. That matters for backports of this
+> Fixes:-tagged patch.
+> 
+> Setting fl6.flowi6_proto = hhdr->nexthdr on its own, without the
+> precompute, seems to match plain ip6ip6 under every policy. Would it be
+> better to drop the mp_hash precompute?
+> 
+> The commit message also says:
+> 
+>     precompute fl6.mp_hash from the packet, since ip6_route_output()
+>     carries no skb and would otherwise drop ICMPv6 quoted-flow and L4
+>     keys.
+> 
+> Can the ICMPv6 quoted-flow case happen here? ioam6_do_encap() always sets
+> tuninfo->eh.nexthdr = NEXTHDR_IPV6, so the header after the HBH is
+> always 41.
 
-syzbot found the following issue on:
+Thanks for the report. This part touch all the policies. I need to think
+if I should drop this patch until there is a better fix.
 
-HEAD commit:    c4ba1716853d net: atl1c: drop oversized RX frames instead ..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=10dad4a1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d30e1495ee3ac817
-dashboard link: https://syzkaller.appspot.com/bug?extid=e6bb7c8bc275dfed69c1
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/1fbe24b1b049/disk-c4ba1716.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/4142b610b0c3/vmlinux-c4ba1716.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2441af2219d1/bzImage-c4ba1716.xz
-
-AI-generated root cause summary:
-In drivers/block/nbd.c, nbd_genl_reconnect_sock_cb() incorrectly calls
-sk_set_memalloc(sock->sk) while holding the mutex nsock->tx_lock.
-sk_set_memalloc() invokes static_branch_inc(), which acquires cpus_read_lock()
-(cpu_hotplug_lock). Because nsock->tx_lock is acquired during block I/O request
-dispatch in nbd_queue_rq(), it is part of the direct memory reclaim (fs_reclaim)
-dependency chain. Acquiring cpu_hotplug_lock under nsock->tx_lock inverts the
-core MM locking hierarchy (cpu_hotplug_lock -> slab_mutex -> fs_reclaim),
-creating an ABBA circular locking dependency that can lead to system deadlock.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=e6bb7c8bc275dfed69c1
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e6bb7c8bc275dfed69c1@syzkaller.appspotmail.com
-
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.4.1718/12980 is trying to acquire lock:
-ffffffff90094cc0 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:316 [inline]
-ffffffff90094cc0 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4673 [inline]
-ffffffff90094cc0 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:5011 [inline]
-ffffffff90094cc0 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_noprof+0x5f/0x600 mm/slub.c:5047
-
-but task is already holding lock:
-ffffffff900771b8 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x59/0x470 mm/slab_common.c:350
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #7 (slab_mutex){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x197/0x15a0 kernel/locking/mutex.c:821
-       kmem_cache_destroy+0x73/0x180 mm/slab_common.c:565
-       nfsd_file_cache_shutdown+0x126/0x370 fs/nfsd/filecache.c:1063
-       nfsd_shutdown_generic fs/nfsd/nfssvc.c:293 [inline]
-       nfsd_startup_net fs/nfsd/nfssvc.c:411 [inline]
-       nfsd_svc+0x539/0x710 fs/nfsd/nfssvc.c:788
-       nfsd_nl_threads_set_doit+0xa6c/0xc30 fs/nfsd/nfsctl.c:1780
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2584
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
-       sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
-       __sock_sendmsg net/socket.c:818 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
-       __sys_sendmsg net/socket.c:2801 [inline]
-       __do_sys_sendmsg net/socket.c:2806 [inline]
-       __se_sys_sendmsg net/socket.c:2804 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #6 (cpu_hotplug_lock){++++}-{0:0}:
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read include/linux/percpu-rwsem.h:77 [inline]
-       cpus_read_lock+0x3d/0x160 kernel/cpu.c:490
-       static_key_slow_inc+0x12/0x30 kernel/jump_label.c:190
-       nbd_genl_reconnect_sock_cb+0x69a/0xbb0 drivers/block/nbd.c:1377
-       nbd_genl_foreach_sock+0x265/0x450 drivers/block/nbd.c:2152
-       nbd_genl_reconfigure+0xbbb/0x1040 drivers/block/nbd.c:2477
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2584
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
-       sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
-       __sock_sendmsg net/socket.c:818 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
-       __sys_sendmsg net/socket.c:2801 [inline]
-       __do_sys_sendmsg net/socket.c:2806 [inline]
-       __se_sys_sendmsg net/socket.c:2804 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #5 (&nsock->tx_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x197/0x15a0 kernel/locking/mutex.c:821
-       nbd_handle_cmd drivers/block/nbd.c:1143 [inline]
-       nbd_queue_rq+0x373/0xff0 drivers/block/nbd.c:1207
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2131
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x167/0x2f0 block/blk-mq.c:2546
-       process_one_work kernel/workqueue.c:3495 [inline]
-       process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3578
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3659
-       kthread+0x38b/0x480 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #4 (&cmd->lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x197/0x15a0 kernel/locking/mutex.c:821
-       nbd_queue_rq+0xc1/0xff0 drivers/block/nbd.c:1199
-       blk_mq_dispatch_rq_list+0x499/0x1990 block/blk-mq.c:2131
-       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
-       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
-       __blk_mq_sched_dispatch_requests+0xd36/0x1580 block/blk-mq-sched.c:307
-       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
-       blk_mq_run_work_fn+0x167/0x2f0 block/blk-mq.c:2546
-       process_one_work kernel/workqueue.c:3495 [inline]
-       process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3578
-       worker_thread+0xa47/0xfb0 kernel/workqueue.c:3659
-       kthread+0x38b/0x480 kernel/kthread.c:436
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #3 (set->srcu){.+.+}-{0:0}:
-       srcu_lock_sync include/linux/srcu.h:225 [inline]
-       __synchronize_srcu+0xca/0x2f0 kernel/rcu/srcutree.c:1662
-       elevator_switch+0x1e8/0x7b0 block/elevator.c:576
-       elevator_change+0x2fa/0x480 block/elevator.c:681
-       elevator_set_default+0x375/0x440 block/elevator.c:754
-       blk_register_queue+0x404/0x4f0 block/blk-sysfs.c:992
-       __add_disk+0x6b8/0xdb0 block/genhd.c:531
-       add_disk_fwnode+0x100/0x3a0 block/genhd.c:600
-       add_disk include/linux/blkdev.h:801 [inline]
-       nbd_dev_add+0x733/0xb60 drivers/block/nbd.c:2026
-       nbd_init+0x168/0x1f0 drivers/block/nbd.c:2743
-       do_one_initcall+0x250/0x870 init/main.c:1419
-       do_initcall_level+0x10a/0x1a0 init/main.c:1481
-       do_initcalls+0x59/0xa0 init/main.c:1497
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1732
-       kernel_init+0x22/0x1d0 init/main.c:1622
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #2 (&q->elevator_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x197/0x15a0 kernel/locking/mutex.c:821
-       elevator_change+0x1af/0x480 block/elevator.c:679
-       elevator_set_none+0xb5/0x140 block/elevator.c:769
-       blk_mq_elv_switch_none block/blk-mq.c:5114 [inline]
-       __blk_mq_update_nr_hw_queues block/blk-mq.c:5159 [inline]
-       blk_mq_update_nr_hw_queues+0x5ef/0x19e0 block/blk-mq.c:5224
-       nbd_start_device+0x189/0xb30 drivers/block/nbd.c:1530
-       nbd_genl_connect+0x167d/0x1cd0 drivers/block/nbd.c:2310
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2584
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
-       sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
-       __sock_sendmsg net/socket.c:818 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
-       __sys_sendmsg net/socket.c:2801 [inline]
-       __do_sys_sendmsg net/socket.c:2806 [inline]
-       __se_sys_sendmsg net/socket.c:2804 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (&q->q_usage_counter(io)#49){++++}-{0:0}:
-       blk_alloc_queue+0x544/0x690 block/blk-core.c:505
-       blk_mq_alloc_queue block/blk-mq.c:4439 [inline]
-       __blk_mq_alloc_disk+0x194/0x390 block/blk-mq.c:4486
-       nbd_dev_add+0x494/0xb60 drivers/block/nbd.c:1996
-       nbd_init+0x168/0x1f0 drivers/block/nbd.c:2743
-       do_one_initcall+0x250/0x870 init/main.c:1419
-       do_initcall_level+0x10a/0x1a0 init/main.c:1481
-       do_initcalls+0x59/0xa0 init/main.c:1497
-       kernel_init_freeable+0x29d/0x3e0 init/main.c:1732
-       kernel_init+0x22/0x1d0 init/main.c:1622
-       ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3209 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
-       validate_chain kernel/locking/lockdep.c:3952 [inline]
-       __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
-       lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
-       __fs_reclaim_acquire mm/page_alloc.c:4360 [inline]
-       fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4374
-       might_alloc include/linux/sched/mm.h:316 [inline]
-       slab_pre_alloc_hook mm/slub.c:4673 [inline]
-       slab_alloc_node mm/slub.c:5011 [inline]
-       kmem_cache_alloc_noprof+0x5f/0x600 mm/slub.c:5047
-       create_cache mm/slab_common.c:249 [inline]
-       __kmem_cache_create_args+0x30c/0x470 mm/slab_common.c:387
-       __kmem_cache_create include/linux/slab.h:402 [inline]
-       ieee80211s_init net/mac80211/mesh.c:28 [inline]
-       ieee80211_mesh_init_sdata+0x371/0x620 net/mac80211/mesh.c:1784
-       ieee80211_setup_sdata+0x858/0xc10 net/mac80211/iface.c:1980
-       ieee80211_if_change_type+0x141/0x940 net/mac80211/iface.c:2125
-       ieee80211_change_iface+0xdc/0x4b0 net/mac80211/cfg.c:275
-       rdev_change_virtual_intf net/wireless/rdev-ops.h:74 [inline]
-       cfg80211_change_iface+0x40f/0x9c0 net/wireless/util.c:1368
-       nl80211_set_interface+0x78e/0xaa0 net/wireless/nl80211.c:5252
-       genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2584
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
-       netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
-       netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
-       sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
-       __sock_sendmsg net/socket.c:818 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
-       __sys_sendmsg net/socket.c:2801 [inline]
-       __do_sys_sendmsg net/socket.c:2806 [inline]
-       __se_sys_sendmsg net/socket.c:2804 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
-  fs_reclaim --> cpu_hotplug_lock --> slab_mutex
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(slab_mutex);
-                               lock(cpu_hotplug_lock);
-                               lock(slab_mutex);
-  lock(fs_reclaim);
-
- *** DEADLOCK ***
-
-locks held by syz.4.1718/12980: 4, last CPU#0:
- #0: ffffffff914f05a8 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1217
- #1: ffffffff9148c2a0 (rtnl_mutex){+.+.}-{4:4}, at: nl80211_pre_doit+0x117/0xfa0 net/wireless/nl80211.c:20140
- #2: ffff888067180800 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: wiphy_lock include/net/cfg80211.h:6974 [inline]
- #2: ffff888067180800 (&rdev->wiphy.mtx){+.+.}-{4:4}, at: nl80211_pre_doit+0x6b2/0xfa0 net/wireless/nl80211.c:20189
- #3: ffffffff900771b8 (slab_mutex){+.+.}-{4:4}, at: __kmem_cache_create_args+0x59/0x470 mm/slab_common.c:350
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 12980 Comm: syz.4.1718 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e2/0x300 kernel/locking/lockdep.c:2087
- check_noncircular+0x12f/0x150 kernel/locking/lockdep.c:2219
- check_prev_add kernel/locking/lockdep.c:3209 [inline]
- check_prevs_add kernel/locking/lockdep.c:3328 [inline]
- validate_chain kernel/locking/lockdep.c:3952 [inline]
- __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
- lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
- __fs_reclaim_acquire mm/page_alloc.c:4360 [inline]
- fs_reclaim_acquire+0x71/0x100 mm/page_alloc.c:4374
- might_alloc include/linux/sched/mm.h:316 [inline]
- slab_pre_alloc_hook mm/slub.c:4673 [inline]
- slab_alloc_node mm/slub.c:5011 [inline]
- kmem_cache_alloc_noprof+0x5f/0x600 mm/slub.c:5047
- create_cache mm/slab_common.c:249 [inline]
- __kmem_cache_create_args+0x30c/0x470 mm/slab_common.c:387
- __kmem_cache_create include/linux/slab.h:402 [inline]
- ieee80211s_init net/mac80211/mesh.c:28 [inline]
- ieee80211_mesh_init_sdata+0x371/0x620 net/mac80211/mesh.c:1784
- ieee80211_setup_sdata+0x858/0xc10 net/mac80211/iface.c:1980
- ieee80211_if_change_type+0x141/0x940 net/mac80211/iface.c:2125
- ieee80211_change_iface+0xdc/0x4b0 net/mac80211/cfg.c:275
- rdev_change_virtual_intf net/wireless/rdev-ops.h:74 [inline]
- cfg80211_change_iface+0x40f/0x9c0 net/wireless/util.c:1368
- nl80211_set_interface+0x78e/0xaa0 net/wireless/nl80211.c:5252
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2584
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
- sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
- __sock_sendmsg net/socket.c:818 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
- __sys_sendmsg net/socket.c:2801 [inline]
- __do_sys_sendmsg net/socket.c:2806 [inline]
- __se_sys_sendmsg net/socket.c:2804 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0223f9fb19
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0224f20028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f0224226090 RCX: 00007f0223f9fb19
-RDX: 0000000000000000 RSI: 0000200000000500 RDI: 0000000000000080
-RBP: 00007f0224037b70 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f0224226128 R14: 00007f0224226090 R15: 00007ffe4f069ef8
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+pw-bot: cr
