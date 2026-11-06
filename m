@@ -1,65 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793970835;
-	b=NAtbdzh6W1wPGaZb3v1D9lVqUGIFnPq2XiGrG1TowwK3BmlZO0i285gYjfb5DHdyrW7E
-	 A0v2uAlDsKm4kPIKbEG5rTpytal5/xLxSByq1gCB1Sncu9dj3JW1RlyVYQx/eHCWsE0sr
-	 fNqRWo9Fp499sFpG3L1ovQFdFhB8WMiURgJNEOSb11NiJTdJpS/IHXuuKmlTAbeQFQtva
-	 SFmFKZjDqat3rXj0UdPHjwlSfrvqLbmm9JDL2RL55Z0k3tHLFxVt4moFKYozDXmjacOpp
-	 X336TsV+SHbwAaqTqRBEGtBgGjMEb207Ri0mfxXwr1fmreqvfqADN9UHWroAig/ZPNw==
+	t=1793970929;
+	b=POlx+yzyLE9rfVjWeTMdq3PEdeI4rCkyYh+azT5j/V15nCjTFOosF6sNSJ7ljYyeKhKK
+	 ccb2RyELEi8FRrALmP3sItUjIigfjK7Q2jPTIOslQoFmGcJxDlP4gNLuUtjk65euI0aE2
+	 nllW0hiiVNGdLoCj6pFIAif+GBdkDW/+u7yJ10rWpBj6rM6jx9eum8zUmj3B8klWpTHqv
+	 HB8GAMoDEuEEkCBPgdVjnhr1X/w71I3mYVP5h5P2HoF8cRXWX+uSPPR+dX7PgzLiPD8vB
+	 6ZW9FAq75rayw4D91vjP7SToqJNaBxQGKkETnS5v76V9WiOXOqIwFw8tkyJDiRbqO9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793970835;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=9iuU7MEsK2c2Pxl1bKzJoGbt24cwSpLcFKHMSnlxVwA=;
-	b=tKk/fjXPWg1AaVrBJ/a8KBBH/ZBfrLe6kLgiEeMCZI5j08THcAyifGbDCxmJFDxGwQND
-	 JZBvRx8hy27BktTIIvAvqVnIMbQfUA8nwITAv91K09Kznq7aXCQAF7w2uhbjW23vCrotg
-	 3A9kEMbuyZFrhTjvJzwdo4ohtgJMJsgn8A0ZUt2KldLds/XjtfCaCdUoOTKtHvoFSQDZ8
-	 TecOj2ub2XBROqxjF9W8jwidFSlXUCjsHVJ1O1PFkoC/3WMoYe6qfWpbLvMuqbOAGqJaO
-	 VMMCPEU30g0qqOHs5BXbfhcTkUFHEOwJVWOh/ItkDMtoUWuPiiZtM9MGiKoeqQ34s9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793970929;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=km8r+cnmKuYMdZesKgiekckeUOq5ezdJQc7tNLQIf/k=;
+	b=CBJaIk0RDwy3S/XTwkRW8I8tU870cdgM4SVrpG4CDkzlmWT0Lcb2tV3jLFd8RG1zU/qR
+	 fksFa3LQ+64slv3k7Dx0loq+1Wqp97u/s60hn+ujvPIKSH/KVa8OgoDEPtoWIZmmbOyG8
+	 yiBzOmRfDNsSlAy9l8lxg1LVi5MICCCYAgri75/7lwGa+rYFLlh6OI6QQmWHhbo4FqrCw
+	 6VoRsH8abE3JiYTpLRD2Zs3yG7HGIbDm6YXG+C/ioKfpeOTHaVrrGXvbnEFmo/YSssj31
+	 GglA3+cWbVbxnafruRC+jFyiyfZmj1Jq3WUlDRQimP1uQbwrUfSf2o7eGA6hD2z7S6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC5lAMVT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="eiITEbj/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFA8606A32F;
-	Fri,  6 Nov 2026 13:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671C606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 13:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC5lAMVT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9261F008A1;
-	Fri,  6 Nov 2026 13:13:47 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eiITEbj/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470B91F008A1;
+	Fri,  6 Nov 2026 13:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793970834;
-	bh=9iuU7MEsK2c2Pxl1bKzJoGbt24cwSpLcFKHMSnlxVwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KC5lAMVTiD1H0HRO9wudEjkt9ITRbgLn9PNNZsFAY+PQgcAeTb+mLFYjU0VQBr/P4
-	 OMgR42zZI/a2XPhf2h7VSdpTnTw+0H4wU7aQXkP7RjIUfB+HBeff4XbbOOVLZiU+Ef
-	 d+tf/0NHrAEZuk6IfYvnyUE8lgmnTQjSZ0Bx8YVn6mlfS8I8eHqh0HdwSiV8K805D4
-	 bJ5IqHRIeniTOCWEvTu2GBSeCrdyHq1f6RaWtk+BKmv8FhwurXZ0OHdQtFPFH3rTGF
-	 N9CtRUIOqssm47/xNL3vOfqwll1NQPWSaNY3Fc6Y80QCDrAqqIW4txwjbaUoMbPGvN
-	 WvA32gRJYIsIA==
-Date: Fri, 6 Nov 2026 14:13:45 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Andy Lutomirski <luto@amacapital.net>
-Cc: "Hallgrimur H. Gunnarsson" <halg@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Paul Moore <paul@paul-moore.com>, 
-	Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-Message-ID: <20261106-befreien-addieren-eislauf-e09212803534@brauner>
-References: <20261028221705.3915340-1-halg@google.com>
- <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
+	s=k20260515; t=1793970928;
+	bh=km8r+cnmKuYMdZesKgiekckeUOq5ezdJQc7tNLQIf/k=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=eiITEbj/pelEWOFMjBBfJH32kcPrZ3AHgkjq5pbGBYGacgfzbq61bR5p3ffkE1mKG
+	 fh0cF9PFYOjtQ4nj93+WDvn3zd+XYR2sTEI49KGh09macLRm30e30CPwH7AGmSlJjf
+	 2m+pthN9F+U2muHZZjKKWGHPP8daTxdaiheudszF4OzF5N8QJs3D8elodYoEGWpGd0
+	 5lhl79URBJ9zwZQwIUgg6b/uRTFy0jC/upHXw3wWxZRjQFDEFoh2HDqJB2BXdM+Im5
+	 GKC64sBqMlx/Uq+Ey2GSu87lCgbbpCaHxdb5k9dbE0BMY9FMXgVMmpXAMBQPOu1cff
+	 mVNVdSXWzd39Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2106D3930E6B;
+	Fri,  6 Nov 2026 12:00:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,47 +53,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 net-next 0/2] tcp: Let non-PSP and PSP share mtu and
+ advmss.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179396641976.575356.9858593759192464397.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Nov 2026 12:00:19 +0000
+References: <20261103000712.658501-1-kuniyu@google.com>
+In-Reply-To: <20261103000712.658501-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: edumazet@kernel.org, ncardwell@google.com, daniel.zahka@gmail.com,
+ willemdebruijn.kernel@gmail.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
+ thaisonphan@google.com, kuni1840@gmail.com, netdev@vger.kernel.org
 
-On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
-> The whole unshare/clone flag situation is getting out of hand, IMO.
-> And this new thing makes logical sense but is really about reducing
-> exposure.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue,  3 Nov 2026 00:06:01 +0000 you wrote:
+> Since psp_sk_overhead() is added to icsk->icsk_ext_hdr_len,
+> which is subtracted after clamping in __tcp_mtu_to_mss(),
+> it is impossible to configure a route that both PSP and
+> non-PSP achieve 4K MSS for TCP_ZEROCOPY_RECEIVE.
 > 
-> Perhaps we should instead have a small list associated with a userns
-> (extensible in the future) of things that the ns's admin (i.e. whoever
-> has CAP_SYS_ADMIN relative to the ns) may do.  That list could
-> include:
+>   mtu 4220 advmss 4108
+>   -> non-PSP gets 4K MSS, but PSP gets 4056, breaking
+>      TCP_ZEROCOPY_RECEIVE
 > 
-> - Create loopback with sensible defaults for ipv4 and/or ipv6 (i see
-> no obvious reason to separate them)
-> - Create tun/tap interfaces in that ns (and attach them, etc)
-> 
-> And add a very simple new API to do these things.  Actually, the
+> [...]
 
-We've had this idea in the past and I think it is reasonable. I had
-always thought that we should expose a system call to create empty
-namespaces ot any type. Usually I'd be excited about that but I think
-that point is a bit moot and I'd really like see whether we can turn
-cells (or whatever other name) into a first class api.
+Here is the summary with links:
+  - [v1,net-next,1/2] psp: Check pas->tx.spi in psp_sk_overhead().
+    https://git.kernel.org/netdev/net-next/c/7020a2766440
+  - [v1,net-next,2/2] tcp: Subtract psp_sk_overhead() in __tcp_mtu_to_mss() and tcp_mss_to_mtu().
+    https://git.kernel.org/netdev/net-next/c/3c6e29760c13
 
-The problem I have with the patchset as written is that adds a lot of
-moving parts. And yes, I find the CLONE_* and UNSHARE_* flags plus
-sysctl to be suboptimal as well.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-So the TL;DR is that CAP_NET_ADMIN + userns =
-CAP_NET_PRIVILEGE_ESCALATION 10+ years later. And this patchset wants to
-put it back on a leash.
 
-So why isn't an aggressively stupid solution to this problem to split a
-new capability out of CAP_NET_ADMIN so it covers the absolute minimal
-set of things that should be allowed instead of doing effectively the
-same thing but split over multiple apis?
-
-Anything that is reasonably advanced should not be the kernel's
-responsibility to delegate. I really think the old privilege model where
-the kernel grants control over a whole subsystem is inherently flawed
-and is much better replaced if you have the means to let userspace
-services grant and delegate resources.
