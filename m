@@ -1,67 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793962043;
-	b=tLuH2GhBXpFjfuuJsIElJGVDSiwsOFyOfbEDK4NsEvEQuEs5piPXnnAQFRmdUmKu//yd
-	 uRHlwwas9UWlDrAUx6+ZwWzhRLotrOOz+3yumfojrfIyx2zpKE9sr3v39H5NX9NAcq0li
-	 3vZoGXauwnGZsw3VNF1EylLPOCWKWj6ooLEi40tTvq7zAmNC7R2Y2QR/Aqyo5qWwYrOhT
-	 hJp1VrEab9i76NyqX6PUkjQKIdN5coh905pFcH4KQdiywBxK5mc5NsMX/w/OSUiwlaR7Z
-	 ohdG91UUVQrJx/C5XJHprp0Jt41mX0AxB+Gb8ObyNYiPLCWNPZpfQsEE1+7/D1VuXag==
+	t=1793962064;
+	b=eVtjDjEwekSCXXdtD2JkCA5VAPtOP6zQPInFV+MuMuvuWMuZ/atdhd6mnhqv86wjSTow
+	 n4SerEtLjGAg97ae8mEht0J745BO3leMO1rNlP6rxCvxF1kAgJMCsG/3r4GciZZHodQuq
+	 TXVMcEyI/4rXQzXQ68QvqpirJ9BESe/aWILYXing6WntGMCFkQ5YICSEr1UUJn2oJjOM2
+	 BoN+PJlslo8fli3cXXaVzdVjn90r4/u0b8cm75gScKgyyIff91d4SSgMF2q5Kcp7Pr0qm
+	 KDB42C/Qo4YixskClqG+RiXehic6hQGXJilk5aGrejIDgAkf5+ZAx/iz5xk7jI7OZtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793962043;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
-	bh=7qFOdyeTWjgv8cvpgwW3ZlyKG1+w40IKueRFwRIEoGI=;
-	b=cBPhzZo6RaS63DgylSr17zEfh9w/fNNNawB2IoNBGrY/3YuFL7aDHKfKoaD3N1f38j1o
-	 cSDKWt/bNPx9j4bW6fhQB46jUB+nyWonzMXmfWy+D9MAollPtW3HE8KlcRvYvmuExpx2M
-	 plByR0UNuD18RKlZR1zPWcFkfF7JdEWtCpLom/sRFLLo5kJCQl9sQ0PvFNZAXe3KmSR/l
-	 PPp8QRXqNzGrIIB5fFLJMD7WktZHaGznZpgDCmqoK/bQTWzSJLouFedqH0QU/1SXP0x13
-	 v2TNtSGefSVV2XpRHqyvt3Ybq2D4N9Ss7QXnrgkhjOfJl+43G7WEkExSW4ehw8pzv4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793962064;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=R9S939twrj0SYcNyyNMpKYYBYQFDO5nmOtD0AYtvds4=;
+	b=ZUxpXoj7GGt6O+jBFSFmZBDEa3HXLg+mXud/i+5QtFY9DHkiuYh19vd9pXPu5eeo/UxI
+	 nLm55Q/31rc4ijasXfXp/xzLEMQnkaV9dBKamxTy/+V+nzUCw02rn9DmHcOWpWQrwOOB9
+	 t50h2XtJebfbizUyl46R47Tarxpb0JUMiXVafSPTdgIpUMhZ5NSvdXBS+TW83BYSDebwX
+	 XZZqAMyuGdyYwSqrF8MRZBsci0JEuPRxrggQTZJViNi5CodrsOAQ5V2k7fxxUi5Zl5I9i
+	 I+cfwRWPry4cSbUgnHRhprX7Q3uipigDAskiQsq1JVhmIAF7FDrtGwQluIChpk2WEaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLgNiyQ9;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=wIxBiPHJ;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CAA606D827
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:47:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69CAA606D827
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BC606EE8B;
+	Fri,  6 Nov 2026 10:47:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D5BC606EE8B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLgNiyQ9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793962041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7qFOdyeTWjgv8cvpgwW3ZlyKG1+w40IKueRFwRIEoGI=;
-	b=RLgNiyQ9yNrH4RcRJqDevNAgfhZ9Outu3zKGm9nbKiLk4zUQZzbdVB+lCryOeKkduIqV6i
-	Tb6kPWD8sUI/GWyeQUD5N+lBu+CmIM8aXZ39Ap+Vb5oHRVliSH7dE0eoYVd7AV3QMDJRFz
-	GwnacGToy6TqI8W9rJnQ8Jg+/XB05K0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-HExB2PTUOU-p9cgwNp6QIg-1; Fri,
- 06 Nov 2026 05:47:15 -0500
-X-MC-Unique: HExB2PTUOU-p9cgwNp6QIg-1
-X-Mimecast-MFC-AGG-ID: HExB2PTUOU-p9cgwNp6QIg_1793962033
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C34618005BA;
-	Fri,  6 Nov 2026 10:47:12 +0000 (UTC)
-Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BFEB1956047;
-	Fri,  6 Nov 2026 10:47:06 +0000 (UTC)
-Message-ID: <308681fb-2c07-472f-ac96-dcb70816285f@redhat.com>
-Date: Fri, 6 Nov 2026 11:47:05 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=wIxBiPHJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793962063; x=1825498063;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HRuU2J36shbnhHng97OPy9ikYDpcOLXorav4tJQOvdo=;
+  b=wIxBiPHJcdtHv+H32kJcw2m4PYUNJ3f1egBncWYYh/yD4RSnQwhRRW5A
+   9zb5TdyIucXz0EoJdjUh6qOhAM/l7ia7zbU1xdSxJqat10Xi55c4tFPHp
+   VLoVlRIgFgX5/n+g/hdDBylgJh5KxdmhEVRI5aKOifybSyNoSGA8DR2kr
+   QemYCfhym/pMKmkpfoaltjKbNR9JqT1qHRbf1utx1KqRQXVVCR3JpTUP4
+   MuexJUPfumQC2vzG8P4MxARuAQFRiqK4IBKsuHCBbNAlXIsqoqC1iHY4M
+   gk88MQQn4JlUO8tYMhnRwmoECncx/P4e8d853tIDMm13ijPdeL7mV5KvG
+   Q==;
+X-CSE-ConnectionGUID: /Yq7+t2mRZiAwkDH8CMhWw==
+X-CSE-MsgGUID: bVUN6M8GTjCPROh6upyWsg==
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="233192553"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 03:47:42 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Fri, 6 Nov 2026 03:47:42 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 6 Nov 2026 03:47:39 -0700
+Date: Fri, 6 Nov 2026 11:47:39 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Tapio Reijonen <tapio.reijonen@vaisala.com>
+CC: Woojung Huh <woojung.huh@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Arun Ramadoss
+	<arun.ramadoss@microchip.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Tristram Ha <Tristram.Ha@microchip.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH net] net: dsa: microchip: initialize the IRQ access mutex
+Message-ID: <20261106104739.gi2mfz6mmek2n2ya@DEN-DL-M70577.microsemi.net>
+References: <20261104-ksz-irq-mutex-init-v1-1-e3bb7d9dbd80@vaisala.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,93 +83,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 14/14] selftests: dpll: add reference leak
- tests
-To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Jani Nikula <jani.nikula@intel.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20261105151852.1844305-1-poros@redhat.com>
- <20261105151852.1844305-15-poros@redhat.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20261105151852.1844305-15-poros@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261104-ksz-irq-mutex-init-v1-1-e3bb7d9dbd80@vaisala.com>
 
-On 11/5/26 16:18, Petr Oros wrote:
-> With CONFIG_DPLL_REFCNT_TRACKER the DPLL core keeps the stack traces of
-> unreleased device and pin references in debugfs. The entries do not
-> name their owner, so add library helpers that snapshot the entries
-> present before a test creates its devices and fail when an entry that
-> is not in the snapshot still holds references afterwards. An entry in
-> the snapshot belongs to an object of another driver and is ignored
-> even when its content changed, since other drivers take and drop
-> references while the tests run. A concurrent dump holds references for
-> a moment, so the check waits for the candidates to drain. Attributing
-> by name means that a leak of an earlier run goes unnoticed and that an
-> object reusing the address of a freed one from the snapshot can hide a
-> leak, which is accepted, the entries carry nothing better to go by. A
-> second run alongside would have its devices attributed to this one,
-> which is one more reason for the lock every script takes.
+> ksz_switch_register() initializes dev_mutex, regmap_mutex, alu_mutex and
+> vlan_mutex but not lock_irq, which the IRQ chip takes in its bus lock
+> callbacks on every mask and unmask of a switch interrupt, and the PTP
+> code takes the same way. The zeroed mutex happens to work on the
+> uncontended fast path, but with CONFIG_DEBUG_MUTEXES the first lock,
+> from the IRQ domain mapping during probe, warns:
 > 
-> Whether the tracker works is probed with a throwaway device, which has
-> to show entries while it is live and to drain them once it is deleted,
-> so that a kernel without the tracker is told apart from a broken
-> simulator and from a leak. The probe runs as the first test of the
-> stress script, which gains a final leak check, and of the new
-> dpll_reftrack.sh, which registers a device, removes it and verifies
-> that no reference survived. The snapshot file lives next to the lock
-> file under /run, for the same reason the lock file does not live in
-> /tmp. The library mounts debugfs when nothing else did, like it does
-> for configfs, and the selftest config enables the tracker together
-> with CONFIG_DEBUG_KERNEL, which it depends on, and debugfs.
+>   DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+>   WARNING: kernel/locking/mutex.c:625 at __mutex_lock
+>   ...
+>   ksz_irq_domain_map
+>   irq_domain_associate_locked
+>   irq_create_mapping_affinity
+>   ksz_irq_common_setup
+>   ksz9477_setup
+>   dsa_register_switch
+>   ksz_spi_probe
 > 
-> Signed-off-by: Petr Oros <poros@redhat.com>
+> and turns lock debugging off for the rest of the boot.
+> 
+> Initialize it with the other mutexes.
+> 
+> Triggered at every boot of a KSZ9897S over SPI on an i.MX6 SoloX board
+> with CONFIG_DEBUG_MUTEXES, on v7.4-rc1 and earlier. With this patch the
+> same board boots with lock debugging enabled and it stays enabled
+> (debug_locks 1) through two hours of unrelated stress tests.
+> 
+> Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
 
-Which dump holds a reference here?
-
-The references to a dpll_device or a dpll_pin are taken in
-dpll_device_get(), dpll_device_register(), dpll_pin_get(),
-fwnode_dpll_pin_find() and by the pin registration, in
-dpll_xa_ref_pin_add() and dpll_xa_ref_dpll_add().
-
-The netlink dump and doit handlers in drivers/dpll/dpll_netlink.c run
-under dpll_lock and do not take one.
-
-Could the sentence name what actually holds the references the check waits
-for, or be dropped if nothing does? The same sentence is in the comment
-above dpll_ref_tracker_check_leaks():
-
-[...]
-
-> diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-> index ada10ee4394fd5..d851237bdac440 100644
-> --- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-> +++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
-
-[...]
-
-> @@ -622,3 +639,212 @@ dpllsim_setup_standard_device()
-
-[...]
-> +# $1: snapshot file written by dpll_ref_tracker_snapshot before the
-> +# objects under test were created. Return 0 when no reference to an
-> +# object created since the snapshot is held any more. A concurrent dump
-> +# holds references for a moment, so wait for the candidates to drain. A
-> +# timeout means the references never drained, the candidates seen by the
-> +# last check are then printed and count as leaked.
-> +dpll_ref_tracker_check_leaks()
-[...]
-
-Thanks,
-Ivan
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
