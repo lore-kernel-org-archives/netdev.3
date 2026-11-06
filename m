@@ -1,116 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793924405;
-	b=qUPpsnN5ChRZ2fwsiHBjqkMfdCwBJcbH683RrQy4czX2GZeP1MKdf42vShsH+6H1w3ww
-	 nndKz363ri355yx5ftbwPNWeL92Cl3Bx+JtW+vWYgO6zqT+5qN/zXzO6+dAEEzBoTE9+s
-	 DzSUY5SMcyWbufyrRcAinz5h+90STySfRoM2vEEJcZcKXLKOEzqMWat6o3GBRgfhavrI9
-	 GdtVF2WvZVheDoVJ1J9bQ8sTwEfcQLF16h98rLSpvQuOSfufsgBHB+V3K8fLBkdFvq4dy
-	 Esv9afgEqLqd9rqLF4En/Jj06ccTxCaj0ZLfbMNp/DdStC++t4vgF80ReSxLUqObVFA==
+	t=1793924752;
+	b=Sakac09AL/Z5CAshu5irqlNSmoIptWUGiJrYj7Fyu1Zrqd2z6FQw8akG2CqsiRJsb1vR
+	 EfvPytJHx/mWHjDdDbLkZyoOo2s//t0y5ArL8I8y2L59ZeBeKri4XINr+atY4B6gDUG5C
+	 fuELtcGC9SWGLUIhHVV9kEP9vGFUoCOabQwh7/N1wWiu0rKOvXSQ5pT779Kp6m7JIAOep
+	 I9k3L/JcJDrQv28qLcliQojCWQctk4A84RySO0oIs/sgL6d7CKLhdC1NbkdwKTtt3sPzT
+	 ELjpaTs1/S7VKSzSW/Ygkm5lmpDkYUO0klR29P2VnPAiIIdAhRcCvHOmJ80uMiRJyJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793924405;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Pt9rRtbReRuSITPC1rskmK8kbHNalDkIofRmPHbf5UA=;
-	b=hxKIDMb7jIXwYFL+ZHizJdDjFGHnQ0tL8lzsc7A1cz+LYLW0c1QPeL3O1kNFqiQ5WK6P
-	 SUeHf5VnOkE+wYmK3CvLBIUFP41eVgUJ1+DsruJ8sk4VINK1colsgxlCpyK9gfVRsW3S0
-	 YCYQnNv8zeU8AANNx20W2s75QmihjLtLAE9TuL9jTeyb6z1nzYrLgmdc+4Eco4+UpirDp
-	 WjZFCWvPaX98qVz4sMz57mXBbAwo09r9yG/k9ILLQ4GFX9tuUVdyJ4c8N0g9xgai72Q2+
-	 AEI//QCv4AbDB15B4oZSHcWOq53vqsEAtM3xuM5IjFw+ryhT/FZnekZJ21hsW5tpy7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793924752;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=JvqI6TBiIZCiWZcWVkF7wmK1Vhkf37zW3gHeE3OoHp8=;
+	b=tSgOtU4grwzSDLLZiYzNLPsDgF4GkKhC9fWuZ0jEX2Li0sWcwHrO4E+yznzrb1fw9dGr
+	 qB6VQB7T8b254EvpSEqKFDB6dn3I8YxsEezJ6/+EwQEhyrjSgolddb7DP9B36H2V9U/hs
+	 LA0lVMCQf2Q+D6pFcqMoj5Spm4TZpcBW+RTRc/RK3VowOcpk69aexPkqmlN9GRuXN82AS
+	 R3mgyAyDlgBs0xL6EOH9UTD0tjoBogglQxF7PKSmrgZkjXP7N7ncTzEp+bIHxnvjeI8Zz
+	 FrRg9Uc2nUw1uPv2I3wcSlE0VwaRUley+h9Rt9UeGCBRcwsMCGgbk8Iu+Ro6TLEE16Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISsNCsgZ;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=CwXsNZ8+;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dPxQOlzm;
+	arc=none smtp.remote-ip=209.85.160.198
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F756606A329
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:20:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F756606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00FC606A31B
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:25:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B00FC606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISsNCsgZ;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=CwXsNZ8+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793924403;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pt9rRtbReRuSITPC1rskmK8kbHNalDkIofRmPHbf5UA=;
-	b=ISsNCsgZT9Usu3eLezaUcm05rG23BzOeZlCIK/+0RlqDrhyjc3jm9a1gVU66bb5b5RzZ/g
-	4neoALgK/i977o6rlT2VyKaJV1xIlckJvN0sL2XH4RGlP5Abvgl36KWqPU0oMbsmQpNZUN
-	tbhTG/G+yj8ds6aybo5vCdVjw4M24EE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-gJO3Zb2BNESNdIfUrXA-sA-1; Thu, 05 Nov 2026 19:20:02 -0500
-X-MC-Unique: gJO3Zb2BNESNdIfUrXA-sA-1
-X-Mimecast-MFC-AGG-ID: gJO3Zb2BNESNdIfUrXA-sA_1793924401
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1e489f97fso1649145e9.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:20:02 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dPxQOlzm
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5337ed1ba44so1136411cf.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:25:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793924401; x=1794529201; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Pt9rRtbReRuSITPC1rskmK8kbHNalDkIofRmPHbf5UA=;
-        b=CwXsNZ8+6sHYd1fOaIcM0tqpnS1AeyEgFZBBefydaQQaUqn6pibv4yYSp60V+Asf6r
-         I8zFsfFDVOApum+exBAkbUFao63jUWtJKW+7GXCL+lizlsGnG6UmU7wwEKtzBSYrBIFt
-         ucN3xOoe0OBAUnVKkCuv16R729Qh5cK1wtanJRMutaE+6e1xxoKDuXQLSHv6wwS8VH4E
-         lQhrY1nU4vfINTyMplQagAzD4NLqRg4GhnZEKiJ6AX/E097X1i0K4YPw54nR4YHACWQa
-         KRRi9HkGHjosdCD8mfR0WMtruCAspVIaUfM3CsQIxhhTqvQTUMK2Pn/Fgdud6LLa62A8
-         JLpg==
+        d=google.com; s=20260707; t=1793924750; x=1794529550; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JvqI6TBiIZCiWZcWVkF7wmK1Vhkf37zW3gHeE3OoHp8=;
+        b=dPxQOlzm/EecsuI7ecJmtBSeZKddd15hJzcNWEHbZOfkGkRrFLra1+pRgFfixRPIr2
+         Vw6iYxZL9gg7ntrQWkdN0vZmtClduoY/dygZdYHSAXjN/ald1qENYJ72z4BzNJwp1p7j
+         iAKy85t5ioYPYuJD68ghEy7SsARQQjKZGHKRP44Bbh1ooytror1Ys8Tn27rn3222DidO
+         iAPz5IR58gBoD2DNR0J/YkAogCoPXnYROVrvkKmsn4emf4c9nbnhRSfQX426QYFiQiCY
+         h52lkHE3bp57tJ1FK40ndSoF133yuKUthYlrRyllnDqvEA1ckg4QZqtSBBY0qnnFhrOi
+         4j4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793924401; x=1794529201;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793924750; x=1794529550;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Pt9rRtbReRuSITPC1rskmK8kbHNalDkIofRmPHbf5UA=;
-        b=ai8eEZ1Kiy7l55lI6jRq+HWF/DF/CgwUN/EIhexHPL4Wr3M/hHR1jXykMc9NUH7bUR
-         1vhjGAoNj+Gn4moqpjmiuiXljsNzdA733ta1i56tmiC5ilDAEt4tlsyLYyxkGJ8QNWJK
-         Asfehsx9u+ujrWddb2NTMe0CNXnDP0qIL1IlY21rE0EKb1LRDACnriAm6OXhhnzJVfAn
-         hpLs/ZwMlcwUB+8RH8rGEwv4GKsdgMb+fsvrL4N6C0RiSDcVGvrPeDXsS5gn+QsJghyF
-         J0x20gEuXyalUCa4UOgWOibrbRTec6y1PwTG6sUqhtv2ExZh6qFH0rp5naKzcDWXbqQm
-         R6lg==
-X-Forwarded-Encrypted: i=1; AKwUvBxvyGs6R1COs5SbVCBuou+7wm0JiuL6vFHa+I+0rBQhNsXGjCOWtQGkM4JOa0+n3mzTv8OP8zo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9PLs/G+znFmlZ7FJZU7iH1FoUS3vrwO349ANFamPdva+AMfiBE
-	ESMYR2B6ZX80yJ6bk8Ed8QBpX5nUKrGLHNEGV54nomkNmj/L73OGEcdRSUvcZgByrdC2mSCTA7k
-	N9QjfcvhAQhYpWRUpeJSJhs0soCTWCR+wcr6NQQcxBllRh6yXKRIU8alXHQ==
-X-Gm-Gg: AYBFou0N+BaqwLerGLiUyQIaJ2eiBiaWKr2Ybyzl+/Vz2p+bKi2naRiHWfHtaGkd6w0
-	5U8vEzdYpAfJ5mTXeLT0hxhfSAAsj6e7Pl1BAZ/YDlePinAmcxpac3/JoIr24hh1/wIiiiZeSYX
-	3TGlF1sQJ40RubeUzpkR1Ufy0rfahnFSOfS3U3EADY5khgmASVOfmOe0y2v52hBgljKFZMyJTY1
-	CoSyg1+e2/whpyp4vTxdCrAif16bEK/pVKxbjlJbkFke9ylLaK2FBUFf8yqG0tHUtpmU9PODTAq
-	K0Ib3M+zLS31ezrRbIZaseJycdnfgaRPa/DWhZd7ZJeGx4ZQA5zH3sGMEf4bAOyto5mdNis+qOt
-	6F+OEH02gKRY0+TRobDXMjnazdeaVqXqLG8BAog3u4g==
-X-Received: by 2002:a05:600c:1d0c:b0:4b2:612d:908c with SMTP id 5b1f17b1804b1-4b6df9beb91mr11444335e9.34.1793924400951;
-        Thu, 05 Nov 2026 16:20:00 -0800 (PST)
-X-Received: by 2002:a05:600c:1d0c:b0:4b2:612d:908c with SMTP id 5b1f17b1804b1-4b6df9beb91mr11443845e9.34.1793924400399;
-        Thu, 05 Nov 2026 16:20:00 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1401:db00:7367:7b9e:e66f:2b7d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6c776c90asm12554195e9.4.2026.11.05.16.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 16:19:58 -0800 (PST)
-Date: Thu, 5 Nov 2026 19:19:55 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Oleg Drokin <green@linuxhacker.ru>
-Cc: sgarzare@redhat.com, stefanha@redhat.com, jasowangio@gmail.com,
-	eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
-	bobbyeshleman@meta.com, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 3/3] vsock/virtio: queue at most one credit update
- per socket
-Message-ID: <20261105191917-mutt-send-email-mst@kernel.org>
-References: <20261105000141.3617241-1-green@linuxhacker.ru>
- <20261105000141.3617241-4-green@linuxhacker.ru>
+        bh=JvqI6TBiIZCiWZcWVkF7wmK1Vhkf37zW3gHeE3OoHp8=;
+        b=19akCkryGLkeckXAocLd5BcuWe41ONdlRsPGqcLrZJ8k8K2LF5SLoMQQf1DH8xmOPM
+         dzbtFf6TCocym2nQpuiLr6sv0py1p5gBUqY8b+KF6o0ZRPbAfckNB0rg7i84gbyEQL0y
+         lbsG6I5leq7mCIlppXVMxqdiQriUqnzbkux9yA6Q+zydzSPFkLmARuf+OxVEdwi0x9Yl
+         DUIEEi1QLVZXpwqt0/WOW+bysdehVsQc4tWFDhS2HfV7dLs3iG12HZWZJT658oGxvLA/
+         MhURuonvRBGRll6LJ81zW2F4ubjkXWQ8+q7MUf+rmA2BW2Ncl8tLwF3gPsqukS5UtkLX
+         Fuow==
+X-Gm-Message-State: APuU4Z/LuBMCmzTv3f/NyE8K0Qd8lcotJ3gZR6M26Nc41HAkmK8tNjwL
+	dVRx3hbpNoy/inDxo9fUm1kY02DSQEqaU2URH4mg+blPdsy9ZhkOM/wJOg2pyU3Vuw+mr0NkZK8
+	3Yv59s7gLGz333GphtCBnLZri/A==
+X-Received: from qtvx8.prod.google.com ([2002:ac8:4d48:0:b0:542:fcb0:6027])
+ (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:3c8:b0:535:14f9:3f02 with SMTP id d75a77b69052e-54e1566b67cmr16452671cf.58.1793924750173;
+ Thu, 05 Nov 2026 16:25:50 -0800 (PST)
+Date: Fri,  6 Nov 2026 00:25:46 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -119,240 +74,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105000141.3617241-4-green@linuxhacker.ru>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261106002546.2100412-1-namangulati@google.com>
+Subject: [PATCH iwl-net v2] idpf: fix Rx payload buffer leak when header
+ buffer allocation fails
+From: Naman Gulati <namangulati@google.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Brian Vazquez <brianvv@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Naman Gulati <namangulati@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Nov 04, 2026 at 07:01:41PM -0500, Oleg Drokin wrote:
-> A credit update carries no data, so the send credit never limits it,
-> and the peer can solicit one at will: with OP_CREDIT_REQUEST, or by
-> sending data that a local reader drains (a read that empties the
-> receive queue sends one). A peer that posts no rx buffers can therefore
-> make the other side queue credit updates without limit, about 1 KiB of
-> unaccounted slab each for a 44-byte packet.
-> 
-> Do not queue a credit update while the socket's last queued packet is
-> already one. Every packet carries fwd_cnt and buf_alloc, so a packet
-> queued later makes the queued update redundant and lets a new one be
-> queued after it. When a transport puts a queued update on the wire
-> (vhost once it has an rx buffer for it, the guest driver when it adds
-> it to the tx virtqueue, loopback when it delivers it) and nothing has
-> been queued after it, it refreshes the update's fwd_cnt and buf_alloc
-> and releases the socket. So a suppressed update always reaches the
-> peer, either in the queued one or in a later packet, and the fwd_cnt
-> the peer sees never goes back.
-> 
-> connect() can move a socket to another transport, freeing its
-> virtio_vsock_sock, while packets are still queued in the old one. So a
-> tracked update holds a reference on the virtio_vsock_sock, and its skb
-> destructor clears the socket's pointer to it and drops the reference,
-> however the skb is freed: sent, purged or dropped.
-> 
-> A peer can thus make a connection queue at most one credit update, plus
-> one per packet the socket itself queued after it.
-> 
-> Counting credit updates in queued_replies instead would not work: most
-> of them are sent by local reads, not in answer to the peer, and under
-> bidirectional traffic vhost would stop reading the guest's tx queue
-> while the guest stops reading its rx queue, each waiting for the other.
-> 
-> Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-> Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
-> ---
->  drivers/vhost/vsock.c                   |  2 +
->  include/linux/virtio_vsock.h            |  5 ++
->  net/vmw_vsock/virtio_transport.c        |  2 +
->  net/vmw_vsock/virtio_transport_common.c | 62 ++++++++++++++++++++++++-
->  net/vmw_vsock/vsock_loopback.c          |  1 +
->  5 files changed, 71 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index b0004cb48999..f1b47a826ca4 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -176,6 +176,8 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
->  			break;
->  		}
->  
-> +		virtio_transport_credit_update_xmit(skb);
-> +
->  		if (out) {
->  			restart_tx |= vhost_vsock_drop_skb(vsock, skb);
->  			vq_err(vq, "Expected 0 output buffers, got %u\n", out);
-> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-> index f91704731057..6c3fc8faca0b 100644
-> --- a/include/linux/virtio_vsock.h
-> +++ b/include/linux/virtio_vsock.h
-> @@ -13,6 +13,7 @@ struct virtio_vsock_skb_cb {
->  	bool reply;
->  	bool tap_delivered;
->  	u32 offset;
-> +	struct virtio_vsock_sock *vvs;
->  };
->  
->  #define VIRTIO_VSOCK_SKB_CB(skb) ((struct virtio_vsock_skb_cb *)((skb)->cb))
-> @@ -167,6 +168,9 @@ struct virtio_vsock_sock {
->  	u32 buf_used;
->  	struct sk_buff_head rx_queue;
->  	u32 msg_count;
-> +	struct sk_buff *credit_update;
-> +
-> +	refcount_t refcnt;
+With header split, idpf_rx_update_bufq_desc() allocates the payload
+buffer for a buffer ID first and its header buffer second. If the header
+buffer allocation fails, it returns -ENOMEM and leaves the new payload
+buffer in bufq->buf[buf_id]. idpf_rx_clean_refillq() then stops without
+consuming the refill queue entry, and the next NAPI poll retries the
+same buffer ID, again starting with the payload buffer.
+libeth_rx_alloc() overwrites bufq->buf[buf_id], and the earlier payload
+buffer is never returned to its page_pool.
 
-why all this complexity? can you not just peek at the queue tail
-instead?
+Each such failure leaks one payload buffer. The pool's inflight count
+never drops to zero, so when the queues are re-created or the device
+goes away, the pool never finishes shutting down and
+page_pool_release_retry() keeps warning about a stalled pool shutdown.
 
+This happens when the header buffer pool runs dry while the payload pool
+still has pages, for example under memory pressure: a header page holds
+several header buffers and only goes back to its pool once the skbs
+using all of them have been freed. This was hit under high flow count
+TCP stream tests with memory pressure causing RX header buffer
+allocations to fail, and validated on idpf.
 
->  };
->  
->  struct virtio_vsock_pkt_info {
-> @@ -283,6 +287,7 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
->  void virtio_transport_recv_pkt(struct virtio_transport *t,
->  			       struct sk_buff *skb, struct net *net);
->  void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
-> +void virtio_transport_credit_update_xmit(struct sk_buff *skb);
->  u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
->  void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
->  void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index 4f9aa9c4c3aa..82cd52249de3 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -104,6 +104,8 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
->  	int ret, in_sg = 0, out_sg = 0;
->  	struct scatterlist **sgs;
->  
-> +	virtio_transport_credit_update_xmit(skb);
-> +
->  	sgs = vsock->out_sgs;
->  	sg_init_one(sgs[out_sg], virtio_vsock_hdr(skb),
->  		    sizeof(*virtio_vsock_hdr(skb)));
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 74a8fdf825d5..65d6e0790e72 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -604,18 +604,68 @@ static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
->  	vvs->fwd_cnt += bytes_dequeued;
->  }
->  
-> +static void virtio_transport_put_vvs(struct virtio_vsock_sock *vvs)
-> +{
-> +	if (refcount_dec_and_test(&vvs->refcnt))
-> +		kfree(vvs);
-> +}
-> +
-> +static void virtio_transport_credit_update_destruct(struct sk_buff *skb)
-> +{
-> +	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-> +
-> +	spin_lock_bh(&vvs->rx_lock);
-> +	if (vvs->credit_update == skb)
-> +		vvs->credit_update = NULL;
-> +	spin_unlock_bh(&vvs->rx_lock);
-> +
-> +	virtio_transport_put_vvs(vvs);
-> +	sock_wfree(skb);
-> +}
-> +
->  void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb)
->  {
->  	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +	bool track = le16_to_cpu(hdr->op) == VIRTIO_VSOCK_OP_CREDIT_UPDATE &&
-> +		     skb->destructor == sock_wfree;
-> +
-> +	/* The skb pins vvs, which connect() may detach from the socket. */
-> +	if (track) {
-> +		refcount_inc(&vvs->refcnt);
-> +		VIRTIO_VSOCK_SKB_CB(skb)->vvs = vvs;
-> +		skb->destructor = virtio_transport_credit_update_destruct;
-> +	}
->  
->  	spin_lock_bh(&vvs->rx_lock);
->  	vvs->last_fwd_cnt = vvs->fwd_cnt;
->  	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
->  	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-> +	vvs->credit_update = track ? skb : NULL;
->  	spin_unlock_bh(&vvs->rx_lock);
->  }
->  EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
->  
-> +/* Called by the transports when @skb is put on the wire. */
-> +void virtio_transport_credit_update_xmit(struct sk_buff *skb)
-> +{
-> +	struct virtio_vsock_sock *vvs = VIRTIO_VSOCK_SKB_CB(skb)->vvs;
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +
-> +	if (!vvs)
-> +		return;
-> +
-> +	spin_lock_bh(&vvs->rx_lock);
-> +	/* Still the socket's last packet: carry what was suppressed. */
-> +	if (vvs->credit_update == skb) {
-> +		vvs->credit_update = NULL;
-> +		vvs->last_fwd_cnt = vvs->fwd_cnt;
-> +		hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
-> +		hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
-> +	}
-> +	spin_unlock_bh(&vvs->rx_lock);
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_transport_credit_update_xmit);
-> +
->  void virtio_transport_consume_skb_sent(struct sk_buff *skb, bool consume)
->  {
->  	struct sock *s = skb->sk;
-> @@ -667,11 +717,20 @@ EXPORT_SYMBOL_GPL(virtio_transport_put_credit);
->  
->  static int virtio_transport_send_credit_update(struct vsock_sock *vsk)
->  {
-> +	struct virtio_vsock_sock *vvs = vsk->trans;
->  	struct virtio_vsock_pkt_info info = {
->  		.op = VIRTIO_VSOCK_OP_CREDIT_UPDATE,
->  		.vsk = vsk,
->  		.net = sock_net(sk_vsock(vsk)),
->  	};
-> +	bool queued;
-> +
-> +	spin_lock_bh(&vvs->rx_lock);
-> +	queued = vvs->credit_update;
-> +	spin_unlock_bh(&vvs->rx_lock);
-> +
-> +	if (queued)
-> +		return 0;
->  
->  	return virtio_transport_send_pkt_info(vsk, &info);
->  }
-> @@ -1086,6 +1145,7 @@ int virtio_transport_do_socket_init(struct vsock_sock *vsk,
->  	spin_lock_init(&vvs->rx_lock);
->  	spin_lock_init(&vvs->tx_lock);
->  	skb_queue_head_init(&vvs->rx_queue);
-> +	refcount_set(&vvs->refcnt, 1);
->  
->  	return 0;
->  }
-> @@ -1276,8 +1336,8 @@ void virtio_transport_destruct(struct vsock_sock *vsk)
->  
->  	virtio_transport_cancel_close_work(vsk, true);
->  
-> -	kfree(vvs);
->  	vsk->trans = NULL;
-> +	virtio_transport_put_vvs(vvs);
->  }
->  EXPORT_SYMBOL_GPL(virtio_transport_destruct);
->  
-> diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
-> index 8068d1b6e851..84342a97a513 100644
-> --- a/net/vmw_vsock/vsock_loopback.c
-> +++ b/net/vmw_vsock/vsock_loopback.c
-> @@ -134,6 +134,7 @@ static void vsock_loopback_work(struct work_struct *work)
->  	spin_unlock_bh(&vsock->pkt_queue.lock);
->  
->  	while ((skb = __skb_dequeue(&pkts))) {
-> +		virtio_transport_credit_update_xmit(skb);
->  		/* Decrement the bytes_unsent counter without deallocating skb
->  		 * It is freed by the receiver.
->  		 */
-> -- 
-> 2.56.0
-> 
+Release the payload buffer when the header buffer cannot be allocated,
+as ice_alloc_rx_bufs() already does, so that the retry starts from an
+empty slot. idpf_rx_page_rel() also clears the slot, so the buffer queue
+teardown cannot release the buffer a second time.
+
+Fixes: 90912f9f4f2d ("idpf: convert header split mode to libeth + napi_build_skb()")
+Cc: stable@vger.kernel.org # 6.11+
+Signed-off-by: Naman Gulati <namangulati@google.com>
+Tested-by: Brian Vazquez <brianvv@google.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+---
+v2:
+  - Add Cc: stable@vger.kernel.org # 6.11+ (Alexander)
+  - Add Reviewed-by (Alexander) and Tested-by (Brian) tags
+  - Note how the issue was triggered and validated on idpf in the commit message
+  - v1: https://lore.kernel.org/intel-wired-lan/20261104013606.1527767-1-namangulati@google.com/
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 885df6294ad94..7383d8241ead5 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3745,8 +3745,10 @@ static int idpf_rx_update_bufq_desc(struct idpf_buf_queue *bufq, u32 buf_id,
+ 	fq.truesize = bufq->hdr_truesize;
+ 
+ 	addr = libeth_rx_alloc(&fq, buf_id);
+-	if (addr == DMA_MAPPING_ERROR)
++	if (addr == DMA_MAPPING_ERROR) {
++		idpf_rx_page_rel(&bufq->buf[buf_id]);
+ 		return -ENOMEM;
++	}
+ 
+ 	buf_desc->hdr_addr = cpu_to_le64(addr);
+ 
+-- 
+2.56.0.455.g6c5a503b38-goog
 
