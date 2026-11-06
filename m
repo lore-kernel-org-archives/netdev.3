@@ -1,86 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793995947;
-	b=aC6IxggBZwY46QrY3yQKmMAQRtTEVdvtobEBSkSYVNx7pOqauyhnKBK8bJjawHoNUVwa
-	 vlEJZS3aaL/i79TFnFdb6XtkVpCrTk2HdcPJKfGF9f51rluLpzFiz2y258FWEoykv6cej
-	 /f6YMYaYkZ/2yH8pmwOUz+hMQTsHf/2mRaPFNt+/AebaAzyEupvZN1NPv2hNiFH+g5TaN
-	 NQ2gAjyVpgKW/I26WcqYD6zkP3p51duc1US+7NjYu3gFPFcDukVijwtaIVVOoTbApdbIH
-	 bs5BKL4CvgEFLzWM3rJNqZemmrFB3+sOj6itTyZuDiGvWMpGeoygF67w8+OKalIPvHw==
+	t=1793995953;
+	b=L+/vDPiB7OvcUgaUJ3R/22NnJhS7jx4Srl8CBmD4MQgv91yQKzX0TI4OtJwWVTVM/c5S
+	 buVIhGT5r4eJBA6CWxI8jijZKu8mhFCIBQ+bTpuLpY2wWBARh8BTlzqOqZi8uz081SaGE
+	 Kj0qotdjdqqhE8MrgVtLpixyhNEjHibov2BgtlsxD5YnfZ1wCoIpRLTF2kTdXTdrcC1Lo
+	 2XuPrfqZPVPskip77jeRl0vO9qpmOSXf4GnZWsa6FUI7ckMyuR31X+9G92ksGVTcgZbjU
+	 sBotfh3zz44tMrKHImdG2J8q4wqfPgTK6xTIWM1dM4afc+63602wicohUGM6z2iTb4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793995947;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793995953;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=LjKa8iBUCS34wkjPa7UsY4XzJM1Gn1GsRT6Ph6M5uK8=;
-	b=WQIYDfuX/uiPOGCUCDyzLtp410lMD7FxexFsxANUEhC03b01o39PWtsDlr3LBm3sudZE
-	 gyTocUdKue9eRT6FI4LET1EknYLbsGz8dnA8ZZO+cvzXilQ5RHHZVQQASo5K2Qb+xYWbW
-	 SLtKNIQqhpJsKoDvZSZ5VSY89/r7dw2dIdgtvhFriT/Ctf8UVT8gwpy8kOa5YQ1gVo46Z
-	 rvsLHETDcMf+V2JQWQplCrgbXCXQM01DH73M68MtI+RCf9m9GC4WT8hTpyjQeUsZ06ghY
-	 L1Nv5DeXx9/isJ07LE2YtTYISoR3RoaHIgKeFTtrLIoVGNcEAhzjPhnSVfLEiKnJ/TQ==
+	bh=G0966jd9oypOLtA4E5HN4EPjRdyNLhCliUPsqhp2w6k=;
+	b=wIJdJkfSDgZZkSk4pqQ7WqFV70txmzM6G2FbRMJmhAt3/XJp/ubY7AHYp7z5tDKgKVF5
+	 nj5Txx4Fbg/3kSpqlgfJ/cvHAWs/AWEyPProSb32FBd6Pz64+yrW/y59kz3KxYpC4EijC
+	 R2tCro+sQROcsZJbsEfkZ+MT4SM90ztLK5/4zZ+8e/by21KSUXK53SvvgufyTJXeQGoKy
+	 gSUis1D0sWq3hckCIq5BYb6+HL6i/Yk7eZ0Y0+k5Hsh+sEfQOxWXVTa46Pwp3PHUwOpzQ
+	 XCfpo4LOl/b6BTxJCOZTlre4OWqgOTtE389tQg6jvFzn1JgQblX9FMzwpeE+x8pfkgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Bo848gTT;
-	arc=none smtp.remote-ip=209.85.128.170
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UAIG9mt4;
+	arc=none smtp.remote-ip=209.85.128.172
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E473606A32D
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 20:12:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E473606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92646606D801
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 20:12:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92646606D801
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Bo848gTT
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b31ca7e0bcso9588367b3.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 12:12:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UAIG9mt4
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b312be5de8so10235937b3.2
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 12:12:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793995945; x=1794600745; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793995949; x=1794600749; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LjKa8iBUCS34wkjPa7UsY4XzJM1Gn1GsRT6Ph6M5uK8=;
-        b=Bo848gTTCfuIYSEnzyrjy9H6ebqLo62T4PebafatM3CO74ro0lhGypiUr7Vzd84fO6
-         nyDMkicgMEFv1JpMKvdvpbNHK9eU+NTmjOkQhFq7bXH1iDbSgiVVR40sK+cFEFdUvfdS
-         hLy+euhG0z1fbCXNp5UzQzIHcQRoH/hdMwHLQEqnB3s2ouYo29W/BZCQnVQiEbbtMgad
-         3Id9jB0SaTKQfKIoRfX2pt+D5fS6CDgnMv8G7VfI9B2XzxDWHc+OW5eJ6i/H5C5SMmi1
-         pldtswdWJJo1IUu5UxOMRdyPxW91m/gJ4l3vkhfykWTGyul/e2/odZQF2BlY4mKmeMSh
-         /BSg==
+        bh=G0966jd9oypOLtA4E5HN4EPjRdyNLhCliUPsqhp2w6k=;
+        b=UAIG9mt46x59m4rv3c1reUV6ciVNDkZqA5tGUMCWN1p2xY7WyQ83oLqH1GJdS/2HpN
+         NEFo+qN7PKu84yT+m+bOjLGdTQUIbjYYG6Rm/TRZDGmIh/0VIsnt0DZdpIIKIxKJAZBE
+         cf1mVf0nISw0XZQ+tKOQjM/8qWrjzG5bATeQxBCSySCB7TTOITy9eXa7/GNvh3yMbLRP
+         MqZAHpUaFn1Cj2NWvt4uQfaMwAZhB6cT3Ay49dFebpL2jDol6uVhgpvyaM5x3YLCdv3c
+         NbHWY5uwHPHhjg6YYGp8+rKmNGHiVhg+JF84zCXbiI4ObmBVrQy7dIpMaf+Zbx/3Ggbk
+         PV+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793995945; x=1794600745;
+        d=1e100.net; s=20260707; t=1793995949; x=1794600749;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LjKa8iBUCS34wkjPa7UsY4XzJM1Gn1GsRT6Ph6M5uK8=;
-        b=lUtUZfrnVrLtFqF3mI+hiOTD87Khrljo0YLCdcvNXWd50r7NRedAvJ6UuUCEP/jx5m
-         xGA0lvVAp2PnaEMyq4GQF0opHw224i1XPofJMZ4+JDEhXtzgxz0/KLrV/63/GeNYYCsM
-         65ZH+yD2WxcJJl8EoUp669x57r//NXmWFLSX91ZfO4IF4joJnASlc8iCipeTvfJ3Prdt
-         6TyCP6Nbg7SycKzftM39rB3KWa35NNu18k/mTeOasZtyyRRbDMmRnltvSvsOa56O1Tce
-         uPGO6/Ft8PCB4yPB1VZ6OPkH4OPpgnugfarb1+Yh29v5IO5efGm5MeGDfGiT3ndU33qj
-         SvOw==
-X-Gm-Message-State: APuU4Z8z22bI2+ekwxp2nMgvJiXLrrU/oQUfJXN4vLrZ7I3CzTgaLyFm
-	mjmrAOJ7Syrh8EJD6dUzufUszCRRq0RLbJvJY5ptuzVzfIRrCt0eqGoL
-X-Gm-Gg: AYBFou3eijtouslsLPidBF1Mb4CVLMtbnyC0yLH5gvLgFUpI8XT/iwmC/OLf6iExgNS
-	F3A7nDHON77DWyGorR3i8MNaBC2i8QzbvqreqJ79GJ25vQvo28UyLsEPS5W4bvJqDrZopZTI7t2
-	HW2Impz2Tfu2cOiCe01v3cMd8S0oY3lBfKibAF3UTUQ645K4w8EG5181PXfnTAe06hm4C6yDttr
-	TVRCWk2YatmEI/OaAAs9MjV4MqI0Kt+flyYzhn3kDjoA/r5XPi3831N6S34gf7q2hkWYqY+fwn9
-	xGvAGk0fibpAeHB1vkX61/dERZNMVw6CjwCntY3DrKg+srB2C2QuRYRcv1aC4RsDGbmTaT+EdPA
-	eK0eVedT0tj+b10Vcd2XQQfe2tR23s/cADVlP7VFoj3eNTsj4A0qckcMPT+DmYIOQWYpwa+wwHP
-	m1xVQ2/q3WFCdpvZ5cLJCa6jvIIPALsWoNuLk/YxYCGJd+y/KiBY+AFbKqoGoo/pZw69SLTNWJ6
-	X+rjjHFXas/Ty9/QI31Ob+x9O7Y/u1J+BJLYGz3045gz80ZYXw3SmVmo5q2bnU8+sd4QXEaAUOS
-	uO1CtXaSC+jyAEnb7z96z4ekA6I=
-X-Received: by 2002:a05:690c:10:b0:8b3:47fd:a020 with SMTP id 00721157ae682-8b347fdb094mr15940227b3.35.1793995945458;
-        Fri, 06 Nov 2026 12:12:25 -0800 (PST)
+        bh=G0966jd9oypOLtA4E5HN4EPjRdyNLhCliUPsqhp2w6k=;
+        b=YTF3UabOxNEo2GOvOVF6stU3Ntfd1UZhJHedp51d3zSj4C3NBAfzIJbOfPJUwxHD5P
+         jgEcq/ThVEf1uUH804b+aAUeEVM0Erh+tJ/D55Jf5nbo56NRzORClLRD+nVG3unOYm6M
+         hTSYU9weRMQ1mRS+fqRU65dFtKT6JZlBC65IT2+t2sCERpNtXlQ9AIDUu90gHgBE0msd
+         8iXEyyAK+gUbOIgYd6wleXXsECUvYfB0jEhP6tn777Sat65PwdBZFH8k66t+9MlMeYz2
+         XHKNX3ecqSjqsDYj0PxtxLMSVk1u7Jgpo7sPirQ/U92hcN6qF6cbAoVawljegZ1MXTFi
+         pBPg==
+X-Gm-Message-State: APuU4Z/SMZMNo8EwILlOxFDxNwwQ7Pohvt5tM6iGObfkVvaIwcMdK6NA
+	QXRY8luc59Kkvo3zsnNgsQLTu23RgWkgVh+Q0fR8AWLUH4hLCI+vYhso
+X-Gm-Gg: AYBFou3TIhZXYp3+mpeFnsDTYo15Oppx3Gyl/v0QWyvjFYUpheMAr3BL/kxpZe7nYq3
+	QMtbUf56EgFcsZOvuEJ6aQa+Xfk0yV1lFXV7wi7p5L1yyompEvHdV4e2SK4wPyErHsslrSLYNlt
+	ssCQpqsJSBIeWhWKAFNEoxiTvsIJmver+QlHsBl9Zj9aWXOkFocldGo0SDAYt/3hWsmlV2jRkwY
+	M7685jCIBrkmUeC/vtbcdbz1GOeoPfamCI1ruigEIXSIHkfbUQArDS/UZZpEwxqXXlLJZXpoRKW
+	Qq6Lth/zFa2I4s/9jFD4ikxhvQ74hVX6QP97bSo5R50IPIg8CswyIt3tWDxR4xV29LcDoBCM/si
+	BaUp/uc0/tYmJaeon20xWY5INiC62nFkEcwshV/cpfQIK+UJ6f/ogKUqlaId/x+iL5X4yDdi3bn
+	Ddx/HEr6Pn9YPPPhNj/b4a7zegL8vmn7bR1lzDZX4HOCh/qvTOSxNc3ggFm4NB8eZDz2Hwoq25E
+	iUgs3rTw9QzZmHeTS/n2aPc4/Z5ydP03+sOXgY1TBFAdPyI4Q9qwJ/SZ3Xb+QX1V7AwSlaVNHyQ
+	RiTSJzTkjvNG9YSgiATK+dSNTWM=
+X-Received: by 2002:a05:690c:113:b0:8b0:e10d:1975 with SMTP id 00721157ae682-8b3418ffb8emr16421447b3.29.1793995948659;
+        Fri, 06 Nov 2026 12:12:28 -0800 (PST)
 Received: from localhost ([2a03:2880:30ff:41::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f865b4esm27079897b3.39.2026.11.06.12.12.24
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f88389dsm26276657b3.40.2026.11.06.12.12.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 12:12:24 -0800 (PST)
+        Fri, 06 Nov 2026 12:12:27 -0800 (PST)
 From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Fri, 06 Nov 2026 12:12:09 -0800
-Subject: [PATCH net-next v3 1/5] psp: support rx rekey operation
+Date: Fri, 06 Nov 2026 12:12:10 -0800
+Subject: [PATCH net-next v3 2/5] psp: support tx rekey operation
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,7 +92,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-psp-v3-1-a8dd38f5a727@gmail.com>
+Message-Id: <20261106-psp-v3-2-a8dd38f5a727@gmail.com>
 References: <20261106-psp-v3-0-a8dd38f5a727@gmail.com>
 In-Reply-To: <20261106-psp-v3-0-a8dd38f5a727@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>, 
@@ -107,277 +107,150 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-Support updating the rx PSP state used by a socket. This is most
-useful to do after a device key rotation has occurred and the key
-being used by the peer will become stale after the next device key
-rotation.
+The tx rekey operation creates a new psp_assoc with the same rx state,
+but with new tx state. The new association is spliced into the socket
+with RCU to be used immediately in the tx path.
 
-Create a new psp_assoc for the socket to use that contains the same tx
-state, but with new rx state. Copy the previous rx state to use as a
-fallback while the peer is in the process of switching to the new key.
-
-skbs matching the current rx spi and generation or the previous rx spi
-and generation will be accepted. It might be reasonable to stop
-accepting skbs on the previous state after seeing skbs with the new
-state and after waiting a grace period, but that is not implemented
-for now.
+Drivers that use on-device tx key storage need additional logic to delay
+key deletion until after any in-flight users of the key have been
+drained, so return -EOPNOTSUPP for now.
 
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 v3:
 - move the replaced assoc to psd->stale_assocs, so a rotation
-  racing with its free doesn't count it in stale-events
-- drop the requirement that the new rx spi has the opposite phase
-  bit from the previous one
-- keep prev_generation valid across a rotation when the prev SPI is
-  from the same generation
-- document rx rekey in the rx-assoc op doc in psp.yaml
+  racing with its free doesn't count the socket twice in stale-events
+- document that the previous rx SPI also stops being accepted once
+  its device key is rotated out
+- drop the claim that the peer accepts both the old and new SPI
+  after a tx rekey
+- document tx rekey in the tx-assoc op doc in psp.yaml
 
 v2:
-- copy old rx state by value instead of pointer to prev
-- place non-datapath fields at end of struct psp_assoc
-- disallow rx rekey when socket is not in full psp state, or
-  dev/version doesn't match.
-- require the new rx spi to have the opposite phase bit from the previous
-  one
+- place new assoc on pas->assocs list instead of psd->active assocs
+  list
+- reject tx rekey on SADB devices until deferred tx key deletion
+  lands
 ---
  Documentation/netlink/specs/psp.yaml |  4 ++-
- Documentation/networking/psp.rst     | 23 ++++++++++++++--
- include/net/psp/functions.h          | 10 ++++---
- include/net/psp/types.h              | 17 +++++++++++-
- net/psp/psp.h                        |  3 ++-
- net/psp/psp_sock.c                   | 52 +++++++++++++++++++++++++++++++++---
- 6 files changed, 96 insertions(+), 13 deletions(-)
+ Documentation/networking/psp.rst     |  5 +++-
+ net/psp/psp_sock.c                   | 57 ++++++++++++++++++++++++++++++++----
+ 3 files changed, 58 insertions(+), 8 deletions(-)
 
 diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
-index f3266763c325..d5713f5d1af7 100644
+index d5713f5d1af7..f6af1a510d17 100644
 --- a/Documentation/netlink/specs/psp.yaml
 +++ b/Documentation/netlink/specs/psp.yaml
-@@ -265,7 +265,9 @@ operations:
- 
+@@ -283,7 +283,9 @@ operations:
+         post: psp-device-unlock
      -
-       name: rx-assoc
--      doc: Allocate a new Rx key + SPI pair, associate it with a socket.
+       name: tx-assoc
+-      doc: Add a PSP Tx association.
 +      doc: |
-+        Allocate a new Rx key + SPI pair, associate it with a socket.
-+        If the socket already has PSP state, rekey its Rx direction.
++        Add a PSP Tx association.
++        If the socket already has a Tx association, rekey its Tx direction.
        attribute-set: assoc
        do:
          request:
 diff --git a/Documentation/networking/psp.rst b/Documentation/networking/psp.rst
-index 0f9b6b73f244..fab797506b0a 100644
+index fab797506b0a..43f222b38d3d 100644
 --- a/Documentation/networking/psp.rst
 +++ b/Documentation/networking/psp.rst
-@@ -140,14 +140,33 @@ The PSP assoc state of a socket is not reset when the connection is
- torn down. ``connect()`` on a socket that has PSP assoc state will
- return ``-EINVAL``.
+@@ -145,7 +145,8 @@ Rekeying
  
-+Rekeying
-+--------
+ A connection which has completed the exchange described above and is
+ in the "PSP Full" state can be rekeyed in place without being torn
+-down, using the same netlink calls as in connection setup.
++down. The Tx and Rx directions are rekeyed separately using the same
++netlink calls as in connection setup.
+ 
+ ``rx-assoc`` allocates a new Rx key and SPI, which should be passed
+ to the peer exactly as during the initial exchange. The SPI which was
+@@ -154,6 +155,8 @@ next Rx rekey, or until the device key it was derived from has been
+ rotated out, so packets the peer sent before it learned the new SPI
+ are still received.
+ 
++``tx-assoc`` installs a new Tx key, which takes effect immediately.
 +
-+A connection which has completed the exchange described above and is
-+in the "PSP Full" state can be rekeyed in place without being torn
-+down, using the same netlink calls as in connection setup.
-+
-+``rx-assoc`` allocates a new Rx key and SPI, which should be passed
-+to the peer exactly as during the initial exchange. The SPI which was
-+in use before the rekey remains acceptable on the socket until the
-+next Rx rekey, or until the device key it was derived from has been
-+rotated out, so packets the peer sent before it learned the new SPI
-+are still received.
-+
-+A rekey is rejected with ``-EINVAL`` if it would change the PSP device
-+or the PSP version of the association. It is rejected with ``-EBUSY``
-+if the socket has not completed its initial exchange in both
-+directions.
-+
- Rotation notifications
- ----------------------
- 
- The rotations of device key happen asynchronously and are usually
- performed by management daemons, not under application control.
- The PSP netlink family will generate a notification whenever keys
--are rotated. The applications are expected to re-establish connections
--before keys are rotated again.
-+are rotated. Applications are expected to rekey their connections,
-+as described above, before device keys are rotated again.
- 
- Kernel implementation
- =====================
-diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
-index 410adb6718c1..5a7a518b9579 100644
---- a/include/net/psp/functions.h
-+++ b/include/net/psp/functions.h
-@@ -77,10 +77,12 @@ psp_is_allowed_nondata(struct sk_buff *skb, struct psp_assoc *pas)
- static inline bool
- psp_pse_matches_pas(struct psp_skb_ext *pse, struct psp_assoc *pas)
- {
--	return pse && pas->rx.spi == pse->spi &&
--	       pas->generation == pse->generation &&
--	       pas->version == pse->version &&
--	       pas->dev_id == pse->dev_id;
-+	return pse && pas->version == pse->version &&
-+	       pas->dev_id == pse->dev_id &&
-+	       ((pas->rx.spi == pse->spi &&
-+		 pas->generation == pse->generation) ||
-+		(pas->prev_spi && pas->prev_spi == pse->spi &&
-+		 pas->prev_generation == pse->generation));
- }
- 
- static inline enum skb_drop_reason
-diff --git a/include/net/psp/types.h b/include/net/psp/types.h
-index b8905efbd604..9eb89d2d680c 100644
---- a/include/net/psp/types.h
-+++ b/include/net/psp/types.h
-@@ -3,6 +3,7 @@
- #ifndef __NET_PSP_H
- #define __NET_PSP_H
- 
-+#include <linux/bits.h>
- #include <linux/mutex.h>
- #include <linux/refcount.h>
- #include <net/net_trackers.h>
-@@ -78,7 +79,8 @@ struct psp_assoc_dev {
-  * @active_assocs:	list of registered associations
-  * @prev_assocs:	associations which use old (but still usable)
-  *			device key
-- * @stale_assocs:	associations which use a rotated out key
-+ * @stale_assocs:	associations which use a rotated out key, or were
-+ *			superseded by a rekey
-  *
-  * @stats:	statistics maintained by the core
-  * @stats.rotations:	See stats attr key-rotations
-@@ -152,6 +154,15 @@ struct psp_key_parsed {
- 	u8 key[PSP_MAX_KEY];
- };
- 
-+/**
-+ * enum psp_assoc_flags - flags of struct psp_assoc
-+ * @PSP_ASSOC_SKIP_TX_KEY_DEL: Do not delete Tx key from psp_dev. It was
-+ *	copied to a newer psp_assoc during an Rx rekey.
-+ */
-+enum psp_assoc_flags {
-+	PSP_ASSOC_SKIP_TX_KEY_DEL	= BIT(0),
-+};
-+
- struct psp_assoc {
- 	struct psp_dev *psd;
- 
-@@ -159,6 +170,10 @@ struct psp_assoc {
- 	u8 generation;
- 	u8 version;
- 	u8 peer_tx;
-+	u8 prev_generation;
-+	u8 flags; /* Slow path, protected by psd->lock */
-+
-+	__be32 prev_spi;
- 
- 	u32 upgrade_seq;
- 
-diff --git a/net/psp/psp.h b/net/psp/psp.h
-index b123c2427905..92d7b92acaed 100644
---- a/net/psp/psp.h
-+++ b/net/psp/psp.h
-@@ -63,7 +63,8 @@ static inline bool psp_dev_has_sadb(struct psp_dev *psd)
- static inline bool psp_assoc_needs_tx_key_del(struct psp_assoc *pas)
- {
- 	lockdep_assert_held(&pas->psd->lock);
--	return psp_dev_has_sadb(pas->psd) && pas->tx.spi;
-+	return psp_dev_has_sadb(pas->psd) && pas->tx.spi &&
-+	       !(pas->flags & PSP_ASSOC_SKIP_TX_KEY_DEL);
- }
- 
- #endif /* __PSP_PSP_H */
+ A rekey is rejected with ``-EINVAL`` if it would change the PSP device
+ or the PSP version of the association. It is rejected with ``-EBUSY``
+ if the socket has not completed its initial exchange in both
 diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-index f2cba3fa3a23..c1e38845f08c 100644
+index c1e38845f08c..d497f41c483e 100644
 --- a/net/psp/psp_sock.c
 +++ b/net/psp/psp_sock.c
-@@ -149,10 +149,39 @@ void psp_sk_assoc_free(struct sock *sk)
- 	psp_assoc_put(pas);
+@@ -280,6 +280,53 @@ psp_sock_set_tx_key(struct sock *sk, struct psp_dev *psd, struct psp_assoc *pas,
+ 	return err;
  }
  
-+static int psp_sock_rx_rekey(struct psp_assoc *pas, struct psp_assoc *prev,
-+			     struct netlink_ext_ack *extack)
++static int
++psp_sock_tx_rekey(struct sock *sk, struct psp_dev *psd, struct psp_assoc *pas,
++		  struct psp_key_parsed *key, struct netlink_ext_ack *extack)
 +{
-+	if (pas->psd != prev->psd) {
-+		NL_SET_ERR_MSG(extack, "PSP device mismatch with existing state");
-+		return -EINVAL;
++	struct psp_assoc *new;
++	int err;
++
++	if (psp_dev_has_sadb(psd)) {
++		NL_SET_ERR_MSG(extack, "Tx rekey not supported on this device");
++		return -EOPNOTSUPP;
 +	}
-+	if (pas->version != prev->version) {
-+		NL_SET_ERR_MSG(extack, "PSP version mismatch with existing state");
-+		return -EINVAL;
-+	}
-+	if (!prev->tx.spi || !prev->peer_tx) {
++	if (!pas->peer_tx) {
 +		NL_SET_ERR_MSG(extack, "Socket PSP state is not fully established");
 +		return -EBUSY;
 +	}
 +
-+	pas->peer_tx = 1;
-+	pas->prev_spi = prev->rx.spi;
-+	pas->prev_generation = prev->generation;
++	new = kzalloc_flex(*new, drv_data, psd->caps->assoc_drv_spc,
++			   GFP_KERNEL_ACCOUNT);
++	if (!new)
++		return -ENOMEM;
 +
-+	memcpy(&pas->tx, &prev->tx, sizeof(pas->tx));
-+	memcpy(pas->drv_data, prev->drv_data, pas->psd->caps->assoc_drv_spc);
-+	prev->flags |= PSP_ASSOC_SKIP_TX_KEY_DEL;
-+	list_move(&prev->assocs_list, &prev->psd->stale_assocs);
++	new->psd             = pas->psd;
++	new->dev_id          = pas->dev_id;
++	new->generation      = pas->generation;
++	new->version         = pas->version;
++	new->peer_tx         = 1;
++	new->prev_spi        = pas->prev_spi;
++	new->prev_generation = pas->prev_generation;
++	refcount_set(&new->refcnt, 1);
++	memcpy(&new->rx, &pas->rx, sizeof(new->rx));
++
++	err = psp_assoc_set_tx(psd, new, key, extack);
++	if (err) {
++		kfree(new);
++		return err;
++	}
++
++	psp_dev_get(new->psd);
++	list_add(&new->assocs_list, &pas->assocs_list);
++	list_move(&pas->assocs_list, &psd->stale_assocs);
++
++	rcu_assign_pointer(sk->psp_assoc, new);
++	psp_assoc_put(pas);
 +
 +	return 0;
 +}
 +
- int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
- 			  struct psp_key_parsed *key,
+ int psp_sock_assoc_set_tx(struct sock *sk, struct psp_dev *psd,
+ 			  u32 version, struct psp_key_parsed *key,
  			  struct netlink_ext_ack *extack)
- {
-+	struct psp_assoc *prev;
- 	int err;
- 
- 	memcpy(&pas->rx, key, sizeof(*key));
-@@ -165,10 +194,11 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
+@@ -312,13 +359,11 @@ int psp_sock_assoc_set_tx(struct sock *sk, struct psp_dev *psd,
+ 		err = -EINVAL;
  		goto exit_unlock;
  	}
- 
--	if (psp_sk_assoc(sk)) {
--		NL_SET_ERR_MSG(extack, "Socket already has PSP state");
+-	if (pas->tx.spi) {
+-		NL_SET_ERR_MSG(extack, "Tx key already set");
 -		err = -EBUSY;
 -		goto exit_unlock;
-+	prev = psp_sk_assoc(sk);
-+	if (prev) {
-+		err = psp_sock_rx_rekey(pas, prev, extack);
-+		if (err)
-+			goto exit_unlock;
- 	} else if (sk_has_decrypt_user(sk)) {
- 		NL_SET_ERR_MSG(extack, "Socket has incompatible state");
- 		err = -EINVAL;
-@@ -177,6 +207,7 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
+-	}
++	if (pas->tx.spi)
++		err = psp_sock_tx_rekey(sk, psd, pas, key, extack);
++	else
++		err = psp_sock_set_tx_key(sk, psd, pas, key, extack);
  
- 	refcount_inc(&pas->refcnt);
- 	rcu_assign_pointer(sk->psp_assoc, pas);
-+	psp_assoc_put(prev);
- 	err = 0;
- 
+-	err = psp_sock_set_tx_key(sk, psd, pas, key, extack);
  exit_unlock:
-@@ -302,8 +333,21 @@ void psp_assocs_key_rotated(struct psp_dev *psd)
- 	 */
- 	list_for_each_entry_safe(pas, next, &psd->prev_assocs, assocs_list) {
- 		pas->generation |= ~PSP_GEN_VALID_MASK;
-+		pas->prev_generation |= ~PSP_GEN_VALID_MASK;
- 		psd->stats.stales++;
- 	}
-+
-+	/* Don't allow SPI from two generations ago to alias one from the
-+	 * current generation. Rx rekeying under the same device key generation
-+	 * is currently permitted, so skip if the previous SPI is from just one
-+	 * generation ago.
-+	 */
-+	list_for_each_entry(pas, &psd->active_assocs, assocs_list) {
-+		if ((pas->rx.spi ^ pas->prev_spi) &
-+		    cpu_to_be32(PSP_SPI_KEY_PHASE))
-+			pas->prev_generation |= ~PSP_GEN_VALID_MASK;
-+	}
-+
- 	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
- 	list_splice_init(&psd->active_assocs, &psd->prev_assocs);
- 
+ 	release_sock(sk);
+ 	return err;
 
 -- 
 2.52.0
