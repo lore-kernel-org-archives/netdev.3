@@ -1,88 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794001248;
-	b=P8wHNuvA4j/eTzqU6/5D33hDrSFjbf0H0W3atxxWaA+koljuVF8k4wyOtqemFj9CVJkA
-	 FeY4WCifK9HsPVf/KBykulwm18L7zOtIMm3rvtOfBXlD7cxhgrQA10NgzEbA6LZOLXcPp
-	 pnoNLKKuuzMZGkWCwRk4FKQgQ2mYmeHnNQRvBKVnYCnjZDi9n5FvZwa71qtMJtG6m+hNk
-	 nXengCA0XHQPxpDtgiPR0OTn3H5l6wDLvweji2yxGSuza7rw8jvMgJP8Lh0TxiIL1aQpx
-	 BSHjyHmNvCt78bP0AvFL3AHGehC5vX2Yk1H9JN2JutwUbz5l5jxpI0sj7jKsCwkjErg==
+	t=1794001870;
+	b=GKgkulfcLi9F/vobR6hkuE5gyNTNO0m3sdRKA6Cw4p7SWuP5a6LSC3PZL4SreohXBY3R
+	 5gUEBiwcO4GPgPUvzBl3ytPoQa8ok8KlOufUVulxagqZVCzgNlJJGeGvNn6EaGuhLhsjF
+	 0af4smTlbHe8CzvyUx9ILcNPUi7lqVKjnnWsZKA2W+g1Nb0pmAlqPrVcz0k0HmAa8AroH
+	 sWjthHa3WB6Ih1WVVvimVhqPm7/lpSPD9McEIO2vD2YH4W2Xg8a49uavSyiOjckGJwg64
+	 R4thmDAnCmbESIyZ6REBCQTS5M5X4+ZHFNewjwtMrKUjRKswJtaV/MtVxLPrQkWYmxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794001248;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
-	b=n4ReMPtx0ehh9Raoc7tDfmddIfGCQH9y3KSSmuNBvabRhbMuoiMEIk5Pk0d90IEWgOzO
-	 D70Q9YSwjCwE48zs4vWEM5jNbKsBKKu8iKrktSu7nGUCW7VZ4wanyqT8nFPpFLtD1M5d7
-	 1k1SZBJ1azONco+we3kgWaAQWHBePbxrbFAsZOI+xUYff4LI5iy8sPm72+Hk1tx9YEDvP
-	 MCOMc1fKYsWhxfRLuLzFGtsl//kFlKBED6XTw4S3a8NvMAQ/taHTAvSwAJ4B26OxIvSet
-	 LtzSQAOHs84SgBfS1zkXcZNwNFdPNqQkzo36kkuoA+nPbNdIXs2sqLmTocU+zZZUabA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794001870;
+	h=DMARC-Filter:Message-ID:DKIM-Signature:DKIM-Signature:Subject:From:
+	 To:Cc:Date:In-Reply-To:References:Organization:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
+	b=A9s/7mndhOwyB3FlOdWAQHcozUUoMmuQxrqn7QDGKT7fQFt0CP8kd+yorknOtHzuj1jK
+	 XOYP3maxyMC0kkMCcigKSrOzn5cZP9v1oFgfFg2WBrMZgcXDwG3uOtXJdJlXrTuSf6DCk
+	 cgu7pilPf9Hdn55//anFfPz20ua842lZtF9AzahrwZO/hyXm0CO7ZJlfjCBnS3OafxpX3
+	 6dT7upWGyWO1PzITnoB27zqRF9ag2W/trDAxD1FOeWxB+p5XxGmaAKhvHMlQwMA+UxHFG
+	 47T4dQTDSlIvVk4T9SxyhJm7jamW23q5WXHuzFAZhJhL5CDW85rcbSbficvGc4dQ78Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lk7q8SwX;
-	arc=none smtp.remote-ip=209.85.128.50
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Qr+zythi;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57L2AJeo;
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB34606A32D
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 21:40:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CB34606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771DA606A32F;
+	Fri,  6 Nov 2026 21:51:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 771DA606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lk7q8SwX
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a206f0b95bso8365e9.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 13:40:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794001245; x=1794606045; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
-        b=lk7q8SwXuna/HE2iiiMlyVcoL7yI2SAWKVqoxClIP/wSAqDxTRgly2E+zFPvHr47IN
-         xD8FNxo+ibPoOO6WkHJajZj5eDdJujEBcelV2iDO1JTxHN2X0uM3r5CTxDpAfSOO2Afd
-         nGd+Z28R6QnWNYZTZC+MLnIS5Y2/Kbfkj3Dye/BagbNF8FHfoBoskvSIT0KnYxCsHNMD
-         brYEou7p+RVeB/Km3pDNSUECAxgxLeUSrXzMDUxiweSGez+kWIAAOq14qcPfJaacHnnA
-         N2CF4Rq80fnpiBd9satdmiIv0Nf1jfKrNakIKToAL85O+z9SXhb+Y07D41X7SxIGUqW+
-         YlTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794001245; x=1794606045;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=HDC3HGct+N1kATD3ozLle6tkVgbjKWtzjQkKlLDrKRY=;
-        b=kfCuaSutpnz/Etjon9Q2cZ81icBCr+xEB/tYevXvKR7N9L1T8xs6NnaC55Mdfn0KpR
-         tjPEwyJOUmBFWv0ARkOqpQxqjfej33N/6NL2jBnCImDlpkFxXLCPr76HrzCZXFrMCV2U
-         ES1NOnotP0owK50WYe/uiE7W3PITgx2WcYLmrWBAG8V7rpH4pKRUTsTRQvQMMJ0+6PNB
-         s8rFlxYn2WuzZGa6cH/5jNAV4V/84Uba+Zl5Wa68C6a+fyKMI0bmzSklHrKNUbGkvIYs
-         cmRT3rWssMaV1/wpAkTYDG3CePjoHGVonvNUVK92YFKLhOaeoRmP5ieZxw3e7sWCRAX5
-         NYfg==
-X-Forwarded-Encrypted: i=1; AKwUvBxDxAEU6r1BRe0fhk3UjgPn0NKXsB2B3OrUrgI9TxNnQzekGWJwSXNNvR3SCiZ1KkFCkLMCHJ0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+nw2vpXxBWgdHo/Qnpm4wYDnv5vy8m/a7oIlxJ5WWSZHpzU/24
-	DP817yldwwD0jR8RMegqYZ7CPsHQdl5wiOLmoHuKv40BNwlf5ngZVmHfxCXI0J9XeQ==
-X-Gm-Gg: AYBFou1xpJGrDh1BVn4g9mXzOo5LVNnRhf5bYlhdxLFlmxHYaaRsQi6372nuys9w3/o
-	LszXkSMiDwAWFjfrghK8KJBQgrt6vtjWKsWcUF2vxP2XwFn0TXMOEid8fgYWobLX+56H/74IIdA
-	3pGoMjJkoUBYrhxkgqVVqnVJ5pJQmbRtOU4GL6J9gxsBempmI6TEoD3FaJMQEQNqNdBALwO+Rsj
-	D81n+6r34i7ni1NH3MZWmK/3ee800Tw76tEPwYDS/UqFGzCdZxeyyt5KGisANR7pK02bswGf4gm
-	f14hkVWID3Cc/PP4j1sVFToyUOxdo6QpHN3KAKig4ITroBhjaA/1iYYcaKKudNP9ZG/CN16cb8h
-	b92TqAiEe3zCPljwzsdOJoNhlThK8J6IH+ZgkPyUgyyUQH6MkqfhcjHHCgeFAqajoBRbBxV11z5
-	gZ0fs8S9uL/6GOlCCDUFvqUbcn5/kmNb/+W3Z8J5xkrSqyevGQCQvTOx9elw40ph2qz0KoTGdHy
-	GBYMN+VQDCbnw5A27VzjWDTzbHuQ/4+sly5lH3DRN48uBAwbhD8jUS6qTH0q/tdE3rGDOLfUvEx
-	13ROHI//YZRsooqKjhvOJu11YA/NbyvxLPhcEg/QXJ9iPY07iMcrSv7xYWReVHllaWQffY53f20
-	lD0S/Yvvj2Ez/z0+wP82gpQkBkqNu4pIYEEo=
-X-Received: by 2002:a05:600c:8b31:b0:4a1:d7fa:ae36 with SMTP id 5b1f17b1804b1-4b8190f3b55mr98285e9.4.1794001245067;
-        Fri, 06 Nov 2026 13:40:45 -0800 (PST)
-Received: from localhost ([2a00:79e0:288a:8:476d:4cff:b13d:f028])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701bfasm5887936f8f.40.2026.11.06.13.40.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 13:40:44 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Fri, 06 Nov 2026 22:40:31 +0100
-Subject: [PATCH net] cipso: stop modifying live ip_options_rcu
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Qr+zythi;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=57L2AJeo
+Message-ID: <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1794001867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
+	b=Qr+zythi7fd/WCMR/wC1lIwE26rtLXt2OGzMpWM7UzIMevSXxu0wb7MdigNzhn5jlurEQP
+	eKImHUsS0sH9Yoz3/1yMKgzB+uT0Fa3tsUp040h6x8bGtwwk/MJZL3d2I2n94v9Y+0tn50
+	XxfbSlqtzfCpltoqdh6xJWCUHQmKS3jqCH15dLCL8geld7+0GF9Cv2XtA/whES2lhOtFa0
+	Rdez2AbnhPofdvz2K5MM+uDPfsv+7vZ0xpxU89RTJkJ8wtClYlAuWI/vOWTh/ylrgxcTDC
+	2wwn60Jbhr282GJjbcWc+Bd5ISTMmn/dmZpANyjXbVuW7i71W86opPwMAH2qRA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1794001867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hrybu1qjS55wOR2ZvJDKFOTX4UO4y9/yg/EAiu9mOeQ=;
+	b=57L2AJeoNrxbbDcFsBAzZ/DFjdkvyDKP3GnGuqadUE36FX+Fv2BzCEN4iw/VSR8EzIzB2O
+	K3q3DWu42nW1QqDQ==
+Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Eric
+ Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>,
+ devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, mfd@lists.linux.dev,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Fri, 06 Nov 2026 22:51:04 +0100
+In-Reply-To: <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
+References: 
+	<20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
+	 <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
+	 <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,372 +88,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
-X-B4-Tracking: v=1; b=H4sIAE5J7moC/yWMQQrDIBQFrxLeukK0rZBcJXRh7Lf9Xaj4TQiE3
- L02Xc7AzA6hwiQYux2FVhZOsYG+dPBvF1+k+NkYpjdW694qz1mSKn5JuYoiY0Nwt/t8HQxakws
- F3s7fhEgVj7+UZf6Qr78TjuML9iD+83YAAAA=
-X-Change-ID: 20261106-cipso-rcuopts-e26ffa45b392
-To: Paul Moore <paul@paul-moore.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
- Simon Horman <horms@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
- Casey Schaufler <casey@schaufler-ca.com>, netdev@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
- selinux@vger.kernel.org, stable@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794001239; l=11224;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=sFzK60Ujof6oKkoUevi0RWgNEC3MXkp1co13ojYs7hk=;
- b=ej7CqHV2tcGY7zGDHHLVd8mlD+53sVeZqHB/LxVS7JAqkBTxC9XWBqz93yNoSe62PFZyDBayT
- 2629yyXmgJ9CUPFiQcovKdF2pBDFI4WKrcPwToXC3u6z9XjHzAG4Zc2
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
-socket, and tries to remove CIPSO options from the middle by moving all
-subsequent options.
-That's not allowed - ip_options_rcu can be read locklessly and must always
-be consistent. For example, ip_options_undo() reads trusted offsets and
-length values from the options buffer.
-Fix it by doing the modification in a copy.
+On Fri, 2026-11-06 at 12:13 +0100, Krzysztof Kozlowski wrote:
+> On Thu, Nov 05, 2026 at 03:16:48PM +0100, Vasilij Strassheim wrote:
+> > Add a binding for the SoC-e SWIP multifunction FPGA IP core.
+> >=20
+> > Describe the shared MMIO address space and address translation for
+> > the required Ethernet switch child and the optional integrated MDIO
+> > controller and MMIO-controlled MDIO multiplexer.
+> >=20
+> > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> > ---
+> >  .../devicetree/bindings/mfd/soce,swip.yaml         | 137 +++++++++++++=
+++++++++
+> >  1 file changed, 137 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/mfd/soce,swip.yaml b/Doc=
+umentation/devicetree/bindings/mfd/soce,swip.yaml
+> > new file mode 100644
+> > index 000000000000..625be299e262
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
+> > @@ -0,0 +1,137 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/mfd/soce,swip.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: SoC-e SWIP multifunction Ethernet switch FPGA IP core
+> > +
+> > +maintainers:
+> > +  - Vasilij Strassheim <v.strassheim@linutronix.de>
+> > +
+> > +description:
+> > +  SoC-e Switch IP (SWIP) cores integrate Ethernet switching logic, an
+> > +  MDIO controller, and an MDIO bus multiplexer in one memory-mapped de=
+vice.
+> > +  The MDIO bus multiplexer is wired to the integrated MDIO controller.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: soce,swip
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 1
+> > +
+> > +  ranges: true
+> > +
+> > +  mdio@204:
+> > +    $ref: /schemas/net/soce,swip-mdio.yaml#
+> > +    unevaluatedProperties: false
+> > +
+> > +  mdio-mux@202:
+> > +    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
+> > +    unevaluatedProperties: false
+> > +
+> > +  ethernet-switch:
+>=20
+> Why are you mixing children with and without bus addresses? This is
+> discouraged and shows that device is not correctly represented, e.g. if
+> the ethernet-switch does not have resources, then THIS device is the
+> ethernet switch.
+>=20
 
-The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
-propagate memory allocation failures.
+There is no hardware reason for leaving the switch child unaddressed.
+Just an error that occurred while converting the binding to the MFD
+model.
+I will describe the switch function as an ethernet-switch@0 child node
+with a reg property for it's register resources, like the ocelot MFD
+binding.
 
-Triggering this bug requires that the system is configured to use CIPSO.
-(Setting up CIPSO requires privileges in init_user_ns.)
+> > +    $ref: /schemas/net/dsa/soce,swip-switch.yaml#
+> > +    unevaluatedProperties: false
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - '#address-cells'
+> > +  - '#size-cells'
+> > +  - ranges
+> > +  - ethernet-switch
+> > +
+> > +dependentRequired:
+> > +  mdio-mux@202:
+> > +    - mdio@204
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    ethernet-switch@80020000 {
+> > +        compatible =3D "soce,swip";
+> > +        reg =3D <0x80020000 0x10000>;
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <1>;
+> > +        ranges =3D <0x0 0x80020000 0x10000>;
+> > +
+> > +        mdio_parent: mdio@204 {
+> > +            compatible =3D "soce,swip-mdio";
+> > +            reg =3D <0x204 0xc>, <0x200 0x2>;
+> > +            reg-names =3D "data", "control";
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +        };
+> > +
+> > +        mdio-mux@202 {
+>=20
+> Nodes are ordered by unit address.
 
-Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
----
-I've sent a separate mail with a reproducer to Paul Moore.
----
- include/net/cipso_ipv4.h     | 11 ++++++-----
- include/net/netlabel.h       | 11 ++++++-----
- net/ipv4/cipso_ipv4.c        | 16 +++++++++++++---
- net/netlabel/netlabel_kapi.c | 24 ++++++++++--------------
- security/selinux/netlabel.c  |  5 +++--
- security/smack/smack_lsm.c   | 14 +++++++++-----
- 6 files changed, 47 insertions(+), 34 deletions(-)
+I will fix that.
+Sashiko mentioned scripts/dtc/dt-check-style to find this. I wasn't
+aware of this before and will use it more often in the future
+additionally to dt_binding_check.
 
-diff --git a/include/net/cipso_ipv4.h b/include/net/cipso_ipv4.h
-index d6780d7903f4..b41672221797 100644
---- a/include/net/cipso_ipv4.h
-+++ b/include/net/cipso_ipv4.h
-@@ -185,12 +185,12 @@ int cipso_v4_sock_setattr(struct sock *sk,
- 			  const struct cipso_v4_doi *doi_def,
- 			  const struct netlbl_lsm_secattr *secattr,
- 			  bool sk_locked);
--void cipso_v4_sock_delattr(struct sock *sk);
-+int cipso_v4_sock_delattr(struct sock *sk);
- int cipso_v4_sock_getattr(struct sock *sk, struct netlbl_lsm_secattr *secattr);
- int cipso_v4_req_setattr(struct request_sock *req,
- 			 const struct cipso_v4_doi *doi_def,
- 			 const struct netlbl_lsm_secattr *secattr);
--void cipso_v4_req_delattr(struct request_sock *req);
-+int cipso_v4_req_delattr(struct request_sock *req);
- int cipso_v4_skbuff_setattr(struct sk_buff *skb,
- 			    const struct cipso_v4_doi *doi_def,
- 			    const struct netlbl_lsm_secattr *secattr);
-@@ -221,8 +221,9 @@ static inline int cipso_v4_sock_setattr(struct sock *sk,
- 	return -ENOSYS;
- }
- 
--static inline void cipso_v4_sock_delattr(struct sock *sk)
-+static inline int cipso_v4_sock_delattr(struct sock *sk)
- {
-+	return 0;
- }
- 
- static inline int cipso_v4_sock_getattr(struct sock *sk,
-@@ -238,9 +239,9 @@ static inline int cipso_v4_req_setattr(struct request_sock *req,
- 	return -ENOSYS;
- }
- 
--static inline void cipso_v4_req_delattr(struct request_sock *req)
-+static inline int cipso_v4_req_delattr(struct request_sock *req)
- {
--	return;
-+	return 0;
- }
- 
- static inline int cipso_v4_skbuff_setattr(struct sk_buff *skb,
-diff --git a/include/net/netlabel.h b/include/net/netlabel.h
-index 02914b1df38b..f896b9d52ed1 100644
---- a/include/net/netlabel.h
-+++ b/include/net/netlabel.h
-@@ -477,7 +477,7 @@ int netlbl_sock_setattr(struct sock *sk,
- 			u16 family,
- 			const struct netlbl_lsm_secattr *secattr,
- 			bool sk_locked);
--void netlbl_sock_delattr(struct sock *sk);
-+int netlbl_sock_delattr(struct sock *sk);
- int netlbl_sock_getattr(struct sock *sk,
- 			struct netlbl_lsm_secattr *secattr);
- int netlbl_conn_setattr(struct sock *sk,
-@@ -485,7 +485,7 @@ int netlbl_conn_setattr(struct sock *sk,
- 			const struct netlbl_lsm_secattr *secattr);
- int netlbl_req_setattr(struct request_sock *req,
- 		       const struct netlbl_lsm_secattr *secattr);
--void netlbl_req_delattr(struct request_sock *req);
-+int netlbl_req_delattr(struct request_sock *req);
- int netlbl_skbuff_setattr(struct sk_buff *skb,
- 			  u16 family,
- 			  const struct netlbl_lsm_secattr *secattr);
-@@ -626,8 +626,9 @@ static inline int netlbl_sock_setattr(struct sock *sk,
- {
- 	return -ENOSYS;
- }
--static inline void netlbl_sock_delattr(struct sock *sk)
-+static inline int netlbl_sock_delattr(struct sock *sk)
- {
-+	return 0;
- }
- static inline int netlbl_sock_getattr(struct sock *sk,
- 				      struct netlbl_lsm_secattr *secattr)
-@@ -645,9 +646,9 @@ static inline int netlbl_req_setattr(struct request_sock *req,
- {
- 	return -ENOSYS;
- }
--static inline void netlbl_req_delattr(struct request_sock *req)
-+static inline int netlbl_req_delattr(struct request_sock *req)
- {
--	return;
-+	return 0;
- }
- static inline int netlbl_skbuff_setattr(struct sk_buff *skb,
- 				      u16 family,
-diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
-index e65a3f29d2ca..ee0c72fbc877 100644
---- a/net/ipv4/cipso_ipv4.c
-+++ b/net/ipv4/cipso_ipv4.c
-@@ -2004,11 +2004,16 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
- 	if (!opt || opt->opt.cipso == 0)
- 		return 0;
- 	if (opt->opt.srr || opt->opt.rr || opt->opt.ts || opt->opt.router_alert) {
-+		struct ip_options_rcu *old_opt = opt;
- 		u8 cipso_len;
- 		u8 cipso_off;
- 		unsigned char *cipso_ptr;
- 		int optlen_new;
- 
-+		/* ip_options_rcu must not be modified in place, use a copy */
-+		opt = kmemdup(opt, sizeof(*opt) + opt->opt.optlen, GFP_ATOMIC);
-+		if (!opt)
-+			return -ENOMEM;
- 		cipso_off = opt->opt.cipso - sizeof(struct iphdr);
- 		cipso_ptr = &opt->opt.__data[cipso_off];
- 		cipso_len = cipso_ptr[1];
-@@ -2036,6 +2041,8 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
- 
- 		memset(&opt->opt.__data[optlen_new], IPOPT_END,
- 		       opt->opt.optlen - optlen_new);
-+		rcu_assign_pointer(*opt_ptr, opt);
-+		kfree_rcu(old_opt, rcu);
- 	} else {
- 		/* only the cipso option was present on the socket so we can
- 		 * remove the entire option struct */
-@@ -2055,7 +2062,7 @@ static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
-  * Removes the CIPSO option from a socket, if present.
-  *
-  */
--void cipso_v4_sock_delattr(struct sock *sk)
-+int cipso_v4_sock_delattr(struct sock *sk)
- {
- 	struct inet_sock *sk_inet;
- 	int hdr_delta;
-@@ -2068,6 +2075,7 @@ void cipso_v4_sock_delattr(struct sock *sk)
- 		sk_conn->icsk_ext_hdr_len -= hdr_delta;
- 		sk_conn->icsk_sync_mss(sk, sk_conn->icsk_pmtu_cookie);
- 	}
-+	return (hdr_delta < 0) ? hdr_delta : 0;
- }
- 
- /**
-@@ -2078,9 +2086,11 @@ void cipso_v4_sock_delattr(struct sock *sk)
-  * Removes the CIPSO option from a request socket, if present.
-  *
-  */
--void cipso_v4_req_delattr(struct request_sock *req)
-+int cipso_v4_req_delattr(struct request_sock *req)
- {
--	cipso_v4_delopt(&inet_rsk(req)->ireq_opt);
-+	int hdr_delta = cipso_v4_delopt(&inet_rsk(req)->ireq_opt);
-+
-+	return (hdr_delta < 0) ? hdr_delta : 0;
- }
- 
- /**
-diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
-index 3583fa63dd01..c0eddb6afef3 100644
---- a/net/netlabel/netlabel_kapi.c
-+++ b/net/netlabel/netlabel_kapi.c
-@@ -1045,18 +1045,18 @@ int netlbl_sock_setattr(struct sock *sk,
-  * ensuring that @sk is locked.
-  *
-  */
--void netlbl_sock_delattr(struct sock *sk)
-+int netlbl_sock_delattr(struct sock *sk)
- {
- 	switch (sk->sk_family) {
- 	case AF_INET:
--		cipso_v4_sock_delattr(sk);
--		break;
-+		return cipso_v4_sock_delattr(sk);
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
- 		calipso_sock_delattr(sk);
- 		break;
- #endif /* IPv6 */
- 	}
-+	return 0;
- }
- 
- /**
-@@ -1156,8 +1156,7 @@ int netlbl_conn_setattr(struct sock *sk,
- 		case NETLBL_NLTYPE_UNLABELED:
- 			/* just delete the protocols we support for right now
- 			 * but we could remove other protocols if needed */
--			netlbl_sock_delattr(sk);
--			ret_val = 0;
-+			ret_val = netlbl_sock_delattr(sk);
- 			break;
- 		default:
- 			ret_val = -ENOENT;
-@@ -1185,8 +1184,7 @@ int netlbl_conn_setattr(struct sock *sk,
- 		case NETLBL_NLTYPE_UNLABELED:
- 			/* just delete the protocols we support for right now
- 			 * but we could remove other protocols if needed */
--			netlbl_sock_delattr(sk);
--			ret_val = 0;
-+			ret_val = netlbl_sock_delattr(sk);
- 			break;
- 		default:
- 			ret_val = -ENOENT;
-@@ -1234,8 +1232,7 @@ int netlbl_req_setattr(struct request_sock *req,
- 						       entry->cipso, secattr);
- 			break;
- 		case NETLBL_NLTYPE_UNLABELED:
--			netlbl_req_delattr(req);
--			ret_val = 0;
-+			ret_val = netlbl_req_delattr(req);
- 			break;
- 		default:
- 			ret_val = -ENOENT;
-@@ -1255,8 +1252,7 @@ int netlbl_req_setattr(struct request_sock *req,
- 						      entry->calipso, secattr);
- 			break;
- 		case NETLBL_NLTYPE_UNLABELED:
--			netlbl_req_delattr(req);
--			ret_val = 0;
-+			ret_val = netlbl_req_delattr(req);
- 			break;
- 		default:
- 			ret_val = -ENOENT;
-@@ -1280,18 +1276,18 @@ int netlbl_req_setattr(struct request_sock *req,
- * Remove all the NetLabel labeling from @req.
- *
- */
--void netlbl_req_delattr(struct request_sock *req)
-+int netlbl_req_delattr(struct request_sock *req)
- {
- 	switch (req->rsk_ops->family) {
- 	case AF_INET:
--		cipso_v4_req_delattr(req);
--		break;
-+		return cipso_v4_req_delattr(req);
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
- 		calipso_req_delattr(req);
- 		break;
- #endif /* IPv6 */
- 	}
-+	return 0;
- }
- 
- /**
-diff --git a/security/selinux/netlabel.c b/security/selinux/netlabel.c
-index d51dfe892312..24b11d1891d8 100644
---- a/security/selinux/netlabel.c
-+++ b/security/selinux/netlabel.c
-@@ -557,9 +557,10 @@ static int selinux_netlbl_socket_connect_helper(struct sock *sk,
- 	 * is set to AF_UNSPEC, if that is what is happening we want to reset
- 	 * the socket */
- 	if (addr->sa_family == AF_UNSPEC) {
--		netlbl_sock_delattr(sk);
-+		rc = netlbl_sock_delattr(sk);
-+		if (rc)
-+			return rc;
- 		sksec->nlbl_state = NLBL_REQSKB;
--		rc = 0;
- 		return rc;
- 	}
- 	secattr = selinux_netlbl_sock_genattr(sk);
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 28a8e12603ce..3a4a33568297 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2656,22 +2656,26 @@ static int smack_netlbl_add(struct sock *sk)
-  *
-  * Remove the outbound smack value from a socket
-  */
--static void smack_netlbl_delete(struct sock *sk)
-+static int smack_netlbl_delete(struct sock *sk)
- {
- 	struct socket_smack *ssp = smack_sock(sk);
-+	int rc;
- 
- 	/*
- 	 * Take the label off the socket if one is set.
- 	 */
- 	if (ssp->smk_state != SMK_NETLBL_LABELED)
--		return;
-+		return 0;
- 
- 	local_bh_disable();
- 	bh_lock_sock_nested(sk);
--	netlbl_sock_delattr(sk);
-+	rc = netlbl_sock_delattr(sk);
- 	bh_unlock_sock(sk);
- 	local_bh_enable();
-+	if (rc)
-+		return rc;
- 	ssp->smk_state = SMK_NETLBL_UNLABELED;
-+	return 0;
- }
- 
- /**
-@@ -2711,7 +2715,7 @@ static int smk_ipv4_check(struct sock *sk, struct sockaddr_in *sap)
- 		 * Clear the socket netlabel if it's set.
- 		 */
- 		if (!rc)
--			smack_netlbl_delete(sk);
-+			rc = smack_netlbl_delete(sk);
- 	}
- 	rcu_read_unlock();
- 
-@@ -4548,7 +4552,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
- 	if (hskp == NULL)
- 		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
- 	else
--		netlbl_req_delattr(req);
-+		rc = netlbl_req_delattr(req);
- 
- 	return rc;
- }
+>=20
+> Best regards,
+> Krzysztof
+>=20
 
----
-base-commit: a91337fb5e8e0127c8b5be87be9f3027f95b48bc
-change-id: 20261106-cipso-rcuopts-e26ffa45b392
-
-Best regards,
---  
-Jann Horn <jannh@google.com>
+Thanks,
+Vasilij
 
