@@ -1,61 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793947145;
-	b=O8lVNCXF6em/o3aNLQYNUz2Nr1371ZkGeH6A+1PKJunrIEH6CVrHX1mODLalkSKExaZw
-	 IVgen9UtPNDVT5BFKYCmX+JD6X5pd/8ptJZ8GEN9Rc6jTBrVf0CdTYPXKwam5uKy6LZ2y
-	 jwKmK7jsap3mv5/wnYhCZ8uJKLZ0eb1fgblVI0WW4BAag/D+Y+qwvxzVCR8yWwfAwhPYa
-	 AnG0TgaiHwwGYEwYO55jdDb5UzrduqMH1TfZsP7U25M+n8JphE2GKHqs+8r1yFgWu22Q0
-	 y7GEamdxMEkYzElFXS3I+oK9wQHXhbIf9fAFjlCQTnPPWLnJbsj/zMTkR218YGEAYog==
+	t=1793947323;
+	b=AV5jFuHIuoS6SQ1I+jYydha1HdMmPv06iHOTo8Fye49TZObPLET98p9o0wucfyd+MlND
+	 WON2WlJO6GwLHW/03NjzReBPBdtjlSrPMDKUgk9Q6Gr0gQjG71UU3BygaP2otg/As633U
+	 fyb7QMh76CtxvUqA9BcAMWQ4n/9Nmg8ngCjYA1dk7OKeseR7TXA4TWnTz/igj6coM7mK8
+	 mis0ENM/RRyOIf8pwok/svMPSDWFGsgt7mebgXh4bf3agfIHPthmPZ82XPFkB5rlOWx4A
+	 0f2xu0haaWWSsgVFZ7h+GsVVh7APoe3HV820yaTlnqN4lBO65zouTypS4Z2fiW3VtCw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793947145;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793947323;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:Sender:X-CM-SenderInfo;
-	bh=7QFuBjv5ldosuAup+vJ03lRJS3eCcTcm45Vjx2AsFBA=;
-	b=JqUY7LIpuaaH8bvA079LuhaccFpv0lgG8QCx79dePC9J2Ds4pGeU8kPWTodWBM/6CAHR
-	 GWDi9iWKNzXTXrtT2Mhf5NaTupOeJNBjotdWyHqCbBNrBD+U7n+IkPAxWsxcTM2RVRv3G
-	 o0oluARjJwJPgX7mnsOyI/GCVRwd9OlWN01d0e3zqYRLW6oiskNMt1Ymo3HCSYvDPsJ4V
-	 LljmCL20fMpC+qT+ExhoRXajSdQhQcT44qfBWkpGvGh6i8UZwTXPz9slAdC3KuI4SnaLX
-	 k0iJ21Ur1+U70xPJxBS4KgBcCFbyFQmwB4o1K2dOCfX0cZ3B4S/uuUEUI/ylXJklzcw==
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=SQ426vLxQ2280euxZBJWWN8G4ZPXaNeSNnRUBS0Gfpo=;
+	b=VxtWEKu7FwMr6n7x6X/o7JbVj5wjAMrSkgPASws7XEVZAG8MPpHmzCpXFB65qQZYKGfD
+	 h/dZ6u9DDoqYr3uKlh+V9kqV+W3qJf6PzN5YqMCzIVodUOLtsqdauBugQY08IOTftEg5U
+	 u7lQ6j9uinw282GsSeCmXSw1RcwnzHYkXuQWprE54TVzbsFxt7XzlT7nS+L+uCzd2jJCV
+	 aHmSmGvc3kVsiWKc1a8vGhv/CjIE5HMN7Ku0hRdW40P5cEiU0PXEzJ43Fa5f31LO3lwT6
+	 YgUPKa+y/ivIGY6tXXjao8j6JW6+zu5Majv4sI2bR/x7Q6pV44mFYkuchte9PcYua1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RvWji0Qe;
-	arc=none smtp.remote-ip=117.135.210.5
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Kn5xqePs;
+	arc=none smtp.remote-ip=117.135.210.9
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18E1606A326;
-	Fri,  6 Nov 2026 06:39:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E18E1606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA779606A326;
+	Fri,  6 Nov 2026 06:41:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA779606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RvWji0Qe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=7Q
-	FuBjv5ldosuAup+vJ03lRJS3eCcTcm45Vjx2AsFBA=; b=RvWji0QeoP4YWwZsBe
-	/yXgWGYhN5wIQ1he6cDc3TGUbZCg+o1exnLra1LffNP9U/d2TJDLDNp1v1L39aeX
-	iZ/XQ+vMNGAP1lPpiaT34ufUtaCGpHXyYj+wc/RwNzpvgLFK8flFPsqSa95HSfda
-	43Kd4DVuM9lQqRm16st7Gay2o=
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Kn5xqePs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=SQ
+	426vLxQ2280euxZBJWWN8G4ZPXaNeSNnRUBS0Gfpo=; b=Kn5xqePs/fZLps/QaP
+	5E1Nl+0hi4J+S3W/8I2SzKxYkQ4xdFNBbKdQRKDW38b+iIyvdsjNp31UPea4NOYJ
+	hKIQ0zPrznR1BRV1xOhz6/MQCXvbfC7guVQjxXlBcB3E1LlckXEHMgmUk92DcmrW
+	CM+dZSiGZOnnLHvHvK67MLXBo=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgBn7+bide1q0tZXDw--.54265S2;
-	Fri, 06 Nov 2026 14:38:26 +0800 (CST)
-From: Wei Tao <taowei@kylinos.cn>
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnR+uMdu1qZ7kzCw--.3170S2;
+	Fri, 06 Nov 2026 14:41:17 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
 To: jhs@mojatatu.com,
 	jiri@resnulli.us,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wei Tao <taowei@kylinos.cn>
-Subject: [PATCH net-next v2] net/sched: cls_flow: avoid integer overflow in perturb_period
-Date: Fri,  6 Nov 2026 14:38:23 +0800
-Message-Id: <20261106063823.99731-1-taowei@kylinos.cn>
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/3] net/sched: get_fill_size() budget fixes for act_gact and act_vlan
+Date: Fri,  6 Nov 2026 14:41:11 +0800
+Message-Id: <20261106064114.3592670-1-xiaolinkui@126.com>
 X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,113 +66,65 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgBn7+bide1q0tZXDw--.54265S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr17JF4rJFykXrW8WF4fAFb_yoWrJr1rpF
-	9xJa1ktw4kXFy7Gw4kCr1kW3W3Ww4xJFy8uF42k3y5AasrGFyvka10g34SgFsrCr4rAayS
-	qF1Ygw40vF1qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jWWlkUUUUU=
-Sender: cs_taowei@163.com
-X-CM-SenderInfo: xfvb3tprzhxqqrwthudrp/xtbC-QOr7GrtdeNdXAAA3p
+X-CM-TRANSID:_____wDnR+uMdu1qZ7kzCw--.3170S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFy3Cr48XFyDWF48Zry3XFb_yoW5AFyUpF
+	W3W390kr1DJryxAw4xAw48Xa1S9wsxAFWUWr1fGr1S9Fs5Ww1fAFyrKay3WFyUCws3Xa4j
+	qr4qgrnrWrWvyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlQ6JUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQ7WrWrtdo54WQAA3C
 
-flow_change() calculates perturb_period by directly multiplying
-nla_get_u32(tb[TCA_FLOW_PERTURB]) by HZ, without any overflow
-protection. Since perturb_period is a u32, the multiplication
-overflows when the value from netlink exceeds UINT_MAX / HZ.
-The result can be an unexpectedly short period or even zero.
+The get_fill_size() cleanup began with commit 8e2efb3f45a5
+("net/sched: add get_fill_size callbacks for actions missing them")
+[1], which fixed the actions the bug was reproduced with, pointed at
+act_gact/act_skbedit/act_vlan as the pattern to follow, and left the
+other pre-existing issues to upcoming patches.  It continued with
+commit 4ba61bfd4998 ("net/sched: add get_fill_size() to the five
+actions that lack one"), which spelled out the rule the callbacks have
+to obey: size every optional attribute unconditionally, because reading
+the current flags to size it conditionally races a concurrent replace
+that can flip the attributes between sizing and dumping.
 
-  # tc qdisc add dev lo clsact
-  # tc filter add dev lo ingress protocol ip pref 1 handle 1 flow \
-        hash keys src perturb 42949673 baseclass 1:10
+Auditing the remaining callbacks against their dumps turned up two gaps
+in the very pattern 8e2efb3f45a5 held up:
 
-With HZ=100, 42949673*100=4294967300, but UINT_MAX is 4294967295,
-so the product wraps to 4 jiffies.
+  - act_gact reads tcfg_ptype with neither tcfg_lock nor READ_ONCE() and
+    budgets TCA_GACT_PROB only when that read happens to be non-zero
+    (patch 1);
 
-Both the filter-modify and filter-create paths in flow_change()
-are affected.
+  - act_vlan never budgets the two PUSH_ETH addresses its dump emits,
+    and only escapes overflowing because the three PUSH_VLAN_*
+    attributes that a PUSH_ETH instance does not emit happen to add up
+    to exactly the same 24 bytes (patch 2).
 
-Since perturb_period is ultimately fed to mod_timer(), and
-calc_wheel_index() internally casts delta to signed long for
-comparison, reject values greater than INT_MAX / HZ. Besides
-preventing the u32 multiplication from wrapping, this also
-keeps the relative timeout within the signed-long range on
-32-bit systems.
+Neither can overflow today.  All four consumers of the value --
+tcf_get_notify(), tcf_del_notify_msg(), tcf_add_notify_msg() and
+tcf_reoffload_del_notify_msg() -- allocate at least
+max(attr_size, NLMSG_GOODSIZE), and NLMSG_GOODSIZE is
+SKB_WITH_OVERHEAD(PAGE_SIZE), so a batch has to carry enough actions
+for attr_size to grow past roughly 3.7 KiB before a 12- or 24-byte
+shortfall matters.  A replace cannot interleave between sizing and
+dumping either: RTM_NEWACTION, RTM_DELACTION and RTM_GETACTION all take
+rtnl, and the classifier path, which can run without rtnl, computes
+attr_size in tcf_exts_validate_ex() and discards it.  Both patches are
+therefore accounting-correctness fixes against the rule above; each
+carries a Fixes: tag for whoever wants it in stable.
 
-The missing check was noticed while reviewing commit 7ca52541c05c
-("net_sched: sch_sfq: reject invalid perturb period"). An
-LLM-assisted analysis of the same pattern then showed that cls_flow
-performs the same unchecked seconds-to-jiffies conversion in both
-its create and change paths, and needs the same range check.
+For completeness, act_ct, act_tunnel_key and act_pedit also size some
+attributes conditionally.  They do it from a single rcu_dereference() of
+a params pointer that replace swaps rather than mutates, so the budget
+stays consistent with the snapshot it was computed from.  act_gact
+instead reads tcfg_ptype, a field mutated in place on the action itself,
+with no lock and no READ_ONCE() -- that is what patch 1 fixes.  act_bpf
+sizes conditionally too, but takes tcf_lock to do it; patch 1 removes
+the read instead, which needs no lock.
 
-Tested on aarch64 with CONFIG_HZ=100:
+Patch 3 adds TDC coverage for the previously untested gact dump and
+get paths.
 
-  # tc qdisc add dev lo clsact
-  # tc filter add dev lo ingress protocol ip pref 1 handle 1 flow \
-        hash keys src perturb 42949673 baseclass 1:10
-  Error: cls_flow: invalid perturb period.
+Tested by building net/sched with CONFIG_GACT_PROB=y and W=1, which
+produced no new warnings, and by running the tdc gact and vlan suites
+(38 and 36 cases, including the three added by patch 3) against a
+CONFIG_GACT_PROB=y kernel with this series applied; all passed.
 
-  # tc filter add dev lo ingress protocol ip pref 1 handle 1 flow \
-        hash keys src perturb 100 baseclass 1:10
-  # tc filter show dev lo ingress | cut -d' ' -f9-
-  handle 0x1 hash keys src baseclass 1:10 perturb 100sec
-
-  # tc filter change dev lo ingress protocol ip pref 1 handle 1 flow \
-        hash keys src perturb 42949673 baseclass 1:10
-  Error: cls_flow: invalid perturb period.
-  # tc filter show dev lo ingress | cut -d' ' -f9-
-  handle 0x1 hash keys src baseclass 1:10 perturb 100sec
-
-Signed-off-by: Wei Tao <taowei@kylinos.cn>
----
-v2: https://lore.kernel.org/netdev/20261016040330.59041-1-taowei@kylinos.cn/
-  - drop the Fixes and Cc: stable tags: this is hardening
-  - describe how the issue was found and add the tested commands
- net/sched/cls_flow.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 2ef449706638..4f2d63722e16 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -408,6 +408,7 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 	u32 keymask = 0;
- 	u32 mode;
- 	int err;
-+	u32 val;
- 
- 	if (opt == NULL)
- 		return -EINVAL;
-@@ -486,7 +487,13 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		if (tb[TCA_FLOW_PERTURB]) {
- 			if (mode != FLOW_MODE_HASH)
- 				goto err2;
--			perturb_period = nla_get_u32(tb[TCA_FLOW_PERTURB]) * HZ;
-+			val = nla_get_u32(tb[TCA_FLOW_PERTURB]);
-+			if (val > INT_MAX / HZ) {
-+				NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+				err = -EINVAL;
-+				goto err2;
-+			}
-+			perturb_period = val * HZ;
- 		}
- 	} else {
- 		err = -EINVAL;
-@@ -504,7 +511,13 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		if (tb[TCA_FLOW_PERTURB]) {
- 			if (mode != FLOW_MODE_HASH)
- 				goto err2;
--			perturb_period = nla_get_u32(tb[TCA_FLOW_PERTURB]) * HZ;
-+			val = nla_get_u32(tb[TCA_FLOW_PERTURB]);
-+			if (val > INT_MAX / HZ) {
-+				NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+				err = -EINVAL;
-+				goto err2;
-+			}
-+			perturb_period = val * HZ;
- 		}
- 
- 		if (TC_H_MAJ(baseclass) == 0) {
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
--- 
-2.25.1
+[1] https://patch.msgid.link/20260816201327.2435335-1-victor@mojatatu.com
 
