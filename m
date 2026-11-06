@@ -1,108 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.234
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794005650;
-	b=AMO2PIsItwWr7juTwFJ+w/Klk4zoW1lM0AGY7tu6nd0D+zi+DTe1M/F+O+zM8RelBZEZ
-	 yv9guJAdrL+0xBkOPrXAxMs7vacAP9p3ZhOuECV8lFBej8UBbRqFKa7jsnrpjpwKGflNC
-	 683ZsIcwUbllZ5iarA2AthRjHtqvda2n+CzmON0HJVAiM2LE9yoLq62hk0eETiXnaeHU6
-	 DHZHzP5AVHnn+91Tl8lU1Fiw9dzrYvoMeKxGytVcciDLeBNkn4zFlZUBD5jU2CtXW4osx
-	 NQztTCaNAmF6re0VkY4TcxD3XUZbxbBhKSBrGWLU8oIYNyg4CcZJhwXM6fUYAQSzFdg==
+	t=1794005983;
+	b=j1fLeKoyGQ21Ti0+iU21sufz7UnLYf2xtGqBSwxNEWS4nNtLQMrHb0k9nKUpzEcSNIrP
+	 yeJMZDu9R/4F6QsDoPa106P+XR3s2cvhQ7rLLBOGqSN0eC1SG5mutR97sxJAMV+NVEptr
+	 PN/fN2CQo+YMwqa22SJjoM8BuGDYMY5Qf2NQMxc27KY4MBSaav7WVxAqZf/Z8DnCM1fFV
+	 vRQ9spFgdxNihOR1Rc2rswSxC0LsxCEh5l5fAJ2RPxc6D2fYd5Q4Bg5WdrDbCQ0tOTjwO
+	 wtQkU76WObWXJM9K3791qPAiYyYi7cABoGIHeypWFVHdS2smiskIPoaFO20BmOYM8vw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794005650;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=fbPspms2sS3O5/nUsYayzrSPxne2ni7ynNvNA4DD4fo=;
-	b=CFMHFfuWeoJMrTtMU36u/DX2VCcnHXuib4WlOLogwDcYHWZKTFZAcbBoMJUf/RyquNH/
-	 HMofc8YVrq0I58V9jQnlRVGsToN5HPnhhZ+0wPcMqBMcVuUxBq5BzqLxwrIq8pCCd6ZMC
-	 UPALbZbi3qKZs8C0YlZBox3VNTfkmvgRm1NklFFYtDM42jysTJ5ZGNuNpexQutAUboikk
-	 3ehFIbuI1jCCP1sIHXJY5o7dcyCBoK0h/elYRQI+K8e7ETql52viUV930ZIYee8TlRm40
-	 LpfrcAjTJBnwMkhS2oFNOKu/wLYIR5U6k7kAveZ4P9BDQexvwq2EVWUDmPoCu6pz2+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794005983;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=1ROF08EgwNasXuxo3btYG0d75HLIqEGhXE/Y5ILr3Aw=;
+	b=UxhE3qOTPwh8N2mR9YM4/+SwAeN4EWRqPW9dXLBTIVPlXK+hpiT8l/TNxZlrWEUrHgo5
+	 lCKG4tqjWimP4BucRWSsDPwLQJkbxZVdn2PD5rT0hoxVSInbffEVzoSTHtwU1y6PhcX1Q
+	 tm4C2nFEZNEx7+yt3P3Dj7DHfux1F0eKbeX6VosoV6g7yVI0FYfjVEV1AlOZCDWdZmMQv
+	 9r80ZUnvqKbsX1TUD4TG3g8GUl2Kkqzj8Npfki3O3UOaOm3/teVZSOoF4yuGUub+JiNef
+	 OITd8wkPuizHrq5OP3YHx6yiRtOH7CcOPPeF9ia0eeH8f31z+18/uMdJxUFCMjQI8pA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0M7AHNmA;
-	arc=none smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	arc=none smtp.remote-ip=91.218.175.234
+Received: from mta0.migadu.com (out-234.mta0.migadu.com [91.218.175.234])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A735D606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 22:54:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A735D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0M7AHNmA
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b1b13e09ffso1424320a12.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 14:54:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794005648; x=1794610448; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fbPspms2sS3O5/nUsYayzrSPxne2ni7ynNvNA4DD4fo=;
-        b=0M7AHNmAt0fUBLx8XdzysHSARdvqRt9HK0sAIYFVEZW4+8tfz+wB4r1CWNhp87oKnb
-         H8xiX8SNlsxG1iWOQCqbnu12N51XMnkNrw3H2fd9fMY/3HUvpUv/afJ6UnjUP1emVk/f
-         HKmLzR6g9vzac1S660i6wJot727gk/SKnPKDLspcMM6+zTNeB01Yhi3N+J84GQLIFGkG
-         XCe7A4UY2gW7be/cx/7RQyiaGWZ8cwezd30gp9i03f7lD3mKIEvHq7+owprtxJqH0Zv8
-         IHKiw6uNfjUWH1fpmNZC2STvlbv2j90un6HauQeqbzpGfl/S63fT2x5kbXrG8Gbltw1k
-         HOpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794005648; x=1794610448;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fbPspms2sS3O5/nUsYayzrSPxne2ni7ynNvNA4DD4fo=;
-        b=Cb2dMi2HN0wjQ8d9SDDyDmvlYilQ9Ejsx7nvVWWQuKhpMEvW1XNE2rnAHJ5dciB95z
-         9sOth7v4nEinDNAIBIVqQ0/xxKxjSV1eJfphihVTbpV3qnVnKAGmo86coHUpTMwbiQNW
-         +eZvvWfL6n8loUMxwM3abVeqeXulIQjLZVzm9ZQiqelicUt2kf9gkyKni3CJfDhD8vz8
-         kxWmGMbm1vCmhOHyOqdZ9lkI3G9wWyX2x8qclsF9d2QmFXQguGFRbmKi2CLmDdHqpHe3
-         B1mZU+2ee8m+ZfL43eBFr/GplTiJIfFIgdZSS7jJDUppehLn8vdJd6Sz0aMD48V8R8/N
-         a8Jw==
-X-Forwarded-Encrypted: i=1; AL+hErFkiwx22pB6Bq5f2nUXyc0kA7gu1B35O76EM4F613a0QMVs4MSFcjSql516w7NvLYV5EvWFvCw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8SCPxF0EufmTHZGzg+PgQYcQjsTV5SnZYWTgPskHi3Nq5ZwHl1
-	E6qa8HzOS6+K4mjB2Zof18sQ2Ofpe77sKRNiybA0NhGuIGVmPbiooxZb
-X-Gm-Gg: AYBFou00hLshxXuV9Axgt9UkRuVi9vHB+/jl/hkdVFlmk69uyurTUBESKtq2kgxV6L6
-	Z04xRFDwmFHD1HFgcQlltqcAAVeWWEJKDrJqkyp+ESwRZJfGr16aP43fdfhIAFvMP8175gWm7Ud
-	VRiAnwWWKSr+xqBlKs0l4OMuIY88sIW2uQ/AjIEwQxsziki93A1XtAOLpd9AoWymu8iwSoarSNg
-	Pe1s+B4Vjooezi2/OumH8WaPjqHGNTZxI2hx0N/kuYqeV3ufYClyj+rShhgHuwl7JLP9AUsgEQl
-	m8tNsNBCpA28kvSH+TIxF3lcKf4x3wY4+jGMGV9rvaGnIafoXdWnpdDEhfuiwT+iRVAEWKtPXFo
-	DC2Ri9/n/VX4w8/4Q/R4+itlayQT7rqOEzVzGXFbdmld2X+IVIDO5eJz++nTxlZalOiRUul7XUz
-	ezq7osjWtipf/AKKwCdpsbVysNjWid2Dhkf1WMxLOMY6cNYFfNptkT79jRukiALGiPgtuvjRwaQ
-	74DEMSEVkr/45EVc/e8xjkM14G17IbCX/qwtGE/znX+FM9dHY8oGYsEq/WfIjeRY0h3i06peq64
-	9djPDMFndY3k5maxu2rFub4VmQBy27BtEIJFpK2amyAdQMrhhC4FEXOVTVTu8VDPW+JKlPJNkym
-	3eaxzUxPTQkCO8tI23Yy32RGLUnrd/DjN7g==
-X-Received: by 2002:a05:6402:5514:b0:6b5:8200:5008 with SMTP id 4fb4d7f45d1cf-6b597838b71mr2795992a12.45.1794005647881;
-        Fri, 06 Nov 2026 14:54:07 -0800 (PST)
-Received: from CCM-PC (83-233-221-133.cust.bredband2.com. [83.233.221.133])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b664b165e9sm1095181a12.29.2026.11.06.14.54.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 14:54:07 -0800 (PST)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Stanislaw Pal <kuncy7@gmail.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39547606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 22:59:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39547606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=L4ufDEEa2cDQOD1tieRWm/aNnrY0KOk7T1D5nMVlhHA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794005978; v=1; x=1794610778;
+ b=SH3Wrkk4RHd7MrejZffSWADP4sedp2YtWXuVB4PRiAhqS8aJjvV6y/Q9gV5jjqZxno+ZVEH3
+ zvCOlK6eU82VQSoMFHDCj7MzVJyVYT0SNTLH5nkAVBW4VLmIgy8f6BW+oF4IcFd5owFF1ujzrBq
+ jXMkWyavrlkK5yqF0kA8/xGc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id da53d83c3dc044e5;
+	Fri, 06 Nov 2026 22:59:38 +0000
+X-Mizu-Trace-ID: da53d83c3dc044e5
+X-Migadu-Flow: FLOW_OUT
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: alex.aring@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
 	netdev@vger.kernel.org,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-wpan@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ziyang Huang <hzyitc@outlook.com>
-Subject: Re: [PATCH net-next v8 1/2] net: dsa: qca8k: let regmap serialize register access
-Date: Fri,  6 Nov 2026 23:54:02 +0100
-Message-ID: <20261106225403.272212-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.5
-In-Reply-To: <6aee175b.f01aa0c8.37eba4.18ea@mx.google.com>
-References: <20261104120130.48455-1-yongzhao.derek@gmail.com>
- <20261104120130.48455-2-yongzhao.derek@gmail.com>
- <6aca850a-ef67-4451-aaf2-977be884d1b0@lunn.ch>
- <6aee175b.f01aa0c8.37eba4.18ea@mx.google.com>
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH net] 6lowpan: fix netdev_priv() type confusion in lowpan_event()
+Date: Fri,  6 Nov 2026 22:59:30 +0000
+Message-ID: <20261106225930.1379968-1-roman.gushchin@linux.dev>
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,52 +68,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Ansuel,=0D
-=0D
-On Fri, Nov 06, 2026 at 07:07:19PM +0100, Christian Marangi wrote:=0D
-> Operation of the LED and on the port have their own dedicated register pe=
-r=0D
-> port and for shared stuff, there is a dedicated mutex for it.=0D
->=0D
-> So I'm not sure what case this patch is fixing...=0D
-=0D
-Stanislaw has walked through the regmap path. I can add a reproduction=0D
-of it in which the two accesses read different registers.=0D
-=0D
-It is a local KUnit test on UML. It builds qca8k-8xxx.c with the real=0D
-regmap_config, register callbacks, PCS and MTU code against the real=0D
-regmap core; only the MDIO bus below the driver is a fake register=0D
-file. The test stops one access inside its MDIO read and resumes it=0D
-once a second access has started and blocked, so the second access runs=0D
-between the first one's ->read() callback and its parse_val().=0D
-=0D
-With two qca8k_pcs_get_state() calls, for port 6 and port 0, each=0D
-reading its own PORT_STATUS register, port 6 returns port 0's link=0D
-state. Separate registers do not help, because both reads format the=0D
-register and return the value through the one map->work_buf.=0D
-=0D
-A second case runs the MTU code against a PCS poll. The PORT_STATUS=0D
-value that 2/2 saves is replaced, and MAX_FRAME_SIZE is written while a=0D
-CPU MAC is enabled. 2/2 relies on 1/2 for this, because readers such as=0D
-the PCS poll do not take its new mutex.=0D
-=0D
-On net-next, both cases fail with only 2/2 applied and pass with 1/2=0D
-added.=0D
-=0D
-The limits: the test forces the interleaving (a gate in the fake bus=0D
-and a SCHED_FIFO thread on a single-CPU UML kernel), it covers only the=0D
-MDIO path, not the management frames, and I have not seen the=0D
-corruption on hardware. The test calls qca8k_pcs_get_state() directly,=0D
-so it does not show that two PCS polls meet on a given board; the=0D
-callers that can meet without rtnl are the ones Stanislaw listed.=0D
-=0D
-The test is not part of the series. I can post it if that helps.=0D
-=0D
-If this answers what the patch fixes, I would keep 1/2 as is in v9 and=0D
-add the two-reader case to its commit message. Would you rather see a=0D
-different fix?=0D
-=0D
-Thanks,=0D
-Yongzhao Chen=0D
+lowpan_event() assumes any netdevice with dev->type == ARPHRD_6LOWPAN
+has a struct lowpan_dev in netdev_priv(dev). However, non-6LoWPAN
+devices can also have ARPHRD_6LOWPAN, e.g. a TUN device via TUNSETLINK
+or a bonding device inheriting dev->type from its lower device.
+
+Bringing such a device up or down causes lowpan_event() to read and
+overwrite unrelated netdev_priv() memory. Since unprivileged users can
+create TUN and bonding devices in a user and network namespace, they
+can corrupt struct bonding and trigger a slab use-after-free.
+
+Also check dev->ndisc_ops == &lowpan_ndisc_ops, which is set only by
+lowpan_register_netdevice() on genuine 6LoWPAN devices.
+
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression")
+Fixes: 2ad3ed59198c ("6lowpan: add 802.15.4 short addr slaac")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/bug/linux-97b284e0-576e-4373-b62f-eb132f482b91
+---
+ net/6lowpan/6lowpan_i.h | 13 ++++++++++---
+ net/6lowpan/core.c      |  2 +-
+ 2 files changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/net/6lowpan/6lowpan_i.h b/net/6lowpan/6lowpan_i.h
+index 01853cec0209..07f11d4dde6e 100644
+--- a/net/6lowpan/6lowpan_i.h
++++ b/net/6lowpan/6lowpan_i.h
+@@ -2,19 +2,26 @@
+ #ifndef __6LOWPAN_I_H
+ #define __6LOWPAN_I_H
+ 
++#include <linux/if_arp.h>
+ #include <linux/netdevice.h>
+ 
+ #include <net/6lowpan.h>
+ 
+-/* caller need to be sure it's dev->type is ARPHRD_6LOWPAN */
++extern const struct ndisc_ops lowpan_ndisc_ops;
++
++static inline bool lowpan_is_dev(const struct net_device *dev)
++{
++	return dev->type == ARPHRD_6LOWPAN &&
++	       dev->ndisc_ops == &lowpan_ndisc_ops;
++}
++
++/* caller must ensure lowpan_is_dev(dev) is true */
+ static inline bool lowpan_is_ll(const struct net_device *dev,
+ 				enum lowpan_lltypes lltype)
+ {
+ 	return lowpan_dev(dev)->lltype == lltype;
+ }
+ 
+-extern const struct ndisc_ops lowpan_ndisc_ops;
+-
+ int addrconf_ifid_802154_6lowpan(u8 *eui, struct net_device *dev);
+ 
+ #ifdef CONFIG_6LOWPAN_DEBUGFS
+diff --git a/net/6lowpan/core.c b/net/6lowpan/core.c
+index 850d4a185f55..748103d37e31 100644
+--- a/net/6lowpan/core.c
++++ b/net/6lowpan/core.c
+@@ -113,7 +113,7 @@ static int lowpan_event(struct notifier_block *unused,
+ 	struct in6_addr addr;
+ 	int i;
+ 
+-	if (dev->type != ARPHRD_6LOWPAN)
++	if (!lowpan_is_dev(dev))
+ 		return NOTIFY_DONE;
+ 
+ 	idev = __in6_dev_get(dev);
+-- 
+2.56.0.455.g6c5a503b38-goog
+
