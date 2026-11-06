@@ -1,49 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793959207;
-	b=jaAQKr2OKGutwog3s9WOriZl+tPdv7a3LtDO3bv1yYH0lrau81Xi/nAf9Ivx1jt6dm64
-	 oUS545QBvvvoQawNpv5aiQ/4H4ifOVb3qklVvDxxmCt3myqF7LQdUggG9OnGuZJm5DvS5
-	 Ug9qGg0dcS3LOdykFHzPBbAH6HUcSzWUeAfAamUZx9FTn/P4wUxexFARxS4hGNSnRFMUt
-	 DkBbBeNrru8CUpQGQJuYIwgcsPX/RTO6oOKUOvYygSPIVPvBgZbdw6lizJb7EeAEQlCmm
-	 SDsXOY/+SP+ugxUVBu1RM8dhTfMiSsj6le+a9tg2VS7VvJixEePF/d/dDQIeVkiWZYg==
+	t=1793959792;
+	b=YUbTlOXaHXdgVcwhISB/7MPbxdRNdVf0noh7O2gxhkw9BIGXZJxMsLZo/GP47gKzdE3v
+	 TaUdwukMv/rsLa/wxloEG22pK7fidOxHFdJLqyhObOGRwS8eVsDApQFvH+0Sxne6HPpce
+	 IaNZu1kfiahBFGg+fqCn8+vr5pZevI0vfMMwUB5rJGnFyhlZXIHSaTH6JK3Q+R9S954NJ
+	 8tvN10YuX0MuCzFoOiuW6NZQ1tIKOC+V+TxMLA94HlBKQt8aM6heGvi47i60rRG5P6E82
+	 VairwKaeUZn/tmREE2DOGdNGsz4Pt+hE4U8WV34JIPQLyFJENuZR+3A5gWVwyugPdPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959207;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=vow2vG/QGUSa3sk+BL7ipbjd78B1wl5dopE1viaxuxk=;
-	b=C29qQ15iuGuCtC3wGrg5tPjnPrxFcpvac6CtnuvgUv7Yg7P0KnyhIZJU842hezVkORq1
-	 FUuumEAQhRAC8k6pNqeYBt6SYcxhCcWap0it6IKtJluhwJD9gmpwXjzAtH6g5aHpEJP4F
-	 5Z8MmBhGK4i1F2Y9Sz32dUC2e5lIHHSDhMV+/ZD77WXm0ut0lJuRdmee4RL3i37V9nVO/
-	 5M+P1WBcSLh0FUv9RwnWGW75zI9UdMCl68ME79kGQxtQYVdsNTF4386mutaknsytU8W+p
-	 4kjObGzOqdHsZX+mJp6tOV/5uTmpW5LdOwzS2twTc7wFDNGJ7b3kfXf5S7SU681WeKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793959792;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=nlXCNuaGteJMHPhKOMcWqAFCETDFUXQYuHFMl+88FyI=;
+	b=bcpMhIXSgBCDekJMkx2X/RDDagLsyaReG2XHGCO53DQxpqt0Ebaojs/9rAbnsYlvGpu4
+	 daG6/oyoZisUdk08aHUVYeBZJnZaY4OxSfyA3RKnXMTzveXmuw39L+wxYNjcm00lIF8Tz
+	 mn1NV24/9M6e6WCHzNG2N1vvw9yCcyg0ZycKnDCR7hi2BsvergfLwUNkVFxCG1L8cOyOv
+	 rFKm2gr/f774gmHNkFUSCcsxKDk6/YaZ45TNslZQqg3kwuqiYBt3zYVmO++JNDDCE4lqY
+	 M2FNF20wt+an+MADo1f8JrqmsODgICKMU+/4kvYwYy3UBp1wk8/rN0R7RSsr2vHq4nQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C3y6yKXt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=ciB7EYh5;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D274606A330;
-	Fri,  6 Nov 2026 10:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6A4606A32C;
+	Fri,  6 Nov 2026 10:09:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E6A4606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C3y6yKXt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFE51F008A6;
-	Fri,  6 Nov 2026 10:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793959206;
-	bh=vow2vG/QGUSa3sk+BL7ipbjd78B1wl5dopE1viaxuxk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=C3y6yKXttY1eJt3ps23frI/HFf3gHrtxrjSADU30An6bqmW2kBdWbvHFyo03zOCyu
-	 +JyjjxVTEJgEQHAKjWexdHMzVkNMp47xBYyd0/BwtjGnFFlp2NsojgQTeyYxvf3jeW
-	 xMbGXhlr9XduU0ZzQzfdGIKkBoeLiZURk+o3p2nAoJ24LGW+ngHh6B/Z442ENATnJX
-	 9N7BPWMBO47v/Wbn1dw6S1DrLc9T/Hn4vdr+35IMp4+IGXj8lCkzOJABePO7c4CZve
-	 xqDyq/I3MSh13A++3HUFinSW/H8zxnaCN8aeaONd1ph0abENDiAT1e6FxUFt7x0heB
-	 0UNy3jXIanX2w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B088392447D;
-	Fri,  6 Nov 2026 10:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=ciB7EYh5
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=nlXCNuaGteJMHPhKOMcWqAFCETDFUXQYuHFMl+88FyI=; b=ciB7EYh5KJ21H8k7CQUVDoJPTK
+	aBgaJ2IlEbwPkXY9J0ggZMzwj2MomPQwOFuHGrQ/bu+U+sIvQ3mUrs2U0aWehjAQ05Ld8ivjdv8Lu
+	1qX1L+1al//RhizxEOSN8lJNFi6qNCaD/awwNhUAQBydIMdLfUk5NnAcyzW/5aZPoxhwVr2Mue/CH
+	Y639ld4gMvJb0p9TWcG463E1q2UwLxKrmW25xatpGquDgJZTsT6NvgrhJEq3A/Jb9wAfOM6kAIbAi
+	AFWgzqqpRkAvAF/V10jbPGGrKl8ru2m9v22wh3MAYPHG90zvrpePLR8tpaWgd/R/keZgJ9BsWQnVT
+	V+NBT3bw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xPGtA-009CvW-07;
+	Fri, 06 Nov 2026 10:09:40 +0000
+Date: Fri, 6 Nov 2026 02:09:34 -0800
+From: Breno Leitao <leitao@debian.org>
+To: "Harry Yoo (Meta)" <harry@kernel.org>
+Cc: Arthur Kiyanovski <akiyano@amazon.com>, 
+	David Arinzon <darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, kernel-team@meta.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB page
+ kernels
+Message-ID: <au2nNm44LnaoXcB2@gmail.com>
+References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,44 +70,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5e: TC, Fix double free of branch in failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179395920518.502049.12133598827190916497.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 10:00:05 +0000
-References: <20261028145805.54595-3-fourier.thomas@gmail.com>
-In-Reply-To: <20261028145805.54595-3-fourier.thomas@gmail.com>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, ozsh@nvidia.com, roid@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
+X-Debian-User: leitao
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
-
-On Wed, 28 Oct 2026 15:57:02 +0100 you wrote:
-> When allocating the false branch fails in parse_branch_ctrl(), the
-> already allocated true branch is freed but attr->branch_true is left
-> pointing to it. The caller parse_tc_actions() fails the flow, and
-> free_flow_post_acts(), mlx5_free_flow_attr_actions() which calls again
-> free_branch_attr() on attr->branch_true.
+On Fri, Nov 06, 2026 at 03:17:11AM +0000, Harry Yoo (Meta) wrote:
+> Since commit ef5b0771d247 ("net: ena: fix driver when PAGE_SIZE ==
+> 64kB"), the RX buffer given to the device is limited to ENA_PAGE_SIZE
+> (16kB) because the buffer length field in the RX descriptor is 16 bits.
+> However, the driver still allocates a full page for each RX buffer, so
+> on a 64kB page kernel only the first 16kB of the page is handed to the
+> device and the remaining 48kB is never used.
 > 
-> Clear the pointer after freeing it.
+> The dynamic RX buffer recycling added by commit f7d625adeb7b ("net: ena:
+> Add dynamic recycling mechanism for rx buffers") does not fully utilize
+> the page because ena_try_rx_buf_page_reuse() only reuses what is left
+> in the current buffer and ignores unused memory in the page.
 > 
-> [...]
+> This shows up when RX data stays in socket receive queues, as each
+> queued skb keeps the whole 64kB page alive while at most 16kB of it
+> holds data. On an EC2 t4g.large instance (64kB pages, 8GB memory) with
+> 519MB left unread across 64 TCP sockets, RX pages pinned 2869MB of
+> memory while the socket layer accounted only 687MB.
+> 
+> Fix this by mapping the whole page and letting
+> ena_try_rx_buf_page_reuse() size the next buffer from the room left in
+> the page instead of from what is left of ena_buf->len. ena_buf->len is
+> then only the length written to the RX descriptor and stays capped at
+> ENA_PAGE_SIZE. With this fixed, a comparable workload pins only 497MB.
+> 
+> When PAGE_SIZE equals ENA_PAGE_SIZE, the room left in the page equals
+> ena_buf->len, so nothing changes.
+> 
+> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
 
-Here is the summary with links:
-  - [net] net/mlx5e: TC, Fix double free of branch in failure
-    https://git.kernel.org/netdev/net/c/31f9b43a3bb3
+Nice finding, this seems like a bug, no? Which means 'net' tree and
+a Fix: tag.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
