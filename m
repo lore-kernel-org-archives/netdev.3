@@ -1,56 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.80
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793928894;
-	b=htX7eYiUQHlPbD4iQ3Ev0UGVoOmfRwwvmIZH3CA0i22qRxHvib3Kk2yUR0E6JMhD4F1Q
-	 VDhSVD1hEfOHlorA91BJvtfhEuNYtV0HB7U6KLswkBDmS46WBPYvWGmnQbOfo52GLFdct
-	 IUMdaxCP+iDxZ24SM2XLFIh+xcE9/PZUpiG/mbTTCnLu11ptzJTnfnsLRMGLUF07VVg8I
-	 z6DInmAq91OWoeZXVV3s9dCyzS84hWoDOMxGyvC4r5MvIBD9R60oMghAgmrFzGuKpJray
-	 yQOffuvAgG1krfegWEGMcjtGS9kLN8T+WjX+FY00/KLEwoqr/yRjSFCBOL9KPvwqOZw==
+	t=1793930599;
+	b=UNk47fny5ZTYAx30wZshpUY2++5K2K/QvvvYL3JEEv6E8VpyExNcgE6PkGAEOaizwFb+
+	 pt1l4xXVcK0JfXpa3ju8PtKhol0cJVup+vCJfDeTVHiHHp1KLbs5aP3hOOLq+kzptUL38
+	 QBUPeb5kVKICnpmqI49Rnchfoc03M/d4VED9u16vCRB/l3qVxMdRgHkGJ8GUZG7/r0yy/
+	 MIpYGfUO4DAbb2BAbaUuXlaicPf4W1wsh6fNdaY0VsZqb1Hit5CPjrhCk4zYxdMSkZJBz
+	 Y7Ay9I0ln2bQqxsep7+gFPuhgHrA+GJU6AcCgtja/MAyMF9F2EBIxSYUhtv8X88RT9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793928894;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=37zF0J9YNQQfNg00zUsp96qSKKkGdLAWq7jkYoSVkEw=;
-	b=d4jSpR2co8DRH6ibYHwl2+Rr0N1s+nOWfiFHmlD4Qc/yOTyzRwJoYdkegvIeY9CqB4ai
-	 274i9hpccyfzYDzD9+MrUAW+T76tYgvmHk2uPwckShDILGZISQn2hmKzkcchWNWnZ96TR
-	 CDM93F4Sl0iJ8RRjbmMs2RsIcW/x9ZB1Q2MIMUCHF6VaKGp+nlak5hcU5LqQezJyNKs/t
-	 WP8mQVsvqQvQokM/3NnPNqM+gZYaUZlni4ZSlqILHEp7lLTRByiE7L6Py1W5eR2u0hV+J
-	 YJ04Y6ON+XFqm0vuhhCLokS0r1OdGR9ktV9nw/41uYOl31KM7v+9WoQXuKmTQN9ZSpg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793930599;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=a5+XHx9VkmMYhdeQ2fq6mtWIZa8h3SwrC9yL/0CDbts=;
+	b=qc96gG1UglocMUownRzeKJ86glxdLVy3inp+9B9RhGmHwOeQkSO3orL7bOQbRC1DLBIl
+	 Oig/wzmFECOAGFICINxmw11lVjXG745kB4Ac5qvy+QVhm+DqwIxoB9MaoE75quIKQJwyx
+	 CBTRUloooGeH18vtf4MuZfN03opxAy12kvU72OKO1LbiAAu2UdIQnUvOXWjY0Goft4E9o
+	 EUkdgxX4IbvejGjAJsAg4MSpp3MoXDhjGh2jns5itvX9sCzPm1NZCEOb0/bAroh5/ki/K
+	 3JQupgwLpvQDj+2NVL51wFl1cG2jC2F6DCkhEV+EleVrpX1FQM0942aDuvuBtszxahg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e3YSw8Ew;
-	arc=none smtp.remote-ip=95.215.58.80
-Received: from mta1.migadu.com (out-80.mta1.migadu.com [95.215.58.80])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFC1606A31B
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 01:34:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FFC1606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ppqx8sxJ;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A9C606A31B;
+	Fri,  6 Nov 2026 02:03:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2A9C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e3YSw8Ew
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=YOPsIY4Tuyad8OkdA/iv+lBNUq8frqmfosXKiJVdAj4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793928890; v=1; x=1794533690;
- b=e3YSw8EwtMVJjgbTlXMguKv8bj5d1A7SL9MNQ4ZICLgvMkJBXAC+F0IS6vbsvXjXMQGhZlLK
- wQNXvKWBwZMYcOI3CIUBUjJIy99LFhumPQFKsZioBIYA5pFYy62jcLHotcEoL9IkMSQOzqucl/c
- ys2p2/Ev/tMtOH6H8/tSkHzk=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 81f11a3f24812833;
-	Fri, 06 Nov 2026 01:34:50 +0000
-X-Mizu-Trace-ID: 81f11a3f24812833
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Fri, 06 Nov 2026 09:34:32 +0800
-Subject: [PATCH net RESEND v5] bonding: fix slave_cnt leak on XDP error
- paths
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ppqx8sxJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=ppqx8sxJ8Y1oVubf3Xg5bguV+QMQxKmL+cCdlXzbu0LgBP86xeJ3+F7UTxJ2uAknIGRcpIL9bXeWi
+	 pMyyWqk87dpvk62JNYUvKSGXZlggWNdgxSR8TqC4ijC0wLHPLg04zA3sbRXinwDTDpZZTrbE6SWs0F
+	 INzD1jQm3raEDvMM=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96aed35621f5-b01d6;
+	Fri, 06 Nov 2026 10:03:14 +0800 (CST)
+X-RM-TRANSID:2ee96aed35621f5-b01d6
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from cmss.chinamobile.com (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16aed3561424-0d505;
+	Fri, 06 Nov 2026 10:03:14 +0800 (CST)
+X-RM-TRANSID:2ee16aed3561424-0d505
+From: Yuehong Wu <wuyuehong@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <kees@kernel.org>, nuno.sa@analog.com, Heiner Kallweit <hkallweit1@gmail.com>, Chen Ni <nichen@iscas.ac.cn>, "Alexandru Tachici" <alexandru.tachici@analog.com>, Lennart Franzen <lennart@lfdomain.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] net: ethernet: adi: adin1110: mask the RX IRQ of the port being stopped
+Date: Fri, 06 Nov 2026 10:02:51 +0800
+Message-ID: <20261106-adin1110-net-stop-v3-1-yuehongwu@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,133 +65,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-bond_slave_cnt-v5-1-40857a722b6c@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XPwW7DIAwG4FepOI8JMCFkpx3W6w7rcaoqIGZFq
- 8gUItSqyruXccrGzbb8/ZbvJOEcMJGX3Z3MmEMKUyxN97Qj7mziF9Iwlp4IJhTTrKd2iuMpXUz
- Gk4sL1Rp77TrPjB1IQT8z+nCtgZ8k4vI7+9gf9u9v5FjKc0jLNN/quczrUk0emPifnDnlFBQOn
- fXSKO9fv2+XEKf07GLNymLrofGieCZQ9MCkM6AaD1vffJah+K4fPVhwXjjbeLnxXDZeFj9yqZU
- 0MKBif/y6rg8NFsCzfAEAAA==
-X-Change-ID: 20260807-bond_slave_cnt-88e78c5f0ab9
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jussi Maki <joamaki@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.16.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+adin1110_net_stop() programs the RX-ready interrupt mask of the wrong
+port: it uses ADIN2111_RX_RDY_IRQ (the second port's bit) when stopping
+port 0 and ADIN1110_RX_RDY_IRQ (the first port's bit) when stopping
+port 1, while adin1110_port_rx_ready() uses the opposite mapping, port 0
+-> ADIN1110_RX_RDY and port 1 -> ADIN2111_P2_RX_RDY.
 
-When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-already incremented. If XDP setup subsequently fails, the error paths
-jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+The port being stopped therefore keeps its own RX interrupt enabled
+while the peer's is masked.  On ADIN2111 that stalls RX on the peer port;
+on ADIN1110 the RX interrupt is never masked at all.  As the interrupt is
+level triggered and adin1110_read_frames() skips the FIFO while
+netif_oper_up() is false, the stopped port also keeps re-raising its
+interrupt with nobody draining the FIFO.
 
-This causes slave_cnt to drift upward on each failed enslaving attempt,
-which would lead to unbalanced traffic distribution with round-robin
-mode.
+Swap the two bits so the port being stopped masks its own interrupt.
 
-Add an error out to make sure slave_cnt gets decreased correctly.
+Found by code review while comparing the bit mapping against
+adin1110_port_rx_ready().  I do not have access to ADIN1110 or ADIN2111
+hardware, so this was only compile-tested (CONFIG_ADIN1110=m, x86_64),
+not exercised on a device.
 
-Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
+Signed-off-by: Yuehong Wu <wuyuehong@cmss.chinamobile.com>
 ---
-This issue is found during code review. The reproducer is from
-Eric's patch
+v2 -> v3: no code change.  Cc the ADI commit-signers that
+get_maintainer.pl reports once a git history is available (Nuno Sa,
+Heiner Kallweit, Chen Ni).  Thanks to Andrew Lunn for pointing out that
+Nuno was missing.
 
-  ip link add bond0 type bond mode balance-rr
-  ip link set bond0 xdpdrv obj xdp_dummy.bpf.o sec xdp
-  for i in 0 1 2; do
-    ip link add d$i type dummy
-    ip link set d$i master bond0   # fails: Slave does not support XDP
-  done
+v2:
+- Cc the netdev maintainers, as flagged by the cc_maintainers CI check on v1.
+- Explain how the issue was found and that the change was only compile-tested,
+  no hardware access (netdev guideline for patches found by code review).
+v1: https://lore.kernel.org/all/20261103-adin1110-net-stop-1-yuehongwu@cmss.chinamobile.com/
 
-num_slaves read via SIOCBONDINFOQUERY is 3 before this patch, 0 after.
+ drivers/net/ethernet/adi/adin1110.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For Sashiko:
-
-This patch only focuses on fixing the bond_slave_cnt leak issue.
-
-1. `bond_xdp_xmit()` may call the slave's `ndo_xdp_xmit` before checking
-whether `slave->netdev_ops->ndo_xdp_xmit` exists. This is a separate issue
-and I will address it in another patch.
-2. `bond_slave_ns_maddrs_add()` and device promiscuous/allmulti error
-handling are also separate issues, which I will fix separately.
-
-PS: I'm working on a restruct of bond_enslave to fix all these issues.
----
-Changes in v5:
-- Re-post, no code change.
-- Link to v4: https://lore.kernel.org/r/20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn
-
-Changes in v4:
-- Revert to v1 version as the bond_select_active_slave() just under
-  slave_cnt increase also calls bond_update_slave_arr() (sashiko)
-- re-run all bonding selftests with debug kernel, all passed.
-- Link to v3: https://lore.kernel.org/r/20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn
-
-Changes in v3:
-- move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-- run all bonding selftests on debug kernel to make sure no regression (Jakub)
-- Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-
-Changes in v2:
-- move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-- balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-- Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
----
- drivers/net/bonding/bond_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a1c156c145b2..34f1b8083fbb 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
- 				     "Slave does not support XDP");
- 			res = -EOPNOTSUPP;
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
- 	} else if (bond->xdp_prog) {
- 		struct netdev_bpf xdp = {
-@@ -2319,14 +2319,14 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
- 				     "Slave has XDP program loaded, please unload before enslaving");
- 			res = -EOPNOTSUPP;
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index 53fac3d..abdc160 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -945,7 +945,7 @@ static int adin1110_net_stop(struct net_device *net_dev)
+ 	u32 mask;
+ 	int ret;
  
- 		res = dev_xdp_propagate(slave_dev, &xdp);
- 		if (res < 0) {
- 			/* ndo_bpf() sets extack error message */
- 			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
- 		if (bond->xdp_prog)
- 			bpf_prog_inc(bond->xdp_prog);
-@@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	return 0;
+-	mask = !port_priv->nr ? ADIN2111_RX_RDY_IRQ : ADIN1110_RX_RDY_IRQ;
++	mask = !port_priv->nr ? ADIN1110_RX_RDY_IRQ : ADIN2111_RX_RDY_IRQ;
  
- /* Undo stages on error */
-+err_slave_cnt:
-+	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
-+
- err_sysfs_del:
- 	bond_sysfs_slave_del(new_slave);
- 
+ 	/* Disable RX RDY IRQs */
+ 	mutex_lock(&priv->lock);
+-- 
+2.43.0
 
----
-base-commit: fafbc4051123d5459ea6950899cec08ed946e278
-change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
 
-Best regards,
---  
-Hangbin Liu <liuhangbin@kylinos.cn>
 
