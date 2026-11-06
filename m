@@ -1,47 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793940339;
-	b=fYD/aMO9FSrSSuOXirgeIJVKbRKdk5xVzI4O5JbGYjMVV1tzzDnfkFJREyJ4fq8K3+ff
-	 rSANDpDMV5T1oTCaiVJiSOZL8p+DMls5j5xk7IOKrM0C1bNzeVX084WeYGQRp+5vCXmV2
-	 kFcXbDV4vC1RJJ22J9dZyn9c0jCjnqMt0nrQFYWD0ifRe0klffE1mYH2DKF1eCWvVotsy
-	 LsGJ13zYImqp/kMDW/5P7ApI6111HpDC97z1lcyVNadGyz0fc8VUuo8xYGUW7ArRQRfej
-	 mJACjZRJ09n7NWDeISdNQlJt8sToqudRGEQxkX90LxlLP2rAvl0MtJx5jejUP1x03lg==
+	t=1793940466;
+	b=GE1R/9RvGi9T6XNLfPhfD9GlFh5AfTOMvSqrVKcjT52Gb9Y7QWf5DXRmlEH5bWcbXUiZ
+	 dDLDl1Bl9go9DBHFdAc2pzs/jX7eNJLhCj0eK1eRH4ArZYwcFH1gjJ+mMGhgLrHwT6V/0
+	 bPHhCmW2d0LYTr47/y64Rti74+LLssN6vNzUFZM71rYBvEr5P1NSU9K8j2LKIC4ffh0Sg
+	 2xYEvpEmzP6a2X6V+31PoP8ZWnrCpK7prxSaEbLG2DOT13GvSt/kwsjA2f+0VDIl76NcC
+	 EaY1DXhXsLmfDEyLa4QIXpC2pez+N+CrGzBX8IMpRMFoGhwYMJ037Zas5irT5Trgtqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793940339;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=4vaHZLIW0SPZkIRMSxFNq27ulwhfeMcZ9wy5M8gPylg=;
-	b=V6IEAaRgYQgfrdhI9MqMBLIng5cU28bLto+b01Nvg27BzO8mPW25rXEoDPlr+mSZoIFG
-	 R9yFyVbPt4u5KBv9XjXL3inKJ1BxGVdWxzmHpwe/e9dowWgNwcV6vqHlLj2iGyj1MKWeA
-	 8i023e/Md043tstAkZtRuuG4ChX9DW1SuXenX6aq9hZxQ82zx8KYtrlOI1rwD85ZMrEVJ
-	 YjSTjWgozNO7iyRuYBDOi0YuUYJC3Lb5O/+jltVXsOlLwQlJVpADZw8AorhG2SMHz9kEr
-	 PbF1Tx+Nhm+utEOAfb+3TYZXq+7v38jvasqvh3a8yV/KkPqzQjpHp7HG8ivw9IoWZIQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793940466;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=DlJk8YkzI4Sc7IET8R0ZtA9MIi8qi8si9X/PTNgXjeg=;
+	b=srxoN1FPu2hsOwz5p5+4HgpZ5NlbqKHbeHZif1eR+HhKIzh4Pb+7ZA1j58X/N7ICPRGJ
+	 lYWOEjQIMGWvRzOqlQ6wWwCd5C9k6qYvj2vQNWLe0D/vYtJTYZW8ulyWZgFLEaqjl/MaC
+	 Iavbw4hrFTZws/QViLgbLiLPPsMEtmydQmwJyVUrcs4mIkemQiOHD5SAD2eLTKzr2hWTW
+	 XZ4ePJnAz9BgHB3tZZJb7EGc1sXjnkgX09Q6xLg/7QdxbKJSa+Ygk5C7WweWSpOOHEp3F
+	 CCsookJ/aBqKr1wLah2OyJJcaWfkn7Hz+2H+JV+QQwI1C87imqqJvdKeCPhfQp0OtIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=strlen.de;
-	spf=pass smtp.mailfrom=strlen.de;
-	arc=none smtp.remote-ip=91.216.245.30
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EF7606A31B;
-	Fri,  6 Nov 2026 04:45:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13EF7606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 439836060B; Fri, 06 Nov 2026 05:45:35 +0100 (CET)
-Date: Fri, 6 Nov 2026 05:45:34 +0100
-From: Florian Westphal <fw@strlen.de>
-To: alireza@asgari.net
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
-	kunit-dev@googlegroups.com
-Subject: Re: [PATCH RFC net 2/3] netfilter: nfnetlink_queue: fix batch
- verdict ordering across large ID gaps
-Message-ID: <au1bbkpwnSzzb3l4@strlen.de>
-References: <20261106-nfqueue-review-v1-0-b6c933f44943@asgari.net>
- <20261106-nfqueue-review-v1-2-b6c933f44943@asgari.net>
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zhokTpdL;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3617C606A31B;
+	Fri,  6 Nov 2026 04:47:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3617C606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zhokTpdL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=zhokTpdLVF1Gruuw4w6n1bd7rTN74jHQ+QXghz1tcN4hy3n72GQR7wA1tapH9cu3XWxWU5y35clN9
+	 exf0M/ucSe53kg9VCg0yffjbA90PzFVS7cdNl8/aivpFORMSUZSwM1JyCsTBWdR51K/jjikVyZ+mJh
+	 Wgsh9NP0yUsjyWhc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96aed5bedf2f-b1f2a;
+	Fri, 06 Nov 2026 12:47:41 +0800 (CST)
+X-RM-TRANSID:2ee96aed5bedf2f-b1f2a
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96aed5bea254-1245f;
+	Fri, 06 Nov 2026 12:47:41 +0800 (CST)
+X-RM-TRANSID:2ee96aed5bea254-1245f
+From: xujiahao <xujiahao@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Keyur Chudgar <keyur@os.amperecomputing.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	linux-kernel@vger.kernel.org,
+	xujiahao <xujiahao@cmss.chinamobile.com>
+Subject: [PATCH net-next] net: xgene: Fix the size of the IRQ name buffer
+Date: Fri,  6 Nov 2026 12:44:21 +0800
+Message-ID: <20261106044421.3461816-1-xujiahao@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,18 +70,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-nfqueue-review-v1-2-b6c933f44943@asgari.net>
+Content-Transfer-Encoding: 8bit
 
-Alireza Asgari via B4 Relay <devnull+alireza.asgari.net@kernel.org> wrote:
-> From: Alireza Asgari <alireza@asgari.net>
-> 
-> Signed 32-bit ID differences do not order packets separated by half an
-> ID cycle or more. Queue length does not bound this distance: an old
-> packet can remain queued while newer packets receive individual verdicts.
-> For IDs [1, 0x80000002], batching through 1 incorrectly selects both.
-> For [1, 2, 0x80000003], removing 2 before batching through it also selects
-> both remaining packets instead of only 1.
+xgene_enet_set_irq_name() composes the interrupt names as
+"<netdev>-rx-txc", "<netdev>-rx-%d" and "<netdev>-txc-%d" into
+ring->irq_name[], which is IRQ_ID_SIZE bytes.  A 15-character netdev
+name plus "-txc-" and a full-range %d needs 31 bytes including the
+terminator, so the names of long interfaces can be truncated, and gcc
+reports it in a W=1 build:
 
-BATCH verdicts require strict in-sequence ordering.
+  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:888:66: warning: '-rx-txc' directive output may be truncated writing 7 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
+  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:891:66: warning: '-rx-' directive output may be truncated writing 4 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
+  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:898:58: warning: '-txc-' directive output may be truncated writing 5 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
+
+Size the name buffer to 32 bytes.  It is only ever read as a string, by
+request_irq() and the interrupt logging, so nothing else changes.
+
+Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
+---
+ drivers/net/ethernet/apm/xgene/xgene_enet_main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+index bce2c19e3..8eb97f6ed 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+@@ -71,7 +71,7 @@
+ #define X2_START_BP_BUFNUM_1	0x20
+ #define X2_START_RING_NUM_1	256
+ 
+-#define IRQ_ID_SIZE		16
++#define IRQ_ID_SIZE		32
+ 
+ #define PHY_POLL_LINK_ON	(10 * HZ)
+ #define PHY_POLL_LINK_OFF	(PHY_POLL_LINK_ON / 5)
+-- 
+2.43.0
+
+
+
