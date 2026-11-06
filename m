@@ -1,79 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793962064;
-	b=eVtjDjEwekSCXXdtD2JkCA5VAPtOP6zQPInFV+MuMuvuWMuZ/atdhd6mnhqv86wjSTow
-	 n4SerEtLjGAg97ae8mEht0J745BO3leMO1rNlP6rxCvxF1kAgJMCsG/3r4GciZZHodQuq
-	 TXVMcEyI/4rXQzXQ68QvqpirJ9BESe/aWILYXing6WntGMCFkQ5YICSEr1UUJn2oJjOM2
-	 BoN+PJlslo8fli3cXXaVzdVjn90r4/u0b8cm75gScKgyyIff91d4SSgMF2q5Kcp7Pr0qm
-	 KDB42C/Qo4YixskClqG+RiXehic6hQGXJilk5aGrejIDgAkf5+ZAx/iz5xk7jI7OZtw==
+	t=1793962084;
+	b=ntAnQtKXu2wNhYZQp4KyHnvhgUlkQmC9MxsXaXG7gQZWH8ym8IfMkvY5glSeBX92sqmr
+	 YygeK24wh5fl3bkxjPGQWK4yUagzE7+54JFHHZ+5o/tOUDfVwp9fPtdXzlH1lHPZYolWF
+	 Iq2hKIsrtFyRP9A7nKu0xB/v3BZxPXvJPj4fdmevoV3zZ80lHOudzkqz8ZmGV7rYko9Ek
+	 8aT0bYT+u/F4vCP5ctf5Y7XJQ0Fj8isZCUWsRKatTexJFjlEt+9DlWfKeM2o1tRxAv86i
+	 A0MFiOJILFV3O3wUoggcuElfCsGP2DjUTWhcFbPrseOGdAbdJNJ40bK8NZnQ2hNU3yQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793962064;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=R9S939twrj0SYcNyyNMpKYYBYQFDO5nmOtD0AYtvds4=;
-	b=ZUxpXoj7GGt6O+jBFSFmZBDEa3HXLg+mXud/i+5QtFY9DHkiuYh19vd9pXPu5eeo/UxI
-	 nLm55Q/31rc4ijasXfXp/xzLEMQnkaV9dBKamxTy/+V+nzUCw02rn9DmHcOWpWQrwOOB9
-	 t50h2XtJebfbizUyl46R47Tarxpb0JUMiXVafSPTdgIpUMhZ5NSvdXBS+TW83BYSDebwX
-	 XZZqAMyuGdyYwSqrF8MRZBsci0JEuPRxrggQTZJViNi5CodrsOAQ5V2k7fxxUi5Zl5I9i
-	 I+cfwRWPry4cSbUgnHRhprX7Q3uipigDAskiQsq1JVhmIAF7FDrtGwQluIChpk2WEaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793962084;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=163RElAlae5uQkPUGUG0Xs6XDM13x8ZXFRy0GRmNiHg=;
+	b=JEiVcTibsWSAjgcyY5Jt7RlstXBzXUt62fs65c8cHAMOvxwAKibkS0E6rxWr4c+9IHxE
+	 POMMOvsdmrKv+fSPipDzjd3XUs4wbZVaS7nmjqBfpUYXT0/xefQg0e18vNGh9kH0Tuw9P
+	 1TWQ+6Btjud/EiFm0VYwC48L+9RuVbHYYIqUkf6Sty+aGAgvzVNspZ9ib+CgluTFIkauq
+	 zBwXhCY53iEtbGoOt3q78iAo0G/uqQcjYqblq0d4vO+jTUifyzgPqCxpleMOj+3F+6L+F
+	 Hb5mGI0Zr4rbkmTxJCcXsX1vfgBvZ1zl1pO0cXWQWpyOQ1CLw9b0/uSrDvV8qLGz71A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=wIxBiPHJ;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Epgvwuow;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BC606EE8B;
-	Fri,  6 Nov 2026 10:47:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D5BC606EE8B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3C7606A32E
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:48:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF3C7606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=wIxBiPHJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793962063; x=1825498063;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HRuU2J36shbnhHng97OPy9ikYDpcOLXorav4tJQOvdo=;
-  b=wIxBiPHJcdtHv+H32kJcw2m4PYUNJ3f1egBncWYYh/yD4RSnQwhRRW5A
-   9zb5TdyIucXz0EoJdjUh6qOhAM/l7ia7zbU1xdSxJqat10Xi55c4tFPHp
-   VLoVlRIgFgX5/n+g/hdDBylgJh5KxdmhEVRI5aKOifybSyNoSGA8DR2kr
-   QemYCfhym/pMKmkpfoaltjKbNR9JqT1qHRbf1utx1KqRQXVVCR3JpTUP4
-   MuexJUPfumQC2vzG8P4MxARuAQFRiqK4IBKsuHCBbNAlXIsqoqC1iHY4M
-   gk88MQQn4JlUO8tYMhnRwmoECncx/P4e8d853tIDMm13ijPdeL7mV5KvG
-   Q==;
-X-CSE-ConnectionGUID: /Yq7+t2mRZiAwkDH8CMhWw==
-X-CSE-MsgGUID: bVUN6M8GTjCPROh6upyWsg==
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="233192553"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 03:47:42 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Fri, 6 Nov 2026 03:47:42 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 6 Nov 2026 03:47:39 -0700
-Date: Fri, 6 Nov 2026 11:47:39 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Tapio Reijonen <tapio.reijonen@vaisala.com>
-CC: Woojung Huh <woojung.huh@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Arun Ramadoss
-	<arun.ramadoss@microchip.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Tristram Ha <Tristram.Ha@microchip.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH net] net: dsa: microchip: initialize the IRQ access mutex
-Message-ID: <20261106104739.gi2mfz6mmek2n2ya@DEN-DL-M70577.microsemi.net>
-References: <20261104-ksz-irq-mutex-init-v1-1-e3bb7d9dbd80@vaisala.com>
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Epgvwuow
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793962082;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=163RElAlae5uQkPUGUG0Xs6XDM13x8ZXFRy0GRmNiHg=;
+	b=EpgvwuowiV6adLVG7Ui2b3y/o56YiYAXJVMcsUeaeFcdLfXoyLBrS/xd/yNdIa7MjHlAT9
+	JVLS82QMzovhPQRcMl/mDa6GKOO7lW0YY5CgToX0vHjxi1+qDdhNkbtTzpGGXyOtBO6IZ9
+	8AZzTI+oAy4ABhSZ1Wm/typvoYtIw/U=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-7cQwnCx5NwiEzjtXR0b5Fw-1; Fri,
+ 06 Nov 2026 05:47:56 -0500
+X-MC-Unique: 7cQwnCx5NwiEzjtXR0b5Fw-1
+X-Mimecast-MFC-AGG-ID: 7cQwnCx5NwiEzjtXR0b5Fw_1793962074
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 35FD6180061E;
+	Fri,  6 Nov 2026 10:47:54 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8222C187C36C;
+	Fri,  6 Nov 2026 10:47:49 +0000 (UTC)
+Message-ID: <3627c7c8-8b03-4288-9eb8-90fcf20b8730@redhat.com>
+Date: Fri, 6 Nov 2026 11:47:48 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,39 +71,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261104-ksz-irq-mutex-init-v1-1-e3bb7d9dbd80@vaisala.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 01/14] dpll: dpllsim: Add simulated DPLL
+ device driver
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20261105151852.1844305-1-poros@redhat.com>
+ <20261105151852.1844305-2-poros@redhat.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20261105151852.1844305-2-poros@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-> ksz_switch_register() initializes dev_mutex, regmap_mutex, alu_mutex and
-> vlan_mutex but not lock_irq, which the IRQ chip takes in its bus lock
-> callbacks on every mask and unmask of a switch interrupt, and the PTP
-> code takes the same way. The zeroed mutex happens to work on the
-> uncontended fast path, but with CONFIG_DEBUG_MUTEXES the first lock,
-> from the IRQ domain mapping during probe, warns:
+On 11/5/26 16:18, Petr Oros wrote:
+> Add dpllsim, a driver providing simulated DPLL devices for testing the
+> DPLL subsystem and its userspace tooling without real hardware, in the
+> same spirit as netdevsim for network devices. The DPLL core identifies
+> a device by clock ID, index and module only, so the driver needs no bus
+> and no struct device at all.
 > 
->   DEBUG_LOCKS_WARN_ON(lock->magic != lock)
->   WARNING: kernel/locking/mutex.c:625 at __mutex_lock
->   ...
->   ksz_irq_domain_map
->   irq_domain_associate_locked
->   irq_create_mapping_affinity
->   ksz_irq_common_setup
->   ksz9477_setup
->   dsa_register_switch
->   ksz_spi_probe
+> Instances are created and configured at runtime through configfs,
+> following the gpio-sim precedent for objects that userspace creates on
+> demand. Creating a directory under/sys/kernel/config/dpllsim/ allocates
+> an instance, its clock_id attribute selects the clock ID, writing 1 to
+> live registers the DPLL device with the core and writing 0 unregisters
+> it again. Removing the directory tears a live instance down implicitly.
+> Keeping registration separate from creation lets a test register and
+> unregister the same device repeatedly, which is where the core bugs the
+> driver is meant to catch tend to live, and it allows the structural
+> attributes to be refused with EBUSY while the device is visible to
+> userspace. Unlike sysfs, configfs does not imply a stable ABI, which
+> suits a driver whose knobs exist only to drive tests.
 > 
-> and turns lock debugging off for the rest of the boot.
+> Reading live reports whether the device is registered with the DPLL
+> subsystem, it turns 1 only once the whole live transition succeeded and
+> 0 again as the first step of the teardown. The configuration is frozen
+> earlier, from the moment the transition obtains the device handle, so
+> that a configuration write racing with the transition is refused rather
+> than lost.
 > 
-> Initialize it with the other mutexes.
+> The device registers as a PPS type DPLL with the two mandatory callbacks
+> only. mode_get reports automatic mode and lock_status_get reports
+> unlocked with no error. Pins come with the following patches and the
+> simulation of lock acquisition with a later series.
 > 
-> Triggered at every boot of a KSZ9897S over SPI on an i.MX6 SoloX board
-> with CONFIG_DEBUG_MUTEXES, on v7.4-rc1 and earlier. With this patch the
-> same board boots with lock debugging enabled and it stays enabled
-> (debug_locks 1) through two hours of unrelated stress tests.
+> Document the configfs layout under Documentation/driver-api and add a
+> MAINTAINERS entry.
 > 
-> Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
+> Signed-off-by: Petr Oros<poros@redhat.com>
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+
