@@ -1,62 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793950066;
-	b=28NfUsepYqBF+LNybqiiwr8TnsTAtrmLwMpeKwPcMNrIkQ1ajWHtmtJr2H90CeIVTflt
-	 CL6FJC4t3/o8WMTVS67BAJqA0hlG2ZPfVeDICPSjR2JLgbkdHq9TTsJzlXSq3n1cwLA3s
-	 E1WNrebH98KSEsjthuxP5x01ER5dzef1XU8RVeeyaMRq5ayCg1sj1jdc93VSrMYuJxSum
-	 WCY3bQ2L6nk7n9zeyKQy2UHl1QpVjEywh0HBXV9MnHq1PxmKX3J8t0V6dH/gIKXqCq5o2
-	 7uXkv3A3yORPDeCKnZRJDZJrzG10x2Ef4X3OVhrjjO9+pbxTxwUgxqEkXmGAg/L1NwA==
+	t=1793950257;
+	b=Ny2CBhP9idJn98mbD4HVC0oaKQ8G5Xag0E3fAcjhqBopXOrc1r1XBaqtthMkZGBFZOJK
+	 qsAcXRN4kV2jPesgSwGzTAE8JUB3l+wu/Ea8YYRWAW7e4uQYc4hRSIqDfkfz2ddfgg/BU
+	 pdNVIgUNI4dZdcCuiUP+nI+4N2FVpWixiPvGXzzvcANueRzmFi78iCdrdGcMhXBYh6NVt
+	 WBGo0jFnL4jvQjCf8EmArzeuvM9JcTKMkili53D0yyBq/1AASOWJuDnn4u2d2kNAwoeb2
+	 RyTOtoGY4AIgQVmc7oWDJB3DSBG7E0E5DOm2bZ/1CxYG7N734vXSK3wjUewQIyM67LA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793950066;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	b=zB51csUn3+jXkaINxILRF8MBk/g+5oHekQQzrkY/CYjd53F4UKTTnKKb9RSjlBK6zw6o
-	 MIki3fApP5EnbuAa74u53DuRdtsUPbPX8VmV/iChE+OSwLVHc3Vt7YboysBt3dCcWsiGy
-	 5Ff3go1Lb4l5W9Q9OS7l+6XK4YIO3f+Xo0Ch9LsHU1ueBDbuzhx3I8rr34sf9Uy4gf14f
-	 X/KbA5tXEmKa7LcsNS1Ho+iYzoTaxdS/qlPdcKBnBMncDXCSxRYvGe/5SNJ1s2Bf8s+8h
-	 exYPXvGS0F7xDAPgUd+9lcXgf7efUdEFH2bq/t9JDe1V6MEtGEycYeve/SH5jHIndjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793950257;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=7wSEXHkBeUm7jmx/vvmB6o23ptrbx9HTwP0lEI9vdgY=;
+	b=CKmlpU59Zqp90rtyNQ8odgXUocxyro+n7FF40w69KpwR5hNSojjLj5UKwv1emDpJ335h
+	 nJ5seU0nI/GQjAeT6f48QNuaIHYLfHUcHKEuJoQd5++yyswuncM0GYAZp/CsYUxzI1KC+
+	 9hJLddpLYIs/AjCRPzcEawcYmjtfqSd7qRLe3EaGZSFb1G2EjWET61quU4wuuoCfCvBnf
+	 DQlyR+UxJMbZJsTob++cjKDUmlfhPlqiTu8PPHOn+X9IMnJ1jlDEFtd380easiFNwsLW7
+	 xM9UG52s7MUXkVrNy+TJatPPZXlPXmN0Cjj9xnuldL+YwqKl93mNceP+kzro//nBiVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gKNhEjMR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nsJmSuzG;
+	arc=none smtp.remote-ip=91.218.175.216
+Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53047606A328;
-	Fri,  6 Nov 2026 07:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382FD606A336
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 07:30:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 382FD606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gKNhEjMR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AC61F008A1;
-	Fri,  6 Nov 2026 07:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793950066;
-	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gKNhEjMR74cIFZOUA1+Ep9r3zugd2rYr3x7LAOhmt/iSSRTB1rheh65+EY25Thmdt
-	 INZRkytec0ymzJUuQzDfNSp3uEuqQhhBLBGcbBguorgyTfEg5k2B3gwX6FlEwHUMfY
-	 nufGX9aZECuMDIfagOMnVKh/GiIlrgfmZ8L3Lj7HeVWZ5f3INVHqVoabSbLKDLNSDv
-	 TxZnTIYt5SL9G9Z0zdFEtT3MIKNInMAc7fl6MA4XKiz/IKS5s8i673bdlwbc+9XhAY
-	 GeJWW10isTvnTepbZtY3PusFfEOpOz/hnXO9qBOkuIuWc6ffZs/yKCBmpXO2Lv6HUr
-	 lmqtBIQulCPJw==
-From: netdev-bot+sinfo@kernel.org
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- Ciprian Regus <ciprian.regus@analog.com>, linux-kernel@vger.kernel.org,
- yana06070@163.com
-Subject: Re: [PATCH net-next] net: ethernet: adi: adin1110: Fix phy_device
- leak in probe_netdevs()
-Date: Fri, 06 Nov 2026 07:27:45 +0000
-Message-ID: <179395006518.488859.7603845397469844366@kernel.org>
-In-Reply-To: <1793949783000.333861.5224091507677300156@cmss.chinamobile.com>
-References: <1793949783000.333861.5224091507677300156@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nsJmSuzG
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=aaCHJPtjUYTzU9qBVb0bveZ30m9yiBJImLPHyP2kHKg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793950254; v=1; x=1794555054;
+ b=nsJmSuzGtKp/9cUxFg7ULhPcboclm2j7V+Nc/W3nWsy24/svLKsee3mv0J+R3k84HRUy0ib6
+ TF7f3DPHseyxKwA44HnHtXT971+7BMnJ3LdjfFuKU1K298f+EohqqFuAnrIn6k0tnb143zXGj1I
+ n/8/UkO/F9imbnmELU/wS/LE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 0621bc41cbb61551;
+	Fri, 06 Nov 2026 07:30:54 +0000
+X-Mizu-Trace-ID: 0621bc41cbb61551
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a95b787e-06ee-424a-a154-e4fdaef2eab7@linux.dev>
+Date: Fri, 6 Nov 2026 15:30:49 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,25 +58,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when
+ enabling RX offload
+To: Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
+ mbloch@nvidia.com, borisp@nvidia.com, witu@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
+ <20261029134019.GG257209@horms.kernel.org>
+ <53ba3677-af71-4d8e-b445-39e08eea8b2d@nvidia.com>
+ <c27e8ceb-c0d6-4801-a53b-837545dc51f6@nvidia.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <c27e8ceb-c0d6-4801-a53b-837545dc51f6@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Hi Tariq,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On 2026/11/6 at 01:49 Tariq Toukan wrote:
+> 
+> Seems that we need a resend here.
+> Let me know if you want me to do that.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Yes, please go ahead and resend it. I saw the patch is marked
+"Awaiting Upstream" in patchwork, so I understand it needs to go through
+the mlx5 tree. Thanks for taking care of it!
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+I'll send the follow-up cleanup to net-next once the fix has landed.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks,
+Xuanqiang
