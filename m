@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793934985;
-	b=ZTOJHle2nZ3+Xwik2v1Mjipi+hO0MnLAE31iztnGU0TtGFrqRjzelSF61uLwUbwJzaW5
-	 hqeqcmZzaKkbQSjPmQ8M+t5JCKGUNfE+ayiIX4hVTiNAFfcy+VAO9Mw7t1JdUNUd3Z4Yc
-	 0xXTxFXhz275GpauZ28zqrzv2EEjCvMZlmHmAFAelm9/RnX16UbQkUlV3BHB3DGjFjW0Y
-	 oHyDfK2BHmbs+rxLuWSq4pyzrKTMsEHnFy4DGgy5zKaLdo8Ecpy+qt/uxNEdHOwaH1sU+
-	 HTyw9swIXpUe5SIsnnR/KALaAYV4hw02JL0WbeRJozpw3WNevDO6lQ9bvpYQFawfLPQ==
+	t=1793934977;
+	b=tzfqt9nczLU/A1R3ZDV3FxoGLwmOBOLBOVqR41iIiMvaP3TuHzFTEhGnylQzcBv3h3Z6
+	 HwOgF8Oq/rY/JkR1Adv8bwHnlt3yIxoz/bgSv5CylsJoUtF2S5Bw2xKi9qbmztrsx83Sw
+	 Amy33+xIU8EC+sUrBo6gnA6fMb2hiQ98TGVcRuWboqnBXwlgn3tmR5sR3hd4no3ZSEO39
+	 Totv2IHYkSX0S5lJl73I241A4ivoD6ZBkAkSCWekB4lLsbdKPULkeSN9e6W8HvjomOZFq
+	 xAbMzI26YHnccMdhkb53QU/gMElDa+CwE+UO7eBzugOEyCK38JdMvtch12hkxdHfhjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793934985;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793934977;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=r3VU4rpW4u46cPFMwYUXdLqDRIGWsWmLAYvUx+tx2i0=;
-	b=WlHJbODbad7Pe81Aa7i6yTb+m74DGSi3iG9FIr737YQ39+ZZMEVHDXoTMBzcxuWe+9sO
-	 7BIq1dXBUplg7N2DfytbgIcHZRGLfdeC8RA3mVunpZaLpYdpF5kb3X9RRy5lAB8mxWYT/
-	 naRu+RhhZ12yrcEG2PAkHQz7Mqm0/FiBruZeGDiuvnceP875fTQC95woY5pbQBWSi7lBA
-	 WfoHCfokp1b8H88AvegAwoyBhLgeUIyyBE4GH5dP2UGpN/wI+9WmufO9v6fRyp6iL/sFp
-	 Atwcj9dAmxa3tyBC43gAYP0G/SZUKJr6Moo0uhG6wisLOgNq/QOPg33qKiZGjdci7XA==
+	bh=rS9yH2pHSUpZGvEI4bVkQ6rj4vMCLHWI7UEuhf1xYFU=;
+	b=virWn0ZA/ZIpGnbfDZattTnlG6FC/3kUK7N08b/Fo1Ftc8SDsuc4DAtT597bBIRgu60B
+	 3c/M8xf5sC/qNY/+J7hSMJ348B5cPm/u6w7kgy/w4pzoXa6pdkF95LfRfqOiKUwvq5b3i
+	 VqVAga0lfGuKQpU5N8OhD5veh7g6QWk0mFD7J0NVrdmZUx9uaep/dkFVtRy7XBXxxDtMj
+	 D4G+wFT8azM0hz876OSar8DkPadmV5lEk1oLx+uo5qastUGVYmW6Nn2AqVFvZeVnACgaV
+	 x1yPbZce8FyyM1KbFVAVPqJ6UOcCWp7wsUMHrJAx3IsX2EYkx3BF54HVwzVHdhM4HHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YNVS4oBA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdKkYj3q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE16E606A329;
-	Fri,  6 Nov 2026 03:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2F3606A328;
+	Fri,  6 Nov 2026 03:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YNVS4oBA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0130E1F0089F;
-	Fri,  6 Nov 2026 03:16:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdKkYj3q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9160E1F008A3;
+	Fri,  6 Nov 2026 03:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793934984;
-	bh=r3VU4rpW4u46cPFMwYUXdLqDRIGWsWmLAYvUx+tx2i0=;
+	s=k20260515; t=1793934977;
+	bh=rS9yH2pHSUpZGvEI4bVkQ6rj4vMCLHWI7UEuhf1xYFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YNVS4oBAjO1IwKgoRUXXBDWRmZ3W6Lmg2R3aa+1oAklHjE2dRd6MuX4vz7lDOlsyQ
-	 l0hyakIEKbSHgIXmrxZm7GFqPmmlo6gRvwTZM2GWlPS78kvZZs0baZIxCN3IPV+CRG
-	 QYrVDRyEsvhpgrF+rCxsErjFCNEPX3FzoBGbvaxlXZQc7cdIGBOohff0csorTfsltY
-	 PTI01kZdJdDU5MxaCN/x0FvDR7xMlUfqo1pg2QoFW+ExYUqfDldmD3YvqPp13wjN+J
-	 A2heSFpm1f30OV86nrDq27xplXEbsWy4FItQtx1WGxXKp/8l84I9xdIu3AJ6Nu1zKN
-	 F5nC9sRHMtcdw==
+	b=LdKkYj3qhQ6u3C61mXA87n+Lye0p4WKM4+/YJoa7mbmx5h4FiI4Mw9M1TO1rvQADz
+	 lheEjZMFuSThT6fumUtHOt4B0FDkILvPrwEsU50y4YRX5h40WMTAs3eG0HVDVVaIqA
+	 tjALL1NQlWmOCzAJR2PZrmvQYxPwZe35TIqiBNIHJ9ddsiJu3eXJ7weXQE8uFTDagQ
+	 AL/0g43MAyWyR5jGm4o3DKcvxf+B6Vy9KIdQdLStglWWp2yhZCxoGJsS9pfxxpoU/Y
+	 yYarI+sH6IF1zk+F8MVIbUrcIgduGGkFUAsWR8AIwDa97pDGmOnEKwJFcTplD99JpH
+	 +e2j7XD4/AKmw==
 From: Allison Henderson <achender@kernel.org>
 To: netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
@@ -47,9 +47,9 @@ To: netdev@vger.kernel.org,
 	kuba@kernel.org,
 	horms@kernel.org
 Cc: achender@kernel.org
-Subject: [PATCH net-next v11 12/12] net/rds: drop rds_conn_count in favor of t_conn_count
-Date: Thu,  5 Nov 2026 20:16:15 -0700
-Message-ID: <20261106031615.1047052-13-achender@kernel.org>
+Subject: [PATCH net-next v11 01/12] net/rds: undo conn_alloc() the same way on every __rds_conn_create() exit
+Date: Thu,  5 Nov 2026 20:16:04 -0700
+Message-ID: <20261106031615.1047052-2-achender@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261106031615.1047052-1-achender@kernel.org>
 References: <20261106031615.1047052-1-achender@kernel.org>
@@ -64,95 +64,83 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The patch "net/rds: wait for connections to be freed on transport
-unload", earlier in this series, gave each transport its own
-connection count in t_conn_count, incremented and decremented at
-exactly the points where the global rds_conn_count is.  That leaves
-rds_conn_count with a single remaining consumer: the seed of the
-per-path workqueue names in __rds_conn_create().
+trans->conn_alloc() may allocate transport data for every path of a
+multipath connection - rds_tcp_conn_alloc() does - which is why the
+lost-creation-race exit of __rds_conn_create() loops over all npaths
+when it frees the connection it just built.  The passive-connection
+exit right above it frees only path 0.
 
-Switch the name seed to t_conn_count, as UEK does, and remove
-rds_conn_count.  The numbering becomes per-transport instead of
-global, so connections of different transports can now receive the
-same seed; workqueue names carry no uniqueness requirement, and the
-seed was already reused as the count rose and fell.  Removing the
-counter also removes the rds_conn_lock round-trip that
-rds_conn_destroy_fini() took solely to decrement it.  (The free path
-still sleeps in destroy_workqueue(), so the last reference has to be
-dropped from process context as before; only that one lock goes.)
-
-Based on the Oracle UEK commit "net/rds: Each RDS transport
-should keep its own connection count".
+That is not a leak today: a passive twin is only created for an IB
+loopback connection (an incoming TCP connect to a local address is
+refused with -EOPNOTSUPP before it gets here), and the IB transport is
+not multipath, so npaths is 1 on that exit.  But the two exits express
+the same "undo conn_alloc()" step in two different ways, and the
+following patches add another exit of the same kind.  Move the loop
+into a helper and use it everywhere, so that the step cannot silently
+diverge if a multipath transport ever grows a passive twin.
 
 Assisted-by: Claude-Code:claude-fable-5
 Signed-off-by: Allison Henderson <achender@kernel.org>
 ---
- net/rds/connection.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ net/rds/connection.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/net/rds/connection.c b/net/rds/connection.c
-index 7d03d53a3101..8c4df7d6b294 100644
+index c752a8623cfc..95ff50f31d1e 100644
 --- a/net/rds/connection.c
 +++ b/net/rds/connection.c
-@@ -47,7 +47,6 @@
+@@ -161,6 +161,22 @@ static void __rds_conn_path_init(struct rds_connection *conn,
+ 	cp->cp_flags = 0;
+ }
  
- /* converting this to RCU is a chore for another day.. */
- static DEFINE_SPINLOCK(rds_conn_lock);
--static unsigned long rds_conn_count;
- /* woken whenever a transport's t_conn_count drops to zero */
- static DECLARE_WAIT_QUEUE_HEAD(rds_conn_freed_waitq);
- static struct hlist_head rds_conn_hash[RDS_CONNECTION_HASH_ENTRIES];
-@@ -338,12 +337,13 @@ static struct rds_connection *__rds_conn_create(struct net *net,
- 
- 	init_waitqueue_head(&conn->c_hs_waitq);
- 	for (i = 0; i < npaths; i++) {
-+		int seq = atomic_read(&trans->t_conn_count);
++/* Undo trans->conn_alloc(): it may have allocated transport data for
++ * every path of a multipath connection, not just for path 0.
++ */
++static void rds_conn_free_transport_data(struct rds_connection *conn,
++					 int npaths)
++{
++	struct rds_conn_path *cp;
++	int i;
 +
- 		__rds_conn_path_init(conn, &conn->c_path[i],
- 				     is_outgoing);
- 		conn->c_path[i].cp_index = i;
- 		conn->c_path[i].cp_wq =
--			alloc_ordered_workqueue("krds_cp_wq#%lu/%d", 0,
--						rds_conn_count, i);
-+			alloc_ordered_workqueue("krds_cp_wq#%d/%d", 0, seq, i);
- 		if (!conn->c_path[i].cp_wq)
- 			conn->c_path[i].cp_wq = rds_wq;
- 	}
-@@ -412,7 +412,6 @@ static struct rds_connection *__rds_conn_create(struct net *net,
- 			rds_conn_get(conn);	/* caller */
- 			rcu_assign_pointer(parent->c_passive, conn);
- 			rds_cong_add_conn(conn);
--			rds_conn_count++;
- 			atomic_inc(&conn->c_trans->t_conn_count);
- 		}
- 	} else {
-@@ -435,7 +434,6 @@ static struct rds_connection *__rds_conn_create(struct net *net,
- 			rds_conn_get(conn);
- 			hlist_add_head_rcu(&conn->c_hash_node, head);
- 			rds_cong_add_conn(conn);
--			rds_conn_count++;
- 			atomic_inc(&conn->c_trans->t_conn_count);
- 		}
- 	}
-@@ -684,7 +682,6 @@ static void rds_conn_destroy_fini(struct kref *kref)
- 						   c_refcount);
- 	int npaths = (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
- 	struct rds_transport *trans = conn->c_trans;
--	unsigned long flags;
- 	int i;
- 
- 	for (i = 0; i < npaths; i++)
-@@ -693,10 +690,6 @@ static void rds_conn_destroy_fini(struct kref *kref)
- 	kfree(conn->c_path);
- 	kmem_cache_free(rds_conn_slab, conn);
- 
--	spin_lock_irqsave(&rds_conn_lock, flags);
--	rds_conn_count--;
--	spin_unlock_irqrestore(&rds_conn_lock, flags);
++	for (i = 0; i < npaths; i++) {
++		cp = &conn->c_path[i];
++		if (cp->cp_transport_data)
++			conn->c_trans->conn_free(cp->cp_transport_data);
++	}
++}
++
+ /*
+  * There is only every one 'conn' for a given pair of addresses in the
+  * system at a time.  They contain messages to be retransmitted and so
+@@ -322,7 +338,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
+ 	if (parent) {
+ 		/* Creating passive conn */
+ 		if (parent->c_passive) {
+-			trans->conn_free(conn->c_path[0].cp_transport_data);
++			rds_conn_free_transport_data(conn, npaths);
+ 			free_cp = conn->c_path;
+ 			kmem_cache_free(rds_conn_slab, conn);
+ 			conn = parent->c_passive;
+@@ -338,18 +354,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
+ 		found = rds_conn_lookup(net, head, laddr, faddr, trans,
+ 					tos, dev_if);
+ 		if (found) {
+-			struct rds_conn_path *cp;
+-			int i;
 -
- 	/* only after everything the transport module owns has been
- 	 * freed above may its unload proceed
- 	 */
+-			for (i = 0; i < npaths; i++) {
+-				cp = &conn->c_path[i];
+-				/* The ->conn_alloc invocation may have
+-				 * allocated resource for all paths, so all
+-				 * of them may have to be freed here.
+-				 */
+-				if (cp->cp_transport_data)
+-					trans->conn_free(cp->cp_transport_data);
+-			}
++			rds_conn_free_transport_data(conn, npaths);
+ 			free_cp = conn->c_path;
+ 			kmem_cache_free(rds_conn_slab, conn);
+ 			conn = found;
 -- 
 2.50.1
 
