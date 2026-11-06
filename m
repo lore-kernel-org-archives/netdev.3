@@ -1,54 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793930909;
-	b=Zj/ba5N4sat8lUss+HCBMhc48XwlCAUfUCqSZe6L6LsGut/yNZ7LJCAffOokELlH8LGf
-	 7hXSqOHykUn0kNFcsw+A+iDDfnqxNGNSOcqCKHLN6STdA3UEGLCf4cX2sNTm5LyxMLPaj
-	 8OKtvRsNChId3M+UB6RGKWOJYhdcyp9LtgD9KUEgC4fg+85jZIv6zOVlHds5flfqDT7qL
-	 LstPH/xySN26WwfYHLaHAoFoBOVzCZzwcuo53+osSVSzwFh9uQXlAPPrle+02fSi6eTYA
-	 VzuGIBnrWe6zUleSshlj3jkXKPv9GiL7P6u8/QnT6yN7au+k5IsGhzQxZL42sgt/30Q==
+	t=1793931229;
+	b=IMUuvlRSHBULsZOPIMRPUg6XQQTZEf3/yxFfFGQxJWX0OFK7wn1/c/EMV/5t8SHcKnTr
+	 Rr0n88XLEM2XusXYMu83VLaNBFLwjiFwJyuNGvYwQtRZ8AsoJ24CL0Rc+k2TGPKzVDLac
+	 fzWnNJUA5n2cT/0BiLMxurD/w6lgx9YH1qsbfW7LFEHdceEhRUN4z9+oa9zd2Ah0l7ors
+	 mh8IRa9aVhimwJ0lY3xDfbc3e3VvaYjl0zPPD/PyhUzkTegzUb22SCzdKj+FQ8Wu36e/2
+	 1Knx8bydvOkoexdfHAx1ZCOk0VUWtlPzYNETF4pMwkRC7Gxkq7W0y4AHBnJFngaiiug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793930909;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793931229;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=WS7CApNUNIMsQEToXiuZ7n60SsvckOdd5s0EGh2oKEk=;
-	b=0lAgtzGrJowxN2UJxpMjT5zM0V3qXNGOCmiPDQQknWpza7DkqJi4p5DxBAkp07ffcY+2
-	 zyEi+u+eSXtOZfBqgGzQqaCGw6goXz13yWvvqsaMl03LJbcZS8IG/tBZDZ34Hhl9YVmiV
-	 XnnoMWWIO1SyKcbzCFI6PEBf1Y5RKthrjqhnIKaQjnGBstfLooDz+cvR6zHhBE5zn6EL8
-	 REQm4Btk8MkYxNkfPWOVAXekzDU7ncxoF15aFW1KksOJm6z3g/rni/WfBPuwxncrEuzID
-	 91Di1QuwRDpYJXwzC3e3+FJ45a0G4Hk5617myIGuyx3JCmi03GB4O4CXPPPE0OuyaIQ==
+	bh=yBKPSv9wPtgQc2D10+KX9vKSUfiTfJxDfSRld3KeklA=;
+	b=d3TiDhl2gMFXnDdL9STit6T08Wh+qMvugNb970CJ7iKyKgEr8zmNz9AEocsbrtycmVUp
+	 4yCbdXSsTlz9R7hsyu8WRnF1mU6IN6+UNgn0Bmr3W/xxvq9DdC1LY3EW4wu/3NX6kO56M
+	 DCpIYpFFBJc6VQa2ogHYYZXkWa2ACpoOtjUysrxIkX6hkL7McVwHn6G0d0zh9VG9QDtxq
+	 26xCkL2FtdbNE4QEVmm+fXL8YNcL7n/ISRMN3jcPWlViXtqQUpG84LuNaqQET6PSLe7h4
+	 0cQ5q+IC+bdl8/QbE3+/UVq21TPAjXU1I1iAgjuJpJ2K904hp8ihLEThwZW8jaCEa+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oqKc8MRT;
-	arc=none smtp.remote-ip=95.215.58.30
-Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C74F606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 02:08:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C74F606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tHl8gJ+0;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4486606A31B;
+	Fri,  6 Nov 2026 02:13:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4486606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oqKc8MRT
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/kWDopwCJ5iePiSx3eT6IBYLtMfFMyr3Ivlvyuz+EIw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793930905; v=1; x=1794535705;
- b=oqKc8MRTf95A1KgxEw0rvV6fGdEtAJU8uYL+ttm2EZCh52y7rLKY3GNRX1v9hQBCnPo+8VQ4
- nC3+Qq1pPWNaRKGHGoNZ2UuAfVEqKDtno1X6ibfhbuP9re9gTsal3OVzSlhwTqUAC+oglM4HPon
- Uv0VqgEE5lfFPPEPdoRkev1A=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1da6eafb048a5403;
-	Fri, 06 Nov 2026 02:08:24 +0000
-X-Mizu-Trace-ID: 1da6eafb048a5403
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f15c49f5-724f-4101-806d-24303c5408a4@linux.dev>
-Date: Fri, 6 Nov 2026 10:08:16 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tHl8gJ+0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=tHl8gJ+0qX1w8HAaEWi7zluGSRQ37eZ1Y1z03LcoMKFskjvakFRX09I0hAif/JlxOIlswIt+aDbNb
+	 xYj+3ZZMPi14vA+dvYWKbGRWDx8r4zB17CN3ccTHlvUYV6opRag1fpiZV7bsWmh7gYjrgBeTb59dsE
+	 Hu4CtypZtwl1M+es=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66aed37d9fdf-77866;
+	Fri, 06 Nov 2026 10:13:45 +0800 (CST)
+X-RM-TRANSID:2ee66aed37d9fdf-77866
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.97])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96aed37d798a-0dae7;
+	Fri, 06 Nov 2026 10:13:45 +0800 (CST)
+X-RM-TRANSID:2ee96aed37d798a-0dae7
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: willemdebruijn.kernel@gmail.com,
+	netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	yana06070@163.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	willemb@google.com,
+	tpluszz77@gmail.com
+Subject: Re: [PATCH net v2 1/2] ipv6: fix cached route reuse for SO_MARK control messages
+Date: Fri,  6 Nov 2026 10:13:33 +0800
+Message-ID: <20261106021245.246267-1-yanxia@cmss.chinamobile.com>
+In-Reply-To: <179387153949.488856.16266299848614841295@kernel.org>
+References: <20261104092240.15649-1-yanxia@cmss.chinamobile.com> <179387153949.488856.16266299848614841295@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,116 +82,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net] net: force software segmentation of PPPoE packets
-To: Alexander Duyck <alexander.duyck@gmail.com>,
- Eric Dumazet <edumazet@kernel.org>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin Liu
- <liuhangbin@gmail.com>, Martin Karsten <mkarsten@uwaterloo.ca>,
- Felix Fietkau <nbd@nbd.name>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261020143031.1829-1-qingfang.deng@linux.dev>
- <CAL4Wiiptz1zyxRDKrCrnK2Q-qn0_1d1aSxuUPkJKWnODpjMp1g@mail.gmail.com>
- <c8be6713-2378-4dc5-9959-fc7eddd800e1@linux.dev>
- <CAKgT0Uf_yYxp+tUJt4xYAnwqtK6LZY0KQYt0h4kt78=oQZxd3g@mail.gmail.com>
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <CAKgT0Uf_yYxp+tUJt4xYAnwqtK6LZY0KQYt0h4kt78=oQZxd3g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 2026/11/6 2:53, Alexander Duyck wrote:
-> On Thu, Nov 5, 2026 at 5:33 AM Qingfang Deng <qingfang.deng@linux.dev> wrote:
->> Hi,
->>
->> On 10/20/2026 11:08 PM, Eric Dumazet wrote:
->>> Le mar. 20 oct. 2026 à 16:30, Qingfang Deng <qingfang.deng@linux.dev> a écrit :
->>>> Ordinary TSO does not update the PPPoE payload length. A PPPoE GRO packet
->>>> forwarded by a bridge can retain hardware GSO features and reach the
->>>> driver without software segmentation, if the egress Ethernet interface
->>>> advertises TSO.
->>>>
->>>> To force software segmentation, clear the GSO feature mask for
->>>> ETH_P_PPP_SES in harmonize_features().
->>>>
->>>> Fixes: 55a5d8fca836 ("net: pppoe: implement GRO/GSO support")
->>>> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
->>>> ---
->>>>    net/core/dev.c | 4 ++++
->>>>    1 file changed, 4 insertions(+)
->>>>
->>>> diff --git a/net/core/dev.c b/net/core/dev.c
->>>> index a6951ea08961..27483a2ad747 100644
->>>> --- a/net/core/dev.c
->>>> +++ b/net/core/dev.c
->>>> @@ -3831,6 +3831,10 @@ static netdev_features_t harmonize_features(struct sk_buff *skb,
->>>>           type = skb_network_protocol(skb, NULL);
->>>>           features = net_mpls_features(skb, features, type);
->>>>
->>>> +       /* Ordinary TSO does not update the PPPoE payload length. */
->>>> +       if (IS_ENABLED(CONFIG_PPPOE) && type == htons(ETH_P_PPP_SES))
->>>> +               features &= ~NETIF_F_GSO_MASK;
->>>> +
->>>>           if (skb->ip_summed != CHECKSUM_NONE &&
->>>>               !can_checksum_protocol(features, type)) {
->>>>                   features &= ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
->>>> --
->>>> 2.34.1
->>>>
->>> Ouch.
->>>
->>> harmonize_features() is called for every packet, GSO or not.
->>>
->>> This is a GSO-only problem, please do not add more protocol-specific
->>> tests in this path. gso_features_check() is only called for GSO
->>> packets, and the cost there is amortized over all segments.
->>>
->>> Devices without NETIF_F_HW_CSUM already lose GSO for ETH_P_PPP_SES
->>> because of the can_checksum_protocol() check in harmonize_features(),
->>> and fraglist GRO packets (the main use case for PPPoE GRO) are
->>> segmented in software anyway.
->>>
->>> This leaves bridged, non fraglist GRO PPPoE packets sent to a
->>> NETIF_F_HW_CSUM + TSO device. Have you hit this on real hardware?
->> +Cc: Alexander Duyck
->>
->> I ran the real hardware test on Intel igc.
->>
->> igc_tso() requires skb_network_header() to point to the IP header, which
->> is not the case for PPPoE packets, so it won't work on an unmodified
->> driver. I therefore used a kernel module to inject PPPoE GSO skbs
->> directly to the driver's TX path, deliberately pointing
->> skb_network_header() to IP.
->>
->> Test results show that the hardware can still perform TCP segmentation,
->> but it cannot update the length field in the PPPoE header. So
->> theoretically, we might be able to make GSO_PARTIAL work in PPPoE.
->>
->> Kind regards,
->> Qingfang
-> Is PPPoE being stacked similar to a VLAN or being ran as an L3? To be
-> able to make it work for the GSO_PARTIAL on most these parts it would
-> need to be inserted as part of the MAC/VLAN headers instead of as an
-> L3/network header. The main problem is that the drivers normally need
-> access to the L3 header in order to set the payload length and things
-> like the IPv4 ID field.
+Hi,
 
-Currently, PPPoE occupies the skb's network-header (L3) position. 
-pppoe_xmit() points skb->network_header at the PPPoE header and sets 
-skb->protocol to ETH_P_PPP_SES. pppoe_gso_segment() temporarily pulls 
-the 8 bytes of PPPoE/PPP headers before calling the upper layer handler, 
-then restores network_header to PPPoE on the returned segments. For an 
-untagged frame, network_header therefore points at offset 14, while the 
-actual IP header starts at offset 22.
+Thanks for the review. v2 fixes SO_MARK sends, including the concurrent
+sk_mark case that came up during the v1 review. Sends without an SO_MARK
+cmsg keep the current behavior.
 
-> Really if you are going to support doing GSO with a PPPoE protocol in
-> there you probably need to look at adding a new gso feature flag bit
-> as any driver that will support it will need to know how to move the
-> header out of the way.
+Willem, you also raised the flowlabel and dscp cases in the v1 review:
+https://lore.kernel.org/netdev/willemdebruijn.kernel.6ba984cf38a@gmail.com/
 
-LLM suggested the same and wrote the code, which I have not tested. It 
-could make both hardware segmentation and software fallback work.
+I'd like to keep the SO_MARK fix targeted at net and handle the
+remaining cache issues separately in net-next. Does that split make
+sense to you?
+
+I'll wait for your feedback on the scope before posting v3.
+
+v3 will also add a fwmark 0/0xffffffff prohibit rule to the
+connected-socket selftest, so reusing the cached route instead of doing
+a fresh lookup fails the explicit-zero cases.
+
+Thanks,
+Xia Yan
+
+pw-bot: cr
+
 
