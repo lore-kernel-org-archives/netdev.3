@@ -1,117 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793961548;
-	b=gLe7KRHUiIgkAL6ZYvAgo0EaB9/mBRLTg/q8o8ZI3S6DFyNjPlpyX5qqsqqs8Wxoc1+X
-	 H6XG0C01BRsy7PVlFDh/eburEa8Jd1DJybFJZdCzug4b8uqPebhwUnsR8Jvb1WERJgB31
-	 zewgxOM36bU+Ok+t6OIlVPviAN8AAn96zZ/NIcoX2H2jg0Hpn/90fjCJr68jfaR8jRXd/
-	 8boGH/IpaUBkCb18zYXWCrBtfh8yfC9BS9ixCraDgpSv1Nj6CWAegQjjFpUpzBtOxuTOS
-	 YDTqimZDp97nTXWHGJ2bzf5UQYuSaXfy3a0CNopTkvuqSfAk1PiG0prepAji36ohMPw==
+	t=1793961704;
+	b=mY+DYaSmzn+yotqJVRKraECfeAWiPLk7ccYXnmdLKOnbsCyQbiBoI88Q1t1WwqfHFntq
+	 Ms1dGhvO1L41/K0pgWQgT4LqZUDm0a6hil6fiHzBqennvEgW7Pd9j5RmIFnWoxz43r+ES
+	 qlyJzGWkRAIagHZmV6XH25IoQQcsKwSYFYL9sGLX0ZIV54Vq5KKgP47izRg6KS0UpUSr4
+	 iuthESpLBVC9JDp08AbbeMxJI6RoKJttoq4gyD2fzHEk8Augmf6UzeLsL+exLCTG5yBuO
+	 LEmvkV/Ef7Yfdk12xKVoAFYfcPeyprCRNYiGU74XZS0CgX72B0Pyf+SVPzIpOCOOlbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793961548;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793961704;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=9xz2U+0Ol33gwn3MzV6oM8nP+N+ErAKgSBrkFeTy0pc=;
-	b=39bf/1KBGjUzPyrjvdrEtTUefbtn/BEjQRuWXk/cW3rEyXE4+4sOerM9+XDAgjxtGE5K
-	 VnH/Grc37XIzX6PNDnNHgevolyc8qvjttZgRadCApCFAKPDfw8mQVQklboyoOELjcqLjg
-	 gK5XTXHZkt+yF9pV12IRuB+RbKWPu52j22GxZmQPgSEiB02tmFeL4IbkyiiN1eZhBVt38
-	 Sf8P0KFVlLl7E7W/yWFKTxX80RjsCE2ZwjklTAMJ8ZtvlX9sjbowGH0bGI5O5RSE/j91B
-	 bURZkvGRcny0XHFF2MyDFqaYtwih3/rr5QYRbYX50A+FV5+a/PaZuK9+QaHaffPMNZA==
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=48kbfMmF1DBLzILk4zDW1A3oIaLkRb6C5LUr4+SlxNY=;
+	b=DnQ0ppjIk2z30WApqEZ5nJedZ76QeJlZeqnvjzUMvv+ttFaEj2fr4EeF8NYjP1cbVTGo
+	 nZ8Z4u8JDNMTqJtcWuTUTivedU4EsKuqqMD8hX834ygTo6+B5Jskldlpm+PbyS7KstHR/
+	 yzCAIjpy6j0R40V1ejNWG1Rjhw9CDtRDo24pn/8NLDBa3AZl6t0XnFbQTVO5ofedrwlAE
+	 oGulfYvyYYKOzZZ5rX/aOJLjDu0bPyCEsm9c8JlRLGCjXz6KbdCWvz9CKS4kjdBKLqWAQ
+	 xPdPzUoE0EMOIHYaWxH5EieyOrEKcgaGsqbLnSjPDPn+JuyxeW/0t5bwBPWnzEXyN4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMN3MB73;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=cbnK3bv8;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HoP8hkVd;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97F2606A32E
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:39:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B97F2606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F77606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:41:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67F77606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMN3MB73;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=cbnK3bv8
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HoP8hkVd
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793961546;
+	s=mimecast20190719; t=1793961702;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9xz2U+0Ol33gwn3MzV6oM8nP+N+ErAKgSBrkFeTy0pc=;
-	b=aMN3MB73S8C4y88q5Z82Ys0uHwMCGbNcP7zLKNOJEofrmsOa+hWJzDTwDJS8v7e5I/kgLC
-	lJbJ+XgOg8Bao+aOQCfJSeOiQki8WmrTnTmSVFFMy3/vZhetRJV/1MCB9nlQ4R+EJJZiN9
-	kk7vtRY8ZSQ4vDoRfDG7EPZ0rO8Zddw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-7IbowHLqN3uPsjYcHexsKw-1; Fri, 06 Nov 2026 05:39:05 -0500
-X-MC-Unique: 7IbowHLqN3uPsjYcHexsKw-1
-X-Mimecast-MFC-AGG-ID: 7IbowHLqN3uPsjYcHexsKw_1793961544
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-490c69dc02bso459590f8f.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 02:39:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793961544; x=1794566344; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9xz2U+0Ol33gwn3MzV6oM8nP+N+ErAKgSBrkFeTy0pc=;
-        b=cbnK3bv8mX9bhFWUqJNoH4KJbexP29xRKIJyknAiqTpKWdfAqTKcPLV2YvXiQq3XHa
-         GQcELSYStmfnKW7yNlRQ2udmbK/24DGfydqz7WznxfHtp+lFyg+ldIhIf9+rohIAsGnw
-         qRNHZVwIrADebxI5nmK9Yg9PxKcRC25ryFNQYhTkclkplaD1CFOLDTruHwAhLTccYZGV
-         p6OQGo0Npc6GzwkoT/3ozfmsbWhONBoiTIz66YWH19wchwjzyCq942gcMKGC8Zk1FCVj
-         bah+13ud5TqykZ2HuzLrEco4KkKzpl02BE7EfZVurUNSZCQuuKCEFyBqzVkInpyop3dA
-         CoXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793961544; x=1794566344;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9xz2U+0Ol33gwn3MzV6oM8nP+N+ErAKgSBrkFeTy0pc=;
-        b=FpwrmLkQMW4szovE/BOtApgzXZK6IqI4pUCKnk00kb+RHkCyjVIqcAoe6MbvUcnncw
-         crX71C+bi7nAfbomJrJfnhAgbjFRioiIwerrW6fgpDDfHHeDlMJzwO2P6akMh5AXg95r
-         EeW1zMmueA9y41vabyAg/SeMeDIPIATMNM3oskvWebE8z328VZE0WFz1RYLcuk3/s00t
-         2Dyxrv/jqRwPpKTzXMs2BMdGU142+KUDxf7uyPu7d2kaxKOg0MpZlAXQ+vBIe3Rsm1U8
-         PajQ6PBRaI4zBpZZPo/4UxerxrU8PEzcCdQgkUCgssJGj22+aTN22kXsq2p2D8EomVSr
-         mCAQ==
-X-Gm-Message-State: APuU4Z92I9R4mHDxvErhh6gZU4RDCHXXO4+z4nvQT7Y9LkQpb/RDqoO2
-	50JBo1QelVb099SI+nhlrKwvh29bW1/Td9YrNx6phNk6sHCQ6ma2Fuplj6CbmJeOLzTYmIXdn8s
-	c9YB5JCqyKV1P4mwnvvaIZ6iM7ULXBsK8LXZG+Qbc4kuUNSTxWSMI8NQ3Fw==
-X-Gm-Gg: AYBFou06rvKX4bRdWyrZ5MCcl5RNJ0hLlFdkBf5VcV7g83DAZTVERvzAKrIcwia2fkw
-	K9dGGb11515g11LGLV4hFoeQYp3ny5IRwpmIqw/fnTTX1HCFdQZPmiRLpIErPkQBDpChRLOyhAA
-	KwF3rfIPVUJgmbd2gKafL7dkgeu1cj23wUg6FgMXiyiiJwdwvLQtLOwBHRQlb3R6QP4X8b295CN
-	37/KYs2IxrLi6f+zuU3Wt8/S6BJd4voG7ePSWGltsp3o4hi27herMrHxSTtiSc4me8aHrOd6uLm
-	bIOTcEUGftCdz5U30iwb8vi6R8WloCOYRyRj4XRx7ddYMSAvKlMMcUr2z4Snpd1xuEIJbRDrgzR
-	k0TUGQRP0PPL3N+2essc4iO6M27IjvJZajTGwDfoIXA==
-X-Received: by 2002:a5d:5e86:0:b0:48f:ead0:631a with SMTP id ffacd0b85a97d-49277e91eb9mr4142088f8f.47.1793961543672;
-        Fri, 06 Nov 2026 02:39:03 -0800 (PST)
-X-Received: by 2002:a5d:5e86:0:b0:48f:ead0:631a with SMTP id ffacd0b85a97d-49277e91eb9mr4142020f8f.47.1793961542990;
-        Fri, 06 Nov 2026 02:39:02 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1401:db00:7367:7b9e:e66f:2b7d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d3c6c056sm3158065f8f.4.2026.11.06.02.39.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 02:39:02 -0800 (PST)
-Date: Fri, 6 Nov 2026 05:38:59 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Hassan Sultan <hassansultan@google.com>,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net v4 1/2] net: virtio: validate outer protocol of UDP
- tunnel GSO packets
-Message-ID: <20261106053849-mutt-send-email-mst@kernel.org>
-References: <20261106095340.2113683-1-edumazet@kernel.org>
- <20261106095340.2113683-2-edumazet@kernel.org>
+	bh=48kbfMmF1DBLzILk4zDW1A3oIaLkRb6C5LUr4+SlxNY=;
+	b=HoP8hkVdMAscFTF76L4nxr5LcmUtuSo93JQbNMkJc4Des1zejCMwXoRoEhL+HnR7b5OIaQ
+	Yu8atS92clAAZRQFIl9dS51SZgEnx4mnEUUrl8wVU6E8Ysnwkxo0UjzYT7a7rddFjL1Swf
+	jew52CSJlBl0RGJVUtwpM2nWKSRuI8s=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-VPPX5bDRP_KLO3nismGbdA-1; Fri,
+ 06 Nov 2026 05:41:39 -0500
+X-MC-Unique: VPPX5bDRP_KLO3nismGbdA-1
+X-Mimecast-MFC-AGG-ID: VPPX5bDRP_KLO3nismGbdA_1793961697
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4232E1955F3C;
+	Fri,  6 Nov 2026 10:41:36 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5B6BA30000E3;
+	Fri,  6 Nov 2026 10:41:31 +0000 (UTC)
+Message-ID: <588acb18-7a42-4c92-9898-46ee4160e1a2@redhat.com>
+Date: Fri, 6 Nov 2026 11:41:29 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -121,335 +71,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106095340.2113683-2-edumazet@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 05/14] dpll: dpllsim: Add support to set input
+ pin state
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20261105151852.1844305-1-poros@redhat.com>
+ <20261105151852.1844305-6-poros@redhat.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20261105151852.1844305-6-poros@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Fri, Nov 06, 2026 at 10:53:39AM +0100, Eric Dumazet wrote:
-> virtio_net_hdr_tnl_to_skb() trusts the virtio header to describe a
-> UDP tunnel over IPv4 or IPv6, but never checks that the frame actually
-> carries such outer headers. Because VIRTIO_NET_HDR_F_NEEDS_CSUM is
-> mandatory for tunnel GSO, __virtio_net_hdr_to_skb() skips the flow
-> dissector, so virtio_net_hdr_match_proto() is never applied either.
+On 11/5/26 16:18, Petr Oros wrote:
+> Add support for setting the state of input pins on the device.
+> Implement the state_on_dpll_set callback for input pins and advertise
+> the state-can-change capability for them, so that userspace can move a
+> pin between connected, disconnected and selectable. The driver stores
+> the requested state and reports it back unchanged, it does not act on it
+> yet. Output pins keep reporting their state only.
 > 
-> A guest (or a tap writer) can then inject a frame with an arbitrary
-> outer ethertype, for example ETH_P_NSH, with SKB_GSO_UDP_TUNNEL set.
-> The GSO stack then runs nsh_gso_segment() on top of the UDP tunnel
-> segmentation, which assumes a different header layout. The result is
-> segments with skb->data before skb->head, and a host crash in
-> skb_under_panic() as soon as a later layer pushes a header:
-> 
->   skbuff: skb_under_panic: ... put:4 ... dev:gretap1
->   kernel BUG at net/core/skbuff.c:215!
->    skb_push
->    __gre_xmit
->    gre_tap_xmit
->    ...
->    tun_get_user
-> 
-> Validate the outer headers with the parsing helpers from Michael's
-> series "net: resolve uncommon partial checksums at ingress":
-> 
-> - locate the L3 header: Ethernet with optional VLAN tags, or the
->   network header set by the caller. skb->protocol is not trusted when
->   it disagrees with the frame.
-> - require the outer L3 protocol to match the declared tunnel type.
-> - require the outer UDP header exactly at outer_th_offset, after IPv4
->   options or IPv6 extension headers, and reject fragments.
-> 
-> Unlike the original helpers:
-> 
-> - the callers tell whether the frame starts with an Ethernet header,
->   with a new has_eth argument of virtio_net_hdr_tnl_to_skb(), instead
->   of using the device type. tun frames packets from its IFF_TAP and
->   IFF_TUN flags, and TUNSETLINK can set the device type to any value.
->   virtio_net and tun_xdp_one() always pass true, tun_get_user() passes
->   whether the device is IFF_TAP.
-> - ipv6_find_hdr() stops at an AH header, as Willem suggested in the
->   review of that series.
-> 
-> Fixes: a2fb4bc4e2a6 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-> Reported-by: Hassan Sultan <hassansultan@google.com>
-> Suggested-by: Willem de Bruijn <willemb@google.com>
-> Link: https://lore.kernel.org/netdev/93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com/
-> Cc: Willem de Bruijn <willemb@google.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Co-developed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
+> Signed-off-by: Petr Oros <poros@redhat.com>
 > ---
->  drivers/net/tun.c          |   9 +-
->  drivers/net/tun_vnet.h     |   5 +-
->  drivers/net/virtio_net.c   |   2 +-
->  include/linux/virtio_net.h | 169 +++++++++++++++++++++++++++++++++++++
->  4 files changed, 180 insertions(+), 5 deletions(-)
+>   drivers/dpll/dpllsim/dpll.c | 19 +++++++++++++++++++
+>   1 file changed, 19 insertions(+)
 > 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index dcec7311e601..3920b3dff1e8 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -1944,7 +1944,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  		break;
->  	}
->  
-> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
-> +				    (tun->flags & TUN_TYPE_MASK) == IFF_TAP)) {
->  		atomic_long_inc(&tun->rx_frame_errors);
->  		err = -EINVAL;
->  		goto free_skb;
-> @@ -2621,7 +2622,11 @@ static int tun_xdp_one(struct tun_struct *tun,
->  	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
->  	skb->dev = tun->dev;
->  	skb_set_network_header(skb, ETH_HLEN);
-> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
-> +	/* Frames always start with an Ethernet header here, as the
-> +	 * eth_type_trans() call below expects.
-> +	 */
-> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr,
-> +				    true)) {
->  		atomic_long_inc(&tun->rx_frame_errors);
->  		kfree_skb(skb);
->  		ret = -EINVAL;
-> diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-> index f4c652b1fa44..3364e08dd6e0 100644
-> --- a/drivers/net/tun_vnet.h
-> +++ b/drivers/net/tun_vnet.h
-> @@ -197,9 +197,10 @@ static inline netdev_features_t tun_vnet_hdr_guest_features(int vnet_hdr_sz)
->  static inline int
->  tun_vnet_hdr_tnl_to_skb(unsigned int flags, netdev_features_t features,
->  			struct sk_buff *skb,
-> -			const struct virtio_net_hdr_v1_hash_tunnel *hdr)
-> +			const struct virtio_net_hdr_v1_hash_tunnel *hdr,
-> +			bool has_eth)
->  {
-> -	return virtio_net_hdr_tnl_to_skb(skb, hdr,
-> +	return virtio_net_hdr_tnl_to_skb(skb, hdr, has_eth,
->  				features & NETIF_F_GSO_UDP_TUNNEL,
->  				features & NETIF_F_GSO_UDP_TUNNEL_CSUM,
->  				tun_vnet_is_little_endian(flags));
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index dd2c41ef6fbe..ed20e76fbc4c 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -2533,7 +2533,7 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
->  
->  	skb->dev = dev;
->  	skb_set_network_header(skb, ETH_HLEN);
-> -	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
-> +	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, true, vi->rx_tnl,
->  				      vi->rx_tnl_csum,
->  				      virtio_is_little_endian(vi->vdev))) {
->  		net_warn_ratelimited("%s: bad gso: type: %x, size: %u, flags %x tunnel %d tnl csum %d\n",
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index d6466f96cdd0..b7b6b542f476 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -5,7 +5,10 @@
->  #include <linux/if_vlan.h>
->  #include <linux/ip.h>
->  #include <linux/ipv6.h>
-> +#include <linux/netdevice.h>
->  #include <linux/udp.h>
-> +#include <net/ip.h>
-> +#include <net/ipv6.h>
->  #include <net/tcp.h>
->  #include <uapi/linux/tcp.h>
->  #include <uapi/linux/virtio_net.h>
-> @@ -48,6 +51,145 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
->  	return 0;
->  }
->  
-> +/* TODO: nothing virtio specific here, move to ip.h */
-> +
-> +/*
-> + * Pull and minimally validate the IPv4 header at @nhoff.
-> + * Returns the header and stores the transport header offset in
-> + * @thoff, or NULL if truncated or malformed.  The whole header,
-> + * options included, is guaranteed linear on return.
-> + */
-> +static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
-> +						  unsigned int nhoff,
-> +						  unsigned int *thoff)
+> diff --git a/drivers/dpll/dpllsim/dpll.c b/drivers/dpll/dpllsim/dpll.c
+> index a1d5921fb8d017..2b0c053a7b6087 100644
+> --- a/drivers/dpll/dpllsim/dpll.c
+> +++ b/drivers/dpll/dpllsim/dpll.c
+> @@ -104,10 +104,23 @@ static int dpllsim_pin_state_get(const struct dpll_pin *pin, void *pin_priv,
+>   	return 0;
+>   }
+>   
+> +static int dpllsim_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+> +				 const struct dpll_device *dpll,
+> +				 void *dpll_priv, enum dpll_pin_state state,
+> +				 struct netlink_ext_ack *extack)
 > +{
-> +	unsigned int ihl;
-> +	struct iphdr *iph;
+> +	struct dpllsim_pin *sim_pin = pin_priv;
 > +
-> +	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
-> +		return NULL;
-> +
-> +	iph = (struct iphdr *)(skb->data + nhoff);
-> +	if (iph->version != 4 ||
-> +	    iph->ihl < sizeof(struct iphdr) / sizeof(u32))
-> +		return NULL;
-> +
-> +	ihl = iph->ihl * sizeof(u32);
-> +	*thoff = nhoff + ihl;
-> +	/* Pull the options as well: the transport header offset
-> +	 * returned above must be within the linear data.  iph goes
-> +	 * stale across the pull.
-> +	 */
-> +	if (!pskb_may_pull(skb, nhoff + ihl))
-> +		return NULL;
-> +
-> +	return (struct iphdr *)(skb->data + nhoff);
+> +	guard(mutex)(&sim_pin->dev->lock);
+> +	sim_pin->state = state;
+> +	return 0;
 > +}
+
+Should DPLL_PIN_STATE_CONNECTED be accepted here?
+
+The device always reports automatic mode, which dpllsim_make_group() sets
+and nothing changes:
+
+	sim->mode = DPLL_MODE_AUTOMATIC;
+
+Documentation/driver-api/dpll.rst limits what a user can request in that
+mode:
+
+     In automatic mode (``DPLL_MODE_AUTOMATIC``) the user can request one of
+     following pin states:
+
+     - ``DPLL_PIN_STATE_SELECTABLE`` - the pin shall be considered as valid
+       input for automatic selection algorithm
+     - ``DPLL_PIN_STATE_DISCONNECTED`` - the pin shall be not considered as
+       a valid input for automatic selection algorithm
+
+     Pins that have the ``DPLL_PIN_CAPABILITIES_STATE_CONNECTED_OVERRIDE``
+     capability can additionally be set to ``DPLL_PIN_STATE_CONNECTED`` in
+     automatic mode, overriding the active input selection.
+
+dpll_pin_state_set() in the core only checks state-can-change, so the
+driver has to refuse the state. zl3073x does that for its automatic mode
+in zl3073x_dpll_input_pin_state_on_dpll_set():
+
+	case ZL_DPLL_MODE_REFSEL_MODE_AUTO:
+		if (state == DPLL_PIN_STATE_SELECTABLE) {
+			...
+		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
+			...
+		} else {
+			goto invalid_state;
+		}
+
+[ ... ]
+> @@ -149,6 +162,12 @@ static void dpllsim_pin_props(struct dpllsim_pin *pin,
+>   		prop->freq_supported_num = ARRAY_SIZE(dpllsim_freq_ext);
+>   		break;
+>   	}
 > +
-> +/* Where does the L3 header start, and what protocol is it?
-> + * With @has_eth, the frame starts with an Ethernet header, possibly
-> + * followed by VLAN tags. Otherwise the L3 header starts at the network
-> + * header offset the caller set up.
-> + *
-> + * The caller knows how the frame will be parsed later: the device
-> + * type does not tell, as tun can change it with TUNSETLINK.
-> + */
-> +static inline bool
-> +virtio_net_l3_start(struct sk_buff *skb, bool has_eth, int *nhoff,
-> +		    __be16 *proto)
-> +{
-> +	if (has_eth) {
-> +		__be16 h_proto;
-> +
-> +		if (!pskb_may_pull(skb, ETH_HLEN))
-> +			return false;
-> +		h_proto = eth_hdr(skb)->h_proto;
-> +		/* skb->protocol is a sender claim, and parts of the
-> +		 * stack parse the packet per it: when it disagrees with
-> +		 * the frame we do not know which view the packet will
-> +		 * be parsed as, so do not validate.
-> +		 */
-> +		if (skb->protocol && skb->protocol != h_proto)
-> +			return false;
-> +		*nhoff = ETH_HLEN;
-> +		*proto = h_proto;
-> +		if (eth_type_vlan(*proto)) {
-> +			*proto = __vlan_get_protocol(skb, *proto, nhoff);
-> +			if (!*proto)
-> +				return false;
-> +		}
-> +	} else {
-> +		const struct iphdr *iph;
-> +
-> +		*nhoff = skb_network_offset(skb);
-> +		/* An unset network header shows up as an offset
-> +		 * outside of the packet.
-> +		 */
-> +		if (*nhoff < 0 || (unsigned int)*nhoff >= skb->len)
-> +			return false;
-> +		/* No L2 header to cross-check with: take the protocol
-> +		 * from the IP version at the network header.
-> +		 */
-> +		if (!pskb_may_pull(skb, *nhoff + 1))
-> +			return false;
-> +		iph = (const struct iphdr *)(skb->data + *nhoff);
-> +		if (iph->version == 4)
-> +			*proto = htons(ETH_P_IP);
-> +		else if (iph->version == 6)
-> +			*proto = htons(ETH_P_IPV6);
-> +		else
-> +			return false;
-> +		if (skb->protocol && skb->protocol != *proto)
-> +			return false;
-> +	}
-> +	return true;
-> +}
-> +
-> +/* Walk the L3 header at @nhoff: where does its transport header
-> + * start, and which protocol is it?  Returns false if the header
-> + * is truncated, malformed or fragmented.
-> + */
-> +static inline bool
-> +virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
-> +		    unsigned int *thoff, int *ip_proto)
-> +{
-> +	if (proto == htons(ETH_P_IP)) {
-> +		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
-> +
-> +		if (!iph || ip_is_fragment(iph))
-> +			return false;
-> +		*ip_proto = iph->protocol;
-> +		return true;
-> +	}
-> +
-> +	if (proto == htons(ETH_P_IPV6)) {
-> +		const struct ipv6hdr *iph;
-> +		int flags = IP6_FH_F_AUTH;
-> +
-> +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
-> +			return false;
-> +		iph = (const void *)(skb->data + nhoff);
-> +		if (iph->version != 6)
-> +			return false;
-> +		*thoff = nhoff + sizeof(*iph);
-> +		*ip_proto = iph->nexthdr;
-> +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
-> +			*thoff = nhoff;
-> +			/* Find the transport header behind any
-> +			 * extension headers. IP6_FH_F_AUTH stops
-> +			 * the walk at AH, so frames with AH are rejected.
-> +			 */
-> +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
-> +						  &flags);
-> +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
-> +				return false;
-> +		}
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  					  const struct virtio_net_hdr *hdr,
->  					  bool little_endian, u8 hdr_gso_type)
-> @@ -282,9 +424,33 @@ static inline unsigned int virtio_l3min(bool is_ipv6)
->  	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
->  }
->  
-> +/* Do the tunnel offsets match the outer headers in the frame?
-> + * The L3 header the tunnel claims must be the one the frame
-> + * carries, with UDP following it at @outer_th.
-> + */
-> +static inline bool
-> +virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool has_eth, bool outer_isv6,
-> +			  unsigned int outer_th)
-> +{
-> +	int nhoff;
-> +	__be16 proto;
-> +	unsigned int thoff;
-> +	int ip_proto;
-> +
-> +	if (!virtio_net_l3_start(skb, has_eth, &nhoff, &proto))
-> +		return false;
-> +	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
-> +		return false;
-> +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> +		return false;
-> +
-> +	return ip_proto == IPPROTO_UDP && outer_th == thoff;
-> +}
-> +
->  static inline int
->  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
-> +			  bool has_eth,
->  			  bool tnl_hdr_negotiated,
->  			  bool tnl_csum_negotiated,
->  			  bool little_endian)
-> @@ -338,6 +504,9 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  	if (ret)
->  		return ret;
->  
-> +	if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th))
-> +		return -EINVAL;
-> +
->  	/* In case of USO, the inner protocol is still unknown and
->  	 * `inner_isv6` is just a guess, additional parsing is needed.
->  	 * The previous validation ensures that accessing an ipv4 inner
-> -- 
-> 2.53.0
+> +	/* Capabilities follow the ops the pin is served by */
+> +	if (dpllsim_pin_select_ops(pin) == &dpllsim_input_pin_ops)
+> +		prop->capabilities = DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
+> +	else
+> +		prop->capabilities = 0;
+>   }
+The input pins advertise state-can-change only. If connected is meant to
+be settable on this automatic-only device, should
+DPLL_PIN_CAPABILITIES_STATE_CONNECTED_OVERRIDE be advertised here as well?
+
+If not, should dpllsim_pin_state_set() return -EINVAL with an extack
+message for it?
+
+The commit message says "so that userspace can move a pin between
+connected, disconnected and selectable", and the stress test added by the
+next patch, 70a4dcf52b9c ("selftests: dpll: add pin state tests"), relies
+on it. test_pin_state_flooding() cycles through
+
+	local states=(connected disconnected selectable)
+
+and fails when one of the sets is refused.
+
+Thanks,
+Ivan
 
