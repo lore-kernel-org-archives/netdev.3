@@ -1,87 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794008877;
-	b=ExvrWerlK712wxLEJRoHiScQ01H518qatjCguvalKasNuiewg5KlA7bVWg0RDO+hLdeq
-	 q2VE/Jrth0KcLBs1MWkI24XZOvnedL7XMNWNDzOK0aLA0NlaVNsBHPRIauuRzvNuglwIf
-	 /iHT1yLA7q6h96M4u6kS+W2O4uQgis0QLbQwywgZm4M1nnPiqe24PfsVLkrs9U2I6cnTb
-	 +ZV0rruA6gvhD1cmMljCOamoMJmbsBKiZ1IjnDnP8qSkYONOj+5DA3ndFHdr8ScfwxpD4
-	 Y3KnasffDBkQgP7gmOfKdsPjdaXZ7qzeKux5VEK4JuOZy7VDY+h3JibVvMwDGpTF1jg==
+	t=1794009014;
+	b=0bbDVwsbw08zbytZrXUHNsaB36eOt6LEOo9LXem3iyV2pscP7BuclpTyQKjcSjz4fleH
+	 rX+j1x0Y09xGHU4FWM2sJANClaArHkrG21oWJaKrwqHS17pZ+xoD2M0dIIeGE1zF2MTjF
+	 1Nbs7h3ocN1HCkr397tP97orKHMi7M/HbNCZot1+e54ovp6gk6hLpS0V6UNPveQHQ14sd
+	 +dl/poHvkzr/8NI2Lot9rSoEujcblU6ei+AvYlzo2XM0hnlmaebfItWiAx/09tGZTFZpM
+	 pcAuWpD0HU1rwOpyBsgUunvQ10YnG7CmS5xpu54PBRCydWV7KI1xWnV+CuYfhaXEaCw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794008877;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=9PEBKf2/jcyA/DUFIiQ2NEHydLhTL/AGWCVcR+QKvC4=;
-	b=HXrPzS0QSXlA+3h2r4AgxZr0sdXDaOqZehZ1+vA2D9bDfY+wbCskdXypzwwnR4MdDBsV
-	 cq5A0bqwdXIQxtwX74qxiVTzTrmjCE1nw26XjnXSQzaOgTkdp8MimncLvvpXqDJoSoEDE
-	 D4kwwLRlVRRtfzH8xWgQ7/fDl6JBclAUoEoFOIFNnUDqdsh8MMuXNEMAFn9x1+Srp90Qq
-	 NBR69dC1LH5Gs/FHwh1NDypZYIgyq1MUjtuIVxRIp5P054kybXDJxq8Lq8GleAutlNfTS
-	 DgkFa+2Khi5mb93bWtvLuRLE5gtLiosAjWISaXOoMDWVTEekj3LEUWSyQwJxs12hsgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794009014;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=DcXU0oExIDedQwC/01NHEk+Um4PsVTZtewa33aoXSV0=;
+	b=WHCrK/7AsNLiXYyNpk3wleINY160MDPEdL0DgoVgQWPVLhjheht0w6nqHVpX8sNsxjKj
+	 UZEvXYwjIziuXLFWA9TNcseSCF+x8nay10kKG0EAVjEgOlABWYPoeKSbH1Q6Q8m6/Usss
+	 n3BetvUPwqgBxni8Y1KmiIdu/EPowJ6nlOPfWa6AgvtTBb6btsRwKweNu8h5o2xKWOHMz
+	 2zP41lQzrfeAGpF/2RLDX4xCF0tIxtznYNcuqnUNd/a0H5zBJUO5CH/UwjrGWGLSMgPEv
+	 FILRhqJtdbvXXh9ty0DefJItsh1GF3ZUwnFoloYX66pB3Wo0kXyOtPfT5B7dl181X+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kernel.dk;
-	spf=pass smtp.mailfrom=kernel.dk;
-	dkim=pass header.d=kernel-dk.20260707.gappssmtp.com header.i=@kernel-dk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=TV5gJVy6;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TxlXosMy;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5AC606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:47:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B5AC606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6F1606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel-dk.20260707.gappssmtp.com header.i=@kernel-dk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=TV5gJVy6
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36f8cdd30beso1848625eec.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:47:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20260707.gappssmtp.com; s=20260707; t=1794008875; x=1794613675; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9PEBKf2/jcyA/DUFIiQ2NEHydLhTL/AGWCVcR+QKvC4=;
-        b=TV5gJVy6puZ6BC8Zk4J1m2BEbcpxTcPAAb4T9FwiuoUDWU76SCrC7begEbjqtResbK
-         Q37ewTtQtZiBAX0weE16K+wk5ZgJ1LwZl0PjYsFYXfqHqTzCZaYIdLUbos6t3HYB9Lun
-         Hcyqeylu8qPXvzmMNcXEKyIuBOxcE7wDxDf4emP7sjc2h5Ipdy47EGMuSO5cLf+7KjBt
-         EUabKhnWYrPq0KxaiPRFmQA8tgqWk7K09H/VfbPXQos3EVZnn/0MOw4JR+AmdebcHilj
-         U+zBoixol/yrKvFtEGzwYoHN8iSM4ktElV2NaLrRDFGGc09LaBAB7NgypObDU2q8N7nH
-         7V4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794008875; x=1794613675;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9PEBKf2/jcyA/DUFIiQ2NEHydLhTL/AGWCVcR+QKvC4=;
-        b=s3ao+ymkCNRJkICLcSdKA6nTjyM/9i0zjSc71d/jBiECneHdu2ZwnYUs704R4A5x6f
-         /mCUfJWJgtKaXPn2bEi5pg5WoyQIbdtFKM1urb7iCXzKoFMmR01cloA0MvOyj+EATUfr
-         oILF/71lSbx4qNIzHCRuTjyhRAEjpKAfoa740sSO6wL8uMV6v0XuUm/TXX9X/2t9Y+UT
-         XazzLGMD9yYfaJhaI8e5TVCwqfbaovrd26EDdqvOwTW6b1ROLZcpSXSU8D2C4gcuKmVh
-         ZMnDao5PZzrLFFxU79PCCzoe93gcPBn7BmoU1OIYNxDGIi/n5RiOSMIBibnr0tOV456S
-         1QhQ==
-X-Gm-Message-State: APuU4Z/h83BGJkOxvxWfnCZ0J5B3o7H/CuCllEejjF3E916fC0kW+qW4
-	8UQsum/4/CzOkS3aHimr2+lS4Mrh42OX4CG1XEHh1dJsaPZ9VD1d0dL8mnnVwpPtdW4=
-X-Gm-Gg: AYBFou1G8dc+Zehlpw9x+Ce1QWAgfw6M1WeFoffvRMgolvhZscZLwkCiSk7Vu1bOOu8
-	aig17OvUhHBbi3VVL6ejjtICLGdmyY9LLvkLUAlUUspuxni1esQ+14AXqbRCGyeBGt8NZ8y4R4U
-	JKrvvGKTUXayJxc5C0bQhQlkw22mL8MoFmwWCSvbGhtLf4yB1eAin7Wr1DWTYQnDOLIioos9xSy
-	atYoLXo4Q3rfYCvnVJysLWuVgBOJ9BQHOcN39ySWDhUe+zHs17/KzRIs5S3jEo1BkBvjAD62yLV
-	2OSCwuS+yclxcbAKl4yShS2xwRxbs4gP236ZdzxQPhnTlr4YFM1wsuQ/H39q8iCgpEr74xZWpzT
-	IPfO9wxj2XdLWuLgGR+o8wq/7hYiZtP4uQtYMyKG9NVn6ssdbWFDbAkm0P92q+SZ5FQK3/d1Fmt
-	tRzHsUPdTajP64pj7hyHlF9lUvAmP7+pPPemU1ckGyhCuo6qf6lZJt2zcCN3jp3xRItSNGzsd77
-	DU9WUrockjv9q1FxZiJ+MZo7oUUsR5qpPBYsfx6QKiJ8FX888L02aDGLSc23JdNXVl6yETWTkfJ
-	+zoYLZrw0eMi5h07R3WxH4y9pf1lHX6ik5hJi5bv8O1DnzyuAnuim4UgzFu2fmdTbDGd2pAJ9Kp
-	7ZMnTcl0SBCk=
-X-Received: by 2002:a05:693c:6096:b0:36a:1d6a:596b with SMTP id 5a478bee46e88-36f77200d2dmr6527344eec.29.1794008875034;
-        Fri, 06 Nov 2026 15:47:55 -0800 (PST)
-Received: from [192.168.1.106] ([198.8.77.135])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa922c6c7sm12242774eec.10.2026.11.06.15.47.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 15:47:54 -0800 (PST)
-Message-ID: <236f4ed4-7ee4-47fd-9f3e-f6920035b2e6@kernel.dk>
-Date: Fri, 6 Nov 2026 16:47:53 -0700
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TxlXosMy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD79E1F008A7
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794009012;
+	bh=DcXU0oExIDedQwC/01NHEk+Um4PsVTZtewa33aoXSV0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TxlXosMyFrKzbA7E2GTcZqpq6FJ0PDONXBMs1FkC/HZE4Fff5YVAoK1YUYUZNZ14I
+	 /uQ4EJAYtPxNUDG3DO+MllJEMMF+TPnKscZgfRyBNp21F9AlRuEmLhoKDpBbBzKy6S
+	 dw7r3zkS0RLmB6PNcRbh5/DNnSFAzEaughBGAHCsEVcqBNhEaBP7ICTRhTLzirx972
+	 nQU/A99dgYKPsvLTwOTtb0b+6i475eQJjp8i0ks5W2MguTBfMGMycUjE+mksQ8vXEH
+	 v5JBLf3CgqxSZhgAx59qIhftfQw3P3hWWshpLL2IXmwSaJzx8fWEYik2M7j139/Ykh
+	 ZBqx7QhPjkpMQ==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6de2f213b7aso500695eaf.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:50:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzzrpL4MWVuTMAwdGAabyvp0BOgYu5E70Xohmt80u6pAIEb/kttNXcbKwu+0VZSABMuzFPtvRc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+kepffwiAf1ICWh84cKmhDat/zXshD48YIF203P7e2+JM1uKKb
+	oASJDX4S/OyhjMOEjzsbShZoAZnFiJy2ZT8URPYrS8vtQFFbFjqh+U1I4JIK+NmfCH0EzrVnThQ
+	8L/qSADCvmWonHJplwzpBt+tctDSlioc=
+X-Received: by 2002:a05:6820:f036:b0:6b1:d09d:6d73 with SMTP id
+ 006d021491bc7-716e73cce25mr2420784eaf.8.1794009012160; Fri, 06 Nov 2026
+ 15:50:12 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,67 +59,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: leave O_NONBLOCK to the sendmsg and recvmsg syscalls
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: netdev <netdev@vger.kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-References: <f084de67-85b0-4759-845f-513879ebee5f@kernel.dk>
- <CAL4Wiips_uVD45bC2DpG5BqywmueUBB_wiNCnd64hNUe8YsH2w@mail.gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAL4Wiips_uVD45bC2DpG5BqywmueUBB_wiNCnd64hNUe8YsH2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261106225930.1379968-1-roman.gushchin@linux.dev>
+In-Reply-To: <20261106225930.1379968-1-roman.gushchin@linux.dev>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 7 Nov 2026 00:50:00 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiq7SweZDnbyBYAfg4rvJxowWtO_5LnB8-hnaNR2K228OQ@mail.gmail.com>
+X-Gm-Features: AclHuK-_5NxlKe0tcJTJSD6o8Lrzde1RmDvupDJo9TYr2AbkqTlhAlZ6Fe_nV8U
+Message-ID: <CAL4Wiiq7SweZDnbyBYAfg4rvJxowWtO_5LnB8-hnaNR2K228OQ@mail.gmail.com>
+Subject: Re: [PATCH net] 6lowpan: fix netdev_priv() type confusion in lowpan_event()
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: alex.aring@gmail.com, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/6/26 4:36 PM, Eric Dumazet wrote:
-> Le sam. 7 nov. 2026 ? 00:19, Jens Axboe <axboe@kernel.dk> a ?crit :
->>
->> ____sys_sendmsg() and ____sys_recvmsg() turn O_NONBLOCK on the socket
->> into MSG_DONTWAIT. That is right for the system calls, but io_uring uses
->> __sys_sendmsg_sock() and __sys_recvmsg_sock() for a blocking attempt
->> from io-wq as well, after the non-blocking attempts with MSG_DONTWAIT
->> have failed. On an O_NONBLOCK socket that attempt can't block either and
->> the request completes with -EAGAIN, unlike IORING_OP_SEND and RECV,
->> which call sock_sendmsg() and sock_recvmsg() directly and don't look at
->> O_NONBLOCK at all.
-> 
-> Makes sense. The socket.c side looks fine to me: all syscall paths
-> (sendmsg, sendmmsg, recvmsg, recvmmsg, compat) go through ___sys_sendmsg()
-> or ___sys_recvmsg(), and the copy_msghdr helpers only care about
-> MSG_CMSG_COMPAT, so setting MSG_DONTWAIT earlier is harmless.
+Le ven. 6 nov. 2026 =C3=A0 23:59, Roman Gushchin <roman.gushchin@linux.dev>=
+ a =C3=A9crit :
+>
+> lowpan_event() assumes any netdevice with dev->type =3D=3D ARPHRD_6LOWPAN
+> has a struct lowpan_dev in netdev_priv(dev). However, non-6LoWPAN
+> devices can also have ARPHRD_6LOWPAN, e.g. a TUN device via TUNSETLINK
+> or a bonding device inheriting dev->type from its lower device.
+>
+> Bringing such a device up or down causes lowpan_event() to read and
+> overwrite unrelated netdev_priv() memory. Since unprivileged users can
+> create TUN and bonding devices in a user and network namespace, they
+> can corrupt struct bonding and trigger a slab use-after-free.
+>
+> Also check dev->ndisc_ops =3D=3D &lowpan_ndisc_ops, which is set only by
+> lowpan_register_netdevice() on genuine 6LoWPAN devices.
+>
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression=
+")
+> Fixes: 2ad3ed59198c ("6lowpan: add 802.15.4 short addr slaac")
+> Cc: stable@vger.kernel.org
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/bug/linux-97b284e0-576e-4373-b62f-eb132f482=
+b91
 
-Thanks for checking!
+nit: Signed-off-by should come last, after Fixes:/Reported-by:/Closes:.
 
-> Fixes: tags? And please tag the subject [PATCH net] if this is
-> meant as a fix.
-> 
-> Fixes: 0fa03c624d8f ("io_uring: add support for sendmsg()")
-> Fixes: aa1fa28fc73e ("io_uring: add support for recvmsg()")
+The fix itself looks right to me: lowpan_register_netdevice() is the
+only place setting dev->ndisc_ops to &lowpan_ndisc_ops, and
+bond_setup_by_slave() does not copy ndisc_ops, so this is a reliable
+discriminator.
 
-Good point, I'll add the fixes tags and the subject.
-
->> Move the O_NONBLOCK handling to ___sys_sendmsg() and ___sys_recvmsg(),
->> which the sendmsg, sendmmsg, recvmsg and recvmmsg system calls go
->> through. The io_uring helpers then pass the flags the caller asked for.
->>
->> Reported-by: Luk?? Lalinsk? <lukas@lalinsky.com>
-> 
-> The name lost its accents (Luk?? Lalinsk?). A Closes: or Link: to the
-> report would be nice too.
-
-Man, not a lot went right in this posting... But yes, it lost it. I'll
-add a link too.
-
->> diff --git a/net/socket.c b/net/socket.c
->> index 2e3b5737c481..08658a9b8065 100644
->> --- a/net/socket.c
->> +++ b/n
-> 
-> This header got truncated, so the patch does not apply as posted.
-
-I'll send a v2 :)
-
--- 
-Jens Axboe
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Thanks.
