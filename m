@@ -1,56 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793959903;
-	b=R/zMB9QmOsBHnjDischOuAKK4LulcO6ZNYqKJOhZ4QWPAEZpcL4F46OVDmWQIHV9S44z
-	 7cjNYdLoDN0t4IFfO3pu2bWG7V2iz/2qIBWakLq0XN2KJGzwa6TVqOpM/F3xFi/2reH93
-	 WhFI86DWam+N3KKAQ0gE7rqDE8DresoqkpjmkREwEtkvcPRXbp6p17/Dt5MOyoQf++ekO
-	 xTngQyxCVjATACPEsPzJehWHgYuLZZAb6gI4PkpZ0I7Dr8XDiMijg1fzsUhpjxiC/mW+5
-	 F9wpwEbHPLktJIZkniJ5H7UcFGwtbUHRVAj55MUMdF4kIpOqwrM25GSKAp91zNJ2Kig==
+	t=1793959982;
+	b=Z+MhnnWrt6JPuTP4JSsqIj1oHNViJpmCiEG3ua34SX2e2vVTzaTrlN4xnhsznOZ/Mp2w
+	 TFIxz3FAcIioRTbsCYh9CBQNZ6WPT9Ok+h8pWPHRoEi2UXpXmcmDO5PDm5PVMuJP8Njrh
+	 kWFEJ173bLe+0+vNJ5S+hwFA0pRMsYmhQyOIapPXNolRJe+wILJjX76D2ysY6i9PsNgp9
+	 //Rz1heaAVG6idkoChhug24fOGgI7+3o89TLQA8wkbrGr+mDWKRXlLcC+jmz+UErUsosF
+	 MU4ruTNuq1LgPE68OqBgM+ROofJUO4x1jr6QvBhizVegUy4rvKJvktpKKto8fBIOQfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959903;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793959982;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=NVbdOhY0Y8hSqBaccRJIemSs5pQgbapaJJc/jw4bTlA=;
-	b=KQbaGjLRCPemmg0iaSLF+bqsQFeSKexZLjKhdBSeYO/IHiWucFinRHIFWHsb/2jhk0FX
-	 3jlT5DUyQ1SdYcn1Xn88nZkgBd3QoEA0a4XP5iZClzKn7C9lz5pdXRumIOcidhVjeC/ej
-	 mGUW3IGk2SgKNRPxa3NQhfvQJU0PEtZAxoYdYhVoKhpYippCH5CMc/cYR+xBnVyJ3VJZZ
-	 HGK6U3VMmKrjPv+QsesrgmOEVNmwUF7P6RsF4hK/4iR7ag/qtAZ3sWB0mrjYHCcsS1ZoH
-	 bk+Oop+KJZ7XsFenlgWQ1ilrjPXt1zQQTYJ+JezFh66yxR+F20wAy4JJxbUnHjIebzQ==
+	bh=nnzK0BslWJHcXFemGgfYITU9fhviw2smy0wN/ApAn14=;
+	b=hZc5LuKlOx2w2Rj9dJJVWrPOd+rMzUP8RYWAtuGiHC4aOjQowbicne2HE+A55E+sOXzH
+	 ShEe1Q37OPzLq5XxuCXwfDHBqCzrZlNEbhHO8p2UYS/gwAccNrcyilJqxAuoU6UZQCrE5
+	 NnqikgR5l+ROns1KftFoonDvbjHqnJpq+onv5lkp0Sb3j4jmenHD8DFYxmW1ZVtMh8Ghz
+	 TU28JlcNj0Mt9pQ5Jzfdqcw162gxO+xghvhZa95EVpS82A+y9u0f7vpdlBGUc6LaQhmkl
+	 ySipzs+g88lP9YHGk6KbJb79+nhrWnA48URkmAmuWJHtClwdu/PQNG3kV4L3NOpulAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AF0/cyYI";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="edM4/p9S";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38C3606A32F;
-	Fri,  6 Nov 2026 10:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AFD606A326;
+	Fri,  6 Nov 2026 10:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AF0/cyYI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83761F008A3;
-	Fri,  6 Nov 2026 10:11:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=edM4/p9S
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D81F0089F;
+	Fri,  6 Nov 2026 10:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793959902;
-	bh=NVbdOhY0Y8hSqBaccRJIemSs5pQgbapaJJc/jw4bTlA=;
+	s=k20260515; t=1793959982;
+	bh=nnzK0BslWJHcXFemGgfYITU9fhviw2smy0wN/ApAn14=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AF0/cyYIERpgU0HBQxi/PdKZp0ySQN/ch9rNzlnzK2Yx3SgOkGMggfUBGB4tnknIy
-	 FYUwNMp6vwHdhojBUcl1OoypKlIZGO1vkNnRQN5CwTImzu4+nVCH2mhzqqm8Dm/Tjb
-	 pbhPEFfx0rNwLFDiVkO+LgwPcDrRhC0EOqppkK7vev1kWZvd3BIni/u351TuiHHqxh
-	 mTvXjX3o+m+iMn2AHLiuTbLfHcBf01Oj2Ez2KcoJR9tbhwQLXRxqH7+PzqQsXoe1eO
-	 vPCx2JxRwUFq7pgnZfMnXzpkrGthYv6bdNMyn759+zoUy3qr/IuQUxultlWZYkxID2
-	 F1nLp1YvZHjmw==
-Date: Fri, 6 Nov 2026 10:11:37 +0000
-From: Simon Horman <horms@kernel.org>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, michael.bommarito@gmail.com, gnault@redhat.com,
-	alice.kernel@fastmail.im, kuniyu@google.com, nicoyip.dev@gmail.com,
-	mail@david-bauer.net, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: Re: [PATCH net-next v2] l2tp: bump tunnel stats before dropping the
- session reference
-Message-ID: <20261106101137.GF865646@horms.kernel.org>
-References: <20261103084249.1337657-1-xiaolinkui@126.com>
+	b=edM4/p9SW7+S73fDgQfspXTjrIk9baHrV37Kd/QhylG3sLFrLKrn7Hstn6AQsz5uw
+	 UpQitFXbsHcThZxWuXEdgx2CDWhWf6hbi4u2aagagDQcQos8ZBnDTihVAkxsA3Xn2S
+	 DaXEaR4Ddkun5RuUbGazbbXXqJnn4U2NrjbxamgcSa5zL2fHatPp33S0Uil9R6wxXW
+	 6ge5YPJC6yBuH0U/vS7kAmhEAxOiNR4kAK8TFOI7nFk/vAgdTcuJjqV3mfM6VrhrYp
+	 EqVajW7CacXXOnIxA1xdsWgBIymxyAvUB9LHqQ8we47DuLvg13NGqZGYXr7xRTpXPl
+	 +UVOBxUZErwXA==
+Date: Fri, 6 Nov 2026 11:12:53 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: "Serge E. Hallyn" <serge@hallyn.com>, 
+	"Hallgrimur H. Gunnarsson" <halg@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
+	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+Message-ID: <20261106-sandalen-monopol-neugierig-23357f8efc64@brauner>
+References: <20261028221705.3915340-1-halg@google.com>
+ <aunVmg42/S2uUDWR@hallyn.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,60 +69,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103084249.1337657-1-xiaolinkui@126.com>
+In-Reply-To: <aunVmg42/S2uUDWR@hallyn.com>
 
-On Tue, Nov 03, 2026 at 04:42:49PM +0800, Linkui Xiao wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> l2tp_udp_encap_recv() derives the tunnel pointer from the session it
-> has just looked up, so the session reference is the only thing keeping
-> the tunnel alive.  Both error paths of the function drop the reference
-> before jumping to the invalid label, which still dereferences the
-> tunnel:
-> 
-> 	tunnel = session->tunnel;
-> 
-> 	if (version != tunnel->version) {
-> 		l2tp_session_put(session);
-> 		goto invalid;
-> 	}
-> 	...
-> invalid:
-> 	atomic_long_inc(&tunnel->stats.rx_invalid);
-> 
-> Reorder the error paths so the statistics are updated before the
-> reference is dropped, removing the dependency on the tunnel staying
-> allocated after its last reference is gone.
-> 
-> Currently this is safe by accident: the only live entry point is the
-> UDP encap_rcv hook, which is invoked under rcu_read_lock(), and the
-> tunnel is freed by kfree_rcu(), so the tunnel memory outlives the
-> dereference.  Making the order explicitly correct keeps the function
-> safe regardless of the calling context, instead of relying on every
-> future caller holding an RCU read-side reference.
-> 
-> The put on the version mismatch path came later, with commit
-> 4d10edfd1475 ("l2tp: Fix memleak in l2tp_udp_encap_recv()."), which
-> plugged a session leak.
-> 
-> Found by inspection.
-> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-> ---
-> Changes in v2:
-> - Describe the change as hardening instead of a reachable
->   use-after-free: the socket backlog path pointed at by the v1 commit
->   message cannot be reached, and the live receive path always holds an
->   RCU read-side reference, so the old ordering is currently safe
->   (Sashiko AI review).
-> - Drop the backport tags (the Fixes tag and the Cc to stable)
->   accordingly and retitle the patch.
-> - Correct the index line: the v1 patch carried the blob hashes of an
->   earlier draft of this change, so its new hash did not match the file
->   the diff actually produces.
-> v1:
-> - Link: https://lore.kernel.org/all/20261027063657.1359170-1-xiaolinkui@126.com/
+On Tue, Nov 03, 2026 at 06:37:46AM -0600, Serge E. Hallyn wrote:
+> Kees whipped up a proof of concept BPF lsm that implemented this.  A copy
+> from his email (and let's call it GPLv2 unless he wants to change it to
+> something like MIT) follows:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+There's no need to special-case user namespaces for this anymore.
+I've added generic namespace LSM hooks for v7.4-rc1:
 
+* namespace_init()
+* namespace_install() (setns())
+* namespace_free()
+
+called from the common namespace code I added and for every namespace type.
+
+So a policy like this can cover creation and setns() of all namespaces
+and follow a namespace by its id until it's gone.
+
+The catch is that what got merged doesn't work with the bpf LSM right
+now.
+
+namespace_free() is never called unless an LSM allocated a namespace
+blob, namespace_init() sees a namespace id of zero because
+the id is allocated after the hook has run, and the bpf LSM marks the
+namespace arguments of both hooks as trusted although the namespace can
+be freed right after.
+
+I sent fixes for all of that (cf. [1], [2]) (cf. [3]).
+
+[1]: https://lore.kernel.org/all/20261026-work-security-namespace_free-v1-0-ffa3ebbf71bd@kernel.org
+[2]: https://lore.kernel.org/all/20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org
+[3]: https://lore.kernel.org/all/CAHC9VhRwD1c1qKK4=Uc8cbMy27iF722C0DZeXy4WGtH-kOBOcQ@mail.gmail.com
+
+-- 
