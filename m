@@ -1,61 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793966964;
-	b=Ve0RAdgmcF1SJDXYytrV7RmF2JCCzFzQkCjtRXSk6VeWEIyQjSC4Z5AmfkG3pC/bq3xd
-	 OAdwBxx+UdBkOQ9X3V44vV5JbU0xXh4RWMWrCQvWA/1IGzcj9Sjwqtn2Bn7mqe5ugFN+Y
-	 q39A4chbTa36r1MZ93dJUvQkhpWBxfTs5Rv3ufvKlcqI3y3PCPnIB4P+5uaHX/y/dNoQ4
-	 2wVZO8BSU9u8Z8iH/vMzMmDJbZDTShl5yZIQmHXywMIgcIo8ovKtem8HWA2ClCewRXoUK
-	 bKM+D1h7p5BEYTgx67PzKeaCj2v6IqMsk9Q4X50rWWTlI6aQemn5ks/tZ3KI5j23cBA==
+	t=1793966970;
+	b=jMuA82H9HCLBq2uFO805u2cY9spkLX7dyl5SyGmxd5i3jep7G+svUObmnq7h5fWQ6y9p
+	 pgYkUaCU1BbsO/cDZkIelULyhkrFYx4gbDjtQsMxJuT8b9oXfb/DWG50hYjv+LfRLgFXz
+	 xT/LpEZx1bF2ugRTkBraRehbFn0LaRSeVgOCjzgGE9yLEq6mbBaohg1mtD8ZLwPSOtQyb
+	 LhApRYpNeHs0bTrNRjfMXvkBsNcdZD9oM9YmH1rfv3VbE4CQqiEeBHxg3qyD2g4np9DdE
+	 jTKvp8MQJQzTQZUV8Vk85NiiPRxQFbBp8xCI391hmtxRvO9cYc/fX3mnfqkKV3TlJ8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793966964;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793966970;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:X-Google-Original-Message-ID:Date:From:To:Cc:Subject:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=rIJTGu4lQFEUcai9lQo31jwOxKOMF2xzMy8/uijRKkI=;
-	b=iYA5B8fNbKkQ5crkuN9IMcTwcDUf89D6gnujFb1wpQYjHLjKmpjFxonQShx0mlBEYCbI
-	 MH0B7hHPw82BxI2n8o1Cu0iHsx/mjtFnUVO18HFNv8OX/CvmYzDJ/1eYXyCRL9G0gCAwQ
-	 YOE/xQjxiSCQ+/eBgFD8Kh15h//LM1Sz3QkvC963vnln7Tnjcd0SErXm3sbs4mHK2Blfs
-	 fw+7e4lbz2M0HICfg3dPlqP6Nu5cSaN+/e82BIQdlpbEGipAp3lY6yyr0dcc0J/6X9q2z
-	 qWlVJURmBw+0NxVqj3+EblfIHI13BZ3c46qW33yn1kKS25YvGUl0/EQqSM7ZmUoYoHg==
+	bh=+KjFRIlwc0fQgpSaiqKXkBqkuri5Ko/sHn1nPO0owQo=;
+	b=jUfsItpzBO8eqgMB6KJZWidKMFc1PcHIUg/rfMB8I4wD6STZr3LJOb13rL9ndKQoIobr
+	 zzJFCdXiBiPoSTobX7/Umjyp5CnWPPirn9aZKnsu5IkigCKcCZmXyMGt9AVAPKEUOB873
+	 lo1XM5+h2zstZCrGNoEAN5neYhzPBpWkAer0INWW+PrL8ZIF//e5qUrf+tvoPHLWPTOWc
+	 OVd+HtdsC0XAkxjsB295F+omKMlqzXvNUIcBKr1fgQ7CpW4YbT64lT6j51UnmpZICVSpB
+	 EpXUZNKO5TNiBzkoZymXgDJxLcV1A3GUa0PMxkRA2eFDfAVDWxTr+bbBIc6b0UlGwaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ca7Tc1td;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LnVPtQ4h;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3C1606D804;
-	Fri,  6 Nov 2026 12:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6BA606D802
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 12:09:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D6BA606D802
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ca7Tc1td
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DA61F0089F;
-	Fri,  6 Nov 2026 12:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793966963;
-	bh=rIJTGu4lQFEUcai9lQo31jwOxKOMF2xzMy8/uijRKkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ca7Tc1td1SVOvkCWqi93cF+4oicJ5D2n86/c9DyBbfQbeVGmJXBESJQp2eN000bX0
-	 bvVLAy3jSzzWeWhl2ZqBQ8HRH2529Br6caegJg/3QVBbNyUbBFcHrtL3jo5FFBhGDP
-	 VzmJsUc51vWvsuyXyk+W61mXRJo0foz4rQhNnZKr4lCVGJB1fNnCf3+ZpZ4z2PhN9D
-	 4twt87jfdZZccjiVJ0FuNKdrj3QxmgBCfIZV9Ma0R9cFdotSp5JRGXchyPUHni5kvG
-	 B1//EVUTUyy7RSvycpLtL7L9YuWwY+L2BwIYZg756Qyi5c4T8QtLxeweP0SrQwgn4d
-	 sLuBmDb8rGZcA==
-Date: Fri, 6 Nov 2026 12:09:18 +0000
-From: Simon Horman <horms@kernel.org>
-To: Vadluri Mukunda <vmukunda@marvell.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LnVPtQ4h
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4afe2d546f9so7034475e9.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 04:09:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793966967; x=1794571767; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+KjFRIlwc0fQgpSaiqKXkBqkuri5Ko/sHn1nPO0owQo=;
+        b=LnVPtQ4hJE+U8U1nrrid4USihyS/c14UyDvFeS0ZGtc9o3fc1Hg3EihfVvpNGfy5ER
+         ZWRfiXThFLj3CY2QtTXmIzdxXERWVPqfBSnciPH/RSPwoOWASsb0HT/wxQpHUBF+Kkxr
+         oHCJLGwIu+lDbfqW/N0gpQW2B5B4niRWQQLo+0tuysrU+u18G07lrkCVUpUPD2QmynsJ
+         oNDGP1g7esOS4dD6qpaDed6UJWo8yU9w4jsMI0VJbVQvqePMyR4GVT1pho/rYwlWUCkU
+         qwixXXKPIuwgUtqIIcS1Sk/bEtycg8QzbUWc3IVDE8Wye192mjss5d3b7RZSFn1Pt251
+         2NTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793966967; x=1794571767;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:subject:cc:to:from:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+KjFRIlwc0fQgpSaiqKXkBqkuri5Ko/sHn1nPO0owQo=;
+        b=i8n/fI6a0EQcRRb4Jy6r9VnDEyc82Re+MnoHyIphl+8YGTyK019faXuQeSwFmsMCKt
+         1zHnUslsO+aVR7NM0Mc2o0+6pvVzl++w/2VkKP+Hx5YxdggA+E4khT4EKSlcEws0zYp0
+         tlYMDHMe9fjTYYQNigDj4xQB1tz7sfNVFsuFXbENr9LTd0X9Jsch//AkIofYkHAUf98b
+         3Yk2wuZZGbNELud3jvoQp40CwjJYTg4jqkKDX3Ikb9UGbL6TF5v1DHtJkSlSZ9/slNex
+         /DKaREFUY0DJ7rXoVP1xDaLYXBcXPli7xpRKYM+9Ut0NLbF9ekR0WFq2l6u8zfprFzQz
+         zo8w==
+X-Forwarded-Encrypted: i=1; AKwUvByiLCDIrHsHxvyq8RWZ8iKLACQP9djb4ToEYrz12YIeL/GSSfs4IUGNcnK+wqDRXFFOop/HKdg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z940LO4UBWFRvT2vWecgcqc6GgrCWRpnnZYxHcrf9kqf4Dt9uwn
+	xZnTTcbQEyY2/DyS9KlxDRoHeTJXCfRSH5yNHat1oG5gpUX8Uj6Eg0p2
+X-Gm-Gg: AYBFou10p6cNh1gn1lscwFCAy3gPqm3ADZfeNGUzeG8RBLfpNS4sGJtFacBRixUTYPp
+	LrWXvxkoKXcFwKZJw7Dt+no7RF9BBYTpKNDdEyL2H6VAiP0xFp5KEZvrXM7qjmFj/TAODYbzIPG
+	CjsI4nmzb+snMOmMQch4PAAdRZ4JgAjl8NpEN1GZl4e3PF0ZEwvZWLNGx5xFDi94YHKdtOJy135
+	iCh55VyTtwUViG4bvHGn87UQOu4Tg9HRcRXqYsNfoGBTgapHAQojZebXywj902nPMdIxdd/R60G
+	3sS8rMZ0K2V243oTjJZgeKYp87xfRTjWrHtVYfMZH8EI44tAslK0D3jre1igBZb8jrbcESnoc3N
+	mWLJ/I3j5NtIyM3hI5SgUmNkcU0nwz8liAnjsP+O9btfBfpj0anIBtyhyiKHRymTeINi80fQznB
+	t9v/B1o0RWKKx54dYg0MoAlFYT0J6gfOry32jqk0toZB6kzxiYYDCoB+LsL0kJQfuufDp/jwZgr
+	fkOFmI1jyLkKnooTd6IWaChKSbxOoh0RPPSGDJ1W5fdKKcRkMkSaWKlrGSqNN2JS6qEF9C6V0Mt
+	RegngqsbITBdc9b8E7f27yxTkMtrYUDoVj3xyOoVgOx9yXOn/kGKSU1fLtU02R8+PARPhka6iNF
+	QtR05ajUsKJdEaJA=
+X-Received: by 2002:a05:600c:64c5:b0:4a7:4697:dae3 with SMTP id 5b1f17b1804b1-4b6dfca2330mr40505405e9.24.1793966967349;
+        Fri, 06 Nov 2026 04:09:27 -0800 (PST)
+Received: from Ansuel-XPS. (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7233297sm3526249f8f.27.2026.11.06.04.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 04:09:26 -0800 (PST)
+Message-ID: <6aedc376.79189afa.3a0b25.2405@mx.google.com>
+X-Google-Original-Message-ID: <au3DcuM4XQPC-Aus@Ansuel-XPS.>
+Date: Fri, 6 Nov 2026 13:09:22 +0100
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Suman Ghosh <sumang@marvell.com>
-Subject: Re: [PATCH net v2] octeontx2-af: skip NPC_AF_MATCH_STATX access on
- cn20k
-Message-ID: <20261106120918.GH865646@horms.kernel.org>
-References: <20261103091831.914393-1-vmukunda@marvell.com>
+	Daniel Golle <daniel@makrotopia.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joris Vaisvila <joey@tinyisr.com>,
+	Ahmed Naseef <naseefkm@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v4 5/6] net: phy: mediatek: add calibration
+ logic for AN7581
+References: <20261103221439.30502-1-ansuelsmth@gmail.com>
+ <20261103221439.30502-6-ansuelsmth@gmail.com>
+ <028a75a3-b69c-4ae8-8f15-3ef855346a0f@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,31 +115,116 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103091831.914393-1-vmukunda@marvell.com>
+In-Reply-To: <028a75a3-b69c-4ae8-8f15-3ef855346a0f@lunn.ch>
 
-On Tue, Nov 03, 2026 at 09:18:31AM +0000, Vadluri Mukunda wrote:
-> From: Subbaraya Sundeep <sbhatta@marvell.com>
+On Thu, Nov 05, 2026 at 11:47:26PM +0100, Andrew Lunn wrote:
+> > +static int airoha_cal_cycle(struct phy_device *phydev, int devad,
+> > +			    u32 regnum, u16 mask, u16 cal_val)
+> > +{
+> > +	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
+> > +	struct phy_device *phydev_p0;
+> > +	int ret;
+> > +
+> > +	phydev_p0 = shared->phydev_p0;
+> > +
+> > +	phy_modify_mmd(phydev, devad, regnum, mask, cal_val);
+> > +
+> > +	ret = mtk_cal_cycle_wait(phydev_p0);
 > 
-> NPC_AF_MATCH_STATX is not present on cn20k silicon, and cn20k does
-> not set up an RX miss action counter. Two paths still access it:
-> the npc_delete_flow mailbox, which reads the counter of the deleted
-> rule, and the rx_miss_act_stats debugfs file, which would read
-> counter 0. Avoid the access on cn20k. Counter support for cn20k is
-> left for later.
 > 
-> Found by code inspection. The issue was not triggered on hardware.
-> Compile tested only; not tested on real hardware.
+> > +static int airoha_rext_cal_sw(struct phy_device *phydev)
+> > +{
 > 
-> Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for CN20K silicon")
-> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-> Signed-off-by: Vadluri Mukunda <vmukunda@marvell.com>
-> ---
-> v2:
->   - Fixes tag now points to the upstream commit
->   - Also skip creating the rx_miss_act_stats debugfs file on cn20k
->   - Use full name in Signed-off-by
->   - Add how the issue was found and what testing was done
-> v1: https://lore.kernel.org/netdev/20261026035140.666684-1-vmukunda@marvell.com/
+> ...
+> 
+> > +	phydev_dbg(phydev, "Start REXT SW cal.\n");
+> > +	first_calib = airoha_cal_cycle(phydev, MDIO_MMD_VEND1, MTK_PHY_RG_ANA_CAL_RG5,
+> > +				       MTK_PHY_RG_REXT_ZCAL_CTRL_MASK, zcal_ctrl);
+> > +
+> 
+> > +static int airoha_cal_sw(struct phy_device *phydev, enum CAL_ITEM cal_item,
+> > +			 u8 start_pair, u8 end_pair)
+> > +{
+> > +	u8 pair_n;
+> > +	int ret;
+> > +
+> > +	for (pair_n = start_pair; pair_n <= end_pair; pair_n++) {
+> > +		switch (cal_item) {
+> > +		case REXT:
+> > +			ret = airoha_rext_cal_sw(phydev);
+> > +			break;
+> 
+> > +static int airoha_start_cal(struct phy_device *phydev, enum CAL_ITEM cal_item,
+> > +			    enum CAL_MODE cal_mode, u8 start_pair,
+> > +			    u8 end_pair, u32 *buf)
+> > +{
+> > +	int ret;
+> > +
+> > +	switch (cal_mode) {
+> > +	case SW_M:
+> > +		ret = airoha_cal_sw(phydev, cal_item, start_pair, end_pair);
+> 
+> 
+> > +static int airoha_phy_calib(struct phy_device *phydev)
+> > +{
+> > +	phy_package_lock(phydev);
+> > +	if (!shared->rext_sw_calib_done) {
+> > +		ret = airoha_start_cal(phydev, REXT, SW_M, NO_PAIR, NO_PAIR, NULL);
+> > +		if (ret) {
+> > +			phy_package_unlock(phydev);
+> > +			return ret;
+> > +		}
+> > +
+> > +		shared->rext_sw_calib_done = true;
+> > +	}
+> > +	phy_package_unlock(phydev);
+> > +
+> > +	ret = airoha_start_cal(phydev, TX_R50, SW_M, PAIR_A, PAIR_D, NULL);
+> 
+> 
+> > +static int an7581_phy_config_init(struct phy_device *phydev)
+> > +{
+> > +	struct airoha_socphy_shared *shared = phy_package_get_priv(phydev);
+> > +	struct phy_device *phydev_p0;
+> > +	u8 phy_offset;
+> > +	int oldpage;
+> > +	int ret;
+> > +
+> > +	phydev_p0 = shared->phydev_p0;
+> > +	phy_offset = phydev->mdio.addr - phydev_p0->mdio.addr;
+> > +
+> > +	if (phy_package_init_once(phydev)) {
+> > +		ret = an7581_phy_package_config_init_once(phydev);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+> > +
+> > +	ret = airoha_phy_calib(phydev);
+> 
+> > @@ -88,6 +1610,7 @@ static struct phy_driver mtk_socphy_driver[] = {
+> >  	{
+> >  		PHY_ID_MATCH_EXACT(AIROHA_GPHY_ID_AN7581),
+> >  		.name		= "Airoha AN7581 PHY",
+> > +		.config_init	= an7581_phy_config_init,
+> 
+> > > There are 4 phys in total, only the phy with mdio address 9 has the
+> > > calibration capability. Thus only one phy at the time can perform
+> > > the calibration sequence.
+> 
+> config_init -> airoha_phy_calib -> airoha_start_cal -> airoha_cal_sw
+> -> airoha_cal_cycle
+> 
+> I cannot say i looked at all the details closely, maybe i missed an ==
+> 9 somewhere, but to me, it looks like two config_init can run in
+> parallel.
+> 
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Hi Andrew, in v5 I converted the driver to full phy_package_lock/unlock and
+I set the base address correctly to the hardcoded value of the SoC.
 
+This permitted me to simplify the validation code instead of saving the
+phydev for port0 in the phy_package struct (a much solid implementation in
+short)
+
+-- 
+	Ansuel
