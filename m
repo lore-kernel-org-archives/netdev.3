@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.190.148.227
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793943949;
-	b=RvAwkDs5F4+iwu0pZdcr7lbQVoDIM345LPWlaUIp/nojnVmKkKMNd8y9nrM0xa0mT7dt
-	 UgXBY+ac8mbOyWa5braRuMsvFwLA0fGlSu4aBfMpfoVbdzIg3i+flyrnCzqRh8lbLduGj
-	 AZ1I3BsORFrd9JcKCjh61+oHUR3SkoAkDBo0p9brNv8D23PI3+aeUZWBxfg0COYIfNMJP
-	 PPwm/IAMjg4znUZOER888YiANV20VYxfxV3Nxzt629AS6pG5nUXHUr9A7qc717yu/jVKd
-	 agFqQ6pERo3caE0SzSibujh/sQYs1TZnKrT+dwepZGr51raV7SVFOTb++Kt+LCRlgvA==
+	t=1793944079;
+	b=iXvmPMBw+4AexK/jK4La4EqjW8hslWT2+G2PFkAwkrnyOEX/9dcIbfBOJmH0BdmfQ/mw
+	 uDDNG9k+7BImt0nt+MSyQjlgqWT8Ig4dkkQDkucL3H5QuLP+vNps3JgJSpQxr0KfZp6vW
+	 EAul2HhCcHGa6r+Uduw+jVI1G33L+RFO+czEhU4ts8R52T6H6d/hSB+hQG2suJsa3r6qZ
+	 hdpGIN9sphHfSC/+s9n4Zfw1bcTeIWg/CQ8umwQto8m7FUK6spPGXw6N1W35UucnihNc1
+	 fN00A8m18dUdqLR+86hJWMDwQykaRc5a6xcHY0ngLsXlJNPLrSTLfPtMfY4xX2oQIlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793943949;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793944079;
 	h=DMARC-Filter:Received:Received:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Da1SaMO0CRhyo8NUsuKEWZa9VmLrT53aVWII3on28cs=;
-	b=eBWocAn/3VqVBHCzVxacq+VOyqGJ6AvemL1UxfppjYvzgDJUlKe22aDwa22Cb0nN4WQH
-	 2ENcxbd2YhgQwQboJtGdWOb+Zmxe6gIZ6Vo8NOWpbBmP31B5JOAiU4FWF+xjuK23BIbpw
-	 mx3da3MUq4/bRUCcetrcgRJV9OMA7m/8vq58sC7xywpr2bP9v+14Rynr29oLrZDRnxdRS
-	 7fttoIXCxSZI/Xq3dVveGKTronIU0wUpTUBEdLuJTv+A2Hau8cZ9ua0lZnVhrziiX5i/w
-	 voMaxMcw55lS9dn+ZWJ767QJH50VVvPbak9UXvK743KTFExWX1mUUVHFUgO+IWLagJw==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=5ff/g5VJO2BFNc3k44pYPtI7CiOZMDpxwK2zGNrDIUg=;
+	b=iJJy0h7SZMYbTzH5j/uZ0AZioukaW8c7LCVypNQvRE8Jazme/tWQxrzDKrcig7Hyin/c
+	 NcMTq/7kRIhgx6wHqNgeDeEpjK/On5O1D/JsORVv9EyeGbLKBzJNUIYFUPLr2JGZuiPYO
+	 h9ENgtXA2xiroGNJQUg9jrlQLwn1w0C3A3yqBNQy1lVnCKev0djMOaLMxb3Rspx0TSy5r
+	 YeQl/kj1TFKokCEep3zSPcfwCTOtlBl8kBYRyUfOj+GCFakTwuy9cvPq+rb7RtVdsdoIN
+	 D/WC72TTPn9UlyQID+oCd9prTfcyv1D+1xVEcHxX4KfouYvFWe8vL1D+feE2OJ/8gMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=foundata.com;
 	spf=pass smtp.mailfrom=foundata.com;
@@ -25,49 +25,38 @@ Received: from hera.efm.de (hera.efm.de [195.190.148.227])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7821606A334;
-	Fri,  6 Nov 2026 05:45:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7821606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FC606A331;
+	Fri,  6 Nov 2026 05:47:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 112FC606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=foundata.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foundata.com
 Received: from hera.efm.de (localhost [IPv6:::1])
-	by hera.efm.de (Postfix) with ESMTPS id 82E4240C3D59A;
-	Fri,  6 Nov 2026 06:45:39 +0100 (CET)
+	by hera.efm.de (Postfix) with ESMTPS id 4BD58413304F4;
+	Fri,  6 Nov 2026 06:47:56 +0100 (CET)
 Received: from localhost (localhost [IPv6:::1])
-	by hera.efm.de (Postfix) with ESMTP id 67905414F1D5B;
-	Fri,  6 Nov 2026 06:45:39 +0100 (CET)
+	by hera.efm.de (Postfix) with ESMTP id 358BF414F1D79;
+	Fri,  6 Nov 2026 06:47:56 +0100 (CET)
 Received: from hera.efm.de ([IPv6:::1])
  by localhost (hera.efm.de [IPv6:::1]) (amavis, port 10026) with ESMTP
- id I9DkL1TP4yKV; Fri,  6 Nov 2026 06:45:39 +0100 (CET)
+ id IT0rOaAAUZPt; Fri,  6 Nov 2026 06:47:56 +0100 (CET)
 Received: from tpx13-pf5nr32.fritz.box (ip-037-209-109-094.um11.pools.vodafone-ip.de [37.209.109.94])
 	(Authenticated sender: ah@foundata.com)
-	by hera.efm.de (Postfix) with ESMTPSA id CC99C40C3D59A;
-	Fri,  6 Nov 2026 06:45:38 +0100 (CET)
+	by hera.efm.de (Postfix) with ESMTPSA id CDD7B413304F4;
+	Fri,  6 Nov 2026 06:47:55 +0100 (CET)
 From: Andreas Haerter <ah@foundata.com>
-To: tim770802@gmail.com
-Cc: Chih.Hung.Huang@wnc.com.tw,
-	andrew+netdev@lunn.ch,
-	chandrashekar.devegowda@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	haijun.liu@mediatek.com,
-	horms@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	johannes@sipsolutions.net,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	loic.poulain@oss.qualcomm.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
+To: chandrashekar.devegowda@intel.com
+Cc: haijun.liu@mediatek.com,
 	ricardo.martinez@linux.intel.com,
+	loic.poulain@oss.qualcomm.com,
 	ryazanov.s.a@gmail.com,
-	tim.jh.chen@wnc.com.tw
-Subject: Re: [PATCH net v6 2/4] net: wwan: t7xx: do not exit the TX push kthread on resume failure
-Date: Fri,  6 Nov 2026 06:45:30 +0100
-Message-ID: <20261106054532.201311-1-ah@foundata.com>
+	johannes@sipsolutions.net,
+	tim770802@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: mtk_t7xx: resume after power loss reported as success, modem stays dead
+Date: Fri,  6 Nov 2026 06:46:27 +0100
+Message-ID: <20261106054629.203092-1-ah@foundata.com>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261002014638.47981-3-tim770802@gmail.com>
-References: <20261002014638.47981-3-tim770802@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,46 +69,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 02, 2026 at 09:46:36AM +0800, Tim JH Chen wrote:
-> A later
-> t7xx_dpmaif_tx_thread_rel() then calls kthread_stop() on the stale
-> pointer [...]
+Hi,
 
-I hit this in normal use on a ThinkPad X13 Gen 6 with a Rolling
-RW350R-GL (14c3:4d75, subsystem 2099:3552), on Fedora's 7.2.4 and
-7.2.5.
+After system suspend the t7xx module on this machine can lose power and
+not come back. The PCI core notices, but mtk_t7xx reports the resume as
+successful and keeps its ports registered. Userspace is left with a
+modem that exists and rejects every write, and only a reboot recovers
+it.
 
-A runtime suspend failed with "[PM] SAP suspend error: -110". After
-that, every MBIM write failed with -22 and the modem stayed dead.
-Writing to the PCI remove attribute then gave a WARNING at
-kernel/kthread.c:84 and, on a later occurrence, this oops:
+I have seen this on 4 of at least 13 s2idle cycles, on Fedora's 7.2.5
+to 7.2.15. Line numbers are from current mainline.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor write access in kernel mode
-  RIP: 0010:kthread_stop+0x44/0x180
-  Call Trace:
-   t7xx_dpmaif_hif_exit+0x46/0xa0 [mtk_t7xx]
-   t7xx_md_exit+0x5c/0xa0 [mtk_t7xx]
-   t7xx_pci_remove+0x41/0xc0 [mtk_t7xx]
-   pci_device_remove+0x4a/0xb0
-   device_release_driver_internal+0x19e/0x200
-   pci_stop_bus_device+0x80/0xa0
-   pci_stop_and_remove_bus_device_locked+0x1a/0x30
-   remove_store+0x83/0xa0
+  Machine:  LENOVO 21RMCTO1WW (ThinkPad X13 Gen 6), AMD
+  Module:   Rolling Wireless RW350R-GL, 14c3:4d75 (2099:3552)
+  Firmware: 81601.0000.00.29.25.05_DT
+  BIOS:     R32ET20W (1.03), and R32ET28W (1.11) for the latest one
 
-The faulting instruction is the set_bit of KTHREAD_SHOULD_STOP with
-worker_private NULL, so the pointer no longer referred to a kthread.
-The writing process stayed in D state holding pci_rescan_remove_lock.
-Shutdown then hung and the machine needed a forced power-off, which may
-be worth a line in the changelog.
+From 7.2.15 on BIOS 1.11, on the first standby after the BIOS update:
 
-One question on the retry. In my case the failure is permanent:
-runtime_error is latched, so rpm_resume() returns -EINVAL from then on.
-With this patch the crash goes away, but TX stays dead and the thread
-retries every 20 ms for as long as the TX lists are non-empty. Is that
-the intended end state, or should something report the dead data path?
+  PM: suspend entry (s2idle)
+  mtk_t7xx 0000:c3:00.0: Unable to change power state from D3hot to D0,
+    device inaccessible
+  PM: suspend exit
+  mtk_t7xx 0000:c3:00.0: Write error on MBIM port, -19
 
-I have no reproducer, so I cannot offer a Tested-by.
+The driver logs nothing else about it. Config space then reads all ff
+(on 7.2.8 it still did seven minutes later), while /dev/wwan0mbim0 and
+/dev/wwan0at0 stay present. Runtime PM is not involved: power/control
+is "on" and power/runtime_suspended_time reads 0.
+
+The root port 00:02.5 sees nothing either: SltSta shows PresDet-, and
+LnkSta shows DLActive- and Train-, with 2.5GT/s x16 on a port that is
+x1. So the link is down and the port is not training.
+The ACPI power code for this slot (\_SB.PCI0.GPP7, P0WW) is identical
+in both BIOS versions.
+
+From the code, not traced:
+
+1. __t7xx_pci_pm_resume() reads T7XX_PCIE_PM_RESUME_STATE at
+   t7xx_pci.c:586. From an absent device that gives 0xffffffff, which
+   matches none of the PM_RESUME_REG_STATE_* values.
+2. It reaches the else-if at t7xx_pci.c:632, sends FSM_CMD_STOP and
+   returns 0.
+3. t7xx_port_send_skb() returns -ENODEV for MD_STATE_STOPPED
+   (t7xx_port_proxy.c:345), which is the -19 above.
+4. t7xx_port_wwan_md_state_notify() ignores every state except
+   MD_STATE_READY, so the WWAN ports stay registered.
+
+The next system suspend is then refused. On 7.2.5 two attempts each
+hung for about 37 s until t7xx_pci_pm_suspend() returned -110, and
+systemd-sleep gave up, leaving the machine awake.
+
+Checking pci_device_is_present(), or for an all-ones read, before
+acting on prev_state would make the failure visible. The L3 branch
+handles power loss but needs the device back on the bus first. What
+should the driver do here: fail the resume, or remove the WWAN ports so
+userspace notices?
+
+This looks separate from Tim JH Chen's series "fix DPMAIF data path vs
+system PM suspend", but I have adjusted CC in case it overlaps.
 
 Thanks,
 Andreas
@@ -129,7 +137,7 @@ foundata GmbH
 Steinh=C3=A4userstr. 20
 76135 Karlsruhe
 
-Web: https://foundata.com
+Web: https://foundata.com=20
 Sitz der Gesellschaft: Karlsruhe
 Registergericht: Amtsgericht Mannheim, HRB 714807
 Gesch=C3=A4ftsf=C3=BChrung: Andreas Haerter
