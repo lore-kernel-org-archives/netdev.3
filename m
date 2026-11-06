@@ -1,58 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793959896;
-	b=W5LEkKjmbiZ6qzpl1VFCr9viAevnz3vJk4dmmjEGwcuAMfgTgjEFn9eY0Epg1qspWYk9
-	 YLxBMGQ9KxqnotuWhNoTnehU1eE7uEZgVBkBCGHqHV1T+dPPMuKlGHhV/y8AfREEG2hMz
-	 I1WPS2hkAnDFzUtAJENcXCIiQubBVLuyjkllH8DN3zY6UQZtiB7q88Y9IUBl3exWQrPk1
-	 PInNACbFuacPtaBQgcy9oAbKla5+BxBlyS44XudYFuKIGXvm5FufapocNh8CpE9qMK297
-	 hJU1JvNtwP5LYAsO0p+6k71jXD9nvW5+OH5ISvdw1r3GwwK/td3HYp11HuWNT2E/RgA==
+	t=1793959903;
+	b=R/zMB9QmOsBHnjDischOuAKK4LulcO6ZNYqKJOhZ4QWPAEZpcL4F46OVDmWQIHV9S44z
+	 7cjNYdLoDN0t4IFfO3pu2bWG7V2iz/2qIBWakLq0XN2KJGzwa6TVqOpM/F3xFi/2reH93
+	 WhFI86DWam+N3KKAQ0gE7rqDE8DresoqkpjmkREwEtkvcPRXbp6p17/Dt5MOyoQf++ekO
+	 xTngQyxCVjATACPEsPzJehWHgYuLZZAb6gI4PkpZ0I7Dr8XDiMijg1fzsUhpjxiC/mW+5
+	 F9wpwEbHPLktJIZkniJ5H7UcFGwtbUHRVAj55MUMdF4kIpOqwrM25GSKAp91zNJ2Kig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959896;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=6ogeEWksxpSUWmxEpBUUGjIXdCyDlrjJdIfYEM0KO6U=;
-	b=ye7CHwOcaDic7L82+SvvYM5U4Wu9zl5xcrOyboxVRP//DJ2D1o78FXgqD5bj92kHMm7Y
-	 rJ2xbxKmXNBTNWavyYUl1LF/yqL33VHqwzOxHrFAoEEOqcjODkCd0tH92jwDqCB5W3QEJ
-	 fvuoXVOzRpBBsIgO2uR9RJsgTbmrqRlv4Ry94L+IYvMb1yCxrZ8mUmIixBmVoUVlnDyCJ
-	 F/o/q9RjACdhEBJE/eHcHFNBrMuNJtlVOsVEpdQOm+ts6irLu+OAmxaPDRToxXaLi4VON
-	 tDr8nW8qcJRHq0kkUYDV4IYELARBb98tVpBV4RHygW7jceRGMxVV3X+wjcvWj9bet+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793959903;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=NVbdOhY0Y8hSqBaccRJIemSs5pQgbapaJJc/jw4bTlA=;
+	b=KQbaGjLRCPemmg0iaSLF+bqsQFeSKexZLjKhdBSeYO/IHiWucFinRHIFWHsb/2jhk0FX
+	 3jlT5DUyQ1SdYcn1Xn88nZkgBd3QoEA0a4XP5iZClzKn7C9lz5pdXRumIOcidhVjeC/ej
+	 mGUW3IGk2SgKNRPxa3NQhfvQJU0PEtZAxoYdYhVoKhpYippCH5CMc/cYR+xBnVyJ3VJZZ
+	 HGK6U3VMmKrjPv+QsesrgmOEVNmwUF7P6RsF4hK/4iR7ag/qtAZ3sWB0mrjYHCcsS1ZoH
+	 bk+Oop+KJZ7XsFenlgWQ1ilrjPXt1zQQTYJ+JezFh66yxR+F20wAy4JJxbUnHjIebzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=I5CrbdBu;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AF0/cyYI";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11841606A33B
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:11:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11841606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38C3606A32F;
+	Fri,  6 Nov 2026 10:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=I5CrbdBu
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 58A394E41401;
-	Fri,  6 Nov 2026 10:11:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 259005FFBC;
-	Fri,  6 Nov 2026 10:11:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31F8B103291F9;
-	Fri,  6 Nov 2026 11:11:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793959891; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=6ogeEWksxpSUWmxEpBUUGjIXdCyDlrjJdIfYEM0KO6U=;
-	b=I5CrbdBuFxZWEIZBIc49EI2RZqfWkGbm2L+NrRyTZJ1N7ucRBbZshseI6mtnf2iQ3+ecuf
-	TZG5FPUEC8BVovD0Lf4OeEwwfYCnCw5cabRSLhaM/tpvKlEXiVUqyphsti7+20dCBbX7eR
-	3QfM1qOkrHcwXrRl7p/4ajr228FR1M8E4ae6lcwSWl6JoJyv+x90JYK+ArGk9c2k1OvUd1
-	M5vAWbaCSezXJFI6izU+WQDs5QUa8CnH0sYx+gcaQHkSYdKStZ9qWmZtJsof/RYe5gRp6L
-	+mwvNx385Qq0wRzYny1U2cmcT6XKsQ5q2WxsH7uFmqOSYqfLA5CN/lBtmnjinQ==
-Message-ID: <69be2cfe-e296-4f90-ad19-0bd48a83e287@bootlin.com>
-Date: Fri, 6 Nov 2026 11:11:22 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AF0/cyYI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83761F008A3;
+	Fri,  6 Nov 2026 10:11:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793959902;
+	bh=NVbdOhY0Y8hSqBaccRJIemSs5pQgbapaJJc/jw4bTlA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AF0/cyYIERpgU0HBQxi/PdKZp0ySQN/ch9rNzlnzK2Yx3SgOkGMggfUBGB4tnknIy
+	 FYUwNMp6vwHdhojBUcl1OoypKlIZGO1vkNnRQN5CwTImzu4+nVCH2mhzqqm8Dm/Tjb
+	 pbhPEFfx0rNwLFDiVkO+LgwPcDrRhC0EOqppkK7vev1kWZvd3BIni/u351TuiHHqxh
+	 mTvXjX3o+m+iMn2AHLiuTbLfHcBf01Oj2Ez2KcoJR9tbhwQLXRxqH7+PzqQsXoe1eO
+	 vPCx2JxRwUFq7pgnZfMnXzpkrGthYv6bdNMyn759+zoUy3qr/IuQUxultlWZYkxID2
+	 F1nLp1YvZHjmw==
+Date: Fri, 6 Nov 2026 10:11:37 +0000
+From: Simon Horman <horms@kernel.org>
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, michael.bommarito@gmail.com, gnault@redhat.com,
+	alice.kernel@fastmail.im, kuniyu@google.com, nicoyip.dev@gmail.com,
+	mail@david-bauer.net, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: Re: [PATCH net-next v2] l2tp: bump tunnel stats before dropping the
+ session reference
+Message-ID: <20261106101137.GF865646@horms.kernel.org>
+References: <20261103084249.1337657-1-xiaolinkui@126.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,100 +60,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
-To: Birger Koblitz <mail@birger-koblitz.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Eric Dumazet <edumazet@kernel.org>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- Jianhui Xu <neuromoments@gmail.com>,
- Emir Beganovic <beganovic.emir@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>
-References: <20261106-ax88179a-v20-0-37b5a1189983@birger-koblitz.de>
- <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103084249.1337657-1-xiaolinkui@126.com>
 
-Hi,
-
-On 11/6/26 08:21, Birger Koblitz wrote:
-> Add the phylink_mac_interrupt() function to phylink, which
-> passes a link-change interrupt received by the MAC to phylib.
-> This function can be used by drivers which want to avoid
-> polling the PHY and instead rely on an interrupt received by
-> the MAC when a link-change happens.
+On Tue, Nov 03, 2026 at 04:42:49PM +0800, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
 > 
-> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
+> l2tp_udp_encap_recv() derives the tunnel pointer from the session it
+> has just looked up, so the session reference is the only thing keeping
+> the tunnel alive.  Both error paths of the function drop the reference
+> before jumping to the invalid label, which still dereferences the
+> tunnel:
+> 
+> 	tunnel = session->tunnel;
+> 
+> 	if (version != tunnel->version) {
+> 		l2tp_session_put(session);
+> 		goto invalid;
+> 	}
+> 	...
+> invalid:
+> 	atomic_long_inc(&tunnel->stats.rx_invalid);
+> 
+> Reorder the error paths so the statistics are updated before the
+> reference is dropped, removing the dependency on the tunnel staying
+> allocated after its last reference is gone.
+> 
+> Currently this is safe by accident: the only live entry point is the
+> UDP encap_rcv hook, which is invoked under rcu_read_lock(), and the
+> tunnel is freed by kfree_rcu(), so the tunnel memory outlives the
+> dereference.  Making the order explicitly correct keeps the function
+> safe regardless of the calling context, instead of relying on every
+> future caller holding an RCU read-side reference.
+> 
+> The put on the version mismatch path came later, with commit
+> 4d10edfd1475 ("l2tp: Fix memleak in l2tp_udp_encap_recv()."), which
+> plugged a session leak.
+> 
+> Found by inspection.
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 > ---
->  drivers/net/phy/phylink.c | 20 ++++++++++++++++++++
->  include/linux/phylink.h   |  1 +
->  2 files changed, 21 insertions(+)
-> 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index e885da1c28311a12a869e29ceb3c96886f31adc6..a87eaa2f3db5bef8fe56e12b90375bdb7f9c52e7 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -1616,6 +1616,26 @@ static bool phylink_link_is_up(struct phylink *pl)
->  	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
->  }
->  
-> +/**
-> + * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + *
-> + * Passes a link-change interrupt received by the MAC to phylib.
-> + * This function may be called in interrupt context, and therefore cannot take
-> + * a mutex. However, it is safe to assume that the reference to phy does not
-> + * disappear during the call, as only an SFP module may be unplugged to make a
-> + * PHY disappear. SFP modules however do not support interrupts.
+> Changes in v2:
+> - Describe the change as hardening instead of a reachable
+>   use-after-free: the socket backlog path pointed at by the v1 commit
+>   message cannot be reached, and the live receive path always holds an
+>   RCU read-side reference, so the old ordering is currently safe
+>   (Sashiko AI review).
+> - Drop the backport tags (the Fixes tag and the Cc to stable)
+>   accordingly and retitle the patch.
+> - Correct the index line: the v1 patch carried the blob hashes of an
+>   earlier draft of this change, so its new hash did not match the file
+>   the diff actually produces.
+> v1:
+> - Link: https://lore.kernel.org/all/20261027063657.1359170-1-xiaolinkui@126.com/
 
-I don't see the relevance of PHY SFP supporting interrupts or not here,
-this just re-triggers the PHY state machine. Looks like a comment to
-make sashiko happy.
-
-Anyways, I'm OK with the approach, maybe reword that comment if you need
-to respin,
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> + */
-> +void phylink_mac_interrupt(struct phylink *pl)
-> +{
-> +	struct phy_device *phy;
-> +
-> +	phy = pl->phydev;
-> +	if (phy)
-> +		phy_mac_interrupt(phy);
-> +}
-> +EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
-> +
->  static void phylink_resolve(struct work_struct *w)
->  {
->  	struct phylink *pl = container_of(w, struct phylink, resolve);
-> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-> index 3a88a69882a610afb868b55df6f6e77aea918649..a7b6294cc4a075bd2aaa43ed6484de17a6cb88b1 100644
-> --- a/include/linux/phylink.h
-> +++ b/include/linux/phylink.h
-> @@ -768,6 +768,7 @@ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
->  int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
->  int phylink_speed_down(struct phylink *pl, bool sync);
->  int phylink_speed_up(struct phylink *pl);
-> +void phylink_mac_interrupt(struct phylink *pl);
->  
->  #define phylink_zero(bm) \
->  	bitmap_zero(bm, __ETHTOOL_LINK_MODE_MASK_NBITS)
-> 
+Reviewed-by: Simon Horman <horms@kernel.org>
 
