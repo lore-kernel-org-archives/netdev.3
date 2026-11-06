@@ -1,97 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.66.28
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793974694;
-	b=leRwqlFnR1F1YhHqTZcdz7uwRMD0+U5qEk3wu4Akr8uvIWrWkn2lEJNY0Ji3xsmIrClR
-	 bSDZBvwS3+ceqVJsGHxemoyF7/49Vk3V9Kv5s2VK0HMqufGh+4dsT+Uuy0/V0ZKlO8KCS
-	 93u6p/gJsgUciz94eD9r1cLmIYCZAix2w7fRdmOXObeMn8oox1mqWY3H3g9vpDoia94Uv
-	 da2hYPMO7u4C1gXbuSbMMl+41uBkEViClfjIfR2Cv26Bc5ltXKy0EjTH/xSnwdyV/rotw
-	 PGjSt5LfI2LYKn4Cy8WKEX+IPwjwshWgUZeNwEhbK5Z4ZDCth29n8cCHrOAurP21Gvw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793974694;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:To:Cc:References:Subject:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:
-	 X-Microsoft-Original-Message-ID:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jI9IgHLgBvrzmUQUntUBOe+/lcv42MSX0TIp963LpgQ=;
-	b=mz/WzuDf2lN2tFtKbhJXAglimJxSS2V/keKsOsoASSnc4y3Qt1uD9meCdssoxiyB9Ssh
-	 iH4e3zMMz4jPHrkEOD+brJ5ehlGT/vK4r+CltprcYrScF8dpA/VqsIxxArXMQxYXzV5d+
-	 S5gnC5yfJyBnPCKOvm/7iH/he+2AjjgXVKOnURcqnu4JVHs7ZpfgTqEu61L8MjFLmfgqE
-	 X3CUHplbN7GMwqme/RdfmTX5xVjIkaWFQ9tNanoVXHi3y8UvKX4uG8RXYFGDqo4Nua4dd
-	 9XAvVmUGDmEN1iaHCC/CaAk0jsLCdWWsiOnjOqwWshpHKcCbhG01knIveg4Bx7f4Mig==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=outlook.com;
-	spf=pass smtp.mailfrom=outlook.com;
-	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=Y8jExoOI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.66.28
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011028.outbound.protection.outlook.com [52.103.66.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793975136;
+	b=gGAdzBLJJ1AeHdB+TSMCi+d3Tt+9cydJyJ5hiDjrWWB/FWwloZCqmS4Tjjt4mffj+Bsd
+	 BQTauGaLFPfwM4R73S3vlHKhi7KbCvQ/0gUmlreMjJtT20vw/hmLwsqeLHMGJRQriYyy2
+	 Fuv2TzxdmiyiD7wgYyv94Le8544r/bP3Ivm8yeerrbyoOy8xXtZPQmS49cL3e65MfwyLK
+	 CSdOa2olfpef0BKtLVG13BJCqer9y820HJxvn+MYatxqyEA9wN9eDavmzEjTRbfNTNeAx
+	 mj8tu+QRiFE6itSWrwrlaZ9ok1rw6yi3sVTKV/zce9kEYflCGTlVej1qxUa9s9CEHww==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793975136;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
+	b=kwiiKNUrTo7PAZtqfG7LR8PD1qVWEvl6FSfJJl1PB26SXAxW1g9K1cq+noK7vv4uQb7O
+	 ZQZO43tc+1bqEc2ElkG1qUTxlikGxwt+icG2j4IBf8XS4YO1zgbkuxo8iom7cOLpxZqSR
+	 C6A/RFxaZoCw7WDYkmbhFhN8Jdb6x0zPU+DmJLQtxCnh0SBDE+Pgu4+XetUCSd4tv8EY0
+	 x9eyIEneJHHo27/8haxGmn7HU9B+kAKBkFsuBrpPi9UfjNoj+pQOybRKkJmqmD41IXyby
+	 20X3K2agAlFzYOwlb1QZ2yNIogtiJGt0Xn5xF5kqbnKeM6vHCsJb9AnA+D4VVAAnFgQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W2eonC8s;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CEA606A32C;
-	Fri,  6 Nov 2026 14:18:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36CEA606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6454D606D838
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 14:25:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6454D606D838
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=Y8jExoOI
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PmWJ7c5kI7Ui+G1BGWVe6g6GQe+pknuvN/6XpkoIYc9ul+eeZL5PaavRRDG7YP9cIIY74ALih4u2Ew4f0zCl9iWBk1AsHIgOhwQxl4GtvOSWnmUgY1C6/SsnmsHBZcWVHfDehWQFa4pY8t0cPviarbfi5eMfE8Jo1yYoA96NCfXGzO8QZyruyIa0rmwkuzpKS33vNuhgt6+MdVEOpAd4wd4w32KsBhBk58lSsG9ptW+ClOwzGv/cEW3uBQlQIV+tRoPKMCUbWF3wHCgIF4JcBpR5bONt+/YE4ZEYpeLoojwrq4ClL/NHX0Eggbu5iybUP6RXauaitM+AR2XupaFEjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jI9IgHLgBvrzmUQUntUBOe+/lcv42MSX0TIp963LpgQ=;
- b=h373YudAyddFrVNROndYC0vWRfziF654gA9VnbSteznsL7zLc9CRuK4g5c8/wbOKwVZvoydFLOHlR1o5lQ4tn+UxX14CJfMr7HwEbuEYxOaJKXEEeQiCB/VfR7SYNQVcLskV+1l3FkX0ZB4H8sCj17XUTEGIJZQXUx8Q1apiXg5/uFtLNyEL561fsob1Zud/L3YSHbLfjCY7hm8P2GQPNZZ76bFpcR6jmZe1M2QFT2NgAU6gzmh0OVHdtT+YGB4/FJZnNHy83jbm0EhsY1qu2qffFjaTybrBsGzMisABbj4vnHbJEediRlkLwrATi/KeRG0DEOUw/jBSdsa39Yw7OQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jI9IgHLgBvrzmUQUntUBOe+/lcv42MSX0TIp963LpgQ=;
- b=Y8jExoOIV3I1xh3eY+kG9w/9l4MBqdnTopB0FpH/he+wtycdU36p3+bn32wccfllKFZE1eUsQ4rGQ24piyEgNTIdSUNFdKRm/uy/dAjayQX8El/68OTo8nJ4zjNENCjX7M+yo9YbKc5mTGRDhPpcQlPF63Ye0QnGGVQSovl0UOHoarh2RgPJNnG68Y8hVTBt6bNkmyKXubhK5wqs9z94Y2AfUzNgL0usZD1y8ODv8R0oUyGEBLj8Ya92iOXWtetOcKIthmI7BkT4qnfHW+CHuuNpi8D7VrUsMgFE6jKeOCJxRo7d+naR0JOuY+ChMN21CRQgER59yKadEijl5A/Fvg==
-Received: from TYTPR01MB11000.jpnprd01.prod.outlook.com (2603:1096:400:39c::9)
- by TY4PR01MB15500.jpnprd01.prod.outlook.com (2603:1096:405:272::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
- 2026 14:18:07 +0000
-Received: from TYTPR01MB11000.jpnprd01.prod.outlook.com
- ([fe80::fe39:4f49:5d91:808a]) by TYTPR01MB11000.jpnprd01.prod.outlook.com
- ([fe80::fe39:4f49:5d91:808a%6]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
- 14:18:06 +0000
-Message-ID:
- <TYTPR01MB11000E65B4D5C27C27D7414B4CA762@TYTPR01MB11000.jpnprd01.prod.outlook.com>
-Date: Fri, 6 Nov 2026 22:17:57 +0800
-User-Agent: =?UTF-8?B?TW96aWxsYSBUaHVuZGVyYmlyZCDmtYvor5XniYg=?=
-To: ralf@mandelbit.com
-Cc: antonio@mandelbit.com, bgalvani@redhat.com, coreteam@netfilter.org,
- davem@davemloft.net, dsahern@kernel.org, dxld@darkboxed.org,
- edumazet@kernel.org, fw@strlen.de, horms@kernel.org, idosch@nvidia.com,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org,
- phil@nwl.cc, toke@kernel.org, xavierhsinyuan@outlook.com
-References: <20261024092532.172005-1-ralf@mandelbit.com>
-Subject: Re: [RFC net-next v2 00/18] net: introduce ipxlat stateless IPv4/IPv6
- translation
-From: Xavier HSINYUAN <XavierHsinyuan@outlook.com>
-In-Reply-To: <20261024092532.172005-1-ralf@mandelbit.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SEWP216CA0013.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2b4::14) To TYTPR01MB11000.jpnprd01.prod.outlook.com
- (2603:1096:400:39c::9)
-X-Microsoft-Original-Message-ID:
- <a82e166c-726d-4040-8511-403fee62729c@outlook.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W2eonC8s
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso1146246eec.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 06:25:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793975134; x=1794579934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
+        b=W2eonC8s5BJoRJbGppqiM59YV2PN0mcjJtgshuRjRbHdVnNofp+7+PEYxNdpvBxpbF
+         x5rYNo2JyVZ4V4R5Le102ZQNLVClJMW7MZuEySu52HnWSQZmSDOUkbP5vnxfuwlJpDfI
+         OnuLXNgE0zwBeh84ZysOlJ+KbXUM98KIzUn6GaWW5s9kQaxxMgCuUGVLjfP12ZQXyr0d
+         1bWAIW50p2F3lyLjDha6jY4ti7mYGfMqc0N+JVGJm6Uld2hLrwJUthgOUl+Jl5cj1L59
+         io/hF4A70i+hbFY3leR89gt8TQE8zmV9Wlo86SCZk7x2SbAfkx9DkYhQoH3kfGlDKL+N
+         qsUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793975134; x=1794579934;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
+        b=YAmecp33tdAH4F7Vv2NRucgwj/5f3FnyK9Q7GNoQt3r7JcKOZEcgAg3Th2qhwRhp62
+         uYbo53hjYnxa2SRLZze0MeswpLuREK47Ov/bw1MpwiCn7axSeM0s36verlDMOzV6xqyq
+         lHFlu/7/97+boAHhz60OvOOcMXrF7yqySrZPd5MjGdTIQ9sgyC1cTzM2qLSMci7QU1SJ
+         SDFjn9tfQ/OVR95p7k4AWEWXblMEW9gH4GyIGrf9kPopLt+zIDHvrFpQo22eUb4xN3MC
+         7Ls0eOt1LEzniqpJK5EgbxO/QjJv6zHMuxNydsPskFf2bWzYiP57q8YvC2kkANTPmEk/
+         6c1g==
+X-Forwarded-Encrypted: i=1; AL+hErE67e23d0NGcKSk2okF5HoeH9pZ9khmzXfyhj1MXkqk528Abvqn30viBq8H/ObOVJ/CzgXvF4A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8CkV9J3lLp1cv92oxAlnNLTpjPb79wn9G928HxOn5K+Y4js5Fl
+	cX/I6xWJHaKpisPQRVckXrox+Ab+8VxJDRFaAl+1QWvrQrM+hw4apGCw
+X-Gm-Gg: AYBFou1LZsuEdOtLCPvimG1S1VePWhZrOSvAjYluzbfJu5IO6eekooilnhGQ4K84Do6
+	GOQlC9ooaNzhjvIB7GTGCGY6wo8A0VrSbI7HtT/8ZM4yoN3L/+W9j4jDXMtRTpITWNQZOik9zEs
+	wXPi9ytnXXbzXbxXCgGPNAko5HyuQOlmX71Q254RcgrMpCddEEf7HeQnOceWhhcn1C/p5pqDMgX
+	2EIx56rZ/pU2UcCKCKYZ/X8njZo1ppmjHWk3xqN5rsZrPLBcHZ/k50wOEciF1B/ZhH0zh71/Tlb
+	2O50NLSYIMbeaSCT1TDB2CWAxoTvrkEsrsGersrsOur9K8QQlqLHSOAkB/gH8uo3lwrQ9H5KkdJ
+	Z/d0ohpckwherZEUdqhVJL9/Qm3eiuuPWGEVtuDkwCUtHeA+uAXPYt1D66SZoqIguQYF/NpOa/2
+	UG5yAcIQP0I4Brr1THUnFnxoFhFcGqhAT463QG0qGZxRE7SGoAOgY9qkp5C6SBhsXq8HeL8GHWr
+	sgw/dqeU2kbmGO35fs1uJ8pKUVJENlp5Qb4aw8XYWd51nc7Gu5bSim/v13j/recjaZD6ebYXCnx
+	HSpL1HMNq0L7z92nH7qXbhzKQ3l5TzVYUHRDB08=
+X-Received: by 2002:a05:693c:881b:10b0:351:7ec1:a92c with SMTP id 5a478bee46e88-36f76520e62mr3755759eec.28.1793975134156;
+        Fri, 06 Nov 2026 06:25:34 -0800 (PST)
+Received: from xploitoverload ([2409:40c1:6412:e5b:5516:cd42:6c8f:c918])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa6a649csm7101233eec.26.2026.11.06.06.25.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 06:25:33 -0800 (PST)
+From: Kalpesh Solanki <skalpesh942@gmail.com>
+To: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
+	Kalpesh Solanki <skalpesh942@gmail.com>
+Subject: [PATCH net v2] tun: disallow setting IEEE 802.15.4 link types via TUNSETLINK
+Date: Fri,  6 Nov 2026 19:54:20 +0530
+Message-ID: <20261106142421.17793-1-skalpesh942@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261101092219.1278751-1-skalpesh942@gmail.com>
+References: <20261101092219.1278751-1-skalpesh942@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,100 +109,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYTPR01MB11000:EE_|TY4PR01MB15500:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4d307c0-c402-46c8-3c77-08df3c10c6ba
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|12121999013|24021099003|25010399006|4140399003|6090799003|25031999004|23021999003|5072599009|15080799012|19110799012|8060799015|40105399003|52005399003|440099028|3412199025|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WVhQTGNJVW53MFoyUVRBcjRnZkY2WjR0MzIrTmZENWc3eXdsdEhBZGxLK29i?=
- =?utf-8?B?S0Zoci8wVmJmYzRvd3NxeFlHU1h1ZFFaOFBscFI0VThKMEF5WlBLMzYySkVC?=
- =?utf-8?B?RkpqbWRCVERXa0ZmNXRvV2VkK2x3dHh2Ty9IRXF0RDJVV3hzRFUwelFQMCtk?=
- =?utf-8?B?UlJ5dWdPT3pJaDZaaHpMZFlIb0Z6cWIvazY4UHdPUi93aG44eThIeDZPaXRC?=
- =?utf-8?B?aEN0cnRzU2lkcGVkd3RFSEI0YTZkSkozb2RKQ0VFR2RMZkVjcXRQYTN6Q0lw?=
- =?utf-8?B?aWlDZDhZd2szT3QyR2lOc3lWejdGeWxCUndEeDRzdkR4QlhRQVprVXI0UUdj?=
- =?utf-8?B?dkR5K3pKbERaL0g5U29hZXFORlZSQmhPWEE5ekZsZVdBMlJmUy9wZkdZYWM5?=
- =?utf-8?B?c01QNkJxSXNQS2hoTmgvS2wzYWlPVFhjT0MwZ3VGUXBjL09lL1J0dmhZVzdC?=
- =?utf-8?B?Rk5oL29vTDlmc1FvUVFxRVBLa0lnaVJSOTNvUmdwalhvb2ppSTJEMzA5dnI5?=
- =?utf-8?B?T1p5R3NIMmFtVHZoV0UrS3gvaVlEU3VhbzdpWDcwZDZscTVMWGZCSFQvT1BU?=
- =?utf-8?B?VTRWdGtUMzB3ZzczQzlkWGphTzZqQ1hORVBVbmVJSFlna1NDMGIwdXllQksx?=
- =?utf-8?B?TnBHWFBLSjd3b2I4OXZwcE9XM2RZUXdRNWlSdDEzVHFHM1Y5bGRKQW5WbGR0?=
- =?utf-8?B?WXVHNnkzaFNvUnVYNVovaTh4V2l0YVIxRjNXcjRzMzVmY01mYUUwdnVUbElP?=
- =?utf-8?B?eklQWFNOeXhWek1yeWx3bnFrWkNPMjdlTTk3WHpLUnJTM0V5NDgwTHZTYTZp?=
- =?utf-8?B?Y3dXN2wyMVVQN3pBaHRKZVR0WGpJSzZUcGZ0YnlIelNEVXREVDRLejdKb3lo?=
- =?utf-8?B?MDRnNFRFeDFEM2hPQy9qUHZTdDJINmc4NENWaHZHQUMzem9kdWFmYU96Wm1v?=
- =?utf-8?B?UEdvdTM3R0hjWlVDR1lseE1TZUIvOFFoSk9LTjA3U1FYbDkxOG9GOTVoSmJp?=
- =?utf-8?B?R3lJRVpoL0ZEN0U2cmhRaDZSNmRrL1lsSmUva0xEYnp4N0V4VkNQTjNTYndX?=
- =?utf-8?B?N1dlTzVZd1ZLeGorSnJzZmw3Sko2d0V5dUVwbVVPVUI1QnZveUgvK3lLRXBX?=
- =?utf-8?B?dWNxQUpwQnAwUmNhcHc5bUx2bExHUXBKbERLdWl1L3JkOEVEQktET1BrNXc2?=
- =?utf-8?B?clFuaXFtQlg2WnNycVFqeXBlUjMzVkhnUGhSZ3d0K2dtc2tWL1RsM0NNZyt2?=
- =?utf-8?B?TW5SaDlGUzNVLzY1RDhFZk8xdWJscFM5MGRYdFgxVUhBNEEvdUtpWlhYUFZU?=
- =?utf-8?B?QmRyL2FjeFQ3OXJkbXMxTkxpOS9hQ3pYUXF6S0tjWkdxdThRTDVGYllTOEtB?=
- =?utf-8?B?YjI5b0FRVFFzQi8zNXArS0xvRFBMckV6STQ5WVUrK1hUdmhiRTdwZlZOTTVU?=
- =?utf-8?Q?7+RgGO3f?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWcwVDJXajhyUlNVKys0bHNvNVZyajJkc0N4bFh1NFZoeGErOTAzdnhKV0ls?=
- =?utf-8?B?UWZydmg4djVyOTJXaFFCdUVadjRvTHd4eGgyRVVSem1hN0dxRGxNTjhsYlZU?=
- =?utf-8?B?K3RiUTBNekFzbXdTKzdjcGUwa0UyR1F0U0JPamNuTmkwMnNnUmg1d1hhL1NX?=
- =?utf-8?B?Wk9kNXNiaGJTdDllbktPMUVWQjJaUjZaV2d2Y3pSeGNzREs3MWxJS0g2U0tO?=
- =?utf-8?B?T2ZtSWV0NWNZUTFraENZY282T1paT292S1Q5aHZNcDA2RFVDR3gybmlONkhC?=
- =?utf-8?B?UlRzeWdCOUhVblQ3TEFJQnlHeDN4dElZSkQwaUtqOTJ3ZzRBNExCSElSMnFV?=
- =?utf-8?B?R3lQdnN0R2h4VnlXNzdJRm82ZU01WXl4TUxnOTBKYmpGbjlSYmRNK1F5RkI2?=
- =?utf-8?B?WXd0UEZhM3JRcFF3WEdXd09QMHduWFN5eFFJY1dsOTYvdWFJQlRiVjJaeTZM?=
- =?utf-8?B?VmdZc3JRcU1naTBwbUx3NGJQdzJPRnV3OUpramQ2S1BjY1lKSk9JVnBPMWhN?=
- =?utf-8?B?dlViOGZ5STAzZXBEUm5DQzNBdE9vT2M2Z2NiYW5tTWdPMFJESWR0Zm9ab3ly?=
- =?utf-8?B?eHZMc2QyZmVFbDk2NmlLanhtYU1FelVOVURrdEJTMkQrLzJSMUE5RVVhWmV3?=
- =?utf-8?B?UE1YTmJaOURrUWZoeEFsUUxxM3grWHplMWh2NkJCRTJGVVNKN0x2Q2poWTdF?=
- =?utf-8?B?YXJxbEtRa3p1eUF5ZUZnUnFVSUNGWG4zVUVLYmU4Q1ROWGtOYjhHSjdHS2xH?=
- =?utf-8?B?ZXlBYThITWNJRU9vY2UvN3ROTGtuMVVBSGdWSDY3SVM4RDcrWWNxdyttQ3JB?=
- =?utf-8?B?SVlHWEVOSEJIa3pzWmFBSW03VVJOMnc0RXlZYXVucXVBWEV6MGU1WDltVC9t?=
- =?utf-8?B?VkpBdkFjM1B6YVE0RmpIT296RXZ0VHZFYmFNbEd0dWJYa2pmejgzc0p0TTMy?=
- =?utf-8?B?UTM3YmcxL2l3MDBxMEdRVHpoVzZBSWRPaDZhazhUTG44WmhGQ1ZSM05Da2tx?=
- =?utf-8?B?T1phMzRoV0FoWkNUaVhFbjJYK29ncHFaYnlnZUI0ZjRneGZmSGU0azQ3dlBT?=
- =?utf-8?B?VkpBaHF2bnhudVRtRmthR0FHZDlFYTBhRFg5RjVPNFkyTHFmMkRpdGF1cE1D?=
- =?utf-8?B?TDViVnd0bzVocmFlV283QjM0bmF4SU9CRVFqUWdiVnZ5bVV6MEhMTXQvVmo3?=
- =?utf-8?B?Sy9CVk5tZlJlT1l6RDhPZ2JEUFBtVmZyMmYvdUZuUmZrZFhvTnp2MGIxa3dv?=
- =?utf-8?B?N1Q4WUg2Zy85dVoraTZDOElqc0dhWExUckdyMFFWM2xUdytPSjlIek50cGEw?=
- =?utf-8?B?WC9ncEJFK2p1alVGNG1HSVM0UXM2bGoxQy9hd2FXMXpoVGlhMzdPTHN1VFpJ?=
- =?utf-8?B?aTNTaXVBQXdMMk9mbGZsU25PdU5hUVpnYlo1NGl3RER6a0xrTjc0L0JEbkNY?=
- =?utf-8?B?ZlZmaG0ySklyQzNiLzc3b1dZRC9SSGxVc1N2OWpybWcxOVZ5ZnlBdFA1N25k?=
- =?utf-8?B?Y3VaZERwNUFUTldvK1RyWnJwNithZzNqR25oMy9GTEdyeWhQUUxQL1VTQlkx?=
- =?utf-8?B?WU1lOEtyK1YxQlQ0K3VmVDRzejF6SUc5MXY4WG8wais1VXRYRzl0eE9NaGl2?=
- =?utf-8?B?dFNXZ2FCOW5jZ3MyWHZ4YlVTeEhhNG1mN2lvNEFsaG9naVF4bER1K1pQNHlv?=
- =?utf-8?B?WWQ4blhLUjF0RUIzSEdtVFBpUkVWaU9QanBLYnUxL1lndWVSSjlweklWT3Y1?=
- =?utf-8?B?UHNNNkhKSWZ0TXJiMXlOQmhxaEFsQnRockcrNHBoaUE5Y3JnMlpSTkdrelNE?=
- =?utf-8?B?NWVVbDZCZUFsSEM0Zm1xVUd4czJEWDhCOWJneEpHWWsxYjBnNWp4cmdjOWJi?=
- =?utf-8?B?dks2cllpbnhnTEo2SG1OcWdpTkFtaHRSM1V2UVkvSmVvQnY5UzR0aFhjS085?=
- =?utf-8?B?QktvMk5lV2dJOUFDUlhNcHh2NHJvRnFKd0lEd0pvTEcyTWYweTNoRnRVaTRV?=
- =?utf-8?B?ajJzMnRVNk1BPT0=?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4d307c0-c402-46c8-3c77-08df3c10c6ba
-X-MS-Exchange-CrossTenant-AuthSource: TYTPR01MB11000.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 14:18:06.8184
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15500
+Content-Transfer-Encoding: 8bit
 
-Hi Ralf,
+A userspace application can set the link type of a TUN/TAP interface
+to ARPHRD_IEEE802154 or ARPHRD_IEEE802154_MONITOR via ioctl(fd,
+TUNSETLINK, arg) because tun_get_addr_len() explicitly recognized
+these types.
 
-Thanks for your v2 series!
+However, TUN devices cannot function as IEEE 802.15.4 radios (they
+lack wpan_phy, channels, PAN IDs, and MLME operations), and tun
+never initializes dev->ieee802154_ptr or dev->ml_priv.
 
-Here is a question about netfilter hooks in ipxlat-lwt. In RFC v1,
-netdev-based ipxlat allows POST_ROUTING rules to be applied for
-original-family before translation. Currently LWT path translates first
-and does not check nf_hooks_lwtunnel to optionally run original-family
-POST_ROUTING before translation.
+The IEEE 802.15.4 subsystem operates on the invariant that any
+net_device with dev->type == ARPHRD_IEEE802154 is a genuine WPAN device
+with a valid dev->ieee802154_ptr context. When an unprivileged user
+creates a TUN interface in a user+net namespace, changes its link type
+to ARPHRD_IEEE802154, and issues a netlink dump request (such as
+IEEE802154_LLSEC_LIST_KEY), ieee802154_llsec_dump_table()
+unconditionally dereferences dev->ieee802154_ptr /
+ieee802154_mlme_ops(dev), triggering a supervisor null-pointer
+dereference / general protection fault. Similar dereferences occur
+across net/ieee802154/nl-phy.c (ieee802154_del_iface) and
+net/ieee802154/socket.c.
 
-Is this difference intentional since it keeps LWT path simple and leave
-such cases to netdev path, or would an optional pre-translation pass in
-LWT path also be worth considering?
+Rather than scattering NULL checks across every site in net/ieee802154/,
+fix the issue at the source: validate that arg fits within unsigned short
+(rejecting arg > USHRT_MAX to prevent upper-bit truncation), disallow
+setting ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR via TUNSETLINK
+by returning -EINVAL, and remove these unsupported types from
+tun_get_addr_len() along with the unused <linux/ieee802154.h> include.
 
-Best regards,
-Xavier
+Fixes: cca8ea3b05c9 ("net: tun: set tun->dev->addr_len during TUNSETLINK processing")
+Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
+Signed-off-by: Kalpesh Solanki <skalpesh942@gmail.com>
+---
+v1 -> v2:
+- Instead of adding NULL checks in net/ieee802154/nl-mac.c, disallow setting
+  ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR link types via TUNSETLINK in
+  drivers/net/tun.c, as discussed with Andrew Lunn and identified in Sashiko
+  bot review. Virtual IEEE 802.15.4 interfaces are properly provided by
+  mac802154_hwsim and fakelb; TUN devices cannot function as genuine 802.15.4
+  radios and lack private 802.15.4 contexts.
+- Add an explicit bounds check (arg > USHRT_MAX) to prevent integer truncation
+  bypasses when casting 64-bit ioctl arg to 16-bit dev->type.
+- Remove ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR from tun_get_addr_len()
+  and drop unused <linux/ieee802154.h> header.
+
+ drivers/net/tun.c | 45 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index dcec7311e60..f2915e929e3 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -70,7 +70,6 @@
+ #include <linux/bpf.h>
+ #include <linux/bpf_trace.h>
+ #include <linux/mutex.h>
+-#include <linux/ieee802154.h>
+ #include <uapi/linux/if_ltalk.h>
+ #include <uapi/linux/if_fddi.h>
+ #include <uapi/linux/if_hippi.h>
+@@ -3183,9 +3182,6 @@ static unsigned char tun_get_addr_len(unsigned short type)
+ 		return 4;
+ 	case ARPHRD_ETHER:
+ 		return ETH_ALEN;
+-	case ARPHRD_IEEE802154:
+-	case ARPHRD_IEEE802154_MONITOR:
+-		return IEEE802154_EXTENDED_ADDR_LEN;
+ 	case ARPHRD_PHONET_PIPE:
+ 	case ARPHRD_PPP:
+ 	case ARPHRD_NONE:
+@@ -3362,22 +3358,33 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+ 			netif_info(tun, drv, tun->dev,
+ 				   "Linktype set failed because interface is up\n");
+ 			ret = -EBUSY;
+-		} else {
+-			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
+-						       tun->dev);
+-			ret = notifier_to_errno(ret);
+-			if (ret) {
+-				netif_info(tun, drv, tun->dev,
+-					   "Refused to change device type\n");
+-				break;
+-			}
+-			tun->dev->type = (int) arg;
+-			tun->dev->addr_len = tun_get_addr_len(tun->dev->type);
+-			netif_info(tun, drv, tun->dev, "linktype set to %d\n",
+-				   tun->dev->type);
+-			call_netdevice_notifiers(NETDEV_POST_TYPE_CHANGE,
+-						 tun->dev);
++			break;
++		}
++
++		if (arg > USHRT_MAX) {
++			ret = -EINVAL;
++			break;
++		}
++
++		if (arg == ARPHRD_IEEE802154 || arg == ARPHRD_IEEE802154_MONITOR) {
++			ret = -EINVAL;
++			break;
++		}
++
++		ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
++					       tun->dev);
++		ret = notifier_to_errno(ret);
++		if (ret) {
++			netif_info(tun, drv, tun->dev,
++				   "Refused to change device type\n");
++			break;
+ 		}
++		tun->dev->type = (unsigned short)arg;
++		tun->dev->addr_len = tun_get_addr_len(tun->dev->type);
++		netif_info(tun, drv, tun->dev, "linktype set to %d\n",
++			   tun->dev->type);
++		call_netdevice_notifiers(NETDEV_POST_TYPE_CHANGE,
++					 tun->dev);
+ 		break;
+ 
+ 	case TUNSETDEBUG:
+-- 
+2.53.0
 
