@@ -1,49 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793973606;
-	b=l3mA70k9C2oYiUAStKIwwY3BX/a2BpKz22lTsQVVg2s/c4j6cO4MWVjloF7g3k35PiVc
-	 FFK3WCDyB/SWD66+jWU7MsA97YZsli5dhJ4pi02JGOpvSrAS+s/FjKq2ODGk870ploeHm
-	 gVhFepwk2OymoH0FdchKeqLYcB7jn0uBQaL9POn3UFlNTtBPZoJcwx3Uo9mNsEFF2pQrO
-	 RE2s7K0IowX01j+DjT/1aqmN8sXdwIFA2aYI2NBTASmYOqdBLOrffqgX67utwTXL0kiam
-	 YW+CIBj/3Xr+b0YHFN6yYoME09qCT2utrUbsz44HxhnDBCKJ9UDB1SMXL5fzwczpvDg==
+	t=1793973728;
+	b=ZMTACihwKhGF+1k9h7/bnuqcerWjRHbAaYKlVnB9u1/YR1RpFrwIiTcWbDY/HNYfMV7S
+	 acYKKYnbBKGYSfdICvSKoX2l7jBg83lBPBgC4JL6KG2T8Bug0BQilKl0RKM5V+P1YLGQP
+	 5RCTTD8cr29NuguvE2y9V8px/XI9Hx1C6BdXYCC+WP6ERpYCzpQWelLFgefSsB9fi1u36
+	 nSjkIV8m2XOHQ8x4qAXR4BT0oTOdt2BLFpKoNMI4AN9FF3v6gOc+gan2c9vf3UJhcFXy1
+	 fWj1MAh7/IHfaOnCvA5Bd57CdCz7uhHzU+Jb4LUx9lfsI6ez/BoGUCmKkWRjD0urK/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793973606;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=0s74ZEYdly1/UkkGryzb8KYuxZCSbi/EUf0lzGtMVLU=;
-	b=CfGyJfyC0rwBd2/XSACUBL9I8edxLZtkVM7GNkQouSk+xQgiExjrIKrdNSfHptWvTqlC
-	 Qm4zuveNclXYT8kjretVGtn5OmAvFoqYo4zWpr15dU4oEXuaj2tdAGJMK4dvGb/i+85dg
-	 nuOH+OumTCwOCIU33m9UWThEP3v48d4d1GxaIBRmboG2BOG4+eJzt/phXa1VSepSR02+/
-	 vdm5V93DznpupgeULF5BHIhYuN5hlbwblQ0NOc6JeDnSckp+uToyFQhRiioRAcwMKBvEZ
-	 orPEasCBD4Ss006MKu8cV6k06yQOF6pM20/PcDa3XyaNwHi3a2SbsLelNFmxsQwAV1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793973728;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=n2GWGOm2gRBP1S4H8dnUEM13lExO/Oa8j8HtH41e6t4=;
+	b=o39zw8Shhl1ugnxik15VsRGwUmhqI9hwUPgfSwwSKfz9dSrHr5lm6sdjEKbSYPU6dAIe
+	 stUU9C8LtkFbvqZr0sHOmuKq49pl7NyPsK9dR3I0UdRTB6ZWhlZYu2AwbwxpYWtFMUBQS
+	 gvEUH8Cuv+eX/os0Gk62KLnfqJSAiYWZ35q0BEFVCUH6MAC/Qgft8Kgbx3V4wrO55mpU/
+	 kU32zUn31ZNIOjmEXmME7nOYBtNfL+coLrtwOAQv0ITpVA/xW9iLmO+dBI0nIyOCLiszW
+	 W75R1jK+8N5TBl9TZifLb6Swy/MuM4lrWmABQyRB9K59P6EHw3/e3bXuoTroQnxJBnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UFT1Mkbp;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ENbe1qHP;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8FB606D81D;
-	Fri,  6 Nov 2026 14:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76118606A32C;
+	Fri,  6 Nov 2026 14:02:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76118606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UFT1Mkbp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C491F00930;
-	Fri,  6 Nov 2026 14:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793973605;
-	bh=0s74ZEYdly1/UkkGryzb8KYuxZCSbi/EUf0lzGtMVLU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UFT1Mkbpzj/FgwZXmo3/zUgSAXZOzE0O9HPeYktfVJ5RHCBugmr1RmF5tt62cNqUj
-	 C7yBGaaEJV4Q+RRnJgs7iZn+ESrZYznI6mIBREwVd3+MtHWiVOEaGH052CzEY7FUyD
-	 ZvmSiCpC3ct9J8djnUwMS7jNgy6NdlTZWE3akXerqKfa6Fsijm8t0Kews8bf1sHahB
-	 seqs+Nm7zrIkpQ0fhu3/N2ANJ01pzoGty330V+9CuMWps6OAI6mnBPvrVJn1+NXdwG
-	 NBaVDIX/NVX/+/NC3xu5CIT6mr8e4Kdga0aeAXUeTGdto0hsFNNNTYWRTAh7CcpORC
-	 dt6k9NQahhOmQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D829439E9636;
-	Fri,  6 Nov 2026 14:00:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ENbe1qHP
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41655A159C;
+	Fri, 06 Nov 2026 15:02:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793973723; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=n2GWGOm2gRBP1S4H8dnUEM13lExO/Oa8j8HtH41e6t4=;
+	b=ENbe1qHPjmyWso7Zbzqw8GXA5zGDFqL2IOa2nLrqD/XtKBM75bDJiZhnq85xOMPypR/YPc
+	yDuC9obwS2zBdDIR6goX0yw+FNjaLZxrLTf5WNPzL99BI5h/wkIBVHBIYv+w5fLdR/Cjuh
+	WOaAsAvhPQ9YYpMcsYIJRRGTC5xKAimn0DbP5i/Pls9CYfuEA7TkwXU2SzlOgdWBVn16Zj
+	6e2Hnj9pfcpXx0c6vRkQoYJRgUzdOI3GF28ifDyKQ5dynxsP38e9HfDx7C3D4luMNBc3Xe
+	dlr2SOYZavCQCVwgndrtza29fARiKvd3wHWwwOjcwlujejWgwN62bPWP6gq/Eg==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,46 +53,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: selftests: Add missing endianness
- conversions
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179397360441.639202.10722722859154063493.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 14:00:04 +0000
-References: <20261103122249.951523-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20261103122249.951523-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, thomas.petazzoni@bootlin.com,
- alexis.lothore@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date: Fri, 06 Nov 2026 15:02:00 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Vadluri Mukunda <vmukunda@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sunil Goutham
+ <sgoutham@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, Geetha
+ sowjanya <gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Suman Ghosh
+ <sumang@marvell.com>
+Subject: Re: [PATCH net v2] octeontx2-af: skip NPC_AF_MATCH_STATX access on
+ cn20k
+In-Reply-To: <20261103091831.914393-1-vmukunda@marvell.com>
+References: <20261103091831.914393-1-vmukunda@marvell.com>
+Message-ID: <7582ad3c94a6412f8c570ddef4cfb3a1@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hi Vadluri
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue,  3 Nov 2026 13:22:48 +0100 you wrote:
-> The kbuild bot found some endianness issues in the stmmac ethtool
-> selftests [1] let's address these.
+On 3.11.2026 10:18, Vadluri Mukunda wrote:
+> From: Subbaraya Sundeep <sbhatta@marvell.com>
 > 
-> In practice these missing conversions didn't cause any issue, as the
-> masks / values on which the conversions were missing were either always
-> 0 or ~0, so skipping the byte swaps lead to the same value being passed
-> anyway.
+> NPC_AF_MATCH_STATX is not present on cn20k silicon, and cn20k does
+> not set up an RX miss action counter. Two paths still access it:
+> the npc_delete_flow mailbox, which reads the counter of the deleted
+> rule, and the rx_miss_act_stats debugfs file, which would read
+> counter 0. Avoid the access on cn20k. Counter support for cn20k is
+> left for later.
 > 
+> Found by code inspection. The issue was not triggered on hardware.
+> Compile tested only; not tested on real hardware.
+
+What does the read do on cn20k, fault or just return garbage? If it
+is only the latter, with the recent discussion about routing
+non-critical fixes through net-next, this looks like net-next
+material to me?
+
+> 
+> Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for 
+> CN20K silicon")
+> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+> Signed-off-by: Vadluri Mukunda <vmukunda@marvell.com>
+> ---
+
 > [...]
 
-Here is the summary with links:
-  - [net-next] net: stmmac: selftests: Add missing endianness conversions
-    https://git.kernel.org/netdev/net-next/c/bb67589c8724
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Nicolai
