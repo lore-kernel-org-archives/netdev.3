@@ -1,98 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794021235;
-	b=L4ZajPxutCGonPrbOupec7fdE56bizVS+F6weN+Q9tcG3CCclrQ2iVQ5VWYs8cELr1zz
-	 0Ibj/MiTiU7xeEwmP2+X9tQ5WjZ4j4qyAXw0TI02dAP6uH1OApSYCQ9FIrlIQZj3T0N62
-	 8n2xJIOZiepz/W3wBRaYW4e5suFvrO2QMyb098K03nsGeWvCLkj9yU8FZ9HFTdxCrW2HX
-	 ILsuCTC4RukzMPN4QSakwSZ4vl17s0sLYnQIYpMk5qv63DquwWzcoy+LkkVfI0YBXZtyB
-	 FpvQxA1XKFCud8UNBFAleuGPxFA91tTq4/GQ+EWc9WjVd5XsSgvU4vbq1GMp+y4C57A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794021235;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794021404;
+	b=IBg7a0idAVYt5WjkJJYwWwoM6FRYvM3K8UFAsUEYMTJotgf+ZEl1bNT305RDR7RSl21o
+	 pKGKzvqBLUe2gPtAMvpmmILyx1eJhub4Sg/RckXosaT3pmz/5/VWdmOri6rBATzSkHB/g
+	 0aPmRA892dPsULzIAOrkamAs8jIhZBuqx8LROM1g/tHgMN8yQElwtFTtopoYigPzaeyCX
+	 YGuppbietj0T6cJGpA5JAWQOFxdPS3QV3oNR1xRd//vlw3945MdBnXlkv9p1HvCvxkNt7
+	 Mj72u2TUsJhba70wl3o1upGD2uZ8cTu0avbOdPgXt0L/w72ubUcHbBi/M7YN/GfZlMA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794021404;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=oRpf6L6W1qrmOGUB2ywqgKb8dbORXdYECHA3ikhVQCU=;
-	b=sFscw3vfLlBbxt4FEVhHqXJLfbyrp99bQ5JhfWtEyH1gRuXXvyTOPXwCTxWXqdP/GnbU
-	 XN59+BMlO0BfFn1IObZ9ioYkKtv2efKb3XnOGW1wunoMVRtBbSvq6zVp0tiamDTthJUf/
-	 eme2YQGk3kgN1PW7exzneAZpYV9288/Z5L6HVW+3tyI672ChHgnsqoq3s9m+QEW63Mltq
-	 1zF5EoGz5U1KtckbpDHtpTZ7RZiLKkYTAt+8hRbHWrPaYdKTR2wA8XRbb36IW1yZMDMRr
-	 OcR/90MJVOk9YoPAve7OAaJFrH3fXvERCKB5muM5yD5EqlFja8CDomdqcAj9Xj9RAhg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="K5/xSYU2";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.41
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:From:
+	 Date:Subject;
+	bh=AroYtUhqASfTUnT9LkHqmR5UFi102hUMi9Q27iG8Rfo=;
+	b=pOYUkwelgOZH5NLXbfZRySXFPv3fOD88mZnwwv1q5IMFCD9cUz08DFQY1b26cldKZqtI
+	 tNkvmWFp5o5326BYLrxSyE6I0Wxmz1jp+B93eQF3fl8JB+8EZ4/JAbfu7hn3Dv1hbXN8x
+	 55AwDRJ98HeFKULUAnZFXs2ZS25m0TR/4ON/0YfwsFwZYjXMH4DnVyYt7fQ9Zorx6Pr4S
+	 6dnn1heM7VzMuHUM/u3VP5LR9gnG1OsCnUS/3hxOZOWbX15fPxAE7iXu2he09zrcwzrjp
+	 y3/NBZzPQ5cZ3wO8PWc4dtVZEfb2b2YLqmQt1U61v+Ic+ajTa0QB5iXraze7+tUw3hw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ChX+zQGI;
+	arc=none smtp.remote-ip=74.125.82.41
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBA0606A330
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:13:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7FBA0606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B4E606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:16:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13B4E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=K5/xSYU2
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c434376dbebso48101666b.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:13:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794021234; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X7QtFHT5llHqYO9LcIALH0PYYN3Iw3f/MgouWbvNdK73NNIStVb5PeGcVYaT/1FPm7
-         UH3qv1dbu3hKI3KrOvXeT679RpUAR7HN2ExUYox78T2lhV7Grb7JEgEQdCTUAatwY5EM
-         pQglgLUv+Ozx7F4IvKObMGGdEKT1wxmhrRC9JNEtou4oaVB4BH0PHTm6BJDsxMtJ1xx5
-         4ec0tNUT09YRXUcDDj0WxYz79pqGfJHehJOTlUeVoO8yIrWar1tFtFq22+EpN982KhDN
-         K1XLn4keNImaWMoiFeNBCrUgO9kaLarLy5SL6RfrnfLmA7u9N7o/8NX5AdztICDvVgcD
-         LzrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oRpf6L6W1qrmOGUB2ywqgKb8dbORXdYECHA3ikhVQCU=;
-        fh=FNetVJa7K4MYOSQ4gBQlsJ3/dPfHoNdpttK2LTvPMI8=;
-        b=AeTEPifd/v5HF2WEp2sRW/yht7jlQh2vE+oohxAzpADT54xQJ1w1Yb795Y8QLxyHvZ
-         iRW4z2SrkjzrdKIjW7AmZpuYMpfY3pj/TIwVw5zg4vxymDgCM7JQJTpM62rassO88el6
-         yWDD9XR3QqGurgDGHrLoPiGSaS6GWXBa5yrGqU9JzdeXWVrjjDa2oge1Ij6XzlwCXa3e
-         bKfKAEwgwxnf4ZUcvkiwCw04cz+BiFnjUjDyy6LNx9YrcX5bOeO82RPYyU1NsCWvq+js
-         sk0M5oJXZXRglPy4i2ivL925+RG2N8zX4RHyG4sOc9ws4gt6WWpIXoAisAKuj3meogIj
-         jnjg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ChX+zQGI
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1430eec0070so28851c88.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:16:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794021234; x=1794626034; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oRpf6L6W1qrmOGUB2ywqgKb8dbORXdYECHA3ikhVQCU=;
-        b=K5/xSYU2sTp+9F3Ssc9dMvDglneH6jUV7uspfeiii9TYyO072Qw+6C37+H2BuqkWhv
-         4rseU2AYAVe4zjHmf0l6pCh7AK5v/CIYQC/ejfCs4DvYqK+kQOJqajhjMCEatzHYNUvQ
-         gfRiiZd87mSWTSTX3Xc/Q/VNX+3fTAXEM54dMFBptzvI+h/iN+vLCb/DZOm7Sb5iV45p
-         2r1wL6zEAzXVmcSmcQ3RIuZcM/htexTLwdbXmAfWmJ+b6mrIuA8sA3+ogMk7BMgA55G3
-         +V3fAM9PBOvMP6b964JFduPMQPJVNzLOmEBClMyhd1REGDF4dW8Ov33ous0HAIWn63Uu
-         TPqg==
+        d=gmail.com; s=20260707; t=1794021403; x=1794626203; darn=vger.kernel.org;
+        h=subject:date:from:message-id:cc:to:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AroYtUhqASfTUnT9LkHqmR5UFi102hUMi9Q27iG8Rfo=;
+        b=ChX+zQGIwrpPUQrPz0X/11gv+jGEpNci4BOgrhf/YjDBWV5eez6QJSPcUofdvVkBV/
+         h9v/wevyGeGWsW2185OSLnwz1DccxYm2Ecp129jniYU4vZXr6N8wvmvlRIJbuiKx6roV
+         eeqTYPyHnL6u5P7yBfSXH4QLPjw2bTWsuxt6iH5/m0zla1gJSaqSPzeSN1LfJ+DPx5To
+         WzE1xwxoGsLUPkf5qPenfZTNepefSAIhwKaAEvypNkzCs2XQnhUdKPbRB9AsuHrNneBa
+         86+fRTpRwXwUwqhCGwNDFmIx2w/4lUQKJJHv8A/LZntmongZqMGDOPvbKeWDrt5DQNzd
+         YcSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794021234; x=1794626034;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oRpf6L6W1qrmOGUB2ywqgKb8dbORXdYECHA3ikhVQCU=;
-        b=PuGpsQigveGa94XaAqxvMVgiBLi11cf7w6DTwD4rCcf4TO0zlJrQlG/7YDI6Qsv9Mx
-         tgJlQuAwhBWBuwVeGcQ6WIF1eVdY8i1dYLRXM16UnCaTLVagNiNMuiaY8iq9wNxWzXha
-         6nMXIXGhelilZk3+h19K1q7DV+2FyNHJCgaU8he/Z9RwsnIV0FvGvZWOgfRDiY5bwiJU
-         1tq5BvQgj8+JGBd4hlLfNpa5qAshCGIE82zD/Zsp/vhhHplnueZYa/jh/oBN2zqwQ/wL
-         nKChAJng3ix+yvszfcTtJF06DLOfD6XNMRNrKi9JQHDk3KbRuE8oEbz43Xmmz8+g6w8H
-         IL2w==
-X-Gm-Message-State: APuU4Z+DNeSgVKbX8OZIlu5zIbbICFuSd5c6xEkPZOKIAC20t9zS+CLq
-	o8+hziQFeIsvSmNoBPMgRuRMHYVwnMVhnXcLnmEkUfTZGH9MqnEnNWAHzeJr/QiMOFZvF9QGwP7
-	DrZGfGhiB2ik+RzLH50k62glRM/N/OSUElVqhO6BZ
-X-Gm-Gg: AYBFou3pTgl05nrE9Vr5ofdx34r6/xTq7cz+H4SK6zV1Cf0qZfZJiTl9DI212eotqJs
-	8h5r2xN6th1N9Xejy7rlLwZ6zfB39CEzrnhj/hpWWCr7cil/dC/v13DhQHLSP35eWAOfjC1zB+6
-	8s3wtS4f3vCmNbgdJSWE3F8y+dUWvv9k620Fynhb3ThSLU2if2FYEF12YNEjE0usl+V+G0WZ+Xv
-	E3pMyTkwFWkdOd6HLX6FqGXD2qebKkwqI7UmQ3azzqCY1VxqSGhM08XMpFwFjIzrJlZdRfarLZi
-	KoLC8VbPcymtoHegRMmilx6CdEGPZRIBWos1B0IDC2KW/StGTCfpAXOno+NNLW3heBwAw1oAy6R
-	koYpnv+rr5y0IQ6Q8mMeIxXQR+Om0b7Pjd/xkL4F2sDoYZE1tlijOk8cPQbEv2Bsllpo=
-X-Received: by 2002:a17:907:d22:b0:c3f:2:6faa with SMTP id a640c23a62f3a-c4d523bb4f1mr41862966b.1.1794021233358;
- Fri, 06 Nov 2026 19:13:53 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794021403; x=1794626203;
+        h=subject:date:from:message-id:cc:to:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AroYtUhqASfTUnT9LkHqmR5UFi102hUMi9Q27iG8Rfo=;
+        b=XFToFz7agpGGkpw8NL76Yq/1/k3kvBF5vllNO/C4WEJULb4ffLPJqeYnpQVt9jtmsb
+         p4U4tbcDSTXwQWzswCOHcCzR3FYU6Ek5ZlnKPNnjDdBRz5ENFPg1xNk1Yh8bLNNsq39N
+         O1ojbD4k7l0tC9pWiKoGeMYzX90U0c0e8al/kkmj8h2APGnmWLnngKsMoJUcQGMNcgsy
+         FtPedB8ybReYY0D6LNPdQfLiqe5o4AoitF1wyUglByF99iC1M7A7NmWMXDyvmVn+vVa/
+         /S2aGExFrLtG/TzRDw96EMwSJxxqDHIDp66Nd6xoXB+3OAx5zW3oOhXQ96HQeNiWWgl/
+         zKrQ==
+X-Gm-Message-State: APuU4Z9Y8uSF6qQJkE6HcFeLeCOm4w/BpUptd4iqkLnLz/jg0Oph2oah
+	CVaewX+bowUwG/ifHj/nZbKL7qZ9r9DgLjxY9RB73uvb7xncFiGim8R8
+X-Gm-Gg: AYBFou1xuIkBPO8hQi6Ay+3NI9dXcDUEjCnjKx/qIo35IiKTDq8tIou77ROPh5t94M4
+	TO0pQvvysxWIK1i+Mk3HfRCjK4r67atxLMs2sINtyAzMkHcVVb2OrTTe4MVyJbFKjRGZlaNzDRB
+	ch3X7EqYCWZ/HQrjrYinfyoy6Y+bLPBR2iGwVb+VxwiIj94qiKwSNAm6IzX9bSMDUmz3GYdsJ9U
+	ZNa7LzwF2ThpdBgoPwm/zjkDZNKJiLbzDVr77wpUBzDbCEvhYm/slUfVNbV3UkjP75t08q9kOHT
+	oG0YtdkgkbOqbCSrvYMK//inighqU41tWZX828Yxookb5mnNDOG1pLxdIb7fiB9aUROfpzYCTp4
+	RXAc4IOhxxAjVRwYUNIUKxkvtLnqVFhabtSv10UJn9nuH0eKHFml+WudZVhzLNwWj5bjILUrgvg
+	PH8BR2MHh07thnseLOQ8d524c4l7Wf0l9HkE+gUj2H4SAnd7SYrh3jGHgwihtenvfg1UdVQraGL
+	jieYMZsh5/FbdjYaHL1VwVTC9gCNdy5do4DoXPnNwomZOYgYNxmFyUlOkLiEUBfhgg854LOsihM
+	XTal5qBtfJhvijzUyIlXoV50UloLK5osH889wt7eXSNM3Ea7/Tya4NIjViJaVXNj2LMw3w==
+X-Received: by 2002:a05:7022:1582:b0:17f:641e:7f6b with SMTP id a92af1059eb24-1b25d2d69f1mr9357869c88.1.1794021402939;
+        Fri, 06 Nov 2026 19:16:42 -0800 (PST)
+Received: from msg ([188.253.120.78])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b25e4b4aa7sm9615586c88.13.2026.11.06.19.16.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 19:16:42 -0800 (PST)
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	chopps@labn.net,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	linux-kernel@vger.kernel.org
+Message-ID: <20261107111617.21347-1-q.h.hack.winter@gmail.com>
+From: Qihang <q.h.hack.winter@gmail.com>
+Date: Fri, 6 Nov 2026 09:57:58 +0800
+Subject: [PATCH net v8 0/3] xfrm: fix vti tunnel device use-after-free across async crypto resumption
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,87 +98,147 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261106114551.212675-1-amaan.cheval@gmail.com> <20261106114551.212675-2-amaan.cheval@gmail.com>
-In-Reply-To: <20261106114551.212675-2-amaan.cheval@gmail.com>
-From: Joshua Washington <joshwash@google.com>
-Date: Fri, 6 Nov 2026 19:13:41 -0800
-X-Gm-Features: AclHuK9hqj7STkrMrTFdH3gqq3iNgCshZou6dOEEbH9VmQvXrAu4YpDfrgJPse8
-Message-ID: <CALuQH+VtASWP=w9ibTJ7ioYxWrS5sgi9yCZMVK0D831_A-zusw@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] gve: block XDP on the DQO-QPL queue format
-To: Amaan Cheval <amaan.cheval@gmail.com>
-Cc: netdev@vger.kernel.org, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	bcf@google.com, jordanrhee@google.com, przemyslaw.kitszel@intel.com, 
-	maciej.fijalkowski@intel.com, pkaligineedi@google.com, maolson@google.com, 
-	csully@google.com, willemb@google.com, yangchun@google.com, npl@google.com, 
-	awogbemila@google.com, shailend@google.com, nktgrg@google.com, 
-	maxyuan@google.com, bpf@vger.kernel.org, john.fastabend@gmail.com, 
-	hawk@kernel.org, sdf@fomichev.me, daniel@iogearbox.net, ast@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 6, 2026 at 3:46=E2=80=AFAM Amaan Cheval <amaan.cheval@gmail.com=
-> wrote:
->
-> Commit d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ
-> RDA") enabled XDP on DQO-RDA by dropping the queue_format check from
-> verify_xdp_configuration(), which until then refused every format but
-> GQI-QPL. Nothing replaced it for DQO-QPL: gve_set_netdev_xdp_features()
-> advertises no XDP features there and gve_xdp_xmit() rejects it, but the
-> core only checks that ndo_bpf exists, so a native XDP program, and an
-> AF_XDP socket on top of it, can still be attached on DQO-QPL.
->
-> The DQO-QPL RX path was never written for that. Its page accounting
-> assumes the driver keeps a reference of its own across every handoff:
-> gve_xdp_done_dqo() passes the buffer to xdp_do_redirect() and then
-> recycles it with gve_reuse_buffer(), so a redirect target that releases
-> the buffer synchronously, such as an AF_XDP socket in copy mode, can
-> drop the page's last reference when pagecnt_bias runs out. The page is
-> then freed while it is still DMA-mapped and registered in the QPL, and
-> the driver posts it back to the device.
->
-> Refuse XDP program setup on DQO-QPL in gve_verify_xdp_configuration(),
-> matching the features the driver advertises. A zero-copy XSK pool bind
-> is already refused by the core for the same reason, and a copy-mode
-> bind never reaches the driver and is harmless without a program.
->
-> Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ RDA=
-")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Amaan Cheval <amaan.cheval@gmail.com>
-> ---
->  drivers/net/ethernet/google/gve/gve_main.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/eth=
-ernet/google/gve/gve_main.c
-> index 2437cd8ba633..4e9e692a0ed0 100644
-> --- a/drivers/net/ethernet/google/gve/gve_main.c
-> +++ b/drivers/net/ethernet/google/gve/gve_main.c
-> @@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct net=
-_device *dev,
->         struct gve_priv *priv =3D netdev_priv(dev);
->         u16 max_xdp_mtu;
->
-> +       if (priv->queue_format =3D=3D GVE_DQO_QPL_FORMAT) {
+This replaces the earlier vti/vti6 series and the reference-transfer
+rework.
 
-Thanks for implementing this!
+vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
+control buffer without taking a reference. With async crypto, the
+receive callback runs from crypto completion and may run after the
+tunnel device has been torn down, causing a use-after-free when the
+callback dereferences the cached tunnel.
 
-Minor suggestion: Can we check based on dev->xdp_features
-(NETDEV_XDP_ACT_BASIC) instead?
+The input hook takes a reference on the tunnel device when caching the
+tunnel. A successful receive callback leaves the cached tunnel in
+place; xfrm_input() releases the reference on every exit, including
+after delivery and on drop paths. The error callback only updates the
+error counters, so the common drop path releases the tunnel reference
+after the skb has been freed. IPTFS, which can free or consume the
+outer skb itself, releases the reference through xfrm_input_drop() or
+xfrm_input_consume(). Patch 1 makes the two exits that still used
+skb->dev after the async reference was dropped use it first. Patch 3
+sets the address family before the early invalid-state drop, which now
+has to release the cached tunnel.
 
-> +               NL_SET_ERR_MSG_MOD(extack,
-> +                                  "XDP is not supported in DQO QPL queue=
- format.");
-> +               return -EOPNOTSUPP;
-> +       }
-> +
->         if (dev->features & NETIF_F_GRO_HW) {
->                 NL_SET_ERR_MSG_MOD(extack,
->                                    "XDP is not supported when HW-GRO is o=
-n.");
-> --
-> 2.47.3
->
+Patch 2 is new. The IPTFS drop timer is cancelled when an in-progress
+reassembly completes, although the same timer ages out the reorder
+window. A window that is never drained holds its queued packets and,
+with patch 3, the tunnel reference they carry, so the device could not
+be unregistered. Patch 2 rearms the timer for the window's own deadline
+once the reassembly is done, so that a later reassembly does not
+inherit the earlier expiry.
+
+Patch 2 is deliberately minimal. It only bounds the stale window, which
+is what 3/3 needs so that the reference it adds cannot pin the device; a
+wider rework of the IPTFS timer is orthogonal and can land on its own.
+
+Rebased onto net main fafbc4051, which already carries the iptfs skb
+leak fix on the payload error path. That fix moved the done label ahead
+of the delivery loop, so the inner packets parsed before a validation
+failure are now delivered. The drain that the previous revision added
+to 3/3 is therefore gone.
+
+The issue was found by source audit of the VTI input path (LLM-assisted
+review): the tunnel pointer cached in the skb control buffer is
+dereferenced by the receive callback, which with async crypto can run
+after the device has been torn down, and nothing keeps the device alive
+across that window.  It was confirmed with a KASAN reproducer on arm64
+(async ESP; deleting the VTI device inside the crypto window gives
+"slab-use-after-free in vti_rcv_cb").
+
+Changes since v7:
+- rebased onto net main fafbc4051.  The drain of @sublist added in v5 is
+  dropped: "xfrm: iptfs: fix skb leak on error in
+  __input_process_payload()" is in net now and delivers those packets.
+- new patch 2: hand the IPTFS drop timer back to the reorder window when a
+  reassembly completes, so a stalled window cannot pin the state (and the
+  tunnel reference added by patch 3) forever; reported by the AI review
+  of v7.
+- the former 2/3 (address family before the invalid-state check) is
+  folded into 3/3, because the early drop path in 3/3 needs the family
+  to release the cached tunnel. This gives a clean bisect: no
+  intermediate commit sets the family without using it.
+- the sentence in 3/3 that claimed the parked skbs are always released by
+  the drop timer is gone; patch 2 is what makes that true.
+
+Changes since v6:
+- patch 1 also drops the skb->dev reference that is held across an async
+  resumption only after gro_cells_receive() in the decaps success exit;
+  that exit still used skb->dev after the reference was dropped (found
+  by the netdev AI review).
+
+Changes since v5:
+- cover letter only: record how the issue was found.
+
+Changes since v4:
+- IPTFS: when an inner packet fails validation, __input_process_payload()
+  can reach the drop path before the inner packets queued for delivery
+  are sent. Drop those queued packets as well so the outer skb's tunnel
+  device reference is not leaked (found by the Sashiko review of v4 3/3).
+
+Changes since v3:
+- the cached pointer is always a tunnel; the address family selects its
+  type, and a non-NULL tunnel slot denotes one held device reference
+- xfrm_input() takes the tunnel device out of the skb before
+  gro_cells_receive()/transport_finish(), which may consume the skb
+- the device reference is dropped only after the skb has been freed,
+  including on error paths
+- IPTFS passes the state's address family explicitly instead of
+  inferring it from the secpath; consumed skbs keep consume_skb()
+  semantics and drop paths keep their skb drop reason
+- drop the xfrmi changes: it re-looks up the interface and does not
+  participate in the reference transfer
+- merge the reference and IPTFS changes into one patch so the series
+  remains bisectable
+- the gro_cells NAPI window is pre-existing and is documented, not
+  changed
+
+Runtime testing (aarch64 QEMU; KASAN for UAF detection):
+- VTI async success and error: RTM_DELLINK completes without a KASAN
+  report; the unfixed tree reports slab-use-after-free in vti_rcv_cb.
+- Async resume with the SA deleted during the crypto window: the
+  reference is released and the device is removed; with patch 3
+  reverted, xfrm_input_take_tunnel_dev() warns and
+  unregister_netdevice() waits for vti0.
+- IPTFS outer-skb free: RTM_DELLINK completes; with the
+  !first_skb xfrm_input_drop() reverted to kfree_skb(), the reference
+  leaks and unregister_netdevice() waits for vti0.
+
+The IPTFS drop-timer/reorder/state-teardown paths, including the
+window-pin sequence behind patch 2, are covered by code audit, not by
+dedicated runtime triggers.
+
+v8 was build-tested on fafbc4051: the arm64 objects touched by the
+series (xfrm, xfrm_iptfs, ip_vti, ip6_vti, xfrm6_input) compile with
+XFRM, IPTFS, VTI and ESP enabled.
+
+Tooling: the source audit, the patch text and parts of these messages
+were produced with an AI coding assistant under my direction. I reviewed
+the result and stand behind every line of it; the build and runtime
+results above were obtained from earlier revisions of these changes.
+
+Previous versions:
+  https://lore.kernel.org/netdev/20261027105031.19928-1-q.h.hack.winter@gmail.com/ (v7)
+  https://lore.kernel.org/netdev/20261022032129.16118-1-q.h.hack.winter@gmail.com/ (v6)
+  https://lore.kernel.org/netdev/20261019153247.89957-1-q.h.hack.winter@gmail.com/ (v5)
+  https://lore.kernel.org/netdev/20261018090638.55686-1-q.h.hack.winter@gmail.com/ (v4)
+  https://lore.kernel.org/netdev/20261013074610.17808-1-q.h.hack.winter@gmail.com/ (v2)
+  https://lore.kernel.org/netdev/20260930090813.73901-1-q.h.hack.winter@gmail.com/ (v1)
+
+Qihang (3):
+  xfrm: use skb->dev before dropping the reference held across async
+  xfrm: iptfs: hand the drop timer back to the reorder window
+  xfrm: hold the tunnel device reference across the input path
+
+ net/ipv4/ip_vti.c      |  3 ++
+ net/ipv6/ip6_vti.c     |  2 ++
+ net/ipv6/xfrm6_input.c |  3 ++
+ net/xfrm/xfrm_inout.h  |  4 +++
+ net/xfrm/xfrm_input.c  | 69 +++++++++++++++++++++++++++++++++++++++---
+ net/xfrm/xfrm_iptfs.c  | 40 +++++++++++++++---------
+ 6 files changed, 103 insertions(+), 18 deletions(-)
+
+-- 
+2.54.0 (Apple Git-157)
+
+
