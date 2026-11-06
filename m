@@ -1,88 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793961910;
-	b=nkOwxxaHuV7W+BogLTHUZjLZbYmVd1VssrK8z3i6K2QHg10Wa7WIV1h7g5ysCiPImn7R
-	 pDWp2lPUI2rsRSkbfWzihl3XoimURpsbo7AKA5AUFiCtx2VrFaCazmkLbMktwZ+jXVyVZ
-	 JwX3UIuynKYzo6v7QPy1yLIsPzsmlKhFL+imZ1ZpkreCOl8JluQ0En0Q+kKs5Anw1eKZV
-	 xR0MLMXurrZmltp8Ogb901A/uVhXK9Bo6nr6SFEOQS7D5M+/nrNDO59svkMQAaDl60nXt
-	 KppWkwx/GiTbWo6u51XVxu7YrOgqTF7LDPECY0kT/SFVzlUwtlc8R5FPnXBqP/ROBKg==
+	t=1793962043;
+	b=tLuH2GhBXpFjfuuJsIElJGVDSiwsOFyOfbEDK4NsEvEQuEs5piPXnnAQFRmdUmKu//yd
+	 uRHlwwas9UWlDrAUx6+ZwWzhRLotrOOz+3yumfojrfIyx2zpKE9sr3v39H5NX9NAcq0li
+	 3vZoGXauwnGZsw3VNF1EylLPOCWKWj6ooLEi40tTvq7zAmNC7R2Y2QR/Aqyo5qWwYrOhT
+	 hJp1VrEab9i76NyqX6PUkjQKIdN5coh905pFcH4KQdiywBxK5mc5NsMX/w/OSUiwlaR7Z
+	 ohdG91UUVQrJx/C5XJHprp0Jt41mX0AxB+Gb8ObyNYiPLCWNPZpfQsEE1+7/D1VuXag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793961910;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=mK5Jdfitjwy2qBnVXmB5t+/eIsoKS4R4I1jh8e8KWtg=;
-	b=wDY7ydytFh5+UOudHEUUGEr8XvnyroOEio/Cf6hPkWw073oQNgZ4EMMpmKXbHWpQzBLm
-	 kkT9UvhzDBQC8C3iJyaK3mgpHJeG7U+Kqsun0LiNZDX/ALIDigFkAD/gDkNvg2aSVDQeH
-	 ws4AamQCTvru3pnkHdODPY1COuPDON0t4DP4tnkeAIAGDT3d0LNdAFDWNPxGMW7Pm3SQS
-	 Mw2l17PAfexaMrWGFGmMSme1STmkjEYTvyeFNX8WvMcsW0v1MSLk9kUtRsvBnMWyVZIKQ
-	 89UbMs57MTVdSLNCRFbnYgSBVI9bS3j5Hynq4OHAJW4UTa3l83LLaq012OnK5rI4aHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793962043;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Scanned-By;
+	bh=7qFOdyeTWjgv8cvpgwW3ZlyKG1+w40IKueRFwRIEoGI=;
+	b=cBPhzZo6RaS63DgylSr17zEfh9w/fNNNawB2IoNBGrY/3YuFL7aDHKfKoaD3N1f38j1o
+	 cSDKWt/bNPx9j4bW6fhQB46jUB+nyWonzMXmfWy+D9MAollPtW3HE8KlcRvYvmuExpx2M
+	 plByR0UNuD18RKlZR1zPWcFkfF7JdEWtCpLom/sRFLLo5kJCQl9sQ0PvFNZAXe3KmSR/l
+	 PPp8QRXqNzGrIIB5fFLJMD7WktZHaGznZpgDCmqoK/bQTWzSJLouFedqH0QU/1SXP0x13
+	 v2TNtSGefSVV2XpRHqyvt3Ybq2D4N9Ss7QXnrgkhjOfJl+43G7WEkExSW4ehw8pzv4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IFP2w+V4;
-	arc=none smtp.remote-ip=74.125.227.130
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLgNiyQ9;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B459E606A32F
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:45:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B459E606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CAA606D827
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:47:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69CAA606D827
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IFP2w+V4
-Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2ea19bc317dso4211815ad.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 02:45:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793961909; x=1794566709; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mK5Jdfitjwy2qBnVXmB5t+/eIsoKS4R4I1jh8e8KWtg=;
-        b=IFP2w+V4jns0t4yYEy5GFCJrNcp9y71ad7pD++ZnOBHlKQctT+UyUxQcBDU8YViV9j
-         X4tmcb9ziENv/Bh7ir1qwdPfx9lTPXVZuB80HluQdBaN1r6aUl/6w4yYW5XjHJ9rw39y
-         ZRtowgsbzWkN9mCY6/oSPlcbeOQU0AHomUMjfv2CiGDrDjRPqoNTdI8FaYoLTYdFP2Ak
-         pzJAb/tt1X8tiZPYDImwjmPM8LkuYnshYIk8EgHCP/brvCh88/KWcua0BvQfMUeVsvjE
-         MtXSiqoew+qkr9lx3NZ/laHEBoEW7mzhGQXLEPzy+D2GXEERDkhEcjQxUoJilQsctZex
-         rlsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793961909; x=1794566709;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mK5Jdfitjwy2qBnVXmB5t+/eIsoKS4R4I1jh8e8KWtg=;
-        b=IsPJvBiXUhu544WB54QgphnG+gTVk629EwJPJPufIXfT85fefaYkDnbyJ2v4LkhB2v
-         p9gmvdlNENXvb8Zem1dujqOmOHF4nGdiJmR0I357kpRsHlltyWcRdAQqx7NkQdE2xJVq
-         CbKKMg/B3v3ZsxEKoxXA03pEr8XAd9bmbhPdZpSua5JLGJYyKdA5M2VhZfgSHlUFsSrJ
-         G6S+AY7bDv7S5DlHA7nDqK9MQS8wLD+TOVQzGvmy92DXbjvqYSo+0KUACA/Vl2nHw8Dq
-         SOiRu/ITbc73iqzwx40kEONZ/zmPKLYmcp4ZicoB2U3oSNTiIFOPfiIdheTAIb7O+Rd3
-         jj4w==
-X-Forwarded-Encrypted: i=1; AL+hErGf8MuachRdReKnn9luepfb1QYxAs6cFNEOT32fWD7PkYpboothZyH9FjTPYno7NjZC5XAjJHc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+7NP3PLKhhGlbMsunqT+9jeUtclne09M5mAM7TLZPtLsrVe//j
-	IUiTlV49dW9EihtXjXG6Rfw2DLyE2fVrRXnNLNIO5cCUv7P+fXIlRVSM
-X-Gm-Gg: AYBFou0kYVf+HjHjBPzTStVEoBjUSQsoVcsoKrNVvBUHKsYPUVFCi7+LwZc5c/9WN1J
-	yz4MBT6sLn/FHKGZKGkSgOozirEhKyXhInimuKUffT4Zj9BsdDBKQ3z3U+sJ0uuwo0/sntsbLan
-	M0WWjTBnqzU+8YX3T/rK1hsUchoPfn6H3OdtuLO0MMytwLYgFz0lx25lyh8jTbIuIqHmRxzMjs0
-	X72UI6nWzSTPb06opiWodS1qLZuLv1sUK7rmk/CLNJown0/6dtmUVTF532CnZu4rJySw1kU6+ek
-	CmxeuMN7KvpaJVbKVkiL2+Eup8IfuzPTimuZSZWMDsIq7JnbbgZ7CBVf9Yv/iinkouSD1Z2R8Au
-	IozAmOxE0EoW9hs4Tp2u4CADHTIa8REGOpnfIEiAidfCicRaoEwVug6QpZfh0GSNqt/2GAWP9J+
-	7nlPL4eeNw9nGuvcraTAYOB3vYoZJDBv6bKrEzIWJJ02VxGhclG9ifD/sqtlo3EuzgVXjiZ8Rlq
-	ws50fcm++fE4llPsnodow5pHm8MuDP6RHSR8JhMKRP3AGbZy8YMFC3p8x5F3Lcx7Fgm5a7RN7A1
-	752V825NWYOAIQFaKGZltMoW2yfjvfhn7iwAIDaEfu5ayHFxn51XiA44sUQ=
-X-Received: by 2002:a17:902:da87:b0:2ed:205e:eabc with SMTP id d9443c01a7336-2ed41bbd3d4mr26889285ad.32.1793961908564;
-        Fri, 06 Nov 2026 02:45:08 -0800 (PST)
-Received: from [192.168.100.182] ([110.93.227.81])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47d8915esm4095755ad.67.2026.11.06.02.44.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 02:45:06 -0800 (PST)
-Message-ID: <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
-Date: Fri, 6 Nov 2026 15:44:50 +0500
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RLgNiyQ9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793962041;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7qFOdyeTWjgv8cvpgwW3ZlyKG1+w40IKueRFwRIEoGI=;
+	b=RLgNiyQ9yNrH4RcRJqDevNAgfhZ9Outu3zKGm9nbKiLk4zUQZzbdVB+lCryOeKkduIqV6i
+	Tb6kPWD8sUI/GWyeQUD5N+lBu+CmIM8aXZ39Ap+Vb5oHRVliSH7dE0eoYVd7AV3QMDJRFz
+	GwnacGToy6TqI8W9rJnQ8Jg+/XB05K0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-HExB2PTUOU-p9cgwNp6QIg-1; Fri,
+ 06 Nov 2026 05:47:15 -0500
+X-MC-Unique: HExB2PTUOU-p9cgwNp6QIg-1
+X-Mimecast-MFC-AGG-ID: HExB2PTUOU-p9cgwNp6QIg_1793962033
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C34618005BA;
+	Fri,  6 Nov 2026 10:47:12 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BFEB1956047;
+	Fri,  6 Nov 2026 10:47:06 +0000 (UTC)
+Message-ID: <308681fb-2c07-472f-ac96-dcb70816285f@redhat.com>
+Date: Fri, 6 Nov 2026 11:47:05 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,54 +72,92 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
- emac_suspend()
-To: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+Subject: Re: [PATCH net-next v2 14/14] selftests: dpll: add reference leak
+ tests
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Yixun Lan <dlan@kernel.org>, Vivian Wang <wangruikang@iscas.ac.cn>,
- Chukun Pan <amadeus@jmu.edu.cn>, Siddharth Vadapalli <s-vadapalli@ti.com>,
- Tomas Hlavacek <tmshlvck@gmail.com>, Muhammad Bilal <meatuni001@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20261105123441.2524171-1-alitariq45892@gmail.com>
- <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20261105151852.1844305-1-poros@redhat.com>
+ <20261105151852.1844305-15-poros@redhat.com>
 Content-Language: en-US
-From: Ali Tariq <alitariq45892@gmail.com>
-In-Reply-To: <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20261105151852.1844305-15-poros@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-
-
-On 11/6/26 2:43 PM, Troy Mitchell wrote:
-> On Thu,  5 Nov 2026 17:34:37 +0500, Ali Tariq wrote:
->> @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
->>   		return 0;
->>   	}
->>   
->> +	rtnl_lock();
->>   	emac_stop(ndev);
->> +	rtnl_unlock();
->>   
->>   	clk_disable_unprepare(priv->bus_clk);
->>   	netif_device_detach(ndev);
-> This can deadlock. emac_stop() -> emac_down() calls
-> cancel_work_sync(&priv->tx_timeout_task) with RTNL now held, while
-> emac_tx_timeout_task() starts with rtnl_lock().
+On 11/5/26 16:18, Petr Oros wrote:
+> With CONFIG_DPLL_REFCNT_TRACKER the DPLL core keeps the stack traces of
+> unreleased device and pin references in debugfs. The entries do not
+> name their owner, so add library helpers that snapshot the entries
+> present before a test creates its devices and fail when an entry that
+> is not in the snapshot still holds references afterwards. An entry in
+> the snapshot belongs to an object of another driver and is ignored
+> even when its content changed, since other drivers take and drop
+> references while the tests run. A concurrent dump holds references for
+> a moment, so the check waits for the candidates to drain. Attributing
+> by name means that a leak of an earlier run goes unnoticed and that an
+> object reusing the address of a freed one from the snapshot can hide a
+> leak, which is accepted, the entries carry nothing better to go by. A
+> second run alongside would have its devices attributed to this one,
+> which is one more reason for the lock every script takes.
 > 
+> Whether the tracker works is probed with a throwaway device, which has
+> to show entries while it is live and to drain them once it is deleted,
+> so that a kernel without the tracker is told apart from a broken
+> simulator and from a leak. The probe runs as the first test of the
+> stress script, which gains a final leak check, and of the new
+> dpll_reftrack.sh, which registers a device, removes it and verifies
+> that no reference survived. The snapshot file lives next to the lock
+> file under /run, for the same reason the lock file does not live in
+> /tmp. The library mounts debugfs when nothing else did, like it does
+> for configfs, and the selftest config enables the tracker together
+> with CONFIG_DEBUG_KERNEL, which it depends on, and debugfs.
+> 
+> Signed-off-by: Petr Oros <poros@redhat.com>
 
-Thanks Troy, that makes sense.
+Which dump holds a reference here?
 
-For the deadlock, I think the correct function to call is rtnl_trylock() 
-inside the emac_tx_timeout_task(), which would return if the lock is 
-already held and will hold the lock if it is not.
+The references to a dpll_device or a dpll_pin are taken in
+dpll_device_get(), dpll_device_register(), dpll_pin_get(),
+fwnode_dpll_pin_find() and by the pin registration, in
+dpll_xa_ref_pin_add() and dpll_xa_ref_dpll_add().
 
-What are your thoughts on this? Does a v2 changing rtnl_lock() to 
-rtnl_trylock() inside emac_tx_timeout_task() make sense?
+The netlink dump and doit handlers in drivers/dpll/dpll_netlink.c run
+under dpll_lock and do not take one.
 
-Regards,
-Ali
+Could the sentence name what actually holds the references the check waits
+for, or be dropped if nothing does? The same sentence is in the comment
+above dpll_ref_tracker_check_leaks():
+
+[...]
+
+> diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+> index ada10ee4394fd5..d851237bdac440 100644
+> --- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+> +++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+
+[...]
+
+> @@ -622,3 +639,212 @@ dpllsim_setup_standard_device()
+
+[...]
+> +# $1: snapshot file written by dpll_ref_tracker_snapshot before the
+> +# objects under test were created. Return 0 when no reference to an
+> +# object created since the snapshot is held any more. A concurrent dump
+> +# holds references for a moment, so wait for the candidates to drain. A
+> +# timeout means the references never drained, the candidates seen by the
+> +# last check are then printed and count as leaked.
+> +dpll_ref_tracker_check_leaks()
+[...]
+
+Thanks,
+Ivan
+
