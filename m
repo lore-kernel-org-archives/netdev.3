@@ -1,62 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793970719;
-	b=taTRMI7MG3yYValfH0dv4/5ZgyOioAqQH0EClopdqELphl8PsidR5WlTwZJgylMvN+kc
-	 AZEl3h+7FiRtBKTJ5oWKM+w6L0U4QkI4EC6B0pVhLcbBxReRSgl/Lkknk5Lt+XAC3gsQe
-	 L1Ate4oRsxDUuKkFmje9fi8Is0bZS6RE5ctR5ywqBNvw7mFbSQfKBGBREJuG1MZzqm91M
-	 o2RxyE49aEC8IB82LzPEh8szZdWZNwLXO4qENv+EyPbQbOkJuz7agmiKSNL8qhE9Ffxwu
-	 i/JlAzYsV75JiK3fzWZkbcQDSXQS3z1nRwZUsRcnv5p9qFoTh4rTN1/xJ1vVdMLprbA==
+	t=1793970835;
+	b=NAtbdzh6W1wPGaZb3v1D9lVqUGIFnPq2XiGrG1TowwK3BmlZO0i285gYjfb5DHdyrW7E
+	 A0v2uAlDsKm4kPIKbEG5rTpytal5/xLxSByq1gCB1Sncu9dj3JW1RlyVYQx/eHCWsE0sr
+	 fNqRWo9Fp499sFpG3L1ovQFdFhB8WMiURgJNEOSb11NiJTdJpS/IHXuuKmlTAbeQFQtva
+	 SFmFKZjDqat3rXj0UdPHjwlSfrvqLbmm9JDL2RL55Z0k3tHLFxVt4moFKYozDXmjacOpp
+	 X336TsV+SHbwAaqTqRBEGtBgGjMEb207Ri0mfxXwr1fmreqvfqADN9UHWroAig/ZPNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793970719;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=HETRtqTERejFlDwRcWc6BebILnh68XfD1Hq22tImQdB/9irwzhvcyEHqgj+hXsARGROU
-	 86GkYhGFeaSdPPZ5Q0oUBd5rfbZrvSIon5+YuPw38/dwlDgPjnkozSt7EFoTgG2e4L1Vj
-	 YFhlMzlm5uWCibX1AdfIX1RLsy1Yc7CVcSXU7zhr7PMYLiAMgYpF/DokZfvQSTimZRZ9S
-	 jNNxlqrT7qMrROcheMf2k0+JrIF6wJ0C7GDXcuqzpHoYcqh6bTVqRnqUmC4lGxvqAHg0I
-	 XJHMpUOQ6L1QlxCZh3v7eNWVa3vaYZe5x4HQc9Wu0W84NIKuBhOPeKBPzlFEy9jv6/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793970835;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=9iuU7MEsK2c2Pxl1bKzJoGbt24cwSpLcFKHMSnlxVwA=;
+	b=tKk/fjXPWg1AaVrBJ/a8KBBH/ZBfrLe6kLgiEeMCZI5j08THcAyifGbDCxmJFDxGwQND
+	 JZBvRx8hy27BktTIIvAvqVnIMbQfUA8nwITAv91K09Kznq7aXCQAF7w2uhbjW23vCrotg
+	 3A9kEMbuyZFrhTjvJzwdo4ohtgJMJsgn8A0ZUt2KldLds/XjtfCaCdUoOTKtHvoFSQDZ8
+	 TecOj2ub2XBROqxjF9W8jwidFSlXUCjsHVJ1O1PFkoC/3WMoYe6qfWpbLvMuqbOAGqJaO
+	 VMMCPEU30g0qqOHs5BXbfhcTkUFHEOwJVWOh/ItkDMtoUWuPiiZtM9MGiKoeqQ34s9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVwlr1g1;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC5lAMVT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C20606A326;
-	Fri,  6 Nov 2026 13:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFA8606A32F;
+	Fri,  6 Nov 2026 13:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OVwlr1g1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEDF1F0089F;
-	Fri,  6 Nov 2026 13:11:58 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KC5lAMVT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9261F008A1;
+	Fri,  6 Nov 2026 13:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793970719;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OVwlr1g182n1x45bOXoD6sJakmUWubgrgMrjfowyi+ONkh15lxkNV32o9QI+jYLSh
-	 83YJ00F+GETQD1UzgiOYR4csjrX/UMmFVHV3Wi+ddhhCWOwDsHgpaMANQQ+lCEIGTt
-	 p6gLLk2OKR9SBvkkso57wJ8O8ZgpUwxk7sTE+G8TjbcL0uSmJ9WFypl3apiwNIxWKh
-	 FpjBV68jue16sefLFR840f22D7uMxLd4WBA0yIhuOxZRCRUeENZbgHV/TZ8VqbzLFM
-	 MseNaQVE8VGunt9GjTayJ9NeLe/3Cgs9YB0CBL3mbrGFxPdd0aUdf7IwembiBR9Vo/
-	 tNVBzwBQdsQUQ==
-From: netdev-bot+sinfo@kernel.org
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: 
- Re: [PATCH net v2] net/smc: fix link group ownership in handshake abort
-Date: Fri, 06 Nov 2026 13:11:57 +0000
-Message-ID: <179397071760.488859.2441300053954897931@kernel.org>
-In-Reply-To: <20261106130457.1092203-1-mjambigi@linux.ibm.com>
-References: <20261106130457.1092203-1-mjambigi@linux.ibm.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793970834;
+	bh=9iuU7MEsK2c2Pxl1bKzJoGbt24cwSpLcFKHMSnlxVwA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KC5lAMVTiD1H0HRO9wudEjkt9ITRbgLn9PNNZsFAY+PQgcAeTb+mLFYjU0VQBr/P4
+	 OMgR42zZI/a2XPhf2h7VSdpTnTw+0H4wU7aQXkP7RjIUfB+HBeff4XbbOOVLZiU+Ef
+	 d+tf/0NHrAEZuk6IfYvnyUE8lgmnTQjSZ0Bx8YVn6mlfS8I8eHqh0HdwSiV8K805D4
+	 bJ5IqHRIeniTOCWEvTu2GBSeCrdyHq1f6RaWtk+BKmv8FhwurXZ0OHdQtFPFH3rTGF
+	 N9CtRUIOqssm47/xNL3vOfqwll1NQPWSaNY3Fc6Y80QCDrAqqIW4txwjbaUoMbPGvN
+	 WvA32gRJYIsIA==
+Date: Fri, 6 Nov 2026 14:13:45 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Andy Lutomirski <luto@amacapital.net>
+Cc: "Hallgrimur H. Gunnarsson" <halg@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Paul Moore <paul@paul-moore.com>, 
+	Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jann Horn <jannh@google.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, KP Singh <kpsingh@kernel.org>, 
+	Jonathan Calmels <jcalmels@3xx0.net>, Casey Schaufler <casey@schaufler-ca.com>, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+Message-ID: <20261106-befreien-addieren-eislauf-e09212803534@brauner>
+References: <20261028221705.3915340-1-halg@google.com>
+ <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,25 +69,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
 
-Hi!
+On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
+> The whole unshare/clone flag situation is getting out of hand, IMO.
+> And this new thing makes logical sense but is really about reducing
+> exposure.
+> 
+> Perhaps we should instead have a small list associated with a userns
+> (extensible in the future) of things that the ns's admin (i.e. whoever
+> has CAP_SYS_ADMIN relative to the ns) may do.  That list could
+> include:
+> 
+> - Create loopback with sensible defaults for ipv4 and/or ipv6 (i see
+> no obvious reason to separate them)
+> - Create tun/tap interfaces in that ns (and attach them, etc)
+> 
+> And add a very simple new API to do these things.  Actually, the
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+We've had this idea in the past and I think it is reasonable. I had
+always thought that we should expose a system call to create empty
+namespaces ot any type. Usually I'd be excited about that but I think
+that point is a bit moot and I'd really like see whether we can turn
+cells (or whatever other name) into a first class api.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+The problem I have with the patchset as written is that adds a lot of
+moving parts. And yes, I find the CLONE_* and UNSHARE_* flags plus
+sysctl to be suboptimal as well.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+So the TL;DR is that CAP_NET_ADMIN + userns =
+CAP_NET_PRIVILEGE_ESCALATION 10+ years later. And this patchset wants to
+put it back on a leash.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+So why isn't an aggressively stupid solution to this problem to split a
+new capability out of CAP_NET_ADMIN so it covers the absolute minimal
+set of things that should be allowed instead of doing effectively the
+same thing but split over multiple apis?
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Anything that is reasonably advanced should not be the kernel's
+responsibility to delegate. I really think the old privilege model where
+the kernel grants control over a whole subsystem is inherently flawed
+and is much better replaced if you have the means to let userspace
+services grant and delegate resources.
