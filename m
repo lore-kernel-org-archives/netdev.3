@@ -1,71 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793980557;
-	b=DYbBK4BZ60k3n6kXgqAevR7lzc6BGUlNiqFDmVWLjzubNC/0glOzrTQKcchRCuC7UCjG
-	 xhR0q78HFk8aYrRGEHOTGRUB66rgubnkxvKBdMPecQOqR2+1TLM5D/5C8lahpJzZ5cXx+
-	 ZQWj2YphUw4Wn8uA8A17sQWjyDG+6oqDOdiA1asfqI3VImBnbxPrvDPxEUGmRNeRDg+GT
-	 XIVdGiOrnt6r6C4ohz/wqERZdRZZwWws4JnMUKoOSjeCaWQ1TKvUt0Oiio/uX6q1B8krK
-	 dw65gwa830BLYT4MDrEdUjn0O8R6BWtA2jSOC36hr/6OZX3YT78nYcAvB41em8D0kZw==
+	t=1793980693;
+	b=yj3kEdLrHK0gLIN42FXv4bCpt2IgtAO3Vz5njEj0JMhOKEq/NT0Zihh9c9t5F2D2PwSF
+	 fWxfHiDDN/mkc3Tciig5Mf1JDgjjAs5pihvVhVbhAG38gzo+ntp4uqchRDhz4K4Dp6gpP
+	 NX0ikRat73FXc/q2+FJopVdqhwFrGr2s1ffyHoz/vGJsAd0SuFnJkO8YGkVwo+IGPh96S
+	 41M4msofL+Oi3vboG+92jJOya9Q5c2L1Y7eyGSdCjRKnD7UMDsvYMIvHKc2ZlJjIB7PLT
+	 3q6tHyibIV5hk8tupJ/Je3k+GrrS/ZUiumn7Ug5lFIAT25Kq6kXEC0I4L52EJvOLKCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793980557;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793980693;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=BCioul3B6OdYvFh9JZhAwvMgFeXlmvL+TKu9XvZlfGg=;
-	b=JP7R/F0blMAEA/fHYmLFQn8c5UkvBxKMCBxft2fRuhbEUzr+VnFN0FjoZJZkWnnI2YLw
-	 rz8fe+6k123eT7dEpx5Gfvkx97m3weSN8aAUVCaKzBn3m7A9LN2aCcE8NVpwSFUu/vcdN
-	 nK5IPMt3VLoblNzeCXncmt/02dbD7PRuw037J8jVkCn9c/vPFhmfGnM4zzsgO3U3kqnnv
-	 A1ZzOtFoAxtgxxvDKNnxGQ5AQHGwZcNQPfpZzy0L3zBkxzf18vSKS8vUAEGuS/ScILNxT
-	 /aNxvxSdvADVZuh+B8PW4sFg0vOrXu7lpDF9hMOIe54VRh54bGKXv2TboZtj+Ip0sxw==
+	 In-Reply-To:X-Debian-User;
+	bh=m/XHSoz1deN/ONmn+rJC+0iAtRvNH3rJU7syscPU2ow=;
+	b=w7sWe7Fq59DiqleqEFKXvIJEYF42veWiRK0WbQST00eFh8MnFJc0g0vBVyNzrkLJ5OLW
+	 zfDi+PU7Jt+pthTCVUIuKvBkgyOvjsWe/WpgxtlALiMFNqE5net0s3AjKLVN2ZCV5GyuE
+	 wFEwyvNhlDiGMPErfz232LRErkeC+Dv9Ug7njQkuy+pfKBeYz6I9FlpAHxNpUHXvWzcNi
+	 hYfDMwEX4pk9K2BRyYKVE9dKNWhXvUKPs8q3P+VfTAMdU+Ko5q9n90dtKi7x6r9L7Og2i
+	 aFrOxgDxegpN9wCsLCA3EgNo1ATAA8DZpvVIDF5dpaDv7M5yDXtLfVK/crD0tJKc6eQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=JrgZiFs7;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=elwkYRr0;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDD9606A329;
-	Fri,  6 Nov 2026 15:55:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EDD9606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4DE606A326;
+	Fri,  6 Nov 2026 15:58:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D4DE606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=JrgZiFs7
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BCioul3B6OdYvFh9JZhAwvMgFeXlmvL+TKu9XvZlfGg=; b=JrgZiFs7WDRFq9M7AGZBt8AcxS
-	REpmImLbWhal0W9riTLTJk7DNQE/OQcuDDLWjVHzbsTXyLwfKP9hAe/SNkrv883pvFT287Mp6uNKq
-	K4R1kEvxErlJdK/+Zs6eRcXJoB8+vrQaI58sXp2BCHzLXl7AUGPucHlk9crAN4ywvoxo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xPMI4-00EoZW-0R; Fri, 06 Nov 2026 16:55:44 +0100
-Date: Fri, 6 Nov 2026 16:55:43 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Eric Dumazet <edumazet@kernel.org>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	Jianhui Xu <neuromoments@gmail.com>,
-	Emir Beganovic <beganovic.emir@gmail.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: Re: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
-Message-ID: <1bcae18f-ca18-44bc-980f-ed34e87db5a7@lunn.ch>
-References: <20261106-ax88179a-v20-0-37b5a1189983@birger-koblitz.de>
- <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
- <69be2cfe-e296-4f90-ad19-0bd48a83e287@bootlin.com>
- <27119213-dccc-4c17-bf7e-b39a038038cf@birger-koblitz.de>
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=elwkYRr0
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=m/XHSoz1deN/ONmn+rJC+0iAtRvNH3rJU7syscPU2ow=; b=elwkYRr0dqg+hDAASsQPtUIwGn
+	K0oJEdbmDZYspUHyxDb2AkXDlVbNXc9F35rCmsoNBQkPr3f3zhxcp13P0Rm5EAkB+lXs8f6jSWZtG
+	TnsAfnbI6v6gVz7/hQxvmXm60oOZoC5XFxmmwiYiiALZh0CgDvAeTuTNmEPCXX/+gzkP1NvQwDMND
+	OQHrReVMGPaXJtzmUPncXiMdtUsJfMxpTd6MhFGmqJM7XDAiCeGCxlhlENF/kJmbNi4Re3cNxCQJv
+	Y7Bw3r2IDnAFORObDNd0w+d9MAoht/D4Vf02jHxoIS2MtUfPUQOioHqXm2zBpzJPmvm4w++Vq+os6
+	gbGnBUpw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xPMKM-009Od9-1i;
+	Fri, 06 Nov 2026 15:58:06 +0000
+Date: Fri, 6 Nov 2026 07:58:01 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, acme@kernel.org
+Cc: kuniyu@google.com, netdev@vger.kernel.org, llvm@lists.linux.dev, 
+	ast@kernel.org, yonghong.song@linux.dev, bpf@vger.kernel.org, kuba@kernel.org, 
+	tj@kernel.org
+Subject: Re: [BUG] bpf: tcp: bpf_tcp_ops_set_rcvlowat() missing from BTF with
+ clang KCSAN
+Message-ID: <au347UiVUe5oUuxM@gmail.com>
+References: <au27Y9m78_3EH2v1@gmail.com>
+ <a69dd097-7e71-41f0-9a6b-eda001773236@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,40 +71,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <27119213-dccc-4c17-bf7e-b39a038038cf@birger-koblitz.de>
+In-Reply-To: <a69dd097-7e71-41f0-9a6b-eda001773236@linux.dev>
+X-Debian-User: leitao
 
-On Fri, Nov 06, 2026 at 04:32:30PM +0100, Birger Koblitz wrote:
-> Thanks Maxime for reviewing!
+On Fri, Nov 06, 2026 at 09:16:24PM +0800, Jiayuan Chen wrote:
+> Thanks for the report !
 > 
-> On 06/11/2026 11:11 am, Maxime Chevallier wrote:
 > 
-> > > +/**
-> > > + * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
-> > > + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> > > + *
-> > > + * Passes a link-change interrupt received by the MAC to phylib.
-> > > + * This function may be called in interrupt context, and therefore cannot take
-> > > + * a mutex. However, it is safe to assume that the reference to phy does not
-> > > + * disappear during the call, as only an SFP module may be unplugged to make a
-> > > + * PHY disappear. SFP modules however do not support interrupts.
-> > 
-> > I don't see the relevance of PHY SFP supporting interrupts or not here,
-> > this just re-triggers the PHY state machine. Looks like a comment to
-> > make sashiko happy.
-> Indeed, this is for sashiko. Unfortunately it followed up with: "The
-> function comment notes that SFP modules do not support interrupts. However,
-> when an SFP module is physically unplugged, the electrical link drops. Could
-> this link drop trigger the MAC interrupt being handled here?", which is
-> equally irrelevant, I believe.
+> On 11/6/26 7:38 PM, Breno Leitao wrote:
+> > My arm64 KCSAN builds of linux-next fail since next-20261015, because
+> > bpf_tcp_ops_set_rcvlowat() is missing from the vmlinux BTF:
+> >
+> >   WARN: resolve_btfids: no BTF func for kfunc bpf_tcp_ops_set_rcvlowat in bpf_tcp_ops_set_rcvlowat_kfunc_set
+> >   WARN: resolve_btfids: unresolved symbol bpf_tcp_ops_set_rcvlowat
+> >   Failed to generate BTF for vmlinux
+> >   Try to disable CONFIG_DEBUG_INFO_BTF
+> >   make[4]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+> 
+> 
+> 
+> Has pahole fixed this issue?
 
-It does appear the LLM does not understand what an SFP is and how it
-operates.
+I don't think so, see the line below:
 
-We should just accept the LLM is wrong, and don't add too many
-comments to try to correct it.
-
-The danger is, this code gets merged, and LLM kiddies come along,
-there LLM thinks it is broken, they try to fix it and submit
-patches. But lets see if that actually happens.
-
-	Andrew
+> > This is clang 22.1.3 and pahole 1.31 (current pahole master behaves the
+> > same),
