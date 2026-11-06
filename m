@@ -1,98 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.136.64.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793944099;
-	b=T1yRSNiLbvZ7KyHr/csDZ62Rjs0tUmQb3D63DLPSOhu4J46QdUSQVrzM6/gmsUqQFAgC
-	 /TdlAVXVdzLMxziA53AoP5Q7s3Ryg32mMReOpQy0BrGioiuQ8JRxEzdg+9olVsLg/7U6A
-	 NO8rombEdJ1p3zEveTs9/Y8SFJDBPyGETMfaDhaZTgXo70YQutrZfOym0OevKWpvzGhG7
-	 CfQkJFtJLaMi/DAfwl7Vm1GswlvrTF1AkJOkfYVk4lADxoFA+FnpqpLEiuzgrYRze1RD0
-	 plWnQ4Zz51XkFwKLzYW+v+znP1np3K9dAJ7q0Fc8Nc64/oTUo9SjoWFGnr2wz3nYHAQ==
+	t=1793944252;
+	b=IDeSjOoecqSBMqP4QzR272TxBCQbKo2fbiIVdeKTLSzruLs1Mlrz4vV0j1UTojQagV6i
+	 YazIVsIyPyJIr4lkF0DZRb3fEaL6QYLfEOaxkiJcieKwLRWMjuYJgxagrG/WDXW07/7kq
+	 MkeBhpJ20dsWRagy+R8jNZ810sqWm7whlenXj3A9B5Tv16MX5utm3+d8QaydYYKvviYnh
+	 rpTlc4hR3z+M0IOoWv45AhPxz55O4YvwxXyMx0JiYYmRdaAsxtLDxZXKoa2U+W/wdGcjH
+	 ItxpiVjSg/VM2Adr2zOegOM/mAmyQJV4VdDzOoFg/CIR4f4eZPr+m1kh1t1LoR0GXdQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793944099;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=AAZ9IFW+Zz0SgqoelY4mhTjP7/bdw7XNlc/ioW2tjQU=;
-	b=qxtbgis+4W1nV/G8ejrBFAncCuFVUAYjratVxrzoxjM0WgQSHS9H99lcaBbtkdMdrb71
-	 StVpgon5fiZL1GwJLhb5jB/jDoK/o5ZxxOYhBCbOTr+NDJRdxa/GR3NTJFQFiHCCUKltQ
-	 swtHnzqxWKYBEOM4celywY/7CYX+UD2cRp/1Ci+XM+5T4BipgU0qdb9Rh0MLSnHn811IX
-	 zuN8MAXRRe+YIa5m7Dq7m+wkzf/UcA0VHkpRuJC484PWXvJx9DbLEln4MTSvfr+KxA1ci
-	 wldiACF6cI9/p4+NV3aQxgM+83aBhOhmNNYF2ANAbwrQ2sMAwtrCNz9+2uvPa+HSJoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793944252;
+	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Flowmailer-Platform:Feedback-ID;
+	bh=7gsWLOgkyNbB2pZGgAc1CDd83KlICqOTlYcR5hqj6JA=;
+	b=CvB2gWPYOyl4lyMvV1nTUhCF2RX8MfU6j94E3ybo68mGzKgDXCT6yslNtOxx+Ub05NO0
+	 Q8xC1LRVKIuo8sG2Yf7tauc2elaOx8XWao7OxGyGMl1U42zN0tjsL55lNl9AP5QZDmuaF
+	 R86Spk0Y5YecSEL6t3xbFym4AHpg63p/MfmL6hwaY4S6G4wG5wjElt/y0TRl9TAR0UKqy
+	 Amc8s4FSxDWRL0qT8WTS6LTPQBrnDELPZB+4vckzL9zA7QouW+lGQq7r8HALIRYmC1odd
+	 PUKs01pUjSZwJ3l2veeLxaG1LWUsUa1eFdZDbVhjq5adpU2770vObO/fkiNmE3nZwSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ONk0HDpW;
-	arc=none smtp.remote-ip=209.85.160.179
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=siemens.com;
+	spf=pass smtp.mailfrom=rts-flowmailer.siemens.com;
+	dkim=pass header.d=siemens.com header.i=meng.ding@siemens.com header.a=rsa-sha256 header.s=fm2 header.b=Vhy+fE5N;
+	arc=none smtp.remote-ip=185.136.64.225
+Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E69606EEB1
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 05:48:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57E69606EEB1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9F6606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 05:50:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB9F6606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ONk0HDpW
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5366463571cso2782351cf.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 21:48:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793944097; x=1794548897; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AAZ9IFW+Zz0SgqoelY4mhTjP7/bdw7XNlc/ioW2tjQU=;
-        b=ONk0HDpWZTZzaxkSAtxiRZVFKONuE/vUvC83Dl4aQaEr3IsTawTEUDxCFznTrubGsV
-         b1kaQMKgT/zzhL+D694dm/LKqMpCD+2SBbRPbNYxqlSGMWALBSD+t/3LHjwfavqiMFGA
-         1g1Aobhwb8axvoY4Xt2EiRi1eOGM0DpK09+mQIDQVLhpKrfu7drRcnSO10IONIJTiryG
-         3AZYH/v9roEIx1sqY+WysBwr9dP8GBwKlbwYCNt22n8pkoJLhN9lp0zhvAyX8MazcMxu
-         gML8jHMex8z+ho+H0ZExqenrBXV9vZp3ItYGt2VgWyrSeNduXmQReWFmgx8M9NZa0ghU
-         QUHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793944097; x=1794548897;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AAZ9IFW+Zz0SgqoelY4mhTjP7/bdw7XNlc/ioW2tjQU=;
-        b=y+vg2cBrtPugo0PRpCgx2rSKlxbXCknv/6MSWUeuzcxBWoWySZTkxtnEtCxfuJ270B
-         H8jkjCQIlNuBSO07n1cy3yI6Mtbu7a318/GEmMfIn8iQoTr1dE/gSRpCSknrBCk7mwqS
-         s0e28tHCIFIUe0befqKVcFm9uKMyChVQPlZam5YC4kPLt0SjS+tn1OIsFMPn3AwRo5RX
-         MkDo6giHKp//0sn88g1ZKgXfxcuPFH/m1xabIKqJ2OFtl+P3oJ5vOwWCz5IA/cL7SYrY
-         3nJAo416eH2rLjDsdm0XF6xR5fRGPW27mHkWLq2drq96JtFhV+BA5qevdQsUFORvB/4p
-         ezzA==
-X-Forwarded-Encrypted: i=1; AKwUvBxNZpeb/WfloCy3WCJKEjdNI/Wq/fxAWjt41fvVQJ8wlHqp3Gme+0+9gDGDitnLIb1Rbs/1f/Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z93VeyTubFcruDMm0MQTyTY5x8dcqlyrSIM64NM2ACf0eLLrrQv
-	HldJGiuOL8YBVyce+OBRs1JdWum5/kzw07IYcP8ndy/9nuufS8DvrQ/n
-X-Gm-Gg: AYBFou0YlJC4X/vQzsjqXID3jc1Z5OvlRoz179Cncnv3VnKo+FFMGHfGz4yWJrFt1Oo
-	AzGKWRFSFJIgQBQVEfS+/IDKwBJBs9sNX1HUqjeQ1kznbhh4GctNwWr0nqqg1lkTD/t6nYmWnrI
-	HTs1wejHhwSM6Ba85Ip2qxv/6Rr/o9xr2l+e1w7yb3l68ehRV6DWCJfpq5z71q9StXW32QPge4x
-	eP2GrJFVNh74Tmzjz/SXe2lL1o4dqsl/dczmuqofDWcs8jHS4cZ7SFIb4ljtQCQGrkMCshZaa4r
-	fhj0G6yNQKIinmYp+IcQ772IC7cXpKxcEthZP7gVU/sOjZojH0Fws58gAcHLZBbHGtQQplZNOKL
-	yHWh+VAkbqPHptfTe0J7u10xDJvW8tGttoDncD9Z0h4smabG/PqTo7yPG+JGVy0+GQQj4sFzH66
-	nFXk+ZsP5dl0yO1MkO5H8dry76ux6+DI4Iaw4+QOOPqZSjAMb6TxzPu3ThLDOmu/620LqHpeoWx
-	aEv1Lgcg7qNuoZXDW23wsg14tTee0J45KegURWcBXQQzEPT+kMHKxll8oCmdpEgtsn2hz5BAFRI
-	NTsysqOvwuoxDWZdipHjXOHQQTKDZ6sATPhqN09ZeUQEAu9o96lt
-X-Received: by 2002:ac8:5c8a:0:b0:535:52c:a2d6 with SMTP id d75a77b69052e-54e100e5abbmr22180261cf.3.1793944097227;
-        Thu, 05 Nov 2026 21:48:17 -0800 (PST)
-Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e26f1bd64sm11903521cf.23.2026.11.05.21.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 21:48:16 -0800 (PST)
-From: Yuho Choi <oss.patchbox@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuho Choi <oss.patchbox@gmail.com>
-Subject: [PATCH v1] vhost-scsi: do not validate vrings during endpoint teardown
-Date: Fri,  6 Nov 2026 00:48:07 -0500
-Message-ID: <20261106054811.281798-2-oss.patchbox@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=siemens.com header.i=meng.ding@siemens.com header.a=rsa-sha256 header.s=fm2 header.b=Vhy+fE5N
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 20261106055047804997dd7800020728
+        for <netdev@vger.kernel.org>;
+        Fri, 06 Nov 2026 06:50:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=meng.ding@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Cc:References:In-Reply-To;
+ bh=7gsWLOgkyNbB2pZGgAc1CDd83KlICqOTlYcR5hqj6JA=;
+ b=Vhy+fE5N/708C8u8YWz2Bor5mam+oNFzAz7pOqixsa4RCir4lKG44dr4T84YIeHZx3kpFU
+ KzwXHerT3V0oQuxPMmyl6OCOXEqyk426xXAAjphnj3ikH5QPL4cLEoOFM7sE1GCy19kurF1Z
+ CGcI/DJwUOCekMazOviudGBkcTYJ0sI4MVCX0MBATBOCp8dmHkK8oC22rktVi5CwBrkU2kB7
+ yNZyu4jYrQljlBUZkPKJmIMwebQ98xiLpVDCGWHlgwoKmVs9DPWgr1eWFboGT7zNCdSAof5P
+ 7BRqwdGB8zTMBhpKbICbT1/UFdXcO54k3UnaJXbrLFXJ3lIqZgEZRp2A==;
+Date: Fri, 6 Nov 2026 13:50:30 +0800
+From: Ding Meng <meng.ding@siemens.com>
+To: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, florian.bezdeka@siemens.com,
+ jan.kiszka@siemens.com, wq.wang@siemens.com, gerhard@engleder-embedded.com,
+ Jason Xing <kerneljasonxing@gmail.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Martin KaFai Lau <martin.lau@linux.dev>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri
+ Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor
+ Solodrai <ihor.solodrai@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
+Message-ID: <eqrkw7wsawjtbvjkndmpik7jryb2sau6fdsu4njw6twn2lcfp3@k67o5wav5f5m>
+References: <20261105071706.7043-1-meng.ding@siemens.com>
+ <Tif4BSB0H3l8O1bLzRnhCE9hUYhsz6G3MIhQAgYZImUx1_8YwnCyzy89IV6OSTsXdHDT6fFf7rEL1qfRFJC9OPDHRlhl3cgNJyyE_mVlHWM=@1g4.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,51 +83,230 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Tif4BSB0H3l8O1bLzRnhCE9hUYhsz6G3MIhQAgYZImUx1_8YwnCyzy89IV6OSTsXdHDT6fFf7rEL1qfRFJC9OPDHRlhl3cgNJyyE_mVlHWM=@1g4.org>
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1335312:519-21489:flowmailer
 
-vhost_scsi_clear_endpoint() checks every virtqueue with
-vhost_vq_access_ok() before disabling the backends and waiting for
-in-flight SCSI commands.  If that check fails, endpoint teardown is
-skipped.
+On Thu, Nov 05, 2026 at 10:29:51PM +0000, Paul Moses wrote:
+> 
+> 
+> 
+> 
+> On Thursday, November 5th, 2026 at 1:19 AM, Ding Meng <meng.ding@siemens.com> wrote:
+> 
+> > Commit 97dc7cd92ac6 ("ptp: Support late timestamp determination")
+> > added support for deferring RX timestamp conversion to
+> > ndo_get_tstamp(). When the timestamp is consumed, get_timestamp()
+> > uses the skb's NAPI ID to find the device that owns the timestamp
+> > cookie and invoke its callback.
+> > 
+> > Commit e68b6e50fa35 ("udp: enable busy polling for all sockets")
+> > gated NAPI ID bookkeeping with CONFIG_NET_RX_BUSY_POLL. As a result,
+> > when busy polling is disabled, the skb may not carry a usable NAPI ID.
+> > The device lookup then fails, so the driver callback is not invoked.
+> > get_timestamp() falls back to hwtstamp, which does not contain the
+> > converted timestamp, resulting in an incorrect RX hardware timestamp.
+> > 
+> > Record skb NAPI IDs independently of busy-poll support to support
+> > drivers that use deferred timestamp conversion and future driver
+> > features that need to look up a device by its NAPI ID.
+> > 
+> > Signed-off-by: Ding Meng <meng.ding@siemens.com>
+> > Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+> > ---
+> > In the discussion of the issue reported at
+> > https://lore.kernel.org/netdev/20260630112056.885071-1-meng.ding@siemens.com/
+> > this previous patch added an igc-specific fallback for configurations
+> > with CONFIG_NET_RX_BUSY_POLL disabled. It populated skb's hwtstamp
+> > field with a timestamp converted using the default hardware timer,
+> > allowing get_timestamp() to return it without invoking ndo_get_tstamp().
+> > But Jakub Kicinski noted that the proposed fix appeared to be a
+> > driver-specific workaround for a generic problem. The engleder driver
+> > would also be affected by the same issue.
+> > 
+> > This patch introduces a new configuration option to enable NAPI ID
+> > bookkeeping independently of busy polling. The option is enabled
+> > whenever busy polling is enabled, preserving the existing behavior.
+> > It is also selected by the igc and engleder drivers, ensuring that
+> > skbs carry a NAPI ID even when busy polling is disabled.
+> > 
+> > Another approach considered was to require drivers using deferred
+> > timestamp conversion, such as igc and engleder, to enable busy polling.
+> > However, this would introduce an unnecessary dependency between two
+> > independent features: hardware timestamp reporting should not require
+> > busy polling to be enabled.
+> > 
+> > Timestamping has been tested only with igc; it has not been tested
+> > with engleder.
+> > 
+> >  Documentation/networking/timestamping.rst | 11 ++++++++---
+> >  drivers/net/ethernet/engleder/Kconfig     |  1 +
+> >  drivers/net/ethernet/intel/Kconfig        |  1 +
+> >  include/linux/skbuff.h                    |  4 ++--
+> >  include/net/busy_poll.h                   |  2 +-
+> >  include/trace/events/net.h                |  2 +-
+> >  net/Kconfig                               |  4 ++++
+> >  net/core/filter.c                         |  2 +-
+> >  net/core/skbuff.c                         |  2 +-
+> >  9 files changed, 20 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/Documentation/networking/timestamping.rst b/Documentation/networking/timestamping.rst
+> > index 2162c4f2b28a6..dbe40a1972639 100644
+> > --- a/Documentation/networking/timestamping.rst
+> > +++ b/Documentation/networking/timestamping.rst
+> > @@ -278,9 +278,14 @@ SOF_TIMESTAMPING_OPT_PKTINFO:
+> >    packets with hardware timestamps. The message contains struct
+> >    scm_ts_pktinfo, which supplies the index of the real interface which
+> >    received the packet and its length at layer 2. A valid (non-zero)
+> > -  interface index will be returned only if CONFIG_NET_RX_BUSY_POLL is
+> > -  enabled and the driver is using NAPI. The struct contains also two
+> > -  other fields, but they are reserved and undefined.
+> > +  interface index will be returned only if CONFIG_SKB_MARK_NAPI_ID is
+> > +  enabled and the driver is using NAPI. This hidden configuration is
+> > +  selected automatically by busy-poll support and by drivers that need
+> > +  skb NAPI IDs to resolve deferred hardware timestamps. Drivers that
+> > +  use deferred timestamp conversion must select it so the networking
+> > +  stack can find the device and call its timestamp callback even when
+> > +  busy polling is disabled. The struct contains also two other fields,
+> > +  but they are reserved and undefined.
+> > 
+> >  SOF_TIMESTAMPING_OPT_TX_SWHW:
+> >    Request both hardware and software timestamps for outgoing packets
+> > diff --git a/drivers/net/ethernet/engleder/Kconfig b/drivers/net/ethernet/engleder/Kconfig
+> > index 3df6bf476ae7e..9700a243bea11 100644
+> > --- a/drivers/net/ethernet/engleder/Kconfig
+> > +++ b/drivers/net/ethernet/engleder/Kconfig
+> > @@ -22,6 +22,7 @@ config TSNEP
+> >  	depends on PTP_1588_CLOCK_OPTIONAL
+> >  	select PHYLIB
+> >  	select PAGE_POOL
+> > +	select SKB_MARK_NAPI_ID
+> >  	help
+> >  	  Support for the Engleder TSN endpoint Ethernet MAC IP Core.
+> > 
+> > diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
+> > index 780f113986ea8..7fb63f351fc20 100644
+> > --- a/drivers/net/ethernet/intel/Kconfig
+> > +++ b/drivers/net/ethernet/intel/Kconfig
+> > @@ -376,6 +376,7 @@ config IGC
+> >  	depends on PCI
+> >  	depends on PTP_1588_CLOCK_OPTIONAL
+> >  	depends on ETHTOOL_NETLINK
+> > +	select SKB_MARK_NAPI_ID
+> >  	help
+> >  	  This driver supports Intel(R) Ethernet Controller I225-LM/I225-V
+> >  	  family of adapters.
+> > diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> > index 6787fcf6ac3e4..164c862f7a403 100644
+> > --- a/include/linux/skbuff.h
+> > +++ b/include/linux/skbuff.h
+> > @@ -1059,7 +1059,7 @@ struct sk_buff {
+> >  			__u16	vlan_tci;
+> >  		};
+> >  	};
+> > -#if defined(CONFIG_NET_RX_BUSY_POLL) || defined(CONFIG_XPS)
+> > +#if defined(CONFIG_SKB_MARK_NAPI_ID) || defined(CONFIG_XPS)
+> >  	union {
+> >  		unsigned int	napi_id;
+> >  		unsigned int	sender_cpu;
+> > @@ -1267,7 +1267,7 @@ static inline bool skb_pkt_type_ok(u32 ptype)
+> >   */
+> >  static inline unsigned int skb_napi_id(const struct sk_buff *skb)
+> >  {
+> > -#ifdef CONFIG_NET_RX_BUSY_POLL
+> > +#ifdef CONFIG_SKB_MARK_NAPI_ID
+> >  	return skb->napi_id;
+> >  #else
+> >  	return 0;
+> > diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
+> > index 6e172d0f6ef5f..f7c0e62c6a7d7 100644
+> > --- a/include/net/busy_poll.h
+> > +++ b/include/net/busy_poll.h
+> > @@ -130,7 +130,7 @@ static inline void sk_busy_loop(struct sock *sk, int nonblock)
+> >  static inline void __skb_mark_napi_id(struct sk_buff *skb,
+> >  				      const struct gro_node *gro)
+> >  {
+> > -#ifdef CONFIG_NET_RX_BUSY_POLL
+> > +#ifdef CONFIG_SKB_MARK_NAPI_ID
+> >  	/* If the skb was already marked with a valid NAPI ID, avoid overwriting
+> >  	 * it.
+> >  	 */
+> > diff --git a/include/trace/events/net.h b/include/trace/events/net.h
+> > index dbc2c5598e35a..99ed7645242eb 100644
+> > --- a/include/trace/events/net.h
+> > +++ b/include/trace/events/net.h
+> > @@ -208,7 +208,7 @@ DECLARE_EVENT_CLASS(net_dev_rx_verbose_template,
+> > 
+> >  	TP_fast_assign(
+> >  		__assign_str(name);
+> > -#ifdef CONFIG_NET_RX_BUSY_POLL
+> > +#ifdef CONFIG_SKB_MARK_NAPI_ID
+> >  		__entry->napi_id = napi_id_valid(skb->napi_id) ?
+> >  				   skb->napi_id : 0;
+> >  #else
+> > diff --git a/net/Kconfig b/net/Kconfig
+> > index 76ab44aa439a6..8fa7586dc08ca 100644
+> > --- a/net/Kconfig
+> > +++ b/net/Kconfig
+> > @@ -346,9 +346,13 @@ config CGROUP_NET_CLASSID
+> >  	  Cgroup subsystem for use as general purpose socket classid marker that is
+> >  	  being used in cls_cgroup and for netfilter matching.
+> > 
+> > +config SKB_MARK_NAPI_ID
+> > +	bool
+> > +
+> >  config NET_RX_BUSY_POLL
+> >  	bool
+> >  	default y if !PREEMPT_RT || (PREEMPT_RT && !NETCONSOLE)
+> > +	select SKB_MARK_NAPI_ID
+> > 
+> >  config BQL
+> >  	bool
+> > diff --git a/net/core/filter.c b/net/core/filter.c
+> > index b7ac145b68b1f..e2218c18622b8 100644
+> > --- a/net/core/filter.c
+> > +++ b/net/core/filter.c
+> > @@ -10274,7 +10274,7 @@ static u32 bpf_convert_ctx_access(enum bpf_access_type type,
+> >  		break;
+> > 
+> >  	case offsetof(struct __sk_buff, napi_id):
+> > -#if defined(CONFIG_NET_RX_BUSY_POLL)
+> > +#if defined(CONFIG_SKB_MARK_NAPI_ID)
+> >  		*insn++ = BPF_LDX_MEM(BPF_W, si->dst_reg, si->src_reg,
+> >  				      bpf_target_off(struct sk_buff, napi_id, 4,
+> >  						     target_size));
+> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> > index eb9fcc4b1fd1a..386a32cdc0cc8 100644
+> > --- a/net/core/skbuff.c
+> > +++ b/net/core/skbuff.c
+> > @@ -1581,7 +1581,7 @@ static void __copy_skb_header(struct sk_buff *new, const struct sk_buff *old)
+> >  #ifdef CONFIG_NETWORK_SECMARK
+> >  	CHECK_SKB_FIELD(secmark);
+> >  #endif
+> > -#ifdef CONFIG_NET_RX_BUSY_POLL
+> > +#ifdef CONFIG_SKB_MARK_NAPI_ID
+> >  	CHECK_SKB_FIELD(napi_id);
+> >  #endif
+> >  #ifdef CONFIG_XPS
+> > 
+> > base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
+> > --
+> > 2.47.3
+> > 
+> > 
+> 
+> Are you sure this does not make the preexisting timestamp lifetime
+> issue more pathological? I think it needs to be fixed now as well.
+> It was the last item mentioned by Sashiko in your review if I 
+> remember correctly.
+> 
+> Paul
 
-vhost_scsi_release() ignores the error and frees the vhost-scsi state.
-vhost_dev_stop() drains vhost work, but it does not wait for commands
-owned by the target core.  A later command or TMF completion can therefore
-dereference its saved virtqueue pointer after the virtqueue has been freed.
+The hardware timestamp lifetime issue may indeed exist,
+but it is independent of this patch. Even if that issus is fixed,
+we still need to obtain the netdevice from the skb, so the decoupling
+configuration introduced by this patch is still necessary.
 
-Vring access is not a prerequisite for tearing an endpoint down.  Remove
-the check so teardown always disables the backends and waits for in-flight
-commands before releasing their state.
-
-Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
-Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
----
- drivers/vhost/scsi.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index e44044449cef..f0966f25b09a 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -2194,17 +2194,10 @@ vhost_scsi_clear_endpoint(struct vhost_scsi *vs,
- 	struct vhost_scsi_tpg *tpg;
- 	struct vhost_virtqueue *vq;
- 	bool match = false;
--	int index, ret, i;
-+	int ret, i;
- 	u8 target;
- 
- 	mutex_lock(&vs->dev.mutex);
--	/* Verify that ring has been setup correctly. */
--	for (index = 0; index < vs->dev.nvqs; ++index) {
--		if (!vhost_vq_access_ok(&vs->vqs[index].vq)) {
--			ret = -EFAULT;
--			goto err_dev;
--		}
--	}
- 
- 	if (!vs->vs_tpg) {
- 		ret = 0;
--- 
-2.43.0
-
+Ding Meng
