@@ -1,49 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793999410;
-	b=QKDFQADOKCJHXD5tTZ69tsvc0UNZFVwbbA7IuVbmYdu4ydrDfajDIwEHsgjsQt8r7NjI
-	 TnQ5OzvwzLH99rJMlD61OJ0l8e768SEwQymT6DVJAFxb1rDNVyjstZGk3RwNeJIGRFnqG
-	 93oYpyrKquIwXEs8SlG7vZosedS9tuDF50j+R7Um/rDlKvG7sGFddyW6uowZYU7SnXkdk
-	 qU04d/H2bNAgCpyrMyQ7yL13+h+8DZb4qDLRUJOKhhzMOSlnROsBrL8M5hfF1V391Dov0
-	 xulxkXOaPffzBWmo2Bkezge5zyukBfaXbEymGVXt/jk77vhGTM8Gn3uQw8S80j7B3Kw==
+	t=1793999910;
+	b=WL49UFjhR4OLzXtdveM0H0d5bjYYblb6k/BasSvuQsK5zdoNYfrxklfOZBDkvnGCxqEH
+	 l//6W6Uv1wfBJLGDfkTP2JCgeSLk+Sx8sq6TcSA1d6ScQnmh4bOa+GDpAX158DgepGpMt
+	 XpYl40I0zTzMR08X4ythgirikk2dICNW6WjmEp0h8MXmLlsXD2eU7AwbrOUaR5ONCNvbJ
+	 ZVPoTnYAQjB1h9/mf9hLqqp7d/N4RQZVjrP3vwY0chG+glCe8OARwWT8ZoewoJA4lVuET
+	 y7xZrEYLCO9ymj5XzXjZY2H72lioG6gWSOwSb71nIIzMfXzUuRI+jPScm+Esy9iSA6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793999410;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=IFK4FXq5iIDucyTZ9nFE39jAX34L/Yd55I3Iep0xFMQ=;
-	b=Zde+aM5FTHUT2XVbRy2OdPyIMWcsubAELSm3Flf/nmIcJ2WuDzwA8CYm168eFtfSDgGK
-	 GUkwu4keAZpLeVcMStfrU3lvRlVlfRUIPlL3d++F28HIdLsCv5bqbAynrW52guCWcTy+F
-	 cTRUNUinmc/XJKTZZyR3/eAIkrT2o0VurjdOi/ZCYzyDugpSuUcf7cNX7nKgEZcWuBgRv
-	 geh9mBjNZ1kf+1ypyAcnzp3XthhQFgKFqqlsDDQTHMpygJufkn0HgVCRl6yj9kw2kJH4S
-	 vgLQs2dCCPclrqwwddQXxzNYdUuR9Vv02gGO3wVU0pdFe2BuQ8CPvBFlCEca+klm32Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793999910;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=dsIj34Cu43OU8nAUF9nVgHZIUjZLU87Dom+4gQ74OIs=;
+	b=vT8CKgVhHPeaEE/Z1TgPszVkwqQUeJ5PQc4TS2vQvKBy/GL/N547Fguey/8EZu4zL7cb
+	 96Qj3ZvwHmKnyPWgXO4YdznxvnhntbBZERh4/ShL3P0WdoVmY4P5KtqodSZ8WfGeBNmt+
+	 9p81eGmWeg69mB/y2W+js97DNhClu4VvI7t29Aj7uLc9wtsFxTouJJd3CUBs5cxPWfAvS
+	 KZ3SoJSw9J20b4ludtzKp9rrbrLnAOLMnyK9YumSNm4GXNC7v861EVFs/pQx71ro2SW2H
+	 LNNwObuuCKRXJe7fEb2ZeGWKZf96dMUtj8Q2JmjrEjInYzFTwlm/HH/iwdRNUecbCEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MFOvDEyI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nUrYolUN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1B0606A32D;
-	Fri,  6 Nov 2026 21:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6218606A330;
+	Fri,  6 Nov 2026 21:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MFOvDEyI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B77B1F008A2;
-	Fri,  6 Nov 2026 21:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nUrYolUN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E36C1F008A3;
+	Fri,  6 Nov 2026 21:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793999409;
-	bh=IFK4FXq5iIDucyTZ9nFE39jAX34L/Yd55I3Iep0xFMQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=MFOvDEyI8L73AgWZxSm+fMJhFYIuTCxGs8PjZd+4yJScWS0RN1gpkbRCWGEIYqqtC
-	 fCxHJKn4jlWmTJMYgJQsjMMF8gYXO2sPRyQ+eF8jl1DnSoG2/GuOAOXcYWq3/F3PRs
-	 2ucBw5+RnN9JT3c3nR9ix4o0w0Tmhxd02EgL8oMXEYwgIPZIzv9FSOkOpYkCewxHKO
-	 NU9zS8D1f2Q1qbdWcdCmyI7pnKAjfB+ML6AGCWtJVUxL63Q9I/Wxr8kQpMAEuld7wf
-	 EehN3j0fZm5595Qk3zCBMy/wIH7ZB/WnsbT9Yxrn3bJUq4DkaF4pqChSjtwiuIV9Rz
-	 iIpDoYGD13zrQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 210D33A549A5;
-	Fri,  6 Nov 2026 21:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793999909;
+	bh=dsIj34Cu43OU8nAUF9nVgHZIUjZLU87Dom+4gQ74OIs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nUrYolUNu79sTI9HQCzgLYCON24rJi9xrm31WxOJg6SPF651K4sbjF8g9Neasyjmr
+	 zO+Nr4Gb5rWTWejKr55D6onXVl9m8GncJ8BnyAwKypH3chakHPIHiEcqp8mAFLSn+R
+	 7wVs6lLSsjQ4TVCHnflBkchnQetPAT/RmCFaZmIbkLAYVlhiV45OrHF+qliwTiWG7c
+	 4pxNbUT+s5wcBJ3ULheZAE0SMl6qWEqVMfpIQi3F1KfL8/Nvwn8knFWoLr36iWUEYj
+	 kgvNJEABKNB1128pJ9rwlqVovYrqSK1iaGMrs8RDGTnkAyEEADLDQPlA8codZq1uo7
+	 Vd7QS9nio5Baw==
+Date: Fri, 6 Nov 2026 13:18:28 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jure Rebernik <jure.rebernik@luxonis.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
+ netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] r8169: enable the RxOverflow interrupt again
+Message-ID: <20261106131828.2844d23e@kernel.org>
+In-Reply-To: <20261101102720.702600-1-jure.rebernik@luxonis.com>
+References: <20261101102720.702600-1-jure.rebernik@luxonis.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,61 +61,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5 0/6] net: Move system_long_wq to
- system_dfl_long_wq
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179399940792.873414.7235430116859175660.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 21:10:07 +0000
-References: <20261102105703.111844-1-marco.crivellari@suse.com>
-In-Reply-To: <20261102105703.111844-1-marco.crivellari@suse.com>
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, tj@kernel.org,
- jiangshanlai@gmail.com, frederic@kernel.org, bigeasy@linutronix.de,
- mhocko@suse.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, chleroy@kernel.org,
- enelsonmoore@gmail.com, haren@linux.ibm.com, maddy@linux.ibm.com,
- danishanwar@ti.com, mpe@ellerman.id.au, westeri@kernel.org,
- mmc@linux.ibm.com, npiggin@gmail.com, nnac123@linux.ibm.com,
- petkan@nucleusys.com, icheng@nvidia.com, ricklind@linux.ibm.com,
- rogerq@kernel.org, YehezkelShB@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon,  2 Nov 2026 11:56:50 +0100 you wrote:
-> Hello,
+On Sun,  1 Nov 2026 11:27:20 +0100 Jure Rebernik wrote:
+> Commit 6994520a3328 ("r8169: disable interrupt source RxOverflow")
+> removed RxOverflow (RxDescUnavail in the vendor driver) from the
+> interrupt mask on the grounds that NAPI is scheduled anyway when the
+> chip runs out of RX descriptors. On RTL8125B that does not hold.
 > 
-> Currently the code uses the per-cpu workqueue system_long_wq to schedule
-> long running works.
-> 
-> Unbound works could benefit from scheduler task placement, to optimize
-> performance and power consumption. Another good reason to have this unbound,
-> is the "queue_delayed_work()" function, used to enqueue the work item.
-> More details on this will follow in the next section.
-> 
-> [...]
+> When the RTL8125B runs out of RX descriptors it sets RxOverflow and
+> stops receiving. It does not start again when the driver returns
+> descriptors to it, only when RxOverflow is cleared in IntrStatus.
+> rtl8169_interrupt() clears only the bits it read on entry. If the ring
+> fills while NAPI runs with the interrupt mask cleared, RxOverflow is
+> set after that read and stays set: NAPI empties the ring, unmasks the
+> interrupts and completes, the stopped receiver raises no RxOK, and
+> RxOverflow is no longer an interrupt source. Reception stays stopped,
+> and every frame is counted in rx_missed, until another event such as
+> TxOK makes the handler clear all status bits.
 
-Here is the summary with links:
-  - [net-next,v5,1/6] ibmvnic: Change system_long_wq with system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/fc0f285bc191
-  - [net-next,v5,2/6] net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/d2ed709ff1e5
-  - [net-next,v5,3/6] net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/12e337d448d1
-  - [net-next,v5,4/6] net: thunderbolt: Move long delayed work on system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/2adb5e4c7b40
-  - [net-next,v5,5/6] net: usb: pegasus: Move long delayed work on system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/733d1775cab0
-  - [net-next,v5,6/6] net: usb: r8152: Move long delayed work on system_dfl_long_wq
-    https://git.kernel.org/netdev/net-next/c/b3fcb84fdba4
+Not really following the explanation, TBH.
+In general "ring empty" IRQs are discouraged because the host is likely
+overloaded, so having the NIC force the NAPI is not helpful. But sounds
+like you say there's some sort of a race?
 
-You are awesome, thank you!
+> This was observed on a machine in real use: an RTL8125B (XID 641) on
+> the PCIe bus of an arm64 Qualcomm QCS8550, running v7.2.6. With UDP
+> at 800 Mbit/s inbound and nothing sent by the host, reception stopped
+> for seconds in 13 of 20 30 s runs, losing 5% to 31% of the datagrams,
+> and a single transmitted packet restarted it. To confirm the cause,
+> a debugfs dump added to a test build of the driver showed, during each
+> stop, IntrMask 0x2f, IntrStatus 0x50, NAPI idle and all 256 RX
+> descriptors owned by the NIC. Writing only RxOverflow to IntrStatus
+> from user space, through the sysfs PCI resource mapping and with
+> nothing transmitted, restarted reception in 17 of 17 stops.
+> Reproducing the stall itself needs no kernel modification.
+> 
+> With this change backported to v7.2.6, 0 of 20 runs stopped and the
+> worst run lost 0.03%, on two RTL8125B boards. It was build-tested,
+> not run, on this tree, where the single-vector path RTL8125B uses
+> is the same as in v7.2. The multi-vector mapping used by RTL8127 is
+> not changed and was not tested.
+> 
+> Restore the mask of the chips that had RxOverflow before that commit.
+> Only RTL8125B was tested.
+> 
+> The investigation was done with an AI coding assistant (Claude Code):
+> it wrote the HIL test scripts, the debugfs instrumentation and the
+> register tools used above, proposed this change and drafted this
+> changelog. I reviewed the change and the evidence, and the test
+> results above come from runs on our hardware.
+> 
+> Fixes: 6994520a3328 ("r8169: disable interrupt source RxOverflow")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jure Rebernik <jure.rebernik@luxonis.com>
+> ---
+> 
+> Notes:
+>     This restores RxOverflow for every chip that had it before 6994520a3328,
+>     but I could only test RTL8125B. If you prefer, I can send a v2 that sets
+>     it for the RTL8125 family only (rtl_is_8125()).
+> 
+>  drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index cd4ebc654dd0..62709160d354 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -6086,7 +6086,9 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
+>  		tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
+>  
+>  		if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
+> -			tp->irq_mask |= SYSErr | RxFIFOOver;
+> +			tp->irq_mask |= SYSErr | RxOverflow | RxFIFOOver;
+> +		else
+> +			tp->irq_mask |= RxOverflow;
+
+LLMs point out that you're adding the same bit on both sides so just
+add it in the unconditional init of tp->irq_mask above
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
