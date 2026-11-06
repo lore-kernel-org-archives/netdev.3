@@ -1,60 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794006152;
-	b=cI3IktNReVZQLnqTBPO670UVnH1ggD6N+RBKm7DeUoNcgcSOu/B96uyAFLsHOfCmgVW/
-	 7KlJdw2Lt6KfixrpTuXZdxCP/FWAXKHEoGIbjNSPEzn0fF+LdywzaRff0fNk7naI983Nu
-	 IsBOKd7IubcI6H77l6vCQEBj+O6ZwBJGA189Dn0LjWLKGxgPRlxSzWKe1A+ZYzHPZu7z7
-	 XJhCfoyHw6+SQglJOYBQLC6IMFr1OESt/FgND2UcVz6m3Kq3jRZvmsFVTd3wh7VMTqqwr
-	 upMesFzTGk9liD/Dw9NZ80LUjJzpZNtTStTpbeKlYEiUEGpdKHLLG5FEof3PWVCwaCQ==
+	t=1794006411;
+	b=E2oyflrhTd4RRdzfiRERDNEgPLOnU5D36iCBIBuAFnuSFMJDW1x3QH+bqZH4v+axaa2D
+	 dKcMbK243XpQUQDchMj9J3JgrRt/BsK6glx4ZLqJ7C3lfhEcowevBCS2VMmuVrr/tRAnN
+	 VIz3JdexWJZYScafASmojSZ1N+WEEo0EDxAqguN/k9oDnHeC1yVjZXyTUL4Z5DVWKPpt/
+	 QsNdbX0+L9kpAYjLxAI2fi4L3dM7CyKIco1CBwB0gyPoa2S3VAsbe7wEulPo/24kgD4Vl
+	 TsbqYYLPm6Tmp8rsw7pirDPzGLmT3x3P44CYrLx78hBmAU93qIEkODuUZFZFwbw2O8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794006152;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	b=oqgMYr5GbiUNXxJPaMXA+XsuVQeT8WzLe78vOMIy8hemD7A6ysRQR6YZUIRYyqOOu6VB
-	 v2vmyT8FozZe0rMlOdF4ktOcWOFMrj2Lyw811r6/X5yi+EYsmR64giG2oX2CElpvSHbhI
-	 uEPDOcaLRPdEurYdK1HyP29iIoSBWsAVsGD4b1JdMFdqDn4gzBDJi/ab7mGC+qvvSykQw
-	 aA3RapIqTHVL5fASCnJeVAaZTLpI5jA+wmjteTKjbt9WU/r9DIoNtmEx66cVMtseU/qMA
-	 ytdhzIoixbBuoDxmIPNSojEbb+Wgde82lpKRmY0/ts4rd4keLqW7cx13GOMGh0ELE2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794006411;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=OVffpMJpscIOft4NV2Jq0DE8YsEUp+bRS1xd5OErd84=;
+	b=19xKhNJ8HwF/gZMvl+Qnsv9ALLmKCp9+jP26xna6MzGZ0dPxxs/G5TlTSwL7dNZ0Jhyf
+	 37F7Qg/6Eau4Kaa0HmYMKh2fmJ2z3KNsfQnnenUwYYPg4qcnLvaFXibFHVgAWppY4NPTJ
+	 YHum/aF0Ra8OWaeePbxEFnmuDY2FKBn13BU+G0vuisw+45hAQu+e4TFh2c4lW/z+ZuHEx
+	 OKpK6rs8gVIIzPuOwOy0yJWapizOACvHcJm/FWf81TH0fYWPFDWWMXqtRQHIjJVsH9C5U
+	 oYhjncsxfk4TkJBDn2DpLYRYYerwQyFrb2HIlzCmTqJBDMP+Al8KbBClp32n6jUSxgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pg3OaeYk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OYwNIh8Q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20AB606A32C;
-	Fri,  6 Nov 2026 23:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9F9606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pg3OaeYk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57C91F0089F;
-	Fri,  6 Nov 2026 23:02:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OYwNIh8Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F0A1F008A5
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794006151;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pg3OaeYk8UAvEDDra2mR82CmB68rHS1JwVmlu842OJsrQzbEIkLKYpOiED42DLw/R
-	 74ht3VjDwHyaYlCAMqF4GPHEfqDGKHbpXDBJadF8d2WSqiWzLCb6wa4mcXM9lXyk/c
-	 sCAtNRBkCyR04R+YyKuOinkVYH/CLC/isjA3l6L7vxoJZeVk9Zwk0ayTAKVR2jlX4G
-	 36AZxD6KP1c4tTi1rlD421dE3NuscB48qzEF63w1N5rfVjPvGz2e+CeUFnpD8dNNJf
-	 YoGoZyjVSCO/BOByIEaEzTJhr/39Ni3+PxI1kpvmGQThLf1XUtKa7gFh6NgO77uCHW
-	 Slu/mDhSq00eQ==
-From: netdev-bot+sinfo@kernel.org
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: alex.aring@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-wpan@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net] 6lowpan: fix netdev_priv() type confusion in lowpan_event()
-Date: Fri, 06 Nov 2026 23:02:30 +0000
-Message-ID: <179400615048.488859.9102835578031186781@kernel.org>
-In-Reply-To: <20261106225930.1379968-1-roman.gushchin@linux.dev>
-References: <20261106225930.1379968-1-roman.gushchin@linux.dev>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1794006411;
+	bh=OVffpMJpscIOft4NV2Jq0DE8YsEUp+bRS1xd5OErd84=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OYwNIh8QKo6/ciABJWZoZQ2F11ZJxzpsNlhkZ8/01rtd6f6oTTOdG1NxYR1HW9KuT
+	 LHEuJThM6xdBL1T7dj+RSPuu3ZR3wZBj5+lsFciuyUk5TgUIFP925g4XwXCptwPrdS
+	 cSGyEK2GDAjS4l2U7gLx29alPdQIGAbIofczc2ymmR0Ex1p8NQ7ObdTracIRtb7izs
+	 dblSPzucqwbwi2KyXyuYqjlEwKOqbdIW1AiqyzDkYGpDcanjOBNjZIdgtIciMT4KAK
+	 qX01LM2nNseoFhTVU/yeSZtXrxtvpZKax5Cw33IApSeqsQFrNfF8wUNucNfRwPdFje
+	 IQussb2MR1O5g==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-84d5e56f876so847354a34.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:06:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBy3wPQ+Rwi90rF9rq6QT1VBWDU3pbt+LsWCnIzmn3nNol3ctutWF/8KwykjL+gs8tTGkBNdMmI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9QbDtTIE+xn09oI2jleNV8GYPveBjSr3ZnIm77XHWRNUQ6bbMC
+	1ZixvspATuQ7Q/zK1YFZn/9WhlThn6ycxR2YBVxNU0smtH8I+rxGmkSivQWbkrkMxb9QQUDORZn
+	jXltks3+9IjD5B/XQgZJ8sVv76h/4HFE=
+X-Received: by 2002:a05:6830:2693:b0:82f:5471:4dd7 with SMTP id
+ 46e09a7af769-85f1d16d8f2mr4156210a34.30.1794006410384; Fri, 06 Nov 2026
+ 15:06:50 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,21 +59,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
+In-Reply-To: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 7 Nov 2026 00:06:39 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiiob6K=Y1ne0G+8L6b8fxNxdCz3z+THgCiCBX_5MjtSzcg@mail.gmail.com>
+X-Gm-Features: AclHuK85IAMcn42mvCatif5dGLCxV02KCNk7hXkKoMekgYmtNrFJzX8kSNTk-t4
+Message-ID: <CAL4Wiiob6K=Y1ne0G+8L6b8fxNxdCz3z+THgCiCBX_5MjtSzcg@mail.gmail.com>
+Subject: Re: [PATCH net] cipso: stop modifying live ip_options_rcu
+To: Jann Horn <jannh@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Simon Horman <horms@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, netdev@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	selinux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Le ven. 6 nov. 2026 =C3=A0 22:40, Jann Horn <jannh@google.com> a =C3=A9crit=
+ :
+>
+> cipso_v4_delopt() operates on the ip_options_rcu of a socket or a request
+> socket, and tries to remove CIPSO options from the middle by moving all
+> subsequent options.
+> That's not allowed - ip_options_rcu can be read locklessly and must alway=
+s
+> be consistent. For example, ip_options_undo() reads trusted offsets and
+> length values from the options buffer.
+> Fix it by doing the modification in a copy.
+>
+> The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
+> propagate memory allocation failures.
+>
+> Triggering this bug requires that the system is configured to use CIPSO.
+> (Setting up CIPSO requires privileges in init_user_ns.)
+>
+> Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+> I've sent a separate mail with a reproducer to Paul Moore.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Side note, not for this patch: Smack calls netlbl_sock_delattr()
+and netlbl_sock_setattr() under bh_lock_sock_nested() only, which does
+not exclude a concurrent lock_sock() owner such as
+setsockopt(IP_OPTIONS). Both sides can then kfree_rcu() the same
+old inet_opt. This already exists in the "cipso only" branch of
+cipso_v4_delopt() and in cipso_v4_sock_setattr(), and with this patch
+the copy branch has the same issue.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+The rcu_dereference_protected(*opt_ptr, 1) in cipso_v4_delopt() hides
+this from lockdep. Smack should probably use lock_sock() like
+SELinux does in selinux_netlbl_socket_connect().
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks !
