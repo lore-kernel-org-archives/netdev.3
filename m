@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793993540;
-	b=zvsggzHsHoNKbLaxp0twfmM7a1+U331UIz4VYp/L1yeZ71IselsrXUaI5okCAY3vavpN
-	 BQQvh/YEVmXsm1czv1eV27u11W2xnJoXWCdNp5k6bB5VntoASaTh+tPGUu+NfkFSaf7HK
-	 B9bnAqWKX6kWOpw9QE/VqbQ09y429aRDHO8IoY2WPtYasem/g9n7JSiXzLy+PXpI5+HLt
-	 dPYQ3QIOnFWWJi+yfSLtxEiw74hiNk98RbNc5bR5cWW1vY9IYTACn43wkHz0jBHpVAW5T
-	 m1y0qKqOCLz72BraFmCXKS3KaTQ8CoTcozKHL+oXgcrJ3Du1vTwl0nhmXgIIXzunwYA==
+	t=1793993542;
+	b=098yxGBJ+LxZQH/i+OUCaJHEc1oWCSM2xKCTiBrYsZQYYloe6wLn6oeqPN2rWJIWmfxK
+	 2/28MF0LzmOby7A2HHSpfTrEmDcIXkgZJBw/oDXn75R/lkbEjmi3OB8lz/pMAoNrSX6Wj
+	 yfZky2DDj+DdZleX7RJMGz+7UuMOmGht1tMw+gXjf0iXYH8U9vqiy1bd3CQXaE+CbQHbU
+	 BsMM6c8D7poVBS8Eoj0RhAhFc5qzqAkTXl7RJgu8wA2YhmrExF4JVXU6c2NFyfshzDKb3
+	 PPdd809SkZxUi4ZJlVrExTg+Utn1S/hba0dcYf8CB916dOgsM2pMR4IBrPHNjCE54sA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793993540;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793993542;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
-	b=hKlfipy7tY5fk2VLQTTRoC18VIehtBPBQmpUUfDo4kvczOsIHYlhiZUw9yeJt/IQuerM
-	 peDg6ifOBxo4vsbfrOPA25hjld7XlYHzD3cG/qfttOuOSQeV4Hk8Bk7NzHDmb1cr/jq30
-	 +sJU5zI22Nm/Yk23gyyoujAENlH6Z6G3w6CtYAwyIvWpqLKv/3jAMtoUQYfBTASNs/UyC
-	 oTRkLfn1k55EttimSlG4tsiswEIj10mM0FaFAHk4Q/ysD+hpYieQVpB4PSIwfAkbh2r49
-	 ze6n53O7XlKtSKwC7iiqhAjFmaEhuL+h2TdJ9WOI8SqmCJxFjQjzZI/Qab6rJGeoi5A==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=8oWRxGJ7JRX83dhFy9OyjZ4hFKtbgD4sIEDwt+Jk+oE=;
+	b=P/9TGeXLLPKzaK0pRA4cShRZDT//CjqPNkn/ogUltsL0xbmz8RE3ij0m+XBnMvuP/GpI
+	 QXDPz5UH+1Dy2u5FPQZ3SoPYv/rGww5ROuznA8lDYz6nKi2D7QsXijjxvrnHtFNfl6d7m
+	 4SxZR8ajXE/Whg168BBbbIiqD8Cweq6K9B4LdREhJU3wpg+y1K1uqibcf6LTP67rp/qux
+	 ly0HtqPXKmZF3pT05vCkLd81vtHiaDcS8pN7WYEBziDl/g7cWLmGfNSyhqRfqRg43+ZbG
+	 FZakDi0dw2Vj2Bitc4LOUTLXp/AUHIVT/RWqUP03Al9HvoAcgsjh/hqdhRmt1vDjACQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=purestorage.com;
 	spf=pass smtp.mailfrom=purestorage.com;
-	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b="cyyCMpl/";
-	arc=none smtp.remote-ip=209.85.210.225
-Received: from mail-pf1-f225.google.com (mail-pf1-f225.google.com [209.85.210.225])
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=eReaRoZj;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD750606A32F
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 19:32:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD750606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040EB606D801
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 19:32:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 040EB606D801
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=cyyCMpl/
-Received: by mail-pf1-f225.google.com with SMTP id d2e1a72fcca58-89f85edd210so393397b3a.2
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 11:32:18 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=eReaRoZj
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so626373a91.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 11:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1793993538; x=1794598338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
-        b=cyyCMpl/K9YhiSpcklec+E4m9mCwAI22y4dX48lD15x7/Kc1vND/f/x9+hse5q45Iy
-         TkcUyPL7i0VGtAh6GKeB077uQOeFu6DbNqt5mwCgJQyBMtIf0dTFE2GAQU6XUl/3aWB3
-         cOslvwCLBHEBhRcNM1wVW6hKsBGp0vJZdJ1Kjjm4KF+EJdg1CQTO7jm7bkjsEftfMmuF
-         8iymrMYxA8qS8W83hH5SZz1IFHvBskDGMg0SygnpAWa753RcFK++LaKUhhkweZgekpgN
-         cLUaoxICxWhoe+krQIn8A8VDTepnm9iLgMSATnwTL0b+3VB1TtyFzSXRvUZ1kEC/AmyS
-         G58A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793993538; x=1794598338;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=purestorage.com; s=google2022; t=1793993540; x=1794598340; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
-        b=yg2UXaY4o1XDzvNDn7ugFkA1S2caUb0Dbh3mo7jvXeX6CCEEY/VGKPRWBZiSkntEnL
-         qAfXJVhUV2n/J8XVrGrFBmbi7ZfITRVkenMbjWnKj7YNNNfZ9NP0UUcWU/7E8m0/sxhj
-         3J9S1O/T+eeUlyaPCa3fAAtBcOdD3Xqb9EK2NHcX/1lCQEor9MDMkzya8X3bsiS1GSaE
-         KY2dqeYNC4g9PuUlFwsLkWPMOAev284x5d/rHfRm1rb0dOPKoBVCzzhI7S8YFETsR2GN
-         I8GPTjCKS7GW43FMZVgr2ZvLHt1u2S7v/WuZ49n0551oXHPJ+TGmQApoE/xTVF0x+fo3
-         Ektw==
-X-Gm-Message-State: APuU4Z9g2d3Yo51P0chdPLOCor9vX3GAkxYfGN/TP2W1l41Vmg3jdKqK
-	ACYlrAQE22qO3fEhz44jKaHYpEBkVyWEYeyzPfcwwHRTyM+y7cFgWSL1IG8jfOzv7/f0iG91a36
-	flE5wGWIs3uxBItvl60vJrVemaPieTlCTmmkv
-X-Gm-Gg: AYBFou1E8E3T5YQCyHA9BWG3gB2HKI5ORYHED2oD3ql0ERvsP1Q9rARehoOQsaK5E4t
-	SOlQTasxOIUmjj/wou5CiIs5PhObz5xjNPqtIGpTygf+h4+Cuy8OCNslzVCGD8elMPl2Axuivrv
-	Tn78tqEvFoWj7wEFSa5D9OLOgeaV+Fdildj7XZ1uBikryAWDDR7J7vKUOQVpo0SFbpeGJKitSsp
-	qzh73oF4dO8zvqLj92C+a9vIBZu0vqXSSCCmAlZ79gxUL6auWn5sj3TKN9QIalRNR1sThE04quw
-	qYfUKOB+fHjo/2Vm6RkU8WVgVVj39/4BKHt2aP67P/SFVFoqrM3mDGQULSaSk6RrJP2ukDoUyw0
-	JsFEwtcrKMENdezKllzPn3Xx34CClwvoR65Y=
-X-Received: by 2002:a05:6a00:ac3:b0:874:705d:f659 with SMTP id d2e1a72fcca58-8b37bc5f406mr3255945b3a.39.1793993538079;
-        Fri, 06 Nov 2026 11:32:18 -0800 (PST)
-Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
-        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-8b357bc29c4sm36071b3a.12.2026.11.06.11.32.17
+        bh=8oWRxGJ7JRX83dhFy9OyjZ4hFKtbgD4sIEDwt+Jk+oE=;
+        b=eReaRoZj/+PPfgXJOc7CpmAiCwwiWKl9CaM3vPVbmIH03fMsj19mLn6Ko5A4GabAsE
+         sog6ybxT1PcEshur15EY9SZGwUpD6eb3SwnrKdB598DJzHjnTT5wrBgOe5He0oFbe0ff
+         HHm6cnr0ryAcry2GtFFPqjH2gu6ZnOWeifBP8o8uffqMCfluZo3T8RBRGvxa4j+J2aEb
+         puIyZQZB6Cjq7Zg8a6GoFFfDc6XbEsN4Lt2EiJhKeRwgIe17Aa4v1/O0DdtohAQaXJi2
+         BNR8/q08PDGfdQnH5/esQUVKscN/SkcRddGzCTe00zD9GEvNhVg+O1tltPj45NnQlvFV
+         DCtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793993540; x=1794598340;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8oWRxGJ7JRX83dhFy9OyjZ4hFKtbgD4sIEDwt+Jk+oE=;
+        b=F4CstPDBx90o6eSEDIAhCpw+g5JJth7FRUnqZAHIw2QftGMXVbzSipZgHd+F3W8Bld
+         UP0mXkIwSLxXBmlia3l1KDAC/6iY+pV+DzUIAmzCaB+0mqtLLwODxDS8815zxFEsqoXp
+         QB4VUwHlMdueJf0TSn1SmuzsZ02+j4rvyepebHQsnT92hD9zG2RjUlm/2HqzVvDD/voz
+         0cC2U6HJ9R9ZGQroAEHDvgyAP/NimSX6m1QV6AFsLIeGDTmu2coYcL3owrJ4/26/1oCM
+         Qid47WjF+aLk+g7Jk8lINJVe8zVLVQUx8YdfWQWjDMkuZgCNnoP2ccUuK664arDpCZ0j
+         c2dQ==
+X-Gm-Message-State: APuU4Z9vdoSY3MuktydBCNYbA6k0pHbPqVJMDcZmZq7Ia51t4uAZeuJt
+	srjwvyfTx4mI2j1SSorNEoyjeJm68QysdLM8FZ385uY1eGpk7xUfh1l6pbk4JGWsDqaJMv0Dea/
+	BaYHPIduDlMEvu2RCITkI0AtLBZvWUzdnnHbN
+X-Gm-Gg: AYBFou3oiOpkXHwgVcZVrGYbG/Maohdrlrj/26MNQj/M3z8vTFHJVcSuQNSJsZvgzLb
+	oBJhTjUqc9OTL3Hs/TB6SE04aCuOyD9kKt9ntlw3VCkgVB5W5T7yR4inBZoFIW7us1XUerY0Cci
+	PdgPw90BNXqyFiV8x7RTeWWE0LDZVaQtGa5cITIrYJCp5CDjl1oahBZO8Ecibq4HtruqV2dItVA
+	I/SdrwOsYgSQZ858gq4ogONswDpTN/F1ZPPZKxIYju2f37wyR0bTgFBXUFeVn+SZDtkJTT7FXhE
+	TL77j8v/H/TxHRWqYRiqd2smR+7nFq037BL4aH85YQRE6lQP46ktEtDFwxqelPhSwHHb1u6itaw
+	KNs2hbTICjLIfp8YiYLGF6g77cNor+t07I98=
+X-Received: by 2002:a17:90b:3846:b0:3ab:9f1a:3825 with SMTP id 98e67ed59e1d1-3b0db6218d4mr3586351a91.4.1793993540299;
+        Fri, 06 Nov 2026 11:32:20 -0800 (PST)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.128])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1058d4f27sm53275a91.3.2026.11.06.11.32.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 11:32:18 -0800 (PST)
+        Fri, 06 Nov 2026 11:32:20 -0800 (PST)
 X-Relaying-Domain: purestorage.com
-Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
-	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 6171E40152;
-	Fri,  6 Nov 2026 12:32:17 -0700 (MST)
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [IPv6:2620:125:9025:23::2ea])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 7B5A940152;
+	Fri,  6 Nov 2026 12:32:19 -0700 (MST)
 Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
-	id 5CB4CDCE11C; Fri,  6 Nov 2026 12:32:17 -0700 (MST)
+	id 784EBDCE11C; Fri,  6 Nov 2026 12:32:19 -0700 (MST)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
-	syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -91,12 +91,18 @@ Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Vakul Garg <vakul.garg@nxp.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] tls: read sk_err once in tls_encrypt_done()
-Date: Fri,  6 Nov 2026 12:32:08 -0700
-Message-ID: <20261106193210.1152577-1-rjethwani@purestorage.com>
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v2 2/2] tls: make the record number wrap abort final
+Date: Fri,  6 Nov 2026 12:32:09 -0700
+Message-ID: <20261106193210.1152577-2-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261106193210.1152577-1-rjethwani@purestorage.com>
+References: <20261106193210.1152577-1-rjethwani@purestorage.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,53 +114,522 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tls_encrypt_done() runs from the crypto completion, without the socket
-lock, and reads sk->sk_err twice. getsockopt(SO_ERROR) and sock_error()
-clear sk_err locklessly, so it can go from non-zero to zero between the
-two reads. A successful completion (err == 0) then takes the "no error
-set on the socket" branch and calls tls_err_abort(sk, 0), which hits
-WARN_ON_ONCE(err >= 0) and clears sk_err.
+When a record number wraps, TLS aborts the connection with EBADMSG, but
+only through sk_err, which is consumed when it is reported, by SO_ERROR
+or sock_error(). After that the socket carries on under the same key
+with record number 0:
 
-Read sk_err once and use that value for both checks.
+ - RX: tls_rx_rec_wait() only checks sk_err while no record is ready.
+   After the record with the last number is decrypted, tls_rx_rec_done()
+   lets the parser pick up the next record. If it is already queued,
+   recvmsg() keeps going because a record is ready, decrypts it with
+   record number 0 and returns both, without an error. sk_err is only
+   reported once the parser runs dry, and once it is cleared, receiving
+   continues.
 
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Reported-by: syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cca46a9d1276f38af2ae
+ - TX: the record using the last number is encrypted and queued, then
+   fails to go out because sk_err is set. Once SO_ERROR is read, the
+   next send transmits it and continues with record number 0.
+
+Add tls_err_abort_final(), which also records the error in the TLS
+context, where nothing clears it, and use it for the record number wrap
+in both directions:
+
+ - tls_rx_rec_wait() checks it before looking for a ready record. Data
+   that was already decrypted can still be read, as before. poll()
+   reports EPOLLERR, and EPOLLIN only for that data.
+
+ - sendmsg(), the device push and tls_push_record() check it before
+   taking or encrypting more data, and tls_push_sg() before handing
+   anything to TCP, so that no queued record goes out after the abort.
+   The device push doesn't count the refused record as sent, like the
+   SW path, and tls_tx_records() doesn't raise sk_err again for it.
+
+A KeyUpdate may be the last record received under a key; that already
+pauses receive until a new key is installed. Don't abort the connection
+in that case.
+
+Add TLS 1.3 selftests. tx_wrap starts TX at the last record number, as
+recseq_wrap does. The RX tests can't get their records that way, since
+TX now refuses to send the record using the last number. In TLS 1.3 the
+record number only enters the nonce, so TX instead starts at record
+number 0 with the IV XORed with the second to last number, which
+produces the last two RX records, then switches back to the plain IV
+with a silent rekey to produce the wrapped record number 0.
+
 Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- net/tls/tls_sw.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ Documentation/networking/tls.rst  |  19 +++
+ include/net/tls.h                 |   1 +
+ net/tls/tls.h                     |  24 +++-
+ net/tls/tls_device.c              |  12 +-
+ net/tls/tls_main.c                |   8 +-
+ net/tls/tls_sw.c                  |  44 ++++++-
+ tools/testing/selftests/net/tls.c | 197 ++++++++++++++++++++++++++++++
+ 7 files changed, 293 insertions(+), 12 deletions(-)
 
+diff --git a/Documentation/networking/tls.rst b/Documentation/networking/tls.rst
+index 980c442d7161..ef1a3bacb72f 100644
+--- a/Documentation/networking/tls.rst
++++ b/Documentation/networking/tls.rst
+@@ -228,6 +228,25 @@ The number of successful and failed key updates is tracked in the
+ ``TlsRxRekeyError`` statistics. The ``TlsRxRekeyReceived`` statistic
+ counts KeyUpdate handshake messages that have been received.
+ 
++Record number exhaustion
++------------------------
++
++A record number must not wrap under the same key. When it would, the
++connection is aborted with ``EBADMSG``. On transmit, the record that
++uses the last 64-bit record number is not sent, and the send that
++completes it doesn't count its data as sent. On receive, that record is
++still delivered, but no record after it is. Either way, no further
++record data is sent, not even the rest of a partially sent record.
++Unlike other socket errors, this one is not cleared when it is reported,
++by ``SO_ERROR`` or otherwise: every later send, and every receive that
++needs another record, fails with ``EBADMSG``, and a new key does not
++change that. ``poll()`` reports ``EPOLLERR``, and ``EPOLLIN`` only while
++data that was already decrypted remains; that data can still be read.
++
++A TLS 1.3 KeyUpdate may be the last record received under a key. In
++that case receive is paused as for any other KeyUpdate, and continues
++once the new key is provided.
++
+ Integrating in to userspace TLS library
+ ---------------------------------------
+ 
+diff --git a/include/net/tls.h b/include/net/tls.h
+index e57bef58851e..c945f697fc91 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -251,6 +251,7 @@ struct tls_context {
+ 
+ 	bool splicing_pages;
+ 	bool pending_open_record_frags;
++	int final_err; /* set by tls_err_abort_final(), never cleared */
+ 
+ 	struct mutex tx_lock; /* protects partially_sent_* fields and
+ 			       * per-type TX fields
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 60a37bdaaa25..517dcc452c67 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -142,6 +142,7 @@ void update_sk_prot(struct sock *sk, struct tls_context *ctx);
+ 
+ int wait_on_pending_writer(struct sock *sk, long *timeo);
+ void tls_err_abort(struct sock *sk, int err);
++void tls_err_abort_final(struct sock *sk, int err);
+ void tls_strp_abort_strp(struct tls_strparser *strp, int err);
+ 
+ int init_prot_info(struct tls_prot_info *prot,
+@@ -307,17 +308,30 @@ static inline void tls_bigint_subtract(unsigned char *seq, int  n)
+ 	*p = cpu_to_be64(rcd_sn - n);
+ }
+ 
+-static inline void
+-tls_advance_record_sn(struct sock *sk, struct tls_prot_info *prot,
+-		      struct cipher_context *ctx)
++static inline bool
++__tls_advance_record_sn(struct tls_prot_info *prot, struct cipher_context *ctx)
+ {
+-	if (tls_bigint_increment(ctx->rec_seq, prot->rec_seq_size))
+-		tls_err_abort(sk, -EBADMSG);
++	bool wrapped = tls_bigint_increment(ctx->rec_seq, prot->rec_seq_size);
+ 
+ 	if (prot->version != TLS_1_3_VERSION &&
+ 	    prot->cipher_type != TLS_CIPHER_CHACHA20_POLY1305)
+ 		tls_bigint_increment(ctx->iv + prot->salt_size,
+ 				     prot->iv_size);
++
++	return wrapped;
++}
++
++static inline void
++tls_advance_record_sn(struct sock *sk, struct tls_prot_info *prot,
++		      struct cipher_context *ctx)
++{
++	if (__tls_advance_record_sn(prot, ctx))
++		tls_err_abort_final(sk, -EBADMSG);
++}
++
++static inline int tls_final_err(const struct tls_context *ctx)
++{
++	return READ_ONCE(ctx->final_err);
+ }
+ 
+ static inline void
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 4cdfbb57ecff..5e95710e53fb 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -430,6 +430,7 @@ static int tls_push_data(struct sock *sk,
+ 	int tls_push_record_flags;
+ 	struct page_frag *pfrag;
+ 	size_t orig_size = size;
++	size_t rec_size = size;
+ 	u32 max_open_record_len;
+ 	bool more = false;
+ 	bool done = false;
+@@ -444,6 +445,10 @@ static int tls_push_data(struct sock *sk,
+ 	if ((flags & (MSG_MORE | MSG_EOR)) == (MSG_MORE | MSG_EOR))
+ 		return -EINVAL;
+ 
++	rc = tls_final_err(tls_ctx);
++	if (unlikely(rc))
++		return rc;
++
+ 	if (unlikely(sk->sk_err))
+ 		return -sk->sk_err;
+ 
+@@ -550,8 +555,13 @@ static int tls_push_data(struct sock *sk,
+ 					     ctx,
+ 					     record,
+ 					     tls_push_record_flags);
+-			if (rc < 0)
++			if (rc < 0) {
++				/* the refused record isn't sent, don't count it */
++				if (tls_final_err(tls_ctx))
++					size = rec_size;
+ 				break;
++			}
++			rec_size = size;
+ 		}
+ 	} while (!done);
+ 
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index b8d5a843f761..d5605df59334 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -190,7 +190,7 @@ int tls_push_sg(struct sock *sk,
+ 		bvec_set_page(&bvec, p, size, offset);
+ 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+ 
+-		ret = tcp_sendmsg_locked(sk, &msg, size);
++		ret = tls_final_err(ctx) ?: tcp_sendmsg_locked(sk, &msg, size);
+ 
+ 		if (ret != size) {
+ 			if (ret > 0) {
+@@ -414,8 +414,12 @@ static __poll_t tls_sk_poll(struct file *file, struct socket *sock,
+ 	tls_ctx = tls_get_ctx(sk);
+ 	ctx = tls_sw_ctx_rx(tls_ctx);
+ 
++	/* the final abort outlives sk_err, only decrypted data is readable */
++	if (unlikely(tls_final_err(tls_ctx)))
++		mask |= EPOLLERR;
++
+ 	if ((skb_queue_empty_lockless(&ctx->rx_list) &&
+-	     !tls_strp_msg_ready(ctx)) ||
++	     (!tls_strp_msg_ready(ctx) || tls_final_err(tls_ctx))) ||
+ 	    READ_ONCE(ctx->key_update_pending))
+ 		mask &= ~(EPOLLIN | EPOLLRDNORM);
+ 
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 771e02bff519..b4535139438a 100644
+index b4535139438a..37ba09055220 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -473,6 +473,7 @@ static void tls_encrypt_done(void *data, int err)
- 	struct scatterlist *sge;
- 	struct sk_msg *msg_en;
- 	struct sock *sk;
-+	int sk_err;
+@@ -78,6 +78,18 @@ noinline void tls_err_abort(struct sock *sk, int err)
+ 	sk_error_report(sk);
+ }
  
- 	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
- 		return;
-@@ -489,12 +490,13 @@ static void tls_encrypt_done(void *data, int err)
- 	sge->length += prot->prepend_size;
++/* Like tls_err_abort(), but the error can't be cleared: SO_ERROR and
++ * sock_error() consume sk_err, final_err keeps failing reads and sends.
++ */
++void tls_err_abort_final(struct sock *sk, int err)
++{
++	struct tls_context *ctx = tls_get_ctx(sk);
++
++	if (!tls_final_err(ctx))
++		WRITE_ONCE(ctx->final_err, err);
++	tls_err_abort(sk, err);
++}
++
+ static int __skb_nsg(struct sk_buff *skb, int offset, int len,
+                      unsigned int recursion_level)
+ {
+@@ -458,7 +470,9 @@ int tls_tx_records(struct sock *sk, int flags)
+ 	}
  
- 	/* Check if error is previously set on socket */
--	if (err || sk->sk_err) {
-+	sk_err = READ_ONCE(sk->sk_err);
-+	if (err || sk_err) {
- 		rec = NULL;
+ tx_err:
+-	if (rc < 0 && rc != -EAGAIN && rc != -EINTR && rc != -ERESTARTSYS)
++	/* a final abort already reported its error */
++	if (rc < 0 && rc != -EAGAIN && rc != -EINTR && rc != -ERESTARTSYS &&
++	    !tls_final_err(tls_ctx))
+ 		tls_err_abort(sk, rc);
  
- 		/* If err is already set on socket, return the same code */
--		if (sk->sk_err) {
--			ctx->async_wait.err = -sk->sk_err;
-+		if (sk_err) {
-+			ctx->async_wait.err = -sk_err;
- 		} else {
- 			ctx->async_wait.err = err;
- 			tls_err_abort(sk, err);
+ 	return rc;
+@@ -628,6 +642,11 @@ static int tls_push_record(struct sock *sk, int flags,
+ 	int rc;
+ 	u32 i;
+ 
++	/* tls_push_sg() would refuse it, don't encrypt it */
++	rc = tls_final_err(tls_ctx);
++	if (unlikely(rc))
++		return rc;
++
+ 	if (!rec)
+ 		return 0;
+ 
+@@ -802,6 +821,13 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	}
+ 
+ 	while (msg_data_left(msg)) {
++		int err = tls_final_err(tls_ctx);
++
++		if (unlikely(err)) {
++			ret = err;
++			goto send_end;
++		}
++
+ 		if (sk->sk_err) {
+ 			ret = -sk->sk_err;
+ 			goto send_end;
+@@ -1106,6 +1132,11 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
+ 	if (unlikely(ctx->key_update_pending))
+ 		return -EKEYEXPIRED;
+ 
++	/* checked even if a record is ready, unlike sk_err below */
++	ret = tls_final_err(tls_ctx);
++	if (unlikely(ret))
++		return ret;
++
+ 	timeo = sock_rcvtimeo(sk, nonblock);
+ 
+ 	while (!tls_strp_msg_ready(ctx)) {
+@@ -1582,9 +1613,14 @@ static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
+ 	rxm = strp_msg(darg->skb);
+ 	rxm->offset += prot->prepend_size;
+ 	rxm->full_len -= prot->overhead_size;
+-	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
+ 
+-	return tls_check_pending_rekey(sk, tls_ctx, darg->skb);
++	err = tls_check_pending_rekey(sk, tls_ctx, darg->skb);
++	/* A KeyUpdate in the last record retires the key as usual */
++	if (__tls_advance_record_sn(prot, &tls_ctx->rx) &&
++	    !tls_sw_ctx_rx(tls_ctx)->key_update_pending)
++		tls_err_abort_final(sk, -EBADMSG);
++
++	return err;
+ }
+ 
+ int decrypt_skb(struct sock *sk, struct scatterlist *sgout)
+@@ -2182,7 +2218,7 @@ bool tls_sw_sock_is_readable(struct sock *sk)
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
+ 
+-	return tls_strp_msg_ready(ctx) ||
++	return (tls_strp_msg_ready(ctx) && !tls_final_err(tls_ctx)) ||
+ 		!skb_queue_empty(&ctx->rx_list);
+ }
+ 
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index c4203401c4bf..e7dd77b4f3ff 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -2421,6 +2421,203 @@ TEST_F(tls, rekey_poll_delay)
+ 	}
+ }
+ 
++/* Record number exhaustion, TLS 1.3 only. The record number only enters
++ * the nonce there, so a TX key whose IV is XORed with N sends record
++ * number N at its own record number 0, and TX never has to wrap.
++ */
++FIXTURE(tls_recseq)
++{
++	int fd, cfd;
++	bool notls;
++};
++
++FIXTURE_SETUP(tls_recseq)
++{
++	ulp_sock_pair(_metadata, &self->fd, &self->cfd, &self->notls);
++}
++
++FIXTURE_TEARDOWN(tls_recseq)
++{
++	close(self->fd);
++	close(self->cfd);
++}
++
++static void tls_recseq_keys(struct tls_crypto_info_keys *tls,
++			    uint64_t rec_seq, uint64_t iv_xor)
++{
++	int i;
++
++	tls_crypto_info_init(TLS_1_3_VERSION, TLS_CIPHER_AES_GCM_128, tls, 0);
++	for (i = 0; i < 8; i++) {
++		tls->aes128.rec_seq[i] = rec_seq >> (56 - 8 * i);
++		tls->aes128.iv[i] ^= iv_xor >> (56 - 8 * i);
++	}
++}
++
++/* RX starts at the second to last record number, TX sends it and the
++ * last one at its record numbers 0 and 1.
++ */
++static void tls_recseq_set_keys(struct __test_metadata *_metadata,
++				int fd, int cfd)
++{
++	struct tls_crypto_info_keys tls;
++
++	tls_recseq_keys(&tls, 0, UINT64_MAX - 1);
++	ASSERT_EQ(setsockopt(fd, SOL_TLS, TLS_TX, &tls, tls.len), 0);
++	tls_recseq_keys(&tls, UINT64_MAX - 1, 0);
++	ASSERT_EQ(setsockopt(cfd, SOL_TLS, TLS_RX, &tls, tls.len), 0);
++}
++
++/* Silent rekey to the same key, so TX sends the wrapped record number 0 */
++static void tls_recseq_tx_wrapped(struct __test_metadata *_metadata, int fd)
++{
++	struct tls_crypto_info_keys tls;
++
++	tls_recseq_keys(&tls, 0, 0);
++	ASSERT_EQ(setsockopt(fd, SOL_TLS, TLS_TX, &tls, tls.len), 0);
++}
++
++static int tls_so_error(struct __test_metadata *_metadata, int fd)
++{
++	socklen_t len = sizeof(int);
++	int err = -1;
++
++	EXPECT_EQ(getsockopt(fd, SOL_SOCKET, SO_ERROR, &err, &len), 0);
++	return err;
++}
++
++/* All three records are queued, only the first two may be received */
++TEST_F(tls_recseq, rx_wrap)
++{
++	struct pollfd pfd = { .events = POLLIN };
++	char const *test_str = "test_read";
++	int send_len = strlen(test_str) + 1;
++	char buf[3 * 10];
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	tls_recseq_set_keys(_metadata, self->fd, self->cfd);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++	tls_recseq_tx_wrapped(_metadata, self->fd);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), 0), 2 * send_len);
++	EXPECT_EQ(memcmp(buf, test_str, send_len), 0);
++	EXPECT_EQ(memcmp(buf + send_len, test_str, send_len), 0);
++
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), 0), -1);
++	EXPECT_EQ(errno, EBADMSG);
++
++	/* reading SO_ERROR clears sk_err, the abort stays */
++	EXPECT_EQ(tls_so_error(_metadata, self->cfd), EBADMSG);
++	EXPECT_EQ(tls_so_error(_metadata, self->cfd), 0);
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), MSG_DONTWAIT), -1);
++	EXPECT_EQ(errno, EBADMSG);
++
++	/* the parsed third record isn't readable */
++	pfd.fd = self->cfd;
++	EXPECT_EQ(poll(&pfd, 1, 0), 1);
++	EXPECT_EQ(pfd.revents, POLLERR);
++}
++
++TEST_F(tls_recseq, rx_wrap_splice)
++{
++	char const *test_str = "test_read";
++	int send_len = strlen(test_str) + 1;
++	char buf[10];
++	int p[2];
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	ASSERT_GE(pipe(p), 0);
++
++	tls_recseq_set_keys(_metadata, self->fd, self->cfd);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++	tls_recseq_tx_wrapped(_metadata, self->fd);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++
++	EXPECT_EQ(splice(self->cfd, NULL, p[1], NULL, send_len, 0), send_len);
++	EXPECT_EQ(splice(self->cfd, NULL, p[1], NULL, send_len, 0), send_len);
++	EXPECT_EQ(read(p[0], buf, send_len), send_len);
++	EXPECT_EQ(memcmp(buf, test_str, send_len), 0);
++	EXPECT_EQ(read(p[0], buf, send_len), send_len);
++	EXPECT_EQ(memcmp(buf, test_str, send_len), 0);
++
++	EXPECT_EQ(tls_so_error(_metadata, self->cfd), EBADMSG);
++	EXPECT_EQ(splice(self->cfd, NULL, p[1], NULL, send_len,
++			 SPLICE_F_NONBLOCK), -1);
++	EXPECT_EQ(errno, EBADMSG);
++
++	close(p[0]);
++	close(p[1]);
++}
++
++/* A KeyUpdate may use the last record number, then a new key takes over */
++TEST_F(tls_recseq, rx_keyupdate)
++{
++	struct tls_crypto_info_keys tls12_1;
++	char const *test_str = "test_read";
++	int send_len = strlen(test_str) + 1;
++	char buf[10];
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	tls_crypto_info_init(TLS_1_3_VERSION, TLS_CIPHER_AES_GCM_128,
++			     &tls12_1, 1);
++
++	tls_recseq_set_keys(_metadata, self->fd, self->cfd);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++	tls_send_keyupdate(_metadata, self->fd);
++	ASSERT_EQ(setsockopt(self->fd, SOL_TLS, TLS_TX, &tls12_1,
++			     tls12_1.len), 0);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), send_len);
++
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), 0), send_len);
++	EXPECT_EQ(memcmp(buf, test_str, send_len), 0);
++	tls_recv_keyupdate(_metadata, self->cfd, 0);
++
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), MSG_DONTWAIT), -1);
++	EXPECT_EQ(errno, EKEYEXPIRED);
++	EXPECT_EQ(tls_so_error(_metadata, self->cfd), 0);
++
++	ASSERT_EQ(setsockopt(self->cfd, SOL_TLS, TLS_RX, &tls12_1,
++			     tls12_1.len), 0);
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), 0), send_len);
++	EXPECT_EQ(memcmp(buf, test_str, send_len), 0);
++}
++
++/* The record using the last record number is never sent */
++TEST_F(tls_recseq, tx_wrap)
++{
++	struct tls_crypto_info_keys tls;
++	char const *test_str = "test_read";
++	int send_len = strlen(test_str) + 1;
++	char buf[10];
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	tls_recseq_keys(&tls, UINT64_MAX, 0);
++	ASSERT_EQ(setsockopt(self->fd, SOL_TLS, TLS_TX, &tls, tls.len), 0);
++	ASSERT_EQ(setsockopt(self->cfd, SOL_TLS, TLS_RX, &tls, tls.len), 0);
++
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), -1);
++	EXPECT_EQ(errno, EBADMSG);
++
++	/* reading SO_ERROR clears sk_err, the abort stays */
++	EXPECT_EQ(tls_so_error(_metadata, self->fd), EBADMSG);
++	EXPECT_EQ(send(self->fd, test_str, send_len, 0), -1);
++	EXPECT_EQ(errno, EBADMSG);
++
++	EXPECT_EQ(recv(self->cfd, buf, sizeof(buf), MSG_DONTWAIT), -1);
++	EXPECT_EQ(errno, EAGAIN);
++}
++
+ struct raw_rec {
+ 	unsigned int plain_len;
+ 	unsigned char plain_data[100];
 -- 
 2.50.1
 
