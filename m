@@ -1,54 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793958964;
-	b=A72eMkKM4++eRdr+GVBf4Mrc1iIoXPh8Zm8jgCWKV7n8bvOijsnuPC0/gjQl3Lkwvb2C
-	 +rmvjr+EW1DPd37iLHbbhwYmx9n073brFT6aqnLjzfALomLZGOFbiN5zxZ6zhjr09PAon
-	 LiHAKmrIGTctE68lkVZrWa394pHa2d1Xd0zaXfklCWwGF1tyu6wI2/NaW102tkiD/t5WS
-	 iUGjr0agCtPJGtmYJtsktLzq2ogUlrBlLayTYId7dIzl6FKMRS62WweTEnUr0sFvafVJS
-	 zCjIFQgS4nqllHIfX29YZfUpz1j1HYfcax6SXXYNW8sBpRlk2byDwUMhgkg5QOUrBig==
+	t=1793958993;
+	b=sBriIcfffThIIGyCruFqhmZWGOW4SRmPjVc/S980tFolSrjOe2iFoew0R1bZhYYgseWn
+	 OJe7UDtoaETgnbtz8ZkAmzAxaoB6ztCYPEBU6vF/DqR8/Z1ogHc0zsEJ+nq6YYb6jaiMi
+	 eTTF5FuhrPJIgt0p4ooKaRHJu8XV0LEvZs2Str9bPWf+c53jK7XNPb1v0HMjmRINPetat
+	 w09RFT9sVG1H0HDFx68e5Y946iFAUVm6/lzeLvCkaDWgCudRAt7HnOXJtzvTKrIPejZzw
+	 ky9q3pIoUmk1YGYrUXmcOcwkRTFoup+9Oew29+634Y15plq+Q4rP0xHZVgTklLZFSSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793958964;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=IQAaNA5x2J6cR42Xyyfpudju4b6qQzyTPkfO1wBJwtM=;
-	b=nqcknly1uLiLn5QDIGeL9kknzOgyuCqs9I8qot+tImWCRB4qXaaItkJIy4MEKwzlC0ub
-	 a8dzekcOnAOxO99I5WMrrkSlc3q5CIo/ZLUgSDfSKV71VodV5h6Ysyf9ODxrjCW1ab9zM
-	 4nskjt20xwovIu+BsZ19Mqm2w56E+LNuEZpiinPwQqdFwI3cd3bVLipjBMR2Qxp5vpaue
-	 /Vjg8mKpkJcAPNEbKj7rnDTUPFig8lHJpf2ExBmUcbS6rnZnIVM48gg9C4CalTduWgb+9
-	 j57Ke12S/+Avz+Sd9/sAAUncEHp6GSU8Ah8MJl9ADnVTgLByaae/rbuQLgbiDkkCUzQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793958993;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=p4X9nuP6o1sozZLarhxMvxYA/A7FXv7bB7EJQ813gtI=;
+	b=cpCwzALTSpNC1qHI5r2dds6HJucFTfZn9vFKY3iRNvpXWoyXAta7XyrDmOHglDBDE0OK
+	 oJmIPY9+Sy9qWL6nuJZ3Z+LcINZn8iAc8+2qdxmZQ1tiJi78Fp6NlKmFaqqspLoJfb3ss
+	 LnX8KgR4MO1PDirxCwARlmYcBH9t2dgqQizLxRKDBLa5iGMw56JAKaK6frVFhDoRU4YO3
+	 wHYbXnumgQXcciG2wUruKq5ale2AwWCqGwbwetj7kqCLm3GGIxSzoXruZMl/V+RqIWIzo
+	 mD+iWIwV5RABNRx2bfUE//KSZooupi8BPbOJFS/S3HcH4s0eDjP7ezkwHhRKkhYMiKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsiBVCCz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E4B606A339
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:56:03 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=hW+M13Ay;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC42A606A330;
+	Fri,  6 Nov 2026 09:56:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC42A606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QsiBVCCz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BBB1F0089F
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793958963;
-	bh=IQAaNA5x2J6cR42Xyyfpudju4b6qQzyTPkfO1wBJwtM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QsiBVCCzxxo7kgtGRmXAQtdr5fTHGK9ezJgTvdNVbabLd+lgrohBMUmGKkeAqBqjS
-	 BP5YtCaXFgieL4jtdFBt6Cji4i+1yyf9vXglfdbN7CmUyRd67RgmMExls3hqVK044E
-	 TASuYApdkH0BK8zhjUG+KwzH1d53hrPJpIpKybkZAPk848UnnIr4CScYQEcLLqDYTH
-	 +3RscKrVAxu8DOgBOKiaRm5Rm64EDfqrAsOSA8JopsKgMJRNCx+pL2bJ31poCwCuM2
-	 hIdidx4XUUq7nvJsdEXSjIPpiTy14Mcmqc9FDx0lLCrGN2lN9iYnKr+ybow2rSNWue
-	 DE5bXNl5GZWdw==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6f74f6b46abso225311eaf.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 01:56:03 -0800 (PST)
-X-Gm-Message-State: APuU4Z+8+X2x5tZN34EedXyS0397CliZCjjlqwhqSm66fygb9B40BCW2
-	6KodYUkxs5pjTJX5OmqKkJKZ/AZsVW/ESmQR9qPSvARH38S3i/6oM8ghvSwk3ikyn9PtU3zugmd
-	afSQP0l0MskLeVrdWeZNQwmjg1zQo1lY=
-X-Received: by 2002:a05:6820:628:b0:6b6:c0bc:365c with SMTP id
- 006d021491bc7-716e78812f4mr1280505eaf.22.1793958960523; Fri, 06 Nov 2026
- 01:56:00 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=hW+M13Ay
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=hW+M13Ay8YZkujMbRUInHccf5kp+F8emucIp9FflfFLfxnlLZwP6jZJa92gUc84s02ETTDgrPEEcb
+	 V+sqXyLCOIbU7ROKi8H0YmtuFQ3JA8pjX97r3VXxRu9aUkyTjghTW9XPpv8A86idW20Cm9ersAiWi9
+	 aSvHXaBNrCKBNo9Y=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66aeda44bf73-7d991;
+	Fri, 06 Nov 2026 17:56:29 +0800 (CST)
+X-RM-TRANSID:2ee66aeda44bf73-7d991
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36aeda44ca67-1bcff;
+	Fri, 06 Nov 2026 17:56:28 +0800 (CST)
+X-RM-TRANSID:2ee36aeda44ca67-1bcff
+From: xujiahao <xujiahao@cmss.chinamobile.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xujiahao <xujiahao@cmss.chinamobile.com>
+Subject: [PATCH net-next] liquidio: enlarge the interrupt name buffer
+Date: Fri,  6 Nov 2026 17:51:14 +0800
+Message-ID: <20261106095114.3564335-1-xujiahao@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,63 +72,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105115715.1466924-1-edumazet@kernel.org> <20261105115715.1466924-3-edumazet@kernel.org>
- <20261106042744-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261106042744-mutt-send-email-mst@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 6 Nov 2026 10:55:49 +0100
-X-Gmail-Original-Message-ID: <CAL4WiirN0keZgyx6bP-+_96FEAsQAHnbkgJ0fC+DcFCY3zjXvQ@mail.gmail.com>
-X-Gm-Features: AclHuK8ZDTLU4isi_dgkuIx-7_ncwrjPNhIMfW1viOX5kV74wv3XHkP7rOme_5c
-Message-ID: <CAL4WiirN0keZgyx6bP-+_96FEAsQAHnbkgJ0fC+DcFCY3zjXvQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/8] net: virtio: do not use dev->type to find the
- outer L3 header
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Hassan Sultan <hassansultan@google.com>, virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le ven. 6 nov. 2026 =C3=A0 10:28, Michael S. Tsirkin <mst@redhat.com> a =C3=
-=A9crit :
->
-> On Thu, Nov 05, 2026 at 12:57:09PM +0100, Eric Dumazet wrote:
-> > virtio_net_l3_start() decides from skb->dev->type whether the frame
-> > starts with an Ethernet header. tun decides it from the IFF_TAP and
-> > IFF_TUN flags, and TUNSETLINK can set the type of a down tun device
-> > to any value, without changing the flags.
-> >
-> > On an IFF_TAP device set to ARPHRD_NONE, the outer protocol checks
-> > look at the IP header at the network header (ETH_HLEN), and never read
-> > the Ethernet header. eth_type_trans() then sets skb->protocol from an
-> > unchecked h_proto, for instance ETH_P_NSH, and the packet can reach
-> > the skb_under_panic() addressed by the previous patch.
-> >
-> > On an IFF_TUN device set to ARPHRD_ETHER, the checks validate an
-> > Ethernet header that tun then treats as the start of the L3 header.
-> >
-> > Checking in tun that the device type matches the framing is not
-> > enough: the type is read again later, and a concurrent TUNSETLINK can
-> > change it in between, since tun_get_user() only drops packets of a
-> > down device after these checks.
-> >
-> > Add a has_eth argument to virtio_net_hdr_tnl_to_skb(), passed down to
-> > virtio_net_l3_start(), so the device type is no longer used:
-> >
-> > - virtio_net always receives Ethernet frames.
-> > - tun_get_user() passes whether the device is IFF_TAP.
-> > - tun_xdp_one() always calls eth_type_trans() on its frames.
-> >
-> > Fixes: 288f30435132 ("tun: enable gso over UDP tunnel support.")
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://lore.kernel.org/netdev/sashiko-outbox-198573@kernel.org=
-/
-> > Link: https://lore.kernel.org/netdev/179387332014.488856.91119564136101=
-07951@kernel.org/
-> > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
->
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+The PF and VF interrupt names are assembled as "LiquidIO%u-pf%u-rxtx-%u"
+and "LiquidIO%u-vf%u-rxtx-%u" into INTRNAMSIZ (32-byte) slots.  Three
+full-range %u do not fit, which gcc reports in a W=1 build:
 
-Sorry, I saw this reply too late, I sent v4 without it.
+  drivers/net/ethernet/cavium/liquidio/lio_core.c:1119:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
+  drivers/net/ethernet/cavium/liquidio/lio_core.c:1124:76: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 13 [-Wformat-truncation=]
+
+Enlarge INTRNAMSIZ to 64 bytes.  queue_irq_names is allocated with
+kcalloc(num_interrupts, INTRNAMSIZ) and the auxiliary name with
+kzalloc(INTRNAMSIZ), so both follow the new size.
+
+Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
+---
+ drivers/net/ethernet/cavium/liquidio/liquidio_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/cavium/liquidio/liquidio_common.h b/drivers/net/ethernet/cavium/liquidio/liquidio_common.h
+index 4da90757c..131e39299 100644
+--- a/drivers/net/ethernet/cavium/liquidio/liquidio_common.h
++++ b/drivers/net/ethernet/cavium/liquidio/liquidio_common.h
+@@ -102,7 +102,7 @@ enum octeon_tag_type {
+ 
+ #define BYTES_PER_DHLEN_UNIT        8
+ #define MAX_REG_CNT                 2000000U
+-#define INTRNAMSIZ                  32
++#define INTRNAMSIZ                  64
+ #define IRQ_NAME_OFF(i)             ((i) * INTRNAMSIZ)
+ #define MAX_IOQ_INTERRUPTS_PER_PF   (64 * 2)
+ #define MAX_IOQ_INTERRUPTS_PER_VF   (8 * 2)
+-- 
+2.43.0
+
+
+
