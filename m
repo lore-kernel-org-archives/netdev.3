@@ -1,67 +1,67 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793988772;
-	b=At+3bPTAdr+Yc3j1APQP5y/YOjDgWfmJXVm1klnlkWNO4dMixrrt2cuRU+EbETEHmBOv
-	 H+F+rhYbKpg1liGB5v2bE0X1XGP+wKgtyMBxp0M6TSi3XOCAHJpuZyk9RO0Tcv4n9zm+a
-	 8jPUypcGWwzVDZCZR+mIRKwjT7hha6mb3CYqxu6RsuutmE743JTZPU7wnqSYkrvy6HwRM
-	 eLOxjVWWuvsFrU7WMfrtDKNXZ7M8Tb0FkYDi32XKT1unGgX/1e958/cW2VnoxTcM5+oW3
-	 aJiGoofbTiED7wfd0xV77pvs3A+tf8nzjEvXuSX5u8ctai3E67Qs152qoYHv4PXzfVw==
+	b=BLTylu14azp9kYoHsjayd6uTECOHt1e4uzKEoVsr21chD2obaxmeuMTYYkuCoP6FtD/s
+	 jHf3DzFb+JcIgHIuqWyMtISIIVAqW6r6JmAH4jR/wopilRuSNed/fKSlnrjy/oHXq6iWR
+	 jHz2USBviUKirszEStRDIu/IXplO7Nd4hkMuqiI1nZNoImicrjXABgj1MIyq8ESVpHV0q
+	 foJe9mixlyyHWtv0kgboh/CEUzNiS79kuKiLgd7Lb79XNjnRR3oMdOYVpkkDIBjitIymK
+	 MFLxBaua/QmZvsfpT60rc7U5ffV8gqrNyAu0FUADa7ltFHAAP0FpDYfP4e+lnzqHJaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793988772;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-Reinject:X-QCInternal:
-	 X-QCInternal:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=gO0P5VpQuCoxaaenUEBBWz4dwRcwcFr6ChWhT2qPqTc=;
-	b=JtlDF3f7bHgiYmevj9K7ZhrHSVlJOlksChNtejNexnFzGjsI9SyRFaxpFsSDYzE4Wavm
-	 wIB9qmcUWlrcE+t6G9g7rHs2IsheN3tJzrV5ri1Um0ZT8K14symaQmgjrXAToKTri5W3J
-	 ghTrJ6HzS1c9Sqtkzx5PC4iqd/xwW54kO6gkHCHFqNJUmbgWbtLzcecmN7LPWT1SksRC0
-	 ZCSR91TPshjSbtAB/lF1sMzgVI8+pQyZY4TmxPrOdDoiAyFZuzoDM0hHEXZ44geq5tUoS
-	 EurnRMGYal8ZDrk35CVtUw53qINokyHhQjw112nOugZrcXmRrxXCGF3IHVgGGhh3msA==
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:
+	 X-Proofpoint-Reinject:X-QCInternal:X-QCInternal:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=oNsLcYoF33FhmwCvP5HecG0egJDQBNV3hUsv7xacvoQ=;
+	b=cHxe8ZwL7Ew3+fYbccbLx8/FTjd9V2mamYAO9Q8v6XLOycoLytcotmtz+0kAsCNHugbO
+	 mFM338Feu3lR58In0C3EJCSRhAbYTx6DAqRcgyMRiKF5+W/qVR8D/q1KWgIaFhywtHezW
+	 c0948tBioFzYbdNUSArox19LDPzN32TSgG05sNUtrtalAnFqBs+1KdH0Sfx8IwgnMIEI+
+	 31IGvaOEHMLomO4YpIbNzBbYdydv38oOH/+Kh+xKM+RMskPTwuNUMrqg0DfOaZbS7lasS
+	 R2MsowJ3MZLIw3JL8jZ0abVu1cKYjhUiQGmdzrV4dlPUiXMsSkGQgsabl8YKScxePQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.qualcomm.com;
 	spf=pass smtp.mailfrom=qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="Nr0EVk/t";
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=nB3xH7BO;
 	arc=none smtp.remote-ip=205.220.180.131
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B54606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7523C606A338
 	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:12:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96B54606A33B
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7523C606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Nr0EVk/t
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6HtA8w1075691;
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=nB3xH7BO
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6HtHe31100741;
 	Fri, 6 Nov 2026 18:12:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=gO0P5VpQuCoxaaenUEBBWz4dwRcwcFr6ChW
-	hT2qPqTc=; b=Nr0EVk/tjvtC/yicRRUQB+dSm9E1aLimK27ItlZh2USBaSU6blR
-	rsZs5ajNEYZEpUH1zGyOjmRfQxmLE2z07qW3v1b3K8aKd9R1KRnYh4O+i9zn5bw2
-	NpFTbS0EJMZ/kJXDz3KR+BTMOyjIcJ12lhatce5nYWvjRcxqpUh+uK8Yiz1EVNZv
-	wUMxXSTzrHTQuOTMBTibKZX/hwNo/zjA1sZ9C0YRwp/3IRIkXieDRTAE3LwWsns1
-	4lB9O65aChgI+HHDl8NlQCG3ZjhfipcEsisVf4b01baZfUlFgP95S19Yq3FHucC8
-	FliYbinvjEFIUctWSw5iEE0aAtKa4hrKLYw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hs3pb42s4-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=oNsLcYoF33F
+	hmwCvP5HecG0egJDQBNV3hUsv7xacvoQ=; b=nB3xH7BOE39PuaFEPI7tuM2X+VY
+	R6LemfzcCYk64uQcK1OfYYXukXbOlyr3lsCaJT7ilAUEDeUK4wd43HLizQDS6EPu
+	MAreND80W+PqbNIeqau4Ccwmo7JL9tNQBTEcxMpw3X+NviZvbIDHqpRtJG24svOO
+	+mljixigardCCVCXg9iMcK/gDDDnIR5tazzWSgfyHt89FprIC3TnTbZmGrZRmSpW
+	UXqr3hSodcb/8UhVqSlUe/alIC4cSCZPvTnKSk+hW+6UNPiJ4mBvYmSVFXHReWrP
+	Ay3D4u23JMfq9qoIi9+p+FmgaiAdSFiFxPpYb4S4pr3lsqLJWwDLzzFR2SQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hs3pav3cs-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Fri, 06 Nov 2026 18:12:36 +0000 (GMT)
-Received: from pps.filterd (nalasppmta02.qualcomm.com [127.0.0.1])
-	by NALASPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6ICZj0752657;
+Received: from pps.filterd (nalasppmta01.qualcomm.com [127.0.0.1])
+	by NALASPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6ICZ14587628;
 	Fri, 6 Nov 2026 18:12:35 GMT
 Received: from hu-devc-lv-u24-a.qualcomm.com (hu-zmckevit-lv.qualcomm.com [10.81.84.220])
-	by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 6A6ICYKl752643
+	by NALASPPMTA01.qualcomm.com (PPS) with ESMTPS id 6A6ICY17587615
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Fri, 06 Nov 2026 18:12:35 +0000 (GMT)
 Received: by hu-devc-lv-u24-a.qualcomm.com (Postfix, from userid 4696302)
-	id C893F2219E; Fri,  6 Nov 2026 10:12:34 -0800 (PST)
+	id D30A0222F7; Fri,  6 Nov 2026 10:12:34 -0800 (PST)
 From: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
 To: dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
         riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
@@ -71,10 +71,12 @@ To: dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
 Cc: jeff.hugo@oss.qualcomm.com, carl.vanderlip@oss.qualcomm.com,
         troy.hanson@oss.qualcomm.com, youssef.abdulrahman@oss.qualcomm.com,
         Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
-Subject: [PATCH v3 0/3] Extend drm_ras for qaic telemetry
-Date: Fri,  6 Nov 2026 10:12:22 -0800
-Message-ID: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
+Subject: [PATCH v3 2/3] drm/drm_ras: Extend DRM RAS interface to include telemetry nodes
+Date: Fri,  6 Nov 2026 10:12:24 -0800
+Message-ID: <20261106181225.3333260-3-zachary.mckevitt@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
+References: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -88,113 +90,765 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Reinject: loops=2 maxloops=12
 X-QCInternal: smtphost
 X-QCInternal: smtphost
-X-Proofpoint-GUID: F4tnFHbNGp3rUx4oFwT--3610XfbG8c8
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX7QlRicRznu9T
- OPJB5QBt92QBUbmScqWgc+c5bb52jgD1p/krKlHNRfRO0rlEAfz+zxgXg8wetBGeFZPFUZkC6NN
- vPnu6soCJjwCoQX7QJu42N6u84n7tu4=
-X-Authority-Analysis: v=2.4 cv=LIrz05W9 c=1 sm=1 tr=0 ts=6aee1894 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX0anRdvsdIjTW
+ 58TFjpLBMTffHWO+2wnvWoM4jxgrH3KXA+JmnufDiVYGfeYznUrpShs1cVN5iCMBzZ6vivbrYNO
+ xLVg9yoBORvXt5JnzQxN8Gr1rmB2iWsPHlX5YCP6PnpKY9R2zWJcHeF7Dass7V0XryAfFt9Ju1V
+ r5GBuyQXMoEhWotTanprfsi9YyQBCT+VV4CN9JDfpyFzqAWz6yOel341qITvp9204ve5tRAnD+Y
+ rOysuC0GIxnFrVA9e3ZmC7bRfH4j2COiLdIvkyKrZAqx1c98FUIkS6dirvIMR4FFFqo+1fuQcOw
+ YEG3x2EHVDfIG2L3w6zaq0nbvfFLWGYnSVmHoXVcm0ZxlMwebtNR2clzfp0SfFktatlwuPKg6LI
+ OQlu3NO4tltMZGm2veJCqGGPg6we0ztMaFbb2YKDcFc094jXT9mprXmi8RIhj6Eg7ZtfD/tdMAp
+ 90CILP0qFU/AHip1abA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX4BS7XmY2jOZd
+ V7sJWsPuWViRZSNdwrrbM9OdXuobZ7GKMoE0RXfiEthuCQ91TGBi6I4flWnXQE3U/UrNfOITda2
+ ZdvfCn2eIJ/TCQBHx2AyLQgP350bnJU=
+X-Proofpoint-GUID: BPslWG_d8gzA0CF7tZvXz6kdBlH96aCy
+X-Authority-Analysis: v=2.4 cv=P4ivFSAu c=1 sm=1 tr=0 ts=6aee1894 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=UCRyeg6Ua9RyKZwra7UA:9
-X-Proofpoint-ORIG-GUID: F4tnFHbNGp3rUx4oFwT--3610XfbG8c8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfXwcX5erxMvlw8
- R7P+iIYxL7LTAWsfATbGl1hQPK1QOr+GIOgOazWTEg1KPOSxLQSC0kmUWh5AbAbFlbpK6IDVkvX
- Q+MTkYccPdfIa5TyvilzzlRNh6ZX/FkgcCNsxnL4ryh/GcJhvnHODzPQsuHVHi0SITIReyzZ0bO
- XIyUZ4ww7FMPfpe91HRPeU9uDNjMSaNxAqo6lRHZ/wjpC2ExZ5Ru4XVcIDiJeQMjP63rJCIpTgn
- +T4YJoTenrMjICbdNzGw0szhaHMAZHW8Lgd1FVstuSkMjJzVRh9a3Mb2Cf00R8toIS4Q4WZQN1g
- jCIqS1RJY1S+xT+X0by69FzFeOt9KIrEbY0ah5l1B15nVvQuC7iov2mxS3Oyu2CcmB6LYkEu3dE
- H1xCSYCet0Ysw7VUxpBeWT5lAtWuADVtsnr/aFA2i7TmuoJTu6QxzB5TWEv2vQsu8BmN/DV+Q2q
- q98PTii3AARHxBMrCxg==
+ a=3WHJM1ZQz_JShphwDgj5:22 a=EUspDBNiAAAA:8 a=sSbG-8TrMBQ8RJo8-WwA:9
+X-Proofpoint-ORIG-GUID: BPslWG_d8gzA0CF7tZvXz6kdBlH96aCy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-06_06,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ adultscore=0 clxscore=1015 spamscore=0 phishscore=0 suspectscore=0
+ bulkscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
  impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
  definitions=main-2611060072
 
-This patch series extends the drm_ras netlink interface to include a new
-node type for telemetry nodes. Telemetry nodes support two operations,
-getting and setting, and drivers may specify an optional predoit function
-to validate each operation.
+Add a new node type, attribute set, and doit/dump functions for
+performing telemetry read and write operations using the DRM RAS
+interface.
 
-Telemetry get operations take the drm_ras node id and telemetry field to
-be read and return the field's value and any status reported by the driver.
-Telemetry set operations take the node id, telemetry field, and value,
-and return only the status reported by the driver.
+ynl-regen.sh was used to regenerate drm_ras_nl.c, drm_ras_nl.h, and
+include/uapi/drm/drm_ras.h from the drm_ras.yaml spec.
 
-This extension removes the admin requirement on the list-nodes operation.
-This allows drm_ras nodes to be discovered by userspace programs for
-drivers that do not necessarily require admin privileges, like qaic.
-
-The new drm_ras telemetry interface is implemented by the qaic driver,
-which exposes the telemetry fields to userspace and enforces filesystem-
-esque permission checks on telemetry operations in its telemetry_pre
-callback.
-
-Changes in v3:
- - Address Sashiko comments:
-    - Properly return status when telemetry request is successful but a
-      hardware error occurs.
-    - Validate telemetry fields against their gettable/settable fields
-      lists when invoking the predoit.
-    - Update documentation in include/drm/drm_ras.h.
-    - Moved calls to qaic_drm_ras_register/unregister to mhi_probe/remove
-      instead of pci_probe/remove.
-    - Added srcu read locks around calls to telemetry_request() in get
-      and set callbacks in qaic_telemetry.c.
-    - Added a tele_ch check to telemetry_request().
-    - Properly handle a -ERESTARTSYS return from
-      wait_for_completion_interrputable in telemetry_request().
-    - Ensure field can be truncated to a u8 in qaic's telemetry get and
-      set callbacks.
- - Minor code cleanups (typos, header ordering, etc).
-
-Link to v2: https://lore.kernel.org/all/20261029203000.1763447-1-zachary.mckevitt@oss.qualcomm.com/
-
-Changes in v2:
- - Address Sashiko comments:
-    - Initialize certain stack variables in drm_ras.c.
-    - Added attribute guards (GENL_REQ_ATTR_CHECK) in telemetry doits.
-    - Added a valid node check in drm_ras_nl_pre_telemetry.
-    - Fixed improper node callback in telemetry_set.
-    - Now registering drm_ras node after MHI initialization.
-    - Now removing drm_ras node before freeing MHI controller.
-    - Added scoped_with_init_fs guard to qaic_telemetry_pre's inode check.
-    - Fixed improper kfree in qaic_drm_ras_register_node.
- - Changed telemetry value attribute to sint and dropped padding attribute.
- - Updated documentation in drm_ras.yaml.
- - Renamed telemetry read/write to get/set.
- - Added dumpit for gettable and settable telemetry values.
- - Made telemetry_set optional and added admin-perm for it.
- - Specified ynl file regeneration in commit message for patch 2.
-
-Link to v1: https://lore.kernel.org/all/20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com/
-
-Zack McKevitt (3):
-  drm/drm_ras: Remove admin-perm flag from list-nodes operation
-  drm/drm_ras: Extend DRM RAS interface to include telemetry nodes
-  accel/qaic: Add callbacks for DRM RAS netlink telemetry
-
- Documentation/netlink/specs/drm_ras.yaml |  83 +++-
- drivers/accel/qaic/Makefile              |   1 +
- drivers/accel/qaic/qaic.h                |  19 +
- drivers/accel/qaic/qaic_drv.c            |  14 +
- drivers/accel/qaic/qaic_telemetry.c      | 563 +++++++++++++++++++++++
- drivers/accel/qaic/qaic_telemetry.h      |  18 +
- drivers/gpu/drm/drm_ras.c                | 331 ++++++++++++-
- drivers/gpu/drm/drm_ras_nl.c             |  55 ++-
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Signed-off-by: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+---
+ Documentation/netlink/specs/drm_ras.yaml |  82 +++++-
+ drivers/gpu/drm/drm_ras.c                | 329 ++++++++++++++++++++++-
+ drivers/gpu/drm/drm_ras_nl.c             |  53 ++++
  drivers/gpu/drm/drm_ras_nl.h             |   9 +
- include/drm/drm_ras.h                    |  67 +++
+ include/drm/drm_ras.h                    |  67 +++++
  include/uapi/drm/drm_ras.h               |  19 +-
- include/uapi/drm/qaic_accel.h            |  28 ++
- 12 files changed, 1190 insertions(+), 17 deletions(-)
- create mode 100644 drivers/accel/qaic/qaic_telemetry.c
- create mode 100644 drivers/accel/qaic/qaic_telemetry.h
+ 6 files changed, 545 insertions(+), 14 deletions(-)
 
+diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+index a88fdab7a1c7..cf015bba020d 100644
+--- a/Documentation/netlink/specs/drm_ras.yaml
++++ b/Documentation/netlink/specs/drm_ras.yaml
+@@ -16,11 +16,11 @@ definitions:
+     type: enum
+     name: node-type
+     value-start: 1
+-    entries: [error-counter]
++    entries: [error-counter, telemetry]
+     doc: >-
+-         Type of the node. Currently, only error-counter nodes are
+-         supported, which expose reliability counters for a hardware/software
+-         component.
++         Type of the node. The error-counter nodes expose reliability counters
++         for a hardware/software component, and telemetry nodes expose an
++         interface for reading and writing telemetry values to a device.
+ 
+ attribute-sets:
+   -
+@@ -100,6 +100,34 @@ attribute-sets:
+         name: error-value
+         type: u32
+         doc: Current value of the error counter.
++  -
++    name: telemetry-attrs
++    attributes:
++      -
++        name: node-id
++        type: u32
++        doc: >-
++             Unique identifier for the node.
++             Assigned dynamically by the DRM RAS core upon registration.
++      -
++        name: field
++        type: u32
++        doc:  Telemetry field to be read/written, e.g., SoC temp.
++      -
++        name: field-name
++        type: string
++        doc:  Name of the telemetry field defined by the device's uAPI.
++      -
++        name: value
++        type: sint
++        doc: Value of telemetry field that was read/written.
++      -
++        name: status
++        type: s32
++        doc: >-
++             Status of the telemetry operation.
++             Populated by the device in response to the performed
++             telemetry operation. Errors may be hardware specific.
+ 
+ operations:
+   list:
+@@ -198,6 +226,52 @@ operations:
+             - node-id
+             - error-id
+             - error-threshold
++    -
++      name: telemetry-get
++      doc: Perform a read of the specified telemetry field.
++      attribute-set: telemetry-attrs
++      do:
++        pre: drm-ras-nl-pre-telemetry
++        request:
++          attributes:
++            - node-id
++            - field
++        reply:
++          attributes:
++            - value
++            - status
++      dump:
++        request:
++          attributes:
++            - node-id
++        reply:
++          attributes: &telemetry-field-attrs
++            - field
++            - field-name
++    -
++      name: telemetry-set
++      doc: >-
++           Perform a write of the specified telemetry field.
++           Telemetry writes are device specific, and may be used to set
++           device limits or other capacities, for example.
++      attribute-set: telemetry-attrs
++      flags: [admin-perm]
++      do:
++        pre: drm-ras-nl-pre-telemetry
++        request:
++          attributes:
++            - node-id
++            - field
++            - value
++        reply:
++          attributes:
++            - status
++      dump:
++        request:
++          attributes:
++            - node-id
++        reply:
++          attributes: *telemetry-field-attrs
+ 
+ mcast-groups:
+   list:
+diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
+index 4f4777060a4e..fda50563c4a5 100644
+--- a/drivers/gpu/drm/drm_ras.c
++++ b/drivers/gpu/drm/drm_ras.c
+@@ -53,6 +53,15 @@
+  * 7. SET_ERROR_THRESHOLD: Set error threshold of a given counter.
+  *    Userspace must provide Node ID, Error ID and threshold to be set.
+  *
++ * 8. TELEMETRY_GET: Read a telemetry value.
++ *    Userspace must provide Node ID and telemetry field to be read.
++ *    Returns the status of the read and the value read (if valid).
++ *
++ * 9. TELEMETRY_SET: Write a telemetry value.
++ *    Userspace must provide Node ID, the telemetry field to write, and the value
++ *    to be written.
++ *    Returns the status of the write.
++ *
+  * Node registration:
+  *
+  * - drm_ras_node_register(): Registers a new node and assigns
+@@ -63,7 +72,6 @@
+  * Node type:
+  *
+  * - ERROR_COUNTER:
+- *     + Currently, only error counters are supported.
+  *     + The driver must implement the query_error_counter() callback to provide
+  *       the name and the value of the error counter.
+  *     + The driver must provide a error_counter_range.last value informing the
+@@ -81,6 +89,15 @@
+  *       that are raised by the hardware.
+  *     + The driver is responsible for error threshold bounds checking.
+  *
++ * - TELEMETRY:
++ *     + The driver must implement the telemetry_get() callbacks, telemetry_set()
++ *       is optional.
++ *     + The driver must provide a list of gettable telemetry fields corresponding
++ *       to their uAPI definitions and values. Settable telemetry fields are also
++ *       required if providing telemetry_set().
++ *     + The driver can optionally provide a pre_doit callback, telemetry_pre(),
++ *       to enforce permissions checks on telemetry operations.
++ *
+  * Netlink handlers:
+  *
+  * - drm_ras_nl_list_nodes_dumpit(): Implements the LIST_NODES
+@@ -95,6 +112,16 @@
+  *   operation, fetching the error threshold of a specific counter.
+  * - drm_ras_nl_set_error_threshold_doit(): Implements the SET_ERROR_THRESHOLD doit
+  *   operation, setting the error threshold of a specific counter.
++ * - drm_ras_nl_pre_telemetry(): Implements the TELEMETRY_READ and TELEMETRY_WRITE
++ *   pre_doit operation, returning 0 if valid.
++ * - drm_ras_nl_telemetry_get_dumpit(): Implements the TELEMETRY_GET dumpit
++ *   operation, fetching all readable telemetry values for a telemetry node.
++ * - drm_ras_nl_telemetry_get_doit(): Implements the TELEMETRY_GET doit operation,
++ *   invoking the driver's telemetry_get callback and returning the results.
++ * - drm_ras_nl_telemetry_set_dumpit(): Implements the TELEMETRY_SET dumpit
++ *   operation, fetching all writeable telemetry values for a telemetry node.
++ * - drm_ras_nl_telemetry_set_doit(): Implements the TELEMETRY_SET doit operation,
++ *   invoking the driver's telemetry_set callback and returning the results.
+  */
+ 
+ static DEFINE_XARRAY_ALLOC(drm_ras_xa);
+@@ -617,6 +644,285 @@ int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb, struct genl_info *i
+ 	return set_node_error_threshold(node_id, error_id, threshold);
+ }
+ 
++/**
++ * drm_ras_nl_pre_telemetry - Enforce permission checks
++ * @ops: Generic netlink operations
++ * @skb: Netlink message buffer
++ * @info: Generic Netlink info containing attributes of the request
++ *
++ * Enforces a telemetry node's pre_doit conditions (if they exist).
++ *
++ * Returns 0 if no pre_doit is specified, otherwise returns the pre_doit.
++ */
++int drm_ras_nl_pre_telemetry(const struct genl_split_ops *ops, struct sk_buff *skb,
++			     struct genl_info *info)
++{
++	struct drm_ras_node *node;
++	u32 node_id;
++
++	if (!info->attrs || GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID))
++		return -EINVAL;
++
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node)
++		return -ENOENT;
++
++	if (node->telemetry_pre)
++		return node->telemetry_pre(node);
++
++	return 0;
++}
++
++static bool telemetry_fields_contains(const struct drm_ras_telemetry_field *fields, u32 value)
++{
++	unsigned long idx;
++
++	if (!fields)
++		return false;
++
++	for (idx = 0; fields[idx].name; idx++) {
++		if (fields[idx].value == value)
++			return true;
++	}
++
++	return false;
++}
++
++static int telemetry_fields_dumpit(struct sk_buff *skb, struct netlink_callback *cb,
++				   const struct drm_ras_telemetry_field *fields)
++{
++	const struct genl_info *info = genl_info_dump(cb);
++	struct drm_ras_ctx *ctx = (void *)cb->ctx;
++	const struct drm_ras_telemetry_field *field;
++	struct nlattr *hdr;
++	unsigned long idx;
++	int ret = 0;
++
++	if (!fields)
++		return -EOPNOTSUPP;
++
++	for (idx = ctx->restart; fields[idx].name; idx++) {
++		field = &fields[idx];
++
++		hdr = genlmsg_iput(skb, info);
++		if (!hdr) {
++			ret = -EMSGSIZE;
++			break;
++		}
++
++		ret = nla_put_u32(skb, DRM_RAS_A_TELEMETRY_ATTRS_FIELD, field->value);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		ret = nla_put_string(skb, DRM_RAS_A_TELEMETRY_ATTRS_FIELD_NAME, field->name);
++		if (ret) {
++			genlmsg_cancel(skb, hdr);
++			break;
++		}
++
++		genlmsg_end(skb, hdr);
++	}
++
++	if (ret == -EMSGSIZE)
++		ctx->restart = idx;
++
++	return ret;
++}
++
++/**
++ * drm_ras_nl_telemetry_get_dumpit() - Dump readable telemetry fields.
++ * @skb: Netlink message buffer
++ * @cb: Callback context for multi-part dumps
++ *
++ * Displays the set of readable telemetry fields that is specified by
++ * the device for the given node.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_telemetry_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	const struct genl_info *info = genl_info_dump(cb);
++	struct drm_ras_node *node;
++	u32 node_id;
++
++	if (!info->attrs || GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID))
++		return -EINVAL;
++
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node)
++		return -ENOENT;
++
++	return telemetry_fields_dumpit(skb, cb, node->telemetry_fields_gettable);
++}
++
++/**
++ * drm_ras_nl_telemetry_get_doit() - Query a telemetry value
++ * @skb: Netlink message buffer
++ * @info: Generic Netlink info containing attributes of the request
++ *
++ * Extracts the telemetry field from the netlink attributes and
++ * reads that value from the device.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_telemetry_get_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct drm_ras_node *node;
++	struct sk_buff *msg;
++	struct nlattr *hdr;
++	u32 node_id, field;
++	s32 status = 0;
++	s64 value = 0;
++	int ret = 0;
++
++	if (!info->attrs ||
++	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID) ||
++	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_FIELD))
++		return -EINVAL;
++
++	field = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD]);
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node || !node->telemetry_get)
++		return -ENOENT;
++
++	if (!telemetry_fields_contains(node->telemetry_fields_gettable, field))
++		return -EINVAL;
++
++	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
++	if (!msg)
++		return -ENOMEM;
++
++	hdr = genlmsg_iput(msg, info);
++	if (!hdr) {
++		nlmsg_free(msg);
++		return -EMSGSIZE;
++	}
++
++	ret = node->telemetry_get(node, &field, &value, &status);
++	if (ret) {
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	ret = nla_put_s32(msg, DRM_RAS_A_TELEMETRY_ATTRS_STATUS, status);
++	if (ret) {
++		genlmsg_cancel(msg, hdr);
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	ret = nla_put_sint(msg, DRM_RAS_A_TELEMETRY_ATTRS_VALUE, value);
++	if (ret) {
++		genlmsg_cancel(msg, hdr);
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	genlmsg_end(msg, hdr);
++
++	return genlmsg_reply(msg, info);
++}
++
++/**
++ * drm_ras_nl_telemetry_set_dumpit() - Dump writeable telemetry fields.
++ * @skb: Netlink message buffer
++ * @cb: Callback context for multi-part dumps
++ *
++ * Displays the set of writeable telemetry fields that is specified by
++ * the device for the given node.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_telemetry_set_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	const struct genl_info *info = genl_info_dump(cb);
++	struct drm_ras_node *node;
++	u32 node_id;
++
++	if (!info->attrs || GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID))
++		return -EINVAL;
++
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node)
++		return -ENOENT;
++
++	return telemetry_fields_dumpit(skb, cb, node->telemetry_fields_settable);
++}
++
++/**
++ * drm_ras_nl_telemetry_set_doit() - Write a telemetry value
++ * @skb: Netlink message buffer
++ * @info: Generic Netlink info containing attributes of the request
++ *
++ * Extracts the telemetry field and value to be written from the netlink
++ * attributes and writes that value to the specified field on the device.
++ *
++ * Return: 0 on success, or negative errno on failure.
++ */
++int drm_ras_nl_telemetry_set_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct drm_ras_node *node;
++	struct sk_buff *msg;
++	struct nlattr *hdr;
++	u32 node_id, field;
++	s32 status = 0;
++	s64 value = 0;
++	int ret = 0;
++
++	if (!info->attrs ||
++	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID) ||
++	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_VALUE) ||
++	    GENL_REQ_ATTR_CHECK(info, DRM_RAS_A_TELEMETRY_ATTRS_FIELD))
++		return -EINVAL;
++
++	value = nla_get_sint(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_VALUE]);
++	field = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD]);
++	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
++
++	node = xa_load(&drm_ras_xa, node_id);
++	if (!node || !node->telemetry_set)
++		return -ENOENT;
++
++	if (!telemetry_fields_contains(node->telemetry_fields_settable, field))
++		return -EINVAL;
++
++	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
++	if (!msg)
++		return -ENOMEM;
++
++	hdr = genlmsg_iput(msg, info);
++	if (!hdr) {
++		nlmsg_free(msg);
++		return -EMSGSIZE;
++	}
++
++	ret = node->telemetry_set(node, &field, &value, &status);
++	if (ret) {
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	ret = nla_put_s32(msg, DRM_RAS_A_TELEMETRY_ATTRS_STATUS, status);
++	if (ret) {
++		genlmsg_cancel(msg, hdr);
++		nlmsg_free(msg);
++		return ret;
++	}
++
++	genlmsg_end(msg, hdr);
++
++	return genlmsg_reply(msg, info);
++}
++
+ /**
+  * drm_ras_node_register() - Register a new RAS node
+  * @node: Node structure to register
+@@ -631,14 +937,21 @@ int drm_ras_node_register(struct drm_ras_node *node)
+ 	if (!node->device_name || !node->node_name)
+ 		return -EINVAL;
+ 
+-	/* Currently, only Error Counter Endpoints are supported */
+-	if (node->type != DRM_RAS_NODE_TYPE_ERROR_COUNTER)
+-		return -EINVAL;
+-
+-	/* Mandatory entries for Error Counter Node */
+-	if (node->type == DRM_RAS_NODE_TYPE_ERROR_COUNTER &&
+-	    (!node->error_counter_range.last || !node->query_error_counter))
++	/* Currently, only Error Counter and Telemetry endpoints are supported */
++	switch (node->type) {
++	case DRM_RAS_NODE_TYPE_ERROR_COUNTER:
++		/* Mandatory entries for Error Counter Node */
++		if (!node->error_counter_range.last || !node->query_error_counter)
++			return -EINVAL;
++		break;
++	case DRM_RAS_NODE_TYPE_TELEMETRY:
++		/* Must provide telemetry_get, telemetry_set is optional */
++		if (!node->telemetry_get || !node->telemetry_fields_gettable)
++			return -EINVAL;
++		break;
++	default:
+ 		return -EINVAL;
++	}
+ 
+ 	return xa_alloc(&drm_ras_xa, &node->id, node, xa_limit_32b, GFP_KERNEL);
+ }
+diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+index ff0dc406c27c..19e3683fb35a 100644
+--- a/drivers/gpu/drm/drm_ras_nl.c
++++ b/drivers/gpu/drm/drm_ras_nl.c
+@@ -41,6 +41,29 @@ static const struct nla_policy drm_ras_set_error_threshold_nl_policy[DRM_RAS_A_E
+ 	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD] = { .type = NLA_U32, },
+ };
+ 
++/* DRM_RAS_CMD_TELEMETRY_GET - do */
++static const struct nla_policy drm_ras_telemetry_get_do_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_FIELD + 1] = {
++	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
++	[DRM_RAS_A_TELEMETRY_ATTRS_FIELD] = { .type = NLA_U32, },
++};
++
++/* DRM_RAS_CMD_TELEMETRY_GET - dump */
++static const struct nla_policy drm_ras_telemetry_get_dump_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID + 1] = {
++	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
++};
++
++/* DRM_RAS_CMD_TELEMETRY_SET - do */
++static const struct nla_policy drm_ras_telemetry_set_do_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_VALUE + 1] = {
++	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
++	[DRM_RAS_A_TELEMETRY_ATTRS_FIELD] = { .type = NLA_U32, },
++	[DRM_RAS_A_TELEMETRY_ATTRS_VALUE] = { .type = NLA_SINT, },
++};
++
++/* DRM_RAS_CMD_TELEMETRY_SET - dump */
++static const struct nla_policy drm_ras_telemetry_set_dump_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID + 1] = {
++	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
++};
++
+ /* Ops table for drm_ras */
+ static const struct genl_split_ops drm_ras_nl_ops[] = {
+ 	{
+@@ -83,6 +106,36 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
+ 		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
+ 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
++	{
++		.cmd		= DRM_RAS_CMD_TELEMETRY_GET,
++		.pre_doit	= drm_ras_nl_pre_telemetry,
++		.doit		= drm_ras_nl_telemetry_get_doit,
++		.policy		= drm_ras_telemetry_get_do_nl_policy,
++		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_FIELD,
++		.flags		= GENL_CMD_CAP_DO,
++	},
++	{
++		.cmd		= DRM_RAS_CMD_TELEMETRY_GET,
++		.dumpit		= drm_ras_nl_telemetry_get_dumpit,
++		.policy		= drm_ras_telemetry_get_dump_nl_policy,
++		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID,
++		.flags		= GENL_CMD_CAP_DUMP,
++	},
++	{
++		.cmd		= DRM_RAS_CMD_TELEMETRY_SET,
++		.pre_doit	= drm_ras_nl_pre_telemetry,
++		.doit		= drm_ras_nl_telemetry_set_doit,
++		.policy		= drm_ras_telemetry_set_do_nl_policy,
++		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_VALUE,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
++	},
++	{
++		.cmd		= DRM_RAS_CMD_TELEMETRY_SET,
++		.dumpit		= drm_ras_nl_telemetry_set_dumpit,
++		.policy		= drm_ras_telemetry_set_dump_nl_policy,
++		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
++	},
+ };
+ 
+ static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
+diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
+index 9aef097ea10f..ad3b28f2d809 100644
+--- a/drivers/gpu/drm/drm_ras_nl.h
++++ b/drivers/gpu/drm/drm_ras_nl.h
+@@ -12,6 +12,9 @@
+ 
+ #include <uapi/drm/drm_ras.h>
+ 
++int drm_ras_nl_pre_telemetry(const struct genl_split_ops *ops,
++			     struct sk_buff *skb, struct genl_info *info);
++
+ int drm_ras_nl_list_nodes_dumpit(struct sk_buff *skb,
+ 				 struct netlink_callback *cb);
+ int drm_ras_nl_get_error_counter_doit(struct sk_buff *skb,
+@@ -24,6 +27,12 @@ int drm_ras_nl_get_error_threshold_doit(struct sk_buff *skb,
+ 					struct genl_info *info);
+ int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb,
+ 					struct genl_info *info);
++int drm_ras_nl_telemetry_get_doit(struct sk_buff *skb, struct genl_info *info);
++int drm_ras_nl_telemetry_get_dumpit(struct sk_buff *skb,
++				    struct netlink_callback *cb);
++int drm_ras_nl_telemetry_set_doit(struct sk_buff *skb, struct genl_info *info);
++int drm_ras_nl_telemetry_set_dumpit(struct sk_buff *skb,
++				    struct netlink_callback *cb);
+ 
+ enum {
+ 	DRM_RAS_NLGRP_ERROR_REPORT,
+diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
+index 1765a3130b09..1b2a40040c3b 100644
+--- a/include/drm/drm_ras.h
++++ b/include/drm/drm_ras.h
+@@ -10,6 +10,16 @@
+ 
+ #include <uapi/drm/drm_ras.h>
+ 
++/**
++ * struct drm_ras_telemetry_field - A descriptor of a telemetry field.
++ */
++struct drm_ras_telemetry_field {
++	/** @name: The enum or macro name defined by the device uAPI. */
++	const char *name;
++	/** @value: The numerical value of the field. */
++	u32 value;
++};
++
+ /**
+  * struct drm_ras_node - A DRM RAS Node
+  */
+@@ -100,6 +110,63 @@ struct drm_ras_node {
+ 	 */
+ 	int (*set_error_threshold)(struct drm_ras_node *node, u32 error_id, u32 threshold);
+ 
++	/* Telemetry Related Callback and Variables */
++
++	/**
++	 * @telemetry_fields_gettable:
++	 *
++	 * A list of gettable telemetry fields for a device.
++	 * The list must be terminated by a NULL .name entry.
++	 */
++	const struct drm_ras_telemetry_field *telemetry_fields_gettable;
++
++	/**
++	 * @telemetry_fields_settable:
++	 *
++	 * A list of settable telemetry fields for a device.
++	 * The list must be terminated by a NULL .name entry.
++	 */
++	const struct drm_ras_telemetry_field *telemetry_fields_settable;
++
++	/**
++	 * @telemetry_pre:
++	 *
++	 * This callback is used to enforce any pre_doit conditions necessary
++	 * for telemetry. This is an optional callback for telemetry_node.
++	 *
++	 * Returns 0 on success, negative error code on failure.
++	 */
++	int (*telemetry_pre)(struct drm_ras_node *ep);
++
++	/**
++	 * @telemetry_get:
++	 *
++	 * This callback is used for a drm-ras telemetry node to read a
++	 * telemetry value. This is a mandatory callback for telemetry_node.
++	 *
++	 * The callback will read the desired device-specific field into value
++	 * and update status corresponding to a device-specific error code.
++	 *
++	 * Returns 0 on success, negative error code on failure.
++	 */
++	int (*telemetry_get)(struct drm_ras_node *ep, u32 *field, s64 *value,
++			     s32 *status);
++
++	/**
++	 * @telemetry_set:
++	 *
++	 * This callback is used for a drm-ras telemetry node to write a
++	 * telemetry value. This is an optional callback for telemetry_node.
++	 *
++	 * The callback will write the value to the desired device-specific
++	 * field and update status corresponding to a device-specific error
++	 * code.
++	 *
++	 * Returns 0 on success, negative error code on failure.
++	 */
++	int (*telemetry_set)(struct drm_ras_node *ep, u32 *field, s64 *value,
++			     s32 *status);
++
+ 	/** @priv: Driver private data */
+ 	void *priv;
+ };
+diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
+index 2f832275ee6e..4776c2f9cb5a 100644
+--- a/include/uapi/drm/drm_ras.h
++++ b/include/uapi/drm/drm_ras.h
+@@ -11,11 +11,13 @@
+ #define DRM_RAS_FAMILY_VERSION	1
+ 
+ /*
+- * Type of the node. Currently, only error-counter nodes are supported, which
+- * expose reliability counters for a hardware/software component.
++ * Type of the node. The error-counter nodes expose reliability counters for a
++ * hardware/software component, and telemetry nodes expose an interface for
++ * reading and writing telemetry values to a device.
+  */
+ enum drm_ras_node_type {
+ 	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
++	DRM_RAS_NODE_TYPE_TELEMETRY,
+ };
+ 
+ enum {
+@@ -51,6 +53,17 @@ enum {
+ 	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
+ };
+ 
++enum {
++	DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_TELEMETRY_ATTRS_FIELD,
++	DRM_RAS_A_TELEMETRY_ATTRS_FIELD_NAME,
++	DRM_RAS_A_TELEMETRY_ATTRS_VALUE,
++	DRM_RAS_A_TELEMETRY_ATTRS_STATUS,
++
++	__DRM_RAS_A_TELEMETRY_ATTRS_MAX,
++	DRM_RAS_A_TELEMETRY_ATTRS_MAX = (__DRM_RAS_A_TELEMETRY_ATTRS_MAX - 1)
++};
++
+ enum {
+ 	DRM_RAS_CMD_LIST_NODES = 1,
+ 	DRM_RAS_CMD_GET_ERROR_COUNTER,
+@@ -58,6 +71,8 @@ enum {
+ 	DRM_RAS_CMD_ERROR_EVENT,
+ 	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
+ 	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
++	DRM_RAS_CMD_TELEMETRY_GET,
++	DRM_RAS_CMD_TELEMETRY_SET,
+ 
+ 	__DRM_RAS_CMD_MAX,
+ 	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
 -- 
 2.43.0
 
