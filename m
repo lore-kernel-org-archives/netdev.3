@@ -1,49 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793960406;
-	b=ZQHsSAbSgi1nA4c95d7DwuBJZU+n7TDFmmfFS9E2kugykMcZ/vjj6hv6O9gl+qTxOotw
-	 SzTXIqak5gcG9GMV5gnyb45zYB5b2ROXp44Z32KecAdRyWdibbeWyW512/5UMQeGU0Z7i
-	 Eqm4QfQ34BDJoTSqWBzmqa5fPjUe4MKc88VA9gwDfRlzwUjM7ZBuQIBTkbyItGC8P+p5p
-	 qHm/5dCiKOV2Z+ywPCoKsiRUjU1q/4M80U3Ot11P8SIkAQafcO+Ly1Y/+KAX2XDnf5/uL
-	 aubszEpDXyby1ydvecnTJC9vAoinRsEwm4s/p6iTsh2L59Bm4iHZOEV7WgAAbJXPNYQ==
+	t=1793961082;
+	b=4iQdCSCoyy2Lp/cJE7iQvvOKEm3UyrY4ahH9vlcKgf31scQObZW9Q9ZDGAtvdDMcloAd
+	 REfWVNKCRF8iBI+lbw3pFIIgHFSUwnti+pgKRUXAwdJPulbZ0sLSmWbLTc3rSPjLeQO1T
+	 bWAYqiyHT9xckY++anJMtz9mGBVkPsn4inhtNQnZosBM/BLpVKrnbKguWBmJDSp+cKIZi
+	 wE4CvM6C4qZBaicMgIZrrwUKWYgGJypfBq4o1WNjTNacx3hsYSo4PBpG3Yg/vbUo7ndSG
+	 pbglrReWFZPJFLMAV4dAOtz2L4aXGXqI0nTWhAMGBo7vVZ7B9xqGLeyXAtJWGuVTNRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793960406;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=JNl5Xakwn7jLlETiJBK8Gnvf3fDOngSL4R4QB3bVpzo=;
-	b=u+ng2VtF5dzvpyeZErIQvGk+B0Gz23Y+R3/kbDVIQGhm/WnQTVhcqlS/XNd5g8jf26Cx
-	 2QtBKJyPbUgtYgng9jIEJUZx0WUKfnDoxbY0YsMKXUzX47eDAcGAGKDC9EzZKeL8q5oiu
-	 4bcZc9r/WTxIG+9YeXHhfBo7wYxcw4gJsl9CDGKVOKq7j29EbKSyr3HLhxncc/a0vz9pp
-	 OUB+cbV67bKm9atC6AOzaoTp39G5zw3ASIyn6YfHxyFMoRBO1OxKEu+HqviOhfFu3XBfs
-	 r9Rh7G/HCdX0jjJpkfU5B+Ue9nEOy9I1xVqaersL+FC0t/1EWRhrZxuxmIgpkOCVTHA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793961082;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=w12peOFymWKjUViaaf9nps9PbjYDf8OvKh2+tzPpz8Y=;
+	b=zFd18NnIZhUrPmGexD7N5vz142f4fKyTMkm67OJenm/GfOToyXmYjQwVYNWN06Vw3uyo
+	 G0c0SwFT0k6UEyudOGBzWKsKqIL7yBThgjmB2RenQfqXgkmArLKxppnLGwPcIyrD5nvp1
+	 YRLSV6Bx7mHJQ/LQV5npD6dTXJRrNJ5v+wdvf+kualUlLtQhwpGtzztcovnG10ZMOd+Ik
+	 fns/1hre3MGTERjCGAYo4WoJe/DnmrjY7sjWnVQ90YtzjkNMEQYOlQrhouuAgA4E+a9GH
+	 +ho2vWQwWyu319nY/O4s3TZ8S/zuHr8vdMdVEHXA5q9YJSgOP0dz9kHTFTY+Um4h30Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMlhxpE7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b="Z4/u4akj";
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C33C6082BD7;
-	Fri,  6 Nov 2026 10:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B33E606A326;
+	Fri,  6 Nov 2026 10:31:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B33E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMlhxpE7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FE91F008A3;
-	Fri,  6 Nov 2026 10:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793960405;
-	bh=JNl5Xakwn7jLlETiJBK8Gnvf3fDOngSL4R4QB3bVpzo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AMlhxpE7ccDf9aq0sq4DRpa/AYB94KUdxbV0HQFIp5A/p7i9xlKmcwto1X/DXyluF
-	 scxzMWYViSbOjAujSQa5aWF9eaWvu3NLp1YMXOj54XeJEe2UPRNpkSrMRCPeCKnV74
-	 v2ax4OqKZ86wlK/Cnh5/Npbevnd60UuXxUqiWAXr42BNqqMGBVE+93Ux4IVzpSZ8wR
-	 mp7vit4xYDMmT96dmcU7kzWvkkGmBmpPrBeCCtzrVUgt+AMndCUvInKL2I3fSbEgnu
-	 1ZX1bTGrRBDy9+E9aJ1ncyd+99YcczBtn9XRX5Kwv1WiJy+zxFwh4cIadUuutizotX
-	 FmADaxTr4vv0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B0503924A54;
-	Fri,  6 Nov 2026 10:20:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=Z4/u4akj
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 211DBA05A6;
+	Fri, 06 Nov 2026 11:31:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793961072; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=w12peOFymWKjUViaaf9nps9PbjYDf8OvKh2+tzPpz8Y=;
+	b=Z4/u4akj+l7mZpAF5EZkgDjakW61Fv8tlB8qOzi7apbypm7QdD6bQOQVMLE9oKJBn96wSX
+	C8/RhfSKJAAIRk6nZGFJWfRSM4SFTBr/2dDp9EKNODFQ6wBA762PodBtSWM46uExjmxLeE
+	DDMUBis6NTgRoAsRvlC3z2UJ9zJaSphmFn0QRPMU2Mx4KU+2jtxEqfm/q+T84ZWWNsQ/za
+	WYC/A0BNfD9D8PAtqJfWkVN8KuhXGeZlJgvnLOIMTQ4cMQNryLfB8oFqPwXmkTYGj5vPFo
+	8vLzvvQ5gnetW6G41E96v/zcTmx7sSzTRHYd0WwJYAW4Y7Mw/GAONE3WjQ5H7Q==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,43 +53,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] hv_netvsc: Stop PPI parsing on invalid metadata
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179396040443.513493.15670101315738233771.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 10:20:04 +0000
-References: <20261030093459.4004663-1-ernis@linux.microsoft.com>
-In-Reply-To: <20261030093459.4004663-1-ernis@linux.microsoft.com>
-To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, lkmlabelt@gmail.com,
- parri.andrea@gmail.com, linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, liuwe@microsoft.com
+Date: Fri, 06 Nov 2026 11:31:10 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Nicolai Buchwitz <nb@tipi-net.de>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Pierre-Marin Leclercq
+ <pierremarinleclercq88@gmail.com>, Dave Stevenson
+ <dave.stevenson@raspberrypi.com>, Justin Chen <justin.chen@broadcom.com>
+Subject: Re: [PATCH net-next v6 0/9] net: bcmgenet: support larger MTUs
+In-Reply-To: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+References: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+Message-ID: <d6ca04a7139130ce43d6b184351e5204@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+On 3.11.2026 11:04, Nicolai Buchwitz wrote:
+> This is v6 of my genet series which adds larger MTU / jumbo packet 
+> support.
 
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
+Looks like clashiko didn't send the mails as usual, but I agree with 
+most of it's
+findings [1]. Will send a v7 with the fixes.
 
-On Fri, 30 Oct 2026 02:34:59 -0700 you wrote:
-> rndis_get_ppi() uses continue when a per-packet information entry has an
-> invalid size or offset, or cannot hold the requested metadata. However,
-> the remaining length and entry pointer are only updated at the bottom
-> of the loop. Each error path therefore retries the same invalid entry
-> indefinitely, repeatedly logging the error and preventing receive
-> processing from completing.
-> 
+[1] 
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5%40tipi-net.de
+
 > [...]
 
-Here is the summary with links:
-  - [net,v2] hv_netvsc: Stop PPI parsing on invalid metadata
-    https://git.kernel.org/netdev/net/c/19a227903e65
+Regards,
+Nicolai
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+--
+pw-bot: cr
 
