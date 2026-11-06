@@ -1,79 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
 	t=1793951947;
-	b=4g2R5Cwz4EcjsqpjLLGMlVtec880I0/ijmdHO5dSOgNOYLc2xuCTHpGG49vVYnaU6BG6
-	 GjAWyVPKEOF+qe1sVS7NK3Z8jQzpCaYdn0couQ2k3xHP2h0Yt9yFUDEfMHPBnqqNnPuUu
-	 0OB3AgVRiBcNlQ8uQ1GIWKmEunIBhL0UQQM6Wturv/bOBiqjHSiM/VVXhsSGMjTr3E3JR
-	 vPS4HNckrkBxACRi6uWjnIGhuMQeTCiLK7R596EedzT+aPl4Je6FgCV5IjlFwqqszTYx0
-	 bUHHIQia5w6EP9so6niVlp+wLlR8JZ1jBJzNDVM+6kOAet6VlqbbSDzqp36tADCkItA==
+	b=c4JII6g3j6jO/Ola6ylTX9QXnDI6n5NWcsOIRJy85fDJzmFMUv+uvsTmo112G9vqhDOl
+	 JIJ/z5VBUlt2BrxQIGGBYoxBZ8+SXjDgTcqf5zCnKTeZBIh3phviY1PHV19v+mgjrFkUg
+	 tlbkhShDepqUBY46PsBoOcMbEVyqf/thz7hgmwhT3vrH0EgUVvDl2+sxPphtcI5Q8jJpG
+	 63WeP+TIam5xT3jz5XHumctpK4Rwn1K6yUKptX7oEWMSFcg6CkxN7aXIczR3xnlSswsKG
+	 vLBSDaI0abtOggGb5p2FU/Z5etj0fHif/mjezc7alpyIpMBekVAol+N2EQ83h+YjuOw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793951947;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=kPbSQnSE/QJ3x1rfPbGOXpcL9+sompGSau+wLZMj/jY=;
-	b=od2q4CHzX7aXJqgB2BnCP408LTZwg3ykkYYKINzcZKJO4GFajVYGnPNKRvul3WdYlzAV
-	 4js+rEtKdwP98/wH4bJrSx3Hs5XQy6yYqnSDZ+DH3arBPuxnBU+vJs3s9SQDOsgBRyAxS
-	 SF7bkhfGpgL93Z5kH/NPzgboQLv3uulqkMrkV055s1zZr+1JwTyD6c4g4jGqpM9K3thwA
-	 Ts/+KSH2yZMkOOqWScnwH4V5VUlFK0uGyHDeKUfUraJYZSEg3PrXjkwI9hSehfUKl9HHZ
-	 bNIErD2yuUeiB7byoelnPHnmOg6pER/iIurp/DD2/YaiQpgx0W8Yw+L3xxSf9MTO2GQ==
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=jcrs75do3SplBoI37hg1MInUN49XcuGYOTz0cGN/Z2U=;
+	b=qgvVmk0RybEsXQ4krVOhAzt7SX1aQ9/6LCAEKFu+/SC1iU5Oelklfk/+wPwJZr0BBrtA
+	 qFNeC0DWKr3BsBq5p1ufWcau/tu5RJoyR9FGdeK5ZGG37k8YWprN9s32g9p1jYcUZSlqk
+	 tt9sYOMf+rYmkXAQFfRUtjE/lxNOKYun0UxtNYTXpWSYpdQWuinlZosAZ9cnUzxrhh4ml
+	 cJgSRjk2xURRnaufCD7eT014aHmZuYp/OxYSldr+Brtl8ySuGqsLx1QJcmDIwmqLHMIGw
+	 Qnkx1FM4EBJpS541+N3KVnYkfjrA8ABpQ/LoJaG/9cVPUJ38ZEW/oNcpesaOVKj27SA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ReNeYfCO;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="gaIfR7Z/";
 	arc=fail smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DAC606A329;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93835606A32C;
 	Fri,  6 Nov 2026 07:59:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60DAC606A329
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93835606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=ReNeYfCO
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=gaIfR7Z/
 Received: from ratatoskr.trumtrar.info (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
 	(Authenticated sender: str@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9F45F20041D;
-	Fri, 06 Nov 2026 08:59:02 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C3691201E0D;
+	Fri, 06 Nov 2026 08:59:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793951942;
+	s=20260414; t=1793951944;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kPbSQnSE/QJ3x1rfPbGOXpcL9+sompGSau+wLZMj/jY=;
-	b=ReNeYfCODfomlVdCheXppJS3kDPTfv3rlI0YZvjJ/dtPnNwHYpmcExyjMdsrh/CBRF2XY2
-	qolZHRay0uslgFVT01et+9/nYwOVCUyFhQiSkmMhbPOTcEN4c5QSCohzHrjMumo1gfg+1F
-	OkR9MtMtd1Bjg9FGot7qliNj2NAugwfv6NReWAYR7pjuPXwYjhV4TNNZK9ywcw1hQEiZNJ
-	Fc938oMv1iLS5M60NIpuPFZvhQxAMl1Zb5974ZVPpkeGhp8+lurrhv9KTwuD5gQDW+q+Wh
-	qqfp1IIVpSIcazMCtGwhanKbqCYswz88GaDV6EkYGBHCJRvwJonREXBXywIhZQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jcrs75do3SplBoI37hg1MInUN49XcuGYOTz0cGN/Z2U=;
+	b=gaIfR7Z/rBK5v7/l5FOzbBZOTAeKLfInkphiV52Tw6o/Ll1d9W3wQqXEOehOJ/ePTA8nuZ
+	ZVQkPOYlPdfMWjzqUnjE6Ml+xxiNqWM7qNQp+lOIQ1NrEq8tZNG6KnKHryk+9DGbo7sRjw
+	x8isu4sjSTZUcA4XVk4aQyziJQNe3/j5rOzO9a1qO82gqKL5lP7nTUxo1Ju6bceuXeeTVg
+	tsQEYiR5WAaTCTHUCXnI7JhmAvc34JSgQlLtdYOx03xOgxrcDghpOLarXExBmm6hVvQg1n
+	qtJRI5qCpKXUBOTRW2JehP7sRJjrIuMtxUzv2a/TjfCU+Yje/pxfXHmqTkCqcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793951942;
+	s=20260414; t=1793951944;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kPbSQnSE/QJ3x1rfPbGOXpcL9+sompGSau+wLZMj/jY=;
-	b=KE90NvHM+cd2vMrolv6/WcqIH2pfZ/OfuyV/xvREFuN7lMNiNc1WumxkyXqq9GQJjInHzV
-	rAgCQMJXolHuSArrE5EftrtTuBBAXAeO07Q2q9MrZzCIWR/pHjFy0FQqyIbYZNmqhEfTPz
-	LIULrT36MOdWrxRbSavmPmwXdDRxC3nandjHlCrOHGdj9q+AsriMdGbNT+Q/zwqi5AT04z
-	kZPUKfTqK0iEF2xXlFleXXZuG/uTXCZBHEZsLHXXD3nDMOT1ASwkc17wZYX+Ywboj1uZUB
-	BT0iP57vMSNsSpeX3xxno/PwiLLIbJLHXuEH8HSXAkmmu4XtBT4bvbQGIATmuQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jcrs75do3SplBoI37hg1MInUN49XcuGYOTz0cGN/Z2U=;
+	b=fCBxgE3viVsRpP+rjwaXGWHKARDheIlK204FI1x+iXJwI5I2jAqsZXRUYyXTBDYPTjFnzu
+	GBwRSZXs2LhJEBFfhHfkDowcimhYwEU7r0ng+HPl6i1urHJpDjHVTiaAx5+Y2DkMXTbFiH
+	Ca8Cnl7ZEtZEXP/1oLkIa4h1Gj1jFkiEcZvLExkjaJqRjCjycb2CBN79TQ1WjyPEJMF/GD
+	yC6sinPHbDLkAF2KY0uIbSkDqQ2yYHaOXWHtdAiRq3F9GHoaxLaPDJ7EU4pvui4fRLe0BD
+	5mXWX7v+cHqzBWCC5F1SzOTbmuzp0zl5AvtEQ7gSqkUzjiK9pzzAG5czIPeKMA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793951942; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793951944; a=rsa-sha256;
 	cv=none;
-	b=fe87B8CcFvG6lvmdFWK1W5h7Pm0mxXwDrwUAG40Be9cPrlZucaA5nxWsS+Q8YKOn2fG7mJ
-	w1NixVzFu4R1w0CHb7smXBiWVMTSWquCdBnsc5q7LUmg3tU/JUjDa7GR+yO80ylY6GTuvv
-	i7iq3kUNb22R9qMGofTpnXOhw/F9HC2hNOcluTu+pxrRuWbW1+uua1r3SFEJMlXA3m/z0y
-	ekwqoQs7VgtyVdsllm1x9xAdsGQ65V34Q3jz+/9cNOqHi+uIo5jjWE5XPtRv66l5GkMPgG
-	Lvh206Ob04fPrpJ8zEELL6p+4tEuAha0WYOtFd26tezgNPwSZjUkJgE4VR/vrQ==
+	b=WSyx0Jgb6GNVRPcN38i9ytAWGLn+XNeqVhMxqbCCuOmkY6pQfUKpyFcSUpHydv021O4dVO
+	4LOzThaEUhBy8jbBwsaoHzGnbHygE3fmPJT6zFMVFkM37eqWIW/22VgpdK5/U8OHQ1s8Yt
+	NjAuwsDgrEeWE6UDSzcFwKiCiqWeHONrbm9Rm090KCOkBucJcHC/Hn1yO0Bb9TVEkXUMb1
+	7mjaLuQi8O95aRj9E15WnyqqRWKF7CrEkuIvwnqrUcGmm0OKvyEqzsvxxRD3ScrSrbDo6j
+	j9ofV/qu+q/Wr5mDJk1hY5yhjYksEvBCFNjHCkSph3tQwd6JwBV3n8IlrYQTKA==
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Subject: [PATCH net-next v3 0/5] net: dp83867: add new output-impedance DT
- binding
-Date: Fri, 06 Nov 2026 08:47:24 +0100
-Message-Id: <20261106-v7-2-topic-dp83867-v3-0-45e1d3adf1bf@pengutronix.de>
+Date: Fri, 06 Nov 2026 08:47:27 +0100
+Subject: [PATCH net-next v3 3/5] dt-bindings: net: dp83867: make
+ exclusivity explicit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,11 +86,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ6CMBAF0KuYrh1T2tqCK+9hXEAZoC5K05YGQ
- 7i7BTcmGpc/M//9hQT0BgO5HBbiMZlgRpsDPx6IHmrbI5g2Z8Iok7SkApICBnF0RkPrSl5KBah
- 4XQrNFS0kyUXnsTPzjt6IxQgW50ju70uYmgfquJnb72BCHP1z30/F3vg3lQqgUOhaVdicBWJ3d
- Wj7KfrRmvnU4r6S2IfD5E+HZaeuVCM0aokV/3LWdX0Bo/XfkB0BAAA=
-X-Change-ID: 20260804-v7-2-topic-dp83867-e73a84c37016
+Message-Id: <20261106-v7-2-topic-dp83867-v3-3-45e1d3adf1bf@pengutronix.de>
+References: <20261106-v7-2-topic-dp83867-v3-0-45e1d3adf1bf@pengutronix.de>
+In-Reply-To: <20261106-v7-2-topic-dp83867-v3-0-45e1d3adf1bf@pengutronix.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
@@ -102,86 +101,75 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3673;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2240;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=al1FHRm3IZNEtLnKufWsjtPBIJAxTPWvgFsTaGtRGec=;
- b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bbjkOe/0v7VvdolUyb6bB+Zt1LjwpB5n/Sx6pElKsZK
- owPRUV1lLIwiHExyIopsqgsrOAT9fjgGTlNhAtmDisTyBAGLk4BmEhiF8N/97kc0xfz3rPgU2f2
- sXTsks1+V7PPL+mhcen1nsk1s/8GAVVcT32xNLDO7tp1SX/trFO8Ft/WHy361ubHesO7uU3EgBM A
+ bh=zOfh/nRl7qM9sGEpSyKo6sDagN6Ev7ZFJAk2eCa2Wwo=;
+ b=owGbwMvMwCUmtVehiCsuTInxtFoSQ9bbjqOaF1p+5/yVfqW/plDsevLuc68/tH6YeDpjserpr
+ NCaLumjHaUsDGJcDLJiiiwqCyv4RD0+eEZOE+GCmcPKBDKEgYtTACbCVMbI0Kng7ejBfPuk23Vn
+ 5WcrfllOevC+6eMBf2NNjRuLVOSypzMyNLt5lvls3Vmj0fpEu6nT/WHk6/ZowfpYDt6/X9eGR2q
+ yAgA=
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=24A1780E1548F0495996140A1ABD20720A5E5622
 
-Currently the dp83867 supports setting the io impedance to minimum,
-maximum, default or a value from a nvmem cell. In situations where there
-is no backend for a nvmem cell, the value can not be set to anything but
-minimum, maximum or default.
+The io_impedance_ctrl nvmem cell and the properties
+ti,{min,max}-output-impedance are mutually exclusive, as noted in the
+ti,max-output-impedance description.
 
-Add support for a ti,output-impedance-ohms binding, allowing to specify
-the impedance in ohms via the devicetree. It is mutually exclusive with
-the nvmem cell and the boolean bindings for minimum and maximum; the
-binding schema now enforces this for all of them.
+As this is only stated in the description and not made explicit in the
+schema, the binding checker will not catch if this condition is ignored.
 
-Until now, dtschema never applied the binding: it had neither a
-compatible nor a select. The binding gets the compatible of the PHY ID,
-which several devicetrees already use. The Xilinx ZynqMP devicetrees
-then fail validation on an unused #phy-cells in their DP83867 nodes;
-patch 1 drops it. It does not depend on the rest of the series and can
-go through the Xilinx tree.
+Make it explicit in the schema that only one of them can be used. With
+that, drop the note, which also described a precedence for device trees
+that the schema now rejects.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
-Changes in v3:
-- new patch: drop the unused #phy-cells from the Xilinx DP83867 nodes,
-  which fail validation once the binding applies to them
-- new patch: give the binding a compatible and reference
-  ethernet-phy.yaml; without a compatible or select, dtschema never
-  applied the binding, so the new constraints would not have been checked
-- ti,output-impedance-ohms takes ohms (35..70) instead of the register
-  value, the driver maps it linearly to the nearest of the 32 settings
-  (the datasheet does not specify the impedance of each setting)
-- fix the range check, out of range values were silently masked
-- describe the mutual exclusivity instead of a wrong precedence in the
-  commit messages
-- fix typo in commit message
-- also forbid ti,min-output-impedance together with
-  ti,max-output-impedance and drop the precedence note from the binding
-- rename the binding patch to "Add ti,output-impedance-ohms"
-- Link to v2: https://patch.msgid.link/20260826-v7-2-topic-dp83867-v2-0-a97b4cec6e93@pengutronix.de
+ Documentation/devicetree/bindings/net/ti,dp83867.yaml | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-Changes in v2:
-- change 'u8 *val' to 'u32 *val'
-- fix logic in driver
-- update description of new binding
-- rename ti,output-impedance -> ti,output-impedance-ohms
-- make mutual exclusivity explicit in binding
-- Link to v1: https://patch.msgid.link/20260804-v7-2-topic-dp83867-v1-0-1ca79eb54eef@pengutronix.de
+diff --git a/Documentation/devicetree/bindings/net/ti,dp83867.yaml b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+index 2cd8311ece5e..833540743bdf 100644
+--- a/Documentation/devicetree/bindings/net/ti,dp83867.yaml
++++ b/Documentation/devicetree/bindings/net/ti,dp83867.yaml
+@@ -7,9 +7,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: TI DP83867 ethernet PHY
+ 
+-allOf:
+-  - $ref: ethernet-phy.yaml#
+-
+ # only the PHY ID, not every PHY with the c22 fallback
+ select:
+   properties:
+@@ -67,11 +64,6 @@ properties:
+     description: |
+       MAC Interface Impedance control to set the programmable output impedance
+       to a maximum value (70 ohms).
+-      Note: Specifying an io_impedance_ctrl nvmem cell or one of the
+-        ti,min-output-impedance, ti,max-output-impedance properties
+-        are mutually exclusive. If more than one is present, an nvmem
+-        cell takes precedence over ti,max-output-impedance, which in
+-        turn takes precedence over ti,min-output-impedance.
+ 
+   tx-fifo-depth:
+     $ref: /schemas/types.yaml#/definitions/uint32
+@@ -133,6 +125,15 @@ properties:
+       Transmitt FIFO depth- see dt-bindings/net/ti-dp83867.h for applicable
+       values.
+ 
++allOf:
++  - $ref: ethernet-phy.yaml#
++  - not:
++      required: [nvmem-cells, "ti,min-output-impedance"]
++  - not:
++      required: [nvmem-cells, "ti,max-output-impedance"]
++  - not:
++      required: ["ti,min-output-impedance", "ti,max-output-impedance"]
++
+ required:
+   - reg
+ 
 
----
-Steffen Trumtrar (5):
-      arm64: dts: xilinx: drop unused #phy-cells from the DP83867 nodes
-      dt-bindings: net: dp83867: add compatible and reference ethernet-phy.yaml
-      dt-bindings: net: dp83867: make exclusivity explicit
-      dt-bindings: net: dp83867: Add ti,output-impedance-ohms
-      net: phy: dp83867: support setting output-impedance
-
- .../devicetree/bindings/net/ti,dp83867.yaml        | 47 ++++++++++++++++++----
- .../boot/dts/xilinx/zynqmp-sck-kr-g-revA.dtso      |  2 -
- .../boot/dts/xilinx/zynqmp-sck-kr-g-revB.dtso      |  2 -
- .../boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso      |  1 -
- .../boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso      |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revA.dts  |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu102-revB.dts  |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu104-revA.dts  |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu104-revC.dts  |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu106-revA.dts  |  1 -
- arch/arm64/boot/dts/xilinx/zynqmp-zcu111-revA.dts  |  1 -
- drivers/net/phy/dp83867.c                          | 29 +++++++++++--
- 12 files changed, 65 insertions(+), 23 deletions(-)
----
-base-commit: 6584acd42820478910a771efb28a355a707e9cb0
-change-id: 20260804-v7-2-topic-dp83867-e73a84c37016
-
-Best regards,
---  
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+-- 
+2.56.0
 
