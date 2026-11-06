@@ -1,43 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=18.194.254.142
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793964417;
-	b=WpB83KGgYCn/0CQlctrvcqAGLc9OFUPx7JZ9XEWmEUEvsQ1qsR0SMqAdRfV6h3fB/8S9
-	 6IDBcNfCh1jlPV7EKQQTC55v6laLWYRKVFMegzF4iXEbj/pHhUJVVxzT1ZW7bUbAIpDaV
-	 Cg4yp/Npo3t11P0pjBq/8q29aUa+9eIRl0d93ws/XIWUGvFxFDfvXuKDMeIKWowyaaEMs
-	 OzFqarHKo6tCwkud+/cVfjuuA/7TVO3Qr3AxbUYQsRN/m/IQtGH8r+WUSmGA3w4G1ql6N
-	 S+hAS+BPV7BSUXcY3l5Pw+ak1iWtoRBxPLwmnZsIGqVIjDR/BoA84JRrMFVfmkA84iw==
+	t=1793964422;
+	b=G5BH+SF4tXaNflOXaz9NBet2ULAUpi39ffCDg4Uv1UlTBFJ8s69hL0g4z2i8AqcQ9XwO
+	 3ctj6xVQ2ufoimFittSZJCIiV80002QdmVkBMwElRKeSpLi9oNPWcTBKcoiyTvYvier4D
+	 hqs3gyFaBuS4wcEQB1YwwVdY3m3Xw2JTftNjK04nn6ROXRAZ3wIgX7dapKovi9elXk/pA
+	 KjwLllR7Dvf47zlm751k6SNTZ8AUhAlij141ucq6IM3X5C2sj2ROFdiqH7RFCcF95FVnT
+	 Kg/bVO8IJrGBF3KC47Rl4I0rLjHZd+Bp5X8X1c2fQLA9S2apvRuhswdwWmdo3bdzm0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793964417;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793964422;
 	h=DMARC-Filter:X-QQ-mid:X-QQ-Originating-IP:Received:X-QQ-SSF:
 	 X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=xr1ZydXFc2EfREs2tnP0GSJUkk+7dmWoZc5lCVrfVjg=;
-	b=aMdJhv60TePWGBr0QyigbyLBUxNDJgF2MJZRRyIEznv1HkXaqis2Pxj/pbaaWp21pb7W
-	 AUX8cWHtewKM29mHZgw6VYqe9V7XuBrn13M5yk6HRdFT7lEJ0v4pKYiW/V1GJKj22ysN3
-	 KOR5CYAdgEkRDIAZgUiGk7BYZmlXntotZcIxYVXdFyH8IhLOWX1YVYTSQ+ydYOX/C3yVj
-	 D+jlJEf2AztQgTpyVvk4jmjGy5q/R/blNqjceyKopUSnMnpPL+GXbN+AiKmWnrr2jjKx2
-	 jeQ8so2r+mZnq/R5YawwRjcnegmlKCmivRdAPJjiDAePm87AUrUSBA3Zf+EJcmUqOWg==
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=9pZkdeVJl7R8SXcoQCcXrYP4kUb4kP91dWdpJkr349g=;
+	b=TAe2HFCiD9XetYSd6/+Mc7yycJl+3iGi3An71VZnpgQuStmLApMTp5UXmYrk2gQdh2tM
+	 E745M+WIFhp3UwVGW6nJ3GC9mMZgTWolAqXplNRm5oEkUBW/PpFjuzpTlYrq8eVg7XwT2
+	 Fx3JNdfbXAX5Ve4nKdzxwa8PaIVfW4P+qfK0AcWI3/D1sq/NbKwdYxopVLbCqReFJv4zf
+	 WGsJFW+hEVD/AFgqe0fgaqeT1aADh3xaShpHHlLVqCehjZ2d5F+nWmwPYlVWyP8trRJPV
+	 zDa3pel030HWCaGmotw2Onr3XNbpVg9PIkf61Bt3sz9cS+c5EeoH8OfBGPIBz2oAVNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mucse.com;
 	spf=pass smtp.mailfrom=mucse.com;
-	arc=none smtp.remote-ip=54.206.16.166
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	arc=none smtp.remote-ip=18.194.254.142
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4596D606A330;
-	Fri,  6 Nov 2026 11:26:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4596D606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DAB606A338;
+	Fri,  6 Nov 2026 11:26:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18DAB606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpgz10t1793964266t3cd986d1
-X-QQ-Originating-IP: eM1C2NUQNTKmaU9lL2ivyCFoVMnYSK2AhgTAEOBL5+A=
+X-QQ-mid: esmtpgz11t1793964349ta682decf
+X-QQ-Originating-IP: JONAMwfQXG1DB2Jgg0lA0PU+BNlRVHnDTsOBoSHteQY=
 Received: from nic-Precision-5820-Tower.tail7b ( [203.174.112.180])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 06 Nov 2026 19:24:23 +0800 (CST)
+	id ; Fri, 06 Nov 2026 19:25:46 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10207227521404303170
+X-BIZMAIL-ID: 14686409550492991758
 EX-QQ-RecipientCnt: 10
 From: Dong Yibo <dong100@mucse.com>
 To: andrew+netdev@lunn.ch,
@@ -50,10 +51,12 @@ Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	dong100@mucse.com,
 	yaojun@mucse.com
-Subject: [PATCH net-next 0/5] net: rnpgbe: Add basic management and statistics
-Date: Fri,  6 Nov 2026 19:24:20 +0800
-Message-ID: <FB722C2F25FE9005+20261106112420.43050-1-dong100@mucse.com>
+Subject: [PATCH net-next 4/5] net: rnpgbe: Allow changing the primary MAC address
+Date: Fri,  6 Nov 2026 19:25:44 +0800
+Message-ID: <425F4F0858D134DD+20261106112544.44210-1-dong100@mucse.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <FB722C2F25FE9005+20261106112420.43050-1-dong100@mucse.com>
+References: <FB722C2F25FE9005+20261106112420.43050-1-dong100@mucse.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,72 +69,106 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: Ni68Q0J6fxe2R6MWvByUeCYIGEpG8D5FzADryyeLWV4z2DC81Ojj1cw8
-	2f/HuiDGd7ODYzJoidxL6I1SFrlmfkxBVCRVKnBZHTlbZBDAjyP1W7tEJXMm38yO6F+uaqa
-	5PYajJlDm+xRdms1ICPg64VZWem+6knHn48jG8i9KK98o6djDLiPqpJJedtcEcQEO9yAaA6
-	WS+yNNoVbRxCu05wk/2NsErTHUcWYsU3KxjPgUCCFae6YtKmmN08GdwleBbtMFLwAsepAGP
-	P4yiH6UYTU0BTcQasjB6rLRqhKcJpGaRKM1LZcBJPriwciPsr9P/MJfOkDLS5ykPQRW66vS
-	SwuB1C3TVkH0iTszjef8U60PSQPP37nG9U703IfYp06n0RroWqNM/fk2QJG0UAdPN9v5DU5
-	1wy7jMlfzborTAg+jQIaLnLr/QTfMRUV1K8s3lYLZ3Q6Oz9FhVhP6fvcbQBdRckolSRZnqG
-	+QhJML7fuwEKzas+cz2v+rK5MTb6wynR5/9fSIYeoZmw/gbxYb0O/zrh1NFdQyhDMtSot/A
-	biI7Qk0DAacri5B5f9N8cuLI7R3TIz/NKtg33jxx1ZhOvhCpvNOqGazjOI59GxRpiH5YN5U
-	EdpSsc4tj1CEf3zVt3mGkT2tMew7qHk/k71kc+Lepj0cT0FZtb5fR7yoVyoDGQTB1ELyZJl
-	gqIrBnDQZoMyQd2kJUCZODTdIIBBAd/RJv3wCMMidrko5RsZ6u4MLyCwlodZT1pyL/77Ch4
-	GabFB45tTrUg3/giWG4cG67kY4/+g0D/N+nG/pxDsrB2QA4nNirmztaUPT3PdkRojPAT7J2
-	1GEy8BZqCxxup6e29pJ6a2TADmWwJuYleOWurwTcobRaXFtCsPwjC9SweG1qAR7zwR3GvRY
-	5xbp2dZegmqQOjOMh1h+z2UcagkuvlUbyUQTviYR4o56GzdvMVrjuq8KZbf6rwMqKpnJTRj
-	OeBvnB0zg/x4BH0QfQs8Z9rxyRrowaV87n9NT3ZSt99o8h8bh7aiiEE5bJaIpAI3/gXY/C+
-	NDj3h3wvt4Op6ULyyaJTulQv8CiOLh8/2VSSM+CYH3WdwLaK/q
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: MQjKimNqHmey8MTT4ZNphzZA84gT8MZchVwAbeHs2ByLhtnwq8+rpgDv
+	BGQRXUG6RP9SE/PUJzWuZEvJN5xdBlM4dQV95KnSi5RVJItB0TAsQzLcn3ZNoi/R3vrouX8
+	hHELz7BOUjbWUarLqAVZt98HgOV+fIY+yaub6p8krqc3FoS6gBISUUSjW50Hi6duiEkf26m
+	AQmM0YOPJC/yHZEjNHxa4yM5cPJGuxhpcLSBkB1WbOuQbHaG8khaXYke+3pVw4N4REVBwgb
+	ZSjOCvNZaxEIkqLkhk6cTkIrjzBZsO7pX6icdCv1Cp3wd45w2Cae3o2AHYVqcSMhnlMAELW
+	aVylDYaEasUrBXV9r8hmCE1DjmEIgEBkUjL6yycd1XbV/SlIs/tuvYqC2O9LgPel54kQJTe
+	zElBB0WikOfVkZx7y7HV1NeO+6ivtm54TxLyIt91m3EI8/djsIXzNDkgkR08P6bhqMn3/MD
+	+pm28RfFzaHi1mDP9C/3oE1WWjVLLWlPgnFZpPS/RTLHTxNP8VcbnKUDBk1wi/vq4/18u6R
+	kT6NTsMQ/YZORI7V81YTOyF9EgplMVil1nMBvAfKvW5Xke2KQuaI0pqcTrc8/PLFstOpQGU
+	gitso4Z0v+vgjs+owJqkBLGnQ1sxmBjQkZEzQOm8p3NyldSV3Rv5Dcd2ANPXx6L4ah5XD7H
+	IjZbIHa9bb2/f9itX49ATLL4KRo8G+7o6Kkr5413FtAHFfdZ6wuLD5nH6hR7ENMIGDYYPWN
+	+xOSV8Yl381T5u3ounIkWHiFkYKnanyCfsV3cyJFZNQ2rWphTmNwcHjF7397ocl8OR9/F5m
+	bzg41fR5U2D3sjrRE8jNvgcLqR7rbRkZf05nYdh+tEDEr30g4EPdB7dRpS5Vq1hafg+AdnC
+	q0VFJhWBnVUeh9sf/4dt4pm4n98xXa2e1854NqivqXVUlHxQ9WZ7PiCn9MpmO3wnLrdn+zx
+	hp1KMrfVxVrWCehv1OGsZLgTGGq6jS4LzPAh0KuLTQraSP+F2IN7lmKLkTivejuudq2d2qV
+	vITVEo7Y9KU8g6bcmxzPIk/4xQT56dkevAdxFwhSVq0m9+8N1Rcscj15p7Xnq0NTFSCgqHu
+	IUkdEMyQlaEngKN2NiKanc=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 X-QQ-RECHKSPAM: 0
 
-This patch series adds basic management and statistics support to the
-RNPGBE driver.
+Add ndo_set_mac_address support to change the primary MAC address
+while the interface is up or down. Validate the new address with the
+standard Ethernet helpers, then update the primary receive address
+filter and the netdev address.
 
-The series introduces:
-- Basic ethtool driver and link information
-- Link settings reporting for copper, fibre and backplane ports
-- Copper autonegotiation, speed/duplex and MDI/MDI-X configuration
-- Primary MAC address changes
-- Hardware and per-queue statistics
+Signed-off-by: Dong Yibo <dong100@mucse.com>
+---
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  1 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   | 23 +++++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  4 +++-
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
-These changes allow users to inspect and configure the adapter and
-monitor interface and queue statistics.
-
-Dong Yibo (5):
-  net: rnpgbe: Add basic ethtool support
-  net: rnpgbe: Report link settings through ethtool
-  net: rnpgbe: Support copper link configuration
-  net: rnpgbe: Allow changing the primary MAC address
-  net: rnpgbe: Add hardware and queue statistics
-
-Tested on N210 and N500 copper ports with firmware 1.1.8.0.
-
-LLM assisted with development, testing and code review.
-
-Dong Yibo (5):
-  net: rnpgbe: Add basic ethtool support
-  net: rnpgbe: Report link settings through ethtool
-  net: rnpgbe: Support copper link configuration
-  net: rnpgbe: Allow changing the primary MAC address
-  net: rnpgbe: Add hardware and queue statistics
-
- drivers/net/ethernet/mucse/rnpgbe/Makefile    |   2 +
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  24 ++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  51 +++-
- .../ethernet/mucse/rnpgbe/rnpgbe_ethtool.c    | 242 ++++++++++++++++++
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   2 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    |  28 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  17 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  35 ++-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |  26 ++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_stats.c  | 217 ++++++++++++++++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_stats.h  |  37 +++
- 11 files changed, 672 insertions(+), 9 deletions(-)
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_ethtool.c
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_stats.c
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_stats.h
-
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+index 83267d475257..8574377e3a22 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+@@ -269,6 +269,7 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type);
+ int rnpgbe_set_rx_mode(struct net_device *netdev,
+ 		       struct netdev_hw_addr_list *uc,
+ 		       struct netdev_hw_addr_list *mc);
++int rnpgbe_set_mac_address(struct net_device *netdev, void *addr);
+ void rnpgbe_set_link(struct mucse_hw *hw, bool linkup);
+ 
+ extern const struct ethtool_ops rnpgbe_ethtool_ops;
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+index a6ab94bd1578..7505c9f6c79d 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+@@ -232,6 +232,29 @@ static void rnpgbe_clear_rar(struct mucse_hw *hw, u32 index)
+ 	mucse_hw_wr32(hw, RNPGBE_RX_RAR_LOW(index), 0);
+ }
+ 
++/**
++ * rnpgbe_set_mac_address - Change the interface's primary MAC address
++ * @netdev: network interface
++ * @addr: socket address containing the new MAC address
++ *
++ * Return: 0 on success, negative errno for an invalid address
++ */
++int rnpgbe_set_mac_address(struct net_device *netdev, void *addr)
++{
++	struct mucse *mucse = netdev_priv(netdev);
++	struct sockaddr *sa = addr;
++	int err;
++
++	err = eth_prepare_mac_addr_change(netdev, addr);
++	if (err)
++		return err;
++
++	rnpgbe_set_rar(&mucse->hw, 0, sa->sa_data);
++	eth_commit_mac_addr_change(netdev, addr);
++
++	return 0;
++}
++
+ int rnpgbe_set_rx_mode(struct net_device *netdev,
+ 		       struct netdev_hw_addr_list *uc,
+ 		       struct netdev_hw_addr_list *mc)
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+index 31871b244882..09d499dc10ee 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+@@ -160,6 +160,8 @@ static const struct net_device_ops rnpgbe_netdev_ops = {
+ 	.ndo_stop		 = rnpgbe_close,
+ 	.ndo_start_xmit		 = rnpgbe_xmit_frame,
+ 	.ndo_set_rx_mode_async = rnpgbe_set_rx_mode,
++	.ndo_set_mac_address	 = rnpgbe_set_mac_address,
++	.ndo_validate_addr	 = eth_validate_addr,
+ 	.ndo_get_stats64	 = rnpgbe_get_stats64,
+ };
+ 
+@@ -253,7 +255,7 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
+ 
+ 	netdev->netdev_ops = &rnpgbe_netdev_ops;
+ 	netdev->ethtool_ops = &rnpgbe_ethtool_ops;
+-	netdev->priv_flags |= IFF_UNICAST_FLT;
++	netdev->priv_flags |= IFF_UNICAST_FLT | IFF_LIVE_ADDR_CHANGE;
+ 	rnpgbe_sw_init(mucse);
+ 	err = rnpgbe_reset_hw(hw);
+ 	if (err) {
 -- 
 2.50.1
 
