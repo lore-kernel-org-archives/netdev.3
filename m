@@ -1,95 +1,134 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793986175;
-	b=yYR0F7HNourlPEGCRah+s10ZUshKZ6gcSmw5KR/vPG1VXbXbzNXakNEGP32A8HiAXrJR
-	 cVaGbOJzUNiAUjd1azPpWmFWCa6Nx1nsz5ZFvEO09iR743LdXc0eYbGwR06NK0QD07EXF
-	 SIXRTaxyjYNwik7A8+a2JVTS4yojvul2ZhF1FmI87SEgaxhtmNtJKIVNCcuCgcYxKOR/m
-	 mFxTG58Ym94/S5g8y5qVU1B10IQM4vBUX93swl09rglnVy98rT95j1ftSMYMv5aRIsbb4
-	 ZEhqSP/wGHdB7Ifuz3+XhPkONKw9sax3Sefo7f31Q9VhRS+YzOEThxUTBZaQWg0YIcQ==
+	t=1793986263;
+	b=GOmSRf1cIzwxQvBLiHMZ8XReWMAXfsD6rtsaQQBMuEtukdoXTsw13Sw8lTaen5BZuPM9
+	 bsQDDXN0X7deibSMUrh9Lph4dkd8cmiwdp0JQtHeOM9qEPziQKhnWUs3JhRDwVrlNHTdV
+	 UkGNrfI2FI/OzZLqaEgm49AcwXQ+zzrm+sBEWZrjJwHTw6qQ1lGgpYE5BbZNRTK4FztJU
+	 N5AhS++gqdkH9XJCGRU36n9OHDA/5zLJSFHfVb6EUzyXqZsSZNjgKCjCu4GJs+PPH+OAN
+	 eoiWZTpJLZueGNC/PyPsFSQfh0l/4cwE9NufoKlJ0CWy+buvsfmVUxoXT7AVK4b78Uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793986175;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793986263;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=3aUKUqNF4swJLhpf709T2ixhcc7iUggf/u0m5b6RuNQ=;
-	b=jPuI/RaTInfSEd2q3V8g6QHPC22Nqoit0wiOrNvWKRPiCfgpAkGcsoKV3qdDZx5Twg/B
-	 YqlgurBM8iDg8qVdTXJNIubHzZYWdCVZyZEFTCPeJdFUTOftzM4dD7G8BtyWaicXUZGhp
-	 OfzZXR5xbGF5Qh3ArvrgrQfNHDcyDd4oP6Qzwx70R1MYpzy+BLKZfthC8R5vXHi4pGPPH
-	 eShI/IgW6h2u4SUz6p95CVRV0AlmEMTvrskLaLXSlIUCFgLezwUQIAwH+8jQFcS7l8y9R
-	 KFZi1jk0W16jjNT3X6s5IsLSb2rKmGcLCeDRFiV0DYeQZZR3EeG5jzX3afUVyg7Fejg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=XofOEQXNLqFn+X/AdUrRbjVcp2Tpjks1Mv/4b0yulcU=;
+	b=bUCpLqDurCRMAkl037oRu6S9aOoH3s0/BAkZie08FaRICoo5SStncJd+K4l9DBrsY0az
+	 bFtKf1zXTjHKeqc0AAbJf94FH9Rny6agVuCogZA8zpMt/IUR1wcAyVSgPmw51TgEDCMgt
+	 tZ/QqaeLHwvsl5VGZLq868qupCYhlOII5lHNG0u7CcA3F2ZBdCcbKr92H/jGS7SDnexGW
+	 TvnCktPlAmDLwFUpfA+dfGKu3h0hYMPYfUxvLRFyNNIHDEomITGVMOgPgJ0ItuJIN7nYC
+	 66IpjJRd6g84NxvEqqS512NqB2r5KyyI3659i9IMS8VFMMy/BYYyCTk3yvEH0ALImsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kiObS91Y;
-	arc=none smtp.remote-ip=209.85.128.176
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=fYsE2vYt;
+	arc=none smtp.remote-ip=209.85.219.43
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB9E606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 17:29:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDB9E606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF64E606A329
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 17:30:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF64E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kiObS91Y
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b31ca7e0bcso7881937b3.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 09:29:34 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=fYsE2vYt
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-91eb5559b34so3365846d6.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 09:30:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793986174; x=1794590974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3aUKUqNF4swJLhpf709T2ixhcc7iUggf/u0m5b6RuNQ=;
-        b=kiObS91YI/DgL+V8wGUebe/mcu2MTd/AwMP3eqjyyCEPHIHhvcHT/oGlPoS3l1ERXe
-         HZpXHQmEgHnW68ARYSvSxUVqeTvskDJjOkxae3w2OGdyx/6juIp9mcL5o/U8GMiEcu9o
-         WIpA/x+lj1E06uvpw+PJGjw+TysT9bDsbgChBb1jQzrQDipfcNpEaK7yW4Vajb4diYM3
-         3hliB5Pi9g3AURsDAtTh7uJBKODKVQAhvvPaWi9yuo6btTBN5E8rc92WuqFunR2N/0qz
-         OUb23aoMjkqH+0MImAgwd/t/H8MKP/NS0RZDfluh3KFR9Bj3PLT7KzkXuvuC25DUwATy
-         Axcg==
+        d=ziepe.ca; s=google; t=1793986256; x=1794591056; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XofOEQXNLqFn+X/AdUrRbjVcp2Tpjks1Mv/4b0yulcU=;
+        b=fYsE2vYtjmjwrQWdM228+vJrfQI/zfz4d8EZd9hqS+Da5DuaJIGJN82jYUkEQnAQXJ
+         276pcvSkMpyOUA88uoZqfJepcWaH+fDLM3PeHPPLJDoYLRuQUX7KClXiaMPEZf13t3dS
+         8XHZFyigHL7ZxZuRJehfyQvVfxcrRxiGZrEzmXaZhQ4zBnxGZXUn9LMEIWIf5ZX+0oaj
+         PXesfT3jlDzAeRSoucM4rkP6lStrPSVTmMAUkaFTam6eIzVTnLRJ0Bq2t1kniLeeSNAI
+         PChUbgBgn1IddS4SmfD+bsmAlxXOMcHOE2hRzkm09lHStjx7NS5P6SVi6CHEW1xsdg47
+         Cdiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793986174; x=1794590974;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3aUKUqNF4swJLhpf709T2ixhcc7iUggf/u0m5b6RuNQ=;
-        b=qCPqk3431wqVHFA4BWuO4AVeQGk2RBqG06Mh1eg4K2c7/cRQQV0r+EAc+fISsoDMW5
-         opVEXmJGy/0b5XLS3MWeVe2b8Sx95isJ/TxU/bLJfTWbDRcINRub58Akfz0K78fy3cti
-         MloXNKnhRIZPeS0hsFnfpZypyawbdJAwJTQqT4YphPxQY2AclbF3ZiNqEFmttb74Um2X
-         fa3TKPAZhRnv8v9i/2ghKAJHF0wp9nby3hWxeUgPkUZGKejilZcHKqGq7khcery7rt3Z
-         uGNF3mzU3iS8k1f4m1y+ETBIQ27a6rmBrZJCceRRm28TOejzo9xn3vKoa0tug5yoHnPC
-         /BSw==
-X-Gm-Message-State: APuU4Z+gGa8VF+gmUjEHPCsDKyH4AEaYAlHRZ8k+9XVmbMIYZBn9zhCj
-	xq/VkvYZAEc/zGUe4q8Cs07QXJXWSGTW7j/9ZBYcJupbXSwI5EHk9jc8kC76GAcE
-X-Gm-Gg: AYBFou3wur2fTwBzbnwYi8hv3/qxbIP1Zg/YbRMVe/nVzxxpQtI4izXYkE1ECawp9wn
-	EhFon/UMTDmXzJW6TLmr5O29RfrmfP3xXulO0ninvHYTg4oBaliYVkYUznYO2MJeo2ZnYRQ/WR8
-	F4NYqFl3jUMpMLjAbi+4nIin+QFT2jzb7XlMZnlqbPBnziAPZs07/VR0jc9KsEOtOOAyvMuQlU9
-	3BNlT63oUER+MXJNVHyzHj8t/rqTCwamRXRbh9lsXFZAwl26zzpeZdPWQBtJA1OBe21mDvUeM0+
-	KIblTsJ7mrYUvfQ/PnlKZoicQN0bQYhbevdbF6FbXg8jaZzuQ8cIzKQOuKXE4hBb2XHLa2F4RwP
-	2sgehMi1ehUPFvvrfr1NMZleNazI6ZyzT+kwxh+Be5tSxb0Jts3k2Qgyx7se6F5jm1V/8OiNq3C
-	a50RpdwQGb6h3GFwmfOIjkIOv4Z5wuASMaJ1iGdDZIqBB1hwYnGPa9NoBLsRuer3yb7yhx4w6GT
-	azlf51D9E8d6MPwIvr1yZ3p2P0DKWfQjWdZq6NO//F5adbl4vFKfGQUIhZd1Ttp+eAkZ0N3Tv/p
-	SHoLJeOYxVOdrXU4rwpEGo7r30sj2A==
-X-Received: by 2002:a05:690c:e3c4:b0:8b3:361f:5d77 with SMTP id 00721157ae682-8b341959533mr21325037b3.26.1793986173712;
-        Fri, 06 Nov 2026 09:29:33 -0800 (PST)
-Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f88389dsm23228537b3.40.2026.11.06.09.29.32
+        d=1e100.net; s=20260707; t=1793986256; x=1794591056;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XofOEQXNLqFn+X/AdUrRbjVcp2Tpjks1Mv/4b0yulcU=;
+        b=r+zRr6Xv4LPmjFz0hogwTqwt56hopQdurlzpiK7Lpm0eNOknUZ+zAEwbmfBnvDvgI1
+         d9NS35GRr1fxTs59XI7sa1CWwpT4G/YfkksEnuVGbMKFZXmu0064KneP79BcgeVykAE3
+         83l9gyo/zaTmVL4uJe7J//Jsq4tCqTyHPJubsc72c8Y9oRLlCJQXeiHR3NbYw5OZg+Sc
+         o+c90ShjyRni0dA222qSvfAsO8zRRrs/6Wr6WN969kllrEdiXMAytyyFjGKfgOlObTMn
+         /9pPoZhZ1+ckava10wabGBl7pbjPpRHai9BcZfxHrTWC0DYycfWgIaVy0zbszykNZae4
+         3GSA==
+X-Forwarded-Encrypted: i=1; AL+hErE1BQIz/P8KbfLRXjuDKAPdvhZD2HsfCOPMugvY++6N/AB8uGEPqek+UTzTPZQ1e1FNXKDCfVc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/JasXDAJzUMY0j+D42Saa1qRzDXTVvLljqQ7h/Ih2fmMc+s4r9
+	XifkVTPUlTBrVy4RqivrXQPzKBjSnsp5JwZXDnTwFshmFge05sRrs9lf6/qiFuBdo2o=
+X-Gm-Gg: AYBFou19qGw6KaT3DdQfv4SFwnMr2A7sNAChf+4nj0xcO65BKos++1C+MPm6XDRi2aB
+	EG1isVAUNb64QlPISwwpsn3wA8cLNVolG+iW0YKMyKzsBKltxb0NpkCpNeduk2BKE1Ivmy28t6O
+	gwee8oEFvT7CuHuOPSNGFo4aOLExWYgfKTo+eonQoYOO/tFNfAxBy0V72sbobW7jUqqHqq+zO7q
+	mmGPo0BvBWyw+MKaIU5Cie19jtC6cIEnk4iFIew6fd6avS+2VOltBIMtJjjm8kIFJgmachLNpuh
+	+Act6zC3RS2bJctz5Yfi9dAGvPuXqBPdzgYZXRBMc9lacUnbyiDui7NAL3vlqks+mgfrboTECM+
+	MJHNa0dD5pvw+r667GifTmhXHfiJtCYnT0LnlprI/f6ThqmwGIWzxtzcPl57LGsO97qd6O1M9Ob
+	G3x4TPkqEsLtLlrLN7MFyV0RQA46+/LZriiPYckHWo2SnPfv7lR9skOwSEOKRqPnKNjjR6kp6Tb
+	RaCV4Zz7bYF41GfZIzA7c3/7jsvVLDWbOL7saWpleQePfH/LHTGQR8QVzCi7KSBU5Qau0PeQG4O
+	8fgj57DlS2wRqIFJQicPbqUxqw3J2yPb5t5a34WY0eoFyUySXd3VaGOEtGmlEz3bplYkSRJxlOL
+	midmzyDsFjZ31mJbS89Gm7slEJDoMLis=
+X-Received: by 2002:a05:6214:c69:b0:91c:73fc:a5a8 with SMTP id 6a1803df08f44-91ea9742db4mr40471196d6.9.1793986256339;
+        Fri, 06 Nov 2026 09:30:56 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6acceacsm25406486d6.43.2026.11.06.09.30.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 09:29:33 -0800 (PST)
-From: Matt Vollrath <tactii@gmail.com>
-To: netdev@vger.kernel.org,
+        Fri, 06 Nov 2026 09:30:55 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xPNmA-000000076Mk-3tnC;
+	Fri, 06 Nov 2026 13:30:54 -0400
+Date: Fri, 6 Nov 2026 13:30:54 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Naman Gulati <namangulati@google.com>
+Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
 	Willem de Bruijn <willemb@google.com>,
-	Alexander Duyck <alexanderduyck@fb.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next v2] net: reset transport_header for ndo_features_check
-Date: Fri,  6 Nov 2026 12:29:25 -0500
-Message-ID: <20261106172925.3718103-1-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+Message-ID: <20261106173054.GH663069@ziepe.ca>
+References: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+ <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
+ <20261022201229.GH3381610@ziepe.ca>
+ <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
+ <20261023140107.GC3977851@ziepe.ca>
+ <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca>
+ <20261103080933.GA4213@lst.de>
+ <20261103151021.GK3889730@ziepe.ca>
+ <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,84 +138,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
 
-For CHECKSUM_PARTIAL skbs, validate_xmit_skb() resets
-transport_header (inner_transport_header for encapsulated skbs)
-from csum_start, but only after netif_skb_features() has called
-ndo_features_check().
+On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
+> I drafted an implementation [1] for premapped TX and RX buffers on top
+> of the existing networking page_pool. It is implemented entirely in
+> the networking layer and extends page_pool as the default RX
+> allocator, to the TX path. There are no hooks in the IOMMU, DMA or
+> page allocator code. I wanted to understand if this implementation
+> correctly captured the feedback on this thread. Key components of this
+> design:
+> 
+> - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but each
+> chunk is mapped once per opted-in device through the DMA API and
+> records its IOVA for each device, rather than using a shared IOVA
+> window.
+> 
+> - TX: page_pool accepts a memory provider for pools that are not bound
+> to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunks
+> of their NUMA node; TCP copies sendmsg() data into them through the
+> task page_frag and allocates its skb heads from them.
+> 
+> - RX: an instance of the same memory provider, sharing the chunk code,
+> backs RX queue page_pools. RX chunks of order-0 pages belong to one
+> device and NUMA node, and are shared by that device's queues on the
+> node.
+> 
+> [1] https://github.com/torvalds/linux/compare/master...NamanGulati:linux:netdev_dma_pool
 
-The hook can therefore see a transport_header left elsewhere by
-the receive path, while ndo_start_xmit() sees the reset one. For
-example, ip6_rcv_core() leaves it after the fixed header of
-forwarded IPv6 packets with destination options or a routing
-header, and seg6, rpl and ioam6 point it at the header they insert.
+IMHO the netstack should never read from shared/decrypted memory. If
+you put it in a SKB you have to be sure the only touch after that
+point will be a DMA read from an untrusted device on the TX side
+(sending it to a trusted device would be a fail) and the final copy to
+userspace on the RX side.
 
-i40e_features_check() then bounds IPLEN with a 40 byte
-skb_network_header_len(), while i40e_tx_enable_csum() programs the
-real length, which can overflow the 7-bit field.
+Everything else is very security questionable.
 
-Move the reset before netif_skb_features(). Skbs that are not
-segmented in software reach ndo_start_xmit() with the same headers
-as before, and software GSO parses the headers itself. The exception
-is encapsulated SKB_GSO_DODGY skbs that the device segments: their
-inner_transport_header, which bpf_skb_adjust_room() or
-bpf_lwt_push_ip_encap() may have copied from a stale
-transport_header, now points at csum_start.
+It is unclear to me how any of these page pool proposals meet that
+requirement since page pool typically provides memory that ends up
+widely used in the netstack.
 
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
----
-v2:
-- Target net-next, drop Fixes and Cc: stable (Eric)
-- Shorten the changelog (Eric)
-
-v1: https://lore.kernel.org/all/20261104175517.2395704-1-tactii@gmail.com/
----
- net/core/dev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1aece2fe2429f..6fbd8a8884258 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4209,6 +4209,15 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 	if (unlikely(!skb))
- 		goto out_null;
- 
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (skb->encapsulation)
-+			skb_set_inner_transport_header(skb,
-+						       skb_checksum_start_offset(skb));
-+		else
-+			skb_set_transport_header(skb,
-+						 skb_checksum_start_offset(skb));
-+	}
-+
- 	features = netif_skb_features(skb);
- 	skb = validate_xmit_vlan(skb, features);
- 	if (unlikely(!skb))
-@@ -4241,16 +4250,9 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 		 * support checksumming for this protocol, complete
- 		 * checksumming here.
- 		 */
--		if (skb->ip_summed == CHECKSUM_PARTIAL) {
--			if (skb->encapsulation)
--				skb_set_inner_transport_header(skb,
--							       skb_checksum_start_offset(skb));
--			else
--				skb_set_transport_header(skb,
--							 skb_checksum_start_offset(skb));
--			if (skb_csum_hwoffload_help(skb, features))
--				goto out_kfree_skb;
--		}
-+		if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+		    skb_csum_hwoffload_help(skb, features))
-+			goto out_kfree_skb;
- 	}
- 
- 	skb = validate_xmit_xfrm(skb, features, again);
-
-base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
--- 
-2.43.0
-
+Jason
