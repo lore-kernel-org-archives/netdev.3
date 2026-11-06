@@ -1,66 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793959792;
-	b=YUbTlOXaHXdgVcwhISB/7MPbxdRNdVf0noh7O2gxhkw9BIGXZJxMsLZo/GP47gKzdE3v
-	 TaUdwukMv/rsLa/wxloEG22pK7fidOxHFdJLqyhObOGRwS8eVsDApQFvH+0Sxne6HPpce
-	 IaNZu1kfiahBFGg+fqCn8+vr5pZevI0vfMMwUB5rJGnFyhlZXIHSaTH6JK3Q+R9S954NJ
-	 8tvN10YuX0MuCzFoOiuW6NZQ1tIKOC+V+TxMLA94HlBKQt8aM6heGvi47i60rRG5P6E82
-	 VairwKaeUZn/tmREE2DOGdNGsz4Pt+hE4U8WV34JIPQLyFJENuZR+3A5gWVwyugPdPw==
+	t=1793959896;
+	b=W5LEkKjmbiZ6qzpl1VFCr9viAevnz3vJk4dmmjEGwcuAMfgTgjEFn9eY0Epg1qspWYk9
+	 YLxBMGQ9KxqnotuWhNoTnehU1eE7uEZgVBkBCGHqHV1T+dPPMuKlGHhV/y8AfREEG2hMz
+	 I1WPS2hkAnDFzUtAJENcXCIiQubBVLuyjkllH8DN3zY6UQZtiB7q88Y9IUBl3exWQrPk1
+	 PInNACbFuacPtaBQgcy9oAbKla5+BxBlyS44XudYFuKIGXvm5FufapocNh8CpE9qMK297
+	 hJU1JvNtwP5LYAsO0p+6k71jXD9nvW5+OH5ISvdw1r3GwwK/td3HYp11HuWNT2E/RgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959792;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Debian-User;
-	bh=nlXCNuaGteJMHPhKOMcWqAFCETDFUXQYuHFMl+88FyI=;
-	b=bcpMhIXSgBCDekJMkx2X/RDDagLsyaReG2XHGCO53DQxpqt0Ebaojs/9rAbnsYlvGpu4
-	 daG6/oyoZisUdk08aHUVYeBZJnZaY4OxSfyA3RKnXMTzveXmuw39L+wxYNjcm00lIF8Tz
-	 mn1NV24/9M6e6WCHzNG2N1vvw9yCcyg0ZycKnDCR7hi2BsvergfLwUNkVFxCG1L8cOyOv
-	 rFKm2gr/f774gmHNkFUSCcsxKDk6/YaZ45TNslZQqg3kwuqiYBt3zYVmO++JNDDCE4lqY
-	 M2FNF20wt+an+MADo1f8JrqmsODgICKMU+/4kvYwYy3UBp1wk8/rN0R7RSsr2vHq4nQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793959896;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=6ogeEWksxpSUWmxEpBUUGjIXdCyDlrjJdIfYEM0KO6U=;
+	b=ye7CHwOcaDic7L82+SvvYM5U4Wu9zl5xcrOyboxVRP//DJ2D1o78FXgqD5bj92kHMm7Y
+	 rJ2xbxKmXNBTNWavyYUl1LF/yqL33VHqwzOxHrFAoEEOqcjODkCd0tH92jwDqCB5W3QEJ
+	 fvuoXVOzRpBBsIgO2uR9RJsgTbmrqRlv4Ry94L+IYvMb1yCxrZ8mUmIixBmVoUVlnDyCJ
+	 F/o/q9RjACdhEBJE/eHcHFNBrMuNJtlVOsVEpdQOm+ts6irLu+OAmxaPDRToxXaLi4VON
+	 tDr8nW8qcJRHq0kkUYDV4IYELARBb98tVpBV4RHygW7jceRGMxVV3X+wjcvWj9bet+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=ciB7EYh5;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=I5CrbdBu;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6A4606A32C;
-	Fri,  6 Nov 2026 10:09:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E6A4606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11841606A33B
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 10:11:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 11841606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=ciB7EYh5
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nlXCNuaGteJMHPhKOMcWqAFCETDFUXQYuHFMl+88FyI=; b=ciB7EYh5KJ21H8k7CQUVDoJPTK
-	aBgaJ2IlEbwPkXY9J0ggZMzwj2MomPQwOFuHGrQ/bu+U+sIvQ3mUrs2U0aWehjAQ05Ld8ivjdv8Lu
-	1qX1L+1al//RhizxEOSN8lJNFi6qNCaD/awwNhUAQBydIMdLfUk5NnAcyzW/5aZPoxhwVr2Mue/CH
-	Y639ld4gMvJb0p9TWcG463E1q2UwLxKrmW25xatpGquDgJZTsT6NvgrhJEq3A/Jb9wAfOM6kAIbAi
-	AFWgzqqpRkAvAF/V10jbPGGrKl8ru2m9v22wh3MAYPHG90zvrpePLR8tpaWgd/R/keZgJ9BsWQnVT
-	V+NBT3bw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xPGtA-009CvW-07;
-	Fri, 06 Nov 2026 10:09:40 +0000
-Date: Fri, 6 Nov 2026 02:09:34 -0800
-From: Breno Leitao <leitao@debian.org>
-To: "Harry Yoo (Meta)" <harry@kernel.org>
-Cc: Arthur Kiyanovski <akiyano@amazon.com>, 
-	David Arinzon <darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, kernel-team@meta.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB page
- kernels
-Message-ID: <au2nNm44LnaoXcB2@gmail.com>
-References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=I5CrbdBu
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 58A394E41401;
+	Fri,  6 Nov 2026 10:11:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 259005FFBC;
+	Fri,  6 Nov 2026 10:11:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31F8B103291F9;
+	Fri,  6 Nov 2026 11:11:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793959891; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=6ogeEWksxpSUWmxEpBUUGjIXdCyDlrjJdIfYEM0KO6U=;
+	b=I5CrbdBuFxZWEIZBIc49EI2RZqfWkGbm2L+NrRyTZJ1N7ucRBbZshseI6mtnf2iQ3+ecuf
+	TZG5FPUEC8BVovD0Lf4OeEwwfYCnCw5cabRSLhaM/tpvKlEXiVUqyphsti7+20dCBbX7eR
+	3QfM1qOkrHcwXrRl7p/4ajr228FR1M8E4ae6lcwSWl6JoJyv+x90JYK+ArGk9c2k1OvUd1
+	M5vAWbaCSezXJFI6izU+WQDs5QUa8CnH0sYx+gcaQHkSYdKStZ9qWmZtJsof/RYe5gRp6L
+	+mwvNx385Qq0wRzYny1U2cmcT6XKsQ5q2WxsH7uFmqOSYqfLA5CN/lBtmnjinQ==
+Message-ID: <69be2cfe-e296-4f90-ad19-0bd48a83e287@bootlin.com>
+Date: Fri, 6 Nov 2026 11:11:22 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,42 +62,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
+To: Birger Koblitz <mail@birger-koblitz.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Eric Dumazet <edumazet@kernel.org>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ Jianhui Xu <neuromoments@gmail.com>,
+ Emir Beganovic <beganovic.emir@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>
+References: <20261106-ax88179a-v20-0-37b5a1189983@birger-koblitz.de>
+ <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Nov 06, 2026 at 03:17:11AM +0000, Harry Yoo (Meta) wrote:
-> Since commit ef5b0771d247 ("net: ena: fix driver when PAGE_SIZE ==
-> 64kB"), the RX buffer given to the device is limited to ENA_PAGE_SIZE
-> (16kB) because the buffer length field in the RX descriptor is 16 bits.
-> However, the driver still allocates a full page for each RX buffer, so
-> on a 64kB page kernel only the first 16kB of the page is handed to the
-> device and the remaining 48kB is never used.
-> 
-> The dynamic RX buffer recycling added by commit f7d625adeb7b ("net: ena:
-> Add dynamic recycling mechanism for rx buffers") does not fully utilize
-> the page because ena_try_rx_buf_page_reuse() only reuses what is left
-> in the current buffer and ignores unused memory in the page.
-> 
-> This shows up when RX data stays in socket receive queues, as each
-> queued skb keeps the whole 64kB page alive while at most 16kB of it
-> holds data. On an EC2 t4g.large instance (64kB pages, 8GB memory) with
-> 519MB left unread across 64 TCP sockets, RX pages pinned 2869MB of
-> memory while the socket layer accounted only 687MB.
-> 
-> Fix this by mapping the whole page and letting
-> ena_try_rx_buf_page_reuse() size the next buffer from the room left in
-> the page instead of from what is left of ena_buf->len. ena_buf->len is
-> then only the length written to the RX descriptor and stays capped at
-> ENA_PAGE_SIZE. With this fixed, a comparable workload pins only 497MB.
-> 
-> When PAGE_SIZE equals ENA_PAGE_SIZE, the room left in the page equals
-> ena_buf->len, so nothing changes.
-> 
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+Hi,
 
-Nice finding, this seems like a bug, no? Which means 'net' tree and
-a Fix: tag.
+On 11/6/26 08:21, Birger Koblitz wrote:
+> Add the phylink_mac_interrupt() function to phylink, which
+> passes a link-change interrupt received by the MAC to phylib.
+> This function can be used by drivers which want to avoid
+> polling the PHY and instead rely on an interrupt received by
+> the MAC when a link-change happens.
+> 
+> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+> ---
+>  drivers/net/phy/phylink.c | 20 ++++++++++++++++++++
+>  include/linux/phylink.h   |  1 +
+>  2 files changed, 21 insertions(+)
+> 
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index e885da1c28311a12a869e29ceb3c96886f31adc6..a87eaa2f3db5bef8fe56e12b90375bdb7f9c52e7 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -1616,6 +1616,26 @@ static bool phylink_link_is_up(struct phylink *pl)
+>  	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
+>  }
+>  
+> +/**
+> + * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
+> + * @pl: a pointer to a &struct phylink returned from phylink_create()
+> + *
+> + * Passes a link-change interrupt received by the MAC to phylib.
+> + * This function may be called in interrupt context, and therefore cannot take
+> + * a mutex. However, it is safe to assume that the reference to phy does not
+> + * disappear during the call, as only an SFP module may be unplugged to make a
+> + * PHY disappear. SFP modules however do not support interrupts.
+
+I don't see the relevance of PHY SFP supporting interrupts or not here,
+this just re-triggers the PHY state machine. Looks like a comment to
+make sashiko happy.
+
+Anyways, I'm OK with the approach, maybe reword that comment if you need
+to respin,
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
+> + */
+> +void phylink_mac_interrupt(struct phylink *pl)
+> +{
+> +	struct phy_device *phy;
+> +
+> +	phy = pl->phydev;
+> +	if (phy)
+> +		phy_mac_interrupt(phy);
+> +}
+> +EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
+> +
+>  static void phylink_resolve(struct work_struct *w)
+>  {
+>  	struct phylink *pl = container_of(w, struct phylink, resolve);
+> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+> index 3a88a69882a610afb868b55df6f6e77aea918649..a7b6294cc4a075bd2aaa43ed6484de17a6cb88b1 100644
+> --- a/include/linux/phylink.h
+> +++ b/include/linux/phylink.h
+> @@ -768,6 +768,7 @@ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
+>  int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
+>  int phylink_speed_down(struct phylink *pl, bool sync);
+>  int phylink_speed_up(struct phylink *pl);
+> +void phylink_mac_interrupt(struct phylink *pl);
+>  
+>  #define phylink_zero(bm) \
+>  	bitmap_zero(bm, __ETHTOOL_LINK_MODE_MASK_NBITS)
+> 
+
