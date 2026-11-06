@@ -1,105 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=18.194.254.142
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975136;
-	b=gGAdzBLJJ1AeHdB+TSMCi+d3Tt+9cydJyJ5hiDjrWWB/FWwloZCqmS4Tjjt4mffj+Bsd
-	 BQTauGaLFPfwM4R73S3vlHKhi7KbCvQ/0gUmlreMjJtT20vw/hmLwsqeLHMGJRQriYyy2
-	 Fuv2TzxdmiyiD7wgYyv94Le8544r/bP3Ivm8yeerrbyoOy8xXtZPQmS49cL3e65MfwyLK
-	 CSdOa2olfpef0BKtLVG13BJCqer9y820HJxvn+MYatxqyEA9wN9eDavmzEjTRbfNTNeAx
-	 mj8tu+QRiFE6itSWrwrlaZ9ok1rw6yi3sVTKV/zce9kEYflCGTlVej1qxUa9s9CEHww==
+	t=1793975252;
+	b=4yYN68ImXchXV+43inExYI6E9+OQi/L2hbyGZ47M4xminESsrwQlGkjK6ffRcCVnPl43
+	 wZqWdO2pXf//7+3VfDBRQSuAw6YyogmvIMQHMCUCvAKnEgKaNskZ0FLabwYNsy3MDdub9
+	 62uxKnzs56u8/5fvDyOEqtwhNbQdABj0GhdIVpMsobH9otkuudP/ss0HjiJLvFO343xnD
+	 YLBNuZ6jLT5DWCOnGU68EP7+OVuaLFpcafFDD9LfasTKQke/b3l12MlcnLhssn+rlHiig
+	 gbCadEuatwH0Y6kxS2uPavv+Lza064VuoiHeZAef48L+lR+mwEO0Ku9aiYPdBJf5neA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975136;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
-	b=kwiiKNUrTo7PAZtqfG7LR8PD1qVWEvl6FSfJJl1PB26SXAxW1g9K1cq+noK7vv4uQb7O
-	 ZQZO43tc+1bqEc2ElkG1qUTxlikGxwt+icG2j4IBf8XS4YO1zgbkuxo8iom7cOLpxZqSR
-	 C6A/RFxaZoCw7WDYkmbhFhN8Jdb6x0zPU+DmJLQtxCnh0SBDE+Pgu4+XetUCSd4tv8EY0
-	 x9eyIEneJHHo27/8haxGmn7HU9B+kAKBkFsuBrpPi9UfjNoj+pQOybRKkJmqmD41IXyby
-	 20X3K2agAlFzYOwlb1QZ2yNIogtiJGt0Xn5xF5kqbnKeM6vHCsJb9AnA+D4VVAAnFgQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793975252;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Mime-Version:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=ies+2HW5mTG1O2fNxFjPMdL4QQNBslFCepJ6zX5a7fw=;
+	b=tAiypicsX1qJh22QjNig0uLZgjsbrEX/tOcw8vGTM5VcOh1IL+Gqx1MTIJM0phD1VCch
+	 VYlzqqnix5vjyg2Dd8hzgD4zXmg/CWRInihug7xgBIF/a97B0QS4tw8VghdIQn9BpVqmq
+	 E3Id/o5cSTcRSqwyj0eWdfsd6z1W8dL9Wfk001D0pOJ7KjYvDMIsXI1XFQ6zQVaKXpoiw
+	 kNVyBBoXO/1dC6FFAD66C0PUrCSoDk5vDzH24U0axY/KToN/IXDgBxhoNhyDsza0ny28W
+	 /6Ddfa0IglMqhs30c4Tsu0+K/Pc8gi1C23lQUaP5PCLgZkNh3J8GXu/plBf+lQKkByg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W2eonC8s;
-	arc=none smtp.remote-ip=74.125.82.179
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=linux.spacemit.com;
+	spf=none smtp.mailfrom=linux.spacemit.com;
+	dkim=pass header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=eU6Zz58d;
+	arc=none smtp.remote-ip=18.194.254.142
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6454D606D838
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 14:25:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6454D606D838
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4CE606A32C;
+	Fri,  6 Nov 2026 14:27:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6C4CE606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=W2eonC8s
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso1146246eec.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 06:25:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793975134; x=1794579934; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
-        b=W2eonC8s5BJoRJbGppqiM59YV2PN0mcjJtgshuRjRbHdVnNofp+7+PEYxNdpvBxpbF
-         x5rYNo2JyVZ4V4R5Le102ZQNLVClJMW7MZuEySu52HnWSQZmSDOUkbP5vnxfuwlJpDfI
-         OnuLXNgE0zwBeh84ZysOlJ+KbXUM98KIzUn6GaWW5s9kQaxxMgCuUGVLjfP12ZQXyr0d
-         1bWAIW50p2F3lyLjDha6jY4ti7mYGfMqc0N+JVGJm6Uld2hLrwJUthgOUl+Jl5cj1L59
-         io/hF4A70i+hbFY3leR89gt8TQE8zmV9Wlo86SCZk7x2SbAfkx9DkYhQoH3kfGlDKL+N
-         qsUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793975134; x=1794579934;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/vQq7/OUg3A7EulCfcTLyC9GSdMx/w1XZowxdVp3bKA=;
-        b=YAmecp33tdAH4F7Vv2NRucgwj/5f3FnyK9Q7GNoQt3r7JcKOZEcgAg3Th2qhwRhp62
-         uYbo53hjYnxa2SRLZze0MeswpLuREK47Ov/bw1MpwiCn7axSeM0s36verlDMOzV6xqyq
-         lHFlu/7/97+boAHhz60OvOOcMXrF7yqySrZPd5MjGdTIQ9sgyC1cTzM2qLSMci7QU1SJ
-         SDFjn9tfQ/OVR95p7k4AWEWXblMEW9gH4GyIGrf9kPopLt+zIDHvrFpQo22eUb4xN3MC
-         7Ls0eOt1LEzniqpJK5EgbxO/QjJv6zHMuxNydsPskFf2bWzYiP57q8YvC2kkANTPmEk/
-         6c1g==
-X-Forwarded-Encrypted: i=1; AL+hErE67e23d0NGcKSk2okF5HoeH9pZ9khmzXfyhj1MXkqk528Abvqn30viBq8H/ObOVJ/CzgXvF4A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8CkV9J3lLp1cv92oxAlnNLTpjPb79wn9G928HxOn5K+Y4js5Fl
-	cX/I6xWJHaKpisPQRVckXrox+Ab+8VxJDRFaAl+1QWvrQrM+hw4apGCw
-X-Gm-Gg: AYBFou1LZsuEdOtLCPvimG1S1VePWhZrOSvAjYluzbfJu5IO6eekooilnhGQ4K84Do6
-	GOQlC9ooaNzhjvIB7GTGCGY6wo8A0VrSbI7HtT/8ZM4yoN3L/+W9j4jDXMtRTpITWNQZOik9zEs
-	wXPi9ytnXXbzXbxXCgGPNAko5HyuQOlmX71Q254RcgrMpCddEEf7HeQnOceWhhcn1C/p5pqDMgX
-	2EIx56rZ/pU2UcCKCKYZ/X8njZo1ppmjHWk3xqN5rsZrPLBcHZ/k50wOEciF1B/ZhH0zh71/Tlb
-	2O50NLSYIMbeaSCT1TDB2CWAxoTvrkEsrsGersrsOur9K8QQlqLHSOAkB/gH8uo3lwrQ9H5KkdJ
-	Z/d0ohpckwherZEUdqhVJL9/Qm3eiuuPWGEVtuDkwCUtHeA+uAXPYt1D66SZoqIguQYF/NpOa/2
-	UG5yAcIQP0I4Brr1THUnFnxoFhFcGqhAT463QG0qGZxRE7SGoAOgY9qkp5C6SBhsXq8HeL8GHWr
-	sgw/dqeU2kbmGO35fs1uJ8pKUVJENlp5Qb4aw8XYWd51nc7Gu5bSim/v13j/recjaZD6ebYXCnx
-	HSpL1HMNq0L7z92nH7qXbhzKQ3l5TzVYUHRDB08=
-X-Received: by 2002:a05:693c:881b:10b0:351:7ec1:a92c with SMTP id 5a478bee46e88-36f76520e62mr3755759eec.28.1793975134156;
-        Fri, 06 Nov 2026 06:25:34 -0800 (PST)
-Received: from xploitoverload ([2409:40c1:6412:e5b:5516:cd42:6c8f:c918])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa6a649csm7101233eec.26.2026.11.06.06.25.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 06:25:33 -0800 (PST)
-From: Kalpesh Solanki <skalpesh942@gmail.com>
-To: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
-	Kalpesh Solanki <skalpesh942@gmail.com>
-Subject: [PATCH net v2] tun: disallow setting IEEE 802.15.4 link types via TUNSETLINK
-Date: Fri,  6 Nov 2026 19:54:20 +0530
-Message-ID: <20261106142421.17793-1-skalpesh942@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261101092219.1278751-1-skalpesh942@gmail.com>
-References: <20261101092219.1278751-1-skalpesh942@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=eU6Zz58d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+	s=mxsw2412; t=1793975188;
+	bh=ies+2HW5mTG1O2fNxFjPMdL4QQNBslFCepJ6zX5a7fw=;
+	h=Mime-Version:Date:Message-Id:Subject:From:To;
+	b=eU6Zz58dH00WEa6FL+zeebtmEJrNcxY/Krp8P3Wzqp4360LcsJf4xZiMXr3tceCcE
+	 svAAp2N4byiBKqkFw0QiZKn4HbKLZ74oS4ptwE3NEh3wBkw9nTiaqPw+8ZHFeLI9oo
+	 Uanj8YI3WS8/LwOB8uWsKhcxD1s/yj9EzjDvwjZg=
+X-QQ-mid: esmtpsz20t1793975182tbd35ad97
+X-QQ-Originating-IP: TXe3qKmdAqKHaOhVsQVWL6itOrYqiQ+KBF3bprKbVQA=
+Received: from = ( [58.254.68.27])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 06 Nov 2026 22:26:20 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11997525554458896140
+EX-QQ-RecipientCnt: 19
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,128 +58,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=dccf64d274bd60cba0fa2d9ae238bd5d3708f6eae0880e28d195f102ba69;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Fri, 06 Nov 2026 14:26:19 +0000
+Message-Id: <DMO74K2MG3D7.15UUOU1O66K6N@linux.spacemit.com>
+Cc: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>, "Vadim Fedorenko"
+ <vadim.fedorenko@linux.dev>, <netdev@vger.kernel.org>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Yixun Lan" <dlan@kernel.org>, "Vivian Wang"
+ <wangruikang@iscas.ac.cn>, "Chukun Pan" <amadeus@jmu.edu.cn>, "Siddharth
+ Vadapalli" <s-vadapalli@ti.com>, "Tomas Hlavacek" <tmshlvck@gmail.com>,
+ "Muhammad Bilal" <meatuni001@gmail.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>, <linux-riscv@lists.infradead.org>,
+ <spacemit@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+From: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>
+To: "Ali Tariq" <alitariq45892@gmail.com>
+In-Reply-To: <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
+ <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+ <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:linux.spacemit.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MgHozbPPr2uXgP1SLKJNKX0MU8mJtRMwKsqd8FFPf/CApPbZk5H0RdWV
+	2IuTYIIQVfzRXjR59LdWeKfGLpM7lGSvOJiXxqsT0L5A12z0BINeq8nr+PgZH78hDygz9jS
+	F7dvONFH4P+gorhye0ML7cCFUlMhurd0NX1f/VD3OjE5IPViUZdbrFp5tIyBpym8XD+j0oX
+	40Z1FvYJu1EkdwoQDesdQ4E2g9NQGIFWec3Tw6wz7MRkaYgf8cCWQiRInZd4LfC8bGKVKmV
+	L7H8fGm3fHsjPR2oxDDa5LPKOfgXnP4c4IgR05Xu6VtbwpUi3ry5FyyT2oIcn0giRMlWZu1
+	Qx0eC0bwJ/idAm0zgLrBCrA+q/ZI+xklVpQJ09/QfebNOgd+JOL83zD0Ely7y2ZEDzje+s7
+	8w0iYmk19VKgKr1LBtqrlUnlklU/+fK517B+paFsR7OPmnD4rLKpt+ZlEZwRiL6e8zL8Zps
+	hqcGhvziGJpyHYSkXkpD0UVGuk1N5sfwc2O0XIC84L3eHHmPdx7FZHUT8nNDyTa8leujFzm
+	le1wnXT6WAm9jdsrRHv359l2wRzgK8cA972fDKpbEBka6H0n37XjDt2D5cFV4xbDo8HGGew
+	Oli85Otpd0aRaH/rNs7xPBZQ5/ebfeUA7VWsyapuKSfc4XW+DOanf2ELshdJNurI3o4ZObg
+	nNZeRzfgAzISi313CFbhRXDvpcpP8umB9b9mCl3ebN7qDX+BUf7cbaFAI3VZsYNynDvetDt
+	ZlX9+lJySR6PwQ7XPHBYP1nuK0WnMnhLvukB7blwUhyLX/B/v4tZ8Pq8oSewhNnRhyDHUg5
+	1h+8F3NxtZs8QPyWiVRcaJERYG2i7YYpD8ZDGSgJt4ecnkFM/XKazxgCeIfoX/lyWQCVYJY
+	NL1n3oxDWcsFu64cC0OIsHQonk9fFxU8qYno89C55tY46CToE3UHS317zaS72rb3Pvi90+0
+	BgyumNGf4/DzseVq0Y9c1ZWIJJczll6zAQl9yWqkruf5AlTNBaTjmNhxMVE/CSBKNf7wpwk
+	am+u023+iw6pCIuq4sDQJh9hPJ4Y9yc4vuX5M/ofFjBtv5qVfJzeGOw4kRiR2iax+YNFUsg
+	AGI3kH5fjr/IAfOH5s3uqgfczHy4AbA9SfPR1EDojgR3mOb5r8cPbs933KhRx4CsA==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-A userspace application can set the link type of a TUN/TAP interface
-to ARPHRD_IEEE802154 or ARPHRD_IEEE802154_MONITOR via ioctl(fd,
-TUNSETLINK, arg) because tun_get_addr_len() explicitly recognized
-these types.
+--dccf64d274bd60cba0fa2d9ae238bd5d3708f6eae0880e28d195f102ba69
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-However, TUN devices cannot function as IEEE 802.15.4 radios (they
-lack wpan_phy, channels, PAN IDs, and MLME operations), and tun
-never initializes dev->ieee802154_ptr or dev->ml_priv.
+On Fri, 6 Nov 2026 15:44:50 +0500, Ali Tariq wrote:
+> For the deadlock, I think the correct function to call is
+> rtnl_trylock() inside the emac_tx_timeout_task(), which would return
+> if the lock is already held and will hold the lock if it is not.
+>
+> What are your thoughts on this? Does a v2 changing rtnl_lock() to
+> rtnl_trylock() inside emac_tx_timeout_task() make sense?
+rtnl_trylock() there is fine, it fixes the suspend case.
 
-The IEEE 802.15.4 subsystem operates on the invariant that any
-net_device with dev->type == ARPHRD_IEEE802154 is a genuine WPAN device
-with a valid dev->ieee802154_ptr context. When an unprivileged user
-creates a TUN interface in a user+net namespace, changes its link type
-to ARPHRD_IEEE802154, and issues a netlink dump request (such as
-IEEE802154_LLSEC_LIST_KEY), ieee802154_llsec_dump_table()
-unconditionally dereferences dev->ieee802154_ptr /
-ieee802154_mlme_ops(dev), triggering a supervisor null-pointer
-dereference / general protection fault. Similar dereferences occur
-across net/ieee802154/nl-phy.c (ieee802154_del_iface) and
-net/ieee802154/socket.c.
+Looking at it, I found an existing bug though: once the work holds RTNL
+it deadlocks on itself, on every TX timeout:
 
-Rather than scattering NULL checks across every site in net/ieee802154/,
-fix the issue at the source: validate that arg fits within unsigned short
-(rejecting arg > USHRT_MAX to prevent upper-bit truncation), disallow
-setting ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR via TUNSETLINK
-by returning -EINVAL, and remove these unsupported types from
-tun_get_addr_len() along with the unused <linux/ieee802154.h> include.
+  emac_tx_timeout_task()
+    dev_close()
+      emac_stop()
+        emac_down()
+          cancel_work_sync(&priv->tx_timeout_task)  <- waits for itself
 
-Fixes: cca8ea3b05c9 ("net: tun: set tun->dev->addr_len during TUNSETLINK processing")
-Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
-Signed-off-by: Kalpesh Solanki <skalpesh942@gmail.com>
----
-v1 -> v2:
-- Instead of adding NULL checks in net/ieee802154/nl-mac.c, disallow setting
-  ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR link types via TUNSETLINK in
-  drivers/net/tun.c, as discussed with Andrew Lunn and identified in Sashiko
-  bot review. Virtual IEEE 802.15.4 interfaces are properly provided by
-  mac802154_hwsim and fakelb; TUN devices cannot function as genuine 802.15.4
-  radios and lack private 802.15.4 contexts.
-- Add an explicit bounds check (arg > USHRT_MAX) to prevent integer truncation
-  bypasses when casting 64-bit ioctl arg to 16-bit dev->type.
-- Remove ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR from tun_get_addr_len()
-  and drop unused <linux/ieee802154.h> header.
+rtnl_trylock() does not help with that. Please fix it in a separate
+patch ahead of this one, e.g. by resetting in place instead of going
+through dev_close()/dev_open(). Feel free to add:
+Reported-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
 
- drivers/net/tun.c | 45 ++++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+--=20
+Troy Mitchell
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index dcec7311e60..f2915e929e3 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -70,7 +70,6 @@
- #include <linux/bpf.h>
- #include <linux/bpf_trace.h>
- #include <linux/mutex.h>
--#include <linux/ieee802154.h>
- #include <uapi/linux/if_ltalk.h>
- #include <uapi/linux/if_fddi.h>
- #include <uapi/linux/if_hippi.h>
-@@ -3183,9 +3182,6 @@ static unsigned char tun_get_addr_len(unsigned short type)
- 		return 4;
- 	case ARPHRD_ETHER:
- 		return ETH_ALEN;
--	case ARPHRD_IEEE802154:
--	case ARPHRD_IEEE802154_MONITOR:
--		return IEEE802154_EXTENDED_ADDR_LEN;
- 	case ARPHRD_PHONET_PIPE:
- 	case ARPHRD_PPP:
- 	case ARPHRD_NONE:
-@@ -3362,22 +3358,33 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
- 			netif_info(tun, drv, tun->dev,
- 				   "Linktype set failed because interface is up\n");
- 			ret = -EBUSY;
--		} else {
--			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
--						       tun->dev);
--			ret = notifier_to_errno(ret);
--			if (ret) {
--				netif_info(tun, drv, tun->dev,
--					   "Refused to change device type\n");
--				break;
--			}
--			tun->dev->type = (int) arg;
--			tun->dev->addr_len = tun_get_addr_len(tun->dev->type);
--			netif_info(tun, drv, tun->dev, "linktype set to %d\n",
--				   tun->dev->type);
--			call_netdevice_notifiers(NETDEV_POST_TYPE_CHANGE,
--						 tun->dev);
-+			break;
-+		}
-+
-+		if (arg > USHRT_MAX) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		if (arg == ARPHRD_IEEE802154 || arg == ARPHRD_IEEE802154_MONITOR) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
-+					       tun->dev);
-+		ret = notifier_to_errno(ret);
-+		if (ret) {
-+			netif_info(tun, drv, tun->dev,
-+				   "Refused to change device type\n");
-+			break;
- 		}
-+		tun->dev->type = (unsigned short)arg;
-+		tun->dev->addr_len = tun_get_addr_len(tun->dev->type);
-+		netif_info(tun, drv, tun->dev, "linktype set to %d\n",
-+			   tun->dev->type);
-+		call_netdevice_notifiers(NETDEV_POST_TYPE_CHANGE,
-+					 tun->dev);
- 		break;
- 
- 	case TUNSETDEBUG:
--- 
-2.53.0
+--dccf64d274bd60cba0fa2d9ae238bd5d3708f6eae0880e28d195f102ba69
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iJcEABYKAD8WIQSL4Ay2cExaPXAQcU2YCe+A+TM0LwUCau3jiyEcdHJveS5taXRj
+aGVsbEBsaW51eC5zcGFjZW1pdC5jb20ACgkQmAnvgPkzNC9EhwD/bCyatTRIBS+r
+zpKFQzPzJykRoAVi4Rh6mDltoPZYzRkBALYRVcX6Wn1PJuX0hMwEF/A7ErpRIC/z
+5Ba+Vr8flvEC
+=Qi5F
+-----END PGP SIGNATURE-----
+
+--dccf64d274bd60cba0fa2d9ae238bd5d3708f6eae0880e28d195f102ba69--
