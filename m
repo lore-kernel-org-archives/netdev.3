@@ -1,47 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793955992;
-	b=mnnEmbM+wLJlo7g1bQnIZUogh9TNggc76iGhydv8xvpS39aQFLsXO9ZSBN4FWhfUwHVq
-	 aY+IWUQnXhGGyl0tccgGQWX0Fzn5hi7c+VqZfy4NZUXv+b/nics31aUdlJCIp/INqTubI
-	 wheULOWy1H87wev2oRebNfrwTNZo/OqHcHGTx/gY9BIgIQV1QTTyS1UBJ6I6cdxhH50vv
-	 w6upzPRtNEZCcEdTK/+MZ180iIWQh9SoUPNpULisqm3qCiKJDxh9tnfm4rCFHC1H7+UIk
-	 nrXIxHFTIxcAN0grrud2MiBGjHRH0Mhz79muE7ZuC4q8NkxXDaM/feSSHGs+kkH3xjQ==
+	t=1793955991;
+	b=O4CnIIFpoYnETy38KaBTXguoRsisRK55nDe1edtgYyQgJHpr/wHBBNE+8PHc5xW/ax5O
+	 tzYVsjWn7OPhjHXzqh3tAOn9ToZAcJq+GlX1BqGbd5iQdcM/Bd9Q9ekqtpUNGVvhuf745
+	 /VgA9pakkF+Ef49mt64g8/gxxHViBazh6KaoD1c3rc4DgAfDhn5/RGAjm69EzQqsGxoZ6
+	 DV+ZBvZsOAj4xCwXvgUN4ClouFtYZMublXoAB9267uG0F/wEyhURJE2Nb+WVgXmNPtZOP
+	 ZGOvzlXTOxMPEx5hZR4jfvTf5e1Iqyp9EmEr4aTarY7iK2xroup+XVFcHpVkS1vyEQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793955992;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793955991;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=q1H95/3jUArP09V4hzLaUE0XBUgQ2k28lsOurBPd7c8=;
-	b=PB0ol/5m+0uH+dpLYAhaDrZp9B5LxQp0XuA/rDo5NdnitAHtej75Ov/TG/029akJR8CW
-	 Npi66aAqK+kEF50j77j2u2kACY5dk5uiN1bFvOZBUFcmpKGWSyWZCmsc/TtfKu46OMKCc
-	 318TN86LcULv4ToGKWEsHfbQtxXLrUpc9oBO6IYRPSh/Y1yFSLw4cfmW/u2s8iXqeKXTC
-	 oCML2VdholnS7UDCUsyFGuannpXC5A68R3PTJXd3CWehH/qx6TR+MbmoXhN30tKNQz7vD
-	 9TyIzp+iJA+2C0AL8FqiZp4xuVZzn40YZSoXhNvQIx4zFzJhz30ScRCRFKR/Lhn7xpg==
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=qTD9uv7EbNta/9xuGWhItT6sXbpcUOA9/0K6CzF3X6A=;
+	b=BalE7/Rxh9j9sxZLy1SY3qQ6idtqVfwA8giJ7r5EqS/zCgrPOSSB/+hjT2Cwa8/CFfX+
+	 nsC3rt4MZA7Q4wL65hFgHj/ula/iTAmK8HhzbuQf1x+de1e1y4O5AQid+trHRTOaqeojo
+	 hMAQaF9b2zHRZkqq5SfmqG3iGeMvEH3tklkO/VD3F/3F10sOV174X+kqWFG8hQMvwjBp4
+	 hC4r+y5zbUbiqaA2u7W4DfpwZsZ7EHHImG1iTqwOqf0sl9xcxBFtw3WjpWLR0ZpTv/vRm
+	 K9tgkKebaE9AtsfjNpu+foGaT6n6Ke5ew5zrEx3LfzGtu1enbARuoa80iPA0MsQMMAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="ETUQ/8Er";
-	arc=none smtp.remote-ip=117.135.210.2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=jfUMs0uH;
+	arc=none smtp.remote-ip=117.135.210.3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EAA606A328;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB096606A329;
 	Fri,  6 Nov 2026 09:06:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8EAA606A328
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB096606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ETUQ/8Er
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=jfUMs0uH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=q1
-	H95/3jUArP09V4hzLaUE0XBUgQ2k28lsOurBPd7c8=; b=ETUQ/8ErmweduNzLfe
-	rBILfqHyBPbKH7HUgdKY5q+xKHcf1aBazRi6DbR0smOY5pWsx2QSQRJ2+1reOgku
-	iDDigAjh0gNv9MeHsaNl7AOCF/Fu1A+0ZvnY130/XT3nsKFBgniz6R/kMuZ6mjTA
-	QHvinM241W6gEIo/jrAdYhfFc=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=qT
+	D9uv7EbNta/9xuGWhItT6sXbpcUOA9/0K6CzF3X6A=; b=jfUMs0uHqVnMRPmIXI
+	rGruasEtBdE7RyTCNcfGyDXKpX/rWPcFcectzerj2WChz1HEGJTzQm69V14kFdjI
+	vn+GpcFH83BPK6T+pkf5kYl1H8NVcA2i1D/aBxbwKziCmcpanVKlUPoo9Pjn5yUf
+	FvuhoSTmgD5R4qrk3gLfpf+D8=
 Received: from 4CV529F122.company.local (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_7hJmO1qqwdQFQ--.15084S2;
-	Fri, 06 Nov 2026 17:05:28 +0800 (CST)
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_7hJmO1qqwdQFQ--.15084S3;
+	Fri, 06 Nov 2026 17:05:33 +0800 (CST)
 From: Ding Hui <dinghui1111@163.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -59,10 +60,12 @@ Cc: dinghui@lixiang.com,
 	xiasanbo@lixiang.com,
 	yangchen11@lixiang.com,
 	liuxuanjun@lixiang.com
-Subject: [PATCH net-next v6 RESEND 0/4] net: stmmac: fix DMA descriptor ring cleanup issues
-Date: Fri,  6 Nov 2026 17:05:02 +0800
-Message-Id: <20261106090507.1020751-1-dinghui1111@163.com>
+Subject: [PATCH net-next v6 RESEND 1/4] net: stmmac: guard against NULL pointers when freeing TX/RX buffers
+Date: Fri,  6 Nov 2026 17:05:03 +0800
+Message-Id: <20261106090507.1020751-2-dinghui1111@163.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261106090507.1020751-1-dinghui1111@163.com>
+References: <20261106090507.1020751-1-dinghui1111@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,104 +76,136 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_7hJmO1qqwdQFQ--.15084S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw4UAF4kKw15XrW5JF1DZFb_yoWrGw1Dpa
-	yfKan8tryDXr18JwsxCw4xWF18Aa1fCF4Ygr17Jw1fua15uryF9rWS9rWYgFyDCryqkw1j
-	qF15ZasrAF1UAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jayxiUUUUU=
-X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0RlSfmrtmFlPrAAA3B
+X-CM-TRANSID:_____wD3_7hJmO1qqwdQFQ--.15084S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43GF4fXw4xurWfuF1Utrb_yoWrur1rpr
+	srC3yvy34UtrnxGa1DJr48Xa45Jayrtr4YgayfKwnxZF1akryIgF45AryUCrykCrWkuF1f
+	KrZ8C3Z8Ar18JrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jw73gUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0R1Tf2rtmF1QTwAA39
 
 From: Ding Hui <dinghui@lixiang.com>
 
-Hello,
+The DMA resource free helpers may be invoked on queues whose buffers
+were never allocated:
 
-This is a resend of v6, originally posted on October 24, 2026,
-when net-next was closed. The four patches are unchanged.
+  - dma_free_rx_skbufs() and dma_free_rx_xskbufs() dereference
+    rx_q->buf_pool[i] via stmmac_free_rx_buffer(), but buf_pool may
+    be NULL if its kzalloc_objs() failed.
 
-Previous posting (v6):
-https://lore.kernel.org/netdev/20261024071319.875921-1-dinghui1111@163.com/
+  - dma_free_tx_skbufs() dereferences tx_q->tx_skbuff_dma[i] via
+    stmmac_free_tx_buffer(), but tx_skbuff_dma may be NULL if its
+    kzalloc_objs() failed.
 
-This series fixes the NULL pointer dereferences in the stmmac TX/RX
-DMA resource cleanup paths and the associated error path issues,
-found on a DWMAC platform whose descriptor ring allocation may fail
-under memory pressure.
+  - stmmac_free_tx_buffer() dereferences tx_q->xdpf[i] and
+    tx_q->tx_skbuff[i] (aliased through a union), but tx_skbuff may
+    be NULL if its allocation failed while tx_skbuff_dma succeeded.
 
-Patch 1 adds NULL guards in the free helpers and makes them clear
-the pointers they free, so that a NULL pointer reliably means "not
-allocated" for the long-lived priv->dma_conf.
+Add NULL checks in the free helpers as a defensive measure, since they may
+be called on partially-initialized queues.
+Additionally, make __free_dma_rx_desc_resources() and
+__free_dma_tx_desc_resources() clear the pointers they free, so that
+the NULL guards in the free helpers hold reliably when the long-lived
+priv->dma_conf is reused across XDP open/release cycles.
 
-Patch 2 makes the per-queue allocation functions undo their own
-allocations on error, instead of leaving the cleanup to the outer
-error paths that would then walk partially-initialized queues.
+Signed-off-by: Ding Hui <dinghui@lixiang.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 32 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
-Patch 3 releases the descriptor resources through priv->dma_conf
-when __stmmac_open() fails after copying the temporary dma_conf, so
-the long-lived configuration stays consistent with the resource
-cleanup.
-
-Patch 4 holds RTNL around the descriptors_status debugfs reader and
-skips queues whose rings are not allocated.
-
-The original v6 series was based on net-next commit
-734bef548a96 (Merge tag 'net-next-7.4' of
-git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next).
-This resend retains the same base.
-
-Changes in v6:
-  - Split the single patch into a four-patch series as requested
-    during review: NULL guards and pointer clearing, allocation
-    error paths, descriptor resource release through priv->dma_conf
-    on open failure, and the descriptors_status debugfs locking.
-  - Merge the descriptor resource release with the ptp_error unwind
-    from 8181678a92f0 and rebase on top of the current net-next.
-  - Use the "net-next" subject prefix, which was requested back in
-    v1 but mistakenly kept as "net" in all previous revisions.
-  - Link to v5:
-    https://lore.kernel.org/netdev/20261012142458.2845385-1-dinghui1111@163.com/
-
-Changes in v5:
-  - Release the descriptor resources through priv->dma_conf when
-    __stmmac_open() fails, avoiding stale pointers in the
-    long-lived configuration.
-  - Hold RTNL while descriptors_status reads the descriptor rings.
-  - Link to v4:
-    https://lore.kernel.org/netdev/20261001035045.3305816-1-dinghui1111@163.com/
-
-Changes in v4:
-  - Free the RX resources in alloc_dma_desc_resources() when the TX
-    allocation fails.
-  - Skip queues whose descriptor rings are not allocated in
-    stmmac_rings_status_show() and print a hint instead.
-  - Link to v3:
-    https://lore.kernel.org/netdev/20260919121436.1642724-1-dinghui1111@163.com/
-
-Changes in v3:
-  - Use addr directly in __alloc_dma_rx_desc_resources() error path
-    instead of the if/else block on rx_q->dma_erx/dma_rx.
-  - Clear the freed pointers in __free_dma_rx_desc_resources() and
-    __free_dma_tx_desc_resources().
-  - Link to v2:
-    https://lore.kernel.org/netdev/20260905154654.1725313-1-dinghui1111@163.com/
-
-Changes in v2:
-  - Instead of only adding NULL checks in the free helpers, also fix
-    __alloc_dma_rx_desc_resources() and
-    __alloc_dma_tx_desc_resources() to clean up their own
-    allocations on error, as suggested by Andrew.
-  - Link to v1:
-    https://lore.kernel.org/netdev/20260830040610.1156008-1-dinghui1111@163.com/
-
-Ding Hui (4):
-  net: stmmac: guard against NULL pointers when freeing TX/RX buffers
-  net: stmmac: clean up partially allocated DMA rings on error
-  net: stmmac: release descriptor resources through priv->dma_conf on
-    open failure
-  net: stmmac: hold RTNL when reading descriptor rings in
-    descriptors_status
-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 115 +++++++++++++++---
- 1 file changed, 98 insertions(+), 17 deletions(-)
-
---
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b20e5038eead..2f03600cc5bd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1766,7 +1766,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
+ 					 DMA_TO_DEVICE);
+ 	}
+ 
+-	if (tx_q->xdpf[i] &&
++	if (tx_q->xdpf && tx_q->xdpf[i] &&
+ 	    (tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XDP_TX ||
+ 	     tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XDP_NDO)) {
+ 		xdp_return_frame(tx_q->xdpf[i]);
+@@ -1778,7 +1778,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
+ 		tx_q->tx_skbuff_dma[i].buf_type = STMMAC_TXBUF_T_SKB;
+ 	}
+ 
+-	if (tx_q->tx_skbuff[i] &&
++	if (tx_q->tx_skbuff && tx_q->tx_skbuff[i] &&
+ 	    tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_SKB) {
+ 		dev_kfree_skb_any(tx_q->tx_skbuff[i]);
+ 		tx_q->tx_skbuff[i] = NULL;
+@@ -1801,6 +1801,10 @@ static void dma_free_rx_skbufs(struct stmmac_priv *priv,
+ 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+ 	int i;
+ 
++	/* buf_pool may not be allocated if alloc failed early */
++	if (!rx_q->buf_pool)
++		return;
++
+ 	for (i = 0; i < dma_conf->dma_rx_size; i++)
+ 		stmmac_free_rx_buffer(priv, rx_q, i);
+ }
+@@ -1842,6 +1846,10 @@ static void dma_free_rx_xskbufs(struct stmmac_priv *priv,
+ 	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+ 	int i;
+ 
++	/* buf_pool may not be allocated if alloc failed early */
++	if (!rx_q->buf_pool)
++		return;
++
+ 	for (i = 0; i < dma_conf->dma_rx_size; i++) {
+ 		struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
+ 
+@@ -2137,6 +2145,10 @@ static void dma_free_tx_skbufs(struct stmmac_priv *priv,
+ 	struct stmmac_tx_queue *tx_q = &dma_conf->tx_queue[queue];
+ 	int i;
+ 
++	/* tx_skbuff_dma may not be allocated if alloc failed early */
++	if (!tx_q->tx_skbuff_dma)
++		return;
++
+ 	tx_q->xsk_frames_done = 0;
+ 
+ 	for (i = 0; i < dma_conf->dma_tx_size; i++)
+@@ -2194,13 +2206,20 @@ static void __free_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
+ 
+ 	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
++	rx_q->dma_erx = NULL;
++	rx_q->dma_rx = NULL;
++	rx_q->dma_rx_phy = 0;
+ 
+ 	if (xdp_rxq_info_is_reg(&rx_q->xdp_rxq))
+ 		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
+ 
+ 	kfree(rx_q->buf_pool);
+-	if (rx_q->page_pool)
++	rx_q->buf_pool = NULL;
++
++	if (rx_q->page_pool) {
+ 		page_pool_destroy(rx_q->page_pool);
++		rx_q->page_pool = NULL;
++	}
+ }
+ 
+ static void free_dma_rx_desc_resources(struct stmmac_priv *priv,
+@@ -2242,9 +2261,16 @@ static void __free_dma_tx_desc_resources(struct stmmac_priv *priv,
+ 	size = stmmac_get_tx_desc_size(priv, tx_q) * dma_conf->dma_tx_size;
+ 
+ 	dma_free_coherent(priv->device, size, addr, tx_q->dma_tx_phy);
++	tx_q->dma_etx = NULL;
++	tx_q->dma_entx = NULL;
++	tx_q->dma_tx = NULL;
++	tx_q->dma_tx_phy = 0;
+ 
+ 	kfree(tx_q->tx_skbuff_dma);
++	tx_q->tx_skbuff_dma = NULL;
++
+ 	kfree(tx_q->tx_skbuff);
++	tx_q->tx_skbuff = NULL;
+ }
+ 
+ static void free_dma_tx_desc_resources(struct stmmac_priv *priv,
+-- 
 2.34.1
 
