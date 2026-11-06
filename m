@@ -1,71 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.97.239
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793949705;
-	b=kT/zzg5FMnl5DZuN/l+33JaKs6+4QuGUkW0CgEzQP7M2nxOyK4xpW5xlH4zg5rsA0vao
-	 JW6Pq9QblF2hILnM/pFNSCf4aSXh4HHQ+1dQ+fDSRSjfSI6ZNXjK6MWOxS/3idEr4PrWx
-	 9ed71L/D4MN5EfC2483suqjiNdznEKb4nTbMc2/q+4ydXSubJmzWcUKXBGRhjHw4Gezza
-	 nJx1KQgYfavXxzIwNKP/3VhkMkvgo+I8uzk7NFbHQQ5/rf9h330/PY3Uazk6VJCdcH531
-	 737OxXOGrsyGLS6mREJMvi2rTApU72crNnWn+VchZt3lmpMEVBLm0PTYqV6FtUQGgLA==
+	t=1793949694;
+	b=p770Phrw2g+yavZVSP+CvU8tW5VBvwOS7pvmCeW618bi4QaTZQXd34uaepUZ1Vn34k9o
+	 HBL4EH71/Zm46AtSjxcaQA/hUjhx0BTrAvfwI6hQipqgVxPpgMjJNcSlcxY3pLtnhFGxx
+	 d5RU92+QKUiKljynqy7A2NJFPwgL3s0mwA5V0WdhGmzfI+CVXeUi9+pEvHCFYuGCrP7sN
+	 xBNalKXjK/ldzvXqCe1gu2msWv90nZJImkTmY+Z2KJNhlgRBJF37/JVgjI99GzxIXWZqC
+	 cEzKNrfHt81dVukfOsxp7QMEbTGZB4UthmuC/9FZdW2pfr79gsS70KPw465lCgR0goA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793949705;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793949694;
 	h=DMARC-Filter:DKIM-Signature:Received:X-Spam-Checker-Version:
 	 X-Spam-Level:X-Spam-Status:DKIM-Signature:Received:From:Date:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
 	 References:In-Reply-To:To:Cc:X-Mailer;
-	bh=qUNd6kXD91woJetM+lXs4L874hiv0cRTV46+6IT4S/c=;
-	b=n50Gf88OAIWOz3eVpJeSAYP12LB6Kt69VVn26UVpC4rWtJM9GA9baClVFPxysoIqtsO/
-	 gH4aL/hXQxlBylNi5mvDsbk56sJHPoGvhQBoSnalB/rNyqybxMUfImz3Jno+oPlrtXLdi
-	 hc6BzKkeH/52RJRl5wrF3AXMIszBJwBU3UfJU1ns/CHNN3ECnDwcEBtKojj3lKHVJIzng
-	 QRY1hX7yIZIZ8yEiNrjnVfOVBc83W3vbUwShLXk7A+WI4JwrJR8+uwOmXjZ+aGHnXAKUZ
-	 mBtPoh5rj8nFDEFHQChOhmQt4RHWuMgODp5/14ixk6doQD6T4qHIj11WblaStcxJHSQ==
+	bh=Ee/myPCg0IdhXGVMjGs0qrYdfKisJto2g/jdb1Ya1WY=;
+	b=4tKvrlUdCMdYeYhb7zaDCdiNb5pBJAc5Vj2WL3ad1Fd+buzUu4LEHJ30Edw7ruZpXXgZ
+	 aaAEir/5bw8qVOCtGoRktA9DtYxDvOXQ+1OxEcp95M8yPeQWIZcw4MumixAEBO4U6Dafg
+	 OqeZbsdXUW1lSWy7tw2JsZfCEAQv6ebTSNF0nu4Sa3UNWwkSvCM1EuUv+5IBiPK6l5Osv
+	 T+/pfZkuupg8fZjUe/rnLxoLQSS+s0GkMkS+HBgtLm3eCgl0hqOMO2yDypxKUdFXLUybY
+	 FkIqr93cm/YzcmscBHI79VAswl4c0GK5Gmj6jTWMdKhtWazRsNtEaS6bioY+eg7Y2pA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=birger-koblitz.de;
 	spf=pass smtp.mailfrom=birger-koblitz.de;
-	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=Ui0IQsIV;
-	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b="TuHBy/yi";
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=QMlTR7WR;
+	dkim=pass header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=iThz4MXZ;
 	arc=none smtp.remote-ip=23.88.97.239
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3B76082BC2;
-	Fri,  6 Nov 2026 07:21:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED3B76082BC2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3665C606A32F;
+	Fri,  6 Nov 2026 07:21:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3665C606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=Ui0IQsIV;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=TuHBy/yi
+	dkim=pass (2048-bit key, unprotected) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=QMlTR7WR;
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.a=rsa-sha256 header.s=default header.b=iThz4MXZ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1793949703;
-	bh=0kKsGJW5I991lB/XYv7HVOnFpAaEd/5zFhjNi8hK5ss=;
+	s=default; t=1793949687;
+	bh=zknT+B53H6X7aoQ8XVtHqntrw86TTn6ol6IZ3zX5qnc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Ui0IQsIV0By+kpHTCaTqK8zXnOscXytRWVFJfdoFy7mUYe6DhWQs8wsEl5jjDrH0h
-	 OyeYVy3jtHHz7W+9W3UXPeuINhHUih5ZUL16YovE5AumWyjiXjNLMeActWHXaQTX4j
-	 iwJtmx9zMGkyo9xr2GrznBs60ySSP8TtSpI74Oha8fcN1I22ZIBHsyFr+iOliSy+Sj
-	 R/PytfY5kVib0wiuUGJfYqvoAhIORM5JWmLfT7s8Zghmk0ShX4Ag1RX9Ya/iR+LkZK
-	 4dj7mymyLlKzxgBxDQUzO+AOFnRaxvxSjVBu40PQqElWT9xbdU4AtyLKtBiKmwKnx1
-	 7n6y/GJSRnuwg==
+	b=QMlTR7WRIeukH2vy2Zj73EbGyO9v0QREeZIN7JhE1qISlk09NE7K0DhU6l6ydf/UT
+	 ZkwxcOzpTkE12qCoH/eU+4bAAQVjlOF/fP1TGuk741sY/BqybnDgZQHrQoCUrxfcE2
+	 2uJREGZ6s+9tViDuAQ2u34yn3Q593fV2Rwzw4TAF+vMBGDDMZYKihPZyyBQPuyTKN3
+	 4pJ5V/WyDwuKcHbBFDMphRFmX+kfMH7FWbcJRuWaA8iwALIq92qQ52k7aP2kHHQBqs
+	 TKv4HjCCSJsYVdbHeLeDi7kfJSij/D5+7SGgSlRlv4T7g91EYDfeEwwkEpCZjV3fJa
+	 ypSRPxm09d9zA==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 961B348BD0; Fri,  6 Nov 2026 07:21:43 +0000 (UTC)
+	id 966E748BB7; Fri,  6 Nov 2026 07:21:27 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1793949689;
-	bh=0kKsGJW5I991lB/XYv7HVOnFpAaEd/5zFhjNi8hK5ss=;
+	s=default; t=1793949684;
+	bh=zknT+B53H6X7aoQ8XVtHqntrw86TTn6ol6IZ3zX5qnc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TuHBy/yiD6zllyBdnZkk50J6MDabrwyLq4m9MBvksDpOs4fP6iV30me0qiBfTbpD+
-	 jrvRTt2NxOAD5pwsGITgdmO1Nj85IYEWFa6+bAulD+JhEu9Y+wKj/FozysQfgg5GRl
-	 Zqkymm04qNJNOXCFVzxxFP7MForuhSTEs9D0sdlqlry9yvu8SDl1mtQ4nBVLRCnnAQ
-	 l+mGtBIH1cZqbHY1WjOmVuvgj/+n3tyVvqvYNBPrGVWlODxYztJKUzDxkiqnWfs48f
-	 F9HXzKDfXf0dkQkO+klKg2ZUx+UnkSlyUnKmTsAa10XgxgSvmg/7C7C/pRgAN8RuXg
-	 VLkGCKJASwutA==
+	b=iThz4MXZKPvjSqGBT6mBs3Zq45v9c7dh0pM1bMWJJouLHlyS5a2eBVXIgGp84qa9g
+	 v3lHJyn+bbxERtfM9fIn/6u96fTGYgvxKFXAxnYC99TGm5kyhX+HvOOoIM6VNlhyMl
+	 6eOZVOR4QDpzCIJtYzsbbCoquCpYjAUPeYEHCZxBDv+Nj4IRlBq36IQ6vyoMO9eoWC
+	 uvFvYT/V+nPsPc+r0wBsFIuycOQf6rYaBwO9Ack2d1CI1Vtiay1BQNg2Jmla5J/PwW
+	 eOCt4N7o0F1uvNza4KU1blgvJXfo9oml1RLuL8s56DmY4jyQCcJZ0k6onmdqbUk8kz
+	 1umgvBz753rtg==
 Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 87AE048BB5;
-	Fri,  6 Nov 2026 07:21:28 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 862A248B89;
+	Fri,  6 Nov 2026 07:21:23 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Fri, 06 Nov 2026 08:21:26 +0100
-Subject: [PATCH net-next v20 11/13] ax88179_178a: Update driver name and
- information
+Date: Fri, 06 Nov 2026 08:21:16 +0100
+Subject: [PATCH net-next v20 01/13] phylink: Add phylink_mac_interrupt
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,7 +76,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-ax88179a-v20-11-37b5a1189983@birger-koblitz.de>
+Message-Id: <20261106-ax88179a-v20-1-37b5a1189983@birger-koblitz.de>
 References: <20261106-ax88179a-v20-0-37b5a1189983@birger-koblitz.de>
 In-Reply-To: <20261106-ax88179a-v20-0-37b5a1189983@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -93,122 +92,63 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Birger Koblitz <mail@birger-koblitz.de>, Nicolai Buchwitz <nb@tipi-net.de>
 X-Mailer: b4 0.14.2
 
-Add additionally supported devices to Kconfig description, add
-further requirements such as PHYLINK.
-
-Update driver name in usb_driver and update MODULE_DESCRIPTION
-to include the additionally supported chips.
-
-Change Kconfig symbol name from USB_NET_AX88179_178A to USB_NET_AX88179
-and update loongson32_defconfig/loongson64_defconfig to use that
-symbol.
+Add the phylink_mac_interrupt() function to phylink, which
+passes a link-change interrupt received by the MAC to phylib.
+This function can be used by drivers which want to avoid
+polling the PHY and instead rely on an interrupt received by
+the MAC when a link-change happens.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- arch/loongarch/configs/loongson32_defconfig |  2 +-
- arch/loongarch/configs/loongson64_defconfig |  2 +-
- drivers/net/usb/Kconfig                     | 10 +++++++---
- drivers/net/usb/Makefile                    |  2 +-
- drivers/net/usb/ax88179_178a.c              |  8 ++++----
- 5 files changed, 14 insertions(+), 10 deletions(-)
+ drivers/net/phy/phylink.c | 20 ++++++++++++++++++++
+ include/linux/phylink.h   |  1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/arch/loongarch/configs/loongson32_defconfig b/arch/loongarch/configs/loongson32_defconfig
-index dbef879935f322e6167b4ed878ad4cb20048c6db..a039b8e8d242073c16ea281cf8734068a1a9b29f 100644
---- a/arch/loongarch/configs/loongson32_defconfig
-+++ b/arch/loongarch/configs/loongson32_defconfig
-@@ -641,7 +641,7 @@ CONFIG_USB_RTL8150=m
- CONFIG_USB_RTL8152=m
- CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_AX8817X is not set
--# CONFIG_USB_NET_AX88179_178A is not set
-+# CONFIG_USB_NET_AX88179 is not set
- CONFIG_USB_NET_CDC_EEM=m
- CONFIG_USB_NET_HUAWEI_CDC_NCM=m
- CONFIG_USB_NET_CDC_MBIM=m
-diff --git a/arch/loongarch/configs/loongson64_defconfig b/arch/loongarch/configs/loongson64_defconfig
-index 4f8bb77b8a1e6e30bcbd6e96d7e38b5054630ea0..b30415c03fa185cae77e81ded929c743ef22ee40 100644
---- a/arch/loongarch/configs/loongson64_defconfig
-+++ b/arch/loongarch/configs/loongson64_defconfig
-@@ -657,7 +657,7 @@ CONFIG_USB_RTL8150=m
- CONFIG_USB_RTL8152=m
- CONFIG_USB_USBNET=m
- # CONFIG_USB_NET_AX8817X is not set
--# CONFIG_USB_NET_AX88179_178A is not set
-+# CONFIG_USB_NET_AX88179 is not set
- CONFIG_USB_NET_CDC_EEM=m
- CONFIG_USB_NET_HUAWEI_CDC_NCM=m
- CONFIG_USB_NET_CDC_MBIM=m
-diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
-index 115990b0d9537aea2776544c9768b034f32aa7a4..27862e380bdb4a54d184fa8618e4c9b348354e84 100644
---- a/drivers/net/usb/Kconfig
-+++ b/drivers/net/usb/Kconfig
-@@ -195,11 +195,12 @@ config USB_NET_AX8817X
- 	  This driver creates an interface named "ethX", where X depends on
- 	  what other networking devices you have in use.
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index e885da1c28311a12a869e29ceb3c96886f31adc6..a87eaa2f3db5bef8fe56e12b90375bdb7f9c52e7 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1616,6 +1616,26 @@ static bool phylink_link_is_up(struct phylink *pl)
+ 	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
+ }
  
--config USB_NET_AX88179_178A
--	tristate "ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet"
-+config USB_NET_AX88179
-+	tristate "ASIX AX88179/179A/178A USB 2.0/3.0 to 100M/1G/2.5GbE Adapters"
- 	depends on USB_USBNET
--	select CRC32
- 	select PHYLINK
-+	select AX88796B_PHY
-+	select CRC32
- 	default y
- 	help
- 	  This option adds support for ASIX AX88179 based USB 3.0/2.0
-@@ -207,6 +208,9 @@ config USB_NET_AX88179_178A
++/**
++ * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
++ * @pl: a pointer to a &struct phylink returned from phylink_create()
++ *
++ * Passes a link-change interrupt received by the MAC to phylib.
++ * This function may be called in interrupt context, and therefore cannot take
++ * a mutex. However, it is safe to assume that the reference to phy does not
++ * disappear during the call, as only an SFP module may be unplugged to make a
++ * PHY disappear. SFP modules however do not support interrupts.
++ */
++void phylink_mac_interrupt(struct phylink *pl)
++{
++	struct phy_device *phy;
++
++	phy = pl->phydev;
++	if (phy)
++		phy_mac_interrupt(phy);
++}
++EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
++
+ static void phylink_resolve(struct work_struct *w)
+ {
+ 	struct phylink *pl = container_of(w, struct phylink, resolve);
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index 3a88a69882a610afb868b55df6f6e77aea918649..a7b6294cc4a075bd2aaa43ed6484de17a6cb88b1 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -768,6 +768,7 @@ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
+ int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
+ int phylink_speed_down(struct phylink *pl, bool sync);
+ int phylink_speed_up(struct phylink *pl);
++void phylink_mac_interrupt(struct phylink *pl);
  
- 	  This driver should work with at least the following devices:
- 	    * ASIX AX88179
-+	    * ASIX AX88179A/B
-+	    * ASIX AX88279
-+	    * ASIX AX88772D/E
- 	    * ASIX AX88178A
- 	    * Sitcomm LN-032
- 
-diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
-index 2ecead0181eaf8d66fb6f5dbd6f2905b22b6eb57..4026f19ecb826a6465de38f1d9bb0e4c0af80421 100644
---- a/drivers/net/usb/Makefile
-+++ b/drivers/net/usb/Makefile
-@@ -12,7 +12,7 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
- obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
- obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
- asix-y := asix_devices.o asix_common.o ax88172a.o
--obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
-+obj-$(CONFIG_USB_NET_AX88179)      += ax88179.o
- ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o
- obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
- obj-$(CONFIG_USB_NET_CDC_EEM)	+= cdc_eem.o
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index b077b7153f0c07676aafd5dfd13a2c0d9a826719..88dce368eacfeee5df4062ff277041427f6ff475 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1361,8 +1361,8 @@ static const struct usb_device_id products[] = {
- };
- MODULE_DEVICE_TABLE(usb, products);
- 
--static struct usb_driver ax88179_178a_driver = {
--	.name =		"ax88179_178a",
-+static struct usb_driver ax88179_driver = {
-+	.name =		"ax88179",
- 	.id_table =	products,
- 	.probe =	usbnet_probe,
- 	.suspend =	ax88179_suspend_wrapper,
-@@ -1373,8 +1373,8 @@ static struct usb_driver ax88179_178a_driver = {
- 	.disable_hub_initiated_lpm = 1,
- };
- 
--module_usb_driver(ax88179_178a_driver);
-+module_usb_driver(ax88179_driver);
- 
--MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
-+MODULE_DESCRIPTION("ASIX AX88179/179A/178A/279 based USB 3.0/2.0 100M/1G/2.5GbE Controllers");
- MODULE_LICENSE("GPL");
- MODULE_ALIAS("ax88179_178a");
+ #define phylink_zero(bm) \
+ 	bitmap_zero(bm, __ETHTOOL_LINK_MODE_MASK_NBITS)
 
 -- 
 2.47.3
