@@ -1,103 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793939162;
-	b=Z9le4TMFtBXr/wCmqroe6DFfAt8Zs2GmQLeauTgxGT1I0NwfXfovMoYMZCdeedAqyRzB
-	 TEHQTPxYSRBpcfJIfDCdqZbTIeFtCjiOhK7+PSWVutTWjGy6XkYip/EMr47z94e4JY5ib
-	 Zk2V+mxXRbMLnwKnCMp3xJST0NKqB+3zD3dFNiVSpvG3Gzj1LlOQlSHn30nyaw24OE/03
-	 +YL8prbVQO0uJUaDeUlol3IdQGK9TQD+Tm2j6RwgKPNvSYSreYmF403QnZ60dDy8GvmUb
-	 qbPmn5pJ45E8lJRIRm31S4Ut4/1P3pYMoyi8O+EKz5XPmbA4BeGkmv9M5jrlhZcIhxA==
+	t=1793939632;
+	b=LpYhtWn9alIfloWI6CWVC6O8A+rj8bV0iDLr3G7fM9NWnTgYVMdVM2NvrNFGhnf8mO3s
+	 61sZ6dArmH7hn+JSkQ2BtLCGTUrZhHK+4gvQa1udCN9PtdEWjZYpk3hvqajs3N4XAk29P
+	 qDvmACz/54KjvWueNObwW9trJ6FWOyZer/6fxf6oT0hUjHLutzQH/gQb51be1VZnbNPe6
+	 qs2n7WZBrmpDkCRWzhazWTX7JKSBVIUXDrP7Il9zSNE/+AOeAdtrTd6xVoZjWuThjuFHK
+	 ay0c+IHTUoV0SZp33qsk4H+LvvDItSrIrHOiNKg/rs79WWWGt7eNsG6yd6ZTHIb3CqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793939162;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=qqKPGKgxzCnJl5Zf6W6XFm1IHi1NIK5zysMn+xDZUsU=;
-	b=MQ0Jns6+x+L8t/fPjpGmPWPwCOw/Ye8qnk9ikfG98ImX1/Q8a2xpkNiQsvynoeMFcxLa
-	 clISuORk4pdRQkmcYomj/yLuSV2Jl/kbi+LQXKpBtMkysVo5F4rS8liI4KaCe0HEJpcxm
-	 oXfpUOJGL42HEzF+D6bYhsTbMJQP1ZdZRIfNMounTdS5TvCwPL6jTqUERH33V7AUX1jnW
-	 UV9/sRifPEDkg32QEBcqLgEbrBAp1qOAia/ZbbtBsdmwNF+fDAj387bkTawURuMCsEKgf
-	 CQTSGiprlYasxENik8KJEAQ6K01R44DCzGfTM+P9Ct2MKqlVG6u0EJBJLsfHP7jhStg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793939632;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=UjmvlMxMfsOJ2MipGoWSWM8HIKzXWVlbjvE93f4mWOI=;
+	b=4g4bRdr/xyZ8V9ArPNj5X7gYkwJ9bfk3eod9CnUfGGH6iHgPnKY3AGrDcfxm5nXnwL1B
+	 MHZwlK6YTn3Vk2goEJPCszFAnGt3DWDx0oK2TjKig4wK9BqwUMtGDla5uZl792TWqFX2i
+	 XhUScNR2W8xiEr0ACIW1kmWp8LNtkcMNJ/MIEW0I8bI5wfIcrzhTskaz6WeRDMaOOHovV
+	 dgfAsWsXVbwc3vPL3CWHg2MSTa7/batKzeV5OjQC8jNki0eYqWQO9yi61XcY18PsVx0gQ
+	 WFhI+5Tew0DUrzZBq8e065tfkRozFncLSQ1ARDsATPsQ8SqOy+VmghRKJGauGngEKxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.178
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.210.72
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43764606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 04:25:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43764606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5eaaa9b1591so185291e0c.3
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 20:25:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793939152; x=1794543952; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qqKPGKgxzCnJl5Zf6W6XFm1IHi1NIK5zysMn+xDZUsU=;
-        b=ld17VLBtzs6SqS7N+cRKUdQ7qbgqEWoYkrRl/H3GQpIbLXSTP3MaSpZ4GmH0aMySJs
-         wjVNVzlJdEC16D7dRIycLlG/2gS14zSi3fiz4vCMlrsPTGEbmFzxFxDIPxIo5KyTmurZ
-         4A+VwRyaQsmQHh1XlTCRyv7OAQxXRScHyJtVK5d1qrviymLsyDrMCp1MLShAvkfqqUgb
-         YGEMoTcex0tulvlcOGK4Nc4NvmfyogHZ8n8HVecJpLrshoP1xEyjeMC1VjjAv7tMVbf+
-         OAfXM109tx/k916+XiU3X5TZ2EqNhLV+/J+CasYQ1kI4OOcBMMZ4K5g3+LOKqL/234FF
-         Mu7A==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D24606D814
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 04:33:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1D24606D814
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-847e2926d94so535637a34.0
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 20:33:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793939152; x=1794543952;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793939631; x=1794544431;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qqKPGKgxzCnJl5Zf6W6XFm1IHi1NIK5zysMn+xDZUsU=;
-        b=q72/gwvatCVTpnvIfC18I1T60z9/W1lOj7WxIFp4gHQPtfi8kVWCC2E5Ybo/2luHti
-         KxexnO++DUxGGYFIDjcvIyD+jB0pJ8Dx0eGvAihDnv6LKZBGXcp+kgdYHv7Rnw4chHKf
-         JMxMxIpeiteLKvprN8tUX2fDkwHhrRSAOVyNOgvfHEeqVXdzx6yE9wiEzaxIin+LJeJy
-         /iU+CBcA2kVRUH5ra65u+1p/MZ8KXmDBKeTiXqFiQT73Il3frqXgBA3ZOAQ34EooOHVS
-         vrz/dJY7pGIfGvQav5niFP+6DrqczG+A1EKYpnN1CkDwDswO3EBFsqKP+UrAMRab71sJ
-         pz+w==
-X-Forwarded-Encrypted: i=1; AKwUvBxSynOO2N9b7x+HVVqNKcTIaE6VXY0wiU3y1M+MZDSPRqVThikCOmEIqPZSfKsGV3LGZ2owuFM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9E0CWtvonPoo7pGxG9VSNrTzmogf/17anspmMVEya7sc51NpQ0
-	H8Pvg4RJ5oS9R+fYAO8zjZ5yLEXFXvhKK9N8ubZywVF10omG69fZrjqJ
-X-Gm-Gg: AYBFou3jB8EWKVYMSNdJH+EVT+BXK3mdvZyUr1kAt77f31rMZIbcof9ro8haNDDsSN2
-	RpL2TjBz6qoE3/if8FaWTPWpviL/zv81Cal00upjHcEznK0JoJpdosQ85kLjlPmTqhOPjDA1Vez
-	1teG053uJHq80MUStMOoJCntEJH/WiRzhlSJXabhLEMWEwl2M6lB12LHmHQYxrIp7m+ScUpVl/R
-	RiG47/3LEVJUXgyfKVKwczWh31EsyZAoofEy67nZm5Bqm88egYWXiLzUjcqrB975HiJXbDs4mqH
-	h9EgPO5+ICzHAajLS8aBabV1poFRwAiO8d3HJqTklyGVgiS/ejdxah/dkod2sfr1aFpkvqL5ZFl
-	Wttb0AR4fMEzlRRYO32r9P9Vj8jU+7UMn2Pc/+7YSjlm0/bi2xQxlG/3BguBm3mWhcmUO8ngyaJ
-	vFO4NI1wrcU04BOE0adnsQsZSDrnl/OmWwrfRarrolOuIB6UHBXmItG+a7I9+SzfBB8ELaoDLu6
-	6wsyWHT0ILVH5jqqacfX1R5p4Y/RKgqkij+JWXxUQdBy+0egeDFmqFsGth7VXaV0h2XzsVL0HvT
-	EFdiEB4QScO7u3Heim5yoIb+LijfE+k9lyjSti4Dh2shVCcW7DG1OfvceM9LnrzEVBA13J7XUcJ
-	ov0EY974xgJihbrLRMWR1laFKQ2+z3oXBoMVihG2BLEanUERvCiaRRaR0saH6RMLZ1zNadPc=
-X-Received: by 2002:a05:6122:1d07:b0:5ea:c37b:450 with SMTP id 71dfb90a1353d-5ecc4428992mr843406e0c.20.1793939152230;
-        Thu, 05 Nov 2026 20:25:52 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecc64a6774sm576387e0c.3.2026.11.05.20.25.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 20:25:51 -0800 (PST)
-Date: Thu, 05 Nov 2026 23:25:51 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- netdev@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, 
- Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Hassan Sultan <hassansultan@google.com>, 
- virtualization@lists.linux.dev
-Message-ID: <willemdebruijn.kernel.1374b4bb37bc5@gmail.com>
-In-Reply-To: <20261105115715.1466924-7-edumazet@kernel.org>
-References: <20261105115715.1466924-1-edumazet@kernel.org>
- <20261105115715.1466924-7-edumazet@kernel.org>
-Subject: Re: [PATCH net v3 6/8] selftests: net: tun: test UDP tunnel GSO on
- retyped devices
+        bh=UjmvlMxMfsOJ2MipGoWSWM8HIKzXWVlbjvE93f4mWOI=;
+        b=bdVipnyt6LE2Nn0j3g4kqFqQQNG/yJO0EENMa5AnqrxXzulvtKnnd7JlpJmtwobXvp
+         2w5UBQsydjmoIMWzDK6IRiahqwhNOKLGHEQH4apPqUfH6ne7K0ASM4wfh1Yd1e/EzPxA
+         iYSq2JfiwqA7qkR7V/CG9PFEfCF3yG3yVp7EmKZPYgVXp7sCdifgsjxyVoKSOFFKBhex
+         GQhbPtijHBHygaN9Z4EKv4INkWOGQsOL2AMLLJuZprxfZmyo5ALRu7TPyxifTlUl+cV8
+         H/t9eilt3AqDOJBJe0I2FTWSoXA0LL0KL5Vvho2bq0jBz9UWC1b8d2UXzVYW7RO+Ii0B
+         as/w==
+X-Forwarded-Encrypted: i=1; AKwUvBz4aVMi5i4FewbC8uN0LbBKeRifr5TZ0F5X1oMk+JhA2EqzHMepnCaE0Y/H+pCZhDPujqeik+g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Ss9F/yXW9AVGNHmAamsieWDWlWrBJE1sJ9UpYrszIn+qefaOQ
+	vUAbnaEuM5a9WnGDFCwL5oq9wGu8dXQEKhO9koUFwZ+MtS+4Q4XCl0FQiPB6VPqXGehDafKfpR6
+	/OwJy58+id7Hf/JxL/jLkEUqhn2v1O+0AidgAFSeKLDqvYhwlX5G2+qTey38=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,28 +58,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6808:1828:b0:4dd:18c7:5448 with SMTP id
+ 5614622812f47-567e16d6313mr1093975b6e.56.1793939631120; Thu, 05 Nov 2026
+ 20:33:51 -0800 (PST)
+Date: Thu, 05 Nov 2026 20:33:51 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aed58af.02d3f859.2829d1.0007.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Nov 2026)
+From: syzbot <syzbot+listd640a374c372365da528@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Eric Dumazet wrote:
-> Use TUNSETLINK to make the device type disagree with the tun/tap
-> framing, and check that the outer headers of UDP tunnel GSO frames are
-> still validated according to the framing:
-> 
-> - tun_vnet_udptnl_proto.outer_proto_link_type: tap device set to
->   ARPHRD_NONE. Frames with an NSH outer ethertype, with or without a
->   VLAN tag, are rejected. A valid outer IPv4 frame is accepted.
-> - tun_vnet_udptnl_proto_l3.outer_proto_link_type: IFF_TUN device set
->   to ARPHRD_ETHER. An Ethernet frame behind the tun_pi header is
->   rejected.
-> 
-> Without the patch "net: virtio: do not use dev->type to find the outer
-> L3 header", the frames expected to be rejected are accepted.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Hello wireless maintainers/developers,
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-This TUNSETLINK ioctl is so odd. Changing dev->type but not really
-changing the underlying link layer expectations, such as eth_type_trans.
+During the period, 2 new issues were detected and 1 were fixed.
+In total, 16 issues are still open and 219 have already been fixed.
+There are also 7 low-priority issues.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 2134    Yes   INFO: task hung in reg_process_self_managed_hints
+                  https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<2> 1236    Yes   INFO: task hung in crda_timeout_work (8)
+                  https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<3> 365     Yes   INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+                  https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
+<4> 63      Yes   INFO: task hung in nl80211_pre_doit (3)
+                  https://syzkaller.appspot.com/bug?extid=da14e8c0ada830335981
+<5> 24      No    BUG: workqueue lockup in reg_todo
+                  https://syzkaller.appspot.com/bug?extid=b733a65a200ab7aa2cbe
+<6> 22      Yes   INFO: task hung in cfg80211_event_work (4)
+                  https://syzkaller.appspot.com/bug?extid=5506b2556159a1ab6923
+<7> 103     Yes   INFO: rcu detected stall in cfg80211_wiphy_work (2)
+                  https://syzkaller.appspot.com/bug?extid=858514d213c2ff9b671e
+<8> 4       Yes   INFO: task hung in wiphy_register (2)
+                  https://syzkaller.appspot.com/bug?extid=e79f3349c93df8969402
+<9> 4       No    WARNING in cfg80211_cac_event
+                  https://syzkaller.appspot.com/bug?extid=3df76a08d929e91e5327
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
