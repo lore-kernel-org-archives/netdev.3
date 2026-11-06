@@ -1,54 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793988550;
-	b=uHxfgVyeV2/RL4ZVArc11qycWdD6qT3qrFJYtlm6eegQM0h/yUIASLisBoISuHigr4lP
-	 QtBi010AiDyc1ZsU3ejNXvj9qoSWYyqSDELJBNOw7CNB3xw26KeFYFl4OfnZhAJjNPUB2
-	 /+PC4Rkw4JjgzJebCdr/zKKai1ovs5w1EolLD1XsdYNYIkCb1aJjKbPwwXDQtC7b7XCc/
-	 bgxZYhSFdZ3RXYd+QeSOadDYqz49S2tfdzo6m2DhSMf1FCC553eLqabbR0xjuNrEM/TYj
-	 zAzmTYqlX9vWv5tZ0LAx5bvE0jRzBrFEkminwmCkwmZZbOMDKBXP1Z4wbQtDOXw6ZQg==
+	t=1793988770;
+	b=gnrze8wgfOxlCx3IzaZdphGf9xGv0x2rv8K3NJofmss9C41GdiPW3VblYH413fBowIcw
+	 krfx4/aVAsplQ2ApskCAOvn6V/GYWAFmwBKLqb2qXuVlU8xgAuyiUhClIrmqkKv1Ta8Cd
+	 McOr8ftAJa5dlxdAqdtbUV+LKBh3augpq8gB0Hz1A5VIPy9WCOv43KyYxlhSs7EABNCya
+	 DGSLPyKFZapcj0/3ZxHV7qlwG+uEQ1puEPAx7U2J5krJBCS30D2h5MyUTyT5k/V977Dc+
+	 FpIBRTRYDyuSlojZaLjUn0L2yHmxn3KG+abVMesR18rpz2dIS6NN6nJGASfaR1d3sfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988550;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=tHsWuUqZawgO/+5zHIysVA31VVEjDt03dHJYlp7sVuw=;
-	b=2fLj22N2nI22t/XMVbt2v6SNYPshtkqFW1quJgo3Ooj971zUTNxy9v9tw90J9kAymt75
-	 CGfiCyGmI/jo3ydrlXzAO6SBjV+QGvJUG3pPFzGATZQsQnariZ7iMQ6xv21f4MYweND3t
-	 QivVQ17F0fIW5XkVaxEQtJG3TlU0WyAQOhnJtq5i7ITEmMAnlf1JGAuD89glwsyvjF4ag
-	 Im8FmlYV6IiR+3B2/7oeS8L667t4AitjYWYSG1sZubLuHtRR5YP6+FUls1hBnD4NEl5kQ
-	 u+FWwlIcRj/lIqNbrqVFlUSj/0ePERCcebiAvvPZklHJ3Hzww2ZeRBJTf3UtWRTFJDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988770;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=sgRmgrlCmLHVGsBUVwEOPeglhQGTfDiNl+DwyII1fEo=;
+	b=1RHW08BIrT+dhd4Fb1tGBX9I2py3Ty4M2aoZ61Qniu4EKRly1JHTnOu+J3DiFwyhvkHr
+	 i+eWEGZ9c8mNcsv6c3JuPnQ6MQcR30xa84jO+YeghiUedqgw3eEJQAjQ8lbvQsCBzZV2J
+	 fxP+EnNvjXzE836+a/llvdjTMBBAnpyoEL2bZ0mYhwUFaSqBMtbAwS4qTEwLQV6GgPVX+
+	 DKE7AFrd/ZHa0kDsbnDzsN6eGyi7VENzkMhzcOW9YOokCcLdOWX9hX4QuVGEzjLLakvX1
+	 adR73/Yhk4irjVLDmvXUf+oam/yYrO9I16kVnq7MyJ72675mPB4Eo9wrU0wHUD0UdZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bllMkXDT;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC62606A32D
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:09:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFC62606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-5384e381fbbso711774b6e.2
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 10:09:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793988548; x=1794593348;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tHsWuUqZawgO/+5zHIysVA31VVEjDt03dHJYlp7sVuw=;
-        b=QsdNYdBmFZJLv1sEkuBD/mYBAZVPDFbiw1TI3n1OMxzDRCwAjsnmEmn/ZqmAyjfiT4
-         vgp+DmwK3SCjf8sRxrRXpmJ94I/iIThL3+5v3lTfM+kbuhClEPSzjU7fOFDTxjIRZx28
-         FCl+LvUrK3SWjBqXyINDjET1Ijik0PtK6erNWyoYJ40SCqkXdwBipyL6ZwdaOEgSP6Io
-         v66HvarkhjuWS51BfUh9IX0hDJclbLOGM05jrw5KHFSkWHGYhRPiogADawL4memRRofA
-         cPPNK/4vGrbyho5KxMl5VTP6OD/BnZeah204ep/PPRn3HQ+YsLQdNsEeclMFQ8d17u0m
-         VGHA==
-X-Forwarded-Encrypted: i=1; AKwUvBwkJ8ciybvvFnFG1orgCXlbr1q8SocYIApjst4XKjbFCGXTGexrWIvy2XyRH48rNLv3PjZC9ss=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/w+dh9ORtS6Afck/1C8Dkbd+9SlMLdxbAIel5Tb16tePMxlDXm
-	FFwE7K3ZPkWZgs+aW1dTTjrL3duY03q3S4/HH3pd9aAdB3pdE1hDXmdABDwVXGK02t2iqC19dm9
-	eZvjDv+gorjtcS9dym/iL2bPQ2efKhCjpL3R/8KwIjx5jD+y+hYOPxMcXIME=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA460606A32F;
+	Fri,  6 Nov 2026 18:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bllMkXDT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607E81F0089F;
+	Fri,  6 Nov 2026 18:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793988769;
+	bh=sgRmgrlCmLHVGsBUVwEOPeglhQGTfDiNl+DwyII1fEo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bllMkXDT3LSQU2IBLf6ImeuG01urX91GJtFfpeVRO/ttNF/7LbMvFGabZD70cfzZ5
+	 2Lk8V+kwemwzVhRZsVZfSvHVJ0iEtpmG4IhHirF0s/1CNqTYDQ7eQeHHKJl783VHh+
+	 VHTPPLolxek3RZg6EFoefOeZP3F9eSZqcPG8kKC+13jacgrx4pZlBmyEkAya+kcW7y
+	 YvxlMkS3vtXWBVxNm0p4yRQcAyN3f3FrevqHG28bOQpUcZKRB6Uj8qcMFkwPUfmVj/
+	 1gJsE3QWgK2nd30Esuhvc7peLQyR8Z/stXxolnRvgyq6x8TE/nlY2qjg/CBtFkejqQ
+	 uCJqKFWkvbwqQ==
+From: Simon Horman <horms@kernel.org>
+To: qingfang.deng@linux.dev
+Cc: Simon Horman <horms@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	manizada@pm.me,
+	ericwouds@gmail.com,
+	nbd@nbd.name,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/2] pppoe: pass bound packets directly to generic PPP
+Date: Fri,  6 Nov 2026 18:12:29 +0000
+Message-ID: <20261106181228.1263020-2-horms@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261103111711.28202-1-qingfang.deng@linux.dev>
+References: <20261103111711.28202-1-qingfang.deng@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,145 +67,225 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c298:b0:55b:f8c9:298e with SMTP id
- 5614622812f47-567e1047884mr2818860b6e.25.1793988548779; Fri, 06 Nov 2026
- 10:09:08 -0800 (PST)
-Date: Fri, 06 Nov 2026 10:09:08 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aee17c4.8be4ead1.3b45e1.0199.GAE@google.com>
-Subject: [syzbot] [net?] [nfs?] WARNING in svc_destroy
-From: syzbot <syzbot+8cbdf9aa6c281a4e6bbe@syzkaller.appspotmail.com>
-To: Dai.Ngo@oracle.com, anna@kernel.org, cel@kernel.org, davem@davemloft.net, 
-	edumazet@kernel.org, horms@kernel.org, jlayton@kernel.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, neil@brown.name, 
-	netdev@vger.kernel.org, okorniev@redhat.com, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com, tom@talpey.com, trondmy@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kernel..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14721d2d580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
-dashboard link: https://syzkaller.appspot.com/bug?extid=8cbdf9aa6c281a4e6bbe
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e8f55ecc1d55/disk-05441d69.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/db66972c51fd/vmlinux-05441d69.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6628bc03aa4a/bzImage-05441d69.xz
-
-AI-generated root cause summary:
-In fs/nfs/callback.c, nfs4_callback_up_net() first initializes an IPv4 TCP
-listener transport via svc_xprt_create(..., PF_INET, ...), which links the
-transport onto serv->sv_permsocks. When a subsequent call to
-svc_xprt_create(..., PF_INET6, ...) fails with an error other than
--EAFNOSUPPORT, nfs4_callback_up_net() returns the error immediately without
-tearing down the existing IPv4 transport. As a result, nfs_callback_up() unwinds
-on error and calls xprt_svc_destroy_nullify_bc() -> svc_destroy(), which
-triggers the WARN_ONCE(!list_empty(&serv->sv_permsocks)) warning because the
-IPv4 transport is still attached to the service, and subsequently frees the
-service while leaving the active listener with a dangling pointer.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=8cbdf9aa6c281a4e6bbe
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8cbdf9aa6c281a4e6bbe@syzkaller.appspotmail.com
-
-NFS: callback service start failed
-------------[ cut here ]------------
-SVC: permsocks remain for NFSv4 callback
-WARNING: net/sunrpc/svc.c:532 at svc_destroy+0x299/0x330 net/sunrpc/svc.c:532, CPU#1: syz.2.321/6994
-Modules linked in:
-CPU: 1 UID: 0 PID: 6994 Comm: syz.2.321 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/15/2026
-RIP: 0010:svc_destroy+0x29d/0x330 net/sunrpc/svc.c:532
-Code: 48 b8 00 00 00 00 00 fc ff df 49 8b 5d 00 48 8d 7b 18 48 89 fa 48 c1 ea 03 80 3c 02 00 75 67 48 8d 3d 17 5e 78 07 48 8b 73 18 <67> 48 0f b9 3a e9 d0 fd ff ff 48 8b 7c 24 08 e8 bf 13 86 f7 e9 a5
-RSP: 0018:ffffc900042af860 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffffffff9040ba80 RCX: ffffc900063d9000
-RDX: 1ffffffff2081753 RSI: ffffffff8c37e800 RDI: ffffffff927aee30
-RBP: 0000000000000000 R08: 00000000ffffffff R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888035744000
-R13: ffff888055f04c00 R14: ffff88802de30000 R15: ffffffff9cd5b540
-FS:  00007ff81118f6c0(0000) GS:ffff88812257c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c29af61 CR3: 0000000056a04000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- nfs_callback_up+0x511/0xad0 fs/nfs/callback.c:236
- nfs4_init_callback fs/nfs/nfs4client.c:327 [inline]
- nfs4_init_client_minor_version fs/nfs/nfs4client.c:379 [inline]
- nfs4_init_client+0x236/0x420 fs/nfs/nfs4client.c:429
- nfs_get_client+0xf38/0x1230 fs/nfs/client.c:467
- nfs4_set_client+0x3f6/0x640 fs/nfs/nfs4client.c:763
- nfs4_init_server.isra.0+0x5be/0xf80 fs/nfs/nfs4client.c:1014
- nfs4_create_server+0x185/0x2b0 fs/nfs/nfs4client.c:1063
- nfs4_try_get_tree+0x93/0x140 fs/nfs/nfs4super.c:228
- nfs_get_tree+0xa61/0x1440 fs/nfs/fs_context.c:1621
- vfs_get_tree+0x92/0x320 fs/super.c:1881
- fc_mount fs/namespace.c:1282 [inline]
- do_new_mount_fc fs/namespace.c:3910 [inline]
- do_new_mount fs/namespace.c:3986 [inline]
- path_mount+0x7d0/0x2850 fs/namespace.c:4337
- do_mount fs/namespace.c:4350 [inline]
- __do_sys_mount fs/namespace.c:4565 [inline]
- __se_sys_mount fs/namespace.c:4542 [inline]
- __x64_sys_mount+0x293/0x310 fs/namespace.c:4542
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff81039fb19
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff81118f028 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 00007ff810625fa0 RCX: 00007ff81039fb19
-RDX: 0000200000000480 RSI: 0000200000000440 RDI: 0000200000000400
-RBP: 00007ff810437b70 R08: 00002000000004c0 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff810626038 R14: 00007ff810625fa0 R15: 00007ffd2a563db8
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-   7:	fc ff df
-   a:	49 8b 5d 00          	mov    0x0(%r13),%rbx
-   e:	48 8d 7b 18          	lea    0x18(%rbx),%rdi
-  12:	48 89 fa             	mov    %rdi,%rdx
-  15:	48 c1 ea 03          	shr    $0x3,%rdx
-  19:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
-  1d:	75 67                	jne    0x86
-  1f:	48 8d 3d 17 5e 78 07 	lea    0x7785e17(%rip),%rdi        # 0x7785e3d
-  26:	48 8b 73 18          	mov    0x18(%rbx),%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e9 d0 fd ff ff       	jmp    0xfffffe04
-  34:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
-  39:	e8 bf 13 86 f7       	call   0xf78613fd
-  3e:	e9                   	.byte 0xe9
-  3f:	a5                   	movsl  %ds:(%rsi),%es:(%rdi)
-
-
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103111711.28202-1-qingfang.deng@linux.dev?part=1
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+pppoe: pass bound packets directly to generic PPP
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+This changes pppoe_rcv() to hand frames for PPPOX_BOUND sockets straight
+to ppp_input(), instead of going through __sk_receive_skb(). It relies on
+commit ec4215683e47 deferring the channel free to an RCU grace period. It
+also clears skb->dev, matching what __sk_receive_skb() used to do.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+> index 67c28ac763efd..5d5187e4976b3 100644
+> --- a/drivers/net/ppp/pppoe.c
+> +++ b/drivers/net/ppp/pppoe.c
+> @@ -415,6 +415,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	if (!po)
+>  		goto drop;
+>  
+> +	skb->dev = NULL;
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+[Severity: Low]
+Should the comment in ppp_bridge_gso_segment() be updated as well? It
+still says __sk_receive_skb() is what clears skb->dev:
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+drivers/net/ppp/ppp_generic.c:ppp_bridge_gso_segment() {
+	/* skb->dev is NULL here (cleared by __sk_receive_skb() for PPPoE),
+	 * and some GSO handlers (tunnels, IPv6 UFO) dereference it.
+	 */
+	...
+}
 
-If you want to undo deduplication, reply with:
-#syz undup
+Bound PPPoE frames are the ones that reach the bridge path, and they no
+longer go through __sk_receive_skb(). The invariant now holds only
+because of this assignment in pppoe_rcv(). Nothing in pppoe.c says that
+the GSO path depends on it.
+
+The follow-up patch "pppoe: queue unbound packets directly" does not
+touch ppp_generic.c, so the comment stays stale after that patch too.
+
+> +
+> +	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
+> +		ppp_input(&po->chan, skb);
+> +		return NET_RX_SUCCESS;
+> +	}
+>  	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+
+[Severity: Medium]
+The commit message says:
+
+  "The direct bound receive path also skips the socket filter check in
+  __sk_receive_skb()."
+
+Does this path skip more than the socket filter? __sk_receive_skb()
+calls sk_filter_trim_cap(), and that function runs the LSM hook before
+the filter:
+
+net/core/filter.c:sk_filter_trim_cap() {
+	...
+	err = security_sock_rcv_skb(sk, skb);
+	if (err)
+		return SKB_DROP_REASON_SECURITY_HOOK;
+	...
+}
+
+apparmor_socket_sock_rcv_skb() mediates sockets of any family when
+skb->secmark is set. BPF-LSM programs on socket_sock_rcv_skb also apply
+to AF_PPPOX. After this change, neither runs for bound session frames
+from the remote peer. A configured policy would therefore fail open.
+
+Some other checks are skipped as well:
+
+  - A filter attached with SO_ATTACH_FILTER or SO_ATTACH_BPF, even one
+    locked with SO_LOCK_FILTER, is still accepted by setsockopt(), but it
+    never runs on bound frames and never trims them.
+
+  - The sk_rcvqueues_full() check and the sk_drops / drop reason
+    accounting in __sk_receive_skb() no longer happen.
+
+pppol2tp_recv() already calls ppp_input() directly for bound sockets, so
+there is precedent. Could the commit message still describe the LSM
+bypass and the other skipped checks?
+
+This stays true after the follow-up patch "pppoe: queue unbound packets
+directly". There, only the unbound path still reaches sk_filter, via
+sock_queue_rcv_skb().
+
+[Severity: Low]
+Does include/linux/ppp_channel.h need an update along with this? Its SMP
+locking notes say:
+
+ * The channel code must ensure that when it calls ppp_unregister_channel,
+ * nothing is executing in any of the procedures above, for that
+ * channel.
+
+PPPoE followed that rule before this patch. ppp_input() ran under
+bh_lock_sock(), and every ppp_unregister_channel() caller (through
+pppox_unbind_sock()) holds lock_sock().
+
+Now pppoe_rcv() calls ppp_input() from softirq without the socket lock.
+So ppp_input() and ppp_unregister_channel() can run at the same time on
+the same channel.
+
+That looks safe in practice:
+
+  - struct channel is freed through call_rcu().
+  - pch->ppp is cleared and then followed by synchronize_net().
+  - pch->bridge is cleared and then followed by synchronize_rcu().
+
+Even so, the documented contract no longer matches the rule PPPoE and
+pppol2tp now rely on.
+
+[Severity: Low]
+Is chan->ppp now accessed locklessly without any annotation? ppp_input()
+does a plain load:
+
+drivers/net/ppp/ppp_generic.c:ppp_input() {
+	struct channel *pch = chan->ppp;
+	...
+}
+
+Meanwhile, ppp_unregister_channel() can do a plain store at the same
+time, protected only by lock_sock():
+
+pppox_unbind_sock()
+  ppp_unregister_channel()
+    chan->ppp = NULL;
+
+For PPPoE, the socket BH lock used to serialize these two. Without it,
+this looks like a data race that KCSAN would report.
+
+There is a second ordering gap. ppp_register_net_channel() publishes
+chan->ppp before it initializes pch:
+
+	chan->ppp = pch;
+	init_ppp_file(&pch->file, CHANNEL);
+
+This store has no release ordering, and the sk_state test in pppoe_rcv()
+gives no acquire ordering. In practice the gap between connect() and
+PPPIOCGCHAN hides this.
+
+Would READ_ONCE()/WRITE_ONCE() on chan->ppp be appropriate here? Should
+chan->ppp also be published only after initialization, with release
+semantics?
+
+The sk_state access is volatile, so that side is not a KCSAN concern.
+The chan->ppp race is still there after "pppoe: queue unbound packets
+directly".
+
+[Severity: Low]
+Can frames reach generic PPP out of order during the PPPIOCGCHAN
+handoff? pppox_ioctl() does:
+
+		sk->sk_state |= PPPOX_BOUND;
+		...
+		synchronize_net();
+		...
+		while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
+			skb_orphan(skb);
+			ppp_input(&po->chan, skb);
+
+A frame that arrives after PPPOX_BOUND is set now takes the direct path.
+It reaches ppp_input() during synchronize_net(), ahead of older frames
+that are still in sk_receive_queue.
+
+At this commit, frames that go to the backlog while the ioctl holds
+lock_sock() arrive even later, from release_sock() -> pppoe_rcv_core().
+
+Before the patch, the socket lock kept these frames in wire order. The
+follow-up "pppoe: queue unbound packets directly" removes the backlog,
+but the reordering against sk_receive_queue remains. pppol2tp already
+behaves this way. The frames in this window are mostly LCP and other
+control frames for pppd.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but ppp_input() appears to
+call ppp_receive_error() without holding ppp_recv_lock():
+
+drivers/net/ppp/ppp_generic.c:ppp_input() {
+	...
+	rcu_read_lock_bh();
+	ppp = rcu_dereference_bh(pch->ppp);
+	if (!ppp_decompress_proto(skb)) {
+		kfree_skb(skb);
+		if (ppp) {
+			DEV_STATS_INC(netdev_from_priv(ppp), rx_length_errors);
+			ppp_receive_error(ppp);
+		}
+		goto done;
+	}
+	...
+}
+
+ppp_input_error() makes the same call inside ppp_recv_lock() /
+ppp_recv_unlock(). ppp_receive_error() then calls slhc_toss(ppp->vj),
+which does a non-atomic comp->flags |= SLF_TOSS.
+
+A peer can reach this branch with a PPPoE session frame of length 0 or
+1. pskb_trim_rcsum() trims the frame, and pskb_may_pull(skb, 2) then
+fails in ppp_decompress_proto().
+
+Can this race with PPPIOCSMAXCID in ppp_ioctl()?
+
+		ppp_lock(ppp);
+		if (ppp->vj)
+			slhc_free(ppp->vj);
+		ppp->vj = vj;
+		ppp_unlock(ppp);
+
+Without rlock, ppp_receive_error() could load the old ppp->vj and write
+to the slcompress after it has been freed.
+
+This patch adds one effect in the common single-channel PPPoE case. The
+socket BH lock no longer serializes ppp_input() calls for one channel.
+The lockless slhc_toss() can therefore run while another CPU is in
+slhc_uncompress() / slhc_remember() under rlock, and a comp->flags
+update can be lost.
+
+Would taking ppp_recv_lock() around ppp_receive_error() in ppp_input(),
+as ppp_input_error() already does, fix both cases?
