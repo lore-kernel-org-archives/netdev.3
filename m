@@ -1,54 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.83
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793945772;
-	b=2GnUWa885/Hgpw//fpb9/WlrbLCONWr16jVepWHrqoiTfQqFNKsiq3X4SzHu0//KEE/W
-	 wGSVtQrkeZnZi75OyTGCQCdPfLWifcdPLAZ3EtjfafEmSwYkUcyJDye5WjBH+Cih4LAhP
-	 xJ34xTIWaYwV0C2LThWJ+XhWZ9SaICkOIeAZzM9ywEXljsu7Omb2tEMOgNuISCyPRZUrJ
-	 l0jeFgVsHtkHfJPYhXGkbkhGj4/h1aL+ecfyN+J4QBUndU2Y3LyN+K5zV21KRAbkNw4u4
-	 lhWj305W6IgzOOLiHnaa/Q6dLdc8LhUFJoTzPdGFK5q6sBvrd7hwldHjcYqfKvS3lNQ==
+	t=1793945858;
+	b=wyPGwdUZ6J9M7PeA0Bs5wfgGmeCzmhc3ihnimD3piTyCtquyQy4x9oXjZ567gh4uc0c3
+	 W1WvMEjV6uYrJimDie8yctZSH5mVgcPtbix/LonuAUVIIShI/EkmUpi+h3gH8Le02s6eI
+	 eva95CUAXmnVmbXz7dW2iRQHrfHj2dDL0HDWUm43ISNkK/ancwlDVAOsyeEpVFOty7cPK
+	 eSszNrcalVoUQkjzSUX5+nCacwQKJPva7hraPi8MXg/xEclENte6KKjY05/PUuAOMcLAg
+	 8xNsL4pHRjwSKRQRy7QqPbuJsPBSdowktli/yVCGIGEbi99rWmbKCk2MukvgGSL36ng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793945772;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=QkdmBPlNQnGu105wggpDIUpINN7JTcBrIEM5l8eU7vE=;
-	b=y1lTIq3STgSCVV4fk/K4Yaygczb0LgEnzNrcD+AGwoipVIxXOGR9QI6KN0MXw6p4xDn/
-	 FHsgHiXttGC6cnSD/rY3sZoXesjdEWIVdxDOplvM7FGHo4lnbZdtB1vppUf2Yf1ii8UbI
-	 +Ok8e6aiVneEQG5yX3X+eESAPYXBOHFTRnsJkAr1FFOzhBEUbVE59gKJI0+rcL+ldCzT3
-	 EsqwqYiT4CrMDYaX7ELqkkv0AWo7INowgSBmfKUeTFtmicOoVHuzTKNtZM6dCQL6a+CwB
-	 f5Cs8/Rjjz1ZorNk+SpCZMbt3E5iKvrkTcAHK4UzfzjUgYLy9BN7zFH67QEIW1R3RjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793945858;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=dy/d2GC7QK09QgoZlz5nxNi8qXIn97lfPrkg+wuH/2ZFWoD3d7eSIbU7X4BSUEqGIXzC
+	 mGe+mHlz0OWerWyFPbGZmLVwecCiqZMJOB7XwRpfggiQJukHtbAhab9V+dYvVmIAIj8Ur
+	 N93GvjxnyQo4N6p+fhdfYLDKGl0cL4uaVjfs5ZpWlXSbmA8O8n0FZk01NiU5e1cKdkwJM
+	 pUAB3d7RkUAIfXxBadBbDNLx2NhOIL8Xf7VrYcZZm45zpglZRohdsog972BMKpRJNacyQ
+	 pg4w/t1iwMgbdzZY5FVouR0Y7uEB2WcnnRcA2mb+cdN5CSUHl8BVh5cWxdMwlpxvjoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WN+AaxYC;
-	arc=none smtp.remote-ip=95.215.58.83
-Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="S/uMwMUV";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBB3606A328
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 06:16:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFBB3606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892D5606A326;
+	Fri,  6 Nov 2026 06:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WN+AaxYC
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=0SyDJ5tj5ftKMDHZLP0MehFmcA6JD/wW/tkhPu9aV8M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793945770; v=1; x=1794550570;
- b=WN+AaxYCgfkarFaymWhLI7abi+6MLVriGz67Sr6FSM3pi7CqkvtgVdUxjnE1UVZDdx+GapAL
- 8KGR78Y1Xmiz2mDhrtd1ejsVThNux5S9dBjedwD+NfDNSy2e/ze23gJyHhGtgZi12CCZ0BsU/+e
- PIQWopAdx98UF6UElahndwgc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1b0a039608d9a9ea;
-	Fri, 06 Nov 2026 06:16:09 +0000
-X-Mizu-Trace-ID: 1b0a039608d9a9ea
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e0f76fe6-dc65-4053-b949-b34d90adbf5d@linux.dev>
-Date: Fri, 6 Nov 2026 14:15:56 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S/uMwMUV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACE01F0089F;
+	Fri,  6 Nov 2026 06:17:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793945858;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=S/uMwMUVN92cqSAfa5+mJl5DcgM+LIr/SYOqYSl7WG5zmqFrUZboJS90oWkNQVyB/
+	 gp1Y3uDf8GOHDW7tFSB+VMzLPcrHZtZHseMJMLf6I/voWmSIt6KOPEU4/Uc8XaCZng
+	 x3cNDi2EOKZWQYz9Vx4up/NrToAE7GvPEGUNRvKGZ3+rQ/4gbfQQPKacyv+FWY/mM/
+	 wFT6fIqSynznv7T77HiP/pfmZB6iBADNCdlIO7zPHBbRHOnSYPD5vhcClxbEZ2MGXo
+	 sCAPtGl8QGlMgN3V8IdMf8AGSJJdb+XN220zI+Jn/oA72K8QwJLe3dufkp8/F2XCXI
+	 gz29n3KGK0oPw==
+From: netdev-bot+sinfo@kernel.org
+To: luoqing <l1138897701@163.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Patrick McHardy <kaber@trash.net>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] netfilter: conntrack: avoid secs-to-jiffies
+ overflow in SIP helper
+Date: Fri, 06 Nov 2026 06:17:36 +0000
+Message-ID: <179394585680.488859.7199354601021880079@kernel.org>
+In-Reply-To: <20261106060948.540233-1-l1138897701@163.com>
+References: <20261106060948.540233-1-l1138897701@163.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,68 +66,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: protect negative destination advice with RCU
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
- Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>
-References: <20261104131744.1056562-1-edumazet@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261104131744.1056562-1-edumazet@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Hi!
 
-On 11/4/26 9:17 PM, Eric Dumazet wrote:
-> From: Kyle Zeng <kylebot@openai.com>
->
-> SO_CNX_ADVICE calls __dst_negative_advice() while holding the socket
-> lock. Connected UDP sends can still invalidate or replace sk_dst_cache
-> without that lock. A concurrent sk_dst_check() can drop the final
-> destination reference and allow an RCU callback to destroy it while
-> __dst_negative_advice() retains only a borrowed pointer. This can cause
-> a use-after-free while accessing dst->ops or running the negative_advice
-> callback.
->
-> The writer-side ordering fixed by commit 92f1655aa2b2 ("net: fix
-> __dst_negative_advice() race") does not protect this reader from an
-> independent cache replacement.
->
-> Hold an RCU read-side critical section across the lookup and callback.
-> This follows the datagram release callbacks and covers IPv4, IPv6, and
-> XFRM advice without changing cache-reset or reference-ownership rules.
->
-> Fixes: a87cb3e48ee8 ("net: Facility to report route quality of connected sockets")
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-> ---
->  include/net/sock.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index 173b37b2b8bb..0c1a6895d347 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -2218,10 +2218,13 @@ sk_dst_get(const struct sock *sk)
->  
->  static inline void __dst_negative_advice(struct sock *sk)
->  {
-> -	struct dst_entry *dst = __sk_dst_get(sk);
-> +	struct dst_entry *dst;
->  
-> +	rcu_read_lock();
-> +	dst = __sk_dst_get(sk);
->  	if (dst && dst->ops->negative_advice)
->  		dst->ops->negative_advice(sk, dst);
-> +	rcu_read_unlock();
->  }
->  
->  static inline void dst_negative_advice(struct sock *sk)
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
