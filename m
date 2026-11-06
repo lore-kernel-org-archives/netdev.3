@@ -1,93 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793967926;
-	b=xfJkvxVbXs59gHQ1wPOt1ZmuGkIybUtxddweqFp7Sm7JaWLadcMEoYei8q+9yrGq8N+n
-	 e1MZseexZHa1e8Mp5mZndP+JUWkyEwnNSu2EFlsVaBvHgipw0vpY44qYtQQs2kCcsh2G6
-	 R92trGmWrzUUzvoxCTiLV8d9KrEgjQwrfWVJx3LL7DxMmIzvmyhlz54nc+VBfxPAyskd8
-	 leW+Dz6+0qhujNMc6RI8kUledCajv16Z0vQ5puAkTvb1GQxqsHTIep8qAJkIDbpmRqW/F
-	 VAx7QzwdpAst6f/ItS5qlkGGP0rXAcF18ZKzJNUWCb2fUI338oZR8y0yc86T9qrve4w==
+	t=1793968053;
+	b=xgCF/pi3wcRjW7eNb/8LqcM3LeEvBMTZZcSPVZK9Z4v+Au+cWlTRAaoPtZukpE01DOcF
+	 79zaJFVe/3nPFp+Vt6EFIfDr1stbAld864xuogX1nCD/5mTCP6SneWD0uCgqgjJYjDZdV
+	 5+DHylG3w0ZW8FgG6e73nXzO1i0SMenE7tZ638VGRz6M9/F7xbEiCDJafle6bOG06bbTO
+	 Hsui8sy6zfe3jCIU07yAUUKOB1SpMupNqGwizm2UznIOCGrfdQ+NAJWSZo6PVrqjNm6JY
+	 fxLaAFyfIuZxhAYHT1smbjZmWOncdTfARAWIssXMjnQz/KmAtLvzmm3V7tYwp82IYzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793967926;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793968053;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:MIME-Version:Content-Type:Content-Disposition;
-	bh=jdeq7OEaVAoiCrHRA9SZExAgah8LRWZ6NagErzJomvU=;
-	b=PAYmqL1zi1kea6R/O9tkh0SApN2dnF/q/NQ+TtIte2MnOWFV2CqVAfyO/vI4yz3LzOTO
-	 mImORRWlT+iPMhl5FI/b04yug/88GtR//WXXzopHq0WPi2OkBuQuj4en/YXxLK4p+G20c
-	 c0u+0ZK8r5+fEw6tB1WfMbj/vj7vODE+7GIiYT1Y7iPIlqpZTa3CFVME2PLkEne3DLFqd
-	 w+UQW13JxKO88fntUu74W+w0IV4XZDGI1wUmVzDDbh/U5Fnlgf6t1J0uPoqgNmkqEPvkI
-	 ZST5mhEAC34plHgZRAraQzJz3qNKDPl+UevX46EshF2FtGSjznYi30RWmtDE3ah8pjQ==
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=hVQgj/qtamPKqZe9GjDSaLmwvkqiYswM2rlF0amjSwA=;
+	b=jCKRAA0NKZgeRCiph1ew3ZWCluiuvZ2Ts/N/c64x2onu3NWIN38OcUguhJ2gcPEAnRWS
+	 s187y5n4SSfQKtlesfIZGx17Jb9dMoQtBnaRweirqgoOIeYb1EUyYHywpTcQMuikN/N5U
+	 /9I+XGnx7dr1TGZZsC3HRkEAGWprM1AmZBiAm1BpuLRxems+JDT9nv1tiHtuDGaKu4Zu7
+	 ve4PWCWKjXGBHfi1Ldp9IwO6THq21RQ7AFvM3FAPjI8UPcn2zYmDIk5VhlYeOYva3ntb6
+	 I0fx6n8wa4bETIv8Yh3AN2rYGe6AU5AgZDp1+ZFic99PTZHi3zZH43/rK9nfNFAL9gw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LyMEqzpI;
-	arc=none smtp.remote-ip=209.85.215.182
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=Slzp+EhU;
+	arc=none smtp.remote-ip=209.85.128.52
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C239606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 12:25:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C239606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DE1606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 12:27:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46DE1606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LyMEqzpI
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cd3310348d2so769215a12.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 04:25:26 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=Slzp+EhU
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so4154275e9.2
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 04:27:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793967926; x=1794572726; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jdeq7OEaVAoiCrHRA9SZExAgah8LRWZ6NagErzJomvU=;
-        b=LyMEqzpIawAi63+/VRb2nOZIFVtuE4Q23X4omvDtvlJNfxkt5kFPBzgYql1VQckFqM
-         qjz9gXdT9hytM0ilw8OGLkpx50RbkYtubE9On95cIT0YTC8B0XhubQjGy3GayW4zrE4g
-         l1bC8NhVj6jMRXsCP3eeUG3tMNdWupoTtWSdMWybP4kyaH3P6gi8v/F39f2O0+QyFmOT
-         GPwlCHmGnDxVNmvTevqf7oM6/m31PE1jmpLf96O74ETC6gLgqKeCre76gpBoLexsPGyG
-         G7mqgCxhZzvbml/9lSWJrZWJjo9I3JeS7C1IK8QPv+IQ5z+Y8wOx/rSkUlIKMgEFRYz+
-         nmzw==
+        d=resnulli.us; s=google; t=1793968049; x=1794572849; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hVQgj/qtamPKqZe9GjDSaLmwvkqiYswM2rlF0amjSwA=;
+        b=Slzp+EhUlrouRtTK7cIqBLFjFKtffdW/HyvUHLYmJw7XjmBeYevm8Lj12xNdvJ+2qi
+         liAcKT2C2BgvihbgNMzb8b3i69eta9Ggy22EKuffT47ojjRQQeUZUlL0+CMrIOXXRdN+
+         sRLJx6nb9Q70/SrkYjnSYGmXCsN58DJZDOsQf3cuKue7biIpYuLYhoQmYvNYoUk6fl9O
+         lbOnIYtMBTTw5XM6N7cJWvWgsAPf/swDvDDEU7e0iy8FWBxtte++wUHhFiZsO9OPSdTN
+         CsUi1P7v2jyC3Rb5umcVVSNAGKgE5NKtIg3wR8TSSyEYwPS5r+U3dUbei/vxB4IV5Zoe
+         WKAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793967926; x=1794572726;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jdeq7OEaVAoiCrHRA9SZExAgah8LRWZ6NagErzJomvU=;
-        b=f8CE+Z+3KvJcPY89RNF7KLTqnn3v/H3Jo5JEvGIrQacYCgRgdrqdcE7aJ5lC8gg1Ni
-         wyJUNeKfVIYYVI20tA2bW88JZOAvz2yao7B0ihPY32dRTJS+Ps0Up2IOuCXywXSGvcZA
-         HMY02TXmVBGxamFiNblS4gnLsi9pOJsoon43Arrc7PQeIqT3bfYLbfRNRQA6syDG5Dfj
-         UFzVJtdsJSX3zK/4px0RarMl2R7dWSpVi7dQEO1e7v/x572D6QKmuFTti2mYRb0UPnJg
-         mM/SpKtnmrIzoTCdYx2lQc5BY9tIyAzAC7lLKeuwwSKwZngJ8k2djz2NPnpgtJyENLOm
-         A7Zw==
-X-Gm-Message-State: APuU4Z99rafJehfDMTFvsg0AxNmKuix4+JxVezUf6nXBe2WF/241vh4f
-	Iy3zgknH3OG4hAyE+QCE58ANDxLg4MgozJ1muNR9XhTHQYn7xBO0xfYz
-X-Gm-Gg: AYBFou3nRdQ0PfdQftyHe9G75YDFlOk9sIiz2rIjPdAqF85sihb/WiTCWdYvw68GS/m
-	RodBQf464p3H3KzRkVwe64vGhxfa90miGFiRnowb5q7NyLbhOmZf4RJ1I8BCIA4K7XpjDluK4Bv
-	t2FfebNRsi115qK+1iIuxkf0qx8OTWcylo5GhFKL3Vw1bg5bojuQNdXtRcaKeAy6VOAwU63iUkn
-	088BJq3kkBVm4COqHYng+5iGe+Xt/CC55LhVkNLW3EKEo/U9Kz1zsIyCxEO9H6vALYs2Y+uvtwb
-	dvBFWcfyYbSRpQgazbqMpVjj2zeGXnEOQ+tCIV+S34TW8j4gbpo9TGwrZwtb0ag8hzO9ch07oVc
-	ds0s5eTE47nc/EJWZVYpuZIXLh/37EKi0oNjChK3Yr45xiCJBrCC9pTpmcqUPyYNn+r6Z0HvUfK
-	5bq2z43hSANRRol6HUwKm6nyWwTuYLZnK99K4fWgkZLPKAfpV2AKCOx+ClC8BKmLbNY9ALHetrH
-	syWP7qhAIORRPRkAEhKttFV+UQ75eNQ/j1Ep4SC0RQaRQgL2vonpb3kAhtPgzhIJHAHdrpr4FQh
-	vqsDVFP98E+vk9n6crZq0UYUj6PpX0v4U34nV4y7zljHhno=
-X-Received: by 2002:a17:90b:2e4f:b0:3ac:9ed8:f301 with SMTP id 98e67ed59e1d1-3b0db6f9073mr1421712a91.30.1793967925452;
-        Fri, 06 Nov 2026 04:25:25 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0e4b26725sm857198a91.4.2026.11.06.04.25.22
+        d=1e100.net; s=20260707; t=1793968049; x=1794572849;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hVQgj/qtamPKqZe9GjDSaLmwvkqiYswM2rlF0amjSwA=;
+        b=RgzgeIgEsqhoisDk2mybQIbGfRDJFWG1vOrKZZqIX/wdTzru3BVN3PFJvtP/7dThC1
+         nbIGtRx9qlQdE/ue7Rl1ayC13yU+y0/VoJo3BPhwFQN2+T44T2KxuQ1wTWuCeIUHf9IU
+         /m8uZcKguTSl9udnd8DyuslumjWVra0CDfEYjnwm1MNeYzVne76fx7e8Eh9xPsoVrYPI
+         Xd9jB3P8ek/p9LLwEpJguc0Zy2rNdhC9bDwzMusQpaEEbrbWog6m6kbYEycsBAcJOhDn
+         xHlXBNz9AoGX3IxW2DwHnNlkW+CRilxSvFGXN5FAGUps7cFZNOYqD5xksgwbQph7W4Xn
+         kgIQ==
+X-Gm-Message-State: APuU4Z8ULN3EPQgWjSY2Zz1ELFzyDcSAYipSJWkbJCbu6Tvq0IFkz/MB
+	V5yJ1V2eF+S8mW0ZcZ1Gq/k/59Jq3fnCFiOwRL7J1aqJs1LC8QD5ela3sfS4zru7Quw=
+X-Gm-Gg: AYBFou0tPYrthRmmkxqhktvgY+32RQpcDPe++rgDopWG2LOiqXLJ5JiAMS8JLiiMrJT
+	DUHaxOLsMLa2H763KsuHQoIJjUIsdooGzXhhyGeXabUDijVNDdH9++Hnge+R5wXPDY3EVYp4d1J
+	Py6bvDwkyTNEYNV4s1IwY9zGoSlm0bOkgM5FKMYzdsaiH0lvvae05lPa1q4xr8VXHjnJmBtPS7e
+	EF7Psb0SnxI6NQ4lPrWCEwtZIGrtekAitfWgz45x1ktVWf28aIIvEXnlkeoZ3MDmAdAhSwhjCwu
+	K6ff7oFKeBCcKmH0dkFZiLMniM7ylxTUX3EYS30fzXZH5+O1r6e8gTYUdPU1J9XcKdvJdmgDmOd
+	DOvsbT9IVluMKg3dP2fJY3OAkZ1ZbgElC/kOwS5vXpCObE4ROlo4U6lpS1HdxzSQrjNTMo3Yvp4
+	5OQu48lZoKhl5jdG9yPea4Sr+td2Z2SxOQ1rQHh24rnXdrCyd7a4yPrO5kBYCL/+LX2SE7TmJ2q
+	rGcmFFIU2UPsFdjAJbTRJU07aWMzYHDuOvejv9Z8D99ab4z9ayy6+wT+FqbwERCmb9icj+phJjb
+	tw1tEPEw/jysuj4JHOuzPgOEgVn5y9NmUOik
+X-Received: by 2002:a05:600c:4454:b0:4a0:1b21:2628 with SMTP id 5b1f17b1804b1-4b6dfba8640mr38712955e9.23.1793968049321;
+        Fri, 06 Nov 2026 04:27:29 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6e1b5d745sm51444055e9.6.2026.11.06.04.27.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 04:25:25 -0800 (PST)
-Date: Fri, 6 Nov 2026 21:25:21 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, john.fastabend@gmail.com,
-	sd@queasysnail.net
-Cc: netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net v2] tcp: do not coalesce segments after FIN
-Message-ID: <au3HMfqNW3_DRMqS@v4bel>
+        Fri, 06 Nov 2026 04:27:28 -0800 (PST)
+Date: Fri, 6 Nov 2026 13:27:24 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jani Nikula <jani.nikula@intel.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+	Ivan Vecera <ivecera@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2 00/14] dpll: add a simulated DPLL device
+ driver
+Message-ID: <au3HhHt5LD5scvn1@FV6GYCPJ69>
+References: <20261105151852.1844305-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,137 +104,59 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20261105151852.1844305-1-poros@redhat.com>
 
-A FIN consumes a sequence number. If another FIN segment is coalesced
-into an skb that already carries FIN, end_seq advances to account for
-the additional FIN, but tcp_flags still contains only one FIN bit.
+Thu, Nov 05, 2026 at 04:18:38PM +0100, poros@redhat.com wrote:
+>The DPLL subsystem has no in-tree driver that can run without real
+>hardware, so core changes and userspace tooling are hard to exercise in
+>CI, and the pin-on-pin and reference sync paths see almost no coverage
+>outside the vendors' labs. This series adds dpllsim, a simulated DPLL
+>device driver, together with selftests that run against it.
+>
+>The driver is controlled through configfs, following gpio-sim. Writing a
+>clock ID into a device directory and setting "live" to 1 registers a
+>DPLL device with the core. Pins are directories under pins/ with their
+>type, frequency, direction and priority as attributes, and all of them
+>are registered when the device goes live. The split between creating
+>the configuration and going live keeps the register and unregister
+>paths reachable from userspace, so they can be exercised repeatedly
+>without reloading the module. Nothing in the simulator is a stable ABI.
+>
+>The patches follow the shape of the zl3073x introduction. The
+>driver starts with the device alone, then gains pins and the static pin
+>operations one at a time (state, priority, frequency, phase adjustment),
+>and every feature patch is followed by the selftest that covers it. The
+>last two patches add concurrency stress tests and reference tracker
+>leak tests for the lifecycle paths.
+>
+>The simulation loop (lock state machine, phase and frequency
+>measurements, monitoring features), the topology features (MUX pin
+>hierarchies, reference sync, media failure injection), netdevsim
+>integration and device mode setting follow in two further series once
+>this one is in, to stay within the 15 patch limit.
+>
+>The driver and the selftests were developed with an LLM coding
+>assistant (Claude Code) working under my direction. I chose the
+>configfs design, the split into one feature per patch and the test
+>scenarios, and I reviewed every line. The assistant wrote most of the
+>code and the first drafts of the changelogs, and it found and fixed
+>bugs by running the suite on the lab host. The series then went
+>through several rounds of an LLM based patch reviewer whose findings
+>were fixed, and through a mutation test in which deliberately broken
+>driver and core code was caught by the tests.
+>
+>The selftests live in tools/testing/selftests/drivers/net/dpll and run
+>with "make -C tools/testing/selftests TARGETS=drivers/net/dpll
+>run_tests". By default they create dpllsim devices; with
+>DPLL_DEV_ID=<id> the basic and feature scripts run against an existing
+>device instead, so the same suite exercises real hardware. The whole
+>suite was run through the kselftest runner on an ice E810 host with
+>CONFIG_KASAN, CONFIG_PROVE_LOCKING and CONFIG_DPLL_REFCNT_TRACKER
+>enabled, against the simulator and, with DPLL_DEV_ID, against the ice
+>DPLL, where the tests that need a simulator skip and the pin state and
+>priorities of the hardware are left as they were. All pass with no
+>warnings in dmesg.
+>
 
-When the preceding gap is filled and tcp_ofo_queue() processes the
-coalesced skb, rcv_nxt advances to the skb's end_seq. When the receive
-path consumes all data in the skb, copied_seq advances by the data
-length and one sequence number for FIN. If three or more FIN segments
-have been coalesced into one skb, tcp_inq() can still return a positive
-value after the receive queue becomes empty and the SOCK_DONE adjustment
-is applied.
-
-TCP_ZEROCOPY_RECEIVE is another consumer affected by this state.
-tcp_zerocopy_receive() takes its length from tcp_inq() and follows
-skb->next without checking for the end of the receive queue.
-
-Software kTLS receive is one consumer affected by this state. When
-strp->copy_mode is false, tls_strp_msg_consume() calls the TCP helper
-tcp_read_done() to consume the current TLS record. In the reproducer,
-tcp_read_done() consumed the record data and one FIN before freeing the
-receive skb.
-
-When kTLS looked for the next record, tcp_inq() reported at least
-TLS_HEADER_SIZE bytes even though the receive queue was empty.
-tcp_recv_skb() returned NULL, so tls_strp_load_anchor_with_queue() hit
-WARN_ON_ONCE() and returned without updating the anchor.
-
-Since tcp_inq() had reported at least TLS_HEADER_SIZE,
-tls_strp_read_sock() proceeded to tls_strp_check_queue_ok().
-skb_shinfo(strp->anchor)->frag_list still pointed to the freed receive
-skb. tls_strp_check_queue_ok() then read TCP_SKB_CB(first)->seq through
-the stale pointer, causing a use-after-free.
-
-The reproducer followed this call path:
-
-  tls_rx_rec_done()
-    tls_strp_msg_consume()
-      tcp_read_done()                       // frees the receive skb
-    tls_strp_check_rcv()
-      tls_strp_read_sock()
-        tls_strp_load_anchor_with_queue()   // returns after WARN_ON_ONCE()
-          tcp_recv_skb() == NULL
-        tls_strp_check_queue_ok()
-          TCP_SKB_CB(first)->seq            // reads the freed receive skb
-
-KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in tls_strp_check_queue_ok.isra.0+0x5f/0x100
-  Read of size 4 at addr ffff888103169ca8 by task ktls-server/71
-  ...
-  Call Trace:
-   <TASK>
-   ...
-   tls_strp_check_queue_ok.isra.0+0x5f/0x100
-   tls_strp_check_rcv+0x2a9/0x400
-   ...
-   tls_sw_recvmsg+0x3ce/0xa10
-   ...
-   sock_recvmsg+0xea/0x100
-   __sys_recvfrom+0x142/0x1f0
-   ...
-   __x64_sys_recvfrom+0x76/0x90
-   do_syscall_64+0xdd/0x4a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   ...
-   </TASK>
-  ...
-  Freed by task 71:
-   ...
-   napi_skb_cache_put+0x24/0xf0
-   skb_attempt_defer_free+0x183/0x3b0
-   tcp_read_done+0x2d4/0x340
-   tls_strp_msg_consume+0x45/0x80
-   tls_sw_recvmsg+0x3c4/0xa10
-   ...
-
-In tcp_try_coalesce(), skip coalescing when the destination skb already
-carries FIN. tcp_add_backlog() calls skb_try_coalesce() directly instead
-of using this helper, so add the same check there. Since both paths check
-only the destination skb, a final segment carrying data and FIN can still
-be coalesced into an skb without FIN when the other coalescing checks pass.
-
-Fixes: e93a0435f809 ("tcp: allow segment with FIN in tcp_try_coalesce()")
-Fixes: 4f693b55c3d2 ("tcp: implement coalescing on backlog queue")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
-Changes in v2:
-- Mention TCP_ZEROCOPY_RECEIVE as another affected path in the changelog.
-  (Eric)
-- Move the FIN check from tcp_ooo_try_coalesce() to tcp_try_coalesce(),
-  after the existing checks and before skb_try_coalesce(), using unlikely().
-  (Eric)
-- Move the tcp_add_backlog() FIN check after the other tcp_flags checks
-  and add a short comment. (Eric)
-v1: https://lore.kernel.org/all/auxx1bK0QJfUvcB7@v4bel/
----
- net/ipv4/tcp_input.c | 4 ++++
- net/ipv4/tcp_ipv4.c  | 2 ++
- 2 files changed, 6 insertions(+)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e1f2d9765f810..1e25db7e4514d 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5290,6 +5290,10 @@ static bool tcp_try_coalesce(struct sock *sk,
- 	if (!tcp_skb_can_collapse_rx(to, from))
- 		return false;
- 
-+	/* Nothing follows a FIN. */
-+	if (unlikely(TCP_SKB_CB(to)->tcp_flags & TCPHDR_FIN))
-+		return false;
-+
- 	if (!skb_try_coalesce(to, from, fragstolen, &delta))
- 		return false;
- 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index a7f9242f1e429..661c9f94f9c07 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1957,6 +1957,8 @@ enum skb_drop_reason tcp_add_backlog(struct sock *sk, struct sk_buff *skb)
- 	    ((TCP_SKB_CB(tail)->tcp_flags ^
- 	      TCP_SKB_CB(skb)->tcp_flags) &
- 	     (TCPHDR_ECE | TCPHDR_CWR | TCPHDR_AE)) ||
-+	    /* Nothing follows a FIN, see tcp_try_coalesce() */
-+	    (TCP_SKB_CB(tail)->tcp_flags & TCPHDR_FIN) ||
- 	    !tcp_skb_can_collapse_rx(tail, skb) ||
- 	    thtail->doff != th->doff ||
- 	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)) ||
--- 
-2.43.0
-
+set-
+Acked-by: Jiri Pirko <jiri@nvidia.com>
