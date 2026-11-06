@@ -1,132 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793973526;
-	b=lgGauIn0MGY/9JMJ7ZUH88/Rjeu4gRyALyBcijW+yC1OX1IrgIXBmOOLUwpk+molq3ad
-	 +a13Z6reDZGEjZjcjXOuQ2KrEnnF/PC0CR/X7PRYYDUOKrYU7Htrfs5sAQrNURY5pDo0C
-	 0RrE3KIYpdTAiHGgPKeNiAT2qGFV3ZxLlSUYPWeNObbAE5Yct5Bv4LlHBNez2hQlcBrKT
-	 IK71ZmyugenHmpEJFokFHdqEMUCfBm0M46EI+aa/UQ9qI8ac46sq0o9EgppaMcSOafERf
-	 FwS9nsbTN2eknTeOr6DXcZgfCRgcrfzVr1J7adughWQIFSUWK7IjorH9eAm1auXy5Dg==
+	t=1793973554;
+	b=xLKrMdUz0pgO2eqs5C/oj9USi0fwjRr4xrM0wfF6bKhlAPh8J/f10bPTYnUmxzxyTXcy
+	 20U9/p5ur/6eEonea620n5o4RMIw6anrZ3IeXy6AuIJytE18xW6L98L7EgNSoBGbJhtBx
+	 XowKqLlcvqgPro1gwv+n+M9w3nIZJQWq1QfNY4LCe/3HlO33sTZhRTrzNuiEtFXoKjvQp
+	 iLP+WZ1rl4Lw0xYkwjKan877vsjr///+ObiC/fthi0/y0iz0GJI5gZeDB6Da5EW110LY/
+	 o0Xk/5uHNKDmtXTHptiEpzCDk/m9rjXVz6rVmlAnntneZV1/og+P1jVwK2ZTi1B0GOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793973526;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spamd-Result:X-Spam-Score:X-Spam-Level:X-Spam-Flag;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=lLm/2362Jto1m90argCKrgvD1UmsgxkA6At7FJ6kmGTH9Z1+4OJRYDakCEAyZtcCoT3P
-	 jLkj9cX1uuGuBZbTbqhYzcEUsXrDomavHOf6l6vzNNHL7dKnq0Xv9TjbgSP03lVKRuZHR
-	 BiXWWC2FWuy9GzTgxnBUWrfudbSTJ3VMGeRTm9zvSoiby35WT9MUUq3zseh8VpmcXi5Jq
-	 08gojiCXVmrOiVmpbtUd8+p3H+daTbdlFteAPxcCP0Nm+hn3A2J32J1p0qalzmdMDEDaa
-	 bCKjaxkIx3jkhaxAFY8sE29xiGaPYiu5HbPhy6wufDQPfsY290yTi6KZ0yOj5wfIZlw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793973554;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=fdyWAktPoh7yf4BNuSuBcGMtWgBKcjHGM1gjgcFt1EY=;
+	b=KA3oRjhB1n69QX6t/tTvu/41uAUf0T09H4UpVNgTgMnm3n68rSGWfyPntNNsqqa+UJ3l
+	 aH2q+JgJ1e4CxOy9t+lBE+UUZBHLqB94+h5rwBHLmexIGqQiaYaDIXiS4jbkMUR176WXM
+	 PrChB6nrMvilKLIp2KjwgdP78XYre5wmsBnpKV9ONNyHcHt6flEHuuCdHKxHS/06Mens9
+	 Sm5/K97asc6ORX6cOVeDfP5zdzFYmBQ1colPLDwyiQ8YVE004hk4MUn/OWNlynJ+av2zL
+	 xPRJOLmPTPmx9dIYfqC3mxIP3DHthsigvMp6x2WNUxy1rkhXATNoq1rkimWgckxgjFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=uiFsa2Bw;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6UCJswdK;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LgjfvuMA;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=X0ai5JyZ;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P72btyHj;
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB28606A329;
-	Fri,  6 Nov 2026 13:58:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECB28606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9455606EEAA
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 13:59:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9455606EEAA
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=uiFsa2Bw;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6UCJswdK;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LgjfvuMA;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=X0ai5JyZ
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 169731F45A;
-	Fri,  6 Nov 2026 13:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793973524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=uiFsa2BwcYOxq2gi53CMvsQcPLhPjX3qEOfmyRG+MMW+i9UaggY9jJaa5wavXNFuLDRya0
-	b9bIk7d+ZGVpmXDC5GD2K4lSWXyUMEx1Xgkq2ZbP1QBkGfhdEqjgXpD2RQsoW8lER5KjM6
-	2nPPQOWWqm1KOh+/u7G+gDW1pky2kPE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793973524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=6UCJswdK0Z/DiwhrcdamgOXwZj9ItIC+/2kw90iroytJRvaOKpNnwu36Zgri1J7K0hnpW1
-	lNS/qFpJKVe0WBAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793973523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=LgjfvuMAU87vP+sPHVFl3AgPTWwGTRrRaQzjksp+GUoFchaJHCJWRi3C7JriPqlaDS1xv0
-	xf0+UF6xyLfW5w2peCcDGzuPDj/KNox0QLmUkIz4npAwhjxdTcSyJLMVg3YL5GoQgLdgFJ
-	1Wd203yEyPmbh14aWkzxWl+puCMK0x8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793973523;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ItHvNO33pb8zb9UZ+LEb6x6bQbeF4DIAGvYYNsI45U8=;
-	b=X0ai5JyZByGuYCrevlOApXcGyusGRiOAMLTwFWFDZ7nil+IaqW8n/M/kqrLHGa75L9F+9G
-	ed8IDOXKbujoFXBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6C01134F4;
-	Fri,  6 Nov 2026 13:58:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wBCPLBLd7WqeVAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 06 Nov 2026 13:58:42 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 4E5B121B72; Fri, 06 Nov 2026 14:58:27 +0100 (CET)
-Date: Fri, 6 Nov 2026 14:58:27 +0100
-From: Jan Kara <jack@suse.cz>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>, 
-	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
-	Billy Tsai <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
-	Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
-	Scott Branden <scott.branden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Richard Cochran <richardcochran@gmail.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 06/14] udf: convert mmap hook to mmap_prepare
-Message-ID: <6ve6dvcmmozqiv5zkkq57thm62rtsc43jlbsfoxm24qrm5bhkg@ygji3l2k2qxq>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-6-c56aadfbab8a@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P72btyHj
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso3583495ad.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 05:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793973553; x=1794578353; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fdyWAktPoh7yf4BNuSuBcGMtWgBKcjHGM1gjgcFt1EY=;
+        b=P72btyHjY0jWhATyUuntFPnCjQYvQyZl6CAC83+e1eJuLGmmk7Srn9vgLectTb7NwS
+         SkjrxMTYbyIkZH1OX9DoDc0jA57Mir0CQ7WrD90TidWTpgD6p/gwTrVFFlxtC0+6PYkF
+         swJ3gb2skQPh3jakrbqwFmrYeNOQ08vL2/HS9ib3W2KuLGakO5w5iDpt7u9ISs34WWC1
+         4sutvtlrtkR7hlYys/VMaFkUgpIikUYS3oLKM1fSOY2OCUp9MqYI3m/Fhtff1hXOSO/d
+         tIr+Bda7xassy/dF+LT7We+g6DFiq0/g/6MV4zsyEQAF1jpiEPZsIiku+lL8KaDmdFOS
+         OWSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793973553; x=1794578353;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fdyWAktPoh7yf4BNuSuBcGMtWgBKcjHGM1gjgcFt1EY=;
+        b=HRjGltZkK8JWwFw1E3kMPbJkOpnZs1WrTWcEV4KxZ57Dew1SsMj6kk0a5pB3JDNNCT
+         SVSI1pHIogarjCBp6PFAYxF3c0XIbCKsHuyxgsa1TBV+8UrYMoq0mUvE9WtqPnB3/Sce
+         aMY35HBr5PQIO2kxqn/dEYFWjoRljFWfaaxqjawb9jqbE+5TP6LgE8SRgRFp5ZmpaYAm
+         tIWgLzB5LMrDu41SQCMOEFd0rwrrxpEcvmp4HhHteR34araBRlofUWVFQprFtjq3qjce
+         JBDeN8XKvjj4q5rFvFL9JyBH0VQyJFG2erlJFPc7VE25880uF2O68rlqNyWKfA1huAHu
+         Abew==
+X-Forwarded-Encrypted: i=1; AL+hErE+YK5AlHwvpQjTklglsEaz/f2ro3Zw8aUDh4tSaTu7+KlzcoMlXKFBPo5ypmDZURAAUP1cXDQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/HVJpNTuBTKvX8/aSeDjX4Wfz9gyYkuj51tlwCtXxxTXPtN7ZO
+	sfZsBuPsCVpLhISCOJ32uG51NDeOdwHUFkKpQQRNTBPrIw7vtqjsTy3/
+X-Gm-Gg: AYBFou05KA8h/0FvveL0TmAb5u9Mj9LJxF+9aslIVPCrK4R+kypbbcNtOvy1cEEq9Kz
+	7DjfclDCLhX0+cBpyI+Hs6zYr/+5vmqhcRl694On/uSWazA1DpRH8LjhEQxcAYC7kTztBU/zGKq
+	helCdpi9l9skdETACaZabuBjy4Lu8DVj4hbqnmUtr4Hz/FDjtDDUypsfYMkE65nHAzDWPaEMiwJ
+	9wP2daHqJnWUFIPnB0A/SKXSkrCKT32S3lUbBHL8tXtbr+osETwVRNBedo/YjYz4CCs/EV2/U62
+	ODtzmOKCIPH19OXTG6+1WuuJDZCkfwRoVH9fBY7P17hoHYJFNYWqZRiw24mnWaHcjTXwmgM8jwU
+	yerPNwZmqVfVY7fClDSzgdx91hDH5JMAE2m+6pc1ChY/Yg8rSuTzKy8LvsHlgv7141Hyu2gyTzi
+	S1yM6UshxarQf16+vtQ6hVoL1r+i72isqOCfD+E+a3tNs7xXvA7yoVFW2ctutIATTfg7HJPuBGP
+	kSHBpZ/JiVA0T2n3S6+xuM/K+TlWisyw8TUPn3U1H4ArcITQ8yRo2Yycat+YqzGeK5nq65zEmfF
+	rB4vE4qAlu8mg5G4gGT5zZLNNCrL+lbf1xyL4OieiryKaEPEk4NhqGRF+4qGuXhaKzC8dJWpQ2A
+	xRiJsLcx0Od7Nxw==
+X-Received: by 2002:a17:903:2ecd:b0:2e9:7e90:8a3 with SMTP id d9443c01a7336-2ed41bfc38fmr34706695ad.39.1793973552850;
+        Fri, 06 Nov 2026 05:59:12 -0800 (PST)
+Received: from JIAPENGLIN-MC0.tencent.com ([112.97.59.166])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47d40998sm5634145ad.34.2026.11.06.05.59.06
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 05:59:12 -0800 (PST)
+From: Lin Jiapeng <ljp1205831794@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Lin Jiapeng <ljp1205831794@gmail.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org,
+	Lin Jiapeng <jiapenglin@tencent.com>
+Subject: [PATCH net] net: reuseport: avoid duplicate closed socket insertion
+Date: Fri,  6 Nov 2026 21:58:38 +0800
+Message-ID: <20261106135841.418-1-ljp1205831794@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -136,85 +107,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-6-c56aadfbab8a@kernel.org>
-X-Spamd-Result: default: False [-15.30 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,kernel.org,epam.com,linux.ibm.com,gmail.com,ellerman.id.au,microsoft.com,redhat.com,linux.alibaba.com,linux.intel.com,alien8.de,zytor.com,paul-moore.com,jms.id.au,codeconstruct.com.au,aspeedtech.com,broadcom.com,arndb.de,linuxfoundation.org,infradead.org,lunn.ch,davemloft.net,lists.xenproject.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,lists.infradead.org,lists.trustedfirmware.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[61];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -15.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Thu 05-11-26 21:05:37, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-> only updates the access time and sets the VMA operations.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Clearing SO_REUSEPORT on a TCP listener clears sk_reuseport but leaves
+sk_reuseport_cb attached to its reuseport group. A subsequent listen()
+does not put the socket back into the listening section because
+inet_hash() checks sk_reuseport. However, inet_unhash() checks
+sk_reuseport_cb and calls reuseport_stop_listen_sock().
 
-Looks good. Feel free to add:
+With request migration enabled, reuseport_stop_listen_sock() ignores
+whether __reuseport_detach_sock() actually removed the socket from the
+listening section and unconditionally appends it to the closed section.
+Repeated connect(AF_UNSPEC)/listen() cycles therefore insert the same
+socket until num_closed_socks exceeds max_socks. The next insertion
+writes before socks[], overlapping prog on x86-64 and leading to type
+confusion when a reuseport program is attached or detached.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Only insert the socket into the closed section when it was actually
+removed from the listening section. A socket that was not rehashed as a
+listener is already represented in the closed section, so leaving it
+there preserves request migration semantics and prevents duplicate
+entries and the resulting negative array indices.
 
-I'll leave it for MM guys to merge this.
-								Honza
+Fixes: 333bb73f620e1 ("tcp: Keep TCP_CLOSE sockets in the reuseport group.")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Lin Jiapeng <jiapenglin@tencent.com>
+---
+ net/core/sock_reuseport.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  fs/udf/file.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/udf/file.c b/fs/udf/file.c
-> index 02e9314818dc..d5e80c6cae96 100644
-> --- a/fs/udf/file.c
-> +++ b/fs/udf/file.c
-> @@ -190,10 +190,10 @@ static int udf_release_file(struct inode *inode, struct file *filp)
->  	return 0;
->  }
->  
-> -static int udf_file_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int udf_file_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	file_accessed(file);
-> -	vma->vm_ops = &udf_file_vm_ops;
-> +	file_accessed(desc->file);
-> +	desc->vm_ops = &udf_file_vm_ops;
->  
->  	return 0;
->  }
-> @@ -202,7 +202,7 @@ const struct file_operations udf_file_operations = {
->  	.read_iter		= generic_file_read_iter,
->  	.unlocked_ioctl		= udf_ioctl,
->  	.open			= generic_file_open,
-> -	.mmap			= udf_file_mmap,
-> +	.mmap_prepare		= udf_file_mmap_prepare,
->  	.write_iter		= udf_file_write_iter,
->  	.release		= udf_release_file,
->  	.fsync			= simple_fsync,
-> 
-> -- 
-> 2.56.0
-> 
+diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+index fccbdd0430b0..775f446516c3 100644
+--- a/net/core/sock_reuseport.c
++++ b/net/core/sock_reuseport.c
+@@ -480,8 +480,8 @@ void reuseport_stop_listen_sock(struct sock *sk)
+ 			 */
+ 			bpf_sk_reuseport_detach(sk);
+ 
+-			__reuseport_detach_sock(sk, reuse);
+-			__reuseport_add_closed_sock(sk, reuse);
++			if (__reuseport_detach_sock(sk, reuse))
++				__reuseport_add_closed_sock(sk, reuse);
+ 
+ 			spin_unlock_bh(&reuseport_lock);
+ 			return;
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.55.0
+
