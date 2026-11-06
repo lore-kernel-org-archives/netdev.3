@@ -1,113 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793979635;
-	b=C4AmuNRYSOr9qNYk+8SvCKLoH2Za7mGpSjvhgh0BT8qsooWatDPPp5Laul5KIVfzuR2f
-	 cVpjVeGyr3Qs46HiOXdic4YEAk8YYpwaPqmjXvWBfwCeBlM6G9oIVAkGigJdf44yNc1ve
-	 PvJMHAmzglWcgxEp2EIFsKhC7fBCNjgbfzkRsxzN1wo+NqoIz/p0NTD7kJATJiGNp/02U
-	 ZKT9LOmwU7Ag1ScJL1yl4++3BKGUSDwAbnfmKJ2N2GmX1gAh+KnR+Ah/2taFYKfuptnO9
-	 j3Y/91euQ+2u7d2Igmb25VgkP6uCfOA/Bln4d6R+VJ5omYCNV5o5PL91k14vcgFO/5A==
+	t=1793979739;
+	b=jL4TztvhrnKnpGuyjV2+e83LjhByqevdjyR6OdMOvjz5u6XiCtV78RsiL16wmzS+sQ4G
+	 pAWSgwGxzWy+CMVUe0lk6L/0ByvplZbFExQMs6Zp1P2om/pfvJE3LPLcRu9mRVOC4/eYc
+	 sdgBi5dwXOR6w+B0JqC0kR2MbU7nqFc9ae/BND1q4gEpDeKBesKzbsKAtvbzHRk8N6fkz
+	 6qfB9q1oLgIIr/XwEuxZ0BU+X/YaCK5aOfsOb6LZSt8ZPso1ztu4cVjctWlbNMh1789G4
+	 mOOwU0IM4iqnEQsb16iGDf/kdwz+4uzfRweyfPsLcNrSLmysXh2f9/4GFPbFNyxB1xg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979635;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:In-Reply-To:References:User-Agent:Date:
-	 Message-ID:MIME-Version:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ESkDZkRPOyck9xWvcTMlEJlHmb6QgfW/Vr0P1IxgNFw=;
-	b=jlm5to0MoGYvThBkLx0Rogr1q1yE3Zd71sWYQHKPtDcUI+DlwfR51qDgVrd31M8iKLgC
-	 tvNwba+JIgdcGJcc9nrPXOsSJWxtIiYCN24dUjCMXu3qUQLGb/sodUwDDWAqdoFjaTyGk
-	 V8tD/42V7sX7dQV0Q/1643i6uUjNGyf5uEfYXKfOouO1gQE6FlQmWoWjb1D4YtYwQdhIh
-	 GUiHDbRYEN76Ei5jp0X33nRs8SnJprBYdP0uSXsEfxg/Lp0wtjjD2DDeFmk0v4nCepIVo
-	 /eTY+6FgnnV/QwZS8VwB66sO8R3/7azPzPxCWnD/TYeB/05S/9IFj7ipg8fUGqtW+Bw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979739;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Message-ID:
+	 In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Importance:User-Agent:X-Mailer;
+	bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=;
+	b=vxhvrRnPMAuHuGSchDI4S5ONPZPdO25ESMLOUkvtuECWRDtYBDBjtYNYx39ZS+6JIzeE
+	 X5PY/VaFJBDEWVrcKtb5sxSzlp0lw6gbF4NFz7gijfzC+b3ERXRMDpFNPHXPJfwG9F33I
+	 0kw7M8e4FQloRm0Iox30boj20KFz+mE04Ri4hIqKqr5CX1wn9XwZy36sOgI9kppkiJXML
+	 LNgrIYiXo2dTeBiNUc3ZKdA1lhPJpfQy01sEwcmcJHW4YuDIR4mOV2OfcwF3InKbBQ1xe
+	 nUMFqP8sn61ze6wSI8cPEISsZ1ivQBxoWPmgoEuk8/0Io/17tMcoqbxyFCHYdPW32yw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lkzGjK1e;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.54
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012054.outbound.protection.outlook.com [52.101.48.54])
+	dmarc=none header.from=asgari.net;
+	spf=pass smtp.mailfrom=asgari.net;
+	dkim=pass header.d=asgari.net header.i=@asgari.net header.a=rsa-sha256 header.s=zmail header.b=cA34GPsB;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.50
+Received: from sender-of-o50.zoho.eu (sender-of-o50.zoho.eu [136.143.169.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB08C606A329
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 15:40:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB08C606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D59606D833;
+	Fri,  6 Nov 2026 15:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0D59606D833
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asgari.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asgari.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lkzGjK1e
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g9wk4VYFUdYtGAQGIJMjGm1ls0oQhC9t0EDsHzGEfiLesjWuGPMuLmIANViuRmjePpagk2akJmzToGsLiO6hx8KF3mNA0ddi5PT2ns6vqKjVHQHz4unOqmVpdPMkkf2mEwEnUjVUIIlRZeDAkTSCjEX/xuEh2kykoYm+Vl3LjBQd9QQNVleHRBQMvsJJhpPhg8PRzvkBLDRDx9q1Joa+WN6hxF/8l1FaC8gO2p5oDCmDrd5bPKTyWctMAA9+92TK2HZ+/FlKIHurYeFqBRxoJHX6pAX2ZZvbXmS6nU5/ceLr2V2H7pqKlJcKvhWdmUIfD6DNE/o0HHuXObzLZ5QLAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ESkDZkRPOyck9xWvcTMlEJlHmb6QgfW/Vr0P1IxgNFw=;
- b=DDd4f8qoLAUniuKdFjgdusQietukd1KGC8rYMnPbnZTtzczotyVwPz+8M8sb98JFfvuVO0N4XgL075511a6pjUZmUzCUQubJ4GTF8gQuEn3u19FQ++8JhERWwl+CC2FZDupFuRareEz5lP13CaMeXxP/SBj1exNgdMlAGvAVTk1JBp1Mfj7jTjsIvJTMbbdIku2H2O3hTUPi3t+K1EEQc7LKLJj6TO3LpSl1I3zMC2B/iqvA2l4FH/Qe0g7vdQ24nAuLzAGf5Lt+J3KpMwsNftUxWVYeA4i8Q5CdJVjl91GZJowHe2esTeVCD5wIGtUOboO682T0H2R0pR5NP3v+/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ESkDZkRPOyck9xWvcTMlEJlHmb6QgfW/Vr0P1IxgNFw=;
- b=lkzGjK1eUZ/P8iX8VHffQtA5YAMv8vtoXej4KOZfG2m6oUNY98IizaclDCkbj1Zhx2goZFIIHLwxgna2Wsqlz7GgX5tiFPQQWaXmZjoR4MVSdJr2Y15wpMDhbXrUI9VOghdlukXLQEAphiP9Lax+hbk81Vu4eU7ZbjBMtWiiXkAg8wntZyo12mXwts8j0rV4fOK38WHItldTNt6nC9l2U86b4DEpN079/yGS7gmnANMp1Fzx86NRRUjtd3b4pZi1UthUGGM1f7VZuFk72WgWYMwDAFYOpFlRsxAvToiaOhtw7RQJ4KFrEjfCLzeF/MbLc3jBGjXII2vTZpR7sKQCPw==
-Received: from MW4P220CA0026.NAMP220.PROD.OUTLOOK.COM (2603:10b6:303:115::31)
- by DM4PR12MB8450.namprd12.prod.outlook.com (2603:10b6:8:188::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Fri, 6 Nov 2026
- 15:40:23 +0000
-Received: from SJ5PEPF000001E9.namprd05.prod.outlook.com
- (2603:10b6:303:115:cafe::98) by MW4P220CA0026.outlook.office365.com
- (2603:10b6:303:115::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Fri, 6
- Nov 2026 15:40:23 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ5PEPF000001E9.mail.protection.outlook.com (10.167.242.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Fri, 6 Nov 2026 15:40:23 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 6 Nov
- 2026 07:40:08 -0800
-Received: from tuxedo (10.126.230.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Fri, 6 Nov
- 2026 07:40:02 -0800
-From: Petr Machata <petrm@nvidia.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-CC: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andy Roulin
-	<aroulin@nvidia.com>, <mlxsw@nvidia.com>
-Subject: Re: [PATCH net-next] net: neighbour: Avoid sending RTM_NEWNEIGH for
- a dead neighbor
-In-Reply-To: <auzmIrtt_gMVjWhs@google.com> (Kuniyuki Iwashima's message of
-	"Thu, 5 Nov 2026 20:28:31 +0000")
-References: <217109d64f0cdcba1db9569ee6ff7304754c47a4.1793793623.git.petrm@nvidia.com>
-	<auzmIrtt_gMVjWhs@google.com>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Fri, 6 Nov 2026 16:39:56 +0100
-Message-ID: <87eccy2ckz.fsf@pmachata.org>
+	dkim=pass (1024-bit key, unprotected) header.d=asgari.net header.i=@asgari.net header.a=rsa-sha256 header.s=zmail header.b=cA34GPsB
+ARC-Seal: i=1; a=rsa-sha256; t=1793979729; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=ZvM0nvnr4mCdsXkGh05UM6rSz4LNIhu27OnfvN1FpKh/VM/9GgqF6NKl5JKtfSXRplfc5hNlh5JDtOJs+GN7uc7Lgo3eql93max1cJwHsKOP2WRhkS0xyzQQ6NSVPVo1fGEZyX3UVBKTguK4FQscISpYqk5kUZ4vdC9aqOne3xk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1793979729; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=; 
+	b=LGJENBlh1mpEvOxUDvn4UHeTc1hWY+LcpcpgZnxSExfl9VJQ7pJ/bKDfRq1/3D6q+dO3vAA9ehuIKf7SiYGmfiv6p67WGL+bk5C1ygiVA3MRD6cxA4RDpylMPRv2gBvg5mcR9TQ29+mHDn2qfOehyuIHGTOTeH8HECE5eLaFedw=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=asgari.net;
+	spf=pass  smtp.mailfrom=alireza@asgari.net;
+	dmarc=pass header.from=<alireza@asgari.net>
+DKIM-Signature: a=rsa-sha256; b=cA34GPsBkXzs4Icrlstu7swvyhxBpFTAXQJObKq8ZTfblwGjzK8k2EFZH77aUR97c9vRLi1Z0JWkZ2BWdbyWsrntzCDv0KU2ZjTtqAZTtjjX26olVKiNEoH4PSvE6a6blCmcx9fr1sXieTRPueBlcd/GmpHKAcv1xHDtqefV3WA=; c=relaxed/relaxed; s=zmail; d=asgari.net; v=1; bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: from mail.zoho.eu by mx.zoho.eu
+	with SMTP id 1793979727867542.1179257146615; Fri, 6 Nov 2026 16:42:07 +0100 (CET)
+Date: Fri, 06 Nov 2026 16:42:07 +0100
+From: Alireza Asgari <alireza@asgari.net>
+To: "Florian Westphal" <fw@strlen.de>
+Cc: "Pablo Neira Ayuso" <pablo@netfilter.org>, "Phil Sutter" <phil@nwl.cc>,
+	"netfilter-devel" <netfilter-devel@vger.kernel.org>,
+	"netdev" <netdev@vger.kernel.org>,
+	"kunit-dev" <kunit-dev@googlegroups.com>
+Message-ID: <1a1b1863ff2.22494b4c856594.8212473696088017300@asgari.net>
+In-Reply-To: <au3qeEf0LVzO84d3@strlen.de>
+References: <20261106-nfqueue-review-v1-0-b6c933f44943@asgari.net> <au1difVZWMSV78wV@strlen.de> <1a1b040da34.2a9c00de770859.6266910270967560587@asgari.net> <au3qeEf0LVzO84d3@strlen.de>
+Subject: Re: [PATCH RFC net 0/3] netfilter: nfnetlink_queue: handle packet
+ ID reuse and large gaps
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,59 +68,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001E9:EE_|DM4PR12MB8450:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d8be755-e412-41e6-fb34-08df3c1c458b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|4143699003|56012099006|261021123027099003|11063799006|261026121527099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	UnKlco1bNAEv78x/GQpRpOW1JfAqVVJrEd/HOFs96/W20uN4OXxWbLiB+UgHMd+Sl5sY4ts1CiniO7/lSAx3CgV4JJJ2SV7K1anoAXgj+9bXmUA8PjjBHzS0LOtnstLV4s6GFdju0Blvg6J+0b0BKXwUYteHE+uJyrl72YqGuyOe2IBNi2kzMGXmacLx02rIgLvZMBQyhntzleydctHuqvD/Ba7Dlkn6cLxc4jnGh9y4Fi0vpdQj3aOlIQuDTP617EKWohioGG8HevFeBc7l8cEzcVkl//PXRBQvu6lhGonk2saaDxrNYgM6nTgbxZfmTbJlXumIlJ9tpaa9DNddScFfnuTYygIaiIqd4toj86awJJzeUjxXkFLQl8Mbnq1uAEs8WuFGWZa3CxmbQIxQ7DEJ9jf5pUEZYsyYlDCchAOhOw2gjnuqlEqsGSBsXZw3ert1sDBk3XyGIhgVCzsrhc7ABz78IRThLqdLwAbtPX7nZ6arjwxWl1JAqz3i98TIDr9x+qOrOMiyu4XOyjkFtAyx3qcFofM/qV2TH1PieYomS9Ti9c+iGSNJ3OtA7T1hF1EQny8CHBpceWP9c5iJ7PTkdRa2q5qsM5ezwOCNXeCjPS4R+//rwLjll+laxVpoNb2tJmexOod7cxpVG99SXG28Iom2gAtUqlIRP3dZWJYKiapawJKHTCpQI2GT63zU0C4nh8YUHeOCubrvVQd3Xg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(4143699003)(56012099006)(261021123027099003)(11063799006)(261026121527099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Stzmcl+NYiuwigWEFIsg2GtFnN3hOT63C+hU5vRFpQ8TBaY+TSITmNrtJXprj7y2E4YOFL3XTwM+lYrejf28t8vcuHHKwr+Lhc1X77YBxoGJRsFBpPEI/74uiwr03VdkW+leoNVhM4SMdnEPrDc54Exk2vWxdzG6BiuQzcMibsF8KIc8tF7C7svQBle9+UkD4GRnwaCNKznmf6v+BkBLtd8AkWGj0MWijJzlHrj6fOomcYkRblXOPaaO5wT2MCtwoA59KxH0PnQ+LwAsQ6Qw3tfuRbpNdXHBOQtZ3ERRG89YOrYJZAncgKlW36ED5mpls6MmBYq990FFzUa0q+UNV+L89lDK+H+YSF2R8ackHNwZc+YdpvDL6O1BjLwuzfe2D2k8uLLLV9nv5F67rs8Kw8GJ7dR0xGJkC8w2LP1dy1HDJQZn3jtuLm7sLL5j/Ca7
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 15:40:23.2759
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d8be755-e412-41e6-fb34-08df3c1c458b
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001E9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8450
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-Kuniyuki Iwashima <kuniyu@google.com> writes:
+Hi Florian,
 
-> On Wed, 04 Nov 2026 14:56:56 +0100, Petr Machata wrote:
->
->> --- a/net/core/neighbour.c
->> +++ b/net/core/neighbour.c
->> @@ -3593,6 +3593,13 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
->>  	int err = -ENOBUFS;
->>  	struct net *net;
->>  
->> +	/* An attempt to send anything but RTM_DELNEIGH on a dead neighbor
->> +	 * indicates that the neighbor was marked dead while another update
->> +	 * gave the lock up for a bit. Do not send such notifications.
->> +	 */
->
-> I'd remove the comment, it's apparent from ->dead that there
-> was a race and the rest is just repeating the condition bleow.
+Thanks for the pointers. I=E2=80=99d like to give this a try. I=E2=80=99ll =
+take some time to understand the code first and follow up with what I find.
 
-I figured it might be useful to clarify how it can come up, but yeah.
-I'll respin without the comment.
 
-> Otherwise looks good.
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Thanks!
+From: Florian Westphal <fw@strlen.de>
+To: "Alireza Asgari"<alireza@asgari.net>
+Cc: "Pablo Neira Ayuso"<pablo@netfilter.org>, "Phil Sutter"<phil@nwl.cc>, "=
+netfilter-devel"<netfilter-devel@vger.kernel.org>, "netdev"<netdev@vger.ker=
+nel.org>, "kunit-dev"<kunit-dev@googlegroups.com>
+Date: Fri, 06 Nov 2026 15:55:52 +0100
+Subject: Re: [PATCH RFC net 0/3] netfilter: nfnetlink_queue: handle packet =
+ID reuse and large gaps
+
+ > Alireza Asgari <alireza@asgari.net> wrote:=20
+ > > Thanks for the review.=20
+ > >=20
+ > > I understand that batch verdicts are intended to be used in strict seq=
+uence. The scenarios motivating this RFC did not establish a failure under =
+that usage model, and the evidence presented does not justify the additiona=
+l epoch and missing-boundary handling.=20
+ > >=20
+ > > I=E2=80=99ll drop the current series. I also understand that the propo=
+sed collision disposition being reasonable does not by itself establish a n=
+eed for the duplicate-ID guard. I would revisit that separately only if I c=
+an provide a concrete use case.=20
+ > >=20
+ > > Thanks for taking the time to review it.=20
+ > =20
+ > If you want to work on something else that is actually a problem, then=
+=20
+ > you could investigate the mem exhaustion issue.=20
+ > =20
+ > The current limitation is queue length based, this is very old from=20
+ > a time when GSO/TSO aggregate skbs did not exist.=20
+ > =20
+ > Untested idea:=20
+ > =20
+ > 1. compute a memory size limit based off the old NFQA_CFG_QUEUE_MAXLEN:=
+=20
+ >  sizeof(sk_buff shell structure) + 2048 (half a 4k page).=20
+ > 2. store skb->truesize in the entry struct when queueing.=20
+ > 3. charge the truesize to the queue entry (and uncharge on reinject).=20
+ > 4. in addition to the queue length check, also check if the new=20
+ >  skb->truesize would bring us over the limit, refuse queueing if thats=
+=20
+ >  the case.=20
+ > 5. Make sure NFQA_CFG_QUEUE_MAXLEN updates continue to work.=20
+ > =20
+ > This leaves on major issue: userspace can request 64k queues, so these=
+=20
+ > limits don't help.=20
+ > =20
+ > One possible solution:=20
+ > 1. For init netns, no changes.=20
+ > 2. For non-init netns:=20
+ >  at queue creation time resp. when limit is altered, pre-charge=20
+ >  the worst case occupancy to kmemcg.=20
+ > =20
+ > Refuse queue creation if that fails.=20
+ > Ideally this could be split into several patches to ease review.=20
+ > =20
+ > Thanks.=20
+ >=20
+
+
