@@ -1,66 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793940466;
-	b=GE1R/9RvGi9T6XNLfPhfD9GlFh5AfTOMvSqrVKcjT52Gb9Y7QWf5DXRmlEH5bWcbXUiZ
-	 dDLDl1Bl9go9DBHFdAc2pzs/jX7eNJLhCj0eK1eRH4ArZYwcFH1gjJ+mMGhgLrHwT6V/0
-	 bPHhCmW2d0LYTr47/y64Rti74+LLssN6vNzUFZM71rYBvEr5P1NSU9K8j2LKIC4ffh0Sg
-	 2xYEvpEmzP6a2X6V+31PoP8ZWnrCpK7prxSaEbLG2DOT13GvSt/kwsjA2f+0VDIl76NcC
-	 EaY1DXhXsLmfDEyLa4QIXpC2pez+N+CrGzBX8IMpRMFoGhwYMJ037Zas5irT5Trgtqw==
+	t=1793940547;
+	b=ghyg2nAlF+oh9iDn5vmVI+LblNrYEVhB/RR7AM50FJvx21Qt+OUtuTYq+w/+TCjzXccj
+	 3T4MC/ruZa8OljT3A55BJ73UyA6W7lDOEpgAE/BI/HYpOwzQWQB9kGBq03E/pIfXNFMOp
+	 s6jZ6MwhkRXrImikJ5xt9aFbzpG/17ZyDb/ipnBhdWjg4wuh2lY2wxLfiLr8bc420M2r8
+	 eelp7FM/niLm92MidePzQQnnolPVtb8HmHFOlUWqVeW2jWRina5Hm3WNYjGN5Oag24qTQ
+	 OCTYyGAe/7WCpt1oxS/qlim2nc4wnhR+PZnE7K6RMY8DSu4aDS8BBQx+0C2L4VeMevQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793940466;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=DlJk8YkzI4Sc7IET8R0ZtA9MIi8qi8si9X/PTNgXjeg=;
-	b=srxoN1FPu2hsOwz5p5+4HgpZ5NlbqKHbeHZif1eR+HhKIzh4Pb+7ZA1j58X/N7ICPRGJ
-	 lYWOEjQIMGWvRzOqlQ6wWwCd5C9k6qYvj2vQNWLe0D/vYtJTYZW8ulyWZgFLEaqjl/MaC
-	 Iavbw4hrFTZws/QViLgbLiLPPsMEtmydQmwJyVUrcs4mIkemQiOHD5SAD2eLTKzr2hWTW
-	 XZ4ePJnAz9BgHB3tZZJb7EGc1sXjnkgX09Q6xLg/7QdxbKJSa+Ygk5C7WweWSpOOHEp3F
-	 CCsookJ/aBqKr1wLah2OyJJcaWfkn7Hz+2H+JV+QQwI1C87imqqJvdKeCPhfQp0OtIw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793940547;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Vzq2/jHd3V7ID2OwpV6kcgif4qPDG3Zz7FiqGWqZnhI=;
+	b=mMohK0Esl5baML0U4mat3yzEtm8+icA/HadghMBGuHQCQPvw64dSqCUmxZUWhmiC0SPA
+	 4gHLP4q8C6ktXcEFMti1XaL/QHVH6qCr9tfj4QpNZ8OG6XgKf6WjYIywBiE4M6yVt3Iye
+	 0TH01Kh7f7f4tJ0HmeIFXq1mj4fWlJI/2ylZ0nVE4rulmmQCPOFsGyMnMB56/P/8ne7NZ
+	 lSBd+whnFsYo++sEL6mKGg+MhCYUV+av11PHDBIAVOfa2Yr2o3ut68oKxbiQuHCG3CzbA
+	 3Hj4o/brLdQeXE8lcX/T3AZmRU0o6gVKZZnNstQ2YmB0FNiAurpyPnI6JdEcI7A1UlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zhokTpdL;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3617C606A31B;
-	Fri,  6 Nov 2026 04:47:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3617C606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yffi4axE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A15B606A32C;
+	Fri,  6 Nov 2026 04:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=zhokTpdL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=zhokTpdLVF1Gruuw4w6n1bd7rTN74jHQ+QXghz1tcN4hy3n72GQR7wA1tapH9cu3XWxWU5y35clN9
-	 exf0M/ucSe53kg9VCg0yffjbA90PzFVS7cdNl8/aivpFORMSUZSwM1JyCsTBWdR51K/jjikVyZ+mJh
-	 Wgsh9NP0yUsjyWhc=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96aed5bedf2f-b1f2a;
-	Fri, 06 Nov 2026 12:47:41 +0800 (CST)
-X-RM-TRANSID:2ee96aed5bedf2f-b1f2a
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from [25.255.2.225] (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96aed5bea254-1245f;
-	Fri, 06 Nov 2026 12:47:41 +0800 (CST)
-X-RM-TRANSID:2ee96aed5bea254-1245f
-From: xujiahao <xujiahao@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Keyur Chudgar <keyur@os.amperecomputing.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	linux-kernel@vger.kernel.org,
-	xujiahao <xujiahao@cmss.chinamobile.com>
-Subject: [PATCH net-next] net: xgene: Fix the size of the IRQ name buffer
-Date: Fri,  6 Nov 2026 12:44:21 +0800
-Message-ID: <20261106044421.3461816-1-xujiahao@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yffi4axE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2E71F008A1;
+	Fri,  6 Nov 2026 04:49:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793940547;
+	bh=Vzq2/jHd3V7ID2OwpV6kcgif4qPDG3Zz7FiqGWqZnhI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Yffi4axE2MCSQ2nijd15ai0/VtaUYmkB/x9YZSDLGMuELiHb78XCyq4tgfoqQNYip
+	 Zx9vyyYH785lJdzB8qSG/2LVXxU4FxCwMoxKk20W7lriQXKHmVdyE8ACCnhVc8rR6c
+	 vOYN09sdtr/Ae1S/8x0YfrJE46iCKJVPrlCzOUm+7F6gqetLom1rKX9ay3D5zfrk2U
+	 zu30AiwjSkRRdQT8fbhnpehNuecKCYv06Pjw7NrP5+uWvwY5n4eTcfnFFcK4V1Qzao
+	 WFabnY1PzNS/dKNcpqzGdkpAnPRwEtNYDeNrzIuY8iKBgr8W8t3mDbI5zObRSJLs4m
+	 dpQDb9LLijkFg==
+Subject:
+ Re: [PATCH net v2] net: dsa: motorcomm: Publish a consistent MIB sample
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Fri, 06 Nov 2026 04:49:06 +0000
+Message-ID: <179394054617.994134.16932416982994953032@kernel.org>
+In-Reply-To: <20261103134705.867613-1-mmyangfl@gmail.com>
+References: <20261103134705.867613-1-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,42 +63,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-xgene_enet_set_irq_name() composes the interrupt names as
-"<netdev>-rx-txc", "<netdev>-rx-%d" and "<netdev>-txc-%d" into
-ring->irq_name[], which is IRQ_ID_SIZE bytes.  A 15-character netdev
-name plus "-txc-" and a full-range %d needs 31 bytes including the
-terminator, so the names of long interfaces can be truncated, and gcc
-reports it in a W=1 build:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:888:66: warning: '-rx-txc' directive output may be truncated writing 7 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
-  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:891:66: warning: '-rx-' directive output may be truncated writing 4 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
-  drivers/net/ethernet/apm/xgene/xgene_enet_main.c:898:58: warning: '-txc-' directive output may be truncated writing 5 bytes into a region of size between 1 and 16 [-Wformat-truncation=]
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Size the name buffer to 32 bytes.  It is only ever read as a string, by
-request_irq() and the interrupt logging, so nothing else changes.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
----
- drivers/net/ethernet/apm/xgene/xgene_enet_main.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- [Medium] The underflow this patch says it fixes can still happen when
+  the MIB sample is fully consistent.
 
-diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
-index bce2c19e3..8eb97f6ed 100644
---- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
-+++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
-@@ -71,7 +71,7 @@
- #define X2_START_BP_BUFNUM_1	0x20
- #define X2_START_RING_NUM_1	256
- 
--#define IRQ_ID_SIZE		16
-+#define IRQ_ID_SIZE		32
- 
- #define PHY_POLL_LINK_ON	(10 * HZ)
- #define PHY_POLL_LINK_OFF	(PHY_POLL_LINK_ON / 5)
+--
+
+net: dsa: motorcomm: Publish a consistent MIB sample
+
+This patch moves the "good_bytes - ETH_FCS_LEN * frames" calculation out
+of yt921x_dsa_get_stats64() and into the writer, yt921x_mib_read(). The
+writer then publishes the result as pm->rx_bytes and pm->tx_bytes. It
+also skips publishing the sample when a register read fails.
+
+> diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
+> index 6b170fc6e1875..d47aafc468a3f 100644
+> --- a/drivers/net/dsa/motorcomm/mib.c
+> +++ b/drivers/net/dsa/motorcomm/mib.c
+
+[ ... ]
+
+> @@ -144,14 +152,15 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+>  		    u64_stats_read(&mib->tx_512_1023byte) +
+>  		    u64_stats_read(&mib->tx_1024_1518byte) +
+>  		    u64_stats_read(&mib->tx_jumbo);
+> +	rx_bytes = u64_stats_read(&mib->rx_good_bytes) - ETH_FCS_LEN * rx_frames;
+> +	tx_bytes = u64_stats_read(&mib->tx_good_bytes) - ETH_FCS_LEN * tx_frames;
+
+[Severity: Medium]
+Can this subtraction still underflow when the sample is fully consistent?
+
+rx_frames and tx_frames are sums of the packet-length histogram buckets
+(rx_64byte through rx_jumbo, and tx_64byte through tx_jumbo). The byte
+term comes from a separate counter, RX_GOOD_BYTES or TX_GOOD_BYTES, which
+appears to count good frames only. The hardware also has a separate
+RxBadBytes counter:
+
+	MIB_DESC(2, YT921X_MIB_DATA_RX_BAD_BYTES, "RxBadBytes"),
+
+yt921x_dsa_get_rmon_stats() exports the same buckets as RMON histogram
+counters:
+
+	rmon_stats->hist[0] = u64_stats_read(&mib->rx_64byte);
+	...
+	rmon_stats->hist_tx[0] = u64_stats_read(&mib->tx_64byte);
+
+Those are the RFC 2819 etherStatsPktsXtoYOctets counters, and RFC 2819
+counts bad packets in them.
+
+If the YT921x buckets also count CRC or alignment errored frames, a port
+that receives only errored frames would see rx_64byte grow while
+rx_good_bytes stays the same. rx_bytes would then wrap to about 2^64.
+This is the same symptom the commit message describes.
+
+Because the value is recomputed and published on every poll, would the
+wrapped value persist? The commit message says:
+
+    The issue is transient and abnormal values will be flushed
+    by the next function call.
+
+That claim would not hold in this case.
+
+There also seems to be a mismatch with struct rtnl_link_stats64. It says
+rx_packets counts good packets and rx_bytes corresponds to rx_packets.
+For TX, the driver already reads a good-frame counter into mib->tx_good:
+
+	MIB_DESC(1, YT921X_MIB_DATA_TX_PKT, NULL),
+
+Would tx_good be a better match for tx_good_bytes than the histogram sum?
+Alternatively, should the subtraction be clamped to avoid wrapping?
+
+>  	u64_stats_set(&pm->rx_frames, rx_frames);
+>  	u64_stats_set(&pm->tx_frames, tx_frames);
+> +	u64_stats_set(&pm->rx_bytes, rx_bytes);
+> +	u64_stats_set(&pm->tx_bytes, tx_bytes);
+>  	u64_stats_update_end_irqrestore(&pm->syncp, flags);
+
+[ ... ]
+
+> @@ -391,10 +400,8 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
+>  
+>  		stats->rx_packets = u64_stats_read(&pm->rx_frames);
+>  		stats->tx_packets = u64_stats_read(&pm->tx_frames);
+> -		stats->rx_bytes = u64_stats_read(&mib->rx_good_bytes) -
+> -				  ETH_FCS_LEN * stats->rx_packets;
+> -		stats->tx_bytes = u64_stats_read(&mib->tx_good_bytes) -
+> -				  ETH_FCS_LEN * stats->tx_packets;
+> +		stats->rx_bytes = u64_stats_read(&pm->rx_bytes);
+> +		stats->tx_bytes = u64_stats_read(&pm->tx_bytes);
+
+[ ... ]
+
 -- 
-2.43.0
-
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103134705.867613-1-mmyangfl%40gmail.com
