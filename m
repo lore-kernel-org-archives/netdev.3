@@ -1,103 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.225
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793992483;
-	b=QEHVX9hVbyYkQhM9Wstvv15kXXSNkT2klQ0Ei4YR6BKCxBlWEbvFjQ0AAhACZ1MAGz55
-	 8g4iQ6YL8XR38aAIQV5W1H2kz4wwunnCTvwgAqAOhWPdODh1gIPxMDa9B82T8I3+Fj83b
-	 WVlLFOf7VgRXUeo6ZUw6ezwClzX22A1zjlkjcd8ovuF+zRCaL1HLet8GpFws8N2/zMhT5
-	 2eE5v9qffcJv+7I8/6AJgQ94/zZ/d+eYraDX9GN5DyV92F7ho5xfJEWJN9vR+2+Rw+8rX
-	 PEUDIkvhAVpZXEUlerHgKKp4iW4MVhc9VIJsZ04tYg+GOisBbkY4YUup+2K3X9XVjhg==
+	t=1793993540;
+	b=zvsggzHsHoNKbLaxp0twfmM7a1+U331UIz4VYp/L1yeZ71IselsrXUaI5okCAY3vavpN
+	 BQQvh/YEVmXsm1czv1eV27u11W2xnJoXWCdNp5k6bB5VntoASaTh+tPGUu+NfkFSaf7HK
+	 B9bnAqWKX6kWOpw9QE/VqbQ09y429aRDHO8IoY2WPtYasem/g9n7JSiXzLy+PXpI5+HLt
+	 dPYQ3QIOnFWWJi+yfSLtxEiw74hiNk98RbNc5bR5cWW1vY9IYTACn43wkHz0jBHpVAW5T
+	 m1y0qKqOCLz72BraFmCXKS3KaTQ8CoTcozKHL+oXgcrJ3Du1vTwl0nhmXgIIXzunwYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793992483;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793993540;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=aslm3Yn3BYgx8V54FZU0TWe6uKvDrpLLy9fax5L8J1M=;
-	b=vjzBxDhbaFv49uTjOMJNlAaDtX0Md2zQ25dY4YvROiczmv3jo+lpEVDQKVrv8IEV6MG/
-	 YPzDdvrWj0KrEdVC78wTtigXWHdz7bAQ3vy04QfXXu9+wqVBjVtWQ9evyCxZaLyJqLz7m
-	 fPKglSz+PKYpioX+K8nEKUr3PjCM2cTNRnjPAIrP3ra5D2grfF1zhcBseDaiy7r7tmXRS
-	 UY1s7xh5NhHku4EF2e5Be3dVGHX09nKC9IlIk/gIgrW/AIIVb5E6LLKHQ8AKm5SlaCS0V
-	 sDTadk/2himtrW4fElJZEdVZxazvADIvewHG7tlwm3IDpms5ZOms9QzcRiZ/oOvuiSw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 Received:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
+	b=hKlfipy7tY5fk2VLQTTRoC18VIehtBPBQmpUUfDo4kvczOsIHYlhiZUw9yeJt/IQuerM
+	 peDg6ifOBxo4vsbfrOPA25hjld7XlYHzD3cG/qfttOuOSQeV4Hk8Bk7NzHDmb1cr/jq30
+	 +sJU5zI22Nm/Yk23gyyoujAENlH6Z6G3w6CtYAwyIvWpqLKv/3jAMtoUQYfBTASNs/UyC
+	 oTRkLfn1k55EttimSlG4tsiswEIj10mM0FaFAHk4Q/ysD+hpYieQVpB4PSIwfAkbh2r49
+	 ze6n53O7XlKtSKwC7iiqhAjFmaEhuL+h2TdJ9WOI8SqmCJxFjQjzZI/Qab6rJGeoi5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=dama.to;
-	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=fD4M4g12;
-	arc=none smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	dmarc=pass header.from=purestorage.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b="cyyCMpl/";
+	arc=none smtp.remote-ip=209.85.210.225
+Received: from mail-pf1-f225.google.com (mail-pf1-f225.google.com [209.85.210.225])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1898D606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 19:14:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1898D606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD750606A32F
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 19:32:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD750606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=fD4M4g12
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8b271e573adso480706b3a.2
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 11:14:42 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=cyyCMpl/
+Received: by mail-pf1-f225.google.com with SMTP id d2e1a72fcca58-89f85edd210so393397b3a.2
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 11:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793992482; x=1794597282; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aslm3Yn3BYgx8V54FZU0TWe6uKvDrpLLy9fax5L8J1M=;
-        b=fD4M4g12rMDwQ+mCHieGTT+VTcQBpBM0I1nzyEp24lrICR1UikVwZ+X+IWCMI7wV3K
-         Wp0/46Fn8EEeeQs9icZxwhBVdstyNIOUpXelauYtrcKUsTNzhRror/h7Oo2xapgwHZJw
-         BbV5KT/WxiWSHpffrp6ygKjPMaLwqCbXP+OH3t+N+DW5iEdUsCqlWY+7FsiZn1BwGKL1
-         3uYuqHyfiUxmYw8wTh2x28YVu6GzG00kclMFWKHVmGtjX1IXWO5XEYu9pJBnxTq6uMAu
-         qgbKAX5psDv1Fw9aeAGfCcNrRt7TzxklYZoaL+2+jeHdNhFsmZ7wUZiu0pv0InHjQx3N
-         vOpA==
+        d=purestorage.com; s=google2022; t=1793993538; x=1794598338; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
+        b=cyyCMpl/K9YhiSpcklec+E4m9mCwAI22y4dX48lD15x7/Kc1vND/f/x9+hse5q45Iy
+         TkcUyPL7i0VGtAh6GKeB077uQOeFu6DbNqt5mwCgJQyBMtIf0dTFE2GAQU6XUl/3aWB3
+         cOslvwCLBHEBhRcNM1wVW6hKsBGp0vJZdJ1Kjjm4KF+EJdg1CQTO7jm7bkjsEftfMmuF
+         8iymrMYxA8qS8W83hH5SZz1IFHvBskDGMg0SygnpAWa753RcFK++LaKUhhkweZgekpgN
+         cLUaoxICxWhoe+krQIn8A8VDTepnm9iLgMSATnwTL0b+3VB1TtyFzSXRvUZ1kEC/AmyS
+         G58A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793992482; x=1794597282;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aslm3Yn3BYgx8V54FZU0TWe6uKvDrpLLy9fax5L8J1M=;
-        b=K70a2GcXHAIlofdPIWTkaQETfRP9h85bTpZKsLnYcTvUtjIIh9VjNGMjTpL+j3+PY2
-         8LHLCOArJW8VDFkJsf2sXNZ7Fd17E43ViKtC1mLa2znz8pQB59QBKLJ+KsZ0YhjgGGRs
-         cRlfTwPJTWM4YpzC27PjqHi/RBnT9jNC3Q3/7n6lzU9JTvRxYOQVMo5Oj8rQMXrlAs7m
-         QVCmfa4i3iorewefc+Zm7s/v1Zr/3w1c1WWMk9Ovq13Yk3mAkOoc2zMQFRkBj4kzfSZY
-         xknOSDh0RSkkkX5Oqybvw0wbsgVnnLkpEw2x91M4EfciVMWxeEtt6cpS/vgdlZhG7s27
-         hQCg==
-X-Gm-Message-State: APuU4Z+KnqQwdVl0hqdepyPbl+Wa+jW0Y5cRiEWQAOcF5mZEiYlfK0Bk
-	ATX4vD7h+425cOj62+Fxzgp1jl4t8KqQ4+H4Jl41sXvmBZseLhG7RM0Fo9QdAmxCUPsLpUY8z8V
-	kkRip
-X-Gm-Gg: AYBFou1RvDtzvHYGNODm6m1M92pZ+1m++nZzP5OS9WDwt3I80YaU0gZgAJVCvDuIYZj
-	umkAD430HwgUJoHZD5RkLcnz0QubtcVC0RAjqY+mZYnlMzQRgRxS/h1anhHcPw2fWAdiKhx/rcT
-	RB703gYnhroEfZCAVOJaWxozynPFkXYGuLy6wjVrZLdGncSx3w+OJ9cW8tuSyaY91pYOvdCud0Q
-	bQr3odAVd1y6us9UMO+qT+wvqtRCa+kiZsLoZg8PeleIogdW/qPXKFh+88IKqBVy/eazCruyVv1
-	4s9ly09vG1+rE3alw3OeZuw9HFLbk/8+GGGIDi/53k3kjikL0//3MaYhp5CJMEQIUI0Sj2fGXTP
-	MKurjMSoES3W6KLrsnDo8OeEW8q5CdN30vPNDC9PpUByjPeikz4zJLfsAbacZIWuFbtZROQXUqw
-	vWOWYOxYfh2QXrEyu+OUc9byaNNqfkOn9OosLIKD9Aef3HgmXwve3s/AyP1d1dnoqLhnAmBGmbt
-	ePg+xwXslq6VTJDfBfx5KBev8wbj9HTXgLx1W7Q4SvEqc/KTotDpm+HrD+GupM3ixPQPt46FfCe
-	X5T9z5aGA9DGoq36SszrumQrhkyu1i0GgOUgHYp38A==
-X-Received: by 2002:a05:6372:a80c:b0:3e1:3858:1dd0 with SMTP id adf61e73a8af0-3ebb293a76amr3480273637.42.1793992482406;
-        Fri, 06 Nov 2026 11:14:42 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:7::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb70aa3ffasm982983a12.26.2026.11.06.11.14.41
+        d=1e100.net; s=20260707; t=1793993538; x=1794598338;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=a0RDp/rl6Vk8Phw3anBonrB3Rzcis4iuB7hT2hI6hOI=;
+        b=yg2UXaY4o1XDzvNDn7ugFkA1S2caUb0Dbh3mo7jvXeX6CCEEY/VGKPRWBZiSkntEnL
+         qAfXJVhUV2n/J8XVrGrFBmbi7ZfITRVkenMbjWnKj7YNNNfZ9NP0UUcWU/7E8m0/sxhj
+         3J9S1O/T+eeUlyaPCa3fAAtBcOdD3Xqb9EK2NHcX/1lCQEor9MDMkzya8X3bsiS1GSaE
+         KY2dqeYNC4g9PuUlFwsLkWPMOAev284x5d/rHfRm1rb0dOPKoBVCzzhI7S8YFETsR2GN
+         I8GPTjCKS7GW43FMZVgr2ZvLHt1u2S7v/WuZ49n0551oXHPJ+TGmQApoE/xTVF0x+fo3
+         Ektw==
+X-Gm-Message-State: APuU4Z9g2d3Yo51P0chdPLOCor9vX3GAkxYfGN/TP2W1l41Vmg3jdKqK
+	ACYlrAQE22qO3fEhz44jKaHYpEBkVyWEYeyzPfcwwHRTyM+y7cFgWSL1IG8jfOzv7/f0iG91a36
+	flE5wGWIs3uxBItvl60vJrVemaPieTlCTmmkv
+X-Gm-Gg: AYBFou1E8E3T5YQCyHA9BWG3gB2HKI5ORYHED2oD3ql0ERvsP1Q9rARehoOQsaK5E4t
+	SOlQTasxOIUmjj/wou5CiIs5PhObz5xjNPqtIGpTygf+h4+Cuy8OCNslzVCGD8elMPl2Axuivrv
+	Tn78tqEvFoWj7wEFSa5D9OLOgeaV+Fdildj7XZ1uBikryAWDDR7J7vKUOQVpo0SFbpeGJKitSsp
+	qzh73oF4dO8zvqLj92C+a9vIBZu0vqXSSCCmAlZ79gxUL6auWn5sj3TKN9QIalRNR1sThE04quw
+	qYfUKOB+fHjo/2Vm6RkU8WVgVVj39/4BKHt2aP67P/SFVFoqrM3mDGQULSaSk6RrJP2ukDoUyw0
+	JsFEwtcrKMENdezKllzPn3Xx34CClwvoR65Y=
+X-Received: by 2002:a05:6a00:ac3:b0:874:705d:f659 with SMTP id d2e1a72fcca58-8b37bc5f406mr3255945b3a.39.1793993538079;
+        Fri, 06 Nov 2026 11:32:18 -0800 (PST)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-8b357bc29c4sm36071b3a.12.2026.11.06.11.32.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 11:14:41 -0800 (PST)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+        Fri, 06 Nov 2026 11:32:18 -0800 (PST)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.17.2.234])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id 6171E40152;
+	Fri,  6 Nov 2026 12:32:17 -0700 (MST)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 5CB4CDCE11C; Fri,  6 Nov 2026 12:32:17 -0700 (MST)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: Rishikesh Jethwani <rjethwani@purestorage.com>,
+	syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Prashant Sreedharan <prashant@broadcom.com>
-Cc: edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [PATCH net v5 2/4] bnxt_en: check HWRM response if completion never arrives
-Date: Fri,  6 Nov 2026 11:14:18 -0800
-Message-ID: <20261106191423.4194081-3-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261106191423.4194081-1-joe@dama.to>
-References: <20261106191423.4194081-1-joe@dama.to>
+	Simon Horman <horms@kernel.org>,
+	Vakul Garg <vakul.garg@nxp.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] tls: read sk_err once in tls_encrypt_done()
+Date: Fri,  6 Nov 2026 12:32:08 -0700
+Message-ID: <20261106193210.1152577-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,76 +108,53 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a command is sent over a completion ring, __hwrm_send() waits for
-NAPI to consume the completion and gives up if it never arrives, without
-looking at the response.
+tls_encrypt_done() runs from the crypto completion, without the socket
+lock, and reads sk->sk_err twice. getsockopt(SO_ERROR) and sock_error()
+clear sk_err locklessly, so it can go from non-zero to zero between the
+two reads. A successful completion (err == 0) then takes the "no error
+set on the socket" branch and calls tls_err_abort(sk, 0), which hits
+WARN_ON_ONCE(err >= 0) and clears sk_err.
 
-If a completion is not posted within the timeout, check the response
-before giving up. If resp_len is set, the sequence id matches, and the
-valid byte is set then the firmware completed the command and only the
-notification was lost. Fall through to the normal error_code handling in
-that case.
+Read sk_err once and use that value for both checks.
 
-Several seconds are spent waiting for the completion, so a response that
-was written at all is complete by the time the wait gives up. There is no
-need to poll for the valid byte here the way the polling path below has
-to, where the poll is for a non-zero length and the valid byte at the end
-of the message may still be on its way.
-
-Log the response state on both paths so there is more data when this rare
-event occurs.
-
-Fixes: 74608fc98d28 ("bnxt_en: Ring free response from close path should use completion ring")
-Signed-off-by: Joe Damato <joe@dama.to>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Reported-by: syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cca46a9d1276f38af2ae
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- .../net/ethernet/broadcom/bnxt/bnxt_hwrm.c    | 33 ++++++++++++++++---
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ net/tls/tls_sw.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-index 5bfabdca7d0e..4feba90f0bf6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-@@ -582,11 +582,36 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
- 		}
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 771e02bff519..b4535139438a 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -473,6 +473,7 @@ static void tls_encrypt_done(void *data, int err)
+ 	struct scatterlist *sge;
+ 	struct sk_msg *msg_en;
+ 	struct sock *sk;
++	int sk_err;
  
- 		if (READ_ONCE(token->state) != BNXT_HWRM_COMPLETE) {
--			hwrm_err(bp, ctx, "Resp cmpl intr err msg: 0x%x\n",
--				 req_type);
--			goto exit;
-+			__le16 resp_seq_id;
-+			u8 valid_byte = 0;
-+
-+			/* The completion ring entry was not delivered for
-+			 * some reason. It might be possible that the command
-+			 * was carried out even without a completion being
-+			 * posted. Check the response before giving up and log
-+			 * the state.
-+			 */
-+			dma_rmb();
-+			resp_seq_id = READ_ONCE(ctx->resp->seq_id);
-+			len = le16_to_cpu(READ_ONCE(ctx->resp->resp_len));
-+			if (len && resp_seq_id == ctx->req->seq_id)
-+				valid_byte = *((u8 *)ctx->resp + len - 1);
-+
-+			if (!valid_byte) {
-+				hwrm_err(bp, ctx,
-+					 "Resp cmpl intr err msg: 0x%x len:%d seq:0x%x/0x%x\n",
-+					 req_type, len,
-+					 le16_to_cpu(resp_seq_id),
-+					 le16_to_cpu(ctx->req->seq_id));
-+				goto exit;
-+			}
-+			netdev_warn(bp->dev,
-+				    "Resp cmpl intr not delivered, msg: 0x%x completed anyway (len:%d valid:0x%x err:0x%x)\n",
-+				    req_type, len, valid_byte,
-+				    le16_to_cpu(ctx->resp->error_code));
-+		} else {
-+			len = le16_to_cpu(READ_ONCE(ctx->resp->resp_len));
- 		}
--		len = le16_to_cpu(READ_ONCE(ctx->resp->resp_len));
- 		valid = ((u8 *)ctx->resp) + len - 1;
- 	} else {
- 		__le16 seen_out_of_seq = ctx->req->seq_id; /* will never see */
+ 	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
+ 		return;
+@@ -489,12 +490,13 @@ static void tls_encrypt_done(void *data, int err)
+ 	sge->length += prot->prepend_size;
+ 
+ 	/* Check if error is previously set on socket */
+-	if (err || sk->sk_err) {
++	sk_err = READ_ONCE(sk->sk_err);
++	if (err || sk_err) {
+ 		rec = NULL;
+ 
+ 		/* If err is already set on socket, return the same code */
+-		if (sk->sk_err) {
+-			ctx->async_wait.err = -sk->sk_err;
++		if (sk_err) {
++			ctx->async_wait.err = -sk_err;
+ 		} else {
+ 			ctx->async_wait.err = err;
+ 			tls_err_abort(sk, err);
 -- 
-2.53.0-Meta
+2.50.1
 
