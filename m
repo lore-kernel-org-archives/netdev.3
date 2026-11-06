@@ -1,55 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793971738;
-	b=ekMvhZSiL1DbHu4iwhUaQy5AYgWRrzGGOlGAvpjzJ3HdUHKDCEEXufmYyAebhb/GE1+i
-	 PTfVkOQqO4KNtyaQuEEYcXC/Lwt6IvcOShpgNkuLISKh8UFeBDqpLrJA4/exvCRJ7LF1X
-	 EPuZ62jtuRL7kErVbMMcuzYM1yqL3ZFfhtpY8LXabHmBv55GSE9Wfb9TLA2ErWlVAjgwO
-	 oxw/1klcAWWt+rN+LzvYshFQWrxDauWUIAZLyal38qea59gUmN03uP7MWZvo17FlLte8B
-	 FnINBWO+XR6xIVGMegIdrzj+x4WtiG7eU4xtoCe8TOwKPXD1iwX0IDxdXza0q9RP82w==
+	t=1793971812;
+	b=Z9g4XtslQXV8FfnEJeCrmpB+AB9/kGI+x1KLcKxLWjbNlCjz09Hc3J3kfW/T0jzwKIEH
+	 REvKyuieGIdtpRDuC+qfr8f5xMLGF+hPkYAIMOwKNbi/ndf7uRdp28wU/B1Qyjf2Gn/ku
+	 sg5PGebJNicIxChEZiDUKxLoKNk3CEC9Llhj6946IdX3EUmPJQT5mMCnsS0ynkZ+lPgVT
+	 EvubyovcCuVLWkmDz1ZvE3IPWlgtC4RoYxnJbuBulVc17JByEm/WVKvw/u1F+T0mKRrik
+	 Tfp4hzQVha5sZYIkGt6D5/j5QBG3CmlUssRWBkoxJt0aiivgg3AFWkqMeeOdmXR3ghw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793971738;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=/P432aImU9M5+AgzPTvcGtwexqx2Fz0lLbSjYe0pWoo=;
-	b=ztMiBTaozbOzbBcO/G9lzv+pjEM5VuLTq7vMaT+XWbihDYWnPJOD1Zzr1VWWmRll9C95
-	 oBLy27NGrgKRak2rHHinWklLPKW7sVmgEONDzD7A3TonQmCv3WXJj5+lI48ayu7whsT9E
-	 a8j2pUhhMuqa31zx6BUAHcNK6vJJ322Y5BicTUohrt+BoMKI4nIYBSlBhy2l8/u/f/7zu
-	 a4RtjyxoEyqygmGfXwEeRhyO99e4ZmAQAYBLznwBja4gCfCHpn+2ux8TRAxl5rFH3OzY1
-	 ksB/nSLBWU6mrtTJgoyH4BhNF3i5wPEk0PMhljrpOVcI9HxapTbNrnQh0AvRzPpt61g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793971812;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=8Z00acB9Vymz6mYsGI03MQwd0xqs9x+gv6dFEhayj3Q=;
+	b=lWuvuqjqGFnsu0+p61IeSaGb3l12iAm3hGdipU4S7pr4nMP9ccp5kzgr3ONzWluI1tai
+	 XflXk+bl+Abdu4YOyZzmeBC9GeBPX1bJW9YnHUuM3Ub1Cswbol19fDYMCY0OkZtrK+qjX
+	 cGa84mBV26gAzoO89lFectfQfloXXdyPYFdoD0ElKCWGPQCDq8ijjIpdlYMyymtbE6v1g
+	 xIzVIxtsiwo8UvlrYKyg1acqJRnuoUCJBzbF+RvLG6+KAsIliSTZK6S4XrOtlQVWfK0yl
+	 iim4fJki82ALb4kqfGM/H1DkCSUVWPzjCJBMP3zIH1ckV9XAMlCSKMbnUJaNLkoJSPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c5nXakqc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SY5AWf3d;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F21606D803
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 13:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534FB606A32E;
+	Fri,  6 Nov 2026 13:30:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 534FB606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c5nXakqc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAA91F008A5
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 13:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793971737;
-	bh=/P432aImU9M5+AgzPTvcGtwexqx2Fz0lLbSjYe0pWoo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=c5nXakqch5G6zlAiXCylNW7cCz8/twj4/3JWc9haXlHBNkZScMvB0IdgdeW3nqG07
-	 dfKFqGCrCkY/8ar033h0ukckVhvNf407SEsOXmQZTH55Mq/oGQnGaZ/pkC2lYQyont
-	 hASMbq9BF6YpENylceJqWqS5IKkdnIBFEW79UMTysVw4N+7mAosu0kKGBACg2jDeL1
-	 WXBHvhTmSUaL84r+qt6UsNU7tEYxJ2ngpV/umdDJ86LjToNg5U1+GDSPeYMsmuR4+h
-	 jCSoQylMEOxgHpAofpRT0j7ejVWkbTNUaxPBtJtyvVcWvqxzuofuGrIlDGS7AWyiGZ
-	 w8lV1dG3IRuZw==
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-56431524c22so206779b6e.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 05:28:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByDbH3T9OjpSz+mBamxJQfQnaiYhWAE41OjHVVNbbA4wHMPG//NPkEPxFBtRFljI6+G6e+sXm4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8xeSCuD7lR0VzU/SGvejGyyHatIhRHi0GZdkkeQGiRstMB3vH2
-	1jizJBN+4EHhWSAsxC6dq61bHtsRLmjng1w6QjPG6c2dJF5RIS1d7WBBOWYytdLaYl+9OTcL7t9
-	zynKdFV8uLjcMFvJaUkJCo1oULhDeScw=
-X-Received: by 2002:a05:6808:c165:b0:4ce:a4fc:a848 with SMTP id
- 5614622812f47-567e0f14889mr1664126b6e.6.1793971737143; Fri, 06 Nov 2026
- 05:28:57 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SY5AWf3d
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=8Z00acB9Vymz6mYsGI03MQwd0xqs9x+gv6dFEhayj3Q=; b=SY5AWf3dgVsZtdjRExSYJyozIR
+	1HvhjB1cx03bK2x+Exh3+aM7M1XNNcjIm66cabpATg5eynC9FWOOAtbjVyx8AB65cwDFwNdY808gT
+	//pD40mY/NRLB8z9LFadR6OIJA91aT/EUMa9yzVjViViy7Yhq+HYKdP0vh8eHGmng3vU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xPK17-00Em3z-Tq; Fri, 06 Nov 2026 14:30:05 +0100
+Date: Fri, 6 Nov 2026 14:30:05 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	Jens Emil Schulz =?iso-8859-1?Q?=D8stergaard?= <jensemil.schulzostergaard@microchip.com>
+Subject: Re: [PATCH net-next 3/3] net: dsa: forget the port ageing time when
+ the port leaves the bridge
+Message-ID: <ac9079a2-a197-4572-9771-c04d4bba438f@lunn.ch>
+References: <20261104-ksz-stp-ageing-v1-0-2c2bc7217dea@pengutronix.de>
+ <20261104-ksz-stp-ageing-v1-3-2c2bc7217dea@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,75 +69,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <au3HMfqNW3_DRMqS@v4bel>
-In-Reply-To: <au3HMfqNW3_DRMqS@v4bel>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 6 Nov 2026 14:28:45 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioDCs_mksvfJu0Svr+bx3NXm35VWhYAD7h=vqaLFPbShQ@mail.gmail.com>
-X-Gm-Features: AclHuK8WMljdlOeXf4mKIBJOmRy-GSlb6oKZabvG_whwfNM14esefy99z9jHyEg
-Message-ID: <CAL4WiioDCs_mksvfJu0Svr+bx3NXm35VWhYAD7h=vqaLFPbShQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: do not coalesce segments after FIN
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, john.fastabend@gmail.com, sd@queasysnail.net, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104-ksz-stp-ageing-v1-3-2c2bc7217dea@pengutronix.de>
 
-Le ven. 6 nov. 2026 =C3=A0 13:25, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9c=
-rit :
->
-> A FIN consumes a sequence number. If another FIN segment is coalesced
-> into an skb that already carries FIN, end_seq advances to account for
-> the additional FIN, but tcp_flags still contains only one FIN bit.
->
-> When the preceding gap is filled and tcp_ofo_queue() processes the
-> coalesced skb, rcv_nxt advances to the skb's end_seq. When the receive
-> path consumes all data in the skb, copied_seq advances by the data
-> length and one sequence number for FIN. If three or more FIN segments
-> have been coalesced into one skb, tcp_inq() can still return a positive
-> value after the receive queue becomes empty and the SOCK_DONE adjustment
-> is applied.
->
-> TCP_ZEROCOPY_RECEIVE is another consumer affected by this state.
-> tcp_zerocopy_receive() takes its length from tcp_inq() and follows
-> skb->next without checking for the end of the receive queue.
->
-> Software kTLS receive is one consumer affected by this state. When
-> strp->copy_mode is false, tls_strp_msg_consume() calls the TCP helper
-> tcp_read_done() to consume the current TLS record. In the reproducer,
-> tcp_read_done() consumed the record data and one FIN before freeing the
-> receive skb.
->
-> When kTLS looked for the next record, tcp_inq() reported at least
-> TLS_HEADER_SIZE bytes even though the receive queue was empty.
-> tcp_recv_skb() returned NULL, so tls_strp_load_anchor_with_queue() hit
-> WARN_ON_ONCE() and returned without updating the anchor.
->
-> Since tcp_inq() had reported at least TLS_HEADER_SIZE,
-> tls_strp_read_sock() proceeded to tls_strp_check_queue_ok().
-> skb_shinfo(strp->anchor)->frag_list still pointed to the freed receive
-> skb. tls_strp_check_queue_ok() then read TCP_SKB_CB(first)->seq through
-> the stale pointer, causing a use-after-free.
+On Wed, Nov 04, 2026 at 12:48:30PM +0100, Oleksij Rempel wrote:
+> A port that leaves the bridge keeps its cached dp->ageing_time, and it
+> still counts for dsa_switch_fastest_ageing_time(). A port that leaves
+> during an STP topology change keeps the switch at the short value until
+> the port joins a bridge again.
+> 
+> Clear the cached value when the port leaves the bridge. The switch is
+> not reprogrammed on leave. If the leaving port held the shortest ageing
+> time, for example during a topology change, the switch keeps that value
+> until the next ageing time change or bridge join in the DSA tree.
 
-...
+Does the software bridge trigger an ageing time change soon
+afterwards? Does a port leaving the software bridge trigger a topology
+change?
 
->
-> In tcp_try_coalesce(), skip coalescing when the destination skb already
-> carries FIN. tcp_add_backlog() calls skb_try_coalesce() directly instead
-> of using this helper, so add the same check there. Since both paths check
-> only the destination skb, a final segment carrying data and FIN can still
-> be coalesced into an skb without FIN when the other coalescing checks pas=
-s.
->
-> Fixes: e93a0435f809 ("tcp: allow segment with FIN in tcp_try_coalesce()")
-> Fixes: 4f693b55c3d2 ("tcp: implement coalescing on backlog queue")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
+I'm just trying to understand how long the fast ageing value will be
+left in place.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-
-Thanks.
+	Andrew
