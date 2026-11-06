@@ -1,104 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793948187;
-	b=YJEJKF1WGA+yb/T5pMtAxX4jIpuvWdW58xKaQ9AfRtrcLVAM2DyGbVCKqd+WNrH+E5UB
-	 Ib0B6x8UOIhQkwa+1713gMmjQEjxJr5Az/2T8hL81jo2OueqqC0eiI/N8IFH67pSLUiF9
-	 wuJPzLSdstHALl3xrbPfqSP8UaLlAlBxIwkCknp8hKlfyfcFmjH1kIdKlTLd2TiANnw2v
-	 MG8+8XSksBKofNXN5HOKapb+qsMhp2CjuEGumR1g0B6Nl4PAaMzbreoWhFIsmXekUF9lv
-	 fsRVug/D3PR8Y7GPfq5zqBpTNuVXSrhDYaUavqg/zkKWyCsMQEh1pgmYA606S7lyK6A==
+	t=1793948342;
+	b=0UpdW6EzPxUeuvnRyXS/3Ypga9Hdir+EtT236xbavVaDz3z7+yLaOsyb2UXw/myt3DID
+	 ZrVwvKNh9RxzNocmrgmjclgW/rev3OErxBKX/W3Hv4ymjADylUdAG77ypZV9HtU5+zwg5
+	 WGBfiPthQtRm3JJPh9Cbj3Y+N3L8i3/NYDAuPhBDbHoF6OYQMil/r5xGvZceN6fxoqB68
+	 QROd/kuUn7nYX65aqxd2CKwdawwHzIA2zBIgy3YPx9iPniMcgeqSEBpOdFefqfzMwNlFL
+	 hT3Dw8w0yO80KyasL65vNnlOi//i0j0kyewNV/JMvBdkXKNSj1VzRnoXhyqeTj9DuPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793948187;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=/RbMC/zbd8a4NB8aOmz0dErr/x+blirSIsIsAf7UL6U=;
-	b=TIhozB1OTIg86JPAlt2i3T19GO8qnoCLalMsYJz9ffEFOLXTr0UmR1dfHv0kZoMK54/7
-	 GpHlAsuk8WzALNFSgRPNjTmHr3d6o7Qg3gAwwpf0ryro+h4nk7eXqqoMHHXyCNplUFXp0
-	 UWvf+4sk8SrBmTuXWilhBIrtuNbnbNcScvjSy/UNSEeTt4OEvdFcZ6+GbgWw2XEhbYMFQ
-	 BrejJWlVbJeMT5NjLj8S1iWv9DGTEeSRU4/BNI0uUGghza7QXK4W7zglwAEQTOCDFu83O
-	 Axg7UlaRrxkZWlmcXYUFTaxFZyaviEnndqHn8Tje/f2yq6uGULIo7cJPMNb1FrPvQYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793948342;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=sdnHvyDHdypptoLAsZrun1QQagAsqBtQUVLcwRtop5M=;
+	b=JW1zSYRJspS6cYa8AyemfWbjSvSEpc2mOwifXEDDhExEdXkFbwUzXvoHwNhBOMaw2Aft
+	 Upj2oMyr6Rw3w0oSZD7z4pKygBbjLUCQ+jlTfUYmrre/LXmdS0BZ0D65aaGTv5EvxHwYx
+	 e6PvuD/KJl2f7O8ON8WCRkw0+YlvkaprfpE60xQqri1Da65zPVZtlm10rL3Y7xX6JfiGR
+	 3YCA9O/OeH98WE0JQ0WTUlXIOKvy8mPd8Ur8GVws3lp01I0kAjw+bZhQi4ZMFQR9MswIS
+	 f4OiKFx+F/5LJ8Jg0AszvYTeaAXjfwTWzXpLPxUNqzbpFKpLLYGD5KCunKUyzaS6r5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IZCJyYuy;
-	arc=none smtp.remote-ip=209.85.214.196
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793E0606A328
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 06:56:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 793E0606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="YRP/+WBH";
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E578C606A326;
+	Fri,  6 Nov 2026 06:58:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E578C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IZCJyYuy
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2ed28bac8d7so1505645ad.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 22:56:27 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=YRP/+WBH
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793948187; x=1794552987; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/RbMC/zbd8a4NB8aOmz0dErr/x+blirSIsIsAf7UL6U=;
-        b=IZCJyYuy0zkv7PU3oOnTFueCF7jtKKjd8XuSGWI6NuPApPzbm3KQ+pWuWd4pt3QU/M
-         mC/ve/a73EHjs2xFUgnI/rXBFfVUhvTyfZlp8ijHBmWamPQr50cO7geY67pwklfGxryk
-         ts+YLNpTutUGC3aEECdUkX6LsicpMVLeSQYbvQRMN0h0+Js3+RDblz6PyfZ25Vc4Anp7
-         sjADYFWLu8wOWa2otSKd/HBH5j3I08eB8lvcL9p1a8mTpXL5OW2oc4xIeBZeakEMiaAd
-         FTGuN17FqOwlS9EBFujAwjj7IUvKd4XPvYboS4ucjrH3jvAs2xV5vbCUEbcvhmAg2sDi
-         2Jag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793948187; x=1794552987;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/RbMC/zbd8a4NB8aOmz0dErr/x+blirSIsIsAf7UL6U=;
-        b=YZfIw4igjj5uPQJpY9zjMfxF/LxGe9SkXxa9VXMuvrSqxoPlZ3j/KrpKtOA5zhkuhP
-         xFnBKmZF01ZgTtM0mb7CpLkSjSCISMglVSU5wpjrrK2ssjTTBZdzFpBDaXntCc6Qd49z
-         X+v0rbJycBZYtM9yB6b62CjyKwqe+KjOgr/FQpaibrlThnLJZFUri6Itn7y+xi1cUB1D
-         bwhIIqClmV1DRaGAQbs2zyFoOkzF+2jdF1ubQTnQuuZ2bYjyhWIHvgeRDDlxAgDQvBs+
-         vNf5bKQKP9ixPjCcmnr9SzbF/N9c520ROQTvAFAVnFAIsUigcRqcI1OBDiD73R6AYg0q
-         2G9Q==
-X-Forwarded-Encrypted: i=1; AL+hErEr04zCkCtX+N9dPU6Xmgm/TiorRoZVIyDIs/TCauhLUJGRd1AYW+c/b04Me8nmmVZYQ27KTsI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+1IotHCmfY2TU6xArnTHlqUvw1jUEJajnVSlzIqEwhMZMdeUyi
-	ZZyFyHSklbOsctzN+09xC8enRvrDnzni1XrWJTTsvmyLsGjsN59hvgij
-X-Gm-Gg: AYBFou1tEXODtxrZOq5YzSud/dwJeAcOr9FZsT6m+J3jfjAyDs/ZslE5qtPnaU5LSPR
-	88QvGFywewCMfZgaMBPWWs4pwQPmIBxgxu+nzB0XFv+aJ2grHUzQlebrsiUxuelmwD/SujKXChd
-	7xVBx3XvPfqDzzlJkBcDa+7y7npSA1ARFmzkHTt9gu7Xv5LHjFUgTIlZRarcXwastn3y3VLau0B
-	xjHNAH0F1jOhTB7/1zZ5PXy29CCARtC1JwaBd5PbXSD9Sdk790/JfRjmBh6Dfbjd4N5c/jhP+wW
-	y+hkfAuzz4gB1RTZ0IkHEGOtReNyIq1GtVmTcaVEKTVC3K4R/4U/gC6i3WD6DPEuvGRD4tVlxgR
-	9y5mSn1vWDqQc+Ie7ot2mrpvws9wiAoxNzExSjtXNE1BSG2Z3x94bGWOl87o578D/ov4rM5JTLS
-	kAVEPOj+hsCAgqylCYcENz12uVVKKJczAIGIoMScA7moofk0HJb9rLd95hHCZ2/AZRpZZkBQFEk
-	P8BP3z/o/j8RXIXWoKNODKblQQiV2R2b66U1G1WSf4PDfnV4VWRN3wfU78WrIvS5afIgv8hpXNc
-	sVMzFwxjltI+cHjC9M3IX2IzbQ1EMHwIOl9hqzzb+Z/FxltD9Q==
-X-Received: by 2002:a17:903:3888:b0:2e4:ade3:7290 with SMTP id d9443c01a7336-2ed244dd595mr38676575ad.30.1793948186681;
-        Thu, 05 Nov 2026 22:56:26 -0800 (PST)
-Received: from LAPTOP-QJLDGQ2L.localdomain ([112.224.143.52])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47528760sm2338635ad.8.2026.11.05.22.56.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 22:56:24 -0800 (PST)
-From: Boyan Liu <yymhvert@gmail.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: Hangbin Liu <liuhangbin@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=YRP/+WBH6Bq5gNGTmsCxnLvZ9h5l7Fknv2qBLKYRH/TbnOacx65CkqTpwKSlo5nNWgul1nev9aQMp
+	 IfFh3Pqq7aK7FkCbqck+YxUsKm+m25ANf9BhmeWJ3zZZcSuUmLgQY4F4fzpckc8dBq6QjM2p0i1pXD
+	 kh1qIGN5gP7MCnuU=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26aed7aaf1e5-e9ccb;
+	Fri, 06 Nov 2026 14:58:57 +0800 (CST)
+X-RM-TRANSID:2ee26aed7aaf1e5-e9ccb
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [25.255.2.225] (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86aed7ab0be9-15da4;
+	Fri, 06 Nov 2026 14:58:57 +0800 (CST)
+X-RM-TRANSID:2ee86aed7ab0be9-15da4
+From: xujiahao <xujiahao@cmss.chinamobile.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	co+98d7de09cd94fec5@bugs.sh,
-	co+cdeaa2edb6897680@bugs.sh
-Subject: Re: [PATCH net v3] seg6: Fix unset mac header in SRv6 End.DT VRF decapsulation
-Date: Fri,  6 Nov 2026 14:56:07 +0800
-Message-ID: <20261106065607.3372-1-yymhvert@gmail.com>
+	xujiahao <xujiahao@cmss.chinamobile.com>,
+	syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com
+Subject: [PATCH nf] netfilter: xt_nat: allow IP_CT_RELATED_REPLY in DNAT targets
+Date: Fri,  6 Nov 2026 14:56:51 +0800
+Message-ID: <20261106065651.3504452-1-xujiahao@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261024015811.a995b7cab417cac2f41689de@uniroma2.it>
-References: <20261021024738.17266-1-yymhvert@gmail.com> <20261024015811.a995b7cab417cac2f41689de@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,17 +72,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Andrea,
+The DNAT targets warn when the conntrack info is neither IP_CT_NEW nor
+IP_CT_RELATED, while the corresponding SNAT targets additionally accept
+IP_CT_RELATED_REPLY:
 
-It has been about two weeks since you mentioned that you were
-looking into the NFQUEUE case.
+  WARN_ON(!(ct != NULL &&
+           (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED)));
 
-My understanding is that NFQUEUE is the remaining open question
-for v3. Did you get a chance to check it? Should I prepare a v4
-to address that case, or is the current approach acceptable?
+A TCP reset generated by nf_send_reset() on the reject path is attached
+to the conntrack entry of the rejected packet and marked
+IP_CT_RELATED_REPLY.  It traverses the LOCAL_OUT NAT hook, where
+nf_nat_inet_fn() lets IP_CT_RELATED_REPLY packets whose destination NAT
+mapping is not initialized yet run the OUTPUT NAT chain.  When that
+chain holds an xtables DNAT target, the target is reached with
+IP_CT_RELATED_REPLY and warns:
 
-Thanks,
-Boyan
+  WARNING: net/netfilter/xt_nat.c:154 at xt_dnat_target_v2+0x97/0xc0
+
+The same packet is accepted by the SNAT side, so the assertion is
+incomplete rather than the packet being unexpected.  Align the DNAT
+targets with the SNAT targets.
+
+Reported-by: syzbot+2e819f6641708bb6ab9d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e819f6641708bb6ab9d
+Signed-off-by: xujiahao <xujiahao@cmss.chinamobile.com>
+---
+ net/netfilter/xt_nat.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/xt_nat.c b/net/netfilter/xt_nat.c
+index 51c7f7ce8..e565fb341 100644
+--- a/net/netfilter/xt_nat.c
++++ b/net/netfilter/xt_nat.c
+@@ -84,7 +84,8 @@ xt_dnat_target_v0(struct sk_buff *skb, const struct xt_action_param *par)
+ 
+ 	ct = nf_ct_get(skb, &ctinfo);
+ 	WARN_ON(!(ct != NULL &&
+-		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED)));
++		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED ||
++		  ctinfo == IP_CT_RELATED_REPLY)));
+ 
+ 	xt_nat_convert_range(&range, &mr->range[0]);
+ 	return nf_nat_setup_info(ct, &range, NF_NAT_MANIP_DST);
+@@ -119,7 +120,8 @@ xt_dnat_target_v1(struct sk_buff *skb, const struct xt_action_param *par)
+ 
+ 	ct = nf_ct_get(skb, &ctinfo);
+ 	WARN_ON(!(ct != NULL &&
+-		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED)));
++		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED ||
++		  ctinfo == IP_CT_RELATED_REPLY)));
+ 
+ 	memcpy(&range, range_v1, sizeof(*range_v1));
+ 	memset(&range.base_proto, 0, sizeof(range.base_proto));
+@@ -151,7 +153,8 @@ xt_dnat_target_v2(struct sk_buff *skb, const struct xt_action_param *par)
+ 
+ 	ct = nf_ct_get(skb, &ctinfo);
+ 	WARN_ON(!(ct != NULL &&
+-		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED)));
++		 (ctinfo == IP_CT_NEW || ctinfo == IP_CT_RELATED ||
++		  ctinfo == IP_CT_RELATED_REPLY)));
+ 
+ 	return nf_nat_setup_info(ct, range, NF_NAT_MANIP_DST);
+ }
+-- 
+2.43.0
+
+
+
