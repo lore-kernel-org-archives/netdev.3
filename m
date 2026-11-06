@@ -1,64 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793979739;
-	b=jL4TztvhrnKnpGuyjV2+e83LjhByqevdjyR6OdMOvjz5u6XiCtV78RsiL16wmzS+sQ4G
-	 pAWSgwGxzWy+CMVUe0lk6L/0ByvplZbFExQMs6Zp1P2om/pfvJE3LPLcRu9mRVOC4/eYc
-	 sdgBi5dwXOR6w+B0JqC0kR2MbU7nqFc9ae/BND1q4gEpDeKBesKzbsKAtvbzHRk8N6fkz
-	 6qfB9q1oLgIIr/XwEuxZ0BU+X/YaCK5aOfsOb6LZSt8ZPso1ztu4cVjctWlbNMh1789G4
-	 mOOwU0IM4iqnEQsb16iGDf/kdwz+4uzfRweyfPsLcNrSLmysXh2f9/4GFPbFNyxB1xg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793979739;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Message-ID:
-	 In-Reply-To:References:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Importance:User-Agent:X-Mailer;
-	bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=;
-	b=vxhvrRnPMAuHuGSchDI4S5ONPZPdO25ESMLOUkvtuECWRDtYBDBjtYNYx39ZS+6JIzeE
-	 X5PY/VaFJBDEWVrcKtb5sxSzlp0lw6gbF4NFz7gijfzC+b3ERXRMDpFNPHXPJfwG9F33I
-	 0kw7M8e4FQloRm0Iox30boj20KFz+mE04Ri4hIqKqr5CX1wn9XwZy36sOgI9kppkiJXML
-	 LNgrIYiXo2dTeBiNUc3ZKdA1lhPJpfQy01sEwcmcJHW4YuDIR4mOV2OfcwF3InKbBQ1xe
-	 nUMFqP8sn61ze6wSI8cPEISsZ1ivQBxoWPmgoEuk8/0Io/17tMcoqbxyFCHYdPW32yw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=asgari.net;
-	spf=pass smtp.mailfrom=asgari.net;
-	dkim=pass header.d=asgari.net header.i=@asgari.net header.a=rsa-sha256 header.s=zmail header.b=cA34GPsB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.50
-Received: from sender-of-o50.zoho.eu (sender-of-o50.zoho.eu [136.143.169.50])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793979899;
+	b=yzTTYI7NlpEu9zUOOBnTsVUGKAk+VNABmpKYDhoIQEQXrDA6Urj/G9vhGZUqG9GNQMdz
+	 AAGF9VEem4KAHvEpnneiyhjzGLahQ/p2HRJcTpv7Qe1Il3uOd7Ml8FOHELNmEggPpNG0e
+	 JWTWqDdqzerDgJ6rR2+hXBJSfNUNi4r+cKNQA9tST57mJ5bHUI6JDzcORbM+X2ckbwaVs
+	 emDX8sABQFQ8auvyTqObK3jMjBPJlkLF/GruS7GtG42fLnnW1guUiHwkvQbBolr6AVREK
+	 tV2dni90ebb2kM7X5QkIJ2rVNDzXtLkKGPKS8RSJLJZ5fiq9R2rgjUnrMcfBY5B6SXQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793979899;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=m7TGBcFGJ25PzS3E5FjcY3XCx1Va4AtTHtI7meNpbaU=;
+	b=B+dZ88Zv8TcK9q/QNVB/170OI8zJGz9wMvBg/4VPrZbINgCrfHGNyetYSfdEK377cgG+
+	 q/Ox4kU02wfejhQo3lWP2xQZDds4O46VE/zSQVsCwOfu7hjRmqteTIVUEr7lNSS39fnKA
+	 5RilJ4mhfp0poFaUbS9NjnL4C08VW+A1K8byAl0ZS7QmxUU/nc73sg1ZHLB7cKgKZcVl1
+	 RZDnu/Czx/rKJP1nb6z/tZwfsLD+KN/OgStgXfzC+5kfktPzH9EURGgYHXIBWfCii8shj
+	 0bVBbgEHSh3Cnncea+V0jOXnL40gQjRfLIQyMqb4tsYQFCjGloXXuBhcmTaNP5ZqLAw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KxXy4qR8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D59606D833;
-	Fri,  6 Nov 2026 15:42:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0D59606D833
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=asgari.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asgari.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A972606A326;
+	Fri,  6 Nov 2026 15:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=asgari.net header.i=@asgari.net header.a=rsa-sha256 header.s=zmail header.b=cA34GPsB
-ARC-Seal: i=1; a=rsa-sha256; t=1793979729; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=ZvM0nvnr4mCdsXkGh05UM6rSz4LNIhu27OnfvN1FpKh/VM/9GgqF6NKl5JKtfSXRplfc5hNlh5JDtOJs+GN7uc7Lgo3eql93max1cJwHsKOP2WRhkS0xyzQQ6NSVPVo1fGEZyX3UVBKTguK4FQscISpYqk5kUZ4vdC9aqOne3xk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1793979729; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=; 
-	b=LGJENBlh1mpEvOxUDvn4UHeTc1hWY+LcpcpgZnxSExfl9VJQ7pJ/bKDfRq1/3D6q+dO3vAA9ehuIKf7SiYGmfiv6p67WGL+bk5C1ygiVA3MRD6cxA4RDpylMPRv2gBvg5mcR9TQ29+mHDn2qfOehyuIHGTOTeH8HECE5eLaFedw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=asgari.net;
-	spf=pass  smtp.mailfrom=alireza@asgari.net;
-	dmarc=pass header.from=<alireza@asgari.net>
-DKIM-Signature: a=rsa-sha256; b=cA34GPsBkXzs4Icrlstu7swvyhxBpFTAXQJObKq8ZTfblwGjzK8k2EFZH77aUR97c9vRLi1Z0JWkZ2BWdbyWsrntzCDv0KU2ZjTtqAZTtjjX26olVKiNEoH4PSvE6a6blCmcx9fr1sXieTRPueBlcd/GmpHKAcv1xHDtqefV3WA=; c=relaxed/relaxed; s=zmail; d=asgari.net; v=1; bh=v0mcE5o+mEfokba0wzKYkjJQYfiDpuF/z2AJeteosKc=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: from mail.zoho.eu by mx.zoho.eu
-	with SMTP id 1793979727867542.1179257146615; Fri, 6 Nov 2026 16:42:07 +0100 (CET)
-Date: Fri, 06 Nov 2026 16:42:07 +0100
-From: Alireza Asgari <alireza@asgari.net>
-To: "Florian Westphal" <fw@strlen.de>
-Cc: "Pablo Neira Ayuso" <pablo@netfilter.org>, "Phil Sutter" <phil@nwl.cc>,
-	"netfilter-devel" <netfilter-devel@vger.kernel.org>,
-	"netdev" <netdev@vger.kernel.org>,
-	"kunit-dev" <kunit-dev@googlegroups.com>
-Message-ID: <1a1b1863ff2.22494b4c856594.8212473696088017300@asgari.net>
-In-Reply-To: <au3qeEf0LVzO84d3@strlen.de>
-References: <20261106-nfqueue-review-v1-0-b6c933f44943@asgari.net> <au1difVZWMSV78wV@strlen.de> <1a1b040da34.2a9c00de770859.6266910270967560587@asgari.net> <au3qeEf0LVzO84d3@strlen.de>
-Subject: Re: [PATCH RFC net 0/3] netfilter: nfnetlink_queue: handle packet
- ID reuse and large gaps
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KxXy4qR8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128ED1F0089F;
+	Fri,  6 Nov 2026 15:44:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793979898;
+	bh=m7TGBcFGJ25PzS3E5FjcY3XCx1Va4AtTHtI7meNpbaU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KxXy4qR8Ki5rez09gboTTO/asVqsZh7bhqaj7H0ubtK5UcVhdVXNvVphmGw+crUeU
+	 jBgvKz0u4gwBCPv+/f09/WHCQs5SflTaYwnT4ZYM/k/+0d9it6wH8PZV9SL0E9byYm
+	 9jf3V4E/IrxVIZUhQZp0f6K4TDhF6nx42wiM3ede/LBZTtNXgYwT0S+xg/sQGwY1u0
+	 ocU9HjN8/KCTBJZAGYUyXn+gS0o473ZB/9dR7w3NQbiK9sc2wje7dDl2BwEsSrKs75
+	 GMFOIzeF0YKp8IcSkK3bndx1ysdn0TUnAxFXTzFeTRtkQXn/KsJ+pGzJgMMab+JzId
+	 PItBYW1yiZ2mA==
+Date: Fri, 6 Nov 2026 09:44:54 -0600
+From: Rob Herring <robh@kernel.org>
+To: Prabhakar <prabhakar.csengg@gmail.com>
+Cc: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@linux.dev>,
+	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Prabhakar <prabhakar.csengg+renesas@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH net-next v4 05/14] dt-bindings: net: dsa:
+ renesas,rzn1-a5psw: Disallow ports beyond port@4
+Message-ID: <20261106154454.GA3654918-robh@kernel.org>
+References: <20261104182105.1102555-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20261104182105.1102555-6-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,77 +72,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104182105.1102555-6-prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Hi Florian,
+On Wed, Nov 04, 2026 at 06:20:53PM +0000, Prabhakar wrote:
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> 
+> Restrict the A5PSW ethernet-ports node to ports 0 through 4, matching the
+> hardware configuration of four external ports and one CPU/management port.
+> 
+> Although the schema pattern limits port nodes to port@0 through port@4,
+> additionalProperties: true allows other port nodes to pass validation.
+> Set additionalProperties to false and explicitly allow #address-cells
+> and #size-cells so that ports beyond port@4 are rejected.
+> 
+> Existing in-tree device trees describe only port@0 through port@4 and
+> are unaffected by this change.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> ---
+> v3->v4:
+> - Added reg items validation for ethernet ports
+> 
+> v2->v3:
+> - New patch
+> ---
+>  .../bindings/net/dsa/renesas,rzn1-a5psw.yaml         | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+> index 9c477ceb170b..250c59e58439 100644
+> --- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+> +++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+> @@ -63,12 +63,22 @@ properties:
+>  
+>    ethernet-ports:
+>      type: object
+> -    additionalProperties: true
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +      '#size-cells':
+> +        const: 0
+> +
 
-Thanks for the pointers. I=E2=80=99d like to give this a try. I=E2=80=99ll =
-take some time to understand the code first and follow up with what I find.
+Drop all this.
 
+>      patternProperties:
+>        "^(ethernet-)?port@[0-4]$":
 
-
-From: Florian Westphal <fw@strlen.de>
-To: "Alireza Asgari"<alireza@asgari.net>
-Cc: "Pablo Neira Ayuso"<pablo@netfilter.org>, "Phil Sutter"<phil@nwl.cc>, "=
-netfilter-devel"<netfilter-devel@vger.kernel.org>, "netdev"<netdev@vger.ker=
-nel.org>, "kunit-dev"<kunit-dev@googlegroups.com>
-Date: Fri, 06 Nov 2026 15:55:52 +0100
-Subject: Re: [PATCH RFC net 0/3] netfilter: nfnetlink_queue: handle packet =
-ID reuse and large gaps
-
- > Alireza Asgari <alireza@asgari.net> wrote:=20
- > > Thanks for the review.=20
- > >=20
- > > I understand that batch verdicts are intended to be used in strict seq=
-uence. The scenarios motivating this RFC did not establish a failure under =
-that usage model, and the evidence presented does not justify the additiona=
-l epoch and missing-boundary handling.=20
- > >=20
- > > I=E2=80=99ll drop the current series. I also understand that the propo=
-sed collision disposition being reasonable does not by itself establish a n=
-eed for the duplicate-ID guard. I would revisit that separately only if I c=
-an provide a concrete use case.=20
- > >=20
- > > Thanks for taking the time to review it.=20
- > =20
- > If you want to work on something else that is actually a problem, then=
-=20
- > you could investigate the mem exhaustion issue.=20
- > =20
- > The current limitation is queue length based, this is very old from=20
- > a time when GSO/TSO aggregate skbs did not exist.=20
- > =20
- > Untested idea:=20
- > =20
- > 1. compute a memory size limit based off the old NFQA_CFG_QUEUE_MAXLEN:=
-=20
- >  sizeof(sk_buff shell structure) + 2048 (half a 4k page).=20
- > 2. store skb->truesize in the entry struct when queueing.=20
- > 3. charge the truesize to the queue entry (and uncharge on reinject).=20
- > 4. in addition to the queue length check, also check if the new=20
- >  skb->truesize would bring us over the limit, refuse queueing if thats=
-=20
- >  the case.=20
- > 5. Make sure NFQA_CFG_QUEUE_MAXLEN updates continue to work.=20
- > =20
- > This leaves on major issue: userspace can request 64k queues, so these=
-=20
- > limits don't help.=20
- > =20
- > One possible solution:=20
- > 1. For init netns, no changes.=20
- > 2. For non-init netns:=20
- >  at queue creation time resp. when limit is altered, pre-charge=20
- >  the worst case occupancy to kmemcg.=20
- > =20
- > Refuse queue creation if that fails.=20
- > Ideally this could be split into several patches to ease review.=20
- > =20
- > Thanks.=20
- >=20
+And make this "^(ethernet-)?port@". Then any node will get the 'reg' 
+schema applied. That doesn't check the unit-address, but the way to 
+check that is comparing it to the reg value (not yet implemented except 
+for specific buses in dtc).
 
 
+>          type: object
+>          additionalProperties: true
+>          properties:
+> +          reg:
+> +            items:
+> +              - maximum: 4
+>            pcs-handle:
+>              maxItems: 1
+>              description:
+> -- 
+> 2.56.0
+> 
