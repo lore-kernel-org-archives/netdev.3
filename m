@@ -1,64 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794000247;
-	b=DTNzkoByLVCnhzvrixCOM60LF/VobDavfEAY1eVHC91MtNDdpWgHNP0TEMOLTXGwhKNs
-	 xzyyH8o92mQvElxFcDPgDL0Fud5iF7sBSypML+UWga13zfqSdFYxzkCzn3hATdB9x5xcq
-	 pufWydufNBWNIHEk2wxKyJfmvvBfHbqxZy/eXwx9hUq4NIJ0Mm5YD7god8ATiqLq0bpdI
-	 mpeDjcxOAJh/nRju6PKXp1JmK6BtqzpX2LMhyryTW83odVRIxzWZs8/CKDkesJ9akROPZ
-	 uS5qn35Nwk+RcfvV94BvbjdnnZWGLk5yuuZ4Pzz/fNnb4PEq/JDJ90Uc51D6ZEgGARw==
+	t=1794000330;
+	b=IIiNpOsMBILqTJjykXCYloJOUIzrpTSKZsh4Acv1uvuYMIGe+fQIo8Ju+kDdFT6vApe6
+	 7m3tLjHp4WrqZvuP9AJ/iespsgKZ6JFWbR566kf9DDbNDN4e2zRCwvFiMdWJc+HOf/P4+
+	 eFBSsyIDaTp+prnQgcV4fyJuQ5CGBg95dNkwXtgTB05/8hINPvtHAq+61FK1icB0DA8NT
+	 0AZTfPUNLZt7+T/V1fIBAvSHxU+em8DxGIZilz+gTz/JkPrH6lRj6beoe51dRONhcWHZL
+	 /ru2vUx3+76iuifdbizVBEsNCDydYhqVCUPPAtDIwjqR6DYm6DzeHRIhrAtIYd8x4lQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794000247;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794000330;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=aeCN6wptuZFxQwxOglBLWghbHtJUYjvmR86PPRTT2kY=;
-	b=MgDyMnYr0YRVvR7egzcqNBjXuZkr9tcbTBLtUV0nAVMK9H9jRwiposgYYJU/dqxy5qEe
-	 yhA0ebf8yqSwr6YCipMFqvivAy4Jmoh6MpqD52czFrtiwd/0bwJZsoI1uO+/q5YYAkViV
-	 N8cmf1lJQZ05wWUWLUlFVagUEzAg3fcfAQkDrnIp54IPw09LHGTagja9cMBT0lhYBFhxh
-	 q5pkBvQgbHkh/sXy99OUe2/VsfGsUDKpt8UmX35FVgk4rG87GWDDVUzY+lJb4G+VnYzuJ
-	 ih2sCjG6mdpKrWvYd9lIM8brkSans9t0ckTCkzKTjuj/pxyQBpK877m11tUr6TjrgJg==
+	bh=D75xnHEgEQErGUOR7h9XEUbUTbEHhDcv8kD4EeaNl/M=;
+	b=q3jS1YpZkUZoZuipTSMfLzmMAmVvMxegwQvQidQT+Kvnc+KQRCWORWc3Gt4IxEK7tQDH
+	 u8k8DMZNvVgDIDs4P3RBTm0Yfgzk51Ad7/1NhhOgbRSfN+UYo2v7PyvTSg7sRVpopF/VA
+	 0T9zZ9GZMJ5ocaqlJBd/ai76KQeFMbxrLKZVuGFbrLGwdWDnG+MZJZ1ixxnpHweih1+ik
+	 2hhyl9dxUVJ2tk8qhEhkwVZEwxCSnN+GYQGaOEnB43W0ZfqRj9rYnfYNR5lbGllORUyBE
+	 WxICxJ5fKHIJbPMVm0AuoHlOKHlWeTxOUuaBSayE7ZUdRc4BIv+H7q0H1M5anhAg/bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2Dekw5X;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EoKh2jvn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC09606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 21:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C686606A330;
+	Fri,  6 Nov 2026 21:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2Dekw5X
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928D31F0089F;
-	Fri,  6 Nov 2026 21:24:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EoKh2jvn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13B51F008A1;
+	Fri,  6 Nov 2026 21:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794000247;
-	bh=aeCN6wptuZFxQwxOglBLWghbHtJUYjvmR86PPRTT2kY=;
+	s=k20260515; t=1794000330;
+	bh=D75xnHEgEQErGUOR7h9XEUbUTbEHhDcv8kD4EeaNl/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y2Dekw5XQD7iDgbVLPvYeZ3ktFd8MjqcWjbhOYlmLsBQw6mIC/AGyZW718s9b5u8q
-	 qqs1SY/k5+dqQt/toGGU6PmO/uYNszr3DzGO38w1LVMea7Uoa2xaFJE4z4sKE7Fgjo
-	 ivKLoDg6AADapogWZ3TNuL6O9cD/i5tdZ9SxvtwV6wgb5LB0HvEsxu0FbKDVuJHIm0
-	 r/AWdyhtecHY2lsaXSbBFAWqw0Af5dUENMhpanVAc9CyRwk6WE4mjtghW7GC6cmy+R
-	 6nbsw38M1U55f0CK/4bhjDhQhh9IwIhznHf2Ghcx4jTphMMo9cFTXdiJsdugfUUaOm
-	 yaoJUEJRnHOgA==
+	b=EoKh2jvnbEJsJ282GpLsZXxdoLIQqxHvKW7d2Nj8JZAsOQclK+XJPhfmZT3Z6yuQp
+	 M5Azz5ReSqtK1KyTgpd0oIuWHBiZBcAhVAacUviOjyY29Dn/Hk4g5HGgMF3Qb4AMKd
+	 BAW2wamAqN80OVZFCb9poFYkzW9ZMQAm3d0JVojRCqujNBrpXyaIaM1XfW8QCvHu0c
+	 ADMdIjamA+QjstNWyUY3hZXQqujp0BTvnwYmOwaijdhol/XmAWL1k9hwv2o8sVsBYi
+	 ttGRjuimzjXqso/vjoSgPfTIGNO8Q3DA85GF0mdkn2/Gx3mF2jyj2dECFDlehKVUSd
+	 jHrBzDh1c2KCA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: willemdebruijn.kernel@gmail.com
+To: me@marleb.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
 	davem@davemloft.net,
-	edumazet@google.com,
+	edumazet@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	paul@xen.org,
-	wei.liu@kernel.org,
-	mst@redhat.com,
-	axboe@kernel.dk,
-	josef@toxicpanda.com,
-	willemb@google.com
-Subject: Re: [PATCH net-next] net: skbuff: replace ubuf_info ops ptr with type id
-Date: Fri,  6 Nov 2026 13:24:05 -0800
-Message-ID: <20261106212405.947546-1-kuba@kernel.org>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: realtek: register hwmon thermal zones
+Date: Fri,  6 Nov 2026 13:25:28 -0800
+Message-ID: <20261106212528.948836-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103194625.1628600-1-willemdebruijn.kernel@gmail.com>
-References: <20261103194625.1628600-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org>
+References: <20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,101 +70,133 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: skbuff: replace ubuf_info ops ptr with type id
+net: phy: realtek: register hwmon thermal zones
 
-This commit replaces the ubuf_info_ops vtable pointer in struct ubuf_info
-with a u8 type ID. net_zcopy_complete() switches on that ID to pick one of
-the known completion callbacks, and callbacks that live in modules are
-registered through static_call. The io_uring link_skb callback becomes a
-direct call.
+This commit adds HWMON_C_REGISTER_TZ to the channel info of the Realtek
+PHY hwmon device. With it, the hwmon core registers the PHY temperature
+sensor with the thermal framework, so device-tree thermal zones that
+reference the PHY can bind.
 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 48f6764117243..3ec9851d0a10e 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
+> Set the flag, as the Aquantia PHY driver does. This lets the RTL8261N
+> sensors on the Zyxel XGS1250-12 B1 drive the chassis fan through
+> thermal cooling maps.
+>
+> Tested on a Zyxel XGS1250-12 B1 with OpenWrt's Linux 6.18.55: the
+> three PHY thermal zones register, and an emulated 85 C reading on one
+> of them (CONFIG_THERMAL_EMULATION) switches the fan on through the
+> existing 80 C trip and off again once cleared.
 
-[ ... ]
+[Severity: Medium]
+Does this description hold for the mainline driver?
 
-> @@ -1898,10 +1900,72 @@ void msg_zerocopy_put_abort(struct ubuf_info *uarg, bool have_uref)
+rtl822x_hwmon_init() has only one caller, rtl822x_probe() in
+drivers/net/phy/realtek/realtek_main.c:
 
-[ ... ]
+    if (IS_ENABLED(CONFIG_REALTEK_PHY_HWMON) &&
+        phydev->phy_id != RTL_GENERIC_PHYID)
+            return rtl822x_hwmon_init(phydev);
 
-> +void net_zcopy_complete(struct sk_buff *skb, struct ubuf_info *uarg,
-> +			bool zerocopy_success)
-> +{
-> +	switch (uarg->type) {
-> +	case UBUF_TYPE_MSG_ZEROCOPY:
-> +		msg_zerocopy_complete(skb, uarg, zerocopy_success);
-> +		break;
+Only four entries use that probe: RTL8221B-VB-CG, RTL8221B-VM-CG,
+RTL8251B and Realtek Internal NBASE-T PHY.
 
-[Severity: High]
-Is the indirect call primitive described in the commit message still
-reachable through this path?
+The RTL8261C/CE/D_VM entries use rtl8261x_probe(). That probe only
+allocates priv and picks a firmware name. It never calls
+rtl822x_hwmon_init(). The driver table also has no RTL8261N ID.
 
-The commit message says:
+An external C45 PHY cannot fall back to the internal NBASE-T entry
+either, because rtl_internal_nbaset_match_phy_device() has:
 
-  Corrupting skb_shared_info gives a trivial one-hop indirect call
-  primitive via uarg->ops->complete.
+    if (phydev->is_c45)
+        return false;
+    ...
+    return rtlgen_supports_2_5gbps(phydev) && !rtlgen_supports_mmd(phydev);
 
-Take the same threat model: an out-of-bounds write that overwrites
-destructor_arg and flags in skb_shared_info. A forged blob then needs only
-refcnt == 1, type == UBUF_TYPE_MSG_ZEROCOPY, mmp.user == NULL and len == 0.
-Completion goes:
+So on mainline, no RTL8261 PHY seems to register a hwmon device. The
+three thermal zones seen in testing would then come from out-of-tree
+OpenWrt PHY support.
 
-skb_zcopy_clear()
-  net_zcopy_complete()
-    msg_zerocopy_complete()     /* refcount_dec_and_test() succeeds */
-      __msg_zerocopy_callback()
+Could the commit message name the PHYs that actually gain thermal zone
+registration (RTL8221B, RTL8251B and the internal NBASE-T PHYs)? Or
+could it say that RTL8261 hwmon support is a missing prerequisite?
 
-__msg_zerocopy_callback() derives the skb from the uarg address. A real
-msgzc uarg sits inside skb->cb, so the derived skb lands in the same
-forged region:
+> diff --git a/drivers/net/phy/realtek/realtek_hwmon.c b/drivers/net/phy/realtek/realtek_hwmon.c
+> index ac96e2d1ebe82..e6235df288c32 100644
+> --- a/drivers/net/phy/realtek/realtek_hwmon.c
+> +++ b/drivers/net/phy/realtek/realtek_hwmon.c
+> @@ -51,6 +51,7 @@ static const struct hwmon_ops rtl822x_hwmon_ops = {
+>  };
+>  
+>  static const struct hwmon_channel_info * const rtl822x_hwmon_info[] = {
+> +	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
 
-	struct sk_buff *tail, *skb = skb_from_uarg(uarg);
-	struct sock_exterr_skb *serr;
-	struct sock *sk = skb->sk;
-	...
-	mm_unaccount_pinned_pages(&uarg->mmp);
-	...
-	if (!uarg->len || sock_flag(sk, SOCK_DEAD))
-		goto release;
-	...
-release:
-	consume_skb(skb);
-	sock_put(sk);
+[Severity: Low]
+Does this need a DT binding update to go with it?
 
-With len == 0, sk is not dereferenced before consume_skb() runs on the
-forged skb. consume_skb() then goes through
-__kfree_skb()->skb_release_all()->skb_release_head_state(), which calls
-skb->destructor(skb).
+With HWMON_C_REGISTER_TZ set, hwmon_thermal_add_sensor() calls
+devm_thermal_of_zone_register() on the PHY's of_node. Thermal-of finds
+zones through thermal-sensors phandles, so the PHY node needs a
+#thermal-sensor-cells property.
 
-That destructor pointer comes from attacker memory at a fixed offset just
-past cb[]. sock_put(sk) only runs after the indirect call.
+None of the relevant schemas seem to allow that property:
 
-So forging costs about the same as before: one controlled region at a
-known address plus a target. Before this patch, the same route could be
-reached by pointing a forged ops at &msg_zerocopy_ubuf_ops. Now the forged
-ops pointer is a single byte, and no data symbol address is needed.
+  realtek,rtl9301-mdio.yaml is the RTL930x MDIO binding used by the
+  board in the commit message. Its ethernet-phy@ children are
+  $ref: ethernet-phy.yaml# with unevaluatedProperties: false.
 
-The other type IDs also hand forged memory to callbacks that trust
-container_of():
+  realtek,rtl8224-package.yaml restricts its PHY children the same way.
 
-  UBUF_TYPE_TPACKET: tpacket_ubuf_complete() writes status through the
-  forged tu->po and tu->ph, then calls sk_free(&po->sk).
+  realtek,rtl82xx.yaml, which covers the
+  ethernet-phy-id001c.c849/c84a/c862 compatibles, ends with
+  unevaluatedProperties: false.
 
-  UBUF_TYPE_VHOST: vhost_zerocopy_complete() writes
-  vq->heads[ubuf->desc].len through forged ctx and vq pointers.
+  ethernet-phy.yaml does not evaluate any thermal property.
 
-  UBUF_TYPE_IO_URING: io_tx_ubuf_complete() queues task_work on a notif
-  derived from forged memory.
+Would a DTS that adds #thermal-sensor-cells = <0> to an ethernet-phy@N
+node under a realtek,rtl9301-mdio bus fail dtbs_check?
 
-Would closing this need one of two changes? One is checking that
-destructor_arg points to a real object of the claimed type. The other is
-stopping msg_zerocopy completion from deriving and freeing an skb (and
-calling its destructor) from the uarg address.
+The Aquantia and Marvell PHYs have the same gap, but this patch makes
+Realtek PHYs new users of it.
 
-> +	case UBUF_TYPE_IO_URING:
-> +		io_tx_ubuf_complete(skb, uarg, zerocopy_success);
-> +		break;
+[Severity: Medium]
+With this flag, rtl822x_hwmon_read() becomes the get_temp backend of a
+thermal zone that drives cooling devices. Should it check phy_read_mmd()
+for errors now?
 
-[ ... ]
+drivers/net/phy/realtek/realtek_hwmon.c:rtl822x_hwmon_read() {
+    ...
+	case hwmon_temp_input:
+		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSRR) & 0x3ff;
+		*val = rtl822x_hwmon_get_temp(raw);
+		break;
+    ...
+	return 0;
+}
+
+The mask turns a negative errno into a plausible temperature, and the
+function returns success. For example, -EIO becomes 0x3fb, which reads
+as -2500 millidegrees. -ETIMEDOUT reads as -55000.
+
+hwmon_thermal_get_temp() treats only ret < 0 as a failure:
+
+	ret = hwdev->chip->ops->read(tdata->dev, hwmon_temp, hwmon_temp_input,
+				     tdata->index, &t);
+	if (ret < 0)
+		return ret;
+
+	*temp = t;
+
+If one MDIO read fails while the PHY is hot, the thermal core gets a
+sub-zero reading. Could the governor then switch the fan off for at
+least one polling interval? If the errno were returned, the thermal
+core would keep its previous state.
+
+The hwmon_temp_max path, which reads TSSR and shifts by 6, has the same
+unchecked pattern, although thermal does not use it.
+
+The masking itself goes back to commit 33700ca45b7d2e ("net: phy:
+realtek: add hwmon support for temp sensor on RTL822x"). This patch is
+what connects it to a cooling control loop.
+
+>  	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_MAX),
+>  	NULL
+>  };
