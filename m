@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.125
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793934376;
-	b=n0f8sNlGpWBoB/Spp7WCm8p29jLsFDB7Sf0+GCfspp8f1TXDh6ESLJ7De+35xYxKi+Q5
-	 a7PV5duKPtRY63VDY3AzOihUh+aZByyENtbVMObAURESJ+6taJ/WdntteGYP06p7fi8nb
-	 8QIBYcbvpUa+PlawMeA4JmCYbYXFGLRyBabtTGlywaTHIEa8rXB2vBqrtsuqjt0NLHReC
-	 zi63ewF0qFw27uTUIo9VqqKqOl91s4gOj3ZshTqQEAO0u/1caLC5WCLibVLdYRiqxvHje
-	 GE0jKZNVaadIrd/Rfy9/GJPrws1jXjOapkg8NwkWeOjD7l5s5/dJ8/4tANHny+TrLVw==
+	t=1793934378;
+	b=Rcs+OxrD0s1IIjwnuFEeA/saFREx192sm1g31J0jJ934X/MqJZoTVlCog7P0kjviAVVi
+	 q4Fa2p5/d6L1YHW2kS1uR+Oym8zCQITH9mSFQcc2Hpphjc8FOQuxLrtlaTBifgLiPrMR2
+	 SsSZo4roXK57MYBLnOaoLGpHZ9qvPcmLO55AvmmB0wgzvbNq4TW0JS/MH2BmjTfrEFzL0
+	 RvjP/eT/tNQQyiJlWKh4121lokl/6kOyHFeq/D9cvLhRbuYnbGWAXSpwwfITFnWCgc6AM
+	 jb6FZRTFVu+ll+9KdNNYoA3YlVN/imJNw+Mtj372gi2+9Y1uzOzkcxrZlSdJXkQpWKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793934376;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793934378;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=fZRGhGh2wo9CgPnPSQogQeQdxcyl7JS3LITESfEWy7s=;
-	b=PcrFAW6+rBWWXT7OcFLWO4WOP3rJ0Pr4VoDFcepRPd+5kaLQeERlIoZIgp9X2vQ9idGE
-	 BlpF/PTRKzGmZ8FTJW6IFx+3axr4NMuMeP/CoPCVHK2HYMqlRrKEypzfSW0OFmZ7KX0iy
-	 MQ7TF89EMS869gWQQYaC1QHdYto29/8n502BV5SOGBGR6DfgerGoAFNUy9bRKvgyV0Mjm
-	 5+owxjV5HiXwKglbPHa3UmLk9NFp+Yb/+vFHwGGO03avy5PLyhVhhSzxYEfxiUOKy5nn5
-	 tddb1aKtdCKmfeWhqPCUTf4l6KyrxiPYq2VoxP91OZeQMa4Y4R8ZV8TLbHGmwDNhk+g==
+	bh=SFN7QdsDLQ4jCa9vD0JR+UWCPjLFqpbGwK2CZE9LN7Q=;
+	b=CjBjyCaTcRmQsmbJQFcy4LsIqEOUk3MHd+l6/s1fesW9E2VO6RA4zOaex2Hs6cBQzbki
+	 jIINPtTTPu3KTTycL2Mhj7wJVp5NMAZAT6AhKjY9ysfLtBzQ/JfcGMX5z6Gy3XpDlaSPX
+	 4jTLXIatDbah/4wQ0pznX5aRfsaB8LkeTvp85m5iJQnWqfeQs4mf/Q96Ju0sg/Rtk3Tme
+	 1JnD3zOYmcYPKc/Z9XvmirlvguNwE8kFuYlm5eOmmi9eeUyKQnQpI/7Lh7MtzyttYhiXl
+	 AfHAJ5+S7qSwTxVS4sUEF4gVCGWgSaft5+iLe95BM7PQhomA+wwdh/MbZo9CcpE33sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=xiaopeng.com;
 	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b="htXxw/8u";
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=FgImZkCd;
 	arc=none smtp.remote-ip=115.124.28.125
 Received: from out28-125.mail.aliyun.com (out28-125.mail.aliyun.com [115.124.28.125])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71BA606A332;
-	Fri,  6 Nov 2026 03:06:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B71BA606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76E2606A32E;
+	Fri,  6 Nov 2026 03:06:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B76E2606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=htXxw/8u
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=FgImZkCd
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=xiaopeng.com; s=default;
-	t=1793934365; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=fZRGhGh2wo9CgPnPSQogQeQdxcyl7JS3LITESfEWy7s=;
-	b=htXxw/8u6oNFapDwVuP2YAe9M1USuuTCCRTvgzz3opSrVTifjm7feEVSQ2ma7VbF6cr06wcjBGufX+pJ3gx7xunpmE0x8E4a3I2GVHDLpn3dr6hsFAY3dKoFAf6e+4Br5evUfQ2qghxj3L98pget6N1z6JElDQI0ZtL8i0XvBIc=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438125|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00621838-0.000511926-0.99327;FP=5330561223211519360|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.jxwxsgp_1793934362;
-Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jxwxsgp_1793934362 cluster:ay29)
+	t=1793934368; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=SFN7QdsDLQ4jCa9vD0JR+UWCPjLFqpbGwK2CZE9LN7Q=;
+	b=FgImZkCd6E7D4QLeUEq7KLPuUJMtdg2oTdtirex5JYmt7O5pR9VzBhtadavbFL4uUSX4yVgECOwFhSt/NbfDD8RbKq9ayHzh2z4ALosHjL6A970AKfXn3aiyNxkV8YpQWAUMyuUlbMX8Z0DE2kTiYdRJ5KI461AByBlZl2LOK9o=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07902923|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00260988-0.000500615-0.99689;FP=14554920093083864496|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034138;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=15;RT=15;SR=0;TI=SMTPD_---.jxsfG3j_1793934365;
+Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jxsfG3j_1793934365 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 06 Nov 2026 11:06:03 +0800
+          Fri, 06 Nov 2026 11:06:06 +0800
 From: Liu Chao <liuc63@xiaopeng.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -58,12 +58,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
-Date: Fri,  6 Nov 2026 11:06:01 +0800
-Message-ID: <20261106030601.575459-1-liuc63@xiaopeng.com>
+Subject: [PATCH v4 0/2] usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
+Date: Fri,  6 Nov 2026 11:06:03 +0800
+Message-ID: <20261106030605.576584-1-liuc63@xiaopeng.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <auxy5cmALpy0AMzu@ashevche-desk.local>
-References: <20261105072147.3383565-1-liuc63@xiaopeng.com> <20261105072147.3383565-3-liuc63@xiaopeng.com> <auxy5cmALpy0AMzu@ashevche-desk.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,110 +73,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Andy,
+Rework of
 
-Thanks for the review and for the Reviewed-by. v4 goes out together with
-this mail.
+  [PATCH v3] usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
+  https://lore.kernel.org/all/20261105072147.3383565-1-liuc63@xiaopeng.com/
 
-On Thu, Nov 05, 2026 at 02:13:25PM +0200, Andy Shevchenko wrote:
-> It is worth to mention that the occurrences of use those formats
-> (Cisco and irregular grouping) are more historical and rare to meet
-> these days.  Also point out that the original commit didn't explain
-> the choice of implementation, most likely it was just for
-> simplification and not really allowing non-standard formats to be
-> used.
+following Andy's review: 1/2 prepares a parse_mac_pton() helper in
+lib/net_utils.c, 2/2 uses it in get_ether_addr().
 
-v4 adds a paragraph right after the one that says what stops working:
+The two patches belong to different trees: 1/2 touches lib/ and should go
+via netdev or -mm, 2/2 is for the USB tree.  2/2 depends on 1/2, so it
+can only be applied once 1/2 has reached Linus' tree.
 
-	Neither of the two should be missed: they are historical
-	notations that are rarely met these days, and the commit that
-	introduced the loop never said that it accepted them.  That
-	commit only explains that it resolves a FIXME by adding module
-	parameters for stable addresses, so skipping a delimiter
-	wherever one happens to turn up reads as a simplification of
-	the parser rather than as support for non-standard formats.
+Changes since v3:
+  - no code change at all, the tree is byte identical to what Andy
+    reviewed, only the log of 2/2 changed
+  - 1/2: unchanged
+  - 2/2: pick up Andy's Reviewed-by
+  - 2/2: name 331a2d82bcaf ("[PATCH] USB: ethernet/rndis gadget address
+    params") from v2.6.7 as the commit that introduced the loop, and
+    record that it only resolves in the history.git tree, which is why
+    the series carries no Fixes tag
+  - 2/2: record that the Cisco notation and irregular groupings are
+    historical and rarely met these days, and that the commit introducing
+    the loop never documented accepting them
 
-I checked the second half instead of taking it on trust. The log of
-331a2d82bcaf has no hit for format, colon, separator, delimiter, hex,
-notation, cisco, dot or parse. All it says is that it closes a FIXME by
-giving the gadget stable addresses through module parameters.
+Changes since v2:
+  - 1/2: pick up Andy's Reviewed-by, no code change
+  - 2/2: keep the separator-less notation "aabbccddeeff" working by
+    falling back to hex2bin() when parse_mac_pton() does not match, as
+    suggested by Andy
+  - 2/2: drop the Fixes tag, the loop predates the git history
+  - 2/2: spell out in the log which notations stop being accepted
 
-> As I pointed out, you may use the correct SHA, but you need to point
-> the readers out to the history.git tree.
+Changes since v1:
+  - rework the fix on top of parse_mac_pton() as suggested by Andy
+    instead of open coding the bounds checks in get_ether_addr()
+  - add the KASAN report and the malformed address example that v1 was
+    missing, both collected on a KASAN build by loading g_ether with a
+    short and with a non-hex dev_addr
+  - select GENERIC_NET_UTILS for USB_U_ETHER
+  - drop Cc: stable: 2/2 calls parse_mac_pton(), which 1/2 introduces,
+    so it cannot be backported to any stable tree on its own
 
-With the history.git pointer from your other mail [1] it does resolve,
-and what I wrote back to you was wrong: "cgit returns 404" only holds
-for torvalds/linux.git, whose root is 1da177e4c3f4. history.git expands
-the short sha to 331a2d82bcaff97ecc4764cca266db0d7465b937, David
-Brownell, 2004-05-17, committed by Greg KH, adding get_ether_addr() to
-drivers/usb/gadget/ether.c with the loop already in its final shape,
-nibble() where we now have hex_to_bin().
+One user visible effect remains: the Cisco notation "aabb.ccdd.eeff" and
+irregular groupings such as "123456:789abc" are no longer parsed and now
+fall back to a random address.  Details are in the log of 2/2.
 
-v4 names it in the free form you described in the v2 thread:
+Liu Chao (2):
+  lib/net_utils: allow mac_pton() to take a custom delimiter
+  usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
 
-	The loop is older than the git history.  It was introduced by
-	331a2d82bcaf ("[PATCH] USB: ethernet/rndis gadget address
-	params") from v2.6.7 in drivers/usb/gadget/ether.c, and commit
-	2b3d942c4878 ("usb ethernet gadget: split out network core")
-	copied it into u_ether.c.  331a2d82bcaf predates the git
-	conversion and only resolves in the historic tree history.git,
-	so a Fixes: tag naming it would not resolve for most readers
-	and is left out.
+ drivers/usb/gadget/Kconfig            |  1 +
+ drivers/usb/gadget/function/u_ether.c | 18 ++++++++----------
+ include/linux/hex.h                   |  7 ++++++-
+ lib/net_utils.c                       | 17 ++++++++++++++---
+ 4 files changed, 29 insertions(+), 14 deletions(-)
 
-One correction on the release, though: it is v2.6.7, not v2.6.10-rc1. In
-the history.git log of drivers/usb/gadget/ether.c the commit is absent
-at v2.6.6 (20 entries) and present at v2.6.7-rc1 (22 entries), where it
-is the newest commit on that file, dated 2004-05-17, ahead of v2.6.7 of
-2004-06-03. It is of course still there at v2.6.10-rc1 (39 entries),
-which is where I would guess the later tag came from.
 
-> Code wise LGTM, so after addressing the commit message and reference
-> to the culprit commit, feel free to add
->
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> (with all awareness of the potential weirdness of the user input)
+base-commit: a5ebb76233b79db01e82e061173cb73c6d2b5c6b
+-- 
+2.50.1
 
-Added to 2/2, after Signed-off-by. 1/2 already carried it from v3 and is
-otherwise unchanged. v4 is message only: the tree of 2/2 is byte
-identical to what you reviewed, only the log changed.
-
-Your other mail [1] also has this:
-
-> Cisco should not work, the index is going over 3 characters on each
-> iteration.
-
-It does work in the old loop, and I verified that with the verbatim code
-rather than by reading it. The loop advances two characters per
-iteration, not three, and skips a delimiter only when one sits at the
-start of an iteration:
-
-	for (i = 0; i < 6; i++) {
-		if ((*str == '.') || (*str == ':'))
-			str++;
-		num = hex_to_bin(*str++) << 4;
-		num |= hex_to_bin(*str++);
-		dev_addr[i] = num;
-	}
-
-A Cisco group is exactly four digits, so both dots land at the start of
-an iteration and are skipped. Tracing "aabb.ccdd.eeff":
-
-	i=0 pos= 0 skip=0 "aab" -> aa
-	i=1 pos= 2 skip=0 "bb." -> bb
-	i=2 pos= 4 skip=1 ".cc" -> cc
-	i=3 pos= 7 skip=0 "dd." -> dd
-	i=4 pos= 9 skip=1 ".ee" -> ee
-	i=5 pos=12 skip=0 "ff"  -> ff
-
-All 14 characters are consumed and the result is aa:bb:cc:dd:ee:ff, so
-the old code did accept the notation. That is why the v3 log lists it as
-something that stops working.
-
-The fixed three character stride belongs to parse_mac_pton(), which
-looks at s[i*3], s[i*3+1] and s[i*3+2] and wants a delimiter at the last
-of those. There Cisco is rejected, because position 2 holds 'b', and
-that rejection is exactly the narrowing the v4 log records.
-
-[1] https://lore.kernel.org/all/auw8sAYE-nkZ-qIT@ashevche-desk.local/
-
-Liu Chao
