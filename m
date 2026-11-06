@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793923821;
-	b=ksQODjii4wa4jnRan9uG1+NnD0CXn6JEFUxeLzyy3ineXdAz4e6f1I/VHo7RXZPkMf8r
-	 kl4EkxSZqVR8mWc9rng3qc4B2E0o7pO+wYVbn1h3BnBqNaISr/5mFdA4VGfMLcab8mwJe
-	 nRHQefntqDW+z/Gmud2I0Y4DahlNOnfBmRc5CndqfScIfbGOqSf8hZIaMPA+/oDbiCfHw
-	 5IgfJDL/WRw2S1gJEFJ43n71uJELmSKxgVrn88mmvjvkAhjwYmYSQ0ZYuuoj+Mi6nlLSv
-	 bqLXkMzhHvorE0O6H/J5fdPXEDT1crPOkcWSvjJcog7oXBjw9Rp+CFcaTOLqu2dcmUw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793923821;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793923840;
+	b=TjdzEli2/cn+dkDXFPtnkKeGz/UpfZ/Gl5EK81aIMH0sJqTHHcqk7k+6Ev55YKO2kdDK
+	 JrcNfQ70ZBEa2+Hq/aEgsxwkV6y7PW6aGL9VWp4IUH66lJBr8QWxHPpF7WfF7lc7M+gCX
+	 bY5xbidGX+vS00OsSqXq//b2TJsHzqkORTINvgD67i+XERbNyAt2xdnWQlaVww7HH7cL9
+	 XXG56K9PkO5RPPZ06SBtCoMzR1UaEZNmSYKVSvW5trhIVv+qU6UfcXL041uaT4fGpGs6o
+	 pIE/XB7JSuKGhGxbzXPa4u79LCVt4A0W/iG67A8K/XZSpFcZzM1iZzNtFyb6ZjxogeA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793923840;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=SDEIjTL/pMuP5OvwnL/SS4lozZwfHuBubfkoJhtRSRk=;
-	b=TOhr99nzJIqjEQkvPYeHmizmwh5cZslPOIvrf5uoCYsqeSElJWpCKoYfwjy3J1SzbEUp
-	 2CzoJ0rHzkQQwGgcv/tTzrYTVtr0fXTTriNLtV/AYZLtQFXpQsB5/cv9oq0JXA6A4EoN9
-	 GEp3f6n/+D/YlyZS7ZC9kK9cjbgV7/LTL5JDdWwSn/1kB9CSgrWUsMt+Kf9ypsXOkSSzv
-	 VvbsBDdcxaU5faLQo2BRuPr5nf0FVE85GRUp79WVl9yzQjHf3PBUw+br/rIiYVk9oQz5M
-	 K3ngNZAEXqmKH/+mS96XhSW8gPmw85sNou4DHarCGsTGsXfxDKcMuQog/iTICb/SFNg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gzj285x0;
-	arc=none smtp.remote-ip=74.125.229.9
-Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=P1bL50lNxWo1x/ueBX/G/p1juBW6wsfb8QdUKb7CUxE=;
+	b=cDEtyItFnsD0OoR6du5kRr6XcVaB6ZZgdf5l7zgTdYWfCSUP2vLx1Sb4pRlrq8n1fFdN
+	 BYK0kwW5oOcEAwSl0wAGUVkIWqJ36bkLthHH2nukyV4ube6z+VSQcDkyC06ieCnot8v6E
+	 rAupPAkhw1DdDh4cqE8lRimxuKHDtuuKs+68V/Oh4GVy3Pl1DLPN379syXJs8cXgAHUDI
+	 O4Bs4zKstOI7ecjl0GjaesS1dN5F0lrFvwpM6Qyovfd/5VgHUpwCXAi/cEbkEyEm+vGXI
+	 AZfzJXaoXI2n+Zz9HHE3qxGHKci2Izjv9R53b/ihqQkKdA4fiaje01Uu8/FU1FstLNQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=paul-moore.com;
+	spf=pass smtp.mailfrom=paul-moore.com;
+	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=XfnqDibT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1808D606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:10:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1808D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60529606A328
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 00:10:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60529606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gzj285x0
-Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-3678f64d078so97239eec.1
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:10:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=XfnqDibT
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b09a83d12aso67514a91.2
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 16:10:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793923840; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Rmoeu7qirQLFgScKhd7/6nMEoaIOZddeqzUjcdge8aMgk/hI70lCofDpyHtih/ZtEd
+         Cz1r6nhvhbPTGP3hOCo44S5CpbsEvJhzWcQUDIIUstw8eCzCIf7sd8duxy+U931ugsjJ
+         l8d8R9BHlJoB63L5JBUtphwPNEl0Egsst4FLLvWDwgVJdU0uGXycj5QzplNTdofIRE1d
+         xxyjtCCE1vGblCA8lm93QIxp09o9qM02peDxUrjHlrNmkQDUHQW2MmPJ9FA94u9TYhnY
+         nrWluqkk8kJXhIZT7+/DOvSFbSXj2zsOcocFrd5JASa0KPlXmhJFDfvHhLzqBpM8i05p
+         sJyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P1bL50lNxWo1x/ueBX/G/p1juBW6wsfb8QdUKb7CUxE=;
+        fh=LV4aRW/v2+jPLqDzGoXSS2ZNis0zWZvJaswNj9Kho4o=;
+        b=ssVCc3laCUa8m7FM4XBvOknwaOOwYzWFemLIRveBwD0Q6Xf/5rKPBxde7oypciNJva
+         8pxJfOOGy+GQpA7vHjPPWdvJO3zItINgMCY8I8z7djYIFB31FZ+Sfi3MAzw8kK1wg6Zu
+         quBT4GS6QS6ZerA1Ji4jJ8RigEdwMAj2Z667hds7sY+pzLJmSxOsWhA+2POQ38jPH8Z3
+         5Yge7wJSQePm4eArWBpuvxB/bmKm1NC9uhuVxn5YAfOlWt5PNIgAEPXrVHT8D+9QpGJR
+         vAG4hCJvPGgqxd8R304L0qlpkL0QR66XUPev7o4Ar4rcDP3fvgIZQaTPUDv+UY3VMS2N
+         c2Jg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793923819; x=1794528619; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=paul-moore.com; s=google; t=1793923840; x=1794528640; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SDEIjTL/pMuP5OvwnL/SS4lozZwfHuBubfkoJhtRSRk=;
-        b=Gzj285x0Dq3SfXCUBvJM9YvixG8v7TKNssxgoLlOcEEf/hXz9q9HWnf4Li4EB2Qf2g
-         Do2vOeXKc3/+lWknu7wCvz8X+K7Sodbha5oeDiZVIRghxfZWo7ePdAqDprNYezN4zx1A
-         L2ceWDGOaLWpdvtV2RAD0C0AYrkKEvo1xYnuzCcHjdfeUS3abPJ95e10z7Mwk+m4lOSV
-         wBRiTlD8+Bg23QBf/0nCXa3jwB6JqyjDqfed7Swp5q+LeURrOapUMJAPeFYWjle2rQ+q
-         jwJQhXzAI63hfb7vKzHMc5B3OfzWmbPFVZmSUKW5zJ3zAm/09rngB4WYdF1EIAZmHbk3
-         n+UQ==
+        bh=P1bL50lNxWo1x/ueBX/G/p1juBW6wsfb8QdUKb7CUxE=;
+        b=XfnqDibTtLU96TUbfYbxCvtzm/oJJIQCbBmI/LpLqEe8l1nznTGCGrGkUoIQLd4sIx
+         DzKHVznBDwCoDSoyVF12mB5smbU6ZmV7hJs1ZLnGrFbLarghU/CsdREd3XsaB/pYbCYt
+         Mr6vHapI3OUTIyTr5vIDXViLJhucujvdDx4mImAbqw5K9BirkbrzZbU+wiSW2x0jooqv
+         T5LLy1UnFqfE3wolq8o+Ghnpr/3X55jfnyeC+y6S7TdfLw/bRMuqGhWk62OdnURqB7IQ
+         xA4T8SzSu1L3RqXVw/bH/lT1hAaFe/C/Ie100FNLLwvVznwlfmekZEBKKHXOtbT3BBsi
+         JiFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793923819; x=1794528619;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793923840; x=1794528640;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SDEIjTL/pMuP5OvwnL/SS4lozZwfHuBubfkoJhtRSRk=;
-        b=drpjFTTb75gZ3ECPhjMtzBWTEoDaBKRib5VtgX1rm0tddbE4/Gz3/+wIyzjMNtefaR
-         AIgEW75qYKqB2Px3mxNcbdFOBwhrf5g/jhAmORVeNoai2HQnWxTRRrlTiWrSYm4xYx63
-         Ae5zjq6ioq6JVIqAkXDBuhYyIUZpRWjHJ3lfXk+HHn3FlYvonhOZ9BP31+ZZTO3mWvi6
-         jpcw0Y40c5z/FoOqefbyM/kFRFENnbcqivFcSWMyYyg88MOv3XJh+JAxnsmxUWt5Qvdo
-         pJ8/IoJQunUD+2SaUUlBP/NsMRmu2wRNpJZfBZU5O9IGtJkqqGo0FL6G5HHDIJmPSCEs
-         Cpzw==
-X-Gm-Message-State: APuU4Z95fnxHkvvttL2F42UX+7RTAFA7V14vDnSXmYJHPYRnrtl1m2Bz
-	q6zAqrBzE0Z8FBCmk2yoXvXKJsmU0vZvsXjyfkQGCI0wClhFfYgNC/DI
-X-Gm-Gg: AYBFou0agTxEaWNIko1iTDcNGc8r0lzpSs7UJE4AdvsjeHzhp6j/Js+a3WtsHeyk0G+
-	l9lFbqB7YNxWCGiZcqNnMKH2IehqC3MnKyyI3T5CTcx3y9tR5TUNpsB4ovkHpDVARQTtXT5Mvto
-	UxZPkbpjkCSTZqltkSdfxu1Gy6ddf+kM7k2eG/MrUb/NsbZK+Y1NcieLUuKHWY4Dftb7Atkg3+y
-	VJAltwuwuEBB4S5f6AfQ6QaTFsLHeWUob+WhE9eZpNiwRI2RIgNGPHXCom5X7wKOlV902iu4Bvm
-	WPahX4Cg8foWklYYk7Xh8uB3RybDwrhXkSVw7bZx0aXFTvvlsHOpsvBPQIA2Vr/JiNJq5f630qO
-	sx2oeXdvzsySWdlVG7vW6fu732GDklC1AOCsb/rgLtbvc1XtXeCrkqp6KfLEQVOZ5v3YsQc1gqh
-	NR74JhSV3fSBokIE9o4JvtBkmQpsF9GxcUbDfIVrNTzV3rM0cSHguYO9ApjZ0UKsjpArhDvqDq3
-	Ky8hAdJtqtk9la+V61V8rvthMTxLvNpGjXVED8S7mFOJ69+FfvHPhPXDnIrgJtcIWvM8wZAOq0R
-	zrVGLIyw7DhICA/wzeyxNA==
-X-Received: by 2002:a05:693c:8843:b0:351:207d:bff4 with SMTP id 5a478bee46e88-36f72cc18dcmr1071728eec.4.1793923818875;
-        Thu, 05 Nov 2026 16:10:18 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:74::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa4b8aacsm681858eec.23.2026.11.05.16.10.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 16:10:18 -0800 (PST)
-Date: Thu, 5 Nov 2026 16:10:13 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, David Wei <dw@davidwei.uk>
-Subject: Re: [PATCH net-next v1 3/4] net: devmem: support leased queues on
- netdev unregister
-Message-ID: <au0aYjNLRjagTLEA@devvm16445.scu0.facebook.com>
-References: <20261103232659.1340283-1-almasrymina@google.com>
- <20261103232659.1340283-4-almasrymina@google.com>
+        bh=P1bL50lNxWo1x/ueBX/G/p1juBW6wsfb8QdUKb7CUxE=;
+        b=V35oMhCV3fJ0OG9H826jooHvD66oh6XYRXQuVX4qDzCcTRMEuRAZDfx1CZLDC1pINo
+         WD7SrfbpKasOL8lNbVnXL1SRC/bWJ3KQyalQsxk/IEnQtdgZee098uZdx2twMoqav6uf
+         jQBzzhWf+OGHQVr8PXZP4d4z+mpkNlacz31BB6IM79WNTXTxd1fz4y3mEke2JoqYsQNi
+         t5+JguFTiJkfSHqQwPXNh2abSt94y2z/fz/mltw8ZGZbNqd6VBHJWGdMrL4G9UW926nN
+         wlbB7DPaJzV6CcOY/o5bbrLRX/wJ33tQxQ4yhwVSHZpXhwL+ZwJ63+a8z+Bb5bKVdquc
+         CADw==
+X-Forwarded-Encrypted: i=1; AKwUvBxszaVyo2Bc+HI+M/d5zrv+W+0bju17JZlD02NZ+yiLh49FzAitgGEfD2kkDQxFovnslGob2T4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8npd4FcQK6oK79O7eUww+FwYxSiouhGBItXKKcXqUNpdYi5T7g
+	U5rs98i8NKhqNzhminpn1WrdZGSBD1m7BEpOpLtFRIqjoidHTP+0QdNXyD8l/cpXxOQ6vgK3807
+	V5sa6ZlFJYWULR3c/vgrIWKIw8RPDWxsFkCAeAZfi
+X-Gm-Gg: AYBFou1TKhNVfKQ9tN7CwnzlCqzNUzXvoecUL54Dpn5pDERxzLkjr6N+wAXmuXuQ5/8
+	sVbf1o6aNrj8nW7MxSA9I9xR9gAVJJg6SBLEAFG/dacg04M5USJhOYuLqvXsYa8qoppIkIrHEOr
+	j6NoYTUSWB6RiokKccZuopeezQvyqg93AsjkWm1KPO2fO1VLW69vNODMHfAg8R+lFLfa2mwVDK9
+	QpRUszKfxrhHOZV+NhcPd9laEqXc0FQaxXrmnUH4IW+5j2keEygrquyReE1dpOrGXSj91/L23Pw
+	Dvj2Ag6YPBem9Yo7A9HbV3bA3lQGD8rDUfTUSZoAn+V3sivFeCKxFY9qQWkFExVKf2Dij1ApWLX
+	nOq75jJeWJ2btVveo/25NqXBchmqcDj0Clvo/vhn+hMWx5BjtF5ad8Q+iZkunBXQcY0sT
+X-Received: by 2002:a17:90b:52cc:b0:3ac:ffb8:183b with SMTP id
+ 98e67ed59e1d1-3b0db6f90ddmr848021a91.51.1793923839712; Thu, 05 Nov 2026
+ 16:10:39 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,198 +104,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261103232659.1340283-4-almasrymina@google.com>
+References: <20261104150318.1156620-1-edumazet@kernel.org>
+In-Reply-To: <20261104150318.1156620-1-edumazet@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 5 Nov 2026 19:10:27 -0500
+X-Gm-Features: AclHuK98rYrPfudZFSat64ObHfvEPYyRkfAS3zcmw2zEmSVc-KwTmWjym9wDchw
+Message-ID: <CAHC9VhTSCSV-Lic03yzqU=z6OgVZGKUfdUBfYAHnezkTLqOETg@mail.gmail.com>
+Subject: Re: [PATCH net] calipso: do not charge request socket options to the listener
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/03, Mina Almasry wrote:
-> Previously, bind_dev was only populated when bind-tx was called on a
-> virtual netdev (where map_dev != netdev), and leased RX bindings stored
-> the virtual netdev in map_dev without tracking the physical backing
-> netdev at all. Unregistering either the virtual device or the physical
-> backing device while a leased RX or TX devmem binding was active failed
-> to detach the dma-buf cleanly.
-> 
-> Always populate both device pointers on struct
-> net_devmem_dmabuf_binding:
-> - map_dev: the physical net_device whose dma_dev holds the DMA mapping
->   (resolved from leased RX queues in netdev_nl_get_dma_dev(), with its
->   netdev_lock held across net_devmem_bind_dmabuf()).
-> - bind_dev: the net_device the user called bind-rx or bind-tx on (equal
->   to map_dev for direct bindings, or the virtual device for leased
->   bindings).
-> 
-> With both pointers tracked on all bindings, handle socket teardown,
-> queue uninstall, and netdev unregistration in either order (bind_dev
-> first or map_dev first):
-> - Lock &binding->bind_dev during socket teardown in
->   netdev_nl_sock_priv_destroy(), close and erase bound_rxqs via
->   binding->bind_dev in net_devmem_unbind_dmabuf(), and require
->   binding->map_dev to remain non-NULL in net_devmem_get_binding().
-> - Clear binding->bind_dev in mp_dmabuf_devmem_uninstall() once
->   bound_rxqs is empty, leaving unleased bindings mapped until the
->   binding is freed or map_dev is unregistered.
-> - In net_devmem_dev_unregister(dev), if binding->bind_dev == dev, clear
->   NET_DEVMEM_BINDING_LIVE and clear binding->bind_dev if bound_rxqs is
->   empty or dev is not a queue leasee; if binding->map_dev == dev, clear
->   NET_DEVMEM_BINDING_LIVE, unmap the dmabuf, and clear binding->map_dev.
-> - Reject new bindings and RX queue opens in net_devmem_bind_dmabuf() and
->   __netif_mp_open_rxq() if bind_dev or map_dev is no longer
->   NETREG_REGISTERED.
-> 
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
+On Wed, Nov 4, 2026 at 10:03=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
+wrote:
+>
+> calipso_req_setattr() and calipso_req_delattr() allocate ireq->ipv6_opt
+> with ipv6_renew_options(), which charges the listener sk_omem_alloc
+> through sock_kmalloc().
+>
+> tcp_v6_reqsk_destructor() frees ireq->ipv6_opt without uncharging it,
+> so each request socket leaks its options size from the listener
+> budget. Once sysctl_optmem_max is reached, sock_kmalloc() fails,
+> calipso_req_setattr() returns -ENOBUFS, and tcp_v6_route_req() drops
+> all subsequent SYN packets. __sk_destruct() also reports an optmem
+> leakage when the listener is destroyed.
+>
+> Uncharging in tcp_v6_reqsk_destructor() would not be correct: after a
+> migration, req->rsk_listener is no longer the socket that was charged.
+>
+> These options belong to the request socket, there is no reason to
+> charge them to the listener. Change ipv6_renew_options() to use
+> kmalloc() when its sk argument is NULL, and use this from
+> calipso_req_setattr() and calipso_req_delattr(),
+> like cipso_v4_req_setattr() which uses kzalloc().
+>
+> Note:
+>
+> After this patch, calipso_req_setattr() and calipso_req_delattr()
+> no longer need the listener. Commit 10876da918fa ("calipso: Fix
+> null-ptr-deref in calipso_req_{set,del}attr().") could be reverted
+> in net-next (also removing the then unused sk variables), so that
+> CALIPSO works with SYN cookies.
+
+That would be great, are you planning to submit a follow-up patch for
+that once this lands?  Or is that left for others?  Either answer is
+fine, just trying to get ahead of any duplicated effort.
+
+Otherwise, this looks good to me, thanks Eric.
+
+Acked-by: Paul Moore <paul@paul-moore.com>
+
+> Fixes: e1adea927080 ("calipso: Allow request sockets to be relabelled by =
+the lsm.")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/netdev/179378292255.488856.69175774518130=
+10963@kernel.org/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Cc: Paul Moore <paul@paul-moore.com>
+> Cc: linux-security-module@vger.kernel.org
 > ---
->  net/core/devmem.c          | 85 +++++++++++++++++++++-----------------
->  net/core/devmem.h          |  8 ++--
->  net/core/netdev-genl.c     | 33 ++++++++++-----
->  net/core/netdev_rx_queue.c |  5 +++
->  4 files changed, 79 insertions(+), 52 deletions(-)
-> 
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 6446355e787d4..1d6b89f196e02 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -86,7 +86,7 @@ net_devmem_dmabuf_binding_unmap(struct net_devmem_dmabuf_binding *binding)
->  
->  /**
->   * net_devmem_lock_dev() - lock a binding's net_device pointer if still alive
-> - * @dev_ptr:		pointer to the net_device field on a devmem binding
-> + * @dev_ptr:		pointer to &binding->map_dev or &binding->bind_dev
->   * @dev_tracker:	reftracker for the held net_device reference
->   *
->   * Safely dereference @dev_ptr, acquire netdev_lock() on the device, and
-> @@ -95,17 +95,18 @@ net_devmem_dmabuf_binding_unmap(struct net_devmem_dmabuf_binding *binding)
->   * Invariant: *@dev_ptr is set once at bind time and is only ever cleared to
->   * NULL while holding netdev_lock() on that device (in
->   * mp_dmabuf_devmem_uninstall(), net_devmem_unbind_dmabuf(), or
-> - * net_devmem_dev_unregister() during NETDEV_UNREGISTER before
-> - * synchronize_net() and netdev_run_todo() free the net_device).
-> + * net_devmem_dev_unregister(), all before synchronize_net() and
-> + * netdev_run_todo() free the net_device).
->   *
->   * Taking rcu_read_lock() guarantees that a non-NULL device read from
->   * *@dev_ptr has not yet completed unregister_netdevice_many_notify()
->   * (which waits for an RCU grace period via synchronize_net() after
-> - * NETDEV_UNREGISTER before freeing the net_device), so netdev_hold() can
-> - * safely acquire a reference before sleeping on netdev_lock(). Once
-> - * netdev_lock() is held, re-checking that READ_ONCE(*dev_ptr) == dev
-> - * guarantees that the device has not yet been detached from the binding and
-> - * cannot finish unregistering until net_devmem_unlock_dev().
-> + * NETDEV_UNREGISTER and ndo_uninit before freeing the net_device), so
-> + * netdev_hold() can safely acquire a reference before sleeping on
-> + * netdev_lock(). Once netdev_lock() is held, re-checking that
-> + * READ_ONCE(*dev_ptr) == dev guarantees that the device has not yet been
-> + * detached from the binding and cannot finish unregistering until
-> + * net_devmem_unlock_dev().
->   *
->   * Return: The locked and held net_device if *@dev_ptr is still non-NULL,
->   * or NULL if already cleared.
-> @@ -219,22 +220,24 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
->  	if (binding->list.next)
->  		list_del(&binding->list);
->  
-> -	xa_for_each(&binding->bound_rxqs, xa_idx, rxq) {
-> -		const struct pp_memory_provider_params mp_params = {
-> -			.mp_priv	= binding,
-> -			.mp_ops		= &dmabuf_devmem_ops,
-> -		};
-> +	if (binding->bind_dev) {
-> +		xa_for_each(&binding->bound_rxqs, xa_idx, rxq) {
-> +			const struct pp_memory_provider_params mp_params = {
-> +				.mp_priv	= binding,
-> +				.mp_ops		= &dmabuf_devmem_ops,
-> +			};
->  
-> -		rxq_idx = get_netdev_rx_queue_index(rxq);
-> +			xa_erase(&binding->bound_rxqs, xa_idx);
+>  net/ipv6/calipso.c | 12 ++++--------
+>  net/ipv6/exthdrs.c |  5 +++--
+>  2 files changed, 7 insertions(+), 10 deletions(-)
 
-What's the reason we start xa_erase'ing here?
-
-> +			rxq_idx = get_netdev_rx_queue_index(rxq);
->  
-> -		if (netif_mp_close_rxq(binding->map_dev, rxq_idx, &mp_params))
-> -			busy = true;
-> -	}
-> +			if (netif_mp_close_rxq(binding->bind_dev, rxq_idx,
-> +					       &mp_params))
-> +				busy = true;
-> +		}
->  
-> -	if (binding->direction == DMA_FROM_DEVICE && binding->map_dev &&
-> -	    !busy) {
-> -		net_devmem_dmabuf_binding_unmap(binding);
-> -		WRITE_ONCE(binding->map_dev, NULL);
-> +		if (binding->direction == DMA_FROM_DEVICE && !busy)
-> +			net_devmem_dmabuf_binding_unmap(binding);
-> +		WRITE_ONCE(binding->bind_dev, NULL);
->  	}
->  
->  	percpu_ref_kill(&binding->ref);
-> @@ -252,24 +255,20 @@ void net_devmem_dev_unregister(struct net_device *dev)
->  
->  	xa_lock(&net_devmem_dmabuf_bindings);
->  	xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
-> -		if (binding->direction == DMA_FROM_DEVICE) {
-> -			if (READ_ONCE(binding->map_dev) != dev ||
-> -			    xa_get_mark(&net_devmem_dmabuf_bindings, xa_idx,
-> -					NET_DEVMEM_BINDING_LIVE))
-> -				continue;
-> -		} else {
-> -			if (READ_ONCE(binding->bind_dev) == dev)
-> -				WRITE_ONCE(binding->bind_dev, NULL);
-> -			if (READ_ONCE(binding->map_dev) != dev)
-> -				continue;
-> -			WRITE_ONCE(binding->bind_dev, NULL);
-> +		if (READ_ONCE(binding->bind_dev) == dev) {
->  			__xa_clear_mark(&net_devmem_dmabuf_bindings, xa_idx,
->  					NET_DEVMEM_BINDING_LIVE);
-> +			if (xa_empty(&binding->bound_rxqs) ||
-> +			    !netif_is_queue_leasee(dev))
-> +				WRITE_ONCE(binding->bind_dev, NULL);
->  		}
-> +		if (READ_ONCE(binding->map_dev) != dev)
-> +			continue;
->  
-> +		__xa_clear_mark(&net_devmem_dmabuf_bindings, xa_idx,
-> +				NET_DEVMEM_BINDING_LIVE);
->  		xa_unlock(&net_devmem_dmabuf_bindings);
-> -		if (!netif_is_queue_leasee(dev))
-> -			net_devmem_dmabuf_binding_unmap(binding);
-> +		net_devmem_dmabuf_binding_unmap(binding);
->  		xa_lock(&net_devmem_dmabuf_bindings);
->  		WRITE_ONCE(binding->map_dev, NULL);
->  	}
-> @@ -324,6 +323,15 @@ net_devmem_bind_dmabuf(struct net_device *map_dev,
->  	size_t i;
->  	long err;
->  
-> +	netdev_assert_locked(bind_dev);
-> +	netdev_assert_locked(map_dev);
-> +
-
-[..]
-
-> +	if (bind_dev->reg_state != NETREG_REGISTERED ||
-> +	    map_dev->reg_state != NETREG_REGISTERED) {
-> +		NL_SET_ERR_MSG(extack, "Device is being unregistered");
-> +		return ERR_PTR(-ENODEV);
-> +	}
-
-I saw Dragos asking about these, I'm confused as well on why we need them.
-
-> +
->  	if (!dma_dev) {
->  		NL_SET_ERR_MSG(extack, "Device doesn't support DMA");
->  		return ERR_PTR(-EOPNOTSUPP);
-> @@ -560,9 +568,9 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
->  	 * net_device.
->  	 */
->  	dst_dev = dst_dev_rcu(dst);
-> -	if (unlikely(!dst_dev) ||
-> -	    unlikely(dst_dev != READ_ONCE(binding->map_dev) &&
-> -		     dst_dev != READ_ONCE(binding->bind_dev))) {
-> +	if (unlikely(!dst_dev || !READ_ONCE(binding->map_dev) ||
-> +		     (dst_dev != READ_ONCE(binding->map_dev) &&
-> +		      dst_dev != READ_ONCE(binding->bind_dev)))) {
-
-Now we READ_ONCE(map_dev) twice? Time to add a map_dev var and do it once?
+--=20
+paul-moore.com
