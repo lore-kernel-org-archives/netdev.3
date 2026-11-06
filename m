@@ -1,63 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793988770;
-	b=gnrze8wgfOxlCx3IzaZdphGf9xGv0x2rv8K3NJofmss9C41GdiPW3VblYH413fBowIcw
-	 krfx4/aVAsplQ2ApskCAOvn6V/GYWAFmwBKLqb2qXuVlU8xgAuyiUhClIrmqkKv1Ta8Cd
-	 McOr8ftAJa5dlxdAqdtbUV+LKBh3augpq8gB0Hz1A5VIPy9WCOv43KyYxlhSs7EABNCya
-	 DGSLPyKFZapcj0/3ZxHV7qlwG+uEQ1puEPAx7U2J5krJBCS30D2h5MyUTyT5k/V977Dc+
-	 FpIBRTRYDyuSlojZaLjUn0L2yHmxn3KG+abVMesR18rpz2dIS6NN6nJGASfaR1d3sfw==
+	t=1793988772;
+	b=At+3bPTAdr+Yc3j1APQP5y/YOjDgWfmJXVm1klnlkWNO4dMixrrt2cuRU+EbETEHmBOv
+	 H+F+rhYbKpg1liGB5v2bE0X1XGP+wKgtyMBxp0M6TSi3XOCAHJpuZyk9RO0Tcv4n9zm+a
+	 8jPUypcGWwzVDZCZR+mIRKwjT7hha6mb3CYqxu6RsuutmE743JTZPU7wnqSYkrvy6HwRM
+	 eLOxjVWWuvsFrU7WMfrtDKNXZ7M8Tb0FkYDi32XKT1unGgX/1e958/cW2VnoxTcM5+oW3
+	 aJiGoofbTiED7wfd0xV77pvs3A+tf8nzjEvXuSX5u8ctai3E67Qs152qoYHv4PXzfVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793988770;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=sgRmgrlCmLHVGsBUVwEOPeglhQGTfDiNl+DwyII1fEo=;
-	b=1RHW08BIrT+dhd4Fb1tGBX9I2py3Ty4M2aoZ61Qniu4EKRly1JHTnOu+J3DiFwyhvkHr
-	 i+eWEGZ9c8mNcsv6c3JuPnQ6MQcR30xa84jO+YeghiUedqgw3eEJQAjQ8lbvQsCBzZV2J
-	 fxP+EnNvjXzE836+a/llvdjTMBBAnpyoEL2bZ0mYhwUFaSqBMtbAwS4qTEwLQV6GgPVX+
-	 DKE7AFrd/ZHa0kDsbnDzsN6eGyi7VENzkMhzcOW9YOokCcLdOWX9hX4QuVGEzjLLakvX1
-	 adR73/Yhk4irjVLDmvXUf+oam/yYrO9I16kVnq7MyJ72675mPB4Eo9wrU0wHUD0UdZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793988772;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-Reinject:X-QCInternal:
+	 X-QCInternal:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=gO0P5VpQuCoxaaenUEBBWz4dwRcwcFr6ChWhT2qPqTc=;
+	b=JtlDF3f7bHgiYmevj9K7ZhrHSVlJOlksChNtejNexnFzGjsI9SyRFaxpFsSDYzE4Wavm
+	 wIB9qmcUWlrcE+t6G9g7rHs2IsheN3tJzrV5ri1Um0ZT8K14symaQmgjrXAToKTri5W3J
+	 ghTrJ6HzS1c9Sqtkzx5PC4iqd/xwW54kO6gkHCHFqNJUmbgWbtLzcecmN7LPWT1SksRC0
+	 ZCSR91TPshjSbtAB/lF1sMzgVI8+pQyZY4TmxPrOdDoiAyFZuzoDM0hHEXZ44geq5tUoS
+	 EurnRMGYal8ZDrk35CVtUw53qINokyHhQjw112nOugZrcXmRrxXCGF3IHVgGGhh3msA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bllMkXDT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="Nr0EVk/t";
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA460606A32F;
-	Fri,  6 Nov 2026 18:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B54606A33B
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 18:12:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96B54606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bllMkXDT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607E81F0089F;
-	Fri,  6 Nov 2026 18:12:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793988769;
-	bh=sgRmgrlCmLHVGsBUVwEOPeglhQGTfDiNl+DwyII1fEo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bllMkXDT3LSQU2IBLf6ImeuG01urX91GJtFfpeVRO/ttNF/7LbMvFGabZD70cfzZ5
-	 2Lk8V+kwemwzVhRZsVZfSvHVJ0iEtpmG4IhHirF0s/1CNqTYDQ7eQeHHKJl783VHh+
-	 VHTPPLolxek3RZg6EFoefOeZP3F9eSZqcPG8kKC+13jacgrx4pZlBmyEkAya+kcW7y
-	 YvxlMkS3vtXWBVxNm0p4yRQcAyN3f3FrevqHG28bOQpUcZKRB6Uj8qcMFkwPUfmVj/
-	 1gJsE3QWgK2nd30Esuhvc7peLQyR8Z/stXxolnRvgyq6x8TE/nlY2qjg/CBtFkejqQ
-	 uCJqKFWkvbwqQ==
-From: Simon Horman <horms@kernel.org>
-To: qingfang.deng@linux.dev
-Cc: Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	manizada@pm.me,
-	ericwouds@gmail.com,
-	nbd@nbd.name,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/2] pppoe: pass bound packets directly to generic PPP
-Date: Fri,  6 Nov 2026 18:12:29 +0000
-Message-ID: <20261106181228.1263020-2-horms@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103111711.28202-1-qingfang.deng@linux.dev>
-References: <20261103111711.28202-1-qingfang.deng@linux.dev>
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Nr0EVk/t
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6HtA8w1075691;
+	Fri, 6 Nov 2026 18:12:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=gO0P5VpQuCoxaaenUEBBWz4dwRcwcFr6ChW
+	hT2qPqTc=; b=Nr0EVk/tjvtC/yicRRUQB+dSm9E1aLimK27ItlZh2USBaSU6blR
+	rsZs5ajNEYZEpUH1zGyOjmRfQxmLE2z07qW3v1b3K8aKd9R1KRnYh4O+i9zn5bw2
+	NpFTbS0EJMZ/kJXDz3KR+BTMOyjIcJ12lhatce5nYWvjRcxqpUh+uK8Yiz1EVNZv
+	wUMxXSTzrHTQuOTMBTibKZX/hwNo/zjA1sZ9C0YRwp/3IRIkXieDRTAE3LwWsns1
+	4lB9O65aChgI+HHDl8NlQCG3ZjhfipcEsisVf4b01baZfUlFgP95S19Yq3FHucC8
+	FliYbinvjEFIUctWSw5iEE0aAtKa4hrKLYw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hs3pb42s4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 18:12:36 +0000 (GMT)
+Received: from pps.filterd (nalasppmta02.qualcomm.com [127.0.0.1])
+	by NALASPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6ICZj0752657;
+	Fri, 6 Nov 2026 18:12:35 GMT
+Received: from hu-devc-lv-u24-a.qualcomm.com (hu-zmckevit-lv.qualcomm.com [10.81.84.220])
+	by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 6A6ICYKl752643
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 18:12:35 +0000 (GMT)
+Received: by hu-devc-lv-u24-a.qualcomm.com (Postfix, from userid 4696302)
+	id C893F2219E; Fri,  6 Nov 2026 10:12:34 -0800 (PST)
+From: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+To: dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+        riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
+        rodrigo.vivi@intel.com, raag.jadav@intel.com, simona.vetter@ffwll.ch,
+        airlied@gmail.com, kuba@kernel.org, ogabbay@kernel.org,
+        lizhi.hou@amd.com, karol.wachowski@linux.intel.com
+Cc: jeff.hugo@oss.qualcomm.com, carl.vanderlip@oss.qualcomm.com,
+        troy.hanson@oss.qualcomm.com, youssef.abdulrahman@oss.qualcomm.com,
+        Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+Subject: [PATCH v3 0/3] Extend drm_ras for qaic telemetry
+Date: Fri,  6 Nov 2026 10:12:22 -0800
+Message-ID: <20261106181225.3333260-1-zachary.mckevitt@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,224 +85,116 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-GUID: F4tnFHbNGp3rUx4oFwT--3610XfbG8c8
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfX7QlRicRznu9T
+ OPJB5QBt92QBUbmScqWgc+c5bb52jgD1p/krKlHNRfRO0rlEAfz+zxgXg8wetBGeFZPFUZkC6NN
+ vPnu6soCJjwCoQX7QJu42N6u84n7tu4=
+X-Authority-Analysis: v=2.4 cv=LIrz05W9 c=1 sm=1 tr=0 ts=6aee1894 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=UCRyeg6Ua9RyKZwra7UA:9
+X-Proofpoint-ORIG-GUID: F4tnFHbNGp3rUx4oFwT--3610XfbG8c8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA3MiBTYWx0ZWRfXwcX5erxMvlw8
+ R7P+iIYxL7LTAWsfATbGl1hQPK1QOr+GIOgOazWTEg1KPOSxLQSC0kmUWh5AbAbFlbpK6IDVkvX
+ Q+MTkYccPdfIa5TyvilzzlRNh6ZX/FkgcCNsxnL4ryh/GcJhvnHODzPQsuHVHi0SITIReyzZ0bO
+ XIyUZ4ww7FMPfpe91HRPeU9uDNjMSaNxAqo6lRHZ/wjpC2ExZ5Ru4XVcIDiJeQMjP63rJCIpTgn
+ +T4YJoTenrMjICbdNzGw0szhaHMAZHW8Lgd1FVstuSkMjJzVRh9a3Mb2Cf00R8toIS4Q4WZQN1g
+ jCIqS1RJY1S+xT+X0by69FzFeOt9KIrEbY0ah5l1B15nVvQuC7iov2mxS3Oyu2CcmB6LYkEu3dE
+ H1xCSYCet0Ysw7VUxpBeWT5lAtWuADVtsnr/aFA2i7TmuoJTu6QxzB5TWEv2vQsu8BmN/DV+Q2q
+ q98PTii3AARHxBMrCxg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-06_06,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 clxscore=1015 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611060072
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103111711.28202-1-qingfang.deng@linux.dev?part=1
----
-pppoe: pass bound packets directly to generic PPP
+This patch series extends the drm_ras netlink interface to include a new
+node type for telemetry nodes. Telemetry nodes support two operations,
+getting and setting, and drivers may specify an optional predoit function
+to validate each operation.
 
-This changes pppoe_rcv() to hand frames for PPPOX_BOUND sockets straight
-to ppp_input(), instead of going through __sk_receive_skb(). It relies on
-commit ec4215683e47 deferring the channel free to an RCU grace period. It
-also clears skb->dev, matching what __sk_receive_skb() used to do.
+Telemetry get operations take the drm_ras node id and telemetry field to
+be read and return the field's value and any status reported by the driver.
+Telemetry set operations take the node id, telemetry field, and value,
+and return only the status reported by the driver.
 
-> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-> index 67c28ac763efd..5d5187e4976b3 100644
-> --- a/drivers/net/ppp/pppoe.c
-> +++ b/drivers/net/ppp/pppoe.c
-> @@ -415,6 +415,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
->  	if (!po)
->  		goto drop;
->  
-> +	skb->dev = NULL;
+This extension removes the admin requirement on the list-nodes operation.
+This allows drm_ras nodes to be discovered by userspace programs for
+drivers that do not necessarily require admin privileges, like qaic.
 
-[Severity: Low]
-Should the comment in ppp_bridge_gso_segment() be updated as well? It
-still says __sk_receive_skb() is what clears skb->dev:
+The new drm_ras telemetry interface is implemented by the qaic driver,
+which exposes the telemetry fields to userspace and enforces filesystem-
+esque permission checks on telemetry operations in its telemetry_pre
+callback.
 
-drivers/net/ppp/ppp_generic.c:ppp_bridge_gso_segment() {
-	/* skb->dev is NULL here (cleared by __sk_receive_skb() for PPPoE),
-	 * and some GSO handlers (tunnels, IPv6 UFO) dereference it.
-	 */
-	...
-}
+Changes in v3:
+ - Address Sashiko comments:
+    - Properly return status when telemetry request is successful but a
+      hardware error occurs.
+    - Validate telemetry fields against their gettable/settable fields
+      lists when invoking the predoit.
+    - Update documentation in include/drm/drm_ras.h.
+    - Moved calls to qaic_drm_ras_register/unregister to mhi_probe/remove
+      instead of pci_probe/remove.
+    - Added srcu read locks around calls to telemetry_request() in get
+      and set callbacks in qaic_telemetry.c.
+    - Added a tele_ch check to telemetry_request().
+    - Properly handle a -ERESTARTSYS return from
+      wait_for_completion_interrputable in telemetry_request().
+    - Ensure field can be truncated to a u8 in qaic's telemetry get and
+      set callbacks.
+ - Minor code cleanups (typos, header ordering, etc).
 
-Bound PPPoE frames are the ones that reach the bridge path, and they no
-longer go through __sk_receive_skb(). The invariant now holds only
-because of this assignment in pppoe_rcv(). Nothing in pppoe.c says that
-the GSO path depends on it.
+Link to v2: https://lore.kernel.org/all/20261029203000.1763447-1-zachary.mckevitt@oss.qualcomm.com/
 
-The follow-up patch "pppoe: queue unbound packets directly" does not
-touch ppp_generic.c, so the comment stays stale after that patch too.
+Changes in v2:
+ - Address Sashiko comments:
+    - Initialize certain stack variables in drm_ras.c.
+    - Added attribute guards (GENL_REQ_ATTR_CHECK) in telemetry doits.
+    - Added a valid node check in drm_ras_nl_pre_telemetry.
+    - Fixed improper node callback in telemetry_set.
+    - Now registering drm_ras node after MHI initialization.
+    - Now removing drm_ras node before freeing MHI controller.
+    - Added scoped_with_init_fs guard to qaic_telemetry_pre's inode check.
+    - Fixed improper kfree in qaic_drm_ras_register_node.
+ - Changed telemetry value attribute to sint and dropped padding attribute.
+ - Updated documentation in drm_ras.yaml.
+ - Renamed telemetry read/write to get/set.
+ - Added dumpit for gettable and settable telemetry values.
+ - Made telemetry_set optional and added admin-perm for it.
+ - Specified ynl file regeneration in commit message for patch 2.
 
-> +
-> +	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
-> +		ppp_input(&po->chan, skb);
-> +		return NET_RX_SUCCESS;
-> +	}
->  	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+Link to v1: https://lore.kernel.org/all/20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com/
 
-[Severity: Medium]
-The commit message says:
+Zack McKevitt (3):
+  drm/drm_ras: Remove admin-perm flag from list-nodes operation
+  drm/drm_ras: Extend DRM RAS interface to include telemetry nodes
+  accel/qaic: Add callbacks for DRM RAS netlink telemetry
 
-  "The direct bound receive path also skips the socket filter check in
-  __sk_receive_skb()."
+ Documentation/netlink/specs/drm_ras.yaml |  83 +++-
+ drivers/accel/qaic/Makefile              |   1 +
+ drivers/accel/qaic/qaic.h                |  19 +
+ drivers/accel/qaic/qaic_drv.c            |  14 +
+ drivers/accel/qaic/qaic_telemetry.c      | 563 +++++++++++++++++++++++
+ drivers/accel/qaic/qaic_telemetry.h      |  18 +
+ drivers/gpu/drm/drm_ras.c                | 331 ++++++++++++-
+ drivers/gpu/drm/drm_ras_nl.c             |  55 ++-
+ drivers/gpu/drm/drm_ras_nl.h             |   9 +
+ include/drm/drm_ras.h                    |  67 +++
+ include/uapi/drm/drm_ras.h               |  19 +-
+ include/uapi/drm/qaic_accel.h            |  28 ++
+ 12 files changed, 1190 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/accel/qaic/qaic_telemetry.c
+ create mode 100644 drivers/accel/qaic/qaic_telemetry.h
 
-Does this path skip more than the socket filter? __sk_receive_skb()
-calls sk_filter_trim_cap(), and that function runs the LSM hook before
-the filter:
+-- 
+2.43.0
 
-net/core/filter.c:sk_filter_trim_cap() {
-	...
-	err = security_sock_rcv_skb(sk, skb);
-	if (err)
-		return SKB_DROP_REASON_SECURITY_HOOK;
-	...
-}
-
-apparmor_socket_sock_rcv_skb() mediates sockets of any family when
-skb->secmark is set. BPF-LSM programs on socket_sock_rcv_skb also apply
-to AF_PPPOX. After this change, neither runs for bound session frames
-from the remote peer. A configured policy would therefore fail open.
-
-Some other checks are skipped as well:
-
-  - A filter attached with SO_ATTACH_FILTER or SO_ATTACH_BPF, even one
-    locked with SO_LOCK_FILTER, is still accepted by setsockopt(), but it
-    never runs on bound frames and never trims them.
-
-  - The sk_rcvqueues_full() check and the sk_drops / drop reason
-    accounting in __sk_receive_skb() no longer happen.
-
-pppol2tp_recv() already calls ppp_input() directly for bound sockets, so
-there is precedent. Could the commit message still describe the LSM
-bypass and the other skipped checks?
-
-This stays true after the follow-up patch "pppoe: queue unbound packets
-directly". There, only the unbound path still reaches sk_filter, via
-sock_queue_rcv_skb().
-
-[Severity: Low]
-Does include/linux/ppp_channel.h need an update along with this? Its SMP
-locking notes say:
-
- * The channel code must ensure that when it calls ppp_unregister_channel,
- * nothing is executing in any of the procedures above, for that
- * channel.
-
-PPPoE followed that rule before this patch. ppp_input() ran under
-bh_lock_sock(), and every ppp_unregister_channel() caller (through
-pppox_unbind_sock()) holds lock_sock().
-
-Now pppoe_rcv() calls ppp_input() from softirq without the socket lock.
-So ppp_input() and ppp_unregister_channel() can run at the same time on
-the same channel.
-
-That looks safe in practice:
-
-  - struct channel is freed through call_rcu().
-  - pch->ppp is cleared and then followed by synchronize_net().
-  - pch->bridge is cleared and then followed by synchronize_rcu().
-
-Even so, the documented contract no longer matches the rule PPPoE and
-pppol2tp now rely on.
-
-[Severity: Low]
-Is chan->ppp now accessed locklessly without any annotation? ppp_input()
-does a plain load:
-
-drivers/net/ppp/ppp_generic.c:ppp_input() {
-	struct channel *pch = chan->ppp;
-	...
-}
-
-Meanwhile, ppp_unregister_channel() can do a plain store at the same
-time, protected only by lock_sock():
-
-pppox_unbind_sock()
-  ppp_unregister_channel()
-    chan->ppp = NULL;
-
-For PPPoE, the socket BH lock used to serialize these two. Without it,
-this looks like a data race that KCSAN would report.
-
-There is a second ordering gap. ppp_register_net_channel() publishes
-chan->ppp before it initializes pch:
-
-	chan->ppp = pch;
-	init_ppp_file(&pch->file, CHANNEL);
-
-This store has no release ordering, and the sk_state test in pppoe_rcv()
-gives no acquire ordering. In practice the gap between connect() and
-PPPIOCGCHAN hides this.
-
-Would READ_ONCE()/WRITE_ONCE() on chan->ppp be appropriate here? Should
-chan->ppp also be published only after initialization, with release
-semantics?
-
-The sk_state access is volatile, so that side is not a KCSAN concern.
-The chan->ppp race is still there after "pppoe: queue unbound packets
-directly".
-
-[Severity: Low]
-Can frames reach generic PPP out of order during the PPPIOCGCHAN
-handoff? pppox_ioctl() does:
-
-		sk->sk_state |= PPPOX_BOUND;
-		...
-		synchronize_net();
-		...
-		while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
-			skb_orphan(skb);
-			ppp_input(&po->chan, skb);
-
-A frame that arrives after PPPOX_BOUND is set now takes the direct path.
-It reaches ppp_input() during synchronize_net(), ahead of older frames
-that are still in sk_receive_queue.
-
-At this commit, frames that go to the backlog while the ioctl holds
-lock_sock() arrive even later, from release_sock() -> pppoe_rcv_core().
-
-Before the patch, the socket lock kept these frames in wire order. The
-follow-up "pppoe: queue unbound packets directly" removes the backlog,
-but the reordering against sk_receive_queue remains. pppol2tp already
-behaves this way. The frames in this window are mostly LCP and other
-control frames for pppd.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but ppp_input() appears to
-call ppp_receive_error() without holding ppp_recv_lock():
-
-drivers/net/ppp/ppp_generic.c:ppp_input() {
-	...
-	rcu_read_lock_bh();
-	ppp = rcu_dereference_bh(pch->ppp);
-	if (!ppp_decompress_proto(skb)) {
-		kfree_skb(skb);
-		if (ppp) {
-			DEV_STATS_INC(netdev_from_priv(ppp), rx_length_errors);
-			ppp_receive_error(ppp);
-		}
-		goto done;
-	}
-	...
-}
-
-ppp_input_error() makes the same call inside ppp_recv_lock() /
-ppp_recv_unlock(). ppp_receive_error() then calls slhc_toss(ppp->vj),
-which does a non-atomic comp->flags |= SLF_TOSS.
-
-A peer can reach this branch with a PPPoE session frame of length 0 or
-1. pskb_trim_rcsum() trims the frame, and pskb_may_pull(skb, 2) then
-fails in ppp_decompress_proto().
-
-Can this race with PPPIOCSMAXCID in ppp_ioctl()?
-
-		ppp_lock(ppp);
-		if (ppp->vj)
-			slhc_free(ppp->vj);
-		ppp->vj = vj;
-		ppp_unlock(ppp);
-
-Without rlock, ppp_receive_error() could load the old ppp->vj and write
-to the slcompress after it has been freed.
-
-This patch adds one effect in the common single-channel PPPoE case. The
-socket BH lock no longer serializes ppp_input() calls for one channel.
-The lockless slhc_toss() can therefore run while another CPU is in
-slhc_uncompress() / slhc_remember() under rlock, and a comp->flags
-update can be lost.
-
-Would taking ppp_recv_lock() around ppp_receive_error() in ppp_input(),
-as ppp_input_error() already does, fix both cases?
