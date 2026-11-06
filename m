@@ -1,55 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.156.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793952657;
-	b=Clx0QsMTshFgOJBZm6nLpxOOEROt9BeK+v7/VIZfNUCX6dHSTi1lhEZyPPwkGVTx/FQ/
-	 vdLlQvn1FbKdRklJP7rnbHBVG8J8O4/spQGHbdPDaZbT2xPvd4MqK8NHX7DVI18UMHJbA
-	 bBxUm4QpwrgTy0SjS0QG9IHauPoqcmaPSy2ZSIvvuvORsteYcGDpt+x9XlaNVPnJ7RgOu
-	 rmzVEKuYpyfSG1w7xD5poyaPGD/KE6l2oUj85VLRi1/nNdYsEst2ATX90qPu5XyryHrFj
-	 1zNvsDKPtsUAN5nZ5ISB/t3Oj8E0aqrnQ1rzJfG5TeUY/HVaNwbGIonjTfuERe7M9jQ==
+	t=1793952773;
+	b=3+mJXDRJn9zZNIobErOSscPI8DFbhL8ljVo0fSH/uIT5F/5eZSSMrX84RAV5DmfnLSk6
+	 DxR9m1FUeIslmKTLNA2RFbmSh7H6N5KUlgdrq1nIVCiAnzLcn5z+quzE0A6WXW6D4L1Cr
+	 /P3ZqCDPW1xtH8nDclBAs0tui8ESUUqUMCaeG8kwkcMRzrWbkQP3zUvmp6wcfZH+XscxZ
+	 bAHxoR8eO0qj/DBZy+//Oc564ULVmnrupq+aQrdEB9ahHDiC2UQyQ9NwOssDjEAqWlurB
+	 NUIW+w1AH2XU56Q7YEs32Rj48ZFeNfw+ZFbThF/x5xXnqdIth+CwWA9zU+/64VwElAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793952657;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=S9xvJ1NaU4Zk/xPNNDyUuI5WsSyAExyNgvNFDuRo824=;
-	b=O1kqS0YBwNimD9h4oC6plHIrl9tSCcFy/9dlLPxYeVmFssoYp6P/4XRwebwMlXO50pAb
-	 GUl1C5+sq4tquvp+uVoHGfgLRV598VMuOMJXozSHPswRuYVhIf2EpFbq8bQpW7xKC6dV9
-	 jSMVGt0+guETYkvtTe15vAy17+kolT+CoZAJwIJRs3IZ7exHQXUlyJZ2io/eAhmIwEbDK
-	 9RQ5PoYrJ//63TTB4IphWOvzLsD2MbufYQ+LHqV7hQf6GS+M3qQ6++8Av3JoekvRke7ap
-	 7krZIpMaQ7y94KLvxuMn8yroo3+cwDW/zqNg7DUGM77PaiyGrDzEcAvCLXKEw0eJhYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793952773;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-Virus-Version;
+	bh=vK1O462TcjJwJdrHcM6IXUBg2Hc82ddME/vlDO0CVf4=;
+	b=SeEGSAuLlLicm4/N5W8Q76jNtWsgy2JY4OPl5KoWQ3V/bCGwFGMdtroThLTQ94jxEbOO
+	 J7r4vV6eR0jWjzFPcnQcFbkZBUaNjG8lchdf7FT70XKch1H1OGiGOuvAi1Rl61Wmv6mHG
+	 eBd2hOOKwkkD55gcSmJ5W1VVXuyhIw2QCjyjs8Tf77+6FVAyCN1+3SBWqMEBfO2iD08eJ
+	 G8eAmTNRBc9hAHc3q3dw6le3L/3VjrDwXL7HwP3QpqVEBZ49XfYZkqUaVMO98nuvoJDvW
+	 5xZ6K45G8IXJOzuSj6aK7L0G6VyJrNpK1D9QmI2R/v1GjypJUWHxdElm/twLLzJ479g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JsDAj3eR;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=marvell.com;
+	spf=pass smtp.mailfrom=marvell.com;
+	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b="AvSk/6qn";
+	arc=none smtp.remote-ip=67.231.156.173
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03A6606A328
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A55606A334;
+	Fri,  6 Nov 2026 08:12:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6A55606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JsDAj3eR
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EBF1F008A2
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793952656;
-	bh=S9xvJ1NaU4Zk/xPNNDyUuI5WsSyAExyNgvNFDuRo824=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JsDAj3eRpYVeftt8/G/kKkhbqtHjQlogL301UIb8+aa6p0erq+yx5Xapul/cxzsPZ
-	 Rtyo9AXSVS4eXqCOXVDN8Pm+Dw3mNpBYFeXovFb8/63HMKF9LLCVNf4hXzuc9ydN0k
-	 F7o4IRJ2Og0tBZMBFnzvn+io1wRvZJ+id0MxLia7LSvimuhyHUoVPq9nM7LeGZ53r1
-	 fnndZKwqjmfCQdMqYVUBHcledZ9NyDWFyCCBYeLTJP2/k7c2o0sKm+2cyt2lePVCRL
-	 hZm607N2ssnrSjo7MEv6ww3MYY+ApUT93OZFaKSF1mdvdfahHULgPQZjcl0BTeeMKD
-	 xrOm5Q1I+X64g==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-8451a619da7so270910a34.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 00:10:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxh3VaByl4HXXstpoSM00lDKY63m0mG/HAdD2nXJ6TvwP8k4y/M5VppNyQeKbqiozKSj1aoQfE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+z9j7UqcfSKFIeQ+ZX8rHrGyZw7sV2jdxRZiE9jlqpEGgj8sTg
-	oJvQJemWzkh2W0ljzI2hMTVIVtJDRYmOQ+gjbblQsKopX3f/iCCfXj8/UkzHo/SqF2H7R/zy4TS
-	OVCSokDUdl+6EKZARkwg6who+rnfvTcw=
-X-Received: by 2002:a05:6830:310b:b0:829:10c4:2c11 with SMTP id
- 46e09a7af769-85f1cb65e44mr2173404a34.0.1793952655401; Fri, 06 Nov 2026
- 00:10:55 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=AvSk/6qn
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A67SL234164076;
+	Fri, 6 Nov 2026 00:12:35 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=vK1O462TcjJwJdrHcM6IXUBg2
+	Hc82ddME/vlDO0CVf4=; b=AvSk/6qnePJfaDChzAbk58vV25RUr2hCTHdA/VVi9
+	H5vF8SSgIq1T8oKBedE8jdtoeD3qS0zSQtJKC5LGN1qsqPonVGQ7horXOg+Fiqt6
+	5+p7o5JeAv6cB6MX8GsZNRXj9ShVma9dgcRkLdxZi5w2ebDmZ6+3zMbZZ2U27gVx
+	NK64S7yS8Iuq4gRCUCOlHDDiEBKsULJm3QJH/mtvGFdJzci9huucN5I9AY04B6OM
+	JGV97cwHLVCJ6NrgqGiTpZGRNFnISVw6bLldWbxK6tI3RBf2gSCCLDdJcEmfqYTS
+	jFA2Gz9FG52/B871ZpmudgcYkZvMmxwEhSt3o/UtzyAhw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4hs3qs1jxh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Nov 2026 00:12:35 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 6 Nov 2026 00:12:34 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 6 Nov 2026 00:12:33 -0800
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 31BC95B695F;
+	Fri,  6 Nov 2026 00:12:28 -0800 (PST)
+Date: Fri, 6 Nov 2026 13:42:28 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Arnd Bergmann <arnd@kernel.org>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya
+	<gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric
+ Dumazet" <edumazet@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>, Suman Ghosh
+	<sumang@marvell.com>,
+        Hariprasad Kelam <hkelam@marvell.com>,
+        Nitin Shetty J
+	<nshettyj@marvell.com>,
+        Kiran Kumar K <kirankumark@marvell.com>,
+        "Michael
+ Bommarito" <michael.bommarito@gmail.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] [v2] net: octeontx2: fix building without DEBUGFS
+Message-ID: <au2L7FZlj0uyF9ba@rkannoth-OptiPlex-7090>
+References: <20261105161945.1658464-1-arnd@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,98 +96,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105164830.1682714-1-edumazet@kernel.org> <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
-In-Reply-To: <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 6 Nov 2026 09:10:44 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
-X-Gm-Features: AclHuK_dki4Pgn8VVhk8z1fjYLjsARhKpZyckE54dKfXi3IEUlCv_TH1XfBb3J0
-Message-ID: <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Kyle Zeng <kylebot@openai.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261105161945.1658464-1-arnd@kernel.org>
+X-Authority-Analysis: v=2.4 cv=WZCZ+EhX c=1 sm=1 tr=0 ts=6aed8bf3 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8
+ a=M5GUcnROAAAA:8 a=ShSd-FWY-unVLXGE1vIA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=lhd_8Stf4_Oa5sg58ivl:22
+X-Proofpoint-ORIG-GUID: O6aTpAeTmti8oCqHhf9aQ_rkqBg8h89e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDAzMiBTYWx0ZWRfX3/2E1WyyYymj
+ V2jiJPGgKZ57B2gx2lbGTzsMe3rNfNyCCNR8YDB+Lmwgj0P5D32a+Qvo3Hoq15UBryB7vs/jBN5
+ 6E+dbEIidSmJnLNQHQJUrCGBMyDlTkh7Xz+B3gTTzjlH0AkmluwKd6qy4mPRplhmtF195/wUEsw
+ 9kptyVyaSsERtn7iTGzzC9EnQNLdFrnZgRFqNoNQN+y0OEYaNAH3y+ffmToyAFoCQVzpkn+9sEw
+ mHgngsLO/2HU8ckCsHFy+BJKbckUAIENLkBmFgLfqOmSrZRSYpPd7nPL0d4EuIn9UV9NWrFuoG8
+ zHP/LPH/B5NkwN6kd3kX0yzoM1cWDi8AkGTp0wKxZqPQGbQ+gFZWhpqrGzFQ9ULRWhND4ymZ8aO
+ b0P/66N01NWNhUbNDmfh7JDvk9HtcCMIYhi7M4iBgAuh5CU4VYG3YD91OO/TcV45I2Rs4zh61Yc
+ 9/EfgWAANJz3QkQHiRA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDAzMiBTYWx0ZWRfXwLOjQY4MqV8R
+ WuiI9bi312w871Kcvcjt7usBUnAfYk9v6FZZik2hd3lF1iV6XqbnwCMLa3b32qvjbkpTlVShvLO
+ 7LPN9tmZQ2UUP+59cQYqD//RZwSd6VU=
+X-Proofpoint-GUID: O6aTpAeTmti8oCqHhf9aQ_rkqBg8h89e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-06_02,2026-11-04_01,2025-10-01_01
 
-Le ven. 6 nov. 2026 =C3=A0 07:44, Jiayuan Chen <jiayuan.chen@linux.dev> a =
-=C3=A9crit :
+On 2026-11-05 at 21:49:13, Arnd Bergmann (arnd@kernel.org) wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 >
+> This error came up on my randconfig tests this week:
 >
-> On 11/6/26 12:48 AM, Eric Dumazet wrote:
-> > After listen() + shutdown(), a TCP socket is moved to the closed
-> > section of its reuseport group, while TCP_NEW_SYN_RECV requests
-> > can still reference it as rsk_listener.
-> >
-> > If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
-> > reuseport_attach_prog() calls reuseport_alloc(), which resurrects
-> > it into the listening section of a new group, even though the
-> > socket is still in TCP_CLOSE.
-> >
-> > After close(), the socket stays in that group and the pending
-> > requests keep it allocated. When the final ACK arrives,
-> > reuseport_migrate_sock() can select this dead socket and
-> > inet_csk_clone_lock() clones it. With a ULP like espintcp installed
-> > while in TCP_CLOSE, the child inherits icsk_ulp_data and sk_destruct
-> > after tcp_cleanup_ulp() cleared icsk_ulp_ops, leading to a
-> > use-after-free in espintcp_destruct().
-> >
-> > As done in commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions
-> > between ehash and lhash2."), deny this transition instead of adding
-> > checks to the fast path.
-> >
-> > Only an unhashed former listener is affected. Applications can still
-> > attach a reuseport prog to a socket that never listened, or to a
-> > listener (including one that called listen() again after shutdown()).
-> >
-> > Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport grou=
-p.")
-> > Reported-by: Kyle Zeng <kylebot@openai.com>
-> > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> > ---
-> >  net/core/sock_reuseport.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
-> > index fccbdd0430b05984e82c19b17b6b723b0a3a03a1..41a25be1bfff6aa486f33ed=
-563a093a264c49344 100644
-> > --- a/net/core/sock_reuseport.c
-> > +++ b/net/core/sock_reuseport.c
-> > @@ -6,6 +6,7 @@
-> >   * selecting the socket index from the array of available sockets.
-> >   */
-> >
-> > +#include <net/inet_connection_sock.h>
-> >  #include <net/ip.h>
-> >  #include <net/sock_reuseport.h>
-> >  #include <linux/bpf.h>
-> > @@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct =
-bpf_prog *prog)
-> >               if (!sk->sk_reuseport)
-> >                       return -EINVAL;
-> >
-> > +             /* Do not put a shutdown()ed TCP listener back into the
-> > +              * listening section of a reuseport group while it is in
-> > +              * TCP_CLOSE: requests can still migrate to it.
-> > +              */
-> > +             if (sk->sk_protocol =3D=3D IPPROTO_TCP &&
-> > +                 inet_csk(sk)->unhashed_state =3D=3D TCP_LISTEN)
-> > +                     return -EINVAL;
-> > +
+> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c: In function 'npc_cn20k_debugfs_init':
+> drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c:392:55: error: 'struct rvu' has no member named 'rvu_dbg'; did you mean 'rvu_dl'?
+>   392 |         debugfs_create_file("mcam_layout", 0444, rvu->rvu_dbg.npc,
 >
+> The problem here is that the rvu_dbg member is hidden in an #ifdef
+> block, but the reference to it is not.
 >
-> I think sk_is_tcp() is better. raw socket still can reach here and inet_c=
-sk(sk) is invalid.
+> Remove the #ifdef and waste a few bytes in the structure in this
+> config. Note that the debugfs_create_file() call end up ignoring
+> the arguments, so the actual debugfs implementation is still
+> ignored here.
+>
+> Fixes: 528530dff56b ("octeontx2-af: npc: cn20k: add debugfs support")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Yes sashiko reported that. And had the same 'suggestion'.
-
-https://sashiko.dev/#/patchset/20261105164830.1682714-1-edumazet%40kernel.o=
-rg
-
-SO_ATTACH_REUSEPORT_[CE]BPF does not make any sense for anything other
-than TCP or UDP.
-
-I can switch to sk_is_tcp() for net tree, and perform the real fix in net-n=
-ext.
+Acked-by: Ratheesh Kannoth <rkannoth@marvell.com>
