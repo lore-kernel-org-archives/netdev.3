@@ -1,116 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975963;
-	b=s41rof1J/tb1NZcBgXlwrADiabURAXtnxPacokKakOedIAf5Nhie8G0AJpe6/cAE4B8A
-	 8nl9Cfni/nsggtpMRpXcbaasdfrh7jljH3XAPmKdZUCHjsI0DpyJKYTxNYE0DqBWAVI7i
-	 fNuPRiwHVGS9cewFplvKfwEouLQNNbpiZ592tNmzEHfFvS8DlG/qFHgyskEK8NSrjgHEh
-	 g7JJdA06qyfl6mZGAgYAywB3ElCI2ARi9riZGMOvrM2U7euAysv1K4q/fVHSSRgwgVZ2L
-	 fAnKFboIjbQPzo53aaT8G7bLQQ6+sJo6eZ3tZa1KFRX9aVBjv6uqoVEC5gRqCN0GZvQ==
+	t=1793976262;
+	b=TSCQUwz/HFYs7tCX5DbDQ7G3j/HSH5gSHATlBU2sP/lNuc1cfWelZqUTvQtTzHiKUZRc
+	 kJaH++nXCezHiYsSjWfGHgzPinFSpdBJqUqk7NaREMDcD61x+NBOgHgts3Eg/wrkb1nho
+	 wXbp5p3lFNWMeY16iD3EyrdgKmoc3WJ1d+scfcjkY8U1Epm3FSRe80Hrcvj7mIPKyoN1s
+	 FW+49xZozg3Fuxss+PIaqJSv0vhWN98gi3QZAvaH1WEdUTpbHoCbLQbHwfWWgv6CAbymA
+	 8CEsg+YC0M7ISmJUDb2ZfwaZ2HXWaB8J9t4LTFcoXCj0RP+Zbw90Jqujadpl+ZeK5Mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975963;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=8NLwtf7QYxfGCOsBeRSPlOa0BaKLAPm2183RpOle/E0=;
-	b=sFLntvw1yNxD2UCRFRwpmhAqVMfigYu+mWSctU6ySF2LTRn2l5WDO33h6X9Lfma+SRZq
-	 6DmgV6a55URNmRPL8Y+JVrfG4j1xlVdUhfM1ImVv9kRlt/soFkGOpmaMvi8B34CoYfrGI
-	 dI+rcfo/gAEsPeyqvixyagh7bA3bjDWglNnNOKLBKPQwXTTeJK03GHpiHchBQgXhoQYhF
-	 dyJizPYggHGItqVE/AZpbq1zblSF+nPZaaBJBDQ+AY/7cRL32mvF3a4+lfLPeLS5avaAA
-	 M105wUi34+sl356aVpHPB5P7GpW/qONlcWZrA8oa8i9bBTlcWkx1RumEBq0RMwEYwSg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793976262;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=F3QFcS6EAmV3kFTO+kCVCbRgqueOJsNvpmRJjVyrvCA=;
+	b=eHsprucWlyeIWYlgBiqwqEb7FJNS5+1k7UTIPdSjs3lyJGj08yQn8Vs0UORugmuDxYlZ
+	 5WdFCf9F5PvWgsdnlK/RwDjkx/VQaquGMFbPQ+yECCnhKxvkiAWETtvB9qvynWGQxPIVB
+	 9W3l5nWgOmub0bSdrVVCEjD6pdmfz9J97aztsJPCTthnMtSnrnPmbvGccU+HkKIeelBoT
+	 UEHfd9MjvrhEr59UbZG7ZJftAaorlEwrIXEggVvyeDvBDf4TW4X+8xRvnPmJm9ZyVUX6O
+	 c0IeReFcKooE5gOFegFAkk2TqFz0IeLe1xv951g3BKIdIH985pFp5JYK7g4JOpJGQxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LoPcaZ2V;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="fAM6/AAk";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xvLyKzYQ;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC5D606A32C
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 14:39:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACC5D606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF6A606A337
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 14:44:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2DF6A606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LoPcaZ2V;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fAM6/AAk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793975961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8NLwtf7QYxfGCOsBeRSPlOa0BaKLAPm2183RpOle/E0=;
-	b=LoPcaZ2VXGIAu5ude8m/HeAv2AXC2qLPOXLK/+aSVZ2B+WXqfcCFzr1udS7ipv6C9hlU0u
-	fYw014L8Uk4yzlGQH1Q1FeluVcmVrZS1vPy2vwZFJ7UaI3fAjvFNOvudHa3lBLMNcwKV1o
-	vpvMn2ovzPUd8UJmqFFBQdI9TNjVcrM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-GoeQrswVNuqjHcyTJ97Quw-1; Fri, 06 Nov 2026 09:39:19 -0500
-X-MC-Unique: GoeQrswVNuqjHcyTJ97Quw-1
-X-Mimecast-MFC-AGG-ID: GoeQrswVNuqjHcyTJ97Quw_1793975958
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4901562b819so794259f8f.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 06:39:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xvLyKzYQ
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso362583a91.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 06:44:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793975958; x=1794580758; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8NLwtf7QYxfGCOsBeRSPlOa0BaKLAPm2183RpOle/E0=;
-        b=fAM6/AAkZexi9ShT4PKSlVPSFrda+suPwTL5oZMjGDK2hGpPJqgPhlNRy+RYpqjkWf
-         2JMG4IMJl2M34C7L+thWdoURU0kuca/K0IMjZjFfojQT/a6pFbyX1N9e3RnoJBusoB7Z
-         4taG5137kJT944e02AtliUekeg5HaJ35thqj769B8rtEN48zv+io8HuVV4XNq/K2CQhE
-         YP2VXsnMhq4HWxMdmwfFEkKQLJcWGXoktxmXYwTQLbsfHInpUhQmv2P/Lse9pSAfgr7A
-         04i2/9jlTNS6LJlIdG1S9VvJMWEUTLA5VDg0VDhUs6UrhtJNJiRaA+t+SiiOfd9gPS22
-         lzSQ==
+        d=gmail.com; s=20260707; t=1793976261; x=1794581061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F3QFcS6EAmV3kFTO+kCVCbRgqueOJsNvpmRJjVyrvCA=;
+        b=xvLyKzYQ4auVmJsYnFJ+bsVWvuOhy5aGyJv4IC1wszP7cVinXXAALXXL5jSzjeUecF
+         wU9e53UrybKy+HUk4fZcPkVyt1AezCpA7acg9RPM3xuJ466+bdQH8prF5V6UWzs67gan
+         1zuaHv0sqI/9MqRpmPr3PlogxFkslJ5EBfvJasETJAei6+Vjxc22vLh/XMAi/kwEkX4w
+         96TzS0Em0sIRhnBeqHhDTn4T1GlmdtF9xMaEOWZvxBHtFx/pflu6pperAAUNTCRUB8Dl
+         +kuUE30VF25t1eM+ir86zigWjbIAGFPCL5F690bFc5YaRTGEeQtfNHJsmMpQdWlcrqXz
+         4rpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793975958; x=1794580758;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8NLwtf7QYxfGCOsBeRSPlOa0BaKLAPm2183RpOle/E0=;
-        b=CCIcFueQY5LxGiCLsFzBFWnkHXsFCLOZnKlHQ+58Tnw5eF2DmOucXlShoU3by0RanP
-         E3lwZKCfmZRqUJRfE+1sFJXmquR/HwYEVah7LhlF2McN15zh7yL4l4NlVY/yzNU8xr1V
-         VKKHvC4lNrPQxs2FxFC1ARRu5QiDb14fYQltKre1Cvy+HV+/+U2i6JfiEcFXukZe9ENS
-         MgGklTqK9mUgUJGv7wqIx5Jy5420fkmrila73oi9qeRItd/f+xA9a2KHe7N04WKPgfiz
-         SfhabniGRP/AiReOGz2byWGIr8tOepNm409GARK38njM0j08K5xQFjceAqbsFrFwdZZ6
-         kdpQ==
-X-Forwarded-Encrypted: i=1; AL+hErFSfy5KeRSYAQ1aoXGz4/Zlo7JpJL80pH4aPfGBkrOqUdCau83rEhjsJORF4KT+96SKhtr9uiE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/dSxk7emKAelCouQKPT8T3dAVEPoJdeozvu0ETm1isO0R8rj73
-	z+t+HEyh0jnxRwbu2j5Wjn/L3bBC/wHobcMaaLDBM8pObqhjVNTWZF9zCKEFvdUUIA3/SuaWhHv
-	yadWMA+7yHZKGIbxxk7YYeAUVdIeMCQynjxG3AIMEPHzBaSH1pkbKqSAfXA==
-X-Gm-Gg: AYBFou0XxQUCXIE86ewNUfByfHISYKa9MbKocPbXoesBYEWDz1dsuxNJVqNS6px9CHZ
-	E2wrIbJoX6WRhkGiWFDAumlyrOnuUdx4cp+e5Tf34GNhhhDPX5+wPA4y0uHKf9aUsM7qod2Yepk
-	EiCzSK2IgGXDVOKERY2ixrVMJrqQpOy3Mi5DaXzl8HPmyj2mSe0M1apFF0aeFkL5ppy6/IScd6k
-	pjLGiq7hl2BN5JlrZo5oelJrKSvuHBdpK/E6c1dMv8K4Yg50zBJRZYADo9fO7R2TN0Cv1gMw9xH
-	+C4Pfbsvl/I21XCUTanjtxm9AATvK6JICTPcWqvVFP5bLKeU14tCYTKzgUFBBcByq1KAm4wokpI
-	2h5VA20V2ZL0YH542MsD4IiOp8cnT50qxgswisWPORqoqyBkaGCX5
-X-Received: by 2002:a05:6000:26cc:b0:48e:60ed:b012 with SMTP id ffacd0b85a97d-4927817451amr5363047f8f.57.1793975958185;
-        Fri, 06 Nov 2026 06:39:18 -0800 (PST)
-X-Received: by 2002:a05:6000:26cc:b0:48e:60ed:b012 with SMTP id ffacd0b85a97d-4927817451amr5363018f8f.57.1793975957758;
-        Fri, 06 Nov 2026 06:39:17 -0800 (PST)
-Received: from sgarzare-redhat ([80.116.143.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d6d63ad7sm4518709f8f.15.2026.11.06.06.39.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 06:39:15 -0800 (PST)
-Date: Fri, 6 Nov 2026 15:39:10 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrea Parri <parri.andrea@gmail.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Simon Horman <horms@kernel.org>, Luigi Leonardi <leonardi@redhat.com>, 
-	Xuewei Niu <niuxuewei.nxw@antgroup.com>, linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] hv_sock: Report no unread data before a channel is
- available
-Message-ID: <au3k0TggFXTn6usw@sgarzare-redhat>
-References: <20261106123920.162131-1-parri.andrea@gmail.com>
+        d=1e100.net; s=20260707; t=1793976261; x=1794581061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=F3QFcS6EAmV3kFTO+kCVCbRgqueOJsNvpmRJjVyrvCA=;
+        b=GQD6Er4xc4UTVSQrFRFndDtIigXTR+abfXgTaiGjfLbMi/BP3rWF+8/4dORkg0VQk3
+         KG1IBIxDhby3o8cb+xwT7XlvslXWL2dF3+dt5BLo6Nex9pdaeQ1yY5dMQOZOSnIQqSR4
+         qJHEHWKpnjXZELwsLKyZw5LVhAH3uAvcH5LTwGhdEDzgyzS8uvFi+A09mPpDouBu4WSq
+         Bd8UYPJb81k6uQuA7abnuNxvFL/tVfSB6XBGwnzlilJFCSow67wkYILo2wIhki5WI7D3
+         fX+CW1yiwGdP7HOQX76vuhv7TS0YEw4XE3+dVRawcIOSB0RiVEuH9jOzOiNqEIpQpk3v
+         6TAg==
+X-Gm-Message-State: APuU4Z+x/zkwxso2gwBte1kOc1g5xpPDduKNUMSqohx4sLBVtV7oJgZ0
+	/E4H616WZVs/zZICc6yJ8gVxQDrU/NS9FacC+r+SP4EiEq/zZ2E6tTAWlGJ1aCE8
+X-Gm-Gg: AYBFou0D+fR56LVr4S0zaa1YEVLBgVuRn/M0MywTAhhdIJwr3+K8jCHMM7aBvWYhnfQ
+	PriaTgejW8IawcmqenuXDvFsdjIyYSKPO4mVW5RRQm8BuZTLhBwvDpz3ZkbXQjk4d5TF9sHv61X
+	7s/dX+TQhVFO0iIdgpIkeObXpo7UoCUFD2x6QsOrdgZRfUkDaNE0vQB3/+4IhhQxU/GYZejhoKh
+	hyzj2LihBmqi39krDzILeXUYpJD4KiA4iZ+WQOqoya6x0LMVH0JIiroAIMvohr21W09a/T+F6/x
+	3mhti09H4taNB6x2idrAm/H24Bu5PyItE7R028dWKWJwmPSiSPdFzQqZNtqvihJcZOVy5jtd7We
+	1w73+i03HQrpghTZbY5hANjvw2iC/gVFVrsSL+QXq0TRkZ928GJKWrXXYlRobce/Yh4h3jfRCd1
+	poOlGzM4T5KHdlOnk70BRQovft9jnsMfX+k22HS9u0Q3zlH4qktsnswYmdiCAT+2Zf08hG5vnRG
+	JUqtVgqis6aVzMFNCeRSywACazpOHjOXG94uHuSBbfhHUsygUekv6pONn7tCmXaqSCS+ay12aat
+	LGpT8jURBgFQyzriKcp+ty3zFPfRG1gPNZge1LZOXHIDT6yvNw8osR8zP1VteD/CNzvZmettQm7
+	mQ/M=
+X-Received: by 2002:a17:90b:4b89:b0:3a7:82ef:bcdd with SMTP id 98e67ed59e1d1-3b0db6fc27cmr2848553a91.41.1793976261259;
+        Fri, 06 Nov 2026 06:44:21 -0800 (PST)
+Received: from localhost.localdomain ([116.88.205.165])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b32812a6sm8051922a91.11.2026.11.06.06.44.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 06:44:19 -0800 (PST)
+From: CMGS <ilskdw@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	CMGS <ilskdw@gmail.com>
+Subject: [PATCH net] vxlan: reset the remote's dst cache when snooping moves a MAC
+Date: Fri,  6 Nov 2026 22:44:06 +0800
+Message-ID: <20261106144406.66035-1-ilskdw@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,68 +97,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261106123920.162131-1-parri.andrea@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 06, 2026 at 01:39:18PM +0100, Andrea Parri wrote:
->The Hyper-V transport is assigned before the asynchronous VMBus channel
->offer completes.  Its zero-initialized hvsock therefore has a NULL chan
->until hvs_open_connection() associates the channel with the socket.
->
->SIOCINQ can query the assigned transport while the socket is connecting,
->or after connect() fails once the transport has been assigned.  Unlike
->poll(), that path does not check stream_is_active() before calling the
->transport's stream_has_data callback.  hvs_stream_has_data() then 
->passes
->the NULL channel to hvs_channel_readable_payload(), and any user in the
->guest can trigger an oops:
->
->  BUG: kernel NULL pointer dereference, address: 0000000000000178
->  RIP: 0010:hvs_stream_has_data+0x23/0x120
->  Call Trace:
->   <TASK>
->   ? vsock_ioctl+0x74/0xf0
->   sock_do_ioctl+0x42/0xf0
->   sock_ioctl+0x27d/0x310
->   do_vfs_ioctl+0x700/0x810
->   __x64_sys_ioctl+0x7d/0xf0
->
->Return zero unread bytes when no channel is available, before accessing
->the receive state or ring.  Leave the existing channel-backed receive
->handling unchanged.
->
->The oops was reproduced on an unmodified v7.4-rc1 kernel in a WSL2
->guest with a small user-space program, available on request.  With this
->patch, the program reports zero unread bytes and the kernel logs nothing.
->Other vsock_test cases were not run, as most of them need a host-side
->peer.
->
->AI assistance was used to identify the issue and develop the fix.
->
->Fixes: f7c722659275 ("vsock: Add support for SIOCINQ ioctl")
->Cc: stable@vger.kernel.org
->Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
->---
->An alternative is to check stream_is_active() in vsock_do_ioctl(), as
->vsock_poll() does.  That would also change SIOCINQ on VMCI sockets that
->are not connected yet, from -ENOENT to 0.  I kept this fix in hv_sock to
->limit it to the crash, and can send the generic check separately for
->net-next.
+vxlan_snoop() handles a known MAC that now arrives from another remote
+by rewriting the remote's IP address in place. It leaves the remote's
+dst_cache alone, so the next packet to that MAC is routed with the dst
+cached for the previous remote. When the two remotes have different
+next hops, the packet leaves the wrong way. For example, if the
+previous remote was on-link and the new one is behind a router, the
+device resolves the new remote's address on the local link, the
+neighbour stays incomplete, and traffic to the MAC is blackholed until
+the cached route is invalidated, such as by "ip route flush cache".
 
-Yeah, I was going to suggest the same, but I agree that for net this is 
-a better and self contained fix:
+vxlan_fdb_replace(), which makes the same change through netlink,
+already resets the cache. Reset it when snooping too.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reproduced with network namespaces: a learning VXLAN device has one
+peer VTEP on-link and another behind a router, and an inner MAC moves
+from the first peer to the second. Without this patch, pings to the MAC
+fail after the move until the route cache is flushed: in 5 of 5 runs
+with one CPU, and in 1 of 3 runs with two CPUs, where it depends on
+whether the sending CPU holds the stale entry. With the patch, they
+succeed in all 8 runs.
 
->
->The reproducer is a new vsock_test case.  I have not posted it, as
->Documentation/process/security-bugs.rst asks for reproducers of bugs
->found with AI assistance.  I can send it privately, and will post it
->once this fix is merged.
+This was found by our AI-driven automated live migration tests. The fix
+and this changelog were written with the help of an AI coding assistant.
 
-Yes please, post it upstream when merged.
+Fixes: 0c1d70af924b ("net: use dst_cache for vxlan device")
+Signed-off-by: CMGS <ilskdw@gmail.com>
+---
+ drivers/net/vxlan/vxlan_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Stefano
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index d11028b37..6ee071cd2 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1482,6 +1482,7 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 				    "%pM migrated from %pIS to %pIS\n",
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
++		dst_cache_reset(&rdst->dst_cache);
+ 		rdst->remote_ip = *src_ip;
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+-- 
+2.47.3
 
