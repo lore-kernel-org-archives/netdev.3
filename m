@@ -1,104 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=178.63.21.144
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793945282;
-	b=GxeN762XN7V+bv3SvpJoXE8hPF2CtcuTr+8WPgElqWVm5ZceCVhM1EKMOk4dOpIV5ZJ4
-	 XwegXTn7ls0uCgCXuchz2IeKWecBYg8aTbAUmSgUXxWFq2fdXHj199A2+vI6ldY/pBKt6
-	 BQRHctjmeqT7XDWKEtfb+etFdkQ4kTgCZz3Aa0wXSNGWu2tLLh+kqqinpS0cvvw6f52ey
-	 F2VJAbNQMOcm/tcsaCoP5YAfGQPUJI2tCkbgKXj0SLMKP9f9u/EBT8CDeodpH/Ho9v2aW
-	 PgC4MI5EXSb6hrJd4zJM0reLHY9qYMw0mvL5B/QxzubysBdXCsqkgXdG3oWCiBQuPmA==
+	t=1793945474;
+	b=q1dSjiBMZejKWTEuQfVY+60W7k6PE2PrA1MF8E4dZq8f/13yRhiibqsZEQf38eqjw35I
+	 DxS1VTEu8CIjui3yEIprmv8uBhgTACneFFYIJMtAO+67vDAd7ufdQ6rXUuc91q484+fxf
+	 8g6BnPjYZN6whaAi6Y3v9/keCtbgalaE11poRlf2g/dTXSdmSOoOpug4eMiutZTJmKWqI
+	 dbuGzG7CFHrxyxR6XfnVqDH27EnR/qCFxajPuj8HqoP1iDzqCClTE5Ln5NVj4Sn1lkicl
+	 P2YELycA/aIg3glpKvHjujyXsTAT798wteJH0MkNZGp4o22g2vJqMC3ewFnFYRfUGKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793945282;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:X-ME-Sender:
-	 X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:X-Greylist:X-Virus-Scanned:
-	 X-Virus-Status;
-	bh=YWfrO+3PGngce3vAA+WeVwidWQAaCmbQuGPi06xHNro=;
-	b=VhRA7XSyEIyeFPxCP/iP+kyClBznwWgCUHE1Wx3Fv5cCKmu5fbtKZdpmrUgkrmMwzXHu
-	 WD345Vl2BQJU+os0A9lbAT20O+8CkPA82GUjoPtHn/K3ngnqMiPVpR5cbVVCwZo51y3gz
-	 g8eb6kKV4PbGc15UglKwL8Z/K61Z4/K1ttxU2GUL8oa7T3wY65g+aSg6x6iSozoYScdOI
-	 /bO/yUecMDmRQkX1E51AqQ1NCYierZDooXYAQFJAv0TXttv7JiLJ9JckxXMxKkAlkjL4J
-	 KBf6z1kSZOZdZnmfoQPTPaOpNRvlFID/fOWhgsx49BmOhOE+YXpAfjbrrxpeTJVZiVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793945474;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=NnkP5m19ojEmudDy7vOxxyPpI6m5O1F4PvgX0GrcFsE=;
+	b=u49zhIG7ZPyuFID+rsfyKVGQBMlvpiCiPSTpQ8G7+CSgsGt+26EQVMuEAOzlkgKKbXcv
+	 vzqUdZ7V3+xPyyHFCocf6wLzLGVw2wiO3SAn6eAOeypCRbflFlFTjxPu3RBTXRPGrE2RF
+	 gIqJJgCMDV1LlCr3nEb7g618hpRVqrdfs4ngtoHkN7/UMTo7kirlDADLfsUBZivNHGEzu
+	 Ly+dTytfcF9TWxGpoV3iDeskISkUHaaAUDkztblT4ngmHbumlnJ9QN9qmxmTJghDblYjh
+	 z2xwIcg+cqI7K4WISxE2wQNgm55DWxFV/6KsEoxwU/vwVXNwVGxgtxhlev7LJychD6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sericyb.com.au;
-	spf=pass smtp.mailfrom=shining.glasswings.com.au;
-	dkim=pass header.d=sericyb.com.au header.i=@sericyb.com.au header.a=rsa-sha256 header.s=shining header.b=huNjMeSE;
-	arc=none smtp.remote-ip=178.63.21.144
-Received: from shining.glasswings.com.au (shining.glasswings.com.au [178.63.21.144])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cTVD0L+6;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2320A606A329;
-	Fri,  6 Nov 2026 06:07:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2320A606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sericyb.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shining.glasswings.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87238606A32D;
+	Fri,  6 Nov 2026 06:11:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87238606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sericyb.com.au header.i=@sericyb.com.au header.a=rsa-sha256 header.s=shining header.b=huNjMeSE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sericyb.com.au;
-	s=shining; t=1793945273;
-	bh=oxQ/XatkM5jxRdXO267bhYI/CjAhkGUFXp033JxNLIA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huNjMeSExGDy27bXgm9B5b3lZufUTUe4yjSuMqmGCphhmRecJ2JtV/3GUvjjjkXOV
-	 nwK7S1bMYhaVmNw1KUGvJO45by9C1fCRwRxUQ+DYcjHP8gWYLH0WJQq94CERFTDgC9
-	 JlWR5bg4CV+jaevCDxSh2C+R9i+Ipnq2etvMBr1ReKaqxCFoxkZIo2Sn/F3icILqmy
-	 Kf5qclY04nv7YNpTPe8BtH9RCfD9zOaUg9itx9tN9dJ6VgkTh4CderDQPHFLBj3atU
-	 S4MFixFNocuBy3SvmcrP4fnU2v5ZGeLMGUyAfYE48Zw7/KtaoiVCfjAp3zOpeKDcXE
-	 GqoR3QARhPEXw==
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com [103.168.172.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by shining.glasswings.com.au (Postfix) with ESMTPSA id 3883710924117;
-	Fri,  6 Nov 2026 06:07:52 +0000 (UTC)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1127DF40066;
-	Fri,  6 Nov 2026 01:07:51 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 06 Nov 2026 01:07:51 -0500
-X-ME-Sender: <xms:t27taooP_xPYjbHlmXZ_RLLDecqBtppVYGKl6w7f890mVJNhXr5vAw>
-    <xme:t27tapCu_DEz1i-14dr6JoWPAjxvCBkqpz2C1vhe8upYM_qw2ddxpOjogAN3BlIVi
-    OsQU91HbRti0WHFh3J_m2uQwSikSXeFu3GzHCwEpgjdigjsLuB25G8O>
-X-ME-Received: <xmr:t27tajVT8sbmtTvvrJOe42AIwhmyyR11DVAj7LnlvVqqVMiN8r8fYQriKoX7PwDy9sSOOjrlIqrJ7wJ7F676PpAnXIQ4nK2kqEwywT3ObfY>
-X-ME-Proxy-Cause: dmFkZTGJt3n1PQXC/FQG1+B4dDYdd7jzhZlyl3cBdgxPjc5MzKuIVzENiuR0E8tXhVCYot
-    oOxwUXQVpp6VAEFUg+Uag3+jV3NxxQBqkuwqHRpa3avIMsMf5rLSrLvoU9/YiPtVmmw1Nh
-    zLPLiGNoLWEom9MXOxTuny0wuIwJj+YnwLd3gmlT78BD8tHIS3uMrtPiOeTkzb/BpfqHcJ
-    ZJYCN1MdLe92Bp5QjUXsKpkDjC+xSg0gfYGGYkLbuDh5Mj+BFcqCO2KyQpU99GhnUhksCQ
-    Jqp321gTZQ359Pfjg6F4oa2enLz7ZLclUfrma4OACrOvjp2Zeu6dpHGkjEpDMo+QrHIVq0
-    fPMM9bXKM6l+BG/yuRuKG111J+oroUSvT0iSmY9cALE5HIH87U21thWpHH6wHEgGQBiEtH
-    LntpzjCg88yRAeWhDp473vOfvzyI4VtD+LMyUNtFTBHpmgR//cy5duykjZy7NrqE3s7Atk
-    AeN4QILVnj7M7xU3FkkYEZUX4caYa8SC+PtRogk8XdWDnn+tIsSOGxNXeN1Sp87gpeQl5v
-    XLX8Lr8Lp+n85qJLkCNKagr4EhXLwYsx+CezzZQtxLXLmeKQ/wrO6ds6Z652jMUllzX/aa
-    ouFblC5kIhlM0jv2lkvZEMsqqSF4F5rjD6ey5P1IqGUybJe32nr0mCmQv7dA
-X-ME-Proxy: <xmx:t27tarAvMjJFfCKoMk1rogDHG53bwn-UI4vZMQA4lXh_SqEdgPcOnQ>
-    <xmx:t27tagdzoaA6rSFNBn5sN8c6lOJEW0eOFJNDUaZvCSm4-XdXYB_tgQ>
-    <xmx:t27taiq3NMLIoCTEcAMR_FsMIOf3xnBZLQGl_yHJ8map53LKJbICjQ>
-    <xmx:t27tahQpnbT_FgOeD1YdYjmmXJE_XpHFlYoATuDbFgVLZAKj-WcqgQ>
-    <xmx:t27taiVF1KYKvI0pyzH7ahYn11b_RUKhOiPUrIS1k0TzJHRreVnGe9lC>
-Feedback-ID: i558e4b61:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 01:07:46 -0500 (EST)
-From: Andrew Pam <andrew@sericyb.com.au>
-To: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>
-Cc: Andrew Pam <andrew@sericyb.com.au>,
-	Chuck Lever <cel@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	linux-pm@vger.kernel.org,
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=cTVD0L+6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Nn
+	kP5m19ojEmudDy7vOxxyPpI6m5O1F4PvgX0GrcFsE=; b=cTVD0L+6BXitGqYHug
+	MoqaPG6yUpfOvsdASceC4E+xL1/0Ljoq0R9CLZI2WKpSOkupdFH15ujg+v9RG1Tt
+	bjF0KYF65WZdfzagQcr07BIOwMH/ccRp+eJfjr1VYba2xbpTWhHrl3uUSeQ1YyTK
+	UkFdcmPT9fPsvBVpNMrstrgms=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3fxMtb+1qBVQ1FA--.50369S3;
+	Fri, 06 Nov 2026 14:09:51 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Patrick McHardy <kaber@trash.net>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] SUNRPC: freeze rpciod and xprtiod across system sleep
-Date: Fri,  6 Nov 2026 17:07:29 +1100
-Message-ID: <20261106060735.637295-2-andrew@sericyb.com.au>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261106060735.637295-1-andrew@sericyb.com.au>
-References: <20261106060735.637295-1-andrew@sericyb.com.au>
+Subject: [PATCH net v2 2/2] netfilter: h323: avoid secs-to-jiffies overflow in RAS timeout
+Date: Fri,  6 Nov 2026 14:09:48 +0800
+Message-Id: <20261106060948.540233-2-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261106060948.540233-1-l1138897701@163.com>
+References: <20261106060948.540233-1-l1138897701@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,116 +73,95 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (shining.glasswings.com.au [178.63.21.144]); Fri, 06 Nov 2026 06:07:53 +0000 (UTC)
-X-Virus-Scanned: clamav-milter 1.4.6 at shining
-X-Virus-Status: Clean
+X-CM-TRANSID:_____wD3fxMtb+1qBVQ1FA--.50369S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGFyDGF4kXw4UKr47GF45KFg_yoWrGr4xpF
+	W8K3srtw4kJr4Yk3W09w1kCFWDZws5Gay5urn8GayrCwnxXrsayFWfKFyj9a4UJrs7Wr4j
+	qF42q3W7C3W0yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbdbbUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3g-8QWrtby-rvwAA3-
 
-After hibernation takes its snapshot, the kernel thaws devices to write
-the image, and the NIC with them. Freezable kernel threads and
-workqueues stay frozen until the image is restored, but rpciod and
-xprtiod are not freezable, so RPCs continue to be transmitted, and
-transports reconnected, until power-off. The server acts on them; the
-restored image knows nothing of them.
+From: Qing Luo <luoqing@kylinos.cn>
 
-With NFSv4.1 this wedges the mount after resume. Captured between a
-client that hibernated and its server (Linux 7.0 client, 6.12 server):
+process_rcf() converts info->timeout with "* HZ" twice, once for the
+conntrack refresh and once for the Q.931 expectation, both in 32-bit
+arithmetic.  info->timeout is a u32 decoded from the ASN.1 timeToLive
+field and only checked for being non-zero, so it is remote-controlled
+by both the endpoint (RegistrationRequest) and the gatekeeper
+(RegistrationConfirm).
 
-  - 05:06:02 last exchange before the snapshot; client snd_nxt
-    2711544997.
-  - 05:06:15 hibernation entry.
-  - 05:06:44 and 05:07:48, after the snapshot: a lease-renewal
-    SEQUENCE on slot 0 (seqid 192219), the next (192220), and
-    DELEGRETURNs on slots 1-5. The server executes all of them and
-    acknowledges up to TCP sequence 2711546645.
-  - 14 hours later, on resume: the client retransmits the slot 0
-    SEQUENCE from TCP sequence 2711544997. The server discards it as a
-    duplicate and acknowledges 2711546645, which the client ignores as
-    acknowledging unsent data. Nothing more crosses the connection.
-  - On reconnecting, slot 0 gets NFS4ERR_SEQ_MISORDERED (server at
-    192220, client at 192219) every 15 seconds indefinitely; the state
-    manager waits in nfs4_begin_drain_session() for that task, and
-    every other RPC waits behind it.
+With the signed expiry test "(__s32)(ct->timeout - nfct_time_stamp)
+<= 0", a wrapped product can only cut the lifetime short, never
+extend it: at HZ=1000 a timeToLive of 2147484 seconds (24.9 days)
+crosses 2^31, so the entry is born expired and the RAS connection
+drops mid-call, while 4294968 seconds wraps to 704 jiffies and the
+Q.931 expectation is reaped almost immediately.  A peer that wants a
+long Q.931 expectation can already get one by sending a non-wrapping
+timeToLive, so the overflow is not what extends it.
 
-Other resumes produced the same rollback with different symptoms:
-requests accepted by the server's TCP but never reaching nfsd, or a
-partial overlap that left nfsd reading a session ID as a record marker
-("svc_tcp_read_marker nfsd RPC fragment too large"). Restarting the
-server is the only recovery.
+Reuse nf_ct_secs_to_jiffies() for both conversions and compute the
+value once.  The helper multiplies in u64 and saturates at INT_MAX,
+so an oversized timeToLive now saturates to the INT_MAX jiffies
+ceiling - about 24.8 days at HZ=1000 and 248 days at HZ=100 - which
+is the same maximum the peer could already request with the largest
+non-wrapping timeToLive (2147483 seconds at HZ=1000).  The longest
+lifetime a remote peer can force on the RAS conntrack and the Q.931
+expectation is therefore unchanged by this patch.
 
-Make both workqueues freezable, as the SMB client already does for all
-of its workqueues (WQ_FREEZABLE | WQ_MEM_RECLAIM). Work queued while
-frozen runs after thaw_processes(), in the restored kernel, which is
-consistent with the server. Memory preallocation for the image happens
-before freeze_kernel_threads(), so writeback through rpciod is still
-available then, and pm_restrict_gfp_mask() keeps reclaim from issuing
-I/O while the image is written.
+Sweeping all 2^32-1 inputs at HZ=1000, the helper never wraps, never
+yields a value that reads as expired, and matches the old expression
+up to INT_MAX / HZ; objdump shows the two 32-bit "imul $0x3e8" in
+ras_help() replaced by a 64-bit multiply plus cmp/cmova saturation.
 
-WQ_FREEZABLE is consulted only when freezing and thawing, not when work
-is queued or run, so normal operation is unaffected. Entering system
-sleep now waits for in-flight rpciod and xprtiod items to finish; these
-are short state-machine steps with non-blocking sends and connects. If
-one ever blocked for longer than freeze_timeout_msecs, suspend or
-hibernation would fail, naming the busy workqueue, where today it
-proceeds. The SMB client and XFS accept the same trade-off for their
-reclaim workqueues.
+nf_ct_secs_to_jiffies() is added by the SIP helper patch earlier in
+this series ("netfilter: conntrack: avoid secs-to-jiffies overflow in
+SIP helper"), which carries a different Fixes: tag.  Backporting this
+patch alone would not build; both patches are tagged for stable and
+should be picked up together.
 
-This does not stop the network stack from acknowledging data the
-server sends after the snapshot, such as a callback or a reply to a
-request still in flight when the snapshot was taken; that remains
-a general hibernation and TCP problem.
-
-No Fixes: tag: rpciod has never been freezable, so no single commit
-introduced this.
-
-Tested in QEMU/KVM: an NFSv4.2 client hibernating in test_resume mode
-(the image is written, then restored at once) against a 7.4-rc2 nfsd
-with a 10 second lease, with 1.2 GB of incompressible data in memory and
-the swap device throttled so that writing the image takes 81 seconds.
-Without this patch the server received 12 SEQUENCE renewals during the
-image write, none of which the restored client knew of; after the
-restore the client's mountstats show a SEQUENCE error, two extra
-connections and 10 seconds of queueing before it recovered. With this
-series the server received nothing from the snapshot until the restore,
-and the client resumed without errors. The indefinite hang seen on real
-hardware was not reproduced in the VM: it also needs a request holding
-a session slot across the restore.
-
-Drafted with an AI coding assistant (Claude), which analysed the packet
-capture, wrote the change and this description, and ran the test above.
-
-Signed-off-by: Andrew Pam <andrew@sericyb.com.au>
+Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
 ---
- net/sunrpc/sched.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 016f16ca5779..41f25309b8fb 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -1276,13 +1276,18 @@ static int rpciod_start(void)
- 	struct workqueue_struct *wq;
+v2:
+- Removed the inaccurate "pinned for days" symptom from the commit message,
+  as the 32-bit wrap can only shorten the lifetime, never extend it.
+- Clarified that oversized TTLs now saturate to INT_MAX jiffies instead.
+- Noted the build dependency on the SIP patch (1/2) for stable backports.
+
+v1: https://lore.kernel.org/all/20261104085925.773471-2-l1138897701@163.com/
+
+---
+ net/netfilter/nf_conntrack_h323_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/nf_conntrack_h323_main.c b/net/netfilter/nf_conntrack_h323_main.c
+index 4cb1665bba02..5e900037fa6f 100644
+--- a/net/netfilter/nf_conntrack_h323_main.c
++++ b/net/netfilter/nf_conntrack_h323_main.c
+@@ -1375,9 +1375,11 @@ static int process_rcf(struct sk_buff *skb, struct nf_conn *ct,
+ 	}
  
- 	/*
--	 * Create the rpciod thread and wait for it to start.
-+	 * Both workqueues are freezable so that no RPC is transmitted, and
-+	 * no connection is made, between taking a hibernation snapshot and
-+	 * powering off. Anything sent then changes the server's state but is
-+	 * missing from the image, and is forgotten when the image is restored.
- 	 */
--	wq = alloc_workqueue("rpciod", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
-+	wq = alloc_workqueue("rpciod",
-+			     WQ_MEM_RECLAIM | WQ_UNBOUND | WQ_FREEZABLE, 0);
- 	if (!wq)
- 		goto out_failed;
- 	rpciod_workqueue = wq;
--	wq = alloc_workqueue("xprtiod", WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-+	wq = alloc_workqueue("xprtiod",
-+			     WQ_UNBOUND | WQ_MEM_RECLAIM | WQ_FREEZABLE, 0);
- 	if (!wq)
- 		goto free_rpciod;
- 	xprtiod_workqueue = wq;
-
-base-commit: f66469d9905b39d2c260a15d7d6db450f4db67c1
+ 	if (info->timeout > 0) {
++		u32 timeout = nf_ct_secs_to_jiffies(info->timeout);
++
+ 		pr_debug("nf_ct_ras: set RAS connection timeout to "
+ 			 "%u seconds\n", info->timeout);
+-		nf_ct_refresh(ct, info->timeout * HZ);
++		nf_ct_refresh(ct, timeout);
+ 
+ 		/* Set expect timeout */
+ 		spin_lock_bh(&nf_conntrack_expect_lock);
+@@ -1388,8 +1390,7 @@ static int process_rcf(struct sk_buff *skb, struct nf_conn *ct,
+ 				 "timeout to %u seconds for",
+ 				 info->timeout);
+ 			nf_ct_dump_tuple(&exp->tuple);
+-			WRITE_ONCE(exp->timeout,
+-				   nfct_time_stamp + (info->timeout * HZ));
++			WRITE_ONCE(exp->timeout, nfct_time_stamp + timeout);
+ 		}
+ 		spin_unlock_bh(&nf_conntrack_expect_lock);
+ 	}
 -- 
-2.53.0
+2.25.1
 
