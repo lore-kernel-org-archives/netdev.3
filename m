@@ -1,55 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793975400;
-	b=nlPhieVm2Oa3Un2lPsXcNm4H6fqrBjOMdouv4FWEMobVh16vYCBR0OWIUeB8BmMnSGw3
-	 o7szTGHKYbjng/QbhmtFj3dNQuFWC6XINcxe3XfMnqRZtkto+XQo/Xjofx7zUfcbzzmL6
-	 1SWA7JXyIJfaXsxALu+xtWLJJVhKmUQ7lOifCsxBF/Zi4hvZM+VbaCmwU39YrVv7vZcVi
-	 c62O/IZ1d74Z4ctiGeBw8d8KDxBiWNEn42SF3pMysrlk5bmebhxN35uEWO9Rv6WMTqpoK
-	 zLmz4JoMkZL2WNTXE9TAiJEHDLJUvzseFJTOP3WpyjDDYx/m5VFs+Y+DbJTZHSDYhGg==
+	t=1793975626;
+	b=Z7c2hVuIBjcSvK6tHze21UzbNXrNQwRYF9S8sd5qgmNl4zvF5ZyD7sgsyuBSCdnmjVY0
+	 Hp/bUXCansnt/zILvVc4ibJGot6vh6Ymrv5iY6YNYDaQD4XKG5KrcWalb19nCU3adJ682
+	 yjN40tFwO39qfUrJ/17wF5o8oSIlqdXeUpJjS2bkhKOAvhZvb1qLJF7vWBLPDWl5061R7
+	 56/3ZJRWzI3K7607pFqhMF9E1Rfq8hW89dlPoFWcD6f7ufHBDEEseE1DLENtPyQKWzQKZ
+	 ZZSVcoZK7VQKMIv/uT8wLITK5y6+ExFKWX/Dz2Akp+CijXtk78HYYXRaYcVhaoeMlrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793975400;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Mime-Version:
-	 Content-Type:Date:Message-Id:From:To:Cc:Subject:X-Mailer:References:
-	 In-Reply-To:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:
-	 X-QQ-RECHKSPAM;
-	bh=vzMC/t7/9F/wHvk0dCiUSdp5ZVi9RLoAVmLD5Z32e+M=;
-	b=heix7A1/eNFeMYsxEPlL9leSSNjO6DkAcX+5dgogI0gxnoO+dFMI1vaiHVlPSAl1vUyV
-	 qnNtmMRMsLDxh02lW5uRhfYw4nYB8LRsNwJV8Cc9wEbb2fbyGpmMJnkjRn89JauTyf3DC
-	 W59X/W1KdtMi0q7lKor5QLMs8BPo1SAq8skZKeEGRYRWDrxtJiSywWYyfBlYJ+aFCrf0k
-	 ErQxtsY9njuiJEVcY3mxQD2ys5dy8ah/gssHXEJ4zpWUnhCjzhrtETKlMV7iJ9unDomfP
-	 4C+0sFYPbahbn2/ypjdERLvNrllWvRUkTBeEia9bLbHldIijju93mI8FRpHFPOAh7jw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793975626;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=wtqvUty3awL+WV2C4Bd+4jjQ8JiJNaHCJXSR0TJ5v3A=;
+	b=yQzm4CfK2F9ZYjA2mIbjoeprcosHEdNNYxr3L1jgrtO4GxgMaTdKcDgd0UTpHBltDfJa
+	 ztMhbK3nfnpX+vEilGUwKtzNysu0wPRgSa7R3ovGzSuvI4q085TzzJsYn04ZGMjOrkrzi
+	 2B771f91iFKJwlsDgj73cRdrR/U2oswgItNA35M+zz4FwbG/Tq3Sxup4bhnYVzKPWba98
+	 oL9SHgc72QDyZL+41/14kb8wJEyGeYJ861q0z2aSBx4lA9bsj/qqjbK7ewW0rOgmU7Ucy
+	 ahW+TYvzrjcpLWGapc/60DhflNyRrkyFs6k7kFbujgN43nKwnZt1fzyoQjFBqrrwkTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=linux.spacemit.com;
-	spf=none smtp.mailfrom=linux.spacemit.com;
-	dkim=pass header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=A1WzslVd;
-	arc=none smtp.remote-ip=54.254.200.128
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b2r2H5Bd;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCD6606A331;
-	Fri,  6 Nov 2026 14:29:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DCD6606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED22606A32C;
+	Fri,  6 Nov 2026 14:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=A1WzslVd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
-	s=mxsw2412; t=1793975344;
-	bh=vzMC/t7/9F/wHvk0dCiUSdp5ZVi9RLoAVmLD5Z32e+M=;
-	h=Mime-Version:Date:Message-Id:From:To:Subject;
-	b=A1WzslVdCUQ/WJRfgyBj3jhc6Lkume/x8blyh77ieCLwqzcI/nARd1gSrHWLm18ko
-	 jIHf/fMUK4r2wHT7dS+UWEwwJvRCFYQNW3A5gmk26iRRdFyNmWl4t02uHbsia69AkQ
-	 O5GrC29p8pB7S3kia/RQF0FYIUdlUCa4MI0Y/wPI=
-X-QQ-mid: zesmtpsz6t1793975342tfca03cd3
-X-QQ-Originating-IP: FXWx1J02SNiwq6D76KpE+jmmvOYqfA66DcWE0D9isCM=
-Received: from = ( [183.48.247.17])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 06 Nov 2026 22:29:00 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11635340926689287876
-EX-QQ-RecipientCnt: 20
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b2r2H5Bd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EA81F0089F;
+	Fri,  6 Nov 2026 14:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793975625;
+	bh=wtqvUty3awL+WV2C4Bd+4jjQ8JiJNaHCJXSR0TJ5v3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=b2r2H5BdxpXdgNiFxLfKLsliHD1aW/wDAEDaKEhpVM3EC5rk9Xr6npFA/IH2FuBji
+	 UDxYAgdQaJNICIZINw9Ilbfw8bLsyrsQzWp+NoPqhA/+jsoa6GKznm54YiNoZU+9oJ
+	 sKCs6bWl1EjHh98hGORYkKB0GcOkK/HjEQjgTReSqakMKK6efSYleyQ6zh8ZhPS7y0
+	 0wS9qzyBqM/XWz66nB/U7xvUJNcHVDCJop7XlyB7M2TSiH7wu9UstnvOKKmLIrUiaj
+	 f3Nh+j2TKg+aNrfLE9k32yn/pJAm68XoJQeSANboxqzmkjEzD0Fm3hpnEuFuKwhEfE
+	 9n14k2PzJGEaQ==
+Date: Fri, 6 Nov 2026 16:33:40 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 02/17] Input: serio - attach manual drivers through the
+ driver core
+Message-ID: <20261106143340.GL8298@unreal>
+References: <20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com>
+ <20261105-device-trust-core-v1-2-1e536825b4eb@nvidia.com>
+ <auy2plYVi723Qt42@google.com>
+ <20261105191940.GI8298@unreal>
+ <auzno3uoL5Pfojfl@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,99 +88,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: multipart/signed;
- boundary=2e4d8a39a2bea6f818a63b3ff9e25a3c00c3087051a22930243346653cb5;
- micalg=pgp-sha512; protocol="application/pgp-signature"
-Date: Fri, 06 Nov 2026 14:28:59 +0000
-Message-Id: <DMO76LFWHRFZ.1CQNNBZQE9X10@linux.spacemit.com>
-From: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>
-To: "Breno Leitao" <leitao@debian.org>, "Troy Mitchell"
- <troy.mitchell@linux.spacemit.com>
-Cc: "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, "Ali Tariq"
- <alitariq45892@gmail.com>, <netdev@vger.kernel.org>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Yixun Lan" <dlan@kernel.org>, "Vivian Wang"
- <wangruikang@iscas.ac.cn>, "Chukun Pan" <amadeus@jmu.edu.cn>, "Siddharth
- Vadapalli" <s-vadapalli@ti.com>, "Tomas Hlavacek" <tmshlvck@gmail.com>,
- "Muhammad Bilal" <meatuni001@gmail.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>, <linux-riscv@lists.infradead.org>,
- <spacemit@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
- emac_suspend()
-X-Mailer: aerc 0.21.0-reader-ipc4
-References: <20261105123441.2524171-1-alitariq45892@gmail.com>
- <auyG7hGJtMzV0Gbi@gmail.com>
- <6c36ec6d-5bc8-4ac3-8ad0-79eac7873b67@linux.dev>
- <DMO12HWY5N64.2IJ5XMUKM8WWR@linux.spacemit.com>
- <au2_yS85zJYqOaYm@gmail.com>
-In-Reply-To: <au2_yS85zJYqOaYm@gmail.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:linux.spacemit.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MeLso3b7zQmNLST0XqVNLyTWsfrX11Z1ePc5yBgFMtG6Jii4wFCUA08P
-	7iGs5Ucx6CvC7foE+P0Zb5lfTDmPaG1PBsvsMhYW0v/ENCoWZlhnwJXm4U8I9uiXJ/PEMaZ
-	k8FyAvoUp1/qgV971kTDIYKePrkaQ35xZ6RdBnfNCwF6mX3y3DP30OmcpcYsPBf1ON/NHzB
-	5qUWuFoOzHrTZZlVFQEeGlQzTeXPwUIVCxIwprQmwMQcNKtEaJ7S+5mdca4wwV0g6E0k4M9
-	04ggUgr6859hzudETy/mKWc2mEVLsBPodx5IUNQZ++SxxCswUkqpzdOUiseiU2l2W+hPgDR
-	BBahmOQM7JO0Cuonc0t4Ebo0fP5Fa2L62sUU5pVQ0vzsEI1mlSH/9BpnswGwuFqHLKOZest
-	3NjUOjL/ZXonkvq3p4fbE0UlY/jpgemH25xZU1foK+qWtNhKMd735BxiwpgsDuUkE6LW75U
-	QiE5GYOm7fDsIurH9vk1t0d/L5lSxssydvez0i1KGoEl6lxQIWr82Yqe199BCBKbrnG5aD3
-	X+Mwl49OaXnC2544rJteJCwHqTXyWb8Ftj8Ha8ktY5WYYJ083h79cY5BQRVCL0vTLn7rDZs
-	Q16lFu+mSw1K9wLewUqovbWIAVqeOxxkK1+7eRCdYUNUsdJz7InA4DJvD0PwhnBL7wZF3U5
-	s0usvguG2/PeTU6zRCbXmcBsm5rWLQbfVFF62JDwutk8HuTXJKkgRMLxmbPKwgquhSiwFAo
-	/CE5MZ1NkpwbITLW7GDxpNbHtX1z/IzLwq2+3fG59+E8+w2glitGex50D9x75l9v9ru2IIH
-	bR+OXtD6nqddxkeqli9CmtZmdM5fjV+Zw9vJLnyuhWItU9Tv71+k/vyhFTzirGATj8T9tLm
-	NJsCpOdeSgitIyyyCctH2kwKRltkt71M6nK6uqNpgJghWLbtloPBULiLLP20V9wcwY7AQ6G
-	+RhCw/rWreJxovNJ6y8KA9nT7Jp3WWZ0GzeG4+Md9pWU8pUOaNCCbE8PuIJ8sllmRMpJNDa
-	kmfJ3gb0bPr+P9DblJAw5IjzSpil5ap9QGc/xkqsg4WPxbePE7ORiugOnnnVaBQc9ncrRAP
-	R5Cf8XyR/GPkjdayTNpp27YRzBKEwCKGxqfkh2iM5HxwTu02eiMdYT7X67J/7cWdHD5RbrB
-	qaAYY6r9JTRXgfURGXAutRj5mQ==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auzno3uoL5Pfojfl@google.com>
 
---2e4d8a39a2bea6f818a63b3ff9e25a3c00c3087051a22930243346653cb5
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+On Thu, Nov 05, 2026 at 12:34:53PM -0800, Dmitry Torokhov wrote:
+> On Thu, Nov 05, 2026 at 09:19:40PM +0200, Leon Romanovsky wrote:
+> > On Thu, Nov 05, 2026 at 09:05:29AM -0800, Dmitry Torokhov wrote:
+> > > On Thu, Nov 05, 2026 at 01:42:15PM +0200, Leon Romanovsky wrote:
+> > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > > 
+> > > > Manual serio binding connects a driver before driver core can admit the
+> > > > device. A rejected binding therefore arrives after functional setup.
+> > > > 
+> > > > Keep the port ID check and use device_driver_attach() for the existing bus
+> > > > probe path. Driver core then serializes admission and handles probe failure
+> > > > before publishing the binding.
+> > > > 
+> > > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > > > ---
+> > > >  drivers/input/serio/serio.c | 24 +++---------------------
+> > > >  1 file changed, 3 insertions(+), 21 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/input/serio/serio.c b/drivers/input/serio/serio.c
+> > > > index 54dd26249b027..604440244c1ca 100644
+> > > > --- a/drivers/input/serio/serio.c
+> > > > +++ b/drivers/input/serio/serio.c
+> > > > @@ -81,28 +81,10 @@ static int serio_match_port(const struct serio_device_id *ids, struct serio *ser
+> > > >  
+> > > >  static int serio_bind_driver(struct serio *serio, struct serio_driver *drv)
+> > > >  {
+> > > > -	int error;
+> > > > -
+> > > > -	if (serio_match_port(drv->id_table, serio)) {
+> > > > -
+> > > > -		serio->dev.driver = &drv->driver;
+> > > > -		if (serio_connect_driver(serio, drv)) {
+> > > > -			serio->dev.driver = NULL;
+> > > > -			return -ENODEV;
+> > > > -		}
+> > > > +	if (!serio_match_port(drv->id_table, serio))
+> > > > +		return 0;
+> > > >  
+> > > > -		error = device_bind_driver(&serio->dev);
+> > > > -		if (error) {
+> > > > -			dev_warn(&serio->dev,
+> > > > -				 "device_bind_driver() failed for %s (%s) and %s, error: %d\n",
+> > > > -				 serio->phys, serio->name,
+> > > > -				 drv->description, error);
+> > > > -			serio_disconnect_driver(serio);
+> > > > -			serio->dev.driver = NULL;
+> > > > -			return error;
+> > > > -		}
+> > > > -	}
+> > > > -	return 0;
+> > > > +	return device_driver_attach(&drv->driver, &serio->dev);
+> > > 
+> > > I am not sure how safe it is, serio (and gameport) have pretty elaborate
+> > > structure and locking rules because they can recurse into themselves (to
+> > > support case of Synaptics touch-pads with pass-through PS/2 ports).
+> > > 
+> > > But this call is for user-initiated probing anyways, I am not sure if it
+> > > even needs "trust" handling.
+> > 
+> > This patch does not change the locking; the lock was already held on paths such
+> > as the rescan path. This change makes that explicit.
+> 
+> Does this enforce synchronous probing?
 
-On Fri Nov 6, 2026 at 11:54 AM GMT, Breno Leitao wrote:
-> On Fri, Nov 06, 2026 at 09:41:31AM +0000, Troy Mitchell wrote:
->> On Thu, 5 Nov 2026 23:28:31 +0100, Vadim Fedorenko wrote:
->> > > This would work, but I am wondering if it would be possible to call
->> > > rtnl inside the _open function, when dealing with the PHY? in other
->> > > words, shrink the time rtnl is held.
->> >
->> > +1, especially in emac_open() rtnl is needed only in error path case
->>=20
->> emac_open() and emac_stop() are also the driver's .ndo_open and
->> .ndo_stop, which the core already calls with RTNL held, see
->> Documentation/networking/netdevices.rst +214. Taking rtnl_lock()
->> inside them would deadlock on every open and close, so the lock has to
->> stay in the PM callbacks.
->
-> That makes sense to me.
->
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-This tag is deprecated. Version 2 will use a different approach [1]
+No, it ensures that a device is bound to only one driver at a time,
+without races.
 
-Link: https://lore.kernel.org/all/c55c5878-d9c1-4863-bc55-99d334ba2ede@gmai=
-l.com/ [1]
+> 
+> Anyway, I would like to get rid of this special probing in serio core.
+> Given that the code path is only triggered by explicit user request I do
+> not believe we need to worry about supporting trust notion here, so
+> please drop it from the series.
 
+Technically, this is exactly the flow we should be concerned about. Users
+attempting to load the driver generally don't know whether their device is
+trusted; attestation software is responsible for determining that. I modified
+serio to ensure that driver attachment happens under the driver core lock.
 
---=20
-Troy Mitchell
+One idea I had over the weekend was to introduce a special API for driver
+attachment that says, "I don't care." It would allow attachment only in
+"full" mode, as it does now, and fail in any other trust mode.
 
-
---2e4d8a39a2bea6f818a63b3ff9e25a3c00c3087051a22930243346653cb5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJcEABYKAD8WIQSL4Ay2cExaPXAQcU2YCe+A+TM0LwUCau3kKyEcdHJveS5taXRj
-aGVsbEBsaW51eC5zcGFjZW1pdC5jb20ACgkQmAnvgPkzNC8XngEAvtzBFhWPFmid
-I0DRo4WtvPrX94+31sqkjSWGVgnTIfgBAOgNph85ce2o+93QlLRtOrPDaCJBz/OQ
-/EOLlRcW7+EO
-=qdeh
------END PGP SIGNATURE-----
-
---2e4d8a39a2bea6f818a63b3ff9e25a3c00c3087051a22930243346653cb5--
+Thanks.
+> 
+> Thanks.
+> 
+> -- 
+> Dmitry
+> 
