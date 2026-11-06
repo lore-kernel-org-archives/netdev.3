@@ -1,104 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793933500;
-	b=lYl4El0MvQGN6/mYo7miMH6syyPiincMaFKdbKnY5Q2MR5UrMJl5LDK4gOXtXhvMiMAn
-	 7oh42Yc5CpxftGyy6I5LEI3SZAqC6UnOTeMPPUGYS6EAJ/dY5f5s9ODpQ5vHDDCLfzYAC
-	 J9iwJk88O7O1tO30elmY0v3vdICTYxqr7Pa77KaK1ebtGEpV7MICzyRji0ho5uqDLNKzO
-	 wJ7Kai45PcsepUZjGooY+ECUbX7l2rls9Y9D70sGn5cHLNuvu8KBcnQLAyVrvdZLaJY57
-	 i7BlVb1AkWO2fa8WFP9Ny74K10DQPnY4QQqCHhEJWS/djxAfEV1WkZBHxBn/lPvL12A==
+	t=1793934091;
+	b=2zlAS1m+VgqVWnqkZO+j4mpq+kU2O2FVnotY3wFiTIxVCsJEQyArcglazC2IKG6Zqljn
+	 kEuKQ8u+Asb/VMPre5WTo6yN+GYWD0cf19m8xhS7mShH3rAz/T1k5JN2lUhQc31tBVer4
+	 PLNHAwYw+0TuFQC7Yelmfq7o2Ss4pc1rFQlyYIAeFX4zyYhPWBxxeyyMIqXEen/ooYsS4
+	 VsoDCFoHelZWMBmMIXiEjpDJyEZfQ078jd/V9Wt1EFcHg6dw6hl5Cf7LxiBO/tgG3vUU+
+	 JPIdUbgUkDkU7kOgNfDmFM5R+vIQ7Kcy+WXvRO2bXX08obQkWVziP6T8XCcQGetR4pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793933500;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793934091;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=C4YKO6ifCvG670/AtfKy+sKSzMH1iQMMQOHq83vJaQY=;
-	b=GG9vLvY3c8yZHM3y/s7smCTLzd2OtEJnSt5+r5SXK9M966hxwWVbTnT44MxkMXtsoRLa
-	 vk/EVNMmV3gOGBjMxop33XTQsYCQikENyFqUH3UqftSTSJHSmYWDlHyui1F/d8Fnq70NX
-	 sKo7NDezS22dlSPsVPYZL/gBTKpRCMfx22ji6qzHIQYiDHojhVbcxAC8WDRcXTVcbuFKP
-	 oTfQa3WUElFr//sswM/h0anyRQefqoOfzVZjrTNfdHLWR8NnstLjUREOG297aQyKv0bxB
-	 LKMZGjEWMigWyd+tKLBlasrmeh9fba4DPVsry2fuCNS4pdu4LtUsC8L/Xmr3qRzsJcw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=t6aRulHNXUeC2tlehsSj6ODcF0+cJ04EmVwTbLYgrmk=;
+	b=FLyiYEaZlukk6TgW2aFZtcWMYFD2YKbPiYR61loMKpxLE4vmq26xwjhsRCtA9uCEBzZt
+	 ObYEs5G+YPSPdMG6wZi9GTblpkNFOkpCgYLu0qr7mSIuAIuljHRPIFQVxN6pktFEk0f+V
+	 ctb4G0nuoWkyhEibSdYQDmnBL23jwmbzUzX1opfibuQd5pcNErwi8PwsHpfcNE2lLvY63
+	 zCRlm1dRcWesgh4wNIObLch2J/nvykrN4x8w7LrDJOY7cA0tueGsEvSrhUG8zyjAa5VVC
+	 eXQJtpFymTgxgNWtpzQFQi7sXlV1mrthiDppFKaj7R5Uqo4YS9deFeCzZW21VL/Kheg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xhFcBwWj;
-	arc=none smtp.remote-ip=209.85.217.47
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JCl4Gfy0;
+	arc=none smtp.remote-ip=209.85.217.44
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BF2606A31B
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 02:51:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4BF2606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D07606A32C
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 03:01:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84D07606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xhFcBwWj
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-77bf892b496so83098137.0
-        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 18:51:39 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JCl4Gfy0
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-7777fa8f1ccso58880137.3
+        for <netdev@vger.kernel.org>; Thu, 05 Nov 2026 19:01:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793933499; x=1794538299; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793934090; x=1794538890; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=C4YKO6ifCvG670/AtfKy+sKSzMH1iQMMQOHq83vJaQY=;
-        b=xhFcBwWjS4HqafxaONQ7+8hoecwIizKVadRymVGlIE2lGD1bXqih5Wexq0npneCZ/t
-         E+yxAyS/ApEV1zvgakQ0d4r2cREz4SCssltufK98oeIheG91vDtvayGZfIYOqtviVEyW
-         EjMWl+v0xLSMyi/XBftGgfCiWfKpPEunloijI2b1Fyraku4fJm2UjKDmfPT2InTImthv
-         2hATAPOFyFtqYF+paljdZ1K4cZNvpXZZEm0JcM5aagBt+WUv2JBaIL+H3J8XKu2E1i6P
-         IlScCKiZORvOQ7Wr+vdedsjvweHf5kJAiflrOWyiLzLVlyGrXfJknikZG37Z/8aEvp86
-         8Nig==
+        bh=t6aRulHNXUeC2tlehsSj6ODcF0+cJ04EmVwTbLYgrmk=;
+        b=JCl4Gfy0EBXXqrT5LV6qnfQdzP0zEsd279x8qeNp9xw1/cvvvBRYQcDjrC6GVeX8h/
+         jfNkCTg3MZ5RUsyP2iQuXxG4os7zuN8QwX7y81S6xL7pSjyoZk6R8TkaCu9hAu5Ei2Mh
+         ZYkL52QTJfBup6LDoFjp90Hjg/RUnODdQXlU4YnyTkPTvCix/uDocjDzixnymYooFjcG
+         mITLgCR0CeXhXzH+uQTVkTtGwBXuEg/5MeuLoAFtpR+R2QCNGMLBO2V/+KSn6tW80Y+t
+         z+0aKEtK5SqkEXHYzQKScdpOb75WveqS3Wg+sjB4Bw2zM0KWOR9c4WxkJOWS2cosEbUx
+         d+dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793933499; x=1794538299;
+        d=1e100.net; s=20260707; t=1793934090; x=1794538890;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C4YKO6ifCvG670/AtfKy+sKSzMH1iQMMQOHq83vJaQY=;
-        b=AL+X2xjabsXKVWXGl0woSiyzZKjAGccVscK5HrVbCVFqsKPY/8fJ65ftdQ7IqviSy+
-         o68c4Pm1WcHKCQK25PADi01IZJf0PJQy0TT9kbGsKVUcLJmYfkYT10KPjv92o2l7laFQ
-         c+s3f7h3b+4Dc2w+R03T/QqpsMYQyxHp5IRDndN8Rys/X7Ekd+eLfJV9UOXfA9wG5M8A
-         3TpH5pbGSPrZVsXd+etNIRwdehctMNBQdHro94KzTm/s3WzblhWCSi/2rWN4Y41f7mFD
-         vUMYJwbb45FKs78XPtQfsgLky3j1eOUjo8Cp7GGt61eLq0WjivDONeMVvtiEV2lwyLbs
-         1lmg==
-X-Forwarded-Encrypted: i=1; AKwUvBzBDFjAiM4nzACjZi14VOZoAdIJEo+WQ/FrCvbAvg8yUnW4W9MaL3zOMRDeT2U38g+nqXkEcxc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/a0SkPNDqSYAxxcNRC4IcaLQCqJ8XgRfo1aaEY2LvHRXso0pQs
-	nqtrHJo+rZrmYtSKrDCXBEcIzXqarxV2tsyN/Z2mTzIRCe+eNbMHe09Y
-X-Gm-Gg: AYBFou1INZW7aqlXYYN9wL8i6songmtehODeyx1eCJ/0mMQ4Hckj1F7vWpnLUT0+t8e
-	HqUYmXkfrkM/8kipCL9/P2ReEyZ7Jl58Mvj1YXJO0lJ4Uz09S5eKtVWRbqlhC62GY6tOMgzHUfl
-	4g04XbBs3SQNrTfjc/h9ni6whLi+N28DLQYhcA5Xv2Ety+i5uhyGTZ+xcxz/HeuP8NETFXALnD6
-	vqFZhj6V+RaoeUywHr+yf0r5Y0JbnP0cJ6tPC6uWVOnsFcZOzJ36Oy+gGrLFiZMgKxeJEgp8rho
-	UTv7sfMjs7RkOsTkXeXI4BJle/eLHKhmDUr17GrwRsYGzfVkEKgElzh92ToLITlaMhVN1ZGae48
-	OcowwhNvONkV0L0EBUsJTXjw77QP4MAfYcH/mlMv+f93gIusCyAhB4qj3T/MhiHK8XHKPvVrPfj
-	wiN1X6qrtcKSk+4Blaz2Cl7lv2SZEf5Ng0Ic4ioE3rOPOz5nDvaGGLhZmYcbcmSkr2y0JN3Ldb3
-	WqUDI2aMNYmInPWROGTTdjbVyDlWNIBWW8leThtEwBfV80XGkQXeNJhrQI1vDr56/k3ExyHWmkW
-	u/dCHGqh2hI/Z5KsdBUoeunZPHhKzRAR21zyazk+6V96mU+c8xKMCHGkVqpwYw6qcNLpZOWxXtR
-	M0Q6TpH/uTbvTHNKu5ZoPRMXwP+waejksugYzXSNJEBJVD4qPvRY5N2aYWfeDMzq1pAh0+dY=
-X-Received: by 2002:a05:6102:dc9:b0:7cc:9d82:ae17 with SMTP id ada2fe7eead31-7d2a1521b83mr797725137.11.1793933498749;
-        Thu, 05 Nov 2026 18:51:38 -0800 (PST)
+        bh=t6aRulHNXUeC2tlehsSj6ODcF0+cJ04EmVwTbLYgrmk=;
+        b=iRqA6X8ZR6/J+WcqoXjaWKwU1afBl+3bNAmaeWTo1p36bRSjJBQaZbZ3v/FHZw3Hog
+         1dBcalRyvspVXLMjpczzWdE9q0P4xAoRo3XTrFgRByVw66nfVNo7AaZTRenu46CUdmDp
+         U6XFckEwjwd9VLyK6SmyVe3sZtWEqM7+WQSGRv6Jk0qeTvZzMpJVrZ1GU1h+2iwYe1lN
+         Aw12dJJuWUFqBs9A6/sUmxq8atzLA8WKcSVfe3FME3vwGPeR0QU+5SX9cqGwZYP6uJIh
+         SvE+N1MHufcsRTbnwrtHbpi6HwaQfVXn7of6V0PM6CxVTHC3I+Xht5bbeeZqcqp2yO1j
+         sCoQ==
+X-Gm-Message-State: APuU4Z+fI9V15gRc9DVV/ibM1l5OyQ6uTLWSRGOxfHDg1IjKl4+3DCsW
+	qOzSAJ5AOs0mCXFa8/0n/gnZF8LlVEEAfiPQ65lG0Luz1PLZapUvf+H7bX4w1A==
+X-Gm-Gg: AYBFou0lG5jIchS6+uH7H3CY0H7x3a+QkX0fbn6Bzemm9vsIVJboRDLFfxkMk4YOttV
+	ELBpqxED+fbJWa/rpTWzYLT5Niqs8Fv6RIswlC+QOhQFQj1lWitH+05UbLZPMgnom5z/U1xDFwp
+	EidTeQklpGUAwmVdz5k98fpCVfRU84XNdKAPBSqNs8H2QPyZSUnM7je0FfnLeciOUhPuLSSanMF
+	xJDB1BBRZqrtpKnR3zT/NdNB1FflB/gS+Xb5NGJ6dsy7mY6daA3hpgLap/FcYeFXpgBNU2iSmu5
+	wzWJTylhsWdHZyTItqMeAlesrvzjYJe7OfCzARjLcKZZ3b0sRKms9Y5uzINQOZ6AveFYNC57E45
+	k1ks5QjWz7Y3CP4Aqr3G9BuuTyY753Ei8d4X5LgP1yKGjisyMIshTlPEF7FBChy/2ycFx95j73F
+	71riDt6sJzp+8vVSF2tEwJczgGm9x/P7ftPE7j/tvohSgGnccfiMDAt3+N8VZFu+MeXV17vnlX/
+	h5m4pTBQ0byIR+snxvU56JgKk3IBwVhaGm//TI3g3beRFPXSsCRh25ciFRzI98h1zy4CfFAj6N3
+	TKG+JarxzYUTiGDIOTUjdA8KUjYT3gzKHpkr0YLfcqDaCiAYBU6NujMNYXoWGHN/iU5eLoiF689
+	5JkGYzxXr2MtritWsBwoIBTojV4z0cDiz5YDSVdIL9/eJdItca6H9hzxEEQ5bkyrv43k6Htk=
+X-Received: by 2002:a05:6102:160c:b0:7cb:288a:b66d with SMTP id ada2fe7eead31-7d2a15989e3mr838027137.20.1793934090385;
+        Thu, 05 Nov 2026 19:01:30 -0800 (PST)
 Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99bab48abe0sm864033241.2.2026.11.05.18.51.37
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99baea8e48csm854885241.10.2026.11.05.19.01.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 18:51:37 -0800 (PST)
-Date: Thu, 05 Nov 2026 21:51:37 -0500
+        Thu, 05 Nov 2026 19:01:29 -0800 (PST)
+Date: Thu, 05 Nov 2026 22:01:29 -0500
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: =?UTF-8?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1PlronlhajlhazlhbHpgq7nrrEp?= <tencentos_secure@tencent.com>, 
- netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Steffen Klassert <klassert@kernel.org>, 
- steffen.klassert@secunet.com, 
- Eric Dumazet <edumazet@kernel.org>
-Message-ID: <willemdebruijn.kernel.20f8423db92c4@gmail.com>
-In-Reply-To: <306E09760B4212AC+ipv4.6d58afc075934322860394a26ceaa2e8.2@tencent.com>
-References: <ipv4.6d58afc075934322860394a26ceaa2e8.0@tencent.com>
- <306E09760B4212AC+ipv4.6d58afc075934322860394a26ceaa2e8.2@tencent.com>
-Subject: Re: [PATCH net v2 2/2] net/ipv4: reject appends with negative
- fragment copy
+To: Xia Yan <yanxia@cmss.chinamobile.com>, 
+ willemdebruijn.kernel@gmail.com, 
+ netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, 
+ dsahern@kernel.org, 
+ idosch@nvidia.com, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ yana06070@163.com, 
+ shuah@kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ willemb@google.com, 
+ tpluszz77@gmail.com
+Message-ID: <willemdebruijn.kernel.1e8c4e152eca9@gmail.com>
+In-Reply-To: <20261106021245.246267-1-yanxia@cmss.chinamobile.com>
+References: <20261104092240.15649-1-yanxia@cmss.chinamobile.com>
+ <179387153949.488856.16266299848614841295@kernel.org>
+ <20261106021245.246267-1-yanxia@cmss.chinamobile.com>
+Subject: Re: [PATCH net v2 1/2] ipv6: fix cached route reuse for SO_MARK
+ control messages
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,86 +117,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-tencentos_secure(TencentOS=E5=AE=89=E5=85=A8=E5=85=AC=E5=85=B1=E9=82=AE=E7=
-=AE=B1) wrote:
-> __ip_append_data() caps datalen at maxfraglen - fragheaderlen when more=
+Xia Yan wrote:
+> Hi,
+> 
+> Thanks for the review. v2 fixes SO_MARK sends, including the concurrent
+> sk_mark case that came up during the v1 review. Sends without an SO_MARK
+> cmsg keep the current behavior.
+> 
+> Willem, you also raised the flowlabel and dscp cases in the v1 review:
+> https://lore.kernel.org/netdev/willemdebruijn.kernel.6ba984cf38a@gmail.com/
+> 
+> I'd like to keep the SO_MARK fix targeted at net and handle the
+> remaining cache issues separately in net-next. Does that split make
+> sense to you?
 
-> fragments are needed, and later computes
-> =
+Agreed that those additional concerns should not block this patch.
 
-> 	copy =3D datalen - transhdrlen - fraggap - pagedlen;
-> =
-
-> If transhdrlen + fraggap exceeds datalen, copy goes negative in the
-> non-paged allocation branches, where pagedlen is zero, invalidating
-> the offset/length accounting. In the paged allocation branch,
-> pagedlen =3D datalen - transhdrlen - fraggap wraps unsigned instead.
-> The subsequent copy calculation cancels to zero, so checking copy
-> alone does not catch this invalid fragment geometry.
-> =
-
-> This is reachable independently of the xfrm fraggap bug fixed by the
-> preceding patch. icmp_timestamp() passes a 20-byte transport header.
-> With a small MTU and IPv4 options, the capped datalen can be smaller
-> than that header even when fraggap is zero. The negative copy then
-> propagates a negative offset into icmp_glue_bits(), and a timestamp
-> reply with corrupted timestamp fields can be emitted.
-> =
-
-> For example, with MTU 68 and 40 bytes of IPv4 options, fragheaderlen
-> is 60, maxfraglen is 68, datalen is capped at 8, and fraggap is zero,
-> so the 20-byte transport header cannot fit.
-> =
-
-> Reject this geometry before allocation with -EINVAL, covering all three=
-
-> alloclen branches and matching the existing __ip6_append_data() guard.
-> A negative copy cannot produce a valid append, so this does not reject =
-a
-> send that could otherwise construct a correct packet. All callers flush=
-
-> the cork on append error, and returning -EINVAL in mid-cork state alrea=
-dy
-> happens in this function (MSG_ZEROCOPY ubuf mismatch).
-> =
-
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Anakin Zhang <tencentos_secure@tencent.com>
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-> ---
-> v2:
-> - Document the independently reachable ICMP Timestamp corruption path.
-> - Distinguish negative copy in non-paged allocation branches from
->   unsigned pagedlen wrap in the paged allocation branch.
-> - Update the subject and Fixes tag accordingly.
-> - Drop the unrelated xfrm Reported-by tag; no code changes.
-> =
-
->  net/ipv4/ip_output.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> =
-
-> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-> index b84d56c..5db8b06 100644
-> --- a/net/ipv4/ip_output.c
-> +++ b/net/ipv4/ip_output.c
-> @@ -1105,6 +1105,11 @@ alloc_new_skb:
->  			fraglen =3D datalen + fragheaderlen;
->  			pagedlen =3D 0;
->  =
-
-> +			if (unlikely(transhdrlen + fraggap > datalen)) {
-> +				err =3D -EINVAL;
-
-nit: EMSGSIZE might be better
-
-> +				goto error;
-> +			}
-> +
+Are they net-next material, or similar bugs and thus also net?
+ 
+> I'll wait for your feedback on the scope before posting v3.
+> 
+> v3 will also add a fwmark 0/0xffffffff prohibit rule to the
+> connected-socket selftest, so reusing the cached route instead of doing
+> a fresh lookup fails the explicit-zero cases.
+> 
+> Thanks,
+> Xia Yan
+> 
+> pw-bot: cr
+> 
+> 
 
 
