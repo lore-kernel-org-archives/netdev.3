@@ -1,49 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793958023;
-	b=abZVx7deO9josr7CLKJ13/q6AMNbdzeBSO5BvqkN/HLGgXnyofuC+HIicvBFoaVbBzPk
-	 BJNb6OSiDbJLkbo53+XEpChuZ1tYkI+9VA1YtrQ2pOg+1PPNl68pr6n/5Wr2sp6PkKZmB
-	 DhWXqrOIxsUSI1JyOkcou3u9I0DorkZ6p74ekbDmFeP6ByojS0VKRVLVRtxyODzwx5lP7
-	 lNXtIn4eLW4nYXH6F1bXdjJa3eqKtcgCIuONoKDQi/szIe0tbv7QksKotUWE50fKG/L72
-	 LWmErkohWFNPHLMMHAg0fO9vRHzxUeE2PFofts+OzGpkic7PiqmBeuYoA3zRk5eZzPA==
+	t=1793958063;
+	b=bzVAqdEWcAGep631JzlVc/b15eup9eTo8fPL5KKI9F8wb7bQSZ8JadamZR9X2uWfcIXF
+	 +xGOYXZZ++4h9Gc190i2jhIKJTwx4jADFc3THrFGiH0tnSJd+S2ti8mMPH2RVugiif7bS
+	 6iqO2aEVxYMBVJpn2MsLYACQ3B/b7UfVY4mNArt69hAa+iyKDA7scWqaGfl01AyAXKW74
+	 MmI+UfNF1o/UuugCiE4Gzh16Ym02dZz4cPePsdVboPT4m5ODAGQgE80dNKkNKIT7SwWdC
+	 Srye501LH1zA57G2kXQWqeIMHzOjvFRd2qjUE/yPCWy9Sm+OwHkK8YbhNnjcz2AIPDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793958023;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=VJy/31DrL9o7BAtBd/bUoeYF+vPcq5nyrybnUYKjAG8=;
-	b=ZdNoY8iXc9ubwgGcnF1BUljGZ2sSPAfeBTP46LUvulEGd8UaCO0CeN7ikyziMkyiy9vX
-	 XNzdz7spTJ2VxkN3GStqgw5mjARjK/R6a3EKXQ3p2zNkTQqFNIGv9gfWFDtDB/KLTJIt7
-	 mBGfFm2mMoLSjR1P8jY7YW8IvnHAKHjnBIBcCn6ciuenrjRd2LEJzD/jWX0/aOfVLxZK0
-	 BsCwSFRrKwJKY17oaD0Yda8q9f5eU4SLUYU5EvfKJfKY/cDsCoawsxbfTd8LicKyxOvO5
-	 7DPU8oEucFqLvjas9vB9MiOuZe/2eEsWqIxBB1zSWYkPrStSvBgYpkvr3a36Rs1ARvg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793958063;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=sDfhFOPZ3KM2MaWTWl2qG7+3UHWyhGCSTPMLXUGyVC4=;
+	b=TmJ18JeRWXF58Z25KTH7pk570rk1MstPwy1IVt/Dc/8sj/I7Ua9l0Akl4MKCzx9oiooR
+	 9I2+BCIumJnPrVw1+VvrHePCYkY+2IKWXpusULzgvmYsn66hQyYBAmGLo315Z3hEXRViv
+	 iBUh39IPBEjOiKLV2wA8gSKpNCg/0+lr4p07o+zC1flkBWb+glU6xmT4IirEGFoNj0feX
+	 FS0IILi6dYSrLp0LNM0Ze/mr5VYHdf7x3ulng1FfUGG4/fxiMvvn4ZDLKXwaAjDgKjjTn
+	 owhv67lPFtMcu+t+DGlHSncAPF5iYwNjxzSTpjZ8t/hji3Lu1HIRO8En9ykjNLenwyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyCDJDu6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=EhBIwCaL;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE9C606A920
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C92606A32F;
+	Fri,  6 Nov 2026 09:41:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0C92606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CyCDJDu6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505431F0089F;
-	Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793958022;
-	bh=VJy/31DrL9o7BAtBd/bUoeYF+vPcq5nyrybnUYKjAG8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CyCDJDu64khWqNvki1ZO1K7A5zpbPWM+PYeIVV9vCqA2qfRqgqdethRzgSJnt8NIF
-	 6U5hfF43t6oxRoElI4V9E8+35dHay2049pdQ4U5eZZD5LYZY2TdlIRJm5s4EQKk2H3
-	 sOgoY+EJOCPVPKACP9BmyOrTWmiR8aGj3erhpfTdFHntUiMtftVJvrd4how8dab5IO
-	 jG5zmgaw8ySHN1bpIEkuIFo2x0HDmrfb3ZVm3Q4FCe/EtefZgEA4erLx5KwepjGUMk
-	 Fglhx9RXIPKQMOblgHlcvwfeR8/uTtlWqjBAjUM9HdsCf+k65/bqxt2Y2IUTjA752R
-	 0MVA+nhn0Rx9w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 45E9F392447B;
-	Fri,  6 Nov 2026 09:40:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=EhBIwCaL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793958062; x=1825494062;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CtjNrr0lV4K9AM7eEJ1v2UHLIwBoHkxGF4hGdBTO3p4=;
+  b=EhBIwCaLlJblGfi55TV/PH0nhLXxrX8AmSRHjnAbRDPTsZtI04uzhcvy
+   syqu5H2cKIwk5z6Qe+9Ui4/O6GBdpLPh72E6Lr3w5Mz9Skt80BGQkKYIH
+   qBP6Tdj1g1CkKCPPWc69rQ6sAO/SU9UG0aYiZtw1+Ua0E7+/JAyaMyA14
+   lv5D48fWjd8a5IzM/EFZVnfJdg1Ad7vldNFGBKFL3N22+VTiSxfZTTsr1
+   Y/8gG2KCd4WcZ91nz9GuE15k2f0FmZT/dfm4wWAVsSAT15ZiyLXvZdmmt
+   ig9lyEM4mWIw0tL1V4keGE8oIQrMM5ccuZD2HElxMsYqpK8DhPyBrEvMn
+   A==;
+X-CSE-ConnectionGUID: T9DjPCwITs2p8rbRmW24jg==
+X-CSE-MsgGUID: GRg268VCR9SZiv4y+/lP1w==
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="233190422"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 02:40:55 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Fri, 6 Nov 2026 02:40:55 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 6 Nov 2026 02:40:53 -0700
+Date: Fri, 6 Nov 2026 10:40:52 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Florian Fainelli <f.fainelli@gmail.com>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, open list
+	<linux-kernel@vger.kernel.org>, <macro@orcam.me.uk>
+Subject: Re: [PATCH net-next 1/3] net: sb1250-mac: Add ethtool link settings
+ support
+Message-ID: <20261106094052.ryeppkdb7otdmjko@DEN-DL-M70577>
+References: <20261105193435.2050321-1-f.fainelli@gmail.com>
+ <20261105193435.2050321-2-f.fainelli@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,41 +82,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179395802105.491229.7639452799219614935.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 09:40:21 +0000
-References: <20261030111528.2850082-1-edumazet@kernel.org>
-In-Reply-To: <20261030111528.2850082-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
- netdev@vger.kernel.org, mason@kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261105193435.2050321-2-f.fainelli@gmail.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 30 Oct 2026 12:15:28 +0100 you wrote:
-> snd_cwnd has no practical upper bound: snd_cwnd_clamp defaults to ~0,
-> and RTAX_INITCWND, a locked RTAX_CWND metric, TCP_BPF_IW and
-> TCP_BPF_SNDCWND_CLAMP accept any positive value.
+> The driver connects to its PHY through phylib, but does not provide
+> ethtool operations. As a result, ethtool cannot report or configure the
+> link settings.
 > 
-> Congestion control modules do u32 arithmetic on cwnd that assumes
-> much smaller values. For instance, ssthresh() handlers compute:
+> Use the phylib get_link_ksettings and set_link_ksettings helpers, and
+> provide ethtool_op_get_link for carrier reporting. The helpers return
+> -ENODEV when the PHY is not attached, as the driver attaches it when
+> the interface is opened and disconnects it when the interface is closed.
 > 
-> [...]
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
 
-Here is the summary with links:
-  - [v2,net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
-    https://git.kernel.org/netdev/net/c/475ff14ba558
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
