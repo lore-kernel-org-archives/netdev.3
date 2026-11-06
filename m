@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794005411;
-	b=yL+hcBTnTYaK20+TWR2ruDSJ74MTgS19C0cuUfn+TH4z3ucac6uAbsdbkvpfDdG9UoK+
-	 fHvnRTu0p7+EvHux+p07EqP4VEMoXHmtHOXBUvXznZHnQZNhZZbVzjbmZtEDXK1FVOznb
-	 CXHSL9DTRvu3a2TJFSECAAWvwxT1WooSV4G5IpdhN/FkNSIZzLa9GZk5Ym2L3Cl99rxJg
-	 +ylhJjIAH/BLw+8Sa+KoiAqKeiKbqv33P+LoeU06tz7IhkXp6cR/Ti4Jo+Eiaq0XllWWN
-	 XG9FFd2F7nFhaz8Us5wDtPVhF9t7oz8YjqNv/LZkloEZd/BKxvVdzhYANlwJpNctykw==
+	t=1794005422;
+	b=2y4SEttouDBgSIShHp46QLT+10sTHk5WlYoS5JJwVjdc0z/f8GrJCHkw/71i0iytFIYL
+	 6gm6I0X2hHm6vYDnAZSFCqncuJxLumML6JLnIWrPdMvZ5oUjhGuZtW+PWZIlDwkxQCkPz
+	 Q4964/5pCtt1Ddv7XsW2CXtMvRi1i4mOF7OLet/qPg8ARpeNQZtMe/DXmLAJgL2Y5SjR4
+	 H9zUdCbjoZvXC549u/lBBzHh3VUzwRhOWPHuA2o6sUFRqmo+npA62/z8CsxTtfKUcyUM7
+	 g/SkVHIcDoRZ7Q6uSVeqlI0QxhGlNiO6W0+AS/BZqdY0/0kj4x3EAD2SDjdGJoaqG3A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794005411;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794005422;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=yjIkLHTE6zm8xxbw2Bckbdu3f+EsG+gHBYzTg0WRdpY=;
-	b=ts6xj+WrpE4M5MSHdmMIKVc0lo4ar7YyRKbX39jh0yB5iBmoq5ZXPnvlD+azrncnv9LX
-	 MHzSXigxTapF2HLklMHbePXkgTcFEgDPvEgKIAe8kQC9J7ikO7Aq6O/uiYPGbGhyhRVu3
-	 9NGB+TI6hffekhYxr5mk14nCGwaDk4LvYiH0zr1qsvCsArJslLKj543wxc3k3KhTtr5to
-	 q0rtqkINmaITSlfo8VDKpVcZkqs/FMNB2BW2M3+Cu51EXn9qV1x1eXav3ZYzVp7S7XzxX
-	 x3VO5/qJGFfvbj34hJx8LR5wVbNMN+MJyjK9QELAakDaj2CzDUq9gx6BeIpFAClNgoQ==
+	bh=kfk7ZCeGci9OiZ4Iwnox2bUeO0HWUEyxyZkWqW52+rg=;
+	b=Bcy6gytpmsoBIjkGki7Qju/qEwaT4Ju5sFuYnrwKcZjr4EtoO6KN3efwuu5BDNaaInJq
+	 REYaoJ0fMvyohly0WmpihPgG1/XJsjct4h7ZGO+X4y5GMWfYXhQNr/2up92286UwLpe9K
+	 ifIqD9PFBxjRKVD4ltxji3a9mpk8q1KdkDhEJwH6fmlqEIFPpcvuym/ug1WvWEW+f9C67
+	 Rt1rvtzM4Aip+5AOhzg0t+20ucXWrkiE234EXqV5m+G8jK5gwBZpEyGFtA4aM8abbHWSL
+	 4zQa8ZOQqym0JcJ2+9MVLtqDnp8qhzByGajICELx5Ic3x+PsQ42L6xkXsUrx5Rp/1Eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JnnZKtOZ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QuHTDkB1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933A6606D808;
-	Fri,  6 Nov 2026 22:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D351E606D82C;
+	Fri,  6 Nov 2026 22:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JnnZKtOZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5081F008A3;
-	Fri,  6 Nov 2026 22:50:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QuHTDkB1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34CA1F0089F;
+	Fri,  6 Nov 2026 22:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794005411;
-	bh=yjIkLHTE6zm8xxbw2Bckbdu3f+EsG+gHBYzTg0WRdpY=;
+	s=k20260515; t=1794005421;
+	bh=kfk7ZCeGci9OiZ4Iwnox2bUeO0HWUEyxyZkWqW52+rg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JnnZKtOZa3/cfMh3iYVX2tVx7OSygnq/Nhp2l+r+pWabLmQa2Y/or1MT3oJVSC4Ro
-	 shWimEUReWgSm0dOQhUgYd13ajHakbdMV47aYDArGgLjwhkTqGc+hcxNxGEul5EPMT
-	 D33xC6SpuWjLZdeJ/hQ8GKisZLWpdxs7pj4LleHSXAOnxv16tBCz3LGskmcJTgrdhL
-	 kIA0KwSI6/aKJm6W00iyOUsg3WPXFsCY3Q5qpnPZ0SS3zejLasxuPpDWMnvr+Xdb1G
-	 1zaCUZTg11IHUgn1HyYhE6g+HdYktNj5eFUCp9cm3yqHX4IxGNQkHAVzcRuLoID+3O
-	 +sGF866hkRxrQ==
+	b=QuHTDkB1rPmNCeKinmT6V4pcTANj/cHiq/0X0FpkAC4yxX7snJoOSaj2lZzP+pwMM
+	 JMbe/7xuDKSl7sOupEQbIDlbocy3YPTikc9VTjnxxqg1EtkbEHKR7BLfKsepG0rfVR
+	 Q/a2SPmXMpEq+XT+dP63MIGrpz//Fs/U1AUESmkv69w/BEctswX8GjZLKBnfh2zY5Z
+	 Goi+Oh8/7LBVlGYxysYaQ2OVHZORuz3rx1QtnHtPG7coujiy/22kWKKtxSQs+BNYpc
+	 Fcgnltso8TP2mDmofPzM/BphoHWI9GdC1yx4gy8BOmFYzBjJCjL3f078VVrKR5cKTj
+	 GpQIVTq3MsBEQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2100C3A55EC2;
-	Fri,  6 Nov 2026 22:50:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9B09B3A55EC2;
+	Fri,  6 Nov 2026 22:50:21 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,37 +54,43 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ipv6: Check the Home Address option again before its
- address is used
+Subject: Re: [PATCH] selftests: net: fix format warnings on 32-bit
+ architectures
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179400540967.914342.6623391724463766435.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Nov 2026 22:50:09 +0000
-References: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-In-Reply-To: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, bpf@vger.kernel.org
+ <179400542017.914342.7300604920872948742.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Nov 2026 22:50:20 +0000
+References: <20261103155503.534876-1-sashal@kernel.org>
+In-Reply-To: <20261103155503.534876-1-sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ willemdebruijn.kernel@gmail.com, horms@kernel.org, shuah@kernel.org,
+ kerneljasonxing@gmail.com, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Nov 2026 06:49:22 +0000 you wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
+On Tue,  3 Nov 2026 10:55:03 -0500 you wrote:
+> On 32-bit architectures ssize_t is an int, tv_sec is a long long with a
+> 64-bit time_t, and uint64_t is not a size_t, so ipsec, txtimestamp and
+> the tcp_ao library warn when printing them with %ld, %lu and %zu:
 > 
-> ipv6_dest_hao() checks the Home Address option and sets IP6CB(skb)->dsthao
-> to the offset of the destination options header. Later mip6_addr_swap() and
-> mip6_destopt_reject() call ipv6_find_tlv() with that offset and use the 16
-> address bytes. They assume that the same header is still there.
+>   txtimestamp.c:191:42: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type '__time64_t' {aka 'long long int'} [-Wformat=]
+> 
+> Print ssize_t with %zd, tv_sec as long long, and the net namespace
+> cookies with PRIu64 as the rest of ftrace-tcp.c already does. While at
+> it, print tv_nsec, a long, with %ld instead of %lu, and cast it to long,
+> as it is a long long on x32.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ipv6: Check the Home Address option again before its address is used
-    https://git.kernel.org/netdev/net/c/30c71476d842
+  - selftests: net: fix format warnings on 32-bit architectures
+    https://git.kernel.org/netdev/net-next/c/205f10778a94
 
 You are awesome, thank you!
 -- 
