@@ -1,148 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793952317;
-	b=eaNvDA9Ae7wd/qlWTNBBeZ51HOfyvX2V7iJAoV+aDm2JYbwl831YI+f1fj/krQXbry5X
-	 RrJCLNhNLGOanSBgcB7CLpBi78ZBorKFRjs98eD6qV+1xWQEBRHUG0zJgX2eSBtSEtjHa
-	 2do3HEhmvHsPd3Cwl/8NQYQkercW3csnLzXUlfqqeOqZ5MZ8HsxYTXoV60mKe5TsNmaup
-	 0DjiX4zi6m7X0IevrVgrGvNYSgkBL5SQvbMJJEsfFYJegFfgdJ+lSWGd+b2R3/F7kMXe1
-	 0ztVJ3p9kkWdAsDTQ1TVsniAkInnBwop6FVE8gdXQ1uuFPGZjE/cp4SLamgJlvDizEw==
+	t=1793952657;
+	b=Clx0QsMTshFgOJBZm6nLpxOOEROt9BeK+v7/VIZfNUCX6dHSTi1lhEZyPPwkGVTx/FQ/
+	 vdLlQvn1FbKdRklJP7rnbHBVG8J8O4/spQGHbdPDaZbT2xPvd4MqK8NHX7DVI18UMHJbA
+	 bBxUm4QpwrgTy0SjS0QG9IHauPoqcmaPSy2ZSIvvuvORsteYcGDpt+x9XlaNVPnJ7RgOu
+	 rmzVEKuYpyfSG1w7xD5poyaPGD/KE6l2oUj85VLRi1/nNdYsEst2ATX90qPu5XyryHrFj
+	 1zNvsDKPtsUAN5nZ5ISB/t3Oj8E0aqrnQ1rzJfG5TeUY/HVaNwbGIonjTfuERe7M9jQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793952317;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-SRS-Rewrite;
-	bh=x07awLmZl1uGnixljrDMUgu9d0OiWf2Z+sJydT2Lbr0=;
-	b=kK90EZVLQTSrwkKFrGbmMmqDgnougbb6rsjrsuwRR4bQDz3QHyODOlITuadiqtzKqvTT
-	 vutzURAuGDiqDetEp3mhvX+D8txijmGRETEeRi2yoUko0Qy7zvZAGd/h9WkOYMSGusLAt
-	 8sOAJap0TCZ1s/ul2gtdTiYo5Te3noxE8yTdKtTO2Iu9v+MaxIUJzg/GHB0WzQns9BJpY
-	 M7sU6jX1AShAfUqbVPcKhFW9Hn90wQ1ehWHT+VykRoAj+l3HwuHkgOFC2JpGg6QJct+vj
-	 0raXbCpGg6asjsA8GhAooILQr4aBH6hzgglUZmuNN1UwbCiPilj08uoFy/mk4uaLEKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793952657;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=S9xvJ1NaU4Zk/xPNNDyUuI5WsSyAExyNgvNFDuRo824=;
+	b=O1kqS0YBwNimD9h4oC6plHIrl9tSCcFy/9dlLPxYeVmFssoYp6P/4XRwebwMlXO50pAb
+	 GUl1C5+sq4tquvp+uVoHGfgLRV598VMuOMJXozSHPswRuYVhIf2EpFbq8bQpW7xKC6dV9
+	 jSMVGt0+guETYkvtTe15vAy17+kolT+CoZAJwIJRs3IZ7exHQXUlyJZ2io/eAhmIwEbDK
+	 9RQ5PoYrJ//63TTB4IphWOvzLsD2MbufYQ+LHqV7hQf6GS+M3qQ6++8Av3JoekvRke7ap
+	 7krZIpMaQ7y94KLvxuMn8yroo3+cwDW/zqNg7DUGM77PaiyGrDzEcAvCLXKEw0eJhYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=bombadil.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oiRMln23;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JsDAj3eR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702A606A328;
-	Fri,  6 Nov 2026 08:05:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1702A606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03A6606A328
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oiRMln23
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=x07awLmZl1uGnixljrDMUgu9d0OiWf2Z+sJydT2Lbr0=; b=oiRMln23yl/QBuC0DzwXONkLv5
-	qM+sNI41fnd6ZZdtIdfoPIuUSZHjJllyir3jn5dYul9Hhh11zXahz7DjQNGL6kqFmMxym0kEDtOmD
-	JgIADndDf71VAul280x2lDyIVPe6HFQRskf9qC5NU/8P7kjkPPDBDgNWgZKWzmAJG/fm1BZ3LikI4
-	AJReQOjF2xOHtD0/o6EMEslTbPj3TIA0VVZuOvKHyIPeRI6tauCfHZubFGOzh5ORdNmavj6txE4sb
-	V62/yFS1hM13pH3V2NMo05nu4U1qu41e/vy7J1YKCYoB+vzlPGJYOKDkhh/XndWwFf9Phw2nFy/jN
-	8N6Cktqw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xPEvi-0000000BWDm-0Spo;
-	Fri, 06 Nov 2026 08:04:10 +0000
-Date: Fri, 6 Nov 2026 00:04:10 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Bence Csokas <bence.csokas@arm.com>
-Cc: Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Benson Leung <bleung@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Nilesh Javali <njavali@marvell.com>,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Carlos Maiolino <cem@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	=?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"Geoffrey D. Bennett" <g@b4.vu>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-	bpf@vger.kernel.org, netdev@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org, linux-bluetooth@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-hyperv@vger.kernel.org, chrome-platform@lists.linux.dev,
-	linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-	linux-xfs@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add offsetofp() and offsetofendp() for pointer
- arithmetic
-Message-ID: <au2J-lMcEn4p4KGR@infradead.org>
-References: <20261105-offsetof-v1-0-4153f5c10edc@arm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JsDAj3eR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EBF1F008A2
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 08:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793952656;
+	bh=S9xvJ1NaU4Zk/xPNNDyUuI5WsSyAExyNgvNFDuRo824=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JsDAj3eRpYVeftt8/G/kKkhbqtHjQlogL301UIb8+aa6p0erq+yx5Xapul/cxzsPZ
+	 Rtyo9AXSVS4eXqCOXVDN8Pm+Dw3mNpBYFeXovFb8/63HMKF9LLCVNf4hXzuc9ydN0k
+	 F7o4IRJ2Og0tBZMBFnzvn+io1wRvZJ+id0MxLia7LSvimuhyHUoVPq9nM7LeGZ53r1
+	 fnndZKwqjmfCQdMqYVUBHcledZ9NyDWFyCCBYeLTJP2/k7c2o0sKm+2cyt2lePVCRL
+	 hZm607N2ssnrSjo7MEv6ww3MYY+ApUT93OZFaKSF1mdvdfahHULgPQZjcl0BTeeMKD
+	 xrOm5Q1I+X64g==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-8451a619da7so270910a34.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 00:10:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBxh3VaByl4HXXstpoSM00lDKY63m0mG/HAdD2nXJ6TvwP8k4y/M5VppNyQeKbqiozKSj1aoQfE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+z9j7UqcfSKFIeQ+ZX8rHrGyZw7sV2jdxRZiE9jlqpEGgj8sTg
+	oJvQJemWzkh2W0ljzI2hMTVIVtJDRYmOQ+gjbblQsKopX3f/iCCfXj8/UkzHo/SqF2H7R/zy4TS
+	OVCSokDUdl+6EKZARkwg6who+rnfvTcw=
+X-Received: by 2002:a05:6830:310b:b0:829:10c4:2c11 with SMTP id
+ 46e09a7af769-85f1cb65e44mr2173404a34.0.1793952655401; Fri, 06 Nov 2026
+ 00:10:55 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -152,18 +59,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-offsetof-v1-0-4153f5c10edc@arm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20261105164830.1682714-1-edumazet@kernel.org> <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
+In-Reply-To: <af79b34f-a941-4d0d-adbf-fe30a09c20d7@linux.dev>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 6 Nov 2026 09:10:44 +0100
+X-Gmail-Original-Message-ID: <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
+X-Gm-Features: AclHuK_dki4Pgn8VVhk8z1fjYLjsARhKpZyckE54dKfXi3IEUlCv_TH1XfBb3J0
+Message-ID: <CAL4WiiqxeZSZWSKkK6qcA=U1haTCoCakEKYatYf0i7mB-CdXTA@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Kyle Zeng <kylebot@openai.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 05, 2026 at 06:16:15PM +0100, Bence Csokas wrote:
-> A common usage pattern for offsetof() is the following:
-> 
->   offsetof(typeof(*ptr), member)
-> 
-> Condense this operation to one macro for a more maintainable code base.
+Le ven. 6 nov. 2026 =C3=A0 07:44, Jiayuan Chen <jiayuan.chen@linux.dev> a =
+=C3=A9crit :
+>
+>
+> On 11/6/26 12:48 AM, Eric Dumazet wrote:
+> > After listen() + shutdown(), a TCP socket is moved to the closed
+> > section of its reuseport group, while TCP_NEW_SYN_RECV requests
+> > can still reference it as rsk_listener.
+> >
+> > If SO_ATTACH_REUSEPORT_[CE]BPF is then used on this socket,
+> > reuseport_attach_prog() calls reuseport_alloc(), which resurrects
+> > it into the listening section of a new group, even though the
+> > socket is still in TCP_CLOSE.
+> >
+> > After close(), the socket stays in that group and the pending
+> > requests keep it allocated. When the final ACK arrives,
+> > reuseport_migrate_sock() can select this dead socket and
+> > inet_csk_clone_lock() clones it. With a ULP like espintcp installed
+> > while in TCP_CLOSE, the child inherits icsk_ulp_data and sk_destruct
+> > after tcp_cleanup_ulp() cleared icsk_ulp_ops, leading to a
+> > use-after-free in espintcp_destruct().
+> >
+> > As done in commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions
+> > between ehash and lhash2."), deny this transition instead of adding
+> > checks to the fast path.
+> >
+> > Only an unhashed former listener is affected. Applications can still
+> > attach a reuseport prog to a socket that never listened, or to a
+> > listener (including one that called listen() again after shutdown()).
+> >
+> > Fixes: 333bb73f620e ("tcp: Keep TCP_CLOSE sockets in the reuseport grou=
+p.")
+> > Reported-by: Kyle Zeng <kylebot@openai.com>
+> > Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> > ---
+> >  net/core/sock_reuseport.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+> > index fccbdd0430b05984e82c19b17b6b723b0a3a03a1..41a25be1bfff6aa486f33ed=
+563a093a264c49344 100644
+> > --- a/net/core/sock_reuseport.c
+> > +++ b/net/core/sock_reuseport.c
+> > @@ -6,6 +6,7 @@
+> >   * selecting the socket index from the array of available sockets.
+> >   */
+> >
+> > +#include <net/inet_connection_sock.h>
+> >  #include <net/ip.h>
+> >  #include <net/sock_reuseport.h>
+> >  #include <linux/bpf.h>
+> > @@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct =
+bpf_prog *prog)
+> >               if (!sk->sk_reuseport)
+> >                       return -EINVAL;
+> >
+> > +             /* Do not put a shutdown()ed TCP listener back into the
+> > +              * listening section of a reuseport group while it is in
+> > +              * TCP_CLOSE: requests can still migrate to it.
+> > +              */
+> > +             if (sk->sk_protocol =3D=3D IPPROTO_TCP &&
+> > +                 inet_csk(sk)->unhashed_state =3D=3D TCP_LISTEN)
+> > +                     return -EINVAL;
+> > +
+>
+>
+> I think sk_is_tcp() is better. raw socket still can reach here and inet_c=
+sk(sk) is invalid.
 
-What exactly makes non-standard macros with no obvious safety benefit
-more maintainable?
+Yes sashiko reported that. And had the same 'suggestion'.
 
+https://sashiko.dev/#/patchset/20261105164830.1682714-1-edumazet%40kernel.o=
+rg
+
+SO_ATTACH_REUSEPORT_[CE]BPF does not make any sense for anything other
+than TCP or UDP.
+
+I can switch to sk_is_tcp() for net tree, and perform the real fix in net-n=
+ext.
