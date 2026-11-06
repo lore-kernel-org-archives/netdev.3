@@ -1,60 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793956969;
-	b=V9udbh4ielcEEyshhQmQa1KB9ut7HbJ3X9+c6Jq0m7Ev9/3z8xEYtVqGrQtUnU7/kf0n
-	 0BBlwCLACEZcPfMohbesEL8cT2h1mwbzD5IxuOfqsqgdAL/CB99M7/zVVMb2R0mU10jVH
-	 GktiCtvv2a+zyrL3+DXrICf5hK/XoMmpoAOYhitYyfQJpIAWbPfTxBor303tbNlLL0cqh
-	 Kf2LWQjMcO0K7Zd6h9iZS34runv7wg1ByCmYtpHzW1Ln/yi3wu+juEgUxqIwelKywXl4E
-	 YmKhAThjCwtTqhMK++UGspGNg+WpM3wnpvAmjhOv+8z/O8xUJiwJNZGUVx6ADBDHYMQ==
+	t=1793957224;
+	b=eEk13QObtQfeQjaIx4d0Ma9dLzfz9Y1TxE5n2bJWHts4CaOmpfzhHV2Ey0SAxnYJDEci
+	 NrtMLUi26ywMEVhbbXiqZBeqoOZR59AGVUbfOeN7REx5EcbqXqJ9mlf2NuhTv7G80L1x5
+	 aDSIFceFlQn05AE+FnIRJfCqBzhn88UD31KKye2q/Vr2/26Bten7NHS1SZuUQMGr6YXJD
+	 aYWcocLRasB1O0LNxwFPqmCgOnLoAFO36rujg4vdpqS6cFn91poxQp9MKap32H30H7qH/
+	 JwFqbnYtT3CunmnzTCf0NW5O7BbV5u3eqMdCcKR9prisdNHRxzGhqPiAwy9Pbhnzg3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793956969;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=B2VlpYxIyrjBwpfsYj6tday8nvUyo3/23/5HWi7DkJA=;
-	b=Uj4KRAKwrOM4dHungbn9dq/gCEm7PNbfoOk1TqK8fKz3qGRWVZqQiKgfiC3xwe4fHoBL
-	 DOTq13BQ3kvdUZ0P0Qo5a40DrcwzWhwuZctCCRvvAIpNjI3diQfoesv+DimYF6DohraKM
-	 Es8qWhfQe96XYF+ZzX6mWtG/yjQKBx6LFrFDXzXUKYNLUcwd91uFGlhB6cGueVhDy9jtK
-	 6BW+eoXDpqeyyD3wuP6CKVMegx99Sf5lv2Uh28HP4OyBQnzNKqjVD2iCkrp2L0zttiiHb
-	 HOotNl5Q0sGboo0R/CDd4AhBnMKpJodEacfp70C1XI9nUPKCwIvjZmr3uumgr+2q0Zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793957224;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=hLqKl4DHf1/3oE13SQ+fGSWLoGkn3xwzGKOEnxMd+2c=;
+	b=ppKOs3WgQahecWm6OG+DGOYicCYiMowNB/5jYr3XSTTWZrZn+yYAfh9pIg5qQ7CxQw56
+	 62MKPel+TOpQSFixsRwcVAv/eNgVqgYeTxtRExyY9PF+Ehvx4unEd2sUmCorxZ6bepDUk
+	 0p4kyus60oFZBP6kGkjlAaoltEBp+QHgcQgP2kxlrw4CQEnpyLs/sQ1n7CwDR8hTK7k7k
+	 qbFIGrcnvGw49nRgYgINEKnmvz20JECGWxeWb5TtO45dCkDHYINdQoBilFgKA38/yFcbC
+	 wBkH8MrOGR/EOvQZVYsWInweNjsQvbG7+vHB/fspUdYz2xa4nH6CiNJ5PHLq3Mf/7ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ed+zaeMM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Ad79GImo;
+	arc=none smtp.remote-ip=209.85.218.45
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67B5606D813;
-	Fri,  6 Nov 2026 09:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D5606A326
+	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 09:27:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 009D5606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ed+zaeMM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F01F0089F;
-	Fri,  6 Nov 2026 09:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793956968;
-	bh=B2VlpYxIyrjBwpfsYj6tday8nvUyo3/23/5HWi7DkJA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ed+zaeMMxZkk0sMX866f+hgUL+LQdcH7o/qgyoCCXq+vPhec3VXmkvw9H9xDLigWw
-	 UY59NgQpfozxZ25pJ/8Qp3Y5hEdCF2kdkNTJ5B2MucLA/3E8ng0Wu3PnU1+gE0FSmt
-	 BMi33657UPtzIj6cpgeskuDgJH/84aPM+MoqyBa1+cVAkwhijctC2I/DVbGdVgYkKV
-	 m+M56yMwhFwDD5wSM8d/QfYvFNONQo6b7EiQMaUSm3gpmeHGevg0deKPMUxWX2Rv7n
-	 YQkXB0lwcKfVPiIluNdn/qZXDQaiJPNjFwS3NJLFi9pDniyKA11Sp2ciLyv0ng2bSe
-	 I3AhH3FJxH26A==
-From: Simon Horman <horms@kernel.org>
-To: thnkslprpt@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	richardcochran@gmail.com,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ptp: Report clock removal to poll waiters
-Date: Fri,  6 Nov 2026 09:22:06 +0000
-Message-ID: <20261106092205.1168004-2-horms@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102122340.1160733-1-thnkslprpt@gmail.com>
-References: <20261102122340.1160733-1-thnkslprpt@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Ad79GImo
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c4d30639709so49373466b.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 01:27:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1793957222; x=1794562022; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hLqKl4DHf1/3oE13SQ+fGSWLoGkn3xwzGKOEnxMd+2c=;
+        b=Ad79GImoOiVoZjaMQhhocTzrz3/FK8bJxCcn/v6yEBOAfDlg5eeothyGeiGbK0RQOs
+         kIXMPY2MQ/JXoCvzh4Boo5g1DDKrDB7zNergHITfGMukmna63nZPldAvZ5WoSs8R0HsP
+         VZXJXIu7HL6XPE97I1HveEi0H+le2OO1ohEtu1pqkonUxXK19BPbkafySl2ot+I71AQs
+         RJIEU6UGwcdmOKQXqm+q68V2jWVBFQ2CWUa5CFpaAK6aTXOISBWgELV4KCAFgEqWuulQ
+         Rsq3bqA4Yk/7+NeYS+L7r2kfypv/8kLtuP4Sv5o1qEck0Ej622yXP8414KIsut28ARp2
+         W39w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793957222; x=1794562022;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hLqKl4DHf1/3oE13SQ+fGSWLoGkn3xwzGKOEnxMd+2c=;
+        b=vJw0AlUHfq4+uOw76TDpHSVcTKYcDB7rytHaKl0fc0eo4HEvF1ZlTqF6Kg0X1zUW2x
+         F4IVwyLfYjh7zssWCrDvUuzHOrmkA0dUmAr8Ub/JsrAEN9XLAXg3C3kfPR5CLGjaZlYf
+         XjNuDsON0ndeipBFM2vKSUe1D7zygLnHF1NeJ/lWybSc1dMrIKTau+31qB+CpsAiFA5y
+         oAsyW1YPKr3lRL69Pr2zVTmUBOZ/iUEdkahQXIBs8Go9ZlBPRuonzEwFwl9pV/dS622I
+         V+rEDI5NdzgeWFCITatKxAbMr66hgY1OwRFMNL7RG0OJU9NaOuqWtgumCMog9tPfrWLl
+         MGWQ==
+X-Gm-Message-State: APuU4Z/7WR95+ldmUkpr2RmxOdy3UW9C3J2tm7OpYhx49wmKyuQ/FIUo
+	i9gumF06SEZde8MYY3+BbceNM7J5da2yOK1ZrJhNf9bf1E7SAJEIEA2e+iWzmhVLcxzh9e8zB4l
+	VCXrNces=
+X-Gm-Gg: AYBFou1iGsqs93t5mGeYU5OTIXWVJtJkCEY01BTN8g4lGn52sMJonsVqtNkCR36oa7C
+	5hpvaKf7Fyzff6otPYV3eUeNG7lE3q4qjNm9mkaTMieU02k5RmPk3mfQk5wbvx4jU0QWmnVFdbl
+	VRvfuZTaajg8Ey7kYzRXaSqb0G2nW1tJOUvILMp3yfq3mLOy9keR+9K5E4RKmzh6RYWjUyeQV6i
+	ds2n1LWzc34vLqyS3ofWbZ8g1e65gotwY/kxCPqTuGuouW0cHoxZ9LJEGR9VmO10B99kgweWIko
+	Bg0onf4IRnDv81q4n2soOpSUXulOwMSdiTXNSL1TGkr3AlsxpwQhyfBjEYfcZCRxZv2uVl7jovi
+	xvtunG5hIv2/mWrXHOsyNPAdB9WURjMYvpOjQsT88SBLdvJjgBFstHk2r8q1HKGYMRjsTTM3HBG
+	Ce8jIT7avwkUBzmvCc7DeUcUD4v6cmNgot2g5N3u7EO+n69YvVy6PgzzeCNBQ4a1ODAs/OZXNAQ
+	z87xycsBES9fbcR0hAHC/lBQFWaptNF30HkJeqQefhZVQqRvIq0MowOJG4Owmmm0Wz+w6ovlh0I
+	2lSewX0VN/VqcXs9+H1lAv1tk/Zbo+e3/ZCxTm8ORwbzyR/IxYO25ncgXU96YwjwiSj+AXsIuZ8
+	MkRiamaYQEu2Pg4vwyOHaRBZHCVK+vT60Ytpc
+X-Received: by 2002:a17:906:7316:b0:c4d:a05:a2e4 with SMTP id a640c23a62f3a-c4d34b9e16dmr162861466b.20.1793957221759;
+        Fri, 06 Nov 2026 01:27:01 -0800 (PST)
+Received: from stephen-xps.local (93.224-78-194.adsl-static.isp.belgacom.be. [194.78.224.93])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d356c1ee1sm63006166b.64.2026.11.06.01.27.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 01:27:01 -0800 (PST)
+Date: Fri, 6 Nov 2026 10:26:59 +0100
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>, Stefano
+ Garzarella <sgarzare@redhat.com>, <virtualization@lists.linux.dev>, Bobby
+ Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH RFC iproute2-next 2/2] ip: add "ip vsock" to move the
+ guest vsock device to a netns
+Message-ID: <20261106102659.77f8ba56@stephen-xps.local>
+In-Reply-To: <20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
+References: <20261105-vsock-guest-ns-v1-0-b1c11b3b69c7@meta.com>
+	<20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,69 +101,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102122340.1160733-1-thnkslprpt@gmail.com?part=1
----
-ptp: Report clock removal to poll waiters
+On Thu, 5 Nov 2026 11:30:36 -0800
+Bobby Eshleman <bobbyeshleman@meta.com> wrote:
 
-The patch adds a check of ptp->defunct to ptp_poll(), placed after
-poll_wait() has registered on tsev_wq. ptp_poll() now returns EPOLLERR
-when the clock is being removed, so a poll waiter that consumes the
-removal wakeup no longer stays blocked until timeout.
+> + * The guest's vsock device is not a netdev, so rtnetlink cannot move it.
+> + * The "vsock" generic netlink family moves it with VSOCK_CMD_DEV_NETNS_SET
+> + * and reports where it is with VSOCK_CMD_DEV_NETNS_GET. There is nothing to
+> + * name in a request: the kernel serves it in the namespace of the socket it
+> + * arrived on, so the destination is chosen by sending it from there, and the
+> + * reported namespace is an nsid relative to the sender.
+> + */
 
-> diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-> index f63b45f5ee6ae..01adc70ad97b4 100644
-> --- a/drivers/ptp/ptp_chardev.c
-> +++ b/drivers/ptp/ptp_chardev.c
-> @@ -593,6 +593,9 @@ __poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
->
->  	poll_wait(fp, &ptp->tsev_wq, wait);
->
-> +	if (READ_ONCE(ptp->defunct))
-> +		return EPOLLERR;
-> +
-
-[Severity: Low]
-This isn't a bug, but should the other accesses to ptp->defunct be
-annotated to match this new READ_ONCE()?
-
-The only writer still uses a plain store, so this load has no
-WRITE_ONCE() to pair with:
-
-drivers/ptp/ptp_clock.c:ptp_clock_unregister() {
-    ...
-	ptp->defunct = 1;
-	wake_up_interruptible(&ptp->tsev_wq);
-    ...
-}
-
-The other lockless reader in this file, ptp_read(), still uses plain
-loads:
-
-drivers/ptp/ptp_chardev.c:ptp_read() {
-    ...
-	if (wait_event_interruptible(ptp->tsev_wq, ptp->defunct || queue_cnt(queue)))
-		return -ERESTARTSYS;
-
-	if (ptp->defunct)
-		return -ENODEV;
-    ...
-}
-
-After this patch, ptp_poll() and ptp_read() read the same flag in two
-different ways. Other code in this subsystem pairs its annotations
-explicitly. For example, queue_cnt() in ptp_private.h notes that its
-READ_ONCE() is "Paired with WRITE_ONCE() in
-enqueue_external_timestamp(), ptp_read(), extts_fifo_show()".
-
-Would it be more consistent to use WRITE_ONCE(ptp->defunct, 1) in
-ptp_clock_unregister() and READ_ONCE() in ptp_read()? The other option
-is to leave the new check unannotated like the existing ones.
-
->  	return queue_cnt(queue) ? EPOLLIN : 0;
->  }
--- 
-pw-bot: changes-requested
+Please be more concise in comments, AI seems to think it gets paid by word.
