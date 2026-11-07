@@ -1,74 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794080337;
-	b=tb7xPeDKAlGreiBG1zpknNQcVvObFM1uNYEIe5gOGcCS+k/C/CaL/h2Lr6aWv8BIg4Qg
-	 W/4hWlWqTywOGEdXGYsy/pD58WLZ5Emp1m915S81FyYwgHWYOAwqddjIGqmVIMuuzJHJI
-	 h3LE2AQr6AIn1VGNmVCfta2xDJDQVVHyMjlN5x1X6+r0gCQTIOsHfsLLAZ/h3f8dr1Y6/
-	 oTKXIyISd8l1Jf1dTKlYQmqVElEvPFNfmvJpPf+JYxXDcMSqfenrJpaSZO3z/6/rAL3sR
-	 yl1x7yaRxnQiNqRNvqk6w5evw49wZwhDrZuVEXhRXg7qqWpzMFQU44rLT9VynMGntYQ==
+	t=1794080368;
+	b=a7lKqvvGnOA0LJVTZzr+kKOWUXbm0ZUWFSQif5lgRvN3Bev1KaO+naUlN5b7qxyssp5l
+	 c3j79r/b31ToIdfjh88r+CgpmxkSZcJCnKDnZWNkegCcn6ZuOXZScBFcKaOc3zzOQ0Pn/
+	 slCzJnMc0svo0mTXgpvNFR0nVozICa9rbEiSn8VDoa3sjkLFk0VtM1qhcn2ITr3QTu+dj
+	 qqWZt5F1zuDJv+rBGQQbbpsTGGiQysJfPiXz/0ppZHAyHsiWhd8EsmPDhnmbxk260r2fa
+	 spQ3eG/uqoXtC4dTPi/kL6o49mfNnqDuSFpN5h4fFVfSrmgETKAqyh9UCVuht1XVFQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794080337;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=tqjlsZmhJDg48N9X3FOqlRV0cdVj2t2jS3/eCuO7plE=;
-	b=ppiBGulZhy0Mp46ImShKdp189MZ/foEM02baiA2kUz6dLtF1vPWiS7/bGTndPPZB2+j1
-	 tgU85NIghtsKeYkfvG95hdMDsrESaxLQurcBQc9s9bSZ9iDstodTZQOj2OMx+cLBkko0b
-	 XcNWCuYI5B44kRPxI+SAMG+A77cWS8WgwoqUd2vYrFT5HOCLLbJ+Xo8gTpeAiufgaDfwA
-	 vADIZxIJtphf80krrh/VezQvSYUFVSpIXHT9mFvlm77SiLXsR36RQZ83/1Pbyndf5QFLE
-	 ZPwrccQHEhjqPCxsfrLgjAJ8bNRNEmXJ7Fut7ACl2NMbAFlVZXvuKULv+h1WXWOvNNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794080368;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PPLNgcCbpdDwgqH/GLAU2EpORaOc7VYf2uI8S7UdHRo=;
+	b=rUdN1xPqNp2ONnnLYsyCSwhPacPLa6QlpEelL2ET1jIxehxB5JNUtpPbUYLXX8nFw4Bg
+	 6fz+5WUEmQozJWQrk+YVHjBy1YGLt+x3BwQIaayVSjDIb0UGlQEe3nagXvztI1Zuzlw2o
+	 9Jvg5jDrqx7hf6xWh+0PJ8aNJWvi3A0waxEa+iys98TAhFOyPuCe/PWnnGT6F1gxc4moq
+	 Kr1nlVtrXeDZ9/j9US2yU3XBuu5fcMrXNAt/7sS4TCkbEHlYIFqWB3L6AL7BgmWZTKCXK
+	 /qm3NwARouc+sRM174SmDxGretLN+YRlo0/y++Rt0z/xveLv25IeajM7ur8WWxBio2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="mPjGzY/A";
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwpSMJuX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C3C606A32F
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 19:38:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3C3C606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16065606A326;
+	Sat,  7 Nov 2026 19:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mPjGzY/A
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ae7faf4ff7so2414095a91.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 11:38:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794080336; x=1794685136; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tqjlsZmhJDg48N9X3FOqlRV0cdVj2t2jS3/eCuO7plE=;
-        b=mPjGzY/APQ1GmdDexbABa6rKO+zeO1GGH6TMbIFEUYyhcBx3ee5FEjn33kr9QVKabe
-         ttdyI3l0RO4+3B9bbFp6RXj9pzCQN4omIf5fRThCC4zYJt8h762Yfkwb8aq1wJ3LnJY2
-         7SMuCWHHoQxhhigGUFFr4TrFJ0TDZbMvy9Y+m8B8+gKFQI34rjmoMHTjCMg/kwfDwTOu
-         AQUs2ttxADDevYMNt9b3SRyhbzlGUgGVrD42gPBrxL6zRV43QTTpUPhQ4KPUognL1hNK
-         HDQduHeWjTBfBSI/9gdr85YVNptYxpIZdqrgy/ictr428XclCiX8X3gJG94pVkcV4dcd
-         eeEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794080336; x=1794685136;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tqjlsZmhJDg48N9X3FOqlRV0cdVj2t2jS3/eCuO7plE=;
-        b=WqK4fESVn1QgIrA9dFFdgoSHu8AHO0L4yEa8/oodfQQyVN2HhDoPPyAerf7yRiYqft
-         22xTsGK69DqO07nWDtA6J63J6Drrz6jPFfLZxjk4TyHPTvkqTqpxZK25fIGk3ZHRJqiR
-         /u0rNkNMlm1RgS1czJ7AXKRgMpq11Z5Ku0x5P3YqCHskjReYcYUsEEFzKmWdx/yNa9df
-         pMFUBmLurDvJ9RoOcuguRXeiCB4IEarfWoEsX2xCjSVaz5zsu8qlg2hOcQLgMJcKLyFi
-         RfA8lGMUDZs2FbR6LB0o44RHSu+knc6qvQd8C/VSMy//nIXv/C67YIwvc0KPw5KQZVte
-         T0sA==
-X-Forwarded-Encrypted: i=1; AL+hErHZdB1BME8+VbXyMrqfDYXf3kUQlWVjW6qMHbl7uAJ9+GLibm4GgZui9eVbgYZ5BHEpCF6IW30=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9xB0iuK/GMx53QN7okSy19WfqLZlVh9iusBFG+Mo01O2cvLzmO
-	HmjbEf4spMIKhRImkYrIM6wKMcTruQHke/zuVmduG+/m03S/JXd9sDvbT3tZexTPJwQHTuVgLHO
-	pFBixmA==
-X-Received: from pglq30.prod.google.com ([2002:a63:505e:0:b0:cc7:d53a:a251])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:39ac:b0:3b0:9cc6:62bc
- with SMTP id 98e67ed59e1d1-3b0db6ebd52mr6094061a91.37.1794080335721; Sat, 07
- Nov 2026 11:38:55 -0800 (PST)
-Date: Sat, 7 Nov 2026 19:38:55 +0000
-In-Reply-To: <au3HMfqNW3_DRMqS@v4bel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NwpSMJuX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749071F0089F;
+	Sat,  7 Nov 2026 19:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794080367;
+	bh=PPLNgcCbpdDwgqH/GLAU2EpORaOc7VYf2uI8S7UdHRo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NwpSMJuXbZx3xtljXRukKmlbb+Yn2XRiaFhKt3LkekUYKJ+Zs+srlrNYIS7qHoo9X
+	 m/TTlWgvblhXJ6G6PWdXT4r/0FG3B7NrPAygeHLe7rolS6KGUnv3EwCcQ8H+MfXsVo
+	 7FAnuHNSZWN3B5Dgyny4PeC8Z68ZJ+SSaGzZEt5nf5G9cIn0T1e/N72mlYGANMwLFb
+	 hmOt5i4yIuqqie5VSfenaMOgF8aLliOJL2cQyy4YWjuYZCuTUzG7BTfuBoeafBXFiw
+	 EY9XrUYJGZhwQYIH14q9qyClXN79npl8NWnORjB1k7ldyr7S0ls+Ly78yhlVjDXpyG
+	 E5ZSeA+KAcbig==
+Subject: Re: [PATCH net-next 1/2] net: dsa: motorcomm: Report error when FDB
+ fails to add
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Sat, 07 Nov 2026 19:39:27 +0000
+Message-ID: <179408036701.994134.5574691776169579582@kernel.org>
+In-Reply-To: <20261106184811.350700-2-mmyangfl@gmail.com>
+References: <20261106184811.350700-2-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,105 +62,158 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <au3HMfqNW3_DRMqS@v4bel>
-Message-ID: <au9-QgRUrLwQSDYl@google.com>
-Subject: Re: [PATCH net v2] tcp: do not coalesce segments after FIN
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, john.fastabend@gmail.com, sd@queasysnail.net, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 
-On Fri, 06 Nov 2026 21:25:21 +0900, Hyunwoo Kim wrote:
-> A FIN consumes a sequence number. If another FIN segment is coalesced
-> into an skb that already carries FIN, end_seq advances to account for
-> the additional FIN, but tcp_flags still contains only one FIN bit.
-> 
-> When the preceding gap is filled and tcp_ofo_queue() processes the
-> coalesced skb, rcv_nxt advances to the skb's end_seq. When the receive
-> path consumes all data in the skb, copied_seq advances by the data
-> length and one sequence number for FIN. If three or more FIN segments
-> have been coalesced into one skb, tcp_inq() can still return a positive
-> value after the receive queue becomes empty and the SOCK_DONE adjustment
-> is applied.
-> 
-> TCP_ZEROCOPY_RECEIVE is another consumer affected by this state.
-> tcp_zerocopy_receive() takes its length from tcp_inq() and follows
-> skb->next without checking for the end of the receive queue.
-> 
-> Software kTLS receive is one consumer affected by this state. When
-> strp->copy_mode is false, tls_strp_msg_consume() calls the TCP helper
-> tcp_read_done() to consume the current TLS record. In the reproducer,
-> tcp_read_done() consumed the record data and one FIN before freeing the
-> receive skb.
-> 
-> When kTLS looked for the next record, tcp_inq() reported at least
-> TLS_HEADER_SIZE bytes even though the receive queue was empty.
-> tcp_recv_skb() returned NULL, so tls_strp_load_anchor_with_queue() hit
-> WARN_ON_ONCE() and returned without updating the anchor.
-> 
-> Since tcp_inq() had reported at least TLS_HEADER_SIZE,
-> tls_strp_read_sock() proceeded to tls_strp_check_queue_ok().
-> skb_shinfo(strp->anchor)->frag_list still pointed to the freed receive
-> skb. tls_strp_check_queue_ok() then read TCP_SKB_CB(first)->seq through
-> the stale pointer, causing a use-after-free.
-> 
-> The reproducer followed this call path:
-> 
->   tls_rx_rec_done()
->     tls_strp_msg_consume()
->       tcp_read_done()                       // frees the receive skb
->     tls_strp_check_rcv()
->       tls_strp_read_sock()
->         tls_strp_load_anchor_with_queue()   // returns after WARN_ON_ONCE()
->           tcp_recv_skb() == NULL
->         tls_strp_check_queue_ok()
->           TCP_SKB_CB(first)->seq            // reads the freed receive skb
-> 
-> KASAN reported:
-> 
->   BUG: KASAN: slab-use-after-free in tls_strp_check_queue_ok.isra.0+0x5f/0x100
->   Read of size 4 at addr ffff888103169ca8 by task ktls-server/71
->   ...
->   Call Trace:
->    <TASK>
->    ...
->    tls_strp_check_queue_ok.isra.0+0x5f/0x100
->    tls_strp_check_rcv+0x2a9/0x400
->    ...
->    tls_sw_recvmsg+0x3ce/0xa10
->    ...
->    sock_recvmsg+0xea/0x100
->    __sys_recvfrom+0x142/0x1f0
->    ...
->    __x64_sys_recvfrom+0x76/0x90
->    do_syscall_64+0xdd/0x4a0
->    entry_SYSCALL_64_after_hwframe+0x77/0x7f
->    ...
->    </TASK>
->   ...
->   Freed by task 71:
->    ...
->    napi_skb_cache_put+0x24/0xf0
->    skb_attempt_defer_free+0x183/0x3b0
->    tcp_read_done+0x2d4/0x340
->    tls_strp_msg_consume+0x45/0x80
->    tls_sw_recvmsg+0x3c4/0xa10
->    ...
-> 
-> In tcp_try_coalesce(), skip coalescing when the destination skb already
-> carries FIN. tcp_add_backlog() calls skb_try_coalesce() directly instead
-> of using this helper, so add the same check there. Since both paths check
-> only the destination skb, a final segment carrying data and FIN can still
-> be coalesced into an skb without FIN when the other coalescing checks pass.
-> 
-> Fixes: e93a0435f809 ("tcp: allow segment with FIN in tcp_try_coalesce()")
-> Fixes: 4f693b55c3d2 ("tcp: implement coalescing on backlog queue")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message says the change "does not affect userspace
+  tools: .port_fdb_add() is asynchronous and DSA core always returns 0…
+- [Medium] The patch reads YT921X_FDB_RESULT_NOTFOUND (BIT(14),
+  chip.h:284) after an OP_ADD as "table full" and returns -ENOSPC from…
+- [Low] The patch fixes a real bug, but it has no Fixes: tag.
+
+--
+
+net: dsa: motorcomm: Report error when FDB fails to add
+
+This patch makes yt921x_fdb_add() return -ENOSPC when the FDB result
+register reports YT921X_FDB_RESULT_NOTFOUND after an add operation.
+Before the patch, the hardware status was ignored. The commit message
+says userspace is not affected because .port_fdb_add() is asynchronous.
+
+> Note that this does not affect userspace tools: .port_fdb_add() is
+> asynchronous and DSA core always returns 0 for that.
+
+[Severity: Medium]
+Is this accurate? yt921x_fdb_add() is also reached from the MDB path, and
+DSA returns .port_mdb_add() errors synchronously:
+
+yt921x_dsa_port_mdb_add()
+  yt921x_fdb_join()
+    yt921x_fdb_add()
+      return -ENOSPC;
+
+When a port joins a bridge, host-joined MDB groups are replayed as
+SWITCHDEV_OBJ_ID_HOST_MDB. nbp_switchdev_sync_objs() then returns the
+error unchanged:
+
+net/bridge/br_switchdev.c:nbp_switchdev_sync_objs() {
+    ...
+	err = br_switchdev_mdb_replay(br_dev, dev, ctx, true, blocking_nb,
+				      extack);
+	if (err) {
+		/* -EOPNOTSUPP not propagated from MDB replay. */
+		return err;
+	}
+    ...
+}
+
+If the hardware table is full, will "ip link set lanX master br0" now
+fail with -ENOSPC? Before this patch it succeeded.
+
+For deferred MDB adds, br_switchdev_mdb_complete() now calls
+br_multicast_set_pg_offload_flags(p, !err) with an error. Userspace then
+gets an RTM_NEWMDB notification and sees offload_failed in
+"bridge mdb show".
+
+On the FDB path, dsa_user_switchdev_event_work() now logs the error and
+skips dsa_fdb_offload_notify():
+
+net/dsa/user.c:dsa_user_switchdev_event_work() {
+    ...
+		if (err) {
+			dev_err(ds->dev,
+				"port %d failed to add %pM vid %d to fdb: %d\n",
+				dp->index, addr, vid, err);
+			break;
+		}
+		dsa_fdb_offload_notify(switchdev_work);
+    ...
+}
+
+As a result, "bridge fdb show" no longer marks these entries as
+offloaded. The driver sets ds->assisted_learning_on_cpu_port = true, so
+every learned station MAC takes this path. A full table would then log
+one dev_err() per address, with no rate limit.
+
+The new behavior looks more correct. Could the commit message describe
+these changes that userspace can see, especially that bridge join can
+now fail?
+
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+Before this patch, a static FDB or MDB add that the hardware rejected
+still returned 0. DSA then called dsa_fdb_offload_notify(), and the
+bridge set MDB offload flags for entries the switch never installed.
+Traffic to those addresses could be flooded or forwarded wrongly.
+
+The ignored result goes back to the original driver submission:
+
+Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
+
+Could this also go to net instead of being bundled with net-next feature
+work?
+
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 33e5fc127244d..a7a9a74393045 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -725,7 +725,13 @@ yt921x_fdb_add(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
+>  	if (res)
+>  		return res;
+>  
+> -	return yt921x_fdb_wait(priv, &val);
+> +	res = yt921x_fdb_wait(priv, &val);
+> +	if (res)
+> +		return res;
+> +	if (val & YT921X_FDB_RESULT_NOTFOUND)
+> +		return -ENOSPC;
+
+[Severity: Medium]
+Does the hardware set YT921X_FDB_RESULT_NOTFOUND when an OP_ADD finds no
+free slot?
+
+Everywhere else in the driver this bit means a lookup miss. For example,
+yt921x_fdb_has() checks it after OP_GET_ONE:
+
+	if (val & YT921X_FDB_RESULT_NOTFOUND) {
+		*indexp = YT921X_FDB_NUM;
+		return 0;
+	}
+
+The neighbouring bit is defined in chip.h but never checked:
+
+#define  YT921X_FDB_RESULT_OVERWRITED		BIT(13)
+
+If the hardware reports a full table some other way, this check would
+miss the case the commit message describes. Static FDB and MDB entries
+could then still be lost silently while being marked as offloaded.
+
+If OVERWRITED means the ADD evicted another entry from a full bucket,
+would that other entry also be lost silently?
+
+Could the datasheet meaning of these bits for OP_ADD be confirmed?
+
+Separately, yt921x_fdb_add_index_in12() still ignores every result bit.
+It is used by the join and leave update paths. Should it check them too?
+
+> +
+> +	return 0;
+>  }
+>  
+>  static int
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106184811.350700-1-mmyangfl%40gmail.com
