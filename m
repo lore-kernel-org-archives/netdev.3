@@ -1,60 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.162
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794046277;
-	b=GOzLlm7HE53XapxsH4ouPI7IYvnCy1k7B++HWP5jDhN+wTnpXhPWy9kY2oJz7MCOXyVE
-	 1vF0EVbglpHvSOr3hNi/Ln8vsUhSEkaKOpHMcAaX1hO3CSPPqJAWOv6MBEHnPW48YOZkE
-	 CWsZhjFoUvbe+eBE8HcMBj6IMZt9TL+GhcNlOn12ivT79gYCcbXcjhq1gYgN8wMQkhb5H
-	 VCks934hgmwB6afwgGt9rKds42DXsqKYnCayf0chY9mxj4sTxIyeRog7d7Q2n2tQNr9Zn
-	 8t61HMxvKJon1qnZVNU9RIcXfb05lzcRW2oKBpAAEw4lO3jYJqoUR3ptiBefTCExd7g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794046277;
-	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
-	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
-	 X-SimpleLogin-Want-Signing;
-	bh=D8qnkZYaP8QEiEnWStUV7Ol/+8QaugHXvxXWg6fF5ic=;
-	b=ZHReK9C4ar0qzUMJHoxj9knd/9ghpFq+0T28mMJotpWSMtxw3UFFCltwhVg2WFXmei5p
-	 YD0B8/RK0I5UoP2cEdVJpikdX6IVc/tYok8j4BLV7/gAwJ9q1HTY9ZL1nV776DJmaUij/
-	 1xz1T7+uekoGx9qU7QK2mXSjjOpSz9Bo4UF8awO3hBo5Ss2LDmBCWJhhpajyUgPZpWue0
-	 k41MCJbzC0KNkwH+pNiJdP9g26qhCjWC4knf1nY/V70/OCNcsXL9NdeaQsp8CQ6RD3S6h
-	 XDrmNq4+usI+RlnT+n7NObgTnQHfqaX6VG+DNePJnlVkTtJvE10nDEQJw619oq8EzZQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=eldare.de;
-	spf=pass smtp.mailfrom=eldare.de;
-	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b="q+//nBJo";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.162
-Received: from mail-200162.simplelogin.co (mail-200162.simplelogin.co [176.119.200.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794047344;
+	b=u4R/wI8XU02TgXqTaPt/BNaL1hxIvj4jVVU2yKwtU7tLefMPJzI18YAQs/CGOFZE910R
+	 JQtm4ev6sUDhXMKQmzJziwdieJLo3cjBWT3uLIJdHu79gtqnbAyFnWUeuD2a4Bd8Os5W9
+	 qs9Wf0re3pTzZl5QG0AAMxTgrGOvKn+sSp43UQg2FNVV4Yp/rPnS/TMqtHiWlx9glfwPU
+	 YT0LmmAUdbXTax71kbYx7EhUNFWoDW/XVfEXrAt1mqR8i906Ts8mDLQJ7dg3TaukPNeM5
+	 CYvnPeUapWGoLbqpwUGUYfddvJjstLF2YVZvW8Ol/1cjhS2kyvC9HepPZa1gvvpbmew==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794047344;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
+	 In-Reply-To;
+	bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
+	b=eRMSEMISv0PH3kd7VcXe+3Wud+2GEwd+OL6aESqzKvkbLPUnKOaOwg8DJWxpc27ffcb1
+	 4vZ6kQt1Fn3aelzatSvAUY9s+sC9tIPy1MqklijeDk9ZstoaQu0QxcTRGjcT5xrWrH4Dc
+	 2gXRwvs2douyRTazgujISvHNtjENHx5OmRDMzH1gCk8rBbxEIaB3mj3E2s06+ZSqvuB8N
+	 NqE2gSkMmzPUSI9O+BlIg2SdR6BhVXTBRYOSIVJZVT/2Ya4dAbE6OwwH/eg8oqbbUIuTI
+	 F9MV2ONhsAAJC8u1x29a1isbWIZYXyXJk3K5iwhVR+56fwPqtXs6qXBenXv+wjLxy5g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=openai.com;
+	spf=pass smtp.mailfrom=openai.com;
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=gU8fV7MN;
+	arc=none smtp.remote-ip=209.85.160.173
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED68606A32F
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 10:11:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BED68606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F962606A339
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 10:29:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F962606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=q+//nBJo
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1794046269;
-	cv=none; b=inMcURBaUnnmiFzBKA0XFDIgVEEXX6wZRINKCIAG6GakaHqeqKniiZkuGe2Hl77ebLtKhQp6gQyV2RBapiDzNs8B4QAMYgxtUtkPgoTH9yB88cTo30qmi5A88N/P9LkXEs/KkS6Ci0ch8L6tCyq7ui22YvPEKZIGNkzxk0Qz4dxnsGhzhSHdevDx/to6ttjyx66JrdfkeiczcGjyrqrF6DxVz4Y86bBOFXKDDHL8ik3cZ9+1gyEfkKrPLBstzbOg2smHdoRhn3WgqZ25M8z4/KIg68uOK1RfT2KzfW+LudGYMAzsLH7kwL/uXLtbfpleusZci3sWuuxna41qcgJ9UQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1794046269; c=relaxed/simple;
-	bh=jVDqDvrRQsAZ22D6DF6i3XHA4gMN1HWL8uRQDdFvR2U=;
-	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=LzapzOb5NdiOrSUdwgDyf+5xQCwbWMDd4DY56oaTxXK+EAAVDN2u6ldDaBdJsyL7hTTxv6RrLXnE54UDt2aEGapXY0CyEg5mCxCoS+rzKBA3Sv7zJQHipU0di43i19gE7nP8LeslauPhr+yrzoaD6Pe+MSwzlqFUb0QCKtBstU9dFXe0ffhvONP/XMWd4fEw33EFx8jfSfwp36sBU5+2h0KcvUzJ3X+BOpTkuEGLoivu+JksELgFaCOKWsr2PDtnMrlzy9mAXuLC97l6trOfwUY1RGmJ8WeKCOvFPrtpooEws93grPUv/yGIXgqoZq45kUukBsm3CbR7t/YQjuKj3w==
-ARC-Authentication-Results: i=1; mail.protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
-	t=1794046269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D8qnkZYaP8QEiEnWStUV7Ol/+8QaugHXvxXWg6fF5ic=;
-	b=q+//nBJoIM/k20Tl2DfPZ86y9MIYto7smEAAHF+Mbho6wezvb9NVx3efTxHoM1gM4akVOI
-	GImpZhMCtnE4iNLR79mmLuSp0jX/7jMu3/UPo6mh4+B4EBOA28fiegBaHurnZ259ukBvPl
-	vktk03EjoFqtNdVvf+8M0AA6ZnzelbU=
-Date: Sat, 07 Nov 2026 10:11:02 +0000
-Subject: Re: [PATCH net v4 1/2] vsock/bpf: release sock lock while waiting for
- data in recvmsg
-In-Reply-To: <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=gU8fV7MN
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5495d549924so14396321cf.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 02:29:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1794047342; x=1794652142; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
+        b=gU8fV7MN8HJRfR0yKPGughXHLXj/wm9K6t0J7Vdu8qZjnVIQY+xLkiocbpG0MrNr5c
+         UJ/rhNua6yMK7CDQPNtNFEeztgoR6MjAAH8ImfZ2SueDr+PyiWGwpEjLxCZfuMOvmU6L
+         8i/27wDm8zx09wa5f2dtbZpPBiE2L9eSQ/XpY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794047342; x=1794652142;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
+        b=vlua38pcgW8pSdKWhW49ROe14zuPr7ds/mMZ7XpFrv5MdKuHdcsV7MktwvgICeLuTI
+         LgZY7lccCLIvre75pqr33gL4I9OPTgzji2f4gUolbDNmuiQyWulc+lIpK31QQQanD6kJ
+         5JrQ5G31YYaYM4uvR4u4IY17lzKSlkd4nhMumi2QPGh+sWvWw5Kqy+MbHhwKIomAieja
+         Gs7ykJDp3iUhD5NA4nr8SaBOt8xOIR3fEtZKOAhxz3wIjm3z2cTGCj5PT/1Qro9XiB0I
+         WlJtcRZriNurLEOg6DP+8C+TqxLV50RG/Ys6euwGtetur9gY1IrRkdf4IMzAA+07HOV5
+         77dQ==
+X-Forwarded-Encrypted: i=1; AKwUvBynKHN0gdzeTRp9SvbNig1WWssx1iEyoiYwgZh36qBJJwNmAMGT/b+DTGdIqsoLbn02cejj2CY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Rpld55C4J1S/D1zFMxKdI74xOQq/MXOEcQ9UdHX+rSS4vngBx
+	uOMPBl98E9vDmfqXlWe38WX9+aRKRGxKBZUiUanOXjCt4IJuLyi/TxwUZbUQ0+uU94A=
+X-Gm-Gg: AYBFou0bq7xMrmlwqcduztwAFPLUTr0yWRJJvSnL/fQh6PP+1jEweIRW9qoBFLkilzj
+	AOlWK2s+z4TKrFJCcyt3YXTsIG8xLnleqAsS91Md5JOkhI8fQUXpd+S/D1+q1Xfhh3CDTpJrq+F
+	hDU4MpEK4TAyCgNwPl7puY2YlarsVpj6ClaO5ZMcXN7S0F2RaePQvjTCfkEFZNmbiE4/NzDnAtT
+	yckYeTQq9r7inK2mR0UY3+QuvA5059inG71saJ3txfXFY86HkPmPvjLG9VaO3WuZB4iUzJ6phPT
+	VC2Jay70pU1KIYsYF8zYdy8mg8pCscPjfKSIsONfunkRDXT3LU/E1lsTV6zK/mnJdHI+sdK6X3u
+	dLCAsINS00INbdsvhxqkuOznn/OS0wsasNouncOZZFaRdB0x+j7lfW1v4xWdMh4I6xXiD4O6g2G
+	Il8JRN7WJwO47qBA8m48VMKBq5xWoKnpEbzXLOkbtaS+dbp7+Rkl+j1Aq10gM3Mu57/GCrM3bk9
+	ELyjpLSc5hDEG42s60aNYG28jr9iyGwGA2zzU9uq2pLhN3hOJOxOqymGNGdEztGlXskW7nLw6wi
+	dVqA0/rOE/0BrOTyIU5JK71eECfk2gvNTjk6ZL2OjQPwQ26ik3LfNFUUBCsWPvn3+9rkLG42WrY
+	t/KNEsv4=
+X-Received: by 2002:a05:622a:2508:b0:537:dea7:adb1 with SMTP id d75a77b69052e-54e115b4283mr77969511cf.4.1794047342290;
+        Sat, 07 Nov 2026 02:29:02 -0800 (PST)
+Received: from com-75606 ([199.47.143.1])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e2625abafsm43098871cf.16.2026.11.07.02.29.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 02:29:02 -0800 (PST)
+Date: Sat, 7 Nov 2026 02:28:58 -0800
+From: Kyle Zeng <kylebot@openai.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: netfilter-devel@vger.kernel.org,
+	Pablo Neira Ayuso <pablo@netfilter.org>, coreteam@netfilter.org,
+	bridge@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
+Subject: Re: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices
+ for DNAT
+Message-ID: <au79avuyDAz__s4t@com-75606>
+References: <20261030042155.73844-1-kylebot@openai.com>
+ <au7SdYQrIqAQOU24@strlen.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,54 +99,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: jrmmhm.kernel@eldare.de
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,Bobby Eshleman
- <bobbyeshleman@meta.com>,"David S. Miller" <davem@davemloft.net>,Eric Dumazet
- <edumazet@kernel.org>,Jakub  Kicinski <kuba@kernel.org>,Paolo Abeni
- <pabeni@redhat.com>,Simon  Horman <horms@kernel.org>,"Michael S. Tsirkin"
- <mst@redhat.com>,Michal Luczaj
- <mhal@rbox.co>,virtualization@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,stable@vger.kernel.org
-Message-ID: <179404626756.7.5004773530941890450.1753698952@eldare.de>
-References: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de>
- <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
- <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
-X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 1753699018
-X-SimpleLogin-Want-Signing: yes
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <au7SdYQrIqAQOU24@strlen.de>
 
-On Sat, 07 Nov 2026 02:09:17 +0000, Alexei Starovoitov wrote:
-> No need for a 2nd copy of the return values.
-[...]
->   recv()                          no sockmap    this series   the diff
->   ------------------------------  ------------  ------------  -----------
->   after a virtio reset            -ENOTCONN     -ECONNRESET   -ENOTCONN
->   after a reset, len =3D=3D 0         -ENOTCONN     0             -ENOTCO=
-NN
->   after a reset, MSG_OOB          -ENOTCONN     -EOPNOTSUPP   -ENOTCONN
->   after peer shutdown, SO_INQ on  0 + SCM_INQ   0             0 + SCM_INQ
->   asleep when the reset comes     -ECONNRESET   -ECONNRESET   -ENOTCONN
+On Sat, Nov 07, 2026 at 08:25:41AM +0100, Florian Westphal wrote:
+> Kyle Zeng <kylebot@openai.com> wrote:
+> > The IPv4 and IPv6 bridge prerouting callbacks classify DNAT traffic using
+> > the logical input device saved in skb->dev. The physical input port can
+> > have a different bridge master when prerouting resumes, for example after
+> > an NFQUEUE verdict. Netfilter reassembly can also combine the first
+> > fragment's bridge information with a different fragment's input device.
+> > 
+> > br_nf_pre_routing_finish_bridge() replaces skb->dev with the port's
+> > current bridge master, but looks up the neighbour using the existing
+> > route. This can put an skb with skb->dev pointing to bridge B on an
+> > unresolved neighbour of bridge A. Deleting B and resolving the neighbour
+> > on A then causes a use-after-free in __dev_queue_xmit().
+> > 
+> > Before calling the neighbour output method, check that the neighbour
+> > keeps skb->dev alive. A neighbour holds its device, and a VLAN device
+> > also holds its real device, so allow a VLAN whose real device is the
+> > bridge. Release the neighbour and drop the skb on a mismatch.
+> > 
+> > Doing this in the shared continuation covers both protocol families,
+> > including a queue in the remaining bridge prerouting hooks. Leave the
+> > cached-header path unchanged since it does not enqueue the skb.
+> > 
+> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> > ---
+> > I have a reproducer for this issue and can share via DM
+> > 
+> >  net/bridge/br_netfilter_hooks.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> > 
+> > diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+> > index e15355ff215a..726a2d17ed3a 100644
+> > --- a/net/bridge/br_netfilter_hooks.c
+> > +++ b/net/bridge/br_netfilter_hooks.c
+> > @@ -307,6 +307,18 @@ int br_nf_pre_routing_finish_bridge(struct net *net, struct sock *sk, struct sk_
+> >  
+> >  			ret = br_handle_frame_finish(net, sk, skb);
+> >  		} else {
+> > +			struct net_device *dev = neigh->dev;
+> > +
+> > +			/* The neighbour queue must keep skb->dev alive. A VLAN
+> > +			 * device also holds a reference to its real device.
+> > +			 */
+> > +			if (is_vlan_dev(dev))
+> > +				dev = vlan_dev_real_dev(dev);
+> > +			if (dev != skb->dev) {
+> > +				neigh_release(neigh);
+> > +				goto free_skb;
+> > +			}
+> > +
+> 
+> I don't understand the vlan check. Why is that needed?
+> The call to br_nf_pre_routing_finish_bridge is gated via:
+> 
+>  405                         if (skb_dst(skb)->dev == dev) {
+>  406                                 skb->dev = br_indev;
+>  407                                 nf_bridge_update_protocol(skb);
+>  408                                 nf_bridge_push_encap_header(skb);
+>  409                                 br_nf_hook_thresh(NF_BR_PRE_ROUTING,
+>  410                                                   net, sk, skb, skb->dev,
+>  411                                                   NULL,
+>  412                                                   br_nf_pre_routing_finish_bridge);
+> 
+> 
+> ... so this patch ought to be sufficient?
+> 
+> --- a/net/bridge/br_netfilter_hooks.c
+> +++ b/net/bridge/br_netfilter_hooks.c
+> @@ -283,6 +283,10 @@ int br_nf_pre_routing_finish_bridge(struct net *net, struct sock *sk, struct sk_
+>         if (!skb->dev)
+>                 goto free_skb;
+>         dst = skb_dst(skb);
+> +
+> +       if (dst->dev != skb->dev)
+> +               goto free_skb;
+> +
+>         neigh = dst_neigh_lookup_skb(dst, skb);
+> 
+> (I can't see how neigh->dev != skb->dev after the extra test).
 
-Agreed. I ran your diff in a guest with the reproducers of this series:
-the deadlock, the dataless wakeup, signal, timeout, peer shutdown,
-MSG_ERRQUEUE and MSG_OOB cases behave as with v4, with no KASAN, lockdep
-or hung task report. In the first four rows of your table the sockmap
-socket now returns exactly what a native one returns.
 
-The last row is confirmed as well. I'd accept that and say so in the
-commit message, since it only changes which error a reader of an
-already reset connection sees.
+The VLAN check is intended to preserve existing VLAN DNAT behavior.
 
-> None of these tests sleeps in vsock_msg_wait_data().
-> The sockmap tests call select() before recv() or pass MSG_DONTWAIT.
-> vmtest.sh doesn't use sockmap.
+bridge-nf-filter-vlan-tagged=1, bridge-nf-pass-vlan-input-dev=1, and br0.100, the earlier test can pass with
+dst->dev == dev == br0.100. The continuation then changes skb->dev to br0, so the strict comparison would
+drop that valid packet.
 
-Right. v5 won't cite them as coverage of this change.
-
-v5 will be a single patch based on your diff, with your Suggested-by.
-
-Thanks,
-Jerome
-
+A neighbour on br0.100 is safe here because it holds the VLAN device, which holds its underlying bridge. That is why the slow-path check compares the neighbour´s underlying device with skb->dev.
