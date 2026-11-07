@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794022483;
-	b=eytM9sgOWi0A6an40+FKxMv/eRwRbK3ukLDohFM/2K3HL/Zv0mK7AYigDirX4QyPeW2v
-	 jdJ8QNfOP+JutWcEejPB1TWqZBqaJT+N6wDLRK4lN9ZZS22V0fLlabNFKVT1bqVb8W7dV
-	 2joGEtIINSJGQlCFSaME/Z+QjQ+o3tPQYTrTY4igICRe7rMQTSZx0q4F6cWEaNzT76k+K
-	 T8OeaTVSJgUS+a02RF00SdOR5aGSk9nckzWhH24YGv4XRKkgkLeewrgNtqf4cxpgKis/x
-	 JtYPyd4CjMVih6iMwz8e47OOX/nlvMSGSSEODNASx22Ikn1iFzJd+blcwO5PydU/wfQ==
+	t=1794022486;
+	b=y6HcxNYpxoUuMYXH8DhG+UbVYmhu74sZXvsHzDjBo04qdzlAJNUHIU7KrliloVfl7LBE
+	 OgFINgzJ0kyO48aoG0jsReUclMGdG+44HHJ0ySP+L9iVJpkJJeuqt6otcKlCbvbfdOAGM
+	 RAKrq4NF2VR4qVrrbWqE5Eh3rvyT/tDsEJVU2+FPXak14ReS354u/44mPC3+kZJvFpw3F
+	 NvPksPV7ub2Sv+1SDiXISYdVL/GRrDo+nYnxyAfZkb8vVZssCjQE5eZnNqZKBAx38VMs4
+	 tHVYm2SZn47G07Dnp+N08vZ4CJEqVmBKEtPqhnkiBb+wXt2RrArCvOjsAuTOAWrxOBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794022483;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794022486;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=RrV5iqN0VATzlL9Eoq00NFZhRYz4qlgHoomWQEo1jXw=;
-	b=TjOZhG6Zxoro/QxvLlKaH+CZAbGSBuKSj5JEjZ55173AXPTyY95skaM+eW5HxKb3dwvV
-	 FWiCbptT319R5gdFPbMsCrifTDuZ9gcFDXUxwN8vydnvpLZnzmCpFGb0Dj8xFiTwZvEBB
-	 VhEl9pRMxa00Ja8C9Eh0BKmqZAv3bJvm21oiT9QfAwEbMHzoKuVHKEiGTkct6RdofJt0z
-	 Jh9JUs/7uRnKld1g3+2hEfpX5/lSt+ZLdIwLQNzjuQnZn0cWDl/79VzYcbySf0IYHyZ/3
-	 fsSzF5bLOwi0v1qCIaWAYrJwszR6tctc4D4cyAv2CAoeCwrsBSVLiuqzMRZZNGuvP0g==
+	bh=x4zTBAOSJlU8f106RKk3bpv2K/L+ZgYBExNbeipkUpI=;
+	b=jQWlZyA97Obt8Xps9Y4xG6hocKS+5CaXwsFZ3lyTr5DvNNpTZufievlhZMWk694N2+dB
+	 QtIexylrj6tzZuahk41y6FJ4j6/rHvRZau8PRQ/yuBerWCeZQXaDgjJTS2kbw+RCgGOTo
+	 4Jmqo9pLCH2iQrDeCIWV8hGfWEMxy7Bj1Ze2KOnF9wdZb/byV9o/OEeJxk8Fvn72M1Ntw
+	 rHUYw/iS//Ri6xgDdI8UlgrmYkdovCyNOXD2MTGibPhbJgcBDr4TTZpI17Oljle8NYsQW
+	 86fze7xo0NZKyPOD8+iebW2MrQQxcTZegQtMRxA311u3GduLDjdCfKf/pApd7xfNO5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cloudflare.com;
 	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=KlfMre+Z;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=GIe+ZKoW;
+	arc=none smtp.remote-ip=209.85.218.41
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0815B606A33C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:34:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0815B606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA8F606A330
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:34:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BA8F606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=KlfMre+Z
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso164068466b.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:34:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=GIe+ZKoW
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c423b145922so177654466b.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:34:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794022481; x=1794627281; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1794022485; x=1794627285; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RrV5iqN0VATzlL9Eoq00NFZhRYz4qlgHoomWQEo1jXw=;
-        b=KlfMre+Z7nZjGpdNNmAPYVnUnKeDa/tY8JSsFzeVfl6aMAVYrLnVC3du54uvFKSS9c
-         P8J4+HTghaSxCZIsjLlI/EkKBQKWp0Q9y1scjI9Gcwy9B8MiRrgRQDVkLehJCDxphYVB
-         PxZxHDH+4F1fjxkly/VAdKsj8XMZKIIu/0QzDTmIOJvfof0X86ZgFFC255Ge5EjNWDhs
-         nOarth4F32zcMsyIgMPCIQf3HDLEixgCHGwPlEmvjpsOvNRy/eZzFPucwYw/2C52CyaM
-         EMv2Z4NlrC3ayy1Asf+0xf66clln+V8I7XEGPheqMLf6YYl+j7wbBk2Pf49mO7sEZa8N
-         9TTQ==
+        bh=x4zTBAOSJlU8f106RKk3bpv2K/L+ZgYBExNbeipkUpI=;
+        b=GIe+ZKoW+pY5Fl7fRKi2DeDJ5Qd5FjGaaUW23q/i6MvM4UFc/J0l7jS5zsjSA4ZRxj
+         r6pa4/VmNL+ASX+wt8RkjKMbgD4AleZmF4shbhyaUu6J/yEbfU3gpkM9UDZCBmABAm7k
+         hIu2H6X8DvuG2YzUBsOyN+IcVqUlaVVw/FpnqNNLKwbVfyNlRV0MoM4IgrJnhdunFLYv
+         gIan4/vx0SSq/FbCC4OmZw9l6xwUBLa9I6SULVV+kMzUrNrkMJKSY7+IEue2duvueLN1
+         jH/6HLvXOqGgB/K9Cy+yZ2LN8sVQwYVnB4lHkTjXaMC5uzulWt+HinTK7nADVY5mR1Dz
+         WUog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794022481; x=1794627281;
+        d=1e100.net; s=20260707; t=1794022485; x=1794627285;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RrV5iqN0VATzlL9Eoq00NFZhRYz4qlgHoomWQEo1jXw=;
-        b=XwSkcHKiJCTba9l3Vmkw9+PSkRnRHrTNj69vas/0rfm3EbKp83JQMMkH+DtO4HdSsU
-         RMO6CUVaRSS2TDeHaVo1QFco+MeyI2a8Ocddjypdug4U10e52dS6w8Ie7Llagli3TJ10
-         at4Rc1/KXYtSMASEB9T0GotF+9pHwOZNGL877J4O0TQXGL1ScJOGWNtUbvWt5O9ywSQ+
-         kpDoj9y3zxBpQ2C3YszlzcMlFxRBv4qUNKtfLH9ZwDfoVad+GnWzss8Q8QWC+v7R3TBu
-         rqQ8jmEvdMV1/ixVoE5Hy8ZRPQzZl4HD9/76bJJV9ba8OsiuDkKDA6zUsaIbuHPl9i7F
-         Ug/w==
-X-Gm-Message-State: APuU4Z9qhctH7VIXo0/yMXnexCDn0fLOyVeqxIHf5l6mdIwU0DQdbJta
-	JQ/voYJTUjldLn+MpDBH0VDm6H+gQV5xb6f/Fvyk/SG/eH2OMg41VlmE3NDRTDP9LV9azBvM2FU
-	a9KNTLIk=
-X-Gm-Gg: AYBFou0GXxRUfy4LuhEqgCYHnDqJ3B1o63C5wIcaGVl+GP1VXbsQTfYaBG+IXhHyEHq
-	edLnfPRcVQKBpyplfJ6C+mZZRSHLLCJw7J9ojpa8kC5Hxfohng2OuVCl8Du1Dv6lGqpuK2e2Sbj
-	NFFzDCn5FlfC7pWM/mPhI3f1OURIOPzGOMaXyLMmRcVzS5Hnb35Nm84fouxA11GLj1xDVXXYcB8
-	dBOeBFw3Is8JApbz5OkNzH0CWZFSFLmRKYTKWf9TIZRCYyEQC5CRFshiRtyRO9a4snL6UCdxWd7
-	qjbrY3Rhuj+vLh2Jpt1qegLiyBMDNiLxzboA/h7Dhabyf7YU9i0NaNX36cK2yCVXrhzuBp6GNqN
-	3F9p1E7QWgZh/Y3R1HPDTJjX33mX1I5OWqptTDKXVZ/O+Fu9oFUq54U0IhzjQmNTHRoTG52kxHr
-	aOqmDDJ2XKvki6woiiV2hYUaeYWBKpGPXs87CdK/5evPpa24Besq1+PZvhj6y6Bu54ciwvaqE0p
-	znxTEaTvwC8xcrk9IBPlzw9XzXHH9lqCZYskWO9BmLBJOwzlVm08uB/q2gLQ9FWHwc8aR6ioZB0
-	EGiwEva6vRTIdCCgB6f3jir/4/wqVuh/uaIvvxhmZIbpDh8KbLBRsuTJ/MSMeJY=
-X-Received: by 2002:a17:906:9f92:b0:c3f:dce3:20c5 with SMTP id a640c23a62f3a-c4d34c9a760mr362334466b.44.1794022481458;
-        Fri, 06 Nov 2026 19:34:41 -0800 (PST)
+        bh=x4zTBAOSJlU8f106RKk3bpv2K/L+ZgYBExNbeipkUpI=;
+        b=CVgzMz2d0AfvQgqRRhwhS+EwvAv/DpZH7tkZ6mTs2oYG/BQq44B+uIrZs7F7J/X6+z
+         aQpmLZkkCjMw1OOowmXpQ0xULY1CK+TMzXhLwfVynzPWUToWZPuCxCEaiemr7XtuACHL
+         cyNeLDUIW48cNQMzLEJfWbNagEGF/osdfVsFBNR7Kom0z/f7PRFxKWgSPEXL9tg6Ac0m
+         SQK0x/1phjApNDiW0dv+88oWMxb0kB8qa7gtNcnbj1A7HUrBEwJdcTkVqME1YlxGKvU1
+         hlNp/5jJ22V74xUpfSO6TY1ZJRfX1Bw15XTcrizn3yCExQkE/thzzKDOyZ/DEFjjH+h+
+         k9KA==
+X-Gm-Message-State: APuU4Z8vkReafullXyf+HuiEmiBA5KdjtM+tOSzklG8iP0P6oJhNEBx2
+	O6+8bMQgeeJUBE8ov0wyd4A/DV135Sytv03vLW7bQtquyHrrFAfyol3gMnbwvagrg5fANfH3vPQ
+	ob8Vqz6o=
+X-Gm-Gg: AYBFou3OnBEjDYCF7j77a6X4A+Np12VGhOcv0lAmD2MAnGvWjtRjDEZaDUt0SCZn7qa
+	mH52dbsAwYhJ+/WqDbbA98DkwKLW6zwG0x5EcRAzyrZldEtq5RvvL6QLGeLyF0zCXXu2fvm/tht
+	dDIqzB2/IDUXgfqLyvCHiblkvfHK85ETLt8jdul7pSbaaPl1Q9XlRTaxBn/WtSE3Z00UaSLPmGr
+	4XwCZQcAvVpPJmYyK9t3ATUqWLKY9+mtipWUN9HLw/GkMfTBTL4wCUFkPXrQwis1CRufojw7xEt
+	WJQPFumC+Owyd1LgJRkeHnJCWkJapYVJ1GZ6h+prqh/GGJPtsIP2EmUuofRozocUg79KY7mrIw5
+	zKJc+J0bBq+oPY/BG0yTTlfburZQBrT7Oz7toSLZom06zjzeiNc50P1ueI7wQHVptgwjVz9Ls5d
+	PGKxzVqMrbTtPSgPoVM4uJft3O4TNe4KVasEtMXe+mbuBKdBk+ol6iUJ2eWCP5ViJmEgwXWuzHB
+	QP5tsJlZlJ+Wtdl7DY8IfJ/JkQxv8pm2PvT3oqwKebzplSyelns6K+zP86HNK/Ot5XeTPl1a1L/
+	LlvjV8WDaZizbzuA4NfvddsIIwfxUNsFTu5dUdNT23mRruf+CXZptve444eZwHJMIF1zujKiniL
+	HH9ERmA0Y
+X-Received: by 2002:a17:907:3e8d:b0:c37:c0dd:6642 with SMTP id a640c23a62f3a-c4d34c6d09emr361258566b.37.1794022484771;
+        Fri, 06 Nov 2026 19:34:44 -0800 (PST)
 Received: from L9JK9NPFH9.lan ([104.28.20.56])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d3562e00dsm121104166b.21.2026.11.06.19.34.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d3562e00dsm121104166b.21.2026.11.06.19.34.41
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 19:34:40 -0800 (PST)
+        Fri, 06 Nov 2026 19:34:43 -0800 (PST)
 From: Tianyi Gao <tianyi@cloudflare.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -116,9 +117,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	kernel-team@cloudflare.com,
 	nh-open-source@amazon.com,
 	Tianyi Gao <tianyi@cloudflare.com>
-Subject: [PATCH net-next 2/8] net: reserve extra TX headroom for local egress
-Date: Sat,  7 Nov 2026 03:34:21 +0000
-Message-ID: <4b2f20b9a7bcca58fced690d20916efab55ad31a.1794020868.git.tianyi@cloudflare.com>
+Subject: [PATCH net-next 3/8] rtnetlink: add IFLA_TX_EXTRA_HEADROOM
+Date: Sat,  7 Nov 2026 03:34:22 +0000
+Message-ID: <e515d1a0d46831ca06f45659caa8c7c5668e20c9.1794020868.git.tianyi@cloudflare.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <cover.1794020868.git.tianyi@cloudflare.com>
 References: <cover.1794020868.git.tianyi@cloudflare.com>
@@ -135,154 +136,196 @@ Content-Transfer-Encoding: 8bit
 
 From: David Keogh <dkeogh@amazon.com>
 
-Use LL_ALLOC_SPACE() and LL_ALLOC_SPACE_EX() instead of
-LL_RESERVED_SPACE() and LL_RESERVED_SPACE_EX() where the stack allocates
-packets on behalf of a local sender and sizes them for the output
-device:
+Expose tx_extra_headroom through a new IFLA_TX_EXTRA_HEADROOM u32
+attribute. The value is bounded to NETDEV_TX_EXTRA_HEADROOM_MAX
+(512 bytes) by the netlink policy, which is plenty for several layers
+of encapsulation while keeping the growth of per-packet allocations
+modest.
 
- - __ip_append_data() and __ip6_append_data(), covering UDP, ICMP,
-   ping and raw sockets without IP_HDRINCL;
- - raw_send_hdrinc() and rawv6_send_hdrinc();
- - the three AF_PACKET transmit paths;
- - AF_XDP copy mode, which open-codes its own calculation from
-   needed_headroom and now uses netdev_tx_alloc_headroom().
+The attribute can be given when creating a link and when changing one.
+It is included in link dumps and a change triggers the usual link
+notification when the device is up. Zero is the default and resets the
+reservation.
 
-These are the main paths where a packet's headroom is decided by the
-device's advertised requirement and nothing else. Adding the
-administrator's extra reservation here means such packets reach the TC
-egress hook with room for additional headers already in place.
+IFLA_HEADROOM keeps reporting needed_headroom, the driver's own
+requirement, so userspace can tell the two apart.
 
-Paths that check an existing packet against LL_RESERVED_SPACE() and
-expand it on demand, such as ip_finish_output2() and the tunnel
-transmit functions, are deliberately left alone. Using the larger value
-there would force a reallocation of every packet that lacks the full
-extra reservation, including TCP segments that already have enough
-room for the headers an egress program actually pushes.
-
-ip_do_fragment() and ip6_fragment() are also left alone. They use the
-same value to check the headroom of existing fragments and to size new
-ones. A larger value would send more packets to the slow path, which
-copies them. A local sender's fragments normally come from
-__ip_append_data() or __ip6_append_data().
+The setting applies to the device the packet is allocated for, that is
+the device selected by the route, and is not inherited by stacked
+devices. Document that together with the allocation-only semantics in
+netdevices.rst and add the attribute to the rt-link spec.
 
 Signed-off-by: David Keogh <dkeogh@amazon.com>
+[tianyi: make IFLA_TX_EXTRA_HEADROOM a u32, fix the docs]
 Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
 ---
- net/ipv4/ip_output.c   | 2 +-
- net/ipv4/raw.c         | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- net/ipv6/raw.c         | 2 +-
- net/packet/af_packet.c | 6 +++---
- net/xdp/xsk.c          | 6 ++++--
- 6 files changed, 11 insertions(+), 9 deletions(-)
+IFLA_TX_EXTRA_HEADROOM is a u32 attribute, although the maximum value
+(NETDEV_TX_EXTRA_HEADROOM_MAX) is 512.
+Documentation/userspace-api/netlink/specs.rst says to avoid types
+smaller than 32 bits. Netlink aligns each attribute to 4 bytes, so a
+smaller type does not save memory. The dev->tx_extra_headroom field
+stays unsigned short. IFLA_GSO_MAX_SEGS and the u16 dev->gso_max_segs
+do the same.
+---
+ Documentation/netlink/specs/rt-link.yaml | 12 ++++++++
+ Documentation/networking/netdevices.rst  | 35 ++++++++++++++++++++++++
+ include/uapi/linux/if_link.h             |  1 +
+ net/core/rtnetlink.c                     | 19 ++++++++++++-
+ 4 files changed, 66 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 3396f177a18d..bf718b8f6f1d 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -988,7 +988,7 @@ static int __ip_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
- 	paged = !!cork->gso_size;
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 81b58633911d..fb76410abd5b 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -1098,6 +1098,16 @@ attribute-sets:
+         name: pacing-offload
+         type: u32
+         doc: Enable EDT pacing offload (0 - disabled, 1 - enabled).
++      -
++        name: tx-extra-headroom
++        type: u32
++        doc: |
++          Additional headroom, in bytes, reserved on top of the driver's
++          requirement when the UDP, raw, AF_PACKET and AF_XDP copy mode transmit
++          paths allocate a packet for this device. TCP and forwarded packets are
++          not covered. Zero (the default) disables the extra reservation.
++        checks:
++          max: 512
+   -
+     name: prop-list-link-attrs
+     subset-of: link-attrs
+@@ -2471,6 +2481,7 @@ operations:
+             - gso-ipv4-max-size
+             - gro-ipv4-max-size
+             - af-spec
++            - tx-extra-headroom
+     -
+       name: newlink-ntf
+       doc: Notify that a link has been created
+@@ -2567,6 +2578,7 @@ operations:
+             - gso-ipv4-max-size
+             - gro-ipv4-max-size
+             - pacing-offload
++            - tx-extra-headroom
+       dump:
+         request:
+           value: 18
+diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
+index 6a87f09e7015..da3556e56cc2 100644
+--- a/Documentation/networking/netdevices.rst
++++ b/Documentation/networking/netdevices.rst
+@@ -441,6 +441,41 @@ from a notifier.
  
--	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
-+	hh_len = LL_ALLOC_SPACE(rt->dst.dev);
+ Drivers **must not** generate nested notifications of the ops-locked types.
  
- 	fragheaderlen = sizeof(struct iphdr) + (opt ? opt->optlen : 0);
- 	maxfraglen = ((mtu - fragheaderlen) & ~7) + fragheaderlen;
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index 9d01006d8189..a1e72e634d0e 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -355,7 +355,7 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
- 	if (flags&MSG_PROBE)
- 		goto out;
++TX headroom reservation
++=======================
++
++``needed_headroom`` is the driver's own additional header-space requirement.
++It is written by the driver, or by a stacked device inheriting the value of
++the device below it, and is reported read-only through ``IFLA_HEADROOM``.
++
++``tx_extra_headroom`` is a separate reservation configured by the
++administrator through the ``IFLA_TX_EXTRA_HEADROOM`` rtnetlink attribute, a
++byte count from 0 to 512 that defaults to 0. It can be supplied when a link
++is created or changed, is reported in link dumps and change notifications,
++and setting it back to 0 removes it.
++
++The extra reservation is only applied when the stack allocates a locally
++generated packet for transmission through the device. ``LL_ALLOC_SPACE()``
++adds ``tx_extra_headroom`` before ``LL_RESERVED_SPACE()`` aligns the sum to
++``HH_DATA_MOD``, and is used by the UDP, raw and AF_PACKET transmit paths.
++AF_XDP copy mode adds it through ``netdev_tx_alloc_headroom()``. Its purpose
++is to give programs attached at TC egress room to push additional headers
++without having to reallocate the packet first.
++
++The setting is deliberately not part of ``LL_RESERVED_SPACE()``, which
++remains the threshold for deciding whether an already existing packet must
++be expanded. Packets that reach the device with less than the extra
++reservation, such as forwarded packets or TCP segments, are therefore not
++reallocated because of it. Consumers must keep their usual headroom and
++clone checks.
++
++The setting is not inherited through stacked devices. Packets are allocated
++against the device selected by the route, so configure it on the VLAN,
++bond or bridge device the route points at rather than on the device
++beneath it. It survives link down/up and network namespace moves and is
++independent of any TC or BPF attachment. It does not change the MTU or
++the bytes on the wire.
++
+ NETDEV_INTERNAL symbol namespace
+ ================================
  
--	hlen = LL_RESERVED_SPACE(rt->dst.dev);
-+	hlen = LL_ALLOC_SPACE(rt->dst.dev);
- 	tlen = rt->dst.dev->needed_tailroom;
- 	skb = sock_alloc_send_skb(sk,
- 				  length + hlen + tlen + 15,
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 25fe0ba98b1a..a3626d5f0d11 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1490,7 +1490,7 @@ static int __ip6_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
- 	orig_mtu = mtu;
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 245b36204525..fb3a6b382a78 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -382,6 +382,7 @@ enum {
+ 	IFLA_HEADROOM,
+ 	IFLA_TAILROOM,
+ 	IFLA_PACING_OFFLOAD,
++	IFLA_TX_EXTRA_HEADROOM,
+ 	__IFLA_MAX
+ };
  
--	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
-+	hh_len = LL_ALLOC_SPACE(rt->dst.dev);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index e141340172ce..16ee1a874107 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1409,6 +1409,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
+ 	       + nla_total_size(4)  /* IFLA_PACING_OFFLOAD */
+ 	       + nla_total_size(2)  /* IFLA_HEADROOM */
+ 	       + nla_total_size(2)  /* IFLA_TAILROOM */
++	       + nla_total_size(4)  /* IFLA_TX_EXTRA_HEADROOM */
+ 	       + rtnl_dev_parent_size(dev)
+ 	       + 0;
  
- 	fragheaderlen = sizeof(struct ipv6hdr) + rt->rt6i_nfheader_len +
- 			(opt ? opt->opt_nflen : 0);
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index bdea825434ea..06459685ec61 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -601,7 +601,7 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
- 	struct sk_buff *skb;
- 	int err;
- 	struct rt6_info *rt = dst_rt6_info(*dstp);
--	int hlen = LL_RESERVED_SPACE(rt->dst.dev);
-+	int hlen = LL_ALLOC_SPACE(rt->dst.dev);
- 	int tlen = rt->dst.dev->needed_tailroom;
+@@ -2206,7 +2207,9 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
+ 	    nla_put_u16(skb, IFLA_HEADROOM,
+ 			READ_ONCE(dev->needed_headroom)) ||
+ 	    nla_put_u16(skb, IFLA_TAILROOM,
+-			READ_ONCE(dev->needed_tailroom)))
++			READ_ONCE(dev->needed_tailroom)) ||
++	    nla_put_u32(skb, IFLA_TX_EXTRA_HEADROOM,
++			READ_ONCE(dev->tx_extra_headroom)))
+ 		goto nla_put_failure;
  
- 	if (length > rt->dst.dev->mtu) {
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 8250e6a791f6..8800da612880 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2032,7 +2032,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		goto out_unlock;
+ 	if (rtnl_fill_proto_down(skb, dev))
+@@ -2367,6 +2370,8 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+ 	[IFLA_HEADROOM]		= { .type = NLA_REJECT },
+ 	[IFLA_TAILROOM]		= { .type = NLA_REJECT },
+ 	[IFLA_PACING_OFFLOAD]	= NLA_POLICY_MAX(NLA_U32, 1),
++	[IFLA_TX_EXTRA_HEADROOM] =
++		NLA_POLICY_MAX(NLA_U32, NETDEV_TX_EXTRA_HEADROOM_MAX),
+ };
  
- 	if (!skb) {
--		size_t reserved = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+		size_t reserved = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 		int tlen = dev->needed_tailroom;
- 		unsigned int hhlen = dev->header_ops ? hard_header_len : 0;
+ static const struct nla_policy ifla_info_policy[IFLA_INFO_MAX+1] = {
+@@ -3374,6 +3379,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 		}
+ 	}
  
-@@ -2860,7 +2860,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto tpacket_error;
++	if (tb[IFLA_TX_EXTRA_HEADROOM]) {
++		u32 val = nla_get_u32(tb[IFLA_TX_EXTRA_HEADROOM]);
++
++		if (dev->tx_extra_headroom != val) {
++			WRITE_ONCE(dev->tx_extra_headroom, val);
++			status |= DO_SETLINK_NOTIFY;
++		}
++	}
++
+ 	if (tb[IFLA_OPERSTATE])
+ 		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
  
- 		status = TP_STATUS_SEND_REQUEST;
--		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+		hlen = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
- 			data += vnet_hdr_sz;
-@@ -3087,7 +3087,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_unlock;
+@@ -3865,6 +3879,9 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 		netif_set_gso_ipv4_max_size(dev, nla_get_u32(tb[IFLA_GSO_IPV4_MAX_SIZE]));
+ 	if (tb[IFLA_GRO_IPV4_MAX_SIZE])
+ 		netif_set_gro_ipv4_max_size(dev, nla_get_u32(tb[IFLA_GRO_IPV4_MAX_SIZE]));
++	if (tb[IFLA_TX_EXTRA_HEADROOM])
++		dev->tx_extra_headroom =
++			nla_get_u32(tb[IFLA_TX_EXTRA_HEADROOM]);
  
- 	err = -ENOBUFS;
--	hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+	hlen = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 	tlen = dev->needed_tailroom;
- 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
- 	linear = max(linear, min_t(int, len, hard_header_len));
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 781ba46eb152..3ee8ad3fd155 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -1045,7 +1045,8 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
- 	buffer = xsk_buff_raw_get_data(pool, addr);
- 
- 	if (!skb) {
--		hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(xs->dev->needed_headroom));
-+		hr = max(NET_SKB_PAD,
-+			 L1_CACHE_ALIGN(netdev_tx_alloc_headroom(xs->dev)));
- 
- 		skb = sock_alloc_send_skb(&xs->sk, hr, 1, &err);
- 		if (unlikely(!skb))
-@@ -1128,7 +1129,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 		len = desc->len;
- 
- 		if (!skb) {
--			hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(dev->needed_headroom));
-+			hr = max(NET_SKB_PAD,
-+				 L1_CACHE_ALIGN(netdev_tx_alloc_headroom(dev)));
- 			tr = dev->needed_tailroom;
- 			skb = sock_alloc_send_skb(&xs->sk, hr + len + tr, 1, &err);
- 			if (unlikely(!skb))
+ 	return dev;
+ }
 -- 
 2.56.0
 
