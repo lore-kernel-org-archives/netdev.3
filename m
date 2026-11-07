@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794081532;
-	b=JiPBiETBm4YClVpEtepOq+PB5Tq+VZ28Vl+ILN8/3xYDbpodBE+hqetaTy9tAOlLbol4
-	 t+v4PXCaYDkP6bQ2CGD0H5MDnPg6dY5a7VdiC6vbo1HHqJBWlgjyUmSnkkmTJXS1ylRN1
-	 h6406yWh2fxbNrUp1rXxRCk2ELLJt1373JpEzqCoRwnuuidRSfRr7xrdUuoiawl/ORWq0
-	 +4+Ix+Uy8YndVrXelGcBfHjmvOSGAHycskYKB9zeIDkLHTMc+S0ivBYHKjWNb6xti5Zgh
-	 XFQ1vW6ibl3gEZUkliH2ipNS7fN4epMopoxLI5AHIQa8MMerzN70oYTmb8fmPaLgwPw==
+	t=1794083082;
+	b=ROW9obSMw4kTbjwiFCPCk9O83drTTQGgyGkuoyE+7gp2K27Sn7P4NzGCICodtUuy2Rlb
+	 JItFIJUcqoH1fxBv7fh4h3MLMj7pyzCze0BnOch/wk6hYQUAofo96T5dbvLtZRU6eQxzG
+	 cSDP8SRJK+yqNOr+W6U58zFCceeg0edwDlqKikEemKErTbwJGGOcUoIsbYBE79IMAZAiC
+	 CE81651CkETfN/w+w7PstqxzLv/NUwDIhB9J5zS4jMy4/J++unv3Ikhbzf1pUDR1d6IaH
+	 GWJXNPM/E1upwDz7gL37OrclfrmvifBzydnPRpRJjIJbjbrNJw7It+K50MyckntW3kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794081532;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083082;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Q5Im6BFhU4c73HRwf/q+HpEYX20gYNbEp6RoZ7l899w=;
-	b=ZqczrpJ5m2JJBk2HYJ81+lNRY5+cMx+b7k51uo4hsFDi2ps7zTQgIvD+QN4A5nME2/y9
-	 drx+1H0T76Z2zeN8YHk6cXRfGK/skyAYhZG3b+WwhxbAhXs0Zj2t/hERnu2eIsjzA2evb
-	 d0LYApNCu9MydXwwURwdKY7/efY3XtwxHUVQb1S730d1jMhkiBovMEL0UXlXxuDQI3gWn
-	 gKJV0CVftNdT/Y2+7KdWenChrnvpFOQMTE4uvtUUaoYXoiLFEtM00YX1LP7ut9j+GYQ+t
-	 95WnjRDoTCI417AfFFb9U1Rr2YZQC/lxFH6gXgJ/dfxhRDOT03b15nN+kdy9HdUa7NQ==
+	bh=Yre4GilkIAFAcudSjzMPk/UneKEQo+pn5RJtt75meX8=;
+	b=H2gYlX5NC+IlRhBEpAM3OyUjZ+Dxk1L/CmjQvyg2qnWZqx4tYFW5Y4SBnomyy26IqG1q
+	 rjjuEztr5pRm4EobhzquG8MNQTxEh/QYiBTNQYUkyYKHx9bzwcsvLdAoQ9RVXDI5vtxzm
+	 UU0wgK6xvnU6IjQu2wGbd0r/cw+KN4RATArrwlM81rzA/Tz9or/skjaoxeNAn7/27Cskm
+	 F7a5axTKSvQi3bHq+LGm0Q/ZELxl3zcXaZxyq3epkpodEaIR5V06WLDAX8ITU/hlqZbTq
+	 xfaP+gp/O2Kw5ocpgWAxb5zCMFGC2qCMjHkKTQQRbGgxZUu47xjHH8x/DiccODLZOCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BjkjE9Fx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtPk4ZQo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4CF606A330;
-	Sat,  7 Nov 2026 19:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF1F606A334;
+	Sat,  7 Nov 2026 20:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BjkjE9Fx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E38A1F0089F;
-	Sat,  7 Nov 2026 19:58:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtPk4ZQo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF631F0089F;
+	Sat,  7 Nov 2026 20:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081532;
-	bh=Q5Im6BFhU4c73HRwf/q+HpEYX20gYNbEp6RoZ7l899w=;
+	s=k20260515; t=1794083081;
+	bh=Yre4GilkIAFAcudSjzMPk/UneKEQo+pn5RJtt75meX8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BjkjE9FxEZaXr65Lx27gx1Y9P7mXfdVT/aaHWy0gf1h1/UXo+fSc3Z2ouwgf7r8Uh
-	 Ft2Bkm2leC8POeBXzCDoiv3sZSUACbx4wTRcA4UWcFVQ/3aeqPAA+CVKLXQQsb4aH0
-	 3VU7QZ0cLlKmuqugZsVZnJ8k1XlSFfBO8TikkFbBUGYjTZZwyKCJevp/MkPZNKobZ+
-	 XmoUsCYjGq+hKuR6ZYKBHTliqhh7KmXSAYZzQF9Q+r0DI7NUkLgBe2bj9XjNFZCqg2
-	 nZ6UtBy0ML3pIhKWHR9TE5DmAD9oPBb0aLm/fIwIIoHnuM8jilYVygttKysU37ZSkj
-	 sGeiDkq6FinEQ==
-Subject: Re: [PATCH net v5 2/4] bnxt_en: check HWRM response if completion
- never arrives
+	b=GtPk4ZQoJLISAQNDyu84x0tPZKAtqAZhXUJCfLiXCRLZ+8EXUAmPcBlLc8sLMNkV3
+	 A4vIz9CNM3jpee3MX4Gk9VSRLljWX0Ofbq534V2xAGQYj2/rYhK/hVtpYGU1r6YX3N
+	 KHqfuIOCQlf8Kbo+eBgIcEp5Yr42c4G/SWPvv1d9RhtRZJhUJoKo2h5Dnv+eRMi2OZ
+	 ulfZO/wsYeJcePP1v3l5hTVjT//oGDthCC0CULcS8jWFg9ZAXEhF+4oZZyx8ODBZMy
+	 EVBZxowoIsr7NizvFofOVcvA5UtFHbflBA1MNyBlhQR4H3pegYTbKlfsvtyTWjH3bn
+	 BTdvJOyl3RJJw==
+Subject:
+ Re: [PATCH rdma-next 01/23] net/mlx5: Add mlx5_trigger_health_work_force()
 From: netdev-bot+sashiko@kernel.org
-To: joe@dama.to
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- prashant@broadcom.com, edumazet@google.com, horms@kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 07 Nov 2026 19:58:51 +0000
-Message-ID: <179408153103.994134.11897477531270570828@kernel.org>
-In-Reply-To: <20261106191423.4194081-3-joe@dama.to>
-References: <20261106191423.4194081-3-joe@dama.to>
-X-sashiko-severity: Medium
+To: yishaih@nvidia.com
+Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+ davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
+ moshe@nvidia.com, maorg@nvidia.com
+Date: Sat, 07 Nov 2026 20:24:40 +0000
+Message-ID: <179408308027.994134.17949886966516055410@kernel.org>
+In-Reply-To: <20261103163949.1554-2-yishaih@nvidia.com>
+References: <20261103163949.1554-2-yishaih@nvidia.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 2
+Critical: 0 · High: 2 · Medium: 2 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,221 +77,331 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new fallback for a missing completion is in the generic
-  completion-ring wait branch of __hwrm_send()…
-- [Medium] bnxt_hwrm_rx_ring_reset()
-  (drivers/net/ethernet/broadcom/bnxt/bnxt.c:14467) sends…
-- [Medium] In the new fallback for a missing completion in __hwrm_send(),
-  dma_rmb() runs once, before the loads of seq_id, resp_len and the…
-- [Low] The commit message says the valid byte need not be polled because
-  'Several seconds are spent waiting for the completion, so a response…
-- [Low] BNXT_HWRM_CTX_SILENT is documented in bnxt_hwrm.h as 'squelch
-  firmware errors', and hwrm_err() turns messages into netdev_dbg when…
+- [High] The forced path in mlx5_fw_fatal_reporter_err()
+  (drivers/net/ethernet/mellanox/mlx5/core/health.c) tries only…
+- [High] net/mlx5: forced health work recovers device when interface is
+  already down
+- [Medium] Nothing deduplicates force_fatal_report_work against
+  fatal_report_work or against the device state.
+- [Medium] A forced request is dropped with no record or retry if
+  force_fatal_report_work runs while MLX5_DROP_HEALTH_WORK is set only…
+- [Low] The patch changes the existing sensor-triggered recovery path
+  (fatal_report_work, forced=false) in mlx5_fw_fatal_reporter_err().
+- [Low] A forced, consumer-detected fault goes through the same devlink
+  fw_fatal reporter path as a real firmware-fatal error.
 
 --
 
-bnxt_en: check HWRM response if completion never arrives
+net/mlx5: Add mlx5_trigger_health_work_force()
 
-This changes __hwrm_send() so that when a command sent over a completion
-ring never has its completion consumed by NAPI, the DMA response is
-checked before giving up. If resp_len is non-zero, the sequence id
-matches and the valid byte is set, the command is treated as completed
-and falls through to the normal error_code handling.
+This adds mlx5_trigger_health_work_force(). It queues a new
+force_fatal_report_work that runs the fatal health recovery with the error
+state forced, whatever the health sensors report. Before forcing the error
+state, the forced path stops the health poller and issues a fast teardown
+of the HCA under intf_state_mutex. The function is exported for mlx5_ib,
+which uses it later in the series.
 
-> Several seconds are spent waiting for the completion, so a response that
-> was written at all is complete by the time the wait gives up. There is no
-> need to poll for the valid byte here the way the polling path below has
-> to, where the poll is for a non-zero length and the valid byte at the end
-> of the message may still be on its way.
-
-[Severity: Low]
-Is the "several seconds" part accurate? __hwrm_req_init() sets the
-default timeout like this:
-
-    ctx->timeout = bp->hwrm_cmd_timeout ?: DFLT_HWRM_CMD_TIMEOUT;
-
-DFLT_HWRM_CMD_TIMEOUT is defined as 500 in bnxt.h, and
-bp->hwrm_cmd_timeout comes from the firmware's def_req_timeout. None of
-the completion ring callers (ring free, ring reset, selftest irq) seem to
-raise it.
-
-The wait loop can also end with no timeout at all when
-bnxt_free_hwrm_resources() cancels the token:
-
-    WRITE_ONCE(token->state, BNXT_HWRM_CANCELLED);
-
-That also enters the new != BNXT_HWRM_COMPLETE branch. And if firmware
-finishes right at the timeout boundary, the response DMA may still be in
-flight when it is checked.
-
-A partly written response still reads valid_byte == 0 and takes the error
-exit, so the code fails safe. Could the justification be reworded, though?
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-> index 5bfabdca7d0e2..4feba90f0bf68 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-> @@ -582,11 +582,36 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
->  		}
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+> index aeeb136f5ebc7..d000ac335fa7a 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+> @@ -627,18 +627,11 @@ mlx5_fw_fatal_reporter_dump(struct devlink_health_reporter *reporter,
+>  	return err;
+>  }
 >  
->  		if (READ_ONCE(token->state) != BNXT_HWRM_COMPLETE) {
-> -			hwrm_err(bp, ctx, "Resp cmpl intr err msg: 0x%x\n",
-> -				 req_type);
-> -			goto exit;
-> +			__le16 resp_seq_id;
-> +			u8 valid_byte = 0;
+> -static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
+> +static void mlx5_fw_fatal_reporter_err(struct mlx5_core_dev *dev, bool forced)
+>  {
+
+[ ... ]
+
+>  	mutex_lock(&dev->intf_state_mutex);
+>  	if (test_bit(MLX5_DROP_HEALTH_WORK, &health->flags)) {
+> @@ -646,8 +639,26 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
+>  		mutex_unlock(&dev->intf_state_mutex);
+>  		return;
+>  	}
+
+[Severity: Medium]
+Can a forced request get lost here? If force_fatal_report_work runs while
+MLX5_DROP_HEALTH_WORK is set only for a while, mlx5_fw_fatal_reporter_err()
+logs "health works are not permitted at this stage" and returns. The
+request is not recorded and not retried.
+
+The FW sync reset flow opens such a window.
+mlx5_sync_reset_set_reset_requested() sets the bit without holding
+intf_state_mutex:
+
+	mlx5_stop_health_poll(dev, true);
+
+On abort or timeout, mlx5_sync_reset_clear_reset_requested() clears it
+again:
+
+	if (poll_health)
+		mlx5_start_health_poll(dev);
+
+A dropped sensor fault is caught again by the next poll_health(). A forced
+fault cannot be, because the sensors never see it. So dev->state stays
+MLX5_DEVICE_STATE_UP. The kernel-doc of mlx5_trigger_health_work_force()
+says this API exists to prevent exactly that.
+
+In the mlx5_ib consumer later in this series, umrc->state is already
+MLX5_UMR_STATE_ERR at this point, and cq->poll_one is already
+mlx5_ib_poll_one_stopped. The UMR waiters in mlx5r_umr_post_send_wait()
+depend on the internal error flush to wake them, and they wait with no
+timeout:
+
+	wait_for_completion(&umr_context.done);
+
+If the forced request is dropped this way, would those waiters hang
+forever?
+
+> +	/*
+> +	 * The firmware might still be running, so stop it first. Do it under
+> +	 * intf_state_mutex and only while UP, so the cmd interface is valid.
+> +	 */
+> +	if (forced && test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
+> +		int err;
 > +
-> +			/* The completion ring entry was not delivered for
-> +			 * some reason. It might be possible that the command
-> +			 * was carried out even without a completion being
-> +			 * posted. Check the response before giving up and log
-> +			 * the state.
-> +			 */
-> +			dma_rmb();
-> +			resp_seq_id = READ_ONCE(ctx->resp->seq_id);
-> +			len = le16_to_cpu(READ_ONCE(ctx->resp->resp_len));
-> +			if (len && resp_seq_id == ctx->req->seq_id)
-> +				valid_byte = *((u8 *)ctx->resp + len - 1);
+> +		mlx5_stop_health_poll(dev, false);
+> +		err = mlx5_cmd_fast_teardown_hca(dev);
+> +		if (err)
+> +			mlx5_core_err(dev, "Failed to stop the device before forcing the error state, err %d\n",
+> +				      err);
+> +	}
 
-[Severity: Medium]
-Is the dma_rmb() in the right place here? It runs once, before the
-seq_id, resp_len and valid byte loads. Nothing orders the loads of the
-rest of the response after the valid byte is seen.
+[Severity: High]
+What happens here when MLX5_INTERFACE_STATE_UP is already clear? The
+forced branch skips mlx5_stop_health_poll() and
+mlx5_cmd_fast_teardown_hca(), but the function does not bail out. It
+still calls enter_error_state(dev, true) and then continues into
+mlx5_health_try_recover() or devlink_health_report().
 
-Those later reads include ctx->resp->error_code in the netdev_warn()
-below. They also include the common tail of __hwrm_send():
+A non-remove unload leaves the device in exactly that state.
+mlx5_unload_one_devl_locked() does:
 
-    *valid = 0;
-    rc = le16_to_cpu(ctx->resp->error_code);
+	clear_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state);
+	mlx5_unload(dev);
+	mlx5_function_teardown(dev, false);
 
-and any response fields that callers read after hwrm_req_send() returns.
+mlx5_function_disable(dev, false) then calls
+mlx5_stop_health_poll(dev, false), so MLX5_DROP_HEALTH_WORK is never
+set. mlx5_suspend() and mlx5_devlink_reload_down() take this path.
+mlx5_pci_err_detected() takes it too, before it drains the health wq.
+None of them cancel force_fatal_report_work.
 
-Firmware writes the valid byte last. The usual consumer pattern is to
-see the valid byte, then dma_rmb(), then read the payload. The address of
-the valid byte load depends on len, but the error_code load depends on
-nothing.
+Suppose a consumer calls mlx5_trigger_health_work_force() just before
+or during one of those unloads. The work runs once intf_state_mutex is
+released. It finds MLX5_DROP_HEALTH_WORK clear and the interface down.
+It then forces MLX5_DEVICE_STATE_INTERNAL_ERROR on a device whose cmd
+interface mlx5_cmd_disable() has already shut down. The recovery then
+runs:
 
-On weakly ordered CPUs such as arm64 or POWER, could the error_code load
-complete before the valid byte load while firmware is still writing the
-response at the timeout boundary? The response buffer starts zeroed, so a
-stale error_code would read as 0 and a failed command would look like a
-success.
+mlx5_health_try_recover()
+  mlx5_handle_bad_state()
+    /* sensors clean, NIC never disabled by fast teardown */
+    mlx5_disable_device()
+      mlx5_error_sw_reset()
+        /* can poll up to PCI_TOGGLE timeout for IFC disabled */
+  mlx5_recover_device()
+    mlx5_pci_slot_reset()
+    mlx5_load_one_devl_locked(dev, true)
 
-For HWRM_RING_FREE, would that hide a failure from the error handling
-added later in the series, which stops DMA only when ring free fails?
+Does that reset and reload a device that was just suspended or
+unloaded on purpose?
 
-The polling path has the same gap after its valid loop. This patch adds
-a new consumer that relies on the completeness argument in the commit
-message.
+Devlink reload is affected as well. devl_lock is held from reload_down
+to reload_up, so the work blocks on devl_lock, either directly or
+inside devlink_health_report(), until reload_up has loaded the device
+again. The work then forces the error state on the freshly reloaded,
+healthy device and recovers it. If the report lands inside the
+graceful period, it unloads the device with
+mlx5_unload_one(dev, false) instead.
+
+Should the forced path unlock and return when the interface is not UP,
+instead of only skipping the teardown? Or should the non-remove unload
+paths cancel force_fatal_report_work?
+
+[Severity: High]
+What happens here when mlx5_cmd_fast_teardown_hca() fails? It returns
+-EOPNOTSUPP at once when MLX5_CAP_GEN(dev, fast_teardown) is 0. It can also
+return -EIO, -EACCES or a command error. The failure is only logged, and
+enter_error_state(dev, true) runs anyway. The HCA can then still be in
+FULL_DRIVER mode with bus mastering enabled when dev->state becomes
+MLX5_DEVICE_STATE_INTERNAL_ERROR.
+
+>From that point, mlx5_internal_err_ret_value() fakes success for
+TEARDOWN_HCA, DISABLE_HCA and the DESTROY_* commands. MANAGE_PAGES fails
+with -ENXIO, so reclaim_pages_cmd() reclaims the firmware pages in
+software:
+
+	/* No hard feelings, we want our pages back! */
+
+The recovery then runs:
+
+mlx5_health_try_recover()
+  mlx5_handle_bad_state()
+    /* only warns "Expected to see disabled NIC but it is full driver" */
+    mlx5_disable_device()
+      mlx5_error_sw_reset()
+        /* sensors are clean: no SW reset, only "NIC IFC still" logged */
+      mlx5_unload_one_devl_locked()
+        /* frees EQ/CQ/QP/RQ buffers and ICM pages */
+  mlx5_recover_device()
+    mlx5_pci_disable_device()   /* skipped for SFs */
+
+Can the still-running HCA DMA into the freed queue buffers and ICM pages
+before bus mastering is cleared? On the -ECANCELED branch,
+mlx5_unload_one(dev, false) frees everything and the device is never
+disabled.
+
+Compare mlx5_try_fast_unload(). It falls back to force teardown and
+enters the error state only after a teardown has succeeded:
+
+	ret = mlx5_cmd_fast_teardown_hca(dev);
+	if (!ret)
+		goto succeed;
+
+	ret = mlx5_cmd_force_teardown_hca(dev);
+	if (!ret)
+		goto succeed;
+	...
+	mlx5_start_health_poll(dev);
+	return ret;
+
+Does this path need a mlx5_cmd_force_teardown_hca() fallback, or bus
+mastering cleared before the error state is forced? The commit message
+says the work asks the firmware to stop "as the device might still be
+running", but that does not happen when fast teardown is unsupported or
+fails.
 
 > +
-> +			if (!valid_byte) {
-> +				hwrm_err(bp, ctx,
-> +					 "Resp cmpl intr err msg: 0x%x len:%d seq:0x%x/0x%x\n",
-> +					 req_type, len,
-> +					 le16_to_cpu(resp_seq_id),
-> +					 le16_to_cpu(ctx->req->seq_id));
-> +				goto exit;
-> +			}
-
-[Severity: Medium]
-This fallback is in the generic completion ring branch, so it covers
-every request that sets cmpl_ring, not only HWRM_RING_FREE. Does it change
-the result of the ethtool interrupt self test?
-
-bnxt_hwrm_selftest_irq() sends HWRM_SELFTEST_IRQ with the completion ring
-set:
-
-    req->cmpl_ring = cpu_to_le16(cmpl_ring);
-    return hwrm_req_send(bp, req);
-
-The test catches a broken interrupt path only because hwrm_req_send()
-fails when NAPI never consumes the HWRM_DONE.
-
-Firmware still writes the DMA response for the command. If the interrupt
-or completion never reaches NAPI, this path now falls through and returns
-error_code, which is 0:
-
-ethtool -t <dev> offline
-  bnxt_self_test()
-    bnxt_test_irq()
-      bnxt_hwrm_selftest_irq()
-        __hwrm_send()
-
-bnxt_self_test() marks the test failed only here:
-
-    if (rc || bnxt_test_irq(bp)) {
-        buf[BNXT_IRQ_TEST_IDX] = 1;
-        etest->flags |= ETH_TEST_FL_FAILED;
-    }
-
-Would Interrupt_test then pass on a device whose interrupt delivery is
-broken, with only a netdev_warn in dmesg? The commit message mentions
-only the ring free case.
-
-[Severity: Medium]
-bnxt_hwrm_rx_ring_reset() raises a similar question. It sends
-HWRM_RING_RESET with cmpl_ring set to the RX ring's own completion ring,
-using hwrm_req_send_silent().
-
-Before this patch, a lost completion returned -EBUSY. bnxt_rx_ring_reset()
-then fell back to bnxt_reset_task(), which also re-initializes NAPI and
-IRQs:
-
-    rc = bnxt_hwrm_rx_ring_reset(bp, i);
-    if (rc) {
-        ...
-        bnxt_reset_task(bp, true);
-        break;
-    }
-    bnxt_free_one_rx_ring_skbs(bp, rxr);
-    ...
-    rxr->bnapi->in_reset = false;
-
-Now the same case can return 0 and take the in-place recovery path.
-
-Commit 74608fc98d28 sent the response through the ring's own completion
-ring for ordering: "The response will be the last entry in the ring and
-we can free the ring after getting the response." When NAPI consumes
-HWRM_DONE, that shows the earlier RX completions on the ring were
-discarded while in_reset was set.
-
-Without that, can unconsumed completions stay on the cp ring and be
-processed by bnxt_rx_pkt() after in_reset is cleared and the buffers are
-replaced?
-
-If the completion was lost because the ring's interrupt or NAPI is stuck,
-would the in-place path leave the ring broken, where the global reset
-would have recovered it?
-
-What happens once stale entries are processed depends on runtime state,
-so this one is less certain.
-
-> +			netdev_warn(bp->dev,
-> +				    "Resp cmpl intr not delivered, msg: 0x%x completed anyway (len:%d valid:0x%x err:0x%x)\n",
-> +				    req_type, len, valid_byte,
-> +				    le16_to_cpu(ctx->resp->error_code));
+> +	/*
+> +	 * Enter the error state before unlocking, or an unload could send
+> +	 * TEARDOWN_HCA to the stopped NIC, fail and skip function disable.
+> +	 */
+> +	enter_error_state(dev, forced);
+>  	mutex_unlock(&dev->intf_state_mutex);
+> -	enter_error_state(dev, false);
 
 [Severity: Low]
-Should this respect BNXT_HWRM_CTX_SILENT? The flag is documented as
-"squelch firmware errors". The failure side of this branch uses
-hwrm_err(), which drops to netdev_dbg for silent contexts.
+This also changes the existing sensor-triggered path (fatal_report_work,
+forced == false). enter_error_state(dev, false) runs mlx5_cmd_flush() and
+the MLX5_DEV_EVENT_SYS_ERROR notifier chain. It used to run after
+mutex_unlock(&dev->intf_state_mutex). It now runs with the mutex held, for
+every firmware fatal recovery.
 
-This netdev_warn() always prints the firmware error_code. The common tail
-of __hwrm_send() suppresses the same error_code for silent callers:
+mlx5_enter_error_state() already calls enter_error_state() under the same
+mutex, so this doesn't look like a deadlock. However, the new comment and
+the commit message explain the move only for the forced case.
 
-    if (rc == HWRM_ERR_CODE_BUSY && !(ctx->flags & BNXT_HWRM_CTX_SILENT))
-        netdev_warn(bp->dev, "FW returned busy, hwrm req_type 0x%x\n",
-                    req_type);
-    else if (rc && rc != HWRM_ERR_CODE_PF_UNAVAILABLE)
-        hwrm_err(bp, ctx, "hwrm req_type 0x%x seq id 0x%x error 0x%x\n",
-                 req_type, le16_to_cpu(ctx->req->seq_id), rc);
+Could the commit message say that the non-forced path changes too?
 
-bnxt_hwrm_rx_ring_reset() uses hwrm_req_send_silent() and goes through
-this path. A lost completion there would now log a warning that includes
-the firmware error code.
+>  	if (IS_ERR_OR_NULL(health->fw_fatal_reporter)) {
+>  		devl_lock(devlink);
+>  		if (mlx5_health_try_recover(dev))
+> @@ -669,6 +680,33 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
+>  	}
+>  }
+>  
+
+[ ... ]
+
+> +static void mlx5_fw_fatal_reporter_force_err_work(struct work_struct *work)
+> +{
+> +	struct mlx5_core_health *health;
+> +	struct mlx5_core_dev *dev;
+> +	struct mlx5_priv *priv;
+> +
+> +	health = container_of(work, struct mlx5_core_health,
+> +			      force_fatal_report_work);
+> +	priv = container_of(health, struct mlx5_priv, health);
+> +	dev = container_of(priv, struct mlx5_core_dev, priv);
+> +
+> +	mlx5_fw_fatal_reporter_err(dev, true);
+> +}
+
+[Severity: Low]
+With forced == true, mlx5_fw_fatal_reporter_err() still reports through
+the fw_fatal reporter as a firmware fatal error:
+
+	fw_reporter_ctx.err_synd = health->synd;
+	fw_reporter_ctx.miss_counter = health->miss_counter;
+	if (devlink_health_report(health->fw_fatal_reporter,
+				  "FW fatal error reported", &fw_reporter_ctx) == -ECANCELED) {
+
+health->synd and health->miss_counter are firmware sensor values that have
+nothing to do with the forced fault, and health->fatal_error is not set.
+Will devlink health output show a firmware fatal event with a stale or zero
+syndrome, and nothing that points to the consumer that triggered it?
+
+Each forced event also counts toward the fw_fatal reporter's graceful
+period. A second forced trigger inside that period (60s on a PF) makes
+devlink_health_report() return -ECANCELED, and the driver then calls
+mlx5_unload_one(dev, false). Should the commit message describe this?
+
+[ ... ]
+
+> @@ -759,6 +797,25 @@ void mlx5_trigger_health_work(struct mlx5_core_dev *dev)
+>  		queue_work(health->wq, &health->fatal_report_work);
+>  }
+>  
+
+[ ... ]
+
+> +void mlx5_trigger_health_work_force(struct mlx5_core_dev *dev)
+> +{
+> +	struct mlx5_core_health *health = &dev->priv.health;
+> +
+> +	if (!mlx5_dev_is_lightweight(dev))
+> +		queue_work(health->wq, &health->force_fatal_report_work);
+> +}
+
+[Severity: Medium]
+Does anything deduplicate this against fatal_report_work, or check
+dev->state? The two are separate work items on the ordered health->wq, so
+queue_work() never merges them. The recovery path (mlx5_disable_device()
+and mlx5_recover_device()) does not drain health->wq.
+
+The forced branch in mlx5_fw_fatal_reporter_err() checks only
+MLX5_DROP_HEALTH_WORK and MLX5_INTERFACE_STATE_UP. The peer helpers refuse
+to run on a device that is already in error:
+
+mlx5_enter_error_state():
+	if (!err_detected && dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
+		goto unlock;/* a previous error is still being handled */
+
+mlx5_try_fast_unload():
+	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR) {
+		mlx5_core_dbg(dev, "Device in internal error state, giving up\n");
+		return -EAGAIN;
+	}
+
+Suppose poll_health() has already set MLX5_DEVICE_STATE_INTERNAL_ERROR
+and queued fatal_report_work while the forced work is pending.
+mlx5_internal_err_ret_value() fakes TEARDOWN_HCA as a success.
+mlx5_cmd_fast_teardown_hca() then writes the iseg NIC state and polls for
+up to the TEARDOWN timeout on a device in firmware fatal state. Later, the
+queued fatal_report_work handles the same fault again on the device that
+was just recovered.
+
+The other order is also possible. A forced work queued while
+fatal_report_work is recovering runs on the freshly loaded, healthy device.
+It fast-tears it down and forces the error state.
+
+In both orders, the second devlink_health_report() falls inside the
+graceful period and returns -ECANCELED. mlx5_unload_one(dev, false) then
+leaves the device unloaded instead of recovered. Is that intended?
+
+The mlx5_ib consumer in this series switches cq->poll_one to
+mlx5_ib_poll_one_stopped before it triggers, so a single UMR CQ cannot
+trigger twice. A sensor fault and a forged CQE close together would still
+be enough, for example when mlx5_ib_poll_cq() passes its mdev->state check
+just before poll_health() sets the error state.
+
+> +EXPORT_SYMBOL_GPL(mlx5_trigger_health_work_force);
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106191423.4194081-1-joe%40dama.to
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
