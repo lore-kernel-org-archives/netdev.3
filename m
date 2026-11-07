@@ -1,56 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794055574;
-	b=LazHhM+XwqXwoikH2WZV7KnfYfkOQN0ReqY+f1hWNxKmLqj11qan1dhIswfyQQ2qpqq9
-	 K+ORdSaja44IsX/LA8Yd8qEF5Tj/2dvpu4C7e7JRvoqh2+texeA5/TWk1kPbgKWkqRvBJ
-	 ISqeaJNMiGUoDtu0zsXTGRMdqaVIjKEkIN9jfni6J6lw0nS9FGMrNqTCUB1Gnk6TDeMWU
-	 Vbe5TKMge/IIB9xQkFCeMB62cLj6/+uu9Qv+f3jbdU/thVStNNpSPiZjiH0TBc7m6LVmU
-	 TQlviBvEFjVcTuunn/XGd+wqqYqpfJLeG0MkkF1zPnWyX/KBo4md9H4Nw6cvFGQ6ozQ==
+	t=1794055958;
+	b=UCzg3qYxUv2yGuH8lri2/GHLf/9kWuqYbTJOhGgCY/DQ8AGmXVPGS0CJ7HkeQXuXv88P
+	 E0VezMhuqexxVuYQ20gwn0hTA5dXKiEoIe64VfA9txEzEnCO61BlG9DjfMtxwNAiBS3fr
+	 fBlYZXXsJ/NYqAMR9JGoJ2UP1q/LVPHD9uFc1vGX7oYbDw5e3S19CdHxxYFe98h2BsXti
+	 lkItWK09CJV9UD3VRO4gAhZomWUpFg+I6DCArfq7AtOS7dN5TmoiT+KQgH6ytIk7gw8ZT
+	 v6TwSPedBMQqdomumC5otGsR2RNuqjxefkh6CEL87PLQkQlL19qZfohpPpYqL5dRFjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794055574;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794055958;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=/RiPgyoXuembimyDq6WnhbjkgPIJFpoffN9+ARbON4Q=;
-	b=Hrc/+U+5G33HoEXLBzK04M/I4DIW9nWYBlomHezhJ2p8I47SDxuAEZNBPCzhtZknv7/l
-	 WIQ+lRFrxHJ2Tx5dmv6b93ScWjxZjUuzkOhTyOdE0/RD4nTTnrRywUxXktMSCzBNFZrYO
-	 9LGzRF3SGUgHxRFjXTi+EWWkubVT3SaDq5UtOtOYzDnUWRJQ7gLuWViuF6ArkYKo1UfaL
-	 Yy/AM1oMz9ee1xnYJKcDhvLwiGcHQDeAj118/nRxLSzX9qrf/gBdZ3/JB+8yif4Q1H23Y
-	 lQ98TcA0I5cDB0YrFgqJ350bc7JJLhIRr0hemqW13B/KgO3LElKIpJCI8AqwLnZMY0Q==
+	bh=Dz4nU+XktsAws1dehkwjm0qCQeZEQukoJ/eEOgzjJmw=;
+	b=4KRKS9wnHqVNB6Fn/HYfq3iTjQzm/ZS5Z6f8rUnv+xaW/oGP1tI9+ih705ovmXWUzgo0
+	 NOechnTSEPGHOesmZXD/NDkCLYslhib6WCuAh8gC7GUSxC76d1gq0tyngvjlT1UW9/p6w
+	 ooQih5WB+NouLIubf3TaBbUJOCQpSiELgiZqN9txOs+Wjbb9ifUrmCX1+6AIpWeC4PqG2
+	 mpL1z0sKlbmlZx+bZLpkYZDpRleBrzZNk67J7L2d2XS3Q0+UL1IQNwaARuuQu9HSG/4ia
+	 5J/1lw1gHgbyAj6kfxISgMrST+us/+J6zixFFAC/HEEJez5I67X8KhiRxvkBNzwmgwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kjLVTBZa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="CW/Xjxlz";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60B606A326;
-	Sat,  7 Nov 2026 12:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF41606A332;
+	Sat,  7 Nov 2026 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kjLVTBZa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286251F0089F;
-	Sat,  7 Nov 2026 12:46:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CW/Xjxlz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB991F0089F;
+	Sat,  7 Nov 2026 12:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794055573;
-	bh=/RiPgyoXuembimyDq6WnhbjkgPIJFpoffN9+ARbON4Q=;
+	s=k20260515; t=1794055958;
+	bh=Dz4nU+XktsAws1dehkwjm0qCQeZEQukoJ/eEOgzjJmw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kjLVTBZanYT45cNamz8KZqx4UF1JUJoQOjZ2AZ1BlKr3QRZMTupufknRY5QkMZ+lX
-	 UnTFpTddxV3lyO6+WRTw1eIiWzxH9XvUQKw5Cv1BKJRchgtVXQsraaAnYgsaifghaN
-	 qoJUORi35W5qKZLS21RYDRDTxtsyEHGDUo9hyLmwNRR4Ei6ofquYj2yZOcPqH+8gKr
-	 Afh7CPIoU3gAFJ4B56UABiiiJC+WrPYDVBUFwGtwfyeOuR8ISHuf11joJ8TgGOfaes
-	 XFllM0JZ9GK/Tjhg7OPS1DHdKuauN4Yi3/mSxRCU8Tfv75sLGJeAPe/GFakbG6BOv4
-	 joX4XEJegZ7wQ==
-Subject: Re: [PATCH] igb: disable the PCI device when resume fails
+	b=CW/XjxlzDTg1aVQdaW7JqzCU9aaRZxg62YnM+vgqwA4flyextgxB4VK1ac/IZ1+v8
+	 Cld5GUjoR/e3mRH/HCVPROmI+GqeAVSCy0MnXbulfqi3Wg3TcDyaUu8OJ0KPQ9C4i+
+	 l5t5U3OLiP7rQ9LyRNqBdmyAEfWssgWcaIleDJl3djI003zeCK49MptH2JveNn6Sj0
+	 IYM96xWfsnZsLVEpC461U6Y9DFgP8aRtUIMcm4BCbGuF+ws5liDWWlFWiQN/0ZkVSx
+	 3uMyOs5gUS7S2Iidi1R4Zoizlq2D/QeYDvO73S//iARvwmixC1nJu8Uktg24qnjpqD
+	 UhmvdKDI8T73A==
+Subject: Re: [PATCH] net: stmmac: free RX resources when TX allocation fails
 From: netdev-bot+sashiko@kernel.org
 To: vulab@iscas.ac.cn
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 12:46:12 +0000
-Message-ID: <179405557264.994134.1212641106918033235@kernel.org>
-In-Reply-To: <20261103102849.1340413-1-vulab@iscas.ac.cn>
-References: <20261103102849.1340413-1-vulab@iscas.ac.cn>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Sat, 07 Nov 2026 12:52:36 +0000
+Message-ID: <179405595688.994134.1843500788974971566@kernel.org>
+In-Reply-To: <20261103102857.1340748-1-vulab@iscas.ac.cn>
+References: <20261103102857.1340748-1-vulab@iscas.ac.cn>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,7 +69,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,169 +77,166 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch adds pci_disable_device() calls that unbalance the PCI
-  enable count.
-- [High] igb: missing interrupt and hw control cleanup in __igb_resume()
+- [High] net: stmmac: double free of RX resources after stmmac_xdp_open()
+  failure
+- [Low] The commit message does not accurately describe what leaks, and
+  it leaves out one of the two callers whose behaviour changes.
+
+Pre-existing issues:
+- [High] The NULL-pointer oops this concern describes exists in the code,
+  but it predates this patch.
+- [Low] This problem wasn't introduced by this patch, but the kernel-doc
+  of alloc_dma_desc_resources() (lines 2434-2442), repeated word for…
 
 --
 
-igb: disable the PCI device when resume fails
+net: stmmac: free RX resources when TX allocation fails
 
-This patch adds pci_disable_device() calls to __igb_resume() for the cases
-where igb_init_interrupt_scheme() or __igb_open() fails after
-pci_enable_device_mem() has succeeded. The aim is to release the PCI
-enable reference that resume takes when the resume fails.
+This patch makes alloc_dma_desc_resources() release the RX queues with
+free_dma_rx_desc_resources() when alloc_dma_tx_desc_resources() fails.
+The goal is to stop the RX side from leaking when stmmac_setup_dma_desc()
+drops the partially populated dma_conf.
 
-> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-> index d4a897a8c82c6..853bc99a10113 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_main.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-> @@ -9621,6 +9621,7 @@ static int __igb_resume(struct device *dev, bool rpm)
+> stmmac_setup_dma_desc() only frees the
+> dma_conf on this path, so the RX DMA rings, page pools and socket
+> buffers are leaked.
+
+[Severity: Low]
+Is the list of leaked resources accurate? When the TX allocation fails,
+__alloc_dma_rx_desc_resources() has only done four things: created the
+page_pool, allocated the buf_pool array, allocated the descriptor ring with
+dma_alloc_coherent(), and registered xdp_rxq.
+
+The RX buffers are filled in later by init_dma_desc_rings(), so no socket
+buffers exist at this point.
+
+stmmac_setup_dma_desc() is also not the only caller. stmmac_xdp_open()
+calls alloc_dma_desc_resources() on the persistent priv->dma_conf:
+
+	ret = alloc_dma_desc_resources(priv, &priv->dma_conf);
+	if (ret < 0) {
+		netdev_err(dev, "%s: DMA descriptors allocation failed\n",
+			   __func__);
+		goto dma_desc_error;
+	}
+
+Before this patch, the RX resources on that path were not leaked, because a
+later release freed them. Now they are freed early inside
+alloc_dma_desc_resources(), and priv->dma_conf still holds the pointers.
+
+Could the commit message mention this caller and explain how the change
+affects it?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 7ffed295eb14a..3f9f3b7878c20 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -2450,6 +2450,8 @@ static int alloc_dma_desc_resources(struct stmmac_priv *priv,
+>  		return ret;
 >  
->  	if (igb_init_interrupt_scheme(adapter, true)) {
->  		dev_err(&pdev->dev, "Unable to allocate memory for queues\n");
-> +		pci_disable_device(pdev);
->  		return -ENOMEM;
->  	}
+>  	ret = alloc_dma_tx_desc_resources(priv, dma_conf);
+> +	if (ret)
+> +		free_dma_rx_desc_resources(priv, dma_conf);
+
+[Severity: High]
+Can this turn into a double free on the stmmac_xdp_open() path?
+
+stmmac_xdp_set_prog() calls stmmac_xdp_release() and then
+stmmac_xdp_open() when the interface is running.
+stmmac_xdp_release() frees everything with
+free_dma_desc_resources(priv, &priv->dma_conf), and stmmac_xdp_open()
+then calls alloc_dma_desc_resources() directly on the persistent
+priv->dma_conf. It does not use a temporary copy the way
+stmmac_setup_dma_desc() does.
+
+If the RX side succeeds and the TX side fails there, this new call
+frees the new RX descriptor rings, rx_q->buf_pool and rx_q->page_pool.
+__free_dma_rx_desc_resources() does not clear rx_q->dma_rx,
+rx_q->dma_erx, rx_q->buf_pool or rx_q->page_pool afterwards, so
+priv->dma_conf.rx_queue[] is left holding freed pointers.
+
+stmmac_xdp_set_prog() ignores the return value of stmmac_xdp_open(),
+so the device stays IFF_UP. The next __stmmac_release(), MTU change or
+XDP toggle calls free_dma_desc_resources(priv, &priv->dma_conf) again.
+That would read the freed buf_pool in dma_free_rx_skbufs(), and then
+kfree() buf_pool, page_pool_destroy() the page_pool and
+dma_free_coherent() the rings a second time.
+
+Before this patch the RX side of that path was only freed once, by the
+later release. The TX side already had the same problem, since
+__free_dma_tx_desc_resources() leaves tx_q->dma_tx, tx_q->dma_etx,
+tx_q->dma_entx, tx_q->tx_skbuff_dma and tx_q->tx_skbuff dangling, and
+a partial failure in either allocator can unwind stale pointers left
+over from stmmac_xdp_release().
+
+Should the free helpers reset these pointers to NULL? Or should
+stmmac_xdp_open() build a new dma_conf and only install it on success
+the way stmmac_setup_dma_desc() does? Either way, it seems like this
+needs to be handled before the early RX free is safe for every caller
+of alloc_dma_desc_resources().
+
+[Severity: High]
+This is a pre-existing issue, but can the TX unwind oops before this new
+free_dma_rx_desc_resources() call is reached?
+
+stmmac_setup_dma_desc() allocates dma_conf with kzalloc_obj(), so
+tx_skbuff_dma and tx_skbuff start out NULL for every TX queue.
+
+Say __alloc_dma_tx_desc_resources() fails for queue k. The err_dma label in
+alloc_dma_tx_desc_resources() then unwinds all tx_queues_to_use queues,
+including queue k and the queues after it that were never allocated:
+
+alloc_dma_tx_desc_resources()
+  free_dma_tx_desc_resources()
+    __free_dma_tx_desc_resources()
+      dma_free_tx_skbufs()
+        stmmac_free_tx_buffer()
+
+stmmac_free_tx_buffer() reads the arrays without checking them:
+
+	if (tx_q->tx_skbuff_dma[i].buf &&
+	    tx_q->tx_skbuff_dma[i].buf_type != STMMAC_TXBUF_T_XDP_TX) {
+	...
+	if (tx_q->xdpf[i] &&
+
+Wouldn't this dereference NULL when tx_skbuff_dma was never allocated? And
+when only the tx_skbuff allocation failed, wouldn't the read of xdpf[i] (a
+union alias of tx_skbuff) do the same?
+
+The only TX failure the unwind seems to survive is a dma_alloc_coherent()
+failure on the last TX queue, because dma_free_coherent() returns early for
+a NULL cpu_addr. That would mean the path this patch targets still oopses
+in most cases.
+
+alloc_dma_rx_desc_resources() looks like it has the same problem.
+stmmac_free_rx_buffer() does:
+
+	struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
+
+	if (buf->page)
+
+buf_pool is still NULL at that point if page_pool_create() or the buf_pool
+allocation failed, or if the queue was never allocated.
+
 >  
-> @@ -9647,6 +9648,9 @@ static int __igb_resume(struct device *dev, bool rpm)
->  	if (!rpm)
->  		rtnl_unlock();
->  
-> +	if (err)
-> +		pci_disable_device(pdev);
-> +
->  	return err;
+>  	return ret;
 >  }
 
-[Severity: High]
-When __igb_open() fails here, the new error path disables the PCI
-device but leaves the rest of what __igb_resume() set up in place.
+[Severity: Low]
+This isn't a bug introduced by this patch, but the kernel-doc above
+alloc_dma_desc_resources() says the following, and the same text appears on
+__alloc_dma_rx_desc_resources() and __alloc_dma_tx_desc_resources():
 
-Earlier in this function, igb_init_interrupt_scheme(adapter, true)
-has enabled MSI-X or MSI on pdev. It has also allocated
-adapter->q_vector[] and registered their NAPI instances on
-netdev->napi_list. igb_get_hw_control() has then set
-E1000_CTRL_EXT_DRV_LOAD.
+ * this function allocates the resources for TX and RX paths. In case of
+ * reception, for example, it pre-allocated the RX socket buffer in order to
+ * allow zero-copy mechanism.
 
-None of the __igb_open() error paths call
-igb_clear_interrupt_scheme(). If __igb_open() fails at err_setup_tx
-or err_setup_rx, it also skips igb_release_hw_control(). That happens
-when ring allocation fails in igb_setup_all_tx_resources() or
-igb_setup_all_rx_resources().
+None of these functions allocate RX buffers. That happens later, in
+init_dma_desc_rings().
 
-So after this hunk the device is disabled while:
-
-  - MSI-X or MSI is still enabled on pdev
-  - the q_vectors and their NAPI instances are still allocated
-  - firmware still sees DRV_LOAD and believes the driver owns the
-    hardware
-
-The runtime PM case is worse. When igb_runtime_resume() returns an
-error, rpm_resume() leaves the device in RPM_SUSPENDED. The next
-runtime resume then runs __igb_resume() and
-igb_init_interrupt_scheme() again on this uncleaned state:
-
-  - If MSI-X was in use, pdev->msix_enabled is still set and
-    __pci_enable_msix_range() hits WARN_ON_ONCE(dev->msix_enabled).
-    igb then falls back to single vector MSI. That overwrites
-    adapter->num_q_vectors with 1 and leaks adapter->q_vector[1]
-    onwards.
-  - If MSI was in use, the same thing happens through
-    WARN_ON_ONCE(dev->msi_enabled) in __pci_enable_msi_range().
-  - igb_alloc_q_vector() then finds the existing q_vector[0] and
-    memsets it. It calls netif_napi_add_config() on a napi_struct
-    that is still linked on netdev->napi_list, which corrupts that
-    list.
-
-If this patch is meant to unwind a failed resume, shouldn't this path
-also undo igb_init_interrupt_scheme() and igb_get_hw_control()? For
-example, igb_clear_interrupt_scheme() and igb_release_hw_control()
-could run before the device is disabled.
-
-__igb_shutdown() and igb_remove() already call both helpers, along
-with pci_disable_device(). How do you intend the resume error unwind
-to stay consistent with those teardown paths?
-
-[Severity: High]
-Can these new calls lead to a double pci_disable_device()?
-
-The commit message says:
-
-  The PCI enable count stays elevated and the device remains enabled
-  even though the driver failed to resume it.
-
-A failed resume doesn't unbind the driver. igb already drops its enable
-reference unconditionally on every teardown path:
-
-drivers/net/ethernet/intel/igb/igb_main.c:igb_remove() {
-    ...
-	free_netdev(netdev);
-
-	pci_disable_device(pdev);
-}
-
-drivers/net/ethernet/intel/igb/igb_main.c:__igb_shutdown() {
-    ...
-	igb_release_hw_control(adapter);
-
-	pci_disable_device(pdev);
-    ...
-}
-
-igb_io_error_detected() also calls pci_disable_device() before it
-requests a slot reset. __igb_shutdown() is reached from igb_suspend(),
-igb_runtime_suspend() and igb_shutdown().
-
-Without this patch the count looks balanced:
-
-  probe: 1
-  suspend: 0
-  resume: 1
-  failed resume: still 1
-  remove or next suspend: 0
-
-With this patch, a failed resume drops enable_cnt to 0 while the driver
-stays bound. Any of the following then calls pci_disable_device() a
-second time:
-
-  - rmmod or unbind
-  - the next system or runtime suspend
-  - reboot or poweroff
-  - AER error_detected
-
-pci_device_remove() calls drv->remove() even when pm_runtime_get_sync()
-fails, so unbind can also hit this after a failed runtime resume.
-
-In drivers/pci/pci.c:
-
-pci_disable_device() {
-	dev_WARN_ONCE(&dev->dev, atomic_read(&dev->enable_cnt) <= 0,
-		      "disabling already-disabled device");
-
-	if (atomic_dec_return(&dev->enable_cnt) != 0)
-		return;
-    ...
-}
-
-That second call warns, which panics the host when panic_on_warn is set,
-and leaves enable_cnt at -1.
-
->From then on, the count stays wrong:
-
-  - The next pci_enable_device_mem() in __igb_resume() moves the count
-    from -1 to 0. It still enables the device, and __igb_resume() turns
-    on bus mastering, but pci_is_enabled() now reports false.
-  - Each later pci_disable_device() moves the count from 0 to -1 and
-    returns early. do_pci_disable_device() never runs, so
-    PCI_COMMAND_MASTER is no longer cleared on suspend or unbind.
-
-The existing teardown paths already release this reference. Should the
-new pci_disable_device() calls be dropped? If they stay, the other
-disable sites would need driver state to make them conditional.
-
-Because of the Cc: stable tag, this change would also be backported to
-stable trees.
+The comment also has no Return: section. Both callers now rely on
+everything being released already when the function fails, and that is not
+written down anywhere.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103102849.1340413-1-vulab%40iscas.ac.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103102857.1340748-1-vulab%40iscas.ac.cn
