@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794057329;
-	b=GlbXqdz1+S/SDJNSyzPzGxR9e5LLFoS+isijvu6TIWdXoyjaWE3R/MR/o+zJcvPupGXG
-	 LlV5b22R73EGgCOHkL7vAc16N5mmM+v4OLks+K0X8VPo/r2GYDLVu9Mv0TJiCYqS0eSqL
-	 rP0Uc7LhFYUdJ5T23PhXGe6c2AEoopyDiJGO3LVvtB2y+uStj4FqYMoDitWFqHBK/0OAL
-	 450hSIH/cMal1lx+fqM6jYYvrPaekOxZ9p1er19k5foPkmJF1niATWQITZOet6zC3abnL
-	 eZbIKlNdYGklqBm9Wj+XDasD+77+fLihmAUpnviMG9x4CbjS7KNAyoNLKxGXqcielfQ==
+	t=1794057340;
+	b=KAqTiAPBrMlQmNuCaxYl9/PHI9CSamN2pHrWbU7JWvyayIiakqrSglPMmd92Se+ZPpKh
+	 1hD6jE+tSp3MiaWS48PKQv0N/7cwTjLJGTySlPrEtCZScLEuL39+Z66ey7VfqcE7prEHv
+	 SgGbPQGi+1rq3aY1/SGYhyaRmW0fAtM9nzkIjtyDqCNC2gRN9mrR3IHpT3OpiMlPDZxYA
+	 y0sz/oyBxtapXJTGUU/yYTWtXC7UTA8IpvCr8oLdZxlF+8g8q4gcwoXroQzy3IZVJ4s61
+	 k/nj1qMoP+3oEMoLpwapuzujYfy4D8qDlOd7otPP4SbdTtiAL+nXWOJw25fiyfxHiWA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794057329;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794057340;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Ib5OOJ4ufUTeso4k1bDQ5VutJZ6SWyjJH7N1HGtkLgQ=;
-	b=PmGtGy5DiiYRckE1iuv2r/GfKyaMFvs2c+i3iyuy5ZHrX7on+faSLtPrpelxMJvju6fF
-	 N+UkKzF+dAs0/xAloADI4l43WhFKEZ5oLtHWnBsBatDMS9RsLqSzAwhJJaEcKcKM9zKmD
-	 8Ycw8L5FXWeGOe0Ekb4VbwDGAYlR4Igxxf3QNzpG6FDXfa8g1EF5mWb9Odq3VtnA4eqY0
-	 R1+EQrg4PLIZUw3pmpAM1KmfXsx/gY0+v0AhqKiJCpOCwzNJ85pUSk3xn/5di9LyS99Kj
-	 BfiiyG265mL+UTux4lr3nI/InB8dDH41tR3u9aexMRzONb3vT2zA11EIb+4VPyy6PSA==
+	bh=lkqe98CyLBgQ52rBxXU0ciHtvnWKRuThjgKaQZqo1VU=;
+	b=hddQHRFkaR6/x1O0+7v3rOo7ldkCArsFVp0A6Hd49GG/5epkrv3o48S4EMLfrboRe7JM
+	 XPwwG8klfEtewkP3aEEr9GVeaS/D+0zCI0IolFhRpjpwoTlNxhxh0pDiDBjH1SC/SEnfR
+	 pS017/cIVOaByK7sYZxC8r6XarYnJTGGqnQpC4Xx+Jh8EzEx6HwU8VSdGFDXxlgZK2pw0
+	 ihecl2fkt6cpCS6FwREj30q157BAMyD4b9aFhjj+gz0wnV7nYbVP3zko0DpdVqG5zwbho
+	 ZrriibQ0eNXXu+FpXumytsVJ/vsmQVOUZQq/yJqZcdThceC3Uh99fIzz31IBiItVnCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WTXrOVJy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jqf5evw7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id D7A4A606A332;
-	Sat,  7 Nov 2026 13:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9C8B7606A326;
+	Sat,  7 Nov 2026 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WTXrOVJy
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B87211F008A2;
-	Sat,  7 Nov 2026 13:15:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jqf5evw7
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 8127F1F008BD;
+	Sat,  7 Nov 2026 13:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794057328;
-	bh=Ib5OOJ4ufUTeso4k1bDQ5VutJZ6SWyjJH7N1HGtkLgQ=;
+	s=k20260515; t=1794057340;
+	bh=lkqe98CyLBgQ52rBxXU0ciHtvnWKRuThjgKaQZqo1VU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WTXrOVJyOJ5aHwmPjqoFS/9dt0b1RJ1BV5xfjQQ2rbZFYQyvllvexd5ACc5hP8hkq
-	 9iYwO8eGhKis77entu/kPxGGr3wvVKGJCjUitqWqzkA/skeMnR6PdFxg6j63R1+62o
-	 19mUMBAR5uVmoLFRAY7ezYcGZnXpXgukeCqzHv7jsHur0ToPv0gdTVepDi1u/NhefM
-	 /Z51yodu4or5SWdY4YC8Z4jmuAqkRVSsuQJKIuDrP9RoBlJ9VeDDmCb4Pj2A8NiijK
-	 aVjmkNuB+Rl9RqUasfv5aUUdmV42Y1TSZuiCKtnsfSbt58lPZCLr1ZNoG9dRMgpeX+
-	 7Km7jrlK/ZCAw==
+	b=Jqf5evw7st7f7Aw05ToVeTeyuqAnAYQkQzs+fY4Y1nffzIkyZ6WVeTIvrPQLUG1Lk
+	 Y8SytL+56wHru9OcWmdu9bpVsUZFDbnQkG0CEG1JLMmTgObqNghsDIio2VatUJroZS
+	 1Wgtz4nt5q1GD/g5pG6z6Vz74Agu/pjXcYyoTunrdF6wcrr7vk9xKtoi6z6bDcHNn+
+	 8WD33w5HITjAbCge1n5E3F+BQckTwx9nGSBHduRCBAfMJS7p712oeROqZWtd73gWgk
+	 e8ZItOgz40OMYOJkHjjWDDhivjwNMA4Mp4Uf/nyUooB2noaIhlifhDpLkGqnuyI0wy
+	 7qckv4QITVBLw==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -77,9 +77,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	Tom Talpey <tom@talpey.com>,
 	Trond Myklebust <trondmy@kernel.org>,
 	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v4 02/11] dns_resolver: Move the key type into a separate module
-Date: Sat,  7 Nov 2026 15:15:03 +0200
-Message-ID: <20261107131512.3603168-3-jarkko@kernel.org>
+Subject: [PATCH v4 05/11] s390/cert_store: Start tracking subsystem keys
+Date: Sat,  7 Nov 2026 15:15:06 +0200
+Message-ID: <20261107131512.3603168-6-jarkko@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261107131512.3603168-1-jarkko@kernel.org>
 References: <20261107131512.3603168-1-jarkko@kernel.org>
@@ -94,285 +94,291 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Once keys pin to the kernel module of their key type, having the DNS key
-type in the same modules as the resolver will introduce a circular
-dependency preventing module_exit() from ever running.
+cert_store refreshes its keyring by unregistering and then registering
+again key_type_cert_store_key. Once keys pin to the kernel module of their
+key type, this is no longer necessary.
 
-Introduce dns_resolver_key.ko containing key_type_dns_resolver. On a module
-exit, drop the credentials and call key_gc_flush() in order the drain the
-remaining RCU callbacks.
+Register key_type_cert_store_key once during init before creating sysfs
+attributes, and track subsystem-created keys explicitly so that the refresh
+operationunlinks and invalidates previous entries directly.
 
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- net/Makefile                 |  2 +-
- net/dns_resolver/Kconfig     | 15 +++++++++
- net/dns_resolver/Makefile    |  4 ++-
- net/dns_resolver/dns_key.c   | 65 +++++-------------------------------
- net/dns_resolver/dns_query.c | 64 +++++++++++++++++++++++++++++++++++
- net/dns_resolver/internal.h  |  5 ---
- 6 files changed, 92 insertions(+), 63 deletions(-)
+ arch/s390/kernel/cert_store.c | 161 ++++++++++++++--------------------
+ 1 file changed, 67 insertions(+), 94 deletions(-)
 
-diff --git a/net/Makefile b/net/Makefile
-index 5b2dd7f07a85..69c16a7851b4 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -55,7 +55,7 @@ obj-$(CONFIG_IEEE802154)	+= ieee802154/
- obj-$(CONFIG_MAC802154)		+= mac802154/
- 
- obj-$(CONFIG_SYSCTL)		+= sysctl_net.o
--obj-$(CONFIG_DNS_RESOLVER)	+= dns_resolver/
-+obj-$(CONFIG_DNS_KEY)		+= dns_resolver/
- obj-$(CONFIG_CEPH_LIB)		+= ceph/
- obj-$(CONFIG_BATMAN_ADV)	+= batman-adv/
- obj-$(CONFIG_NFC)		+= nfc/
-diff --git a/net/dns_resolver/Kconfig b/net/dns_resolver/Kconfig
-index 7c2dba273e35..2618bad2e771 100644
---- a/net/dns_resolver/Kconfig
-+++ b/net/dns_resolver/Kconfig
-@@ -1,10 +1,25 @@
- # SPDX-License-Identifier: GPL-2.0-only
-+
-+#
-+# Configuration for DNS Resolver key type
-+#
-+config DNS_KEY
-+	tristate "DNS Resolver key type"
-+	depends on KEYS
-+	help
-+	  Support the key type used to cache DNS lookups independently of
-+	  the in-kernel DNS query service.
-+
-+	  To compile this as a module, choose M here: the module is called
-+	  dns_resolver_key.
-+
- #
- # Configuration for DNS Resolver
- #
- config DNS_RESOLVER
- 	tristate "DNS Resolver support"
- 	depends on KEYS
-+	select DNS_KEY
- 	help
- 	  Saying Y here will include support for the DNS Resolver key type
- 	  which can be used to make upcalls to perform DNS lookups in
-diff --git a/net/dns_resolver/Makefile b/net/dns_resolver/Makefile
-index 877532d662d0..586e4c6514de 100644
---- a/net/dns_resolver/Makefile
-+++ b/net/dns_resolver/Makefile
-@@ -3,6 +3,8 @@
- # Makefile for the Linux DNS Resolver.
- #
- 
-+obj-$(CONFIG_DNS_KEY) += dns_resolver_key.o
- obj-$(CONFIG_DNS_RESOLVER) += dns_resolver.o
- 
--dns_resolver-y :=  dns_key.o dns_query.o
-+dns_resolver-y := dns_query.o
-+dns_resolver_key-y := dns_key.o
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index 451247864a63..fecbdc1d6beb 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -9,8 +9,8 @@
-  *              Wang Lei (wang840925@gmail.com)
-  *		David Howells (dhowells@redhat.com)
-  */
-+
+diff --git a/arch/s390/kernel/cert_store.c b/arch/s390/kernel/cert_store.c
+index 998f2da56175..ab1a78cdfd4c 100644
+--- a/arch/s390/kernel/cert_store.c
++++ b/arch/s390/kernel/cert_store.c
+@@ -17,6 +17,7 @@
+ #include <linux/key.h>
+ #include <linux/keyctl.h>
+ #include <linux/kobject.h>
++#include <linux/list.h>
  #include <linux/module.h>
--#include <linux/moduleparam.h>
+ #include <linux/seq_file.h>
  #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
-@@ -22,15 +22,12 @@
- #include <keys/user-type.h>
- #include "internal.h"
+@@ -296,6 +297,18 @@ static int check_certificate_valid(const struct vce *vce)
+ 	return check_certificate_hash(vce);
+ }
  
--MODULE_DESCRIPTION("DNS Resolver");
-+MODULE_DESCRIPTION("DNS Resolver key type");
- MODULE_AUTHOR("Wang Lei");
- MODULE_LICENSE("GPL");
- 
- unsigned int dns_resolver_debug;
--module_param_named(debug, dns_resolver_debug, uint, 0644);
--MODULE_PARM_DESC(debug, "DNS Resolver debugging mask");
--
--const struct cred *dns_resolver_cache;
-+EXPORT_SYMBOL_GPL(dns_resolver_debug);
- 
- #define	DNS_ERRORNO_OPTION	"dnserror"
- 
-@@ -318,61 +315,17 @@ struct key_type key_type_dns_resolver = {
- 	.describe	= dns_resolver_describe,
- 	.read		= dns_resolver_read,
- };
-+EXPORT_SYMBOL_GPL(key_type_dns_resolver);
- 
--static int __init init_dns_resolver(void)
-+static int __init init_dns_key(void)
++struct cert_store_key {
++	struct list_head list;
++	struct key *key;
++};
++
++static DEFINE_MUTEX(cs_refresh_lock);
++/* Owned references, protected by cs_refresh_lock. */
++static LIST_HEAD(cs_keys);
++static struct key *active_cs_keyring;
++static struct key *cs_keyring_parent;
++
++/* Return an owned reference to the user session keyring. */
+ static struct key *get_user_session_keyring(void)
  {
--	struct cred *cred;
--	struct key *keyring;
--	int ret;
+ 	key_ref_t us_keyring_ref;
+@@ -305,118 +318,66 @@ static struct key *get_user_session_keyring(void)
+ 	if (IS_ERR(us_keyring_ref)) {
+ 		pr_dbf_msg("Couldn't get user session keyring: %ld",
+ 			   PTR_ERR(us_keyring_ref));
+-		return ERR_PTR(-ENOKEY);
++		return ERR_CAST(us_keyring_ref);
+ 	}
+-	key_ref_put(us_keyring_ref);
+ 	return key_ref_to_ptr(us_keyring_ref);
+ }
+ 
+-/* Invalidate all keys from cert_store keyring. */
+-static int invalidate_keyring_keys(struct key *keyring)
+-{
+-	unsigned long num_keys, key_index;
+-	size_t keyring_payload_len;
+-	key_serial_t *key_array;
+-	struct key *current_key;
+-	int rc;
 -
--	/* create an override credential set with a special thread keyring in
--	 * which DNS requests are cached
--	 *
--	 * this is used to prevent malicious redirections from being installed
--	 * with add_key().
--	 */
--	cred = prepare_kernel_cred(&init_task);
--	if (!cred)
+-	keyring_payload_len = key_type_keyring.read(keyring, NULL, 0);
+-	num_keys = keyring_payload_len / sizeof(key_serial_t);
+-	key_array = kzalloc_objs(key_serial_t, num_keys);
+-	if (!key_array)
 -		return -ENOMEM;
 -
--	keyring = keyring_alloc(".dns_resolver",
--				GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, cred,
--				(KEY_POS_ALL & ~KEY_POS_SETATTR) |
--				KEY_USR_VIEW | KEY_USR_READ,
--				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
--	if (IS_ERR(keyring)) {
--		ret = PTR_ERR(keyring);
--		goto failed_put_cred;
+-	rc = key_type_keyring.read(keyring, (char *)key_array, keyring_payload_len);
+-	if (rc != keyring_payload_len) {
+-		pr_dbf_msg("Couldn't read keyring payload");
+-		goto out;
 -	}
 -
--	ret = register_key_type(&key_type_dns_resolver);
--	if (ret < 0)
--		goto failed_put_key;
+-	for (key_index = 0; key_index < num_keys; key_index++) {
+-		current_key = key_lookup(key_array[key_index]);
+-		pr_dbf_msg("Invalidating key %08x", current_key->serial);
 -
--	/* instruct request_key() to use this special keyring as a cache for
--	 * the results it looks up */
--	set_bit(KEY_FLAG_ROOT_CAN_CLEAR, &keyring->flags);
--	cred->thread_keyring = keyring;
--	cred->jit_keyring = KEY_REQKEY_DEFL_THREAD_KEYRING;
--	dns_resolver_cache = cred;
+-		key_invalidate(current_key);
+-		key_put(current_key);
+-		rc = key_unlink(keyring, current_key);
+-		if (rc) {
+-			pr_dbf_msg("Couldn't unlink key %08x: %d", current_key->serial, rc);
+-			break;
+-		}
+-	}
+-out:
+-	kfree(key_array);
+-	return rc;
+-}
 -
--	kdebug("DNS resolver keyring: %d\n", key_serial(keyring));
--	return 0;
+-static struct key *find_cs_keyring(void)
+-{
+-	key_ref_t cs_keyring_ref;
+-	struct key *cs_keyring;
 -
--failed_put_key:
--	key_put(keyring);
--failed_put_cred:
--	put_cred(cred);
--	return ret;
-+	return register_key_type(&key_type_dns_resolver);
- }
- 
--static void __exit exit_dns_resolver(void)
-+static void __exit exit_dns_key(void)
+-	cs_keyring_ref = keyring_search(make_key_ref(get_user_session_keyring(), true),
+-					&key_type_keyring, CERT_STORE_KEYRING_NAME,
+-					false);
+-	if (!IS_ERR(cs_keyring_ref)) {
+-		cs_keyring = key_ref_to_ptr(cs_keyring_ref);
+-		key_ref_put(cs_keyring_ref);
+-		goto found;
+-	}
+-	/* Search default locations: thread, process, session keyrings */
+-	cs_keyring = request_key(&key_type_keyring, CERT_STORE_KEYRING_NAME, NULL);
+-	if (IS_ERR(cs_keyring))
+-		return NULL;
+-	key_put(cs_keyring);
+-found:
+-	return cs_keyring;
+-}
+-
+ static void cleanup_cs_keys(void)
  {
--	key_revoke(dns_resolver_cache->thread_keyring);
- 	unregister_key_type(&key_type_dns_resolver);
--	put_cred(dns_resolver_cache);
+-	struct key *cs_keyring;
++	struct cert_store_key *entry, *tmp;
++	int rc;
+ 
+-	cs_keyring = find_cs_keyring();
+-	if (!cs_keyring)
++	if (!active_cs_keyring)
+ 		return;
+ 
+-	pr_dbf_msg("Found cert_store keyring. Purging...");
+-	/*
+-	 * Remove cert_store_key_type in case invalidation
+-	 * of old cert_store keys failed (= severe error).
+-	 */
+-	if (invalidate_keyring_keys(cs_keyring))
+-		unregister_key_type(&key_type_cert_store_key);
++	/* Invalidate even certificates unlinked or linked into other keyrings. */
++	list_for_each_entry_safe(entry, tmp, &cs_keys, list) {
++		key_invalidate(entry->key);
++		key_put(entry->key);
++		list_del(&entry->list);
++		kfree(entry);
++	}
+ 
+-	keyring_clear(cs_keyring);
+-	key_invalidate(cs_keyring);
+-	key_put(cs_keyring);
+-	key_unlink(get_user_session_keyring(), cs_keyring);
++	rc = keyring_clear(active_cs_keyring);
++	if (rc)
++		pr_dbf_msg("Couldn't clear cert_store keyring: %d", rc);
++	key_invalidate(active_cs_keyring);
++	rc = key_unlink(cs_keyring_parent, active_cs_keyring);
++	if (rc)
++		pr_dbf_msg("Couldn't unlink cert_store keyring: %d", rc);
++	key_put(active_cs_keyring);
++	key_put(cs_keyring_parent);
++	active_cs_keyring = NULL;
++	cs_keyring_parent = NULL;
  }
  
--module_init(init_dns_resolver)
--module_exit(exit_dns_resolver)
--MODULE_LICENSE("GPL");
-+module_init(init_dns_key);
-+module_exit(exit_dns_key);
-diff --git a/net/dns_resolver/dns_query.c b/net/dns_resolver/dns_query.c
-index b8fb9a1245bf..ae4dde190101 100644
---- a/net/dns_resolver/dns_query.c
-+++ b/net/dns_resolver/dns_query.c
-@@ -24,8 +24,10 @@
-  */
++/* Return a borrowed reference; cleanup_cs_keys() owns the keyring. */
+ static struct key *create_cs_keyring(void)
+ {
+-	static struct key *cs_keyring;
++	struct key *cs_keyring, *parent;
  
- #include <linux/module.h>
-+#include <linux/moduleparam.h>
- #include <linux/slab.h>
- #include <linux/cred.h>
-+#include <linux/keyctl.h>
- #include <linux/dns_resolver.h>
- #include <linux/err.h>
- #include <net/net_namespace.h>
-@@ -35,6 +37,8 @@
- 
- #include "internal.h"
- 
-+static const struct cred *dns_resolver_cache;
+ 	/* Cleanup previous cs_keyring and all associated keys if any. */
+ 	cleanup_cs_keys();
++	parent = get_user_session_keyring();
++	if (IS_ERR(parent))
++		return parent;
 +
- /**
-  * dns_query - Query the DNS
-  * @net: The network namespace to operate in.
-@@ -137,3 +141,63 @@ int dns_query(struct net *net,
- 	return ret;
+ 	cs_keyring = keyring_alloc(CERT_STORE_KEYRING_NAME, GLOBAL_ROOT_UID,
+ 				   GLOBAL_ROOT_GID, current_cred(),
+ 				   (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW | KEY_USR_READ,
+ 				   KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_SET_KEEP,
+-				   NULL, get_user_session_keyring());
++				   NULL, parent);
+ 	if (IS_ERR(cs_keyring)) {
+ 		pr_dbf_msg("Can't allocate cert_store keyring");
+-		return NULL;
++		key_put(parent);
++		return cs_keyring;
+ 	}
+ 
++	active_cs_keyring = cs_keyring;
++	cs_keyring_parent = parent;
+ 	pr_dbf_msg("Successfully allocated cert_store keyring: %08x", cs_keyring->serial);
+ 
+-	/*
+-	 * In case a previous clean-up ran into an
+-	 * error and unregistered key type.
+-	 */
+-	register_key_type(&key_type_cert_store_key);
+-
+ 	return cs_keyring;
  }
- EXPORT_SYMBOL(dns_query);
-+
-+static int __init init_dns_resolver(void)
-+{
-+	struct cred *cred;
-+	struct key *keyring;
-+	int ret;
-+
-+	/*
-+	 * Create an override credential set with a special thread keyring in
-+	 * which DNS requests are cached.  This prevents malicious redirections
-+	 * from being installed with add_key().
-+	 */
-+	cred = prepare_kernel_cred(&init_task);
-+	if (!cred)
-+		return -ENOMEM;
-+
-+	keyring = keyring_alloc(".dns_resolver",
-+				GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, cred,
-+				(KEY_POS_ALL & ~KEY_POS_SETATTR) |
-+				KEY_USR_VIEW | KEY_USR_READ,
-+				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
-+	if (IS_ERR(keyring)) {
-+		ret = PTR_ERR(keyring);
-+		goto failed_put_cred;
+ 
+@@ -454,6 +415,7 @@ static char *get_key_description(struct vcssb *vcssb, const struct vce *vce)
+ static int create_key_from_vce(struct vcssb *vcssb, struct vce *vce,
+ 			       struct key *keyring)
+ {
++	struct cert_store_key *entry;
+ 	key_ref_t newkey;
+ 	char *desc;
+ 	int rc;
+@@ -462,6 +424,13 @@ static int create_key_from_vce(struct vcssb *vcssb, struct vce *vce,
+ 	if (!desc)
+ 		return -ENOMEM;
+ 
++	/* Reserve cleanup tracking before the key can be linked elsewhere. */
++	entry = kmalloc_obj(*entry);
++	if (!entry) {
++		rc = -ENOMEM;
++		goto out;
 +	}
 +
-+	/*
-+	 * Instruct request_key() to use this special keyring as a cache for
-+	 * the results it looks up.
-+	 */
-+	set_bit(KEY_FLAG_ROOT_CAN_CLEAR, &keyring->flags);
-+	cred->thread_keyring = keyring;
-+	cred->jit_keyring = KEY_REQKEY_DEFL_THREAD_KEYRING;
-+	dns_resolver_cache = cred;
-+
-+	kdebug("DNS resolver keyring: %d\n", key_serial(keyring));
-+	return 0;
-+
-+failed_put_cred:
-+	put_cred(cred);
-+	return ret;
-+}
-+
-+static void __exit exit_dns_resolver(void)
-+{
-+	key_revoke(dns_resolver_cache->thread_keyring);
-+	put_cred(dns_resolver_cache);
-+	/* Drain deferred credential and keyring destruction. */
-+	key_gc_flush();
-+}
-+
-+module_init(init_dns_resolver);
-+module_exit(exit_dns_resolver);
-+
-+MODULE_DESCRIPTION("DNS Resolver");
-+MODULE_AUTHOR("Wang Lei");
-+MODULE_LICENSE("GPL");
-+
-+module_param_named(debug, dns_resolver_debug, uint, 0644);
-+MODULE_PARM_DESC(debug, "DNS Resolver debugging mask");
-diff --git a/net/dns_resolver/internal.h b/net/dns_resolver/internal.h
-index d0d8edcea092..3478bad78a9a 100644
---- a/net/dns_resolver/internal.h
-+++ b/net/dns_resolver/internal.h
-@@ -18,11 +18,6 @@ enum {
- 	dns_key_error,
- };
+ 	newkey = key_create_or_update(
+ 		make_key_ref(keyring, true), CERT_STORE_KEY_TYPE_NAME,
+ 		desc, (u8 *)vce + vce->vce_hdr.vc_offset,
+@@ -473,10 +442,12 @@ static int create_key_from_vce(struct vcssb *vcssb, struct vce *vce,
+ 	if (rc) {
+ 		pr_dbf_msg("Couldn't create a key from Certificate Entry (%d)", rc);
+ 		rc = -ENOKEY;
++		kfree(entry);
+ 		goto out;
+ 	}
  
--/*
-- * dns_key.c
-- */
--extern const struct cred *dns_resolver_cache;
--
- /*
-  * debug tracing
-  */
+-	key_ref_put(newkey);
++	entry->key = key_ref_to_ptr(newkey);
++	list_add_tail(&entry->list, &cs_keys);
+ out:
+ 	kfree(desc);
+ 	return rc;
+@@ -704,19 +675,18 @@ static int fill_cs_keyring(void)
+ 	if (rc)
+ 		goto cleanup_keys;
+ 
+-	rc = -ENOMEM;
+ 	cs_keyring = create_cs_keyring();
+-	if (!cs_keyring)
++	if (IS_ERR(cs_keyring)) {
++		rc = PTR_ERR(cs_keyring);
+ 		goto cleanup_keys;
++	}
+ 
+ 	rc = add_certificates_to_keyring(vcssb, cs_keyring);
+ 	if (rc)
+-		goto cleanup_cs_keyring;
++		goto cleanup_keys;
+ 
+ 	goto out;
+ 
+-cleanup_cs_keyring:
+-	key_put(cs_keyring);
+ cleanup_keys:
+ 	cleanup_cs_keys();
+ out:
+@@ -724,7 +694,6 @@ static int fill_cs_keyring(void)
+ 	return rc;
+ }
+ 
+-static DEFINE_MUTEX(cs_refresh_lock);
+ static int cs_status_val = -1;
+ 
+ static ssize_t cs_status_show(struct kobject *kobj,
+@@ -794,14 +763,18 @@ static int __init cert_store_init(void)
+ 	if (!cert_store_kobj)
+ 		goto cleanup_dbf;
+ 
+-	rc = sysfs_create_files(cert_store_kobj, cert_store_attrs);
++	rc = register_key_type(&key_type_cert_store_key);
+ 	if (rc)
+ 		goto cleanup_kobj;
+ 
+-	register_key_type(&key_type_cert_store_key);
++	rc = sysfs_create_files(cert_store_kobj, cert_store_attrs);
++	if (rc)
++		goto cleanup_key_type;
+ 
+ 	return rc;
+ 
++cleanup_key_type:
++	unregister_key_type(&key_type_cert_store_key);
+ cleanup_kobj:
+ 	kobject_put(cert_store_kobj);
+ cleanup_dbf:
 -- 
 2.47.3
 
