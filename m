@@ -1,56 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794080369;
-	b=ben2WDQRSloEh64Ezm//3mAdigreMJPm1PMYGJZ8HL/2OpuizG8bdAmy+w2P93rqwQHs
-	 WteVk0FXzBm6yuR3hiPBAQ4KILWjSi9aIxG5FodvuUv7dMVCEgZ5POS8EwO7QzWq5Lav3
-	 gIqbGzfhrVpjja9v3OZtRrbe7Xq854UMSccTC6af13tIk6qxIfQvPJDJeURaeARExqpHE
-	 duF9rulWjInN7ALmaQVhIcGwpQzRiqSoQLKc4n+Iicz5sdKcy9v5Ds5s54n+FPAn81+sO
-	 IJijfWqVk4js3RI8AaX/yqicz8lL6Hbfd1tkwpL3SqznU5ASVUg9oe5W2oFjUtNn3tg==
+	t=1794080556;
+	b=sxWid0KdtsAeccvK5TUcJwQfURapVfjDx53VTY0cckVscv5TtU9X85asOV40+UhTZh4k
+	 2ZArvSKzSr7mSvSCQN9/XwslNRv3sMA+3J+GzKrXKcbe08oyP5oM4c/TfeDN0MWn2+o2p
+	 oZ8Ahp3s21EPacvGwG0EpPZaK4NKSoOC4SQpV/EhxcGgus71SqTv3gTPgqaoIsiRbBkaa
+	 ZIa33fAyZuxC4pU8UCnYn+wLY0ibG4wK2T3TlnM8yeVTvIOFzUyg9hFLvv0zMWCa5epNj
+	 L4cf48vTCbZjkokedOn1pff/V4xFqW32iexIg580HKxZFSCSG1UxkHIwMcRZAVI7/Iw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794080369;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794080556;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zGJS4a0bANFqpdBUr2HSdaiGkg8BLv8Y+Kfjy87REWE=;
-	b=J9TbnTxGWQ2oNO4zotKdDW10faH1AUKiQrdux7DeO7KJhGzqjVvg286KXKv80WMSnwZC
-	 25AstipD5FDY9/Jh6n5Agh/pFmA8fvp8DmQLsaIF8JMdBeOKk0AbW9JaoLtXsdLBRg0Kv
-	 /mxmTfGz+BtQSyx3UFs4XjJOJhrrnWeOjOsDJHbsQ6L42VRTsIH4bdjIoZ9X1J9uBnPfX
-	 ZaL1PPXX5YzNgmC9+ic+IjEEz9cnkTjp3zI4H0k6Hy2bK+GIFonaRY4UMhVBBEyczVVHu
-	 EREJ7Z2/a3wdoqiSXR3RhPx+VL4+6o3iiKOMd/08uh9owvn8pZZj2SrT0eeBZtB8NzQ==
+	bh=BFmExUZNkeWrEtyH9eFzdslvWVHLBcuvWey6vYUf3mU=;
+	b=kgrk5kBM+5do7BzxM9bXAvOsa+OB2h1bUAIyNiuCM5iamO397eWf/AcetfgKbUGvaeCq
+	 eOYZJ6ZDVwjBdLevNmZeWJj7sYlTomKKzVIY+1lUxDJynhX7Par62/aHiJJxgCmmfJxbB
+	 3WzLt4sfP0Lz3x8unG+VLXralFJW6fYlefmK3ilHtZY+n+EksHZRHUHpEwZzaPWOUiaS0
+	 bRmqovaXk4WpyXWmexNjOCzWPGqZgrj//9q92dDo2qs3eIcLmiTqjyuQCIuw+emdH8+P2
+	 oIxUNyjX8dz7vVhrBQEfANyDKrImnUiOkV4jmGfvlFnQEZ+NOw9aYaEeTgr9KyprqnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWU1Z2E4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cI6JlBJb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C57606A333;
-	Sat,  7 Nov 2026 19:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C87606A326;
+	Sat,  7 Nov 2026 19:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWU1Z2E4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C67F1F0089F;
-	Sat,  7 Nov 2026 19:39:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cI6JlBJb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E831F008A1;
+	Sat,  7 Nov 2026 19:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794080369;
-	bh=zGJS4a0bANFqpdBUr2HSdaiGkg8BLv8Y+Kfjy87REWE=;
+	s=k20260515; t=1794080555;
+	bh=BFmExUZNkeWrEtyH9eFzdslvWVHLBcuvWey6vYUf3mU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FWU1Z2E4EgVEuaiVIz9pIjEkAhL6Fd+Gel/ejfjDYlqcgZ0c3ERfmLg9/rnQTqNYd
-	 F1eea5ESuIDypJkD0CYymXNfvy7F+sbScsdU2MU4FvZK8U4muxeIroGHZJu6xUPVQ0
-	 YQXmlgUCaubczDXWLbvcqE/D5ZqO09G4sMbapCcJV4XsZj2z92Z4bkgiF48D+FOlUf
-	 RiBEbWq59VkaXyg2bAsZcHEIDUTjgMad5VyEB5MxW5fAL7VV3+iRFueiCGXfmT05fS
-	 5WBkNbPatB+tDfLxdeOhqPNTbeYHF9OU+U6LOTigovY3nClXJVdpKnhzJ0nhsVN0K8
-	 cnaw2RxSq/H6A==
+	b=cI6JlBJboBmVnJ/BdTVHG8qMMG4HO4LW0O8t8Bn/cdTrdHoVMtz4z4dCGl/Ty+AmB
+	 QRi6jnA5icDX0WHsYMwHw5fMNS0//w/7h4/9FZSpM9+L/viBz1pUdTQ79INR+P9V9S
+	 UtWVz7Xty4UB8T2pBpi1UkR41/oAQW0s0TungqKwuQHSldGdmclC+ymQvuoVLq4R1b
+	 HW+BFptOl0MboauE6eGzxZTwo9fwLBTZbmh47twElBMF8aPILY2lgNMjZPjvndTbc0
+	 hdN1UMbvcdLDtr5zzawaowa0orSWbQ9GqKhgUt3yEreedOIIw5f6DR6UNoadN+JBQw
+	 ai42ekxC1s3Ow==
 Subject:
- Re: [PATCH net-next 2/2] net: dsa: motorcomm: Add devlink info and resources
+ Re: [PATCH net-next v2 2/2] tls: make the record number wrap abort final
 From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+To: rjethwani@purestorage.com
+Cc: netdev@vger.kernel.org,
+ syzbot+cca46a9d1276f38af2ae@syzkaller.appspotmail.com, sd@queasysnail.net,
+ john.fastabend@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, vakul.garg@nxp.com,
  linux-kernel@vger.kernel.org
-Date: Sat, 07 Nov 2026 19:39:28 +0000
-Message-ID: <179408036808.994134.2387568593420048929@kernel.org>
-In-Reply-To: <20261106184811.350700-3-mmyangfl@gmail.com>
-References: <20261106184811.350700-3-mmyangfl@gmail.com>
+Date: Sat, 07 Nov 2026 19:42:34 +0000
+Message-ID: <179408055455.994134.12887172212869899418@kernel.org>
+In-Reply-To: <20261106193210.1152577-2-rjethwani@purestorage.com>
+References: <20261106193210.1152577-2-rjethwani@purestorage.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 8 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 4
+Critical: 0 · High: 0 · Medium: 2 · Low: 5
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,383 +77,328 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The devlink FDB resource tree breaks devlink's rule for parent
-  and child sizes.
-- [Medium] yt921x_devlink_occ_get_fdb() computes FDB occupancy as
-  LEARN_UCAST_CNT + LEARN_MCAST_CNT + priv->fdb_static_cnt.
-- [Medium] priv->fdb_static_cnt is changed only after the whole FDB
-  sequence reports success, so it can drift from the hardware when the…
-- [Medium] yt921x_dsa_setup() calls yt921x_chip_reset(), which writes
-  YT921X_RST_HW (chip.c:2258), described in a comment as 'almost same as…
-- [Low] The uAPI resource names "ucast" and "mcast" under /FDBs do not
-  describe what they report.
-- [Low] devlink.h declares `int yt921x_devlink_setup(struct yt921x_priv
-  *priv);` but includes only <net/dsa.h>.
-- [Low] devlink.c defines its own macro `#define to_yt921x_priv(_ds)
-  container_of_const(_ds, struct yt921x_priv, ds)` at line 11.
-- [Low] priv->fdb_static_cnt is accessed in two inconsistent ways.
+- [Medium] With async encryption on the SW TX path, the record that uses
+  the last record number is counted as sent and sendmsg() can return…
+- [Medium] The new tls.rst text says, for an abort in either direction,
+  that the error is not cleared when it is reported and that 'poll()…
+- [Low] The handling of a KeyUpdate in the last record number differs
+  between directions.
+- [Low] The commit fixes behaviour reachable in the baseline: after a
+  record number wraps, once sk_err has been consumed by SO_ERROR or…
+- [Low] Documentation/networking/tls.rst limits the wrap exemption to 'A
+  TLS 1.3 KeyUpdate ... receive ... continues once the new key is…
+- [Low] The doc says that after the final abort 'every later send ...
+  fails with EBADMSG'.
+- [Low] On the sync SW TX path, whether the refused wrapped record is
+  counted as sent still depends on a lockless read of `sk->sk_err ==…
 
 --
 
-net: dsa: motorcomm: Add devlink info and resources
+tls: make the record number wrap abort final
 
-This commit reports the ASIC model through devlink info. It also registers
-devlink resources for ACLs, FDB entries (with ucast, mcast and static
-children) and meters. FDB occupancy adds the hardware learn counters to a
-software count of static entries, which is updated in the FDB add, join
-and leave paths.
+The EBADMSG abort on a record number wrap now persists. It is recorded
+in a new tls_context->final_err field that is never cleared. After a
+wrap, RX delivers no more records unless the last one carried a
+KeyUpdate, TX refuses to encrypt or push further records, poll()
+reports EPOLLERR, and TLS 1.3 selftests are added.
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index a7a9a74393045..c3c555cb8941c 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
+> diff --git a/net/tls/tls.h b/net/tls/tls.h
+> index 60a37bdaaa250..517dcc452c67f 100644
+> --- a/net/tls/tls.h
+> +++ b/net/tls/tls.h
 
 [ ... ]
 
-> @@ -731,6 +732,7 @@ yt921x_fdb_add(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
->  	if (val & YT921X_FDB_RESULT_NOTFOUND)
->  		return -ENOSPC;
->  
-> +	priv->fdb_static_cnt++;
->  	return 0;
+> @@ -307,17 +308,30 @@ static inline void tls_bigint_subtract(unsigned char *seq, int  n)
+>  	*p = cpu_to_be64(rcd_sn - n);
 >  }
 >  
-> @@ -761,18 +763,27 @@ yt921x_fdb_leave(struct yt921x_priv *priv, const unsigned char *addr,
->  	ctrl2 = val2 & ~YT921X_FDB_IO2_EGR_PORTS(ports_mask);
->  	if (ctrl2 == val2)
->  		return 0;
-> +
-> +	res = yt921x_reg_read(priv, YT921X_FDB_OUT1, &ctrl1);
-> +	if (res)
-> +		return res;
-> +
->  	if (!(ctrl2 & YT921X_FDB_IO2_EGR_PORTS_M)) {
->  		ctrl = YT921X_FDB_OP_OP_DEL | YT921X_FDB_OP_START;
->  		res = yt921x_reg_write(priv, YT921X_FDB_OP, ctrl);
->  		if (res)
->  			return res;
->  
-> -		return yt921x_fdb_wait(priv, &val);
-> -	}
-> +		res = yt921x_fdb_wait(priv, &val);
-> +		if (res)
-> +			return res;
->  
-> -	res = yt921x_reg_read(priv, YT921X_FDB_OUT1, &ctrl1);
-> -	if (res)
-> -		return res;
-> +		if ((ctrl1 & YT921X_FDB_IO1_STATUS_M) ==
-> +		    YT921X_FDB_IO1_STATUS_STATIC &&
-> +		    !WARN_ON(!priv->fdb_static_cnt))
-> +			priv->fdb_static_cnt--;
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-Can fdb_static_cnt drift from the hardware table when an FDB command
-takes effect but a later step reports an error?
-
-In yt921x_fdb_add(), OP_ADD|START is written to YT921X_FDB_OP before
-yt921x_fdb_wait() runs. Two failures can happen after that write:
-
-  - the wait times out ("FDB probably stuck")
-  - the MDIO write was applied but still returned an error
-
-In either case the function returns before fdb_static_cnt++, but the
-entry may already be static in hardware. yt921x_fdb_join() has the same
-problem through yt921x_fdb_add_index_in12().
-
-If the same {addr, vid, port} is added again later, yt921x_fdb_join()
-sees STATUS_STATIC with identical ctrl1/ctrl2 and returns 0 without
-counting it. When the entry is finally removed, yt921x_fdb_leave()
-reaches this check:
-
-    if ((ctrl1 & YT921X_FDB_IO1_STATUS_M) ==
-        YT921X_FDB_IO1_STATUS_STATIC &&
-        !WARN_ON(!priv->fdb_static_cnt))
-
-If there are no other static entries, the WARN_ON fires.
-
-The opposite can happen here as well. If yt921x_fdb_wait() fails after the
-DEL has completed, the decrement is skipped. The count then stays too high
-for as long as the device exists, because nothing re-syncs the counter
-with the hardware table.
-
->  
->  	return yt921x_fdb_add_index_in12(priv, index, ctrl1, ctrl2);
->  }
-
-[ ... ]
-
-> @@ -2154,6 +2172,8 @@ static void yt921x_dsa_teardown(struct dsa_switch *ds)
->  
->  	yt921x_leds_remove(priv);
->  #endif
-> +
-> +	dsa_devlink_resources_unregister(ds);
->  }
-
-[Severity: Medium]
-Should fdb_static_cnt be reset somewhere in the setup or teardown path?
-
-yt921x_dsa_setup() calls yt921x_chip_reset(), which does:
-
-    /* Reset */
-    res = yt921x_reg_write(priv, YT921X_RST, YT921X_RST_HW);
-    ...
-    /* RST_HW is almost same as GPIO hard reset, so we need this delay. */
-
-That reset clears the hardware FDB, static entries included. However,
-fdb_static_cnt is only zeroed once, when priv is allocated with
-devm_kzalloc() at probe time.
-
-Setup can run again on the same priv if the DSA tree is torn down and set
-up again while this switch stays probed. Examples are another member of a
-multi-switch tree unbinding and rebinding, or a failed tree setup being
-retried. If the counter was non-zero at teardown, the re-registered
-"static" and "FDBs" resources would then count entries that no longer
-exist.
-
-Entries can still be present at teardown in two cases:
-
-  - entries installed through ndo_dflt_fdb_add() that upper layers never
-    remove; dsa_switch_release_ports() cleans these up, but it only runs
-    at switch removal
-  - entries left behind by the error-path drift described above
-
-When those addresses are deleted later, yt921x_fdb_leave() finds no
-hardware entry and returns early:
-
-    if (index >= YT921X_FDB_NUM)
-        return 0;
-
-So the inflated count is never corrected.
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/motorcomm/devlink.c b/drivers/net/dsa/motorcomm/devlink.c
-> new file mode 100644
-> index 0000000000000..cddc77a6fd111
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/devlink.c
-> @@ -0,0 +1,208 @@
-
-[ ... ]
-
-> +#include "chip.h"
-> +#include "devlink.h"
-> +#include "smi.h"
-> +#include "tc.h"
-> +
-> +#define to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
+> -static inline void
+> -tls_advance_record_sn(struct sock *sk, struct tls_prot_info *prot,
+> -		      struct cipher_context *ctx)
+> +static inline bool
+> +__tls_advance_record_sn(struct tls_prot_info *prot, struct cipher_context *ctx)
+>  {
+> -	if (tls_bigint_increment(ctx->rec_seq, prot->rec_seq_size))
+> -		tls_err_abort(sk, -EBADMSG);
 
 [Severity: Low]
-This isn't a bug, but this macro duplicates dsa_to_yt921x_priv() in
-chip.h, which is already included here:
+The commit message describes behaviour that already exists in released
+kernels. Once SO_ERROR or sock_error() has consumed sk_err after a wrap,
+both RX and TX continue under the same key with record number 0.
 
-    #define dsa_to_yt921x_priv(_ds) container_of_const(_ds, struct yt921x_priv, ds)
+Should this have a Fixes: tag for the commit that added the
+tls_err_abort() wrap handling removed here? That would tell backporters
+which trees are affected. If the patch is meant for net-next only, could
+the commit message say so?
 
-Could yt921x_dsa_devlink_info_get() use the existing helper instead?
+> +	bool wrapped = tls_bigint_increment(ctx->rec_seq, prot->rec_seq_size);
 
 [ ... ]
 
-> +static u64 yt921x_devlink_occ_get_fdb_static(void *ctx)
+> +static inline void
+> +tls_advance_record_sn(struct sock *sk, struct tls_prot_info *prot,
+> +		      struct cipher_context *ctx)
 > +{
-> +	struct yt921x_priv *priv = ctx;
-> +
-> +	return READ_ONCE(priv->fdb_static_cnt);
+> +	if (__tls_advance_record_sn(prot, ctx))
+> +		tls_err_abort_final(sk, -EBADMSG);
 > +}
 
 [Severity: Low]
-Is this read meant to be lockless? It is the only occ_get callback in
-this file that does not take priv->reg_lock.
+On RX, tls_rx_one_record() exempts a KeyUpdate that uses the last record
+number. There is no matching exemption on TX. Is that asymmetry
+intended?
 
-The writers in yt921x_fdb_add(), yt921x_fdb_leave() and yt921x_fdb_join()
-use plain ++/-- under reg_lock, without WRITE_ONCE(). Also,
-yt921x_devlink_occ_get_fdb() reads the same field plainly under reg_lock.
+tls_advance_record_sn() runs after the record has been encrypted. That
+is tls_do_encryption() on the SW path and tls_push_record() in
+tls_device.c. It calls tls_err_abort_final() whatever the content type
+is, and tls_push_sg() then refuses the record.
 
-This callback runs under devl_lock only, which does not exclude the FDB
-writers, so the READ_ONCE() here is paired with unmarked writes.
+So a KeyUpdate that userspace sends via cmsg at rec_seq 2^64-1, which
+RFC 8446 permits, is never sent. final_err is never cleared, so
+installing the new key with setsockopt(TLS_TX) can't recover the
+connection either.
 
-Would it be simpler to take reg_lock like the other callbacks do, or else
-to use WRITE_ONCE() in every writer?
-
-> +
-> +static u64 yt921x_devlink_occ_get_fdb(void *ctx)
-> +{
-> +	struct yt921x_priv *priv = ctx;
-> +	u64 count = 0;
-> +	u32 val;
-> +	int res;
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +
-> +	res = yt921x_reg_read(priv, YT921X_LEARN_UCAST_CNT, &val);
-> +	if (res)
-> +		goto end;
-> +	count += val;
-> +
-> +	res = yt921x_reg_read(priv, YT921X_LEARN_MCAST_CNT, &val);
-> +	if (res)
-> +		goto end;
-> +	count += val;
-> +
-> +	count += priv->fdb_static_cnt;
-
-[Severity: Medium]
-Can this sum count the same FDB entry twice?
-
-The total is LEARN_UCAST_CNT + LEARN_MCAST_CNT + fdb_static_cnt. That is
-only correct if neither hardware counter includes static entries that the
-CPU installed or converted.
-
-For multicast: SA learning cannot create multicast entries, and the
-driver does not configure hardware IGMP/MLD snooping. So every multicast
-entry comes from this path:
-
-  yt921x_dsa_port_mdb_add()->yt921x_fdb_join()->yt921x_fdb_add()
-
-That path writes STATUS_STATIC and does fdb_static_cnt++. If
-YT921X_LEARN_MCAST_CNT counts these entries, every MDB entry is counted
-twice in "FDBs". If it does not, the "mcast" resource always reads 0.
-
-For unicast: yt921x_fdb_join() rewrites an existing hardware-learned
-entry as static through an index-mode ADD, and then does:
-
-    if ((val1 & YT921X_FDB_IO1_STATUS_M) !=
-        YT921X_FDB_IO1_STATUS_STATIC)
-        priv->fdb_static_cnt++;
-
-Does YT921X_LEARN_UCAST_CNT drop by one when the CPU rewrites the entry,
-or only on age-out or flush? If only on age-out or flush, then a
-"bridge fdb add ... static" for a MAC that was already learned is counted
-under both ucast and static.
-
-The commit message describes these as hardware counters for "learned FDB
-entries". Nothing in the code shows how they treat entries the CPU wrote.
-The answer depends on hardware behaviour that can't be confirmed from the
-code.
-
-> +
-> +end:
-> +	mutex_unlock(&priv->reg_lock);
+The new KeyUpdate paragraph in tls.rst only covers the receive side.
+Could it also describe the TX behaviour, or explain why kTLS refuses to
+send what it accepts from the peer?
 
 [ ... ]
 
-> +static const struct yt921x_devlink_resource yt921x_devlink_resources[] = {
+> diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+> index b8d5a843f7617..d5605df59334d 100644
+> --- a/net/tls/tls_main.c
+> +++ b/net/tls/tls_main.c
 
 [ ... ]
 
-> +	{
-> +		"FDBs", yt921x_devlink_occ_get_fdb,
-> +		YT921X_FDB_NUM,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB,
-> +		DEVLINK_RESOURCE_ID_PARENT_TOP,
-> +	},
-> +	{
-> +		"ucast", yt921x_devlink_occ_get_fdb_ucast,
-> +		YT921X_FDB_NUM,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB_UCAST,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB,
-> +	},
-
-[Severity: Low]
-Do the names "ucast" and "mcast" match what these resources report?
-
-yt921x_devlink_occ_get_fdb_ucast() and yt921x_devlink_occ_get_fdb_mcast()
-return only the hardware learn counters (YT921X_LEARN_UCAST_CNT and
-YT921X_LEARN_MCAST_CNT). Static entries from yt921x_dsa_port_fdb_add()
-and yt921x_dsa_port_mdb_add() only increment fdb_static_cnt. So a
-"bridge fdb add ... static" or an MDB entry never shows up under "ucast"
-or "mcast".
-
-These names become uAPI once they are released. Would names like
-"learned-ucast" and "learned-mcast" be clearer?
-
-> +	{
-> +		"mcast", yt921x_devlink_occ_get_fdb_mcast,
-> +		YT921X_FDB_NUM,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB_MCAST,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB,
-> +	},
-> +	{
-> +		"static", yt921x_devlink_occ_get_fdb_static,
-> +		YT921X_FDB_NUM,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB_STATIC,
-> +		YT921X_DEVLINK_RESOURCE_ID_FDB,
-> +	},
+> @@ -414,8 +414,12 @@ static __poll_t tls_sk_poll(struct file *file, struct socket *sock,
+>  	tls_ctx = tls_get_ctx(sk);
+>  	ctx = tls_sw_ctx_rx(tls_ctx);
+>  
+> +	/* the final abort outlives sk_err, only decrypted data is readable */
+> +	if (unlikely(tls_final_err(tls_ctx)))
+> +		mask |= EPOLLERR;
 
 [Severity: Medium]
-Does this hierarchy follow devlink's rule for parent and child sizes?
+The new documentation says "poll() reports EPOLLERR" for an abort in
+either direction, but this is the only place the persistent EPOLLERR is
+set. Does that hold for TX-only kTLS sockets?
 
-"FDBs" is registered with YT921X_FDB_NUM entries. Each of its three
-children, "ucast", "mcast" and "static", is also registered with
-YT921X_FDB_NUM. devlink treats children as parts of the parent:
+build_proto_ops() only installs tls_sk_poll for configurations with RX:
 
-net/devlink/resource.c:devlink_resource_validate_children() {
+net/tls/tls_main.c:build_proto_ops() {
+	ops[TLS_SW  ][TLS_BASE] = ops[TLS_BASE][TLS_BASE];
+	ops[TLS_SW  ][TLS_BASE].splice_eof	= tls_sw_splice_eof;
     ...
-	list_for_each_entry(child_resource, &resource->resource_list, list)
-		parts_size += child_resource->size_new;
-
-	if (parts_size > resource->size_new)
-		size_valid = false;
+	ops[TLS_BASE][TLS_SW  ].poll		= tls_sk_poll;
+    ...
+	ops[TLS_SW  ][TLS_SW  ].poll		= tls_sk_poll;
+    ...
+	ops[TLS_HW  ][TLS_BASE] = ops[TLS_BASE][TLS_BASE];
     ...
 }
 
-Registration does not catch this, because devl_resource_register() sets
-size_valid = true. However, devlink_nl_resource_set_doit() re-validates
-the parent:
+A socket with only TLS_TX configured, SW or HW, uses tcp_poll(). That
+reports EPOLLERR only while sk_err is set, and a TX wrap is exactly the
+case where these sockets matter.
 
-	resource->size_new = size;
-	devlink_resource_validate_children(resource);
-	if (resource->parent)
-		devlink_resource_validate_children(resource->parent);
+Once SO_ERROR consumes sk_err, as the tx_wrap selftest does, poll() no
+longer reports EPOLLERR, while send() still fails with EBADMSG.
 
-Since size_min == size_max, the only value a set can use is 4096. Even
-that no-op, "devlink resource set ... path /FDBs/ucast size 4096", leaves
-"FDBs" permanently reported with size_valid false, because
-3 * 4096 > 4096.
+Even when tls_sk_poll() is used, it can return before reaching the new
+check:
 
-The children also overlap. ucast and mcast split entries by address type,
-while static splits them by entry type, so a static unicast entry
-belongs to two siblings.
+	if (unlikely(state != TCP_ESTABLISHED || shutdown & RCV_SHUTDOWN))
+		return mask;
 
-Would it work better to register these counters as top-level resources?
-mv88e6xxx does this: its ATU_bin_* resources are registered with
-DEVLINK_RESOURCE_ID_PARENT_TOP, as siblings of "ATU". Another option is to
-give the children non-overlapping sizes that add up to the parent.
+Once sk_err is cleared, wouldn't the documented EPOLLERR also be missing
+in those states?
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/motorcomm/devlink.h b/drivers/net/dsa/motorcomm/devlink.h
-> new file mode 100644
-> index 0000000000000..e13fbe320bcaa
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/devlink.h
-> @@ -0,0 +1,16 @@
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index b4535139438ae..37ba09055220d 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
 
 [ ... ]
 
-> +#include <net/dsa.h>
-> +
-> +int
-> +yt921x_dsa_devlink_info_get(struct dsa_switch *ds, struct devlink_info_req *req,
-> +			    struct netlink_ext_ack *extack);
-> +int yt921x_devlink_setup(struct yt921x_priv *priv);
+> @@ -458,7 +470,9 @@ int tls_tx_records(struct sock *sk, int flags)
+>  	}
+>  
+>  tx_err:
+> -	if (rc < 0 && rc != -EAGAIN && rc != -EINTR && rc != -ERESTARTSYS)
+> +	/* a final abort already reported its error */
+> +	if (rc < 0 && rc != -EAGAIN && rc != -EINTR && rc != -ERESTARTSYS &&
+> +	    !tls_final_err(tls_ctx))
+>  		tls_err_abort(sk, rc);
 
 [Severity: Low]
-This isn't a bug, but devlink.h uses struct yt921x_priv without including
-chip.h or forward-declaring the struct. leds.h, mdio_bus.h and smi.h all
-have:
+With this change, tls_tx_records() no longer sets sk_err again when
+final_err is set. On the sync SW TX path, bpf_exec_tx_verdict() still
+uses a lockless read of sk_err to decide whether to subtract the refused
+wrapped record from copied:
 
-    struct yt921x_priv;
+net/tls/tls_sw.c:bpf_exec_tx_verdict() {
+    ...
+	err = tls_push_record(sk, flags, record_type);
+	if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+		*copied -= sk_msg_free(sk, msg);
+		tls_free_open_rec(sk);
+		err = -sk->sk_err;
+	}
+    ...
+}
 
-devlink.h only compiles because chip.c and devlink.c include chip.h
-first. Could a forward declaration be added so the header is
-self-contained?
+Can a concurrent SO_ERROR reader defeat this check? For example:
 
+CPU1 (sendmsg, holds lock_sock)
+tls_do_encryption()
+  tls_advance_record_sn()
+    tls_err_abort_final()
+      sk_err = EBADMSG; sk_error_report()
+
+CPU2
+getsockopt(SO_ERROR)
+  sock_error()
+    xchg(&sk->sk_err, 0)
+
+CPU1
+tls_tx_records()
+  tls_push_sg() returns final_err (-EBADMSG)
+  sk_err is not set again here
+bpf_exec_tx_verdict()
+  sk->sk_err == EBADMSG is false, copied is not reduced
+
+sendmsg() would then return a copied count that includes the refused
+record. If sk_err is cleared between the == EBADMSG test and the
+err = -sk->sk_err assignment, err becomes 0 instead.
+
+The device path uses tls_final_err() for the same decision. Would
+checking tls_final_err(tls_ctx) here too, with a single snapshot of the
+error, close the window?
+
+[ ... ]
+
+> @@ -628,6 +642,11 @@ static int tls_push_record(struct sock *sk, int flags,
+>  	int rc;
+>  	u32 i;
+>  
+> +	/* tls_push_sg() would refuse it, don't encrypt it */
+> +	rc = tls_final_err(tls_ctx);
+> +	if (unlikely(rc))
+> +		return rc;
 > +
-> +#endif
+
+[Severity: Medium]
+With async encryption, is the refused record still counted as sent?
+
+The commit message says "The device push doesn't count the refused
+record as sent, like the SW path". tls.rst says "the send that completes
+it doesn't count its data as sent".
+
+tls_do_encryption() advances the record number, and so raises the final
+abort, even when crypto_aead_encrypt() returns -EINPROGRESS:
+
+net/tls/tls_sw.c:tls_do_encryption() {
+    ...
+	/* Unhook the record from context if encryption is not failure */
+	ctx->open_rec = NULL;
+	tls_advance_record_sn(sk, prot, &tls_ctx->tx);
+	return rc;
+}
+
+tls_push_record() then returns -EINPROGRESS without reaching
+tls_tx_records(). bpf_exec_tx_verdict() skips the un-count because of
+its err != -EINPROGRESS condition. tls_sw_sendmsg_locked() increments
+num_async and ends up at send_end:
+
+send_end:
+	...
+		err = tls_encrypt_async_wait(ctx);
+	...
+	if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
+		cancel_delayed_work(&ctx->tx_work.work);
+		tls_tx_records(sk, msg->msg_flags);
+	}
+
+end:
+	ret = sk_stream_error(sk, msg->msg_flags, ret);
+	return copied > 0 ? copied : ret;
+
+tls_encrypt_async_wait() returns 0 because the encryption succeeded.
+The -EBADMSG that tls_tx_records() gets from tls_push_sg() is ignored.
+
+So sendmsg() reports the record's bytes as sent. Later flushes from
+tls_encrypt_done() and tx_work_handler() are refused, so the data is
+never sent.
+
+The same seems to happen when the wrapped record is encrypted
+synchronously while an earlier record is still pending async.
+tls_tx_records() stops at the first record that isn't tx_ready and
+returns 0, so bpf_exec_tx_verdict() leaves the bytes in copied.
+
+The selftests only use synchronous software GCM, so they don't cover
+this.
+
+> @@ -802,6 +821,13 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+>  	}
+>  
+>  	while (msg_data_left(msg)) {
+> +		int err = tls_final_err(tls_ctx);
+> +
+> +		if (unlikely(err)) {
+> +			ret = err;
+> +			goto send_end;
+> +		}
+
+[Severity: Low]
+final_err is only checked inside the while (msg_data_left(msg)) loop.
+Does a zero-length send() still succeed after the abort?
+
+With size 0 and no cmsg, the loop never runs and num_async is 0.
+sk_stream_error(sk, flags, 0) returns 0, so send() returns 0.
+
+tls_push_data() on the device path checks tls_final_err() on entry, so
+the same call fails there with EBADMSG. tls.rst says "every later send
+... fails with EBADMSG".
+
+[ ... ]
+
+> @@ -1582,9 +1613,14 @@ static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
+>  	rxm = strp_msg(darg->skb);
+>  	rxm->offset += prot->prepend_size;
+>  	rxm->full_len -= prot->overhead_size;
+> -	tls_advance_record_sn(sk, prot, &tls_ctx->rx);
+>  
+> -	return tls_check_pending_rekey(sk, tls_ctx, darg->skb);
+> +	err = tls_check_pending_rekey(sk, tls_ctx, darg->skb);
+> +	/* A KeyUpdate in the last record retires the key as usual */
+> +	if (__tls_advance_record_sn(prot, &tls_ctx->rx) &&
+> +	    !tls_sw_ctx_rx(tls_ctx)->key_update_pending)
+> +		tls_err_abort_final(sk, -EBADMSG);
+
+[Severity: Low]
+tls.rst limits this exemption to "A TLS 1.3 KeyUpdate", but this check
+only looks at key_update_pending. tls_check_pending_rekey() sets that
+flag for any decrypted handshake record that starts with
+TLS_HANDSHAKE_KEYUPDATE, whatever the version:
+
+	if (hs_type == TLS_HANDSHAKE_KEYUPDATE) {
+		struct tls_sw_context_rx *rx_ctx = ctx->priv_ctx_rx;
+
+		WRITE_ONCE(rx_ctx->key_update_pending, true);
+
+On TLS 1.2, a peer can put such a record at the last record number. Then
+neither final_err nor sk_err is set. recv() returns EKEYEXPIRED forever,
+SO_ERROR is 0, and poll() shows no EPOLLERR.
+
+do_tls_setsockopt_conf() rejects a TLS 1.2 RX rekey with -EBUSY, so the
+new key can never be installed.
+
+Should the exemption also require prot->version == TLS_1_3_VERSION, so
+TLS 1.2 gets the documented EBADMSG abort?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106184811.350700-1-mmyangfl%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106193210.1152577-1-rjethwani%40purestorage.com
