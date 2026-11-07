@@ -1,87 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794009050;
-	b=DiqvZwcKgXk2ebFjG9VAcIBGEhNktkxT6TQyatfCrnakzTc5n/ff6k9mSfEZtE3bLPVn
-	 AjsYKLLjQ7cu0YDM5/IcQA/fJuJZ1aXrLwq5imKz/hwpbaD+Sjoxa1fOKe2tnebwOcCje
-	 nsHARvM7JYxLThZAYEnjijXeHr9+NSHFegK/RnPIY+9dwY0WE3Co50dBhT+PdzKIM03xI
-	 a1sdWq8tJc7dBxKXijnkIEdcxOal2ZampXMP6LRIo12iI/3sqoGi5EIO0Rd2tnfc4OUbg
-	 oyvKnXz9pN1mPqIMmulgs2SXjoK6hPWhD/5omlV+fnHyJaIynAKrEgnOoPrlgHixUfg==
+	t=1794009766;
+	b=QNpnv15BtQ5C1EsaLyJ3PiL83NJtZ1b7KkWRQt5gjdarsr96uWrBrVVAerqNT7gMZUd7
+	 qOcU2Vxm2L2mOAImjB5bFDC5//z0bXnCGhyWAaqjzCJXb0jy3vbHiB5KEAGcZfDEHVdwo
+	 XsrJ5uDJanMkovncv4i8Zc9llbAkqDBBkYvRX+HgDfB+CoGABTLv2QkvIn5mToz8hVUZ7
+	 4cy7NkoG+1LfZGDpIlQ/d6Xjum2wcjj0+nkZPLr/0VTO5wTFvT/1/P9adfij7xYjpq2OJ
+	 gn9RFlPnNg/A3IQbN4zabAs0eME413uCrXZEnG0sLkDpSLSKftgkZ0gbMPhyiTHyZCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794009050;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:From:Subject:To:Cc:Content-Language:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=5PzybiuiQkcFi5cN12RhQIKdoWLcgU5vygHaS5A21L4=;
-	b=k8pN33rJAnvzenTDRh7fB0UdZs0PBZGGXy6HJiR1T6YDzUEpHuGf4GfZDR7DQzq7dSsC
-	 XgwjnJ6Hip24mbOlhLVC07jGVX0FCwGDzt//nkj39dLnk3gsJEoXRBwT9wsIWvfvUleto
-	 31E68ozrmUTC81Yi3B2ewHE7t/RhOuP0LOpvZ7l1T2iM2R6Wl6vcxQRNZpEux+4nkNd9w
-	 FL6f0PYZ0X1PZ0btwuI+WAlGbjgrFo/XxAHJPIM2hhgk1wyniliTEwOfd+ZfZ3k10XLmC
-	 JETadBuVR4ooZhkLMEjSLGvQyV03b6vWpt3SxMfOLSWs93KRPb946mqnIsN6xOR5T/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794009766;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:Autocrypt:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=2bbBoX07yT8rTJCrVM6gY2O9OIdKlfJo8J6sej1aUio=;
+	b=lvKSkQkh5x70ZtR4GoaqWGmhZbrUEpEHlPfnDtiXdNDircym5CIxPFMZPMzMjrXu9haZ
+	 YDzzk4sYe5bPEWKs0GKd75FpSdpWhzCAmS+4tUNqyhhaGRBVUHeCqitOCQ8vr1rLfTwY2
+	 pyoBKO35nSs3AIENIeQ9t63slKr/Dgt3RGip1izXjMQABrXuEMxC2HaQ+5wIoXKMHx0D8
+	 oXOrESDmoPhG5r9vnLG2edJ9NdLh42UCttBspM9LXOQiqJlebRWIGMdK+PZRCcx4LxIq0
+	 /0XlKvhKBqsOFw7sAvuPMg0XtjqPqS6H/paaTzL+i/nHuVRQtmE505MmcuxL3pVZmHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kernel.dk;
-	spf=pass smtp.mailfrom=kernel.dk;
-	dkim=pass header.d=kernel-dk.20260707.gappssmtp.com header.i=@kernel-dk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZAwAw560;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=hPD79lUw;
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70B0606A326
-	for <netdev@vger.kernel.org>; Fri,  6 Nov 2026 23:50:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A70B0606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CF8606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 00:02:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08CF8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel-dk.20260707.gappssmtp.com header.i=@kernel-dk.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=ZAwAw560
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-36e99cf7bb3so1906017eec.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 15:50:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20260707.gappssmtp.com; s=20260707; t=1794009049; x=1794613849; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:content-language:cc:to
-         :subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=5PzybiuiQkcFi5cN12RhQIKdoWLcgU5vygHaS5A21L4=;
-        b=ZAwAw560MSCOmWFrjTFtcshWILcdGBxA9ec4/QPEPKH3MoTQ0ts5HQsvcOnXrxPFsU
-         2wMcHitpLdHdbeVPKH2VXSQE1J6lklENbobUK6dS//3qBKagYFt/v3UzQ+0nMSl4eJ+n
-         /YnGxYs3sf+x0udf9nkLtlbOV4A3sB8Yfqeit1yLBwba2s+ynL1k3CzXIHXyq3qIle+h
-         UdCVHkRra81QqfY3ug4X1Zuts2lzMqeYTgNaVqO6bjWfDiG8lD9aJdyjeANgmO79G6ww
-         suf6KgsoKhRAoeN0WTiI0zRZ9UNR8KvIW082XfqpdkDWlCHjQFpXcW8C3IXZkc5xFNjR
-         gpeA==
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=hPD79lUw
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3b0d0b80fb9so739569a91.1
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 16:02:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794009049; x=1794613849;
-        h=content-transfer-encoding:content-type:content-language:cc:to
-         :subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20260707; t=1794009765; x=1794614565;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=2bbBoX07yT8rTJCrVM6gY2O9OIdKlfJo8J6sej1aUio=;
+        b=2npYdPB+p1SenJZxYq/vm/YyaLQ3CXpx0oF/1SuL0if2bpR84kgg0FbT6/QxL0BhNa
+         ldeMPMGQ2iAeiIJ79JN/BjTAsiz4eOS6L3KYy+j+Khzu7himBNqeOFkPArXwlQSld675
+         Ew2Y0m6XU06kOWUI/W2M3VGW1585DsGPmSpt3kUeGZjX7ALdWdxdgXvrAnnz9TfoWjcn
+         E8GAwFTjoirBpYiSjL0DGoPxvOWVos+WeTjs71BfeNr9Kehk2KYOAIAbbaMMN+P5HpuR
+         vYgSwrV65C/ED0SDkBpIrEP/osKJH1IV2/l3MmO5SXMvOuoZjiQnVoFgji+zF5xE+rqt
+         gpyw==
+X-Forwarded-Encrypted: i=1; AL+hErHpnI44ST7Qy3wO/vVqNy8sWpZncqH6szvWYlTagKoydx0O4BeH12wpLAcfzKIwXSMj8gX9Klo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9BgcyHleSnJKwZOouvRCJI0btmXEFRZt0SV/yFfcXCm0vlk+U4
+	fqzEnJcn9YYG1le+YqfMLDoiWvbp2brkttTJWZkjX24GBo6IeMN6uPHzb36/7l3/EOZ0okJX3J6
+	+pAMR9dqK9VPvqPKCyGuKxGINj5JMd4ROu1xHgmKSTTxfU1d79gJxd+m3FNgI0AUkn3ev3vEL7Q
+	BGTEiM+OsEjenDivC2ec/x2cflWXhcm0PGjm97Ca+8fgnv0+kMrMGvl+95g4c3CbIK+t5Y6gzVz
+	sbBXltJKT3nTFNS
+X-Gm-Gg: AYBFou3VTr8PtcGK3vR8Fr25NzfQjyWlRuD+xKGPziw79ppIRXpbTMFHxEmLnGtoBnG
+	gb5/rKOkA4QhedIuNrAP9pbcUfWiqppa45URmPoX0U/dUvPtj/lP6FQMuHXfGPD8UJs5pPBzTld
+	7UF+3VD0lfid8yIXUj36+ASbH8kdgotY1f9unhVSFtF+a4SjrZAiOxZyhhx+YYB0uPaJ6dfk0Mh
+	sapYRanw4ShznCdyxzBuB3tFYpMsYB9scy7ojpUWhbaFRZlUQ0qCEEDOV8+6jPTPaoFKT/jzlyF
+	qWEyD8eL8AQXt4sDUgWqZLJbIgf76/SnOR3J9dR7BIeceA2/IHzAqDoBdcjOgjmT7CUbOm47Fgk
+	mI4G+61jFVdchJUtfwUHp9aRu7kEhsHXx3Z2sK/wxrhFTtkpaxCBfzGEJXXc3H4NjONLxQ6Ah/9
+	jKUIYe5mLsCTbezuo6ZxLLMQ87MBMitnt168lEA5S0
+X-Received: by 2002:a17:90b:1fc7:b0:3ab:b39f:41cd with SMTP id 98e67ed59e1d1-3b0db6ed2f0mr4273116a91.60.1794009765240;
+        Fri, 06 Nov 2026 16:02:45 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b103458b19sm273478a91.4.2026.11.06.16.02.44
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 06 Nov 2026 16:02:45 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-139b62317d0so4048037c88.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 16:02:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794009763; x=1794614563; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5PzybiuiQkcFi5cN12RhQIKdoWLcgU5vygHaS5A21L4=;
-        b=2SpTW+lNZJ+TDmWV/uagDHlG7Uluc5y3UUyu0EdpK3BezwVO+L/960GaifYBFJffTn
-         nbQblWE4ymWAv17SxqFv/fynyRsVlIm+ZPkSI6boJ+XpIFJXqIOOXOR96qb8hMzitoSp
-         K17XxH1CB1xt1QcKVgohQiDs5mJ7t74Yb1XhJFmtzdvfbtPWgWHH8T0iscTjxULpS0rJ
-         MfTOu55sNs4A8HL8Su+jE1ze14VZ2yZs60r6bD93RixRX45Mdsm0XRqIJq9gnDSpKbnn
-         4ajUN3E9KLynd3+WwgTbA/gGyWClSO9iHKu9poaGOmOPMVykkJagdfRZ9tT8FV2yXsBH
-         aoQg==
-X-Gm-Message-State: APuU4Z+SFfkHohHLiFnZRFYU6Nb44KcIR0nhkMftzX0TNz21G18w/fp+
-	RHVCVPc+4Y4nHZlv23qChRE4oPjk+rM2///+myNffZbO8t5WX7DheeMhno6xk+Bl/7metwfnXHM
-	C54yAjj8=
-X-Gm-Gg: AYBFou2MH/ZFZlZpoxGLsPwUZ+C8nSQZYXUkHJUKqdjWAhplpIbN9G+YMSPjXkY6fzx
-	BtfcNsLboIpEk9FoeViS6/03ZQrQ7uaQb/yF4eDGMwfJB7c0+PbkINGLI9jM8yBJ7EVK13TrDHh
-	3UpCS9me7eJ9vPsxs/s0084ZasxB9wdlVN0g2EZQG6zplBrn0IR8+/Rnhi95lbz3qzp44gLZSLx
-	OiGBm5zXzIngmoq9Axi8AZaDmNGZMJ+Z0A/KHmpm1cEarqzhGZrYRt38VhC1syy5fcsJ41mLgGb
-	idt3Zi7QxVWSLEC2jsrYz4ynowhdBmU2RAUt83OoYkuyuSn8E3NNMdcPx8/DLLK40PR3wKGfUSd
-	fmNRVMyg/KTgdhKydJhqEhfbpBs/CTviscLjnWOkLI9V1vFmQa1a69vlrQR57gYwBYKiLJzx0NE
-	GF0wtVxcNcTSg4T8t7t7pHPApaYgxPZXF5EohEAbLlfOP5/BBpNKRDOJxryoXlUppWg1GdB6VQR
-	Y4yTp9ogTmIfnOieMNkRf3eFjzJFNQdmNiXdDi9rrWekWKOmN29SdNbceN4QzoJDQ6AImBZqJoj
-	Y+wKSYG1N85e3lM6Cf1NiUPCgk7Mddz242xf186r02eJDCOkPDxI1Np8fmrVPAv/UFaXQQn343e
-	ErVlsa6FlSFw=
-X-Received: by 2002:a05:7300:de4c:b0:36c:b7b4:407e with SMTP id 5a478bee46e88-36f772fb5b8mr5771871eec.22.1794009048437;
-        Fri, 06 Nov 2026 15:50:48 -0800 (PST)
-Received: from [192.168.1.106] ([198.8.77.135])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8e3a47esm12686777eec.6.2026.11.06.15.50.47
+        bh=2bbBoX07yT8rTJCrVM6gY2O9OIdKlfJo8J6sej1aUio=;
+        b=hPD79lUw4v6ULgu1GePpYDYS3SwpS4ESWWX/lNyD8XyfQXgYpr2pzjD6bcLv0XH1x3
+         wjqigfn+uBNdODYsSqa6Nt023XTpGbOqmGYVhFeeCk0j7hxQ6fAIxgduBKGDC47MnZWc
+         uzAyZz/1M6GCHTR5CAo83k8e4N2z382FdYGkw=
+X-Forwarded-Encrypted: i=1; AKwUvBxvR1VXuKqMZ4ekFRNneXDpsEnvd7TjNKNJF9j1rR3EhLQHygN78IMKmcluuZYnWXz2LC8rf1c=@vger.kernel.org
+X-Received: by 2002:a05:701b:2512:b0:150:c9c5:1ca1 with SMTP id a92af1059eb24-1b25d318407mr5084589c88.18.1794009763175;
+        Fri, 06 Nov 2026 16:02:43 -0800 (PST)
+X-Received: by 2002:a05:701b:2512:b0:150:c9c5:1ca1 with SMTP id a92af1059eb24-1b25d318407mr5084543c88.18.1794009762313;
+        Fri, 06 Nov 2026 16:02:42 -0800 (PST)
+Received: from [192.168.10.3] (ip70-187-214-22.oc.oc.cox.net. [70.187.214.22])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b25e4880dasm8119785c88.8.2026.11.06.16.02.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 15:50:47 -0800 (PST)
-Message-ID: <691880db-d6c6-4147-8509-93fc76125d29@kernel.dk>
-Date: Fri, 6 Nov 2026 16:50:46 -0700
+        Fri, 06 Nov 2026 16:02:41 -0800 (PST)
+Message-ID: <0897e70e-3a7b-4f1b-81cc-98b4bde1dff4@broadcom.com>
+Date: Fri, 6 Nov 2026 16:02:40 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,86 +107,75 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH net v2] net: leave O_NONBLOCK to the sendmsg and recvmsg
- syscalls
-To: netdev <netdev@vger.kernel.org>
-Cc: Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima
- <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net-next] net: bgmac: stop advertising TX checksum offload
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
+Cc: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, open list <linux-kernel@vger.kernel.org>
+References: <20261102215806.13723-1-rosenp@gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20261102215806.13723-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-____sys_sendmsg() and ____sys_recvmsg() turn O_NONBLOCK on the socket
-into MSG_DONTWAIT. That is right for the system calls, but io_uring uses
-__sys_sendmsg_sock() and __sys_recvmsg_sock() for a blocking attempt
-from io-wq as well, after the non-blocking attempts with MSG_DONTWAIT
-have failed. On an O_NONBLOCK socket that attempt can't block either and
-the request completes with -EAGAIN, unlike IORING_OP_SEND and RECV,
-which call sock_sendmsg() and sock_recvmsg() directly and don't look at
-O_NONBLOCK at all.
 
-Move the O_NONBLOCK handling to ___sys_sendmsg() and ___sys_recvmsg(),
-which the sendmsg, sendmmsg, recvmsg and recvmmsg system calls go
-through. The io_uring helpers then pass the flags the caller asked for.
 
-Cc: stable@vger.kernel.org
-Fixes: 0fa03c624d8f ("io_uring: add support for sendmsg()")
-Fixes: aa1fa28fc73e ("io_uring: add support for recvmsg()")
-Link: https://lore.kernel.org/io-uring/a5589b66-9a20-4b1c-a0f1-1b5b31af3667@app.fastmail.com/
-Reported-by: Lukáš Lalinský <lukas@lalinsky.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
+On 11/2/2026 1:58 PM, Rosen Penev wrote:
+> The driver advertises NETIF_F_IP_CSUM and NETIF_F_IPV6_CSUM, but
+> bgmac_dma_tx_add() calls skb_checksum_help() on every CHECKSUM_PARTIAL
+> skb, so the checksum is always computed in software anyway. The return
+> value is ignored too, so if skb_checksum_help() fails the frame is sent
+> with a bad checksum.
+> 
+> Remove the feature flags and the fallback. The stack then computes the
+> checksum before handing the skb to the driver.
+> 
+> Tested on an ASUS RT-N16.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 
-v2: add fixes, CC stable, add link, correct Lukáš, correct subject
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
- net/socket.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/net/socket.c b/net/socket.c
-index 2e3b5737c481..08658a9b8065 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2697,8 +2697,6 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
- 	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
- 	msg_sys->msg_flags = flags;
- 
--	if (sock->file->f_flags & O_NONBLOCK)
--		msg_sys->msg_flags |= MSG_DONTWAIT;
- 	/*
- 	 * If this is sendmmsg() and current destination address is same as
- 	 * previously succeeded address, omit asking LSM's decision.
-@@ -2762,6 +2760,9 @@ static int ___sys_sendmsg(struct socket *sock, struct user_msghdr __user *msg,
- 
- 	msg_sys->msg_name = &address;
- 
-+	if (sock->file->f_flags & O_NONBLOCK)
-+		flags |= MSG_DONTWAIT;
-+
- 	err = sendmsg_copy_msghdr(msg_sys, msg, flags, &iov);
- 	if (err < 0)
- 		return err;
-@@ -2926,9 +2927,6 @@ static int ____sys_recvmsg(struct socket *sock, struct msghdr *msg_sys,
- 	/* We assume all kernel code knows the size of sockaddr_storage */
- 	msg_sys->msg_namelen = 0;
- 
--	if (sock->file->f_flags & O_NONBLOCK)
--		flags |= MSG_DONTWAIT;
--
- 	if (unlikely(nosec))
- 		err = sock_recvmsg_nosec(sock, msg_sys, flags);
- 	else
-@@ -2970,6 +2968,9 @@ static int ___sys_recvmsg(struct socket *sock, struct user_msghdr __user *msg,
- 	struct sockaddr __user *uaddr;
- 	ssize_t err;
- 
-+	if (sock->file->f_flags & O_NONBLOCK)
-+		flags |= MSG_DONTWAIT;
-+
- 	err = recvmsg_copy_msghdr(msg_sys, msg, flags, &uaddr, &iov);
- 	if (err < 0)
- 		return err;
+There is no transmit checksum offload through the DMA descriptors, it 
+can only be done through FA/FA+ which is not supported yet (working on 
+that).
 -- 
-2.56.0
+Florian
 
