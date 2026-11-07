@@ -1,106 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794072440;
-	b=vPgs0Gbnh3BWk2XBm7J/D4J8aQJvDNy0L3qini+wsu3zqt1zQck2ecegFsx6Dz02ccGT
-	 hVU3YBbgroCSKEtwC0ZG8WkJXj004+O9BUGzfAno9ZIoTxcHJgLZioFM79XZUT061YaBd
-	 XW0vcczj1aHDAtUcKFzLkUQIkq3nxbtCNjZEmbnI1L5WXhdnT3gj+cd3ExxArzd/5fzNl
-	 YqhKkm+Q4wuzZV3V7AFroJ1qXN67ETCJe8Dr4YxB2rYDZCw+5SpejUfwwcA8hoXGfV4lt
-	 1APfWv8sQD/jWhY5I7HGX1dUETcF3xS8sCWniD8H+t85bxXnYoGDfeHJIxp7+1jpTUA==
+	t=1794072756;
+	b=W7CLgAZ4aYznk6JDt9Otkne60YkhTzqRwiPnrwrD6zsKhNS0jc7doNCvbZQuB27BcObA
+	 Gm9Bmke7oBxM7E9C/RQ7wkPUfPOTAji1hHnKEpVbG5krOw+qqMH1Avnl4aMgmCJ8dVEoL
+	 IcJ3hDE3X1MGQZHUQkF7uemJHQaUX00fJN1qiDbRBgw5kjjpPgVlY0R9iUCwSNZ4iuv3S
+	 GpD9dQRJQxvadeNW7qWpkQ5fqcsz7S/YtMP82cg5WgAmY6Zm7zVFMQGMWUXn00pFM+Yl7
+	 DK290+gO998NSxTP1PfMsQHo2K+3Gjw5pgl9v1KlMShsacojW5Sa1n1WbDI6+KMxSqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794072440;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
-	b=vNz7/2xOuwB1hp56eNj5bT5wlxdjdOllC3Eoootg0YGxN/aNm5hJk0SuMfTMlBehfZyF
-	 Duma7h6WRxz8kf3eywfWj1q+LdI7BToiXehEeayw5acaBjWY++IS9u8VrITAgE9fagiR5
-	 z3ROjy7AXtMRAc5TaxEIFhTcDxyFSrRt5YhY3Mwg48jJB1suBxokCu8NIs1VJOkvCGqZk
-	 blUv9liDQWIP1Xqy6JjPSSg917p7a8WGfLBJDJ1bZXKCcEya/wWn0euJww1+2jqc5xUq1
-	 gKVTJ3KbtowrGIJwzRx3I9/ClLNdklOzGInw3OA0BzZYEY0Mfq1lsjQreDjvgTM/VNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794072756;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=KzndXIafRq+J+vl6EzkbdZuWJbf/1tRHEtBvKVbMKMo=;
+	b=yU3Hui34fJEi4p580LnN+mXK869npuORtWQi3wJH0rQJ6du37zxoVCWNgC6ILyMmBuJD
+	 LzXM5/rlh4odGZGpIZn8tvWBd3VxbiXLi6l566spksEIb52oovTHQ4Hfl+jP9YNcbkgm2
+	 GlEvKDvqnwlMd1QeYs7P8zsdKvaqELTYCpMJPPAEnu9fCU4vggjRdmq49Z0u+EYSXVGK4
+	 nKtBWBw9ex0UAYME/P5fXAjbepkkcAihMGO1t0XVN5PnBpuIwj54f4WAx1WMqp1mTy/we
+	 FsfDGgqgdgxglYJUPugAw189Ptclt49aceDy8cWTqReBEu/Pa82FlUkQ390PqWeTtgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="kBRtH//X";
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sjvthzk3;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F5B606A32E
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 17:27:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01F5B606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAE5606A326;
+	Sat,  7 Nov 2026 17:32:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CAE5606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kBRtH//X
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36f6295304dso1732474eec.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 09:27:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794072439; x=1794677239; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
-        b=kBRtH//XVichkRikoXz0f3WTHIlITZ1SryQ/0NJaXxcgxJFnQ/kWxd2qN0cvEbrSgL
-         vCc28+x19SetD/5AU+3gDnvpS5OHzdWqfuGF9UY7PUv1jH8TI7eChX3qnXl5d9fW16gI
-         /0XbrUdOwcKCKgx74Oe+0MSoMHyiNB/WfghnbVXVBNsji+jK4eN85o+MoW6g4r6tNZ9v
-         xExwIOsgc7Iw/yN8G4BEZQg3JbyGk5jhCEDiIxkXZgw//mp1v9zKzx/fWSj3iwDNn8jh
-         2CKFV3WKhWqCZnbwJINRBuR+TOsiUzP/UeebdcHL1QLw8bAuVb+djeaNLs04FILbPfJ5
-         mzGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794072439; x=1794677239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
-        b=HqhkgID3cffnJcgArGT/Ff6Ggq8E8oGjoFVotrb5rUQqAOVTPxPwJv8pY6sUBb4S1V
-         wGb4YEVqzqFmqsSRhpfTU1JYn+1ZgEyfMKqH9qLvh4XmmsWVIAO/sjnnm9zzgxUKGegI
-         txqsbQLS5nKwYOZ0f96KqGALPl0NjCKuwI1n6s5I/UrQHZ1k5uBcbAyRzH/QqYYivtxL
-         nfZHjeMwjpL8kNg97Jlb869e0PU4m8GLVGIf/smuxbDQj6eSzwNzwHQZUCioJcYgJVM1
-         NzJgiBe80Amq3Cr6j1bcZ98/9M+/4jvwMx9/26NQ0NDMUYeQ+cG1XteD9hwmnsI+fgLb
-         W3hA==
-X-Forwarded-Encrypted: i=1; AKwUvBwkzg4wB++COEinSSIuezKGVA+TE4VVdfMxXrNfJ6b/F/OrdWqe0gLAq16ectQV1mm5+kdWzBQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+nUc2jgMki5ie/8G1NW9jnF/UVfaKUpr7FoeYIP5G76gDQmf+i
-	2Hpd/1dIPuHebDKhyrBD8Jg7ckxICWnOfXX7oCeiC8RCa/YAY1nNXSrn
-X-Gm-Gg: AYBFou1fXzGazgFbHcT+E7wI1SYjydnVVqQ5pXHsun6BMX3wpq6RKIQZTgOVf3Y+HOe
-	E9wu5crJGPkTRquFBh/trGwPzWCg8TnWwZu4cffS9cv/KvkpZJnWYqoxFNAKB8xYv/6MmkRjK52
-	B9jr4HWbPq/RxLTCfXufJ2bv1V8jH9S/K8ztTeyKOLyjWOJaAqs09pVr2Sn7W27eiW/PtJRdE5L
-	rItQ5n+dWKz88U4IKB1i3O5IjJZlFxO0Nsj11tTt0EMqx9dqzRLBz+jQXIdHWjx17cl0rQ3c6Dc
-	7+umO47PnYGkbNQ4yNs2Z7pIBVBX8ABoFNKuVzJscM3BEFmTb4Xsj6wxKipZt8ggoP3y6PEEguC
-	ks2hYilC/57PLNP8WO2ldsRs2bQPGqEiLVxRoMstrlL5xQKDXoWemOTB+klegX/Gc9KBbfp96/1
-	XtDnrlZuV2wXQjiQMg0ifNJzGt+ucROrTOqP76Wn6KsGkjkaNOWlxOcqHpUd2u5JFbHbe2Me5Qn
-	iHDCpjqxxvnT3wtQsMhVyFQcLvweowCXtJ/XsKYkSJChX9kDUn8NOQc+KpPiDZzJxCdUrqaS+2H
-	p+MFx0sEqt2E4Skg8M4euVJd2ULUprzkoSadWA==
-X-Received: by 2002:a05:693c:2a07:b0:36d:4135:cd7 with SMTP id 5a478bee46e88-36f75a27e38mr8089948eec.18.1794072438631;
-        Sat, 07 Nov 2026 09:27:18 -0800 (PST)
-Received: from xploitoverload ([2409:40c1:6412:e5b:5516:cd42:6c8f:c918])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa999654sm16328165eec.27.2026.11.07.09.27.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 09:27:18 -0800 (PST)
-From: Kalpesh Solanki <skalpesh942@gmail.com>
-To: willemb@google.com
-Cc: Kalpesh Solanki <skalpesh942@gmail.com>,
-	willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v3] tun: disallow setting IEEE 802.15.4 and 6LoWPAN link types via TUNSETLINK
-Date: Sat,  7 Nov 2026 22:56:54 +0530
-Message-ID: <20261107172654.302210-1-skalpesh942@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261107162649.282982-1-skalpesh942@gmail.com>
-References: 
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sjvthzk3
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KzndXIafRq+J+vl6EzkbdZuWJbf/1tRHEtBvKVbMKMo=; b=sjvthzk3+L4LMRbXpwAo3mKNSI
+	L4xDJB8dPTR7dPR85p1EuqZ531SO5llhau/gR4p9dZkAMMvOcfZIMrRnvO90605L7Jp+vGK9tJCuV
+	Lkt/PDZxaI6dtdohCeeV+d+5KoPy9r230VvSyV14gDrjbkPKxT/FEdYh3LZR+D37vU80=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xPkGr-00EzBL-J7; Sat, 07 Nov 2026 18:32:05 +0100
+Date: Sat, 7 Nov 2026 18:32:05 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ali Tariq <alitariq45892@gmail.com>
+Cc: Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yixun Lan <dlan@kernel.org>, Vivian Wang <wangruikang@iscas.ac.cn>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Tomas Hlavacek <tmshlvck@gmail.com>,
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+Message-ID: <12a95b3a-9c8b-4a2d-9b81-12b3839e64a9@lunn.ch>
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
+ <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+ <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,17 +76,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
 
-> Should this be
->
-> Fixes: ff4cc3ac93e1 ("[TUNTAP]: Allow setting the linktype of the tap device from userspace")
+On Fri, Nov 06, 2026 at 03:44:50PM +0500, Ali Tariq wrote:
+> 
+> 
+> On 11/6/26 2:43 PM, Troy Mitchell wrote:
+> > On Thu,  5 Nov 2026 17:34:37 +0500, Ali Tariq wrote:
+> > > @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
+> > >   		return 0;
+> > >   	}
+> > > +	rtnl_lock();
+> > >   	emac_stop(ndev);
+> > > +	rtnl_unlock();
+> > >   	clk_disable_unprepare(priv->bus_clk);
+> > >   	netif_device_detach(ndev);
+> > This can deadlock. emac_stop() -> emac_down() calls
+> > cancel_work_sync(&priv->tx_timeout_task) with RTNL now held, while
+> > emac_tx_timeout_task() starts with rtnl_lock().
+> > 
+> 
+> Thanks Troy, that makes sense.
+> 
+> For the deadlock, I think the correct function to call is rtnl_trylock()
+> inside the emac_tx_timeout_task(), which would return if the lock is already
+> held and will hold the lock if it is not.
 
-Yes, will update the Fixes tag.
+rtnl_trylock() is generally a workaround needed for badly written
+code. Please try to avoid it.
 
-> Cast to unsigned short in these comparisons?
-
-Yes, makes sense. Will cast to unsigned short in v4.
-
-Thanks,
-Kalpesh
+	Andrew
