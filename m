@@ -1,95 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794024163;
-	b=iZpi+Iv3I4KEf9WbxDQeQIDN5TtxuTbfKn3+vfMIxfBBYfyywCq8/8N+YOGAmGhUBYNf
-	 tv3ZkbSiaM75NolvN+55mnNkInTwb57ges27SZX6dNMvIX3xd9/BYUMHAPtYXbNDEYLyX
-	 YIZrpilHIZAlxWKJVXPAl+MqT4qGFY3Ox0EZPhLTz5N8028wyseUoPkyGTzIf1Iytq47J
-	 NhwBBIq5XyO78l8VT+/5gJwK4vfiASfJLEUA8gIuSaTSN4Z3lbqc//sQflLxcNFOfQ+4O
-	 RzOLPf26X2ACtvhydmwGKtnZOSMmKta2KMH5+ibbhN5BCCqFPNGqKfxcrtHGJAVdf5w==
+	t=1794025087;
+	b=dqToaY2bXxHz7wowL1v02shbtyhTyyLjACfs+PGSkA+dD7RvfMQCe08pAtrNDYtY9JO4
+	 FYuJVxONmMmXBOzt/XjAca2zHRp4q27WOmg+2jhGIfDGMBS6YKfJzymMot649x6cQE9dU
+	 9Q7gYdWdliE0BwId5SHdCUHgLrxsrZAJIZbdXXbJOSmIG9z7tbXm2/oNk/MtXJJSQVFOV
+	 Gh6EWAQ/5RgyLjubbEFH6GNeApyiM/yhB1199CHd/MH4aYAH9WF8v8jCLIlSkUpIW2sLi
+	 OHWGzceKH1VRMLqJ+wwc8IPUVha4Y9yUvwzNjmGMFVnJmRfL5aZ80Gne5nGpC8Wn0dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794024163;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794025087;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=iDNBUXlZYHZzJ9wp74s8HsM2SQUSI7+qOI3EN8FHBMw=;
-	b=YrZWRNb5bRa5Fn8bxzi9B7Yefq5K6AfV5p6vVoDlJsDN2/XEuxt6ApWoad8ldOSKx3V4
-	 F7FX7GK2cl9li/a4YA0aWwV/mr8XkEAGwjWd9TPpqQ5aglJ8feWDZFdkkKD0sEAUA6pEl
-	 JgQ2HeLxRQRAKFtfePFq7PqcUhVY5IU+sJJEqtwa698fQvpjudyoPgEKifZu25ubLlc9i
-	 p+kRf2WRBj5bxyU/swCRqEoa459559IaPlm66afzO41hBX9w7u0/xR3V4pVBwBrYAeZ+v
-	 7j3pblEbjOg1atEQLgK4uHuCv2q3Ypw3tJGtq06nRYJocO9DRPmP9o4qG4/yf/1bjSQ==
+	bh=cuN/Wu6kktf8GRN0frnHoHZPEmUKd7TSmOYwdClsOmA=;
+	b=SBFl0VQvg2RUyg/awU/CWqv+WxqvQ9XrAIIkF+tmM91iUcj/aB+yiCst5T37QHOiXPVx
+	 r/Z7IEEq8RFvuwdenVSDaNhT8Her/maUuLCbTBLicE/sT6AjdV6eGyE67qD2gaqCRDTFo
+	 7/2EgrcIqRhPHCreHA2j2EosZBtH6b9Hhg/s+dOpYr9JvPHWVz6005O8x1euBy/uZiCbO
+	 By3mSHgBWVnZdCai/exgUxIUq3TgU3OvMF1iVWaKT9ZV53DFB0K65lEDkTYLFVetSbRJw
+	 cC8tg55G68tQI0NiarX94uXvUX7Q0Fjh+vosTI0lageOQR2Cwqo1x4SGzBWlzBJI91w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=openai.com;
 	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b="Zx4lXM/Y";
-	arc=none smtp.remote-ip=209.85.161.53
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b="aSOI3z/i";
+	arc=none smtp.remote-ip=209.85.210.47
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50F2606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 04:02:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B50F2606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85736606A32E
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 04:18:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85736606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Zx4lXM/Y
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-703be215729so508711eaf.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 20:02:42 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=aSOI3z/i
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-843a4ca671eso569638a34.2
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 20:18:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1794024161; x=1794628961; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1794025086; x=1794629886; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iDNBUXlZYHZzJ9wp74s8HsM2SQUSI7+qOI3EN8FHBMw=;
-        b=Zx4lXM/YLmu98OuBoXL0bPIqITK6E0AeA/i/VUJXhJAd7XkOdbDo3F7W9wEXV2cAgL
-         OwM9/GJt2AnVBheOesg7wWIk3kElkAe7491IDsIuQvigM1GEIbDUBynUI2hqydxSuB/p
-         nU/mwi/Y+sEmTKaVcgeFfKk5B084RG5mxNV+I=
+        bh=cuN/Wu6kktf8GRN0frnHoHZPEmUKd7TSmOYwdClsOmA=;
+        b=aSOI3z/ivB3dLGUeIFD60/qU+RZHCfSGJam7HUGnDYE6+Cxb0ESvpaauNmGnAy85CX
+         fWEwhNdKw1xAwlpNmPmGfbJ2wb6OWAgDmSJVVbVTd++//Kf1luBFiIOGzM700MLMS8gK
+         72gMqOTQ4KOv69G1T6Uk6xESdIEbXLQUQpMzM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794024161; x=1794628961;
+        d=1e100.net; s=20260707; t=1794025086; x=1794629886;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iDNBUXlZYHZzJ9wp74s8HsM2SQUSI7+qOI3EN8FHBMw=;
-        b=QawcVwyP/tSURDkfRsGSwLE+OOZywkrzUXW8uhuYDQoukBkcMPKZHsQghwSD5R5GbN
-         h+UYYozXcrDmxR4fKIJz1sj1bd96nlOX/+D82d6cHX5OEhU80uUqd62O8/JrXf/ca9Jy
-         LTOohzSgmo1VQNRNluL7K9FVYpe3n0GLRKis0H7MjWW5whIT4z8I12Ca3XzD7Q9p+sud
-         3p+Xb8GAqptcSnsj882xI3Y6RPWmkrAKBlX3m+JW2hHR4upBLP0xs1Si4oK9aVnqmgvQ
-         WraqazwkTpdokbxG0OfinLiLY4vpvXzS5xtDAOAZbDCL1eD1qOJL71eTyYh/CMBhSmQP
-         J7MQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwQ7G8O68LZD4g4ouDGhj71l/JjuFi7WhMS/MXJHufyJAfYguamXpbrv787h0isc/UUxlIxsTk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8qdImUziVwoO6esmm1snSn3AQLUK+uGVCfiW6fXqdG4rNBI41n
-	Q45uiDuI8baZxwwU48nY4r/N9qKpSLsJV7cWHZ6Jn8katMYyA+5qGRB0s0+x8XHiWb0=
-X-Gm-Gg: AYBFou2/jx08apb96fw4IcqAV0OdWLwQz43vhBORP+TtZmNYignsRvjUNgaUqlQdWiF
-	ltxzEVFVaJ388ZATVpdcD3tTwOzzcavg7qXaxNc7GJ+Q6R6uxQfciVGS9/MeJ+5WxjDlv3q2ZPa
-	Gv/Zlf5YLEmPF4/YwWZbMTQN6NBC9tCLOnMF6WoMmglMIlAgt5ep1IRi9L7VRJuSfonGZZVXZ0B
-	BPk/ZGZ0gaQ7dNEEnJ5phX7agu10FbkA36+Klc3SYNAxCJzJ+QHjOBThqG529WbPtsgGifYeVvH
-	BqnxEWnziD6lmf74fcuhBOne2UVvJ7dRAUGa6ctmT2JxbGAuh4VUbmwGL6ti1pS7et7hH5pYxl+
-	FIytW3R8k8i3p9iSQvE74dzbQbI+bE4zGyNSp0bOCECHNOcYD2pSyjHADSxkqoWViZHEAP1ah70
-	MxSLxpu8n9X7H9XRpiaSrot6Zf3QwES4pG7TqNosnmMCsf0uogeCLUHoVmw2VVukp3y5JvIE7oX
-	WY6ZkZRzWfAf+82FeXdIMAR26guhutVWY63X1qTI436gQzn+E6pvKkpR6kB2vDiNqFZs81K+Uf6
-	EYh6R7UM2Q0l3idU20J0JCCpLvSMAyJAD0VwePcEEEkffxi5xMVQYHNlBWxiombffxaZtVgKgRo
-	k/t52BloVDV6+gKxtWvd7STiDn935FA==
-X-Received: by 2002:a05:6820:448b:b0:6ef:1250:1064 with SMTP id 006d021491bc7-716e788c04amr2164318eaf.30.1794024161505;
-        Fri, 06 Nov 2026 20:02:41 -0800 (PST)
+        bh=cuN/Wu6kktf8GRN0frnHoHZPEmUKd7TSmOYwdClsOmA=;
+        b=wYK38UGsUSuoYMKLnmnx48obEW60vpxxjWB6+iasAwl6xdyH0TP+OnuoRcBSgsyee/
+         dQzdSuDfaSufDm7SLkhW13JeDOOiwcgSXu1k0a3CIq6ZK/6J4EeY1PmVpFXG44hZs5qm
+         QvLoQR1AR8wlXqP6D4t0v1rniecxJP7H3BWGX+9ksDOwzLbD0ZZXrlJ0iVhxN6zna2HI
+         fAhkNHPR8MBjwBZ50UdsBHex1V9CgxlQB8wcrSoxDrNojOClMIE8tT7ZnVdxH6EEdoyT
+         xaZPfDuoJMGdJP505nl9GnRlZPsphY8YjNnwoRyeRhy8q6wwOgdksCuSuE5UcyGGtc9j
+         mkQg==
+X-Forwarded-Encrypted: i=1; AKwUvByQvUI7WTgQ4MH9jinoVLeqCocyYciNQtXuADztwQFnqLFglAyNLHbdO7Gv/gpnXsWj8CEkME4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z88XlnzNAbpw4dl1JgrNXyIpg382air0j+vnMwYK34V4Sw9jHAY
+	Okh7V2ZXHxkWx88/NOp5R5WaWiTF6m2WK/la5ezJmadhnjrgSoHb/PwNJdLh1IG6ZqM=
+X-Gm-Gg: AYBFou21MYXJrpTCeFSlt5O/X3GLcUoz0t0PXpyIro1c6+aewl0DG2hFYPVKkQ+cEEI
+	IJB76AVpvp/yVPgsupUxh/7FD5qJmsCiGyueaE1pZPm+nS3dNxzQL4tZ43DlkvWqWlgXuF3AqQ0
+	yO1HK8IEWcs8gH5ozdRv2vh/dFgZXFaCGfElzCKX8YIOUvQD7riL5tvejs1L1LsibaXFL9dPPjR
+	cWSzK/58dCnqfQY85LqMDn13z1LD23jfGikv4Qa/qq7kATe0tuC05WIpb9TDec59wu5hX9y/hHd
+	SjLIK6iE+MySGa85RDTd9qWe3r7j61Ca9G+zxDzuM163tE4Rok26voNjXakI9LRwrPAg01hwF0j
+	VGP7JYdqDVrRVDKdrT5iUjARYpzi2AGpOjftlArmjfnSXlkAzr0B8HFKVHy3N556Q6++DR2oDi6
+	kS84t6w6K4Ba/G7zRrisnzB77rYhKpBKhdblDNvxbD/Q3yRkKoAjB7dYARm529UWRrcQ0/qYOW4
+	+oTm7ZHfIFwIjlWi93YUPPYIE8SgCkwXm4aMN+yv6KerJ/vWcZ5+7jEkCt2g5O7wdTJRO58B5g/
+	rMDR3aPqAT8iOpTCvMV3PzSs3oX8xY56tD77mnWjQGHWANpWjfe7PuEZdaEzPCz/fB+k0oZnV8G
+	yCiwhB6FFXwBXIbU84w8GzkVzzFp8uw==
+X-Received: by 2002:a05:6830:2315:b0:81b:bfb5:26cb with SMTP id 46e09a7af769-85f1cd702f9mr4751617a34.3.1794025086363;
+        Fri, 06 Nov 2026 20:18:06 -0800 (PST)
 Received: from com-75606.corp.openai.org ([199.47.143.1])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-716e9cb331fsm3118162eaf.2.2026.11.06.20.02.39
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85f1d951a8csm3575210a34.3.2026.11.06.20.18.05
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 20:02:41 -0800 (PST)
+        Fri, 06 Nov 2026 20:18:06 -0800 (PST)
 From: Kyle Zeng <kylebot@openai.com>
-To: dev@openvswitch.org,
-	netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
+To: linux-rdma@vger.kernel.org
+Cc: achender@kernel.org,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: openvswitch: make transport checksums writable
-Date: Fri,  6 Nov 2026 20:02:38 -0800
-Message-ID: <20261107040238.27606-1-kylebot@openai.com>
+Subject: [PATCH net v2] net/rds: Do not unpin a page after a failed atomic pin
+Date: Fri,  6 Nov 2026 20:18:04 -0800
+Message-ID: <20261107041804.64213-1-kylebot@openai.com>
 X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -102,204 +100,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An IP address rewrite can execute even if the transport-header pull in
-key_extract_l3l4() failed. In that case the transport key is cleared,
-but the IP protocol and transport offset remain available. The address
-rewrite helpers check the total skb length before updating the transport
-checksum. This does not guarantee that the checksum is in the linear
-head, or that it is writable.
+rds_cmsg_atomic() assumes that a non-NULL output from rds_pin_pages()
+represents a pin that it owns. However, pin_user_pages_fast() can roll
+back a fast-GUP pin after racing fork() and then fail in the slow path,
+for example after a concurrent mprotect(PROT_NONE). The output slot can
+still contain the already-unpinned page.
 
-An AI-assisted source review identified the missing writability checks.
-The supplied userspace reproducer sends non-linear IPv6 packets with
-long, valid extension-header chains through TAP and Open vSwitch. It
-triggers a size-2 KASAN access in inet_proto_csum_replace16() as UID
-1000 in an owned user/network namespace. The reproduction uses natural
-allocation pressure, without kernel changes or error injection. IPv4
-TCP/UDP and IPv6 TCP/UDP/ICMPv6 address rewrites have the same issue.
+The common error path calls unpin_user_page() on that stale pointer.
+This can consume another subsystem's pin and allow the page to be freed
+while it is still in use. A local unprivileged reproducer triggers a
+KASAN use-after-free write through an io_uring registered buffer.
 
-Replace the total-length checks with skb_ensure_writable() immediately
-before each transport-checksum access. Keep an unavailable transport
-checksum nonfatal, as with the existing truncated-header handling.
-Preserve the old address values across the operation and reload packet
-pointers afterwards, since even a failed pull can have moved the skb
-head. Retain the existing unchanged-address, later-fragment, and IPv6
-routing-header behavior.
-
-The Open vSwitch module builds with GCC and W=1. The changed object
-also builds with allyesconfig and allmodconfig. Code review covers the
-common SET action paths and adjacent checksum writers. The supplied
-reproducer and kernel selftests have not been rerun against the rebuilt
-module. Codex assisted with the patch review, validation, and report
-preparation.
+Clear page when rds_pin_pages() does not return one. The error path
+continues to release the page on errors after a successful pin, and
+successful requests retain their existing ownership and behavior. All
+four RDS atomic ancillary operations share this path.
 
 The issue was found by an LLM.
 
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
-Link: https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
-Suggested-by: Ilya Maximets <i.maximets@ovn.org>
-Suggested-by: Aaron Conole <aconole@redhat.com>
-Cc: stable@vger.kernel.org
+Fixes: 15133f6e67d8 ("RDS: Implement atomic operations")
+Cc: stable@kernel.org
 Signed-off-by: Kyle Zeng <kylebot@openai.com>
 ---
-v2:
-- Put writability checks directly in the transport-checksum branches.
-- Keep an unavailable L4 checksum update nonfatal.
-- Save the original addresses and refresh all potentially stale packet
-  pointers, including after a failed pull.
-- Target net, include all maintainers, and describe discovery and testing.
-v1: https://lore.kernel.org/r/20261030042304.74291-1-kylebot@openai.com
+v2: Use the net subject prefix, add Fixes and stable Cc tags, and
+    include the validation results.
+v1: https://lore.kernel.org/r/20261030042110.73571-1-kylebot@openai.com
 
-I have a reproducer for this issue and can share through DM.
+I have a reproducer for this issue and can share via DM
 
- net/openvswitch/actions.c | 56 +++++++++++++++++++++++++--------------
- 1 file changed, 36 insertions(+), 20 deletions(-)
+ net/rds/rdma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 12e339cbf791..fe472e950cb1 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -319,20 +319,22 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
- 	return 0;
- }
- 
--static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
--				  __be32 addr, __be32 new_addr)
-+static void update_ip_l4_checksum(struct sk_buff *skb, __be32 addr,
-+				  __be32 new_addr)
- {
--	int transport_len = skb->len - skb_transport_offset(skb);
-+	struct iphdr *nh = ip_hdr(skb);
- 
- 	if (nh->frag_off & htons(IP_OFFSET))
- 		return;
- 
- 	if (nh->protocol == IPPROTO_TCP) {
--		if (likely(transport_len >= sizeof(struct tcphdr)))
-+		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-+					       sizeof(struct tcphdr))))
- 			inet_proto_csum_replace4(&tcp_hdr(skb)->check, skb,
- 						 addr, new_addr, true);
- 	} else if (nh->protocol == IPPROTO_UDP) {
--		if (likely(transport_len >= sizeof(struct udphdr))) {
-+		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-+					       sizeof(struct udphdr)))) {
- 			struct udphdr *uh = udp_hdr(skb);
- 
- 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-@@ -345,11 +347,15 @@ static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
+diff --git a/net/rds/rdma.c b/net/rds/rdma.c
+index 078090d292fa..71b57abb96c4 100644
+--- a/net/rds/rdma.c
++++ b/net/rds/rdma.c
+@@ -957,8 +957,11 @@ int rds_cmsg_atomic(struct rds_sock *rs, struct rds_message *rm,
  	}
- }
  
--static void set_ip_addr(struct sk_buff *skb, struct iphdr *nh,
--			__be32 *addr, __be32 new_addr)
-+/* May move the skb head; callers must reload packet pointers. */
-+static void set_ip_addr(struct sk_buff *skb, __be32 *addr, __be32 new_addr)
- {
--	update_ip_l4_checksum(skb, nh, *addr, new_addr);
--	csum_replace4(&nh->check, *addr, new_addr);
-+	unsigned int addr_offset = (u8 *)addr - skb_network_header(skb);
-+	__be32 old_addr = *addr;
-+
-+	update_ip_l4_checksum(skb, old_addr, new_addr);
-+	addr = (__be32 *)(skb_network_header(skb) + addr_offset);
-+	csum_replace4(&ip_hdr(skb)->check, old_addr, new_addr);
- 	skb_clear_hash(skb);
- 	ovs_ct_clear(skb, NULL);
- 	*addr = new_addr;
-@@ -358,19 +364,17 @@ static void set_ip_addr(struct sk_buff *skb, struct iphdr *nh,
- static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
- 				 __be32 addr[4], const __be32 new_addr[4])
- {
--	int transport_len;
--
- 	if (l4_proto == NEXTHDR_FRAGMENT)
- 		return;
- 
--	transport_len = skb->len - skb_transport_offset(skb);
--
- 	if (l4_proto == NEXTHDR_TCP) {
--		if (likely(transport_len >= sizeof(struct tcphdr)))
-+		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-+					       sizeof(struct tcphdr))))
- 			inet_proto_csum_replace16(&tcp_hdr(skb)->check, skb,
- 						  addr, new_addr, true);
- 	} else if (l4_proto == NEXTHDR_UDP) {
--		if (likely(transport_len >= sizeof(struct udphdr))) {
-+		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-+					       sizeof(struct udphdr)))) {
- 			struct udphdr *uh = udp_hdr(skb);
- 
- 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-@@ -381,7 +385,8 @@ static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
- 			}
- 		}
- 	} else if (l4_proto == NEXTHDR_ICMP) {
--		if (likely(transport_len >= sizeof(struct icmp6hdr)))
-+		if (likely(!skb_ensure_writable(skb, skb_transport_offset(skb) +
-+					       sizeof(struct icmp6hdr))))
- 			inet_proto_csum_replace16(&icmp6_hdr(skb)->icmp6_cksum,
- 						  skb, addr, new_addr, true);
- 	}
-@@ -396,12 +401,19 @@ static void mask_ipv6_addr(const __be32 old[4], const __be32 addr[4],
- 	masked[3] = OVS_MASKED(old[3], addr[3], mask[3]);
- }
- 
-+/* May move the skb head; callers must reload packet pointers. */
- static void set_ipv6_addr(struct sk_buff *skb, u8 l4_proto,
- 			  __be32 addr[4], const __be32 new_addr[4],
- 			  bool recalculate_csum)
- {
--	if (recalculate_csum)
--		update_ipv6_checksum(skb, l4_proto, addr, new_addr);
-+	unsigned int addr_offset = (u8 *)addr - skb_network_header(skb);
-+	__be32 old_addr[4];
-+
-+	if (recalculate_csum) {
-+		memcpy(old_addr, addr, sizeof(old_addr));
-+		update_ipv6_checksum(skb, l4_proto, old_addr, new_addr);
-+		addr = (__be32 *)(skb_network_header(skb) + addr_offset);
+ 	ret = rds_pin_pages(args->local_addr, 1, &page, 1);
+-	if (ret != 1)
++	if (ret != 1) {
++		/* A failed pin can leave a stale page pointer. */
++		page = NULL;
+ 		goto err;
 +	}
+ 	ret = 0;
  
- 	skb_clear_hash(skb);
- 	ovs_ct_clear(skb, NULL);
-@@ -479,16 +491,18 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 		new_addr = OVS_MASKED(nh->saddr, key->ipv4_src, mask->ipv4_src);
- 
- 		if (unlikely(new_addr != nh->saddr)) {
--			set_ip_addr(skb, nh, &nh->saddr, new_addr);
-+			set_ip_addr(skb, &nh->saddr, new_addr);
- 			flow_key->ipv4.addr.src = new_addr;
-+			nh = ip_hdr(skb);
- 		}
- 	}
- 	if (mask->ipv4_dst) {
- 		new_addr = OVS_MASKED(nh->daddr, key->ipv4_dst, mask->ipv4_dst);
- 
- 		if (unlikely(new_addr != nh->daddr)) {
--			set_ip_addr(skb, nh, &nh->daddr, new_addr);
-+			set_ip_addr(skb, &nh->daddr, new_addr);
- 			flow_key->ipv4.addr.dst = new_addr;
-+			nh = ip_hdr(skb);
- 		}
- 	}
- 	if (mask->ipv4_tos) {
-@@ -537,6 +551,7 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 				      true);
- 			memcpy(&flow_key->ipv6.addr.src, masked,
- 			       sizeof(flow_key->ipv6.addr.src));
-+			nh = ipv6_hdr(skb);
- 		}
- 	}
- 	if (is_ipv6_mask_nonzero(mask->ipv6_dst)) {
-@@ -559,6 +574,7 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 				      recalc_csum);
- 			memcpy(&flow_key->ipv6.addr.dst, masked,
- 			       sizeof(flow_key->ipv6.addr.dst));
-+			nh = ipv6_hdr(skb);
- 		}
- 	}
- 	if (mask->ipv6_tclass) {
+ 	sg_set_page(rm->atomic.op_sg, page, 8, offset_in_page(args->local_addr));
 
 base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
 -- 
