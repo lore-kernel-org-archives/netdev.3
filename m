@@ -1,78 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794027494;
-	b=m/ZB55983oFFsnodQ9cYYIAZc5FPE+kkbzYj8piftKyB5DuzTXtcyTt7BrqHhq034Nuc
-	 fl6NF7c7szjuUTnLJwvTeRv1gK2ga7KwVX9olyIe1supcCfKcG/Ehifw3Vkb3cni+dEdD
-	 I39mrSGcxlb8PhHJ6PU/VCUEXBqkR+RIRkHgQvZR7fA/LCFCKn2fmEz84kVbGYDG9LrWX
-	 YjB3hlNEZ7nO+RuTxS57/o7yDm2AEn5suBhy3hBxEzC4CG3d/tfWgpBZt8nB3xndSD9Dw
-	 4oGl6HxFzI+/FAy10+UwTGl0/0yyZ8aQD5RlGL2G2JC+nD8jw+DRsU+XK57I1E2/4fg==
+	t=1794027653;
+	b=QfO3GOj4NMQs094bdabA3VbWKaKTMQZNMaghYsFZBYIuUcUyDxPfht6b4ls5z9M3ynU7
+	 Snz5vfSxvcKM2GDfV6NQrYcteLCbielorxzl9rgdFBTr1GC807M7OHVkwRu63X5cjpKSM
+	 a1rRKokFO6rBMwJ42zayJYDr4mMX6JBLcQQPEt3KhzyctajfdS99sP9hv1R06zM49g7Ac
+	 IqfXi4YEb6gJT6BIP3YAK3mfr73FSOh+5xq/vPmqAxDM57iAFVq+jbD91sTUlsiRGwSOe
+	 1klmTO6k/1Wcz6MxDvm3LpxHfPZTLJ5g5scjAopD2V1YJv2OLXUSUWfUNWPKy02ILvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794027494;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=TjJfxDxxVg+dnFXyzUyU8v0lNKHjR9TDaES/0qqPSJY=;
-	b=GyLzzm2UpFPKlBEkl8D6oFwi8I+bZJDarE7Tp2W4WdmvWyA+k32ylY3eDbPc4z+kwQUA
-	 1XVnjPeDJd2p8jn9fVi8EMQPLj2kciMCTnJD/rfA7TFtIIy73Sc9RVFU0LTGG3GiSxHNw
-	 zh6KVkDO421/pAYkeGRl8kvUnr2lK7em5THhqjO7wMWnNVjf2PVnAQ1AhUDSqPJlV85pz
-	 852uXxIshBitkbBXxQYFANaCz73qJXAtwz/VH77ZZqKQrYQbio0rIVby9ubLrWuT+UmQz
-	 dfx0VCNHL2z+fUT6CghSVUNwchkY/4cQbLJbtbuj4KkH7Ur0rrtG2Zr1z8KMa7Ibyhw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794027653;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=NnLdJUTw8NyPHACTvlK4M1CjSpMv4igCIqBIPH6KXZnwcfPhTrOSXNz4jTBZ6dNODqrC
+	 tt7FEVgIZBom2kcPitUNjhi1X+C1GbjLB6FLAXnDWdpG1mrlecwL+sowJguTegFUpVLY/
+	 pvAD1SIf9Wi9ttZLDd8T/jvgjTGCWY/X7ljjZrdRZwmeMTle0g8jrGvryPqbRbJXaMU5E
+	 OAW4GdF/XL8BeBxXHv1WHwBPq9ZOcD2/HncQluwO3vNzaRWGh9lqUA47lp7NC2SeAEC+g
+	 IKP48NK80wAuXgJ1lty4LMiP3w71swHoaLo2os1S0cAfauZtJgsgtjtFB8n5T4ZsNLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XOSJ4bbN;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD051606A326;
-	Sat,  7 Nov 2026 04:58:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD051606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMHGtyOu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FA9606A32C;
+	Sat,  7 Nov 2026 05:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XOSJ4bbN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=XOSJ4bbNdngtvTUhpWu01KWnZ6inyNGFFKwblXcHP5uxiL9R5zVCtUZGGUHNrloB0SCwJH/21baZr
-	 fsQg1SDcFnOFRKR/nhY5jiedtcQRMQ61+2LTOZlrhMm1nHSsbDNkBCvdpj9VRnNV0CKVm/VQ6CO6Ql
-	 eOXuuH8BhoDqwNMA=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86aeeafd25ca-5553b;
-	Sat, 07 Nov 2026 12:58:00 +0800 (CST)
-X-RM-TRANSID:2ee86aeeafd25ca-5553b
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03.03 (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36aeeafb3fe6-3a4a9;
-	Sat, 07 Nov 2026 12:58:00 +0800 (CST)
-X-RM-TRANSID:2ee36aeeafb3fe6-3a4a9
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 0/2] virtio_net: AF_XDP zero-copy fixes for arm64 and suspend
-Date: Sat,  7 Nov 2026 21:57:01 +0900
-Message-ID: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMHGtyOu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6471F1F0089F;
+	Sat,  7 Nov 2026 05:00:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794027653;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZMHGtyOuB9f1RSHcRFJlSV1ihIw5TjTFvn9j7G6T1Ldyl8Qzshzkm9/onwRlW8tIF
+	 8ktP+aZh0chmBxFXrmYJS7zrAPJkdmSDtC0bCn7fGneYem8EL2ZEQnoD85NeGnHGN5
+	 dQpUo4cgBghmhgtYGM6JlFrm/ju4oCsLvY/75JomUH5d3cm7OCFxeMCP09stPzzPlC
+	 J8mz23huu7EdTy62OzQfh0bQWTlsWUXb9+CR+VC5YfBMvRdLIFHWfyksKrbk85WFp6
+	 bjQ9hyeMDuHElskrpex5zDEQeEj6eU/46resCnEf81ksUr0tjHApwKKt5AtVHcfp8T
+	 RBnP8Dg7z7gng==
+From: netdev-bot+sinfo@kernel.org
+To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Eugenio =?utf-8?q?P=C3=A9rez?= <eperezma@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net 0/2] virtio_net: AF_XDP zero-copy fixes for arm64 and suspend
+Date: Sat, 07 Nov 2026 05:00:51 +0000
+Message-ID: <179402765189.488859.17099847531290257740@kernel.org>
+In-Reply-To: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com>
+References: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,43 +72,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Two AF_XDP zero-copy fixes for virtio_net.
+Hi!
 
-Patch 1: on arm64, binding a zero-copy socket fails with -ENOMEM and a
-"rejecting DMA map of vmalloc memory" warning whenever the device uses
-the DMA API (e.g. VIRTIO_F_ACCESS_PLATFORM), because the static TX
-header lives in the kernel image, which arm64 maps in the vmalloc area.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Patch 2: freeze frees the rx/tx queues while the sockets stay bound in
-the xsk core. The driver state of the pools is leaked, and closing the
-socket after resume hits a "Missing register" warning and a NULL
-pointer dereference in xp_dma_unmap().
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Testing used KASAN kernels with a small /init that binds an
-XDP_ZEROCOPY socket to eth0 queue 0, runs one suspend cycle with
-pm_test=devices and closes the socket, on virtio-net-pci with
-iommu_platform=on,disable-legacy=on:
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-- x86_64, QEMU/KVM on bare metal and nested inside a KVM guest:
-  - without the series: WARNING + KASAN null-ptr-deref + oops on close
-    (patch 1 does not apply to x86, binding works there)
-  - with both patches:  no warnings
-- A full x86_64 guest kernel with the series passed virtio-net ping,
-  a 100MB HTTP download with checksum check and suspend cycles.
-
-Haishuang Yan (2):
-  virtio_net: Don't DMA map the kernel image for the AF_XDP TX header
-  virtio_net: Keep AF_XDP zero-copy pools bound across suspend
-
- drivers/net/virtio_net.c | 70 +++++++++++++++++++++++++++++++++++++---
- 1 file changed, 66 insertions(+), 4 deletions(-)
-
-
-base-commit: 37dfd0efbfffc20a57e41c2eb349ac49b1ca1ff8
--- 
-2.43.0
-
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
