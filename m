@@ -1,109 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.2
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794063863;
-	b=hjBRBraNSptzR94rePzj6LJQtCKQN3/MCNmtbhPOh+Qr4KIz2XPYSZ1A7cY88Mb+vDSp
-	 AhaBamnZ8g4e4r4faP5meBWor5KfAicvfITZ0u1tjjDe+IbpyteFD6bOdHNi/vYs+ZNMF
-	 F8EeoBT9tQsSHVm2/nHzsrL3nViwhbCLqG6ByAmC30Vgpgqx66F/OYYr3HTQZwamWHe3v
-	 7I6mezBCh+vYTcfZJ7RLcaRh43W/r/jHUMJ0ho8FQRgP++cbAB5eRTAD7+bLwWYMY3wAc
-	 JakZE+6OMdXxUZ2pWdddt4VjRdOUGGvE5BVQs/MbrzveG9/7xCl/UhftDRuDwBLyvpw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794063863;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=6gBRzWzI7TZP7eS6aGMyLLuW9iUQtt8tQbdNR+wgn2E=;
-	b=K4BUGB6oLqOEGMeb6KYHgjtDgKd2SVkSTK2OJ5JmJ+wGEBYKnGjt2FmuqQMcxCSoJL7w
-	 2j7JGtPrK8Rz2dY/pwBKPJ0k6fbiaPxAYMOlXnUPjaA8TdU6OJLsP3r55nOEE/6JAl2hR
-	 FY3+raoIamxcx9hBmgSRHiP7j9t9f/iBKCG2Lf9elLwtBlAMwtDSRZDwqQ3VtwHxQp/GJ
-	 pTgYnWLfmrfoxLHRCi/nH8C2c158oUdTTTJ/I62Tu62+sUIeKfNyoWiyyoTqrpUtTJEYO
-	 2QQBevLzsExcjeocN3zUDsm2hPbNVkr49+FnHj+IWdYjJNnkG+k3QoUdStN7TNsSQCA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OIMZFKKZ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.2
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012002.outbound.protection.outlook.com [52.101.53.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794063868;
+	b=BLSbqlRRWlGKbm2m9LVBsu+ZOmEXIpUw16SkXThluPcjrNUzUawadV6bYYKf9S8QPRej
+	 Dv7ye1FT+SA4RnYPTgpsgNOEbEaM4fU/ihqhBZ+rZ8Za0zHLPXev67JMIVj+5zZ8nOkI5
+	 c6ULKbzKSOzBsk5Fa0Kb3TQmu3mgOvB4mgIgCFQxnQluNDEKK9XVJEGJTvf2/PTNei9et
+	 ujCn+sdpbh7dx1pgtF/HI/c+Vhdj2z9l/WDDrNIdws9/PuC34OGYrH9RaHUFbJtK5vHso
+	 OnQH7SRTDfEBKuD9Ty/oQG3DycC6dVYGYYiAuRch6Wnfh3idgvm+6upYKcu8KljMnVQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063868;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=vy7ktIeClbyEEG+6rCnQhDLjTI8DqaLU7Mkwveq768Y=;
+	b=Y4jIabV5/tvAR15e18iSpVk6+spkmNFH7UQTifdfk80iProBEyi/03pN5T7PTWy1iOgl
+	 xHHqXN0MJwHi0xo+GoWn3k71FHGtlhK3FSCzLcPLjKqC9+3/nXfdrRP3CYjlHxKLAwPLZ
+	 LAuadTugijQ9EzoWKUk/8JDmVIvpn0dTCQSkDVrfSHdcLnrKHICPyMNXpt/9h8nLN65w0
+	 VqkoEEQFfVKWAaK1RnOMqQe/JTL0BTO3/Cots+9yZ8mSkkFZM13+zlmcsgIj4BiYoHWku
+	 AKfkJxpxkva8TItlppDz/49ydqGzQm4YqCRAj/SeIuMatUWY0PEOFhvCk+zbpKB/3Cg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OadxouFz;
+	arc=none smtp.remote-ip=209.85.221.169
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA77606CE5F;
-	Sat,  7 Nov 2026 15:04:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEA77606CE5F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03059606CE7D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 15:04:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03059606CE7D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OIMZFKKZ
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AoypBhPRRYBcqGZDutgVJ2LYye4rHOOHE5tCQUTY+0+XMJGnQxYSNfTX8guk/YHiM6Nus+ffQOEA92yc/+vAtCNcurLerGVJQMzfeXYgoeAVsvzKkzrOofVFMy4ZRFgT4/I4PXLtrZJI9Sx0OE083L5d5vWsxT9iFBm7/nKUELcaTjVS4MvLjTfoCSG//UjttS3GY38IfBvy6+fL+fbKgD9JhHXU7F2e+tyEFRTLsZShdtr5cA+V9LQ6ioRvOPho4uf1DHiSMWzz4K7YsR59xBpIDxYe+tS/OSE2wcdwcgyJvfzrBGmdihoWeSF8y+1K48c5C5WX2wsnLNb+xOszAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6gBRzWzI7TZP7eS6aGMyLLuW9iUQtt8tQbdNR+wgn2E=;
- b=W+VFsay7CJlfqSmd8EDbooAJ9aXd8loaIRIQdObR9skhGf3H41tNLtFEy4/rg7wRUVyo76iOyXGPVlNYSRjq81lSEk9rf6REYj+hFfL6mqc628Dm8pNcJQnz1H/4ssZjyUKfPjyUIrARWzmAx80/brYUcvJ7dKrYzoq3hfmFq9ZYiGxReuUNKOvwXklpvwOXXuspvKa44fa+3hOVSeVkUqmJZ3hfSarW6GoiDTfy4iSB5qQP6fkC1PKvIhQicmaf1nav/5b4TrPCwU3HGOEGaDrozMynBzUfyCv4e5n19TuXw+YtsL2ntD0bXc9qs6t3cnEERmVU0jbc4h7+vpOQQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6gBRzWzI7TZP7eS6aGMyLLuW9iUQtt8tQbdNR+wgn2E=;
- b=OIMZFKKZbLMmmQ4JZnXqq1ptd/eu6d9B3rN2JVabTscY0d6LPym7eB8Lriv/jTyWDe+8Xg++Z7aMj+Q9up61EkqIOwVu+RZfACF0xR7nTa2xOxOQ+1m17LBvH/MPDcPGGcvCPGAsMPSfMJtifADtCoVJt0In60NWeu05QhSFZUs=
-Received: from CY8PR19CA0030.namprd19.prod.outlook.com (2603:10b6:930:6::21)
- by BL3PR12MB6474.namprd12.prod.outlook.com (2603:10b6:208:3ba::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Sat, 7 Nov
- 2026 15:04:10 +0000
-Received: from CY5PEPF00000E87.namprd05.prod.outlook.com
- (2603:10b6:930:6:cafe::86) by CY8PR19CA0030.outlook.office365.com
- (2603:10b6:930:6::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Sat, 7
- Nov 2026 15:04:10 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY5PEPF00000E87.mail.protection.outlook.com (10.167.247.183) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Sat, 7 Nov 2026 15:04:09 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sat, 7 Nov
- 2026 09:04:06 -0600
-Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Sat, 7 Nov 2026 09:04:02 -0600
-From: Abhijit Gangurde <abhijit.gangurde@amd.com>
-To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <allen.hubbe@amd.com>, <eric.joyner@amd.com>, <nikhil.agarwal@amd.com>,
-	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gregor Dick <gregor.dick@amd.com>, "Abhijit
- Gangurde" <abhijit.gangurde@amd.com>
-Subject: [for-next 4/4] RDMA/ionic: use the v2 atomic send WQE layout
-Date: Sat, 7 Nov 2026 20:32:49 +0530
-Message-ID: <20261107150249.1576835-5-abhijit.gangurde@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261107150249.1576835-1-abhijit.gangurde@amd.com>
-References: <20261107150249.1576835-1-abhijit.gangurde@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OadxouFz
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eac01ff101so567621e0c.2
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 07:04:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794063867; x=1794668667; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vy7ktIeClbyEEG+6rCnQhDLjTI8DqaLU7Mkwveq768Y=;
+        b=OadxouFzWDNRkM1dCLKi2MyKKY+rORoE2qjdptO5MHzNpvA8wdUE1aj1PzJc/k7xcK
+         jsFQA6DDLEsJCjYqtvUpEcGmP3Ytokk9ByqGicDSvATDZ9IniPUc+ogA6+8Bci0dzCQ+
+         iVsPAMY48OUYFBxaef01OBVqjqwf7gFj0ZgfH//zMf9wjCz70HTJFNjODCs2SrA/aqsR
+         lrLClXacUbzoaBis5qSeRBMOQXIgISur2KPcP2egB1xROOnOIaRk9Msi9I6v+2QZLTsI
+         mQNnlC2JL4gGYPpBFdyTt1cmZC4ok8fGX7rgbrSwxp5+sx7KkncRky0arvgIoY5RJzte
+         16Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794063867; x=1794668667;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vy7ktIeClbyEEG+6rCnQhDLjTI8DqaLU7Mkwveq768Y=;
+        b=2slrIHM9R3AjQSmZck49AP3miMkKy56ePU1WgBg5pVWNVpaGszV7O2W96qErKZmqMd
+         NmA7rpSTgqZNP43hPkO7T0JH265dSkF2yDqZTO/zJmaQGRofOi51XtmX/ujuhFDnwmOi
+         N8YG2XHpagcvWUqiYsH/gDjJnP2+1IlbhG1nCWwCvUz6SPFOpnMI35vQ8QBHCx0CAmOp
+         yvywxeA8V8yr+FAmzDqVjDvq87iSHnH4L55mjY+V/qSKZdLkx4NLmAVGt7zyixbJpOT3
+         aRfycF1NTjfkjeVI2WQ2uiH8XgbbmccoRjVyfguG9IJBUUwvQVVi77Sd2nEmq1Ag84L5
+         2jyQ==
+X-Forwarded-Encrypted: i=1; AL+hErEFldPw/kL47KNMHGey9Z+ovpK7Npqh/HR1e4mlNgVYbyoQ7ZVFFxHnWfSjArxZqYUKIUFEzZI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/r1cyYsv50SSNKWgogUQwn490i4iYhjUrqRhdB13T2euyfp/ZG
+	Jgox0UXFESFQ58j92bcrFcdgYxGLGZF5mrsTvnetiGKfLNA3om/41/cw
+X-Gm-Gg: AYBFou07NFSrggQtWKqGLMqnz4oDBZfFkHOO82qinlfPcMueVgcWX54wItbZkmkMV8M
+	uP9Ee7AJVeIXE5QbxCWOyDDTzCcL950+xSa7U0BDJCPwTpxs73Tc85xCJGM69c2UFyAC4tR5jee
+	S+PCfDXQp7IGT4x6cvxBw31yNQYTLzrrMHErAj+1YzccJ08/slHtBX4RrwZYk07uAE9s3IY4Mjz
+	5FVTyKHgvleYrk4DnmFttr0SWyMMNpuynp8Fr/aVCQJ4GjREKJBaHuf9LF18Dx3KcjgEum825H+
+	HbQkp0PBTFtCU450Motlp8+xnycQ0omFvR3cfsghpoB75djOOtcFjkB4VMrYs+LUHj6gqr5xVUz
+	SOC4VIlU6p9Zv0RjUjprxGiwluHjK7IRMSYhN/kFb6obV5tLGbsrO1e2y2AKfH8aLF/tWeu868F
+	SSOtnlRHMlvqixriI/w4VtKoNdI7M6v+z/wjWjteXu3XNcfJFQ8wVvThkZ6ewvKwE3xqihdbchi
+	bZDrBQjQKTBJPScYEcr1TOYNFCsjLf3Bz9LcUTYYnaYHTZJg0L5PlTkfu7+DSz/KKTvTE08pYvL
+	9rsWUZfX+XqcN1K/iLbOSSdMDljMuy0Ud8Hzs7m5GmDmaVZwyh09oE/2TkfSP3tY6ZrPdIVeiJC
+	ir0Pjl1VzI9f6Fp3k+v4KVgSlWgVGGWn76SoDjZfR6d09Hqn7aXaGMHAUPre5VMFOFpIsEOA=
+X-Received: by 2002:a05:6122:e443:b0:5c9:a60b:e5bd with SMTP id 71dfb90a1353d-5ecc43f9985mr2270855e0c.13.1794063866745;
+        Sat, 07 Nov 2026 07:04:26 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecc64e8c5dsm3974947e0c.11.2026.11.07.07.04.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 07:04:25 -0800 (PST)
+Date: Sat, 07 Nov 2026 10:04:25 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: shao.mingyin@zte.com.cn, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ netdev@vger.kernel.org, 
+ josef@toxicpanda.com
+Cc: horms@kernel.org, 
+ josef@toxicpanda.com, 
+ willemb@google.com, 
+ almasrymina@google.com, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.703e96022339@gmail.com>
+In-Reply-To: <20261107215051120CrLjo_cGXWfdJxXk4ae8s@zte.com.cn>
+References: <20261107215051120CrLjo_cGXWfdJxXk4ae8s@zte.com.cn>
+Subject: Re: [PATCH] net: skbuff: don't BUG() when skb_copy_bits() fails in
+ __pskb_pull_tail
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,105 +108,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PEPF00000E87:EE_|BL3PR12MB6474:EE_
-X-MS-Office365-Filtering-Correlation-Id: feed808f-e4b5-47c1-4d13-08df3ce06083
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|7416014|23010399003|1800799024|22082099003|18002099003|10067099003|11063799006|261021123027099003|56012099006|261021121427099003|261021135927099003|261102123227099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	CadxGNGI1DplHYvXMXAiwvALIdmm97Hg8v4Z4D2CIpC6TjWlJuQR09sb8aeZQHZtmpgzAiKGLiyfhTWi+YzlKfFC86XoIyMpME2gv7AFbEhpoo1TyT9EQLtTVap5MlFFT1AORiml5/lb+wD0uqHMB2Tuz6xhBiwMjSvJK3JWips57bvh8R9Gf2chbe2D8UezYHVs/uLpdS9W3KuUwnCwZULA9dr9/5kDxwu3oI6E64lmQigDlw4/Gl0nLMg6UD2HbM9FsRaXivh/oHW9rtHOIWKyefWOwzG9sGG40a7DLcw14MpHRSw+Uw8FQZLr/XciNhM5ZIwo5sALsWtXaJttTQs0QLZueVubnVkokG2du3XOXRZ08IvUF949/5oULNKhh1Eb4WVyI4NIME/ekZxLh55NwbCXh3LTkgzJnzgP7sZYf7gL7oqUYoL4bikipPyzs1/SyFQp1KIl5vdjneXxCBaI2sl8bbDjRZ/mTnHjPxMs0+e3WfvTxlqs8OlcwQp7JS3at9wyOiOzpnTKp8rwAQddvW/ulNrOSjkPL1FJxI1OqjAaRu3T/S5KWPC6GhRxCMdjwVzUTsJ7OoSf6tkQAPt6WfU2hy8amcDB6j2oRBIPTHKqQJKwRn/BFvJjU5IpkyUZU51uw3JIwsGoZ3Hm1fttB0RKcgPLiFQ/NT02DPeUIeto3demlJOfdtaCjnYxvlLCm9vqUyuSnWwiYiMuHA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(7416014)(23010399003)(1800799024)(22082099003)(18002099003)(10067099003)(11063799006)(261021123027099003)(56012099006)(261021121427099003)(261021135927099003)(261102123227099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	FBIKl+A8RPK3nn1cyilzrwI4N1v96Ds9shmh1XAqFZDpxqZlPSr4mtsWDPrWA3GxQAvfUfDkbohNkLQ5Bl+U5x9PKkJUf2BNF/yDa58FckDQ4rA0/mNR95J0hjzZADEwHkhjy6QaG0F4sykHfp8jYuOL1/5VSbucM4NV0VMSPO0Vt1SYa2eEBnahzWC+O7gB8A+Sl1SRdfK1d7IJ02L4eC8s5zf3x3ilbMxAFwspV6to26BTCh31YHfCvcAiF2LUc1B0UdN1zFP7gJpJ1zIbLZq5ovkKSNba4yrq++sPQY9pCF6NMDEsq0pMyG3f+PGm+yHDXn5fd4LgAlgpyxc9g3huL95W0XN54ol9nI7mM1msFdJJuALLWmEU+2NA/e144N2QPIldL1aUpVMD6ovuCFYxjd/N6JZkjYIBFHVDSwnPki5+qh+OpTLbs5jnZpWF
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 15:04:09.8606
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: feed808f-e4b5-47c1-4d13-08df3ce06083
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY5PEPF00000E87.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6474
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Gregor Dick <gregor.dick@amd.com>
+shao.mingyin@ wrote:
+> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+> 
+> __pskb_pull_tail() BUG()s if skb_copy_bits() returns an error.
+> skb_copy_bits() fails when the lengths do not add up, or when a
+> frag_list child carries unreadable frags (devmem net_iov, commit
+> 65249feb6b3d ("net: add support for skbs with unreadable frags")).  The
+> top-level check above does not cover frag_list children, and
+> skb_gro_receive() links them without propagating skb->unreadable, so a
+> mixed skb trips the BUG().
+> 
+> Nothing has been committed at that point, so return NULL the way the
+> rest of the function already handles failures, with a
+> DEBUG_NET_WARN_ON_ONCE() for debug kernels.  skb_condense(), the one
+> net/core caller that ignores the return, now checks it and keeps the
+> original truesize when the pull fails, as the frags are still there.
+> 
+> The other direct callers that ignore the return do not build a
+> frag_list child: xen-netfront drops the skb when the failed pull leaves
+> nr_frags at MAX_SKB_FRAGS, and niu, mlx5 and ftmac100 pull at most what
+> their own skb holds.  A length mismatch there is a driver bug, which
+> the debug warning reports.
+> 
+> This is the separate change that commit 279877d86c82 ("net: skbuff:
+> don't BUG() when skb_copy_bits() fails in copy helpers") left for the
+> callers; the audit is above.  No Fixes: tag and no stable marking: the
+> mixed skb is an invariant violation, not a regression, and this is a
+> net-next hardening in the BUG_ON() removal series.
 
-Firmware with RDMA version 2 reads the atomic local operand from the v2
-atomic body. The lkey follows compare_low, and the 8-byte local VA is at
-offset 32. Version 1 keeps the SGE layout. Select the body with the same
-RDMA version that already selects the atomic opcode.
+In the series, Josef reported
 
-Signed-off-by: Gregor Dick <gregor.dick@amd.com>
-Signed-off-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
----
- drivers/infiniband/hw/ionic/ionic_datapath.c | 12 +++++++++---
- drivers/infiniband/hw/ionic/ionic_fw.h       | 15 +++++++++++++++
- 2 files changed, 24 insertions(+), 3 deletions(-)
+  Two BUG_ON()s are left on purpose.  __pskb_pull_tail() and
+  skb_pull_rcsum() have callers that can't otherwise fail, so they don't
+  check the return.  Some of them would carry on and BUG() somewhere
+  else, or push back a pull that never happened.  Those need their
+  callers fixed first and will come as separate series.
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_datapath.c b/drivers/infiniband/hw/ionic/ionic_datapath.c
-index 5b6f10256b49..75f82c21cc03 100644
---- a/drivers/infiniband/hw/ionic/ionic_datapath.c
-+++ b/drivers/infiniband/hw/ionic/ionic_datapath.c
-@@ -1050,9 +1050,15 @@ static int ionic_prep_atomic(struct ionic_qp *qp,
- 	wqe->atomic.remote_rkey = cpu_to_be32(wr->rkey);
- 
- 	wqe->base.num_sge_key = 1;
--	wqe->atomic.sge.va = cpu_to_be64(wr->wr.sg_list[0].addr);
--	wqe->atomic.sge.len = cpu_to_be32(8);
--	wqe->atomic.sge.lkey = cpu_to_be32(wr->wr.sg_list[0].lkey);
-+
-+	if (dev->lif_cfg.rdma_version >= 2) {
-+		wqe->atomic_v2.local_va = cpu_to_be64(wr->wr.sg_list[0].addr);
-+		wqe->atomic_v2.lkey = cpu_to_be32(wr->wr.sg_list[0].lkey);
-+	} else {
-+		wqe->atomic.sge.va = cpu_to_be64(wr->wr.sg_list[0].addr);
-+		wqe->atomic.sge.len = cpu_to_be32(8);
-+		wqe->atomic.sge.lkey = cpu_to_be32(wr->wr.sg_list[0].lkey);
-+	}
- 
- 	meta->len = 8;
- 	ionic_prep_base(qp, &wr->wr, meta, wqe);
-diff --git a/drivers/infiniband/hw/ionic/ionic_fw.h b/drivers/infiniband/hw/ionic/ionic_fw.h
-index 100138e4cae7..3f8b69e114a7 100644
---- a/drivers/infiniband/hw/ionic/ionic_fw.h
-+++ b/drivers/infiniband/hw/ionic/ionic_fw.h
-@@ -495,6 +495,20 @@ struct ionic_v1_atomic_bdy {
- 	struct ionic_sge		sge;
- };
- 
-+/* v2 atomic wqe body */
-+struct ionic_v2_atomic_bdy {
-+	__be32				remote_va_high;
-+	__be32				remote_va_low;
-+	__be32				remote_rkey;
-+	__be32				swap_add_high;
-+	__be32				swap_add_low;
-+	__be32				compare_high;
-+	__be32				compare_low;
-+	__be32				lkey;
-+	__be64				local_va;
-+	__u8				rsvd_expdb[8];
-+};
-+
- /* v1 reg mr wqe body */
- struct ionic_v1_reg_mr_bdy {
- 	__be64				va;
-@@ -524,6 +538,7 @@ struct ionic_v1_wqe {
- 		struct ionic_v1_recv_bdy	recv;
- 		struct ionic_v1_common_bdy	common;
- 		struct ionic_v1_atomic_bdy	atomic;
-+		struct ionic_v2_atomic_bdy	atomic_v2;
- 		struct ionic_v1_reg_mr_bdy	reg_mr;
- 		struct ionic_v1_bind_mw_bdy	bind_mw;
- 	};
--- 
-2.43.0
+> Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+> ---
+>  net/core/skbuff.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> Tested on 7.3.0-next-20261030 (QEMU/TCG guest).  QEMU has no devmem
+> (net_iov) backend, so a TEST-ONLY hook (applied to both kernels, not
+> part of this patch) fabricates an skb whose frag_list child carries an
+> unreadable frag, then calls the real __pskb_pull_tail() on it at
+> late_initcall time: skb_copy_bits() recurses into the child, sees the
+> unreadable frag and fails.  The hook then calls skb_condense() on the
+> same skb, so the failed pull must not shrink truesize.
+> 
+>   unpatched                             patched
+>   kernel BUG at                         __pskb_pull_tail() returns NULL,
+>   net/core/skbuff.c:2903                skb_condense() keeps truesize 960,
+>                                         boot continues, no BUG
+> 
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 48f676411724..8a200252ef93 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -2900,8 +2900,11 @@ void *__pskb_pull_tail(struct sk_buff *skb, int delta)
+>  			return NULL;
+>  	}
+>  
+> -	BUG_ON(skb_copy_bits(skb, skb_headlen(skb),
+> -			     skb_tail_pointer(skb), delta));
+> +	if (unlikely(skb_copy_bits(skb, skb_headlen(skb),
+> +				   skb_tail_pointer(skb), delta))) {
+> +		DEBUG_NET_WARN_ON_ONCE(1);
+> +		return NULL;
+> +	}
+>  
+>  	/* Optimization: no fragments, no reasons to preestimate
+>  	 * size of pulled pages. Superb.
+> @@ -7218,7 +7221,8 @@ void skb_condense(struct sk_buff *skb)
+>  			return;
+>  
+>  		/* Nice, we can free page frag(s) right now */
+> -		__pskb_pull_tail(skb, skb->data_len);
+> +		if (!__pskb_pull_tail(skb, skb->data_len))
+> +			return;	/* frags are still there, keep truesize */
+>  	}
+>  	/* At this point, skb->truesize might be over estimated,
+>  	 * because skb had a fragment, and fragments do not tell
+> --
+
 
