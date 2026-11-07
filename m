@@ -1,96 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794039094;
-	b=trDxAf5Z4a5JlrAUCd3fJNlyx1i479QUVAwp8ao0mSPCcf1vP/Aut1UItHofKd6OQXC4
-	 dCGDZpL9uvy0QCJEbKdg8vBDVx+8nkN0d6rFnZuDKvxCRYi/2LYJ2Nlu1qY2d70HxYKaF
-	 Co+FwikpEBQo7ZKb8Cqycwvv8B5t1AI2R9lQU0hfPL//7gLl214JOAgwBqId3VxxpL0Ew
-	 S5D4R5d+Vk8mS4yNslyK3eLszzM49cnrnAUzzw7FbPFTKavfaWKjz9USMMpoz/WVeBkVU
-	 XEtsxaxiDksIMNLUG2RQdbnOSGuzUF3IGvd/jLSOlIPXJEZSuF5fnSwO1Pu68VLMdtg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794039094;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
-	b=omIJrZW3FOQnBMxkdLgt7UiJFyruUJshTYrwkW8OJ2UhjaZToLy1YjWeds3SF3qNQG7I
-	 yaOix8FhleM5SLae5RukNjDlsf6KKf0aTPCK7xDtMgVkkV+UKR+swyWYQXW1CrodJezEk
-	 qCXIV+HyAVwjiAj9T4diKLYYVD2GgYkXcd7xd89uimSkYD0GmnlPXgLWdl2pAoeVfHqzl
-	 S2uqP+r5r/ND0UF2rSrrhrT691aUcLHlAtmJCqWHOu+wbsvwSk/Ozo+0eq0azA6zEM2JD
-	 Aqq1BlkJEa1XMN0p8Ex8r/MFm3YUnK3zL/wHWTo9IEPOg6laOoIVWGTlyvyXWexCZRw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=luxonis.com;
-	spf=pass smtp.mailfrom=luxonis.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794039936;
+	b=NJeAWjMQJzR7/P4SuLYuTAeAydd5nnS9ex4EZeVkEgXamWZuR3Re6SOeeAWs7p2K3wz2
+	 JDHNBvf6TcGvi/mCrSQU9Awyc5YnA65CN0XfyrdDWAvAWPJshm3tY33WZOl3nLhQwY9iq
+	 sjhUL8SAFka7Gh1Dd0k6WaG13qY3AXhuGfRzrTn3d2YzRnz/AZ7pg7SJgD2hVzct2S4WU
+	 60hs319Ue+4ToV7KfCMNCBGssGN1X2XMcpTTWOTkPSZ9s9RPi8dfC+D8RAUTO2HHr2toq
+	 J44590su637MfTjAswrgnkoFYE5Ell7txz2ba07VDULCICK//EVfCxyoleoRWNZsrzQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794039936;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=wuSXNxDCgx+fhMLuKC4fCXfgbDgFI2GvFydwF67bIko=;
+	b=gQfuYxclvBw1ZolduH0kVoRnyLTI2AO1FxSlw9kZXtqZ/OUUdxUzkjBELRXSSxw8drCg
+	 hJ6Mzs0jIpBm1/ejfA8atAcXWwwqHqX0zIcmQjGXPd8okM91m2UC5Vl1KRcgJpc/0QvXx
+	 pdh9p79jUIfRdc682UVufD8zqogI+0WgjnNnLV50z1MInujmLqxOohkFMluK47gT8dwyM
+	 y+j8JvVNGSJHrj7Fcjy8htwh5O4ZuyiunPhj+cGtR48rKDpnPtqL/ezCG4ei2dzya+LIr
+	 Yu927zxu0M3hz4NScQQz85Y38AMB9oEQ4UtpVyoyA3+ZeZc+LSdc2yzdx2YdsjwCNOg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Y40ejyTm;
+	arc=none smtp.remote-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B29606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 08:11:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1B29606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=luxonis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luxonis.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b570ff3dfdso1322318a12.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 00:11:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794039087; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PGJ2Jj/zyP25xfdiISpIj1XrridFD9cEm4UrooI3cSHHxWfVUZbffh4/CWKyAWdgR7
-         36F54EJD5IKv6RPAeBacpzchUKJcEWRFHFHKzfp+lKUTCbwv6CS11T5wlnlIMyEm33a6
-         wj8eisPkNnQ1lkOc0gIwBFpT1cVEPQ2y29LYjwY1n3AuT00N1BD07ptVMd3x/wf9l34S
-         Tf50bW4J2ANbu/8L1TywZlfSMnGpVAjiHg+Br1slRaGBchjaAfpuEjS5cA0vMuLUPaqB
-         /o0/K9SzQnXe0QdqbPH0D5RhoaMeyBbQGOUkOKnwctTrwdJghvslQnZ2Ygy4J0KI9SES
-         4nPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
-        fh=iY97GPgCHkFmcIZOlkyqpzLtg6k2KcxXX2sJb1fYuJE=;
-        b=giojpPXCWxMROZtTHVlDiq5L6I3PcFIsFub8gQJiTb+y577Kp/7JZjhnau1CEUnM0X
-         2JSKvInJC8t9D2jnzP2C3RKak7l0tXz/lKRWjNmH8mpTMgAXI5KEqkA3cwDdzqjClRfS
-         sKXnBId2j13Xm0cdEQmsdodJwzYITqR3OPJw5V9CAy959AWpP2Y1H0bEIsEPVvis4MoH
-         ub30Y4aOllcRBrEeuIMbAwAw2Q6syMincjuh+5aECZaMqdIFe2CMTzBI9nqqeUUhvrTt
-         sTFu3zEMYdJwhrukkvDKLKfQoR1s1/J7pSWYX7mdBDTgMCflMyWfztObh/trjSvTy+TA
-         vl5A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=luxonis.com; s=google; t=1794039087; x=1794643887; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
-        b=i+BZEnQeLfpuxDV52EIGZHIqys/+bL20VEt/gQlf8jFl3tVdIjfxBnbW4Yz98IZC3X
-         khkTl5z0XoW0v25+ivaKgtTIWS9Wj6EcHJJKE8Znm71tI7Ba9JXgz6b3rhJ4PJ0mCAkw
-         +DT1GZzhLOpu9xarDzNFWNKHO1eRmQ1LX3aXdIbUIaqqpXB7dVsTDjnidjzHhw1aO+qp
-         uJbV3LAbEmVTIAku1aquJe2IpjOF7js7fvbO4PzkBJLiz1D84rTkUfRSIaTjV0hBu+ck
-         d2bPfhhnPDcegpKZVE32oynF4bAJyd04a4GxDxaQjrW67/urIOiozVNyfrPntZFfMw+9
-         De/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794039087; x=1794643887;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
-        b=dV0AaO3kklwoQ3FBuSYmVZMa47Javoa5Y1ZEQXw+LLgpjyar0vKOchmI68nb5QJeba
-         cx5IXi35rk1m1/8p/Os+0JpA+sW6KPv4bnBzWnZR3xj5hTZ4KslR7M7q7dpcqbCkcqV9
-         SNNb65tSxWP6rc7MxsCIht3fjWbMXJYxkuhN5SdIvNMdtTt416IZI3vfxcgBU7bvfRXF
-         h1qb91qXvXmHB3xICTqRRoMZCPqDF/sVScvKvjvWJXvJqlv9tfsObp2iaynRmuQbka/q
-         yOqz0CQr6arxy0Pmg3jPEp1W5n8tsklD9oU8cC3cItvgzv462RPBYziKQT+85RTMQ/j/
-         F2ug==
-X-Forwarded-Encrypted: i=1; AL+hErHKdMLctrwUBovsR4AN4aiOaYXBX4hJNl1ZBLHqnrySoAsiEvuqUueLLMwz4zQqciXrEwz1sIw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9nVi+x+IgxGjdR/AmT5X597NB+GfOIRLKles977nDp8MfqZqEZ
-	QzY1LnuqAAuXDGwfAlFH5kDhNtn8NiagTOr9V+oLsoHKXBk4UvEm5lGKYDayQrBc9QBDRrftYnF
-	y+spDXlFRAR8VMZlat/dt9rP+hplYqCxxstg/QIll8Q==
-X-Gm-Gg: AYBFou2josaTgPPTVHLTWpfnmOYV+5/loQH009b4HGNS4ojCOzVcy0TV8D+++SqVYfT
-	4MWbwtGZJqHq6wuo1W1TuyD/c8IrfYIfXS/1E/Q4P1acjrBV9ffa1JgarSviMr19b0YLpm9stWc
-	j83g9pmm0aVmMUfK55XOEcVBwpY6oxMT6AEnEqZDKMA12TvBKo/+mmE3CxGBSPbgQ66h7LWEt0Y
-	Uy7L8wzCmIoV2PPKmXp/UoQLn9dtu/TGfsyUxgGKqt1DIf6+0xEfG0PPM21fjGcILHxe8arIPk2
-	BFrkzsxRmnqtGKjHNVaJHTxYA1fyfmic09hIMGDjh7nZA+xvILIc0zhXCPxX/FgRxKPZcM2b92m
-	qjkSOfLaQNoa/I8jONHmtc/SsACuINu2IkIg=
-X-Received: by 2002:a05:6402:2815:b0:6b3:f891:c2d4 with SMTP id
- 4fb4d7f45d1cf-6b597806627mr3457069a12.29.1794039087024; Sat, 07 Nov 2026
- 00:11:27 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D8B606A32C;
+	Sat,  7 Nov 2026 08:25:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88D8B606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Y40ejyTm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wu
+	SXNxDCgx+fhMLuKC4fCXfgbDgFI2GvFydwF67bIko=; b=Y40ejyTmBmaKZgyho/
+	7NXa8Lzk6lvsftRicV6lG6efv0ieB3d5u/5KP3qwgJvHUBsDyorwVk/qsNhOj3es
+	BHPyWW7G8s+6lJtd1mn+b8Efk0wBZZ1t+odqo4q7q9MhUpXnEzn7s2DxWEh+DTW/
+	PJ7n8+aPSFFc01ggtC64zvI88=
+Received: from shaos.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3l8s24O5qm+D+GA--.26729S2;
+	Sat, 07 Nov 2026 16:24:23 +0800 (CST)
+From: shaos <shawnq1@163.com>
+To: jmaloy@redhat.com
+Cc: Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] tipc: don't count unjoined publications as receivers
+Date: Sat,  7 Nov 2026 08:24:22 +0000
+Message-Id: <20261107082422.900347-1-shawnq1@163.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,85 +66,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101102720.702600-1-jure.rebernik@luxonis.com> <20261106131828.2844d23e@kernel.org>
-In-Reply-To: <20261106131828.2844d23e@kernel.org>
-From: Jure Rebernik <jure.rebernik@luxonis.com>
-Date: Sat, 7 Nov 2026 09:11:16 +0100
-X-Gm-Features: AclHuK9iN-4C02LmAAJuI1W1GyctSZGv-_z96k80CwTx7Gbtw0_eVmMh2EFhTYM
-Message-ID: <CAD9jT+qH_XkV3vJV1OYGHqsQ0ThwK=HC+X1CCMv=kcojCx5zOA@mail.gmail.com>
-Subject: Re: [PATCH net] r8169: enable the RxOverflow interrupt again
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
-	Sunil Goutham <sgoutham@marvell.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3l8s24O5qm+D+GA--.26729S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GFW7Cr1xJr1fKryruF45KFg_yoW7XF47pF
+	Z0k34rAr15GF4kCan7Xayaqa4I93s5XF47Kas8Cw48Zan7tryxAw4Ivw1UCF98ZFWvk3yF
+	vr4YvF17Ca15Xa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jo388UUUUU=
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzxicqmru4DjPXAAA3u
 
-On Fri, 6 Nov 2026 13:18:28 -0800 Jakub Kicinski wrote:
-> Not really following the explanation, TBH.
-> In general "ring empty" IRQs are discouraged because the host is likely
-> overloaded, so having the NIC force the NAPI is not helpful. But sounds
-> like you say there's some sort of a race?
+Hello,
 
-Yes, sorry, the description was not clear. The interrupt is not there to
-force NAPI. On the RTL8125B the receiver stays stopped after it runs out
-of descriptors until RxOverflow is cleared in IntrStatus, even after
-NAPI has emptied the ring. The sequence, as I understand it:
+A local process with no capabilities can block sends from a TIPC
+communication group by publishing the matching service range from a
+socket that never joins the group. I reproduced it with a root sender
+and a separate unprivileged group member on the same node. A third,
+unprivileged process binds the same type and instance as an ordinary
+TIPC service. The sender's first nonblocking send returns -EAGAIN. Its
+subsequent blocking send remains asleep; after 12 seconds,
+poll(POLLOUT) is still clear.
 
- 1. The ring fills. The chip completes the last frames (RxOK), then sets
-    RxOverflow and stops receiving.
- 2. rtl8169_interrupt() read IntrStatus before RxOverflow was set, so it
-    clears only RxOK.
- 3. NAPI empties the ring and unmasks the interrupts.
- 4. The stopped receiver raises no new RxOK, and RxOverflow is not an
-    interrupt source, so nothing clears it. Reception stays stopped
-    until a TX completion makes the handler clear all status bits.
+The publisher has CapEff=0 and NoNewPrivs=1. It does not need
+CAP_NET_ADMIN or CAP_NET_RAW. The guest init enables the TIPC bearer
+before dropping privileges. The test uses one local node; I have not
+tested a remote-node trigger. This demonstrates a local availability
+issue for the group service only. There is no memory corruption,
+information disclosure, or privilege escalation.
 
-What I measured is the stopped state (IntrMask 0x2f, IntrStatus 0x50,
-NAPI idle, all descriptors owned by the NIC), and that writing only
-RxOverflow to IntrStatus restarts reception with nothing transmitted.
-The order of steps 1 and 2 is my inference.
+tipc_nametbl_build_group() and TIPC_PUBLISHED events create
+MBR_PUBLISHED entries for matching service publications.
+tipc_group_is_receiver() currently accepts this state. Its
+zero-initialized window is added to small_win, so
+tipc_group_bc_cong() blocks a sender indefinitely when the ordinary
+socket does not complete the group JOIN handshake. A real group
+member is present in the reproducer, so this is not an empty-group
+send.
 
-So the fix only needs RxOverflow cleared once the ring is empty. I see
-two ways, both tested on an RTL8125B with v7.2.6:
+This is distinct from the group broadcast hang caused by deleting
+the last unacked member: this trigger needs no ACK loss or member
+departure and occurs before the first broadcast.
 
-a) v1 with your suggestion, RxOverflow in the unconditional init of
-   tp->irq_mask, so the handler clears it.
+HEAD: commit c03c1a14507dfaf8b856c2608f9ac216021fc222 ("Linux 7.3")
+git tree:       upstream Linux, local branch master
+source version: Linux 7.3.0 (v7.3)
+compiler:       gcc 11.4.0, GNU ld 2.38
+QEMU:           6.2.0
 
-b) No "ring empty" interrupt. Clear RxOverflow in rtl8169_poll() right
-   before unmasking:
+Raw reproduction files:
 
-        if (work_done < budget && napi_complete_done(napi, work_done)) {
-                rtl_ack_events(tp, RxOverflow);
-                rtl_irq_enable(tp);
-        }
+console-output.txt
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/console-output.txt
+patched-console-output.txt
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/patched-console-output.txt
+kernel-config.txt
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/kernel-config.txt
+poc.c
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/poc.c
+init
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/init
+build-initramfs.sh
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/build-initramfs.sh
+run-qemu.sh
+https://gist.githubusercontent.com/shaos26/243e46a190cef51fbe6a1e8cf1bcdede/raw/1cb4d487be1eace60d6d68ab384f85057b296b41/run-qemu.sh
 
-For each, a test build switched between the old and the new behaviour
-on the same boot, in blocks of 5 to 10 runs of 30 s with UDP at
-800 Mbit/s inbound, about 2.14 million datagrams per run. Totals over
-all runs of each kind:
+With these files saved in a Linux tree at the HEAD above:
 
-              runs that lost    datagrams     datagrams
-              >1000 datagrams   sent, total   lost, total
-   (a) old    5 of 76           162865429      411511 (0.25%)
-       new    0 of 76           162861980         489 (0.0003%)
-   (b) old    9 of 75           160722174     1041366 (0.65%)
-       new    0 of 75           160721463         846 (0.0005%)
+    cp kernel-config.txt .config
+    make olddefconfig
+    make -j"$(nproc)" bzImage
+    ./build-initramfs.sh
+    ./run-qemu.sh arch/x86/boot/bzImage phantom-group
 
-The small loss left with (a) and (b), 489 and 846 datagrams in total and
-at most 61 and 184 in a single run, matches the NIC's rx_missed counter
-over the same runs, 492 and 846. So the NIC dropped those frames, while
-the RX ring was briefly full. I used the upstream ring size (256
-entries) on purpose for these tests. Our tree also raises the ring to
-1024 entries (not part of this patch), and with that and the v1 change
-the same test lost no datagrams in 20 runs on two boards.
+The unmodified kernel reproduced:
 
-Which one would you prefer? I'll send v2 accordingly.
+    POLL_BEFORE_FIRST_SEND=4
+    NONBLOCK_FIRST_SEND ret=-1 errno=11
+    POC_RESULT POSITIVE_SEND_BLOCKED observe_ms=12000 pollout=0
 
-> LLMs point out that you're adding the same bit on both sides so just
-> add it in the unconditional init of tp->irq_mask above
+The patched kernel was built from the same HEAD and config. The same
+test reported:
 
-Agreed, v2 of (a) does that.
+    POLL_BEFORE_FIRST_SEND=4
+    NONBLOCK_FIRST_SEND ret=1 errno=0
+    POC_RESULT CONTROL_SEND_RETURNED ret=1 errno=0
 
--- Jure Rebernik
+The patched run also preserves POLLOUT for a legitimate group member.
+The patch passed checkpatch.pl --no-tree --strict and git apply --check;
+the patched kernel and static PoC both built successfully.
+
+Exclude MBR_PUBLISHED entries from receiver accounting. When the JOIN
+handshake changes a member to MBR_JOINED, open the group even if that
+member was not on the small-window list.
+
+Fixes: b7d42635517f ("tipc: introduce flow control for group broadcast messages")
+Signed-off-by: shaos <shawnq1@163.com>
+---
+diff --git a/net/tipc/group.c b/net/tipc/group.c
+index 74f6d3dac0784..61fc57d96f365 100644
+--- a/net/tipc/group.c
++++ b/net/tipc/group.c
+@@ -105,9 +105,12 @@ static void tipc_group_proto_xmit(struct tipc_group *grp, struct tipc_member *m,
+ static void tipc_group_open(struct tipc_member *m, bool *wakeup)
+ {
+ 	*wakeup = false;
+-	if (list_empty(&m->small_win))
+-		return;
+-	list_del_init(&m->small_win);
++	if (list_empty(&m->small_win)) {
++		if (m->state != MBR_JOINED || *m->group->open)
++			return;
++	} else {
++		list_del_init(&m->small_win);
++	}
+ 	*m->group->open = true;
+ 	*wakeup = true;
+ }
+@@ -145,7 +148,8 @@ u16 tipc_group_bc_snd_nxt(struct tipc_group *grp)
+ 
+ static bool tipc_group_is_receiver(struct tipc_member *m)
+ {
+-	return m && m->state != MBR_JOINING && m->state != MBR_LEAVING;
++	return m && m->state != MBR_JOINING && m->state != MBR_PUBLISHED &&
++	       m->state != MBR_LEAVING;
+ }
+ 
+ static bool tipc_group_is_sender(struct tipc_member *m)
+
