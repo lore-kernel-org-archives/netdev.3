@@ -1,65 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794061317;
-	b=Gdi40Yiy7C6Uep/MSqjMnXopN0+U1joNyG/4je+m/w0I+5kb8wGBNrW2buR2Rif83GrM
-	 oqnndkEyMGyUIeFiAGTzywOg7n1gqhkAv35IG4wUGqTSojeMkILaKdce152rYz1/q3yd9
-	 fLVXmBDi466xJpUl532n6RaQxuY2Ei2VfYCVUyXH0MWKoJWN/rFTacr2KycDDt9dfHZdr
-	 7l7Upbd2BjLre4M0LdlruuT/UiiEutnyeSmYJRK5+Jcy5M1Eqa9h0IaENeOkb/+QvkgBC
-	 bZsvXi88tXnEozOZNTX1wxOiJk1qKpLqlEZDSCzZQwi+NRFi5WM1ZwHlg1vxS4F0U1Q==
+	t=1794061372;
+	b=n6Q/EOY6THv19yHqY9uloBAU8YiOAuF/bMBsawWP5DtVEByds2LvL409jsbnJAFUG8Ds
+	 FoFiowCnEQs2TJ1vO4mW0egrLHFot+M7iErdH/K1DXbLItuS9k2FOcat1SuN6ZSJVyN6b
+	 BFDGF44JWK4q3ZjhYPm5dei7obOpdeyaVWifu/DpbcoG9YEPj5xQKDr5tSJ5HUD7EkMGi
+	 tc6XV4FDYtR8qLSA2zKUcMPqEg0wziuzUo2/CCEQvcYBN8Z6BtE6YjVqUMhfP/qazF0l+
+	 aP5F83BUPU4/1HdYdKwMBWhG/ku6lRcgyytzTYoTBWwDCgvnHGT6UsAh4JIHP6/9OAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794061317;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	b=MyPH1PUdIHSdnI0y/1nHJ7OSAnq/pOxRfv88Gx7uj1TEjZuGnZgDNnk0G6BgjLqppUbE
-	 Fe/WYiz4R/WcUpfz8pvBv6ZzJN3r415HdS+LGSdFaENAqtsLL176wlVFnqMGc+K534/W0
-	 cNJaKgYKbVMLqy25a6vCoBf6UvEkiGn7zLVJXe38jjycX0Lg/iNbhvQRdz44Be5dP10gD
-	 RwxcPjSaxLcMmCcY5+guWiTzD3xTi82Z15+X47G//YYmvTukEXiX17KtPdG+0GOAxW8fe
-	 jupSUbFI1jnT4/tCVLIA1BeuxZ1YNqv1L6Wfl8pMU3+FAOQXWgjMWh3kO4UDgcp1H8w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794061372;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=Zc76TO6qUVRGeeHVXQdMS6eOYrg3MPsFB1Ka1Yvj58U=;
+	b=qRCvnXTSmeaDGKN7gMi0ZkHcsYSSpd4i2XfX4GcvmXONAqLNjyvijxmYZZ7AyL/TyFer
+	 LRSyOyKV9xeXRzChUsx6+JzdDKRutTZg8aNLkzTffTk04Qu33z60OrJXwpaVpe1ipM+CL
+	 KDz2ffs8U0D806XbuyYgirCOUZkhQoAUQPU2IKHfWj9n0dZTarHbgAWQS01KGLrTrOoej
+	 KJFIgS69fAdWunkykK5Bi98gdevlHACR1Cquxm6CIDhgxFDlysLFMg5ClalNsBJoEG2f7
+	 aKYzToRn04T4AvdZIfsmWG67a/ajdltz6ycyk68TpMFkVtpBl0QHbQndUgapKjd0t3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jXRNeYSD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=sang-engineering.com;
+	spf=pass smtp.mailfrom=sang-engineering.com;
+	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=deMBkNlk;
+	arc=none smtp.remote-ip=194.117.254.33
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EA2606A326;
-	Sat,  7 Nov 2026 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF36606A33D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 14:22:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DF36606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jXRNeYSD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F37E1F0089F;
-	Sat,  7 Nov 2026 14:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794061317;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jXRNeYSD1UFTW+NzGat54yHQg16hpMnjBsqYjThBrrtvQyodflqHQeRKKA7W1RcZH
-	 ALzByAeQiF62jKTemPxWK/EV7tJu4Ug+IoU3xITxOvOXWpxblr/TilmjeqsbWPFV/Z
-	 DbaPxKh8rC376o04cjJlZ27+7fxdXsaWTOjuR47TpE4pD+gyYyn51uWNgCjguPHMJ1
-	 N9566qdk+Ts3qOVOJpIi1yduyno6I1Umw6R+4gCprK4S0IDR1yIRb3dPt6gbkSAcVY
-	 VPtt2WQ8v8N9UNuVfFstevm2w3t+fYpdu4gQLY0mNZa3oAfgsxw8oCf2YidKp2m/AP
-	 os8f0QVy/bOfw==
-From: netdev-bot+sinfo@kernel.org
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Yanqing Wang <ot_yanqing.wang@mediatek.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- yana06070@163.com
-Subject: Re: [PATCH net-next] net: ethernet: mtk-star-emac: fix device_node
- leak in mtk_star_probe()
-Date: Sat, 07 Nov 2026 14:21:55 +0000
-Message-ID: <179406131565.488859.1019307996230359534@kernel.org>
-In-Reply-To: <1794061182000.57993.3986467551914992480@cmss.chinamobile.com>
-References: <1794061182000.57993.3986467551914992480@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=deMBkNlk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=Zc76
+	TO6qUVRGeeHVXQdMS6eOYrg3MPsFB1Ka1Yvj58U=; b=deMBkNlkuoAHsHcvg+VW
+	/JOGUyDVHLSNz2M2P318rSNR8ihhOn/icNfH112ofFlA9vj9/Cq1/GB2kPS93Y40
+	YF/E/JzExb1+S9I1cstiBzedJlDUnUSkE30QPeWQc507bnuBni0Z3NyRW4Kbgikv
+	A33vNAj4UQjDG+RAKO5HfUR7weMBMBqiqmK0raV2oPWm0SZWyc4pewIm8g0fDZne
+	LkWZdfpDHRtTXcDecdPHMvKhMX5AroogrzfiJHaQZyQZEmMUS5nMy4dWe/94uyCo
+	CxZZl4Q8KqM0Whbjetz1A4x1NAoLWi2ICCJyuUW9bykg7e8j4gzLaz/eOC4I3nFt
+	YQ==
+Received: (qmail 2530674 invoked from network); 7 Nov 2026 15:22:35 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 7 Nov 2026 15:22:35 +0100
+X-UD-Smtp-Session: l3s3148p1@G1+7dbBfHLcFFu4j
+Date: Sat, 7 Nov 2026 16:22:34 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Danila Tikhonov <danila@jiaxyga.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Amit Kucheria <amitk@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
+	Lee Jones <lee@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alex Elder <elder@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Andy Gross <agross@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
+	Sibi Sankar <quic_sibis@quicinc.com>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
+	David Wronek <david@mainlining.org>,
+	Jens Reidel <adrian@mainlining.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+	linux-scsi@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-remoteproc@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-hardening@vger.kernel.org,
+	linux@mainlining.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 20/33] dt-bindings: i2c: qcom-cci: Add the SM7150
+ compatible
+Message-ID: <au80Kv5YDDtUW2L5@shikoro>
+References: <20250422213137.80366-1-danila@jiaxyga.com>
+ <20250422213137.80366-4-danila@jiaxyga.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,21 +128,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422213137.80366-4-danila@jiaxyga.com>
 
-Hi!
+On Wed, Apr 23, 2025 at 12:31:24AM +0300, Danila Tikhonov wrote:
+> Add the SM7150 CCI device string compatible.
+> 
+> Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Andi already acked this, so I guess qcom tree is fine.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
