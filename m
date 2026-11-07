@@ -1,72 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794062477;
-	b=ngAwCTJ3x/hOsjU6KfCiRtNLO+cnM/mEf+/+c6sP6+0Ij6Bwc8Q6MRQz3+Cbv8htigeG
-	 F3+ChjqZ6vrB4bnppBJxcsJ+/vVi3g+6dq2oUWji1cR0CgTiNiNx0vSo+u69dXCHcZx/I
-	 gOgiw8aij0+cGwTOGAdLBBbVtsTwuK9rJsy9MwkYpR63RPouc8uu7Syzf4SYyt0FsSfBS
-	 Cwc3ldCr5v5/XU2NTgafqLoDASu5l/Yc5LVchEK/qvMoVZBb5K0f7zd3QDBApqml38rNJ
-	 Muxpz9Z6HhxwL6hXdKeqjPBcBMKxG6lL5RpFKLE28xLhl5aDQ79xERnxv+cDv2oZCTQ==
+	t=1794063019;
+	b=3S64vaSbHet1jB/082kGeaI502Udq2Zjm+c1xgyYbWDlmBprJPn21xomLphDy6PoQ21e
+	 u2nFig4T6N70H0Ek6TU5elpjPXk+GAIpL2OoyWaCqqSNua3oPDlcOrpQE9ug8eE6b9cGe
+	 xmS6PSqEj0A+sFbp7CGxy80M00IUT7huGowRz2WZBmK1EtZL0kuKf7bDPKsGi79e4DNcR
+	 pUqPkYBFaJW6/RXpQTN9kM0ayC4OVj1UCkL6Q1RYw+2Jz3CLrLOycSG1Iuw56DTOGjM3j
+	 BOyvgYti5yC7CeLnWQvG2xUhnAPi0SqNHFiWga6qSx/tpxJLKGK/Kyun5syNDs4g+LQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794062477;
-	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 Content-Type;
-	bh=MTKqzeN2qzSEwB7wgpPDqmDOm1XJz5MFsmhF4czrNrI=;
-	b=N9/oimPhIKZAihwbnKUqnL+Z0kFf65FNRmsKRu9B756NDyjnS3A8QY0SgnRCQGd7GwGr
-	 +QUnwAUv96CQyQNOipA/sX+pwuSUJWgiRxuby4dt4SujRZIJA0KZOHWPVRy7/9LQ+HBUk
-	 rl79FtlvlD4JDQNO5C9hj+0/22EQB7qF0y6TJ4JxAHswY5L9+EZRuyfvLfJ1fOp9Fk9hZ
-	 qg7PGKBsKCBtxEfvuVtMDyr3kYB7/l79hDmHLrkl5pJsgP7L0oTznaIW0RINge6VRyDFz
-	 65mkFDYu1ZATlbc0Dr2RrECn748cUmIwjuMwlhhCcklhhiK3GfXA2iaOKIRJmHsPG/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063019;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=1xaaoP/EG1BtJMDCy2mKZ4SODT4vwuwFBsmwd28CmvY=;
+	b=wI/HXrgIcans+ZKSGaGE2QSvNe58v+OKQJvNJbBklbcpF3FYAPIXujcDFhToTq0PvYmh
+	 Nq9KAKbopAjb97ogu2cTKN/ui7LWkJyvlSKW1iZEToLdmRTHgXJ6MFbYtMmudTf4ZR16K
+	 4s5tbA8XdR6h8fbo0hvPe6ctxFnwYm31VgBxN0NsLefaeuUmKaPx0s/6Jw9ydoE8pSuEK
+	 upuOklHIpq3vIdDWHx7JipRiuzz3JkDhOQ+RaDUS7sGsU/XYa146/XN+wYuYBaRKxuKT7
+	 whPhG4V4Xwokg2/aNhgagHq/CWmJI+DNYFzp9c0iu6ZL+ilzYxfu8H9yGOZROqsQTJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sntech.de;
-	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=AKfQpOEc;
-	arc=none smtp.remote-ip=185.11.138.130
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZtROPTc3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E517606D822;
-	Sat,  7 Nov 2026 14:41:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E517606D822
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70336606D81F;
+	Sat,  7 Nov 2026 14:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=AKfQpOEc
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=MTKqzeN2qzSEwB7wgpPDqmDOm1XJz5MFsmhF4czrNrI=; b=AKfQpOEcyMJuFY5WDsAYJCTPjL
-	pgnw4g5N7gDR3sRbLbFgG73J6zge7zNIO0U5Km4Qo/IoKiabt/e8uLUdTA7R2zZXc/s+9IS57fvvF
-	72zVqn2IdV6MrKoyzu9pOjZqKdtb5zyu7j2UkFKUk67ed7AEm0Dh+jLxuLdUY4pItdnHYV8H1Tev5
-	vD+2hx89y6foUzJmwrEnK7jzdalIL2ZDOVxos10lo20RajGCi5S8fwui/nYnLxiTYpETen3FkgD0+
-	f2wq6OjDIi1cpxq//uoGJdNTDNcF3XxMPt37xeImwXJZqfUKmYQx0vNtV0j1Hj+XlF3mdU7+Hu8F8
-	tZjG+fog==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Wolfgang Grandegger <wg@grandegger.com>,
- Oliver Hartkopp <socketcan@hartkopp.net>, kernel <kernel@pengutronix.de>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Cunhao Lu <1579567540@qq.com>
-Cc: linux-can <linux-can@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linux-rockchip <linux-rockchip@lists.infradead.org>,
- netdev <netdev@vger.kernel.org>, linux-doc <linux-doc@vger.kernel.org>,
- stable <stable@vger.kernel.org>
-Subject:
- Re: [PATCH net v7 0/7] can: fix bus-off restart and device close races
-Date: Sat, 07 Nov 2026 15:40:55 +0100
-Message-ID: <6105577.1B3tZ46Xf9@phil>
-In-Reply-To: <tencent_B3369A1199D0849091BB8015C41BBFF0A607@qq.com>
-References:
- <20261106-rockchip-canfd-restart-close-v7-0-accdb11bc845@qq.com>
- <16255046.uLZWGnKmhe@diego>
- <tencent_B3369A1199D0849091BB8015C41BBFF0A607@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZtROPTc3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC3B1F008A1;
+	Sat,  7 Nov 2026 14:50:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794063019;
+	bh=1xaaoP/EG1BtJMDCy2mKZ4SODT4vwuwFBsmwd28CmvY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZtROPTc3VvVBjBBGFVuqEVgmoZxKAKdVEpq7p6GeaJYPuVQD2WoXu2i66gKMirEDJ
+	 Dh544hMztf7YD10m0SmAmCJvobW50BebIQlHYh7Ui7lsy9brqt9Lfa5qDmEc0c6gm6
+	 PsmSrUhoVlq2NiPUywFu+J6f9IbENnEGuWixlYRe+fDEq0xJQYminKqOkbfXiY/Qgc
+	 uLz70sVXaZkx12L+44qg8pyfvu9IlpBm7ph9UpGtmkEwQpUiQa+pspRCv/AEo986kT
+	 /e3sQiy0RhUk5zFF1stbB+C8G9VXg7ldbopEvbPLaDJXhOf4YGnWhJM+uSP+O7aZa7
+	 NZED9D3KZ0c3A==
+Subject: Re: [PATCH net v3 2/4] net/sched: act_ife: require a full Ethernet
+ header on egress
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com,
+ davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us,
+ kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com,
+ thomas.goff@boeing.com
+Date: Sat, 07 Nov 2026 14:50:18 +0000
+Message-ID: <179406301809.994134.18083601714109684155@kernel.org>
+In-Reply-To: <SER-NSBD.v3.r0.20261103064310-2@mojatatu.com>
+References: <SER-NSBD.v3.r0.20261103064310-2@mojatatu.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,49 +64,130 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Am Samstag, 7. November 2026, 03:57:26 Mitteleurop=C3=A4ische Normalzeit sc=
-hrieb Cunhao Lu:
-> > > This series depends on the three patches in "can: skb: make CAN skb
-> > > freeing safe in any IRQ context" [1] and the three patches in "can:
-> > > rockchip_canfd: fix TX stalls and races" [2].
-> > >=20
-> > > [1] https://lore.kernel.org/linux-can/tencent_CD05F020BAFB2537F5D1F4C=
-BB425588EA80A@qq.com/
-> > > [2] https://lore.kernel.org/linux-can/tencent_E25C9BE6689264E4138A464=
-803B810FDFD09@qq.com/
-> >=20
-> > Both these series are from july and seemingly from before you started
-> > using the b4-relay. So they may or may not have survived the kernel
-> > releases and their threading is broken both on lore and in any maibox
-> > they arrived in.
-> >=20
-> > And if there haven't been any responses to them since then, I'd think
-> > they have been lost or so.
-> >=20
-> > So I'd suggest rolling both your dependencies forward on top of the can
-> > tree and sending them as a new version, so that reviewers can find them?
->=20
-> Thank you very much for the guidance! :-P
->=20
-> I just checked: the "can: skb: make CAN skb freeing safe in any IRQ
-> context" series was merged into mainline yesterday, so I won't send a
-> new version of it. I'll remove its link from the cover letter.
->=20
-> The "can: rockchip_canfd: fix TX stalls and races" series still has some
-> issues reported by the bots during submission to the net tree that I
-> need to address. Since those patches overlap with this series, I plan
-> to fold them into the next version (v8) and send them together.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-As that series is also "just" for the Rockchip CAN driver, merging both
-sounds like a good plan - especially as it makes it easier to keep track
-of things :-) .
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [Medium] The commit is titled "require a full Ethernet header on
+  egress".
+- [Low] The commit message says "A short egress skb is now dropped
+  instead of being encoded." The patch actually drops every egress skb…
 
-Heiko
+--
 
+net/sched: act_ife: require a full Ethernet header on egress
 
+On egress, tcf_ife_is_eth_skb() now requires pskb_may_pull(skb, ETH_HLEN)
+to succeed. Without that check, ife_encode() could copy ETH_HLEN bytes from
+past the linear data of a short skb. The ingress mac_len check is unchanged.
+
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260821164031.32824-1-victor%40mojatatu.com
+Link: https://sashiko.dev/#/patchset/20260821164031.32824-1-victor@mojatatu.com
+Link: https://lore.kernel.org/netdev/20261022144736.61227-1-shawnq1@163.com/
+
+> diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+> index 6b23a3965121e..5a527da005661 100644
+> --- a/net/sched/act_ife.c
+> +++ b/net/sched/act_ife.c
+> @@ -878,13 +878,16 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+>   * is an Ethernet header because the skb could've been redirected with mirred
+>   * from a non-Ethernet device.
+>   */
+> -static bool tcf_ife_is_eth_skb(const struct sk_buff *skb)
+> +static bool tcf_ife_is_eth_skb(struct sk_buff *skb)
+>  {
+>  	if (skb->dev->type != ARPHRD_ETHER &&
+>  	    skb->dev->type != ARPHRD_LOOPBACK)
+>  		return false;
+>  
+> -	return !skb_at_tc_ingress(skb) || skb->mac_len == ETH_HLEN;
+> +	if (skb_at_tc_ingress(skb))
+> +		return skb->mac_len == ETH_HLEN;
+> +
+> +	return pskb_may_pull(skb, ETH_HLEN);
+
+[Severity: Medium]
+The subject says "require a full Ethernet header on egress". The commit
+message also says tcf_ife_is_eth_skb() "returns true even when the skb has
+no Ethernet header".
+
+Does the new egress branch check that the skb has an Ethernet header, or
+only that ETH_HLEN bytes are in the linear area?
+
+Take the reproducer setup from the commit message and send an IP packet of
+14 bytes or more instead of a short one:
+
+tun_get_user() (IFF_TUN)
+    skb_reset_network_header(skb);       /* mac_len is 0 */
+tcf_mirred_to_dev()
+    mac_len = at_ingress ? skb->mac_len : skb_network_offset(skb);
+    skb_push_rcsum(skb_to_send, mac_len); /* pushes 0 bytes */
+lo egress: tcf_ife_act()
+    tcf_ife_is_eth_skb()
+        pskb_may_pull(skb, ETH_HLEN)      /* succeeds */
+    tcf_ife_encode()->ife_encode()
+        iethh = (struct ethhdr *) skb->data;
+        __skb_push(skb, total_push);
+        memcpy(skb->data, iethh, ETH_HLEN);
+
+At this point skb->data still points at the IP header. The first 14 IP
+header bytes are copied as the inner "original" Ethernet header. They also
+end up in the outer h_dest/h_source unless eth_dst/eth_src are configured.
+
+The over-read past the linear data is fixed, and these bytes are packet
+data the sender controls, not kernel memory. This behaviour for L3 skbs of
+14 bytes or more was already there after commit 5b483f7791b0. Still, a
+non-Ethernet frame can be encoded on egress as if it had an Ethernet
+header, which is what the subject and issue statement say this patch
+prevents.
+
+The comment above the function also still reads as a pure check:
+
+    IFE encapsulates the original Ethernet header and, on decode, expects
+    to find one, so it can only ever work on skbs that carry one.
+
+It does not say that the egress branch only checks linear length, or that
+the call can now pull and so modify the skb.
+
+Should the subject, issue statement and function comment say that egress
+only checks linear length? Or should the egress branch also check that the
+L2 header really is Ethernet?
+
+[Severity: Low]
+The commit message says "A short egress skb is now dropped instead of
+being encoded." Is that the only behaviour change?
+
+tcf_ife_act() calls tcf_ife_is_eth_skb() before choosing between encode
+and decode. So a short egress skb is now dropped even when tcf_ife_encode()
+would never have encoded it.
+
+ife_get_sz() returns 0 when no metadata is present. One example is
+ife_check_meta_u32() with no skb->mark and no configured value. In that
+case tcf_ife_encode() returned before touching skb->data:
+
+net/sched/act_ife.c:tcf_ife_encode() {
+    ...
+	if (!metalen) {		/* no metadata to send */
+		...
+		qstats_cpu_overlimit_inc(ife->common.cpu_qstats);
+		return action;
+	}
+    ...
+}
+
+These sub-ETH_HLEN frames used to pass with the configured action and were
+counted as overlimits. Now tcf_ife_act() drops them with TC_ACT_SHOT and
+counts them as drops.
+
+Could the commit message mention this change in behaviour and statistics?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v3.r0.20261103064310%40mojatatu.com
