@@ -1,132 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794063071;
-	b=yoNuY9T4Kpch+/vk2jI1kqG18bntyZKQ3UYI4AweLPfOZuhFp+m9jxwaVQfxnPJTGmxa
-	 NQ3TWAWcgafr2w5L3UA5yHTgOAeMMpy5geQE9y1uLKk4ZtgfN2adTqD+DnFs6N+iNa0MA
-	 4XteRQDnx6s8hrUoQW0KRB3jpbr3v9AbtABF1DI7ZUwqyJXe9HOQD9jKdkIENE5KK2T7S
-	 sAt6F1n8yzyYt1kSV0NUNhWp7vZqbiD1OpF937AoeQUCObbFH1CapyAg2ETiN+F6soYbF
-	 53iprxXO9n+KgP6Cj8f5QoBNMvRr62K6Emzlzv3jeBYzC1wyiXi8cUrO+NZjddWfOxA==
+	t=1794063786;
+	b=x05y61tGT5aZgLTMso7n/W4TYxX+t3lEFiCcTUxUhH03bhyhwnzhIvibm8Pd0ZKiqKa6
+	 BJVHbqu9rOoqJIIdGfynD+0ZfeECiMiP8kuiTPFrMYCChMK77GW/wJ9TcNIYqx0qBJa++
+	 gXBaVFJ7KvKd+Fusyyx55dDs/LNdfftSkhPHGMy4umuK8cXF6/yQ23eXQIcjDX4MUJwLD
+	 u+G9RIEZvlqLJFqw5Nu1offk3qhTBbFEWe3OLXNSyi5OIMjwsphdz0Aef1R5W74Lus2Ou
+	 mfa24Xsv8vNjbX44vFYiUOC8fSdusMOqpJs5RpzVeNaH9SQyMhjRt5ILPR2jf4hnsjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794063071;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
-	b=4khl2NbzUeH1GwvdNMPvo9QBApG2oW7ieAjxZGcwePrMHVpjcJxBiD1g5RXBz0njlecp
-	 aRtSMdEYS4EcvvzrBhLPgqfi9215ixI5EtZ9aofVHjTHzlIN25FfkC/5RT4rVwBLNmwhT
-	 e+8ckej1y8GVMOZLck1z+4oOcJ7MM5YFEyQES4fibTPCq2NAJyPOt1MTBdPxh93lUlljB
-	 NXHxkGU6481fE0EsfxHAEr5b8aj2ayVtuB2toOLZ2s0xVw/wFXffRmeEFKY8sShP+N43G
-	 lSpRRLTfg0t1oSV5Zm9xXoT5Pz8DIhdO7bEjao3lSFIFYTQwiTKVawGg2tq/qeeQMdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063786;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=rkgeuZd7YSntSvwVnN4dhPGBeSaQtAsMcpcJkxt4xs0=;
+	b=GmiAVHU2kQTaC9UK5SQ4B0CUQP3dZd2rVvZCuw2x5xl5W57hvcqDU5ZxEu9ckXEvPtSZ
+	 Q2mgEIpRh+HZKl82w7A1+ek+FrvDRieIYATLnE6ba81JmfCPtI1YDKshHka2dGzrRFHT/
+	 yISstWXt01D+wNAZ2oYqZl7cyf9DekmZ4QK0kBeHcZ4Rg7HW5Ri9KmNkg2dFk7d5rzB+C
+	 KFLwcEpFkHlBJNs4iXpwaQfSiZfQwSBdtlITpQ6bpDP+SZl2Ph2A0ygf3Mfmnv2vYbf9B
+	 Y9+yMiOhtqVV8aaD6o54KqksFfp5N2oWa2Y3ERuIxykFyNGwVYc3hiLRWZaMV44ZODQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GMmnpEp8;
-	arc=none smtp.remote-ip=209.85.217.45
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fH2y3xRQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A7F606D80F
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 14:51:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7A7F606D80F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E96F606EE98
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 15:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GMmnpEp8
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7d2ca055399so55634137.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 06:51:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794063070; x=1794667870; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
-        b=GMmnpEp8of2xPaPuVAQPWKFigGoxcgA2aR9nmMX8ZNpJmmZa9wenRFjcQYhqzF+O4f
-         awBenfwbtU48GdXYiFGvMF05ZuPd2YRwUd/bKYVmg2+fpVvWyXk3/cOqljzGB7EFuehQ
-         jSFMjTS1HImQQbpOAIch75CU0lfTskRBtkH/rJuM0AjpjE/P3P8J+DQI87qBktK8nXt/
-         aSxf7BEmuWBin/5d4x52nfaZrhJOPIOJV6hOYMw3nmjeLfBW19C/l5v/LtsaIoX84Xvv
-         xUVgNd0DsgIXX3J/pesSgSTgnV0kJtmqYWA9OozHAL2Ef726Xk7KoMfu60bGOWnp30qP
-         G0sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794063070; x=1794667870;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
-        b=UqZxgJr67NFOg38LAnrRSYDRVzQO3z2oe5HqMoLz2Tx7HgqF/ZVWq2giQpDc6BPLxW
-         ufqIm1y8XMq91b+XLrvN8w9HRvU6+3w2Y8tadqVXgqaUNl2R9E9jnqXGD406cqZKwigw
-         EMJb3h88hhl811g5iLAF5b+McllowGFQFcWVWCs5LIOOGUIg2gpZ7Rg+WXnd8y7ex2Rb
-         gye8csU6SsnbKwwOJgA3ONJ0HEnUtIrhSe0Cj4SkvmiuKge+P4TiYZcj18GDy2PonTrM
-         QzLwknUAL6sZgKPh/AztfSVPyG98uXHI38vmniVEnB283PIe1x6lSsFruwfMXXOVtuhw
-         k+9A==
-X-Forwarded-Encrypted: i=1; AL+hErHM13AbORg3104UBq2qr/SSaY695/UjNuI9t7D1Gd6xe29SZlXHFTJ6miJNhdToLyWwkNP7vqE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8oZJXxMymqjeDsQVFquv52/XGEyano40HzN07skpsIYFR1K1kt
-	rfpH/fBzLJZYyohbC8iEYGVauN/lYWg8x4sKEbtWY57fKiEEMfgSMePg
-X-Gm-Gg: AYBFou1RgBYjxZDbGVDRmZIP4scMQ1fN/WTj4qrOiFhmC0ZUd/gCNZtGG2/cvGtzGz6
-	J20LVdFRMVOotG01EMh6Dpt4ZELec/0r8u8zWmqaNjrBRS+uA8KeZtiv1gngLJh/QFxpVBesZ5I
-	0YA7z1uhL6QolDSu2cDnsjq9MVGioRsYX9w1V+e+xf4ZcwucZZMVQq8eFDJL6kydUACRZcUMXFy
-	gvQOWL/wTfVvP82Ena4ApmZj61VuB++s9zLIlQicq0Fb1OtE77OOHApmTchiPnVtU5txlwI4eQW
-	YQr5jo92qbrsnBu3Jhq5nX43LIjDI6Es4W0NzfxmREIbiHwY0kq9o2OMg+tis35wMC9V3Ug2N2n
-	keDk1tJ+a99Fn6kDf6JwdSL60qCN81ZQJLYz8Fzpf6jK8sQ2YrnmNzl7rlwAQoX8C1N8NzS6+X3
-	//uJOGoj3BobAd95+YWg+gQy3/0DZK7/PHXoI2Pjf3Hrpqg5+iHAAt5I1K5oE3EAPtmZJtcXy1r
-	NTosmlxawxd4OibRVH8P+oij9qoAGtASjhrCP08lYLrrrqCbi+cs43Mja1g80AGLIdtTQzCuuUL
-	rSF0lecVaqU0/lEI5FR1HP1BMzx7tKXXVJUL0J5bYR7DPsoLbQJInKeayk8yBd8ClE8a5sdVQIR
-	DAcGynQL5NnqHZXI5SxVt5lLveN/F1iRCeS3mgks0rfRY3Jy99X77K86ULT87CVxW9LqRg9qT75
-	yvOUGGNRPgsLVK97Zt
-X-Received: by 2002:a05:6102:4bca:b0:7c3:8150:83e7 with SMTP id ada2fe7eead31-7d2a154169emr2304378137.9.1794063068607;
-        Sat, 07 Nov 2026 06:51:08 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99badbceebdsm4199060241.3.2026.11.07.06.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 06:51:07 -0800 (PST)
-Date: Sat, 07 Nov 2026 09:51:07 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Tianyi Gao <tianyi@cloudflare.com>, 
- netdev@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- Simon Horman <horms@kernel.org>, 
- David Keogh <dkeogh@amazon.com>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- David Woodhouse <dwmw2@infradead.org>, 
- Dragos Tatulea <dtatulea@nvidia.com>, 
- Nimrod Oren <noren@nvidia.com>, 
- Alasdair McWilliam <alasdair@mcwilliam.dev>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- Alexei Starovoitov <ast@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Donald Hunter <donald.hunter@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Breno Leitao <leitao@debian.org>, 
- =?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>, 
- Danielle Ratson <danieller@nvidia.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- bpf@vger.kernel.org, 
- linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- kernel-team@cloudflare.com, 
- nh-open-source@amazon.com, 
- Tianyi Gao <tianyi@cloudflare.com>
-Message-ID: <willemdebruijn.kernel.1d64e7848503b@gmail.com>
-In-Reply-To: <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
-References: <cover.1794020868.git.tianyi@cloudflare.com>
- <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
-Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and
- LL_ALLOC_SPACE()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fH2y3xRQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3031F008A1;
+	Sat,  7 Nov 2026 15:03:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794063786;
+	bh=rkgeuZd7YSntSvwVnN4dhPGBeSaQtAsMcpcJkxt4xs0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fH2y3xRQH0fF91zO1fDfe2ZCrVYtKlA0h31OYY8bwUelBLayGvRvmvR+FSHl5XWAY
+	 OZTy4tMp49IAFa7lKtEQmOJKjyg51JvztdjkjPnxHecN+odcGUtNng9m8DNRutU/BH
+	 OZv6GDVATCc8d+Ky5A6im7hk7kvcBUb3kiM2nGUGfugSEYXZHHtMEsG2u1zDyWCIZl
+	 +A0CuaphwaMKao2UxAaqf0YQuolHchKneSFNcMeQB256n5L8nKX5Bv+z3KG+Aqg60O
+	 mJnvL6VWcDtXOKTGJKBbk4D7EZnVdeR0Cf1uTiV71ZBDZqaRhHnxqC2DhfXfIsRM4q
+	 fHtML97fhppJg==
+Subject:
+ Re: [PATCH net v5 1/2] enic: retain admin-channel DMA until queues stop
+From: netdev-bot+sashiko@kernel.org
+To: satishkh@cisco.com
+Cc: netdev@vger.kernel.org, sebaddel@cisco.com, aradhana@cisco.com,
+ rfaucett@cisco.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Date: Sat, 07 Nov 2026 15:03:05 +0000
+Message-ID: <179406378503.994134.16615988654708205370@kernel.org>
+In-Reply-To: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-1-2501d1223eff@cisco.com>
+References: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-1-2501d1223eff@cisco.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -136,116 +63,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Tianyi Gao wrote:
-> From: David Keogh <dkeogh@amazon.com>
-> 
-> Programs attached at TC egress commonly push additional headers onto a
-> packet, for example to encapsulate it. When the packet does not carry
-> enough headroom the BPF helpers reallocate the head, which costs an
-> allocation and a copy per packet.
-> 
-> Locally generated UDP, raw and AF_PACKET traffic is allocated with
-> exactly LL_RESERVED_SPACE() of headroom, which only covers the
-> link-layer header and the driver's needed_headroom. An administrator can
-> only ask for more headroom at allocation time if the driver supports it,
-> as netkit does with IFLA_NETKIT_HEADROOM. veth does not.
-> 
-> Add a tx_extra_headroom field to struct net_device for that purpose,
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Main high level concern is just adding an extra field. What's next,
-do we need to add a field extra_extra_headroom?
+Low priority / nit picks for your consideration:
 
-> together with LL_ALLOC_SPACE() and LL_ALLOC_SPACE_EX(). These add the
+- [Low] The comments above the admin channel close in enic_reset() and
+  enic_tx_hang_reset() (drivers/net/ethernet/cisco/enic/enic_main.c)…
 
-Since this already changes callers from LL_RESERVED_SPACE to
-LL_ALLOC_SPACE, could this additional use case be integrated more in
-the struct fields and helpers that are already there?
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  edits the exact lines involved.
 
-Admittedly, I did not spend much time looking at that deeply, and you
-likely did, so the answer is no. But I want to poke a little at that
-before we add yet another optional length field.
+--
 
-> extra reservation to the header length before the HH_DATA_MOD alignment,
-> so the alignment of the link-layer header does not change.
-> 
-> The new macros are intended only for sites that allocate new packets.
-> LL_RESERVED_SPACE() keeps its current meaning and remains the threshold
-> used when checking whether an existing packet must be expanded, so the
-> extra reservation never forces a reallocation on its own: packets that
-> already have enough room for the headers being pushed, such as TCP
-> segments built with MAX_TCP_HEADER, are left alone.
-> 
-> Keep the extra reservation separate from needed_headroom so that driver
-> updates of their own requirement do not clobber it and so that it can
-> be cleared independently. Place the field in the padding that follows
-> needed_headroom, which keeps it in the TX read-mostly cacheline group.
-> 
-> The field is not set anywhere yet. A later patch exposes it through
-> rtnetlink.
-> 
-> Also remove LL_RESERVED_SPACE_EXTRA(). It has had no user since
-> commit 6d5431555de0 ("caif: remove CAIF NETWORK LAYER"). It could add
-> the extra headroom, but it reads dev->hard_header_len itself. AF_PACKET
-> must use the value that it read once, see commit 03390aa32e66 ("packet:
-> use consistent hard_header_len in non-ring send paths").
-> LL_ALLOC_SPACE_EX() takes the header length as an argument instead.
-> 
-> Signed-off-by: David Keogh <dkeogh@amazon.com>
-> [tianyi: remove LL_RESERVED_SPACE_EXTRA()]
-> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
-> ---
-> checkpatch --strict reports "Macro argument reuse 'dev'" for
-> LL_ALLOC_SPACE_EX() and LL_ALLOC_SPACE(). It reports the same for
-> LL_RESERVED_SPACE().
-> ---
->  .../networking/net_cachelines/net_device.rst  |  1 +
->  include/linux/netdevice.h                     | 36 +++++++++++++++++--
->  net/core/dev.c                                |  2 ++
->  3 files changed, 36 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
-> index 8eceaa80b686..a7e311fb7875 100644
-> --- a/Documentation/networking/net_cachelines/net_device.rst
-> +++ b/Documentation/networking/net_cachelines/net_device.rst
-> @@ -35,6 +35,7 @@ unsigned_short                      gflags
->  unsigned_short                      hard_header_len             read_mostly         read_mostly         ip6_xmit(tx);gro_list_prepare(rx)
->  unsigned_int                        mtu                         read_mostly                             ip_finish_output2
->  unsigned_short                      needed_headroom             read_mostly                             LL_RESERVED_SPACE/ip_finish_output2
-> +unsigned_short                      tx_extra_headroom           read_mostly                             LL_ALLOC_SPACE/__ip_append_data
->  unsigned_short                      needed_tailroom
->  netdev_features_t                   features                    read_mostly         read_mostly         HARD_TX_LOCK,netif_skb_features,sk_setup_caps(tx);netif_elide_gro(rx)
->  netdev_features_t                   hw_features
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 435be7880d7e..98d1501d6fee 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -311,9 +311,24 @@ struct hh_cache {
->  	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
->  #define LL_RESERVED_SPACE(dev) \
->  	LL_RESERVED_SPACE_EX(dev, (dev)->hard_header_len)
-> -#define LL_RESERVED_SPACE_EXTRA(dev,extra) \
-> -	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom) + (extra)) \
-> -	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
-> +
-> +/*
-> + * Headroom to reserve when allocating a locally generated packet for
-> + * transmission through a device. On top of LL_RESERVED_SPACE() this adds
-> + * the administrator-configured tx_extra_headroom, folded in before the
-> + * alignment so that the link-layer header placement does not change.
-> + *
-> + * Only use this for new allocations. Code that checks whether an existing
-> + * packet has enough headroom must keep using LL_RESERVED_SPACE(), so that
-> + * the extra reservation can never force a reallocation by itself.
-> + */
-> +#define LL_ALLOC_SPACE_EX(dev, hlen) \
-> +	LL_RESERVED_SPACE_EX(dev, (hlen) + READ_ONCE((dev)->tx_extra_headroom))
-> +#define LL_ALLOC_SPACE(dev) \
-> +	LL_ALLOC_SPACE_EX(dev, (dev)->hard_header_len)
-> +
+enic: retain admin-channel DMA until queues stop
 
-If having to modify/add these helpers, it's probably a good time to
-switch to actual, type safe and readable, functions instead.
+This commit tracks the SR-IOV admin channel as DOWN, LIVE or QUARANTINED.
+If the admin queues cannot be shown to have stopped, the admin WQ/RQ/CQ
+allocation is kept instead of freed. The reset workers refuse to reset or
+reopen a quarantined channel, and when a final recheck fails, probe unwind
+and removal keep the inert resources and the PCI reservation until reboot.
+
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> index 6b5824f45a14c..4d616c3732dae 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+
+[ ... ]
+
+> @@ -2273,8 +2288,17 @@ static void enic_reset(struct work_struct *work)
+>  	 * DMAs from the about-to-be-reset rings) and frees the admin resources
+>  	 * so they are cleanly re-allocated afterwards.
+>  	 */
+> -	if (enic_has_admin_chan(enic))
+> +	if (enic_has_admin_chan(enic)) {
+>  		enic_admin_channel_close(enic);
+
+[Severity: Low]
+This isn't a bug, but is this comment still accurate? After this patch,
+enic_admin_channel_close() frees the admin resources only when both
+enic_admin_wq_disable() and enic_admin_rq_disable() succeed:
+
+	if (wq_err || rq_err) {
+		WRITE_ONCE(enic->admin_chan_state, ENIC_ADMIN_CHAN_QUARANTINED);
+		mutex_unlock(&enic->mbox_lock);
+		...
+		return wq_err ?: rq_err;
+	}
+
+	enic_admin_channel_release(enic);
+
+Otherwise the WQ/RQ/CQ allocation is kept and the channel is quarantined.
+The new quarantine branch just below depends on that.
+
+enic_tx_hang_reset() has the same wording ("stop the admin QP and free
+the admin resources before the hardware queues are wiped").
+
+Should both comments mention the quarantine case?
+
+> +		/* Channel close has drained registration replies. */
+> +		if (enic_is_sriov_vf_v2(enic))
+> +			WRITE_ONCE(enic->vf_registered, false);
+> +	}
+> +	if (enic_admin_channel_is_quarantined(enic)) {
+> +		/* Core close excludes netpoll and clears __LINK_STATE_START first. */
+> +		dev_close(enic->netdev);
+> +		goto reset_out;
+> +	}
+>  
+>  	enic_stop(enic->netdev);
+>  	if (enic_is_sriov_vf_v2(enic))
+> @@ -2287,7 +2311,8 @@ static void enic_reset(struct work_struct *work)
+>  	enic_dev_set_ig_vlan_rewrite_mode(enic);
+>  	enic_ext_cq(enic);
+>  
+> -	enic_open(enic->netdev);
+> +	if (enic_open(enic->netdev))
+> +		goto reset_out;
+
+[Severity: High]
+This is a pre-existing issue, since the old code also ignored the return
+value of enic_open(). These lines are being changed here, though, so: what
+state is the netdev left in when this internal enic_open() fails?
+
+enic_stop() above has already disabled every RQ/WQ NAPI and released the
+datapath resources.
+
+If enic_open() fails early, it never reaches napi_enable(). That covers
+enic_request_intr(), enic_dev_notify_set(), page_pool_create(), and an RQ
+fill that posts no buffers. If it fails in enic_dev_enable(), the
+err_out_dev_enable path disables the NAPIs again.
+
+In both cases the device is still marked IFF_UP and __LINK_STATE_START.
+Nothing calls dev_close() here, unlike the quarantine branches above.
+
+A later ip link set down, dev_close() or unregister_netdev() (including
+from enic_remove()) would run enic_stop() a second time:
+
+enic_stop()
+    for (i = 0; i < enic->rq_count; i++)
+        napi_disable(&enic->napi[i]);
+
+napi_disable_locked() would then wait on a NAPI that is already disabled:
+
+    while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+        usleep_range(20, 200);
+        val = READ_ONCE(n->state);
+    }
+
+Can this loop forever while holding RTNL?
+
+A possible trigger: an RQ/WQ error interrupt schedules enic->reset, or
+ndo_tx_timeout schedules tx_hang_reset. Then an allocation or
+request_irq() call fails inside enic_open().
+
+enic_tx_hang_reset() has the same goto reset_out pattern. Should this
+failure path call dev_close() too?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-0-2501d1223eff%40cisco.com
