@@ -1,22 +1,22 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.5
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.39
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794011049;
-	b=I7kdC0Hvhnz0uvciXd3rpfbp7xPByYFj5sPFyITiqXO0A/8KhTA8NpqEKIJRF89GxhKM
-	 zYVZSro7AZLK/3mVPmNHX9oh25GRS8rkIdawIfM1WPPfHanb7vnA5Sq8NjxbLajXXFSjD
-	 ZiODW/NfocczeW/FI7y8d6igKuWCLOwShs6vUy/WgWjnmyjhiXoQWo53VyUtM4w4nYYsx
-	 NwrJJNV1tEyMHbk19W9NPMSlLitBfXn+n5aMT+NG0lojpiHiPhHEicTctjqZnH19JroOs
-	 5YCHZeVg9zo2g/NGpSprhiO00GcUafZwrkI8DWpuXMGQrIr4dYeH561PUXhbG3idmzA==
+	t=1794011052;
+	b=IEOQZ5SzONsTbQfjQITaXTcJnYU3clM5SDopyn1COj5MWDmsFKQqXe9OL7wCLSDQH9Cx
+	 YA/tVSnuf5Jj7hFHzLnzGRUQ3990YaGsO/pLgLwHFBRA7CLHj366PxcgX8uMWRrun9REC
+	 kM708WHtmP5D0CRsB7bsgQMdR6z+lqBYW5hs+4nYl7vBD5/VI9xc1sjJJthzXtwjqyjaj
+	 BR3wYg+XXPpi0pZaNkJI6TPzeGVAHG4eAgDM94Kz24n5n0Feysp7sl/I5oX9b4EZ+UWZO
+	 KjZfWP8ulsxcDhfbspgmEKvamYQVVBgsrWylaJQ9lDCIPbKVEYHNsVaoQZuILaQdlyA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011049;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011052;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
@@ -26,51 +26,51 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=0p+Y2iGSfZ6EJBwbmFyShmlBEwlMutl4X2l3jmMBRXs=;
-	b=bcPON4ogCWiIm6bprK04U05vMTAIfn5UG8r1kcInuSAvQSXu9OylZs3UyG6gfXSw1G1V
-	 h0f3UPwvInvh1EpQIS6lWaivWWd0yYG93nvpq0+KOSRWQPM1XQLh+4drjifzZT1euuQHg
-	 tAKYglOtsxECYxwJ8LQMQbyE2GbWZBbz5owE1knbzAB1RcTGcOAYLbAkQwMryRTaN4AwJ
-	 0/1NXrX/Zha+gefcKM2pU6ruk5lNtrkOHq1FpeS4sRoKkWAzIwSEUiwTe7o4/FsVT+7Ka
-	 TcWIc1B97sXeSvHPDNiULXr72tUwGO+TieUQJQW1/D1eC8l3PwwwA4iVnD6RyxE1BNQ==
+	bh=7tKy8Z5io6THizODNJ4rqd7XgI160xiuUF0GMMfgPDk=;
+	b=k5pUrRBu+C4I4KFXKms7qvAT0EoZvyZQvmCc9TdDfySOpYrgcfaK+i6/n/B/64aIhQhQ
+	 fm5yrxldaTDWcs22c084bQ36qupxASOliAjhnL0bUuu+SKV5t/+lHMaOhHzESa87axi/L
+	 qRNsP2AO1iKW9C7l2QezdTWyrVyY0h+n6Rj9YeGBT55hzrQmnpwz0gmOcNwQpMgD8Eq30
+	 0+HHH+Hs31eXkAZmLtWcGlCk1HSyfaKjh7Bowgsk/6d5bQZmdRAckwZIyU8VlxIr4KC5w
+	 XsVGnw/1a+2jPw41K9834jwtbhWID40j+Nb6I6WcgCKOK07mEFZwbI7b8pg64Vt4I/A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=mGb5CpW2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.85.5
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010005.outbound.protection.outlook.com [52.101.85.5])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="RUdi7hX/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.208.39
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011039.outbound.protection.outlook.com [40.107.208.39])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBE4606A326;
-	Sat,  7 Nov 2026 00:24:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DBE4606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A05606A32C;
+	Sat,  7 Nov 2026 00:24:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99A05606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=mGb5CpW2
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RUdi7hX/
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a0Toc00uw2Ng5nAgSYZegs9mlfLYWTvzdD9aBxpwj0RRosGl5gxC2Bib5Ie3Srx5McNP3za0ZpAEAc6vbOG1h+Ia2Eq3elv2Yqf4PovP+XSoWUaP21LgYP8cRn7zohuZZ/WqelloO0sM2mUlAB1hHfmKKzkyI9+lF8kxoJdtYKWMkjqUJNwihFJ70WnZeyUYHZ2/xn5MD+Aziuxc0ggWDMWQsy8y5FQItsU5O4Qq/NOKd8kNZNwMhVFcED2OA4voVb2BQEZPhHXP8TGWz9EcyfrZDFe8sbGbnFkuErrkpbJJ2c/K5qddbCynoGelgnLPYKjzj7IaJQDPJEXe8IHndA==
+ b=x/o8P4trZgeDmNL5LYb1O09XgK+JF+Nu6ZXLjqLzuwARE7v/hJKB/9+JjGPVl48M80lfYwB85Z2bhb0TWhHATff0ds1wHgpKIyT7D7/QviU9P3JhpYU4arAuyAEZb0UojcuyrezXspuTcqWBAg43SQBOoZNP4idliG0tY6hUx4/OAEmtpPpZyC9VkvECuS2LtpWpqSRbjqx6VIpbChtwQlO+n1IpgDud0mooPj4X38qeeTgTg2gQgvxlLhxIpNmXbgTftGczi3g1YJH7KIhoufYbvgCN/NK0M+YdfqUlMdIbzlbT4vDITVNgEAuSoMQMXouj5LUNPGAs0g9r2NEKcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0p+Y2iGSfZ6EJBwbmFyShmlBEwlMutl4X2l3jmMBRXs=;
- b=MkZ2+F+Tw1iK+486h4Wfh5Jkv7kOQSfcabtxEf0xSP9UVK1OsjHOAdp51nbgl7vU34eHYGdiovA5mVM5FU2TQqElvv7Ev2lnWkAhr0OCRxh8YdliGT6lTnChDLdAe+KqhatxR7QkaunZLJaBYsQhMlj1GBMF1pyg8HvKutk20D9Q+S5iO21/E07YU5Z4HO2WxX1pkwOJmrO4rJCE3j5yvWU3ziVyt65HKDIQOIfZo+AOd36/RkfNzz6zss+sSl7FZSmLkuinoS7waGf20/JOdfXEwNVFGZD3GvD8Zlyc4munn2lUNQtBeHU0AyykAEQPIZKC0RzOdbHCWXjs8fY5wQ==
+ bh=7tKy8Z5io6THizODNJ4rqd7XgI160xiuUF0GMMfgPDk=;
+ b=I/i+g/s30nuDNhEzv+z4aOQXcXSv6n8IDw5JuyKhuAiA7yvyeLa12IqyfJrp75GVhb7CDIowJfWSuCjmJ7ZBNEf2+8Ao7HoFecJshYariIXeIYiS6D4Qzl4Z0MIVpVvjd6fCCZXlFMYbuULHoQA7B5CyBo5UD33AO73iIA8k3O+OOIZWWmSVKRqFqWNu2LfLeqKHagUOO7I2W3hRmZp2SHMvRfzy5e1V2QEbE9lDSZA0OdixDbbzc0AKoSc0ArZuP9Ru/Eao81w2YhD50zPIsngsRy788HZwcS2GrwM6Kw7nao5VpHarUzubh+DAp0TVbqSBkfo4xjeCopqVwzn1QQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=davemloft.net smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0p+Y2iGSfZ6EJBwbmFyShmlBEwlMutl4X2l3jmMBRXs=;
- b=mGb5CpW2d33RjEBxQzE1DmMGhLMeFd/QAyl8tqYRLQBfqYtvX52mPOPnqYlXtb3WLSwfYcgzorzL4DmArqAVOiGHLMdLlPcaGsWZsC7C/jRVO2GLC+mMHypz33BZsLbYIJi8LMcz2qIzAdxKwMp185XhO3UJnCqMUysF3bpNMIc=
-Received: from CH5PR02CA0005.namprd02.prod.outlook.com (2603:10b6:610:1ed::7)
- by DS7PR12MB5933.namprd12.prod.outlook.com (2603:10b6:8:7c::14) with
+ bh=7tKy8Z5io6THizODNJ4rqd7XgI160xiuUF0GMMfgPDk=;
+ b=RUdi7hX/jZfPgYc1c+9HQzVTbsToZBExvp5O/PwUni+ohjshL3GaWM7FCVq4Ix1kGLvPfbRitwMCPGtxN+IKDP/2QxR40b8attsh9JpqE0qejzXFdIZK/qD2m/xhpY5+QF7FmdRDarT2EknDnXZDiqDXGc/kG2x9Pn5eF3Jgjzg=
+Received: from CH5PR02CA0011.namprd02.prod.outlook.com (2603:10b6:610:1ed::28)
+ by DS0PR12MB9039.namprd12.prod.outlook.com (2603:10b6:8:de::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Sat, 7 Nov
  2026 00:24:03 +0000
 Received: from CH01EPF000BE944.namprd02.prod.outlook.com
- (2603:10b6:610:1ed:cafe::42) by CH5PR02CA0005.outlook.office365.com
- (2603:10b6:610:1ed::7) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:610:1ed:cafe::3c) by CH5PR02CA0011.outlook.office365.com
+ (2603:10b6:610:1ed::28) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Sat, 7
  Nov 2026 00:24:03 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
@@ -82,16 +82,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  CH01EPF000BE944.mail.protection.outlook.com (10.167.244.136) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Sat, 7 Nov 2026 00:24:02 +0000
+ 15.21.615.4 via Frontend Transport; Sat, 7 Nov 2026 00:24:03 +0000
 Received: from [192.168.0.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Fri, 6 Nov
- 2026 18:24:00 -0600
+ 2026 18:24:01 -0600
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
-Subject: [PATCH net 0/2] ionic: fix Tx stalls on TSO skbs larger than the
- Tx ring
-Date: Sat, 7 Nov 2026 00:23:42 +0000
-Message-ID: <20261107-b4-ionic-tso-max-segs-v1-0-67c248a5b681@amd.com>
+Date: Sat, 7 Nov 2026 00:23:43 +0000
+Subject: [PATCH net 1/2] ionic: reject Tx ring sizes below the minimum
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,10 +101,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAI5v7moC/yWM0QqDMBAEf0Xu2YNEtGJ/pfhg4mqv0FhyUQTx3
- 03bx1l25iBFFCjdi4MiNlFZQgZbFuSfQ5jBMmamylQ3a03LruZ8Ec9JF34POytmZdO0bkTnJ9Q
- dZfcTMcn+6z4oIFH/H3V1L/j0LdJ5XvBAMwB+AAAA
-X-Change-ID: 20261107-b4-ionic-tso-max-segs-057bde9cfe49
+Message-ID: <20261107-b4-ionic-tso-max-segs-v1-1-67c248a5b681@amd.com>
+References: <20261107-b4-ionic-tso-max-segs-v1-0-67c248a5b681@amd.com>
+In-Reply-To: <20261107-b4-ionic-tso-max-segs-v1-0-67c248a5b681@amd.com>
 To: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
 	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
  Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
@@ -119,72 +116,67 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH01EPF000BE944:EE_|DS7PR12MB5933:EE_
-X-MS-Office365-Filtering-Correlation-Id: 562ccc34-2413-4ab4-2b8f-08df3c656cd4
+X-MS-TrafficTypeDiagnostic: CH01EPF000BE944:EE_|DS0PR12MB9039:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1302d964-0b7c-429e-3408-08df3c656da4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|82310400026|36860700016|261026140227099003|11063799006|5023799004|56012099006|261021123027099003|261021121427099003|261022105027099003|261009223027099003|261021135927099003|261102123227099003|261026121527099003|261028144727099003|10067099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|376014|82310400026|1800799024|36860700016|5023799004|11063799006|56012099006|261021135927099003|261021121427099003|261009223027099003|261102123227099003|261026121527099003|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	zrgW10KOJ/stbhA669dQsqUgp564/5hXML3Ywv7wEPWnhvyC8C62ULahKXnztEZEfqAqgxKd5gr5zDip53lPCXLvMnyZcd9/4u7OMNO3nk/WUrtwOEz+//pxZjQpkm/IfEjCGeWwxP0GWTKybCnkaujcxH3t+5oIbmIGRrAzNmuxVcpRaWlQF7i1n5pluei3qjaO24T0wYZzaUhKEzJPhZWPRuMPPzY/CYAx+uXwd/3LAn3BBw7qrbtsvy9vtFtXXAHnXPtJesM+kL/mqKmWGbFumSRZS95BysbjrQQtwdA9PdK/uvMnuF/QOK1X28D8zeFmwXQHi6FB5vCDArHgqoRu1tGPcdLj7vcuzwhuQ+tz6wMqlar918Ws5LZN33oxVNrJ8qw2iM37il4f7XJ6JlWoCjOUxpgU/IGNVoCh03sevLkiSZJydcM1mzzOXLp3ZlG6LxEdnEz0yz20xltIpJF27RXJQT58sQHNOD56ek/Ah1L88rQpwPR3xwmD2VsTlWq+p8AzrDCkfmbp7D7kzMlMtwk4wORDZznN/8yDW73AfwTZhLUCZi20hilHk8BhJAc2MyUQ4RSMdIEQh+VKqH/nd7/9nIPb6ZnARAO1bN/e2jz3X/4/1OSSjM9t4g6/fMX+fKJ3koZAvW3pczvlzYSc1cqLtz2p09ZbZSG1CLnTlo28KRNZpYTsJ6599sVFeOFZpbqcnHOLL7kelBbPEw==
+	enREZyuAt/76VtbiL2HyREB4UcflTeVcYcTxdlpNdHXZggD4DXu1hQvTzH4bXKZZ6GlA9BLnGuRHOfYK74h+supIz5rIByhfL74b4m3LfSFNhqv5XKFbq8FMgkixSglcXhis1RA2bdywuWMqOgqI38s6raZ+Gk6RtxzsqUfeEGHvOhiLsyT62Wh8R3V/NRUYoeLn5ZJOVHw+O+sfym1SUpFwUuOpiACW8hwzQtH4u4cyImIjgK/1JjGma4vLmJ5iNqBabVwhz19W96M8gHaBe/RT9/wbPzubE3gyoIJYyfx4W1ScNTNoEBaumJv/+mpb6JQUTyDjrgcYGoSNDxnGShn4jdjH/QbSNXQqMJCGoiyVUalDtqt/aQIrMmX/ANHlp7HUWD216BGL0MOJt3k6WGeGR+LGS5I2HDNQMXUuq3EUHkHUCDs0X9mkeCqAp+GSceIh+qirg5pLdSgWiKMWF6RAUmkAhPPPhdm3acqYSXzeGPAwLeIaaPvAyW1S7+hSu0zSmgqBlzmZELJgjk+C5oIJHWd9STOakyHzk79lOZVLJ22heBGYIf62GKMWMHqtPeoMTjtoP0aa3Cy+Fx0V+ahEmB9A4zKOiQNdy74X9e970mzIzmIKkkFosHD0QT+4WZEcTJWPKUbogVWijt6dpbPtVhGe+aSX+IxlZhqoisIMPRqzUtiNfc+bGgCFv7ARBFFQNX1Dw0B7ckQI7rbEzw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(82310400026)(36860700016)(261026140227099003)(11063799006)(5023799004)(56012099006)(261021123027099003)(261021121427099003)(261022105027099003)(261009223027099003)(261021135927099003)(261102123227099003)(261026121527099003)(261028144727099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(82310400026)(1800799024)(36860700016)(5023799004)(11063799006)(56012099006)(261021135927099003)(261021121427099003)(261009223027099003)(261102123227099003)(261026121527099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	CsRZGjCdXCJt8iYEtgAJghRDcIyXc4wdHkEmbiq8CyhI8xq1b55IO+LlrCbeMynRhjh5sOxhquzrGphKjin0GwU+xbKFj9I905M8kTcaLekMiF/5FNMKGyhvphAg7iBGYPM1nF80I/o85xTDvOmHeLgYLtQRAG0zFTTPLnAOqB5Oo0DaGgSkaGeqX0VQNLtAGxhamaSfZSeqB+5VSaaTTCKm5N1BNzt2vct2wd56ha0Pvm0zSu6W6frwIOhNu0+Z903IIIuo41uufIpn3cUcHbFVp72mZw6DP2E1y7Zjz8XMq22c5Q/dJ9mRUHbOCY3zZCIDgWpQlCVwqECPR4crIT2m3n3QEk/gdi3J7qKp740lzVuMh3zapVpZsPqgFOL971oYH+EHmBjrahYr2Edo1/tzp6W+WuuVw/FBeWZ3AQn3KfZC4Ena2oV3Sjo7enfa
+	R73fUw7EBZvL/5PFiJiy784V8RMzUvxVwlot89XTHns0NWT5bb+cfLyDD/eHQ82WQj2gR/K7W3iuqmDv4SodsW8tUeroafEOUYnI0DFd3I3hjJr0w1U99DYrDvwdPIzdsJYhhVql8q9zJV4Du0dLx1r27ikYib7May2fkSAOTSFzFdkci0BINOi8r7wwxCbo0tFooNfiqfJK06VZSHgNEIsAs9687HeDys0aRjsxyqnU0QKzsQsow2RrPcXSQF8wTuxvYDPzcSkjOKTs5VvX5hQpVyWhX2yomyPGruUd4lGGvyjOTiHrPQVcbhmCPH9WsQ36e9aJA2HB/sYhWCsdNL4hA1yTI3Txs4iWOB7R174WdXrPFmbiDLwQZ4EIATkhevat7b54gkPGB3CtVoNm2TqoegZl5vcYgeFhyhj4pKHWL7klB4idpBW5wKPzdIwi
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 00:24:02.4506
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 00:24:03.8397
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 562ccc34-2413-4ab4-2b8f-08df3c656cd4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1302d964-0b7c-429e-3408-08df3c656da4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CH01EPF000BE944.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5933
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9039
 
-ionic uses one Tx descriptor per TSO segment but never tells the stack
-how many it can hold, so tso_max_segs stays at its 65535 default. A TSO
-skb with more segments than the Tx ring holds can never be posted: the
-queue stops with the ring empty, nothing wakes it, and the netdev
-watchdog fires again after every reset. A 64 KB TSO skb needs more
-than 1023 segments, the limit of the default 1024-entry ring, once the
-MSS is below 64 bytes.
+ionic_tx_cq_service() wakes a stopped Tx queue only once
+IONIC_TSO_DESCS_NEEDED (44) descriptors are free. The threshold is
+sized for a 64 KB TSO skb at a 1500 byte MSS and assumes the ring can
+have that many free; a Tx ring of 32 or fewer descriptors cannot, so a
+stopped queue is never woken and the netdev watchdog fires.
+ionic_set_ringparam() only checks that the size is a power of 2, and
+the ethtool core only checks the maximum, so such sizes are accepted.
 
-Patch 1 rejects Tx ring sizes below 64. The completion path wakes a
-stopped Tx queue only once 44 descriptors are free, so a smaller ring
-can stall on its own, and patch 2 would otherwise let such a ring lower
-gso_max_segs to a uselessly small value.
+Reject Tx ring sizes below IONIC_MIN_TXRX_DESC.
 
-Patch 2 advertises tso_max_segs from the Tx ring size and keeps it in
-step with ethtool -G, so the stack sizes TSO skbs to fit the ring and
-segments larger ones in software.
-
-Tested with the in-tree driver in a VM with the PF passed through:
-GSO frames with a virtio-net header and about 1500 segments, injected
-through a tap redirected to the ionic netdev with tc mirred, stalled the
-Tx queue before the series and are sent without a stall after it;
-tso_max_segs follows ethtool -G with the interface up and down, and a
-Tx ring of 32 is rejected.
-
-This series was developed with the help of an LLM-based coding
-assistant (Claude).
-
+Fixes: 061b9bedbef1 ("ionic: Rework Tx start/stop flow")
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
 ---
-Nikhil P. Rao (2):
-      ionic: reject Tx ring sizes below the minimum
-      ionic: limit TSO segments to the Tx ring size
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 19 ++++++++++++++++---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c     | 10 +++++++---
- drivers/net/ethernet/pensando/ionic/ionic_lif.h     | 10 ++++++++++
- 3 files changed, 33 insertions(+), 6 deletions(-)
----
-base-commit: a36b9e205cb3c452ab96cc783e63465d466fe615
-change-id: 20261107-b4-ionic-tso-max-segs-057bde9cfe49
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 119ac720c078..3518fbf5882d 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -708,6 +708,13 @@ static int ionic_set_ringparam(struct net_device *netdev,
+ 		return -EINVAL;
+ 	}
+ 
++	if (ring->tx_pending < IONIC_MIN_TXRX_DESC) {
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Tx descriptor count must be at least %d",
++				       IONIC_MIN_TXRX_DESC);
++		return -EINVAL;
++	}
++
+ 	/* if nothing to do return success */
+ 	if (ring->tx_pending == lif->ntxq_descs &&
+ 	    ring->rx_pending == lif->nrxq_descs &&
 
-Best regards,
---  
-Nikhil P. Rao <nikhil.rao@amd.com>
+-- 
+2.43.0
 
