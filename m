@@ -1,109 +1,157 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794064118;
-	b=ep0Zy8bdf5/qttaIwxT73cdBk9Ad3lI6eJLZOSmeMVTnC5G/+qScgFzIRCOgJ5fZydxf
-	 Vk+c2+DondKpWaHRquIPDiQXKnGXTXG12hFMnJGklZQ1QLWUfaOIgKCLGDDigUQpQknhX
-	 D1eHaAodPQ01Z9MXTYXNYEF1e1LMSEPLxIXQkjRXdqE8ktTB3qK8gjz2SOyO1IbHxD9lm
-	 AbSGlNlI7kLCHZ+l58v1uxDCf192wQx1wk9DyBRL1KmPLd3aXiE8564+MTehChAsa9gtY
-	 QqYOGgGKVRD4AhOzJYF8LYxH0SHneoQvBHu7z/PgYw9PGUUHeUb/qx0R5TMLZJ7puAg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794064118;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=ALGSenX0zs2BVHF/84nUUmepv/GDcgnI5RNZWHPQC+I=;
-	b=nmP3NjcQU/6MXZQUvH4GnsA4eJfN2zmWmlsn7QBWT1ISAVsF4swxTKXJCzVeRpLIVKDA
-	 nuEymJo9a8EI0z6kVr+OEy989jj85OwOV8X/Htk/kQV7lFaZrEWLMwnmqLUvk+WZniBIW
-	 3I6WuKT1GGQJkd03w0W0C26WDMLnUZwLTCYZ21Msd/w57k1LM+SIMj6vMfpaazEolwsk1
-	 MS7yivmXO6kGlL02Thkwe7wm7cq/7eFJ5owPt4ObIGgks4waHWJiW/lUIHh9XNdZ9Pj4e
-	 XYf0F5I2GCIFqwwQBeUTsOTf7AGQ3z85JlxpkJoh8nrJUDi28Ekv6fAlblCvJHqRX3g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JV1vknhq;
-	arc=none smtp.remote-ip=209.85.221.175
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.192.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794064407;
+	b=SVZqAjgOzgher0gOwsIHbY7iLEQYyRAWoQ6J4CEA7C0reItdH/rOdliU7SYdIxGgvelQ
+	 CFqhgAgZ5kLHRumlEQ+hOqsYYzr3Bo2Ff5miXVGOkvYb/s7iXmAZ7BenJtnv3V45OxShI
+	 7hWfVSLTQYQ8VoWBFSgKI18Tn2bQXYz/O59g87R6azLnzBuCcW/MGconlcDwlJNhRDmlS
+	 ehf7ko4HFbHmdkUSzeD6eLNyQMP5PJdPDNdE17vVFHuUZPy71bbC0cE+7LvKIiHq7EMwp
+	 qmi6LNvbYkKj3/xn+E9hYrS1w26TAW/aziMcehGEX5FajrmGaH+WRwno3nuiTAGZZ/g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794064407;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=cfImJqHL+dzKHx/Mltts3JcvtV8m8GeGHYFDzuh95ik=;
+	b=G5nkTdsatJQ24rEH0ai+tQpfD3bFGTZ6+lwQ8W39FshN3maeEsjgnVNLa9E2657Z6LrL
+	 pLEU3wt7hb0mN4ytCpnsicA2y5aGnbXvgshDNc5/N+jUJMxSYJy453ag3PrcNeVqc5lfW
+	 nhTBnGOYb8h0uXFczxDZj7XkswkW/O+4AxM7et8RFz5tvuRbfm06h36EMb2BXw+cSaYAD
+	 aZQ64Gm2eg97jd6gOGERZ8DPraADEn+gaHIpws9m65t2kmiP/I0HBXUZPrKO13tBG17vB
+	 /357Lo5WJeAYtqCTW/YAHZDfv7Tq/kdZeexRaWUK0XqXfaM0b4Qav7QMgc/qgC/Cczw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=hydroquebec.com;
+	spf=pass smtp.mailfrom=hydroquebec.com;
+	dkim=pass header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=BzWMl3II;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.192.2
+Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11011002.outbound.protection.outlook.com [40.107.192.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74461606E8C1
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 15:08:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74461606E8C1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C8B606E8DE;
+	Sat,  7 Nov 2026 15:13:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26C8B606E8DE
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hydroquebec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hydroquebec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JV1vknhq
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5ead9f60e26so658367e0c.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 07:08:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794064117; x=1794668917; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ALGSenX0zs2BVHF/84nUUmepv/GDcgnI5RNZWHPQC+I=;
-        b=JV1vknhqyz68CXblk7gJJEBC30Y31srYk2XDMjYnwMH9498cfA1iexxosTCnNbEZZy
-         hzmlQi9mS5eh/uB/LIKf9M6obAQZdSM9XSCkm0rHeZQVfGcTtyCGtGEpK9ttqbUjLZUb
-         /iFAZ8BTYWoDKxySIgPu744IUaOwOEU630Wl33rM+O6wO9sBanuUcjen+4gt5/FjsxB+
-         E1Ag4O4IGPq6fLw8N+0LKwHXjl6mLo0CuSwBz5Gv7sEIWV6B7pTfMcr4E8ObuxucWql4
-         B7dF6RojE7bezcandIg4VziQxbb47WzVHiAjAG+j0V+kVmSuTGsfwhdAXKwBNySOv3ZK
-         hxYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794064117; x=1794668917;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ALGSenX0zs2BVHF/84nUUmepv/GDcgnI5RNZWHPQC+I=;
-        b=CBHE+F8TyxzRtzWWJLWfBZsjw7wJNMzT6rEaREe+KOuz4NidqW4S5afqOW24SZjGGu
-         jZVRKVQ1umGl8Zl0cASMsJH8Bbl3rlvF+Oa0Zq4Vq3CI8+b/caVa5Z/U2YJYkfKeDfFm
-         Bu2FPEb2Wlu6s9MYXHkC0A5oWF8rYn5PQh6w508DIoeiofIkbocfKTdPYSgP1gtKY52/
-         dYm6lENlegDgqTlB1Z/nPsUhTsw9JWrge5kyWNad/OTANxyZBvVDEJgCoh8l7zQw66nA
-         6XK07AluO17EEf9rvmN9OolaqjDK80hHSh9NXB2PasnLQHPhavH6RcM+lgsxCrrQ99OK
-         1eEg==
-X-Forwarded-Encrypted: i=1; AL+hErEDb3yIV/Z4s9Wtd+EYR4/+UDurn6lmikmhaQIsi55STupa7XrmFZjztEYbV29DaygklN45PHc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+8RyE2ijUJ84RxWLopllAQhquWPUPPH4WdqYRkrcVrwd+zQ4QH
-	qEhjSji9PB6zJYLf6APWoVGw6LD9E6hDFfn3JSi/FkkgSCXAqQxc5bzd
-X-Gm-Gg: AYBFou3dmaUrl4vil2I6ffA/PQi/CYVrLcIgV+Ffe7ZHZAS1xAOKQV6xRyn+i1s/ajB
-	5oPBH0tscVvos7M/8TJ4slmS6pGEKLSUJ/Y+ZIoFzZzNvPMShaP4oViCYz/wpP7lUIajUoX/sZV
-	z3hfpQjdtHlMHckjym0B30Q63bI2xXqjU4N0EQt7IMnNuoGVC68TdTsTRtQVXLc+q1EqnsmXeYN
-	mU4Gn02dRrm2Tw4OTl2vRMvHZSiIUAO/eNwNz5QPI5ZKz+dSsJub9fMcuxMkMWC7T4eqaV4asAe
-	WOzVtGcTbJCetMGyyCSdYugeeOxLZ96S1d+XpJh8KFnN4rFy2Yl05t4sgxRuLDwML1RAqrvUDMU
-	9n6OHNw9d2LMbMsuzNHPkmlyrbvtYRRExkHT1ZigWMVeHASkGUfQ9zIGv+pGRr617DppaNnvBcX
-	JW87LlKeXILBFupElKWjE+072OqO1TqPLTQp6+YX4IJpQnOxEAtpnaZy0S7MkZusGh+fcI+sBeN
-	QlgrUktAIU48rhSYHyl4GdWUbbmsamzOm7stSUhD2jzX/6+XEeVznHhUK4z7BuU1V1FuWcgEC78
-	hRkyFv/V4LGm5JjK+WtYY4LbbKF0jvVmAtY1dPLYn+tpMnxwvjysqPcMRogksNgpMJhMF+SX+oW
-	/YVCVHE3I6mLK6Fr6Em2J8CbntCUB2/P8LKjeLEv1N9B8bjV91crligFETPF/GkG4qBILDX8=
-X-Received: by 2002:a05:6122:6e0f:b0:5ea:cb6c:6513 with SMTP id 71dfb90a1353d-5ecd1af4864mr502091e0c.1.1794064117333;
-        Sat, 07 Nov 2026 07:08:37 -0800 (PST)
-Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecc64ccb58sm3801606e0c.9.2026.11.07.07.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 07:08:36 -0800 (PST)
-Date: Sat, 07 Nov 2026 10:08:35 -0500
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Kalpesh Solanki <skalpesh942@gmail.com>, 
- willemb@google.com
-Cc: Kalpesh Solanki <skalpesh942@gmail.com>, 
- willemdebruijn.kernel@gmail.com, 
- jasowang@redhat.com, 
- alex.aring@gmail.com, 
- stefan@datenfreihafen.org, 
- miquel.raynal@bootlin.com, 
- andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- edumazet@kernel.org, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- linux-wpan@vger.kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
-Message-ID: <willemdebruijn.kernel.1e7cfcaee3e82@gmail.com>
-In-Reply-To: <20261107062755.23145-1-skalpesh942@gmail.com>
-References: <20261107062755.23145-1-skalpesh942@gmail.com>
-Subject: Re: [PATCH net v2] tun: disallow setting IEEE 802.15.4 link types via
- TUNSETLINK
+	dkim=pass (2048-bit key, unprotected) header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=BzWMl3II
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FZ4EWPPmT6Vo+JZnU9529iVnVyDHvLjRtN1pLfRPpwAlQCZ8ijT0Pvk9Ca6x7OZ8xSTxuMjKTghVVN4n1kuqmpnW0rnozJI03r7Vv/13/dbR3rrefpy0WYPFvszyMYn1JdQLzqUG5mntZ7WryH4mUYQoCNjaFISzg9NuCUdJlfaEqHlNhPobmoFKl1uB5bRRP2D5j/kBb99H1sGsQ2kTc6VAoWGWWS8gOBWHYq+f1ep6mU1cEYxP37c+MG8C1HKnln29Me/TKEay3lyP5Q2lNd7IV4cVxRcfnrb4e7yE6qwK+F4kP45YWKw+NckDMEWbremtWTeZW7ao55x5acd8dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cfImJqHL+dzKHx/Mltts3JcvtV8m8GeGHYFDzuh95ik=;
+ b=ZkMR5Vkow966ouE+yA8bU15qLsGeB7RGkc+13sX8KoAY3EiPn8XacYSAy4diEZr8senu/xsG6S1hiO7xkd0erkM2ykaC63Qow3Yw+9tBXWlqq96timhUjvdAI7cIJ6KkKkeFq4AWFFydQtyQf+T1Rb3WypQ+LFb9Ea5BSZXrRMOFVFF+1PMy/voz1Ki4hBw8mZlQFkz88OKhwDpNRwHsK8KoTrZYLXMF3UYQMSF3WFLw9S8GHULizdldfmI6/b4tJAoH6C3NxRgYKBG1YcaVdQiPLxPiBKPczjFo8kuHubSjDSmiKEajx0GLnd+mLn9GQysnUtH4sZMEU/1MBGPLoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hydroquebec.com; dmarc=pass action=none
+ header.from=hydroquebec.com; dkim=pass header.d=hydroquebec.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hydroquebec.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cfImJqHL+dzKHx/Mltts3JcvtV8m8GeGHYFDzuh95ik=;
+ b=BzWMl3IIpZeJ3TLCORKfFLfp/jx8dzzxRYFLmV6Akc3ycNy0NPfg/z0Hgu6khP5fb3+uNjFoEqKDWCy7HDOPHFbVZs4KZ/Zu/RvnobwJNgWV0s5z3aVpSrXA29JIQMjv5b5mJ/ZwOA/ZM/ZE1+WeljitX6zAI6VhnuKlwXXQQDeWcMOKRjCDFDs1ASwReik6zhojp6+puzgdr3EhUgZFDuas6FcDUOFxyVSx71ZuJ4EALsFQv4KmzDLShduvtZCBU8+9nSo/7V1bUZCVFnC2nzu1RwBLVIEeMpB3lYgQ0pEmSVwcQ7tWh2wPqwwJNcGR8C8QzD+2s8vWt4dvYt2vvA==
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:18d::8) by YT8PR01MB553497.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b00:10::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Sat, 7 Nov
+ 2026 15:13:20 +0000
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40]) by YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40%6]) with mapi id 15.21.0592.010; Sat, 7 Nov 2026
+ 15:13:19 +0000
+From: =?iso-8859-1?Q?Choini=E8re=2C_Vincent?=
+	<choiniere.vincent@hydroquebec.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"aleksandr.loktionov@intel.com" <aleksandr.loktionov@intel.com>,
+	"michal.kubiak@intel.com" <michal.kubiak@intel.com>,
+	"wojciech.drewek@intel.com" <wojciech.drewek@intel.com>,
+	"mateusz.polchlopek@intel.com" <mateusz.polchlopek@intel.com>,
+	"pmenzel@molgen.mpg.de" <pmenzel@molgen.mpg.de>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net v2] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Topic: [PATCH net v2] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Index: AQHdZU4ihKdjzNAMJk2Vt0Tl0Q7xS7cT0jmAgA73rbw=
+Date: Sat, 7 Nov 2026 15:13:19 +0000
+Message-ID:
+ <YT4PR01MB64729023ADDEA05B9BDF7F064BE3752@YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM>
+References: <20261026-ice-tx-hang-dump-v2-1-e2136ef2c5dc@hydroquebec.com>
+ <179324143967.3134.13716472134019576369@kernel.org>
+In-Reply-To: <179324143967.3134.13716472134019576369@kernel.org>
+Accept-Language: fr-CA, en-US
+Content-Language: fr-CA
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Enabled=True;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_SiteId=f40a10f0-50ee-4880-9a37-6e1dd4ac2ff3;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_SetDate=2026-11-07T15:12:53.896Z;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Name=Diffusion
+ restreinte;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_ContentBits=1;MSIP_Label_5af313ef-8edb-402d-b576-47820579b2e0_Method=Standard;
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hydroquebec.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: YT4PR01MB647290:EE_|YT8PR01MB553497:EE_
+x-ms-office365-filtering-correlation-id: a9ed6718-bd71-4db0-963c-08df3ce1a83b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|38070700021|261026140227099003|11063799006|4143699003|261022075727099003|261009223027099003|56012099006|261022105027099003|261021121427099003|261102123227099003|261026121527099003|261028144727099003|18002099003|22082099003|6133799003|10067099003|3023799007;
+x-microsoft-antispam-message-info:
+ p+/iB3/5+iuaUSz4Q14Aqj3e8yPM1zadF/Y4J0/xDsDckKMKJ3yp+7g4OH6eS+5xeFGDgp8spn5/vQrcutcO7gNKLBGuR4E6f+/N9oplyIYHUlypV3H4kbGaug5wt/XmYEkowYa7itkRV0NkDBQzQSPFlHRW1oCxhQ/bQg9ZgvgAunEtf2w7nWmDZ2DxsX4AQD0Y2c2ah/I/EViy2UTuWEuIFG1gTiiaHvhycn1FJpzGb6NjpsQy2pJ7plyJfzwyIb6DwcG/9TP66NcVfzLo8xcDF5VKH8ksqyM20Bj8MGwh8M5Aqh+E3KuSBqZqXxGnQjHf26P957UVPA9bSPlFQa4congL/QMsN1vI6ct78kkmRI89l4Kl0PMeNrVbJPaArE2cdDYNGqGmlGTNaFHbz63PkPj/Tua2r+jtY+ziDAfOg820Bj/ohigv/lvRhT8NB9JqQtZ7wNMtUJHwbYoVIYuUbj6/ufmOnHgnfJQvaFRdQy6aGhA603LrXiGVUOlpUejGvRz6wpgLzw4RgciuTKZNnk15mdJTWfyGLmYC4SsDtkuTSLcBWegYPVnC8DorHWoaKZf9ZsjuxFVkcG6hVUIyxrKIbQ0i1bEfGpACv+hqV2/9OqipjCtY93RCi7NTqRqJmNghp2yaqogxIIQL8Wmf+2g/QKlRjzySSN9Gxfw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(38070700021)(261026140227099003)(11063799006)(4143699003)(261022075727099003)(261009223027099003)(56012099006)(261022105027099003)(261021121427099003)(261102123227099003)(261026121527099003)(261028144727099003)(18002099003)(22082099003)(6133799003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?tYy6vgNdsv1TtQS4BHnn/SVfvmHEBB4M6igir/bSsQSGmjBuMhfTg/uVjE?=
+ =?iso-8859-1?Q?aAYKcNANFIqMAB3+3PlFcXFquSLsw+6qj7u+vBJxkkeGs112cTMteNoOGQ?=
+ =?iso-8859-1?Q?caZMhd/a4k7iBSpXaLffysa8hxOExhLBmTrWIhuuje1T2EFT2hd0Q80tWi?=
+ =?iso-8859-1?Q?81VIank8WRMqExgwnzly3VveN05QI+xpwYBKHG7eT4oVBF9SXuPMTmIEX7?=
+ =?iso-8859-1?Q?9/M4OJXS9CXdVSGuRD2hRaXbIXycFM19u/HgEci5n2NtVqkZz8iI4EO+zt?=
+ =?iso-8859-1?Q?jthl1lM3ePmUnshwMJjYidbDtATAV2H40MlV4B70wmp/CiTHRLxDQENkdJ?=
+ =?iso-8859-1?Q?mreZJsgh/gIvY2XBCBMyixIb68ljNuTNv1tWI2HPMC3Y0e+y+akSrr3L8N?=
+ =?iso-8859-1?Q?aScsNMNLR0u3CEenGpDHqMxd5USiOYll0sjl9toD/NnyDvjXvPH6Q8fk/k?=
+ =?iso-8859-1?Q?stdS+IWwgffiUqsWzbJlQcNOKtH1MyX1LUvoiHBaV1eU19/Zi9RL66FLLs?=
+ =?iso-8859-1?Q?OJmQZHR8DzBlwGopytM5kKDOqnf2elmVpoQ7vH3YYjMQoF0bSGnYgaVNN0?=
+ =?iso-8859-1?Q?7QAxEDF3clyJNFUEJtejyA0c05BcTjyPPX8TVYCx5EBkkHxb68jJPecYUs?=
+ =?iso-8859-1?Q?QLBlaXLZl0S3aUZ3xDkzVNC3sB2HJmuvbhmUdj9gtUArpSLpg30XYy3qF8?=
+ =?iso-8859-1?Q?3CHJYfxhHO6dDO5s7BC4uwXt3IIwELs32w28bZnbcP9EGV+ZCw5oW2200s?=
+ =?iso-8859-1?Q?uH1I7JshBLZL96QgwgGQq3bWGLQq7PFMj0syn8MP+Z2vl0jrvpQsJKfB6m?=
+ =?iso-8859-1?Q?JmXrXiAkRSTSN1THF93tHmDNM5zgIRadDX1KW8746U2hslluy1BQaz5viH?=
+ =?iso-8859-1?Q?aIo8V/pJTpJsB2aZNhZOQw3XscfCnd4JB0WcE4qAbYe69Ppjb+8Y0OCB7x?=
+ =?iso-8859-1?Q?nQf9y4DpE1w2ZiIpj8dGwSM4dYoU38CgIi5gTQkjWprMnGfDcWZe1Fmh5k?=
+ =?iso-8859-1?Q?EnQc8XQXCQlMrdHWAz7BaZFHZxZvC0HG+74RRn38uTHx/3POY+fsTtnyZx?=
+ =?iso-8859-1?Q?JnyMnFYWK6vpqnuy+tj4v8L/rYPEEhs3L9yM3/uvP7u2ewNZMoLeMOsE3l?=
+ =?iso-8859-1?Q?L7l8vmn+rQ6EGxNdQ906KyRkbMskAye2Vp6ZIzOTfRGirgSdz+L1buhw5h?=
+ =?iso-8859-1?Q?xPO3eIMDonfVZzCghaqC9LinAmPR7Zex/N6oQkYn65w8xNzt3PuCFecySu?=
+ =?iso-8859-1?Q?wHIMP6aoNDNAfJ+Hb7GQfF4GBZoDaY/VYPI7RpkWtK/K1d2TltpDzc/gOf?=
+ =?iso-8859-1?Q?wNuHv+IwlitkdB8drVYRXSfmtSzdiPM0h8PiMeJ/uQMF72B99J86CEH8cU?=
+ =?iso-8859-1?Q?0C1gFEw3j/rtL3FUwVHoxeH22B0UFOU99S9cav05CzZtWuXt4D6kvfwRa4?=
+ =?iso-8859-1?Q?Ma74GxNUH+VwO0SuJXEJWOztbF0qDSPdiZca0tDeX73ulI4v5IUd93Gq5S?=
+ =?iso-8859-1?Q?Z56Wf+yRNZbUq36R4IXsckQlpzM1y/gKJsHRw+O5YNtD/KM6IFtIUR9a4B?=
+ =?iso-8859-1?Q?fB8Ts6EYjFAFu1RkzbssIdn7PM7T0OQYe9L6j9aLSxJkTyOBXfUTLYejz+?=
+ =?iso-8859-1?Q?O82QZ+veRvEK0UO7MCfh/8e0uyScDjpmYa0SOnlQm+oBHwnO8yK4fPQu5l?=
+ =?iso-8859-1?Q?xTQFn88V3H/8TvWaQhlEzFKxysSPq4MFiE4VgjCoFtFkKVMFa4BWA6wOOh?=
+ =?iso-8859-1?Q?vKu3a3cOquHkwA6pbh611EUR3kJyCQOLQgD4D/poi0KDlShi/tIJOt2tYq?=
+ =?iso-8859-1?Q?CqI2dqPCeDXoA1HBUOSQrxeqj+y5hQY=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,52 +161,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: hydroquebec.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9ed6718-bd71-4db0-963c-08df3ce1a83b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2026 15:13:19.7453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f40a10f0-50ee-4880-9a37-6e1dd4ac2ff3
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: czT16vcoaVE9peCabd/uma6astxbbVyPy+eOOSunTxYSJMFaN2B4+zHDveC5HF3Ycx8C3jDS6miqNoff83TMmO2zlXCBMOx5VKMpxX8Hy4GstxtX8Av1SPJG+lWXedUS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT8PR01MB553497
 
-Kalpesh Solanki wrote:
-> On Sat, Nov 07, 2026 at 01:51, Willem de Bruijn wrote:
-> > One exception is if this has never worked. If this was a NULL ptr
-> > exception from the start, then clearly no userspace can depend on it.
-> 
-> Right, this has never worked.
-
-In that case, the fewer these weird exceptions, the better.
-+1 on explicitly failing this, thanks.
-
-> TUN devices only have tun_netdev_ops and never allocate dev->ieee802154_ptr
-> or register with wpan_phy. Setting ARPHRD_IEEE802154 via TUNSETLINK was only
-> handled in tun_get_addr_len() to set addr_len, but any actual use (like
-> dumping interfaces, llsec keys, or opening an IEEE 802.15.4 socket) immediately
-> triggers a NULL pointer dereference. Real virtual wpan devices are created
-> with mac802154_hwsim. So blocking it won't break any working userspace setup.
-> 
-> > Apparently a similar issue affects ARPHRD_6LOWPAN.
-> 
-> Yes, good catch. Setting ARPHRD_6LOWPAN has the same issue: lowpan_dev(dev)
-> assumes netdev_priv(dev) is struct lowpan_dev, but on TUN it's struct
-> tun_struct. On events like NETDEV_DOWN, lowpan_device_event() writes to
-> lowpan_dev(dev)->ctx.table flags, which corrupts tun's private memory.
-> 
-> Should I block ARPHRD_6LOWPAN in the same patch, or would you prefer that
-> in a separate fix?
-
-Depends on the complexity? If you could handle both, that would be
-great. Sashiko would probably call out the same thing otherwise, too.
-No preference on whether one patch or two from me.
-
-> > If blocking this proves safe, prefer as little unrelated code churn as
-> > possible.
-> 
-> Understood. I'll drop the USHRT_MAX check and avoid touching tun_get_addr_len
-> or the include header in v3, keeping the patch strictly to checking the
-> rejected types in TUNSETLINK.
-
-Mostly, try to avoid changing the indentation of that otherwise untouched
-basic block.
-
-> Thanks,
-> Kalpesh
-
-
+Thanks for the review. I posted v3 here:=0A=
+=0A=
+https://lore.kernel.org/netdev/20261107-ice-tx-hang-dump-v3-1-8f22109d1aad@=
+hydroquebec.com/=0A=
+=0A=
+I checked the sequences against current net.=0A=
+=0A=
+[High] VSI and ring lifetime in ice_remove():=0A=
+=0A=
+You are right that the kernel-doc claim was too strong. In ice_remove(),=0A=
+ice_unload() drops RTNL, ice_deinit() sets ICE_SERVICE_DIS and frees the=0A=
+VSIs, and the service task is only cancelled later in ice_deinit_dev().=0A=
+ice_service_task() also runs the Tx hang report before it looks at=0A=
+ICE_SERVICE_DIS, so the rings are not only replaced or freed under RTNL=0A=
+or from the service task.=0A=
+=0A=
+The underlying lifetime issue predates this patch: before it, the service=
+=0A=
+task dereferences the same saved ring with no protection at all. v3=0A=
+removes the incorrect claim about RTNL protection and documents the=0A=
+remaining limitations in the kernel-doc (ethtool -G/-L and the reset paths=
+=0A=
+are covered; driver removal and devlink reload are not).=0A=
+=0A=
+[High, pre-existing] reporter freed in ice_remove():=0A=
+=0A=
+Correct. ice_health_deinit() destroys the reporter without clearing=0A=
+pf->health_reporters.tx_hang, and the service task can still reach it.=0A=
+Same cause as above: the service task is stopped after the teardown.=0A=
+=0A=
+[High, pre-existing] DRIVER_REINIT reload vs. the service task:=0A=
+=0A=
+I read the same sequence: ice_devlink_reinit_down() reaches=0A=
+ice_deinit_dev() and cancel_work_sync() on the service task with the=0A=
+devlink instance lock held, while devlink_health_report() takes that lock=
+=0A=
+when auto_dump is set. That is a lock-ordering problem rather than a=0A=
+teardown-ordering one, so this patch does not address it. I have not=0A=
+reproduced it, and dropping RTNL before reporting does not change it.=0A=
+=0A=
+[Low] tx_hang_buf:=0A=
+=0A=
+Yes, listed under Limitations and left out of this patch.=0A=
+=0A=
+Przemek, Tony: I think these pre-existing teardown and lock-ordering=0A=
+issues would be better addressed separately from this fix. I am willing=0A=
+to investigate and test follow-up fixes (I can force Tx timeouts on an=0A=
+E810 with KASAN and lockdep), but I am not an ice expert. Please let me=0A=
+know whether you would like me to prepare a separate series, and I would=0A=
+appreciate guidance on the preferred approach.=0A=
