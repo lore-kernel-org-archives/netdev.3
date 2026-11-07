@@ -1,73 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794069981;
-	b=UsQ6Xne5uteaKgr0Mk+VDvKz2ySdwT8D+RiHXELZ4BfJGlG7nMfGIZw4uWrpK9zHwlzQ
-	 6WrQefwGo+LZToMkdNKM5wMEJa8hD9vS3J3Xcz9z4xPedEwZdOSLC9VIO94uVOK6cKU6q
-	 OcR5+WzRKrXMvaqAHT4oedupT0SuplgSE+xRZgWrzqtwww8Hic+fc7mJKROVBBMr2x/ov
-	 NiwACDYUshPmw1WGYLWWYhzukQ4DJ2dqZDRBsLsl2r9oOOo9jgTbTYn9CMkNezMZZPnrB
-	 TknMUv5a+jaEWxVzRC8uEoMXODZgJKEWwi+qN/hkd7q2F6AdwjO71XUtzBbdyGnmUcw==
+	t=1794070488;
+	b=zEyRX1xbpKGaz2iepR7Mhl5fe9HnPHWW/Z9xxWIiYoPUtA5SSYy9N7BKU8O5H8dKkE6q
+	 AODXyt37U0o2h/YCEkq97twH9oN2XhhQPU6/CUd2weIZ4kkXSYlqACn1N/sosmbCU8KuF
+	 22gxrIpnGpInm/juVKAOAlU5lLxLZHND5JrR8sRZSO1ZtSM/bLQWTY6Ogo7TqnqUexEbI
+	 m3c+HpwjR0Ys7+rjcvAScuwQoTs3CwEOkKuXR/DZgtm1DSGhUocpHguu/1NHPZVUV8wg0
+	 5qxxdgUAI3wjC700d9eSuNm6VCAuB/Qls2ZO/et09JCRa7UXPT+z0QgYyT0A0X5rZBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794069981;
-	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
-	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
-	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
-	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=iQPFcguwJfJnGIUghj3vW2cnp0ZTKsyoI6OiYKG+trA=;
-	b=v7wF209hoERrDgjFwANIMrIRvimQbbj474nPui52auGW5BxluofGM6z4EJfOLBXkPsnR
-	 MTPk3jNz7X4guFQDBR28t2uG6Od5YUQuY9uP04OC+8pfhvsY2wefsHPsMnHwCrUIBrjbC
-	 YZwPlboaITtX6Ava/fR4AtRO3Wv7TAKn5HsESpR/axheMDnmArBRrOMELdbDpFbo4/kkX
-	 oi1IRUTWtIPdmxn+xiG1LpHXVP7NdBR5uOZn7vV7tTBJ0dxgeiqdJDboH4DP1fUeorlUQ
-	 Mnx2MgCPgoKTyXlPtrZbJ6WcDbVt9/UuoAhWoxjooXsZA0MaBC3o0OFeztayfHBIliA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794070488;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
+	b=2Tr9adt82KngM/7+gHwtBajSH7X4YU/li0zWfMWawHHKJse5FS6GgNawka1GX7Ce5jUz
+	 zFj89S8ejR1VOW4r9PbUEzauXp7N+ZOfSIwkWHsKO+XbAmdep6nMT6rj6hDcGpG8jrTZ8
+	 dh22Y0KRlMRp31apG1cazFn4lAO6qdjO4Vj1onCLuDiHAHyICfSY7fJz9lhc0EWFdLvSa
+	 a2NoGejMedhCehcubSKQ9coPqA7/L4fp6hs5ER+oKMxcuS7K0zoSKhb8WCRPsVaaYw3jD
+	 2ERzuXxSVzvGxP3EM7vrMmy10XPkTAKmempGDnob3AaDMEL0YoeCCyqAVqjxnG27WoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GdchM4JA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ9xwmCX;
+	arc=none smtp.remote-ip=209.85.215.178
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16FD606A326;
-	Sat,  7 Nov 2026 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EA0606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 16:54:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65EA0606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GdchM4JA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F3B1F008A3;
-	Sat,  7 Nov 2026 16:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794069980;
-	bh=iQPFcguwJfJnGIUghj3vW2cnp0ZTKsyoI6OiYKG+trA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=GdchM4JAcx1qo6towHdQHCgh2tMHo3zzg17T84D+E9tEQ4saStJy8zvHY9EwNQyxR
-	 oK8yaLgqNU37R0MQlKrJvaZTfioOKst375+EE3LbYI7gUQePChwprYDcMtej1nwiGU
-	 dsufOCJUs+IgboNeWUzJfOUvnLV/mLmPPAxP++XxBwWdSvsRbSF91P8JnlzSeymBlh
-	 lEzS0bCVLtim+6ouaGlrDE6fsFvc5qFqfvhCWl64VQwoWxGe8sefwAjw7/I+6jcZC+
-	 /WKSC7uAJb9FKzTFrIsSEdraVR2Eq0psBydCysFViOt9COyNjQJH1jVYaRzZxwoY3u
-	 vZLcyJogV9A/g==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 770BBF40066;
-	Sat,  7 Nov 2026 11:46:19 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 07 Nov 2026 11:46:19 -0500
-X-ME-Sender: <xms:21XvaoI8xVkuzu2ggxmfT2VoL9otHZIhGkdP7sT7nnFaVj7_NCZbgw>
-    <xme:21Xvai9jvswL5aosPOj2sjBdsne--z2Vcw9CybSvH6cV4Z7_VedZPDAPFFm2w_uB1
-    OOHRpQdMcOvh9FQ9jewIohgBu8C0-FJ_t7pVgQmYakS7uvE0DqdnYj1>
-X-ME-Proxy-Cause: dmFkZTFtOlailLA7ZjiNgBTvvRwW+fQs0xcHo5AHr7fRtJrIuFWMuFVGu4oQuCeZ0pr0pC
-    lj/WCGWUBzDoQrKdmeOIOx622PB5FBwnR92PlS1DrVrA5uW0MnsNHEpSCCEISbjWcBNWpd
-    AJGAUrhAP2ixHqxr5ktjqtDZtDRxQ+wxwdXnbM6ymNuxLXWUu5re/DshCdypVN4RJVSYiI
-    pX6xC2OVQ0adGi3NIKU3V3E+k0PR9F5sS1Jrk8VpzWhAMrFUcs3GPG4cWRftcOZ2GaObQm
-    dtFuqB299Yev5WyoldQClGgN+jblV8xsVjLfVWhN2y4yGtMahzOezGLQ8LrNpUxR8dZfbu
-    lIypd5PasUVA/oQYiP1JJjnE0dbtceWFuNu/cXjVcI3peKzIbO94dNfJzf+KPUBbBj6OJs
-    xONTmDWVPcnavfLGnJ9Str1iCXWjLd8n8plei7GhfZ2Yct1Mb36p3Ftpqsy8HiFzlFB6JR
-    vCDf5AqtF24I+Ixh6htHYnxAa1boUFkUM/E/HKAo3rcBd+9kTud3Md2a4DQbfiDrY+cerB
-    BCLBcSU5xi/5AvO8RpQ0ihQUFVAFkvT394aMfNkcrcyvDmaq3pfLyB5Len7h2/bmpF+8sx
-    FrsAUEinhV76Ec3u6Qe9hQY0Pq0UexmL2UqEZd4qhrOC8BGG20S51iSoFmYA
-X-ME-Proxy: <xmx:21Xvatt0Wu0fKbN7TVc00SVx5cl4nBo0Q82lDLMniu-fjrCmVGavWQ>
-    <xmx:21XvauqT1roSxPVbJ__cvWOICXpZBt0Uy7t30skmPBgH4PUxXx1_Kg>
-    <xmx:21XvasX4cyeQOJfObf8n0k85OhQoglMXW2ST001O3cCOWy0j31aVlA>
-    <xmx:21Xvau1v9osh-1HQCt_nNNhBn8zDdcUV3_YpTMTutnfhDXcPKzQcmA>
-    <xmx:21XvapvZRqwLy9j4pgfhYCEDK1_0cwha-81FwJc9sq3a-mW19BlYyiSq>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5E62D782738; Sat,  7 Nov 2026 11:46:19 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ9xwmCX
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccca948203aso596343a12.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 08:54:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794070488; x=1794675288; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
+        b=EJ9xwmCXuRLVDRzge33hcKr2+q/R5m/0hsPPquNGhCKVcmsug8bFHuIiz3T1CovAX9
+         VZukWJM+7/ZGGa+72Pujv/cE2agl6ecl2tcwmK+t6+zjfQrSLoUEXmKjCVIW4WkoRoPB
+         n8TqckVGUqrmobnfTWeOETlbfobjxZesd+MaQh2f7uVmdVqXtyuCHHPGIRXEjhdGSRLO
+         MI6SCmFLLYOwf47nWgJ+Jsl547qKwvFSsfR6TVCF7jdCbZdG3mdWreqMiryOJZFxXzWV
+         muRrCXsv/Y+XK4jFLG+U+L785zpCws/1fCPfo41Y0g13tCmbNSuS+KdZ5BoPK1AhYcQ6
+         i1cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794070488; x=1794675288;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
+        b=d5lD0EF86rnjQS2FMZjPHpUMeOoALPN8Lh/cLjIH0Wl71wfkPCzF3Ufxy+4/iXRgOd
+         e+yZiE5p7TlBw1ltY3igCCqMJvQq5kbpAZGT98m5hjrj9y+elkvty38qzM8CAR2tqIrU
+         qyOpHOI7axJ6UkcLoeFL0WsmRr/R+WSdJcwlHZXG3gYGfZHudXZYut9Z6k3flo9ZVJnE
+         usMeFAxAc0/Fm09bGei8zwt8O5Ko8TdAG7IPk3hZOlr/SCLwHR5PaJuASMzJ/hOqBCZB
+         9V4CtYFO1rktMX4Tn83qwLdPRiHH13QS3bjqNOnhLLn4viGMjk1ZkM6mOxfFCNIMKE+b
+         yfbQ==
+X-Forwarded-Encrypted: i=1; AL+hErHlHCNr/G0on2QfIaKlQpAwo7axuQ0ba4j8wrpSmdERFCmPADhItlDMgIS5CbfxIzVNnxXml1E=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+b4ai3MuAL19zX9NjlbOixoOHzHkhu+Pc55AntMnH0A0Bv/YDm
+	Fyipf87AehR9oOtd3Rmx7UAP1UzC1nDTH40qypSHYW8jW6At0/70Trt+
+X-Gm-Gg: AYBFou1Q7reNeKzCZGTmP0xJyXrhW92jeLaHe2+pEsA7xNGQfSw+Cr8NGjzm079NHOv
+	K++rRmcBMlwasMRqkHHSXWEE3TSmMDg6urhRa/MCNib4lzK9R8AYRoxhI8TXTOfeZwz/QnKPJif
+	Jf0ZOvyRPh67uqlsdmWyoVlyfy7fBH9d57RU7oXyLCRbNgsBDtiC8GKSOtLISDSLWfA+q8ozR7Y
+	+uWGdGZf5LIOiaOOhBjOzZsTh9+6rRhNfvm1jLVT716vLJpIYBvaVwqNMBa7MZoO+ELvx6ANE5M
+	VMWb1h4w26x4H8mtQPf2ODh/aqajB74oPwUdm/EEdwCC07q2J6SDEr4K4DhnRNlhuCfzd7/WNs9
+	2A/x4HMHu5WWGo3vDcElfP1HQSxRPIizRRn/v7Uks6QwX9zOyLDHGjx4AubEKdiAEQVgrTjU2hl
+	RSavGlreZvinRi3OM5bSQV0fL+IDM2hKJxyHjvc+suCGlUzzHxMijh5HHoSBoXcaDn80DTlwKoX
+	oPzqwA118MpdDiyDFL0BTFBDZ8mVTUTfls4LumRagJVEkBGhUSwHlrxjCtS/+PIIeNp6vGCJQ5F
+	gV2mGlZ/Kex2cb44CKaUQjP/odx4iy2NR9jBLTYLt+6485NZ/iiZgT6iNqTbtD7PhV+IglRMHUD
+	X8q2EZbK5Dsh37OsfRhD0EtSkztkxlSH77cxVYSH2pZVFAyI/brQxoXU=
+X-Received: by 2002:a17:90a:d60c:b0:3ac:6e91:3f22 with SMTP id 98e67ed59e1d1-3b0db72c4d0mr5096080a91.52.1794070487771;
+        Sat, 07 Nov 2026 08:54:47 -0800 (PST)
+Received: from localhost ([153.61.198.246])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b11b04458csm828387a91.13.2026.11.07.08.54.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 Nov 2026 08:54:47 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Nov 2026 16:54:46 +0000
+Message-Id: <DMP4WRIOGMBX.3VW2KNLBGDZ0K@gmail.com>
+To: "Yingjie Wang" <1075151112@qq.com>, <netdev@vger.kernel.org>
+Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Thomas Graf"
+ <tgraf@suug.ch>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: ipv6: reject collect_md tunnel route without
+ inet6_dev
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+In-Reply-To: <tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com>
+References: <tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,67 +105,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: AjxZksNfZZQV
-Date: Sat, 07 Nov 2026 11:45:59 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Jann Horn" <jannh@google.com>, "Josef Bacik" <josef@toxicpanda.com>,
- "Chris Mason" <mason@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>,
- "Thomas Gleixner" <tglx@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Jonathan Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>,
- "Greg Kroah-Hartman" <gregkh@suse.de>,
- "Joel Granados" <joel.granados@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-s390@vger.kernel.org,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
- "Linuxppc Dev" <linuxppc-dev@lists.ozlabs.org>, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
- coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
- jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org,
- linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
- samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- "Takashi Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org,
- linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org
-Message-Id: <a1e2d05f-08c6-41ac-a8f9-6985ee00dc97@app.fastmail.com>
-In-Reply-To: <20261104-work-procfs-net-v2-10-221e2437fed1@kernel.org>
-References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
- <20261104-work-procfs-net-v2-10-221e2437fed1@kernel.org>
-Subject: Re: [PATCH RESEND v2 10/13] SUNRPC: let procfs own the wait queue of the
- procfs channel files
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
+On Sat, Nov 07, 2026 at 07:29 AM Yingjie Wang <1075151112@qq.com> wrote:
+> A route using a nexthop object can remain after its output device loses
+> its inet6_dev when its MTU is lowered below IPV6_MIN_MTU. The route still
+> has no error, so ip6_route_output() returns it with rt6i_idev == NULL.
 
+since so, should it be fixed in there?
 
-On Wed, Nov 4, 2026, at 4:13 PM, Christian Brauner wrote:
-> cache_poll() sleeps the poller on queue_wait, which went back to being
-> a static queue so that a poll() on a procfs channel file can't be left
-> on the queue of a cache_detail that its network namespace freed. procfs
-> owns the queue poll() uses now and it outlives the file, so the procfs
-> channel files leave the poll_wait() to procfs and an upcall wakes their
-> pollers through proc_poll_notify(). The channel entry is remembered in
-> the cache_detail for that and forgotten before the entries are removed.
-> The rpc_pipefs files keep sleeping on queue_wait, procfs has nothing to
-> do with them.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
+This is the fifth check of the same pointer:
 
-Acked-by: Chuck Lever <cel@kernel.org>
+  commit        function
+  ------------  --------------------------
+  d101291b2681  __fib6_rule_action()
+  4db783d68b9b  ip6_output()
+  d46401052c2d  xfrm6_get_saddr()
+  1b9b5323725e  rpfilter_lookup_reverse6()
+  this patch    ip6_tnl_xmit()
 
+Three more callers still dereference it without a check:
+__ip_vs_route_output_v6(), validate_ipv6_net_dev(), cxgb_find_route6().
+When the same mistake is made in N places the interface is the problem.
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 616b86f..e4834e1 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1151,6 +1151,12 @@ static void ip6_rt_init_dst(struct rt6_info *rt, const struct fib6_result *res)
+ 		return;
+ 	}
+
++	/* addrconf_ifdown() removed inet6_dev. The device can't do IPv6. */
++	if (!rt->rt6i_idev) {
++		ip6_rt_init_dst_reject(rt, RTN_UNREACHABLE);
++		return;
++	}
++
+ 	rt->dst.error = 0;
+ 	rt->dst.output = ip6_output;
+
+@@ -1186,10 +1192,10 @@ static void ip6_rt_copy_init(struct rt6_info *rt, const struct fib6_result *res)
+ 	const struct net_device *dev = nh->fib_nh_dev;
+ 	struct fib6_info *f6i = res->f6i;
+
++	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
+ 	ip6_rt_init_dst(rt, res);
+
+ 	rt->rt6i_dst = f6i->fib6_dst;
+-	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
+ 	rt->rt6i_flags = res->fib6_flags;
+ 	if (nh->fib_nh_gw_family) {
+ 		rt->rt6i_gateway = nh->fib_nh_gw6;
