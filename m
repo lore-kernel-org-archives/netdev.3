@@ -1,59 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794052247;
-	b=hh9ZBF3oAQMl2TuDo+Ls5gPCfwOxrW+WaBb6C0YPq9KdCtt/5RBKO5vjU86JH2N8e2+m
-	 cxlOHHr80fgjqdoGYDsvYqpxJ40MFEIkPqqU+tvqesCLElVkkqtZWHqe39k5DfFMqSm+F
-	 +/M6QS7QXgmB1tynjgYbVNVyBHTJIbf2SXefUrPglhrDBRYXeuayd4z/NZ3rRDKSk1D62
-	 vOfAC2Mbgyi1jtwcX4fe+hbURuDuWwGM2CYR+Gq9BVDNPR+pUn9QglGOZEQur87eVfqTq
-	 SfF2CvFzYxYX+/y7H9xqD87DjhUdxjNydQ71Bf+C57Lt0wjny71II28JYUSV34p47ew==
+	t=1794052389;
+	b=O5FdAQdcI/hupMnaYsAWu7S4B9VIKapW+GiOpqPibUD2110YzmS4RiChVeraBLteuqaM
+	 NHNrDBuHhzPTXEkYdREH+hdj3wvZXOq9yFa69g5HzxObyRLo+qL/HTqxrWhNkQ27IHbiZ
+	 yHSK3oHO6Fh66bpxn/12WjnfzQlqNScvU3MbION1Yd2JAoUFUhrMrMuBNc1tpwrETImlh
+	 p+6+BeEc5EzTqrchmJYJwexGQoYvtBvtPBGCkU9HKN44KtS9MvzZ8/4tB3jTfLdwv4axe
+	 5P3YKtapzQQDv0cabnB0er6lRMDcLiwtvo5Z1X8Uj67nP2PXYr/dJ6o6AuRZcwVkOlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794052247;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=0nl3EtW/t9ZcBzb8A/tKhYaRHR6Wov+cG3wp3yyG6Fw=;
-	b=SDb8aUQIhrNkzXro978XkEH8BEp+jcgRM2CHU1Vp1w6MLXtSikU9mE+ajL84IasauYEI
-	 SKZT3zRHBk6prPFDRRFUp5+k69UecG8cH2S1CmC7q2Hy8uQbTnAiAWe6U7ESdpGMWx7JC
-	 VG1+EqSVBgXBGVe719dQNQCmw9YSLXtPRlU4/5nCRo3spDYsN9ipjpdwK+KhkqF7h3BoG
-	 8XFZjcR/il8eie5zzSw1zaA/xh+re7fr+NyE7Y0eeEc9IE194QF9s5UudJFDVoi7wyN5m
-	 RNj63t+4NiT47R4vlwA83+mhxzgelXO27tySCf168Q2u4QtNm0hsRZOJuQiic3hmdeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794052389;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=tve596h8zkYZfLnnzqz1wxSl0S3pzuQnyT+uXalhoXg=;
+	b=OFSBUNxT3KER0G/Lu+EKFUgTYkBAiDtx010V9IN/UEWnw+ofTsMywsUYZBFL/ffiH38K
+	 ErY4B530ltqpfh6S2vfESzwInsvAh1wBjJcRN5ogdyqkcx4VI2QkoJr4AFavApaE1FbxB
+	 HFr6Y5oADVXk9wyfvcDWZwEaOt9z0MEPZdy9JGxgv9teCXpZaRlRzNT1jwzT0W78KKtBX
+	 gKou1Ywmv/Qc0+EgfPLJQgaPmpJ1WWprR0bLXBwTuOVty1Rooe0rX+PnwyekF2bswPPx/
+	 i7SYEvZJpaDisF31jzellAr76hnQf0UM+A7l8X39ko9C0C+oOOyVvx24lzOF8ziIk0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i4yDtueU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ZU9qi2ej;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A550606A326;
-	Sat,  7 Nov 2026 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE439606A326;
+	Sat,  7 Nov 2026 11:53:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE439606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i4yDtueU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667A31F0089F;
-	Sat,  7 Nov 2026 11:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794052247;
-	bh=0nl3EtW/t9ZcBzb8A/tKhYaRHR6Wov+cG3wp3yyG6Fw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=i4yDtueUQSU5XJr9MzitR2Fl+pi/ipaP5eQHiW3wI8jA04yP3Ok9og7wETsVtL5Dd
-	 khsI5tCNk0CRHKKOlG5BgT5h7oGlEJDKOSwH17Ic4gXhNV7wJ1tJ+XPYWd1vXME0Cd
-	 uzIBb2RH4riODr+k1Urj2IwkxxLY9aRKfBeaQ9ZexG0draPrkjTVvs8fAsmMtclti5
-	 MrH+i/d+Tby9UEB8FLJUiqWL3QuAmGyRYvVHo/MiylZGgxcF/pV+cOIXf7OKY58OHM
-	 T34Wir8JbVG2jllyGg71m2PV3nBpyM4ntVqk4Z4X2Oa933BCwnXuFsz44lwfMgooyv
-	 ynUWz5evMo9zA==
-Subject: Re: [PATCH] ice: release the VF reference in the switchdev trust path
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 11:50:45 +0000
-Message-ID: <179405224597.994134.14854399116658341017@kernel.org>
-In-Reply-To: <20261103100530.1309907-1-vulab@iscas.ac.cn>
-References: <20261103100530.1309907-1-vulab@iscas.ac.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ZU9qi2ej
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C61EAA0034;
+	Sat, 07 Nov 2026 12:53:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1794052386; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=tve596h8zkYZfLnnzqz1wxSl0S3pzuQnyT+uXalhoXg=;
+	b=ZU9qi2ej3MRvknrlmOJX1qCqg+H9HV4Tz8CnPAUi+ywathWMeA2VW4JtBUu/vvP+1Pn8NL
+	/KfiKF1LjlW72wXB4OUZqohf/PmvXitctdT+Q81OlpHT9Fbh0R1W5VGnK16CyT9c5XNsOO
+	p3y1BB5SvFKaDWJu1TPQbdYUHhZbEP9E63PDqqyEj8H42oEMVMiYqGpcH+rn3aJvuCNvnz
+	nDvx+p9jDoBTZSlxwsGRPjxO5/WMgfJVNDA2/nsBJSjlhlArzcNyLGcCr2TXnXBdZYXU+B
+	O7RzNk2UwAto5RoHEk/sUrGY1zilztWmIFRB/t3YujkGxsNuCSHgw8o9wCUXxA==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,98 +53,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Date: Sat, 07 Nov 2026 12:53:04 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Doug Berger <opendmb@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Justin
+ Chen <justin.chen@broadcom.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Nikolay Aleksandrov
+ <razor@blackwall.org>, Jason Xing <kerneljasonxing@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: bcmgenet: cap the Tx queue threshold at the ring
+ size
+In-Reply-To: <1b33c10e-fa25-427a-92a6-d26669712f09@broadcom.com>
+References: <20261106-nb-genet-txq-thld-net-v1-1-53bbac647b71@tipi-net.de>
+ <1b33c10e-fa25-427a-92a6-d26669712f09@broadcom.com>
+Message-ID: <6c0446dbe8e63a7c6a6120d4a1d6ad0a@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi Florian
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+On 7.11.2026 01:14, Florian Fainelli wrote:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> [...]
 
-- [Medium] The Fixes: tag in commit "ice: release the VF reference in the
-  switchdev trust path" points at the wrong commit.
+> Eventually we will have to decide what to do with those other queues :D
 
---
+Probably sooner than later. Sashiko claims that this patch does not 
+fully
+fix hte CONFIG_MAX_SKB_FRAGS=31 case. The check in bcmgenet_xmit()
 
-ice: release the VF reference in the switchdev trust path
+         if (ring->free_bds <= (nr_frags + 1))
 
-In ice_set_vf_trust(), the VF reference taken by ice_get_vf_by_id() was
-not dropped when the request was rejected because the PF is in switchdev
-mode. This patch sends that path through the existing out_put_vf label
-so ice_put_vf() is called.
+wants 33 free descriptors for a 31 frag skb and those rings hold 32. 
+Arguably
+the bug is way older than this patch and you need a non-default config 
+to hit.
 
-> ice: release the VF reference in the switchdev trust path
->
-> ice_set_vf_trust() takes a reference on the VF with ice_get_vf_by_id()
-> and then rejects the request when the PF is in switchdev mode without
-> dropping that reference.
->
-> Return through the existing out_put_vf label so the VF reference is
-> released on this path too.
->
-> Fixes: 1281b7459657 ("ice: Forbid trusted VFs in switchdev mode")
+So IMHO the options are:
+Either linearize in bcmgenet_xmit() when the frame does not fit, or we 
+drop
+the queues as I proposed in June [1]?
 
-[Severity: Medium]
-Is this the right commit for the Fixes: tag?
+With XDP in mind the second one seems more attractive, as it needs its 
+own 64
+descriptor ring. With the current split the main queue would end up with 
+64
+descriptors, against 192 if the queues are collapsed.
 
-When 1281b7459657 added the switchdev check, it was at the very top of
-ice_set_vf_trust(), before any VF lookup. VF refcounting (3d5985a185e6)
-did not exist yet, so the bare return did not leak anything.
+[1] 
+https://lore.kernel.org/netdev/20260612205915.3156127-1-nb@tipi-net.de/
 
-The leak seems to come from 83b49e7f63da ("ice: check if VF exists before
-mode check"). That commit moved the lookup above the switchdev check and
-did not change the early return:
-
-    +	vf = ice_get_vf_by_id(pf, vf_id);
-    +	if (!vf)
-    +		return -EINVAL;
-    +
-     	if (ice_is_eswitch_mode_switchdev(pf)) {
-     		dev_info(ice_pf_to_dev(pf), "Trusted VF is forbidden in switchdev mode\n");
-     		return -EOPNOTSUPP;
-     	}
-
-    -	vf = ice_get_vf_by_id(pf, vf_id);
-    -	if (!vf)
-    -		return -EINVAL;
-    -
-
-With Cc: stable, the current tag would aim at trees that have
-1281b7459657 but not 83b49e7f63da. Those trees do not have the leak.
-There, ice_get_vf_by_id() still comes after the switchdev check, so a
-fuzzed backport would add a goto out_put_vf that runs before vf is
-assigned.
-
-Should this be the following instead?
-
-    Fixes: 83b49e7f63da ("ice: check if VF exists before mode check")
-
-The phrase "takes a reference on the VF with ice_get_vf_by_id() and then
-rejects the request" also reads as if the check has always leaked. That
-has only been true since 83b49e7f63da.
-
-> Cc: stable@vger.kernel.org
-> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-> index c49f48b5ae38c..90bf1becbc3da 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-> @@ -1400,7 +1400,8 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
->
->  	if (ice_is_eswitch_mode_switchdev(pf)) {
->  		dev_info(ice_pf_to_dev(pf), "Trusted VF is forbidden in switchdev mode\n");
-> -		return -EOPNOTSUPP;
-> +		ret = -EOPNOTSUPP;
-> +		goto out_put_vf;
->  	}
->
->  	ret = ice_check_vf_ready_for_cfg(vf);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103100530.1309907-1-vulab%40iscas.ac.cn
+Regards
+Nicolai
