@@ -1,95 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794047344;
-	b=u4R/wI8XU02TgXqTaPt/BNaL1hxIvj4jVVU2yKwtU7tLefMPJzI18YAQs/CGOFZE910R
-	 JQtm4ev6sUDhXMKQmzJziwdieJLo3cjBWT3uLIJdHu79gtqnbAyFnWUeuD2a4Bd8Os5W9
-	 qs9Wf0re3pTzZl5QG0AAMxTgrGOvKn+sSp43UQg2FNVV4Yp/rPnS/TMqtHiWlx9glfwPU
-	 YT0LmmAUdbXTax71kbYx7EhUNFWoDW/XVfEXrAt1mqR8i906Ts8mDLQJ7dg3TaukPNeM5
-	 CYvnPeUapWGoLbqpwUGUYfddvJjstLF2YVZvW8Ol/1cjhS2kyvC9HepPZa1gvvpbmew==
+	t=1794049190;
+	b=KySdRXE/Ffk55lVLy3TKgRwRz6/kh59B87EmcgSp69ddb1tet4GWPEXHFe0btsAXya/s
+	 9qSdZ6nYh6jmQKZnz4rtQwNGpem3cATzZaHALpWAbC070S83//0FqJoy/abjcFSVQWGfd
+	 v4qhPT0f8Jo2itmcvX7qORMQks7kPmKQCo/QtTZv2k2fTK9BeFWYTRlq5QWEgnGE/Xpy7
+	 1KjPZjUBUVGD23p6IRwuKWYg/+/vQNEwuClqtp1ofNHdwwRDSB/o+662jWKrDJUeO6gYG
+	 NEQedRDY1HKQJBiB3u9wMPcwS2by8K2nC5b5GN+DlNro9TrNhagayykW1EEdtRW0cNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794047344;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
-	b=eRMSEMISv0PH3kd7VcXe+3Wud+2GEwd+OL6aESqzKvkbLPUnKOaOwg8DJWxpc27ffcb1
-	 4vZ6kQt1Fn3aelzatSvAUY9s+sC9tIPy1MqklijeDk9ZstoaQu0QxcTRGjcT5xrWrH4Dc
-	 2gXRwvs2douyRTazgujISvHNtjENHx5OmRDMzH1gCk8rBbxEIaB3mj3E2s06+ZSqvuB8N
-	 NqE2gSkMmzPUSI9O+BlIg2SdR6BhVXTBRYOSIVJZVT/2Ya4dAbE6OwwH/eg8oqbbUIuTI
-	 F9MV2ONhsAAJC8u1x29a1isbWIZYXyXJk3K5iwhVR+56fwPqtXs6qXBenXv+wjLxy5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794049190;
+	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=+3Xf0PE+LagmTc4tqKy4edOsojgcvPiX0DMuZnq5S3k=;
+	b=TsGKts6VzD8fXnb/dffuEXIY/Vit3RTdnvcR8Lpq1HDpui8qAEbT5l31eidlJE3k1tmD
+	 DEcVcivLs9+mnNARD5lPJsUk1Pe/GBcPskG7YWC2+HBzuybchMpRgGhgVyYFFJ/JppAwj
+	 kOjUe+yFPgdmXIaLYLoGm3mt9saqKubiWd6ML1OZO0zen+ngijcJCrqXRcfeXBz1X7QNN
+	 gGapoOhapMsNN7VA/AzF4NOriGEyFD/LMLVsRpCs71Ean3IJM1pqTr0nWOF87RZHDl3m+
+	 qGOi7Ae69+ojiGRjZWb4apXSnmawbpwv9p0ySpXMI7wbVXrTqgHSGxSYCYS5nHa37yA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=openai.com;
-	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=gU8fV7MN;
-	arc=none smtp.remote-ip=209.85.160.173
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="N9WAtu/F";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F962606A339
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 10:29:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F962606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33AC606A33A;
+	Sat,  7 Nov 2026 10:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=gU8fV7MN
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5495d549924so14396321cf.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 02:29:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1794047342; x=1794652142; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
-        b=gU8fV7MN8HJRfR0yKPGughXHLXj/wm9K6t0J7Vdu8qZjnVIQY+xLkiocbpG0MrNr5c
-         UJ/rhNua6yMK7CDQPNtNFEeztgoR6MjAAH8ImfZ2SueDr+PyiWGwpEjLxCZfuMOvmU6L
-         8i/27wDm8zx09wa5f2dtbZpPBiE2L9eSQ/XpY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794047342; x=1794652142;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kPfxxEoDedkpzijCZq5OLG208Bd3QgI6noPt3uH0hgY=;
-        b=vlua38pcgW8pSdKWhW49ROe14zuPr7ds/mMZ7XpFrv5MdKuHdcsV7MktwvgICeLuTI
-         LgZY7lccCLIvre75pqr33gL4I9OPTgzji2f4gUolbDNmuiQyWulc+lIpK31QQQanD6kJ
-         5JrQ5G31YYaYM4uvR4u4IY17lzKSlkd4nhMumi2QPGh+sWvWw5Kqy+MbHhwKIomAieja
-         Gs7ykJDp3iUhD5NA4nr8SaBOt8xOIR3fEtZKOAhxz3wIjm3z2cTGCj5PT/1Qro9XiB0I
-         WlJtcRZriNurLEOg6DP+8C+TqxLV50RG/Ys6euwGtetur9gY1IrRkdf4IMzAA+07HOV5
-         77dQ==
-X-Forwarded-Encrypted: i=1; AKwUvBynKHN0gdzeTRp9SvbNig1WWssx1iEyoiYwgZh36qBJJwNmAMGT/b+DTGdIqsoLbn02cejj2CY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Rpld55C4J1S/D1zFMxKdI74xOQq/MXOEcQ9UdHX+rSS4vngBx
-	uOMPBl98E9vDmfqXlWe38WX9+aRKRGxKBZUiUanOXjCt4IJuLyi/TxwUZbUQ0+uU94A=
-X-Gm-Gg: AYBFou0bq7xMrmlwqcduztwAFPLUTr0yWRJJvSnL/fQh6PP+1jEweIRW9qoBFLkilzj
-	AOlWK2s+z4TKrFJCcyt3YXTsIG8xLnleqAsS91Md5JOkhI8fQUXpd+S/D1+q1Xfhh3CDTpJrq+F
-	hDU4MpEK4TAyCgNwPl7puY2YlarsVpj6ClaO5ZMcXN7S0F2RaePQvjTCfkEFZNmbiE4/NzDnAtT
-	yckYeTQq9r7inK2mR0UY3+QuvA5059inG71saJ3txfXFY86HkPmPvjLG9VaO3WuZB4iUzJ6phPT
-	VC2Jay70pU1KIYsYF8zYdy8mg8pCscPjfKSIsONfunkRDXT3LU/E1lsTV6zK/mnJdHI+sdK6X3u
-	dLCAsINS00INbdsvhxqkuOznn/OS0wsasNouncOZZFaRdB0x+j7lfW1v4xWdMh4I6xXiD4O6g2G
-	Il8JRN7WJwO47qBA8m48VMKBq5xWoKnpEbzXLOkbtaS+dbp7+Rkl+j1Aq10gM3Mu57/GCrM3bk9
-	ELyjpLSc5hDEG42s60aNYG28jr9iyGwGA2zzU9uq2pLhN3hOJOxOqymGNGdEztGlXskW7nLw6wi
-	dVqA0/rOE/0BrOTyIU5JK71eECfk2gvNTjk6ZL2OjQPwQ26ik3LfNFUUBCsWPvn3+9rkLG42WrY
-	t/KNEsv4=
-X-Received: by 2002:a05:622a:2508:b0:537:dea7:adb1 with SMTP id d75a77b69052e-54e115b4283mr77969511cf.4.1794047342290;
-        Sat, 07 Nov 2026 02:29:02 -0800 (PST)
-Received: from com-75606 ([199.47.143.1])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e2625abafsm43098871cf.16.2026.11.07.02.29.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 02:29:02 -0800 (PST)
-Date: Sat, 7 Nov 2026 02:28:58 -0800
-From: Kyle Zeng <kylebot@openai.com>
-To: Florian Westphal <fw@strlen.de>
-Cc: netfilter-devel@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>, coreteam@netfilter.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
-Subject: Re: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices
- for DNAT
-Message-ID: <au79avuyDAz__s4t@com-75606>
-References: <20261030042155.73844-1-kylebot@openai.com>
- <au7SdYQrIqAQOU24@strlen.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N9WAtu/F
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1ED1F0089F;
+	Sat,  7 Nov 2026 10:59:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794049189;
+	bh=+3Xf0PE+LagmTc4tqKy4edOsojgcvPiX0DMuZnq5S3k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N9WAtu/Fie4JSawBbWTucmridD3H+Ras9ViIcMJUXiO/NqRxEoZVYTVJS1Axowtcb
+	 nycReq0Jp9FjPTbzD/sv2jw/dlWi9fDwIfqgjibz+3VVXan3Mu0WAi74xfwFLSIH5i
+	 3ZibKHb8/Fm95Xl1JyHhK9MfCGld6IcI9Z/k0VudFZK0ndIU/43p3CRoui9aDR2xck
+	 XkcPtwDk29izrMiVuXpwrhFVAL+KGDx7KgAHSXhzFN6/LOrv5T4dkBgg+vom3cruTs
+	 2OZILCbM2z9SPGg86iv8xVzcKOE6t8Tl6C7wcGGy8WotPiM+W028Fg/DTCxTYi9J2S
+	 qRlrGh1ONtuvw==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id 81D3D28D2449; Sat, 07 Nov 2026 10:59:44 +0000 (GMT)
+Date: Sat, 7 Nov 2026 10:59:44 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Frank.Li@oss.nxp.com
+Cc: Matt Porter <mporter@kernel.crashing.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 3/3] ASoC: sprd: use dmaengine_prep_slave_sg_context()
+ instead of device_prep_slave_sg()
+Message-ID: <6ca75bd5-f402-4757-b264-6720b03b0365@sirena.org.uk>
+References: <20261106-rio_sg-v1-0-bc54b4bd8c95@nxp.com>
+ <20261106-rio_sg-v1-3-bc54b4bd8c95@nxp.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,96 +76,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aU+YWAD6yJFUUGmA"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <au7SdYQrIqAQOU24@strlen.de>
-
-On Sat, Nov 07, 2026 at 08:25:41AM +0100, Florian Westphal wrote:
-> Kyle Zeng <kylebot@openai.com> wrote:
-> > The IPv4 and IPv6 bridge prerouting callbacks classify DNAT traffic using
-> > the logical input device saved in skb->dev. The physical input port can
-> > have a different bridge master when prerouting resumes, for example after
-> > an NFQUEUE verdict. Netfilter reassembly can also combine the first
-> > fragment's bridge information with a different fragment's input device.
-> > 
-> > br_nf_pre_routing_finish_bridge() replaces skb->dev with the port's
-> > current bridge master, but looks up the neighbour using the existing
-> > route. This can put an skb with skb->dev pointing to bridge B on an
-> > unresolved neighbour of bridge A. Deleting B and resolving the neighbour
-> > on A then causes a use-after-free in __dev_queue_xmit().
-> > 
-> > Before calling the neighbour output method, check that the neighbour
-> > keeps skb->dev alive. A neighbour holds its device, and a VLAN device
-> > also holds its real device, so allow a VLAN whose real device is the
-> > bridge. Release the neighbour and drop the skb on a mismatch.
-> > 
-> > Doing this in the shared continuation covers both protocol families,
-> > including a queue in the remaining bridge prerouting hooks. Leave the
-> > cached-header path unchanged since it does not enqueue the skb.
-> > 
-> > Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> > ---
-> > I have a reproducer for this issue and can share via DM
-> > 
-> >  net/bridge/br_netfilter_hooks.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-> > index e15355ff215a..726a2d17ed3a 100644
-> > --- a/net/bridge/br_netfilter_hooks.c
-> > +++ b/net/bridge/br_netfilter_hooks.c
-> > @@ -307,6 +307,18 @@ int br_nf_pre_routing_finish_bridge(struct net *net, struct sock *sk, struct sk_
-> >  
-> >  			ret = br_handle_frame_finish(net, sk, skb);
-> >  		} else {
-> > +			struct net_device *dev = neigh->dev;
-> > +
-> > +			/* The neighbour queue must keep skb->dev alive. A VLAN
-> > +			 * device also holds a reference to its real device.
-> > +			 */
-> > +			if (is_vlan_dev(dev))
-> > +				dev = vlan_dev_real_dev(dev);
-> > +			if (dev != skb->dev) {
-> > +				neigh_release(neigh);
-> > +				goto free_skb;
-> > +			}
-> > +
-> 
-> I don't understand the vlan check. Why is that needed?
-> The call to br_nf_pre_routing_finish_bridge is gated via:
-> 
->  405                         if (skb_dst(skb)->dev == dev) {
->  406                                 skb->dev = br_indev;
->  407                                 nf_bridge_update_protocol(skb);
->  408                                 nf_bridge_push_encap_header(skb);
->  409                                 br_nf_hook_thresh(NF_BR_PRE_ROUTING,
->  410                                                   net, sk, skb, skb->dev,
->  411                                                   NULL,
->  412                                                   br_nf_pre_routing_finish_bridge);
-> 
-> 
-> ... so this patch ought to be sufficient?
-> 
-> --- a/net/bridge/br_netfilter_hooks.c
-> +++ b/net/bridge/br_netfilter_hooks.c
-> @@ -283,6 +283,10 @@ int br_nf_pre_routing_finish_bridge(struct net *net, struct sock *sk, struct sk_
->         if (!skb->dev)
->                 goto free_skb;
->         dst = skb_dst(skb);
-> +
-> +       if (dst->dev != skb->dev)
-> +               goto free_skb;
-> +
->         neigh = dst_neigh_lookup_skb(dst, skb);
-> 
-> (I can't see how neigh->dev != skb->dev after the extra test).
+In-Reply-To: <20261106-rio_sg-v1-3-bc54b4bd8c95@nxp.com>
+X-Cookie: Whoever dies with the most toys wins.
 
 
-The VLAN check is intended to preserve existing VLAN DNAT behavior.
+--aU+YWAD6yJFUUGmA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-bridge-nf-filter-vlan-tagged=1, bridge-nf-pass-vlan-input-dev=1, and br0.100, the earlier test can pass with
-dst->dev == dev == br0.100. The continuation then changes skb->dev to br0, so the strict comparison would
-drop that valid packet.
+On Fri, Nov 06, 2026 at 05:43:10PM -0500, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+>=20
+> Replace direct calls to chan->device->device_prep_slave_sg() with the
+> dmaengine_prep_slave_sg_context() helper in both sprd-pcm-dma.c and
+> sprd-pcm-compress.c.
 
-A neighbour on br0.100 is safe here because it holds the VLAN device, which holds its underlying bridge. That is why the slow-path check compares the neighbour´s underlying device with skb->dev.
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--aU+YWAD6yJFUUGmA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCau8EmwAKCRAv73Ows9A4
+iW+5AP9aetZoADx2kgpQxvUXbikjHna+8G8k3cywS9jVU4nvyQD/V5fyZbvLDm/v
+sgHODthprx1rRSCge4KCShshtklVhQQ=
+=X2k0
+-----END PGP SIGNATURE-----
+
+--aU+YWAD6yJFUUGmA--
