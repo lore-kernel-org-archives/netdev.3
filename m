@@ -1,86 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794038893;
-	b=4UplGIITUpBoXOTrI4X2xLUUTZHrPCYJC7ZroC3uKnTbhNIk1ke06Yc4BEdie979qBXb
-	 E3eGQlIeFrAYlRw8vneHvOQbEasg8gwkmgOGdyP7h4+2XEB+/9jZ17u3QggrMzrVXjGwj
-	 owVwquq4uiW0XBqqol7TjG85k18pOvVvMN2GJh8YRBArzSczprNWUUnZXzeWbpv+UEqpj
-	 sY+2EFeW7BHzvHS7U0D91WV14610tANHmSAMpTpMkBlw8ObP6XkAiYO8cTjSlyvXLCRzN
-	 YnP2p42iScpiMuyisJOvOJXAR/tdm7IpWIfe2Rnyk/eGzdLwaX5plLPFU6CyIZhbosA==
+	t=1794038906;
+	b=V1moCjjLpv+qiPBGUMFfPd8S4q1flo4UYuvWfi8gQslNCDmy1loT8wsBABmE4oxgdNp0
+	 j3YtirN7HCA2f15/MCJQxwuRnF5z5ypuF4TWDPoHQNZmqOhoAzABSS2ORZ+d2kwvkCCCz
+	 bmt1NaK3KQKX5W/hWpkLT4QOfLeMKlALMZMWZjyhNEde39cSs9LoPUqPRVDnu6DC9cPW7
+	 aD7ZZAqOEwjVhTW6NFzmmbOCVi2BoPsKn5FmSChExI+gAVsORKYmQ3e1AfXj2eTFA5Owe
+	 Q7kDbzKGneh3EyXaPpRc3P06S0ezRTjYyvfTbXfYzi2WZQMjlXZ5gSKn1mDEhb5CuyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794038893;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794038906;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Fu3COQCAPmOwpJB4SS2FVTvXTR/NXj3quXMf5G+9+Gc=;
-	b=LKhC0D58ywV6jQrNKu9oxap6oRi94lI+o6XxXEN/kEz1yA5kdFH26qxqgbK0w1NR8wHG
-	 Kx6dGOEvXtNlJKYUUeqr+zjOIqM7Lziv0GDx+KvVYDJN7nqVGn9TB3JlGAy4MKaGd/QAe
-	 wP+hO9S/QA1KyIOSXIzRI0UVDNO3Xcb47dv9KZkzyiv1nKgh0ZEY0QuOT85PJGPxFLDZ0
-	 BaZram2WXFy19WYjNi4/j2mrAREsFIqfmbUaU+jtG3N9QigguQOOaGsXlx7W0srblbI1Z
-	 b6fiowUPW94fY00lArBRqY3amA6hkelhMXBr/YaQC00XTrS/SQYWN5TC+6BpnDUrlSg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
+	b=Ft4fhYHj7pYp7KKn5T9cHNJtWIjIJxlJx4WWKHFWrVDCRHU4PRgFDvodYBKixh5/6APg
+	 Xa16AczOjRepXatmtGQn/EtJafNhBWSIcx/gcph4Lk2ldjcvVBznXmBouuP7FytTSO3xG
+	 s+CEaSxclJZ6XJDlNvVvwUdkEeQJp0zKJx6uMukwbRnBqruJm4pW5YWEAJPW3lpWo8VCt
+	 28dN+753H+vJhKIqy7N//YAX2wVKOHWnTx1UlWwgjWC3WKZQ+/qLNB8COgUVdpa3DxcuP
+	 ieNGHx+8HKwVj5ZqSorIvgGBFC4N9Q2N+hRW3r4flUhxO5t0e+Nwx2HFbajF8KE++lA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gjR3O+Ln;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="VE/wXq0Z";
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D703606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 08:08:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D703606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04F0606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 08:08:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E04F0606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gjR3O+Ln
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e946155442so11328465ad.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 00:08:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VE/wXq0Z
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a59717b0c0so960551b3a.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 00:08:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794038892; x=1794643692; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Fu3COQCAPmOwpJB4SS2FVTvXTR/NXj3quXMf5G+9+Gc=;
-        b=gjR3O+LnbqWxSywMeqbqw+2tekOwfmC3a5BDhu60zh3iUcZ0Y3Mzu7GPeI9zhL+aHG
-         eZWl1skwP1Q/ll1e+lKt8scG8ma7mqFE2WWCEWpcHSYAqqqLl3NSj92XPwBjFcUwPDIS
-         l2MVQZyp8nPW6H4lH7sAHbUnWKOctaRelZL2/8faw9SdV7hAOI1FIueSB6ylCXggbLe7
-         JfxANvcupt3AxNkyuaiwncgHCpq1yxBDSLkCP49P6ePE8BAobSbK4noUzkekAp73VY9e
-         SDcZvO8bll/JwGA4InjCk6mETFBPB52IlyvUXmM1kkKc2+Y7KooJs5ZauCtp6HNd8+p3
-         IxyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794038892; x=1794643692;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794038905; x=1794643705; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Fu3COQCAPmOwpJB4SS2FVTvXTR/NXj3quXMf5G+9+Gc=;
-        b=xMjhUlxd7t3uMahpLmWIZLMsj3mfcOrnEps59OkASJzCByvt5NwcROd2Yyjtyxug7B
-         OZ0pkgrGmWBkR3ZoGaVX3aMZ5EgdPVcCqKZWlvXc/ogB4tfJVqiTADf/fF1HyfPg408p
-         Tw31+w4rni7y2E6vRUo8+laIkMRi3FQN/6F4Rh4nBotJZWs7hQZBhIlOx8lcWtzjk59z
-         5fACj11yamAxwrNVeaPLZt71JI5qhPH2hwMJSsa8rXCd0zKNAlcrLNlOMuaXgx6jxbxV
-         GUTNxdNjM1eHFBnYvddRiASuPoKPzLfp5J16BYOwSLPTMC+l23QopVyhV+gbVUJOJcEd
-         R0+w==
-X-Forwarded-Encrypted: i=1; AL+hErGpSovTW9b3f0+Gn67GTiDNhevUW0BQjD1HWH/xgWRtvBopl/zE9+3j+1oyKwzmTMmKYbBUEPg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/cWcbiHM43JFSgI3f5tdeb75jtP26KNVHA44gr7nhiHirjq3Hm
-	YC1H6xmNcA7ZhmqNXnjmUmhjKpo9YCM4Leg2UuRmlfn85QyQsmPaE5tL
-X-Gm-Gg: AYBFou0m1YNq/LCrosKmOZ88IFBf5l/WDhjAR8Qlw3uzMTJsUmIlpq+eHmiml8Opxo3
-	BjMRLXfnv7JBHRY+drklzf3cnyqMmPFITpzqIKui6ugK9l6ci1kpbceVnyRhm7bfXU511N7COTc
-	OUpUksIwy65cJ60uh3+/C0S6092beIu4RLWjYitlO9piHJVnGPAuu2SZKWJPtYg3T/lPt4HcF9/
-	raGt3EU8CDB2/LZQ9+XPB8lo19GIbSMYM81Zo+K0kQkTnE12bw+SLRXMkxrpCniFORoUvEcNHjW
-	HJ93Z2pslOlhVBhdpOQPPhYUTbwXwiT0N1N9bniyfgpGYou/1TIR2ndgQY8Rn+S/LXFc4kEK49N
-	Uu12byo7HpRygVYWpeTec73yEx6IQSLGAj4kIXROZ+nuNKRGNLnmseizdjzH6sdOtNfe/8uOg82
-	r8TRy0l5kC5+nJ0Z8PBpjM33Lk9YX7ZH5LobvQNI5WRyji4jfmgZyiv9pcdnFC73X47iQax2OUK
-	oSTNW9AGLoQin2yrDmYtxgQGRoX5HDa2RgZtVbUeW1xiZBMOF3sIF9vGlYiJ3/OhDFDt0StQHW4
-	IYyXXH1rrB7irHFKYZqjrL8NhGqTUgD4rzJQRllNCQrH7fx5Cgct68OR
-X-Received: by 2002:a17:90b:568e:b0:3ad:870b:b6d4 with SMTP id 98e67ed59e1d1-3b0db609836mr4788668a91.1.1794038891748;
-        Sat, 07 Nov 2026 00:08:11 -0800 (PST)
-Received: from [192.168.255.10] ([223.104.68.152])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc27e829sm1764509a91.0.2026.11.07.00.08.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Nov 2026 00:08:10 -0800 (PST)
-Message-ID: <05e77224-7d3a-42d5-9e08-82c7257cba34@gmail.com>
-Date: Sat, 7 Nov 2026 16:08:03 +0800
+        bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
+        b=VE/wXq0ZVwPv54UL4lC9s8hULEmpup18q2VZe/7rDzgYDYPXuz0kATpJ2ES3yvotp4
+         mHFlY3HkRHEKHh7KPu7AtAvhxZko5Z7ZSnts7+Njo3jaKwvhxLuOaUVOmKhReZeCVh6h
+         m8ZLyDoPzSziLhxtspbC74w6yWxMcFxv/QUp9i0HUtTX5urp18aUPKwLZkerhTlBV9Ur
+         XVHTKWyU/yUWGR3fVjDYRetqz2By6TKyWyt0cNFhKP2Q0fbkLdD1Cp4/DsBsHb441GK+
+         t48PHH/QDxthjUJQSD+aqaYFv6qg26VWAORqjkbBxCJSu0QWf/BYSPuocdON7ALFdiqE
+         uulA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794038905; x=1794643705;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
+        b=xj1yF1vtlOCrbFmhu1d+VPwA31quURdF5L7l0hU8H64FFWRZ01NMmVUKoWz5ilwLtu
+         CvSIjxKqgWtIWF1nnjMxFvSxC+Fl1cvt1cEvuTJze32yvfbrsd/A+iBTvmTIqFmbKoKK
+         hlVsMDfnTbHhNktCAajAi6tvuALgbL/qqACEihgnsS+KrgXf9gZKbfVMHy7bRvEKGuhp
+         EU/5RscGDR0s62mbkXZpjqyktuROI1MGxhzE8pBdbuCyjZr2xfKTdScqrwrPyLzACGBv
+         GNYXDHdwnOpH2A34ePMq3nUiLAyXZLY0knFmIvWXmjxq5Eh72bQ4NkVLALnT5jiEUBiX
+         IIJQ==
+X-Forwarded-Encrypted: i=1; AL+hErEAnKQ+UqeCFBbG5vsVU2RvgveGyvkB86oPBjtCS2W3BA/h+V6iFDhWnM3fhphGiNVmB3hB10s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8+txRSR4FikSyFqjPYElNWgdkMW3cyE4Jv4DaGeJ3bXTL/Lxxz
+	EvmnTkztDdA1sSkM20/6k4iPzTsYTGUH21UUYqKHZXdsVjQy4azBByA4uHgZ6wl2rpRxPaRimAw
+	600Y+/Q==
+X-Received: from pffh14-n2.prod.google.com ([2002:a05:6a00:c24e:20b0:891:240a:3bb3])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:180a:b0:882:2b16:c314
+ with SMTP id d2e1a72fcca58-8b37c52ff35mr4860050b3a.52.1794038904784; Sat, 07
+ Nov 2026 00:08:24 -0800 (PST)
+Date: Sat, 7 Nov 2026 08:08:24 +0000
+In-Reply-To: <20261106201822.1734-1-lirongqing@baidu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,113 +77,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: reuseport: avoid duplicate closed socket
- insertion
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, Eric Dumazet
- <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
- Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: TencentOS Corvus AI <corvus@tencent.com>, stable@vger.kernel.org,
- Lin Jiapeng <jiapenglin@tencent.com>
-References: <20261106135841.418-1-ljp1205831794@gmail.com>
- <6cb5fe89-c6f0-4e84-b753-4425b1aebe1e@linux.dev>
-From: Lin Jiapeng <ljp1205831794@gmail.com>
-In-Reply-To: <6cb5fe89-c6f0-4e84-b753-4425b1aebe1e@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261106201822.1734-1-lirongqing@baidu.com>
+Message-ID: <au7bGHqwhXXttXH_@google.com>
+Subject: Re: [PATCH] af_unix: Fix wrong socket tested in the symmetric half of unix_state_lock_cmp_fn().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: lirongqing <lirongqing@baidu.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+
+> [PATCH] af_unix: Fix wrong socket tested in the symmetric half
+
+This is net-next material, so it should be
+
+  [PATCH net-next vX] af_unix: ...
+
+see Documentation/process/maintainer-netdev.rst.
 
 
-On 2026-11-07 1:02 p.m., Jiayuan Chen wrote:
+On Sat, 07 Nov 2026 04:18:22 +0800, lirongqing wrote:
+> From: Li RongQing <lirongqing@baidu.com>
 > 
-> On 11/6/26 9:58 PM, Lin Jiapeng wrote:
->> Clearing SO_REUSEPORT on a TCP listener clears sk_reuseport but leaves
->> sk_reuseport_cb attached to its reuseport group. 
->> ...
->> Repeated connect(AF_UNSPEC)/listen() cycles therefore insert the same
->> socket until num_closed_socks exceeds max_socks. The next insertion
->> writes before socks[], overlapping prog on x86-64 and leading to type
->> confusion when a reuseport program is attached or detached.
+> The second half of unix_state_lock_cmp_fn() is meant to mirror the
+> first one with the roles of a and b swapped, but it switches on b's
+> state again:
 > 
+> 	if (b->sk.sk_state == TCP_LISTEN) {
+> 		switch (b->sk.sk_state) {
+> 		case TCP_CLOSE:
+> 		case TCP_ESTABLISHED:
+> 			return 1;
 > 
-> Is the issue same as Eric's patch ?
+> The enclosing if already established that b is TCP_LISTEN, so the
+> switch can only reach the default label and the branch always returns
+> 0, "no order known", instead of the intended 1.
 > 
-> https://lore.kernel.org/netdev/20261106084300.2029567-1-edumazet@kernel.org/
+> Test a's state, as the first half does.  The code is only compiled with
+> CONFIG_PROVE_LOCKING, so there is no runtime memory-safety impact; the
+> effect is that lockdep cannot validate this nesting order of
+> unix_state_lock().
+> 
+> Fixes: 98f706de445b ("af_unix: Define locking order for U_LOCK_SECOND in unix_stream_connect().")
 
-These reports may be related, but analysis suggests that they seem
-to have different root causes.
+Please drop the tag.
 
-Eric's patch seems to prevent attaching a program to the same unhashed,
-shutdown listener from resurrecting it into the listening section. My
-patch addresses duplicate closed-section insertion after SO_REUSEPORT
-is cleared, which may eventually make socks[-1] overwrite reuse->prog.
+As commented, the branch never hits and no real issue exists,
+not worth backporting.
 
-Eric's patch does not change reuseport_stop_listen_sock(). Also, my PoC
-attaches the program on a separate, still-hashed anchor socket, so his
-new check may not apply to this path.
 
-I tested Eric's v2 patch with my unmodified PoC. His positive control
-returned EINVAL, so the patch seems to be active. However, my PoC still
-triggered the same UBSAN/KASAN failure. Since his patch did not stop my
-reproducer, and the root causes appear to be different, I think these
-may not be the same issue. The two fixes may therefore be complementary.
-
-The following is the UBSAN/KASAN output with Eric's v2 patch applied:
-
-[trigger] cycle 129/129 (vulnerable: socks[-1] overwrites prog)
-[trigger] attaching CBPF after closed-region pump
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in 
-/Users/m00nb1rd/WorkSpace/vul-findings/reuseport-closed-region-negative-index-bpfprog-as-sock/repro-upstream/linux-eric-v2/net/core/sock_reuseport.c:153:9
-index -1 is out of range for type 'struct sock *[] 
-__counted_by(max_socks)' (aka 'struct sock *[]')
-CPU: 0 UID: 65534 PID: 22 Comm: poc Not tainted 7.4.0-rc1+ #1 PREEMPTLAZY
-Call Trace:
-  <TASK>
-  dump_stack_lvl+0x23/0x30
-  ubsan_epilogue+0x5/0x30
-  __ubsan_handle_out_of_bounds+0x91/0xa0
-  reuseport_stop_listen_sock+0x290/0x310
-  ? reuseport_stop_listen_sock+0x43/0x310
-  inet_unhash+0xd5/0x400
-  tcp_set_state+0x125/0x260
-  tcp_disconnect+0x47/0x1950
-  __inet_stream_connect+0x2d0/0xab0
-  ? do_iter_readv_writev+0x25b/0x350
-  ? vfs_writev+0x2e0/0x3c0
-  inet_stream_connect+0x57/0x90
-  __sys_connect+0x14b/0x1a0
-  __x64_sys_connect+0x71/0x80
-  do_syscall_64+0x6c/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x205560
-...
-...
-  </TASK>
----[ end trace ]---
-Oops: general protection fault, probably for non-canonical address 
-0xdffffc000000008e: 0000 [#1] KASAN
-KASAN: null-ptr-deref in range [0x0000000000000470-0x0000000000000477]
-CPU: 0 UID: 65534 PID: 22 Comm: poc Not tainted 7.4.0-rc1+ #1 PREEMPTLAZY
-RIP: 0010:call_rcu+0x10d/0x260
-...
-Call Trace:
-  <TASK>
-  ? reuseport_attach_prog+0x6c/0x250
-  reuseport_attach_prog+0xdd/0x250
-  sk_reuseport_attach_filter+0x97/0xf0
-  sk_setsockopt+0x973/0x1cc0
-  do_sock_setsockopt+0xa9/0x120
-  __sys_setsockopt+0xaa/0xe0
-  __x64_sys_setsockopt+0xac/0xc0
-  do_syscall_64+0x6c/0x1d0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x202f22
-...
-  </TASK>
----[ end trace 0000000000000000 ]---
-
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
+>  net/unix/af_unix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index e7a0582..501e693 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -163,7 +163,7 @@ static int unix_state_lock_cmp_fn(const struct lockdep_map *_a,
+>  
+>  	/* Should never happen.  Just to be symmetric. */
+>  	if (b->sk.sk_state == TCP_LISTEN) {
+> -		switch (b->sk.sk_state) {
+> +		switch (a->sk.sk_state) {
+>  		case TCP_CLOSE:
+>  		case TCP_ESTABLISHED:
+>  			return 1;
+> -- 
+> 2.9.4
+> 
