@@ -1,72 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794072756;
-	b=W7CLgAZ4aYznk6JDt9Otkne60YkhTzqRwiPnrwrD6zsKhNS0jc7doNCvbZQuB27BcObA
-	 Gm9Bmke7oBxM7E9C/RQ7wkPUfPOTAji1hHnKEpVbG5krOw+qqMH1Avnl4aMgmCJ8dVEoL
-	 IcJ3hDE3X1MGQZHUQkF7uemJHQaUX00fJN1qiDbRBgw5kjjpPgVlY0R9iUCwSNZ4iuv3S
-	 GpD9dQRJQxvadeNW7qWpkQ5fqcsz7S/YtMP82cg5WgAmY6Zm7zVFMQGMWUXn00pFM+Yl7
-	 DK290+gO998NSxTP1PfMsQHo2K+3Gjw5pgl9v1KlMShsacojW5Sa1n1WbDI6+KMxSqg==
+	t=1794072942;
+	b=4VAhGmrSZbEe52cdVidYnQfozPZnfZ/xtYvtgkE9fkFgoFWf5jlh6Q7UZBMphrkcegMG
+	 twsz0Zp7M2PjpgdefBrWoj1fkMNXA1KcsVlS3+s9xEvM0Fsy8yQyxY6EN823+Na2WXTlp
+	 oJWOWhPG2J2R2TUU7ELKMBt4EDgr35U28Tv69Xe4Lz5GU4dViN15WlvaFcuauE0W3708G
+	 EgQ5AGNnDb1RXgUtPrRFMmOa6WJKZl3V1sGyeBKmEPLyhOr6UGALfKIwCF+jY0jUgcD8E
+	 yvfhjnh3+4mUn5k1ax9px4OiJUE9DV3VAK+oqvW1IqkCZKcjvVNzMIbac9O+UD9xT5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794072756;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794072942;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=KzndXIafRq+J+vl6EzkbdZuWJbf/1tRHEtBvKVbMKMo=;
-	b=yU3Hui34fJEi4p580LnN+mXK869npuORtWQi3wJH0rQJ6du37zxoVCWNgC6ILyMmBuJD
-	 LzXM5/rlh4odGZGpIZn8tvWBd3VxbiXLi6l566spksEIb52oovTHQ4Hfl+jP9YNcbkgm2
-	 GlEvKDvqnwlMd1QeYs7P8zsdKvaqELTYCpMJPPAEnu9fCU4vggjRdmq49Z0u+EYSXVGK4
-	 nKtBWBw9ex0UAYME/P5fXAjbepkkcAihMGO1t0XVN5PnBpuIwj54f4WAx1WMqp1mTy/we
-	 FsfDGgqgdgxglYJUPugAw189Ptclt49aceDy8cWTqReBEu/Pa82FlUkQ390PqWeTtgQ==
+	bh=OT852kkRo/o4VjO6nyHiNDsa3iGlZR8hdH3eYAOExAs=;
+	b=ngSttEBJaCgMD+UkC2+eiBiSpSR8Uzd+ddun5xJ8Ggv72ddRssODvzK/b2y1sQul4gAU
+	 P01LFZZJM9+9rwMXkjX5MDP7SataAPALbn/7PRX0RRzkaqLa40TUESm4SQroea9tY4mZw
+	 Ek+amN06nefqmgt/8UMTMioCqV6wbgpCjEnuPinyS47ddQTnH60ECCpSOzbSuXysBESNF
+	 vV4B/gobhlgQ/r6J5m6x9kXeo53IOPISqJpjJeY83VyREY+MPEj+JX1mEWHzAhSJd/tLf
+	 5dfpAjQfFW16QR5l1JVpBaCUJ+evBcKBCZtyv2AzFdsZmFw9EzpFjWYBXnsgcAAh7TQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=lunn.ch;
 	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sjvthzk3;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ovou0tyw;
 	arc=none smtp.remote-ip=156.67.10.101
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAE5606A326;
-	Sat,  7 Nov 2026 17:32:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CAE5606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6EE606A326;
+	Sat,  7 Nov 2026 17:35:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D6EE606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sjvthzk3
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ovou0tyw
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KzndXIafRq+J+vl6EzkbdZuWJbf/1tRHEtBvKVbMKMo=; b=sjvthzk3+L4LMRbXpwAo3mKNSI
-	L4xDJB8dPTR7dPR85p1EuqZ531SO5llhau/gR4p9dZkAMMvOcfZIMrRnvO90605L7Jp+vGK9tJCuV
-	Lkt/PDZxaI6dtdohCeeV+d+5KoPy9r230VvSyV14gDrjbkPKxT/FEdYh3LZR+D37vU80=;
+	bh=OT852kkRo/o4VjO6nyHiNDsa3iGlZR8hdH3eYAOExAs=; b=Ovou0tywlvaSffc2v+I5u+7dbS
+	kFnRn2pP6r1t4tP5XOnyoH8W6L6tpQZw+NRbA0ziv5aY5nXi0THYLVgKGgA5VAXvcnW6EqrCkwQES
+	fn9LTHRTMjXmi7xo0uc8S3D+ZFpn2c9aYywiFzvAuGFmOKLvd5lnOcrSXZfpkOMsW5NA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xPkGr-00EzBL-J7; Sat, 07 Nov 2026 18:32:05 +0100
-Date: Sat, 7 Nov 2026 18:32:05 +0100
+	id 1xPkK1-00EzDN-C0; Sat, 07 Nov 2026 18:35:21 +0100
+Date: Sat, 7 Nov 2026 18:35:21 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Ali Tariq <alitariq45892@gmail.com>
-Cc: Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yixun Lan <dlan@kernel.org>, Vivian Wang <wangruikang@iscas.ac.cn>,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Tomas Hlavacek <tmshlvck@gmail.com>,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
- emac_suspend()
-Message-ID: <12a95b3a-9c8b-4a2d-9b81-12b3839e64a9@lunn.ch>
-References: <20261105123441.2524171-1-alitariq45892@gmail.com>
- <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
- <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
+	Jeff Garzik <jeff@garzik.org>,
+	David Gibson <david@gibson.dropbear.id.au>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: ibm: emac: fix MR0 write in emac_rx_enable()
+Message-ID: <59326527-5002-483a-b418-fef18eeab5d4@lunn.ch>
+References: <20261105231417.119930-1-rosenp@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,33 +68,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
+In-Reply-To: <20261105231417.119930-1-rosenp@gmail.com>
 
-On Fri, Nov 06, 2026 at 03:44:50PM +0500, Ali Tariq wrote:
+On Thu, Nov 05, 2026 at 03:14:17PM -0800, Rosen Penev wrote:
+> When an asynchronous RX disable is still in progress, emac_rx_enable()
+> waits for MR0[RXI] with
 > 
+> 	while (!(r = in_be32(&p->mr0) & EMAC_MR0_RXI) && n)
 > 
-> On 11/6/26 2:43 PM, Troy Mitchell wrote:
-> > On Thu,  5 Nov 2026 17:34:37 +0500, Ali Tariq wrote:
-> > > @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
-> > >   		return 0;
-> > >   	}
-> > > +	rtnl_lock();
-> > >   	emac_stop(ndev);
-> > > +	rtnl_unlock();
-> > >   	clk_disable_unprepare(priv->bus_clk);
-> > >   	netif_device_detach(ndev);
-> > This can deadlock. emac_stop() -> emac_down() calls
-> > cancel_work_sync(&priv->tx_timeout_task) with RTNL now held, while
-> > emac_tx_timeout_task() starts with rtnl_lock().
-> > 
+> which assigns only the RXI bit to r, as & binds tighter than =. The
+> following write of r | EMAC_MR0_RXE then clears every other MR0 bit,
+> including TXE, and TX stays stopped until the watchdog resets the EMAC.
 > 
-> Thanks Troy, that makes sense.
+> This path is taken when RX is restarted after an RX descriptor error.
 > 
-> For the deadlock, I think the correct function to call is rtnl_trylock()
-> inside the emac_tx_timeout_task(), which would return if the lock is already
-> held and will hold the lock if it is not.
+> Tested on a Cisco Meraki MX60.
+> 
+> Fixes: 1d3bb996481e ("Device tree aware EMAC driver")
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/ethernet/ibm/emac/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+> index 640618c0a09e..b676b286e339 100644
+> --- a/drivers/net/ethernet/ibm/emac/core.c
+> +++ b/drivers/net/ethernet/ibm/emac/core.c
+> @@ -249,7 +249,7 @@ static void emac_rx_enable(struct emac_instance *dev)
+>  		if (unlikely(!(r & EMAC_MR0_RXI))) {
+>  			/* Wait if previous async disable is still in progress */
+>  			int n = dev->stop_timeout;
+> -			while (!(r = in_be32(&p->mr0) & EMAC_MR0_RXI) && n) {
+> +			while (!((r = in_be32(&p->mr0)) & EMAC_MR0_RXI) && n) {
+>  				udelay(1);
+>  				--n;
 
-rtnl_trylock() is generally a workaround needed for badly written
-code. Please try to avoid it.
+This sort of code should really make use of iopoll.h
 
 	Andrew
