@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794063021;
-	b=QU+YTzjwIUuhNckcyX2XwQq25KGcKOFMTvbSm5mPfKLa43UTgY4k4/0R7idfhbeh/Wl0
-	 bG6AvaiArT8obGPad/DeCwZz3r+qHapZ0Q749vWZFLWbvYy6J4SttNhrb/EJDAvvkleJm
-	 GHUEY1zrFc77M1wiS8BjZqD1RKOCKYv+ScK82b7liejnLq60M+CsaOIL8qh1uaxRRxrDS
-	 DxMyqpWCXQ0jvD/NheU+iR2RskhAj17VToOuIHG1CB9+YHBpZHEs208IPgpw2jOp0iYHV
-	 z+70R/kmUt7iS3mn+VL3UIDD5BJW5N0ln7AUOtQB2CmJSiggF8gyTdrUTCnKXKZIgAQ==
+	t=1794063022;
+	b=y0sAvv01Ll69l7JBLqF0wiSWp4MfEXjJXD2KMTume4UyHQUsw3bfy2jZ+Rb/vMfTQhdK
+	 Qqd9MO8Np+yLkkJRqfwEDfy2mYo+A3XcAfNGYP9Z5wKjxBGlTTr3gQCeY7zZ45wSK2dUM
+	 GgDmK4rVET05MOtq7+EB5/0hjHCOTLbFl70CLUEQ50ystQ8TUC+oRNMv0txqfriFUPzej
+	 CrttRCpFysJnHxlT/Ne3eRgx60mfjABUi3ezjOhHGGguo1e8I4dp9NNZM+BTTi5dp7ccE
+	 TbfYNxffaIBbODgn9cBCzNJKvqq5O0fHrDhojNetIc3RissrXz2V5tEDmii9KnPKokg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794063021;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063022;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=xziTI3YYXoskqI56R/QdTymEmbBbGrcSZUWa4NYlYs8=;
-	b=0FP0qq3NZgVwnQjCWMcbiYrUBZB7uRlooTvdezQnGR718qK5YIUT/U6FJc/7iFjUwvzn
-	 GnAoXRbm6YIbqRxgQxCg+X4ejKCNe1KAgQanisUSVXar+GJik0GdJjPT44NCybiXErcsS
-	 jMUd6zqTGyjMCxGsTb496GUCMN1qPVWe9QZPdTldL+sLPuFKNnbIZOTxPfsh8kG8b/PTi
-	 OYcnD8APfl7xTPhMDG38VMvY73Mfn6qkGbtZA5C9qY1zsrVczB2fbQzuVGDNgKLQZox39
-	 /BrjoXUMhT2cVBOZxO/lSv9afzOvlA7Ust90Oj3GJgt89OTvsLEsRnbfVyAK0xXQQIA==
+	bh=L7gONvuWJ1W5fc4Gent1f5TjdAlfCccrrNFVcwKBXuA=;
+	b=E1tYWLzc78n7XZS9JA7wuYlBbQ3FfXr/VSjV8zBuuRfAZ3ObNYhbDgaQbdE0AUDFDvrX
+	 vlxY9rANv5hXgi/vsQfbDZp/0oOBz97xYlmsTW1ku/7katKzFTy5p9cy70n78RvrAfQHK
+	 ugsDoFyj1orpANKGbNeSdjB/C9R8W0I0GeukTBlE++esnhMkVO1JC5k+Cfzl94DEB00R3
+	 AZcVmPNGkUUvPnXid6D3BYu90M/dSohASYbUTKSDgtuD/jdQ77dkLSZo1C3IYdr5ezvq8
+	 vR62mb73CD0jW8TFkhCSCnenDXJGU7n7HOdn1m7ZlzQu6qG8Lmj9mf53PcU8AkQvoHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MHkhNWd+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObWXVGcr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1966B606EE90;
-	Sat,  7 Nov 2026 14:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150C0606EE8C;
+	Sat,  7 Nov 2026 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MHkhNWd+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C641F008A1;
-	Sat,  7 Nov 2026 14:50:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObWXVGcr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418131F008A2;
+	Sat,  7 Nov 2026 14:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794063020;
-	bh=xziTI3YYXoskqI56R/QdTymEmbBbGrcSZUWa4NYlYs8=;
+	s=k20260515; t=1794063021;
+	bh=L7gONvuWJ1W5fc4Gent1f5TjdAlfCccrrNFVcwKBXuA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MHkhNWd+ccUY4Jd5KfYGhVuDD3ZCdTUJmjHuVlouN0Fdo1QjKGhA0qJgRPxcthDZz
-	 xb28HTcUZmTFOpLTM04kxqzOMMcin7RNrmW+ziygyOVK4/MoV9gFZC/nVNFGcp5pOU
-	 QxwxLmjyOteYomnqOCuPq421URTMldl+KaZ0z/Q+y85NG1aA5sW8g8febtuX0q33SQ
-	 TdCkDOFDxAO0mVb74ydDN42XRx81DXxnngLx+TZ/0DH/6RhKEVh6jC76BwFZumseCU
-	 VuHlC28SK6jmmlhGFVRtW/hngbE/KJeXUNud9SEymrE/eZuMECf3Tn8ZR2SLGay7lE
-	 dsy3Dfg7lyH4A==
-Subject: Re: [PATCH net v3 3/4] net/sched: sch_teql: reject qdiscs from
- another network namespace
+	b=ObWXVGcr5qE1JMbstc2J1Rixv3VQdgTf7VqXZ1BhNqdKm8pltuYbsLmh534QhgTq6
+	 OYvzRWhbm3T/cTdqwoNjnnvBV5PS12StI7GdLR9gv+2uCqMTp2FdUxuVPbHOF4FyTh
+	 nt0el9iAz0NzTnFA1TiBVu9yrHP7uAQ6bUozy/DxpcT8Ko4plfxZmllEEM1xnyMXRt
+	 HVkTGyU1DL1FDPL2ZlUpTXEEVrBDfNVKVO/k/02Sw3ereq0zGRXAsKz0iuzTTyw1f5
+	 cRhBeEyERwoD6vX85NXPriLE5O1fKFqcST079qiZ376zlvQaL/+80DAhwu6pBDebQp
+	 CFSa5cLFaFyRw==
+Subject: Re: [PATCH net v3 4/4] selftests: tc-testing: teql: cover each attach
+ rejection on its own
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com,
  davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us,
  kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com,
  thomas.goff@boeing.com
-Date: Sat, 07 Nov 2026 14:50:19 +0000
-Message-ID: <179406301946.994134.7212801896124135602@kernel.org>
-In-Reply-To: <SER-NSBD.v3.r0.20261103064310-3@mojatatu.com>
-References: <SER-NSBD.v3.r0.20261103064310-3@mojatatu.com>
-X-sashiko-severity: Medium
+Date: Sat, 07 Nov 2026 14:50:20 +0000
+Message-ID: <179406302081.994134.2324214805948881495@kernel.org>
+In-Reply-To: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
+References: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,164 +65,141 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The fix checks that the slave device and the master are in the
-  same network namespace only once, in teql_qdisc_init()…
-- [Low] The commit message says only that a qdisc from another netns
-  could attach to the init-net master "and change its MTU and flags".
-- [Low] Moving skb_queue_head_init(&q->q) to the top of teql_qdisc_init()
-  (sch_teql.c:203) is presented as groundwork for the new netns failure…
+- [Low] The commit body describes the patch as a change relative to an
+  unmerged v2 posting, not as a change to the tree.
+- [Low] Both rejection cases check only that tc exits with 2 and that no
+  matching qdisc is dumped.
 
 --
 
-net/sched: sch_teql: reject qdiscs from another network namespace
+selftests: tc-testing: teql: cover each attach rejection on its own
 
-This patch makes teql_qdisc_init() reject a teql qdisc whose device is
-in a different network namespace than the teql master. It returns
--EOPNOTSUPP with an extack message. It also moves skb_queue_head_init()
-of the private queue to the top of teql_qdisc_init(), so every
-constructor failure path sees an initialized queue.
+This commit moves tdc case 124e out of the nsPlugin test namespace and
+into init_net with its own dummy device. Only the root-only check in
+teql_qdisc_init() can then refuse it. It also adds case 6a06, which
+attaches teql0 at root from the test namespace, so that only the
+namespace check can refuse that one.
 
-Link: https://lore.kernel.org/netdev/20261022144830.67948-1-shawnq1@163.com/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
 Link: https://lore.kernel.org/netdev/179366641863.488856.17368571591466000274@kernel.org/
+Link: https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
 
-> The issue:
-> The teql master devices are created once in the initial network
-> namespace and their Qdisc_ops are global. teql_qdisc_init() takes the
-> teql_master embedded in the registered sch->ops and uses it without
-> checking whether the new qdisc's device lives in the same network
-> namespace as the master. A qdisc created in another netns can therefore
-> attach to the init-net master and change its MTU and flags.
-
-[Severity: Low]
-Does this description understate the impact of the bug?
-
-Besides changing the MTU and flags, teql_qdisc_init() links the foreign
-qdisc into the master's slave ring, or makes it the first slave:
-
-    rcu_assign_pointer(NEXT_SLAVE(first), sch);
-
->From then on, teql_master_xmit() round-robins init_net traffic sent
-through teqlN onto the device from the other netns. There is no netns
-check and no skb scrubbing:
-
-    skb->dev = slave;
-    if (!netif_xmit_frozen_or_stopped(slave_txq))
-        rc = netdev_start_xmit(skb, slave, slave_txq, false);
-
-If teql0 is already up with slaves, the attach still succeeds as long as
-the foreign device has compatible flags and an MTU at least as large as
-the master's. A CAP_NET_ADMIN holder in a user namespace can set both.
-
-With a veth slave, the netns owner could capture or drop part of the
-host's teql traffic. It could also answer ARP that __teql_resolve()
-sends on that device.
-
-The code change closes this path as well. Since stable and CVE triage
-depend on the stated impact, could the commit message describe the
-cross-netns traffic interception?
-
-> Initialize the private skb queue before any validation so every
-> constructor failure path, including qdisc_create_dflt(), which resets the
-> qdisc before destroying it, sees an initialized empty queue.
-
-[Severity: Low]
-This isn't a bug, but should the commit message say that this reorder
-also fixes an existing NULL pointer dereference?
-
-Before this patch, three returns happened before skb_queue_head_init():
--EINVAL (hard_header_len), -ELOOP (m->dev == dev) and -EOPNOTSUPP
-(non-root parent). On those paths q->q was still zeroed. When init
-fails, qdisc_create_dflt() calls qdisc_put(), which leads to:
-
-    qdisc_put()
-      __qdisc_destroy()
-        qdisc_reset()
-          teql_reset()
-            skb_queue_purge(&dat->q)
-
-skb_queue_purge_reason() sees list->next == NULL. That is not equal to
-list, so it treats the queue as non-empty, and skb_queue_splice_init()
-dereferences a NULL first pointer.
-
-This looks reachable with net.core.default_qdisc=teql0. mq, mqprio and
-taprio create children with a non-root parent, and
-attach_one_default_qdisc() on teql0 itself returns -ELOOP. Setting
-default_qdisc needs CAP_NET_ADMIN in init_net.
-
-Would it be worth calling out the crash fix explicitly, for backports
-and Fixes: attribution?
-
-> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-> index 70c948a26f809..dc21cd9704a25 100644
-> --- a/net/sched/sch_teql.c
-> +++ b/net/sched/sch_teql.c
+> It no longer proves that a child attach is
+> refused as such, and the case added in the previous posting covers the
+> namespace check alone.
 
 [ ... ]
 
-> @@ -211,9 +213,12 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
->  		return -EOPNOTSUPP;
->  	}
->  
-> -	q->m = m;
-> +	if (dev_net(dev) != dev_net(m->dev)) {
-> +		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
-> +		return -EOPNOTSUPP;
-> +	}
+> Attach a root qdisc from the test namespace in the second case, so that
+> only the namespace check can refuse that one.
 
-[Severity: Medium]
-Is a netns check at attach time enough to keep the master and its
-slaves in the same namespace?
+[Severity: Low]
+This isn't a bug, but these sentences read as if a namespace rejection
+case is already in the tree. Is that the case?
 
-teql_master_setup() never sets dev->netns_immutable. That means
-__dev_change_net_namespace() lets teqlN move to another netns while
-slaves are attached, because this is the only guard:
+Case 6a06 ("Reject TEQL attach from a different network namespace") is
+added in full by this commit. The parent commit, "net/sched: sch_teql:
+reject qdiscs from another network namespace", changes nothing under
+tools/testing/selftests/tc-testing/.
 
-    if (dev->netns_immutable) {
-        NL_SET_ERR_MSG(extack, "The interface netns is immutable");
-        goto out;
-    }
+The only place that says a new case is added is the v1 -> v2 and
+v2 -> v3 changelog. That text sits below the "---", so it is dropped
+when the patch is applied.
 
-The move runs dev_shutdown() only on teqlN's own qdisc. The teql slave
-qdiscs on the init-net devices stay linked in m->slaves:
-teql_master_close() only stops the queue, and teql registers no netdev
-notifier.
+Could the body say outright that this commit adds new coverage for the
+namespace rejection and moves 124e into init_net?
 
-Once the master is in netns B, three things can happen:
+> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
+> index 0179c57104adb..ab5d0881c0070 100644
+> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
+> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
 
-The owner of B, who may be root in an unprivileged user namespace,
-passes the new dev_net(dev) == dev_net(m->dev) check. It can then add
-its own devices to a ring that still holds init-net slaves.
+[ ... ]
 
-teql_master_open() takes the MTU and flags from the init-net slaves.
+> @@ -104,7 +100,35 @@
+>          "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:1",
+>          "matchJSON": [],
+>          "teardown": [
+> -            "$TC qdisc del dev $DUMMY root handle 1:"
+> +            "$TC qdisc del dev $DUMMY root handle 1:",
+> +            "$IP link del dev $DUMMY"
+> +        ]
+> +    },
+> +    {
+> +        "id": "6a06",
+> +        "name": "Reject TEQL attach from a different network namespace",
 
-Traffic sent through teqlN in B reaches teql_master_xmit(), which sets
-skb->dev = slave and calls netdev_start_xmit() on the init-net slave.
-Through __teql_resolve(), it also calls ipv4_neigh_create() on the
-init-net slave.
+[ ... ]
 
-Moving teqlN out of init_net needs CAP_NET_ADMIN in init_net, so the
-unprivileged user cannot do this alone. After this patch, though,
-moving the master seems to be the only way a container can use teql.
+> +        "setup": [],
+> +        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0",
+> +        "expExitCode": "2",
+> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
+> +        "matchPattern": "qdisc teql0 3: root",
+> +        "matchCount": "0",
 
-Should the master be marked netns_immutable? Alternatively, should a
-netns change of the master be refused, or detach the existing slaves?
+[Severity: Low]
+Can this case pass even when the namespace check is not what refused
+the attach?
 
-> -	skb_queue_head_init(&q->q);
-> +	q->m = m;
->  
->  	raw_spin_lock_irqsave(&m->slaves_lock, flags);
+tc exits with 2 for any netlink error. The verify step only checks that
+no teql0 qdisc shows up in the dump. Case 124e has the same weakness:
+it checks only expExitCode "2" and matchJSON [].
+
+In teql_qdisc_init(), both rejections return the same errno. Only the
+extack text tells them apart:
+
+net/sched/sch_teql.c:teql_qdisc_init() {
+    ...
+	if (sch->parent != TC_H_ROOT) {
+		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
+		return -EOPNOTSUPP;
+	}
+
+	if (dev_net(dev) != dev_net(m->dev)) {
+		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
+		return -EOPNOTSUPP;
+	}
+    ...
+}
+
+The tc-testing config sets CONFIG_NET_SCH_TEQL=m. Unlike the other
+sch_* modules, sch_teql.c has no MODULE_ALIAS_NET_SCH(). So the
+alias-based request_module() never autoloads it, and the lookup fails:
+
+net/sched/sch_api.c:qdisc_create() {
+    ...
+	ops = qdisc_lookup_ops(kind);
+	if (!ops) {
+		err = -ENOENT;
+		NL_SET_ERR_MSG(extack, "Specified qdisc kind is unknown");
+		goto err_out;
+	}
+    ...
+}
+
+When that happens, tc still exits with 2 and nothing named teql0
+appears. Both 6a06 and 124e then pass, whether or not the kernel has
+either check. That includes a kernel without the namespace fix.
+
+The module is loaded only by try_modprobe() in tdc.sh. That function
+just prints "skipping" when modprobe fails. Running tdc.py directly,
+for example with -e 6a06 or -c teql, never loads it.
+
+The commit message says "only the root-only check can refuse it" and
+"only the namespace check can refuse that one". That only holds when
+sch_teql is loaded.
+
+Would it make sense for each case to match the specific extack
+message? Another option is to fail when the teql0 kind is unavailable.
+
+The positive teql cases would fail in the same setup, so the suite as a
+whole would still show that something is wrong.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v3.r0.20261103064310%40mojatatu.com
