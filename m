@@ -1,52 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794029738;
-	b=aomNyY8sJZxRcAn5gH1MyUBLHVhjIMXQztOxuDAxU4cwC2EhjHdfs2MXn37S5vo20PnX
-	 IWxG0xMhHf/4ecJ2UHbYGuJVrtQT7moOONahZivJkXhRgcQR92fc7OpKtQYTnUNJIqYS8
-	 V7wbfwfl/8LaJrrqecyPha7xCHyjg/Ubh8Q4hAgmUOHjAECd2+jwHHPuoqFCQdy3ronLk
-	 n5e+czG7bDITJbNPxmnEyLalV3NedaSSZFYj1f0G5pNA3xqicpo58+qF/qt/gnOLe4dyZ
-	 ugzYt5zRhNIzNcQYRGzajAEas1yaCYslj73rUMRi9GIG5CB/7g2volBev/EjcDyK4+g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794029738;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:Content-Type:Content-Transfer-Encoding:MIME-Version:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=4BU3jWG6HgtUEzCXO9L6HXY2c3GFaOpgCDBfsihICbY=;
-	b=cc5M/e4ZfZRri2/Xk9y/dsKtWhO9NZzhlFZ2GydC8l9rBdqM1/C0tEaSwjeunKszGztI
-	 QkJ7tzfDSlzgY3dD4MyonVL+e8B/I6E00cOAXAjlQ5O8UMHsUowEWjUZYSDelplh6HCIk
-	 3ypiPuIB7okIFTdqPO61/lDr46bPiMnuCutXC5zB8nysyCY7ccQ9K/H3/eHDjSKSRn3nG
-	 YnnbHZRsbbeULVvW57lqtCQx5YhDYFuzREF7V0Y7HdQWhrjUW8Gnl6IABzCWjwjyx1x/r
-	 6FQE4uGqhg5wP5rmoThX1I4fy2OWjxLCGmUfJsYL8aVgZpTPryJ702Q02abK/kjhX0A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794031600;
+	b=ChI4FqPzIeA1iDZZSqvR2ZOxOlGeZKzwgbVoSJjVSEnFlcdoVa6BPta5Qy7rPSD1o5aW
+	 27g3BkGP0iJEPPSMqW4Yj906WLh3W6MS4cSkmDBxiXx74Km6v2XGzBYAEnLdBdtg4gF5S
+	 11RQaS/sNB6ERfPctyJa5lF5d1dhbTweRKylQAu326URo11xOMY2/UWgP4yMUtXGi2A1o
+	 mLKm9xkFMSw3NcsSdE6lKRKJ2/ZKgwOstT04BQ96B+8mPR/9j1kxWQFo8Y7b/iPn40KCb
+	 ucFzOqCeG2Ydz4SSzF/LrdQ0RMCBHG674bMIcxnwPy/hwV/JFezqJEDUYl1rbPEHTWg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794031600;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type;
+	bh=IbTXKYhTg4UDz4yQdeuAV4pJ758Mchv9ycf3D50REY0=;
+	b=NUJAEuXntl/uecJvgzA/t9scEzISH5FIZK+T71og+9uTvZ1KPkm5KGV8Hh0/d/aUvqyK
+	 N9pYJwzEZuDEQNbzAf7vl5Qwz32vecZzuBYwC9SU1tmN3IIUxvRA9qfx/mKD+MnF2bdaB
+	 BA4hVJtKxUqEbnfjhu0IxxCFKhUY8lrt1gD828pSb5sTE3fZe9ihQnbFbJXz5OGyjKorK
+	 C6xAc+CP/l6LC3fXX9r6FusdJfPp656ux+fOVRyTQfgK5MojtwPOBrPD4E6ZwvLGRy5TW
+	 EC0Jel0UvPrrtRfoJtsuvDN075S3+GxH7FHS8cBIbzkmPO8N5cpV4bqrMDMVpVqH1dQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="q/7dWNdw";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.50
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD0D606A326;
-	Sat,  7 Nov 2026 05:35:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DD0D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAA3QZKauO5qndt5AA--.17203S2;
-	Sat, 07 Nov 2026 13:35:22 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Simon Horman <horms@kernel.org>
-Cc: enachman@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 
- Re: [PATCH] net: prestera: release the ruleset in prestera_flower_prio_get
-In-Reply-To: <20261106121731.GI865646@horms.kernel.org>
-References: <20261103100532.1309990-1-vulab@iscas.ac.cn>
- <20261106121731.GI865646@horms.kernel.org>
-Date: Sat, 07 Nov 2026 05:35:17 -0000
-Message-ID: <179402971765.2318769.17775485131459248250@iscas.ac.cn>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2333E606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 06:06:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2333E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=q/7dWNdw
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-43bf9548df4so1215940fac.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 22:06:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794031599; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r8/zMW5Ny1ubctMjSBBuI8WzSe/nrMTkvvtQKHiCB7MAKuGO4CFfbMpm5zGbfDz2pk
+         Z7iJeWUQou6xmAggYKkvDfAYUfaX8H/t1mJtRDXUkEkP16yGauHXM0ddrKcieIlzvggh
+         Lg5PlEmwb3MfUKYhL1yA09iqQn4G6H8RXYvJ9G5A8hbhuRMtotm5c2BC9ZjLMn78q8q3
+         CU3qU70VlraKeHyxI1xIxNjKkqeomIDanHBsbqAdGIAUQXOxMiBLwZ4s1vN4qz7oLsPY
+         OnKaUXD+ZK98u1sUmbwXp6Aefbx3CVbtZ7sw9RnN/s2WJAT0iMlxflK1MSd1C3dFH6yG
+         +vzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=IbTXKYhTg4UDz4yQdeuAV4pJ758Mchv9ycf3D50REY0=;
+        fh=y62OM90oLmeP6fwlP9BrsvI3PdqGlvcMdcyeZBjLLpk=;
+        b=ENwRRugP+37rlABmxyNt3D4ddgrv1mIu4U5idnXQDbIQ66C4IjyuvZJAPrLj3iroR2
+         jEoiF6htDUHIc/e/rUWzpyIiBF8Yw5XGbQ+8gtTfnJms3/g05cf6Rtcl8noUwHCeQYuB
+         EOBKedwX4emLFu9ewxiQuoRu5pXL4FSVacijOOnZjn0bJRiEiqyNPZHsBbJI47dxB4bj
+         DUB4vheCcUZ7kPi5P40olhDfbawlMuWbpFSm+7LR0oOzisfPNDFKx79osNUhqSOyophH
+         PteIb+NzgZ7AVLg7+ZsBNowtipah5RKFXPout6MxZ+cjSHWA1I3mx2PfiC9924JS0m5Q
+         GFoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794031599; x=1794636399; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IbTXKYhTg4UDz4yQdeuAV4pJ758Mchv9ycf3D50REY0=;
+        b=q/7dWNdw003NwmwZXnvlv7VO365y8zNcVd0MPxkKzeNaX9Ksq3LCD/80d4DKzhDCF6
+         IZRpO5bWCHMSSEhnc9MqyEmf6uSyzj7jgnxm3F8x/63kXS+xlH2Z3d+WNLWhoRF7K+FB
+         N7/f8hAefAwArQNrLO4FWfhPm7MKhjnRBauNRLKOFiBwPaOTBKIv2EzTrP2aNnOEQux5
+         vYFE3nlTQu9aAAHQo92Gxk+ag/bFRJeTY24X2zRgrv1M4igD5iKGjefTDmJ3umUdmeKG
+         735kVziiOc5bYAPtNH2kthGmUEXnjL5+nymlwpZPrYIIffyTAi/hA9AsU2kTb3Y+lo11
+         U6Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794031599; x=1794636399;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IbTXKYhTg4UDz4yQdeuAV4pJ758Mchv9ycf3D50REY0=;
+        b=k2aHm724ZoNb1+Um7GZ6XIyt4OIoqIgKujb8vB9HyrVi6eh0qMR6+KjFm/6qA1RADM
+         8PI/7fTGyi7iX09ns+eun/LAyTv4oLUN61oHVnBeXs0GmJuMAsPioWVD+32zfIDCFMIn
+         8cLqBfNtWG9c7e6dJ0jHzwaCzKKpOuuZp14QUhpyygHCKdqU2JTXjQqz+iVjL6MATqcc
+         IZFHK9BYvyKoA1ZPgmrUB0pRpU2LEhAjfFRDVTEqZBtPli8jcDUDQ7jdtU9UeYw5VleV
+         Hmy2cIAz2Fw5OXu0rbVwLFMllS/Z1NmI6RgpiyOvb5/Bi7rew2bEXA1vUHplG7YVctvI
+         u2bA==
+X-Forwarded-Encrypted: i=1; AKwUvBwz5Am9LUILzfeF8XdWA72Lo1njRYXApWD4JKfzox37xauvL5vzRs6E+ZGZmyiyOPUdRnd7Y5w=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+lz9jDyr1keH8g1VAXfckAKkTJofJzQLViLWzPycQhnZVisya5
+	eskLBc0ZXa6/ok8kYESJDEK6l2XbZLU0pr6Ylfut+Q34et6Y+G02BmF+rg1legIHTcCx0ovFP/W
+	ZcLOk8pmPVQV8JFBx+1mrNid+3D3wUDA=
+X-Gm-Gg: AYBFou0kITFPy9XIkiSFcsS9Png9Dtkp6606x2x+LznCvZgWVl2hKPmTJ0QLHNVE+qE
+	L3OsIVAw1nuWpr5LAOR0BFSHUM+TVG7MnRgq8C2my+swMY/lMv2A+bT5yAC358DJq+NlZJXn01N
+	pX81xCZL6RDb2gQolOFU+0maadInagxesrNlYTpWXk/+98E15nXc4QKcsuZlPH7tts0U9yLl2Kq
+	s57UKtQwqRaIuZjr0ir4QaRloW5tmdYGIi3bOE2Vl+Vq+JxGvxbywoBP+8w9sV4fDP8pCtCT15S
+	SiI/RXP5JZwUi+aLmSkp/EgQvaQih+1EIobS00rsFYqf8Rz1MrlQh1J/hsPMvGq+iBFNnReHs+v
+	2Zhuh2GvNKjXSTtw4TMhOnMiJAOI33luXoSMXOopUGKsPiZf+DqqRzmxMbg==
+X-Received: by 2002:a05:6808:23cf:b0:564:3bc3:4605 with SMTP id
+ 5614622812f47-567e1535fe1mr3335044b6e.40.1794031598913; Fri, 06 Nov 2026
+ 22:06:38 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 6 Nov 2026 22:06:37 -0800
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Fri, 6 Nov 2026 22:06:26 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,46 +105,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowAA3QZKauO5qndt5AA--.17203S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtF15tFW8Jw4DKrW8Jw45Awb_yoWfXFbE9w
-	4vy347Za1UAF17Ja1YyrWYvrZ3Wr48CrW5Z34rXr13try5ZFZaqw1vkrZ0yw1SqFWUAFZx
-	Jr1Yy3yYk34qgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb-8YjsxI4VWkKwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
-	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
-	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
-	Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7
-	v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_
-	Jw0_GFyl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxV
-	CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
-	6r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
-	WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG
-	6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UYxBIdaVFxhVjvjDU0xZFpf9x07bnXd8UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRUEA2rucA5nSwACsP
+From: Roshan Kumar <roshaen09@gmail.com>
+Date: Fri, 6 Nov 2026 22:06:37 -0800
+X-Gm-Features: AclHuK99jKENmsQSNXDnKdu7CcWNmvDQnx-3eEPjLvKurMnwi59_003exdfncjk
+Message-ID: <CANphZRNSXy4tQ9jO7RT5g2X69T-CapR3-sSood1qJfYTRUE8ag@mail.gmail.com>
+Subject: Re: [PATCH net] ieee802154: hwsim: free PIB after unregistering hardware
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Cc: Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, linux-wpan@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Simon,
+Hi Yousef,
 
-Thank you for reviewing this patch and providing your Reviewed-by.
+I independently reproduced and tested this issue on current wpan.git
+(2b4707a149a5). I also prepared the requested rcu_access_pointer()
+update. It passes checkpatch, targeted W=1 allmodconfig/allyesconfig
+builds, and 200 KASAN teardown rounds without sanitizer findings.
 
-I apologize for the delayed reply and for the excessive volume of
-patches I sent to netdev. I also failed to follow up on earlier
-feedback promptly, creating additional work for you and other
-reviewers. I take responsibility for that.
+Are you planning to post v2? If not, I can forward it while preserving
+your authorship and Signed-off-by, adding my Signed-off-by as the
+forwarding submitter.
 
-Your concern about the submission volume is well founded. I will
-personally go through the outstanding feedback, review each comment
-carefully, and respond in the relevant threads. I will respect the
-posting pause requested in the earlier discussions while I address
-that feedback.
+v1: https://lore.kernel.org/all/20260627235805.17310-1-alhouseenyousef@gmail.com/
 
-Going forward, I will not send large batches of patches. I will keep
-submissions within my personal capacity to understand and validate
-each change, and to respond to review in a timely manner.
-
-Thank you again for your time and careful review.
-
-Best regards,
-Wentao Liang
-
+Thanks,
+Roshan
