@@ -1,61 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794085167;
-	b=aEe9Tb9bm/bgEQK9ftp/rPeB6NJjU7K8b9z0bYn65OG5Od8hMhsaZFY7o7CCL2HvSEwi
-	 PBt0IgysckDBcJwlZD8XsnCmaxiT1F/CBbQ2XEbVSNJtm+JUk/EdgutbZ1k29DZ3S1y2J
-	 DcH8L+mWsZl3Dca+l19Tk5pyqTZbmFi0D9sP0y1XDS0REC7bxWU8zgAWtAhTXwLVyhwv+
-	 dlY192B3vR6nqrpdZTqbuaYPIxLzUT2Sw8VZSO2Xt0MK5CEO0WDDWehcSeNFoNDETocr0
-	 ip48V8T/bsnIQ2CZoKTXawi+pUWd5FT4tlyCVx7Tt1Y7tCCrutS0xPXdUhcCdu1xwig==
+	t=1794085184;
+	b=y2Dh/H7+Qz1da5nxWwp6IuY+PLCNcMgEn73s78pfbWqDo8MFLJ8V7U8rFGCLUsd42QgJ
+	 Km1sg/9BhACVxoOgOumokLY6A4n+FJOK0lHJ/tB40LMmKE+0OrQsxbZx6zAS/GwPcJGet
+	 93DMS+iiVKc+1RjTYoh46OguWrzeHsDTYj8vi1ha890fw6xoRkssrvUVL96G6JkDU6TlL
+	 Qk1UK0ZQpMFEc2Fv7I0zC3lM+TmMUaStPSau04u5wwSEAAq0FUj0Kkfy63OhHNKiSftlS
+	 aiAmiLGMj+8zbFimbHftaLycb1YIs4O9PajbEgfldO4ISQmi0EgxFA4Vm2iyDGy3eRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794085167;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=b3RDVGO3+bP5dg9fDJjr6KnmIzH5WR2VM3WhSL40Oqs=;
-	b=xT3v+L08LVfMAl9c4cyp4sCVbdxITtPxiZv5FnEGLldZ5gw4mpJCYlhER+c3YMKUff6m
-	 VAp50W9gvi+W9uNFM8qk0aSxV+fIYJ1o/FY+BrYYSTcKI8ccm8mgfrXm5y+UyKCaNWaMk
-	 7YlxHdPZFnDvivtcsfGl3v5OowJyzqEVuo6Iv7SUCsUk8wBdXvkSsJQw+/6OlpPIXLvh3
-	 nE2uiRrTA1TR3RDmTXvoShaBCRVseBoDsIoQuCA73DlT8/zYVSSqU7YbDtfo7uauOn/0J
-	 TIp2hLEEDiFYima55Y632ehBP/TGQ68x5TtwC0604g5x+6MAx888BC01DPOJ6N6diJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794085184;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=DdANYzbV0Lro+OPxxD4bgUweqNMIXZ8k/JJD4bBO6rI=;
+	b=CAYxMOHaMzuEtjjV/+OQn6zaQEWSBvh7uYPcUuzEHSRq1bly0b9Psk70G+5VAOrj+iE1
+	 Lngk5fkBVdkj77NBTjO9w5oulzsqnKvEiOPc9AJ39eoUQ4bPtEzXErU05+5ymDKte5Uq6
+	 hIVu3dgCl5aZyBlt01EApeuaMezhV250EMAUsEPdegdG26mvOO9+RvQMXtZEdiEBE3KJX
+	 hlnKEhG5fjesP8BhM7puxnYfHRjFENDlUomy2dCEzFJeURB+DGwEjRNVDovaxeFlWCEKY
+	 6SEEBif2N+seeTzBm4YIu5E3fouuwXg5dZ3+hptF8VmBs6SqZdhRGx2E113VwGXrn7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cGgfNYTX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=Edus5YeA;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA85606A32D;
-	Sat,  7 Nov 2026 20:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D19E606D805;
+	Sat,  7 Nov 2026 20:59:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D19E606D805
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cGgfNYTX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64731F0089F;
-	Sat,  7 Nov 2026 20:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794085166;
-	bh=b3RDVGO3+bP5dg9fDJjr6KnmIzH5WR2VM3WhSL40Oqs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cGgfNYTXs/SqnlSxtrc8zAA0ldSrb39BN89s7qPsjezo1YSGMgJaLcEzt7N1Vd4lw
-	 abk2lMgjqIvZW8sTGfMyb37u6Qhz3f5yEv9PeeSwUXn3ksz5GG+SlMI/YWeL3CA9Px
-	 EsJiETn2FhKbQ2+YYvpRsjtEmvx5hRXBS+5gWrdYYZELUZr2iZWkX0qdDf3CFTKbcO
-	 YjoyTVLAW5WkOvyUYuzcO347VxDgGbpL/tkDLkI0cxjjVanbLW+L0p1vciO8zfCiGm
-	 3FbCO5Ss4v0/tVgXMZE2XXRyWPzbw9Ydn7uwMD/mKrlO5kWnMS7eiOO7VYCcEPPMLw
-	 lSow9d/xle9Ww==
-Subject: Re: [PATCH net-next v3 1/5] psp: support rx rekey operation
-From: netdev-bot+sashiko@kernel.org
-To: daniel.zahka@gmail.com
-Cc: kuba@kernel.org, willemdebruijn.kernel@gmail.com, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, donald.hunter@gmail.com,
- andrew+netdev@lunn.ch, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Date: Sat, 07 Nov 2026 20:59:25 +0000
-Message-ID: <179408516544.994134.848767943937829488@kernel.org>
-In-Reply-To: <20261106-psp-v3-1-a8dd38f5a727@gmail.com>
-References: <20261106-psp-v3-1-a8dd38f5a727@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=Edus5YeA
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D29B1A0034;
+	Sat, 07 Nov 2026 21:59:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1794085176; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=DdANYzbV0Lro+OPxxD4bgUweqNMIXZ8k/JJD4bBO6rI=;
+	b=Edus5YeAcb7ZtvU1NRFfbiHlNXNRD8a4VytQ74PxTYmtcjZJSITS/xz3/djqBNZOLS3+LN
+	qd6r0NO3OYD5NGPkDn/9NDMt6xFnOHDzM80nWq+0lgH/QFkAVAhsdU6/f+NDaL8gMBPJHh
+	b/YRXkTxg8nZnE3E240Hgral19jubWkcUYZ5FwkiCgNsbs4FB35yeM4Nu6gXHcVhjYBNtf
+	pzpTdZ2AgNih12pLCFHFZLVLkLEjdq1ON+ZTAlxvjgk2mYOKw2W80Fadjv0NhgFPMjXKkQ
+	T8QZfGzdfQuwC4+S/nbu9owuGO9DMCxrWebOoJgVfD1cAplUj8ktcMZesrVGrg==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Sat, 07 Nov 2026 21:58:47 +0100
+Subject: [PATCH net 1/2] net: macb: credit unsent frames to BQL in
+ macb_tx_error_task()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,110 +57,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de>
+References: <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
+In-Reply-To: <20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52@tipi-net.de>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Sean Anderson <sean.anderson@linux.dev>, 
+ Robert Hancock <robert.hancock@calian.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+The frames dropped on a TX error are never returned to BQL. Each error
+shrinks the BQL budget for good until the queue stops with an empty
+ring.
 
-Low priority / nit picks for your consideration:
+netdev_tx_reset_queue() is not safe here as the task runs without
+tx_ptr_lock, so macb_start_xmit() may still be queueing.
 
-- [Low] There is an unannotated data race on the new
-  psp_assoc::prev_generation field.
+Fixes: e6a532185daa ("net: cadence: macb: Implement BQL")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---
-
-psp: support rx rekey operation
-
-This commit lets an established PSP socket rekey its Rx direction. It
-does this by creating a new psp_assoc that copies the existing Tx state,
-and it records the previous Rx SPI and generation as a fallback.
-psp_pse_matches_pas() now accepts packets that match either the current
-or the previous Rx SPI/generation, and psp_assocs_key_rotated()
-invalidates prev_generation as needed.
-
-> diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
-> index 410adb6718c16..5a7a518b9579b 100644
-> --- a/include/net/psp/functions.h
-> +++ b/include/net/psp/functions.h
-> @@ -77,10 +77,12 @@ psp_is_allowed_nondata(struct sk_buff *skb, struct psp_assoc *pas)
->  static inline bool
->  psp_pse_matches_pas(struct psp_skb_ext *pse, struct psp_assoc *pas)
->  {
-> -	return pse && pas->rx.spi == pse->spi &&
-> -	       pas->generation == pse->generation &&
-> -	       pas->version == pse->version &&
-> -	       pas->dev_id == pse->dev_id;
-> +	return pse && pas->version == pse->version &&
-> +	       pas->dev_id == pse->dev_id &&
-> +	       ((pas->rx.spi == pse->spi &&
-> +		 pas->generation == pse->generation) ||
-> +		(pas->prev_spi && pas->prev_spi == pse->spi &&
-> +		 pas->prev_generation == pse->generation));
->  }
-
-[ ... ]
-
-> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-> index f2cba3fa3a235..c1e38845f08c3 100644
-> --- a/net/psp/psp_sock.c
-> +++ b/net/psp/psp_sock.c
-
-[ ... ]
-
-> @@ -302,8 +333,21 @@ void psp_assocs_key_rotated(struct psp_dev *psd)
->  	 */
->  	list_for_each_entry_safe(pas, next, &psd->prev_assocs, assocs_list) {
->  		pas->generation |= ~PSP_GEN_VALID_MASK;
-> +		pas->prev_generation |= ~PSP_GEN_VALID_MASK;
->  		psd->stats.stales++;
->  	}
-> +
-> +	/* Don't allow SPI from two generations ago to alias one from the
-> +	 * current generation. Rx rekeying under the same device key generation
-> +	 * is currently permitted, so skip if the previous SPI is from just one
-> +	 * generation ago.
-> +	 */
-> +	list_for_each_entry(pas, &psd->active_assocs, assocs_list) {
-> +		if ((pas->rx.spi ^ pas->prev_spi) &
-> +		    cpu_to_be32(PSP_SPI_KEY_PHASE))
-> +			pas->prev_generation |= ~PSP_GEN_VALID_MASK;
-> +	}
-
-[Severity: Low]
-Will KCSAN report a data race on pas->prev_generation here?
-
-psp_assocs_key_rotated() updates prev_generation with a plain
-read-modify-write while holding only psd->lock. That happens both for
-the prev_assocs entries and in the new active_assocs loop. Both lists
-hold assocs that are still attached to sockets and can still receive
-traffic.
-
-On the Rx side, psp_pse_matches_pas() reads prev_spi and prev_generation
-with plain loads and does not take psd->lock:
-
-tcp_v4_do_rcv() / tcp_v6_do_rcv()
-  psp_sk_rx_policy_check()
-    __psp_sk_rx_policy_check()
-      psp_pse_matches_pas()
-
-psp_twsk_rx_policy_check() reaches the same check under RCU.
-
-This means a key-rotate running while a rekeyed socket is receiving PSP
-traffic gives a plain write racing with a plain read. The writer and
-reader hold no lock in common.
-
-Since the field is a u8, it can't tear. A racing packet would either
-match the old prev_generation or be dropped against the invalidated one,
-so there doesn't seem to be a functional problem. The existing
-pas->generation update already follows the same unannotated pattern.
-
-Would it make sense to use WRITE_ONCE() for these stores in
-psp_assocs_key_rotated() and READ_ONCE() for the loads in
-psp_pse_matches_pas()? The later patches in this series don't appear to
-add those annotations.
-
->  	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
->  	list_splice_init(&psd->active_assocs, &psd->prev_assocs);
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index f087f278f9e56..b6105f915fe35 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1412,10 +1412,8 @@ static void macb_tx_error_task(struct work_struct *work)
+ 					    skb->data);
+ 				bp->netdev->stats.tx_packets++;
+ 				queue->stats.tx_packets++;
+-				packets++;
+ 				bp->netdev->stats.tx_bytes += skb->len - tx_skb->fcs_len;
+ 				queue->stats.tx_bytes += skb->len - tx_skb->fcs_len;
+-				bytes += skb->len;
+ 			}
+ 		} else {
+ 			/* "Buffers exhausted mid-frame" errors may only happen
+@@ -1428,6 +1426,12 @@ static void macb_tx_error_task(struct work_struct *work)
+ 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
+ 		}
+ 
++		/* BQL has to see every frame leaving the ring, sent or not */
++		if (skb) {
++			packets++;
++			bytes += skb->len;
++		}
++
+ 		macb_tx_unmap(&bp->info, tx_skb, 0);
+ 	}
+ 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-psp-v3-0-a8dd38f5a727%40gmail.com
+2.53.0
+
