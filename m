@@ -1,97 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794089762;
-	b=TSECg7J/98kC/Vl8onLFwrS7uZqFM2wI0gViHobmxEzN7+m2fzBRfCLKeAykCd/uP1La
-	 oeQiouPaJBhH4fsV19zcKnrux07tHhGl1VKeExKnFDGDz4guQh2Bthvgt8rKhOb3LWZwY
-	 W+WTNKnrP3I47mYGqCTJpxPHwsvc9dHdxMJon4o+HPdpkSVKUAVvyVd5NLc9tfaCQEOm8
-	 HKMq1vahhT82VZqYTufaM1YUuHOyHOPq1LB3nh+uplArXJfnCrkSa5Hd/xLz18RtX66Yb
-	 qN0Gm+KH8de5rT+hrTe4bsFD1pdsD8kJEhdHYeZE2RloPkC3ZIqI26SxaLQ4WANfaUQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794089762;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794090240;
+	b=oG4damvfyG1zLWFb3ruEJAZxfupCiHv0mu66VVTUErcNYXEHBqBOIQFy34m6tbVvMHxb
+	 WSKJj483e+byAo9cHNHk54R1LcV/2M02Li1x4HGTM/1u0H7UfxvKQheHhT5weJUM8sFTZ
+	 DAiE3oGRjNXqYsDhVQDQAo9U/cl7rB3CvBgCcPOcidxW9v1ZU/MEghRCfYdBHw9huxKXS
+	 xfLQ8wUKqPGx3p3fIIWqYLZ76eJfibgK0+pHQ6dHJqlwIWuO5iE5rwiL9wzc4NgUy8bp/
+	 lPOK40+5g/fj6vzxIj890h5knWFhF7VxKYbBDsrqb1YqB16W6BTxUAAukw2xIE0Yshg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794090240;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=o4tz06DzCLHV+ZlaAK8efvWKy5+EgQA7F7usPbcqp/o=;
-	b=TjaeyBBd2RsbqiaX98jeM1Y7ABPHd99HrX7V94/0DfqKuv4W3Vi/2XDk2WSaiq9uAcax
-	 Gac75+vfE3np9IeVKrHJcQW7n7/B16+fqvbYFWWTWIeSZR0O2m9dG0zmbLK0X1mONQ0RU
-	 UBW1uKmp+++TMKZ1ldZM5jT9aKQ19UsHe2pGPcp9EgeNSkyaCeMSFdOBmzAxv8I5sSidU
-	 6de9JlCxagLVVJr1moGOx6jLwEXTwoIhj5THwml0nn6P8htaaOhWNmtZF7Zi01dA58VLt
-	 Z7d13u9sP788M5cZJtRUZSSp4cvqH7rJaGyb/vJhtHkrnQQzUUwYSmFfI2UesG9eMpQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=b6B1HkjM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
+	b=pxw0RwbJ+XscE58/fycHJ8VL7+ZUI6AtQN+poH2A285H4ikIuqIn41UjnS5N6VLN18Ht
+	 NcXngfV7kcK+6jSrHlej8nwu+JQEx5k7dGoKiFCsZPqCCMDnaPPbEjJJRk2clFog7hBJy
+	 dpMW8GRfyfiB8bh7M7LFg5AzF2IghUFFRcAf1y9TlZGJjib0f1/gAvWvXJ91ZXqEbAxDG
+	 u2rM06yy5VuE9961kEE7wNjLPuqVjiaCIUn81MRRtZAIFzJRVphod15KgxJ9H6HMFK9Hm
+	 Bb3Nslra+FqawoQra+sfZRY/R5W/SNPrwIVoC6TRrs30W0A3GBQiTsmrAQlFtp4cduA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0t6ybGm;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CD1606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 22:16:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7CD1606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2F4606A32C
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 22:23:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C2F4606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=b6B1HkjM
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a0673d9bd2so28244b3a.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 14:16:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794089761; cv=none;
-        d=google.com; s=arc-20260327;
-        b=O6hBGNemqSD3yfnqHIN/1z7s5QxFE+bNJR5fT78B7gg9vSYyQzkvfc9JpUnU/LCVAQ
-         g5HcC+3W77gvcM+YdWefzOjC0mjF1qb7DRAgyb9b4Vflj2Ow5ZQhzLHAIaUvdLi/T6JO
-         3f2DaeaX4TmFAPg1iyvQvCxhuctvz4GPVnQuEj0LBiwzPDiY2PRIKBMFGOxt9b+Oyome
-         8jgR//K30j1Mf04D/eBFdkf8t5jSEgst5f+J4wGMCAoOdDuJxkzAmLMZHIoP1AbJU9PH
-         PDFBz/4GpPR+q2IPTRS8mNA1xlQKxgwC74j0a9D+5cYBIuXyfzXbAQIFdNS7bQJoPQpO
-         Olpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=o4tz06DzCLHV+ZlaAK8efvWKy5+EgQA7F7usPbcqp/o=;
-        fh=Wb9DVDULmpc6j8VpUw/87dSUm8bUBKa2Tfv3D2tp0ZI=;
-        b=sGdt9SI52JpheQ7EkCRKyzk0p/aihl+i5tOVUQQ+jGuDDXFnZ9wNzK5eBLD8AqPrhC
-         xr+ujsSUICnPF7luPSmBfn2i+yLz4CmQ/wBMi9PK+OqfmFr/hrn5GMGPByDIrC5sL6lv
-         iKK3L+nSlAjKDFu25LMBfXrsPYSaIgrXRR9NEd+f/dSXHIWUdLae6k7lHzR7leuSgzsm
-         CcuTKhFB6/x2LpogyHy2AVTOCTVRjBpXEhk2ZKkJSVNt+1beGttMoRAPuRnRUi/8ithB
-         Gze0b/N15eciXsp4M/LyXEtANEs0CNiJTwrhJJhit68woi0uio+sTqD+YZwDgBRDhR1F
-         mqoA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0t6ybGm
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b10afdf947so403920a91.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 14:23:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1794089761; x=1794694561; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o4tz06DzCLHV+ZlaAK8efvWKy5+EgQA7F7usPbcqp/o=;
-        b=b6B1HkjMie2eGJo3x8MJmf60WsxZxJJdti4ZsqUx0TMMxyZ79rdu3kQQc6rFk0D5sa
-         ZsqXWWEVjbso/gRYe/uPyC2uwx4/Bhz6ACkkSiO7TYzk26LofQnI8avHKILhdp1oM6I+
-         j6DoiWo90zQi9A6fJOjmq47PZja6MkjlMn3/k=
+        d=google.com; s=20260707; t=1794090239; x=1794695039; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
+        b=V0t6ybGm28ZDrqSbzWcFepU0cd3Dw9egLzbJtYq8z/iegL2YyT1oI3o7OR+ftW3xT6
+         BFFhbGZ0Iwm6pxFJoLdohWfmOJUg4L3dzZGtfd6d0NqkEArLdN1MJZ9NDeIfClCEjmeg
+         1ZVl82FAmtHDMAmS85N2CXZ+YHn4xOxhilYZhxjH9XAbX+kF+4fhuxPDlQTYvQtQ5Rpx
+         TmitgMuLQdbLCoBGi4zKF09jjDbQEu58uWoNFxATGCpXdDNjO1wC8B0OeXoa49nYst2h
+         pydGyroHPRy6HfSWwOBOmpPyJtHhabfDNEmzCCivRNMeN+bcgSYXulEO5n7AKWXIxuPF
+         c/rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794089761; x=1794694561;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794090239; x=1794695039;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=o4tz06DzCLHV+ZlaAK8efvWKy5+EgQA7F7usPbcqp/o=;
-        b=ekDac14S8Xc+yDAOkFtLAH8CgaD0HYqixRnLLw5F2YF7nFO75n2Audz0nGMtuGigwK
-         9jronFkJyEcTB+Vy1X8H3IbqnRIJmt36rPgGTMHeuAROPVFswIt+6EUAkB1+JTHDnH6U
-         Y5DIJxhpsX1Vx5DGp4P+clArob3zhuMQOaby5RqNgkzVpCrKpmFDnktdCkrb+HG3FhL1
-         cld4Rk+eUf0/IfmurmYyWj0FeGS86NVSKaAI7dISLJh6cG+Jh7ok+N3rXI18+395NtAw
-         X/TAYV0sbwgpe2f9jBQ9qV5vsS7C1/XgrynwNlcyaZg6xMVQv0sPuq0fiz+xwMsi8hWW
-         ue1g==
-X-Gm-Message-State: APuU4Z/WAdSRiw03Rwh6aV8FHAuXxhPyxaJ43HnckR4mX4AWruaRaS7y
-	aiIRigbHn99nA0qm5OKBm8wipXzWgCRCYJ/1QbXHxILl71atXo9GD6CZqBA7u8T1b/AK5OfGAdb
-	Bbz+TFxk5XS8EU+/w4Pj2Jct5Xb40nAWaiUGYJSQ3
-X-Gm-Gg: AYBFou0Mrc2V78RgLktyC8SFKRihzUMGfsIT6ESJFMrzXD1kfJ2L8bCV3SjXKu2fPxP
-	AEBeALysCCyD4LxZloe6YAULNJLCTZLzUqjModmldlJi8rpmuV/T1IABYQNfdSmmB/uliDZQsjs
-	7d+brohi0x0fsxrArwmD2rzbEHiXwZYdIXBfj3RoOSYWNIJwvBk+w9YwWcTwhLaX9HUWGngwiKG
-	1tKamGAosdSsj9YQ8O06Ocw1ozR90TEr2U/m/LchWWqPc3iyJGsK+avBVBGoKksnQsFb4Yf04GK
-	fVwGaTkZ6kZmTUZZmZQJyr5xJm+w3OlRVULA9qDdWqOTjiES2egvn95F9jB9218vQYVFCqU6OsM
-	4tNsjiQm6mH3aDgYXO08uJJu8zFqLOoUH1r3hlR3RSc9CC3Ut+kuYUrq/CKiof9azbGG/DUvvmX
-	uKSCqrMnjrUPrn0J4=
-X-Received: by 2002:a05:6a00:3d4d:b0:8b1:3137:d78b with SMTP id
- d2e1a72fcca58-8b67082f822mr37510b3a.48.1794089761173; Sat, 07 Nov 2026
- 14:16:01 -0800 (PST)
+        bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
+        b=RGVtEnoolfjzJUtxUkh9P2McLqaU7QdRISd9OhLpA13XwpMawoOkvYBVkyGDhg0d5J
+         7Xim73egxlNhHf/Y6k+1f+kM4fec17rY9ZQY4vWOxukAeQSDWCtPun0ZshWuD2L8frQp
+         xTA+n9oOmMdB4aAXnqIuayf620CZWwbFklWwLfCJbBhmCjVUklLABtoH4CLr5l36yMZd
+         BZvOW0IGs17JLJTvtlYuzeCTf1Xd6CXYm1AeEUwJUz44kr7TIoJjZubY9kozaZHTdoBm
+         5FTSJi0nJ8WBoxma0TWaUZkivaynswXcJexw45MIcFdTF4hCAhncyTJkxfOgZeYrNPDc
+         5Rlw==
+X-Forwarded-Encrypted: i=1; AL+hErH5J5z0Fn7jJzAKhdweeCcmFALL237lfigMQDLw70EZJ342WdjJmy5tta1JcyQmE3Cg6NKyKGc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z86tQA35lSQ54Ng6uNUDDMbQBi6+nasI2ncDV4ZzAnRzJsz6r6V
+	0zo/KbPISmZO50ixB1l1SNPQeOCktzV6N1G84UldZ58NxHnf55Z5/wInNjta8BBhU35EC/6DIT1
+	a1QARdQ==
+X-Received: from pjbrr5.prod.google.com ([2002:a17:90b:2b45:b0:3b0:a379:b383])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4488:b0:3ad:7f4d:2839
+ with SMTP id 98e67ed59e1d1-3b1060a69f7mr2074752a91.14.1794090239138; Sat, 07
+ Nov 2026 14:23:59 -0800 (PST)
+Date: Sat, 7 Nov 2026 22:23:58 +0000
+In-Reply-To: <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,181 +79,162 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com> <179406302081.994134.2324214805948881495@kernel.org>
-In-Reply-To: <179406302081.994134.2324214805948881495@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sat, 7 Nov 2026 17:15:49 -0500
-X-Gm-Features: AclHuK-EImvDmozLrSXa89DezzPdIm_N3VnO1x4Pj8HHQtC5v1kgy6BRB_djrq0
-Message-ID: <CAM0EoMnjMoHQ2kU01naxDT0L3JXx61uKa7XBEWSQTJ9DaUa0_w@mail.gmail.com>
-Subject: Re: [PATCH net v3 4/4] selftests: tc-testing: teql: cover each attach
- rejection on its own
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com, 
-	davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us, 
-	kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com, 
-	thomas.goff@boeing.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com> <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
+Message-ID: <au-kFhuPgrCjxI2R@google.com>
+Subject: Re: [PATCH] tcp: fix authentication bypass via unsupported TCP auth options
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "=?utf-8?B?SsOpcsOpbXk=?= Jean" <jeremy.jean@oss.cyber.gouv.fr>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 7, 2026 at 9:50=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] The commit body describes the patch as a change relative to an
->   unmerged v2 posting, not as a change to the tree.
-> - [Low] Both rejection cases check only that tc exits with 2 and that no
->   matching qdisc is dumped.
->
+On Thu, 22 Oct 2026 20:36:53 +0200, J=C3=A9r=C3=A9my Jean wrote:
+> On 2026-10-22 16:46, Eric Dumazet wrote:
+> > Le mer. 21 oct. 2026 =C3=A0 21:32, J=C3=A9r=C3=A9my Jean
+> > <Jeremy.Jean@oss.cyber.gouv.fr> a =C3=A9crit :
+> > >=20
+> > > tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
+> > > least one of the two features is enabled. With TCP_MD5SIG=3Dy and
+> > > TCP_AO=3Dn, a packet with an AO option reaches the disabled
+> > > tcp_inbound_ao_hash() stub. That stub returns success, so sockets
+> > > configured to require MD5 authentication end up accepting
+> > > unauthenticated data.
+> > >=20
+> > > The inverse configuration with TCP_MD5SIG=3Dn and TCP_AO=3Dy has the =
+same
+> > > problem for an MD5 option on AO sockets.
+> > >=20
+> > > Make the disabled stubs reject options for the unsupported
+> > > authentication scheme.
+> > >=20
+> > > Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments"=
+)
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> > > ---
+> > >  include/net/tcp_ao.h | 2 +-
+> > >  net/ipv4/tcp.c       | 2 +-
+> > >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
+> > > index 9a2333e62e994..bb249d6df8723 100644
+> > > --- a/include/net/tcp_ao.h
+> > > +++ b/include/net/tcp_ao.h
+> > > @@ -303,7 +303,7 @@ static inline enum skb_drop_reason
+> > > tcp_inbound_ao_hash(struct sock *sk,
+> > >                 const struct request_sock *req, int l3index,
+> > >                 const struct tcp_ao_hdr *aoh)
+> > >  {
+> > > -       return SKB_NOT_DROPPED_YET;
+> > > +       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
+> > >  }
+> > >=20
+> > >  static inline struct tcp_ao_key *tcp_ao_do_lookup(const struct sock
+> > > *sk,
+> > > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > > index 87ef6d5cbfeba..7d800b6283bd2 100644
+> > > --- a/net/ipv4/tcp.c
+> > > +++ b/net/ipv4/tcp.c
+> > > @@ -4962,7 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk,
+> > > const struct sk_buff *skb,
+> > >                      const void *saddr, const void *daddr,
+> > >                      int family, int l3index, const __u8
+> > > *hash_location)
+> > >  {
+> > > -       return SKB_NOT_DROPPED_YET;
+> > > +       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
+> > >  }
+> > >=20
+> > >  #endif
+> > > --
+> > > 2.47.3
+> > >=20
+> >=20
+> > Good catch, thanks.
+> >=20
+> > The forged AO option makes us skip the unsigned fast path, which is
+> > the only place where tcp_md5_do_lookup() can return MD5NOTFOUND.
+> > An attacker able to hit the window of an MD5-protected session (BGP...)
+> > can therefore inject RST or data with a junk AO option, which is
+> > exactly what RFC 2385 is supposed to prevent.
+> >=20
+> > Please mention in the changelog that TCP_AO depends on 64BIT: every
+> > 32-bit kernel with TCP_MD5SIG=3Dy is in the vulnerable configuration.
+> >=20
+> > With your patch the stubs now return what the real helpers return for
+> > a socket without keys (AOUNEXPECTED / MD5UNEXPECTED), so behavior
+> > becomes consistent across configs. One visible change is that MD5=3Dn,
+> > AO=3Dy kernels will now drop segments carrying an MD5 option to unkeyed
+> > sockets, as MD5=3Dy kernels already do. That is fine, but worth one
+> > sentence.
+> >=20
+> > Optional: bumping LINUX_MIB_TCPAOKEYNOTFOUND /
+> > LINUX_MIB_TCPMD5UNEXPECTED
+> > from the stubs would make these drops visible in nstat.
+> >=20
+> > This is a fix, please send v2 as [PATCH net].
+> >=20
+> > Also please CC TCP-AO folks from Arista
+> >=20
+> > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+>=20
+> Hello Eric,
+>=20
+> Thanks for the quick review.
+>=20
+> I have prepared a v2, which only adds some bits to the commit message,
+> and leave the actual patch untouched.
+>=20
+> Noted for the Cc:, I will use the 3 @arista.com addresses at the top of
+> the tcp_ao.c file.
+>=20
+> For your optional remark, I was thinking of adding a second commit as
+> a 2/2 in a 2-patch series. Something like the below diff, which AFAICT,
+> would make the drops visible under TCPAOKeyNotFound and TCPMD5Unexpected
+> in nstat. Is it what you had in mind? I am not particularly familiar
+> with that subsystem; yet, while getting this kind of feedbacks in nstat
+> seems good, I am opened for advice. Do you prefer that I add this
+> in the same fix instead?
 
-Again cosmetics - so far no reason to resend.
-6a06 is added by this commit, not by a previous posting, if i resend i
-would reword to state that.
-The module point cannot cause a pass here - it would fail several other tes=
-ts..
+FWIW, a single fix commit sounds good to me as it didn't
+drop the packet previously.
+
+Could you post v2 ?
+
+Thanks
 
 
-cheers,
-jamal
-> --
->
-> selftests: tc-testing: teql: cover each attach rejection on its own
->
-> This commit moves tdc case 124e out of the nsPlugin test namespace and
-> into init_net with its own dummy device. Only the root-only check in
-> teql_qdisc_init() can then refuse it. It also adds case 6a06, which
-> attaches teql0 at root from the test namespace, so that only the
-> namespace check can refuse that one.
->
-> Link: https://lore.kernel.org/netdev/179366641863.488856.1736857159146600=
-0274@kernel.org/
-> Link: https://lore.kernel.org/netdev/179366641986.488856.2193313144081673=
-076@kernel.org/
->
-> > It no longer proves that a child attach is
-> > refused as such, and the case added in the previous posting covers the
-> > namespace check alone.
->
-> [ ... ]
->
-> > Attach a root qdisc from the test namespace in the second case, so that
-> > only the namespace check can refuse that one.
->
-> [Severity: Low]
-> This isn't a bug, but these sentences read as if a namespace rejection
-> case is already in the tree. Is that the case?
->
-> Case 6a06 ("Reject TEQL attach from a different network namespace") is
-> added in full by this commit. The parent commit, "net/sched: sch_teql:
-> reject qdiscs from another network namespace", changes nothing under
-> tools/testing/selftests/tc-testing/.
->
-> The only place that says a new case is added is the v1 -> v2 and
-> v2 -> v3 changelog. That text sits below the "---", so it is dropped
-> when the patch is applied.
->
-> Could the body say outright that this commit adds new coverage for the
-> namespace rejection and moves 124e into init_net?
->
-> > diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.js=
-on b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-> > index 0179c57104adb..ab5d0881c0070 100644
-> > --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-> > +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
->
-> [ ... ]
->
-> > @@ -104,7 +100,35 @@
-> >          "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:1",
-> >          "matchJSON": [],
-> >          "teardown": [
-> > -            "$TC qdisc del dev $DUMMY root handle 1:"
-> > +            "$TC qdisc del dev $DUMMY root handle 1:",
-> > +            "$IP link del dev $DUMMY"
-> > +        ]
-> > +    },
-> > +    {
-> > +        "id": "6a06",
-> > +        "name": "Reject TEQL attach from a different network namespace=
-",
->
-> [ ... ]
->
-> > +        "setup": [],
-> > +        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0=
-",
-> > +        "expExitCode": "2",
-> > +        "verifyCmd": "$TC qdisc show dev $DUMMY",
-> > +        "matchPattern": "qdisc teql0 3: root",
-> > +        "matchCount": "0",
->
-> [Severity: Low]
-> Can this case pass even when the namespace check is not what refused
-> the attach?
->
-> tc exits with 2 for any netlink error. The verify step only checks that
-> no teql0 qdisc shows up in the dump. Case 124e has the same weakness:
-> it checks only expExitCode "2" and matchJSON [].
->
-> In teql_qdisc_init(), both rejections return the same errno. Only the
-> extack text tells them apart:
->
-> net/sched/sch_teql.c:teql_qdisc_init() {
->     ...
->         if (sch->parent !=3D TC_H_ROOT) {
->                 NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root=
-");
->                 return -EOPNOTSUPP;
->         }
->
->         if (dev_net(dev) !=3D dev_net(m->dev)) {
->                 NL_SET_ERR_MSG_MOD(extack, "teql master is in a different=
- network namespace");
->                 return -EOPNOTSUPP;
->         }
->     ...
-> }
->
-> The tc-testing config sets CONFIG_NET_SCH_TEQL=3Dm. Unlike the other
-> sch_* modules, sch_teql.c has no MODULE_ALIAS_NET_SCH(). So the
-> alias-based request_module() never autoloads it, and the lookup fails:
->
-> net/sched/sch_api.c:qdisc_create() {
->     ...
->         ops =3D qdisc_lookup_ops(kind);
->         if (!ops) {
->                 err =3D -ENOENT;
->                 NL_SET_ERR_MSG(extack, "Specified qdisc kind is unknown")=
-;
->                 goto err_out;
->         }
->     ...
-> }
->
-> When that happens, tc still exits with 2 and nothing named teql0
-> appears. Both 6a06 and 124e then pass, whether or not the kernel has
-> either check. That includes a kernel without the namespace fix.
->
-> The module is loaded only by try_modprobe() in tdc.sh. That function
-> just prints "skipping" when modprobe fails. Running tdc.py directly,
-> for example with -e 6a06 or -c teql, never loads it.
->
-> The commit message says "only the root-only check can refuse it" and
-> "only the namespace check can refuse that one". That only holds when
-> sch_teql is loaded.
->
-> Would it make sense for each case to match the specific extack
-> message? Another option is to fail when the teql0 kind is unavailable.
->
-> The positive teql cases would fail in the same setup, so the suite as a
-> whole would still show that something is wrong.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/SER-NSBD.v3.r0.20261103064310%40mojatatu.com
+>=20
+> Regards,
+> J=C3=A9r=C3=A9my
+>=20
+> ---
+>=20
+> diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
+> index 9a2333e62e994..xxxxxxx 100644
+> --- a/include/net/tcp_ao.h
+> +++ b/include/net/tcp_ao.h
+> @@ -303,6 +303,7 @@ static inline enum skb_drop_reason
+> tcp_inbound_ao_hash(struct sock *sk,
+>               const struct request_sock *req, int l3index,
+>               const struct tcp_ao_hdr *aoh)
+>  {
+> +     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOKEYNOTFOUND);
+>       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
+>  }
+>=20
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index 87ef6d5cbfeba..xxxxxxx 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -4962,6 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const
+> struct sk_buff *skb,
+>                    const void *saddr, const void *daddr,
+>                    int family, int l3index, const __u8 *hash_location)
+>  {
+> +     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5UNEXPECTED);
+>       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
+>  }
