@@ -1,59 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794063787;
-	b=f6uetouCPo8c4M+cjKxmk9/GJOK6oY7WQVHl6h9VXMTBTO5vA/Gwc1cZzui2OLXHbFfW
-	 vTUqrkBURkrtPj8QtCJ/Sv/viGrwquMqVPTxAboJhhRMv+AIOMkUgJeSIFIjqOR7BJo7c
-	 w13/IHrO7zJHOarhjz6U2Zy3m0o2SyZGbWxFDTyKwsC3qmbFepe8ylzL5BTP3rs65o7rB
-	 JBIDtin4s/VAVY+Jsnb/x9vLDo8doqzH2xu+CDI8377wuG3FHShf0ygfEsVn9cG35kntq
-	 j/o2LM5CXRM8pK5mxlQLQv4nALOV6gu9v34/BUs1FWhwzUbBBwKhfahMMUXMeUqMnXA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794063787;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=70g4G37l8EVjm8zR18ELGxvJLg3g7+9igUjOf1zODP0=;
-	b=ABgsqhaXPdSS5ZufYUGBvFqPpj27mXZFQqSFH35AU8Hd9TqMUoPEIFroSFiw4PBEmTyA
-	 k3kYul6Vwe/R97/22xWxqBsupeE9aURj8Qi07Vxu/zOZf0iwakgqfrhD57ITe6HDYcVO+
-	 y4ik6M2GICBsnWPv4hVPafDnIXvuvAWzNoFRi2Kp5tKcTSHpz+xz1GHCri4lTL4MdY0oa
-	 e3qczYbDQPNQ1aiaSGAF/Gsh/qeDRWGijpf8gqQZqVGI4b17s45vmEoVh2iyJY6CgSL3Z
-	 uqwo3lNRxZn1qwEvutLkdVrHuRUQC3kyCmzaIvy0wkcGrM7TFs7Qi66bYxo4H8Vze5A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFj3FhMh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794063835;
+	b=C++cHSXfJPH/ClvCfDo7Q+fKriq9kVSkOI4m/I5OptvDW9Csn5aPvrNPNNYh3HgJqKyK
+	 48H3PaXaLjwJ0b1y2eNNEe72ZacbvEtT2C5k4nK8FoOXBFFpH0NnqlJIyqLSwxjem0sUn
+	 64KvMlDuNGwTg55kp/K6fS3RjCWneZNb/5LHSQiCFnonr0dJzr4TkErLaqMxT2f6DSc1N
+	 I72PTIcYg19yd7H/XVB92masfndWbc/6adrbwnquzbBcSpkgq3OMUxcXECZ18d2iuClGS
+	 TcnHS1YjZqOxfr4IGIPxC9Uf9MyEhWjv+v/YqplKItm4pKSUPvD1PJNCZyJZuIsAo2g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063835;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=x1kh08r2uui2Ftlhw63uWg19gjv8kG3d1EDC3HTcyJ8=;
+	b=JiFK00Cexz8yccFRXw++ApKZlkGrTqeK7kKUxrW8pCfYpIeR3XZEeGWyjbcaWMLyl4Ci
+	 lLI7sodY7RZ624c65ewUlDNSI7VIAiHNnkCRHCDXsweo5hAwFCc1k+8UBvKIj/vKQUXHB
+	 SFXUMGrVBjWMaA7AgF9gV7tAm+FFBD3lgCt9nC0zq66YzU+UZ4GqgB9OcA0jyUEigTQvU
+	 7x/2NQJ9UFiFshetiEbCcwkm36jt7950ZVF5WGSfvk03QKEO+f7g//EVKEGdjbdQfHrJS
+	 TLkEaxGb+0llKqR9hQosrkWh3JkcTg3rnhdZeiwjUWeXVIHpSbYpCIaudurbMYVHn+w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="pdx0s/7V";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.45
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010045.outbound.protection.outlook.com [52.101.46.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E49360A3810
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683B860A5BCC;
+	Sat,  7 Nov 2026 15:03:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 683B860A5BCC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFj3FhMh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3181F008A2;
-	Sat,  7 Nov 2026 15:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794063787;
-	bh=70g4G37l8EVjm8zR18ELGxvJLg3g7+9igUjOf1zODP0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SFj3FhMhmJDyVAOp0Q2CWjzWrAhTtXQhY0RRPZGk1CkwV2cIFy9fIRGsFJUthVDW+
-	 xKos7JvQlC0ZjormSfhXIZLGcJFzqxL4y/Kgh55gJcSWw0oBdguBmYVFIcASNxjbsE
-	 K4y6MSVPLDuMsyi30erInKSr5gKRTlJZiVRWDZ0eVz/5BxHddsV6GkELuEcyWQROar
-	 cC6/gBKpBnH8p7PP8SxjTmPUs3J6Y5uFpGx0iulpnag2hz00u1MLTcxAd1fUe5qtkt
-	 iTH/51qaJkUxzUlL3jocWehKEwZvRaD6gRCGFzjEfVOtPTTMm3EYrdV3kccrS0KCat
-	 PKsho816IP0yA==
-Subject:
- Re: [PATCH net v5 2/2] enic: require DEVCMD2 and set the V2 VF mailbox source
-From: netdev-bot+sashiko@kernel.org
-To: satishkh@cisco.com
-Cc: netdev@vger.kernel.org, sebaddel@cisco.com, aradhana@cisco.com,
- rfaucett@cisco.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Date: Sat, 07 Nov 2026 15:03:06 +0000
-Message-ID: <179406378616.994134.1586384067056474250@kernel.org>
-In-Reply-To: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-2-2501d1223eff@cisco.com>
-References: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-2-2501d1223eff@cisco.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=pdx0s/7V
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f/I5uYNSTWebE1cPEVoBFCGU1F2Anv5mZ5quI1MU75/m88+Qsxf3wscW2/4pjTdtJAslmWuQX6WLinNnpMmKXsAY3A2Y3vjjy6x9dQgU8q16IqGSFAsk3W+MpfQae+/+RGwBpHVaDrL4ZFmQqmjaLW4bFcRQJ7Tnnn5v1I4uU4VasVF0bIgSaitl4103JQJoiAwYoGqlMt1BxXD6k5XbZyGfkLsg8/t/YCnYPB9yqatNCsSDS9SRPt+iApeKmLjAcCFzqONGNo3f0XTKhGdHE6cXicNVAkqoRvOnivga31ZL7/jeiyupElBn8bpjKHV/oe5zYr5/z2qWYC/p2p6eRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x1kh08r2uui2Ftlhw63uWg19gjv8kG3d1EDC3HTcyJ8=;
+ b=Hk8af4NcGNIJM9wRFcyPi1ueqXKDGOH1nvHrKnayKlmLQSPmaRsNHC+jDnsO2jz2XfCj9gkRFRA+A1gJow4aIA14FAI3LlkFNA2fgN0CqhqMOUbHxfAzIw84FTe3FHE6BFvrJDEh0Ap86LsNXs6qskNr+dqokqE6igU2UqR8ZZ7Mmj7XChj7t78D8ugsWsdJp9RuTVabL1xM5pzoRylPTpD27knqqJ//gfVDSuxzBq3a71q5Mid1bR36Hc7DLpRIJSY8ICnvH0L4xQ7OuHthEDZ92s+XxxyK8P8DMrwrsqyEcIbF2ghNzjaLhNLNBtiWMSkvrsFObMrILsFaR2d24Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x1kh08r2uui2Ftlhw63uWg19gjv8kG3d1EDC3HTcyJ8=;
+ b=pdx0s/7VaXBOQX22vO9XsL5L2aHywcgrNWvk8j9DGjQE5+F9uLxOCbu5KBX+9eDjDZqUJdJel/TXCAQZliJB1uEeak2nK5auGfqXx/o4JW2+XaFqItJCMCK0LgoL/whqGUybk9EetQOBzQKRBJB1XU97wCP8PJC+VfO5HeWAqaw=
+Received: from CY8PR12CA0034.namprd12.prod.outlook.com (2603:10b6:930:49::22)
+ by LV3PR12MB9440.namprd12.prod.outlook.com (2603:10b6:408:215::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Sat, 7 Nov
+ 2026 15:03:50 +0000
+Received: from CY5PEPF00000E81.namprd05.prod.outlook.com
+ (2603:10b6:930:49:cafe::6d) by CY8PR12CA0034.outlook.office365.com
+ (2603:10b6:930:49::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.11 via Frontend Transport; Sat, 7
+ Nov 2026 15:03:50 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY5PEPF00000E81.mail.protection.outlook.com (10.167.247.180) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Sat, 7 Nov 2026 15:03:49 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Sat, 7 Nov
+ 2026 09:03:49 -0600
+Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Sat, 7 Nov 2026 09:03:45 -0600
+From: Abhijit Gangurde <abhijit.gangurde@amd.com>
+To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <allen.hubbe@amd.com>, <eric.joyner@amd.com>, <nikhil.agarwal@amd.com>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
+Subject: [for-next 0/4] RDMA/ionic: add DMA MR and v2 atomic WQE
+Date: Sat, 7 Nov 2026 20:32:45 +0530
+Message-ID: <20261107150249.1576835-1-abhijit.gangurde@amd.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,172 +109,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PEPF00000E81:EE_|LV3PR12MB9440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e6cb494-6dd9-48ca-301e-08df3ce0549b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|23010399003|1800799024|18002099003|10067099003|261026140227099003|11063799006|261026121527099003|261028144727099003|261021121427099003|56012099006|261021135927099003|261022105027099003|261021123027099003|261009223027099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	dWkgs9lbGlJG4Nl7whxeQXNIrLi3xV6ShHe71zEgMaOOkGH/GalYoSxG0oa1wTEKrdt0MZk8Lje5HFXh91OZDMrCyR1JyUxxOVEr6uKHddLUg+134Eg+hZPT4bW9aRfTPME896QNNxVJJvk1IuBBDVT+aSb4PJcKKSNtmQQXsHg58Nu3To+hk99EUvL0SoFvTb5YPJ5g2GgOziDMC3ZKKvOlKTGxV2qfTAnEZQtaaF6SefCxccbTHP4N0C5hAetJ08Bsb7JEXVMTaQBFNE7oosZSMvVA9ehQ4C7h31lYoXiL83zsCf9jAND3INTJLp46WawYpcLfF48lGBoZNj92HXjdFTACfbxjdolUKi4C7cCryFg4I9oHBK+xmDy1ZlipSlcWUx8YQa/JA9f0vVh11cJgnaFGxizSb1WGsBpwctHawFlo0DZ/WNOcflpc4hdburmaT7/4NFT1XLENzg0DISxDmzsA+BWA5CmWp3oblHnTbnLDcfC30REBDQLhOzlzCse7xg8XCrmCXWGuTelKSw4rPxEbTHGJttQNxA4XY37DAy/vuQa63e+GsqAVxobc/I9KgS+du/vkQJ+T+6G5kjCNmEebjmSEAh3+lT/7SCnw2V8lH+wjzwqj76/De62I4QbjZGLhIYVfsHJ2T/6nK+rL0CKzutjKjl3lX74aloWz798aXA6Lmc4067w9nA2m3vVq8HdJ+psaqUM8yjyKNQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(23010399003)(1800799024)(18002099003)(10067099003)(261026140227099003)(11063799006)(261026121527099003)(261028144727099003)(261021121427099003)(56012099006)(261021135927099003)(261022105027099003)(261021123027099003)(261009223027099003)(261102123227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	f7CMrJ/odn6+ofrgDLA66mXyryUGz14v4YTbr9ZXaieGNmGJiBR14KT9FgD/8HBArbTwdr8lz6tAwJzPqpg5bvwB7UuwUaG0qY2JDOVc2dwZwaVAlgel2gPDjTeIYB4peKbrnpgqfYWGT2yFt4nNW40+ZqV52g76t9I5Dlxc/qjYfKp7/GoNpoBzLx4eu91ISKb/a1HSwcqewE9tyoI8R2G0JCSGozY1iOoIOs1ok2k6mPj6WwHrGtAh6lFychpVX257Hb2ag3sFEAZ+1fj6Ujvr563mIRE2EjczWPWMI3e/Yi2FVhWXzU0BSXT0RDrN3Tpl28BbAT12liqojoPneFqAJa2z3jlnxFyd+yRGl/PvIk16p/UbsNhM/Lnn3imLgO2pTpGGoST27OBycNvn6ILbER77KV48k4P3UjbOtGsPbqH/mwQ859bZMHyFr2dq
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 15:03:49.8807
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e6cb494-6dd9-48ca-301e-08df3ce0549b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY5PEPF00000E81.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9440
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Add a generic RDMA capability word to the LIF identity and use it
+to allocate a PD-scoped DMA memory region. Use the v2 atomic send
+WQE on RDMA version 2. Also fix the v1 atomic WQE so the operands
+are not overwritten by the common payload.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Net changes pull request:
+The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
 
-- [Medium] V2 VF probe now depends on firmware support for the new devcmd
-  CMD_SRIOV_STATS_GET (devcmd 98), and nothing checks for that support…
-- [Low] enic_admin_channel_open() accepts the CMD_SRIOV_STATS_GET reply
-  only when le32_to_cpu(stats->ver) == VNIC_SRIOV_STATS_VERSION (1).
-- [Low] The comment on the new struct enic field
-  sriov_stats_dma_unresolved says a CMD_SRIOV_STATS_GET timeout leaves…
+are available in the Git repository at:
 
---
+  https://github.com/abhijitG-xlnx/linux.git ionic-shared
 
-enic: require DEVCMD2 and set the V2 VF mailbox source
+for you to fetch changes up to e64b2ae81599ce9e17fab5e635b8fe22df09739b:
 
-This patch makes DEVCMD2 mandatory for V2 PF support and V2 VF probe. On
-a V2 VF, enic_admin_channel_open() now issues CMD_SRIOV_STATS_GET and uses
-the returned vf_index as the MBOX source ID. It also adds per-call DEVCMD2
-completion tracking so that a statistics DMA target is retained after a
-timeout.
+  net: ionic: add an RDMA capability word to the LIF identity (2026-11-05 09:18:39 +0530)
 
-> diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-> index ebe617e752c79..d1f9f2156e0b0 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic.h
-> +++ b/drivers/net/ethernet/cisco/enic/enic.h
-> @@ -271,6 +271,11 @@ struct enic {
->  	u16 num_vfs;
->  	enum enic_vf_type vf_type;
->  	bool vf_registered;
-> +	u16 vf_id;
-> +	/* A CMD_SRIOV_STATS_GET timeout leaves its persistent coherent target
-> +	 * device-owned until a later serialized command completes.
-> +	 */
-> +	bool sriov_stats_dma_unresolved;
+Abhijit Gangurde (2):
+  net: ionic: add an RDMA capability word to the LIF identity
+  RDMA/ionic: preserve atomic operands in the send WQE
 
-[Severity: Low]
-This isn't a bug, but does this comment describe a broader release
-condition than the code implements?
+Gregor Dick (2):
+  RDMA/ionic: allocate a PD-scoped DMA MR
+  RDMA/ionic: use the v2 atomic send WQE layout
 
-The flag is cleared in only two places: on a VNIC_DEVCMD2_COMPLETED result
-from CMD_QP_TYPE_SET in enic_admin_qp_type_set(), and on one from
-CMD_CLOSE in enic_dev_close(). Every other DEVCMD2 command goes through
-vnic_dev_cmd() -> _vnic_dev_cmd2(), which passes a NULL status. Those
-commands complete on the same ring but leave the flag set.
-
-The commit message is more precise: "A later blocking QP or close command
-result fences that target". Could the comment say the same thing? A later
-change might otherwise expect an ordinary devcmd to clear the flag, and
-then get -EBUSY from enic_admin_channel_open().
-
-> diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
-> index 8a063c563a41e..6fa27a755e3f3 100644
-> --- a/drivers/net/ethernet/cisco/enic/enic_admin.c
-> +++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
-
-[ ... ]
-
-> @@ -590,15 +604,40 @@ int enic_admin_channel_open(struct enic *enic)
->  		goto disable_queues;
->  	}
->  
-> -	vnic_intr_unmask(&enic->admin_intr);
-> +	if (enic_is_sriov_vf_v2(enic) &&
-> +	    READ_ONCE(enic->vf_id) == ENIC_MBOX_DST_PF) {
-> +		struct vnic_sriov_stats *stats;
-> +		u32 version;
-> +		u16 vf_id;
-> +
-> +		/* Keep received notifications queued until their ACK can use
-> +		 * the VF source ID. The statistics query needs QP_ENABLE first.
-> +		 */
-> +		err = enic_dev_sriov_stats(enic, &stats);
-> +		if (err) {
-> +			netdev_err(enic->netdev,
-> +				   "Failed to get SR-IOV statistics: %d\n", err);
-> +			goto disable_queues;
-> +		}
-
-[Severity: Medium]
-What happens on firmware that provides DEVCMD2 but does not implement
-CMD_SRIOV_STATS_GET (devcmd 98)?
-
-For a V2 VF, enic_probe() checks only vnic_dev_uses_devcmd2(), and nothing
-checks for the new command before it is sent. vnic_dev.c already has
-vnic_dev_capable(), which sends CMD_CAPABILITY for this purpose, but
-vnic_dev_sriov_stats() does not call it.
-
-If the firmware answers ERR_ECMDUNKNOWN, _vnic_dev_cmd2_status() exempts
-only CMD_CAPABILITY:
-
-			if (result->error) {
-				err = result->error;
-				if (err != ERR_ECMDUNKNOWN ||
-				    cmd != CMD_CAPABILITY)
-					vdev_neterr(vdev, "Error %d devcmd %d\n",
-						    err, _CMD_N(cmd));
-				return -err;
-			}
-
-So the driver logs an error and returns a failure. A timeout returns
--ETIMEDOUT. In both cases the path is:
-
-enic_probe()
-  enic_admin_channel_open()
-    enic_dev_sriov_stats()
-      vnic_dev_sriov_stats()
-        vnic_dev_cmd2_status(CMD_SRIOV_STATS_GET)  -> error
-    goto disable_queues
-  goto err_out_dev_deinit
-
-and the netdev is never registered.
-
-Does this also break VF 0? Before this patch VF 0 could register with the
-deployed PF, because its source ID of 0 matched.
-
-The PF-side VIC_FEATURE_SRIOV check in enic_sriov_detect_vf_type() does not
-cover VF probe. The patch carries a Fixes: tag and may be backported.
-Would it be worth adding a vnic_dev_capable(CMD_SRIOV_STATS_GET) check, or
-stating a minimum firmware version in the commit message?
-
-> +		version = le32_to_cpu(stats->ver);
-> +		vf_id = le16_to_cpu(stats->vf_index);
-> +		if (version != VNIC_SRIOV_STATS_VERSION ||
-> +		    vf_id == ENIC_MBOX_DST_PF) {
-> +			netdev_err(enic->netdev,
-> +				   "Invalid SR-IOV statistics version %u VF index %#x\n",
-> +				   version, vf_id);
-> +			err = -EINVAL;
-> +			goto disable_queues;
-> +		}
-
-[Severity: Low]
-Is the exact match on VNIC_SRIOV_STATS_VERSION intended?
-
-struct vnic_sriov_stats has a reserved1 field and a reserved2[256 - 23]
-tail, which looks like space for fields added in later versions. This code
-reads only ver and vf_index, and vf_index sits at a fixed offset. If
-firmware raises ver above 1, every V2 VF would fail probe with -EINVAL.
-
-The MBOX capability negotiation in enic_mbox_vf_capability_check() treats
-the version as a minimum instead:
-
-	if (version < ENIC_MBOX_CAP_VERSION_1) {
-
-Would a "version < VNIC_SRIOV_STATS_VERSION" check work here too?
-
-Also, the commit message says:
-
-  Validate the returned version and zero-based VF index
-
-The only check on vf_index, though, is that it is not the
-ENIC_MBOX_DST_PF sentinel. Could the commit message say exactly what is
-checked?
-
-> +		WRITE_ONCE(enic->vf_id, vf_id);
-> +	}
-
-[ ... ]
+ .../infiniband/hw/ionic/ionic_controlpath.c   | 38 +++++++++++++++++--
+ drivers/infiniband/hw/ionic/ionic_datapath.c  | 17 +++++++--
+ drivers/infiniband/hw/ionic/ionic_fw.h        | 31 +++++++++++++++
+ drivers/infiniband/hw/ionic/ionic_ibdev.h     |  1 -
+ drivers/infiniband/hw/ionic/ionic_lif_cfg.c   |  1 +
+ drivers/infiniband/hw/ionic/ionic_lif_cfg.h   |  1 +
+ .../net/ethernet/pensando/ionic/ionic_if.h    |  4 +-
+ 7 files changed, 83 insertions(+), 10 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-0-2501d1223eff%40cisco.com
+2.43.0
+
