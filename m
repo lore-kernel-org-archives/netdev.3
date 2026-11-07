@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083103;
-	b=dVLAdJbNAMYDEcIsaFDIzeA16qIGNzfbtP5S0RrQpwAb34MFZm1537sXZRzkfmwcr3s+
-	 Afw13XnTIlvWUktIDbzA0M/F0iEFV220QHMocIeMWjJgJ/A57O2o6lS2Ixy9rleUgVg8c
-	 Qtf+5pG86CSxhCkZTmg0HRIsodQAKEcxpMNuLIEkNifj0N06pBxozkEFp8rqp5j9evdcc
-	 xll7nVF8LR3Emdo48yuw6XnSA4T7t6elxEiVK7lrgOcFKQ8jqNGoawBnH/1g6pe0p9xIe
-	 rcn9yhKqgHsNaSoENFUyJk4MFFLsAQuiCTeQbwqkpcj1iAxTckm4eF8wRnI7zU4YEGQ==
+	t=1794083094;
+	b=CgviVED4g+GislqXn1ccFxSLoVOu6SxEvxxoxj2ou0T2lU0v9pjfRTjNaSm+i9ToRzbJ
+	 7gscZv8bnFRuhNg29hXaKe74cQrLCx1WHHwz4RxEya+o0Kw5QsXs5zLiA9qd9Ywy5xZD+
+	 TbhN3fGo59GIyHrNJFSbSMG3kV1pZ1T2SbJt9Q5npo87UptZjMX+jdyMALt+tKhrlEGfj
+	 pKxingkHX9VEzOmRb7r/djMV2HecynouKah/zoIfX5grM8fqW5ib+lwgusIiDVWvwglKk
+	 34sXYFefPVxELEwXEAsrakL2DakQgpvDtGcelP5prJKguHY7yGMHWpODAhJDe96gPJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083103;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083094;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=oowdS+RUaXqQYhqTl8K+JWCk7L9i4EL13SAkeszSlFo=;
-	b=uvbknP8C42UisOYq6Yvxshlqbwb4uBF1lwHyQNfOmkVSOIsSk0Zy704I/LVAJQkDzLnb
-	 kQdda8q/rsMGY/e8O2iqgHmLyTU2VrY9uzKg/NnexwpD2Ets3ygl6+q8vf8/KV2WkV5ws
-	 MBg8QcvIctT+6yHMWODq+uHQncjrKR8KomfRMrV5L1kBx1g0dXPbYQsWJRWCbDfmJeJOm
-	 ktGEBa/Gt28UiPIeMxaHstyR77b5DoIZvVAPUfIiqBuzRtpzgZQMIFqNKSGSWI6VpS2dd
-	 LCbc69RJOev/ik+IOmRFKbfegrhEAL+F1lZO59KgoeCXzGLYpWgEQv5TOQku170iJOw==
+	bh=lgs3KVNbf0o7fwvX/gx91q/+sHVfD9TIfwHmI1J95iU=;
+	b=4rZLVx/HWnPIEiZoxZdYfX3Z9nRbBzx7araN7wjeBFMsLrKt3jvtlmzpw01TNWnD+sEA
+	 aCchQpSDFNb8ffaH5ZzhouzqbZZWbzDLKLgdXa7YdxnqkjLVngHruZvFRnjNfKGlnXqYj
+	 tk0J6r2eGK89AyK8o9hjJd7hnIg9Dwfz5YjyZu1wYSqC1D6ypGJbGGbLB7vwdtyq8McVL
+	 L+UXv7IHc/Vyys09w2xkno/jIWVf64B2b74+oqQWIPY7YdwUbJjWJ07KVRcTSkeIRIby7
+	 qNWOfczqCRB4P51k8MTcyXA2+OPHlSYZKntonzw9iJM88y7kmQlbZKI+6MV7h7Lg3Yg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq2zs6qI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLXrcmPV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F44606D82C;
-	Sat,  7 Nov 2026 20:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC8606D81C;
+	Sat,  7 Nov 2026 20:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq2zs6qI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C9A1F008A4;
-	Sat,  7 Nov 2026 20:25:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLXrcmPV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD321F008A6;
+	Sat,  7 Nov 2026 20:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083103;
-	bh=oowdS+RUaXqQYhqTl8K+JWCk7L9i4EL13SAkeszSlFo=;
+	s=k20260515; t=1794083094;
+	bh=lgs3KVNbf0o7fwvX/gx91q/+sHVfD9TIfwHmI1J95iU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Dq2zs6qI/0KvCnEtdM6veb857H8abtyWdUvxYQIl/M/oYaQ0d1R1zzqpiZQHEIJXM
-	 8dmbv/0rUlJ3O9En6Za6pdpSlsgsesLA2BvdYa2ezMCXTYcsWpS5p/i31sBzX6W/y9
-	 w987a1vYQn7amMHCo5g1Ch45JoQButEiRO0cbVBPU7gilncvJzovOU1g/qAJbhSIiH
-	 IIbtaCKJWqVRH1Kdh0paOMBwKv9JCChfuO6lvQjdpGDw3eVeGSr/q+0TbxEiFAeTtW
-	 VFsum4NorbjUiPWTp8bfaY3ozKA+EzjNekeqjl+fLYDgeDNEnAaFD+gXZ9TWwkHff0
-	 JNe2GHioppMAw==
-Subject: Re: [PATCH rdma-next 17/23] RDMA/mlx5: Validate EQE port and GSI port
- before indexing devr.ports[]
+	b=VLXrcmPVo5jyXjyMBpsd8n3ZM/C/P2xlVHUD56k6qDWp3bHbWlgqKnXyUZLRSgN18
+	 TeHXFgbTVPVKJpvQzgTLgVLln5ZsDkvga/Kv9rUMaVU4HIQMgh4coQOEfUTDpo9NiW
+	 Fy6Z+fvsHFXFzFyWj9V6CpoRVIqJ+ZQm0TGZlyZXh13nQXdRUqwV8nKrPpmQeG3rT2
+	 L8Pms2YL63b8Aj+AF92W0J2rk1J9qJzzp/vVdCSr2Cjat7gkpUAsnmmmRq5sXXNBSp
+	 67xNzwW5Qtz8DL2svOgYvxBfLYghmXpM7Kc1RZaoXPxqX46yq0Gl1DUoTrGQYKGhYr
+	 gnjBY3HdP9lJQ==
+Subject: Re: [PATCH rdma-next 11/23] RDMA/mlx5: Add shadow FIFO infrastructure
+ for UMR completions
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,10 +49,10 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:25:01 +0000
-Message-ID: <179408310169.994134.18411917783042594669@kernel.org>
-In-Reply-To: <20261103163949.1554-18-yishaih@nvidia.com>
-References: <20261103163949.1554-18-yishaih@nvidia.com>
+Date: Sat, 07 Nov 2026 20:24:52 +0000
+Message-ID: <179408309294.994134.208597027649974206@kernel.org>
+In-Reply-To: <20261103163949.1554-12-yishaih@nvidia.com>
+References: <20261103163949.1554-12-yishaih@nvidia.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -72,79 +72,51 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] This patch makes the existing invalid-port check and warning in
-  mlx5_ib_handle_event() (drivers/infiniband/hw/mlx5/main.c)…
+- [Low] The commit message's design premise is wrong.
 
 --
 
-RDMA/mlx5: Validate EQE port and GSI port before indexing devr.ports[]
+RDMA/mlx5: Add shadow FIFO infrastructure for UMR completions
 
-This commit adds port validation to handle_port_change() and
-mlx5_ib_create_gsi(). The port number from the NIC is checked with
-rdma_is_port_valid() and limited to ARRAY_SIZE(devr.ports) before it is
-used to index devr.ports[].
+This commit adds a shadow FIFO of posted UMR contexts in adversarial
+mode. A later patch can then check each UMR CQE against the oldest
+pending request instead of trusting the CQE wqe_counter. Each context
+also records the SQ producer counter it was posted at.
 
-> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-> index f4f2ad80e76c4..c29102260989f 100644
-> --- a/drivers/infiniband/hw/mlx5/main.c
-> +++ b/drivers/infiniband/hw/mlx5/main.c
-> @@ -3063,6 +3063,10 @@ static int handle_port_change(struct mlx5_ib_dev *ibdev, struct mlx5_eqe *eqe,
->  {
->  	u32 port = (eqe->data.port.port >> 4) & 0xf;
->  
-> +	if (!rdma_is_port_valid(&ibdev->ib_dev, port) ||
-> +	    port > ARRAY_SIZE(ibdev->devr.ports))
-> +		return -EINVAL;
-> +
+> The UMR QP is RC and signals every WR, so its completions arrive in
+> posting order.
 
 [Severity: Low]
-Does this early return make the port check and warning in
-mlx5_ib_handle_event() unreachable?
+Is this description accurate? The UMR QP does not look like an RC QP.
 
-mlx5_ib_handle_event() treats any non-zero return from
-handle_port_change() as a reason to skip the event:
+mlx5r_umr_resource_init() in drivers/infiniband/hw/mlx5/umr.c creates it
+as a REG_UMR QP:
 
-drivers/infiniband/hw/mlx5/main.c:mlx5_ib_handle_event() {
+drivers/infiniband/hw/mlx5/umr.c:mlx5r_umr_resource_init() {
     ...
-	case MLX5_EVENT_TYPE_PORT_CHANGE:
-		if (handle_port_change(ibdev, work->param, &ibev))
-			goto out;
-		break;
-	case MLX5_EVENT_TYPE_GENERAL_EVENT:
-		handle_general_event(ibdev, work->param, &ibev);
-		fallthrough;
-	default:
-		goto out;
-	}
-
-	ibev.device = &ibdev->ib_dev;
-
-	if (!rdma_is_port_valid(&ibdev->ib_dev, ibev.element.port_num)) {
-		mlx5_ib_warn(ibdev, "warning: event on port %d\n",  ibev.element.port_num);
-		goto out;
-	}
+	init_attr.qp_type = MLX5_IB_QPT_REG_UMR;
     ...
 }
 
-The only way to reach the rdma_is_port_valid() check is a successful
-handle_port_change(). After this patch, a successful return always means
-the port is valid.
+to_mlx5_st() in drivers/infiniband/hw/mlx5/qp.c maps that type to its
+own service type, not MLX5_QP_ST_RC:
 
-Before the patch, a port change EQE with port 0 or a port above
-phys_port_cnt went through handle_port_change() and returned 0 if its
-sub_type was not PKEY (LID, GUID, CLIENT_REREG, or ACTIVE/DOWN on IB).
-The caller's check then printed the "warning: event on port %d" message.
+	case MLX5_IB_QPT_REG_UMR:	return MLX5_QP_ST_REG_UMR;
 
-After the patch, the same event is dropped with no log message.
+mlx5r_umr_qp_rst2rts() also moves the QP to RTS without a remote QPN or
+a path, which an RC connection would need.
 
-Could the warning be moved into the new early-return path in
-handle_port_change()? Or, if the silent drop is intended, could the
-caller's check be removed, since it is now dead code?
+The shadow FIFO design depends on in-order completion. The consumer added
+later in the series, mlx5_ib_poll_one_umr(), treats any CQE whose
+wqe_counter differs from the FIFO head as forged.
 
-> +
->  	ibev->element.port_num = port;
->  
->  	switch (eqe->sub_type) {
+The in-order conclusion is probably still correct, since mlx5 send queues
+complete in order and the generic poll path already relies on that when
+it sets wq->tail = wq->wqe_head[idx] + 1. Only the stated reason seems
+wrong.
+
+Could the message say that the UMR SQ (a REG_UMR service type QP)
+completes in posting order, instead of calling the QP RC?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
