@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794055958;
-	b=UCzg3qYxUv2yGuH8lri2/GHLf/9kWuqYbTJOhGgCY/DQ8AGmXVPGS0CJ7HkeQXuXv88P
-	 E0VezMhuqexxVuYQ20gwn0hTA5dXKiEoIe64VfA9txEzEnCO61BlG9DjfMtxwNAiBS3fr
-	 fBlYZXXsJ/NYqAMR9JGoJ2UP1q/LVPHD9uFc1vGX7oYbDw5e3S19CdHxxYFe98h2BsXti
-	 lkItWK09CJV9UD3VRO4gAhZomWUpFg+I6DCArfq7AtOS7dN5TmoiT+KQgH6ytIk7gw8ZT
-	 v6TwSPedBMQqdomumC5otGsR2RNuqjxefkh6CEL87PLQkQlL19qZfohpPpYqL5dRFjQ==
+	t=1794056720;
+	b=cAzsIugb0StJYgue37QnXAvr+MQYgMK8dSPkBaB3LnrfGl+BpQcTdjfzM6HQk3YDeAGA
+	 ZB1ABY0qVwRSJCt/SbdJ3sTLdyf2lOaNvCGlIu9r1X/dole8A8sYtmfHOAwCbjDdTyrot
+	 aNKCcCFRfSTiOWlXl/Dd5XksXmD6qdaawnGItYYuMbvmNHoEV8gHyX3IWwfWtK01dEnc6
+	 VJdcCXrL48R30X6+4xLFMl9VMa8zpFrUlvi+wsvyXoihNYefy+qDF3Z7SkyYqkg6R8ye9
+	 I7cmvmrLAnz/+8NmRWWrh7rH3tmDv7RLd7zZ7JuC404WCHiUSYJX9UFIIUl883LzbGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794055958;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794056720;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Dz4nU+XktsAws1dehkwjm0qCQeZEQukoJ/eEOgzjJmw=;
-	b=4KRKS9wnHqVNB6Fn/HYfq3iTjQzm/ZS5Z6f8rUnv+xaW/oGP1tI9+ih705ovmXWUzgo0
-	 NOechnTSEPGHOesmZXD/NDkCLYslhib6WCuAh8gC7GUSxC76d1gq0tyngvjlT1UW9/p6w
-	 ooQih5WB+NouLIubf3TaBbUJOCQpSiELgiZqN9txOs+Wjbb9ifUrmCX1+6AIpWeC4PqG2
-	 mpL1z0sKlbmlZx+bZLpkYZDpRleBrzZNk67J7L2d2XS3Q0+UL1IQNwaARuuQu9HSG/4ia
-	 5J/1lw1gHgbyAj6kfxISgMrST+us/+J6zixFFAC/HEEJez5I67X8KhiRxvkBNzwmgwQ==
+	bh=bY5y/UpFh5i7nT5MZ0PdGQ5Q5A6XBRtLcJX0AZBBR4U=;
+	b=fY264O1aPx9fmRO383fpAAg1d2oHaT2R8b4Bqihlon6NmV8l3qFoWlMAAlbz2g/Fb+C8
+	 YK5EpIp7w7MrLMBawyQAxe0CnD1vnbJFJ8HMYaJd39nooWfirB5zJtc/mrK3Qk5B6UxV6
+	 ZGv9SOtrWGPPwkR7Gd1Bv4m+TiV8n0bTFi4voEs9LttdKFGBvv03QJbm6xiX2H/ekEa2z
+	 d3cSitWRYmg66ptg/DhiNpvq43ZpzLag8Aj88ASlv+wHjp33KrgVKbZ2IHcOtZP6d5OTc
+	 xWMlHUD9UTsXMbMX0FoDi96ZlCgq7upC7LRO58S9PWl36rPWve5UVvxFbMF180h00Bw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="CW/Xjxlz";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PU04oNnE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF41606A332;
-	Sat,  7 Nov 2026 12:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6154E606A326;
+	Sat,  7 Nov 2026 13:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CW/Xjxlz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB991F0089F;
-	Sat,  7 Nov 2026 12:52:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PU04oNnE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7561C1F0089F;
+	Sat,  7 Nov 2026 13:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794055958;
-	bh=Dz4nU+XktsAws1dehkwjm0qCQeZEQukoJ/eEOgzjJmw=;
+	s=k20260515; t=1794056720;
+	bh=bY5y/UpFh5i7nT5MZ0PdGQ5Q5A6XBRtLcJX0AZBBR4U=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CW/XjxlzDTg1aVQdaW7JqzCU9aaRZxg62YnM+vgqwA4flyextgxB4VK1ac/IZ1+v8
-	 Cld5GUjoR/e3mRH/HCVPROmI+GqeAVSCy0MnXbulfqi3Wg3TcDyaUu8OJ0KPQ9C4i+
-	 l5t5U3OLiP7rQ9LyRNqBdmyAEfWssgWcaIleDJl3djI003zeCK49MptH2JveNn6Sj0
-	 IYM96xWfsnZsLVEpC461U6Y9DFgP8aRtUIMcm4BCbGuF+ws5liDWWlFWiQN/0ZkVSx
-	 3uMyOs5gUS7S2Iidi1R4Zoizlq2D/QeYDvO73S//iARvwmixC1nJu8Uktg24qnjpqD
-	 UhmvdKDI8T73A==
-Subject: Re: [PATCH] net: stmmac: free RX resources when TX allocation fails
+	b=PU04oNnEZ2a79nE9+6dLinYdrWVrs3mu9neB8uYlLChA6jT5+HmBurhUeEWgL84hn
+	 Jjb+2BDPkH8vKa/DEZsUKCo/gY0rZw+kC00a+QE/rDpBKfb0AUfFdm7zXacNSvDATh
+	 f+m2ikejvLmjbgiM7Bfb24OqBLGJQk2+jkSrDhehHYUnoGTgDyLntOc3iPFmKGnS6+
+	 /lxbF4gLKdo/2ZJI2WWiXqIzBBvBgM5oUZ1A8O8V1V6Vy4F2pXzTs2mfuStxLZnudM
+	 erdgfHk2r9h7GSx0NLMw0mo9h8oixyT/EZhdgIMa1Cxujf+HMCZyVWwNy4dDSojWKq
+	 JMSVQVKlF7qRw==
+Subject: Re: [PATCH] net/mlx5e: TC, release meter if rule offload fails
 From: netdev-bot+sashiko@kernel.org
 To: vulab@iscas.ac.cn
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 12:52:36 +0000
-Message-ID: <179405595688.994134.1843500788974971566@kernel.org>
-In-Reply-To: <20261103102857.1340748-1-vulab@iscas.ac.cn>
-References: <20261103102857.1340748-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
+Date: Sat, 07 Nov 2026 13:05:18 +0000
+Message-ID: <179405671897.994134.13525993179862980932@kernel.org>
+In-Reply-To: <20261103102856.1340672-1-vulab@iscas.ac.cn>
+References: <20261103102856.1340672-1-vulab@iscas.ac.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,166 +76,122 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] net: stmmac: double free of RX resources after stmmac_xdp_open()
-  failure
-- [Low] The commit message does not accurately describe what leaks, and
-  it leaves out one of the two callers whose behaviour changes.
-
-Pre-existing issues:
-- [High] The NULL-pointer oops this concern describes exists in the code,
-  but it predates this patch.
-- [Low] This problem wasn't introduced by this patch, but the kernel-doc
-  of alloc_dma_desc_resources() (lines 2434-2442), repeated word for…
+- [Medium] The new failure path in mlx5e_tc_rule_offload()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_tc.c) calls…
 
 --
 
-net: stmmac: free RX resources when TX allocation fails
+net/mlx5e: TC, release meter if rule offload fails
 
-This patch makes alloc_dma_desc_resources() release the RX queues with
-free_dma_rx_desc_resources() when alloc_dma_tx_desc_resources() fails.
-The goal is to stop the RX side from leaking when stmmac_setup_dma_desc()
-drops the partially populated dma_conf.
+When mlx5_eswitch_add_offloaded_rule() fails, this patch makes
+mlx5e_tc_rule_offload() release the flow meter and the post meter state
+that mlx5e_tc_add_flow_meter() set up. Before the patch, that meter
+reference leaked when mlx5e_tc_add_fdb_flow() failed.
 
-> stmmac_setup_dma_desc() only frees the
-> dma_conf on this path, so the RX DMA rings, page pools and socket
-> buffers are leaked.
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> index 708b7987ea4cd..17bd92529a44a 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
 
-[Severity: Low]
-Is the list of leaked resources accurate? When the TX allocation fails,
-__alloc_dma_rx_desc_resources() has only done four things: created the
-page_pool, allocated the buf_pool array, allocated the descriptor ring with
-dma_alloc_coherent(), and registered xdp_rxq.
+[ ... ]
 
-The RX buffers are filled in later by init_dma_desc_rings(), so no socket
-buffers exist at this point.
-
-stmmac_setup_dma_desc() is also not the only caller. stmmac_xdp_open()
-calls alloc_dma_desc_resources() on the persistent priv->dma_conf:
-
-	ret = alloc_dma_desc_resources(priv, &priv->dma_conf);
-	if (ret < 0) {
-		netdev_err(dev, "%s: DMA descriptors allocation failed\n",
-			   __func__);
-		goto dma_desc_error;
-	}
-
-Before this patch, the RX resources on that path were not leaked, because a
-later release freed them. Now they are freed early inside
-alloc_dma_desc_resources(), and priv->dma_conf still holds the pointers.
-
-Could the commit message mention this caller and explain how the change
-affects it?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 7ffed295eb14a..3f9f3b7878c20 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -2450,6 +2450,8 @@ static int alloc_dma_desc_resources(struct stmmac_priv *priv,
->  		return ret;
+> @@ -503,9 +505,14 @@ mlx5e_tc_rule_offload(struct mlx5e_priv *priv,
+>  		err = mlx5e_tc_add_flow_meter(priv, attr);
+>  		if (err)
+>  			return ERR_PTR(err);
+> +		meter_added = true;
+>  	}
 >  
->  	ret = alloc_dma_tx_desc_resources(priv, dma_conf);
-> +	if (ret)
-> +		free_dma_rx_desc_resources(priv, dma_conf);
+> -	return mlx5_eswitch_add_offloaded_rule(esw, spec, attr);
+> +	rule = mlx5_eswitch_add_offloaded_rule(esw, spec, attr);
+> +	if (IS_ERR(rule) && meter_added)
+> +		mlx5e_tc_del_flow_meter(esw, attr);
 
-[Severity: High]
-Can this turn into a double free on the stmmac_xdp_open() path?
+[Severity: Medium]
+Can this lead to a double free of the post meter and an extra meter put?
 
-stmmac_xdp_set_prog() calls stmmac_xdp_release() and then
-stmmac_xdp_open() when the interface is running.
-stmmac_xdp_release() frees everything with
-free_dma_desc_resources(priv, &priv->dma_conf), and stmmac_xdp_open()
-then calls alloc_dma_desc_resources() directly on the persistent
-priv->dma_conf. It does not use a temporary copy the way
-stmmac_setup_dma_desc() does.
+mlx5e_tc_del_flow_meter() kfree()s attr->meter_attr.post_meter and drops
+the attr->meter_attr.meter reference, but it does not clear either
+pointer:
 
-If the RX side succeeds and the TX side fails there, this new call
-frees the new RX descriptor rings, rx_q->buf_pool and rx_q->page_pool.
-__free_dma_rx_desc_resources() does not clear rx_q->dma_rx,
-rx_q->dma_erx, rx_q->buf_pool or rx_q->page_pool afterwards, so
-priv->dma_conf.rx_queue[] is left holding freed pointers.
+mlx5e_tc_del_flow_meter() {
+	mlx5e_post_meter_cleanup(esw, attr->meter_attr.post_meter);
+	mlx5e_tc_meter_put(attr->meter_attr.meter);
+}
 
-stmmac_xdp_set_prog() ignores the return value of stmmac_xdp_open(),
-so the device stays IFF_UP. The next __stmmac_release(), MTU change or
-XDP toggle calls free_dma_desc_resources(priv, &priv->dma_conf) again.
-That would read the freed buf_pool in dma_free_rx_skbufs(), and then
-kfree() buf_pool, page_pool_destroy() the page_pool and
-dma_free_coherent() the rings a second time.
+attr->dest_ft and the FWD_DEST action bit set by
+mlx5e_tc_add_flow_meter() also stay in place.
 
-Before this patch the RX side of that path was only freed once, by the
-later release. The TX side already had the same problem, since
-__free_dma_tx_desc_resources() leaves tx_q->dma_tx, tx_q->dma_etx,
-tx_q->dma_entx, tx_q->tx_skbuff_dma and tx_q->tx_skbuff dangling, and
-a partial failure in either allocator can unwind stale pointers left
-over from stmmac_xdp_release().
+mlx5e_tc_rule_unoffload() treats a non-NULL meter pointer as a live
+reference:
 
-Should the free helpers reset these pointers to NULL? Or should
-stmmac_xdp_open() build a new dma_conf and only install it on success
-the way stmmac_setup_dma_desc() does? Either way, it seems like this
-needs to be handled before the early RX free is safe for every caller
-of alloc_dma_desc_resources().
+	if (attr->meter_attr.meter)
+		mlx5e_tc_del_flow_meter(esw, attr);
 
-[Severity: High]
-This is a pre-existing issue, but can the TX unwind oops before this new
-free_dma_rx_desc_resources() call is reached?
+So any later unoffload of the same attr releases the meter again.
 
-stmmac_setup_dma_desc() allocates dma_conf with kzalloc_obj(), so
-tx_skbuff_dma and tx_skbuff start out NULL for every TX queue.
+That later unoffload looks reachable through mlx5e_reoffload_encap() in
+en/tc_tun_encap.c. Consider a fast path FDB flow with a police or MTU
+meter that redirects to an encap device:
 
-Say __alloc_dma_tx_desc_resources() fails for queue k. The err_dma label in
-alloc_dma_tx_desc_resources() then unwinds all tx_queues_to_use queues,
-including queue k and the queues after it that were never allocated:
+mlx5e_invalidate_encap()
+  mlx5e_tc_unoffload_fdb_rules(esw, flow, flow->attr)
+    releases meter ref #1 and post_meter P1
 
-alloc_dma_tx_desc_resources()
-  free_dma_tx_desc_resources()
-    __free_dma_tx_desc_resources()
-      dma_free_tx_skbufs()
-        stmmac_free_tx_buffer()
+mlx5e_reoffload_encap()
+  mlx5e_tc_offload_fdb_rules()
+    mlx5e_tc_rule_offload()
+      mlx5e_tc_add_flow_meter()          takes ref #2 and P2
+      mlx5_eswitch_add_offloaded_rule()  fails
+      mlx5e_tc_del_flow_meter()          frees P2, puts ref #2,
+                                         attr->meter_attr still set
 
-stmmac_free_tx_buffer() reads the arrays without checking them:
+mlx5e_reoffload_encap() then marks the flow as offloaded even when this
+step fails:
 
-	if (tx_q->tx_skbuff_dma[i].buf &&
-	    tx_q->tx_skbuff_dma[i].buf_type != STMMAC_TXBUF_T_XDP_TX) {
-	...
-	if (tx_q->xdpf[i] &&
+		rule = mlx5e_tc_offload_fdb_rules(esw, flow, spec, flow->attr);
+		if (IS_ERR(rule)) {
+			mlx5e_tc_unoffload_flow_post_acts(flow);
+			...
+		}
+		...
+		flow_flag_set(flow, OFFLOADED);
 
-Wouldn't this dereference NULL when tx_skbuff_dma was never allocated? And
-when only the tx_skbuff allocation failed, wouldn't the read of xdpf[i] (a
-union alias of tx_skbuff) do the same?
+The flow is now OFFLOADED and not SLOW. The next flow delete
+(mlx5e_tc_del_fdb_flow()) or route event (mlx5e_invalidate_encap()) goes
+through:
 
-The only TX failure the unwind seems to survive is a dma_alloc_coherent()
-failure on the last TX queue, because dma_free_coherent() returns early for
-a NULL cpu_addr. That would mean the path this patch targets still oopses
-in most cases.
+mlx5e_tc_unoffload_fdb_rules()
+  mlx5e_tc_rule_unoffload()
+    mlx5e_tc_del_flow_meter()
+      mlx5e_post_meter_cleanup()  reads freed P2->type, destroys its HW
+                                  objects again, kfree()s P2 again
+      mlx5e_tc_meter_put()        drops a reference that is no longer
+                                  held
 
-alloc_dma_rx_desc_resources() looks like it has the same problem.
-stmmac_free_rx_buffer() does:
+The extra mlx5e_tc_meter_put() could also destroy a meter that other
+flows using the same police index still rely on.
 
-	struct stmmac_rx_buffer *buf = &rx_q->buf_pool[i];
+Before this patch, P2 and ref #2 leaked at the failure point and were
+released exactly once by the later unoffload. With this patch they are
+released twice.
 
-	if (buf->page)
+The same mlx5e_tc_rule_unoffload() call also passes the stale
+flow->rule[0] to mlx5_eswitch_del_offloaded_rule() on this path. That
+problem already existed and comes from the unconditional OFFLOADED in
+mlx5e_reoffload_encap(). The split_count failure branch in
+mlx5e_tc_offload_fdb_rules() already left similar stale meter state
+before this patch. The main path this commit targets, where
+mlx5e_tc_add_fdb_flow() fails, does look correct.
 
-buf_pool is still NULL at that point if page_pool_create() or the buf_pool
-allocation failed, or if the queue was never allocated.
+Would it help to set attr->meter_attr.meter and
+attr->meter_attr.post_meter to NULL, and undo the attr->dest_ft change,
+after mlx5e_tc_del_flow_meter() in this failure path? A later unoffload
+would then skip the meter release.
 
->  
->  	return ret;
+> +
+> +	return rule;
 >  }
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but the kernel-doc above
-alloc_dma_desc_resources() says the following, and the same text appears on
-__alloc_dma_rx_desc_resources() and __alloc_dma_tx_desc_resources():
-
- * this function allocates the resources for TX and RX paths. In case of
- * reception, for example, it pre-allocated the RX socket buffer in order to
- * allow zero-copy mechanism.
-
-None of these functions allocate RX buffers. That happens later, in
-init_dma_desc_rings().
-
-The comment also has no Return: section. Both callers now rely on
-everything being released already when the function fails, and that is not
-written down anywhere.
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103102857.1340748-1-vulab%40iscas.ac.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103102856.1340672-1-vulab%40iscas.ac.cn
