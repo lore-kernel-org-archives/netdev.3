@@ -1,96 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794060425;
-	b=KEzlGIkmaUIWN2r8kLfYkHetwXgaw4odic7bjxgTRhbRKbz8Ni6NXwFEGXTF13TrN7YB
-	 IrgMY8ecUh4EqwtQXlsyfmeqyTASYNODlPYIH2CgyXWQ924gUuij+k8ZWciiWsADSXbvH
-	 SN0OWhYlQitxIYkgnTMjg7IHFGmqTCdZPuoJoA/cBNdAwLTs8fu3oJg3ATDbfHMNRT+xG
-	 9nGVXJoGSwi1g11bXRE5A3TUh8VQ0q0Pxt0VoHlujmaZJIIH78rY19D4X2rvVPqDh4Pbz
-	 +3yDs19vLdrsGh6SKui1br+j5XO4HuCLxvzucXT5d/hICje7XF4pM0HAqffrn0qRcPg==
+	t=1794061193;
+	b=oOehcRMaI454nq0jx05t/L/gLrlGUxEWyOG6dyawQfbbtwTznW+NXG6mJmRRLD+73vRK
+	 qnStKSVdHn5B+lEwe3VXXmSsCPYs2vH/1VnA7Tt59bWQ2g4DUPQ1SbflKU0X6BvgKNO77
+	 Q6ip4/xcWSXLnNHLBq2iOMRUs5gyuHYk4Eafwp2mAP5cGIySU/TwD20efKPmSF/uqDFm1
+	 waWz48y27vNR0XPkiXC9VeaJ/fS0lxGGCg9mG/BCkYE2lhn7xUnh5O1UfRrUiQDP61jfz
+	 98WOYMw4lV9dn+IMc3k5SgQklRW1gz9wJHOde5orVMT5KBpceAdq3l0oKKLx8hwLYCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794060425;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794061193;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=ngyvw7W1wldCSbIp2eT/kVHJ8HXnUw9pEjSsrIxeEVQ=;
-	b=o1ScIhorh42WOOXBaX1XFhCQ0Rzl0IlPUgXlZ7LuRhLMxVK+UzTTdtuGNI+A0MnP0psy
-	 tLx//yIC3/l3+5lryRXIRd6v0tPKpFUdZvCE58E9R/5ctIAvCxcEKyieXvljF8NDKGzvA
-	 MH5AefZBiBvVfC2mfcbEcAkUQt4r5pLHF8bt+jUu0yoZ01xw4Elq3J1yZB6ui2CrJ0l/l
-	 PNF7Vy5b+ODBrFQstVq7tO5JEI49BmzSUJJCb4f6QPWyrUM5vyAFycz3qdQ11TqnA4ANe
-	 NgPrhG3egVUH5C3Q3e2WMJAr0+jx2mHjeVulv7XWzHhiZbP90Q487j56jnaWgVEo68Q==
+	bh=6Xy4g2k9SgZBU5SQWNQcYqwfJeIbihBIIqmeCYm2TIs=;
+	b=kqRK3ooK8fzlz2PtqApzURN4upJvjOpc+mz6OIm9ezCN78hduLUtQD+Evkwt4ikKSfdG
+	 wOrqLp2umcd4Rwtn8PrzhrGcC667vIg+Yz2YqmJXJNoFSICjNYZ0c+eqCHtpPt+PtqtlI
+	 Jv5e7q903qxPMylAXxX1/9cA4G+EF34Rm52OxG6uJBhFxzmTvGU0EsXFBhJgeMnKgxhAe
+	 pppAz90dI560tE62FxBoNxHt3uF4cEfonU/01lzSPKAQb1yHu6iM17qI1ZxYZtAH/Tyd0
+	 kirjFEdW97/A7mE0LuBqPJjtRSPJYqanUgPIgXvfGSdDzVLKySbeI/0f+nkvsLN7BnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d+KvkcLr;
-	arc=none smtp.remote-ip=74.125.82.47
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1346E606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 14:07:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1346E606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OfoZT1md;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EEC606A326;
+	Sat,  7 Nov 2026 14:19:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3EEC606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d+KvkcLr
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-15ea896ddc8so2700763c88.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 06:07:04 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=OfoZT1md
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794060424; x=1794665224; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ngyvw7W1wldCSbIp2eT/kVHJ8HXnUw9pEjSsrIxeEVQ=;
-        b=d+KvkcLr03VEL/Dw8mCET7X/fPun7qHPwWG088o+U2t1dmqLcJuMjlgmXhQQtIWS9x
-         yo1b+vPZ9d0v8CDFXjPpnhrbSzdkxTk3wEXDHNtfCdVZXJRF6O/Z2bLJ9Aaqv07K341Z
-         AbmBU/pbPrXyQfdhaHa208u/2JvsBIzXiIb+DWxYQ4ABAJibl8JCoVvDFhSX9hfO5dvO
-         5tZHLVtpBLoqncTkIiXM/l6u1oIiEAuMVdRV03PAalY0QVtlscJRXuq26S2PRydiVgp8
-         e26BgBsUhMnASeEaLbSZKbi9HHZDzXFP6b2kM6yI6/V2XWId0gPBN4S+k9nFy1U560Sq
-         ILow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794060424; x=1794665224;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ngyvw7W1wldCSbIp2eT/kVHJ8HXnUw9pEjSsrIxeEVQ=;
-        b=LCvquIhXfRTfO7lVZkf+Ug7Cw5DK6P5pe0EzPzELqmVEeu+1T9igDX3nPY45ZD8ecJ
-         JbaijxMC/a4l6JVHDsyX6L4GFc2foqyvnQD35itYZHWcaiL3l9xCs9WztA7RWKa6yfwv
-         GOo0j9gjFOUWtpSgXWK/HW2JaO+8GblWyl7s3Zox1rmqOprf81pn6y3JO0I5LKI7BE3Z
-         SQ7kgK4ZZOO1NmU4Dx+lhtGlY6TcUBkDNdc4vJ0dbRLDI6poi0PBVVLFH71JYMZ22xut
-         ojVUGPg1hfW2DVO48ZDgvmMxD6ZLkfLZj+ra3Lr9Q6EyzP9tYXyiVD3pL0wr0Hq4AU2/
-         EdXg==
-X-Forwarded-Encrypted: i=1; AKwUvBxfuJvt1OOyZBWe3KtDvzm06foQ0TrPJeWEh2WdAGeznz/3/yrAJtDe821UIsik3F806hQvpYY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/oPa68ZUnndILNjZnZ/qccWWiulpEzwfIYiu6Ie7BBWYCU+pXn
-	Baby2Dr0ghu4UXejcezfziBXtwK+KJaVRFEI+RrcjDDMfOyu92rTY9j5
-X-Gm-Gg: AYBFou2VINNInhdwrmMAQyvCb2lErdGdOybJMLxqyhK3uAmnYd1N0JZP2bttAU8HWgK
-	k7E0xebqvjdKmmAzJ29A8BBwovHVTGzzgIn2YkpvTKmQhjbBoyHykQckyvZ5jj4vUUPwGWcegk1
-	VwBaEgV7PvVLeED5mq0WCeLLP4yq78nK9xpcEUbZl1HZ9u1Iet6rIVQp/C4TMF7wRLIQFOmGWnC
-	ka8MAVf/zPGWOk9PH38fk4anwQXGQrIt2KoiHoiMMKeLHg1aiFn68JPpU46HLpnIpuuxwHSk+Cj
-	Wk0s/fr5eKgUik4KVS6YKE2o6XH9cVELcmzbjgm/Rhb8lI69of1ZVs5ozn7QHA+U68E1CHSqyLE
-	FAw88mFjyvT7prA47FoobWY04oSq6mem8qi5Yd7tX+htGguKELHju1fjV6slfZUmGmSuIEZt4nb
-	SolnUOjkWzcIF+WwJWOnhMSSAuwLm5Dbz8jiVn9qhCnkMrMlxMERsxegozhINwBwwMXbVEOU803
-	LIPLEWG33Ajtn4NiI7B5V63qZYqI7n7Zf0A23d5vyK9KYFvmkS9+9oPDaEQQDCb2EBdeagTek2y
-	nODMaAF409qA5gl8ReSaUM6R0qYUC0DBHKjcA4zmbB5mrpYy
-X-Received: by 2002:a05:7022:b056:10b0:167:4198:2cb3 with SMTP id a92af1059eb24-1b25d3083a7mr7690558c88.18.1794060423886;
-        Sat, 07 Nov 2026 06:07:03 -0800 (PST)
-Received: from hj.. ([163.239.22.29])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa9fd0000sm14558756eec.21.2026.11.07.06.06.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 06:07:03 -0800 (PST)
-From: hyunjungg <hj351016@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Hyunjung Ko <hj351016@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: enc28j60: cancel deferred works on remove to avoid use-after-free
-Date: Sat,  7 Nov 2026 23:06:49 +0900
-Message-ID: <20261107140649.3702472-1-hj351016@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=OfoZT1mdEV1XwpGxGjrElEH0VxKM7xWy8hj6ScvZu/fK/lGZH2KUTc0M3cAQOwMeQs8XZyYTQSp1O
+	 auK57dKui2koR4W18X4TmUSbN3XZAfq9ChAgf1nWgIj6hEoMikmhRYM645W9Mcde/ViKs4RaWQgner
+	 87cSA96ODVUKBqUc=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76aef337ba39-b8122;
+	Sat, 07 Nov 2026 22:19:44 +0800 (CST)
+X-RM-TRANSID:2ee76aef337ba39-b8122
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.79] (unknown[112.23.104.16])
+	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6aef337e00c-47617;
+	Sat, 07 Nov 2026 22:19:44 +0800 (CST)
+X-RM-TRANSID:2eea6aef337e00c-47617
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Yanqing Wang <ot_yanqing.wang@mediatek.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ yana06070@163.com
+Subject: [PATCH net-next] net: ethernet: mtk-star-emac: fix device_node leak
+ in mtk_star_probe()
+Date: Sat, 07 Nov 2026 22:19:42 +0800
+Message-ID: <1794061182000.57993.3986467551914992480@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,53 +73,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-From: Hyunjung Ko <hj351016@gmail.com>
+mtk_star_probe() gets the PHY node from the "phy-handle" property
+with of_parse_phandle(). The helper takes a reference on the node it
+returns. The node is used by of_phy_connect() each time the netdevice
+is opened.
 
-enc28j60 defers work to three work_structs that dereference the driver
-private data via container_of(): tx_work (queued from ndo_start_xmit),
-setrx_work (from ndo_set_rx_mode) and restart_work (from ndo_tx_timeout).
-They run on the system workqueue and are never cancelled.
+That reference is never dropped. Every error return after the lookup
+leaks it. Unbind leaks it as well: the driver is devm-only and has no
+remove callback.
 
-enc28j60_remove() calls unregister_netdev(), then free_irq(), then
-free_netdev(). unregister_netdev() brings the interface down so no new
-work is scheduled, but it does not cancel a work that was already queued
-from an xmit, rx-mode change or TX timeout shortly before the device went
-down. priv is netdev_priv() memory and is freed by free_netdev(), so a
-still-pending work then runs enc28j60_tx_work_handler() /
-enc28j60_setrx_work_handler() / enc28j60_restart_work_handler() against
-freed memory (use-after-free).
+Release it with a devm action, registered right after the lookup.
+The error paths and the unbind path then drop the node through the
+devm cleanup.
 
-Cancel the three works after unregister_netdev() (which guarantees no new
-scheduling) and before free_netdev(), while priv is still valid. The
-handlers do not re-queue themselves or each other, so cancelling each once
-is sufficient.
+Found during a code review of the OF node handling in ethernet drivers.
 
-Found by static analysis and code review; not tested on real hardware
-(needs an ENC28J60 SPI Ethernet device).
-
-Fixes: 3ec9c11da033 ("add driver for enc28j60 ethernet chip")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunjung Ko <hj351016@gmail.com>
+Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
 ---
- drivers/net/ethernet/microchip/enc28j60.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/enc28j60.c b/drivers/net/ethernet/microchip/enc28j60.c
-index d6c9491..5266912 100644
---- a/drivers/net/ethernet/microchip/enc28j60.c
-+++ b/drivers/net/ethernet/microchip/enc28j60.c
-@@ -1602,6 +1602,9 @@ static void enc28j60_remove(struct spi_device *spi)
- 
- 	unregister_netdev(priv->netdev);
- 	free_irq(spi->irq, priv);
-+	cancel_work_sync(&priv->tx_work);
-+	cancel_work_sync(&priv->setrx_work);
-+	cancel_work_sync(&priv->restart_work);
- 	free_netdev(priv->netdev);
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index b83886a41121..bac4a24c5979 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1501,6 +1501,11 @@
+ 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  }
  
--- 
-2.43.0
++static void mtk_star_of_node_put(void *data)
++{
++	of_node_put(data);
++}
++
+ static int mtk_star_set_timing(struct mtk_star_priv *priv)
+ {
+ 	struct device *dev = mtk_star_get_dev(priv);
+@@ -1603,6 +1608,11 @@
+ 		return -ENODEV;
+ 	}
+ 
++	ret = devm_add_action_or_reset(dev, mtk_star_of_node_put,
++				       priv->phy_node);
++	if (ret)
++		return ret;
++
+ 	priv->rmii_rxc = of_property_read_bool(of_node, "mediatek,rmii-rxc");
+ 	priv->rx_inv = of_property_read_bool(of_node, "mediatek,rxc-inverse");
+ 	priv->tx_inv = of_property_read_bool(of_node, "mediatek,txc-inverse");
+
 
