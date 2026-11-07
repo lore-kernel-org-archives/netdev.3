@@ -1,65 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794020256;
-	b=VcQz1AgGfv0NkvfMFNDo3vW7Vj79ADU5aomBUoKhm3uYBcnttZ8AueApczat7NVuQp8F
-	 4Q43Lj/S9sbIKzSbTTSL8e3dD/kpeI+rU/n4WMPupy4jDzJlWpPg535N761MZhrummW7Z
-	 3AI6HBsH6oxBfzKtlUKd2XCeEmGsDJ7TP4+PngouTXv+yW+zvmPIWZjPUmePRutbthvKs
-	 6x4SZn6qp5+lZv9y7c9ETIWmWXWdS8uOSiuQAQJjbL5PvfWF2f2g/znXNuwMIABnARsLW
-	 9zzJBV+UoMjJ1k7pmsoN5PML0APp01pWbIkuMkcEkBsHcSTJRi+0msXrwkA5xQ5863A==
+	t=1794020737;
+	b=oAI+4LWYbEgwEPsbAJswLpHOfVlNF0/sxxTaf1LgVoNCAKnvf5F/niwhp9mDwpyB1Fj3
+	 ag4uyVe1ujU0DP3XYYV8ITVj/+WU7WDC0+OnCQ7rU0ZkGsrpyLSFh4FCW87j6oX3SiHDo
+	 mlDbEzDAo7ySXv+AWLD92CQ1QpstfIgQDqMYvSPdRz/E+0TtEN3VwXNQi13mvUc/+NlQZ
+	 4IxVohctxdWgPR2rTRj5tvxxtTytB+uahyF+/jLz5ER12pZocJF2Q8leF0z8JTHCme4eX
+	 RmmI2zw5eM6GY7x57D6K7xvFSyeQoklYHezobu5qa6X0AqxGhmyVY70InzpxQtjsDOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794020256;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-XMRINFO:X-QQ-XMAILINFO:From:To:Cc:
-	 Subject:Mime-Version:Content-Type:Content-Transfer-Encoding:Date:
-	 X-Priority:Message-ID:X-QQ-MIME:X-Mailer:X-QQ-Mailer:References:
-	 In-Reply-To:X-QQ-mid;
-	bh=+NfG3aoVVDYg320wMNuDSmqyNFEaM7V/GRWW/LuOKlc=;
-	b=XOcIhmgXgkURmz3/l3lyyB4KNpmPJPnMYx9pz4z652kRuMcFgknqa9I4Yb5NFwVuWnd4
-	 Cq/eKc5caADTb+vfuB2KaVwWA3wOyv1AZy6ItT9Xm74uNnoTn1obQZRmpzSfIIf/LqlK8
-	 TApuOH4OdL4H1Bk8SWrloqy4fEB8GS99qpjLUDuu8OkF7AZbH15TZ9PNnteHrR8kYCt/R
-	 eB5hQynMFcRSv1TDyTl700YspIJus99rZVXWy98mJ3GC2fwqMgOw10fviqc0YI99gfW+p
-	 2sIXkBWdEmUY8+vjPnbhKH6ZV9afDM/tO0ezXGQyuQXXw+iISZk7YZ9TYPhvmcWFI4A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794020737;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=rP1Yhc8V6RNptl8ZAiLhF4SuAftOJVbuJVVUglBaikU=;
+	b=4T/gIui1QpDIbmUYrmGNcG0b4BZXEbpL+N5rBBh5KeQmKyjP9qOk1mZV+Fz1RDhSV90H
+	 IVxfmDKUiZyse9WIF4aPAUtx2VmumslsGzV3BzQebcw7OvdHtTS7ezhJYNviU5lZDLM+E
+	 zx22NbWwV3IhO2WGVTiGvSFsoYtk9vpRI/stVkBAlfmV3dnXWTz/oM9kRLgRPOUwoCGZ0
+	 JrCZNau4W9M0+G9fMSEciHHdmijGkcsSvMUUClL8a2oVgCpsmGxvEBbQXejXwWxXahexV
+	 f+v6kA1u6tSb7/rSrhwiWkLsGWWqLOEPoUYVjqF5UZsczYxCq0y2yv8SqnGzq9AZXLQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=MDRyLQRw;
-	arc=none smtp.remote-ip=162.62.57.87
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=openai.com;
+	spf=pass smtp.mailfrom=openai.com;
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=LnwVBnrF;
+	arc=none smtp.remote-ip=209.85.161.54
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79533606A32D;
-	Sat,  7 Nov 2026 02:57:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79533606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4625E606A32D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:05:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4625E606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=MDRyLQRw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1794020248; bh=+NfG3aoVVDYg320wMNuDSmqyNFEaM7V/GRWW/LuOKlc=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=MDRyLQRweWcf+xUdMyrRKSmQ4ym8LxPSKGEuTbq8sda/LnBrQsChWSTv29ATNeLl1
-	 5kWV0jo2YqJvU6DKgoUr+AJrGje3BPSoyvyrUwYRyCseF+TMcqFg43W8vPcKoVyG/T
-	 IgribdMGCx+0gdmxzvXarCy4BkxVGjuwgdB5/LrI=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-XMAILINFO: MdmyWVu0InhASiUkhb//VhxE+kD9CHxdhJTc2eGlkCfKL+hSZzxtKPiKVMWgqY
-	 Lv/UzTv+iDbo7dMZuvj8UN+79ox9/cI1AEMe33S2r7bt3E1M7gv8SGTY9I6pqBky60sk3/mm0O29D
-	 v0tNVj8tRScQbUZinQwt1KFWKmyu1mcSFjpMRKY99eqQ2XcKYoS2kJBZ4JXHIhrufiW9AK7duvXRg
-	 KsCUp8IMW+hWAen10Hz/NonxkHKmrw8902WefN6BT2pi5LZRVi6hT0uRjYwpmCFaBwOCVjazaFZkW
-	 wEvJ2oVheUjYu7K2SVD3dwVH3rg8F1Ym9357Bt5Beoc/RzPFu25LZVECBn5HSGTziBRNIiIuN0BYv
-	 dEY1lbfOgnkbsHmmhhBbM8zSlEo/FBbqBSFXTl0VIE558t1XIs5A0mDldpoYzntiRPQJhZW5ZJhQ+
-	 aXfkpv1h/TX3CVwZKdOX088TERlmDzC1alWuo2aXUMAqKmn5cyZEA2Wx1M+jtxE7XQ9k+lBvG+1l3
-	 Zq1Zh1i3lLMsxAXOGVv4s+FAEJn+M52EhPVreYm8frXOB6zR9f9VIq7AEjHL1lVVAPiG/jnSsdK8g
-	 gl2D5ZEXeGnzyuJvVRK3zNJas9038c4pPTfTWudT0QbHKHcaiCsMBWWtcjr37NAAuyBE3cDToy1Ye
-	 f/fPG5YwGmKcivHs3GSJKCOilYZAH/0NjqGLv3nOMYkIHgSrD4VBqR216mgFGUrYRlRoIglr8SnBX
-	 Vwd9JgaaP0nTboNq8nqGOxkpMXE3N/smmQPyKgVHltVRYPhEjlLCfRnQDg5ahGRRGyn5xfrQC8gxe
-	 1s2Xm/45nDEHVn54Il7wDgGZkucaaWxag1IMmsMYB5qNw+XLMaJV3txEO+bkf7nIXCmNSp5T74x47
-	 JWyeAwNoPjkPUyKjUhtMl566EFDTKOjES7UsQlzb9uxvGRMYCqArnqRcqrnsawcwhe1woh2u7iiVl
-	 juAaZyli3jPdvYY9zMs7UVjONkCX33DbPmQFGSBmrAvtZ92wlRp/O2VU0cnkVetSzWwX5d04zH20e
-	 1OGx3SKWYgTJfYdLdBm+X0RZ6S74lhVe/Wnze8B3OhuP+NB45fbHc/8kqfCjn4GsLlGU6WyVm2SDO
-	 tfRx5hWc/qYBDj4PUGmY2/bZ
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?SGVpa28gU3TDvGJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?TWFyYyBLbGVpbmUtQnVkZGU=?=" <mkl@pengutronix.de>, "=?utf-8?B?VmluY2VudCBNYWlsaG9s?=" <mailhol@kernel.org>, "=?utf-8?B?RGF2aWQgUy4gTWlsbGVy?=" <davem@davemloft.net>, "=?utf-8?B?V29sZmdhbmcgR3JhbmRlZ2dlcg==?=" <wg@grandegger.com>, "=?utf-8?B?T2xpdmVyIEhhcnRrb3Bw?=" <socketcan@hartkopp.net>, "=?utf-8?B?a2VybmVs?=" <kernel@pengutronix.de>, "=?utf-8?B?RXJpYyBEdW1hemV0?=" <edumazet@kernel.org>, "=?utf-8?B?SmFrdWIgS2ljaW5za2k=?=" <kuba@kernel.org>, "=?utf-8?B?UGFvbG8gQWJlbmk=?=" <pabeni@redhat.com>, "=?utf-8?B?U2ltb24gSG9ybWFu?=" <horms@kernel.org>, "=?utf-8?B?Sm9uYXRoYW4gQ29yYmV0?=" <corbet@lwn.net>, "=?utf-8?B?U2h1YWggS2hhbg==?=" <skhan@linuxfoundation.org>, "=?utf-8?B?UmFuZHkgRHVubGFw?=" <rdunlap@infradead.org>
-Cc: "=?utf-8?B?bGludXgtY2Fu?=" <linux-can@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?bGludXgtZG9j?=" <linux-doc@vger.kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Subject: Re: [PATCH net v7 0/7] can: fix bus-off restart and device close races
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=LnwVBnrF
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6fe4372c5f3so831289eaf.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:05:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1794020735; x=1794625535; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rP1Yhc8V6RNptl8ZAiLhF4SuAftOJVbuJVVUglBaikU=;
+        b=LnwVBnrFVKd4RmmtwNpC5ZIpYUQ3jidty2bj9aG30X4RnNmPVWvtRXkubIjjaFev8e
+         PaUNsCLZIbiMUMitEH3IpDfAiaxnytnUnwoYmJnQzGiYfREvafWZ/dSQ2hFI7mcgairU
+         p8CuTzrpbPrrSbBINfVDKpwHDcX7tx4rBpBCI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794020735; x=1794625535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rP1Yhc8V6RNptl8ZAiLhF4SuAftOJVbuJVVUglBaikU=;
+        b=mYPVoTQsZl3hKZ6ErmSpcn0G9e10iGu93tkvUlPEZTQOj/w4bfzaSHkFhA37aaN71u
+         OQQNpE9BA+nWWlsu7HsE+lH5RuFiHPpL17kzqfHqurxqaCkcjdMeaESky2DXep0xSDhY
+         QmS7FWlTbqnxFO3cTUeBIleaWnSnIbZRRSho0QRonu9klxLgOQYJAWSnD2K3bustes2f
+         w5EpJK48rCzpTmZeVdXL+I2+6Py6aPpD0dDOMEfjt4ftWKDjWhKjen0KnX5XWMSVCbIv
+         tH4zw4SBGzyz7DFv0KKV3i59YHV9R/+cJQoek+tSu+s+Cf+F35nYF6YgFMRWGYNAY54t
+         8sGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwbSGsb7Jy6+/ffqQ284GYhcyuEkKBbjhJyirMh21lHQJw/7AGow04VkX7WqjxjzYYqrjbzrhs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9P0s75P12QKTezeaQZC2wL7/31KggxF/MBy/kjyXLDArzi24aw
+	YL8bZQH7IVpy8FBNPXB1CI9zP/eSv9iRO66bktkDvY2Fg7l5kwYqOzy6IHnzPTPXu/o=
+X-Gm-Gg: AYBFou0/Bv9kCHNgh2t77IrC0WH8qVaaxup0rBLHy50XFXV0cSGnF33lrBZT6prTUMT
+	G2dKsIeTq2GoFcaWpDBRugdAXHLI+g37+V4poNjPC+QRFmjdLy+NPmRidReNzbdQ9zaR2+iadrY
+	tNr7v6MJVfCP4RfdnGqI1p3Dd0p4WzgGe/RULcUuoQ06OhVR6Opsl2NNw6mfRrPy2n+k9P/9T7K
+	6QrzFWonhBNBgLPfpCb8juv+OXhMyz8e6n0QoEuk9XnAVo9jyoH/8pF3KeKAxzXJEQeUSUKxA+4
+	s7IMQElWcDt4rwXapyb3dXvJ+qsoGQHWzIHzpcYH5E14T4gmCe/X+ZXl76cBa9loKruSOWSkk0Q
+	5bG07sXlnIwxCVtfanMV4y6iZJV2xRUFZj9jwZ95aT+BE40L4B7S4RzZbw62HPsKp3SL6SeydER
+	PA9BNnXPl+uqvnOpbUCI5Qe27sBcE8i4rUlDZ+EZpMC3m+IbxBByO2zkTtm9Z2bCL62AtbI7s99
+	haUXWwx+J/y2qxo2kqCqCdPFF8H2ViudCY6PGjOaMKPBdErDLjxiniWphxUAu2hkRfjlmx6keJC
+	mz6kqS0mCwHQKYXbJcLpeJWzRDr9j5CYFiDIoYG1Vt/NPazude/29dlXoGvEmDEfEEoXP5H+udg
+	A4woda6jKyLYh8krUN3Selz5s9aW83g==
+X-Received: by 2002:a05:6820:1621:b0:716:f44b:2dd6 with SMTP id 006d021491bc7-716f44b2f07mr1500290eaf.25.1794020735120;
+        Fri, 06 Nov 2026 19:05:35 -0800 (PST)
+Received: from com-75606.corp.openai.org ([199.47.143.1])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ad97a37725sm3581702fac.11.2026.11.06.19.05.34
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 19:05:34 -0800 (PST)
+From: Kyle Zeng <kylebot@openai.com>
+To: linux-sctp@vger.kernel.org
+Cc: lucien.xin@gmail.com,
+	marcelo.leitner@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] sctp: avoid requeueing pending control chunks
+Date: Fri,  6 Nov 2026 19:05:32 -0800
+Message-ID: <20261107030532.32310-1-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,48 +93,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Sat, 7 Nov 2026 10:57:26 +0800
-X-Priority: 3
-Message-ID: <tencent_B3369A1199D0849091BB8015C41BBFF0A607@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20261106-rockchip-canfd-restart-close-v7-0-accdb11bc845@qq.com>
-	<16255046.uLZWGnKmhe@diego>
-In-Reply-To: <16255046.uLZWGnKmhe@diego>
-X-QQ-mid: xmsezb41-0t1794020246tqmnr7ex0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-SGksCgo+ID7CoFRoaXPCoHNlcmllc8KgZGVwZW5kc8Kgb27CoHRoZcKgdGhyZWXCoHBhdGNo
-ZXPCoGluwqAiY2FuOsKgc2tiOsKgbWFrZcKgQ0FOwqBza2IKPiA+wqBmcmVlaW5nwqBzYWZl
-wqBpbsKgYW55wqBJUlHCoGNvbnRleHQiwqBbMV3CoGFuZMKgdGhlwqB0aHJlZcKgcGF0Y2hl
-c8KgaW7CoCJjYW46Cj4gPsKgcm9ja2NoaXBfY2FuZmQ6wqBmaXjCoFRYwqBzdGFsbHPCoGFu
-ZMKgcmFjZXMiwqBbMl0uCj4gPsKgCj4gPsKgWzFdwqBodHRwczovL2xvcmUua2VybmVsLm9y
-Zy9saW51eC1jYW4vdGVuY2VudF9DRDA1RjAyMEJBRkIyNTM3RjVEMUY0Q0JCNDI1NTg4RUE4
-MEFAcXEuY29tLwo+ID7CoFsyXcKgaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtY2Fu
-L3RlbmNlbnRfRTI1QzlCRTY2ODkyNjRFNDEzOEE0NjQ4MDNCODEwRkRGRDA5QHFxLmNvbS8K
-PiAKPiBCb3RowqB0aGVzZcKgc2VyaWVzwqBhcmXCoGZyb23CoGp1bHnCoGFuZMKgc2VlbWlu
-Z2x5wqBmcm9twqBiZWZvcmXCoHlvdcKgc3RhcnRlZAo+IHVzaW5nwqB0aGXCoGI0LXJlbGF5
-LsKgU2/CoHRoZXnCoG1hecKgb3LCoG1hecKgbm90wqBoYXZlwqBzdXJ2aXZlZMKgdGhlwqBr
-ZXJuZWwKPiByZWxlYXNlc8KgYW5kwqB0aGVpcsKgdGhyZWFkaW5nwqBpc8KgYnJva2VuwqBi
-b3RowqBvbsKgbG9yZcKgYW5kwqBpbsKgYW55wqBtYWlib3gKPiB0aGV5wqBhcnJpdmVkwqBp
-bi4KPiAKPiBBbmTCoGlmwqB0aGVyZcKgaGF2ZW4ndMKgYmVlbsKgYW55wqByZXNwb25zZXPC
-oHRvwqB0aGVtwqBzaW5jZcKgdGhlbizCoEknZMKgdGhpbmsKPiB0aGV5wqBoYXZlwqBiZWVu
-wqBsb3N0wqBvcsKgc28uCj4gCj4gU2/CoEknZMKgc3VnZ2VzdMKgcm9sbGluZ8KgYm90aMKg
-eW91csKgZGVwZW5kZW5jaWVzwqBmb3J3YXJkwqBvbsKgdG9wwqBvZsKgdGhlwqBjYW4KPiB0
-cmVlwqBhbmTCoHNlbmRpbmfCoHRoZW3CoGFzwqBhwqBuZXfCoHZlcnNpb24swqBzb8KgdGhh
-dMKgcmV2aWV3ZXJzwqBjYW7CoGZpbmTCoHRoZW0/CgpUaGFuayB5b3UgdmVyeSBtdWNoIGZv
-ciB0aGUgZ3VpZGFuY2UhIDotUAoKSSBqdXN0IGNoZWNrZWQ6IHRoZSAiY2FuOiBza2I6IG1h
-a2UgQ0FOIHNrYiBmcmVlaW5nIHNhZmUgaW4gYW55IElSUQpjb250ZXh0IiBzZXJpZXMgd2Fz
-IG1lcmdlZCBpbnRvIG1haW5saW5lIHllc3RlcmRheSwgc28gSSB3b24ndCBzZW5kIGEKbmV3
-IHZlcnNpb24gb2YgaXQuIEknbGwgcmVtb3ZlIGl0cyBsaW5rIGZyb20gdGhlIGNvdmVyIGxl
-dHRlci4KClRoZSAiY2FuOiByb2NrY2hpcF9jYW5mZDogZml4IFRYIHN0YWxscyBhbmQgcmFj
-ZXMiIHNlcmllcyBzdGlsbCBoYXMgc29tZQppc3N1ZXMgcmVwb3J0ZWQgYnkgdGhlIGJvdHMg
-ZHVyaW5nIHN1Ym1pc3Npb24gdG8gdGhlIG5ldCB0cmVlIHRoYXQgSQpuZWVkIHRvIGFkZHJl
-c3MuIFNpbmNlIHRob3NlIHBhdGNoZXMgb3ZlcmxhcCB3aXRoIHRoaXMgc2VyaWVzLCBJIHBs
-YW4KdG8gZm9sZCB0aGVtIGludG8gdGhlIG5leHQgdmVyc2lvbiAodjgpIGFuZCBzZW5kIHRo
-ZW0gdG9nZXRoZXIuCgpCZXN0IHJlZ2FyZHMsCkN1bmhhbyBMdQoKcHctYm90OiBjcgoKCgo=
+The T4 and RE-CONFIG timeout handlers take a reference to their cached
+control chunk and submit it through SCTP_CMD_REPLY. A previous
+transmission can still be on the control outqueue when output is corked
+or suppressed, or when sctp_packet_transmit_chunk() could not append the
+chunk.
+
+sctp_outq_tail() then adds the same list node a second time. Re-adding a
+non-tail entry can corrupt the list without being caught by the
+insertion-time list checks. A subsequent flush or association teardown
+can access an already freed chunk. The ASCONF path is reproducible by an
+unprivileged SCTP socket owner in a user/network namespace, with KASAN
+reporting a use-after-free in __sctp_outq_teardown().
+
+Check sctp_chunk_pending() in both timeout handlers before taking the
+extra reference and issuing SCTP_CMD_REPLY. If the chunk is already
+linked, leave the existing entry for normal output processing. Keep
+the remaining timer and error-handling commands unchanged. This also
+covers RE-CONFIG retransmission after sctp_assoc_rm_peer() moves the
+request to another transport and starts its timer.
+
+The issue was found by an LLM.
+
+Fixes: 2e3216cd54b1 ("sctp: Follow security requirement of responding with 1 packet")
+Fixes: 7b9438de0cd4 ("sctp: add stream reconf timer")
+Cc: stable@kernel.org
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
+v1: https://lore.kernel.org/netdev/20261030042321.74407-1-kylebot@openai.com/
+v2: Move the pending checks into the T4 and RE-CONFIG timeout handlers.
+v3: Drop OUTQ_FLUSH and use the two pending checks as suggested. Leave
+already-queued chunks for normal output processing.
+
+I have a reproducer for this issue and can share by DM.
+
+ net/sctp/sm_statefuns.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index b2f609f177fb..64519fd8f943 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -1122,9 +1122,11 @@ enum sctp_disposition sctp_sf_send_reconf(struct net *net,
+ 		return SCTP_DISPOSITION_DELETE_TCB;
+ 	}
+ 
+-	sctp_chunk_hold(asoc->strreset_chunk);
+-	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+-			SCTP_CHUNK(asoc->strreset_chunk));
++	if (!sctp_chunk_pending(asoc->strreset_chunk)) {
++		sctp_chunk_hold(asoc->strreset_chunk);
++		sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
++				SCTP_CHUNK(asoc->strreset_chunk));
++	}
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transport));
+ 
+ 	return SCTP_DISPOSITION_CONSUME;
+@@ -6197,9 +6199,11 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
+ 	 * chunk, it MUST be the same (including its serial number) as the last
+ 	 * ASCONF sent.
+ 	 */
+-	sctp_chunk_hold(asoc->addip_last_asconf);
+-	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+-			SCTP_CHUNK(asoc->addip_last_asconf));
++	if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
++		sctp_chunk_hold(asoc->addip_last_asconf);
++		sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
++				SCTP_CHUNK(asoc->addip_last_asconf));
++	}
+ 
+ 	/* ADDIP 4.1 B5) Restart the T-4 RTO timer. Note that if a different
+ 	 * destination is selected, then the RTO used will be that of the new
+
+base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
+-- 
+2.55.0.openai.911.g06873a30d2f3
 
