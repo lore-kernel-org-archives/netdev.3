@@ -1,62 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794062467;
-	b=fzbeSJzeCIiTZ24fjT5NJ17OIp5tkTrtHvWhiGKra0+p+wUAM4943IKCK//buUCSYuOy
-	 VItIJQkDzsjvCmih4Vn5+Ai7DQwg+Lk/RimSS/5j0IylNE6JkGPNrQlKZll4vvxEQ/oFU
-	 OxlNK3ZQ98kLzbEJ3hIkTKu2VNpHVjuROxvTNemft7NxMi5R5chlEN1GZfMD9zdCeclF8
-	 6P7p68LfVKlUXm5rLD/8/AJHy2spBOZcpBqlQBcxY6zN9hZKdFN8s8sDfohXhWPd1vNhY
-	 eetZz2x+Horer92f2pn1d9fqY2whtB6vLq2jPMmZpGoyJDzy76WCsoXumUDHBeRTcFQ==
+	t=1794062477;
+	b=ngAwCTJ3x/hOsjU6KfCiRtNLO+cnM/mEf+/+c6sP6+0Ij6Bwc8Q6MRQz3+Cbv8htigeG
+	 F3+ChjqZ6vrB4bnppBJxcsJ+/vVi3g+6dq2oUWji1cR0CgTiNiNx0vSo+u69dXCHcZx/I
+	 gOgiw8aij0+cGwTOGAdLBBbVtsTwuK9rJsy9MwkYpR63RPouc8uu7Syzf4SYyt0FsSfBS
+	 Cwc3ldCr5v5/XU2NTgafqLoDASu5l/Yc5LVchEK/qvMoVZBb5K0f7zd3QDBApqml38rNJ
+	 Muxpz9Z6HhxwL6hXdKeqjPBcBMKxG6lL5RpFKLE28xLhl5aDQ79xERnxv+cDv2oZCTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794062467;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=mAXBJnrefFBIzpyi+/xIAamlnKbGOaz7xXuvjQoOG20=;
-	b=g2+gsvN+FRGOI7cLyBKbSahgYxWxDUDtJvM5ROq37W/e3Nmr048jACS9NxAZWCSmEaw1
-	 kl5d5pHQq3nj8f0nSW0+PbNwJCn7hOFeKmxYhAePqsUrWBF96ysrYPAHtCXf1RlFIeY1e
-	 DiEmFkxfsV2906wv+UUrWcYXBIGqJWDtNpceu9RFSgwBH5F9VaeM1qVqwGNpAKjldWWW3
-	 VA5qJaz7AK2AUEapUZ0VqOFowkW4smHaTCt2rKRY4WJkzvuV2AuqCbuHWhWSKu5hcA76X
-	 nfZXv4V+kHgYOSXzUl87lZ2um2BjeWLZ09HRtuHgj1jzdcMfdDFPbby/CzI7c/42C7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794062477;
+	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 Content-Type;
+	bh=MTKqzeN2qzSEwB7wgpPDqmDOm1XJz5MFsmhF4czrNrI=;
+	b=N9/oimPhIKZAihwbnKUqnL+Z0kFf65FNRmsKRu9B756NDyjnS3A8QY0SgnRCQGd7GwGr
+	 +QUnwAUv96CQyQNOipA/sX+pwuSUJWgiRxuby4dt4SujRZIJA0KZOHWPVRy7/9LQ+HBUk
+	 rl79FtlvlD4JDQNO5C9hj+0/22EQB7qF0y6TJ4JxAHswY5L9+EZRuyfvLfJ1fOp9Fk9hZ
+	 qg7PGKBsKCBtxEfvuVtMDyr3kYB7/l79hDmHLrkl5pJsgP7L0oTznaIW0RINge6VRyDFz
+	 65mkFDYu1ZATlbc0Dr2RrECn748cUmIwjuMwlhhCcklhhiK3GfXA2iaOKIRJmHsPG/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=niaecTAq;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=sntech.de;
+	spf=pass smtp.mailfrom=sntech.de;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=AKfQpOEc;
+	arc=none smtp.remote-ip=185.11.138.130
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D8F606A65A;
-	Sat,  7 Nov 2026 14:41:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08D8F606A65A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E517606D822;
+	Sat,  7 Nov 2026 14:41:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E517606D822
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=niaecTAq
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=mAXBJnrefFBIzpyi+/xIAamlnKbGOaz7xXuvjQoOG20=; b=niaecTAqavwtL7dI0lyUOAqyEa
-	E58LYVcaKACZDTdDNLvCDFX3YlqOIU6vX9zKMiB4BtXy4nKBNcAbltCwU4/PVmekWfZ+wCRBLRZRv
-	zH4e8VyCRBkPd4bEUo4vHUR/nRdIEYheiTNYbWVOpTvkeFhxvE3tDs55MrSjP/5M/k0w=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xPhb3-00Ey67-7L; Sat, 07 Nov 2026 15:40:45 +0100
-Date: Sat, 7 Nov 2026 15:40:45 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Guangshuo Li <liguangshuo@mail.sdu.edu.cn>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: micrel: Fix potential shared PHC
- use-after-free
-Message-ID: <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
-References: <20261107-0d0c29e10a-net-micrel-lan8814-1@mail.sdu.edu.cn>
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=AKfQpOEc
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=MTKqzeN2qzSEwB7wgpPDqmDOm1XJz5MFsmhF4czrNrI=; b=AKfQpOEcyMJuFY5WDsAYJCTPjL
+	pgnw4g5N7gDR3sRbLbFgG73J6zge7zNIO0U5Km4Qo/IoKiabt/e8uLUdTA7R2zZXc/s+9IS57fvvF
+	72zVqn2IdV6MrKoyzu9pOjZqKdtb5zyu7j2UkFKUk67ed7AEm0Dh+jLxuLdUY4pItdnHYV8H1Tev5
+	vD+2hx89y6foUzJmwrEnK7jzdalIL2ZDOVxos10lo20RajGCi5S8fwui/nYnLxiTYpETen3FkgD0+
+	f2wq6OjDIi1cpxq//uoGJdNTDNcF3XxMPt37xeImwXJZqfUKmYQx0vNtV0j1Hj+XlF3mdU7+Hu8F8
+	tZjG+fog==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+ Vincent Mailhol <mailhol@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Wolfgang Grandegger <wg@grandegger.com>,
+ Oliver Hartkopp <socketcan@hartkopp.net>, kernel <kernel@pengutronix.de>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Cunhao Lu <1579567540@qq.com>
+Cc: linux-can <linux-can@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-rockchip <linux-rockchip@lists.infradead.org>,
+ netdev <netdev@vger.kernel.org>, linux-doc <linux-doc@vger.kernel.org>,
+ stable <stable@vger.kernel.org>
+Subject:
+ Re: [PATCH net v7 0/7] can: fix bus-off restart and device close races
+Date: Sat, 07 Nov 2026 15:40:55 +0100
+Message-ID: <6105577.1B3tZ46Xf9@phil>
+In-Reply-To: <tencent_B3369A1199D0849091BB8015C41BBFF0A607@qq.com>
+References:
+ <20261106-rockchip-canfd-restart-close-v7-0-accdb11bc845@qq.com>
+ <16255046.uLZWGnKmhe@diego>
+ <tencent_B3369A1199D0849091BB8015C41BBFF0A607@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,29 +76,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261107-0d0c29e10a-net-micrel-lan8814-1@mail.sdu.edu.cn>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, Nov 07, 2026 at 02:54:37PM +0800, Guangshuo Li wrote:
-> The shared PHC outlives the first PHY's managed pin array and is not
-> unregistered before the package data is freed. Subsequent PHC operations
-> can therefore access released storage.
-> 
-> Keep the pins at package scope and select a remaining PHY for register
-> access when a member leaves. Unregister the clock before releasing its
-> storage on the last member's exit. Pair each member's registration with
-> cleanup that also runs on probe failure, and serialize clock access with
-> member removal.
+Hi,
 
-You fix looks overly complicated. Ugly.
+Am Samstag, 7. November 2026, 03:57:26 Mitteleurop=C3=A4ische Normalzeit sc=
+hrieb Cunhao Lu:
+> > > This series depends on the three patches in "can: skb: make CAN skb
+> > > freeing safe in any IRQ context" [1] and the three patches in "can:
+> > > rockchip_canfd: fix TX stalls and races" [2].
+> > >=20
+> > > [1] https://lore.kernel.org/linux-can/tencent_CD05F020BAFB2537F5D1F4C=
+BB425588EA80A@qq.com/
+> > > [2] https://lore.kernel.org/linux-can/tencent_E25C9BE6689264E4138A464=
+803B810FDFD09@qq.com/
+> >=20
+> > Both these series are from july and seemingly from before you started
+> > using the b4-relay. So they may or may not have survived the kernel
+> > releases and their threading is broken both on lore and in any maibox
+> > they arrived in.
+> >=20
+> > And if there haven't been any responses to them since then, I'd think
+> > they have been lost or so.
+> >=20
+> > So I'd suggest rolling both your dependencies forward on top of the can
+> > tree and sending them as a new version, so that reviewers can find them?
+>=20
+> Thank you very much for the guidance! :-P
+>=20
+> I just checked: the "can: skb: make CAN skb freeing safe in any IRQ
+> context" series was merged into mainline yesterday, so I won't send a
+> new version of it. I'll remove its link from the cover letter.
+>=20
+> The "can: rockchip_canfd: fix TX stalls and races" series still has some
+> issues reported by the bots during submission to the net tree that I
+> need to address. Since those patches overlap with this series, I plan
+> to fold them into the next version (v8) and send them together.
 
-Try looking at it from a different direction.
+As that series is also "just" for the Rockchip CAN driver, merging both
+sounds like a good plan - especially as it makes it easier to keep track
+of things :-) .
 
-.probe() and .remove() should be opposites of each other. What happens
-if you do that?
 
-    Andrew
+Heiko
 
----
-pw-bot: cr
+
