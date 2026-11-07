@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794057660;
-	b=zTH2uONY5cPOvFvDuk9het3X2Jt3MRt5tGCEpIdIW3y1VaWdx/bTyhIqJKzPVDHoX70a
-	 qFbaiy7SMDxQ/yUPjJvGM/I3wm/hpo7J/Td1ucnqVke/+alQ1+vWxmNQggLKXXbrBYC6Y
-	 0r5OUVf2CCB7FUpFJY2mM4qOp0tm31imTxUxOXU/ANLBCYpLeg+6HVMdKtwg7gKVuKSd9
-	 fMl+x86EJHBVi2mRdtm4IHjqgZYB3+GnEFpwut5C1xZIZhSHfN4IGdNfi/AE6cqlIezAN
-	 9yudnxBwJC1KSLQ2+XlP13Qf6WA2nyagP8fsOqfTKzNT8UFwnTORxb+Qa5s2pDvJvNg==
+	t=1794057667;
+	b=jrRfB5euK0F2Fc/TXYAfs9Tdh3gZUAgweSRIfzn6sh6gFcOgsF52JMRiaCs1ENO+bRgn
+	 +EzUHkqFrcdlrxP1e0SudGPfMwtuKFHEHL1V8+M2baNa0xcVFW/Y+XSBpWuJaYkmax9vS
+	 Xuduvtz2v8EpMpdPMi+Wic4LOWNUfcgQgK/AEe3RPjBd6K+PWWpDdcwF3H1iPumC/NK95
+	 W5uuxV1oNIR5chsFPOlQ7jdvzUe/42VSuG5IxruRde0YEyjd7xjaYq95Ghla+SVLwtSiz
+	 TCK/GIs9PDGzkbaOdissfW5JXJz9X5Wp0tROCMuDY6j98AxCQhTFt2/taCZccg7dBGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794057660;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794057667;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=p/l/ItgemMFWSjv2M5mduN7bQYto7r4TWh2GQLaqw/0=;
-	b=Z8B6bf6YEN9m0EOwpq6tcE1uUg4firpJz51IyNDgbRkA4TaCjDgnWTYWQoAeHXjAVVTB
-	 CX1i9oW0M6R/cgxJTJLDMUb6IHaANV4qk3GD47pc8/xAVhvw3m+Kthv6Qr6cVvNLhh0ml
-	 /akKqXA3zEP5i0qXYwT/I5ejxdF6TCp2ZuXgU8UFpYg84nHXy+I03EHpWNmw8HU5jamPh
-	 NNEuipJ5xq2lRJdl5dGB7IyqL+Uh6HbFN7qtPk1kxbS6CJrrvqi7nDTsJTDsgUAqW2Ozr
-	 S2qkspGWZbMw/km499sDigKmhbO872Z2fFm8up5WczHyNdk6FxMNdQG/F75HE/1Vf1Q==
+	bh=YdYDe5Tw+9XhasZ+ahvLRnigPCWeorVpo4kpPwQy+Qo=;
+	b=SP2o5NJIVNyT+VQp+oE11cQrF01dcypMDLVPv3AKH4zP50VEcGJROU7FknwkN5/rpWD0
+	 kTv3ZMmqmc3k2lu1F6IIFK0MnLMtp9sudZrc9uilg3ude6PSPRYF3X4eyyxXFWAQKUKxH
+	 1W6N56g1v/sVvU9zv7XaHaXCHkSfnTjUqDXvR+pzltxDTaxZkoAGM0UsUrAIBnIIiTOq8
+	 ZmJXlbBoP3mrP5HOjXuUXY7odryPDE26F7ICbbBLmcLmATBt9uLYByHG9j3AOy0SgF4dU
+	 xdhPKZnd5T0J5gyrdvoGFttu/SXWECqjLn1WhP2BDDmjcyUCrJ/3j9ROGKxjDtK1Rgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mMjYpSZ0;
-	arc=none smtp.remote-ip=209.85.216.52
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LtTfOAcl;
+	arc=none smtp.remote-ip=209.85.215.178
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D534C606A337
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 13:20:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D534C606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460C2606D802
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 13:21:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 460C2606D802
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mMjYpSZ0
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so1305997a91.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 05:20:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LtTfOAcl
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cdb684859cbso982085a12.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 05:21:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794057659; x=1794662459; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794057667; x=1794662467; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=p/l/ItgemMFWSjv2M5mduN7bQYto7r4TWh2GQLaqw/0=;
-        b=mMjYpSZ0PCIIB0fJ3/3ZVizmYD92jMgGlTJob219pIs42Qs/uGJ5jL/5c4rjaMKgHu
-         8qcxbeilSJuNv768B+kfL/P1AGCyifdmwUzeChJClhiiU3CCQ6hv14/J6IO4P8tNpifJ
-         KKaFTYEsWCkpUf7vIzA9t4i/Op2nr5s1ycQYMTEsGNEfMGHDAE9i3mUIvkprepCwNAIR
-         kVbl3n8ooSsK1nAwGSSxioKXtqDwlGC1RyyvCj9NgyhK6iV7UKOu0uWpkDcDjKa6irN6
-         8sVPlU1oIvCC96ANxZGL+R265moDKDEcGmjipn7s0ynyLobdoNCRdt8Rq1E5sX0Y37PH
-         IRHA==
+        bh=YdYDe5Tw+9XhasZ+ahvLRnigPCWeorVpo4kpPwQy+Qo=;
+        b=LtTfOAcl6kg+iNbeMFdFtsPGnIG6nfbkgmbSrZVWR7b+CNRpFqsBXnBxrQC7zELuBg
+         B04W2GfJYhWnz0RBQSGmZBI58JvUNyJPHoLIB3v/Hc3R/fBT/JPAVsL3XNAhUfFP1Sv9
+         0V6EgNaBlKNgN85XJWZRfXmbIfD0SEwjkDhC2YKJk8RIQAB4drHGu5Y2YnATaEhnxbid
+         bcpe6B6l5wgs8edoRRDNc0iXaLcCMIYvYnvDnk8e2ExOhN7/3XC8RJiFtr8HocCb8e5e
+         v4LW59HYuQnFOlvXB4uL3G9qJzqvMPDPDy3XjhivSoA1n8isjT8DBTJk3kSMiDZCNq4t
+         PJ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794057659; x=1794662459;
+        d=1e100.net; s=20260707; t=1794057667; x=1794662467;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p/l/ItgemMFWSjv2M5mduN7bQYto7r4TWh2GQLaqw/0=;
-        b=v+cGsGzV+ziayxlUsakJtb8pRgEy38DC+wsd+wLVm5EaShpC/bDjdVXM9ObmQFjOtH
-         GR82EHji42foZRI9obROEg/z3+siNpMMGPIfR9GdlZCKyf2TlDf/6MLv2i6qBShpBM0c
-         bJCxCN9CWGZwesk7LDipVj7rneUhkY+jikTN45ka0YpZocNRcuu2HczCvvtuIzCO5bV1
-         7UzBUj6dDxqgSfo7UDoQK7bY2AjkgQ4SprjSUABd8Y5HodIxnVcEg3FCOotnOFFMGrQ/
-         1zO39da984VxF2vBmPQwGNCKHgWDpUdMBp8nTRyTWWeWPNtPKbxxKEQmcEST6Up6Ru3K
-         Fp7g==
-X-Gm-Message-State: APuU4Z/tZRhDHMWcPuJw3RszXFcFHs+Sb6QqtK35t2utUYFgmGHVaZzI
-	IGA+fJ1PMRpPFl5I9lt/SNRrWwp0O0yNVO1BtSVIppnYvAMZO/+bj3lz5p5Y2g==
-X-Gm-Gg: AYBFou3KQ/0ObMmVsD+8BxadYBPIBkocIJ6l9Gbo0f7YpPXTD1xc/R/csSq/CF8Nv/T
-	aOPy+pv2jPIAHQG7bPK6LU3+KwgsEK/D4ldSYkbjbUKjGXWULGzJ2YiBa3FoJOwdtgq1E4pQdm1
-	dX3FzLSZSiPletd4MU1H+JSIIw/ZYffLjMFAcoc6GnCRYuXUnQNuIRGwONRsPDc8DFq32wWeGoZ
-	aZuWjTxdcd1RkFg4TNT5vVHmSJJXSLbSvp3l2gqEiVgXmGe90+Z+AdVx4fahQF4oxNKgqJS5YX4
-	UO8bNBa5gBoasIE8qJTjZ0OeyrB9Q7aqLNX618AuKM5JkZe8nA1tl5e5uTzJyvppqTftY+SxdEx
-	PwG4hMPWK5dkWFgUzd1PuPLRBcL+2rmo5sJ4DI4kLHRmv5qieeA5uBO9ch/k79lYOUD4CvkziEX
-	ZYS2Ud9qCtpFDCLRnE2SQObUW9u2mGTQkr29T1l4Vb11lYBsTjCrBFLKKkbM3uGmX7pVLQ9hVEm
-	UsDdGK7SdLMx8A7w5kAdjX36XYs/PzsFp+8h4GqyNR8+HzirmuGSjbaRzFI2BRge7JevkcAORIb
-	+Eac2ifk/oqU7JYMHxixY/SThFvMMDCyonQND3tli920RSQXeHH49g==
-X-Received: by 2002:a17:90b:4986:b0:3a7:b260:9ccc with SMTP id 98e67ed59e1d1-3b0db70d52cmr5229686a91.65.1794057659179;
-        Sat, 07 Nov 2026 05:20:59 -0800 (PST)
+        bh=YdYDe5Tw+9XhasZ+ahvLRnigPCWeorVpo4kpPwQy+Qo=;
+        b=TBZnQQcmleYiz3EQ+Og3WjMYbbl8okLBFdx3uZ05KpWCaaqTmoMcoRZdNoWQkXHuJ6
+         vcm1Liq1z+3AU2aqJRH5tw7kWkSF2WHh2IZpFGyF5etS+KFyeAscytwr2I90d/9VXtzv
+         WeO00nH2LoxreHpAuZrjAy3/wkV5Ss4/8hRk6HuyAZfDLhn728VlTPLNsvk3yYWgotV3
+         AigHRHBSUjVyj4w9QgY3NH2FGl4KuqSdfgJv+2UBjN6J21lMhAEEgcg8EuM9I4sPltfW
+         ZsI5W/DgSZ4amf2+5yuEnjQ1Ai/bE5vy9Hd25Es9ySMtP444kE2kj82iwl159Stg+AcB
+         IO8w==
+X-Gm-Message-State: APuU4Z+hedRwv7XCmQ+GLDrQX2QYTKP+xC7O83pec1jCJ6wc1V02iSR0
+	wlnCCIVuaMo7gF7TTKeOch/iymVGTfDRBeZjzXLQ+9PZ79UanhNSZ1OvekZX6zUa
+X-Gm-Gg: AYBFou2h2QUaM/NBZs6fYaDqg+Xi8+18hEaU1K5C7pyoc/coqda/CRS+TrZ2m7n+e41
+	xq7v9PEpKc6yo+Zq0i3SPTXwVYve6xL8ka3YMo9gf/ca44Gng4tI8sQSQVIMAWWLq9myI5TlIe3
+	Zd+Izx22gJht1rATj/8ISnFzxV746IDzPzf/GOlT5ThD1UqtEvR5uCSM/MKbiEgKzlbGH6g23W/
+	mKKnZnPGfjxVwm/upVcTfDvpAjYD2ccmtjrahXv/poOHlNmWER2RuekYl/n5ZpHddln2ijB/gNI
+	mapk08K88rh1UFNlipZQffDnbG391S8kIZbKsYVT35MLJSry0UJXNcEUg5NHgp6Hk2u5/yK+f3G
+	8cD+qT7R0pk6+aS+s5Sjf9VqX/BFY5nW0aeGerR2vaV8MbMV0dFlUj/DdA3CtujftGEyvwH5NjS
+	D8zlbxr9tA25UwKPoRqn0PToIzzWq0xSXniI1twVOZtnquALla9a8qChI8KjVKaynBhEWn48Zf5
+	ZB52zkDd9A9IQ+Yup04vjpgqnhXpwME7wc5p1TQSiJlL4orzSBFi8Gp98I4cKDGNHnqmDZA7zri
+	CCCFsFwVlFmHIXdw5uhTiBHJm7LCdXDMdAOdOnsVIrh4LLOqRWgTGw==
+X-Received: by 2002:a17:90a:c2c7:b0:3ad:13fe:41ba with SMTP id 98e67ed59e1d1-3b0db6f8012mr5252212a91.52.1794057666450;
+        Sat, 07 Nov 2026 05:21:06 -0800 (PST)
 Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b101d3d0e8sm1626521a91.3.2026.11.07.05.20.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b101d3d0e8sm1626521a91.3.2026.11.07.05.21.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 05:20:58 -0800 (PST)
+        Sat, 07 Nov 2026 05:21:06 -0800 (PST)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -87,9 +87,9 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 1/4] net: dsa: motorcomm: Fix stats64 error counter mapping
-Date: Sat,  7 Nov 2026 21:20:33 +0800
-Message-ID: <20261107132040.1066996-2-mmyangfl@gmail.com>
+Subject: [PATCH net-next 3/4] net: dsa: motorcomm: Use safe 64-bit counter reader
+Date: Sat,  7 Nov 2026 21:20:35 +0800
+Message-ID: <20261107132040.1066996-4-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261107132040.1066996-1-mmyangfl@gmail.com>
 References: <20261107132040.1066996-1-mmyangfl@gmail.com>
@@ -104,67 +104,123 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtnl_link_stats64 wants aFrameTooLongErrors in rx_length_errors, and the
-eth-mac stats already report the oversize counter there as
-FrameTooLongErrors; move it from rx_over_errors, which is a RX FIFO
-overflow counter.
+64-bit counter registers are read as two separate 32-bit transactions.
+If the low word wraps from about 0xffffffff to a small value while the
+high word increments between the two transactions, the recombined value
+becomes ((new_high << 32) | old_low), producing a spurious ~4 GiB jump.
 
-Drop the tx_undersize to tx_fifo_errors mapping as well; a runt frame is
-not a FIFO underrun. Report it as a TxUndersize ethtool stat instead.
+Use a safe counter reader for this.
 
 Signed-off-by: David Yang <mmyangfl@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/dsa/motorcomm/mib.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/dsa/motorcomm/mib.c | 21 +++++++++-----------
+ drivers/net/dsa/motorcomm/smi.c | 35 +++++++++++++++++++++++++++++++++
+ drivers/net/dsa/motorcomm/smi.h |  2 ++
+ 3 files changed, 46 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
-index 6b170fc6e187..5c027edb71e3 100644
+index 90b0ef670aa3..b45bc8211741 100644
 --- a/drivers/net/dsa/motorcomm/mib.c
 +++ b/drivers/net/dsa/motorcomm/mib.c
-@@ -50,7 +50,7 @@ static const struct yt921x_mib_desc yt921x_mib_descs[] = {
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_PAUSE, NULL),
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_MULTICAST, NULL),
+@@ -102,29 +102,26 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+ 	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
+ 		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+ 		u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
+-		u32 val0;
+-		u64 val;
+-
+-		res = yt921x_reg_read(priv, reg, &val0);
+-		if (res)
+-			break;
  
--	MIB_DESC(1, YT921X_MIB_DATA_TX_UNDERSIZE_ERR, NULL),
-+	MIB_DESC(1, YT921X_MIB_DATA_TX_UNDERSIZE_ERR, "TxUndersize"),
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_PKT_SZ_64, NULL),
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_PKT_SZ_65_TO_127, NULL),
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_PKT_SZ_128_TO_255, NULL),
-@@ -376,8 +376,9 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
- 		start = u64_stats_fetch_begin(&pm->syncp);
+ 		if (desc->size <= 1) {
+ 			u64 old_val = buf[i];
++			u32 val0;
++			u64 val;
++
++			res = yt921x_reg_read(priv, reg, &val0);
++			if (res)
++				break;
  
- 		stats->rx_length_errors = u64_stats_read(&mib->rx_undersize_errors) +
--					  u64_stats_read(&mib->rx_fragment_errors);
--		stats->rx_over_errors = u64_stats_read(&mib->rx_oversize_errors);
-+					  u64_stats_read(&mib->rx_fragment_errors) +
-+					  u64_stats_read(&mib->rx_oversize_errors);
-+		/* stats->rx_over_errors */
- 		stats->rx_crc_errors = u64_stats_read(&mib->rx_crc_errors);
- 		stats->rx_frame_errors = u64_stats_read(&mib->rx_alignment_errors);
- 		/* stats->rx_fifo_errors */
-@@ -385,7 +386,7 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
+ 			val = (old_val & ~(u64)U32_MAX) | val0;
+ 			if (val < old_val)
+ 				val += 1ull << 32;
+-		} else {
+-			u32 val1;
  
- 		stats->tx_aborted_errors = u64_stats_read(&mib->tx_aborted_errors);
- 		/* stats->tx_carrier_errors */
--		stats->tx_fifo_errors = u64_stats_read(&mib->tx_undersize_errors);
-+		/* stats->tx_fifo_errors */
- 		/* stats->tx_heartbeat_errors */
- 		stats->tx_window_errors = u64_stats_read(&mib->tx_late_collisions);
+-			res = yt921x_reg_read(priv, reg + 4, &val1);
++			buf[i] = val;
++		} else {
++			res = yt921x_counter_read(priv, reg, &buf[i]);
+ 			if (res)
+ 				break;
+-			val = ((u64)val1 << 32) | val0;
+ 		}
+-
+-		buf[i] = val;
+ 	}
  
-@@ -401,10 +402,9 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
- 		stats->collisions = u64_stats_read(&mib->tx_collisions);
- 	} while (u64_stats_fetch_retry(&pm->syncp, start));
- 
--	stats->rx_errors = stats->rx_length_errors + stats->rx_over_errors +
--			   stats->rx_crc_errors + stats->rx_frame_errors;
--	stats->tx_errors = stats->tx_aborted_errors + stats->tx_fifo_errors +
--			   stats->tx_window_errors;
-+	stats->rx_errors = stats->rx_length_errors + stats->rx_crc_errors +
-+			   stats->rx_frame_errors;
-+	stats->tx_errors = stats->tx_aborted_errors + stats->tx_window_errors;
+ 	flags = u64_stats_update_begin_irqsave(&pm->syncp);
+diff --git a/drivers/net/dsa/motorcomm/smi.c b/drivers/net/dsa/motorcomm/smi.c
+index bf3adfd64165..16f62409422d 100644
+--- a/drivers/net/dsa/motorcomm/smi.c
++++ b/drivers/net/dsa/motorcomm/smi.c
+@@ -63,6 +63,41 @@ int yt921x_reg_update_bits(struct yt921x_priv *priv, u32 reg, u32 mask, u32 val)
+ 	return yt921x_reg_write(priv, reg, u);
  }
  
- void
++/* Reliably read a 64-bit counter, assuming the counter isn't that "fast" */
++int yt921x_counter_read(struct yt921x_priv *priv, u32 reg, u64 *valp)
++{
++	u32 old_lo;
++	int res;
++	u32 hi;
++	u32 lo;
++
++	res = yt921x_reg_read(priv, reg, &old_lo);
++	if (res)
++		return res;
++
++	res = yt921x_reg_read(priv, reg + 4, &hi);
++	if (res)
++		return res;
++
++	res = yt921x_reg_read(priv, reg, &lo);
++	if (res)
++		return res;
++
++	if (lo < old_lo) {
++		u32 new_hi;
++
++		res = yt921x_reg_read(priv, reg + 4, &new_hi);
++		if (res)
++			return res;
++		if (new_hi != hi + 1)
++			return -EIO;
++		hi = new_hi;
++	}
++
++	*valp = ((u64)hi << 32) | lo;
++	return 0;
++}
++
+ static int
+ yt921x_regs_read(struct yt921x_priv *priv, u32 reg, u32 *vals,
+ 		 unsigned int num_regs)
+diff --git a/drivers/net/dsa/motorcomm/smi.h b/drivers/net/dsa/motorcomm/smi.h
+index 212e20f71d80..d34240548af7 100644
+--- a/drivers/net/dsa/motorcomm/smi.h
++++ b/drivers/net/dsa/motorcomm/smi.h
+@@ -35,6 +35,8 @@ yt921x_reg_toggle_bits(struct yt921x_priv *priv, u32 reg, u32 mask, bool set)
+ 	return yt921x_reg_update_bits(priv, reg, mask, !set ? 0 : mask);
+ }
+ 
++int yt921x_counter_read(struct yt921x_priv *priv, u32 reg, u64 *valp);
++
+ /* Some multi-word registers, like VLANn_CTRL, should be treated as a single
+  * long register. More specifically, writes to parts of its words won't become
+  * visible, until the last word is written.
 -- 
 2.53.0
 
