@@ -1,79 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794070888;
-	b=uykfu6NXmgSt/08/HvqdxUQVrzEyHecSq6KGSlGATewd7qsA33+XcDyTnAW8UUpEKuSn
-	 Y36b8pvGAl77bYQ6+JiXLbz4c5pvjDLD/xJXt6iqkteQwAYSf7jAuyZidZrEnJHs5IVZy
-	 2wmk7M7LiUaTZUmj+iFIfC4jNN8FJC7I9qtUjApS2sAPkBnm9+oYty3y4+a6dJN0uz0he
-	 Rfwrdqt/nD1wE9jeVxIPrgdTHzgv2mMWQkqNlBgZ1Vqu3pucGtZeaC/73cMvJ+Bwj9wYs
-	 xozS0efEpqXWPxCAY9BW0LT0I9vMXFJwMKEwLbIq2T7py6uQRfd34ba1gid2/JQDhLw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794070888;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=uzjNXgt46wd9zIfWGFy0z8XRbAiX3V0Ch45qLXmgn0M=;
-	b=OfMBwzKXay9ynCib5CXopTaEr4gJw9T7g9+AnXXTJNOVocY05MvDe7cC7r3fLXzT1nQG
-	 wYRhwzB7YuOSbRhk/uc/KAK1Prk1sXUhoE0mfLnqLjGYPBh4OZPQqHHz2sFd62MGTHQu7
-	 b5MuX1A4KOO1teeCXFiq5EvJpJ5p7FBdc4G6DWrlib4cSgpryEOzYkRV6Yiys5JBkiag/
-	 osAsk95KATlfqEPn68g53YXh003GHQFIVLb6gWFaso5HPcDQ6QMzP7yPGxhXFKMkPfgJP
-	 aNgm63J7/4Kwv6gnlE75+Scp3y3jEEBn4U+tMQPYHioksZWTIlQQ4mKEJ6pspiqdyIA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="b/LsD9Ap";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DAB606A334;
-	Sat,  7 Nov 2026 17:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b/LsD9Ap
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794070888;
-	b=2mbS07L0TxB8pQwcZwmVxQwFyAySJFn7TS6tLqaWFuDg5MCOq5xojOG+JcWGlCF/vThO
-	 oADY6Hh8ZsmzUqIPM1blW85hEuLDIYUffecJw3pBrA0uSKkoC6/BNZA9P/6G/BWALOsT7
-	 Xmn1yb0MfvxivGZ6RIEofv5NSWOL6vLfuDS8QVRrC5x58UP3FQ3yzVfEndaKDYaDQzF//
-	 2nyeWMILvMo0LoKd4Yj4FilLoPy6SDGrwFNfB48W0xKy5NluziCh7el9cJtKVZ7j8lfaK
-	 0dGy5LuzX8ugo31bnxyzv2FymiH6YVbEjZ4EMQeT9rvc3ycVoPF3FzQigILFaPUtc3A==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794070888;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=uzjNXgt46wd9zIfWGFy0z8XRbAiX3V0Ch45qLXmgn0M=;
-	b=S2neqICYnORdWQqVqv8wUsfNRA88Jv/9vXjumqgT3yq8OWmccI2MFaU8sNMECrlqmCS+
-	 /3aUMtY7+rDWVLva2i+FKZmOHFXJx6YfT+2mRWjMHNhc09n/4g7tocQi1G4jbuzHDzOJl
-	 A3VnnEDD5LbbDX3OJq2HMTF6AsDcUGShO7Tl5yWx/f/826eiutAAMzte2a1nfqmXDWw/u
-	 JspKrOt3iEl8nWfx+gXc2XOGNdTknzeIURbywqo9HhnzXaMxnkeI8T8IJgHX5eYsl+WBB
-	 l5IUV4VwW4alfmV6U+70BIfYpXgx4zjSYq20P71kLygO3ignZHM2+BsyZKTRnKc3kWQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.181
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794071593;
+	b=ZuQDrIPIGZiEtuPED26cjvtPR/x9yt6cAh274JGWo7veKkBSa2HLWy5L22h1P8BbPr6x
+	 lNzrV27mkuCYSZmrcIag2an191GSOvgqX2NPem4xUAEiwzktU9c5Akl3Y9R4JbD5ccdcy
+	 FnxOv7aUY3a0qHjiiXKX12EmkpZc7owmSFkscWw4/wPWxpEWHbsfcBWX5L1z0FnGYmhZh
+	 O0IQDK+efEf2RNeG0Jm7SakrNlNFVubTBnpsZV4ZEJFJPa85F52DSm0trLCy2KoYE9Pf1
+	 Enok+YfIAMAt8baN3bjaZubxe7HB19rZd2BZUxJ+PUrJME5653nw3Z41JMgL164J1Ng==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794071593;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=RrcIjc82wzLHRIBiu7WsbnPLnaaISGaTukITjRMdwK4=;
+	b=zHNWb5x/HmGXn+8SoG0jDHLZZtcZyLH4WaEtQO3euxgc9CJ+PKe1VHm8pqqRybyuaGQF
+	 Z4ejZX7Y0SE5VOvOOGsaRRKC3DT+1EQCKDBv2zBJis1YcwZ/Vhs2qB/+MYijPRXEYBbX0
+	 wHNSpesbrpqquEp0R3h7Exsp2XXHPPc3eUva+gXRDn9sEyRsFR2To9DJcgCkMNgjTRXmb
+	 emtR7M0pqUQpSboyYENpw6X0lrCeoPH7MRxp9MJ/xCcx7Qd8VmDioIsGcF8EJmJYgP72b
+	 HbUONMo23gwFh+MP2i01sPKiMBIxInrkk4+8ZtWvbTXCe/RNnAuO7uKG3KOCWOJVN3g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LSKRq+Su;
+	arc=none smtp.remote-ip=209.85.221.181
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 1E2DB1F008A1;
-	Sat,  7 Nov 2026 17:01:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794070888;
-	bh=uzjNXgt46wd9zIfWGFy0z8XRbAiX3V0Ch45qLXmgn0M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=b/LsD9ApkIw8gH3eqvwVX3ndU+nDYPCTQEzfCJZYYnPtZSvRD1Q+teoLvbOWsnIsw
-	 qwf896np5c2vBLkZvhOgq4fNicOKKA/m+tSp0zXq/6tMAL/LkZ5hr2f4eSZZ0OvtBu
-	 5gIh1VqwlxRPNyIEhe15hN/r2HTfYbDoOiFNx4mOOHzWBqYDE7fB0+YdjrqVTa6XJz
-	 DBHYRCsdPHIFJ3Vq5uflc9QMs9STt+rlc8+dMkU4e+DB97I4qqu2rD6ImJqedwdEK/
-	 PLKe/3zViueWsAEp8BJV93SlM8Vx3mv89/egL8+fqCLZHoPL8qmJqkd5Iq+Z4JHlXR
-	 mO5mVWDCBRlUA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8314347C86;
-	Sat,  7 Nov 2026 17:01:26 +0000 (UTC)
-From: Hleb Shauchenka via B4 Relay <devnull+me.marleb.org@kernel.org>
-Date: Sat, 07 Nov 2026 18:00:45 +0100
-Subject: [PATCH net-next v2 1/3] dt-bindings: net: ethernet-phy: add
- property #thermal-sensor-cells
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBB3606EEA4
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 17:13:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FBB3606EEA4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LSKRq+Su
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eafb65e169so1054923e0c.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 09:13:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794071592; x=1794676392; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RrcIjc82wzLHRIBiu7WsbnPLnaaISGaTukITjRMdwK4=;
+        b=LSKRq+Sub16VAsEMonpzRlOiZ8U/Plpyjo0xR2iYyxNNpt3DqQhh77kmf5d1aaRvti
+         IyZhXH9yctfuza57fW/gCZP74SmXlTA4YxybQsjf6uITlQpHi39WwbzFBfjmHJuVO+Gk
+         iQdTg3oJ9cpYc1ZmoFUBFuz79/TEvjwIL8YDIHzozD4wLMoy4Y2kWPfoC9VILYoSVr/E
+         HRWn5S+FkoluHtTxKQiD/DB5X7aHTVcmofLixtW6CNTen71h88Vubkd+QhyfUReog68T
+         rEwCnatBtUQqKCoKFSm8v16DmtVOf2V3BoRTUyIjCLyut6lNnDair7haTTLmVaNRvSSn
+         TN4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794071592; x=1794676392;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RrcIjc82wzLHRIBiu7WsbnPLnaaISGaTukITjRMdwK4=;
+        b=LHlAVnWxmxHBYH5L4uaxJlJ/8hpvXPVRfhoHJuk2GuQX8xmIp5ipBM1nPAwyHur2Sd
+         A8Nbfta74vWih/2kf7lrC2SYPJsQakCwsMoSRdhmkl6n68QACiOYrx9hJDSmXCswhzic
+         SX3WykeRU0P7UXRnZ5c/XOEBRJExDHQAcFyZns3P+pAcCJf9jOy1ePgAF9RFRqtHG/zV
+         wp/J8wp3j6ccZZJO5UBfYgO6HNiTxynFwtAAOmb/cCROWkyh+nE41s3GL+si6rS25XJa
+         rwTSfPysIwwtrL06Pt65AN3nzejAhEGodAhTo7nKGATk+xlNKkZcvzHNSAzzAuF9YpvD
+         zZYw==
+X-Forwarded-Encrypted: i=1; AL+hErFmf8s548lMhPWh8XkWi9Mf6guw/oLj65JOu4WK1sUuXpb0FPFaqlpaNR3o8ARttUBnxJWDOCo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ueTFXvmzy3/qFxZZ8Tx1DmbY+gM6sehTO69llgF3evkWNkVpY
+	28mPOr6r4jQZ4HN8CerwQPsUxW4HOv+ICrTFgxdDueDlHrkuqNHik/ff
+X-Gm-Gg: AYBFou3Y99/8o1sh90c9F7AbLdbuQJjEEZGluN+clNiur/hzuVa9it72+8oMciyY1+y
+	Z3NNVmyi+IP5C3kotsthPDB3P54KLG84DXbnSM2zm+5kDmG7jADmaJC6cX1s+Tm/ltWoAho7OMA
+	i1jN0ian/aYDSwVtVcmKTEX51iN4/HBVCphKZb59fIszQzy04i27og8lTI/1MsIOZjhBrmudfGD
+	spiIaCgxiHt5Vj+dqWnGl4ur3hppfVv6Lh1DFwECEFXZYQi3Tp1cv/PUrByqa87t1Om0Sq3wDTu
+	myOwPt8g+7evhm4yZJwRQA0Fxa1Ul1BEedCzAuztlDDVBGyXkE4wc2IJdlaA6+7u7ESbANGo1xW
+	u4K7FygSTMdYfj59PzxdwqCYMAdjbkhQfPlcgh0D8rSucpnO2oJrp+v+o8yaTk9sS21V4sS3C5f
+	K+RQTuGfvXrYzf8mgx+z6fhFI1gCuHx+gx5CaApm8vqluuzx6p8sOrwll73MGCFITakiE3cy9vr
+	Y4PdS2mItQc9zlN4/jAg7z2rKSO5EFK+73dtbQXDRzJiDQ5z1/M4VY99TPUT6ylHKs31VkSXcCq
+	f4E7Qm1x2cpa8fM98bGSnmJa4OQ0A1stiMAcNit9azHOHgM2tHfkBSILbn3Vn4r25wC/dojyrQq
+	Agr9vEtGMUCCWIAAnpD3z2SPPm252JO/hkRyvqiEJpiN1wPySImpjA/ecZJZLKdMrPfIY07n7
+X-Received: by 2002:a05:6122:3c45:b0:5ea:aedd:6087 with SMTP id 71dfb90a1353d-5ecc43a4d30mr2895214e0c.4.1794071592253;
+        Sat, 07 Nov 2026 09:13:12 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecc64ccb58sm4015495e0c.9.2026.11.07.09.13.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 09:13:10 -0800 (PST)
+Date: Sat, 07 Nov 2026 12:13:09 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Kalpesh Solanki <skalpesh942@gmail.com>, 
+ willemdebruijn.kernel@gmail.com, 
+ jasowangio@gmail.com, 
+ alex.aring@gmail.com, 
+ stefan@datenfreihafen.org, 
+ miquel.raynal@bootlin.com, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com
+Cc: andrew+netdev@lunn.ch, 
+ linux-wpan@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com, 
+ Kalpesh Solanki <skalpesh942@gmail.com>
+Message-ID: <willemdebruijn.kernel.2b153da88ae03@gmail.com>
+In-Reply-To: <20261107162649.282982-1-skalpesh942@gmail.com>
+References: <20261107162649.282982-1-skalpesh942@gmail.com>
+Subject: Re: [PATCH net v3] tun: disallow setting IEEE 802.15.4 and 6LoWPAN
+ link types via TUNSETLINK
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,73 +112,104 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261107-realtek-hwmon-tz-v2-1-6b9a69d44470@marleb.org>
-References: <20261107-realtek-hwmon-tz-v2-0-6b9a69d44470@marleb.org>
-In-Reply-To: <20261107-realtek-hwmon-tz-v2-0-6b9a69d44470@marleb.org>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hleb Shauchenka <me@marleb.org>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1484; i=me@marleb.org;
- h=from:subject:message-id;
- bh=VRuFxemFp//Th1i9H61fWbV1u2h1anUlOxoYWqWx9q0=;
- b=owJ4nJvAy8zAJTZJnM368y8lXsbTakkMWe8jU1vCJM7/avVac2vXYu5HlrZ79kdtD3cWWFmz8
- LDbsbav/T4dpSwMYlwMsmKKLJuai0Sfrox+61q9JwtmDisTyBAGLk4BmIjvHUaGrZvXHbo7iUX1
- +dPNhrZzD4s9NW/csG6zxL/Wt18fXWpj9mL4w8/16nh+7c1XC1fqBbrLVt815mT2lNnPf6xuy3f
- RxT7XuQGD2ktR
-X-Developer-Key: i=me@marleb.org; a=openpgp;
- fpr=B2837215E5A95BED457BBC6A9217063BF3FA220D
-X-Endpoint-Received: by B4 Relay for me@marleb.org/default with
- auth_id=1394
-X-Original-From: Hleb Shauchenka <me@marleb.org>
-Reply-To: me@marleb.org
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-From: Hleb Shauchenka <me@marleb.org>
+Kalpesh Solanki wrote:
+> A userspace application can set the link type of a TUN/TAP interface
+> to ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, or ARPHRD_6LOWPAN
+> via ioctl(fd, TUNSETLINK, arg) because tun_get_addr_len() explicitly
+> recognized these types.
+> 
+> However, TUN devices cannot function as genuine IEEE 802.15.4 or 6LoWPAN
+> interfaces:
+> 
+> 1. They lack wpan_phy, channels, PAN IDs, and MLME operations, and tun
+>    never initializes dev->ieee802154_ptr or dev->ml_priv. When an
+>    unprivileged user creates a TUN interface in a user+net namespace,
+>    changes its link type to ARPHRD_IEEE802154, and issues a netlink dump
+>    request (such as IEEE802154_LLSEC_LIST_KEY),
+>    ieee802154_llsec_dump_table() unconditionally dereferences
+>    dev->ieee802154_ptr / ieee802154_mlme_ops(dev), triggering a supervisor
+>    null-pointer dereference / general protection fault. Similar
+>    dereferences occur across net/ieee802154/nl-phy.c (ieee802154_del_iface)
+>    and net/ieee802154/socket.c.
+> 
+> 2. Similarly, the 6LoWPAN subsystem assumes via lowpan_dev(dev) that
+>    netdev_priv(dev) is struct lowpan_dev. On a TUN device, netdev_priv(dev)
+>    is struct tun_struct. On netdev events (such as NETDEV_DOWN in
+>    net/6lowpan/core.c:lowpan_device_event), it clears bits in
+>    lowpan_dev(dev)->ctx.table flags, which corrupts private memory inside
+>    tun_struct.
+> 
+> Rather than scattering checks across subsystems, fix the issue at the
+> source: disallow setting ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR, and
+> ARPHRD_6LOWPAN via TUNSETLINK by returning -EINVAL.
+> 
+> Fixes: cca8ea3b05c9 ("net: tun: set tun->dev->addr_len during TUNSETLINK processing")
 
-The Aquantia and Marvell PHY drivers register their hwmon temperature
-sensor with the thermal framework, and a following patch does the same
-for Realtek PHYs, so a thermal zone can reference the PHY node through
-thermal-sensors. That requires #thermal-sensor-cells in the PHY node,
-which no PHY binding allows: dtbs_check rejects it under MDIO buses
-whose PHY children use unevaluatedProperties: false, such as
-realtek,rtl9301-mdio.
+Should this be
 
-Allow it in the common PHY binding.
+Fixes: ff4cc3ac93e1 ("[TUNTAP]: Allow setting the linktype of the tap device from userspace")
 
-This patch was prepared with AI assistance (Claude Opus 5.5), after an
-AI review of the previous posting pointed out the missing property.
+> Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
+> Signed-off-by: Kalpesh Solanki <skalpesh942@gmail.com>
+> ---
+> v2 -> v3:
+> - Include ARPHRD_6LOWPAN alongside ARPHRD_IEEE802154 as agreed with Willem
+>   de Bruijn, preventing Sashiko AI flags and addressing the underlying
+>   lowpan_dev(dev) memory corruption.
+> - Minimize code churn as advised by Willem de Bruijn: drop unrelated
+>   USHRT_MAX check and preserve tun_get_addr_len(), headers, and existing
+>   block indentation.
+> - Fresh standalone thread as advised by Jakub Kicinski.
+> - Link to v1 and v2 discussion:
+>   https://lore.kernel.org/all/20261101092219.1278751-1-skalpesh942@gmail.com/
+> 
+> v1 -> v2:
+> - Instead of adding NULL checks in net/ieee802154/nl-mac.c, disallow setting
+>   ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR link types via TUNSETLINK in
+>   drivers/net/tun.c, as discussed with Andrew Lunn and identified in Sashiko
+>   bot review. Virtual IEEE 802.15.4 interfaces are properly provided by
+>   mac802154_hwsim and fakelb; TUN devices cannot function as genuine 802.15.4
+>   radios and lack private 802.15.4 contexts.
+> - Add an explicit bounds check (arg > USHRT_MAX) to prevent integer truncation
+>   bypasses when casting 64-bit ioctl arg to 16-bit dev->type.
+> - Remove ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR from tun_get_addr_len()
+>   and drop unused <linux/ieee802154.h> header.
+> 
+>  drivers/net/tun.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index dcec7311e60..05eb28578b8 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -3362,6 +3362,10 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
+>  			netif_info(tun, drv, tun->dev,
+>  				   "Linktype set failed because interface is up\n");
+>  			ret = -EBUSY;
+> +		} else if (arg == ARPHRD_IEEE802154 ||
+> +			   arg == ARPHRD_IEEE802154_MONITOR ||
+> +			   arg == ARPHRD_6LOWPAN) {
+> +			ret = -EINVAL;
 
-Signed-off-by: Hleb Shauchenka <me@marleb.org>
----
- Documentation/devicetree/bindings/net/ethernet-phy.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks, a lot simpler.
 
-diff --git a/Documentation/devicetree/bindings/net/ethernet-phy.yaml b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-index df50c4c33..e2e9e615f 100644
---- a/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-+++ b/Documentation/devicetree/bindings/net/ethernet-phy.yaml
-@@ -269,6 +269,12 @@ properties:
-       have to be placed on board. When omitted, the PHYs default will be left as
-       is.
- 
-+  '#thermal-sensor-cells':
-+    const: 0
-+    description:
-+      Present when the PHY has a temperature sensor that thermal zones can
-+      reference.
-+
-   marvell,reg-init:
-     $ref: /schemas/types.yaml#/definitions/uint32-matrix
-     deprecated: true
+But, arg is unsigned long while tun->dev->type is unsigned short.
 
--- 
-2.56.0
+An arg ARPHRD_IEEE802154 | 0x10000 could pass this check, get and get
+assigned while truncated.
+
+Cast to unsigned short in these comparisons?
+
+>  		} else {
+>  			ret = call_netdevice_notifiers(NETDEV_PRE_TYPE_CHANGE,
+>  						       tun->dev);
+> -- 
+> 2.53.0
+> 
 
 
