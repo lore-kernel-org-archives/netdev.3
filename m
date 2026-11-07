@@ -1,60 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794051110;
-	b=cqyatIxnzxhGLcGTqN5arIqPxOM7GqBd5MQXsjQGEqY1o9c/l1DxRd3RNkrSxUqes9WL
-	 mnIQAdP1dK2SV0M/O9IFd8ySIhX8PUM8YRgjYfUuJwDxTz61hrm40YRPavrXN3l0YPNle
-	 gzb9l3+QTX9POLX31Lmd1K8FkiwCoIOayUontRhYr55K/Wc9ygcU25vsiTSxZNGnJDukj
-	 SlPGnShisDYydgV8qSWbJDDpXUKn065bTENlY5VnLW2wUFlOTwtIWOgNnLvn5ouVvvo9m
-	 mBWOpH5mncQIcQA+UtVTNnluYOyMPIREJ9xIiKxr5Sd0G1kHQt37RNpCTHN8ZwlAjOA==
+	t=1794051262;
+	b=2gu3+HInTv9LxodnCaGOJehE7rGonchtmwet3iLA0d6/ZO8Ce+JEMvlPJB0EUZePiXWd
+	 JKQQIlmTZM7i//1lY4Xvz5492pEx13wRM7ehY1FoysQusHru/Dk5KX6Je7o/xWPFKziyv
+	 QprgMkkPsEYfhOYF2mlCWI719SX3QHMWGC6darIDcGqYT0KJlwm8rnki5d68UlKRs69ce
+	 dgrFpH0i9FTbZBlWcPFwHWg3dMy5giiBmN5CSWPFCFEeXpnVA+YJatvx6ybVkhGbvrFLw
+	 DVm/ZJP4geFysZs75UQ7bw2lMgOzJviZc1ZIR4dBMjFS7U+qvNOVeo14sklIokmLS6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794051110;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=9thr76seF/S4HTgAitnmH/j/7lgpAL+uj2aAp2+0Yho=;
-	b=aGUD5iA3Y0UrmTB8isade+fn/1lgM2MScJfY68W23BU0ZiJbaNFbLuGFqwxyHLajdWHC
-	 aZyGKfHGBgNbO5j+iC/1zX3FLUGu6w6uCIqBOFOwqxmds4e9QISKTY91TvQ5RNMLJVM5e
-	 i6HUO/ypEfaF8ehPyqE8BwgL/eEJHCcVt65uK5/xmmYAJJ2COMszZKdaU6zRiPNjYmgrS
-	 /0lS7hJkABhGAqA8IRMAXw/kr+/aMb1gx5JSV2Qu4bsK64oI5TJpx7nxvNjMBu68S1Agk
-	 5TuCqMStzVvcsZkRXGueCIyvXtX4C9Z8nLOoEvTE0SzfMRF7Zy/cpFKYJHOjOUp3Fdg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794051262;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=8Y4wuXjHScY3iujceiUAqjM+xKc+nuPmQr+0vb7xGNE=;
+	b=PjihWr5cO6V+l2Z3hQFnNeL2avnBZj7sGBU4TTG7c9WBdwNQ+yk+YKKSiqCxzRuirDLy
+	 jTr2DAAr9xkxIqamzt1IygzVEHflI19Fsb+U9nIbS8jp6SUEjAkDsFBxREjj3MrwNb0Wz
+	 GGkEV2a5x59uYP58bGWQSndjYcIvOSevDKj8mL85jdWlBHt/YYr3gzBGihSt5eJ1MFY9e
+	 NoNvi4O3IbxnvVFC6O6AboPiW+9ZLMSHatZpQORR9cZh025u+jWCWG0tuWbgiXDqqcw4A
+	 DSUbHBPVoWPs5xQX8/tuw7KCFNtfppy26utOi2KL993N1ZvhPVo6BmpK4dR9e/ypq3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="K/0oNUXG";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=m9zxtFYa;
+	arc=none smtp.remote-ip=209.85.128.173
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04CB606A32C;
-	Sat,  7 Nov 2026 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D51A606A32D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 11:34:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5D51A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K/0oNUXG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AA61F0089F;
-	Sat,  7 Nov 2026 11:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794051109;
-	bh=9thr76seF/S4HTgAitnmH/j/7lgpAL+uj2aAp2+0Yho=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=K/0oNUXG9dFjLTWur+SN10mHBXgS78yRktVzKJ2Qp0AAac+2auwSHjo/6vD4Zom6y
-	 HCKGCFYUX01OdSCajsc1+Qdddlcc7jRa9QoK6JS7DaRkrLeTe6N3VAsu0Q1FMztho6
-	 VGSDAnEmXlQk4OSUoEolMOnckU5IL/8VUSHj/Mnbnj7d1Z/2pRkTuZ+DOvoyWd/A75
-	 TRmX0UU96NqUIHJEVreJO2TCJ3eqYrWYLUyfIlUhoAzSeoHZplgLuxxOYcvZYTaS3F
-	 pj9bV5+yWiVc3scNvD1eGuetR+lXRc7e5tCob6KDbs5rUNk36A1ynpnS1Qe46Qucw7
-	 rr5IgHtZt1FgA==
-Subject: Re: [PATCH] net: octeontx2-pf: drop the TC mark reference when adding
- a flow fails
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 11:31:48 +0000
-Message-ID: <179405110835.994134.149418482897287841@kernel.org>
-In-Reply-To: <20261103100536.1310108-1-vulab@iscas.ac.cn>
-References: <20261103100536.1310108-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=m9zxtFYa
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8b306bbff8eso11227077b3.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 03:34:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794051260; x=1794656060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Y4wuXjHScY3iujceiUAqjM+xKc+nuPmQr+0vb7xGNE=;
+        b=m9zxtFYaW4rqF4n2ETlXK1c7uIu5mPJG+AfCoWhTQmmytmIZYqW9GyZfgAfD2t4L2t
+         SEQ7u2uUbqPOvBHld75cet4UMRPPOQ3RlpurtiqE8g0er+0m5KtBGKsE+xAnaIXmNxw5
+         YKutkRPdD0O94ZXff70gZJP1ft+wwWHQrUpCWoXioczrPuT1aL9PzI6m1FcxS27EmDpx
+         pTx3IM99eDbwudPCUoAbNnH0dr9jsMMLPeW72BI2XgvXPIuPHbz9eCsQ02jOSE0GeRA1
+         faY2/UGfXDZz3LA+7B20wZNiNCAZgPH2EeN0uyk9Be4ERctQjOgcsl9Kt39a7P0ZVZ1x
+         z23g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794051260; x=1794656060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Y4wuXjHScY3iujceiUAqjM+xKc+nuPmQr+0vb7xGNE=;
+        b=ME5oKipV3ykhcGwCf+78nDTHRk/LHdB9+llwSxd6a2ScsYmPcIvDzQpvXpUcBl2U85
+         9c8dd2IDiOOwnHxjEHrseyomU28rRVqV4NRe4GijANcoLGLb6r8BhPnvbbES2NSVFyCU
+         EwWB2LTKt5qiQLL4DTBGKH2LIrrZahe76RCsOHMIQCVQsumI/J77PcaLIDePZcWO6IvL
+         MrlcVzIzYTcsjyzXi/5c53mV/VZ9eYfy7WYwHG60QQ7MrDeYqNHD5roRM0qFPH8J0aFb
+         Cm7xl7WWLoHBftQsxVl4yv6kT7SxFD0C+dbC7D5lbZYztm9iX/o4MJgbcjipPOrp3r2+
+         5P+g==
+X-Gm-Message-State: APuU4Z+cRybOQesnG22jPbZZwqJa5odIciLrA6+NQ36PePTUVnutEgob
+	PO+H7kbqboAxDns8vCZK1A1k+9aydk2kTDzD4BmiqzCNJkNJu+qqZ47EFR+Kkqku
+X-Gm-Gg: AYBFou32OyuABwXGqvg+jl1DfUbjrRvJZAHS5LIb1nHmIBLCYCegqXSWIFlDMNV7rkZ
+	1SQhCfIvS7kirXBWOQCZ8ee/9+v2UthOeMd0xQGujJPhtPbnTxk89lp960fw5hd6p0ykQ9/ryoK
+	Xb0JEOWESeBgKX3SR5aRjKZFSd6E1SA/zVmkQqjzbJB3Lv7pMq0Xj+TCp4QjND32tDnLFx7sEsI
+	55n6kbD8S3LbOIXfeMheOmJ4b9f393z/jaQ2sTgBf1HtXM+jhdAT7cFcJlRTe7/IOm8XL7567k4
+	l/9NAstbwa1YUfNYf9XAxmukNQ4A8ZO1K7OLF1h34m0PQe7Y4Ozd0YZVB5dqlObXr1Jaaa2yl/y
+	sjXckb2r0cz5HdU+iW8eCIY87AI5NO7nWARncHLcN9WHd6MbxttiYe5UBqyHDi1j06/uZN1ll3u
+	zKzLoHFcuCZcGxWfIZiwLECUF0LALBSnSixiMwubKYjmPydu2etDQngqvu6Pnye2OiIcuoaWCLQ
+	mW46GppkPS8Z6IXydi+6vQBxR5Bf8wQSdyiFS4cLr/+8xEUnKCuGtpCvHjYFs8QuZ0aBHA4SZM1
+	oovQqWCIENJw/OM9D3b+6ur2
+X-Received: by 2002:a05:690c:82:b0:8b3:150b:43b7 with SMTP id 00721157ae682-8b3418dfef7mr27601517b3.22.1794051260195;
+        Sat, 07 Nov 2026 03:34:20 -0800 (PST)
+Received: from houminxi ([61.170.225.237])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f5f2d5dsm40084597b3.2.2026.11.07.03.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 03:34:19 -0800 (PST)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paul Blakey <paulb@nvidia.com>,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v1 0/2] net: openvswitch: fix a feature leak on a failed change
+Date: Sat,  7 Nov 2026 06:34:01 -0500
+Message-ID: <20261107113403.797779-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,230 +103,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+ovs_dp_change() records the requested user features before it calls the
+update that can fail, so a request rejected for an empty per-cpu-pids
+leaves the datapath claiming a feature it never enabled. The tc skb
+extension key is a reference count shared with cls_flower, and the code
+that would keep it in step is skipped on that path.
 
-Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
+Patch 1 fixes the ordering. Patch 2 adds a set-dp command to the
+openvswitch selftest tool, and a test that sends such a request and
+checks the features the datapath reports afterwards. It fails without
+the fix and passes with it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The problem turned up while the YNL spec for this family was being
+written: describing the ovs_datapath set command meant reading
+ovs_dp_change(), where the ordering stands out.
 
-- [High] The new helper otx2_tc_put_mark_flow() (otx2_tc.c:1240-1245)
-  uses `req->match_id != 0` to decide whether a mark_flows reference was…
-- [Medium] net: octeontx2-pf: otx2_tc_put_mark_flow() leaves TC mark flag
-  enabled
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it makes the
-  counter the patch balances meaningless.
-- [Medium] This problem wasn't introduced by this patch, but the error
-  paths of otx2_tc_add_flow() that the patch edits fail to undo other…
+Minxi Hou (2):
+Minxi Hou (2):
+  net: openvswitch: do not record user features when the change fails
+  selftests/net/openvswitch: check that a failed set keeps the features
 
---
+ net/openvswitch/datapath.c                    | 10 +--
+ .../selftests/net/openvswitch/openvswitch.sh  | 64 +++++++++++++++++++
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 50 +++++++++++++++
+ 3 files changed, 119 insertions(+), 5 deletions(-)
 
-net: octeontx2-pf: drop the TC mark reference when adding a flow fails
 
-This patch adds otx2_tc_put_mark_flow() and calls it on the error paths
-of otx2_tc_add_flow(). When installing a flow fails, it drops the
-flow_cfg->mark_flows reference that otx2_tc_parse_actions() took for a
-FLOW_ACTION_MARK action. The match_id of the parsed request is used to
-decide whether a reference was taken.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> index dee38d5c7f65b..c3726d9f455a2 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> @@ -1237,6 +1237,13 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
->  	return 0;
->  }
->  
-> +static void otx2_tc_put_mark_flow(struct otx2_nic *nic,
-> +				  struct npc_install_flow_req *req)
-> +{
-> +	if (req->match_id)
-> +		refcount_dec(&nic->flow_cfg->mark_flows);
-
-[Severity: Medium]
-The helper puts back the mark_flows reference, but it leaves the other
-half of what otx2_tc_parse_actions() did in place. The FLOW_ACTION_MARK
-case does both of these before the flow has been installed:
-
-	nic->flags |= OTX2_FLAG_TC_MARK_ENABLED;
-	refcount_inc(&nic->flow_cfg->mark_flows);
-
-Suppose the first rule with an skbedit mark action fails to install.
-A later action in otx2_tc_parse_actions() could be rejected, or one of
-cn20k_tc_alloc_entry(), otx2_tc_update_mcam_table(),
-otx2_mbox_alloc_msg_npc_install_flow() or otx2_sync_mbox_msg() could
-fail. In each case mark_flows returns to its initial value of 1, but
-OTX2_FLAG_TC_MARK_ENABLED stays set in nic->flags.
-
-With no mark rule installed, otx2_rcv_pkt_handler() still does this for
-every received packet:
-
-	if (pfvf->flags & OTX2_FLAG_TC_MARK_ENABLED)
-		skb->mark = parse->match_id;
-
-So a failed add still changes the RX datapath. The flag is only cleared
-again if a marked flow is later deleted through otx2_tc_del_flow().
-
-If the intent of this patch is to undo the side effects of a failed
-add, should the flag also be cleared here once no mark rules remain?
-Clearing it unconditionally would be wrong when another mark rule is
-already installed, so it would need the same "last reference" test that
-otx2_tc_del_flow() is meant to use. Alternatively, would it be simpler
-to set the flag only after the flow has been installed successfully?
-Then the error paths would have nothing to undo.
-
-[Severity: High]
-Does a non-zero match_id reliably show that the reference was taken? The
-code in otx2_tc_parse_actions() that takes the reference doesn't follow
-the same rule:
-
-	case FLOW_ACTION_MARK:
-		if (act->mark & ~OTX2_RX_MATCH_ID_MASK) {
-			...
-			return -EOPNOTSUPP;
-		}
-		mark = act->mark;
-		req->match_id = mark & OTX2_RX_MATCH_ID_MASK;
-		req->op = NIX_RX_ACTION_DEFAULT;
-		nic->flags |= OTX2_FLAG_TC_MARK_ENABLED;
-		refcount_inc(&nic->flow_cfg->mark_flows);
-		break;
-
-This check accepts a mark of 0, so "action skbedit mark 0" takes a
-reference and leaves match_id at 0. act_skbedit sets SKBEDIT_F_MARK
-whenever TCA_SKBEDIT_MARK is present. tcf_skbedit_offload_act_setup()
-then passes the value through unchanged as FLOW_ACTION_MARK, so mark 0
-does reach the driver.
-
-Nothing stops a rule from having several MARK actions either. Each one
-increments mark_flows and overwrites match_id. The helper drops at most
-one reference, or none if the last mark is 0.
-
-Take a rule like this one:
-
-  flower skip_sw ... action skbedit mark 0 action skbedit ptype host
-
-It fails in otx2_tc_prepare_flow() on the second action, and the
-reference taken for the first action still leaks. The
-cn20k_tc_alloc_entry() failure path and the free_leaf path behave the
-same way.
-
-The commit message says:
-
-  Release the reference on the error paths of otx2_tc_add_flow(), using
-  the match id of the parsed request to tell whether it was taken.
-
-Doesn't this leave the leak reachable in these cases?
-
-otx2_tc_del_flow() uses the same match_id test. A mark 0 rule that
-installs successfully would also leak its reference when it is deleted.
-
-Would it be more robust to record the acquisition per node, for example
-with a bool or a count set next to refcount_inc()? Another option is to
-reject duplicate MARK actions. Either way, the decision would no longer
-depend on match_id.
-
-> +}
-> +
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. It
-does affect what the counter balanced here actually does.
-otx2_mcam_flow_init() starts the counter at 1:
-
-	refcount_set(&flow_cfg->mark_flows, 1);
-
-otx2_tc_del_flow() is the only code that reads it:
-
-	/* Disable TC MARK flag if they are no rules with skbedit mark action */
-	if (flow_node->req.match_id)
-		if (!refcount_dec_and_test(&flow_cfg->mark_flows))
-			nic->flags &= ~OTX2_FLAG_TC_MARK_ENABLED;
-
-Starting from 1, refcount_dec_and_test() never reaches 0 when references
-are balanced, so the negated test is always true. Doesn't that clear
-OTX2_FLAG_TC_MARK_ENABLED every time a marked flow is deleted, even while
-other mark rules are still installed?
-
-otx2_rcv_pkt_handler() only copies the hardware match_id into skb->mark
-while the flag is set:
-
-	if (pfvf->flags & OTX2_FLAG_TC_MARK_ENABLED)
-		skb->mark = parse->match_id;
-
-Suppose two skip_sw flower rules are installed with "skbedit mark 5" and
-"skbedit mark 6", and the second one is deleted. Packets matching the
-first rule would then stop getting skb->mark, even though the hardware
-still writes match_id 5 into the CQE.
-
-The same-cookie replace path in otx2_tc_add_flow() can hit this with a
-single rule. otx2_tc_prepare_flow() sets the flag for the new rule, and
-then otx2_tc_del_flow() on the old node clears it.
-
-Since this test is the only reader of mark_flows, does the reference
-balancing in this patch change any driver behaviour while this problem
-remains?
-
-[ ... ]
-
-> @@ -1287,6 +1295,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
->  		if (rc) {
->  			NL_SET_ERR_MSG_MOD(extack,
->  					   "MCAM rule allocation failed");
-> +			otx2_tc_put_mark_flow(nic, &dummy);
->  			kfree_rcu(new_node, rcu);
->  			return rc;
->  		}
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does this path leak other
-resources that otx2_tc_prepare_flow() acquired?
-
-cn20k allows police actions. otx2_tc_act_set_police() allocates a leaf
-profile, maps the RQ policer and sets a bit in nic->rq_bmap:
-
-	rc = otx2_tc_act_set_hw_police(nic, node);
-	if (!rc)
-		set_bit(rq_idx, &nic->rq_bmap);
-
-If cn20k_tc_alloc_entry() then fails, new_node is freed directly here and
-the police cleanup in free_leaf is skipped. The leaf profile, the RQ
-policer mapping and the rq_bmap bit all look like they leak.
-
-The multicast group that otx2_tc_update_mcast() creates and stores in
-new_node->mcast_grp_idx is also never destroyed, either here or in the
-free_leaf path. otx2_tc_del_flow() sends NIX_MCAST_GRP_DESTROY for it, but
-the error paths in otx2_tc_add_flow() don't.
-
-In otx2_tc_parse_actions(), the multicast group is also created before
-the nr_police check and before otx2_tc_act_set_police() runs:
-
-	if (mcast) {
-		err = otx2_tc_update_mcast(nic, req, extack, node,
-					   &dummy_grp_update_req,
-					   num_intf);
-		if (err)
-			return err;
-	}
-
-	if (nr_police > 1) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "rate limit police offload requires a single action");
-		return -EOPNOTSUPP;
-	}
-
-If either of those fails, the otx2_tc_prepare_flow() error path frees
-new_node and the AF multicast group leaks.
-
-Repeated failures could use up rq_bmap ("Police action rules exceeded"),
-as well as AF multicast groups and leaf profiles.
-
+base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103100536.1310108-1-vulab%40iscas.ac.cn
+2.56.0
+
