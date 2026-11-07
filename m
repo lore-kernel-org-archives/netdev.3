@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083082;
-	b=ROW9obSMw4kTbjwiFCPCk9O83drTTQGgyGkuoyE+7gp2K27Sn7P4NzGCICodtUuy2Rlb
-	 JItFIJUcqoH1fxBv7fh4h3MLMj7pyzCze0BnOch/wk6hYQUAofo96T5dbvLtZRU6eQxzG
-	 cSDP8SRJK+yqNOr+W6U58zFCceeg0edwDlqKikEemKErTbwJGGOcUoIsbYBE79IMAZAiC
-	 CE81651CkETfN/w+w7PstqxzLv/NUwDIhB9J5zS4jMy4/J++unv3Ikhbzf1pUDR1d6IaH
-	 GWJXNPM/E1upwDz7gL37OrclfrmvifBzydnPRpRJjIJbjbrNJw7It+K50MyckntW3kg==
+	t=1794083083;
+	b=o1raAIT+E6wGOa6pxDgd89UY43SXPtBED/VmngCkZ8P2+MT3RqHgG1xkDafLQQPG9PoM
+	 yduhSytOvWTsJ8Cx6Nkw8Dst0MpDxPO9eDfPPabhHStXkt9OhYruV7TJ61YMs8p2kBMRN
+	 TxP5xcsOkZWecBnIsDrT4MK3NpVdO/vdbtcDUmQ9smeud8cdigOLy9UeJ271/tKE7J9gm
+	 lgcf4f3L75NZqVbY7VTEP1DK6zXRFF5MyuR1zIbXeqiKviTAnXhZcitmw8BaUXRGShfTU
+	 zH+VrTxINpwtY8eNPFKszglZqYOa7R4mNJZenIonyHcy1y+Nxv0vPthjlveLIwOLXLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083082;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083083;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Yre4GilkIAFAcudSjzMPk/UneKEQo+pn5RJtt75meX8=;
-	b=H2gYlX5NC+IlRhBEpAM3OyUjZ+Dxk1L/CmjQvyg2qnWZqx4tYFW5Y4SBnomyy26IqG1q
-	 rjjuEztr5pRm4EobhzquG8MNQTxEh/QYiBTNQYUkyYKHx9bzwcsvLdAoQ9RVXDI5vtxzm
-	 UU0wgK6xvnU6IjQu2wGbd0r/cw+KN4RATArrwlM81rzA/Tz9or/skjaoxeNAn7/27Cskm
-	 F7a5axTKSvQi3bHq+LGm0Q/ZELxl3zcXaZxyq3epkpodEaIR5V06WLDAX8ITU/hlqZbTq
-	 xfaP+gp/O2Kw5ocpgWAxb5zCMFGC2qCMjHkKTQQRbGgxZUu47xjHH8x/DiccODLZOCQ==
+	bh=fHBfhv5Os1UERuh0WwXS8t9EiYrGbuhZFIIikND+GOk=;
+	b=SPSJcD7E/VFlvPbUF0TNg2B1zSwAQR8EDkGs0iyih/BZHyEwqmH5rijITLTHLXQr7IjE
+	 K7U7f3SbfGFjO4PGAGduIapvleQ7FgNgT8atcqzKdPuJcN+4G3Oc8Gxq07zvhbi+9SGIB
+	 Kst8Sq2bn11iaDJQh58BDOnjHeZCFGaQV/vDvv0I5NFlBsKrJnYOp10iTArSqAHC8VPhk
+	 R8sRuDQ67trXvspsXxY58q3tRQEVbuZsv/H49OPXJFdDNHUgvQrZIRkXEtJilYYTsyr3/
+	 ibp1/xg5Ks4S3nstvrCfwCCv42qjB/vzV8zIL5LRx0DAFJcoFU+DQ93Kze1bvWKNjbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtPk4ZQo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsqePyln;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF1F606A334;
-	Sat,  7 Nov 2026 20:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772DE606D807;
+	Sat,  7 Nov 2026 20:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtPk4ZQo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF631F0089F;
-	Sat,  7 Nov 2026 20:24:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsqePyln
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420521F008A1;
+	Sat,  7 Nov 2026 20:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083081;
-	bh=Yre4GilkIAFAcudSjzMPk/UneKEQo+pn5RJtt75meX8=;
+	s=k20260515; t=1794083083;
+	bh=fHBfhv5Os1UERuh0WwXS8t9EiYrGbuhZFIIikND+GOk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GtPk4ZQoJLISAQNDyu84x0tPZKAtqAZhXUJCfLiXCRLZ+8EXUAmPcBlLc8sLMNkV3
-	 A4vIz9CNM3jpee3MX4Gk9VSRLljWX0Ofbq534V2xAGQYj2/rYhK/hVtpYGU1r6YX3N
-	 KHqfuIOCQlf8Kbo+eBgIcEp5Yr42c4G/SWPvv1d9RhtRZJhUJoKo2h5Dnv+eRMi2OZ
-	 ulfZO/wsYeJcePP1v3l5hTVjT//oGDthCC0CULcS8jWFg9ZAXEhF+4oZZyx8ODBZMy
-	 EVBZxowoIsr7NizvFofOVcvA5UtFHbflBA1MNyBlhQR4H3pegYTbKlfsvtyTWjH3bn
-	 BTdvJOyl3RJJw==
-Subject:
- Re: [PATCH rdma-next 01/23] net/mlx5: Add mlx5_trigger_health_work_force()
+	b=jsqePylnZzrLJn3BHHzddesh0LiLeTPKYZjdV9Q0ubuSMWB0jMTGT+OLZGG2PNZne
+	 QNPI2t40o/OozbyE1V+Z8BqYpeWaldOkczQQJ98qhodgr74dITGRpb7onHiRd3Xl+T
+	 HMZTpH1rDtM92zhpu8yultB0xEaIVSvB3rqxgF+8i41lzOKBUyZxN+u8EX8E//pMPf
+	 VwchixEWAcejgzEe6Bsga/+I4Wq44mk2pasKfQ2TnxW9N4INhZMU57Lb3Se2NhxNRi
+	 JCUwUp2g3zMYKlebv5M0ya9VipDPjqgVQKaQkFBLaL8C940Zt3AROIQ3AsrSUjzt94
+	 Cu8wAU14nIuYQ==
+Subject: Re: [PATCH rdma-next 02/23] net/mlx5: Derive adversarial mode from CC
+ guest memory encryption
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,11 +49,11 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:24:40 +0000
-Message-ID: <179408308027.994134.17949886966516055410@kernel.org>
-In-Reply-To: <20261103163949.1554-2-yishaih@nvidia.com>
-References: <20261103163949.1554-2-yishaih@nvidia.com>
-X-sashiko-severity: High
+Date: Sat, 07 Nov 2026 20:24:41 +0000
+Message-ID: <179408308185.994134.9934571250726048143@kernel.org>
+In-Reply-To: <20261103163949.1554-3-yishaih@nvidia.com>
+References: <20261103163949.1554-3-yishaih@nvidia.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,340 +66,87 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 2
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The forced path in mlx5_fw_fatal_reporter_err()
-  (drivers/net/ethernet/mellanox/mlx5/core/health.c) tries only…
-- [High] net/mlx5: forced health work recovers device when interface is
-  already down
-- [Medium] Nothing deduplicates force_fatal_report_work against
-  fatal_report_work or against the device state.
-- [Medium] A forced request is dropped with no record or retry if
-  force_fatal_report_work runs while MLX5_DROP_HEALTH_WORK is set only…
-- [Low] The patch changes the existing sensor-triggered recovery path
-  (fatal_report_work, forced=false) in mlx5_fw_fatal_reporter_err().
-- [Low] A forced, consumer-detected fault goes through the same devlink
-  fw_fatal reporter path as a real firmware-fatal error.
+- [Low] mlx5_is_adversarial() in
+  drivers/net/ethernet/mellanox/mlx5/core/main.c is exported…
+- [Low] mlx5_is_adversarial(void) takes no device argument and returns
+  cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), so the decision applies to…
 
 --
 
-net/mlx5: Add mlx5_trigger_health_work_force()
+net/mlx5: Derive adversarial mode from CC guest memory encryption
 
-This adds mlx5_trigger_health_work_force(). It queues a new
-force_fatal_report_work that runs the fatal health recovery with the error
-state forced, whatever the health sensors report. Before forcing the error
-state, the forced path stops the health poller and issues a fast teardown
-of the HCA under intf_state_mutex. The function is exported for mlx5_ib,
-which uses it later in the series.
+This patch adds mlx5_is_adversarial(), exported from mlx5_core. It
+reports whether the driver should treat the NIC as untrusted. The result
+comes from cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), so it is true in
+any confidential computing guest.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-> index aeeb136f5ebc7..d000ac335fa7a 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-> @@ -627,18 +627,11 @@ mlx5_fw_fatal_reporter_dump(struct devlink_health_reporter *reporter,
->  	return err;
->  }
->  
-> -static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
-> +static void mlx5_fw_fatal_reporter_err(struct mlx5_core_dev *dev, bool forced)
->  {
-
-[ ... ]
-
->  	mutex_lock(&dev->intf_state_mutex);
->  	if (test_bit(MLX5_DROP_HEALTH_WORK, &health->flags)) {
-> @@ -646,8 +639,26 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
->  		mutex_unlock(&dev->intf_state_mutex);
->  		return;
->  	}
-
-[Severity: Medium]
-Can a forced request get lost here? If force_fatal_report_work runs while
-MLX5_DROP_HEALTH_WORK is set only for a while, mlx5_fw_fatal_reporter_err()
-logs "health works are not permitted at this stage" and returns. The
-request is not recorded and not retried.
-
-The FW sync reset flow opens such a window.
-mlx5_sync_reset_set_reset_requested() sets the bit without holding
-intf_state_mutex:
-
-	mlx5_stop_health_poll(dev, true);
-
-On abort or timeout, mlx5_sync_reset_clear_reset_requested() clears it
-again:
-
-	if (poll_health)
-		mlx5_start_health_poll(dev);
-
-A dropped sensor fault is caught again by the next poll_health(). A forced
-fault cannot be, because the sensors never see it. So dev->state stays
-MLX5_DEVICE_STATE_UP. The kernel-doc of mlx5_trigger_health_work_force()
-says this API exists to prevent exactly that.
-
-In the mlx5_ib consumer later in this series, umrc->state is already
-MLX5_UMR_STATE_ERR at this point, and cq->poll_one is already
-mlx5_ib_poll_one_stopped. The UMR waiters in mlx5r_umr_post_send_wait()
-depend on the internal error flush to wake them, and they wait with no
-timeout:
-
-	wait_for_completion(&umr_context.done);
-
-If the forced request is dropped this way, would those waiters hang
-forever?
-
-> +	/*
-> +	 * The firmware might still be running, so stop it first. Do it under
-> +	 * intf_state_mutex and only while UP, so the cmd interface is valid.
-> +	 */
-> +	if (forced && test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
-> +		int err;
-> +
-> +		mlx5_stop_health_poll(dev, false);
-> +		err = mlx5_cmd_fast_teardown_hca(dev);
-> +		if (err)
-> +			mlx5_core_err(dev, "Failed to stop the device before forcing the error state, err %d\n",
-> +				      err);
-> +	}
-
-[Severity: High]
-What happens here when MLX5_INTERFACE_STATE_UP is already clear? The
-forced branch skips mlx5_stop_health_poll() and
-mlx5_cmd_fast_teardown_hca(), but the function does not bail out. It
-still calls enter_error_state(dev, true) and then continues into
-mlx5_health_try_recover() or devlink_health_report().
-
-A non-remove unload leaves the device in exactly that state.
-mlx5_unload_one_devl_locked() does:
-
-	clear_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state);
-	mlx5_unload(dev);
-	mlx5_function_teardown(dev, false);
-
-mlx5_function_disable(dev, false) then calls
-mlx5_stop_health_poll(dev, false), so MLX5_DROP_HEALTH_WORK is never
-set. mlx5_suspend() and mlx5_devlink_reload_down() take this path.
-mlx5_pci_err_detected() takes it too, before it drains the health wq.
-None of them cancel force_fatal_report_work.
-
-Suppose a consumer calls mlx5_trigger_health_work_force() just before
-or during one of those unloads. The work runs once intf_state_mutex is
-released. It finds MLX5_DROP_HEALTH_WORK clear and the interface down.
-It then forces MLX5_DEVICE_STATE_INTERNAL_ERROR on a device whose cmd
-interface mlx5_cmd_disable() has already shut down. The recovery then
-runs:
-
-mlx5_health_try_recover()
-  mlx5_handle_bad_state()
-    /* sensors clean, NIC never disabled by fast teardown */
-    mlx5_disable_device()
-      mlx5_error_sw_reset()
-        /* can poll up to PCI_TOGGLE timeout for IFC disabled */
-  mlx5_recover_device()
-    mlx5_pci_slot_reset()
-    mlx5_load_one_devl_locked(dev, true)
-
-Does that reset and reload a device that was just suspended or
-unloaded on purpose?
-
-Devlink reload is affected as well. devl_lock is held from reload_down
-to reload_up, so the work blocks on devl_lock, either directly or
-inside devlink_health_report(), until reload_up has loaded the device
-again. The work then forces the error state on the freshly reloaded,
-healthy device and recovers it. If the report lands inside the
-graceful period, it unloads the device with
-mlx5_unload_one(dev, false) instead.
-
-Should the forced path unlock and return when the interface is not UP,
-instead of only skipping the teardown? Or should the non-remove unload
-paths cancel force_fatal_report_work?
-
-[Severity: High]
-What happens here when mlx5_cmd_fast_teardown_hca() fails? It returns
--EOPNOTSUPP at once when MLX5_CAP_GEN(dev, fast_teardown) is 0. It can also
-return -EIO, -EACCES or a command error. The failure is only logged, and
-enter_error_state(dev, true) runs anyway. The HCA can then still be in
-FULL_DRIVER mode with bus mastering enabled when dev->state becomes
-MLX5_DEVICE_STATE_INTERNAL_ERROR.
-
->From that point, mlx5_internal_err_ret_value() fakes success for
-TEARDOWN_HCA, DISABLE_HCA and the DESTROY_* commands. MANAGE_PAGES fails
-with -ENXIO, so reclaim_pages_cmd() reclaims the firmware pages in
-software:
-
-	/* No hard feelings, we want our pages back! */
-
-The recovery then runs:
-
-mlx5_health_try_recover()
-  mlx5_handle_bad_state()
-    /* only warns "Expected to see disabled NIC but it is full driver" */
-    mlx5_disable_device()
-      mlx5_error_sw_reset()
-        /* sensors are clean: no SW reset, only "NIC IFC still" logged */
-      mlx5_unload_one_devl_locked()
-        /* frees EQ/CQ/QP/RQ buffers and ICM pages */
-  mlx5_recover_device()
-    mlx5_pci_disable_device()   /* skipped for SFs */
-
-Can the still-running HCA DMA into the freed queue buffers and ICM pages
-before bus mastering is cleared? On the -ECANCELED branch,
-mlx5_unload_one(dev, false) frees everything and the device is never
-disabled.
-
-Compare mlx5_try_fast_unload(). It falls back to force teardown and
-enters the error state only after a teardown has succeeded:
-
-	ret = mlx5_cmd_fast_teardown_hca(dev);
-	if (!ret)
-		goto succeed;
-
-	ret = mlx5_cmd_force_teardown_hca(dev);
-	if (!ret)
-		goto succeed;
-	...
-	mlx5_start_health_poll(dev);
-	return ret;
-
-Does this path need a mlx5_cmd_force_teardown_hca() fallback, or bus
-mastering cleared before the error state is forced? The commit message
-says the work asks the firmware to stop "as the device might still be
-running", but that does not happen when fast teardown is unsupported or
-fails.
-
-> +
-> +	/*
-> +	 * Enter the error state before unlocking, or an unload could send
-> +	 * TEARDOWN_HCA to the stopped NIC, fail and skip function disable.
-> +	 */
-> +	enter_error_state(dev, forced);
->  	mutex_unlock(&dev->intf_state_mutex);
-> -	enter_error_state(dev, false);
+> Add mlx5_is_adversarial() to report whether the driver treats the NIC
+> as untrusted. In a confidential computing guest, the hypervisor and any
+> passthrough device are outside the guest's trust boundary, so the mode
+> is derived from cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT).
+>
+> This turns adversarial mode on automatically in such guests, without
+> any administrator configuration.
 
 [Severity: Low]
-This also changes the existing sensor-triggered path (fatal_report_work,
-forced == false). enter_error_state(dev, false) runs mlx5_cmd_flush() and
-the MLX5_DEV_EVENT_SYS_ERROR notifier chain. It used to run after
-mutex_unlock(&dev->intf_state_mutex). It now runs with the mutex held, for
-every firmware fatal recovery.
+This isn't a bug, but is the last sentence accurate for this patch on its
+own? Nothing calls mlx5_is_adversarial() at this commit, so this patch by
+itself does not change behaviour in a CC guest.
 
-mlx5_enter_error_state() already calls enter_error_state() under the same
-mutex, so this doesn't look like a deadlock. However, the new comment and
-the commit message explain the move only for the forced case.
+The callers arrive later in the series:
 
-Could the commit message say that the non-forced path changes too?
+  "net/mlx5: Add capability filtering in adversarial mode" (caps_filter.c)
 
->  	if (IS_ERR_OR_NULL(health->fw_fatal_reporter)) {
->  		devl_lock(devlink);
->  		if (mlx5_health_try_recover(dev))
-> @@ -669,6 +680,33 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
->  	}
->  }
->  
+  "RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from mlx5_core
+  adversarial API" (drivers/infiniband/hw/mlx5/main.c)
+
+Could the changelog say that the users come in follow-up patches?
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> index 1a45474ce03db..f9e10464a71b5 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
 
 [ ... ]
 
-> +static void mlx5_fw_fatal_reporter_force_err_work(struct work_struct *work)
+> @@ -484,6 +485,12 @@ bool mlx5_is_roce_on(struct mlx5_core_dev *dev)
+>  }
+>  EXPORT_SYMBOL(mlx5_is_roce_on);
+>  
+> +bool mlx5_is_adversarial(void)
 > +{
-> +	struct mlx5_core_health *health;
-> +	struct mlx5_core_dev *dev;
-> +	struct mlx5_priv *priv;
-> +
-> +	health = container_of(work, struct mlx5_core_health,
-> +			      force_fatal_report_work);
-> +	priv = container_of(health, struct mlx5_priv, health);
-> +	dev = container_of(priv, struct mlx5_core_dev, priv);
-> +
-> +	mlx5_fw_fatal_reporter_err(dev, true);
-> +}
+> +	return cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
 
 [Severity: Low]
-With forced == true, mlx5_fw_fatal_reporter_err() still reports through
-the fw_fatal reporter as a firmware fatal error:
+This isn't a bug, but this check treats every device in a CC guest as
+adversarial, and the helper takes no device argument. That matches the
+current tree, which has no guest-side way to detect a trusted (T=1)
+device.
 
-	fw_reporter_ctx.err_synd = health->synd;
-	fw_reporter_ctx.miss_counter = health->miss_counter;
-	if (devlink_health_report(health->fw_fatal_reporter,
-				  "FW fatal error reported", &fw_reporter_ctx) == -ECANCELED) {
+ib_register_device() in drivers/infiniband/core/device.c uses the same
+check and documents the assumption:
 
-health->synd and health->miss_counter are firmware sensor values that have
-nothing to do with the forced fault, and health->fatal_error is not set.
-Will devlink health output show a firmware fatal event with a stale or zero
-syndrome, and nothing that points to the consumer that triggered it?
+	/*
+	 * In a CoCo guest every device is currently assumed to be untrusted
+	 * (T=0) and therefore subject to DMA bouncing. Once trusted (T=1)
+	 * device detection is wired up, narrow this check to exclude such
+	 * devices.
+	 */
+	if (dma_device && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+		device->cc_dma_bounce = 1;
 
-Each forced event also counts toward the fw_fatal reporter's graceful
-period. A second forced trigger inside that period (60s on a PF) makes
-devlink_health_report() return -ECANCELED, and the driver then calls
-mlx5_unload_one(dev, false). Should the commit message describe this?
+Would a similar comment here, or a note in the changelog, be worth
+adding? Once T=1 detection exists, narrowing this check would also mean
+giving mlx5_is_adversarial() a device argument.
 
-[ ... ]
-
-> @@ -759,6 +797,25 @@ void mlx5_trigger_health_work(struct mlx5_core_dev *dev)
->  		queue_work(health->wq, &health->fatal_report_work);
->  }
->  
-
-[ ... ]
-
-> +void mlx5_trigger_health_work_force(struct mlx5_core_dev *dev)
-> +{
-> +	struct mlx5_core_health *health = &dev->priv.health;
-> +
-> +	if (!mlx5_dev_is_lightweight(dev))
-> +		queue_work(health->wq, &health->force_fatal_report_work);
 > +}
-
-[Severity: Medium]
-Does anything deduplicate this against fatal_report_work, or check
-dev->state? The two are separate work items on the ordered health->wq, so
-queue_work() never merges them. The recovery path (mlx5_disable_device()
-and mlx5_recover_device()) does not drain health->wq.
-
-The forced branch in mlx5_fw_fatal_reporter_err() checks only
-MLX5_DROP_HEALTH_WORK and MLX5_INTERFACE_STATE_UP. The peer helpers refuse
-to run on a device that is already in error:
-
-mlx5_enter_error_state():
-	if (!err_detected && dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-		goto unlock;/* a previous error is still being handled */
-
-mlx5_try_fast_unload():
-	if (dev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR) {
-		mlx5_core_dbg(dev, "Device in internal error state, giving up\n");
-		return -EAGAIN;
-	}
-
-Suppose poll_health() has already set MLX5_DEVICE_STATE_INTERNAL_ERROR
-and queued fatal_report_work while the forced work is pending.
-mlx5_internal_err_ret_value() fakes TEARDOWN_HCA as a success.
-mlx5_cmd_fast_teardown_hca() then writes the iseg NIC state and polls for
-up to the TEARDOWN timeout on a device in firmware fatal state. Later, the
-queued fatal_report_work handles the same fault again on the device that
-was just recovered.
-
-The other order is also possible. A forced work queued while
-fatal_report_work is recovering runs on the freshly loaded, healthy device.
-It fast-tears it down and forces the error state.
-
-In both orders, the second devlink_health_report() falls inside the
-graceful period and returns -ECANCELED. mlx5_unload_one(dev, false) then
-leaves the device unloaded instead of recovered. Is that intended?
-
-The mlx5_ib consumer in this series switches cq->poll_one to
-mlx5_ib_poll_one_stopped before it triggers, so a single UMR CQ cannot
-trigger twice. A sensor fault and a forged CQE close together would still
-be enough, for example when mlx5_ib_poll_cq() passes its mdev->state check
-just before poll_health() sets the error state.
-
-> +EXPORT_SYMBOL_GPL(mlx5_trigger_health_work_force);
+> +EXPORT_SYMBOL_GPL(mlx5_is_adversarial);
 
 [ ... ]
 
