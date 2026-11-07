@@ -1,102 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.106
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794017359;
-	b=wajV3fBK0JWuOVXq46K+aPVC1SeYyUCzNTATtqu8Cv2pZ+y4NQu85umfACH4I8wzNQaw
-	 waKlo3Q4WnL3XgKtxfSOA0stwYWagGTQnh1qki92sxTCy+KCof5Mtvh9YC6ZGznM3KGmR
-	 bgtfTgd/A4WoTv0zOvWWxuypMVFG7bmeCwPTmBoRxQA2xVH8UYubMwE1+tXc6+Cc4Kj7b
-	 6c7vSfqx7Q9G7gFmfNC7AMPGHAbLcN+mML+yyed+bqNr+OTDNbDlBierVu57+P57ffG2i
-	 Lbn3YwQy30HU5AZ8uz0RyKjZzhswbf4BbsVr6P9gduehF+GHd1QjFKawoeMUINRrIBQ==
+	t=1794018265;
+	b=p9b/3BdBwVTjPLjqNrYs9NkHbU/JdetHXIokRsmDLtv6EKdb8RuIn4J3CkyHnvnWST45
+	 rKrIIQi45x1JUzHMjDebdz6+BwkGw4YbOWKDnz98KGXLB0jV4C9/B2m7FrpPTSiC+/+Qg
+	 4PLyZzKY0B1gsX3rXUbNiQbekj2gFaET0w+metJDxUm9EVC8W2ezSN9WOgOf2jQ2RR0vd
+	 0Wtb/RTgVzgzW79kPGWV9LThfAIz3/Z4rXBVtAmS0YS4kxOPspWjI+sZP9gdEdbrKDA0M
+	 kLaolByGbfAv3XDFaYXIDHcsRSe/MulNLml4xjn8EzsTlsjBRg3yDRWE1mBpD+c6qTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794017359;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
-	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
-	b=Gwpo3xsdAeFIxD/5xmIfD7GfQ10Yx39wchPTTnw6k/bck9J7HLvjsb8iMlMYhiV0rE6F
-	 2CQrZQrv3loyn4gJaz+UhfxBmLOxngq7WQixsd5eJnVYfMM2T2pweiQ0tQ36qPSPsqWR4
-	 wxwYQVJretCR1KPDZcRnjoE8x+/5FSMVDPTWzKEOFJJYkW3ng+dMRxLyXheIDZA02Nn5J
-	 N0j6ifSZgBaSgtmioTqUyJoa9a2sPXtQnEvduZDk8QIiLa3MCqWtjdM8FBDr/8MNPouU7
-	 dyfxkuEpziC+Nb555ncZEgUxybX+hzLko3c1wc97p8TfzgJnyNirRuLRoX7ntBXCuAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794018265;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=FNiNBtPDzzetWijssUKEwr2+c/XYMNjUeXXOB4NdeCk=;
+	b=vDocaJ9E/dnUp/MVqhJH5swEidO9xjkv5/E2YXuwmd0ljXANvFHVG0IGet+6xOcKOaHi
+	 Ct03MRGySPgwjiuWFvQH4O7klHHYeakjaLoZwd56NN0CaviYsGzFZWSzRJMDkQGdiKfBv
+	 +IDzrYG5JBB93CzaMP62pTqRfbxqL50AuIK1JYgArsLlgE0O+cLcm4ISIqr6kw9I6xHRC
+	 jPtESulKZi3mYYlt9GMyprFFLN8r1NJ1lcVpya8HjM90HiLLQ+Dyy6HPDwv1p+3YUiJbi
+	 Ch/PWf8n0sXmbjTF+oGIXg4Bx0SaXXVXLMUrY5N0M03PMD5Shx0adm3a2X+vM0nzwqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+8vyume;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mR8TJXTA;
+	arc=none smtp.remote-ip=91.218.175.106
+Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5D2606A334
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 02:09:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E5D2606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D869C606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 02:24:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D869C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+8vyume
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b094e649d3so766629a91.0
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 18:09:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794017359; x=1794622159; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
-        b=H+8vyume+obI271XmNk+PDu48Q19jOLc/Va8iCJp+YPAfevLZPbtqZKst6ucyXtfSw
-         SesmJ3do6CgH0DvagS2lCWl//emQ8A8R9ws51AQTEijOWlvGxTR2vpKj7HFj7HUNesAD
-         Iz/tqmsd4wcjINMkFThPdh82py3fh0hdETwaSNa/7BESxLI2fFYv4JdsIe5+Yh+iNqwi
-         GuQQxgL9obB3jiEMRpDE9NQASENmDbDCM9g7vOrH4FzP3N/mV41LFrwuOV+fbmrRkUkI
-         PlnkIn5ku0EaxwHF2d31ktU40mx5GyEtw9tUQotInc5smSPvSCczAu0/CGscJ/0+rKLR
-         LO6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794017359; x=1794622159;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:to
-         :from:subject:cc:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
-        b=xK865mOP2ayOtqCwT/dsHubvkKCQ+CpBd67GSHEce0qseCppZ64+BBsE/qNDWh0c68
-         SG3Mx6SHTpFD1CM2TcAnHHv5alMzmuwsWENAYWdyWPDE40DIwsUGj3xW9gkT9RYlSuRM
-         QhZYYa1gHVOQFddxgRuyPAXKJr8FmmhvYam820VqIEHXtpZ0SaA7gmo+uXW+v3grhOM7
-         Vv3uBtNNtZbc7gRUfsVGUzDTDHxqym+dPvh9sTBWcO1nUcr9BauvMQwyctP3dSlLIdgV
-         oFWBhcqn7Hz2wqg0Gedm/QhoPQJQM2aZz6hPuAifLYXE98lVDxer7J+8oaqmB1v/SLk3
-         +40w==
-X-Forwarded-Encrypted: i=1; AL+hErH1wJ8Fwk979OXWfb0YmuZ1nN8hm5a4EmkUD46u3WDe+pFNPiVn6RWu8Kjf76dfwGh/mrlUtdo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9hOoIgvrO9YDnVFo1hK1+amS27ZvYwX7kPs+QGdJtDh2x2RiWH
-	xdnVVbMqi10X98C+nHhyQK4tLJW1uPqRaVfsuLqahj5YTxl60fCFcFDF
-X-Gm-Gg: AYBFou3E9nSfNLpf2MWygxuW75IQ6TFAOO511KDORnPLrzhsljcHW2JT1ftjG9VOaJg
-	Kvv21gio+2pptIh8zBZtgPh29sKREOlPMXyyjFX0Vr91kaEHaC83/LKu7/MTDBYFvkeQoil2jwx
-	iou+iU5nYXuPMK9ukmos9NpW/Yu/HMJqBzoZnPZKDmF2L2HJjJClt/VKSzDpDRO8rbIqkshoQRI
-	pxT/mmOZ15Gwu0X3lm95AWMmFhthFlg7vF9Aq79cbTuLkBLIZRAPr4GYOuZYfGitF9+TDldIXdD
-	+OOadA0onb/j2mRQ7E8g1Pa/uzc8g+2bEnVPKwPiSam/YFGiPtTI2KBlticQbqZsh6w/J2xmJlt
-	9rKtnbBLqa37/aoCCPzDGplPuYXQ9v2jxex4/ESNarAZxFVC+4mQEEuqIeu+Nz5MqhwKl1FRd90
-	mxtbU3B3zVeEgzQLjMaUVb1faDSqrLPmtCpOB0UjdOwccxpPGHQc2qdHLL5Io8OMj+7b9CwbhGC
-	rRjK/cZkvgO0uzo1LintNAakhatWa18S+ArM0WjYYL06G86F21wxWiDW6UtTTgr9LksiUZrMgrp
-	IQ8/ovQr/p7/N6M22BunkugL1sapc87/P2kE1ZEWCS0ESjH0ozD6NVZgGUbrektpz1JHZLW4nO1
-	vIq153vbmZPuCaizOnUP8QiOF69vxVo4pkg==
-X-Received: by 2002:a17:90b:1a91:b0:3b0:ae41:2707 with SMTP id 98e67ed59e1d1-3b0db6fe133mr4547927a91.45.1794017358501;
-        Fri, 06 Nov 2026 18:09:18 -0800 (PST)
-Received: from localhost ([153.61.198.246])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b105864375sm1156571a91.4.2026.11.06.18.09.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 18:09:18 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 07 Nov 2026 02:09:17 +0000
-Message-Id: <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
-Cc: "Michal Luczaj" <mhal@rbox.co>, <virtualization@lists.linux.dev>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bpf@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v4 1/2] vsock/bpf: release sock lock while waiting
- for data in recvmsg
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: <jrmmhm.kernel@eldare.de>, "Stefano Garzarella" <sgarzare@redhat.com>,
- "Bobby Eshleman" <bobbyeshleman@meta.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>
-In-Reply-To: <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
-References: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de> <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mR8TJXTA
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OYVZ0yzumc1mk5Sb1WLESPC1f1zKEMV4R0hkomobwSQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794018261; v=1; x=1794623061;
+ b=mR8TJXTAyaI8UY449/vxt26+P/JzCQGp62Sv0rKA79EXTyvfggJQMSfOOVUCncG3XB2Y2h5s
+ NwWce76HxNcM7OwrCvg1EW/ZUZTiPtIvi5pdFGGqX8+Ipnraj8id9cFdgqTiW63WczdB9Cbb8MD
+ 0atJIRC9NOfN2wueXDt7Am24=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id ab62eec1d21b0e00;
+	Sat, 07 Nov 2026 02:24:21 +0000
+X-Mizu-Trace-ID: ab62eec1d21b0e00
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <be3166fd-596d-473a-8959-207492c06282@linux.dev>
+Date: Sat, 7 Nov 2026 10:24:15 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,118 +58,260 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/2] pppoe: pass bound packets directly to
+ generic PPP
+To: Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, manizada@pm.me, ericwouds@gmail.com,
+ nbd@nbd.name, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261103111711.28202-1-qingfang.deng@linux.dev>
+ <20261106181228.1263020-2-horms@kernel.org>
+Content-Language: en-US
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <20261106181228.1263020-2-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 06, 2026 at 01:57 PM Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org> wrote:
-> example by a credit update. So the wait also loops until data arrives
-> or one of the native exits applies: a socket error, a local or peer
-> shutdown, a socket that is no longer connected, the timeout or a
-> pending signal. The loop alone, with the lock still held, keeps the
-> deadlock, so the fix needs both halves and stays one patch.
+On 11/7/2026 2:12 AM, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103111711.28202-1-qingfang.deng@linux.dev?part=1
+> ---
+> pppoe: pass bound packets directly to generic PPP
+> 
+> This changes pppoe_rcv() to hand frames for PPPOX_BOUND sockets straight
+> to ppp_input(), instead of going through __sk_receive_skb(). It relies on
+> commit ec4215683e47 deferring the channel free to an RCU grace period. It
+> also clears skb->dev, matching what __sk_receive_skb() used to do.
+> 
+>> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+>> index 67c28ac763efd..5d5187e4976b3 100644
+>> --- a/drivers/net/ppp/pppoe.c
+>> +++ b/drivers/net/ppp/pppoe.c
+>> @@ -415,6 +415,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+>>   	if (!po)
+>>   		goto drop;
+>>   
+>> +	skb->dev = NULL;
+> 
+> [Severity: Low]
+> Should the comment in ppp_bridge_gso_segment() be updated as well? It
+> still says __sk_receive_skb() is what clears skb->dev:
+> 
+> drivers/net/ppp/ppp_generic.c:ppp_bridge_gso_segment() {
+> 	/* skb->dev is NULL here (cleared by __sk_receive_skb() for PPPoE),
+> 	 * and some GSO handlers (tunnels, IPv6 UFO) dereference it.
+> 	 */
+> 	...
+> }
+> 
+> Bound PPPoE frames are the ones that reach the bridge path, and they no
+> longer go through __sk_receive_skb(). The invariant now holds only
+> because of this assignment in pppoe_rcv(). Nothing in pppoe.c says that
+> the GSO path depends on it.
+> 
+> The follow-up patch "pppoe: queue unbound packets directly" does not
+> touch ppp_generic.c, so the comment stays stale after that patch too.
 
-No need for a 2nd copy of the return values.
-The old code returns true on RCV_SHUTDOWN. The psock queue is empty, so
-the caller goes to __vsock_recvmsg(), which picks the return value.
-tcp_bpf, udp_bpf and unix_bpf do the same.
-Do it for sk_err, peer_shutdown and sk_state too.
-__vsock_recvmsg() doesn't wait in any of these states.
-It handles len == 0, MSG_OOB and MSG_ERRQUEUE as well.
+Ack.
 
-The copy differs from a socket that is not in a sockmap in four cases.
-The diff differs in one, the last row:
+>> +
+>> +	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
+>> +		ppp_input(&po->chan, skb);
+>> +		return NET_RX_SUCCESS;
+>> +	}
+>>   	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
+> 
+> [Severity: Medium]
+> The commit message says:
+> 
+>    "The direct bound receive path also skips the socket filter check in
+>    __sk_receive_skb()."
+> 
+> Does this path skip more than the socket filter? __sk_receive_skb()
+> calls sk_filter_trim_cap(), and that function runs the LSM hook before
+> the filter:
+> 
+> net/core/filter.c:sk_filter_trim_cap() {
+> 	...
+> 	err = security_sock_rcv_skb(sk, skb);
+> 	if (err)
+> 		return SKB_DROP_REASON_SECURITY_HOOK;
+> 	...
+> }
+> 
+> apparmor_socket_sock_rcv_skb() mediates sockets of any family when
+> skb->secmark is set. BPF-LSM programs on socket_sock_rcv_skb also apply
+> to AF_PPPOX. After this change, neither runs for bound session frames
+> from the remote peer. A configured policy would therefore fail open.
 
-  recv()                          no sockmap    this series   the diff
-  ------------------------------  ------------  ------------  -----------
-  after a virtio reset            -ENOTCONN     -ECONNRESET   -ENOTCONN
-  after a reset, len == 0         -ENOTCONN     0             -ENOTCONN
-  after a reset, MSG_OOB          -ENOTCONN     -EOPNOTSUPP   -ENOTCONN
-  after peer shutdown, SO_INQ on  0 + SCM_INQ   0             0 + SCM_INQ
-  asleep when the reset comes     -ECONNRESET   -ECONNRESET   -ENOTCONN
+> Some other checks are skipped as well:
+> 
+>    - A filter attached with SO_ATTACH_FILTER or SO_ATTACH_BPF, even one
+>      locked with SO_LOCK_FILTER, is still accepted by setsockopt(), but it
+>      never runs on bound frames and never trims them.
+> 
+>    - The sk_rcvqueues_full() check and the sk_drops / drop reason
+>      accounting in __sk_receive_skb() no longer happen.
+> 
+> pppol2tp_recv() already calls ppp_input() directly for bound sockets, so
+> there is precedent. Could the commit message still describe the LSM
+> bypass and the other skipped checks?
 
-Instead of patches 1 and 2 (compile tested only):
+I can mention in the commit message that it make pppoe_rcv behave like 
+pppol2tp. This commit is intended to bypass the backlog queue, so no 
+need to mention sk_rcvqueues_full().
 
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index 9049d26..3cf017d 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -34,24 +34,34 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
- 	return vsock_sk_has_data(sk, psock);
- }
+> This stays true after the follow-up patch "pppoe: queue unbound packets
+> directly". There, only the unbound path still reaches sk_filter, via
+> sock_queue_rcv_skb().
+> 
+> [Severity: Low]
+> Does include/linux/ppp_channel.h need an update along with this? Its SMP
+> locking notes say:
+> 
+>   * The channel code must ensure that when it calls ppp_unregister_channel,
+>   * nothing is executing in any of the procedures above, for that
+>   * channel.
+> 
+> PPPoE followed that rule before this patch. ppp_input() ran under
+> bh_lock_sock(), and every ppp_unregister_channel() caller (through
+> pppox_unbind_sock()) holds lock_sock().
+> 
+> Now pppoe_rcv() calls ppp_input() from softirq without the socket lock.
+> So ppp_input() and ppp_unregister_channel() can run at the same time on
+> the same channel.
+> 
+> That looks safe in practice:
+> 
+>    - struct channel is freed through call_rcu().
+>    - pch->ppp is cleared and then followed by synchronize_net().
+>    - pch->bridge is cleared and then followed by synchronize_rcu().
+> 
+> Even so, the documented contract no longer matches the rule PPPoE and
+> pppol2tp now rely on.
 
--static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
-+/* __vsock_recvmsg() doesn't wait in these states and knows what to return. */
-+static bool vsock_rx_done(struct sock *sk)
- {
--	bool ret;
--
--	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+	return sk->sk_err || sk->sk_state != TCP_ESTABLISHED ||
-+	       (sk->sk_shutdown & RCV_SHUTDOWN) ||
-+	       (vsock_sk(sk)->peer_shutdown & SEND_SHUTDOWN);
-+}
+Ack.
+> [Severity: Low]
+> Is chan->ppp now accessed locklessly without any annotation? ppp_input()
+> does a plain load:
+> 
+> drivers/net/ppp/ppp_generic.c:ppp_input() {
+> 	struct channel *pch = chan->ppp;
+> 	...
+> }
+> 
+> Meanwhile, ppp_unregister_channel() can do a plain store at the same
+> time, protected only by lock_sock():
+> 
+> pppox_unbind_sock()
+>    ppp_unregister_channel()
+>      chan->ppp = NULL;
+> 
+> For PPPoE, the socket BH lock used to serialize these two. Without it,
+> this looks like a data race that KCSAN would report.
+> 
+> There is a second ordering gap. ppp_register_net_channel() publishes
+> chan->ppp before it initializes pch:
+> 
+> 	chan->ppp = pch;
+> 	init_ppp_file(&pch->file, CHANNEL);
+> 
+> This store has no release ordering, and the sk_state test in pppoe_rcv()
+> gives no acquire ordering. In practice the gap between connect() and
+> PPPIOCGCHAN hides this.
+> 
+> Would READ_ONCE()/WRITE_ONCE() on chan->ppp be appropriate here? Should
+> chan->ppp also be published only after initialization, with release
+> semantics?
 
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
--		return true;
-+static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
-+{
-+	int ret = 0;
+Ack.
 
--	if (!timeo)
--		return false;
-+	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+> The sk_state access is volatile, so that side is not a KCSAN concern.
+> The chan->ppp race is still there after "pppoe: queue unbound packets
+> directly".
+> 
+> [Severity: Low]
+> Can frames reach generic PPP out of order during the PPPIOCGCHAN
+> handoff? pppox_ioctl() does:
+> 
+> 		sk->sk_state |= PPPOX_BOUND;
+> 		...
+> 		synchronize_net();
+> 		...
+> 		while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
+> 			skb_orphan(skb);
+> 			ppp_input(&po->chan, skb);
+> 
+> A frame that arrives after PPPOX_BOUND is set now takes the direct path.
+> It reaches ppp_input() during synchronize_net(), ahead of older frames
+> that are still in sk_receive_queue.
+> 
+> At this commit, frames that go to the backlog while the ioctl holds
+> lock_sock() arrive even later, from release_sock() -> pppoe_rcv_core().
+> 
+> Before the patch, the socket lock kept these frames in wire order. The
+> follow-up "pppoe: queue unbound packets directly" removes the backlog,
+> but the reordering against sk_receive_queue remains. pppol2tp already
+> behaves this way. The frames in this window are mostly LCP and other
+> control frames for pppd.
 
- 	add_wait_queue(sk_sleep(sk), &wait);
- 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--	ret = vsock_has_data(sk, psock);
--	if (!ret) {
--		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
--		ret = vsock_has_data(sk, psock);
-+	while (!vsock_has_data(sk, psock) && !vsock_rx_done(sk)) {
-+		if (!timeo) {
-+			ret = -EAGAIN;
-+			break;
-+		}
-+		if (signal_pending(current)) {
-+			ret = sock_intr_errno(timeo);
-+			break;
-+		}
-+		release_sock(sk);
-+		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
-+		lock_sock(sk);
- 	}
- 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 	remove_wait_queue(sk_sleep(sk), &wait);
-@@ -80,6 +90,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	struct vsock_sock *vsk;
- 	int copied;
+The same concern was raised when reviewing my patch that introduced 
+synchronize_net() in pppox_ioctl(), commit 92c1bf630ab ("pppox: drain 
+queued packets on channel handoff"). Before that commit, unbound packets 
+were stranded in sk_receive_queue forever.
 
-+	if (unlikely(!len || (flags & (MSG_OOB | MSG_ERRQUEUE))))
-+		return __vsock_recvmsg(sk, msg, len, flags);
-+
- 	psock = sk_psock_get(sk);
- 	if (unlikely(!psock))
- 		return __vsock_recvmsg(sk, msg, len, flags);
-@@ -102,10 +115,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	while (copied == 0) {
- 		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+In pppd, the window between connect() and ioctl(PPPIOCGCHAN) is minimal. 
+If you prefer deliver order over best-effort deliver, should those 
+packets be dropped instead?
 
--		if (!vsock_msg_wait_data(sk, psock, timeo)) {
--			copied = -EAGAIN;
-+		copied = vsock_msg_wait_data(sk, psock, timeo);
-+		if (copied)
- 			break;
--		}
+> [Severity: High]
+> This isn't a bug introduced by this patch, but ppp_input() appears to
+> call ppp_receive_error() without holding ppp_recv_lock():
+> 
+> drivers/net/ppp/ppp_generic.c:ppp_input() {
+> 	...
+> 	rcu_read_lock_bh();
+> 	ppp = rcu_dereference_bh(pch->ppp);
+> 	if (!ppp_decompress_proto(skb)) {
+> 		kfree_skb(skb);
+> 		if (ppp) {
+> 			DEV_STATS_INC(netdev_from_priv(ppp), rx_length_errors);
+> 			ppp_receive_error(ppp);
+> 		}
+> 		goto done;
+> 	}
+> 	...
+> }
+> 
+> ppp_input_error() makes the same call inside ppp_recv_lock() /
+> ppp_recv_unlock(). ppp_receive_error() then calls slhc_toss(ppp->vj),
+> which does a non-atomic comp->flags |= SLF_TOSS.
+> 
+> A peer can reach this branch with a PPPoE session frame of length 0 or
+> 1. pskb_trim_rcsum() trims the frame, and pskb_may_pull(skb, 2) then
+> fails in ppp_decompress_proto().
+> 
+> Can this race with PPPIOCSMAXCID in ppp_ioctl()?
+> 
+> 		ppp_lock(ppp);
+> 		if (ppp->vj)
+> 			slhc_free(ppp->vj);
+> 		ppp->vj = vj;
+> 		ppp_unlock(ppp);
+> 
+> Without rlock, ppp_receive_error() could load the old ppp->vj and write
+> to the slcompress after it has been freed.
+> 
+> This patch adds one effect in the common single-channel PPPoE case. The
+> socket BH lock no longer serializes ppp_input() calls for one channel.
+> The lockless slhc_toss() can therefore run while another CPU is in
+> slhc_uncompress() / slhc_remember() under rlock, and a comp->flags
+> update can be lost.
 
- 		if (sk_psock_queue_empty(psock)) {
- 			release_sock(sk);
+pppd never uses any compression on PPPoE. Fix should be in a separate 
+commit.
+> Would taking ppp_recv_lock() around ppp_receive_error() in ppp_input(),
+> as ppp_input_error() already does, fix both cases?
 
-[...]
-
-> guest's virtio-vsock device. With the series applied they behave as on
-> a native socket, except for the reset case above, and the vsock
-> vmtest.sh single-VM tests and the BPF sockmap test_progs pass.
-
-None of these tests sleeps in vsock_msg_wait_data().
-The sockmap tests call select() before recv() or pass MSG_DONTWAIT.
-vmtest.sh doesn't use sockmap.
-
-pw-bot: cr
