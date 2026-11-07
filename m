@@ -1,61 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794072408;
-	b=mSJDNK5PeR2VbOZa5zg5IsTzDnlnJvA51fE0ONZDMidwlyAeWkP7lzG3TXlrhJnnb089
-	 mOEua8EdvD6JlwKbVpCatM9I9QOOjGmqF/NsPj9JmjNJ4lclzly7XrvwJNjRJvhVkwBwv
-	 VkVy5U8ubFJGqhBaSOVoeSlIRo71ZPYbS4oSBgjdG8AYPxObO+NQ3Z60nvi6RJefWqnm0
-	 z72HzGZBDwf2inoRPrPWSzvVe5AF7JLEFwMP6bfSRSOyqpT7O31+9v5zBFlhbUREFz29n
-	 BGrfOK31NuwWUZ/B9NDmMojlucQVXHB7zOUBQmgyUos7CrOAW5hQeAX0oGqtc710ERw==
+	t=1794072440;
+	b=vPgs0Gbnh3BWk2XBm7J/D4J8aQJvDNy0L3qini+wsu3zqt1zQck2ecegFsx6Dz02ccGT
+	 hVU3YBbgroCSKEtwC0ZG8WkJXj004+O9BUGzfAno9ZIoTxcHJgLZioFM79XZUT061YaBd
+	 XW0vcczj1aHDAtUcKFzLkUQIkq3nxbtCNjZEmbnI1L5WXhdnT3gj+cd3ExxArzd/5fzNl
+	 YqhKkm+Q4wuzZV3V7AFroJ1qXN67ETCJe8Dr4YxB2rYDZCw+5SpejUfwwcA8hoXGfV4lt
+	 1APfWv8sQD/jWhY5I7HGX1dUETcF3xS8sCWniD8H+t85bxXnYoGDfeHJIxp7+1jpTUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794072408;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=QNkjpjOOZukafknHpjmjTlu7GYmPQ8lQhqnY2KVvK00=;
-	b=n/Gt4eLsrrc3WL2rsGTdnczy4AHDorDZbFtheykOOTaoggEDU7I8eFqy0paWDzNgn735
-	 KZBW3+M6f/eMw0jPeqBKP/ooiFutYo3QW2Y7glIU6LyEgKgCt2lFjk7n/wb1+t1j2KkUZ
-	 zlSDBfja19YJj2HvdbXM/1a6zSMmwdEgppaagdVtnJjtrVOmmae6ylyAmHOiyyn+HjX//
-	 ATV1x5GB6aGL8Y9mMB+0X/hRKC012jk1Q4/2HCkaDUoKirKl/Gx8WZXGDiKpLyT5MXXP+
-	 guS7b8MyzjFfjDaxxYByymwPdeqpOZUg7JAiM/EAY/Y3HG2pVgZsWPFnQPccn9rXvHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794072440;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
+	b=vNz7/2xOuwB1hp56eNj5bT5wlxdjdOllC3Eoootg0YGxN/aNm5hJk0SuMfTMlBehfZyF
+	 Duma7h6WRxz8kf3eywfWj1q+LdI7BToiXehEeayw5acaBjWY++IS9u8VrITAgE9fagiR5
+	 z3ROjy7AXtMRAc5TaxEIFhTcDxyFSrRt5YhY3Mwg48jJB1suBxokCu8NIs1VJOkvCGqZk
+	 blUv9liDQWIP1Xqy6JjPSSg917p7a8WGfLBJDJ1bZXKCcEya/wWn0euJww1+2jqc5xUq1
+	 gKVTJ3KbtowrGIJwzRx3I9/ClLNdklOzGInw3OA0BzZYEY0Mfq1lsjQreDjvgTM/VNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=K259xF3G;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="kBRtH//X";
+	arc=none smtp.remote-ip=74.125.82.169
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C58606A326;
-	Sat,  7 Nov 2026 17:26:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16C58606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F5B606A32E
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 17:27:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01F5B606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=K259xF3G
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QNkjpjOOZukafknHpjmjTlu7GYmPQ8lQhqnY2KVvK00=; b=K259xF3GUjZv/2Mgu+KBvvS93b
-	r6nA9Z7TW4BpFYmRFHui0XS48wjV+sY4uQ7cUEfXB9WdirONJEbzNOS7gBmtiZU8nv4vWSMuv6OB4
-	kX4m8HOybHd1wcsCDnub/d0Ic3XnaENcuETe8ZytEhlMj/NSzpPbF/kc+9snKZxs2Jag=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xPkBe-00Ez8f-MO; Sat, 07 Nov 2026 18:26:42 +0100
-Date: Sat, 7 Nov 2026 18:26:42 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: dsa: motorcomm: Prevent rx_bytes/tx_bytes
- underflow
-Message-ID: <91357461-8056-4b1d-a06e-6f1db5eeaaa4@lunn.ch>
-References: <20261107015447.335056-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kBRtH//X
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-36f6295304dso1732474eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 09:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794072439; x=1794677239; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
+        b=kBRtH//XVichkRikoXz0f3WTHIlITZ1SryQ/0NJaXxcgxJFnQ/kWxd2qN0cvEbrSgL
+         vCc28+x19SetD/5AU+3gDnvpS5OHzdWqfuGF9UY7PUv1jH8TI7eChX3qnXl5d9fW16gI
+         /0XbrUdOwcKCKgx74Oe+0MSoMHyiNB/WfghnbVXVBNsji+jK4eN85o+MoW6g4r6tNZ9v
+         xExwIOsgc7Iw/yN8G4BEZQg3JbyGk5jhCEDiIxkXZgw//mp1v9zKzx/fWSj3iwDNn8jh
+         2CKFV3WKhWqCZnbwJINRBuR+TOsiUzP/UeebdcHL1QLw8bAuVb+djeaNLs04FILbPfJ5
+         mzGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794072439; x=1794677239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZZwMrztt3of5COKCtSyFNtiXLTIolPtZxVxm9oGuspE=;
+        b=HqhkgID3cffnJcgArGT/Ff6Ggq8E8oGjoFVotrb5rUQqAOVTPxPwJv8pY6sUBb4S1V
+         wGb4YEVqzqFmqsSRhpfTU1JYn+1ZgEyfMKqH9qLvh4XmmsWVIAO/sjnnm9zzgxUKGegI
+         txqsbQLS5nKwYOZ0f96KqGALPl0NjCKuwI1n6s5I/UrQHZ1k5uBcbAyRzH/QqYYivtxL
+         nfZHjeMwjpL8kNg97Jlb869e0PU4m8GLVGIf/smuxbDQj6eSzwNzwHQZUCioJcYgJVM1
+         NzJgiBe80Amq3Cr6j1bcZ98/9M+/4jvwMx9/26NQ0NDMUYeQ+cG1XteD9hwmnsI+fgLb
+         W3hA==
+X-Forwarded-Encrypted: i=1; AKwUvBwkzg4wB++COEinSSIuezKGVA+TE4VVdfMxXrNfJ6b/F/OrdWqe0gLAq16ectQV1mm5+kdWzBQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+nUc2jgMki5ie/8G1NW9jnF/UVfaKUpr7FoeYIP5G76gDQmf+i
+	2Hpd/1dIPuHebDKhyrBD8Jg7ckxICWnOfXX7oCeiC8RCa/YAY1nNXSrn
+X-Gm-Gg: AYBFou1fXzGazgFbHcT+E7wI1SYjydnVVqQ5pXHsun6BMX3wpq6RKIQZTgOVf3Y+HOe
+	E9wu5crJGPkTRquFBh/trGwPzWCg8TnWwZu4cffS9cv/KvkpZJnWYqoxFNAKB8xYv/6MmkRjK52
+	B9jr4HWbPq/RxLTCfXufJ2bv1V8jH9S/K8ztTeyKOLyjWOJaAqs09pVr2Sn7W27eiW/PtJRdE5L
+	rItQ5n+dWKz88U4IKB1i3O5IjJZlFxO0Nsj11tTt0EMqx9dqzRLBz+jQXIdHWjx17cl0rQ3c6Dc
+	7+umO47PnYGkbNQ4yNs2Z7pIBVBX8ABoFNKuVzJscM3BEFmTb4Xsj6wxKipZt8ggoP3y6PEEguC
+	ks2hYilC/57PLNP8WO2ldsRs2bQPGqEiLVxRoMstrlL5xQKDXoWemOTB+klegX/Gc9KBbfp96/1
+	XtDnrlZuV2wXQjiQMg0ifNJzGt+ucROrTOqP76Wn6KsGkjkaNOWlxOcqHpUd2u5JFbHbe2Me5Qn
+	iHDCpjqxxvnT3wtQsMhVyFQcLvweowCXtJ/XsKYkSJChX9kDUn8NOQc+KpPiDZzJxCdUrqaS+2H
+	p+MFx0sEqt2E4Skg8M4euVJd2ULUprzkoSadWA==
+X-Received: by 2002:a05:693c:2a07:b0:36d:4135:cd7 with SMTP id 5a478bee46e88-36f75a27e38mr8089948eec.18.1794072438631;
+        Sat, 07 Nov 2026 09:27:18 -0800 (PST)
+Received: from xploitoverload ([2409:40c1:6412:e5b:5516:cd42:6c8f:c918])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa999654sm16328165eec.27.2026.11.07.09.27.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 09:27:18 -0800 (PST)
+From: Kalpesh Solanki <skalpesh942@gmail.com>
+To: willemb@google.com
+Cc: Kalpesh Solanki <skalpesh942@gmail.com>,
+	willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v3] tun: disallow setting IEEE 802.15.4 and 6LoWPAN link types via TUNSETLINK
+Date: Sat,  7 Nov 2026 22:56:54 +0530
+Message-ID: <20261107172654.302210-1-skalpesh942@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261107162649.282982-1-skalpesh942@gmail.com>
+References: 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,21 +110,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261107015447.335056-1-mmyangfl@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-> +	if (res) {
-> +		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
-> +			port, res);
+> Should this be
+>
+> Fixes: ff4cc3ac93e1 ("[TUNTAP]: Allow setting the linktype of the tap device from userspace")
 
-Please don't break strings like that. The reason we allow lines with
-strings to be longer than 80 is because somebody is likely to grep the
-error message in the code to find out why it is being printed.
+Yes, will update the Fixes tag.
 
-grep -r "Failed to read stats for" is not going to match.
+> Cast to unsigned short in these comparisons?
 
-    Andrew
+Yes, makes sense. Will cast to unsigned short in v4.
 
----
-pw-bot: cr
+Thanks,
+Kalpesh
