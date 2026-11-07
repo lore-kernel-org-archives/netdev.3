@@ -1,54 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.106
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794018265;
-	b=p9b/3BdBwVTjPLjqNrYs9NkHbU/JdetHXIokRsmDLtv6EKdb8RuIn4J3CkyHnvnWST45
-	 rKrIIQi45x1JUzHMjDebdz6+BwkGw4YbOWKDnz98KGXLB0jV4C9/B2m7FrpPTSiC+/+Qg
-	 4PLyZzKY0B1gsX3rXUbNiQbekj2gFaET0w+metJDxUm9EVC8W2ezSN9WOgOf2jQ2RR0vd
-	 0Wtb/RTgVzgzW79kPGWV9LThfAIz3/Z4rXBVtAmS0YS4kxOPspWjI+sZP9gdEdbrKDA0M
-	 kLaolByGbfAv3XDFaYXIDHcsRSe/MulNLml4xjn8EzsTlsjBRg3yDRWE1mBpD+c6qTw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794018265;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=FNiNBtPDzzetWijssUKEwr2+c/XYMNjUeXXOB4NdeCk=;
-	b=vDocaJ9E/dnUp/MVqhJH5swEidO9xjkv5/E2YXuwmd0ljXANvFHVG0IGet+6xOcKOaHi
-	 Ct03MRGySPgwjiuWFvQH4O7klHHYeakjaLoZwd56NN0CaviYsGzFZWSzRJMDkQGdiKfBv
-	 +IDzrYG5JBB93CzaMP62pTqRfbxqL50AuIK1JYgArsLlgE0O+cLcm4ISIqr6kw9I6xHRC
-	 jPtESulKZi3mYYlt9GMyprFFLN8r1NJ1lcVpya8HjM90HiLLQ+Dyy6HPDwv1p+3YUiJbi
-	 Ch/PWf8n0sXmbjTF+oGIXg4Bx0SaXXVXLMUrY5N0M03PMD5Shx0adm3a2X+vM0nzwqw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mR8TJXTA;
-	arc=none smtp.remote-ip=91.218.175.106
-Received: from mta0.migadu.com (out-106.mta0.migadu.com [91.218.175.106])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.0
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794019408;
+	b=uAwqWiypuogNLVhyXKpNf1BYpnKaiP9WcdjTGiB29yl42cszcuATkCvnF1Ps/RIpQOBg
+	 AmID9mt0Cq5WsBj0nzrgxZsqvUNWkHg5k5aUNcplgzMv8Dg23jcbM2l359gvNdI30S+g/
+	 bg3v5PQ9UvAR00I5Hdq3bNqBeHiI9FwYHDPZzsIBI326LXdSoKzsT6kxFLabjRhHBsWIl
+	 X2zazCyKnC0709s4Q6TgUupn1ovaMezA0d6TUY05hXiVUkf8P/f9L8rU4FRZoI14zH7vA
+	 JYSBdh4zaXpbBkcpZmgyWpHvOyGQ4JSNF66ZipChW69kDPT3ZyekUchc25UMjkmDsiQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794019408;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=+XWW7PFKZXZGqB3OVbBsJvy380LZfgPaj1X9yMI8NyU=;
+	b=WyPXdIUl/0dFiOiq61Z28aHntNebWnBZoepv0Ntidq67i2Y0B1EPox5MitXA63K7Mu8v
+	 QT3/yL04e90rZ9aig8qFpuzqBDGJxcjwwj2PTkcRYiL3v/noggIIzouASubzIKPU7jlpg
+	 lf86pU5DkqqC/LzvxAF+dFVkv8b8LWfaRyJU/DAeXpvN9Saw9RczANOY/1ux0z8iSDvLB
+	 cQVOzmCkmr9jMGbrQmAX8xhcy+VyX375ADuXxsLjvftG7SS//p8r18oiO+1+s9D22jZL0
+	 X5Yo/Z61ZV+9Yue0r+B1xemmNGbVwRraqSnStRdyWRV41enQY6m+kSz8KrcUGlOuyqw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nokia.com;
+	spf=fail smtp.mailfrom=nokia.com;
+	dkim=pass header.d=nokia.com header.i=@nokia.com header.a=rsa-sha256 header.s=selector1 header.b=r1cI87f6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.0
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010000.outbound.protection.outlook.com [52.101.193.0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D869C606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 02:24:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D869C606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6012606A333;
+	Sat,  7 Nov 2026 02:43:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6012606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=mR8TJXTA
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=OYVZ0yzumc1mk5Sb1WLESPC1f1zKEMV4R0hkomobwSQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794018261; v=1; x=1794623061;
- b=mR8TJXTAyaI8UY449/vxt26+P/JzCQGp62Sv0rKA79EXTyvfggJQMSfOOVUCncG3XB2Y2h5s
- NwWce76HxNcM7OwrCvg1EW/ZUZTiPtIvi5pdFGGqX8+Ipnraj8id9cFdgqTiW63WczdB9Cbb8MD
- 0atJIRC9NOfN2wueXDt7Am24=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ab62eec1d21b0e00;
-	Sat, 07 Nov 2026 02:24:21 +0000
-X-Mizu-Trace-ID: ab62eec1d21b0e00
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <be3166fd-596d-473a-8959-207492c06282@linux.dev>
-Date: Sat, 7 Nov 2026 10:24:15 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=nokia.com header.i=@nokia.com header.a=rsa-sha256 header.s=selector1 header.b=r1cI87f6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F8jvh943O92Sc8IUaG6ySgMEbuDpJFiKMQA0PwXqwlew+nfTHp6ZXdnYQF1+Dth/JZCK2ur5DklZCI2Lu4MjVVRDd2QDVsb3xS9bkBhxDlzfm/LyxcJuiYefSoPRvh0IzrzHQrzb12RlUdkGfk/WmYAbu8WrRLbfBd9vGZH4+TdAfr9NW7pLzvN6XspcWRra5NnEy27ARl39zNeCBCZ0vzar7gUlXZpj3/3iTlMKg4BHwQhCogGYYMrrr4nz7Cc8uQ7QJjukbw2/0Gzitc0VapixTUmKIbaTsSAnGHa5QoLL+KTpejM0bgs4H+IQ2TaNtkkMhx43ur8LEtggQ2gN1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+XWW7PFKZXZGqB3OVbBsJvy380LZfgPaj1X9yMI8NyU=;
+ b=fsRjU8Gev1OD/7+7h7aOPd8q7OAC9Xmu4Scs5mUAm4wb7lWlv3kYo+mx8kSMGWpWd27xM6iP8fO52j2AcJ51YW0/8ipaWAGvD3rfWP4NdlESCdCL8Vnt6W6G2keNbliqU2eBB1+1AUmRDt2U02AY5N0vBjXSkPqxzxZK3zbYzKPsVuC/FeP07kMzhxXLwfkE/m9SJA9RcIKs4Kh8Xky9Nc1CITGvOb4TQeLxw8FXNUktcUGhJ9S0TGuyc+txfX2PKkhqhEvYTt16v7B5YjYdDzUoiWm5NQ64cn1nWftYkIPfC6W63/Is0DD/a/9uX0VJdPPY4hclgEG69Sjg6wElQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nokia.com; dmarc=pass action=none header.from=nokia.com;
+ dkim=pass header.d=nokia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+XWW7PFKZXZGqB3OVbBsJvy380LZfgPaj1X9yMI8NyU=;
+ b=r1cI87f6zMgX4/qZUc7rqfwxcux/njm8YSFzDi8soNcjLEGjF8K4XwqlQnWqW1krUp+LVGj9Qi3K9WaKmWAr7VgwPhYPYePnYmLQPULARahmL0Tq9mX187unz4jlZaItmoeghUUAfWz3uByp7bJ6lKgaU2slEIFNjwZW6TUD+PvC0WHYqcYerqt3YMZqzM7XY+HQxM1fXrgjozLOWpiNOS11XsxsSPRmFLodr0i6gfawa74uJIqwDviljb/tHOE5niw7eXsm2iRcgoubNfSBgYXPkz+VVGvusknztUxGZ6jxs9MH5fRsqi3UG2RnGvx/nqvWG/lTZxeevHLrYT3MsA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nokia.com;
+Received: from BN0PR08MB6951.namprd08.prod.outlook.com (2603:10b6:408:128::14)
+ by SJ0PR08MB7781.namprd08.prod.outlook.com (2603:10b6:a03:3d9::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Sat, 7 Nov
+ 2026 02:43:23 +0000
+Received: from BN0PR08MB6951.namprd08.prod.outlook.com
+ ([fe80::4dd1:e1e:56b0:b178]) by BN0PR08MB6951.namprd08.prod.outlook.com
+ ([fe80::4dd1:e1e:56b0:b178%5]) with mapi id 15.21.0569.011; Sat, 7 Nov 2026
+ 02:43:22 +0000
+From: Anthony Pighin <anthony.pighin@nokia.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: stable@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Todd Fujinaka <todd.fujinaka@intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-net v2] igb: Retry the D0 write of the i210 PLL workaround
+Date: Fri,  6 Nov 2026 21:43:19 -0500
+Message-ID: <20261107024319.103771-1-anthony.pighin@nokia.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR19CA0020.namprd19.prod.outlook.com
+ (2603:10b6:610:4d::30) To BN0PR08MB6951.namprd08.prod.outlook.com
+ (2603:10b6:408:128::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,260 +103,168 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 1/2] pppoe: pass bound packets directly to
- generic PPP
-To: Simon Horman <horms@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, manizada@pm.me, ericwouds@gmail.com,
- nbd@nbd.name, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261103111711.28202-1-qingfang.deng@linux.dev>
- <20261106181228.1263020-2-horms@kernel.org>
-Content-Language: en-US
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <20261106181228.1263020-2-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR08MB6951:EE_|SJ0PR08MB7781:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc267e64-4622-4c62-d6d3-08df3c78e39e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|7416014|18002099003|10067099003|11063799006|261028144727099003|261102123227099003|261026140227099003|261026121527099003|261021121427099003|261021123027099003|261022105027099003|261022075727099003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	SbW6Dvpy3UnbeuZNuF0N8NgW544vOF99DIl43rHtE9Z6Tj1KECMwNaC5Sj9/CSXYazoPoy0AAiA9aexqc5PPutm6JhahymfS04Whdf4aWN/egb8QbQ/YebwDLVuJsC0ugwbNVlb+S3N6GRFJ0y1MsXG6h3aA8C0PYu8Dac7oz52PmBaOjw4SU/y+Yr9LEx5dnqJ0Bmh3BmwgZbK6Nrb4EoeSgSKD9LrNRAKACdV+pt7uXZzY1ztYTcs6NYKQ3EC0Q3kwnQ5y3YlUBpMY3NaIr7xSOAlGwuT3rF8Z3O1xs33noEDuEEJKkcjn7hypjkzXy/z7MZysBAvjPUgqBga/R9azcPwZeNKndqX67tuwvuvfke7arqbNjpkhQXn1xBRWgV88jos8gRKtpInHPmWia9pN3hacYm1poyNQiT69udtVWlindo/gqtb/RA6A6nc8W11yOxuIKY4/eXyCohVmGzLo9MPQ4LCMHzxtJww0Qodi9mOqWElfqsKPqIXiBgrTqbvdk6F7e9f2IAnFtI+Z4vRymvZhvRMeJMuQoXCHbcFAhob6LQ1am/+kl7cP85k0Pi6iPJpBnGyCYim6SHw8xlyx7acKmTdEW/YfBzLWzFxsXmQT+2tKXYFpmfdPazKx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR08MB6951.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(7416014)(18002099003)(10067099003)(11063799006)(261028144727099003)(261102123227099003)(261026140227099003)(261026121527099003)(261021121427099003)(261021123027099003)(261022105027099003)(261022075727099003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MEzjb+GneAKocUOOYS3Nh9Y5CJtikxPCAySbKSh8lBRoFtGe0nR6Hp3ETH9j?=
+ =?us-ascii?Q?lEYvG/elOxpy2NKdlG70UgSgdKm2lKdModk5SHBDYSfZ67EU/m9Rdyj+G7Zp?=
+ =?us-ascii?Q?snonV/V67bCJRQ+RZNPA6p9cNvm6F+VbJxEdwfxXJ1UoIafFFHKAFdQup/8o?=
+ =?us-ascii?Q?fXxnTmgXnv1vpmCHDT2/v50S+plBijlreNmwEvmlFGch+zSKKzYDuiXE4Ecy?=
+ =?us-ascii?Q?IgGW/Km3A2VXCzMpvPvmgE1kjESzmj5ZbhQ8cfyy32FdNfrG6vWUsnp1YHq3?=
+ =?us-ascii?Q?moZHVMk09Dz421xvlu1q0OCQadO+NJKyuWKUENlhooqG3Uf2bPPHFzB1IdFl?=
+ =?us-ascii?Q?7+RrGWfL9jD/rGbX/vxb4X+BQ3v8N3nk10NW62j48hv2gkuIK8PiMExt+ZBC?=
+ =?us-ascii?Q?hLqOA9A/tzPgkRmxbLOuMD+SbeUGE/oMsnWkxV/QRyao9MpDDI5WQ3JagcuU?=
+ =?us-ascii?Q?8OG+wd3iUYQ+JeFR2ePQT71/DA0liELqO5ZV1U2bYGCDBXJim6VEH/hz9WAi?=
+ =?us-ascii?Q?h/qLlwmO0jjpNDEZQnjOBehtSCUouoZT94Pv0+afCiyLmxxKI+nRygnhheky?=
+ =?us-ascii?Q?f8yrVttJ8RkJHQugD7ZtR/1R634ImIhyRIPKYCQrYaZUZV4OY8/gzqNCnM7P?=
+ =?us-ascii?Q?QhvP6kK2dDcT/kWOlWmkFaWrs4M9zjWafHTi+dlA5Ng08mzCLwI7mFQvrn3l?=
+ =?us-ascii?Q?NpK+CDyO3GyPw11Bj4cvFNuqvhUbdfCs9HfG8M9txVBtpMhCl6kcC29hyZP5?=
+ =?us-ascii?Q?j37hC+AfhPJeMaqmeSpeYFnJvzzgYOwMQDsGNuvmF6Ctn6wlzihWpSR7t2yT?=
+ =?us-ascii?Q?bezW5PL+OtL4driIGPJnaXKeBHCfHEfqFhRbwM+dZjXwXspzgm67AhB232/u?=
+ =?us-ascii?Q?W3kONqCxZtZtipvQrQjpIfqzOrojYz9Uj5DPhmMnjfpdUdARnj0JAHZYuAB0?=
+ =?us-ascii?Q?ibOKOLSlwlLO9BvrygBeWZ0/h9iZaIdKTbIzEmjbvss/FXDZJMk1wrji8RFH?=
+ =?us-ascii?Q?sMhMuhejM4iX5DUMdhBJ/xiJi3xHumU46fJY6bh81xfHszJVI9dlYHNV4Rhe?=
+ =?us-ascii?Q?7KUMU5Etm0YYQlCUS1atwnJIRBtGJc/lhAgpViWJ9amCxTeqho8nQDnZO/k2?=
+ =?us-ascii?Q?F+nkQVwQ44cdgTjSz9gSB6Y64bHXGNZ5AoGgrE5vNJAZPEI9Udvj88xUj/Mq?=
+ =?us-ascii?Q?g3FWwOgaN3Q/tZ3wYFOcasEfl18S82529fBQ3bsmo16ROOQPzftB1JpATNf1?=
+ =?us-ascii?Q?CcNoZAFifUhvzga/1PCCMoCK/25Qwr5Wua45+UDiKgdpjaducRm9JjeAIxO+?=
+ =?us-ascii?Q?Eprl7/Xr4y0ysra1fjutA7W7KFtih23hGresaOkOWxJ/py0SBL4AslfA59YY?=
+ =?us-ascii?Q?DKpxP+I4iYiskEN1p7pWV+t4UmJuIXvizrH7y5pT4drgzXeCoP4FEDQU9RtM?=
+ =?us-ascii?Q?q8CdRpkGwjH4MRIgpDqhDD3V9q/N4m90sY3mcC8ZmhyuotfYX3/qWBrqtFYt?=
+ =?us-ascii?Q?2m3bf2Q+A+RIVkF6fBzpkVbS3xkbXx/idlkc3uOP7HGWrfuQ8YPdV54qUKFJ?=
+ =?us-ascii?Q?I1lEvBSGNdmVUOtBwRti0+KrHjJ+Zd/tbbRmPH2CZpZu/XhOSaToRLtVJ2xA?=
+ =?us-ascii?Q?TSEQINiaNKajq7vpdne9o2QP0/mISfHkQ1M6fU9cREIlKDD1hBpuCrhSxwQ2?=
+ =?us-ascii?Q?n0DpN0XTA+DGlqvnY92jJaYLqyAfTICGs4ciI0i9B7ZsjG6l78YJUYx+XU5W?=
+ =?us-ascii?Q?XnSIKxr0GQ=3D=3D?=
+X-OriginatorOrg: nokia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc267e64-4622-4c62-d6d3-08df3c78e39e
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR08MB6951.namprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 02:43:22.3654
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1OikDFBoj3pIrYQLzweOU1OvxZsXKFw04LhE14AiFJtEAeIG3Lk8c+0chvJQYnatRNKKhOnsnB/2AJQS2GpUyuL2/yEr4VWsoYos07yXj1A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR08MB7781
 
-On 11/7/2026 2:12 AM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103111711.28202-1-qingfang.deng@linux.dev?part=1
-> ---
-> pppoe: pass bound packets directly to generic PPP
-> 
-> This changes pppoe_rcv() to hand frames for PPPOX_BOUND sockets straight
-> to ppp_input(), instead of going through __sk_receive_skb(). It relies on
-> commit ec4215683e47 deferring the channel free to an RCU grace period. It
-> also clears skb->dev, matching what __sk_receive_skb() used to do.
-> 
->> diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
->> index 67c28ac763efd..5d5187e4976b3 100644
->> --- a/drivers/net/ppp/pppoe.c
->> +++ b/drivers/net/ppp/pppoe.c
->> @@ -415,6 +415,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
->>   	if (!po)
->>   		goto drop;
->>   
->> +	skb->dev = NULL;
-> 
-> [Severity: Low]
-> Should the comment in ppp_bridge_gso_segment() be updated as well? It
-> still says __sk_receive_skb() is what clears skb->dev:
-> 
-> drivers/net/ppp/ppp_generic.c:ppp_bridge_gso_segment() {
-> 	/* skb->dev is NULL here (cleared by __sk_receive_skb() for PPPoE),
-> 	 * and some GSO handlers (tunnels, IPv6 UFO) dereference it.
-> 	 */
-> 	...
-> }
-> 
-> Bound PPPoE frames are the ones that reach the bridge path, and they no
-> longer go through __sk_receive_skb(). The invariant now holds only
-> because of this assignment in pppoe_rcv(). Nothing in pppoe.c says that
-> the GSO path depends on it.
-> 
-> The follow-up patch "pppoe: queue unbound packets directly" does not
-> touch ppp_generic.c, so the comment stays stale after that patch too.
+When the PHY PLL of a flashless i210 fails to lock, the existing errata
+handler transitions the device through D3hot.
 
-Ack.
+On some platforms, the root port frequently reports link training
+while the device is in D3hot. The generic DesignWare link check
+then treats the link as down, and the config access is rejected.
+If the write that requests D0 state is rejected, igb ignores the
+error and the device stays in D3hot. The next MMIO read fails, and
+igb reports "PCIe link lost" and detaches the device. Every later
+link setting fails.
 
->> +
->> +	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
->> +		ppp_input(&po->chan, skb);
->> +		return NET_RX_SUCCESS;
->> +	}
->>   	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
-> 
-> [Severity: Medium]
-> The commit message says:
-> 
->    "The direct bound receive path also skips the socket filter check in
->    __sk_receive_skb()."
-> 
-> Does this path skip more than the socket filter? __sk_receive_skb()
-> calls sk_filter_trim_cap(), and that function runs the LSM hook before
-> the filter:
-> 
-> net/core/filter.c:sk_filter_trim_cap() {
-> 	...
-> 	err = security_sock_rcv_skb(sk, skb);
-> 	if (err)
-> 		return SKB_DROP_REASON_SECURITY_HOOK;
-> 	...
-> }
-> 
-> apparmor_socket_sock_rcv_skb() mediates sockets of any family when
-> skb->secmark is set. BPF-LSM programs on socket_sock_rcv_skb also apply
-> to AF_PPPOX. After this change, neither runs for bound session frames
-> from the remote peer. A configured policy would therefore fail open.
+  igb 0000:01:00.0 0000:01:00.0 (uninitialized): PCIe link lost
+  igb 0000:01:00.0: Hardware Error
+  ...
+  igb 0000:01:00.0: Cannot change link characteristics when SoL/IDER is active.
 
-> Some other checks are skipped as well:
-> 
->    - A filter attached with SO_ATTACH_FILTER or SO_ATTACH_BPF, even one
->      locked with SO_LOCK_FILTER, is still accepted by setsockopt(), but it
->      never runs on bound frames and never trims them.
-> 
->    - The sk_rcvqueues_full() check and the sk_drops / drop reason
->      accounting in __sk_receive_skb() no longer happen.
-> 
-> pppol2tp_recv() already calls ppp_input() directly for bound sockets, so
-> there is precedent. Could the commit message still describe the LSM
-> bypass and the other skipped checks?
+Retry the D0 request until it is accepted, up to 1000 times. If the
+device never reaches D0, stop the workaround.
 
-I can mention in the commit message that it make pppoe_rcv behave like 
-pppol2tp. This commit is intended to bypass the backlog queue, so no 
-need to mention sk_rcvqueues_full().
+Observed on LX2160A systems with a flashless i210. To confirm it, a
+test build of igb forced the workaround on every probe. Without this
+change, igb lost the device in 15 of 20 probes. Reading the root port
+registers during the workaround showed link training reported while the
+i210 was in D3hot.
 
-> This stays true after the follow-up patch "pppoe: queue unbound packets
-> directly". There, only the unbound path still reaches sk_filter, via
-> sock_queue_rcv_skb().
-> 
-> [Severity: Low]
-> Does include/linux/ppp_channel.h need an update along with this? Its SMP
-> locking notes say:
-> 
->   * The channel code must ensure that when it calls ppp_unregister_channel,
->   * nothing is executing in any of the procedures above, for that
->   * channel.
-> 
-> PPPoE followed that rule before this patch. ppp_input() ran under
-> bh_lock_sock(), and every ppp_unregister_channel() caller (through
-> pppox_unbind_sock()) holds lock_sock().
-> 
-> Now pppoe_rcv() calls ppp_input() from softirq without the socket lock.
-> So ppp_input() and ppp_unregister_channel() can run at the same time on
-> the same channel.
-> 
-> That looks safe in practice:
-> 
->    - struct channel is freed through call_rcu().
->    - pch->ppp is cleared and then followed by synchronize_net().
->    - pch->bridge is cleared and then followed by synchronize_rcu().
-> 
-> Even so, the documented contract no longer matches the rule PPPoE and
-> pppol2tp now rely on.
+With this change, all 500 probes on the same systems reached D0 with
+no lost link. About 70% needed a retry, at most 21 D0 requests.
+Tested with 6.12.92.
 
-Ack.
-> [Severity: Low]
-> Is chan->ppp now accessed locklessly without any annotation? ppp_input()
-> does a plain load:
-> 
-> drivers/net/ppp/ppp_generic.c:ppp_input() {
-> 	struct channel *pch = chan->ppp;
-> 	...
-> }
-> 
-> Meanwhile, ppp_unregister_channel() can do a plain store at the same
-> time, protected only by lock_sock():
-> 
-> pppox_unbind_sock()
->    ppp_unregister_channel()
->      chan->ppp = NULL;
-> 
-> For PPPoE, the socket BH lock used to serialize these two. Without it,
-> this looks like a data race that KCSAN would report.
-> 
-> There is a second ordering gap. ppp_register_net_channel() publishes
-> chan->ppp before it initializes pch:
-> 
-> 	chan->ppp = pch;
-> 	init_ppp_file(&pch->file, CHANNEL);
-> 
-> This store has no release ordering, and the sk_state test in pppoe_rcv()
-> gives no acquire ordering. In practice the gap between connect() and
-> PPPIOCGCHAN hides this.
-> 
-> Would READ_ONCE()/WRITE_ONCE() on chan->ppp be appropriate here? Should
-> chan->ppp also be published only after initialization, with release
-> semantics?
+Fixes: 948264879b68 ("igb: Workaround for i210 Errata 25: Slow System Clock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
+---
 
-Ack.
+Notes:
+    v2:
+    - Cast PCI_D0 to u16 to fix two new sparse warnings
+      ("restricted pci_power_t degrades to integer" and "invalid assignment")
+    
+    v1: https://lore.kernel.org/all/20261105205325.2624892-1-anthony.pighin@nokia.com/
 
-> The sk_state access is volatile, so that side is not a KCSAN concern.
-> The chan->ppp race is still there after "pppoe: queue unbound packets
-> directly".
-> 
-> [Severity: Low]
-> Can frames reach generic PPP out of order during the PPPIOCGCHAN
-> handoff? pppox_ioctl() does:
-> 
-> 		sk->sk_state |= PPPOX_BOUND;
-> 		...
-> 		synchronize_net();
-> 		...
-> 		while ((skb = skb_dequeue(&sk->sk_receive_queue))) {
-> 			skb_orphan(skb);
-> 			ppp_input(&po->chan, skb);
-> 
-> A frame that arrives after PPPOX_BOUND is set now takes the direct path.
-> It reaches ppp_input() during synchronize_net(), ahead of older frames
-> that are still in sk_receive_queue.
-> 
-> At this commit, frames that go to the backlog while the ioctl holds
-> lock_sock() arrive even later, from release_sock() -> pppoe_rcv_core().
-> 
-> Before the patch, the socket lock kept these frames in wire order. The
-> follow-up "pppoe: queue unbound packets directly" removes the backlog,
-> but the reordering against sk_receive_queue remains. pppol2tp already
-> behaves this way. The frames in this window are mostly LCP and other
-> control frames for pppd.
+ drivers/net/ethernet/intel/igb/e1000_i210.c | 33 +++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-The same concern was raised when reviewing my patch that introduced 
-synchronize_net() in pppox_ioctl(), commit 92c1bf630ab ("pppox: drain 
-queued packets on channel handoff"). Before that commit, unbound packets 
-were stranded in sk_receive_queue forever.
+diff --git a/drivers/net/ethernet/intel/igb/e1000_i210.c b/drivers/net/ethernet/intel/igb/e1000_i210.c
+index 784f9a7bcbed..2de9ddc46dea 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_i210.c
++++ b/drivers/net/ethernet/intel/igb/e1000_i210.c
+@@ -7,9 +7,11 @@
+ 
+ #include <linux/bitfield.h>
+ #include <linux/if_ether.h>
++#include <linux/pci.h>
+ #include <linux/types.h>
+ #include "e1000_hw.h"
+ #include "e1000_i210.h"
++#include "igb.h"
+ 
+ static s32 igb_update_flash_i210(struct e1000_hw *hw);
+ 
+@@ -812,6 +814,33 @@ s32 igb_init_nvm_params_i210(struct e1000_hw *hw)
+ 	return 0;
+ }
+ 
++static bool igb_set_d0_i210(struct e1000_hw *hw, u16 pci_word)
++{
++	struct igb_adapter *adapter = hw->back;
++	u16 pmcsr;
++	int i;
++
++	pci_word &= ~PCI_PM_CTRL_STATE_MASK;
++	pci_word |= (__force u16)PCI_D0;
++
++	/* Some host controller drivers refuse config accesses while the root
++	 * port reports link training. The root port can report link training
++	 * while the device is in D3hot, so the write that requests D0 can be
++	 * refused.
++	 */
++	for (i = 0; i < 1000; i++) {
++		igb_write_pci_cfg(hw, E1000_PCI_PMCSR, &pci_word);
++		igb_read_pci_cfg(hw, E1000_PCI_PMCSR, &pmcsr);
++		if (!PCI_POSSIBLE_ERROR(pmcsr) &&
++		    (pmcsr & PCI_PM_CTRL_STATE_MASK) == (__force u16)PCI_D0)
++			return true;
++		usleep_range(50, 100);
++	}
++
++	dev_err(&adapter->pdev->dev, "Device stuck in D3hot\n");
++	return false;
++}
++
+ /**
+  * igb_pll_workaround_i210
+  * @hw: pointer to the HW structure
+@@ -866,8 +895,8 @@ s32 igb_pll_workaround_i210(struct e1000_hw *hw)
+ 		pci_word |= E1000_PCI_PMCSR_D3;
+ 		igb_write_pci_cfg(hw, E1000_PCI_PMCSR, &pci_word);
+ 		usleep_range(1000, 2000);
+-		pci_word &= ~E1000_PCI_PMCSR_D3;
+-		igb_write_pci_cfg(hw, E1000_PCI_PMCSR, &pci_word);
++		if (!igb_set_d0_i210(hw, pci_word))
++			break;
+ 		reg_val = (E1000_INVM_AUTOLOAD << 4) | (nvm_word << 16);
+ 		wr32(E1000_EEARBC_I210, reg_val);
+ 
 
-In pppd, the window between connect() and ioctl(PPPIOCGCHAN) is minimal. 
-If you prefer deliver order over best-effort deliver, should those 
-packets be dropped instead?
-
-> [Severity: High]
-> This isn't a bug introduced by this patch, but ppp_input() appears to
-> call ppp_receive_error() without holding ppp_recv_lock():
-> 
-> drivers/net/ppp/ppp_generic.c:ppp_input() {
-> 	...
-> 	rcu_read_lock_bh();
-> 	ppp = rcu_dereference_bh(pch->ppp);
-> 	if (!ppp_decompress_proto(skb)) {
-> 		kfree_skb(skb);
-> 		if (ppp) {
-> 			DEV_STATS_INC(netdev_from_priv(ppp), rx_length_errors);
-> 			ppp_receive_error(ppp);
-> 		}
-> 		goto done;
-> 	}
-> 	...
-> }
-> 
-> ppp_input_error() makes the same call inside ppp_recv_lock() /
-> ppp_recv_unlock(). ppp_receive_error() then calls slhc_toss(ppp->vj),
-> which does a non-atomic comp->flags |= SLF_TOSS.
-> 
-> A peer can reach this branch with a PPPoE session frame of length 0 or
-> 1. pskb_trim_rcsum() trims the frame, and pskb_may_pull(skb, 2) then
-> fails in ppp_decompress_proto().
-> 
-> Can this race with PPPIOCSMAXCID in ppp_ioctl()?
-> 
-> 		ppp_lock(ppp);
-> 		if (ppp->vj)
-> 			slhc_free(ppp->vj);
-> 		ppp->vj = vj;
-> 		ppp_unlock(ppp);
-> 
-> Without rlock, ppp_receive_error() could load the old ppp->vj and write
-> to the slcompress after it has been freed.
-> 
-> This patch adds one effect in the common single-channel PPPoE case. The
-> socket BH lock no longer serializes ppp_input() calls for one channel.
-> The lockless slhc_toss() can therefore run while another CPU is in
-> slhc_uncompress() / slhc_remember() under rlock, and a comp->flags
-> update can be lost.
-
-pppd never uses any compression on PPPoE. Fix should be in a separate 
-commit.
-> Would taking ppp_recv_lock() around ppp_receive_error() in ppp_input(),
-> as ppp_input_error() already does, fix both cases?
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.43.0
 
