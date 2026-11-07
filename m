@@ -1,126 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794075934;
-	b=nU9yK27WWBQSE1idmgaR5C+KigW5Uwdb2bM3MeWwKXkp1ad/x1fxfIdmycswjTqaDT9M
-	 GBpMJSb36pyZa3qx0kprmFcwAa4LuoeUekqeiFRirs4xI/f5PPiJzqiGbnu4dt23++ePp
-	 XvXfAj0UweyFYlAsWtOgkMe7VrKhBGy9p935bp1pQUs/EioGuSi3REQof0VJkcPgX4Mu8
-	 pKnp+uPLL2NMOnFMVw0yZvW/TvN0zIy8JF5zg22jsY83ggKAkmIxBFY6tphOXOQ+MFD3Z
-	 wNFJk5CzQgv0x5SDNGVZWnQj16dEyUmUtCilWMSP4MLVn+OFgLb9wil5ULaDh+e8dzQ==
+	t=1794077083;
+	b=FF+O9OFn4Muqm3oKEKdCVmVfIip5XT/ULTyAEZ79Zyasry9snxXCw6c72+HJbu2tGd+k
+	 PCMz2UQ2CnsGcwytpfnf99wAnuLBSehOYXxXGy/8Pfo3l8BVstOsMGIv3P1mAp4R59Bdc
+	 I4A4WeBZiCYLd2DwkOTZRECw2bLvGRZ62lwFVbnO3KQO8aIzHixxz9rSPh58tAu42YCV5
+	 6VDt8ZEfP95ZraZZG+czVlbhq6P0Q3qx5K3F/9vBqOTr1Pf8wBuRfU6DC47fvu4H4AXON
+	 BBYj0UweyMbKxXpP+qaODQHV9DXyWAiVANARAULf7TivCkCSIls9642zI2f4IylFiJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794075934;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077083;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=o4KEBZgQa5HXSbmQneNQ9t8RBeb6quQFAx0lvX+O4LM=;
-	b=rjkLMwqW0czZqeD3IbGI0qJFWSa7uJ7ywXmSrOdSpjz6Ga+6yn/BvNxE1+Pf0piHP4pU
-	 JrLFt+3heTzuPsFEyyvwjknkIvWmgx9tIzh/nxBAS48jsPkKu/F77Vp0ZskdYQ32cizFw
-	 BOZHiZ648HcQ8D7x4k1Lq/Pz2Kyks8DRSXUX5T/NkM9UkEuHQKA3NGiODNj7QTkLX8RNk
-	 hqqfUt7ey3SzsOPkgl2ZFHr1JodEr3LFRfDtmBO17sQK0mx3JIvbqxDnUiJYqEJgLu3OG
-	 zCZm/RbFD0iiR5mn/w2avYzCq16OS7vWK0IilTYmZYPXfyENpZIkY6Xf8q8em1SXHpA==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
+	b=bpJCiCTRlsMlgVVQVD0zuQfnoFbrEtuBW2BUhgyJ0tI2/17F02m7Zs3XZ/Cog0BBR+j0
+	 s57Wq8qZZCMShpZt9KXBO7JBJMC091XaD/dl/0apMdKRZc655c5W14lWjOq3nnKcFM8CL
+	 44S/T/+/rCTd1e1oXFrnIECH03F3Rl4u79bVnwo/XkWdL3i5oeyyN18negphK+Y762e4p
+	 /bfSPGMYIzsjE+hbdAh6Ch+NYlau+2vZd/k9MOCqL1YqANwpS0NqTTv/CxHQ94dE9rI0q
+	 AnSlESr3VXfTNwQYpDGcRhyMCHoOSCIPuSCYt0ueUlCX4AtCu9RmfhjduUgx1ZIFKbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=ZXFxPfbI;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dmarc=pass header.from=blockcast.net;
+	spf=pass smtp.mailfrom=blockcast.net;
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=bcHQ1w7a;
+	arc=none smtp.remote-ip=74.125.82.180
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70537606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:25:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70537606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9B606A32D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94E9B606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=ZXFxPfbI
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c49c32650adso215465866b.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:25:34 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=bcHQ1w7a
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-36f8cdd30beso649917eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794075933; x=1794680733; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o4KEBZgQa5HXSbmQneNQ9t8RBeb6quQFAx0lvX+O4LM=;
-        b=ZXFxPfbIL1yDhO7eAFUmmD5GbEzTzeTMc45MKZEzL2A15eafYpnSeCWHdGS9HOYcDX
-         UfifGvvj8hDRRsWB0ca7cSl0soaX2SEyWI4E/iykJiHosDG8fK12wSekdcoB/Ws9axGp
-         1udECMKCzZZi/q9tpGpr5/naHelYTBh0JJCeSstKL9TlkU37DMWbx4i+jBVGgDwwLiti
-         Adjl6GsUsd2IAOjOpIiRxpGhKdEYUHmef3yUR1vCWTttx8or9aSdBiR9f7/mFqu6uMCH
-         UMTAc1dzDC1giOev7pL45ndBOaDrTIvqkuZK5BsNXdTbqEp7AQ1KOCP7rx2aOUi5AkIc
-         xdEA==
+        d=blockcast.net; s=google; t=1794077082; x=1794681882; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
+        b=bcHQ1w7aFmchEDTJHBSP2xLcySFU2FljKGhu4aTe1PuSfCVVlPRQP76zg3h7oNWTLS
+         D+sj/CSVV6lpHms7xX/Y3LZYQy/JAaoqcSBhKXPWQMnKbi8IzvzRbG+rvxJ2ijisEAQj
+         Ay0SlWQv/yRPyy9hzw8xq7+A6KousOc9VkL0Po+psOL06JAQRka7YpAkdgEylxE+pcV6
+         0GmI6OcnuUCK12MVRBkuhbFhS0NcaVOOYg090rhCmJ1GffhhotV1GpstriHp/BQRIYWN
+         hgisshvtITu8CnWY9D3gz7j4V0RP7OmYqpGi3RNQmeUQOngpX2CsymHnF06b4g0Mb0sO
+         nMDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794075933; x=1794680733;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o4KEBZgQa5HXSbmQneNQ9t8RBeb6quQFAx0lvX+O4LM=;
-        b=kVt5RYll8bz1kSvxPWu8u6SJA43Yy58k+mYaAbcS9kKw/8lITA0ew6/oEV3xXVGLeu
-         12DXa/aiCDV6aZC4NmqIbcxF3V3sa/3I2WTveoH01Wk7DYkhg5m5nzrnz/JEP2J9I6U+
-         tF335V5olktYBfcqoizrFjBB7zkf0T3Xlf5Zy4GwPwWKql0XPdwso+hm6vn+/YPwOqwD
-         Zze30bESWLju6/xwshDVEwixxJe+ihdB4q1tFB4Pnr4TNDLqmHEJXwV6+RDWrPw0ojBs
-         nYaHlzoXzSCedNFvCDzH+OaF2C5vWETcy8Gxd7yDjAuY0h/W0JYLJXPkWlVDfiKG/xFj
-         1xNQ==
-X-Gm-Message-State: APuU4Z9no7zx6+nFmguumf0/0DWJsWUZsp4gqqI9GlfuGGB1XtxYda7v
-	74mLlPxabAbOu2TeL8ajt1qf4HoVdkUm8rt8VEPLfVr7Ol3AqfUPJcyFTUkRyophsDQ=
-X-Gm-Gg: AYBFou23Wja5uBJQIUSYDLkNfT7MNe14fI/aAI9bddb9NJkjaXsekWr8MLI/Q5/WYV6
-	1t9poyltu3L6ZLHR3VVwOGKuM8AsnK5pa7qHNRXfBOAjy1/+hoJjb1zBXA6m9U1uVxv+Trvuz7b
-	0crFzPiFg3PGGFNzxjL5EvXUx6fTivAS6Prrq1xEC2oApFRh6+zLMTsk55vt/l8WCUdpdBnWqRc
-	F9+bSonIZfwF5NGpFai7gmdDLKi7+e3D0MzXIkBb9Z6wTg7Cf5ns2JUKpDqX2ue6KxT4k3sQ8ek
-	A3gs8HsM7j6J8tm6VIfkHSal0yWKyCok3mR+zjXOERxfTNAw4gyWCSzNJVK3IkIfkcymFX9upPI
-	sT4n1TV0hc9pxYNFTOOEQcHRe9TcUev8nOi7NsdxIFPEKVi+E+eFeoYG0z8+YxVvVTX6lv4Q4vR
-	9IucL9bTwUObhyOn45rtIjKGJOP3Bb3Y4pPP+C47OjFFEVqVluFxfMqpHDaLPtlAC31lNSlw43T
-	jLqRPxfRwAp17Z+cJDaB9O+ggGVwb4Oq1hixPkPx9XrkBT1hLUEM3jOQgqi/gTkG4gUPoGG2dqr
-	/tW9J1lQkCwPJOaTmpHU1/zwc8c9gTKHA7F+WZkLVjsziiORU/g4ULI6ZA==
-X-Received: by 2002:a17:907:3f8f:b0:c49:4450:6248 with SMTP id a640c23a62f3a-c4d34b8d695mr429135066b.16.1794075932804;
-        Sat, 07 Nov 2026 10:25:32 -0800 (PST)
-Received: from L9JK9NPFH9 ([104.28.20.57])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d6a999f00sm644066b.75.2026.11.07.10.25.30
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 07 Nov 2026 10:25:32 -0800 (PST)
-From: Tianyi Gao <tianyi@cloudflare.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>,
+        d=1e100.net; s=20260707; t=1794077082; x=1794681882;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
+        b=ov5TCsRb0i1F7RVR3hJ5Ssp9c0dF7UkCcb8zpVP0HXWHt4X1iASNR8uPx8b73oIH2p
+         mwvs2BUwcR5DBUecvkpKicb2K1zwMszNo4OxD3uMvLlgtJVWamRy6Y0jRSN0jxBetTMa
+         +BwdSedexzwkdL0YKx92jSS0BFAb/csDt2BExjlaFenP0OoBQesxX7WfHL/udnArAj8B
+         PUf2rYXKz+uX/QCMmM1QaurM66LNg5xf0lRjyP/gU/ydltJ+FmWMgHuOFTdY17N9/lyL
+         dSCJ6FYb0zRTejrwZADZE6cQbcFHMdIQNN0M5DwFCNxQryeQ2hWQIIVk7kTm5UFY7RhS
+         aBgQ==
+X-Gm-Message-State: APuU4Z9gTNWHksBX6Tm9T0t3pnY7yIBmfyEe5cVnBGorAMj/R9nq2ZSh
+	FkugGjx/NgWC6sK6NQc3Xbw2MZtKNuAvz3rzp3wSFlXRf8L6QvIIURJ02Z/x4olZKwk=
+X-Gm-Gg: AYBFou3jFqCc/3xyWDXUD+d5K9GnsrA2ElrpNpL7BLThTrBpI6Uy9rXM+MPjllREK8t
+	NhwRx+ME827IALmqlKwiDCEX8iMPbHiA1Am1eShE6XfGzdi14i++CD5+M4VXZesZzP2rbFjrsQz
+	5RK4V519iSFgb4IcUnSWfQ7ZFomF3gB6GlBGmYwllI6aXJA5boY9/fJZ/Y0McE4ImUWM/4c84kG
+	5NPpTOt1iDgqY7PEX8YNm9omcO9B07sizWPvlYX/ZyTYLAhTv+I0LX5kZNWGKpo0NgYMwORwaWO
+	Kx0ZGL8ePGNCbj5CHuAJ86GXcKPIrVtcbZkZFewdzob5sqkwVL7y2JYfSC0DcLSqNuPAsDBdGUE
+	aQGsG5zJmWL1TuLl+Z4MycP9m1dZ705OMRk/essqgIBLSYY6HE1Exad0fRhwuCGphD4QotquIPM
+	KBavk1v+ijQ39rS5VublXpQU032Nn6y8b8f8vW0uzGC7br1xRxhRbocHUcK5MKP/Oo0+YPulC3l
+	E5I59hJwYy1FT204vuquzkCzdZxWQReGHhGuuoTCoCrm5f4yanxqjoPmIDi0rbJRKgELifIAW04
+	x1o190sj/tCS996mVIIZ/FBAaQzG5Eeo1JTW5A7o2UcOjrZyehsGDLplOyBZ08ChPGHpSBs=
+X-Received: by 2002:a05:7300:109:b0:36a:79e7:2fd with SMTP id 5a478bee46e88-36f77ce5f5fmr9933762eec.40.1794077081392;
+        Sat, 07 Nov 2026 10:44:41 -0800 (PST)
+Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 10:44:40 -0800 (PST)
+From: Omar Ramadan <omar@blockcast.net>
+To: Taehee Yoo <ap420073@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	David Keogh <dkeogh@amazon.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Alasdair McWilliam <alasdair@mcwilliam.dev>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	brett.creeley@amd.com,
+	sgoutham@marvell.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	intel-wired-lan@lists.osuosl.org,
 	Ido Schimmel <idosch@nvidia.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
+	Satish Kharat <satishkh@cisco.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Simon Horman <horms@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Breno Leitao <leitao@debian.org>,
-	=?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>,
-	Danielle Ratson <danieller@nvidia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	bpf@vger.kernel.org,
-	linux-doc@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-kselftest@vger.kernel.org,
-	kernel-team@cloudflare.com,
-	nh-open-source@amazon.com
-Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and LL_ALLOC_SPACE()
-Date: Sat,  7 Nov 2026 18:25:26 +0000
-Message-ID: <20261107182526.69543-1-tianyi@cloudflare.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <willemdebruijn.kernel.1d64e7848503b@gmail.com>
-References: <cover.1794020868.git.tianyi@cloudflare.com> <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com> <willemdebruijn.kernel.1d64e7848503b@gmail.com>
+	linux-hardening@vger.kernel.org
+Subject: [RFC PATCH net-next 0/9] amt: relay replication offload provider contract (RFC, not for merge, seeking a provider)
+Date: Sat,  7 Nov 2026 18:44:28 +0000
+Message-ID: <20261107184437.2783174-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -130,68 +116,262 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 07, 2026 at 09:51:07AM -0500, Willem de Bruijn wrote:
-> Tianyi Gao wrote:
-> > From: David Keogh <dkeogh@amazon.com>
-> >
-> > Add a tx_extra_headroom field to struct net_device for that purpose,
->
-> Main high level concern is just adding an extra field. What's next,
-> do we need to add a field extra_extra_headroom?
+This is an RFC and is NOT for merge. We are posting it to find a
+provider: a Linux-attached device (DPU, SmartNIC, switch ASIC or P4
+target) whose driver would implement the contract below. We will not
+post a for-merge version until one in-tree driver with a named
+maintainer implements it, either as a co-authored patch on this list
+or as a public commitment from that driver's maintainer. Until then
+the contract has no in-tree user other than netdevsim, and we do not
+think it should be merged on netdevsim alone.
 
-Thanks for the review.
+Problem
 
-A user needs more room either in every packet or only in new skbs.
-needed_headroom covers the first case and tx_extra_headroom the
-second. I do not see a third case.
+An AMT relay (RFC 7450) replicates every multicast data packet once
+per gateway tunnel: one UDP-encapsulated unicast copy per gateway that
+joined the group. In drivers/net/amt.c that is the loop in
+amt_dev_xmit(), one skb copy and one route lookup per tunnel. At the
+relay's egress the copy count, not the input rate, sets the
+ceiling. We are bringing up an AMT relay port at the SFMIX exchange,
+which is where that ceiling becomes concrete for us.
 
-needed_headroom does not only set the headroom of new skbs. It is also
-the minimum that ip_finish_output2() and ip_forward() require of
-existing skbs. Raising it for new skbs also raises that minimum. With
-XDP on a veth peer and needed_headroom raised to 256, throughput drops
-by 2.8% to 5.8% for local TCP and by 4.0% to 20.8% for forwarded
-traffic. The cover letter has the detailed analysis. veth also cannot
-set needed_headroom from user space today.
+Hardware that can replicate one packet to N unicast destinations
+exists, but there is no way for the amt driver to hand that work to
+it. This series proposes one.
 
-pahole on x86_64 (defconfig, net/core/dev.o) shows that the field fills
-the 2-byte hole after needed_headroom, so struct net_device does not
-grow:
+What the series does
 
-before:
-	unsigned short             needed_headroom;      /*    60     2 */
-	/* XXX 2 bytes hole, try to pack */
-	/* size: 2688, cachelines: 42, members: 187 */
+  Patch 1 adds include/net/amt_offload.h: provider capabilities,
+    opaque provider-owned endpoint and group handles, struct
+    amt_offload_ops, the TX and ingress paths, the FALLBACK /
+    CONSUMED / BUSY results and a per-binding u64 epoch. It is an
+    in-kernel interface with no ABI promise.
+  Patch 2 adds the provider registry, keyed by the lower netdev
+    (amt_offload_register() / amt_offload_unregister()), and the
+    lower-device lifecycle: a relay in auto or required mode binds
+    when its stream device is a registered lower and the provider
+    accepts it (otherwise it stays unbound, counted), and unbinds in
+    a fixed order on NETDEV_UNREGISTER, provider unregister or relay
+    deletion.
+  Patch 3 adds one group object per (family, group) with its member
+    endpoints, a generation and the desired state, plus a reconciler
+    that programs the provider from process context, never under
+    amt->lock, with a per-tick op budget, ENOSPC hysteresis with a
+    software remainder, and reset-and-replay on op timeout.
+  Patch 4, on a TX binding, hands each relay data packet of a group
+    whose commit amt has published to the provider before the
+    software loop, while the binding admits packets and its desired
+    state is in sync; every other packet goes to software. Exactly
+    one actor handles each packet handed over: CONSUMED means the
+    provider handled every copy (sent it, or dropped and counted it)
+    and owns the skb; FALLBACK and BUSY mean the provider sent no
+    copy and amt runs the software loop once. It also exports
+    amt_offload_encap_xmit(), so a simulated provider emits copies
+    byte-identical to amt's own.
+  Patch 5 adds IFLA_AMT_OFFLOAD_MODE (software, the default; auto;
+    required). required with no usable provider refuses the link with
+    -ENODEV and extack.
+  Patch 6 adds 26 KUnit cases for the contract against an in-file
+    fake provider.
+  Patch 7 adds a TX reference provider to netdevsim. It keeps its own
+    endpoint, group and generation tables, decides replication from
+    them and emits each copy over the peer link. debugfs injects
+    ENOSPC, reset and BUSY; devlink resources and an amt health
+    reporter are registered on netdevsim's own devlink instance.
+  Patch 8 adds tools/testing/selftests/net/amt_offload.sh. It counts
+    the copies each gateway receives, and reads the provider's own
+    hardware copy count, in the no-member, commit, generation-replace,
+    BUSY, per-group forwarding, reset, partial-commit, disable and
+    unlink-under-traffic cases. It also checks that required mode
+    with no provider is refused, and that deleting a lower carrying
+    two amt devices removes both without a warning.
+  Patch 9 adds the new header and the netdevsim provider to the AMT
+    MAINTAINERS entry.
 
-after:
-	unsigned short             needed_headroom;      /*    60     2 */
-	unsigned short             tx_extra_headroom;    /*    62     2 */
-	/* size: 2688, cachelines: 42, members: 188 */
+Forwarding semantics are unchanged by design. The hardware key is
+(family, group), because that is what the software path forwards on
+today: a tunnel with only an INCLUDE(S1) membership still receives S2
+for that group. A provider that keyed on (S, G) would change what
+gateways receive, so the feature bit for it is reserved with no
+semantics in this version.
 
-arm64 defconfig gives the same offsets, and the size stays 2752 bytes.
+With no provider registered, or with offload=software (the default),
+amt_dev_xmit() runs the same loop it runs today, after one more RCU
+pointer read and test (patch 4).
 
-> > together with LL_ALLOC_SPACE() and LL_ALLOC_SPACE_EX(). These add the
->
-> Since this already changes callers from LL_RESERVED_SPACE to
-> LL_ALLOC_SPACE, could this additional use case be integrated more in
-> the struct fields and helpers that are already there?
+Questions for the list
 
-Changing only the helpers does not help. Without a new field, the
-helpers can only add a fixed amount, which every allocation on every
-device then pays for. Or they can derive it from needed_headroom,
-which brings back the regressions above.
+1. This RFC registers providers in a registry keyed by the lower
+   netdev and adds nothing to struct net_device or net_device_ops.
+   Once a real driver exists, would you rather see a struct net_device
+   field or an ndo instead?
+2. Is netdevsim the right home for the reference provider, given it
+   has no ingress classifier to simulate and so can only exercise the
+   TX path?
+3. Is an in-kernel provider contract for a single tunnel driver
+   acceptable at all, or would you want it expressed through an
+   existing offload framework? We did not find one that models
+   one-to-N unicast replication with per-destination encapsulation.
+4. The per-relay offload state and counters are exposed in a sysfs
+   offload/ group on the amt device for this RFC. We expect to move
+   them to netlink (link xstats) for a for-merge version, and would
+   like guidance on that.
 
-hard_header_len cannot carry it, because AF_PACKET and header_ops use
-it as the link-layer header length.
+Performance
 
-> > +#define LL_ALLOC_SPACE_EX(dev, hlen) \
-> > +	LL_RESERVED_SPACE_EX(dev, (hlen) + READ_ONCE((dev)->tx_extra_headroom))
-> > +#define LL_ALLOC_SPACE(dev) \
-> > +	LL_ALLOC_SPACE_EX(dev, (dev)->hard_header_len)
->
-> If having to modify/add these helpers, it's probably a good time to
-> switch to actual, type safe and readable, functions instead.
+This series makes no performance claim. With no provider it adds one
+more RCU pointer read and test per packet to the software path
+(patch 4), which we have not measured, and netdevsim demonstrates the
+contract's semantics, not speed.
 
-Agreed. v2 will make the new helpers static inline functions.
+For context only, we measured a separate software fan-out change,
+which is not part of this series and has not been posted: it clones
+each copy instead of copying it, clears the copy's hash and caches
+each tunnel's outer route. Base and branch are both builds of our
+downstream 6.18-based amt.c, out of tree against v6.18.48, not of
+net-next's driver. Base is that driver just before the change. Branch
+adds the change and an earlier 6.18 form of this series' patches 1, 2
+and 5, which add no code to the data path; patch 4 was not in it. CPU
+time per copy, median ns over 6 interleaved runs on two days,
+virtme-ng guest, software path, no provider bound:
+
+    N tunnels   base    branch   branch/base
+            8   1898      1326         0.699
+           64   1974      1392         0.705
+          512   2480      1612         0.650
+
+The table pools both days. Day 2 reproduced the direction but not the
+spread: on day 2 alone the branch/base ratio was 0.706-0.730 (a 27-29%
+saving), and the branch's day-2 medians at N=64 and N=512 fell outside
+their day-1 ranges. The saving we would defend is therefore ~27-35%,
+not a single figure.
+
+No drops were counted on any step. We have not yet measured a
+hardware AMT relay (a router-terminated relay, which would measure
+relay capacity rather than this contract) against the Linux software
+path, and the first-loss point is not yet measured on a physical NIC,
+so we quote no hardware rate here.
+
+We have also prepared a vendor capability appendix covering Linux amt,
+Junos, Cisco, Arista and DPU/SmartNIC replication, with every row
+either cited or marked unconfirmed. It is available on request to
+anyone evaluating whether their device could be a provider.
+
+Known limitation: tunnel lifetime
+
+The offload desired state is only as sound as the relay's tunnel
+lifetime, and the hooks in patches 3 and 4 inherit three windows that
+exist in amt.c today:
+
+  - an Update can add a group node, and with this series an offload
+    member, after amt_clear_groups() on a tunnel that is about to be
+    freed by kfree_rcu();
+  - an Update can re-arm a tunnel's gc_wq while amt_tunnel_expire()
+    unlinks and frees it, so the expiry, and with this series
+    amt_ofl_tunnel_gone(), can run again on freed memory;
+  - amt_dev_stop() unlinks a tunnel before
+    cancel_delayed_work_sync(gc_wq).
+
+None is introduced here. All three are closed by the in-review net
+series "[PATCH net v6 0/6] amt: relay tunnel lifetime, validation and
+request-path hardening"
+(<20261107004935.2627329-1-omar@blockcast.net>), which a for-merge
+version of this series will depend on.
+
+Dependencies
+
+This does not apply to bare net-next, and patchwork will report it as
+not applying. It is written on v7.1 plus eight of our other amt
+series, not all of them posted:
+
+  - relay endpoint keying and visible pre-Query report drops, later
+    versions of which are part of the net series cited above;
+  - sending the relay's General Query directly, a later version of
+    which is in mainline as commit afae89de73dd ("amt: send the
+    relay's General Query directly from the receive path");
+  - the IPv6 relay and gateway modes, a reworked version of which was
+    posted, in a different split, as "[PATCH net-next 00/13] amt: add
+    an IPv6 outer transport"
+    (<20261009122426.551178-1-omar@blockcast.net>), on which changes
+    were requested;
+  - relay scaling (configurable hash buckets, group limit and queue
+    count), the relay sending IGMPv3/MLDv2 host reports upstream, and
+    a configurable per-source tunnel cap, none of which has been
+    posted.
+
+The net series instead bounds the tunnels admitted per source address
+at a fixed 16. Our "[PATCH net-next v2] amt: make the per-tunnel group
+and source limits configurable"
+(<20261015231825.2852054-1-omar@blockcast.net>), on which changes were
+requested, overlaps the scaling group limit, and its planned v3 also
+sizes the hash buckets.
+
+Patch 8's case for a lower carrying two amt devices also needs our fix
+"amt: tear down every amt device on an unregistering lower"
+(<20261105232302.494171-1-omar@blockcast.net>), posted to net
+separately. Without it, amt_device_event() unregisters only the first
+amt device on an unregistering lower, so the second stays linked and
+trips the upper-device WARN in unregister_netdevice_many_notify().
+
+To build the series and run its KUnit suite and the existing amt.sh
+selftest, fetch this git branch:
+
+  https://github.com/Blockcast/linux.git amt-offload-rfc-v1
+
+It carries v7.1, the eight series, this RFC and a copy of that fix,
+rebased onto this series, in that order.
+
+IFLA_AMT_OFFLOAD_MODE is 16 on this base, after the seven attributes
+those series add. None of those attributes is upstream, so it will be
+renumbered to follow whatever is accepted. An iproute2 patch (ip link
+... offload {software|auto|required}) is held until the uapi is
+accepted. The patch 8 selftest skips when ip lacks the offload
+keyword.
+
+On that branch, under KASAN and lockdep, amt_offload.sh passes all 11
+cases, amt.sh all 5 and the amt KUnit suite all 29, with no splat. The
+ip came from our held iproute2 patches, the offload one renumbered for
+this base (IFLA_AMT_OFFLOAD_MODE = 16); we can send them on request.
+
+Testing: on this base, every patch builds with W=1 and the amt KUnit
+suite (the 3 existing cases plus the 26 new ones) passes under UML
+with CONFIG_IPV6=y and =n. net-next has no amt KUnit suite: the suite
+and its 3 existing cases come from the unposted series that has the
+relay send host reports upstream.
+
+Omar Ramadan (9):
+  amt: add the relay replication offload provider header
+  amt: offload provider registry and lower-device lifecycle
+  amt: offload group object, desired state and reconciler
+  amt: offload TX handoff, ingress punt rule and counters
+  amt: add IFLA_AMT_OFFLOAD_MODE
+  amt: KUnit cases for the offload contract
+  netdevsim: add a TX reference provider for AMT relay offload
+  selftests: net: add amt_offload.sh for AMT relay offload
+  MAINTAINERS: amt: cover the offload header and netdevsim provider
+
+ MAINTAINERS                                |    2 +
+ drivers/net/Kconfig                        |    1 +
+ drivers/net/amt.c                          | 5036 +++++++++++++++++---
+ drivers/net/netdevsim/Makefile             |    4 +
+ drivers/net/netdevsim/amt.c                |  600 +++
+ drivers/net/netdevsim/dev.c                |   68 +
+ drivers/net/netdevsim/health.c             |   28 +-
+ drivers/net/netdevsim/netdev.c             |   19 +-
+ drivers/net/netdevsim/netdevsim.h          |   27 +
+ include/net/amt.h                          |   72 +
+ include/net/amt_offload.h                  |  353 ++
+ include/uapi/linux/amt.h                   |   27 +
+ tools/testing/selftests/net/Makefile       |    1 +
+ tools/testing/selftests/net/amt_offload.sh |  608 +++
+ tools/testing/selftests/net/config         |    2 +
+ 15 files changed, 6214 insertions(+), 634 deletions(-)
+ create mode 100644 drivers/net/netdevsim/amt.c
+ create mode 100644 include/net/amt_offload.h
+ create mode 100755 tools/testing/selftests/net/amt_offload.sh
+
+-- 
+2.43.0
+
