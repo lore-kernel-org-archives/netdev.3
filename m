@@ -1,64 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794085405;
-	b=1octOSD9P1Tp2OZ7NIZiVowQYqsCUosVY0mqyBM3VrV6f4hZC4Xj5mJWk3OiqBJOygwE
-	 CA6riCvUaH5bBzV7GCc+fjR27hjTA3+sDnWSy0GFUvHAv2bIX11OUEk/htQzOkl14QJns
-	 WMGjgO2tstmusneUp0r1VIvpa3Zxp4GwBOgiezks8frmNBr3o2ufPUlgpE+mRSUGpzMmr
-	 ik9VC8caikUv2v9XNJRTXon+vSOzmcqy5A62TbGnnSAEz1mFqOZD5xD0UwSigG1EHem5P
-	 nTlV6zben4vgq1b75aBdRc3jqYlfkSsvBeOj815jVh6U0iFIwwYWa+esA9CMG8iWiSQ==
+	t=1794085433;
+	b=eVgY+TJtzNxddm21Csh/d9WvyfZJJRujKMLDBncH6w58szpmaN7EdSdmcJLCQzcq1b7H
+	 eBgOY0cJWVyyFr4ByTjlenXYLgrakbfEHMVt94cV4BjWDX8hzMXOXASQwHZD4l42EXEHc
+	 4e22wTsfrbqanea7JQ9pnmIrJ7JRsjtT5pG7t5AVYtJUUZUjPUNSQYxCqX9zITTGavga4
+	 rBrUW5xmC1aNTU1h0LMgd+Pyjqi+VacuL+vbZZLf0b6KV7Ax9K8wVP95jpvH4oq26GOuy
+	 c5f3O3j5P5/gReLa7Zoc62kIhTBDvRBu1bjUjHa5tWKHVVVvdNZmCfftE/dA8VzyNJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794085405;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=5sO1lU80ZjfwUdMSovSpngbH5Rby3bvgBLbLRv/3gAA=;
-	b=MdqfK/d8LEa9benuK4c/hRXSGO5BYG49kRQR4Wwml5iCcVtckez/iezX2Q1urFMm7fw3
-	 jdSK2NiRuWVkQHkZi7zFEt2Nvd7BzTFec/0mOmQ98OVcduz/HCZ/E359Tk5QDANK0JwQc
-	 aQHHaaRYskREZSzKVQdBCRno1OAkTQ3+k0YOE9rNkkM+NFWYRj8LSFBZUSuo7yD7GQgZB
-	 Kuiv88T1wLciGPoGDyd7V507k6OKWoYk0/rT5/sf7IdK7h3PPUeFwOxglMUV5ZnPQA682
-	 tOtjhvQq3YEYSs4om02Penem/zKCKNvmw6TiTifipNhJzuguuO+fswU4KmBGPtX5S3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794085433;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=6ZaKA9uotmuigUO+lt3+1p4XtUC0uLUC5fl9/GAlSTE=;
+	b=ct+JGUFYZoJm88ebMM2gQrOW7cROanjlb3JFHlnIwf3AqNWjACj/RKzaNUvEsNMTZgrn
+	 8fH+DWSwfVokiee7j9bnqPOhyehKbFFYc1pIC1knQ9IYiNDzY8agg6OTvoS9yHs+A29ki
+	 wirtpmvYHK+nyjvbrHKOfNC0wRBxZM7dBE2DFvgYkmw+g2taDi4tzC3SUyBYOxmrQjMra
+	 20vyNVCon4SZJfjPlrFAm27pOEbrwCVOpO9vQi0PtsOL06brFloHE3XVAxfJdZIWwzobI
+	 QpQNpuGtMCv8LStaYaP+EDvegMS4Pi0YGKPRFjVvDwCAY+33Gw7Xy62lBBUVdOjNoog==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SYKUJMHL;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DYkTBDCt;
+	arc=none smtp.remote-ip=74.125.82.175
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D9606A326;
-	Sat,  7 Nov 2026 21:03:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C6D9606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABF2606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 21:03:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1ABF2606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=SYKUJMHL
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5sO1lU80ZjfwUdMSovSpngbH5Rby3bvgBLbLRv/3gAA=; b=SYKUJMHLwSJPTJe73wnodG2khs
-	9fKnuVmlmOEP8MTRsWeWUOAi6Ae+AnYD1Vsp7zxxcTaPXOSPQ5SSEq5mmiuH7gYBpMUz1gNrLAtdq
-	WRh2M7SvMzOuh4hH/P7cXahahjCMt6Pe3TqvX2egw42jAVieBG266UPrQT9rL6pfvobs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xPnYz-00F0OA-Cu; Sat, 07 Nov 2026 22:03:01 +0100
-Date: Sat, 7 Nov 2026 22:03:01 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xin Tian <tianx@yunsilicon.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Junxian Huang <huangjunxian6@hisilicon.com>, weihg@yunsilicon.com,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v1 07/15] net/xsc: add ethernet netdev registration
-Message-ID: <7bf0875f-f5c5-4894-8e26-433aa40c2e04@lunn.ch>
-References: <20261104155650.37053-1-tianx@yunsilicon.com>
- <20261104155705.37053-8-tianx@yunsilicon.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DYkTBDCt
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36ff9c9da34so75352eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 13:03:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794085432; x=1794690232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6ZaKA9uotmuigUO+lt3+1p4XtUC0uLUC5fl9/GAlSTE=;
+        b=DYkTBDCtMVKNjelCFUqz9yBXZcsxD5nKLsWCMfrAht//WWfHMadqiVfjcBRm1HLV1l
+         WZmjcIkYk4aZvv/mfH3IaF6qqDliqGSacqrEn2aQ3H0cFZ+qFy1RUtm8jE71xfNEJFYM
+         VsWaq4PQrJ26W2HLPK2HVEmxNPINLdjGHajOSJkovmx18gOAP62NMQqc/+lALT1FQvhS
+         or7wQpJ+eyuoU75gp4ddVR9k62C840YtCzZZrODYeWcU43EPdSlBjXQfLrOqZZpjaF0U
+         o5r/XhjrHbw4SA1RnVAn9YwRIw1/AZ/LkQFqhmIsBaeIzSPbEh5Wr0a79dLAkLwbIzuK
+         uCbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794085432; x=1794690232;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6ZaKA9uotmuigUO+lt3+1p4XtUC0uLUC5fl9/GAlSTE=;
+        b=eiDXpwBKGAATGFqAsc1MPfkf92iY0oRUX+4GA2HT/IOds7u2apg156xo6NLBJSX+yo
+         kXHh/ZIxLmU+5eGbbyAqb2/lLGdzekiEz74gCuwGJHO+7KqmAXxfeRstEDllemyTHM/Q
+         axU9A9SiE+kCuvniUXWfTszw+KCBk2ksyc2cg7M7DZvBAXqLmKtkvaguNIJVwMrua0mF
+         yngM6WE/P6wTTm5SN/F1vvR0FleHYkMs8AGqe+Vpfgf7U+/UV0UrT7d/RW+rOL/Z76ol
+         cqLtHTzvqyJYT7ghqEr2gnClF4sGFi0Zh5Ka0MdoFoWw0XyR7sTVudjeFDmPa0KmXYLA
+         lzZw==
+X-Gm-Message-State: APuU4Z9XtdPfLkzTcH7yoxg/QGsCRNEC447zQT08X0uldJoV5WmnMCj/
+	/Ambd+gmoA3rAd0L1/u+exuVPvoIIeiWuuAUliuidck3BGB+suHlD2EY
+X-Gm-Gg: AYBFou2B+WqlNthSH7w2KzPpGwSW67IfY9xEanNsYPzLrijEEnA55BeWqeaks+wRZNQ
+	H7p8LxmObL7UAm5R1DccwfqOpIDfWBAc0wY4YWsTgjMCtEbplFQ0w9NKMRyQiJuwpJJRHZPmHQW
+	qPJZUk6V1yJ68zFfEioWXTAdkCL+clneK4F8h2RkQu3PgqvxiSWlckXfJzrMKb+Iw1N4TxMm9n8
+	myXA3p2vDVbVX/qRIfOZa0ChUxW35vn5ZzkUj2i9QUsjiIgd0E40jIljrv8InDOTSM6oADttxrA
+	kd255K25+Zvd4bXSaakszJWIf3Daj4HbVE1Z711ca209NNeuogNVIGIWAh5J5tSJ9AIA25Cx/jE
+	eJuhchUIxL4k81k64ME/VQvadUdJh0IR857aRXbl0D4igP8LQy3uJbBdmh9XbUILE4ma8JGNAkg
+	7xMkJ9Y8I8yz3bpFQuuF/O2jcuxajTkO3uORDySL7nIp4F5nJm2TNiqJEZ4SAGWs6iC3qfb6tH5
+	tNRy1BP7GXKpXT0mx8Lyr0q/tmBjBTFA8dCqyIW7Jwp2EzK09qYTIE/KGpJStkpxd35KOaC4Ue/
+	vXERJc7hbocUTK+uXMDjCkIKRu1g1yvnDtSNRp47tyNreRgV6PM=
+X-Received: by 2002:a05:7301:f29:b0:36e:b3e6:ebe7 with SMTP id 5a478bee46e88-37256bf3a85mr367782eec.26.1794085431966;
+        Sat, 07 Nov 2026 13:03:51 -0800 (PST)
+Received: from ZephyrLabServer.internal ([165.162.64.148])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-372660f444csm351114eec.19.2026.11.07.13.03.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 13:03:51 -0800 (PST)
+From: John Macias <dencity7@gmail.com>
+To: pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: dsa: clear the conduit RX queue on receive
+Date: Sat,  7 Nov 2026 13:03:15 -0800
+Message-ID: <20261107210315.2003645-1-dencity7@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <15433a8b-5e5d-44dd-a12f-f2074857c1ad@redhat.com>
+References: <15433a8b-5e5d-44dd-a12f-f2074857c1ad@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,203 +102,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104155705.37053-8-tianx@yunsilicon.com>
+Content-Transfer-Encoding: 8bit
 
-> @@ -1,7 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Copyright (C) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd.
->  # All rights reserved.
-> -#
->  # Yunsilicon driver configuration
->  #
+On 11/2/26 16:47, Paolo Abeni wrote:
+> The diff is damaged. Please fix your setup and re-submit.
 
-Please don't include hunks like this. Was this added be a previous
-patch in this patchset? Then fix it back then. If this is already in
-mainline, add a patch making these 'whitespace' changed.
+Sorry about that. My mail setup re-wrapped the diff. I've sent v3
+with git send-email, with no code changes.
 
-> +static int xsc_eth_open(struct net_device *netdev)
-> +{
-> +	struct xsc_adapter *adapter = netdev_priv(netdev);
-> +	int ret;
-> +
-> +	if (adapter->opened) {
-> +		netdev_err(adapter->netdev, "ndo_open on an already opened device\n");
-> +		return 0;
-> +	}
-> +
-
-How does this happen?
-
-And returning 0 seems odd. Something bad has happened, so at least
-EBUSY.
-
-> +
-> +	xsc_set_default_xps_cpumasks(adapter);
-> +
-> +	ret = xsc_set_port_admin_status(adapter, XSC_PORT_UP);
-> +	if (ret)
-> +		netdev_err(netdev, "failed to set port admin status up, err=%d\n",
-> +			   ret);
-> +
-> +	return 0;
-
-return err?
-
-
-> +}
-> +
-> +static int xsc_eth_close(struct net_device *netdev)
-> +{
-> +	struct xsc_adapter *adapter = netdev_priv(netdev);
-> +	int ret;
-> +
-> +	if (!adapter->opened)
-> +		return 0;
-
-How does this happen?
-
-Is there an error code ENOTBUSY? 
-
-> +static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
-> +{
-> +	struct net_device *netdev = adapter->netdev;
-> +
-> +	/* Set up network device as normal. */
-> +	netdev->netdev_ops = &xsc_netdev_ops;
-> +
-> +	netdev->min_mtu = SW_DEFAULT_MTU;
-> +	netdev->max_mtu = SW_DEFAULT_MTU;
-> +	/*mtu - macheaderlen - ipheaderlen should be aligned in 8B*/
-> +	netdev->mtu = SW_DEFAULT_MTU;
-
-What has MTU got to do with alignment?
-
-> +static int xsc_eth_get_mac(struct xsc_core_device *xdev, char *mac)
-> +{
-> +	struct xsc_query_eth_mac_mbox_out *out;
-> +	struct xsc_query_eth_mac_mbox_in in;
-> +	int err;
-> +
-> +	out = kzalloc_obj(*out, GFP_KERNEL);
-> +	if (!out)
-> +		return -ENOMEM;
-> +
-> +	memset(&in, 0, sizeof(in));
-> +	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_QUERY_ETH_MAC);
-> +
-> +	err = xsc_cmd_exec(xdev, &in, sizeof(in), out, sizeof(*out));
-> +	if (err || out->hdr.status) {
-> +		netdev_warn(xsc_dev_to_netdev(xdev),
-> +			    "get mac failed! err=%d, out.status=%u\n",
-> +			    err, out->hdr.status);
-> +		err = -ENOEXEC;
-> +		goto exit;
-> +	}
-> +
-> +	memcpy(mac, out->mac, ETH_ALEN);
-
-There are helpers for copying MAC addresses around.
-
-> +static int xsc_eth_probe(struct auxiliary_device *adev,
-> +			 const struct auxiliary_device_id *adev_id)
-> +{
-
-...
-
-> +	err = register_netdev(netdev);
-> +	if (err) {
-> +		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
-> +		goto err_free_stats;
-> +	}
-
-The stack can up the interface and start sending packets before this
-function call returns. NFS root often does that.
-
-> +
-> +	xdev->netdev = netdev;
-
-
-Does anything bad happens in open and packet Rx and Tx if xdev->netdev
-== NULL because this assignment has not happened yet.
-
-> +
-> +	xsc_irq_event_register(xdev, xsc_eth_link_event_handler);
-
-And does anything bad happen if the event handler is not registered?
-
-> +static void xsc_eth_remove(struct auxiliary_device *adev)
-> +{
-> +	struct xsc_adev *xsc_adev = container_of(adev, struct xsc_adev, adev);
-> +	struct xsc_core_device *xdev = xsc_adev->xdev;
-> +	struct xsc_adapter *adapter;
-> +
-> +	if (!xdev)
-> +		return;
-
-How does that happen?
-
-> +
-> +	adapter = xdev->eth_priv;
-> +	if (!adapter)
-> +		return;
-
-How does that happen?
-
-> +
-> +	/* Stop link events reaching this adapter and wait out one already in
-> +	 * flight, which would otherwise touch the memory freed below.
-> +	 */
-> +	xsc_irq_event_unregister(xdev);
-> +
-> +	/* Runs ndo_stop(), so the queues and the HCA are shut down first. */
-> +	unregister_netdev(adapter->netdev);
-> +
-> +	/* Must precede free_netdev(): the adapter lives in the netdev priv. */
-> +	xsc_eth_nic_cleanup(adapter);
-> +	kvfree(adapter->stats);
-> +	free_netdev(adapter->netdev);
-> +
-> +	xdev->netdev = NULL;
-> +	xdev->eth_priv = NULL;
-
-> +static inline void xsc_tx_dma_unmap(struct device *dev, struct xsc_sq_dma *dma)
-> +{
-> +	switch (dma->type) {
-> +	case XSC_DMA_MAP_SINGLE:
-> +		dma_unmap_single(dev, dma->addr, dma->size, DMA_TO_DEVICE);
-> +		break;
-> +	case XSC_DMA_MAP_PAGE:
-> +		dma_unmap_page(dev, dma->addr, dma->size, DMA_TO_DEVICE);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-
-This should probably not be hiding away somewhere in a header file.
-
-> +static inline struct xsc_cqe *xsc_cqwq_get_cqe(struct xsc_cqwq *wq)
-> +{
-> +	u32 ci = xsc_cqwq_get_ci(wq);
-> +	u8 cqe_ownership_bit;
-> +	struct xsc_cqe *cqe;
-> +	u8 sw_ownership_val;
-> +
-> +	cqe = xsc_cqwq_get_cqe_buff(wq, ci);
-> +
-> +	cqe_ownership_bit = !!(le32_to_cpu(cqe->data1) & XSC_CQE_DATA1_OWNER);
-> +	sw_ownership_val = xsc_cqwq_get_wrap_cnt(wq) & 1;
-> +
-> +	if (cqe_ownership_bit != sw_ownership_val)
-> +		return NULL;
-> +
-> +	/* ensure cqe content is read after cqe ownership bit */
-> +	dma_rmb();
-> +
-> +	return cqe;
-
-This is also a bit big for an include file inline. Plus that dma_rmb()
-should not be hiding, it should be in plain sight.
-
-	Andrew
+John
