@@ -1,61 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794074383;
-	b=qxLYHnoQ+TIGqJY8wv75P6obUIMGkCrPd4L9tcytFWqE7ab6o0qXcUiJHpR45KwuD0no
-	 5Q+0en7Kc9+4ikCa5HeWofZzloiUG9j05TS46Ty+lzAhLGojuHv3lVM36A2DT00dUnvZR
-	 K8iGk3f+c2wh5E+UyHRogG6qkvSBPfV7d6pcGqhfuRn4LV6lFnoOVIanek+XCT0c/jNSK
-	 pkg/n3WEd47KiFIHt8pDUE2rqzEu2xqd+tvQUl5xSAy40BbI48MIbV4ahTGnv/wf9ugQd
-	 dvs5W/Nr14NDkFVJhoMLZCoQWuJo3NwPdg2cKpSA57pAY/Pmw16i6UelK1awcoOg1eg==
+	t=1794074665;
+	b=VgQD1N0fHyXtz2ebYRtlAUbtSYGxOd/aGOWwjnV4N3CAY/jOKd01bXm+GDCCp2vFkuCe
+	 MX1IhBTMuwVUaFs8dwRXXphEG0vmlIVuyRQvkvGeVscWGg+wIeAZrN/261BqZdZH3bSq+
+	 +fpse+j3nzQcDJmiLCGFJ5x5i3nZqs2EGwGGcT6F7L/YB6v0l+G8Bc+zQcNxz9tNn3R2a
+	 VovoOO6L/1Q6x4P1TrgbJQH/yuxnONKyNzuIN7RN6jhNK5nAzuicfSjOlA+X8FaerYTyc
+	 ccEGRNx6YKFFHpkfmsok6k+scGzc90/oHjHUwV00gCk+cbCv+fWsPZ+tP/B1Cn59hag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794074383;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Subject:
-	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=8lVLvxc8Qs6BngpHaRFwnA/hdSpn+KLdbrSSp8PidEc=;
-	b=1vxedvK3bOm31p9mMZYzp5Si8ROI7DF9DswqVZNGfKZuK1pJ1yyFbR26dfYt79gEBCB7
-	 mk08YN4M81MnEX/ZgM+WWHpVC4bfQkYrlt8+gTDkSHKG3NgzJUwcXiQvF8tzcylqkEDrf
-	 KJTiM6EOYjQ5Qh0rVu8thE8suhr+/UCkjbR1itzpBCAnjOgehvpcwnT5+U4hUogrqyKEi
-	 oK+Tdx7YZkGuFowLDtFKNMKRei78/TS8kBS1WXkfcfPY+1k11ACtz6UkFJkwopVwEC3yt
-	 APC1VVo8Y7iEQyQqJOJDFOSlsUhdbXzbPJ/xaYP0Hrq3GW7caSLHybhaFabE7AyXy2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794074665;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=QXa9zPuXA8rkMsYvvuuKZtvoPATPnpClQ4XaIx2/zF4=;
+	b=footZrQygu18/RXX9gQnWn7ZkIXRaXB2xsatufxPJyWTpNeKT57wkGo5L0UiIQGYJwtj
+	 p4vZmYdqtynO9IfyIwt0Bxk2MwbYzKxrhsAzjIEYMz7PubjvHqPvJN5ClIDEcHPVBmKgv
+	 AFxlu/o1pzTZjuQfdu5SOFg9VRpq0In1CNj4jDjScTg8AFZUpwY/eAvlGcfUaJTGOTMLo
+	 EtwCpnOXI5MUuT9Ab74SSIPkfUz/C90ZQ70gOQtENpfp/1uocDP1vau35iDTCccgZQsod
+	 NxIvDLA2KfI2nfj4nrvjpk0tHw5fmwWhe5QdhCioeqFQyZ1jjogyg+USKXlScq77DEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rbox.co;
-	spf=pass smtp.mailfrom=rbox.co;
-	arc=none smtp.remote-ip=185.226.149.37
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=eq1HoqyF;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25E4606A32E;
-	Sat,  7 Nov 2026 17:59:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A25E4606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1xPkhN-007j5e-4c; Sat, 07 Nov 2026 18:59:29 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=8lVLvxc8Qs6BngpHaRFwnA/hdSpn+KLdbrSSp8PidEc=
-	; b=inpLAybUUeGEXVpxpjf2xkIg/S8TV16mUpOyCBS1FjTk0Ae7d+3SYOqHNxhi+qwcnSEhXie8N
-	Wm7dOcChwdhYCegGVfc4ML8ZKqz6RbnBcbiAV6766WYadGmRHP2lNRIMvcKnWE6lMoDO44kNav1OI
-	BMOjNr/W/Ic2AmYZQLyIC7y8y59GNoi0ER+BkM/FYRsmdP2fjaJRaxtzEvoCVq41R3b/gT8BnMG9I
-	nAqMJ+ZpxhT7nENW2OGq+Ks/qzWeZGDZIEaajt8rJY9eDtWNPir4U5vs73VyNLtq2HpE9lEMAeMWn
-	j6bayALldb+08aGxMLa859NJWFnpFpSc1ZwBsw==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1xPkhB-0006ai-A7; Sat, 07 Nov 2026 18:59:17 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1xPkgy-007LnK-Th;
-	Sat, 07 Nov 2026 18:59:05 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH bpf-next v3 0/8] bpf, sockmap: Restrict iter-context
- sockmap updates to sockmap iterators
-Date: Sat, 07 Nov 2026 18:58:22 +0100
-Message-Id: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F05B606A32C;
+	Sat,  7 Nov 2026 18:04:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F05B606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=eq1HoqyF
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QXa9zPuXA8rkMsYvvuuKZtvoPATPnpClQ4XaIx2/zF4=; b=eq1HoqyFQIvJLyReDT83mibARm
+	BGgcdJ0JbC3NASn9nta9n0oNtzGHqCxRrlT9WxKqRxOeSTJ8Y3ic/a/FbZMUrVij3qacGwXj4IkBu
+	UOeV2+mgVGR8R1qfkjHhmIgEEGnJZ1ynvSbxCCRoPPXycjD3MNSTtab7ceduuZvm5Pg0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xPkm4-00EzOJ-1p; Sat, 07 Nov 2026 19:04:20 +0100
+Date: Sat, 7 Nov 2026 19:04:20 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	yaojun@mucse.com
+Subject: Re: [PATCH net-next 3/5] net: rnpgbe: Support copper link
+ configuration
+Message-ID: <a60f0f38-85c7-4453-8a9d-310db05f4615@lunn.ch>
+References: <FB722C2F25FE9005+20261106112420.43050-1-dong100@mucse.com>
+ <D2E577671FEE0E12+20261106112533.44065-1-dong100@mucse.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,118 +65,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Oyw6CMBBFf8V07Zg+pFhX/odx0ZZBRoWSthCM4
- d9FXLhzeXPnnjMvljASJnbcvFjEkRKFbglqu2G+sd0VgaolM8mlFpwfIAV/b20PQ1/ZjPCgljJ
- QxggVV2hlUZuyLNiy7yPWNK3sM3N9DR1OmV2+TRrcDX3+oD+3DaUc4nN9YxTr4msU+o9xFMBBq
- tqava5cYfAUXZh2PqyWUf44gst/HLlw0Girld8rp8yPM8/zG0I5NR0kAQAA
-X-Change-ID: 20261008-sockmap-update-limit-iter-d03ea25f9775
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Stanislav Fomichev <sdf@fomichev.me>
-Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
- Sashiko <sashiko-bot@kernel.org>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D2E577671FEE0E12+20261106112533.44065-1-dong100@mucse.com>
 
-Follow-up to Sashiko's report [1] and the decision to restrict which
-iterator may perform sockmap updates [2]. Series started short: remove
-about-to-be-stale test, restrict updates, add a negative test. Then it
-expanded: mark bpf_iter__sockmap::sk as PTR_TRUSTED, restrict
-bpf_sock_destroy() callers to iter/{tcp,udp}, few little tweaks.
+> @@ -236,7 +236,7 @@ int mucse_mbx_set_link(struct mucse_hw *hw, u32 advertising, bool autoneg,
+>  
+>  	len = le16_to_cpu(req.r.datalen);
+>  	mutex_lock(&hw->mbx.lock);
+> -	err = mucse_write_and_wait_ack_mbx(hw, req.dwords, len);
+> +	err = mucse_write_mbx_coalesce_event(hw, req.dwords, len);
+>  	mutex_unlock(&hw->mbx.lock);
 
-[1]: https://msgid.link/20260626205814.BAC3C1F000E9@smtp.kernel.org
-[2]: https://msgid.link/87echn2fhd.fsf@cloudflare.com
+This seems out of place.
 
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Changes in v3:
-- Drop RFC prefix
-- Update bpf_iter_reg::feature docs
-- Fix tcp_request_sock BTF build error
-- Restrict allowed callers of bpf_sock_destroy() to iter/{tcp,udp} (Alexei)
-- Link to v2: https://patch.msgid.link/20261102-sockmap-update-limit-iter-v2-0-e96a63c43b39@rbox.co
-
-Changes in v2:
-- Commit 7cc639dc45c5 ("bpf: Don't take an extension for an iterator
-  program") and commit b83bacf2161d ("bpf: Don't take a program with a
-  target program for an iterator") landed. Drop the redundant
-  env->prog->type check.
-- Mark bpf_iter__sockmap::sk as PTR_TRUSTED (Alexei)
-- Link to v1: https://patch.msgid.link/20261016-sockmap-update-limit-iter-v1-0-23fa946db59e@rbox.co
-
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Andrii Nakryiko <andrii@kernel.org>
-To: Eduard Zingerman <eddyz87@gmail.com>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-To: Song Liu <song@kernel.org>
-To: Yonghong Song <yonghong.song@linux.dev>
-To: Jiri Olsa <jolsa@kernel.org>
-To: Emil Tsalapatis <emil@etsalapatis.com>
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-To: Shuah Khan <shuah@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Willem de Bruijn <willemb@google.com>
-To: Jakub Sitnicki <jakub@cloudflare.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Simon Horman <horms@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-To: Shuah Khan <skhan@linuxfoundation.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-To: Stanislav Fomichev <sdf@fomichev.me>
-Cc: bpf@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-
----
-Michal Luczaj (8):
-      selftests/bpf: Remove sockmap update from bpf_iter_unix
-      bpf, sockmap: Restrict iter-context sockmap updates to iter/sockmap
-      selftests/bpf: Add negative test for sockmap update from non-sockmap iter
-      bpf, docs: Document BPF_ITER_NOSLEEP
-      bpf: Restrict bpf_sock_destroy() to iter/{tcp,udp}
-      bpf: Mark bpf_iter__sockmap::sk as PTR_TRUSTED
-      selftests/bpf: Add iter/sockmap bpf_sock_destroy() negative test
-      bpf: Fix "unresolved symbol tcp_request_sock" build error
-
- Documentation/bpf/bpf_iterators.rst                       | 12 +++++++++---
- kernel/bpf/verifier.c                                     |  4 +++-
- net/core/filter.c                                         | 15 ++++++++++++++-
- net/core/sock_map.c                                       |  2 +-
- tools/testing/selftests/bpf/progs/bpf_iter_unix.c         | 10 ----------
- .../testing/selftests/bpf/progs/sock_destroy_prog_fail.c  | 11 +++++++++++
- .../testing/selftests/bpf/progs/verifier_sockmap_mutate.c | 14 ++++++++++++++
- 7 files changed, 52 insertions(+), 16 deletions(-)
----
-base-commit: 2d0b457611c06304138754a05e0873cc18acfb7e
-change-id: 20261008-sockmap-update-limit-iter-d03ea25f9775
-
-Best regards,
---  
-Michal Luczaj <mhal@rbox.co>
-
+     Andrew
