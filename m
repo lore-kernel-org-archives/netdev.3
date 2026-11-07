@@ -1,100 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794058883;
-	b=UvCl7XkAY1UBImD0xfHN+PALut2e5HnD3tOT4T+BieIVExwnZTrg1+oZuCll0UH677na
-	 cKwgYqJJYn+sbXA5Vm9zoabE1XRusnKfcHLWeSAiN0l88FVhACNETkL0Wu6WxlE6ypgal
-	 XnCX+P6OULVPDzTFhuy7GsZAKiHQiou5lAcWbCbdT1Iv09iVDIit/E5gILo/i6P66/LQq
-	 nORM+Ok758qrZB/TtmTyJlACtJpVOKqTuAldb/9ypmdDRfj/D9sUBvX339U458rTfhmCi
-	 6q9bZWTPAPkQmWiVWaou5+LfLelCRhUAIz5c3TrA6ST8fRnboPLjS5ivr0CUYZSkVqg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794058883;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=gFu9cBDaata/nEmYtOPDFMK1VmLefD8wqznSXlq1hIo=;
-	b=Rf+JI6mCdzaz/qwD78lCA8jIrNmNzqEzVLB1vd9DXhqPhTsLmcpEi8fXEkUp2d+kU7F9
-	 PHROpHqvKHIThRoVDnYlwl8GtjbzNLDMYh8bxkLPe5GAw0S0W/Z1jquxlneNv605wLdFM
-	 epqXP2B/PeHTLbtOxFh3y96z0Ba5DAWnQRDXcKSFw9pLavMntv9ZCJy6yOfEhNKvekqoP
-	 VCCyuKGrGSjXiF0T/JsKMF1Zs/24gsPWqcZhMyLs0nbFnZzdwFiBssvi0D8t3iYLyt/de
-	 4yoC/cj0jFibvjoS2YCCMZxARoa1n5d8rLAUgQdeUrU13bl6BU7cw54hyKHhY1zUbrw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cwIJWBVz;
-	arc=fail smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794059458;
+	b=knqy7OKXzflTWHwzSXT9KTkwydTVQ2xkzJ48/b/pmIy9xiOsWx+TKSCIU9YXnZAn2X+V
+	 U6Nn77YTWE7DogskB4f3wcUgc/U3aRZgxhneNL4HH3YHZTNdJHHb/2z2hBtf31xtt3N6I
+	 8o0eJN3FQLX7WOBqyo4jcbF5UKSwZT34dT2Vo0h10XjxGczu4a1qkivGZwGDtAPwiKXOJ
+	 j/B9UllRVeV/Bo/MPu8dowmezmR2gW/KWfbFU8u3zm5HPZ0kOi7BnPmg4yMRNPjoZgK5J
+	 +uJ0YwicnB5vSVYwHKoobuc/v46gfF2D4hfPQCWYZSO2I/ASzilHYh4eSWD+mo13oEw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794059458;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:X-Mailer:
+	 Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type:X-MAIL:
+	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
+	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=yv1aNjLkbAl4fTpgBXhNWf1+G8wEj5mdyEs/bUbPwEI=;
+	b=1nvsIlBhKV2oMCWmMc4nqYbaCun0V5XnCE2py2z8a61FBlTGGHZt3jVpNhAps/Jzcxjv
+	 e+fmfE1hSU0QFx4nxHdNZrHaLnOciGSEc715hvSaZf8a5vIhnTorG+MWUdfRHmU2VBWUi
+	 0DZqzMCmmkVRzSyugD/h169nZdSwX29oIbSql2/Sip8hIWOpMpMPqoK++xSRVXM8g5Pn+
+	 b+GRdQtkj1dAcnjQ5nknoX8vZVd7uTSf5g9mdfGanAnhGa7/sQET9PrD7F1JZ1j1QM4NR
+	 TfaaRdf8W5LJ7Wdnz3D/WLTeYRr3/fjG80z7jSRVwhmvqFnuj4V5N7GpuKhooWtLSMg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	arc=none smtp.remote-ip=160.30.148.35
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A3606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 13:41:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 512A3606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cwIJWBVz
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso4900a12.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 05:41:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794058881; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ooF1UP4xH//Snbh3C8qOZu/z4+5FBTD2QFFTMSRoGNsHGXfD0NzEVNPelCrXbjW6q4
-         YCVmYOPEBF8VEkFprrxm06vUxRGsca99O0gs/5cX2EiRYgYP4oBi2QM2s8zStJv3eBBB
-         7sUd7BHBL7QZA7nzpUPykrxWSZP9dVkIM3QJpXxcJdh/nxLEgGY74sCyhVhWcI8Ce2sa
-         xgbNmXgQj6JN+imDHOJV8YzG/MDrgKVDMgYyIZEoPlcL+4fNx8B14pPEMKvR6enz7TCY
-         86HtOu52R+yPQoSHpAeF10m0Zar+a0U6fscy71B+ofAj+BztXC/KnyuIjD2GWYmI0bbv
-         merg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gFu9cBDaata/nEmYtOPDFMK1VmLefD8wqznSXlq1hIo=;
-        fh=dmg5RplInHVIem2Q1PFQ8KOGqwCBKEG5zDSHnT3OHks=;
-        b=AqYX61IO5DY2VVi7xpv7TBkI/XtFjpuRYk4M8yyXtjmcXW/pNJkFZmNUjb3bpNUSUg
-         5IkBidotR1rKQyjWNOPJ+lvJQ+HNB4wjrbJ8ckiM4dctOBW3/1JaZL6HF2yIaCrKfyfu
-         sEmNAQTl0pBUqxhovVUPwwcrCUc0/bJ7W99L5zwgUP3yP+z5niO2vy+yQTR7u1ZyDj0T
-         ThhZJgcH4AZjcjg426sJO5qkj5iWG8ZoGhntCbkI4Jtar2LGIiL0JfcmlpS+RDhsm5Ky
-         C+2s2D2jA705To5VbTf3qhsMlPNC4J4TSjWqwWi/ZTLhZAEz6hKzyMYkAwFePQhiUI5j
-         lKfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794058881; x=1794663681; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gFu9cBDaata/nEmYtOPDFMK1VmLefD8wqznSXlq1hIo=;
-        b=cwIJWBVzaVjDEO7O/K1WAOpL7ECtiOwC9amY11IPTmJ3vrwDqBIODUc6/YmcE/tn+k
-         3gSlQHEmA989m//74xxI8oZQf8Jo0QcEENBedwFceU0d/p1uUMNFJ26qG2Xj5WkPN6dO
-         VENEbTGNed08YETICjDtiv8RqcrbaDpllc7yhn3IlZpL7cZVHzrWywFlUBkYIxxYyWWS
-         kO4gy37wBkrcZVUVPsFBFkybb18gQ7Kcy7scihDsw6nEAKCcZOcAZRqYpbUqMHXGFg3s
-         j9I+/SdNxTdMlnVuWF+iGwBHN44gmXK2NtaRk2crQr+B9rOCnWFs9y2REZYGxhrEeJCN
-         0DsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794058881; x=1794663681;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gFu9cBDaata/nEmYtOPDFMK1VmLefD8wqznSXlq1hIo=;
-        b=gmFKvkRv0nNCyYsuavmmxCa/x4+pPEIwyE2vGEOwNeDSOQaSOjUTnF7lJHbFSSWki/
-         rjpVM6OV//dxasQrrTRjPke4eojpsvS5Z3Say5XthZc5HLTD4v3hQAbgHfArtnJ5kSte
-         nlO+rwct/AM93qh6HCNHWNHZnsVAR1me0AHU0Rd152TOkNGsnQkhgcsVJsNA1kBNJZ/O
-         Z1da3KJQKKLywYl+wHtsOtpdMBfO9SWS38Lx/DBN2KBBnYRz/WHKqTWmubw/F6onDLsM
-         FoK0Ic3wzt7C5nkgMBk6EAWbz+3dI71qIh3f+L0D8OG7vuXzEb6TKTQB3pNMx/y1wB3L
-         9MVw==
-X-Forwarded-Encrypted: i=1; AL+hErELMlwwgbVubScpIjCokO21gi8+t6/GGBbHXh+CTOfCdFt2sss/UKEuz5fymlIoup+4okbk8Zg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/UbLOJsi/pBpM7ZN3arWD+tU1GuncZqS7BozxGoV5vML/EtxI0
-	qOVmwcRyyojdpRaTWz69k+dcVNVqmA1Gn+9Ff30zjO04ANvxclZamCJXm5bvFiGKRFYiy40KR6g
-	WWao77JwN/WPiUTfl+bRucqRVjxHsgOWDJHFrAHtt
-X-Gm-Gg: AYBFou1uPIRXnfsqicH+rh3/thAZJRBTsDNGeeeBa4HgFqhkqz+KLxALZ9VuOeAh9Is
-	2iwaC5QElNy0X2ABf1mQuNbidoc+1ieQtM5eLW5rzLGykgnXNvwQcQ4nNwipXx9eyg0iappB0Id
-	zmEs9Slj2j07voyvpMalMYR2wEb8UepJuFCjhK7bj9QeFzFZ1/BtR4d+ADa3Mh8nkm+4iymrbNk
-	EDMEChwAcnVq0IM3MrL3zn8JGuVjQPSL2TIztgyn2aR2BBIJ3Uf3GE6QRt2Bxqh1Dlk5e7Xb5y4
-	HdRjypq5gU+RWuq1LmPTkNTQdNSTIeHgvF+Y9PpoxxbBvwxVfC+fK/CFyc4RG8GYswigGWc6Uds
-	FMPxCMmdrNLbYe4TnurSepj5seqkJJC7b0n6I
-X-Received: by 2002:a05:6402:52c5:b0:6b5:70c1:650c with SMTP id
- 4fb4d7f45d1cf-6b6fad0aa01mr52745a12.4.1794058880853; Sat, 07 Nov 2026
- 05:41:20 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D512A606A330;
+	Sat,  7 Nov 2026 13:50:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D512A606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jMHWL4KG0z8XrrJ;
+	Sat, 07 Nov 2026 21:50:54 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl2.zte.com.cn with SMTP id 6A7DonWa001651;
+	Sat, 7 Nov 2026 21:50:49 +0800 (+08)
+	(envelope-from shao.mingyin@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sat, 7 Nov 2026 21:50:51 +0800 (CST)
+X-Zmail-TransId: 2afb6aef2cbb3ac-e1dfc
+X-Mailer: Zmail v1.0
+Message-ID: <20261107215051120CrLjo_cGXWfdJxXk4ae8s@zte.com.cn>
+Date: Sat, 7 Nov 2026 21:50:51 +0800 (CST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,134 +56,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261104042521.3979880-1-almasrymina@google.com>
- <20261104042521.3979880-3-almasrymina@google.com> <auy0aaY0-g32aYi9@devvm16445.scu0.facebook.com>
- <CAHS8izNrM+iaT6OOJVoZdVp00TkNRhFe9ucCVrwaUWL0oQS7Ow@mail.gmail.com> <au5SPWdVCuso8Esq@devvm16445.scu0.facebook.com>
-In-Reply-To: <au5SPWdVCuso8Esq@devvm16445.scu0.facebook.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Sat, 7 Nov 2026 05:41:08 -0800
-X-Gm-Features: AclHuK8cj889GX7mHOiPklNdo7pHPkUF0C-SJejhfCxDe2De9Vg3dflK0Ya2AKE
-Message-ID: <CAHS8izNXwhTybUHk3Zkh-cmp9CXz2m9kXt-NoB2huu5co1rGAg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/2] net: prevent mixing frags from different
- memory providers or bindings
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Kaiyuan Zhang <kaiyuanz@google.com>, 
-	Eric Dumazet <edumazet@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+From: <shao.mingyin@zte.com.cn>
+To: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <netdev@vger.kernel.org>
+Cc: <horms@kernel.org>, <josef@toxicpanda.com>, <willemb@google.com>,
+        <almasrymina@google.com>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBuZXQ6IHNrYnVmZjogZG9uJ3QgQlVHKCkgd2hlbiBza2JfY29weV9iaXRzKCkgZmFpbHMgaW4gX19wc2tiX3B1bGxfdGFpbA==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 6A7DonWa001651
+X-TLS: YES
+X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Sat, 07 Nov 2026 21:50:54 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AEF2CBE.000/4jMHWL4KG0z8XrrJ
 
-On Fri, Nov 6, 2026 at 2:22=E2=80=AFPM Stanislav Fomichev <sdf.kernel@gmail=
-.com> wrote:
->
-> On 11/06, Mina Almasry wrote:
-> > On Thu, Nov 5, 2026 at 8:59=E2=80=AFAM Stanislav Fomichev <sdf.kernel@g=
-mail.com> wrote:
-> > > > +static inline void *skb_net_iov_provider(const struct sk_buff *skb=
-)
-> > > > +{
-> > > > +     struct net_iov *niov;
-> > > > +
-> > >
-> > > [..]
-> > >
-> > > > +     if (!skb_has_net_iovs(skb) || !skb_shinfo(skb)->nr_frags)
-> > > > +             return NULL;
-> > >
-> > > (a few nits/questions)
-> > >
-> > > Why !skb_has_net_iovs is not enough? (and if !nr_frags is required,
-> > > maybe fold it into skb_has_net_iovs?)
-> > >
-> >
-> > Well skb_has_net_iovs only checks skb->unreadable, which is not
-> > actually enough. The skb doesn't necessarily have net_iovs if it's
-> > unreadable, it technically could be that it has no frags, right?
-> >
-> > Technically we should never have the edge case where
-> > skb->unreadable=3D=3Dtrue && skb_shinfo->nr_frags=3D=3D0, but I don't t=
-hink
-> > the code is careful about that today, and I don't know that I want to
-> > do a global refactor everywhere we remove frags, which skb-> flags
-> > need to be updated.
-> >
-> > but you're right that it can be folded.
->
-> Not sure I'm buying that, but happy to look again if you disagree. I thin=
-k
-> the only way to make an skb unreadable right now is to add at least
-> one niov frag? Don't think this is (ever?) gonna change? What does
-> and unreadable skb without frags even means?
+From: Shao Mingyin <shao.mingyin@zte.com.cn>
 
-I have no doubt that we set skb->unreadable correctly when we add an
-unreadable frag. I have doubt that we unset it correctly when we
-remove the last unreadable frag (or we do it correctly for other skb
-flags like pfmemalloc). If you can trust it, my LLM confirmed my
-suspicion:
+__pskb_pull_tail() BUG()s if skb_copy_bits() returns an error.
+skb_copy_bits() fails when the lengths do not add up, or when a
+frag_list child carries unreadable frags (devmem net_iov, commit
+65249feb6b3d ("net: add support for skbs with unreadable frags")).  The
+top-level check above does not cover frag_list children, and
+skb_gro_receive() links them without propagating skb->unreadable, so a
+mixed skb trips the BUG().
 
-```
-  1. skb->pfmemalloc is NEVER cleared (or recomputed) when nr_frags
-becomes 0 on an sk_buff=E2=80=94and isn't even propagated in skb_split() /
-skb_shift():
-      =E2=80=A2 None of ___pskb_trim(), __pskb_pull_tail(), skb_split(),
-skb_shift(), skb_condense(), gro_pull_from_frag0(), or
-__pskb_trim_head() touch skb->pfmemalloc.
-      =E2=80=A2 Why it's fundamentally broken to just clear skb->pfmemalloc=
- =3D
-0 on nr_frags =3D=3D 0: Unlike struct xdp_buff (which has a separate
-XDP_FLAGS_FRAGS_PF_MEMALLOC flag that BPF helpers clear via
-      xdp_buff_clear_frag_pfmemalloc() in filter.c:4441-4444 and
-filter.c:12740-12743 when !sinfo->nr_frags), struct sk_buff has a
-single sticky skb->pfmemalloc:1 bit shared by both linear skb->head
-      (skbuff.c:515-885) and frags[] (skbuff.h:2631-2632). Clearing
-skb->pfmemalloc when nr_frags =3D=3D 0 would wrongly clear pfmemalloc when
-skb->head itself was allocated from PFMEMALLOC reserves.
-  2. skb->unreadable is cleared in some nr_frags -> 0 paths, but still
-missed in a few others:
-      =E2=80=A2 Unlike pfmemalloc, skb->unreadable only applies to frags[] =
-/
-frag_list (linear skb->head is always CPU-readable).
-      =E2=80=A2 Where we DO clear skb->unreadable when nr_frags =3D=3D 0:
-          =E2=80=A2 ___pskb_trim() (skbuff.c:2810-2811): if
-(!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
-skb->unreadable =3D 0;
-          =E2=80=A2 skb_split_inside_header(), skb_split_no_header(), and
-skb_shift() (skbuff.c:4228-4454): cleared by Patch 1/2 in this series.
-      =E2=80=A2 Where nr_frags can drop to 0 and skb->unreadable is NOT cle=
-ared:
-          =E2=80=A2 pskb_carve_inside_nonlinear() (skbuff.c:7139-7167): if
-pskb_extract() carves past all frags[] (k =3D=3D 0, e.g., into frag_list),
-shinfo->nr_frags =3D 0 on the clone without clearing skb->unreadable (if
-          !skb_has_frag_list(skb) or if the remaining frag_list is readable=
-).
-          =E2=80=A2 __pskb_trim_head() (tcp_output.c:2020): sets
-shinfo->nr_frags =3D k without checking !k (in practice tcp_trim_head()
-is only called when len < skb->len and skb_headlen(skb) =3D=3D 0, so k > 0
-unless a
-          frag_list is present).
-          =E2=80=A2 skb_try_coalesce() (skbuff.c:6365) and skb_gro_receive(=
-)
-(gro.c:131): zero from_shinfo->nr_frags =3D 0 when stealing frags
-without clearing from->unreadable (benign because from is immediately
-freed
-          via stolen-head free).
-          =E2=80=A2 __pskb_pull_tail() (skbuff.c:2894) and
-gro_pull_from_frag0() (gro.c:416): cannot be entered with
-skb->unreadable =3D=3D 1 (__pskb_pull_tail() bails on
-!skb_frags_readable(skb), and
-          skb_gro_reset_offset() requires skb_frag_page(frag0) !=3D NULL).
-```
+Nothing has been committed at that point, so return NULL the way the
+rest of the function already handles failures, with a
+DEBUG_NET_WARN_ON_ONCE() for debug kernels.  skb_condense(), the one
+net/core caller that ignores the return, now checks it and keeps the
+original truesize when the pull fails, as the frags are still there.
 
-I already have 1 ambitious refactor on list to try to remove
-pp_recycle. I think maybe I want to do the nr_frags checks in this
-patch rather than do a global cleanup of setting skb flags correctly
-so that skb->unread is 100% accurate. WDTY?
+The other direct callers that ignore the return do not build a
+frag_list child: xen-netfront drops the skb when the failed pull leaves
+nr_frags at MAX_SKB_FRAGS, and niu, mlx5 and ftmac100 pull at most what
+their own skb holds.  A length mismatch there is a driver bug, which
+the debug warning reports.
 
---=20
-Thanks,
-Mina
+This is the separate change that commit 279877d86c82 ("net: skbuff:
+don't BUG() when skb_copy_bits() fails in copy helpers") left for the
+callers; the audit is above.  No Fixes: tag and no stable marking: the
+mixed skb is an invariant violation, not a regression, and this is a
+net-next hardening in the BUG_ON() removal series.
+
+Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+---
+ net/core/skbuff.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+Tested on 7.3.0-next-20261030 (QEMU/TCG guest).  QEMU has no devmem
+(net_iov) backend, so a TEST-ONLY hook (applied to both kernels, not
+part of this patch) fabricates an skb whose frag_list child carries an
+unreadable frag, then calls the real __pskb_pull_tail() on it at
+late_initcall time: skb_copy_bits() recurses into the child, sees the
+unreadable frag and fails.  The hook then calls skb_condense() on the
+same skb, so the failed pull must not shrink truesize.
+
+  unpatched                             patched
+  kernel BUG at                         __pskb_pull_tail() returns NULL,
+  net/core/skbuff.c:2903                skb_condense() keeps truesize 960,
+                                        boot continues, no BUG
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 48f676411724..8a200252ef93 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -2900,8 +2900,11 @@ void *__pskb_pull_tail(struct sk_buff *skb, int delta)
+ 			return NULL;
+ 	}
+ 
+-	BUG_ON(skb_copy_bits(skb, skb_headlen(skb),
+-			     skb_tail_pointer(skb), delta));
++	if (unlikely(skb_copy_bits(skb, skb_headlen(skb),
++				   skb_tail_pointer(skb), delta))) {
++		DEBUG_NET_WARN_ON_ONCE(1);
++		return NULL;
++	}
+ 
+ 	/* Optimization: no fragments, no reasons to preestimate
+ 	 * size of pulled pages. Superb.
+@@ -7218,7 +7221,8 @@ void skb_condense(struct sk_buff *skb)
+ 			return;
+ 
+ 		/* Nice, we can free page frag(s) right now */
+-		__pskb_pull_tail(skb, skb->data_len);
++		if (!__pskb_pull_tail(skb, skb->data_len))
++			return;	/* frags are still there, keep truesize */
+ 	}
+ 	/* At this point, skb->truesize might be over estimated,
+ 	 * because skb had a fragment, and fragments do not tell
+--
