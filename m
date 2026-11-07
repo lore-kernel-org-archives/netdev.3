@@ -1,58 +1,140 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794066910;
-	b=imn8HYA/eAqnwnlb1OUvoG4iu1XHHJ9DYhvIeeF//jSkgoaQ0TlYmYyJai2xH2tsmBTs
-	 Bag8xdSGHYdbBar+HNOfG8cyqxfWWutgNaTQeMcc3tovUd8OCAedaYiUnE7CJd1+q5mDH
-	 c3SBQ0hxE2cz8+oSD2dAHOe3Zl5Snu0VjZtaNfTs5spPCW8/PDpiGMlwQ6JfdlfZ3Vw10
-	 BCSOpi5KEjOL6+uCG7fHj6/0hTSZFPIPyFqFGh9Teg1auO/bghx0z9D3td78pP62mlrTS
-	 APQZTLrtFAQYxJqKLpwidKZRy6oQwbmz2xTYC32jgF497HUeoa3ZmkOkcddNgGvx0yQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794066910;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=oTlatxiVv9UYZ/odweCxyDE3oqTZzP4Eh9sjjXrDe2Q=;
-	b=iRSL8N9vBaGIx9BXAR1LJNKUM5Vs+sShNxkoVMJ9ZU4XhfS6OSBeIL3gzsxXLc4OJzfz
-	 nrhYFIBhvlSIgNjFrfChmSXg52aVXXGOFbp9ZvlzXb6l6R4xD7nCq+Cs/wp/MrfWJLdjf
-	 0kcaqqo9gBIPkBd/qXWqQM/NxXTDKhMuDQmho7v7Y5TXuxSZ8LppVx2sE31/j+2U5JQC8
-	 4xVZMDBp3xpGACEeAb81ASHBZMqzYb6IKOraE/Lx7d3jfu9BF7JnQb2GimTs7VDpIvpaY
-	 0ma85svp3An6SGzfRHfQvTf38A/9dHXJM+5dxu+5KQThdEzDaA8B/AIqsfm27qhKEKg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZokveVUh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794067350;
+	b=TPh9hynF3sLQ0vRROMyiaXUy0iOuG+vwmnTkISUqI4K5EPXHnwz0Ulz8h2yewO3KPLrj
+	 AdjEohAA/g3WTzLwKt7Ob/LuFCBdsbqeiRutcldk1b42Kwla8EhcJ3XQrILyjbz/ANAow
+	 T1iGN3UG2MvuMrSMiZmHcDekKRkEVSIjQ9d6MRY3KzPu+Q2J4mjtCPqzvhXOPUFV0GEXc
+	 MjnwwrteK/1dnEkUH8FzdMybRmOA6mWTmt02Tt++cKzHdEtDmsN2LjEK2/0gZVPEZONHS
+	 hWj0E0OvFu50R8ajOJlhzD1cUmF6rstXYe2Bh4pUGBNK87aIwxQ1gwE1K5KGbuGjWxg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794067350;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Date:From:To:CC:Subject:Message-ID:
+	 References:Content-Type:Content-Disposition:In-Reply-To:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=I+TzRr62auSLtrW/7L4sguiqEguVL6062SI6TD/pU2g=;
+	b=KMe4+ye6UWI7hepakyFtK9XnX60zCePdWeCFEz9hNjlKrgyM2hPwoAYs/EO7wiBedb8b
+	 BFOglFDDvwrlwLKr6viJx0YiVMhCXSjeqVgmp792aCuw+x3UANI5CHnlWZDMm4yR7vVyd
+	 E+YocsNc14RMfCwBd0OsezmtNP5JwOh0CckdVfw5Of8nkueT4LKNWPjr7xbwmdAQnLCJc
+	 suu8XZsFNuzB7MEf+r2Sca47D7ys8VyRr9bbI3qcpK7lS2K5ZOm8tLzhtA1mIDA7MTnob
+	 dEHk9J1blLBIcqPvmRsNGQ4gQsdqbtHVYacm1GA6lsmY5gpkqZKvBCiFYiA5v1lRkPg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QywbwYor;
+	arc=fail smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44906606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 15:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D168606A32E;
+	Sat,  7 Nov 2026 16:02:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D168606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZokveVUh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FC71F0089F;
-	Sat,  7 Nov 2026 15:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794066909;
-	bh=oTlatxiVv9UYZ/odweCxyDE3oqTZzP4Eh9sjjXrDe2Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZokveVUhVO8aTa8d60z4daqls8SWhJffNMTEHYS/XL/EVAMFZOxnD7w7MWcGiPFwo
-	 +EgdPARh9TURKvo3vd+S/lMuVc3/JzxirV9HdW3IesqbpJOBpPfqMXm+4a5UH5jyFC
-	 R/Le10wzbnKhtB2tSU1KDJooPXQg/SibSXYCEBez15H3G7/HMtYpuzuaziluUMXucP
-	 9zLjtLR88iDdfTUpzHXyaYgHnHzWAFSbNv5PN3Lp6npT5t55W9/tzR1h/wPSrhVA1g
-	 LYsHxtCYoMXcctPFmLxgNZUil4HtuDNB4lpTvqU5huKpx80uSFENgSSXJ64keqeD6G
-	 bH47OM59U2cRA==
-Subject: Re: [PATCH 1/2] net: thunderbolt: Stop queueing Rx buffers if
- allocation fails
-From: netdev-bot+sashiko@kernel.org
-To: mika.westerberg@linux.intel.com
-Cc: netdev@vger.kernel.org, YehezkelShB@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Date: Sat, 07 Nov 2026 15:55:08 +0000
-Message-ID: <179406690879.994134.8991092134542553771@kernel.org>
-In-Reply-To: <20261103125621.1111198-1-mika.westerberg@linux.intel.com>
-References: <20261103125621.1111198-1-mika.westerberg@linux.intel.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QywbwYor
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794067349; x=1825603349;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=RO4dGz2S/p36K1MB52+rvnUbriIK4gNT+XoPDYDw0Ds=;
+  b=QywbwYor83/vthfvApc2lmN8kuuZXF+nyd74R6IpPxyOIKvlNkPChmhH
+   vWOMFZoVh7o3qp8rap7oIc2I54oQlq3e2iBXzJATbXOqakBlAejImME5e
+   h60fvO5sDabgpBkab6OS+JHQh21Aavd++wcDGSs88vKzPMbfr8oSWoOuR
+   fooN32taMD/INGoBxC1y8MNHjJ6Gac90dt3CNgU8RFj1gmkRM1FcM4UGE
+   DPyGu85xggX2VtyMjMtN1JRnnisekjieiTblBDQ1rVNbj6TDTH9SDRmPM
+   YfWJgMYhX5VzAL+b940kCNdQDDXduobRwyRuVDr6GKKKazxrP7Tm3O2+z
+   Q==;
+X-CSE-ConnectionGUID: 3qiOomacTgCaihFxY7tjZQ==
+X-CSE-MsgGUID: 4aJfWYbcQFCLeNkprKrJvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2886619"
+X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
+   d="scan'208";a="2886619"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2026 08:02:28 -0800
+X-CSE-ConnectionGUID: m4xHYlr6THig89LFY80qUA==
+X-CSE-MsgGUID: VYCJSvl7T6WBwuRSxjELgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
+   d="scan'208";a="7339652"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2026 08:02:27 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Sat, 7 Nov 2026 08:02:00 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Sat, 7 Nov 2026 08:02:00 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.26) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Sat, 7 Nov 2026 08:01:07 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f0S1NLgkWnl31iIOExQEYBZVn1Wv/kw9la8pE1YqWDSFwmoFI/5/PC2aW32UhD1X+qN8lojXnEjodboXhCiauaREvUSA/V4573SADcui1SqoHxu58XVTJup9WmB+I1gXSmYsjU8lFt1XAyo2t6XyVixGNiG0rxAZOKlayS8+8NZiy0ABcBt2ZE8XTrDGcz7wZWlUMONqZHiC9eFrc5rDTipsxkIkOae+mUcd8AFz+QcMUw32ERqBzJj4YVa96EaPaFAZGIrYtyoKCjx2+rtyXhEvYzh6Crmva3XrUXwiCszeU6jvLOiPvKKuaIL0dCYYd9kSvN/m55Hmtv4OA5hLvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I+TzRr62auSLtrW/7L4sguiqEguVL6062SI6TD/pU2g=;
+ b=GLOn73PpbgYGXTh2tSpe9Zn4wcxC1Z1fsI6xIYtyqjgtCyzVFi1TbiqilbxCgZ8Q9p5AQ6W8SDzIaEcJbWQz0GoBKvNqRZXQQCGcvoh0z/yLSzv2MuUeQ+xAr8qDdpVO/iAGIMb4luKLcAOJg7pGqQ9HDf6z4kdgWsVfRPSXEouJzDwfokqdWaIgxYJxGWRFeAQ9Qe0GQGKFWZ0P1Z5Hc5xE6FgTt9W/7YREa9yOcfMpEyNVXnyNDStrsKfOmeWQZwaCoZecICb998lNccuxVQ+tI8MmtBmyy5L+p/fi0sn792wECxPL3RA7ORHuWQkli8KBmeJmeREaooybqQotVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13) by SA1PR11MB9849.namprd11.prod.outlook.com
+ (2603:10b6:806:4d7::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Sat, 7 Nov
+ 2026 16:01:04 +0000
+Received: from LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de]) by LV2PR11MB868673.namprd11.prod.outlook.com
+ ([fe80::5bfd:6afe:a9db:b7de%4]) with mapi id 15.21.0592.010; Sat, 7 Nov 2026
+ 16:01:04 +0000
+Date: Sat, 7 Nov 2026 17:00:48 +0100
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: <tkusters@aweta.nl>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Alexei
+ Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Sven
+ Auhagen <sven.auhagen@voleatech.de>, Richard Cochran
+	<richardcochran@gmail.com>, "Kurt Kanzenbach" <kurt@linutronix.de>, Sriram
+ Yagnaraman <sriram.yagnaraman@ericsson.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, Paul Moses
+	<p@1g4.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net v5 4/4] igb: drop AF_XDP zero-copy frames that span
+ several Rx buffers
+Message-ID: <au9LMP75WIgIQnub@boxer>
+References: <20261104-igb-rx-ts-fix-v5-0-bf4b4367129a@aweta.nl>
+ <20261104-igb-rx-ts-fix-v5-4-bf4b4367129a@aweta.nl>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261104-igb-rx-ts-fix-v5-4-bf4b4367129a@aweta.nl>
+X-ClientProxiedBy: TL0P290CA0004.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::17) To LV2PR11MB868673.namprd11.prod.outlook.com
+ (2603:10b6:408:422::13)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,260 +144,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR11MB868673:EE_|SA1PR11MB9849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2cfeffe3-a7a9-43a2-364d-08df3ce853ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|22082099003|6133799003|10067099003|18002099003|261102123227099003|56012099006|261021121427099003|261022075727099003|4143699003|261026140227099003|11063799006|261028144727099003|261009223027099003|261022105027099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info: uP0RSxuTFXG4aFkuXnJzULVvhPhXb4QqVHZBEWlck8W+LJDiV2drvju+z+5AlbAHu9CZtRl14ifeO7s/WHSBOyokPTNfnvyQwcdL5n5/naXkq/m5YKfa4oaTtx675/iyLVZEKuQkllN5YEii1AahuuKFbyJ8K4THDbFYFgk+xgJMnrJB0F/yrcIYJBKAZ6p48bBYrV3DRv7bqxwr/dT/3JrZNZ0mIEK8hDlDRWzQ9L8aYP5xraHMmbdzZZ8faPq/Leao/MiCXuvocv57GonlyV/LDdkkJAOjHwOYGt2M68JiyY9grsV5LHifju+6/lk/lnuzR0tK3hMb93Wxk7YVFEWM90LatObpXS0F6oVhkDYcQLCgHibbt8z+RczjqjO8nUjLNDMd9kihQcGxKvJHgXYG9Ta6JTSJ6hHTHF0Xvhw8PsACHSgy72IdI6VSCFTssT7mM+JERqLaC7xH3Ds34fH9y0VIBN6ZAtsUnMJpVe8L9PwFguZumuEni1BB7WZRBu6pFA7XnXbI+eQzGpa5Io9lHjHBdgWwxqdzSJ6K6Kt7GMnF917BirhSfLFMZJJcT8Slz39Kj7kjPDgAJ4v2wKTQMo1zUjEd02lG7Wx0eu6/tRLyPpK1wswiVT/wwrTkLFd3C5LnZ82zkn/9PPWQjzwmQl4SUUrOU9M/RBi6O3k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB868673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(22082099003)(6133799003)(10067099003)(18002099003)(261102123227099003)(56012099006)(261021121427099003)(261022075727099003)(4143699003)(261026140227099003)(11063799006)(261028144727099003)(261009223027099003)(261022105027099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UifS/RIohtCdf6wqkSroGnPDvwfJplbPli165RnlAKM8Y24iBx0JT8g1Mcz8?=
+ =?us-ascii?Q?lVzTx8idW9UGLEryglYA7ty8TEC66ypS8uvTN4PPeZCxd9HP0fGYjc032oQT?=
+ =?us-ascii?Q?SIHszjWON4e8a4gE2zq2oPjAOJCHx8HI3lg2hutHBpCipLtwhCFLXTFvcJDE?=
+ =?us-ascii?Q?04+U/zvuXs/fGGvrnLMlAtMpCPkfUt31HEz6Fn3qQLeiAsEZnTMbjSnpcvXJ?=
+ =?us-ascii?Q?KqLLlcYohgF6jxoadloByRwo+DUJhbQVlFWpA6HzMMJoIZ7pS/wftSrMa29d?=
+ =?us-ascii?Q?4Dj29apVRiMVdFfaz+hulhXAxYxcB9+7UW3afWCPlyqFSZ1USKlnxaDwEk7D?=
+ =?us-ascii?Q?3EgqnZqf4L3ZS8yaPxhUG5FJ+Mr7ra1H32zWGOnXlpnsIR7hJ0fYsT5ohLWz?=
+ =?us-ascii?Q?TF+z0RBtrE9vQwxIrGeELyxG9zYVA5jIDPk/nrgi4j3nLdDgZpV+YGZiXT4u?=
+ =?us-ascii?Q?NekJixPFnnVNSXLMo3MH+55TvpNOqeaFo1KLLGjH1oHFi3oSj/o8PwMEdNby?=
+ =?us-ascii?Q?rtiRF01i9o+qLPvsd+riDPRpIOyqg5qSsHXpWNkHTqTb5Z+oetTZkCo2IOnM?=
+ =?us-ascii?Q?ETuD6ItwDy27T33aKh0xdGQWJx1k9/yGIDHK6h6cvxU4cfjDChwyugYK6HwX?=
+ =?us-ascii?Q?NTVgOB4o1cg1cZ6+aHrywLLgIM32CyvtvpAyxCMa37jnjE5ukM3hH/lIuKjo?=
+ =?us-ascii?Q?7nosUnaQJhMRAVv6W0NLmwxqZebygz++eCo/tLEMbwNkGR2asWWvR4yD2mA4?=
+ =?us-ascii?Q?z5EXfGAEAk2KwxWInngTrRNhQ9+1Z4gCwjBT8rzjr+6zBBK12YBZaf9as5+E?=
+ =?us-ascii?Q?d9gzltr+6OhBmVLIlGAe4mU4G4fbqBvsO9kYRG4O195XUuKV6ghwk7k1BiSx?=
+ =?us-ascii?Q?jCIFluvHX9js07l0r5e21ugCDrbVTTaPQ3IJP2Gt6L6amqBrK4hHearf+RD1?=
+ =?us-ascii?Q?NFw3cz66COaDJIIkTWPc4SkJN0XqSzDcaNRxHdLdHaOh8n2rj95bXZ8d6Dec?=
+ =?us-ascii?Q?KZxKvFuyf5FcQziWmbMDzhweouxkUrKVuBnE4WJpWzQc1b26Qy/GSCIR+IFr?=
+ =?us-ascii?Q?1dQwNuL7tyuBTYn8ChZqBNxR9FyFqGPAV1FP6m95EtggEdJpOXYiqjn6KBhF?=
+ =?us-ascii?Q?SoGNjAmoHLWkhB4crl05KjktdrGHkPKUypUp5j3sPoFg7Se3FXhd69VtYwA2?=
+ =?us-ascii?Q?ewkR7XB1j1F/b6u4rO8wZ/PKo/SWjGat4K1ux79UI1MieItjPdhTHAssiqYF?=
+ =?us-ascii?Q?v+ci7hThCdWfxOF8AKowGAIbCQACUoAp9Sv0O7QXoZaqDyp5+npIL4qenEM+?=
+ =?us-ascii?Q?ys0A8TK5LD0yT3FjLFD+tkjjW8kBkp8BIuQoF3OQDTdP7zFb5rIIFe0/8L6p?=
+ =?us-ascii?Q?AeSg4wFh1QOCkQrextrOOQdUuYc168lo9C/2RHsPtrUSfLvfUIxZBAP/9Fop?=
+ =?us-ascii?Q?IQf5kgoztTQujLm9umQJetxRywrPJmjqyR+0uDSebvONjGfLHcvjD2RXRiA7?=
+ =?us-ascii?Q?Yc3sOGSlo1Okc3Kx/5p+E33zlrwvR5XnBggSWJy+jQkYi60wqV5WXHXOtsjP?=
+ =?us-ascii?Q?qqnS7y3V2nTD0gc/2sxClnhOpvS7mlDXQ0RmpGN9vFUhEQSvVndEz0yAkMMa?=
+ =?us-ascii?Q?tITPCGmSlUtzE3fobtlZXRzy005T/chagOHIiQmuUAWsVqje/wmCnXx+AOeH?=
+ =?us-ascii?Q?7zeNaqY9ZaPpCUL1+cFN5Ylt46QPvrf9S/n8rQNrFHiSwQsAp16zf/++d3im?=
+ =?us-ascii?Q?xEQzSkkrP/Ge/LvOjrPTop8YY7oPqUM=3D?=
+X-Exchange-RoutingPolicyChecked: kqB8tKkWUcnFvvRHJrclcFcbAjOxQlQdZ+CmrDRgS/OrnYLViHTJJkutwxJ/+hjIVq62L/Q5QF5eFSN7o4ovfsyLyvIW+AFaiDC0xpDvg79HAxpFn+ClAjocz3/HXcP8asbP7gQ2TbCphZBgTCPD8lNklDuK3c/zubaAoG3nuqx19WhcDSk2QU8h4wRQlDNb4ATVKbhT2B50nM9L74aS+vjBiiDHnVilB/3y+VbnNW5q3q+owRYQp7x5KHNCXUBziQIdI781h1LZJZ5sM75mIhsZyfKaSvEG2f2RN5BELXKnBBuN2giwZywEAPEEc7uYBQUU5RfLwP52kDt1MFlFuA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cfeffe3-a7a9-43a2-364d-08df3ce853ce
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB868673.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2026 16:01:04.6831
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ICfM1+/JxE47hU8kjakjnvA7Mepif1JXEHdegALzrdo+P7529JjzPh3JwxubBOpJz5Va2icBVy2gs96/uKzEcBOw3MidYlwGejZBN6xfmLk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9849
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Wed, Nov 04, 2026 at 07:40:05AM +0100, Tjerk Kusters via B4 Relay wrote:
+> From: Tjerk Kusters <tkusters@aweta.nl>
+> 
+> igb_clean_rx_irq_zc() handles every descriptor as a complete frame and
+> strips the inline Rx timestamp header from each of them. If a frame
+> spans several descriptors, the AF_XDP socket gets its later buffers as
+> separate packets without headers. If such a buffer is shorter than the
+> header, the size wraps and the XDP program sees data past data_end. On
+> XDP_PASS, igb_construct_skb_zc() then fails to allocate an skb, and the
+> queue can stall on that descriptor.
+> 
+> The previous patches make sure that frames fit in one buffer while XDP
+> is attached. As ixgbe does, also drop any frame that still spans several
+> descriptors instead of passing its buffers on: free the buffers without
+> EOP, and the EOP buffer that ends such a frame. The state is kept in a
+> ring flag, as a frame can be split over two NAPI polls.
+> 
+> This depends on the previous patch. Without it, every full-size frame
+> on 2 KiB chunks spans two buffers and would be dropped.
+> 
+> Not reproduced on hardware, as with the previous patches the I350 no
+> longer splits frames in zero-copy mode.
 
-Critical: 0 · High: 3 · Medium: 0 · Low: 2
+I am missing the point of this patch then. Are you adding a dead code to
+hot path?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+ixgbe was probably problematic to address all supported hw (i think 82599
+has no per-q registers and would need different treatment on config side?)
+that's why it was chosen to carry the discard logic.
 
-- [High] tbnet_poll() (drivers/net/thunderbolt/main.c) can stop Rx
-  permanently when a refill fails.
-- [High] The new deficit-based cleaned_count in tbnet_poll() (lines
-  829-831) lets a NAPI poll that runs after teardown allocate and strand…
-- [High] tbnet_poll() no longer completes NAPI while allocations keep
-  failing and the ring is empty (the new `return budget` at line 936),…
-- [Low] The commit message understates what changed.
-- [Low] The new comment in tbnet_poll() (lines 932-935) says that when
-  the Rx ring could not be refilled, polling is kept enabled to retry…
+But here if you specifically are addressing the config side of things on
+igb I am having a hard time to understand the purpose of this patch.
 
---
-
-net: thunderbolt: Stop queueing Rx buffers if allocation fails
-
-On an allocation or DMA mapping failure, tbnet_alloc_rx_buffers() now
-stops instead of freeing every Rx buffer, including the ones already
-posted to the hardware ring. The patch also reorders the
-tbnet_connected_work() error path so the rings are stopped before
-buffers are freed. tbnet_poll() now refills based on the ring deficit
-and keeps polling when the ring cannot be refilled.
-
-Closes: https://sashiko.dev/#/patchset/20260902082128.1148463-1-mika.westerberg%40linux.intel.com
-
-> corruption to happen. Fix this by making tbnet_alloc_rx_buffers() not
-> release the buffers already queued and modify the call sites accordingly.
-
-[Severity: Low]
-This isn't a bug, but could the commit message say more about what
-changes? The patch is tagged for stable, and these tbnet_poll() changes
-are not visible from the description:
-
-- cleaned_count now starts from the ring deficit,
-  tb_ring_size() - (prod - cons), instead of prod - cons
-- a refill failure now breaks out of the Rx loop early
-- NAPI now returns budget without completing while the ring is empty
-  and the order-1 GFP_ATOMIC allocations keep failing
-
-The patch also includes two separate fixes.
-
-First, tbnet_connected_work() now stops both rings before freeing
-buffers. The old err_free_tx_buffers/err_free_rx_buffers labels freed
-them while the rings were still running.
-
-Second, the dma_mapping_error() path in tbnet_alloc_rx_buffers() now
-frees the page locally. The old goto err_free reached
-tbnet_free_buffers(), which called dma_unmap_page() on a stale
-tf->frame.buffer_phy left over from an earlier use of the slot.
-
-> diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-> index cf51b9c39f4ee..30b3568a83fc2 100644
-> --- a/drivers/net/thunderbolt/main.c
-> +++ b/drivers/net/thunderbolt/main.c
-
-[ ... ]
-
-> @@ -826,9 +822,13 @@ static bool tbnet_check_frame(struct tbnet *net, const struct tbnet_frame *tf,
->  static int tbnet_poll(struct napi_struct *napi, int budget)
->  {
->  	struct tbnet *net = container_of(napi, struct tbnet, napi);
-> -	unsigned int cleaned_count = tbnet_available_buffers(&net->rx_ring);
->  	struct device *dma_dev = tb_ring_dma_device(net->rx_ring.ring);
-> -	unsigned int rx_packets = 0;
-> +	unsigned int cleaned_count, rx_packets = 0;
-> +	bool no_buffers = false;
+> 
+> Fixes: 2c6196013f84 ("igb: Add AF_XDP zero-copy Rx support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tjerk Kusters <tkusters@aweta.nl>
+> ---
+>  drivers/net/ethernet/intel/igb/igb.h     |  1 +
+>  drivers/net/ethernet/intel/igb/igb_xsk.c | 23 +++++++++++++++++++++++
+>  2 files changed, 24 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
+> index 0495c02544d6..6613ea0eedb8 100644
+> --- a/drivers/net/ethernet/intel/igb/igb.h
+> +++ b/drivers/net/ethernet/intel/igb/igb.h
+> @@ -393,6 +393,7 @@ enum e1000_ring_flags_t {
+>  	IGB_RING_FLAG_TX_DETECT_HANG,
+>  	IGB_RING_FLAG_TX_DISABLED,
+>  	IGB_RING_FLAG_RX_ALLOC_FAILED,
+> +	IGB_RING_FLAG_RX_XSK_DISCARD,
+>  };
+>  
+>  #define ring_uses_large_buffer(ring) \
+> diff --git a/drivers/net/ethernet/intel/igb/igb_xsk.c b/drivers/net/ethernet/intel/igb/igb_xsk.c
+> index fb04df82272a..7b098069fff2 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_xsk.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_xsk.c
+> @@ -269,6 +269,8 @@ void igb_clean_rx_ring_zc(struct igb_ring *rx_ring)
+>  	u16 ntc = rx_ring->next_to_clean;
+>  	u16 ntu = rx_ring->next_to_use;
+>  
+> +	clear_bit(IGB_RING_FLAG_RX_XSK_DISCARD, &rx_ring->flags);
 > +
-> +	/* Buffers a previous run was not able to return to the ring */
-> +	cleaned_count = tb_ring_size(net->rx_ring.ring) -
-> +			tbnet_available_buffers(&net->rx_ring);
-
-[Severity: High]
-Can a poll that runs after teardown fill the stopped ring with a full
-set of DMA-mapped pages here?
-
-tbnet_tear_down() is called from tbnet_disconnect_work(),
-tbnet_suspend() and tbnet_shutdown() without napi_disable(). Only
-tbnet_stop() disables NAPI. In tbnet_tear_down(),
-tbnet_free_buffers(&net->rx_ring) resets prod = cons = 0 after the ring
-is stopped. A later poll then computes:
-
-    cleaned_count = 256 - 0 = 256
-
-and calls tbnet_alloc_rx_buffers(net, 256). For each slot it allocates
-an order-1 page, maps it, stores it in tf->page and calls
-tb_ring_rx_more(). On a stopped ring, __tb_ring_enqueue() takes this
-branch:
-
-	} else {
-		ret = -ESHUTDOWN;
-	}
-
-The return value is ignored, and ring->prod++ still runs.
-
-A poll can run after teardown in three ways: NAPI was already scheduled
-when teardown ran, the new no_buffers path below keeps NAPI
-rescheduling itself across a disconnect, or socket busy polling calls
-the poll directly.
-
-On ifdown or removal, tbnet_stop() calls tbnet_tear_down(), which skips
-tbnet_free_buffers() because login_sent and login_received are already
-false. tb_ring_free() then drops frames[]. Does this leak up to 256
-order-1 pages and their DMA mappings?
-
-On reconnect, tbnet_connected_work() calls
-tbnet_alloc_rx_buffers(net, TBNET_RING_SIZE) while frames[0].page is
-still set, so this check:
-
-		if (tf->page)
-			break;
-
-returns 0 without posting anything. The link then comes up with carrier
-on and no Rx descriptors in the hardware ring. Would Rx stay dead in
-that case?
-
-Before this patch, cleaned_count was prod - cons, which is 0 after
-teardown, so a late poll did nothing.
-
-[ ... ]
-
-> @@ -845,8 +845,14 @@ static int tbnet_poll(struct napi_struct *napi, int budget)
->  		 * time.
->  		 */
->  		if (cleaned_count >= MAX_SKB_FRAGS) {
-> -			tbnet_alloc_rx_buffers(net, cleaned_count);
-> +			int ret;
+>  	while (ntc != ntu) {
+>  		struct xdp_buff *xdp = rx_ring->rx_buffer_info_zc[ntc];
+>  
+> @@ -390,6 +392,27 @@ int igb_clean_rx_irq_zc(struct igb_q_vector *q_vector,
+>  		dma_rmb();
+>  
+>  		xdp = rx_ring->rx_buffer_info_zc[ntc];
 > +
-> +			ret = tbnet_alloc_rx_buffers(net, cleaned_count);
->  			cleaned_count = 0;
-> +			if (ret) {
-> +				no_buffers = true;
-> +				break;
-> +			}
->  		}
-
-[Severity: High]
-Can this break stop Rx permanently under memory pressure?
-
-The break comes before tb_ring_poll(), so frames the NHI has already
-completed are not reaped, even though reaping needs no allocation.
-
-The keep-polling check at the end of tbnet_poll() is:
-
-	if (no_buffers && !tbnet_available_buffers(&net->rx_ring))
-		return budget;
-
-That check uses prod - cons, which also counts descriptors that are
-completed but not yet reaped. Unless every buffer has been reaped, NAPI
-completes and tb_ring_poll_complete() unmasks the interrupt.
-
-Consider this sequence:
-
-1. One poll reaps 17 (MAX_SKB_FRAGS) frames and the refill fails,
-   leaving prod - cons = 239.
-
-2. On every later interrupt, cleaned_count = 256 - 239 = 17, so the
-   refill runs first. If it fails, the poll breaks with zero frames
-   reaped, and NAPI completes because available is 239.
-
-3. The peer keeps sending until all 239 descriptors are completed. The
-   last completion raises the final interrupt. That poll also fails the
-   refill and unmasks.
-
-4. With no free descriptor, the NHI cannot complete another frame.
-   nhi_unmask_interrupt() only writes the mask register, so no further
-   interrupt arrives.
-
-Once memory is available again, what would schedule NAPI? It looks like
-Rx stays stalled until the link is torn down.
-
-[ ... ]
-
-> @@ -917,12 +923,19 @@ static int tbnet_poll(struct napi_struct *napi, int budget)
->  		}
->  	}
+> +		/* A frame should never span several buffers here, see
+> +		 * igb_xsk_frame_fits(). If one does, drop all its buffers.
+> +		 */
+> +		if (unlikely(!igb_test_staterr(rx_desc, E1000_RXD_STAT_EOP) ||
+> +			     test_bit(IGB_RING_FLAG_RX_XSK_DISCARD,
+> +				      &rx_ring->flags))) {
+> +			if (igb_test_staterr(rx_desc, E1000_RXD_STAT_EOP))
+> +				clear_bit(IGB_RING_FLAG_RX_XSK_DISCARD,
+> +					  &rx_ring->flags);
+> +			else
+> +				set_bit(IGB_RING_FLAG_RX_XSK_DISCARD,
+> +					&rx_ring->flags);
+> +
+> +			xsk_buff_free(xdp);
+> +			ntc++;
+> +			if (ntc == rx_ring->count)
+> +				ntc = 0;
+> +			continue;
+> +		}
+> +
+>  		xsk_buff_set_size(xdp, size);
+>  		xsk_buff_dma_sync_for_cpu(xdp);
 >  
-> -	if (cleaned_count)
-> -		tbnet_alloc_rx_buffers(net, cleaned_count);
-> +	if (cleaned_count && tbnet_alloc_rx_buffers(net, cleaned_count))
-> +		no_buffers = true;
->  
->  	if (rx_packets >= budget)
->  		return budget;
->  
-> +	/*
-> +	 * We were not able to fill the RX ring for more buffers on this
-> +	 * run. Keep the polling enabled to retry the allocation.
-> +	 */
-> +	if (no_buffers && !tbnet_available_buffers(&net->rx_ring))
-> +		return budget;
-
-[Severity: Low]
-The comment says polling stays enabled whenever the refill fails. The
-condition only keeps polling when no Rx buffers are posted at all.
-
-After a partial refill failure, NAPI completes and the retry depends on
-a later Rx interrupt. Could the comment describe the actual condition?
-
-[Severity: High]
-This return keeps NAPI polling while allocations fail, and
-tbnet_tear_down() does not disable NAPI. Can this poll loop outlive a
-disconnect and race with the next connection's tbnet_connected_work()?
-
-Both paths call tbnet_alloc_rx_buffers() on the same net->rx_ring with
-no shared lock:
-
-tbnet_connected_work() (process context)
-    tb_ring_start(net->rx_ring.ring);
-    tbnet_alloc_rx_buffers(net, TBNET_RING_SIZE);
-
-tbnet_poll() (softirq)
-    tbnet_alloc_rx_buffers(net, cleaned_count);
-
-Inside tbnet_alloc_rx_buffers():
-
-		unsigned int index = ring->prod & (TBNET_RING_SIZE - 1);
-		struct tbnet_frame *tf = &ring->frames[index];
-		...
-		if (tf->page)
-			break;
-		...
-		tb_ring_rx_more(ring->ring, &tf->frame);
-
-		ring->prod++;
-
-Both callers can read the same ring->prod and see tf->page == NULL.
-Each then allocates and maps its own page. The second overwrites
-tf->page and tf->frame.buffer_phy, which leaks the first page and its
-mapping.
-
-Both then call tb_ring_rx_more() on the same ring_frame. ring->lock in
-__tb_ring_enqueue() serializes the list operations. However, a second
-list_add_tail() of a frame already on in_flight would corrupt
-ring->queue and in_flight, and the same buffer could end up in two
-descriptors.
-
-The non-atomic ring->prod++ from both contexts would also break the
-prod/cons accounting. Reaping the duplicate completion could then see
-tf->page == NULL and pass it to page_address().
-
-Busy polling (net.core.busy_read) also looks like a way to run
-tbnet_poll() concurrently with tbnet_connected_work().
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103125621.1111198-1-mika.westerberg%40linux.intel.com
+> 
+> -- 
+> 2.27.0
+> 
+> 
