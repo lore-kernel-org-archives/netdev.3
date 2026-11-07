@@ -1,102 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=114.111.35.159
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794043631;
-	b=EYtI6TYE0z2aGxcArB48z4D9wLJZ0cvoIfkvclZL460xDsLyeFf7adQLICfsTvyHj0jL
-	 vWI58J0AFovc+Ts1woADz/w7H8D447iS04qev9rLV82Z3oVYEk8l2AuEaSc2TijkF5uMY
-	 ddz6eJ2aN5x9CalZP/EYBrjOOzZt20Qk6IVspQZNsJ3XssEApbZRId2TEmWpRK19d6kAL
-	 vROr49Ak/5Ze+DHB6ha1VzMPdP+ilqRZTk/voSHkfU1ZiwJwzqueJgFhxx/+33uI+PLJO
-	 qygU+AR6L9f/j+RtM1fQJqjwtP1pXIC+yPp6oXW1sxfx//KoQfpAoFEs0nBW+7OnuMQ==
+	t=1794044179;
+	b=N+mCL4C8Q11Q72HSnUkMcye2/xsXGVI22p/z9zgeJNXIt5qf5ajOcolpYeoQzOhci1cs
+	 yG55YEHNegrNo9XhMHRYGIXABKdRbj13BXAdf3Iz4B19Syx5A/W4KyQle15hQhGtfPLqa
+	 J51qd6oTPqCmRyuNUqCZmA/1wyICXnAuHk3xkOw0pbFm0ifhpHR9pV1kZI+ZVZ/Hthbm9
+	 hwHzQ6+qE5xASrc3SNUrKdcgJKPE7rLyw6PMYn+dC+NaGYHm2iKk+K1Rv8+62/YgTw7Ol
+	 /OFBZssIPbTtg0eQsLUqNMJaJSoZxxG4Ms6odv84mnfQwZW9f1A4ag62EhJsCTTspMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794043631;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=648Fmrq4vssciW2Xkc98+yh2q0DAP5HyeqVB1vpYGDM=;
-	b=KeJZiNXe4Os2NEg311t0RqVMt+0fzgmTLQiC4YXMqXsZ8b5FRcpaP5flV+HSfPnfz+Dm
-	 t2l7ebrNXFfwinPC+LUVCPM5Wb+Xk/WDoftYnLFNKrVcVYtOIleJcwtMHtY9zxQbC3Gog
-	 e3wOOlIniDIU/rMc97W4tt6OKWyumYI8Zbv1BBZplRsse0v97+4lFI69+FQvL5PqifHQy
-	 t86LIZ6uVzcoLJ+6PV5xRO30KvFR1lg24OMScxJmHnvF1f3WMrjArjLv4n1r7qrUQatXS
-	 6riA85V0rPuI9NfmAOqRS7x/ItAXfOCBgQ7eSaPO4+c9UApUDpICTCEeaw7wg1ywwTQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794044179;
+	h=DMARC-Filter:X-Originating-IP:Received:DKIM-Signature:X-Session-ID:
+	 X-Originating-IP:X-Works-Send-Opt:X-Works-Smtp-Source:Received:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=t31VrqxX/6Kokqqwv2fdOX1UJc0aKrpkZnqQRqM3rf4=;
+	b=a8fDy3BhxxqkyruNUSq7TQYPZEE5zVDd8Ti1C0SwgXUFMJq0CiSaIhBBIzfi1B1A90jO
+	 ZPsY4QkMVYY0TPCV5VImChPLMwFeaNgh6VwHnA58yiaxgoAGWEzj8Go4ejd2qY/slaM4z
+	 lrymKHq2WH1h4yGenYr1gSbwlQpgqsh+pzbTpFyqWnHclBh+eTAz1ucGETV1wnh9zc83c
+	 vRwctz2uXvlngd1wBzV0Omee8GDxKxs1IDwo4Y4dpWUL8kxBpisbbHyuEhBe+14SQTDwX
+	 Z+aP1rmNvCWMfZKlSwhNn+5/IyGom5G1fgBX25sQsQ3tRHgvAhbRjXkf1YNwkiuoGSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UNoo1uum;
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=naver.com;
+	spf=pass smtp.mailfrom=naver.com;
+	dkim=pass header.d=naver.com header.i=@naver.com header.a=rsa-sha256 header.s=s20171208 header.b=YKCcT+Ls;
+	arc=none smtp.remote-ip=114.111.35.159
+Received: from cvsmtppost19.nm.naver.com (cvsmtppost19.nm.naver.com [114.111.35.159])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8D1606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 09:27:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB8D1606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9161606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 09:36:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9161606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UNoo1uum
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-490c1d337d8so899569f8f.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 01:27:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794043629; x=1794648429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=648Fmrq4vssciW2Xkc98+yh2q0DAP5HyeqVB1vpYGDM=;
-        b=UNoo1uumizjnBzCBR3G+p+evTFMTh7MxIWlk03wB5vCRpOpsCOJHi+csM9K2eaqZ4y
-         prTpob9Wgs/PM0niu9dYDFFXNX05kE0ZLEVIukqAuc62K3+YYOQGk60aY47QzbF9rCQq
-         4IgJ/3gRf438GqlZikGGGZmff/qbIa4jHXJEvAbww3LN8uqj56o7ADDr60/yWKQQh9SV
-         Sah45MI/QzUMkKox6mPF/0gHObdbXyheyelVo3/1hgUZbYnt0b//4ohMFpUx1NZUDJZQ
-         4W/x1K4YXtqLQGGTbqIPzJyqJ1g+Bx23RYsGq7VvCb+gQKOyyzaQYZ+NYXgdKRGPmt9N
-         6hew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794043629; x=1794648429;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=648Fmrq4vssciW2Xkc98+yh2q0DAP5HyeqVB1vpYGDM=;
-        b=V3rpg6ePO3ovE8TU/mVf7/QUoH9stN1WpOCf4g5oIJYhv6nV+3WOVtM21phu1FmiKk
-         iW7o17eGxDztHXvkZyv8sPTmVq6tKvpM3Ch9eWWJ2L1ydkfkh8Cp0e8Yw9qLmLfzb8ih
-         +HlRapgSN7JnuR+EdCykBYOmlWjYBlyODLy/IC6Wm0ySoJCxF4zPsl352yA6O3Rkn1Ah
-         dmS7mHLGRNLishRVpFAI1nYFrFXCzlb8JknCUc9B4lnuHq9ROFDTRTfqoK2YmxW8Xycl
-         eC6dDG/f8JW4GFecYN8TEtiuCW1KjpfPCClbPpkdUSTqVTiivztFar8wUOg9vN5cwvhr
-         eOKg==
-X-Forwarded-Encrypted: i=1; AL+hErFIkegWdu/UXTYg/ADz2bu5pC09zNz5m2v6TsTH1U46cdoqteoLKMahzfzzsaC1Lg4juPQX2YQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/rVlDSQzaTaaC65TzqkzqBc7QRAizgI7MJsvI6qqKEau05DL6d
-	gE+R4QWcNypa9MoGXDvkYA+e8N4J2iShUaeNxesxJG7tCj5K16gR3wjw
-X-Gm-Gg: AYBFou0s431w9Kn80s5/vIMyVlmaERGNASV+TgqYOJaR0+g/dQb2IkoHoZBr+069szR
-	PEBgfOcltb3JgAcyBc6h3KIEtSPLloVPNN1aNZL1dulklKb/zSeedVsKRhp6UUwfzFxg25K3CHd
-	MXina2r0Zm8dCCl9Ul4rYeP8aIOJU9LtssB7KUoq3N4u941MOKApFI3i5g3yXflYn/Iq3+KmxfC
-	oO9ML71HB+aToRz4TrlpCDmf/c7dVYyokcKcTBxmhBoDOVNW5ERR2deEPVed5EGOqucS8TAWocC
-	NERwmaB6oZTERHeNgeuMbKLRY48Ed5c7iz1XNn4FvkXuXKUMU0SZwa6masgevfGaNwHUnQBXjVJ
-	v7EZTdQOxiXU5BqLztJTfHafm5iM6HaMzcovbJ5LnofYrFiujKwgTjrF09MpK7PvBk9PrlV3CZb
-	+kC+ZkRzb/YIzIhtQjZo+zTRnMp7JvL5mVe8ExUIUUD4uT3T0zarHiPt9kGJDw2cPt5mB2UQX+c
-	7kDHWEIEeYpu/Kfg0W88EaAIbEMHTZrUcpiXKTiJGl663UvTmWzNm7T+pXGlogC9gM95WiHpjDQ
-	CThrV7yA26JGMNSBy2waQbzDVG3vZiH4x2tFAI9DElk4SNuqR1nZDB+PuocLMXAX23/8XGBwMHT
-	lHUMyRbX81yEm
-X-Received: by 2002:a05:6000:184d:b0:48a:fba3:d5b1 with SMTP id ffacd0b85a97d-49280216912mr10880993f8f.55.1794043629072;
-        Sat, 07 Nov 2026 01:27:09 -0800 (PST)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan (user-31-175-184-45.play-internet.pl. [31.175.184.45])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701cf9sm7492724f8f.39.2026.11.07.01.27.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 01:27:07 -0800 (PST)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Alexey Immoreev <luixo-public@luixo.me>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Yongzhao Chen <yongzhao.derek@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/4] net: dsa: qca8k: read each register into its own word over MDIO
-Date: Sat,  7 Nov 2026 10:27:03 +0100
-Message-ID: <20261107092703.13274-1-kuncy7@gmail.com>
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.a=rsa-sha256 header.s=s20171208 header.b=YKCcT+Ls
+Received: from nv1m-hmac-real-24 ([10.174.201.121])
+  by cvsmtppost19.nm.naver.com with ESMTP id td6lIQxrStK1s-UyRYaxBA
+  for <netdev@vger.kernel.org>;
+  Sat, 07 Nov 2026 09:36:10 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1794044170; bh=v7B/P7rykYj0eZShFThZFg5hZuGefmyYt6GFzO+LfzA=;
+	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=YKCcT+LsFJXpLykqJQD70JgvlpSFX47SbzauM4FNzcyN4xAZ9No8pPHaVgW0llQdO
+	 a4AI1me0qrboqW591f7qnuPaZYFEi5Qo4bMG7u2/Cv3fc377a1lw/VdDFQcvt9WCCw
+	 HuVLTdX/X3oe34xfI7SGx905M3viAIDV3DTLD7/DhGfB1LpI0MbOgRE59zYZOb3Mpb
+	 Ek/bibkZIU/ZRt3fzeabEVEfMw/lAbMO8qDFUt16OlX436C+EShoFfE01jKLF3fI+9
+	 t3mOoCT+T3B/ahsIUy039iCW68TZwi+jcXoTM+HARy5d4G+btz82ODzjqHqvgKBgj8
+	 N+qU01GUbMtBA==
+X-Session-ID: Add5CrCTRhKPO3sBb-JiAw
+X-Works-Send-Opt: OP+wpzGdjHmdKHFOMr39Ko3YKHm9jAudFqM9KqMqFxIYkEljxBmwjAg=
+X-Works-Smtp-Source: rdYwKAtlFqJZ+HmlFobw+6E=
+Received: from localhost.localdomain ([115.136.205.4])
+  by cvnsmtp002.nm.naver.com with ESMTP id Add5CrCTRhKPO3sBb-JiAw
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sat, 07 Nov 2026 09:36:09 -0000
+From: Sung Byeongchan <tjdqudcks0424@naver.com>
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] ieee802154: require CAP_NET_ADMIN for SIOCSIFADDR
+Date: Sat,  7 Nov 2026 18:36:01 +0900
+Message-ID: <20261107093601.619363-1-tjdqudcks0424@naver.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261107031005.2525-1-luixo-public@luixo.me>
-References: <20261104210757.467964-1-kuncy7@gmail.com> <20261104210757.467964-2-kuncy7@gmail.com> <20261107031005.2525-1-luixo-public@luixo.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,17 +77,53 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 07, 2026 at 07:10:04AM +0400, Alexey Immoreev wrote:
-> > last three bytes of a three-register read are never written.
->
-> Small wording correction: I believe this should be "last six bytes".
-> The four-byte stores start at offsets 0, 1 and 2, covering bytes 0-5
-> of the 12-byte buffer.
 
-You are right: three stores at offsets 0, 1 and 2 end at byte 5, so
-bytes 6-11 are never written. I will fix the sentence in the next
-version, or it can be adjusted when applying if no respin is needed.
+PF_IEEE802154 DGRAM sockets are available to ordinary init-net processes.
+Their family-specific SIOCSIFADDR path calls the netdev ioctl directly and
+does not pass through the generic network-device setter capability check.
+An unprivileged process can therefore change the PAN ID and short address
+of a separately administrator-owned down WPAN interface.
 
-Thanks for the independent check of the callback.
+In a local fakelb fixture, uid 1000 changed both identifiers and the values
+remained active through a later administrator interface open in three of
+three fresh KASAN boots.
 
-Stanislaw
+Require CAP_NET_ADMIN in the socket network namespace before processing
+SIOCSIFADDR. Keep SIOCGIFADDR and all existing state and value checks
+unchanged.
+
+The fixed kernel rejected the same unprivileged request with -EPERM and
+preserved the administrator identity in three of three matched boots.
+Administrator SET, running-device, invalid-value, wrong-device, cleanup,
+later-open and recovery controls passed in all baseline and fixed runs.
+
+The demonstrated impact is local cross-principal WPAN identity and policy
+modification after privileged device setup. Memory corruption, disclosure,
+RCE and LPE were not demonstrated.
+
+Fixes: 9ec767160357 ("net: add IEEE 802.15.4 socket family implementation")
+Assisted-by: OpenAI Codex
+
+Signed-off-by: Sung Byeongchan <tjdqudcks0424@naver.com>
+---
+ net/ieee802154/socket.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+index be8ca1f053a2b..362457de8424c 100644
+--- a/net/ieee802154/socket.c
++++ b/net/ieee802154/socket.c
+@@ -128,6 +128,10 @@ static int ieee802154_dev_ioctl(struct sock *sk, struct ifreq __user *arg,
+ 	int ret = -ENOIOCTLCMD;
+ 	struct net_device *dev;
+ 
++	if (cmd == SIOCSIFADDR &&
++	    !ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
+ 	if (get_user_ifreq(&ifr, NULL, arg))
+ 		return -EFAULT;
+ 
+
+base-commit: d48723711bae9b8cdc56719c448ba42fef28cbee
+-- 
+2.43.0
