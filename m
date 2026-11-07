@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794081531;
-	b=tme9mNnnhSGi+mxlbLaCo5qpDqSBvFOLETzriuMaHeMTNq1U2dn3HpbnoyLRhGYf687X
-	 kus2dsQhlMSEE0plbiZg54TG8y3Eo1u4bysmgtiCwlZ82sGUzbjd05hLAEaSfwIWKs2VZ
-	 FwK8Ej8fwGY5IN3Y6GmfxElq9K/t5ZGMWuYDdujN2woVUDIypmmo/eCHwK5nu2uGsKpXn
-	 zf4g+7B/7by+a0P1/g1LaRxeLv53BmDmOh+sI3DR/JpeanLnpR30E6XN3VxqklGhc6cAd
-	 yjQq48X5gYjXJ7hL7RE9fe4ZJcCQ4SJ4odj+2BNMcKFI9p+U4Ztizu/dz6HOj5s95qQ==
+	t=1794081533;
+	b=Q/3SlyysEXVNmwJQguymp3H3CBX8HPSfhNBhHhCie7FECCwyqf4COnhhTm9/nUhpUunQ
+	 xXLDzsR19kCPwpOZfUs9IiPC/3M8f1mmLYkXFN6871a+zqkswu80ZJFgVlV2KDf/CLs62
+	 FK9zfdCOZSgfqU8i+YyeWEhIyaB6LjRg6klDt8TR5rjN8d9PizaUSqUVP8QAod7kJjj0o
+	 xYA9J3Y5ylBEQ6sDNGZ7YM63QYkYiUUhb8K9X6V9HVOKzuiyVn+JBFGGv4jx6y9mhuwbi
+	 fFoEwZw+MEegOaWW4civ/wtE0lZoOm3M5XyRTJEfFuoaNqOVgufY/EmK9PQKbqrFREw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794081531;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794081533;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=HsH/ESsjxGT6Amr/Yi1q7u+6v57LDKwT2C5DQH3AF4o=;
-	b=Pa4cWWU6h+p6n/prWHGUmrhybE3ZX2bRqU3FWFO+nZVcJuaT7WB3nAg3jz2tqPjzL4Ke
-	 PGExw+u7J3gqJJiP8+UgsUaq1luOLXPr+98qGr5n0mOIeeaOQZ4P8+UbtPoK35gufpjrn
-	 LYikVz6L9Ov3yk+pMV5dD6xU4Nrp2i+qaGwHYsIKNziiBzqUac2lB5nYNsGhXC7ieytqg
-	 vl+4g13ZtoKSZdhy8zYF0NlWaV2FSV9SjFHOAVQAaYs32GKa1ciVl13997Y7afv/3iXhv
-	 L6h0KAHd2javLsdDyH5b9ZmD0JDWlK0DtWiE0n8tWkN56+aPnqa7ZiV/IGJIY6be+3A==
+	bh=CTce4zEAlVGArBtBpRATcSZzHWtxlOE/W4XhWcLleWs=;
+	b=iCemkijKrvNZnc32jMCfpFb/sJr6+UU54m4T4s01Ktxk5npgUCHZwIgawqrNdT2rFA/2
+	 Ylk5ymq1WbYhDs7Pj0GDhfV0D6nnOGM0UuFBLaahotxCEA8Y/Qy8SMzcTuE1yOBpOVwCZ
+	 RXgpIE2B8yRvLywcew6gaVaibcudPvUSxa8TRHFcFfzFXuRsu9nOEG6Y/5GymhQaKAC1h
+	 k2mbN9eo22u7LO09I6y26LqEHjTU8vXSuS15Sv0vEq9TQFzbxLiLVo9/n/U0mwmRG4rvZ
+	 NPbLH8Cf01Z9pwBbSyoeHXbWGxJbBIpFP1xhwNWOpBRkqX87iD+ttNQaLplBJffypEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ar9bK5wV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Gw/XS5zR";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0767C606A326;
-	Sat,  7 Nov 2026 19:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4F9606A337;
+	Sat,  7 Nov 2026 19:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ar9bK5wV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3917E1F0089F;
-	Sat,  7 Nov 2026 19:58:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gw/XS5zR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6CD1F0089F;
+	Sat,  7 Nov 2026 19:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081530;
-	bh=HsH/ESsjxGT6Amr/Yi1q7u+6v57LDKwT2C5DQH3AF4o=;
+	s=k20260515; t=1794081533;
+	bh=CTce4zEAlVGArBtBpRATcSZzHWtxlOE/W4XhWcLleWs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ar9bK5wVmRadgJhlJXaQpAm2lxh3PsDy4DRIkbZJ3FADImtkGLIXCAfVozfHg3G9S
-	 9TAtOr5NTfv1KCmAA7EP7WJatk8/TAC4id068YdMXmzQ4hlYo1wjwH0UPVE/NdaRf2
-	 hT86EIbxigIxL4H4Inr/JEc2+J1xn8iDgsyqXnyCkGPeELUWLDw89pJSmlOhQnQlhy
-	 qQogmARgqA0PW2q5dAYjbtDewkZDzKu6aObrbiYgSDpfbUrponrFso//jGzbJxyW1n
-	 9u6Mq6SuWa5FK7YO7Q+FgafCb9ZIvvt06VnuAxcFoSS5Vjxs293uv5V3pw5KnFNQOJ
-	 Ki5LFrNJMd01g==
-Subject:
- Re: [PATCH net v5 1/4] bnxt_en: return the RING_FREE status to callers
+	b=Gw/XS5zR/IrhMcXflmaNydsxa6ETv+TA8rCTdGQpG1N4ubpmq8ow3ghsheAjihXTW
+	 Z2AjHOLUqyAY07ei3rWriordPQvDQJToJfv79TwVzd6ks1eEX9pNNCcpR1oHeQnQYX
+	 wcreTybdW03vZyWM/yk3eGQD4svStyphhDrjkX0L6rq1yYzH4ZlwA2hItn+pE9ITEU
+	 /+fMkdEAEMuAVAJ9HLAuE1InGEp5gQCbbqzCzy3IDmJApkc/jd9ZgOS39l2Yjdyohm
+	 ct7CKdH5PDXGFieJxQEgRCgfiJNfE4tw0pXeJyiGd1Q3J126GdJGgHZmRrHQV/w31I
+	 2IoKamCEKbW9g==
+Subject: Re: [PATCH net v5 3/4] bnxt_en: stop DMA before releasing rings the
+ firmware did not free
 From: netdev-bot+sashiko@kernel.org
 To: joe@dama.to
 Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
@@ -49,10 +49,10 @@ Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  prashant@broadcom.com, edumazet@google.com, horms@kernel.org,
  linux-kernel@vger.kernel.org
-Date: Sat, 07 Nov 2026 19:58:49 +0000
-Message-ID: <179408152976.994134.11735257663578231009@kernel.org>
-In-Reply-To: <20261106191423.4194081-2-joe@dama.to>
-References: <20261106191423.4194081-2-joe@dama.to>
+Date: Sat, 07 Nov 2026 19:58:52 +0000
+Message-ID: <179408153226.994134.1709355150317602595@kernel.org>
+In-Reply-To: <20261106191423.4194081-4-joe@dama.to>
+References: <20261106191423.4194081-4-joe@dama.to>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -66,10 +66,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 2 · Medium: 4 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,164 +77,344 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch makes bnxt_hwrm_rx_ring_free(),
-  bnxt_hwrm_rx_agg_ring_free() and bnxt_hwrm_tx_ring_free() return the…
-- [Medium] The commit message says "All three ring free helpers that send
-  the command discard the value", but four helpers send HWRM_RING_FREE,…
+- [High] The fix leaves out completion/NQ rings and stat contexts.
+- [High] The queue-restart path still frees ring memory after a RING_FREE
+  failure.
+- [Medium] bnxt_stop_dma() calls pci_clear_master() on the whole PCI
+  function without quiescing anything else that uses it.
+- [Medium] The trigger for an irreversible bus-master disable is broader
+  than the commit justifies.
+- [Medium] Bus mastering can be turned back on while stale firmware rings
+  may still exist.
+- [Medium] RING_FREE failures that only happen because a firmware reset
+  is in progress are counted as stuck rings, and in the final series…
 
 --
 
-bnxt_en: return the RING_FREE status to callers
+bnxt_en: stop DMA before releasing rings the firmware did not free
 
-This commit changes bnxt_hwrm_tx_ring_free(), bnxt_hwrm_rx_ring_free()
-and bnxt_hwrm_rx_agg_ring_free() so they return the status from
-hwrm_ring_free_send_msg() instead of discarding it. No caller acts on
-the returned value yet.
+This commit makes bnxt_hwrm_ring_free() count TX, RX and RX AGG rings
+whose HWRM_RING_FREE failed and return -EIO when any failed. The error
+goes up through bnxt_hwrm_resource_free() to the close, half-close and
+init_chip error paths. Those paths then call a new bnxt_stop_dma() helper,
+which clears PCI bus mastering before ring memory is released.
 
 > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 33c4cacc8ffe3..ea8529c789947 100644
+> index ea8529c789947..b5ef86bf92bf5 100644
 > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -7679,50 +7679,55 @@ static int hwrm_ring_free_send_msg(struct bnxt *bp,
-
-[ ... ]
-
-> -static void bnxt_hwrm_rx_ring_free(struct bnxt *bp,
-> -				   struct bnxt_rx_ring_info *rxr,
-> -				   bool close_path)
-> +static int bnxt_hwrm_rx_ring_free(struct bnxt *bp,
-> +				  struct bnxt_rx_ring_info *rxr,
-> +				  bool close_path)
->  {
->  	struct bnxt_ring_struct *ring = &rxr->rx_ring_struct;
->  	u32 grp_idx = rxr->bnapi->index;
->  	u32 cmpl_ring_id;
-> +	int rc;
+> @@ -7773,21 +7773,25 @@ static void bnxt_clear_one_cp_ring(struct bnxt *bp, struct bnxt_cp_ring_info *cp
+>  			memset(cpr->cp_desc_ring[i], 0, size);
+>  }
 >  
->  	if (ring->fw_ring_id == INVALID_HW_RING_ID)
+> -static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
+> +static int bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
+>  {
+> +	int stuck = 0;
+>  	u32 type;
+>  	int i;
+>  
+>  	if (!bp->bnapi)
 > -		return;
 > +		return 0;
 >  
->  	cmpl_ring_id = bnxt_cp_ring_for_rx(bp, rxr);
-> -	hwrm_ring_free_send_msg(bp, ring,
-> -				RING_FREE_REQ_RING_TYPE_RX,
-> -				close_path ? cmpl_ring_id :
-> -				INVALID_HW_RING_ID);
-> +	rc = hwrm_ring_free_send_msg(bp, ring,
-> +				     RING_FREE_REQ_RING_TYPE_RX,
-> +				     close_path ? cmpl_ring_id :
-> +				     INVALID_HW_RING_ID);
->  	ring->fw_ring_id = INVALID_HW_RING_ID;
->  	bp->grp_info[grp_idx].rx_fw_ring_id = INVALID_HW_RING_ID;
-> +	return rc;
->  }
+>  	for (i = 0; i < bp->tx_nr_rings; i++)
+> -		bnxt_hwrm_tx_ring_free(bp, &bp->tx_ring[i], close_path);
+> +		if (bnxt_hwrm_tx_ring_free(bp, &bp->tx_ring[i], close_path))
+> +			stuck++;
+
+[Severity: Medium]
+Does every non-zero return here really mean the firmware did not free the
+ring? hwrm_ring_free_send_msg() returns the same -EIO for several
+different cases:
+
+hwrm_ring_free_send_msg() {
+	...
+	if (rc || error_code) {
+		netdev_err(bp->dev, "hwrm_ring_free type %d failed. rc:%x err:%x\n",
+			   ring_type, rc, error_code);
+		return -EIO;
+	}
+	...
+}
+
+A timeout ends up here. So does a firmware reply with a non-zero
+error_code, for example a rejection of a ring ID the firmware no longer
+tracks. Local failures from __hwrm_send() also end up here: -EBUSY when
+BNXT_NO_FW_ACCESS() becomes true, or -ENOMEM from token acquisition.
+
+The commit message only makes the case for "When HWRM_RING_FREE is not
+answered". An explicit error reply means the firmware processed the
+command.
+
+Before this patch such a reply was only logged and the device could be
+reopened. Now it leads to bnxt_stop_dma() and the driver has to be
+rebound. Should stuck only count the case where no response arrived?
+
+>  
+>  	bnxt_cancel_dim(bp);
+>  	for (i = 0; i < bp->rx_nr_rings; i++) {
+> -		bnxt_hwrm_rx_ring_free(bp, &bp->rx_ring[i], close_path);
+> -		bnxt_hwrm_rx_agg_ring_free(bp, &bp->rx_ring[i], close_path);
+> +		if (bnxt_hwrm_rx_ring_free(bp, &bp->rx_ring[i], close_path))
+> +			stuck++;
+> +		if (bnxt_hwrm_rx_agg_ring_free(bp, &bp->rx_ring[i], close_path))
+> +			stuck++;
+>  	}
 
 [Severity: High]
-The per-queue callers of these helpers still ignore the returned status,
-and none of the later patches in the series seems to change them. Can
-the queue restart path still release rings that the firmware did not
-free?
+Earlier in the series these helpers were changed to return the RING_FREE
+status, but the queue restart path still ignores it. Can that path free
+ring memory after an unanswered RING_FREE?
 
-In bnxt_queue_stop():
-
+bnxt_queue_stop() {
+	...
 	bnxt_hwrm_rx_ring_free(bp, rxr, false);
 	bnxt_hwrm_rx_agg_ring_free(bp, rxr, false);
 	...
-	memcpy(qmem, rxr, sizeof(*rxr));
-	bnxt_init_rx_ring_struct(bp, qmem);
-
+	if (bp->tph_mode) {
+		bnxt_hwrm_cp_ring_free(bp, rxr->rx_cpr);
+		bnxt_clear_one_cp_ring(bp, rxr->rx_cpr);
+	}
+	...
 	return 0;
+}
 
-If the firmware rejects HWRM_RING_FREE or it times out, ndo_queue_stop
-still returns 0. netdev_rx_queue_reconfig() then calls
-ndo_queue_mem_free() on the old queue memory.
-
-bnxt_queue_mem_free() then frees the RX buffers, destroys the page pools
-and frees the RX and AGG descriptor rings. The firmware ring may still be
-live at that point.
-
-With tph_mode set, bnxt_tx_queue_stop() does the same thing for TX:
+With TPH, bnxt_tx_queue_stop() does the same for TX, then unmaps the TX
+buffers straight away:
 
 		bnxt_hwrm_tx_ring_free(bp, txr, true);
 		bnxt_hwrm_cp_ring_free(bp, txr->tx_cpr);
 		bnxt_free_one_tx_ring_skbs(bp, txr, txr->txq_index);
+		bnxt_clear_one_cp_ring(bp, txr->tx_cpr);
 
-The helpers also clear ring->fw_ring_id even when rc is non-zero. After
-that, the stale firmware ring is no longer visible to the stuck ring
-accounting that the later patch "bnxt_en: stop DMA before releasing
-rings the firmware did not free" adds to bnxt_hwrm_ring_free(). Would a
-later close then skip bnxt_stop_dma() for that ring?
+bnxt_queue_stop() returns 0, so netdev_rx_queue_restart() treats the stop
+as successful and calls ndo_queue_mem_free(old_mem). That frees the old
+RX descriptor rings and the page_pool buffers the firmware may still be
+writing to:
 
-This path can be reached through netdev_rx_queue_restart(), either from
-devmem TCP or io_uring zcrx memory provider binding, or from the bnxt
-TPH IRQ affinity work.
+netdev_rx_queue_restart()
+  bnxt_queue_stop()
+    bnxt_hwrm_rx_ring_free()    <- -EIO, ignored
+  ndo_queue_mem_free(old_mem)
 
-> -static void bnxt_hwrm_rx_agg_ring_free(struct bnxt *bp,
-> -				       struct bnxt_rx_ring_info *rxr,
-> -				       bool close_path)
-> +static int bnxt_hwrm_rx_agg_ring_free(struct bnxt *bp,
-> +				      struct bnxt_rx_ring_info *rxr,
-> +				      bool close_path)
+This path can be reached from bnxt_tph_update() on an IRQ affinity
+change, from devmem dmabuf bind/unbind, or from io_uring zcrx
+registration.
 
-[ ... ]
+Neither this patch nor the later "bnxt_en: refuse to open a device with
+stopped DMA" changes these paths. Should they be handled the same way?
 
-> @@ -7730,14 +7735,15 @@ static void bnxt_hwrm_rx_agg_ring_free(struct bnxt *bp,
->  		type = RING_FREE_REQ_RING_TYPE_RX;
 >  
->  	if (ring->fw_ring_id == INVALID_HW_RING_ID)
-> -		return;
+>  	/* The completion rings are about to be freed.  After that the
+> @@ -7817,6 +7821,19 @@ static void bnxt_hwrm_ring_free(struct bnxt *bp, bool close_path)
+>  			bp->grp_info[i].cp_fw_ring_id = INVALID_HW_RING_ID;
+>  		}
+>  	}
+> +
+> +	if (!stuck)
 > +		return 0;
->  
->  	cmpl_ring_id = bnxt_cp_ring_for_rx(bp, rxr);
-> -	hwrm_ring_free_send_msg(bp, ring, type,
-> -				close_path ? cmpl_ring_id :
-> -				INVALID_HW_RING_ID);
-> +	rc = hwrm_ring_free_send_msg(bp, ring, type,
-> +				     close_path ? cmpl_ring_id :
-> +				     INVALID_HW_RING_ID);
->  	ring->fw_ring_id = INVALID_HW_RING_ID;
->  	bp->grp_info[grp_idx].agg_fw_ring_id = INVALID_HW_RING_ID;
-> +	return rc;
->  }
->  
->  static void bnxt_hwrm_cp_ring_free(struct bnxt *bp,
 
-[Severity: Medium]
-The commit message says:
+[Severity: High]
+Only the TX, RX and RX AGG frees are counted in stuck. Can the firmware
+still own completion or NQ ring memory when this returns 0?
 
-    All three ring free helpers that send the command discard the value.
+bnxt_hwrm_cp_ring_free() still returns void, and it drops the result for
+the L2_CMPL rings in cp_ring_arr:
 
-Is that count right? bnxt_hwrm_cp_ring_free() also sends HWRM_RING_FREE,
-and it still returns void:
-
+bnxt_hwrm_cp_ring_free() {
+	...
 	hwrm_ring_free_send_msg(bp, ring, RING_FREE_REQ_RING_TYPE_L2_CMPL,
 				INVALID_HW_RING_ID);
 	ring->fw_ring_id = INVALID_HW_RING_ID;
+}
 
-The inline NQ/L2_CMPL free in bnxt_hwrm_ring_free() also drops its
-status:
+The NQ/L2_CMPL free in the loop just above also ignores its return value:
 
 		if (ring->fw_ring_id != INVALID_HW_RING_ID) {
 			hwrm_ring_free_send_msg(bp, ring, type,
 						INVALID_HW_RING_ID);
+			ring->fw_ring_id = INVALID_HW_RING_ID;
 
-By the end of the series, bnxt_hwrm_ring_free() counts stuck rings only
-for TX, RX and AGG failures. If a CP or NQ RING_FREE fails, would
-bnxt_stop_dma() be skipped, with __bnxt_close_nic() going on to free
-that ring's memory in bnxt_free_mem()?
+bnxt_hwrm_stat_ctx_free() has the same problem. It ignores each
+hwrm_req_send() result and sets hw_stats_ctx_id to INVALID_STATS_CTX_ID
+anyway, and bnxt_hwrm_resource_free() takes rc only from
+bnxt_hwrm_ring_free().
 
-Ring 0 of the CP/NQ set is also registered as the firmware async event
-completion ring by bnxt_hwrm_set_async_event_cr() in
-bnxt_hwrm_ring_alloc(). The close path does not move that registration.
+The commit message says only a subset of RING_FREEs time out. Suppose
+that subset is only CP/NQ rings or STAT_CTX_FREE. Then bnxt_stop_dma() is
+skipped, and __bnxt_close_nic()/bnxt_half_close_nic() go on to
+bnxt_free_mem(). That frees the completion/NQ descriptor pages through
+bnxt_free_cp_rings() and bnxt_free_all_cp_arrays(). With irq_re_init it
+also frees the hw_stats DMA buffers through bnxt_free_ring_stats().
 
-It is not certain that firmware keeps writing to an unfreed CP/NQ ring
-after the TX and RX rings are gone. Async event completions are the
-likely source if it does.
+The device writes to these buffers even with no traffic. It writes
+completion and NQ entries, async events on cp ring 0 (registered by
+bnxt_hwrm_set_async_event_cr() in bnxt_hwrm_ring_alloc()) and periodic
+stats.
 
-On the per-queue paths, bnxt_tx_queue_stop() and bnxt_queue_stop() (with
-tph_mode) call the converted helpers right next to
-bnxt_hwrm_cp_ring_free(). The CP ring free status is not available to
-those callers either.
+Doesn't that leave the IO_PAGE_FAULT case from the commit message still
+reachable? The later "bnxt_en: refuse to open a device with stopped DMA"
+does not change this.
+
+> +
+> +	netdev_err(bp->dev, "Firmware did not free %d ring(s)\n", stuck);
+> +	return -EIO;
+> +}
+> +
+> +static void bnxt_stop_dma(struct bnxt *bp)
+> +{
+> +	netdev_err(bp->dev,
+> +		   "Disabling DMA before releasing ring memory, the driver must be rebound to recover\n");
+> +	pci_clear_master(bp->pdev);
+
+[Severity: Medium]
+The commit message says:
+
+  "bnxt_hwrm_resource_free() still frees the remaining firmware
+  resources before returning the error, so the shutdown can send every
+  message it needs to before the device is stopped."
+
+Is that accurate? The firmware DMA-writes HWRM responses into host
+memory:
+
+__hwrm_req_init() {
+	...
+	ctx->req->resp_addr = cpu_to_le64(dma_handle + BNXT_HWRM_RESP_OFFSET);
+	...
+}
+
+Once bus mastering is cleared, every later HWRM can only time out, and
+bnxt_close() still sends messages after the close:
+
+bnxt_close() {
+	...
+	bnxt_close_nic(bp, true, true);
+	bnxt_hwrm_shutdown_link(bp);
+	bnxt_hwrm_if_change(bp, false);
+	...
+}
+
+bnxt_fw_reset_close() likewise sends HWRM_FUNC_DRV_UNRGTR through
+bnxt_hwrm_func_drv_unrgtr() after __bnxt_close_nic().
+
+pci_clear_master() also acts on the whole PCI function, which the bnxt_re
+auxiliary device shares. The normal close and TX timeout reset paths
+(bnxt_close(), and bnxt_reset() -> bnxt_reset_task()) never call
+bnxt_ulp_stop().
+
+The driver's existing paths that disable the device all call
+bnxt_ulp_stop() first: bnxt_fw_exception()/bnxt_fw_reset() before
+bnxt_fw_reset_close(), bnxt_io_error_detected() and bnxt_suspend().
+
+Would bnxt_re lose DMA, MSI-X delivery and its HWRM channel here without
+being notified?
+
+A separate concern, an immediate reopen through bnxt_reset_task() ->
+bnxt_open_nic(), is fixed later in the series by "bnxt_en: refuse to
+open a device with stopped DMA". The ULP and post-stop HWRM issues are
+still present at the end of the series.
+
+[Severity: Medium]
+Can bus mastering be turned back on while the firmware still has the
+stuck rings? No caller of pci_set_master() in the driver checks for the
+stopped state first. For example:
+
+bnxt_resume() {
+	...
+	pci_set_master(bp->pdev);
+	if (bnxt_hwrm_ver_get(bp)) {
+		rc = -ENODEV;
+		goto resume_exit;
+	}
+	rc = bnxt_hwrm_func_reset(bp);
+	if (rc) {
+		rc = -EBUSY;
+		goto resume_exit;
+	}
+	...
+}
+
+VER_GET or FUNC_RESET may well fail if the firmware has already stopped
+answering RING_FREE. Resume then exits with bus mastering on and nothing
+reset.
+
+If the function kept its ring context across suspend (D3hot without an
+internal reset), could the stuck RX rings then DMA into pages that
+bnxt_free_mem() has already released?
+
+bnxt_fw_reset_task() also calls pci_set_master() unconditionally in its
+ENABLE_DEV state.
+
+The later "bnxt_en: refuse to open a device with stopped DMA" only blocks
+bnxt_open*(). So "the driver must be rebound to recover" holds for open,
+but not for bus mastering being re-enabled.
+
+>  }
+>  
+>  static int __bnxt_trim_rings(struct bnxt *bp, int *rx, int *tx, int max,
+
+[ ... ]
+
+> @@ -13540,7 +13561,8 @@ static void __bnxt_close_nic(struct bnxt *bp, bool irq_re_init,
+>  	if (BNXT_SUPPORTS_MULTI_RSS_CTX(bp))
+>  		bnxt_clear_rss_ctxs(bp);
+>  	/* Flush rings and disable interrupts */
+> -	bnxt_shutdown_nic(bp, irq_re_init);
+> +	if (bnxt_shutdown_nic(bp, irq_re_init))
+> +		bnxt_stop_dma(bp);
+
+[Severity: Medium]
+What happens when the only reason these RING_FREEs fail is a firmware
+reset in progress?
+
+NAPI and bnxt_timer are still running here, because bnxt_disable_napi()
+and timer_delete_sync() come after bnxt_shutdown_nic(). The async
+RESET_NOTIFY handler can set BNXT_STATE_FW_FATAL_COND after
+hwrm_ring_free_send_msg() has passed its BNXT_NO_FW_ACCESS() check.
+__hwrm_send() then returns -EBUSY.
+
+__hwrm_send() also abandons the wait if the firmware health register
+reports not healthy:
+
+__hwrm_send() {
+	...
+				if (hwrm_wait_must_abort(bp, req_type, &sts)) {
+					hwrm_err(bp, ctx, "Resp cmpl intr abandoning msg: 0x%x due to firmware status: 0x%x\n",
+						 req_type, sts);
+					goto exit;
+	...
+}
+
+bnxt_close_nic() already notes that "Some firmware messages may fail as
+we proceed to close" when BNXT_STATE_IN_FW_RESET is set. With this
+patch, each such failure becomes -EIO, stuck++ and then bnxt_stop_dma().
+
+That includes the FW reset close path itself:
+
+bnxt_fw_reset_task()
+  bnxt_fw_reset_close()
+    __bnxt_close_nic()
+      bnxt_shutdown_nic()    <- -EIO
+      bnxt_stop_dma()
+
+After the later "bnxt_en: refuse to open a device with stopped DMA",
+bnxt_stop_dma() also sets BNXT_STATE_DMA_STOPPED, and nothing clears it.
+
+The reset still re-enables bus mastering in ENABLE_DEV. But in the
+OPENING state, bnxt_open() then fails in bnxt_check_dma_stopped() with
+-ENODEV, and bnxt_fw_reset_abort() runs.
+
+If a close races with a reset, bnxt_close_nic() sets ABORT_ERR. A later
+bnxt_open() is then refused before it reaches bnxt_reinit_after_abort(),
+which doesn't call pci_set_master() anyway.
+
+Before this patch a coordinated FW reset could recover the device. Is it
+intended that a rebind is now the only way to recover?
+
+>  
+>  	/* TODO CHIMP_FW: Link/PHY related cleanup if (link_re_init) */
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106191423.4194081-1-joe%40dama.to
