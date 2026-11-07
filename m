@@ -1,60 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794081143;
-	b=PGNLcMPrqvHsJQN7LpkoPPy0Zv3CVHR4Gv/7P9gigG7QGTNKcQiG278tfHELeQIOdbee
-	 49F162Tv0rmrMxrAOo0/9uM7wGR95as3oXBRy+TmYLjkIImDOG3kTTNfJJAcmHncFS/Hj
-	 dXHnycYC1qYM1ixfbFPe+3U6Qpjo8+ym/tDTDW585GGjoqBWMlCC4Y6IZMlgibAPKjLEa
-	 rjlXkem7bDtJ4X7BaUumSUYQ4nHHQP4DwazfWvGp3u7uxm1jGtTmmr4gkvLdIqXcfzIDU
-	 /H+KxSB7GVx8Ahmny1AYMNQfSwIVrqAHG3yiqgCMd0pSBWGMle/I0ov5a5fxSiFAy2w==
+	t=1794081167;
+	b=t7HH2f5ICB5+By4h/ljsqqSCBYpDsaZTP3ultNFkOamMFC2zOgPm5ukRxWTFANpt9lM/
+	 IgAseZq7quyO6AlJr+/gLUnXsyr2w2hbuT75uK5elp/kAzF2Tfq3Es+DmdbQuMef1HarM
+	 cubK5vqqWDEa9ks/oS5BkhWKkOjRb9kz5Io3iMDsBC9+qQL5w1raCixKnUa+uGkmFycYS
+	 u6NwSmNdi1Bvo/baZPUva5ZfMWCLwXuVTO9v+ttDNxUBxKNmtVRTXHV/vmyHosVTFEJmD
+	 hVihTM19SlmjQTsrWOErVrFU0o5FfOTBK9LhJA/7QNftpOR1ONfFvnrkEFks7YZWQtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794081143;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=7v5w7Y/6lP7RhD+lVR/dnms1QkLIxcaWJVP5wnw756I=;
-	b=RMb21QL48a0TLtu8dWGL2YCZGq8Vuar42N6ANyHm4E4zvHe/Ls69lcvINEKKf0+2ksfT
-	 3nGey8KzBoeGOAYdOrGQb7nZyichgZMQGWWOZbrqtgJBEikU++aseBPwy6/r2yD5eKOqs
-	 nQ4jTqICOF8wcMeWTSHWPq6SMQaKq6JqzLv3LpXicKSO4nRaXXTfT+ziG3nWHXG5YTQWw
-	 100D6iXbMs3qrvm8HBSXYd/Lb7fVsrQhN2eADJ4bqF+HROT7dIC82g5mJPwIaXo+YsNkS
-	 qvkCuUER6TM47ISdfLMUBM/lglRWcJG1eW6rlrHAIp7ejKpgQQ9m3vC8BQnRt8JUmkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794081167;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=7L/MDyWNPktLzS6Yto3hu+NE19udBVCCXoZ+5qjXmtI=;
+	b=gY7aYgv3fXVbqDcV0RW3LERlYc49t619ln+tP1Cfhmska0XZTrbG94i8Q4sKXaEUC9U5
+	 gZdHG9INDJOvZGg/T7gaAvRy+f0uPVlXbTqtt/b8SQ+i5ckPfSWHNt44SuhKaPGaMsDtZ
+	 5lRqP1spkMOZnLN0PYynHabnd6WKW8eUHoKRCawgGsiuQ8VDmEGGzw1EUzGCqAzuE6h0X
+	 q5qivil0Uei8OoXkbg91Bc0KrKe8C5SZKdJH41+QYIksJE6h5Iv1O2b3BQ88DwWzFACNS
+	 aB9oyT+8kxZIeagF5Y71iuSuZldfh//fUIBoG23J3gBIodC7X7NBJ2tFsVHXhwOmj1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cySyJAnr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fLoTRkFg;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B93606A32C;
-	Sat,  7 Nov 2026 19:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0FB606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 19:52:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F0FB606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cySyJAnr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464BF1F0089F;
-	Sat,  7 Nov 2026 19:52:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081142;
-	bh=7v5w7Y/6lP7RhD+lVR/dnms1QkLIxcaWJVP5wnw756I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cySyJAnrsYJPX2lE5ZiXqPcroCO8YC3N2Mtux7eFxYPwuTbJj5RMB4Q2RJ5IHpnM+
-	 aFMcMovHc0xfyW4WbxlLeSGMazZIlhmut+4q0JbszsPKtH5/0q8jTdtJ+SgLEVf4Ja
-	 iqrinofny/Cieoc0GxzjQf0i2gk7aRBoIHcleB29TsBAtbg2nsWNm+tqAKjUJCj3Pv
-	 2rgX82jRhQsAhAvWf7GxRcpfwb+ejOc3LDk9ja+z832phVbnMH9ixv1fviexfnQXa0
-	 4iWttSmtSje2087OXhE5retArgWDth9msvYb1Fl3CnRZO/A7sGX1Uf++8mpeuGSlSY
-	 UW8rjYfGqNK4w==
-Subject:
- Re: [PATCH net v3] sctp: fix ASCONF address change on single-homed hosts
-From: netdev-bot+sashiko@kernel.org
-To: andrey.misyrov@gmail.com
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, junvyyang@tencent.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 19:52:21 +0000
-Message-ID: <179408114179.994134.782467837057730523@kernel.org>
-In-Reply-To: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
-References: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fLoTRkFg
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e954d87b48so28248285ad.2
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 11:52:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794081166; x=1794685966; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7L/MDyWNPktLzS6Yto3hu+NE19udBVCCXoZ+5qjXmtI=;
+        b=fLoTRkFgJWgSDA4ONtKWHN9FvZ+3qYFStgAmqj4fr2ntheFwzGv4QbUUPGaw7/XViH
+         JLyiV0u85Hx4K8lD/m/7lTZjeBcXjArDqpYYsP+pJKeXzYW5eN9Ly6kgqJWjW4zJwDUf
+         DBN6XRYjxbRWaLDlGQxU1KysEN1ncWGxsl7bg5D3o9Dde/fNYcom5HXfQ/lTe7j6X/uu
+         pwed1awUlRYpcigNFD8Wwa0GaQPTPMCi7OOoq/yj5FJjmguJTZesrMJ4DXw2DppTHnh0
+         wkw5bhLWYqYwd968GT+MLcgSMciF1VW5AsO4krstndc8rJSi62pzTT19edWtggiQ2WgF
+         o3qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794081166; x=1794685966;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7L/MDyWNPktLzS6Yto3hu+NE19udBVCCXoZ+5qjXmtI=;
+        b=KFZnmXrcSVXnlh0JMakPbFh+4gsDh1w1lTtq4yzE1dG4hnIkniDMyELeh6Pw5ZcDNs
+         Xrv2rlKibibHPJrXPlrL3ZeyXD9LOhy5bPa2c/1FNNkGZatvKjhYsgLcjnO+jSP2hzhX
+         U2cuhGjAIswlJwvKzOGHJGtfo52j8mAGK+lsvOmE+WJT0vi7ao9rl43FzKO6bsxmM/RJ
+         v+AYdkCD1dxyyr/YfjHNGISrFBLc5oid4Q+8Gds/0T5aIHvor9j1chV9ki+Gp30lhvKL
+         cA5PjHykpF9w44o2sUvvoflwzEJgwphpFUWV09DdkTwsFp58byQeMD5EODcAa8zu/Wy4
+         +wrQ==
+X-Forwarded-Encrypted: i=1; AL+hErGPo96gtMoJ1R8R2zJ5XXtqhOceW1T15VnPUFWcVgVId+lqDPAXYfEGaeQTJbdgwLsgbS8Snh4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+AS79ZU9AOqrDymDSCOERgOtGYTu8KXSYtNM2s6s3kkUUr7TS8
+	nzuw4lIE4r36TlUEIcYSi9ClZgfy6Lcfw+lcw7PW51afCo+laZVcytVJoIbPm3HPhSF862j7rUJ
+	I2gZkXQ==
+X-Received: from pjbpl18.prod.google.com ([2002:a17:90b:2692:b0:3ab:f091:d7bd])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:47:b0:3b0:ce1c:e754
+ with SMTP id 98e67ed59e1d1-3b0db70120emr6415623a91.62.1794081166391; Sat, 07
+ Nov 2026 11:52:46 -0800 (PST)
+Date: Sat, 7 Nov 2026 19:52:45 +0000
+In-Reply-To: <20261106110135.2161204-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,149 +77,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261106110135.2161204-1-edumazet@kernel.org>
+Message-ID: <au-BcpZWQg0zcb7r@google.com>
+Subject: Re: [PATCH net] udp: do not use a cross-family sk_rx_dst in early demux
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Fri, 06 Nov 2026 12:01:35 +0100, Eric Dumazet wrote:
+> A dual-stack UDP socket connected to a v4-mapped address can receive
+> both IPv4 packets and IPv6 packets using v4-mapped addresses:
+> ip6_rcv_core() no longer rejects a v4-mapped source since commit
+> dcc32f4f183a ("ipv6: weaken the v4mapped source check"), which kept
+> that check only in tcp_v6_conn_request(). ipv6_portaddr_hash() hashes
+> v4-mapped addresses like IPv4 ones, so both early demux handlers find
+> the socket, and both __udp4_lib_rcv() and __udp6_lib_rcv() store their
+> input dst in the same sk->sk_rx_dst.
+> 
+> udp_v6_early_demux() validates the cached dst with dst_check(), but
+> ipv4_dst_check() ignores the cookie, so an IPv4 dst gets attached to
+> an IPv6 skb. ip6_rcv_finish_core() then skips the route lookup and
+> ip_local_deliver() parses the IPv6 header as an IPv4 one: the IPv6
+> next header and hop limit are read as a fragment offset, and the IPv4
+> protocol is taken from a source address byte.
+> 
+> The reverse direction looks possible too: per-cpu dsts of IPv6 routes
+> using nexthop objects have rt->sernum set, and ip6_dst_check() then
+> ignores the cookie, so udp_v4_early_demux() can attach an IPv6 dst to
+> an IPv4 skb.
+> 
+> Kyle Zeng reported that such a packet can reach XFRM input still
+> holding the prefetched, non refcounted, socket set by early demux,
+> which can then outlive its RCU grace period.
+> 
+> Only use the cached dst if its family matches the packet. Otherwise
+> fall back to a regular route lookup.
+> 
+> TCP does not have the same problem: sk_ehashfn() hashes a v4-mapped
+> socket with inet_ehashfn(), while IPv6 lookups use inet6_ehashfn(),
+> so IPv6 packets do not normally find a v4-mapped TCP socket.
+> 
+> Fixes: 5425077d73e0 ("net: ipv6: Add early demux handler for UDP unicast")
+> Fixes: c9f2c1ae123a ("udp6: fix socket leak on early demux")
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] In sctp_process_asconf_param()
-  (net/sctp/sm_make_chunk.c:3181-3183), a plain DEL-IP that removes…
-- [Low] The rewritten wildcard DEL-IP branch in
-  sctp_process_asconf_param() (net/sctp/sm_make_chunk.c:3162-3170)…
-
---
-
-sctp: fix ASCONF address change on single-homed hosts
-
-This patch removes the refusal of a DEL-IP for the ASCONF's own transport
-that commit 9b2854f86f0b added, since that refusal broke the RFC 5061
-single-homed renumber sequence. The wildcard DEL-IP now looks up the
-transport for the packet source, and both DEL-IP paths retarget
-asconf->transport to a surviving transport.
-
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index 90de272842512..15c2d87575a8a 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -3160,9 +3160,12 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
->  		 * packet MUST be deleted.
->  		 */
->  		if (af->is_any(&addr)) {
-> -			sctp_assoc_set_primary(asoc, asconf->transport);
-> -			sctp_assoc_del_nonprimary_peers(asoc,
-> -							asconf->transport);
-> +			peer = sctp_assoc_lookup_paddr(asoc, &asconf->source);
-> +			if (!peer)
-> +				return SCTP_ERROR_REQ_REFUSED;
-
-[Severity: Low]
-
-This changes how a wildcard DEL-IP behaves on the wire. Before, this
-branch always made asconf->transport primary, removed every other peer
-address and returned SCTP_ERROR_NO_ERROR.
-
-Now the request is refused if the packet source is not already a
-transport of the association. That can happen when the ASCONF was found
-through its Address Parameter and no earlier ADD-IP in the same chunk
-added the source. For example:
-
-    [Addr L] [DEL-IP 0.0.0.0] [ADD-IP S]
-
-The delete used to succeed here. Now it returns an error cause and all
-the other peer addresses stay.
-
-Refusing may well be more correct. However, the commit message only says
-the branch now "look[s] up the transport of the packet source rather than
-reusing asconf->transport". Since this is tagged for stable, could the
-changelog mention the new SCTP_ERROR_REQ_REFUSED case?
-
-> +			sctp_assoc_set_primary(asoc, peer);
-> +			sctp_assoc_del_nonprimary_peers(asoc, peer);
-> +			asconf->transport = peer;
->  			return SCTP_ERROR_NO_ERROR;
->  		}
->  
-> @@ -3175,13 +3178,9 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
->  		if (!peer)
->  			return SCTP_ERROR_DNS_FAILED;
->  
-> -		/* Don't free asconf->transport; a later wildcard DEL-IP
-> -		 * parameter reuses it.
-> -		 */
-> -		if (peer == asconf->transport)
-> -			return SCTP_ERROR_REQ_REFUSED;
-> -
->  		sctp_assoc_rm_peer(asoc, peer);
-> +		if (asconf->transport == peer)
-> +			asconf->transport = asoc->peer.primary_path;
-
-[Severity: Medium]
-
-Can primary_path be a transport other than the packet source here?
-
-The D8 check earlier in sctp_process_asconf_param() returns
-SCTP_ERROR_DEL_SRC_IP, so this branch only removes asconf->transport when
-two things are true. The association was found through the Address
-Parameter L, and the packet came from a different address S.
-
-In that case a transport for S exists only if an earlier ADD-IP S in the
-same chunk created it. That is the [Addr L] [ADD-IP S] [DEL-IP L]
-sequence this patch fixes.
-
-With two peer addresses after the ADD, sctp_assoc_rm_peer() makes the
-first remaining entry (T_S) primary, so this works. With three or more
-addresses it does not seem to. For example, with peer addresses
-{A (primary), L}:
-
-    ADD-IP S  -> {A (primary), L, S}
-    DEL-IP L  -> sctp_assoc_rm_peer(asoc, T_L), primary stays T_A
-                 asconf->transport = T_A
-
-This happens even though T_S exists.
-
-sctp_inq_pop() reuses the same sctp_chunk for every chunk bundled after
-the ASCONF and does not reset chunk->transport. Those chunks are then
-credited to T_A in three places.
-
-First, sctp_vtag_verify() copies the packet's encap_port into T_A:
-
-    chunk->transport->encap_port = SCTP_INPUT_CB(chunk->skb)->encap_port;
-
-Second, sctp_assoc_bh_rcv() updates last_data_from and last_time_heard
-on T_A, so the SACK for bundled DATA goes to A:
-
-    if (sctp_chunk_is_data(chunk))
-        asoc->peer.last_data_from = chunk->transport;
-    ...
-    if (chunk->transport)
-        chunk->transport->last_time_heard = ktime_get();
-
-Third, a wildcard SET_PRIMARY later in the same ASCONF resolves
-sctp_source(asconf) to T_A->ipaddr. A then becomes primary instead of
-the packet source, and the request is still acked as a success.
-
-Before this patch, bundled chunks in this case were credited to T_L,
-which was not the source either. Still, the new code picks a transport
-other than S even when T_S exists.
-
-The wildcard branch in this same patch already calls
-sctp_assoc_lookup_paddr(asoc, &asconf->source). Would it make sense to
-do that here too, and fall back to asoc->peer.primary_path only when
-there is no transport for the source? That would also match the
-"Remember where we came from" meaning that sctp_rcv() gives
-chunk->transport.
-
->  		break;
->  	case SCTP_PARAM_SET_PRIMARY:
->  		/* ADDIP Section 4.2.4
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106195126.1563231-1-andrey.misyrov%40gmail.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
