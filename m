@@ -1,74 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794038906;
-	b=V1moCjjLpv+qiPBGUMFfPd8S4q1flo4UYuvWfi8gQslNCDmy1loT8wsBABmE4oxgdNp0
-	 j3YtirN7HCA2f15/MCJQxwuRnF5z5ypuF4TWDPoHQNZmqOhoAzABSS2ORZ+d2kwvkCCCz
-	 bmt1NaK3KQKX5W/hWpkLT4QOfLeMKlALMZMWZjyhNEde39cSs9LoPUqPRVDnu6DC9cPW7
-	 aD7ZZAqOEwjVhTW6NFzmmbOCVi2BoPsKn5FmSChExI+gAVsORKYmQ3e1AfXj2eTFA5Owe
-	 Q7kDbzKGneh3EyXaPpRc3P06S0ezRTjYyvfTbXfYzi2WZQMjlXZ5gSKn1mDEhb5CuyQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794038906;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794039094;
+	b=trDxAf5Z4a5JlrAUCd3fJNlyx1i479QUVAwp8ao0mSPCcf1vP/Aut1UItHofKd6OQXC4
+	 dCGDZpL9uvy0QCJEbKdg8vBDVx+8nkN0d6rFnZuDKvxCRYi/2LYJ2Nlu1qY2d70HxYKaF
+	 Co+FwikpEBQo7ZKb8Cqycwvv8B5t1AI2R9lQU0hfPL//7gLl214JOAgwBqId3VxxpL0Ew
+	 S5D4R5d+Vk8mS4yNslyK3eLszzM49cnrnAUzzw7FbPFTKavfaWKjz9USMMpoz/WVeBkVU
+	 XEtsxaxiDksIMNLUG2RQdbnOSGuzUF3IGvd/jLSOlIPXJEZSuF5fnSwO1Pu68VLMdtg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794039094;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
-	b=Ft4fhYHj7pYp7KKn5T9cHNJtWIjIJxlJx4WWKHFWrVDCRHU4PRgFDvodYBKixh5/6APg
-	 Xa16AczOjRepXatmtGQn/EtJafNhBWSIcx/gcph4Lk2ldjcvVBznXmBouuP7FytTSO3xG
-	 s+CEaSxclJZ6XJDlNvVvwUdkEeQJp0zKJx6uMukwbRnBqruJm4pW5YWEAJPW3lpWo8VCt
-	 28dN+753H+vJhKIqy7N//YAX2wVKOHWnTx1UlWwgjWC3WKZQ+/qLNB8COgUVdpa3DxcuP
-	 ieNGHx+8HKwVj5ZqSorIvgGBFC4N9Q2N+hRW3r4flUhxO5t0e+Nwx2HFbajF8KE++lA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="VE/wXq0Z";
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
+	b=omIJrZW3FOQnBMxkdLgt7UiJFyruUJshTYrwkW8OJ2UhjaZToLy1YjWeds3SF3qNQG7I
+	 yaOix8FhleM5SLae5RukNjDlsf6KKf0aTPCK7xDtMgVkkV+UKR+swyWYQXW1CrodJezEk
+	 qCXIV+HyAVwjiAj9T4diKLYYVD2GgYkXcd7xd89uimSkYD0GmnlPXgLWdl2pAoeVfHqzl
+	 S2uqP+r5r/ND0UF2rSrrhrT691aUcLHlAtmJCqWHOu+wbsvwSk/Ozo+0eq0azA6zEM2JD
+	 Aqq1BlkJEa1XMN0p8Ex8r/MFm3YUnK3zL/wHWTo9IEPOg6laOoIVWGTlyvyXWexCZRw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=luxonis.com;
+	spf=pass smtp.mailfrom=luxonis.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04F0606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 08:08:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E04F0606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=VE/wXq0Z
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8a59717b0c0so960551b3a.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 00:08:25 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B29606A32C
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 08:11:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1B29606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=luxonis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luxonis.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b570ff3dfdso1322318a12.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 00:11:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794039087; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PGJ2Jj/zyP25xfdiISpIj1XrridFD9cEm4UrooI3cSHHxWfVUZbffh4/CWKyAWdgR7
+         36F54EJD5IKv6RPAeBacpzchUKJcEWRFHFHKzfp+lKUTCbwv6CS11T5wlnlIMyEm33a6
+         wj8eisPkNnQ1lkOc0gIwBFpT1cVEPQ2y29LYjwY1n3AuT00N1BD07ptVMd3x/wf9l34S
+         Tf50bW4J2ANbu/8L1TywZlfSMnGpVAjiHg+Br1slRaGBchjaAfpuEjS5cA0vMuLUPaqB
+         /o0/K9SzQnXe0QdqbPH0D5RhoaMeyBbQGOUkOKnwctTrwdJghvslQnZ2Ygy4J0KI9SES
+         4nPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
+        fh=iY97GPgCHkFmcIZOlkyqpzLtg6k2KcxXX2sJb1fYuJE=;
+        b=giojpPXCWxMROZtTHVlDiq5L6I3PcFIsFub8gQJiTb+y577Kp/7JZjhnau1CEUnM0X
+         2JSKvInJC8t9D2jnzP2C3RKak7l0tXz/lKRWjNmH8mpTMgAXI5KEqkA3cwDdzqjClRfS
+         sKXnBId2j13Xm0cdEQmsdodJwzYITqR3OPJw5V9CAy959AWpP2Y1H0bEIsEPVvis4MoH
+         ub30Y4aOllcRBrEeuIMbAwAw2Q6syMincjuh+5aECZaMqdIFe2CMTzBI9nqqeUUhvrTt
+         sTFu3zEMYdJwhrukkvDKLKfQoR1s1/J7pSWYX7mdBDTgMCflMyWfztObh/trjSvTy+TA
+         vl5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794038905; x=1794643705; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=luxonis.com; s=google; t=1794039087; x=1794643887; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
-        b=VE/wXq0ZVwPv54UL4lC9s8hULEmpup18q2VZe/7rDzgYDYPXuz0kATpJ2ES3yvotp4
-         mHFlY3HkRHEKHh7KPu7AtAvhxZko5Z7ZSnts7+Njo3jaKwvhxLuOaUVOmKhReZeCVh6h
-         m8ZLyDoPzSziLhxtspbC74w6yWxMcFxv/QUp9i0HUtTX5urp18aUPKwLZkerhTlBV9Ur
-         XVHTKWyU/yUWGR3fVjDYRetqz2By6TKyWyt0cNFhKP2Q0fbkLdD1Cp4/DsBsHb441GK+
-         t48PHH/QDxthjUJQSD+aqaYFv6qg26VWAORqjkbBxCJSu0QWf/BYSPuocdON7ALFdiqE
-         uulA==
+        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
+        b=i+BZEnQeLfpuxDV52EIGZHIqys/+bL20VEt/gQlf8jFl3tVdIjfxBnbW4Yz98IZC3X
+         khkTl5z0XoW0v25+ivaKgtTIWS9Wj6EcHJJKE8Znm71tI7Ba9JXgz6b3rhJ4PJ0mCAkw
+         +DT1GZzhLOpu9xarDzNFWNKHO1eRmQ1LX3aXdIbUIaqqpXB7dVsTDjnidjzHhw1aO+qp
+         uJbV3LAbEmVTIAku1aquJe2IpjOF7js7fvbO4PzkBJLiz1D84rTkUfRSIaTjV0hBu+ck
+         d2bPfhhnPDcegpKZVE32oynF4bAJyd04a4GxDxaQjrW67/urIOiozVNyfrPntZFfMw+9
+         De/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794038905; x=1794643705;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ezL4r4ua1RBFqrJXqddrPEFW/yvPOGvhTPdO31bBmUg=;
-        b=xj1yF1vtlOCrbFmhu1d+VPwA31quURdF5L7l0hU8H64FFWRZ01NMmVUKoWz5ilwLtu
-         CvSIjxKqgWtIWF1nnjMxFvSxC+Fl1cvt1cEvuTJze32yvfbrsd/A+iBTvmTIqFmbKoKK
-         hlVsMDfnTbHhNktCAajAi6tvuALgbL/qqACEihgnsS+KrgXf9gZKbfVMHy7bRvEKGuhp
-         EU/5RscGDR0s62mbkXZpjqyktuROI1MGxhzE8pBdbuCyjZr2xfKTdScqrwrPyLzACGBv
-         GNYXDHdwnOpH2A34ePMq3nUiLAyXZLY0knFmIvWXmjxq5Eh72bQ4NkVLALnT5jiEUBiX
-         IIJQ==
-X-Forwarded-Encrypted: i=1; AL+hErEAnKQ+UqeCFBbG5vsVU2RvgveGyvkB86oPBjtCS2W3BA/h+V6iFDhWnM3fhphGiNVmB3hB10s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8+txRSR4FikSyFqjPYElNWgdkMW3cyE4Jv4DaGeJ3bXTL/Lxxz
-	EvmnTkztDdA1sSkM20/6k4iPzTsYTGUH21UUYqKHZXdsVjQy4azBByA4uHgZ6wl2rpRxPaRimAw
-	600Y+/Q==
-X-Received: from pffh14-n2.prod.google.com ([2002:a05:6a00:c24e:20b0:891:240a:3bb3])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:180a:b0:882:2b16:c314
- with SMTP id d2e1a72fcca58-8b37c52ff35mr4860050b3a.52.1794038904784; Sat, 07
- Nov 2026 00:08:24 -0800 (PST)
-Date: Sat, 7 Nov 2026 08:08:24 +0000
-In-Reply-To: <20261106201822.1734-1-lirongqing@baidu.com>
+        d=1e100.net; s=20260707; t=1794039087; x=1794643887;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Mhkve0AREgIHZlQo7Mk2vGGc3A9EkMtvF/OVPHAgmwA=;
+        b=dV0AaO3kklwoQ3FBuSYmVZMa47Javoa5Y1ZEQXw+LLgpjyar0vKOchmI68nb5QJeba
+         cx5IXi35rk1m1/8p/Os+0JpA+sW6KPv4bnBzWnZR3xj5hTZ4KslR7M7q7dpcqbCkcqV9
+         SNNb65tSxWP6rc7MxsCIht3fjWbMXJYxkuhN5SdIvNMdtTt416IZI3vfxcgBU7bvfRXF
+         h1qb91qXvXmHB3xICTqRRoMZCPqDF/sVScvKvjvWJXvJqlv9tfsObp2iaynRmuQbka/q
+         yOqz0CQr6arxy0Pmg3jPEp1W5n8tsklD9oU8cC3cItvgzv462RPBYziKQT+85RTMQ/j/
+         F2ug==
+X-Forwarded-Encrypted: i=1; AL+hErHKdMLctrwUBovsR4AN4aiOaYXBX4hJNl1ZBLHqnrySoAsiEvuqUueLLMwz4zQqciXrEwz1sIw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9nVi+x+IgxGjdR/AmT5X597NB+GfOIRLKles977nDp8MfqZqEZ
+	QzY1LnuqAAuXDGwfAlFH5kDhNtn8NiagTOr9V+oLsoHKXBk4UvEm5lGKYDayQrBc9QBDRrftYnF
+	y+spDXlFRAR8VMZlat/dt9rP+hplYqCxxstg/QIll8Q==
+X-Gm-Gg: AYBFou2josaTgPPTVHLTWpfnmOYV+5/loQH009b4HGNS4ojCOzVcy0TV8D+++SqVYfT
+	4MWbwtGZJqHq6wuo1W1TuyD/c8IrfYIfXS/1E/Q4P1acjrBV9ffa1JgarSviMr19b0YLpm9stWc
+	j83g9pmm0aVmMUfK55XOEcVBwpY6oxMT6AEnEqZDKMA12TvBKo/+mmE3CxGBSPbgQ66h7LWEt0Y
+	Uy7L8wzCmIoV2PPKmXp/UoQLn9dtu/TGfsyUxgGKqt1DIf6+0xEfG0PPM21fjGcILHxe8arIPk2
+	BFrkzsxRmnqtGKjHNVaJHTxYA1fyfmic09hIMGDjh7nZA+xvILIc0zhXCPxX/FgRxKPZcM2b92m
+	qjkSOfLaQNoa/I8jONHmtc/SsACuINu2IkIg=
+X-Received: by 2002:a05:6402:2815:b0:6b3:f891:c2d4 with SMTP id
+ 4fb4d7f45d1cf-6b597806627mr3457069a12.29.1794039087024; Sat, 07 Nov 2026
+ 00:11:27 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,74 +99,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261106201822.1734-1-lirongqing@baidu.com>
-Message-ID: <au7bGHqwhXXttXH_@google.com>
-Subject: Re: [PATCH] af_unix: Fix wrong socket tested in the symmetric half of unix_state_lock_cmp_fn().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: lirongqing <lirongqing@baidu.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20261101102720.702600-1-jure.rebernik@luxonis.com> <20261106131828.2844d23e@kernel.org>
+In-Reply-To: <20261106131828.2844d23e@kernel.org>
+From: Jure Rebernik <jure.rebernik@luxonis.com>
+Date: Sat, 7 Nov 2026 09:11:16 +0100
+X-Gm-Features: AclHuK9iN-4C02LmAAJuI1W1GyctSZGv-_z96k80CwTx7Gbtw0_eVmMh2EFhTYM
+Message-ID: <CAD9jT+qH_XkV3vJV1OYGHqsQ0ThwK=HC+X1CCMv=kcojCx5zOA@mail.gmail.com>
+Subject: Re: [PATCH net] r8169: enable the RxOverflow interrupt again
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+	Sunil Goutham <sgoutham@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> [PATCH] af_unix: Fix wrong socket tested in the symmetric half
+On Fri, 6 Nov 2026 13:18:28 -0800 Jakub Kicinski wrote:
+> Not really following the explanation, TBH.
+> In general "ring empty" IRQs are discouraged because the host is likely
+> overloaded, so having the NIC force the NAPI is not helpful. But sounds
+> like you say there's some sort of a race?
 
-This is net-next material, so it should be
+Yes, sorry, the description was not clear. The interrupt is not there to
+force NAPI. On the RTL8125B the receiver stays stopped after it runs out
+of descriptors until RxOverflow is cleared in IntrStatus, even after
+NAPI has emptied the ring. The sequence, as I understand it:
 
-  [PATCH net-next vX] af_unix: ...
+ 1. The ring fills. The chip completes the last frames (RxOK), then sets
+    RxOverflow and stops receiving.
+ 2. rtl8169_interrupt() read IntrStatus before RxOverflow was set, so it
+    clears only RxOK.
+ 3. NAPI empties the ring and unmasks the interrupts.
+ 4. The stopped receiver raises no new RxOK, and RxOverflow is not an
+    interrupt source, so nothing clears it. Reception stays stopped
+    until a TX completion makes the handler clear all status bits.
 
-see Documentation/process/maintainer-netdev.rst.
+What I measured is the stopped state (IntrMask 0x2f, IntrStatus 0x50,
+NAPI idle, all descriptors owned by the NIC), and that writing only
+RxOverflow to IntrStatus restarts reception with nothing transmitted.
+The order of steps 1 and 2 is my inference.
 
+So the fix only needs RxOverflow cleared once the ring is empty. I see
+two ways, both tested on an RTL8125B with v7.2.6:
 
-On Sat, 07 Nov 2026 04:18:22 +0800, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> The second half of unix_state_lock_cmp_fn() is meant to mirror the
-> first one with the roles of a and b swapped, but it switches on b's
-> state again:
-> 
-> 	if (b->sk.sk_state == TCP_LISTEN) {
-> 		switch (b->sk.sk_state) {
-> 		case TCP_CLOSE:
-> 		case TCP_ESTABLISHED:
-> 			return 1;
-> 
-> The enclosing if already established that b is TCP_LISTEN, so the
-> switch can only reach the default label and the branch always returns
-> 0, "no order known", instead of the intended 1.
-> 
-> Test a's state, as the first half does.  The code is only compiled with
-> CONFIG_PROVE_LOCKING, so there is no runtime memory-safety impact; the
-> effect is that lockdep cannot validate this nesting order of
-> unix_state_lock().
-> 
-> Fixes: 98f706de445b ("af_unix: Define locking order for U_LOCK_SECOND in unix_stream_connect().")
+a) v1 with your suggestion, RxOverflow in the unconditional init of
+   tp->irq_mask, so the handler clears it.
 
-Please drop the tag.
+b) No "ring empty" interrupt. Clear RxOverflow in rtl8169_poll() right
+   before unmasking:
 
-As commented, the branch never hits and no real issue exists,
-not worth backporting.
+        if (work_done < budget && napi_complete_done(napi, work_done)) {
+                rtl_ack_events(tp, RxOverflow);
+                rtl_irq_enable(tp);
+        }
 
+For each, a test build switched between the old and the new behaviour
+on the same boot, in blocks of 5 to 10 runs of 30 s with UDP at
+800 Mbit/s inbound, about 2.14 million datagrams per run. Totals over
+all runs of each kind:
 
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
->  net/unix/af_unix.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index e7a0582..501e693 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -163,7 +163,7 @@ static int unix_state_lock_cmp_fn(const struct lockdep_map *_a,
->  
->  	/* Should never happen.  Just to be symmetric. */
->  	if (b->sk.sk_state == TCP_LISTEN) {
-> -		switch (b->sk.sk_state) {
-> +		switch (a->sk.sk_state) {
->  		case TCP_CLOSE:
->  		case TCP_ESTABLISHED:
->  			return 1;
-> -- 
-> 2.9.4
-> 
+              runs that lost    datagrams     datagrams
+              >1000 datagrams   sent, total   lost, total
+   (a) old    5 of 76           162865429      411511 (0.25%)
+       new    0 of 76           162861980         489 (0.0003%)
+   (b) old    9 of 75           160722174     1041366 (0.65%)
+       new    0 of 75           160721463         846 (0.0005%)
+
+The small loss left with (a) and (b), 489 and 846 datagrams in total and
+at most 61 and 184 in a single run, matches the NIC's rx_missed counter
+over the same runs, 492 and 846. So the NIC dropped those frames, while
+the RX ring was briefly full. I used the upstream ring size (256
+entries) on purpose for these tests. Our tree also raises the ring to
+1024 entries (not part of this patch), and with that and the v1 change
+the same test lost no datagrams in 20 runs on two boards.
+
+Which one would you prefer? I'll send v2 accordingly.
+
+> LLMs point out that you're adding the same bit on both sides so just
+> add it in the unconditional init of tp->irq_mask above
+
+Agreed, v2 of (a) does that.
+
+-- Jure Rebernik
