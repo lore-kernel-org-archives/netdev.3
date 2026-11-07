@@ -1,94 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794085642;
-	b=hYdZdPwSvZA8j+NyxKUG4qjotl4nNcEgJ9PUefsGLiiXCWbalaHn/ybIWUArz9wxRL8W
-	 E00C/sevSA/u+KomMkuskEYwa8OLYzNVGKYwqMvec2yQPqabpf+8NAlED16PLHR9A0MaI
-	 54ag8i5t6Znyz4V+B/OWTKJdM/kqpCJW25hTCg4yqkgHaOOcD2QKMBtqbtsXl7y0pk43t
-	 5tNUTvwOnLZBzsU5nm8hahy6lXIflMQQpyrPhKvMiRRL2YI746LAAig/3TTgC60f2aO+U
-	 wbqPeI0p9QPwhrim0nSHjE/SmqIoQiRXS3and67GJbyZnsrCGTAvQR/H6HOG70QYFSw==
+	t=1794088831;
+	b=B4IxBm27TeoXHpgM+rU6v+DZnnxoqsGDtUZ+txX5BF/bjGsmXwQstPe3gA9aEgXMOR77
+	 8B3dXXXh1TNNqCvBp9L8Xx5QLeKIFenVeUdLWI7kAsRIL/y3E1xFPAG7j/m3HfqwwefT9
+	 Wl9JmCiIFUadHLS74g2UfVXeXBYPxL/jYmmks2x7J7rUgfLI0USNTHrilUq7j7Vv7jLT7
+	 a3eE5Px7emMCH/X9+L7lOBhQwd9CGwZvRrYJOHEggdtfsKrYjvmxk9gq5N+t7TFG4fs3x
+	 W0w6R4qzFDDrzSh9PBv6DsffatneroX5XUfVIGYZ9dtsSsiBb5g20T+Rl5+Ra9n63yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794085642;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
-	b=xot/s9V99lAONYEQNWc6IZRGw59UTJPPurmPL+XhaTSL9mQoDo3SJ/eGMdtiZwRTBCCn
-	 NirvsJN3V8RdW/sOlIqRiGV8hu29JlVOB8Ei4U7GZqhLN/TFPrygv7eV5YqxJWe1mctf2
-	 FongxO/P2P/yxcVYL3biQsMI4vZPCTSZrji1PEKld5lBGHelbe85pE30iyFvq28mgMkAj
-	 8kT14Y69VkXuZL8m05a7elPdRkIEtqvPGV6sDA3+9F9sXfEWQvVOMWQfjcAC9X9DikRvL
-	 5N6EBDSDtvlkSg1NhfHlFXIVWrPyVLXO2WvtAU1lJHqrbFoChu0wMQT+UGOO7IQNwTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794088831;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=R9mxM4jj9umMgpGEnC3ywyFmHTkF33AVyWG7Zk844IE=;
+	b=u5YVlEUT2NBcQAIATqk1DdYyabGzlXxDCYAANhKhBm2jWQ/bEWLKpDfto08SKAdbA0Ai
+	 gOIDgM8ii0feE0qwXe7cpUOwPO6msfDfqpaxzLkOq0d7mKxsbX5r4Rzem1rjaaTKAWk/2
+	 xe+06qBq6BRIEK0mgrPxU+rtAAURwA8ZU5muBaI7jFXUHmWNefgCxzWeZxq/31Cb22TxN
+	 5oCkTxC2hsNmIvB8nVTlzcCjuW2SWMhkKNznN0ay/V93WwluEirLUhpFUsRV4fYIEPhws
+	 u8phIExY0x09T84aLZu2UPOwL/5MVsa8bUDTUs3w58r4irKD4vS5JuPtrrCDgMnfvig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v3VTxUSo;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BJGDUGFM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D04F606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 21:07:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D04F606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115A6606A326;
+	Sat,  7 Nov 2026 22:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v3VTxUSo
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-37198ed3727so534989eec.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 13:07:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794085641; x=1794690441; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
-        b=v3VTxUSo5xdLe91KD1TmAmy+Hk7quvkWacahldqH+gvWRPUtpmA1w6lWmj76cHGNRQ
-         u0FYpGPpEGSp22Qa1uPQLuFysjD1DfAn/7aUNzWcywLzTziNd3HhNKVBBd68Bu9cmgNn
-         1m3GKAf1PAW2SxP1io881+ihvFmPLJv/Y5Hwx+2JBiIFMCynKZLDgphQZEJzdRhg78ux
-         e98UGLcbDlSR4ufmOhUdwJO9qIRTFYhKcAADCXg+v7pSwMJSoXAZErG+W9uqQETWN8kh
-         9aCYvJJ2WmQPukPQpGbIuJhya2hEyn0SzIcHKIf68E1ndr6pBFXzT2hhq9XjjAjXjVRb
-         9rgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794085641; x=1794690441;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
-        b=oB5OOZoVT9zQILMFMoW1F+7ud564PYSO1W8Lckby/kmW29c1NaZcaR8FRtfaXWXKhL
-         6AwGwNpXpkbr1Ig0O1F3p3QWlFDmGZiKpLbNzqAibTbyhELVwMAzE2JlAAY3cn2j03XE
-         6r5RIK43Vzha+vhgYa/ut9UIg640fH9hh7IpoulOi6Ndn01ZHO11XHDQV6GXo/uBr1LT
-         j5xh1XRNeD0eZo0KSAMWuATperBMysKZZZdzlQ1ar509ek95xS8g7NaaUwdbJe+PXFSG
-         pa4br06j2UTr1Xi2VhFyEnbokRkeWDZe78a7IvbKKLlIkKDwgL7c5I5+3vbworn2mDyc
-         qAsQ==
-X-Gm-Message-State: APuU4Z8+3D0igB591UbEFJnoSN6pH0etggebv/lCMkQcZ9lrFzzqC/h+
-	qkSDcgpFKpbNqbzw9FRbM46c2IjHep1yHGdW+UQoYj5kfUqjZrTCKB8/Md8wXVb9Jsg=
-X-Gm-Gg: AYBFou2uN1DJde+/aPBEb6cH08Xt1fFUSP61QwFoIZAUcpIK1JJtXk9hDV0DJyR19Tz
-	6fYlT5sbJYZqQ3u56EcdgiFN0rG75HYgtUgPc6DEqTyuU/7snZb18F7ivbGo2yZB8SmEbODdzCM
-	qgfXcRECbc4cshG0JA2bEZQT/t2rjIXjcVF+9/FnWyKrbBrvDuuzz2f14gSR80gJ0h5poM21maQ
-	WaQ3toZxJ+DfIaaKSfKy9ys4zCUM25Aj9I6k226sLezZbBgttvfsYfxu7anq/7Vf4oVhJR+uacH
-	VXRrihIc88Li3V5qFtF3iHvFTzYV4NdaRVCFANeYgIRDGEfe8f2UWNXD/ay2QosqEIW+XQXRABU
-	OmTevRDPG+EvwrxMaaz5b5lmNTgaxJmS1zf+fsUhkx2DjftRBIefxDUpJKZYA7dvoi1DaVVqoOE
-	X7ET/nizu+M6MwpJ3MReWy+CPT+8CGvd3QjLRL8KdppJ8kYiPbKTtaPNm3gfCSG4b6ytlnqixFr
-	C429sQeEhJUFeQpVZaQjkcP4JUCdaVXqKR3HRzeL9Ar2sLftB9+BngkAZCsnXF49PTWcLlM1GPV
-	ccwzvayAA8PStH4uOt6FoioLhLCh3Fx9Y36rv1TA2wtq+w5drw==
-X-Received: by 2002:a05:701b:4201:10b0:144:eb3f:563a with SMTP id a92af1059eb24-1b269b20199mr3989418c88.15.1794085640608;
-        Sat, 07 Nov 2026 13:07:20 -0800 (PST)
-Received: from ZephyrLabServer.internal ([165.162.64.148])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b375726fd1sm889625c88.14.2026.11.07.13.07.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 13:07:20 -0800 (PST)
-From: John Macias <dencity7@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] net: dsa: clear the conduit RX queue on receive
-Date: Sat,  7 Nov 2026 13:06:53 -0800
-Message-ID: <20261107210653.2007194-1-dencity7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BJGDUGFM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9BA1F0089F;
+	Sat,  7 Nov 2026 22:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794088830;
+	bh=R9mxM4jj9umMgpGEnC3ywyFmHTkF33AVyWG7Zk844IE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=BJGDUGFMJe2pGxq+tPXY5B/2pUVIbR0qIdoNuJBE36kppS7P4bakHEMXwc1lLnznC
+	 0LtswL9qQkT7s8mpn4zp/XC96TTPeIkBihLgAst9ZtUAPDnuGj7x4OGBRaCtBDf8Jh
+	 4VNO4bm9jGh9fMhJmGMb60bRQdapfG13MwECWc1vBGnbCaFRUJ8wi5U1lw8HC4UURq
+	 KoXqNhLU0sTuRW+zFiF6Jw5mD87pFynMF0N0DKxvKW2iRcJn6ofibSSCGOCv7WfFN+
+	 lmgh6PNw80pZYdWLereKkRSya8xC3+RT8p7rOy+4SSOSb0jXJYrw2/eUPOLcClaW5A
+	 ltoreifmz8HAQ==
+Subject:
+ Re: [PATCH net-next v2 1/2] net: ethernet: mtk_eth_soc: skip page_pool
+From: netdev-bot+sashiko@kernel.org
+To: sandeeph@loljews.com
+Cc: netdev@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux@armlinux.org.uk,
+ mason-cw.chang@mediatek.com, frank-w@public-files.de,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 07 Nov 2026 22:00:29 +0000
+Message-ID: <179408882923.994134.9885831030402062778@kernel.org>
+In-Reply-To: <patch-79206c12217411fcdbff905b65eecfb2@loljews.com>
+References: <patch-79206c12217411fcdbff905b65eecfb2@loljews.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,134 +67,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-A multi-queue conduit records its RX queue in skb->queue_mapping with
-skb_record_rx_queue(), as stmmac, mtk_eth_soc, fec and dpaa2 do.
-dsa_switch_rcv() passes the skb on with that index unchanged, although
-it counts the conduit's queues, not those of skb->dev. A user port has
-a single RX queue. For a packet from conduit queue 1 or above,
-get_rps_cpu() finds the index past the port's real_num_rx_queues and
-returns without steering, and its WARN_ONCE() stays silent because the
-port has only one queue. So rps_cpus on a user port only takes effect
-for packets from conduit queue 0.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Trunk-tagged frames go straight to a bond or team (tag_dsa), through
-the netif_rx() branch for devices that are not user ports. That device
-has its own RX queue count, so the conduit's index there selects the
-RPS map of an unrelated rx-N queue, skips RPS, or, when the device has
-more than one queue and an index at or above that count, triggers
-the WARN_ONCE().
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Clear the queue mapping once the tagger has chosen skb->dev, before
-that branch, so both paths are covered.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This leaves no RX queue recorded, rather than recording queue 0. Both
-make get_rps_cpu() use the first RX queue's map. They differ for code
-that reads the recorded queue later:
+- [Medium] The page_pool gate added in mtk_rx_alloc()
+  (drivers/net/ethernet/mediatek/mtk_eth_soc.c:2827) checks…
+- [Low] The commit message gives the reason for the gate as "On NETSYS v2
+  and later every RX ring gets a page_pool ... The HW-LRO ring already…
 
-- skb_tx_hash() picks the TX queue from a recorded RX queue when no
-  socket mapping or XPS map decides. A flow forwarded from a DSA port
-  to a multi-queue device now gets its TX queue from the flow hash
-  instead of the conduit's RX queue number. Recording queue 0 would
-  instead put every such flow on the first TX queue of its traffic
-  class. The selected TX queue is also an input to several taggers:
-  tag_brcm encodes it directly, while tag_ksz, tag_sja1105,
-  tag_ocelot_8021q, tag_netc and tag_vsc73xx_8021q derive a traffic
-  class or PCP from it. A different queue within the same traffic
-  class need not change that encoded class.
-- With CONFIG_SOCK_RX_QUEUE_MAPPING, packets received through DSA ports
-  no longer update sk_rx_queue_mapping, so XPS by RX queue (xps_rxqs)
-  stops following the conduit's queue number for those sockets. A
-  mapping the socket already holds is left as it is.
+--
 
-Found on an IPQ8074 board (OpenWrt, Linux 6.18, conduit with four RX
-rings): with rps_cpus set on the LAN and WAN user ports,
-/proc/net/softnet_stat showed RPS only for traffic hashed to conduit
-ring 0.
+net: ethernet: mtk_eth_soc: skip page_pool
 
-Claude and Codex assisted with diagnosing the queue-metadata issue,
-preparing the change and its explanation, and checking source and test
-results.
+With this change, mtk_rx_alloc() creates a page_pool for an RX ring only
+when ring->frag_size fits in PAGE_SIZE. Rings with larger buffers fall
+back to the existing netdev_alloc_frag()/mtk_max_lro_buf_alloc() path.
 
-Fixes: 91da11f870f0 ("net: Distributed Switch Architecture protocol support")
-Signed-off-by: John Macias <dencity7@gmail.com>
----
-Changes in v3:
-- No code changes. Resent with git send-email; the v2 posting was
-  damaged in transit by the mail service (wrapped hunk header). Rebased
-  onto net/main 30c71476d, where net/dsa/tag.c is unchanged.
-v2: https://lore.kernel.org/all/CA+KzPspNN14ZEyxisGrOSpgfTqajJfZTXG_iHBRMYd2su1dRKQ@mail.gmail.com/
+Link: https://github.com/mediatek/mtk-openwrt-feeds
 
-Changes in v2:
-- Clear the queue mapping before the branch for devices that are not
-  user ports, so trunk-tagged frames delivered to a bond or team are
-  covered too (Sashiko review).
-- Replace the claim that TX queue selection is unaffected. The changelog
-  now describes the effect on skb_tx_hash(), taggers that consume the
-  selected TX queue, and sk_rx_queue_mapping and
-  xps_rxqs, and says why no queue is recorded instead of queue 0.
-- Subject: "on user port receive" -> "on receive".
-v1: https://lore.kernel.org/all/20261025072203.1519561-1-dencity7@gmail.com/
+> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> index ad0fdc4133fb6..29370376f0322 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> @@ -2819,7 +2819,12 @@ static int mtk_rx_alloc(struct mtk_eth *eth, int ring_no, int rx_flag)
+>  	if (!ring->data)
+>  		return -ENOMEM;
+>  
+> -	if (mtk_page_pool_enabled(eth)) {
+> +	/* page_pool hands out order-0 pages and the pool is created with
+> +	 * MTK_PP_MAX_BUF_SIZE, so only rings whose buffers fit in a page can
+> +	 * use it.  The larger rings (HW-LRO, and 9K jumbo once enabled) take
+> +	 * the netdev_alloc_frag()/mtk_max_lro_buf_alloc() path below.
+> +	 */
 
-Claude assisted with diagnosis, the patch and runtime harness. Codex
-independently reviewed the code, claims and raw results, and corrected
-the test descriptions.
+[Severity: Low]
+Is the HW-LRO part of this comment and of the commit message accurate?
+The commit message says:
 
-Testing on net/main (5d7f3375c), x86_64 under QEMU: a 4-queue virtio-net
-conduit with dsa_loop, which for this test only was changed to use the
-Marvell DSA tagger and to accept LAG offload (lan2 + lan3 in a
-balance-xor bond with 2 RX queues). The host injects DSA-tagged UDP on
-chosen conduit RX queues; rps_cpus on lan1 and on bond0 rx-0 points to
-an otherwise idle CPU. 200 datagrams per queue and path. The RPS columns
-say on which conduit queues the receiving socket saw the RPS CPU
-(SO_INCOMING_CPU, which holds the socket's latest receive CPU, so this
-is a per-socket observation rather than a per-packet one):
+    On NETSYS v2 and later every RX ring gets a page_pool.
+    ...
+    The HW-LRO ring already needs 12K buffers, and 9K jumbo adds more such
+    rings; for those the descriptor length is larger than a page, so the
+    pool cannot back them.
 
-                       lan1 RPS     bond0 RPS    WARN_ONCE   eth1 TX
-                       (q0-q3)      (q0-q3)                  per queue
-  unpatched            q0 only      q0 only      yes         800/0/1/0
-  v1                   all          q0 only      yes         201/100/150/350
-  v2                   all          all          no          201/100/350/150
-  skb_record_rx_queue  all          all          no          800/0/0/1
-  (skb, 0) instead
+mtk_page_pool_enabled() returns mtk_is_netsys_v2_or_greater(eth). MTK_HWLRO
+is set only in mt2701_data, mt7622_data, mt7623_data and mt7629_data, and
+all of those are .version = 1. MT7981_CAPS, MT7986_CAPS and MT7988_CAPS
+don't include it. So a HW-LRO ring is never allocated on a SoC that has
+page_pool enabled.
 
-(Queue 2's NAPI happened to run on the RPS CPU, so q2 does not tell the
-cases apart; q1 and q3 do.) The last column is the eth1 TX packet delta
-per queue while 16 UDP flows (800 datagrams), all from conduit RX
-queue 0, were routed out a 4-queue virtio-net with XPS cleared; each
-total is 801 because one other packet was also sent. The aggregate
-counters are consistent with fallback TX selection favoring queue 0
-when RX queue 0 is recorded, and flow-hash distribution
-when none is recorded; the unclassified extra packet is not attributed
-to a test flow. W=1 build of net/dsa is clean.
+At this commit, every ring that reaches the new check uses ETH_DATA_LEN,
+and mtk_add_mac() limits max_mtu:
 
-On the original hardware (Netgear RAX120 v1, IPQ8074, OpenWrt Linux
-6.18, four-ring conduit), v1 was tested as described in v1. v2 has not
-run there yet, and I have no switch with LAG offload to test the trunk
-path on real hardware.
+	eth->netdev[id]->max_mtu = MTK_MAX_RX_LENGTH_2K - MTK_RX_ETH_HLEN;
 
- net/dsa/tag.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+As a result, ring->frag_size <= PAGE_SIZE is always true here. The patch
+doesn't change behavior until the following "add 9K jumbo" patch.
 
-diff --git a/net/dsa/tag.c b/net/dsa/tag.c
-index 6a5aa7fc3..e53dc3f3c 100644
---- a/net/dsa/tag.c
-+++ b/net/dsa/tag.c
-@@ -95,6 +95,13 @@ static int dsa_switch_rcv(struct sk_buff *skb, struct net_device *dev,
- 	skb->pkt_type = PACKET_HOST;
- 	skb->protocol = eth_type_trans(skb, skb->dev);
- 
-+	/* The RX queue the conduit recorded is an index into the conduit's
-+	 * queues. It means nothing on skb->dev, a user port with a single RX
-+	 * queue or a bond/team with its own queue count, and get_rps_cpu()
-+	 * would check it against that device. Leave no queue recorded.
-+	 */
-+	skb_set_queue_mapping(skb, 0);
-+
- 	if (unlikely(!dsa_user_dev_check(skb->dev))) {
- 		/* Packet is to be injected directly on an upper
- 		 * device, e.g. a team/bond, so skip all DSA-port
+Could the commit message describe this as preparation for jumbo frames?
+As written, it could be read as a fix for an existing HW-LRO overrun on
+v2+, for example by stable backporters.
+
+The next patch in the series renames mtk_max_lro_buf_alloc() to
+mtk_max_buf_alloc() and enables 9K jumbo. After that, this comment still
+says mtk_max_lro_buf_alloc() and "9K jumbo once enabled". Should that
+patch also update the comment?
+
+> +	if (mtk_page_pool_enabled(eth) && ring->frag_size <= PAGE_SIZE) {
+
+[Severity: Medium]
+Does this check match what the pool can actually hold? The comment refers
+to MTK_PP_MAX_BUF_SIZE, but the condition compares frag_size with
+PAGE_SIZE.
+
+The pool uses the page_pool layout:
+
+mtk_create_page_pool() {
+    ...
+		.offset = MTK_PP_HEADROOM,
+		.max_len = MTK_PP_MAX_BUF_SIZE,
+    ...
+}
+
+#define MTK_PP_MAX_BUF_SIZE	(PAGE_SIZE - MTK_PP_PAD)
+
+MTK_PP_PAD is XDP_PACKET_HEADROOM (256) plus the aligned skb_shared_info.
+
+The descriptor length is calculated for the netdev_alloc_frag() layout
+instead:
+
+mtk_max_buf_size() {
+	int buf_size = frag_size - NET_SKB_PAD - NET_IP_ALIGN -
+		       SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+    ...
+}
+
+mtk_rx_alloc() then programs that value for page_pool buffers too:
+
+	rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size);
+
+buf_size is larger than MTK_PP_MAX_BUF_SIZE once frag_size goes above
+about PAGE_SIZE - 256 + NET_SKB_PAD + NET_IP_ALIGN (around 3906 with 4K
+pages). Those rings still pass the frag_size <= PAGE_SIZE check.
+
+For example, with the "add 9K jumbo" patch applied, consider an MT7988
+with 4K pages, CONFIG_MAX_SKB_FRAGS between 42 and 45, and an MTU set
+before ifup so that rx_buf_len is 3072:
+
+    frag_size = 3200 + 768 = 3968   (passes this check)
+    buf_size = 3134
+    MTK_PP_MAX_BUF_SIZE = 4096 - 256 - 768 = 3072
+
+The hardware may then DMA up to page offset 256 + 3134 = 3390, which is
+past the start of skb_shared_info at 3328.
+
+In that case PP_FLAG_DMA_SYNC_DEV syncs only max_len bytes for the
+device. In mtk_poll_rx(), build_skb(data, PAGE_SIZE) sets up shinfo on top
+of the received bytes. For pktlen > 3072, skb_put() would move tail past
+skb->end and hit skb_over_panic().
+
+It isn't confirmed whether the MAC actually delivers frames between 3073
+and 3134 bytes, since that depends on hardware frame length limits. With
+the default CONFIG_MAX_SKB_FRAGS=17, this window isn't reached.
+
+Would ring->buf_size <= MTK_PP_MAX_BUF_SIZE be a better condition here?
+It would match the limits mtk_change_mtu() and mtk_xdp_setup() already
+check against MTK_PP_MAX_BUF_SIZE.
+
+>  		struct page_pool *pp;
+>  
+>  		pp = mtk_create_page_pool(eth, &ring->xdp_q, ring_no,
+
 -- 
-2.47.3
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/patch-2793186c653124c4c0b3d463bde2ea3a%40loljews.com
