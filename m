@@ -1,60 +1,132 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794063022;
-	b=y0sAvv01Ll69l7JBLqF0wiSWp4MfEXjJXD2KMTume4UyHQUsw3bfy2jZ+Rb/vMfTQhdK
-	 Qqd9MO8Np+yLkkJRqfwEDfy2mYo+A3XcAfNGYP9Z5wKjxBGlTTr3gQCeY7zZ45wSK2dUM
-	 GgDmK4rVET05MOtq7+EB5/0hjHCOTLbFl70CLUEQ50ystQ8TUC+oRNMv0txqfriFUPzej
-	 CrttRCpFysJnHxlT/Ne3eRgx60mfjABUi3ezjOhHGGguo1e8I4dp9NNZM+BTTi5dp7ccE
-	 TbfYNxffaIBbODgn9cBCzNJKvqq5O0fHrDhojNetIc3RissrXz2V5tEDmii9KnPKokg==
+	t=1794063071;
+	b=yoNuY9T4Kpch+/vk2jI1kqG18bntyZKQ3UYI4AweLPfOZuhFp+m9jxwaVQfxnPJTGmxa
+	 NQ3TWAWcgafr2w5L3UA5yHTgOAeMMpy5geQE9y1uLKk4ZtgfN2adTqD+DnFs6N+iNa0MA
+	 4XteRQDnx6s8hrUoQW0KRB3jpbr3v9AbtABF1DI7ZUwqyJXe9HOQD9jKdkIENE5KK2T7S
+	 sAt6F1n8yzyYt1kSV0NUNhWp7vZqbiD1OpF937AoeQUCObbFH1CapyAg2ETiN+F6soYbF
+	 53iprxXO9n+KgP6Cj8f5QoBNMvRr62K6Emzlzv3jeBYzC1wyiXi8cUrO+NZjddWfOxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794063022;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=L7gONvuWJ1W5fc4Gent1f5TjdAlfCccrrNFVcwKBXuA=;
-	b=E1tYWLzc78n7XZS9JA7wuYlBbQ3FfXr/VSjV8zBuuRfAZ3ObNYhbDgaQbdE0AUDFDvrX
-	 vlxY9rANv5hXgi/vsQfbDZp/0oOBz97xYlmsTW1ku/7katKzFTy5p9cy70n78RvrAfQHK
-	 ugsDoFyj1orpANKGbNeSdjB/C9R8W0I0GeukTBlE++esnhMkVO1JC5k+Cfzl94DEB00R3
-	 AZcVmPNGkUUvPnXid6D3BYu90M/dSohASYbUTKSDgtuD/jdQ77dkLSZo1C3IYdr5ezvq8
-	 vR62mb73CD0jW8TFkhCSCnenDXJGU7n7HOdn1m7ZlzQu6qG8Lmj9mf53PcU8AkQvoHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794063071;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
+	b=4khl2NbzUeH1GwvdNMPvo9QBApG2oW7ieAjxZGcwePrMHVpjcJxBiD1g5RXBz0njlecp
+	 aRtSMdEYS4EcvvzrBhLPgqfi9215ixI5EtZ9aofVHjTHzlIN25FfkC/5RT4rVwBLNmwhT
+	 e+8ckej1y8GVMOZLck1z+4oOcJ7MM5YFEyQES4fibTPCq2NAJyPOt1MTBdPxh93lUlljB
+	 NXHxkGU6481fE0EsfxHAEr5b8aj2ayVtuB2toOLZ2s0xVw/wFXffRmeEFKY8sShP+N43G
+	 lSpRRLTfg0t1oSV5Zm9xXoT5Pz8DIhdO7bEjao3lSFIFYTQwiTKVawGg2tq/qeeQMdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObWXVGcr;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GMmnpEp8;
+	arc=none smtp.remote-ip=209.85.217.45
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150C0606EE8C;
-	Sat,  7 Nov 2026 14:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A7F606D80F
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 14:51:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7A7F606D80F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ObWXVGcr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418131F008A2;
-	Sat,  7 Nov 2026 14:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794063021;
-	bh=L7gONvuWJ1W5fc4Gent1f5TjdAlfCccrrNFVcwKBXuA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ObWXVGcr5qE1JMbstc2J1Rixv3VQdgTf7VqXZ1BhNqdKm8pltuYbsLmh534QhgTq6
-	 OYvzRWhbm3T/cTdqwoNjnnvBV5PS12StI7GdLR9gv+2uCqMTp2FdUxuVPbHOF4FyTh
-	 nt0el9iAz0NzTnFA1TiBVu9yrHP7uAQ6bUozy/DxpcT8Ko4plfxZmllEEM1xnyMXRt
-	 HVkTGyU1DL1FDPL2ZlUpTXEEVrBDfNVKVO/k/02Sw3ereq0zGRXAsKz0iuzTTyw1f5
-	 cRhBeEyERwoD6vX85NXPriLE5O1fKFqcST079qiZ376zlvQaL/+80DAhwu6pBDebQp
-	 CFSa5cLFaFyRw==
-Subject: Re: [PATCH net v3 4/4] selftests: tc-testing: teql: cover each attach
- rejection on its own
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com,
- davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us,
- kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com,
- thomas.goff@boeing.com
-Date: Sat, 07 Nov 2026 14:50:20 +0000
-Message-ID: <179406302081.994134.2324214805948881495@kernel.org>
-In-Reply-To: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
-References: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GMmnpEp8
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7d2ca055399so55634137.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 06:51:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794063070; x=1794667870; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
+        b=GMmnpEp8of2xPaPuVAQPWKFigGoxcgA2aR9nmMX8ZNpJmmZa9wenRFjcQYhqzF+O4f
+         awBenfwbtU48GdXYiFGvMF05ZuPd2YRwUd/bKYVmg2+fpVvWyXk3/cOqljzGB7EFuehQ
+         jSFMjTS1HImQQbpOAIch75CU0lfTskRBtkH/rJuM0AjpjE/P3P8J+DQI87qBktK8nXt/
+         aSxf7BEmuWBin/5d4x52nfaZrhJOPIOJV6hOYMw3nmjeLfBW19C/l5v/LtsaIoX84Xvv
+         xUVgNd0DsgIXX3J/pesSgSTgnV0kJtmqYWA9OozHAL2Ef726Xk7KoMfu60bGOWnp30qP
+         G0sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794063070; x=1794667870;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TiUGdurgArXkHoJfkLsRhbw1Pz03rQ/EVAWVD4W2NTI=;
+        b=UqZxgJr67NFOg38LAnrRSYDRVzQO3z2oe5HqMoLz2Tx7HgqF/ZVWq2giQpDc6BPLxW
+         ufqIm1y8XMq91b+XLrvN8w9HRvU6+3w2Y8tadqVXgqaUNl2R9E9jnqXGD406cqZKwigw
+         EMJb3h88hhl811g5iLAF5b+McllowGFQFcWVWCs5LIOOGUIg2gpZ7Rg+WXnd8y7ex2Rb
+         gye8csU6SsnbKwwOJgA3ONJ0HEnUtIrhSe0Cj4SkvmiuKge+P4TiYZcj18GDy2PonTrM
+         QzLwknUAL6sZgKPh/AztfSVPyG98uXHI38vmniVEnB283PIe1x6lSsFruwfMXXOVtuhw
+         k+9A==
+X-Forwarded-Encrypted: i=1; AL+hErHM13AbORg3104UBq2qr/SSaY695/UjNuI9t7D1Gd6xe29SZlXHFTJ6miJNhdToLyWwkNP7vqE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8oZJXxMymqjeDsQVFquv52/XGEyano40HzN07skpsIYFR1K1kt
+	rfpH/fBzLJZYyohbC8iEYGVauN/lYWg8x4sKEbtWY57fKiEEMfgSMePg
+X-Gm-Gg: AYBFou1RgBYjxZDbGVDRmZIP4scMQ1fN/WTj4qrOiFhmC0ZUd/gCNZtGG2/cvGtzGz6
+	J20LVdFRMVOotG01EMh6Dpt4ZELec/0r8u8zWmqaNjrBRS+uA8KeZtiv1gngLJh/QFxpVBesZ5I
+	0YA7z1uhL6QolDSu2cDnsjq9MVGioRsYX9w1V+e+xf4ZcwucZZMVQq8eFDJL6kydUACRZcUMXFy
+	gvQOWL/wTfVvP82Ena4ApmZj61VuB++s9zLIlQicq0Fb1OtE77OOHApmTchiPnVtU5txlwI4eQW
+	YQr5jo92qbrsnBu3Jhq5nX43LIjDI6Es4W0NzfxmREIbiHwY0kq9o2OMg+tis35wMC9V3Ug2N2n
+	keDk1tJ+a99Fn6kDf6JwdSL60qCN81ZQJLYz8Fzpf6jK8sQ2YrnmNzl7rlwAQoX8C1N8NzS6+X3
+	//uJOGoj3BobAd95+YWg+gQy3/0DZK7/PHXoI2Pjf3Hrpqg5+iHAAt5I1K5oE3EAPtmZJtcXy1r
+	NTosmlxawxd4OibRVH8P+oij9qoAGtASjhrCP08lYLrrrqCbi+cs43Mja1g80AGLIdtTQzCuuUL
+	rSF0lecVaqU0/lEI5FR1HP1BMzx7tKXXVJUL0J5bYR7DPsoLbQJInKeayk8yBd8ClE8a5sdVQIR
+	DAcGynQL5NnqHZXI5SxVt5lLveN/F1iRCeS3mgks0rfRY3Jy99X77K86ULT87CVxW9LqRg9qT75
+	yvOUGGNRPgsLVK97Zt
+X-Received: by 2002:a05:6102:4bca:b0:7c3:8150:83e7 with SMTP id ada2fe7eead31-7d2a154169emr2304378137.9.1794063068607;
+        Sat, 07 Nov 2026 06:51:08 -0800 (PST)
+Received: from gmail.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99badbceebdsm4199060241.3.2026.11.07.06.51.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 06:51:07 -0800 (PST)
+Date: Sat, 07 Nov 2026 09:51:07 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Tianyi Gao <tianyi@cloudflare.com>, 
+ netdev@vger.kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Simon Horman <horms@kernel.org>, 
+ David Keogh <dkeogh@amazon.com>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ David Woodhouse <dwmw2@infradead.org>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, 
+ Nimrod Oren <noren@nvidia.com>, 
+ Alasdair McWilliam <alasdair@mcwilliam.dev>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Donald Hunter <donald.hunter@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Breno Leitao <leitao@debian.org>, 
+ =?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5lc2Vu?= <ast@fiberby.net>, 
+ Danielle Ratson <danieller@nvidia.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ bpf@vger.kernel.org, 
+ linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ kernel-team@cloudflare.com, 
+ nh-open-source@amazon.com, 
+ Tianyi Gao <tianyi@cloudflare.com>
+Message-ID: <willemdebruijn.kernel.1d64e7848503b@gmail.com>
+In-Reply-To: <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
+References: <cover.1794020868.git.tianyi@cloudflare.com>
+ <e90e748e0aefa7cbe1c2b31b8c7902ccf135c3f2.1794020868.git.tianyi@cloudflare.com>
+Subject: Re: [PATCH net-next 1/8] net: add tx_extra_headroom and
+ LL_ALLOC_SPACE()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,142 +136,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Tianyi Gao wrote:
+> From: David Keogh <dkeogh@amazon.com>
+> 
+> Programs attached at TC egress commonly push additional headers onto a
+> packet, for example to encapsulate it. When the packet does not carry
+> enough headroom the BPF helpers reallocate the head, which costs an
+> allocation and a copy per packet.
+> 
+> Locally generated UDP, raw and AF_PACKET traffic is allocated with
+> exactly LL_RESERVED_SPACE() of headroom, which only covers the
+> link-layer header and the driver's needed_headroom. An administrator can
+> only ask for more headroom at allocation time if the driver supports it,
+> as netkit does with IFLA_NETKIT_HEADROOM. veth does not.
+> 
+> Add a tx_extra_headroom field to struct net_device for that purpose,
 
-Low priority / nit picks for your consideration:
+Main high level concern is just adding an extra field. What's next,
+do we need to add a field extra_extra_headroom?
 
-- [Low] The commit body describes the patch as a change relative to an
-  unmerged v2 posting, not as a change to the tree.
-- [Low] Both rejection cases check only that tc exits with 2 and that no
-  matching qdisc is dumped.
+> together with LL_ALLOC_SPACE() and LL_ALLOC_SPACE_EX(). These add the
 
---
+Since this already changes callers from LL_RESERVED_SPACE to
+LL_ALLOC_SPACE, could this additional use case be integrated more in
+the struct fields and helpers that are already there?
 
-selftests: tc-testing: teql: cover each attach rejection on its own
+Admittedly, I did not spend much time looking at that deeply, and you
+likely did, so the answer is no. But I want to poke a little at that
+before we add yet another optional length field.
 
-This commit moves tdc case 124e out of the nsPlugin test namespace and
-into init_net with its own dummy device. Only the root-only check in
-teql_qdisc_init() can then refuse it. It also adds case 6a06, which
-attaches teql0 at root from the test namespace, so that only the
-namespace check can refuse that one.
+> extra reservation to the header length before the HH_DATA_MOD alignment,
+> so the alignment of the link-layer header does not change.
+> 
+> The new macros are intended only for sites that allocate new packets.
+> LL_RESERVED_SPACE() keeps its current meaning and remains the threshold
+> used when checking whether an existing packet must be expanded, so the
+> extra reservation never forces a reallocation on its own: packets that
+> already have enough room for the headers being pushed, such as TCP
+> segments built with MAX_TCP_HEADER, are left alone.
+> 
+> Keep the extra reservation separate from needed_headroom so that driver
+> updates of their own requirement do not clobber it and so that it can
+> be cleared independently. Place the field in the padding that follows
+> needed_headroom, which keeps it in the TX read-mostly cacheline group.
+> 
+> The field is not set anywhere yet. A later patch exposes it through
+> rtnetlink.
+> 
+> Also remove LL_RESERVED_SPACE_EXTRA(). It has had no user since
+> commit 6d5431555de0 ("caif: remove CAIF NETWORK LAYER"). It could add
+> the extra headroom, but it reads dev->hard_header_len itself. AF_PACKET
+> must use the value that it read once, see commit 03390aa32e66 ("packet:
+> use consistent hard_header_len in non-ring send paths").
+> LL_ALLOC_SPACE_EX() takes the header length as an argument instead.
+> 
+> Signed-off-by: David Keogh <dkeogh@amazon.com>
+> [tianyi: remove LL_RESERVED_SPACE_EXTRA()]
+> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
+> ---
+> checkpatch --strict reports "Macro argument reuse 'dev'" for
+> LL_ALLOC_SPACE_EX() and LL_ALLOC_SPACE(). It reports the same for
+> LL_RESERVED_SPACE().
+> ---
+>  .../networking/net_cachelines/net_device.rst  |  1 +
+>  include/linux/netdevice.h                     | 36 +++++++++++++++++--
+>  net/core/dev.c                                |  2 ++
+>  3 files changed, 36 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
+> index 8eceaa80b686..a7e311fb7875 100644
+> --- a/Documentation/networking/net_cachelines/net_device.rst
+> +++ b/Documentation/networking/net_cachelines/net_device.rst
+> @@ -35,6 +35,7 @@ unsigned_short                      gflags
+>  unsigned_short                      hard_header_len             read_mostly         read_mostly         ip6_xmit(tx);gro_list_prepare(rx)
+>  unsigned_int                        mtu                         read_mostly                             ip_finish_output2
+>  unsigned_short                      needed_headroom             read_mostly                             LL_RESERVED_SPACE/ip_finish_output2
+> +unsigned_short                      tx_extra_headroom           read_mostly                             LL_ALLOC_SPACE/__ip_append_data
+>  unsigned_short                      needed_tailroom
+>  netdev_features_t                   features                    read_mostly         read_mostly         HARD_TX_LOCK,netif_skb_features,sk_setup_caps(tx);netif_elide_gro(rx)
+>  netdev_features_t                   hw_features
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 435be7880d7e..98d1501d6fee 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -311,9 +311,24 @@ struct hh_cache {
+>  	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+>  #define LL_RESERVED_SPACE(dev) \
+>  	LL_RESERVED_SPACE_EX(dev, (dev)->hard_header_len)
+> -#define LL_RESERVED_SPACE_EXTRA(dev,extra) \
+> -	((((dev)->hard_header_len + READ_ONCE((dev)->needed_headroom) + (extra)) \
+> -	  & ~(HH_DATA_MOD - 1)) + HH_DATA_MOD)
+> +
+> +/*
+> + * Headroom to reserve when allocating a locally generated packet for
+> + * transmission through a device. On top of LL_RESERVED_SPACE() this adds
+> + * the administrator-configured tx_extra_headroom, folded in before the
+> + * alignment so that the link-layer header placement does not change.
+> + *
+> + * Only use this for new allocations. Code that checks whether an existing
+> + * packet has enough headroom must keep using LL_RESERVED_SPACE(), so that
+> + * the extra reservation can never force a reallocation by itself.
+> + */
+> +#define LL_ALLOC_SPACE_EX(dev, hlen) \
+> +	LL_RESERVED_SPACE_EX(dev, (hlen) + READ_ONCE((dev)->tx_extra_headroom))
+> +#define LL_ALLOC_SPACE(dev) \
+> +	LL_ALLOC_SPACE_EX(dev, (dev)->hard_header_len)
+> +
 
-Link: https://lore.kernel.org/netdev/179366641863.488856.17368571591466000274@kernel.org/
-Link: https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
-
-> It no longer proves that a child attach is
-> refused as such, and the case added in the previous posting covers the
-> namespace check alone.
-
-[ ... ]
-
-> Attach a root qdisc from the test namespace in the second case, so that
-> only the namespace check can refuse that one.
-
-[Severity: Low]
-This isn't a bug, but these sentences read as if a namespace rejection
-case is already in the tree. Is that the case?
-
-Case 6a06 ("Reject TEQL attach from a different network namespace") is
-added in full by this commit. The parent commit, "net/sched: sch_teql:
-reject qdiscs from another network namespace", changes nothing under
-tools/testing/selftests/tc-testing/.
-
-The only place that says a new case is added is the v1 -> v2 and
-v2 -> v3 changelog. That text sits below the "---", so it is dropped
-when the patch is applied.
-
-Could the body say outright that this commit adds new coverage for the
-namespace rejection and moves 124e into init_net?
-
-> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-> index 0179c57104adb..ab5d0881c0070 100644
-> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-
-[ ... ]
-
-> @@ -104,7 +100,35 @@
->          "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:1",
->          "matchJSON": [],
->          "teardown": [
-> -            "$TC qdisc del dev $DUMMY root handle 1:"
-> +            "$TC qdisc del dev $DUMMY root handle 1:",
-> +            "$IP link del dev $DUMMY"
-> +        ]
-> +    },
-> +    {
-> +        "id": "6a06",
-> +        "name": "Reject TEQL attach from a different network namespace",
-
-[ ... ]
-
-> +        "setup": [],
-> +        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0",
-> +        "expExitCode": "2",
-> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
-> +        "matchPattern": "qdisc teql0 3: root",
-> +        "matchCount": "0",
-
-[Severity: Low]
-Can this case pass even when the namespace check is not what refused
-the attach?
-
-tc exits with 2 for any netlink error. The verify step only checks that
-no teql0 qdisc shows up in the dump. Case 124e has the same weakness:
-it checks only expExitCode "2" and matchJSON [].
-
-In teql_qdisc_init(), both rejections return the same errno. Only the
-extack text tells them apart:
-
-net/sched/sch_teql.c:teql_qdisc_init() {
-    ...
-	if (sch->parent != TC_H_ROOT) {
-		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
-		return -EOPNOTSUPP;
-	}
-
-	if (dev_net(dev) != dev_net(m->dev)) {
-		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
-		return -EOPNOTSUPP;
-	}
-    ...
-}
-
-The tc-testing config sets CONFIG_NET_SCH_TEQL=m. Unlike the other
-sch_* modules, sch_teql.c has no MODULE_ALIAS_NET_SCH(). So the
-alias-based request_module() never autoloads it, and the lookup fails:
-
-net/sched/sch_api.c:qdisc_create() {
-    ...
-	ops = qdisc_lookup_ops(kind);
-	if (!ops) {
-		err = -ENOENT;
-		NL_SET_ERR_MSG(extack, "Specified qdisc kind is unknown");
-		goto err_out;
-	}
-    ...
-}
-
-When that happens, tc still exits with 2 and nothing named teql0
-appears. Both 6a06 and 124e then pass, whether or not the kernel has
-either check. That includes a kernel without the namespace fix.
-
-The module is loaded only by try_modprobe() in tdc.sh. That function
-just prints "skipping" when modprobe fails. Running tdc.py directly,
-for example with -e 6a06 or -c teql, never loads it.
-
-The commit message says "only the root-only check can refuse it" and
-"only the namespace check can refuse that one". That only holds when
-sch_teql is loaded.
-
-Would it make sense for each case to match the specific extack
-message? Another option is to fail when the teql0 kind is unavailable.
-
-The positive teql cases would fail in the same setup, so the suite as a
-whole would still show that something is wrong.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v3.r0.20261103064310%40mojatatu.com
+If having to modify/add these helpers, it's probably a good time to
+switch to actual, type safe and readable, functions instead.
