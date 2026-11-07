@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794077083;
-	b=FF+O9OFn4Muqm3oKEKdCVmVfIip5XT/ULTyAEZ79Zyasry9snxXCw6c72+HJbu2tGd+k
-	 PCMz2UQ2CnsGcwytpfnf99wAnuLBSehOYXxXGy/8Pfo3l8BVstOsMGIv3P1mAp4R59Bdc
-	 I4A4WeBZiCYLd2DwkOTZRECw2bLvGRZ62lwFVbnO3KQO8aIzHixxz9rSPh58tAu42YCV5
-	 6VDt8ZEfP95ZraZZG+czVlbhq6P0Q3qx5K3F/9vBqOTr1Pf8wBuRfU6DC47fvu4H4AXON
-	 BBYj0UweyMbKxXpP+qaODQHV9DXyWAiVANARAULf7TivCkCSIls9642zI2f4IylFiJw==
+	t=1794077087;
+	b=sTCbxZ2nGCQmoMN8Semilk8ahzCTUE0kuEuGc9qfX7e3YWvTw/tBJzgMX27gFibPNmhK
+	 yhTfboZVFC9rqyhh+7OMsF6Zke1ZdXjvbzm5ePLRkenEceq8I4DCG4XkET8Kft/r8EGc3
+	 BNJo7IlpOQmRuvlAHrjy7FEbf4Z1nYik7xWTx3XS0KY4QfH8ZRI3ea/RgO4Oi+mQC/V4u
+	 zZXQ5p7aEWlcq0GBrzdzzxo+Kn9sElyt9v3odO02QMQ6bK4NCzt+iij9lnfwZsoLPCfdP
+	 Di2iAE0206KGWASp2c2gpAsK1v7ZxCAlwFNEjXJ3X0LK/1sZWdFGEpDZGVYUhW7wyBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794077083;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077087;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
-	b=bpJCiCTRlsMlgVVQVD0zuQfnoFbrEtuBW2BUhgyJ0tI2/17F02m7Zs3XZ/Cog0BBR+j0
-	 s57Wq8qZZCMShpZt9KXBO7JBJMC091XaD/dl/0apMdKRZc655c5W14lWjOq3nnKcFM8CL
-	 44S/T/+/rCTd1e1oXFrnIECH03F3Rl4u79bVnwo/XkWdL3i5oeyyN18negphK+Y762e4p
-	 /bfSPGMYIzsjE+hbdAh6Ch+NYlau+2vZd/k9MOCqL1YqANwpS0NqTTv/CxHQ94dE9rI0q
-	 AnSlESr3VXfTNwQYpDGcRhyMCHoOSCIPuSCYt0ueUlCX4AtCu9RmfhjduUgx1ZIFKbw==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xYAGS+XY4LIyYAiAoo2wIS0oAg0GDCdOlyiXz1Uxi6Y=;
+	b=ZL9vikRLbeOR8QcKDjbcB9i6t273oKTrvMb5ESC2PNLfT8dyNM3PwevY4aZrNvGuYh54
+	 6CNo6416ja5oA5VXO/m+leoI2U301H/Y2s+VD5RkCxyiSGcAxsjbWMbV2EGyuCQY4u3dK
+	 UXbeExCYN5K3bY23CZEg8x+7qjNLM7I3s+dxD4BgfIShbV491Va6z4qLt+B4K3ermz1bQ
+	 p94xJ1cI6qvAXFGcFmEs24HMKOthZzeJWFyKG/v4hdVCZwJePA5y23oGbmWMHGuw8P64c
+	 /nZ4eMbaJGpWr5vsJwz8r38c+0/R5IsrIPEh+xyFfeCWExXChdmV1AFOJWihrGnbUjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=blockcast.net;
 	spf=pass smtp.mailfrom=blockcast.net;
-	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=bcHQ1w7a;
-	arc=none smtp.remote-ip=74.125.82.180
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=mW3OgqQG;
+	arc=none smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9B606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94E9B606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE614606A32F
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE614606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=bcHQ1w7a
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-36f8cdd30beso649917eec.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=mW3OgqQG
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-3712b6d9843so149757eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1794077082; x=1794681882; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
-        b=bcHQ1w7aFmchEDTJHBSP2xLcySFU2FljKGhu4aTe1PuSfCVVlPRQP76zg3h7oNWTLS
-         D+sj/CSVV6lpHms7xX/Y3LZYQy/JAaoqcSBhKXPWQMnKbi8IzvzRbG+rvxJ2ijisEAQj
-         Ay0SlWQv/yRPyy9hzw8xq7+A6KousOc9VkL0Po+psOL06JAQRka7YpAkdgEylxE+pcV6
-         0GmI6OcnuUCK12MVRBkuhbFhS0NcaVOOYg090rhCmJ1GffhhotV1GpstriHp/BQRIYWN
-         hgisshvtITu8CnWY9D3gz7j4V0RP7OmYqpGi3RNQmeUQOngpX2CsymHnF06b4g0Mb0sO
-         nMDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794077082; x=1794681882;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=blockcast.net; s=google; t=1794077086; x=1794681886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ah3ZygR+c4YLpOShjlCccm4ACHvwsjqPcDugpOfZDmw=;
-        b=ov5TCsRb0i1F7RVR3hJ5Ssp9c0dF7UkCcb8zpVP0HXWHt4X1iASNR8uPx8b73oIH2p
-         mwvs2BUwcR5DBUecvkpKicb2K1zwMszNo4OxD3uMvLlgtJVWamRy6Y0jRSN0jxBetTMa
-         +BwdSedexzwkdL0YKx92jSS0BFAb/csDt2BExjlaFenP0OoBQesxX7WfHL/udnArAj8B
-         PUf2rYXKz+uX/QCMmM1QaurM66LNg5xf0lRjyP/gU/ydltJ+FmWMgHuOFTdY17N9/lyL
-         dSCJ6FYb0zRTejrwZADZE6cQbcFHMdIQNN0M5DwFCNxQryeQ2hWQIIVk7kTm5UFY7RhS
-         aBgQ==
-X-Gm-Message-State: APuU4Z9gTNWHksBX6Tm9T0t3pnY7yIBmfyEe5cVnBGorAMj/R9nq2ZSh
-	FkugGjx/NgWC6sK6NQc3Xbw2MZtKNuAvz3rzp3wSFlXRf8L6QvIIURJ02Z/x4olZKwk=
-X-Gm-Gg: AYBFou3jFqCc/3xyWDXUD+d5K9GnsrA2ElrpNpL7BLThTrBpI6Uy9rXM+MPjllREK8t
-	NhwRx+ME827IALmqlKwiDCEX8iMPbHiA1Am1eShE6XfGzdi14i++CD5+M4VXZesZzP2rbFjrsQz
-	5RK4V519iSFgb4IcUnSWfQ7ZFomF3gB6GlBGmYwllI6aXJA5boY9/fJZ/Y0McE4ImUWM/4c84kG
-	5NPpTOt1iDgqY7PEX8YNm9omcO9B07sizWPvlYX/ZyTYLAhTv+I0LX5kZNWGKpo0NgYMwORwaWO
-	Kx0ZGL8ePGNCbj5CHuAJ86GXcKPIrVtcbZkZFewdzob5sqkwVL7y2JYfSC0DcLSqNuPAsDBdGUE
-	aQGsG5zJmWL1TuLl+Z4MycP9m1dZ705OMRk/essqgIBLSYY6HE1Exad0fRhwuCGphD4QotquIPM
-	KBavk1v+ijQ39rS5VublXpQU032Nn6y8b8f8vW0uzGC7br1xRxhRbocHUcK5MKP/Oo0+YPulC3l
-	E5I59hJwYy1FT204vuquzkCzdZxWQReGHhGuuoTCoCrm5f4yanxqjoPmIDi0rbJRKgELifIAW04
-	x1o190sj/tCS996mVIIZ/FBAaQzG5Eeo1JTW5A7o2UcOjrZyehsGDLplOyBZ08ChPGHpSBs=
-X-Received: by 2002:a05:7300:109:b0:36a:79e7:2fd with SMTP id 5a478bee46e88-36f77ce5f5fmr9933762eec.40.1794077081392;
-        Sat, 07 Nov 2026 10:44:41 -0800 (PST)
+        bh=xYAGS+XY4LIyYAiAoo2wIS0oAg0GDCdOlyiXz1Uxi6Y=;
+        b=mW3OgqQGvckxDTPr8OcA56Ms55gHjXrLKhi5iuO5IoPLaHAnfv1yxbCEJLIRBNrFJE
+         P7F4QwYpptPXAb7OdXyFaLaImcLfrJexYbs2hlVhMIHb+2Tdxb6vo0WsvUha7I477aeI
+         c3EgWMaUsX3uJUEcUZlj4vB707sGxVLRg/5QHPoRb7x7iqZoxL9jCPBC3cP2Puo0Y5iR
+         sqHaUu6uJBegOZllvTkIAarYWtBxetaPc7TGD8qxuanzXe44+Rr9cCxWKRJTStD64T8y
+         sEWh68igngypKW2lTS+k3mTv1PMvQgKs3RUWtlcQiq5JhB7cOq004TOg0uh2UfhGgyI+
+         hc3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794077086; x=1794681886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xYAGS+XY4LIyYAiAoo2wIS0oAg0GDCdOlyiXz1Uxi6Y=;
+        b=ouOnbq0LN3AUYt0Pk5N+QjYzH1OJw8wwTa5mTXOTF0wfg2nk37iV93ADVD06THl1Ho
+         K+pN4MlzoiD1GKqGK26Hm66QgkHRhbl+2sDbVxJvoc6SLaVY9TMFGX2TQOOZDXX5hG9V
+         1lM17XIv4sJLHC47Qv3i+gHJ0LPPvA+JyaBEayzkrRloXE0YMm8igHP2tXtKLS9YioD9
+         BW9YdAOHHlbnA7vbhqInvRKg+XhQTdlysV+Y7g7Bp6UvH6QN9ha/2T82hnA/fs+k50nv
+         bKKZ6p+6ETC99Xr8gAiBsGAQQ11H95oWo9LMh1eBNz+62KvmbErHi81lRbgp2DjnmrW6
+         Lu+g==
+X-Gm-Message-State: APuU4Z9L3CcFaJ7MvAMx2BkX2AAfkba7sMWrjHGnOrpDWeaV3ok5Iotp
+	XLK/+dcPOoG4My0teKNSYIM32zvvX0WnjTietJX5gbB7x2GRjrlxItEDCR4Twu45FvA=
+X-Gm-Gg: AYBFou25QZLGORoAcLHADYlsMOZxFOygZGUq7JVzYgEVjL+anPvS7HXcaEiwWC5WsCE
+	bb9Wj7a/UZGolNW92EeIWAK5j7S/fUVN9JX9zVOQskG391K/4O05RLvNpcDO7G9nAzcjlP/gDzQ
+	9sw++ez8Cre1+HRp6X2ITjcvUyocGoUOQrhmp6HYhWlc8Ey6P8+IM6rOHBP0WybER7EJoibpUaB
+	tAba7JoJGpr79dcFwVNSUqH738VTo/eL7JuSh6Y7SNfDiLOPHhRff8iP2pMqV5IlaciePmReiUk
+	b5PfjPs0r/xq/GSkpdkWGJDxpMfUiRf4p7hj57KbKwidZ8Lg6lFHaCXdj2rlvtEjCVHqIq6OcIG
+	2FOeF9pv7RsM1/0qR2B4feRUEZPLyhSuxFuxP9IDxcKVqT+aSdUZdsXnR3vMObYQVdiLX9JMjaJ
+	8m+08l75et53mAnNJ+o5nV6vbqGQFSreNOl+ny3KLwA1Vx8sbs2S4jev3kIqkJwSIpY12sXg2z+
+	q4fC1eEPkV9BkcDi/bt2JpvQ0BkEaFj9dogRPUBawLIzKZM1U8w6HBeJKFscPpOGOkxi4hlUBpJ
+	Oin5fjDYceatyWlxUvfhZa6NtaI7deb3wfRZL6TtkRnrDBPPjfUZlre6OrnG988g+zcwhvA=
+X-Received: by 2002:a05:693c:80c1:b0:36a:1732:1e7 with SMTP id 5a478bee46e88-36f76d0f26emr8538567eec.31.1794077085833;
+        Sat, 07 Nov 2026 10:44:45 -0800 (PST)
 Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.39
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 10:44:40 -0800 (PST)
+        Sat, 07 Nov 2026 10:44:45 -0800 (PST)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -103,10 +105,12 @@ Cc: netdev@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH net-next 0/9] amt: relay replication offload provider contract (RFC, not for merge, seeking a provider)
-Date: Sat,  7 Nov 2026 18:44:28 +0000
-Message-ID: <20261107184437.2783174-1-omar@blockcast.net>
+Subject: [RFC PATCH net-next 2/9] amt: offload provider registry and lower-device lifecycle
+Date: Sat,  7 Nov 2026 18:44:30 +0000
+Message-ID: <20261107184437.2783174-3-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261107184437.2783174-1-omar@blockcast.net>
+References: <20261107184437.2783174-1-omar@blockcast.net>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,260 +122,589 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an RFC and is NOT for merge. We are posting it to find a
-provider: a Linux-attached device (DPU, SmartNIC, switch ASIC or P4
-target) whose driver would implement the contract below. We will not
-post a for-merge version until one in-tree driver with a named
-maintainer implements it, either as a co-authored patch on this list
-or as a public commitment from that driver's maintainer. Until then
-the contract has no in-tree user other than netdevsim, and we do not
-think it should be merged on netdevsim alone.
+amt_offload_register()/amt_offload_unregister() (EXPORT_SYMBOL_GPL) keep
+an RCU list of providers keyed by the lower netdev. Relays are listed at
+newlink; a relay in auto or required mode whose stream_dev has a
+provider binds there, and registering a provider on a stream_dev binds
+the auto and required relays already using it at once (counted). bind()
+fills caps; a relay whose bind() fails, or whose outer family the caps
+lack, stays unbound (counted): in software in auto mode, refused at
+creation or left without carrier in required mode.
 
-Problem
+On NETDEV_UNREGISTER of the lower device (before amt_dellink), on
+provider unregistration and on relay deletion, teardown runs in one
+order: stop admission and wait out in-flight xmit, cancel programming
+work, group_disable all, endpoint_del all, unbind, unpublish,
+synchronize_rcu, software. A required-mode relay that loses its provider
+drops carrier. Counters are under the relay's offload/ sysfs group; the
+global required-refusal count is the offload_required_refused module
+parameter.
 
-An AMT relay (RFC 7450) replicates every multicast data packet once
-per gateway tunnel: one UDP-encapsulated unicast copy per gateway that
-joined the group. In drivers/net/amt.c that is the loop in
-amt_dev_xmit(), one skb copy and one route lookup per tunnel. At the
-relay's egress the copy count, not the input rate, sets the
-ceiling. We are bringing up an AMT relay port at the SFMIX exchange,
-which is where that ceiling becomes concrete for us.
+Assisted-by: LLM
+Signed-off-by: Omar Ramadan <omar@blockcast.net>
+---
+ drivers/net/amt.c        | 425 +++++++++++++++++++++++++++++++++++++++
+ include/net/amt.h        |  34 ++++
+ include/uapi/linux/amt.h |  20 ++
+ 3 files changed, 479 insertions(+)
 
-Hardware that can replicate one packet to N unicast destinations
-exists, but there is no way for the amt driver to hand that work to
-it. This series proposes one.
-
-What the series does
-
-  Patch 1 adds include/net/amt_offload.h: provider capabilities,
-    opaque provider-owned endpoint and group handles, struct
-    amt_offload_ops, the TX and ingress paths, the FALLBACK /
-    CONSUMED / BUSY results and a per-binding u64 epoch. It is an
-    in-kernel interface with no ABI promise.
-  Patch 2 adds the provider registry, keyed by the lower netdev
-    (amt_offload_register() / amt_offload_unregister()), and the
-    lower-device lifecycle: a relay in auto or required mode binds
-    when its stream device is a registered lower and the provider
-    accepts it (otherwise it stays unbound, counted), and unbinds in
-    a fixed order on NETDEV_UNREGISTER, provider unregister or relay
-    deletion.
-  Patch 3 adds one group object per (family, group) with its member
-    endpoints, a generation and the desired state, plus a reconciler
-    that programs the provider from process context, never under
-    amt->lock, with a per-tick op budget, ENOSPC hysteresis with a
-    software remainder, and reset-and-replay on op timeout.
-  Patch 4, on a TX binding, hands each relay data packet of a group
-    whose commit amt has published to the provider before the
-    software loop, while the binding admits packets and its desired
-    state is in sync; every other packet goes to software. Exactly
-    one actor handles each packet handed over: CONSUMED means the
-    provider handled every copy (sent it, or dropped and counted it)
-    and owns the skb; FALLBACK and BUSY mean the provider sent no
-    copy and amt runs the software loop once. It also exports
-    amt_offload_encap_xmit(), so a simulated provider emits copies
-    byte-identical to amt's own.
-  Patch 5 adds IFLA_AMT_OFFLOAD_MODE (software, the default; auto;
-    required). required with no usable provider refuses the link with
-    -ENODEV and extack.
-  Patch 6 adds 26 KUnit cases for the contract against an in-file
-    fake provider.
-  Patch 7 adds a TX reference provider to netdevsim. It keeps its own
-    endpoint, group and generation tables, decides replication from
-    them and emits each copy over the peer link. debugfs injects
-    ENOSPC, reset and BUSY; devlink resources and an amt health
-    reporter are registered on netdevsim's own devlink instance.
-  Patch 8 adds tools/testing/selftests/net/amt_offload.sh. It counts
-    the copies each gateway receives, and reads the provider's own
-    hardware copy count, in the no-member, commit, generation-replace,
-    BUSY, per-group forwarding, reset, partial-commit, disable and
-    unlink-under-traffic cases. It also checks that required mode
-    with no provider is refused, and that deleting a lower carrying
-    two amt devices removes both without a warning.
-  Patch 9 adds the new header and the netdevsim provider to the AMT
-    MAINTAINERS entry.
-
-Forwarding semantics are unchanged by design. The hardware key is
-(family, group), because that is what the software path forwards on
-today: a tunnel with only an INCLUDE(S1) membership still receives S2
-for that group. A provider that keyed on (S, G) would change what
-gateways receive, so the feature bit for it is reserved with no
-semantics in this version.
-
-With no provider registered, or with offload=software (the default),
-amt_dev_xmit() runs the same loop it runs today, after one more RCU
-pointer read and test (patch 4).
-
-Questions for the list
-
-1. This RFC registers providers in a registry keyed by the lower
-   netdev and adds nothing to struct net_device or net_device_ops.
-   Once a real driver exists, would you rather see a struct net_device
-   field or an ndo instead?
-2. Is netdevsim the right home for the reference provider, given it
-   has no ingress classifier to simulate and so can only exercise the
-   TX path?
-3. Is an in-kernel provider contract for a single tunnel driver
-   acceptable at all, or would you want it expressed through an
-   existing offload framework? We did not find one that models
-   one-to-N unicast replication with per-destination encapsulation.
-4. The per-relay offload state and counters are exposed in a sysfs
-   offload/ group on the amt device for this RFC. We expect to move
-   them to netlink (link xstats) for a for-merge version, and would
-   like guidance on that.
-
-Performance
-
-This series makes no performance claim. With no provider it adds one
-more RCU pointer read and test per packet to the software path
-(patch 4), which we have not measured, and netdevsim demonstrates the
-contract's semantics, not speed.
-
-For context only, we measured a separate software fan-out change,
-which is not part of this series and has not been posted: it clones
-each copy instead of copying it, clears the copy's hash and caches
-each tunnel's outer route. Base and branch are both builds of our
-downstream 6.18-based amt.c, out of tree against v6.18.48, not of
-net-next's driver. Base is that driver just before the change. Branch
-adds the change and an earlier 6.18 form of this series' patches 1, 2
-and 5, which add no code to the data path; patch 4 was not in it. CPU
-time per copy, median ns over 6 interleaved runs on two days,
-virtme-ng guest, software path, no provider bound:
-
-    N tunnels   base    branch   branch/base
-            8   1898      1326         0.699
-           64   1974      1392         0.705
-          512   2480      1612         0.650
-
-The table pools both days. Day 2 reproduced the direction but not the
-spread: on day 2 alone the branch/base ratio was 0.706-0.730 (a 27-29%
-saving), and the branch's day-2 medians at N=64 and N=512 fell outside
-their day-1 ranges. The saving we would defend is therefore ~27-35%,
-not a single figure.
-
-No drops were counted on any step. We have not yet measured a
-hardware AMT relay (a router-terminated relay, which would measure
-relay capacity rather than this contract) against the Linux software
-path, and the first-loss point is not yet measured on a physical NIC,
-so we quote no hardware rate here.
-
-We have also prepared a vendor capability appendix covering Linux amt,
-Junos, Cisco, Arista and DPU/SmartNIC replication, with every row
-either cited or marked unconfirmed. It is available on request to
-anyone evaluating whether their device could be a provider.
-
-Known limitation: tunnel lifetime
-
-The offload desired state is only as sound as the relay's tunnel
-lifetime, and the hooks in patches 3 and 4 inherit three windows that
-exist in amt.c today:
-
-  - an Update can add a group node, and with this series an offload
-    member, after amt_clear_groups() on a tunnel that is about to be
-    freed by kfree_rcu();
-  - an Update can re-arm a tunnel's gc_wq while amt_tunnel_expire()
-    unlinks and frees it, so the expiry, and with this series
-    amt_ofl_tunnel_gone(), can run again on freed memory;
-  - amt_dev_stop() unlinks a tunnel before
-    cancel_delayed_work_sync(gc_wq).
-
-None is introduced here. All three are closed by the in-review net
-series "[PATCH net v6 0/6] amt: relay tunnel lifetime, validation and
-request-path hardening"
-(<20261107004935.2627329-1-omar@blockcast.net>), which a for-merge
-version of this series will depend on.
-
-Dependencies
-
-This does not apply to bare net-next, and patchwork will report it as
-not applying. It is written on v7.1 plus eight of our other amt
-series, not all of them posted:
-
-  - relay endpoint keying and visible pre-Query report drops, later
-    versions of which are part of the net series cited above;
-  - sending the relay's General Query directly, a later version of
-    which is in mainline as commit afae89de73dd ("amt: send the
-    relay's General Query directly from the receive path");
-  - the IPv6 relay and gateway modes, a reworked version of which was
-    posted, in a different split, as "[PATCH net-next 00/13] amt: add
-    an IPv6 outer transport"
-    (<20261009122426.551178-1-omar@blockcast.net>), on which changes
-    were requested;
-  - relay scaling (configurable hash buckets, group limit and queue
-    count), the relay sending IGMPv3/MLDv2 host reports upstream, and
-    a configurable per-source tunnel cap, none of which has been
-    posted.
-
-The net series instead bounds the tunnels admitted per source address
-at a fixed 16. Our "[PATCH net-next v2] amt: make the per-tunnel group
-and source limits configurable"
-(<20261015231825.2852054-1-omar@blockcast.net>), on which changes were
-requested, overlaps the scaling group limit, and its planned v3 also
-sizes the hash buckets.
-
-Patch 8's case for a lower carrying two amt devices also needs our fix
-"amt: tear down every amt device on an unregistering lower"
-(<20261105232302.494171-1-omar@blockcast.net>), posted to net
-separately. Without it, amt_device_event() unregisters only the first
-amt device on an unregistering lower, so the second stays linked and
-trips the upper-device WARN in unregister_netdevice_many_notify().
-
-To build the series and run its KUnit suite and the existing amt.sh
-selftest, fetch this git branch:
-
-  https://github.com/Blockcast/linux.git amt-offload-rfc-v1
-
-It carries v7.1, the eight series, this RFC and a copy of that fix,
-rebased onto this series, in that order.
-
-IFLA_AMT_OFFLOAD_MODE is 16 on this base, after the seven attributes
-those series add. None of those attributes is upstream, so it will be
-renumbered to follow whatever is accepted. An iproute2 patch (ip link
-... offload {software|auto|required}) is held until the uapi is
-accepted. The patch 8 selftest skips when ip lacks the offload
-keyword.
-
-On that branch, under KASAN and lockdep, amt_offload.sh passes all 11
-cases, amt.sh all 5 and the amt KUnit suite all 29, with no splat. The
-ip came from our held iproute2 patches, the offload one renumbered for
-this base (IFLA_AMT_OFFLOAD_MODE = 16); we can send them on request.
-
-Testing: on this base, every patch builds with W=1 and the amt KUnit
-suite (the 3 existing cases plus the 26 new ones) passes under UML
-with CONFIG_IPV6=y and =n. net-next has no amt KUnit suite: the suite
-and its 3 existing cases come from the unposted series that has the
-relay send host reports upstream.
-
-Omar Ramadan (9):
-  amt: add the relay replication offload provider header
-  amt: offload provider registry and lower-device lifecycle
-  amt: offload group object, desired state and reconciler
-  amt: offload TX handoff, ingress punt rule and counters
-  amt: add IFLA_AMT_OFFLOAD_MODE
-  amt: KUnit cases for the offload contract
-  netdevsim: add a TX reference provider for AMT relay offload
-  selftests: net: add amt_offload.sh for AMT relay offload
-  MAINTAINERS: amt: cover the offload header and netdevsim provider
-
- MAINTAINERS                                |    2 +
- drivers/net/Kconfig                        |    1 +
- drivers/net/amt.c                          | 5036 +++++++++++++++++---
- drivers/net/netdevsim/Makefile             |    4 +
- drivers/net/netdevsim/amt.c                |  600 +++
- drivers/net/netdevsim/dev.c                |   68 +
- drivers/net/netdevsim/health.c             |   28 +-
- drivers/net/netdevsim/netdev.c             |   19 +-
- drivers/net/netdevsim/netdevsim.h          |   27 +
- include/net/amt.h                          |   72 +
- include/net/amt_offload.h                  |  353 ++
- include/uapi/linux/amt.h                   |   27 +
- tools/testing/selftests/net/Makefile       |    1 +
- tools/testing/selftests/net/amt_offload.sh |  608 +++
- tools/testing/selftests/net/config         |    2 +
- 15 files changed, 6214 insertions(+), 634 deletions(-)
- create mode 100644 drivers/net/netdevsim/amt.c
- create mode 100644 include/net/amt_offload.h
- create mode 100755 tools/testing/selftests/net/amt_offload.sh
-
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 201421ad0..034221e1c 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -20,6 +20,7 @@
+ #include <net/icmp.h>
+ #include <net/mld.h>
+ #include <net/amt.h>
++#include <net/amt_offload.h>
+ #include <uapi/linux/amt.h>
+ #include <linux/security.h>
+ #include <net/gro_cells.h>
+@@ -3464,9 +3465,11 @@ static int amt_dev_stop(struct net_device *dev)
+  * lifetime matches vxlan/geneve and the rest of the netdev tree.
+  */
+ static const struct attribute_group amt_upstream_group;
++static const struct attribute_group amt_offload_group;
+ 
+ static const struct attribute_group *amt_groups[] = {
+ 	&amt_upstream_group,
++	&amt_offload_group,
+ 	NULL,
+ };
+ 
+@@ -4028,6 +4031,414 @@ static void amt_link_setup(struct net_device *dev)
+ 	ether_setup(dev);
+ }
+ 
++/* Relay replication offload: provider registry and lower-device lifecycle.
++ *
++ * A provider registers against the lower netdev relays transmit on (their
++ * stream_dev); there is no net_device field or ndo. Every relay is linked
++ * into amt_offload_devs at newlink so registration can find the relays
++ * already using that lower device. Both lists are written under RTNL;
++ * amt_offload_providers is an RCU list so a reader outside RTNL can test
++ * for a provider without it.
++ *
++ * Teardown has one order, whichever side goes first (the lower device is
++ * unregistered, the provider unregisters, or the relay is deleted): stop
++ * admitting packets to ops->xmit and wait out in-flight callers, cancel
++ * programming work, group_disable every group, endpoint_del every
++ * endpoint, unbind, unpublish and synchronize_rcu(). The relay is then
++ * in software, exactly the path it runs with no provider at all.
++ */
++struct amt_offload_provider {
++	struct list_head		node;
++	struct net_device		*lower;
++	const struct amt_offload_ops	*ops;
++	struct rcu_head			rcu;
++};
++
++/* One provider-owned handle amt must give back on teardown. */
++struct amt_offload_ref {
++	struct list_head		node;
++	void				*handle;
++};
++
++struct amt_offload_bound {
++	struct amt_offload_binding	pub;
++	const struct amt_offload_ops	*ops;
++	struct amt_offload_caps		caps;
++	/* Cleared first on teardown; ops->xmit is only called while set. */
++	bool				admitting;
++	struct list_head		groups;		/* amt_offload_ref */
++	struct list_head		endpoints;	/* amt_offload_ref */
++};
++
++static LIST_HEAD(amt_offload_providers);
++static LIST_HEAD(amt_offload_devs);
++
++/* Relays refused at newlink for want of a provider in required mode. The
++ * refused netdev is unregistered again before newlink returns, so the
++ * count cannot live on it.
++ */
++static atomic_t amt_offload_required_refused = ATOMIC_INIT(0);
++
++static int amt_offload_required_refused_get(char *buf,
++					    const struct kernel_param *kp)
++{
++	return sysfs_emit(buf, "%u\n",
++			  (u32)atomic_read(&amt_offload_required_refused));
++}
++
++/* Read-only, but a load-time value still reaches ->set: parse_one()
++ * calls it without a NULL check (only the sysfs store path checks), so
++ * a get-only ops oopses the loader. Ignore the value rather than fail
++ * the load, so a stray modprobe option cannot keep the relay down.
++ * NOARG: a bare "amt.offload_required_refused" would otherwise be
++ * -EINVAL in parse_one() before ->set, and fail the module load.
++ */
++static int amt_offload_required_refused_set(const char *val,
++					    const struct kernel_param *kp)
++{
++	pr_warn("offload_required_refused is read-only; ignoring \"%s\"\n",
++		val ? val : "");
++	return 0;
++}
++
++static const struct kernel_param_ops amt_offload_required_refused_ops = {
++	.flags = KERNEL_PARAM_OPS_FL_NOARG,
++	.set = amt_offload_required_refused_set,
++	.get = amt_offload_required_refused_get,
++};
++module_param_cb(offload_required_refused, &amt_offload_required_refused_ops,
++		NULL, 0444);
++MODULE_PARM_DESC(offload_required_refused,
++		 "Relays refused at creation: offload=required and no usable provider");
++
++static void amt_offload_count(struct amt_dev *amt,
++			      enum amt_offload_counter cnt)
++{
++	atomic_inc(&amt->offload_cnt[cnt]);
++}
++
++static struct amt_offload_provider *
++amt_offload_provider_find(const struct net_device *lower)
++{
++	struct amt_offload_provider *p;
++
++	ASSERT_RTNL();
++	list_for_each_entry(p, &amt_offload_providers, node)
++		if (p->lower == lower)
++			return p;
++	return NULL;
++}
++
++static u32 amt_offload_outer_family(const struct amt_dev *amt)
++{
++	return ipv6_addr_any(&amt->local_ipv6) ? AMT_OFFLOAD_FAMILY_V4 :
++						 AMT_OFFLOAD_FAMILY_V6;
++}
++
++/* The data path's way in: a binding is usable only while admitting. The
++ * caller holds rcu_read_lock(). The later TX handoff is its first caller.
++ */
++static __maybe_unused struct amt_offload_bound *
++amt_offload_tx_admit(struct amt_dev *amt)
++{
++	struct amt_offload_bound *b = rcu_dereference(amt->offload);
++
++	return b && READ_ONCE(b->admitting) ? b : NULL;
++}
++
++/* Record a handle the provider handed back; the later reconciler is the
++ * production caller.
++ */
++static int __maybe_unused amt_offload_track(struct list_head *list,
++					    void *handle)
++{
++	struct amt_offload_ref *ref = kzalloc(sizeof(*ref), GFP_KERNEL);
++
++	if (!ref)
++		return -ENOMEM;
++	ref->handle = handle;
++	list_add_tail(&ref->node, list);
++	return 0;
++}
++
++static void amt_offload_set_carrier(struct amt_dev *amt, bool on)
++{
++	if (amt->offload_mode != AMT_OFFLOAD_MODE_REQUIRED)
++		return;
++	if (on)
++		netif_carrier_on(amt->dev);
++	else
++		netif_carrier_off(amt->dev);
++}
++
++/* Bind @amt to @p. 0 means bound; an error leaves @amt in software and
++ * counted. RTNL held.
++ */
++static int amt_offload_bind(struct amt_dev *amt,
++			    struct amt_offload_provider *p, bool on_register)
++{
++	struct amt_offload_bound *b;
++	int err;
++
++	ASSERT_RTNL();
++	if (amt->mode != AMT_MODE_RELAY ||
++	    amt->offload_mode == AMT_OFFLOAD_MODE_SOFTWARE ||
++	    rtnl_dereference(amt->offload))
++		return -EINVAL;
++
++	b = kzalloc_obj(*b, GFP_KERNEL);
++	if (!b)
++		return -ENOMEM;
++	b->pub.lower = p->lower;
++	b->pub.dev = amt->dev;
++	b->pub.epoch = ++amt->offload_epoch;
++	b->ops = p->ops;
++	INIT_LIST_HEAD(&b->groups);
++	INIT_LIST_HEAD(&b->endpoints);
++
++	err = b->ops->bind(&b->pub, &b->caps);
++	if (err) {
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_BIND_FAILED);
++		kfree(b);
++		return err;
++	}
++	if (!(b->caps.families & amt_offload_outer_family(amt))) {
++		b->ops->unbind(&b->pub);
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_FAMILY_UNSUPPORTED);
++		kfree(b);
++		return -EOPNOTSUPP;
++	}
++
++	b->admitting = true;
++	rcu_assign_pointer(amt->offload, b);
++	amt_offload_count(amt, AMT_OFFLOAD_CNT_BIND);
++	if (on_register)
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_BIND_ON_REGISTER);
++	amt_offload_set_carrier(amt, true);
++	return 0;
++}
++
++/* Return @amt to software in the documented order. @cnt is the cause to
++ * count, or AMT_OFFLOAD_CNT_MAX for the relay's own deletion. RTNL held.
++ */
++static void amt_offload_teardown(struct amt_dev *amt,
++				 enum amt_offload_counter cnt)
++{
++	struct amt_offload_bound *b = rtnl_dereference(amt->offload);
++	struct amt_offload_ref *ref, *tmp;
++
++	if (!b)
++		return;
++
++	/* 1. Stop admission and wait for every ops->xmit already admitted. */
++	WRITE_ONCE(b->admitting, false);
++	synchronize_net();
++
++	/* 2. Programming work is cancelled here once the reconciler exists
++	 *    (next patch); nothing can program the provider past this point.
++	 */
++
++	/* 3. Disable every group, then 4. delete every endpoint. */
++	list_for_each_entry_safe(ref, tmp, &b->groups, node) {
++		b->ops->group_disable(&b->pub, ref->handle);
++		list_del(&ref->node);
++		kfree(ref);
++	}
++	list_for_each_entry_safe(ref, tmp, &b->endpoints, node) {
++		b->ops->endpoint_del(&b->pub, ref->handle);
++		list_del(&ref->node);
++		kfree(ref);
++	}
++
++	/* 5. Unbind, then 6. unpublish and let RCU readers drain. */
++	b->ops->unbind(&b->pub);
++	RCU_INIT_POINTER(amt->offload, NULL);
++	synchronize_rcu();
++	kfree(b);
++
++	/* 7. Software. */
++	amt->offload_epoch++;
++	if (cnt < AMT_OFFLOAD_CNT_MAX) {
++		amt_offload_count(amt, cnt);
++		if (amt->offload_mode == AMT_OFFLOAD_MODE_REQUIRED) {
++			amt_offload_count(amt, AMT_OFFLOAD_CNT_REQUIRED_UNBOUND);
++			amt_offload_set_carrier(amt, false);
++		}
++	}
++}
++
++int amt_offload_register(struct net_device *lower,
++			 const struct amt_offload_ops *ops)
++{
++	struct amt_offload_provider *p;
++	struct amt_dev *amt;
++
++	ASSERT_RTNL();
++	if (!lower || !ops || !ops->bind || !ops->unbind ||
++	    !ops->group_disable || !ops->endpoint_del)
++		return -EINVAL;
++	if (amt_offload_provider_find(lower))
++		return -EEXIST;
++
++	p = kzalloc_obj(*p, GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++	p->lower = lower;
++	p->ops = ops;
++	list_add_rcu(&p->node, &amt_offload_providers);
++
++	list_for_each_entry(amt, &amt_offload_devs, offload_node)
++		if (amt->stream_dev == lower)
++			amt_offload_bind(amt, p, true);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(amt_offload_register);
++
++static void amt_offload_provider_drop(struct net_device *lower,
++				      enum amt_offload_counter cnt)
++{
++	struct amt_offload_provider *p = amt_offload_provider_find(lower);
++	struct amt_dev *amt;
++
++	list_for_each_entry(amt, &amt_offload_devs, offload_node)
++		if (amt->stream_dev == lower)
++			amt_offload_teardown(amt, cnt);
++	if (p) {
++		list_del_rcu(&p->node);
++		kfree_rcu(p, rcu);
++	}
++}
++
++void amt_offload_unregister(struct net_device *lower)
++{
++	ASSERT_RTNL();
++	amt_offload_provider_drop(lower, AMT_OFFLOAD_CNT_TEARDOWN_PROVIDER);
++}
++EXPORT_SYMBOL_GPL(amt_offload_unregister);
++
++/* NETDEV_UNREGISTER of a stream_dev: tear its relays down before
++ * amt_dellink runs, and forget its provider so no entry outlives the
++ * netdev it names.
++ */
++static void amt_offload_lower_gone(struct net_device *lower)
++{
++	amt_offload_provider_drop(lower, AMT_OFFLOAD_CNT_TEARDOWN_LOWER);
++}
++
++/* newlink: list the relay and bind it if a provider is registered. A
++ * required-mode relay with no usable provider is refused (-ENODEV) and
++ * counted globally. RTNL held.
++ */
++static int amt_offload_attach(struct amt_dev *amt,
++			      struct netlink_ext_ack *extack)
++{
++	struct amt_offload_provider *p;
++	int err = -ENODEV;
++
++	INIT_LIST_HEAD(&amt->offload_node);
++	if (amt->mode != AMT_MODE_RELAY)
++		return 0;
++	list_add_tail(&amt->offload_node, &amt_offload_devs);
++	if (amt->offload_mode == AMT_OFFLOAD_MODE_SOFTWARE)
++		return 0;
++
++	p = amt_offload_provider_find(amt->stream_dev);
++	if (p)
++		err = amt_offload_bind(amt, p, false);
++	if (!err || amt->offload_mode != AMT_OFFLOAD_MODE_REQUIRED)
++		return 0;
++
++	list_del_init(&amt->offload_node);
++	atomic_inc(&amt_offload_required_refused);
++	if (p)
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Offload required but the stream device's provider cannot serve this relay");
++	else
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Offload required but the stream device has no offload provider");
++	return -ENODEV;
++}
++
++/* The relay itself is going away. RTNL held. */
++static void amt_offload_detach(struct amt_dev *amt)
++{
++	amt_offload_teardown(amt, AMT_OFFLOAD_CNT_MAX);
++	if (!list_empty(&amt->offload_node))
++		list_del_init(&amt->offload_node);
++}
++
++/* offload/ sysfs group: mode, binding state and the counters. Counters
++ * are monotonic since netdev creation and wrap at u32.
++ */
++static ssize_t offload_mode_show(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	static const char * const names[] = {
++		[AMT_OFFLOAD_MODE_SOFTWARE] = "software",
++		[AMT_OFFLOAD_MODE_AUTO] = "auto",
++		[AMT_OFFLOAD_MODE_REQUIRED] = "required",
++	};
++	struct amt_dev *amt = netdev_priv(to_net_dev(dev));
++
++	return sysfs_emit(buf, "%s\n", names[READ_ONCE(amt->offload_mode)]);
++}
++static struct device_attribute dev_attr_offload_mode =
++	__ATTR(mode, 0444, offload_mode_show, NULL);
++
++static ssize_t offload_bound_show(struct device *dev,
++				  struct device_attribute *attr, char *buf)
++{
++	struct amt_dev *amt = netdev_priv(to_net_dev(dev));
++
++	return sysfs_emit(buf, "%d\n", !!rcu_access_pointer(amt->offload));
++}
++static struct device_attribute dev_attr_offload_bound =
++	__ATTR(bound, 0444, offload_bound_show, NULL);
++
++static ssize_t amt_offload_cnt_show(struct device *dev, char *buf,
++				    enum amt_offload_counter cnt)
++{
++	struct amt_dev *amt = netdev_priv(to_net_dev(dev));
++
++	return sysfs_emit(buf, "%u\n", (u32)atomic_read(&amt->offload_cnt[cnt]));
++}
++
++#define AMT_OFFLOAD_CNT_ATTR(name, cnt)					\
++static ssize_t offload_##name##_show(struct device *dev,		\
++				     struct device_attribute *attr,	\
++				     char *buf)				\
++{									\
++	return amt_offload_cnt_show(dev, buf, cnt);			\
++}									\
++static struct device_attribute dev_attr_offload_##name =		\
++	__ATTR(name, 0444, offload_##name##_show, NULL)
++
++AMT_OFFLOAD_CNT_ATTR(binds, AMT_OFFLOAD_CNT_BIND);
++AMT_OFFLOAD_CNT_ATTR(binds_on_register, AMT_OFFLOAD_CNT_BIND_ON_REGISTER);
++AMT_OFFLOAD_CNT_ATTR(bind_failed, AMT_OFFLOAD_CNT_BIND_FAILED);
++AMT_OFFLOAD_CNT_ATTR(family_unsupported, AMT_OFFLOAD_CNT_FAMILY_UNSUPPORTED);
++AMT_OFFLOAD_CNT_ATTR(teardown_lower, AMT_OFFLOAD_CNT_TEARDOWN_LOWER);
++AMT_OFFLOAD_CNT_ATTR(teardown_provider, AMT_OFFLOAD_CNT_TEARDOWN_PROVIDER);
++AMT_OFFLOAD_CNT_ATTR(required_unbound, AMT_OFFLOAD_CNT_REQUIRED_UNBOUND);
++
++static struct attribute *amt_offload_attrs[] = {
++	&dev_attr_offload_mode.attr,
++	&dev_attr_offload_bound.attr,
++	&dev_attr_offload_binds.attr,
++	&dev_attr_offload_binds_on_register.attr,
++	&dev_attr_offload_bind_failed.attr,
++	&dev_attr_offload_family_unsupported.attr,
++	&dev_attr_offload_teardown_lower.attr,
++	&dev_attr_offload_teardown_provider.attr,
++	&dev_attr_offload_required_unbound.attr,
++	NULL,
++};
++
++static const struct attribute_group amt_offload_group = {
++	.name = "offload",
++	.attrs = amt_offload_attrs,
++};
++
+ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
+ 	[IFLA_AMT_MODE]		= { .type = NLA_U32 },
+ 	[IFLA_AMT_RELAY_PORT]	= { .type = NLA_U16 },
+@@ -4284,6 +4695,13 @@ static int amt_newlink(struct net_device *dev,
+ 	INIT_DELAYED_WORK(&amt->secret_wq, amt_secret_work);
+ 	INIT_WORK(&amt->event_wq, amt_event_work);
+ 	INIT_LIST_HEAD(&amt->tunnel_list);
++
++	err = amt_offload_attach(amt, extack);
++	if (err) {
++		netdev_upper_dev_unlink(amt->stream_dev, dev);
++		unregister_netdevice(dev);
++		goto err;
++	}
+ 	return 0;
+ err:
+ 	dev_put(amt->stream_dev);
+@@ -4294,6 +4712,7 @@ static void amt_dellink(struct net_device *dev, struct list_head *head)
+ {
+ 	struct amt_dev *amt = netdev_priv(dev);
+ 
++	amt_offload_detach(amt);
+ 	unregister_netdevice_queue(dev, head);
+ 	netdev_upper_dev_unlink(amt->stream_dev, dev);
+ 	dev_put(amt->stream_dev);
+@@ -4438,6 +4857,12 @@ static int amt_device_event(struct notifier_block *unused,
+ 	LIST_HEAD(list);
+ 	int new_mtu;
+ 
++	/* Before amt_dellink below: the provider's tables are torn down
++	 * while the relay and its stream_dev are both still intact.
++	 */
++	if (event == NETDEV_UNREGISTER)
++		amt_offload_lower_gone(dev);
++
+ 	upper_dev = amt_lookup_upper_dev(dev);
+ 	if (!upper_dev)
+ 		return NOTIFY_DONE;
+diff --git a/include/net/amt.h b/include/net/amt.h
+index 5b3405f04..7d70f30e6 100644
+--- a/include/net/amt.h
++++ b/include/net/amt.h
+@@ -379,6 +379,29 @@ struct amt_events {
+ 	struct sk_buff *skb;
+ };
+ 
++struct amt_offload_bound;
++
++/* Per-relay offload counters, exported under offload/ in sysfs. */
++enum amt_offload_counter {
++	/* bind() succeeded and the caps covered the outer family */
++	AMT_OFFLOAD_CNT_BIND,
++	/* ... of which: bound when a provider registered on the stream_dev
++	 * this relay already uses
++	 */
++	AMT_OFFLOAD_CNT_BIND_ON_REGISTER,
++	/* bind() returned an error; the relay stayed unbound */
++	AMT_OFFLOAD_CNT_BIND_FAILED,
++	/* caps lacked the relay's outer family; the relay stayed unbound */
++	AMT_OFFLOAD_CNT_FAMILY_UNSUPPORTED,
++	/* teardown because the stream_dev was unregistered */
++	AMT_OFFLOAD_CNT_TEARDOWN_LOWER,
++	/* teardown because the provider unregistered */
++	AMT_OFFLOAD_CNT_TEARDOWN_PROVIDER,
++	/* a required-mode relay lost its provider and dropped carrier */
++	AMT_OFFLOAD_CNT_REQUIRED_UNBOUND,
++	AMT_OFFLOAD_CNT_MAX,
++};
++
+ struct amt_dev {
+ 	struct net_device       *dev;
+ 	struct net_device       *stream_dev;
+@@ -484,6 +507,17 @@ struct amt_dev {
+ 	struct socket		*stream_sock_v4;
+ 	struct socket		*stream_sock_v6;
+ 	atomic_t		upstream_setsockopt_slow_count;
++
++	/* Replication offload (relay mode). Everything here is written
++	 * under RTNL; offload is also read by the data path under RCU.
++	 * offload_node links the relay into amt_offload_devs so a provider
++	 * registering on its stream_dev can find it.
++	 */
++	u32			offload_mode;
++	struct amt_offload_bound __rcu *offload;
++	struct list_head	offload_node;
++	u64			offload_epoch;
++	atomic_t		offload_cnt[AMT_OFFLOAD_CNT_MAX];
+ };
+ 
+ #define AMT_TOS			0xc0
+diff --git a/include/uapi/linux/amt.h b/include/uapi/linux/amt.h
+index c04ed1fa4..de1ae1929 100644
+--- a/include/uapi/linux/amt.h
++++ b/include/uapi/linux/amt.h
+@@ -21,6 +21,26 @@ enum ifla_amt_mode {
+ 
+ #define AMT_MODE_MAX (__AMT_MODE_MAX - 1)
+ 
++/* Relay replication offload (include/net/amt_offload.h). */
++enum ifla_amt_offload_mode {
++	/* Never use a provider. The default. */
++	AMT_OFFLOAD_MODE_SOFTWARE = 0,
++	/* Use the provider registered on the stream device when its bind
++	 * succeeds, it covers the relay's outer family and it implements the
++	 * TX path; software otherwise.
++	 */
++	AMT_OFFLOAD_MODE_AUTO,
++	/* Refuse to create the relay without a usable provider, and drop
++	 * carrier while none is bound. Unlike auto, also bind a provider
++	 * that replicates only on ingress. A bound relay still forwards in
++	 * software, with carrier up, what the provider does not serve.
++	 */
++	AMT_OFFLOAD_MODE_REQUIRED,
++	__AMT_OFFLOAD_MODE_MAX,
++};
++
++#define AMT_OFFLOAD_MODE_MAX (__AMT_OFFLOAD_MODE_MAX - 1)
++
+ enum {
+ 	IFLA_AMT_UNSPEC,
+ 	/* This attribute specify mode etier Gateway or Relay. */
 -- 
 2.43.0
 
