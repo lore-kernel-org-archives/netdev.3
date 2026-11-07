@@ -1,116 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794077093;
-	b=HpX6qSY4ql4zuixf898spw5uVXS7WUmNBi5FrFwJVLQwVWFPSWAsvgkXZFS0/KvJDAvR
-	 6zY0TUQPP0wMLNUHtXhTLzf8G38kVy6E7oCoJNSANj9EKA6OdSX+pqmQiTlMugTQu1lox
-	 H70zLVJaJVjaAhzUvSRc6YWz4SzPPNSPpNBUK2cTg//ZTVeRzgMu6JR1RBHQphrGJGhF9
-	 0HPe6uk00GpQdF4zVxgnwMc/7F8whfUME+3MV/L3piimw+8MDN7glb9tSpGUMHOS9NlvL
-	 +rzqB0cANasPzOs3WS7Z7VcdZ/ioepCfB0eyjAu14ahA4AgZqeB2XA63YhKvFQ41C4A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794077093;
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.167.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1794077276;
+	b=wog0eLN5fLukkcuZPS02rpd89QYhxNJq2IImamnAY6BURsdq4WPPX2hJkOJ9itrWt20F
+	 tYdRMkOwr4kGjhY12z3P1sMp0FADNF1Y5d2Kjk/viYlvtLgI880TEE+/wNrCg2d42FORD
+	 9otadHWZaFxUSF2ky/tute1UEhXPKHvevXetrQgFDzxVmvmVVufXyEXTVrQMXT3KI3jTO
+	 IUSPJ8YhxeqA14DFqZY4MMjdtmhRQFBlEnGuQalhhr7SN3ZWPAzkplVo33AxeLagnY9SG
+	 41yGtfOWNhACCOa+z/EH+LAJhGUg29ePrXte2kVXdMLUw8avUmFHxzV90VHh3OkRb2w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077276;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=sg7nmjDxIAixbof136SBr2EkAZqYxcTSKOudRFI2tTA=;
-	b=L7b4k3cVIvVIKVZzjTk8/siI4H0f1Xlk25kAviBE87upwPS9kcd2qVOu4sDY9i5CcJ/g
-	 kioKsjaArQ4AWH0IsQm8PeSRka5E0gMU32aVlrwy1bOykT6Vv7NPZtPlRpAm2nXrhefrc
-	 J/dP87isOaeQyz/0jJK8iPPIDp980sGlafuLV2XEPDyAslJVfyv8ZcCU3I7W+MfS5qGMh
-	 rWnqbYuxayl0YFQFu0sz+H5jtzX3bMpYjfKvUtsAkCMTyvJ0j7EgV4yN6c7eg9m7ClgSp
-	 lWrIW5/cJyeMyUts7SG5X6PH8D8rekPE8w5UkNBjENVBvg7nLbw0AlDyXbkZvRJtezA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=blockcast.net;
-	spf=pass smtp.mailfrom=blockcast.net;
-	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=Vq6K+tl+;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=DWojXY4nDMT9rtwg6h/b477SwUuLPC3ITyeb/WPBYqc=;
+	b=s7CTHOQy6voqnhgLVBhqtB0PK79KTXC0pPcyKF50fxueu1V89JFfalZvOa5FO6loMHBT
+	 XMNr3xj0mD61JwY5jnn6p1a2nsTYVGFpgGx6akb4DEhCzhGj5blgBOCNUEHSBZFpSH1SJ
+	 eIaFWZhON7SliYRLrUXhCOzOAvX6OZ5Vuyk7bKZo9Ifrw/bkrADemF/jopn+g42omFZwi
+	 eQpGbTG9545yqaXrdcyktROOPPYcqpylDGc113413UsnD6BVRx11YsOgR7qmQQnOT6l4p
+	 P3bfuQLUalmAaLHjX3SQ3I+ag2K7cdLFj0rIYTGAWQyxsihcCcnCimHSfavTnlAiAOg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=amacapital.net;
+	spf=pass smtp.mailfrom=amacapital.net;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jDsWkgNe;
+	arc=fail smtp.remote-ip=209.85.167.43
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBB8606A335
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DBB8606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06164606A332
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:47:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06164606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=Vq6K+tl+
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso2799954eec.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=jDsWkgNe
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5be47aa555cso1407859e87.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:47:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794077274; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mprifGlWNrCxW1jj0ShKHmyrVbTdOy6XJ//DTCDmdqFGDRZBuEdnJs6xpVRSeNvYLv
+         8PQ4w3OlD1aWhLwbb+kXDG0BJ+gUQy2K+ZX2NQCWddDscecrYCq/7CaAj8gEOHqlH7ZQ
+         5gMpHzBa5eb9HeRsmWygfBN8AHmFcv8Qbv3SFUMjwptyPoz/atptCarpbXdpuu/t9aAs
+         LF91ChVc9oA4RN4SWVCK4PRsJclKm33kzhTSjpzuVeJZSGnLIImPcQFihCu/NgNmQfyq
+         AxKFWs8wKb4UvZDmzvqd5yvIpFW9APWkO190Ri+bn0JzDvwMwo62zOLkgCUswwK3JEWe
+         34Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DWojXY4nDMT9rtwg6h/b477SwUuLPC3ITyeb/WPBYqc=;
+        fh=/1UvEaUG9z85JHOMfAjIGOiaQBLlqNWpUFTNHGaTwx4=;
+        b=Ptc4rsQoAQU4doUAdNYIW1b+cx7bIytdGRhWRDQKiKYK9Zr9KqrCihMAhc8eNW8Tb8
+         JRSJsBw8+cA1dTC93hICGXM7TIznAgmocEJUoExlAWZtnmgfgOf2gjK5gSS39Vcc3CgJ
+         QWB81tnynwq1309Llu8AtUnTOiWZ1jrBzKewOT5QPb5GumhIM6BUhUdteJyaH/YiOEr8
+         skorzaHEEEmm12YksgAotn7EdC+JWcYk9ubIGsR9pymAuQ73gJXOu6bMtC7ksjs/t/k0
+         HAg59SLscxmQ7RrOe1VkZU3vpCxi082WEBoX1lNxBYJR2h/lJWSRPe0CmhyLNRbYHOZy
+         t4+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1794077092; x=1794681892; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sg7nmjDxIAixbof136SBr2EkAZqYxcTSKOudRFI2tTA=;
-        b=Vq6K+tl+F5g1iN+iqHMArRY4yJWDM7Kpf/2w97t8ACvJdttnXzfxPf4pjTAKDFmrks
-         1cM69JKmY33UeLLhn/73sKNx6riqGMLiCLFMWaezg0fdsZLTmAE4CYLCSF91LEyhMWO5
-         gkxRiC4r6oXqq+ay3iPEuIcLPHgGeYsou8uukEby9B1VRiptnyG+lep5y935xv/ZnuR/
-         /deSgO7k39fdfi+CI1FYdaeqWxkiuIKyHfUaOIooQsFROzlttonXzCujaxqUBjVIOqr1
-         fH421UqEXxuQTuAoDMMmi8bQ0sI39qj/2UZbTV+dEjCx+plZp7/yL4a1YMbVsRRRGjqV
-         1iGQ==
+        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1794077274; x=1794682074; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DWojXY4nDMT9rtwg6h/b477SwUuLPC3ITyeb/WPBYqc=;
+        b=jDsWkgNeFsbdQ7qKqbpHSGOmDkfyI4OzDS2pJc6+Irn0QHpBxG9wPbmRTDmNnDdzS5
+         db8t7KSVAGcHE/QtRbNhFDCWnX4uqUr1mEeZuLglr9YUDK4k94+gZZ0e2v5XDqaLBMAu
+         GF2mKtLq3tPj9IBZGN3w1gGTAF0jFrsZMFCKcXAmKrirJiOIjEcuysNg1l24IqICP4gV
+         r2UQCTmuYiVAi+q/1GU8UDVYE1+IZodom/D3RIz9GtMMMdasHTqHTXmlylMP0IcXnVJO
+         5lWPTzglrmuISOXtwRoPqefa1QyXnIQk56sGTTb2Rf1nGsDNJzcZ5BPRF2XDpKcZZ3TD
+         g2UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794077093; x=1794681893;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sg7nmjDxIAixbof136SBr2EkAZqYxcTSKOudRFI2tTA=;
-        b=gFSquZOZ9dJDWaAVaEvfIxFA+JnRYpgezzzb5zF1SJIOe6e0B0C+bPw3vFHdW6k/5J
-         GvIwQNOJV7s6Ab4nnoAFktmPCu0BS3L/TXLoSaERmsZ76QTtGk7YLHpECZNifh9Vdvyz
-         gFU9innt4FJbzcyxhlLhMP5Ro940dlo5+9adWPUoZhfxA0hqG//pR0IipL9PPI5SQZqk
-         +n2aXTleRzy01wbPjuoyKtqvP5Sg4VL0CCv8mMthgWRH0Mj8Q4D7NQapTFUemp3k/WMF
-         gzP3qPzrhxeynADveNuNgMnHBudRySlR4E4V/nHmsw24EYNBN+McmrzH044TBlx6xoJf
-         MwaA==
-X-Gm-Message-State: APuU4Z/xpTpMtgIbq1mYHIG915Qhr2uvUihvgw+Mcyvb8S73Is71uPR8
-	J4lbWeQjJTLs1p0TghCn1FnJ+Ma+NisJPUb08fy8IhpZHnXfInsocRLYa11P4ewucOE=
-X-Gm-Gg: AYBFou1GZcBGD73BVQILoGCN8FEBgKi/9EyvCunVxEwgodCVkFv0yhuBxtBDoLwFNeN
-	ClXdXyFeVJExMIpfp13FMjhcKrGj8OO4wY+j+ETve7YdgADEn3eeXtJ5CDu8L1skCphft3FuJkv
-	HYZPy3RpiR5wv8KrIul0QCLebRh9rPU3g02mXO5hHyWQTjbMoBrxslo1X7FeK9dxyXZECcH6Y7r
-	Eok/I9kZWZLKcoMBXUgsEj2gfD8S190YuwJmjE8qwDYphPhMLTCCdwe/JHuYrY5ybjUzE54g6D1
-	Cg8gD6cQIX/4/Qz6vLmT1981IugMJ0SW8JhGRGc8LKIdK5Hg+FhrhgVI52dPBr4zNTHEJM5ftl0
-	jPa/f7pMHxmPnrkmtbQr456B1mYQ3bggP6mklL+Zewajg4T1fbgYzHZM5cMAjl6uheYoz8xL3FG
-	3L1Vcat3fCxCfndQSSG4aFdRUaXMNA7i8Kmqnk38QCmu71ZAp2U2LnCNzOr5/qgU0dTb8Lan+5I
-	9PuU65b3dTJCH4vFBUjrjvRFI8P262vNL5bvgS6odG4jtg4x1dc4qDw44+2kOTdZOI5MjLAN4sa
-	AmMD2JOqs+OLBc2UA5WUsw3VstrRWGbyOQDvLhI/S8khQhMsm+PV3OrHcuJ1J9ZczKwCHNQ=
-X-Received: by 2002:a05:693c:881b:10b0:351:7ec1:a92c with SMTP id 5a478bee46e88-36f76520e62mr9146148eec.28.1794077092493;
-        Sat, 07 Nov 2026 10:44:52 -0800 (PST)
-Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 10:44:51 -0800 (PST)
-From: Omar Ramadan <omar@blockcast.net>
-To: Taehee Yoo <ap420073@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	brett.creeley@amd.com,
-	sgoutham@marvell.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	Ido Schimmel <idosch@nvidia.com>,
-	Satish Kharat <satishkh@cisco.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH net-next 5/9] amt: add IFLA_AMT_OFFLOAD_MODE
-Date: Sat,  7 Nov 2026 18:44:33 +0000
-Message-ID: <20261107184437.2783174-6-omar@blockcast.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261107184437.2783174-1-omar@blockcast.net>
-References: <20261107184437.2783174-1-omar@blockcast.net>
+        d=1e100.net; s=20260707; t=1794077274; x=1794682074;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DWojXY4nDMT9rtwg6h/b477SwUuLPC3ITyeb/WPBYqc=;
+        b=XGDxSrtsxh+KzIieZt9uL9XZoOoZANDHXcgoWK++BrwOSBU8VxHFMd19WsYoHTUBH2
+         E/dJl3/XHKDLpKVwL46WyluQK/NVlNUYLRuDNMi7iLT6kKh6NUPBG4vMGjREYu3QaxQP
+         /Vm9YUoQKpQ9cLWl9BRjQqzlIjuLNDGLbmkIT3mXZRXXI+AuS59HBMqU7LPwWgjNE2/h
+         6HRhv2qbuw31T1d5z3o8JV/y7+9Um1ZGPp3+HfL3fLqZlZIHX8poUtWI9t4fOtAKRFvD
+         nEPtsrg1eNc7jiD8fxpBBh+OIdzejr7SNUqJVCrtHrbTYEV+31TfyVU8kBRTtiNagRL0
+         tPcg==
+X-Forwarded-Encrypted: i=1; AL+hErH8JTsM/NeyBC7dN8DKkFq9vhWJOP+6tE+Z7zXIbx4kqYr+PeCM7eS+a1mtzDZm5W0NP0wCcVY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+3CnZ5/e/zx3SYni+UDVOsaY/ygiKz64urXo0TRKNK16ipqwzw
+	WPp71/Op/IV+H05s7qyR4WyklOXd+BbepblhT9i+rkJfbc90W4SaAH2WExjdBwBOrkf6CKsvMQW
+	qe/MzpbT5Uhi+/qTdVcCmlpFiZVcaPqf2YIGS5snv
+X-Gm-Gg: AYBFou27Sk9aXQgxcLgiobG8EJBLHdIcgwd1c+w6Tc4aCfB/tkc9P83Oo97jsBtiKrf
+	lEOzwlKhJpmUi5YqGLa9O86festFv8W7yJ7Ov1cCGtvoXNK0SiIROz+X6CCaFxZg9m6Ivs4w4Jt
+	tv/lJqGj19vTUv0Sy4roUQplmJHW97DRv4bB9+/KJHHBEsDAhxoHjx/FUKSqWCV/CVPZRFLLEZK
+	V4L4PzsgL4eoFW2VgRFV4HImO+HdZzBAR2V1YvOmldgoSK4O6SVt8Td8Epqvwl14FQxnWcOtzU5
+	yFVCeqm9a1w2djEnRpgg8N601CGlRr8IIMEEGCdNg8H7qVJgaOiDY0k1W6taPyR0B4MUcXbMy+x
+	fL8u3mYYXYH9eHedJsBnanCPk7x19N4S1VQ==
+X-Received: by 2002:a05:6512:291a:b0:5c0:ca1:9dd7 with SMTP id
+ 2adb3069b0e04-5c00ca19f2bmr594320e87.35.1794077274068; Sat, 07 Nov 2026
+ 10:47:54 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,103 +104,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261028221705.3915340-1-halg@google.com> <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
+ <20261106-befreien-addieren-eislauf-e09212803534@brauner>
+In-Reply-To: <20261106-befreien-addieren-eislauf-e09212803534@brauner>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Sat, 7 Nov 2026 10:47:41 -0800
+X-Gm-Features: AclHuK9s0dgg3FDVqp4WbjYQnA0hebDpEpxOAgz_VjLjRP_HfRjeTpRH9DX274k
+Message-ID: <CALCETrWa1SBLcb5oWjqjgzZvKvCoHjmYFk=Lf5ytEM9uqm5jYA@mail.gmail.com>
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+To: Christian Brauner <brauner@kernel.org>
+Cc: "Hallgrimur H. Gunnarsson" <halg@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Jann Horn <jannh@google.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	KP Singh <kpsingh@kernel.org>, Jonathan Calmels <jcalmels@3xx0.net>, 
+	Casey Schaufler <casey@schaufler-ca.com>, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-software (default), auto or required, after
-IFLA_AMT_MAX_TUNNELS_PER_SOURCE. An unknown value, or a non-software
-mode on a gateway, is refused with extack. required with no usable
-provider on the stream device refuses the link with -ENODEV and extack.
-Emitted by fill_info.
+On Fri, Nov 6, 2026 at 5:13=E2=80=AFAM Christian Brauner <brauner@kernel.or=
+g> wrote:
+>
+> On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
+> > The whole unshare/clone flag situation is getting out of hand, IMO.
+> > And this new thing makes logical sense but is really about reducing
+> > exposure.
+> >
+> > Perhaps we should instead have a small list associated with a userns
+> > (extensible in the future) of things that the ns's admin (i.e. whoever
+> > has CAP_SYS_ADMIN relative to the ns) may do.  That list could
+> > include:
+> >
+> > - Create loopback with sensible defaults for ipv4 and/or ipv6 (i see
+> > no obvious reason to separate them)
+> > - Create tun/tap interfaces in that ns (and attach them, etc)
+> >
+> > And add a very simple new API to do these things.  Actually, the
+>
+> We've had this idea in the past and I think it is reasonable. I had
+> always thought that we should expose a system call to create empty
+> namespaces ot any type. Usually I'd be excited about that but I think
+> that point is a bit moot and I'd really like see whether we can turn
+> cells (or whatever other name) into a first class api.
+>
+> The problem I have with the patchset as written is that adds a lot of
+> moving parts. And yes, I find the CLONE_* and UNSHARE_* flags plus
+> sysctl to be suboptimal as well.
+>
+> So the TL;DR is that CAP_NET_ADMIN + userns =3D
+> CAP_NET_PRIVILEGE_ESCALATION 10+ years later. And this patchset wants to
+> put it back on a leash.
+>
+> So why isn't an aggressively stupid solution to this problem to split a
+> new capability out of CAP_NET_ADMIN so it covers the absolute minimal
+> set of things that should be allowed instead of doing effectively the
+> same thing but split over multiple apis?
 
-Assisted-by: LLM
-Signed-off-by: Omar Ramadan <omar@blockcast.net>
----
- drivers/net/amt.c        | 25 ++++++++++++++++++++++++-
- include/uapi/linux/amt.h |  7 +++++++
- 2 files changed, 31 insertions(+), 1 deletion(-)
+Because we don't actually have a clean way to make a list of
+privileges that are, in theory, harmless but are hazardous from an
+attack surface perspective and assign them only to tasks that ought to
+have them.
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 377660e55..58e9da443 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -5719,6 +5719,7 @@ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
- 	[IFLA_AMT_NUM_QUEUES]	= NLA_POLICY_MAX(NLA_U32, AMT_MAX_QUEUES),
- 	[IFLA_AMT_DISCOVERY_IP6] = NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- 	[IFLA_AMT_REMOTE_IP6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[IFLA_AMT_OFFLOAD_MODE]	= { .type = NLA_U32 },
- };
- 
- static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
-@@ -5745,6 +5746,22 @@ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
- 		return -EINVAL;
- 	}
- 
-+	if (data[IFLA_AMT_OFFLOAD_MODE]) {
-+		u32 offload = nla_get_u32(data[IFLA_AMT_OFFLOAD_MODE]);
-+
-+		if (offload > AMT_OFFLOAD_MODE_MAX) {
-+			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_OFFLOAD_MODE],
-+					    "Offload mode is not valid");
-+			return -EINVAL;
-+		}
-+		if (offload != AMT_OFFLOAD_MODE_SOFTWARE &&
-+		    nla_get_u32(data[IFLA_AMT_MODE]) != AMT_MODE_RELAY) {
-+			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_OFFLOAD_MODE],
-+					    "Offload is only valid in relay mode");
-+			return -EINVAL;
-+		}
-+	}
-+
- 	if (!data[IFLA_AMT_LOCAL_IP] && !data[IFLA_AMT_LOCAL_IP6]) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Local IPv4 or IPv6 attribute is required");
-@@ -5802,6 +5819,9 @@ static int amt_newlink(struct net_device *dev,
- 
- 	amt->net = link_net;
- 	amt->mode = nla_get_u32(data[IFLA_AMT_MODE]);
-+	amt->offload_mode = data[IFLA_AMT_OFFLOAD_MODE] ?
-+			    nla_get_u32(data[IFLA_AMT_OFFLOAD_MODE]) :
-+			    AMT_OFFLOAD_MODE_SOFTWARE;
- 
- 	if (data[IFLA_AMT_MAX_TUNNELS] &&
- 	    nla_get_u32(data[IFLA_AMT_MAX_TUNNELS]))
-@@ -5998,7 +6018,8 @@ static size_t amt_get_size(const struct net_device *dev)
- 	       nla_total_size(sizeof(struct iphdr)) + /* IFLA_AMT_LOCAL_IP */
- 	       nla_total_size(sizeof(struct in6_addr)) + /* IFLA_AMT_LOCAL_IP6 */
- 	       nla_total_size(sizeof(struct in6_addr)) + /* IFLA_AMT_DISCOVERY_IP6 */
--	       nla_total_size(sizeof(struct in6_addr)); /* IFLA_AMT_REMOTE_IP6 */
-+	       nla_total_size(sizeof(struct in6_addr)) + /* IFLA_AMT_REMOTE_IP6 */
-+	       nla_total_size(sizeof(__u32)); /* IFLA_AMT_OFFLOAD_MODE */
- }
- 
- static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
-@@ -6068,6 +6089,8 @@ static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 		goto nla_put_failure;
- 	if (nla_put_u32(skb, IFLA_AMT_NUM_QUEUES, dev->real_num_tx_queues))
- 		goto nla_put_failure;
-+	if (nla_put_u32(skb, IFLA_AMT_OFFLOAD_MODE, amt->offload_mode))
-+		goto nla_put_failure;
- 
- 	return 0;
- 
-diff --git a/include/uapi/linux/amt.h b/include/uapi/linux/amt.h
-index de1ae1929..c67a1f763 100644
---- a/include/uapi/linux/amt.h
-+++ b/include/uapi/linux/amt.h
-@@ -122,6 +122,13 @@ enum {
- 	 * AMT_MAX_TUNNELS_PER_SOURCE; raise it on a relay that fronts CGNAT.
- 	 */
- 	IFLA_AMT_MAX_TUNNELS_PER_SOURCE,
-+	/* Relay mode: enum ifla_amt_offload_mode, default
-+	 * AMT_OFFLOAD_MODE_SOFTWARE. Replication offload to a provider
-+	 * registered on the IFLA_AMT_LINK device (include/net/amt_offload.h).
-+	 * Required mode refuses creation with -ENODEV when no usable provider
-+	 * is bound. Gateway mode accepts software only.
-+	 */
-+	IFLA_AMT_OFFLOAD_MODE,
- 	__IFLA_AMT_MAX,
- };
- 
--- 
-2.43.0
+But maybe we should invent such a thing.  It would be very, very nice.
 
+Other than that, I agree with you.
+
+>
+> Anything that is reasonably advanced should not be the kernel's
+> responsibility to delegate. I really think the old privilege model where
+> the kernel grants control over a whole subsystem is inherently flawed
+> and is much better replaced if you have the means to let userspace
+> services grant and delegate resources.
+
+
+
+--=20
+Andy Lutomirski
+AMA Capital Management, LLC
