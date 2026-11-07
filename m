@@ -1,98 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794044807;
-	b=T2u++l9ddfBPUG13FjixIVgO1/PAE5xOog1uEwJyJ3GqiGhjCSU4oxj/57ToNKprc72l
-	 MDSKqNSEH+Q9H2cZVxl78udXZ2Y8ZBVAeG+r7crLFgimHwnWKJJ6mizhVbW6alEAKUDo/
-	 kjTVf9zH/9DdKz/lhTbrWajKIiDZwVj7dcZx1nQk2O6lfkvBJcJ8IzVuWm1CHT1bm1LPZ
-	 PXOgWbGBbrRHHPtgtwkK70LbqI+K7YMtyIt+6W9kBEapyUF/oRjhy7tG54DyCA4YIpea2
-	 +r8JTRg2RHO4+sgBLbLIleYDCakVqkhw6E4u/wksF8P0mu+lSUIE3BLUVLzgI0gy9+w==
+	t=1794044930;
+	b=FxN8x0CdoVmuXem/PbyuZoavU79Lrb/y11DkGIRuhpDeJYYbN7ZNLB7eLcnRSl9w9bSe
+	 rYWYwbsuPSUJu1yNcsBJRf7TfIElA7NWyzg3rhe6M4UvIGFwzypQCZBimsXWhuv2uiMUO
+	 yB13Deb9RKSvdZgwpL0A2CgCFVGKmGw5TBxalc+OtpMI8DlwYuIdDt8T+7GWCg7GFwsXG
+	 2cOMmw6L7kyXLbwiRiG6by8jyMWLJolvKwMJcdk+AMI84zGJSXlDtNuaY2FqbXjcgxWny
+	 505wsLusQcyNy03C3qZ0kfdlO+lqZHE7WP1mI5jxNRR0MIitwhk2bkzMmjsn6WbB0xQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794044807;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:From:To:Cc:
-	 Subject:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=AcKtBQkNyQn8m4NmLz6hreUobiXaoInBfOtLRGrYNvo=;
-	b=sELavn9GSk8Yg8sW0bR96y9CfnNAwJ9VneXakjinI/Z5mybupfH+dTAkYjPg2ggidO/B
-	 91pJ8eUuzpeMbX0IMNWSFlNl/GneUUaBJFC1H0wN7oRcZVOIO5J2hJrTEbLnpUpBar54b
-	 RCyraVh24KV3nOnPkOs7I2odCEJxn7VQFYO5wM4QjZI6xZpDTjeQAzYSTSYgvJQnFOMEe
-	 x7FFFpcRfJxCUGm/qvvypPH6gt8hYR2MlN7tcQMLqqWi7k8xSAVwiOuIZKRMKXd1OqUP/
-	 0fLsZwj3c1fgwYDd2UiFi2ipD/h8Kc3kyiivkUQln1Gd1hU1ByFg+EU9ANEbkx39uew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794044930;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=rorNI1UIic/55wFWIBl0e+Ri75FN+PnMt9WvbEXwkRc=;
+	b=U7/psnXgEAnYQfxcSYHkkcUaBfLtp62nIG71yjEKq9ciYEBylQLa1LRNjfxuI8QXWsQc
+	 I6sGz2e6w6flKpwB3Gi59o/W9xwSWMotfMs8WhV/A4PkVzmRf0kzY6kGLWlBV69TJS6VK
+	 y8RCWYnIQoFkNGesjqgVrUUl9jcFQE9zwooeG9FHN/3/rX2h7/IDeGXJS1IPkU83u/yfm
+	 x/kyM1KupAhNeUhYagHFQ/QuCeoP0LMtpamDdbaNo70nyBMM0xyMQyigE+SjBOXQcCqAj
+	 /9c66oNu7IYlPouJfRw7syEROdKPuzSCD38Uj3D8yBaUJmO/YKo4Bs7G9XBhIToBd2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ny7sw3Za;
-	arc=none smtp.remote-ip=74.125.224.46
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iW02CE60;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E65606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 09:46:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3E65606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20473606D801;
+	Sat,  7 Nov 2026 09:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ny7sw3Za
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-67990a45e02so1527199d50.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 01:46:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794044806; x=1794649606; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:date:subject:cc:to:from:message-id:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AcKtBQkNyQn8m4NmLz6hreUobiXaoInBfOtLRGrYNvo=;
-        b=ny7sw3ZaMWH8uB8lOe2QwduaPsOslQophG7FsSI3vQijCdlgiO/9ANBukv5zdzz66/
-         wBK5qAnYIDGyfRnmw2vlt0qWG0XWnehoEd1jmu/pKxv8LWugppnlsvp6bQG/Dt+ogOcN
-         XTT9d7+WE2Qy1phXbG+/6mFNuCQrDXR0/7QlDF2Bh2u214LCXlBDpumsWBRDyrhLreWj
-         bBFL6uniqF8nMCoODAk2K5FADtCrOPj+pwYosQX9e5z9q7W9lhlV5cjyTs+2ovxA0SlU
-         lFrH9VbDC2I8t9BNWnqmJVyyWkW4uXeKYX1R8IQevF/bnJw9oUB9saDVS7kVeNyL9S83
-         hvOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794044806; x=1794649606;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:date:subject:cc:to:from:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AcKtBQkNyQn8m4NmLz6hreUobiXaoInBfOtLRGrYNvo=;
-        b=kfFVNL9QidFf0QzsquoqyxqU898nx8kT5sMpvO4cudBCeXCk8t9vrIBhtKFvlJZCJl
-         hJWBDCkPf071rAKoeQcOGAGUxh5C/hnuEJFMAhayluqIOe3Iu54uSMpB4IwpVNPQXPbI
-         xGjHqJkbIME/4rqKBjN64+jbHjouEz86LxjffrpefZ5lWDxzZKCoC8wcMSj64DgM4jMa
-         3U0xHxR9uTzpAojHYg1DT55lmB77LioQIYvL7NtGr/Olvu8oUt3lbP+7tufxWN+4qEwl
-         xcB4mcApC5FDCtzhxcKAEXdRQneKSfFsHk88G4NFm4U5xJC8aL/JlM9zJU1Ho/bxAwD/
-         BiXQ==
-X-Gm-Message-State: APuU4Z+kwYWkD4VNE5cuRrCmpcGLzKx1potqGBReK8FMj+rpvspgpDZG
-	XYemJC2zjalfCsQqmKIOz59/vSfXW7GWrHbDcVmZ6PMtntTyisizHyBOm6DoT2Jd
-X-Gm-Gg: AYBFou2HgOK/1pVW5RygpyBmN3+CQNP2B01kXlshVFbsywy0fPIBW5fk1vV8DQGb3Kl
-	0W8YJide37FoCztdM9lX0mwYqpRtV2Syu4hkNzzBc56K2u28sRFiKSlNU9xmFPxsdjMn5kz9p9R
-	/K+QAsJhPZhFmnfyhFGPQ81VcB79iXqf2bZ95Q1FYfvqxBbW1fNIk9XQsdalmzJl+PctH1myeWi
-	Nv8q/Xd5NaMfWo/TCl2pqG4ayfYVqMK8W+hq9vd012a6RgtCwTR+WEd2OuP2M4BkJr1CWzyekLZ
-	rS87zpTaeckSIWJ6/E/QFeWlucR6x//VdKK8HhuvyUQt4TkC2mbj2G74gTZwUrYUhpZOQFxSRZc
-	ZRCX8zreBm2dXgyXpsTDw1gCeZNl+cpKy5zzKNOOKhAshZVZTmy3N4U/o5XpdjS5kNQ8fevxhN/
-	Yevr+y+QDrKZ9uHmS1WD4KCBVCcICzdKsaZA7IzpFdz8Kh2IXqGeiC3LDJll5dSPedrNlA+hCzS
-	Wcs2FwDs3EfnAMrfwlKvGFT033TywhBKFvHXB6m4YJSkkrazqsU6ntPGZXkJotbTactczES3pxS
-	djtgCot7hz814D310HgmKJZwnYRWtWx2pPBLNGYP/ZnoXqwbcEiRuphl
-X-Received: by 2002:a05:690e:1916:b0:677:d023:49e3 with SMTP id 956f58d0204a3-67c2729437cmr1566700d50.65.1794044805696;
-        Sat, 07 Nov 2026 01:46:45 -0800 (PST)
-Received: from [192.168.100.12] ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c13540451sm3731000d50.10.2026.11.07.01.46.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 01:46:44 -0800 (PST)
-Message-ID: <6aeef384.2b6211eb.2eba46.0de8@mx.google.com>
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- dev@openvswitch.org, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PATCH net-next v5 0/2] netlink: specs: fill in the missing ovs
- operations
-Date: Sat, 07 Nov 2026 04:46:27 -0500
-In-Reply-To: <20261103183319.2730567-1-houminxi@gmail.com>
-References: <20261103183319.2730567-1-houminxi@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iW02CE60
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328FB1F0089F;
+	Sat,  7 Nov 2026 09:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794044929;
+	bh=rorNI1UIic/55wFWIBl0e+Ri75FN+PnMt9WvbEXwkRc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iW02CE60RHF02fEuqPqKcJf6i4V3KTjWDHzo9DZbo95gORtH0ZrmCJDxrNOCnD4Id
+	 9WnOBlB++VD4fZIWQsCzrQhJIry0nbljvHblYH3quGITH2PJSiPvwUzFopDT7DZDt2
+	 EHHmNwDws2w9I0dTG1wwVA0PVma1a6Hmr9kUmUnaP/d8oN+oH0kQjwhxNPRQPPwlA4
+	 xw0Rt/uXRWnSdUas9IyJY6YU5S7A3WpR700rHxBipZTWxfOwImozcBkuV3AdARVDwJ
+	 t+x6t7k7LiUG553yMU1QgCJYHr0hUKV7+ybnwND/Tl+BQydELSVgjRpI3YK5OOLnj3
+	 agc3DJMfrldDA==
+Date: Sat, 7 Nov 2026 10:48:35 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
+ pinning the entry
+Message-ID: <20261107-akteur-gemieden-eckdaten-21304d085e35@brauner>
+References: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
+ <CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,30 +78,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
 
-Sashiko reviewed v5 and raised four things. Answers below.
+On Thu, Nov 05, 2026 at 11:07:32AM +0100, Geert Uytterhoeven wrote:
+> > +       ssize_t (*proc_write_buf)(struct file *, char *, size_t, loff_t *);
+> 
+> "const char *"?
 
-The ufid length one stands. get_ufid_len() returns 0 for a ufid shorter
-than 1 byte or longer than 16, and ovs_nla_get_ufid() then reports it as
-absent, so a del with no key and an invalid ufid does flush the data
-path. I will say that in the del and key docs, and give the attribute the
-range the kernel enforces. A new flow that carries an invalid ufid is
-indexed by its unmasked key instead, so the ufid doc needs the same
-qualification.
+I prototyped this to have a detailed reply. It's not worth it.
 
-ifindex is u32 in the spec and signed in the kernel, and no datapath
-request used the attribute before this series, so it went unnoticed. v6
-declares it s32 with a minimum of 0.
+* The buffer is the entry's private copy.
+  procfs creates the copy for this specific call and frees it
+  afterwards.
 
-dont-validate is missing. These ops carry GENL_DONT_VALIDATE_STRICT |
-GENL_DONT_VALIDATE_DUMP, so new, del and set in both specs should say so,
-the way fou and team do.
+  A bunch of handlers modify the buffer in place and it's documented as
+  allowed:
 
-The last one is a real bug and it is older than this series.
-ovs_dp_change() stores the new features in dp->user_features before
-calling ovs_dp_set_upcall_portids(), and that call fails on an empty
-per-cpu-pids. The request returns an error with the TC_RECIRC_SHARING bit
-already recorded and tc_skb_ext_tc_enable() not run, so the next request
-that clears the bit calls tc_skb_ext_tc_disable() for an enable that
-never happened. The same key is shared with cls_flower. I will send a fix
-separately rather than mix kernel code into a spec series.
+  - afs_proc_cells_write()
+  - afs_proc_sysname_write
+  - a chunk of the sunrpc cache channel ->cache_parse() implementations
+  - thinkpad_acpi's ->write() methods
+  - SCSI devinfo file
+  - dyndbg
+  - cio_ignore
+  - the pseries ofdt parsers
+  - two more hand the buffer to a char * interface:
+    - the SCSI host ->write_info()
+    - simple_strtoul() in proc_scsi_write()
+  - four strip a trailing newline in place
+
+All ways to make that work suck.
+
+(1) Copy in the handler. That means eight kmemdup_nul()s and a
+    kvmemdup() for every nfs downcall.
+    IOW the copy this series just removed comes back as a copy of a
+    copy which is not acceptable.
+
+(2) Make the parsers work on spans which also sucks and doesn't solve
+    all of them.
+
+(3) Leave the buffer writable. Costs nothing, nobody else can see it.
+
+So (3) I think char * stays.
+
+> While at it, I think it would be good to use this conversion as an
+> opportunity to replace "char *" by "void *", which will probably let
+> you drop several casts from users.
+
+So I tried that too. The thing is it drops exactly one u8 * cast in
+ntfs3's label write. And to get this done we need to introduce a whole
+range of local char *foo = arg assignments. So I decided against this.
+It just doesn't add value.
+
+Thanks for taking a look!
