@@ -1,101 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794032393;
-	b=csAbIy0yS2ws1iMvHf9BQghZQBwYEioG21jKWPKK3ail3DSYoVYalY6m4jjTi4Ghmlpj
-	 TjTtcgMce17eGsF9GA8L7N10GD6lLbRUutGkhg/pHB7+GX91BaAKqJ60YqHPc2zBZSYab
-	 B2IaQCbqc0s882+52ITwDwsi+cFuN+zR1wv3k+KggA8PEfyTTLtw09TaFFkPb8nDxSTdI
-	 9SvyMh7/aNN0yePUsg/bskRQPZ3NELzMEQNvt3cBNKSg73ftD6LigHYI49lVHAQq1uXML
-	 LnX7Wm3egb5f5YzfF3RZH5JXU9VbH75qHr5Mea0GgjidWC5fsj1L04EgvvYtClFyrIg==
+	t=1794032957;
+	b=eI3PLn6iuIeh8kv1g3X53H+VM3RgfQel29jpccI9WYcn5mz5EbBFfwukdMliKIdfKXZY
+	 JOO6YoU0d86iLrGZXewMRUs7as3RkkA0RA8fLLboU7wEwSgCrRNwrIRYRDvXMuu5ha1M1
+	 t3mtb92VKt47EnjDvWQizK9Z5FBy/gmAut1Gc0JEMIwissuGPta0SzW5q/gcIBoNbJb9x
+	 lD9swl5l/cVa3IqJDX8oMO8+3grA3HFs+Ck0iBg5Uixb8KuGD6/mljJzVZ/+gduKkWJHc
+	 ZGjJ2vXfWCY1PEG2UaE0P4pPKlf7+uPEaQJ0DNiJ9/kfKVh40uVt3aE7FRv50zYZH4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794032393;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794032957;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Subject:
-	 Message-ID:In-Reply-To:References:To:Cc:Date:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Xd/Rrz6G4skAqcLMMbmw+5Mcc5fzjjR69xjLDlk4KFE=;
-	b=P9NtAA63bTXaExpafvHt62zjF4uyXjvtudR717vV1iRX+N33VQjzAFpzCp+8T2IcFe9P
-	 pO9nLqnCgG3cwEGMz849cJmk6FMQ6kv9qtHn+iCCepOziwScfp0RbAw2JbEKMxo0MePPZ
-	 xaVqXkNVhPdbg9eQ6fXPqa8ptVjgjKIERBHG9fE9nknO2gCPEhOyCMm3TNBUP+E+h3DN5
-	 SPpK46nW10IFWu1mxbCF5GvQ3TGvpjLnclAYHPoLSS0/vETNDD0F2CICdctrJe6zn/7Os
-	 HSxITMaiyAD7P8v8ivZCLPLqw6PJYZ4bT3Sn4ntdGAjCKoaMexCoKfmfRqgp8eXF8DQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=fMtnBu3iCFV4jSkaCb7AX9yL/4T5RVnlRz0UlmFCWdU=;
+	b=k7NqQTsjEt0InIV05CzmKnKSc0Sf8A8vbkqDTLVI+pa3cLfFnx/1PluHLqKqW+VDKN15
+	 eKd9drP1mXXBb04r1C7y8O3x4i/zu38KNHOsGOMbkLkufPDgCE+udvG8o8aTBfm7Yj/Cv
+	 LKCH9a0+TZBN4Gmq531CKReCCkFi9xuIartcK15LN9O4u5c2/zTX8S9KFpgpp0Fmf86+r
+	 j2Ju45l/PEYJqScyqZX9XAdReI/YU3mr6ekP9A+tSdQoow3umXup4iXDM7sd6r3kVNw2o
+	 n7xwvb76M1bHCq+dGKAuWe/WOq/x+0Ajxc3lbqOjQnBkpEDgpa8wVzOlFEKlcxMF88Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xM39QFfm;
-	arc=none smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DSVoa1cX;
+	arc=none smtp.remote-ip=74.125.82.49
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B194606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 06:19:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B194606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC911606A32E
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 06:29:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC911606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xM39QFfm
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b0a519049aso928085a91.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 22:19:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DSVoa1cX
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-170135e43c7so2346854c88.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 22:29:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794032393; x=1794637193; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:cc:to
-         :references:in-reply-to:message-id:subject:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xd/Rrz6G4skAqcLMMbmw+5Mcc5fzjjR69xjLDlk4KFE=;
-        b=xM39QFfmL5VNXqLMzTHC93dvkKOjGy9Blq14oR6uSU78duG0WHfSRREWVtVdJjiX21
-         RCE1b8LlDmE1Ev0rJOI0HfnA2f+ZjSImwBFHqlpxHsO66apI5S9nWje7A14ni1VAzoA7
-         s83OJ8ArbCpoM3W8r7XYLGZd3L224XiOgyjgGGJvk8aHcqtH9+xYBFKX/JNntClI1hYy
-         U7l5diPC7ahbLNNQEveWdkYMyyTIZ2ho+AM3fjO/68N0QR5/RctVoD7MAZ7mef2cC6bA
-         RUAIi1beAMDmRcUM21/2hOy4ISrRQPUQDyO//WII4yAWic9VsjiJRgXNQuT5KGHtGVRi
-         9MUw==
+        d=gmail.com; s=20260707; t=1794032956; x=1794637756; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fMtnBu3iCFV4jSkaCb7AX9yL/4T5RVnlRz0UlmFCWdU=;
+        b=DSVoa1cXqvrAH83f4WObwyl4J3m3E83GNS1XzmhGgssIOExNh+4oFbdYhMuhCnuZ3l
+         9oiwxEN5AYYTmTqCtjaZEQdLB8MHAl6y0yNsFkGrXp8ukRsJ+xiTQcJKmJSKVeex/aGG
+         IDwxDtebUJOYUdPJ3anGg6XzgYLTTXRZh6iXO4NKEye+Vj40vi9nvgt7Yx+UKTCn2XAg
+         NEgnOyWPCvdZHBHPdAUSZAm+YG1UmIDa3f1TpFOY2srRBX8+bRJDh+MoFQyKQkLsiX5w
+         pHFFuE78TGveuOY//0RVuJEziYtuuljbaJU50M0rkBHBdJYptHvEh9KwaLR3i46bugU/
+         oYnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794032393; x=1794637193;
-        h=content-transfer-encoding:content-type:mime-version:date:cc:to
-         :references:in-reply-to:message-id:subject:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xd/Rrz6G4skAqcLMMbmw+5Mcc5fzjjR69xjLDlk4KFE=;
-        b=ixpu+jdVDOLGBnRW4WepcOI9VeB8/ZNuBv0c0kwx3lzVyzKjCBhuFPzU/VnkcETkKG
-         fxv1SPb/wWhPTX8BcF8Oeb0C0zI33kAc/FH27YT0V0Z1ERmm3+QnceUO7xqhQbUJ3Syb
-         A3P1adF51/+frq4gXUWHm5WC5OSgnaSSYk91nOfh0I7mqtCVMu9JLdKfhtt4OdC2JOHH
-         ADiLb4dGZj2HYytRRoQbRG8AYgEHPE4L82aBclGk+FHleIM9X4IU/KLJiAztD7FoJC8w
-         zegn55PzMBIrhif8NDysSf0HHW0B8QSl8qRz8BNAEK3MAYbO0yYa7hdQX487fTWoTwq/
-         N0jg==
-X-Gm-Message-State: APuU4Z+BcX56Db6tIbpGE5NaSwXi7a34Sfr6fPqZUhiV+vebU6BuBe2u
-	Q/88V5UM0PSWHv309Mk9z9tdi0K972A+keUJnW2e1/wWDD74/fOcb90e4baw/2VBmoM=
-X-Gm-Gg: AYBFou2N6CaWAy8l36lyqALUySBAe29eZJJpqY4UD9CD6JAEfNQb+2W7gQ3T+EruunF
-	gDBIaqC9c1PyRGPkYWCYHANkn3A40pUcklG5T5TFa3AG9c9+CHaSb1c6oVrw23EuT4Ji7ZoV4+q
-	6TbfDw8TCmbKEvGNqNBeTeH6gNJOXFb3nvxqMZrA4FTsGQ0iEEYyaJQtuSNfn7JrhX74nNb1lFS
-	Z0q8WD3kqEhPM07obFctCZpo87iGKNhDOvG6wdEjvEOF15Ro5pl7bxdKGMs90CJqPtPhR0v8ABI
-	mDSIO8kugXJVCOATJAjoNZKM9FkEYVCDCjo3i/+agaHYTYJcEBE0BWwqOjilNzHmjJBnMJGRHfy
-	YYM3CdcOzcg0tC464XBDlDOUKRoyxolauzQmKjXanvpRsfY7jYER61iObzk0GhRTkKvWQHGcP7+
-	W62YPtzpYT9GMnL9y0i6xS/foZHZJxHg5SDBDTX5IM4SJwoo8V2QF5s6WQkDoDOnb7EOTCuhqEI
-	RJQE6Pp+4D7oKrkgJz5jVkMWWUeblsFKll8DOyep5U/G9suL3yPZ1tF0oKxD/2fej1VN8V1MEtn
-	ovpqQrH0o8BhEVx8x2zrpu8FyoERJqVEJTqwyiLC4f0yLtTCY8HwkUV7clzrzbPBRhUDcxi75vU
-	gkPp6uTE=
-X-Received: by 2002:a17:90b:540c:b0:3ad:adfe:5854 with SMTP id 98e67ed59e1d1-3b0db6e4757mr4779195a91.40.1794032392625;
-        Fri, 06 Nov 2026 22:19:52 -0800 (PST)
-Received: from patch.eml (awork078078.netvigator.com. [203.198.250.78])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1058a7b29sm1965794a91.10.2026.11.06.22.19.47
+        d=1e100.net; s=20260707; t=1794032956; x=1794637756;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fMtnBu3iCFV4jSkaCb7AX9yL/4T5RVnlRz0UlmFCWdU=;
+        b=Jbyaa5ohnz8IHQRTpY2vLC+p34PDqVJ7st9xAOEzMh36uGLo/9VMpoO3kH018/W04y
+         VMj/GRve/ZTM/jnTH/4m7+WxTzfwZ0tqP59wKyAOenRoZG1w3FGiR2xb8yn0D/3M5/wt
+         MOyEAgksaqTlh+pOdDRRUuy+tLDXQ+3ErYxt4mznWXveljiXu5ashQuK75+96f448rcT
+         Ybmy4ci9Npa8U0Q4t/E5SqaaFOGaOSkr/y800AjiJxHBxklCFBKXQe9DjC1Y1HUOhCME
+         lgIVeGRXpSnXq+BuxheVLD+TlnsuoOl0PmeDOF4D+X92zNyc/7jcVUp58bL7VeFDeazq
+         Nwlw==
+X-Forwarded-Encrypted: i=1; AKwUvBwZOQVRESSrxdURJeTLADdlZZJrW0DVdU/j6a/bBe/jPdtJRXR6SOJFXfHJgWvJxeuIAH4T+Kk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z84igo7FBNyZxjngDflO9LP75tp4AEPO9tGG66hOOaymY6jhsRo
+	LLDQYd0Cu4+xDbkzA5NtR/xmJ83BF/AGo38Ht35M8wl9y8hyzi5yiOY4
+X-Gm-Gg: AYBFou2Nuj7ZyhoniBFIAOCcGUzeQYY/4bRMDw41SqnzVfYMO51s2qQUOtrI7gBkzPT
+	dxY5hPWW9WYZ9uX1zpuNUM0Nh12UVoN/JfggPqCY5awzcZy2M/PpkGes+LMVkpeVH7225EOHu3S
+	4EWAAqQeyvjFsVt7EyS79npjlQrcYZng+PV2o1AZCGIOn+4O8Sm1ThR04q2QgcCi6jw8GNRDIcp
+	LkLr9QVHfAs63bI8y2YJXQuFA0WnhJE3jDrqUQ4ugMKlijDpEaRSoETGXT96qK2n3lrldxlb/yW
+	QEoIjIh6fgJgqff4YF3FiUVfp8L8RXE5+fl3Z4lmfdIEfBYREo5UnM9mQ3SdZ5bZ8UFbFod+C3+
+	EqayaQTWG0FM+3Dwr1yh37DOCn4U1KWfA1CjgqTzmmynHBytxSozQitCVHBr6l5RQ5zwR3wC4QI
+	D/ud/EXAPfP8v7F/xYJc1I+WB3k85g21Pd+b/i2M10IcCXJg6MN8goIUfkT7R5r4Eo4ghBYLovv
+	LejR04BDRtsf2jVOiZNwlucQSOqM+Huq+VCFRyII0KxAsA/Ryfn6uy3YU2FGsoAMNAKrRIcC/78
+	4lUKTENGuFXL7mrjKlJIUCphH3e0hG8vI49CFhP1ZvcxGambxmf4D5wfOys=
+X-Received: by 2002:a05:7022:7e07:b0:18d:96e8:b913 with SMTP id a92af1059eb24-1b25d38ef3emr7391109c88.47.1794032955809;
+        Fri, 06 Nov 2026 22:29:15 -0800 (PST)
+Received: from xploitoverload ([2409:40c1:6412:e5b:5516:cd42:6c8f:c918])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b269316725sm4004414c88.16.2026.11.06.22.29.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 22:19:52 -0800 (PST)
-From: Yuqi Xu <xuyuqiabc@gmail.com>
-Subject: [PATCH net v2 1/1] nfc: digital: fix use-after-free in unregister
-Message-ID: <20261107141910.549465-1-xuyuqiabc@gmail.com>
-In-Reply-To: <cover.1793112510.git.xuyuqiabc@gmail.com>
-References: <cover.1793112510.git.xuyuqiabc@gmail.com>
-To: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev
-Cc: David Heidelberg <david@ixit.cz>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- stable@vger.kernel.org, Vega <vega@nebusec.ai>, Ren Wei <weir@nebusec.ai>,
- xuyq21@lenovo.com, Mark Greer <mgreer@animalcreek.com>, Uwe =?utf-8?q?Klein?=
- =?utf-8?q?e-K=C3=B6nig?= (The Capable Hub) <u.kleine-koenig@baylibre.com>,
- Ian Ray <ian.ray@gehealthcare.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Thierry Escande <thierry.escande@linux.intel.com>,
- Samuel Ortiz <sameo@linux.intel.com>
-Date: Sat, 07 Nov 2026 14:19:10 +0800
+        Fri, 06 Nov 2026 22:29:15 -0800 (PST)
+From: Kalpesh Solanki <skalpesh942@gmail.com>
+To: willemb@google.com
+Cc: Kalpesh Solanki <skalpesh942@gmail.com>,
+	willemdebruijn.kernel@gmail.com,
+	jasowang@redhat.com,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v2] tun: disallow setting IEEE 802.15.4 link types via TUNSETLINK
+Date: Sat,  7 Nov 2026 11:57:55 +0530
+Message-ID: <20261107062755.23145-1-skalpesh942@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,257 +107,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-nfc_digital_unregister_device() cancels its own workqueue items and
-then frees every queued digital_cmd. A command already submitted to
-the driver remains the argument of the async completion.
-digital_send_cmd_complete() can still assign cmd->resp after that
-object has been freed, which is a use-after-free.
+On Sat, Nov 07, 2026 at 01:51, Willem de Bruijn wrote:
+> One exception is if this has never worked. If this was a NULL ptr
+> exception from the start, then clearly no userspace can depend on it.
 
-Abort the in-flight driver command before reclaiming the queue, and
-drain the completion work the driver may schedule from abort. Once
-the nfc device is shutting down, do not queue or submit another
-command: finishing the aborted one would otherwise hand the next
-queued command to the driver while it is being freed.
+Right, this has never worked.
 
-Cancelling cmd_complete_work does not run it, so a response the driver
-already reported can be left without a consumer. Free cmd->resp in the
-cleanup loop, and free cmd->req for a command that is still queued and
-was never handed to the driver, which is the only case where the stack
-still owns it.
+TUN devices only have tun_netdev_ops and never allocate dev->ieee802154_ptr
+or register with wpan_phy. Setting ARPHRD_IEEE802154 via TUNSETLINK was only
+handled in tun_get_addr_len() to set addr_len, but any actual use (like
+dumping interfaces, llsec keys, or opening an IEEE 802.15.4 socket) immediately
+triggers a NULL pointer dereference. Real virtual wpan devices are created
+with mac802154_hwsim. So blocking it won't break any working userspace setup.
 
-Port100 and nfcsim invoke the digital completion from a private work
-item, so flush that work before abort returns. trf7970a completes from
-a delayed timeout work and from its IRQ thread; handle its MD listening
-state in abort and shutdown, and cancel the timer only after unregister,
-so no submission or IRQ path can arm it again before the device is
-freed. st95hf's IRQ thread can observe that remove already ran and must
-not call back into the freed command.
+> Apparently a similar issue affects ARPHRD_6LOWPAN.
 
-shutting_down is read under cmd_lock but written under the device lock,
-so mark the accesses with READ_ONCE() and WRITE_ONCE(). Document the
-unregister-time requirement that abort_cmd() must not leave a completion
-callback armed or running.
+Yes, good catch. Setting ARPHRD_6LOWPAN has the same issue: lowpan_dev(dev)
+assumes netdev_priv(dev) is struct lowpan_dev, but on TUN it's struct
+tun_struct. On events like NETDEV_DOWN, lowpan_device_event() writes to
+lowpan_dev(dev)->ctx.table flags, which corrupts tun's private memory.
 
-Fixes: 59ee2361c924 ("NFC Digital: Implement driver commands mechanism")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-Reviewed-by: Ren Wei <weir@nebusec.ai>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- drivers/nfc/nfcsim.c      |  8 +++++++-
- drivers/nfc/port100.c     |  7 +++++++
- drivers/nfc/st95hf/core.c | 13 ++++++++++---
- drivers/nfc/trf7970a.c    | 11 +++++++++++
- include/net/nfc/digital.h |  6 +++++-
- net/nfc/core.c            |  4 ++--
- net/nfc/digital_core.c    | 33 ++++++++++++++++++++++++++++++++-
- 7 files changed, 74 insertions(+), 8 deletions(-)
+Should I block ARPHRD_6LOWPAN in the same patch, or would you prefer that
+in a separate fix?
 
-diff --git a/drivers/nfc/nfcsim.c b/drivers/nfc/nfcsim.c
-index f8e5c4da3b13..52d1fbf8e532 100644
---- a/drivers/nfc/nfcsim.c
-+++ b/drivers/nfc/nfcsim.c
-@@ -239,9 +239,15 @@ static int nfcsim_send(struct nfc_digital_dev *ddev, struct sk_buff *skb,
- 
- static void nfcsim_abort_cmd(struct nfc_digital_dev *ddev)
- {
--	const struct nfcsim *dev = nfc_digital_get_drvdata(ddev);
-+	struct nfcsim *dev = nfc_digital_get_drvdata(ddev);
- 
- 	nfcsim_link_recv_cancel(dev->link_in);
-+	/*
-+	 * recv_work blocks in the link wait and then calls the digital
-+	 * completion. Wake it and wait so the callback cannot run after
-+	 * abort_cmd() returns.
-+	 */
-+	flush_work(&dev->recv_work);
- }
- 
- static int nfcsim_switch_rf(struct nfc_digital_dev *ddev, bool on)
-diff --git a/drivers/nfc/port100.c b/drivers/nfc/port100.c
-index e769a30b8b5c..738acb87f19b 100644
---- a/drivers/nfc/port100.c
-+++ b/drivers/nfc/port100.c
-@@ -968,6 +968,13 @@ static void port100_abort_cmd(struct nfc_digital_dev *ddev)
- 
- 	/* cancel the urb request */
- 	usb_kill_urb(dev->in_urb);
-+
-+	/*
-+	 * The URB completion handler only queues cmd_complete_work, which
-+	 * is what calls back into the digital stack. Run it before
-+	 * returning so that callback cannot outlive abort_cmd().
-+	 */
-+	flush_work(&dev->cmd_complete_work);
- }
- 
- static struct sk_buff *port100_alloc_skb(const struct port100 *dev, unsigned int size)
-diff --git a/drivers/nfc/st95hf/core.c b/drivers/nfc/st95hf/core.c
-index 4d772a308bff..b39a5215dad7 100644
---- a/drivers/nfc/st95hf/core.c
-+++ b/drivers/nfc/st95hf/core.c
-@@ -856,9 +856,16 @@ static irqreturn_t st95hf_irq_thread_handler(int irq, void  *st95hfcontext)
- 	kfree_skb(skb_resp);
- 	wtx = false;
- 	cb_arg->rats = false;
--	skb_resp = ERR_PTR(result);
--	/* call of callback with error */
--	cb_arg->complete_cb(stcontext->ddev, cb_arg->cb_usrarg, skb_resp);
-+	/*
-+	 * remove() frees the digital command before dropping rm_lock.
-+	 * The completion argument is then gone; do not write it.
-+	 */
-+	if (!stcontext->nfcdev_free) {
-+		skb_resp = ERR_PTR(result);
-+		/* call of callback with error */
-+		cb_arg->complete_cb(stcontext->ddev, cb_arg->cb_usrarg,
-+				    skb_resp);
-+	}
- 	/* up the semaphore before returning */
- 	up(&stcontext->exchange_lock);
- 	mutex_unlock(&stcontext->rm_lock);
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index ddfc58c29964..87c833abb36a 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -1903,6 +1903,7 @@ static void trf7970a_abort_cmd(struct nfc_digital_dev *ddev)
- 		trf->aborting = true;
- 		break;
- 	case TRF7970A_ST_LISTENING:
-+	case TRF7970A_ST_LISTENING_MD:
- 		trf->ignore_timeout = !cancel_delayed_work(&trf->timeout_work);
- 		trf7970a_send_err_upstream(trf, -ECANCELED);
- 		dev_dbg(trf->dev, "Abort process complete\n");
-@@ -2017,6 +2018,8 @@ static void trf7970a_shutdown(struct trf7970a *trf)
- 	case TRF7970A_ST_WAIT_FOR_RX_DATA_CONT:
- 	case TRF7970A_ST_WAIT_TO_ISSUE_EOF:
- 	case TRF7970A_ST_LISTENING:
-+	case TRF7970A_ST_LISTENING_MD:
-+		trf->ignore_timeout = !cancel_delayed_work(&trf->timeout_work);
- 		trf7970a_send_err_upstream(trf, -ECANCELED);
- 		fallthrough;
- 	case TRF7970A_ST_IDLE:
-@@ -2230,6 +2233,14 @@ static void trf7970a_remove(struct spi_device *spi)
- 	mutex_unlock(&trf->lock);
- 
- 	nfc_digital_unregister_device(trf->ddev);
-+
-+	/*
-+	 * shutdown() leaves the chip powered off, so no IRQ or command path
-+	 * can arm the timeout again and unregister has cancelled cmd_work.
-+	 * Wait for a handler that was already running before freeing trf.
-+	 */
-+	cancel_delayed_work_sync(&trf->timeout_work);
-+
- 	nfc_digital_free_device(trf->ddev);
- 
- 	regulator_disable(trf->vddio_regulator);
-diff --git a/include/net/nfc/digital.h b/include/net/nfc/digital.h
-index bb3e8fdc0692..d5ae45da5a33 100644
---- a/include/net/nfc/digital.h
-+++ b/include/net/nfc/digital.h
-@@ -131,7 +131,11 @@ typedef void (*nfc_digital_cmd_complete_t)(struct nfc_digital_dev *ddev,
-  * @switch_rf: Turns device radio on or off. The stack does not call explicitly
-  *	switch_rf to turn the radio on. A call to in|tg_configure_hw must turn
-  *	the device radio on.
-- * @abort_cmd: Discard the last sent command.
-+ * @abort_cmd: Discard the last sent command. When called from
-+ *	nfc_digital_unregister_device(), the command is freed after this
-+ *	returns, so the driver must ensure that its completion callback
-+ *	cannot run afterwards. Completions delivered from work items, IRQ
-+ *	handlers or timers must be cancelled or flushed before returning.
-  *
-  * Notes: Asynchronous functions have a timeout parameter. It is the driver
-  *	responsibility to call the digital stack back through the
-diff --git a/net/nfc/core.c b/net/nfc/core.c
-index f521669293f0..af2c9bd1fadb 100644
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -1133,7 +1133,7 @@ int nfc_register_device(struct nfc_dev *dev)
- 			dev->rfkill = NULL;
- 		}
- 	}
--	dev->shutting_down = false;
-+	WRITE_ONCE(dev->shutting_down, false);
- 	device_unlock(&dev->dev);
- 
- 	rc = nfc_genl_device_added(dev);
-@@ -1167,7 +1167,7 @@ void nfc_unregister_rfkill(struct nfc_dev *dev)
- 		rfk = dev->rfkill;
- 		dev->rfkill = NULL;
- 	}
--	dev->shutting_down = true;
-+	WRITE_ONCE(dev->shutting_down, true);
- 	device_unlock(&dev->dev);
- 
- 	if (rfk) {
-diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
-index 18236221d898..376dc78b5b19 100644
---- a/net/nfc/digital_core.c
-+++ b/net/nfc/digital_core.c
-@@ -162,7 +162,11 @@ static void digital_wq_cmd(struct work_struct *work)
- 
- 	cmd = list_first_entry_or_null(&ddev->cmd_queue, struct digital_cmd,
- 				       queue);
--	if (!cmd || cmd->pending) {
-+	/*
-+	 * Unregister has already handed an in-flight command to the driver
-+	 * and will free whatever is still queued. Do not submit another one.
-+	 */
-+	if (READ_ONCE(ddev->nfc_dev->shutting_down) || !cmd || cmd->pending) {
- 		mutex_unlock(&ddev->cmd_lock);
- 		return;
- 	}
-@@ -244,6 +248,11 @@ int digital_send_cmd(struct nfc_digital_dev *ddev, u8 cmd_type,
- 	INIT_LIST_HEAD(&cmd->queue);
- 
- 	mutex_lock(&ddev->cmd_lock);
-+	if (READ_ONCE(ddev->nfc_dev->shutting_down)) {
-+		mutex_unlock(&ddev->cmd_lock);
-+		kfree(cmd);
-+		return -ENODEV;
-+	}
- 	list_add_tail(&cmd->queue, &ddev->cmd_queue);
- 	mutex_unlock(&ddev->cmd_lock);
- 
-@@ -846,9 +855,31 @@ void nfc_digital_unregister_device(struct nfc_digital_dev *ddev)
- 	cancel_work_sync(&ddev->cmd_work);
- 	cancel_work_sync(&ddev->cmd_complete_work);
- 
-+	/*
-+	 * A command with pending set has been given to the driver as the
-+	 * completion argument. Freeing it here lets a late
-+	 * digital_send_cmd_complete() write cmd->resp into freed memory.
-+	 * abort_cmd() drops that exchange; the driver may schedule
-+	 * cmd_complete_work before it returns, so drain both works again.
-+	 */
-+	digital_abort_cmd(ddev);
-+	cancel_work_sync(&ddev->cmd_complete_work);
-+	cancel_work_sync(&ddev->cmd_work);
-+
- 	list_for_each_entry_safe(cmd, n, &ddev->cmd_queue, queue) {
- 		list_del(&cmd->queue);
- 
-+		/*
-+		 * A command that was never submitted still owns its request.
-+		 * A command whose completion work was cancelled above may
-+		 * have a response that nobody consumed.
-+		 */
-+		if (!cmd->pending)
-+			kfree_skb(cmd->req);
-+
-+		if (!IS_ERR_OR_NULL(cmd->resp))
-+			kfree_skb(cmd->resp);
-+
- 		/* Call the command callback if any and pass it a ENODEV error.
- 		 * This gives a chance to the command issuer to free any
- 		 * allocated buffer.
--- 
-2.56.0
+> If blocking this proves safe, prefer as little unrelated code churn as
+> possible.
 
+Understood. I'll drop the USHRT_MAX check and avoid touching tun_get_addr_len
+or the include header in v3, keeping the patch strictly to checking the
+rejected types in TUNSETLINK.
 
+Thanks,
+Kalpesh
