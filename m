@@ -1,75 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.208.142.49
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794045748;
-	b=P9S2q6LaGt+EJrNLY4LR7Fq4jgb8/9hwm5HXymPUFjOMv2l7TWO27dMATfpEB0Q0vAFf
-	 /exgCutrWtoRHBCkY5DOBrJaAC9ehIxXAU05EjANDF14NPZ7ROjzYBX1ctrkrZE6Vo7Jc
-	 qPB7t5suZyGp3e9qxQjuptZHigcHOiDyWKoKQ6bSuXNa4uytazvZbFe2x5HB/sXyrt9Ux
-	 nhhNntskRWz0eu7pg25NoEXIFV5PEcuRl6XLBkfpDH0oLExwFp1E+wgdS/oWfEB2rE/49
-	 ZKfHe8/NwgIx8hSs4SR5K9jOG16Tyynh0i42VHn6F/ayuvyHBQvknuZZQTUc6CKg2OQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794045748;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=TjMdFk8RF2kaRdnGIftRqRXHaK9TIJqelTHCSWvnKbg=;
-	b=D7yz3vl7pUwRg3vphWjNCEkgelCIvPfkfgzPmVVQCaBOmnQqFv5OzOrfm62BDMyMKOrj
-	 2hY3Q3uzfrC7cft3ruaMIQ+XAavBjiqX8yCAvIbU9Gv9cWV2pWLlYNmDEyYLaiD2KdjgY
-	 6Dk8dNcQNFcfg8lFmYL68UWOoKCiOaPZ+dyUFtekpNs2lvjOQjMWWNlWELSh/jSFjUmwO
-	 m+eTkVe/EE0qjoJRXTB8ELJbui2D5hTxP7mHUvzDkgYSzO52J5C+ImmWbkI3S9GjHvIYX
-	 NuiW477vkbt3CACp82OsghM+DuR6OJDTnEEsW+6B0lYgyMbI3KFDacHh7i1CfNrTkzw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kernelriot.com;
-	spf=pass smtp.mailfrom=kernelriot.com;
-	dkim=pass header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b=YA3oaAqq;
-	arc=none smtp.remote-ip=74.208.142.49
-Received: from mail.kernelriot.com (mail.kernelriot.com [74.208.142.49])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.162
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794046277;
+	b=GOzLlm7HE53XapxsH4ouPI7IYvnCy1k7B++HWP5jDhN+wTnpXhPWy9kY2oJz7MCOXyVE
+	 1vF0EVbglpHvSOr3hNi/Ln8vsUhSEkaKOpHMcAaX1hO3CSPPqJAWOv6MBEHnPW48YOZkE
+	 CWsZhjFoUvbe+eBE8HcMBj6IMZt9TL+GhcNlOn12ivT79gYCcbXcjhq1gYgN8wMQkhb5H
+	 VCks934hgmwB6afwgGt9rKds42DXsqKYnCayf0chY9mxj4sTxIyeRog7d7Q2n2tQNr9Zn
+	 8t61HMxvKJon1qnZVNU9RIcXfb05lzcRW2oKBpAAEw4lO3jYJqoUR3ptiBefTCExd7g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794046277;
+	h=DMARC-Filter:DKIM-Signature:Date:Subject:In-Reply-To:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:From:To:Cc:Message-ID:
+	 References:X-SimpleLogin-Type:X-SimpleLogin-EmailLog-ID:
+	 X-SimpleLogin-Want-Signing;
+	bh=D8qnkZYaP8QEiEnWStUV7Ol/+8QaugHXvxXWg6fF5ic=;
+	b=ZHReK9C4ar0qzUMJHoxj9knd/9ghpFq+0T28mMJotpWSMtxw3UFFCltwhVg2WFXmei5p
+	 YD0B8/RK0I5UoP2cEdVJpikdX6IVc/tYok8j4BLV7/gAwJ9q1HTY9ZL1nV776DJmaUij/
+	 1xz1T7+uekoGx9qU7QK2mXSjjOpSz9Bo4UF8awO3hBo5Ss2LDmBCWJhhpajyUgPZpWue0
+	 k41MCJbzC0KNkwH+pNiJdP9g26qhCjWC4knf1nY/V70/OCNcsXL9NdeaQsp8CQ6RD3S6h
+	 XDrmNq4+usI+RlnT+n7NObgTnQHfqaX6VG+DNePJnlVkTtJvE10nDEQJw619oq8EzZQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=eldare.de;
+	spf=pass smtp.mailfrom=eldare.de;
+	dkim=pass header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b="q+//nBJo";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=176.119.200.162
+Received: from mail-200162.simplelogin.co (mail-200162.simplelogin.co [176.119.200.162])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B4D606A32F;
-	Sat,  7 Nov 2026 10:02:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04B4D606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kernelriot.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelriot.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED68606A32F
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 10:11:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BED68606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=eldare.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eldare.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b=YA3oaAqq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernelriot.com;
-	s=kr2026; t=1794045741;
-	bh=+/ah8vkaUP87DIJHEblp3tls1hoAvi5cG63uzTk2jyA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:From;
-	b=YA3oaAqqZeN6mMwRbLlWFxUHJTOS/YV5Tf0YMXVoJGIeGL1kBg3ADZFfe5MNss8vE
-	 MIEoobu/aDKNIrDejwSZFcURBEatbOt+BAIuzjkZ12NRCYmeGkrHMnGDIOSWsNpEGL
-	 MLf7cp1GrS1iC0Gx4bH5sxaEq5fH4DhVKFjeqsM2x7fbVWaYgtZRG2Ft0H2JG9ORJ6
-	 zI2LEmpGjLw+Yx/XISWN6bbUKkyzu/ViR20cEfpKUwmyJpEkeI11ITx49iO45mk6sZ
-	 XwvkqaG4hxP0HO+2XeRh9sURl+EKV0txlu5rE6XO/0QqJ00xhuY0DmB5bfzSISoDvF
-	 lMG6KdXpegkHw==
-Received: by mail.kernelriot.com (Postfix, from userid 995)
-	id 3E6128147A; Sat,  7 Nov 2026 10:02:21 +0000 (UTC)
-From: Magnus Leatti <magnusleatti@kernelriot.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel interrupts
-Date: Sat,  7 Nov 2026 07:01:40 -0300
-Message-ID: <20261107100140.8279-1-magnusleatti@kernelriot.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <179379704484.488856.2140619507341432623@kernel.org>
-References: <20261103125430.962715-1-maxime.chevallier@bootlin.com> <179379704484.488856.2140619507341432623@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=eldare.de header.i=@eldare.de header.a=rsa-sha256 header.s=dkim header.b=q+//nBJo
+ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1794046269;
+	cv=none; b=inMcURBaUnnmiFzBKA0XFDIgVEEXX6wZRINKCIAG6GakaHqeqKniiZkuGe2Hl77ebLtKhQp6gQyV2RBapiDzNs8B4QAMYgxtUtkPgoTH9yB88cTo30qmi5A88N/P9LkXEs/KkS6Ci0ch8L6tCyq7ui22YvPEKZIGNkzxk0Qz4dxnsGhzhSHdevDx/to6ttjyx66JrdfkeiczcGjyrqrF6DxVz4Y86bBOFXKDDHL8ik3cZ9+1gyEfkKrPLBstzbOg2smHdoRhn3WgqZ25M8z4/KIg68uOK1RfT2KzfW+LudGYMAzsLH7kwL/uXLtbfpleusZci3sWuuxna41qcgJ9UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
+	t=1794046269; c=relaxed/simple;
+	bh=jVDqDvrRQsAZ22D6DF6i3XHA4gMN1HWL8uRQDdFvR2U=;
+	h=Date:Subject:In-Reply-To:From:To:Cc:References; b=LzapzOb5NdiOrSUdwgDyf+5xQCwbWMDd4DY56oaTxXK+EAAVDN2u6ldDaBdJsyL7hTTxv6RrLXnE54UDt2aEGapXY0CyEg5mCxCoS+rzKBA3Sv7zJQHipU0di43i19gE7nP8LeslauPhr+yrzoaD6Pe+MSwzlqFUb0QCKtBstU9dFXe0ffhvONP/XMWd4fEw33EFx8jfSfwp36sBU5+2h0KcvUzJ3X+BOpTkuEGLoivu+JksELgFaCOKWsr2PDtnMrlzy9mAXuLC97l6trOfwUY1RGmJ8WeKCOvFPrtpooEws93grPUv/yGIXgqoZq45kUukBsm3CbR7t/YQjuKj3w==
+ARC-Authentication-Results: i=1; mail.protonmail.ch
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eldare.de; s=dkim;
+	t=1794046269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D8qnkZYaP8QEiEnWStUV7Ol/+8QaugHXvxXWg6fF5ic=;
+	b=q+//nBJoIM/k20Tl2DfPZ86y9MIYto7smEAAHF+Mbho6wezvb9NVx3efTxHoM1gM4akVOI
+	GImpZhMCtnE4iNLR79mmLuSp0jX/7jMu3/UPo6mh4+B4EBOA28fiegBaHurnZ259ukBvPl
+	vktk03EjoFqtNdVvf+8M0AA6ZnzelbU=
+Date: Sat, 07 Nov 2026 10:11:02 +0000
+Subject: Re: [PATCH net v4 1/2] vsock/bpf: release sock lock while waiting for
+ data in recvmsg
+In-Reply-To: <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,30 +64,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: jrmmhm.kernel@eldare.de
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,Bobby Eshleman
+ <bobbyeshleman@meta.com>,"David S. Miller" <davem@davemloft.net>,Eric Dumazet
+ <edumazet@kernel.org>,Jakub  Kicinski <kuba@kernel.org>,Paolo Abeni
+ <pabeni@redhat.com>,Simon  Horman <horms@kernel.org>,"Michael S. Tsirkin"
+ <mst@redhat.com>,Michal Luczaj
+ <mhal@rbox.co>,virtualization@lists.linux.dev,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,stable@vger.kernel.org
+Message-ID: <179404626756.7.5004773530941890450.1753698952@eldare.de>
+References: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de>
+ <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
+ <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
+X-SimpleLogin-Type: Reply
+X-SimpleLogin-EmailLog-ID: 1753699018
+X-SimpleLogin-Want-Signing: yes
 
-> Should the Fixes: tag point at 1b9707e6f1a9 instead, or also include it?
-> As written, stable may backport this to 5.13+ trees that cannot hit these
-> storms.
+On Sat, 07 Nov 2026 02:09:17 +0000, Alexei Starovoitov wrote:
+> No need for a 2nd copy of the return values.
+[...]
+>   recv()                          no sockmap    this series   the diff
+>   ------------------------------  ------------  ------------  -----------
+>   after a virtio reset            -ENOTCONN     -ECONNRESET   -ENOTCONN
+>   after a reset, len =3D=3D 0         -ENOTCONN     0             -ENOTCO=
+NN
+>   after a reset, MSG_OOB          -ENOTCONN     -EOPNOTSUPP   -ENOTCONN
+>   after peer shutdown, SO_INQ on  0 + SCM_INQ   0             0 + SCM_INQ
+>   asleep when the reset comes     -ECONNRESET   -ECONNRESET   -ENOTCONN
 
-A data point for the RBU case from the YT6801, same 64-byte UDP RX
-flood, all on the same 7.0.13 kernel:
+Agreed. I ran your diff in a guest with the reproducers of this series:
+the deadlock, the dataless wakeup, signal, timeout, peer shutdown,
+MSG_ERRQUEUE and MSG_OOB cases behave as with v4, with no KASAN, lockdep
+or hung task report. In the first four rows of your table the sockmap
+socket now returns exactly what a native one returns.
 
-  stmmac from 7.0.13 (has 6ccf12ae111e, not 1b9707e6f1a9):
-    no storm; the MAC interrupt never fires (4 streams for 10 s,
-    and 8 streams plus TX for 30 s)
-  stmmac from 7.2.11, built for 7.0.13:
-    storm, the machine hangs
-  the same, with only 1b9707e6f1a9 reverted:
-    no storm
+The last row is confirmed as well. I'd accept that and say so in the
+commit message, since it only changes which error a reader of an
+already reset connection sees.
 
-So on this hardware the RBU storm needs 1b9707e6f1a9. I did not test
-the RPS case.
+> None of these tests sleeps in vsock_msg_wait_data().
+> The sockmap tests call select() before recv() or pass MSG_DONTWAIT.
+> vmtest.sh doesn't use sockmap.
 
-> Since RBU and RPS were enabled only for statistics, was masking them in
-> multi-MSI mode considered as an alternative?
+Right. v5 won't cite them as coverage of this change.
 
-For reference, d3265c19b35d ("net: stmmac: xgmac2: disable RBUE in
-default RX interrupt mask") took that route for xgmac2.
+v5 will be a single patch based on your diff, with your Suggested-by.
 
-Magnus
+Thanks,
+Jerome
+
