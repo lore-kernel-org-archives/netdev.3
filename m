@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794081535;
-	b=pIj66W+f3uPt0egr7HvrkpDEMlPPjUTW2oZQROKN7siXpC4SZY5XRZOh0bneo7Jb/bZm
-	 VLXF3XWn5rpcfyws768xglWw/DJJz7u8MTkcVFgbw17QLwUXikQK5xEEc7hh/8dQLxJe1
-	 I5g0VRdxlfhQ2mZCTBVZgQD513SAXpGuKRT5wYqD911aQAyr7imEHOeVAnBwFvGh7qifG
-	 9uod4Z77KvqbYMJtH2OkdK8HmqXauG+VGyU1uj1Yrp4+xQYYcm7NRI+/bkZyBuTmGAB4l
-	 pkwnYgF4ADpv2FYOIWrmgxOFX2uLTOSq7uTcWtnFHHPrGy7ABh2p6+GrahuwGzWsHYQ==
+	t=1794081536;
+	b=PzlB7EZJThoC+VszROvVnd+XLlVGjqDk0EMAw0MQl8aSpPCsa78pEVGOsPGp7Ws/ltCo
+	 tfrEIR54KBpKnbNKNViWqEVkvuA82ep+wIiMgOW+6TfRjE5QchoFjfVzYEbxhTnI50GvX
+	 Zz2EfSXwiMHud61KHD8CnDxX5lvbQt7L8saPbLcYwRC7DhXwUBzOhyupVnbo1rVpfEr8j
+	 Tue0afxYjPHefqt1dtbe8lWZTyweJnSbzUUr2mRZAns4onwNxF204wFGe8rpLrj9bZFSH
+	 rd7Qj4KggHCAiC9Np9lJQhsP1WH1+vNnz0iNUT1KCtrwHgWG1aZZdBHfDWCYwLPORIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794081535;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794081536;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=hgSgLs2bBvsbEokhU33zWYCtHCmVsL0KnjvQIpaRhJ8=;
-	b=VOTXW0bRHasl7RXdm9BfO2x+au+Znp13YPbXJ5UoN9NKLnjmFPhQNSGjgHzr9JVLKKzd
-	 PDbrN6kZHv1fdnHJf7o9a5OdBsCnItL1grB07j2UUF2VBz8UwiCyYCv1vRIUAvuR7nXsI
-	 FyP4/8c4bapWaM0Mo7gGI4wqZtFCIoXTs+GFCQbLEkrcpLpP/39IxJkMEVNBmqS07I3Dh
-	 Ebfz77K0T0Mo02YS/PwmVcKqr5mccu1JeR2e2WsZhfVvXt9mQh6wMgb6SWY51zAYpHbnl
-	 zgJxX1BjblocYbS0Z0/pbv7yxRDGmPL03Ls709WBn1IBHJBA+Q0W8me95Ao8BgtVotg==
+	bh=K+6FXcYHVfobAwwclOPrbTchyR3ZZDSNjw3ExZa6P2g=;
+	b=du+uAhWbxIQ8aQNrf89ILt8rZ8EhYB5AcI3X39/YGFh1KN7syk6CVrC0aOIjt8TdTiTY
+	 TE6hDNzqsaF6HGf5h3XrFraaAb7be13o6Qrxt6MmiukvVLTwBQdEdG+AW5waokP+Kg1Ng
+	 1/SGjU1lGQjMfoH6VrOX1MZSkewomIJnyutNGHnTczvBohnX8T4lhkbBeVNEzUjuYfp+r
+	 Gs1e/oiNkRHmObXSe3F/6WTPp4o3fbNWIDQm+0wifpjODQ7i8k2W6CdS5MF7beQbTRQis
+	 nPD2eh4T/SS4yas8n2bJlmLGpFBzmV2vl4Ix39FW8MpyFn1Bg6VK8Yw3eviglnS3PBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PB5FaxbK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jw6S19Kp;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C432D606A33C;
-	Sat,  7 Nov 2026 19:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF85606A32E;
+	Sat,  7 Nov 2026 19:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PB5FaxbK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BD81F008A3;
-	Sat,  7 Nov 2026 19:58:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jw6S19Kp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98CF1F0089F;
+	Sat,  7 Nov 2026 19:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081534;
-	bh=hgSgLs2bBvsbEokhU33zWYCtHCmVsL0KnjvQIpaRhJ8=;
+	s=k20260515; t=1794081536;
+	bh=K+6FXcYHVfobAwwclOPrbTchyR3ZZDSNjw3ExZa6P2g=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PB5FaxbKA8ewEq1APQDbqLtrdeTKZ67fHW1MZRh1VXg1rCDAIu5jmtJzD/8lITRFZ
-	 +qFdm5rOqaPE9maHAyklOZJDddXMabGKHTvZK+5xpf80r3rBhAKZ+dGcjdfKfRJWAk
-	 GT1i8Jwz1AsdwQImfnk7qyQKrMv0JGao6B+OWkrh/4idW84sxPSmlOqjdEIb5vAVHv
-	 4KkUTdF+lKokvRNRmVNI8TuOmhNz/q4atQoV4wiZGpTqIiY9RruMJBfHxtcvU2umU9
-	 br3DI4MFyWnnS0RxJJWbbrFQL62fnAaYZKvKaFRjHQb84PsIZVojHBxbST1enRxGTE
-	 6Np5MW2c59P5Q==
+	b=jw6S19KpASIeXF4u3PI90hyNUUY14hsQ6bRmBcCqxuo8kxSa0nNryuY7LaFcV4g9e
+	 +4CAhq2IQ0rLcDHYphkVKl8+cNLcAAxHlIN3H8nADr3jgJX/iVgICSrC4vTshNGmBB
+	 CRDluSAKh6pJUuBAhT1Tbwy2mqS5bNwIBPbzC99XRVUJ026y61R6IxcAvkuA8E8bym
+	 ed9JDNdp+rXEiZr1S5StGN0G3vS+RgDn6WjdbZ2ebK64excMfsNw8c6FlibGwmF/0A
+	 QjUoa7FlRH1RPFGLXK6ZnY61/X+N2H9ej4FIqhsZPRDoagchh0hDKOKdp9EJo3m9Rf
+	 NRj35qOtIj+rw==
 Subject:
- Re: [PATCH net v5 4/4] bnxt_en: refuse to open a device with stopped DMA
+ Re: [PATCH net] net: mii: Check speed and duplex only when autoneg is off
 From: netdev-bot+sashiko@kernel.org
-To: joe@dama.to
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+To: anthony.pighin@nokia.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- prashant@broadcom.com, edumazet@google.com, horms@kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 07 Nov 2026 19:58:53 +0000
-Message-ID: <179408153359.994134.12098598533748017138@kernel.org>
-In-Reply-To: <20261106191423.4194081-5-joe@dama.to>
-References: <20261106191423.4194081-5-joe@dama.to>
-X-sashiko-severity: Medium
+ zhangxiangqian@kylinos.cn, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Sat, 07 Nov 2026 19:58:55 +0000
+Message-ID: <179408153520.994134.11224591607932425032@kernel.org>
+In-Reply-To: <20261106195544.4146568-1-anthony.pighin@nokia.com>
+References: <20261106195544.4146568-1-anthony.pighin@nokia.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,7 +68,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,143 +76,164 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] This patch blocks driver recovery after a full device reset.
-- [Medium] bnxt_en: missing BNXT_STATE_DMA_STOPPED check in
-  BNXT_NO_FW_ACCESS()
+- [High] This fix only covers the autoneg case of the read-modify-write
+  (RMW) breakage caused by f6f2e946aa4d.
+- [Medium] After this patch, mii_ethtool_set_link_ksettings() accepts any
+  base.speed and base.duplex when autoneg is AUTONEG_ENABLE.
 
 --
 
-bnxt_en: refuse to open a device with stopped DMA
+net: mii: Check speed and duplex only when autoneg is off
 
-This adds a BNXT_STATE_DMA_STOPPED bit. bnxt_stop_dma() sets it after
-the firmware fails to free rings and bus mastering is cleared. While the
-bit is set, bnxt_open(), bnxt_open_nic() and bnxt_half_open_nic() refuse
-to open the device, so the user has to rebind the driver.
+This patch moves the speed and duplex checks in
+mii_ethtool_set_link_ksettings() under the AUTONEG_DISABLE case. With
+that change, enabling autoneg on a port with no link no longer fails
+with -EINVAL. Before, it failed because the getter reports
+SPEED_UNKNOWN.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index b5ef86bf92bf5..eb885fd74064f 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -7833,9 +7833,20 @@ static void bnxt_stop_dma(struct bnxt *bp)
->  {
->  	netdev_err(bp->dev,
->  		   "Disabling DMA before releasing ring memory, the driver must be rebound to recover\n");
-> +	set_bit(BNXT_STATE_DMA_STOPPED, &bp->state);
->  	pci_clear_master(bp->pdev);
->  }
-
-[Severity: Medium]
-Once bnxt_stop_dma() has cleared bus mastering, can any later HWRM
-command complete? The firmware writes HWRM responses into host memory
-by DMA. With BNXT_FW_CAP_SHORT_CMD it also fetches the request by DMA.
-With the master bit cleared, __hwrm_send() should just poll until
-each command times out.
-
-BNXT_NO_FW_ACCESS() only tests BNXT_STATE_FW_FATAL_COND and
-pci_channel_offline(). The new BNXT_STATE_DMA_STOPPED bit is never
-consulted there, so nothing stops these commands from being sent.
-
-After the failed ring free, __bnxt_close_nic() continues into
-bnxt_free_mem(), which calls bnxt_free_ntp_fltrs() and
-bnxt_free_l2_filters(). bnxt_close() then sends
-bnxt_hwrm_shutdown_link() and bnxt_hwrm_if_change(). The netif_close()
-teardown after a failed bnxt_open_nic() goes through the same path.
-
-Suppose the user follows the log message and rebinds the driver.
-bnxt_remove_one() still sends bnxt_hwrm_func_drv_unrgtr() and the rest
-of the teardown commands, and each of them waits for its full timeout
-too.
-
-Most of this runs under rtnl_lock and the netdev instance lock. Every
-stalled command lengthens how long those locks are held. Close and
-unbind of a device that has already failed can therefore take a long
-time.
-
-Should BNXT_NO_FW_ACCESS() also test BNXT_STATE_DMA_STOPPED, so that
-__hwrm_send() fails these commands immediately? If so, the bit would
-have to be cleared wherever bus mastering is turned back on:
-bnxt_fw_reset_task(), bnxt_resume() and bnxt_io_slot_reset().
-Otherwise the HWRM commands those paths send right after
-pci_set_master() would be refused as well.
-
-[ ... ]
-
-> @@ -13505,6 +13521,10 @@ static int bnxt_open(struct net_device *dev)
->  	struct bnxt *bp = netdev_priv(dev);
->  	int rc;
+> diff --git a/drivers/net/mii.c b/drivers/net/mii.c
+> index 37bc3131d31a8..4394446375373 100644
+> --- a/drivers/net/mii.c
+> +++ b/drivers/net/mii.c
+> @@ -333,12 +333,6 @@ int mii_ethtool_set_link_ksettings(struct mii_if_info *mii,
+>  	struct net_device *dev = mii->dev;
+>  	u32 speed = cmd->base.speed;
 >  
-> +	rc = bnxt_check_dma_stopped(bp);
-> +	if (rc)
-> +		return rc;
+> -	if (speed != SPEED_10 &&
+> -	    speed != SPEED_100 &&
+> -	    speed != SPEED_1000)
+> -		return -EINVAL;
+> -	if (cmd->base.duplex != DUPLEX_HALF && cmd->base.duplex != DUPLEX_FULL)
+> -		return -EINVAL;
+>  	if (cmd->base.port != PORT_MII)
+>  		return -EINVAL;
+>  	if (cmd->base.phy_address != mii->phy_id)
+> @@ -346,8 +340,19 @@ int mii_ethtool_set_link_ksettings(struct mii_if_info *mii,
+>  	if (cmd->base.autoneg != AUTONEG_DISABLE &&
+>  	    cmd->base.autoneg != AUTONEG_ENABLE)
+>  		return -EINVAL;
+> -	if ((speed == SPEED_1000) && (!mii->supports_gmii))
+> -		return -EINVAL;
 > +
->  	if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
->  		rc = bnxt_reinit_after_abort(bp);
->  		if (rc) {
+> +	/* Speed is SPEED_UNKNOWN while the link is down; autoneg ignores it */
+> +	if (cmd->base.autoneg == AUTONEG_DISABLE) {
+> +		if (speed != SPEED_10 &&
+> +		    speed != SPEED_100 &&
+> +		    speed != SPEED_1000)
+> +			return -EINVAL;
+
+[Severity: High]
+
+Do forced-media ports with no link still hit the same -EINVAL?
+
+mii_ethtool_get_link_ksettings() sets the speed to SPEED_UNKNOWN after
+both branches. In forced mode, that replaces the speed the
+AUTONEG_DISABLE branch has just read from BMCR:
+
+drivers/net/mii.c:mii_ethtool_get_link_ksettings() {
+    ...
+	} else {
+		cmd->base.autoneg = AUTONEG_DISABLE;
+
+		cmd->base.speed = ((bmcr & BMCR_SPEED1000 &&
+				    (bmcr & BMCR_SPEED100) == 0) ?
+				   SPEED_1000 :
+				   ((bmcr & BMCR_SPEED100) ?
+				    SPEED_100 : SPEED_10));
+		...
+	}
+
+	if (!(bmsr & BMSR_LSTATUS))
+		cmd->base.speed = SPEED_UNKNOWN;
+    ...
+}
+
+So a request that leaves the speed alone sends SPEED_UNKNOWN back. One
+example is "ethtool -s eth0 duplex half" on a forced-media port with no
+cable.
+
+On the netlink path, ethnl_update_linkmodes() only updates
+lsettings->speed when ETHTOOL_A_LINKMODES_SPEED is present. The ioctl
+read-modify-write path behaves the same way.
+
+That SPEED_UNKNOWN then fails the check above and returns -EINVAL.
+Before f6f2e946aa4d the same command worked, because the getter reported
+the BMCR speed in forced mode.
+
+Since this carries the f6f2e946aa4d Fixes: tag and Cc: stable, should
+the forced case be covered too? phylib reports the forced speed and
+duplex even when the link is down, and only reports SPEED_UNKNOWN under
+autoneg. Would doing the same in the getter's AUTONEG_DISABLE branch fix
+the remaining case?
+
+> +		if (cmd->base.duplex != DUPLEX_HALF &&
+> +		    cmd->base.duplex != DUPLEX_FULL)
+> +			return -EINVAL;
+> +		if ((speed == SPEED_1000) && (!mii->supports_gmii))
+> +			return -EINVAL;
+> +	}
 
 [Severity: Medium]
-Nothing in the driver clears BNXT_STATE_DMA_STOPPED. That includes the
-paths that fully reset the device and call pci_set_master() again.
 
-This check also runs before bnxt_reinit_after_abort() and
-bnxt_hwrm_if_change(). Could that make the firmware reset, resume and AER
-recovery paths fail every time?
+With AUTONEG_ENABLE, any base.speed and base.duplex now pass this
+function. mii_ethtool_sset() in the same file still rejects those values
+in every mode:
 
-In a non-fatal firmware reset, bnxt_fw_reset_close()->__bnxt_close_nic()
-still sends HWRM_RING_FREE. Ring free is only skipped for FW_FATAL_COND
-or when the PCI channel is offline. If ring free fails there:
-
-__bnxt_close_nic()
-    if (bnxt_shutdown_nic(bp, irq_re_init))
-        bnxt_stop_dma(bp);
-
-bnxt_fw_reset_task() then turns bus mastering back on and waits for the
-firmware to come up, but the open is refused:
-
-bnxt_fw_reset_task()
-    pci_set_master(bp->pdev);
+drivers/net/mii.c:mii_ethtool_sset() {
     ...
-    case BNXT_FW_RESET_STATE_OPENING:
-        ...
-        rc = bnxt_open(bp->dev);
-        if (rc) {
-            netdev_err(bp->dev, "bnxt_open() failed during FW reset\n");
-            bnxt_fw_reset_abort(bp, rc);
-
-Suspend/resume looks similar. bnxt_suspend()->bnxt_close() can set the
-bit, and then bnxt_resume() does:
-
-bnxt_resume()
-    pci_set_master(bp->pdev);
-    if (bnxt_hwrm_ver_get(bp)) {
+	if (speed != SPEED_10 &&
+	    speed != SPEED_100 &&
+	    speed != SPEED_1000)
+		return -EINVAL;
+	if (ecmd->duplex != DUPLEX_HALF && ecmd->duplex != DUPLEX_FULL)
+		return -EINVAL;
     ...
-    rc = bnxt_hwrm_func_reset(bp);
+}
+
+Can this leave the pch_gbe PHY without the requested advertisement?
+pch_gbe_set_link_ksettings() only rewrites speed == UINT_MAX. It then
+stores whatever this function accepted:
+
+drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_ethtool.c:pch_gbe_set_link_ksettings() {
     ...
-    if (netif_running(dev)) {
-        rc = bnxt_open(dev);
+	ret = mii_ethtool_set_link_ksettings(&adapter->mii, &copy_ecmd);
+	...
+	hw->mac.link_speed = speed;
+	hw->mac.link_duplex = copy_ecmd.base.duplex;
+    ...
+}
 
-A rebind runs the same pci_set_master() plus HWRM_FUNC_RESET sequence, in
-bnxt_init_board() and bnxt_fw_init_one_p1(). Even so, bnxt_open() fails
-here and the netdev stays detached.
+Some requests used to get -EINVAL and now succeed. One is
+"ethtool -s ethX autoneg on speed 2500 advertise 0x2f", where the
+explicit advertise mask skips ethnl_auto_linkmodes(). Another is an
+out-of-range duplex sent through raw netlink or ioctl.
 
-AER has the same problem. Suppose an earlier failed close left the bit
-set. bnxt_io_slot_reset() hard resets the slot, calls pci_set_master()
-and then bnxt_hwrm_func_reset(). After that, bnxt_io_resume()->bnxt_open()
-and any later ifup are still refused.
+When the interface is not running, the path is:
 
-With only the preceding commit "bnxt_en: stop DMA before releasing rings
-the firmware did not free", these paths turned bus mastering back on and
-bnxt_open() succeeded.
+pch_gbe_set_link_ksettings()
+  pch_gbe_reset()
+    pch_gbe_phy_init_setting()
+      pch_gbe_phy_write_reg_miic(hw, MII_BMCR, BMCR_RESET);
+      mii_ethtool_sset()   <- returns -EINVAL
 
-The fatal firmware error path already handles a similar case.
-bnxt_fw_fatal_close() calls pci_disable_device(), and the reset task
-later calls pci_set_master() and reopens the device.
+pch_gbe_phy_init_setting() passes the stored hw->mac.link_speed and
+hw->mac.link_duplex to mii_ethtool_sset() right after the PHY reset.
+mii_ethtool_sset() rejects them and "Error: mii_ethtool_sset" is logged.
 
-The commit message says "the device needs manual intervention by the
-user to become usable again". Does that still hold once the firmware or
-the function has been reset?
+The requested advertisement is never written to the freshly reset PHY,
+even though the ethtool call has already returned success.
 
-Should the bit be cleared, or the check skipped, after a firmware reset,
-HWRM_FUNC_RESET or slot reset completes?
+The stored link_speed can also reach pch_gbe_set_rgmii_ctrl() and
+pch_gbe_set_mode() in __pch_gbe_suspend(). This happens if the watchdog
+never overwrites it, and the watchdog only does that once the link comes
+up.
+
+Should mii_ethtool_set_link_ksettings() and mii_ethtool_sset() stay
+consistent here?
+
+>  
+>  	/* ignore supported, maxtxpkt, maxrxpkt */
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106191423.4194081-1-joe%40dama.to
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106195544.4146568-1-anthony.pighin%40nokia.com
