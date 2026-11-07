@@ -1,99 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794021439;
-	b=lP6pgPfVfXm7w8EWay+Ax4TC1+u4RD0hFPjT+ts8UC5y+IoXdAljBQonsRnKciU4EM2P
-	 FuilKUGusPa20CfterZWEHCg6FNylHRDKQUcyQRpci2Flu/WVOI7xy/DrqGx7FbYC/Erv
-	 hdFOqexQxYqz+OZ8VbMonxI5CsKd2NAhgcKX7KscRt06Z1MyxDOSA5ZWbFHj/iLwblEgt
-	 Ad34KbhEqN+NsKd2RlmxtCccbBGbcyUEqmT1JTrTgP140tbyMqFkcEE00QFeJLwVbLpQM
-	 5glz9R/m/tAUtMpKCR8MzYFDCVkG3h7K0h7UJBYaunlHlnlvzLkd4XzNQgmbr6XBDbw==
+	t=1794021800;
+	b=uDb6RERZdRvFvRyomUA3E5PP9XU+BxkFkiUsbRM1nI7OVfQTMRhRduNSBJ0tjtRaaB9l
+	 8+r7dBrmanJXsfAWkzDqSOZPVnq0zZqNJFqnDFvAj8s6lp8tduSFRcVY+9WVlmR13Eraw
+	 Q4NIQIeFKV7Ii6B4Z5JwzPoY8nIV+dRwwFV1M+xWKlDl4VX0Uugde0G7FcEkA4YnwoztI
+	 1M7ToLiyJrQRmEyZ6R06PCQjN3wj/Wf7+QdVfICViB6GFpT2hHnggOEs1ebxt5MZaVvnY
+	 iN2GKJyWT9VixB/LLL5QMjOoEE4W8yYvBbhicRaeXnjbkJRnIAhhNj4B4ha96dZxMJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794021439;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:
-	 In-Reply-To:References:From:Date:Subject;
-	bh=5V973eV5z9bFCFEhgPYSvRAKHWeecR/OoECRUm/vrjI=;
-	b=g5wReHToXid2QZH+UaNWs3oOK4P70Hu3Mc1v5dFHjiwqU2s5kqGqbm/KHmG4kDS1jCfY
-	 TRj6CqHX6qgVS6LdCe+dynBZ2lN21I1DEFycF5niySNa4AufFXbDJSCsGBHp8WvwHfTVW
-	 kXRgXb3pUjsTrN7KwoN2WvlmjOA1fE7t18qihTn4l/dQpzwjtoW0osGBMc1VY37FzEMHo
-	 7oyWYgo+LehjsWfL+NOzryTpbYegwo//cUe6gudLviM/b8iIZVmKYmfi0A4GoG8odiDyl
-	 40s/Ej8PZrHbOf5IMZlA6G0lhE61MQhbOkANCGj9gdyrmJq6GKWQYx8aYsnUw8Zs6uw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794021800;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=u+3wSkSWQgwuFMFiViQDJVrhL9go48YADqXEr3eJRfg=;
+	b=CfY41jv3fvhkbEDBGFNyjWkv8mJme6rPy8JwYID3377Zs+pBtD7Z/IOTqpcsBuZcK1l0
+	 LddTvkuCpGaX6mQ03ZQd7Iw+aiz/apBygE4fMzOl281YjnmlHFhaC6M3+tkV19nOW+JWR
+	 H1ytKqW8gd8j6nRbOem7N1SqYVeFsJBLjqWDplmjKIh8LxFpQGbxG6OgP2gtbyWvHhAhl
+	 2CLMTI6vfVYHpMTsMiVHUq/mHNO7x2neTSt6Xe6fWctPy+szfRf34Enuqfm2Fy0U+dkD7
+	 MvZ4zaGHM8quxLryH7yG9vZIqiKxFio9cz6yXhFarBrFWleyU+QVbrTwsFBZFQ5aGSw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mtf0B2Lr;
-	arc=none smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCJkpxxN;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D4C606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:17:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0D4C606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F43606A331;
+	Sat,  7 Nov 2026 03:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mtf0B2Lr
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-36a6ee9c59aso172660eec.3
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:17:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794021438; x=1794626238; darn=vger.kernel.org;
-        h=subject:date:from:references:in-reply-to:message-id:cc:to:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=5V973eV5z9bFCFEhgPYSvRAKHWeecR/OoECRUm/vrjI=;
-        b=mtf0B2Lr5l7FsjDOdaERaAxmGRyqLte1g4IWhLbZHM+ub48pKGPjjqUGdZd+IRHrMD
-         meJZuBiTQeW55zIf8ZeLOzfb05/Np7cAH55b+PnuXKk4EtVoyjXKdBTVi3wYCBJY4XE5
-         81Qo8qPVVsSdfUXFBoTn2rnLwIhrdXYaHbYBIuN3GnsHkPoWVSJXz/+L3uqWHBbwHnAU
-         czIgLwzP9Anr4267FbtfN5OLlT5Hcu5dAXgXZddin+r5ivbJ3wgyHtcjBkrG8t0jz45W
-         RxG5zQYjomPh/tmMwtlxVGEPlJDFPT+M2slOybjXuKi/LcK0FIj23U0i89TaifaUmrjO
-         gizQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794021438; x=1794626238;
-        h=subject:date:from:references:in-reply-to:message-id:cc:to:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5V973eV5z9bFCFEhgPYSvRAKHWeecR/OoECRUm/vrjI=;
-        b=IB5M/Mk7uuAoSHhXae0beAjaeNSdr8dWau6cgvCLDOXh7gJ8ad3QikYjmn+p1I2sVm
-         lRAh3DEA9Hpg2sLg3ZIcpd6nZNec6bDEPWpZonGhoRR4pwviyG3X7bmxJTdQmOWkzpjG
-         bp8yePq464gbXQI0+1cWKi9WVVFDO4tJUK85wgTCjmyn/LK3iXf5PWU0NJKz4eZi9xqS
-         jgaKxm1RMg4nBJzu4SUj0rJUuu5k8ag3xBWS7cMA6kjsslZq8RaTcBm1cR37xiLdC+Jo
-         Lzdf2EWms4s96SJBcXHqXfTxQCYV99A8ovv9r7/ImrhzyZyEPvMHb7AoRzVxpzWTQkzG
-         w/0g==
-X-Gm-Message-State: APuU4Z+Ksuf63ViyL2P75JcjYXeJB2ZH9a2dfvAofnZbRonj6bFwmwab
-	/UtN/9C4eWa40GM/Enm7DYpjDbIssiaoEcKgPbAbs5z8zlpm4/L4dapJ
-X-Gm-Gg: AYBFou1b0zslgyOM/zDOQNu3I/sVwP+0M+dsGh8Otj0XtOfCijf0WgHQLCEecVrgDgb
-	wttRKAN4KgIZ1lP/aQX0iN47s5lXaI+ypnrNiWJkmOUMZBJNieoeLa19zNCpNRtzDkL1VGP7hAX
-	cKrEM7SPHLO1/6LvmLgwp70PlAr/mlb/qEQOM/0LAy3U+JAnf2Xszf8ASz80W5Tp0/5fNJAcXf5
-	HdY4oFOpAX1bg/uUmWw4J5Dh1XId2HECaCf0Fu6rf/MuQdvgVj10qhEdRji/+WqkhvGbo1BkxyV
-	t0Upbw89ZA0t87iNWTEI2sRrbUfvUkAjMxus/rqQaBwbcOjrq3+dByuVOappIiseKgFxI3VYdC4
-	vphS5YjsUVHCpOKkdvT3NUub7RvXc7BzBDQ6H2Ud8BIDdZh0HqHj9aKwif220772umnMGX3fe+d
-	XmQxFnSZh1IH5P1jzq/41XNnFZHR/y8iIITvsFC76YVPbAKgS02Pm7Gt3nMp5YtPCuM3yrP2jIA
-	IjOSka4X9WsNGi8oUVbz5+aCMBJ1CiMxoQi/xlsjznrrCgAYXiP45EXCnZ9CpyLaaDKV+PTh79U
-	cZId7oANEIlvPJ+rcmeL8fn5r1msyNO7Kgk8Lf9E8PYPik0vfXTKTNlLCLPxYYKMEdYVC6o=
-X-Received: by 2002:a05:693c:8858:b0:35f:ea17:d171 with SMTP id 5a478bee46e88-36f7524bf37mr9088545eec.2.1794021437662;
-        Fri, 06 Nov 2026 19:17:17 -0800 (PST)
-Received: from msg ([188.253.120.78])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa922b205sm10973889eec.11.2026.11.06.19.17.11
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 06 Nov 2026 19:17:17 -0800 (PST)
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	chopps@labn.net,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	linux-kernel@vger.kernel.org
-Message-ID: <20261107111617.21347-4-q.h.hack.winter@gmail.com>
-In-Reply-To: <20261107111617.21347-1-q.h.hack.winter@gmail.com>
-References: <20261107111617.21347-1-q.h.hack.winter@gmail.com>
-From: Qihang <q.h.hack.winter@gmail.com>
-Date: Sat, 31 Oct 2026 10:09:48 +0800
-Subject: [PATCH net v8 3/3] xfrm: hold the tunnel device reference across the
- input path
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZCJkpxxN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC371F0089F;
+	Sat,  7 Nov 2026 03:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794021800;
+	bh=u+3wSkSWQgwuFMFiViQDJVrhL9go48YADqXEr3eJRfg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZCJkpxxNVsGOdQSrddRjDkfZaTK522LA5OBtNjKurGZQNSG4/SAZTYRvKV7j3g3UV
+	 UyHqQsn6F7I43paClEUXnrrC7A1ymFx9Wav86aP6VtuoQJ7XiMj5JJCmXXEUzKq+MM
+	 SuGoOga0lKQucj8itxnxycJW1VWgC77EZXOceDJPriPK3wjt5uVCkEZzvco2iv8h0R
+	 EC1lU2kThtBpmcMsuyO/IcjPulZYvT8ZOSI1onKopX6s73VcktfP7DF/Am0Z6NoDc8
+	 z4sqnLQY/c9nIeUe7ghnyCG52ysmxuBL188CWRN77PuB1LhcYBa9HYYBu0TybboYhg
+	 LG+nsLLkWpmpg==
+Subject:
+ Re: [PATCH net v7 2/3] nfc: nci: uart: quiesce callbacks during teardown
+From: netdev-bot+sashiko@kernel.org
+To: shubham@octane.security
+Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, david@ixit.cz,
+ horms@kernel.org, gio@octane.security, kuba@kernel.org
+Date: Sat, 07 Nov 2026 03:23:19 +0000
+Message-ID: <179402179947.994134.10399672518212378012@kernel.org>
+In-Reply-To: <20261104062026.80599-3-shubham@octane.security>
+References: <20261104062026.80599-3-shubham@octane.security>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,317 +61,287 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
 
-vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
-control buffer without taking a reference.  With async crypto the
-receive callback runs from the crypto completion, after a possible
-device teardown, and dereferences the freed tunnel device:
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-    BUG: KASAN: slab-use-after-free in vti_rcv_cb
+Critical: 0 · High: 1 · Medium: 0 · Low: 3
 
-Take a reference on the tunnel device when the pointer is cached.  The
-tunnel is the device's private area, so the reference keeps the tunnel
-structure alive as well.  xfrm6_rcv_spi() takes the same reference for
-the tunnel it is given; it is a separate entry point, so vti6 does not
-hold the reference twice.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A successful vti/vti6 callback leaves the cached tunnel in place for
-xfrm_input() to release after delivery.  A callback that fails only
-updates the error counters; the common drop path releases the reference
-after the skb has been freed.  The helper takes the device out of the
-skb before gro_cells_receive() and transport_finish(), which may already
-consume the skb, so the device reference is always dropped after the skb
-is gone.  The early drop for a state that is no longer valid releases
-the reference too, and needs the address family for that, so set the
-family before the validity check.
+- [High] The commit message says teardown will "Balance tx_start() with
+  tx_done() if teardown catches an active transmit burst".
+- [Low] The commit message says nci_uart_tty_close() frees transport
+  state "before ensuring that the UART write worker and receive callback…
+- [Low] The new field comment in include/net/nfc/nci_core.h says
+  `spinlock_t tx_lock; /* protects tx_state */`.
+- [Low] nci_uart_set_ready() (net/nfc/nci/uart.c) calls
+  nci_uart_queue_empty() with no lock.
 
-The reference is released right after gro_cells_receive().  The NAPI
-that processes the queued skb later still reads skb->dev without a
-reference.  That window is pre-existing on the synchronous path as well
-and is not changed here.
+--
 
-IPTFS consumes the outer skb itself and frees it directly, so it must
-release the reference as well.  The IPTFS state carries the address
-family the tunnel was resolved for, and the caller passes it in.  Add
-xfrm_input_drop() and xfrm_input_consume() for the outer-skb free paths
-in __input_process_payload(), iptfs_input_ordered(), iptfs_input(),
-iptfs_drop_timer() and iptfs_destroy_state().  Only the outer skb
-carries the cached tunnel; the inner skbs built by iptfs_alloc_skb()
-have a zeroed control buffer, so they do not release it.  The drop paths
-keep their skb drop reason and the consumed skb keeps consume_skb()
-semantics.
+nfc: nci: uart: quiesce callbacks during teardown
 
-Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive hook.")
-Fixes: fa9ad96d4905 ("vti6: Update the ipv6 side to use its own receive hook.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
- net/ipv4/ip_vti.c      |  3 ++
- net/ipv6/ip6_vti.c     |  2 ++
- net/ipv6/xfrm6_input.c |  3 ++
- net/xfrm/xfrm_inout.h  |  4 +++
- net/xfrm/xfrm_input.c  | 64 ++++++++++++++++++++++++++++++++++++++++--
- net/xfrm/xfrm_iptfs.c  | 31 +++++++++++---------
- 6 files changed, 91 insertions(+), 16 deletions(-)
+This patch adds a tx_lock and a CLOSING tx state to the generic NCI UART
+layer. Teardown can then stop the write worker and receive callbacks before
+transport state is freed. It also publishes the Marvell UART back-pointers
+before nci_register_device(), and adds nci_ready/nci_quiesce hooks that roll
+them back on failure and on unregister.
 
-diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
-index c4f14d42d..e7b836aba 100644
---- a/net/ipv4/ip_vti.c
-+++ b/net/ipv4/ip_vti.c
-@@ -63,6 +63,9 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
- 
-+		/* Keep the tunnel alive until xfrm_input() is done with the skb. */
-+		dev_hold(tunnel->dev);
-+
- 		if (update_skb_dev)
- 			skb->dev = tunnel->dev;
- 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index c79027839..c3666dc53 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -319,6 +319,8 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
- 			goto discard;
- 		}
- 
-+		/* Keep the tunnel alive until xfrm_input() is done with the skb. */
-+		dev_hold(t->dev);
- 		rcu_read_unlock();
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 07edef258..d27bc24f1 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -15,6 +15,7 @@
- #include <linux/netfilter.h>
- #include <linux/netfilter_ipv6.h>
- #include <net/ipv6.h>
-+#include <net/ip6_tunnel.h>
- #include <net/xfrm.h>
- #include <net/protocol.h>
- #include <net/gro.h>
-@@ -23,6 +24,8 @@ int xfrm6_rcv_spi(struct sk_buff *skb, int nexthdr, __be32 spi,
- 		  struct ip6_tnl *t)
- {
- 	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-+	if (t)
-+		dev_hold(t->dev);
- 	XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
- 	XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
- 	return xfrm_input(skb, nexthdr, spi, 0);
-diff --git a/net/xfrm/xfrm_inout.h b/net/xfrm/xfrm_inout.h
-index efc5e6b2e..8bd05f62a 100644
---- a/net/xfrm/xfrm_inout.h
-+++ b/net/xfrm/xfrm_inout.h
-@@ -6,6 +6,10 @@
- #ifndef XFRM_INOUT_H
- #define XFRM_INOUT_H 1
- 
-+void xfrm_input_drop(struct sk_buff *skb, unsigned int family,
-+		     enum skb_drop_reason reason);
-+void xfrm_input_consume(struct sk_buff *skb, unsigned int family);
-+
- static inline void xfrm4_extract_header(struct sk_buff *skb)
- {
- 	const struct iphdr *iph = ip_hdr(skb);
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index cfd5cea03..e3b6c486f 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -120,6 +120,56 @@ static int xfrm_rcv_cb(struct sk_buff *skb, unsigned int family, u8 protocol,
- 	return ret;
- }
- 
-+/*
-+ * The cached tunnel holds one reference on its net_device.
-+ * The address family determines the tunnel type.
-+ */
-+static struct net_device *xfrm_input_take_tunnel_dev(struct sk_buff *skb,
-+						     unsigned int family)
-+{
-+	void *slot = (void *)XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4;
-+	struct net_device *dev;
-+
-+	if (!slot)
-+		return NULL;
-+
-+	switch (family) {
-+	case AF_INET:
-+		dev = ((struct ip_tunnel *)slot)->dev;
-+		break;
-+	case AF_INET6:
-+		dev = ((struct ip6_tnl *)slot)->dev;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return NULL;
-+	}
-+
-+	XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = NULL;
-+	return dev;
-+}
-+
-+void xfrm_input_drop(struct sk_buff *skb, unsigned int family,
-+		     enum skb_drop_reason reason)
-+{
-+	struct net_device *dev = xfrm_input_take_tunnel_dev(skb, family);
-+
-+	kfree_skb_reason(skb, reason);
-+	if (dev)
-+		dev_put(dev);
-+}
-+EXPORT_SYMBOL(xfrm_input_drop);
-+
-+void xfrm_input_consume(struct sk_buff *skb, unsigned int family)
-+{
-+	struct net_device *dev = xfrm_input_take_tunnel_dev(skb, family);
-+
-+	consume_skb(skb);
-+	if (dev)
-+		dev_put(dev);
-+}
-+EXPORT_SYMBOL(xfrm_input_consume);
-+
- struct sec_path *secpath_set(struct sk_buff *skb)
- {
- 	struct sec_path *sp, *tmp = skb_ext_find(skb, SKB_EXT_SEC_PATH);
-@@ -468,6 +518,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	const struct xfrm_state_afinfo *afinfo;
- 	struct net *net = dev_net(skb->dev);
- 	struct net_device *dev = skb->dev;
-+	struct net_device *tdev;
- 	int err;
- 	__be32 seq;
- 	__be32 seq_hi;
-@@ -747,8 +798,11 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			sp->olen = 0;
- 		if (skb_valid_dst(skb))
- 			skb_dst_drop(skb);
--		/* gro_cells_receive() reads skb->dev. */
-+		/* gro_cells_receive() may free the skb. */
-+		tdev = xfrm_input_take_tunnel_dev(skb, family);
- 		gro_cells_receive(&gro_cells, skb);
-+		if (tdev)
-+			dev_put(tdev);
- 		if (async)
- 			dev_put(dev);
- 		rcu_read_unlock();
-@@ -758,6 +812,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		if (xo)
- 			xfrm_gro = xo->flags & XFRM_GRO;
- 
-+		tdev = xfrm_input_take_tunnel_dev(skb, family);
- 		err = -EAFNOSUPPORT;
- 		afinfo = xfrm_state_afinfo_get_rcu(family);
- 		if (likely(afinfo))
-@@ -771,6 +826,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			gro_cells_receive(&gro_cells, skb);
- 		}
- 
-+		if (tdev)
-+			dev_put(tdev);
- 		if (async)
- 			dev_put(dev);
- 		rcu_read_unlock();
-@@ -781,9 +838,12 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	spin_unlock(&x->lock);
- drop:
- 	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
-+	tdev = xfrm_input_take_tunnel_dev(skb, family);
-+	kfree_skb(skb);
-+	if (tdev)
-+		dev_put(tdev);
- 	if (async)
- 		dev_put(dev);
--	kfree_skb(skb);
- 	return 0;
- }
- EXPORT_SYMBOL(xfrm_input);
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 5ea3e77dd..363962308 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -717,8 +717,9 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
- 			      IPTFS_HRTIMER_MODE);
- 	}
- 
--	if (free)
--		kfree_skb(xtfs->ra_newskb);
-+	if (free && xtfs->ra_newskb)
-+		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	xtfs->ra_newskb = NULL;
- }
- 
-@@ -1213,14 +1214,11 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
- 	skb_abort_seq_read(skbseq);
- 
- 	if (defer) {
--		consume_skb(defer);
-+		xfrm_input_consume(defer, x->props.family);
- 	} else if (!first_skb) {
--		/* skb is the original passed in skb, but we didn't get far
--		 * enough to process it as the first_skb, if we had it would
--		 * either be save in ra_newskb, trimmed and sent on as an skb or
--		 * placed in defer to be freed.
--		 */
--		kfree_skb(skb);
-+		/* The original skb was not consumed as the first inner packet. */
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- 	return true;
- }
-@@ -1307,7 +1305,8 @@ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
- 	if (!consumed) {
- 		skb = skbseq.root_skb;
- 		skb_abort_seq_read(&skbseq);
--		kfree_skb(skb);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- }
- 
-@@ -1709,7 +1708,8 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
- 	spin_unlock(&xtfs->drop_lock);
- 
- 	if (skb)
--		kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_FRAG_REASM_TIMEOUT);
- 
- 	if (count) {
- 		list_for_each_entry_safe(skb, next, &list, list) {
-@@ -1760,7 +1760,8 @@ static int iptfs_input(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	list_for_each_entry_safe(skb, next, &freelist, list) {
- 		skb_list_del_init(skb);
--		kfree_skb(skb);
-+		xfrm_input_drop(skb, x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- done:
- 	/* We always have dealt with the input SKB, either we are re-using it,
-@@ -2761,11 +2762,13 @@ static void iptfs_destroy_state(struct xfrm_state *x)
- 	hrtimer_cancel(&xtfs->drop_timer);
- 
- 	if (xtfs->ra_newskb)
--		kfree_skb(xtfs->ra_newskb);
-+		xfrm_input_drop(xtfs->ra_newskb, xtfs->x->props.family,
-+				SKB_DROP_REASON_NOT_SPECIFIED);
- 
- 	for (s = xtfs->w_saved, se = s + xtfs->w_savedlen; s < se; s++) {
- 		if (s->skb)
--			kfree_skb(s->skb);
-+			xfrm_input_drop(s->skb, x->props.family,
-+					SKB_DROP_REASON_NOT_SPECIFIED);
- 	}
- 
- 	kfree_sensitive(xtfs->w_saved);
+> nci_uart_tty_close() releases transport state before ensuring that the
+> UART write worker and receive callback have stopped using it.
+
+[Severity: Low]
+Is the receive callback part of this accurate for the close path?
+
+tty_ldisc_close() runs with the ldisc semaphore held for write:
+
+drivers/tty/tty_ldisc.c:tty_ldisc_close() {
+	lockdep_assert_held_write(&tty->ldisc_sem);
+    ...
+}
+
+tty_port_default_receive_buf() only delivers data after it gets an ldisc
+reference:
+
+	ld = tty_ldisc_ref(tty);
+	if (!ld)
+		return 0;
+
+tty_wakeup() also goes through tty_ldisc_ref(). So nci_uart_tty_receive()
+and nci_uart_tty_wakeup() can't run at the same time as
+nci_uart_tty_close(). During close, the only concurrent user of tx_skb,
+rx_skb and tx_q appears to be nu->write_work.
+
+The same applies here:
+
+> and roll the state back if registration fails.  On close, detach TTY
+> callback admission first but keep transmit available while the transport
+
+The old code also cleared tty->disc_data before it used nu.
+
+The new READY recheck under rx_lock in nci_uart_tty_receive() and the
+nci_uart_rx_stop() calls look like they are needed for the failed-open path
+instead. On that path, NCIUARTSETDRIVER runs under an ldisc read reference,
+nfcmrvl_uart_nci_ready() publishes READY, and nci_register_device() then
+fails. nfcmrvl_uart_nci_quiesce() rolls back while receive_buf can still
+run.
+
+Could the commit message say which race actually exists in close?
+
+> diff --git a/net/nfc/nci/uart.c b/net/nfc/nci/uart.c
+> index 529c8cf8861af..63671ea38c67b 100644
+> --- a/net/nfc/nci/uart.c
+> +++ b/net/nfc/nci/uart.c
+
+[ ... ]
+
+> @@ -64,24 +65,61 @@ static inline int nci_uart_queue_empty(struct nci_uart *nu)
+
+[ ... ]
+
+> +void nci_uart_tx_stop(struct nci_uart *nu)
+> +{
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	set_bit(NCI_UART_CLOSING, &nu->tx_state);
+> +	spin_unlock_irqrestore(&nu->tx_lock, flags);
+> +
+> +	cancel_work_sync(&nu->write_work);
+> +	clear_bit(TTY_DO_WRITE_WAKEUP, &nu->tty->flags);
+> +
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	clear_bit(NCI_UART_SENDING, &nu->tx_state);
+> +	clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +	spin_unlock_irqrestore(&nu->tx_lock, flags);
+> +}
+> +EXPORT_SYMBOL_GPL(nci_uart_tx_stop);
+> +
+>  static void nci_uart_write_work(struct work_struct *work)
+>  {
+>  	struct nci_uart *nu = container_of(work, struct nci_uart, write_work);
+>  	struct tty_struct *tty = nu->tty;
+>  	struct sk_buff *skb;
+> +	unsigned long flags;
+>  
+>  restart:
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	if (test_bit(NCI_UART_CLOSING, &nu->tx_state)) {
+> +		clear_bit(NCI_UART_SENDING, &nu->tx_state);
+> +		clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +		spin_unlock_irqrestore(&nu->tx_lock, flags);
+> +		return;
+> +	}
+>  	clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +	spin_unlock_irqrestore(&nu->tx_lock, flags);
+>  
+>  	if (nu->ops.tx_start)
+>  		nu->ops.tx_start(nu);
+> @@ -99,14 +137,55 @@ static void nci_uart_write_work(struct work_struct *work)
+>  		kfree_skb(skb);
+>  	}
+>  
+> -	if (test_bit(NCI_UART_TX_WAKEUP, &nu->tx_state))
+> +	spin_lock_irqsave(&nu->tx_lock, flags);
+> +	if (test_bit(NCI_UART_CLOSING, &nu->tx_state)) {
+> +		clear_bit(NCI_UART_SENDING, &nu->tx_state);
+> +		clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +		spin_unlock_irqrestore(&nu->tx_lock, flags);
+> +		if (nu->ops.tx_done)
+> +			nu->ops.tx_done(nu);
+> +		return;
+> +	}
+> +	if (test_and_clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state)) {
+> +		spin_unlock_irqrestore(&nu->tx_lock, flags);
+>  		goto restart;
+> +	}
+> +	spin_unlock_irqrestore(&nu->tx_lock, flags);
+>  
+>  	if (nu->ops.tx_done && nci_uart_queue_empty(nu))
+>  		nu->ops.tx_done(nu);
+
+[Severity: High]
+The commit message says teardown will "Balance tx_start() with tx_done() if
+teardown catches an active transmit burst". Can nci_uart_write_work() still
+exit after tx_start() without ever calling tx_done()?
+
+Consider this sequence:
+
+write_work                         nfcmrvl_uart_nci_quiesce()
+restart: CLOSING clear
+ops.tx_start()
+  break_ctl(tty, 0)
+write loop
+test_and_clear_bit(TX_WAKEUP) true
+spin_unlock_irqrestore()
+                                   nci_uart_tx_stop()
+                                     set_bit(NCI_UART_CLOSING)
+                                     cancel_work_sync()
+goto restart
+restart: CLOSING set
+  clear SENDING, TX_WAKEUP
+  return
+
+The CLOSING exit at restart: returns without calling ops.tx_done(), even
+though tx_start() already ran earlier in the same burst. Only the CLOSING
+branch after the write loop calls tx_done().
+
+TX_WAKEUP can be set during the write loop by the close-time CORE_RESET,
+sent via nci_close_device()->__nci_request()->nci_uart_send(). If the
+closing task has a signal pending,
+wait_for_completion_interruptible_timeout() returns early. Teardown then
+reaches nci_uart_tx_stop() almost immediately.
+
+There is a second path. If tty->ops->write() writes only part of the skb,
+nu->tx_skb stays set. nci_uart_queue_empty() then returns false, so the
+tx_done() call above is skipped, and SENDING is cleared while the worker
+waits for a write wakeup. If teardown runs at that point, nci_uart_tx_stop()
+cancels an idle work item and never calls tx_done() either.
+
+For nfcmrvl with break_control, tx_start and tx_done look like this:
+
+drivers/nfc/nfcmrvl/uart.c:nfcmrvl_nci_uart_tx_start() {
+    ...
+	/* Remove BREAK to wake up the NFCC */
+	if (priv->config.break_control && nu->tty->ops->break_ctl) {
+		nu->tty->ops->break_ctl(nu->tty, 0);
+    ...
+}
+
+drivers/nfc/nfcmrvl/uart.c:nfcmrvl_nci_uart_tx_done() {
+    ...
+	if (priv->config.break_control && nu->tty->ops->break_ctl) {
+		nu->tty->ops->break_ctl(nu->tty, -1);
+    ...
+}
+
+So in both cases BREAK is left removed at teardown. Before this patch, in
+the first path, cancel_work_sync() let the running worker finish and reach
+tx_done().
+
+The later patch in this series ("nfc: nfcmrvl: stop firmware work before
+unregistering") doesn't touch net/nfc/nci/uart.c, so both paths are still
+present at the end of the series.
+
+Would it work to set a local started flag when tx_start() runs, and call
+tx_done() from every CLOSING exit when it is set? nci_uart_tx_stop() could
+also call tx_done() when a burst is still pending.
+
+[ ... ]
+
+> +void nci_uart_set_ready(struct nci_uart *nu)
+> +{
+> +	/* Publish transport fields before callbacks observe READY. */
+> +	smp_mb__before_atomic();
+> +	set_bit(NCI_UART_READY, &nu->flags);
+> +
+> +	if (!nci_uart_queue_empty(nu))
+> +		nci_uart_tx_wakeup(nu);
+>  }
+
+[Severity: Low]
+Is it safe to call nci_uart_queue_empty() here without tx_lock?
+
+nci_uart_set_driver() calls nci_uart_set_ready() a second time after
+nu->ops.open() returns. For nfcmrvl, by then nfcmrvl_nci_register_dev() has
+already set READY through nfcmrvl_uart_nci_ready() and exposed the device
+through nci_register_device().
+
+Userspace can bring the device up in that window:
+
+NFC_CMD_DEV_UP->nci_open_device()->CORE_RESET->nci_uart_send()
+
+The write worker then makes plain stores to nu->tx_skb in
+nci_uart_dequeue() and on partial writes, while this unlocked read of
+nu->tx_skb runs. Before this patch, nci_uart_queue_empty() was only called
+from the worker. Would KCSAN report this as a data race?
+
+The handoff that restarts an already queued frame also seems to lack a full
+barrier. This side does set_bit(READY) and then loads the queue. The sender
+does skb_queue_tail() and then test_bit_acquire(READY) under tx_lock. That
+is a store-buffering pattern the LKMM does not forbid. With nfcmrvl,
+though, nothing can be queued before READY is first published.
+
+[ ... ]
+
+> @@ -136,21 +215,17 @@ static int nci_uart_set_driver(struct nci_uart *nu, unsigned int driver)
+
+[ ... ]
+
+>  err_module:
+> -	cancel_work_sync(&nu->write_work);
+> +	nci_uart_rx_stop(nu);
+> +	nci_uart_tx_stop(nu);
+>  	kfree_skb(nu->tx_skb);
+>  	nu->tx_skb = NULL;
+> -	kfree_skb(nu->rx_skb);
+> -	nu->rx_skb = NULL;
+>  	skb_queue_purge(&nu->tx_q);
+> -	clear_bit(NCI_UART_SENDING, &nu->tx_state);
+> -	clear_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+> +	clear_bit(NCI_UART_CLOSING, &nu->tx_state);
+
+[Severity: Low]
+Is the new field comment in include/net/nfc/nci_core.h accurate?
+
+	spinlock_t		tx_lock; /* protects tx_state */
+
+This clear_bit() of NCI_UART_CLOSING runs without tx_lock. Every other
+tx_state access the patch adds holds tx_lock.
+
+It is safe today only because nci_uart_rx_stop() has already cleared
+NCI_UART_READY, and nci_uart_tx_wakeup() checks CLOSING || !READY under the
+lock.
+
+Should this clear take tx_lock, or should the comment be narrowed?
+
+[ ... ]
+
 -- 
-2.54.0 (Apple Git-157)
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104062026.80599-1-shubham%40octane.security
