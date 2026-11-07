@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083083;
-	b=o1raAIT+E6wGOa6pxDgd89UY43SXPtBED/VmngCkZ8P2+MT3RqHgG1xkDafLQQPG9PoM
-	 yduhSytOvWTsJ8Cx6Nkw8Dst0MpDxPO9eDfPPabhHStXkt9OhYruV7TJ61YMs8p2kBMRN
-	 TxP5xcsOkZWecBnIsDrT4MK3NpVdO/vdbtcDUmQ9smeud8cdigOLy9UeJ271/tKE7J9gm
-	 lgcf4f3L75NZqVbY7VTEP1DK6zXRFF5MyuR1zIbXeqiKviTAnXhZcitmw8BaUXRGShfTU
-	 zH+VrTxINpwtY8eNPFKszglZqYOa7R4mNJZenIonyHcy1y+Nxv0vPthjlveLIwOLXLA==
+	t=1794083090;
+	b=sjAiIHj0huegilVTHLmTm4Yvz857GwOL2h0yqdl7CfMeY7kg/E2zTKm7DwRlUj7GexkM
+	 zdLH96SQTFX3YDGodpUj3xk6F7l2oD94lfBJyjNWUjIYxnbwEaMf2vqHX8eaaV9oVuF1V
+	 wKHiUNyRVwxvFsT6hc3lhMfH1V+DUFUlqS8V7cpCAKs5ntYzEsog4koC6g+f/+mgeq7Z8
+	 nFI4m/Yi8eMqKoQynG+aWOSHP9dEcMlHfIMIhunNT+ZKIm8iF+bBt837Z8AqVroSNDLs3
+	 bGtMBV6yRFfcqsXYaWE4pqhGh1vz8zd7fcBa+8yzkda3qWxZNakPq9OU8Zcuv0ZcA8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083083;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083090;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=fHBfhv5Os1UERuh0WwXS8t9EiYrGbuhZFIIikND+GOk=;
-	b=SPSJcD7E/VFlvPbUF0TNg2B1zSwAQR8EDkGs0iyih/BZHyEwqmH5rijITLTHLXQr7IjE
-	 K7U7f3SbfGFjO4PGAGduIapvleQ7FgNgT8atcqzKdPuJcN+4G3Oc8Gxq07zvhbi+9SGIB
-	 Kst8Sq2bn11iaDJQh58BDOnjHeZCFGaQV/vDvv0I5NFlBsKrJnYOp10iTArSqAHC8VPhk
-	 R8sRuDQ67trXvspsXxY58q3tRQEVbuZsv/H49OPXJFdDNHUgvQrZIRkXEtJilYYTsyr3/
-	 ibp1/xg5Ks4S3nstvrCfwCCv42qjB/vzV8zIL5LRx0DAFJcoFU+DQ93Kze1bvWKNjbg==
+	bh=pu1pe8eDqY/kb7H7Vv4RY02+044IW1jA59qA22PzvKc=;
+	b=NPCLSfDu+NSzW+VBiAxI6jEPX5X9Mr6nxxIhuAsEvsDj4AKHHe3Nm/+CSvVoriCNnQ0y
+	 kGOiS0aSNnKeCo3llC1kLjn6XBgwmXJYVHfW62gSBb+9A7CNwohozWehqQkgsgDFNSjG7
+	 ZZ8ufwI1FHy9Cc2SB1+sxpBXVd/mZ7MLnWcgCO8IPDLOPbM5cjSTDX5mftN4T+QHgzAyM
+	 GXKl+cJfNhh2JIrwbb3UNUmlAMbqn5fpqeMG3gDOFuBw3xRBRykx46jf6G4qZedP2rsU4
+	 QhK/hkBkimm2/My4oELnREeUbIi8kWV9PXsdehBJLZQlZeeM+Fu8F0ghgmFdUE5th/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsqePyln;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VhjjRP9d;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772DE606D807;
-	Sat,  7 Nov 2026 20:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EBB606A32D;
+	Sat,  7 Nov 2026 20:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jsqePyln
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420521F008A1;
-	Sat,  7 Nov 2026 20:24:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VhjjRP9d
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380ED1F008A2;
+	Sat,  7 Nov 2026 20:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083083;
-	bh=fHBfhv5Os1UERuh0WwXS8t9EiYrGbuhZFIIikND+GOk=;
+	s=k20260515; t=1794083090;
+	bh=pu1pe8eDqY/kb7H7Vv4RY02+044IW1jA59qA22PzvKc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jsqePylnZzrLJn3BHHzddesh0LiLeTPKYZjdV9Q0ubuSMWB0jMTGT+OLZGG2PNZne
-	 QNPI2t40o/OozbyE1V+Z8BqYpeWaldOkczQQJ98qhodgr74dITGRpb7onHiRd3Xl+T
-	 HMZTpH1rDtM92zhpu8yultB0xEaIVSvB3rqxgF+8i41lzOKBUyZxN+u8EX8E//pMPf
-	 VwchixEWAcejgzEe6Bsga/+I4Wq44mk2pasKfQ2TnxW9N4INhZMU57Lb3Se2NhxNRi
-	 JCUwUp2g3zMYKlebv5M0ya9VipDPjqgVQKaQkFBLaL8C940Zt3AROIQ3AsrSUjzt94
-	 Cu8wAU14nIuYQ==
-Subject: Re: [PATCH rdma-next 02/23] net/mlx5: Derive adversarial mode from CC
- guest memory encryption
+	b=VhjjRP9dGGaEv7BFSz7CCOWiHyrewdkdgJ7gVkdyEu6o0q3M4p418xJ6QHnh7wEWC
+	 osVPntetU/XFdGL6FuIlN0zPvHRgBWlcdQn7jPjQDiupCemKRF51EB631cPiTX8IR+
+	 iNPMeARl2bzFieS8wD0hfB/3c+VzJLYKfzYtRaXAz0ts07iKoVBXuFvCOd9d9WQLaS
+	 7CoD9cUA+K7ZG/A+V84DcuKLzE/l47noY1MtmG9G4SjkUzIiAr/1v82UfdX9Hy4HjM
+	 BOcCDnSiuAnUvzFrlvEv3CReW/GmRmcIfnmNV2Ydm9Yr1M2GSGzq6FBgT2rQi2VdjV
+	 73gwQXQNFRmoA==
+Subject: Re: [PATCH rdma-next 07/23] RDMA/mlx5: Derive
+ mlx5_ib_adversarial_mode global from mlx5_core adversarial API
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,10 +49,10 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:24:41 +0000
-Message-ID: <179408308185.994134.9934571250726048143@kernel.org>
-In-Reply-To: <20261103163949.1554-3-yishaih@nvidia.com>
-References: <20261103163949.1554-3-yishaih@nvidia.com>
+Date: Sat, 07 Nov 2026 20:24:48 +0000
+Message-ID: <179408308880.994134.16800694809832426795@kernel.org>
+In-Reply-To: <20261103163949.1554-8-yishaih@nvidia.com>
+References: <20261103163949.1554-8-yishaih@nvidia.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -72,83 +72,44 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] mlx5_is_adversarial() in
-  drivers/net/ethernet/mellanox/mlx5/core/main.c is exported…
-- [Low] mlx5_is_adversarial(void) takes no device argument and returns
-  cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), so the decision applies to…
+- [Low] The commit message does not describe the code correctly.
 
 --
 
-net/mlx5: Derive adversarial mode from CC guest memory encryption
+RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from mlx5_core adversarial API
 
-This patch adds mlx5_is_adversarial(), exported from mlx5_core. It
-reports whether the driver should treat the NIC as untrusted. The result
-comes from cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), so it is true in
-any confidential computing guest.
+This commit adds a global bool mlx5_ib_adversarial_mode to the mlx5_ib
+driver. mlx5_ib_init() sets it from mlx5_is_adversarial(). The flag is
+declared extern in mlx5_ib.h so that other files in the driver can read it.
 
-> Add mlx5_is_adversarial() to report whether the driver treats the NIC
-> as untrusted. In a confidential computing guest, the hypervisor and any
-> passthrough device are outside the guest's trust boundary, so the mode
-> is derived from cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT).
->
-> This turns adversarial mode on automatically in such guests, without
-> any administrator configuration.
+> Use the mlx5_core mlx5_is_adversarial() exported API to set a
+> module-level static bool mlx5_ib_adversarial_mode at init time,
+> instead of a per-device bit field. This avoids propagating the flag
+> through every mlx5_ib_dev pointer and makes the module-wide policy
+> clear at the call sites.
 
 [Severity: Low]
-This isn't a bug, but is the last sentence accurate for this patch on its
-own? Nothing calls mlx5_is_adversarial() at this commit, so this patch by
-itself does not change behaviour in a CC guest.
+Is "static" the right word here? The patch adds a non-static global in
+drivers/infiniband/hw/mlx5/main.c:
 
-The callers arrive later in the series:
+    bool mlx5_ib_adversarial_mode;
 
-  "net/mlx5: Add capability filtering in adversarial mode" (caps_filter.c)
+and makes it visible to the rest of the driver in
+drivers/infiniband/hw/mlx5/mlx5_ib.h:
 
-  "RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from mlx5_core
-  adversarial API" (drivers/infiniband/hw/mlx5/main.c)
+    extern bool mlx5_ib_adversarial_mode;
 
-Could the changelog say that the users come in follow-up patches?
+Later in the series the variable stays non-static, and umr.c and cq.c
+read it. That is why it can't be static.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> index 1a45474ce03db..f9e10464a71b5 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+The text "instead of a per-device bit field" also seems to point at
+something that isn't in the tree. No adversarial field exists under
+drivers/infiniband/ before this patch, and the patch only adds lines. Is
+this a leftover from an earlier, unmerged version of the series?
 
-[ ... ]
-
-> @@ -484,6 +485,12 @@ bool mlx5_is_roce_on(struct mlx5_core_dev *dev)
->  }
->  EXPORT_SYMBOL(mlx5_is_roce_on);
->  
-> +bool mlx5_is_adversarial(void)
-> +{
-> +	return cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT);
-
-[Severity: Low]
-This isn't a bug, but this check treats every device in a CC guest as
-adversarial, and the helper takes no device argument. That matches the
-current tree, which has no guest-side way to detect a trusted (T=1)
-device.
-
-ib_register_device() in drivers/infiniband/core/device.c uses the same
-check and documents the assumption:
-
-	/*
-	 * In a CoCo guest every device is currently assumed to be untrusted
-	 * (T=0) and therefore subject to DMA bouncing. Once trusted (T=1)
-	 * device detection is wired up, narrow this check to exclude such
-	 * devices.
-	 */
-	if (dma_device && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-		device->cc_dma_bounce = 1;
-
-Would a similar comment here, or a note in the changelog, be worth
-adding? Once T=1 detection exists, narrowing this check would also mean
-giving mlx5_is_adversarial() a device argument.
-
-> +}
-> +EXPORT_SYMBOL_GPL(mlx5_is_adversarial);
-
-[ ... ]
+Could the message instead say that the patch adds a driver-wide global,
+shared through mlx5_ib.h, that caches mlx5_is_adversarial() in
+mlx5_ib_init()?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
