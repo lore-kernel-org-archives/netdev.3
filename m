@@ -1,63 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794074384;
-	b=l+M/SU6bZBGELqhYlYRUyxi7AqvbfILaRyzc2I5FuR13xNtkB7V2uJA4UO+2cHLHQcGC
-	 LHa7mtUMozDu7E23qg1GCjECESKQPo19XI1TcolWad6PYJcWT+W8MvNs2x5mf/TYLfXxB
-	 5ieiw6X8I+Cn2TG1mpre5bE8Xkg/Se9YfDmYVv9LayvmWBzg+F7FUUf6Bb+8g21rb/SJd
-	 3cFxMo/PjKILHe/f48Xbr/3ye5sdEFgSE17bs2faM8DNVVc2fuut2kqBK3hWW5+/q2wJ5
-	 vnK61dhCjxF67Ahd3e4yVz5KmL2flpxbg6LCY3eP+CwmF14vv0HF+jSMOpR1NhdF2rg==
+	t=1794074388;
+	b=ZM0NyZQQ+dbQcxZ8+3Aink/N3w/7jNBnMaDe54IFJEvXmlVPPzfDvTJcDN2EgbKD31o0
+	 /GCpHGsRk0yvoCH1ZDufPlJuQ9WWKDthZKvIa/xq0SCq8Ur6CfJaZcVOXn6h7GcrstiFk
+	 bGnWCFaog5Wwe0tNoidQwdHBgvroaBaSY0PfQWnwiPqXjl3TUo7tV9Vnwk+X9j9UQT/8N
+	 Vb/We7yXRXsiuhbDOTwglGezqpA/BgGr09qKOMi+g/AvCdddWwTREyvtUpFDaVcOCP/ri
+	 /D9DFO0MJpld3qEs2L9Z8mXJ0gP5sqblFxXYYXxTqUWXGu5n/Xxwl6JHX9oDTLZJ1ow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794074384;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794074388;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=bGepyAYVEqnlKtLsoUC51vfuL8x0qiUkny6Ci/G6J3U=;
-	b=wNbwXl9nIBIlY+cx1VIkD3QpD8JpW36Kp8zLOV+IqBUb5w8AIodSzP/XjBnWtkVdizWP
-	 la22iKVr6rcdROTd9AdTw/7E7leMvMVu7H4eKoWywlEO60E3cuDRSLzACAh3/xDfDaFWq
-	 SegAYSrmznFwmBRSCsEV6o4ndrlPbrKeuqMAVhGt2FcunSrMwpSy9wkPQzsvclli5rO5o
-	 Vxj+1oOZgC+zG+T828Tj+Kf/DePfbyBz/F/Ixu2zkUnuzC25og+oOB1nOQzDbUe2j4hJc
-	 3lmx+J/KT7unqfTLE1X9s5xtkYkRcyOlYGlbDzyXfoDsTU9jvA3DSJ1JSekDqbX412A==
+	bh=mYH1R7Aw1iVn3adjIX8WOzgpUmMHsc4YqOxn33DMKdI=;
+	b=vQ2+kfEQKsm/yDK96up8C3iG4nzBfa57iK3cgXYdFb37Iasy47Pao3+rGJggekEErVGl
+	 WI+XUhGXyVrTvt0YyoC1lHtYVjRctlvn//AGpHNs4WXAcA0vMUjM41tjhVCS19I2P/IXg
+	 wvhuBIHmWRPf7hBcdpHC54gFkwQ7iKv/o/JdWwXTf5NlblzaO/ZfGMcM9ozEE93NO/E8b
+	 nESx9vANDfBzQ228IVCSYS71h2yY+lePk+Sk3PL5lkkjTdrEJdo+ZQFMTyW/j9lRSG4+I
+	 1aFq61BU7cXyPRamy0fioePFXToA2BJ8Epxt8Ymu4SAvpmd5Ea6+jC6daJr1BzSrokQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=rbox.co;
 	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b="Mt/7ZFwO";
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ApioPmNb;
 	arc=none smtp.remote-ip=185.226.149.38
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F52A606D811;
-	Sat,  7 Nov 2026 17:59:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F52A606D811
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC141606A33B;
+	Sat,  7 Nov 2026 17:59:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC141606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=Mt/7ZFwO
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ApioPmNb
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1xPkhN-007oUJ-R6; Sat, 07 Nov 2026 18:59:29 +0100
+	id 1xPkhN-007oU7-A0; Sat, 07 Nov 2026 18:59:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=bGepyAYVEqnlKtLsoUC51vfuL8x0qiUkny6Ci/G6J3U=; b=Mt/7ZFwOmJ2rkTAeItS9T8hfdD
-	qirpYNVLVnMJzAu614dofN5MYpV3oc0QhQazqdilxE4FURcqyh6paUP/2gzv2CKkiIf0Fb/rYjGC6
-	CvLGL8nww71LkGOObn2QsPpqvl+qz/rV2zAGlADiCx8rRtK/IfqnRENN1IdLSgfeXiyTHN7972Qhl
-	6LpDmxdjjlK/HpFZvoBIf30MZIRQkGD9bvmq4PtNMGS9X8BMI9fTEJ5sB7KuCIgpxWmltejuRk59Z
-	ltA2MWWSmTX87aGQj7Iyljh4Ek/fBNn7FPdjpoSsbbcnRbvzPU3ahHbtEFWZ9BNVREE9IUlz2g5Ai
-	2kgrpyZw==;
+	bh=mYH1R7Aw1iVn3adjIX8WOzgpUmMHsc4YqOxn33DMKdI=; b=ApioPmNb4g0URfQcNo+bHmOHqK
+	lTCpz72XYQOXsE8r37ukCxxZ4ct+0WxzIa4l00p+FMV/HJL8SiVqkyr/c/Fhwg6MoDLA8xmdJgHqs
+	CX2Z7ubgIt1YCHwDT2M+n5A19z2aLGCnBS3FG0OhL/t68ExBOyWnq/tFFhBey0b298x39vlMdFml9
+	3VxLa23xI+dNwM9Vjboi9zM1sy+ZJYFp0v3ZYCD5kjRnaGn5TBWZ/Uq6F90pJT+bxFEZW/l3cGHtp
+	5i4D+qUGhYfc0qz03AFQUrrk6KZ3iFHcRIZGqic9cWP8Da+UVZzyQ9U4MbuRzJxTyKmwsPDlak+3J
+	KmWPG5TA==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1xPkhD-0006IL-Fw; Sat, 07 Nov 2026 18:59:19 +0100
+	id 1xPkhB-0006ar-Ri; Sat, 07 Nov 2026 18:59:18 +0100
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1xPkh4-007LnK-Uj;
-	Sat, 07 Nov 2026 18:59:11 +0100
+	id 1xPkh9-007LnK-Hh;
+	Sat, 07 Nov 2026 18:59:15 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Sat, 07 Nov 2026 18:58:26 +0100
-Subject: [PATCH bpf-next v3 4/8] bpf, docs: Document BPF_ITER_NOSLEEP
+Date: Sat, 07 Nov 2026 18:58:29 +0100
+Subject: [PATCH bpf-next v3 7/8] selftests/bpf: Add iter/sockmap
+ bpf_sock_destroy() negative test
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,7 +70,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261107-sockmap-update-limit-iter-v3-4-7c0bad1ad036@rbox.co>
+Message-Id: <20261107-sockmap-update-limit-iter-v3-7-7c0bad1ad036@rbox.co>
 References: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
 In-Reply-To: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -94,38 +95,33 @@ Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-Commit dfcd17659112 ("bpf: Reject sleepable programs for task_vma
-iterator") introduced BPF_ITER_NOSLEEP, but did not update the docs.
-Mention the flag in bpf_iterators.rst.
+bpf_sock_destroy() is restricted to socket-locked iters, TCP and UDP.
+Fail attempting it from iter/sockmap.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- Documentation/bpf/bpf_iterators.rst | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/Documentation/bpf/bpf_iterators.rst b/Documentation/bpf/bpf_iterators.rst
-index 72435e32ffa1..c534215f05de 100644
---- a/Documentation/bpf/bpf_iterators.rst
-+++ b/Documentation/bpf/bpf_iterators.rst
-@@ -351,9 +351,15 @@ The following is the breakdown for each field in struct ``bpf_iter_reg``.
-        the bpf iterator.
-    * - feature
-      - Specifies certain action requests in the kernel BPF iterator
--       infrastructure. Currently, only BPF_ITER_RESCHED is supported. This means
--       that the kernel function cond_resched() is called to avoid other kernel
--       subsystem (e.g., rcu) misbehaving.
-+       infrastructure.
+diff --git a/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c b/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
+index dd6850b58e25..7b9f5779a184 100644
+--- a/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
++++ b/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
+@@ -20,3 +20,14 @@ int BPF_PROG(trace_tcp_destroy_sock, struct sock *sk)
+ 	return 0;
+ }
+ 
++SEC("iter/sockmap")
++__failure __msg("calling kernel function bpf_sock_destroy is not allowed")
++int iter_sockmap_destroy(struct bpf_iter__sockmap *ctx)
++{
++	struct sock *sk = ctx->sk;
 +
-+       BPF_ITER_RESCHED
-+           the kernel function cond_resched() is called to avoid other kernel
-+           subsystem (e.g., rcu) misbehaving
++	if (sk)
++		bpf_sock_destroy((struct sock_common *)sk);
 +
-+       BPF_ITER_NOSLEEP
-+           ``seq_operations::show()`` cannot run sleepable programs
-+
-    * - seq_info
-      - Specifies the set of seq operations for the BPF iterator and helpers to
-        initialize/free the private data for the corresponding ``seq_file``.
++	return 0;
++}
 
 -- 
 2.56.0
