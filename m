@@ -1,113 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.73
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794074376;
-	b=Yjh4A+ch8t44nRU8JlcQjWFe6jeBXNq1l8lFFnKEbDD3gGq0LEi270TuFRFEMdMaDyqi
-	 /uZace+VQzRAjdsqXvXbdU+Yw8OAtFOiRJt2MZ13yB4WZEImQsJ/8yR9cXKWGKTLfmVW7
-	 4cgEHZpFoWWWb6azUku/Jv891NloJuKkJ4BD/LVl+7byCzFNkvyokX8dYT0WNRxzg1g5q
-	 zgzJuQQmSubmiGfWGjVYAxCtiOJujdIUtVQBWIihA4sfhpR70lUnekvLE2RXdBfw3Cr32
-	 RXBuSs2pM17ez7/3XNW9jFd22zUOftq2chwoxBTsEvlphGvbCPS21FLWHl06rmppvUQ==
+	t=1794074384;
+	b=l+M/SU6bZBGELqhYlYRUyxi7AqvbfILaRyzc2I5FuR13xNtkB7V2uJA4UO+2cHLHQcGC
+	 LHa7mtUMozDu7E23qg1GCjECESKQPo19XI1TcolWad6PYJcWT+W8MvNs2x5mf/TYLfXxB
+	 5ieiw6X8I+Cn2TG1mpre5bE8Xkg/Se9YfDmYVv9LayvmWBzg+F7FUUf6Bb+8g21rb/SJd
+	 3cFxMo/PjKILHe/f48Xbr/3ye5sdEFgSE17bs2faM8DNVVc2fuut2kqBK3hWW5+/q2wJ5
+	 vnK61dhCjxF67Ahd3e4yVz5KmL2flpxbg6LCY3eP+CwmF14vv0HF+jSMOpR1NhdF2rg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794074376;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=3YIZbDWLhjFZp3TZcUfe8N0OzJoM90vuAbv+FC37iQs=;
-	b=v+yM8j7i3UTlRyXcPnwH3bhSGE8nPanfNZWdSDx25ZUvq5jGY4OeBMpDMXo3wTNW+XMs
-	 RrfdX3bev30jZXd0gh8y4Oj8bSWKZ4y5K+fd3XYcsKiPzFEsALNtod3t025o/GRMDxc0g
-	 N/X0L97Za1s5LTHrVpyEU7QHY/mv5w9MvCOKleh1bHp+DTpsXt39dqjUgfkMIwf9ZyKNd
-	 ALh2rgnpnG7lbE2dKf+TECeDAF7lL6S1QcrMScMuxeWNN1TFZiFUghx+IvM5eCeGAtDst
-	 J58wNvAB2tTZOwzYB88I6vLHNy1VDcWhADLqO1qvj3ZMFL8dUM80XHSNdrhIF9U+25g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794074384;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=bGepyAYVEqnlKtLsoUC51vfuL8x0qiUkny6Ci/G6J3U=;
+	b=wNbwXl9nIBIlY+cx1VIkD3QpD8JpW36Kp8zLOV+IqBUb5w8AIodSzP/XjBnWtkVdizWP
+	 la22iKVr6rcdROTd9AdTw/7E7leMvMVu7H4eKoWywlEO60E3cuDRSLzACAh3/xDfDaFWq
+	 SegAYSrmznFwmBRSCsEV6o4ndrlPbrKeuqMAVhGt2FcunSrMwpSy9wkPQzsvclli5rO5o
+	 Vxj+1oOZgC+zG+T828Tj+Kf/DePfbyBz/F/Ixu2zkUnuzC25og+oOB1nOQzDbUe2j4hJc
+	 3lmx+J/KT7unqfTLE1X9s5xtkYkRcyOlYGlbDzyXfoDsTU9jvA3DSJ1JSekDqbX412A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=h893Es9s;
-	arc=none smtp.remote-ip=173.37.86.73
-Received: from rcdn-iport-2.cisco.com (rcdn-iport-2.cisco.com [173.37.86.73])
+	dmarc=pass header.from=rbox.co;
+	spf=pass smtp.mailfrom=rbox.co;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b="Mt/7ZFwO";
+	arc=none smtp.remote-ip=185.226.149.38
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DA9606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 17:59:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1DA9606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F52A606D811;
+	Sat,  7 Nov 2026 17:59:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F52A606D811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=h893Es9s
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=949; q=dns/txt;
-  s=iport01; t=1794074375; x=1795283975;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3YIZbDWLhjFZp3TZcUfe8N0OzJoM90vuAbv+FC37iQs=;
-  b=h893Es9s1SBnqchaNy+rYapw77HS/Lfo83R7cyAXPCdJlMqd6dsJXzBY
-   GC08eYqbKBUdRzLZpsO4nJ1UAEOrRHY9osiMaA90z+t+NZo60luQmPHi+
-   eM3LvheVUjhYzeeffRVU8WtXml4+Mqdi8iHzdskLaCGvRLSsGi9N4QgIC
-   xb/RTPLIqqjJ5RVjK5Ef6/PbzL++qgPfwTz9NRWvW1xpXo2BevbDHAcnG
-   0gdiN4SXOOw0nXqw1WYD5Xu7L78Qjec7ODgsyrwBFQzEI9hEnbReKrA2S
-   L4syBZyrQxR947a/GCOKifOVsk8yvKMYV6JzYWrBlNPr1N2A7toin6DcU
-   w==;
-X-CSE-ConnectionGUID: +O9UwdB2QmulNn2ZLZEB8A==
-X-CSE-MsgGUID: O5QgWalCT5uqXsb7HqtRkA==
-X-IPAS-Result: =?us-ascii?q?A0BfAwAhZu9q/5D/Ja1aglmELEOFIJF0niSBfg8BAQEPU?=
- =?us-ascii?q?QQBAYQEAYEAAo4dAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHB?=
- =?us-ascii?q?YEOE4ZckBMCAQMjDwFGEAsaAiYCAlaDG4J1A7w0eoEygQHeSYF0FYEKLoV0g?=
- =?us-ascii?q?m4BhQN2hH0nG4FJRIRAPoQfcYMPgmoEgiKBDJdASAp4HANZLAFVEw0KCwcFg?=
- =?us-ascii?q?SVDAzUSKhUjDzwFLR2BIyEdFxEeWBsGBRIgKkFDW4ESgQddgSsoXQECH0YtF?=
- =?us-ascii?q?YF2AoJRgSNdAgFJQQ4HRVMJJUMSRyQiCBIJARMaLAqBGjU8CSY/FQxkCAMaB?=
- =?us-ascii?q?RomAh8IAgsCDHQoERATHR4kLwUcJj4bCjYYDUgRLDcVGQQ9AW4HlU0ILIJBJ?=
- =?us-ascii?q?ikQlAqSBYE1ikOVGYQqgWifdhozqnGZCKRbhGmBaDyBWTMaCBsVgyNSGQ/dZ?=
- =?us-ascii?q?SZvAQEHAgcOAwuBaJARgW0BAQ?=
-IronPort-Data: A9a23:2tORC6ozxFTvMhqM9h4UG/cxkfNeBmLbZBIvgKrLsJaIsI4StFCzt
- garIBmBOPuCN2TxfYh1adviphkEsZXQmoIxSQdl/n00RCgTpOPIVI+TRqvS04x+DSFioGZPt
- Zh2hgzodZhsJpPkjk7zdOWn9T8jhfngqoPUUIbsIjp2SRJvVBAvgBdin/9RqoNziLBVOSvV0
- T/Ji5OZYgDNNwJcaDpOtfva8Ew35ZwehRtB1rAATaET1LPhvyF94KI3fcmZM3b+S49IKe+2L
- 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVHT4pb+c/HKbilq/kTe4I5iXBYvQRs/ZwGyojxE4
- I4lWapc5useFvakdOw1C3G0GszlVEFM0OevzXOX6aR/w6BaGpfh660GMa04AWEX0qVQUFxR+
- dZCETUQajaF3dCS8p+RGsA506zPLOGzVG8ekmtrwTecCbMtRorOBv2Vo9RZxzw3wMtJGJ4yZ
- eJANmEpN0uGOUASfA5LVPrSn8/w7pX7WyZRtFOOpak3y2PS1wd2lrPqNbI5f/TXHpwMwh7A/
- T2uE2LRJUwjO+OWzRG5r2+1tvTFwgPiRLgRPejtnhJtqBjJroAJMzUaXEW2pNG1g1CzXtZYJ
- VBS/CcyxYA/+FGuR8vwQzW7rWSCsxpaXMBfe8U59QuE4qnZ+QCUAi4DVDEpQNorqMM7W3kg0
- UPKhNryBT1st5WWRGib+7PSqim9UQAcK2MYaDBHSwYZ79T9iIUuiBSJRdYLOLa8hNDzGBnqz
- jyKpTR4jLIW5eYN2rm38E7vnT2hvN7KQxQz6wGRWXiqhj6Vf6a/bICurFye5vFaIcPBER+Kv
- WMPnI6V6+Vm4YyxqRFhid4lRNmBj8tp+hWF6bKzN/HNLwiQxkM=
-IronPort-HdrOrdr: A9a23:C9hA/qqSJQoxPSh0Fhds7jEaV5oNeYIsimQD101hICG9vPb1qy
- nIpoV96faUskd0ZJhOo7690cW7K080sKQFgrX5Xo3SOTUO2lHIEGgK1+KLqAEIWReOlNK1vp
- 0OT0ERMrDN5CBB7frS0U2fD8sqxsWB/eSDgOfTyGoocCRRApsQiTuQzm2gYzVLrM4sP+tBKK
- ah
-X-Talos-CUID: 9a23:wNPWvW+d2dVixDR+oiyVvw0zS/06fleH9XLNJ2m+U1RNepC/GXbFrQ==
-X-Talos-MUID: =?us-ascii?q?9a23=3AHRh5HQ/BG9bXWxTHGt7HjU+Qf+A12quRAUQmrcg?=
- =?us-ascii?q?bovmfP3NQIiunjx3iFw=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,200,1787011200"; 
-   d="scan'208";a="531140037"
-Received: from rcdn-l-core-07.cisco.com ([173.37.255.144])
-  by rcdn-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 07 Nov 2026 17:59:29 +0000
-Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-07.cisco.com (Postfix) with ESMTPS id 3422318000236;
-	Sat,  7 Nov 2026 17:59:28 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	sebaddel@cisco.com,
-	aradhana@cisco.com,
-	rfaucett@cisco.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH net v5 2/2] enic: require DEVCMD2 and set the V2 VF mailbox source
-Date: Sat,  7 Nov 2026 09:59:25 -0800
-Message-ID: <20261107175925.1142634-1-satishkh@cisco.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179406378616.994134.1586384067056474250@kernel.org>
-References: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-2-2501d1223eff@cisco.com> <179406378616.994134.1586384067056474250@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=Mt/7ZFwO
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1xPkhN-007oUJ-R6; Sat, 07 Nov 2026 18:59:29 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=bGepyAYVEqnlKtLsoUC51vfuL8x0qiUkny6Ci/G6J3U=; b=Mt/7ZFwOmJ2rkTAeItS9T8hfdD
+	qirpYNVLVnMJzAu614dofN5MYpV3oc0QhQazqdilxE4FURcqyh6paUP/2gzv2CKkiIf0Fb/rYjGC6
+	CvLGL8nww71LkGOObn2QsPpqvl+qz/rV2zAGlADiCx8rRtK/IfqnRENN1IdLSgfeXiyTHN7972Qhl
+	6LpDmxdjjlK/HpFZvoBIf30MZIRQkGD9bvmq4PtNMGS9X8BMI9fTEJ5sB7KuCIgpxWmltejuRk59Z
+	ltA2MWWSmTX87aGQj7Iyljh4Ek/fBNn7FPdjpoSsbbcnRbvzPU3ahHbtEFWZ9BNVREE9IUlz2g5Ai
+	2kgrpyZw==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1xPkhD-0006IL-Fw; Sat, 07 Nov 2026 18:59:19 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1xPkh4-007LnK-Uj;
+	Sat, 07 Nov 2026 18:59:11 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Sat, 07 Nov 2026 18:58:26 +0100
+Subject: [PATCH bpf-next v3 4/8] bpf, docs: Document BPF_ITER_NOSLEEP
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,30 +67,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: rcdn-l-core-07.cisco.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261107-sockmap-update-limit-iter-v3-4-7c0bad1ad036@rbox.co>
+References: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
+In-Reply-To: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Stanislav Fomichev <sdf@fomichev.me>
+Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org
+X-Mailer: b4 0.15.2
 
-Thanks for the review.
+Commit dfcd17659112 ("bpf: Reject sleepable programs for task_vma
+iterator") introduced BPF_ITER_NOSLEEP, but did not update the docs.
+Mention the flag in bpf_iterators.rst.
 
-The statistics ABI keeps the version-1 prefix stable when later fields
-are added. V6 will therefore accept version 1 or later, while continuing
-to reject version 0 and the PF-source sentinel. Focused tests accepted a
-synthetic version-2 response and rejected version 0 and the sentinel.
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ Documentation/bpf/bpf_iterators.rst | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-CMD_SRIOV_STATS_GET is intentionally mandatory for V2 VF probe. Without
-it the driver cannot determine a trustworthy mailbox source ID. A
-CMD_CAPABILITY check would only detect the same unsupported-command case
-earlier; it cannot provide the VF ID or a safe fallback. A V2 VF whose
-device does not implement the command will continue to fail probe. V6
-will state this explicitly.
+diff --git a/Documentation/bpf/bpf_iterators.rst b/Documentation/bpf/bpf_iterators.rst
+index 72435e32ffa1..c534215f05de 100644
+--- a/Documentation/bpf/bpf_iterators.rst
++++ b/Documentation/bpf/bpf_iterators.rst
+@@ -351,9 +351,15 @@ The following is the breakdown for each field in struct ``bpf_iter_reg``.
+        the bpf iterator.
+    * - feature
+      - Specifies certain action requests in the kernel BPF iterator
+-       infrastructure. Currently, only BPF_ITER_RESCHED is supported. This means
+-       that the kernel function cond_resched() is called to avoid other kernel
+-       subsystem (e.g., rcu) misbehaving.
++       infrastructure.
++
++       BPF_ITER_RESCHED
++           the kernel function cond_resched() is called to avoid other kernel
++           subsystem (e.g., rcu) misbehaving
++
++       BPF_ITER_NOSLEEP
++           ``seq_operations::show()`` cannot run sleepable programs
++
+    * - seq_info
+      - Specifies the set of seq operations for the BPF iterator and helpers to
+        initialize/free the private data for the corresponding ``seq_file``.
 
-I will also narrow the sriov_stats_dma_unresolved comment to the two
-completion observations implemented by the code: a blocking QP command
-or CMD_CLOSE.
+-- 
+2.56.0
 
-I have made these changes in V6 and will post the revision shortly.
-
-pw-bot: cr
