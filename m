@@ -1,64 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794074388;
-	b=ZM0NyZQQ+dbQcxZ8+3Aink/N3w/7jNBnMaDe54IFJEvXmlVPPzfDvTJcDN2EgbKD31o0
-	 /GCpHGsRk0yvoCH1ZDufPlJuQ9WWKDthZKvIa/xq0SCq8Ur6CfJaZcVOXn6h7GcrstiFk
-	 bGnWCFaog5Wwe0tNoidQwdHBgvroaBaSY0PfQWnwiPqXjl3TUo7tV9Vnwk+X9j9UQT/8N
-	 Vb/We7yXRXsiuhbDOTwglGezqpA/BgGr09qKOMi+g/AvCdddWwTREyvtUpFDaVcOCP/ri
-	 /D9DFO0MJpld3qEs2L9Z8mXJ0gP5sqblFxXYYXxTqUWXGu5n/Xxwl6JHX9oDTLZJ1ow==
+	t=1794074389;
+	b=Fnat8L9C5FCMLWSdDYFRoVWANi1vm0lFvSMKusbwwDPkztig4cAv9Pjtp2OoQh72uWE5
+	 +X9VVXEZCiCu+oNcHG7S9jkpDgOQ7VxqopE/EbuxQJDwFpOghTNfAJoaOg25jyXr2o5p3
+	 5V/h0H+bFkKWqAgxNF9E1CO24E74+c+2FVT0WEcFempPokrSUaUNetJgdKAjE54WxZX1I
+	 KoKQhXSHzTQRISntwXDKfX4fWDVZIiPY7u/aTpKd+6ZnJqsIKheT8WLTDAIh3BfxUSJ17
+	 PH1txjCdejpV8agyYpKco2eNTO/1N4zOyXOqpCiXvFPNhaqmth6FtWf/yppaX1/RchQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794074388;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794074389;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=mYH1R7Aw1iVn3adjIX8WOzgpUmMHsc4YqOxn33DMKdI=;
-	b=vQ2+kfEQKsm/yDK96up8C3iG4nzBfa57iK3cgXYdFb37Iasy47Pao3+rGJggekEErVGl
-	 WI+XUhGXyVrTvt0YyoC1lHtYVjRctlvn//AGpHNs4WXAcA0vMUjM41tjhVCS19I2P/IXg
-	 wvhuBIHmWRPf7hBcdpHC54gFkwQ7iKv/o/JdWwXTf5NlblzaO/ZfGMcM9ozEE93NO/E8b
-	 nESx9vANDfBzQ228IVCSYS71h2yY+lePk+Sk3PL5lkkjTdrEJdo+ZQFMTyW/j9lRSG4+I
-	 1aFq61BU7cXyPRamy0fioePFXToA2BJ8Epxt8Ymu4SAvpmd5Ea6+jC6daJr1BzSrokQ==
+	bh=+sOGB5lb2oiDR2pVte8gE4CcBLvveiaJEtksFCZ6wwI=;
+	b=hcr/gZ6xewGKdjsXd5o4TOXJBUXmVAOKTej0Z0oeAZVmGSchzm4GoeHOLOlGSKK5/72m
+	 oqt863zXq7LIj1Yu8S+4U8E6pP3DB4X/Q8RnvYEWK6bfb53OuIhrjufcRsasGxi8xn1OH
+	 odVpysMKJ3VpvTlvtnyAqufgAL1RHDDlHu9zcXwh0rUgcHqQM2nNHVoqyBAad/EhXOgQY
+	 3GRxQ7vquYaY+shx4MhgDwNtBrGOPxI2pCioGTOICpINnV1UhSEA51K5pwx/zSH1zfKu2
+	 t+FYA71eYgDnxTcgGZlwQpRW4QIUoHokEvXFukWNvRi2ccgRhMTrEojyfcEcLXJC/ug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=rbox.co;
 	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ApioPmNb;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=xDY+Dzg7;
 	arc=none smtp.remote-ip=185.226.149.38
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC141606A33B;
-	Sat,  7 Nov 2026 17:59:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC141606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C9A606EE84;
+	Sat,  7 Nov 2026 17:59:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43C9A606EE84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ApioPmNb
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=xDY+Dzg7
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1xPkhN-007oU7-A0; Sat, 07 Nov 2026 18:59:29 +0100
+	id 1xPkhN-007oUE-OS; Sat, 07 Nov 2026 18:59:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=mYH1R7Aw1iVn3adjIX8WOzgpUmMHsc4YqOxn33DMKdI=; b=ApioPmNb4g0URfQcNo+bHmOHqK
-	lTCpz72XYQOXsE8r37ukCxxZ4ct+0WxzIa4l00p+FMV/HJL8SiVqkyr/c/Fhwg6MoDLA8xmdJgHqs
-	CX2Z7ubgIt1YCHwDT2M+n5A19z2aLGCnBS3FG0OhL/t68ExBOyWnq/tFFhBey0b298x39vlMdFml9
-	3VxLa23xI+dNwM9Vjboi9zM1sy+ZJYFp0v3ZYCD5kjRnaGn5TBWZ/Uq6F90pJT+bxFEZW/l3cGHtp
-	5i4D+qUGhYfc0qz03AFQUrrk6KZ3iFHcRIZGqic9cWP8Da+UVZzyQ9U4MbuRzJxTyKmwsPDlak+3J
-	KmWPG5TA==;
+	bh=+sOGB5lb2oiDR2pVte8gE4CcBLvveiaJEtksFCZ6wwI=; b=xDY+Dzg720FHSgO6gJscshGB1F
+	iEGBF5XtYLBoeSPg+5+9pG5Q9MHbDH1wNhh9Vu5PZkvD6D2n8uCqrwkbNhi1/u1CK6If6e002EwNu
+	1L9VrG03D+8cQBxGQsFim8qs3gH7STN1ZA8RTvT3M908BXtVm/OAptwK4WHlZu7ES/tNGfTD+rkHL
+	hM09NtFYZyPqgwAq1DWMF1XMeen1Ftt2ctJbn+7eIPdnFSbvCLP22aVTNddSWr+mfLOHgronrVV1p
+	m+getDbUhjameJbwET2jR9yBoSjmr466DK1bi2sMtKMzd4rzxs9q5C5ka3Tpjukp//322RUfNRt3x
+	yrSc/AAA==;
 Received: from [10.9.9.74] (helo=submission03.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1xPkhB-0006ar-Ri; Sat, 07 Nov 2026 18:59:18 +0100
+	id 1xPkhC-0006az-Og; Sat, 07 Nov 2026 18:59:18 +0100
 Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1xPkh9-007LnK-Hh;
-	Sat, 07 Nov 2026 18:59:15 +0100
+	id 1xPkhB-007LnK-1s;
+	Sat, 07 Nov 2026 18:59:17 +0100
 From: Michal Luczaj <mhal@rbox.co>
-Date: Sat, 07 Nov 2026 18:58:29 +0100
-Subject: [PATCH bpf-next v3 7/8] selftests/bpf: Add iter/sockmap
- bpf_sock_destroy() negative test
+Date: Sat, 07 Nov 2026 18:58:30 +0100
+Subject: [PATCH bpf-next v3 8/8] bpf: Fix "unresolved symbol
+ tcp_request_sock" build error
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,7 +70,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261107-sockmap-update-limit-iter-v3-7-7c0bad1ad036@rbox.co>
+Message-Id: <20261107-sockmap-update-limit-iter-v3-8-7c0bad1ad036@rbox.co>
 References: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
 In-Reply-To: <20261107-sockmap-update-limit-iter-v3-0-7c0bad1ad036@rbox.co>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -95,33 +95,41 @@ Cc: Michal Luczaj <mhal@rbox.co>, bpf@vger.kernel.org,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org
 X-Mailer: b4 0.15.2
 
-bpf_sock_destroy() is restricted to socket-locked iters, TCP and UDP.
-Fail attempting it from iter/sockmap.
+CONFIG_WERROR=y CONFIG_NET=y CONFIG_INET=n build fails:
+
+    WARN: resolve_btfids: unresolved symbol tcp_request_sock
+    Failed to generate BTF for vmlinux
+    Try to disable CONFIG_DEBUG_INFO_BTF
+    make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+    make[1]: *** [.../Makefile:1379: vmlinux] Error 2
+    make: *** [Makefile:248: __sub-make] Error 2
+
+Handle it in the style of commit d82a532a6115 ("bpf: Fix "unresolved
+symbol" build error with resolve_btfids"): force BTF generation.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Technically, since tcp_request_sock embedds inet_request_sock there's no
+need to explicitly emit for inet_.
+---
+ net/core/filter.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c b/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
-index dd6850b58e25..7b9f5779a184 100644
---- a/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
-+++ b/tools/testing/selftests/bpf/progs/sock_destroy_prog_fail.c
-@@ -20,3 +20,14 @@ int BPF_PROG(trace_tcp_destroy_sock, struct sock *sk)
- 	return 0;
- }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 6a67bc2a0c4b..b86529dead65 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -12391,6 +12391,10 @@ const struct bpf_func_proto bpf_skc_to_tcp_timewait_sock_proto = {
  
-+SEC("iter/sockmap")
-+__failure __msg("calling kernel function bpf_sock_destroy is not allowed")
-+int iter_sockmap_destroy(struct bpf_iter__sockmap *ctx)
-+{
-+	struct sock *sk = ctx->sk;
+ BPF_CALL_1(bpf_skc_to_tcp_request_sock, struct sock *, sk)
+ {
++	/* Ensure BTF for the structs exists even with CONFIG_INET=n. */
++	BTF_TYPE_EMIT(struct inet_request_sock);
++	BTF_TYPE_EMIT(struct tcp_request_sock);
 +
-+	if (sk)
-+		bpf_sock_destroy((struct sock_common *)sk);
-+
-+	return 0;
-+}
+ #ifdef CONFIG_INET
+ 	if (sk && sk->sk_prot == &tcp_prot && sk->sk_state == TCP_NEW_SYN_RECV)
+ 		return (unsigned long)sk;
 
 -- 
 2.56.0
