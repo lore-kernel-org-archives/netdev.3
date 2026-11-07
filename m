@@ -1,60 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794085573;
-	b=l2PfpjN5xt2ZiAVp+gdSb+W9Okc+iIkd/WgopYNMo+lxZoBsJLL66yQ86wvfx5ADWo0w
-	 li/AbYF52aeyOthWtUVvJI5OX/pWk6ROxxgJkKasf4vnGdt7u5X+L+3xWNBDHZDtt+xuu
-	 uU5cL/65YKruJMlQq3gfKNAoTUzYklzVppoxBX1FfmDD+AkCrjMdyBuxddPv7rLA90MTN
-	 sIOp/h0vLUjRNpp/Yp+PESKd3mOTBAQdNS5LiKUM7b7rjN+71BiIzcy5W8+sesVQ9igDD
-	 1KFKcFNs1MeW3K5zF5L6h1o+9yPynCVGhR4pAbmTMjUavGbEz5LLF1JMQY10y3P4KHg==
+	t=1794085642;
+	b=hYdZdPwSvZA8j+NyxKUG4qjotl4nNcEgJ9PUefsGLiiXCWbalaHn/ybIWUArz9wxRL8W
+	 E00C/sevSA/u+KomMkuskEYwa8OLYzNVGKYwqMvec2yQPqabpf+8NAlED16PLHR9A0MaI
+	 54ag8i5t6Znyz4V+B/OWTKJdM/kqpCJW25hTCg4yqkgHaOOcD2QKMBtqbtsXl7y0pk43t
+	 5tNUTvwOnLZBzsU5nm8hahy6lXIflMQQpyrPhKvMiRRL2YI746LAAig/3TTgC60f2aO+U
+	 wbqPeI0p9QPwhrim0nSHjE/SmqIoQiRXS3and67GJbyZnsrCGTAvQR/H6HOG70QYFSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794085573;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=GXAkWtV0fCcGEA/twUd5fTTQKgnBfg+V+HOTAGhnJcw=;
-	b=GSOknX/lz/WBT2M1ifdt3srF+wy9DOjb82LlQpzjEDbuw9gJ9lpV/iMAHEdVIltouXI5
-	 TmuHLmSvOvZJhxbIIdunH/IiFt8ZvxI0VoBmRmZy7wLErQDBt3MurkzJjZ2FRCpzxRIDk
-	 9eZastSmSpmeVMWt6SHKcGsbO5Uz1yu/hgfbS7Gpq5Uodxq32uLdbd0Tllw+GOR0ube9K
-	 dv/0i7x0vr/7OfA3FHUy3L9OGCYCTymkotISFkkPcwKN6loV2RygLDNWGraX3UWBkp1cj
-	 NQv/N2NKzV9LkS8N6OECXfvmyiGx+51gCFmEUYXMffevOWqnP3h4+MrQ42ZrYgF7a+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794085642;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
+	b=xot/s9V99lAONYEQNWc6IZRGw59UTJPPurmPL+XhaTSL9mQoDo3SJ/eGMdtiZwRTBCCn
+	 NirvsJN3V8RdW/sOlIqRiGV8hu29JlVOB8Ei4U7GZqhLN/TFPrygv7eV5YqxJWe1mctf2
+	 FongxO/P2P/yxcVYL3biQsMI4vZPCTSZrji1PEKld5lBGHelbe85pE30iyFvq28mgMkAj
+	 8kT14Y69VkXuZL8m05a7elPdRkIEtqvPGV6sDA3+9F9sXfEWQvVOMWQfjcAC9X9DikRvL
+	 5N6EBDSDtvlkSg1NhfHlFXIVWrPyVLXO2WvtAU1lJHqrbFoChu0wMQT+UGOO7IQNwTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YeiL4vYX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v3VTxUSo;
+	arc=none smtp.remote-ip=74.125.82.170
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF35606A326;
-	Sat,  7 Nov 2026 21:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D04F606A32C
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 21:07:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D04F606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YeiL4vYX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB51F0089F;
-	Sat,  7 Nov 2026 21:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794085572;
-	bh=GXAkWtV0fCcGEA/twUd5fTTQKgnBfg+V+HOTAGhnJcw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YeiL4vYXBQfRq9SSN60+Hvuvqp8PneRDdXdJ0a3jAp7CwaRoCpMIMYjQUXHHqBquU
-	 asnHVbI5D5T1hJcCshOJl8U66G67JkbD9ptyLzoefXHlCoU7Xq3w7HSQ7FjyPDl+/w
-	 iZz+jfFLje3lL6ZEC34Tjrl31AHQv/VZq6BQ1O4erd49zyMEh8fxpZtfxC75d8COvd
-	 pLkKb7CS7AsvwKzn7TgnXFQNgHmpOgAog03gUKzG5/AKvenHZqeKxrEQv/duJX1EDv
-	 Pwm2Odrx9D0i5k97/KEufQHicFa/GLET8z5nsHrCGDdnZPwsylNsMNwo4Ds8HZT7v2
-	 CQR6Zhoka3ERw==
-Subject:
- Re: [PATCH net v3 2/2] xfrm: fix selector matching for IPv6 atomic fragments
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, dsahern@kernel.org, idosch@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Sat, 07 Nov 2026 21:06:11 +0000
-Message-ID: <179408557152.994134.2903061781051597708@kernel.org>
-In-Reply-To: <20261106202910.723098-6-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261106202910.723098-6-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v3VTxUSo
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-37198ed3727so534989eec.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 13:07:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794085641; x=1794690441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
+        b=v3VTxUSo5xdLe91KD1TmAmy+Hk7quvkWacahldqH+gvWRPUtpmA1w6lWmj76cHGNRQ
+         u0FYpGPpEGSp22Qa1uPQLuFysjD1DfAn/7aUNzWcywLzTziNd3HhNKVBBd68Bu9cmgNn
+         1m3GKAf1PAW2SxP1io881+ihvFmPLJv/Y5Hwx+2JBiIFMCynKZLDgphQZEJzdRhg78ux
+         e98UGLcbDlSR4ufmOhUdwJO9qIRTFYhKcAADCXg+v7pSwMJSoXAZErG+W9uqQETWN8kh
+         9aCYvJJ2WmQPukPQpGbIuJhya2hEyn0SzIcHKIf68E1ndr6pBFXzT2hhq9XjjAjXjVRb
+         9rgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794085641; x=1794690441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2ISWID7R3PJvGfbWlsLezGwB1NxsnTURFXD2bP305k0=;
+        b=oB5OOZoVT9zQILMFMoW1F+7ud564PYSO1W8Lckby/kmW29c1NaZcaR8FRtfaXWXKhL
+         6AwGwNpXpkbr1Ig0O1F3p3QWlFDmGZiKpLbNzqAibTbyhELVwMAzE2JlAAY3cn2j03XE
+         6r5RIK43Vzha+vhgYa/ut9UIg640fH9hh7IpoulOi6Ndn01ZHO11XHDQV6GXo/uBr1LT
+         j5xh1XRNeD0eZo0KSAMWuATperBMysKZZZdzlQ1ar509ek95xS8g7NaaUwdbJe+PXFSG
+         pa4br06j2UTr1Xi2VhFyEnbokRkeWDZe78a7IvbKKLlIkKDwgL7c5I5+3vbworn2mDyc
+         qAsQ==
+X-Gm-Message-State: APuU4Z8+3D0igB591UbEFJnoSN6pH0etggebv/lCMkQcZ9lrFzzqC/h+
+	qkSDcgpFKpbNqbzw9FRbM46c2IjHep1yHGdW+UQoYj5kfUqjZrTCKB8/Md8wXVb9Jsg=
+X-Gm-Gg: AYBFou2uN1DJde+/aPBEb6cH08Xt1fFUSP61QwFoIZAUcpIK1JJtXk9hDV0DJyR19Tz
+	6fYlT5sbJYZqQ3u56EcdgiFN0rG75HYgtUgPc6DEqTyuU/7snZb18F7ivbGo2yZB8SmEbODdzCM
+	qgfXcRECbc4cshG0JA2bEZQT/t2rjIXjcVF+9/FnWyKrbBrvDuuzz2f14gSR80gJ0h5poM21maQ
+	WaQ3toZxJ+DfIaaKSfKy9ys4zCUM25Aj9I6k226sLezZbBgttvfsYfxu7anq/7Vf4oVhJR+uacH
+	VXRrihIc88Li3V5qFtF3iHvFTzYV4NdaRVCFANeYgIRDGEfe8f2UWNXD/ay2QosqEIW+XQXRABU
+	OmTevRDPG+EvwrxMaaz5b5lmNTgaxJmS1zf+fsUhkx2DjftRBIefxDUpJKZYA7dvoi1DaVVqoOE
+	X7ET/nizu+M6MwpJ3MReWy+CPT+8CGvd3QjLRL8KdppJ8kYiPbKTtaPNm3gfCSG4b6ytlnqixFr
+	C429sQeEhJUFeQpVZaQjkcP4JUCdaVXqKR3HRzeL9Ar2sLftB9+BngkAZCsnXF49PTWcLlM1GPV
+	ccwzvayAA8PStH4uOt6FoioLhLCh3Fx9Y36rv1TA2wtq+w5drw==
+X-Received: by 2002:a05:701b:4201:10b0:144:eb3f:563a with SMTP id a92af1059eb24-1b269b20199mr3989418c88.15.1794085640608;
+        Sat, 07 Nov 2026 13:07:20 -0800 (PST)
+Received: from ZephyrLabServer.internal ([165.162.64.148])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b375726fd1sm889625c88.14.2026.11.07.13.07.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 13:07:20 -0800 (PST)
+From: John Macias <dencity7@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] net: dsa: clear the conduit RX queue on receive
+Date: Sat,  7 Nov 2026 13:06:53 -0800
+Message-ID: <20261107210653.2007194-1-dencity7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,143 +98,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+A multi-queue conduit records its RX queue in skb->queue_mapping with
+skb_record_rx_queue(), as stmmac, mtk_eth_soc, fec and dpaa2 do.
+dsa_switch_rcv() passes the skb on with that index unchanged, although
+it counts the conduit's queues, not those of skb->dev. A user port has
+a single RX queue. For a packet from conduit queue 1 or above,
+get_rps_cpu() finds the index past the port's real_num_rx_queues and
+returns without steering, and its WARN_ONCE() stays silent because the
+port has only one queue. So rps_cpus on a user port only takes effect
+for packets from conduit queue 0.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Trunk-tagged frames go straight to a bond or team (tag_dsa), through
+the netif_rx() branch for devices that are not user ports. That device
+has its own RX queue count, so the conduit's index there selects the
+RPS map of an unrelated rx-N queue, skips RPS, or, when the device has
+more than one queue and an index at or above that count, triggers
+the WARN_ONCE().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Clear the queue mapping once the tagger has chosen skb->dev, before
+that branch, so both paths are covered.
 
-- [High] The fix does nothing on the local-input (XFRM_POLICY_IN) path,
-  which is the main bypass the commit message says it closes.
-- [Medium] The new pskb_network_may_pull() call turns
-  __xfrm_decode_session() from a read-only helper into one that can…
+This leaves no RX queue recorded, rather than recording queue 0. Both
+make get_rps_cpu() use the first RX queue's map. They differ for code
+that reads the recorded queue later:
 
---
+- skb_tx_hash() picks the TX queue from a recorded RX queue when no
+  socket mapping or XPS map decides. A flow forwarded from a DSA port
+  to a multi-queue device now gets its TX queue from the flow hash
+  instead of the conduit's RX queue number. Recording queue 0 would
+  instead put every such flow on the first TX queue of its traffic
+  class. The selected TX queue is also an input to several taggers:
+  tag_brcm encodes it directly, while tag_ksz, tag_sja1105,
+  tag_ocelot_8021q, tag_netc and tag_vsc73xx_8021q derive a traffic
+  class or PCP from it. A different queue within the same traffic
+  class need not change that encoded class.
+- With CONFIG_SOCK_RX_QUEUE_MAPPING, packets received through DSA ports
+  no longer update sk_rx_queue_mapping, so XPS by RX queue (xps_rxqs)
+  stops following the conduit's queue number for those sockets. A
+  mapping the socket already holds is left as it is.
 
-xfrm: fix selector matching for IPv6 atomic fragments
+Found on an IPQ8074 board (OpenWrt, Linux 6.18, conduit with four RX
+rings): with rps_cpus set on the LAN and WAN user ports,
+/proc/net/softnet_stat showed RPS only for traffic hashed to conduit
+ring 0.
 
-This patch makes __xfrm_decode_session() recover the ports, the ICMPv6
-type and code, and the GRE key for IPv6 atomic fragments. Before this,
-those fields were left zero for any packet with a Fragment header. It
-adds an IP6_FH_F_NON_ATOMIC flag to ipv6_find_hdr() so the caller can
-tell whether every Fragment header in the chain is atomic, and it pulls
-the base IPv6 header before calling ipv6_find_hdr().
+Claude and Codex assisted with diagnosing the queue-metadata issue,
+preparing the change and its explanation, and checking source and test
+results.
 
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index 4f6a5b81e3b5a..b7deeb03276e4 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -3530,9 +3530,24 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
->  		decode_session4(&flkeys, fl, reverse);
->  		break;
->  #if IS_ENABLED(CONFIG_IPV6)
-> -	case AF_INET6:
-> +	case AF_INET6: {
-> +		unsigned int offset = 0;
-> +		int fh_flags = 0;
-> +
-> +		if ((flkeys.control.flags & FLOW_DIS_IS_FRAGMENT) &&
-> +		    pskb_network_may_pull(skb, sizeof(struct ipv6hdr)) &&
+Fixes: 91da11f870f0 ("net: Distributed Switch Architecture protocol support")
+Signed-off-by: John Macias <dencity7@gmail.com>
+---
+Changes in v3:
+- No code changes. Resent with git send-email; the v2 posting was
+  damaged in transit by the mail service (wrapped hunk header). Rebased
+  onto net/main 30c71476d, where net/dsa/tag.c is unchanged.
+v2: https://lore.kernel.org/all/CA+KzPspNN14ZEyxisGrOSpgfTqajJfZTXG_iHBRMYd2su1dRKQ@mail.gmail.com/
 
-[Severity: High]
-Can this check ever succeed on the local input path?
+Changes in v2:
+- Clear the queue mapping before the branch for devices that are not
+  user ports, so trunk-tagged frames delivered to a bond or team are
+  covered too (Sashiko review).
+- Replace the claim that TX queue selection is unaffected. The changelog
+  now describes the effect on skb_tx_hash(), taggers that consume the
+  selected TX queue, and sk_rx_queue_mapping and
+  xps_rxqs, and says why no queue is recorded instead of queue 0.
+- Subject: "on user port receive" -> "on receive".
+v1: https://lore.kernel.org/all/20261025072203.1519561-1-dencity7@gmail.com/
 
-When xfrm6_policy_check(XFRM_POLICY_IN) runs for a locally delivered
-packet, skb->data already points at the transport header.
-ip6_protocol_deliver_rcu() does:
+Claude assisted with diagnosis, the patch and runtime harness. Codex
+independently reviewed the code, claims and raw results, and corrected
+the test descriptions.
 
-    if (!pskb_pull(skb, skb_transport_offset(skb)))
-        goto discard;
-    ...
-        if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb)) {
+Testing on net/main (5d7f3375c), x86_64 under QEMU: a 4-queue virtio-net
+conduit with dsa_loop, which for this test only was changed to use the
+Marvell DSA tagger and to accept LAG offload (lan2 + lan3 in a
+balance-xor bond with 2 RX queues). The host injects DSA-tagged UDP on
+chosen conduit RX queues; rps_cpus on lan1 and on bond0 rx-0 points to
+an otherwise idle CPU. 200 datagrams per queue and path. The RPS columns
+say on which conduit queues the receiving socket saw the RPS CPU
+(SO_INCOMING_CPU, which holds the socket's latest receive CPU, so this
+is a per-socket observation rather than a per-packet one):
 
-tcp_v6_rcv() and the UDP and ICMPv6 receive paths run their own IN checks
-from the same position.
+                       lan1 RPS     bond0 RPS    WARN_ONCE   eth1 TX
+                       (q0-q3)      (q0-q3)                  per queue
+  unpatched            q0 only      q0 only      yes         800/0/1/0
+  v1                   all          q0 only      yes         201/100/150/350
+  v2                   all          all          no          201/100/350/150
+  skb_record_rx_queue  all          all          no          800/0/0/1
+  (skb, 0) instead
 
-ipv6_frag_rcv() does not reassemble an atomic fragment. It only moves the
-transport header forward:
+(Queue 2's NAPI happened to run on the RPS CPU, so q2 does not tell the
+cases apart; q1 and q3 do.) The last column is the eth1 TX packet delta
+per queue while 16 UDP flows (800 datagrams), all from conduit RX
+queue 0, were routed out a 4-queue virtio-net with XPS cleared; each
+total is 801 because one other packet was also sent. The aggregate
+counters are consistent with fallback TX selection favoring queue 0
+when RX queue 0 is recorded, and flow-hash distribution
+when none is recorded; the unclassified extra packet is not attributed
+to a test flow. W=1 build of net/dsa is clean.
 
-    if (!(fhdr->frag_off & htons(IP6_OFFSET | IP6_MF))) {
-        /* It is not a fragmented frame */
-        skb->transport_header += sizeof(struct frag_hdr);
+On the original hardware (Netgear RAX120 v1, IPQ8074, OpenWrt Linux
+6.18, four-ring conduit), v1 was tested as described in v1. v2 has not
+run there yet, and I have no switch with LAG offload to test the trunk
+path on real hardware.
 
-So skb_network_offset(skb) is negative here: -48 for a plain atomic
-fragment carrying TCP. pskb_network_may_pull_reason() then computes:
+ net/dsa/tag.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-    return pskb_may_pull_reason(skb, skb_network_offset(skb) + len);
-
-Because len is unsigned, -48 + 40 wraps to 0xFFFFFFF8.
-pskb_may_pull_reason() then returns SKB_DROP_REASON_PKT_TOO_SMALL from
-the len > skb->len check.
-
-The && chain stops at that point and FLOW_DIS_IS_FRAGMENT stays set.
-decode_session6() then still leaves the ports, the ICMPv6 type and code,
-and the GRE key at zero.
-
-Wouldn't a plaintext atomic fragment sent to a local TCP, UDP or ICMPv6
-endpoint still miss an IN policy that selects on those fields? If so,
-only the FWD and OUT directions actually get the fix.
-
-With CONFIG_DEBUG_NET, wouldn't each such packet also hit
-DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in pskb_may_pull_reason()? One
-remote packet would then be enough to cause a WARN, or a panic with
-panic_on_warn set.
-
-Instead of pskb_network_may_pull(), could the base header be read with
-skb_header_pointer() at skb_network_offset(skb)? Another option would be
-to pass an explicit offset to ipv6_find_hdr().
-
-[Severity: Medium]
-Could this pull leave stale header pointers in callers of
-xfrm6_policy_check()?
-
-Before this patch, __xfrm_decode_session() only read the skb through the
-flow dissector, and the dissector uses skb_header_pointer().
-
-pskb_may_pull_reason() calls skb_might_realloc() before any length check.
-Under CONFIG_FAIL_SKB_REALLOC that does
-pskb_expand_head(skb, 0, 0, GFP_ATOMIC). __pskb_pull_tail() can also call
-pskb_expand_head() when the base header is not linear.
-
-Several callers keep header pointers across the policy check. For
-example, tcp_v6_rcv() does:
-
-    th = (const struct tcphdr *)skb->data;
-    hdr = ipv6_hdr(skb);
-    ...
-    if (!xfrm6_policy_check(NULL, XFRM_POLICY_IN, skb))
-        goto discard_it;
-
-    tcp_v6_fill_cb(skb, hdr, th);
-
-The TIME_WAIT path in tcp_v6_rcv() follows the same pattern, and
-tcp_inbound_hash() is passed &hdr->saddr and &hdr->daddr. ip6_forward()
-saves hdr on entry and reads hdr->hop_limit after
-xfrm6_policy_check(XFRM_POLICY_FWD).
-
-If the head is reallocated here, wouldn't those reads touch the freed
-head?
-
-A concrete trigger was only found with CONFIG_FAIL_SKB_REALLOC.
-ip6_rcv_core() already makes the base header linear for forwarded
-packets. On local input, the wrapped length fails before
-__pskb_pull_tail() is reached.
-
-The pull seems to exist only to protect the ipv6_hdr(skb)->nexthdr read
-at the start of ipv6_find_hdr(). Would a skb_header_pointer() read that
-doesn't modify the skb, or an explicit start offset, cover that read?
-
-> +		    ipv6_find_hdr(skb, &offset, -1, NULL, &fh_flags) >= 0 &&
-> +		    (fh_flags & IP6_FH_F_FRAG) &&
-> +		    !(fh_flags & IP6_FH_F_NON_ATOMIC)) {
-
-[ ... ]
-
+diff --git a/net/dsa/tag.c b/net/dsa/tag.c
+index 6a5aa7fc3..e53dc3f3c 100644
+--- a/net/dsa/tag.c
++++ b/net/dsa/tag.c
+@@ -95,6 +95,13 @@ static int dsa_switch_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	skb->pkt_type = PACKET_HOST;
+ 	skb->protocol = eth_type_trans(skb, skb->dev);
+ 
++	/* The RX queue the conduit recorded is an index into the conduit's
++	 * queues. It means nothing on skb->dev, a user port with a single RX
++	 * queue or a bond/team with its own queue count, and get_rps_cpu()
++	 * would check it against that device. Leave no queue recorded.
++	 */
++	skb_set_queue_mapping(skb, 0);
++
+ 	if (unlikely(!dsa_user_dev_check(skb->dev))) {
+ 		/* Packet is to be injected directly on an upper
+ 		 * device, e.g. a team/bond, so skip all DSA-port
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106202910.723098-2-Jeremy.Jean%40oss.cyber.gouv.fr
+2.47.3
+
