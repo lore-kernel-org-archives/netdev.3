@@ -1,101 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.238.123.102
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794070488;
-	b=zEyRX1xbpKGaz2iepR7Mhl5fe9HnPHWW/Z9xxWIiYoPUtA5SSYy9N7BKU8O5H8dKkE6q
-	 AODXyt37U0o2h/YCEkq97twH9oN2XhhQPU6/CUd2weIZ4kkXSYlqACn1N/sosmbCU8KuF
-	 22gxrIpnGpInm/juVKAOAlU5lLxLZHND5JrR8sRZSO1ZtSM/bLQWTY6Ogo7TqnqUexEbI
-	 m3c+HpwjR0Ys7+rjcvAScuwQoTs3CwEOkKuXR/DZgtm1DSGhUocpHguu/1NHPZVUV8wg0
-	 5qxxdgUAI3wjC700d9eSuNm6VCAuB/Qls2ZO/et09JCRa7UXPT+z0QgYyT0A0X5rZBg==
+	t=1794070694;
+	b=aW5zUAdmkfb8Btbx+wO7znB2lHMp3jp4M964Ao/VBqkgbYkIXSo+W8v3Y8ZFipxA22XY
+	 UhlA1FJGUPlRgWtfsfJaLmkn7AqvhYTU9L5kEKFY5yMLa+gHZro9UjJDOIwkd/wdszWQM
+	 zy9XQfYebNDGVoM/IbS8o1Vycz5zLDPf+pjt3We0qdOPXHq4EQJ5gSaKmV+2XMUABlnKY
+	 oBtN5C2jgqWNnP/EyVZKjOwFEPfG4VuyZrzSC56aKd//j5AuGcO/ZFUKaOS7J0bxBNT4X
+	 HTFY87CxJjRYJF+FYjAIX5Aq78F7pv0Jc0TV1s9sb5TI/INKBcHrx7AqL8JkQR7IQhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794070488;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:To:Cc:Subject:From:In-Reply-To:
-	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
-	b=2Tr9adt82KngM/7+gHwtBajSH7X4YU/li0zWfMWawHHKJse5FS6GgNawka1GX7Ce5jUz
-	 zFj89S8ejR1VOW4r9PbUEzauXp7N+ZOfSIwkWHsKO+XbAmdep6nMT6rj6hDcGpG8jrTZ8
-	 dh22Y0KRlMRp31apG1cazFn4lAO6qdjO4Vj1onCLuDiHAHyICfSY7fJz9lhc0EWFdLvSa
-	 a2NoGejMedhCehcubSKQ9coPqA7/L4fp6hs5ER+oKMxcuS7K0zoSKhb8WCRPsVaaYw3jD
-	 2ERzuXxSVzvGxP3EM7vrMmy10XPkTAKmempGDnob3AaDMEL0YoeCCyqAVqjxnG27WoA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794070694;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=KKTs5+AnKZPaqJkUBfTaMQT3/ZytLFNYoxVwpYr6eHY=;
+	b=DnMfP9C/EPsQ7fzUORMc0cum2UwTOZA8rQZ13RA9SpO6hhjLkQ2R/B/nJdL60t2dYld0
+	 /0pRFSN65dWBRXM6U27l/IR83FBI6JuqM8shsbr436+43xA7NhXFjfwYiTUENvRUMa0Rh
+	 PvS4Z/aMDlRxaO0z91H92P5feOTMdOILnCYapNkgqVfrddoshS14jInPjAoDin5son+Wc
+	 4NsiTPB5QMYVDcRoIdbR+dZ2BmY7SxVpYquQErWhcDekyUgxqyT6h+Q9fk3SoVtURVfli
+	 KYA4GaaRcfGfUHELRkjlb255V0Bg+FWGm+fbRdoRmlZxT3RP9e/3hWqr/RrorvYLxzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ9xwmCX;
-	arc=none smtp.remote-ip=209.85.215.178
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=marleb.org;
+	spf=pass smtp.mailfrom=marleb.org;
+	dkim=pass header.d=marleb.org header.i=@marleb.org header.a=rsa-sha256 header.s=dkim header.b="gWC6VK/4";
+	arc=none smtp.remote-ip=80.238.123.102
+Received: from mail.marleb.org (mail.marleb.org [80.238.123.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EA0606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 16:54:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65EA0606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CA3606A335;
+	Sat,  7 Nov 2026 16:58:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2CA3606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marleb.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marleb.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EJ9xwmCX
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccca948203aso596343a12.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 08:54:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794070488; x=1794675288; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:from
-         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
-        b=EJ9xwmCXuRLVDRzge33hcKr2+q/R5m/0hsPPquNGhCKVcmsug8bFHuIiz3T1CovAX9
-         VZukWJM+7/ZGGa+72Pujv/cE2agl6ecl2tcwmK+t6+zjfQrSLoUEXmKjCVIW4WkoRoPB
-         n8TqckVGUqrmobnfTWeOETlbfobjxZesd+MaQh2f7uVmdVqXtyuCHHPGIRXEjhdGSRLO
-         MI6SCmFLLYOwf47nWgJ+Jsl547qKwvFSsfR6TVCF7jdCbZdG3mdWreqMiryOJZFxXzWV
-         muRrCXsv/Y+XK4jFLG+U+L785zpCws/1fCPfo41Y0g13tCmbNSuS+KdZ5BoPK1AhYcQ6
-         i1cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794070488; x=1794675288;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:from
-         :subject:cc:to:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9crvf8Iw5xDhgykteC/ydKrbY+Caq7Bxsz2VEq620k8=;
-        b=d5lD0EF86rnjQS2FMZjPHpUMeOoALPN8Lh/cLjIH0Wl71wfkPCzF3Ufxy+4/iXRgOd
-         e+yZiE5p7TlBw1ltY3igCCqMJvQq5kbpAZGT98m5hjrj9y+elkvty38qzM8CAR2tqIrU
-         qyOpHOI7axJ6UkcLoeFL0WsmRr/R+WSdJcwlHZXG3gYGfZHudXZYut9Z6k3flo9ZVJnE
-         usMeFAxAc0/Fm09bGei8zwt8O5Ko8TdAG7IPk3hZOlr/SCLwHR5PaJuASMzJ/hOqBCZB
-         9V4CtYFO1rktMX4Tn83qwLdPRiHH13QS3bjqNOnhLLn4viGMjk1ZkM6mOxfFCNIMKE+b
-         yfbQ==
-X-Forwarded-Encrypted: i=1; AL+hErHlHCNr/G0on2QfIaKlQpAwo7axuQ0ba4j8wrpSmdERFCmPADhItlDMgIS5CbfxIzVNnxXml1E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+b4ai3MuAL19zX9NjlbOixoOHzHkhu+Pc55AntMnH0A0Bv/YDm
-	Fyipf87AehR9oOtd3Rmx7UAP1UzC1nDTH40qypSHYW8jW6At0/70Trt+
-X-Gm-Gg: AYBFou1Q7reNeKzCZGTmP0xJyXrhW92jeLaHe2+pEsA7xNGQfSw+Cr8NGjzm079NHOv
-	K++rRmcBMlwasMRqkHHSXWEE3TSmMDg6urhRa/MCNib4lzK9R8AYRoxhI8TXTOfeZwz/QnKPJif
-	Jf0ZOvyRPh67uqlsdmWyoVlyfy7fBH9d57RU7oXyLCRbNgsBDtiC8GKSOtLISDSLWfA+q8ozR7Y
-	+uWGdGZf5LIOiaOOhBjOzZsTh9+6rRhNfvm1jLVT716vLJpIYBvaVwqNMBa7MZoO+ELvx6ANE5M
-	VMWb1h4w26x4H8mtQPf2ODh/aqajB74oPwUdm/EEdwCC07q2J6SDEr4K4DhnRNlhuCfzd7/WNs9
-	2A/x4HMHu5WWGo3vDcElfP1HQSxRPIizRRn/v7Uks6QwX9zOyLDHGjx4AubEKdiAEQVgrTjU2hl
-	RSavGlreZvinRi3OM5bSQV0fL+IDM2hKJxyHjvc+suCGlUzzHxMijh5HHoSBoXcaDn80DTlwKoX
-	oPzqwA118MpdDiyDFL0BTFBDZ8mVTUTfls4LumRagJVEkBGhUSwHlrxjCtS/+PIIeNp6vGCJQ5F
-	gV2mGlZ/Kex2cb44CKaUQjP/odx4iy2NR9jBLTYLt+6485NZ/iiZgT6iNqTbtD7PhV+IglRMHUD
-	X8q2EZbK5Dsh37OsfRhD0EtSkztkxlSH77cxVYSH2pZVFAyI/brQxoXU=
-X-Received: by 2002:a17:90a:d60c:b0:3ac:6e91:3f22 with SMTP id 98e67ed59e1d1-3b0db72c4d0mr5096080a91.52.1794070487771;
-        Sat, 07 Nov 2026 08:54:47 -0800 (PST)
-Received: from localhost ([153.61.198.246])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b11b04458csm828387a91.13.2026.11.07.08.54.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Nov 2026 08:54:47 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 07 Nov 2026 16:54:46 +0000
-Message-Id: <DMP4WRIOGMBX.3VW2KNLBGDZ0K@gmail.com>
-To: "Yingjie Wang" <1075151112@qq.com>, <netdev@vger.kernel.org>
-Cc: "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Thomas Graf"
- <tgraf@suug.ch>, "Daniel Borkmann" <daniel@iogearbox.net>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] net: ipv6: reject collect_md tunnel route without
- inet6_dev
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-In-Reply-To: <tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com>
-References: <tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com>
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=marleb.org header.i=@marleb.org header.a=rsa-sha256 header.s=dkim header.b=gWC6VK/4
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2D2471732;
+	Sat, 07 Nov 2026 17:58:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marleb.org; s=dkim;
+	t=1794070685; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=KKTs5+AnKZPaqJkUBfTaMQT3/ZytLFNYoxVwpYr6eHY=;
+	b=gWC6VK/4BCtlJvkAks9C6fn25sZTBpztRVApdHMzZpIVnWHEi2xUir/EVse1Rq630PRzQZ
+	mTNgdJyKEYvJOK/guUBqHlfWXsWfP8/GW7BVaVRrBvHA7H360X2hDAuzzvCyX7m6GmS3Iv
+	tswSFTFRwTiBJZF75zI9qJOPzVdORqyVWNsY4wC0KaQiL93oslDCoUlN6FRZ388Kwjqt6f
+	jF7KNsknWghiXMIiPhxnLM7ASfVkUpSeHYB9uP2l43N+V+SF/mpPMnNXUrLFSQaBk7V375
+	t6VH+Z11frgLUVOhwhC0VIuQFf7OCIjHlcFPvr/d+ZlZKUcn35+xCnqkZ7Mm9g==
+Message-ID: <2c7c16a8-b8ba-4df6-96b3-39e8222f8d8a@marleb.org>
+Date: Sat, 7 Nov 2026 17:58:01 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,54 +55,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: phy: realtek: register hwmon thermal zones
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org>
+ <20261106212528.948836-1-kuba@kernel.org>
+Content-Language: en-US
+From: Hleb Shauchenka <me@marleb.org>
+In-Reply-To: <20261106212528.948836-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sat, Nov 07, 2026 at 07:29 AM Yingjie Wang <1075151112@qq.com> wrote:
-> A route using a nexthop object can remain after its output device loses
-> its inet6_dev when its MTU is lowered below IPV6_MIN_MTU. The route still
-> has no error, so ip6_route_output() returns it with rt6i_idev == NULL.
+On Fri, Nov 06, 2026, Jakub Kicinski wrote:
+ > So on mainline, no RTL8261 PHY seems to register a hwmon device. The
+ > three thermal zones seen in testing would then come from out-of-tree
+ > OpenWrt PHY support.
 
-since so, should it be fixed in there?
+Correct. On that board OpenWrt's out-of-tree RTL8261N support calls
+rtl822x_hwmon_init(). In mainline the flag reaches the RTL8221B-VB-CG,
+RTL8221B-VM-CG and RTL8251B when they have a DT node. The internal
+NBASE-T PHYs normally have none, so the hwmon core skips them. I will
+reword the commit message in v2.
 
-This is the fifth check of the same pointer:
+ > Would a DTS that adds #thermal-sensor-cells = <0> to an ethernet-phy@N
+ > node under a realtek,rtl9301-mdio bus fail dtbs_check?
 
-  commit        function
-  ------------  --------------------------
-  d101291b2681  __fib6_rule_action()
-  4db783d68b9b  ip6_output()
-  d46401052c2d  xfrm6_get_saddr()
-  1b9b5323725e  rpfilter_lookup_reverse6()
-  this patch    ip6_tnl_xmit()
+Yes. dt-schema drops the additionalProperties: true of ethernet-phy.yaml,
+so nothing evaluates the property. v2 will add #thermal-sensor-cells to
+ethernet-phy.yaml, which also covers the Aquantia and Marvell PHYs.
 
-Three more callers still dereference it without a check:
-__ip_vs_route_output_v6(), validate_ipv6_net_dev(), cxgb_find_route6().
-When the same mistake is made in N places the interface is the problem.
+ > If the errno were returned, the thermal core would keep its previous
+ > state.
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 616b86f..e4834e1 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1151,6 +1151,12 @@ static void ip6_rt_init_dst(struct rt6_info *rt, const struct fib6_result *res)
- 		return;
- 	}
+Agreed. v2 will return the phy_read_mmd() error from both reads, as a
+separate patch with a Fixes tag for 33700ca45b7d.
 
-+	/* addrconf_ifdown() removed inet6_dev. The device can't do IPv6. */
-+	if (!rt->rt6i_idev) {
-+		ip6_rt_init_dst_reject(rt, RTN_UNREACHABLE);
-+		return;
-+	}
-+
- 	rt->dst.error = 0;
- 	rt->dst.output = ip6_output;
-
-@@ -1186,10 +1192,10 @@ static void ip6_rt_copy_init(struct rt6_info *rt, const struct fib6_result *res)
- 	const struct net_device *dev = nh->fib_nh_dev;
- 	struct fib6_info *f6i = res->f6i;
-
-+	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
- 	ip6_rt_init_dst(rt, res);
-
- 	rt->rt6i_dst = f6i->fib6_dst;
--	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
- 	rt->rt6i_flags = res->fib6_flags;
- 	if (nh->fib_nh_gw_family) {
- 		rt->rt6i_gateway = nh->fib_nh_gw6;
+On 06/11/2026 22:25, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: phy: realtek: register hwmon thermal zones
+>
+> This commit adds HWMON_C_REGISTER_TZ to the channel info of the Realtek
+> PHY hwmon device. With it, the hwmon core registers the PHY temperature
+> sensor with the thermal framework, so device-tree thermal zones that
+> reference the PHY can bind.
+>
+>> Set the flag, as the Aquantia PHY driver does. This lets the RTL8261N
+>> sensors on the Zyxel XGS1250-12 B1 drive the chassis fan through
+>> thermal cooling maps.
+>>
+>> Tested on a Zyxel XGS1250-12 B1 with OpenWrt's Linux 6.18.55: the
+>> three PHY thermal zones register, and an emulated 85 C reading on one
+>> of them (CONFIG_THERMAL_EMULATION) switches the fan on through the
+>> existing 80 C trip and off again once cleared.
+> [Severity: Medium]
+> Does this description hold for the mainline driver?
+>
+> rtl822x_hwmon_init() has only one caller, rtl822x_probe() in
+> drivers/net/phy/realtek/realtek_main.c:
+>
+>      if (IS_ENABLED(CONFIG_REALTEK_PHY_HWMON) &&
+>          phydev->phy_id != RTL_GENERIC_PHYID)
+>              return rtl822x_hwmon_init(phydev);
+>
+> Only four entries use that probe: RTL8221B-VB-CG, RTL8221B-VM-CG,
+> RTL8251B and Realtek Internal NBASE-T PHY.
+>
+> The RTL8261C/CE/D_VM entries use rtl8261x_probe(). That probe only
+> allocates priv and picks a firmware name. It never calls
+> rtl822x_hwmon_init(). The driver table also has no RTL8261N ID.
+>
+> An external C45 PHY cannot fall back to the internal NBASE-T entry
+> either, because rtl_internal_nbaset_match_phy_device() has:
+>
+>      if (phydev->is_c45)
+>          return false;
+>      ...
+>      return rtlgen_supports_2_5gbps(phydev) && !rtlgen_supports_mmd(phydev);
+>
+> So on mainline, no RTL8261 PHY seems to register a hwmon device. The
+> three thermal zones seen in testing would then come from out-of-tree
+> OpenWrt PHY support.
+>
+> Could the commit message name the PHYs that actually gain thermal zone
+> registration (RTL8221B, RTL8251B and the internal NBASE-T PHYs)? Or
+> could it say that RTL8261 hwmon support is a missing prerequisite?
+>
+>> diff --git a/drivers/net/phy/realtek/realtek_hwmon.c b/drivers/net/phy/realtek/realtek_hwmon.c
+>> index ac96e2d1ebe82..e6235df288c32 100644
+>> --- a/drivers/net/phy/realtek/realtek_hwmon.c
+>> +++ b/drivers/net/phy/realtek/realtek_hwmon.c
+>> @@ -51,6 +51,7 @@ static const struct hwmon_ops rtl822x_hwmon_ops = {
+>>   };
+>>   
+>>   static const struct hwmon_channel_info * const rtl822x_hwmon_info[] = {
+>> +	HWMON_CHANNEL_INFO(chip, HWMON_C_REGISTER_TZ),
+> [Severity: Low]
+> Does this need a DT binding update to go with it?
+>
+> With HWMON_C_REGISTER_TZ set, hwmon_thermal_add_sensor() calls
+> devm_thermal_of_zone_register() on the PHY's of_node. Thermal-of finds
+> zones through thermal-sensors phandles, so the PHY node needs a
+> #thermal-sensor-cells property.
+>
+> None of the relevant schemas seem to allow that property:
+>
+>    realtek,rtl9301-mdio.yaml is the RTL930x MDIO binding used by the
+>    board in the commit message. Its ethernet-phy@ children are
+>    $ref: ethernet-phy.yaml# with unevaluatedProperties: false.
+>
+>    realtek,rtl8224-package.yaml restricts its PHY children the same way.
+>
+>    realtek,rtl82xx.yaml, which covers the
+>    ethernet-phy-id001c.c849/c84a/c862 compatibles, ends with
+>    unevaluatedProperties: false.
+>
+>    ethernet-phy.yaml does not evaluate any thermal property.
+>
+> Would a DTS that adds #thermal-sensor-cells = <0> to an ethernet-phy@N
+> node under a realtek,rtl9301-mdio bus fail dtbs_check?
+>
+> The Aquantia and Marvell PHYs have the same gap, but this patch makes
+> Realtek PHYs new users of it.
+>
+> [Severity: Medium]
+> With this flag, rtl822x_hwmon_read() becomes the get_temp backend of a
+> thermal zone that drives cooling devices. Should it check phy_read_mmd()
+> for errors now?
+>
+> drivers/net/phy/realtek/realtek_hwmon.c:rtl822x_hwmon_read() {
+>      ...
+> 	case hwmon_temp_input:
+> 		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSRR) & 0x3ff;
+> 		*val = rtl822x_hwmon_get_temp(raw);
+> 		break;
+>      ...
+> 	return 0;
+> }
+>
+> The mask turns a negative errno into a plausible temperature, and the
+> function returns success. For example, -EIO becomes 0x3fb, which reads
+> as -2500 millidegrees. -ETIMEDOUT reads as -55000.
+>
+> hwmon_thermal_get_temp() treats only ret < 0 as a failure:
+>
+> 	ret = hwdev->chip->ops->read(tdata->dev, hwmon_temp, hwmon_temp_input,
+> 				     tdata->index, &t);
+> 	if (ret < 0)
+> 		return ret;
+>
+> 	*temp = t;
+>
+> If one MDIO read fails while the PHY is hot, the thermal core gets a
+> sub-zero reading. Could the governor then switch the fan off for at
+> least one polling interval? If the errno were returned, the thermal
+> core would keep its previous state.
+>
+> The hwmon_temp_max path, which reads TSSR and shifts by 6, has the same
+> unchecked pattern, although thermal does not use it.
+>
+> The masking itself goes back to commit 33700ca45b7d2e ("net: phy:
+> realtek: add hwmon support for temp sensor on RTL822x"). This patch is
+> what connects it to a cooling control loop.
+>
+>>   	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_MAX),
+>>   	NULL
+>>   };
