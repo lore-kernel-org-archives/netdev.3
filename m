@@ -1,61 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.238.123.102
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794074273;
-	b=aaw2JA0son/gjaAlbs73uJ8k4xL3bzPuopZV8Az2WLw37zt7sG1zSKmkojsZq6jzo8US
-	 nTG+OoD1qiot66C37r6DbrFAdkh9xhWQohiLAEBo5MtSQmO4L6W/1BRvFkcvO6HSIsc2T
-	 HIg39ehDzaYKT0vkOmoiMXgMT7KqwN7ZxAJg6mwxnnYkS+7OlrjTYg5G6D6lxw429cIRZ
-	 CQowY8W9guTmFd13b96b07WDSQfadOT1KuLtDsSd9oAKYELQWe3UiZe9VytRlLzNkoXu3
-	 V58c5OJ8XnUO0QJNPAjgujHXlASkaVPV7Raj19HM/TLXaK7xQL+LUriOiVmMzXk7t5Q==
+	t=1794074323;
+	b=leVFDcwyhulZIO8AqsOofl4iTGVb2qy+UhtuFatvjARuNtJcyNithxV4uIjXVE0MbIW6
+	 9zwUuqDfmWLA3xcudtK24SJUwOlSXSlNaE0c5VRTVLCDSPCuuXIZ8BOa0CBD39kaOcikJ
+	 Lix7AZd1rXxXD46Sw7RXdECtqt46gnbX1iYAqMNAt8SpVihiflQvHEgCNb7IyqgBjEi3d
+	 w3dpzNFhjCk0dk9f+r4fwN1oFNMu5OOAP6oXU8BwWvYNJfq99e5sTrSSQke4GLd9iUwmP
+	 9PI9HTR5YiWO+7rqL4ud01u/+ogrIAGPqPKkW8fZI1pFwW+/44Lp2yJVb9GrySQjXBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794074273;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=jZbkHHYtwIbgU4wy/4KVFGSe2PVc8UG7tdfmC7f5SfE=;
-	b=pKA1jjhK50lUFgdiIWKarmuFToT8e1HfAirUHaZC+1Mt2csQy/rXS5UC5g9gD9ziwkXR
-	 HAewpDJA2txlgfpeLjGVLJ0kHMqK26K86klY/tF1GqPh+3sHYzxBc22/C/aYw+WFWmSNK
-	 LhZv5zeEtQDLYgk5S8lxVUmIJfLVGjOIirOVHkNA88/EH3m8FvCkWS9cq8svFrt/iQ6oz
-	 h+16hPrYapKKBfQQbXOho61sZxncqGjNPbdAcZoRon7JS/HzTRCLs9f4TMw5M2VybTjJi
-	 6DOn2ZpnjOE9kluPSXM0jPrZScTCgt5CuDzkyETUQ9y058bUNoxaqp1QKDuxqI/yN/g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794074323;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=X3KKbePSIcNC7QkEyqi+sx/OEJ50cw4qv4mf8XSrOBo=;
+	b=eDri0U/6XZL/0omp7Y6fmRByxS4wM2RNLO73CTN/v9UTN0bBL/DfFLLvjMHt78pciLry
+	 /67fCGQrBCVxOEi5hrEQWaxhzLshq1qWzB5UD4egHqnQi5JoWH0fwfnn4Evs6Wyi/O/sd
+	 McqWt+9rJ53b7EFelGje7vZAnVuDChItZs9ybrBM+i6t2BsItB7BzqM2lvX/yZFXQCg2z
+	 6Ns38zQUo9YXu7ZjJjRt67AvG1rAIsTOS7q+HWQrzAVIXN0aJzfec8sylS9SIXyUwMBkm
+	 nkSsuYjIVfs1S4vlnkiGbEDuSaHXdSkjPmTYkNkGu8ojHviaGWK8gPVxNeg3ImNcv2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ibONHJDp;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=marleb.org;
+	spf=pass smtp.mailfrom=marleb.org;
+	dkim=pass header.d=marleb.org header.i=@marleb.org header.a=rsa-sha256 header.s=dkim header.b=piB6QCaS;
+	arc=none smtp.remote-ip=80.238.123.102
+Received: from mail.marleb.org (mail.marleb.org [80.238.123.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6413606A32C;
-	Sat,  7 Nov 2026 17:57:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6413606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93190606A326;
+	Sat,  7 Nov 2026 17:58:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93190606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marleb.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marleb.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ibONHJDp
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jZbkHHYtwIbgU4wy/4KVFGSe2PVc8UG7tdfmC7f5SfE=; b=ibONHJDpu+L/WZgSrOL3LszIp0
-	RRIJ0nBhxH6r6eY6ZJG39oH3frNHO7hpb4hBKvNyc9M2RSDWUenzZdKK835lcj1InI9VTjaPoVAo8
-	Y3pCNgYkDQBFXuTXA6ogEp0Kcv8oUBgwMoGz4rPJf+sagqeitOVioOJIb0Mjcvq3hrVE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xPkfh-00EzJ8-BZ; Sat, 07 Nov 2026 18:57:45 +0100
-Date: Sat, 7 Nov 2026 18:57:45 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Dong Yibo <dong100@mucse.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	yaojun@mucse.com
-Subject: Re: [PATCH net-next 2/5] net: rnpgbe: Report link settings through
- ethtool
-Message-ID: <228e8fd8-4f1d-40d7-aca6-fc8a304b9906@lunn.ch>
-References: <FB722C2F25FE9005+20261106112420.43050-1-dong100@mucse.com>
- <BB3F0BAB3B9947AF+20261106112522.43965-1-dong100@mucse.com>
+	dkim=pass (2048-bit key, unprotected) header.d=marleb.org header.i=@marleb.org header.a=rsa-sha256 header.s=dkim header.b=piB6QCaS
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D085EF50;
+	Sat, 07 Nov 2026 18:58:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marleb.org; s=dkim;
+	t=1794074319; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=X3KKbePSIcNC7QkEyqi+sx/OEJ50cw4qv4mf8XSrOBo=;
+	b=piB6QCaSSLPnB7x093Iu7/TESACTeYP5RHz4yDGhZ/v5WPwcGdxbknAPN9D7GlnifWctRA
+	ZtgT1ktQ4avNE9pCrCtT3Cj0fcyEavlClU8dECa42Z9TzDwqYDMMnEmR9R/I6y1qFRnoGE
+	KNUR5KVqe/gt72DMc+T4qSBTvOLBOrq61NLwpI2gBVbMJxATL/rIqQtl41ujgNXEv3PZd0
+	/LJgFkDO3InoiY7t4pf+p2dnNXdqnG2+J3d4XxiF43bhkZX7QkiSqaRZGFh8QyqJoaQVOo
+	C8nKTEgHfGgotOXVv++5OOOFyeKXAbQx0fhRToIAtWUaOr4yEEANI3R43TwG0A==
+Message-ID: <bce539f2-9dac-4574-a765-11cf367bcbaf@marleb.org>
+Date: Sat, 7 Nov 2026 18:58:36 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,81 +55,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BB3F0BAB3B9947AF+20261106112522.43965-1-dong100@mucse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 3/3] net: phy: realtek: register hwmon thermal
+ zones
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261107-realtek-hwmon-tz-v2-0-6b9a69d44470@marleb.org>
+ <20261107-realtek-hwmon-tz-v2-3-6b9a69d44470@marleb.org>
+ <ed20a09c-e275-4124-90b7-8b1ada9fbf91@lunn.ch>
+Content-Language: en-US
+From: Hleb Shauchenka <me@marleb.org>
+In-Reply-To: <ed20a09c-e275-4124-90b7-8b1ada9fbf91@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> These devices support autonegotiation only on TP ports. Configure TP
-> ports with autonegotiation enabled and fibre and backplane ports with
-> fixed 1 Gb/s full duplex.
->  int rnpgbe_setup_default_link(struct mucse_hw *hw)
->  {
-> -	return mucse_mbx_set_link(hw, RNPGBE_DEFAULT_ADV, true, 0, 0,
-> -				  ETH_TP_MDI_AUTO);
-> +	u32 advertising = hw->link_config.supported & RNPGBE_DEFAULT_ADV;
-> +	bool autoneg = hw->link_config.status & MUCSE_LINK_TP;
-> +	u8 duplex = DUPLEX_UNKNOWN;
-> +	u32 speed = SPEED_UNKNOWN;
-> +	int err;
-> +
-> +	if (!autoneg) {
-> +		advertising &= RNPGBE_FW_ADV_1000_FULL;
-> +		speed = SPEED_1000;
-> +		duplex = DUPLEX_FULL;
-> +	}
-> +
-> +	err = mucse_mbx_set_link(hw, advertising, autoneg,
-> +				 autoneg ? 0 : speed, autoneg ? 0 : duplex,
-> +				 ETH_TP_MDI_AUTO);
+On Sat, Nov 07, 2026 at 06:22:36PM +0100, Andrew Lunn wrote:
+ > Does this have any value for Mainline?
 
-This looks odd. If autoneg is off, you expect user space to indicate
-how the MAC should be configured. 10, 100, 1G, full or half.
+No. Its only user is OpenWrt's out-of-tree RTL8261N support. I will drop 
+it and patch 1.
 
-> +static int rnpgbe_get_link_ksettings(struct net_device *netdev,
-> +				     struct ethtool_link_ksettings *cmd)
-> +{
-> +	struct mucse *mucse = netdev_priv(netdev);
-> +	struct mucse_hw *hw = &mucse->hw;
-> +	u32 supported, advertising;
-> +	unsigned long flags;
-> +	u16 status;
-> +	int mode;
-> +
-> +	status = hw->link_config.status;
-> +	supported = hw->link_config.supported;
-> +	advertising = hw->link_config.advertising;
-> +	ethtool_link_ksettings_zero_link_mode(cmd, supported);
-> +	ethtool_link_ksettings_zero_link_mode(cmd, advertising);
-> +	ethtool_link_ksettings_zero_link_mode(cmd, lp_advertising);
+v3 will be patch 2 alone without the Fixes tag and with the AI note 
+below the ---.
 
-Do you have access to the LP advertisement value? It is useful for debugging.
+Hleb
 
-> +	} else {
-> +		if (status & MUCSE_LINK_BACKPLANE) {
-> +			mode = ETHTOOL_LINK_MODE_1000baseKX_Full_BIT;
-> +			ethtool_link_ksettings_add_link_mode(cmd, supported,
-> +							     Backplane);
-> +			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-> +							     Backplane);
-
-Does it actually advertise Backplane?
-
-
-> +			cmd->base.port = PORT_NONE;
-> +		} else {
-> +			mode = ETHTOOL_LINK_MODE_1000baseX_Full_BIT;
-> +			ethtool_link_ksettings_add_link_mode(cmd, supported,
-> +							     FIBRE);
-> +			ethtool_link_ksettings_add_link_mode(cmd, advertising,
-> +							     FIBRE);
-
-Again, does it advertise fibre? What happens if the LP wants to do TP?
-
-You probably want to look at phylib, it figure out the correct way to
-to implement ksetting set/get.
-
-
-    Andrew
-
----
-pw-bot: cr
+On 07/11/2026 18:22, Andrew Lunn wrote:
+>> I tested this on a Zyxel XGS1250-12 B1 with OpenWrt's Linux 6.18.55,
+>> where OpenWrt's out-of-tree RTL8261N support calls
+>> rtl822x_hwmon_init():
+> Mainline does not care about out of tree code.
+>
+> Does this have any value for Mainline?
+>
+> If not, drop it.
+>
+> Or bring the out of tree code into Mainline.
+>
+> 	Andrew
