@@ -1,83 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794077085;
-	b=2NPu3zgzhix72uU6pV5g3G1M3ycYnQUIq6gcNspJp/ucdOnZHyMXXZEGqSZO45rQxVpr
-	 FJgph/lxqF4JacdPzs09NeeG1OtNyvoUBUMuep3KuhBmLlvf/qvt4cwQIBW5wu9sWe9qc
-	 9gq04UHj5/lbUoLz1QNSMxlVfBymYNu7Yu7dqXXMGtK6AoveBTPorQE52EylnbvFGZD7K
-	 FW6L4XIzDm3EUyhAzzYw8V3JpTq+k+/OPql9R91j44h0K9WonypQrUWT4Sk0YhBDvIgJR
-	 TsR4jW+lLcW6oqZjM1XhLo84DwjqfQXZ6sxo6J015vBJKD4ynro2yHHDKMQVO7v2/NA==
+	t=1794077092;
+	b=q611p5IdUv17oiRw/eG1WnzpseedQW0aPUn050mohG7GqULdslEDKZYcADqIaqzQrElP
+	 r1U/K9TWCOvIK0dj/kXY2HEUyhaantwi9CRH1li4q2tUjPG2CRfyEjQDlbDihmLtqE5Bn
+	 K4I1QhBEqsCsGEcltSeb8qYu1dtegAbPLJ3mRA6XmyXDnuDIhA8iejVQJVQwA6vlWMqnQ
+	 aSVN6XR257oCmmXpicRBPrnlAvwW+o6+F9+hv2B51ACFkpvBsNgRh8QV1EpSM3kGGl73r
+	 kZeP9cEup2WTZ4sHzpAklVvMqnbrvIaVTbmMlH6m8dMf5H6L6OHt+CwRG6KIzZCLyBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794077085;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077092;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=KZ+ukhZnuLhEoTcJCFbadpKzgvv+xdEMUoSf7p2jX1E=;
-	b=5EW7db85p/wsmKSbBXpXg+yk48po7tJoOQpNhW3puGzXL7XKFqc9aMC7Juib6hh81NUy
-	 nsAMwT2uReaSd9JYPzSDnV5txsDnLLy7GF9mBnx9yOR8xJS4w+/LZyRfCScXjD1SLjXft
-	 WMA+ftOGsU2jWjJGu1nySdjbwMYcr74kyjaUP/6QQwYEkf+5cMEHDtX2PX0ALQt9h4dmD
-	 3Kl1AUj6veSSAXyWe6XOLGhY7G8bTjqP8BebcLPqSnjPH5RiNiS0X9HQki14J8MF3LmQC
-	 0EIQTfuFBYGBsea3UxfwWDnFkxWCw8aggMfcsBBFtwxvbf6mnJ59tsj4nhJqXbvsxyg==
+	bh=034iry7WHQ0bPsFgpNeABa63Awxx8ExkIQs+SzxKml4=;
+	b=4jHei+KKImLhZZD5yTpv9f/yqxGs4TMf+I0t0Su01AWFpcLHPJFyvq0GoWPvKVw4DEKm
+	 dUqptiTU/SUwKNBfebDg/d6xReQnkvnz7dhpg3wl3J2EuvSc4ffDAkMnjb4hBkdaOZZfg
+	 y8/ljy66/jTHQ5ML0yFKN9/IvXIdsRud9/BTpQtA2wNtmf/yS74y3EgqThCFYhZo4I+Xu
+	 W0VkmZH8j6b6TjLAr7dKUqn0KfqXdKU1stCNaJ+ftJiquZkYxejRIM/IUF/Kd0+vi7ME0
+	 3yDam/pTscWR4lUS5is0Lf5DRv8YU4+DO0JhJORKgRHVJSxS/THv76Fj34/PLCYMqdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=blockcast.net;
 	spf=pass smtp.mailfrom=blockcast.net;
-	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=fdYjPVwt;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=OLKKdnPP;
+	arc=none smtp.remote-ip=74.125.82.41
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF41606D801
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BF41606D801
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816E8606D82D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 816E8606D82D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=fdYjPVwt
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36f6295304dso1777006eec.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=OLKKdnPP
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-19305bcb72cso1621240c88.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1794077084; x=1794681884; darn=vger.kernel.org;
+        d=blockcast.net; s=google; t=1794077091; x=1794681891; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KZ+ukhZnuLhEoTcJCFbadpKzgvv+xdEMUoSf7p2jX1E=;
-        b=fdYjPVwtfjRAngxFK3IxmrpzQEm2aqrueU/2fJxIXkKkWai7Ca9ceI+Dd+aC0HgP7n
-         c7rNS+7+YoDUspPUIoPtYaMZUTRAM3dLADmi7ux24KzCWfCIn5e0GdzOC89vgAa2Ec/C
-         bcH1HhSDEb2X6FK6vB5FwqZfoLgPGVYWyolzUPrq4cwjxmQkMahUnWcYstEXTtwxEt2R
-         EBx81T9GsUQDt5qEOd2WYvTwOfZGomaJMRvInTtkp9wRahOqVcVyz+kZESdAyia+my59
-         kzhKDcvSYp9jG8sD6PbEFaqVOXqQroPJl7LUnt7/temfn9UuJ+AgziLsF6ZROVe3isBK
-         b9MQ==
+        bh=034iry7WHQ0bPsFgpNeABa63Awxx8ExkIQs+SzxKml4=;
+        b=OLKKdnPPeCkqRJohePg2wlWvHtfEJvAy6t9YTLjpy2nxczCcKuEQNt940aFRvo0L7l
+         npmPS+Rk+990B5IGIO/jn9YCp88tzli4tnH+oKx26MUf5tUnrq79/nu8FO1H5wHfnh4S
+         gnrmEK3JdJsICq2roHCAuB3icGOSh9uPzYlH2fHEYGZ3ufYsFhoa8fgP33jt1stFs7r4
+         dpVkxG3xA/Vev+tqUG0n0SmdvcYKq7wlJgZrkWqXPRXh0RYEsv6yCwIeA2o6Y1XeTlSS
+         TW2Tt9Z3Nhes/ONBd0rIaodHuJn9KOlEShhwwb7GU5XbrULjp1H4mXlfIglamdcMrYO4
+         H/vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794077084; x=1794681884;
+        d=1e100.net; s=20260707; t=1794077091; x=1794681891;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KZ+ukhZnuLhEoTcJCFbadpKzgvv+xdEMUoSf7p2jX1E=;
-        b=hfMY2QH5BvUX5fGbP3aiD78YHjG8I0gASinXxuWbFEq0p0lg6sN3QxwuZbcQv/9TZ/
-         I4Ovod6le9WMme9zfsSZpdlre7rxDhzw2eoXOWNFLePVYMjLx8pFi1I7lAH6EfofPcBw
-         zPIlmqC9s0nui/0bAcaublRZynufloa+wRMV5bdpdxgOhIVs25nBlOEIknhYNdJpSqha
-         bBHLl442twkN1C2I7GsHLgyyf9MT+8DsnlCkrj8W9NdSaX8yx9L6XCJ5kDy9vjZM8qaC
-         H/l3K8xNyOVm8NLvPk1hwrYVliD5Elm0aptQL7fowPueTAGVE5ICBvkb44i9dCLELm8P
-         Ei2Q==
-X-Gm-Message-State: APuU4Z8mUnzX3LyPKio0mWHw0OKb8uLwgEXVXCtkq5eBKwq3dCht1G8T
-	2cPmrpt0CTY8p7GDSxMnRTDl+B7fClVTiKLKkOgHYJjgGlj5gNt22VQVH4QNTjatBvo=
-X-Gm-Gg: AYBFou0zWm2vH22BDRkKKaOU3hOOI57cfIT4O/6qjiBmjJPHB7hLtCql3mgy2QHgpYf
-	R1FSIQeMDSBSC3rgvDCSqIbBaFKWNgiE6iKpZrTTmjCsb16Nga6DuILzKnNPbcyPCb+zf8YcMDd
-	+2A7g66+9h3gpnkycJPudQA4NKQpSkoeLMZMhs4OKb0NvUC36guDQ5VUrQBd3Wvc1RUCicen6Wp
-	0IyPoiKfprTQAG/XujF5yOFCs4XHPZMhscIersAY/K4m/NvAqjO3T6gsiJ5FGa1+uiXhL5PjbV4
-	Dlftfmyqhf4MS7OT26V6IHjlj4hez9spqdaE/kHOjxD/XTM10JhwzeSqRDnrAuQmOuaprKgs801
-	21FzGDHWoeGrcSZPswy9rjnDchYNxOAP/lE5lm/un9ZwbsajgwhtvNXQMqdHaHOEqd2LQmHpjQJ
-	7oC/kbK8Ahvedei0pd0o+bft6XgIuumFnxa+tBuhWo+GubtbXH9COX6rJtUU0OXe4nm215wUyvb
-	9OS8DxjAl1ipxN+3GqqSwIEkRID79I5SloRz2mqbMwkwwhEaHbIRXyCBnleCSPVtM1yOGQzIUga
-	bagqKvTvec8D0SEtViWY+G1iCvAxRk94hKaPHoaQs7aRVRis90NXFt82t1cX6QKF3A0vgmatpBz
-	bRTJjVPXXvKX52NsA
-X-Received: by 2002:a05:7301:f0b:b0:366:83dd:46f7 with SMTP id 5a478bee46e88-36f75a26838mr8205255eec.17.1794077083543;
-        Sat, 07 Nov 2026 10:44:43 -0800 (PST)
+        bh=034iry7WHQ0bPsFgpNeABa63Awxx8ExkIQs+SzxKml4=;
+        b=B/RGE5UUYqqVAeQ7vdv8/VZTtgdw0j0rkNyyLrAUGhQHvDcoGFIHuBZE2vTwlD4aVq
+         sJUxZApVRbwPbtypLV5fzFKYj3F5pWRHDItSDIQAisUvWPosoLATlunjnibIyPI1i4wt
+         O6TErmFSH7Jd8KFOwsKXQ6aWQfNhIMHu4yPDXGo13y1fPtfs66Ggmk9M64Wro6kyAMJo
+         wmD2JHp8SqdPWqvnrF7/f3dYR/zooKNHxTZ0GkQojoq37+cUmvWCvE1ID47mbQ0ItvUF
+         8mOZq1JTfl2l+0dR1khV1YU6/sgqkopnXEvX5LSQx6zvZZItEqOtWgfia7Ry+LjH4x2I
+         k2YA==
+X-Gm-Message-State: APuU4Z+Xeejq2Cr7Rubt3Jd5FuZvTdielOI88uK9YOm/8EGr7VeEfLCV
+	whIdYIzyxl26dEZXaIA7jjglL/CUo5vpUGfrxz9jMk0bm6NjTHXFcw9OWf+QgdDn3gk=
+X-Gm-Gg: AYBFou3Uk8CN9fm4pSfEG5AqFP/V44DtRe/Sunix4EbmQwprb4CF+FIH8EYKrVw5WIs
+	iggJHfS4lvTkGcMnCQVsLXz9Po96jvnyykMrwR446Fzw4Cmpx89m+qGVndi+pfDOqdIKxdqR1l9
+	oi3nyio14cLAbASK1CENwN/r/9YJXd1mS7WM+775obSWXlDl6Qd6zWFNy/S/sduVHfEPaCZLQIZ
+	YFXxu7HdPXCdbsl929p/BiG9BHcGH+6NPHEXAwVmFmRaPwjO4sBr4d1Fw5lWx9f0TRye2GsziKR
+	Vsm1nGu01mgS3zTC2YFK74quaf+IoMCq2I0Mt3wuGf59uM1tuqnRgFHdAz4KE5QkyiWIFpetN6t
+	HauebxElmEVuyZUMr58l4KKTY/kO8tRgVKgyA5mVG/vn56VkTYDyj4gC+RQu1g8EBgrUC3WBSHl
+	WhSAcya/4UBzwybtVMW3Np20JZHyOi0iRXGVbzvEuDZc8z8QQt3Oq+BG4HIUtFW04v5ilD5y/33
+	17XW/AOqz8STw+nm4Xh7QYD7AqaMl8dqxQaSfTdyQG+Nh8Qe9AgRSlX/yYaLOxzqycwf0rdcAoa
+	sddozt9j41v96SxQLnJ5oWyFkdBSmvy0FiRDI/hWpMk4xNea6DoZSI33SeEgm/WW065E2Po=
+X-Received: by 2002:a05:7022:b04b:10b0:196:bf5f:8bb with SMTP id a92af1059eb24-1b25d34a675mr8380119c88.45.1794077090265;
+        Sat, 07 Nov 2026 10:44:50 -0800 (PST)
 Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.41
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 10:44:42 -0800 (PST)
+        Sat, 07 Nov 2026 10:44:49 -0800 (PST)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -106,9 +105,9 @@ Cc: netdev@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH net-next 1/9] amt: add the relay replication offload provider header
-Date: Sat,  7 Nov 2026 18:44:29 +0000
-Message-ID: <20261107184437.2783174-2-omar@blockcast.net>
+Subject: [RFC PATCH net-next 4/9] amt: offload TX handoff, ingress punt rule and counters
+Date: Sat,  7 Nov 2026 18:44:32 +0000
+Message-ID: <20261107184437.2783174-5-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261107184437.2783174-1-omar@blockcast.net>
 References: <20261107184437.2783174-1-omar@blockcast.net>
@@ -123,289 +122,469 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-include/net/amt_offload.h: provider caps, opaque provider-owned endpoint
-and group handles, struct amt_offload_ops, TX/INGRESS paths,
-FALLBACK/CONSUMED/BUSY results, the per-binding u64 epoch, and the
-amt_offload_register()/amt_offload_unregister() entry points. An
-in-kernel interface with no ABI promise; nothing touches struct
-net_device or net_device_ops.
+On a TX binding, amt_dev_xmit hands each relay data packet of a group
+the reconciler has published (hw_active, set with hw_gen after a
+successful group_commit) to the provider before its software fan-out,
+while the binding admits packets and desired state is in sync; every
+other packet goes to software. Exactly one actor handles each packet
+handed over: CONSUMED means the provider handled every copy (sent it, or
+dropped it and counted it, apart from the copy and route failures
+amt_offload_encap_xmit() counts itself) and owns the skb; FALLBACK
+leaves the skb untouched for the software loop; BUSY runs one
+synchronous software pass and counts it, never NETDEV_TX_BUSY since the
+relay is IFF_NO_QUEUE. hw_gen is read once per packet. The reconciler
+writes it after a successful group_commit, also when it then withholds
+hw_active because a member left meanwhile, so a packet already past the
+hw_active test can carry the new generation and one that read hw_gen
+earlier any older committed one; the provider serves or declines it.
+
+On the ingress path the provider replicates every packet of a group from
+group_commit until group_disable or flush, and must never also punt one.
+While the group's commit is published (hw_active, with the binding
+admitting and desired state in sync), a punted copy that reaches the
+relay is dropped and counted; at any other time (before the first
+publication, after a park, during a reset or a teardown, after desync)
+it goes to the software fan-out. The provider sees none of these
+transitions as amt makes them, so the drop is only a safety net.
+Removing a member on an ingress binding does not withdraw the group as
+it does on TX: hardware replicates to the committed set until the
+recommit regardless, and lifting the drop would send the remaining
+members every punted packet a second time. For the same reason the
+reconciler publishes a commit on an ingress binding even when a member
+left while it was programmed. A relay binds on ingress only in required
+mode: a packet the provider consumes on ingress never reaches the host,
+so nothing on the host's forwarding path, mroute counters included, sees
+it, and auto does not choose that. A provider offering no path the relay
+may use leaves it unbound, counted. TX needs ops->xmit.
+
+New offload/ counters: path_unsupported, busy_fallback, punt_dropped
+(plus sw_remainder, resets, stale_completions and desync from the
+reconciler). With no provider bound the data path does one more RCU
+pointer read and test.
+
+A simulated replication provider -- netdevsim is the reference one --
+decides from its own tables which gateways get a copy of a relay data
+packet, but has no business re-implementing AMT encapsulation: if its
+copies differed on the wire from amt's own, a test could not tell a
+provider bug from an encapsulation difference.
+
+amt_offload_encap_xmit(binding, endpoint key, skb), exported, emits one
+gateway's copy byte for byte as the software fan-out does: the copy, AMT
+Multicast Data header and amt_udp_xmit() of amt_send_multicast_data(),
+from the relay port to the gateway's port with AMT_TOS on an IPv4 outer
+and the route's hop limit. Each failed copy or route lookup counts once
+in tx_dropped; the software fan-out on this base counts neither. It
+takes the endpoint key, not the provider's handle, which is opaque to
+amt, and is for use from ops->xmit only.
+
+With no provider registered nothing calls it.
 
 Assisted-by: LLM
 Signed-off-by: Omar Ramadan <omar@blockcast.net>
 ---
- include/net/amt_offload.h | 263 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 263 insertions(+)
- create mode 100644 include/net/amt_offload.h
+ drivers/net/amt.c         | 206 +++++++++++++++++++++++++++++++++++---
+ include/net/amt.h         |  13 ++-
+ include/net/amt_offload.h |  38 ++++++-
+ 3 files changed, 237 insertions(+), 20 deletions(-)
 
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 17337989a..377660e55 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -319,6 +319,8 @@ static void amt_ofl_member_del(struct amt_dev *amt,
+ static void amt_ofl_tunnel_gone(struct amt_dev *amt,
+ 				struct amt_tunnel_list *tunnel);
+ static void amt_ofl_state_free(struct amt_dev *amt);
++static bool amt_offload_tx(struct amt_dev *amt, struct sk_buff *skb,
++			   const union amt_addr *group, bool v6);
+ 
+ static void amt_del_group(struct amt_dev *amt, struct amt_group_node *gnode)
+ {
+@@ -1510,6 +1512,11 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	} else if (amt->mode == AMT_MODE_RELAY) {
+ 		if (!data)
+ 			goto free;
++		/* A bound offload provider replicates it, or declines; see
++		 * amt_offload_tx() for the cutover rules.
++		 */
++		if (amt_offload_tx(amt, skb, &group, v6))
++			return NETDEV_TX_OK;
+ 		key.group_addr = group;
+ 		key.v6 = v6;
+ 		list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
+@@ -4087,6 +4094,7 @@ struct amt_offload_bound {
+ 	struct amt_offload_binding	pub;
+ 	const struct amt_offload_ops	*ops;
+ 	struct amt_offload_caps		caps;
++	enum amt_offload_path		path;
+ 	/* Cleared first on teardown; ops->xmit is only called while set. */
+ 	bool				admitting;
+ };
+@@ -4209,6 +4217,10 @@ struct amt_offload_state {
+ 	struct list_head		parked;
+ 	struct list_head		ep_gc;
+ 	bool				desync;
++	/* The binding is on the ingress path: a member change must not
++	 * clear hw_active, which there gates the punt-drop. Set at bind.
++	 */
++	bool				ingress;
+ 	/* Reconciler. bind and teardown also take the mutex. */
+ 	struct mutex			mutex;
+ 	struct work_struct		work;
+@@ -4286,9 +4298,9 @@ static u32 amt_offload_outer_family(const struct amt_dev *amt)
+ }
+ 
+ /* The data path's way in: a binding is usable only while admitting. The
+- * caller holds rcu_read_lock(). The later TX handoff is its first caller.
++ * caller holds rcu_read_lock().
+  */
+-static __maybe_unused struct amt_offload_bound *
++static struct amt_offload_bound *
+ amt_offload_tx_admit(struct amt_dev *amt)
+ {
+ 	struct amt_offload_bound *b = rcu_dereference(amt->offload);
+@@ -4402,13 +4414,15 @@ static void amt_ofl_kick(struct amt_offload_state *st)
+ }
+ 
+ /* Desired state could not record a change. Hardware would forward to a
+- * stale member set, so the relay leaves offload for good: the data path
+- * stops consulting the provider, and the next reconciler pass gives every
+- * provider object back (group_disable, endpoint_del; the binding stays,
+- * with no unbind). Desync does not schedule that pass: a pass already
+- * queued or a later removal of a recorded member (by a leave, a timer or
+- * a tunnel removal) does, and a teardown gives everything back itself
+- * and unbinds. Caller holds st->lock.
++ * stale member set, so the relay leaves offload for good. On TX that
++ * takes effect at once: the data path stops handing packets to the
++ * provider. The next reconciler pass gives every provider object back
++ * (group_disable, endpoint_del; the binding stays, with no unbind).
++ * Desync does not schedule that pass: a pass already queued or a later
++ * removal of a recorded member (by a leave, a timer or a tunnel removal)
++ * does, and a teardown gives everything back itself and unbinds. On an
++ * ingress binding the provider replicates to its committed sets until
++ * then. Caller holds st->lock.
+  */
+ static void amt_ofl_desync(struct amt_offload_state *st)
+ {
+@@ -4562,12 +4576,16 @@ static void amt_ofl_member_unlink(struct amt_offload_state *st,
+ 	g->nr_members--;
+ 	g->gen++;
+ 	g->left++;
+-	/* The committed member set still names this endpoint: stop handing
+-	 * the group to hardware now, not when the reconciler recommits, so
+-	 * no packet admitted after this is replicated to it. Software serves
+-	 * the group meanwhile.
++	/* TX: the committed member set still names this endpoint. Stop
++	 * handing the group to hardware now, not when the reconciler
++	 * recommits, so no packet admitted after this is replicated to it;
++	 * software serves the group meanwhile. Ingress: hardware replicates
++	 * on its own until the recommit whatever the host does, and
++	 * hw_active there only drops the punted copies, so clearing it
++	 * would send the remaining members every packet twice.
+ 	 */
+-	WRITE_ONCE(g->hw_active, false);
++	if (!READ_ONCE(st->ingress))
++		WRITE_ONCE(g->hw_active, false);
+ 	amt_ofl_grp_dirty(st, g);
+ 	ep->refs--;
+ 	amt_ofl_ep_unused(st, ep);
+@@ -4966,7 +4984,10 @@ static unsigned int amt_ofl_grp_program(struct amt_offload_state *st,
+ 	 * committed, and amt_ofl_member_unlink() already withdrew the group.
+ 	 * A join meanwhile does not hold the publication back: the committed
+ 	 * set is a subset that names no departed endpoint. Either change
+-	 * re-queued @g; the next pass commits it.
++	 * re-queued @g; the next pass commits it. On ingress, hardware is
++	 * already replicating to the committed set whatever the host does,
++	 * and hw_active only drops the punted copies, so withholding it there
++	 * protects no one and sends the remaining members every packet twice.
+ 	 */
+ 	spin_lock_bh(&st->lock);
+ 	for (i = 0; i < n; i++)
+@@ -4978,7 +4999,7 @@ static unsigned int amt_ofl_grp_program(struct amt_offload_state *st,
+ 	swap(g->ceps, eps);	/* out: frees the old set */
+ 	g->nr_ceps = n;
+ 	WRITE_ONCE(g->hw_gen, gen);
+-	if (g->left == left)
++	if (READ_ONCE(st->ingress) || g->left == left)
+ 		smp_store_release(&g->hw_active, true);
+ 	spin_unlock_bh(&st->lock);
+ 	goto out;
+@@ -5238,6 +5259,135 @@ static void amt_ofl_state_free(struct amt_dev *amt)
+ 	amt->offload_st = NULL;
+ }
+ 
++/* Cutover, per packet; exactly one actor handles each one.
++ *
++ *   relay data packet (inner IP; Ethernet pulled)
++ *    |
++ *    +-- bound, admitting, desired state in sync, and (family, group)
++ *    |   hw_active?  no --> software fan-out
++ *    |
++ *    +-- TX path: ops->xmit(grp, hw_gen)
++ *    |     CONSUMED --> the provider handled every copy and owns the skb
++ *    |     FALLBACK --> skb untouched --> software fan-out
++ *    |     BUSY     --> skb untouched --> software fan-out, counted
++ *    |                  (never NETDEV_TX_BUSY: the relay is IFF_NO_QUEUE)
++ *    |
++ *    +-- ingress path: a punted copy of an hw_active group reaching here
++ *          is dropped and counted; one that took the "no" branch is
++ *          forwarded in software. A provider cannot tell which (amt
++ *          publishes after group_commit returns, and withdraws before
++ *          the callback on a reset, park or teardown and with no
++ *          callback on desync), so it must never punt a packet it
++ *          replicates.
++ *
++ * hw_gen is read once per packet. The reconciler writes it after
++ * group_commit returns 0, before it publishes hw_active, and also when a
++ * member left meanwhile and it withholds hw_active. So a packet already
++ * past the hw_active test may carry that new generation, and one that
++ * read hw_gen earlier any older committed one; the provider serves or
++ * declines it.
++ *
++ * Returns true when the skb is gone (consumed, or a punted copy dropped);
++ * false sends it to the software fan-out untouched.
++ */
++static bool amt_offload_tx(struct amt_dev *amt, struct sk_buff *skb,
++			   const union amt_addr *group, bool v6)
++{
++	struct amt_offload_group_key key;
++	enum amt_offload_result res;
++	struct amt_offload_bound *b;
++	struct amt_ofl_grp *g;
++	bool gone = false;
++
++	rcu_read_lock();
++	b = amt_offload_tx_admit(amt);
++	if (!b || READ_ONCE(amt->offload_st->desync))
++		goto out;
++	amt_ofl_grp_key(&key, group, v6);
++	g = amt_ofl_grp_find(amt->offload_st, &key);
++	/* Pairs with the release in amt_ofl_grp_program(). */
++	if (!g || !smp_load_acquire(&g->hw_active))
++		goto out;
++
++	if (b->path == AMT_OFFLOAD_PATH_INGRESS) {
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_PUNT_DROPPED);
++		consume_skb(skb);
++		gone = true;
++		goto out;
++	}
++
++	res = b->ops->xmit(&b->pub, g->hw, skb, READ_ONCE(g->hw_gen));
++	switch (res) {
++	case AMT_OFFLOAD_CONSUMED:
++		gone = true;
++		break;
++	case AMT_OFFLOAD_BUSY:
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_BUSY_FALLBACK);
++		break;
++	case AMT_OFFLOAD_FALLBACK:
++		break;
++	default:
++		WARN_ONCE(1, "amt: offload xmit returned %d\n", res);
++		break;
++	}
++out:
++	rcu_read_unlock();
++	return gone;
++}
++
++/* One gateway's copy for a simulated provider, built and sent exactly
++ * as amt_send_multicast_data() builds and sends a software copy: the
++ * same copy, AMT Multicast Data header, UDP ports, TOS and hop limit,
++ * through amt_udp_xmit(). Called from ops->xmit, in softirq context
++ * under rcu_read_lock().
++ */
++int amt_offload_encap_xmit(struct amt_offload_binding *b,
++			   const struct amt_offload_endpoint_key *key,
++			   struct sk_buff *oskb)
++{
++	struct amt_dev *amt = netdev_priv(b->dev);
++	struct amt_header_mcast_data *amtmd;
++	bool v6 = ip_hdr(oskb)->version == 6;
++	union amt_addr daddr = {0,};
++	struct socket *sock;
++	struct sk_buff *skb;
++
++	sock = rcu_dereference_bh(amt->sock);
++	if (!sock)
++		return -ENETDOWN;
++	if (key->family != (amt_v6(amt) ? AF_INET6 : AF_INET))
++		return -EAFNOSUPPORT;
++
++	skb = skb_copy_expand(oskb, sizeof(*amtmd) + amt_ip_hlen(amt) +
++			      sizeof(struct udphdr), 0, GFP_ATOMIC);
++	if (!skb)
++		goto drop;
++
++	skb_reset_inner_headers(skb);
++	amtmd = skb_push(skb, sizeof(*amtmd));
++	amtmd->version = 0;
++	amtmd->reserved = 0;
++	amtmd->type = AMT_MSG_MULTICAST_DATA;
++	skb_set_inner_protocol(skb, htons(v6 ? ETH_P_IPV6 : ETH_P_IP));
++
++#if IS_ENABLED(CONFIG_IPV6)
++	if (key->family == AF_INET6)
++		daddr.ip6 = key->addr.ip6;
++	else
++#endif
++		daddr.ip4 = key->addr.ip4;
++	if (amt_udp_xmit(amt, sock->sk, skb, &daddr, amt->relay_port,
++			 key->port, 0))
++		goto free;
++	return 0;
++free:
++	kfree_skb(skb);
++drop:
++	DEV_STATS_INC(amt->dev, tx_dropped);
++	return -ENETUNREACH;
++}
++EXPORT_SYMBOL_GPL(amt_offload_encap_xmit);
++
+ static void amt_offload_set_carrier(struct amt_dev *amt, bool on)
+ {
+ 	if (amt->offload_mode != AMT_OFFLOAD_MODE_REQUIRED)
+@@ -5285,9 +5435,27 @@ static int amt_offload_bind(struct amt_dev *amt,
+ 		kfree(b);
+ 		return -EOPNOTSUPP;
+ 	}
++	/* TX when offered. Ingress only for a required relay: a packet
++	 * consumed on ingress never reaches the host, so nothing on its
++	 * forwarding path sees it, and auto never chooses that.
++	 */
++	if ((b->caps.paths & BIT(AMT_OFFLOAD_PATH_TX)) && b->ops->xmit) {
++		b->path = AMT_OFFLOAD_PATH_TX;
++	} else if ((b->caps.paths & BIT(AMT_OFFLOAD_PATH_INGRESS)) &&
++		   amt->offload_mode == AMT_OFFLOAD_MODE_REQUIRED) {
++		b->path = AMT_OFFLOAD_PATH_INGRESS;
++	} else {
++		b->ops->unbind(&b->pub);
++		amt_offload_count(amt, AMT_OFFLOAD_CNT_PATH_UNSUPPORTED);
++		kfree(b);
++		return -EOPNOTSUPP;
++	}
+ 
+ 	b->admitting = true;
+ 	mutex_lock(&amt->offload_st->mutex);
++	/* Before any group can hold hw under this binding. */
++	WRITE_ONCE(amt->offload_st->ingress,
++		   b->path == AMT_OFFLOAD_PATH_INGRESS);
+ 	rcu_assign_pointer(amt->offload, b);
+ 	/* Replay desired state: every group is programmed afresh. */
+ 	amt_ofl_requeue_all(amt->offload_st);
+@@ -5506,6 +5674,9 @@ AMT_OFFLOAD_CNT_ATTR(sw_remainder, AMT_OFFLOAD_CNT_SW_REMAINDER);
+ AMT_OFFLOAD_CNT_ATTR(resets, AMT_OFFLOAD_CNT_RESET);
+ AMT_OFFLOAD_CNT_ATTR(stale_completions, AMT_OFFLOAD_CNT_STALE);
+ AMT_OFFLOAD_CNT_ATTR(desync, AMT_OFFLOAD_CNT_DESYNC);
++AMT_OFFLOAD_CNT_ATTR(path_unsupported, AMT_OFFLOAD_CNT_PATH_UNSUPPORTED);
++AMT_OFFLOAD_CNT_ATTR(busy_fallback, AMT_OFFLOAD_CNT_BUSY_FALLBACK);
++AMT_OFFLOAD_CNT_ATTR(punt_dropped, AMT_OFFLOAD_CNT_PUNT_DROPPED);
+ 
+ static struct attribute *amt_offload_attrs[] = {
+ 	&dev_attr_offload_mode.attr,
+@@ -5521,6 +5692,9 @@ static struct attribute *amt_offload_attrs[] = {
+ 	&dev_attr_offload_resets.attr,
+ 	&dev_attr_offload_stale_completions.attr,
+ 	&dev_attr_offload_desync.attr,
++	&dev_attr_offload_path_unsupported.attr,
++	&dev_attr_offload_busy_fallback.attr,
++	&dev_attr_offload_punt_dropped.attr,
+ 	NULL,
+ };
+ 
+diff --git a/include/net/amt.h b/include/net/amt.h
+index 0c746e4be..0b57c8604 100644
+--- a/include/net/amt.h
++++ b/include/net/amt.h
+@@ -389,7 +389,9 @@ struct amt_offload_state;
+ 
+ /* Per-relay offload counters, exported under offload/ in sysfs. */
+ enum amt_offload_counter {
+-	/* bind() succeeded and the caps covered the outer family */
++	/* bind() succeeded, and the caps covered the outer family and offered
++	 * a data path this relay may use
++	 */
+ 	AMT_OFFLOAD_CNT_BIND,
+ 	/* ... of which: bound when a provider registered on the stream_dev
+ 	 * this relay already uses
+@@ -418,6 +420,15 @@ enum amt_offload_counter {
+ 	AMT_OFFLOAD_CNT_STALE,
+ 	/* desired state lost an update (allocation failure); software only */
+ 	AMT_OFFLOAD_CNT_DESYNC,
++	/* no data path this relay may use: the caps offered none, or TX
++	 * without ops->xmit (ingress counts only in required mode); it stayed
++	 * unbound
++	 */
++	AMT_OFFLOAD_CNT_PATH_UNSUPPORTED,
++	/* xmit returned BUSY: one synchronous software pass ran instead */
++	AMT_OFFLOAD_CNT_BUSY_FALLBACK,
++	/* ingress: a punted copy of a group the provider replicates, dropped */
++	AMT_OFFLOAD_CNT_PUNT_DROPPED,
+ 	AMT_OFFLOAD_CNT_MAX,
+ };
+ 
 diff --git a/include/net/amt_offload.h b/include/net/amt_offload.h
-new file mode 100644
-index 000000000..3be5d129c
---- /dev/null
+index b5c119851..99f78699f 100644
+--- a/include/net/amt_offload.h
 +++ b/include/net/amt_offload.h
-@@ -0,0 +1,263 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * AMT relay replication offload: the contract between the amt driver and
-+ * a provider that replicates relay multicast data to gateways in hardware
-+ * (or, for testing, in a simulated device).
-+ *
-+ * This is an IN-KERNEL INTERFACE WITH NO ABI PROMISE. It may change in any
-+ * release, like every other in-kernel API; out-of-tree providers get no
-+ * stability guarantee.
-+ *
-+ * Registration is keyed by the lower netdev a relay transmits on (its
-+ * IFLA_AMT_LINK stream device). Nothing here adds a field or an ndo to
-+ * struct net_device.
-+ */
-+#ifndef _NET_AMT_OFFLOAD_H_
-+#define _NET_AMT_OFFLOAD_H_
-+
-+#include <linux/bits.h>
-+#include <linux/in6.h>
-+#include <linux/types.h>
-+
-+struct net_device;
-+struct sk_buff;
-+
-+/* Outer transport families, for &amt_offload_caps.families. */
-+#define AMT_OFFLOAD_FAMILY_V4		BIT(0)
-+#define AMT_OFFLOAD_FAMILY_V6		BIT(1)
-+
-+/*
-+ * Reserved: (S,G)-keyed forwarding. v1 forwards per (family, group) exactly
-+ * as the software path does, so this bit has NO v1 semantics. A provider
-+ * must not set it; amt ignores it.
-+ */
-+#define AMT_OFFLOAD_F_SOURCE_FILTER	BIT(0)
-+
+@@ -42,8 +42,16 @@ struct sk_buff;
+  *	group without a callback when a member leaves, until it publishes the
+  *	recommit. Every other packet goes straight to software.
+  * @AMT_OFFLOAD_PATH_INGRESS: the provider replicates on ingress and the
+- *	host only sees punted packets. Semantics only until a real provider
+- *	exists; no simulated provider implements it.
++ *	host only sees punted packets. From &amt_offload_ops.group_commit
++ *	until &amt_offload_ops.group_disable or &amt_offload_ops.flush the
++ *	provider replicates every packet of the group, and it must never also
++ *	punt one. amt drops, and counts, a punted copy of a group only while
++ *	the group's commit is published: from some time after group_commit
++ *	returns until amt withdraws it, which it does before any group_disable
++ *	or flush and, with no callback, once its desired state is lost. A
++ *	punted copy outside that window is forwarded in software as well.
++ *	Semantics only until a real provider exists; no simulated provider
++ *	implements it, and only a relay in required mode binds on it.
+  */
+ enum amt_offload_path {
+ 	AMT_OFFLOAD_PATH_TX,
+@@ -203,7 +211,12 @@ struct amt_offload_stats {
+  * @group_disable: stop forwarding @grp and free it. amt has already
+  *	stopped submitting packets for @grp and waited out @xmit callers.
+  * @xmit: TX path. Replicate @skb for @grp under @gen or decline; see
+- *	&enum amt_offload_result. Softirq context, under rcu_read_lock().
++ *	&enum amt_offload_result. @skb is the relay data packet with its
++ *	data at the inner IP header. On %AMT_OFFLOAD_CONSUMED the provider
++ *	owns @skb and must have handled every copy under @gen alone: each one
++ *	handed to the stack, or dropped and counted (see
++ *	%AMT_OFFLOAD_CONSUMED). Otherwise it must not have sent any copy, nor
++ *	modified or freed @skb. Softirq context, under rcu_read_lock().
+  * @flush: drop every endpoint and group (reset after a timeout). amt then
+  *	replays from its own desired state under a new epoch, except when
+  *	the op that overran was a @group_disable or @endpoint_del of amt
+@@ -318,4 +331,23 @@ int amt_offload_register(struct net_device *lower,
+  */
+ void amt_offload_unregister(struct net_device *lower);
+ 
 +/**
-+ * enum amt_offload_path - where a provider replicates
-+ * @AMT_OFFLOAD_PATH_TX: amt hands the provider each relay data packet of
-+ *	a group whose commit it has published (&amt_offload_ops.group_commit),
-+ *	before its software fan-out (&amt_offload_ops.xmit), while the binding
-+ *	admits packets and amt has not lost its desired state. amt withdraws a
-+ *	group without a callback when a member leaves, until it publishes the
-+ *	recommit. Every other packet goes straight to software.
-+ * @AMT_OFFLOAD_PATH_INGRESS: the provider replicates on ingress and the
-+ *	host only sees punted packets. Semantics only until a real provider
-+ *	exists; no simulated provider implements it.
-+ */
-+enum amt_offload_path {
-+	AMT_OFFLOAD_PATH_TX,
-+	AMT_OFFLOAD_PATH_INGRESS,
-+};
-+
-+/**
-+ * struct amt_offload_caps - what a bound provider can do
-+ * @families: AMT_OFFLOAD_FAMILY_* outer families it can encapsulate. A
-+ *	relay whose outer family is missing stays unbound (counted), with the
-+ *	outcome of a failed &amt_offload_ops.bind, except that amt first calls
-+ *	&amt_offload_ops.unbind, since that bind succeeded.
-+ * @paths: BIT(enum amt_offload_path) it implements.
-+ * @op_timeout_ms: longest a programming op may take before amt treats the
-+ *	provider as wedged, resets it and replays from desired state.
-+ * @features: AMT_OFFLOAD_F_* bits. None has v1 semantics.
-+ * @max_endpoints: endpoint table size; 0 means unbounded. Informational:
-+ *	amt does not read it in this version. A provider out of room fails an
-+ *	&amt_offload_ops.endpoint_add for a key it does not hold, by
-+ *	convention with -ENOSPC.
-+ * @max_groups: group table size; 0 means unbounded. Informational: amt
-+ *	does not read it in this version. A provider out of room fails the
-+ *	&amt_offload_ops.group_update that needs a new group, by convention
-+ *	with -ENOSPC.
++ * amt_offload_encap_xmit - emit one gateway's copy of a relay data packet
++ * @b: the binding @skb was handed to the provider under.
++ * @key: the gateway endpoint, as amt passed it to endpoint_add.
++ * @skb: the packet given to &amt_offload_ops.xmit; not consumed.
 + *
-+ * Filled by &amt_offload_ops.bind.
-+ */
-+struct amt_offload_caps {
-+	u32 families;
-+	u32 paths;
-+	u32 op_timeout_ms;
-+	u32 features;
-+	u32 max_endpoints;
-+	u32 max_groups;
-+};
-+
-+/**
-+ * struct amt_offload_binding - one relay device bound to one provider
-+ * @lower: the registered lower netdev (the relay's stream device).
-+ * @dev: the amt relay netdev.
-+ * @epoch: monotonic per relay device, bumped on every bind, reset and
-+ *	teardown. A completion carrying an older epoch is stale and ignored.
-+ * @priv: provider-owned; amt never touches it.
++ * For simulated providers: encapsulates a copy of @skb as AMT Multicast
++ * Data to @key and transmits it on the relay's stream device, byte for
++ * byte as amt's own software fan-out would. Which endpoints get a copy
++ * is the provider's decision, made from its own tables. Call only from
++ * &amt_offload_ops.xmit.
 + *
-+ * Allocated and freed by amt. Valid from &amt_offload_ops.bind until
-+ * &amt_offload_ops.unbind returns.
++ * Return: 0 if the copy was handed to the stack, else a negative errno
++ * (counted in the relay's tx_dropped when the copy or route failed).
 + */
-+struct amt_offload_binding {
-+	struct net_device *lower;
-+	struct net_device *dev;
-+	u64 epoch;
-+	void *priv;
-+};
++int amt_offload_encap_xmit(struct amt_offload_binding *b,
++			   const struct amt_offload_endpoint_key *key,
++			   struct sk_buff *skb);
 +
-+/**
-+ * struct amt_offload_endpoint_key - one gateway's outer endpoint
-+ * @family: AF_INET or AF_INET6, the relay's outer family.
-+ * @addr: gateway outer address.
-+ * @addr.ip4: IPv4 address when @family is AF_INET.
-+ * @addr.ip6: IPv6 address when @family is AF_INET6.
-+ * @port: gateway outer UDP port (tunnel identity is address + port).
-+ */
-+struct amt_offload_endpoint_key {
-+	u8 family;
-+	union {
-+		__be32 ip4;
-+		struct in6_addr ip6;
-+	} addr;
-+	__be16 port;
-+};
-+
-+/**
-+ * struct amt_offload_group_key - one replicated group
-+ * @family: AF_INET or AF_INET6, the INNER group family.
-+ * @group: group address.
-+ * @group.ip4: IPv4 group when @family is AF_INET.
-+ * @group.ip6: IPv6 group when @family is AF_INET6.
-+ *
-+ * Forwarding is per (family, group), never per source: a gateway holding
-+ * an INCLUDE(S1) membership still receives S2, exactly as the software
-+ * fan-out does today.
-+ */
-+struct amt_offload_group_key {
-+	u8 family;
-+	union {
-+		__be32 ip4;
-+		struct in6_addr ip6;
-+	} group;
-+};
-+
-+/* Provider-owned table entries. amt only stores the pointers. */
-+struct amt_offload_endpoint;
-+struct amt_offload_group;
-+
-+/**
-+ * enum amt_offload_result - outcome of &amt_offload_ops.xmit
-+ * @AMT_OFFLOAD_FALLBACK: skb untouched; amt runs its software fan-out.
-+ * @AMT_OFFLOAD_CONSUMED: the provider handled every copy of this packet
-+ *	under the generation it was given and owns the skb; amt emits none and
-+ *	retries none. A copy that failed is the provider's to count, except one
-+ *	amt_offload_encap_xmit() could not copy or route, which amt has already
-+ *	counted in the relay's tx_dropped.
-+ * @AMT_OFFLOAD_BUSY: skb untouched; amt runs one synchronous software pass
-+ *	and counts it. Never NETDEV_TX_BUSY: the relay is IFF_NO_QUEUE.
-+ *
-+ * Exactly one actor handles each packet, so no packet is duplicated.
-+ */
-+enum amt_offload_result {
-+	AMT_OFFLOAD_FALLBACK,
-+	AMT_OFFLOAD_CONSUMED,
-+	AMT_OFFLOAD_BUSY,
-+};
-+
-+/**
-+ * struct amt_offload_stats - provider-side counters
-+ * @tx_packets: copies the provider emitted.
-+ * @tx_bytes: bytes of those copies on the wire.
-+ * @tx_dropped: copies the provider failed to emit.
-+ */
-+struct amt_offload_stats {
-+	u64 tx_packets;
-+	u64 tx_bytes;
-+	u64 tx_dropped;
-+};
-+
-+/**
-+ * struct amt_offload_ops - provider callbacks
-+ * @bind: a relay transmitting on the registered lower device starts using
-+ *	this provider. Fill @caps. Process context, RTNL held. Nonzero leaves
-+ *	the relay unbound (counted): in software in auto mode; in required
-+ *	mode refused if it is being created, else without carrier.
-+ * @unbind: last call for a binding. Every endpoint and group has already
-+ *	been deleted or disabled. Free @b->priv. RTNL held.
-+ * @endpoint_add: program one gateway endpoint. Idempotent: an identical
-+ *	key returns the existing handle. 0 means accepted and durable, not yet
-+ *	forwarding. Process context, never under amt's spinlocks.
-+ * @endpoint_del: remove an endpoint no group references any more.
-+ * @group_update: stage the member set of one group under generation @gen,
-+ *	allocating *@grp on first use. Not forwarding until @group_commit.
-+ * @group_commit: start forwarding generation @gen of @grp. amt hands @gen
-+ *	to @xmit only after this returns 0, and may never do so: an overrun
-+ *	resets the provider, and on TX a member leaving meanwhile withholds
-+ *	the commit until the next one. Until amt publishes @gen, any @xmit for
-+ *	@grp carries an earlier generation this provider committed, and a call
-+ *	already in flight may carry any of those or @gen itself; the provider
-+ *	serves such a generation or declines it. A provider must never emit
-+ *	one packet to one endpoint under two generations. On failure the group
-+ *	stays in software and previously added endpoints stay valid.
-+ * @group_disable: stop forwarding @grp and free it.
-+ * @xmit: TX path. Replicate @skb for @grp under @gen or decline; see
-+ *	&enum amt_offload_result. Softirq context, under rcu_read_lock().
-+ * @flush: drop every endpoint and group (reset after a timeout). amt then
-+ *	replays from its own desired state under a new epoch, except when
-+ *	the op that overran was a @group_disable or @endpoint_del of amt
-+ *	giving everything back -- at teardown, where @unbind follows, or
-+ *	after its desired state was lost: then nothing is replayed and the
-+ *	epoch does not move.
-+ * @stats: fill @st. Optional; amt does not call it in this version.
-+ *
-+ * Teardown order, on unregistration of the lower device and on
-+ * amt_offload_unregister(): amt stops admitting packets to @xmit, waits for
-+ * in-flight @xmit calls, cancels its programming work, calls @group_disable
-+ * for every group, @endpoint_del for every endpoint, then @unbind, then
-+ * synchronize_rcu(); the relay is back in software afterwards. If one of
-+ * those @group_disable/@endpoint_del calls overruns op_timeout_ms, amt
-+ * calls @flush once instead of the rest, then @unbind, with no replay.
-+ */
-+struct amt_offload_ops {
-+	int (*bind)(struct amt_offload_binding *b,
-+		    struct amt_offload_caps *caps);
-+	void (*unbind)(struct amt_offload_binding *b);
-+	int (*endpoint_add)(struct amt_offload_binding *b,
-+			    const struct amt_offload_endpoint_key *key,
-+			    struct amt_offload_endpoint **ep);
-+	void (*endpoint_del)(struct amt_offload_binding *b,
-+			     struct amt_offload_endpoint *ep);
-+	int (*group_update)(struct amt_offload_binding *b,
-+			    const struct amt_offload_group_key *key,
-+			    struct amt_offload_endpoint *const *members,
-+			    unsigned int nr_members, u64 gen,
-+			    struct amt_offload_group **grp);
-+	int (*group_commit)(struct amt_offload_binding *b,
-+			    struct amt_offload_group *grp, u64 gen);
-+	void (*group_disable)(struct amt_offload_binding *b,
-+			      struct amt_offload_group *grp);
-+	enum amt_offload_result (*xmit)(struct amt_offload_binding *b,
-+					struct amt_offload_group *grp,
-+					struct sk_buff *skb, u64 gen);
-+	void (*flush)(struct amt_offload_binding *b);
-+	void (*stats)(struct amt_offload_binding *b,
-+		      struct amt_offload_stats *st);
-+};
-+
-+/**
-+ * amt_offload_register - offer a provider for relays on @lower
-+ * @lower: the netdev the relays transmit on.
-+ * @ops: provider callbacks; must outlive the registration.
-+ *
-+ * Every relay already using @lower in auto or required mode tries to bind
-+ * now. Caller holds RTNL.
-+ *
-+ * Return: 0, -EEXIST if @lower already has a provider, or -ENOMEM.
-+ */
-+int amt_offload_register(struct net_device *lower,
-+			 const struct amt_offload_ops *ops);
-+
-+/**
-+ * amt_offload_unregister - withdraw the provider for @lower
-+ * @lower: as passed to amt_offload_register().
-+ *
-+ * Tears every binding down in the documented order and returns with every
-+ * relay on @lower in software. Caller holds RTNL. A no-op if @lower has no
-+ * provider, which is the case after @lower itself was unregistered.
-+ */
-+void amt_offload_unregister(struct net_device *lower);
-+
-+#endif /* _NET_AMT_OFFLOAD_H_ */
+ #endif /* _NET_AMT_OFFLOAD_H_ */
 -- 
 2.43.0
 
