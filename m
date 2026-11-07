@@ -1,59 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794052860;
-	b=sgYSApAuwWgjXibfiJZRFp2Xh8Cgj4mz96buWxG8B4M77Inj4ygI1Hv+qOlM4CT1AKI3
-	 QBCLGBpTM0DXVa5G0uqhw5AFfNXdXScsB+mnTh3TygxChDqblPVn9MFYkwGigWYjfsT/l
-	 UzYvSYPwg3SYmkIFw52OoQ8UxS/Y8QuDCCxYLAIG9XIeDhCYdLaXeqJw3L8PXz6dmVOeQ
-	 b8Uzybu+lp3nZZWgR8WLFHkGApT7eUWH0sE+rEQC1nWJHqBRaG5VTn/+7VfGxTYq67Kj6
-	 ZzY9lXK3O2s/W+quycRrqIcjsCD/eaMMUeo5GPqYr+YGOOqOYnqQYty83Q8GOfRREXA==
+	t=1794053225;
+	b=JhZEtiUP4IhmfV5LLuKj1E23qs6LAHwZtHEzM938HpNUt3SXnBT+yXbSH8sLiWWlXkiv
+	 A12sSrl+iJuVnTi0CEwcJi9ROtqKl9N7tbAPuGWUQljHPxky64xvFNcn5XD+QF6DNpdAc
+	 M7PtmogvoelTBswV5Z1zIHlvWwrHs5QrvA/wRGcFULTzgIh8Pc8OWXttf3UiQUp+rMOpN
+	 hYManF75IhdOwwwie+MIR94/cXC1v055zmmX81YvFM5EB/zjZIhy2DShHMzu5RZW+HS5k
+	 SUKtXgju5B0D9PH5Raz3FjGxn7Y2+kl8Or5X4H2dDw2FWiZPvIb5Fn66PdZtyCjTJlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794052860;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=wmkOVTO6/HcciH7e0IPrV6/8aI7VC/wYHlVJ4GKyU2E=;
-	b=cp/BItP4+eWauimog9EUDqXi8GY2JY33SgCPlvyhaP57Ukza65vd/6Uj5/VR4RjP47sh
-	 YD+NxNokYce8IQET3zikUZxbb6LRKOvesrvbOYcitWXc5LCZVLwjiIGfxn6TxQyesVN8A
-	 KHy9yxc5QLvkCKldNU6dAA4924p16ecagYEraXSrdiypyLxEpMmkCB3p9TtDe0BciLWeJ
-	 D+LM3zxtOTu0PVHKcIWms2lLLTdDqtq74C0oZcJFdw+Vfvz87FToF6DtfufO8oYEZRcqw
-	 YO/SVZpJUG7lXNIq9ao58V5xbj60GjbhrppXzz5DhoS8IahoeI/ypLhjtJa6pxphymw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794053225;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
+	b=mzAu6kLU1TfBJGI5a8KsPZTq/EfE9bFhXp2Z+O4J9IkkNWzc79Si8URw1Um6a4KXcieC
+	 irPRy94mW/qjoYL1TkdTDXfefDCweZ5cA8tF3kvcxjC5vmVoKr70vXL4gVNYSZBxZr1wu
+	 Y8PQDXz9spSKOraYpBF0HdHW1eIS1jgdg5n53mDlxM/7JX5Ua45M7HcIAdEQAzWP7nFvN
+	 sRfmDxAaNxSUTthbxsDMftT0gpUa2j6EdNGKzmuKAPNri4z1ia4ZhQER/vPgsGBYIv+3z
+	 K+7vh1TVUX3YdVWO8JpiOY9yM7GaOtFA3qonaSJFV/q17xDd4f3zgdc0CdlebLVo8AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtwMqNKz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UXYGz64Y;
+	arc=none smtp.remote-ip=74.125.224.44
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441CC606A326;
-	Sat,  7 Nov 2026 12:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61B606A32D
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 12:07:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B61B606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtwMqNKz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E7A1F008A1;
-	Sat,  7 Nov 2026 12:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794052859;
-	bh=wmkOVTO6/HcciH7e0IPrV6/8aI7VC/wYHlVJ4GKyU2E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WtwMqNKz0FGtXDFPhkQFgSodpjMHv0P3NcjzE5y3oFhAZ8GJDEE9KuvBRft/ejWK0
-	 b4p4rRPqrvbvZSBr4hwm43JCJctHeEqGEdYEqxdeU2LNqBuVQJBqLNNJ+UMaG2RVLi
-	 R1F5Yu3cMKPfpTN9TBYH8UkVSZucQdtGHH5uU8lr4XLSBXVT7BKkyBtfoO/8joR2ia
-	 VDM7dOoeCW433BS8xj/1o0eBNozNLARHATtQK0qrKqzCZkZiK3UqHUd4c5NEFP4JWn
-	 15d81Rhgf6ESMxErI1d8GCujs26WscPth6T8wnZacc+yJX1DItwvz0vp8DNE30R9GK
-	 BTJD+4J12ITnQ==
-Subject: Re: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port
- is stopped
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: marcin.s.wojtas@gmail.com, linux@armlinux.org.uk, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 12:00:58 +0000
-Message-ID: <179405285872.994134.2557194195988942800@kernel.org>
-In-Reply-To: <20261103100535.1310088-1-vulab@iscas.ac.cn>
-References: <20261103100535.1310088-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UXYGz64Y
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67be4f2f4d4so1714748d50.2
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 04:07:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794053224; x=1794658024; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
+        b=UXYGz64Ydu19JZiz182rbonA6mfNLwsUYdmZbtKG1Xu08S+kaaLW4WcJemh/6ZXFW+
+         VV+YdTk7SQSbqZsHO0sDkpgcIpLtScXshRYJLYzUeLaPcchc6tHfVe+2Dl4UAyczhGQi
+         9I1rpHbjmYr4PP9Pkjkawi+Qu6pJO0s4poHcAlW3xOEumFtquhVa6lpp0vugZKxbRJDk
+         1lmw+90BquKx8Lm9HMcOkUlag/4M0nC7QtC4x+WzcKF+OylCC1kDem8r1F4CMIVzIxLF
+         hcZh31T6NgQj0QtpK/LhWnBp2RaAyGbGIaaJx3tP2yVARVUvJfg6zkvJ8PHVViMXnJ/p
+         7A9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794053224; x=1794658024;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
+        b=bTnDtQq+U7ndToFJ4hVX2cIsGhnB7XbmRriIQWPFVkOL9zAN0ygHVJeo5lzofhSvOQ
+         53o0jTAneIJbz2j6gCxgUJcfkAdOENotiGEW0Xlmcepr8LxGxANUG671gexgtH8+tw35
+         rBU1grsTqUXrTIBYcPHlmdnj/m1CHe9Uzck6KSz4qIfzEZHoJ5Fq8QxbOai+FeljuChS
+         EaMeg4YZc9zbgFC22BxYV8x2XVf+J9OshQgjkw7nafZvM+RZu/dJcJUBJ64lnvzQEhmv
+         k7Ak80g0qL08hx/7Y3OZMZa9KbJNSgtsy2qE7JSY2g/NYAlITe3IlMpxH99rO09vDnxu
+         LXyw==
+X-Gm-Message-State: APuU4Z/YLm5Y/LvZ0NxcEn+BUClsPJATwp5dx/Mahdx+ViPlNpRu/+xe
+	lFrK38hn3r7tRltEmRv238HVqODzi6CIAe17hNNxNeH46oDCNyOaSRabO/ZlhJuO
+X-Gm-Gg: AYBFou2fVUQAgWMqjW6yNmslFHIHuoBS+IlmzhnPiIPQdRGs8Qe9Mvcd33T6EeEIeZE
+	co0janT+/s/HdK0GkZeT25yeXx2KVqHGR7m9klQdwMfUy390wXLNUdU1xSYUhcljNZ40IT96tmn
+	GLE/gDjvD5c0hud3MhFRbuC5PrRy664Kji3JHInubRlbDN4zlkNTgpfFWmLReV3fHcTDirXXZgR
+	OC/JJ3BZJCtU23moJyZmXWdYt83nJtAd23xJnDzcDArVZVDHUbGXc/8LW66wyMnW7yATXPiyyuT
+	+pLNJ2T9KPqzKnvjxwWGkvRPyuQCLw6kc8dT0YoJpq/X5jnnqxAxiZmKMrYIrI5EDdLMfip5Va2
+	OzmSQA1veAQri/HZvK9K/YoRIwceX9zhD1HB8wVQfrT4Ly2xhWzMK4Zh5nPECZ40GU2VGgTkdhb
+	720FZOt886TxVq3N8xZFlUnNS4MfcuW9oDG9U8aoeF7eKRzUHEMD2GYnCjIMLaCu9XXP4grcFkU
+	AxQACXhsCkxmtkXLjB4G1WYJ0O8f7kwQXf5B2SdaKjUE9EU5S2kbY2Y78m2dFI/i+YEbJMdL1Nq
+	bujPIweSzdYb1zOmCRJzj6hX
+X-Received: by 2002:a05:690c:c1c2:b0:8ab:422f:a8a3 with SMTP id 00721157ae682-8b341b30203mr19939877b3.104.1794053224038;
+        Sat, 07 Nov 2026 04:07:04 -0800 (PST)
+Received: from houminxi ([61.170.225.237])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f77055bsm39518927b3.8.2026.11.07.04.07.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 04:07:03 -0800 (PST)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	dev@openvswitch.org,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>
+Subject: [PATCH net-next v6 0/2] netlink: specs: fill in the missing ovs operations
+Date: Sat,  7 Nov 2026 07:06:45 -0500
+Message-ID: <20261107120647.874906-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,176 +100,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+The ovs specs describe get and new but not the set and del commands the
+kernel has registered since the families were added. This series adds
+them and names the attributes each handler reads. Nothing here changes
+how the kernel behaves.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0 (1)
+v6:
+https://lore.kernel.org/netdev/20261103183319.2730567-1-houminxi@gmail.com/
+  - A del flushes the data path when it carries no key and no valid ufid,
+    not when it carries neither. The kernel reads a ufid outside 1-16
+    octets as absent, so such a request flushes as well. The ufid doc now
+    says that, and that a new request with such a value indexes the flow
+    by its key instead, and the attribute records the minimum length the
+    policy enforces. The same sentences in
+    include/uapi/linux/openvswitch.h follow.
+  - ifindex is declared s32 with a minimum of 0, which is how both
+    policies read it. No request used the attribute before this series,
+    which is why the type went unnoticed.
+  - The ops skip strict and dump validation in the kernel, so get, new,
+    del and set say so in all three specs.
+  - Rebased onto current net-next.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+v5:
+https://lore.kernel.org/netdev/20261025103409.3519874-1-houminxi@gmail.com/
+  - ovs_flow dump gets a request list of its own with ufid-flags. It
+    shared the get list, which offered a key and a ufid the kernel
+    ignores on a dump. The reply is unchanged.
+  - The key, actions and ufid docs no longer claim those attributes are
+    always present, and say what the exceptions are: a ufid-identified
+    flow sends no key or actions when the request asked for them to be
+    left out, a dump leaves the actions out when they do not fit, and a
+    dump ignores the ufid. The same sentences in
+    include/uapi/linux/openvswitch.h are updated to match, since the
+    spec text was copied from there.
+  - The key doc now says a get and a set need a key or a ufid, that a
+    new request needs a key, and that a del carrying neither flushes the
+    data path.
+  - The ovs_datapath new and set docs say per-cpu-pids takes effect only
+    when the same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in
+    user-features.
+  - The ovs_vport set doc says the vport is picked by name or by port
+    number, names the rejections in the order the kernel checks them,
+    and says upcall-pid is the only attribute that changes state.
+  - Rebased onto current net-next after the merge window.
 
-- [High] The new mvpp2_tx_hwtstamp_flush()
-  (drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c:3422-3436) checks,…
+v4:
+https://lore.kernel.org/netdev/20261015024132.698658-1-houminxi@gmail.com/
+  - ovs_vport set lists port-no and ifindex. lookup_vport() finds a
+    vport by name or by port number, and returns -EOPNOTSUPP as soon as
+    it sees an ifindex, before the type or the options are looked at.
+  - ovs_datapath new lists masks-cache-size, per-cpu-pids and ifindex.
+    new calls ovs_dp_change(), which reads the first two, and reads
+    ifindex itself.
+  - ovs_flow get lists probe. ovs_flow_cmd_get() reads it to decide
+    whether to log.
+  - The key attribute doc now says a new request needs a key even when
+    it finds an existing flow and replaces its actions, and that a dump
+    reads neither the key nor the ufid. A del with neither flushes the
+    data path, and the del operation doc says so too.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a
-  serious race on the same data.
-- [Low] Baseline decision: not a valid finding against this patch.
+v3:
+https://lore.kernel.org/netdev/20261012065552.2426415-1-houminxi@gmail.com/
+  - no change since v2.
 
---
+v2:
+https://lore.kernel.org/netdev/20261006130533.1620706-1-houminxi@gmail.com/
+  - ovs_flow new lists ufid-flags and probe, which ovs_flow_cmd_new()
+    reads.
+  - The commit message now says probe changes from binary to flag, and
+    that new needs CAP_NET_ADMIN.
+  - The key attribute doc no longer says a key is required for every
+    request except a dump. get, set and del accept a ufid with no key,
+    and only a new flow needs a key. A set that replaces the actions
+    still needs a key.
 
-net: mvpp2: free pending TX timestamp skbs when the port is stopped
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
 
-This commit adds mvpp2_tx_hwtstamp_flush(). It frees any skbs still held
-in port->tx_hwtstamp_queue[] that are waiting for a hardware TX timestamp.
-It is called from mvpp2_stop() after the port interrupts have been
-released, so the extra references taken by mvpp2_tx_hw_tstamp() are not
-leaked.
+Minxi Hou (2):
 
-> diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> index 317af54369cfe..fc020b8c88301 100644
-> --- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> +++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-> @@ -3419,6 +3419,22 @@ static void mvpp2_isr_handle_ptp(struct mvpp2_port *port)
->  		mvpp2_isr_handle_ptp_queue(port, 1);
->  }
->  
-> +static void mvpp2_tx_hwtstamp_flush(struct mvpp2_port *port)
-> +{
-> +	struct mvpp2_hwtstamp_queue *queue;
-> +	int nq, i;
-> +
-> +	for (nq = 0; nq < ARRAY_SIZE(port->tx_hwtstamp_queue); nq++) {
-> +		queue = &port->tx_hwtstamp_queue[nq];
-> +		for (i = 0; i < ARRAY_SIZE(queue->skb); i++) {
-> +			if (!queue->skb[i])
-> +				continue;
-> +			dev_kfree_skb_any(queue->skb[i]);
-> +			queue->skb[i] = NULL;
+Minxi Hou (2):
+  netlink: specs: add ovs_flow del and set operations
+  netlink: specs: add ovs datapath and vport set operations
 
-[Severity: High]
-Can this race with mvpp2_tx_hw_tstamp() on another CPU and free the same
-skb twice?
+ Documentation/netlink/specs/ovs_datapath.yaml | 35 +++++++-
+ Documentation/netlink/specs/ovs_flow.yaml     | 86 ++++++++++++++++---
+ Documentation/netlink/specs/ovs_vport.yaml    | 30 ++++++-
+ include/uapi/linux/openvswitch.h              | 23 +++--
+ 4 files changed, 150 insertions(+), 24 deletions(-)
 
-mvpp2_stop() is not only reached through ndo_stop, where
-__dev_close_many() has already quiesced TX. It is also called directly
-on running devices:
 
-mvpp2_xdp_setup():
-	if (running && reset)
-		mvpp2_stop(port->dev);
-
-mvpp2_change_mtu()->mvpp2_bm_switch_buffers():
-	for (i = 0; i < priv->port_count; i++) {
-		port = priv->port_list[i];
-		status[i] = netif_running(port->dev);
-		if (status[i])
-			mvpp2_stop(port->dev);
-	}
-
-The second path stops every running port on the controller, including
-ports whose MTU did not change.
-
-mvpp2_stop_dev() does set_bit(0, &port->state), which mvpp2_tx() never
-checks. It also disables interrupts and NAPI and calls phylink_stop().
-
-The only TX gating is netif_tx_stop_all_queues() in mvpp2_mac_link_down().
-It does not wait for an mvpp2_tx() that is already running on another
-CPU. On ports without phylink, the TX queues are not stopped at all.
-
-Meanwhile the xmit path works on the same array:
-
-mvpp2_tx_hw_tstamp():
-	i = queue->next;
-	queue->next = (i + 1) & 31;
-	if (queue->skb[i])
-		dev_kfree_skb_any(queue->skb[i]);
-	queue->skb[i] = skb_get(skb);
-
-Suppose the flush and an in-flight xmit both see the same skb in skb[i].
-Both would then call dev_kfree_skb_any() on it. TX completion has already
-dropped the stack's reference, so that skb only holds the skb_get()
-reference.
-
-On phylink ports the window is limited to an xmit that started before
-netif_tx_stop_all_queues(). That window is not bounded on PREEMPT_RT.
-mvpp2_cleanup_txqs() already has the same missing TX quiescence on these
-paths, but the flush adds a new unsynchronized writer.
-
-Should TX be quiesced before mvpp2_tx_hwtstamp_flush() runs on these
-paths?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but concurrent transmits also
-do not appear to protect this per-port array.
-
-port->tx_hwtstamp_queue[] and its next index are per-port. mvpp2 is not
-LLTX, so the core holds only the per-txq lock. XPS maps each CPU to its
-own txq, so mvpp2_tx() can run on several CPUs at once.
-
-The only driver lock in mvpp2_tx() is conditional and per-thread:
-
-	if (test_bit(thread, &port->priv->lock_map))
-		spin_lock_irqsave(&port->tx_lock[thread], flags);
-
-That lock does not serialize two threads in mvpp2_tx_hw_tstamp().
-
-If two CPUs read the same queue->next value while skb[i] holds a pending
-skb, could both call dev_kfree_skb_any() on it? If skb[i] is NULL, one
-skb_get() reference would be overwritten, and that skb and its socket
-write memory would be leaked.
-
-The slot-reuse free in mvpp2_tx_hw_tstamp() also looks like it can race
-with the consumer in mvpp2_isr_handle_ptp_queue():
-
-	skb = queue->skb[id];
-	queue->skb[id] = NULL;
-	if (skb) {
-
-Once TX HW timestamping is enabled on the port, a process without any
-capability can set SO_TIMESTAMPING with SOF_TIMESTAMPING_TX_HARDWARE and
-send PTP frames from several CPUs.
-
-The new flush adds another unlocked accessor to this array.
-
-> +		}
-> +	}
-> +}
-> +
-
-[ ... ]
-
-> @@ -4914,6 +4930,7 @@ static int mvpp2_stop(struct net_device *dev)
->  		free_irq(port->port_irq, port);
->  
->  	mvpp2_irqs_deinit(port);
-> +	mvpp2_tx_hwtstamp_flush(port);
-
-[Severity: Low]
-This is a pre-existing issue, but the stop path does not touch the
-hardware PTP TX result FIFOs (MVPP22_PTP_TX_Q0_R0..R2 and the Q1
-equivalents). It also does not reset queue->next.
-
-A stale record for a reused slot could be matched to a new skb after
-reopen. That happens the same way with or without this patch. In
-practice, mvpp2_open() normally drains latched PTP causes before TX
-restarts.
-
-The effect specific to this patch is smaller. Some timestamps have
-already been captured by the hardware but not yet read when the port
-stops. Those records now find a NULL slot in mvpp2_isr_handle_ptp_queue()
-and are dropped, instead of being delivered to the original skb.
-
-Would it make sense to drain both hardware queues with
-mvpp2_isr_handle_ptp_queue() before freeing the remaining skbs here?
-
->  	if (!port->has_tx_irqs) {
->  		for (thread = 0; thread < port->priv->nthreads; thread++) {
->  			port_pcpu = per_cpu_ptr(port->pcpu, thread);
-
+base-commit: fa5196392691051963726787944db872420dfa75
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103100535.1310088-1-vulab%40iscas.ac.cn
+2.56.0
+
