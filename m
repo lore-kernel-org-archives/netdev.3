@@ -1,76 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794078935;
-	b=siWarBn/gh8VzEcPZIW8+9aIxL5j31kiSMv3hUk8bYLgMHIaDZb2WeKaJ44Bb1EL12V2
-	 LIoO2Wv1TeXMrG8V5AuS9d2uuZIFG+HOMTJD2gGsALcN9XNzfx0xdPYDyIcGBVxI0rWHg
-	 rwKTSoj8gnR/7Kf9JnHquPzZchvLhYUvC01PKdIekpjb9F/klIg5bP8oSzQLMvzWhW2Ag
-	 hprvs67JHKrm+j0HOcnMXF9ev+7T3LPSph1FbhwpkmjP+WZZYD+sHd4qXg4TGjkVhaP4v
-	 k2KtDOOs7epLPiltgDqlQW6tA2tsuFg7fEsc91EPWFJFdWHhM8TppFnu9qb5bvqhHIQ==
+	t=1794080049;
+	b=w1meyT8bFD6ZSqmkEd7v9mVMk3LuqlXc1pPzETT8nNLgGNy2Bj2uczyftVncg9/HA0om
+	 TvD1IwGk/UDPmxST0hJWHEBACl+yQeH5BnvpFP7c9YSqc9//5xPy4F1V9CmnPKDIyzcdQ
+	 7pgIe62X8K4yGsTXy9/ZEznAQ5+xwQMeRu6GnoyGqBygcb6eHGjX3SE0YtFZCtsSkrecX
+	 gIvX2+UENtAstOXkWCr9gzA+3zvimV2y7kpDSFdajdN6PsONQQEQHx11tfmHvSYGLkkRZ
+	 UrPgtCeMnCiC5iuWPZnN+5e1tLe9+wzZRH9eeq6TpLjc+mAGaUG1qi83AIheFTNblSQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794078935;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794080049;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=mafEGEdrVUw8NHEcO8SJv6Z5WTJzza2tDmHJlOhN/14=;
-	b=gxRUP4yfsmBEZhnY6pI3Sts4MuzkvxMGrziUbDHfJ1h9AR+YeQXlNmG/Zr22R1kAj8Cl
-	 cQFST1RZAfCeoQvWmf8d33PcARqGnmM7/aWdQXdoGFoQtk0BGQPMiVbkbzPR/ecTxjAe9
-	 6xoQPRJN64mefgkwqGOYunIzJ0HLbueHJDhCVB8cO6ND2+oZ4IIyaSVidwCieoeud6EQq
-	 IlWLSDJY9XCjmwEhrEh7LEvwYXzEdPHVU93XaCeCq5hrPoZWxk1byDpLAfuikPstpjWXC
-	 9bJyZWU4ejlFPsqVUezuMrWYMRpyuV5l6qqc6IZ93wwXpaedQ0MzcOYkd6Mc4js4d5Q==
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=tTMbY5wDu0Q9kyyP5WALVTT8c1BJMdKWv4LGJnBFjhc=;
+	b=iaN8+fX1HFEY2TbJoplWFALISmobLVLTBAcV1C8/sLQNQLwReT3GQuNBjNjaWsiZeIxf
+	 T0WaGY5ffuoSiv69c5jEWvAnEJereCAFCUOFnZl5d5NrpfJ0/PWlwcAW1DHRMawLUeXv2
+	 KLEMEcLqOAs7Vfy3XWOObk4xER8A0/p9mBIH2C+niLU2+EutbjIoJauVTspIj4TtrXB+d
+	 h2KOd0U0cI+eGgfwor9yw3MKlItJN4nZcN50nb/78rPMc3HFW4B+rMQyCrj6aS4v+67B2
+	 su5rnhealy0789wFMdfOryrnDZdKL6YwZlysFOs0XCLLPqdtqJbFhOxBtWW5ORiBunQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="dC6J/aT7";
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLxrqfM7;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E04606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 19:15:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83E04606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B06606A339
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 19:34:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60B06606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dC6J/aT7
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ed08b07232so16058295ad.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 11:15:34 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLxrqfM7
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e987ec84afso16408195ad.3
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 11:34:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794078934; x=1794683734; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=mafEGEdrVUw8NHEcO8SJv6Z5WTJzza2tDmHJlOhN/14=;
-        b=dC6J/aT7bfCHFAgBwL9fqX1e+XMB4+JBfvLSPEI8QMnQp2rB5ihlxHSZcZ4lG1siSt
-         at8n0Fcu7d6uRniKJQJ6R60b0eUq+EL+T2S578q5VnXp2yUGL8wSDnrO4jvcj/c08q8D
-         74EkV0l2nM3hyeCj16HmTGFs2gJ6fG0Sx1o2NzZwVtCkHSzSpTRt31QoQzMi10woPj2R
-         sVshTgt+yHiuT3OYIAtd+hNBnscKhi7yyFEa0DJiWHLjPbaeiwbdKXtAcsYATXrUkrng
-         uGqELtm8cv1gB+KeW64o7KjpCnL0U9avz5K4guIoqjIFrBb9VFiS+/62xlEirGpyGuOH
-         VXxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794078934; x=1794683734;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794080049; x=1794684849; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mafEGEdrVUw8NHEcO8SJv6Z5WTJzza2tDmHJlOhN/14=;
-        b=nDK64V5rineqzq/aPlMaqONgnCXBdoBynOAkDUzuilW1SdUBc5H2FeS23xDRAUqOmj
-         yCekdTjHA2+EG4AHyQHWRP7SjPfmH5NqLqF+L8AKJIVhENkeEs3pG229jg/aJRQS2GXy
-         Hr8YGWLAJ83bj32TWunGENUYuT3KaDBBsxV7oEVpzOCE/3tyFnPPMqTzS7q6PO1Et6L6
-         nqS7jhZb5af52bD66EEIgC8cdBA3gVMol3A7rUkTizCS8itkmaOiqqopATZOE8exeBZM
-         uIlGIeqqYBAYTjqNmlYfeVYoy+2YVm5dMcfsI/rrHRnPuYWGMPMCCWeaOyVPvGRWsCZI
-         va2Q==
-X-Forwarded-Encrypted: i=1; AL+hErEbIBTG4V6xKy6hkgkHE3kBrDwVyoqU4nUKh5cZ7Ec9qIBrjuyt39u5V/2ZKeFpRqLNu9ReEXA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+c9V8MQbn/G/L81RBkyO4AkqbHYOgYRkAP1vTMpKNWWFeRXOuh
-	oJVI1xA+lEDtE0epn9DOjm5NAeU/ay5hIANaOo+R9iLIoCzk0Ox+nEZkJsMBDZ3yEb+W+fLO4G3
-	lj51e1A==
-X-Received: from plsl4.prod.google.com ([2002:a17:903:2444:b0:2eb:6048:4647])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b28:b0:2ed:2e3a:1faf
- with SMTP id d9443c01a7336-2ed40c937e4mr67561865ad.47.1794078933562; Sat, 07
- Nov 2026 11:15:33 -0800 (PST)
-Date: Sat, 7 Nov 2026 19:15:33 +0000
-In-Reply-To: <CADVnQy=AHpy6UoiAFopRUmHLNv6Arw07PysXVijiR=qERuzeww@mail.gmail.com>
+        bh=tTMbY5wDu0Q9kyyP5WALVTT8c1BJMdKWv4LGJnBFjhc=;
+        b=KLxrqfM7u7uxgIMHAjsKmhtRJzAp+RwNzVoYEu9m3l2q/VEQBRvxR1azMIMowRWtPU
+         Ybh3pdXyLOYMy1vxHG0BXAtbMhHhuIxUO3+VoL+GnSeEH3Esy/WeYhTkcPWiy3EpVsh7
+         gehZbvSgUJi/5SNvluEmcUyx5I6iEdvs+cbgyuh+WtIoSqrUhQS0kzQ7cr7SHEXbBIV1
+         a7Z26cEUJQTt2eiUv3xLTJu6Z8Ya+TUVV4okI/1exFuGUWd+dHdXCxnUg2YIz8ELkThA
+         B9ymKTEVZOYuApXh1SHPhckbNuw5P68jP0PYlcLW4PAzcMSss6BUnIm3JSDZmbAWLZVT
+         V5/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794080049; x=1794684849;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tTMbY5wDu0Q9kyyP5WALVTT8c1BJMdKWv4LGJnBFjhc=;
+        b=NSCZgoEL/Rm+sbmv05NbwZxX6FxXTu5u3Fq6mhg8zwneD26Q8ahfbGYyZ+Lk5ScxIE
+         r1Ht8ADM3wtqedaPpnudlF/izC/lyKxHj2JAChVdNZENYsi3u05k7PJ565x9S30/dmG7
+         F0U3e533a2hEvkEpSZ/+Gpea0lhyBR16svOTjooLpSfU4bUyv4I00MtaLLifCUzggptD
+         3HoXIb6Fi7BADrf4e3NBpV0Fm5+YDyW+xj2azQzTCGsyJIMhocIc3DRUPDJIdpmOKaKn
+         AVLBO5ojwVVMnvjMANiCkifoYsyRqsqYe3A/KeJH9xbjMKAs1UYGK1Za0+x0X9aHkhMN
+         tXdA==
+X-Forwarded-Encrypted: i=1; AL+hErEY7WyAsvQuPyMoAiQoBelvJlQ9seiDrRGYNFyTC90y0mOaM1DpSeiiqzzWlqkmTMiF8iimRhA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+xfPTRx5XeYp06Q/ahbXxwKOOzi9+bAWGvZp1YCTFXrFnbGbqi
+	2krmBNenvT7E3ryFxAdej59JtJdtmRkzWxDS2pokXcK0ZaS2QOrttexMBtspfnp1XoqRDFENnbQ
+	IqRYfXA==
+X-Received: from plon11.prod.google.com ([2002:a17:903:1a8b:b0:2ea:ce88:ff88])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e88e:b0:2e9:9a19:c4f
+ with SMTP id d9443c01a7336-2ed40e89b01mr67905115ad.61.1794080048300; Sat, 07
+ Nov 2026 11:34:08 -0800 (PST)
+Date: Sat, 7 Nov 2026 19:34:07 +0000
+In-Reply-To: <a951af6957fe4890d3eaaf5a661754fc259a4b79@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,138 +78,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261103-mtu-probing-series-v1-0-a2809e725aaa@gmail.com>
- <20261103-mtu-probing-series-v1-1-a2809e725aaa@gmail.com> <CADVnQy=AHpy6UoiAFopRUmHLNv6Arw07PysXVijiR=qERuzeww@mail.gmail.com>
-Message-ID: <au9zxblIQx7OF_gx@google.com>
-Subject: Re: [PATCH net-next 1/4] tcp: sync MSS after enabling MTU probing on
- passive connections
+References: <20261009091941.5837-1-qiang.zhang@linux.dev> <CAAVpQUAeHP7M07uMweRePtuzPPUo-99dL6jOYUiVf7CSVUxNDQ@mail.gmail.com>
+ <a951af6957fe4890d3eaaf5a661754fc259a4b79@linux.dev>
+Message-ID: <au99DNHQEsaaDqpJ@google.com>
+Subject: Re: [PATCH] neighbour: Move the netdev_put() out of RCU callback
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Neal Cardwell <ncardwell@google.com>
-Cc: echoowall@gmail.com, horms@kernel.org, edumazet@kernel.org, 
-	kuba@kernel.org, shuah@kernel.org, davem@davemloft.net, pabeni@redhat.com, 
-	netdev@vger.kernel.org, panweiping3@gmail.com, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Zqiang <qiang.zhang@linux.dev>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Sat, 07 Nov 2026 12:53:36 -0500, Neal Cardwell wrote:
-> On Tue, Nov 3, 2026 at 2:09=E2=80=AFAM Yongjian Wang via B4 Relay
-> <devnull+echoowall.gmail.com@kernel.org> wrote:
-> >
-> > From: Yongjian Wang <echoowall@gmail.com>
-> >
-> > tcp_v4_syn_recv_sock() and tcp_v6_syn_recv_sock() call tcp_sync_mss()
-> > before MTU probing is enabled, and tcp_init_transfer() enables it later
-> > without syncing the MSS again.
-> >
-> > With net.ipv4.tcp_mtu_probing=3D2, a passive connection therefore start=
-s
-> > at the full MSS instead of tcp_base_mss as documented, while an active
-> > connection starts at tcp_base_mss. This has two visible effects, shown
-> > here with tcp_base_mss=3D1024:
-> >
-> >  - The MSS drops when the first probe is acknowledged, from 1460 to 124=
-2,
-> >    although that probe has just shown the path can carry more.
-> >
-> >  - On a black hole path the MSS never tries tcp_base_mss. It goes from
-> >    1460 straight to 512, since MTU probing is already enabled when blac=
-k
-> >    hole detection triggers.
-> >
-> > Sync the MSS right after tcp_mtup_init(). tcp_sync_mss() only applies
-> > search_low when MTU probing is enabled, so the other tcp_mtu_probing
-> > values keep their behaviour.
-> >
-> > The Fixes commit kept tcp_mtup_init() in a single place on purpose, so
-> > sync the MSS next to it instead of moving it back into the
-> > syn_recv_sock() handlers.
-> >
-> > Fixes: 4d83e1773031 ("tcp: delete redundant calls of tcp_mtup_init()")
-> > Signed-off-by: Yongjian Wang <echoowall@gmail.com>
-> > ---
-> >  net/ipv4/tcp_input.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index e1f2d9765..c13f005b2 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -6760,6 +6760,7 @@ void tcp_init_transfer(struct sock *sk, int bpf_o=
-p, struct sk_buff *skb)
-> >         struct tcp_sock *tp =3D tcp_sk(sk);
-> >
-> >         tcp_mtup_init(sk);
-> > +       tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
-> >         icsk->icsk_af_ops->rebuild_header(sk);
-> >         tcp_init_metrics(sk);
-> >
-> >
-> > --
->=20
-> Functionally this seems correct. But I'm wondering about the
-> performance impact, and whether there is a way to achieve this without
-> adding this call to the code path for every connection establishment?
->=20
-> Eric and Kuniyuki, WDYT?
+On Sat, 07 Nov 2026 11:47:45 +0000, Zqiang wrote:
+> > 
+> > On Fri, Oct 9, 2026 at 2:19 AM Zqiang <qiang.zhang@linux.dev> wrote:
+> > 
+> > > 
+> > > For builts with CONFIG_NET_DEV_REFCNT_TRACKER=y kernels, netdev_put()
+> > >  records the caller's stack trace via ref_tracker_free() for debugging
+> > >  reference leaks. however, the netdev_put() is within pneigh_destroy()
+> > >  RCU callback, this recorded stack is uninformative, it does not reveal
+> > >  which code path initiated the deletion.
+> > > 
+> > Have you seen pneigh double-free ? What motivates this change ?
+> 
+> Firstly, Apologies for delayed reply.
+> 
+> 
+> 
+> Actually, I didn't see any double-free happening,  just wanted it to
+> record a meaningful callstack which on release path.  After all, if double-free
+> really occurs, the callstack of the RCU callback execution path will not be helpful.
+> 
+> 
+> > 
+> > > 
+> > > This commit therefore move netdev_put() from the RCU callback into the
+> > >  caller's process context, and replace call_rcu() with kfree_rcu().
+> > > 
+> > >  Fixes: d539d8fbd8fc ("neighbour: Free pneigh_entry after RCU grace period.")
+> > > 
+> > Please elaborate why your change is safe in the commit message
+> > and remove the tag.
+> 
+> Does it refer to using kfree_rcu instead of call_rcu ensures safely ?
 
-Looking at history, initially it seems we properly called
-tcp_mtup_init() right before tcp_sync_mss() in ->syn_recv_sock(),
-but 4d83e1773031 removed them.
+I mean why dropping netdev refcnt waiting RCU gp is safe.
 
-The dup tcp_mtup_init() mentioned in the commit is the one in
-tcp_init_transfer() today.
 
-Then, 27204aaa9dc6 moved only tcp_mtup_init() to tcp_init_transfer()
-without tcp_sync_mss().
-
-The dup exists in tcp_rcv_state_process() from day 0 (5d424d5a674f),
-and 168a8f58059a copy-and-pasted the unnecessary tcp_mtup_init().
-
-So, 4d83e1773031 removed the correct one.
-
-Instead of restoring the 2nd set of calls, I think we should
-revert 4d83e1773031 and remove tcp_mtup_init() in tcp_init_transfer().
-
----8<---
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e1f2d9765f81..8d009c0d9359 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6759,7 +6759,6 @@ void tcp_init_transfer(struct sock *sk, int bpf_op, s=
-truct sk_buff *skb)
- 	struct inet_connection_sock *icsk =3D inet_csk(sk);
- 	struct tcp_sock *tp =3D tcp_sk(sk);
-=20
--	tcp_mtup_init(sk);
- 	icsk->icsk_af_ops->rebuild_header(sk);
- 	tcp_init_metrics(sk);
-=20
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index a7f9242f1e42..579a88472abf 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1740,6 +1740,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *=
-sk, struct sk_buff *skb,
-=20
- 	tcp_ca_openreq_child(newsk, dst);
-=20
-+	tcp_mtup_init(newsk);
- 	tcp_sync_mss(newsk, dst4_mtu(dst));
- 	newtp->advmss =3D tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
-=20
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index e006a30360ea..c465fd97baec 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1489,6 +1489,7 @@ static struct sock *tcp_v6_syn_recv_sock(const struct=
- sock *sk, struct sk_buff *
-=20
- 	tcp_ca_openreq_child(newsk, dst);
-=20
-+	tcp_mtup_init(newsk);
- 	tcp_sync_mss(newsk, dst6_mtu(dst));
- 	newtp->advmss =3D tcp_mss_clamp(tcp_sk(sk), tcp_dst_advmss(dst));
-=20
----8<---
-
+> 
+> Thanks
+> Zqiang
+> 
+> > 
+> > > 
+> > > Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+> > > 
+> > nit: full name
+> > 
+> > > 
+> > > ---
+> > >  net/core/neighbour.c | 14 ++++----------
+> > >  1 file changed, 4 insertions(+), 10 deletions(-)
+> > > 
+> > >  diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> > >  index 6ed8eb075146..4263689fc415 100644
+> > >  --- a/net/core/neighbour.c
+> > >  +++ b/net/core/neighbour.c
+> > >  @@ -818,14 +818,6 @@ int pneigh_create(struct neigh_table *tbl,
+> > >  return err;
+> > >  }
+> > > 
+> > >  -static void pneigh_destroy(struct rcu_head *rcu)
+> > >  -{
+> > >  - struct pneigh_entry *n = container_of(rcu, struct pneigh_entry, rcu);
+> > >  -
+> > >  - netdev_put(n->dev, &n->dev_tracker);
+> > >  - kfree(n);
+> > >  -}
+> > >  -
+> > >  int pneigh_delete(struct neigh_table *tbl, const void *pkey,
+> > >  struct net_device *dev)
+> > >  {
+> > >  @@ -849,7 +841,8 @@ int pneigh_delete(struct neigh_table *tbl, const void *pkey,
+> > >  if (tbl->pdestructor)
+> > >  tbl->pdestructor(n);
+> > > 
+> > >  - call_rcu(&n->rcu, pneigh_destroy);
+> > >  + netdev_put(n->dev, &n->dev_tracker);
+> > >  + kfree_rcu(n, rcu);
+> > >  return 0;
+> > >  }
+> > >  }
+> > >  @@ -891,7 +884,8 @@ static void pneigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+> > >  if (tbl->pdestructor)
+> > >  tbl->pdestructor(n);
+> > > 
+> > >  - call_rcu(&n->rcu, pneigh_destroy);
+> > >  + netdev_put(n->dev, &n->dev_tracker);
+> > >  + kfree_rcu(n, rcu);
+> > >  }
+> > >  }
+> > > 
+> > >  --
+> > >  2.17.1
+> > >
+> >
