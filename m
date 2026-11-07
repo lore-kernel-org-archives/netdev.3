@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794053225;
-	b=JhZEtiUP4IhmfV5LLuKj1E23qs6LAHwZtHEzM938HpNUt3SXnBT+yXbSH8sLiWWlXkiv
-	 A12sSrl+iJuVnTi0CEwcJi9ROtqKl9N7tbAPuGWUQljHPxky64xvFNcn5XD+QF6DNpdAc
-	 M7PtmogvoelTBswV5Z1zIHlvWwrHs5QrvA/wRGcFULTzgIh8Pc8OWXttf3UiQUp+rMOpN
-	 hYManF75IhdOwwwie+MIR94/cXC1v055zmmX81YvFM5EB/zjZIhy2DShHMzu5RZW+HS5k
-	 SUKtXgju5B0D9PH5Raz3FjGxn7Y2+kl8Or5X4H2dDw2FWiZPvIb5Fn66PdZtyCjTJlw==
+	t=1794053230;
+	b=3ZgNfG/TKzviCwNYgsJA6f7kF4NV2518M6KS+Pb8aLDd6vn4y8ZsC072/6b16n3nfKvI
+	 HS3X9GME2lWkA+djmcs9KKLvXbAI65cJJflrBSCC1U5EjQT6CSNh/e75jZrzdYPJFR1Rv
+	 fkgQo3TwcsOhbl66ewGp8hVDFM6aWqtwPBm11N2e7dzGekmLXqDsfLPx6ryT2/D5xxOKv
+	 q8ECOFRrSYtzluag4FpSUpdB1LW6KeuyIZf4pfPwiOvhdGcPf2RczWhlkqSZgSKH1mto+
+	 CUYwxLyZQCQARzdGZDzmMQloLRwFlkDaBxOHUvRsqyV8jZA41V8aCKOAHZJ/NnLHWrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794053225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794053230;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
-	b=mzAu6kLU1TfBJGI5a8KsPZTq/EfE9bFhXp2Z+O4J9IkkNWzc79Si8URw1Um6a4KXcieC
-	 irPRy94mW/qjoYL1TkdTDXfefDCweZ5cA8tF3kvcxjC5vmVoKr70vXL4gVNYSZBxZr1wu
-	 Y8PQDXz9spSKOraYpBF0HdHW1eIS1jgdg5n53mDlxM/7JX5Ua45M7HcIAdEQAzWP7nFvN
-	 sRfmDxAaNxSUTthbxsDMftT0gpUa2j6EdNGKzmuKAPNri4z1ia4ZhQER/vPgsGBYIv+3z
-	 K+7vh1TVUX3YdVWO8JpiOY9yM7GaOtFA3qonaSJFV/q17xDd4f3zgdc0CdlebLVo8AA==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=yLYelWlzZbcAyDESwlZ+3oqhRhUvbgMxRgZ3XTVSRbc=;
+	b=maA/NQ4c5Ej92pKYPIw5iIDPC4ehuO3Nx0wvDLZHOklkwkmfmaBd6VsAyVcLGbqTQBRw
+	 eBk+L4AsY8Twxzo/mWysxZF/uc9dMKk+QAxWgS9QCutiTAA7dwrLDv4jw5TpiXw2U1vkD
+	 NQ9Axdnmo7DKyRsuDRK4EnUiiV37alOFaJt35LmC3L9SY1ASjCPoH1EWhBNgly2fuCMrb
+	 ZzYV/nWWn0BIE1qV0wowkb8ltIWMeOnBX5Y/S9wPNc8D7CeeEdEVrNTa4JfMXfmJK+j0/
+	 yVc5ax/2Hlz5+XP04NZZGyXCryKN65vrHSJ58axNw1953rYV0KtWRyXmTAUlSyBoljA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UXYGz64Y;
-	arc=none smtp.remote-ip=74.125.224.44
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="g/idRoYd";
+	arc=none smtp.remote-ip=74.125.224.51
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61B606A32D
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 12:07:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B61B606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81397606A32C
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 12:07:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81397606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UXYGz64Y
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67be4f2f4d4so1714748d50.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 04:07:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g/idRoYd
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-6774639a8a4so1366605d50.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 04:07:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794053224; x=1794658024; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
-        b=UXYGz64Ydu19JZiz182rbonA6mfNLwsUYdmZbtKG1Xu08S+kaaLW4WcJemh/6ZXFW+
-         VV+YdTk7SQSbqZsHO0sDkpgcIpLtScXshRYJLYzUeLaPcchc6tHfVe+2Dl4UAyczhGQi
-         9I1rpHbjmYr4PP9Pkjkawi+Qu6pJO0s4poHcAlW3xOEumFtquhVa6lpp0vugZKxbRJDk
-         1lmw+90BquKx8Lm9HMcOkUlag/4M0nC7QtC4x+WzcKF+OylCC1kDem8r1F4CMIVzIxLF
-         hcZh31T6NgQj0QtpK/LhWnBp2RaAyGbGIaaJx3tP2yVARVUvJfg6zkvJ8PHVViMXnJ/p
-         7A9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794053224; x=1794658024;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794053228; x=1794658028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pbRWUgFzstEx20sAnwfteY/8tUQcjocHNqkIohI528M=;
-        b=bTnDtQq+U7ndToFJ4hVX2cIsGhnB7XbmRriIQWPFVkOL9zAN0ygHVJeo5lzofhSvOQ
-         53o0jTAneIJbz2j6gCxgUJcfkAdOENotiGEW0Xlmcepr8LxGxANUG671gexgtH8+tw35
-         rBU1grsTqUXrTIBYcPHlmdnj/m1CHe9Uzck6KSz4qIfzEZHoJ5Fq8QxbOai+FeljuChS
-         EaMeg4YZc9zbgFC22BxYV8x2XVf+J9OshQgjkw7nafZvM+RZu/dJcJUBJ64lnvzQEhmv
-         k7Ak80g0qL08hx/7Y3OZMZa9KbJNSgtsy2qE7JSY2g/NYAlITe3IlMpxH99rO09vDnxu
-         LXyw==
-X-Gm-Message-State: APuU4Z/YLm5Y/LvZ0NxcEn+BUClsPJATwp5dx/Mahdx+ViPlNpRu/+xe
-	lFrK38hn3r7tRltEmRv238HVqODzi6CIAe17hNNxNeH46oDCNyOaSRabO/ZlhJuO
-X-Gm-Gg: AYBFou2fVUQAgWMqjW6yNmslFHIHuoBS+IlmzhnPiIPQdRGs8Qe9Mvcd33T6EeEIeZE
-	co0janT+/s/HdK0GkZeT25yeXx2KVqHGR7m9klQdwMfUy390wXLNUdU1xSYUhcljNZ40IT96tmn
-	GLE/gDjvD5c0hud3MhFRbuC5PrRy664Kji3JHInubRlbDN4zlkNTgpfFWmLReV3fHcTDirXXZgR
-	OC/JJ3BZJCtU23moJyZmXWdYt83nJtAd23xJnDzcDArVZVDHUbGXc/8LW66wyMnW7yATXPiyyuT
-	+pLNJ2T9KPqzKnvjxwWGkvRPyuQCLw6kc8dT0YoJpq/X5jnnqxAxiZmKMrYIrI5EDdLMfip5Va2
-	OzmSQA1veAQri/HZvK9K/YoRIwceX9zhD1HB8wVQfrT4Ly2xhWzMK4Zh5nPECZ40GU2VGgTkdhb
-	720FZOt886TxVq3N8xZFlUnNS4MfcuW9oDG9U8aoeF7eKRzUHEMD2GYnCjIMLaCu9XXP4grcFkU
-	AxQACXhsCkxmtkXLjB4G1WYJ0O8f7kwQXf5B2SdaKjUE9EU5S2kbY2Y78m2dFI/i+YEbJMdL1Nq
-	bujPIweSzdYb1zOmCRJzj6hX
-X-Received: by 2002:a05:690c:c1c2:b0:8ab:422f:a8a3 with SMTP id 00721157ae682-8b341b30203mr19939877b3.104.1794053224038;
-        Sat, 07 Nov 2026 04:07:04 -0800 (PST)
+        bh=yLYelWlzZbcAyDESwlZ+3oqhRhUvbgMxRgZ3XTVSRbc=;
+        b=g/idRoYdgqmXq/TogYu2NL/u2aF2vjfb7XJgJ46abv4A/ZAVps6IIxZgVQABqEDCRM
+         J/oT1/KHAz1htZu3cJBJMpI6qWr1anBwTdN3v1EOKAm4wfcuCK9XTWevaqHxDurHZ3oB
+         mQtUJqnay84Ew/KkMaqKsX/ClvMEyxUBXS5SfCZWJbKr+uFLYJo1tGYc+JqJlIa6m7IC
+         91IzJsm9vUuu/Deapo6M3FamSkf9BLAqvHUlJcYxSszyLOsFcNyqTSWyafyxNwcfgPkT
+         JhvYROoJWR3rIYbaPSJGfFBOZmBZnlfLmtkNDL3wlj4WIt7Az+k3aBka4mIOWUgmbQvI
+         7LXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794053228; x=1794658028;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yLYelWlzZbcAyDESwlZ+3oqhRhUvbgMxRgZ3XTVSRbc=;
+        b=r7YLqgQejg2R1IwomysymWrJIYE5o7PjLjNRDAP7cbfvWgG4RlhvQTY9SpVQTMOzcy
+         rnf5eDWnydYj1cLjV8pl4LYmmhAKnionqZ/TKdvcJA1iYLzcmtTcBCqZ1JQyA7CBfSPM
+         gHcrrf18ZHyiFF+nO91nO6/NABSgTPKXLM0JTumcqaeKUqYdOWRmqN2bu6WaV1LCvcbA
+         TQiM8l9GJ+KW1/NzK3fTn2bZj5cOAmHxEdy2eaK7NP0SBa0nW4BJdtVyD/QobaNNetu3
+         +4ZblzEbn8qzTs9oIiEWEtJ1+SrY4ClJfe0xKVmOz5ZzMAQvokU7khHxU1m7z6YT3nnT
+         CS0w==
+X-Gm-Message-State: APuU4Z9H3UjQzQJIT8kEYi38HrcSsVtSt/QopxUbjQUXofNi6zY23/Me
+	QYHvvK1XvvwExBcpNe68X6UMIPMpZzkYW7MB+qDxb+NzzkfBDW2becq3yGYouJoc
+X-Gm-Gg: AYBFou2HqCDF1vIUR6m5yvD3q8riireOKHsQIUrCFMPHR2eTEO/n+GQ6R7Z6iaA3PKy
+	IDcHepIl6e3zNjjjf6LDBHa3dy2Rb3iYY+BnTmp+OntqqB4sL4G6ITNy9QTm4+GuD4yrxRtESJT
+	nwZPP5dtp1FI/FJIHF50Q1i+a06EmLuOUARdeyoMyclqnmS49DLK4xlq+Co4FQjBv0ETFbHsdZU
+	JYegDM0Io6shbyWANvxEuWh5hOLQQDxkLjuTBYpsklKKFLtummqqf3Ikjz/Ro3IsM7HKlPrlMF/
+	ZioEa8uQoQK/jqASGtgqHdr0JBAtc8efCc7Xu8+rtau/5W2eiZCI/A2rYRelyWYoJt429Yk2uA9
+	ugnKlDJYuAdejsCeSXoSKYoIS2qq0TOkaEbICxS9XqpTzPx5ymR7N1HLC+5D3tIVM/LXH2cRA+w
+	T33WyYlfNwqTxcvMw+zcdVXj0n5C3pOfjmA2XHiEH6XNqOmlFy2dudq8rnfsoUFJfpnLib6lQFP
+	UrV4KqjYBfWId5ICykVkiuqRx/20RdciFd+TNWo1m+L0iGk7k4TtwETKOPefB1NkuevCryREAAu
+	7SOYz84nlHdWiKNIjucx7pcD
+X-Received: by 2002:a05:690c:16:b0:8b3:47fd:a035 with SMTP id 00721157ae682-8b347fdb145mr18976467b3.62.1794053228421;
+        Sat, 07 Nov 2026 04:07:08 -0800 (PST)
 Received: from houminxi ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f77055bsm39518927b3.8.2026.11.07.04.07.00
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f77055bsm39518927b3.8.2026.11.07.04.07.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 04:07:03 -0800 (PST)
+        Sat, 07 Nov 2026 04:07:08 -0800 (PST)
 From: Minxi Hou <houminxi@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Donald Hunter <donald.hunter@gmail.com>,
@@ -87,10 +89,12 @@ Cc: Donald Hunter <donald.hunter@gmail.com>,
 	Aaron Conole <aconole@redhat.com>,
 	Eelco Chaudron <echaudro@redhat.com>,
 	Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH net-next v6 0/2] netlink: specs: fill in the missing ovs operations
-Date: Sat,  7 Nov 2026 07:06:45 -0500
-Message-ID: <20261107120647.874906-1-houminxi@gmail.com>
+Subject: [PATCH net-next v6 1/2] netlink: specs: add ovs_flow del and set operations
+Date: Sat,  7 Nov 2026 07:06:46 -0500
+Message-ID: <20261107120647.874906-2-houminxi@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261107120647.874906-1-houminxi@gmail.com>
+References: <20261107120647.874906-1-houminxi@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,96 +106,244 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ovs specs describe get and new but not the set and del commands the
-kernel has registered since the families were added. This series adds
-them and names the attributes each handler reads. Nothing here changes
-how the kernel behaves.
+The ovs_flow spec described get and new only, so a YNL client could not
+delete or modify a flow. Both commands have been in the kernel since the
+family was added: del flushes the data path when a request carries no key
+and no valid ufid, and set looks a flow up by key or by ufid.
 
-v6:
-https://lore.kernel.org/netdev/20261103183319.2730567-1-houminxi@gmail.com/
-  - A del flushes the data path when it carries no key and no valid ufid,
-    not when it carries neither. The kernel reads a ufid outside 1-16
-    octets as absent, so such a request flushes as well. The ufid doc now
-    says that, and that a new request with such a value indexes the flow
-    by its key instead, and the attribute records the minimum length the
-    policy enforces. The same sentences in
-    include/uapi/linux/openvswitch.h follow.
-  - ifindex is declared s32 with a minimum of 0, which is how both
-    policies read it. No request used the attribute before this series,
-    which is why the type went unnoticed.
-  - The ops skip strict and dump validation in the kernel, so get, new,
-    del and set say so in all three specs.
-  - Rebased onto current net-next.
+List the attributes each command reads. new reads ufid-flags and probe as
+well as the key, so those go in its request list. new, del and set need
+CAP_NET_ADMIN.
 
-v5:
-https://lore.kernel.org/netdev/20261025103409.3519874-1-houminxi@gmail.com/
-  - ovs_flow dump gets a request list of its own with ufid-flags. It
-    shared the get list, which offered a key and a ufid the kernel
-    ignores on a dump. The reply is unchanged.
-  - The key, actions and ufid docs no longer claim those attributes are
-    always present, and say what the exceptions are: a ufid-identified
-    flow sends no key or actions when the request asked for them to be
-    left out, a dump leaves the actions out when they do not fit, and a
-    dump ignores the ufid. The same sentences in
-    include/uapi/linux/openvswitch.h are updated to match, since the
-    spec text was copied from there.
-  - The key doc now says a get and a set need a key or a ufid, that a
-    new request needs a key, and that a del carrying neither flushes the
-    data path.
-  - The ovs_datapath new and set docs say per-cpu-pids takes effect only
-    when the same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in
-    user-features.
-  - The ovs_vport set doc says the vport is picked by name or by port
-    number, names the rejections in the order the kernel checks them,
-    and says upcall-pid is the only attribute that changes state.
-  - Rebased onto current net-next after the merge window.
+A dump reads ufid-flags and nothing else. It shared the get request list,
+which let a client send a key and a ufid the kernel ignores, so give it a
+request list of its own. The reply stays the same as for get.
 
-v4:
-https://lore.kernel.org/netdev/20261015024132.698658-1-houminxi@gmail.com/
-  - ovs_vport set lists port-no and ifindex. lookup_vport() finds a
-    vport by name or by port number, and returns -EOPNOTSUPP as soon as
-    it sees an ifindex, before the type or the options are looked at.
-  - ovs_datapath new lists masks-cache-size, per-cpu-pids and ifindex.
-    new calls ovs_dp_change(), which reads the first two, and reads
-    ifindex itself.
-  - ovs_flow get lists probe. ovs_flow_cmd_get() reads it to decide
-    whether to log.
-  - The key attribute doc now says a new request needs a key even when
-    it finds an existing flow and replaces its actions, and that a dump
-    reads neither the key nor the ufid. A del with neither flushes the
-    data path, and the del operation doc says so too.
+probe was binary while the kernel policy is NLA_FLAG. A YNL client leaves
+out a false flag, where it sent an empty binary attribute before.
 
-v3:
-https://lore.kernel.org/netdev/20261012065552.2426415-1-houminxi@gmail.com/
-  - no change since v2.
+The key and the actions docs called those attributes always present in
+notifications. A flow identified by a ufid sends neither when the request
+asked for it to be left out, and a get reply follows the same rule. A
+dump also leaves the actions out when they do not fit in the message.
 
-v2:
-https://lore.kernel.org/netdev/20261006130533.1620706-1-houminxi@gmail.com/
-  - ovs_flow new lists ufid-flags and probe, which ovs_flow_cmd_new()
-    reads.
-  - The commit message now says probe changes from binary to flag, and
-    that new needs CAP_NET_ADMIN.
-  - The key attribute doc no longer says a key is required for every
-    request except a dump. get, set and del accept a ufid with no key,
-    and only a new flow needs a key. A set that replaces the actions
-    still needs a key.
+The key doc said a key is required for every request except a dump. The
+kernel accepts a ufid with no key, but a get and a set need one of the
+two, and a set that replaces the actions needs a key. A new request needs
+a key, including one that finds an existing flow and replaces its
+actions, and a del that carries no key and no valid ufid flushes the data
+path.
+
+The ufid doc promised that the flow is indexed by that value, which does
+not hold for a value the kernel rejects. Anything outside 1-16 octets is
+read as if the attribute were absent, so a del with such a ufid and no
+key flushes the data path, and a new request indexes the flow by its key
+instead. Say so, and record the minimum length the policy enforces in the
+attribute.
+
+Fix the same sentences in the uapi header. The spec text was copied from
+there, and the two descriptions disagreed once this patch changed the
+spec.
+
+The ops skip strict and dump validation in the kernel, so the spec says
+so for get, new, del and set.
 
 Signed-off-by: Minxi Hou <houminxi@gmail.com>
+---
+ Documentation/netlink/specs/ovs_flow.yaml | 86 +++++++++++++++++++----
+ include/uapi/linux/openvswitch.h          | 23 ++++--
+ 2 files changed, 88 insertions(+), 21 deletions(-)
 
-Minxi Hou (2):
-
-Minxi Hou (2):
-  netlink: specs: add ovs_flow del and set operations
-  netlink: specs: add ovs datapath and vport set operations
-
- Documentation/netlink/specs/ovs_datapath.yaml | 35 +++++++-
- Documentation/netlink/specs/ovs_flow.yaml     | 86 ++++++++++++++++---
- Documentation/netlink/specs/ovs_vport.yaml    | 30 ++++++-
- include/uapi/linux/openvswitch.h              | 23 +++--
- 4 files changed, 150 insertions(+), 24 deletions(-)
-
-
-base-commit: fa5196392691051963726787944db872420dfa75
+diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
+index 951837b72e1d..bfdbf55bc219 100644
+--- a/Documentation/netlink/specs/ovs_flow.yaml
++++ b/Documentation/netlink/specs/ovs_flow.yaml
+@@ -383,19 +383,27 @@ attribute-sets:
+         type: nest
+         nested-attributes: key-attrs
+         doc: |
+-          Nested attributes specifying the flow key. Always present in
+-          notifications. Required for all requests (except dumps).
++          Nested attributes specifying the flow key. Present in replies and
++          notifications, except for a flow identified by a ufid when the
++          request asked for the key to be left out. A get, set or del may
++          carry a ufid instead of a key; a get and a set need one of the
++          two, and a set that replaces the actions needs a key. A new
++          request needs a key, including one that finds an existing flow and
++          replaces its actions. A dump reads neither the key nor the ufid. A
++          del that carries no key and no valid ufid flushes the data path.
+       -
+         name: actions
+         type: nest
+         nested-attributes: action-attrs
+         doc: |
+           Nested attributes specifying the actions to take for packets that
+-          match the key. Always present in notifications. Required for
+-          OVS_FLOW_CMD_NEW requests, optional for OVS_FLOW_CMD_SET requests.  An
+-          OVS_FLOW_CMD_SET without OVS_FLOW_ATTR_ACTIONS will not modify the
+-          actions.  To clear the actions, an OVS_FLOW_ATTR_ACTIONS without any
+-          nested attributes must be given.
++          match the key. Present in replies and notifications, except when
++          the request asked for the actions to be left out, and in a dump
++          when they do not fit in the message. Required for
++          OVS_FLOW_CMD_NEW requests, optional for OVS_FLOW_CMD_SET requests.
++          An OVS_FLOW_CMD_SET without OVS_FLOW_ATTR_ACTIONS will not modify
++          the actions. To clear the actions, an OVS_FLOW_ATTR_ACTIONS
++          without any nested attributes must be given.
+       -
+         name: stats
+         type: binary
+@@ -438,18 +446,22 @@ attribute-sets:
+           are exact match bits.
+       -
+         name: probe
+-        type: binary
++        type: flag
+         doc: |
+           Flow operation is a feature probe, error logging should be suppressed.
+       -
+         name: ufid
+         type: binary
++        checks:
++          min-len: 1
+         doc: |
+           A value between 1-16 octets specifying a unique identifier for the
+           flow. Causes the flow to be indexed by this value rather than the
+-          value of the OVS_FLOW_ATTR_KEY attribute. Optional for all
+-          requests. Present in notifications if the flow was created with this
+-          attribute.
++          value of the OVS_FLOW_ATTR_KEY attribute. A request that carries a
++          value outside that range is treated as if it carried no ufid, so a
++          new flow is indexed by its key. Optional for all requests. Present
++          in notifications if the flow was created with this attribute.
++          Ignored in a dump.
+         display-hint: uuid
+       -
+         name: ufid-flags
+@@ -969,25 +981,33 @@ operations:
+       doc: Get / dump OVS flow configuration and state
+       value: 3
+       attribute-set: flow-attrs
+-      do: &flow-get-op
++      dont-validate: [strict, dump]
++      do:
+         request:
+           attributes:
+             - key
+             - ufid
+             - ufid-flags
+-        reply:
++            - probe
++        reply: &flow-get-reply
+           attributes:
+             - key
+             - ufid
+             - mask
+             - stats
+             - actions
+-      dump: *flow-get-op
++      dump:
++        request:
++          attributes:
++            - ufid-flags
++        reply: *flow-get-reply
+     -
+       name: new
+       doc: Create OVS flow configuration in a data path
+       value: 1
+       attribute-set: flow-attrs
++      dont-validate: [strict, dump]
++      flags: [uns-admin-perm]
+       do:
+         request:
+           attributes:
+@@ -995,6 +1015,44 @@ operations:
+             - ufid
+             - mask
+             - actions
++            - ufid-flags
++            - probe
++    -
++      name: del
++      doc: |
++        Delete one flow, or every flow in the data path. A request that
++        carries no key and no valid ufid flushes the data path.
++      value: 2
++      attribute-set: flow-attrs
++      dont-validate: [strict, dump]
++      flags: [uns-admin-perm]
++      do:
++        request:
++          attributes:
++            - key
++            - ufid
++            - ufid-flags
++            - probe
++    -
++      name: set
++      doc: |
++        Modify an existing flow. The kernel rejects the request with
++        -EINVAL when it carries neither a key nor a ufid. Replacing the
++        actions also needs a key: a ufid on its own is not enough.
++      value: 4
++      attribute-set: flow-attrs
++      dont-validate: [strict, dump]
++      flags: [uns-admin-perm]
++      do:
++        request:
++          attributes:
++            - key
++            - ufid
++            - mask
++            - actions
++            - ufid-flags
++            - clear
++            - probe
+ 
+ mcast-groups:
+   list:
+diff --git a/include/uapi/linux/openvswitch.h b/include/uapi/linux/openvswitch.h
+index 440825e65837..4c5625c8c1cf 100644
+--- a/include/uapi/linux/openvswitch.h
++++ b/include/uapi/linux/openvswitch.h
+@@ -624,11 +624,18 @@ struct ovs_nsh_key_md1 {
+ /**
+  * enum ovs_flow_attr - attributes for %OVS_FLOW_* commands.
+  * @OVS_FLOW_ATTR_KEY: Nested %OVS_KEY_ATTR_* attributes specifying the flow
+- * key.  Always present in notifications.  Required for all requests (except
+- * dumps).
++ * key.  Present in replies and notifications, except for a flow identified
++ * by a ufid when the request asked for the key to be left out.  A get, set
++ * or del may carry a ufid instead of a key; a get and a set need one of the
++ * two, and a set that replaces the actions needs a key.  A new request needs
++ * a key, including one that finds an existing flow and replaces its
++ * actions.  A dump reads neither of the two, and a del carrying no key and
++ * no valid ufid flushes the data path.
+  * @OVS_FLOW_ATTR_ACTIONS: Nested %OVS_ACTION_ATTR_* attributes specifying
+- * the actions to take for packets that match the key.  Always present in
+- * notifications.  Required for %OVS_FLOW_CMD_NEW requests, optional for
++ * the actions to take for packets that match the key.  Present in replies
++ * and notifications, except when the request asked for the actions to be
++ * left out, and in a dump when they do not fit in the message.  Required
++ * for %OVS_FLOW_CMD_NEW requests, optional for
+  * %OVS_FLOW_CMD_SET requests.  An %OVS_FLOW_CMD_SET without
+  * %OVS_FLOW_ATTR_ACTIONS will not modify the actions.  To clear the actions,
+  * an %OVS_FLOW_ATTR_ACTIONS without any nested attributes must be given.
+@@ -655,9 +662,11 @@ struct ovs_nsh_key_md1 {
+  * should be suppressed.
+  * @OVS_FLOW_ATTR_UFID: A value between 1-16 octets specifying a unique
+  * identifier for the flow. Causes the flow to be indexed by this value rather
+- * than the value of the %OVS_FLOW_ATTR_KEY attribute. Optional for all
+- * requests. Present in notifications if the flow was created with this
+- * attribute.
++ * than the value of the %OVS_FLOW_ATTR_KEY attribute. A request that carries
++ * a value outside that range is treated as if it carried no ufid, so a new
++ * flow is indexed by its key. Optional for all requests. Present in
++ * notifications if the flow was created with this attribute. Ignored in a
++ * dump.
+  * @OVS_FLOW_ATTR_UFID_FLAGS: A 32-bit value of OR'd %OVS_UFID_F_*
+  * flags that provide alternative semantics for flow installation and
+  * retrieval. Optional for all requests.
 -- 
 2.56.0
 
