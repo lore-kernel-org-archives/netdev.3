@@ -1,98 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794057670;
-	b=O1aHRl72uEY/s3fYh2a9JkN0PG0Se6a0WT9Z9OT1Xe56UOkGAbjJei+vh5vaMDibjf3p
-	 8pbV+E0rsmRqfXAnwJIzvAlNs4vg2/TkZOgPiqXy2o2x875zRuYdIzQwHTkH6PwEQQ6IP
-	 o5ekQPVLGGHvWW+cCjp47ZfZZerkuK8zN1n8EnpgwhCPhxHetbOFk+IEHW/6MRN0SA4Me
-	 sMepacL9OfYET9Lqjr7LUaCH4gh7hitbm66QoLgIhWPqPZbZW7ir8NQbKlxs0DVqps5mT
-	 UIhdGJRzKaGoHzpGyDmWpcJWR+HFE/Gh2HVC8M+7pcAtEHORGrt6NRrk6zfENkijQfQ==
+	t=1794057890;
+	b=ZZLLcyeq6IJs8rDaMZPA4cq5vRwj/g8hq6Szsh+GydUVRb28V/JIW8N12V3Ens+xaDHh
+	 rjg3Njy7FbJs731zQK90nqAd09+ACF3F9J4Fv6nEVMHY8hoLq6HlQU82YGCBkkBGJIodJ
+	 fxQrsQ96PqZh6iRvCEqqEDiOwrxuKGgwaxp5veu1DzpZYDTLgDh+sPFsy6L1Kfq2QEX0m
+	 /IVtaKEaTfLKx3Fb2sBMq4iq8jOiJtScb5PK4DqJsC8SG55aysn2GC6/uEgBy5dvr+zwv
+	 /Sov5QRYQl33aIP/Abq9Htrb+vYxx0dQJH8aH47dz1T5skvuOF8HU+5T/Q2mZQMeJLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794057670;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=mJ1fvT6xQkbU3RAcDjFMvDU2jO1gP0q2R08NAUCv0G8=;
-	b=O7GGoNP1iHVNND/c3KX5WCrf93kvA/VpY2mwkqzKUbx3PWNwr4OqkxkkGt30WgBca+y6
-	 HBLfuHM4dwCtQbAWGesxrv3pabH4fPe5jbqgSgSYgUzudTb7aCIDS6SCkxdNSJXcG5dQt
-	 TK3zjL9lgAntN37aqtmOXNxjRUrjrZuXO+KztLrXFXTT1RANu1Tlp7RNS/0JnVZHrvP+f
-	 xquj/D608VYmh9m2G1quny2JNybvmAxZ0P2897ATAXCt0MiAq5ofvTg9ajRjt2+VoA0Km
-	 RjWh8BHJUsPp7B82hRaz0l+e5fZMKF72lEnG3azGRtEjNj0b3qdfofiDOfi+C7kBi0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794057890;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=miXRAW1Efri9cUSyb7Jw4ccqK0kjkG8zCIFDdKi5TKo=;
+	b=nl60EeOx063b700tDd384nQM208GnHl9SO06sQs0FOh7kju6xtaZ6WbxNRV9xFXBbH7E
+	 Ks2eNTK4fNeSy/P/lzKIeRCUVYKTA5EPeW2ACbwBt5q77A0UFcHaRcVYKgb4ZLEWPjD/F
+	 i4chemGI9Y7cFoSrRx8I8Q/AIvIsm047Z1Dp9edaKTG0UAsAEIZJjKbJbgWzoXztMmSFh
+	 V6zTg/IdyB/decVfx1AcXJqE+q5zERN6qj+RwS8TTTgbNuooYVo3y+8qNqsCu/jKjuJuF
+	 DJu0xblQqLZRCnUNLn1ObqhIhW8r8GM8Wsfi1nI5REleXK/29+qG5NlWkMAVwfjAEhw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fD3906I6;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OFMTYist;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A86606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 13:21:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40A86606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A9B606A32C;
+	Sat,  7 Nov 2026 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fD3906I6
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3b09a83d12aso1030740a91.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 05:21:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794057670; x=1794662470; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mJ1fvT6xQkbU3RAcDjFMvDU2jO1gP0q2R08NAUCv0G8=;
-        b=fD3906I6JjeGQ2dSkg3zfm8RlYE989NbLI5KOgXBXXELSGZvOAPM8HpQoIEVoOLNwO
-         fhL4sERAUbBOcQIBo6IgVM6hSe4xBJFoUjazj1y78CPBWcNNGz0IE2etDoCmpxX2rFal
-         Vy0e0Jm0fGCPfoDUDwT3TQ6PFcUK8RZUJCFqnuHsUkNC3gOotWDZ9jDSl8/4SyJDC0Q6
-         67ud+zo/uyB/hPG0Ivk1DH5SuyjMUV5X67JwWyAdEg88dZw539B8scE7YfCW7A9LjHk8
-         caGlCWOrkotEEoflX4OBfS4Y6o38mj4U2HU0pljIF42GKhktVCwKELSrlF93taXy2/5q
-         li4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794057670; x=1794662470;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mJ1fvT6xQkbU3RAcDjFMvDU2jO1gP0q2R08NAUCv0G8=;
-        b=PBU1HtMzrNeoGpB8VAvRKpqH4ow73h/CJf3YawaHBxpRziSouzmK+LB3L/FJVCGyKF
-         tBAA2veOg/f/pu/wkdqAYgDOmpJYdlDZbNdzV1wLhjE63xMVnxmd0AiD2D+VdMy1XRo9
-         Z8ag55c/O/89f76U0wDYtXvJVYubzWDsSP4Dv6GA9AV0bPsKdUK03C0HZDPdfn3raCpG
-         yQyA1qoe7conB6xSGTpdPlAGUddtmldTIBtiFyuN8DuG1k5bwY/T3o9lISabC6b0IEL1
-         opbeTd+71urdzUHnZwiC9CX6kLiRaMGKO9vmrdCPOJ8/4+XCFcvhqTr0VEqKz6u9SlIB
-         Skdg==
-X-Gm-Message-State: APuU4Z/egEKdczD0f1oMOMOXtsrx1GjxnFA7qKblN/RXqKXKEuJPFOB9
-	/PA2TG4LL9hpwb+JAZyNhpT2hzwY1S5ouQmNBGDMs5sPA88NebMsOV9dYKJeaw==
-X-Gm-Gg: AYBFou2/S5Wz+x7oSPMDbvDB0dAklNGCRlExVapjZGT2Tnd+lenDO/8y9G4YTrL6MuQ
-	7BR06HGOFaFU/aLMHVn28Elluxxj8uh1ujhbGXtnKje36AZa9H6143kFBMJFAncElmjLGYcSXc2
-	PR/DNYMDTW8iP+Ka+U7Ngekjd3YRP3RTOBF4SEgpSrYFOhBifnw7wEIZtpJJy1914IqN1oSRUH6
-	VzGh2/8ZPvRDc0gyxPNKHnsu9LthEV8LCyyMXy/8cICmXpC/30eRcuoCGreOlkYHXNEoK5hvLj8
-	CxXfSzR22GtGy/wbZxXn7Gke6b15JQfVX//kRV9dy0rFHK4kpgj3Rd841saA+EMnvCaFa5F9Y1+
-	UQ1WcJHFUI3T8d+GwLUaKUFMZEJZoc1qsxYr00XoMEAQBhirivwdt0cTtjmrL1Sx9/IR8qlvu1r
-	74qGiebmLgh8eJccmZKrhWPCfmAvOnv2JJcrYklBoSSaT2g2a/srD9iHkAsXMntFdwdCxzjFu73
-	nAtGWzPWYoXqMoeNX1wF4bLjkHgJF767aVld32rQgoliiiV7hpJQmoNGGCf+EDJMLSLqmEVXQwh
-	F7DyTZhoKg4tyKUOLGci4e0IXtY+aZDUlq9/21CFT3QY8s8mYxo7FQ==
-X-Received: by 2002:a17:90b:2d50:b0:3ab:884b:65b4 with SMTP id 98e67ed59e1d1-3b0db702a95mr5716040a91.59.1794057669654;
-        Sat, 07 Nov 2026 05:21:09 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b101d3d0e8sm1626521a91.3.2026.11.07.05.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 05:21:09 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 4/4] net: dsa: motorcomm: Prevent rx_bytes/tx_bytes underflow
-Date: Sat,  7 Nov 2026 21:20:36 +0800
-Message-ID: <20261107132040.1066996-5-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261107132040.1066996-1-mmyangfl@gmail.com>
-References: <20261107132040.1066996-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OFMTYist
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D6A1F0089F;
+	Sat,  7 Nov 2026 13:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794057889;
+	bh=miXRAW1Efri9cUSyb7Jw4ccqK0kjkG8zCIFDdKi5TKo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OFMTYistWAuJUZ+YHRAp20uGkUMAZ8XeXx7HcTiulRTFdACK/wj8In4p4IxUCaHiZ
+	 wKHfcdhgsrudrpf4LF1ej5+w36swO8ekjD/L/1f8ZR7yYHg+mEOI22DragnKEkKMKi
+	 TOkhgiTp0B6pNN0vj2i8XlmUCHoTRjAV2K1HuzWRSFsaHlKN7fkVQ3VADp4LZ5Jqt0
+	 yzgAdV6uo4PQzr6RUKhzu+0FZ19UK1cUKaMLU52/ei1Hu9vglWY2Ej30mPi3sGQwlb
+	 QXp59F9Z4GZPHhmLbPDn4OEaD3lin/cVHPCwGAdSVE/zSqmOdTYEF5sccW0L6U77Pv
+	 6ZSivK4UA34OA==
+Subject: Re: [PATCH] net: phy: microchip_rds_ptp: unregister the PTP clock if
+ init fails
+From: netdev-bot+sashiko@kernel.org
+To: vulab@iscas.ac.cn
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sat, 07 Nov 2026 13:24:48 +0000
+Message-ID: <179405788818.994134.7883775213631372468@kernel.org>
+In-Reply-To: <20261103102900.1340854-1-vulab@iscas.ac.cn>
+References: <20261103102900.1340854-1-vulab@iscas.ac.cn>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,106 +63,227 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-There is no direct rx_bytes/tx_bytes counter excluding the FCS; both
-have to be derived as good_bytes - ETH_FCS_LEN * frames. Three hazards
-can pair a frame count with a mismatched byte count and make the
-subtraction underflow, reporting rx_bytes or tx_bytes as about 2^64:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-- a register read fails midway and the half-refreshed buffer is
-  published as is, pairing fresh frame counters with stale byte
-  counters;
-- get_stats64() on 64-bit kernels reads the published counters without
-  any sequencing across fields (u64_stats_sync is a no-op there), so a
-  writer update can slip between the frame and byte reads;
-- the MIB bank cannot be read as a whole; counters keep counting while
-  the read loop walks the table.
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 0 (1)
 
-Handle this in the writer: do not publish a half-read buffer, keep the
-last complete sample on read failure, do the arithmetic on the complete
-sample under priv->reg_lock, and publish the derived byte counters only
-when check_sub_overflow() succeeds, so that get_stats64() copies plain
-published values.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/mib.c | 25 +++++++++++++++++--------
- drivers/net/dsa/motorcomm/mib.h |  2 ++
- 2 files changed, 19 insertions(+), 8 deletions(-)
+- [High] The PTP clock registered by mchp_rds_ptp_probe() is still never
+  unregistered when the driver unbinds after a successful init.
+- [Medium] The commit message misdescribes the failure context.
+- [Medium] The new error path in mchp_rds_ptp_probe()
+  (drivers/net/phy/microchip_rds_ptp.c:1321-1323) calls…
 
-diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
-index b45bc8211741..cb3912493cfb 100644
---- a/drivers/net/dsa/motorcomm/mib.c
-+++ b/drivers/net/dsa/motorcomm/mib.c
-@@ -95,6 +95,8 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
- 	unsigned long flags;
- 	u64 rx_frames;
- 	u64 tx_frames;
-+	u64 rx_bytes;
-+	u64 tx_bytes;
- 	int res = 0;
- 
- 	mib = &pm->stats;
-@@ -124,6 +126,12 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
- 		}
- 	}
- 
-+	if (res) {
-+		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
-+			port, res);
-+		return res;
-+	}
-+
- 	flags = u64_stats_update_begin_irqsave(&pm->syncp);
- 	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++)
- 		u64_stats_set(&((u64_stats_t *)mib)[i], buf[i]);
-@@ -143,12 +151,15 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
- 		    u64_stats_read(&mib->tx_jumbo);
- 	u64_stats_set(&pm->rx_frames, rx_frames);
- 	u64_stats_set(&pm->tx_frames, tx_frames);
-+	if (!check_sub_overflow(u64_stats_read(&mib->rx_good_bytes),
-+				ETH_FCS_LEN * rx_frames, &rx_bytes))
-+		u64_stats_set(&pm->rx_bytes, rx_bytes);
-+	if (!check_sub_overflow(u64_stats_read(&mib->tx_good_bytes),
-+				ETH_FCS_LEN * tx_frames, &tx_bytes))
-+		u64_stats_set(&pm->tx_bytes, tx_bytes);
- 	u64_stats_update_end_irqrestore(&pm->syncp, flags);
- 
--	if (res)
--		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
--			port, res);
--	return res;
-+	return 0;
- }
- 
- void yt921x_mib_poll(struct work_struct *work)
-@@ -389,10 +400,8 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
- 
- 		stats->rx_packets = u64_stats_read(&pm->rx_frames);
- 		stats->tx_packets = u64_stats_read(&pm->tx_frames);
--		stats->rx_bytes = u64_stats_read(&mib->rx_good_bytes) -
--				  ETH_FCS_LEN * stats->rx_packets;
--		stats->tx_bytes = u64_stats_read(&mib->tx_good_bytes) -
--				  ETH_FCS_LEN * stats->tx_packets;
-+		stats->rx_bytes = u64_stats_read(&pm->rx_bytes);
-+		stats->tx_bytes = u64_stats_read(&pm->tx_bytes);
- 		stats->rx_dropped = u64_stats_read(&mib->rx_dropped);
- 		/* stats->tx_dropped */
- 		stats->multicast = u64_stats_read(&mib->rx_multicast);
-diff --git a/drivers/net/dsa/motorcomm/mib.h b/drivers/net/dsa/motorcomm/mib.h
-index 9c24a52d46cc..2e2b832cb245 100644
---- a/drivers/net/dsa/motorcomm/mib.h
-+++ b/drivers/net/dsa/motorcomm/mib.h
-@@ -136,6 +136,8 @@ struct yt921x_mib {
- 	struct yt921x_mib_stats stats;
- 	u64_stats_t rx_frames;
- 	u64_stats_t tx_frames;
-+	u64_stats_t rx_bytes;
-+	u64_stats_t tx_bytes;
- 	/* protected by priv->reg_lock */
- 	u64 data[YT921X_MIB_STAT_NUM];
- };
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  mchp_rds_ptp_probe() makes the PHC visible to userspace before the…
+- [Low] This problem wasn't introduced by this patch, but
+  mchp_rds_ptp_init() (drivers/net/phy/microchip_rds_ptp.c:1139-1240)…
+
+--
+
+net: phy: microchip_rds_ptp: unregister the PTP clock if init fails
+
+When mchp_rds_ptp_init() fails, mchp_rds_ptp_probe() now calls
+ptp_clock_unregister() on the PTP clock it has just registered. The goal
+is to stop leaking the PHC, its character device and its sysfs entries.
+
+> Nothing else releases that clock: the callers abort the PHY probe, and
+> the clock object allocated by ptp_clock_register(), together with its
+> character device and sysfs entries, stays around forever.
+
+[Severity: Medium]
+Is "the callers abort the PHY probe" accurate? The only caller of
+mchp_rds_ptp_probe() is lan887x_phy_init(). That is the driver's
+.config_init, not its .probe:
+
+drivers/net/phy/microchip_t1.c:microchip_t1_phy_driver[] {
+    ...
+		.probe		= lan887x_probe,
+		.get_features	= lan887x_get_features,
+		.config_init    = lan887x_phy_init,
+    ...
+}
+
+lan887x_cd_reset() also calls it directly on the cable diagnostics
+restore path.
+
+So when it fails, phy_init_hw()/phy_attach_direct() fails, but the PHY
+driver stays bound and devm resources are not released.
+lan887x_phy_init() returns before init_done is set:
+
+	if (!priv->init_done && phy_interrupt_is_valid(phydev)) {
+		priv->clock = mchp_rds_ptp_probe(phydev, MDIO_MMD_VEND1,
+						 MCHP_RDS_PTP_LTC_BASE_ADDR,
+						 MCHP_RDS_PTP_PORT_BASE_ADDR);
+		if (IS_ERR(priv->clock))
+			return PTR_ERR(priv->clock);
+		...
+		priv->init_done = true;
+	}
+
+As a result, every later attach (each ifup, for example) calls
+mchp_rds_ptp_probe() again. Before this patch, each retry leaked another
+PTP clock, not just one. With the patch, each retry still allocates a new
+devm clock and pin_config, and those are only freed on unbind.
+
+Could the commit message describe the config_init context instead? The
+probe premise may also explain why this error path only unwinds the PHC
+and leaves phydev->mii_ts and default_timestamp set (see below).
+
+> diff --git a/drivers/net/phy/microchip_rds_ptp.c b/drivers/net/phy/microchip_rds_ptp.c
+> index 2ad95d5c9d867..0db6eeb2660c2 100644
+> --- a/drivers/net/phy/microchip_rds_ptp.c
+> +++ b/drivers/net/phy/microchip_rds_ptp.c
+> @@ -1318,8 +1318,10 @@ struct mchp_rds_ptp_clock *mchp_rds_ptp_probe(struct phy_device *phydev, u8 mmd,
+>  	clock->phydev = phydev;
+
+[Severity: High]
+This is a pre-existing issue, but is the PHC visible to userspace before
+clock->phydev is set? Earlier in mchp_rds_ptp_probe():
+
+	clock->ptp_clock = ptp_clock_register(&clock->caps,
+					      &phydev->mdio.dev);
+
+ptp_clock_register() creates /dev/ptpN and its pin sysfs attributes
+through posix_clock_register(). clock comes from devm_kzalloc(), so
+clock->phydev stays NULL until the assignment above.
+
+A process that opens /dev/ptpN in that window and issues a PHC operation
+would follow this path:
+
+ptp_clock_gettime()
+  mchp_rds_ptp_ltc_gettime64()
+    mchp_rds_phy_set_bits_mmd()
+      phy_set_bits_mmd(NULL, ...)
+        phy_lock_mdio_bus()
+
+Can this dereference a NULL phydev? settime64, adjtime, adjfine and
+PEROUT through mchp_rds_ptpci_enable() follow similar paths. Those
+callbacks take clock->ptp_lock, but that lock does not serialize against
+probe.
+
+There is also a second race. mchp_rds_ptp_init() runs without ptp_lock
+and does CMD_CTL_DIS, a TSU hard reset, OP_MODE/REF_CLK programming and
+the enables. Could that overwrite LTC or PEROUT settings a user programs
+in the same window?
+
+Would it close both races to set clock->phydev, set up the software state
+and run mchp_rds_ptp_init() before ptp_clock_register()? The
+unregister-on-failure path added here would then no longer be needed.
+
+>  
+>  	rc = mchp_rds_ptp_init(clock);
+> -	if (rc < 0)
+> +	if (rc < 0) {
+> +		ptp_clock_unregister(clock->ptp_clock);
+
+[Severity: Medium]
+Does this leave phydev->mii_ts pointing at a timestamper whose ptp_clock
+has just been freed? By the time mchp_rds_ptp_init() runs, the function
+has already published:
+
+	phydev->mii_ts = &clock->mii_ts;
+	...
+	phydev->default_timestamp = true;
+
+This path resets neither of them. It also does not clear
+clock->ptp_clock, even though ptp_clock_unregister() drops the final
+reference and ptp_clock_release() frees the ptp_clock when no fd is open.
+The caller then stores the ERR_PTR in priv->clock.
+
+Because the caller is .config_init, the driver stays bound and the devm
+clock behind phydev->mii_ts stays allocated. Before this patch, the stale
+mii_ts pointed to a ptp_clock that was leaked but still valid. With the
+patch, reaching the stale mii_ts makes mchp_rds_ptp_ts_info() read freed
+memory:
+
+	info->phc_index = ptp_clock_index(clock->ptp_clock);
+
+One way to reach it is an ethtool get_ts_info that runs while
+dev->phydev is set during the failing phy_attach_direct(). This is not
+proven reachable, because ethtool and attach normally both run under
+RTNL.
+
+phy_is_default_hwtstamp() also stays true. A later attach can skip the
+PTP probe, for example when PHY_F_NO_IRQ forces phydev->irq to PHY_POLL
+(phy_detach_internal() does not restore irq for non-genphy drivers). If
+that attach succeeds, lan887x_config_intr() does:
+
+	if (phy_is_default_hwtstamp(phydev)) {
+		return mchp_rds_ptp_top_config_intr(priv->clock,
+		...
+
+with the ERR_PTR in priv->clock, and mchp_rds_ptp_top_config_intr()
+dereferences clock->phydev. That oops already existed before this patch.
+
+For comparison, dp83640_probe() undoes this state on its error path:
+
+	clock->ptp_clock = NULL;
+	phydev->default_timestamp = false;
+	phydev->mii_ts = NULL;
+
+Could mchp_rds_ptp_init() run before ptp_clock_register(), with mii_ts
+and default_timestamp published only on success? If not, should this
+path reset phydev->mii_ts, phydev->default_timestamp and clock->ptp_clock?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but mchp_rds_ptp_init()
+returns on the first failed MDIO write and leaves the PTP/TSU block
+partly programmed. For example, writing MCHP_RDS_PTP_TSU_GEN_CFG_TSU_EN
+to MCHP_RDS_PTP_TSU_GEN_CONFIG can succeed and the final
+MCHP_RDS_PTP_CMD_CTL_EN write can then fail.
+
+Should this error path also disable the TSU and PTP in hardware, rather
+than only unregistering the software PHC?
+
+>  		return ERR_PTR(rc);
+> +	}
+>  
+>  	return clock;
+>  }
+
+[Severity: High]
+On the success path, is the registered PHC ever unregistered? The only
+user of this library is the LAN887X entry in microchip_t1_phy_driver[].
+That entry has .probe and .config_init but no .remove. The library
+exports no teardown helper, and phy_remove() only calls drv->remove when
+a driver provides one.
+
+The ptp_clock_info passed to ptp_clock_register() is &clock->caps.
+clock is allocated with devm_kzalloc() on phydev->mdio.dev, and so is
+caps.pin_config. Both are freed on unbind (sysfs unbind, rmmod of
+microchip_t1, or removal of the MDIO bus or MAC). /dev/ptpN and its pin
+sysfs files stay registered after that.
+
+Could a later PHC call then do this?
+
+ptp_clock_gettime()
+  ptp->info->gettime64()   <-- info points into freed devm memory
+
+That would load a function pointer from freed memory.
+
+phydev->mii_ts also keeps pointing into the freed clock. A later ethtool
+get_ts_info on a netdev that is still attached would read freed memory,
+and so would phy_device_remove()->unregister_mii_timestamper() after a
+sysfs unbind.
+
+This is the same leak the commit message describes ("stays around
+forever"). The message also says the change is "mirroring what the
+remove callbacks of the other PTP capable PHY drivers do", but this
+driver has no remove callback.
+
+Does a complete fix need a teardown helper? It would unregister the PHC
+and clear phydev->mii_ts and default_timestamp. It could be called from
+both this error path and a new lan887x .remove, or registered as a devm
+action.
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103102900.1340854-1-vulab%40iscas.ac.cn
