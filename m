@@ -1,175 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794022378;
-	b=3kl1ocR+dgmW+pyOK6p4TV9vCGCZQKdlw1prL7LfE8p1AgDMyf/oN7J6rVKRxXylACTg
-	 weLAND1Ddm2RNQ6t/INFcHiHD5ZVdObZ7esnVqsStAcWEFSWXKtfSge1jQXIPGM0g7P4O
-	 7lAhUZzTvKd4LRYfbZSR2YvxmrLfztrciC5Lzznr9gKsedecMfXRuDgz2Z1QbOQ4H4sao
-	 15xbixEC/uIjDOalAFqcKNBQ27/wxqBgNQxb+RMDkmDzhoXHhq7c1EoZQ5jdC678dHetI
-	 Pzdm/QdBBzasEyE0ECthdoxYr6LIQ1yJ4bwyHqJoi7pVmO5AGMzVx7S4duxpE+D+yDg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794022378;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=W3cArQinU2DOOhL5HHjf7OIhJWGRMnxeh9Cs0n3igcI=;
-	b=iCxB/ESohmQlYfxf/Mm0R9tXOnkekibGhnI539QmObZdOI7n9eEcAMfN0EMdJF6h6k0g
-	 HGBg0vlK2yv539d60qloShD6BdF94mvDPrKCKFZEZg0xSJ2NhVWy3N0Z17RhjQX7xFQyX
-	 i5QoY5HBlmPqvBFHFHyLDh4wkRVxCdN9LBUieETkJjChSZaoOMeT976WNoNIXnZEAvm6u
-	 JRK2iRXgx06pg7DtouYXkFhyOYFJiYnd9QbwKjv28QN9Xlpq5X4ezhx+2wsxp/zgVGUrV
-	 ddiJUASMukREgzWtrPOQri07tP2eS3n82QAg3xbo951IBNuoTwuo/MEektGmaMzXypA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dyLUH5Qo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794022477;
+	b=0qBqaT+FNXdjYFi5UpaEzOQGC3XIBzwqsxAqrTQNgC064RBKJ507Q0vRn9fJ2tkgR/ZX
+	 23dQLTESTT9UdvnCGIxTuMorBDy+dYi0s5FiBD7Z85f9h7x9PCBjTPQ3w8nEzZk9L4UTx
+	 fnS87acaDC7xpAu0BmDYziRyBT65ZqEvOzGyboF0hxckaIz1Z5gca9Q6HJ5q5SPTS2v21
+	 yg6uF0Mmxe9TjbXvQSIbZaaG1amnLmWnNbY+2ywNEGdjCNRdxnEaEv7iQgwzPS8kh1qyP
+	 t+Z7X6i3C6U1gQIhadHaGmBLmZVtZO1uXmLxQxIlkHSzJltSIU3JJmb1GLcvIOYLJ3g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794022477;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=yAQvBw1PVJuhybp5YVi1fX4+UzEv8rZ9bKF4PeZ2eGs=;
+	b=F/MNGhzkM2WxlmsdAnWokR62xAopBgqRzGgLGbyIfjCeGA+HKSc2H5mwxS52OhvZQ9Vj
+	 dMSRfcv2TXhN7zw4pIUYhKHW+XNY995qjccG5PUYcPso3FAevVL4IlJDi6peCbQL5SYDM
+	 WZr1N+kreuTR3246aX29IFi7Sn4FxsRTp8mdSdVb7N6jcvc6Y2mGoXKyGX/LY1MErpdRS
+	 mXIJU8HicDMgOITEjIKfa8dFUxTskOZuYL6G/n8wbK90u5bnWwQvRmOtjMsSri4PKyNNj
+	 1cMLDJWKkIsr59Na+fdm5Qx4KmRI3Qe5cIjkw1yPT0BsQwr01Gh8HSVdTAE3OflrTPA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=RqFmdIMN;
+	arc=none smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D844606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:32:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D844606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29117606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 03:34:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29117606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dyLUH5Qo
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794022375; x=1825558375;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Y8rpzHgrRcUixekChLxVburJblsXpppfgqOeAoKOeBw=;
-  b=dyLUH5Qoo0FOq1xqmay7gmbdIga17Ce/npUV8ZLRxdhTG5VsacQxwlHR
-   QKhnZrM4fMiX5hdOmWdPMhlfsy+VFz4v7h5+vclmqC0+0eNpy2/qJ+gDl
-   7crwIMfrBEpuoSDFz4grYFqBQchlP4REyJJvQhMIJIUIJyIIyexXp4jbp
-   wD8V4H+3L9E0vXXrxvVYlvl8H5w+OUh9Jy94ldm7myVrV341sE1nUlJQi
-   ZpTcRu48VATLxMHuIHTOQxhiEU28GHRFOy34pMwaFP13+L5z6PtPdVuTL
-   qlNX4r/Ddw5ToAhvlbQZdClXlYM6B1KvpGTBmME0s+yzZmGe/F5UXKzkw
-   Q==;
-X-CSE-ConnectionGUID: Ij3ZMvukSTW+8bBDER2LWg==
-X-CSE-MsgGUID: Y1YbQlO2Sj2tp0E5wTQxBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2851503"
-X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="2851503"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 19:32:55 -0800
-X-CSE-ConnectionGUID: L3BbwEqLRDSR64Dx5oiHfQ==
-X-CSE-MsgGUID: uTibMEROTj61+9IMymv6rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="9176412"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 19:32:55 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 6 Nov 2026 19:32:54 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Fri, 6 Nov 2026 19:32:54 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.21) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 6 Nov 2026 19:32:53 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FZBR7VI79idhawxowuUOFkZfoXgp+dzD6hyYBbax+ZM6B4LV95Os+TgO1GyAUkW+l4dKwg41o5CyGyW1STa6gnRjiR0KSf/MI/1nUuq6niU7K9wSBVADvaMDJM3HXvTKbk3fZJ984NEKGeKs2gfrBWX6eBMqRKFv8Lj22T6aQtf2bcWLBRXoYXa33rT5sQmkjH8ZLqLxzHTcKuC1gK/pNcUmhTKU1tBj8C5/7C5iKuUj5W3ZuJibTOC7JHHPKMXxKU9imor8yIlgnMGZxb4xMnT23j4620ZU37CDmQ578FqJmu0NsHVBGvD7coGJt2EPA6QFbD7VxtogG7oV07JjyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W3cArQinU2DOOhL5HHjf7OIhJWGRMnxeh9Cs0n3igcI=;
- b=JLApSZigqgJPEO43eirCv3qRz34wChfQjLQ+wqMSifn8cbWN3zZBGVqzBAtk4dD/ahA85SCzHNhmhHomFGawg+77n12TC18sk3svnZ/WhGlXn6NqPQEXzC7X59u7YX+vSFL1aYmVditnJ2cwq/GM4MnpUEHCWtd5j7P0d3mqPtOZ5XePpCCW3WI3M+GQ06UUmfMv95QgrjVd3upYSEb3W9oa9/Qb13ftPfgZJt4N3c+VIQO6quAEUbfvEh6pi6NSPyxnUZrGEe23eSiRyFdXp/J4YRowZKVpxxh1GoTlQ4qWDzsuOVs/eRe3P7vsPYHYIoif7uRdikU9NTy3uhjxNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from LV1PR11MB8790.namprd11.prod.outlook.com (2603:10b6:408:2b1::16)
- by DM3PPF5217261E0.namprd11.prod.outlook.com (2603:10b6:f:fc00::f21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Sat, 7 Nov
- 2026 03:32:51 +0000
-Received: from LV1PR11MB8790.namprd11.prod.outlook.com
- ([fe80::27cb:7a60:19bb:584a]) by LV1PR11MB8790.namprd11.prod.outlook.com
- ([fe80::27cb:7a60:19bb:584a%5]) with mapi id 15.21.0592.007; Sat, 7 Nov 2026
- 03:32:51 +0000
-From: "Nowlin, Alexander" <alexander.nowlin@intel.com>
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>
-Subject: RE: [PATCH iwl-next v2 08/10] ice: use libie_irq for interrupts
- managing
-Thread-Topic: [PATCH iwl-next v2 08/10] ice: use libie_irq for interrupts
- managing
-Thread-Index: AQHdQfHi7ondtzSh+E6KLXINseLLTbciTUGQ
-Date: Sat, 7 Nov 2026 03:32:51 +0000
-Message-ID: <LV1PR11MB87901429BC7B4FAA4983A28590752@LV1PR11MB8790.namprd11.prod.outlook.com>
-References: <20260911124921.2881348-1-michal.swiatkowski@linux.intel.com>
- <20260911124921.2881348-9-michal.swiatkowski@linux.intel.com>
-In-Reply-To: <20260911124921.2881348-9-michal.swiatkowski@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LV1PR11MB8790:EE_|DM3PPF5217261E0:EE_
-x-ms-office365-filtering-correlation-id: d561c4fc-5802-4d51-947e-08df3c7fcd5e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|38070700021|261021123027099003|11063799006|4143699003|56012099006|261026140227099003|261009223027099003|261028144727099003|261026121527099003|261021121427099003|261022105027099003|10067099003|261102123227099003|18002099003|22082099003;
-x-microsoft-antispam-message-info: Ao6SlK3TrCN5dQwW/8Pai3TdiGWtdQG3X8p78WCCC9191IGCgbCtdhmAYZRaAgak/oXVd/6M80gvFEnBXlqqFVBdIqMftvOG1xx+f9IBzk5u8TOBqg8ACzUuZtB5YITwU5hZneLO67vw3rnCcxBUBJX/TMfqjFDYvrPG4FLLECkkanGsZSgm0a0HClYA38rM4nQQayncQ42XySR633CTSDq7JWt2k2kVfhwBqkkBn3kE4GmVwUwOD2hi5BWdbztktSRFcJTJYcronQZ22EVZ2APYcdGcdy/HImqDf21E5ffDj5w1OMsXeNj8aUg1vvtm8tL14Uqfw7k1zkTl6iMyDRR/27HIXgdRly093q5yocERUAyu2lpykojhWhlbp8UqtWCw0/UPHrByNVhw1Jw+DL32d9gQhQWvQv6Q93MnttVcur+dJp2kgWOJPID5x1d6pNJNXc8bv/DPS/JzlpYWpkqFQCzVuGSThaxSchKRSLpk6XP6UbP+JqqgDjj5wAcaP3twn/0hUUeKwljAYOxZ7X8osOYys9RDQ9kKnrZugnqXdH7qI1hHIQulb7su46kVQGUpwzgJJ/8q/sCBP3yFztuQifpZiwVK0LrLlRXJp3r/daoGMgq355pA+qvQ0belDL0EARrzbCH9O2k8/fuoUxNbm35L3PBjnQTkvZ1JDq7iTDy/D8HF1VbODTYFOZYWBNt/+AVs6+nEyN1n0IunDQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV1PR11MB8790.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(38070700021)(261021123027099003)(11063799006)(4143699003)(56012099006)(261026140227099003)(261009223027099003)(261028144727099003)(261026121527099003)(261021121427099003)(261022105027099003)(10067099003)(261102123227099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?IR6Zd80Pu3TnqVLfpTXLHRp6HOLm+LnkkqpuOCJlapCjXo+vTSyt5vX0sX4q?=
- =?us-ascii?Q?y8ToQ5Zwsmn60f3HVJAVi1mf80AsRrEHU8uD1ST/1ti7ou295+r0rgD0XNQY?=
- =?us-ascii?Q?mLQ3YHx2jiTKJS/fLbhg3l2BVugMaS2Rm8ZKHIImlps7iiWod48+VNu1vsSP?=
- =?us-ascii?Q?M7y7ZRpcunv4YD+kkrTF+RaiEXoTWeRS8ij7KIh4SM+Upjv/nVL0UnZIk/+8?=
- =?us-ascii?Q?qn+cITJ/2ai1cKXbvqBcjBYaG/QiSUtmffbqnCJv4CayxbyHznmVW7z1emkw?=
- =?us-ascii?Q?Fqw2Pd0+j+oG1Lq++RODupU/sM80hP2Cre0hqMYft8JvgYac96sfOoD0WgAX?=
- =?us-ascii?Q?m/T9CV56DO7OybpTML5UamdLiraY2hl+Khm4G1zFDUoemWaDmT1yTW6Zuw5C?=
- =?us-ascii?Q?11wdozhUBTQ6nAtw1ANEgoi1xxeAKOswgBpO6uAN5/Na3OyeWp7xgwEG/oRo?=
- =?us-ascii?Q?3nOpofI1D67YZW5xcJN+pFdEjo0wX/W520GWr6pOLTvaqy+wDRcAG/4HRaAZ?=
- =?us-ascii?Q?Ypic1j2O4upCKyMVWFAjXlzsF05/SnZC/6bgsYAV0asTUxOXEql1WeiGSxPv?=
- =?us-ascii?Q?RLO4EBYbgylPj+P7uQZgiYO0mJO6plzkb0FIMc3UXtWCBbA+FdLtjguhYFOZ?=
- =?us-ascii?Q?ogJaUkObQcGWuyINDis06x3EJIUxpSxVGJ8lxuzG1Ryg4nXBah/Kesk8BYD5?=
- =?us-ascii?Q?S1pjAE+KAAtp1aXkMmDbcsiuAIVT4wZCBC4bHYAD5m6aKMOucTjReGYeC7lF?=
- =?us-ascii?Q?V6hiY88f7Eb0dQUJoVjfHKtwlyJjxrLaweKY/a1270/4V+jfb96eul1crGh1?=
- =?us-ascii?Q?VLTSEo9e82VqtQACYStGCRpikXxiaf5vSh7t67XiWBTbIAskJI1uS3lEcHFV?=
- =?us-ascii?Q?q1CAREvgOeDYFwTyYm32DmlXnSlXFOrGTsgh02RUIJlmnAD0bAZPk6jkzWya?=
- =?us-ascii?Q?JCtFpcjJGQ9HzpJ7WM2sJS40sLnuUI0uR3oL8zEWGLz2TE2tD4vT/iVpLV4a?=
- =?us-ascii?Q?LoYOdtxXSlNjRp5ZXqWm0PR917epXsKi6uiMKdxnNZnH2yCOcyohS3cFtzDB?=
- =?us-ascii?Q?KdSsBAl2EU7VKaGkAS5WicJSi1eMu6TPIjvOCNojI/LPOcELg8ApDDTRDjS/?=
- =?us-ascii?Q?gZ2HNXkQL7c7UhZcGzwZZHxo8m1Yk4hNfZLNw2k6sOWmaxPNglNMJEZdsumN?=
- =?us-ascii?Q?NV81F6UNuPiPjmWzCy3od3+6XQeGCYFUjUmhGbFAnHPjdW8zwrbHlEMyt4km?=
- =?us-ascii?Q?mmDhMysQ7NtxGtTXNF0JBG5bmWN5JkXlFeiPd9Zbqk3cxC9Ds/dbthBuwNim?=
- =?us-ascii?Q?kenRNdWxIDC6tQSXn1sPNLWlB+UDlcp6HAAObCpCUkuSKkSXHSxBH+jZDOky?=
- =?us-ascii?Q?kkCaeSLu86/wKWv007c+bMDzE5elqBalOyiHPyPG6bVUCbJqIfIWV0DTMURI?=
- =?us-ascii?Q?09o4Hxev+eMwKPBTGZMfDDHMBZ5++wvtr8Gusmy8JtAc2sklVvbjqhzwLZ/+?=
- =?us-ascii?Q?9vNoraohIM5YyQhlMj4hMmpGRwA9oRwE9yU30IR/5LqW+hK6lhlEvxmsD46o?=
- =?us-ascii?Q?SdU+RSX72COy45RY9xffROrS61lSHfnjyY0HQ/MvVWihdBBkxDvwnIGGBDLJ?=
- =?us-ascii?Q?l/jaVNLn8FsTBgntdnsWAtBnzlUzXORHLrrDJkDd9vs66znlxgURMCjv3g8l?=
- =?us-ascii?Q?tpupvOu2apnrK0Pu4X/B75I8Jbb7JBeyzdHdcaJCk9XqylXR7U6XJeDzlwdT?=
- =?us-ascii?Q?qFkhpsjlgQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=RqFmdIMN
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c450ab1483cso198182266b.3
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 19:34:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1794022474; x=1794627274; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yAQvBw1PVJuhybp5YVi1fX4+UzEv8rZ9bKF4PeZ2eGs=;
+        b=RqFmdIMN+3kYVy1ihur1Qf8pqlW83bSprSSH1rby4KaQANpHcYhhFa0EJzYz8HdhMy
+         PD0KljsfcP0F1HSNlX6RIjdY5+F9ty/NvBQ9WOHxw3R2lrFE4uQdv6ktZ2CPgXVdrr0m
+         9BldEHPTJCS1/9XQaOJwy9G56uMn145n9SPm2aD1DWoKdtskhSiV3jT6R/4EXM0k69em
+         7pnInrzeS06i6nFAaxy7ZMDC5tNoCjHnhGXiyMMKJcbsEc96GMrtrVK/pa3f6B6XRPZb
+         XLM1IM1PQPyKxyvs+HR9ynUH4R84q6mwtcki4SeSEtVbmeQzTxTcmSR2GrY7LBsuGY3/
+         2b6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794022474; x=1794627274;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yAQvBw1PVJuhybp5YVi1fX4+UzEv8rZ9bKF4PeZ2eGs=;
+        b=FZbJ//WKaBvByAtVj32cawlSVCH9wBizd1qhwwAjdb0oWOLr73PNlZP5Bs95zvUJSh
+         SbYDiWfnDSeNEKHfxsZ/dOV+RY+8ssxGmLvaO9/qCay61jv6VP6iCS82JTMYKmMkGXlR
+         VRPhjg+qnHBtmGnSiKgtxm3dhOPt2pDyscnvv47/yQTX1IwWiW5e1JoXphBB/eN2ABU7
+         5txpVNDisHDfX5Wt16avq8TDpp3rRM00YkhdoCPs/JeILJUMUihkrPMGf+N5nF4pOic7
+         1vhXv1N3TafkUV1WVK9DhJVF/3KlBy/BY2jHC8rgFo0HQKuecmt8HwAPd2NObHhlLl76
+         +WdA==
+X-Gm-Message-State: APuU4Z+tcMfwz8q+s4M6EINPcNn1PoKVpmneoOxaYiunUV2r5KzcQwii
+	QqWJcAFprP7dfSc6QdAMRZI+MlU72801yU1jZ3Sf4awOo190FM0M33Fabef8SxuAbfI1sVuX8iK
+	JRe+bSUf1Uw==
+X-Gm-Gg: AYBFou3LYKLu9bxfqHZbguOw5Cco8guFONycJZh6c971oDhSsHlMvy90INm8fYFbF67
+	3Bdcx+IJk4b9uZ70jlJHHXpH5TZQrED78q/mvoUAaHrtrHkBGN30yIFjQ6gfbuRRW/dJOhZ7CXP
+	fkpqspS01Y1LFUUj5oCSDVlNzO+knuBGO6M8Fic/+XeKgHhgi39bkRBASjR7uC1oxSVcFkbhCQv
+	mkF0FXzYrwQhKCH2bKNIUaxqffDz+/kOxxtCYGm8/Ad2dSe5IT7LkXThrgBYnmg8YzzHarFsUDc
+	RGn/En4/IyuFmcWN2zc6gTwpq9q14OApBjNbuAJrrHXOXnHxkWvk+Lnwgf+Ly9ufl0pHHjzFyfu
+	CIlpwcSiqTooyy+6kBY5t9z11fQe31xMhUjDtcS4WtjqiAwfDue/aGZZ2yzsO653i2+XLiZQDz9
+	DjV/n5mURJ15+I2+txlJKhbeloYWgdm0jt4hhXelMvidTtefXpInIH388xNRsOrgzwHz6cnStkX
+	0fp4tTs3ZP+rUr4TREKz9+jLrBp09o1yiAL8IKgkXTPdcR0NgWP9PqQJwmu2PupJD+tXTiBXdi0
+	Ongto/h8EWlnKcNUR/Kezvs0EZE4nd4juv+2p83voBOgtbb3fw/t696SWSFTHho=
+X-Received: by 2002:a17:907:3e8f:b0:c41:4d5:e97c with SMTP id a640c23a62f3a-c4d3537fda4mr352829966b.37.1794022474460;
+        Fri, 06 Nov 2026 19:34:34 -0800 (PST)
+Received: from L9JK9NPFH9.lan ([104.28.20.56])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d3562e00dsm121104166b.21.2026.11.06.19.34.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 19:34:31 -0800 (PST)
+From: Tianyi Gao <tianyi@cloudflare.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	David Keogh <dkeogh@amazon.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Alasdair McWilliam <alasdair@mcwilliam.dev>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Breno Leitao <leitao@debian.org>,
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	bpf@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	nh-open-source@amazon.com,
+	Tianyi Gao <tianyi@cloudflare.com>
+Subject: [PATCH net-next 0/8] net: configurable extra TX headroom for local egress
+Date: Sat,  7 Nov 2026 03:34:19 +0000
+Message-ID: <cover.1794020868.git.tianyi@cloudflare.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -179,56 +127,236 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: uuYnj6IyF9dAOT01xEhoQOks++z5pbHKbINevq8EUMivBeLuQpwX+q4PhTGjpg9+TIRddek23H4MI+g7WRO7srqIDkXUQZYO6KWDrQ7Es/RLrQt38dcHiN1nTeYwN1WshlMxLDi2kAulfUu4tGmTpfDXSE1hP37QJ/MmLC1u8m1xGNU29+mF22x46ZYqu5pO2yU6NSDuocyrV+qH1tgoHANoTdk+RPDIO+BXbM3NKYA7MhaQEAxbqiLHh9f1mld/i1rWnmbpcJbDH4TxNT8qlp7PzYmhoF0nddXEty3byyNw9dNhExpDjGGi0tZbYM1XC576QrWIsgnEFcRDnuppxQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LV1PR11MB8790.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d561c4fc-5802-4d51-947e-08df3c7fcd5e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2026 03:32:51.2986
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zXuKN72T42t6RYNu/hAoXoS9ULF7Hi7RIKQedRwSPbbWgrkKWD2GEPbDeUDOJGplCjejnHSEQIosRGmW6qss/2hyp943N0g2pEEAZAdLM3w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF5217261E0
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-> -----Original Message-----
-> From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>=20
-> Sent: Friday, September 11, 2026 5:49 AM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Michal Swiatkowski <michal.swiatkowski@linux.=
-intel.com>; Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
-> Subject: [PATCH iwl-next v2 08/10] ice: use libie_irq for interrupts mana=
-ging
->=20
-> Change interrupts code to fit the libie_irq calls.
->=20
-> There is not many difference. Bool for dynamic alloc in libie is changed =
-to enum for static and dynamic. Rest code is the same. Instead of custom ic=
-e_irq_tracker there is libie_irq that tracks the interrupts.
->=20
-> Code fallback to static when there is not more dynamic. Previously it fir=
-st used static part. Getting dynamic first better fit the lib code. It isn'=
-t breaking current driver code.
->=20
-> Dynamic alloc is always set to true if there is support. In libie_irq cod=
-e check for dynamic support is done inside. LIBIE_IRQ_ANY can be always pas=
-s in case of getting interrupts for VSI. If there is no platform support it=
- is changed to LIBIE_IRQ_STATIC inside libie code.
->=20
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> ---
->  drivers/net/ethernet/intel/Kconfig        |   1 +
->  drivers/net/ethernet/intel/ice/ice.h      |   5 +-
->  drivers/net/ethernet/intel/ice/ice_base.c |   4 +-
->  drivers/net/ethernet/intel/ice/ice_idc.c  |   4 +-
->  drivers/net/ethernet/intel/ice/ice_irq.c  | 181 ++--------------------  =
-drivers/net/ethernet/intel/ice/ice_irq.h  |  14 --
->  drivers/net/ethernet/intel/ice/ice_lib.c  |   3 -
->  drivers/net/ethernet/intel/ice/ice_main.c |  15 +-
->  drivers/net/ethernet/intel/libie/irq.c    |  30 +++-
->  include/linux/net/intel/libie/irq.h       |   2 +
->  10 files changed, 51 insertions(+), 208 deletions(-)
+A program attached at TC egress commonly pushes additional headers onto
+a packet, for example to encapsulate it. Locally generated UDP, raw and
+AF_PACKET traffic is allocated with exactly LL_RESERVED_SPACE() of
+headroom, which covers the link-layer header plus the driver's
+needed_headroom and alignment, leaving no room for headers an egress
+program pushes, so the push reallocates the skb head on every packet.
 
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+An XDP program on a veth peer has the same problem. A local UDP, raw or
+AF_PACKET socket, or AF_XDP in copy mode, sends a packet on a veth
+device. veth_xmit() passes the skb to the peer, where the XDP program
+runs. The skb reaches the peer with headroom smaller than
+XDP_PACKET_HEADROOM (256 bytes), which XDP guarantees to its programs.
+With native XDP, the peer therefore has to copy the packet in
+veth_xdp_rcv_skb() to get the headroom required. Generic XDP on veth and
+other devices like macvlan and ipvlan also copies the packet in
+netif_receive_generic_xdp().
+
+Add a per-device tx_extra_headroom, configured through a new
+IFLA_TX_EXTRA_HEADROOM rtnetlink attribute. It is a separate value from
+needed_headroom: LL_ALLOC_SPACE() adds it at the allocation sites only,
+it can be set and cleared freely without recreating the device, it is
+reported through its own attribute so it is never confused with the
+driver's requirement, and it is not inherited by stacked devices.
+needed_headroom keeps its current meaning and remains the threshold for
+deciding whether an existing packet must be expanded, so the extra
+reservation never forces a reallocation on its own.
+
+The value is limited to NETDEV_TX_EXTRA_HEADROOM_MAX (512 bytes). This is
+enough for several stacked encapsulations, for example VXLAN, GRE or IPIP,
+and keeps the growth of per-packet allocations modest. The netlink policy
+rejects a larger value.
+
+The reservation applies to the device the packet is allocated against
+(the one the route selects) at skb-allocation time. A GSO super-skb is
+therefore allocated once with the headroom in place; software
+segmentation copies that headroom into each segment, so the push lands
+in reserved space for every segment without a per-segment realloc.
+net/xdp/xsk.c is included among the converted paths: AF_XDP copy mode
+open-codes its own headroom calculation from needed_headroom, so it uses
+netdev_tx_alloc_headroom() to pick up the extra reservation consistently
+with the socket paths.
+
+Because the reservation is applied only at the allocation sites, TCP is
+left alone: TCP segments are built with MAX_TCP_HEADER already reserved
+and are checked against LL_RESERVED_SPACE(), not LL_ALLOC_SPACE(), so
+raising the knob does not reallocate them. Covering the TCP allocation
+path is deliberately not part of this series.
+
+With this series, generic XDP no longer copies packets that a local
+socket sends on veth. Native XDP on veth still copies them. Besides
+enough headroom, it also needs a head that is a page fragment. A local
+socket allocates the head with kmalloc, so it does not qualify. A
+follow-up veth patch will move this check and the copy after the
+program, so that XDP_PASS and XDP_DROP do not copy.
+
+One option is to raise needed_headroom instead. Setting it from user space
+needs driver support [1], which veth does not have. Where a driver does
+support it, the value is fixed at creation time. Moreover, raising it
+regresses current data paths, as measured below. tx_extra_headroom avoids
+these problems. It needs no driver support. It only affects new
+allocations. It can be cleared at any time.
+
+Another option, suggested in [2], is to declare the needed headroom in
+the BPF program itself, for example with a BTF decl tag. This works for a
+program at TC egress. An XDP program, however, runs on the receive side.
+The skb is already allocated elsewhere before it reaches the program.
+
+Auto-tuning, as suggested in [3], is out of scope for this series, but
+it is possible future work. ip_tunnel_adj_headroom() already does this
+for needed_headroom. A tuned value would also need a field that does not
+cause the regressions described below, and tx_extra_headroom can be that
+field.
+
+- Patch 1 adds the field and the LL_ALLOC_SPACE() macros.
+- Patch 2 switches the local-egress allocation sites to them (UDP, raw,
+  AF_PACKET and AF_XDP).
+- Patch 3 exposes the attribute through rtnetlink, with documentation and
+  the rt-link spec entry.
+- Patch 4 tests the attribute itself through YNL.
+- Patch 5 tests whether a push at TC egress reallocates the skb.
+- Patch 6 adds a flag to xdp_helper that sends one frame.
+- Patch 7 tests whether generic XDP on a veth peer copies packets from
+  UDP and raw sockets (IPv4 and IPv6), AF_PACKET and AF_XDP.
+- Patch 8 tests that ip can set tx_extra_headroom on both ends of a new
+  veth pair.
+- The iproute2 series "iplink: add tx_extra_headroom" is sent separately,
+  at the same time as this series.
+
+The following case shows how raising needed_headroom regresses current
+data paths. Take a veth pair with veth0 in the host and veth1 in a network
+namespace, and an XDP program on veth1. The ideal needed_headroom for
+veth0 would be XDP_PACKET_HEADROOM (256 bytes). A packet allocated on
+veth0 then reaches the XDP program on veth1 without a copy. However, this
+regresses data paths that reach ip_finish_output2() or ip_forward():
+
+a. TCP sent between the host and the namespace. TCP reserves
+   MAX_TCP_HEADER of headroom for all its headers. After the TCP and IP
+   headers, less headroom is left in front of the IP header than
+   LL_RESERVED_SPACE() (272 bytes). ip_finish_output2() therefore expands
+   the head of every TCP skb, ACKs included.
+
+b. A packet received by the host and forwarded into the namespace. mlx5
+   and ice running XDP leave 256 bytes in front of the Ethernet header, so
+   today the packet reaches the XDP program on veth1 without a copy. In
+   front of the IP header it has 270 bytes, 2 short of LL_RESERVED_SPACE()
+   (272 bytes). ip_forward() now expands the head of every such packet.
+   The new head is not a page fragment, so veth1 also copies the packet
+   before XDP runs. bnxt copies the headers into a new skb with 64 bytes
+   of headroom, so veth1 already copies its packets, and the expansion
+   comes on top.
+
+We used patch 4/4 of Jesper Dangaard Brouer's veth reallocation RFC [4] to
+raise the needed_headroom of both veth0 and veth1 to 256 while XDP is
+attached. We then measured the throughput of cases a and b on a Xeon
+E5-2640 v4 with a ConnectX-4 Lx NIC, on net-next at 734bef548a96. Each
+value is the median of 9 rounds, and the scripts are in [5]:
+
+test                          tool     net-next       256 (4/4 in [4])
+local TCP, host to netns (a)  iperf3   5.75 Gbit/s    5.59 (-2.8%)
+local TCP, netns to host (a)  iperf3   39.14 Gbit/s   37.70 (-3.7%)
+TCP_RR, 1 byte (a)            netperf  91582 trans/s  86296 (-5.8%)
+forwarded TCP (b)             iperf3   7.04 Gbit/s    6.76 (-4.0%)
+forwarded 64B UDP (b)         pktgen   873822 pps     692155 (-20.8%)
+
+bpftrace confirms that the head of every packet in these tests is expanded
+in the 256 column.
+
+The next table shows that tx_extra_headroom removes the reallocation
+caused by a push at TC egress. netperf sends 500000 UDP datagrams of 64
+bytes on a veth device, and a program at TC egress pushes 20 bytes after
+the Ethernet header with bpf_skb_adjust_room(). Only tx_extra_headroom
+varies. The machine and base are the same as above, with this series
+applied:
+
+tx_extra_headroom  tc push  pskb_expand_head() calls
+0                  yes      500003
+64                 yes      0
+128                yes      0
+256                yes      0
+256                no       0
+
+All 5 rounds give the same counts. 500003 includes 3 datagrams that
+netperf sends at the end of the test. With no program pushing headers, a
+set value only costs the reserved bytes per allocation. It causes no
+reallocation or copy.
+
+[1] https://lore.kernel.org/all/a8f2f84e-7dc0-473d-afb1-af710d621f69@iogearbox.net/
+[2] https://lore.kernel.org/all/bba453eb-769e-458b-88f7-8cc9bcafc1db@nvidia.com/
+[3] https://lore.kernel.org/all/b8914a523b4a6b80424c5001d3d8012c6a98fd04.camel@infradead.org/
+[4] https://lore.kernel.org/all/169272716651.1975370.10514711233878278884.stgit@firesoul/
+[5] https://github.com/tgao-cf/tx-extra-headroom-bench/tree/main
+
+---
+Changes since RFC:
+- Patch 1 also removes LL_RESERVED_SPACE_EXTRA(), which has no user since
+  commit 6d5431555de0 ("caif: remove CAIF NETWORK LAYER").
+- Patch 2 adds a paragraph on why ip_do_fragment() and ip6_fragment()
+  are left alone. It also no longer says that AF_XDP copy mode uses
+  the same calculation: xsk.c has its own, from needed_headroom.
+- Patch 3 changes IFLA_TX_EXTRA_HEADROOM from u16 to u32.
+- Patch 3 fixes the description of LL_ALLOC_SPACE() in netdevices.rst. It
+  adds tx_extra_headroom before the HH_DATA_MOD alignment, not after.
+- Patch 3 names the paths that use the setting in rt-link.yaml. TCP and
+  forwarded packets are not covered.
+- Patch 4 renames set_() to set_hr() and d0 to dummy0, and adds
+  docstrings.
+- Patch 4 checks that the VLAN headroom is exactly 4 and that
+  tx_extra_headroom does not change needed_headroom.
+- Patch 4 skips every case on a kernel without the attribute.
+- RFC patches 5 and 6 are mostly dropped. Patch 5 is a new test. One tc
+  program in selftests/net compares skb->head before and after the push.
+  It follows test_dst_clear.c in selftests/bpf. The test setup of
+  tx_extra_headroom_dataplane.py is moved into tx_extra_headroom.py.
+- Patches 6-8 are new: a flag to send a frame in xdp_helper, a test of
+  generic XDP on the veth peer, and a test that sets both ends of a veth
+  pair at creation.
+- The cover letter adds the veth XDP case, the regressions from raising
+  needed_headroom and answers to the BTF annotation and auto-tuning
+  ideas. The tx_extra_headroom measurements are repeated on net-next
+  734bef548a96. The selftests run on net-next fa5196392691. The cover
+  letter drops the RFC question, the sentence that there is no in-tree
+  way to ask for more headroom, and the sentence about a concurrent TCP
+  stream, which no test covers.
+
+RFC: https://lore.kernel.org/all/20261015235335.4162993-1-dkeogh@amazon.com/
+
+David Keogh suggested that I post v1, with patches 1-4 from him:
+https://lore.kernel.org/all/au4j2nQdOwr90ffh@dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com/
+
+David Keogh has a test that tx_extra_headroom does not change the
+headroom of TCP packets. He will post it as a reply to this series.
+
+David Keogh (4):
+  net: add tx_extra_headroom and LL_ALLOC_SPACE()
+  net: reserve extra TX headroom for local egress
+  rtnetlink: add IFLA_TX_EXTRA_HEADROOM
+  selftests: net: add tx_extra_headroom test
+
+Tianyi Gao (4):
+  selftests: net: tx_extra_headroom: test a push at TC egress
+  selftests: net: add flag to send a frame in xdp_helper
+  selftests: net: tx_extra_headroom: test generic XDP on the veth peer
+  selftests: net: tx_extra_headroom: test veth peer at creation
+
+ Documentation/netlink/specs/rt-link.yaml      |  12 +
+ .../networking/net_cachelines/net_device.rst  |   1 +
+ Documentation/networking/netdevices.rst       |  35 ++
+ include/linux/netdevice.h                     |  36 +-
+ include/uapi/linux/if_link.h                  |   1 +
+ net/core/dev.c                                |   2 +
+ net/core/rtnetlink.c                          |  19 +-
+ net/ipv4/ip_output.c                          |   2 +-
+ net/ipv4/raw.c                                |   2 +-
+ net/ipv6/ip6_output.c                         |   2 +-
+ net/ipv6/raw.c                                |   2 +-
+ net/packet/af_packet.c                        |   6 +-
+ net/xdp/xsk.c                                 |   6 +-
+ tools/testing/selftests/net/Makefile          |   1 +
+ tools/testing/selftests/net/config            |   1 +
+ tools/testing/selftests/net/lib/xdp_helper.c  | 113 +++++-
+ .../selftests/net/tx_extra_headroom.bpf.c     |  94 +++++
+ .../selftests/net/tx_extra_headroom.py        | 330 ++++++++++++++++++
+ 18 files changed, 645 insertions(+), 20 deletions(-)
+ create mode 100644 tools/testing/selftests/net/tx_extra_headroom.bpf.c
+ create mode 100755 tools/testing/selftests/net/tx_extra_headroom.py
+
+
+base-commit: fa5196392691051963726787944db872420dfa75
+-- 
+2.56.0
+
