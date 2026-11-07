@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083093;
-	b=PUumcsUWn+ob4GU498sixWU2HXPrFKuVo1QqmNrOyr+ooQe86Hv6MVpqbAeGdc85JmGE
-	 gdpeDmA+XOkwZn06h0PDRk4NIxGnbI/o4RHJpPA50MmwUjsLbCbM7mKa27Uo2EjjA0QYG
-	 GmOYzUBeqB/XshReVsfVq0L1rK4QFv6GMuNQZj7RoqOAhhzF5VytdAmopv7nt60o3tFLf
-	 YqHL8hpar+PRpXmZF3QqiVzzJ3ImiCS0+uwMe+RuUZXW0UycKPgYWLyYT35oeLUcjX3zM
-	 KCAj5Wc2uK8kJwcBs3e+++zb1fnexDCcLRbNCfJrUN6ESm6c8K1h0grkN/nDyi9mTCw==
+	t=1794083103;
+	b=dVLAdJbNAMYDEcIsaFDIzeA16qIGNzfbtP5S0RrQpwAb34MFZm1537sXZRzkfmwcr3s+
+	 Afw13XnTIlvWUktIDbzA0M/F0iEFV220QHMocIeMWjJgJ/A57O2o6lS2Ixy9rleUgVg8c
+	 Qtf+5pG86CSxhCkZTmg0HRIsodQAKEcxpMNuLIEkNifj0N06pBxozkEFp8rqp5j9evdcc
+	 xll7nVF8LR3Emdo48yuw6XnSA4T7t6elxEiVK7lrgOcFKQ8jqNGoawBnH/1g6pe0p9xIe
+	 rcn9yhKqgHsNaSoENFUyJk4MFFLsAQuiCTeQbwqkpcj1iAxTckm4eF8wRnI7zU4YEGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083093;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083103;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=eJ88kR2RZv5479E9n8qD0nMND7wbcrif7/eT10RPNAo=;
-	b=ycYD4b8n76eHVFE82qWLHxzzteri94UnZI3t6UY8hAsLxnSmUv1TNXBfihO2C+4LJvmy
-	 8HcMGnTtb9/zKWfUO74BKhS/DSPG1yggqyKWYo3TZt/iiXwHz43/RKXMG8U3D08/9r/LZ
-	 QlwRp72Q+4HuWZgnkmiqcuhucapsG4t7VbQKbHwf49EEVDql1Bx4qs0bWXCCW6YkMkExq
-	 8lYM5BJZCfk8E1C6w2kv1kZdvprGNbMPxLC6502RQ1V4fPdGuvUN2PL+u9rkiQqBREAK7
-	 bmEggHef1wq6qxnvKnPjJ5OLhpfDTuciRLy6ATSlYq85EYTooGGFvq/MXqVDcidqUrg==
+	bh=oowdS+RUaXqQYhqTl8K+JWCk7L9i4EL13SAkeszSlFo=;
+	b=uvbknP8C42UisOYq6Yvxshlqbwb4uBF1lwHyQNfOmkVSOIsSk0Zy704I/LVAJQkDzLnb
+	 kQdda8q/rsMGY/e8O2iqgHmLyTU2VrY9uzKg/NnexwpD2Ets3ygl6+q8vf8/KV2WkV5ws
+	 MBg8QcvIctT+6yHMWODq+uHQncjrKR8KomfRMrV5L1kBx1g0dXPbYQsWJRWCbDfmJeJOm
+	 ktGEBa/Gt28UiPIeMxaHstyR77b5DoIZvVAPUfIiqBuzRtpzgZQMIFqNKSGSWI6VpS2dd
+	 LCbc69RJOev/ik+IOmRFKbfegrhEAL+F1lZO59KgoeCXzGLYpWgEQv5TOQku170iJOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COuxbkd0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq2zs6qI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1AB606A33E;
-	Sat,  7 Nov 2026 20:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F44606D82C;
+	Sat,  7 Nov 2026 20:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COuxbkd0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6431F008A4;
-	Sat,  7 Nov 2026 20:24:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dq2zs6qI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C9A1F008A4;
+	Sat,  7 Nov 2026 20:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083092;
-	bh=eJ88kR2RZv5479E9n8qD0nMND7wbcrif7/eT10RPNAo=;
+	s=k20260515; t=1794083103;
+	bh=oowdS+RUaXqQYhqTl8K+JWCk7L9i4EL13SAkeszSlFo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=COuxbkd0MLNwLJS/YBpMvrERMT5wDnXvES8Np7Shf+84OE+U4yPwaU+GajnLoy79v
-	 sF1jk5tq+awKlPEXlqWu59SaR3vdTgYvZ26zY03gbAaziMwc4GpPubAAnS4B84ymud
-	 18/RXZn3x+19n1gbqhtLEvCBoc8kS1Op55HbzMrPtpLbxkk0QQnI7mvBw45p9LNCop
-	 nWzOsxLLcvMm3r2nTpEJgIIpvp6U0XLLbU1N20wKOF5hLZGyNBxEt0XLFFCIQQFjQQ
-	 gnnjtXwAu8wFu/xJUSgigf5ztnxucXJl9UD1wmZSiEWhz4jxy7zwCWqcD4JGu5rkuA
-	 l3VUXCiKfUurA==
-Subject: Re: [PATCH rdma-next 10/23] RDMA/mlx5: Introduce per-CQ poll_one hook
- in mlx5_ib_cq
+	b=Dq2zs6qI/0KvCnEtdM6veb857H8abtyWdUvxYQIl/M/oYaQ0d1R1zzqpiZQHEIJXM
+	 8dmbv/0rUlJ3O9En6Za6pdpSlsgsesLA2BvdYa2ezMCXTYcsWpS5p/i31sBzX6W/y9
+	 w987a1vYQn7amMHCo5g1Ch45JoQButEiRO0cbVBPU7gilncvJzovOU1g/qAJbhSIiH
+	 IIbtaCKJWqVRH1Kdh0paOMBwKv9JCChfuO6lvQjdpGDw3eVeGSr/q+0TbxEiFAeTtW
+	 VFsum4NorbjUiPWTp8bfaY3ozKA+EzjNekeqjl+fLYDgeDNEnAaFD+gXZ9TWwkHff0
+	 JNe2GHioppMAw==
+Subject: Re: [PATCH rdma-next 17/23] RDMA/mlx5: Validate EQE port and GSI port
+ before indexing devr.ports[]
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,10 +49,10 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:24:51 +0000
-Message-ID: <179408309154.994134.2462822873146851293@kernel.org>
-In-Reply-To: <20261103163949.1554-11-yishaih@nvidia.com>
-References: <20261103163949.1554-11-yishaih@nvidia.com>
+Date: Sat, 07 Nov 2026 20:25:01 +0000
+Message-ID: <179408310169.994134.18411917783042594669@kernel.org>
+In-Reply-To: <20261103163949.1554-18-yishaih@nvidia.com>
+References: <20261103163949.1554-18-yishaih@nvidia.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -72,67 +72,79 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message calls this "a pure refactor with no behaviour
-  change", but it changes the per-CQE fast path.
+- [Low] This patch makes the existing invalid-port check and warning in
+  mlx5_ib_handle_event() (drivers/infiniband/hw/mlx5/main.c)…
 
 --
 
-RDMA/mlx5: Introduce per-CQ poll_one hook in mlx5_ib_cq
+RDMA/mlx5: Validate EQE port and GSI port before indexing devr.ports[]
 
-This adds a poll_one function pointer to struct mlx5_ib_cq. It is
-initialized to mlx5_poll_one() in mlx5_ib_create_cq() and
-mlx5_ib_create_user_cq(), and mlx5_ib_poll_cq() now dispatches through
-it. A follow-up patch uses the hook to install a specialised poll_one for
-the UMR CQ.
+This commit adds port validation to handle_port_change() and
+mlx5_ib_create_gsi(). The port number from the NIC is checked with
+rdma_is_port_valid() and limited to ARRAY_SIZE(devr.ports) before it is
+used to index devr.ports[].
 
-> diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
-> index 55ffd7d4de517..11c1153747c24 100644
-> --- a/drivers/infiniband/hw/mlx5/cq.c
-> +++ b/drivers/infiniband/hw/mlx5/cq.c
-> @@ -633,7 +633,7 @@ int mlx5_ib_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
->  		soft_polled = poll_soft_wc(cq, num_entries, wc, false);
+> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+> index f4f2ad80e76c4..c29102260989f 100644
+> --- a/drivers/infiniband/hw/mlx5/main.c
+> +++ b/drivers/infiniband/hw/mlx5/main.c
+> @@ -3063,6 +3063,10 @@ static int handle_port_change(struct mlx5_ib_dev *ibdev, struct mlx5_eqe *eqe,
+>  {
+>  	u32 port = (eqe->data.port.port >> 4) & 0xf;
 >  
->  	for (npolled = 0; npolled < num_entries - soft_polled; npolled++) {
-> -		if (mlx5_poll_one(cq, &cur_qp, wc + soft_polled + npolled))
-> +		if (cq->poll_one(cq, &cur_qp, wc + soft_polled + npolled))
->  			break;
->  	}
+> +	if (!rdma_is_port_valid(&ibdev->ib_dev, port) ||
+> +	    port > ARRAY_SIZE(ibdev->devr.ports))
+> +		return -EINVAL;
+> +
 
 [Severity: Low]
-The commit message says:
+Does this early return make the port check and warning in
+mlx5_ib_handle_event() unreachable?
 
-  This is a pure refactor with no behaviour change.
+mlx5_ib_handle_event() treats any non-zero return from
+handle_port_change() as a reason to skip the event:
 
-Does that hold for the per-CQE fast path?
+drivers/infiniband/hw/mlx5/main.c:mlx5_ib_handle_event() {
+    ...
+	case MLX5_EVENT_TYPE_PORT_CHANGE:
+		if (handle_port_change(ibdev, work->param, &ibev))
+			goto out;
+		break;
+	case MLX5_EVENT_TYPE_GENERAL_EVENT:
+		handle_general_event(ibdev, work->param, &ibev);
+		fallthrough;
+	default:
+		goto out;
+	}
 
-Before this patch, mlx5_poll_one() was static and had one caller, this
-loop in mlx5_ib_poll_cq(), so the compiler could inline it.
+	ibev.device = &ibdev->ib_dev;
 
-The patch stores its address in cq->poll_one in mlx5_ib_create_cq() and
-mlx5_ib_create_user_cq(). As a result, every polled CQE on every mlx5 CQ
-now goes through an indirect call. On kernels with Spectre-v2
-mitigations, that call goes through a retpoline thunk.
+	if (!rdma_is_port_valid(&ibdev->ib_dev, ibev.element.port_num)) {
+		mlx5_ib_warn(ibdev, "warning: event on port %d\n",  ibev.element.port_num);
+		goto out;
+	}
+    ...
+}
 
-Only the UMR CQ needs a different implementation, which the later commit
-"RDMA/mlx5: Verify UMR CQ polling against a hostile NIC" installs. Even
-so, every in-kernel consumer polling an mlx5 CQ (NVMe-oF, iSER, SRP,
-NFS/RDMA, SMC-R, RDS, IPoIB) takes the indirect path:
+The only way to reach the rdma_is_port_valid() check is a successful
+handle_port_change(). After this patch, a successful return always means
+the port is valid.
 
-ib_poll_cq()->mlx5_ib_poll_cq()->cq->poll_one()
+Before the patch, a port change EQE with port 0 or a port above
+phys_port_cnt went through handle_port_change() and returned 0 if its
+sub_type was not PKEY (LID, GUID, CLIENT_REREG, or ACTIVE/DOWN on IB).
+The caller's check then printed the "warning: event on port %d" message.
 
-The end of the series doesn't seem to restore a direct call for the
-common case, and there is no INDIRECT_CALL_1() use under
-drivers/infiniband/. Would something like this avoid the cost?
+After the patch, the same event is dropped with no log message.
 
-    if (INDIRECT_CALL_1(cq->poll_one, mlx5_poll_one,
-                        cq, &cur_qp, wc + soft_polled + npolled))
+Could the warning be moved into the new early-return path in
+handle_port_change()? Or, if the silent drop is intended, could the
+caller's check be removed, since it is now dead code?
 
-The final mlx5_poll_one() also already has an
-unlikely(mlx5_ib_adversarial_mode) check, which a cheap dispatch here
-could reuse.
-
-If the indirect call stays, could the commit message mention this
-trade-off rather than say there is no behaviour change?
+> +
+>  	ibev->element.port_num = port;
+>  
+>  	switch (eqe->sub_type) {
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
