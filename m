@@ -1,68 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794027653;
-	b=QfO3GOj4NMQs094bdabA3VbWKaKTMQZNMaghYsFZBYIuUcUyDxPfht6b4ls5z9M3ynU7
-	 Snz5vfSxvcKM2GDfV6NQrYcteLCbielorxzl9rgdFBTr1GC807M7OHVkwRu63X5cjpKSM
-	 a1rRKokFO6rBMwJ42zayJYDr4mMX6JBLcQQPEt3KhzyctajfdS99sP9hv1R06zM49g7Ac
-	 IqfXi4YEb6gJT6BIP3YAK3mfr73FSOh+5xq/vPmqAxDM57iAFVq+jbD91sTUlsiRGwSOe
-	 1klmTO6k/1Wcz6MxDvm3LpxHfPZTLJ5g5scjAopD2V1YJv2OLXUSUWfUNWPKy02ILvQ==
+	t=1794027655;
+	b=xB+DQiFYAtdeTunBRUTiG1ALY5OxuhLeJF6fYpQQN5WeOU94IvQYCgxmDKr4cR4f1zkQ
+	 LLCIyc1t4hvvOZblu4VjMXaM5JaNOf1HDvaC+r6R4pfJI3ivXjQN/dP6HMSLy7XEt/y3x
+	 gyMrzqmutUgteoalvZWPd011ygSL7Z1sICkm9E3rqv1xUwPHZuuT3uieH2SmBbpry26on
+	 d99/lgyCiDJlQoNyC+tFugTB8Shmk2yIk9P+1/W+xPm6RWTzbrCxaUxr/fEN+lF0CDA2L
+	 veWiNGsXGPtt2imHS/qzornmAazt3kG+90x1w6xjVuZcD5fmM4Wx9m8iVYU3qXembHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794027653;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=NnLdJUTw8NyPHACTvlK4M1CjSpMv4igCIqBIPH6KXZnwcfPhTrOSXNz4jTBZ6dNODqrC
-	 tt7FEVgIZBom2kcPitUNjhi1X+C1GbjLB6FLAXnDWdpG1mrlecwL+sowJguTegFUpVLY/
-	 pvAD1SIf9Wi9ttZLDd8T/jvgjTGCWY/X7ljjZrdRZwmeMTle0g8jrGvryPqbRbJXaMU5E
-	 OAW4GdF/XL8BeBxXHv1WHwBPq9ZOcD2/HncQluwO3vNzaRWGh9lqUA47lp7NC2SeAEC+g
-	 IKP48NK80wAuXgJ1lty4LMiP3w71swHoaLo2os1S0cAfauZtJgsgtjtFB8n5T4ZsNLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794027655;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=U1gd6UA2nDUrScSCQliizSZWUXIvJcQRp5u6YbYjYJc=;
+	b=TMxP1Q6Zetnh7afqp/nCv/pvarJZEdkWAAFONddIYyMnndEoQc9QKlKo7viu4dsdq3qC
+	 5tqvRUK95xyU6G6p8qgp3O0oO1H2OCmdbo+Hcxy2kCaoMTRjuwt2ghTWBu3P10VxbnXhR
+	 ti9abZQ+8t3VlGf+n5kQ8SM1/QhmbIPLxSvs13wwbX2rI52lwjqxGR6l7XjC5Snx9hoIh
+	 NWidKbwXvIt7gCXgpE2oVRJQ8gTztWrIHZ703CVkYiFfbKE6YWsuPO0RxqT/ZOifiDiHm
+	 yG3SA69FVsptJ0u9bOBc3xbbi8hTZmdwMuSTPgeog84j/f5N7gSd8iggBMkbe7DnQaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMHGtyOu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FA9606A32C;
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=JHCAlLA3;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FB7606A331;
 	Sat,  7 Nov 2026 05:00:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25FB7606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMHGtyOu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6471F1F0089F;
-	Sat,  7 Nov 2026 05:00:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794027653;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZMHGtyOuB9f1RSHcRFJlSV1ihIw5TjTFvn9j7G6T1Ldyl8Qzshzkm9/onwRlW8tIF
-	 8ktP+aZh0chmBxFXrmYJS7zrAPJkdmSDtC0bCn7fGneYem8EL2ZEQnoD85NeGnHGN5
-	 dQpUo4cgBghmhgtYGM6JlFrm/ju4oCsLvY/75JomUH5d3cm7OCFxeMCP09stPzzPlC
-	 J8mz23huu7EdTy62OzQfh0bQWTlsWUXb9+CR+VC5YfBMvRdLIFHWfyksKrbk85WFp6
-	 bjQ9hyeMDuHElskrpex5zDEQeEj6eU/46resCnEf81ksUr0tjHApwKKt5AtVHcfp8T
-	 RBnP8Dg7z7gng==
-From: netdev-bot+sinfo@kernel.org
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Eugenio =?utf-8?q?P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net 0/2] virtio_net: AF_XDP zero-copy fixes for arm64 and suspend
-Date: Sat, 07 Nov 2026 05:00:51 +0000
-Message-ID: <179402765189.488859.17099847531290257740@kernel.org>
-In-Reply-To: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=JHCAlLA3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=JHCAlLA3JeXTRjgEEmoHG2hPMsWW3pRgKSitzvsz/O1QbU+GWQ8t0PE4dkgtsbMValNoMZqK2Uno6
+	 HfSZrHOb36QhSV+ZPKYZ3vW/LTEsePQB3XtBVifjrOaJ167l4b+qw4vnvifyJKf3fLKKHJL/B+v1t6
+	 LQJR8d8kK3ZAj2Kw=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56aeeb07ccd9-b3131;
+	Sat, 07 Nov 2026 13:00:46 +0800 (CST)
+X-RM-TRANSID:2ee56aeeb07ccd9-b3131
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03.03 (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66aeeb06e3ff-3a7f5;
+	Sat, 07 Nov 2026 13:00:46 +0800 (CST)
+X-RM-TRANSID:2ee66aeeb06e3ff-3a7f5
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	William Tu <witu@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] erspan: drop packets with an unknown ERSPAN version
+Date: Sat,  7 Nov 2026 22:00:30 +0900
+Message-ID: <20261107130030.35220-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,21 +74,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+The ERSPAN type II and III receive paths take the length of the ERSPAN
+header from the version field of the packet, with erspan_hdr_len(), but
+never check that the version is one they know: 1 for type II or 2 for
+type III.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+For any other version, erspan_hdr_len() returns 0 or the type III
+length. With version 0, the ERSPAN header is not pulled, so it is
+passed up as the start of the inner Ethernet frame, and in collect_md
+mode the metadata is filled from the wrong part of the header. The
+ETH_HLEN pull in __iptunnel_pull_header() still covers the bytes that
+are copied, so nothing is read past the pulled data.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Reject such packets, as a packet with a truncated ERSPAN header already
+is.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+---
+Tested with hand-built GRE/ERSPAN packets sent over a veth into erspan
+and ip6erspan devices, in plain and collect_md mode: version 0 packets
+are now dropped, version 1 and 2 packets are unchanged.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+v2:
+- Drop the Fixes tags and correct the commit message: the ETH_HLEN pull
+  of __iptunnel_pull_header() covers the metadata copy, so there is no
+  out of bounds read (Ido, Sashiko).
+- Drop the patch that skipped the type III sub-header, as no device is
+  known to send it (Ido).
+v1: https://lore.kernel.org/netdev/20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com/
+
+ net/ipv4/ip_gre.c  | 4 +++-
+ net/ipv6/ip6_gre.c | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 5485586fa0e6..ea41be3c4229 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -303,8 +303,10 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 	if (tunnel) {
+ 		if (is_erspan_type1(gre_hdr_len))
+ 			len = gre_hdr_len;
+-		else
++		else if (ver == ERSPAN_VERSION || ver == ERSPAN_VERSION2)
+ 			len = gre_hdr_len + erspan_hdr_len(ver);
++		else
++			return PACKET_REJECT;
+ 
+ 		if (unlikely(!pskb_may_pull(skb, len)))
+ 			return PACKET_REJECT;
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index b5d6ed8f0c36..46fac89a0743 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -507,6 +507,9 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 	if (tunnel) {
+ 		int len = erspan_hdr_len(ver);
+ 
++		if (unlikely(ver != ERSPAN_VERSION && ver != ERSPAN_VERSION2))
++			return PACKET_REJECT;
++
+ 		if (unlikely(!pskb_may_pull(skb, len)))
+ 			return PACKET_REJECT;
+ 
+
+base-commit: 303d91a1592587fdb481dd36a9ef2c0414dacb0f
+-- 
+2.43.0
+
+
+
