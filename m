@@ -1,74 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794080859;
-	b=vIo62hOiv2QqGnQz2HqlvyaAmY0hDWWuJe3yQMQT8whSlbmShovgtuOmdfUs3nhbRvgA
-	 mTr+829fZtP6GN1UPu18Q+dv34okzYX1Ipm7jndQ3XCDxSl8eVbmxh38dz9UVwDXCiqHD
-	 MkZkuBeHa+wE0AT/6MOocBVlMm5tcRQWknzOu2E3TUUimge+8bWAKo0djKUWK0byJ0R48
-	 KhdMEm+qy0wkNW1w4mgiHdR7xEvYs4JSkivIl8KqtR2AdgdP8hPWf6FEY89NWtJDOM6G5
-	 BxrOZduLlKeCcYawoXGXpBhm/CE8EIXDX0WILga/ucmHFWvvQpw79m3SKaljtfeCOvw==
+	t=1794081143;
+	b=PGNLcMPrqvHsJQN7LpkoPPy0Zv3CVHR4Gv/7P9gigG7QGTNKcQiG278tfHELeQIOdbee
+	 49F162Tv0rmrMxrAOo0/9uM7wGR95as3oXBRy+TmYLjkIImDOG3kTTNfJJAcmHncFS/Hj
+	 dXHnycYC1qYM1ixfbFPe+3U6Qpjo8+ym/tDTDW585GGjoqBWMlCC4Y6IZMlgibAPKjLEa
+	 rjlXkem7bDtJ4X7BaUumSUYQ4nHHQP4DwazfWvGp3u7uxm1jGtTmmr4gkvLdIqXcfzIDU
+	 /H+KxSB7GVx8Ahmny1AYMNQfSwIVrqAHG3yiqgCMd0pSBWGMle/I0ov5a5fxSiFAy2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794080859;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=SYcjJygf+sJY+ufopYfdJKIVnGnyP9gSuN2/MpdkeWI=;
-	b=rPimgLHYrvum/dqpRnojdkDi7poWWGLMtjyX/7LEp2Tz/f9UOSFaF9XvpUKUZuISecFW
-	 /qIQhv7+mYcJi4hObX8KNk88RD2svpyLyGI+B0+39UcEw2TCOT7hHQBdCiZ75+T08FaGP
-	 PLUSa/dV9uJ90aHd2BqQZcPGQhTagCN0hCl64lSw0VpbkgFVlP6vqa2aUehpP8qqbAbiJ
-	 lHybLosrmT6uNarZxpWqcpooZImUVNGhxUdoJ7EICbe/WslBnb4P5Q1F7PsQSotPwngtV
-	 xioR8Mk46cuiBwBFcYAYlbiYzrLVCrk+SqA4mp60C2mB4mC9JHUTQ1t02Q9mRKnJhBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794081143;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=7v5w7Y/6lP7RhD+lVR/dnms1QkLIxcaWJVP5wnw756I=;
+	b=RMb21QL48a0TLtu8dWGL2YCZGq8Vuar42N6ANyHm4E4zvHe/Ls69lcvINEKKf0+2ksfT
+	 3nGey8KzBoeGOAYdOrGQb7nZyichgZMQGWWOZbrqtgJBEikU++aseBPwy6/r2yD5eKOqs
+	 nQ4jTqICOF8wcMeWTSHWPq6SMQaKq6JqzLv3LpXicKSO4nRaXXTfT+ziG3nWHXG5YTQWw
+	 100D6iXbMs3qrvm8HBSXYd/Lb7fVsrQhN2eADJ4bqF+HROT7dIC82g5mJPwIaXo+YsNkS
+	 qvkCuUER6TM47ISdfLMUBM/lglRWcJG1eW6rlrHAIp7ejKpgQQ9m3vC8BQnRt8JUmkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HS8K8tB4;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cySyJAnr;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF8B606D815
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 19:47:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DF8B606D815
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B93606A32C;
+	Sat,  7 Nov 2026 19:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HS8K8tB4
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd66551e02cso1849772a12.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 11:47:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794080859; x=1794685659; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SYcjJygf+sJY+ufopYfdJKIVnGnyP9gSuN2/MpdkeWI=;
-        b=HS8K8tB46rVV3XK02DYLXjAdcKip8k6Hm5Q9t+XfPBuc9VvckozIH+lZvslrE8FuVj
-         Dep1/mj0pYrlWDP/10n3ed8sNOjBNC7wPjjbIM+PCfkDBqiUmQPL2uX/lAlXr1StbIKY
-         9N3VooBCrOLen7FIS9I+f6Ip7RRSAQhD/hrOFm0G4DE00qRHeQhxbax8DDnQnx9SGqV0
-         pSf0qoT/Sk4JP0c2gGn9GTgEfh6+WvNWj0+vI/KyK96fnndT5wjZV42zK0tDw5pMS7yN
-         ZBFo7eFZpInQH9veHNrzGX5jBZlO1+eny9aupqZB3KF+PPWT7eSsKCCCQ+xS80GdiecZ
-         JlqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794080859; x=1794685659;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SYcjJygf+sJY+ufopYfdJKIVnGnyP9gSuN2/MpdkeWI=;
-        b=xB8h1vuTF5L8Axo6iqC0rGbI2hIWx9RVduPyUcBGAgys6/KJ/MWsjeep74ASww24AJ
-         fkoNCQe4C6dr45lXFyeu8l2Cl6IdEtQ4xqWKW9JrBygwSTlNIWOur+pFXImZFWkSRDr8
-         cNCXg/sLM+BK0LPF9EyiNSJ0UTPFKrB5ADNdE2mQxSBd9dc6TT7wQwNIyklVVuSUv9LO
-         uwJN5gj8GTPTbj3glud7rNNjP4krZv2z9k0IkS3chKBEldlP3FGNEDLLT9KJXoqV1deq
-         h/S39TSOkeeeg/DCRXcUcNY/VUvbsb/mR6yCmC8OVd08eW4VBycur8FZreoTLLQEKEhn
-         EDqw==
-X-Forwarded-Encrypted: i=1; AKwUvBzEjNZ79G+KPpVCrHi8uSHBKac/2IcPXEFvmgvpc/KGmOBUqgrILDbW9+EKIrjrc5qzjoxlmYk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9KOXVeuQhy5cNN4FF8SSvSu5HdqKDxXB9/LHY8p5Ox89rFFQeu
-	xHHxpG+N68W59QN84/XTIxoePxiz5RnnI3RoPlNgFDJtwjdvTlCuuOeRhFRrPhuq1omiPfNqPcS
-	ztom9jQ==
-X-Received: from pgaa23-n2.prod.google.com ([2002:a05:6a02:6497:20b0:cdb:1c92:d2df])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:c206:b0:3ed:bdfd:23a8
- with SMTP id adf61e73a8af0-3edbdfd2488mr2314948637.61.1794080858543; Sat, 07
- Nov 2026 11:47:38 -0800 (PST)
-Date: Sat, 7 Nov 2026 19:47:38 +0000
-In-Reply-To: <au99DNHQEsaaDqpJ@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cySyJAnr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464BF1F0089F;
+	Sat,  7 Nov 2026 19:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794081142;
+	bh=7v5w7Y/6lP7RhD+lVR/dnms1QkLIxcaWJVP5wnw756I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cySyJAnrsYJPX2lE5ZiXqPcroCO8YC3N2Mtux7eFxYPwuTbJj5RMB4Q2RJ5IHpnM+
+	 aFMcMovHc0xfyW4WbxlLeSGMazZIlhmut+4q0JbszsPKtH5/0q8jTdtJ+SgLEVf4Ja
+	 iqrinofny/Cieoc0GxzjQf0i2gk7aRBoIHcleB29TsBAtbg2nsWNm+tqAKjUJCj3Pv
+	 2rgX82jRhQsAhAvWf7GxRcpfwb+ejOc3LDk9ja+z832phVbnMH9ixv1fviexfnQXa0
+	 4iWttSmtSje2087OXhE5retArgWDth9msvYb1Fl3CnRZO/A7sGX1Uf++8mpeuGSlSY
+	 UW8rjYfGqNK4w==
+Subject:
+ Re: [PATCH net v3] sctp: fix ASCONF address change on single-homed hosts
+From: netdev-bot+sashiko@kernel.org
+To: andrey.misyrov@gmail.com
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, junvyyang@tencent.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sat, 07 Nov 2026 19:52:21 +0000
+Message-ID: <179408114179.994134.782467837057730523@kernel.org>
+In-Reply-To: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
+References: <20261106195126.1563231-1-andrey.misyrov@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,115 +63,149 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261009091941.5837-1-qiang.zhang@linux.dev> <CAAVpQUAeHP7M07uMweRePtuzPPUo-99dL6jOYUiVf7CSVUxNDQ@mail.gmail.com>
- <a951af6957fe4890d3eaaf5a661754fc259a4b79@linux.dev> <au99DNHQEsaaDqpJ@google.com>
-Message-ID: <au-AQ7OPf6QPyc3Q@google.com>
-Subject: Re: [PATCH] neighbour: Move the netdev_put() out of RCU callback
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Zqiang <qiang.zhang@linux.dev>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 
-On Sat, 07 Nov 2026 19:34:07 +0000, Kuniyuki Iwashima wrote:
-> On Sat, 07 Nov 2026 11:47:45 +0000, Zqiang wrote:
-> > > 
-> > > On Fri, Oct 9, 2026 at 2:19 AM Zqiang <qiang.zhang@linux.dev> wrote:
-> > > 
-> > > > 
-> > > > For builts with CONFIG_NET_DEV_REFCNT_TRACKER=y kernels, netdev_put()
-> > > >  records the caller's stack trace via ref_tracker_free() for debugging
-> > > >  reference leaks. however, the netdev_put() is within pneigh_destroy()
-> > > >  RCU callback, this recorded stack is uninformative, it does not reveal
-> > > >  which code path initiated the deletion.
-> > > > 
-> > > Have you seen pneigh double-free ? What motivates this change ?
-> > 
-> > Firstly, Apologies for delayed reply.
-> > 
-> > 
-> > 
-> > Actually, I didn't see any double-free happening,  just wanted it to
-> > record a meaningful callstack which on release path.  After all, if double-free
-> > really occurs, the callstack of the RCU callback execution path will not be helpful.
-> > 
-> > 
-> > > 
-> > > > 
-> > > > This commit therefore move netdev_put() from the RCU callback into the
-> > > >  caller's process context, and replace call_rcu() with kfree_rcu().
-> > > > 
-> > > >  Fixes: d539d8fbd8fc ("neighbour: Free pneigh_entry after RCU grace period.")
-> > > > 
-> > > Please elaborate why your change is safe in the commit message
-> > > and remove the tag.
-> > 
-> > Does it refer to using kfree_rcu instead of call_rcu ensures safely ?
-> 
-> I mean why dropping netdev refcnt waiting RCU gp is safe.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-*without waiting
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> 
-> 
-> > 
-> > Thanks
-> > Zqiang
-> > 
-> > > 
-> > > > 
-> > > > Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-> > > > 
-> > > nit: full name
-> > > 
-> > > > 
-> > > > ---
-> > > >  net/core/neighbour.c | 14 ++++----------
-> > > >  1 file changed, 4 insertions(+), 10 deletions(-)
-> > > > 
-> > > >  diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> > > >  index 6ed8eb075146..4263689fc415 100644
-> > > >  --- a/net/core/neighbour.c
-> > > >  +++ b/net/core/neighbour.c
-> > > >  @@ -818,14 +818,6 @@ int pneigh_create(struct neigh_table *tbl,
-> > > >  return err;
-> > > >  }
-> > > > 
-> > > >  -static void pneigh_destroy(struct rcu_head *rcu)
-> > > >  -{
-> > > >  - struct pneigh_entry *n = container_of(rcu, struct pneigh_entry, rcu);
-> > > >  -
-> > > >  - netdev_put(n->dev, &n->dev_tracker);
-> > > >  - kfree(n);
-> > > >  -}
-> > > >  -
-> > > >  int pneigh_delete(struct neigh_table *tbl, const void *pkey,
-> > > >  struct net_device *dev)
-> > > >  {
-> > > >  @@ -849,7 +841,8 @@ int pneigh_delete(struct neigh_table *tbl, const void *pkey,
-> > > >  if (tbl->pdestructor)
-> > > >  tbl->pdestructor(n);
-> > > > 
-> > > >  - call_rcu(&n->rcu, pneigh_destroy);
-> > > >  + netdev_put(n->dev, &n->dev_tracker);
-> > > >  + kfree_rcu(n, rcu);
-> > > >  return 0;
-> > > >  }
-> > > >  }
-> > > >  @@ -891,7 +884,8 @@ static void pneigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
-> > > >  if (tbl->pdestructor)
-> > > >  tbl->pdestructor(n);
-> > > > 
-> > > >  - call_rcu(&n->rcu, pneigh_destroy);
-> > > >  + netdev_put(n->dev, &n->dev_tracker);
-> > > >  + kfree_rcu(n, rcu);
-> > > >  }
-> > > >  }
-> > > > 
-> > > >  --
-> > > >  2.17.1
-> > > >
-> > >
+- [Medium] In sctp_process_asconf_param()
+  (net/sctp/sm_make_chunk.c:3181-3183), a plain DEL-IP that removes…
+- [Low] The rewritten wildcard DEL-IP branch in
+  sctp_process_asconf_param() (net/sctp/sm_make_chunk.c:3162-3170)…
+
+--
+
+sctp: fix ASCONF address change on single-homed hosts
+
+This patch removes the refusal of a DEL-IP for the ASCONF's own transport
+that commit 9b2854f86f0b added, since that refusal broke the RFC 5061
+single-homed renumber sequence. The wildcard DEL-IP now looks up the
+transport for the packet source, and both DEL-IP paths retarget
+asconf->transport to a surviving transport.
+
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 90de272842512..15c2d87575a8a 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -3160,9 +3160,12 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
+>  		 * packet MUST be deleted.
+>  		 */
+>  		if (af->is_any(&addr)) {
+> -			sctp_assoc_set_primary(asoc, asconf->transport);
+> -			sctp_assoc_del_nonprimary_peers(asoc,
+> -							asconf->transport);
+> +			peer = sctp_assoc_lookup_paddr(asoc, &asconf->source);
+> +			if (!peer)
+> +				return SCTP_ERROR_REQ_REFUSED;
+
+[Severity: Low]
+
+This changes how a wildcard DEL-IP behaves on the wire. Before, this
+branch always made asconf->transport primary, removed every other peer
+address and returned SCTP_ERROR_NO_ERROR.
+
+Now the request is refused if the packet source is not already a
+transport of the association. That can happen when the ASCONF was found
+through its Address Parameter and no earlier ADD-IP in the same chunk
+added the source. For example:
+
+    [Addr L] [DEL-IP 0.0.0.0] [ADD-IP S]
+
+The delete used to succeed here. Now it returns an error cause and all
+the other peer addresses stay.
+
+Refusing may well be more correct. However, the commit message only says
+the branch now "look[s] up the transport of the packet source rather than
+reusing asconf->transport". Since this is tagged for stable, could the
+changelog mention the new SCTP_ERROR_REQ_REFUSED case?
+
+> +			sctp_assoc_set_primary(asoc, peer);
+> +			sctp_assoc_del_nonprimary_peers(asoc, peer);
+> +			asconf->transport = peer;
+>  			return SCTP_ERROR_NO_ERROR;
+>  		}
+>  
+> @@ -3175,13 +3178,9 @@ static __be16 sctp_process_asconf_param(struct sctp_association *asoc,
+>  		if (!peer)
+>  			return SCTP_ERROR_DNS_FAILED;
+>  
+> -		/* Don't free asconf->transport; a later wildcard DEL-IP
+> -		 * parameter reuses it.
+> -		 */
+> -		if (peer == asconf->transport)
+> -			return SCTP_ERROR_REQ_REFUSED;
+> -
+>  		sctp_assoc_rm_peer(asoc, peer);
+> +		if (asconf->transport == peer)
+> +			asconf->transport = asoc->peer.primary_path;
+
+[Severity: Medium]
+
+Can primary_path be a transport other than the packet source here?
+
+The D8 check earlier in sctp_process_asconf_param() returns
+SCTP_ERROR_DEL_SRC_IP, so this branch only removes asconf->transport when
+two things are true. The association was found through the Address
+Parameter L, and the packet came from a different address S.
+
+In that case a transport for S exists only if an earlier ADD-IP S in the
+same chunk created it. That is the [Addr L] [ADD-IP S] [DEL-IP L]
+sequence this patch fixes.
+
+With two peer addresses after the ADD, sctp_assoc_rm_peer() makes the
+first remaining entry (T_S) primary, so this works. With three or more
+addresses it does not seem to. For example, with peer addresses
+{A (primary), L}:
+
+    ADD-IP S  -> {A (primary), L, S}
+    DEL-IP L  -> sctp_assoc_rm_peer(asoc, T_L), primary stays T_A
+                 asconf->transport = T_A
+
+This happens even though T_S exists.
+
+sctp_inq_pop() reuses the same sctp_chunk for every chunk bundled after
+the ASCONF and does not reset chunk->transport. Those chunks are then
+credited to T_A in three places.
+
+First, sctp_vtag_verify() copies the packet's encap_port into T_A:
+
+    chunk->transport->encap_port = SCTP_INPUT_CB(chunk->skb)->encap_port;
+
+Second, sctp_assoc_bh_rcv() updates last_data_from and last_time_heard
+on T_A, so the SACK for bundled DATA goes to A:
+
+    if (sctp_chunk_is_data(chunk))
+        asoc->peer.last_data_from = chunk->transport;
+    ...
+    if (chunk->transport)
+        chunk->transport->last_time_heard = ktime_get();
+
+Third, a wildcard SET_PRIMARY later in the same ASCONF resolves
+sctp_source(asconf) to T_A->ipaddr. A then becomes primary instead of
+the packet source, and the request is still acked as a success.
+
+Before this patch, bundled chunks in this case were credited to T_L,
+which was not the source either. Still, the new code picks a transport
+other than S even when T_S exists.
+
+The wildcard branch in this same patch already calls
+sctp_assoc_lookup_paddr(asoc, &asconf->source). Would it make sense to
+do that here too, and fall back to asoc->peer.primary_path only when
+there is no transport for the source? That would also match the
+"Remember where we came from" meaning that sctp_rcv() gives
+chunk->transport.
+
+>  		break;
+>  	case SCTP_PARAM_SET_PRIMARY:
+>  		/* ADDIP Section 4.2.4
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106195126.1563231-1-andrey.misyrov%40gmail.com
