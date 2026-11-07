@@ -1,76 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.31
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794090240;
-	b=oG4damvfyG1zLWFb3ruEJAZxfupCiHv0mu66VVTUErcNYXEHBqBOIQFy34m6tbVvMHxb
-	 WSKJj483e+byAo9cHNHk54R1LcV/2M02Li1x4HGTM/1u0H7UfxvKQheHhT5weJUM8sFTZ
-	 DAiE3oGRjNXqYsDhVQDQAo9U/cl7rB3CvBgCcPOcidxW9v1ZU/MEghRCfYdBHw9huxKXS
-	 xfLQ8wUKqPGx3p3fIIWqYLZ76eJfibgK0+pHQ6dHJqlwIWuO5iE5rwiL9wzc4NgUy8bp/
-	 lPOK40+5g/fj6vzxIj890h5knWFhF7VxKYbBDsrqb1YqB16W6BTxUAAukw2xIE0Yshg==
+	t=1794090780;
+	b=Dvzrs7d3YbVF3M/4thlcDrzTRWla3CogRNmnAuQPkwrXi0UPPaUsUJMm8xpAMX7lNNJG
+	 d4ceODH5X0frMEMfVFg4V4iGus40lB5u6N8TEvkGuEvibQab0qlkSD4PS/DCijd6skmxW
+	 l6ecDh4ePyoP8IJ1xYcL4Io5j0J7bXVmkp7Hldfmhr7cjdiLgvMjlyu44iRAARUIGJpps
+	 I3EX5vvXUW8QzoqwwbOBS7fz8Z9E/JHiPHLRtTBcgRAAlRsNitD/Z0IBvv1gO/mY4ILJH
+	 IHicpr5m7eazQ7wExk4bTq7iikPxNtG7bc1YBXN7TFRNHPXW+Q+KalyFNjDrWh56qRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794090240;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
-	b=pxw0RwbJ+XscE58/fycHJ8VL7+ZUI6AtQN+poH2A285H4ikIuqIn41UjnS5N6VLN18Ht
-	 NcXngfV7kcK+6jSrHlej8nwu+JQEx5k7dGoKiFCsZPqCCMDnaPPbEjJJRk2clFog7hBJy
-	 dpMW8GRfyfiB8bh7M7LFg5AzF2IghUFFRcAf1y9TlZGJjib0f1/gAvWvXJ91ZXqEbAxDG
-	 u2rM06yy5VuE9961kEE7wNjLPuqVjiaCIUn81MRRtZAIFzJRVphod15KgxJ9H6HMFK9Hm
-	 Bb3Nslra+FqawoQra+sfZRY/R5W/SNPrwIVoC6TRrs30W0A3GBQiTsmrAQlFtp4cduA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794090780;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type;
+	bh=Fy1q9DDL6EW09W8M1xaP5lNpvYiNE8bBDgxpWOc4HI4=;
+	b=d0zo+0L2jsVUD4Xq7yIl1175WN4wS4fiJ6THHKJ7qx4yl77hCBJDEUABOAs9ypmiy+/3
+	 Hlt3FT4D3ApYOwE5NzasdeU5n4xDaQrsvpPy6jLgo3kueApWYMIq+j1Hy0E7+GLRc8MAj
+	 VQsjGNDJwk/s9ELyoJvLc+cwVJWWZ7VZHWErWsBW+Ibs/9L61wm2QM5V84yYmq2+a4r6L
+	 umpUXv+HRrSRmU+HGLChfHCCdLRdTV48Cr4HiL++KbfX1wIEDeU5dvV0WMeq564krdlIH
+	 72PCvD0KM19x6ycptCDn3BRxiIJw1GYADJ5KeURadHFfxZ0jt1t8tDhj5RDdoxYdTTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0t6ybGm;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=protonmail.com;
+	spf=pass smtp.mailfrom=protonmail.com;
+	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=uc7dTI9R;
+	arc=none smtp.remote-ip=79.135.106.31
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2F4606A32C
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 22:23:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1C2F4606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F84606A326
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 22:32:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5F84606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=V0t6ybGm
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b10afdf947so403920a91.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 14:23:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794090239; x=1794695039; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
-        b=V0t6ybGm28ZDrqSbzWcFepU0cd3Dw9egLzbJtYq8z/iegL2YyT1oI3o7OR+ftW3xT6
-         BFFhbGZ0Iwm6pxFJoLdohWfmOJUg4L3dzZGtfd6d0NqkEArLdN1MJZ9NDeIfClCEjmeg
-         1ZVl82FAmtHDMAmS85N2CXZ+YHn4xOxhilYZhxjH9XAbX+kF+4fhuxPDlQTYvQtQ5Rpx
-         TmitgMuLQdbLCoBGi4zKF09jjDbQEu58uWoNFxATGCpXdDNjO1wC8B0OeXoa49nYst2h
-         pydGyroHPRy6HfSWwOBOmpPyJtHhabfDNEmzCCivRNMeN+bcgSYXulEO5n7AKWXIxuPF
-         c/rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794090239; x=1794695039;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Dm6rO29QixR22u6fEQ/JRWKlqBHjUSHEU2oHT/qED9U=;
-        b=RGVtEnoolfjzJUtxUkh9P2McLqaU7QdRISd9OhLpA13XwpMawoOkvYBVkyGDhg0d5J
-         7Xim73egxlNhHf/Y6k+1f+kM4fec17rY9ZQY4vWOxukAeQSDWCtPun0ZshWuD2L8frQp
-         xTA+n9oOmMdB4aAXnqIuayf620CZWwbFklWwLfCJbBhmCjVUklLABtoH4CLr5l36yMZd
-         BZvOW0IGs17JLJTvtlYuzeCTf1Xd6CXYm1AeEUwJUz44kr7TIoJjZubY9kozaZHTdoBm
-         5FTSJi0nJ8WBoxma0TWaUZkivaynswXcJexw45MIcFdTF4hCAhncyTJkxfOgZeYrNPDc
-         5Rlw==
-X-Forwarded-Encrypted: i=1; AL+hErH5J5z0Fn7jJzAKhdweeCcmFALL237lfigMQDLw70EZJ342WdjJmy5tta1JcyQmE3Cg6NKyKGc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z86tQA35lSQ54Ng6uNUDDMbQBi6+nasI2ncDV4ZzAnRzJsz6r6V
-	0zo/KbPISmZO50ixB1l1SNPQeOCktzV6N1G84UldZ58NxHnf55Z5/wInNjta8BBhU35EC/6DIT1
-	a1QARdQ==
-X-Received: from pjbrr5.prod.google.com ([2002:a17:90b:2b45:b0:3b0:a379:b383])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4488:b0:3ad:7f4d:2839
- with SMTP id 98e67ed59e1d1-3b1060a69f7mr2074752a91.14.1794090239138; Sat, 07
- Nov 2026 14:23:59 -0800 (PST)
-Date: Sat, 7 Nov 2026 22:23:58 +0000
-In-Reply-To: <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
+	dkim=pass (2048-bit key, unprotected) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=uc7dTI9R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1794090776; x=1794349976;
+	bh=Fy1q9DDL6EW09W8M1xaP5lNpvYiNE8bBDgxpWOc4HI4=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=uc7dTI9R3L2Hw2ANmfucfPYrfWCA65/PP3HhZK6jt8ou4SiNnux7Q8NMEbjA4vZbi
+	 NfuKLPry/mWuivbRoAk6p/rxpojGZFriwrrQS8C7FDPi55m6kiCbTm1ptlEYaU3WT+
+	 qX42CxpJNlq3Khe53upLIzbCQ/HHyaHgdppPJeXz1qBgSfvhKZID+TyYXV5uaZaSte
+	 GlgZO3h0E8xKNDQtyt7R2TkYcVqgDUVkIBE762xcMgbHVLObPKX9n6Uf8iWoOrWHZs
+	 /6P/YDbgwLa7ZdTQfr3l1D74Oy3/mZDUIBseCrBkFn7gS0VMyc5+/yisFPsfnv6cJF
+	 3cbW6WNS+sg+g==
+Date: Sat, 07 Nov 2026 22:32:51 +0000
+To: linux-wpan@vger.kernel.org, netdev@vger.kernel.org
+From: Ryan Prinz <rc4d5a@protonmail.com>
+Cc: Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal <miquel.raynal@bootlin.com>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Ryan Prinz <rc4d5a@protonmail.com>
+Subject: [PATCH] ieee802154: 6lowpan: validate fragment offset against datagram size
+Message-ID: <20261107223217.718177-1-rc4d5a@protonmail.com>
+Feedback-ID: 190731814:user:proton
+X-Pm-Message-ID: b722c76460f019a123dd4092d1ad458167b9bc77
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,162 +59,152 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261021193151.1819085-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <CAL4WiiqYwtZ0851Y0M1gOAQ5uU=kjU29Puwjx7+kyR7BqKEpUg@mail.gmail.com> <76cd85fa3315cd7efbd99c791514f22e@oss.cyber.gouv.fr>
-Message-ID: <au-kFhuPgrCjxI2R@google.com>
-Subject: Re: [PATCH] tcp: fix authentication bypass via unsupported TCP auth options
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "=?utf-8?B?SsOpcsOpbXk=?= Jean" <jeremy.jean@oss.cyber.gouv.fr>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------42251045ef49eb2e1d58e9bb17ea4dbe21ddf3576aebf534060aa7cabb773e01"; charset=utf-8
 
-On Thu, 22 Oct 2026 20:36:53 +0200, J=C3=A9r=C3=A9my Jean wrote:
-> On 2026-10-22 16:46, Eric Dumazet wrote:
-> > Le mer. 21 oct. 2026 =C3=A0 21:32, J=C3=A9r=C3=A9my Jean
-> > <Jeremy.Jean@oss.cyber.gouv.fr> a =C3=A9crit :
-> > >=20
-> > > tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
-> > > least one of the two features is enabled. With TCP_MD5SIG=3Dy and
-> > > TCP_AO=3Dn, a packet with an AO option reaches the disabled
-> > > tcp_inbound_ao_hash() stub. That stub returns success, so sockets
-> > > configured to require MD5 authentication end up accepting
-> > > unauthenticated data.
-> > >=20
-> > > The inverse configuration with TCP_MD5SIG=3Dn and TCP_AO=3Dy has the =
-same
-> > > problem for an MD5 option on AO sockets.
-> > >=20
-> > > Make the disabled stubs reject options for the unsupported
-> > > authentication scheme.
-> > >=20
-> > > Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments"=
-)
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> > > ---
-> > >  include/net/tcp_ao.h | 2 +-
-> > >  net/ipv4/tcp.c       | 2 +-
-> > >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
-> > > index 9a2333e62e994..bb249d6df8723 100644
-> > > --- a/include/net/tcp_ao.h
-> > > +++ b/include/net/tcp_ao.h
-> > > @@ -303,7 +303,7 @@ static inline enum skb_drop_reason
-> > > tcp_inbound_ao_hash(struct sock *sk,
-> > >                 const struct request_sock *req, int l3index,
-> > >                 const struct tcp_ao_hdr *aoh)
-> > >  {
-> > > -       return SKB_NOT_DROPPED_YET;
-> > > +       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
-> > >  }
-> > >=20
-> > >  static inline struct tcp_ao_key *tcp_ao_do_lookup(const struct sock
-> > > *sk,
-> > > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > > index 87ef6d5cbfeba..7d800b6283bd2 100644
-> > > --- a/net/ipv4/tcp.c
-> > > +++ b/net/ipv4/tcp.c
-> > > @@ -4962,7 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk,
-> > > const struct sk_buff *skb,
-> > >                      const void *saddr, const void *daddr,
-> > >                      int family, int l3index, const __u8
-> > > *hash_location)
-> > >  {
-> > > -       return SKB_NOT_DROPPED_YET;
-> > > +       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
-> > >  }
-> > >=20
-> > >  #endif
-> > > --
-> > > 2.47.3
-> > >=20
-> >=20
-> > Good catch, thanks.
-> >=20
-> > The forged AO option makes us skip the unsigned fast path, which is
-> > the only place where tcp_md5_do_lookup() can return MD5NOTFOUND.
-> > An attacker able to hit the window of an MD5-protected session (BGP...)
-> > can therefore inject RST or data with a junk AO option, which is
-> > exactly what RFC 2385 is supposed to prevent.
-> >=20
-> > Please mention in the changelog that TCP_AO depends on 64BIT: every
-> > 32-bit kernel with TCP_MD5SIG=3Dy is in the vulnerable configuration.
-> >=20
-> > With your patch the stubs now return what the real helpers return for
-> > a socket without keys (AOUNEXPECTED / MD5UNEXPECTED), so behavior
-> > becomes consistent across configs. One visible change is that MD5=3Dn,
-> > AO=3Dy kernels will now drop segments carrying an MD5 option to unkeyed
-> > sockets, as MD5=3Dy kernels already do. That is fine, but worth one
-> > sentence.
-> >=20
-> > Optional: bumping LINUX_MIB_TCPAOKEYNOTFOUND /
-> > LINUX_MIB_TCPMD5UNEXPECTED
-> > from the stubs would make these drops visible in nstat.
-> >=20
-> > This is a fix, please send v2 as [PATCH net].
-> >=20
-> > Also please CC TCP-AO folks from Arista
-> >=20
-> > Reviewed-by: Eric Dumazet <edumazet@kernel.org>
->=20
-> Hello Eric,
->=20
-> Thanks for the quick review.
->=20
-> I have prepared a v2, which only adds some bits to the commit message,
-> and leave the actual patch untouched.
->=20
-> Noted for the Cc:, I will use the 3 @arista.com addresses at the top of
-> the tcp_ao.c file.
->=20
-> For your optional remark, I was thinking of adding a second commit as
-> a 2/2 in a 2-patch series. Something like the below diff, which AFAICT,
-> would make the drops visible under TCPAOKeyNotFound and TCPMD5Unexpected
-> in nstat. Is it what you had in mind? I am not particularly familiar
-> with that subsystem; yet, while getting this kind of feedbacks in nstat
-> seems good, I am opened for advice. Do you prefer that I add this
-> in the same fix instead?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------42251045ef49eb2e1d58e9bb17ea4dbe21ddf3576aebf534060aa7cabb773e01
+Content-Type: multipart/mixed;
+ boundary=4bd63114661f58558a324b8e38d0f5b50f21cf001d258bdae6b10dac11c0
+From: Ryan Prinz <rc4d5a@protonmail.com>
+To: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Ryan Prinz <rc4d5a@protonmail.com>
+Subject: [PATCH] ieee802154: 6lowpan: validate fragment offset against datagram size
+Date: Sat,  7 Nov 2026 23:32:17 +0100
+Message-ID: <20261107223217.718177-1-rc4d5a@protonmail.com>
+X-Mailer: git-send-email 2.56.0
+MIME-Version: 1.0
 
-FWIW, a single fix commit sounds good to me as it didn't
-drop the packet previously.
+--4bd63114661f58558a324b8e38d0f5b50f21cf001d258bdae6b10dac11c0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Could you post v2 ?
+A 6LoWPAN fragment announces the total size of the datagram it belongs
+to (d_size) and its own offset within that datagram. The reassembly
+code never checks that the offset actually fits inside d_size, so a
+fragment claiming to start far past the end of the datagram is
+accepted the same as a legitimate one, allowing an attacker to forge
+data of another sender.
 
-Thanks
+lowpan_frag_queue() considers a datagram complete by counting bytes
+received (fq->q.meat) against the declared size (fq->q.len), not by
+verifying the bytes form a contiguous range. A fragment with an
+out-of-range offset still has its length counted toward that total, so
+a legitimate fragment exchange plus an attacker fragment can sum to
+d_size, marking the datagram complete while a gap in the data was
+never filled, and appending the out-of-range fragment's bytes to the
+end of the reassembled buffer as if they were part of the message.
+
+IPv6's reassembly (net/ipv6/reassembly.c, ip6_frag_queue()) computes
+end = of
+fset + payload length for every fragment and checks end
+against IPV6_MAXPLEN, which bounds offset by construction. 6LoWPAN's
+d_offset and d_size are independent wire fields with no such coupling,
+and no separate bounds check was added for it.
+
+The same class of bug was assigned CVE-2019-8359 (CVSS 9.8) in
+Contiki-NG's 6LoWPAN stack before a 2019 fix; RIOT-OS's implementation
+(gnrc_sixlowpan_frag_rb_add) rejects a fragment once offset + size
+exceeds the reassembly buffer's datagram_size. Linux's 6LoWPAN
+reassembly is the only one of these implementations without an
+equivalent check.
+
+Fix by rejecting any fragment whose offset, or offset plus length,
+falls outside [0, d_size).
+
+Fixes: 7240cdec60b1 ("6lowpan: handling 6lowpan fragmentation via inet_frag api")
+Signed-off-by: Ryan Prinz <rc4d5a@protonmail.com>
+---
+Reproduced two ways: with a local kernel module calling
+lowpan_frag_rcv() directly, and over mac802154_hwsim with three
+independent processes standing in for s
+ender, receiver and attacker.
+An attacker in radio range who observes one fragment of an
+in-progress transmission reads d_tag, d_size and the addressing in the
+clear, then sends a single out-of-range fragment of its own. The
+receiver's reassembly completes with the attacker's bytes appended to
+the legitimate data. Both reproducers were re-run against this fix to
+confirm the out-of-range fragment is now rejected and the datagram no
+longer completes with it included.
+
+AI Disclosure: An AI assistant (Claude) was used to assist with the
+analysis and testing. I have verified the vulnerability, the fix, and
+the test results myself and take responsibility for this contribution,
+per Documentation/process/coding-assistants.rst.
+
+ net/ieee802154/6lowpan/reassembly.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ieee802154/6lowpan/reassembly.c b/net/ieee802154/6lowpan/reassembly.c
+index ddb6a5817d09..905ba5f86844 100644
+--- a/net/ieee802154/6lowpan/reassembly.c
+++
++ b/net/ieee802154/6lowpan/reassembly.c
+@@ -103,6 +103,9 @@ static int lowpan_frag_queue(struct lowpan_frag_queue *fq,
+ 	offset = lowpan_802154_cb(skb)->d_offset << 3;
+ 	end = lowpan_802154_cb(skb)->d_size;
+
++	if (offset > end || skb->len > end - offset)
++		goto err;
++
+ 	/* Is this the final fragment? */
+ 	if (offset + skb->len == end) {
+ 		/* If we already have some bits beyond end
+--
+2.51.2
+
+--4bd63114661f58558a324b8e38d0f5b50f21cf001d258bdae6b10dac11c0
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="publickey - rc4d5a@protonmail.com
+ - 0xE775BF83.asc"; name="publickey - rc4d5a@protonmail.com -
+ 0xE775BF83.asc"
+Content-Type: application/pgp-keys; filename="publickey -
+ rc4d5a@protonmail.com - 0xE775BF83.asc"; name="publickey -
+ rc4d5a@protonmail.com - 0xE775BF83.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCkNvbW1lbnQ6IGh0dHBzOi8vZ29w
+ZW5wZ3Aub3JnClZlcnNpb246IEdvcGVuUEdQIDIuMTAuMAoKeGpNRWFkRFpyUllKS3dZQkJBSGFS
+dzhCQVFkQTFpeGV6cng0ZTBFNWJGcjV6UU8xMitlb20vdWZnUVFTS05jQwpHU1ZjUzlqTkxYSmpO
+R1ExWVVCd2NtOTBiMjV0WVdsc0xtTnZiU0E4Y21NMFpEVmhRSEJ5YjNSdmJtMWhhV3d1ClkyOXRQ
+c0xBRVFRVEZnb0Fnd1dDYWREWnJRTUxDUWNKRUFVYktZOW5tekdRUlJRQUFBQUFBQndBSUhOaGJI
+UkEKYm05MFlYUnBiMjV6TG05d1pXNXdaM0JxY3k1dmNtY21EdVNNSm1tcTJWVDN2aFkzY0JzRDFS
+YUVsZGE2dDdpTwo1S21uZXZwYXhRTVZDZ2dFRmdBQ0FRSVpBUUtiQXdJZUFSWWhCT2QxdjRPUWRH
+ZGFobnFvR0FVYktZOW5tekdRCkFBQmFDUUVBdWxVaElDbmFPSU9DT1d4T3pldUNUZ0dUVGkxM1k4
+WjdVL3pYaER1bmFpa0EvaUJRRVBZOEx5NisKU2RZUnZzekQwcHBsS0M0elB2WkhqRDZaMEo4U2Ir
+RUh6amdFYWREWnJSSUtLd1lCQkFHWFZRRUZBUUVIUUNwbApBSFVLZXNpb25QaGlBVnBvL3dDUFdt
+MnR3SGtpL0tmaUpHQVdlckIxQXdFSUI4SytCQmdXQ2dCd0JZSnAwTm10CkNSQUZHeW1QWjVzeGtF
+VVVBQUFBQUFBY0FDQnpZV3gwUUc1dmRHRjBhVzl1Y3k1dmNHVnVjR2R3YW5NdWIzSm4KNlJuS0R5
+WjJlV1BjOSs3NEJIR3VPM1E1VGVuWFZ6bWRrRjQ3L1lYQUxFOENtd3dXSVFUbmRiK0RrSFJuV29a
+NgpxQmdGR3ltUFo1c3hrQUFBN1RzQS8zRy9hUE9NeGE2MDZxdlh2U3lUOURDNTJCa294ZmlNMk5N
+SFpHK0QwSnVGCkFQMFhXbGRlbEVvTFY1bWNRbXFIVThqMVp2ZzRtT1hWL2owYytPWmRheVhUQnc9
+PQo9VnZDNAotLS0tLUVORCBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0t
+--4bd63114661f58558a324b8e38d0f5b50f21cf001d258bdae6b10dac11c0--
+
+--------42251045ef49eb2e1d58e9bb17ea4dbe21ddf3576aebf534060aa7cabb773e01
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wqsEARYIAF0FgmrvpxMJEAUbKY9nmzGQNRQAAAAAABwAEHNhbHRAbm90YXRp
+b25zLm9wZW5wZ3Bqcy5vcmdxxi8Ehs2A2U1MdsnVee88FiEE53W/g5B0Z1qG
+eqgYBRspj2ebMZAAABU9AP0c8mwebEUm16RNwWgRDmlSc70LDNN5ZgURV+cs
+UXk4ggD/fidd7LgZyjBfLEnkrVYLrXqdX0eE4eBe2/fAPuwo0AQ=
+=g7G9
+-----END PGP SIGNATURE-----
 
 
->=20
-> Regards,
-> J=C3=A9r=C3=A9my
->=20
-> ---
->=20
-> diff --git a/include/net/tcp_ao.h b/include/net/tcp_ao.h
-> index 9a2333e62e994..xxxxxxx 100644
-> --- a/include/net/tcp_ao.h
-> +++ b/include/net/tcp_ao.h
-> @@ -303,6 +303,7 @@ static inline enum skb_drop_reason
-> tcp_inbound_ao_hash(struct sock *sk,
->               const struct request_sock *req, int l3index,
->               const struct tcp_ao_hdr *aoh)
->  {
-> +     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOKEYNOTFOUND);
->       return SKB_DROP_REASON_TCP_AOUNEXPECTED;
->  }
->=20
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 87ef6d5cbfeba..xxxxxxx 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -4962,6 +4962,7 @@ tcp_inbound_md5_hash(const struct sock *sk, const
-> struct sk_buff *skb,
->                    const void *saddr, const void *daddr,
->                    int family, int l3index, const __u8 *hash_location)
->  {
-> +     NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5UNEXPECTED);
->       return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
->  }
+--------42251045ef49eb2e1d58e9bb17ea4dbe21ddf3576aebf534060aa7cabb773e01--
+
