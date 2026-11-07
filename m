@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083094;
-	b=CgviVED4g+GislqXn1ccFxSLoVOu6SxEvxxoxj2ou0T2lU0v9pjfRTjNaSm+i9ToRzbJ
-	 7gscZv8bnFRuhNg29hXaKe74cQrLCx1WHHwz4RxEya+o0Kw5QsXs5zLiA9qd9Ywy5xZD+
-	 TbhN3fGo59GIyHrNJFSbSMG3kV1pZ1T2SbJt9Q5npo87UptZjMX+jdyMALt+tKhrlEGfj
-	 pKxingkHX9VEzOmRb7r/djMV2HecynouKah/zoIfX5grM8fqW5ib+lwgusIiDVWvwglKk
-	 34sXYFefPVxELEwXEAsrakL2DakQgpvDtGcelP5prJKguHY7yGMHWpODAhJDe96gPJg==
+	t=1794083104;
+	b=WdV+i3sHHalkCqMemsSGsudMmz8F4UCxm4zMuu6XSosLetdrNTa1lONrDoG8McZNtERs
+	 wbiTcu4pO6DAniIwhynxLekfEQNkZprREcKNqlk8IL5fGLl5fN840wa+UVXUJKmThLBW4
+	 ETQ4rOVMdzfKAzKPnMLeiBCPjJq+XitnM2Z6djaHeihTmD3MqSFZGAMpcEKo1jNAIh2Lo
+	 30Xm57Si+Qj2gLf8nyybQwQ5zEEG9puBS3vdtEdoJsMT/i2xdN90DWQdXiqUSkkbjeYR2
+	 Bt0ZwBBwCCvM6aFX34ODgbnm0Rx2PeYlgEV0dMhc3oTyhOizZrdhIaYqdrjkhcumJNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083094;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083104;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=lgs3KVNbf0o7fwvX/gx91q/+sHVfD9TIfwHmI1J95iU=;
-	b=4rZLVx/HWnPIEiZoxZdYfX3Z9nRbBzx7araN7wjeBFMsLrKt3jvtlmzpw01TNWnD+sEA
-	 aCchQpSDFNb8ffaH5ZzhouzqbZZWbzDLKLgdXa7YdxnqkjLVngHruZvFRnjNfKGlnXqYj
-	 tk0J6r2eGK89AyK8o9hjJd7hnIg9Dwfz5YjyZu1wYSqC1D6ypGJbGGbLB7vwdtyq8McVL
-	 L+UXv7IHc/Vyys09w2xkno/jIWVf64B2b74+oqQWIPY7YdwUbJjWJ07KVRcTSkeIRIby7
-	 qNWOfczqCRB4P51k8MTcyXA2+OPHlSYZKntonzw9iJM88y7kmQlbZKI+6MV7h7Lg3Yg==
+	bh=cbdqRrawWEmkj/VuzVVVo1aYDLOZxsMyrd3Ku/9wVWo=;
+	b=RxZEO9JYna9wMv/l+2T7Da8zTlfLwbFMyx3goBIFvfY0zWhchG6FcfQD3nekbt6HT7f5
+	 TWOHuJEq9lWBQY4Po+WBompHkBnBqMHs+XR18INpTGujZYKVqXt6xnsZcR3OvdKsU/btc
+	 4JOS4GQ+CxXB2BYmisa4E6gPmONgsHk2jlso8hmcHbPJ3ZYuCd8uHMW0682Ct3ggjpWB6
+	 q01utBquiSTmqeODewN8zHFhbXlFd3SYRnEjVFVbYFR3GpOtvtRii/P78+N5sIj3oKvZv
+	 67eK0eOeILabJ69QINMwPNsoZmxlVqTZ59SzE/UUliDk9h2yb+RutbGOHPzAFu4xS9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLXrcmPV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L+7OW8zo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC8606D81C;
-	Sat,  7 Nov 2026 20:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAF1606A339;
+	Sat,  7 Nov 2026 20:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLXrcmPV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD321F008A6;
-	Sat,  7 Nov 2026 20:24:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L+7OW8zo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFC41F008A1;
+	Sat,  7 Nov 2026 20:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083094;
-	bh=lgs3KVNbf0o7fwvX/gx91q/+sHVfD9TIfwHmI1J95iU=;
+	s=k20260515; t=1794083104;
+	bh=cbdqRrawWEmkj/VuzVVVo1aYDLOZxsMyrd3Ku/9wVWo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VLXrcmPVo5jyXjyMBpsd8n3ZM/C/P2xlVHUD56k6qDWp3bHbWlgqKnXyUZLRSgN18
-	 TeHXFgbTVPVKJpvQzgTLgVLln5ZsDkvga/Kv9rUMaVU4HIQMgh4coQOEfUTDpo9NiW
-	 Fy6Z+fvsHFXFzFyWj9V6CpoRVIqJ+ZQm0TGZlyZXh13nQXdRUqwV8nKrPpmQeG3rT2
-	 L8Pms2YL63b8Aj+AF92W0J2rk1J9qJzzp/vVdCSr2Cjat7gkpUAsnmmmRq5sXXNBSp
-	 67xNzwW5Qtz8DL2svOgYvxBfLYghmXpM7Kc1RZaoXPxqX46yq0Gl1DUoTrGQYKGhYr
-	 gnjBY3HdP9lJQ==
-Subject: Re: [PATCH rdma-next 11/23] RDMA/mlx5: Add shadow FIFO infrastructure
- for UMR completions
+	b=L+7OW8zoz9+jIu07FHzDf0sqjY95kdFAYBNrgNuoP6UBXnY5Xc+dX/ErkL2ZOernc
+	 3cCkWzcVHeMHG5q1mzrX03fY86za7H82lBCBLKV+7kgJSpcG6me26Ecln3uW7Jd+jN
+	 bHA2R1wKKlo55GaRxcPQjGXFuh7nNj0DQLXfZlHfhhgogfwihLuZdNdsa7/gmpbjti
+	 abJrYq4RD0TPQKZR4o5OU5WaFmynraIpbXudm+1jHhUFWmeg60jI94GiieZFw1KY8l
+	 hwLCXW1cVXEnoD9hUqB1+bB6cD5O6C56XRJ02+UkoqvW6NAOQsDiNFy0Bq91/02VRw
+	 EoU/ciiOcmK4g==
+Subject: Re: [PATCH rdma-next 18/23] RDMA/mlx5: Validate firmware RQ/SQ state
+ before sqrq_trans[] lookup
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,11 +49,11 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:24:52 +0000
-Message-ID: <179408309294.994134.208597027649974206@kernel.org>
-In-Reply-To: <20261103163949.1554-12-yishaih@nvidia.com>
-References: <20261103163949.1554-12-yishaih@nvidia.com>
-X-sashiko-severity: Low
+Date: Sat, 07 Nov 2026 20:25:03 +0000
+Message-ID: <179408310322.994134.9461475387371859568@kernel.org>
+In-Reply-To: <20261103163949.1554-19-yishaih@nvidia.com>
+References: <20261103163949.1554-19-yishaih@nvidia.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,57 +66,99 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The commit message's design premise is wrong.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new check in sqrq_state_to_qp_state()
+  (drivers/infiniband/hw/mlx5/qp.c:5084) bounds the firmware SQ/RQ state…
 
 --
 
-RDMA/mlx5: Add shadow FIFO infrastructure for UMR completions
+RDMA/mlx5: Validate firmware RQ/SQ state before sqrq_trans[] lookup
 
-This commit adds a shadow FIFO of posted UMR contexts in adversarial
-mode. A later patch can then check each UMR CQE against the oldest
-pending request instead of trusting the CQE wqe_counter. Each context
-also records the SQ producer counter it was posted at.
+This commit adds a bounds check to sqrq_state_to_qp_state() in
+drivers/infiniband/hw/mlx5/qp.c. Any SQ or RQ state returned by QUERY_SQ
+or QUERY_RQ that is at or above the sqrq_trans[] table dimension is now
+rejected with -EIO, which prevents an out-of-bounds read of the 5x5
+table.
 
-> The UMR QP is RC and signals every WR, so its completions arrive in
-> posting order.
+> diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+> index 19cbf6b2b979d..05e8e75d734fb 100644
+> --- a/drivers/infiniband/hw/mlx5/qp.c
+> +++ b/drivers/infiniband/hw/mlx5/qp.c
+> @@ -5081,6 +5081,9 @@ static int sqrq_state_to_qp_state(u8 sq_state, u8 rq_state,
+>  		},
+>  	};
+>  
+> +	if (sq_state >= MLX5_SQ_NUM_STATE || rq_state >= MLX5_RQ_NUM_STATE)
+> +		return -EIO;
+> +
+>  	*qp_state = sqrq_trans[rq_state][sq_state];
 
-[Severity: Low]
-Is this description accurate? The UMR QP does not look like an RC QP.
+[Severity: Medium]
+Should this check compare against the hardware state encodings instead of
+the table size?
 
-mlx5r_umr_resource_init() in drivers/infiniband/hw/mlx5/umr.c creates it
-as a REG_UMR QP:
+The hardware only defines three values in include/linux/mlx5/mlx5_ifc.h.
+The RQC values are the same:
 
-drivers/infiniband/hw/mlx5/umr.c:mlx5r_umr_resource_init() {
+    MLX5_SQC_STATE_RST  = 0x0,
+    MLX5_SQC_STATE_RDY  = 0x1,
+    MLX5_SQC_STATE_ERR  = 0x3,
+
+The table dimension comes from a driver-only sentinel in
+include/linux/mlx5/qp.h:
+
+    MLX5_SQ_STATE_NA	= MLX5_SQC_STATE_ERR + 1,
+    MLX5_SQ_NUM_STATE	= MLX5_SQ_STATE_NA + 1,
+
+That means firmware values 2 and 4 still get past the new check.
+
+query_raw_packet_qp_rq_state() passes the raw 4-bit field through
+unchanged, and mlx5_core_query_sq_state() does the same for the SQ:
+
+    *rq_state = MLX5_GET(rqc, rqc, state);
+
+query_raw_packet_qp_state() sets the NA sentinel by default and only
+overwrites it for queues that exist:
+
+    u8 sq_state = MLX5_SQ_STATE_NA;
+    u8 rq_state = MLX5_RQ_STATE_NA;
+
+    if (qp->sq.wqe_cnt) {
+        err = query_raw_packet_qp_sq_state(dev, sq, &sq_state);
     ...
-	init_attr.qp_type = MLX5_IB_QPT_REG_UMR;
-    ...
-}
 
-to_mlx5_st() in drivers/infiniband/hw/mlx5/qp.c maps that type to its
-own service type, not MLX5_QP_ST_RC:
+Take an SQ-only raw packet QP where firmware returns SQ state 4. Doesn't
+that value alias MLX5_SQ_STATE_NA and land on sqrq_trans[NA][NA]?
 
-	case MLX5_IB_QPT_REG_UMR:	return MLX5_QP_ST_REG_UMR;
+    [MLX5_SQ_STATE_NA]	= MLX5_QP_STATE_BAD,
 
-mlx5r_umr_qp_rst2rts() also moves the QP to RTS without a remote QPN or
-a path, which an RC connection would need.
+That entry reaches WARN(1, "Buggy Raw Packet QP state, ...") through
+ib_query_qp()->mlx5_ib_query_qp()->query_raw_packet_qp_state(). A legal
+SQ value on that QP always maps to MLX5_QP_STATE. The RQ-only case with
+RQ state 4 behaves the same way.
 
-The shadow FIFO design depends on in-order completion. The consumer added
-later in the series, mlx5_ib_poll_one_umr(), treats any CQE whose
-wqe_counter differs from the FIFO head as forged.
+Value 2 indexes a row or column that is never initialized, so it reads
+as 0, which is IB_QPS_RESET. Would ib_query_qp() then report RESET with
+no error and no WARN? On an SQ-only QP, any legal value would have
+returned qp->state.
 
-The in-order conclusion is probably still correct, since mlx5 send queues
-complete in order and the generic poll path already relies on that when
-it sets wq->tail = wq->wqe_head[idx] + 1. Only the stated reason seems
-wrong.
+On a panic_on_warn system, a device-triggered WARN here becomes a panic.
 
-Could the message say that the UMR SQ (a REG_UMR service type QP)
-completes in posting order, instead of calling the QP RC?
+Would it close this gap to accept only the RST, RDY and ERR encodings,
+and only for the queues that were actually queried?
+
+>  
+>  	if (*qp_state == MLX5_QP_STATE_BAD) {
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
