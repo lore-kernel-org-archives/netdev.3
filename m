@@ -1,99 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.169
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794016995;
-	b=2slYVd+2fuHb/uZi+QUaLPRwmSlUq2vCmxYHCnJ26y2swVlECmMKeaa20QEuGzshsIxq
-	 Hnv/GAsfx3TZ7ca06u1iUSAqzf77IQHIz/XnhnsCWPzy/rEb8dnqds7JeOgSIAzI1L/Ng
-	 A9RFApB/fs2t1pDNLWY74FLHVrcM5lhGHFHFeQJbNeOorw6VgirJ+RaLmqIMsl5Q8DKFy
-	 05YRQRCC9nOTXR52VjksXR7nzLKJooGcjgxLd6AEYylfN2exbx4bAVs1KHEGNHwkJ8sc4
-	 2rpe7G6ZUDTRjrVagI87WThePOQkdhpRxXPr/3a+PZVaLk6/u9ABmXHSE3wE5cCgKhg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794016995;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794017359;
+	b=wajV3fBK0JWuOVXq46K+aPVC1SeYyUCzNTATtqu8Cv2pZ+y4NQu85umfACH4I8wzNQaw
+	 waKlo3Q4WnL3XgKtxfSOA0stwYWagGTQnh1qki92sxTCy+KCof5Mtvh9YC6ZGznM3KGmR
+	 bgtfTgd/A4WoTv0zOvWWxuypMVFG7bmeCwPTmBoRxQA2xVH8UYubMwE1+tXc6+Cc4Kj7b
+	 6c7vSfqx7Q9G7gFmfNC7AMPGHAbLcN+mML+yyed+bqNr+OTDNbDlBierVu57+P57ffG2i
+	 Lbn3YwQy30HU5AZ8uz0RyKjZzhswbf4BbsVr6P9gduehF+GHd1QjFKawoeMUINRrIBQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794017359;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=uBvVdSJFRMwmcimjlEgQVos7C2jTDNbNYsRZ09W0EWg=;
-	b=XiY8Zn9pFXpJvqDB0IzE1w/i4c22E88FitWZtrv36BPCgFdQ2l5J/YNA/g5n/Sst+NsA
-	 a1KL/9UZHaXStLYtkucTqFG28D8EUXfU9LLSge4POApVlwO/SOc67RdNdy9CCJViXxrNr
-	 JnNz1+C/X+E3WbkQQ0/6UYYX4e4vcFL+QHGgIHllSdV5e7NrGTk05DWRnpUq9Sg++Fvem
-	 jTF9nNPgUQQ69CILy6jSaj90ErobOhNiC83Iynxx719sJp/g0Qp2V52Sw1s+JYURJUYM2
-	 Vk0n++2DzR/gL8sD+UjeSOUO/TegebRXmB1wc8b+xQXuuC27Esymp9LLOOXmOqE2YUA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
+	b=Gwpo3xsdAeFIxD/5xmIfD7GfQ10Yx39wchPTTnw6k/bck9J7HLvjsb8iMlMYhiV0rE6F
+	 2CQrZQrv3loyn4gJaz+UhfxBmLOxngq7WQixsd5eJnVYfMM2T2pweiQ0tQ36qPSPsqWR4
+	 wxwYQVJretCR1KPDZcRnjoE8x+/5FSMVDPTWzKEOFJJYkW3ng+dMRxLyXheIDZA02Nn5J
+	 N0j6ifSZgBaSgtmioTqUyJoa9a2sPXtQnEvduZDk8QIiLa3MCqWtjdM8FBDr/8MNPouU7
+	 dyfxkuEpziC+Nb555ncZEgUxybX+hzLko3c1wc97p8TfzgJnyNirRuLRoX7ntBXCuAQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qYmNNCZ5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.169
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+8vyume;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA3606A326
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 02:03:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3EA3606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5D2606A334
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 02:09:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E5D2606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qYmNNCZ5
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-53dda625f63so986253b6e.1
-        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 18:03:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794016994; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XRbGKK23waE+t0zxLLkPUYOXQTbBnbMxyZvhTH+RaBh5beV/SsTigArBwam0Dxoq5m
-         pTDxDalkmIG7olg2QcNCZUmc7wIB5RQ29ws2bfa2FkdEhyfHtp1cqhEuST9X9cEEVJ0I
-         P+Y2Q3HoykuIqWV4D6ZCdsox1J6MSInORkMIhPuQkenucHRTqKVfhnPl7VW3FzelbbY5
-         wsX5aByEygI4wCgb/1/8keWpwid7vs6x7dP0QfyweJ+RfF5m6LzPkForEx5TIKIyifhF
-         UWRM12Ue2U+ZEyAblXwIWIrc34Ni5SRu1fuJrJRX0QbNXbLR6vhTKIRrBg/CcSE6rPdt
-         Yvjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uBvVdSJFRMwmcimjlEgQVos7C2jTDNbNYsRZ09W0EWg=;
-        fh=apboHd9+R1dvvCkJdZDZKmUVNsbKVTk7ZyeK9b5N4V4=;
-        b=I1d28Oxrog94IPpOHDQEIPuLs0rwK8CsfzYJh5SpYNf2y8NPyi47anhkjq5rIMqHSG
-         j68mWI9bBpkMaJGXB1lbfgOisLnMAujajXQJAnVcWwJif0M8HbmLoll0GPc3qMcC1fJt
-         vV7Tm9wYshbocY5HXp4XKIf7nUbE74UW5v54lIutgOAJ0PCkmvFocSx+slwh12WsUAYI
-         FxDmS1+PD47yLIbeLPp8UYs0spd+Ru2gdWx/NXfb0IJeI06upJKsfoHpZ/830b0kKViR
-         UmdBX6Oqg6zuPD2QlyZvScJI2xF33A7r02e+sYVnuG4U1l79l04eRlObWFSQvAJDQT0G
-         45Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H+8vyume
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b094e649d3so766629a91.0
+        for <netdev@vger.kernel.org>; Fri, 06 Nov 2026 18:09:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794016994; x=1794621794; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1794017359; x=1794622159; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=uBvVdSJFRMwmcimjlEgQVos7C2jTDNbNYsRZ09W0EWg=;
-        b=qYmNNCZ5NqWdPMJP4+WM7EmgiouVGnh02yTLr0djfb8MbKlCc0yCiEYt51b8f4frXZ
-         BmBfsn+8/kP6jX9RM2fvk3nyVEoYQ8F5stUxHs4+OEFeiOUZUOv/qCGymZV5QFadXaag
-         96if04qj5BaEEd8QoUpl8lFXGLaYfC87Zv9mh9iP1jW3pG+ZewEjbxgMlDd0mqPFnnLx
-         O6Z52+NXdR/QD4Rx1e7YyUwP1PDOySI9XLX2BPx6jZE7AINSs3oRyDsCwiyO5+Etbmdq
-         RHjGhRHlSoCWPDrKo3IfZB8l3CdQQEHnDAbL3KP8bp4pBrdIJMV+GbMGQXAr4Ls6MdMZ
-         iEVQ==
+        bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
+        b=H+8vyume+obI271XmNk+PDu48Q19jOLc/Va8iCJp+YPAfevLZPbtqZKst6ucyXtfSw
+         SesmJ3do6CgH0DvagS2lCWl//emQ8A8R9ws51AQTEijOWlvGxTR2vpKj7HFj7HUNesAD
+         Iz/tqmsd4wcjINMkFThPdh82py3fh0hdETwaSNa/7BESxLI2fFYv4JdsIe5+Yh+iNqwi
+         GuQQxgL9obB3jiEMRpDE9NQASENmDbDCM9g7vOrH4FzP3N/mV41LFrwuOV+fbmrRkUkI
+         PlnkIn5ku0EaxwHF2d31ktU40mx5GyEtw9tUQotInc5smSPvSCczAu0/CGscJ/0+rKLR
+         LO6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794016994; x=1794621794;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794017359; x=1794622159;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uBvVdSJFRMwmcimjlEgQVos7C2jTDNbNYsRZ09W0EWg=;
-        b=mc8DtPElq7fGSyrb3cBbLryEuzKVPbzjwTJZtquwiFEXhJsVQR1zK1G05/8bRB6v5e
-         y263txrSMbkZgPmvpg8/+CAZ/uSsHJRJwLBxBBIwiuqGb4ytkGWmKJNIogFL7sxzf0br
-         hkuBubXQF+wNtGEujmp6OP+8ajQcKLF2H2EKq8Yi189bsOxlub8oYqvXwOFoMDIPulcf
-         mBZ1Tck/PxrkAMI7rNNNhWJvnjKgOVC5AibM3DPYuBa51NW7Ttt+P7+01EAyPl1pe441
-         fg8uoCQE5XvU9zAKIAneFpJx19qu71V3B/YJg2rql+OMqei7bUSmMqgzx6X5wGs/+aWD
-         jb4A==
-X-Gm-Message-State: APuU4Z83eSn/i2AibvLVUhN9Jx/idnv9QyRXrvKQLKwBAsFzqjGveKce
-	c6+RldM+B8RUAAWXDujaGz5Lj4S2p53nYqpQnSB7rQXKcEokDwVu3k8Izb652tvB4t7W4+Y++WV
-	Tc+jt6hqFLHhfc0qrE5sYXZOX4qbZ/bH4Fv/YZwU=
-X-Gm-Gg: AYBFou1/ZmVsTEdjZP8dNrA0zF+RW1SheCh/GjcJZ6IqygkJHVdDLUXbTOjiyyruW4x
-	iOPess+UQW8oxWhuZzD1VvdZWDzMCyJ5W4p4yZh5dS9sbHZ2TbEqb3WLE/EiFPv+coj0LcfZtoi
-	slIT/DtVEJWcQbShBrGAN8BcLnpQcmO9qZggsNSlHcn38YJI8JVKCf9FPx2qKasmnpKd7I3e3mR
-	dep4GYklzyhKAg14n16mIxTiBrLm5cwyN5b6KvzJAnMMAvfi1+A2OYVTKs2UXgf4Kq/oXGQJ8pr
-	SPzTadS9cBMg8GlOUYPSan8+NBvFThcMvaMA6lebGLtAKWmuettCnGc9y5peE2Fa3gyEtAbgz92
-	avSA/jKBRiczPrRb3sbZvDkzwA8zSj1LhVwwuRyHKuW0G1RxSdUZ8qofmzY9JvFBo0x3N6yk=
-X-Received: by 2002:a05:6808:1506:b0:4b9:e65b:8c30 with SMTP id
- 5614622812f47-567e154aeecmr3107364b6e.30.1794016993742; Fri, 06 Nov 2026
- 18:03:13 -0800 (PST)
+        bh=oWCm5sO2ZJcIfwM/bU9hgd9OcLaoRmJrQ2OQCAcOYQw=;
+        b=xK865mOP2ayOtqCwT/dsHubvkKCQ+CpBd67GSHEce0qseCppZ64+BBsE/qNDWh0c68
+         SG3Mx6SHTpFD1CM2TcAnHHv5alMzmuwsWENAYWdyWPDE40DIwsUGj3xW9gkT9RYlSuRM
+         QhZYYa1gHVOQFddxgRuyPAXKJr8FmmhvYam820VqIEHXtpZ0SaA7gmo+uXW+v3grhOM7
+         Vv3uBtNNtZbc7gRUfsVGUzDTDHxqym+dPvh9sTBWcO1nUcr9BauvMQwyctP3dSlLIdgV
+         oFWBhcqn7Hz2wqg0Gedm/QhoPQJQM2aZz6hPuAifLYXE98lVDxer7J+8oaqmB1v/SLk3
+         +40w==
+X-Forwarded-Encrypted: i=1; AL+hErH1wJ8Fwk979OXWfb0YmuZ1nN8hm5a4EmkUD46u3WDe+pFNPiVn6RWu8Kjf76dfwGh/mrlUtdo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9hOoIgvrO9YDnVFo1hK1+amS27ZvYwX7kPs+QGdJtDh2x2RiWH
+	xdnVVbMqi10X98C+nHhyQK4tLJW1uPqRaVfsuLqahj5YTxl60fCFcFDF
+X-Gm-Gg: AYBFou3E9nSfNLpf2MWygxuW75IQ6TFAOO511KDORnPLrzhsljcHW2JT1ftjG9VOaJg
+	Kvv21gio+2pptIh8zBZtgPh29sKREOlPMXyyjFX0Vr91kaEHaC83/LKu7/MTDBYFvkeQoil2jwx
+	iou+iU5nYXuPMK9ukmos9NpW/Yu/HMJqBzoZnPZKDmF2L2HJjJClt/VKSzDpDRO8rbIqkshoQRI
+	pxT/mmOZ15Gwu0X3lm95AWMmFhthFlg7vF9Aq79cbTuLkBLIZRAPr4GYOuZYfGitF9+TDldIXdD
+	+OOadA0onb/j2mRQ7E8g1Pa/uzc8g+2bEnVPKwPiSam/YFGiPtTI2KBlticQbqZsh6w/J2xmJlt
+	9rKtnbBLqa37/aoCCPzDGplPuYXQ9v2jxex4/ESNarAZxFVC+4mQEEuqIeu+Nz5MqhwKl1FRd90
+	mxtbU3B3zVeEgzQLjMaUVb1faDSqrLPmtCpOB0UjdOwccxpPGHQc2qdHLL5Io8OMj+7b9CwbhGC
+	rRjK/cZkvgO0uzo1LintNAakhatWa18S+ArM0WjYYL06G86F21wxWiDW6UtTTgr9LksiUZrMgrp
+	IQ8/ovQr/p7/N6M22BunkugL1sapc87/P2kE1ZEWCS0ESjH0ozD6NVZgGUbrektpz1JHZLW4nO1
+	vIq153vbmZPuCaizOnUP8QiOF69vxVo4pkg==
+X-Received: by 2002:a17:90b:1a91:b0:3b0:ae41:2707 with SMTP id 98e67ed59e1d1-3b0db6fe133mr4547927a91.45.1794017358501;
+        Fri, 06 Nov 2026 18:09:18 -0800 (PST)
+Received: from localhost ([153.61.198.246])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b105864375sm1156571a91.4.2026.11.06.18.09.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 18:09:18 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Nov 2026 02:09:17 +0000
+Message-Id: <DMOM2SFCFHYK.3BT44IQ90X9UB@gmail.com>
+Cc: "Michal Luczaj" <mhal@rbox.co>, <virtualization@lists.linux.dev>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bpf@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net v4 1/2] vsock/bpf: release sock lock while waiting
+ for data in recvmsg
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: <jrmmhm.kernel@eldare.de>, "Stefano Garzarella" <sgarzare@redhat.com>,
+ "Bobby Eshleman" <bobbyeshleman@meta.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>
+In-Reply-To: <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
+References: <20261106-kbh3-1-022-fix-v2-v4-0-c7d36703814d@eldare.de> <20261106-kbh3-1-022-fix-v2-v4-1-c7d36703814d@eldare.de>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,40 +106,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261107015447.335056-1-mmyangfl@gmail.com> <179401683893.488859.14756679871319417849@kernel.org>
-In-Reply-To: <179401683893.488859.14756679871319417849@kernel.org>
-From: David Yang <mmyangfl@gmail.com>
-Date: Sat, 7 Nov 2026 10:02:36 +0800
-X-Gm-Features: AclHuK8qmYKV9rGbhU5WORYEBGRTBaOnxnVUQ4immJpreIZflrHaqZuZv3O6ShA
-Message-ID: <CAAXyoMPY8QEdrpKEdvB4ceZQkikDHoJdERd1eWcO6E+8bVfS3g@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: dsa: motorcomm: Prevent rx_bytes/tx_bytes underflow
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 7, 2026 at 10:00=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+On Fri, Nov 06, 2026 at 01:57 PM Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org> wrote:
+> example by a credit update. So the wait also loops until data arrives
+> or one of the native exits applies: a socket error, a local or peer
+> shutdown, a socket that is no longer connected, the timeout or a
+> pending signal. The loop alone, with the lock still held, keeps the
+> deadlock, so the fix needs both halves and stays one patch.
 
-code inspection only
+No need for a 2nd copy of the return values.
+The old code returns true on RCV_SHUTDOWN. The psock queue is empty, so
+the caller goes to __vsock_recvmsg(), which picks the return value.
+tcp_bpf, udp_bpf and unix_bpf do the same.
+Do it for sk_err, peer_shutdown and sk_state too.
+__vsock_recvmsg() doesn't wait in any of these states.
+It handles len == 0, MSG_OOB and MSG_ERRQUEUE as well.
+
+The copy differs from a socket that is not in a sockmap in four cases.
+The diff differs in one, the last row:
+
+  recv()                          no sockmap    this series   the diff
+  ------------------------------  ------------  ------------  -----------
+  after a virtio reset            -ENOTCONN     -ECONNRESET   -ENOTCONN
+  after a reset, len == 0         -ENOTCONN     0             -ENOTCONN
+  after a reset, MSG_OOB          -ENOTCONN     -EOPNOTSUPP   -ENOTCONN
+  after peer shutdown, SO_INQ on  0 + SCM_INQ   0             0 + SCM_INQ
+  asleep when the reset comes     -ECONNRESET   -ECONNRESET   -ENOTCONN
+
+Instead of patches 1 and 2 (compile tested only):
+
+diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
+index 9049d26..3cf017d 100644
+--- a/net/vmw_vsock/vsock_bpf.c
++++ b/net/vmw_vsock/vsock_bpf.c
+@@ -34,24 +34,34 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
+ 	return vsock_sk_has_data(sk, psock);
+ }
+
+-static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
++/* __vsock_recvmsg() doesn't wait in these states and knows what to return. */
++static bool vsock_rx_done(struct sock *sk)
+ {
+-	bool ret;
+-
+-	DEFINE_WAIT_FUNC(wait, woken_wake_function);
++	return sk->sk_err || sk->sk_state != TCP_ESTABLISHED ||
++	       (sk->sk_shutdown & RCV_SHUTDOWN) ||
++	       (vsock_sk(sk)->peer_shutdown & SEND_SHUTDOWN);
++}
+
+-	if (sk->sk_shutdown & RCV_SHUTDOWN)
+-		return true;
++static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
++{
++	int ret = 0;
+
+-	if (!timeo)
+-		return false;
++	DEFINE_WAIT_FUNC(wait, woken_wake_function);
+
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+-	ret = vsock_has_data(sk, psock);
+-	if (!ret) {
+-		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
+-		ret = vsock_has_data(sk, psock);
++	while (!vsock_has_data(sk, psock) && !vsock_rx_done(sk)) {
++		if (!timeo) {
++			ret = -EAGAIN;
++			break;
++		}
++		if (signal_pending(current)) {
++			ret = sock_intr_errno(timeo);
++			break;
++		}
++		release_sock(sk);
++		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
++		lock_sock(sk);
+ 	}
+ 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+@@ -80,6 +90,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	struct vsock_sock *vsk;
+ 	int copied;
+
++	if (unlikely(!len || (flags & (MSG_OOB | MSG_ERRQUEUE))))
++		return __vsock_recvmsg(sk, msg, len, flags);
++
+ 	psock = sk_psock_get(sk);
+ 	if (unlikely(!psock))
+ 		return __vsock_recvmsg(sk, msg, len, flags);
+@@ -102,10 +115,9 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	while (copied == 0) {
+ 		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
+
+-		if (!vsock_msg_wait_data(sk, psock, timeo)) {
+-			copied = -EAGAIN;
++		copied = vsock_msg_wait_data(sk, psock, timeo);
++		if (copied)
+ 			break;
+-		}
+
+ 		if (sk_psock_queue_empty(psock)) {
+ 			release_sock(sk);
+
+[...]
+
+> guest's virtio-vsock device. With the series applied they behave as on
+> a native socket, except for the reset case above, and the vsock
+> vmtest.sh single-VM tests and the BPF sockmap test_progs pass.
+
+None of these tests sleeps in vsock_msg_wait_data().
+The sockmap tests call select() before recv() or pass MSG_DONTWAIT.
+vmtest.sh doesn't use sockmap.
+
+pw-bot: cr
