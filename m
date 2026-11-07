@@ -1,59 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.26
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794052062;
-	b=tJNtb3ntv9x/6z3yrIX5/ozkqYVeZlrKHtNxPuPFEKDYG0/pUbs8CD2OyU1w137s7cS8
-	 JSr7st0uF2ZhvpamDxyFn0GfpgwVDIsSrtfkWku6bcwG0sfRHK9VOpRAQcSqLbi60VQDz
-	 9WMVj4JchIFOngvu/NSIZI/72SG1/1gTGmESOnh5l0UTuJ8mEHsnAFCIcdWrcON+X6/2u
-	 MS7zOuIATQ5r0GToWehR7ov6jqreLXtdcf2Bofs8JJftZ7oeUeh2Vts+1nXpu82cKAOAb
-	 CKoIa1BaRDr5eefLqIBfD4kMKJEdm6spOndXBTkAoRu1DCzq1LVny2AEPJUm62e103Q==
+	t=1794052069;
+	b=fpOOT7lMSLaLMUsWelsXQ+zvW/3zdnmgwp37PjXaOmrF0eQq1q9VP82UAPoLPZ0rec8k
+	 oqO1aukAzYgjQZgRDzMiNPY8s4iLq2iValNfbIJSfigzhj4bRszHmeO824mfnDYCK4Vak
+	 vcgw6Nj5pkYJEZ+1jxTfpnD2bAkLGcY8lpdd4OsIkSnsJyY8+u9Ry3Gfiqr2rmNLwn+d5
+	 Omcm/ILQSR8W1uAgogfeqK+8sG+qkJJDLu0jOU/4uJvndiMb00ApyZW0KBCI2yf0XxRMJ
+	 TUGBnX46U5NUhozUoKPID3HfTN0NhwZsKMpu7OO5gYyteEpCtByNdziXvklOAq/Oq+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794052062;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=shn+UzrofE7NNr5BdTHNkIDvUbHajl81IywsSu+zOis=;
-	b=IE8HKP2zrF8zrcKWbawBSFIBkhVWosGFKq22RkM6iXiAKSASdxDw/8eGUKmghewgQCYu
-	 ANf4fVsYesV2yPjXo5/RdbdKYwefjHUi0h4wZp5t1J05shFS0Sv5TfYIjc1TkN3kfzAls
-	 hrKlSCIiF37zDe+P138rhEQ3kEMlZZPkl+foYf+Q/ML4JHK6eyPwhFpAZ1k+VUBBGAVzx
-	 fRcCh5//d7XM2BmrniOFGOBDhFrcQ3rgIWNImuulhnsLt3L61daMRcl454JwpljBt+iHE
-	 aemyriM/ykAfL5GW+JLOMOr6xDf0vinLPS2QNERNZSh3S2S2iXwovEv/N2FgSrrknXA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794052069;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:MIME-Version:Date:Content-Type:
+	 Content-Transfer-Encoding:From:Message-ID:TLS-Required:Subject:To:Cc:
+	 In-Reply-To:References;
+	bh=GnHezEpsy7TwQxHl7QCtA4TWsPZS/fezs0Pa1IH2a4Q=;
+	b=P5hAPFCvX4IEusaYN+WkAoLv8nHbeJOKfXQtn/i0YdCjeMMOW1weUqJqL5dUYrlPurB7
+	 Dv2Q738bwuz6ZGJIOXVZ0RLRXrfN2NGhEqd1/W0/crdMk5mFSjewgu+kbr7rhGEVlUx6R
+	 vmexzvNH2Qs2qLyYyFCFmzKyCcLWLHx6U8M3tfl4oyhyg0CyTWI5b6wypo5Mrz54sn5ap
+	 uuWUPiQ8UDe6Ib9WsONewz5U/POCm3WgLcN13WfMGTwrbjPolOtoWYKsYIz7sQoeRIVqZ
+	 WLCwlQRooXL9F1b25EFXNAxN8OX0wvQA8RVZ1kL0IIWPUFh1igITW/xDPw+lAbZ8nJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SDU10OKG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p35pArLu;
+	arc=none smtp.remote-ip=91.218.175.26
+Received: from mta0.migadu.com (out-26.mta0.migadu.com [91.218.175.26])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EC6606A326;
-	Sat,  7 Nov 2026 11:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341C0606A332
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 11:47:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 341C0606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SDU10OKG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3548D1F0089F;
-	Sat,  7 Nov 2026 11:47:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794052061;
-	bh=shn+UzrofE7NNr5BdTHNkIDvUbHajl81IywsSu+zOis=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SDU10OKGQL0OEagf4BKtSQlgNhR/bO8alAts+IGtS2QQ/7x/WsJnPyM4NKfolqcRZ
-	 7kjJggnA2+GYayF1emk94mAljCVLpo+RIu0x5tZ4gZ05HkjR27wGB6WlbKxQDISY4G
-	 tYryRIeyybD1v2HeItXVQt/a9drVIsBLgGD8tZa427n+aG2d272ZUgw1GIFI0veqNO
-	 y+qZGeqzqjbreWJEyQ7JV2d1Sjd/yqNK9KXbxMwRLMDr8KWLkRh4Hjln0B9Kf8+hGg
-	 slqBy5+vsEzV8+tyKrNdyBZRIgGL9ku+uEuX0ukBGe+C3lasrcvRaGlE6zFmff66cD
-	 W/mGV1t1Ga/oQ==
-Subject: Re: [PATCH] net: dsa: microchip: drop the parent MDIO bus reference
-From: netdev-bot+sashiko@kernel.org
-To: vulab@iscas.ac.cn
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Sat, 07 Nov 2026 11:47:40 +0000
-Message-ID: <179405206074.994134.651288231971882952@kernel.org>
-In-Reply-To: <20261103100531.1309946-1-vulab@iscas.ac.cn>
-References: <20261103100531.1309946-1-vulab@iscas.ac.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p35pArLu
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Xagw4uV/cJ7unFmTqNMB0IDgo84IicTToPr/WXewfaI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794052066; v=1; x=1794656866;
+ b=p35pArLuJ3P4B8gSCE7O0EMkeuGZkNORiT5GAkNt0vagOrGUXSVmb7QrboQIh4ZJtqs2Ggx/
+ /58ab1+yO73qJtqSeqO/wUR01zAl71tx964nL3IIBPRJZ3/f6J3fUfRbLXKUo13gz8XDNUMU+sH
+ pJ9l5E6Wu71julLJeNPhs+WU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 86d04180e8eba885;
+	Sat, 07 Nov 2026 11:47:45 +0000
+X-Mizu-Trace-ID: 86d04180e8eba885
+X-Migadu-Flow: FLOW_OUT
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,137 +56,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Date: Sat, 07 Nov 2026 11:47:45 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Zqiang" <qiang.zhang@linux.dev>
+Message-ID: <a951af6957fe4890d3eaaf5a661754fc259a4b79@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] neighbour: Move the netdev_put() out of RCU callback
+To: "Kuniyuki Iwashima" <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <CAAVpQUAeHP7M07uMweRePtuzPPUo-99dL6jOYUiVf7CSVUxNDQ@mail.gmail.com>
+References: <20261009091941.5837-1-qiang.zhang@linux.dev>
+ <CAAVpQUAeHP7M07uMweRePtuzPPUo-99dL6jOYUiVf7CSVUxNDQ@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+>=20
+>=20On Fri, Oct 9, 2026 at 2:19 AM Zqiang <qiang.zhang@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> For builts with CONFIG_NET_DEV_REFCNT_TRACKER=3Dy kernels, netdev_p=
+ut()
+> >  records the caller's stack trace via ref_tracker_free() for debuggin=
+g
+> >  reference leaks. however, the netdev_put() is within pneigh_destroy(=
+)
+> >  RCU callback, this recorded stack is uninformative, it does not reve=
+al
+> >  which code path initiated the deletion.
+> >=20
+>=20Have you seen pneigh double-free ? What motivates this change ?
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Firstly, Apologies for delayed reply.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [High] The patch fixes code that never runs, and the reference leak it
-  describes is still live in mainline.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the cached
-  dev->parent_mdio_bus pointer is only protected by a struct device…
+Actually, I didn't see any double-free happening,  just wanted it to
+record a meaningful callstack which on release path.  After all, if doubl=
+e-free
+really occurs, the callstack of the RCU callback execution path will not =
+be helpful.
 
---
 
-net: dsa: microchip: drop the parent MDIO bus reference
+>=20
+>=20>=20
+>=20> This commit therefore move netdev_put() from the RCU callback into =
+the
+> >  caller's process context, and replace call_rcu() with kfree_rcu().
+> >=20
+>=20>  Fixes: d539d8fbd8fc ("neighbour: Free pneigh_entry after RCU grace=
+ period.")
+> >=20
+>=20Please elaborate why your change is safe in the commit message
+> and remove the tag.
 
-This patch adds a devres action to ksz_mdio_register(). The action calls
-put_device() on the parent MDIO bus returned by of_mdio_find_bus(). The
-goal is to stop leaking that struct device reference on probe error
-paths and when the switch is torn down.
+Does it refer to using kfree_rcu instead of call_rcu ensures safely ?
 
-> diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-> index 767c8fe8e819a..ddd821fa0d3e1 100644
-> --- a/drivers/net/dsa/microchip/ksz_common.c
-> +++ b/drivers/net/dsa/microchip/ksz_common.c
+Thanks
+Zqiang
 
-[ ... ]
-
-> @@ -2431,6 +2442,12 @@ int ksz_mdio_register(struct ksz_device *dev)
->  			goto put_mdio_node;
->  		}
->  
-> +		ret = devm_add_action_or_reset(ds->dev,
-> +					       ksz_mdio_put_parent_bus,
-> +					       parent_bus);
-> +		if (ret)
-> +			goto put_mdio_node;
-> +
-
-[Severity: High]
-Can any current chip reach this branch? It sits behind this check in
-ksz_mdio_register():
-
-	if (parent_bus_node && !dev->info->phy_side_mdio_supported) {
-		...
-		ret = -EINVAL;
-
-		goto put_mdio_node;
-
-In ksz_switch_chips[], only the LAN9370-LAN9374 entries set
-phy_side_mdio_supported = true. All of them use lan937x_switch_ops, so
-their setup path is lan937x_setup()->lan937x_mdio_register(), not
-ksz_mdio_register().
-
-ksz_mdio_register() is called only from ksz8_setup(), ksz8463_setup()
-and ksz9477_setup(). None of those chips support side MDIO. For them, a
-DT with mdio-parent-bus returns -EINVAL before of_mdio_find_bus() is
-called, so the new put_device() action is never registered.
-
-Commit 03d10c776802 ("net: dsa: microchip: implement lan937x-specific MDIO
-registration") copied the side MDIO logic into lan937x_main.c, and that
-copy still takes the reference without dropping it:
-
-drivers/net/dsa/microchip/lan937x_main.c:lan937x_mdio_register() {
-    ...
-	} else if (parent_bus_node) {
-		parent_bus = of_mdio_find_bus(parent_bus_node);
-		if (!parent_bus) {
-			ret = -EPROBE_DEFER;
-
-			goto put_mdio_node;
-		}
-
-		dev->parent_mdio_bus = parent_bus;
-	}
-    ...
-}
-
-Does the parent bus struct device reference still leak there? That
-would happen on the later error paths (devm_mdiobus_alloc(),
-lan937x_mdio_bus_preinit(), lan937x_create_phy_addr_map(),
-ksz_parse_dt_phy_config(), devm_of_mdiobus_register()), on deferred
-re-probes, and on every unbind of a LAN937x switch.
-
-ksz_mdio_put_parent_bus() is static to ksz_common.c, so as written
-lan937x_mdio_register() cannot use it. Should the fix go into
-lan937x_mdio_register() instead? The side MDIO branch in
-ksz_mdio_register() looks unreachable and could perhaps be removed.
-
-With Cc: stable and Fixes: 9afaf0eec2ab, this would be backported to
-trees both with and without the lan937x split. Would it only have an
-effect in the trees without the split?
-
->  		dev->parent_mdio_bus = parent_bus;
->  	}
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. The
-commit message says:
-
-  "The child MDIO bus is unregistered before the action runs, so the
-  parent bus stays valid for the whole lifetime of the switch."
-
-Does this hold for anything beyond the mii_bus memory? The reference
-from of_mdio_find_bus() keeps struct mii_bus allocated. However, there
-is no device_link to the parent MDIO controller and no
-try_module_get(bus->owner).
-
-The parent controller driver can be unbound through sysfs, or its
-module unloaded, while the switch stays bound. PHY accesses on the side
-bus would still go through:
-
-ksz_parent_mdio_read()->mdiobus_read_nested()->__mdiobus_read()->bus->read()
-
-__mdiobus_read() in drivers/net/phy/mdio_bus.c does not check
-bus->state:
-
-	if (bus->read)
-		retval = bus->read(bus, addr, regnum);
-
-Could the parent driver's read or write callback then run against
-released devm resources or unloaded module text? That depends on the
-specific parent MDIO driver. The same applies to ksz_parent_mdio_write()
-and to the pointer cached in lan937x_mdio_register().
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103100531.1309946-1-vulab%40iscas.ac.cn
+>=20
+>=20>=20
+>=20> Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+> >=20
+>=20nit: full name
+>=20
+>=20>=20
+>=20> ---
+> >  net/core/neighbour.c | 14 ++++----------
+> >  1 file changed, 4 insertions(+), 10 deletions(-)
+> >=20
+>=20>  diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> >  index 6ed8eb075146..4263689fc415 100644
+> >  --- a/net/core/neighbour.c
+> >  +++ b/net/core/neighbour.c
+> >  @@ -818,14 +818,6 @@ int pneigh_create(struct neigh_table *tbl,
+> >  return err;
+> >  }
+> >=20
+>=20>  -static void pneigh_destroy(struct rcu_head *rcu)
+> >  -{
+> >  - struct pneigh_entry *n =3D container_of(rcu, struct pneigh_entry, =
+rcu);
+> >  -
+> >  - netdev_put(n->dev, &n->dev_tracker);
+> >  - kfree(n);
+> >  -}
+> >  -
+> >  int pneigh_delete(struct neigh_table *tbl, const void *pkey,
+> >  struct net_device *dev)
+> >  {
+> >  @@ -849,7 +841,8 @@ int pneigh_delete(struct neigh_table *tbl, const=
+ void *pkey,
+> >  if (tbl->pdestructor)
+> >  tbl->pdestructor(n);
+> >=20
+>=20>  - call_rcu(&n->rcu, pneigh_destroy);
+> >  + netdev_put(n->dev, &n->dev_tracker);
+> >  + kfree_rcu(n, rcu);
+> >  return 0;
+> >  }
+> >  }
+> >  @@ -891,7 +884,8 @@ static void pneigh_ifdown(struct neigh_table *tb=
+l, struct net_device *dev,
+> >  if (tbl->pdestructor)
+> >  tbl->pdestructor(n);
+> >=20
+>=20>  - call_rcu(&n->rcu, pneigh_destroy);
+> >  + netdev_put(n->dev, &n->dev_tracker);
+> >  + kfree_rcu(n, rcu);
+> >  }
+> >  }
+> >=20
+>=20>  --
+> >  2.17.1
+> >
+>
