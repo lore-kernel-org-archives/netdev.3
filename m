@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794083106;
-	b=SFVuMdQbcGhWiIVxGoJRb2XX/Bn4zEaZnUAHrXd5vqzP/VGdjLR9c0iCkFrpnd919l1Q
-	 j9rz4uzHTxdrJe1X2QeI6eojxta/8e28Bo6AVdAO/ExzCMs5blqvW9xQ0xEMc8zF3Zy4a
-	 O2wjMbo8RqrXMVOEFFaCLwr3XqDjCgwyDwLizdmaMhfz4sjS4M/o4MBOMDtAFlWd/U3oa
-	 0sucB0UrOse8dlMm5oRDNNocY+HB8yg0/Ya2RVApwH/z13i3hfqJrVbzTm6Pcu8qyy/Lq
-	 XBeqtmtSSAQ+asSDI6gEtwksuHIc8Dh9yS8GdUSSYYpH9HRjdAApqSjW9cdiJtMhPKA==
+	t=1794083102;
+	b=X5X75YWxrJI7iN+bFsBwJzMgOAoY3wZbky7irpzzmHScyyC3OaozLYnCCm/oI700S2os
+	 GrCi/nM/pZvuA9fQ1ZBWcyFf/Lljn28S+Al1NoMpamgxAmoxeVvTCJsvWcLwqr+34jZ7i
+	 OEDIxPiLY353DqyhLTDfKAw3stsW4KhX/CRDZDBUI8p9hkHq9Z7tI2L3flgxh2cA/DrYb
+	 +/l+2GHssg/yQllydCdnpmmZXFFO7UOoKhATa1NV+wiYYZFS2juiyLBjsgV8+F8yqZ0XS
+	 Zm+euDVon/xPicxPEEayWn6UmvArWs4V63nFKBaYgy2RkzcX7By6BFa4ARPOqNlm++A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794083106;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083102;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=u8Hdgh8QlUYNJeWOyQtm6kq20wm81S/bBQQZJgwtwCg=;
-	b=qudDxZbUEDPMuUkvfuN9n/S0pyN+VD4efQoNu1F/uZz2q48uIPME5gqP9RpLmnHqN16q
-	 09xLey4sA7rT19ElCTD3+bp8ENiYgl+rQDCIipjBLYSnhInX6H/BrBEwnrSOzMjIpLac1
-	 Pa/GtDr1okiZVrFOOCP/oNPLxRWH044t5NknnObMSSZIVgg82srphS47SKeZco+Kdl9N8
-	 OQ1C20kG8p5ij2GnYdcBxm3Sh7ulfH3QkRBbL/6kyFvS5T1zAOZwy22CBh+0vj5TOijE+
-	 koqRjrYtfWmyUT2sMhWlgPEcJiUHRh7wbOiVlsod2znABOvIgZjcnvIl02UVrl3VmVw==
+	bh=hAxrrIcR8kFy2gsceeU205RpPHqOi1H7v/dWyGTpYxY=;
+	b=ih3TDKoZcrB4y1Pipd9kec0OGpijzYrJsNvxEi0KcnHGbKJwkV2LTfbRVUqXQkt4OoYD
+	 QreO00PlKzTudlsxf9nHj2iYoYhjJGu+DdJIW4NOqesMB2OS/OYQC92zbRiCB3gW9gjEV
+	 w5BNN+RRZKk4Buk5U7j/P+vy05sZT35D8V/EwAYIsONBDdS8IkFBdbHBGxy3brrn1Whug
+	 N8dj6objzj+Hg3132KthKDM48JcH5eZnNFTcg05fQ5lQguALWU5uUi/Xqu1MPxv9m+oem
+	 Ki13RXwfupiAbIsrBp3pyY5jNjKo3oGGhB6Uh0DVfTHVd+719EJlPrRbJqjaLIbT34w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AiNi/dtC";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NuVbsSZn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18783606D836;
-	Sat,  7 Nov 2026 20:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BB9606A32F;
+	Sat,  7 Nov 2026 20:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AiNi/dtC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EBB1F008A1;
-	Sat,  7 Nov 2026 20:25:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NuVbsSZn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7BC1F008A1;
+	Sat,  7 Nov 2026 20:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794083105;
-	bh=u8Hdgh8QlUYNJeWOyQtm6kq20wm81S/bBQQZJgwtwCg=;
+	s=k20260515; t=1794083101;
+	bh=hAxrrIcR8kFy2gsceeU205RpPHqOi1H7v/dWyGTpYxY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AiNi/dtCroMm2W0X9/00WYMTfrrU6dWv+UrZJ6hpyefsG2k0jDI2CJACH9ULfuiZl
-	 ZZ8THctwob0iMbcgWQJPi7Rd2IDlu4kBYoNAmqNu+/BwbTuxNGerg6d427J1M7h0UN
-	 hSg48XiwS7Ry3qlUid+4f1gZ7U5gx5j73Wk7iYen0i3CUImH1p8eTA7FEjwbfX54rJ
-	 0QQ8lPE+aIlERSRxRBvMKiDSmcOlKmZigaPRfHsOl2c2ktMI9GFUFPej+U89TmGyyx
-	 I7Hj6i+9ZbB3O1NopeSu/VrLcSyQoENA36DaZvEYdO5c9eNFx4V6W7Hlun4xIflbCB
-	 OehyTqn6yV4qg==
-Subject: Re: [PATCH rdma-next 19/23] RDMA/mlx5: Clamp log_max_cq_sz shift in
- CQ size checks
+	b=NuVbsSZneZIFgRql+d1Rn2GBYJawSe+9wASghXgzUEqq7jPAyAZaG4SbUlOU2AJ4z
+	 9AccY7j4qTFLOzpALyYR8bOd18+TOvM1LDAI56tWEn4bdHauWnPPofnO1o+HNNm+2v
+	 uZ/RJXf+qXaKHIEE1VsmB50LZhJD9shrYSo8kEVmZxlt6Dy7uKA2dooQMNK5onchst
+	 sGgj5ZLX2o5rIVuAmq86RtNBM6DotzEkgAoIif6M47JOu3H54OoQNiRrv56CI1No68
+	 HtCPDD9t/wPtfW77wXu1cGfOMvJ3QNvG7xYYa9S+KZSTWjGdbNp0Lgrte1Rqg9niaU
+	 Dd4zf8SiS1biQ==
+Subject: Re: [PATCH rdma-next 16/23] RDMA/mlx5: Ignore completion events for a
+ CQ without a handler
 From: netdev-bot+sashiko@kernel.org
 To: yishaih@nvidia.com
 Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
@@ -49,10 +49,10 @@ Cc: jgg@ziepe.ca, leon@kernel.org, linux-rdma@vger.kernel.org,
  mbloch@nvidia.com, kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
  davem@davemloft.net, andrew+netdev@lunn.ch, dtatulea@nvidia.com,
  moshe@nvidia.com, maorg@nvidia.com
-Date: Sat, 07 Nov 2026 20:25:04 +0000
-Message-ID: <179408310459.994134.3829922527726679973@kernel.org>
-In-Reply-To: <20261103163949.1554-20-yishaih@nvidia.com>
-References: <20261103163949.1554-20-yishaih@nvidia.com>
+Date: Sat, 07 Nov 2026 20:25:00 +0000
+Message-ID: <179408310019.994134.8139150984682840933@kernel.org>
+In-Reply-To: <20261103163949.1554-17-yishaih@nvidia.com>
+References: <20261103163949.1554-17-yishaih@nvidia.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -77,108 +77,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new `entries > INT_MAX` check only keeps the CQ entry count
-  inside an int.
+- [High] The fix leaves a memory-ordering race on comp_handler.
 
 --
 
-RDMA/mlx5: Clamp log_max_cq_sz shift in CQ size checks
+RDMA/mlx5: Ignore completion events for a CQ without a handler
 
-This commit computes the CQ size limit with MLX5_CAP_GEN_LOGSZ_U64(), so
-an untrusted log_max_cq_sz no longer causes an undefined shift. The
-requested entry count is now rounded up in 64 bits. Sizes above INT_MAX
-are rejected in the create and resize paths.
+This patch makes mlx5_ib_cq_comp() skip the comp_handler call when no
+handler is set. The case it targets is devr->c0, which is never armed, but
+a hostile NIC in adversarial mode can still raise a completion event for
+it.
 
 > diff --git a/drivers/infiniband/hw/mlx5/cq.c b/drivers/infiniband/hw/mlx5/cq.c
-> index f955eb762051d..25344dfba1c12 100644
+> index 5cc86c3f93f3e..f955eb762051d 100644
 > --- a/drivers/infiniband/hw/mlx5/cq.c
 > +++ b/drivers/infiniband/hw/mlx5/cq.c
-
-[ ... ]
-
-> @@ -1226,12 +1237,14 @@ int mlx5_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
->  	int cqe_size;
->  	int eqn;
->  	int err;
-> +	u64 max_cq_entries = MLX5_CAP_GEN_LOGSZ_U64(dev->mdev, log_max_cq_sz);
->
-> -	if (attr->cqe > (1 << MLX5_CAP_GEN(dev->mdev, log_max_cq_sz)))
-> +	if (attr->cqe > max_cq_entries)
->  		return -EINVAL;
->
-> -	entries = roundup_pow_of_two(entries + 1);
-> -	if (entries > (1 << MLX5_CAP_GEN(dev->mdev, log_max_cq_sz)))
-> +	entries = cq_roundup_entries(entries);
-> +	/* cq->ibcq.cqe and create_cq_kernel() take an int */
-> +	if (entries > max_cq_entries || entries > INT_MAX)
->  		return -EINVAL;
+> @@ -46,7 +46,12 @@ static void mlx5_ib_cq_comp(struct mlx5_core_cq *cq, struct mlx5_eqe *eqe)
+>  {
+>  	struct ib_cq *ibcq = &to_mibcq(cq)->ibcq;
+>  
+> -	ibcq->comp_handler(ibcq, ibcq->cq_context);
+> +	/*
+> +	 * A CQ created without a handler (devr->c0) is never armed, but a
+> +	 * hostile NIC can still raise a completion event for it.
+> +	 */
+> +	if (ibcq->comp_handler)
+> +		ibcq->comp_handler(ibcq, ibcq->cq_context);
 
 [Severity: High]
-Is INT_MAX the right bound here? It keeps the entry count inside an int,
-but the CQ buffer's byte size is still computed from it in 32-bit
-arithmetic.
+For devr->c0 this check is enough, because comp_handler stays NULL for
+that CQ. Is it also enough for the CQs set up by __ib_alloc_cq()?
 
-With a device-reported log_max_cq_sz of 26 or more, entries can now be up
-to 2^30. They are then passed to create_cq_kernel() and on to
-alloc_cq_frag_buf():
+The companion commit "RDMA/core: Set the CQ comp_handler after its poll
+context is set up" relies on this NULL check as a "poll context ready"
+gate. Neither side of that gate has any ordering, though.
 
-drivers/infiniband/hw/mlx5/cq.c:alloc_cq_frag_buf() {
+On the writer side, the CQ can be reached from the EQ interrupt once
+create_cq() puts it in eq->cq_table.tree. The handler is published later
+with a plain store:
+
+drivers/infiniband/core/cq.c:__ib_alloc_cq() {
     ...
-	err = mlx5_frag_buf_alloc_node(dev->mdev,
-				       nent * cqe_size,
-				       frag_buf,
-				       dev->mdev->priv.numa_node);
+	ret = dev->ops.create_cq(cq, &cq_attr, NULL);
+    ...
+	case IB_POLL_SOFTIRQ:
+		comp_handler = ib_cq_completion_softirq;
+		irq_poll_init(&cq->iop, IB_POLL_BUDGET_IRQ, ib_poll_handler);
+		break;
+	case IB_POLL_WORKQUEUE:
+	case IB_POLL_UNBOUND_WORKQUEUE:
+		comp_handler = ib_cq_completion_workqueue;
+		INIT_WORK(&cq->work, ib_cq_poll_work);
+		cq->comp_wq = ...
+    ...
+	cq->comp_handler = comp_handler;
     ...
 }
 
-Both values are powers of two. So nent * cqe_size wraps to exactly 0 for
-nent >= 2^26 with 64-byte CQEs. With 128-byte CQEs
-(cache_line_size() == 128) it wraps at nent >= 2^25.
+On the reader side, mlx5_eq_comp_int() gets the CQ with mlx5_eq_cq_get(),
+which is an RCU radix_tree_lookup() plus a refcount increment. That orders
+against the tree insertion, but not against the stores made after it.
+mlx5_ib_cq_comp() then loads comp_handler twice with plain loads.
 
-With size 0, mlx5_frag_buf_alloc_node() sets npages to 0, and
-kcalloc_node(0, ...) returns ZERO_SIZE_PTR. The function then returns
-success, and buf->nent is still set to the full count.
+Adversarial mode is enabled when cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)
+is true. That includes arm64 Realm and pKVM guests, and those CPUs are
+weakly ordered. Take the UMR CQ, which mlx5r_umr_resource_init() allocates
+with IB_POLL_SOFTIRQ.
 
-init_cq_frag_buf() then does:
+Could another CPU see comp_handler == ib_cq_completion_softirq before the
+memset(), INIT_LIST_HEAD(), weight and poll stores from irq_poll_init()
+are visible? If so, irq_poll_sched() would link iop onto the per-CPU list.
+The delayed irq_poll_init() stores could then overwrite iop->state and
+iop->list while iop is still on that list.
 
-	for (i = 0; i < buf->nent; i++) {
-		cqe = mlx5_frag_buf_get_wqe(&buf->fbc, i);
-		...
-	}
+Possible results are per-CPU list corruption, irq_poll_softirq() spinning
+on a stale entry, or a NULL iop->poll call. For the workqueue cases, the
+compiler is also free to move the plain comp_handler store ahead of the
+INIT_WORK() and cq->comp_wq stores. That could lead to queue_work() with a
+NULL workqueue or an uninitialized work item.
 
-Won't mlx5_frag_buf_get_wqe() dereference fbc->frags[0].buf through
-ZERO_SIZE_PTR on the first iteration and oops?
+The wmb() in the later ib_req_notify_cq() only helps if the device waits
+for the arm doorbell, and a hostile device does not wait.
 
-mlx5_ib_resize_cq() with udata == NULL has the same INT_MAX-only check.
-It reaches the same code through resize_kernel()->alloc_cq_frag_buf()->
-init_cq_frag_buf().
+Would it make sense to publish the handler with:
 
-The user path in mlx5_ib_create_user_cq() has a similar problem.
-create_cq_user() passes this as the minimum umem size:
+	smp_store_release(&cq->comp_handler, comp_handler);
 
-	cq->buf.umem = ib_umem_get_cq_buf_or_va(&dev->ib_dev, attrs,
-						ucmd.buf_addr,
-						entries * ucmd.cqe_size,
-						IB_ACCESS_LOCAL_WRITE);
+in __ib_alloc_cq(), and read it once in mlx5_ib_cq_comp() with:
 
-That is a 32-bit unsigned multiply, and it wraps to 0 the same way. On the
-UMEM-attribute path, the only length check in ib_umem_get_desc_check() is
-umem->length < min_size, so any umem passes. The device is still
-programmed with log_cq_size = ilog2(entries). resize_user() already uses
-(size_t)ucmd.cqe_size * entries for this.
+	ib_comp_handler h = smp_load_acquire(&ibcq->comp_handler);
 
-The commit message says a large limit made the CQ size get "truncated
-when passed on as an int". Since create_cq_kernel() still multiplies that
-int by cqe_size, can this truncation still happen?
+	if (h)
+		h(ibcq, ibcq->cq_context);
 
-Should the bound account for the CQE size, for example by rejecting
-entries > INT_MAX / 128? Another option would be to compute the byte size
-in size_t with check_mul_overflow().
+That also removes the double fetch. KCSAN would likely report the current
+plain check against the plain store as a data race. Later patches in the
+series do not change this code.
 
->
->  	cq->ibcq.cqe = entries - 1;
-
-[ ... ]
+>  }
+>  
+>  static void mlx5_ib_cq_event(struct mlx5_core_cq *mcq, enum mlx5_event type)
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103163949.1554-1-yishaih%40nvidia.com
