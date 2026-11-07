@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794077099;
-	b=ZJpKKSocAR25tFpIrFd08a5ZEaOSrrjhthdqH7AaHsNM3g9PczhlRon3zyzzcrgx5V86
-	 ijEwxgJP1mCjXgx2d66kPIjnlNXUxOETiGt+AaqbxTfaEzVIsMRFbrcnMy5SH9SDbE0MI
-	 Fa/OAe1SQanyhyJjmaAW7nbghtBO3FlHUcEf5ERGNOVQ2vqjOWJ49mOGnHDM92d/mNRzi
-	 0X1SZhzldEYvaJapWtZYX13DA2epvhF4UWiJT/m978sPrxHigo+BWupkvlqyDiB0QPzbS
-	 N5W3RdCKQVhA2XDoOStvyL2lQuJgMijAtQ+emqri4AxmTex7RVP2TqsYB6KONn+nzFA==
+	t=1794077091;
+	b=kJCvd3r9UpfBOmPmzJaYdaKsXd6MMeotcf82CSJcG01YB3qLdqcdPYvNdf5dwa7/JgAP
+	 8DN0jLoyzWBlY4sDaSQm6fH0Y8s3R3L2NEr7afnNUbVpcGMgQUYsTUHNXWd5gteLQ4UaP
+	 SXYlBD2nOk71EKlq0xeqEjZmw1E3+megcWk6/GBimv6XqUFPNX3Dmg6TPkwXIpGiD5ztK
+	 swOXvgj0dMyXqdl5G6pgRPBHeJmvyqvpRKEtOtwy02lYOtNbcENEJvUwW+Gw8EOYKXNo+
+	 jVcyQJVUjfEEm5hOSFYv3nO6Ny3udxkAsRJty0ZaW9dbOMH/fmfHN7c1Jz5r94CKV8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794077099;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794077091;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=mg8UGJuyK6ZVPowqoxE+B4fRWFQpJezgay0t77tS3ig=;
-	b=NTzwL2/iUNAijVWRu/J90RgPXCiqybj060tNtbccjBreBAPP8dSiAG/XP/NoLjeDWzZ+
-	 +Ph51Ff8N9RDqR3diMnzm9egsED+uGTg5mJEMSxQJoxsPqsFSt9x8wrdBKL0woBHCHzvR
-	 e9qsQ/MoLfofOn7Nix9cqZ7XBsI/Rsz9qXwC8HJzMn60ScZFyDXx0lyDj/C+aiBBxqmoK
-	 Z7g3QFXaWAv2HQsQUHMnZ7jSi1Q7SvLOWaiBKcKPwWkUx1dbHcQum7l1OtFk8a4evgWDM
-	 r38bt+0CqAwWtojGCHWi0QA8y+beRHT4B//l55562vIMxCrrqEaDrKddmRSYo7bLwrA==
+	bh=JuLpMa1SsARbLX+VgT8lDkaksHzgOIaqTQ9JsfA99F0=;
+	b=Evg6OlXCo4d7LcoT8/woihX/EApIfXZWpDbidkUPXOm8QyZ/7/e7hUFNV7qFnDsEtJ1G
+	 CHT6W18s6ccxu34m/squwryrALUo1DWxza2kgZbGjtFdDwy0VpROzuNvfMMIRLgFq3nr0
+	 z0JM+OzmP2oLSdHAQhwalhDR7TRIk5EaKy5SKeJcOy3crh4ibmCQjfkWCfrBkAYIf5QwN
+	 a1eLfhPcQNshajIkYiTuqZW42tyTroyRJyF9rRCb14ZfRQsak8EoIlbaQRwWOz7K8u+Cw
+	 37Gc2E8YDaj6jO2bqXlb6WLVKU44K2rNl9ZJiBBW+16vxZDSWLsxZ/UYBd/ZO4bclww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=blockcast.net;
 	spf=pass smtp.mailfrom=blockcast.net;
-	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=dZIzs1Fw;
-	arc=none smtp.remote-ip=74.125.82.178
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	dkim=pass header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=tlsK2cNm;
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AF9606D815
-	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28AF9606D815
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B55606D825
+	for <netdev@vger.kernel.org>; Sat,  7 Nov 2026 18:44:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2B55606D825
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=dZIzs1Fw
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-36eb1cb7aabso2683669eec.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.a=rsa-sha256 header.s=google header.b=tlsK2cNm
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3720addb068so210449eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 10:44:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1794077097; x=1794681897; darn=vger.kernel.org;
+        d=blockcast.net; s=google; t=1794077089; x=1794681889; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mg8UGJuyK6ZVPowqoxE+B4fRWFQpJezgay0t77tS3ig=;
-        b=dZIzs1Fwt2l1a3nl0vqs640rx0OYLG7nNrJU10Qyd5DthXDzXgWAIv0pznL77q8xLy
-         UeGdQ5mEsbBQ30kUxpU+iMlJvpKRIgm1jW8qs6agm4zNnyuWTpd+Uo+unpoB/LhO/OGR
-         OlTyFUWFVwrhIaTh/MkRhdtNSKqKjZWuiG1WZh9wCylirPtwAszfcldnxMTvcrJa8y/O
-         2M0keArIZ9TUJOuo4HeSeQjANlp9RIT7Ig3q5I1VRrotHuHz3OvyM8Cw6G6yJqHyYO5r
-         DU3h5fKA/DKeQgGGjb5ycshBAoXTqHcdscXU8zMoiOOVyB3Kdeca3S2V5MJbqmXOTxhK
-         KjNA==
+        bh=JuLpMa1SsARbLX+VgT8lDkaksHzgOIaqTQ9JsfA99F0=;
+        b=tlsK2cNmxgleA0eb/d3tuW0pniK+AnkTM0t5/VJRi0Jlz0PqbUxUU56OzFTdRtg93d
+         mVuXVYvfC6K+W9Dzsv5ZlMApk558yA88TdBo8+rJH7JWMgLBrOqzUwOZrrTtBHqIjeMD
+         Qdb5aIV7oJtFCPzuea3X5WPs7D91aGFXDOvFC02Wa04IKdDxjVIqPA+Q8B+0+ice6Uo0
+         hxPAoLpry9k404ECppcuO08rHBi7eJWSJR1FuS2fPXbklRiQ/zWxJSedEY7YmIOJ08Ua
+         zHZASUcqA6FuJ7ZoYLQaYnTmw8y24doEqvqMCeAJpIybB17B+hUc8kZztfk9BKJDu0a6
+         oPpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794077097; x=1794681897;
+        d=1e100.net; s=20260707; t=1794077089; x=1794681889;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mg8UGJuyK6ZVPowqoxE+B4fRWFQpJezgay0t77tS3ig=;
-        b=EkGY76ljC5zrkSCY/sKJwKx22cDdVNoh3PZY7Ccz+T9sQFIPs/9/eqYTdZ/nwmmpHW
-         1euuW+igxRnJMs28vGvMZl2kxdlMjsKUvDJVlzWTXPmQ4aSSgiZ9PXkAZW0fAuwMSwlM
-         s827SBOPI+o2CTEwfR50/3ea2I9xYXrlBxkKyyAoXpbMkJUqaREaTCGRhwcICpwBkc6k
-         TxNqqOUGdkxwijyfN7akAG04Omgetb7DO3C27Mi4og2RzlQyQoThtQWdHotv3hAkzOaA
-         QVbbGYZ15Z201SEpvJ+kjwq75uTTPl8CBr5rJuQLDSPLfP1UIZuaXnkQ2GjNApadxZLq
-         0TwA==
-X-Gm-Message-State: APuU4Z/3xen7WhOda9X/OlpmRTLP3njqs/IR2UIeh8HpWcG40GMS65Df
-	ln3BiRXqzMhluI6duG/Dbn+XrPsP19oJaZgJH/EzQrR9MBYJJG6OtJeczs/hRX1cm3I=
-X-Gm-Gg: AYBFou3ZgdnNEi51QMxBYhRSEu6gEld4oYWAo3BMgzTtIxBELSYGYfLpLiJakE1r1T/
-	81fNxT9KNsiq0GyY7XYje8UYEET2GCeb6G91sbzkCXSKHmydtOP5lLgDj7zVmBJdIFoE0079VRW
-	VSMCfZsyqxdo+UGlUVe0NeOXcJ0vq09gkhfR0uVei9hmqT7cKkW56BbR/GMj9mhpjfG20iwmtL3
-	opJ+5HZ8rfHRbtbZaqA9nmoGcriyvZMVCMK+7C5jXt4F0J4vGZlqO6vK9tpGcgnCvnOqhw6Ra6i
-	6hVKnAhwXZXbKeIIbZnoSRuJsQ+cwjfR+FWzeN4pRxbEFWqxrE6BsHa3XUaFTnvqsM1/ZZon9Rn
-	cAJpxL3foq8FP8sgBC8wD3K5b9Z6gwoUQCj12XI2WI0dQSBhrtUQZFrVZoT41HlAvkEqqfSsDlZ
-	BYDcSaRAko7XsSAPws4trHbWp94oM43BImLr1+QJ6/VKT8QUbt6jmqHPhz6TykYwkOWL/feHx1w
-	exPfg+QQ7ZI1lFjtJKzjKRvtZyQjzdmuisyFzj4YyvJCrWQ6VtvB73K6wiPFWryoLKBmhNz6esz
-	w9INRpmWlyFFlFTGkY9SjqUEjy/7/N6vRPm94M5DScArVY4lj90SV/p1psOFYFaClsvpsXc=
-X-Received: by 2002:a05:7301:dd81:b0:35c:8b96:94d9 with SMTP id 5a478bee46e88-36f75d229e2mr8091949eec.19.1794077097000;
-        Sat, 07 Nov 2026 10:44:57 -0800 (PST)
+        bh=JuLpMa1SsARbLX+VgT8lDkaksHzgOIaqTQ9JsfA99F0=;
+        b=dpcc+TY33pfUBar+i62idbyzGgcuHN9NJCovqh24z/I7H742altPPVt51qOqGMUiwn
+         2D22i2ksaUxhayzyGdGGH2BGsBgRfme/UTmWlIOEBgaidLg9X+Z8qfzQE4HifTYiD2X4
+         j8zSoxWUsaUpeh7Jgp6HYiJM6NEL7NC9k8ilMJgi2Vk+zRVGJ03KeTwbePX3VQVKxQsu
+         LtyVI7QQCof7XcaLw+g3ivQnm6ZK21AJq+ggFbE2DFPiqysjMjUZWNZ9WS7CcGYDJd9/
+         2Nsi7mW4o/3NjsL6VjAAv6OZ+ab/7H+4Kma8NkRS018r5+2ocRR11SBl5FZYyjs/OGdz
+         sZug==
+X-Gm-Message-State: APuU4Z96CiUslqJgVPDcy8t0iyUk5WZjST7ggQJ6VqlUsSAwguvZcA7a
+	/6nMh74p0QViDOKmodI+3fIJlB2+B1F0wqA4DYwhYhbi/hM7rJvmwFddPKjj8tvdPbw=
+X-Gm-Gg: AYBFou0o6qPl85Q1HDrR+5udI4+FeKPDpppPngvnDyPqbBOAcVvfV+Rp2MGlbNqkV2q
+	wkTFS27aCvK/xKe/DnEl6Xo1xzuoFTagQKSa4II12rceS+oVj65+g1ZzJiXnHqmz4bpHZgawiZ4
+	977KwOM3BqpL0kTyRU3d0wank6pe7IC4QBL4q1Tuk5QITLq7rvCd6lhmstd3BGw4DXxnVeFVs6r
+	ERM3zBwrGau1JQAE6sZLKSJi58lPaciQpi7u9ZC2sQYrdgNBtlPnSnAQzyfL1xKLAPW5oVABoFU
+	+khY2P3HGUt/rXSdMoDsAEgjOtj9GkfB4jTGGvYBR+Z1qY2KNh6HzTtG+CZDQEy8vwCUrejsZzC
+	Efs7oJtNwk8UI49UI7g/RX+5PoRsnmRF6dqTaaS+lSe7lLI98r/51qLDPcqo0jxj48YDhnC1hme
+	gwyT3gSkf+BOLvJi4tGJQ+o6ldj3juiw8Es2o5GNqD2gchXtVIMWT686Yrd4SvOe+cULsRvjxPg
+	X+UoLyjd93OguSViFXxoZ16HHmeRnRVk4dOYSrC6xdKVe23LLoQBUq0OXt+GcHSGAmYTBlGR5vF
+	41wVDszgFjndRGWEpyJltIRecofrtml26BmMG589ar+YZgeg474zXUYLasjFXbyuZ4UH+Bg=
+X-Received: by 2002:a05:7301:4283:b0:36c:c434:b6b8 with SMTP id 5a478bee46e88-36f7681bb02mr7877247eec.26.1794077088158;
+        Sat, 07 Nov 2026 10:44:48 -0800 (PST)
 Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.55
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa8c4f28dsm17286897eec.9.2026.11.07.10.44.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 10:44:56 -0800 (PST)
+        Sat, 07 Nov 2026 10:44:47 -0800 (PST)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -105,9 +105,9 @@ Cc: netdev@vger.kernel.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [RFC PATCH net-next 7/9] netdevsim: add a TX reference provider for AMT relay offload
-Date: Sat,  7 Nov 2026 18:44:35 +0000
-Message-ID: <20261107184437.2783174-8-omar@blockcast.net>
+Subject: [RFC PATCH net-next 3/9] amt: offload group object, desired state and reconciler
+Date: Sat,  7 Nov 2026 18:44:31 +0000
+Message-ID: <20261107184437.2783174-4-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261107184437.2783174-1-omar@blockcast.net>
 References: <20261107184437.2783174-1-omar@blockcast.net>
@@ -122,964 +122,1585 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Each PF port offers itself as an AMT relay replication offload provider
-(include/net/amt_offload.h) for relays whose stream device it is. It is
-not a pass-through to amt's software fan-out: the port keeps its own
-endpoint and group tables, with a staged and a committed member set per
-group under the generation amt gave it, and decides from those which
-endpoints get a copy of each packet amt hands to ->xmit. Each copy is
-encapsulated by amt_offload_encap_xmit() and sent out of the port to its
-peer, so any divergence between amt's desired state and what the
-provider committed shows up as a wrong copy count at the peer. The set
-committed before the last one is kept for packets already in flight,
-and an endpoint stays allocated while a set names it.
+One group object per (family, group) carries its members (the gateway
+endpoints joined to it), a generation and hw_active. Desired state
+changes under a leaf bh spinlock: the first gnode of a group on a
+tunnel adds the tunnel's endpoint as a member, the last removes it,
+and a tunnel's unlink removes it from every group at once.
+Forwarding stays per (family, group) and never per source, exactly as
+the software fan-out: a gateway holding INCLUDE(S1) still receives S2.
 
-debugfs (ports/<n>/amt/) shows the tables and counters and injects the
-failures the contract has to survive: busy (xmit returns BUSY),
-fail_commit (group_commit returns -ENOSPC), max_endpoints (endpoint_add
-returns -ENOSPC), stall_ms (every programming op sleeps, so amt sees it
-overrun op_timeout_ms and resets) and op_timeout_ms (advertised at
-bind).
+A reconciler in process context, never under amt->lock or a tunnel lock,
+converges the provider to desired state: endpoint_add for new endpoints,
+group_update and group_commit at the group's generation, then hw_active;
+group_disable for emptied groups and endpoint_del for unused endpoints
+once no committed group can name them. Each endpoint counts the
+committed groups naming it, so its deletion does not wait for every
+dirty group to be reprogrammed. A pass starts no new group once it has
+spent offload_op_budget ops (default 1000, an estimate), so it can
+overrun the budget by one group's ops; if the budget left no room for
+one, it still makes one endpoint_del, so a group re-dirtied on every
+pass cannot starve endpoint collection. The pass that gives everything
+back once desired state is lost is not budgeted. Changes between passes
+coalesce into one update per group. A group the provider refuses is
+served by software and retried with hysteresis (once the provider holds
+an eighth fewer objects), after a reset or on a new binding; its
+endpoints stay programmed. An op overrunning op_timeout_ms flushes the
+provider, bumps the epoch and replays from desired state; a result from
+an older epoch is ignored. A pass ends at a reset and at a teardown, and
+checks for teardown before every endpoint_add, group_update,
+group_commit and endpoint_del. A teardown under RTNL therefore waits out
+at most one of those ops plus the cleanup it triggers or the pass has
+already queued: a flush after an overrun, the group_disable that parks a
+group it could not program, the group_disable calls for groups the pass
+emptied, and, on the pass that gives everything back once desired state
+is lost, the rest of that release. The group_disable and endpoint_del
+calls that give everything back are timed too: the first to overrun
+flushes the provider once and the remaining handles are forgotten, so a
+wedged provider costs one op plus one flush, with no replay and no new
+epoch (at teardown, unbind follows). The overrun is sampled as the
+provider call returns, so amt's own bookkeeping is not charged to it.
 
-The provider owns its devlink objects, registered on netdevsim's own
-devlink instance, not amt's: resources amt/endpoints, amt/groups,
-amt/members and amt/cmdq, and an "amt" health reporter reported on
-every flush (amt's reset). amt registers nothing on devlink.
+The endpoint and group tables are sized once from max_tunnels and
+max_tunnels * max_groups respectively, and hashed with the device's
+hash_seed: gateways choose their groups and ports. Removing a member
+withdraws its group from hardware at once (hw_active), so no packet
+admitted after that is replicated to the departed endpoint; software
+serves the group until the reconciler commits the new member set, and
+hw_active is published only if no member was removed since the snapshot
+the commit was built from. A join meanwhile does not withhold it: the
+committed set is a subset that names no departed endpoint. A group
+re-created for an emptied group's key waits, within the pass, for the
+old provider object's group_disable, so a provider never holds two
+groups for one key. Parking a group that holds a provider object always
+waits out ops->xmit, since removing a member clears hw_active with no
+grace period. The table size is clamped in 64 bits before
+order_base_2(), which would truncate the product on 32-bit.
 
-Moving a netdev to another netns unregisters it there first, which
-makes amt forget its provider; the port offers itself again once it is
-registered in the new netns.
-
-TX only: netdevsim has no ingress classifier to simulate the ingress
-path with.
+Binding replays desired state; teardown takes the reconciler mutex to
+cancel programming, then gives every group and endpoint back in the
+documented order. Desired state is freed at ndo_uninit, after the
+tunnels. amt_tunnel_unlink() now carries the unlink that
+amt_tunnel_expire() and amt_dev_stop() each open-coded, so the hook
+runs on both. Software mode allocates nothing and runs no hook.
 
 Assisted-by: LLM
 Signed-off-by: Omar Ramadan <omar@blockcast.net>
 ---
- drivers/net/Kconfig               |   1 +
- drivers/net/netdevsim/Makefile    |   4 +
- drivers/net/netdevsim/amt.c       | 600 ++++++++++++++++++++++++++++++
- drivers/net/netdevsim/dev.c       |  68 ++++
- drivers/net/netdevsim/health.c    |  28 +-
- drivers/net/netdevsim/netdev.c    |  19 +-
- drivers/net/netdevsim/netdevsim.h |  27 ++
- 7 files changed, 744 insertions(+), 3 deletions(-)
- create mode 100644 drivers/net/netdevsim/amt.c
+ drivers/net/amt.c         | 1166 +++++++++++++++++++++++++++++++++++--
+ include/net/amt.h         |   35 +-
+ include/net/amt_offload.h |   74 ++-
+ 3 files changed, 1225 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index fda19ae4b..6e45d2fa0 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -625,6 +625,7 @@ config NETDEVSIM
- 	depends on INET
- 	depends on PSAMPLE || PSAMPLE=n
- 	depends on PTP_1588_CLOCK_MOCK || PTP_1588_CLOCK_MOCK=n
-+	depends on AMT || AMT=n
- 	select NET_DEVLINK
- 	select PAGE_POOL
- 	select NET_SHAPER
-diff --git a/drivers/net/netdevsim/Makefile b/drivers/net/netdevsim/Makefile
-index 87718204f..eec03812a 100644
---- a/drivers/net/netdevsim/Makefile
-+++ b/drivers/net/netdevsim/Makefile
-@@ -25,3 +25,7 @@ endif
- ifneq ($(CONFIG_MACSEC),)
- netdevsim-objs += macsec.o
- endif
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 034221e1c..17337989a 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -7,6 +7,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/udp.h>
+ #include <linux/jhash.h>
++#include <linux/hashtable.h>
+ #include <linux/if_tunnel.h>
+ #include <linux/net.h>
+ #include <linux/igmp.h>
+@@ -33,6 +34,8 @@
+ #include <net/inet_dscp.h>
+ #include <net/ip6_checksum.h>
+ 
++#include <kunit/static_stub.h>
 +
-+ifneq ($(CONFIG_AMT),)
-+netdevsim-objs += amt.o
-+endif
-diff --git a/drivers/net/netdevsim/amt.c b/drivers/net/netdevsim/amt.c
-new file mode 100644
-index 000000000..ffb9aa4e7
---- /dev/null
-+++ b/drivers/net/netdevsim/amt.c
-@@ -0,0 +1,600 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* netdevsim: TX reference provider for AMT relay replication offload.
-+ *
-+ * Each PF port registers itself as a provider for relays that transmit
-+ * on it (include/net/amt_offload.h). The port keeps its OWN endpoint and
-+ * group tables, with a staged and a committed member set per group under
-+ * the generation amt gave it, and decides replication from them: a packet
-+ * amt hands to ->xmit is copied to the endpoints of the committed set of
-+ * that generation, each copy encapsulated by amt_offload_encap_xmit() and
-+ * sent out of this port to its peer. Any divergence between what amt
-+ * wants and what the provider committed shows up at the peer as a wrong
-+ * copy count. TX only: netdevsim has no ingress classifier to simulate.
-+ *
-+ * debugfs, per port, under ports/<n>/amt/:
-+ *   tables         the provider's endpoints and groups, read-only
-+ *   tx_copies, tx_busy, tx_stale_gen, tx_dropped, commits, flushes
-+ *                  counters, read-only
-+ *   busy           xmit returns BUSY
-+ *   fail_commit    group_commit fails with -ENOSPC
-+ *   max_endpoints  endpoint_add fails with -ENOSPC beyond this (0: none)
-+ *   stall_ms       every programming op sleeps this long first
-+ *   op_timeout_ms  advertised to amt at bind (0: no limit)
-+ *
-+ * devlink, per device: resources amt/{endpoints,groups,members,cmdq} and
-+ * the "amt" health reporter, reported on every flush (amt's reset).
+ static struct workqueue_struct *amt_wq;
+ 
+ static HLIST_HEAD(source_gc_list);
+@@ -304,6 +307,19 @@ static void amt_destroy_source(struct amt_source_node *snode)
+ 	spin_unlock_bh(&source_gc_lock);
+ }
+ 
++/* Offload desired-state hooks, defined with the rest of the offload code.
++ * Each is a no-op on a relay in software mode.
 + */
++static void amt_ofl_member_add(struct amt_dev *amt,
++			       struct amt_tunnel_list *tunnel,
++			       const union amt_addr *group, bool v6);
++static void amt_ofl_member_del(struct amt_dev *amt,
++			       struct amt_tunnel_list *tunnel,
++			       const union amt_addr *group, bool v6);
++static void amt_ofl_tunnel_gone(struct amt_dev *amt,
++				struct amt_tunnel_list *tunnel);
++static void amt_ofl_state_free(struct amt_dev *amt);
 +
-+#include <linux/debugfs.h>
-+#include <linux/delay.h>
-+#include <linux/netdevice.h>
-+#include <linux/rculist.h>
-+#include <linux/refcount.h>
-+#include <linux/seq_file.h>
-+#include <linux/skbuff.h>
-+#include <net/amt_offload.h>
-+#include <net/devlink.h>
+ static void amt_del_group(struct amt_dev *amt, struct amt_group_node *gnode)
+ {
+ 	struct amt_source_node *snode;
+@@ -315,6 +331,8 @@ static void amt_del_group(struct amt_dev *amt, struct amt_group_node *gnode)
+ 	rhltable_remove(&amt->groups_rhl, &gnode->rhlnode, amt_gnode_params);
+ 	list_del(&gnode->tunnel_node);
+ 	gnode->tunnel_list->nr_groups--;
++	amt_ofl_member_del(amt, gnode->tunnel_list, &gnode->group_addr,
++			   gnode->v6);
+ 
+ 	if (!gnode->v6)
+ 		netdev_dbg(amt->dev, "Leave group %pI4\n",
+@@ -569,6 +587,7 @@ static struct amt_group_node *amt_add_group(struct amt_dev *amt,
+ 	}
+ 	list_add(&gnode->tunnel_node, &tunnel->groups);
+ 	tunnel->nr_groups++;
++	amt_ofl_member_add(amt, tunnel, group, v6);
+ 
+ 	if (!gnode->v6)
+ 		netdev_dbg(amt->dev, "Join group %pI4\n",
+@@ -1542,6 +1561,17 @@ static void amt_clear_groups(struct amt_tunnel_list *tunnel)
+ 	spin_unlock_bh(&tunnel->lock);
+ }
+ 
++/* Unlink @tunnel from the relay. Caller holds amt->lock, or RTNL with the
++ * device stopping (amt_dev_stop). The groups stay until amt_clear_groups.
++ */
++static void amt_tunnel_unlink(struct amt_dev *amt,
++			      struct amt_tunnel_list *tunnel)
++{
++	list_del_rcu(&tunnel->list);
++	amt->nr_tunnels--;
++	amt_ofl_tunnel_gone(amt, tunnel);
++}
 +
-+#include "netdevsim.h"
+ static void amt_tunnel_expire(struct work_struct *work)
+ {
+ 	struct amt_tunnel_list *tunnel = container_of(to_delayed_work(work),
+@@ -1551,8 +1581,7 @@ static void amt_tunnel_expire(struct work_struct *work)
+ 
+ 	spin_lock_bh(&amt->lock);
+ 	rcu_read_lock();
+-	list_del_rcu(&tunnel->list);
+-	amt->nr_tunnels--;
++	amt_tunnel_unlink(amt, tunnel);
+ 	amt_clear_groups(tunnel);
+ 	rcu_read_unlock();
+ 	spin_unlock_bh(&amt->lock);
+@@ -3445,8 +3474,7 @@ static int amt_dev_stop(struct net_device *dev)
+ 	amt->remote_ip = 0;
+ 
+ 	list_for_each_entry_safe(tunnel, tmp, &amt->tunnel_list, list) {
+-		list_del_rcu(&tunnel->list);
+-		amt->nr_tunnels--;
++		amt_tunnel_unlink(amt, tunnel);
+ 		cancel_delayed_work_sync(&tunnel->gc_wq);
+ 		amt_clear_groups(tunnel);
+ 		kfree_rcu(tunnel, rcu);
+@@ -3996,6 +4024,7 @@ static void amt_dev_uninit(struct net_device *dev)
+ 	/* amt_dev_stop() has removed every tunnel and its groups. */
+ 	rhltable_destroy(&amt->groups_rhl);
+ 	gro_cells_destroy(&amt->gro_cells);
++	amt_ofl_state_free(amt);
+ }
+ 
+ static const struct net_device_ops amt_netdev_ops = {
+@@ -4054,20 +4083,141 @@ struct amt_offload_provider {
+ 	struct rcu_head			rcu;
+ };
+ 
+-/* One provider-owned handle amt must give back on teardown. */
+-struct amt_offload_ref {
+-	struct list_head		node;
+-	void				*handle;
+-};
+-
+ struct amt_offload_bound {
+ 	struct amt_offload_binding	pub;
+ 	const struct amt_offload_ops	*ops;
+ 	struct amt_offload_caps		caps;
+ 	/* Cleared first on teardown; ops->xmit is only called while set. */
+ 	bool				admitting;
+-	struct list_head		groups;		/* amt_offload_ref */
+-	struct list_head		endpoints;	/* amt_offload_ref */
++};
 +
-+struct amt_offload_endpoint {
-+	struct list_head		node;	/* nsim_amt_bind.eps */
++/* Desired state and its reconciler.
++ *
++ *   amt_add_group / amt_del_group      tunnel unlink
++ *   (first / last gnode of a group)    (every group of the tunnel)
++ *                 |                              |
++ *                 v                              v
++ *   +-- desired state, st->lock (bh, a leaf) -------------------------+
++ *   |  grp (family, group) --< member (grp, tunnel) >-- ep (addr,port) |
++ *   |  a member change bumps grp->gen and queues grp on st->dirty      |
++ *   +------------------------------------------------------------------+
++ *                 |  st->work, process context
++ *                 v
++ *   reconciler, st->mutex, never under amt->lock or a tunnel lock:
++ *     per dirty grp: endpoint_add each new ep, group_update(gen),
++ *     group_commit(gen), then publish hw_gen and hw_active; a grp
++ *     with no members is disabled; then unused eps get endpoint_del
++ *                 |
++ *                 v
++ *   provider tables; amt_dev_xmit reads grp->hw_active and hw_gen
++ *
++ * A tick starts no new group once st->budget ops are spent, so one
++ * group may overrun it by its own ops, and endpoint GC runs one
++ * endpoint_del past it when the budget left none, so a group re-dirtied
++ * on every tick cannot starve collection. Changes that land between ticks
++ * coalesce: a group is queued at most once and programmed at its latest
++ * generation. A group whose programming fails is parked and served by
++ * software (the remainder); parked groups are retried only when the
++ * provider holds an eighth fewer objects than when it refused one
++ * (hysteresis), after a reset, or on a new binding. A programming, gone
++ * or GC op overrunning op_timeout_ms resets the provider (flush) and
++ * replays every group from desired state under a new epoch; a result
++ * from an older epoch is ignored. A release op that overruns while amt
++ * gives everything back (teardown, or desired state lost) flushes once
++ * and forgets the remaining handles, with no new epoch and no replay.
++ * Only the reconciler frees grp and ep records, so it may use them
++ * without st->lock between ops.
++ *
++ * Forwarding is per (family, group) and never per source, exactly as the
++ * software fan-out in amt_dev_xmit: a gateway with an INCLUDE(S1)
++ * membership still receives S2. AMT_OFFLOAD_F_SOURCE_FILTER has no v1
++ * meaning.
++ */
++/* Both tables are sized once, from the caps, at state allocation: eps
++ * from max_tunnels, grps from max_tunnels * max_groups. Neither cap has a
++ * changelink, so a load factor of about one holds without a resize; the
++ * upper bound only matters past 64k entries.
++ */
++#define AMT_OFL_HASH_MIN_BITS	4
++#define AMT_OFL_HASH_MAX_BITS	16
++
++/* Default ops per reconciler tick. [estimated]: not measured on hardware. */
++static unsigned int amt_offload_op_budget = 1000;
++module_param_named(offload_op_budget, amt_offload_op_budget, uint, 0444);
++MODULE_PARM_DESC(offload_op_budget,
++		 "Offload programming ops per reconciler tick (default 1000)");
++
++enum amt_ofl_grp_state {
++	AMT_OFL_IDLE,
++	AMT_OFL_DIRTY,		/* on st->dirty */
++	AMT_OFL_PARKED,		/* on st->parked: served by software */
++};
++
++struct amt_ofl_ep {
++	struct hlist_node		hnode;		/* st->eps */
++	struct list_head		gc_node;	/* st->ep_gc */
 +	struct amt_offload_endpoint_key	key;
-+	/* One for amt's handle (all endpoint_add calls for the key), one per
-+	 * member set naming it: an in-flight packet may still be copied to
-+	 * an endpoint amt already deleted.
-+	 */
-+	refcount_t			refs;
-+	u32				adds;
-+	atomic64_t			copies;
-+	struct rcu_head			rcu;
++	u32				refs;		/* members using it */
++	u32				committed;	/* committed grps naming it */
++	bool				on_gc;
++	/* Reconciler-owned, under st->mutex. */
++	struct list_head		hw_node;	/* st->hw_eps */
++	struct amt_offload_endpoint	*hw;
 +};
 +
-+struct nsim_amt_set {
-+	u64				gen;
-+	u32				n;
-+	struct rcu_head			rcu;
-+	struct amt_offload_endpoint	*eps[] __counted_by(n);
-+};
-+
-+struct amt_offload_group {
-+	struct list_head		node;	/* nsim_amt_bind.grps */
++struct amt_ofl_grp {
++	struct hlist_node		hnode;		/* st->grps, RCU */
++	struct list_head		q_node;	/* st->dirty or st->parked */
 +	struct amt_offload_group_key	key;
-+	struct nsim_amt_set		*staged;
-+	/* Committed last, and the one before it for packets in flight. */
-+	struct nsim_amt_set __rcu	*cur;
-+	struct nsim_amt_set __rcu	*prev;
++	struct list_head		members;
++	u32				nr_members;
++	u8				state;
++	u64				gen;		/* desired */
++	u32				left;		/* members removed */
++	/* Reconciler-owned, under st->mutex; the data path reads hw and
++	 * hw_gen once it has read hw_active true (acquire).
++	 */
++	struct list_head		hw_node;	/* st->hw_grps */
++	struct amt_offload_group	*hw;
++	/* The endpoints the last successful group_commit named; each counts
++	 * in its ep->committed, under st->lock.
++	 */
++	struct amt_ofl_ep		**ceps;
++	u32				nr_ceps;
++	u64				hw_gen;
++	bool				hw_active;
 +	struct rcu_head			rcu;
 +};
 +
-+struct nsim_amt_bind {
-+	struct list_head		node;	/* nsim_amt.binds */
-+	struct amt_offload_binding	*b;
-+	struct list_head		eps;
-+	struct list_head		grps;
-+	u32				nr_eps;
++struct amt_ofl_member {
++	struct list_head		grp_node;	/* grp->members */
++	struct hlist_node		tun_node;	/* tunnel->offload_members */
++	struct amt_ofl_grp		*grp;
++	struct amt_ofl_ep		*ep;
++	u32				gnodes;	/* the tunnel's gnodes for grp */
 +};
 +
-+struct nsim_amt {
-+	struct netdevsim		*ns;
-+	struct mutex			lock;	/* binds and their tables */
-+	struct list_head		binds;
-+	struct dentry			*ddir;
-+	bool				busy;
-+	bool				fail_commit;
-+	u32				max_endpoints;
-+	u32				stall_ms;
-+	u32				op_timeout_ms;
-+	u64				commits;
-+	u64				flushes;
-+	atomic64_t			tx_copies;
-+	atomic64_t			tx_busy;
-+	atomic64_t			tx_stale_gen;
-+	atomic64_t			tx_dropped;
-+};
-+
-+#define nsim_amt_deref(nam, p) \
-+	rcu_dereference_protected(p, lockdep_is_held(&(nam)->lock))
-+
-+static struct nsim_amt *nsim_amt_of(struct amt_offload_binding *b)
++struct amt_offload_state {
++	struct amt_dev			*amt;
++	/* Desired state, written from the softirq decap path. */
++	spinlock_t			lock;
++	struct hlist_head		*grps;		/* RCU */
++	struct hlist_head		*eps;
++	u32				grp_bits;
++	u32				ep_bits;
++	struct list_head		dirty;
++	struct list_head		parked;
++	struct list_head		ep_gc;
++	bool				desync;
++	/* Reconciler. bind and teardown also take the mutex. */
++	struct mutex			mutex;
++	struct work_struct		work;
++	struct list_head		hw_grps;
++	struct list_head		hw_eps;
++	u32				hw_objs;
++	bool				enospc;
++	u32				enospc_at;
++	u32				budget;
+ };
+ 
+ static LIST_HEAD(amt_offload_providers);
+@@ -4146,21 +4296,948 @@ amt_offload_tx_admit(struct amt_dev *amt)
+ 	return b && READ_ONCE(b->admitting) ? b : NULL;
+ }
+ 
+-/* Record a handle the provider handed back; the later reconciler is the
+- * production caller.
++static void amt_ofl_grp_key(struct amt_offload_group_key *key,
++			    const union amt_addr *group, bool v6)
 +{
-+	struct netdevsim *ns = netdev_priv(b->lower);
-+
-+	return ns->amt;
-+}
-+
-+/* Every programming op runs inside one of these: cmdq occupancy, and the
-+ * injected stall that makes amt see an op overrun op_timeout_ms.
-+ */
-+static struct nsim_amt *nsim_amt_op_begin(struct amt_offload_binding *b)
-+{
-+	struct nsim_amt *nam = nsim_amt_of(b);
-+	u32 stall = READ_ONCE(nam->stall_ms);
-+
-+	atomic_inc(&nam->ns->nsim_dev->amt.cmdq);
-+	if (stall)
-+		msleep(stall);
-+	mutex_lock(&nam->lock);
-+	return nam;
-+}
-+
-+static void nsim_amt_op_end(struct nsim_amt *nam)
-+{
-+	mutex_unlock(&nam->lock);
-+	atomic_dec(&nam->ns->nsim_dev->amt.cmdq);
-+}
-+
-+static void nsim_amt_ep_put(struct amt_offload_endpoint *ep)
-+{
-+	if (refcount_dec_and_test(&ep->refs))
-+		kfree_rcu(ep, rcu);
-+}
-+
-+static void nsim_amt_set_free_rcu(struct rcu_head *head)
-+{
-+	struct nsim_amt_set *set = container_of(head, struct nsim_amt_set,
-+						rcu);
-+	u32 i;
-+
-+	for (i = 0; i < set->n; i++)
-+		nsim_amt_ep_put(set->eps[i]);
-+	kfree(set);
-+}
-+
-+static void nsim_amt_set_free(struct nsim_amt_set *set)
-+{
-+	if (set)
-+		call_rcu(&set->rcu, nsim_amt_set_free_rcu);
-+}
-+
-+static int nsim_amt_bind(struct amt_offload_binding *b,
-+			 struct amt_offload_caps *caps)
-+{
-+	struct nsim_amt *nam = nsim_amt_of(b);
-+	struct nsim_amt_bind *nb;
-+
-+	nb = kzalloc_obj(*nb, GFP_KERNEL);
-+	if (!nb)
-+		return -ENOMEM;
-+	nb->b = b;
-+	INIT_LIST_HEAD(&nb->eps);
-+	INIT_LIST_HEAD(&nb->grps);
-+	b->priv = nb;
-+
-+	caps->families = AMT_OFFLOAD_FAMILY_V4 | AMT_OFFLOAD_FAMILY_V6;
-+	caps->paths = BIT(AMT_OFFLOAD_PATH_TX);
-+	caps->op_timeout_ms = READ_ONCE(nam->op_timeout_ms);
-+	caps->max_endpoints = READ_ONCE(nam->max_endpoints);
-+
-+	mutex_lock(&nam->lock);
-+	list_add_tail(&nb->node, &nam->binds);
-+	mutex_unlock(&nam->lock);
-+	return 0;
-+}
-+
-+/* Drop every group and endpoint of @nb. Caller holds nam->lock; amt has
-+ * stopped submitting packets for this binding.
-+ */
-+static void nsim_amt_bind_clear(struct nsim_amt *nam, struct nsim_amt_bind *nb)
-+{
-+	struct nsim_dev *nsim_dev = nam->ns->nsim_dev;
-+	struct amt_offload_endpoint *ep, *et;
-+	struct amt_offload_group *g, *gt;
-+	struct nsim_amt_set *set;
-+
-+	list_for_each_entry_safe(g, gt, &nb->grps, node) {
-+		set = nsim_amt_deref(nam, g->cur);
-+		if (set)
-+			atomic_sub(set->n, &nsim_dev->amt.members);
-+		nsim_amt_set_free(set);
-+		nsim_amt_set_free(nsim_amt_deref(nam, g->prev));
-+		nsim_amt_set_free(g->staged);
-+		list_del(&g->node);
-+		atomic_dec(&nsim_dev->amt.groups);
-+		kfree_rcu(g, rcu);
-+	}
-+	list_for_each_entry_safe(ep, et, &nb->eps, node) {
-+		list_del(&ep->node);
-+		nb->nr_eps--;
-+		atomic_dec(&nsim_dev->amt.endpoints);
-+		nsim_amt_ep_put(ep);
-+	}
-+}
-+
-+static void nsim_amt_unbind(struct amt_offload_binding *b)
-+{
-+	struct nsim_amt *nam = nsim_amt_of(b);
-+	struct nsim_amt_bind *nb = b->priv;
-+
-+	mutex_lock(&nam->lock);
-+	/* Empty unless amt broke the teardown order; then free, not leak. */
-+	WARN_ON_ONCE(!list_empty(&nb->grps) || !list_empty(&nb->eps));
-+	nsim_amt_bind_clear(nam, nb);
-+	list_del(&nb->node);
-+	mutex_unlock(&nam->lock);
-+	kfree(nb);
-+}
-+
-+static bool nsim_amt_ep_key_eq(const struct amt_offload_endpoint_key *a,
-+			       const struct amt_offload_endpoint_key *b)
-+{
-+	if (a->family != b->family || a->port != b->port)
-+		return false;
-+	if (a->family == AF_INET6)
-+		return ipv6_addr_equal(&a->addr.ip6, &b->addr.ip6);
-+	return a->addr.ip4 == b->addr.ip4;
-+}
-+
-+static int nsim_amt_endpoint_add(struct amt_offload_binding *b,
-+				 const struct amt_offload_endpoint_key *key,
-+				 struct amt_offload_endpoint **epp)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+	struct nsim_amt_bind *nb = b->priv;
-+	struct amt_offload_endpoint *ep;
-+	int err = 0;
-+
-+	list_for_each_entry(ep, &nb->eps, node) {
-+		if (nsim_amt_ep_key_eq(&ep->key, key)) {
-+			ep->adds++;
-+			goto out;
-+		}
-+	}
-+	if (nam->max_endpoints && nb->nr_eps >= nam->max_endpoints) {
-+		err = -ENOSPC;
-+		goto unlock;
-+	}
-+	ep = kzalloc_obj(*ep, GFP_KERNEL);
-+	if (!ep) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
-+	ep->key = *key;
-+	refcount_set(&ep->refs, 1);
-+	ep->adds = 1;
-+	list_add_tail(&ep->node, &nb->eps);
-+	nb->nr_eps++;
-+	atomic_inc(&nam->ns->nsim_dev->amt.endpoints);
-+out:
-+	*epp = ep;
-+unlock:
-+	nsim_amt_op_end(nam);
-+	return err;
-+}
-+
-+static void nsim_amt_endpoint_del(struct amt_offload_binding *b,
-+				  struct amt_offload_endpoint *ep)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+	struct nsim_amt_bind *nb = b->priv;
-+
-+	if (!--ep->adds) {
-+		list_del(&ep->node);
-+		nb->nr_eps--;
-+		atomic_dec(&nam->ns->nsim_dev->amt.endpoints);
-+		nsim_amt_ep_put(ep);
-+	}
-+	nsim_amt_op_end(nam);
-+}
-+
-+static int nsim_amt_group_update(struct amt_offload_binding *b,
-+				 const struct amt_offload_group_key *key,
-+				 struct amt_offload_endpoint *const *members,
-+				 unsigned int nr_members, u64 gen,
-+				 struct amt_offload_group **grpp)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+	struct amt_offload_group *g = *grpp;
-+	struct nsim_amt_bind *nb = b->priv;
-+	struct nsim_amt_set *set;
-+	int err = 0;
-+	u32 i;
-+
-+	if (!g) {
-+		g = kzalloc_obj(*g, GFP_KERNEL);
-+		if (!g) {
-+			err = -ENOMEM;
-+			goto out;
-+		}
-+		g->key = *key;
-+		list_add_tail(&g->node, &nb->grps);
-+		atomic_inc(&nam->ns->nsim_dev->amt.groups);
-+		*grpp = g;
-+	}
-+	set = kzalloc(struct_size(set, eps, nr_members), GFP_KERNEL);
-+	if (!set) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+	set->n = nr_members;
-+	set->gen = gen;
-+	for (i = 0; i < nr_members; i++) {
-+		refcount_inc(&members[i]->refs);
-+		set->eps[i] = members[i];
-+	}
-+	nsim_amt_set_free(g->staged);
-+	g->staged = set;
-+out:
-+	nsim_amt_op_end(nam);
-+	return err;
-+}
-+
-+static int nsim_amt_group_commit(struct amt_offload_binding *b,
-+				 struct amt_offload_group *g, u64 gen)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+	struct nsim_dev *nsim_dev = nam->ns->nsim_dev;
-+	struct nsim_amt_set *cur, *prev;
-+	int err = 0;
-+
-+	if (nam->fail_commit) {
-+		err = -ENOSPC;
-+		goto out;
-+	}
-+	if (!g->staged || g->staged->gen != gen) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+	cur = nsim_amt_deref(nam, g->cur);
-+	prev = nsim_amt_deref(nam, g->prev);
-+	atomic_add(g->staged->n, &nsim_dev->amt.members);
-+	if (cur)
-+		atomic_sub(cur->n, &nsim_dev->amt.members);
-+	rcu_assign_pointer(g->prev, cur);
-+	rcu_assign_pointer(g->cur, g->staged);
-+	g->staged = NULL;
-+	nsim_amt_set_free(prev);
-+	nam->commits++;
-+out:
-+	nsim_amt_op_end(nam);
-+	return err;
-+}
-+
-+static void nsim_amt_group_disable(struct amt_offload_binding *b,
-+				   struct amt_offload_group *g)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+	struct nsim_amt_set *set;
-+
-+	set = nsim_amt_deref(nam, g->cur);
-+	if (set)
-+		atomic_sub(set->n, &nam->ns->nsim_dev->amt.members);
-+	nsim_amt_set_free(set);
-+	nsim_amt_set_free(nsim_amt_deref(nam, g->prev));
-+	nsim_amt_set_free(g->staged);
-+	list_del(&g->node);
-+	atomic_dec(&nam->ns->nsim_dev->amt.groups);
-+	kfree_rcu(g, rcu);
-+	nsim_amt_op_end(nam);
-+}
-+
-+/* Softirq, under rcu_read_lock(). Copies go to the committed set of @gen
-+ * only; a generation this provider never committed (or has already
-+ * retired) is declined, never guessed at.
-+ */
-+static enum amt_offload_result
-+nsim_amt_xmit(struct amt_offload_binding *b, struct amt_offload_group *g,
-+	      struct sk_buff *skb, u64 gen)
-+{
-+	struct nsim_amt *nam = nsim_amt_of(b);
-+	struct nsim_amt_set *set;
-+	u32 i;
-+
-+	if (READ_ONCE(nam->busy)) {
-+		atomic64_inc(&nam->tx_busy);
-+		return AMT_OFFLOAD_BUSY;
-+	}
-+	set = rcu_dereference(g->cur);
-+	if (!set || set->gen != gen) {
-+		set = rcu_dereference(g->prev);
-+		if (!set || set->gen != gen) {
-+			atomic64_inc(&nam->tx_stale_gen);
-+			return AMT_OFFLOAD_FALLBACK;
-+		}
-+	}
-+	for (i = 0; i < set->n; i++) {
-+		if (amt_offload_encap_xmit(b, &set->eps[i]->key, skb)) {
-+			atomic64_inc(&nam->tx_dropped);
-+			continue;
-+		}
-+		atomic64_inc(&set->eps[i]->copies);
-+		atomic64_inc(&nam->tx_copies);
-+	}
-+	consume_skb(skb);
-+	return AMT_OFFLOAD_CONSUMED;
-+}
-+
-+/* Called under amt's offload mutex, like every programming op: from
-+ * the reconciler with no other lock, or at teardown with RTNL held and,
-+ * when the port is being deleted, the devlink instance lock too. The
-+ * "amt" reporter has no .recover and no .dump (health.c), so reporting
-+ * it takes no devlink lock in either case.
-+ */
-+static void nsim_amt_flush(struct amt_offload_binding *b)
-+{
-+	struct nsim_amt *nam = nsim_amt_op_begin(b);
-+
-+	nsim_amt_bind_clear(nam, b->priv);
-+	nam->flushes++;
-+	nsim_amt_op_end(nam);
-+	devlink_health_report(nam->ns->nsim_dev->health.amt_reporter,
-+			      "amt reset: provider tables flushed", NULL);
-+}
-+
-+static const struct amt_offload_ops nsim_amt_ops = {
-+	.bind		= nsim_amt_bind,
-+	.unbind		= nsim_amt_unbind,
-+	.endpoint_add	= nsim_amt_endpoint_add,
-+	.endpoint_del	= nsim_amt_endpoint_del,
-+	.group_update	= nsim_amt_group_update,
-+	.group_commit	= nsim_amt_group_commit,
-+	.group_disable	= nsim_amt_group_disable,
-+	.xmit		= nsim_amt_xmit,
-+	.flush		= nsim_amt_flush,
-+};
-+
-+static void nsim_amt_show_ep(struct seq_file *m,
-+			     const struct amt_offload_endpoint_key *key)
-+{
-+	if (key->family == AF_INET6)
-+		seq_printf(m, "[%pI6c]:%u", &key->addr.ip6, ntohs(key->port));
-+	else
-+		seq_printf(m, "%pI4:%u", &key->addr.ip4, ntohs(key->port));
-+}
-+
-+static void nsim_amt_show_set(struct seq_file *m, const char *name,
-+			      const struct nsim_amt_set *set)
-+{
-+	u32 i;
-+
-+	if (!set)
++	memset(key, 0, sizeof(*key));
++#if IS_ENABLED(CONFIG_IPV6)
++	if (v6) {
++		key->family = AF_INET6;
++		key->group.ip6 = group->ip6;
 +		return;
-+	seq_printf(m, "  %s gen %llu members %u:", name, set->gen, set->n);
-+	for (i = 0; i < set->n; i++) {
-+		seq_putc(m, ' ');
-+		nsim_amt_show_ep(m, &set->eps[i]->key);
 +	}
-+	seq_putc(m, '\n');
++#endif
++	key->family = AF_INET;
++	key->group.ip4 = group->ip4;
 +}
 +
-+static int nsim_amt_tables_show(struct seq_file *m, void *unused)
++static void amt_ofl_ep_key(struct amt_offload_endpoint_key *key,
++			   const struct amt_dev *amt,
++			   const struct amt_tunnel_list *tunnel)
 +{
-+	struct nsim_amt *nam = m->private;
-+	struct amt_offload_endpoint *ep;
-+	struct amt_offload_group *g;
-+	struct nsim_amt_bind *nb;
++	memset(key, 0, sizeof(*key));
++	key->port = tunnel->source_port;
++#if IS_ENABLED(CONFIG_IPV6)
++	if (amt_v6(amt)) {
++		key->family = AF_INET6;
++		key->addr.ip6 = tunnel->addr.ip6;
++		return;
++	}
++#endif
++	key->family = AF_INET;
++	key->addr.ip4 = tunnel->addr.ip4;
++}
 +
-+	mutex_lock(&nam->lock);
-+	list_for_each_entry(nb, &nam->binds, node) {
-+		seq_printf(m, "binding %s epoch %llu\n", netdev_name(nb->b->dev),
-+			   nb->b->epoch);
-+		list_for_each_entry(ep, &nb->eps, node) {
-+			seq_puts(m, "endpoint ");
-+			nsim_amt_show_ep(m, &ep->key);
-+			seq_printf(m, " copies %llu\n",
-+				   atomic64_read(&ep->copies));
-+		}
-+		list_for_each_entry(g, &nb->grps, node) {
-+			if (g->key.family == AF_INET6)
-+				seq_printf(m, "group %pI6c\n", &g->key.group.ip6);
-+			else
-+				seq_printf(m, "group %pI4\n", &g->key.group.ip4);
-+			nsim_amt_show_set(m, "committed",
-+					  nsim_amt_deref(nam, g->cur));
-+			nsim_amt_show_set(m, "previous",
-+					  nsim_amt_deref(nam, g->prev));
-+			nsim_amt_show_set(m, "staged", g->staged);
++/* Keys are built zeroed, so memcmp() over the padding is sound. Seeded
++ * per device: gateways choose their groups and ports, so an unseeded hash
++ * lets them pile entries into one chain under st->lock.
++ */
++static u32 amt_ofl_hash(const struct amt_offload_state *st,
++			const void *key, size_t len, u32 bits)
++{
++	return hash_32(jhash(key, len, st->amt->hash_seed), bits);
++}
++
++static struct hlist_head *
++amt_ofl_grp_bucket(const struct amt_offload_state *st,
++		   const struct amt_offload_group_key *key)
++{
++	return &st->grps[amt_ofl_hash(st, key, sizeof(*key), st->grp_bits)];
++}
++
++static struct hlist_head *
++amt_ofl_ep_bucket(const struct amt_offload_state *st,
++		  const struct amt_offload_endpoint_key *key)
++{
++	return &st->eps[amt_ofl_hash(st, key, sizeof(*key), st->ep_bits)];
++}
++
++/* Caller holds st->lock, or rcu_read_lock() for the data path. */
++static struct amt_ofl_grp *
++amt_ofl_grp_find(struct amt_offload_state *st,
++		 const struct amt_offload_group_key *key)
++{
++	struct amt_ofl_grp *g;
++
++	hlist_for_each_entry_rcu(g, amt_ofl_grp_bucket(st, key), hnode,
++				 lockdep_is_held(&st->lock))
++		if (!memcmp(&g->key, key, sizeof(*key)))
++			return g;
++	return NULL;
++}
++
++static struct amt_ofl_ep *
++amt_ofl_ep_find(struct amt_offload_state *st,
++		const struct amt_offload_endpoint_key *key)
++{
++	struct amt_ofl_ep *ep;
++
++	hlist_for_each_entry(ep, amt_ofl_ep_bucket(st, key), hnode)
++		if (!memcmp(&ep->key, key, sizeof(*key)))
++			return ep;
++	return NULL;
++}
++
++/* Queue @g for the reconciler. A parked group stays parked, served by
++ * software, until its retry is due -- unless it lost its last member,
++ * which the reconciler must see to free it. Caller holds st->lock.
++ */
++static void amt_ofl_grp_dirty(struct amt_offload_state *st,
++			      struct amt_ofl_grp *g)
++{
++	if (g->state == AMT_OFL_DIRTY)
++		return;
++	if (g->state == AMT_OFL_PARKED) {
++		if (g->nr_members)
++			return;
++		list_del(&g->q_node);
++	}
++	list_add_tail(&g->q_node, &st->dirty);
++	g->state = AMT_OFL_DIRTY;
++}
++
++static void amt_ofl_kick(struct amt_offload_state *st)
++{
++	queue_work(system_unbound_wq, &st->work);
++}
++
++/* Desired state could not record a change. Hardware would forward to a
++ * stale member set, so the relay leaves offload for good: the data path
++ * stops consulting the provider, and the next reconciler pass gives every
++ * provider object back (group_disable, endpoint_del; the binding stays,
++ * with no unbind). Desync does not schedule that pass: a pass already
++ * queued or a later removal of a recorded member (by a leave, a timer or
++ * a tunnel removal) does, and a teardown gives everything back itself
++ * and unbinds. Caller holds st->lock.
++ */
++static void amt_ofl_desync(struct amt_offload_state *st)
++{
++	if (st->desync)
++		return;
++	WRITE_ONCE(st->desync, true);
++	amt_offload_count(st->amt, AMT_OFFLOAD_CNT_DESYNC);
++}
++
++/* The first gnode of (@group, @v6) on @tunnel makes the tunnel's
++ * endpoint a member; later ones only count. Caller holds tunnel->lock.
++ */
++static void amt_ofl_member_add(struct amt_dev *amt,
++			       struct amt_tunnel_list *tunnel,
++			       const union amt_addr *group, bool v6)
++{
++	struct amt_offload_state *st = amt->offload_st;
++	struct amt_ofl_grp *g, *new_g = NULL;
++	struct amt_ofl_ep *ep, *new_ep = NULL;
++	struct amt_offload_endpoint_key ekey;
++	struct amt_offload_group_key gkey;
++	struct amt_ofl_member *m;
++
++	if (!st)
++		return;
++	amt_ofl_grp_key(&gkey, group, v6);
++	spin_lock_bh(&st->lock);
++	if (st->desync)
++		goto out;
++	hlist_for_each_entry(m, &tunnel->offload_members, tun_node) {
++		if (!memcmp(&m->grp->key, &gkey, sizeof(gkey))) {
++			m->gnodes++;
++			goto out;
 +		}
 +	}
-+	mutex_unlock(&nam->lock);
-+	return 0;
++
++	g = amt_ofl_grp_find(st, &gkey);
++	if (!g) {
++		new_g = kzalloc_obj(*new_g, GFP_ATOMIC);
++		if (!new_g)
++			goto nomem;
++		g = new_g;
++		g->key = gkey;
++		INIT_LIST_HEAD(&g->members);
++		INIT_LIST_HEAD(&g->hw_node);
++	}
++	amt_ofl_ep_key(&ekey, amt, tunnel);
++	ep = amt_ofl_ep_find(st, &ekey);
++	if (!ep) {
++		new_ep = kzalloc_obj(*new_ep, GFP_ATOMIC);
++		if (!new_ep)
++			goto nomem;
++		ep = new_ep;
++		ep->key = ekey;
++		INIT_LIST_HEAD(&ep->hw_node);
++	}
++	m = kzalloc_obj(*m, GFP_ATOMIC);
++	if (!m)
++		goto nomem;
++
++	if (new_g)
++		hlist_add_head_rcu(&g->hnode, amt_ofl_grp_bucket(st, &gkey));
++	if (new_ep)
++		hlist_add_head(&ep->hnode, amt_ofl_ep_bucket(st, &ekey));
++	m->grp = g;
++	m->ep = ep;
++	m->gnodes = 1;
++	ep->refs++;
++	list_add_tail(&m->grp_node, &g->members);
++	hlist_add_head(&m->tun_node, &tunnel->offload_members);
++	g->nr_members++;
++	g->gen++;
++	amt_ofl_grp_dirty(st, g);
++	spin_unlock_bh(&st->lock);
++	amt_ofl_kick(st);
++	return;
++nomem:
++	/* One lost allocation takes the relay out of offload for good (see
++	 * amt_ofl_desync()). Rebuilding desired state from the tunnel walk
++	 * would avoid that, if GFP_ATOMIC failures ever show up here.
++	 */
++	kfree(new_g);
++	kfree(new_ep);
++	amt_ofl_desync(st);
++out:
++	spin_unlock_bh(&st->lock);
 +}
-+DEFINE_SHOW_ATTRIBUTE(nsim_amt_tables);
 +
-+static int nsim_amt_atomic64_get(void *data, u64 *val)
++/* The reconciler's member arrays: up to max_tunnels entries, so not one
++ * contiguous block.
++ */
++static void *amt_ofl_alloc_array(u32 n, size_t size)
 +{
-+	*val = atomic64_read(data);
-+	return 0;
-+}
-+DEFINE_DEBUGFS_ATTRIBUTE(nsim_amt_atomic64_fops, nsim_amt_atomic64_get,
-+			 NULL, "%llu\n");
-+
-+static void nsim_amt_debugfs_init(struct nsim_amt *nam)
-+{
-+	struct dentry *d;
-+
-+	d = debugfs_create_dir("amt", nam->ns->nsim_dev_port->ddir);
-+	nam->ddir = d;
-+	debugfs_create_file("tables", 0400, d, nam, &nsim_amt_tables_fops);
-+	debugfs_create_file("tx_copies", 0400, d, &nam->tx_copies,
-+			    &nsim_amt_atomic64_fops);
-+	debugfs_create_file("tx_busy", 0400, d, &nam->tx_busy,
-+			    &nsim_amt_atomic64_fops);
-+	debugfs_create_file("tx_stale_gen", 0400, d, &nam->tx_stale_gen,
-+			    &nsim_amt_atomic64_fops);
-+	debugfs_create_file("tx_dropped", 0400, d, &nam->tx_dropped,
-+			    &nsim_amt_atomic64_fops);
-+	debugfs_create_u64("commits", 0400, d, &nam->commits);
-+	debugfs_create_u64("flushes", 0400, d, &nam->flushes);
-+	debugfs_create_bool("busy", 0600, d, &nam->busy);
-+	debugfs_create_bool("fail_commit", 0600, d, &nam->fail_commit);
-+	debugfs_create_u32("max_endpoints", 0600, d, &nam->max_endpoints);
-+	debugfs_create_u32("stall_ms", 0600, d, &nam->stall_ms);
-+	debugfs_create_u32("op_timeout_ms", 0600, d, &nam->op_timeout_ms);
++#if IS_ENABLED(CONFIG_AMT_KUNIT_TEST)
++	KUNIT_STATIC_STUB_REDIRECT(amt_ofl_alloc_array, n, size);
++#endif
++	return kvmalloc_array(n, size, GFP_KERNEL);
 +}
 +
-+int nsim_amt_init(struct netdevsim *ns)
++static void amt_ofl_free_array(void *p)
 +{
-+	struct nsim_amt *nam;
++#if IS_ENABLED(CONFIG_AMT_KUNIT_TEST)
++	KUNIT_STATIC_STUB_REDIRECT(amt_ofl_free_array, p);
++#endif
++	kvfree(p);
++}
++
++/* @ep may be deleted once no member uses it and no committed group names
++ * it: queue it for endpoint GC. Caller holds st->lock.
++ */
++static void amt_ofl_ep_unused(struct amt_offload_state *st,
++			      struct amt_ofl_ep *ep)
++{
++	if (ep->refs || ep->committed || ep->on_gc)
++		return;
++	list_add_tail(&ep->gc_node, &st->ep_gc);
++	ep->on_gc = true;
++}
++
++/* @g's committed member set no longer reaches hardware: its provider
++ * object is disabled or flushed. Caller holds st->mutex.
++ */
++static void amt_ofl_grp_uncommit(struct amt_offload_state *st,
++				 struct amt_ofl_grp *g)
++{
++	struct amt_ofl_ep **ceps = g->ceps;
++	u32 i;
++
++	if (!ceps)
++		return;
++	spin_lock_bh(&st->lock);
++	for (i = 0; i < g->nr_ceps; i++) {
++		ceps[i]->committed--;
++		amt_ofl_ep_unused(st, ceps[i]);
++	}
++	g->ceps = NULL;
++	g->nr_ceps = 0;
++	spin_unlock_bh(&st->lock);
++	amt_ofl_free_array(ceps);
++}
++
++/* Caller holds st->lock. */
++static void amt_ofl_member_unlink(struct amt_offload_state *st,
++				  struct amt_ofl_member *m)
++{
++	struct amt_ofl_grp *g = m->grp;
++	struct amt_ofl_ep *ep = m->ep;
++
++	hlist_del(&m->tun_node);
++	list_del(&m->grp_node);
++	g->nr_members--;
++	g->gen++;
++	g->left++;
++	/* The committed member set still names this endpoint: stop handing
++	 * the group to hardware now, not when the reconciler recommits, so
++	 * no packet admitted after this is replicated to it. Software serves
++	 * the group meanwhile.
++	 */
++	WRITE_ONCE(g->hw_active, false);
++	amt_ofl_grp_dirty(st, g);
++	ep->refs--;
++	amt_ofl_ep_unused(st, ep);
++	kfree(m);
++}
++
++/* The last gnode of (@group, @v6) on @tunnel is gone: the endpoint
++ * leaves the group. Caller holds tunnel->lock.
++ */
++static void amt_ofl_member_del(struct amt_dev *amt,
++			       struct amt_tunnel_list *tunnel,
++			       const union amt_addr *group, bool v6)
++{
++	struct amt_offload_state *st = amt->offload_st;
++	struct amt_offload_group_key gkey;
++	struct amt_ofl_member *m;
++	bool kick = false;
++
++	if (!st)
++		return;
++	amt_ofl_grp_key(&gkey, group, v6);
++	spin_lock_bh(&st->lock);
++	hlist_for_each_entry(m, &tunnel->offload_members, tun_node) {
++		if (memcmp(&m->grp->key, &gkey, sizeof(gkey)))
++			continue;
++		if (!--m->gnodes) {
++			amt_ofl_member_unlink(st, m);
++			kick = true;
++		}
++		break;
++	}
++	spin_unlock_bh(&st->lock);
++	if (kick)
++		amt_ofl_kick(st);
++}
++
++/* @tunnel is torn down or unlinked: its endpoint leaves every group at
++ * once. The gnodes deleted afterwards find no member and do nothing.
++ * Caller holds amt->lock, or RTNL with the device stopping (amt_dev_stop).
++ */
++static void amt_ofl_tunnel_gone(struct amt_dev *amt,
++				struct amt_tunnel_list *tunnel)
++{
++	struct amt_offload_state *st = amt->offload_st;
++	struct amt_ofl_member *m;
++	struct hlist_node *tmp;
++	bool kick;
++
++	if (!st)
++		return;
++	spin_lock_bh(&st->lock);
++	kick = !hlist_empty(&tunnel->offload_members);
++	hlist_for_each_entry_safe(m, tmp, &tunnel->offload_members, tun_node)
++		amt_ofl_member_unlink(st, m);
++	spin_unlock_bh(&st->lock);
++	if (kick)
++		amt_ofl_kick(st);
++}
++
++/* Queue every group with members, parked ones included, for a full
++ * replay: on a new binding and after a reset.
++ */
++static void amt_ofl_requeue_all(struct amt_offload_state *st)
++{
++	struct amt_ofl_grp *g;
++	u32 bkt;
++
++	spin_lock_bh(&st->lock);
++	for (bkt = 0; bkt < 1U << st->grp_bits; bkt++) {
++		hlist_for_each_entry(g, &st->grps[bkt], hnode) {
++			if (g->state == AMT_OFL_PARKED) {
++				list_del(&g->q_node);
++				g->state = AMT_OFL_IDLE;
++			}
++			amt_ofl_grp_dirty(st, g);
++		}
++	}
++	st->enospc = false;
++	spin_unlock_bh(&st->lock);
++}
++
++/* Wait out every ops->xmit admitted before the caller cleared hw_active or
++ * admitting.
++ */
++static void amt_ofl_sync_net(void)
++{
++#if IS_ENABLED(CONFIG_AMT_KUNIT_TEST)
++	KUNIT_STATIC_STUB_REDIRECT(amt_ofl_sync_net);
++#endif
++	synchronize_net();
++}
++
++/* Forget every provider handle; the provider was flushed. Each group is
++ * unpublished too, so a later binding never sees hw_active over a NULL
++ * handle. Caller holds st->mutex.
++ */
++static void amt_ofl_hw_forget(struct amt_offload_state *st)
++{
++	struct amt_ofl_grp *g, *gt;
++	struct amt_ofl_ep *ep, *et;
++
++	list_for_each_entry_safe(g, gt, &st->hw_grps, hw_node) {
++		WRITE_ONCE(g->hw_active, false);
++		amt_ofl_grp_uncommit(st, g);
++		g->hw = NULL;
++		list_del_init(&g->hw_node);
++	}
++	list_for_each_entry_safe(ep, et, &st->hw_eps, hw_node) {
++		ep->hw = NULL;
++		list_del_init(&ep->hw_node);
++	}
++	st->hw_objs = 0;
++}
++
++/* An op issued at @t0 overran op_timeout_ms: the provider is wedged. */
++static bool amt_ofl_op_overran(struct amt_offload_bound *b, ktime_t t0)
++{
++	u32 tmo = b->caps.op_timeout_ms;
++
++#if IS_ENABLED(CONFIG_AMT_KUNIT_TEST)
++	KUNIT_STATIC_STUB_REDIRECT(amt_ofl_op_overran, b, t0);
++#endif
++	return tmo && ktime_ms_delta(ktime_get(), t0) > tmo;
++}
++
++/* Give every provider object back with group_disable and endpoint_del,
++ * groups first. A release op that overruns op_timeout_ms ends it: the
++ * provider is flushed once and the remaining handles are forgotten, so
++ * a wedged provider costs one op plus one flush, not one op per object,
++ * under RTNL at teardown. @quiesced: the caller already stopped
++ * admission and waited out ops->xmit. Caller holds st->mutex.
+  */
+-static int __maybe_unused amt_offload_track(struct list_head *list,
+-					    void *handle)
++static void amt_ofl_hw_release(struct amt_offload_state *st,
++			       struct amt_offload_bound *b, bool quiesced)
+ {
+-	struct amt_offload_ref *ref = kzalloc(sizeof(*ref), GFP_KERNEL);
++	struct amt_ofl_grp *g, *gt;
++	struct amt_ofl_ep *ep, *et;
++	bool overran;
++	ktime_t t0;
++
++	lockdep_assert_held(&st->mutex);
++	if (!quiesced && !list_empty(&st->hw_grps)) {
++		list_for_each_entry(g, &st->hw_grps, hw_node)
++			WRITE_ONCE(g->hw_active, false);
++		amt_ofl_sync_net();
++	}
++	list_for_each_entry_safe(g, gt, &st->hw_grps, hw_node) {
++		WRITE_ONCE(g->hw_active, false);
++		t0 = ktime_get();
++		b->ops->group_disable(&b->pub, g->hw);
++		overran = amt_ofl_op_overran(b, t0);
++		amt_ofl_grp_uncommit(st, g);
++		g->hw = NULL;
++		list_del_init(&g->hw_node);
++		if (overran)
++			goto wedged;
++	}
++	list_for_each_entry_safe(ep, et, &st->hw_eps, hw_node) {
++		t0 = ktime_get();
++		b->ops->endpoint_del(&b->pub, ep->hw);
++		overran = amt_ofl_op_overran(b, t0);
++		ep->hw = NULL;
++		list_del_init(&ep->hw_node);
++		if (overran)
++			goto wedged;
++	}
++	st->hw_objs = 0;
++	return;
++wedged:
++	b->ops->flush(&b->pub);
++	amt_ofl_hw_forget(st);
++	amt_offload_count(st->amt, AMT_OFFLOAD_CNT_RESET);
++}
++
++/* An op overran op_timeout_ms: the provider is treated as wedged. Stop
++ * forwarding through it, flush its tables, forget every handle, bump the
++ * epoch so anything it still returns is stale, and replay. Caller holds
++ * st->mutex.
++ */
++static void amt_ofl_reset(struct amt_offload_state *st,
++			  struct amt_offload_bound *b)
++{
++	struct amt_ofl_grp *g;
++
++	lockdep_assert_held(&st->mutex);
++	list_for_each_entry(g, &st->hw_grps, hw_node)
++		WRITE_ONCE(g->hw_active, false);
++	amt_ofl_sync_net();
++	b->ops->flush(&b->pub);
++	amt_ofl_hw_forget(st);
++	b->pub.epoch = ++st->amt->offload_epoch;
++	amt_offload_count(st->amt, AMT_OFFLOAD_CNT_RESET);
++	amt_ofl_requeue_all(st);
++}
++
++/* Completion check for an op issued under @epoch; @overran was sampled
++ * right after the provider call returned, so amt's own bookkeeping is not
++ * charged to the provider. False means its result must be ignored -- the
++ * op overran op_timeout_ms (the provider is reset here) or the epoch moved
++ * under it.
++ */
++static bool amt_ofl_op_done(struct amt_offload_state *st,
++			    struct amt_offload_bound *b, u64 epoch, bool overran)
++{
++	if (overran)
++		amt_ofl_reset(st, b);
++	if (b->pub.epoch == epoch)
++		return true;
++	amt_offload_count(st->amt, AMT_OFFLOAD_CNT_STALE);
++	return false;
++}
++
++/* Stop forwarding @g in hardware and free its provider object. The caller
++ * cleared hw_active and waited out ops->xmit, or the group never had it.
++ * Returns whether group_disable overran op_timeout_ms.
++ */
++static bool amt_ofl_grp_hw_free(struct amt_offload_state *st,
++				struct amt_offload_bound *b,
++				struct amt_ofl_grp *g)
++{
++	ktime_t t0 = ktime_get();
++	bool overran;
++
++	b->ops->group_disable(&b->pub, g->hw);
++	overran = amt_ofl_op_overran(b, t0);
++	amt_ofl_grp_uncommit(st, g);
++	g->hw = NULL;
++	list_del_init(&g->hw_node);
++	st->hw_objs--;
++	return overran;
++}
+ 
+-	if (!ref)
++/* Retry parked groups once the provider holds an eighth fewer objects
++ * than when it refused one. Refused with nothing programmed, only a
++ * reset or a new binding retries them. Caller holds st->mutex.
++ */
++static void amt_ofl_unpark(struct amt_offload_state *st)
++{
++	struct amt_ofl_grp *g, *t;
++
++	if (!st->enospc || !st->enospc_at ||
++	    st->hw_objs + max(st->enospc_at / 8, 1U) > st->enospc_at)
++		return;
++	spin_lock_bh(&st->lock);
++	list_for_each_entry_safe(g, t, &st->parked, q_node) {
++		list_del(&g->q_node);
++		g->state = AMT_OFL_IDLE;
++		amt_ofl_grp_dirty(st, g);
++	}
++	st->enospc = false;
++	spin_unlock_bh(&st->lock);
++}
++
++/* Programming @g failed: software serves it from now until a retry. Its
++ * endpoints stay programmed; they may serve other groups.
++ */
++static unsigned int amt_ofl_grp_park(struct amt_offload_state *st,
++				     struct amt_offload_bound *b,
++				     struct amt_ofl_grp *g)
++{
++	unsigned int ops = 0;
++
++	if (g->hw) {
++		/* Wait out ops->xmit even when hw_active already reads false:
++		 * amt_ofl_member_unlink() clears it from softirq with no grace
++		 * period, so a reader admitted before may still hold g->hw.
++		 */
++		WRITE_ONCE(g->hw_active, false);
++		amt_ofl_sync_net();
++		amt_ofl_grp_hw_free(st, b, g);
++		ops++;
++	}
++	if (!st->enospc) {
++		st->enospc = true;
++		st->enospc_at = st->hw_objs;
++	}
++	amt_offload_count(st->amt, AMT_OFFLOAD_CNT_SW_REMAINDER);
++	spin_lock_bh(&st->lock);
++	if (g->state == AMT_OFL_DIRTY && !g->nr_members) {
++		/* Emptied meanwhile: let the reconciler free it. */
++	} else {
++		if (g->state == AMT_OFL_DIRTY)
++			list_del(&g->q_node);
++		list_add_tail(&g->q_node, &st->parked);
++		g->state = AMT_OFL_PARKED;
++	}
++	spin_unlock_bh(&st->lock);
++	return ops;
++}
++
++/* Program @g at its current generation: add its endpoints that are not
++ * in hardware yet, stage the member set, commit, publish. Returns the
++ * ops spent. Caller holds st->mutex; @g is off every queue.
++ */
++static unsigned int amt_ofl_grp_program(struct amt_offload_state *st,
++					struct amt_offload_bound *b,
++					struct amt_ofl_grp *g)
++{
++	struct amt_offload_endpoint **hws = NULL;
++	struct amt_ofl_ep **eps = NULL;
++	struct amt_offload_group *hw;
++	struct amt_ofl_member *m;
++	unsigned int ops = 0;
++	u32 n, i;
++	ktime_t t0;
++	u64 epoch;
++	u32 left;
++	u64 gen;
 +	int err;
 +
-+	nam = kzalloc_obj(*nam, GFP_KERNEL);
-+	if (!nam)
-+		return -ENOMEM;
-+	nam->ns = ns;
-+	mutex_init(&nam->lock);
-+	INIT_LIST_HEAD(&nam->binds);
-+	nam->op_timeout_ms = 1000;
-+	nsim_amt_debugfs_init(nam);
-+
-+	rtnl_lock();
-+	ns->amt = nam;
-+	err = amt_offload_register(ns->netdev, &nsim_amt_ops);
-+	if (err)
-+		ns->amt = NULL;
-+	rtnl_unlock();
-+	if (err) {
-+		debugfs_remove_recursive(nam->ddir);
-+		mutex_destroy(&nam->lock);
-+		kfree(nam);
++	for (;;) {
++		spin_lock_bh(&st->lock);
++		n = g->nr_members;
++		spin_unlock_bh(&st->lock);
++		if (!n)
++			goto requeue;
++		eps = amt_ofl_alloc_array(n, sizeof(*eps));
++		hws = amt_ofl_alloc_array(n, sizeof(*hws));
++		if (!eps || !hws)
++			goto park;
++		spin_lock_bh(&st->lock);
++		if (g->nr_members == n)
++			break;
++		spin_unlock_bh(&st->lock);
++		/* Membership moved under the allocation. The next pass may
++		 * find none and leave through out:, which frees both again.
++		 */
++		amt_ofl_free_array(eps);
++		amt_ofl_free_array(hws);
++		eps = NULL;
++		hws = NULL;
 +	}
-+	return err;
++	i = 0;
++	list_for_each_entry(m, &g->members, grp_node)
++		eps[i++] = m->ep;
++	gen = g->gen;
++	left = g->left;
++	spin_unlock_bh(&st->lock);
++
++	if (g->hw && READ_ONCE(g->hw_active) && g->hw_gen == gen)
++		goto out;	/* a replay of what is already committed */
++
++	for (i = 0; i < n; i++) {
++		struct amt_offload_endpoint *ehw = NULL;
++
++		if (!eps[i]->hw) {
++			if (!READ_ONCE(b->admitting))
++				goto out;	/* teardown gives it all back */
++			epoch = b->pub.epoch;
++			t0 = ktime_get();
++			err = b->ops->endpoint_add(&b->pub, &eps[i]->key, &ehw);
++			ops++;
++			if (!amt_ofl_op_done(st, b, epoch, amt_ofl_op_overran(b, t0)))
++				goto out;	/* reset: replayed */
++			if (err)
++				goto park;
++			eps[i]->hw = ehw;
++			list_add_tail(&eps[i]->hw_node, &st->hw_eps);
++			st->hw_objs++;
++		}
++		hws[i] = eps[i]->hw;
++	}
++
++	if (!READ_ONCE(b->admitting))
++		goto out;
++	hw = g->hw;
++	epoch = b->pub.epoch;
++	t0 = ktime_get();
++	err = b->ops->group_update(&b->pub, &g->key, hws, n, gen, &hw);
++	ops++;
++	if (!amt_ofl_op_done(st, b, epoch, amt_ofl_op_overran(b, t0)))
++		goto out;
++	if (!g->hw && hw) {
++		g->hw = hw;
++		list_add_tail(&g->hw_node, &st->hw_grps);
++		st->hw_objs++;
++	}
++	if (err)
++		goto park;
++
++	if (!READ_ONCE(b->admitting))
++		goto out;
++	epoch = b->pub.epoch;
++	t0 = ktime_get();
++	err = b->ops->group_commit(&b->pub, g->hw, gen);
++	ops++;
++	if (!amt_ofl_op_done(st, b, epoch, amt_ofl_op_overran(b, t0)))
++		goto out;
++	if (err)
++		goto park;
++
++	/* Generation rule: packets submitted from here on carry @gen.
++	 * Release pairs with the acquire in amt_offload_tx(): a reader that
++	 * sees hw_active also sees hw and hw_gen. Publish only if no member
++	 * was removed since the snapshot: it is still in what was just
++	 * committed, and amt_ofl_member_unlink() already withdrew the group.
++	 * A join meanwhile does not hold the publication back: the committed
++	 * set is a subset that names no departed endpoint. Either change
++	 * re-queued @g; the next pass commits it.
++	 */
++	spin_lock_bh(&st->lock);
++	for (i = 0; i < n; i++)
++		eps[i]->committed++;
++	for (i = 0; i < g->nr_ceps; i++) {
++		g->ceps[i]->committed--;
++		amt_ofl_ep_unused(st, g->ceps[i]);
++	}
++	swap(g->ceps, eps);	/* out: frees the old set */
++	g->nr_ceps = n;
++	WRITE_ONCE(g->hw_gen, gen);
++	if (g->left == left)
++		smp_store_release(&g->hw_active, true);
++	spin_unlock_bh(&st->lock);
++	goto out;
++park:
++	ops += amt_ofl_grp_park(st, b, g);
++	goto out;
++requeue:
++	spin_lock_bh(&st->lock);
++	amt_ofl_grp_dirty(st, g);
++	spin_unlock_bh(&st->lock);
++out:
++	amt_ofl_free_array(eps);
++	amt_ofl_free_array(hws);
++	return ops;
 +}
 +
-+void nsim_amt_uninit(struct netdevsim *ns)
++/* Disable the unhashed groups on @gone: one grace period per flush, then
++ * disable. A group holds hw only while bound, so @b is set when any does.
++ */
++static void amt_ofl_gone_flush(struct amt_offload_state *st,
++			       struct amt_offload_bound *b,
++			       struct list_head *gone)
 +{
-+	struct nsim_amt *nam = ns->amt;
++	struct amt_ofl_grp *g, *gt;
++	u64 e;
 +
-+	if (!nam)
++	if (list_empty(gone))
 +		return;
-+	rtnl_lock();
-+	amt_offload_unregister(ns->netdev);
-+	ns->amt = NULL;
-+	rtnl_unlock();
-+	debugfs_remove_recursive(nam->ddir);
-+	mutex_destroy(&nam->lock);
-+	kfree(nam);
++	amt_ofl_sync_net();
++	list_for_each_entry_safe(g, gt, gone, q_node) {
++		list_del(&g->q_node);
++		/* A reset earlier in this flush or tick already flushed it. */
++		if (g->hw) {
++			e = b->pub.epoch;
++			amt_ofl_op_done(st, b, e, amt_ofl_grp_hw_free(st, b, g));
++		}
++		kfree_rcu(g, rcu);
++	}
 +}
 +
-+/* amt forgets a provider when its lower device is unregistered, and
-+ * moving a netdev to another netns unregisters it there first. Offer
-+ * the port again once it is registered in its new netns.
-+ */
-+static int nsim_amt_netdev_event(struct notifier_block *nb,
-+				 unsigned long event, void *ptr)
++/* Is a group with @key on @gone, its provider object still live? */
++static bool amt_ofl_gone_has(struct list_head *gone,
++			     const struct amt_offload_group_key *key)
 +{
-+	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct netdevsim *ns;
++	struct amt_ofl_grp *g;
 +
-+	if (event != NETDEV_REGISTER || !netdev_is_nsim(dev))
-+		return NOTIFY_DONE;
-+	ns = netdev_priv(dev);
-+	if (ns->amt)
-+		amt_offload_register(dev, &nsim_amt_ops);
-+	return NOTIFY_DONE;
++	list_for_each_entry(g, gone, q_node)
++		if (!memcmp(&g->key, key, sizeof(*key)))
++			return true;
++	return false;
 +}
 +
-+static struct notifier_block nsim_amt_notifier = {
-+	.notifier_call = nsim_amt_netdev_event,
-+};
-+
-+int nsim_amt_module_init(void)
++/* One reconciler tick. Returns true while work remains. */
++static bool amt_ofl_reconcile(struct amt_dev *amt)
 +{
-+	return register_netdevice_notifier(&nsim_amt_notifier);
++	struct amt_offload_state *st = amt->offload_st;
++	struct amt_ofl_grp *g;
++	struct amt_offload_bound *b;
++	LIST_HEAD(gone);
++	unsigned int spent = 0;
++	unsigned int budget;
++	struct amt_ofl_ep *ep;
++	bool gc_del = false;
++	u64 epoch = 0, e;
++	ktime_t t0;
++	bool more;
++
++	budget = max(READ_ONCE(st->budget), 1U);
++	mutex_lock(&st->mutex);
++	b = rcu_dereference_protected(amt->offload,
++				      lockdep_is_held(&st->mutex));
++	if (b && !READ_ONCE(b->admitting)) {
++		/* Teardown is under way and gives everything back. */
++		mutex_unlock(&st->mutex);
++		return false;
++	}
++	if (b && READ_ONCE(st->desync)) {
++		amt_ofl_hw_release(st, b, false);
++		b = NULL;
++	}
++	if (b)
++		epoch = b->pub.epoch;
++
++	while (spent < budget) {
++		/* A teardown waiting on st->mutex holds RTNL, and a reset
++		 * replays everything anyway: end the pass at either, and let
++		 * the work re-kick, rather than spend the whole budget
++		 * against a provider that may be wedged.
++		 */
++		if (b && (!READ_ONCE(b->admitting) || b->pub.epoch != epoch))
++			break;
++		spin_lock_bh(&st->lock);
++		g = list_first_entry_or_null(&st->dirty, struct amt_ofl_grp,
++					     q_node);
++		if (!g) {
++			spin_unlock_bh(&st->lock);
++			break;
++		}
++		list_del(&g->q_node);
++		g->state = AMT_OFL_IDLE;
++		if (!g->nr_members) {
++			hlist_del_init_rcu(&g->hnode);
++			spin_unlock_bh(&st->lock);
++			if (g->hw) {
++				WRITE_ONCE(g->hw_active, false);
++				list_add_tail(&g->q_node, &gone);
++				spent++;
++			} else {
++				kfree_rcu(g, rcu);
++			}
++			continue;
++		}
++		spin_unlock_bh(&st->lock);
++		if (!b)
++			continue;
++		/* A rejoin of a group emptied earlier in this tick hashed a
++		 * new object for the same key while the old one's provider
++		 * group is still live: disable that one first, or the
++		 * provider would hold two groups for one (family, group).
++		 */
++		if (amt_ofl_gone_has(&gone, &g->key)) {
++			amt_ofl_gone_flush(st, b, &gone);
++			/* A reset in that flush requeued @g: replay it. */
++			if (b->pub.epoch != epoch)
++				break;
++		}
++		spent += amt_ofl_grp_program(st, b, g);
++	}
++
++	amt_ofl_gone_flush(st, b, &gone);
++
++	/* Unused endpoints: no member uses one and no committed group names
++	 * it (ep->committed), so it goes whatever is still dirty. At least
++	 * one endpoint_del per tick, or a group re-dirtied on every pass
++	 * would spend the budget and starve it.
++	 */
++	for (;;) {
++		if (b && !READ_ONCE(b->admitting))
++			break;
++		spin_lock_bh(&st->lock);
++		ep = spent < budget || !gc_del ?
++		     list_first_entry_or_null(&st->ep_gc, struct amt_ofl_ep,
++					      gc_node) : NULL;
++		if (!ep) {
++			spin_unlock_bh(&st->lock);
++			break;
++		}
++		list_del(&ep->gc_node);
++		ep->on_gc = false;
++		if (ep->refs || ep->committed) {
++			/* Queued again when both reach zero. */
++			spin_unlock_bh(&st->lock);
++			continue;
++		}
++		hlist_del_init(&ep->hnode);
++		spin_unlock_bh(&st->lock);
++		if (ep->hw) {
++			list_del_init(&ep->hw_node);
++			st->hw_objs--;
++			e = b->pub.epoch;
++			t0 = ktime_get();
++			b->ops->endpoint_del(&b->pub, ep->hw);
++			spent++;
++			gc_del = true;
++			amt_ofl_op_done(st, b, e, amt_ofl_op_overran(b, t0));
++		}
++		kfree(ep);
++	}
++
++	if (b)
++		amt_ofl_unpark(st);
++	spin_lock_bh(&st->lock);
++	more = !list_empty(&st->dirty) || !list_empty(&st->ep_gc);
++	spin_unlock_bh(&st->lock);
++	mutex_unlock(&st->mutex);
++	return more;
 +}
 +
-+void nsim_amt_module_exit(void)
++static void amt_ofl_work(struct work_struct *work)
 +{
-+	unregister_netdevice_notifier(&nsim_amt_notifier);
-+	rcu_barrier();	/* nsim_amt_set_free_rcu() is module text */
++	struct amt_offload_state *st = container_of(work,
++						    struct amt_offload_state,
++						    work);
++
++	if (amt_ofl_reconcile(st->amt))
++		amt_ofl_kick(st);
 +}
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index f00fc2f9e..7fcdb0d67 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -444,6 +444,69 @@ static void nsim_dev_port_debugfs_exit(struct nsim_dev_port *nsim_dev_port)
- 	debugfs_remove_recursive(nsim_dev_port->ddir);
++
++static int amt_ofl_state_alloc(struct amt_dev *amt)
++{
++	struct amt_offload_state *st;
++
++	st = kzalloc_obj(*st, GFP_KERNEL);
++	if (!st)
+ 		return -ENOMEM;
+-	ref->handle = handle;
+-	list_add_tail(&ref->node, list);
++	st->ep_bits = clamp_t(u32, order_base_2(amt->max_tunnels),
++			      AMT_OFL_HASH_MIN_BITS, AMT_OFL_HASH_MAX_BITS);
++	/* Clamp in 64 bits: order_base_2() takes an unsigned long, which
++	 * would truncate the product on a 32-bit kernel.
++	 */
++	st->grp_bits = clamp_t(u32, order_base_2(min_t(u64,
++					(u64)amt->max_tunnels * amt->max_groups,
++					1U << AMT_OFL_HASH_MAX_BITS)),
++			       AMT_OFL_HASH_MIN_BITS, AMT_OFL_HASH_MAX_BITS);
++	st->grps = kvcalloc(1U << st->grp_bits, sizeof(*st->grps), GFP_KERNEL);
++	st->eps = kvcalloc(1U << st->ep_bits, sizeof(*st->eps), GFP_KERNEL);
++	if (!st->grps || !st->eps) {
++		kvfree(st->grps);
++		kvfree(st->eps);
++		kfree(st);
++		return -ENOMEM;
++	}
++	st->amt = amt;
++	spin_lock_init(&st->lock);
++	INIT_LIST_HEAD(&st->dirty);
++	INIT_LIST_HEAD(&st->parked);
++	INIT_LIST_HEAD(&st->ep_gc);
++	mutex_init(&st->mutex);
++	INIT_WORK(&st->work, amt_ofl_work);
++	INIT_LIST_HEAD(&st->hw_grps);
++	INIT_LIST_HEAD(&st->hw_eps);
++	st->budget = READ_ONCE(amt_offload_op_budget);
++	amt->offload_st = st;
+ 	return 0;
  }
  
-+static u64 nsim_dev_amt_endpoints_occ_get(void *priv)
++/* ndo_uninit: every tunnel is gone and the binding with it, so nothing
++ * here is in hardware. Members are freed without touching their tunnels.
++ */
++static void amt_ofl_state_free(struct amt_dev *amt)
 +{
-+	return atomic_read(&((struct nsim_dev *)priv)->amt.endpoints);
-+}
++	struct amt_offload_state *st = amt->offload_st;
++	struct amt_ofl_member *m, *mt;
++	struct hlist_node *tmp;
++	struct amt_ofl_grp *g;
++	struct amt_ofl_ep *ep;
++	u32 bkt;
 +
-+static u64 nsim_dev_amt_groups_occ_get(void *priv)
-+{
-+	return atomic_read(&((struct nsim_dev *)priv)->amt.groups);
-+}
-+
-+static u64 nsim_dev_amt_members_occ_get(void *priv)
-+{
-+	return atomic_read(&((struct nsim_dev *)priv)->amt.members);
-+}
-+
-+static u64 nsim_dev_amt_cmdq_occ_get(void *priv)
-+{
-+	return atomic_read(&((struct nsim_dev *)priv)->amt.cmdq);
-+}
-+
-+static int
-+nsim_dev_amt_resources_register(struct devlink *devlink,
-+				const struct devlink_resource_size_params *p)
-+{
-+	static const struct {
-+		const char *name;
-+		u64 id;
-+		devlink_resource_occ_get_t *occ_get;
-+	} res[] = {
-+		{ "endpoints", NSIM_RESOURCE_AMT_ENDPOINTS,
-+		  nsim_dev_amt_endpoints_occ_get },
-+		{ "groups", NSIM_RESOURCE_AMT_GROUPS,
-+		  nsim_dev_amt_groups_occ_get },
-+		{ "members", NSIM_RESOURCE_AMT_MEMBERS,
-+		  nsim_dev_amt_members_occ_get },
-+		{ "cmdq", NSIM_RESOURCE_AMT_CMDQ, nsim_dev_amt_cmdq_occ_get },
-+	};
-+	int err, i;
-+
-+	if (!IS_ENABLED(CONFIG_AMT))
-+		return 0;
-+	err = devl_resource_register(devlink, "amt", (u64)-1,
-+				     NSIM_RESOURCE_AMT,
-+				     DEVLINK_RESOURCE_ID_PARENT_TOP, p);
-+	if (err) {
-+		pr_err("Failed to register AMT top resource\n");
-+		return err;
-+	}
-+	for (i = 0; i < ARRAY_SIZE(res); i++) {
-+		err = devl_resource_register(devlink, res[i].name, (u64)-1,
-+					     res[i].id, NSIM_RESOURCE_AMT, p);
-+		if (err) {
-+			pr_err("Failed to register AMT %s resource\n",
-+			       res[i].name);
-+			return err;
++	if (!st)
++		return;
++	cancel_work_sync(&st->work);
++	for (bkt = 0; bkt < 1U << st->grp_bits; bkt++) {
++		hlist_for_each_entry_safe(g, tmp, &st->grps[bkt], hnode) {
++			list_for_each_entry_safe(m, mt, &g->members, grp_node)
++				kfree(m);
++			amt_ofl_free_array(g->ceps);
++			kfree(g);
 +		}
-+		devl_resource_occ_get_register(devlink, res[i].id,
-+					       res[i].occ_get,
-+					       devlink_priv(devlink));
 +	}
-+	return 0;
++	for (bkt = 0; bkt < 1U << st->ep_bits; bkt++)
++		hlist_for_each_entry_safe(ep, tmp, &st->eps[bkt], hnode)
++			kfree(ep);
++	mutex_destroy(&st->mutex);
++	kvfree(st->grps);
++	kvfree(st->eps);
++	kfree(st);
++	amt->offload_st = NULL;
 +}
 +
- static int nsim_dev_resources_register(struct devlink *devlink)
+ static void amt_offload_set_carrier(struct amt_dev *amt, bool on)
  {
- 	struct devlink_resource_size_params params = {
-@@ -514,6 +577,11 @@ static int nsim_dev_resources_register(struct devlink *devlink)
- 		pr_err("Failed to register NEXTHOPS resource\n");
- 		goto err_out;
- 	}
-+
-+	/* AMT relay offload tables, owned by the ports' provider (amt.c) */
-+	err = nsim_dev_amt_resources_register(devlink, &params);
-+	if (err)
-+		goto err_out;
- 	return 0;
+ 	if (amt->offload_mode != AMT_OFFLOAD_MODE_REQUIRED)
+@@ -4191,10 +5268,10 @@ static int amt_offload_bind(struct amt_dev *amt,
+ 		return -ENOMEM;
+ 	b->pub.lower = p->lower;
+ 	b->pub.dev = amt->dev;
+-	b->pub.epoch = ++amt->offload_epoch;
+ 	b->ops = p->ops;
+-	INIT_LIST_HEAD(&b->groups);
+-	INIT_LIST_HEAD(&b->endpoints);
++	mutex_lock(&amt->offload_st->mutex);
++	b->pub.epoch = ++amt->offload_epoch;
++	mutex_unlock(&amt->offload_st->mutex);
  
- err_out:
-diff --git a/drivers/net/netdevsim/health.c b/drivers/net/netdevsim/health.c
-index 3bd0e7a48..f6bc6cb51 100644
---- a/drivers/net/netdevsim/health.c
-+++ b/drivers/net/netdevsim/health.c
-@@ -175,6 +175,16 @@ static const struct file_operations nsim_dev_health_break_fops = {
- 	.owner = THIS_MODULE,
+ 	err = b->ops->bind(&b->pub, &b->caps);
+ 	if (err) {
+@@ -4210,7 +5287,12 @@ static int amt_offload_bind(struct amt_dev *amt,
+ 	}
+ 
+ 	b->admitting = true;
++	mutex_lock(&amt->offload_st->mutex);
+ 	rcu_assign_pointer(amt->offload, b);
++	/* Replay desired state: every group is programmed afresh. */
++	amt_ofl_requeue_all(amt->offload_st);
++	mutex_unlock(&amt->offload_st->mutex);
++	amt_ofl_kick(amt->offload_st);
+ 	amt_offload_count(amt, AMT_OFFLOAD_CNT_BIND);
+ 	if (on_register)
+ 		amt_offload_count(amt, AMT_OFFLOAD_CNT_BIND_ON_REGISTER);
+@@ -4225,7 +5307,7 @@ static void amt_offload_teardown(struct amt_dev *amt,
+ 				 enum amt_offload_counter cnt)
+ {
+ 	struct amt_offload_bound *b = rtnl_dereference(amt->offload);
+-	struct amt_offload_ref *ref, *tmp;
++	struct amt_offload_state *st = amt->offload_st;
+ 
+ 	if (!b)
+ 		return;
+@@ -4234,21 +5316,14 @@ static void amt_offload_teardown(struct amt_dev *amt,
+ 	WRITE_ONCE(b->admitting, false);
+ 	synchronize_net();
+ 
+-	/* 2. Programming work is cancelled here once the reconciler exists
+-	 *    (next patch); nothing can program the provider past this point.
++	/* 2. Cancel programming: a reconciler tick holds st->mutex
++	 *    throughout, so taking it waits one out; a later tick finds
++	 *    admission stopped, then no binding, and programs nothing.
+ 	 */
++	mutex_lock(&st->mutex);
+ 
+ 	/* 3. Disable every group, then 4. delete every endpoint. */
+-	list_for_each_entry_safe(ref, tmp, &b->groups, node) {
+-		b->ops->group_disable(&b->pub, ref->handle);
+-		list_del(&ref->node);
+-		kfree(ref);
+-	}
+-	list_for_each_entry_safe(ref, tmp, &b->endpoints, node) {
+-		b->ops->endpoint_del(&b->pub, ref->handle);
+-		list_del(&ref->node);
+-		kfree(ref);
+-	}
++	amt_ofl_hw_release(st, b, true);
+ 
+ 	/* 5. Unbind, then 6. unpublish and let RCU readers drain. */
+ 	b->ops->unbind(&b->pub);
+@@ -4256,8 +5331,10 @@ static void amt_offload_teardown(struct amt_dev *amt,
+ 	synchronize_rcu();
+ 	kfree(b);
+ 
+-	/* 7. Software. */
++	/* 7. Software. Desired state stays for the next binding. */
+ 	amt->offload_epoch++;
++	mutex_unlock(&st->mutex);
++	amt_ofl_kick(st);
+ 	if (cnt < AMT_OFFLOAD_CNT_MAX) {
+ 		amt_offload_count(amt, cnt);
+ 		if (amt->offload_mode == AMT_OFFLOAD_MODE_REQUIRED) {
+@@ -4275,7 +5352,9 @@ int amt_offload_register(struct net_device *lower,
+ 
+ 	ASSERT_RTNL();
+ 	if (!lower || !ops || !ops->bind || !ops->unbind ||
+-	    !ops->group_disable || !ops->endpoint_del)
++	    !ops->endpoint_add || !ops->endpoint_del ||
++	    !ops->group_update || !ops->group_commit ||
++	    !ops->group_disable || !ops->flush)
+ 		return -EINVAL;
+ 	if (amt_offload_provider_find(lower))
+ 		return -EEXIST;
+@@ -4338,6 +5417,9 @@ static int amt_offload_attach(struct amt_dev *amt,
+ 	INIT_LIST_HEAD(&amt->offload_node);
+ 	if (amt->mode != AMT_MODE_RELAY)
+ 		return 0;
++	if (amt->offload_mode != AMT_OFFLOAD_MODE_SOFTWARE &&
++	    !amt->offload_st && amt_ofl_state_alloc(amt))
++		return -ENOMEM;
+ 	list_add_tail(&amt->offload_node, &amt_offload_devs);
+ 	if (amt->offload_mode == AMT_OFFLOAD_MODE_SOFTWARE)
+ 		return 0;
+@@ -4420,6 +5502,10 @@ AMT_OFFLOAD_CNT_ATTR(family_unsupported, AMT_OFFLOAD_CNT_FAMILY_UNSUPPORTED);
+ AMT_OFFLOAD_CNT_ATTR(teardown_lower, AMT_OFFLOAD_CNT_TEARDOWN_LOWER);
+ AMT_OFFLOAD_CNT_ATTR(teardown_provider, AMT_OFFLOAD_CNT_TEARDOWN_PROVIDER);
+ AMT_OFFLOAD_CNT_ATTR(required_unbound, AMT_OFFLOAD_CNT_REQUIRED_UNBOUND);
++AMT_OFFLOAD_CNT_ATTR(sw_remainder, AMT_OFFLOAD_CNT_SW_REMAINDER);
++AMT_OFFLOAD_CNT_ATTR(resets, AMT_OFFLOAD_CNT_RESET);
++AMT_OFFLOAD_CNT_ATTR(stale_completions, AMT_OFFLOAD_CNT_STALE);
++AMT_OFFLOAD_CNT_ATTR(desync, AMT_OFFLOAD_CNT_DESYNC);
+ 
+ static struct attribute *amt_offload_attrs[] = {
+ 	&dev_attr_offload_mode.attr,
+@@ -4431,6 +5517,10 @@ static struct attribute *amt_offload_attrs[] = {
+ 	&dev_attr_offload_teardown_lower.attr,
+ 	&dev_attr_offload_teardown_provider.attr,
+ 	&dev_attr_offload_required_unbound.attr,
++	&dev_attr_offload_sw_remainder.attr,
++	&dev_attr_offload_resets.attr,
++	&dev_attr_offload_stale_completions.attr,
++	&dev_attr_offload_desync.attr,
+ 	NULL,
  };
  
-+/* Reported by the AMT relay offload provider (amt.c) each time amt resets
-+ * it. Recovery is amt's own replay, so there is no .recover, and no .dump:
-+ * with neither, devlink_health_report() never takes the devlink instance
-+ * lock, which amt's ->flush() may not take (amt holds its offload mutex,
-+ * below rtnl, and the instance lock sits above rtnl).
-+ */
-+static const struct devlink_health_reporter_ops nsim_dev_amt_reporter_ops = {
-+	.name = "amt",
-+};
-+
- int nsim_dev_health_init(struct nsim_dev *nsim_dev, struct devlink *devlink)
- {
- 	struct nsim_dev_health *health = &nsim_dev->health;
-@@ -196,10 +206,21 @@ int nsim_dev_health_init(struct nsim_dev *nsim_dev, struct devlink *devlink)
- 		goto err_empty_reporter_destroy;
- 	}
- 
-+	if (IS_ENABLED(CONFIG_AMT)) {
-+		health->amt_reporter =
-+			devl_health_reporter_create(devlink,
-+						    &nsim_dev_amt_reporter_ops,
-+						    health);
-+		if (IS_ERR(health->amt_reporter)) {
-+			err = PTR_ERR(health->amt_reporter);
-+			goto err_dummy_reporter_destroy;
-+		}
-+	}
-+
- 	health->ddir = debugfs_create_dir("health", nsim_dev->ddir);
- 	if (IS_ERR(health->ddir)) {
- 		err = PTR_ERR(health->ddir);
--		goto err_dummy_reporter_destroy;
-+		goto err_amt_reporter_destroy;
- 	}
- 
- 	health->recovered_break_msg = NULL;
-@@ -213,6 +234,9 @@ int nsim_dev_health_init(struct nsim_dev *nsim_dev, struct devlink *devlink)
- 			    &health->fail_recover);
- 	return 0;
- 
-+err_amt_reporter_destroy:
-+	if (health->amt_reporter)
-+		devl_health_reporter_destroy(health->amt_reporter);
- err_dummy_reporter_destroy:
- 	devl_health_reporter_destroy(health->dummy_reporter);
- err_empty_reporter_destroy:
-@@ -226,6 +250,8 @@ void nsim_dev_health_exit(struct nsim_dev *nsim_dev)
- 
- 	debugfs_remove_recursive(health->ddir);
- 	kfree(health->recovered_break_msg);
-+	if (health->amt_reporter)
-+		devl_health_reporter_destroy(health->amt_reporter);
- 	devl_health_reporter_destroy(health->dummy_reporter);
- 	devl_health_reporter_destroy(health->empty_reporter);
- }
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index a75076891..4294c026d 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -1075,6 +1075,10 @@ static int nsim_init_netdevsim(struct netdevsim *ns)
- 	if (err)
- 		goto err_unregister_netdev;
- 
-+	err = nsim_amt_init(ns);
-+	if (err)
-+		goto err_psp_uninit;
-+
- 	if (IS_ENABLED(CONFIG_DEBUG_NET)) {
- 		ns->nb.notifier_call = netdev_debug_event;
- 		if (register_netdevice_notifier_dev_net(ns->netdev, &ns->nb,
-@@ -1084,6 +1088,8 @@ static int nsim_init_netdevsim(struct netdevsim *ns)
- 
- 	return 0;
- 
-+err_psp_uninit:
-+	nsim_psp_uninit(ns);
- err_unregister_netdev:
- 	rtnl_lock();
- 	peer = rtnl_dereference(ns->peer);
-@@ -1182,8 +1188,10 @@ void nsim_destroy(struct netdevsim *ns)
- 		unregister_netdevice_notifier_dev_net(ns->netdev, &ns->nb,
- 						      &ns->nn);
- 
--	if (nsim_dev_port_is_pf(ns->nsim_dev_port))
-+	if (nsim_dev_port_is_pf(ns->nsim_dev_port)) {
-+		nsim_amt_uninit(ns);
- 		nsim_psp_uninit(ns);
-+	}
- 
- 	rtnl_lock();
- 	peer = rtnl_dereference(ns->peer);
-@@ -1238,10 +1246,14 @@ static int __init nsim_module_init(void)
- {
- 	int err;
- 
--	err = nsim_dev_init();
-+	err = nsim_amt_module_init();
- 	if (err)
- 		return err;
- 
-+	err = nsim_dev_init();
-+	if (err)
-+		goto err_amt_exit;
-+
- 	err = nsim_bus_init();
- 	if (err)
- 		goto err_dev_exit;
-@@ -1256,6 +1268,8 @@ static int __init nsim_module_init(void)
- 	nsim_bus_exit();
- err_dev_exit:
- 	nsim_dev_exit();
-+err_amt_exit:
-+	nsim_amt_module_exit();
- 	return err;
- }
- 
-@@ -1264,6 +1278,7 @@ static void __exit nsim_module_exit(void)
- 	rtnl_link_unregister(&nsim_link_ops);
- 	nsim_bus_exit();
- 	nsim_dev_exit();
-+	nsim_amt_module_exit();
- }
- 
- module_init(nsim_module_init);
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index d909c4160..549afee0d 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -127,6 +127,8 @@ struct netdevsim {
- 		u32 assoc_cnt;
- 	} psp;
- 
-+	struct nsim_amt *amt;
-+
- 	struct nsim_bus_dev *nsim_bus_dev;
- 
- 	struct bpf_prog	*bpf_offloaded;
-@@ -232,6 +234,11 @@ enum nsim_resource_id {
- 	NSIM_RESOURCE_IPV6_FIB,
- 	NSIM_RESOURCE_IPV6_FIB_RULES,
- 	NSIM_RESOURCE_NEXTHOPS,
-+	NSIM_RESOURCE_AMT,
-+	NSIM_RESOURCE_AMT_ENDPOINTS,
-+	NSIM_RESOURCE_AMT_GROUPS,
-+	NSIM_RESOURCE_AMT_MEMBERS,
-+	NSIM_RESOURCE_AMT_CMDQ,
+diff --git a/include/net/amt.h b/include/net/amt.h
+index 7d70f30e6..0c746e4be 100644
+--- a/include/net/amt.h
++++ b/include/net/amt.h
+@@ -312,6 +312,11 @@ struct amt_tunnel_list {
+ 	struct rcu_head		rcu;
+ 	/* This tunnel's entries in amt->groups_rhl, under lock */
+ 	struct list_head	groups;
++	/* Offload desired state: one amt_ofl_member per group this tunnel
++	 * is joined to, under amt_offload_state.lock. Empty unless the
++	 * relay's offload mode is auto or required.
++	 */
++	struct hlist_head	offload_members;
  };
  
- enum nsim_port_resource_id {
-@@ -241,6 +248,7 @@ enum nsim_port_resource_id {
- struct nsim_dev_health {
- 	struct devlink_health_reporter *empty_reporter;
- 	struct devlink_health_reporter *dummy_reporter;
-+	struct devlink_health_reporter *amt_reporter;
- 	struct dentry *ddir;
- 	char *recovered_break_msg;
- 	u32 binary_len;
-@@ -351,6 +359,13 @@ struct nsim_dev {
- 	bool fail_reload;
- 	struct devlink_region *dummy_region;
- 	struct nsim_dev_health health;
-+	/* AMT relay offload tables of every port, for devlink resources */
-+	struct {
-+		atomic_t endpoints;
-+		atomic_t groups;
-+		atomic_t members;
-+		atomic_t cmdq;
-+	} amt;
- 	struct nsim_dev_hwstats hwstats;
- 	struct flow_action_cookie *fa_cookie;
- 	spinlock_t fa_cookie_lock; /* protects fa_cookie */
-@@ -472,6 +487,18 @@ nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext) {}
- int nsim_setup_tc(struct net_device *dev, enum tc_setup_type type,
- 		  void *type_data);
+ /* RFC 3810
+@@ -380,6 +385,7 @@ struct amt_events {
+ };
  
-+#if IS_ENABLED(CONFIG_AMT)
-+int nsim_amt_init(struct netdevsim *ns);
-+void nsim_amt_uninit(struct netdevsim *ns);
-+int nsim_amt_module_init(void);
-+void nsim_amt_module_exit(void);
-+#else
-+static inline int nsim_amt_init(struct netdevsim *ns) { return 0; }
-+static inline void nsim_amt_uninit(struct netdevsim *ns) {}
-+static inline int nsim_amt_module_init(void) { return 0; }
-+static inline void nsim_amt_module_exit(void) {}
-+#endif
+ struct amt_offload_bound;
++struct amt_offload_state;
+ 
+ /* Per-relay offload counters, exported under offload/ in sysfs. */
+ enum amt_offload_counter {
+@@ -399,6 +405,19 @@ enum amt_offload_counter {
+ 	AMT_OFFLOAD_CNT_TEARDOWN_PROVIDER,
+ 	/* a required-mode relay lost its provider and dropped carrier */
+ 	AMT_OFFLOAD_CNT_REQUIRED_UNBOUND,
++	/* a group could not be programmed and is served by software */
++	AMT_OFFLOAD_CNT_SW_REMAINDER,
++	/* an op overran op_timeout_ms: flush and replay from desired state
++	 * (a release op while amt gives everything back: flush only)
++	 */
++	AMT_OFFLOAD_CNT_RESET,
++	/* an op result arrived under an older epoch and was ignored; a
++	 * programming, gone or GC op that overran counts here too, since its
++	 * reset moved the epoch (a release op's flush does not move it)
++	 */
++	AMT_OFFLOAD_CNT_STALE,
++	/* desired state lost an update (allocation failure); software only */
++	AMT_OFFLOAD_CNT_DESYNC,
+ 	AMT_OFFLOAD_CNT_MAX,
+ };
+ 
+@@ -508,16 +527,24 @@ struct amt_dev {
+ 	struct socket		*stream_sock_v6;
+ 	atomic_t		upstream_setsockopt_slow_count;
+ 
+-	/* Replication offload (relay mode). Everything here is written
+-	 * under RTNL; offload is also read by the data path under RCU.
+-	 * offload_node links the relay into amt_offload_devs so a provider
+-	 * registering on its stream_dev can find it.
++	/* Replication offload (relay mode). offload_mode is set at newlink.
++	 * offload is written under RTNL and offload_st's mutex, and read by
++	 * the data path under RCU. offload_epoch is written under
++	 * offload_st's mutex: at bind and teardown with RTNL held too, and
++	 * by the reconciler, without RTNL, when it resets the provider.
++	 * offload_node, under RTNL, links the relay into amt_offload_devs so
++	 * a provider registering on its stream_dev can find it. offload_cnt
++	 * is atomic and bumped from any context.
+ 	 */
+ 	u32			offload_mode;
+ 	struct amt_offload_bound __rcu *offload;
+ 	struct list_head	offload_node;
+ 	u64			offload_epoch;
+ 	atomic_t		offload_cnt[AMT_OFFLOAD_CNT_MAX];
++	/* Desired state and reconciler; allocated at newlink in auto and
++	 * required mode, freed at ndo_uninit once every tunnel is gone.
++	 */
++	struct amt_offload_state *offload_st;
+ };
+ 
+ #define AMT_TOS			0xc0
+diff --git a/include/net/amt_offload.h b/include/net/amt_offload.h
+index 3be5d129c..b5c119851 100644
+--- a/include/net/amt_offload.h
++++ b/include/net/amt_offload.h
+@@ -179,10 +179,17 @@ struct amt_offload_stats {
+  *	been deleted or disabled. Free @b->priv. RTNL held.
+  * @endpoint_add: program one gateway endpoint. Idempotent: an identical
+  *	key returns the existing handle. 0 means accepted and durable, not yet
+- *	forwarding. Process context, never under amt's spinlocks.
+- * @endpoint_del: remove an endpoint no group references any more.
++ *	forwarding.
++ * @endpoint_del: remove an endpoint no committed group references any
++ *	more. amt only deletes endpoints once every group naming one has been
++ *	recommitted without it or disabled.
+  * @group_update: stage the member set of one group under generation @gen,
+- *	allocating *@grp on first use. Not forwarding until @group_commit.
++ *	allocating *@grp on first use (also on failure, if it allocated). On
++ *	any failure amt serves the group in software and disables *@grp if it
++ *	is set, a live group included. @members is valid only during the
++ *	call. Not forwarding until @group_commit. amt holds at most one group
++ *	per key per binding: a first use (*@grp NULL) never names a key whose
++ *	earlier group on this binding has not been disabled or flushed.
+  * @group_commit: start forwarding generation @gen of @grp. amt hands @gen
+  *	to @xmit only after this returns 0, and may never do so: an overrun
+  *	resets the provider, and on TX a member leaving meanwhile withholds
+@@ -190,9 +197,11 @@ struct amt_offload_stats {
+  *	@grp carries an earlier generation this provider committed, and a call
+  *	already in flight may carry any of those or @gen itself; the provider
+  *	serves such a generation or declines it. A provider must never emit
+- *	one packet to one endpoint under two generations. On failure the group
+- *	stays in software and previously added endpoints stay valid.
+- * @group_disable: stop forwarding @grp and free it.
++ *	one packet to one endpoint under two generations. On failure amt
++ *	disables the group and serves it in software; previously added
++ *	endpoints stay valid, since they may serve other groups.
++ * @group_disable: stop forwarding @grp and free it. amt has already
++ *	stopped submitting packets for @grp and waited out @xmit callers.
+  * @xmit: TX path. Replicate @skb for @grp under @gen or decline; see
+  *	&enum amt_offload_result. Softirq context, under rcu_read_lock().
+  * @flush: drop every endpoint and group (reset after a timeout). amt then
+@@ -237,15 +246,64 @@ struct amt_offload_ops {
+ 		      struct amt_offload_stats *st);
+ };
+ 
++/*
++ * Completion semantics. Every programming op (@endpoint_add,
++ * @endpoint_del, @group_update, @group_commit, @group_disable, @flush) is
++ * synchronous: amt calls it in process context, never under amt's
++ * spinlocks -- from one reconciler per relay, or with RTNL held when the
++ * binding is torn down -- so a provider may sleep in it but must not
++ * take RTNL. Return 0 means accepted and
++ * durable in the provider's tables. Nothing forwards before @group_commit
++ * returns 0. @xmit is only passed a generation for which @group_commit on
++ * that group returned 0, which can lag the one committed last (see
++ * @group_commit).
++ *
++ * An op that takes longer than &amt_offload_caps.op_timeout_ms (0: no
++ * limit) marks the provider wedged: amt stops submitting packets, calls
++ * @flush, forgets every handle, bumps &amt_offload_binding.epoch and
++ * replays every group from its own desired state. The exception is amt
++ * giving every object back (teardown, or desired state lost): there an
++ * overrunning @group_disable or @endpoint_del ends it with @flush, and the
++ * remaining handles are forgotten, with no new epoch and no replay. A
++ * result returned under an older epoch is ignored. After @flush the
++ * provider holds nothing for this binding; amt never passes it an older
++ * handle again.
++ *
++ * Cancellation is the teardown order on &struct amt_offload_ops. A
++ * reconciler pass running when a teardown starts finishes the op it is in
++ * and then makes no further @endpoint_add, @group_update, @group_commit or
++ * @endpoint_del, except that it may still call @flush (after an overrun),
++ * @group_disable (for a group it parks or found emptied) and, on a pass
++ * giving every object back once desired state is lost, the remaining
++ * @group_disable and @endpoint_del calls of that release.
++ *
++ * The reconciler starts no new group once a pass has spent the amt module
++ * parameter offload_op_budget (default 1000, an estimate) ops, and never
++ * splits a group's ops across passes, so a pass can overrun the budget by
++ * one group's ops. If the budget left no room for one, a pass still makes
++ * one @endpoint_del, so endpoint collection is never starved. The pass
++ * that gives every object back once desired state is lost is not
++ * budgeted. A group the provider refuses (-ENOSPC or any other error) is
++ * served by software and retried once the provider holds an eighth fewer
++ * objects than when it refused, after a reset, or on a new binding.
++ */
 +
- struct nsim_bus_dev {
- 	struct device dev;
- 	struct list_head list;
+ /**
+  * amt_offload_register - offer a provider for relays on @lower
+  * @lower: the netdev the relays transmit on.
+  * @ops: provider callbacks; must outlive the registration.
+  *
+  * Every relay already using @lower in auto or required mode tries to bind
+- * now. Caller holds RTNL.
++ * now. Caller holds RTNL. Every op but @stats and @xmit is required.
++ * Whether a provider offers %AMT_OFFLOAD_PATH_TX shows only in the caps
++ * @bind fills, so @xmit is not checked here. Without it, once @bind
++ * succeeds and the caps cover the relay's outer family, amt treats TX as
++ * not offered: a relay in required mode whose caps offer
++ * %AMT_OFFLOAD_PATH_INGRESS binds on the ingress path, and any other
++ * relay stays unbound (counted as path_unsupported).
+  *
+- * Return: 0, -EEXIST if @lower already has a provider, or -ENOMEM.
++ * Return: 0, -EINVAL if a required op is missing, -EEXIST if @lower
++ * already has a provider, or -ENOMEM.
+  */
+ int amt_offload_register(struct net_device *lower,
+ 			 const struct amt_offload_ops *ops);
 -- 
 2.43.0
 
