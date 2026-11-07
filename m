@@ -1,59 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794064585;
-	b=ceoWCc0ebmI7Mo2h7k9nIDDs3NJG8VmOJIn8z4SIu+nNUi+l3T0mLOO7QAYjMBlEAIJx
-	 dDUHOGaYgTXdFcdohWTFjwjVWmxM8r0yWclzecIdUDS4G9DMnEDNz4268IJJzJMd+wusW
-	 PCegYgmZ53S/Xo+ndFnebk0fev+G7r4ehP1QKTADCeyMfnKiLMDSWKlhWrtdosyB25u5n
-	 LKiF+x93OwYq6owNxLSiS1khhbBeiWSUF9CoyB7IZ9X/dQovTU7xxYAKvaoRVWTr3iznq
-	 k+/lT5c/A1ENG8hK5sQbU0sKBbUShmECWaMouZJZPgZ7n7FF/hxeUEOmtFsy/oL7CVA==
+	t=1794064989;
+	b=MTq7TEWwCEdE6ibyozNe14ct3w8BkbHgMDwMOska8CmPByrzLNiAzA/VTkTDIDlCbbc6
+	 2hps66yBvkmwDFxxOkMYZFDM5AKruE/TlGhilPkjPCFsN59g9bBsX/N/k6dLVSLRnU8mb
+	 jizc3fek0Giw0uoM+3EZn8Ghf5HZxSeutL1/euSRn/6pN/aXQB05gN02OeoaCi5xOusff
+	 BEl2Y5S+H750LAxRHACytS4qOP7DQ6+jbM3hrYX8wKMaInYeUCX+UxI/GEkHi8DdkRtzr
+	 4CE7HHGdiKwM5g1+5Um7U3AZ69YYZ6id7dKVB1nVeK08qSxEg30xP9v1KumvpTnn3fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794064585;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=fmTPVOyd1cQq/DQTsVIa0U0d4oxVcQ44aVcpPa+R3AU=;
-	b=Hqiesm+qacwq9MWM06DMfQ1R/Vlzawnu192gCfD/2jDpPedrpv5x6A7dP6X7aFxsapAN
-	 lfcgyI+TXwCvr1OxB89ehiMPEJuDQBQnJ78Fi5h6JVC2y6sMoxwXo1DcKHr5iUBFk30dk
-	 LNN9KLUvxOGgEtlERbvigh9M+rgdUaY8LHCGX46rJh9ztITxAJqyo9I2Vz0oe7pWc28Wi
-	 7R9K8c8/VvQAZypxdrItn4NCuo0+1HiOSBRfWG0dMa75NRJlPAjR+8y+/bUMVPwWde1JN
-	 DFi9o5lSHsx+JZwAyTUTyZluehoqZH1LdKEF/oX7T+rlkzf7v0B7ULWkWoD8tdLfwYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794064989;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:X-Mailer:
+	 Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
+	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=rmV/drJwFzjGVIpMrdq/RYdfM4Dnd81hhWt/4N/tmbU=;
+	b=vJgFahtAthJxytfWfILxqg7MH8VhwyGa9yDkKjPs5LPIRyRqjzqFszudo6z+Er+Tm8rr
+	 iKAgkpBAGVOu9p+rXDUShbTRtltVVOIWeIzjVrvxoqrkgoaVCu8PZl+hTxzxp12XuBYMW
+	 wX0AH6fduLkQJXDyNZajybW7F9CD96iByEAyx6eWgqgrK2u5uZEO7sWBtr7g9Mb/QBtCU
+	 L6EdY4HPQrpQlF04WTI3FZKHaOzASziyWd1Ol+s1a73Krg8Vuh43VLcIfh71+Pp9p23xZ
+	 m+w6o+KaxEnP0ZscAMUaFO9moti3MJTy/cpKWBEJHTjZDOEjwXM/Xr5JMTVXGp3gg7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIr3afK1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	arc=none smtp.remote-ip=183.62.165.209
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A61606A9C0;
-	Sat,  7 Nov 2026 15:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hIr3afK1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E683D1F008A1;
-	Sat,  7 Nov 2026 15:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794064584;
-	bh=fmTPVOyd1cQq/DQTsVIa0U0d4oxVcQ44aVcpPa+R3AU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hIr3afK1NEdfK2hUtPa73OpNAiYqypYV3mbFMFhq9F9bMZq6ANRoashrX79qOZqoW
-	 mH/iay2XCs1hRG/mRtvy7MQh9T8JJ+Og83+qGBUEBRJPOyV1pRwuBteWEp7tjOd5/0
-	 RPvNZPDkPTmSjUQAjsCsnru7Ns+IWwhCHJ4+qv/Va6S4IIO/RDYtUm/9sYcS1/aosY
-	 CwlycAC6Abmr8oTuE57AbdUNqpboa/vwnMWmuuUOSE67/YtHRvjVeXTLz4TctQpdBx
-	 v5OLDL0ke80B5y44JHtNhvKvHO4gbeDkFeDnWTgr1wmxQzD3Ki3iDXLyXRuWLTqXJp
-	 b4/U1CUOuZ2Og==
-Subject: Re: [PATCH net v3 2/2] net/sched: sch_teql: keep skb->dev consistent
- on the arp-queue path
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
-Date: Sat, 07 Nov 2026 15:16:23 +0000
-Message-ID: <179406458348.994134.6942745655171316289@kernel.org>
-In-Reply-To: <QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com>
-References: <QDISC-6HS9.v3.r0.20261103062649-2@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881E2606A9FC;
+	Sat,  7 Nov 2026 15:23:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 881E2606A9FC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jMKYc30Jdz51Sm4;
+	Sat, 07 Nov 2026 23:23:00 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 6A7FMutY052234;
+	Sat, 7 Nov 2026 23:22:56 +0800 (+08)
+	(envelope-from shao.mingyin@zte.com.cn)
+Received: from mapi (xaxapp04[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Sat, 7 Nov 2026 23:22:58 +0800 (CST)
+X-Zmail-TransId: 2afb6aef42527d1-331d1
+X-Mailer: Zmail v1.0
+Message-ID: <20261107232258297K0a2CCYzVIOXLNuYCYeq6@zte.com.cn>
+In-Reply-To: <willemdebruijn.kernel.703e96022339@gmail.com>
+References: 20261107215051120CrLjo_cGXWfdJxXk4ae8s@zte.com.cn,willemdebruijn.kernel.703e96022339@gmail.com
+Date: Sat, 7 Nov 2026 23:22:58 +0800 (CST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,138 +58,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+From: <shao.mingyin@zte.com.cn>
+To: <willemb@google.com>, <netdev@vger.kernel.org>, <davem@davemloft.net>,
+        <edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>
+Cc: <josef@toxicpanda.com>, <horms@kernel.org>, <almasrymina@google.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbmV0OiBza2J1ZmY6IGRvbid0IEJVRygpIHdoZW4gc2tiX2NvcHlfYml0cygpIGZhaWxzIGluIF9fcHNrYl9wdWxsX3RhaWw=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6A7FMutY052234
+X-TLS: YES
+X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Sat, 07 Nov 2026 23:23:00 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AEF4254.000/4jMKYc30Jdz51Sm4
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, Nov 07, 2026 at 10:04:25AM -0500, Willem de Bruijn wrote:
+> In the series, Josef reported
+>
+>   Two BUG_ON()s are left on purpose.  __pskb_pull_tail() and
+>   skb_pull_rcsum() have callers that can't otherwise fail, so they don't
+>   check the return.  Some of them would carry on and BUG() somewhere
+>   else, or push back a pull that never happened.  Those need their
+>   callers fixed first and will come as separate series.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Yes, and this is that separate series for __pskb_pull_tail();
+skb_pull_rcsum() is still untouched.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The return contract is not new.  __pskb_pull_tail() already returns NULL
+today when skb_frags_readable() is false or pskb_expand_head() fails; the
+patch only stops BUG()ing on the third failure, skb_copy_bits() failing on
+a frag_list child.  That failure returns before the commit block at the
+bottom, so the skb is left exactly as it was (apart from a possible head
+realloc) and there is no half-done pull to push back.
 
-- [Medium] The new gate in neigh_update_process_arp_queue()
-  (net/core/neighbour.c), `if (!n1->dev->header_ops) skb->dev =…
-- [Low] The comment added in neigh_update_process_arp_queue()
-  (net/core/neighbour.c), '/* headerless outputs (teql, shaper) transmit…
+Of the direct callers that ignore the return:
 
---
+- skb_condense() is the one that can reach it.  It runs on receive skbs
+  that can carry a frag_list, i.e. the GRO-merged skb from
+  skb_gro_receive() that the patch is about; it now checks the return and
+  keeps truesize.
 
-net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+- xen-netfront pulls pull_to - skb_headlen() only when nr_frags is already
+  MAX_SKB_FRAGS.  On failure nothing is committed, so nr_frags is still
+  MAX_SKB_FRAGS and the check right below drops the skb with -ENOENT.
+  That is the same path the existing NULL returns already take.
 
-The commit sets skb->dev to the teql slave before teql_resolve(). This
-means an skb parked on the slave's arp_queue no longer points at a master
-that teql_exit() can free on module unload. It also changes
-neigh_update_process_arp_queue() to set skb->dev to the top-level
-neighbour's device when that device has no header_ops, so the skb goes
-back through teql_master_xmit().
+- niu, mlx5 and ftmac100 cannot reach it: delta is bounded by
+  skb->data_len at the call site (niu caps the pull at sizeof(*rh) +
+  VLAN_ETH_HLEN, mlx5 clamps to skb->data_len, ftmac100 pulls ETH_HLEN or
+  the frame length), and their skbs are built from page frags only, never
+  with a frag_list child, so skb_copy_bits() cannot fail.
 
-Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
-Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel.org/
-Link: https://lore.kernel.org/netdev/20261031165925.780930-1-horms@kernel.org/
-Link: https://lore.kernel.org/netdev/179363700308.3131.11778179538290251434@kernel.org/
+skb_pull() propagates the same NULL as before; on the GRO path the
+protocol handlers get at the data through pskb_may_pull().  A length
+mismatch is a driver bug, and DEBUG_NET_WARN_ON_ONCE() reports it.
 
-> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index d6e9c7c59a892..541cf699abae4 100644
-> --- a/net/core/neighbour.c
-> +++ b/net/core/neighbour.c
-> @@ -1339,6 +1339,9 @@ static void neigh_update_process_arp_queue(struct neighbour *neigh)
->  			if (n2)
->  				n1 = n2;
->  		}
-> +		/* headerless outputs (teql, shaper) transmit on skb->dev */
-
-[Severity: Low]
-This isn't a bug, but the shaper driver is no longer in the tree. There
-is no entry for it in drivers/net/Makefile, and the older comment block
-just above also names it.
-
-Would it be clearer to name in-tree devices this gate is meant for, such
-as teql and eql?
-
-> +		if (!n1->dev->header_ops)
-> +			skb->dev = n1->dev;
-> +		READ_ONCE(n1->output)(n1, skb);
-
-[Severity: Medium]
-This gate is in generic neighbour code, and it doesn't check whether
-sch_teql parked the skb. n1 comes from the skb's retained dst via
-dst_neigh_lookup_skb().
-
-Can it fire for any skb parked on an arp_queue whose original route uses
-a device with NULL header_ops? Examples include ppp, geneve in L3 mode,
-vxlan when header_ops is NULL, rmnet, qmi_wwan, mhi_net, ipa, iosm,
-mhi_wwan_mbim, eql and teql.
-
-Two producers park skbs on another device's neighbour while keeping the
-original dst.
-
-The first is nft_fwd_neigh_eval(), which nft_fwd_validate() allows on
-NF_NETDEV_EGRESS:
-
-	ip_decrease_ttl(iph);
-	...
-	skb->dev = dev;
-	skb_clear_tstamp(skb);
-
-	nf_dev_xmit_recursion_inc();
-	neigh_xmit(neigh_table, dev, addr, skb);
-
-The second is bpf_redirect_neigh() with an explicit nexthop.
-__bpf_redirect_neigh_v4() replaces the dst only when nh == NULL:
-
-	if (!nh) {
-	...
-		skb_dst_drop(skb);
-		skb_dst_set(skb, &rt->dst);
-	}
-
-bpf_out_neigh_v4() then sets skb->dev to the target and calls
-neigh_output() with the old dst still attached.
-
-When the target device X's neighbour resolves, the drain takes this path
-(Y is the original route device):
-
-neigh_update_process_arp_queue()
-  dst_neigh_lookup_skb()  -> Y's neighbour (Y has no header_ops)
-  skb->dev = Y
-  neigh_direct_output()
-    dev_queue_xmit() on Y
-
-Does this run Y's egress hooks a second time? In __dev_queue_xmit(),
-nf_hook_egress() runs before nf_skip_egress(skb, true) is set, so the
-nft egress chain runs again. sch_handle_egress() and tc BPF also run
-again.
-
-For nft fwd, this would decrement TTL/hop_limit twice. A packet that
-reaches Y's egress with TTL 2 would then be dropped.
-
-Counters, quotas and limits would also be applied twice. A tc BPF program
-that encapsulates could encapsulate twice. If the second pass gives a
-different verdict, the packet would leave through Y and not through the
-device it was forwarded to.
-
-Before this patch these skbs went out X without a link header, which was
-also wrong. Running Y's egress hooks a second time is new, though.
-
-The commit message acknowledges this:
-
-  "Those forwards supply their own device and nexthop and do not consult
-  the retained dst, so dropping it at those two sites is where that is
-  fixed; that is a separate change to the producers, not part of this
-  series."
-
-The patch is tagged Cc: stable. Would stable trees get the new behaviour
-without the producer-side fix?
-
-Should the dst drop in nft_fwd_neigh_eval() and in the bpf_redirect_neigh()
-explicit nexthop path go in the same series as this change?
-
->  		if (n2)
->  			neigh_release(n2);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v3.r0.20261103062649%40mojatatu.com
+Thanks,
+Shao
