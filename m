@@ -1,80 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794178814;
-	b=oflLno98X03TKO3NBIxFxLrcz0R7G1v6/fB1Ccu9OGZ94VmfOFkFFs7ZzjL655maVu74
-	 FU2cOQnOIUqjsYV4SFOQ/Q34D3XKnD/r03TDqE1kq6S9qBqbYSc0Jt6E6AYy/7KSi1az8
-	 n0LKukTmYdLa018ddEnXhuSSOt/5bgybS2AEvfZjyC4m28PlUulLIHGFeuCkuhPm37XCm
-	 Z46MZ5nwe9uDxtM2Uf+4dNqluTKJrvg3fjryjzrRIJFyhBFSiuM7dxsYODzyIgM4+rGze
-	 H2l0Qwike2V2yHDbeA2lG1tdIyzFZ7unesIE2KDgyezfpywGeLmZTZRNK6Jgd9pADGQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794178814;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=bMP7j68x3PMM1IBkF2dBr6dlucgKTFleWZgyG10h8LI=;
-	b=RAYC6njrLDFs6gsybZDRjZbnXt+6OPvic5nDxBo64XGUsTT1orCsTz4dMnCcgZFULp4L
-	 bbtVgjIRwtFF3FiaABdgfvEifmhpG/NBb1MbYqo6gYWDhr+KfnDebI7mjqM5QHbISbUez
-	 JM31Rqedj+rnzPyKY6c5bW20ct3v0F7BGNDBMA/zjWqynJZoAm3DiZQeQt5GvWZoBVXY1
-	 5TOrwnvPxNnal+EXmObopeP3GOq5L9ABEBAhaQ9zvd1nMWeX09Pb9W7vivZeAoaqQ2+Ab
-	 QwmFgLAoMeyLxkNi6xYx4j/eXtYSwfb42wmpWRE26eKZRRWuJQsqN0yNTWrd2mgp4Ow==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BH1hjCrg;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794178922;
+	b=LYWgJQwtpsfLP6L+JY9Kd7CW2i291E447v/Gw05lGkDCf2Zso8BZM01a1l7884YAgoK4
+	 uouwu2J8fKYODn8R/R5m2KSEqwBlSQ9wgWcsrb846lAwEJv4mxw620NyINhOmCKhrRL76
+	 /+QEmq9b60U9AJqpU/gAoIsGtSeq/T74KvbEZ6btgH7gimUijAIZ5OEcMalvFiD/tJzc6
+	 QCny/8J0YY1bdriy4cyoPBga8xd3o8o+V0ZF1imGl/GgSGwGgW/nl4iUBU96Ysf7jR6Ei
+	 NktxPxuz7/2SQohml7N8geCBGzbUCxBB91B+uK1bqlBYebyQ1rH5yTTj12NRiRb+XAw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794178922;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=yM25/GugWtS5eYQw8jUKm3Ak+vyWwBY7qyUlPKTLzYI=;
+	b=IpeCd0vnb4wcA8/iNvtrZL9XkU4zeCd+aosdcU3mhqSeQ28DqAg5Lpm+IKzGVaWdePhV
+	 0RlSmyzJl2uKEC25v7V98YVL7uVzj3aGWavcDNDyIB85Wp6pjbFGd6m2d727j91IlDAuy
+	 uD+veb+0bhV8r94Ew5Rh0YGZNokPj2iCaoi/MWc7eCENKRX8YWJNW6TP+257bL8W/QJjR
+	 mUyi00p6HRgVCyO7KlFV+5CwHEDMFWTcw4r7O+hEbnz8YgTnOLWi4vMqh+x/n/0+J/KEt
+	 44lFGU5exnmgeviOQPM35/1/sH4P0DuRWosXdMegOG8xuewF2yZLcgYw0ohzCYu0cnA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZWzpTQX9;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091C5606A326;
-	Sun,  8 Nov 2026 23:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6785E606A33B;
+	Sun,  8 Nov 2026 23:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BH1hjCrg
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794178813;
-	b=jcxRdo5/3YqRBFVs113EhetbiVv6qLgvEcl9fT7Ab2RTq0DNGQVmVmfgk9/cIxnqogY2
-	 OwNKg9ESUNcAsjeIhJrEXeb42dEhT2KJNjYXraMDRgPvMvqaC7liHXnRbnzf2sR6zkcVN
-	 YX0yFt5FSnlzsQuzuMASW2yhQhmiVahvRINyw5+4qsGuh9mfgfT+J0oF0jCz0Iy9Jv4MY
-	 CWsD+C61X6Yo2e+V32EwcpuRiyZ3gM/HJCrhiczmPNiW5TZXFLHO/Xsj0AUpouJmOYOFb
-	 kpEgELCSUZ0GQU0uh3vYSRixMZaSI+x9aVUic8fh/p1KWaQcn1at8Wat+0QTQPt4o9g==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794178813;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=bMP7j68x3PMM1IBkF2dBr6dlucgKTFleWZgyG10h8LI=;
-	b=DM1Vl19v7fQmWhCSK8m3AwPowX9GFR1UaCO2lBO4D5IdxRv4GNgBJUeawZ068oV7wqvX
-	 vX7qKPS1L453blxAzE6oNb1etUph4biwIWGNIyZGOto2zB6AKxvktNIiJ2tjCU2rZBbNv
-	 soOhaOMwPfaVrKFcDV2VsnRbc4j8pGGUdCrlrffueYfR1e3fLN+7oQtrMU5TyrxvyeVgS
-	 KLVsL0plyY8EdLEpqV5yPj6KUebeWIc91VzYSjQYb1p2TPdVE1zX57ATdilRFI1o88CRC
-	 f0Y39OtOQAQr5zYQBABFdb2ZoFsnsJ/H2VG57w8B5/TjQzpKuDqr4v9R+RzqYbH+Ixw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2419B1F008A2;
-	Sun,  8 Nov 2026 23:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZWzpTQX9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C851F0089F;
+	Sun,  8 Nov 2026 23:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794178813;
-	bh=bMP7j68x3PMM1IBkF2dBr6dlucgKTFleWZgyG10h8LI=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=BH1hjCrgwrba9ntU2mT9kLaq9X2l4h+X4+ROtjo9YTisWDjcNuWIRAEEdSAC2+xYb
-	 wXfMdg7cHshSQSoNM5eY68b1BKnOqJXykph4bBt9hazOO+wZXM7/BhA77GFiWeaYMy
-	 cocoKNbcWmSlIcC1elCaglvBIlbecM0ILiFRr15SqktAuQzRNIEEUDNfyFdQnLVoGG
-	 QX5qannepa//8Mirj8dOw2uNbJJio5gp4zrexbcX/VOKeEHpAfo1gAUMZ3se4fHn7z
-	 0Mxt/Utj+9QGcWo5vRbqP80QYmiNNjHZe3jbPQB1N6rWNyptkbGtX4l5IofbvujsSN
-	 jShJdTUtGMKcg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A1D9D48153;
-	Sun,  8 Nov 2026 23:00:11 +0000 (UTC)
-From: Joseph Telaak via B4 Relay <devnull+joseph.telaak.dev@kernel.org>
-Subject: [PATCH net-next v2 0/2] net: dsa: mxl-gsw1xx: reset the switch
- through reset-gpios
-Date: Sun, 08 Nov 2026 17:59:49 -0500
-Message-Id: <20261108-mxl-gsw1xx-reset-v2-0-46c1da093893@telaak.dev>
+	s=k20260515; t=1794178922;
+	bh=yM25/GugWtS5eYQw8jUKm3Ak+vyWwBY7qyUlPKTLzYI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZWzpTQX9ntSJDElPFYuEJoalbwsUtLJ7oxrcLwQ9D2La0kIwTZWA9gvQbsENmc1cY
+	 EBFMLVz1cAczeF91P0Cf+jLG92iGZFUshIm0uG2mIFThm7LDanBMAGwN+rHkZ8RVHc
+	 K0zaARXg6P1cV5q7SXR/404pOxtn3xpEfHIHQo4BxzLl0FllIihmOnINaKBzIGSKvv
+	 a2xFMwjfJPoj11rBRYY9w5FwUyGj9O2FZxODVaH8nNTurMxkDZUtxsCEBGAg87h8PC
+	 GImDg+kU6KssGI+qOuq5Wst8/QWQolVvH6wrqZfZK9i1pOJ/5XjsHzWrYgJQsgMli0
+	 IR0UNEbHZlE6A==
+Subject: Re: [PATCH net v3 6/8] selftests: net: tun: test UDP tunnel GSO on
+ retyped devices
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, hassansultan@google.com,
+ virtualization@lists.linux.dev
+Date: Sun, 08 Nov 2026 23:02:01 +0000
+Message-ID: <179417892118.994134.13795421387066708306@kernel.org>
+In-Reply-To: <20261105115715.1466924-7-edumazet@kernel.org>
+References: <20261105115715.1466924-7-edumazet@kernel.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,85 +64,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOb+8GoC/2WNwRKCIBRFf8V562gE0qhV/9G4QHwqpdgAEY3jv
- 4fWruWde889Mzi0Gh2csxksBu30ZFJguwxUL02HRDcpA8tZSWnOyBgH0rkXjZFYdOgJP0oleFl
- z2iIk7GGx1XG7vIJJA4PRQ/Vt3LO+ofLr47rttfOTfW/2QDfiJzr8iwIlOSm44Ke6LZQQePE4S
- HnfNxigWpblA9vgvMPNAAAA
-X-Change-ID: 20261102-mxl-gsw1xx-reset-37ac836b31fe
-To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>, 
- Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Joseph Telaak <joseph@telaak.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794178811; l=2239;
- i=joseph@telaak.dev; s=20261104; h=from:subject:message-id;
- bh=f7rumqhBXVUbXmTQZIshRAFnkK32CNzOSjjgSSKpiR8=;
- b=QPAUW8a6ugRpkrJXJB0dpgxYkTIc00FbTxffLAyGFvXNzMo0+oOzQN6D7pmH7oGNVdOW5byIQ
- 9vzvn8KKZvODJte0VI1bitiTyaXrXpToT4D8bLxZliyOTdg7afkj0KT
-X-Developer-Key: i=joseph@telaak.dev; a=ed25519;
- pk=oQI+UfddlZ0wK2ac4WKOGNjUl1ZEN8j9ZVFSqEDoNP0=
-X-Endpoint-Received: by B4 Relay for joseph@telaak.dev/20261104 with
- auth_id=1404
-X-Original-From: Joseph Telaak <joseph@telaak.dev>
-Reply-To: joseph@telaak.dev
 
-The GSW1xx driver never resets the switch, and the MDIO core does not
-handle reset-gpios for non-PHY devices, so the driver works with whatever
-the bootloader configured. On the GL.iNet GL-SFT1200 (Siflower SF19A2890 +
-GSW150) the bootloader leaves the internal PHYs one MDIO address too high,
-and the WAN port has no PHY.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Patch 1 allows reset-gpios in the binding for the standalone switches.
-Patch 2 pulses it at probe.
+Low priority / nit picks for your consideration:
 
-This is separate from commit 82e2c7db0830 ("net: dsa: mxl-gsw1xx: force
-internal PHYs into a known reset state"), which only programs the PHY
-bits of RST_REQ. On this board that commit is applied, and the PHYs still
-sit at the shifted addresses; only a hardware reset of the switch moves
-them back.
+- [Low] In TEST_F(tun_vnet_udptnl_proto, outer_proto_link_type) in
+  tools/testing/selftests/net/tun.c, the second write sends a VLAN-…
 
-Tested on a GL.iNet GL-SFT1200 (Intel GSW150 / PEB7084 at SMI address
-0x1f, reset on an active-low SoC GPIO), on v7.4-rc1 with
-CONFIG_RESET_GPIO=y: after a warm reboot and after a cold power-on, all
-three ports find their PHYs at addresses 0 to 2 and link at 1 Gbit/s.
-Without the patch, port 0 fails with -ENODEV after every boot.
+--
 
-There is no in-tree user yet: the GL-SFT1200's device tree is under
-review on linux-mips without the switch, which follows once the SoC's
-GMAC is supported.
+selftests: net: tun: test UDP tunnel GSO on retyped devices
 
----
-Changes in v2:
-- Use the reset controller API, so reset-gpios goes through reset-gpio,
-  instead of driving the GPIO from the driver (Daniel).
-- Use the vendor driver's reset timing, 250 ms asserted and 1 s before
-  the first access. v1 gave 2 ms and 100 ms as the vendor's, which they
-  are not.
-- Patch 1: add Rob's Ack.
-- Link to v1: https://patch.msgid.link/20261104-mxl-gsw1xx-reset-v1-0-53839bf5c88e@telaak.dev
+This commit adds a tun_set_link_type() helper that uses TUNSETLINK to
+retype tun/tap devices. It also adds two tests that check the outer
+headers of UDP tunnel GSO frames are validated by the tun/tap framing
+rather than by dev->type.
 
----
-Joseph Telaak (2):
-      dt-bindings: net: dsa: lantiq,gswip: add reset-gpios
-      net: dsa: mxl-gsw1xx: reset the switch through reset-gpios
+> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+> index 81410afbbcc8d..cfeca53863ce2 100644
+> --- a/tools/testing/selftests/net/tun.c
+> +++ b/tools/testing/selftests/net/tun.c
+> @@ -816,6 +816,59 @@ TEST_F(tun_vnet_udptnl_proto, outer_proto_bad)
 
- .../devicetree/bindings/net/dsa/lantiq,gswip.yaml  |  6 ++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.c                | 25 ++++++++++++++++++++++
- drivers/net/dsa/lantiq/mxl-gsw1xx.h                |  4 ++++
- 3 files changed, 35 insertions(+)
----
-base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
-change-id: 20261102-mxl-gsw1xx-reset-37ac836b31fe
+[ ... ]
 
-Best regards,
---  
-Joseph Telaak <joseph@telaak.dev>
+> +TEST_F(tun_vnet_udptnl_proto, outer_proto_link_type)
+> +{
+> +	uint8_t *pkt = self->pkt;
+> +	int len, ret;
+> +
+> +	/* The frames still start with an Ethernet header, but the device
+> +	 * type no longer says so: the Ethernet header must still be
+> +	 * checked.
+> +	 */
+> +	ASSERT_EQ(tun_set_link_type(self->fd, self->ifname, ARPHRD_NONE), 0);
+> +
+> +	len = build_udptnl_frame(pkt, false, ETH_P_NSH, 2800);
+> +	ret = write(self->fd, pkt, len);
+> +	ASSERT_EQ(ret, -1);
+> +	ASSERT_EQ(errno, EINVAL);
+> +
+> +	len = build_udptnl_frame(pkt, true, ETH_P_NSH, 2800);
+> +	ret = write(self->fd, pkt, len);
+> +	ASSERT_EQ(ret, -1);
+> +	ASSERT_EQ(errno, EINVAL);
 
+[Severity: Low]
 
+Does this VLAN-tagged NSH write fail on a kernel that is missing the fix?
+The commit message says:
+
+  Without the patch "net: virtio: do not use dev->type to find the outer
+  L3 header", the frames expected to be rejected are accepted.
+
+Without that fix, dev->type is ARPHRD_NONE here, so virtio_net_l3_start()
+takes the non-Ethernet branch. For IFF_TAP, tun_get_user() has already
+done:
+
+    skb_set_network_header(skb, ETH_HLEN);
+
+so the IP version is read at frame offset 14. In a tagged frame, that
+offset holds the 802.1Q TCI that build_udptnl_frame() writes:
+
+    uint16_t vlan_tag[2] = { htons(100), htons(l3proto) };
+
+The first byte is 0x00, so the old code sees version 0:
+
+    if (iph->version == 4)
+        *proto = htons(ETH_P_IP);
+    else if (iph->version == 6)
+        *proto = htons(ETH_P_IPV6);
+    else
+        return false;
+
+and the write returns -EINVAL. The old code rejects every VLAN-tagged
+frame on a retyped tap, NSH or not. With the fix, this frame is still
+rejected, because the protocol after the tag is NSH. So this assertion
+passes with or without the fix.
+
+The untagged ETH_P_IP accept case below also passes on both kernels,
+because the old path finds a valid IPv4 header at offset 14. Only the
+untagged NSH write tells the two kernels apart.
+
+Could a VLAN-tagged ETH_P_IP frame that must be accepted be added here?
+The unfixed kernel rejects it (version 0 at offset 14), and the fixed
+kernel accepts it after walking the tag. The case is still missing at the
+end of the series, after "selftests: net: tuntap: write UDP tunnel offsets
+in little endian".
+
+Should the commit message also be narrowed, since the tagged NSH frame is
+rejected without the fix as well?
+
+> +
+> +	len = build_udptnl_frame(pkt, false, ETH_P_IP, 2800);
+> +	ret = write(self->fd, pkt, len);
+> +	ASSERT_EQ(ret, len);
+> +}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105115715.1466924-1-edumazet%40kernel.org
