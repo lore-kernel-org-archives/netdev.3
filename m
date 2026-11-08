@@ -1,55 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794147651;
-	b=fws8Y1qTbkg5gKKvCb6IaHnut6aY7zMU6axallBoqV6TrF5yi0Kx+aLZ32Qh0y8nO/pS
-	 hKC9spzLo4N9D8KHvODW0zs3SfuDGkji2Gj3C4BQpJunTBoy82Oep6LWS2Xp7R6/yVOiU
-	 kM6JjCt0pEhBuHx1pUCbBCZsoXJLAEoJKMAgOhqd2iuE9FXv19H8RQSxooCkaPtgJ9MSE
-	 GmVAcnXim6qntQNoDTRvrpByYmX6U22ZE+MRocz8cTHoMeZ5sAVNK3Kvt1e4CJd1oaS8n
-	 frzLC3GxCWw58WKm1EllbYQu+pzYDZhcIlT7AXN+hQkADJstHz3l/siO94FjAmEQlHQ==
+	t=1794147670;
+	b=bH3NstSz/o39NHf60aGNKox7x7GPLLYh/+Ax8kPT/8dNPrp7jUZ33XqOEJdO5HY6STX4
+	 fVPBkS3jqvD4fO6bPST3mhD5r84qo+/COT0XLOdkmJ3p06lObNxLVg7R4o7jyszHU/O2+
+	 Epc631yZUyBBvLoHOXfQZp0KlyHjRBtUqIupPZD37BgIS8l1LwRqyMUTPslZ2k7K798Ko
+	 akzhLC6Am1iVNC6k53JtbVh3AZt+Kf5RPboYItUI1/Dur0dJOFuzxcCDmXVeBCwImS0e2
+	 bzs5BDdcJcBzn+c0j4Qprri/ppswe116EN4y/rc3XiNqbxihFh/hy9nxbFYR0E61Klw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794147651;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=En5T3Q1CBZFMdMfVfUK6/74xR4rxJK4EOOMSyfT1adA=;
-	b=dA9arjTnguXZ9G/jM8XSmL8cVZy5TF12tiA1AUxrd2fqEjHisnj2+n/lfNTK8z1gZfMO
-	 T0zTyxUhN2RiJCX+j1A6xyApLaT9oltqaiv6X18Yk+E/FIRcNClHhZSYSfjiaU82MYxiI
-	 eclb0EwORSrY+DkEh6XvBNDk5Fj3qCME7i3CY1YbcKfwXKJ+X0tKkRHlmH8YcbfNW4yFj
-	 CTA7cMuGyqIrNKcc3k5AkBodRUXvKG6HUCM5jbKOeSIvLcubNMU6ly9uCi/jjHduPvYTR
-	 lguCYUcOfa4dPjXTx6L76BFDc2C4xLPLw7MdQmkXtXP8rziStZ57Cf2nDGObFxR1wCw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794147670;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=kQtf2YGeartcwb3E5bs7hWbnN6qZi5AsGs3oh/sS15M=;
+	b=ODMIJczeo160WIlzQWBi7u3lPZ0wXuvjzGYauTYRdpv5L7hOe/9Ttgl0f6/PXn5JhUR3
+	 oc7vTbAFS6I/9TvMdxXYnEnsQirLcagjnw3pJmKCueoJMaBXTrz+oIZYrs4AFqr/nYZBo
+	 ZDxK4GzvhN7q8GA54TZHyo6yUV11GRPfOnnV/LaIFDl2tDVm1mzVGXuUCKxi7IcUKVrEy
+	 2qRRZgoN3jAtd7RHOyTM3o9yksUoN/4ockFuzqlg4VZuhfiKH4Q6gFMiDR+Dy8GggYFPl
+	 oRD2P+UYZYbPNfbNmrQKNkoWoiOwaiJGcODq0qJ0+ZY+6+CTCR4pyM4SEhjlb9BNKxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bb7HVq0j;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b="bXjH0l/D";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D508606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFA0606A31C;
+	Sun,  8 Nov 2026 14:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bb7HVq0j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFB11F008BF
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:20:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794147650;
-	bh=En5T3Q1CBZFMdMfVfUK6/74xR4rxJK4EOOMSyfT1adA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Bb7HVq0jXXx4LHzMyO12CNb/ZdLIh0V9o69IULdu0SLt/AJDcQZx9pa9iAnxiFOGG
-	 0Lyk941HUQS2HKmHR30zE6kSh8skfXCx7TEhmv/9tK39phuhv4K4hXAXfbRfRYZLic
-	 vFGdDOEOiAUa31O8XVsSU7ik6uNw84yyJY1DAy6ZOTgucZhTVwgQ/fCEqA7glyODJi
-	 EyjXRvGSvaR7rTT6WM6xHXitWDN3OCRdrpr0xzGcBx7NkOExCezBeB+QGNh86pmqhu
-	 uDJv2XsI36knymamEgajl+C/lwivLGA0AkMFKS/wCCfug6Y9wj0vANsbOX4YJH2LSg
-	 oTw8ZSlezaYgg==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5bfbc67991cso42818e87.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 06:20:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHyxpKlf7ysvWZfQBqS6HNbUVqTR7BOXShCcO+twmgeNwlHJS4a9NyJtbRUMQM/2KgJ5Ao4MG8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8TKhyYCpLUmFU5WabzUAFZOkmN7j1q4b/AYVU6/exJdZmoM1JA
-	HEIOp6T5Xx+mXszlUqdP9A59ITxLdrTL+/sH1XJ+8L1pVbEDCkn89krB6IY0wTD21/mwDDn7KZ4
-	eGcrhz5os0lwfyms2X0BVfGaH6LMwqJY=
-X-Received: by 2002:a05:6512:12c7:b0:5bf:c700:3c3a with SMTP id
- 2adb3069b0e04-5c14c022ce4mr403666e87.32.1794147648467; Sun, 08 Nov 2026
- 06:20:48 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=bXjH0l/D
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD191F0089F;
+	Sun,  8 Nov 2026 14:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1794147669;
+	bh=kQtf2YGeartcwb3E5bs7hWbnN6qZi5AsGs3oh/sS15M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bXjH0l/DRRa0mduKHwWjZwmw9uFcEyQzx+MFRVVe8sDNtDoXlWfbN7GL4R/VGETnF
+	 /w0UYUadX/uchHJamEVmQL5gl52L+OpUKt7saublI3UEtknGe6TQwmC/JVJZwfY8Sw
+	 Zbyh9mf3d+gGYnj7EL+jTl8rlbuwITy1Bp+ODT6E=
+Date: Sun, 8 Nov 2026 09:21:08 -0500
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	driver-core@lists.linux.dev
+Subject: Re: [PATCH net-next 2/2] net sysfs: simplify creating empty wireless
+ directory
+Message-ID: <2026110812-angles-guru-473b@gregkh>
+References: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
+ <675f4353-125e-4168-a617-c0d1fb519045@gmail.com>
+ <2026110816-crate-tightly-8560@gregkh>
+ <d85b02e5-d9ab-4535-ab82-9b8184fbd1a8@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,52 +63,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com> <310bca10-e082-4d0a-a645-42fd4e58d2a6@yahoo.com>
-In-Reply-To: <310bca10-e082-4d0a-a645-42fd4e58d2a6@yahoo.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 8 Nov 2026 15:20:35 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnsyZkxkmhnU_a5pXCwZg8=7N+Ui2YhQ61aLx3hdW39AQ@mail.gmail.com>
-X-Gm-Features: AclHuK9cjF2StbZgIZnAHn9GNvPkXApcSfZXvvHMgKx0AC7y2IkMPjxniHEACpE
-Message-ID: <CAD++jLnsyZkxkmhnU_a5pXCwZg8=7N+Ui2YhQ61aLx3hdW39AQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 02/11] net: dsa: realtek: rtl8365mb: add chip
- family infrastructure
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
-	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, alvin.sipraga@analog.com, gusfmora@gmail.com, 
-	kuncy7@gmail.com, fabianotassotti@gmail.com, gabonpivovich@gmail.com, 
-	contact@c127.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d85b02e5-d9ab-4535-ab82-9b8184fbd1a8@gmail.com>
 
-On Sun, Nov 8, 2026 at 9:07=E2=80=AFAM Mieczyslaw Nalewaj <namiltd@yahoo.co=
-m> wrote:
+On Sun, Nov 08, 2026 at 03:12:04PM +0100, Heiner Kallweit wrote:
+> On 08.11.2026 15:06, Greg Kroah-Hartman wrote:
+> > On Sun, Nov 08, 2026 at 02:46:03PM +0100, Heiner Kallweit wrote:
+> >> Now that an empty directory can be created with attrs being NULL,
+> >> make use of this new functionality and remove the dummy attribute list.
+> >>
+> >> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> >> ---
+> >>  net/core/net-sysfs.c | 5 -----
+> >>  1 file changed, 5 deletions(-)
+> >>
+> >> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+> >> index 5c0402389c6..f58b59e1126 100644
+> >> --- a/net/core/net-sysfs.c
+> >> +++ b/net/core/net-sysfs.c
+> >> @@ -910,13 +910,8 @@ static const struct attribute_group netstat_group = {
+> >>  	.attrs  = netstat_attrs,
+> >>  };
+> >>  
+> >> -static struct attribute *wireless_attrs[] = {
+> >> -	NULL
+> >> -};
+> >> -
+> >>  static const struct attribute_group wireless_group = {
+> >>  	.name = "wireless",
+> >> -	.attrs = wireless_attrs,
+> > 
+> > Why does this want to create an empty directory?  Surely you aren't
+> > adding attributes later to it, right?  If so, that's not ok either...
+> > 
+> 
+> For compatibility reasons. See 38c1a01cf10c ("wireless: add back sysfs directory")
 
-> Add enum rtl8365mb_family and struct rtl8365mb_family_info, which holds
-> the data shared by all chips of one family: the family id, the port
-> count and the init jam table. struct rtl8365mb_chip_info now points to
-> it through a family_info member, and all existing chips use the
-> RTL8365MB_FAMILY_C instance. rtl8365mb_get_family_info() and
-> rtl8365mb_is_d() are declared in a new rtl8365mb.h so that the VLAN
-> code can use them too.
->
-> Use num_ports from the family info in rtl8365mb_detect() instead of a
-> fixed constant, so that a family with a different port count can be
-> described by its own entry.
->
-> RTL8365MB_FAMILY_D is defined here but no chip uses it yet; it is
-> needed by the following patches, which add family D handling for chips
-> whose register layout differs from the existing ones.
->
-> No functional change.
->
-> Tested-by: Gustavo Foletto Mora <gusfmora@gmail.com>
-> Tested-by: Stanislaw Pal <kuncy7@gmail.com>
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+How long do we have to keep that?  That was a very long time ago, 2012,
+why not just remove it entirely now?  And if the sysfs core hasn't
+needed this since then, why give other people the opportunity to abuse
+it this way as well?  That doesn't feel like a good idea to me.
 
-OK that is prettier than the prior solution for sure.
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+thanks,
 
-Yours,
-Linus Walleij
+greg k-h
