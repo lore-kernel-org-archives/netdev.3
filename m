@@ -1,87 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.83
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794170367;
-	b=xtWsO2i0LhQ9jDwy8vmDUVX+UAGF4RX3pwjCde9z4R9yKBIDjnxFoEtVKx0Lb8AkIgLd
-	 iOFl4VEcjXjC5g+DPxeF7+OjuMVEEr1OFqK/EIYByS6AR6w9Feuyd8FJBMDv48Q7X+Rjq
-	 XE37jJcYSWcHw7ndl4UftUFdtpN4DN6Du/T7Om9EkJxFvHmmjyIBu+4gVysHd9laQZlCg
-	 50r0j99iBKSXvOtlZE7zS9qBD+ICCQb9v/Ci/hmmjXcgHnlK/hZPWqGivL9qD1FC7tT8K
-	 9EuevQrQwiX1PBt72tfUoXuZSvfFIp5asjT8cd2adIFsud4zIUWy0YIzuTrYcjOoA5w==
+	t=1794171228;
+	b=qSnxjBJc+DXvjnfUusOSYHPYahJNy58bTzweVf7sN56XSRlJq3xFofvVDXoRHtno/bE3
+	 0JGrwpqGOuncZeEuj5aUfez67FjdkiPKT2rVQcsKCTb4bUlo9wUcivxk06XDRhU7zJBKs
+	 /hyad8qv7mHAlL/xEKDffgMVPW/TJ+M1Ks0nzEzPcPSU06LanUsPEKvNYIWUAQYHCMfVA
+	 yiD1LXoBOFUetzlqMmQBMt2dcLAJLw7RIzgklA2JVEgh2D3B2Y8hv/iyikgYV+dD6SkkF
+	 LzYY+vRUNZkW4TyuCCs102reddl+63LD4Vm/tU+kiCQ0d/CD3UO6KHje3IQUg76WZ2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794170367;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Content-Language:To:Cc:From:Subject:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=jGyQa9J2GvS5QVrL62cmcRZc9qO4WtRWpjo4TF1CVb8=;
-	b=Z1OVzRluTM9XSOmYDxYqUsPOrLalRhqNVrL1VXIDzsd3IFAb7IbnB6PcaC3cDXu7kIt/
-	 xqQEFkbMwbP2ZFSM261sr5hNXl73wyT/XCiQd1390k54/yQ6RNYiYSs4NjKaCP5rzNvtK
-	 j3PPIG5i80/nw1g7AZ6Z9s8IjUABGBd77bzPln8o+n4oYVcUaCdXIieF7eGjGbSFeNqu7
-	 iST3eEP3URD4JO1oZTV6KOVlbqabvGaskGSWAFJe4F7yEN8ZcEzEc6JHhWerQx079AcsD
-	 AFiGIaYXpnu3/jNdozhRcUMRR14xB1+ZwZytIRJxx6uf8Sfv/PObyjrYRQpzksWepmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794171228;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=e/3pPBGnBIMYiIi6ztyK5TxrJUDF7cio2r7awt76SK4=;
+	b=KoK+Uz31gCmvJd8T9Zg/PU1mOYIKzh6sGMNUUcLDYsZZTAKthk80pDjOOXbyXR+KoA9S
+	 nbhXfMy02MFBGiAyQGcjJLbPTV/vVrxr4bpJn9dqeLVWNVYpVtvipJF9I1SBQ8JnIwYZd
+	 RSUrUZ/9m0ci7LqIyX+ZJicD/G+zkSpIZ9I7RlF6hj0At8JJazCCeiAFj7exm/gWa2xxp
+	 +Qlg+jPTsAwp74vBqTQfWsXJVRlweHONR5f70rTC2yT+h7XvtqBfJrfpGOqeiOUUMG/BK
+	 S6UXDY09TlumnyJ0dmfWCTdE8HXw3xiMBZku4/0nKT8GAYsRPHKeQyv7O/lPiBe1iqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RA6f593x;
-	arc=none smtp.remote-ip=209.85.128.44
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=byhOVwYq;
+	arc=none smtp.remote-ip=66.163.189.83
+Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD4B606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:39:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFD4B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC71606A320
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:53:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CC71606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RA6f593x
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a2000d5fb1so1157475e9.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 12:39:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794170365; x=1794775165; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=jGyQa9J2GvS5QVrL62cmcRZc9qO4WtRWpjo4TF1CVb8=;
-        b=RA6f593xb8qDiC9d+aM/c3tvR5NKkvO/W03N4d5vE6Y14J7LGcTaGISvUHk5pqIOKC
-         bU3HyaEAtgSe6T7pFVm3rRfxXA4xN+ogrANlipypd8G2Q0PvrtREAH525/czaQt3SA4g
-         wlfK7gesM23EAdy8GahlNycwza3UjlcePIVdM5aCbcxVwqZs7i/3HI6Wi3vgla5LhgHv
-         s0JPY0+WISt1TwkhJOojAlSyPWxFaxpU93MEdy/udj/K18WXDSJeWAp3p8RlUyfmm/4t
-         +CrC2cuD9CHCojEhY1EeIpSHHBuVfSRLcan7JSOj56qshjBpieEoZXq6DSpghfvqbv6Z
-         /jew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794170365; x=1794775165;
-        h=content-transfer-encoding:content-type:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jGyQa9J2GvS5QVrL62cmcRZc9qO4WtRWpjo4TF1CVb8=;
-        b=TimNG8Fb6AonQDwstirbm+V8FxtfkJY4sn7e6i4ROxPeMZWe4prWRBjIR1TgjVi4P2
-         AcQsOgqcG1B8oLiptF+6ISDvCfYVNn+jd4DlK5Kr9WuwZNmPQeksPSSBiIhJPSjgHAyk
-         22d/4TgBK2WKTLg/F0hD70GimCF0VuB6pMYA0QJetwol/Qd9mHyc3B1bFQIBphl3J71x
-         rDDWdeEN3t2nVHq3rLkpzCq/alKIEmko/1eWKS72wcopKPfNueYKG994IGnR2e12oTTT
-         tTlZYzaj6ZSv8k9Q3jRg2YcGDAy3V8RWrcQs2QoVM0tCyofck4YuioZ6LjZ+jHOOE4St
-         vKqA==
-X-Gm-Message-State: APuU4Z/l2XukFtxDUo71ti65qv5Q0GHu7xoGhn84o6foXyPCBfmokGqZ
-	X7LsYGG6bJh03D5vskFmsbbAnTy0PFe+XbBp9v1JeExfnrRoQZFrwIwR
-X-Gm-Gg: AYBFou3UMhsFu5FlMfKrgTpQ9nszktULWFyO/Ad+KHZKCRG/+/4obPWOnKzF5Xb9aZF
-	2mW0Z4qvan4duPRSUWNu3rnEHejaDCEZg4iiak48xmV1MYD7pkrzz/QAJ2iD/yAvpK9YK1HRv3s
-	rDMmD8r9q8GSJXjLHdUltIPOe2TbHFUcrNGMDmN3g5ehnfcgxU3tjK7b8GW/XAPleZmvmU5yW0x
-	P9dxsvjIQ+McSvvSr/zWKB9bPRwzKHtHc0VoP+5EW5tXjPBbwsEX2iZ+xkvbNxeFNrYyF48QOHK
-	I3mQDzSHJ+WBHJaAoqy5MDrUv3t68/KdNjMu7uDMQSYBfhLy10zfaIy1nZxZcCONXjpH2/yG+1w
-	7/8pUomjG0BH785KwtPWo7MtNHja+L8JN3cqnkd4q1XCnr4n38nGHpNmuZftR3vf8RcI/puamFC
-	P56V0bDLOHo6Ydy5pZ1s2vjcuYxPiknkk4yEIzulqQkknWB3E/B2/6A3RH9uVbE+Olhr9DnKUhY
-	TCLNS578uh4BCrAuNj96xfY/yAa0H0ELIC7zKLY1nTwLmHuEBe1N/OQooVLIPo7DIxJBGWHQq47
-	UPVYmAwIQViMfSM2lq3zm1n3MSIuVvSldhlTgnb+qNMO0NhXfTeu4g9gcbkr7ZfxnvFhZkurPoC
-	6Sjm3ufLmIblytVyWP+0c6c30ZWzKArgnVrFj6w7vaRNRS0lLQ0MUNw7uXmqTks8odhDZGjFT+1
-	dOtxjX/Bg6g0Q=
-X-Received: by 2002:a05:600c:190f:b0:4a3:59c9:a754 with SMTP id 5b1f17b1804b1-4b963c7121dmr43767825e9.22.1794170365006;
-        Sun, 08 Nov 2026 12:39:25 -0800 (PST)
-Received: from ?IPV6:2003:ea:8f45:7100:cde5:5d75:8598:b64f? (p200300ea8f457100cde55d758598b64f.dip0.t-ipconnect.de. [2003:ea:8f45:7100:cde5:5d75:8598:b64f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7efb1b64esm184981965e9.13.2026.11.08.12.39.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Nov 2026 12:39:24 -0800 (PST)
-Message-ID: <2af5fc30-4520-4768-bcdb-7b1058b39212@gmail.com>
-Date: Sun, 8 Nov 2026 21:39:23 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=byhOVwYq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794171221; bh=e/3pPBGnBIMYiIi6ztyK5TxrJUDF7cio2r7awt76SK4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=byhOVwYqH1Aza48vpRJ4LjGjOjfIAQXumAA/b2x7aiZ8TbeJ51qhc0R7B5hTqjGxOlDMkeuZHYviK2g3C/4jb0cYaoquCFkYdoHf8Kh0h+MCW12TFZa91qZ2pjUQwweRT7bAw5T4eEHaVJ4NABo7FAatlV6GYmYkk66DG+Wb0fajMWDEAt5Sm6Mmk1D/BJ257H4WGqoNzgF5E1ZDkx/xqOSQOO/hhkX5XkLYJGu+uYYeBGm4JCuphz8KUk9KYTmJxX6/50+dfltfF4pDHxukO2tzbi2FMQvrx0nIjdrMH8I0/T8VAy8R1nrmYty1f1B2sGaEkztrGzfXda3N6IuZhA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794171221; bh=bfbRY13LtdKfiFRgGEqBHhC0t1aLNx8+za0tHZYb/SC=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=DyFh9zEmpmNtV93lkurnqAgHG/mtGTM4Hmcg31EJUCcEBaZaHWwIKRK5xqQjHxcl5p6dlEg/UGJcg/ZkmjcB+jsjUiW+tCtl5o5lyIGXhEjMSW+ZP6dOSGiAa71SpA0d+bpcR6VtGpYSsjkzxdZ/Xjnpj8s75/BJ50a0LLH90Bv6QfmyFJYKAKWbzgXHp9BNbvgwfw9xU8Aii73uCA2R2IwYZlif8ILOiud4MXo5+WHivALnGtrGVB1FLPZHz/xx3srrtiJriZl4v1bx1BLDWusc/rLLD6wu2qi20R/2QWxb33ISnp4rBCYD388Ub+e9CAmiQwOCl2EagBsSGXHlyA==
+X-YMail-OSG: X7lC0_kVM1k708JTOK6ZygPyY4o8Jok51aUXM7sDPReFjcldjTYWzcZS5L4Ckmn
+ rCg3QFkUUCZD6kMtZw5.FOzDpuVQ9s9m3xgIzvneHlW1sH5quIPJQ.HqFJ2EQc2Lgl2hiznduCdo
+ a445tWutLgsd27OBJ8AICmHz5l9bJRz1_8BSn39.XUwPXp.JiQsQD1ytP2ujzWYg4zFY9Kb3ODP5
+ YU2MvRSRsAdhnnPUA_QcPPZEqMvGPCyr5uZ.GlWKSxO3gh0WKIzt5DHDPPrMMS6PFMdxvEPazaN5
+ 13hASrHtLmY8q2x5cGWTgu_qfzeQfU6jY3x3j23w2nMgLylurBn4gfDjb017fT5V7qOGKp_J2HHt
+ hv6tV4hORcGneUujDvXevLl77v2t.8gNn4qqzpqcT_WZohfNOXWybaczU.GgPZ8wbKN4UDRPq6Vc
+ MViinPL9q0KdSJOQRy.LImEFLR3E_nkc0D9IWpeFDxQGyWVHjVY4RFHBEm_tv1UYWDFlgDrPErqt
+ OoJN3hMsWNWNLCnPGSp0J6OtppEywbsky8E54ZXbPjbcdo5UEzX8P_kd1kJZLuLfZJKuT5_AOjG7
+ fUB09D7qG2T.ZUqLHMIM_lD0.n75rw46gHRKmx8.Ewkz4iQ7nBkBXnmuBgZOFc7y5DUI8hZzw77F
+ RNc48YpxP44RgvUsQGJHqZIPnqkEKKhynbTQReO7kyUItMK7BUH7Yw_RkHP2s1ivUhz4gFmSQRdM
+ gGvAoQutoQnCWmjzxiy9eOXoEIipcyr5hS5xHNiY5zEZxwZ7M4iUXJ09tDmxnjPxFRi4dEM6_GnV
+ fzB2Jdod7aefEt1eDX3045F3hL96QPrxL.TOw5nZ8YgwCPTubcfQuoA.AVgz_sFALNrtlFiLCzIU
+ aDKGT1C01_0O6Y5DJCTzqh0Hkln2VbAhjO2HRhHOFmXc1y_HzuMWxhkWIjbNwoBrIvD1CDS2EBGF
+ Nn6sI8bJEcCBCRzWz_xD0C_mBSdTxEibsadCsqD3BItmF1cSf.MFrEAd_cH_tm..Q.0ohc71EXXb
+ 9juu94wQz3.jTvqhDeV9qleNZRZjrhkLMP20DISu_iWVFNZJXSKtDl.wOyhbPniFUs7XskUrry8F
+ 4HzXoM2p6IxTpfU4amoBl2L2FVDKH1FkOXCrbaNNjAVUaaFY2ODdzPTakP.xx1XzZGCbOPSNMsHa
+ 3dZMDpBwbddGsfgcg8Im0Lh7kE0j6I8OhNDCNMVQqZ40ahZEyif3T2LNRHbO1MhsN9JdbX4Lj42r
+ xL1RgLhL8wJnjM.rtmdJF7d8vMDyZ7apdAHWtszIBoX50WpV.cYvsLjKluEktEF9TalpxBqeONI.
+ 02l8YjbZQFMm7dQIPa_oMJIwx5O7yEnMy5tRM6h1RkOXwhS544bqBNWY3zhakhMw5jf_GLHCZJZ7
+ t6Kg51NnS6ausIIA4loAnLdWLux_2hTgblSWZWlYY4O547L0I80Olm3TQwYjMSjk2XgrVGrHYYDl
+ iFrSkk5IjguKtUhHpzxV09py1xC2nI.lRqrB3GSE1RWeywAbbMTIS32hK55QHPGdYacQCcnRuncr
+ hA9GlHJK_9Zo1Rdh2WbP_4P8GTnaqe0t5zpXJ0QgUJNpE3Oun2cNYhL5Vd0tOZ8yy3klVEaCz_rv
+ Vc_v92HfnwTE..GuvE9wRzXIa.ohg1Yi4aXpYDCoi.k8g7SFsk7JsVAf0Mgy4JS0VCzZeXTmJXcc
+ DJCuEHlGfiGYt9mP2rBhh6BsuKiiA4_pndpwHbnp7XSFCkAZFYqHv.8w_HTZZ1qfOciA6o7U9aQv
+ oZwKq8MRfdHOSrUTxIjsJzCXfDbOnpa5SkLM9C2_kfQ4liRVq82uX_b2_v3vQThxg.QvlXR0nnBB
+ DRvI3xvSXDotqGPfn44pSSQWQ0ruCqIfoWux1Yi3m2EtWqD2KrHGeWG36_k4PwAg12FS2W758.uS
+ 01bfnPhpehfn2WrnmFEYJ6ACVAPaqARi_cpWenvPjudJ9xWcj1I.R5i2jr98rO16tJcN_6kZ2ZZp
+ .uWG1ncAdvjGayjtBrIJFpqxSX_WCzZCBUip.iN75cJkVIrd.3WPOlqus8X_tW1JiTUDdfaPuDDA
+ tkdCJoFrwx_._9XGmGFlH3XHDp50_Ab_F3ENWXg1Ex30hFaSu4JJpX.hdC8hvBM0vLME86oSG07J
+ 7RBMynpdnWOKILkSarCuVv8_.mYaueIflc9TMJrMiY3CqwpvPMVoLTYPU8eXMoA7VxpqzFmtnvOp
+ DpeHJFf4Ws2Ihh6enurOqSVXykATVgfHDPzydCMKSBXDGTlkfJsMmCcxnhGNN9gmLBuxNEdfyZIe
+ mXWftIciHDDvEBaF3uF3gBAtKucbLQip9qS73fnKOlONG.RFvWal5
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 10da040a-9b43-41bc-8977-490da0709b1a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Sun, 8 Nov 2026 20:53:41 +0000
+Received: by hermes--production-ir2-5dd9bf4598-c2rmk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c961121125a6f0b424c88f0430981591;
+          Sun, 08 Nov 2026 20:53:38 +0000 (UTC)
+Message-ID: <f84cfedb-b551-4316-8d2b-4d6e06fc151b@yahoo.com>
+Date: Sun, 8 Nov 2026 21:53:33 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,84 +85,35 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH net-next] net sysfs: remove deprecated empty wireless
- directory
+Subject: Re: [PATCH net-next v9 08/11] net: dsa: realtek: rtl8365mb: re-latch
+ the family D SerDes
+To: Johan Alvarado <contact@c127.dev>, alvin.sipraga@analog.com
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, gusfmora@gmail.com,
+ kuncy7@gmail.com, fabianotassotti@gmail.com, gabonpivovich@gmail.com
+References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com>
+ <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com>
+ <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Last known user of this deprecated feature was Fedora, until 2012.
-See also 38c1a01cf10c ("wireless: add back sysfs directory").
-This was 14yrs ago, let's remove the feature.
+On Sun, Nov 8, 2026 Johan Alvarado wrote:
+> I'm still investigating and will report back once I have something
+> concrete. Until then I would ask to hold off on patch 8.
 
-Link: https://github.com/fedora-sysv/initscripts/commit/4e96fcecee7ab70295a5f2c52748cd57cbab60bb
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- include/linux/netdevice.h |  2 +-
- net/core/net-sysfs.c      | 25 -------------------------
- 2 files changed, 1 insertion(+), 26 deletions(-)
+Hi Johan,
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 435be7880d7..ac943798abc 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2484,7 +2484,7 @@ struct net_device {
- 	struct dm_hw_stat_delta __rcu *dm_private;
- #endif
- 	struct device		dev;
--	const struct attribute_group *sysfs_groups[5];
-+	const struct attribute_group *sysfs_groups[4];
- 	const struct attribute_group *sysfs_rx_queue_group;
- 
- 	const struct rtnl_link_ops *rtnl_link_ops;
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 5c0402389c6..cb8c82d1a4d 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -910,28 +910,6 @@ static const struct attribute_group netstat_group = {
- 	.attrs  = netstat_attrs,
- };
- 
--static struct attribute *wireless_attrs[] = {
--	NULL
--};
--
--static const struct attribute_group wireless_group = {
--	.name = "wireless",
--	.attrs = wireless_attrs,
--};
--
--static bool wireless_group_needed(struct net_device *ndev)
--{
--#if IS_ENABLED(CONFIG_CFG80211)
--	if (ndev->ieee80211_ptr)
--		return true;
--#endif
--#if IS_ENABLED(CONFIG_WIRELESS_EXT)
--	if (ndev->wireless_handlers)
--		return true;
--#endif
--	return false;
--}
--
- #else /* CONFIG_SYSFS */
- #define net_class_groups	NULL
- #endif /* CONFIG_SYSFS */
-@@ -2370,9 +2348,6 @@ int netdev_register_kobject(struct net_device *ndev)
- 
- 	*groups++ = &netstat_group;
- 	*groups++ = &netdev_phys_group;
--
--	if (wireless_group_needed(ndev))
--		*groups++ = &wireless_group;
- #endif /* CONFIG_SYSFS */
- 
- 	/* Hold back the KOBJ_ADD uevent until the device is listed. */
--- 
-2.56.0
+OK, I will hold off on patch 8 until I hear from you.
 
+The logs and the board for this are with Oleg Gavrilov (Cc'd), who
+co-developed the patch. Oleg, could you please send Johan whatever he
+asks for?
+
+Best regards,
+Mieczyslaw
