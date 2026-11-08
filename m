@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.25
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794135634;
-	b=G78ssHcStBqocfrhZAtND/wWKGUZKTaxBQ35w9hd0W7CZ302ZCUbXv/87iciABUTHUna
-	 zd5Ezp/7nOjDf66YbVY9e4CDYrivzW7QcO212MlEc+DX6TeDLlV0LjwaRHpKJ3/BQ2ddZ
-	 uYV6FjR6NM/lJYbxcM2t4aHv/lHZcnIhe/blyAK0BcxubM3MoACH8uBLmGo20hwJdWuto
-	 7cgbn4DSCRVts12U9ueamoGRDDZWXagXNeaOeWVq9i/WMgq/Tw0zfTNANAH/nm+LuMVgf
-	 Duo2y6Qldz7wPkcDw67tSVPGgfbGaeUJbxWYehCbrkn+luF9Tl8bGqtSOGY76ra8SCg==
+	t=1794135635;
+	b=yFpyur7LdZYTP+xV6egCeE1m5l2swca9AtCeZS5WNhRZkW1Al1JMZADAizmPhrGWqe5s
+	 9kf0cDsAO/UiZKmYnTYaqOyg4MIzRv3v72P7FSl7CmxgJD+gSMj8h1UaR6uO9gCd2Q7Rb
+	 HVOF6pPiJozuUbKHmzvgjxSazQcwJJwGJ9HyLPeZsBzFF1wdzV3naXAazdjJa2T1u8grp
+	 FOK1NjUsUMTG+y+WRb/HXdaI0lMX1Uj3pxT19FClAgsqfzOLA+QEtabehdD29kC2bpT7p
+	 uPGxcvN42GD0yNTlx56KYtGHpF3qgBuENLqut6u/2zvTYn8FNBqcymLmoD3tgLt6bLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794135634;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=/kOHEMt6o3SH+fIujtD4HWZmb2OSZImsZF0uq5e7/vU=;
-	b=5KPfO64qNnrA9t4RA6u2Dt4GPwQw7Zf/DN/U1oXro8LlVC34TiOVZUgoZvf9v15w6Dd2
-	 5/6K95CNDqZnPE4+95hshYpKeFlU1Qt5HCpqnwRCNusq/C8UqSpWovipa8wvtCKKSbY34
-	 Dl7Cw9FE5UO2uxBBDmqciV46lIPYOoriepwSP/yYQldDwRclQ+6fGTQg3MMUllG4u5Lh2
-	 Hmo5ysz1CBkP9tJU79NEZTmBcCvI9bmf/0j2Pp4q1P5TXNZ1RaaxqzTRepdeNJSIS3gan
-	 nBzxG51rZ2k1LQvPsupFvCXJfNDbEvwLdEgZ4gZ3X34tPEo7l473HLppVcUbIaNxfLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794135635;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=Ttz1b1xvGOZQ5uY4SvW+d2KsWCJGIzO1EwdoPlIKTCA=;
+	b=ki1uOYlffsrH0vJ14tu7DotoE4XMU+llaC+Tp/y5zEluhc3FZCX0p9Bm2fiTkh1N+NjD
+	 8/bX6IRHOcbUIDXuSK8tqyVgsb4j/cOrJYqDCMRt43gk/84NIoDJlEZF8x/3MRD+Sxsu2
+	 ohkqwjY6ENnd1mHu3HLCY2RCGjQYxzdnweXKVhVB7JHC91YUR7sEiEOYaP75SwQqa6Mpl
+	 0L+xsX7KOpgoa5kgBOauGDeH2JZkM0vnO0sCC4aZhW/jYTPpGTDml7Fe+h05ovFsG8RRL
+	 u0oT7JfllxMnJa7v4tj2OD1NTDoerOaWsV7y4xHW48zcoBvytATwhDU0QV1PVfu0cwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,29 +25,26 @@ Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFE6606A31C;
-	Sun,  8 Nov 2026 11:00:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EFE6606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD83606A321;
+	Sun,  8 Nov 2026 11:00:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABD83606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAD3j7VFVvBqX_OZAA--.21534S2;
-	Sun, 08 Nov 2026 19:00:22 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowABH4LVIVvBqgvOZAA--.18736S2;
+	Sun, 08 Nov 2026 19:00:24 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Simon Horman <horms@kernel.org>
-Cc: UNGLinuxDriver@microchip.com, vladimir.oltean@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, vulab@iscas.ac.cn
-Subject: Re: [PATCH] net: mscc: ocelot: Fix mirror reference leak on VCAP aux
- resource error
-Date: Sun, 08 Nov 2026 11:01:12 +0000
-Message-ID: <20261108110112.315001-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260921104624.GI13925@horms.kernel.org>
-References: <20260917113444.2149183-1-vulab@iscas.ac.cn>
- <20260921104624.GI13925@horms.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+To: Vladimir Oltean <vladimir.oltean@nxp.com>,
+ UNGLinuxDriver@microchip.com, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, vulab@iscas.ac.cn
+Subject:
+ [PATCH v2] net: mscc: ocelot: release the mirror reference on policer failure
+Date: Sun, 08 Nov 2026 11:01:38 +0000
+Message-ID: <20261108110138.315003-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,39 +54,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:zQCowAD3j7VFVvBqX_OZAA--.21534S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYX7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMxAqzxv26x
-	kF7I0En4kS14v26r1q6r43MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x
-	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8
-	JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIx
-	AIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JjUgAwUUUUU
-	=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRIFA2rv4kizowAAsi
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:zQCowABH4LVIVvBqgvOZAA--.18736S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFWxCw47AFWftFykWFyrXrb_yoW8tF4kpF
+	4UKa9rGr4qqF4fuw17Zr4vv3s0yFW7KFZ09ry8uws3uwn8Jr98GFsrtFWj9ryDCFWFyr92
+	vF4qyw4UA3WDAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9G1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
+	WrylYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r
+	4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRQFA2rv4kizpAABsi
 
-Hi Simon,
+ocelot_vcap_filter_add_aux_resources() takes a reference on the mirror
+before setting up the policer. If ocelot_vcap_policer_add() fails, the
+function returns without dropping that reference. The filter is not
+added to the block, so the deletion path never releases it.
 
-Sorry for the very late reply.
+Release the mirror reference on this error path. Use a goto-based
+unwind ladder so that a failure added to this function later does not
+have to repeat the cleanup.
 
-You are right that a goto-driven unwind ladder is more robust here: it
-keeps the release of resources taken earlier in the function next to
-the failure paths, so that a failure added later cannot silently skip
-it. I have reworked the patch along those lines, and a v2 follows in a
-separate mail. The v2 also records how the issue was found and how it
-was tested.
+The issue was found by a static analysis tool; the candidate was then
+audited and the fix was prepared with the help of DeepSeek and
+GPT-6.1 Sol. It was identified by code inspection only and was not
+triggered; this patch was compile-tested, not tested on hardware.
 
-I am going through all the remaining review comments one by one now,
-and I will not send patches in bulk again, so that I do not get ahead
-of my ability to follow up.
+Fixes: f2a0e216bee5 ("net: mscc: ocelot: offload per-flow mirroring using tc-mirred and VCAP IS2")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+Changes in v2:
+- Sorry for the very late follow-up to the review.
+- Use a goto-based unwind ladder, as suggested by Simon Horman,
+  instead of an inline ocelot_mirror_put() call.
+- Describe how the issue was found and how it was tested, as
+  requested by netdev-bot.
+- Drop Cc: stable@vger.kernel.org: the leak is only reachable when
+  the policer allocation fails.
 
-Thanks,
-Wentao
+ drivers/net/ethernet/mscc/ocelot_vcap.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/mscc/ocelot_vcap.c b/drivers/net/ethernet/mscc/ocelot_vcap.c
+index 25e533e91d71..ce4a3da38c58 100644
+--- a/drivers/net/ethernet/mscc/ocelot_vcap.c
++++ b/drivers/net/ethernet/mscc/ocelot_vcap.c
+@@ -957,7 +957,7 @@ ocelot_vcap_filter_add_aux_resources(struct ocelot *ocelot,
+ 				     struct ocelot_vcap_filter *filter,
+ 				     struct netlink_ext_ack *extack)
+ {
+-	struct ocelot_mirror *m;
++	struct ocelot_mirror *m = NULL;
+ 	int ret;
+ 
+ 	if (filter->block_id == VCAP_IS2 && filter->action.mirror_ena) {
+@@ -971,10 +971,15 @@ ocelot_vcap_filter_add_aux_resources(struct ocelot *ocelot,
+ 		ret = ocelot_vcap_policer_add(ocelot, filter->action.pol_ix,
+ 					      &filter->action.pol);
+ 		if (ret)
+-			return ret;
++			goto err_mirror_put;
+ 	}
+ 
+ 	return 0;
++
++err_mirror_put:
++	if (m)
++		ocelot_mirror_put(ocelot);
++	return ret;
+ }
+ 
+ static void
+-- 
+2.34.1
 
