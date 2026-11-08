@@ -1,62 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794176091;
-	b=NzQjtSvw6Iq1fw88TdtcM9oPCR3979TPBNddfumpVLPj+pYBduWhzH7Ig2foRXqbinxZ
-	 ZuaWfi2jwHqriA6a3bmZ0DqzKZXncfWEz0sVJ5DtSW1hbFzNMbCX/pGVyaOYBQxHAvcpd
-	 xX4M5mA4qhvbhs1P1zcUINzG/xxN9CNm4yznSt8D4dWL0l3uqbv059QjO4BVJ2kKNe4G4
-	 TUM0Gn68zxFxFPn47s8UwVegVIcLui5BBHUlP8wV4pkFbL4LB+HyFwV6Y8QvZcEPNvIby
-	 6Sh28GxNFZTPiSISFx1tpsQMZWvrA7gkf+lh/UYEdVJRmYz597L3eBI+N7O63tO0q2A==
+	t=1794176583;
+	b=jLyFKZdc5VdF4OKLzEoqdSUwbC0kM3c3Eajv80nAYUozY80DWlbbwvWDoxDq9ulaIBem
+	 prm0auw1F7I8IxO8bY7PzlRiS9Q++JXezDT6ns6ObfypyzC9+4Q/sTALKaxQt34w9Hrd5
+	 kSmkqgnTqFYjQXJNrS13gNw5xkCVzimV6z2XWetPmcYwBECfkrLmWBgNqMRmRmCiy1RmA
+	 xupetDpe7AUWjAY7n46NhmABIN1Ejnz+YxKWvGGSHgDYvAJ7mvzCbLml+wP/rg8fq4eDZ
+	 q9sEFVrn4XizrWjZacpsoWm4JtGeJZ+1fcUGZ1blcDziHrSlCFRh5xAGuZUBWjQ7W6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794176091;
-	h=DMARC-Filter:Received:DKIM-Signature:Date:From:To:CC:Subject:
-	 User-Agent:In-Reply-To:References:Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=6HlW3TCaZn9o9E0elHB7OhlF6bCGUREXfflt55QEmic=;
-	b=2/0sMCr+KoPXkKBHDxIM+OYxxzLJIujoKDwhOn93qKYxu8LXJUNfFTIwsjwuI7fPEL3Z
-	 ktfP4+J2w/tGnvxN331LrGcFijTOA9S7xZU0QlFU9bZb1yAwFZN3yZJ4TCUbuJB78zigI
-	 LOQdlYbz6LfU0rTdaBUpfUJcrizr/MZKi+lddcnd9pjYTunSoZ+WxuXX7ZzUEMAR/t6jI
-	 5D64+POgMVjQbCJ/hvoDdsYCTfH5mSxNXdLsAk0pxOFtCI4u/rF09yR3eCYlsPHnWap2t
-	 Nra4HSRZPY4uotGEx4bRaEt275R+NTH04Uuv3PPe0k8uEdd1G6GOzOhHyarucXg04Lg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794176583;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=F8VrC0NrVnqqzC7QHzYrksb2qPLbsZB4BZ6N/65Bg1s=;
+	b=wbQvRLenbs65VpNNQAclhQZy9tzrkevQ/SeRIUkod/YHMDZmDNY7EeC+cflCdwITuXz2
+	 dCzP6Slq65zH/H+sDMteia4n6EV7pcIIdbmdVmUZNPjb4fMP7Kb7MBNPFeWIu0i/L0x7o
+	 xlpjOMovURAtIZAdrX3WVdaJEYaulcJI1QvT1sk99jNLzk5FadN+FGUw8D+hlN4vmXhmE
+	 5YCCf2fAQt6s5QlEsBewWDaX0i9IsEZg7igM4YkmBBPhEk+M3DdjBTRWlL3yw4U0iOPAh
+	 wQOH/+3/V6Xrv629SlPkHLM7wA//YMKEsMZUBsfjLj5VOsDhXflf5fYXyOyuB3y6THg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=4sf9o8Kw;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=SfY25uKn;
+	arc=none smtp.remote-ip=209.85.218.42
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5E5606A31C;
-	Sun,  8 Nov 2026 22:14:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E5E5606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53477606A320
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 22:23:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53477606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=4sf9o8Kw
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCD8FA1651;
-	Sun, 08 Nov 2026 23:14:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1794176081; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6HlW3TCaZn9o9E0elHB7OhlF6bCGUREXfflt55QEmic=;
-	b=4sf9o8KwBP6ebyfUc2HMsNc+xqGEkf+i2THEMu//l222f/IW1FFw4jU8NmqD5DhqrApjLv
-	+5Y0kDfvHANEOODffVpikXuoMYCikcjhAlLFHTXLN3wycR4LmBjPf5sWOMp/pPp4SoDygU
-	XcUJBmdkbtEIJhdjilniIO0g/5maWpERcYchBdjzi10Vnul/kEFljlbGT/BoykAYCudKLZ
-	Z2OELl+Dem8hUS0gniNg/vl7az2hww1AFt46Z98DUEXsXkPG0MZtbXDhZFJJT5dkgaHVC3
-	k8X/G4/CMDNTUjftwFbf5ugO/6pRBZGlZNGF6eNrT1XXLuKRWWB3kzXv9v7qCQ==
-Date: Sun, 08 Nov 2026 23:14:37 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-CC: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- sean.anderson@linux.dev, robert.hancock@calian.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net_1/2=5D_net=3A_macb=3A_credit_uns?=
- =?US-ASCII?Q?ent_frames_to_BQL_in_macb=5Ftx=5Ferror=5Ftask=28=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <179417344193.994134.16378845352525630728@kernel.org>
-References: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de> <179417344193.994134.16378845352525630728@kernel.org>
-Message-ID: <9F62B158-0DCC-4741-9A04-E5CAAB9CD11B@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=SfY25uKn
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c4322d310e7so38109766b.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 14:23:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1794176582; x=1794781382; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F8VrC0NrVnqqzC7QHzYrksb2qPLbsZB4BZ6N/65Bg1s=;
+        b=SfY25uKn/JBcQ+d70yTpWO8LSHxIsd/H5CYD830kg4drEdlZ0hGlP7YMe0fNbqiIqz
+         7siZ0gKKHa94RYOiPYJFCHHXhmOqQ8tUabYy2eJH+GZeV21o7BXukP4wXupvHBYMf/nm
+         ZPHT7DuccVIu2E4NqpN592jLlTAjRhvGCml38LdAXXAv14dX2MmQyiHpqwmfY/Q3oaWA
+         eaSFpnmKORAPFbl7025cVpX2Ya9GXha1mu34UtmopeXodOBUkw8it+uBjkIe1jIHf3pi
+         x3aP6z8T6QbVF6IX2j1UgdJKNme5qt9gd+TVjbEWj4VQWbiWAFeCA/jdj9bQyAv4WywB
+         VJgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794176582; x=1794781382;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F8VrC0NrVnqqzC7QHzYrksb2qPLbsZB4BZ6N/65Bg1s=;
+        b=gMHw4BFiedbzHnrlG7oZ5HZvICwH/oSzNiEwu1IBo0Ox5aUOXlJ2G6GUqhHk66G9M3
+         dR9sKKnYJO9bFJ6LyLMfYHrvG44X0kTzSUb4mSeuS1BnIPypD61PEgNmjeXvV/M0b/oQ
+         7RWYyRtNzvZCme3BRKDLn6GIiVWX+afY8IwNGWy/PWiwEs40LVJgm8VE8zZ3gBO7xVL6
+         DgPrgnNJ6CY2+4azoR67oQjLeb9iFV846eJpLiuNzmP4YMtQLReJ2+qADxuBD+Tf7M6S
+         VmRPoHPMrqjaseA7By69DLJd14AysJDeYg34tNkkiEqMgXtIZAOkCoPwkC/vkgVubGIk
+         Nllw==
+X-Forwarded-Encrypted: i=1; AL+hErFV9UAzemLvxsLRSir0WV8MUru5SF90gM0jxHWUMRNmawBk5fP2ZEBJJPTWbsnehwLGhkWYzII=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/zKx00hu4m9QayOYB5+cFxnv72Likju5AmcxQkvBHwu6MrIzo4
+	hPayqY9/l1i+zurSGVfW5ePA59Fx45A9F80nkpquqmisCx8dRK7TPOyITWZaJMQrqMjHePgy11u
+	QdEdU0HM=
+X-Gm-Gg: AYBFou0lqzaHQU3CHYg5KFBY7h/1lmP3SLIX/tJrUud4lugtNYuy1zps1fIWJkIOBiO
+	5nHW001SUTipBsCizY3/0d/u4tc2zlkYPiWHS/qc+Ok714NyCPpZlcM+k08ZrZ2iROtAW+Hnr4X
+	0gy9Wv+ciIDDTyqYGFCV5JMGVzFudN163Hbfnwlc0ZM91OD9njExf/E8wQeKu/gwWtVk2Z74ArN
+	c1uo7at4AWxsGVnwCFzvMq+n2RAv8NIfQwWRLf+wf1NKsgmZrsd7Ydz89Fuaf7731rAZlG0EqMA
+	8doKzx8cJ56F6k/7Ot5LWEWVVSgVdm2cibldHSoadKf+mhDHFMp00J9iwwL2r2lBAvlUj6QPPz1
+	EHYqgG228tZk2wZ+UzmmMxk4xoug7mVQ1bnywGcxQzYejHPdL4rxdB0di5qzEcQwEqWCl8hGSsQ
+	/kcWJfmpNgHQFFjFvHqNrcams0yjthQ6ZZ/bHeK8Hy2mrsRaZKPTTh3Puv+ns5s5RIDY/rTdaqv
+	uSdjsOxVnU4Rt6xOOUHviahyr6FBHKarRe9vYmwDD5PTpzrKYlp85YTVMuiXT4OFaMHhx9KYOd0
+	lpZ5ILG50skkpQKh9LCwFKH3huFF4WyTFLkt9efZCXNzq8dE93y+M2nPJk/b64g=
+X-Received: by 2002:a17:907:1b18:b0:c3f:c856:fb7a with SMTP id a640c23a62f3a-c4d6d166840mr164389566b.3.1794176581779;
+        Sun, 08 Nov 2026 14:23:01 -0800 (PST)
+Received: from L9JK9NPFH9.lan ([104.28.20.58])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d69f944a1sm91809566b.14.2026.11.08.14.22.59
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 08 Nov 2026 14:23:00 -0800 (PST)
+From: Tianyi Gao <tianyi@cloudflare.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: sashiko-bot@kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH net-next 2/8] net: reserve extra TX headroom for local egress
+Date: Sun,  8 Nov 2026 22:22:56 +0000
+Message-ID: <20261108222257.16997-1-tianyi@cloudflare.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <sashiko-outbox-203545@kernel.org>
+References: <cover.1794020868.git.tianyi@cloudflare.com> <4b2f20b9a7bcca58fced690d20916efab55ad31a.1794020868.git.tianyi@cloudflare.com> <sashiko-outbox-203545@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,24 +104,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8bit
 
+On Sun, Nov 08, 2026 at 03:35:12AM +0000, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> This problem wasn't introduced by this patch, but can hr + csum_start
+> overflow the u16 skb->csum_start field in xsk_skb_metadata() [1]?
 
+[ ... ]
 
-On November 8, 2026 10:30:41 PM GMT+01:00, netdev-bot+sashiko@kernel=2Eorg=
- wrote:
+> When a UMEM is registered with chunk_size equal to PAGE_SIZE on a 64KB
+> page kernel (or with a large headroom reservation), desc->len can be up to
+> 65536 and hr + csum_start can exceed U16_MAX while still passing the
+> desc->len check.  Truncating the sum into skb->csum_start wraps it below
+> skb_headroom(skb), making skb_checksum_start_offset() negative and
+> triggering skb_dump() and WARN_ONCE() in skb_checksum_help() or passing a
+> malformed skb to the driver in validate_xmit_skb().
 
-> [=2E=2E=2E]
+This is a pre-existing issue, not introduced by this series.
 
->[Severity: High]
->The commit message describes the problem in general terms: "The frames
->dropped on a TX error are never returned to BQL=2E" Does
->macb_hresp_error_task() leak in the same way?
+Jason already planned to fix it [2][3], but it has been five months.
 
-Yes, same issue but IMHO a different and also pre-existing bug=2E I can fi=
-x this in another patch=2E
+Jason, are you still planning to send the fix? If not, I can send it
+to net.
 
-> [=2E=2E=2E]
+[2] https://lore.kernel.org/all/CAL+tcoCp19F2rNxYL_LoGsY5MuBZ6cGKSZsj6D7kvQZcYp0wJg@mail.gmail.com/
+[3] https://lore.kernel.org/all/CAL+tcoCgXG5MdPVzXavwMwk=jmPXgcB5aKpLK+TNXMVrsGmS9w@mail.gmail.com/
