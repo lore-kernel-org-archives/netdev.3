@@ -1,54 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794143799;
-	b=UQ8yx9en8/+nV9THz6Zo+U9YwbNt4rtXoB3zrgi9YYZJim0YP6VXrHqvKR2Bw95zsyhY
-	 vwZ5vJF7PxKCninNpue9tjuyWqkNrqi055VfYH8B8gidvDC/1kOBJA5uk5SeMuk9YDWrG
-	 78n0VYadcgNOiI3Udk1jc+Ufdqlo+INzvZPK40fpUyIGQwYJZWJ4Mt30h3xXCDwb/MQPw
-	 uUvyD3RBMAL+6IcvOcrORunmKgM8iyUbiZFFF4odAoNE5ERZ04HDqShiGSeZ/AFVG16kC
-	 PihvZPbtusF+NHaO6+ftZc1Kd0On9QaBF4gkZ8c4CNrNK/zzCiEQBlwLOMwq3Xo76aw==
+	t=1794143819;
+	b=EqQRvNwBSRdawhceN2NI9VSlQ6E7IVsPslVdvMSu53pb5BvfME4PBWCat8W8ZkDT4VNZ
+	 FsCJkf+qILsJcp6QaEFS21MB69I1AxHHm1OpmOjMJkY+vPlCS6xf1TD3Pvprt2PYpfhCs
+	 Xzaum4hN7J5ns0O9LyWfnsoVc7cBfkfTP1x+xoNxCDeBxvORQqrfMtMTTT3wUNoWnc9ij
+	 BXS1YEsgfakzW8H5VATjHlOLrOuakD3//PhBT52fjDNEMhq3aYfkXOXnhciXrHe7wnaeq
+	 vZEKeEz2IYm97YFepQg3GUFst/F/6KcQEhzcS7eD7APfPOoNhgpVGCfjtQFuCqYz6Rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794143799;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=wyuD9PdZZTyd8Ezh2sp77+2jgNbxGbIBu3YTZsnhh1c=;
-	b=1aZuY2IvbJR1vdylfpvpyYGf2Xpt2BzkoKwYbpnBVWBI3jzNiKmiwMOT5ae5KQR+wLE4
-	 vmWPIfd+yrhN6s2YW/9AH+8Ukm1EX5ah9r2ExaDjDmNEkTiSHUpP4Dge4YNlkphgt9Exf
-	 IWiEiPfAArBZBirJJWuPj+27OLICgUIhTHryIGvolE48uL17QAgBT+LQHGJcBE/TtRM5L
-	 0loI7GenuooXw9T0P3vDDGyenjBGSk6JUzbvebEFkJVDiJeOERDLqK21AaaWme6gegvEl
-	 m4v7qFfqdhT8ClMe6vlAOTxS+V16F+CqfY1ZbFqqzbgQNvPGMftdZBMDq0rTY/i2CVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794143819;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=JJxNTB9eCOe/pFt54aN+l5cQw4iYZx9PorRckcs6gdQ=;
+	b=KeY+GDID8Y7M47V4e5LljjfXAbTiPQUIS9K+k3IgwPTBGjSREB8YGdZeed1xPhotN+oW
+	 uE2hSp0ES2Czg/6Uw1/3IeTCn01sv98vXve/2IYOoufuKXj8Xgah6g+bHKpLY0n+ujBl6
+	 5UsSjJ8vzO8BIZuLF5J/A6NVQqHgbg2EpufprXR6gfT0q2k/P0XAL2I8RLNiYnOZuMfaE
+	 36tVFcQ7HBXNYknFCvyDaUmNYC3OqrNskRpMoXxAd393r9g6LI2/cdB4llD2tbuY8aYx2
+	 LuqKufLHxDztL5PgHKts4cUTkPMxsUFJZZqhrdeBgZQ3+H1oGZFPhlinKl8UBxIwb4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwWxL12V;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88D0606A31C;
-	Sun,  8 Nov 2026 13:16:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A88D0606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAXKJkrdvBqYNOUAA--.21299S2;
-	Sun, 08 Nov 2026 21:16:27 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A399606A31C;
+	Sun,  8 Nov 2026 13:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwWxL12V
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610821F0089F;
+	Sun,  8 Nov 2026 13:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794143818;
+	bh=JJxNTB9eCOe/pFt54aN+l5cQw4iYZx9PorRckcs6gdQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lwWxL12VW8wXib5rkzi0bjImamFqNFpn1HCyZW61SWsB9qe6eDK10uNY2tOmWjEtj
+	 60kIctPb8gPxRoYpfr0uyqEXGrK8aMNIxvj7P4nwZe7GDDMjmMRZmdFMUI5R0syDwS
+	 I0ifTKmsEHrA2BEbAOlBgREQqIEtYrc89gLBlrweMGfdwCb157E4G3h6A2Au3tAZSO
+	 T8UFAUcAofKNKNvxIR8MNSyZrvA2yr0N5DSLmINT63Puv10YWq9M+dzV0XrL3IBllp
+	 n7fKcF9XrPcMuUTQGx3yAdl2VzriXIShX2XMC59myMVjp2kykAJHjvYWoyVsPXTauP
+	 tD6OaHvaoQEaA==
 Subject:
- [PATCH v2] net/mlx5e: TC, fix internal port leak when a flow is reoffloaded
-Date: Sun, 08 Nov 2026 13:21:00 +0000
-Message-ID: <20261108132100.315011-1-vulab@iscas.ac.cn>
-In-Reply-To: <04665957-efb5-4632-878a-6a45fa1553f5@nvidia.com>
-References: <20261103102855.1340650-1-vulab@iscas.ac.cn>
- <04665957-efb5-4632-878a-6a45fa1553f5@nvidia.com>
+ Re: [PATCH net v1 1/1] net: phylink: keep initial advertising settings
+From: netdev-bot+sashiko@kernel.org
+To: thi.zirnstein@gmail.com
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 08 Nov 2026 13:16:57 +0000
+Message-ID: <179414381793.994134.3838415671926603542@kernel.org>
+In-Reply-To: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
+References: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,77 +63,218 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAXKJkrdvBqYNOUAA--.21299S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFyDGF48Kw43JFWfGr1fXrb_yoW8KFy5pF
-	WUGry7KrWDXa4xAa17Ja1rZa4ruw43tFW5ua4xA39xXrn8JF17Wr9I9a45ua4UCrW8WFyj
-	yr4qv3Z5uFWDAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9G1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-	8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_
-	Jw1lYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VU8nNVPUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgcFA2rv4zLYsAABs6
 
-For a flow originating from an OVS internal port,
-mlx5e_tc_add_fdb_flow() takes a reference on the internal port and stores
-it in the flow's esw attribute.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-If the flow cannot be offloaded because the encap route is not available
-(-ENETUNREACH) on a multipath LAG setup, __mlx5e_add_fdb_flow() keeps the
-flow on the unready list instead of freeing it. When
-mlx5e_tc_reoffload_flows_work() retries, mlx5e_tc_add_fdb_flow() takes
-another reference and overwrites the stored pointer, so the previous
-reference is never dropped.
+Critical: 0 · High: 3 · Medium: 2 · Low: 0
 
-Only look up the internal port if the flow does not hold a reference
-already; the reference is released together with the flow attributes.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The candidate was found by a static analysis tool we run over the tree,
-which reports reference-count imbalance candidates. DeepSeek-V4.1-Flash
-and GPT-6.1 Sol were then used to audit the candidate and to prepare
-this fix. The leak was identified by code inspection only and was not
-triggered, so there is no stack trace or error message to report. The
-patch was compile-tested only and was not tested on mlx5 hardware.
+- [High] In phylink_bringup_phy() (drivers/net/phy/phylink.c:2323), the
+  new linkmode_and() limits the PHY's validated advertisement to…
+- [High] phylink_bringup_phy() now reads pl->link_config.advertising as
+  the user's requested advertisement.
+- [High] For a PHY on an SFP module, phylink_sfp_config_phy() calls
+  phylink_bringup_phy() (line 3891) before phylink_sfp_set_config()…
+- [Medium] The fix carries over only part of a pre-open link
+  configuration.
+- [Medium] phylink_bringup_phy() can now give phylib an autoneg
+  advertisement with no link modes in it.
 
-Fixes: 166f431ec6be ("net/mlx5e: Add indirect tc offload of ovs internal port")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
-Changes in v2:
-- Fold the internal port check into the outer condition, as suggested by
-  Tariq Toukan, instead of re-indenting the lookup.
-- Describe in the commit message how the issue was found and how it was
-  tested, as requested by netdev-bot.
-- Drop Cc: stable@vger.kernel.org: the leak is only reachable when a flow
-  is retried after the encap route lookup fails with -ENETUNREACH on a
-  multipath LAG setup.
+--
 
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+net: phylink: keep initial advertising settings
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 708b7987ea4c..88e620654f9f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1981,7 +1981,8 @@ mlx5e_tc_add_fdb_flow(struct mlx5e_priv *priv,
- 			goto err_out;
- 	}
- 
--	if (netif_is_ovs_master(parse_attr->filter_dev)) {
-+	if (netif_is_ovs_master(parse_attr->filter_dev) &&
-+	    !esw_attr->int_port) {
- 		struct mlx5e_tc_int_port *int_port;
- 
- 		if (attr->chain) {
+This patch keeps an advertisement that was set through ethtool before the
+MAC driver connects the PHY in ndo_open. phylink_bringup_phy() now ANDs
+the PHY's validated advertisement with pl->link_config.advertising. The
+result is stored back into both pl->link_config.advertising and
+phy->advertising.
+
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index e885da1c28311..145f181bc9d37 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -2320,6 +2320,7 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
+>  	pl->phy_state.duplex = DUPLEX_UNKNOWN;
+>  	pl->phy_state.rate_matching = RATE_MATCH_NONE;
+>  	linkmode_copy(pl->supported, supported);
+> +	linkmode_and(config.advertising, config.advertising, pl->link_config.advertising);
+
+[Severity: High]
+Can this narrow the PHY advertisement on the first ndo_open, before the
+user has configured anything?
+
+If nothing has been set through ethtool, pl->link_config.advertising
+still holds the default from phylink_create(), or from
+phylink_parse_mode() for in-band:
+
+    linkmode_fill(pl->supported);
+    linkmode_copy(pl->link_config.advertising, pl->supported);
+    phylink_validate(pl, pl->supported, &pl->link_config);
+
+That mask is validated only for the DT phy-mode, with rate_matching left
+at RATE_MATCH_NONE.
+
+phylink_validate_phy() deliberately validates more widely. It uses
+phy->possible_interfaces or the PHY's rate matching mode, and for C45
+PHYs it does this:
+
+    if (phy->is_c45 && state->rate_matching == RATE_MATCH_NONE &&
+        ...)
+        state->interface = PHY_INTERFACE_MODE_NA;
+
+The AND here undoes that widening, and the narrowed result is then
+copied into phy->advertising.
+
+Two examples:
+
+- phy-mode = "10gbase-r" with an 88X3310 or AQR class PHY: the default
+  only has MAC_10000FD modes.
+- phy-mode = "2500base-x" with an RTL8221B class PHY: only MAC_2500FD
+  survives.
+
+Wouldn't the PHY then advertise only 10GBASE-T (or 2500BASE-T)? Before
+this patch it could link with lower speed partners; after it, those
+links would fail.
+
+The AND can't tell a user setting apart from phylink's own
+interface-limited default. Would user intent need to be tracked
+separately?
+
+[Severity: Medium]
+Can the intersection end up with no link modes here?
+
+The AND runs after phylink_validate_phy(). Nothing checks for an empty
+result or re-validates it before it is copied into phy->advertising.
+
+While no PHY is attached, pl->supported holds every MAC mode for the
+interface. For MAC_1000FD that includes 1000baseX_Full and
+1000baseKX_Full. So "ethtool -s ethX advertise 1000baseX/Full" is
+accepted while the interface is down.
+
+At ndo_open, ANDing the copper PHY's baseT modes with that mask leaves
+only Autoneg and Pause. phydev->autoneg stays enabled.
+
+The other two configuration paths reject this state.
+phylink_ethtool_ksettings_set() has:
+
+    /* If autonegotiation is enabled, we must have an advertisement */
+    if (linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+                          config.advertising) &&
+        phylink_is_empty_linkmode(config.advertising))
+        return -EINVAL;
+
+phy_ethtool_ksettings_set() also returns -EINVAL for an empty
+advertisement with autoneg enabled.
+
+phylink_bringup_phy() returns 0 here, and the link silently never comes
+up. Should the result be checked, or fall back to the PHY's validated
+advertisement?
+
+The missing check also turns the stale link_config and SFP cases below
+into a total link loss.
+
+>  	linkmode_copy(pl->link_config.advertising, config.advertising);
+
+[Severity: High]
+Does pl->link_config.advertising still reflect what the user asked for
+once a PHY has been attached?
+
+With a PHY present, phylink_ethtool_ksettings_set() passes the request
+to phylib and returns without touching link_config:
+
+    /* We can rely on phylib for this update; we also do not need
+     * to update the pl->link_config settings:
+     ...
+     */
+    return phy_ethtool_ksettings_set(pl->phydev, &phy_kset);
+
+This line writes the intersection back into pl->link_config.advertising,
+and phylink_disconnect_phy() never resets it. Non-genphy PHY drivers
+also keep phy->advertising across phy_detach() and phy_attach(). On
+macb, stmmac, r8169 and tn40xx, the mask can therefore only lose bits
+across ndo_stop and ndo_open.
+
+Two sequences show this:
+
+(a) "ethtool -s advertise 100baseT/Full" while up, then ifdown/ifup,
+leaves link_config at {100M}. A later ethtool -s with the full set
+while up is reverted to {100M} at the next ifdown/ifup.
+
+(b) "ethtool -s advertise 100baseT/Full", ifdown/ifup, then
+"ethtool -s advertise 1000baseT/Full", ifdown/ifup, gives {1G} AND
+{100M}.
+
+In case (b) only the Autoneg and Pause bits are left. Wouldn't the PHY
+then advertise no speed modes, so the link never comes up until the
+driver is rebound?
+
+[Severity: High]
+How does this behave for PHYs on SFP modules?
+
+phylink_sfp_config_phy() calls phylink_bringup_phy() before it updates
+link_config for the new module:
+
+    ret = phylink_bringup_phy(pl, phy, config.interface);
+    ...
+    phylink_sfp_set_config(pl, support, &config, true);
+
+So the AND uses whatever pl->link_config.advertising was left by the
+cage default or by a previously inserted module. Neither module removal
+nor PHY disconnect resets it.
+
+Some examples:
+
+(1) A 1000BASE-SX module leaves {1000baseX_Full, Autoneg, Pause, FIBRE}.
+If a copper SGMII module (e.g. 88E1111) is inserted next, its baseT
+modes are ANDed with that mask, which has no speed bits.
+
+(2) If an optical module's only interface has no in-band AN,
+phylink_sfp_config_optical() calls linkmode_zero(config.advertising).
+That leaves link_config.advertising entirely zero for the next copper
+SFP PHY.
+
+(3) A cage with managed = "in-band-status" and phy-mode 1000base-x only
+gets MAC_1000FD modes from phylink_parse_mode(). Even the first copper
+module inserted would lose its 10/100 modes.
+
+Right after bringup, phylink_sfp_set_config() overwrites
+link_config.advertising with the module's full mask. Doesn't that leave
+phylink's recorded advertisement out of sync with what the PHY was
+actually programmed with?
+
+>  
+>  	/* Restrict the phy advertisement according to the MAC support. */
+
+[Severity: Medium]
+Is only half of a forced link configuration set before open carried
+over here?
+
+Without a PHY, phylink_ethtool_ksettings_set() handles
+"ethtool -s ethX autoneg off speed 100 duplex full" in two steps. It
+stores the speed and duplex in link_config.speed and
+link_config.duplex, and it clears the Autoneg bit:
+
+    linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, config.advertising,
+                     kset->base.autoneg == AUTONEG_ENABLE);
+
+At bringup only the bitmap is applied, through the new AND and the
+following linkmode_copy(phy->advertising, config.advertising).
+phydev->autoneg, phydev->speed and phydev->duplex are never updated.
+
+So the PHY keeps autonegotiating and ignores the forced mode, as it did
+before the patch. The difference is that phy->advertising now lacks the
+Autoneg bit while phydev->autoneg is still AUTONEG_ENABLE.
+
+phy_ethtool_ksettings_set() always keeps these two consistent. Is this
+a state phylib expects? ethtool would now report autoneg on while
+Autoneg is not advertised.
+
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104125509.3221743-1-thi.zirnstein%40gmail.com
