@@ -1,72 +1,80 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794129848;
-	b=lvRypMSzHNCEQSmUgnKMmh88wrCGjYJO8iWm/gZ76Er3wi2t3dTs6HeCY2ACKG8Gw8y8
-	 3FU5WpEszHbMiOGHEpyRzwp99dL/r0Nx7cmvi3e+TkWjX4IOomCC+DLMi2Doc3t+ZcYET
-	 AoiolNlly2AoHX3rLW1SWQUsWi6CZqvUz5NJk3B3QBgWvMP66aYfs7gFPnw/W+QofjjuM
-	 DLoGeV22hu6Mr5cb8MX3z9RR+4KIG09npUVkrNmUHuWZvqnpZO8z4rwVlBh+dBjFANx/1
-	 ob9hultrsnmaQRWR5jNSnkAX5tbHAObMyo64EXX0wVPkISwIN5XYkKuhCYRGb4tkazg==
+	t=1794129875;
+	b=cfXW3u9jMulZWL4juXtzF0mbq9+QQYLwTBFKVGqdXCgVf/XHNsQVIMOxD2ZYDYhQ7HX3
+	 dTWUazDzoPCibX1a/JnZWGQ750ARPKgkMYcxJb/N6q6TC7+ODtrqc8rDyLqyDXzO+1xON
+	 lsEB0Gz/c8c8Lq7XoT7/e83jGlGPlHfxgq74sfzk4+31dmohaUs0GGTvBxF9ujrN/MpZD
+	 daBjOpOFBW4AEZANyysvLFgvOUxTV3kABBSLIAuEJoyhhaxOa/x4fGHYSGX4Uzzn3DbZ9
+	 XHZ18YjnCBHUCM8YGFX9vfOZ4u571MsNFGMPTqA56H15Qe8EBg7LXi/Xfalsi+5HRww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794129848;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794129875;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
 	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=tQxKIyAXlBwDhSPp/TxaPn0rgpWq0tA/ezL9W8QK5g8=;
-	b=NFKKMIYCQCtLdIC6CC3cgotKkBeZwjIPrZLiyA6bdEWfUTQjtdM7tfRBswGYbSTVQNrQ
-	 sqjDEO3SCscbsnRzMM7XxyuA1YyU3So8McMbUppANzUF3yIlslpEe2MrY5hnAPCyFK8Su
-	 ZmsbTgjU5ZQSEgxkJWUgdkDEqMJ2AcQayjcX077GwUHquXLeud5L/e59l6K9rq6CyPsKG
-	 3JOPYL0z91lM7t0z4MCbvuGnaZFVEaGvC9iHukul+SJYb87PA9Z71CUWeJAeDzv+bezdf
-	 BKMs3qb287AeMb5vNjVx7rXS9yBqaVGw4vxImMiNwBCuwLJmlGDL0uQ0nlWxain+vaw==
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=j8rq9WD1PWSJfzNjdvpugwztGTtxU4BUg3rNiZ2tRAM=;
+	b=HM3ftjnT7Clo+sb61zpD86IhyixSdSvbABFeam1p84uYQaZ6ysQHchZoLqNNoWs7T9Bc
+	 oymAuRHKfN3n+ayfPnq478a1Y5/UuhKORt5PTMhd/VojIkxfQpEYWiNH3Bod6wfLr0ZRb
+	 nr1jotW+gVZV03bYOpmEBKXzebIb8PUcwjrQTjOnZ21zpGkFJ/Bj/EeNt9+mtt8XCutVK
+	 p53c2buVFuUCwb1Q79BMrzapowsfg0kiln5aUjPIlXZAH7gtJI6MJ9NX7tQU26eHsr4oB
+	 sjWitzOYncwP/38ovKjzEape2V38dhvq+09wn0aGiMjUvq6jGCl2x3AGrUD3jX51AWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Xb5SpIca;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tK8QjT2N;
 	arc=none smtp.remote-ip=111.22.67.139
 Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66F9606A31C;
-	Sun,  8 Nov 2026 09:24:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B66F9606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DAA606A322;
+	Sun,  8 Nov 2026 09:24:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1DAA606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Xb5SpIca
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=tK8QjT2N
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Xb5SpIca8Ls4HS4b1mNSKI2j2rhFbRDwLYnkQRLmMGrP0oQMF61vhVBostJluXFxR4mncuehzHV2+
-	 N09G05PpF1hNd5AgZprrjEHdp8qqHOeTTR+eoU9wZvnZAiyNCjZdY3hMrU338pKTa3p58J41AoGKg+
-	 5VtLWPP76ZmgXwUA=
+	b=tK8QjT2NhGmyW4wmOO8RrBskFx5hXGRg9xwQtBhc/8hgQCR1MVmMHh7y3w2pikytdDaCu87d5ldS2
+	 K8li6vmXmuoohPvT7aO4VNHVQntXl1cGSzPPX3dJBrmhnEPI6BG6G/KfxcJJrNZs6qau8mhhzK1yAV
+	 jZxkiMqF6PnZxl1U=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96af03faa28f-c0433;
-	Sun, 08 Nov 2026 17:23:56 +0800 (CST)
-X-RM-TRANSID:2ee96af03faa28f-c0433
+	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96af03fc6296-c043a;
+	Sun, 08 Nov 2026 17:24:31 +0800 (CST)
+X-RM-TRANSID:2ee96af03fc6296-c043a
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03.03 (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26af03f9e529-63cf5;
-	Sun, 08 Nov 2026 17:23:56 +0800 (CST)
-X-RM-TRANSID:2ee26af03f9e529-63cf5
+Received:from  (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af03fc1270-639ea;
+	Sun, 08 Nov 2026 17:24:31 +0800 (CST)
+X-RM-TRANSID:2ee76af03fc1270-639ea
 From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	William Tu <witu@nvidia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] erspan: drop packets with an unknown ERSPAN version
-Date: Mon,  9 Nov 2026 02:23:09 +0900
-Message-ID: <20261108172341.56557-1-yanhaishuang@cmss.chinamobile.com>
+Subject: Re: [PATCH net 2/2] virtio_net: Keep AF_XDP zero-copy pools bound across suspend
+Date: Mon,  9 Nov 2026 02:23:55 +0900
+Message-ID: <20261108172417.56607-2-yanhaishuang@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179411422969.994134.8902723149137301857@kernel.org>
-References: <20261107130030.35220-1-yanhaishuang@cmss.chinamobile.com> <179411422969.994134.8902723149137301857@kernel.org>
+In-Reply-To: <179411647719.994134.8428591729717130295@kernel.org>
+References: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com> <20261107125723.33547-3-yanhaishuang@cmss.chinamobile.com> <179411647719.994134.8428591729717130295@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,26 +84,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 08, 2026 at 05:03:49AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Can an ETH_P_ERSPAN2 frame with a 4-byte GRE header get around this new
-> check?
->
-> is_erspan_type1() looks only at gre_hdr_len and never checks
-> tpi->proto:
+On Sun, Nov 08, 2026 at 05:41:17AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> - [High] virtnet_xsk_pools_unbind() calls virtnet_xsk_pool_disable() for
+>   pools whose AF_XDP sockets are still XSK_BOUND.
+> - [High] virtio_net: stale DMA addresses in free_list after unaligned XSK
+>   pool rebind
+> - [High] virtio_net: uninitialized xsk_hdr_dma_addr used in
+>   virtnet_xsk_pool_enable()
+> - [Medium] virtnet_xsk_pools_unbind()
+>   (drivers/net/virtio_net.c:6063-6072) loops over max_queue_pairs and…
 
-[ ... ]
+Thanks, I went through all four against the code and they all hold.
 
-> Would it make sense to also require tpi->proto == htons(ETH_P_ERSPAN)
-> when classifying a packet as type I, so this path is covered too?
+The three High ones come from the same mistake: the patch reuses
+virtnet_xsk_pool_disable()/enable(), which assume the socket is
+already unbound, while the sockets are still bound and the device is
+still running. That opens the window against the RX path redirecting
+to the socket, unmaps and remaps the pool behind buffers sitting on
+its free_list, and lets TX NAPI run before xsk_hdr_dma_addr is set.
 
-Yes, this is right. gre_parse_header() takes an ERSPAN2 frame with
-a 4-byte GRE header as one with an ERSPAN header, but erspan_rcv()
-then treats it as type I and never looks at the version. Type I only
-exists with protocol 0x88BE, so I'll make is_erspan_type1() check
-tpi->proto as well and send a v3. ip6_gre has no type I path and is
-not affected.
+For v2 I'll stop unmapping and remapping the pool across suspend.
+Freeze will keep the pool DMA mapping and only stash the driver's
+per-queue xsk state after virtnet_freeze_down() has stopped NAPI, and
+restore will attach it to the new queues before virtnet_open(). That
+should remove all three problems instead of patching each one.
+
+The Medium one is right too. A pool can be left bound on a queue at
+or above curr_queue_pairs after native XDP is detached. As noted, that
+comes from virtnet_xdp_set() not checking for bound pools, which
+predates this patch. I'll fix it there as a separate patch in the
+series, so suspend no longer has to handle that case.
+
+v2 will be retested with KASAN for both aligned and unaligned pools.
 
 pw-bot: cr
 
