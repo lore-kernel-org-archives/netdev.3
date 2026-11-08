@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794175706;
-	b=vZOu2ncB6pZ+01UdRVPPHzUL3h4sxKPkecFP9V5xoCzgt+JLVx+Bf/nLah2c4Rb++CrC
-	 HiCBXfTmjftpeIJUVbinhn5oDMpf0VnsjopHQUZqKro7vmannkU9idNb6UuaelPghnD7r
-	 dWmczQyfcVmv3xvbqqBmVpjeILyIiCBQ2pO3CbO3k345zmuK2RZ3uiE+HXXo8EF+gOEOt
-	 Dw8RueoweJs/5fIVkT7AjMoITnYfW3aKBIEDozAroAuLXZsPBuZbLu3/zIrIsKlZ0ZXpb
-	 +Y7dSazt6ThBglKOU0nn2OjR8Ypy0hxIpr5jNqqkIAU3LQORHuZQzO+TKZbVYGZlloA==
+	t=1794175717;
+	b=qonv2xZ0csrnhr7C/uvd4GzxKA+WK/h+6J/N/Qxzb+Lu0PVCmUjuGmO8THFiAg////JG
+	 yQSM/WrE1xD+l3ItE/VhfLxXN11nZu0D/T/2ZbKG/f3jivQYG0tyYfr9PaXlzuPsfGNgT
+	 zfppCQcf4dyGp8n/5JvevsXup9xmTMpSdenS58V0zjRoNQ2S7wSopDdXKtcme4b81+jTF
+	 wD2qvCImPXXpxgWICMYkvlf6jknm/oIkNf6DtzdqFVUu+5n5ZFXZ3zLac0upAo2bboz1y
+	 wMbaDI+5N68PALy1fmBPw9OfdZeG4OYEQT8OiI/AlbSh1DagJVMWoqg7hMAkKZl8DhQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794175706;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794175717;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=vTNVZdXw6o21WqcFGBxd9DOHUD3xQC0qrIumoTiqvwU=;
-	b=LfnscoB0Nkef0pcCThkea5VIl19jvPOouh44f1LDQKf2N/T2JlI22WxgYlI/khxuI+bp
-	 QJ+cZRACPajSvnuwpNhD2nB6FHDpZT7wDw4pP4/rcstBnzxYySqkQ52gS6uTj2HZCDSmw
-	 2uVtZTbo2q0vHxtqYPfjJ+uLm20/n9om+xwKuDGRnpJi0zRhmHeiaGdfDvT/I6aGzHWbq
-	 VPFuUnCe41XbcvVKPnU0Ui8A/W7ZlEh28LpftgJO/LNmL4n5pZxqBE/VV8NtVZuKIuW5v
-	 HQrzDERk9d8VZ6Nlz2DKvCAwYnPIelH+ubOkEbicyQFzrG4/8vrxsVpk3ROcxj0Be/Q==
+	bh=GPBOnH/igQQ1Y7Jgrlbm4Ff98jEBOiO/VijMzt7smks=;
+	b=cg3bJH1XMQK7KmNdh69UYHWmtt4TqllQchcOZdfUqe+R7DgfkLS8V2B/GMt5o0Jh/Ekb
+	 V+9r8RzHg4+YQjbR1rnF3jrqYRlAozW9FuSv+5LirS/gwr2GMYQPVSGeLNvwplA2qLHpk
+	 ep3x0hU58w4+WW43DzJ3nKFOz6PujdedE3wRN5KTASs2gckPV9e0dPGf1SyLezOsq8h5T
+	 YOTYK2sHCL6AIUZUEh9apdTwUGEXSHL45ZoixrI7RmMugo2/b/E/F5MmCBM6hUaCej5Ub
+	 MXNGnidP/SJOYrymACX/++rfYanro1qlxo/cwWx3E56AwQZ3wjORPX1+4siU1WnOw1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Am3cYaRO;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cDMrfDHf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E18606A333;
-	Sun,  8 Nov 2026 22:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A55606A339;
+	Sun,  8 Nov 2026 22:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Am3cYaRO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D8B1F0089F;
-	Sun,  8 Nov 2026 22:08:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cDMrfDHf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193161F008AB;
+	Sun,  8 Nov 2026 22:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794175705;
-	bh=vTNVZdXw6o21WqcFGBxd9DOHUD3xQC0qrIumoTiqvwU=;
+	s=k20260515; t=1794175711;
+	bh=GPBOnH/igQQ1Y7Jgrlbm4Ff98jEBOiO/VijMzt7smks=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Am3cYaRONk8QHztljHE7Ay5r5WM9squmFdyAqUkQMiDuJwgcRy5nl/lBu4545WkIJ
-	 iQlQ+K7TrVc9tS7HoCaIe0H7/YYVRRT8OwW5L29hrNI/H/8YTqCNE8TDtMaEAlPlJN
-	 XLoP+trs2pmcEJJNUdFQm08U/6WGKGDDuDTt4M6utHTE1PKEDPOsYfmnMrmZTi0q6Y
-	 51eTCjjuz0QM1gWhuO2BrImaASjAcmgLV/wpFxV/zCSiFykzv1NJ3f7pXSHSH96Srg
-	 pyINJuPXqZZFrr28OKi74kc3JFeH80Sqj/ClSHsYPSvNPBzPY1OkLiBIRZzBS/9C9d
-	 nNqwHH1+Hwx0A==
-Subject: Re: [PATCH net v8 1/4] net: hsr: keep GRO disabled on HSR/PRP ports
+	b=cDMrfDHfbts2phpYASsd4ddmmm0OU4/l+LCcjj7L9r6ZVQmLVxmibfkbWfBF5ZYvP
+	 k9W2VmgxAkwQNsfPSp90RXArcHh5Z/g3N1NBULkn9wWx5Gu6hTJHY13SNLNRDOgrck
+	 nfwLtGNGvwHwPx71aUs7MnhYLdwAF/axXL5CacngFwG4nlL/+Z2eCLSUzE8tXDPOkL
+	 Wya6RFV6Y4z04gyjynlr0Qs33ZolV6m6O9wC4jzMwqQbvC1DfQrzuafvU7dMqk/eNB
+	 pt1DlawKNztyNdQ1oEoCs+WsG3lMvwyWwwsfHjKO9jjowbZnV3N13JyqcGmczj2AXl
+	 vlOabCZgMndow==
+Subject: Re: [PATCH net v8 4/4] selftests: net: hsr: verify GRO policy and
+ ordered forwarding
 From: netdev-bot+sashiko@kernel.org
 To: xiexinet@gmail.com
 Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
@@ -51,10 +52,10 @@ Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
  bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
  liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com,
  lukma@denx.de, fmancera@suse.de, danishanwar@ti.com
-Date: Sun, 08 Nov 2026 22:08:23 +0000
-Message-ID: <179417570353.994134.16201150912134067025@kernel.org>
-In-Reply-To: <20261107220544.20-2-xiexinet@gmail.com>
-References: <20261107220544.20-2-xiexinet@gmail.com>
+Date: Sun, 08 Nov 2026 22:08:29 +0000
+Message-ID: <179417570965.994134.712913867770028727@kernel.org>
+In-Reply-To: <20261107220544.20-5-xiexinet@gmail.com>
+References: <20261107220544.20-5-xiexinet@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -71,7 +72,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -79,207 +80,120 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] hsr_portdev_setup() (net/hsr/hsr_slave.c:210) calls
-  hsr_portdev_role_set() on every non-master port without checking…
-- [Medium] hsr_portdev_role_set() calls netdev_change_features() with
-  dev->hsr_port set.
+- [Medium] topo() in
+  tools/testing/selftests/net/hsr/hsr_gro_superpacket.py treats a…
+- [Low] ordered_wrap() in
+  tools/testing/selftests/net/hsr/hsr_gro_superpacket.py checks the…
 
 --
 
-net: hsr: keep GRO disabled on HSR/PRP ports
+selftests: net: hsr: verify GRO policy and ordered forwarding
 
-This patch adds an hsr_port role bit to struct net_device. The bit is set
-on HSR/PRP slave A/B and interlink ports. While it is set,
-__netdev_update_features() drops software GRO and configurable GRO_HW
-from both wanted_features and the computed features, and the attach
-fails if software GRO stays active.
+This commit adds two HSR/PRP selftests. Each is a shell entry point that
+execs a shared Python helper. hsr_gro_superpacket.sh covers the GRO policy
+on member ports, refusal of forwarding port types, and TCP over the
+interlink and PRP LANs. hsr_ordered_forwarding.sh covers the ordering of
+local and interlink data, supervision frames, concurrent producers and the
+sequence number wrap.
 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index df1a840b03343..2916b17f4169f 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -11269,6 +11269,21 @@ int __netdev_update_features(struct net_device *dev)
->  
->  	features = netdev_get_wanted_features(dev);
->  
-> +	/* A direct HSR/PRP port needs per-frame metadata. Drop software
-> +	 * GRO and configurable GRO_HW from the request as well as from the
-> +	 * result, as the core does for upper-disabled features: drivers
-> +	 * such as veth derive state from wanted_features and need the
-> +	 * requested and the active bit to agree. Fixed-on or
-> +	 * driver-required GRO_HW is left to the driver.
-> +	 */
-> +	if (dev->hsr_port) {
-> +		netdev_features_t gro = NETIF_F_GRO |
-> +					(dev->hw_features & NETIF_F_GRO_HW);
-> +
-> +		dev->wanted_features &= ~gro;
-> +		features &= ~gro;
-> +	}
-> +
->  	if (dev->netdev_ops->ndo_fix_features)
->  		features = dev->netdev_ops->ndo_fix_features(dev, features);
->  
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index a546f70f9cc8b..bc340ae0b52e1 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
+> diff --git a/tools/testing/selftests/net/hsr/hsr_gro_superpacket.py b/tools/testing/selftests/net/hsr/hsr_gro_superpacket.py
+> new file mode 100755
+> index 0000000000000..23feb0ce4df4c
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/hsr/hsr_gro_superpacket.py
+> @@ -0,0 +1,1376 @@
 
 [ ... ]
 
-> +static void hsr_portdev_role_clear(struct net_device *dev)
-> +{
-> +	netdev_lock_ops(dev);
-> +	dev->hsr_port = false;
-> +	/* Recompute features without the role. GRO was dropped from
-> +	 * the request while the role was set and stays off; the user
-> +	 * can turn it back on with ethtool. A dying device just drops
-> +	 * the role, a netns move stays registered and is recomputed.
-> +	 */
-> +	if (dev->reg_state == NETREG_REGISTERED)
-> +		netdev_change_features(dev);
-> +	netdev_unlock_ops(dev);
-> +}
+> +def ordered_wrap(lab):
+> +    """The interlink sequence number wraps with both lanes intact."""
+> +    topology = topo(lab)
+> +    caps = ordered_lanes(lab, topology)
+> +    sender = ordered_socket(lab, topology["tx"], "100.64.2.1")
+> +    probe = ordered_send(lab, sender, 4, 0, 1, 5130)
+> +    # This only selects the warmup count; final loss-free captures certify it.
+> +    rows = [udp_rows(cap, {5130}) for cap in caps]
+> +    require(all(len(lane) == 1 for lane in rows) and
+> +            rows[0][0]["seq"] == rows[1][0]["seq"], "wrap probe missing or unequal")
+
+[Severity: Low]
+
+Could this check run before the probe has reached the da/db captures?
+The only wait between sending the probe and reading the captures is the
+fixed drain at the end of ordered_send(), and it has no completion
+condition:
+
+    ordered_send() {
+        ...
+        lab.observe(0.1)
+        return expected
+    }
+
+The probe goes from t0 over the veth to dil, through the HSR rx_handler in
+NET_RX softirq, and then out on da/db. That softirq usually runs
+synchronously inside sendto(). If net_rx_action() runs out of budget, the
+remaining work is handed to ksoftirqd.
+
+On a loaded CI VM, can ksoftirqd take longer than 100 ms to get scheduled?
+If so, the case would fail with "wrap probe missing or unequal" even though
+the kernel behaves correctly.
+
+The other packet checks in the script wait through lab.finish() with a
+completion predicate. Would polling lab.observe() until both lanes hold the
+probe, bounded by lab.remaining(), close this window?
+
+> +    start = rows[0][0]["seq"]
 
 [ ... ]
 
-> @@ -169,6 +199,22 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
->  	if (res)
->  		goto fail_upper_dev_link;
->  
-> +	/* Enable the member role and recompute before the RX handler
-> +	 * is published, so that software GRO on this device is off
-> +	 * before frames can arrive. This covers the direct member
-> +	 * only: a stacked member receives from a lower device that
-> +	 * may still run GRO and can deliver merged frames as GSO skbs.
-> +	 * A still-active software GRO rejects the port, a remaining
-> +	 * GRO_HW alone does not.
-> +	 */
-> +	hsr_portdev_role_set(dev);
-> +	if (dev->features & NETIF_F_GRO) {
+> +def topo(lab):
+> +    """SAN - interlink - HSR DUT - two LANs - receiver namespaces."""
+> +    tx, dut, rx = lab.ns(), lab.ns(), lab.ns()
+> +    for ns, dev, peer_ns, peer in ((tx, "t0", dut, "dil"),
+> +                                   (dut, "da", rx, "ra"), (dut, "db", rx, "rb")):
+> +        lab.veth(ns, dev, peer_ns, peer)
+> +        for owner, link in ((ns, dev), (peer_ns, peer)):
+> +            lab.ip(owner, "link", "set", "dev", link, "up")
+> +    hsr_attach(lab, dut, "hm", "da", "db", "dil")
+> +    attributes = link_state(lab, dut, "hm")["linkinfo"]["info_data"]
+> +    require(attributes.get("proto") == 0 and attributes.get("version") == 1 and
+> +            all(attributes.get(key) == value for key, value in
+> +                (("slave1", "da"), ("slave2", "db"), ("interlink", "dil"))),
+> +            "HSR topology has unexpected protocol/version")
 
 [Severity: Medium]
-The role is set here for every non-master port. Nothing checks
-prot_version, port->type or hsr->fwd_offloaded first. Is GRO actually a
-problem on all of these ports?
 
-On PRP slave A/B, frames that carry an RCT trailer do not appear to be
-merged. inet_gro_receive() flushes when the IP tot_len does not match
-skb_gro_len():
+What happens here with an iproute2 that does not print the HSR version
+attribute?
 
-net/ipv4/af_inet.c:inet_gro_receive() {
-    ...
-	flush = (u16)((ntohl(*(__be32 *)iph) ^ skb_gro_len(skb)) | (ntohl(*(__be32 *)&iph->id) & ~IP_DF));
-    ...
-}
+The kernel has only sent IFLA_HSR_VERSION for non-PRP devices since commit
+16a2206354d169 ("net/hsr: add protocol version to fill_info output"), in
+hsr_fill_info():
 
-prp_is_lan_dup() also drops A/B forwarding. Untagged LAN traffic goes to
-the master or interlink untagged, the same way a bridge forwards GRO
-skbs.
+    else if (nla_put_u8(skb, IFLA_HSR_VERSION, hsr->prot_version))
 
-Some slaves have HW forwarding offload (NETIF_F_HW_HSR_FWD, for example
-icssg, ksz9477 and xrs700x). For those, hsr_drop_frame() does:
+Whether a "version" key shows up in the ip -j -d link show output then
+depends on the iproute2 HSR print code. Older iproute2 releases print
+slave1, slave2, interlink, seq_nr, supervision and proto, but not version.
+In that case attributes.get("version") returns None and require() raises
+ValueError.
 
-net/hsr/hsr_forward.c:hsr_drop_frame() {
-	if (port->dev->features & NETIF_F_HW_HSR_FWD)
-		return prp_is_lan_dup(frame->port_rcv->type, port);
-    ...
-}
+ValueError is in CASE_ERRORS, so main() reports the case as not ok. It then
+marks every later case as failed too:
 
-so merged skbs are never re-tagged towards the other slave.
+    for later, (other, _) in enumerate(cases[number:], number + 1):
+        print(f"not ok {later} - {other}: stopped after prior failure", flush=True)
 
-There is also no GRO offload for ETH_P_HSR or ETH_P_PRP. Outside
-net/hsr, the only references are in flow_dissector, so tagged frames
-cannot be merged. The per-frame metadata problem seems to exist only
-where untagged frames get tagged: the interlink, and SAN frames
-forwarded between non-offloaded HSR slaves.
+In gro mode, "natural TCP interlink" is the first caller of topo(). The six
+"PRP LAN" cases after it never call topo(), but they would still be
+reported as not ok. In ordered mode all five cases call topo(), so the
+whole test would fail.
 
-Because wanted_features is cleared and not restored when the port
-leaves, PRP ports and HW-offloaded ports lose software GRO for good.
-Host-bound receive then costs more CPU and gets less throughput. The
-commit message does not mention this cost. The Fixes: tag would also
-bring this behaviour change into stable kernels.
+A missing interlink option in iproute2 is already reported as SKIP through
+interlink_unsupported(). Could a missing "version" key get the same
+treatment, or simply not be required?
 
-Could the role be limited to the ports where GRO actually breaks
-per-frame tagging?
-
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "software GRO still on after feature update, cannot join");
-> +		res = -EBUSY;
-> +		goto fail_role_policy;
-> +	}
-> +
->  	res = netdev_rx_handler_register(dev, hsr_handle_frame, port);
->  	if (res)
->  		goto fail_rx_handler;
-> @@ -177,7 +223,12 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
->  	return 0;
->  
->  fail_rx_handler:
-> +fail_role_policy:
-> +	/* Rollback order: unlink the upper, clear the role and
-> +	 * recompute, then undo this setup's promiscuous increment.
-> +	 */
->  	netdev_upper_dev_unlink(dev, hsr_dev);
-> +	hsr_portdev_role_clear(dev);
-
-[Severity: Medium]
-Can a failed attach leave GRO disabled on a device that never became an
-HSR member?
-
-hsr_portdev_role_set() leads to __netdev_update_features(), which clears
-NETIF_F_GRO (and configurable GRO_HW) from dev->wanted_features. This
-happens before the attach is known to succeed. The previous request is
-not saved anywhere. hsr_portdev_role_clear() only recomputes from the
-reduced wanted_features.
-
-This rollback undoes the upper link, the role bit and promiscuity, but
-not the GRO request. The -EBUSY check above can fire, for example, when
-ndo_set_features() fails. In that case __netdev_update_features()
-returns early with dev->features unchanged, but wanted_features has
-already been cleared.
-
-A second path goes through hsr_del_port(). hsr_dev_finalize() attaches
-the ports one at a time:
-
-net/hsr/hsr_device.c:hsr_dev_finalize() {
-    ...
-	res = hsr_add_port(hsr, slave[0], HSR_PT_SLAVE_A, extack);
-	if (res)
-		goto err_unregister;
-
-	res = hsr_add_port(hsr, slave[1], HSR_PT_SLAVE_B, extack);
-	if (res)
-		goto err_unregister;
-    ...
-}
-
-Slave B or the interlink can fail, for example in hsr_check_dev_ok() or
-in the new -EBUSY check. Then err_unregister runs
-hsr_del_ports()->hsr_del_port()->hsr_portdev_role_clear() on slave A,
-which had attached successfully, and slave A keeps GRO disabled. For
-example:
-
-  ip link add hsr0 type hsr slave1 eth0 slave2 lo
-
-fails, but GRO stays off on eth0.
-
-The commit message says:
-
-  A failed attach does not restore the GRO request either; the next patch
-  refuses the usual causes before any state is changed.
-
-The next patch, "net: hsr: refuse forwarding devices as HSR/PRP ports",
-only adds checks to hsr_check_dev_ok() for the port being attached.
-Wouldn't that still leave out ports attached earlier in
-hsr_dev_finalize(), and ndo_set_features() failures?
-
-A stable backport selected through the Fixes: tag could also take this
-patch without the follow-up.
-
->  fail_upper_dev_link:
->  	if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
->  		dev_set_promiscuity(dev, -1);
+> +    lab.ip(tx, "addr", "add", "100.64.2.1/24", "dev", "t0")
 
 [ ... ]
 
