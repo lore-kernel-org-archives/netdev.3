@@ -1,69 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794169599;
-	b=M5zgRPxzyy/ckJobTxZ2mFp+FfpxGBjgIrRy6K6l8Tx8VT+I0GAxFMsx4zlA7xUDmskp
-	 dOSJaILoP1umQU49OTDC2Eak0udy+i+agFzlGXWKPVN9b9OZNF6sIR9UmXPaQB/WMRj+q
-	 197mYET8iMAfLJDGV+j24qK30NrHX4FhpVqWMLPNmGBeaAM/JvqIK8BBXVEeoMXTKWJRG
-	 uP71kk0RAzsetb9uahbLaWVoz7gXv31qp/l4EX5VZdvAPzyV/n4yY2j6jsrvrTKeN47Fm
-	 sO4QE2x4Z97MbZHOoPtzA7Jlr5jmiZIjDOuZM0l4MSsatozYy/PcgwUTXqYuPZpH2+Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794169599;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-ZohoMailClient;
-	bh=7xW0TLz5lSvzPfO+HptsTc8YtmKOz/HuMEhxKbGSBVk=;
-	b=3DfFmz69y1gHk3AN/A3mZl7TfAX9/igbMitaNZeVjcntW9C5/4M2fT/XUJAXqwIiCd7a
-	 08MX97nO6Xay4Fa7s2mK+iOMuu9wWqFBqm6ccResLpL/Li9h8s63gLCokx4XDuVTjDU7q
-	 4bsxjl01i9GsgJlMaR+Q4vmA9tBitYLcJWWH7CUZLNkva8AFKUwpvQG8MxIdzoSuEqbmK
-	 7eftJR0MbJqqCRL+4P1FE6e428RXZl2XIuDsqqMv1mVfvMR9Vm6fG2QJLNeI2kBT1YfH2
-	 UauTmf8ag034co7xrDs0YsixD8ylp7rSo8kjiQJHjg4OH2upUGmmx0dncdJihk9/rNQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=machnikowski.net;
-	spf=pass smtp.mailfrom=machnikowski.net;
-	dkim=pass header.d=machnikowski.net header.i=@machnikowski.net header.a=rsa-sha256 header.s=zoho header.b=Xh7dpspG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.54
-Received: from sender6-of-o54.zoho.com (sender6-of-o54.zoho.com [165.173.180.54])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794170061;
+	b=3HBY67fX7ETHWheb3HGHarpT+zTHhU3qocscFEQnxkCe4ODdjh8BODee1oLTW7Van67t
+	 AHLGg2bog4mIo38XPWncxWXiG/2DQqSPI/8oU80CghfvuQGJ1vgGP6TPKEGH7i3QAtl4Y
+	 eerpl+oIGFQngnanX/PN3EArMwALwXDCNbHLtt1lxdLIJdWeFKRoYmxXpHvg0sEStGnWY
+	 Sq8eO6dNkGNT+VeYhharaTC7zlBH20BHOR7IbvxSQrU+dtyTFT3rYDv6AbDY1G1R1DBJD
+	 5H3kalNl6I3GJMRVvo+2VV7684r7/wudY024AARXN10HxE+iQjBb9zVnlrt58y2Mteg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794170061;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=OfyPxkhPGNPMGFvLBwZAx3jv4eqYnhKxNevbPUnouxY=;
+	b=08qfzG+QCQ+pC7E0XQPK184bczVblqESYKpaBOjjnMSm1LI24nZC+S40iHDajbG8lqw2
+	 EXHBcgzrBZ+EAueM3JjIBE7erHThJsKsRw/LlHDmt1rOjD78eyC0fwpTcv5LgsXfARYuw
+	 ftj5ZRQdZyWsfcp0G/xqjNUnkLLuc02YZwhAtwXCFFfjRo64A/yrYsic4EnU2ENSfgHiy
+	 kHTXPDR/2cruQnp/yRAylXlV8TBZB2odetE08mbnXAxR7hdIONTOUnpCSo0lcuQwO/VbV
+	 9sWc2HdHMKX1s2vBTkW7q0I/kKr73sLkdZJUP16fEdLXBSampMhnOwbw5KXzicKaliQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AXG3lgYb;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E9606A333
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:26:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A27E9606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9353B606D805
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:34:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9353B606D805
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=@machnikowski.net header.a=rsa-sha256 header.s=zoho header.b=Xh7dpspG
-ARC-Seal: i=1; a=rsa-sha256; t=1794169556; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Zujhg9OQ7Q5gX7ZWBjxqdZPU/8OYSbzaqifPGjPJSuhPoDrlz2hoSDde/pphYltKR91DahCOJqrHi4J3YnClo1efFTAVdb8cguZIXyvmYbTYZzF4abpNwCtmVS9WClumV4gK4iryMMje2E/EgtWWWGYHaAROdkf3Ei3xdq/8dj0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1794169556; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=7xW0TLz5lSvzPfO+HptsTc8YtmKOz/HuMEhxKbGSBVk=; 
-	b=dzCwAN2LJHLVaXQKuilRf8iBvSo47/bHjKfLChlcA0SrOMOHjhp32EwhCoWN+AH7BaxpT/7gKS9nTV6WzgN+6ZJ3aQAEnPLeUrJj5S/1KSLlqI0zdQ4y0szhbT9Cbl88UzcodS4wBH/jd+/BZObUsY01M5xQg16F1tkaWpVQRWE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: a=rsa-sha256; b=Xh7dpspG4oXZf4V1hAAZcPMb83CvgdhXFtfPF9hgs9nTTQCZxeW70/PTUhQ13f3juwPY6AQ2ztCYBEaznX29rc9JRk3IxxdsqeGuI8IOcW7ivdi5ApaeSWKk9Qbd4PH4u57uC/wNt8qk6dpOCy1ecDhITJxjDhJ7v1cFzMgU99IiP4S5XxQNpaLRdZsfrIlGro716DA8cTCYfiHXBUYwNvxWIQ486vCZscz7nXYA7pwv7O9I6IjrN0Uma3MpJgH9pxnov4vcfG71ZZOYNGhGnwwuWmp08aJofRqC8AFjkCSVjpVj7346C9/gHSkUZsMhqLq5hIojFod+58kzblRxYA==; c=relaxed/relaxed; s=zoho; d=machnikowski.net; v=1; bh=7xW0TLz5lSvzPfO+HptsTc8YtmKOz/HuMEhxKbGSBVk=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 17941695549301003.7078737956092;
-	Sun, 8 Nov 2026 12:25:54 -0800 (PST)
-From: Maciek Machnikowski <maciek@machnikowski.net>
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=AXG3lgYb
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b09a83d12aso167269a91.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 12:34:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794170060; x=1794774860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OfyPxkhPGNPMGFvLBwZAx3jv4eqYnhKxNevbPUnouxY=;
+        b=AXG3lgYbwMVDVI91jSPEwIr8a0yrDt9yDM8OUdX1lIzae13I4lqxZVW3R9sB7a32K2
+         SynRLM10E6ewQ9cfnUfdsEHuiZqXfqbnVPTk9J4n24BML12olyLlWr0Cf4iZYb3Go89r
+         fAnewjSSHRI9K5vyeb0WgRRoh4+jcl47h0CX/WwWKN1/UcCU66EjEkh539uOu+ABpiPY
+         K+aSMICvKw3tc50d73WR1uvXwc2lb+wbokVra2EJAT9fFpx0gHRXEJaYSBOM6LlacRTs
+         YH5LG2JbrxKV9f95Hn7au6OLK/K4qVeNrAUY6U8kcE1xClZ4BDvuJY+/7tYZNvblPkw1
+         Pzcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794170060; x=1794774860;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OfyPxkhPGNPMGFvLBwZAx3jv4eqYnhKxNevbPUnouxY=;
+        b=Cvaxz38DF73LJioOKRv/8ivoplvKLiJ9V6BqdwNlCYqsCDPw2IrYmYUKx1j0d95Uos
+         hz/STHIk6fNX6bs7aNwKPFLOce2wGGA+ZIEHspCINt/bHPNjus7ESV1YwtPpL777rXGq
+         4GQRC5BzNsGiyWdkrNEf2m89BfnV2iHvEyacQHlv926D1d5gddxyYK7tddQiIvnO+MUS
+         XEdxKAzX5NunF/ZV+VeVstEIM9MfxsaJp73WtrjUBcnAOlnN8qr+v1Fz1YEqxbpci+WQ
+         eXFbj+MOPpc2MNnBblZ7zb79FQH+hBr+ndomiZ0GWnuLUG0Cl104GieWI3Gvj7Rh/8ko
+         1IiA==
+X-Gm-Message-State: APuU4Z/dJAJuZxhIQ+W55NevnE3YvAIFX1mgCU/CaIuQk/oYTO6VXVGe
+	tWdFUTpjws+yqnbX/3d+S/CSJjaAtYl1V1PTgRS532Ty/De2MiCcBsNOXcnjpKESzjq3vDDGnNl
+	2K1YT
+X-Gm-Gg: AYBFou2VIWYJ67QJUFszx4ati0Uq3hK3ReYj5MLAhn9f3OZe4K15sW4iVqFtaapVWZw
+	+EoRxefuGA6O6h7JrKMnlvnmJcbkdv/fIpiAH6pjzGqWUfA2XQ0gZv+5OLqBEzAoCN4w38K4Gj+
+	bmoZcMujip2WOU+pjpx6TVQnv8Te3Ip7VSrZoWGE66GdMhlqp4yyXkAFng12OKp0Ezi8oFnd62t
+	X7t+zHCJyghrd1c02kygO30TsneLv6vigVlF7bj+5uCtT96w95qk6ysdxCAZnldr9HqdY0XZC8b
+	LqFjj4Fk0amFYjXhdsFVAGC8s3Ae7gb+5yEwLmEa1eEKZicVnEDRYrxTWT5pFTwn4xPhdOyVJ5+
+	hEFU1ra49fZlxqwxSIO/n3HjdDkwN/EDAGmvgX/a4Re8z0nEOg16/l+tphIFIRwC0fVpr1NtA4A
+	UAFKRNIGiKz7Yb3FtEhFKSULDAP4r3UIpzqUb6GfLCXJSfQ60+Zv7QdJ+73kxhc6X1ptMZW2ta0
+	mnfKnOJZQStR0cQsedqgcz7vm7Su29lPEci2YI/xiR5Iqc34EGSy+MnclyI8p8RmMhgQtnTflIh
+	xYhIaAZHDwJZTqfQWXaswu+26aNDlt25nYaULaCY8cDBjgt7wkKnZQ6b8DVX8fohsKu9o1qE3Bt
+	6Nhf/qNVCC31GIA==
+X-Received: by 2002:a17:90b:39ab:b0:3ac:bc3d:6fe5 with SMTP id 98e67ed59e1d1-3b12d108a23mr2225732a91.7.1794170059491;
+        Sun, 08 Nov 2026 12:34:19 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b127fad1d3sm4058812a91.11.2026.11.08.12.34.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 12:34:19 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	maciek@machnikowski.net,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev,
-	horms@kernel.org,
-	almasrymina@google.com
-Subject: [PATCH v12 net-next 3/3] selftests: drivers/net: Implement ptp4l sync test using netdevsim
-Date: Sun,  8 Nov 2026 21:15:03 +0100
-Message-ID: <20261108201503.85000-4-maciek@machnikowski.net>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261108201503.85000-1-maciek@machnikowski.net>
-References: <20261108201503.85000-1-maciek@machnikowski.net>
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2-next v2] arpd: remove
+Date: Sun,  8 Nov 2026 12:33:34 -0800
+Message-ID: <20261108203417.1207407-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,165 +95,1088 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Add PTP synchronization test using ptp4l and netdevsim.
-The test uses the NetDrvEpEnv to link a local netdevsim
-device to a remote endpoint, runs ptp4l as leader and follower
-on the two ends, and waits for the follower to report the
-synchronized state (s2).
+arpd, the userspace ARP daemon, passed away quietly in misc/.
+Born last century to Alexey Kuznetsov, it spent its youth answering kernel
+neighbour solicitations for networks too large for the in-kernel table,
+keeping its memories in a Berkeley DB file. In its final years its only
+visitors were tree-wide cleanups, who stopped by to add an SPDX tag and
+fix its whitespace. It outlived the problem it was built to solve, as
+neighbour tables grew up and learned to take care of themselves.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
+arpd was predeceased by its lifelong companion libdb, which Fedora has
+already laid to rest; Debian is making arrangements. Unable to build
+without it, arpd chose to go with dignity rather than be kept alive on
+a bundled copy. It is survived by ip neigh, which does the job without
+a database. In lieu of flowers, please drop libdb from your build
+dependencies.
+
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- tools/testing/selftests/drivers/net/Makefile |   1 +
- tools/testing/selftests/drivers/net/config   |   1 +
- tools/testing/selftests/drivers/net/ptp.py   | 112 +++++++++++++++++++
- 3 files changed, 114 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/ptp.py
+v2 - claude review found some more dead bits to remove
 
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index 79c6f998e704..ed41a69ef6ad 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -23,6 +23,7 @@ TEST_PROGS := \
- 	ping.py \
- 	pppoe_gro.py \
- 	psp.py \
-+	ptp.py \
- 	queues.py \
- 	ring_reconfig.py \
- 	rss_key.py \
-diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
-index 4838adf27fa1..30e69446d41d 100644
---- a/tools/testing/selftests/drivers/net/config
-+++ b/tools/testing/selftests/drivers/net/config
-@@ -21,6 +21,7 @@ CONFIG_NET_SCH_INGRESS=y
- CONFIG_NET_SCH_PRIO=m
- CONFIG_PPP=y
- CONFIG_PPPOE=y
-+CONFIG_PTP_1588_CLOCK_MOCK=y
- CONFIG_TLS=y
- CONFIG_VLAN_8021Q=m
- CONFIG_XDP_SOCKETS=y
-diff --git a/tools/testing/selftests/drivers/net/ptp.py b/tools/testing/selftests/drivers/net/ptp.py
-new file mode 100755
-index 000000000000..1065bd42ba53
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/ptp.py
-@@ -0,0 +1,112 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# By Maciek Machnikowski <maciek@machnikowski.net> (c) 2026
-+
-+"""
-+Test suite for PTP sync using ptp4l.
-+
-+Start a ptp4l leader and follower and check that the follower locks onto the
-+leader (state s2)
-+"""
-+
-+import time
-+
-+from lib.py import (
-+    KsftSkipEx,
-+    NetDrvEpEnv,
-+    bkg,
-+    cmd,
-+    defer,
-+    fd_read_timeout,
-+    ksft_exit,
-+    ksft_pr,
-+    ksft_run,
-+    ksft_true,
-+)
-+
-+PTP4L_SYNC_TIMEOUT = 40
-+
-+
-+def _require_hw_timestamping(ifname, host=None):
-+    """Skip the test unless ifname supports HW TX and RX timestamping."""
-+    end = "Remote" if host else "Local"
-+    ts_info = cmd(f"ethtool -T {ifname}", host=host).stdout
-+    if "hardware-transmit" not in ts_info or "hardware-receive" not in ts_info:
-+        raise KsftSkipEx(
-+            f"{end} device does not support hardware timestamping")
-+
-+
-+def _poll_follower_sync(follower, timeout):
-+    """Read the follower stdout pipe until ptp4l reports sync state s2.
-+
-+    Returns a tuple (synced, output) where output is the text read so far.
-+    The synchronized ptp4l log line looks like this:
-+    ptp4l[18374.558]: master offset        844 s2 freq    +822 path delay       521
-+    """
-+    fd_file = follower.proc.stdout
-+    fd = fd_file.fileno()
-+    buf = b""
-+    deadline = time.monotonic() + timeout
-+    while time.monotonic() < deadline:
-+        if b" s2 " in buf:
-+            break
-+        if follower.proc.poll() is not None:
-+            chunk = fd_file.read()
-+            if chunk:
-+                buf += chunk
-+            break
-+        try:
-+            remaining = deadline - time.monotonic()
-+            buf += fd_read_timeout(fd, max(0, min(1, remaining)))
-+        except TimeoutError:
-+            continue
-+    return b" s2 " in buf, buf.decode("utf-8", "replace")
-+
-+
-+def ptp_sync_test(cfg):
-+    """Verify ptp4l leader/follower synchronization reaches state s2."""
-+    cfg.require_cmd("ptp4l", remote=True)
-+    cfg.require_cmd("ethtool", remote=True)
-+
-+    _require_hw_timestamping(cfg.ifname)
-+    _require_hw_timestamping(cfg.remote_ifname, host=cfg.remote)
-+
-+    local_dir = cmd("mktemp -d").stdout.strip()
-+    remote_dir = cmd("mktemp -d", host=cfg.remote).stdout.strip()
-+    defer(cmd, f"rm -rf {local_dir}")
-+    defer(cmd, f"rm -rf {remote_dir}", host=cfg.remote)
-+
-+    leader_cmd = (f"ptp4l -i {cfg.remote_ifname} -m -2 "
-+                  f"--uds_address {remote_dir}/ptp4l "
-+                  f"--uds_ro_address {remote_dir}/ptp4lro")
-+    follower_cmd = (f"ptp4l -i {cfg.ifname} -m -s -2 "
-+                    f"--uds_address {local_dir}/ptp4l "
-+                    f"--uds_ro_address {local_dir}/ptp4lro")
-+
-+    # bkg() can't reliably signal the remote ptp4l over SSH (no pty), so
-+    # kill it by pattern explicitly in addition to the normal teardown.
-+    # pkill exits 1 when ptp4l already terminated, so don't treat it as fatal.
-+    defer(cmd, f'pkill -INT -f "{leader_cmd}"', host=cfg.remote, fail=False)
-+
-+    with bkg(leader_cmd, host=cfg.remote), \
-+         bkg(follower_cmd) as follower:
-+        synced, output = _poll_follower_sync(follower, PTP4L_SYNC_TIMEOUT)
-+
-+    if not synced:
-+        ksft_pr(f"ptp4l follower did not reach locked state (s2) within "
-+                f"{PTP4L_SYNC_TIMEOUT}s")
-+        tail = output.strip().split("\n")[-10:]
-+        ksft_pr("Follower log (last 10 lines): " + " | ".join(tail))
-+    ksft_true(synced, "PTP sync timeout")
-+
-+
-+def main():
-+    """Run ksft tests."""
-+    with NetDrvEpEnv(__file__) as cfg:
-+        ksft_run([ptp_sync_test], args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.56.0
+ Makefile        |   5 -
+ README          |  11 +-
+ configure       |  23 --
+ man/man8/arpd.8 |  69 ----
+ misc/.gitignore |   1 -
+ misc/Makefile   |   7 -
+ misc/arpd.c     | 841 ------------------------------------------------
+ 7 files changed, 2 insertions(+), 955 deletions(-)
+ delete mode 100644 man/man8/arpd.8
+ delete mode 100644 misc/arpd.c
+
+diff --git a/Makefile b/Makefile
+index 6f5d4765..6e4e6a85 100644
+--- a/Makefile
++++ b/Makefile
+@@ -24,13 +24,9 @@ CONF_ETC_DIR?=/etc/iproute2
+ CONF_USR_DIR?=$(DATADIR)/iproute2
+ DOCDIR?=$(DATADIR)/doc/iproute2
+ MANDIR?=$(DATADIR)/man
+-ARPDDIR?=/var/lib/arpd
+ KERNEL_INCLUDE?=/usr/include
+ BASH_COMPDIR?=$(DATADIR)/bash-completion/completions
+
+-# Path to db_185.h include
+-DBM_INCLUDE:=$(DESTDIR)/usr/include
+-
+ SHARED_LIBS = y
+
+ DEFINES= -DRESOLVE_HOSTNAMES -DLIBDIR=\"$(LIBDIR)\"
+@@ -42,7 +38,6 @@ DEFINES+=-DCONF_USR_DIR=\"$(CONF_USR_DIR)\" \
+          -DCONF_ETC_DIR=\"$(CONF_ETC_DIR)\" \
+          -DNETNS_RUN_DIR=\"$(NETNS_RUN_DIR)\" \
+          -DNETNS_ETC_DIR=\"$(NETNS_ETC_DIR)\" \
+-         -DARPDDIR=\"$(ARPDDIR)\" \
+          -DCONF_COLOR=$(CONF_COLOR)
+
+ #options for mpls
+diff --git a/README b/README
+index 6ddf6015..7b612870 100644
+--- a/README
++++ b/README
+@@ -27,21 +27,14 @@ Support (LTS) kernel version.
+
+ How to compile this.
+ --------------------
+-1. libdbm
+
+-arpd needs to have the berkeleydb development libraries. For Debian
+-users this is the package with a name like libdbX.X-dev.
+-DBM_INCLUDE points to the directory with db_185.h which
+-is the include file used by arpd to get to the old format Berkeley
+-database routines.  Often this is in the db-devel package.
+-
+-2. make
++1. make
+
+ The makefile will automatically build a config.mk file which
+ contains definitions of libraries that may or may not be available
+ on the system such as: ATM, ELF, MNL, and SELINUX.
+
+-3. include/uapi
++2. include/uapi
+
+ This package includes matching sanitized kernel headers because
+ the build environment may not have up to date versions. See Makefile
+diff --git a/configure b/configure
+index ebc0d97a..e0820857 100755
+--- a/configure
++++ b/configure
+@@ -401,26 +401,6 @@ check_mnl()
+ 	fi
+ }
+
+-check_berkeley_db()
+-{
+-    cat >$TMPDIR/dbtest.c <<EOF
+-#include <fcntl.h>
+-#include <stdlib.h>
+-#include <db_185.h>
+-int main(int argc, char **argv) {
+-	dbopen("/tmp/xxx_test_db.db", O_CREAT|O_RDWR, 0644, DB_HASH, NULL);
+-	return 0;
+-}
+-EOF
+-    if $CC -I$INCLUDE -o $TMPDIR/dbtest $TMPDIR/dbtest.c -ldb >/dev/null 2>&1; then
+-	echo "HAVE_BERKELEY_DB:=y" >>$CONFIG
+-	echo "yes"
+-    else
+-	echo "no"
+-    fi
+-    rm -f $TMPDIR/dbtest.c $TMPDIR/dbtest
+-}
+-
+ check_strlcpy()
+ {
+     cat >$TMPDIR/strtest.c <<EOF
+@@ -631,9 +611,6 @@ check_elf
+ echo -n "libmnl support: "
+ check_mnl
+
+-echo -n "Berkeley DB: "
+-check_berkeley_db
+-
+ echo -n "need for strlcpy: "
+ check_strlcpy
+
+diff --git a/man/man8/arpd.8 b/man/man8/arpd.8
+deleted file mode 100644
+index 5050a98b..00000000
+--- a/man/man8/arpd.8
++++ /dev/null
+@@ -1,69 +0,0 @@
+-.TH ARPD 8 "28 June, 2007"
+-
+-.SH NAME
+-arpd \- userspace arp daemon.
+-
+-.SH SYNOPSIS
+-Usage: arpd [ -lkh? ] [ -a N ] [ -b dbase ] [ -B number ] [ -f file ] [-p interval ] [ -n time ] [ -R rate ] [ <INTERFACES> ]
+-
+-.SH DESCRIPTION
+-The
+-.B arpd
+-daemon collects gratuitous ARP information, saving it on local disk and feeding it to the kernel on demand to avoid redundant broadcasting due to limited size of the kernel ARP cache.
+-
+-.SH OPTIONS
+-.TP
+--h -?
+-Print help
+-.TP
+--l
+-Dump the arpd database to stdout and exit. The output consists of three columns: the interface index, the IP address of the interface, and the MAC address of the interface. Negative entries for dead hosts are also shown, in this case the MAC address is replaced by the word FAILED followed by a colon and the most recent time when the fact that the host is dead was proven.
+-.TP
+--f <FILE>
+-Read and load an arpd database from FILE in a text format similar to that dumped by option -l. Exit after load, possibly listing resulting database, if option -l is also given. If FILE is -, stdin is read to get the ARP table.
+-.TP
+--b <DATABASE>
+-the location of the database file. The default location is /var/lib/arpd/arpd.db
+-.TP
+--a <NUMBER>
+-With this option, arpd not only passively listens for ARP packets on the interface, but also sends broadcast queries itself. NUMBER is the number of such queries to make before a destination is considered dead. When arpd is started as kernel helper (i.e. with app_solicit enabled in sysctl or even with option -k) without this option and still did not learn enough information, you can observe 1 second gaps in service. Not fatal, but not good.
+-.TP
+--k
+-Suppress sending broadcast queries by the kernel. This option only makes sense together with option -a.
+-.TP
+--n <TIME>
+-Specifies the timeout of the negative cache. When resolution fails, arpd suppresses further attempts to resolve for this period. This option only makes sense together with option '-k'. This timeout should not be too much longer than the boot time of a typical host not supporting gratuitous ARP. Default value is 60 seconds.
+-.TP
+--p <TIME>
+-The time to wait in seconds between polling attempts to the kernel ARP table. TIME may be a floating point number. The default value is 30.
+-.TP
+--R <RATE>
+-Maximal steady rate of broadcasts sent by arpd in packets per second. Default value is 1.
+-.TP
+--B <NUMBER>
+-The number of broadcasts sent by arpd back to back. Default value is 3. Together with the -R option, this option ensures that the number of ARP queries that are broadcast does not exceed B+R*T over any interval of time T.
+-.P
+-<INTERFACES> is a list of names of networking interfaces to watch. If no interfaces are given, arpd monitors all the interfaces. In this case arpd does not adjust sysctl parameters, it is assumed that the user does this himself after arpd is started.
+-.P
+-.SH SIGNALS
+-.TP
+-When arpd receives a SIGINT or SIGTERM signal, it exits gracefully, syncing the database and restoring adjusted sysctl parameters. On a SIGHUP it syncs the database to disk. With SIGUSR1 it sends some statistics to syslog. The effect of any other signals is undefined. In particular, they may corrupt the database and leave the sysctl parameters in an unpredictable state.
+-.P
+-.SH NOTE
+-.TP
+-In order for arpd to be able to serve as ARP resolver, the kernel must be compiled with the option CONFIG_ARPD and, in the case when interface list in not given on command line, variable app_solicit on interfaces of interest should be in /proc/sys/net/ipv4/neigh/*. If this is not made arpd still collects gratuitous ARP information in its database.
+-.SH EXAMPLES
+-.TP
+-arpd -b /var/tmp/arpd.db
+-Start arpd to collect gratuitous ARP, but not messing with kernel functionality.
+-.TP
+-killall arpd ; arpd -l -b /var/tmp/arpd.db
+-Look at result after some time.
+-.TP
+-arpd -b /var/tmp/arpd.db -a 1 eth0 eth1
+-Enable kernel helper, leaving leading role to kernel.
+-.TP
+-arpd -b /var/tmp/arpd.db -a 3 -k eth0 eth1
+-Completely replace kernel resolution on interfaces eth0 and eth1. In this case the kernel still does unicast probing to validate entries, but all the broadcast activity is suppressed and made under authority of arpd.
+-.PP
+-This is the mode in which arpd normally is supposed to work. It is not the default to prevent occasional enabling of too aggressive a mode.
+diff --git a/misc/.gitignore b/misc/.gitignore
+index d7df0b02..1177605e 100644
+--- a/misc/.gitignore
++++ b/misc/.gitignore
+@@ -1,4 +1,3 @@
+-arpd
+ ifstat
+ ss
+ ssfilter.tab.c
+diff --git a/misc/Makefile b/misc/Makefile
+index 50dae79c..4736d928 100644
+--- a/misc/Makefile
++++ b/misc/Makefile
+@@ -6,10 +6,6 @@ TARGETS=ss nstat ifstat rtacct lnstat
+
+ include ../config.mk
+
+-ifeq ($(HAVE_BERKELEY_DB),y)
+-	TARGETS += arpd
+-endif
+-
+ all: $(TARGETS)
+
+ ss: $(SSOBJ)
+@@ -24,9 +20,6 @@ ifstat: ifstat.c
+ rtacct: rtacct.c
+ 	$(QUIET_CC)$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o rtacct rtacct.c $(LDLIBS) -lm
+
+-arpd: arpd.c
+-	$(QUIET_CC)$(CC) $(CFLAGS) -I$(DBM_INCLUDE) $(CPPFLAGS) $(LDFLAGS) -o arpd arpd.c $(LDLIBS) -ldb
+-
+ ssfilter.tab.c: ssfilter.y
+ 	$(QUIET_YACC)$(YACC) -b ssfilter ssfilter.y
+
+diff --git a/misc/arpd.c b/misc/arpd.c
+deleted file mode 100644
+index a42603f6..00000000
+--- a/misc/arpd.c
++++ /dev/null
+@@ -1,841 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * arpd.c	ARP helper daemon.
+- *
+- * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+- */
+-
+-#include <stdio.h>
+-#include <syslog.h>
+-#include <malloc.h>
+-#include <string.h>
+-#include <unistd.h>
+-#include <stdlib.h>
+-#include <netdb.h>
+-#include <db_185.h>
+-#include <sys/ioctl.h>
+-#include <poll.h>
+-#include <errno.h>
+-#include <fcntl.h>
+-#include <sys/uio.h>
+-#include <sys/socket.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <time.h>
+-#include <signal.h>
+-#include <linux/if.h>
+-#include <linux/if_ether.h>
+-#include <linux/if_arp.h>
+-#include <netinet/in.h>
+-#include <arpa/inet.h>
+-#include <linux/if_packet.h>
+-#include <linux/filter.h>
+-
+-#include "libnetlink.h"
+-#include "utils.h"
+-#include "rt_names.h"
+-
+-DB	*dbase;
+-char const	default_dbname[] = ARPDDIR "/arpd.db";
+-char const	*dbname = default_dbname;
+-
+-int	ifnum;
+-int	*ifvec;
+-char	**ifnames;
+-
+-struct dbkey {
+-	__u32	iface;
+-	__u32	addr;
+-};
+-
+-#define IS_NEG(x)	(((__u8 *)(x))[0] == 0xFF)
+-#define NEG_TIME(x)	(((x)[2]<<24)|((x)[3]<<16)|((x)[4]<<8)|(x)[5])
+-#define NEG_AGE(x)	((__u32)time(NULL) - NEG_TIME((__u8 *)x))
+-#define NEG_VALID(x)	(NEG_AGE(x) < negative_timeout)
+-#define NEG_CNT(x)	(((__u8 *)(x))[1])
+-
+-struct rtnl_handle rth;
+-
+-struct pollfd pset[2];
+-int udp_sock = -1;
+-
+-volatile int do_exit;
+-volatile int do_sync;
+-volatile int do_stats;
+-
+-struct {
+-	unsigned long arp_new;
+-	unsigned long arp_change;
+-
+-	unsigned long app_recv;
+-	unsigned long app_success;
+-	unsigned long app_bad;
+-	unsigned long app_neg;
+-	unsigned long app_suppressed;
+-
+-	unsigned long kern_neg;
+-	unsigned long kern_new;
+-	unsigned long kern_change;
+-
+-	unsigned long probes_sent;
+-	unsigned long probes_suppressed;
+-} stats;
+-
+-int active_probing;
+-int negative_timeout = 60;
+-int no_kernel_broadcasts;
+-int broadcast_rate = 1000;
+-int broadcast_burst = 3000;
+-int poll_timeout = 30000;
+-
+-static void usage(void)
+-{
+-	fprintf(stderr,
+-		"Usage: arpd [ -lkh? ] [ -a N ] [ -b dbase ] [ -B number ] [ -f file ] [ -n time ] [-p interval ] [ -R rate ] [ interfaces ]\n");
+-	exit(1);
+-}
+-
+-static int handle_if(int ifindex)
+-{
+-	int i;
+-
+-	if (ifnum == 0)
+-		return 1;
+-
+-	for (i = 0; i < ifnum; i++)
+-		if (ifvec[i] == ifindex)
+-			return 1;
+-	return 0;
+-}
+-
+-int sysctl_adjusted;
+-
+-static void do_sysctl_adjustments(void)
+-{
+-	int i;
+-
+-	if (!ifnum)
+-		return;
+-
+-	for (i = 0; i < ifnum; i++) {
+-		char buf[128];
+-		FILE *fp;
+-
+-		if (active_probing) {
+-			sprintf(buf, "/proc/sys/net/ipv4/neigh/%s/mcast_solicit", ifnames[i]);
+-			if ((fp = fopen(buf, "w")) != NULL) {
+-				if (no_kernel_broadcasts)
+-					strcpy(buf, "0\n");
+-				else
+-					sprintf(buf, "%d\n", active_probing >= 2 ? 1 : 3-active_probing);
+-				fputs(buf, fp);
+-				fclose(fp);
+-			}
+-		}
+-
+-		sprintf(buf, "/proc/sys/net/ipv4/neigh/%s/app_solicit", ifnames[i]);
+-		if ((fp = fopen(buf, "w")) != NULL) {
+-			sprintf(buf, "%d\n", active_probing <= 1 ? 1 : active_probing);
+-			fputs(buf, fp);
+-			fclose(fp);
+-		}
+-	}
+-	sysctl_adjusted = 1;
+-}
+-
+-static void undo_sysctl_adjustments(void)
+-{
+-	int i;
+-
+-	if (!sysctl_adjusted)
+-		return;
+-
+-	for (i = 0; i < ifnum; i++) {
+-		char buf[128];
+-		FILE *fp;
+-
+-		if (active_probing) {
+-			sprintf(buf, "/proc/sys/net/ipv4/neigh/%s/mcast_solicit", ifnames[i]);
+-			if ((fp = fopen(buf, "w")) != NULL) {
+-				strcpy(buf, "3\n");
+-				fputs(buf, fp);
+-				fclose(fp);
+-			}
+-		}
+-		sprintf(buf, "/proc/sys/net/ipv4/neigh/%s/app_solicit", ifnames[i]);
+-		if ((fp = fopen(buf, "w")) != NULL) {
+-			strcpy(buf, "0\n");
+-			fputs(buf, fp);
+-			fclose(fp);
+-		}
+-	}
+-	sysctl_adjusted = 0;
+-}
+-
+-
+-static int send_probe(int ifindex, __u32 addr)
+-{
+-	struct ifreq ifr = { .ifr_ifindex = ifindex };
+-	struct sockaddr_in dst = {
+-		.sin_family = AF_INET,
+-		.sin_port = htons(1025),
+-		.sin_addr.s_addr = addr,
+-	};
+-	socklen_t len;
+-	unsigned char buf[256];
+-	struct arphdr *ah = (struct arphdr *)buf;
+-	unsigned char *p = (unsigned char *)(ah+1);
+-	struct sockaddr_ll sll = {
+-		.sll_family = AF_PACKET,
+-		.sll_ifindex = ifindex,
+-		.sll_protocol = htons(ETH_P_ARP),
+-	};
+-
+-	if (ioctl(udp_sock, SIOCGIFNAME, &ifr))
+-		return -1;
+-	if (ioctl(udp_sock, SIOCGIFHWADDR, &ifr))
+-		return -1;
+-	if (ifr.ifr_hwaddr.sa_family != ARPHRD_ETHER)
+-		return -1;
+-	if (setsockopt(udp_sock, SOL_SOCKET, SO_BINDTODEVICE, ifr.ifr_name, strlen(ifr.ifr_name)+1) < 0)
+-		return -1;
+-
+-	if (connect(udp_sock, (struct sockaddr *)&dst, sizeof(dst)) < 0)
+-		return -1;
+-	len = sizeof(dst);
+-	if (getsockname(udp_sock, (struct sockaddr *)&dst, &len) < 0)
+-		return -1;
+-
+-	ah->ar_hrd = htons(ifr.ifr_hwaddr.sa_family);
+-	ah->ar_pro = htons(ETH_P_IP);
+-	ah->ar_hln = 6;
+-	ah->ar_pln = 4;
+-	ah->ar_op  = htons(ARPOP_REQUEST);
+-
+-	memcpy(p, ifr.ifr_hwaddr.sa_data, ah->ar_hln);
+-	p += ah->ar_hln;
+-
+-	memcpy(p, &dst.sin_addr, 4);
+-	p += 4;
+-
+-	memset(sll.sll_addr, 0xFF, sizeof(sll.sll_addr));
+-	memcpy(p, &sll.sll_addr, ah->ar_hln);
+-	p += ah->ar_hln;
+-
+-	memcpy(p, &addr, 4);
+-	p += 4;
+-
+-	if (sendto(pset[0].fd, buf, p-buf, 0, (struct sockaddr *)&sll, sizeof(sll)) < 0)
+-		return -1;
+-	stats.probes_sent++;
+-	return 0;
+-}
+-
+-/* Be very tough on sending probes: 1 per second with burst of 3. */
+-
+-static int queue_active_probe(int ifindex, __u32 addr)
+-{
+-	static struct timeval prev;
+-	static int buckets;
+-	struct timeval now;
+-
+-	gettimeofday(&now, NULL);
+-	if (prev.tv_sec) {
+-		int diff = (now.tv_sec-prev.tv_sec)*1000+(now.tv_usec-prev.tv_usec)/1000;
+-
+-		buckets += diff;
+-	} else {
+-		buckets = broadcast_burst;
+-	}
+-	if (buckets > broadcast_burst)
+-		buckets = broadcast_burst;
+-	if (buckets >= broadcast_rate && !send_probe(ifindex, addr)) {
+-		buckets -= broadcast_rate;
+-		prev = now;
+-		return 0;
+-	}
+-	stats.probes_suppressed++;
+-	return -1;
+-}
+-
+-static int respond_to_kernel(int ifindex, __u32 addr, char *lla, int llalen)
+-{
+-	struct {
+-		struct nlmsghdr	n;
+-		struct ndmsg		ndm;
+-		char			buf[256];
+-	} req = {
+-		.n.nlmsg_len = NLMSG_LENGTH(sizeof(struct ndmsg)),
+-		.n.nlmsg_flags = NLM_F_REQUEST,
+-		.n.nlmsg_type = RTM_NEWNEIGH,
+-		.ndm.ndm_family = AF_INET,
+-		.ndm.ndm_state = NUD_STALE,
+-		.ndm.ndm_ifindex = ifindex,
+-		.ndm.ndm_type = RTN_UNICAST,
+-	};
+-
+-	addattr_l(&req.n, sizeof(req), NDA_DST, &addr, 4);
+-	addattr_l(&req.n, sizeof(req), NDA_LLADDR, lla, llalen);
+-	return rtnl_send(&rth, &req, req.n.nlmsg_len) <= 0;
+-}
+-
+-static void prepare_neg_entry(__u8 *ndata, __u32 stamp)
+-{
+-	ndata[0] = 0xFF;
+-	ndata[1] = 0;
+-	ndata[2] = stamp>>24;
+-	ndata[3] = stamp>>16;
+-	ndata[4] = stamp>>8;
+-	ndata[5] = stamp;
+-}
+-
+-
+-static int do_one_request(struct nlmsghdr *n)
+-{
+-	struct ndmsg *ndm = NLMSG_DATA(n);
+-	int len = n->nlmsg_len;
+-	struct rtattr *tb[NDA_MAX+1];
+-	struct dbkey key;
+-	DBT dbkey, dbdat;
+-	int do_acct = 0;
+-
+-	if (n->nlmsg_type == NLMSG_DONE) {
+-		dbase->sync(dbase, 0);
+-
+-		/* Now we have at least mirror of kernel db, so that
+-		 * may start real resolution.
+-		 */
+-		do_sysctl_adjustments();
+-		return 0;
+-	}
+-
+-	if (n->nlmsg_type != RTM_GETNEIGH && n->nlmsg_type != RTM_NEWNEIGH)
+-		return 0;
+-
+-	len -= NLMSG_LENGTH(sizeof(*ndm));
+-	if (len < 0)
+-		return -1;
+-
+-	if (ndm->ndm_family != AF_INET ||
+-	    (ifnum && !handle_if(ndm->ndm_ifindex)) ||
+-	    ndm->ndm_flags ||
+-	    ndm->ndm_type != RTN_UNICAST ||
+-	    !(ndm->ndm_state&~NUD_NOARP))
+-		return 0;
+-
+-	parse_rtattr(tb, NDA_MAX, NDA_RTA(ndm), len);
+-
+-	if (!tb[NDA_DST])
+-		return 0;
+-
+-	key.iface = ndm->ndm_ifindex;
+-	memcpy(&key.addr, RTA_DATA(tb[NDA_DST]), 4);
+-	dbkey.data = &key;
+-	dbkey.size = sizeof(key);
+-
+-	if (dbase->get(dbase, &dbkey, &dbdat, 0) != 0) {
+-		dbdat.data = 0;
+-		dbdat.size = 0;
+-	}
+-
+-	if (n->nlmsg_type == RTM_GETNEIGH) {
+-		if (!(n->nlmsg_flags&NLM_F_REQUEST))
+-			return 0;
+-
+-		if (!(ndm->ndm_state&(NUD_PROBE|NUD_INCOMPLETE))) {
+-			stats.app_bad++;
+-			return 0;
+-		}
+-
+-		if (ndm->ndm_state&NUD_PROBE) {
+-			/* If we get this, kernel still has some valid
+-			 * address, but unicast probing failed and host
+-			 * is either dead or changed its mac address.
+-			 * Kernel is going to initiate broadcast resolution.
+-			 * OK, we invalidate our information as well.
+-			 */
+-			if (dbdat.data && !IS_NEG(dbdat.data))
+-				stats.app_neg++;
+-
+-			dbase->del(dbase, &dbkey, 0);
+-		} else {
+-			/* If we get this kernel does not have any information.
+-			 * If we have something tell this to kernel. */
+-			stats.app_recv++;
+-			if (dbdat.data && !IS_NEG(dbdat.data)) {
+-				stats.app_success++;
+-				respond_to_kernel(key.iface, key.addr, dbdat.data, dbdat.size);
+-				return 0;
+-			}
+-
+-			/* Sheeit! We have nothing to tell. */
+-			/* If we have recent negative entry, be silent. */
+-			if (dbdat.data && NEG_VALID(dbdat.data)) {
+-				if (NEG_CNT(dbdat.data) >= active_probing) {
+-					stats.app_suppressed++;
+-					return 0;
+-				}
+-				do_acct = 1;
+-			}
+-		}
+-
+-		if (active_probing &&
+-		    queue_active_probe(ndm->ndm_ifindex, key.addr) == 0 &&
+-		    do_acct) {
+-			NEG_CNT(dbdat.data)++;
+-			dbase->put(dbase, &dbkey, &dbdat, 0);
+-		}
+-	} else if (n->nlmsg_type == RTM_NEWNEIGH) {
+-		if (n->nlmsg_flags&NLM_F_REQUEST)
+-			return 0;
+-
+-		if (ndm->ndm_state&NUD_FAILED) {
+-			/* Kernel was not able to resolve. Host is dead.
+-			 * Create negative entry if it is not present
+-			 * or renew it if it is too old. */
+-			if (!dbdat.data ||
+-			    !IS_NEG(dbdat.data) ||
+-			    !NEG_VALID(dbdat.data)) {
+-				__u8 ndata[6];
+-
+-				stats.kern_neg++;
+-				prepare_neg_entry(ndata, time(NULL));
+-				dbdat.data = ndata;
+-				dbdat.size = sizeof(ndata);
+-				dbase->put(dbase, &dbkey, &dbdat, 0);
+-			}
+-		} else if (tb[NDA_LLADDR]) {
+-			if (dbdat.data && !IS_NEG(dbdat.data)) {
+-				if (memcmp(RTA_DATA(tb[NDA_LLADDR]), dbdat.data, dbdat.size) == 0)
+-					return 0;
+-				stats.kern_change++;
+-			} else {
+-				stats.kern_new++;
+-			}
+-			dbdat.data = RTA_DATA(tb[NDA_LLADDR]);
+-			dbdat.size = RTA_PAYLOAD(tb[NDA_LLADDR]);
+-			dbase->put(dbase, &dbkey, &dbdat, 0);
+-		}
+-	}
+-	return 0;
+-}
+-
+-static void load_initial_table(void)
+-{
+-	if (rtnl_neighdump_req(&rth, AF_INET, NULL) < 0) {
+-		perror("dump request failed");
+-		exit(1);
+-	}
+-
+-}
+-
+-static void get_kern_msg(void)
+-{
+-	int status;
+-	struct nlmsghdr *h;
+-	struct sockaddr_nl nladdr = {};
+-	struct iovec iov;
+-	char   buf[8192];
+-	struct msghdr msg = {
+-		.msg_name = &nladdr,
+-		.msg_namelen = sizeof(nladdr),
+-		.msg_iov = &iov,
+-		.msg_iovlen = 1,
+-	};
+-
+-	iov.iov_base = buf;
+-	iov.iov_len = sizeof(buf);
+-
+-	status = recvmsg(rth.fd, &msg, MSG_DONTWAIT);
+-
+-	if (status <= 0)
+-		return;
+-
+-	if (msg.msg_namelen != sizeof(nladdr))
+-		return;
+-
+-	if (nladdr.nl_pid)
+-		return;
+-
+-	for (h = (struct nlmsghdr *)buf; status >= sizeof(*h); ) {
+-		int len = h->nlmsg_len;
+-		int l = len - sizeof(*h);
+-
+-		if (l < 0 || len > status)
+-			return;
+-
+-		if (do_one_request(h) < 0)
+-			return;
+-
+-		status -= NLMSG_ALIGN(len);
+-		h = (struct nlmsghdr *)((char *)h + NLMSG_ALIGN(len));
+-	}
+-}
+-
+-/* Receive gratuitous ARP messages and store them, that's all. */
+-static void get_arp_pkt(void)
+-{
+-	unsigned char buf[1024];
+-	struct sockaddr_ll sll;
+-	socklen_t sll_len = sizeof(sll);
+-	struct arphdr *a = (struct arphdr *)buf;
+-	struct dbkey key;
+-	DBT dbkey, dbdat;
+-	int n;
+-
+-	n = recvfrom(pset[0].fd, buf, sizeof(buf), MSG_DONTWAIT,
+-		     (struct sockaddr *)&sll, &sll_len);
+-	if (n < 0) {
+-		if (errno != EINTR && errno != EAGAIN)
+-			syslog(LOG_ERR, "recvfrom: %m");
+-		return;
+-	}
+-
+-	if (ifnum && !handle_if(sll.sll_ifindex))
+-		return;
+-
+-	/* Validate packet */
+-	if (n < sizeof(*a) ||
+-	    (a->ar_op != htons(ARPOP_REQUEST) &&
+-	     a->ar_op != htons(ARPOP_REPLY)) ||
+-	    a->ar_pln != 4 ||
+-	    a->ar_pro != htons(ETH_P_IP) ||
+-	    a->ar_hln != sll.sll_halen ||
+-	    sizeof(*a) + 2*4 + 2*a->ar_hln > n)
+-		return;
+-
+-	key.iface = sll.sll_ifindex;
+-	memcpy(&key.addr, (char *)(a+1) + a->ar_hln, 4);
+-
+-	/* DAD message, ignore. */
+-	if (key.addr == 0)
+-		return;
+-
+-	dbkey.data = &key;
+-	dbkey.size = sizeof(key);
+-
+-	if (dbase->get(dbase, &dbkey, &dbdat, 0) == 0 && !IS_NEG(dbdat.data)) {
+-		if (memcmp(dbdat.data, a+1, dbdat.size) == 0)
+-			return;
+-		stats.arp_change++;
+-	} else {
+-		stats.arp_new++;
+-	}
+-
+-	dbdat.data = a+1;
+-	dbdat.size = a->ar_hln;
+-	dbase->put(dbase, &dbkey, &dbdat, 0);
+-}
+-
+-static void catch_signal(int sig, void (*handler)(int))
+-{
+-	struct sigaction sa = { .sa_handler = handler };
+-
+-#ifdef SA_INTERRUPT
+-	sa.sa_flags = SA_INTERRUPT;
+-#endif
+-	sigaction(sig, &sa, NULL);
+-}
+-
+-#include <setjmp.h>
+-sigjmp_buf env;
+-volatile int in_poll;
+-
+-static void sig_exit(int signo)
+-{
+-	do_exit = 1;
+-	if (in_poll)
+-		siglongjmp(env, 1);
+-}
+-
+-static void sig_sync(int signo)
+-{
+-	do_sync = 1;
+-	if (in_poll)
+-		siglongjmp(env, 1);
+-}
+-
+-static void sig_stats(int signo)
+-{
+-	do_sync = 1;
+-	do_stats = 1;
+-	if (in_poll)
+-		siglongjmp(env, 1);
+-}
+-
+-static void send_stats(void)
+-{
+-	syslog(LOG_INFO, "arp_rcv: n%lu c%lu app_rcv: tot %lu hits %lu bad %lu neg %lu sup %lu",
+-	       stats.arp_new, stats.arp_change,
+-
+-	       stats.app_recv, stats.app_success,
+-	       stats.app_bad, stats.app_neg, stats.app_suppressed
+-	       );
+-	syslog(LOG_INFO, "kern: n%lu c%lu neg %lu arp_send: %lu rlim %lu",
+-	       stats.kern_new, stats.kern_change, stats.kern_neg,
+-
+-	       stats.probes_sent, stats.probes_suppressed
+-	       );
+-	do_stats = 0;
+-}
+-
+-
+-int main(int argc, char **argv)
+-{
+-	int opt;
+-	int do_list = 0;
+-	char *do_load = NULL;
+-
+-	while ((opt = getopt(argc, argv, "h?b:lf:a:n:p:kR:B:")) != EOF) {
+-		switch (opt) {
+-		case 'b':
+-			dbname = optarg;
+-			break;
+-		case 'f':
+-			if (do_load) {
+-				fprintf(stderr, "Duplicate option -f\n");
+-				usage();
+-			}
+-			do_load = optarg;
+-			break;
+-		case 'l':
+-			do_list = 1;
+-			break;
+-		case 'a':
+-			active_probing = atoi(optarg);
+-			break;
+-		case 'n':
+-			negative_timeout = atoi(optarg);
+-			break;
+-		case 'k':
+-			no_kernel_broadcasts = 1;
+-			break;
+-		case 'p':
+-			if ((poll_timeout = 1000 * strtod(optarg, NULL)) < 100) {
+-				fprintf(stderr, "Invalid poll timeout\n");
+-				exit(-1);
+-			}
+-			break;
+-		case 'R':
+-			if ((broadcast_rate = atoi(optarg)) <= 0 ||
+-			    (broadcast_rate = 1000/broadcast_rate) <= 0) {
+-				fprintf(stderr, "Invalid ARP rate\n");
+-				exit(-1);
+-			}
+-			break;
+-		case 'B':
+-			if ((broadcast_burst = atoi(optarg)) <= 0 ||
+-			    (broadcast_burst = 1000*broadcast_burst) <= 0) {
+-				fprintf(stderr, "Invalid ARP burst\n");
+-				exit(-1);
+-			}
+-			break;
+-		case 'h':
+-		case '?':
+-		default:
+-			usage();
+-		}
+-	}
+-	argc -= optind;
+-	argv += optind;
+-
+-	if (argc > 0) {
+-		ifnum = argc;
+-		ifnames = argv;
+-		ifvec = malloc(argc*sizeof(int));
+-		if (!ifvec) {
+-			perror("malloc");
+-			exit(-1);
+-		}
+-	}
+-
+-	if ((udp_sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+-		perror("socket");
+-		exit(-1);
+-	}
+-
+-	if (ifnum) {
+-		int i;
+-		struct ifreq ifr = {};
+-
+-		for (i = 0; i < ifnum; i++) {
+-			if (get_ifname(ifr.ifr_name, ifnames[i]))
+-				invarg("not a valid ifname", ifnames[i]);
+-			if (ioctl(udp_sock, SIOCGIFINDEX, &ifr)) {
+-				perror("ioctl(SIOCGIFINDEX)");
+-				exit(-1);
+-			}
+-			ifvec[i] = ifr.ifr_ifindex;
+-		}
+-	}
+-
+-	if (strcmp(default_dbname, dbname) == 0) {
+-		if (mkdir(ARPDDIR, 0755) != 0 && errno != EEXIST) {
+-			perror("create_db_dir");
+-			exit(-1);
+-		}
+-	}
+-
+-	dbase = dbopen(dbname, O_CREAT|O_RDWR, 0644, DB_HASH, NULL);
+-	if (dbase == NULL) {
+-		perror("db_open");
+-		exit(-1);
+-	}
+-
+-	if (do_load) {
+-		char buf[128];
+-		FILE *fp;
+-		struct dbkey k;
+-		DBT dbkey, dbdat;
+-
+-		dbkey.data = &k;
+-		dbkey.size = sizeof(k);
+-
+-		if (strcmp(do_load, "-") == 0 || strcmp(do_load, "--") == 0) {
+-			fp = stdin;
+-		} else if ((fp = fopen(do_load, "r")) == NULL) {
+-			perror("fopen");
+-			goto do_abort;
+-		}
+-
+-		buf[sizeof(buf)-1] = 0;
+-		while (fgets(buf, sizeof(buf), fp)) {
+-			__u8 b1[6];
+-			char ipbuf[128];
+-			char macbuf[128];
+-
+-			if (buf[0] == '#')
+-				continue;
+-
+-			if (sscanf(buf, "%u%s%s", &k.iface, ipbuf, macbuf) != 3) {
+-				fprintf(stderr, "Wrong format of input file \"%s\"\n", do_load);
+-				goto do_abort;
+-			}
+-			if (strncmp(macbuf, "FAILED:", 7) == 0)
+-				continue;
+-			if (!inet_aton(ipbuf, (struct in_addr *)&k.addr)) {
+-				fprintf(stderr, "Invalid IP address: \"%s\"\n", ipbuf);
+-				goto do_abort;
+-			}
+-
+-			if (ll_addr_a2n((char *) b1, 6, macbuf) != 6)
+-				goto do_abort;
+-			dbdat.size = 6;
+-
+-			if (dbase->put(dbase, &dbkey, &dbdat, 0)) {
+-				perror("hash->put");
+-				goto do_abort;
+-			}
+-		}
+-		dbase->sync(dbase, 0);
+-		if (fp != stdin)
+-			fclose(fp);
+-	}
+-
+-	if (do_list) {
+-		DBT dbkey, dbdat;
+-
+-		printf("%-8s %-15s %s\n", "#Ifindex", "IP", "MAC");
+-		while (dbase->seq(dbase, &dbkey, &dbdat, R_NEXT) == 0) {
+-			struct dbkey *key = dbkey.data;
+-
+-			if (handle_if(key->iface)) {
+-				if (!IS_NEG(dbdat.data)) {
+-					char b1[18];
+-
+-					printf("%-8d %-15s %s\n",
+-					       key->iface,
+-					       inet_ntoa(*(struct in_addr *)&key->addr),
+-					       ll_addr_n2a(dbdat.data, 6, ARPHRD_ETHER, b1, 18));
+-				} else {
+-					printf("%-8d %-15s FAILED: %dsec ago\n",
+-					       key->iface,
+-					       inet_ntoa(*(struct in_addr *)&key->addr),
+-					       NEG_AGE(dbdat.data));
+-				}
+-			}
+-		}
+-	}
+-
+-	if (do_load || do_list)
+-		goto out;
+-
+-	pset[0].fd = socket(PF_PACKET, SOCK_DGRAM, 0);
+-	if (pset[0].fd < 0) {
+-		perror("socket");
+-		exit(-1);
+-	}
+-
+-	if (1) {
+-		struct sockaddr_ll sll = {
+-			.sll_family = AF_PACKET,
+-			.sll_protocol = htons(ETH_P_ARP),
+-			.sll_ifindex = (ifnum == 1 ? ifvec[0] : 0),
+-		};
+-
+-		if (bind(pset[0].fd, (struct sockaddr *)&sll, sizeof(sll)) < 0) {
+-			perror("bind");
+-			goto do_abort;
+-		}
+-	}
+-
+-	if (rtnl_open(&rth, RTMGRP_NEIGH) < 0) {
+-		perror("rtnl_open");
+-		goto do_abort;
+-	}
+-	pset[1].fd = rth.fd;
+-
+-	load_initial_table();
+-
+-	if (daemon(0, 0)) {
+-		perror("arpd: daemon");
+-		goto do_abort;
+-	}
+-
+-	openlog("arpd", LOG_PID | LOG_CONS, LOG_DAEMON);
+-	catch_signal(SIGINT, sig_exit);
+-	catch_signal(SIGTERM, sig_exit);
+-	catch_signal(SIGHUP, sig_sync);
+-	catch_signal(SIGUSR1, sig_stats);
+-
+-#define EVENTS (POLLIN|POLLPRI|POLLERR|POLLHUP)
+-	pset[0].events = EVENTS;
+-	pset[0].revents = 0;
+-	pset[1].events = EVENTS;
+-	pset[1].revents = 0;
+-
+-	sigsetjmp(env, 1);
+-
+-	for (;;) {
+-		in_poll = 1;
+-
+-		if (do_exit)
+-			break;
+-		if (do_sync) {
+-			in_poll = 0;
+-			dbase->sync(dbase, 0);
+-			do_sync = 0;
+-			in_poll = 1;
+-		}
+-		if (do_stats)
+-			send_stats();
+-		if (poll(pset, 2, poll_timeout) > 0) {
+-			in_poll = 0;
+-			if (pset[0].revents&EVENTS)
+-				get_arp_pkt();
+-			if (pset[1].revents&EVENTS)
+-				get_kern_msg();
+-		} else {
+-			do_sync = 1;
+-		}
+-	}
+-
+-	undo_sysctl_adjustments();
+-out:
+-	dbase->close(dbase);
+-	exit(0);
+-
+-do_abort:
+-	dbase->close(dbase);
+-	exit(-1);
+-}
+--
+2.53.0
 
