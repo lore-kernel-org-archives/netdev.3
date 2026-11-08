@@ -1,99 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.5
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794167149;
-	b=ozDfXSYeTE/4k7z8vDwuV3Z0JBnwqWlRUgLbJcj3uDzjAWdNFmY2u3kLjSfkprwm3bVE
-	 UTlesGqu8kXMFh5oiqseL8n25h44ifKQJVfb4n1/40A5QUD+RY6kDKRXeyIxXNJG3bIbP
-	 Z5nB1zCP8CJK2NUehjdlYnctZn0zI8GvRX0kP4zCKhhYITxwA9wtNv97ADjJWWXXbQ2fB
-	 X35nSv1HHUQVfEtJ7RUcxIYso/RAHjMiuyvJRGdwSaE/NKp4T4d0TdUNkSOqss24w3PI5
-	 XAsBGbci+3do+W+mK3NZGGcot8sWK+IVB7/eZoB9pINu0VDNoJgxTZUzTnli1zQJTLQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794167149;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=mU/CEuwwNvuUHGDOA5yZN4w9o9/T1GJqF2OzKRNpbwM=;
-	b=Yuzxoy73TSIbRNXflJ2YlB3o/dmTQ3LPs+siFhYGNbXgpW7Tz9vOeeACr2+5De6d0p+2
-	 ev4V+lRl+ewqQ4lrZrwZ57iWikOwfHgRmrcb0OgbdIEOOAyElX0U7WinPyGtad2RjRXkA
-	 kVDjNlFN9OGRVwaTKS6Nx/0+ju92B42TC2J0zkVisD8rbamUFJWEhAjKnXFgo40h9C/0r
-	 GqF80XrqbwhRGIpikOsC47p1gZ9x6NVauu1CcpDreqLWXy5EYTulmevNXXd+QCZKeUH0S
-	 zJUiroN5JpyAs4DxOb1lTKDi6rO7qsQI0/t5co1Yc1QLCR8OnQBd21U9DO4yMskTWZQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kwV67pd+;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.5
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013005.outbound.protection.outlook.com [40.93.201.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.44
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794167332;
+	b=v7A8/JDAd7K5L0hq6OCWltxohb4ecHDTscQGPfwF2BJ/M5uqU0udKTXTf/34lv53h0A7
+	 DsFzS9X7EZczYATFei4dKdUSoNr7h+WtMFPnzelepfCB/1sR5g+/I99lJHWTFd7qU/X48
+	 8KPgPemFK/r9jba8u4urVpQ6E1yTP4YTX5Mhm2qAjxv8YS9ahlXixdDv0HHz0ifmyRZ7Q
+	 lZY9G3OYQJxCBV1I3wHtGt3e1DMFEpE2/Gq64PDC3Fzr1CIc0SpYv6c5SIzzVlj6gKcQt
+	 UgENKKekQuSbrhYcXwGCmIbRbFRw9+v1Z+AWbE4ctN3E60Tx3AP4rbnBMGlADyzh0xw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794167332;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:Thread-Index:Content-Language;
+	bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
+	b=2XQKRvIkiJOaTcOZZf/qH8dyHVw3K1qgm3dUA7Iurhour05WUMhR4YhRcOViwNxLo82D
+	 kaailunO7ZVKqky8OHv3ZCcd4Ow03+ReHhnRgg64Fc2P182I3KawMBfvFJgAkUfLhzAmw
+	 /mRtKplmG+Byqo8yQDhpg7Yaq/ETiiVlPqMHsIKn0MGempm1XZHdu8DEyolJmJHMS7anV
+	 MZBOJ9Nx9f0L+DRfwhiUrQGzFHmT+H+uuNd50ekOANJjtDxQIFPq8eRLX+Ez9hBARty0F
+	 clRZT8rcJjZCedRtl9mVx7JzBsJX6FNo7acbQaEdAS9XdBlLTBeoH3EOH2hM25AbTSQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jXyBRKdJ;
+	arc=none smtp.remote-ip=209.85.219.44
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127C3606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 19:45:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 127C3606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666FB606A322
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 19:48:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666FB606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kwV67pd+
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rR0iIzkQTUe69gkyILoEhbdeqaKgzJV2shsirNAZUqxoIx1HPLQHBVwRIKCYUUThboyEIDnsQKNO+iY6yfkaof4Cf7qF1oAUMHqRz6a3qMVq5kMAQuw3sV+P1x80UKHCIZzHB1FQ3Pxc0rmvbCx+m84uM1huPLQxCZP55xhfT4l12720ZZsvZZNBvTLxC7laVvgrbFqpYVYH1A45E2sP/iCcz7SKFG2PEmjtSVH4ZV4x2cqIf6wLk4WYHVSIunz6Ne19a4r+9WJWAeu8CsMJCZVBHjfDdPIR+Fs9jp4QBOgOjtigkY3YRvx3kcMAcAQiU78EeORpSOcVT+DMPlHsaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mU/CEuwwNvuUHGDOA5yZN4w9o9/T1GJqF2OzKRNpbwM=;
- b=WEQl0h07zImAHuaA1j0C4PyG48Vw3hsPkYrAPVy1c+v31aigocuhBJkD2DlBihIkl1axAa2mHxUpLA/Gu8m+B9rM3RVBoMFRWtPE/5D0OS1xcLGmmknl/cCVFL+DJw3yC9YIGANqbKP8q+nD9XOia/P5SzjTC8qhPQBVYV5KmM24HjHweRouvIwFMPbfSL5R0b++BfgfNKCsfObJD88GGGDVlKvN0A3s8EIlqiNtbNWF3QUyPNYfVdAYQGPSXzUPrbDr3rwdK6+Wr/rynWW39p6hGRFrJwfJi6qy4+AzWG5M7oa+kUQ96Mwgofvyd4jqpjdbdzvSINYJ82Bsv1tO/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mU/CEuwwNvuUHGDOA5yZN4w9o9/T1GJqF2OzKRNpbwM=;
- b=kwV67pd+WO6SEvobUr6nHtxfKTj6ammUh53GDvz+3decNziP4MhOXeMzkNcsKqbdtA/m6zPqaGQG8f+W7Y29x9oSJkzEUp67PBMCMasRPs1MS5TfIieW6ycHZE43xMr9E/BHkQ/b0uZ4tBsOiXuU+QujvWx8IyUXzyJnjOlTSwkGiyMLn6P2k7calyUJ5Kmbm/YR5EdEhyj/q50dQoSF8MsAT8Z8lRPGELytkqdmLq0qYCQPGC6qnmid/xUYJ5+dt4r0ULS35euECbPJoMr08xsSDotzDbIVa80mZqD8SBOYc5mbkshOWk7j7GIrfwbt969XIEk2Mlrlt6OXsZtKkg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by MW5PR12MB5624.namprd12.prod.outlook.com
- (2603:10b6:303:19d::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Sun, 8 Nov
- 2026 19:45:44 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0592.010; Sun, 8 Nov 2026
- 19:45:43 +0000
-Message-ID: <9a8e3e1a-977a-4e48-ba9a-2b71700f6924@nvidia.com>
-Date: Sun, 8 Nov 2026 21:45:42 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: Question: net/mlx5e kTLS TX TIS reuse vs in-flight WQEs
-To: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Gal Pressman <gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
- Boris Pismenny <borisp@nvidia.com>, Sabrina Dubroca <sd@queasysnail.net>,
- John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org
-References: <20261022181751.1349984-1-rjethwani@purestorage.com>
- <fc0da060-5bf5-4289-8814-d25e6c422673@nvidia.com>
- <CAKaoeS1hj9XuM7ojLBCjGA=EXc2M-b+eRjC2Sk=8L_8XYeJ18w@mail.gmail.com>
- <4796023b-10ae-4172-afa8-9c7541844314@nvidia.com>
- <CAKaoeS3hDE5q7XGtPy4XKmGL54-+7Y-H9JyMcdz94FiQW2_ffw@mail.gmail.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <CAKaoeS3hDE5q7XGtPy4XKmGL54-+7Y-H9JyMcdz94FiQW2_ffw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TLZP290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::15) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jXyBRKdJ
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-91e9309f171so2352936d6.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 11:48:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794167330; x=1794772130; darn=vger.kernel.org;
+        h=content-language:thread-index:content-transfer-encoding
+         :content-type:mime-version:message-id:date:subject:cc:to:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
+        b=jXyBRKdJkp6XXvNTVIP2mXjuKPdYX1DWsFl9pcjjUplrb32KrShGQams2/5jR6g9B/
+         iYuUFgoWKkSRHJlK9aABS/6k7CON3OhlRylQDZKvG5/GpLNAR5DoaH+ndUFPLzWHJCRG
+         aFvjcLhjmVEuIN2jkZXDiOK4BcFmxQVMhg98YqvRxcr45aW2dKpfHNPel5FVskOaqbYv
+         YGaPgrqrJM0fwl9k0MPvARz5ufMpydgf3kzHR1o0HdAV6jq579EcNHP+dDBmlYuRqqae
+         XgbHIsBg3FoK7GzT/bLE35d0fYOeDUpzlcVKEcGgxPfhyT1F3gYnyiTUwZlaRXpXHBte
+         KU+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794167330; x=1794772130;
+        h=content-language:thread-index:content-transfer-encoding
+         :content-type:mime-version:message-id:date:subject:cc:to:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
+        b=mC9Iq5iED5t1oQUI1+pUWHOkERbYFoc0WD+oc2Mf695sW3L03gVvIloIbOs0iewO6L
+         qVuwhM8qgxOPIcKouXFIBqTSzYwHn3OPEiX2ZTi1PimRLfRloUjVl3GJDLvE6aHryfkm
+         G4hLKWoearihk6gROdVYpvvXp6KAoOIpz93Km/moc3YzpWB9wxEBnei1uN8nsgE/PKh5
+         6qzc2o2RHnBtlPA7qvYgo4V4DbOVg9mjj8ypN28qtucKU0nUD3CpVKCiyckQ4aMSu9iO
+         0+qczr0OP4zt6ShehSXJOuKmpbOuV4BsMFM5jLY/XVeBK5R34OsD29usXuYqtY5LEku/
+         mmgw==
+X-Gm-Message-State: APuU4Z+pq8frBWhQrO1YIrNJlTtQSvvKNtPNVSfksyi2rrFDGnA/ND0S
+	LiHeMS7h12zZQecSGcN7FIfGvm0Da8MZBRycJmy+p+BghmIj7cVYt2yU
+X-Gm-Gg: AYBFou35HTAoJloJ8vWy1K2tJxZLkkw4haiH5LJ3LnRp9sZ5fTqDuuHgVmS1hoCn+yy
+	blV9NlUZWxFhGU9f/NSgD+exREy86i8ryq9pkfagDENGmA5K89wStkF/sJor7X2hn5LV71XO0i2
+	g4JXviSRyuNe2rPIIRPRQjtAdYLhvp6gDuEXNk04lrt/Vnln48aDLY1gVrirc3DT6DmMKN9v7gy
+	zRUpCdjOiUKVNOXpKIYDbJOxNlcN8veGXDAopaowRL9bg9ys2BjK3J0gFkpeupjE4ZAnGdDO3iH
+	Ad/KlPWNjXXikwcYHH9BonW8k/aixxP8/6i67bzgivE6e0B6yFVpkIJExh0oqWpfNaEvLEI0SI7
+	p0Zx8xZoxQpSGtReh7FCizrmIO6rsrDqoTA2V+5wiSTM+znl4L6k0UeHAP8Iwg6fx5+rXFqheyg
+	a1ELelQkHxi3hYBaNBVsDaHQmyCtGjiT3dtC7DpgQYj68pBXj/6R1L9xH2Ebzhb/w9J58Ieb0Uv
+	ilsuvcUT/EvLecpwBcaOin8iAf5MkgVdMGuBflvHEpXPKljMY7uUbZq/Q0n49igqI9GOhwrgULZ
+	Ww6d1ucqZ1gQahir2avVSKsugyMAQzvOrRDIaeusNtpLy/HjhqhsAyrXqXqwMshEPmQ8
+X-Received: by 2002:ad4:5745:0:b0:91e:76a7:187 with SMTP id 6a1803df08f44-91ed24acfe1mr32302126d6.43.1794167330178;
+        Sun, 08 Nov 2026 11:48:50 -0800 (PST)
+Received: from Desktop ([186.247.175.171])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91eced95d39sm25058076d6.13.2026.11.08.11.48.48
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 08 Nov 2026 11:48:49 -0800 (PST)
+From: <brianrobertjames@gmail.com>
+To: <westeri@kernel.org>,
+	<YehezkelShB@gmail.com>
+Cc: <netdev@vger.kernel.org>,
+	<linux-usb@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: thunderbolt_net: GRO header-length ordering defect on Proxmox 7.0.14
+Date: Sun, 8 Nov 2026 14:48:48 -0500
+Message-ID: <000201dd6fba$2c726e80$85574b80$@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,191 +96,108 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|MW5PR12MB5624:EE_
-X-MS-Office365-Filtering-Correlation-Id: 345024b4-f0df-440e-a111-08df3dd0e034
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|22082099003|18002099003|6133799003|3023799007|4143699003|5023799004|11063799006|56012099006|10067099003|261028144727099003|261026121527099003|261102123227099003|261022075727099003|261022105027099003|261021135927099003|261021123027099003|261021121427099003|261026140227099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	dTADMNrfMz2QFTH9ZhvEvPqKaTWYSqBBGekqK7okRt6hMgl7PMax9s7okfHNii2BXq2B27mkrA7IiKt2xdcjwZnLlKLqKj0UJHCaaktdt+IAEthUjO4XZujD1B9QCgyUnDF9fN2/Nk/mlwYM+sU+qpdsAZBdIA5mZZJFbNTa4wG2PLQgpvh6TdGT/jMCE+UFbqrK40bk/Jm70et7FP8TITFNTgfoOFKarOifi0z1M3K/QfHuvtwrUHLEvKgfZ6MbBKuECXhlpGazk7vmawEIQ3dBSIQwwxzXTik+sPHaPcH5t78kTSE985fApZxrlwtOJiXIjume6OSxxXmb2eCqS14o0y5yi4joULOVr7A7Z4s8AnW/htLBGXv3Erf8klw2QctmmYim+HCbjOxAuri6Ev7ZldZrW7zSiOq1bnKAXPKAYKjdAFiypzQDTIMp9sfRtammG5ABpn4IRuqewBUxeD6zrPSgjHjbiWBZH5e+3Lb2OiPnugH9tEiNadXgoQLds505lqYfyDZvla41478WJo24UW+LTJj2R+/L+qF69X+tJxMWULRMPr14p1Z0rStbQdAshIWV1dxquKuUzlkUwCPCrPabRmKBV7e89nCcXLTUOCg6ESX/C3R3QoPS8wp3GOIb/O16URyDhLtKsX73sSLuG1ennhRLoHDN0N1gYK4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(22082099003)(18002099003)(6133799003)(3023799007)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003)(261028144727099003)(261026121527099003)(261102123227099003)(261022075727099003)(261022105027099003)(261021135927099003)(261021123027099003)(261021121427099003)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M291YlhwVXNyMUZGYjkyRlhtcVl6TEFhUUVBUy9KOEtIN2hLeTR0VFVqVWlR?=
- =?utf-8?B?aEdaWEdRMmF0aS94S2xiUmZuZ2JKZ0d5bW1Yc2NsdXRKNFFqZ0xYM2Ivb0Mv?=
- =?utf-8?B?cW91N0I3SDJkakt3M2NMNUE0Z1FUUnZ1U0VXNUEzRExQNXZrRVRhQ1Fnak8v?=
- =?utf-8?B?SndZcTFoVGdjWTFrb0x5STJNbzhuTjJFdzFDY2RrakZnY2tucnkxRXk1cFRY?=
- =?utf-8?B?WjNTTS9hRm5VdW9acjJqR2FwRmNYNUNwMmhRei9EL3M0ZWMzcmcxTCtzK2ZN?=
- =?utf-8?B?STgvTUlFMG5Bb3MrSlo3T1c0T3JaRmVZU3VkWFRYRVJMWXdSbHJNOGN0R0tt?=
- =?utf-8?B?ZXQvQzc4VGkxVFI5T0UzZndsc2xWYk9yYUowQzkzYy96UjhTS0dYYTFkU0ZI?=
- =?utf-8?B?NEZnQ2hjaDJjWTJ1a2FtOE1XaERVZGJtS1kzbHNSbk05b1JieWY0ZG81UDZ1?=
- =?utf-8?B?ZlZqWDBRTFpMTFJINDBiYzNuQ3hwcEVSNnVOVGpraDRSQ2hhcDRETTJpZ1Yx?=
- =?utf-8?B?dEt2SFlBNE11OXcrMU5KMVgxNVhoclM4RStDNWd6aFF0ZEhOdVVvV2owbTdI?=
- =?utf-8?B?UXJCQ3IrVGMyU3ByWnlNeVc2SDBSa25VN24vc0Nhcmhnb1htVmtHYjVzU3Jr?=
- =?utf-8?B?UVI1TitzMDhLMXRuTmpHSTJ1dFM5R1lnQnBXZERBMmhjQWlCR01jdjl0ZnZr?=
- =?utf-8?B?cjlhMnRIb0hoSVE4K1VVUW9Dc0xacUhqenpMc2tlZWgvWUhsRDFiRXBvTnlD?=
- =?utf-8?B?ZCtSOTdOSzhLWUR2SnBTWllLYTlkMmxqWFdMcmovdjdiRVltdUFOVEJocmg2?=
- =?utf-8?B?aFBqK2R1dWpMdnYzM0FJNlliNkNwOE1QQnNsUzQxUTZ6SnpFMXNEeXpnd1Z1?=
- =?utf-8?B?OXg0LzZmVm80R2Z1NFRkVW5sWkZNcWJNcGJFckJrQ1g0UUpXUFdpQzRYRm0v?=
- =?utf-8?B?Ymp6VzB0WFhjaDhSTzF1UDE1WEd4Z2xLdi9oc1lUZlBGNnJpZ3JnWmgxWnVO?=
- =?utf-8?B?UzZGREJCdGpjenBUWi9ybEd3eHR4SEdXd3dDZlVsZWxuQmpLaWFISWZKclg0?=
- =?utf-8?B?L0c0UTZtbnJMT2JJTkxySlIrczlMT3R4WXNtTlMvQ1ZMekFkVURXek03Z201?=
- =?utf-8?B?anlQNzE0QnV4RFNVS21abEdTN3FGUUsyeVJzeWdoaThjb2gxVGVLVDRjOWh1?=
- =?utf-8?B?VkF6UmFkdnUxTVpMaXFPaXFScFlNS29FN1BwSUpid0puL0htd3VMMUtOeDA0?=
- =?utf-8?B?TVRwZVVnR0JLUlMxdVBRR0ZwVUo1REdHbjZ4enNUckZIZDFVbzd5RHRyT2Vj?=
- =?utf-8?B?bXgvcnhHa0tXc2FyOGhWR2FVZXdlL3Y3REZ2WEhlcFhZV2lCNHJCN2dpUDYr?=
- =?utf-8?B?ZXNOMmtkbUR5TGVZekdkdmwxdEJTSm9QQXNacXNoYUxjWm9sSHQvL2pUd2pn?=
- =?utf-8?B?ZnBXZ0U1REIyMmM2RlJOdE1wUmpmQjZxcjNJUTJYNkNCYW9reFU3S3lYaUVm?=
- =?utf-8?B?R1gwY0hkSnh3WXBQSUh4MXR4cWthSFNUVzl5anpiNG9YdUxaR1lWQUN1T0R6?=
- =?utf-8?B?NDVuS3EyRWRXd1JlVXBHdHZmeE9WeC9CbU9HR1hUbENIZDJpOEhrazFhNTFG?=
- =?utf-8?B?RFN4UlI5Skp5UWxvODRMeEIrQTczU0FWZ0FaeHY0VkdsbWNQOFNNalkwZkRY?=
- =?utf-8?B?TVFOcEVnUGhQR0pzTHlPdXZ1dUJ4c0F3VEdBK3BOalh3M1JwQ2daWUJGMDgr?=
- =?utf-8?B?NzkxVHptSmlVajc4Z1JYZ2ZqQjdJSXhrdkY0WTJ4MzRZamw0YTFKUDIzaTZC?=
- =?utf-8?B?ZTFSS3VZb3VWZkN0YnoxNU5IY0ZsOXUvRVl1ZzNYSlVlSDgxeTdyNjhCZkVI?=
- =?utf-8?B?T0wwdjZ6aEdBQlllcEluN2t6WHFxdUh0UmtSeFdTaWc3b2pJdDYyY01BYVpj?=
- =?utf-8?B?UDQ2dHlTVDhYS0crMFFxNmhkZlZENUNvdi9jbWlkNXBiSFYrdGU3czJUSlN2?=
- =?utf-8?B?N0ExYjJHSG5ZYmk0MW1sQjJTTGxDeTIyWVJpZXU3SkVTcEJJeGREQWRpalFS?=
- =?utf-8?B?anpzRE81aDRFVUQvSUZia0pEK1dnTTRrcm1NbTBUU1oxc1EzeFN5dTA1K2dK?=
- =?utf-8?B?RzY4Z1pDclhkZFZLOU02ZlZvbzRYMnJRTDZibS9JZTNiNVhpWEFrUmRwTlJM?=
- =?utf-8?B?cjE1RU9EN3BCbis1NlNjMWxzTmZnUUV0cFlPazE0Z0RqTWRBMllPNU1sL2pX?=
- =?utf-8?B?dFhFakNhRU5YOVg5QzU5ZjFWSW0wRTQ5NG9rVHloV1pRVFI5cTVVU1VFZlcz?=
- =?utf-8?B?YkEvd2NtNVJTVU9tSUpBYndjd2s3MmVMZklmM2xKUFdRWkdOVEtUUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 345024b4-f0df-440e-a111-08df3dd0e034
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2026 19:45:43.4731
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QJixvfjFfyeno0zNbV8MTEpX966SCCLfx8Cd1/dK3A723/OGeBYNWqMHYRhYO8xDwNeMWVPM0Y5mUA9/1ntyjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5624
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: Ad1vuZ0ajLhI60pVTHeHwa3vcNZzXQ==
+Content-Language: en-us
 
+Hello Mika and Yehezkel,
 
-On 06/11/2026 21:58, Rishikesh Jethwani wrote:
- > Thanks. Agreed on (3a), (i) and the net fixes, with one condition on
- > (i) below.
+I would appreciate your assessment of a thunderbolt_net GRO ordering defect
+observed on a direct USB4 link between two AMD Proxmox hosts. We have
+receiver-only original/corrected/original comparisons and packet-order
+traces supporting the Ethernet-header/headroom correction already published
+by Shun Li.
 
-Hi Rishikesh,
+Credit for that prior published correction belongs to Shun Li:
+https://github.com/riverscn/thunderbolt-net-dkms/commit/b18a196bb5ca54246443
+e1a29924d6007aa16036 
 
-Thanks. I took your points into the patches, details inline. I'm
-re-running the ConnectX-6 Dx tests with the changes, and will share the
-RFCs once they pass.
+We independently investigated the same defect and applied the minimal change
+to pinned official Proxmox source. We did not install the project's broader
+DKMS/RX-normalization modifications.
 
- > Thanks. Until then, the two hardware questions remain open, including
- > whether DESTROY_SQ can fail; the destroy wrapper discards the status.
+Tested environment:
+- Two AMD x86-64 hosts with one direct USB4 cable; native thunderbolt0
+traffic, no bridge, VM or Ceph in the path.
+- Receiver kernel 7.0.14-28-pve, #2 SMP PREEMPT_DYNAMIC PMX 7.0.14-28
+(2026-11-02T11:54Z). Also reproduced historically on 7.0.2-6-pve.
+- MTU 9000; TSO/GSO/GRO enabled; gso_max_size=65536; unpaced single-stream
+IPv4 TCP iperf3.
+- Stock thunderbolt controller driver unchanged. Receiver comparisons
+changed only the network module's header/headroom metadata. Cable, ports,
+offloads and CPU/IRQ placement stayed constant within each comparison.
+Secure Boot remained enabled with signed test modules.
 
-DESTROY_SQ doesn't fail while the function is healthy. If it does,
-something went badly wrong in the firmware.
+Receiver-only comparison, original -> corrected -> original, 20 seconds per
+arm:
+  Original:          30.599221 Gb/s, 620 TCP retransmissions
+  GRO corrected:     29.779541 Gb/s,   0 TCP retransmissions
+  Original restored: 29.994158 Gb/s, 540 TCP retransmissions
 
- > One correction to my last mail: recovery clears RECOVERING even on a
- > flush timeout, so the queue can wake once stop_room frees.
+Endpoint interface error/drop increments and receiver FQ drops were zero in
+all three arms. The unchanged sender in this historical receiver-isolation
+test was still on 7.0.2-6-pve with TX E2E enabled; receiver RX flags stayed
+FRAME|E2E (6). Both hosts now remain on 7.0.14-28-pve. This is not a
+two-latest-kernel GRO-only comparison.
 
-Thanks. WQEs posted to that SQ then complete with error CQEs, which mark
-their connections for a full resync, as in the first error.
+Minimal reproduction outline: establish direct USB4 IP connectivity with the
+above settings, run an iperf3 server bound to the receiver's USB4 address,
+and run one 20-second TCP stream from the peer:
+  receiver: iperf3 -s -B <receiver-USB4-IP>
+  sender: iperf3 -c <receiver-USB4-IP> -B <sender-USB4-IP> -P 1 -t 20 -J
+Repeat after changing only the receiver's header/headroom line, then restore
+the original receiver module and repeat. Module reload interrupts the data
+link; our management connection was separate.
 
- > Agreed. What rekey needs from that resync fix: a lost initialization
- > or replacement always triggers a full resync on the next skb that
- > needs the TLS context, and a connection marked again while the driver
- > is consuming an earlier mark stays marked (test-and-clear, not
- > clear-after).
+Mechanism and minimal correction in tbnet_probe():
+- dev->hard_header_len += sizeof(struct thunderbolt_ip_frame_header);
++ dev->needed_headroom = sizeof(struct thunderbolt_ip_frame_header);
 
-Both hold now. The mark stays until an skb that uses the context
-consumes it, and it is taken with a test-and-clear before the resync is
-posted, so a loss reported meanwhile marks the connection again.
+The 12-byte transport header is not part of the Ethernet MAC header
+presented to eth_type_trans()/GRO. The original hard_header_len is 26 rather
+than ETH_HLEN (14), so gro_list_prepare() can compare 12 IP-header bytes as
+link-layer bytes and fail to recognize packets belonging to the same flow.
+Runtime tracing confirmed original hard_header_len/needed_headroom=26/0
+versus corrected 14/12.
 
- > An explicit bypass right after the
- > datalen check in mlx5e_ktls_handle_tx_skb() closes that without a
- > sequence comparison:
- >
- >         if (!skb_is_decrypted(skb))
- >                 return true;
+Historical paired receive hooks on 7.0.2 covered the same 18,871,120,863 TCP
+payload bytes and 303,590 packets before GRO and at TCP ingress, on the same
+CPU. Forward sequence gaps were 0 before GRO and 1,219 at TCP ingress, with
+no packet-length parsing mismatches. A corrected capture had equal byte
+coverage and zero forward gaps. Retransmitted/overlapping sequence ranges
+were treated separately. This localizes the observed ordering defect to the
+receive software path; it is not proof of physical USB4 packet loss.
 
-Agreed, it's in the pass-through patch, with credit.
+Full reproduction details, source provenance and the one-line patch:
+https://bugzilla.proxmox.com/show_bug.cgi?id=8306 
 
- > I'm happy to use (i), but warning/counting alone does not cover the
- > forced-queue case: a detected conflict has to prevent the conflicting
- > hardware access, since old TIS accesses must have retired before
- > another SQ can modify the context. Dropping before any TLS WQE or
- > context-state change would preserve safety without SW crypto.
+Independent hardware validation shared with the prior fix's author:
+https://github.com/riverscn/thunderbolt-net-dkms/issues/27 
 
-Agreed, the counter is now a drop. Each connection records the TX queue
-that it posts on. An skb on another TX queue moves the connection only
-if no other skb of its socket is in flight: an skb is freed only once
-the WQEs posted for it completed, or were destroyed with their SQ, so
-nothing of the connection is then pending on any SQ. Otherwise the skb
-is dropped before anything is posted, and counted, and TCP retransmits
-it.
+Separate context: with both hosts on 7.0.14-28-pve and GRO already
+corrected, we also observed TX-credit-dependent fragment-validation errors.
+A local negotiated TX E2E opt-in gave 18,604 -> 1 -> 18,601 TCP
+retransmissions in off/on/off 20-second arms. This is a separate diagnostic
+change, excluded from the GRO patch. Its lower-level cause is unresolved; we
+are not proposing globally re-enabling TX E2E given the known controller
+compatibility concerns. The related discussion and limitations are here:
+https://github.com/hellas-ai/thunderbolt-ibverbs/pull/78#issuecomment-672616
+9650 
 
-The move is made under the old TX queue's lock, taken with a trylock,
-under which the connection posts there. That serializes the check and
-the publication with that path, and leaves the connection's datapath
-with a compare of the queue index.
+We have not reproduced these observations on the latest vanilla mainline
+kernel, and upstream acceptance of Shun Li's GRO correction has not been
+verified. Could you assess whether the GRO correction is appropriate for
+upstream/backporting, or point us to an existing fix or discussion? Raw
+benchmark and trace evidence is retained locally.
 
-This covers your points 1 and 2 where the WQEs are posted, wherever the
-queue came from. For 2, the mlx5e pin now also re-checks wmem at
-selection as you suggest, so a stale ooo_okay doesn't lead to drops in
-the first place. Does that match what you had in mind?
+AI assistance disclosure: source review, diagnostic automation, analysis and
+preparation of this email were AI-assisted using OpenAI Codex (GPT-6 model
+family; a more specific serving-model identifier was not provided).
+Measurements came from actual hosts and are not simulated results.
 
- > 3. The drain has to cover the QoS/HTB SQs too, and reap deactivated
- >    SQs although mlx5e_poll_tx_cq() returns early once ENABLED is
- >    clear; a missing or replaced txq2sq entry isn't evidence of
- >    retirement. On a drain timeout, the fallback must close the old
- >    SQs first (which keeps the guarantee, modulo DESTROY_SQ), never
- >    activate with them alive.
+Thank you,
+Brian James
 
-That's how the drain works: it covers the QoS SQs, reaps the deactivated
-SQs directly, and on a timeout closes the old channels before activating
-the new ones. The drop above doesn't rely on txq2sq either: an SQ that
-is deactivated alone, e.g. on an HTB leaf delete, keeps its skbs until
-it is destroyed, so their socket keeps its wmem until then.
-
- > On the price you mention for priority changes, agreed. Please
- > document in Documentation/networking/tls-offload.rst that pinning
- > delays priority/DSCP/HTB-driven TX queue changes until migration is
- > safe, potentially indefinitely under sustained traffic.
-
-Done.
-
- > Nice, that's simpler. On the core side, the op's contract: the
- > callback prepares the new key and pending parameters but posts no TLS
- > WQEs for this connection.
-
-[...]
-
- > Callbacks are serialized per connection, but another may arrive
- > before the previous replacement is posted. On success, the driver
- > must clean up any superseded, never-posted key.
-
-Agreed on the contract.
-
- > Record lookup also uses 32-bit TCP sequence numbers
- > today without rekey, so a sufficiently delayed clone can alias a live
- > record there too. The floor catches old-key clones within its
- > comparison window, but does not remove that ambiguity. I'll look at
- > closing this in the core separately.
-
-Thanks. On the driver side, the bypass above keeps plaintext skbs out of
-the record lookup, so it's down to the decrypted clones.
-
- > Please Cc me on the RFCs, and let me know which fixes the rekey
- > patches should depend on.
-
-Will do. The rekey patches should go on top of these net fixes:
-
-   net/mlx5e: kTLS, Hold a dropped skb until its posted WQEs complete
-   net/mlx5e: kTLS, Resync TX fully after its WQEs were lost
-   net/mlx5e: kTLS, Post TX context params only for skbs that use them
-   net/mlx5e: Drain old TX SQs before activating new channels
-   net: tls: keep the TX queue of a device-offloaded socket stable
-   net/mlx5e: kTLS, Keep the TX queue of an offloaded socket stable
-
-The drop goes to net-next separately, as "net/mlx5e: kTLS, Keep a TX
-connection on one SQ at a time"; the rekey patches don't depend on it.
-
-Thanks,
-Tariq
