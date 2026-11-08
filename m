@@ -1,48 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.37.83.207
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794172211;
-	b=MvzBhp8hoUoK0BhvNWGreEVwHOyCdUSJsxThFH18X6SYI0FUIDJGGTEj+Ne6g868vDLt
-	 9xqxhjTC6FfnAcwtQ8CD+dWeAyWyfzElkdlkAwPOr+a8zPXX6bS4bocdxeP2Mat7/s4hh
-	 jcASVjOMQUc6+fpBKqkHIuEI+Gau3ISostw1L+0+xRlk9J6C76UN0dMZLb+ttlgYR1lG9
-	 Tj4DDV9o9YfOx0DPUFVJsUVSiGgHzDo0ja4iSGg5MiTCK32Pvwt8vlBpTOlRhjvGc9AnF
-	 k9rCQ9kE7AWWaS8wYVy8igfQdcCkufLyz7iGLDdqpUbf/QPWRn6XmIoTf0LdmUHD86Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794172211;
-	h=DMARC-Filter:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer;
-	bh=5eQhyl6BefQXEM3HqBC+049vGW9GIrPFhCIuE5Q+htU=;
-	b=tuO8J/aH0JkE3wnTIwpHongOgn99DH3nuUz3KjqjUxSCQZKqOTylXqmEBN/xkndlUf13
-	 7vBKu0kx2bA/qBZgrgrn2xIHlX6VvWKY6/q/4jcLX97+ybtnJT+tZmmXKm5ASfsmmsCEw
-	 aiw77+DPqwrlWeEtUzVmFJi5iwEwog3CCDQpKK6yNzhnIsisRmNyzomqLGHDnPaaTo5oc
-	 /jkTt59q1TsXiybuznsfM5DaqxBQW5EFeKiylsrSdIUMjwMP1OklIoLbJOwauDHXorv/N
-	 uFpHGGsT7cvwM2xR/JC3p4IWvkXKGZG1nQuuYn8/7FPj4/K/33s9uHItzDZMVMtMbAQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dfb.sh;
-	spf=pass smtp.mailfrom=dfb.sh;
-	dkim=pass header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=X3jpyQS1;
-	arc=none smtp.remote-ip=54.37.83.207
-Received: from frkn.dfb.sh (frkn.dfb.sh [54.37.83.207])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794172443;
+	b=n69M2ELimmXBSKLtDWG1M+Wjcjz3ugfGPKhXqGFOJo15/yGuYFatwCz7qi3RPXGlInjy
+	 P70/U82s4DHUQ3TZTplr8oH+q+WaWCTDrXK4zkXR6GYN4HwNeRwW1OdT8NXS7MLuM0kLl
+	 4SmJpScfq+hRghp8ZQDzqUCr/JJJYYnsBFHxwNazMNo5NhrFbgnvVUnDinPc1DyE0yRTs
+	 vYzfVuRBf5YCUHjbrGV9+mAwpwD8HUztV3XgXF50yD1GdXi+fZJXNYgqZ83Jc0wLwNcuo
+	 NG9na7w3iPr1LIpnTD6dx1iQIKAo82X41Tj0E8ajxQB0a9powegNEXZ9veHwqsoD64Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794172443;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=DrXeH+tZC3Vva3ircwn3Kn4fX5MCrsA321e2xqYBjtM=;
+	b=CYPt9+RtnKwvHQMzHNHOqQ4armgQ/fHCLP5a5Sm396yaRsAPWlMiBE7LIbIYtl5Nyztq
+	 xAWsWDF0F+vlwkn9w1KLSGl1v0BTdGUVSu7ruFaNbeZAh3fwq0nXgvZ90K2ex05lPaAPR
+	 u1Ngvc8TlU+nmWidbROafZO2EuEWbp4tvlVAqEnHIjvvfnMIbgXuod1vG7TGpIfsx0V9M
+	 ZCb2P5AjYFpY+D2XNofRU1zBdzq4lSjsuaeLeYOhHw6F9faxvI0X275WN8WVhVWOgh4lT
+	 F1PckctsLCQlbjdMrjd8WNRtskp3+arpKa7bqqpCCEwXmtUZ/2syn1dBSPHQ9We/pTg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NcWOFHVJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D05606A31C;
+	Sun,  8 Nov 2026 21:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NcWOFHVJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794172443;
+	b=gDWVPeBOn3nJlATfG1LVYerjsdbkRspbR6GfyxfM0PIFDu0QKE6hoVIiyfYmmZRmfeF1
+	 q1SDwXru7PqiuWfBdsdzy+Shnap2Hjxdde87c8Jr4jMsFRV1Nhw82+n5dfYDer72nSCb5
+	 1h/9+m1kmoKDMuWkADVtSmajdi8SJrYvFWQPr+Et+LHpUgflj4apVoXdTrXFQgy/zVBEM
+	 jLfhgVXHRPnterZB+zV0+KisIz7jB8fnIONvtteI2rOmHi5GvZx1nQaM0YXyg8xYHzsm2
+	 AGCWVQcTTyv3m6FudAm7XMQnI0K8BNvKWPbmSrAkBlE2pV21Fn13qudcLiMwaqaHUrQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794172443;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=DrXeH+tZC3Vva3ircwn3Kn4fX5MCrsA321e2xqYBjtM=;
+	b=lGBCQhSkdC9KKEEbvxim+m9+b28i4pNDj9ZEcZnGqSfdMKMB2TT4gtE6N5Nyr7SioCcT
+	 mijrVS2h5J6iprr2XCZkK86mefi36sOLCiecCIB3889oQ5PzeV2XSjoQcjp0OrDGc2KkR
+	 yEqJkFdnZFvMfbgXB63srREuw5z9PoIuXllPlEB1WuWpEQiNGXDtUQ6I1kyzq2yFezpvL
+	 sUPJJqDU2KTwrUpTPFQcECMa5V9si+RitIPA1TTwWc0LiBcQnjo9jeIrAkA+eVFTkJCnb
+	 jIYf/LT366X0JVjdqP0jCoCqiiWV9a1xe+217Fbv1wSieuv/iVlBDy/9jYV+HGK8xUQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60AB606A31C;
-	Sun,  8 Nov 2026 21:10:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B60AB606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dfb.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dfb.sh
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dfb.sh header.i=@dfb.sh header.a=rsa-sha256 header.s=frkn header.b=X3jpyQS1
-DKIM-Signature: v=1; a=rsa-sha256; s=frkn; d=dfb.sh; c=relaxed/relaxed; r=y;
-	h=To:Message-Id:Subject:Date:From; t=1794172177; bh=5eQhyl6BefQXEM3HqBC+049
-	vGW9GIrPFhCIuE5Q+htU=; b=X3jpyQS1aG5Z0S/C0V2DrwKMXO8HIaYK29v21lyUlfNhyLJkbD
-	5vueWEircvAF/SrV2K87aeDquFRh0V8LRFs22ujx/0J8h2Ibp66MP7ii/lehnJ7KVMhkR+Ip1Z2
-	EzVj9ERRtwFlcsrZU03i0mXrA3YDDayuQ8Aen4O0Bf+iKSHnRaQ2qrMK3a0Vd//fsC9deBOr8ZJ
-	TtBIqpO2EaIdcsJv9tlwbQ5uGOsSbfXrMequpODbBnHbvZ3iGHx3Ge4F0RCmLLCT40hMP/pqY3r
-	j2Ie4k4Fy58XMVU1PT6fMFsRE7anfq/EI1lHIagmQ95OHBtnF75Ov6K5q9PdlRT9CaA==;
-From: Vladimir Petrzhikovskii <vladimir@dfb.sh>
-Date: Sun, 08 Nov 2026 22:09:16 +0100
-Subject: [PATCH net] virtio_net: check RX buffer length before DMA sync
+	by smtp.kernel.org (Postfix) with ESMTPS id 876631F0089F;
+	Sun,  8 Nov 2026 21:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794172443;
+	bh=DrXeH+tZC3Vva3ircwn3Kn4fX5MCrsA321e2xqYBjtM=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=NcWOFHVJZq14LewoCUBVIRX0EsT6kJzu6MA7RGn195T2fR/FQ8rTTIr9Vf9tXLrLx
+	 89iU5Z4YnHfG3+y3LAW3ec22MTONCbWFhvE4oeIthi7mpZ+3W/VmXm23S1qaPyY2o3
+	 ozn6GRATyfdfCIg1Hyt2rsyaQW7FYp1NFsU9X0seXiiUiYuzCiLuplV7I3GmIyU++7
+	 mOoILHSCqhM+u8jZXIaqR+cJq7C1d5SSKudMECoXQe6/3vtGa14KcZMP2yUezgBZX9
+	 GseOEhUPlh/nQmk4e8t0QP6oPjPyRriN9DM7wcaK2v+P4tN5glCeBDY5A1SetMWX7L
+	 2XT+d/mvvoIRw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id DA721480FC;
+	Sun,  8 Nov 2026 21:14:01 +0000 (UTC)
+From: Hleb Shauchenka via B4 Relay <devnull+me.marleb.org@kernel.org>
+Date: Sun, 08 Nov 2026 22:13:45 +0100
+Subject: [PATCH net-next v3] net: phy: realtek: return MDIO read errors
+ from hwmon
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,221 +84,98 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-b4-virtionet-rxlen-v1-1-0078c5ab7e14@dfb.sh>
-X-B4-Tracking: v=1; b=H4sIAPvk8GoC/yWM0Q6CMAxFf4X02UYGxoC/YnhYR5EanaabhITw7
- 3b6eE7OvRskVuEEl2oD5UWSvKKBO1QQZh9vjDIaQ1M3Z+fqDumEi2i2jDPq+uCIfqKpHfue247
- Ahm/lSdbf6RUsg+Ev04fuHHK5Kxn5xEjqY5iLsvD49BJh378A0Vn4lgAAAA==
-X-Change-ID: 20261108-b4-virtionet-rxlen-afbf3d99e38b
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+Message-Id: <20261108-realtek-hwmon-tz-v3-1-b4e9fb16d323@marleb.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOwXLCMAxEf4XxGdHYCTHm1P9gONhGJGqJ3ZFNo
+ GXy7yThAjP0uLvS272JhEyYxHZxE4w9JYphFOVyIXxrQ4NAh1ELVahayqIERnvK+A3tpYsB8h+
+ YtSq1NUq6oxHj2w/jka4zcicCZgh4zWL/SNLZfaHPE3G6dTYhOLbBt5MVmRoKH52lMKUtpRz5d
+ 97Wy5n3/4xeggSstdKq9OuNd5+d5RO6VeRmbu/VM0G/ISgooHbG1uZQVZUuXgjDMNwBfY53XS0
+ BAAA=
+X-Change-ID: 20261103-realtek-hwmon-tz-95237a921bf9
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vishwanath Seshagiri <vishs@meta.com>, virtualization@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Nikolai Kalinin <nikolai@kalinidze.me>, 
- Vladimir Petrzhikovskii <vladimir@dfb.sh>
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Hleb Shauchenka <me@marleb.org>
 X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2366; i=me@marleb.org;
+ h=from:subject:message-id;
+ bh=5AKdSsLeZoi/+Kn1tEFUpy3mbr1m+5jW94geBAoL4co=;
+ b=owJ4nJvAy8zAJTZJnM368y8lXsbTakkMWR+eSVi1KVY4Vc3v8pvwIE/FzeBPUYR6eNP9C1stb
+ lpkJNlmr+4oZWEQ42KQFVNk2dRcJPp0ZfRb1+o9WTBzWJlAhjBwcQrARNYrMTJMN1h+qPnclRcX
+ hQS6v1kw/FvxLPPM+0y9bxU/v6y/wbp4ASPDx55uD4UdZ73s2oJDuGtDNrM4mKwrF3x3713cvE4
+ +nU/sAGBtSQw=
+X-Developer-Key: i=me@marleb.org; a=openpgp;
+ fpr=B2837215E5A95BED457BBC6A9217063BF3FA220D
+X-Endpoint-Received: by B4 Relay for me@marleb.org/default with
+ auth_id=1394
+X-Original-From: Hleb Shauchenka <me@marleb.org>
+Reply-To: me@marleb.org
+Content-Transfer-Encoding: 7bit
 
-Since commit 24fbd3967f3f ("virtio_net: add page_pool support for
-buffer allocation"), an RX queue that uses the DMA API
-(rq->use_page_pool_dma, for example with VIRTIO_F_ACCESS_PLATFORM)
-syncs each received buffer with page_pool_dma_sync_for_cpu() using the
-length the device wrote to the used ring, and checks that length
-against the posted buffer only after the sync.
+From: Hleb Shauchenka <me@marleb.org>
 
-With SWIOTLB bouncing (swiotlb=force, or a confidential-computing
-guest), the sync copies from the shared bounce buffer into the guest's
-private page, so an oversized length also copies the bytes the device
-wrote past the posted buffer over the neighbouring page pool fragments.
-The later check drops the packet, but the copy has already happened. A
-malicious device, such as a host the confidential guest does not
-trust, can overwrite guest kernel memory next to an RX buffer with
-bytes it chooses, which is enough to take an unprivileged guest
-process to root.
+rtl822x_hwmon_read() masks or shifts the value returned by
+phy_read_mmd() without checking it and returns success, so a failed
+MDIO read is reported as a temperature: -EIO reads as -2.5 C and
+-ETIMEDOUT as -55 C.
 
-Check the length before the sync in the per-fragment loops.
-receive_buf() has to sync the header before the length check, because
-the mergeable error path reads num_buffers from it, so limit that sync
-to the posted length. A device that reports correct lengths sees no
-change.
+Return the error instead, so that readers of the hwmon attributes see
+the failure rather than a plausible but wrong temperature.
 
-Found by an LLM code review agent auditing users of the DMA API; the
-fix and this changelog were also written with an LLM coding assistant
-and reviewed by us. Reproduced in QEMU with swiotlb=force and
-iommu_platform=on, a test-only device change that reports a used length
-64 bytes past the posted buffer and writes a marker there, and a guest
-kprobe module that reads the buffer after the sync: without this patch
-the marker reaches the guest page for small and mergeable buffers; with
-it the packets are dropped and counted in rx_length_errors. The
-virtio_net selftest basic_features.sh passes with and without mergeable
-buffers.
-
-Fixes: 24fbd3967f3f ("virtio_net: add page_pool support for buffer allocation")
-Cc: stable@vger.kernel.org
-Co-developed-by: Nikolai Kalinin <nikolai@kalinidze.me>
-Signed-off-by: Nikolai Kalinin <nikolai@kalinidze.me>
-Signed-off-by: Vladimir Petrzhikovskii <vladimir@dfb.sh>
+Signed-off-by: Hleb Shauchenka <me@marleb.org>
 ---
-The QEMU change and the guest probe are available on request.
-
-We also have a working exploit for an unmodified v7.3-rc7 guest with
-KASLR and IBT enabled: a malicious backend takes an unprivileged
-process in the guest to root in the guest's initial user namespace.
-We can share it privately with the maintainers on request.
-
-An alternative is one sync helper bounded by the posted length for all
-four call sites; we kept the per-site change to keep the net and
-stable backport small.
+This patch was prepared with AI assistance (Claude Opus 5.5), after an
+AI review of v1 pointed out the problem. It is build-tested only: I
+could not provoke a failed MDIO read on hardware.
 ---
- drivers/net/virtio_net.c | 63 +++++++++++++++++++++++++++++++++---------------
- 1 file changed, 43 insertions(+), 20 deletions(-)
+Changes in v3:
+- Drop the binding and HWMON_C_REGISTER_TZ patches: their only user is
+  out-of-tree code.
+- Send this patch alone, without the Fixes tag.
+- Move the AI note below the ---.
+- Link to v2: https://patch.msgid.link/20261107-realtek-hwmon-tz-v2-0-6b9a69d44470@marleb.org
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index dd2c41ef6fbe..5aee4351dc4b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -792,19 +792,32 @@ static unsigned int mergeable_ctx_to_truesize(void *mrg_ctx)
- 	return (unsigned long)mrg_ctx & ((1 << MRG_CTX_HEADER_SHIFT) - 1);
- }
+Changes in v2:
+- New patch, in a series with two others.
+- Link to v1: https://patch.msgid.link/20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org
+---
+ drivers/net/phy/realtek/realtek_hwmon.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/phy/realtek/realtek_hwmon.c b/drivers/net/phy/realtek/realtek_hwmon.c
+index ac96e2d1e..b6b2806e2 100644
+--- a/drivers/net/phy/realtek/realtek_hwmon.c
++++ b/drivers/net/phy/realtek/realtek_hwmon.c
+@@ -30,13 +30,17 @@ static int rtl822x_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
  
--static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
--			       unsigned int len)
-+/* Length of the mergeable buffer that add_recvbuf_mergeable() posted. */
-+static unsigned int mergeable_ctx_to_buflen(void *mrg_ctx)
- {
--	unsigned int headroom, tailroom, room, truesize;
-+	unsigned int headroom, tailroom, room;
- 
--	truesize = mergeable_ctx_to_truesize(mrg_ctx);
- 	headroom = mergeable_ctx_to_headroom(mrg_ctx);
- 	tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
- 	room = SKB_DATA_ALIGN(headroom + tailroom);
- 
--	if (len > truesize - room) {
--		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
--			 dev->name, len, (unsigned long)(truesize - room));
-+	return mergeable_ctx_to_truesize(mrg_ctx) - room;
-+}
-+
-+/* Length of the small buffer that add_recvbuf_small() posts. */
-+static unsigned int small_buflen(const struct virtnet_info *vi)
-+{
-+	return vi->hdr_len + GOOD_PACKET_LEN;
-+}
-+
-+static int check_mergeable_len(struct net_device *dev, void *mrg_ctx,
-+			       unsigned int len)
-+{
-+	unsigned int buflen = mergeable_ctx_to_buflen(mrg_ctx);
-+
-+	if (len > buflen) {
-+		pr_debug("%s: rx error: len %u exceeds buffer length %u\n",
-+			 dev->name, len, buflen);
- 		DEV_STATS_INC(dev, rx_length_errors);
- 		return -1;
- 	}
-@@ -1797,15 +1810,15 @@ static struct page *xdp_linearize_page(struct net_device *dev,
- 		p = virt_to_head_page(buf);
- 		off = buf - page_address(p);
- 
--		if (rq->use_page_pool_dma)
--			page_pool_dma_sync_for_cpu(rq->page_pool, p,
--						   off, buflen);
--
- 		if (check_mergeable_len(dev, ctx, buflen)) {
- 			page_pool_put_page(rq->page_pool, p, -1, true);
- 			goto err_buf;
- 		}
- 
-+		if (rq->use_page_pool_dma)
-+			page_pool_dma_sync_for_cpu(rq->page_pool, p,
-+						   off, buflen);
-+
- 		/* guard against a misconfigured or uncooperative backend that
- 		 * is sending packet larger than the MTU.
- 		 */
-@@ -2165,15 +2178,15 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
- 		page = virt_to_head_page(buf);
- 		offset = buf - page_address(page);
- 
--		if (rq->use_page_pool_dma)
--			page_pool_dma_sync_for_cpu(rq->page_pool, page,
--						   offset, len);
--
- 		if (check_mergeable_len(dev, ctx, len)) {
- 			page_pool_put_page(rq->page_pool, page, -1, true);
- 			goto err;
- 		}
- 
-+		if (rq->use_page_pool_dma)
-+			page_pool_dma_sync_for_cpu(rq->page_pool, page,
-+						   offset, len);
-+
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		xdp_frags_truesz += truesize;
- 
-@@ -2446,15 +2459,15 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		u64_stats_add(&stats->bytes, len);
- 		page = virt_to_head_page(buf);
- 
-+		if (check_mergeable_len(dev, ctx, len))
-+			goto err_skb;
-+
- 		if (rq->use_page_pool_dma) {
- 			offset = buf - page_address(page);
- 			page_pool_dma_sync_for_cpu(rq->page_pool, page,
- 						   offset, len);
- 		}
- 
--		if (check_mergeable_len(dev, ctx, len))
--			goto err_skb;
--
- 		truesize = mergeable_ctx_to_truesize(ctx);
- 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
- 						    buf, len, truesize);
-@@ -2574,12 +2587,22 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 
- 	/* Sync the memory before touching anything through buf,
- 	 * unless virtio core did it already.
-+	 *
-+	 * len comes from the device and is checked against the buffer
-+	 * only later, so never sync past the buffer posted to the device.
-+	 * The sync still covers the header, which receive_buf() and the
-+	 * mergeable drop path read. Big buffers never come from the page
-+	 * pool, so a buffer here is either mergeable or small.
- 	 */
- 	if (rq->use_page_pool_dma) {
- 		struct page *page = virt_to_head_page(buf);
- 		int offset = buf - page_address(page);
-+		unsigned int buflen = vi->mergeable_rx_bufs ?
-+				      mergeable_ctx_to_buflen(ctx) :
-+				      small_buflen(vi);
- 
--		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
-+		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset,
-+					   min(len, buflen));
- 	}
- 
- 	/* About the flags below:
-@@ -2655,7 +2678,7 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
- 	buf += VIRTNET_RX_PAD + xdp_headroom;
- 
- 	ctx = mergeable_len_to_ctx(alloc_len, xdp_headroom);
--	err = virtnet_rq_submit(rq, buf, vi->hdr_len + GOOD_PACKET_LEN, ctx, gfp);
-+	err = virtnet_rq_submit(rq, buf, small_buflen(vi), ctx, gfp);
- 
- 	if (err < 0)
- 		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+-		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSRR) & 0x3ff;
+-		*val = rtl822x_hwmon_get_temp(raw);
++		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSRR);
++		if (raw < 0)
++			return raw;
++		*val = rtl822x_hwmon_get_temp(raw & 0x3ff);
+ 		break;
+ 	case hwmon_temp_max:
+ 		/* Chip reduces speed to 1G if threshold is exceeded */
+-		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSSR) >> 6;
+-		*val = rtl822x_hwmon_get_temp(raw);
++		raw = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL822X_VND2_TSSR);
++		if (raw < 0)
++			return raw;
++		*val = rtl822x_hwmon_get_temp(raw >> 6);
+ 		break;
+ 	default:
+ 		return -EINVAL;
 
 ---
-base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
-change-id: 20261108-b4-virtionet-rxlen-afbf3d99e38b
+base-commit: fa5196392691051963726787944db872420dfa75
+change-id: 20261103-realtek-hwmon-tz-95237a921bf9
 
 Best regards,
 --  
-Vladimir Petrzhikovskii <vladimir@dfb.sh>
+Hleb Shauchenka <me@marleb.org>
+
 
