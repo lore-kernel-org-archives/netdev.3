@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794176878;
-	b=5sg4oBYPMNMrLvb990Vm/Umeen/ZiWOy+08hzH7zKvyvhEKEp9SBgNvz6jGlmYu9r4/o
-	 fyFgWKwU7f+mm83xqIHNmTk3To+rI4XGsMVlMu3dITeEzQINcVzTu+fXKA4vvmy937HA0
-	 jpm65MuNmS9djm/TSOeXXuQXuS93fqUrmANm+i0XJYBYoodmSN8Fw3zUphGpp2+FaJeEx
-	 88Dn/pPioNKRG7Yw18KdYbgXwOFIj97VlUtO/HjcGZ/6PGfppFnUVnphIg0KtPi1uPZ6w
-	 /oBGJcoapBwKythvfMu5dU9MSM6vIg9itqE3HSm6mZSUL6u3OvrjMiiH9IHAW2XrWgA==
+	t=1794176889;
+	b=kQ1YK8g77F2lEbqrrbdhCmwG1MxxSUthDd4bMLZlpxllrv7z6NF5FB6fT+Ns8ADOwtxY
+	 i7eXbnerhdtDzwMaOArKw2LJSLRJAo8Qvf2VvHeR8PRe+Ij20Peb76ZuTDAoh0krc4+mX
+	 O3n7H3JU1MT+ihe9S0FwtAx5ekeW5rx7I6jXCe/r14v2D9OhrF2tthoouBaZXOXB4csDv
+	 NxmgseZXsyhNm0XZRSVr/AySfNXD/CGDOEuhu9pzgRD+ixgQ1kIt5p35GyGuIUWELVD2i
+	 MQ3wykQB5UoNQAakqMeCJs/UKddAu8rNx1LGz30HQSjRXoLwe8tmNNVqhTwLomvyqkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794176878;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=4IKEyNNVMbtlH/YtAA2tKyWfWnOYgIJubMPziZyywq8=;
-	b=Ts4fw4imjA0TwARk1zLjWZ8olsZTAGOoRuYtZ4EGqHrK3g4HXbJ+0heMgfwF5hlDBgU7
-	 3mU5YpX4Vly73Nde4gIvlpobyg1FR/sEU9ZpHUHSKsba8u/QEM8mOQ9orUYEEckPh2CAw
-	 eRQHNy1rXaIvtnxprIX7iVw/71RaJFaMvZmPVyrmnMuRePr0szA35JdScEKz8twynqgqo
-	 VSpqj6VKohCQBdyQGX9wWAt8/lTdL73VKoMGbhXxnWBL3Cs7v9LuwDAbtHV3Uzh7Rq8SB
-	 Sde+2r5CbVvjifho8Iu9CAJgG2iCy9S3M+Eghv2TAVVAwfKlqgU2XI64lC4p7+ijSgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794176889;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
+	b=E+2B1HyY2G03WNG0Knhfo1zvK63z+99/EkMQ+tkNGR4b//jyrtL4MvRv2621PNCMR0Hu
+	 k/DaRBqA+5K1u91jXPtPYV9KHRcRXWaiTkdIkAPvdL7ZgaFs88XIdILKTh1o30UcN+06M
+	 TWHNeNVuUvMMJJ53yCTYETxSVqut8lYCwXElNHo7tqPHknzKTafN2jDsuvvE0VvlUo28O
+	 ft3UlYRb5t4SpSLnFAX93UPsZXubKZKwX3iuGVyTJ6NxMNFNGXJj7wgIF6NO0wPVsd4gS
+	 Y4DQH6hr9nGR8vAnqgbW6tsxRn9RKxO+cSVLA66MK6cceBG3gPgr9c5JBDvVZ1cWg7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wdz8J4g0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gc7oUUKY;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 73F58606EE85;
-	Sun,  8 Nov 2026 22:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D246A6082BCC
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 22:28:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D246A6082BCC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wdz8J4g0
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6053F1F008A7;
-	Sun,  8 Nov 2026 22:27:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794176878;
-	bh=4IKEyNNVMbtlH/YtAA2tKyWfWnOYgIJubMPziZyywq8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wdz8J4g0bCy5/NMiYmiXLZEcK/qa4mel5KA7dJrd8tffkLSNG4nTfsy+tUud6n96D
-	 Oep2KRKcpj2qhHBRybpakcdAxPYttSAgI+RlPRdXhaFNAzYbsUlBJ7aHjXRHxrQaPq
-	 up6TwtBpMMZez0cEPxlEdFLrSHXR1zcdaGa6edNOAhDbzIowLYX8zrsMalfCLnOdh0
-	 AV1Nz92M8PG5intxsbRTRhr/stS166lY/nk2sIISEV+xFww6Loh8GjmCTAlk9oTokV
-	 cv/29jRI3sBgpLmBie9AIk84wQ73VlQhxemKPq8HSOYy7Bcw/gMp5VcwDundLNG0/o
-	 UWGH3KuLDX/vg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	James Morris <jmorris@namei.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Tom Talpey <tom@talpey.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v5 08/12] rxrpc: Release conn->key when init_connection_security() fails
-Date: Mon,  9 Nov 2026 00:27:14 +0200
-Message-ID: <20261108222719.304712-9-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261108222719.304712-1-jarkko@kernel.org>
-References: <20261108222719.304712-1-jarkko@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gc7oUUKY
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4ae34ad9bb6so312385e9.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 14:28:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794176887; x=1794781687; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
+        b=Gc7oUUKYhXfkzyx4k8R8oVoqd2a1GEZJYPK8L4AhkN64P4yEv7LvuatfcoSyFVoVWw
+         LgjwkaxoNOBgcBLRLPZ6qRzyJ6gy8CxIHCs45u7htBQv6+liu+k5eDu6hrOsQjCZSA3P
+         ueHS/oBEzNRSm96p8tQUy+0/WHVA/HuqX+6iDRzLP6LPc0wqvybPxavkZv7tOeqKSxyv
+         hi6WTI+N8x9ng5uL5hgJJWVXc+bvFnMEn8MfovnvgBxBL93Cqaq1Tfk5OWmc8iWTSbvy
+         jbU7JtTs/SYdTNq2cmcvjKHrvOL85H9ksfXgMDpUNnXuuqykGC0zvTaBSsFQFjpvo8tC
+         9z9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794176887; x=1794781687;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
+        b=q3HVG8Etya9HF5Q0RLQPsdZ/NhttGcrmbgmTr4gfnrpjGIUN26vIBs8T/m8LDHK4eA
+         f3VATgxLAj0lqTg30MB4uAWZpmDVAVkBb6xPS9q5GP9rL8vCUDvKQk+dLbByWpYQ65MK
+         cOA6bOu5eaGjmgYYk1z0cJQeEOkWvWkeMe6B68CbFYBuMKciGt/WDpG0qvPgEV+dc+WB
+         67lJvXDn44izYhYSI15KYF9QpPsBPS4mFcmRtO71o5urOXoyy11vpCb9uj1KWT1oamn+
+         noedgnrV6Ui/6Kx+YyOZoVB/2g57/H/id5uPooFyjWAPBH6EKwSTDuicUlapXv2mbgaQ
+         MtjQ==
+X-Gm-Message-State: APuU4Z8Sioa7qeRakvnHZ8RC4MLgmOX7Ht3fWWNa/pBfh3M7F9Ab6FDH
+	Ws4rFsyC1vGBaBu3oK2w2jJvxdl3Nvarcvr3DvlvPCzRY7Gokdw1lUT/
+X-Gm-Gg: AYBFou0rcV8KWwUV8unqwsQGis9Hj0F0i+yLzZDrkqEAD0v93Fv9vyLp+m70HSccJhJ
+	fqt6bf3couiZeILLVCukJ91s/71X6sLT+M1cZUp18wIlTnxhq6lENwy6PNbHTAeiCweTT4+cl3k
+	apHWSaB/LoRX1EMqQRRfqCn6aApdBaYrHf+wOqMPIGbOE5YpKUkBWuaUUMl42f36F90Om3cnf9a
+	IPtXL5zzLwXV6LkyaIJq1Qu8tftjIbT6FR+AzhqvdttMACbfizOTkKLraOeyLEgTGLPrDJeLdL/
+	nVqHHhkC5JdaQPCI5bdqivuPfzssY2E2YgiZpLpbgVlOu4nmXoo7WxVZbRsI2g7LMmnPXl6MLFM
+	0iQGNwoCZDldkVq/AygLDJ2MZYJYWIh16BrEX8E8stMVCmrbwILCNhp66+NCdmQp437KP4DkFBb
+	RrPrLTv+lIwcu3obvg4gEpdVuEt5DCvC8T3ykTkbycbJCrk3urhJqm9OIJXIjMrauMTGHcgd3vR
+	rJQluTgzOj1I+2gob5M/aHX7LPNs90RlSVvvdzVppbxylBw0Y0ipSDMJU/nMrH7O8UnhBjJE2P2
+	49FrRtSQJJRn/NpqDuiuCKcK2GBg50+gqXVfDzk/LwJLD8WJSjqw5zPVNXYkaATM7ShpPl6DPHC
+	kaQO2U8ZYjGE57w124Ed6eSQRgy9hVz/JWkdzbwgHFibP9iqfF12vWEF9KERhBO/+J3hJzgUGTs
+	R0NCk0pFu5Kg+s5i++m/TUoDH+Cq0uI+vhDJCY3j9l47rv+ok=
+X-Received: by 2002:a05:600c:c09a:b0:4a0:1f9e:5f78 with SMTP id 5b1f17b1804b1-4b943f77191mr31556685e9.0.1794176886817;
+        Sun, 08 Nov 2026 14:28:06 -0800 (PST)
+Received: from ?IPV6:2a02:3100:599c:f8fc:6c90:be22:1a93:1ff? (dynamic-2a02-3100-599c-f8fc-6c90-be22-1a93-01ff.310.pool.telefonica.de. [2a02:3100:599c:f8fc:6c90:be22:1a93:1ff])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b76cb772e1sm212597315e9.0.2026.11.08.14.28.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Nov 2026 14:28:05 -0800 (PST)
+Message-ID: <e1a0aa77-908e-4786-96b2-5d0d58675f21@gmail.com>
+Date: Sun, 8 Nov 2026 23:28:04 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,50 +92,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v8 2/4] net: hsr: refuse forwarding devices as HSR/PRP
+ ports
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
+ qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
+ bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
+ liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com,
+ lukma@denx.de, fmancera@suse.de, danishanwar@ti.com
+References: <20261107220544.20-3-xiexinet@gmail.com>
+ <179417570554.994134.17137863494736269542@kernel.org>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <179417570554.994134.17137863494736269542@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Clear conn->key before calling key_put() when init_connection_security()
-fails, and pair with READ_ONCE() in rxrpc_connection_seq_show().
+The point about cloned data is right: skb_share_check() only
+handles a shared skb, but when packet_rcv() or a tc mirror holds a
+clone, the TCP/UDP GSO handlers on the RX path still write the checksum
+into the shared head. v9 will make the head private with
+skb_cow_head(skb, 0) before __skb_gso_segment().
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- net/rxrpc/conn_event.c | 7 ++++++-
- net/rxrpc/proc.c       | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+I will check the TX GSO cost on HW tag-insertion offloads and mention
+aggregates from older HSR senders as well as older PRP senders in the
+v9 message.
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 611c790bc6d0..096807f13354 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -298,8 +298,13 @@ static int rxrpc_process_event(struct rxrpc_connection *conn,
- 
- 		ret = conn->security->init_connection_security(
- 			conn, conn->key->payload.data[0]);
--		if (ret < 0)
-+		if (ret < 0) {
-+			struct key *key = conn->key;
-+
-+			WRITE_ONCE(conn->key, NULL);
-+			key_put(key);
- 			return ret;
-+		}
- 
- 		spin_lock_irq(&conn->state_lock);
- 		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
-diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
-index e9a27fa7b25d..2bf34b85c2f9 100644
---- a/net/rxrpc/proc.c
-+++ b/net/rxrpc/proc.c
-@@ -182,7 +182,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
- 		   refcount_read(&conn->ref),
- 		   atomic_read(&conn->active),
- 		   state,
--		   key_serial(conn->key),
-+		   key_serial(READ_ONCE(conn->key)),
- 		   conn->tx_serial,
- 		   conn->hi_serial,
- 		   conn->channels[0].call_id,
+v8 also conflicts with Sebastian's pending "hsr: inline PTP header" v10
+in net-next; v9 will describe how the two combine.
+
+
 -- 
-2.47.3
+Xin
 
+pw-bot: cr
