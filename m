@@ -1,62 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.202.193.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794165409;
-	b=QEqXlP0FbvpO6n97jjW+0kxH/IUxXTAQkCQRQJz/gnDTnJxqzjmpXm6tXN9QpBR13PDD
-	 xUfPyjQjO2WQwlCopBQomBD4pLJgB0bpj0YPBSZB2WBPv7zcFH3K5ysdy55qpXhVSoetx
-	 9wVHIUDZ67vieVA5XED05Vs7TdLiMUlQBNAEpADMNVE8Eg0d7vPDICJMb6SZZ6adNJXTB
-	 0YWGan752sThI8+snjI2aMoqhnztjsFdHq8z6eKRH+N45enmuh0nbfCr3rfPD+LgDx8j+
-	 5UlSKRzKKnyWXlr9k5cSv2NXcmAnjte6Uo9bjDEZAzhikwabncAqfk1MOFwXJJp832w==
+	t=1794165651;
+	b=F9dyL3ga9ZNmjPrvRA/aAV0e00hMqI7alB9RvNVEQU1VwHp9lBRPAggrQLeZFMKJ7s9O
+	 9DiICtRREyPxCWfvVzDqwtvEtO402DmgxTqclnYAPu4zgnpBbCBPKpvygQFX7xtbTW8UY
+	 VwO6QMFWdmXDGXJS1zorxFRn6I8AofPZqykM80VKLDAyvgAbl+4P+AmaV99hEAwJ5tgT6
+	 rH+n9vceN+8VcV+3aQRgkddCxSYNV5swU9Kq/B3ATbv8NILLL2xWHD0dTixa0sIVetDzA
+	 MEZZbzcUIuCnzGxeoM8uANynnAoyG2eJ5aFfesDez7EiEPJeLAXUXrytfkxeNUPLtAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794165409;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=RU0VW8puxko1VgPUXuZDHjicgX85Ou/sztsF0NyqWMe5gQ97KPFnxEM4GIhhKAkN9Qhn
-	 nUjLYC4uKp7vReOds9I2BLYp4JpWkK/PIqMywK8jbMod0V6tGHvl5PWcHsIEbGnc/a76C
-	 3aKdxp9yvtRUKKT6aM6V1+eVRxyN8fFNznhjtB/1yYvZleAUI20Qy87V/nWPyup+GvrCU
-	 BFzG/2fC249s+eHIn2sv1AltieyFhDAQw+FBH9wu64fCHd1J62yJZelYFMWtXFkSm1s+6
-	 Y7Sf3pRIC2iWv08vWGiBt0rmTQM9Yt8lAPA/T6VaGSV0dwhkROaIWQsBzoIVfL6R50w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794165651;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Feedback-ID:
+	 X-Pm-Original-To:Received:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-MIME-Autoconverted;
+	bh=nET1WJNk3mHLCrQL6NVnuBWMpCe5epTVs5C8Nj7DNa0=;
+	b=woJTY4/u2o1cmXbnwVSmwswAGR1HeunxRRQgPD2IRITu++UwgRoFIW9W688IIeVGPaHq
+	 thwq36uo5nCjxtW6vZJH61k/U81BCoRKEDU+yEZzscZIRN5ARcYGpNah3lkI6NZPrdB4f
+	 UE3tqTcpZt5U3+ZmmTxsgLUCPhtcBCd2wuQTieK3GYY2u/gISOXPAhpk1gS9NZQGetp3n
+	 ePD0OtcXK2pfKDqA45nZWa/UoIXzikm0gx/n64pdsQUALgaEygIRbKQ0I2gUj8RfCEC3j
+	 Sqc79JGi15ygYqdPmbxymv0ZWCk/erhi1KQernxm/2mfh4DahgNhlQjnm7PGct5hbgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PEGtXwVg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=c127.dev;
+	spf=pass smtp.mailfrom=c127.dev;
+	dkim=pass header.d=c127.dev header.i=@c127.dev header.a=rsa-sha256 header.s=purelymail3 header.b=bYrUBH4i;
+	dkim=pass header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b=Qby1ahSP;
+	arc=none smtp.remote-ip=34.202.193.197
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ACA606A31C;
-	Sun,  8 Nov 2026 19:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE78606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 19:20:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFE78606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c127.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PEGtXwVg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1651F0089F;
-	Sun,  8 Nov 2026 19:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794165408;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PEGtXwVg5cj2Dfz0QfESHU3AAZmsbnE5nnxPy82r+VzItvHKR0YtDC9n97TuavStY
-	 kOZHHzVJD/XbVgvNpWDaK0mJPdBQS1Qtf6nHTMz+0EYzrSy7mzVDnC1qrjik/fs0S7
-	 LAjytQDcvhrnPei28FhoyiQYgqTj5OKOpHBZMSxB4Cr4+3Nee5ikZ+4HdcZoEVIcYe
-	 4M/APL4RndAf5sUaaquiZIGsavQ1ptV4MwMAkaunIr8vfGJlQnm8PiTfu0X3bmMN/5
-	 NlzGq9Wm7H8Uji5C0DRMkDyVLf3GRzheUMtR1N7dhD8qtRGsG6JGnl1aYV1TCL+vF5
-	 /PrSFwkpuXDyA==
-From: netdev-bot+sinfo@kernel.org
-To: Ofri Zangi <ofriz@xsightlabs.com>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Vakul Garg <vakul.garg@nxp.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Guy Tzalik <guyt@xsightlabs.com>
-Subject: Re: [PATCH net] tls: fix async encryption race on weakly ordered
- architectures
-Date: Sun, 08 Nov 2026 19:16:47 +0000
-Message-ID: <179416540733.488859.2191045262399137766@kernel.org>
-In-Reply-To: <20261108-tls-async-tx-ordering-v1-1-f9a1844ca88e@xsightlabs.com>
-References: <20261108-tls-async-tx-ordering-v1-1-f9a1844ca88e@xsightlabs.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=c127.dev header.i=@c127.dev header.a=rsa-sha256 header.s=purelymail3 header.b=bYrUBH4i;
+	dkim=pass (2048-bit key, unprotected) header.d=purelymail.com header.i=@purelymail.com header.a=rsa-sha256 header.s=purelymail3 header.b=Qby1ahSP
+DKIM-Signature: a=rsa-sha256; b=bYrUBH4iUsBPghbZDki/P3a8hQZmHlPyPkwCo1+aE65BNeEEifHU7dtas/0ClkJjmUUwOJf2rIGrzBo7LOJ6IupdxaBQfop8Q1jkhsxRUPfdPy8wD6o65WnvpAR9AELFGtOwmxxB7pTeABTg7ltrlChYeKdvQuE5cI/4kVc+SBacYi+eXdsezcJ97jAy645t9XG0kV0sjdhb2/Mu1OEejqdT+kj9vxM3v2D+JiFmmPWTxD1uSfqXOgOXXTvadK/oiEmmuG/oMdgvkcQTPO24BZCmZZRp5beoq7hX/6NykXX+mEzfra68LQD0N0Skr35xorNCSiWveED5n90WilxLJw==; s=purelymail3; d=c127.dev; v=1; bh=nET1WJNk3mHLCrQL6NVnuBWMpCe5epTVs5C8Nj7DNa0=; h=Received:From:To:Subject:Date:Message-ID;
+DKIM-Signature: a=rsa-sha256; b=Qby1ahSPpZ5NkonjottD6WZtcXGrm2Ur5blwqmp97dQHox6qWoUirBypQoEwuzpTh5gv5eYEXLjnytS8UATZTYVp+goO+QT2DPt6a7I6VJzhJPyBwvYdL1usSwBs6BBIZ3oV6K/MhdP2CG36PM8uhOVkk3VGQqefE7TvhGEFD7o1NLDyrrDPZCsCGxYn+WocB9mOKFXumwbBxSkGODWVDWSeue4DW3AfBE7GUXuztHjjNzepb4PKMXLk0Ha2R1JbIr+1biul/6JIC+ET0KxLHcIdUpRPWNUA2SEHevg6Z7d64kWGfyPc933Aarx982GHGLhTWjYw1Ig4EBchBywDSQ==; s=purelymail3; d=purelymail.com; v=1; bh=nET1WJNk3mHLCrQL6NVnuBWMpCe5epTVs5C8Nj7DNa0=; h=Feedback-ID:Received:From:To:Subject:Date:Message-ID;
+Feedback-ID: 1017243:43747:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Authentication-Results: purelymail.com; auth=pass
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 322991363;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sun, 08 Nov 2026 19:20:06 +0000 (UTC)
+From: Johan Alvarado <contact@c127.dev>
+To: alvin.sipraga@analog.com
+Cc: Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+    linusw@kernel.org,
+    andrew@lunn.ch,
+    olteanv@gmail.com,
+    kuba@kernel.org,
+    davem@davemloft.net,
+    edumazet@google.com,
+    pabeni@redhat.com,
+    linux@armlinux.org.uk,
+    luizluca@gmail.com,
+    maxime.chevallier@bootlin.com,
+    netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org,
+    gusfmora@gmail.com,
+    kuncy7@gmail.com,
+    fabianotassotti@gmail.com,
+    gabonpivovich@gmail.com
+Subject: Re: [PATCH net-next v9 08/11] net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+Date: Sun, 08 Nov 2026 14:13:05 -0500
+Message-ID: <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev>
+In-Reply-To: <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com>
+References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com> <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,25 +77,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 
-Hi!
+Hi Alvin, Mieczyslaw,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Thanks for adding me. I'm looking into this on my side, and I suspect
+the problem may be somewhere else rather than in this driver.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I'm still investigating and will report back once I have something
+concrete. Until then I would ask to hold off on patch 8.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Best regards,
+Johan Alvarado
