@@ -1,58 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794096738;
-	b=Hq1gzXNcyPla5Hg8ffQPRUO/ueDe20yYal2qOko6io3S+dTyNPABwCVuZrW5Lfk+lIw8
-	 aI75jKAVN65qEmhKm/wFbvHuyXdd3rGvU8ji+6ZlWV9OwdPKXJSZ111aLtt77XGVBLn5h
-	 0yKsqd+/O922C3zVL62oevdYJehRA3Yqe+LfKzSvhrR2cHV4o4e6oWp4NVkXW0LT4FN1/
-	 aY9ZCTDKzpVy9FZ2Ojh3jMlADbdCT2xJ0HtbVtu0AR+uqz50l3ly867YHIhE0o2ZRmv2i
-	 jiUmp7+8cwQ2TFKXu2MERtYe6auittNhLGQURTfQXTeegQNOT0OfgT9czEXCbc+WQtQ==
+	t=1794096937;
+	b=5FrBek1PJ9s7NE+IXEdraNpElCHumHJDu8fDOruZr0Optw4WZYNRdJ6u+RNTjmkGd5j2
+	 kjmHBRx8HEmvzr1H/NCSPuHg7YP7VQupxHr1ldMQjbshed3KHRZ0oFl0AIlMq+4oRNsar
+	 5GHAM0Ccbid1jKotKA81SV6Boohw6/f97x7kb2MPIDxh3XNStyQLwHVtS3BK8utsqvoWI
+	 yCtDHP12r0deEbGD4LScTsGnWisjV+Sk2Gfh0Z48aPt4oAmi7B4VHsrCjmyHXqRSbZkWq
+	 zJAM3/xqzmYvanmyo9+pjS69Cr/UkVtA9wTLWe7P3A0eCYzSFxmKXBT62+hynt7dVUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794096738;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794096937;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=WT8wm2a9NQoatQNQVc83RmAaqZCdnlsqxrOAjSePHHA=;
-	b=eke32GgvLTocVLHEoL3UrpNR8XNzOo/Uii92kS00tWellhzYQoqWqj9tkR4He5nN+Jvf
-	 09ZYzapZHzMXlfDPjG5gnaLbTW3Ot38ScZ7gYXLzlUvwymbeuwHcIQphOzWa44utNl/Az
-	 hSKsWirRtSQ///R+5Bwy0x/e+w2XxCzMKahiGzI/0cRsdVv8dPWipHKqMjeB7DYTXbeb+
-	 kOGIi7AzrD8ppWt5hptAr0hDkELYvcjefTLsQVXydhypd/FD12PbFFnlAoeq4YSdf7qqO
-	 WdbpN1QXob0MRXCfkWV68ROMw0vxaaEaONcm+81+r9hzb0E5pdrUVvtQ6bAcxG4mdsQ==
+	bh=yqedvBZFUhxFyUcRlmdBRM43DLeyO2kyhxdn8hoc8+M=;
+	b=0Mu8X928PdMAPfIRe3Od9jbxzkiSzyoNs4JlubX7aWYkL6fetCHk/rR0dAy9s87AAjeS
+	 Nlp5Gv/pIBVgEPGBfcV36hFy6efEwhHsA7koA8qe6Fg/xwyT/Iks7ttkw3EAZfeBjeXxy
+	 8oXvC2rRgqwg1W/yzoLfjAGtb+sOLQCntj6EZeFX9EZLj07Ic0//2cCd8mZOk6619h8Am
+	 KonrhfcjWWV+ikbMdYeFQzANTzi8kPGFidATM8A4BoLq8sVeVV4of8qPLGbn82vYGk4j3
+	 qige/mLs7P6i/clpXZiegKItIq5wMTW50ZqJNaEWtoGkOqxOMLkRUM3/UVp5ekdQE/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AbrbWu6+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l1O+3jCO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972A5606A326;
-	Sun,  8 Nov 2026 00:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEC6606A337;
+	Sun,  8 Nov 2026 00:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AbrbWu6+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9FB1F0089F;
-	Sun,  8 Nov 2026 00:12:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l1O+3jCO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D562A1F008A1;
+	Sun,  8 Nov 2026 00:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794096738;
-	bh=WT8wm2a9NQoatQNQVc83RmAaqZCdnlsqxrOAjSePHHA=;
+	s=k20260515; t=1794096937;
+	bh=yqedvBZFUhxFyUcRlmdBRM43DLeyO2kyhxdn8hoc8+M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AbrbWu6+5V95/Fdm4zeoHFsRFKalD9iDryE2p6LFwSp5ivwYTG6mLLE849eTx+WAJ
-	 Jnic/mRoRgOT6XE3lzu9DwVZhyNdHIoj8hESMEAxwkknYKVPTwy7aJ7CdF3fsMm4F3
-	 SdOYxKq8w15E4ISLTM0n9hxgHlcz/wXdQmvBIS6HYwa5UPjOWpWjTIJEr+1YqLuUIH
-	 +9gqVl4a/hR7nt59KFAi+kD0nGsggDBWteexko8Tn2kRpn/HSZW2NrWAG35DgBDfbH
-	 SId+Ez1+rY1m2kulhy6rOyncaST7IBSQZJ0yLKsCI5qorfMEf1OyMC3JsIIg6LF3kO
-	 gjlwAT0wZlZyg==
-Subject: Re: [PATCH net 1/2] ipv4: unshare headers before recompiling IP
- options in ipv4_send_dest_unreach()
+	b=l1O+3jCOxYSvLDSQTlDAZkvQdtFgi8onqQrJSGMudC1D5ZtzQb2+HYmKUzlm/Ldmk
+	 Kb9g4yADEJjNpF7PgbG0nzo3jVxKaZS4JzOF7CQ/LbB3GQYOIGfCFgZqP66hAOk/I4
+	 HESaLzp/W21YZ3R/9+hhwNBQ4GGEnuk+QE5r/lE3ee7/P8iaEWtbs+I87qRk2eeOjY
+	 mU8FmpKMFe9ioHLsRTiyG+YkqM7pDp5clt0pBT70evk9ApXMsGQSGRDzrRAxw/QhxI
+	 JLjltGAJ7IMT78wUtU25DWAZgub/4ccNuQJ1vUYopxcbnanNt/WO0U4qQmIAoQEwqR
+	 Ibk4TzzLZCWFQ==
+Subject: Re: [PATCH net-next v10 04/11] net: ethernet: oa_tc6: Move constant
+ definitions to header file
 From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, idosch@nvidia.com, paul@paul-moore.com,
- linux-security-module@vger.kernel.org, kylebot@openai.com,
- netdev@vger.kernel.org
-Date: Sun, 08 Nov 2026 00:12:17 +0000
-Message-ID: <179409673700.994134.1614691544438367987@kernel.org>
-In-Reply-To: <20261106234313.2537882-2-edumazet@kernel.org>
-References: <20261106234313.2537882-2-edumazet@kernel.org>
-X-sashiko-severity: High
+To: Selvamani.Rajagopal@onsemi.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ parthiban.veerasooran@microchip.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, richardcochran@gmail.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ edumazet@kernel.org, piergiorgio.beruto@gmail.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, jerry.ray@microchip.com, ciprian.regus@analog.com
+Date: Sun, 08 Nov 2026 00:15:35 +0000
+Message-ID: <179409693545.994134.14195728930593325085@kernel.org>
+In-Reply-To: <20261106-s2500-mac-phy-support-v10-4-31b5a69b85b7@onsemi.com>
+References: <20261106-s2500-mac-phy-support-v10-4-31b5a69b85b7@onsemi.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,110 +69,84 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] This patch adds skb_unclone(skb, GFP_ATOMIC) to
-  ipv4_send_dest_unreach() (net/ipv4/route.c:1272-1274).
+- [Low] Hygiene and commit-message problems in
+  drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h, which the commit…
 
 --
 
-ipv4: unshare headers before recompiling IP options in ipv4_send_dest_unreach()
+net: ethernet: oa_tc6: Move constant definitions to header file
 
-The patch makes the IPv4 header private with skb_unclone() before
-__ip_options_compile() rewrites Record Route and Timestamp options in
-place in ipv4_send_dest_unreach(). The goal is to stop concurrent
-link-failure processing of clones from changing an option pointer after
-it has been checked. If the copy fails, no ICMP error is sent.
+This commit moves the TC6 protocol constants, struct oa_tc6 and the related
+enums out of oa_tc6_main.c and into a new private header, oa_tc6_std_def.h,
+so other source files in the oa_tc6 directory can share them.
+oa_tc6_main.c now includes the new header in place of linux/oa_tc6.h.
 
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 3a90c8d28b940..4d8fcc95c2f46 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -1269,7 +1269,8 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
->  
->  	memset(&parm, 0, sizeof(parm));
->  	if (ip_hdr(skb)->ihl > 5) {
-> -		if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4))
-> +		if (!pskb_network_may_pull(skb, ip_hdr(skb)->ihl * 4) ||
-> +		    skb_unclone(skb, GFP_ATOMIC))
+> To help other source files within the module share the
+> constant definitions, some of the definitions from oa_tc6.c
+> are moved to a header file.
 
-[Severity: High]
-Can this skb_unclone() leave stale header pointers in callers of
-dst_link_failure()?
+[Severity: Low]
+This isn't a bug, but the previous patch in the series ("net: ethernet:
+oa_tc6: Move oa_tc6.c to its own directory") already renamed this file to
+drivers/net/ethernet/oa_tc6/oa_tc6_main.c.
 
-ipv4_send_dest_unreach() runs as the ipv4 dst_ops->link_failure
-callback. Before this patch, a header that was already linear was never
-reallocated on this path, because pskb_network_may_pull() returns early.
-Now, when the skb is cloned and has options (ihl > 5),
-pskb_expand_head() swaps skb->head and calls skb_release_data() on the
-old head, which drops this skb's reference.
+Should the commit message say oa_tc6_main.c instead of oa_tc6.c?
 
-ip_tunnel_xmit() in net/ipv4/ip_tunnel.c saves a raw pointer into the
-head before calling dst_link_failure(), and does not reload it
-afterwards:
+[ ... ]
 
-ip_tunnel_xmit() {
-    ...
-	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
-    ...
-			WRITE_ONCE(tunnel->err_count, err_count - 1);
+> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+> new file mode 100644
+> index 0000000000000..c61672aa618c4
+> --- /dev/null
+> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+> @@ -0,0 +1,126 @@
 
-			dst_link_failure(skb);
-    ...
-	tos = ip_tunnel_ecn_encap(tos, inner_iph, skb);
-	ttl = tnl_params->ttl;
-	if (ttl == 0) {
-		if (payload_protocol == htons(ETH_P_IP))
-			ttl = inner_iph->ttl;
-    ...
-}
+[ ... ]
 
-For header_ops GRE devices, ipgre_xmit() in net/ipv4/ip_gre.c also
-points tnl_params into the head:
+> +#ifndef OA_TC6_STD_DEF_H
+> +#define OA_TC6_STD_DEF_H
+> +
+> +#include <linux/bits.h>
+> +#include <linux/ptp_clock_kernel.h>
+> +#include <linux/net_tstamp.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/skbuff.h>
+> +#include <linux/sched.h>
+> +#include <linux/wait.h>
+> +#include <linux/oa_tc6.h>
 
-	tnl_params = (const struct iphdr *)skb->data;
+[Severity: Low]
+This isn't a bug, but does this header need ptp_clock_kernel.h,
+net_tstamp.h, sched.h and wait.h yet? Nothing in oa_tc6_std_def.h uses them
+at this commit. Also, struct oa_tc6 has no hwtstamp_config, ptp_clock or
+list_head members in this patch.
 
-The call chain is:
+They only seem to be needed once the later "net: ethernet: oa_tc6: Support
+for hardware timestamp" patch adds those members.
 
-ip_tunnel_xmit()->dst_link_failure()->ipv4_link_failure()->
-ipv4_send_dest_unreach()->skb_unclone()->pskb_expand_head()
+Could these includes move to that patch so this one stays a pure move? If
+not, could the commit message mention them?
 
-Cloned skbs do get here. TCP transmits nohdr clones, so
-skb_header_cloned() is false and skb_cow_head() in
-ipgre_xmit()/gre_tap_xmit() does not unclone them, but skb_cloned() is
-still true. An unprivileged user can add RR/TS options with
-setsockopt(IP_OPTIONS). err_count goes up on ICMP errors from remote
-hosts in ipgre_err().
+[ ... ]
 
-After the expand, the old head stays alive only while the other clone
-holder, such as the TCP rtx queue skb or a tc-mirred original, keeps its
-reference. If the tunnel has a qdisc, the clone can be sent without the
-socket lock, and an ACK on another CPU could free the original. That
-could happen during __icmp_send(), or even inside pskb_expand_head()
-between the skb_cloned() check and skb_release_data().
+> +enum oa_tc6_data_end_valid_info {
+> +	OA_TC6_DATA_END_INVALID,
+> +	OA_TC6_DATA_END_VALID,
+> +};
+> +#endif /* OA_TC6_STD_DEF_H */
+> +
 
-In that case, are the inner_iph->tos, tnl_params->ttl and inner_iph->ttl
-reads use-after-free reads, with the stale bytes written into the outer
-header's TOS/TTL?
-
-Would it be safer to compile and echo the options from a private copy
-rather than uncloning the caller's skb inside a link_failure callback?
-Another option would be to reload inner_iph and tnl_params in
-ip_tunnel_xmit() after dst_link_failure(). Either way, it seems worth
-checking the other dst_link_failure() callers for the same pattern.
-
->  			return;
->  		parm.opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
->
+[Severity: Low]
+This isn't a bug, but there is an extra blank line after the #endif at the
+end of the file. git apply warns "new blank line at EOF" and checkpatch flags
+it. The blank line is still there at the end of the series.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106234313.2537882-1-edumazet%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-s2500-mac-phy-support-v10-0-31b5a69b85b7%40onsemi.com
