@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794114417;
-	b=3f4dsWeqSkcQyby4T1ev+yrJmNsaYvy5B4yUNiNQmXAst/1qyZ8fRnXbBy3LLIseEmMM
-	 qvfJNZ8lFPRozFLjtg6hX+I+2b3IR8GePX2ldlvEPMMWzw9/6l0mpcY+V3FS2ZFRLm088
-	 MAhih7QyYI2AtI3+z4kUaOcjVKKLGkQAkfDX5Fbi9TqVk9X2kdt4uRQPM11NupIOvSlll
-	 2znqaoaRbfgCmbmpzdB9KRVnuk33QLI7sdM/2lKCbOBih7LQyBKmzlzRRTviaBmyxvjHM
-	 9eIuswimnZgPiU3mtyfJtikx8XrTPzA7gYgsq/1n0n06yOaGpwdJCpjr4cJAI3S/6Yw==
+	t=1794116095;
+	b=hR0pR3FGIPCkUv7Qfa2MiSpVbDeSuy6fR6L0fAsSlRN5pMKp6vLGvZ5vFBq/Me3hItvN
+	 DSRshUsomcDtH3sIj5VF7zNyUXjEEYzHatxsZvsv3HCSwoIlCw/Mk4Fb59tC6CTMye7hc
+	 7Ot+zdDBEy1V0NtlyszNHouTvrMc+Z0KRjpFQDbt/Cmt3nNIVMZn1FdbaXNgP42Gf7r0O
+	 OFIdMVfzgqYp5IErBE12xfyJhIxrpMGAU9/kszMZ2heRxb2VosnsxHA+/SbAq6tyat0yT
+	 uCr0h487jJhFHBZZXfMXvESYcAZvJiCWIP3DyFOhGzIk011hpusdvRDxncdHGmHQ9gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794114417;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794116095;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=fEUO3LKECArytxkpAMPac73CzQtXzt7C3xgXVjZFn+Y=;
-	b=og+59ivrGPD3udMDowUI1rUpy2ZXDs1jaJhMswG6k8e3Sz7S0idim4kUAs2rzTWhplvg
-	 HrWFfstOsgCsBrFJW5MdKtphbD9F5l3FFx1WC6X9auC/jAplDkyQDS/TwxUTCwewzBRLD
-	 jxTCZctE7wJ44lejGckeBPZ00qITZsk7JrkAMVUcUtTDAcSI5u8gSC5qfk6PR0JICdD3P
-	 +jB0O/YH2OeSAv3NKt5/9/gkefCMaJjKIw+1UUfFoW8gIOI6RLYLc/Uzbufa82bjYEx17
-	 e0DqCZ73OJ7HsgWGeZE7hCsws2fNgLVPdTa+wTiG7Q0QN/rrDoC3qsikNsv2n4AvMeA==
+	bh=z1M3/CpqdOMOX/NEW9qWjkfjYumx66+9OISoDjarBhs=;
+	b=G/EQjg8PtTkZrzVWilJlQ+kBCMd30wh1aQs6PRuKmBOocgpL8ZTahXpAhbMVtnCfYSbK
+	 L6PHNiQXUF8bIHW7sl4rcsNJExCqVRiZoWXgzqpx2YPmg4owMgLJeAqqP1p7u1DvlcT9w
+	 oembX7kSo86sX3Ax2TKXfilg6DJJRplArAU9V9wQin00T11CUG/Y1DNtu7GWV2PztR2TC
+	 RwKaqEvyOX7fjmG4TJaKARyE7Qm7tpXh+yTRi/WIPvqCOjeb5TQaHJK0U1ZAp00wh/aw3
+	 iiVL8uKbwnuph5rFmoxrOKvAXC+X6MZxN+IYlnlaUqnhpyKSy2cjnyxgaFB+uO7Bxmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UycnVGWo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kpZXWfJh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4423606A320;
-	Sun,  8 Nov 2026 05:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA741606A31A;
+	Sun,  8 Nov 2026 05:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UycnVGWo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162371F008A1;
-	Sun,  8 Nov 2026 05:06:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kpZXWfJh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93D1F0089F;
+	Sun,  8 Nov 2026 05:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794114416;
-	bh=fEUO3LKECArytxkpAMPac73CzQtXzt7C3xgXVjZFn+Y=;
+	s=k20260515; t=1794116094;
+	bh=z1M3/CpqdOMOX/NEW9qWjkfjYumx66+9OISoDjarBhs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UycnVGWo2TY0N4NKVwNpGtoCwnLtIYez+UNB3BVMw3JNcfuAiGMW8XGxgnbx1dmVR
-	 xWlXATIU6d8dxzcb+9g+D3q4meTPhz+2XL09HKDf6AYPDYgKZru40dFR5v+cCWY+IR
-	 xz60lLq3rps2IKVaO/RPMJKzxn9msWneNaladiCKBWENMBGDKDkNtMB9Kci2k8ZHJG
-	 YriUWfjgVJKEcHB4Asb+mt232HLVwaSqv4Bi6peou/cIiF3zpG1MKNLQkBPjWchXbo
-	 1fSSiuoqYV7i5U5hDuisb5LBLQE1febonFE2RsmcSDgrzZ1cfknKpJAyIT47dk6td8
-	 CUw3aAabHGHXw==
-Subject: Re: [PATCH net v3] bnxt_en: Take RTNL before netif_close() when
- aborting FW reset
+	b=kpZXWfJhCs0GpIw5akqX3nEtzBqQIrwxCZ4kbN8jUqq5tdYuxyX09OP1fYOHSCpEl
+	 R144Lrs+jLtAE33LHjjRzrEvfUNqNKmO8qkDP3Lgm1ctapeXwZ+61Ak5Nx3XpCcQKZ
+	 RPdEpHc6SxHqo1NEU/tfzw25ykVUkQwEypeH7epecKmzglRWzPy1NZkfegONAI6KPR
+	 IuyDsY0FAgfkRURFicIL1Kyp22GfP6Nf77VAkrVgQh7Zt5je4Ys1i6RqigKZgz8T1s
+	 TNilh1chtSAJVCSUkdqf+QF4QfdrGHCFT70K3AbrZnB/My6dwOYdRH5mWoYn+K8wiO
+	 DrCWV0ePtuddA==
+Subject: Re: [PATCH net] net/ncsi: disable the ncsi work before freeing
+ channels and packages
 From: netdev-bot+sashiko@kernel.org
-To: bcochrane@google.com
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, sdf@fomichev.me,
- joe@dama.to, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 08 Nov 2026 05:06:55 +0000
-Message-ID: <179411441563.994134.1253063049402486704@kernel.org>
-In-Reply-To: <20261104045534.79783-1-bcochrane@google.com>
-References: <20261104045534.79783-1-bcochrane@google.com>
+To: hj351016@gmail.com
+Cc: sam@mendozajonas.com, fercerpav@gmail.com, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 08 Nov 2026 05:34:53 +0000
+Message-ID: <179411609314.994134.4851699764532288566@kernel.org>
+In-Reply-To: <20261107051825.3313019-1-hj351016@gmail.com>
+References: <20261107051825.3313019-1-hj351016@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 1 (2) · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,179 +75,240 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Permanent hang while holding RTNL and the netdev instance lock.
-- [Medium] The patch defers the bnxt_get_registered_vfs() failure in
-  bnxt_fw_reset() to bnxt_fw_reset_task().
-- [Medium] The patch turns a synchronous abort into an asynchronous
-  request carried only in bp->fw_reset_state.
+- [High] The patch only quiesces the workqueue entry point of the NC-SI
+  state machine.
+- [Low] The comment added in ncsi_unregister_dev() mostly narrates
+  history ('Commit a0ffa68c70b3 added this disable only ahead of…
+
+Pre-existing issues:
+- [High] ncsi_unregister_dev() never cancels the per-request timers
+  ndp->requests[i].timer, and never releases in-flight requests, before…
+- [High] Packages, channels and ndp are freed with a bare kfree() right
+  after list_del_rcu().
 
 --
 
-bnxt_en: Take RTNL before netif_close() when aborting FW reset
+net/ncsi: disable the ncsi work before freeing channels and packages
 
-This patch takes RTNL around bnxt_fw_reset_abort() in bnxt_fw_reset_task()
-and sends the POLL_VF ABORT_ERR case through that same path. It also
-changes the bnxt_get_registered_vfs() failure path in bnxt_fw_reset(): that
-path now sets fw_reset_state to BNXT_FW_RESET_STATE_ABORT and leaves the
-netif_close() to bnxt_fw_reset_task().
+This patch moves disable_work_sync(&ndp->work) in ncsi_unregister_dev()
+ahead of the ncsi_remove_package() loop. The state-machine work is then
+quiesced before channels and packages are freed. It changes the ordering
+added by commit a0ffa68c70b3, which disabled the work only right before
+kfree(ndp).
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 33c4cacc8ffe3..f48e67670ccfb 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -14860,8 +14860,8 @@ void bnxt_fw_reset(struct bnxt *bp)
->  		if (n < 0) {
->  			netdev_err(bp->dev, "Firmware reset aborted, rc = %d\n",
->  				   n);
-> -			clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
-> -			netif_close(bp->dev);
-> +			bp->fw_reset_state = BNXT_FW_RESET_STATE_ABORT;
-> +			bnxt_queue_fw_reset_work(bp, 0);
->  			goto fw_reset_exit;
+> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+> index 1d63958c4429b..1c2dadfc0a2ad 100644
+> --- a/net/ncsi/ncsi-manage.c
+> +++ b/net/ncsi/ncsi-manage.c
+> @@ -1960,6 +1960,15 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+>  
+>  	dev_remove_pack(&ndp->ptype);
+>  
+> +	/*
+> +	 * Quiesce the state-machine work before freeing any channel or
+> +	 * package it may still be dereferencing (via the channel_queue /
+> +	 * package lists).  Commit a0ffa68c70b3 added this disable only
+> +	 * ahead of kfree(ndp), i.e. after the channels and packages had
+> +	 * already been freed below, leaving that use-after-free window.
+> +	 */
+
+[Severity: Low]
+
+This isn't a bug, but most of this comment is history ("Commit
+a0ffa68c70b3 added this disable only ahead of kfree(ndp) ..."). The
+changelog and the Fixes: tag already cover that. Could the comment
+describe the current invariant instead?
+
+Also, "before freeing any channel or package it may still be
+dereferencing" claims more than disable_work_sync() covers. See the
+question below about ncsi_channel_monitor().
+
+> +	disable_work_sync(&ndp->work);
 
 [Severity: High]
-Can this hang forever, holding rtnl_mutex and the instance lock, when
-bnxt_fw_reset() is entered from devlink health recover?
 
-bnxt_fw_recover() runs in devlink netlink process context, not from
-bnxt_sp_task(). With BNXT_STATE_FW_NON_FATAL_COND set, the path is:
+Does disabling ndp->work here stop the whole state machine?
 
-bnxt_fw_recover()
-  __bnxt_fw_recover()
-    bnxt_fw_reset()
-      bnxt_lock_sp()              /* clears BNXT_STATE_IN_SP_TASK */
-      bnxt_get_registered_vfs()   /* returns < 0 */
-      bnxt_queue_fw_reset_work(bp, 0)
-      bnxt_unlock_sp()            /* set_bit(BNXT_STATE_IN_SP_TASK) */
+ncsi_channel_monitor() also runs the state machine, directly from timer
+context. The monitor timers of channels the removal loop hasn't reached
+yet are still armed.
 
-No sp_task is running, so nothing clears BNXT_STATE_IN_SP_TASK after this.
+ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev(),
+so ncsi_stop_dev() has not run:
 
-fw_reset_task then runs on bnxt_pf_wq:
-
-bnxt_fw_reset_task()
-  rtnl_lock(); netdev_lock(bp->dev);
-  bnxt_fw_reset_abort()
-    netif_close()
-      bnxt_close()
-        bnxt_close_nic()
-          __bnxt_close_nic()
-            while (bnxt_drv_busy(bp))
-                msleep(20);
-
-bnxt_drv_busy() checks BNXT_STATE_IN_SP_TASK, and this loop has no
-timeout. For a PF, bnxt_sp_task() goes on the same ordered bnxt_pf_wq, so
-it can't run behind the blocked fw_reset_task and clear the bit.
-
-A second devlink health recover can't break the loop either.
-bnxt_fw_reset_abort() has already set SEVERITY_FATAL before calling
-netif_close(), so bnxt_fw_recover() returns -ENODEV.
-
-Before this patch, the same branch called netif_close() inline. At that
-point bnxt_lock_sp() had cleared BNXT_STATE_IN_SP_TASK, so the busy loop
-exited.
-
-The commit message says that dropping the lock would let "a concurrent
-devlink health recover enter bnxt_fw_reset() and set BNXT_STATE_IN_SP_TASK
-through bnxt_unlock_sp(), which the subsequent close would then wait on
-forever".
-
-Can the same hang still happen when the devlink health recover caller is
-itself the bnxt_fw_reset() call that defers the close?
-
-[Severity: Medium]
-Is the deferred abort safe against a concurrent bnxt_close()?
-
-After this change, bnxt_fw_reset() drops the instance lock while the
-netdev is still open and BNXT_STATE_IN_FW_RESET is set. The pending abort
-is recorded only in bp->fw_reset_state.
-
-bnxt_hwrm_if_change(), called from bnxt_close(), always reads and resets
-that state:
-
-bnxt_hwrm_if_change() {
+drivers/net/ethernet/faraday/ftgmac100.c:ftgmac100_remove() {
     ...
-	fw_reset = (bp->fw_reset_state == BNXT_FW_RESET_STATE_ABORT);
-	bp->fw_reset_state = 0;
+	if (priv->ndev)
+		ncsi_unregister_dev(priv->ndev);
+	unregister_netdev(netdev);
     ...
 }
 
-A user close (ip link set down) can run before fw_reset_task reads
-fw_reset_state. For example, work for other PFs may be queued ahead of it
-on the single-threaded bnxt_pf_wq. The close path then sets
-BNXT_STATE_ABORT_ERR and resets fw_reset_state to 0.
+After dev_remove_pack(), no GLS responses can arrive. The monitors
+therefore move toward the timeout branch:
 
-When bnxt_fw_reset_task() runs, it sees BNXT_STATE_IN_FW_RESET set and
-fw_reset_state == 0. No case in the switch matches, and there is no
-default, so it returns. bnxt_fw_reset_abort() never runs, and
-BNXT_STATE_IN_FW_RESET is never cleared.
+net/ncsi/ncsi-manage.c:ncsi_channel_monitor() {
+    ...
+	default:
+		...
+		ncsi_report_link(ndp, true);
+		...
+		spin_lock_irqsave(&ndp->lock, flags);
+		nc->state = NCSI_CHANNEL_ACTIVE;
+		list_add_tail_rcu(&nc->link, &ndp->channel_queue);
+		spin_unlock_irqrestore(&ndp->lock, flags);
+		ncsi_process_next_channel(ndp);
+		return;
+    ...
+}
 
-After that, bnxt_open() -> bnxt_reinit_after_abort() fails with:
+ncsi_report_link() walks the package and channel lists.
+ncsi_process_next_channel() then does the following with the first
+channel on channel_queue:
 
-	if (test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
-		return -EBUSY;
+  - pops it with list_first_or_null_rcu() and list_del_init()
+  - takes nc->lock and writes nc->state
+  - reads nc->package
+  - calls ncsi_configure_channel() or ncsi_suspend_channel()
 
-As a result, the port can't be opened, and later firmware resets and
-health checks skip it. The stopped ULP is also never restarted, until the
-driver is reloaded.
+ncsi_remove_channel() unlinks only nc->node. It never removes nc->link
+from ndp->channel_queue.
 
-The other in-progress reset states such as POLL_VF have a similar
-exposure. This path, however, used to be fully synchronous.
+In multi-package or multi-channel mode, ncsi_choose_active_channel() can
+queue several channels, and the work normally drains that queue. If the
+work is disabled in the middle of configuration, can freed channels stay
+on channel_queue?
 
->  		} else if (n > 0) {
+If so, a later monitor timeout could write into a freed nc->link through
+list_add_tail_rcu(). ncsi_process_next_channel() would then dereference
+the freed channel.
 
-[ ... ]
+There is a related race on the channel being removed. The timeout branch
+clears nc->monitor.enabled under nc->lock and keeps using nc after that.
+ncsi_stop_channel_monitor() skips timer_delete_sync() when enabled is
+already false:
 
-> @@ -15524,6 +15524,8 @@ static void bnxt_fw_reset_task(struct work_struct *work)
->  	}
+net/ncsi/ncsi-manage.c:ncsi_stop_channel_monitor() {
+	spin_lock_irqsave(&nc->lock, flags);
+	if (!nc->monitor.enabled) {
+		spin_unlock_irqrestore(&nc->lock, flags);
+		return;
+	}
+    ...
+}
+
+Could ncsi_remove_channel() then kfree(nc) while that channel's own
+monitor callback is still running on another CPU?
+
+A possible fix is to stop every monitor timer unconditionally, using
+timer_shutdown_sync() without the enabled early return. Then drain or
+unlink ndp->channel_queue under ndp->lock before freeing any channel.
+
+> +
+>  	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+>  		ncsi_remove_package(np);
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but the commit message names
+the bare kfree() right after list_del_rcu() in ncsi_remove_channel() and
+ncsi_remove_package() as part of the problem, and that part is not
+fixed. Can the generic netlink handlers still read freed packages and
+channels here?
+
+ndp stays on ncsi_dev_list until this loop has freed every package and
+channel. ndp itself is then freed with no grace period after
+list_del_rcu(&ndp->node).
+
+The netlink side looks up ndp without taking a reference or the RCU read
+lock:
+
+net/ncsi/ncsi-netlink.c:ndp_from_ifindex() {
+    ...
+	nd = ncsi_find_dev(dev);
+	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+
+	dev_put(dev);
+	return ndp;
+}
+
+ncsi_write_package_info() then walks NCSI_FOR_EACH_PACKAGE() and
+NCSI_FOR_EACH_CHANNEL() without rcu_read_lock().
+
+ftgmac100_remove() calls ncsi_unregister_dev() before unregister_netdev(),
+so the ifindex still resolves during teardown.
+
+NCSI_CMD_PKG_INFO is registered with .flags = 0, so an unprivileged
+caller can race a driver unbind. Could ncsi_pkg_info_nl() or
+ncsi_pkg_info_all_nl() copy freed memory into the netlink reply? Examples
+are nc->version.fw_name, nc->modes and nc->vlan_filter.vids, which
+ncsi_remove_channel() frees even earlier.
+
+The admin-only commands could also write through the same freed
+pointers: set_interface, set_package_mask, set_channel_mask and
+send_cmd.
+
 >  
->  	switch (bp->fw_reset_state) {
-> +	case BNXT_FW_RESET_STATE_ABORT:
-> +		goto fw_reset_abort;
+> @@ -1967,8 +1976,6 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+>  	list_del_rcu(&ndp->node);
+>  	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+>  
+> -	disable_work_sync(&ndp->work);
+> -
+>  	kfree(ndp);
 
-[Severity: Medium]
-With bnxt_fw_reset() now setting fw_reset_state to
-BNXT_FW_RESET_STATE_ABORT before this runs, will bnxt_fw_reset_abort()
-report a fatal firmware error for a func_qcfg failure?
+[Severity: High]
 
-bnxt_fw_reset_abort() {
-	clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
-	if (bp->fw_reset_state != BNXT_FW_RESET_STATE_POLL_VF)
-		bnxt_dl_health_fw_status_update(bp, false);
+This is a pre-existing issue, but what happens here to in-flight
+requests in ndp->requests[]?
+
+ncsi_xmit_cmd() arms a one second timer for each request:
+
+net/ncsi/ncsi-cmd.c:ncsi_xmit_cmd() {
+    ...
+	nr->enabled = true;
+	mod_timer(&nr->timer, jiffies + 1 * HZ);
     ...
 }
 
-The POLL_VF exemption no longer applies on this path. As a result,
-bnxt_dl_health_fw_status_update(bp, false) sets SEVERITY_FATAL and
-REMEDY_POWER_CYCLE_DEVICE, and moves the devlink fw reporter to
-DEVLINK_HEALTH_REPORTER_STATE_ERROR.
+ncsi_free_request() is the only place that deletes this timer, on a
+response or a timeout. After dev_remove_pack() no response can arrive,
+so an outstanding request can only finish through
+ncsi_request_timeout().
 
-This is the same kind of failure as the POLL_VF n < 0 abort in
-bnxt_fw_reset_task(): a bnxt_hwrm_func_qcfg() failure before any reset
-step has run. That path skips the health update, and so did the old
-inline abort in bnxt_fw_reset().
+Requests can be outstanding when ncsi_unregister_dev() is called. New
+ones can also be sent during the removal loop:
 
-Once severity is SEVERITY_FATAL, bnxt_fw_recover() refuses manual
-recovery until a new firmware event resets the severity:
+  - by the monitors of channels not yet removed (GLS in START/RETRY)
+  - by netlink, since ndp is still on ncsi_dev_list
 
-	if (bp->fw_health->severity == SEVERITY_FATAL)
-		return -ENODEV;
+Suppose the timer fires during the loop for a request flagged
+NCSI_REQ_FLAG_NETLINK_DRIVEN. ncsi_request_timeout() then calls
+ncsi_find_package_and_channel() on lists that are being freed.
 
-There is also a secondary effect. bnxt_dl_health_fw_status_update() calls
-devlink_health_reporter_state_update(fw_health->fw_reporter, state)
-without checking fw_reporter for NULL.
+If it fires after kfree(ndp), it reads nr->ndp and takes ndp->lock from
+freed memory:
 
-__bnxt_dl_reporter_create() can leave fw_reporter NULL, and
-__bnxt_fw_recover() can still reach bnxt_fw_reset() in that case. The
-other abort paths already carry this NULL dereference risk, and this
-patch adds another way to reach it.
+net/ncsi/ncsi-manage.c:ncsi_request_timeout() {
+    ...
+	spin_lock_irqsave(&ndp->lock, flags);
+	nr->enabled = false;
+	if (nr->rsp || !nr->cmd) {
+    ...
+}
 
-The commit message doesn't mention this behavior change. Was it intended?
+Is the timer_list in requests[] also left queued on the timer wheel
+while it sits in freed slab memory? If the timers never fire, the
+nr->cmd and nr->rsp skbs would leak.
 
->  	case BNXT_FW_RESET_STATE_POLL_VF: {
->  		int n = bnxt_get_registered_vfs(bp);
->  		int tmo;
+Also, with the work disabled, the schedule_work() call in
+ncsi_free_request() now silently does nothing on this path.
 
-[ ... ]
+Should the unregister path call timer_shutdown_sync() on each request
+timer and release the in-flight requests before freeing ndp?
+
+>  }
+>  EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104045534.79783-1-bcochrane%40google.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107051825.3313019-1-hj351016%40gmail.com
