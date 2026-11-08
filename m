@@ -1,78 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.235
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794163555;
-	b=kng2I8m65QvsbH1j4wOYWhjmIyaCEpiLV1cOVMi2sx3phGcuSvRF/NXQhSAfCMNEJqBQ
-	 JJjZ+7V0rkfkI6QDkWQdMtNvyun/eFe1taS4yV94WLVRmgtRFe1YRtyei+9MhIF+yrBaA
-	 Y4SQaKxKoxoPbobBWHU/q0SsBY3qiQsCtkmIaKZ1QmE5q2DzU/dzxSnJdMnBlVODvsnQ2
-	 MnIeSYN3ihCC+eYbAUmnwoG+kmMsPG9U/O/+5SqUsHPuulN3CRf8wt3Uzq6db+h303/HI
-	 zqM8QTooptxDMpLpTrljv5GpSfPFz5Sj/aMyJQIPz5IPfE6Cvt0SzrxDOU50DsJgFIQ==
+	t=1794164398;
+	b=u4/1ydH0yE1f/aRdVR4OuS2ZMIwLmCSKzmNHK8+YFGrB2xDUKpDkpprZ3o8Dj60ZDWev
+	 YcVKs2A760aEOtgsJgD/CjAKeji+UAg5h1ds25bE0JHvCinKE8pSBTNzetDcYGQKZlsyT
+	 NZhrwi4Ueqb56UlLCAzrOKuXODes+jMvDIJL/JP7NVWisIlp+FIRoMjQo6072OFNxNK5y
+	 rgGN8lFvn7GvMCDTUhZ7xU1hYq0XQwhLrmwA4Ab/87TyMQNqa9wv7NhzMBW6sFieExmxq
+	 s8uk7f4BXFrNLpfHwlApQ6JwWu6CqnRq1CMBi+PXHWOoRc9/nFCe7skBF/tuMZSSzXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794163555;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=59PcqYceFmLmXAG+Y80JUvL8xmpcARc+z5WhilxBos0=;
-	b=OtUr2OT5MQ6hUvlHVrshkg0LR2e012uTT5bq81n3we2sd/zzD5KjEkuIsizvFt3lrfmv
-	 NiYgqZFdz4fytO5kJlulIPLFt4flcgWXUMyrkt1oPF5o6wanBhC9PsaWZzUbR7vWrJc89
-	 /InO3VODbl8e8UMjc5XgtrQY9jRZWQzv+aNVCfi6jm7TkPspzj59gRfC1VyI4Aw8BTvVZ
-	 ul/MoOOYKUUdQlgW9eCHs/SY194cnJq+C1dLWr5KBeVoFekdob/gDz21/PVLqvzCgS4By
-	 OdqkqrjslQkP9+o5vlvRcySBWV16cpMWUPoj9s+tBJ3recsO8Im3ti24a8urOnwL0sA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794164398;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=JLhUwzup1lwefYy8NOOFjthYnrByVfTsqIe79kkV+Lk=;
+	b=fA2xnd9IteP5hJ6tpWJD/dv8CbTANi+OC8zRUsgqQ1jcFwxIyG5fvFD+qKX9OLoJRgwk
+	 KSopx7FzcH6/BaPOx4Je2DdRrRx6InFJyv91trVbR6VNMFtjkRj5Be18TxheL/HSX38d1
+	 KHIxb065batBjE7B6pG1cWKj/PTehi2ggqhZwV6G+Jd03x7SeZZ0GYN3AWX7SuRKT7uS7
+	 v8axc+gJ9Nk55ee07SW5wXs88+3vi0pkpzAoA/j3SIYFecsVMZtA3gxcLLBdgCR4XCKBi
+	 qsfn5KlCWZb0JKuQOYfNCe2LnHDBteg/rDgKCuj6t66I0wc+4MA4Wr7Bk4d0bGGZcBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=q8z3L7fD;
-	arc=none smtp.remote-ip=203.205.221.235
-Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XrEUEgHU;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD658606A32A
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:45:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD658606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A0C606A321
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:59:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28A0C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=q8z3L7fD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794163545;
-	bh=59PcqYceFmLmXAG+Y80JUvL8xmpcARc+z5WhilxBos0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q8z3L7fD4ElUoPUIgXZMlf7VnnuER16X05pJb5huyuZ7e2mx4FlWvCHk03DRerJAg
-	 Ak3yyZOz/mqdNjZy29yBTpNz9JIf6F/iLJjcdMlBnnnJHQAHotsEzRXQ8uhCeFODI9
-	 tYVX/A9nVPk+Z/+qwYabf3HasISRsQ9+9L2ow4Vk=
-Received: from localhost.localdomain ([183.23.108.92])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id B6A9EADA; Mon, 09 Nov 2026 02:45:42 +0800
-X-QQ-mid: xmsmtpt1794163544t5c1izdfj
-Message-ID: <tencent_D3F64049D3E34AACEB2B5B11CB8D0C821408@qq.com>
-X-QQ-XMAILINFO: OZMlMiGBv3y9rH/W5p8SI9zuVIBXrZEUbv/H5lSknsWOLJlwfyjW7wjQ99madB
-	 uBcho6L+YRmD2Ps2IiXsqyQqJUQHEbaVrSjRUr5ZGz2B9/iS8iqAbLrzrtfKGZMxtf8bakZBFzcZ
-	 Yb0BfY/ElmOX/2fMRvc/sbSQ1MPaErO3S4GHsr1J+FzEU/G3QwbTpDfrAqKrw4WFMBqBkxbXmgor
-	 ztrPD+ezXorKjbuprmOm52UUmWUmia43MueOFJtc8mqMNJmQZpqWsRm9d0h7SH2NTf5bmdOf0Byk
-	 2p+wJmnSARZmsSS9n7KP9JFn06IT9dV6/lovmdtVdQkjV8owHj/9kt3Wvxnrc6k61O0ocRFK27RF
-	 hZfiq0A7iEPhARIAtudr9o2DLxCe/pOO6lJ2mcfFmEpGGRNW7MrYfoGtd7lxHHhBIlC1YWDhNJIN
-	 8TVjbqVsOK+GbE7kyASdBZ8C5/COFcBHhQh/TtQ9WaV0hDb0uLQuX5iu9BGWVN/G8XJBjUp2NuTd
-	 OWZAXWr8f7rVSFAaJx1aaeLzjZFG5cZeIuBpkIld5s2PZCPsFzJ15J52UG+svbVWcDXYSBwqYpQN
-	 YiQ/uObaGDzAsVttPr3vc/7sHTs7LGhb4druDOS+CUvtWTUr6dHbx64Lvfrc1a0rzYeMDToFyKtu
-	 BPMzMz21Wfd5wsLjTL2kSeWMK+Y3laHATjZ766J3JGXd5jA3KM/9oMfgJ1ULq0O8SAHfGeVxIdux
-	 W32MH3zysvlPeFV4Rmj3ZtHElrKvCvmKAcAQhwd6UX5u/OKdV1Yfe1pyjkfWAT5KyjzTyzvq8e+i
-	 PgSX6JGt0qJ7XGlSA9Q3TJQlU0J9JvzMoFQAu24G+nzDrVsgrH83hfLq+sgiXvoYkvIBptRTSrkf
-	 zSSrOCIsDSs3ke8YKOo9nz2fFUYYGMq6rqN1rvIfTERswuC1aEfBDtIu2qxTWClYYvdDB+IEWxfj
-	 9Zz93ijmX2pbjI5l0mR2Mfg/4pRIU1NFykHaP4l9OUom0uB8KbEHPgkrMJ3RGzlcruFzFA8pdrNx
-	 EuiBkeKkyUm34+4vrf1Tw188tUT81doGtWaHQd3bUks00fTkp2
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: memoriaru@foxmail.com
-To: netdev@vger.kernel.org
-Cc: Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	79190669+memoriaru@users.noreply.github.com
-Subject: [PATCH net 1/2] net: sparx5: fix RX ring stall on frames from inactive ports
-Date: Mon,  9 Nov 2026 02:45:40 +0800
-X-OQ-MSGID: <20261108184541.74618-2-memoriaru@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261108184541.74618-1-memoriaru@foxmail.com>
-References: <20261108184541.74618-1-memoriaru@foxmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XrEUEgHU
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4b79502c27aso1791495e9.1
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 10:59:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794164397; x=1794769197; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JLhUwzup1lwefYy8NOOFjthYnrByVfTsqIe79kkV+Lk=;
+        b=XrEUEgHUwv+lt2Z0T4RzlOQuYT1yMbnY/MJrtF5HY2pc8m0ujKE+1IGJbqc3A1SsPJ
+         Pz+po0Wh7ECcrOl1hyNdZBme+OsO/r11IeCA1lW9KMbstFhlOkC0Hm7Ef+TTavGsfrDk
+         7T2AE8nlcorDhYFpLo0KTCt4xOv09AacMRilfH2h4PS2mZ0iBReAF8XAcgtI3iT+qlRY
+         EJQPYUIUlDRCCjadf1+24R8V0flZyhCZpLCroCVsidoQ510350k4POOaAcSXgGRrBTWF
+         rbpUnz5O6K0TOR8uz/zwLHiObwDAqnCJFWP0+ssCNYCBYnXJwQ2yMfUqdKkv6ro/lp/q
+         XMaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794164397; x=1794769197;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JLhUwzup1lwefYy8NOOFjthYnrByVfTsqIe79kkV+Lk=;
+        b=0qIlVNO+YhCGA5WbBVGVYvZHIK4B3Nz9HJztckvBXTr8SThvvY99i9kq9lpaoLatmH
+         UB8/NWv7jbM4U6rZfMTBiB+1g3Yf5CDXAjjYiMw8irp2XHfdKTzXtpi8MfDQyLTmhjpG
+         R+US2Dp2GIK9gsH9tGbIND6BAa0ve4tgffEIf5A43Vymqe5GQt4rGuUCyw8FtwmYbFp7
+         E2JZfP882WJdEZcfLE5ok1It9vcV27ZTqrfCdD76AC5GXS9RdBviG+bhGmgCDNvvgHIv
+         Lqx/AJdCZ5YTPS94fj8wsdVzmNiEx7rV2Euec/7s+zR7ZN1ZK0qYXiazW2FnBE511fBX
+         1khg==
+X-Forwarded-Encrypted: i=1; AL+hErFj1jNFShRdGUqRVSochIE7MOEhwSC8nhup73A7mU+1qaij3LdWN0qdKzuLrezC7Htuwutf5Mk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/+Sq8Wh01fRw2T27D9J+CVIB0yKJHWzOfJVHqO0ELzwUKAIoOm
+	xPqC7rSGF3KdcTtN/2pEdz4Wzjtv2xdH9L3njqCBlAVT3wg99ec+0mRk
+X-Gm-Gg: AYBFou2xLY4F+hbXRopiQ3L/hgW/KlASHUi6Ah7Fw71Cxh4d6gWoSM8G6+nJ2HhXU7c
+	zCoVjoFlsXamV7OwM0heKYig9rDfGs8Hlv1p6ZHH7cK9UzV8URzFPnBkyS4TSpOBCVjt1DT14Q1
+	VJsgc2aB/aiYKd6o2WiiEV2v4Kq79BzfZehGx/cXnzLwIOyC3v1bUn7nDz04d1Mnt9Je07kPemH
+	JBqbpWuC9H+Bq5zSzeLK8CbQIgAgyph+o1Ikp0jikTOTVdkhdj7OSay96sji7UfJCr+KG5tEurS
+	V9+V00161aIK6LnYqQC1WdF3nK3IRv4awX/J4iEd3HX52MdIKLSsFm/UQ2+eTyORHSSrvUmTB4Q
+	MXIjLNAraOl+H52+USzrq5nrU1XOP77jepQtatauwuusHAU2FgHVjp6ebsdnbMXouP/gMQorSoE
+	MdQnQp8dHDLKhE6ZeN8slyzhJ4MLxMEmg6Rp5UskZJ27rm1l0JQH0sYJ0uBKNVUwolj1RI2aUkx
+	nP2wxZw8zzT4E8gb+BKohjTmFIS9DA4N0FUX4O+W7UfxhzcMTdyraETzGFZoCzmNlSJ/2p0CuHA
+	MUvUadZLR5BiORZWB/IGK0klisx4lqzj6kTSuT2qN/dFEl5SAoqGMvwWsQvpE81F
+X-Received: by 2002:a05:600c:468f:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4b960d9b170mr35982125e9.5.1794164396406;
+        Sun, 08 Nov 2026 10:59:56 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7efb1f3acsm185228445e9.14.2026.11.08.10.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 10:59:56 -0800 (PST)
+Date: Sun, 8 Nov 2026 18:59:53 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-fsdevel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik
+ <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, Jeff Layton
+ <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Eric Dumazet
+ <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Al Viro
+ <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph
+ Hellwig <hch@lst.de>, Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados
+ <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, Jan Kara
+ <jack@suse.cz>, Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ netdev@vger.kernel.org, ntfs3@lists.linux.dev,
+ platform-driver-x86@vger.kernel.org, coreteam@netfilter.org,
+ kexec@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
+ jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-mm@kvack.org, linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
+ samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+ Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, Chuck Lever
+ <cel@kernel.org>
+Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
+ pinning the entry
+Message-ID: <20261108185953.28054fb3@pumpkin>
+In-Reply-To: <20261107-akteur-gemieden-eckdaten-21304d085e35@brauner>
+References: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
+	<CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
+	<20261107-akteur-gemieden-eckdaten-21304d085e35@brauner>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,72 +129,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Zhang Hewei <79190669+memoriaru@users.noreply.github.com>
+On Sat, 7 Nov 2026 10:48:35 +0100
+Christian Brauner <brauner@kernel.org> wrote:
 
-When the FDMA RX path receives a frame whose source port does not map
-to an active netdev, sparx5_fdma_rx_get_frame() logs an error, flushes
-the extraction FIFO and returns false - without advancing the FDMA
-software cursor and without releasing the skb, which has already been
-extended with skb_put().
+> > While at it, I think it would be good to use this conversion as an
+> > opportunity to replace "char *" by "void *", which will probably let
+> > you drop several casts from users.  
+> 
+> So I tried that too. The thing is it drops exactly one u8 * cast in
+> ntfs3's label write. 
 
-The DCB for this frame still carries its hardware DONE bit, so the next
-NAPI poll picks up the same DCB, takes the same inactive-port branch and
-returns false again. The software cursor never moves past this DCB, so
-RX traffic on all ports stalls until the module is reloaded. The
-sparx5_xtr_flush() call only drains the QS_XTR hardware FIFO and does
-not touch the DCB ring or the software cursor, so it does not clear the
-stall.
+Since char is now unsigned that one isn't even needed...
 
-Treat a bogus frame as consumed: free the skb, clear its slot in the
-rx->skb[][] array and return true, so the NAPI loop advances past the
-DB the same way it does for any other received frame. The slot is
-refilled by sparx5_fdma_rx_dataptr_cb() when the DCB is recycled.
-
-Found by code inspection; the stall needs the hardware to emit a frame
-with an invalid source port, which cannot be triggered without hardware.
-
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
-Signed-off-by: Zhang Hewei <79190669+memoriaru@users.noreply.github.com>
----
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-
-@@ -159,7 +159,14 @@
-
- 	if (!port || !port->ndev) {
-
- 		dev_err(sparx5->dev, "Data on inactive port %d\n", fi.src_port);
-
- 		sparx5_xtr_flush(sparx5, XTR_QUEUE);
-
--		return false;
-
-+		/*
-
-+		 * The frame is bogus: free it and let the caller advance
-
-+		 * past this DB. Returning false here would stall the RX
-
-+		 * ring, as this DCB is never consumed by the software.
-
-+		 */
-
-+		dev_kfree_skb_any(skb);
-
-+		rx->skb[fdma->dcb_index][fdma->db_index] = NULL;
-
-+		return true;
-
- 	}
-
- 	skb->dev = port->ndev;
-
- 	skb_pull(skb, IFH_LEN * sizeof(u32));
-
-
--- 
-2.39.5 (Apple Git-154)
-
+David
