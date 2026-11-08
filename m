@@ -1,59 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.242
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794163344;
-	b=rsVXCKMXP86+1YbHXCCZShc166ILeSBLXcTZWPo1EsrbiWf4L44XIvkkCw9Zs3eeWvkQ
-	 fE6ZX6jTjY//EvetCZvcBgyR6NYDpkW8PMIoRO6/Aixxt7o7cv1tgq5nD/eAKcOJd70NN
-	 ym25EjG2+Yv241akpJEFfJkjJUYcAg0FVAMZ86YJTZY0WK80wU85dZuNLDF7fNQA3tgSp
-	 pAGJpIxw27PeFxIeLIyd0FjHzq3iQ6FUL1FQjF5MAXu4yxykSlYssgOFRtzHGxN1KYcqR
-	 q07XHWX3EqDRTnCBMoctbsFlxoGfnwGEJN2wUnOT+fjpHZiOAAc7MnGI/7MrJczHNZQ==
+	t=1794163552;
+	b=gcVAWs037msJKKzdzXM8/l6p3Q7Xq7ZuB6hTRNJoMoFQ4pe70yokcV2eCwia4pXhdW8h
+	 ZlXSrsA5AJGFJZtyLnHo0O3Y0SVsPS15wvt9EbIDvmt+3zGgs3KbWcArtENz+z1NJ1tz4
+	 Ft/EVoQp4jgjjqzggm+r/AD91r7+XfKD2IdLOFiR2WFHKlOXvVQ98KiMwtoKQ0YgnbSV8
+	 ZLz6PGXwmfdWsTSx6AgGmifpmoBMx5Yes4P0apFvoU3895a8qCiX5s2BQ2VDGb8ZtAAsS
+	 chleD9T3XiTk7ZtOCDdVTmAIQfBKUVkO+Kzp2w1E9jVg7EARQP8oSLVIyKr44M/ELKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794163344;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=EM+BKWt4qwzUpc6TxNvTqkkxw5pmvwQIxEMFwIpwtx0=;
-	b=AUYzDRBOX59gaqhQZHw11QnnDmqwd9XzcrdlUiKFbprniPyYFWva1FISO514/nJMhpOs
-	 kJ8x2quz3PfjMj8XY6Fri07aiCRffwg20wOuR31naxRfr8RergOu3XvE4Re8gca9i6P30
-	 Sy/tJsuKqkr7uQFfwMjcxhCh+fbemk4Lq20xAEmTaMeN70G/ez2nkZVaNlDIoloPyRYRM
-	 b36lcGmnd7GbUp7cFJkx7GZW8r1OF1e5DVDjWB1Mfa8T2MTWgaz6BdTcj9wQ7BIDOHUKQ
-	 B20sNXfkcCSwooMbxmwDcz5IkhNbdDbgJoUjjLeGjEcBQKge9rruvpUdiODsW9IM1bA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794163552;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=YnVXjbVHXvvZOcIS/H5qlfvrL3Uc9t/RPStARuKZcOc=;
+	b=Bu4yulsTxYLwrcFkJGFTWvzUgLI3kydYKNrBTJJKpScxTCjLNACXcKCLlq4puGXAKVkP
+	 TmwzcVv9TbgxmylvDyTfB5lalwYKMgKUwENxJpTvRjg/uS0g3s9EaN3lcWTgUwnkHr9+s
+	 ZD2/3E/ybC8u3gvlWgFMZLvzApHOOG5XAmiCBYuMPVK9v6dLXK8UPfJNCbOpaCJZNGLdw
+	 qzLc1+uawksnB23KX8i8grCzNUS6dKJ3clIVRMXQwpfQW+//UtPnP6tg1IrdKLWX6VXCW
+	 hGKjW90W3uJg7DVwHVpWIADKaqsDvVXKopaUXA6/bqHmkyslCONKsVT+UsCk6Nur8Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cbk7Jl0C;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=jQkdMcxd;
+	arc=none smtp.remote-ip=203.205.221.242
+Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA59606A31C;
-	Sun,  8 Nov 2026 18:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5AF606A326
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:45:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D5AF606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cbk7Jl0C
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195541F0089F;
-	Sun,  8 Nov 2026 18:42:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794163343;
-	bh=EM+BKWt4qwzUpc6TxNvTqkkxw5pmvwQIxEMFwIpwtx0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Cbk7Jl0CHUlbf6HkaoU3Gff0oNVHqfbuurTq1I36kg3ktZZRmbeh3bhCJmz9/X4VP
-	 NSE893k/yJ4p66Lqlx3JqYLeAXRzc05D1Ip4PHiCEC5x0UbxfhL7DWW6J1yHWStf9V
-	 VA+wbHWuRakTi+juvqgaqyxrI64nScLc6I0N3e4LBgHMAKUDtbhX3su532zEO7nguI
-	 YnfKMxwi0DAcZwzZNQ5d2v5Rs6wHi1rmjPH9in49vAUw3YMg+3N5t2gPC60UZ+Qqn7
-	 vz4hViHObYP6T+fk5h8Q9doaIWVS0tzhO8yuH+Tym4S72bUEKvMQSWJ0Q6VCds7b9N
-	 fLkBDVFzAqoiQ==
-Subject: Re: [PATCH net] ipv4: route: don't blackhole in-use routes when
- retiring fnhe routes
-From: netdev-bot+sashiko@kernel.org
-To: me@chasehil.tz
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, weiwan@google.com, linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 18:42:22 +0000
-Message-ID: <179416334264.994134.10564853189016691004@kernel.org>
-In-Reply-To: <20261104182058.2673882-1-me@chasehil.tz>
-References: <20261104182058.2673882-1-me@chasehil.tz>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=jQkdMcxd
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1794163546;
+	bh=YnVXjbVHXvvZOcIS/H5qlfvrL3Uc9t/RPStARuKZcOc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jQkdMcxdP3NfiRlh6mUVlMWqt1oj1rrowcmfLTYFVjnWiOcfpbi8X6Q+bQtQDF2tw
+	 P/+5/e3MjuyO9sl9lXRez2mXd5nu35bcGWl6z8Z928QKYDA5yBjt+SArdRGcA35XAJ
+	 kMH6xpv8FJerYaO+Es/jFBPr3eBLyWG+BQmL0Z7s=
+Received: from localhost.localdomain ([183.23.108.92])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id B6A9EADA; Mon, 09 Nov 2026 02:45:42 +0800
+X-QQ-mid: xmsmtpt1794163544tnio22w09
+Message-ID: <tencent_8006708A5820F7E91C2584F5CFADC3E50C07@qq.com>
+X-QQ-XMAILINFO: NHTNowOA4hJdCBJvAUSXHaaU/10PjGxjUWXhanrO2Y5v2GZ8gDMMcCEKwDXUfR
+	 8CLVmtSTSB0rr7rwKpNJGp1uarS2aLxNYr9kxmgcwJxs6oZpkctSBzfcvnQ4dg6smLODvmuCBFwP
+	 sk0UV7Vahk3l+/EqGFB1y56+JTD4JnvbbxDp5bu53Ik33HaSF4DmjhuvB/e0xgs6c+oa2U/nHky2
+	 pxBXvfmpXBFPZ/uEmZHlfk8C0GyZ5B7vLZgohmvUDpeaApBXz8FjS/xNTirj7IEhlREMfnGZNV/k
+	 yL+o15q6bEkM4ncBdO0hEqfykjXUElrmU2DnVJg8dTS7vTOKTCs5BIFAVfLio6x8WWps7Q77Uowc
+	 O7WbZZdHHAgARsudU55xfSl4QXIo0O5+L1HUnDgN6C0icRadd3Zocuxzu/ItKsxfDHAL80qIxoVf
+	 elIkJLvh7paeYROO5r03HpX15IzqQK7TiSQDA/q1wW2m6W1m19yC3XZ9ymztoL9SkA/aYnlW7UVb
+	 E8HCp8uV37RxhRxFzwOmr3Vv/A9PAaSvsjm3NvTPplPnHOMfz8CbVFaKHPJBMgyjXEBeULZEG2wu
+	 5j5DNezR/T0l1ZVRrM8ykrFve5dgw9OtTddkbXBZ10U+TPDdjSaFfdZFOtI3bAZUqQjPRlJ3Wlav
+	 HaZjhIVG5uyE5ZcXhBWwYN5X3wyW/X6MdI3uOoY/5V5WSqljt1hfd84CyIjmZ67RyiorlHkMlOPt
+	 c2PngjzQjT6HjuH6sRlA4tPeaIS/W4Z4pMhIfZUo+k3bUOEboPJfmsemJrSemmBYu9xRzg5zxlpM
+	 5v5Drwo4SSx2cWR93+iUvDK7TGQGtFe6BGTuh/tbghpDfGg0eYYGf8lAwsDfWDwANuIVJ1QXCB5I
+	 Ys6TT0fk6Adxl/bRRen443fzI/kDS6n7PsP4R8nzfFBDvR0Dp7qCZQKemtwfB/2tIzzBpYB89IrL
+	 tJ04HmFbD3vvsHar2UNKXPTqdtNcAJgPvfWDj16NWSgyzP9oLWktYpzf/isTlVAe6T+IZ2cPoy+l
+	 0k016+PRw0WKHVWsVNP9Q79ZHhxfI=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org
+Cc: Steen.Hegelund@microchip.com,
+	daniel.machon@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	79190669+memoriaru@users.noreply.github.com
+Subject: [PATCH net 2/2] net: lan969x: fix RX ring stall on frames from inactive ports
+Date: Mon,  9 Nov 2026 02:45:41 +0800
+X-OQ-MSGID: <20261108184541.74618-3-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20261108184541.74618-1-memoriaru@foxmail.com>
+References: <20261108184541.74618-1-memoriaru@foxmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,129 +82,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Zhang Hewei <79190669+memoriaru@users.noreply.github.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+When a received frame's source port does not map to an active netdev,
+lan969x_fdma_rx_get_frame() recycles the page via the page pool and
+returns NULL, which makes lan969x_fdma_napi_poll() break out of the RX
+loop without advancing the FDMA software cursor.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+As on sparx5, the DCB still carries its hardware DONE bit, so every
+following NAPI poll picks the same DCB, hits the same inactive-port
+branch and breaks again: RX traffic stalls on all ports until the
+module is reloaded.
 
-- [Medium] One fnhe retirement path still calls dst_dev_put() on routes
-  that may be in use, and it comes from the same Fixes target.
-- [Low] The commit ends with a "Co-authored-by: Claude Opus 5.5
-  <noreply@anthropic.com>" trailer.
+A NULL return currently covers two different situations: a failed
+build_skb() (allocation failure - breaking out and retrying the same
+DCB later is correct) and a bogus frame (which must be dropped and
+skipped). Split the two: recycle the page and return ERR_PTR(-EINVAL)
+for a bogus frame, and advance past such a DB in the poll loop.
 
---
+Found by code inspection; the stall needs the hardware to emit a frame
+with an invalid source port, which cannot be triggered without hardware.
 
-ipv4: route: don't blackhole in-use routes when retiring fnhe routes
+Fixes: d84ad2c0d80c ("net: lan969x: add FDMA implementation")
+Signed-off-by: Zhang Hewei <79190669+memoriaru@users.noreply.github.com>
+---
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
 
-The patch stops calling dst_dev_put() on routes retired from a nexthop
-exception in rt_bind_exception() and fnhe_flush_routes(). The new
-fnhe_retire_route() helper instead marks the route DST_OBSOLETE_DEAD,
-puts it on the uncached list and drops the reference, so CPUs still
-using the route are not switched to blackhole_netdev.
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c
 
-> Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+@@ -3,6 +3,7 @@
 
-[Severity: Low]
-This isn't a bug, but checkpatch.pl doesn't recognise the Co-authored-by
-tag. It isn't in $signature_tags, so checkpatch warns about it with
-BAD_SIGN_OFF "Non-standard signature".
+  *
 
-Documentation/process/coding-assistants.rst says an AI-assisted fix "must
-pass the checkpatch.pl checks". Documentation/process/generated-content.rst
-asks for tool use to be disclosed in the changelog or cover letter, not in
-a custom trailer.
+  * Copyright (c) 2025 Microchip Technology Inc. and its subsidiaries.
 
-Switching to Co-developed-by would not fix this. checkpatch requires a
-matching Signed-off-by right after Co-developed-by, and
-coding-assistants.rst does not allow AI agents to add a Signed-off-by.
+  */
 
-Could the trailer be removed and the tool use disclosed in the changelog
-text instead?
++#include <linux/err.h>
 
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 3a90c8d28b940..cd69242afab07 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -573,6 +573,17 @@ static void ip_rt_build_flow_key(struct flowi4 *fl4, const struct sock *sk,
->  
->  static DEFINE_SPINLOCK(fnhe_lock);
->  
-> +/* Other CPUs may still be using @rt, so don't dst_dev_put() it.
-> + * rt_flush_dev() handles it if its device is unregistered.
-> + * Marking it dead makes ipv4_dst_check() fail for users that cached it.
-> + */
-> +static void fnhe_retire_route(struct rtable *rt)
-> +{
-> +	WRITE_ONCE(rt->dst.obsolete, DST_OBSOLETE_DEAD);
-> +	rt_add_uncached_list(rt);
-> +	dst_release(&rt->dst);
-> +}
+ #include <net/page_pool/helpers.h>
 
-[Severity: Medium]
-Is there one more fnhe retirement path that still blackholes in-use
-routes? Commit 95c47f9cf5e0 ("ipv4: call dst_dev_put() properly"), the
-Fixes target, also added dst_dev_put() to rt_fibinfo_free() in
-net/ipv4/fib_semantics.c. That function is used on fnhe routes when the
-owning fib_info or nexthop is freed:
+ 
 
-free_fib_info()
-  call_rcu_hurry(free_fib_info_rcu)
-    fib_nh_release()
-      fib_nh_common_release()
-        free_nh_exceptions()
-          rt_fibinfo_free(&fnhe->fnhe_rth_input)
-          rt_fibinfo_free(&fnhe->fnhe_rth_output)
+ #include "../sparx5_main.h"
 
-net/ipv4/fib_semantics.c:rt_fibinfo_free() {
-    ...
-	dst_dev_put(&rt->dst);
-	dst_release_immediate(&rt->dst);
-}
+@@ -113,8 +114,15 @@
 
-The RCU grace period before free_fib_info_rcu() covers noref users.
-However, __mkroute_output() hands out fnhe_rth_output with a reference:
+ 	sparx5_ifh_parse(sparx5, page_address(page), &fi);
 
-	rth = rcu_dereference(*prth);
-	if (rt_cache_valid(rth) && dst_hold_safe(&rth->dst))
-		return rth;
+ 	port = fi.src_port < consts->n_ports ? sparx5->ports[fi.src_port] :
 
-Also, __nf_queue() calls skb_dst_force() on queued skbs. Both of those
-holders can outlive the grace period.
+ 					       NULL;
 
-For example, a UDP sender could get the dst and then sleep copying user
-data in ip_make_skb() while the route is deleted. Its later
-ip_send_skb()->dst_output() would then go to dst_discard_out().
+-	if (WARN_ON(!port))
 
-Another case is a forwarded skb queued to NFQUEUE at POSTROUTING and
-reinjected after rt_fibinfo_free(). It goes through
-ip_finish_output()->__ip_finish_output()->ip_skb_dst_mtu(), sees the
-blackhole_netdev MTU of 68, and ip_fragment() can send ICMP_FRAG_NEEDED
-with mtu 68 to the remote source. That is the symptom described in the
-commit message.
+-		goto free_page;
 
-The commit message says "Do the same for routes retired from an fnhe",
-and the comment above says not to dst_dev_put() routes other CPUs may
-still be using. Could rt_fibinfo_free() handle fnhe routes the same way:
-mark them DST_OBSOLETE_DEAD, add them with rt_add_uncached_list() and
-drop the reference?
++	if (WARN_ON(!port)) {
 
-Commit 5018c59607a5 also left the matching dst_dev_put() calls in
-rt_fibinfo_free_cpus() and for nhc_rth_input, which affect non-fnhe
-cached routes.
++		page_pool_recycle_direct(rx->page_pool, page);
 
-> +
->  static void fnhe_flush_routes(struct fib_nh_exception *fnhe)
->  {
->  	struct rtable *rt;
++		/*
 
-[ ... ]
++		 * Signal a bogus frame so the caller advances past this
+
++		 * DB. Returning NULL would make the poll loop break
+
++		 * without advancing, stalling the RX ring forever.
+
++		 */
+
++		return ERR_PTR(-EINVAL);
+
++	}
+
+ 
+
+ 	skb = build_skb(page_address(page), fdma->db_size);
+
+ 	if (unlikely(!skb))
+
+@@ -258,6 +266,18 @@
+
+ 			break;
+
+ 
+
+ 		skb = lan969x_fdma_rx_get_frame(sparx5, rx);
+
++		if (IS_ERR(skb)) {
+
++			/* Bogus frame, buffer already recycled: advance past
+
++			 * this DB, or the same DCB stalls the ring forever.
+
++			 */
+
++			fdma_db_advance(fdma);
+
++			counter++;
+
++			if (fdma_dcb_is_reusable(fdma))
+
++				continue;
+
++			fdma_db_reset(fdma);
+
++			fdma_dcb_advance(fdma);
+
++			continue;
+
++		}
+
+ 		if (!skb)
+
+ 			break;
+
+ 
+
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104182058.2673882-1-me%40chasehil.tz
+2.39.5 (Apple Git-154)
+
