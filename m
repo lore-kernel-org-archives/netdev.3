@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794141570;
-	b=fbDV/3EevdMt/CN/+OoObp//MjhFaeU03znKgOh5HpJsUGaLlWUL3fviuGhiA9hIiTqh
-	 6o0/DKWfo5mHnFT3ITDpd3DEjz/RLfQs8Ex5cxAECwyEnTkDC2EZBfs1L1dolLZf3Skhi
-	 vhZ8BWenYJg9NCMXhyPB3kFVUhhvtCzcM1Ej0GUu6YYKtL8AF116lIJqUtz/t+OyZuZbD
-	 IHb3naY26Hyk1SdmlqGznc4ah1hyQpZCw1keq8NHMCNyqb3H+JlFEyYpqtexxEjjeFnGA
-	 TZ3ioRG1y5iD+BZEurtacEq42hG9zCAK5MG2mXM99yaFlUrADwy9qlA7BE//ceuOVwA==
+	t=1794141573;
+	b=m5w8ffhd3I9behgTyMutVBOgok6Kf7imuLD50dbtusDLz0vDnjD14pOyYdSHk4qW5W8a
+	 b/1yENc8eZinvbdBX1uVhnkmvTPtKeHEpfIoyCWz+2BJrEbDpzPCK1wiSezsGodLxoCxh
+	 xDEJUeJ2wb9UXyGeLFI5jctlw4N7JdOczcLtx9ujLdHGWzExZci4/V5SrYo2ZeCBE+rfj
+	 2UP3mCBjGXCcMXLJHXDd9vlPWam2XtAhsInAVTBh5MrT3VcUr9rUPBGD60DF8ATdyxVZ5
+	 v2GD7rHV7S5gvgY7se35OsGogHcuX+heuczIv9g3+6bjS29ZYnr1Fp9svRhGnFy998Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794141570;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141573;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=mM6DVwCqDOpbkvQNO2LJaVej93mzjTfWGXqKWxW9Pm0=;
-	b=D582krLR9ypkRZjunufjVGNLrIFHZRt1PIcPkVKkbcYNwTbrPU6eTM00QwsxgRzJxKtF
-	 fGi3c4WM7sJe34w2jbSha1f7t7H4AdtQjLNMBJsHQ5geueZh3nX2O5QUI9cAoEyG39CBs
-	 qd+42uSlRq4LPKQhqOyGEDEzPiL0WhQaD2Bqyvs5s4/fuZ/XWyZr1kncUpymhMhPoyefR
-	 Y6NKQ3w+QV17ktYCZ+zF0vGUlE8Rt1OzjAPcnGhjhWAzCFvfJHDVfc1JMjDFlecMn3qLu
-	 2kaO/wTgbYDs4tpcXtACWE9IwjWPaPeDu4SZiD3Px2fjT3V/RemIaRfY0TI/ERiHjqw==
+	bh=Xm1hehkTkheewVHZFkFtM4dICzsV3Hiezfso6Iy1pAw=;
+	b=YTY322FmY4VFniNzg+LPu9e3do3HiHMPITy60bqTrmVs7xkZAQaLHdCnsi0FBNiyBLGU
+	 mggqvYOVHE1g+80bbYoF7QAVHQQYR4do7lHM10uCiWymw96FIxwuxxR/fbIY7ieS+J1y8
+	 fe0AqpdEI/4m5MrsbZIYFRFu+aS+EDSnDJUeshd/ASt15dcf35+p9rTADseDeTuJGiI2c
+	 +pVwtvra58Vx6XP+KECPum90PXS7mwgYov4FxjtrxUv28eqeSDBlN2DzmlpPe9WcmSwsy
+	 Um1ni2qsSItv57n4lTwa7xKjhoQ1zYL/+1DUDC/xv9brL76ShrC1e77UOKip3M/NBTQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FVW39Mlx;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrIvraA5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A53606A32A
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 12:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF4A606A321;
+	Sun,  8 Nov 2026 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FVW39Mlx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDF21F008A1;
-	Sun,  8 Nov 2026 12:39:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TrIvraA5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7171F008A2;
+	Sun,  8 Nov 2026 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794141569;
-	bh=mM6DVwCqDOpbkvQNO2LJaVej93mzjTfWGXqKWxW9Pm0=;
+	s=k20260515; t=1794141573;
+	bh=Xm1hehkTkheewVHZFkFtM4dICzsV3Hiezfso6Iy1pAw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FVW39MlxmAMUesAyTlkebNAGtN445AhGLpKmXc05PH6EgprzfmAEqcgRHHkLEj+EN
-	 qTpaAFKcIl+jR9TN8V6VNtgZpAcSj1DefM7jb9kW/Twukpvp5z5oPc1RClwkEJuk1o
-	 sfLNN0ej5qTazrvj4E8VFb+mHfKAtNLw5zh8YBwH/q7n/qn+54hMlM9SI54X7FDF3P
-	 O8ltkkVr6CUaaZRP+eL7wVOONEgaqNK6sMPw/u2kAGEipgPxtbCHk2+zGIPmbXkoRj
-	 Lnd+gqvElfS5/sJdaU++nZTT9HgE7Ap6sSYfQK8ATgkqO4TZVhCOB+gcE3GNfCe6nr
-	 QhbbLvvJ5C/BQ==
-Subject: Re: [PATCH net-next v6 2/2] netlink: specs: add ovs datapath and
- vport set operations
+	b=TrIvraA5pvHZig8QlDwhdgk4IWbzIFcNTguOOouKluYYvCTJZMnfZdXrp/CZfSdAG
+	 obdRgS4qscDH7SO1Ts6OekpT7EqemNtZw1wlfN9AyRHdJT2KiCrKuEGNH6BnqNHf6P
+	 EIqbZG7hcmgE8bl6un1eMF/HjWi2Z6cPfbGXd+1cd+VtmDm4RJ6BsJwjk9gA5Wbe1T
+	 RLE0fNWb7iJA223It8+R8f/G/GFosGtdpGCP8Fcl8lV+piQV437qIVtKXVPESNki/i
+	 6QJ0GhIypa1YSSkrynFWwCFmbh7/gWzkH7cxm50blHqr6ZC3EiFyP//rMLq65ckLje
+	 M9QwIZNB601yQ==
+Subject: Re: [PATCH net-next v4 2/8] net: dsa: motorcomm: Drop VID 0 VLAN
+ table programming
 From: netdev-bot+sashiko@kernel.org
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
- dev@openvswitch.org, aconole@redhat.com, echaudro@redhat.com,
- i.maximets@ovn.org
-Date: Sun, 08 Nov 2026 12:39:28 +0000
-Message-ID: <179414156884.994134.5015506800657224516@kernel.org>
-In-Reply-To: <20261107120647.874906-3-houminxi@gmail.com>
-References: <20261107120647.874906-3-houminxi@gmail.com>
-X-sashiko-severity: Low
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Sun, 08 Nov 2026 12:39:32 +0000
+Message-ID: <179414157227.994134.8326158294654980832@kernel.org>
+In-Reply-To: <20261107121631.1040612-3-mmyangfl@gmail.com>
+References: <20261107121631.1040612-3-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,141 +64,113 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The new vport `set` operation in
-  Documentation/netlink/specs/ovs_vport.yaml lists `options` and…
-- [Low] The commit message says ifindex is declared as s32 with `checks:
-  min: 0` because 'A generated client would otherwise offer a setter for…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message says the VID 0 entry is never looked up,
+  but the driver itself can make VID 0 the classification VID, so the…
 
 --
 
-netlink: specs: add ovs datapath and vport set operations
+net: dsa: motorcomm: Drop VID 0 VLAN table programming
 
-This adds the SET operation to the ovs_datapath and ovs_vport netlink
-specs. It also adds attributes to the datapath NEW request, marks
-new/del/set as uns-admin-perm and marks the ops as dont-validate strict
-and dump. The ifindex attribute moves from u32 to s32 with a min: 0 check
-in both families.
+This commit removes the write of VLAN table entry 0 in
+yt921x_chip_setup_dsa(). That write set LEARN_DIS and all port members
+with an empty untag mask. The commit message says the hardware classifies
+priority-tagged frames to the port's PVID before the VLAN table lookup, so
+the VID 0 entry is never looked up.
 
-> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-> index fa975f8821b6c..16b21c42cac8c 100644
-> --- a/Documentation/netlink/specs/ovs_vport.yaml
-> +++ b/Documentation/netlink/specs/ovs_vport.yaml
-> @@ -111,7 +111,9 @@ attribute-sets:
->          type: unused
->        -
->          name: ifindex
-> -        type: u32
-> +        type: s32
-> +        checks:
-> +          min: 0
-
-[Severity: Low]
-The commit message says:
-
-  The ifindex attribute is signed in both policies, which read it with
-  nla_get_s32_default() and reject anything below zero, so declare it as
-  s32 with a minimum of 0 rather than u32. A generated client would
-  otherwise offer a setter for values the kernel rejects with -ERANGE.
-
-Does the min: 0 check change anything a generated client offers? In
-tools/net/ynl/pyynl/ynl_gen_c.py, checks are only used to build kernel
-policies:
-
-        # Classic families have some funny enums, don't bother
-        # computing checks, since we only need them for kernel policies
-
-The OVS kernel policies are not generated from these specs. They are
-hand-written in net/openvswitch/datapath.c and already contain:
-
-	[OVS_DP_ATTR_IFINDEX] = NLA_POLICY_MIN(NLA_S32, 0),
-	...
-	[OVS_VPORT_ATTR_IFINDEX] = NLA_POLICY_MIN(NLA_S32, 0),
-
-So min: 0 has no effect anywhere. The generated s32 setter still accepts
-every negative value. Those are the same 32-bit patterns (0x80000000 to
-0xffffffff) that the old u32 setter could send, so a generated client
-still offers the same rejected values as before.
-
-There is also a side effect the message doesn't mention. The vport ifindex
-attribute is part of the GET reply, and ovs_vport_cmd_fill_info() still
-sends it as unsigned:
-
-	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
-
-With this change, the ifindex member of the generated ovs_vport_get_rsp
-struct changes from __u32 to __s32. Nothing changes on the wire, since
-both types are 4 bytes and dev->ifindex is always positive.
-
-Could the commit message give the actual benefit, which is matching
-NLA_S32 and nla_get_s32_default() in the request path? Could it also
-mention the type change in the reply? The same rationale also appears for
-the ovs_datapath.yaml change.
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 693564aeaec14..47f06945b8c4e 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
 
 [ ... ]
 
-> @@ -165,6 +172,27 @@ operations:
->              - netnsid
->              - upcall-stats
->        dump: *vport-get-op
-> +    -
-> +      name: set
-> +      doc: |
-> +        Modify an existing OVS vport. The vport is picked by name or by
-> +        port number. The kernel rejects an ifindex with -EOPNOTSUPP, before
-> +        it looks at the type or the options. It rejects a type that differs
-> +        from the vport's type with -EINVAL, and rejects options with
-> +        -EOPNOTSUPP. The only attribute that changes state is upcall-pid.
-> +      value: 4
-> +      attribute-set: vport
-> +      dont-validate: [strict, dump]
-> +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - name
-> +            - type
-> +            - options
-> +            - upcall-pid
-> +            - port-no
-> +            - ifindex
+> @@ -2321,15 +2320,6 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+>  	if (res)
+>  		return res;
+>  
+> -	/* Tagged VID 0 should be treated as untagged, which confuses the
+> -	 * hardware a lot
+> -	 */
+> -	ctrls[0] = YT921X_VLAN_CTRLa_LEARN_DIS | YT921X_VLAN_CTRLa_PORTS_M;
+> -	ctrls[1] = 0;
+> -	res = yt921x_reg64_write(priv, YT921X_VLANn_CTRL(0), ctrls);
+> -	if (res)
+> -		return res;
+> -
 
-[Severity: Low]
-Should options and ifindex be in the set request list? The kernel always
-rejects both of them:
+[Severity: Medium]
+Is entry 0 really unreachable when the port's PVID is 0? The commit message
+says:
 
-net/openvswitch/datapath.c:lookup_vport() {
-	if (a[OVS_VPORT_ATTR_IFINDEX])
-		return ERR_PTR(-EOPNOTSUPP);
-    ...
-}
+  the hardware classifies them to the port's PVID before the VLAN table
+  lookup, just like untagged frames (measured on YT9215S), so the VID 0
+  entry is never looked up.
 
-net/openvswitch/datapath.c:ovs_vport_cmd_set() {
-    ...
-	if (a[OVS_VPORT_ATTR_OPTIONS]) {
-		/* There are no vport types that support legacy options. */
-		err = -EOPNOTSUPP;
-		goto exit_unlock_free;
-    ...
-}
+The driver itself programs a hardware PVID of 0 on VLAN-filtering ports.
+In yt921x_vlan_filtering(), br_vlan_get_pvid() gives 0 when the bridge port
+has no PVID:
 
-The vport family is code-generated (tools/net/ynl/Makefile.deps has
-CFLAGS_ovs_vport). That means ynl_gen_c.py will emit set request setters
-for ifindex and for the options nest. Any request that uses them can only
-fail with -EOPNOTSUPP.
+	else
+		br_vlan_get_pvid(bdev, &pvid);
+	res = yt921x_port_set_pvid(priv, port, pvid);
+	...
+	if (vlan_filtering && !pvid)
+		ctrl |= YT921X_PORT_VLAN_CTRL1_CVLAN_DROP_UNTAGGED;
 
-This seems to go against the reason the commit message gives for retyping
-ifindex: "A generated client would otherwise offer a setter for values the
-kernel rejects". The get and del ops go through the same lookup_vport(),
-and this patch leaves ifindex out of them.
+yt921x_pvid_clear() does the same after the PVID VLAN is deleted, for
+example via yt921x_dsa_port_vlan_del():
 
-Would a request list of name, port-no, type (used as a match check) and
-upcall-pid better describe what the kernel accepts?
+	res = yt921x_port_set_pvid(priv, port,
+				   vlan_filtering ? 0 : YT921X_VID_UNWARE);
+
+In both cases the only extra guard is CVLAN_DROP_UNTAGGED. Does that bit
+also drop priority-tagged frames? If it does not, a priority-tagged frame
+on such a port would be classified to PVID 0 and look up entry 0.
+
+After this patch, entry 0 keeps its reset contents. The 8021q layer can
+also change it at runtime by adding VID 0 automatically:
+
+dsa_user_vlan_rx_add_vid(vid = 0)
+  dsa_port_vlan_add() / dsa_port_host_vlan_add()
+    yt921x_dsa_port_vlan_add()
+      yt921x_vlan_add()
+
+yt921x_vlan_add() sets only the port, CPU port and untag bits, never
+LEARN_DIS:
+
+	masks[0] = YT921X_VLAN_CTRLa_PORTn(port) |
+		   YT921X_VLAN_CTRLa_PORTS(priv->cpu_ports_mask);
+	ctrls[0] = masks[0];
+	...
+	return yt921x_reg64_update_bits(priv, YT921X_VLANn_CTRL(vid),
+					masks, ctrls);
+
+No other code in the driver sets YT921X_VLAN_CTRLa_LEARN_DIS. Could the
+switch now learn source MACs and forward in hardware in VID 0 on a
+filtering port with no PVID? The Linux bridge would drop those frames.
+
+The measurement in the commit message also covers only YT9215S. The rest
+of the series does not restore a LEARN_DIS write to YT921X_VLANn_CTRL(0),
+and PVID 0 is still programmed in yt921x_vlan_filtering() and
+yt921x_pvid_clear().
+
+Should the commit message cover the PVID 0 case and the loss of LEARN_DIS
+on VID 0? Or should the VID 0 programming be kept?
+
+>  	return 0;
+>  }
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107120647.874906-1-houminxi%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107121631.1040612-1-mmyangfl%40gmail.com
