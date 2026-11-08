@@ -1,98 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794162735;
-	b=R9nA5Oti8pJVnBpZgn/oHiV3QrPBA7v/nhBFcqZXXTXBhtwYNeQumNVsrahX+sNJa9V9
-	 /nnwdV63RUHY3bTNNeG9/EkKJhIIYNRXpcM3xc5YlvG7uaYiWRxlnpeDa9t3EZxrivJJz
-	 25JFfnl6cK9AZbPdJdVqieiNSoDlgdzQTTvDGbrh1NhfRRgxm75UTYImQ3EkaxYYrbhj5
-	 lu7iv16J6kwIC0VB+t9iln9VkdXWtCgey535xsUA4sxsKhccYnMM7nuTkfhqXSYM7mB68
-	 D7uZqz/1r0CmyciyxrYqVjj+2xZnplHQXofEqpnqTpPIaIhPOt1DHdrarCh+6w40atg==
+	t=1794162773;
+	b=jaShPs8/IpHXOasTHumY5f//r14lReETU8ggJjcptfn2lcVZd+XBp/9JKXOzpzR/d849
+	 efFP1XPT/sjcXAOWQt3ZgenBSSJCDMwUbNmrBvQAOU7OiEJjctJy1RHZFwBhF4Mn22Gr/
+	 xiWDfKsUijI+Vcmrnw8/Jd3X16nhLaQiZ0l39IF0JQ9MLF0DdVStxxPY+sPAW6nBtbHvU
+	 aaz70JvlaXEXZKI3B61xLRYsKVKpd6LKZjQl7bwC1gH7wna/7dSVZHGNGjLg7hnXKjVvg
+	 kPtNOc4oIm+ianwvItuovh7CgLky7I6CXJ+D7hbpRWqZCtToCvptrf5HpR9xbD719Rg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794162735;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=gph2Kwbd7Nl/6/v3WX6HzhU8XiforJFJRj38g/7wFBc=;
-	b=4AJ5yb4biV0jPyyD4p9adDwfiYuPAq9Cu0+lwqsNhDD9VrrSrFCjCdhXXAXZLBRc5nQt
-	 zjr/KqFFaH1RQDdgDscFuZN9keuF1C6nSu4Lyms3LPVRbGAjDe1o3Ub1Ic1f4bE5YCGkK
-	 R0qiON7leQ+PoDdv7SDYqr3xQTPpLZALY0T/8uOXRF/c5Lj7T8fnSBgEI9C3ROVE0DtWU
-	 rEHT2hpZaziArSxlWBKJ20TTyuog5Tyg3hB3eK9nKKUgXyT8R4jVGBaQJtmUU3lzHP5Hq
-	 I4Atgmj/JsvXVj1c4HbbMQwuF79uavv3AtdFz1IWZkzYRfadC4i77rGkEreyuAGDzCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794162773;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=COJrP3dQukaOhIQRT9U2DOT9xkXjtYyRY85oKSm2Lug=;
+	b=fxukXKB0wREjLPiPGX9w+9KRgqL7pcFXEayzIJJ8kxD7XizVHWhy8TSZpFxXcUK3kJZc
+	 L3RUuBOXnFn5R7APjlGBRiJII8smkx4bkiwo1g/sQWji09Y6DbMozE+rJikbVVisP295b
+	 8q7/Trx4y0SWMMp1yZLLfWgnZwvbbDzjO36tEqeIMNIdIxlwLFBI7t1kaUcGvKc+o5KQ1
+	 ln0WwHGAivpopwMqr+1DVZps9igZVlWN+XouMYchP6fS14pbBX3GXN/69unmxSMZvyHHw
+	 AiCJbA6NgcZ4cR/7NhUMqzjOuNgU1TktANV06IKTd1Hp3ET77ySN80dlPWCV36vEw8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sqrvHFbE;
-	arc=none smtp.remote-ip=209.85.216.41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XW7pDQnE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4EA606A338
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:32:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC4EA606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE2D606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sqrvHFbE
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b0a519049aso128494a91.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 10:32:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794162734; x=1794767534; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gph2Kwbd7Nl/6/v3WX6HzhU8XiforJFJRj38g/7wFBc=;
-        b=sqrvHFbEAtaxln7fcaNMYPt2/WXu4kpYJRogIO6ORTx3S/c7Jpgv18mvA+KIEjOrPQ
-         OkY92IECPUc2luV/Zdp3cGFYeBPwHcbnhBFDWk0P4gni2Ia+jeHfxG9dwzzaJtgAwZj9
-         2Zhlb0KbigOc2YsWz6KGNW8uRXdDTYIRxVLUdfOdNirBwKt4bJMz6BSh3LAK4BxiRMis
-         tdznulRhPkN2WN708urzkyyuSCIEe2z5aSwLvq5lTFNEUpSJbdfT9umgz6086yc7fzHU
-         5bmSTMLvkzufDPcLsTdHftXAQFYzAATdo2g81aK31dUwhyLl5NgfhKee2hxhiA/GiA23
-         ee2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794162734; x=1794767534;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gph2Kwbd7Nl/6/v3WX6HzhU8XiforJFJRj38g/7wFBc=;
-        b=pafPW9954mTrR8rfDMHFLe1YVCW6T12423lspVO1Nn7uiT2qnCHOXVb2Fdfm7XXOlH
-         0yy1yvtQA6Lnv3GWOoZMNYKu4LnIZmQYIviDm0JuEVmd2ZnAaPw4ibX4UjpUzs0t71oN
-         fkI1Sle09AarIsUh85QWafXwVHBhPBA1CXaf9Jg1O/8M2Tcz5+T0wn4ooY3HjOdK0o2Z
-         Pzw0xrSfdO46Ih+uFEuL2isGiKqJEYYW+/FfCp5SZA6K2H525xX72cWeLD/jGxJ6bS+9
-         /2Mr97ozBB2m1W4kq6Yz6X/LfW4+oMmPYezpjTVhTAS5NoJUHntP9TkkN3gp3AuqVvkZ
-         7H1w==
-X-Gm-Message-State: APuU4Z/BFvFsMHz1keax5gjMsMJvnBvqyiEl6FFmBFC9BJHVineartPo
-	3KyqA/KECRZHXGhmQ1Zjd5SBi5ysfV0oM5soya1KY2VuGr6XjRfiyDneV3wkJg==
-X-Gm-Gg: AYBFou38uSxwRINiV3KJR+WYUD6n7y7Z3nAKg3jt+o9ydnC0sf43fbWCb/JJ5C5F1Wr
-	jTr9cEhiofdT6saogHu5J0uqqcRzwHL8mmaSH/5VkcR12nIHH7xgwvEu59ObJPHo2oj0ORzagW1
-	c3m6fPe8k9uCa6EByQXnUVgO6T8/buk4DZX/rTS1l9f8LGdcAGQjwNXnXd4umZU8qzwsP0Zl0ag
-	hwTb5shnkB6a/y3p1lphCrlK1H5vDKxYSK8QPVlAidcNEwuzN3ds8LLuzz1Yf4a8TrD6h3Kx0qU
-	GNA5mjifg+3r0dzS6Nz/nOw6QLJFDedVuEAbvLB1Xi2c6OiyEW9vOKv9bW5Xz8Svl+o6uVundvB
-	Go74PKkalgkCUTELl+0d0Gm9toruX9q+27VHHFfydcvEmUv0AECpRn/VMvGuXSDNqw4vuSqjXxC
-	qEbeeUtH6+LJ3zKG6qZb79kGjEUq2dJQDCnPcvnXOwOVF61LBQvLdNTe9cq9bfQX7QtK7iOC0ER
-	wASGy3uUzqH1nbX1HMz0CkxJFQbxCSd+2yoY2m6bv7yjc089/GnuUqTlLhQj+VHx91YTgAgU+7c
-	DyoaGQZ5IeXLOOfeBPsaiq3QcGbNxWO7QKqiNfaAy8pbYJ6tzBjodPY=
-X-Received: by 2002:a17:90a:d007:b0:3b0:9b3c:4434 with SMTP id 98e67ed59e1d1-3b12d4ae6e8mr1796524a91.36.1794162734091;
-        Sun, 08 Nov 2026 10:32:14 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1054a53e4sm7600534a91.0.2026.11.08.10.32.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 10:32:13 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: dsa: motorcomm: Use safe 64-bit counter reader
-Date: Mon,  9 Nov 2026 02:29:28 +0800
-Message-ID: <20261108182931.1542638-4-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261108182931.1542638-1-mmyangfl@gmail.com>
-References: <20261108182931.1542638-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XW7pDQnE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62031F0089F;
+	Sun,  8 Nov 2026 18:32:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794162772;
+	bh=COJrP3dQukaOhIQRT9U2DOT9xkXjtYyRY85oKSm2Lug=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XW7pDQnECOz/QwuQSicN/SuPnpcrumhbYM53nTIl1Dp8qInqclENGMB/kIesGaUdg
+	 bFBSfZoLip3x1C1vtt06NZUQjFk0TKjZhMc7K8OtEe3/E5JOnPO68EEmYei9rZ36I4
+	 X7UELULqh/dhhNzhtFnwdf87PWYikagA4ooxO56pf6G0dKfd1THpPad55tKjIAEx36
+	 vWjn3ICQmgon6PaS5uDouMPuktwe5fHuNL+vDq22VcfJGhJCFTUT5LFs70P1AxyFpX
+	 roq7o+YJM/SjF+PmXPQbQdHlOOJNG6q/9n3RN40IPzOswZ/cAnHe4i2HverdlJB19n
+	 /S7APf19ZFgDw==
+Subject: Re: [net PATCH 2/5] fbnic: Fix service task races with ndo_stop and
+ PM suspend
+From: netdev-bot+sashiko@kernel.org
+To: alexander.duyck@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
+ pabeni@redhat.com
+Date: Sun, 08 Nov 2026 18:32:51 +0000
+Message-ID: <179416277142.994134.5623223181953033290@kernel.org>
+In-Reply-To: <179381515284.9644.1846335740085170889.stgit@ahduyck-xeon-server.home.arpa>
+References: <179381515284.9644.1846335740085170889.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,126 +63,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-64-bit counter registers are read as two separate 32-bit transactions.
-If the low word wraps from about 0xffffffff to a small value while the
-high word increments between the two transactions, the recombined value
-becomes ((new_high << 32) | old_low), producing a spurious ~4 GiB jump.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Use a safe counter reader for this.
+Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
 
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/dsa/motorcomm/mib.c | 21 +++++++++-----------
- drivers/net/dsa/motorcomm/smi.c | 35 +++++++++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/smi.h |  2 ++
- 3 files changed, 46 insertions(+), 12 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
-index e9f28d446251..6df31753cbbc 100644
---- a/drivers/net/dsa/motorcomm/mib.c
-+++ b/drivers/net/dsa/motorcomm/mib.c
-@@ -102,29 +102,26 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
- 	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
- 		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
- 		u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
--		u32 val0;
--		u64 val;
--
--		res = yt921x_reg_read(priv, reg, &val0);
--		if (res)
--			break;
- 
- 		if (desc->size <= 1) {
- 			u64 old_val = buf[i];
-+			u32 val0;
-+			u64 val;
-+
-+			res = yt921x_reg_read(priv, reg, &val0);
-+			if (res)
-+				break;
- 
- 			val = (old_val & ~(u64)U32_MAX) | val0;
- 			if (val < old_val)
- 				val += 1ull << 32;
--		} else {
--			u32 val1;
- 
--			res = yt921x_reg_read(priv, reg + 4, &val1);
-+			buf[i] = val;
-+		} else {
-+			res = yt921x_counter_read(priv, reg, &buf[i]);
- 			if (res)
- 				break;
--			val = ((u64)val1 << 32) | val0;
- 		}
--
--		buf[i] = val;
- 	}
- 
- 	flags = u64_stats_update_begin_irqsave(&pm->syncp);
-diff --git a/drivers/net/dsa/motorcomm/smi.c b/drivers/net/dsa/motorcomm/smi.c
-index bf3adfd64165..dff576271446 100644
---- a/drivers/net/dsa/motorcomm/smi.c
-+++ b/drivers/net/dsa/motorcomm/smi.c
-@@ -63,6 +63,41 @@ int yt921x_reg_update_bits(struct yt921x_priv *priv, u32 reg, u32 mask, u32 val)
- 	return yt921x_reg_write(priv, reg, u);
- }
- 
-+/* Reliably read a 64-bit counter, assuming the counter isn't that "fast" */
-+int yt921x_counter_read(struct yt921x_priv *priv, u32 reg, u64 *valp)
-+{
-+	u32 old_lo;
-+	int res;
-+	u32 hi;
-+	u32 lo;
-+
-+	res = yt921x_reg_read(priv, reg, &old_lo);
-+	if (res)
-+		return res;
-+
-+	res = yt921x_reg_read(priv, reg + 4, &hi);
-+	if (res)
-+		return res;
-+
-+	res = yt921x_reg_read(priv, reg, &lo);
-+	if (res)
-+		return res;
-+
-+	if (lo < old_lo) {
-+		u32 new_hi;
-+
-+		res = yt921x_reg_read(priv, reg + 4, &new_hi);
-+		if (res)
-+			return res;
-+		if (new_hi != hi && new_hi != hi + 1)
-+			return -EIO;
-+		hi = new_hi;
-+	}
-+
-+	*valp = ((u64)hi << 32) | lo;
-+	return 0;
-+}
-+
- static int
- yt921x_regs_read(struct yt921x_priv *priv, u32 reg, u32 *vals,
- 		 unsigned int num_regs)
-diff --git a/drivers/net/dsa/motorcomm/smi.h b/drivers/net/dsa/motorcomm/smi.h
-index 212e20f71d80..d34240548af7 100644
---- a/drivers/net/dsa/motorcomm/smi.h
-+++ b/drivers/net/dsa/motorcomm/smi.h
-@@ -35,6 +35,8 @@ yt921x_reg_toggle_bits(struct yt921x_priv *priv, u32 reg, u32 mask, bool set)
- 	return yt921x_reg_update_bits(priv, reg, mask, !set ? 0 : mask);
- }
- 
-+int yt921x_counter_read(struct yt921x_priv *priv, u32 reg, u64 *valp);
-+
- /* Some multi-word registers, like VLANn_CTRL, should be treated as a single
-  * long register. More specifically, writes to parts of its words won't become
-  * visible, until the last word is written.
+- [Medium] Regression in __fbnic_pm_attach()
+  (drivers/net/ethernet/meta/fbnic/fbnic_pci.c): the patch moves…
+- [Medium] The Fixes tags are incomplete.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but there is an
+  unbounded hang across the RTNL drop between the two PCI error-recovery…
+
+--
+
+fbnic: Fix service task races with ndo_stop and PM suspend
+
+This commit runs the service task's health check, BMC check and re-arm
+only while the interface is running and the device is present. It also
+makes fbnic_pm_suspend() cancel the service task synchronously after
+dropping RTNL. On resume, __fbnic_pm_attach() now holds RTNL and the
+instance lock across the stats reset, fbnic_up() and the device attach.
+
+> Fixes: 04a230b27d8f ("fbnic: Add logic to repopulate RPC TCAM if BMC enables channel")
+> Fixes: 6ae7da8e9e06 ("eth: fbnic: reprogram TCAMs after FW crash")
+
+[Severity: Medium]
+Are these Fixes tags complete? The commit message calls the suspend
+problem "a worse one":
+
+> It calls ndo_stop
+> directly with the device detached but __LINK_STATE_START still set, so
+> a late pass there sees the interface running, restores the host state,
+> and keeps re-arming itself every second after the mailbox, IRQs and
+> MMIO are gone.
+
+This behaviour seems older than both cited commits. In bc6107771bb4
+("eth: fbnic: Allocate a netdevice and napi vectors with queues"):
+
+- fbnic_service_task() already re-armed on netif_running() alone.
+- fbnic_service_task_stop() already used the non-sync
+  cancel_delayed_work().
+- fbnic_pm_suspend() already called netif_device_detach() and then
+  ndo_stop(), with no cancel_delayed_work_sync().
+
+The instance lock added around fbnic_up() in __fbnic_pm_attach() also
+fixes an older problem. fbnic_up()->fbnic_napi_enable()->
+napi_enable_locked() expects the instance lock. That requirement came in
+with 4ddb17c1a2c2 ("eth: fbnic: request ops lock").
+
+Should bc6107771bb4 and 4ddb17c1a2c2 also get Fixes tags? Without them,
+stable trees that have the fbnic PM and service task code but not the two
+TCAM commits won't pick up the suspend fix.
+
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> index 09eeb4b4ded8f..09ae797b1f0dc 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+
+[ ... ]
+
+> @@ -558,19 +571,26 @@ static void __fbnic_pm_attach(struct device *dev)
+>  	struct net_device *netdev = fbd->netdev;
+>  	struct fbnic_net *fbn;
+>  
+> -	rtnl_lock();
+> -	fbnic_reset_hw_stats(fbd);
+> -	rtnl_unlock();
+> -
+>  	if (fbnic_init_failure(fbd))
+>  		return;
+
+[Severity: Medium]
+fbnic_reset_hw_stats() now sits below the init failure check, so it no
+longer runs when fbd->netdev is NULL. Was that intended?
+
+Commit b1161b1863c5 ("eth: fbnic: Reset hw stats upon PCI error") put the
+reset ahead of this check on purpose. fbnic_reset_hw_stats() also handles
+a NULL netdev:
+
+	if (fbd->netdev)
+		ASSERT_RTNL();
+
+A device in init failure mode stays bound so devlink still works. It also
+keeps the debugfs pcie_stats file created by fbnic_dbg_fbd_init(), and
+reading that file calls fbnic_get_hw_stats().
+
+Resume or AER/DPC recovery (fbnic_err_resume()->__fbnic_pm_attach()) can
+reset the hardware counters. The next read then goes through
+fbnic_hw_stat_rd64():
+
+	new_reg_value = fbnic_stat_rd64(fbd, reg, offset);
+	stat->value += new_reg_value - stat->u.old_reg_value_64;
+
+Won't this subtraction against the stale old_reg_value_64 wrap? That would
+permanently add a huge value to ob_rd_tlp, ob_wr_tlp, ob_cpl_tlp and the
+other PCIe counters. The 32-bit counters would get wrong deltas the same
+way.
+
+The new RTNL and attach ordering doesn't seem to need the reset skipped
+here, and the commit message doesn't mention this change.
+
+> +	/* Hold RTNL until the device is attached, so the service task pass
+> +	 * fbnic_up() schedules cannot run until it will see it present.
+> +	 */
+> +	rtnl_lock();
+> +	netdev_lock(netdev);
+> +
+> +	fbnic_reset_hw_stats(fbd);
+> +
+>  	if (netif_running(netdev))
+>  		fbnic_up(fbn);
+>  
+>  	netif_device_attach(netdev);
+> +
+> +	netdev_unlock(netdev);
+> +	rtnl_unlock();
+>  }
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch. Error
+recovery adds the NAPI vectors under one RTNL hold and enables them under
+a later one. Can a close between the two hang?
+
+fbnic_err_slot_reset()->__fbnic_pm_resume() calls __fbnic_open() under
+rtnl_lock() and netdev_lock(). That reaches netif_napi_add_config_locked(),
+which leaves NAPI_STATE_SCHED and NAPI_STATE_NPSVC set. Then both locks
+are dropped:
+
+	if (netif_running(netdev)) {
+		err = __fbnic_open(fbn);
+	...
+	netdev_unlock(netdev);
+	rtnl_unlock();
+
+The NAPIs are only enabled later, in
+fbnic_err_resume()->__fbnic_pm_attach()->fbnic_up()->fbnic_napi_enable().
+
+In between, __LINK_STATE_START is still set, and __dev_close_many() calls
+ndo_stop even on a detached device. So "ip link set dev X down" in that
+window would run:
+
+fbnic_stop()
+  fbnic_down()
+    fbnic_down_noidle()
+      fbnic_napi_disable()
+        napi_disable_locked()
+
+napi_disable_locked() then waits for bits that only napi_enable_locked()
+clears:
+
+	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+		usleep_range(20, 200);
+		val = READ_ONCE(n->state);
+	}
+
+Wouldn't that loop spin forever while holding RTNL and the instance lock?
+fbnic_err_resume()->__fbnic_pm_attach() would then block on rtnl_lock().
+
+This patch now holds RTNL across fbnic_up() and the attach. The gap
+between __fbnic_open() and fbnic_up() is still open, though.
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179381496288.9644.9775319757787890210.stgit%40ahduyck-xeon-server.home.arpa
