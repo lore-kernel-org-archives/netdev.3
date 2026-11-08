@@ -1,61 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794159285;
-	b=XZbKrRxpU3d1tRcNF0vXKssdvNdcOnV5uHsAIeXDmpdADKSkHVQojIpqiRTX/EuG+Z7g
-	 cogyYyayZ0TQWbg8R8bWhBWOsiC90dv10LQIYwrDIZjEpWecekcR/FPv2YZNKj6UNypRs
-	 pPZYJsnVJYz69+oifjSkM90mZmYdU+wTozQE7Qaj/3AL4gG3/T4DfeFnuAkMVXIUI5KXz
-	 5y0ZlqrG5FCX1SPOzRIGI3hyv3G8iIgQzfLRSGH4qr4xjUss3oEQqB10RWuJ+iNI0VY7P
-	 pHKVxaNch77k4PJjjDoUU4plcFC4FPCQM/XFcXyOBQKF0vDVQqN8sXUNyJAHAf/zdng==
+	t=1794160916;
+	b=qLkmrjCuGVPAKQsdtau93An0XnHGuncnu6YlPOnPlZbhWfFoxdMLe56GWQf2D489ZER3
+	 Dv+sxwFmjnPYGu/WUwEJDyXbEUNR4IuV8+fSMgDOupn58CHfi6Gz2abp2z8CLomp2amhR
+	 fvOq5otiIuTNt//aMjPSp8AGq09XRkNB4Gh7zbwaMQEXhGL5gUjCsbjiWItw9HXffdO5e
+	 fyDuhr3iw4WRO0fJZjwir8hmUTF66cZashHZgXid8GYka7z0iNqMCBKSBmVojo0ruJob9
+	 jfe5idy+BubTdkUknI1aRzKc3UGXwjvXnZAWG5/z6COHETWFi3HPpOhWjsTI33yBHeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794159285;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=h9fN+blWcYiz+Rj05u5EqHcYFX7OMSudCRxrgXVuF4E=;
-	b=4MiAb1KKLFRf7mW5wEuBN0k68Q4g/lqK8yiCiSFD5+uGz0XVUYdTCfQeZAHkr1XtQqcM
-	 1F3TcFzu6GS0eyGoWZU3TgUCKa0H2uMGobdPBvBEjeoZ249Jw3yJEQr8/PTL9TA8gTHN3
-	 F5Sc4icGl79kiZ0tQEu6Qay2WioljitP6rO+JG7NJ3T+izE7ExoNpvSyqKWFRZXphLZcJ
-	 Re7cWeCJSXpQFNxDY1sl809nnv22zJppdXulHwyCS57AbmQeZgXnyV1sC9Le5MPdVvQ0X
-	 gfBdOpGCKB+g3j7jTTJz8n5SBmh6MxNUB4K+pAhM8MENFfZDek7FCy+aPdXR9lZwEzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794160916;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=wKthFVGy2/96NtNdiRDSbQRthuWj2Z8kR1kJlcmQltw=;
+	b=KLIZ87+ZJPVN0jgRXfwnEWB1mXQjVwkjZ5RIwfTjHvqfy3A5cLXrPwgk1te5jx6oT5Bg
+	 Xq6EnSvcE1qCGmDCLKP3Idvj3oECJhpo+JtlilN9pO+o/o/LuBLxdvLmbEJo8NxJyDfW8
+	 x2po5V+U2k9bvM3uSaILHUNywr4OqYP/1SiNwyILFK3Py1S2XOVvk9rFrUyHV5WAyCGyw
+	 x0TSIePByTdN+92MkIrTU7VdIciAOkJ7pgzLn7dwNWlYKNoAY1mKW/qvcZPOLPOekaI8u
+	 UQR/5EJ2nG1Fu2B6yT9j41ZVJa1swzeFPhEtdj2DmxH8vfuPBpH7f9XHVUiNjvnhGDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ut7Gg1Hz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=D8lNDhBP;
+	arc=none smtp.remote-ip=209.85.210.174
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0FB606A31C;
-	Sun,  8 Nov 2026 17:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C755A606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:01:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C755A606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ut7Gg1Hz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9801F0089F;
-	Sun,  8 Nov 2026 17:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794159284;
-	bh=h9fN+blWcYiz+Rj05u5EqHcYFX7OMSudCRxrgXVuF4E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ut7Gg1Hz2MLSjXtk9vj9PkR85jCxIYPQNx6CUAlxUUQOKbGqQsQN/RuDMseiBzf4d
-	 Xqb7ME7/otbljWfqj9/oWrYCTqMGRxNT8oao96QMPHJl/EqqR4OeAsNEUdeaD7a+rA
-	 DrLA63k4CSP8qBoFiQtlXA2hLj+y7RIFVUWnmx6RDfOj+RFSB5ttV8A/ZvhsfSy1Ot
-	 mpeVtGVlJ5MYktIa10IZLMvUxgK5/imQnqHbPl3OtLsgBaWGQHqskrOng6eNUL4ADX
-	 i/B3vA3VIpfL1dib70sc5Ha6WQ5/HrLgFouDo4KZeAJ/wRafbDvIe6FDACVBxDc8WN
-	 XpogubVTrYKvg==
-Date: Sun, 8 Nov 2026 17:34:40 +0000
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port
- is stopped
-Message-ID: <20261108173440.GK18859@horms.kernel.org>
-References: <20261103100535.1310088-1-vulab@iscas.ac.cn>
- <179370062811.488859.14852630470087836565@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=D8lNDhBP
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8b612fd74e1so45419b3a.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 10:01:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794160915; x=1794765715; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wKthFVGy2/96NtNdiRDSbQRthuWj2Z8kR1kJlcmQltw=;
+        b=D8lNDhBPaKDXUxNDqNdYFhyv9rUjvhg9KcgnKggpcZtNjiHRp+ZR7w/iG0Wz7cNMRZ
+         CZL9jV8rWbCW5dTguKoMs6uE4pXt3uEOnPaX+dH/mGcbEeLw8l29HtQwEqrFT6A4CDwV
+         rKy1+6m9OPARfvt5lbsnQjYwq+5eXBNCAKOilbRtkrvTikqimes33rI1iq1Qg23vDFw3
+         9kY/lsUCekQAHeEGY3TuIkHa/yZU3vZuCeGSz14aRgNLuOl3KvBEOrpmTKtvFtK5S+gE
+         58INqtm0lcSCnJR93g0Ttsp+s122GIYNSHNmNLyAYcmFhoc2PB18fWP2jt0GChCgPwEX
+         qpAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794160915; x=1794765715;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wKthFVGy2/96NtNdiRDSbQRthuWj2Z8kR1kJlcmQltw=;
+        b=x/6L/7MEXA8Q1leWnfQsk0sC0vkojYjlag8YuRdOwRm04yeV0ZdfG1hzla22dx6xOh
+         Zhg6AFYZ6ZkC7qaTU4HYJ2VuzyGpjXwKbjzUL9wY2WpQPUhOCbsYnxt+1KB1a1agyjCf
+         vGuGP3dxqJ2eHADIz4HF4dhAouPDgdBDzJiaE5rZiprVR/n9Bg38GcPxwCmQGAtjMdQy
+         zIMNIOnMsMSR1czC/lHjhFdH07Y0Rsge8S7EkyqMcODw7UvVAWutcEPFzbCrGBzXfqhX
+         aG/1ol7BLFB0gzy3NRSai4c9G9tM9LhkM/e1EgFQ5bEvn1+RA3VNV9NuLZHECao4T6An
+         tkTQ==
+X-Gm-Message-State: APuU4Z/42AKy0KuYnMdxMUN7duhRaoo/lpMmt5AGBluVGYITT0mMFfpo
+	ZiSU/T5/2QIlhEtPWitVNNaPjvPfKI093RWvt0Q7EXrtXILeddc5sdb30VIrMQ==
+X-Gm-Gg: AYBFou0O8nOxRb5q1BA9g+4hS2gZ6/2V7zeNllhQ7+fE60QBMmrFdrz0f0Jh9MKUaKN
+	V04DOUwJZrulSs9NReDUhF7dgYHF56dFKbSD+4wCBg9myRoZoJ3bLqlRiH4A/R8Z0t3Phj4vdM4
+	dvCl6ireYebogclyfMWDNdy1AnHM01mGCLv1BOTZ+Kj2I1WxYAhcyUwTlIzzIF/xLZDQnEnXi86
+	uATNbj45+azVZ+tu6cZX3NIKytnwnFOgfwvuZkM6xTLVCv74XwlyzPm6RC+2s5fPO9YS/7aaxlH
+	ZNdCsQeNePmuZUf1KTalHZcjm9RAnsxwNlY+47x8LBLchjzY1OX/bWzrqVrCVpcqE3GHKiqPLNy
+	QkxlMLGYZdk7OV5gsqjSj6URgAlwNXp7FE5lpO+yKQOmPMDHNJXR9e3pVY/Z+XHfQvHHhXLmkrQ
+	+JNXcBcKTiHCvnTHxdUJKLgdD0K+s/6VxIsL3/vZOglU4dfFk5ijTSRbT1r+e1I0AebLdwrNgql
+	ZIgsQReWQGlB1TX7Bt8dGydWNr9D9tlM6XIfhGE/WXP6HXOjpDO5XfebWVFJHw0xvzLNrYZVnzR
+	TZRJAenXivxzEVW6EGi6Z3xqcRHvZx5bOm+vAmUvbspRqA1NfEGL1oTLv2i8MvJTEBUvDGo=
+X-Received: by 2002:a05:6a00:288b:b0:880:5fe5:a818 with SMTP id d2e1a72fcca58-8b6710e76b8mr1600334b3a.59.1794160915046;
+        Sun, 08 Nov 2026 10:01:55 -0800 (PST)
+Received: from arch.localdomain ([223.238.138.174])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b64a2dfd6asm642259b3a.56.2026.11.08.10.01.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 10:01:53 -0800 (PST)
+From: Prashant Sengar <prashantsengar25031@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	andrew+netdev@lunn.ch,
+	linux@armlinux.org.uk,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net-next] net: usb: lan78xx: use phylink for Wake-on-LAN
+Date: Sun,  8 Nov 2026 23:31:37 +0530
+Message-ID: <20261108180137.3488023-1-prashantsengar25031@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,43 +95,183 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179370062811.488859.14852630470087836565@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 03, 2026 at 10:10:28AM +0000, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Use phylink's Wake-on-LAN helpers to handle PHY and MAC
+wakeup capabilities, allowing MAC-based WoL configuration
+when no PHY is attached.
 
-Hi Wentao,
+Add a MAC WoL callback and advertise the supported MAC wakeup
+modes through phylink. Synchronize the effective WoL settings
+with the driver state used during suspend.
 
-In my inbox, I count 39 emails of the form above from netdev-bot+sinfo to
-you in the past week or so. And zero responses from you. If I miscounted
-then I apologise. But in case it is not clear, a response to these messages
-is required.
+Preserve the default magic-packet wakeup configuration and
+restore the previous USB wakeup state if WoL configuration
+fails.
 
-I would appreciate it if you could provided responses to all such messages
-for patches which are still active on patchwork.
+Tested with QEMU Raw Gadget emulating a PHY-less LAN7801.
+Verified WoL configuration, unsupported mode rejection,
+and USB wakeup state transitions.
+
+Signed-off-by: Prashant Sengar <prashantsengar25031@gmail.com>
+---
+ drivers/net/usb/lan78xx.c | 84 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 67 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index d73002b2c21a..7d67dd150271 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1765,13 +1765,6 @@ static void lan78xx_get_wol(struct net_device *netdev,
+ 	struct lan78xx_net *dev = netdev_priv(netdev);
+ 	int ret;
+ 	u32 buf;
+-	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+-
+-	if (!netdev->phydev) {
+-		wol->supported = 0;
+-		wol->wolopts = 0;
+-		return;
+-	}
+ 
+ 	if (usb_autopm_get_interface(dev->intf) < 0)
+ 		return;
+@@ -1783,8 +1776,7 @@ static void lan78xx_get_wol(struct net_device *netdev,
+ 		wol->wolopts = 0;
+ 	} else {
+ 		if (buf & USB_CFG_RMT_WKP_) {
+-			wol->supported = WAKE_ALL;
+-			wol->wolopts = pdata->wol;
++			phylink_ethtool_get_wol(dev->phylink, wol);
+ 		} else {
+ 			wol->supported = 0;
+ 			wol->wolopts = 0;
+@@ -1799,25 +1791,45 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ {
+ 	struct lan78xx_net *dev = netdev_priv(netdev);
+ 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
++	struct ethtool_wolinfo actual = { .cmd = ETHTOOL_GWOL };
++	bool old_wakeup, enable;
++	int rollback_ret;
+ 	int ret;
+ 
+ 	if (wol->wolopts & ~WAKE_ALL)
+ 		return -EINVAL;
+ 
+-	if (!netdev->phydev)
+-		return -EOPNOTSUPP;
+-
+ 	ret = usb_autopm_get_interface(dev->intf);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	pdata->wol = wol->wolopts;
+-
+-	ret = device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
+-	if (ret < 0)
++	phylink_ethtool_get_wol(dev->phylink, &actual);
++	if (wol->wolopts & ~actual.supported) {
++		ret = -EINVAL;
+ 		goto exit_pm_put;
++	}
++
++	old_wakeup = device_may_wakeup(&dev->udev->dev);
++	enable = !!wol->wolopts;
+ 
+-	ret = phy_ethtool_set_wol(netdev->phydev, wol);
++	if (old_wakeup != enable) {
++		ret = device_set_wakeup_enable(&dev->udev->dev, enable);
++		if (ret < 0)
++			goto exit_pm_put;
++	}
++
++	ret = phylink_ethtool_set_wol(dev->phylink, wol);
++	if (ret < 0) {
++		if (old_wakeup != enable) {
++			rollback_ret = device_set_wakeup_enable(&dev->udev->dev, old_wakeup);
++			if (rollback_ret)
++				netdev_warn(dev->net, "USB wakeup rollback failed: %d\n",
++					    rollback_ret);
++		}
++		goto exit_pm_put;
++	}
++	phylink_ethtool_get_wol(dev->phylink, &actual);
++	pdata->wol = actual.wolopts;
+ 
+ exit_pm_put:
+ 	usb_autopm_put_interface(dev->intf);
+@@ -2617,12 +2629,24 @@ static int lan78xx_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
+ 	return lan78xx_mac_eee_enable(dev, true);
+ }
+ 
++static int lan78xx_mac_wol_set(struct phylink_config *config,
++			       u32 wolopts, const u8 *sopass)
++{
++	struct lan78xx_net *dev = netdev_priv(to_net_dev(config->dev));
++	struct lan78xx_priv *pdata = (struct lan78xx_priv *)dev->data[0];
++
++	pdata->wol = wolopts;
++
++	return 0;
++}
++
+ static const struct phylink_mac_ops lan78xx_phylink_mac_ops = {
+ 	.mac_config = lan78xx_mac_config,
+ 	.mac_link_down = lan78xx_mac_link_down,
+ 	.mac_link_up = lan78xx_mac_link_up,
+ 	.mac_disable_tx_lpi = lan78xx_mac_disable_tx_lpi,
+ 	.mac_enable_tx_lpi = lan78xx_mac_enable_tx_lpi,
++	.mac_wol_set = lan78xx_mac_wol_set,
+ };
+ 
+ /**
+@@ -2848,6 +2872,10 @@ static int lan78xx_phylink_setup(struct lan78xx_net *dev)
+ 	       dev->phylink_config.supported_interfaces,
+ 	       sizeof(dev->phylink_config.lpi_interfaces));
+ 
++	pc->wol_mac_support = WAKE_MAGIC | WAKE_UCAST | WAKE_BCAST |
++		      WAKE_MCAST | WAKE_ARP;
++	pc->wol_phy_legacy = true;
++
+ 	phylink = phylink_create(pc, dev->net->dev.fwnode,
+ 				 dev->interface, &lan78xx_phylink_mac_ops);
+ 	if (IS_ERR(phylink))
+@@ -4671,6 +4699,10 @@ static void lan78xx_stat_monitor(struct timer_list *t)
+ static int lan78xx_probe(struct usb_interface *intf,
+ 			 const struct usb_device_id *id)
+ {
++	struct ethtool_wolinfo wol = {
++		.cmd = ETHTOOL_SWOL,
++		.wolopts = WAKE_MAGIC,
++	};
+ 	struct usb_host_endpoint *ep_blkin, *ep_blkout, *ep_intr;
+ 	struct lan78xx_net *dev;
+ 	struct net_device *netdev;
+@@ -4803,6 +4835,24 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 	if (ret < 0)
+ 		goto free_urbs;
+ 
++	/* Preserve the default magic-packet wakeup configuration. */
++	rtnl_lock();
++
++	ret = phylink_ethtool_set_wol(dev->phylink, &wol);
++	if (!ret) {
++		struct lan78xx_priv *pdata = (struct lan78xx_priv *)dev->data[0];
++
++		wol.cmd = ETHTOOL_GWOL;
++		phylink_ethtool_get_wol(dev->phylink, &wol);
++		pdata->wol = wol.wolopts;
++		netdev->ethtool->wol_enabled = !!wol.wolopts;
++	}
++
++	rtnl_unlock();
++
++	if (ret)
++		netdev_warn(netdev, "failed to initialize WoL: %d\n", ret);
++
+ 	ret = register_netdev(netdev);
+ 	if (ret != 0) {
+ 		netif_err(dev, probe, netdev, "couldn't register the device\n");
+-- 
+2.55.0
+
