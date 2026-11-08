@@ -1,86 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794149948;
-	b=nv0tco6aJIF3ltTkqP9l6rVQx0Z+foX0krkYclybyes2f88TNDCPJtuSsI//wwgOnnID
-	 QaVAJyz6ThTNHqF8Z7LrpWCIVLRLlB3Micpzc9a52fXtbpnwxK+MPQU+gvyN1uokgodY4
-	 KRYoRbrf4iTw1Bnf4j9+z9imzGjHzBaZ/a0pU24z1pNGkkzfm8nJ/nH7e07zn9RmaT1RH
-	 9+6oeRzC7CL+qfW40rFq2TwcaX+eOqVWy6XEDs2wMMnDKm/cgpPfy0fqMT39AaG/eUsSd
-	 pg8EjT1JfCUmpdxeZ+2pAnFr9H3mEsucxmbGr9/822fTQRBcBk0eDhEDKT+kOiDauSQ==
+	t=1794150223;
+	b=tw35ckS4tk0gH3p7DBgbiMOdUUDvtzjFDIuICq46n4c+4y35U5hzlJTLVzsBLxLENcxO
+	 sFEZnn2J/9okRb7DjdrCu852JUUAI1kmjiTYCFwI2RgF8o53jLZJf7vlnPwhQZumiBEY3
+	 WZ3Cfi/0yjV4zmHr6/OIGg/8khaOZ8UoqLCBfDhXtMlo0unqwbM2vZTzQZhdCOWJ3sbHi
+	 5RoNy4qQCqMtxKdJ3O5447RtD1DcXMylF65JyNokgFTOZP/6S+8y5prYVpgf2OIemiAzN
+	 yqaoSN1YC2zgThS/eVYJU8Y+u/S6yX4yjlDO2a3HgJncvkbYG+rgTOZ3WenyozlF+Hw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794149948;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Content-Transfer-Encoding:Message-Id:References:To:X-Mailer;
-	bh=46GXHeUALtpO4O3TOALhIC4HG0bGJ4xyjvuRvhuOfq0=;
-	b=KJ9+cE0voCmEvEwg+P7NFevn7RoVt0VjdgpyXuCTOIfka1dXkYqnoVDHB9QO7HOgwfPD
-	 cEslC5hQNjrk1SsEBZQEyonXAETP3xIJ4tljkrYwrvS0qG6bZ3Z00mgqw7YFmdxxaRvHs
-	 0o63HJ/FG+KozL0Y+RcQRuOMNdCkovnPgpsEWAm7Irwiqgvg8176XT6dcU66sGsIBKIiD
-	 bSy4+WGwCbGBpR3sDAqOvPehGA08J9ORDucWcDV+Wf4Fsoo/cCWUfeYLv8n42vBPeilOs
-	 AxDGgINVQNvf6HmtbyubtUuG29emikyiWthUsxXXPKJWgGzZ8rnYAh71XLYGGS4vqFw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794150223;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=QbYiVhTzlQpnBAy6zKPAAIvl7xIK7BIFFyDILWvOq84=;
+	b=W8cGnrWEDW22zttCC/cptDysr8vqE0Mg3Z8FblOI/wG8q9JA3sYfQiHzmMeFD5mtk2rP
+	 QGEdZtjUBA87rPB3ED756LWqppBfrS5F11Ygtps3DjGWuyDqkq0YR/MeEn7fQVGVptDZL
+	 NJz8+rfFuWEziTvpyEa5J+pDamEIDfXNJcpE/nWI+6oMbwrQ3QRSFo33DDEYPdLRRLZ0k
+	 r0iCMG3ggiWh2bQARixngC5980wVW8a9VdJdA6z9UECYXx013M4RZ7gleAELYRQwVKtO/
+	 vUTHIUBFPZHIwsSOhBlY7S/EQ1CoFeKlEf9vtnXbWZp3FmFfbiQ+4J58Ftj52GyI07A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I+mgnbqn;
-	arc=none smtp.remote-ip=74.125.82.175
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HCsa70S1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFAA606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:59:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FFAA606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C5606A31C;
+	Sun,  8 Nov 2026 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I+mgnbqn
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36ff9c9da34so204324eec.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 06:59:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794149947; x=1794754747; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=46GXHeUALtpO4O3TOALhIC4HG0bGJ4xyjvuRvhuOfq0=;
-        b=I+mgnbqnq8NSHuqYlXQCBRsCwEE4OSEQinRr8N0VZR0arR5lJW+qfCv8UvBUUbAt1A
-         iuNEdhaiHT5wbCtr0NgDNbh48EXeKcpGcaJZszJnqmKYY6z5U3E7veLLoAjgfQmxcYbI
-         JmwYZwMdrk6PAc5Yq2opy2NeE8Ns4p9GNTn5qsxTBDmYfYaVZgbenDQNJpseaGv71hEL
-         IzcqwNqVhVdURUQvExrPOvJSU09getdEEbZeaHkZ//MDYaHZJZh758RQ4kLPXtqv0tlB
-         c0JPbzbwIdq925YL/RhIsc1eAj6H9AHwfkKLa/2RLe2lI/PDG6FNJGBWO2PgUC01qL0i
-         lWMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794149947; x=1794754747;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=46GXHeUALtpO4O3TOALhIC4HG0bGJ4xyjvuRvhuOfq0=;
-        b=XbUES+Qz4P/C98oEGmiWfjvmqqM8feXfBm7lprEaxZRJduXTjFGVDR4gBzEaw9O+fZ
-         axG6sG895Y9mi7aGuMPkff4htIE3Dt+SxCwNgEcMbxNVibJblJzq+Fn/3nPFBJ2MPn5r
-         SLtb9KcxyW+rNgLRKvZq+fNr/HUbZDjS9rr+r6XVMUtqKsWWi6Kp6fyU9oPAXTsh2bM2
-         DUKXc/EE8XkLSc1Og1RJrUA98gLooz8zrMuqLOzsPUowP9txHlpVT3tDuv7sWYvHTZ4r
-         rfWcvzZNooxpDh3e9EdFxnqoj6Tq7vCOGO5D+SJ7NAbuAoU9Q3VI19mF/Cbfvd3o2CrQ
-         8cSw==
-X-Forwarded-Encrypted: i=1; AL+hErHegDXjq3lnTI1QXiHvKUBgcbJRnHBXR2Aoi1e5ywz0VZjVnoMEkbWXJP/E73ayJm0sf8BClC0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+BODLfaiBy1EZ1AbePoiBt3xGxCjdNPoT2KrZmlhjVh3FQcKIn
-	ZWXbmqpeDYVA/g5dtNR7HpuFkwM+UXvoJxEntbsJnonkm8LbkF/UKkU6
-X-Gm-Gg: AYBFou2q78Xj6FMk1Ld0dxUNqvZhPQ2YFP3Lt5ldZLVLEGCLJT3byQosUPo7OOadO11
-	6LBzlJFAoOHUn6YSVHYwof/9RjO4xjDRD5APFhndRoMfn8fDNlnHDLQkZDzvbcMJVcBQkAwb8mH
-	rBOIjW1y65IKs9MiSyMpQ3iyF3LG5fQt4r+snuZ/GF9WjQld4mqElkOH3jMO/xGQsFe74BniyT3
-	NskJGPNUsnakGPdOF2gfH68YPW4MM24u2Qwi8I34+/oaWjJ71us/3+p0tOEbaARCtdSKCgxNAhC
-	AeYl1ULeZBsHHGcE2mKs40klx0EMXl2+4o6kruaw6DjQdeiuKdx2hoLhiW3HBLrrfchq0WWKO+r
-	30a1gkS308DTiGmg/MBmjQAqrTwEurTzJehfhqEuTgiYs13Bfo2xIRqK66bXvqyu6Qp+5YAAnYD
-	Y71jSDXNWohlHL0tf/cpR61VyuvXBoc8In7+TCQH8TP24k1pR2Ez/dSJ5fMDMuGDMqVjULVPuvN
-	7J4Zd+yGZ3w6a209NoGRtR7Lfet1CqeI/VOh42GES5LrkRRMgeAlOBi3WaUuicw9yfv+n/tcETz
-	j+TKBsukmi6iQb8ONkDU8J9CdYX5sSSmOrChj0WXrNdqzv9y5beBHsFBjpnVVK5rKA==
-X-Received: by 2002:a05:7300:680e:b0:36b:d3dd:2e85 with SMTP id 5a478bee46e88-372575c63fcmr3296545eec.36.1794149947219;
-        Sun, 08 Nov 2026 06:59:07 -0800 (PST)
-Received: from smtpclient.apple (v133-18-180-162.vir.kagoya.net. [133.18.180.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37265c06c61sm5679879eec.14.2026.11.08.06.59.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 08 Nov 2026 06:59:06 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HCsa70S1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0751F0089F;
+	Sun,  8 Nov 2026 15:03:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794150222;
+	bh=QbYiVhTzlQpnBAy6zKPAAIvl7xIK7BIFFyDILWvOq84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HCsa70S1BZqJdmjyXob9EUXbfT32P5XkVIMtxLhAJLUpjKsjQUrUY5k1ASCZC+gzf
+	 j1bWcrKR2PZqf1vL40czsp2nwov2rDgxpO2To8dhaD8dn73l/A7FAkrbttcKy9d2yB
+	 SpUzbMVmIpO+uRrBm7g9XvoCfbjwxpqrF06FURysNnnKGSya4CSI8Q/qW9wYqrzVA8
+	 lCNlLFIvUYwlYGYdrAJ+SV1MsBFjIZn1fR759BfQ99VS3RrDAA55GCU5wTEeQ4zZRx
+	 WVgHtqCFQIgK//ZJdwA+nsC1PxiwlE3XOUCFqGj0X73nwDATogJd4ImRxywEwTsXZI
+	 kiM/wCADE2/5Q==
+Date: Sun, 8 Nov 2026 15:03:39 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sinfo@kernel.org
+Cc: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>,
+	Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: qualcomm: rmnet: fix TX aggregation teardown
+ race
+Message-ID: <20261108150339.GC18859@horms.kernel.org>
+References: <20261101233427.2050688-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <179357635158.3286.10001576876397197758@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,44 +61,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: Re: [PATCH net-next v2 0/4] tcp: fix tcp_base_mss on passive
- connections and test MTU probing
-From: Esko Mobius <echoowall@gmail.com>
-In-Reply-To: <179414895487.488859.839196891969031483@kernel.org>
-Date: Sun, 8 Nov 2026 22:58:50 +0800
-Cc: davem@davemloft.net,
- pabeni@redhat.com,
- ncardwell@google.com,
- horms@kernel.org,
- kuba@kernel.org,
- kuniyu@google.com,
- shuah@kernel.org,
- edumazet@kernel.org,
- linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- panweiping3@gmail.com,
- netdev@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <6A5F2D50-D257-4F6B-A1B6-BE08489591F6@gmail.com>
-References: <20261108-mtu-probing-series-v2-0-355d6490c3db@gmail.com>
- <179414895487.488859.839196891969031483@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179357635158.3286.10001576876397197758@kernel.org>
 
-> How the issue was discovered
-Hi,
+On Sun, Nov 01, 2026 at 11:39:11PM +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+> 
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-This came up while adding packetdrill coverage for tcp_mtu_probing=2.
-The test work involved comparing the initial send MSS and what happened
-after the first probe was acknowledged on active and passive IPv4
-connections.
+Hi Jérémy,
 
-With tcp_base_mss=1024, the active connection started at 1024 as
-expected. The passive connection started at 1460, and its send MSS
-dropped to 1242 after the first probe was acknowledged. That led to
-checking the passive setup path, where tcp_v4_syn_recv_sock() called
-tcp_sync_mss() before tcp_init_transfer() enabled MTU probing.
-
-Thanks,
-Yongjian
+As per similar requests for other patches, I would appreciate it if you
+could take a moment to respond to the questions posed by the bot above.
