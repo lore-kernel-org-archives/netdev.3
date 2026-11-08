@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794141569;
-	b=x1/XbA1vnVDgrVSQ5sAOp1vTjGAcv7n+uOIhJoxfyUuL+Qb2T5JR1KPtQrq10tMIE9Tw
-	 ZI1NlfGhUw7VGwWOhhJm6J+m9mjqE8lpvqhv11xhD5055blmFrq0HPVwKa7qKHa3Fen5X
-	 SSX4uSI/7Vyb1HS8Cf/wJckm1K4/FUGyC0VRvjysYGeABEq+JwQglEzZbbRIy6NG8tiwW
-	 cz5IR/mfefQv/Sx1nqgKI6z2rEIYn9sjFSm62sfP2vLIhXBt/fTD7V1F+QaSGjJvV4ZZ/
-	 4kwHW8XVXSHo3yERrdjijlhA6/VkSWMmpYa/YNv79TxSOTuX00o67Yaf/6ilwnRUveg==
+	t=1794141570;
+	b=fbDV/3EevdMt/CN/+OoObp//MjhFaeU03znKgOh5HpJsUGaLlWUL3fviuGhiA9hIiTqh
+	 6o0/DKWfo5mHnFT3ITDpd3DEjz/RLfQs8Ex5cxAECwyEnTkDC2EZBfs1L1dolLZf3Skhi
+	 vhZ8BWenYJg9NCMXhyPB3kFVUhhvtCzcM1Ej0GUu6YYKtL8AF116lIJqUtz/t+OyZuZbD
+	 IHb3naY26Hyk1SdmlqGznc4ah1hyQpZCw1keq8NHMCNyqb3H+JlFEyYpqtexxEjjeFnGA
+	 TZ3ioRG1y5iD+BZEurtacEq42hG9zCAK5MG2mXM99yaFlUrADwy9qlA7BE//ceuOVwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794141569;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141570;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=eREda5YYJE2S3LBGhMtfKgJaJUwdP06PFNJ7xCwW/JQ=;
-	b=1E4cQVLK0u+CdWoqs+1RtsZJPZLICVudj/WhafmA8QrBwiF0hhLXnvUfa64AuduhxF9u
-	 nwphIBO5JmzV9nPTRm1/GSpP2NBvU4t/PnSDwYBrj7FBAx5mHqjo3jnIPijCo01EEEVpr
-	 LvFHCVOtThXacKdZKXhk/76aecqIMtPB+Yxi6YzX3mgG2CwKhY92CDXj6uiGBneiHHUKj
-	 6jX1yFK+j7sBxwtr50rb0YDctPjUe5xUy4g+zxiH7k93e1CtVYcpTHlUM6I+wPuAEFEKd
-	 acczBc/jMLiO9CZ9nLWZszZuy40YEniLOyTd5c+ZE7842CRzl7uBOUHC5C6qZIcXC6g==
+	bh=mM6DVwCqDOpbkvQNO2LJaVej93mzjTfWGXqKWxW9Pm0=;
+	b=D582krLR9ypkRZjunufjVGNLrIFHZRt1PIcPkVKkbcYNwTbrPU6eTM00QwsxgRzJxKtF
+	 fGi3c4WM7sJe34w2jbSha1f7t7H4AdtQjLNMBJsHQ5geueZh3nX2O5QUI9cAoEyG39CBs
+	 qd+42uSlRq4LPKQhqOyGEDEzPiL0WhQaD2Bqyvs5s4/fuZ/XWyZr1kncUpymhMhPoyefR
+	 Y6NKQ3w+QV17ktYCZ+zF0vGUlE8Rt1OzjAPcnGhjhWAzCFvfJHDVfc1JMjDFlecMn3qLu
+	 2kaO/wTgbYDs4tpcXtACWE9IwjWPaPeDu4SZiD3Px2fjT3V/RemIaRfY0TI/ERiHjqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QvL82ojH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FVW39Mlx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9E1606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 12:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A53606A32A
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 12:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QvL82ojH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193D91F0089F;
-	Sun,  8 Nov 2026 12:39:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FVW39Mlx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDF21F008A1;
+	Sun,  8 Nov 2026 12:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794141568;
-	bh=eREda5YYJE2S3LBGhMtfKgJaJUwdP06PFNJ7xCwW/JQ=;
+	s=k20260515; t=1794141569;
+	bh=mM6DVwCqDOpbkvQNO2LJaVej93mzjTfWGXqKWxW9Pm0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QvL82ojHkxl75mLFGUNQpFZDyMG6YJGO7dAMitN645AW4D8i/CFgAIyaPKTNBFqOQ
-	 xgGdKw1j35HpuI607tYXmF8PCxbW2tDwJ1ryTs7V9jukUSmuwUgnGLpEvaTfk4EYLb
-	 MBtLT0nFWb9KxY8/W1j1VDf+aFvz3ZK2CFbRrb9IErBxrpupMj9mZXDIlb/u1A4HMK
-	 7jy8qAjhqMNTb5c12DwyzMyv0bFP9iUrs8wAqjx0FPBISyy+pOWFXjvdwU/XxWPCkz
-	 2koZqu2eTcJ7IlZHrO1k7pXHbJDNmZ0kd2xekV/A1wobZPhIq5sHpKbi7G/bzhXxne
-	 SgStZWEoI0D1Q==
-Subject: Re: [PATCH net-next v6 1/2] netlink: specs: add ovs_flow del and set
- operations
+	b=FVW39MlxmAMUesAyTlkebNAGtN445AhGLpKmXc05PH6EgprzfmAEqcgRHHkLEj+EN
+	 qTpaAFKcIl+jR9TN8V6VNtgZpAcSj1DefM7jb9kW/Twukpvp5z5oPc1RClwkEJuk1o
+	 sfLNN0ej5qTazrvj4E8VFb+mHfKAtNLw5zh8YBwH/q7n/qn+54hMlM9SI54X7FDF3P
+	 O8ltkkVr6CUaaZRP+eL7wVOONEgaqNK6sMPw/u2kAGEipgPxtbCHk2+zGIPmbXkoRj
+	 Lnd+gqvElfS5/sJdaU++nZTT9HgE7Ap6sSYfQK8ATgkqO4TZVhCOB+gcE3GNfCe6nr
+	 QhbbLvvJ5C/BQ==
+Subject: Re: [PATCH net-next v6 2/2] netlink: specs: add ovs datapath and
+ vport set operations
 From: netdev-bot+sashiko@kernel.org
 To: houminxi@gmail.com
 Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
  dev@openvswitch.org, aconole@redhat.com, echaudro@redhat.com,
  i.maximets@ovn.org
-Date: Sun, 08 Nov 2026 12:39:27 +0000
-Message-ID: <179414156764.994134.5410552449080338660@kernel.org>
-In-Reply-To: <20261107120647.874906-2-houminxi@gmail.com>
-References: <20261107120647.874906-2-houminxi@gmail.com>
-X-sashiko-severity: Medium
+Date: Sun, 08 Nov 2026 12:39:28 +0000
+Message-ID: <179414156884.994134.5015506800657224516@kernel.org>
+In-Reply-To: <20261107120647.874906-3-houminxi@gmail.com>
+References: <20261107120647.874906-3-houminxi@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,176 +65,141 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The new ufid text in Documentation/netlink/specs/ovs_flow.yaml
-  (flow-attrs/ufid) and in include/uapi/linux/openvswitch.h…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the get
-  reply list, now anchored as &flow-get-reply and reused for the dump…
+- [Low] The new vport `set` operation in
+  Documentation/netlink/specs/ovs_vport.yaml lists `options` and…
+- [Low] The commit message says ifindex is declared as s32 with `checks:
+  min: 0` because 'A generated client would otherwise offer a setter for…
 
 --
 
-netlink: specs: add ovs_flow del and set operations
+netlink: specs: add ovs datapath and vport set operations
 
-This adds the del and set operations to the ovs_flow YNL spec. It also
-gives the dump its own request list, changes probe to a flag, and marks
-the ops dont-validate and admin-only. The key, actions and ufid docs are
-rewritten in both the spec and include/uapi/linux/openvswitch.h.
+This adds the SET operation to the ovs_datapath and ovs_vport netlink
+specs. It also adds attributes to the datapath NEW request, marks
+new/del/set as uns-admin-perm and marks the ops as dont-validate strict
+and dump. The ifindex attribute moves from u32 to s32 with a min: 0 check
+in both families.
 
-> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
-> index 951837b72e1d2..bfdbf55bc219b 100644
-> --- a/Documentation/netlink/specs/ovs_flow.yaml
-> +++ b/Documentation/netlink/specs/ovs_flow.yaml
-
-[ ... ]
-
-> @@ -438,18 +446,22 @@ attribute-sets:
-
-[ ... ]
-
+> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+> index fa975f8821b6c..16b21c42cac8c 100644
+> --- a/Documentation/netlink/specs/ovs_vport.yaml
+> +++ b/Documentation/netlink/specs/ovs_vport.yaml
+> @@ -111,7 +111,9 @@ attribute-sets:
+>          type: unused
 >        -
->          name: ufid
->          type: binary
+>          name: ifindex
+> -        type: u32
+> +        type: s32
 > +        checks:
-> +          min-len: 1
->          doc: |
->            A value between 1-16 octets specifying a unique identifier for the
->            flow. Causes the flow to be indexed by this value rather than the
-> -          value of the OVS_FLOW_ATTR_KEY attribute. Optional for all
-> -          requests. Present in notifications if the flow was created with this
-> -          attribute.
-> +          value of the OVS_FLOW_ATTR_KEY attribute. A request that carries a
-> +          value outside that range is treated as if it carried no ufid, so a
-> +          new flow is indexed by its key. Optional for all requests. Present
-> +          in notifications if the flow was created with this attribute.
-> +          Ignored in a dump.
+> +          min: 0
 
-[Severity: Medium]
-Is this accurate for a zero-length ufid? flow_policy in
-net/openvswitch/datapath.c has:
+[Severity: Low]
+The commit message says:
 
-    [OVS_FLOW_ATTR_UFID] = { .type = NLA_UNSPEC, .len = 1 },
+  The ifindex attribute is signed in both policies, which read it with
+  nla_get_s32_default() and reject anything below zero, so declare it as
+  s32 with a minimum of 0 rather than u32. A generated client would
+  otherwise offer a setter for values the kernel rejects with -ERANGE.
 
-and validate_nla() in lib/nlattr.c checks the minimum length even when
-strict validation is skipped:
+Does the min: 0 check change anything a generated client offers? In
+tools/net/ynl/pyynl/ynl_gen_c.py, checks are only used to build kernel
+policies:
 
-    case NLA_UNSPEC:
-        if (validate & NL_VALIDATE_UNSPEC) {
-            ...
-        }
-        if (attrlen < pt->len)
-            goto out_err;
+        # Classic families have some funny enums, don't bother
+        # computing checks, since we only need them for kernel policies
 
-So for new, del, set and get, the genl core returns -ERANGE for a 0-byte
-ufid before any handler runs. A del with a 0-byte ufid and no key then
-gets -ERANGE and does not flush the data path.
+The OVS kernel policies are not generated from these specs. They are
+hand-written in net/openvswitch/datapath.c and already contain:
 
-For dumps the core skips validation. However, ovs_flow_cmd_dump() parses
-with the same policy and returns the error:
+	[OVS_DP_ATTR_IFINDEX] = NLA_POLICY_MIN(NLA_S32, 0),
+	...
+	[OVS_VPORT_ATTR_IFINDEX] = NLA_POLICY_MIN(NLA_S32, 0),
 
-    err = genlmsg_parse_deprecated(cb->nlh, &dp_flow_genl_family, a,
-                                   OVS_FLOW_ATTR_MAX, flow_policy, NULL);
-    if (err)
-        return err;
+So min: 0 has no effect anywhere. The generated s32 setter still accepts
+every negative value. Those are the same 32-bit patterns (0x80000000 to
+0xffffffff) that the old u32 setter could send, so a generated client
+still offers the same rejected values as before.
 
-So a 0-byte ufid makes the whole dump fail. It is not ignored.
+There is also a side effect the message doesn't mention. The vport ifindex
+attribute is part of the GET reply, and ovs_vport_cmd_fill_info() still
+sends it as unsigned:
 
-The treated-as-absent path in get_ufid_len() in
-net/openvswitch/flow_netlink.c is:
+	    nla_put_u32(skb, OVS_VPORT_ATTR_IFINDEX, vport->dev->ifindex))
 
-    if (len < 1 || len > MAX_UFID_LENGTH) {
+With this change, the ifindex member of the generated ovs_vport_get_rsp
+struct changes from __u32 to __s32. Nothing changes on the wire, since
+both types are 4 bytes and dev->ifindex is always positive.
 
-After policy validation, only the len > 16 case can reach it.
-
-The min-len: 1 check added just above also says 0 octets is rejected,
-which contradicts the doc text under it. The commit message has the same
-contradiction:
-
-  "Anything outside 1-16 octets is read as if the attribute were absent,
-  so a del with such a ufid and no key flushes the data path"
-
-next to "record the minimum length the policy enforces in the attribute".
-
-The same claim also appears in these places:
-
-  - the del op doc ("A request that carries no key and no valid ufid
-    flushes the data path")
-  - the new key doc
-  - @OVS_FLOW_ATTR_UFID and @OVS_FLOW_ATTR_KEY in
-    include/uapi/linux/openvswitch.h
-
-The later patch in the series ("netlink: specs: add ovs datapath and
-vport set operations") does not touch ovs_flow.yaml or openvswitch.h, so
-this text is still there at the end of the series.
-
-Could the docs say that a value longer than 16 octets is treated as
-absent, and that a zero-length value is rejected with -ERANGE?
-
->          display-hint: uuid
+Could the commit message give the actual benefit, which is matching
+NLA_S32 and nla_get_s32_default() in the request path? Could it also
+mention the type change in the reply? The same rationale also appears for
+the ovs_datapath.yaml change.
 
 [ ... ]
 
-> @@ -969,25 +981,33 @@ operations:
->        doc: Get / dump OVS flow configuration and state
->        value: 3
->        attribute-set: flow-attrs
-> -      do: &flow-get-op
+> @@ -165,6 +172,27 @@ operations:
+>              - netnsid
+>              - upcall-stats
+>        dump: *vport-get-op
+> +    -
+> +      name: set
+> +      doc: |
+> +        Modify an existing OVS vport. The vport is picked by name or by
+> +        port number. The kernel rejects an ifindex with -EOPNOTSUPP, before
+> +        it looks at the type or the options. It rejects a type that differs
+> +        from the vport's type with -EINVAL, and rejects options with
+> +        -EOPNOTSUPP. The only attribute that changes state is upcall-pid.
+> +      value: 4
+> +      attribute-set: vport
 > +      dont-validate: [strict, dump]
+> +      flags: [uns-admin-perm]
 > +      do:
->          request:
->            attributes:
->              - key
->              - ufid
->              - ufid-flags
-> -        reply:
-> +            - probe
-> +        reply: &flow-get-reply
->            attributes:
->              - key
->              - ufid
->              - mask
->              - stats
->              - actions
-> -      dump: *flow-get-op
-> +      dump:
 > +        request:
 > +          attributes:
-> +            - ufid-flags
-> +        reply: *flow-get-reply
+> +            - name
+> +            - type
+> +            - options
+> +            - upcall-pid
+> +            - port-no
+> +            - ifindex
 
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. This
-reply list is now anchored and reused for the dump, so should it also
-list used and tcp-flags?
+[Severity: Low]
+Should options and ifindex be in the set request list? The kernel always
+rejects both of them:
 
-ovs_flow_cmd_fill_info() always calls ovs_flow_cmd_fill_stats(). That
-function puts both attributes in get replies and dump entries:
-
-    if (used &&
-        nla_put_u64_64bit(skb, OVS_FLOW_ATTR_USED, ovs_flow_used_time(used),
-                          OVS_FLOW_ATTR_PAD))
-        return -EMSGSIZE;
+net/openvswitch/datapath.c:lookup_vport() {
+	if (a[OVS_VPORT_ATTR_IFINDEX])
+		return ERR_PTR(-EOPNOTSUPP);
     ...
-    if ((u8)ntohs(tcp_flags) &&
-         nla_put_u8(skb, OVS_FLOW_ATTR_TCP_FLAGS, (u8)ntohs(tcp_flags)))
-        return -EMSGSIZE;
+}
 
-Because they are not in the reply list, YNL-generated clients do not
-parse the last-used time or the TCP flags. The dump already shared this
-reply list through *flow-get-op before this patch.
+net/openvswitch/datapath.c:ovs_vport_cmd_set() {
+    ...
+	if (a[OVS_VPORT_ATTR_OPTIONS]) {
+		/* There are no vport types that support legacy options. */
+		err = -EOPNOTSUPP;
+		goto exit_unlock_free;
+    ...
+}
 
-[ ... ]
+The vport family is code-generated (tools/net/ynl/Makefile.deps has
+CFLAGS_ovs_vport). That means ynl_gen_c.py will emit set request setters
+for ifindex and for the options nest. Any request that uses them can only
+fail with -EOPNOTSUPP.
+
+This seems to go against the reason the commit message gives for retyping
+ifindex: "A generated client would otherwise offer a setter for values the
+kernel rejects". The get and del ops go through the same lookup_vport(),
+and this patch leaves ifindex out of them.
+
+Would a request list of name, port-no, type (used as a match check) and
+upcall-pid better describe what the kernel accepts?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107120647.874906-1-houminxi%40gmail.com
