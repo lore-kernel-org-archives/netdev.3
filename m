@@ -1,56 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794134429;
-	b=x7t3ZJr2d+F+1VIkW8enLQgrLb2OWCT0t1A9QFHpBiI3SniT+wk7i5oDHkoLKfeS362Q
-	 NS8Z1ZMvrnmGNEJ6fce1s+nnBcbE1erLe8btwAr4nm96IxxKTFAlv6oz5sh5IO7ecQtIv
-	 /blRXA1UGBvaTLxohkAtH7q6/Zls2sBJbZjOhhCJlS+woA28XxOyPips3jHrnTfm8Qqy/
-	 sytLGBSRvr0nM2RAMMvlAYIXgR4AD+bsL3eNgRLWhIBPeKL7xR+mSz72murMrDKnAefgu
-	 /FEXGkjEBgLr0I77PFcIgXI27C+CDEhHuclbs8sUGsoHAeLa/emwSIkPMEvOfSpr/uQ==
+	t=1794134449;
+	b=BINCo+mpRlcQL4I2+TYa6VbEGeKLrx4smmquWHsGAYo/ewZf4tQMVAA7/6bzAAVpckCo
+	 4HPzdzbMk/OFyFoklmLes+lH78cO2EViRBjG68J/YLeeuGOwkQ71QwzTqnWD9RqSlwzXu
+	 wc8hQQoebeWQXRgQUs660lgC+AcK/r1VxukDks97daUoJtrl2+7wVlgOEfFozpcaDLbaR
+	 BHwKY8mhJxikj46KY/wpTHPU5PgLoNo+yRlT0jpUyvkMcPXN8tA6TVN4LjxRgQrAnHzAz
+	 J4o5aGCB+27yONvM4TzirVNA71DBkMlbTKcU4pbhfritW11KW6ONgJNDTKGsitBZ+yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794134429;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=ovWprSQOuXD+4mcX3DSPO+n0usba5lmjW91zjF05Tps=;
-	b=yzx4KtOcicVjugdOm+EBQ4xGomvwuoz5q7fhF263AY4V/J163B0FXsFtaRPDvyK+ZhFp
-	 tdPaZ2JzyvCT6aBZj+ml9mlJ+sLSlAsONQkRdPLHckwW8WV95EEj8aih3EOM8BucY6cPd
-	 ENUGLhBzSWIfbwpOtT3+S2/gKaqzV0IeGEplm2O27PsMwJ7qVdYcQscNgTOPFRxb3mzMZ
-	 FlIbCWlfZopP5aLiLpXDhZYrJriOn+kMd+jXwc0VVr6qA83IJVGBBMBxmd4fVXpTE5Ukn
-	 QTEjbVxGD4AjiDrE6m52CWXm9BSSxZLopFwROTr7V/4gdBqBM3MyLBUIjry0HtX68kw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794134449;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=hI5wV3V3vozZi1HhdmXT2xHjqsg5h5x/8DZnssR+H1s=;
+	b=j+mMYFhI7uN06KeRBM9XIE+RjRA13us/SmecY9OK3M45NMifkTDRR3ppjEpgrbXuA6vo
+	 QQKc7BCwQYbOC4SP0lIMMncReNjd7QpgM4xdGAuLwfFeOD+jnfG5crdGx79Trwdv4FfXa
+	 oThpsDiakzyKnmSbIeuCRDX4hotCvolbmFtDuVzngzKXrV4JxCtXlSQea8LeK+X+qPmHF
+	 jAWvF5YySRL0pJQlGe0yv4yPvNLKw2oE5cLwzksbE6a7mYafrbhiY+jC9UAeSFOl56Kx9
+	 2O7pYrNR192sAJtf0tfx6DzCAKiVNNhuA3t1ThfzyOPJc4unmq29BTSffrMJFeeGLmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.25
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ohRQ6iJ4;
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F1606A332;
-	Sun,  8 Nov 2026 10:40:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB8F1606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAB31bqRUfBqgqeZAA--.18597S2;
-	Sun, 08 Nov 2026 18:40:17 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Greg KH <greg@kroah.com>
-Cc: Alex Elder <elder@ieee.org>,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- elder@kernel.org,
- kuba@kernel.org,
- linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org,
- pabeni@redhat.com,
- vulab@iscas.ac.cn
-Subject: Re: [PATCH] net: ipa: Fix valid_state leak in ipa_smp2p_init()
-Date: Sun, 08 Nov 2026 10:29:00 +0000
-Message-ID: <20261108102900.3182133-1-vulab@iscas.ac.cn>
-In-Reply-To: <2026091702-engraving-bride-3af1@gregkh>
-References: <20260917115424.2149947-1-vulab@iscas.ac.cn>
- <2026091702-engraving-bride-3af1@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4A2606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 10:40:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E4A2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ohRQ6iJ4
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b10ca4e3f9so10398a91.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 02:40:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794134448; x=1794739248; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hI5wV3V3vozZi1HhdmXT2xHjqsg5h5x/8DZnssR+H1s=;
+        b=ohRQ6iJ4wbszgq2IRy/MehqSnwaeFCGJcF8qB3YBq8L+Rk6WX3Z0ze1I72w+yJiOX9
+         FYdYUqwC77dnyzTN5SLpoe94OZ04uDevu4LSD5gJJJL08Vx8GfKmTpzKt85XFZEGEF6g
+         G8HClXK9XXE9vio8uhQWbmM9f1h1XAnGJNEP5AquHJF/btblvrIcmMqMe8uK1PyyWvuB
+         MRQjxJSM7aVWixSaVgSXHPeSBf3qRVCHATxy9GjmwOqwKijYtKj69EW2RB8hWqFkebY4
+         i3FWoSqau00UEafFQH0Qan+j2SGs0rbTow+ULzA8m2s4W5PTJJdQ1GDNv2DJXxogfH/u
+         wdiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794134448; x=1794739248;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hI5wV3V3vozZi1HhdmXT2xHjqsg5h5x/8DZnssR+H1s=;
+        b=RiZGE7CAZgalUxHFM5pFSL2Kc+zxM0osxVnk/9HvqwohAbF/li6ifHfq4eRqxLi2ZB
+         Go9vzud0O2PTJM6XSv68s3DhSt5E6Kni5Yx5h2JRHyJ8G6D77qteQYuVoJm+IxM/jCSV
+         o4q6359SV19n6cQnGr4azmib8agaYcELaq9YJlKPenasywFhrzC9718a/jkD78QRPQ0q
+         mAWF8fbG7FhGBEW0gVSfFCFk6eguqrWr4c8PevIndVadpnxyDpqBhLacnyGzgFa/hP1u
+         IP9XbnVey2MWBa8rB+5BHrZ5V0yUP4xYbAvJr+aJ5hiSEk80a2HMUWplFaK2qQHTXBWn
+         i7Nw==
+X-Gm-Message-State: APuU4Z/irodvWt6rQjyMNHA6V47UJdF1hl9f1AnWku+uC+Jl2/rDWotk
+	JAaFc6nfrewy30PqIN0IxelwA2GDRBuTeJhJWMKpL2LtkoCjhWKT7dDnruPsYQ==
+X-Gm-Gg: AYBFou06RvXBzrqE4dFtEM3ouEYGrG3a1H35qTIi2dES5oZIPGehmPEJkLX4sHDhtvL
+	gv0UK8NDoY/WG84YtK6sO54turpx2I3n/NKPH2RfgyRf9IXdd6oI5wrEQX2GbBpqlUJ4+EnuGld
+	4Fzv1Py1C0aijSI9MHyCdw4GLC4FzC4MFovTgps0XaRnDw+cS9khtz7ZD7rkSZqBcgLMRtyi13L
+	Woj+fBWGZBW+207FcrOqiZs08JIkl/tBicG5ppjOuptwECA2REziayfHw6NtzOxnNhW/HAhEXWy
+	5VTIoBabZzjnOxQ1cbcgXW242KeFsY5xnJjc6TYS3zZEJxGOAv8B39gb9Us4wKag7xKxIJspVPN
+	XyazFojaRt3xYLWbzfGdChy7YmQeX8iUkMxNP79JpFxt8MPiZkRiw3rwYVNS2DHeVHNKTFZXXGn
+	jRkhOmB6Y4n10n3XFBle7wTiyHE9VqSTiqv3dMC27NK+GLK/mfXMwHwQysysq0g0QI1JQKwVPGR
+	cNMNH85SktUR45kRjqn2VoCVqnSikUa10gx5Yab2+Cl/Cme2zNsMJPkRimpb+FJFPfBjllO2F0r
+	VVlt0lMiaQzC3K9wFa7dGwVNroy/0Vacc0/UT1N1f0syjVC5ybDlPg==
+X-Received: by 2002:a17:90b:578e:b0:3a4:9dd7:296f with SMTP id 98e67ed59e1d1-3b12d388298mr932987a91.40.1794134448311;
+        Sun, 08 Nov 2026 02:40:48 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1032c4508sm3724945a91.2.2026.11.08.02.40.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 02:40:47 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: dsa: motorcomm: Stop MIB poll on link down
+Date: Sun,  8 Nov 2026 18:40:34 +0800
+Message-ID: <20261108104037.1320166-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,56 +98,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:zQCowAB31bqRUfBqgqeZAA--.18597S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF1rur13tF18KFyfuw45ZFb_yoW8XFWfpF
-	Wftas0k39xJ3WSkw1Iqay0qa4ru393Gay5GasxK34Fvr98WrWxtryftrWqva43u3yfWFW7
-	tF43tF15CF4DA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
-	87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMx
-	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
-	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
-	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v2
-	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxV
-	W8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JjU-B_UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRIFA2rv4kisHAAAsC
+Content-Transfer-Encoding: 8bit
 
-Hi Greg, Alex,
+The poll re-arms itself unconditionally, and link down only cancels the
+work non-sync, so a poll caught running kept polling every few seconds
+while the link was down.
 
-Sorry for the very late reply to both of you, and for the extra work this
-caused.
+Cancel the work synchronously so that the re-arm from a running poll is
+rejected.
 
-Alex, you are right that 96ca1e658ae45 ("net: ipa: fix SMEM state handle
-leaks in SMP2P init") already covers this.  It releases both SMEM state
-handles on the init error paths and in ipa_smp2p_exit(), and it has been
-in mainline since v7.2-rc2.  My patch duplicates it, was incomplete on
-its own, and was generated from an old snapshot (v7.1-rc4 based), which
-is why its context does not match v7.2.  There is nothing left to fix, so
-please disregard it; the patchwork entry already shows as not applicable.
+Not carrying a fix tag - the existing behavior is harmless nevertheless.
 
-Greg, I owe you an answer on the Assisted-by tag, and I am sorry for
-leaving it hanging.  The candidate came from our static analysis tooling,
-and DeepSeek and GPT-6.1 Sol were used to audit the finding and help
-write the change; I reviewed the result and I am responsible for what I
-sent.  I should have declared that in the changelog itself, and I did
-not.  I have re-read Documentation/process/generated-content.rst on this
-and will state the tools used in the changelog text from now on.
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/dsa/motorcomm/chip.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Since all three changes here are already upstream, there is no v2 to
-send.  On the volume: you are right, I sent far more patches than I could
-follow up on, and the review time that cost is on me.  This has been an
-important lesson.  I am now going through all of the outstanding feedback
-on every patch I sent, by hand, thread by thread, and I will answer each
-one.  I will not post patches in batches larger than I can personally
-review and follow up on.
-
-Thanks,
-Wentao
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index 33e5fc127244..758599ba0957 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -1837,10 +1837,9 @@ yt921x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
+ 	int port = dp->index;
+ 	int res;
+ 
+-	/* No need to sync; port control block is hold until device remove */
+ 	pm = priv->ports[port].mib;
+ 	if (pm)
+-		cancel_delayed_work(&pm->work);
++		cancel_delayed_work_sync(&pm->work);
+ 
+ 	mutex_lock(&priv->reg_lock);
+ 	res = yt921x_port_down(priv, port);
+-- 
+2.53.0
 
