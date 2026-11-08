@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.122
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794177023;
-	b=RjSC85H5ZCGwf26yTk3gGovfc0gV7W/vdiSHdPrPAJ8/hQeiiMVQWPsqnGs9jHwcNYqy
-	 RIf8SDAp8A5cHTdEqOkVuqpBeb/vY9P1PJsKLFfoLIXTwLdtlyDql/3FNazOnAk7ZMJBI
-	 H2wBKoNss2Kyh2v08r3JX0FjH2v4S1LjbVyof+3IRiNT0YQMajIsSgLP5DVTerbl2reIX
-	 fvI6SWisJHN/IhBqin14yZX/iM6Mbdy79+Zedir55CWHJ9oPRG7jGSt6eGrYbhT6ajkjT
-	 TvzvbbFsCFuHdRl2rIWVN9Tb5uOE1ntacMvxIbYjFUx1t0JQ4BEt5aKupAJ+/YHGrVQ==
+	t=1794177109;
+	b=dNqhhIyZAUba5duvDKwB/CjcCiJpXiYGqmijsinbhb20FpOJpuwHXnz5KlfVNB14cWZm
+	 Gcpvlt2mSvs2HjunbubpkSHDc1EapfXXeHsBCOImvcPL6u3mHEqVNKpCDRNEtXr2Polqd
+	 yCFP092TdogjqkbPkfeHVXxH5E2J6Me2CZe4G2RJaVFv4EFzF0n9crPE3NF4ZKXP3LiSE
+	 /dgWadJWipbIsDRV+oHwGgwsOuPejqIwsl2iSPBnLiBI5gqqUKX0pXG2B4FUuwJocse6F
+	 7If4yASWP/9lNdBqPqs7aW5foxlEM48g/Xx2Nhfocw4FzVcnKX/A6+/qDBmPRbGXzRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794177023;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794177109;
 	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
 	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=LraNvc3nOkreiyFCQDE2c+yLeQKCkjvUV3ZdM9btlOs=;
-	b=bOvaazCuK3PAZG9XgCiluYAa17D/mIuDzKH+cWRSm9FjEBXKqQMtlT7siTpI+LrMeS7g
-	 8qA5VJYxSz8XmiNPbn1AGJ6PHdC7rJs7hOxV+vrSNoAGj6tn6vZlBgQbT1af4iiZhJfr/
-	 Rq/hkyi65WY6RZA+6L51SgO+91I9z8MnlRmTmIOtMawzvgL30YWllHzUZPEjebU3Sno0r
-	 UeCYlwpg6INE3Td1N5S7XJG842FbUM547h+8QM7XZuPjf1F7e9xiAXPi0IUqy6QhCZ6tC
-	 x/JfF5DAzYuMQyRIo4dhkGp0/C6Ttj4X2eZHH9P6vDBwItj+L/SFNxOcaGXoEOt4oog==
+	bh=5cijfvKlEQggiNPs5sr9WSeATZw23mxFpMifA1tF1xw=;
+	b=le/3iey7W5/UCvA82adQyrc8on98TQT0gIiqiIz8RzeFYroP4eyY+gJT6onjO7P91NcA
+	 edCd8jDUv46FIwZePEnshgRJdf9+HX0OW9fXmmR5GjZ7V8yqXtHej9SjgKcQn1LP5JGU+
+	 1CKXJRZcXxPyiw9z8llnqnwGOT1BuwRKCX5dRc7E3MUPnc/UlFqS9Txc5FrLPDTl9GC4m
+	 Hs3eMgM0ParlePt+JRKKokriuS2I1r94kl3BSxSyVirFw+fQUTfHKwfJT+UEp1j5bx/ZD
+	 81kOtn18XPoiaazKkx+5yNih2COdAmzx8omGAYpp8n3XJwYRMl5kvX2mwbuKWt/dzsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=proton.me;
 	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=HR25B7N5;
-	arc=none smtp.remote-ip=185.70.43.16
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=QaI44+Ey;
+	arc=none smtp.remote-ip=109.224.244.122
+Received: from mail-244122.protonmail.ch (mail-244122.protonmail.ch [109.224.244.122])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E687606A334
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 22:30:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E687606A334
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B90606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 22:31:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09B90606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=HR25B7N5
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=QaI44+Ey
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1794177020; x=1794436220;
-	bh=LraNvc3nOkreiyFCQDE2c+yLeQKCkjvUV3ZdM9btlOs=;
+	s=protonmail2; t=1794177106; x=1794436306;
+	bh=5cijfvKlEQggiNPs5sr9WSeATZw23mxFpMifA1tF1xw=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=HR25B7N56PNW/so8OEPMqZk9gDAtYbJ6iBgJhWFXjROykEzyMO5Cdql72pGo51fX/
-	 e6QX2Z7nNzwdmiqlPpSgw8UnK2nxvsv68UForoySADTubzHpF2yUkpcQEC/Pw9SsIL
-	 NjktMNDnG4WEYfLAXf5dqe9bTDg3TwH1haGPAPJ+fDQmiOFF6Zo/89uY4qhCEz6PXA
-	 jDK1U3LKLIP2mJtO+jzo3plRZI2l8KaORnE0HySRKXxzBtLeNZKeu/eIySs+h4lH2k
-	 cZJrwCEEMbciqzorhpx5NqaVA0PZs9C5kG/B8gGfTdYnKmiCfdbJdPC+jY3lnzDwO6
-	 5xPdlW4T1vKqA==
-Date: Sun, 08 Nov 2026 22:30:15 +0000
-To: "david@ixit.cz" <david@ixit.cz>, "davem@davemloft.net" <davem@davemloft.net>, "edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+	b=QaI44+EyZnRGILiwTwALpKHXpPLr+1fYjuyS6bOVWQHgSI9dhZmFpTPUNqgsF31d/
+	 Cyx2L7Jk1mrFV7yMM29xB9mfuC6jMI84Xg9DpKeJmnLNGdom1HE4OGD2KS45nNEOmd
+	 4LttuEL3illvyrlJ0ylG7tC0U5QpJdYW2kWf9AIgi5qHHXA9hBSvxYy/xUFRIb/KCF
+	 bORKEJlj2F6TWlo50JAbPKGQ7MXZXjxaO4OuyyBgCxzX104doE4w5oyXBpvue3/eKe
+	 C7YMH1pfwe3W+ry9PSvdVvaU0OhwtP1K3vPNf5RGfY79cUvk/ga0faVtqWuKrdDZk6
+	 BNYcLEFN0P70Q==
+Date: Sun, 08 Nov 2026 22:31:42 +0000
+To: "andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, "edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
 From: Noah Weinberger <NoahWeinberger2003@proton.me>
 Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH] nfc: digital: check length before reading SENS_REQ
-Message-ID: <i69izu1c4hLS_ZLvaL0RVyF5pJt0gkMCEY-87g-j6iGMyCi9WKPGInJF53uwP9q9k4IPeEoBS6RKRCNaavGJlY7G-ifRKqdeMSC0rzYf9Tg=@proton.me>
+Subject: [PATCH] net: dsa: sja1110: pull meta timestamps before reading them
+Message-ID: <mnJ9l2Ebi69wyTB5k6FBEnjRESb0SmEnlqwaQAOEJ1x5qRQJ3ZMVAdX7Bn9-yWEnQ0iv_3KLoI1yUVCc88IJOVGGow9rOyG6Y54sPMeW0zQ=@proton.me>
 Feedback-ID: 186545857:user:proton
-X-Pm-Message-ID: e54c4e86c06a3adb22bca49215ddaa4197b07323
+X-Pm-Message-ID: ee58b5b60b300db1b03a557a2b54e220ed71265f
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,15 +66,22 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-digital_tg_recv_sens_req() reads resp->data[0] into sens_req before the
-!resp->len check in the very next statement, so an empty frame reads one
-byte past skb->len. The patch simply reorders the check (the ||
-short-circuit then makes the read unreachable on empty frames) and drops
-the now-unused local.
+sja1110_rcv_meta() walks (n_ts + 1) ten-byte timestamp records starting
+at skb->data + 2, but the only linearization on the path is the 4-byte
+pskb_may_pull() in sja1110_rcv_inband_control_extension(); nothing
+covers the meta payload and nothing compares it against skb->len. A
+truncated meta frame (or a non-linear skb) therefore reads up to ~320
+bytes past the linear data and feeds garbage into the PTP timestamp
+handlers.
+
+The in-band header is generated by the switch itself, so on correctly
+functioning silicon the fields are self-consistent; this is hardening
+against buggy or compromised switch silicon and against short-skb
+conduit paths. The patch pulls the meta payload before the loop.
 
 Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd =
-(v7.4-rc1, 2026-11-07), net/nfc/digital_technology.c:1088-1112 (digital_tg_=
-recv_sens_req).
+(v7.4-rc1, 2026-11-07), net/dsa/tag_sja1105.c:529-573 (sja1110_rcv_meta), 5=
+75-598 (caller).
 Longstanding code.
 
 This was found during an assisted (AI-supported) static source review of
@@ -87,31 +94,22 @@ verification rather than a battle-tested fix.
 
 Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
 ---
-diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
-index ae6487c..d9a8e9f 100644
---- a/net/nfc/digital_technology.c
-+++ b/net/nfc/digital_technology.c
-@@ -1088,7 +1088,6 @@ static int digital_tg_send_sens_res(struct nfc_digita=
-l_dev *ddev)
- void digital_tg_recv_sens_req(struct nfc_digital_dev *ddev, void *arg,
- =09=09=09      struct sk_buff *resp)
- {
--=09u8 sens_req;
- =09int rc;
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index bfe1f74..caa6659 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -537,6 +537,12 @@ static struct sk_buff *sja1110_rcv_meta(struct sk_buff=
+ *skb, u16 rx_header)
+ =09struct dsa_switch *ds;
+ =09int i;
 =20
- =09if (IS_ERR(resp)) {
-@@ -1097,10 +1096,8 @@ void digital_tg_recv_sens_req(struct nfc_digital_dev=
- *ddev, void *arg,
- =09=09goto exit;
- =09}
-=20
--=09sens_req =3D resp->data[0];
--
--=09if (!resp->len || (sens_req !=3D DIGITAL_CMD_SENS_REQ &&
--=09    sens_req !=3D DIGITAL_CMD_ALL_REQ)) {
-+=09if (!resp->len || (resp->data[0] !=3D DIGITAL_CMD_SENS_REQ &&
-+=09    resp->data[0] !=3D DIGITAL_CMD_ALL_REQ)) {
- =09=09rc =3D -EINVAL;
- =09=09goto exit;
- =09}
++=09if (!pskb_may_pull(skb,
++=09=09=09   2 + (n_ts + 1) * SJA1110_META_TSTAMP_SIZE)) {
++=09=09kfree_skb(skb);
++=09=09return NULL;
++=09}
++
+ =09cpu_dp =3D conduit->dsa_ptr;
+ =09ds =3D dsa_switch_find(cpu_dp->dst->index, switch_id);
+ =09if (!ds) {
 
