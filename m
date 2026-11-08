@@ -1,110 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794153229;
-	b=LkbU2/rAIVsMkxgjF+uWbBwOG/11yqi1imcOzRHu4gfFYfLxNeeq4zlcTM5V3oscYj7H
-	 /5aOhsyWCxq4HT/+zDeISz44hTFXniVwYtUR2LES19okP9CsXYY3gUKUHrQkWiX1xpSfx
-	 eLw9PsUk6RWrQJHR0KAve55Z6TKOMaP4XqinY0BFbjmB7k4ft8eR+8OKYwGfWG6240HTb
-	 LarRerNTj2FpHi1V+JhOUGjGq5vTHJXa6cV1mE6dBCl9sTRbbxbTk8zkSZJAHixTribWt
-	 +To/oUQ9GqT6W/IaxnKJS1IjsdsZD6wunXuVyadDnbpPC5f95zAZGNuexyoUBhA3QLA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794153229;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794153255;
+	b=cnQQ29ysIwzdXcJ94SlT+RG5HFMPr6A6OO7Cnh8J9RYCiDlkriX6ck0hE3vL1RmMcrqP
+	 NrwMHZj1skB9SrlSQ8wlOYPfi31FwqxKbggbw4TFx2fFGVBBn5nT2Lvw7L0EIavwLkCeo
+	 xHqrU872PpDltvRcizWI/QwWFbaJc/KQC+42CiBuZUeKOiZX/jvMd67TNolvm7flSwf7K
+	 qZgvRLd/LdCTi/7QX+y2UX+p63B7KUl2+eoduU4ZAKKheoHe7iCyXoaTmzsl5xHGjq5O1
+	 HBFxXoTwhNUz6f3pS1hqUoAaOMTdRf7naqaO2MWpZKMQuL3KCiPaBC7xLP8Q2UCRQcg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794153255;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=FubH8KoHiuIQlI9rasAoR9CVcyoiptaz9tuOv9X2T9A=;
-	b=w03EXU7ShYStZvO8KH7bkmwOAbZZulBRVPpfZJNoI2fxW9JaPhN3K/yNLeDTQX6G0+J/
-	 8nbRSWm6f1vnBn5G4iVMWHW6gafmY9sjlj8UKkyXKcsM58MaXjwAV1j4iy/BkluGHBhJI
-	 SYkFQiwhTlNP+j6ftF//JnILfTboSfCkSyfZfjMMFquIe93zuv/O+p4y7KcvzNMV4MCml
-	 bA0LwtJYofhiJnCtwOQGwtu39jMu29oFw33iac1UCktoh+xrA3XoJNfFffTuqVY1KdWeu
-	 sRgpuv23gRD2GIvyE7C997Oigs3DLyupZB+cjzp8Qy10jdQZaiXdk9Ms8M5R1pttQ9Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bairaktaris.de;
-	spf=pass smtp.mailfrom=bairaktaris.de;
-	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=SO+rSjn6;
-	arc=none smtp.remote-ip=209.85.218.41
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=yZljxxtDfRO1wZbBPZeXprNl/Gb7QIZiIUyKm0qR9lw=;
+	b=jNL4EiZhabWoMh8lkRIMVr2ii5I8nX1LRodO3sIB7dm+KsJjGkg17zdtp23ngR0RMyVy
+	 Df2Cujjz6L/5HtYmbgFfWSKq5fRo6ZoxXOHFFd2jqxB8YgMhf9CIj3q4hGyMO6uv+cxMH
+	 nvIFk9PnWGvpyH+FRWVqXnjH+PFhrXWrcVnIhJkmQ9kS1rspQildcI7zsC6jw1CofPNBZ
+	 j22zWNHpd57dHiLzF12km5qL97G7XHAJFGRVIOkTweb7AuEiEvLwJPOGAC2P7Kmp6snjg
+	 KPEboNP6d51nvhWL0G0FQP7EAA2e3sd4L4YNW0eJu7bPNMNf6DVTYxmL7tbwJzeS5AA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=copperfault.com;
+	spf=pass smtp.mailfrom=copperfault.com;
+	dkim=pass header.d=copperfault.com header.i=@copperfault.com header.a=rsa-sha256 header.s=google header.b=ufFwrB4u;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.170
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2AC606D808
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 15:53:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F2AC606D808
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86F4606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 15:54:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B86F4606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=copperfault.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=copperfault.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=SO+rSjn6
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c49b431f022so24767666b.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 07:53:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=copperfault.com header.i=@copperfault.com header.a=rsa-sha256 header.s=google header.b=ufFwrB4u
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b0ca1ebc8bso1602867b3.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 07:54:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794153253; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AO9oS4QG+6IAtvPtsL2BCuvGAIirplPPv5ejasy1n1W1r//IkNML10FXMZV5LjXwuA
+         UhNyhYUyWzpBSCdhSSW38DM8ed8yEqBC/nt50VPKqr0ZKiO9vTl2NBN75pWP9pck3Ktc
+         o9Sa2HF37AXn+rwv6NWDLFnFpZd2NBc+Ge8Fv5yDTCaCd7CgrGPcmMog9TcjjRSk1i9r
+         WcUEe7UuRf5Z1hBi2wUh6+otI9VKSbpvjVlibVRbXrUDDK0n88zcPyIKB5B5rCJkwDgw
+         jYrBbuw7UhdOxD63OQJpzC5ynvGuBpAtRQZ3W4o1Y8E36727ucCwJeA69as6JNhZxuIw
+         jcfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=yZljxxtDfRO1wZbBPZeXprNl/Gb7QIZiIUyKm0qR9lw=;
+        fh=KDKUlulek0azZE0H932prUEFn0ugF8GfcaB90GetFIA=;
+        b=gQInhL5zEFvNgNeTDuttoPEtzmPw3mlT0mSgEdvMBI6zLaYUylNmzxYsrZZ94CN2Ji
+         pqJZmLp4eqd92VN09Sj61s0GQnCgpM0WjLC0+wx05sZK1iB4cSU4O1topKpR+0AkW1rw
+         7PeU/q1SkV+tnDJQ0QQBjVadv9iZgQVr11cU1jfdZUD2/TmzDrjtxrT7MWTgN6gHoKuA
+         jgDfbU41OHkvmbD48HMX3rDgZ6I/NYUhIYEpvBNpxt7+NVYIK95NiYuGuYK/viHAyVee
+         N099kYiudu1ywrdwnMEmaj4dhgqzq5ryP1LZqkoxY3C9G/PlvETasb3FXKoPNXgBnMkP
+         tJig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1794153227; x=1794758027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FubH8KoHiuIQlI9rasAoR9CVcyoiptaz9tuOv9X2T9A=;
-        b=SO+rSjn6FU96y7B5TCUh7/36K6Z2gpuwqbNjRMo9Io4ek7Z/zQaaYqEPFCvDMCwWXF
-         zY46sahkqHqEOwvROKWfYQ8uMUtr5SS1B/papeEjfeqb3HB7th2QHeALsSmaeLy5mi2E
-         55uqVIgzDXH26fY3bJFL1LouuWS0fNZQEdUTXXV78EXWgs6HhT6z6wR+fYewAg2orV43
-         p3lY28Vl1UV5iLLZz5ADe1jybsrN1TOCa8y5nl/MKFElJVY56pkeaDO1KkDD3BZ8HlX4
-         9NVyrg9vFIlnMvDjiH5YFbPV6OgB3W45CCxra0yF6eyXhkTqIbYxwpEoC/AGm1rjm/Jg
-         T0FA==
+        d=copperfault.com; s=google; t=1794153253; x=1794758053; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yZljxxtDfRO1wZbBPZeXprNl/Gb7QIZiIUyKm0qR9lw=;
+        b=ufFwrB4u1T71wxTmgz6vvLW9sZIN0y4kxmo4MtQ8ZvD0+Fub7/DwprrslI3bZPmabq
+         Kb8XGudO3JYK6WX4Vn96AqX8RV8hRis+CuDlfIpH+0TCAsXitwKTEkVDL/biz8YdRn0r
+         aWIB1wg8D29XqnLrOWVatYz0+uNJjjoDVqLaaEBUkrZHrpK94zfsXFdYsniKvdP/Nh0h
+         6L8VO1j93JqdUuwWM0kzg3JqdjNgEtnirSiNMstZo0KHt/exTudvJcv+5nloi5lNL9Uz
+         6eodQA7WsjZVgLdmGkyfukWveIDyqaB0HZQKe+H/Du9kDz1/Mxvzun+E0kOIFwdBR4vl
+         zV1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794153227; x=1794758027;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FubH8KoHiuIQlI9rasAoR9CVcyoiptaz9tuOv9X2T9A=;
-        b=PtMgA2gW5FgyZJARe0WdXZgwYRjhRYidyrT+NiGfa+iK1GpgXU/jXSwzcKVRkrPt+1
-         ADt66Pd6qFLe8M2Tsv5EyQme2Cx8oICFpt+g8/KZlYYARpf7p096F537GF3qqRYW0XUg
-         BaMhC/AReMZ5aUppxDnXzeX4MUx4yD/w2p5hGyTGsnn43CuN09kjIVdxKejLJdSu/s6A
-         DHGeWqSxGjm1nbfC054KoVqlMAYQv8KElS4ekF7skeTdwHRdV+1pbyK9uq+s4MAou6E0
-         tPSyxn7Vjao9WoVIaqGcuR0PvSiB3kzZElx3Oz1vmtQc5++2BGcOECfQqbrkDWw7MPdP
-         uqBg==
-X-Forwarded-Encrypted: i=1; AL+hErEgo58NM2+2P1uLfcg9Q+u9gN9MmHAkXlVKDJwWKlJ5mdpjnjXfK+oZfp7ic9DaUWw7LU2+OK8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8kXGgPErNssnrWuATnsDePiCkl9ptxUcXukq80q5jYj4+puuaN
-	3fBZZ7zN4qJJOSzDT4orKkPxX4B8QKTpkOrEopr0jHp8LgttvLBKgTIEVOsJcOeLgTuHyr0svuu
-	4F4pXCV0y
-X-Gm-Gg: AYBFou1y4df46cIAJKxWaOUN7AKd42rEACZUlo0ytmZ7xD2IEBMTX6lKxZk4XlHq19S
-	FqyfSWH56FKAtQnOsKIM7/0Yh/xTnfAfs3QbRyPztsoucy+7kNzvb9iga9vEulAdGuVAJivEdcH
-	Q2dl81t0XYYerSXVvKSNwoPJA286HsfSY+8tsrO8rzEobUyNdX/1OM3YgldSQIXtf8oziQrlcvi
-	9MSjbnBdCKliznzdxTJ/43IYbaeZlvyr7tmSu9lfa0Pa8jijY5qYdQ5h2CxEA/8VtdCmmYN0PHS
-	/I+QCipjqHIRiW7WWGlBtPs1eO0BttkHh7Zs73CuZDHxBrGE1j7/DyOGK3C4cQBcP7RR/8kxndM
-	M1F9CBmP4g5aQqJLQ4wsuNeXAQ43WDtpfb1zzLDNAKfVMJIseERVftxznybEfqV4pxVEUQsOEt1
-	1STk38guJJe4zpfOllC+FmBHIXHz6Z5UIgXai3/xSbfGMS2FEJxXBFnTAzgaDudsRCfKKAjSENb
-	U/pxMOtValTNlzXdqGGn88ChRzDM0C4QAiYZHROHozTRIkkaWAI7h9sJMBQybI6jQuYOH5YcU93
-	X6dm4pSzo9ofaafz6GP5lVH0ElBY4KADDh4eRJJ2oVyDVG1nCFlQ9Al5abrzDtdKAPYbl+O5z5A
-	uwZRQ59b51tzfvTee/1SNk6tTQAvQGXJyBY7nQoYml+FOFbKaWWKwrQoDQGZ3m3NOiol+tg2afi
-	So8YN2rB7Tv/zDW7XHgGxnsRv6HxZB4K1DjjSEk8TtfvNero+ZQclFBN7knUK0D07O4DkoKIwer
-	CX9hJcmEjSOfCyevLpUXPWg9T+8+PfNg9K1Zvhj/i4heK9CDDJMVK9nkvIB2Az29rAtpnrXjp/s
-	U62tAwMVSBFRJJhwD6Q=
-X-Received: by 2002:a17:907:2d13:b0:c4d:331c:2e97 with SMTP id a640c23a62f3a-c4d6d7d957dmr125306866b.36.1794153226811;
-        Sun, 08 Nov 2026 07:53:46 -0800 (PST)
-Received: from Desktop (p54aff56f.dip0.t-ipconnect.de. [84.175.245.111])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d68d52f4bsm71648166b.8.2026.11.08.07.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 07:53:46 -0800 (PST)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netfilter-devel@vger.kernel.org
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	netdev@vger.kernel.org,
-	bridge@lists.linux.dev
-Subject: [PATCH nf-next v9 2/2] selftests: netfilter: nft_flowtable.sh: roam a host between two bridge ports
-Date: Sun,  8 Nov 2026 16:53:44 +0100
-Message-ID: <20261108155344.35845-3-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261108155344.35845-1-julius@bairaktaris.de>
-References: <20261108155344.35845-1-julius@bairaktaris.de>
+        d=1e100.net; s=20260707; t=1794153253; x=1794758053;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yZljxxtDfRO1wZbBPZeXprNl/Gb7QIZiIUyKm0qR9lw=;
+        b=k9GYNyspfNRFGu9Bhzf2EDqzQxHpdClpnkb3e1s5Fpixux8BKTUiUTZbXv9GgZSlpi
+         hKnOHEqC3XDmUoXr0t+RYi0L0jq/r47cp/9cMQl+Ns3IRuXh5Mz7DrfoNeIICxHd7Rix
+         7Und6mVxm7XczmMVfe0qF1XvhmzcQD6/FYhx/Xhg9MUsgdaD6dimTxWv85bvHoOy1XGB
+         PABEOem1Z7HIyX5TfizabuaOvk5C02NAQtWlIWh8sxiBkUkYHHdL8ne5Beter9S3eCXJ
+         ySaLaoUCErUyrrrATUMfA0fVM+k5rzvqiphmBIE/6RrnzDmG0I+eeeaMM6PiqRqKF7x7
+         VF2w==
+X-Forwarded-Encrypted: i=1; AL+hErG9Wrm2xXUCtgcWC4J1V+nAnPF9Gzv11HN30uf5NdWiFxYTld9tHv13tiCJ2s5K6EV2EDQqWBM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/qQ9+5g1ppZpVa6iaFQg9WTp2Hciqs4V46kZaTRud95wNLRoqJ
+	+m9gEA3V/6mzABeLnTR7U/4vs60YYcA8UsjPLRUDOEinQ3hZFZkB1ae9yV4mUBIvQKMjIeJ0Wu8
+	8/OiA0D6uTio+XEv6rVvz8rPQoOKjtoM9+AdjicRn+vU=
+X-Gm-Gg: AYBFou0I1iZQx2LvOZXTvKMRGX8ltJ3MC0He0zMXVPNISc0hW0Gnd7f6epJLwNy6xuJ
+	JFwNdF8jW2tFEInPUQi+YJkj6wt+eXYlTFULYK5YcrVeC857a74vOph/1BEqRExJhRGM+8B68Cf
+	sTPzPLBdRWCVTvqdDiEw8GJN2o+WFRc2JhSOEWGRycmp6vf1/UqoSanCgtfhkw/khk2H/WBKLDm
+	wYJ9INMAk5TmYCE8gMI3jr+bzMOZsJMjp/TCFZLdUdaOIltYopMapycVG0dD/CS7pNwE8FBp3LQ
+	Z+IzgLy5j6iJtJ4UYOx5B1wJlEdYmFWwtBiJZ11/wt6BIiJTq1wL6h0xuxMeYWY/l6e02+4CGoX
+	HgO2NCLdoKQlg3Aj/HYOCWwWTbcJ1B6yIsbIq
+X-Received: by 2002:a05:690c:e3c6:b0:8b3:527b:d18f with SMTP id
+ 00721157ae682-8b36c9bbd42mr10048647b3.11.1794153253503; Sun, 08 Nov 2026
+ 07:54:13 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,287 +104,372 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261104135707.725-1-me@riley.kitchen> <179414983550.994134.16842767568883283385@kernel.org>
+In-Reply-To: <179414983550.994134.16842767568883283385@kernel.org>
+From: Copperfault Security <security@copperfault.com>
+Date: Sun, 8 Nov 2026 07:54:01 -0800
+X-Gm-Features: AclHuK_9bJGINzFJdLerSjL5er83bsXTWWAlDzCRIxIQrJWa0p2Yivf37KIlSW4
+Message-ID: <CACZtLCt0VhHq+6gfd_iRoz5v=n4qQ-YJdZ6m67BWg-mPD7bRCQ@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: etf: propagate dequeue drops to parents
+To: netdev-bot+sashiko@kernel.org
+Cc: vinicius.gomes@intel.com, netdev@vger.kernel.org, kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Move a host to another port of a bridge on the router while its flow is
-offloaded, and check that the transfer continues and is offloaded again.
-The cases are plain and vlan bridge ports, vlan ports whose real devices
-are ports of another bridge, "bridge fdb replace", a pinned and then
-deleted fdb entry, an aged out entry (the flow must stay), the plain
-case over IPv6, and a vlan_filtering bridge with untagged ports, with
-tagged plain and vlan ports, and with the router address on a vlan
-device on the bridge. The last case makes a vlan device of another
-bridge the bridge port.
+Thanks for the review. I checked all four points against net (d8a4f4c59da5)
+and they hold up; I'll respin.
 
-Without the gc check the transfer stalls when the host moves.
+- [Critical, HTB loop] Confirmed. Two sibling ETF leaves under HTB in the
+  same row, one with only expired packets and one holding a single
+  future-txtime packet: ETF's drop calls qdisc_tree_reduce_backlog() ->
+  htb_qlen_notify() -> htb_deactivate(), which removes the class from the
+  row while htb_dequeue_tree() is walking it. The class is dequeued via the
+  skb =3D=3D NULL path, not the top "qlen =3D=3D 0" branch, so the
+  "if (cl =3D=3D start) start =3D next" fixup never runs; 'start' is left p=
+ointing
+  at the removed class and "while (cl !=3D start)" never terminates. The si=
+bling
+  never empties (its packet is not yet eligible) and never yields a packet,=
+ so
+  the loop spins holding the root qdisc lock with BH disabled. That is wors=
+e
+  than the NULL deref this patch is trying to fix.
 
-Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
----
- .../selftests/net/netfilter/nft_flowtable.sh  | 251 ++++++++++++++++++
- 1 file changed, 251 insertions(+)
+- [High, QFQ] Confirmed. In Root_QFQ -> Child_QFQ -> ETF, the notify fired
+  from inside the child dequeue drives Child_QFQ's qlen to 0 (qfq_dequeue()
+  has already done qdisc_qlen_dec() around the child dequeue) and deactivat=
+es
+  its class in Root_QFQ, so qfq_deactivate_agg() nulls q->in_serv_agg while
+  Root_QFQ's qfq_dequeue() still holds the old in_serv_agg in a local. Root=
+ is
+  left with qlen =3D=3D 1 and no in-service aggregate, skips the "qlen =3D=
+=3D 0" early
+  return, and qfq_choose_next_agg() -> NULL -> qfq_peek_skb(NULL). The patc=
+h
+  moves the exact panic it fixes up one level rather than removing the clas=
+s.
 
-diff --git a/tools/testing/selftests/net/netfilter/nft_flowtable.sh b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-index 449c518bd947d..ed6eb2e3204ed 100755
---- a/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-@@ -851,6 +851,257 @@ test_ipip
- 
- test_bridge
- 
-+# Roam a host between two ports of a bridge on the router while its flow is
-+# offloaded, as a station moving between two access points attached to ports
-+# of one bridge. The host keeps its address and mac on a bridge of its own
-+# and roams by moving that bridge's port, so only the fdb changes. With a vid
-+# the bridge ports are vlan devices, whose ifindex differs from the device
-+# the flow transmits on. With "replace" the router's fdb entry is sticky and
-+# the move is a "bridge fdb replace". With "del" the host stays, its entry is
-+# pinned to the other port and then deleted, and a ping relearns it. With
-+# "age" the host stays and its entry ages out, which must not tear the flow
-+# down. A flow that stays on the fast path leaves no more than a few packets
-+# in the forward chain, the counter tells offloaded from slow path. The
-+# plain roam also runs over IPv6, and on a vlan_filtering bridge: with
-+# untagged ports ("vf"), whose fdb entries are keyed by the pvid of the
-+# port, with tagged ports ("tag"), and with untagged ports and the router
-+# address on a vlan device on the bridge ("upper"). With "stack" the port of
-+# br0 is a vlan device on br1, whose ports the host moves between.
-+test_bridge_roam()
-+{
-+	local vid=$1 how=$2 fam=${3:-4} vf=$4 trunk=$5
-+	local p0=sr0 p1=sr1 r0=rr0 r1=rr1 rbr=br0
-+	local mac=02:00:00:09:01:99
-+	local what="roaming on bridge${vf:+ with vlan_filtering}"
-+	[ "$vf" = tag ] && what="$what and tagged ports"
-+	[ "$vf" = upper ] && what="$what and a vlan device on the bridge"
-+	what="$what${vid:+ with vlan ports}${how:+ by fdb $how}"
-+	[ "$trunk" = trunk ] &&
-+		what="$what whose real devices are ports of another bridge"
-+	[ "$trunk" = stack ] && what="$what on a vlan device of another bridge"
-+	local hn=10.9.1 wn=10.9.2 dot=. len=24 nodad="" ip6="" srv=10.9.2.99
-+	local min=10000000
-+	local dev old new slow fdb lpid cpid win=2
-+
-+	if [ "$fam" = 6 ]; then
-+		hn=dead:9:1 wn=dead:9:2 dot=:: len=64 nodad=nodad ip6=-6
-+		srv="[dead:9:2::99]"
-+		what="$what over IPv6"
-+	fi
-+
-+	setup_ns rns1 rnsr rns2
-+
-+	if ! ip -net "$rnsr" link add br0 type bridge ${vf:+vlan_filtering 1} 2>/dev/null; then
-+		echo "SKIP: could not add bridge for $what"
-+		[ "$ret" -eq 0 ] && ret=$ksft_skip
-+		return
-+	fi
-+
-+	ip link add sr0 netns "$rns1" type veth peer name rr0 netns "$rnsr"
-+	ip link add sr1 netns "$rns1" type veth peer name rr1 netns "$rnsr"
-+	ip link add rw0 netns "$rnsr" type veth peer name w0 netns "$rns2"
-+	for dev in sr0 sr1; do
-+		ip -net "$rns1" link set "$dev" up
-+	done
-+	for dev in rr0 rr1; do
-+		ip -net "$rnsr" link set "$dev" up
-+	done
-+
-+	if [ -n "$vid" ]; then
-+		for dev in sr0 sr1; do
-+			ip -net "$rns1" link add link "$dev" name "$dev.$vid" type vlan id "$vid"
-+			ip -net "$rns1" link set "$dev.$vid" up
-+		done
-+		p0=sr0.$vid; p1=sr1.$vid
-+	fi
-+	if [ -n "$vid" ] && [ "$trunk" != stack ]; then
-+		for dev in rr0 rr1; do
-+			ip -net "$rnsr" link add link "$dev" name "$dev.$vid" type vlan id "$vid"
-+			ip -net "$rnsr" link set "$dev.$vid" up
-+		done
-+		r0=rr0.$vid; r1=rr1.$vid
-+	fi
-+	if [ -n "$trunk" ]; then
-+		ip -net "$rnsr" link add br1 type bridge
-+		ip -net "$rnsr" link set rr0 master br1
-+		ip -net "$rnsr" link set rr1 master br1
-+		ip -net "$rnsr" link set br1 up
-+	fi
-+	if [ "$trunk" = stack ]; then
-+		ip -net "$rnsr" link add link br1 name br1.$vid type vlan id "$vid"
-+		ip -net "$rnsr" link set br1.$vid up
-+		r0=br1.$vid; r1=br1.$vid
-+	fi
-+
-+	ip -net "$rnsr" link set "$r0" master br0
-+	ip -net "$rnsr" link set "$r1" master br0
-+	ip -net "$rnsr" link set br0 up
-+	if [ "$vf" = tag ]; then
-+		for dev in "$r0" "$r1"; do
-+			bridge -n "$rnsr" vlan add vid 10 dev "$dev"
-+		done
-+		bridge -n "$rnsr" vlan add vid 10 dev br0 self pvid untagged
-+		for dev in "$p0" "$p1"; do
-+			ip -net "$rns1" link add link "$dev" name "$dev.10" type vlan id 10
-+			ip -net "$rns1" link set "$dev.10" up
-+		done
-+		p0=$p0.10; p1=$p1.10
-+	elif [ "$vf" = upper ]; then
-+		for dev in "$r0" "$r1"; do
-+			bridge -n "$rnsr" vlan add vid 10 dev "$dev" pvid untagged
-+		done
-+		bridge -n "$rnsr" vlan add vid 10 dev br0 self
-+		ip -net "$rnsr" link add link br0 name br0.10 type vlan id 10
-+		ip -net "$rnsr" link set br0.10 up
-+		rbr=br0.10
-+	fi
-+	ip -net "$rnsr" addr add $hn${dot}1/$len dev $rbr $nodad
-+	ip -net "$rnsr" addr add $wn${dot}1/$len dev rw0 $nodad
-+	ip -net "$rnsr" link set rw0 up
-+	ip netns exec "$rnsr" sysctl -q net.ipv4.ip_forward=1
-+	ip netns exec "$rnsr" sysctl -q net.ipv6.conf.all.forwarding=1
-+
-+	ip -net "$rns1" link add stbr type bridge
-+	ip -net "$rns1" link set stbr address $mac
-+	ip -net "$rns1" link set "$p0" master stbr
-+	ip -net "$rns1" link set stbr up
-+	ip -net "$rns1" addr add $hn${dot}99/$len dev stbr $nodad
-+	ip $ip6 -net "$rns1" route add default via $hn${dot}1
-+
-+	ip -net "$rns2" addr add $wn${dot}99/$len dev w0 $nodad
-+	ip -net "$rns2" link set w0 up
-+	ip $ip6 -net "$rns2" route add default via $wn${dot}1
-+
-+	# no neighbour probes, so the host only sends when it receives
-+	ip -net "$rnsr" neigh replace $hn${dot}99 lladdr $mac nud permanent dev $rbr
-+	ip -net "$rns1" neigh replace $hn${dot}1 nud permanent dev stbr \
-+		lladdr "$(ip -net "$rnsr" -br link show br0 | awk '{print $3}')"
-+
-+	if ! ip netns exec "$rnsr" nft -f - <<EOF
-+table inet filter {
-+  counter roam_repl { }
-+  flowtable f1 { hook ingress priority 0; devices = { rr0, rr1, rw0 }; }
-+  chain forward {
-+    type filter hook forward priority 0; policy accept;
-+    meta oif "rw0" tcp dport 12345 flow add @f1
-+    meta iif "rw0" tcp sport 12345 counter name roam_repl flow add @f1
-+  }
-+}
-+EOF
-+	then
-+		echo "SKIP: could not load ruleset for $what"
-+		[ "$ret" -eq 0 ] && ret=$ksft_skip
-+		return
-+	fi
-+
-+	# the host discards what it receives, its socket byte counter is read
-+	rx_bytes() { ip netns exec "$rns1" ss -tin "dst $srv" 2>/dev/null |
-+		grep -o 'bytes_received:[0-9]*' | head -1 | cut -d: -f2; }
-+	rx_started() { local n; n=$(rx_bytes); [ "${n:-0}" -gt 0 ]; }
-+	# forward chain packets of the reply direction since the last call
-+	slow_pkts() { ip netns exec "$rnsr" nft reset counter inet filter roam_repl |
-+		grep -o 'packets [0-9]*' | cut -d' ' -f2; }
-+	roam_listener_ready() { ss -N "$rns2" -lnt -o "sport = :12345" | grep -q 12345; }
-+
-+	roam_stop() { kill "$cpid" "$lpid" 2>/dev/null; wait "$cpid" "$lpid" 2>/dev/null; }
-+
-+	timeout $((SOCAT_TIMEOUT * 5)) ip netns exec "$rns2" socat -u \
-+		OPEN:/dev/zero TCP$fam-LISTEN:12345,reuseaddr &
-+	lpid=$!
-+	if ! busywait "$BUSYWAIT_TIMEOUT" roam_listener_ready; then
-+		echo "FAIL: $what: listener did not start" 1>&2
-+		ret=1
-+		kill "$lpid" 2>/dev/null; wait "$lpid" 2>/dev/null
-+		return
-+	fi
-+	timeout $((SOCAT_TIMEOUT * 5)) ip netns exec "$rns1" socat -u \
-+		TCP$fam:$srv:12345 OPEN:/dev/null &
-+	cpid=$!
-+
-+	if ! busywait "$BUSYWAIT_TIMEOUT" rx_started; then
-+		echo "FAIL: $what: transfer did not start" 1>&2
-+		ret=1
-+		roam_stop
-+		return
-+	fi
-+	sleep 2
-+	slow_pkts > /dev/null
-+	old=$(rx_bytes)
-+	sleep 2
-+	new=$(rx_bytes)
-+	slow=$(slow_pkts)
-+	if [ -z "$slow" ] || [ $((${new:-0} - ${old:-0})) -lt $min ] ||
-+	   [ "$slow" -gt 100 ]; then
-+		echo "FAIL: $what: not offloaded before the roam:" \
-+		     "$((${new:-0} - ${old:-0})) bytes, ${slow:-no} forward chain packets" 1>&2
-+		ret=1
-+		roam_stop
-+		return
-+	fi
-+
-+	if [ "$how" = age ]; then
-+		# ageing_time is in centiseconds
-+		ip -net "$rnsr" link set br0 type bridge ageing_time 200
-+		win=10
-+	elif [ "$how" = del ]; then
-+		bridge -n "$rnsr" fdb replace $mac dev "$r1" master static sticky
-+		sleep 2
-+		bridge -n "$rnsr" fdb del $mac dev "$r1" master static
-+		ip netns exec "$rns1" ping $ip6 -c 2 -W 1 -q $hn${dot}1 >/dev/null 2>&1
-+	else
-+		# roam: move the host bridge to the other port and send on it
-+		if [ "$how" = replace ]; then
-+			bridge -n "$rnsr" fdb replace $mac dev "$r0" master static sticky
-+		fi
-+		ip -net "$rns1" link set "$p0" nomaster
-+		ip -net "$rns1" link set "$p1" master stbr
-+		ip netns exec "$rns1" ping $ip6 -c 2 -W 1 -q $hn${dot}1 >/dev/null 2>&1
-+		if [ "$how" = replace ]; then
-+			bridge -n "$rnsr" fdb replace $mac dev "$r1" master static sticky
-+		fi
-+	fi
-+
-+	# the bytes in flight at the roam drain within the first seconds; a
-+	# stale flow delivers nothing after that, a torn down one resumes and
-+	# is offloaded again.
-+	sleep 4
-+	old=$(rx_bytes)
-+	sleep 4
-+	new=$(rx_bytes)
-+	slow_pkts > /dev/null
-+	sleep $win
-+	slow=$(slow_pkts)
-+	# before the host's FIN passes the bridge and relearns the entry
-+	fdb=$(bridge -n "$rnsr" fdb show br br0 | grep "$mac.*master")
-+	roam_stop
-+
-+	if [ "$how" = age ] && [ -n "$fdb" ]; then
-+		echo "FAIL: $what: the host's fdb entry did not age out" 1>&2
-+		ret=1
-+	elif [ $((${new:-0} - ${old:-0})) -lt $min ]; then
-+		echo "FAIL: $what: transfer stalled after the roam" 1>&2
-+		ret=1
-+	elif [ "$slow" != 0 ]; then
-+		echo "FAIL: $what: $slow forward chain packets after the roam" 1>&2
-+		ret=1
-+	else
-+		echo "PASS: flow offload for $what"
-+	fi
-+}
-+
-+test_bridge_roam ""
-+test_bridge_roam 100
-+test_bridge_roam "" replace
-+test_bridge_roam "" del
-+test_bridge_roam "" age
-+test_bridge_roam "" "" 6
-+test_bridge_roam "" "" 4 vf
-+test_bridge_roam "" "" 4 tag
-+test_bridge_roam 100 "" 4 tag
-+test_bridge_roam 100 "" 4 "" trunk
-+test_bridge_roam 100 "" 4 "" stack
-+test_bridge_roam "" "" 4 upper
-+
- KEY_SHA="0x"$(ps -af | sha1sum | cut -d " " -f 1)
- KEY_AES="0x"$(ps -af | md5sum | cut -d " " -f 1)
- SPI1=$RANDOM
--- 
-2.53.0
+- [Medium, DRR/ETS/HFSC over QFQ] Confirmed. qfq_dequeue() lowers its own q=
+len
+  around the child dequeue, so reducing it by the full drop count underflow=
+s to
+  ~0U transiently; notify at the grandparent hop is then false and the stal=
+e
+  QFQ class is left on the grandparent's active list. The commit message's
+  "classful ancestors see the removal" does not hold with QFQ in the middle=
+.
 
+- [Medium, taprio] Confirmed. taprio_graft() sets TCQ_F_NOPARENT on the chi=
+ld
+  in software and txtime-assist mode, so qdisc_tree_reduce_backlog() breaks=
+ on
+  the first hop and never reaches taprio. For the usual software-ETF parent=
+ the
+  patch is a no-op, and taprio's qlen/backlog still grow with every expired
+  packet.
+
+More broadly this is the same hazard that 52f1da34c9f4, 097f6fc7b1 and
+15cd0c93bf ("net/sched: {codel,fq_codel,dualpi2}: Do not call
+qdisc_tree_reduce_backlog during peek before restoring qlen", Jun 2026)
+addressed: calling qdisc_tree_reduce_backlog() from a child's dequeue/peek =
+can
+deactivate the parent's class underneath the parent's own dequeue. ETF hits=
+ it
+deterministically because it empties via drops and returns NULL. A codel-st=
+yle
+"defer until the qlen is restored" is not enough here, since ETF returns NU=
+LL
+after dropping and the class is still deactivated mid-walk.
+
+So I don't think ETF can safely propagate these drops inline. The original
+qfq_peek_skb() NULL deref looks like it wants a parent-side fix - qfq_deque=
+ue()
+/ qfq_peek_skb() tolerating in_serv_agg becoming NULL during a child dequeu=
+e -
+and htb_dequeue_tree() has the same latent exposure to a class self-deactiv=
+ating
+mid-walk (the codel family can hit it too, just rarely). I'll rework in tha=
+t
+direction. If you'd prefer the fix live in the parents (qfq/htb) or be hand=
+led a
+different way in etf, I'm happy to follow your steer.
+
+pw-bot: cr
+
+On Sun, Nov 8, 2026 at 6:57=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 1 =C2=B7 High: 1 =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Critical] This patch adds a call to qdisc_tree_reduce_backlog() inside
+>   ETF's ->dequeue().
+> - [High] net/sched: etf: timesortedlist_drop() corrupts parent
+>   qfq_dequeue() state
+> - [Medium] The fix does not reach taprio, which is the usual parent for
+>   software-mode ETF, so taprio keeps counting packets that no longer=E2=
+=80=A6
+>
+> Pre-existing issues:
+> - [Medium] When QFQ sits between ETF and another classful qdisc (DRR, ETS
+>   or HFSC above QFQ), the grandparent is never told that QFQ became=E2=80=
+=A6
+>
+> --
+>
+> net/sched: etf: propagate dequeue drops to parents
+>
+> This patch makes timesortedlist_drop() count the expired packets and
+> bytes it drops on ETF's dequeue path. It then calls
+> qdisc_tree_reduce_backlog() so that classful parents update their qlen
+> and backlog. The goal is to fix a NULL dereference in qfq_peek_skb() when
+> ETF sits below QFQ.
+>
+> > diff --git a/net/sched/sch_etf.c b/net/sched/sch_etf.c
+> > index aaafcf640bc7e..7e7532ea099eb 100644
+> > --- a/net/sched/sch_etf.c
+> > +++ b/net/sched/sch_etf.c
+>
+> [ ... ]
+>
+> > @@ -227,6 +230,7 @@ static void timesortedlist_drop(struct Qdisc *sch, =
+struct sk_buff *skb,
+> >       }
+> >
+> >       kfree_skb_list(to_free);
+> > +     qdisc_tree_reduce_backlog(sch, dropped_pkts, dropped_bytes);
+> >  }
+>
+> [Severity: High]
+> Does this fully close the qfq_peek_skb() NULL dereference, or does it
+> only move it to other QFQ topologies? The new call runs from inside
+> the parent's dequeue. qfq_dequeue() in net/sched/sch_qfq.c does not
+> expect its own qlen and aggregate state to change underneath it.
+>
+> The first problem is that qfq_dequeue() lowers its qlen around the
+> child dequeue:
+>
+>         qdisc_qlen_dec(sch);
+>
+>         skb =3D agg_dequeue(in_serv_agg, cl, len);
+>
+>         if (!skb) {
+>                 qdisc_qlen_inc(sch);
+>                 return NULL;
+>         }
+>
+> Take Root_QFQ -> Child_QFQ -> ETF. ETF holds one expired packet and
+> one packet whose txtime is in the future, so both QFQ instances have
+> qlen =3D=3D 2. Root_QFQ peeks Child_QFQ through qdisc_peek_dequeued(),
+> which runs qfq_dequeue() on Child_QFQ. etf_peek_timesortedlist()
+> returns the expired head without looking at its txtime, so Child_QFQ
+> sees len > 0 and continues:
+>
+> qfq_dequeue(Root_QFQ)
+>   qfq_peek_skb()
+>     qdisc_peek_dequeued(Child_QFQ)
+>       qfq_dequeue(Child_QFQ)        /* Child qlen 2 -> 1 */
+>         agg_dequeue()
+>           etf_dequeue_timesortedlist()
+>             timesortedlist_drop()
+>               qdisc_tree_reduce_backlog()
+>                                     /* Child qlen 1 -> 0 */
+>                 qfq_qlen_notify()   /* deactivates Child's class */
+>                                     /* Root qlen 2 -> 1 */
+>       qdisc_qlen_inc()              /* Child qlen 0 -> 1 */
+>
+> Child_QFQ still holds the future packet. However, notify was computed
+> from its temporarily lowered qlen, so Root_QFQ deactivated the class
+> anyway, and qfq_deactivate_agg() set q->in_serv_agg to NULL. Root_QFQ
+> is left with qlen =3D=3D 1 and no active aggregate.
+>
+> Back in Root_QFQ's qfq_dequeue(), len is 0 and the active list of the
+> local in_serv_agg is empty. The "sch->q.qlen =3D=3D 0" early return is
+> skipped, qfq_choose_next_agg() returns NULL, and qfq_peek_skb()
+> dereferences it. That is the panic the commit message describes, one
+> level further up.
+>
+> The reverse happens when the drops empty Child_QFQ. Its qlen wraps to
+> 0xFFFFFFFF during the walk, so notify is false at the next level and
+> the ancestor keeps an empty class active.
+>
+> The second problem is the local in_serv_agg in qfq_dequeue(). Take an
+> intermediate qdisc that uses qdisc_peek_dequeued(), for example
+> QFQ -> TBF -> ETF. There the drop happens during QFQ's own
+> qfq_peek_skb() instead of inside agg_dequeue().
+>
+> Suppose that drop drains TBF and the in-service aggregate agg1.
+> qfq_qlen_notify() then reaches qfq_deactivate_agg(), which already
+> moves q->in_serv_agg to the next aggregate, agg2, through
+> qfq_choose_next_agg(). qfq_dequeue() still has agg1 in its local
+> variable. It sees len =3D=3D 0, an empty active list and a nonzero qlen,
+> so it calls qfq_choose_next_agg() a second time. agg2 has already been
+> removed from the schedule. Without a third aggregate this call returns
+> NULL, and the next qfq_peek_skb() dereferences it.
+>
+> The same unprivileged user can build both topologies in its own
+> namespaces, just like QFQ -> ETF. Should qfq_dequeue() be changed to
+> cope with drops reported from inside a child's dequeue or peek? For
+> example, it could lower qlen only after agg_dequeue() succeeds and
+> reload q->in_serv_agg after qfq_peek_skb(). Or should ETF report these
+> drops in a way that does not re-enter the parent while the parent is
+> in the middle of its own dequeue?
+>
+> [Severity: Critical]
+> This call now runs from inside ETF's ->dequeue(). If the drops leave ETF
+> empty, the parent's qlen_notify runs while the parent is still inside its
+> own dequeue. Can this make htb_dequeue_tree() in net/sched/sch_htb.c loop
+> forever?
+>
+> Take two HTB leaf classes, A and B, in the same row (level 0, same prio,
+> HTB_CAN_SEND). Each has an ETF child. All of A's packets have expired
+> (delta=3D0 guarantees this). B holds one packet with a txtime far in the
+> future. hprio->ptr points at A.
+>
+> htb_dequeue_tree() picks start once:
+>
+>         start =3D cl =3D htb_lookup_leaf(hprio, prio);
+>
+> A's qlen is nonzero, so the "fix start if we just deleted it" branch is
+> skipped. HTB then calls A's dequeue:
+>
+> htb_dequeue_tree()
+>   etf_dequeue_timesortedlist()
+>     timesortedlist_drop()
+>       qdisc_tree_reduce_backlog()      /* ETF qlen is 0, notify =3D true =
+*/
+>         htb_qlen_notify()
+>           htb_deactivate()
+>             htb_deactivate_prios()
+>               htb_remove_class_from_row()   /* A is erased from the row *=
+/
+>
+> ETF returns NULL. HTB advances ptr, and htb_lookup_leaf() returns B. B's
+> ETF also returns NULL because its packet is not yet eligible. ptr then
+> reaches NULL, and htb_lookup_leaf() goes back to the leftmost class, whic=
+h
+> is B again.
+>
+> A is no longer in the row, so this condition never becomes false:
+>
+>         } while (cl !=3D start);
+>
+> The loop holds the root qdisc lock with BH disabled. It only ends when B'=
+s
+> head packet becomes eligible, and is_packet_valid() puts no upper limit o=
+n
+> txtime.
+>
+> Before this patch, A stayed in the row during the walk. The loop went
+> A -> B -> A =3D=3D start and exited.
+>
+> The commit message says an unprivileged user can put ETF under a classful
+> parent inside its own namespaces. Doesn't that make this HTB lockup
+> reachable in the same way as the QFQ NULL dereference being fixed?
+>
+> In principle, other children that notify from dequeue (the codel family)
+> can hit the same HTB pattern. Codel rarely empties its queue through drop=
+s,
+> though, while ETF does so every time under these conditions.
+>
+> [Severity: Medium]
+> This is a pre-existing issue and was not introduced by this patch. Does t=
+he
+> walk still miss the grandparent when QFQ is the intermediate qdisc, for
+> example DRR -> QFQ -> ETF?
+>
+> qfq_dequeue() temporarily lowers its own qlen around the child dequeue:
+>
+>         qdisc_qlen_dec(sch);
+>
+>         skb =3D agg_dequeue(in_serv_agg, cl, len);
+>
+>         if (!skb) {
+>                 qdisc_qlen_inc(sch);
+>                 return NULL;
+>         }
+>
+> Suppose ETF's expired packets are all of QFQ's backlog (QFQ qlen =3D=3D n=
+).
+> qdisc_tree_reduce_backlog() then notifies QFQ correctly and sets QFQ's ql=
+en
+> to (n - 1) - n =3D 0xFFFFFFFF. On the next hop it computes:
+>
+>         notify =3D !sch->q.qlen;
+>
+> which is false. The grandparent's qlen and backlog are reduced, but it ge=
+ts
+> no qlen_notify. After qfq_dequeue() puts QFQ's qlen back to 0, the
+> grandparent still has the QFQ class on its active list.
+>
+> drr_dequeue() peeks the first active class and qfq_dequeue() returns NULL=
+,
+> so the code takes the goto out path:
+>
+>         skb =3D cl->qdisc->ops->peek(cl->qdisc);
+>         if (skb =3D=3D NULL) {
+>                 qdisc_warn_nonwc(__func__, cl->qdisc);
+>                 goto out;
+>         }
+>
+> The other DRR classes with queued packets then starve until new traffic
+> reaches the QFQ class. ETS non-strict bands and HFSC appear to stall on t=
+he
+> stale class in the same way.
+>
+> ETF did not notify the grandparent before this patch either, so the
+> behaviour is no worse. Does the statement "so classful ancestors see the
+> removal" still hold when QFQ is in the middle?
+>
+> [Severity: Medium]
+> Does this new call reach taprio, which is the usual parent for
+> software-mode ETF?
+>
+> taprio_graft() always sets TCQ_F_NOPARENT on the child, including in
+> software and txtime-assist mode:
+>
+>         new->flags |=3D TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+>
+> In those modes, taprio_enqueue_one() increments taprio's own qlen and
+> backlog. taprio_dequeue_from_txq() decrements them only when the child
+> returns an skb:
+>
+>         skb =3D qdisc_dequeue_peeked(child);
+>         if (unlikely(!skb))
+>                 return NULL;
+>
+>         qdisc_bstats_update(sch, skb);
+>         qdisc_qstats_backlog_dec(sch, skb);
+>         qdisc_qlen_dec(sch);
+>
+> When timesortedlist_drop() runs under taprio, the new walk stops at once =
+in
+> qdisc_tree_reduce_backlog():
+>
+>         if (sch->flags & TCQ_F_NOPARENT)
+>                 break;
+>
+> ETF then returns NULL, so taprio's sch->q.qlen and qstats.backlog grow wi=
+th
+> every expired packet. The visible result is wrong tc statistics, not a
+> crash, because taprio does not use its qlen for scheduling.
+>
+> The commit message says a parent will no longer "keep accounting packets
+> that no longer exist". Would taprio need a change too, such as not settin=
+g
+> TCQ_F_NOPARENT in software mode, or computing taprio's qlen from its
+> children instead of keeping a separate count?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261104135707.725-1-me%40riley.kitchen
