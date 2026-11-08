@@ -1,100 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.65
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.49
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794154661;
-	b=yg7T96NNSWMAXLc/CM1jdOTxvt5zhJwRZIxMHVD/QbXJQ/F1eNqfyph+IkB2Ubbm0g4D
-	 oR9dBsrksNzzgZbf70HyfUxHZSdA911HiCa43+D7GOgvWumPJ9GtJ8Ms9lnId/YV/sL4V
-	 8pyxu6+gSWhfOfS7Kcka12Z0WBBQCKfHrM+Ur+LHC3gOIvFJur17OYyrauPZ4S0wFOSEJ
-	 wwgzabSbcE1kioRVuiMnqGUyGevGJ9hVXfpE0XSG2bFPGI5ccRgrpnD+Ew2LGNrLkS9Rh
-	 NyWWR55E6wz1Q+h0883r3iW1AznGwZsJzdg8opVHQhRcL62EEO/nN/c1rcv9TO8mchw==
+	t=1794154756;
+	b=Vmf4EsPRdEf03QVZOomg/cj/7ST8xhE/n0aJ4monDiL7iyzuDcoXotjno1be164909iE
+	 0vTXOXHMq5cuQ/MLfTITicteJ8hxMGQdrZnycBbjOmSYVFW34ms70g0gZd4bVzkUyFpm6
+	 7/F67t0xtWMsGlQP5nmEG0fXC8hBNhkFsHeh+/3HV4JclNG3DrFJVrUsAPmwWJPFNAzIX
+	 aiWlHzxZqxhhyL4k6gLTlAOhWUD7Neyq6CyQ3PtmTQ6TjlYcvUb8MrmE134q5RoM8lgPZ
+	 qwfZogOu9l6qoa88oWVsmdhuJwW6sEkyJlo73CkwKCpyEXkLB1L9ML5Asi38MVHpQMQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794154661;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=PvtKRSaJl5KvivraymhQQTT7H+9XnyjxQ7edPe0qY+M=;
-	b=sjODWGP+lXwoSGeFNb6RScyZHqwyRmL8WitXcRUuOpWNAcagqjAKLzp0rfmYme7lzuC3
-	 WSmNaD3QdITFdrDbudnPEMk/iAacjiP9om5qaAVX2BlkX5x6ZfZ2qXvvAzcaEEOSnh/ab
-	 x9TeB8GUJwP1aa1TPyRg0fp8jq+um4RJrmRk7g0eLzLXD/8AOa/XgL4sEAq12fL1L0rVv
-	 IFlT+hN196Ta8H7HDlDnn/KPNf44Hp/ZG+1oh2gHyCeBqg1cqKk2S6Jrfs+ObNK3C0YbW
-	 2K6i2w+qTxuMmon+0C6hn9ZqB4hxbq8AovpwUrLwrzjZ7XZfGUkALOgjzWqdGMmrPTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794154756;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=et3swsdOfldP0ujJDRmFWaImEh1vX8VO0MRX9DcXPOI=;
+	b=R+SyUprqqIo4TF4tKTJAM3aOVnMpRiSOBHGQL2VwwucTb89DHhpFm4IMz+CevX5drE7c
+	 mS4SK00YSyWyrvIX++oQT84AtlKtFCavgTRYDLx9iXRurS1f0bGBOEOnZxyWuhcqiLobF
+	 p6pbHL/Xbybysr8w1ysUJPD4XWoIoM2jFIdyDEry76p/fFFOacNnIQKR5ehc51d956353
+	 pWmfBlImHMGlHLk4IHE584JOFolH3uaskxPLGugVqVZx3F3LAg92d9WIahKD+96TIXZPp
+	 HcJnNB9R137862GCuRizW8ozm+HnFsl2eHZVINRhj7pOX+iOAga4TilCG62nGlkNmlg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=MI24uwLR;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.53.65
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012065.outbound.protection.outlook.com [52.101.53.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=arista.com;
+	spf=pass smtp.mailfrom=arista.com;
+	dkim=pass header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=UnHJPzGX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.49
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4764A606A31C;
-	Sun,  8 Nov 2026 16:17:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4764A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB17606A320
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 16:19:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CB17606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=MI24uwLR
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YGh8eOpRAkIzz+ZVwuUClP8OwK59Y+aNVt9rofzmcBHfCR4O2zjHxt6GlfACD/SsnBIBYiXSZOVxkTuNihYk03Qo18kLV7B7C75mV6aLlQMp1EEqclqe28oQbVG2Z2PwPddLIOmsytGCNx5diptjCci9AY4NDxNt8GoEWuCuq5opk2G+kzMgwTSSZATaMhmaqde92izw1wniTyynuTu55BzA0UYTf6HUrJkil+uF83ob6tgAuOBnaAF2FmMEB+GxwuIWN+edxJ0dUlhdA52ajojarFIuzTCuMRl5+EvG//JMdCYTXPRpfe00fsvUP13CGIlHmPv+4CRDeo9Ql93TqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PvtKRSaJl5KvivraymhQQTT7H+9XnyjxQ7edPe0qY+M=;
- b=I0zZFAgCf6WzFRuEiDoHuNR9aoX+lDRrm/rlVw1F6wX7kzthy1rITQmUnZnVb/wJ9Itp21WuKdN0OfNdH9DYwhBzYF7mRnhdryQ96fpMnTwyupJ4t0TL/n5ktAX9bUBIaLCY3DCIltkJbrbtpVzaOgtolEfQ0a6L1sZHv3VnyPfTFHn6OUgFOOfceWSYCIabMYey+9haI7kW1OP4aTO3Fg81q2BmpHsO5rG2uJVQJ0alp+l3LtF58ELm2VYHcWGCxCCm/g5xAI6wGNApzo2F66dy8lH/AarueUCaBanuzqnXemxgB6UUPl1/amKKx/CmtIhOHUozhVEPRqNjYeZb3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PvtKRSaJl5KvivraymhQQTT7H+9XnyjxQ7edPe0qY+M=;
- b=MI24uwLRPZp1SBHYotfSPvB9TqnUgil1OXMvzDj6TRA/H4igCizp1UCmor+S7bVSBv4bv1EyeADE14bxrTqkT+vD473srLYe/RmUTOsaRa+lazqpbFlteBOI8fEkhGSCj7sD2v4P0p2n1SrLGIMwlB6ngGTyzWFuboh126XzBM9dEoZewVjHzBCEFxGsibQIob2dpJOhKVZy3W5iZkVz2w1cXbKx0riaLa3KbzhJObCbKcRcz4+E4YI75W8xZ0cUn1gT86rE9q0KzxNiEPU0q3Jvrsj8TZl//sFPF4+3mHwtDn5xj5VHVXZrYyANQWEGvEzp4t3aE9n5IujrRZZMMA==
-Received: from CH5P220CA0008.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1ef::12)
- by DS4PR12MB9561.namprd12.prod.outlook.com (2603:10b6:8:282::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Sun, 8 Nov
- 2026 16:17:36 +0000
-Received: from MN1PEPF000793FC.namprd05.prod.outlook.com
- (2603:10b6:610:1ef:cafe::5c) by CH5P220CA0008.outlook.office365.com
- (2603:10b6:610:1ef::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Sun, 8
- Nov 2026 16:17:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- MN1PEPF000793FC.mail.protection.outlook.com (10.167.249.199) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Sun, 8 Nov 2026 16:17:35 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sun, 8 Nov
- 2026 08:17:18 -0800
-Received: from [10.125.206.9] (10.126.230.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Sun, 8 Nov
- 2026 08:17:13 -0800
-Message-ID: <c986aada-fa95-4d87-8517-2207af994dad@nvidia.com>
-Date: Sun, 8 Nov 2026 18:17:10 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=UnHJPzGX
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c247f6687dcso24319266b.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 08:19:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794154754; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZfTerIQyNOkOf9RkiG/v/bypSve8X4w3eeMz1fueMXDMbKc91rvERBx70fDCVQoQHX
+         3t/UEqvIY3o6na62jC2638+fWyxm/lcP+jJaBFlC+aH0xM3nYLgJzqf95NqjSR/m+iX7
+         VK8qXRV24rd3b3GxVsztJOUel/jNSVTyUxeo8cay4MOFJwBKtmVpQxxhh/nGiMuUq7Y1
+         NX0UnK4eAwzuWy6mGzRWJxj1W2iQpoYzUdULiyEHscVa4WnrOnJ7IJ7D3zW2ZhBRSyz6
+         CtYqeAw/pfI+i/vqoNjdSRcRbuDOVJCWrg8r6cRvCCHMgKce3kMEDkRfUiAZhXj/AuKG
+         Dajw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=et3swsdOfldP0ujJDRmFWaImEh1vX8VO0MRX9DcXPOI=;
+        fh=5P34O9BiSm3lpSGLVJ/dZNzdg+/do69B07Y4/GwVQNM=;
+        b=s9OMEvOWV+SxO8vP+bIWfyu/buwYvCWMLhG8eMfNXMf7703bwBmgq0rWYV7uCiMBXy
+         ODqelEYMaFXQf9Ru3rPe/V7HAZFINK+abU4eMR0bOh5EPK+x8B4imEHTDhdrUW1gLsy6
+         XCZvUU9Y0SM/me2CGaO8cTviNorvdJ4blKB7JLG3Ndl/1JbPtb00f4lI5NCv232PXeq4
+         uJXJutsqTsd/7fMduMEl77PYNjkJ/+XsTBgLBWyIKpv8NfkNvsNPqLvRh7hurKXls4Xk
+         yG6gfszMxYtmRJSLeJZCgrSizuv+zl2uIsaGFFxnUtoOM1hhullxpQw24FBGKhGqz5sB
+         DmKQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=google; t=1794154754; x=1794759554; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=et3swsdOfldP0ujJDRmFWaImEh1vX8VO0MRX9DcXPOI=;
+        b=UnHJPzGXqtf5M6DSoZKrR6UHFBMfoWqYMQ1Rv17g7fWWT+sUOEqe3QB3lY70652EHs
+         R4u9V0gcMFrFvvSx2428DKOdXjulw15zG2Gy+Qfh3Tw2JxCfbPsye6YS1qby+4Vh/LcO
+         Xzdrbu808uhG44B8h5piODGDrpJo9JOx93iFfrb/IqbcGKOeWlNJGCJ0hA5eBs0PBuPf
+         gCPhGndoxAT6kRnicgZ706hl6Gnyq556H8teishi0UUNNcmQmMprjdC/vEt+ztlS80Ks
+         vDgdeb3d6MYYHH7yqg4ylxT4o6vYu9P0xtrKBd0wphb4zuKRPhhIaLnZx88GNjKCbx1+
+         M+PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794154754; x=1794759554;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=et3swsdOfldP0ujJDRmFWaImEh1vX8VO0MRX9DcXPOI=;
+        b=ZIiguHfDiJHCfJLXLaO/lgpRlRbpRN5DWZ50FlHhxh8NcCp5d7Mg3g+Y+0WnSkTK91
+         P/RXSYhMhdLq6xgfq0QJw4DZwhYuZytRQ4wkwFLNglX3i5UUQC1b3JE8wIIVSPiCKtzJ
+         QS8xND1MsLTV+K5S7bjNyRcJj/0SrRP8VfXanK2HWiv38AZl2s+m0stdeAip/ahAitUu
+         FoXaCybwWTG9P0xW6a3MdwTRavCsqpUVKkOrqIfdZBfHPMCS4bBnMDDSnENEiRj7FhOC
+         3YkVlzJwW+GzONzh2/IjCGf76DPnQw2VFjdgRLRW4Yb/ozktFbNncntd+B7Nt0KTUjhf
+         A0RQ==
+X-Forwarded-Encrypted: i=1; AL+hErFEwl8sB7TIRSrfhil6ZZl9Q+Hu3r+OIw7bHwjl4Qr2OzNq095NX3l8KnG24gVELFsA+Lkgx/g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9VR9lDM4UNcn63+QFrxrIUJrXZL1u2BSDVF/lA2/AhDw56Ofai
+	sZwh72dcPbyrwPvrzHdY08nU5zhaKSrKuNIVRwyoqyNtxwCXzdLplubMY9ifdNV3ZwvcTLT0V/P
+	IlRWy+V+97YTOD7pPBgwKex0IeuL3Kvy42PIlcdTi
+X-Gm-Gg: AYBFou2fQ0NIKkV7XEvroIKUo4H9QBRf83aI6I6IVHmyxhML0gth1q9xAuTw11Lj9hQ
+	iXwIecFgwp0S61ksUrFN7TohBCXJN9zeIaNIwDcvvXDQRaee/V4SgS7EneIZb7mAmOTh5QwyEiE
+	5GR8Ib15d4OnccX2XNeuEXNOMOgLD5qaQzvwYq1dYO5Mbd9UaGxAeUiRzVjeBUd2M0UZ51eDwAe
+	PKuWU5pJmC0vWxlSkLdFAdPY/pBxfvnvpPh2yCqDmFPYR69wqFCv/QH7hcE8Qy/rBzTXTuFb7sg
+	RQf/3A0Y8RsSKIqWYcKxNGW/7401Z/uytnaSi7nRpZEHrsibOLkE6dBHXdGfPeGtt/92Qn7geiE
+	u71oooHH9p7x/q0IDWsoWeopqDkSxyD8rjfxOptEAZMoCIW9kOMdDxzpcolLfNCHVt4MEdgFaE5
+	36NNY9So8F+KVqJsyWEw==
+X-Received: by 2002:a17:907:3f8f:b0:c46:7ec3:fdfb with SMTP id
+ a640c23a62f3a-c4d6d1af6fbmr112340366b.7.1794154753715; Sun, 08 Nov 2026
+ 08:19:13 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,199 +105,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rdma-next 01/23] net/mlx5: Add
- mlx5_trigger_health_work_force()
-To: <netdev-bot+sashiko@kernel.org>
-CC: <jgg@ziepe.ca>, <leon@kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
-	<mbloch@nvidia.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
-	<dtatulea@nvidia.com>, <moshe@nvidia.com>, <maorg@nvidia.com>
-References: <20261103163949.1554-2-yishaih@nvidia.com>
- <179408308027.994134.17949886966516055410@kernel.org>
-Content-Language: en-US
-From: Yishai Hadas <yishaih@nvidia.com>
-In-Reply-To: <179408308027.994134.17949886966516055410@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF000793FC:EE_|DS4PR12MB9561:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90e804d4-6d34-4b2e-97a8-08df3db3cd2d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|36860700016|1800799024|82310400026|5023799004|11063799006|4143699003|56012099006|261021121427099003|261022105027099003|261022075727099003|261009223027099003|261026140227099003|261026121527099003|261102130727099003|261028144727099003|261102123227099003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	rKcWrl4bHIn09rhAm55WMU2bkw/WE+c6zKnatGeV9QGanrJRQodv8jQ5lBtBu17KIJC7DC2dviswbivA4y3DHlylt6Y7xAEIM3m51eVFclS5HIURxrciiLFPv82PYJIbHcW9JJ5eoNYh5FfYUsh5S/oONhEVpTNQnLMCoAxhTe+8YpYVgmZD6hb89rK0qvY3+pP3wnoSY8wkTKR1b8QjzVEIlhnBeRgjxGftmTD43v6fzPvFgPzl4QK8x/2KMtMXfFAgDcmoJXagxyXkK197iyiXJsyn8b8i5HhrB9GHQy5t8jDijAQl8jyKuJc0Sde//kEDp5wEc2LVLVPzBNz0Vud83VnLCbKbJRZH6MIBlHRsHwmOSB90NjXlulYQg7JfNKnIMW1E7mSa7oIB2AWahFTQfexPwj+oDyCO1wBX1TQX4YAZ+YI8wKHHHC3FhklTdZu6ULeznQmdtGJxh6faau1OKzYPNC5AjV2RKEU8JfKut3CpB7gefmh9PXw0Vmmig5SSnBvNOmscFchSJwixVO66uPiGu4IusbX4XRaY06xXVLF/CpCI+HCOJDF2ZOKQYmjqhoHAEvhddD52FH2McCZGjTgXwkY00pB+dQzK5JWLkp9mtL7lGcsDuiPWEqXeRVblTMyKojeuDhA7oRD0FTnzY4tpQOdhue2B4KZNKVpViXF7DSHZA1bSArctYxC/bwBhUsBrYi6u0pbBKiMcRg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(36860700016)(1800799024)(82310400026)(5023799004)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261009223027099003)(261026140227099003)(261026121527099003)(261102130727099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	GgxovoJlK9WK+vnNorx33HptM6zOCITyAU1V2ZhUL6P/+mlioVcbfZbqbGFR8b2jhloXUIT6GOHCCWflyCWMlTONUAtx2GKo5Xsxo3Lw9KQP7IegoJ34+hUIm6+RsYP7VV8ztLyYUzfvDB6Fu4I8UiSJxP/6mcFc7+nUPv3JbCVTpHrFQBTA0ZAWke5KH9GRY0yq4eN1BcwJmp1ASNrqzvgcRBV9tFm65/WWf+ofSMZwijUnnX/6iZnXGL7P8yNbWlKxMhC4N/V9gtKKB/IPLxj0dh8KZJI47ekgUfJAJT3yzU8oNdjLB9/5A5ka+6zvS349wDEN0uJq1Y92k+1NwsOT/fP4/3b6YncyZruvmC+f9cQ1/KrAZZk6PC3yqE/m0B4Zl6vpIem+v2/6vyjeeQ6HQJNAY8nMmoI8EiiluHmshVNyMzN3/m1KPkcGDIFo
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2026 16:17:35.8953
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90e804d4-6d34-4b2e-97a8-08df3db3cd2d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF000793FC.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9561
+References: <20261107224733.1104094-2-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20261107224733.1104094-2-Jeremy.Jean@oss.cyber.gouv.fr>
+From: Dmitry Safonov <dima@arista.com>
+Date: Sun, 8 Nov 2026 16:19:00 +0000
+X-Gm-Features: AclHuK-RlKB8cK6nkN9idStz4fDt7ECu6dP4yCWsCwUDnlTQSNjJu1k9KvIrby8
+Message-ID: <CAGrbwDQFY8gBtEKi2RaSMUSEvLLVADspgoLLppwNt5XQgd-hxw@mail.gmail.com>
+Subject: Re: [PATCH net v2] tcp: fix authentication bypass via unsupported TCP
+ auth options
+To: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Salam Noureddine <noureddine@arista.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 07/11/2026 22:24, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 2 · Medium: 2 · Low: 2
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The forced path in mlx5_fw_fatal_reporter_err()
->    (drivers/net/ethernet/mellanox/mlx5/core/health.c) tries only…
-> - [High] net/mlx5: forced health work recovers device when interface is
->    already down
-> - [Medium] Nothing deduplicates force_fatal_report_work against
->    fatal_report_work or against the device state.
-> - [Medium] A forced request is dropped with no record or retry if
->    force_fatal_report_work runs while MLX5_DROP_HEALTH_WORK is set only…
-> - [Low] The patch changes the existing sensor-triggered recovery path
->    (fatal_report_work, forced=false) in mlx5_fw_fatal_reporter_err().
-> - [Low] A forced, consumer-detected fault goes through the same devlink
->    fw_fatal reporter path as a real firmware-fatal error.
-> 
-> --
-> 
-> net/mlx5: Add mlx5_trigger_health_work_force()
-> 
-> This adds mlx5_trigger_health_work_force(). It queues a new
-> force_fatal_report_work that runs the fatal health recovery with the error
-> state forced, whatever the health sensors report. Before forcing the error
-> state, the forced path stops the health poller and issues a fast teardown
-> of the HCA under intf_state_mutex. The function is exported for mlx5_ib,
-> which uses it later in the series.
-> 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
->> index aeeb136f5ebc7..d000ac335fa7a 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
->> @@ -627,18 +627,11 @@ mlx5_fw_fatal_reporter_dump(struct devlink_health_reporter *reporter,
->>   	return err;
->>   }
->>   
->> -static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
->> +static void mlx5_fw_fatal_reporter_err(struct mlx5_core_dev *dev, bool forced)
->>   {
-> 
-> [ ... ]
-> 
->>   	mutex_lock(&dev->intf_state_mutex);
->>   	if (test_bit(MLX5_DROP_HEALTH_WORK, &health->flags)) {
->> @@ -646,8 +639,26 @@ static void mlx5_fw_fatal_reporter_err_work(struct work_struct *work)
->>   		mutex_unlock(&dev->intf_state_mutex);
->>   		return;
->>   	}
-> 
-> [Severity: Medium]
-> Can a forced request get lost here? If force_fatal_report_work runs while
-> MLX5_DROP_HEALTH_WORK is set only for a while, mlx5_fw_fatal_reporter_err()
-> logs "health works are not permitted at this stage" and returns. The
-> request is not recorded and not retried.
-> 
-> The FW sync reset flow opens such a window.
-> mlx5_sync_reset_set_reset_requested() sets the bit without holding
-> intf_state_mutex:
-> 
-> 	mlx5_stop_health_poll(dev, true);
-> 
-> On abort or timeout, mlx5_sync_reset_clear_reset_requested() clears it
-> again:
-> 
-> 	if (poll_health)
-> 		mlx5_start_health_poll(dev);
-> 
-> A dropped sensor fault is caught again by the next poll_health(). A forced
-> fault cannot be, because the sensors never see it. So dev->state stays
-> MLX5_DEVICE_STATE_UP. The kernel-doc of mlx5_trigger_health_work_force()
-> says this API exists to prevent exactly that.
-> 
-> In the mlx5_ib consumer later in this series, umrc->state is already
-> MLX5_UMR_STATE_ERR at this point, and cq->poll_one is already
-> mlx5_ib_poll_one_stopped. The UMR waiters in mlx5r_umr_post_send_wait()
-> depend on the internal error flush to wake them, and they wait with no
-> timeout:
-> 
-> 	wait_for_completion(&umr_context.done);
-> 
-> If the forced request is dropped this way, would those waiters hang
-> forever?
+On Sat, Nov 7, 2026 at 10:49=E2=80=AFPM J=C3=A9r=C3=A9my Jean
+<Jeremy.Jean@oss.cyber.gouv.fr> wrote:
+>
+> tcp_inbound_hash() parses both TCP-MD5 and TCP-AO options when at
+> least one of the two features is enabled. With TCP_MD5SIG=3Dy and
+> TCP_AO=3Dn, a packet carrying an AO option reaches the disabled
+> tcp_inbound_ao_hash() stub. That stub returns success, so sockets
+> configured to require MD5 authentication end up accepting
+> unauthenticated data. A forged AO option skips the unsigned fast
+> path, which is the only place where tcp_inbound_hash() can return
+> SKB_DROP_REASON_TCP_MD5NOTFOUND.
+>
+> The inverse configuration with TCP_MD5SIG=3Dn and TCP_AO=3Dy has the same
+> problem for an MD5 option on AO sockets.
+>
+> Note that TCP-AO depends on 64BIT: therefore, every 32-bit kernel with
+> TCP_MD5SIG=3Dy is in the vulnerable configuration.
+>
+> Make the disabled stubs reject options for the unsupported
+> authentication scheme. This matches the real helpers' behavior for
+> sockets without keys. It also means that kernels with TCP_MD5SIG=3Dn and
+> TCP_AO=3Dy now drop segments carrying an MD5 option on unkeyed sockets,
+> as kernels configured with TCP_MD5SIG=3Dy already do.
+>
+> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 
-The same rare hang can already happen today: a UMR waiter waits for its 
-completion or a flush, and a fatal error while unbind runs, after the 
-health work is dropped, leaves its WQE unflushed. A forged completion in 
-this window reaches the same state, so it is a pre-existing hang, i.e. a 
-DoS, which is out of scope of this series.
 
-> 
->> +	/*
->> +	 * The firmware might still be running, so stop it first. Do it under
->> +	 * intf_state_mutex and only while UP, so the cmd interface is valid.
->> +	 */
->> +	if (forced && test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
->> +		int err;
->> +
->> +		mlx5_stop_health_poll(dev, false);
->> +		err = mlx5_cmd_fast_teardown_hca(dev);
->> +		if (err)
->> +			mlx5_core_err(dev, "Failed to stop the device before forcing the error state, err %d\n",
->> +				      err);
->> +	}
-> 
-> [Severity: High]
-> What happens here when MLX5_INTERFACE_STATE_UP is already clear? 
-[...]
+Acked-by: Dmitry Safonov <dima@arista.com>
 
-> Should the forced path unlock and return when the interface is not UP,
-> instead of only skipping the teardown? Or should the non-remove unload
-> paths cancel force_fatal_report_work?
+Thanks! Nice find.
 
-Yes, v1 will return early. An unload clears UP only after it detached
-the consumers, under intf_state_mutex, so once the forced work sees the
-interface down there is nothing left to force.
+I think TCP-AO patches tried to preserve accepting MD5-signed segments
+on !CONFIG_TCP_MD5SIG kernels and AO segments on !CONFIG_TCP_AO ones.
+That's why the default stub was to accept the segments.
 
-> 
-> [Severity: High]
-> What happens here when mlx5_cmd_fast_teardown_hca() fails? 
-[...]
+And I prefer we don't add prematurely ifdeffery to tcp_inbound_hash()
+as long as no-one complains on this changed behaviour under kernels
+with disabled auth options.
 
-> Does this path need a mlx5_cmd_force_teardown_hca() fallback, or bus
-> mastering cleared before the error state is forced? 
-> 
-
-v1 will fall back to mlx5_cmd_force_teardown_hca(), as 
-mlx5_try_fast_unload() does.
-
-> [Severity: Medium]
-> Does anything deduplicate this against fatal_report_work, or check
-> dev->state? 
-
-[...]
-
-In v1 the forced work will do nothing once mlx5_cmd_is_down() is true, 
-which covers a device already in internal error. The other order needs
-a forged completion close to a real fatal error, and at worst ends in a 
-second recovery or an unload, i.e. a DoS, which is out of scope of this 
-series.
-
-pw-bot: cr
-
-Yishai
+Thanks,
+           Dmitry
