@@ -1,74 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794101922;
-	b=HXj3psmWwhAzjwQc1yFxbnfEBcAhq5QB3OKx2anWxQXuOJPp4M+O+dfYxmDnXx3SM/IU
-	 y9IvKHHSJ7eaG/Axvkz6Lx4em3Ss3tqp2+EeVmQLwxd9gsDykdhPHdQaV/nHNmT91/gXj
-	 6FQoiQsyUWQYFHTkIkJpk4CF3TtqdoMEropsZ4xzUR7VKCelTuWe1TzfH+vLrCNZhRZgi
-	 lTDoF9tJKX3cTQvH3IBEq6FjDAru6Ybo2L3wNNZEE26FYIiW78NfV0TI1T4ghw0NATl/V
-	 mOzSlM0/y7amEkad/K2fjt8MtC7qVCBFcXaVgvP/eZ6bYnc7Tw6maiY1AWAWsEvPNRw==
+	t=1794102559;
+	b=XyKmnQi3TXnSkJSLqSM9mRvE1mSw9DryAFVVnlcka8HRx0DRkc+836GLw4bi1TVqjFkQ
+	 aol51vlNVUMV0EB8isz92dO0SbANhz1tjDIZFWu026RR0CliMhQ8FY2NouFTj8hOGNCdC
+	 nIt6+3bTcLZD9j49I/kxnmxb7jFcZG442EevFXOAPFbhauCA8mAXmDEcnCkAuKH1O6fHt
+	 WGYLcrsn6YFau5w5vkWNb/shht4FZ8HPnK6lCWbxp6cdHzuyS5nIXZ0Hg2HFFe9BbKb2k
+	 8Q33bnIESMnR2WXmIRPVDSo1FDK9lTZjr0h3WZryuUHkVVU9kL8vYGHqndVUvdw3VQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794101922;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=s69oIx3XXOxgLBpabmnhDrgngw50vfkdDom/Jpxm8e4=;
-	b=mpS0+fnRzfMEzyOfYuY2bIeqCBN2JpyM3ReMABJXFIcdneQSIt5eV/RHPpHLhCboLMs/
-	 XNdYknZd8dBdHc5oAdhka1NbGDmZD9JGmuKAlJzTxMsuZx2Bb0wFjNY4rcCCsAmMcfLVe
-	 AeXkjp479wVvJFvO9EludDbMfdEAdL7aSfHU/AcRi6zW3DFy82kHOStoJb4EdZP05o3Wj
-	 kyy+mtYYtPvhQENvMC0+0PwOpanmYjygvG3mIkd8WhIFaDNLz44eb6bOL8ZkHcvFWHtK3
-	 qH4VN2m4Q0uv4oUAO5oB7TOhG5F9/dsJ1ibQu7CB8U2WudUcd0PDut4fjLaiiCnntmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794102559;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=QlFn/ogZnBwnGXypaqw1Bx3HTl2v+r0AMb9Jwl2RJhE=;
+	b=lkMpSXzMBgmL0q4EBKI8k29pKi4FQc6V0QxcedMV5Z/YRluhl3at5M4hp9xN0UO8zLGV
+	 wI6xapbhthkywMT4CCeaLaB8VjBhKrsw/JJYVxGvI0JBBZ4xGWMdp7+g3CZt/1oKreJl1
+	 zGqwRHH7azaxI804+gtn38z40KcuQjhltsDFvKF6B3N7a9F0VXfocuGgrQ76BRh8HO14S
+	 vAiLaTDopeDGOsihgzyAyaDuOpWWhUd+LDCcN9Up7oCXktb4588oVlAFXOKmbxbV0S8+V
+	 YWhsJOV2sntIYnzJSlLR6jfrN0hQvZvutWuSJV3Vvc80Q0Si2LF5haJG26M3wJXcupg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mJf8x0mr;
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Cu+/WexB";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE037606A33C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 01:38:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EE037606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38661606A31A;
+	Sun,  8 Nov 2026 01:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mJf8x0mr
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-36de26cb4b3so194145eec.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 17:38:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794101921; x=1794706721; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s69oIx3XXOxgLBpabmnhDrgngw50vfkdDom/Jpxm8e4=;
-        b=mJf8x0mr3nNSD6uuCKKlovranhZUDEjtUb2GPZwhhMuxWCLGmGZfvn8m/LtNphtGQo
-         jW1VJcojhramXAsgAzqqZ/ZezMCRF26JUYbRfaX7KFroV4d1EmOXFdsxnXP/oT+WYcpL
-         bhviZC9k5BX/BXmY54K4U403spgOBWoUpWTdz/uiolsORNV8rEZ1o146GTov2SRZyC5Y
-         vhCZ0iJh/L2D5pOixHeuvJWZ+cebsMbPCdYKiSHqDRe52/8prpWEL/AFM+sZwXEkBu8l
-         56GMOz1BOmIi/5vy+fMiYqqgn+c4ms6lcMqerIC1ywRV4HwMW1nR8re2Kg0gm/kTpoF9
-         r64g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794101921; x=1794706721;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s69oIx3XXOxgLBpabmnhDrgngw50vfkdDom/Jpxm8e4=;
-        b=O3xpzNGF7uO2Kx9WGRkbje5Hnkx2C+INAuTU19Akc7oNUnCv5xJ1DPCAtLm2xz+aH4
-         FrSSYRhgf5nSSSUwFkUbXMXJ/p6vS4376ufTNVxAh3WbIGt9utWS7nq1Fs4OjvDHkd+t
-         F0t3P/oz8W+WuQ9GXh3V5ZoETkMwDbrRU9qc6WFL+22CIAZvksJND1JaCCdafQFJvA2h
-         6TT2skhZKAfmViCOH9Y5RanMqWsW0welyPHTan8PEoPFbgnNPyvt97f1dHinsvewPrWz
-         ECgpeTOp7Nm2bS8v2S2wT/AcuqCWDyVbEZOHjLLA4RsF5E5n3zHogUPVWmLOZHZq26mj
-         Sb1w==
-X-Gm-Message-State: APuU4Z+vsyrKzYwvmqrH3+rWxXEWm1U6KwkE6T0yE3qulZSa8REcLuE6
-	spAkSHCqQKB+MSJsvL98J1dT9G0VpTYgYVjwXQ1W9VuvKvgetsSyWj3FY+aBTvr9+jVbPARwXle
-	vnEP0gHs6Ls2+yRcWpcn9u9A/tincvn+gMWV50nXhqcL9v3QisZ3krmmkaaWCK/zdbsJqu2BIqn
-	jfP+WLYc4phZmNWoowNIdnvDS1PnsjngQJd4kBmdkzlg9pFIS3+5qFqO87CkPBptA=
-X-Received: from dlae24.prod.google.com ([2002:a05:701b:2318:b0:1b2:375c:814])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:294:20b0:16f:c9db:c5af with SMTP id a92af1059eb24-1b39fe92ebbmr418378c88.11.1794101920576;
- Sat, 07 Nov 2026 17:38:40 -0800 (PST)
-Date: Sun,  8 Nov 2026 01:38:37 +0000
-In-Reply-To: <20261108013838.1454450-1-almasrymina@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cu+/WexB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C8D1F0089F;
+	Sun,  8 Nov 2026 01:49:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794102558;
+	bh=QlFn/ogZnBwnGXypaqw1Bx3HTl2v+r0AMb9Jwl2RJhE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Cu+/WexBi0lEOhEn4R93nkwKirlhVJq0PSZIO7L2Xz2eGRqXSuzc2Uv49dNXhD3LX
+	 NbjqzoNeiSbMd16WsTRPgQfA3PEOvo4dXP4R63Dbuid+L+aGOPm05bVH4zmXtX+bQv
+	 zaQ/GqWyOW3VhAdcQB4lrPo+Hf5+uPTh5rlwH2Bj6Yq1x1EoLblgxJ2aTskmNONZ7A
+	 VbvAaFl56dzuVgnGmbEldIZ2BHMRSUdsu2JB+XJx0a50+P8YoQVchLikQkJJhJMiKv
+	 8wJ3wsbve9O624caX3kcrxVGmnKSfcF9wPryfb2SYVhqJHBxGcJh5nY6+a+AgmcAPb
+	 qCoReXdaNxr/Q==
+Subject: Re: [PATCH net v3] net: atl1c: free the RX buffer when the descriptor
+ reports an error
+From: netdev-bot+sashiko@kernel.org
+To: federico@rimpianto.com
+Cc: chris.snook@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 08 Nov 2026 01:49:17 +0000
+Message-ID: <179410255769.994134.16589271793081668306@kernel.org>
+In-Reply-To: <20261103225218.19206-1-federico@rimpianto.com>
+References: <20261103225218.19206-1-federico@rimpianto.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,83 +62,232 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261108013838.1454450-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261108013838.1454450-2-almasrymina@google.com>
-Subject: [PATCH net-next v4 1/2] net: fix skb->unreadable propagation in
- skb_split() and skb_shift()
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, linux-kernel@vger.kernel.org, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-skb_split() and skb_shift() do not accurately maintain skb->unreadable
-when moving fragments between skbs:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-- skb_split_inside_header() moves all fragments out of skb into skb1
-  (leaving skb with nr_frags == 0 and only host-readable linear memory),
-  but leaves skb->unreadable set on skb.
-- skb_split_no_header() unconditionally copies skb->unreadable to skb1
-  even if 0 fragments were moved to skb1 (k == 0), and leaves
-  skb->unreadable set on skb when splitting at skb_headlen(skb) moves
-  all fragments into skb1 (!skb_shinfo(skb)->nr_frags).
-- skb_shift() does not clear skb->unreadable after all fragments are
-  shifted out of skb.
+Critical: 0 · High: 0 (1) · Medium: 1 (2) · Low: 0 (1)
 
-Fix all three cases so skb->unreadable accurately tracks whether the
-remaining fragments in each skb are unreadable.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This issue is theoretical and was found by manual code inspection and
-LLM review; it was not triggered in production. Verified with the
-net_core KUnit test suite; not tested on real hardware.
+- [Medium] The new errored-frame branch in atl1c_clean_rx()
+  (drivers/net/ethernet/atheros/atl1c/atl1c_main.c:1926-1943) unmaps and…
 
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- net/core/skbuff.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  widens it: the link-change worker resets and reposts the RX rings…
+- [Medium] In atl1c_clean_rx(), a valid RRD with an error bit set and
+  RRS_RX_RFD_CNT == 0 is never consumed.
+- [Medium] atl1c_clean_rx() checks RRS_RXD_IS_VALID(rrs->word3) (line
+  1909) and then reads rrs->word0 (line 1910) with no dma_rmb() between…
+- [Low] struct atl1c_recv_ret_status (atl1c.h) declares word0 and word3
+  both as __le32.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 48f6764117243..43e720d30b67b 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4225,6 +4225,7 @@ static inline void skb_split_inside_header(struct sk_buff *skb,
- 
- 	skb_shinfo(skb1)->nr_frags = skb_shinfo(skb)->nr_frags;
- 	skb1->unreadable	   = skb->unreadable;
-+	skb->unreadable		   = 0;
- 	skb_shinfo(skb)->nr_frags  = 0;
- 	skb1->data_len		   = skb->data_len;
- 	skb1->len		   += skb1->data_len;
-@@ -4273,7 +4274,10 @@ static inline void skb_split_no_header(struct sk_buff *skb,
- 	}
- 	skb_shinfo(skb1)->nr_frags = k;
- 
--	skb1->unreadable = skb->unreadable;
-+	if (k)
-+		skb1->unreadable = skb->unreadable;
-+	if (!skb_shinfo(skb)->nr_frags)
-+		skb->unreadable = 0;
- }
- 
- /**
-@@ -4447,6 +4451,8 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
- 	skb->ip_summed = CHECKSUM_PARTIAL;
- 
- 	skb_shinfo(tgt)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-+	if (!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
-+		skb->unreadable = 0;
- 
- 	skb_len_add(skb, -shiftlen);
- 	skb_len_add(tgt, shiftlen);
+--
+
+net: atl1c: free the RX buffer when the descriptor reports an error
+
+This patch changes how atl1c_clean_rx() handles an RRD that reports
+RRS_RX_ERR_SUM or RRS_802_3_LEN_ERR. It now unmaps and frees the skb of
+every RFD slot the RRD references, where before it only marked those slots
+free. It also decodes word0 once with le32_to_cpu(), counts errored
+descriptors as work so the RX refill runs, and clears the RRD ring in
+atl1c_clean_rx_ring().
+
+> diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+> index eddd8406867f7..0d7d8426ce99b 100644
+> --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+> +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+> @@ -912,8 +912,9 @@ static void atl1c_clean_rx_ring(struct atl1c_adapter *adapter, u32 queue)
+>  		buffer_info = &rfd_ring->buffer_info[j];
+>  		atl1c_clean_buffer(pdev, buffer_info, 0);
+>  	}
+> -	/* zero out the descriptor ring */
+> +	/* zero out the descriptor rings */
+>  	memset(rfd_ring->desc, 0, rfd_ring->size);
+> +	memset(rrd_ring->desc, 0, rrd_ring->size);
+
+[Severity: High]
+
+This is a pre-existing issue, but does the RRD memset fully prevent what
+the commit message describes?
+
+  "Clear the RRD ring on reset, preventing a stale error descriptor from
+  causing a freshly reposted RX buffer to be unmapped and freed while the
+  device still owns it."
+
+The link-change worker gets here without stopping NAPI:
+
+atl1c_common_task()
+  atl1c_irq_disable()
+  atl1c_check_link_status()      /* link down branch */
+    netif_carrier_off()
+    atl1c_reset_mac()
+    atl1c_reset_dma_ring()
+      atl1c_clean_rx_ring()
+        atl1c_clean_buffer()     /* unmap + napi_consume_skb() each RFD */
+        memset(rrd_ring->desc, 0, rrd_ring->size);
+    atl1c_configure()
+      atl1c_alloc_rx_buffer()    /* repost fresh buffers from index 0 */
+
+atl1c_irq_disable() masks the interrupt and calls synchronize_irq(). There
+is no napi_disable(), and atl1c_clean_rx() checks netif_carrier_ok() only
+on entry.
+
+Suppose a poll on another CPU is already inside its loop and has decoded
+rfd_index. Can the new error branch then see buffer_info->skb as non-NULL
+and call dma_unmap_single() and kfree_skb_reason() on it? That would
+either double unmap and free a buffer that atl1c_clean_buffer() also
+frees, or unmap and free a buffer the worker just reposted to the device.
+
+The good receive path has the same race. The notes below the --- line say
+the link-reset/NAPI races are left to separate patches. Still, this patch
+adds another free site inside that window.
+
+[ ... ]
+
+> @@ -1894,8 +1907,11 @@ static int atl1c_clean_rx(struct napi_struct *napi, int budget)
+>  			break;
+>  		rrs = ATL1C_RRD_DESC(rrd_ring, rrd_ring->next_to_clean);
+>  		if (likely(RRS_RXD_IS_VALID(rrs->word3))) {
+> -			rfd_num = (rrs->word0 >> RRS_RX_RFD_CNT_SHIFT) &
+> +			rrs_word0 = le32_to_cpu(rrs->word0);
+> +			rfd_num = (rrs_word0 >> RRS_RX_RFD_CNT_SHIFT) &
+>  				RRS_RX_RFD_CNT_MASK;
+> +			rfd_index = (rrs_word0 >> RRS_RX_RFD_INDEX_SHIFT) &
+> +				RRS_RX_RFD_INDEX_MASK;
+
+[Severity: Medium]
+
+This isn't a bug introduced by this patch, but should there be a dma_rmb()
+between the RRS_RXD_IS_VALID(rrs->word3) check and the load of rrs->word0?
+Without one, a weakly ordered CPU can pair a stale word0 with a fresh
+word3.
+
+The practical effect looks limited. The RRD and RFD rings advance
+one-for-one, as the comment in atl1c_clean_rrd() says ("the relationship
+between rrd and rfd is one map one"), so a stale rfd_index at RRD slot i
+normally still names RFD slot i. After the new memset, a stale word0 also
+gives rfd_num == 0.
+
+The good path has the same missing barrier, and the notes defer the
+memory-ordering issues to a separate patch.
+
+> @@ -1908,11 +1924,22 @@ static int atl1c_clean_rx(struct napi_struct *napi, int budget)
+>  rrs_checked:
+>  		atl1c_clean_rrd(rrd_ring, rrs, rfd_num);
+>  		if (rrs->word3 & (RRS_RX_ERR_SUM | RRS_802_3_LEN_ERR)) {
+
+[Severity: Low]
+
+This is a pre-existing issue, but struct atl1c_recv_ret_status declares
+word3 as __le32 too. Now that word0 goes through le32_to_cpu(), should
+word3 be converted as well?
+
+These accesses all apply CPU-order masks to the raw little-endian value,
+so they test the wrong bits on big-endian hosts:
+
+  RRS_RXD_IS_VALID(rrs->word3)
+  this error test
+  the RRS_PKT_SIZE extraction
+  rrs->word3 &= ~RRS_RXD_UPDATED in atl1c_clean_rrd()
+
+The driver was already broken on big-endian before this patch.
+
+> -			atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
+> +			/* atl1c_clean_rfd() drops the only pointer to each skb. */
+> +			for (i = 0; i < rfd_num; i++) {
+> +				buffer_info = atl1c_unmap_rx_buffer(pdev, rfd_ring,
+> +								    rfd_index);
+> +				if (buffer_info->skb)
+> +					kfree_skb_reason(buffer_info->skb,
+> +							 SKB_DROP_REASON_NOT_SPECIFIED);
+> +				atl1c_clean_rfd(rfd_ring, rfd_index, 1);
+> +				if (++rfd_index == rfd_ring->count)
+> +					rfd_index = 0;
+> +			}
+
+[Severity: Medium]
+
+Can this loop unmap and free a buffer the NIC still owns? rfd_num and
+rfd_index come straight from the device-written RRD:
+
+#define RRS_RX_RFD_CNT_MASK	0x000F
+#define RRS_RX_RFD_INDEX_MASK	0x0FFF
+
+So rfd_index can be as large as 4095 against a 512-entry RFD ring, and
+rfd_num can be as large as 15.
+
+Before any slot is freed, nothing checks that:
+
+  - rfd_index < rfd_ring->count
+  - rfd_index is the slot software expects (rfd_ring->next_to_clean is
+    written but never read)
+  - the slot is ATL1C_BUFFER_BUSY
+
+atl1c_unmap_rx_buffer() only checks buffer_info->skb.
+
+Before this patch, a wrong index or count here leaked the buffer but left
+the mapping valid. Now the buffer is unmapped and freed, and the device
+can then DMA into freed memory or a released swiotlb slot.
+
+The wrap test is ++rfd_index == rfd_ring->count, so a starting index at or
+above count never wraps. Could the loop then walk into another queue's
+buffer_info entries, or past the end of the single allocation that
+atl1c_setup_ring_resources() shares between the TPD and RFD buffer_info
+arrays, and pass whatever it finds to kfree_skb_reason()?
+
+For comparison, alx_clean_rx_irq() uses the same RRD layout. It unmaps by
+its software index and schedules a reset on a mismatch:
+
+	if (ALX_GET_FIELD(le32_to_cpu(rrd->word0),
+			  RRD_SI) != rxq->read_idx ||
+	    ALX_GET_FIELD(le32_to_cpu(rrd->word0),
+			  RRD_NOR) != 1) {
+		alx_schedule_reset(alx);
+		return work;
+	}
+
+Would a similar sanity check, or using the software index, make sense
+here?
+
+Multi-RFD freeing is also added only on the error path. The good path
+still treats rfd_num != 1 as unsupported.
+
+The patch notes say it hasn't been tested on hardware, so it isn't known
+how atl1c fills these fields for errored frames.
+
+>  			if (netif_msg_rx_err(adapter))
+>  				dev_warn(&pdev->dev,
+>  					 "wrong packet! rrs word3 is %x\n",
+>  					 rrs->word3);
+> +			work_done++;
+>  			continue;
+
+[Severity: Medium]
+
+This isn't a bug introduced by this patch, but what happens with a valid
+errored RRD whose RFD count is 0?
+
+atl1c_clean_rrd(rrd_ring, rrs, 0) neither clears RRS_RXD_UPDATED nor
+advances next_to_clean. The free loop runs zero times, and continue
+re-reads the same descriptor.
+
+Before this patch, that looped forever inside a single poll. With the new
+work_done++, the poll returns budget and NAPI repolls the same RRD. That
+is an improvement, but RX on that queue still makes no progress.
+
+Should rfd_num == 0 be rejected, or the RRD consumed, explicitly? It's not
+known whether the hardware ever produces such a descriptor.
+
+>  		}
+
+[ ... ]
+
 -- 
-2.56.0.455.g6c5a503b38-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103225218.19206-1-federico%40rimpianto.com
