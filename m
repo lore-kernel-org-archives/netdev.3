@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794178920;
-	b=cvs/m/wvPUkMapJ2uNHRWmiuXfKNvj1uF963BTmqIAwhzNisXcpP6gT9spov/sdnqK3h
-	 WyTQeLAgUJ22Q/adySdg+aXsxbtStBgXpFa0WLyYc+zE9epNJ0y5LEMYJd71fPzAHuE1s
-	 xQCg7KS+xbXjTbJZxDjf96ToiOg5TwqUeVsFKzHmEx6xQQBo4kO7uwgM36PsdG1MjDKpB
-	 85DnRgLzfSwzrgMNu+hcW43rejotKuzIvMvxPVRaZNR9kNgn8JmSKVJH2kb/Ifnje/5kP
-	 ci8uwbNW/LI3u4S+W41zEDYNJpV2BuFJXENTKv6cfLBqpjc3SlijKcktE/zFGeY4LWw==
+	t=1794178921;
+	b=LxnI+gj0+5H7Xkg18vatqbcG67vCIZlvLDD+i3IyltUt8eWLCB3EJ1f8cqC3Fnf/to/3
+	 t6Mrn0kBVFiKJoGmsK9vdPQ7OgaWVKE8i5g6Z/YAd1YvWxg1R1AsNGOPiGsEq0yW0wVbu
+	 +c8BHGQxN6l3b8RCt9zO1DMoJkCXPoxUz1UtPOKubpPvS/gmNb3zi5vwkQ98LzgVwUM9X
+	 Y4qwuCdp0UhJI+8hWyKE0TzPUPjIJUwZJCKj9lAmLU7GZxyo9vg/cjInBr5YfEUkWAvBT
+	 s0ECmhr1pZ7X+k+IY8eiGPaIC5uG6bLGoR+Gy0TRcypNVLXIodIVGVQSFx4NZAvYS9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794178920;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794178921;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zKx5R6i9AUhGBVwnmAlpJmhnW8ZyYNcifeunGVtyNv8=;
-	b=lpQoGvMeIQ3le617Up2cp5RPFA5KGNNoM6lGaGm+8ZmR+QR4nP3HfqxEVPd2ExyZCW1o
-	 1vMids9mKOtAedNh9Nc+y8svTFX7WdMN3U14Z8lEwSLMXMzuududKPmBiElksDhp/+szb
-	 c/GS7/Wq86VxIMtxCSbU9D23jGgFE4A9OLSrTdFuBvQrYZv76n/H3fgF9NPkh7LuYrtca
-	 xgrYX/47nmCdga/SK9nuPk8sQOUj8l2ILtRkT5+e7F/0nHJYXG6vF3qVs4zhvPXjnqWC2
-	 r4j6I3a5Lne7OJxwiZ1JEEDdezYgR9KRThBHO1vPGQnjOpRKLGXV9l3cndKWA2I3z/Q==
+	bh=dT/ct1xKJReQWJT7zL9ejsPw2m4cZVlBXXqSgJ273bg=;
+	b=ynWM9YRj10lvkLLehi+ipVcKcp4nhbogzoDTnhBUMKUOsz2NqC5udP7+v7inTMY15Ojq
+	 RJecjphHwtARCjVZUC387PmrwMV3ODcDhZ6SToHTAM5jTaVWTFjIgu/yEJj7CHIukWHUN
+	 9w3C5jx+OVG+wv+rKy0ZE2pPhYqsdXXUbhyB7wYADEKJSN2uDHy9NurdBpZp4mlt/GSDW
+	 4upHQnX3+yZCeGd2Qf4M+508QfBTL8x2bFXYrevqD3uBzfEf1T816dhGPX2ZCIgeoUcg2
+	 R8uqqp+4u51IMEQmSnO9Hm8LTAJA9jCVLKYXwfynJO56kxm0lWgnb8jvPe63medHtng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RaTAtZ8s;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbOQ5rKa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E64606A322;
-	Sun,  8 Nov 2026 23:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28931606A326;
+	Sun,  8 Nov 2026 23:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RaTAtZ8s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1385D1F008A1;
-	Sun,  8 Nov 2026 23:01:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbOQ5rKa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEAF1F0089F;
+	Sun,  8 Nov 2026 23:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794178919;
-	bh=zKx5R6i9AUhGBVwnmAlpJmhnW8ZyYNcifeunGVtyNv8=;
+	s=k20260515; t=1794178921;
+	bh=dT/ct1xKJReQWJT7zL9ejsPw2m4cZVlBXXqSgJ273bg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RaTAtZ8sAQWwuJEHl9M5It5XhW8RlO9VqHObl6A+XPgdBH3jmiJOR3WoJ/uasmcNL
-	 LbLWLGaABD4SOp6hDWe9Pi9yPGOWe5GzmZby4gmaSRQ7Cq0VlDZMI5QypU/vj7Zckp
-	 YDH7Xw4op4RAkzKCYRm+CP2hhhnWqLiKbRhMO7SzHFawmqtLXVpBQ5WYU9sG3ab+6I
-	 4VPiI/vHe6+nHa1WdZ+4gngRRtpse4UuJQjn40hJetD/bH5LnYUiszTFSTYdNN5zee
-	 DK1kyfaK16C2AY5eCqVt6kxnm+/Zv8/ekrZUIyyMKjPot/kIBFmkj2PmDyWzLEdOxl
-	 JO53p6qo0CVcQ==
-Subject: Re: [PATCH net v3 2/8] net: virtio: do not use dev->type to find the
- outer L3 header
+	b=WbOQ5rKaMfP1ljQFlxFIENqNBUNkGNwERmkD0UO5c9DMFdvbsQexmwNaJp2o1eMdi
+	 JguQUJS/00kay3WxLIQ3YtFQxJC4F76HdPj5c2EoHnBqvFMo/IMwP0Hczzb0zb5Gmx
+	 TXCIW0uhuqD5hjghFug324lViUHj5t3hpC/PotqhG4q92XAVbcJcklddMRFe2dCHV3
+	 zH8krbmd94c24kWfVc/vDsqcrn1aGkq4d+dL0jPpfvcRRk+S8bWE8TxG5MgwMYuk2i
+	 OGyhHAsANxzklSbjcQ5IP3Aclfgvm3X8DyCONPofDRia13NwNUN45GS+PEULoP+aeP
+	 BbWr1orgIMRhA==
+Subject:
+ Re: [PATCH net v3 3/8] tun: clear stale skb->protocol of NAPI frags skbs
 From: netdev-bot+sashiko@kernel.org
 To: edumazet@kernel.org
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com,
  jasowangio@gmail.com, eperezma@redhat.com, hassansultan@google.com,
  virtualization@lists.linux.dev
-Date: Sun, 08 Nov 2026 23:01:58 +0000
-Message-ID: <179417891864.994134.2460720079613864614@kernel.org>
-In-Reply-To: <20261105115715.1466924-3-edumazet@kernel.org>
-References: <20261105115715.1466924-3-edumazet@kernel.org>
-X-sashiko-severity: Medium
+Date: Sun, 08 Nov 2026 23:01:59 +0000
+Message-ID: <179417891984.994134.14397350053196333026@kernel.org>
+In-Reply-To: <20261105115715.1466924-4-edumazet@kernel.org>
+References: <20261105115715.1466924-4-edumazet@kernel.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,160 +65,117 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] net: virtio: outer_l3min includes ETH_HLEN in
-  virtio_net_hdr_tnl_to_skb()
-
-Pre-existing issues:
-- [Medium] This patch makes Ethernet framing an explicit argument
-  (`has_eth`), but virtio_net_hdr_tnl_to_skb() in…
+- [Low] The commit message understates what a stale skb->protocol does in
+  the non-tunnel path.
+- [Low] The first symptom in the commit message ("the outer protocol
+  check of UDP tunnel GSO packets rejects a valid frame when the two…
 
 --
 
-net: virtio: do not use dev->type to find the outer L3 header
+tun: clear stale skb->protocol of NAPI frags skbs
 
-virtio_net_l3_start() used skb->dev->type to decide whether a frame
-starts with an Ethernet header. tun can change that type with
-TUNSETLINK, so this patch adds a has_eth argument to
-virtio_net_hdr_tnl_to_skb() instead. Callers now pass true for
-virtio_net and tun_xdp_one(), and pass whether the device is IFF_TAP
-in tun_get_user().
+This patch clears skb->protocol for IFF_TAP frames in tun_get_user()
+before tun_vnet_hdr_tnl_to_skb() runs. With IFF_NAPI_FRAGS, an skb
+recycled by napi_reuse_skb() keeps the protocol that napi_frags_skb() set
+for the previous frame. Without this patch, the virtio header checks see
+that stale value.
 
-Link: https://lore.kernel.org/netdev/179387332014.488856.9111956413610107951@kernel.org/
-
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index dcec7311e6011..3920b3dff1e84 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -1944,7 +1944,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  		break;
->  	}
->  
-> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
-> +				    (tun->flags & TUN_TYPE_MASK) == IFF_TAP)) {
->  		atomic_long_inc(&tun->rx_frame_errors);
->  		err = -EINVAL;
->  		goto free_skb;
+Closes: https://lore.kernel.org/netdev/179386753589.488856.11455181721004759454@kernel.org/
 
 [ ... ]
 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 357116c2a1489..b7b6b542f4763 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
+> On the IFF_TAP path, tun_get_user() calls tun_vnet_hdr_tnl_to_skb()
+> before eth_type_trans(), so the virtio header checks see the protocol
+> of the previous frame: the outer protocol check of UDP tunnel GSO
+> packets rejects a valid frame when the two ethertypes differ, and
 
-[ ... ]
+[Severity: Low]
+Does this symptom really come from 90e33d459407? The outer protocol check
+that compares against skb->protocol seems to have been added earlier in
+this series, by "net: virtio: validate outer protocol of UDP tunnel GSO
+packets":
 
-> @@ -452,6 +450,7 @@ virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
->  static inline int
->  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
-> +			  bool has_eth,
->  			  bool tnl_hdr_negotiated,
->  			  bool tnl_csum_negotiated,
->  			  bool little_endian)
-> @@ -505,7 +504,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  	if (ret)
->  		return ret;
->  
-> -	if (!virtio_net_tnl_offsets_ok(skb, outer_isv6, outer_th))
-> +	if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th))
->  		return -EINVAL;
-
-[Severity: Medium]
-Now that the framing is passed in as has_eth, should the minimum outer
-transport offset check earlier in virtio_net_hdr_tnl_to_skb() depend
-on it as well? outer_l3min is still computed as ETH_HLEN +
-virtio_l3min(outer_isv6), so outer_th must be at least 34 for IPv4 or
-54 for IPv6, whatever has_eth says.
-
-On an IFF_TUN device, tun_get_user() calls skb_reset_network_header()
-and passes has_eth=false. virtio_net_l3_start() then returns nhoff = 0,
-and virtio_net_l4_start() computes thoff = 20 for a plain IPv4 outer
-header, or 40 for a plain IPv6 one. virtio_net_tnl_offsets_ok() then
-requires outer_th == thoff, but the floor above has already rejected
-both values.
-
-As a result, the has_eth=false path only accepts frames whose outer L3
-header is at least ETH_HLEN bytes longer than the minimum, such as IPv4
-with options or IPv6 with extension headers. Would ordinary UDP tunnel
-GSO frames written to an IFF_TUN fd get -EINVAL and be counted in
-rx_frame_errors?
-
-The transmit side of the same ABI produces exactly those offsets: in
-TUN mode virtio_net_hdr_tnl_from_skb() fills outer_th_offset from
-skb->transport_header - skb_headroom(skb), which is 20 for an L3-first
-IPv4 frame. set_offload() also enables NETIF_F_GSO_UDP_TUNNEL without
-looking at IFF_TAP or IFF_TUN, so IFF_TUN devices reach this path.
-
-This isn't introduced by this patch, but since has_eth is now available
-here, would something like this work?
-
-	outer_l3min = (has_eth ? ETH_HLEN : 0) +
-		      virtio_l3min(outer_isv6);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but now that the framing is
-passed in as has_eth, should the minimum outer transport offset in
-virtio_net_hdr_tnl_to_skb() depend on it too? That check comes earlier
-in the same function and still assumes an Ethernet header:
-
-include/linux/virtio_net.h:virtio_net_hdr_tnl_to_skb() {
+include/linux/virtio_net.h:virtio_net_l3_start() {
     ...
-	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
-    ...
-	if (outer_th < outer_l3min ||
-	    inner_nh < outer_th + sizeof(struct udphdr) ||
-	    inner_th < inner_nh + inner_l3min)
-		return -EINVAL;
+		h_proto = eth_hdr(skb)->h_proto;
+		...
+		if (skb->protocol && skb->protocol != h_proto)
+			return false;
     ...
 }
 
-On an IFF_TUN device, tun_get_user() resets the network header and
-passes has_eth=false. virtio_net_l3_start() then returns nhoff = 0, and
-virtio_net_tnl_offsets_ok() requires outer_th == thoff. For a plain
-outer header, thoff is 20 for IPv4 and 40 for IPv6. The floor above has
-already rejected both values, since it is 34 or 54.
+At the baseline, the tunnel path in virtio_net_hdr_tnl_to_skb() never
+read skb->protocol. A stale value could not cause a tunnel rejection
+there.
 
-As a result, the has_eth=false path only accepts frames whose outer L3
-header is at least ETH_HLEN bytes longer than the minimum, such as IPv4
-with options or IPv6 with extension headers. Would ordinary UDP tunnel
-GSO frames written to an IFF_TUN fd get -EINVAL and be counted in
-rx_frame_errors?
+With the current ordering, the two intermediate commits ("net: virtio:
+validate outer protocol of UDP tunnel GSO packets" and "net: virtio: do
+not use dev->type to find the outer L3 header") would drop a valid UDP
+tunnel GSO frame with -EINVAL. This happens on an IFF_TAP |
+IFF_NAPI_FRAGS device when GRO holds packets and the outer ethertype
+differs from the one in the previous merged frame, for example an IPv4
+outer after an IPv6 frame:
 
-The transmit side of the same ABI seems to produce exactly those
-offsets. In TUN mode, tun_put_user() ends up in
-virtio_net_hdr_tnl_from_skb(), which writes:
+tun_get_user()
+  tun_vnet_hdr_tnl_to_skb()
+    virtio_net_hdr_tnl_to_skb()
+      virtio_net_tnl_offsets_ok()
+        virtio_net_l3_start()   <- stale skb->protocol != h_proto
 
-	outer_th = skb->transport_header - skb_headroom(skb);
-	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
-	vhdr->outer_th_offset = cpu_to_le16(outer_th);
+Could this patch move ahead of "net: virtio: validate outer protocol of
+UDP tunnel GSO packets" so the series stays bisectable? If not, could
+the commit message at least mention the dependency on that commit?
 
-For an L3-first frame, that gives 20 for IPv4. Also, set_offload() in
-tun.c enables NETIF_F_GSO_UDP_TUNNEL without checking IFF_TAP or
-IFF_TUN, so IFF_TUN devices can reach this receive path.
+> GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are dissected with
+> the wrong protocol.
 
-The selftest commit in this series also mentions the limitation: "The
-outer IPv4 header carries options, as virtio_net_hdr_tnl_to_skb()
-expects room for an Ethernet header before the outer transport header."
+[Severity: Low]
+Is "dissected with the wrong protocol" too mild for what happens here?
+In __virtio_net_hdr_to_skb(), a stale non-zero skb->protocol means
+dev_parse_header_protocol() never reads the real h_proto of the frame:
 
-Would something like this work here?
+include/linux/virtio_net.h:__virtio_net_hdr_to_skb() {
+    ...
+	} else if (gso_type) {
+		...
+		if (!skb->protocol) {
+			skb->protocol = dev_parse_header_protocol(skb);
+			if (!skb->protocol)
+				virtio_net_hdr_set_proto(skb, hdr);
+		}
+retry:
+		if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
+						      NULL, 0, 0, 0,
+						      0)) {
+		...
+		if (!pskb_may_pull(skb, p_off) ||
+		    keys.basic.ip_proto != ip_proto ||
+		    !virtio_net_hdr_match_proto(keys.basic.n_proto,
+						hdr_gso_type))
+			return -EINVAL;
+    ...
+}
 
-	outer_l3min = (has_eth ? ETH_HLEN : 0) + virtio_l3min(outer_isv6);
+When data is NULL, the dissector starts from skb->protocol at
+skb_network_offset(), which tun_get_user() sets to ETH_HLEN. So
+virtio_net_hdr_match_proto() checks the protocol of the previous frame,
+not the ethertype of this one.
 
->  
->  	/* In case of USO, the inner protocol is still unknown and
+A writer could then send a VIRTIO_NET_HDR_GSO_TCPV4 frame whose h_proto
+is something else, such as MPLS or NSH, with what looks like an
+IPv4/TCP payload at offset 14. That frame would pass validation and get
+SKB_GSO_TCPV4 | SKB_GSO_DODGY. eth_type_trans() would then set
+skb->protocol to the h_proto that was never checked.
+
+The code change closes this. Could the commit message describe it as a
+bypass of the check that the ethertype matches the gso_type, rather than
+just a misparse?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105115715.1466924-1-edumazet%40kernel.org
