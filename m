@@ -1,56 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794148166;
-	b=UoXVcDM+ujGuZPfu11yTeNHaRGHYn1Lr0Tau8sKW6cFmoM/0ryIgP7L8uedEAGO81TmM
-	 g6rye1jxQLnuftkEd9ai1+juy6KI0+2KRz0HkGa+9B+439LvjsbQbYURA4phVLy5W+O8o
-	 XOG1y7DdwCePoqonUB52chUZYhTUyE+FHMIIELpIVbGbz0021UrStPstfIy8KirM+F966
-	 iqrGfIlxksYXiKgJ+h7g9nuJOLqhLGavKJO0hb915uK88G7VmDjs4ehWYJhkFxT/foiC1
-	 hMQe2sT+yQH2zHfCZCcN/4ZocHQttocpTot69Ydd7uYarFCuxaYaWcMbKzCT+exZM+A==
+	t=1794148354;
+	b=QmxjCbwSVTpWmzxdM0QTCPexTHqMUJ3pJJgZlxLCKUhprU0FRxs3fHHMUHIfTqRNXn9h
+	 cJw3uGc0p/JwJLsbTKeCV1x4aFDIEhpUmUZySvhVQGpmVFaHY/p9PgrTGW46xom+8hDIk
+	 29sptL6onvyzB0Q0ZRrjN3zzFZH8Mrip6uWPaL5Kb3GMd4XVviZeek3B149Udv2CIQZSQ
+	 /L69k/uo8OtsY4HtxjMIW8b2ZV3LXLRkFYtCZ8TsdqHIwFdDPMejRkg3H2lsr9ygzpQpd
+	 q0CSXDS+QIrrSUjShJYnlFNoPdSOPBkRUfbpya0MuLINDYfbE1gTvbiEnwJ26FvXtXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794148166;
-	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
-	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=HJV8KOTl4NyfmFqWmI11SWRTSVe2eKyjEMsQjqAfySE=;
-	b=toduQNP2TzCUfaIt62nfKUXRg1oSTJi8EwGi0RSgx4D4DCcHhjV7NkbL2yhPwXL1OS4V
-	 XBjkrNFS+j89vnnDT6XsQ1ZUzsAg1b3oCkSv0LJXlBof17EHhgB6W4S5kuuYQaZcdIRgO
-	 +l31Y04RJXau1OXoAySY7KvEwLZU3roQVsDo+2iYCLoYP0OpEcUUcquECU0iw4w0nL2Kn
-	 pU7Pq1Z0Gu/AeL3Pv8txaUuAu4n5TyvAdLpdE5Ipfbw3vmvtAQj8EgSiqhHzdAMiNAABo
-	 8PlU2Xm4x9pXjMzUKPpn0+0jUnx8Lm7iYHN5v4H6We3Mh9PlM4hr5YOVrJpYY6crgug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794148354;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=nvGC0z4fP87Q3DNdC7jZAtQrTk9sOxwklIjxWNv7DB+FsIENx33CLDNTU2NNbUW6Xsee
+	 T/qF4iticnRkgmtWvgZHgYVi6+0aeFhvXnetHi3Fus5PHzAfV7MaV+u6rr5Cjaq4XFcw7
+	 P+durMGsL5HajgJoRvLbsIk53JnUdRQszQFcDlzAOgoy3bmIT36AwEcsQ7lwphViz9liG
+	 mHfkn18LDuZy1Dzo7o0GtXW6qIE+qpZATR6T9z4E5dgPRLuHORkYvDqCXZaDsMjSkBbkF
+	 x16f2KODdVDB4k4SR9zsH+4VfWjW2d6L36GsfMch61OORoxtreloPSagRwM/nBen0LA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=kMaHHtVd;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LP9W2yxO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAA2606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:29:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCAA2606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B755B606A31C;
+	Sun,  8 Nov 2026 14:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=kMaHHtVd
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=HJV8KOTl4NyfmFqWmI11SWRTSVe2eKyjEMsQjqAfySE=; b=kMaHHtVdMsI7QGzVWOB2cZ5Akr
-	eoUMpdS5eupkbMpKkyOnrGA9qXtcDPQnAYW1vb877BzPDBOraPNW+ckNRZT+GDTXJ4oa79wkCrU4u
-	+3NM2zumG+8JP5SdWkhG/JTiWVbL6AGN0/vGAlJOd3bE3jtXBGdeRtjHj0m2IceT+Vx6pqY78r2eb
-	MgkueT+CQ7kL0bOdHZZT7YmAl/sSjmeZoY7g5Z+oQtp3KPXMZXr46KMZXq9HlW+KFSn2q1MExAVIT
-	AANxgOpFKOOeT9JYGh+lYgO3SzDh1s/tbGLxw7keHDgKKQ3Z3xXMnIkJdWM2zZgIptTuen5IqbY4C
-	FaapV20Q==;
-Received: from [::1] (port=55088 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xQ3tb-00000008NLG-3lw1;
-	Sun, 08 Nov 2026 15:29:23 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LP9W2yxO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26A01F0089F;
+	Sun,  8 Nov 2026 14:32:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794148353;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LP9W2yxOa6pPb9hHHkWjSbMzRpX7dUppXa0DgOK73S3SS3UcwIwIqnzhslVmbEZOd
+	 b01uyadKpH/rztQ5bNueyzPvOtAUtBYKFOXtSnSh6aZ4SpSgR7XBnp5votWcE82ZSE
+	 nX7VWrn0omDdcb+qUliVb5NaZogqate61DI4FeeJUN0r/6IFECUVN/jA5wqF5Y3jsM
+	 GjdOyxTJ/fBVqu/F3Lod1kdxT6tIkCxvZccSBfECxk3aXBa6c6ddlOdeXK+mEEbzXC
+	 cGT1tfttyEsVKelMV7lqCfYOt05a2lAV92NCNtr5+VK4uTj/jGRkRqP7EabF6Eby3j
+	 gFi1zpXh9xzLw==
+From: netdev-bot+sinfo@kernel.org
+To: =?utf-8?q?J=C3=A9r=C3=A9my?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>,
+ Boris Pismenny <borisp@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH ipsec v2 0/7] xfrm: fix ESP IV generation and ESN authentication
+Date: Sun, 08 Nov 2026 14:32:32 +0000
+Message-ID: <179414835216.488859.15220784201816281188@kernel.org>
+In-Reply-To: <20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,94 +67,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Sun, 08 Nov 2026 15:29:23 +0100
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller"
- <davem@davemloft.net>, Sabrina Dubroca <sd@queasysnail.net>, Saeed Mahameed
- <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
- <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Boris Pismenny
- <borisp@nvidia.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH ipsec 0/7] xfrm: fix ESP IV generation and ESN
- authentication
-In-Reply-To: <auwuggdz_TCwtlqN@gauss4>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <auwuggdz_TCwtlqN@gauss4>
-User-Agent: Roundcube Webmail/1.6.20
-Message-ID: <0241f2f197159d7dfb0144035b51a1b1@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-On 2026-11-05 08:21, Steffen Klassert wrote:
-> On Wed, Sep 30, 2026 at 02:45:17PM +0000, Jérémy Jean wrote:
->> Hello,
->> 
->> This series fixes nonce reuse in AES-GCM and ESN authentication errors
->> in the IPv4 and IPv6 ESP offload paths:
->> * 1/7 and 2/7: Save the current sequence number before incrementing 
->> it,
->>                so that GCM IV construction prevents nonce reuse,
->> * 3/7: Use the current sequence for software AAD and hardware offload,
->> * 4/7: Give each early GSO segment a private secpath,
->> * 5/7: Use the packet sequence directly for mlx5 IV generation,
->> * 6/7: Segment untrusted GSO packets before allocating sequence 
->> numbers,
->> * 7/7: Keep the sequence counter unchanged after full ESN overflow.
->> 
->> Note that triggering the bug fixed by 7/7 is impractical: it requires
->> processing about 2^64 packets under a single key. Yet, I still believe
->> it's cleaner to fix it.
->> 
->> On the crypto side, as a reminder, reusing a nonce under the same GCM
->> key is catastrophic for security: it exposes the XOR of the plaintexts
->> and can reveal GCM authentication key, which opens the possibilty for
->> an adversary to forge ciphertexts without recovering the AES key.
->> 
->> This series combines and extends these two individual reports:
->> * 
->> https://lore.kernel.org/all/20260925095105.446269-2-Jeremy.Jean@oss.cyber.gouv.fr/
->> * 
->> https://lore.kernel.org/all/20260925095128.446450-2-Jeremy.Jean@oss.cyber.gouv.fr/
->> 
->> Recent discussion with Sabrina Dubroca may also be of interest:
->> https://lore.kernel.org/all/c443bad568f4e03d05b848b1b245707d@oss.cyber.gouv.fr/T/#u
->> 
->> Regards,
->> Jérémy
->> 
->> ---
->> 
->> Jérémy Jean (7):
->>   xfrm: esp6: use the current sequence number for the IV
->>   xfrm: esp4: use the current sequence number for the IV
->>   xfrm: esp: use the current sequence number for AAD and offload
->>   xfrm: prevent AES-GCM nonce reuse after early GSO
->>   net/mlx5e: Use the packet sequence number for the IPsec IV
->>   xfrm: segment untrusted GSO packets before sequence allocation
->>   xfrm: leave the sequence counter unchanged on ESN overflow
-> 
-> Please rebase your patchset along with the proposed changes to
-> the current ipsec tree so it can get applied eventually.
-> 
-> Thanks!
+Hi!
 
-Thanks for the reminder, I have just submitted a v2 rebased on the
-latest commit from the ipsec tree.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Link: 
-https://lore.kernel.org/all/20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr/
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Regards,
-Jérémy
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
