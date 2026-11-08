@@ -1,80 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.83
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794171228;
-	b=qSnxjBJc+DXvjnfUusOSYHPYahJNy58bTzweVf7sN56XSRlJq3xFofvVDXoRHtno/bE3
-	 0JGrwpqGOuncZeEuj5aUfez67FjdkiPKT2rVQcsKCTb4bUlo9wUcivxk06XDRhU7zJBKs
-	 /hyad8qv7mHAlL/xEKDffgMVPW/TJ+M1Ks0nzEzPcPSU06LanUsPEKvNYIWUAQYHCMfVA
-	 yiD1LXoBOFUetzlqMmQBMt2dcLAJLw7RIzgklA2JVEgh2D3B2Y8hv/iyikgYV+dD6SkkF
-	 LzYY+vRUNZkW4TyuCCs102reddl+63LD4Vm/tU+kiCQ0d/CD3UO6KHje3IQUg76WZ2w==
+	t=1794171714;
+	b=1UImwF6dMGmRl+BrT/PJkCfNp4pYYxyC5ydshbB+3iVM/cWulaIfBb/wqSxQFQXS3NP1
+	 YE7+Uh1j2U9mjvpAgdzQywxPaO69gtt/PHdTXOiI88UWc7rZwaSpbS8cN60F5NPzzbynO
+	 ecBOeU7iFBqPF+Vu/RXhHIlA6x49EleTFdGdDlC2sl/loezy09jR+dZZ0VNb/kKltOb0X
+	 rq3CZJ6haIfq7W5WW36vVQVqj42Pe+GiERqRwSz4BdGU1Y0YchcSRNzoko1wk6kgKdq+x
+	 Es3SWGHZ/pxKH1odIoVRP4ijFu0n7x1UCXM31LwHO6zzrFrsBUevN6VbYcbfERe6+Hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794171228;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Mailer;
-	bh=e/3pPBGnBIMYiIi6ztyK5TxrJUDF7cio2r7awt76SK4=;
-	b=KoK+Uz31gCmvJd8T9Zg/PU1mOYIKzh6sGMNUUcLDYsZZTAKthk80pDjOOXbyXR+KoA9S
-	 nbhXfMy02MFBGiAyQGcjJLbPTV/vVrxr4bpJn9dqeLVWNVYpVtvipJF9I1SBQ8JnIwYZd
-	 RSUrUZ/9m0ci7LqIyX+ZJicD/G+zkSpIZ9I7RlF6hj0At8JJazCCeiAFj7exm/gWa2xxp
-	 +Qlg+jPTsAwp74vBqTQfWsXJVRlweHONR5f70rTC2yT+h7XvtqBfJrfpGOqeiOUUMG/BK
-	 S6UXDY09TlumnyJ0dmfWCTdE8HXw3xiMBZku4/0nKT8GAYsRPHKeQyv7O/lPiBe1iqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794171714;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=61lcyeN+fR5ohV0iDvNp+XpkFOW3xkBVHyTuHv2TNXA=;
+	b=xEP93417m1uKWCGCr3maTwQy8tQF3oJ7U0ppAxwKPav0OIeMFswxQuPZb5LQmhdul/N4
+	 LVSdzxY/b2reSjXCRKU0vwKBZ1fJ5TTzL4tkxnPel7abV4sh0EU5ib1ejMI4PFg42IjlN
+	 RtaiS5SkRuKkAMZFORLGxOvebNzD/7F+LCFTAEV+fIwEv9m3ZuTvglhGTPqBgKJaLmjvo
+	 gmmi8omJPm6hse7ttb8C4MSy9u4R0uMMFctzvrNvdCzPDvcBCXziU8RPNd37X0UxhDgPc
+	 6Xx1s5WMSbJ0/nsTgLwbocfrAdk+SIo0Q5pf/59qmo+t73oMhlaIsi4rq78pENmZBAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.com;
-	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=byhOVwYq;
-	arc=none smtp.remote-ip=66.163.189.83
-Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DV88OfcA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC71606A320
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:53:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CC71606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457A606A333;
+	Sun,  8 Nov 2026 21:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=byhOVwYq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794171221; bh=e/3pPBGnBIMYiIi6ztyK5TxrJUDF7cio2r7awt76SK4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=byhOVwYqH1Aza48vpRJ4LjGjOjfIAQXumAA/b2x7aiZ8TbeJ51qhc0R7B5hTqjGxOlDMkeuZHYviK2g3C/4jb0cYaoquCFkYdoHf8Kh0h+MCW12TFZa91qZ2pjUQwweRT7bAw5T4eEHaVJ4NABo7FAatlV6GYmYkk66DG+Wb0fajMWDEAt5Sm6Mmk1D/BJ257H4WGqoNzgF5E1ZDkx/xqOSQOO/hhkX5XkLYJGu+uYYeBGm4JCuphz8KUk9KYTmJxX6/50+dfltfF4pDHxukO2tzbi2FMQvrx0nIjdrMH8I0/T8VAy8R1nrmYty1f1B2sGaEkztrGzfXda3N6IuZhA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794171221; bh=bfbRY13LtdKfiFRgGEqBHhC0t1aLNx8+za0tHZYb/SC=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=DyFh9zEmpmNtV93lkurnqAgHG/mtGTM4Hmcg31EJUCcEBaZaHWwIKRK5xqQjHxcl5p6dlEg/UGJcg/ZkmjcB+jsjUiW+tCtl5o5lyIGXhEjMSW+ZP6dOSGiAa71SpA0d+bpcR6VtGpYSsjkzxdZ/Xjnpj8s75/BJ50a0LLH90Bv6QfmyFJYKAKWbzgXHp9BNbvgwfw9xU8Aii73uCA2R2IwYZlif8ILOiud4MXo5+WHivALnGtrGVB1FLPZHz/xx3srrtiJriZl4v1bx1BLDWusc/rLLD6wu2qi20R/2QWxb33ISnp4rBCYD388Ub+e9CAmiQwOCl2EagBsSGXHlyA==
-X-YMail-OSG: X7lC0_kVM1k708JTOK6ZygPyY4o8Jok51aUXM7sDPReFjcldjTYWzcZS5L4Ckmn
- rCg3QFkUUCZD6kMtZw5.FOzDpuVQ9s9m3xgIzvneHlW1sH5quIPJQ.HqFJ2EQc2Lgl2hiznduCdo
- a445tWutLgsd27OBJ8AICmHz5l9bJRz1_8BSn39.XUwPXp.JiQsQD1ytP2ujzWYg4zFY9Kb3ODP5
- YU2MvRSRsAdhnnPUA_QcPPZEqMvGPCyr5uZ.GlWKSxO3gh0WKIzt5DHDPPrMMS6PFMdxvEPazaN5
- 13hASrHtLmY8q2x5cGWTgu_qfzeQfU6jY3x3j23w2nMgLylurBn4gfDjb017fT5V7qOGKp_J2HHt
- hv6tV4hORcGneUujDvXevLl77v2t.8gNn4qqzpqcT_WZohfNOXWybaczU.GgPZ8wbKN4UDRPq6Vc
- MViinPL9q0KdSJOQRy.LImEFLR3E_nkc0D9IWpeFDxQGyWVHjVY4RFHBEm_tv1UYWDFlgDrPErqt
- OoJN3hMsWNWNLCnPGSp0J6OtppEywbsky8E54ZXbPjbcdo5UEzX8P_kd1kJZLuLfZJKuT5_AOjG7
- fUB09D7qG2T.ZUqLHMIM_lD0.n75rw46gHRKmx8.Ewkz4iQ7nBkBXnmuBgZOFc7y5DUI8hZzw77F
- RNc48YpxP44RgvUsQGJHqZIPnqkEKKhynbTQReO7kyUItMK7BUH7Yw_RkHP2s1ivUhz4gFmSQRdM
- gGvAoQutoQnCWmjzxiy9eOXoEIipcyr5hS5xHNiY5zEZxwZ7M4iUXJ09tDmxnjPxFRi4dEM6_GnV
- fzB2Jdod7aefEt1eDX3045F3hL96QPrxL.TOw5nZ8YgwCPTubcfQuoA.AVgz_sFALNrtlFiLCzIU
- aDKGT1C01_0O6Y5DJCTzqh0Hkln2VbAhjO2HRhHOFmXc1y_HzuMWxhkWIjbNwoBrIvD1CDS2EBGF
- Nn6sI8bJEcCBCRzWz_xD0C_mBSdTxEibsadCsqD3BItmF1cSf.MFrEAd_cH_tm..Q.0ohc71EXXb
- 9juu94wQz3.jTvqhDeV9qleNZRZjrhkLMP20DISu_iWVFNZJXSKtDl.wOyhbPniFUs7XskUrry8F
- 4HzXoM2p6IxTpfU4amoBl2L2FVDKH1FkOXCrbaNNjAVUaaFY2ODdzPTakP.xx1XzZGCbOPSNMsHa
- 3dZMDpBwbddGsfgcg8Im0Lh7kE0j6I8OhNDCNMVQqZ40ahZEyif3T2LNRHbO1MhsN9JdbX4Lj42r
- xL1RgLhL8wJnjM.rtmdJF7d8vMDyZ7apdAHWtszIBoX50WpV.cYvsLjKluEktEF9TalpxBqeONI.
- 02l8YjbZQFMm7dQIPa_oMJIwx5O7yEnMy5tRM6h1RkOXwhS544bqBNWY3zhakhMw5jf_GLHCZJZ7
- t6Kg51NnS6ausIIA4loAnLdWLux_2hTgblSWZWlYY4O547L0I80Olm3TQwYjMSjk2XgrVGrHYYDl
- iFrSkk5IjguKtUhHpzxV09py1xC2nI.lRqrB3GSE1RWeywAbbMTIS32hK55QHPGdYacQCcnRuncr
- hA9GlHJK_9Zo1Rdh2WbP_4P8GTnaqe0t5zpXJ0QgUJNpE3Oun2cNYhL5Vd0tOZ8yy3klVEaCz_rv
- Vc_v92HfnwTE..GuvE9wRzXIa.ohg1Yi4aXpYDCoi.k8g7SFsk7JsVAf0Mgy4JS0VCzZeXTmJXcc
- DJCuEHlGfiGYt9mP2rBhh6BsuKiiA4_pndpwHbnp7XSFCkAZFYqHv.8w_HTZZ1qfOciA6o7U9aQv
- oZwKq8MRfdHOSrUTxIjsJzCXfDbOnpa5SkLM9C2_kfQ4liRVq82uX_b2_v3vQThxg.QvlXR0nnBB
- DRvI3xvSXDotqGPfn44pSSQWQ0ruCqIfoWux1Yi3m2EtWqD2KrHGeWG36_k4PwAg12FS2W758.uS
- 01bfnPhpehfn2WrnmFEYJ6ACVAPaqARi_cpWenvPjudJ9xWcj1I.R5i2jr98rO16tJcN_6kZ2ZZp
- .uWG1ncAdvjGayjtBrIJFpqxSX_WCzZCBUip.iN75cJkVIrd.3WPOlqus8X_tW1JiTUDdfaPuDDA
- tkdCJoFrwx_._9XGmGFlH3XHDp50_Ab_F3ENWXg1Ex30hFaSu4JJpX.hdC8hvBM0vLME86oSG07J
- 7RBMynpdnWOKILkSarCuVv8_.mYaueIflc9TMJrMiY3CqwpvPMVoLTYPU8eXMoA7VxpqzFmtnvOp
- DpeHJFf4Ws2Ihh6enurOqSVXykATVgfHDPzydCMKSBXDGTlkfJsMmCcxnhGNN9gmLBuxNEdfyZIe
- mXWftIciHDDvEBaF3uF3gBAtKucbLQip9qS73fnKOlONG.RFvWal5
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 10da040a-9b43-41bc-8977-490da0709b1a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Sun, 8 Nov 2026 20:53:41 +0000
-Received: by hermes--production-ir2-5dd9bf4598-c2rmk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c961121125a6f0b424c88f0430981591;
-          Sun, 08 Nov 2026 20:53:38 +0000 (UTC)
-Message-ID: <f84cfedb-b551-4316-8d2b-4d6e06fc151b@yahoo.com>
-Date: Sun, 8 Nov 2026 21:53:33 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DV88OfcA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508BF1F0089F;
+	Sun,  8 Nov 2026 21:01:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794171713;
+	bh=61lcyeN+fR5ohV0iDvNp+XpkFOW3xkBVHyTuHv2TNXA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DV88OfcA7SzB4bNhTuotM542YZ0UVrXMI6p/ykJIbO+vE49JAGvjFTutrEDSF3j39
+	 Z1EqOjNkxopKYrB8xOpBKjFFVr5wNVHMiRbWB7VwoVWzB9HfW14+yzsEJJKmdZUgeY
+	 mHAbUaYISZ5z5+Fw6h2ta9L7YAcq2tbE+/t8Isac2QkSCxYT0+9jXdIEL7EU+jKdQq
+	 tRx431gN1AtbQqJraPtf3qsHLrUEk+EENHN60W+47BDBDVAsdieFtCz09GOMElQLWf
+	 DJiQS8EN5ruTjdZlTb0xIjRm9+x2g4YmWGAGO9fmedz7O32WB0mH8CUOSVhxLkAYVZ
+	 r4b/zC2pDtixA==
+Subject:
+ Re: [PATCH net] sctp: linearize GSO skb when frag_list skbs are shared
+From: netdev-bot+sashiko@kernel.org
+To: lucien.xin@gmail.com
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
+ kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ marcelo.leitner@gmail.com
+Date: Sun, 08 Nov 2026 21:01:52 +0000
+Message-ID: <179417171282.994134.16986580743973805142@kernel.org>
+In-Reply-To: <9997493edadfe9faa713c73de9c70e36cee9ffea.1793902911.git.lucien.xin@gmail.com>
+References: <9997493edadfe9faa713c73de9c70e36cee9ffea.1793902911.git.lucien.xin@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,36 +63,200 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 08/11] net: dsa: realtek: rtl8365mb: re-latch
- the family D SerDes
-To: Johan Alvarado <contact@c127.dev>, alvin.sipraga@analog.com
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, gusfmora@gmail.com,
- kuncy7@gmail.com, fabianotassotti@gmail.com, gabonpivovich@gmail.com
-References: <9b73858d-fc09-4988-8bab-fd7b88db9412@yahoo.com>
- <39e46930-0d24-46d6-8861-5dd309bb7640@yahoo.com>
- <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <1e8da5e3-0d1c-4ce6-bb3c-4b9b7a5789a6@c127.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Sun, Nov 8, 2026 Johan Alvarado wrote:
-> I'm still investigating and will report back once I have something
-> concrete. Until then I would ask to hold off on patch 8.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Hi Johan,
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
-OK, I will hold off on patch 8 until I hear from you.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The logs and the board for this are with Oleg Gavrilov (Cc'd), who
-co-developed the patch. Oleg, could you please send Johan whatever he
-asks for?
+- [High] The fix is incomplete because sctp_rcv() only tests the first
+  frag_list member for sharing.
+- [Medium] sctp: skb_linearize() on GSO skb in sctp_rcv() breaks SCTP-
+  AUTH verification
+- [Low] The comment above the changed condition in sctp_rcv()
+  (net/sctp/input.c:116-119, from 4c2f24549644) gives CRC cost as the…
 
-Best regards,
-Mieczyslaw
+--
+
+sctp: linearize GSO skb when frag_list skbs are shared
+
+This patch widens the linearization condition in sctp_rcv(). GSO packets
+whose frag_list head skb is shared are now linearized as well. The aim is
+to stop SCTP from working in place on frag_list skbs shared through
+pskb_copy() (for example by the TEE target), which can end in a BUG_ON in
+__pskb_pull_tail().
+
+> diff --git a/net/sctp/input.c b/net/sctp/input.c
+> index 9494cfa51106c..db3c7818724b8 100644
+> --- a/net/sctp/input.c
+> +++ b/net/sctp/input.c
+> @@ -117,8 +117,13 @@ int sctp_rcv(struct sk_buff *skb)
+>  	 * it's better to just linearize it otherwise crc computing
+>  	 * takes longer.
+>  	 */
+
+[Severity: Low]
+This isn't a bug, but the comment above this block still gives CRC cost
+as the only reason to linearize:
+
+    /* If the packet is fragmented and we need to do crc checking,
+     * it's better to just linearize it otherwise crc computing
+     * takes longer.
+     */
+
+The new frag_list clause only matters when is_gso is true. In that case
+sctp_rcv_checksum() is skipped anyway. The clause is there for
+correctness, not for CRC speed.
+
+Could the comment be updated to say that GSO packets with shared frag_list
+skbs must be linearized?
+
+> -	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
+> -	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
+> +	if (!is_gso || skb_cloned(skb) ||
+> +	    (skb_has_frag_list(skb) && skb_shared(skb_shinfo(skb)->frag_list))) {
+
+[Severity: High]
+Is it enough to check only the first frag_list member here?
+
+pskb_copy() goes through __pskb_copy_fclone()->skb_clone_fraglist(),
+which takes a reference on every member of the chain:
+
+net/core/skbuff.c:skb_clone_fraglist() {
+	skb_walk_frags(skb, list)
+		skb_get(list);
+}
+
+So after nf_dup_ipv4()->pskb_copy() in the TEE target, every frag_list
+member is shared, not only the head.
+
+Something may pull into the frag_list before sctp_rcv() runs. Examples
+are nft_payload_set_eval() or tcf_pedit_act() through
+skb_ensure_writable(), and bpf_skb_pull_data(). In that case
+__pskb_pull_tail() forks a partially eaten shared head:
+
+net/core/skbuff.c:__pskb_pull_tail() {
+    ...
+				if (skb_shared(list)) {
+					/* Sucks! We need to fork list. :-( */
+					clone = skb_clone(list, GFP_ATOMIC);
+					...
+					insp = list->next;
+					list = clone;
+				}
+    ...
+		/* Free pulled out fragments. */
+		while ((list = skb_shinfo(skb)->frag_list) != insp) {
+			skb_shinfo(skb)->frag_list = list->next;
+			consume_skb(list);
+		}
+		/* And insert new clone at head. */
+		if (clone) {
+			clone->next = list;
+			skb_shinfo(skb)->frag_list = clone;
+		}
+    ...
+}
+
+The pulled copy then has a private clone at the head of its frag_list,
+while the later members still have users == 2. Because consume_skb() drops
+a reference on the old head, the twin skb's head also goes back to
+users == 1. An eat that consumes whole leading members ends in the same
+state.
+
+Both outer skbs stay uncloned with is_gso true. The new check therefore
+returns false in both of them and skb_linearize() is skipped.
+
+sctp_inq_pop() then walks the chain and calls skb_pull() on each member:
+
+net/sctp/inqueue.c:sctp_inq_pop() {
+    ...
+			if (chunk->skb->next) {
+				chunk->skb = chunk->skb->next;
+				goto new_skb;
+			}
+    ...
+			skb_pull(chunk->skb, chunk->chunk_end - chunk->skb->data);
+    ...
+	skb_pull(chunk->skb, sizeof(*ch));
+    ...
+}
+
+It also writes SCTP_INPUT_CB() into those members. Can the two SCTP
+receive paths, possibly on different CPUs, end up changing data, len and
+cb of the same shared sk_buff structs?
+
+Suppose either copy is linearized later, for example because a tap made
+it skb_cloned(), or because of another pull into the frag_list. Then
+__pskb_pull_tail()->skb_copy_bits() walks members whose len has already
+been reduced. Would that still return -EFAULT and hit
+BUG_ON(skb_copy_bits(...)), the same panic this patch is meant to fix?
+
+The commit message talks about sharing of "the frag_list skbs" in general,
+but the check only looks at the head. Should this walk every member with
+skb_walk_frags() and linearize if any of them is skb_shared()?
+
+> +		if (skb_linearize(skb))
+> +			goto discard_it;
+> +	}
+> +
+> +	if (!pskb_may_pull(skb, sizeof(struct sctphdr)))
+>  		goto discard_it;
+>  
+>  	/* Pull up the IP header. */
+
+[Severity: Medium]
+Does linearizing an SCTP GSO skb here lose the per-segment boundaries
+that the SCTP-AUTH check depends on?
+
+On transmit, sctp_packet_pack() builds each GSO segment in its own nskb
+and appends it to skb_shinfo(head)->frag_list. When the association
+uses AUTH, the HMAC is computed over that single nskb only:
+
+net/sctp/output.c:sctp_packet_pack() {
+    ...
+		if (auth) {
+			if (sctp_auth_calculate_hmac(tp->asoc, nskb, auth,
+						     packet->auth->shkey, gfp)) {
+    ...
+}
+
+After skb_linearize() the frag_list is gone. sctp_inq_pop() then no
+longer sets chunk->head_skb, and it treats all the concatenated
+segments as one SCTP packet. When sctp_sf_authenticate() checks the
+first AUTH chunk, it passes chunk->skb to sctp_auth_calculate_hmac(),
+which hashes up to the tail of the whole linear buffer:
+
+net/sctp/auth.c:sctp_auth_calculate_hmac() {
+    ...
+	data_len = skb_tail_pointer(skb) - (unsigned char *)auth;
+    ...
+}
+
+That range now covers every following segment as well, so the digest
+cannot match. sctp_sf_authenticate() returns SCTP_IERROR_BAD_SIG, and
+sctp_sf_pdiscard() discards the remaining chunks, which now means all
+segments of the GSO packet.
+
+The existing skb_cloned() leg already behaves this way. The new clause
+extends it to every GSO packet whose frag_list was shared by
+pskb_copy(). If I read nf_dup_ipv4() right, with the TEE target that
+includes the original skb that keeps going to the local socket, not
+only the duplicate. skb_clone_fraglist() takes a reference on members
+that both skbs point to, so both see a shared frag_list head. On
+loopback or veth with AUTH enabled, a TEE rule would then turn the
+BUG_ON into silent drops of authenticated traffic.
+
+Would it be better to unshare the frag_list members instead, for
+example by replacing each shared member with a private copy, so the
+segments stay separate? Or is there another way to get an exclusive
+copy without merging the segments into one SCTP packet?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/9997493edadfe9faa713c73de9c70e36cee9ffea.1793902911.git.lucien.xin%40gmail.com
