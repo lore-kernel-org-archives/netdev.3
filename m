@@ -1,80 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794137972;
-	b=eAQ6riO5qCIfI9QG+KPtIYctTaGccgAadAdQI6y6QAKZqNPtKAVy2/LTGw8sPAN8hQaW
-	 IY5C1wTCbP6yuzSpr5DprpFgI3EP7D/vAiJka0k7q9tyhefa9/D351ItQ+ad1XJoqATp7
-	 8MtcI/JgPe9nzhkxav/0IRkYRQkWqoDIoZaK+OOx7IGDV35G7BjaKeEgqDNCKCymFRdag
-	 CzyYB4IpSHRDt3NkR6MN7jNHSsa6b8EMX/8l4uBGtPgAa+X8TRWex1cJEtsYs7WlNzYVz
-	 iZ9rWG0woF2/P+ORIK/TyPHhx03G0Wj1ESmEh7o3RwA/101kbELTw6qp3nFcQNH7huQ==
+	t=1794138454;
+	b=dABG6shW6uleT2aZWETpwfx1y9wRBxA9q/rY4vdRiPKrX51tAtAsDntxX5UYMV74ChSq
+	 jdLk7vupwkwUtCtFNbom17ey0CxEFEtU4XhKDtu4Gs7zhgznho1jorIeF9Ib/mUW/pWgU
+	 BvIq86VXtFjG1BAUADy2cmojL0Z/GoNSwdZ+WakIQ0WjzZp/olfa2q6hdqVvNOmnN0wxD
+	 BQ+cc9WmrQRCjxE8mvlw+l+ZkBp6o2o4gzlhmJr+g4xdF5cqaszvA4Pnx6DBDefo0jJjW
+	 H5qrdNoqSOjXI2APrx5uvnqYIwBchvjVqYuxyy4690bxgqm7Qj86UgwDh+qJjdYPykw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794137972;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=YI+QK96xKMFwFE4sByJjvSpEiF0SUOoelmRtxJdJZqo=;
-	b=DzTyCAwW9T+2JKzb7d7n94FkLikcUz0E2AOtCgsirQutH036CghphzvH8+DJMydQtgIF
-	 CngKAHRUMV6oJEe19V1RjzYyvdBqcUp8wPpi7taQ4EDeF6MlietKWOoFf0EOaWfdmvipA
-	 SZCWSmbqZSUyTXrvjazoi1/3YImzNKHApsyQzjLnMDid3G71VOuc7Fo0JDwflGVBtJWHj
-	 LqF+pQUPhiTwMZ/zwGlcUxCFYRIvMmzpcr8wKrFFYLf7XWaePp71qP9/7d3r0EXN4SdLw
-	 wOZYP2NtXZAJlyYcRvN3EEdtAdv1bih+utNDQdAelzTxOwIRaJ/fXo7ElnIIXzkNPHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794138454;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=1Y8EnhS7o4bUUaMd+9kBk4x0A+szwvlZw6MXN768V/Y=;
+	b=ml9KNYDKyOl0pmK0fylUkMZSABH3KV2m1fDbSFEp6t0E5+p26+rSt++TpTjL0rpndLir
+	 H148SdTK+hbffGCQ2XG1rQ0/XqwPalUDShhkxIftVFHhpJgAAWlJc92AXKETj1727faM/
+	 OKkbpy4O26tI0lkhjDTklbdmDLwwnRUYYXhtl+062txfHHXrmJm8JNlGTLyTgZhKtIPFj
+	 g9salnodqe9otTq3rXaIAmdXOKHZC5SkmZtD0kxbPJKj0WbShnKH9hnjbRnOsmiJ4PP5N
+	 5ehc1PTiPDf22ohYe4GvqNLbhi4014LPtkxYrC6Ae3gAwollrL/Q0MLKXHRlaEteZzw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=WHFiWLPc;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857A5606A32A;
-	Sun,  8 Nov 2026 11:39:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 857A5606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=bairaktaris.de;
+	spf=pass smtp.mailfrom=bairaktaris.de;
+	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=jETELm1Y;
+	arc=none smtp.remote-ip=209.85.218.41
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D5B606A321
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 11:47:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2D5B606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=WHFiWLPc
+	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=jETELm1Y
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c4d21051042so7926666b.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 03:47:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=WHFiWLPcp/qEP9VqwRM22BotBJx+p+jvBvs2luGpaDiHO+IJzqfTqp/v8Ijkm7gvf9zjnlnHGi68X
-	 yKVDcRmEFqblpH6C3LZzwJhvgcuE2EiUo7TAvdNCxhT0d/SeBeeDBOwUi99xdaw2G0bL2pHsiE4jy7
-	 GnRUhOakAvV8PzDY=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af05f6cd92-9705a;
-	Sun, 08 Nov 2026 19:39:29 +0800 (CST)
-X-RM-TRANSID:2ee16af05f6cd92-9705a
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6af05f47e53-666cf;
-	Sun, 08 Nov 2026 19:39:29 +0800 (CST)
-X-RM-TRANSID:2eea6af05f47e53-666cf
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	bpf@vger.kernel.org,
+        d=bairaktaris.de; s=google; t=1794138452; x=1794743252; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1Y8EnhS7o4bUUaMd+9kBk4x0A+szwvlZw6MXN768V/Y=;
+        b=jETELm1Y5XaG/cTJQLXmABBnB7mhSrc9sbdzZ8p6mRRmgHV6onkf4q2pry8PzMZRQH
+         CH3dm5/SCZE/MiaWN8wHHtD5qpo7gm7/gf2xECMQK5aRfgidLCfRdXBlZ/8Z84tYRx4E
+         L8X7ejBSFMFF0wYbSupve7tvU2wwgTNX0paVCHqto+8VRqZf+zRPv/fYjo+RcUGem6Nx
+         xZzYZGGDn7gWrr11CH3oOkoXoDM+rWsPHna29fDctTyHMdBpsJAUCNcBzAOWQ0Q2RXy2
+         IJVzJEbaQIPslyg/cSnz/2UpxAYa+aTS3enUxQM2GyQLLYSa9DXrrsmMAb7puxXIafq0
+         eSZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794138452; x=1794743252;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1Y8EnhS7o4bUUaMd+9kBk4x0A+szwvlZw6MXN768V/Y=;
+        b=cCKU1kl5xv0r2lYTeurXttEe5V9qm+ZhCJnuLBWuON/RhXOcsTHK2GurDZTq/8P6e+
+         /zrCRPzab2gSiArUv1MZ1GbYgNj/gafAzxE0EkmVWaATGJfdQ+9CpPbqGr526vkMcIQl
+         6TTjpyX20UZ1SlQX08vEOYCbz+JQfcyYQ3iFuaatPpyjhLih0+v6HPDYr1yfMqBCjEvu
+         8hol/3bKfGeJkMWwUjF5Bsm2ADbmwZX11P+HwaMvpYZSFAT+ruZ5Jsfw4XyIwpDCs4r2
+         Rxu+SzVFNDYZui/h9C6cGi1fh6KM2M5535pEZsOlkDMkzupTtwx3X49Ro562ks2kIzyH
+         ObOw==
+X-Gm-Message-State: APuU4Z/lQT5GH1tWpAijlftSYKsqgmA/57iiRKsgCfgRqWxs4MaEChT3
+	Hp54a13aDoEbeznyC70PLjEd2XMukNxTJmEMvYGbGkkhaZdlv4QY4WZxQzjOHt71NA==
+X-Gm-Gg: AYBFou04UlTHJqAfrxepoBcgZEf8ndsxf2n6p2OV/urukLpJ2tyFW6AuhAvviC8jLyI
+	FFNBe8xjSyh5BmMW01b4e3CD9aW/5/wb5a13B4lXyfMINNOqTyRfWkCKIAvHhUd8ITU950hTjgH
+	CvNmKfQerfBmMfa56wdIB9MONdmVNUXxi376h6+nL/m/Ov49Eiiz5eq8b47JcNMGtPcJwLFVjHC
+	Y761PPgSIk10fvpF2/XRPv9YrbdP2rPvPgsaexO2if4l6I6SrvVvFntpdVIJHngYocRgNfSwkAx
+	Dy6Ws/ZsAws7THrfixoeC4o75XqxUSARnPcjFafsjX/Dd4cS+UBR0KA/d9upor/S8Yv1qlINvYv
+	AiPZtRYVfAoKcpIU2IvdKV9njWlAEO0NPKHgRM0JF4ja2Ss2cmcmsd9r5MaXN/xTBGjACbSHG0v
+	2Hxv94b8ldsPST00NLtAVwhVES8VU+CwIISya9I9/6bVIWNJxNLRAAyELPFz7gSnVfNgHzyiVac
+	EYHqfLYGP5uiRR8jmpmHgNtoG4Nv45zijt/bP37Y7ZHxtWe0W8ID/9IKXxPFz9tOBVSciIBEPhH
+	3suk+jPQeJy8tqJ93nbfEETnBymXen8ZqZRBQxYL5jXoY45OxJO82YFlgSnLtNfTNRbquo+K3U3
+	ma6rCgjHq+e5vKfHPnnL6WgKkRF8aSQxBK73grLioP7uxJeAcw1dvzASS9EHC1eKMCv9dbc2Lpz
+	5pj9g3616gURxzaI6Cn2j6+dgqfHxJhN5q+oLj+iwQmY4kOlrI/N8d2deOxngbyZX5hT5H/vAu6
+	jvo9VrTVeJqlJNsu5va+/AZ9mU0/Pq4Fvxe23To2dvWb4ydsJ3KY2shHOXcEOg4o+Cf+7c7I6e4
+	xS1Wq0wulWOVqJifiQ==
+X-Received: by 2002:a17:907:80b:b0:c4d:2cb4:7bbd with SMTP id a640c23a62f3a-c4d6d7c1ac0mr93601366b.47.1794138452222;
+        Sun, 08 Nov 2026 03:47:32 -0800 (PST)
+Received: from Desktop (p54afff19.dip0.t-ipconnect.de. [84.175.255.25])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d6a99320bsm56079066b.67.2026.11.08.03.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 03:47:31 -0800 (PST)
+From: Julius Bairaktaris <julius@bairaktaris.de>
+To: razor@blackwall.org
+Cc: netdev@vger.kernel.org,
+	bridge@lists.linux.dev,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	vladimir.oltean@nxp.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/3] virtio_net: Keep AF_XDP zero-copy pools bound across suspend
-Date: Mon,  9 Nov 2026 04:38:39 +0900
-Message-ID: <20261108193845.73621-4-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261108193845.73621-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261108193845.73621-1-yanhaishuang@cmss.chinamobile.com>
+Subject: Re: [PATCH net] net: bridge: fdb: hold hash_lock when an entry roams
+Date: Sun,  8 Nov 2026 12:47:31 +0100
+Message-ID: <20261108114731.123174-1-julius@bairaktaris.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <01600be7-3d8b-48b2-a59a-1125eb452714@blackwall.org>
+References: <20261004124254.3525496-1-julius@bairaktaris.de> <01600be7-3d8b-48b2-a59a-1125eb452714@blackwall.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,243 +112,20 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-virtnet_freeze() frees the receive and send queues and virtnet_restore()
-allocates new ones, but AF_XDP sockets stay bound to the device in the
-xsk core. Whatever the driver set up for a zero-copy pool is lost on
-freeze: the pool's DMA mapping, the xsk_buffs array, the TX header and
-its mapping are leaked, and the queue comes back with no pool. When the
-socket is closed afterwards, the core asks the driver to disable the
-pool again:
+(Resent with the lists on Cc; the first copy went to the To:
+address only.)
 
-  WARNING: net/core/xdp.c:140 ... Missing register, driver bug
-  BUG: KASAN: null-ptr-deref in xp_dma_unmap
-  Read of size 8 at addr 0000000000000090
+On 04/10/2026 15:44, Nikolay Aleksandrov wrote:
+> Absolutely not, this was made intentionally. Taking the hash_lock would further kill learning
+> and roaming scaling. Surely switchdev drivers must have dealt with this for some time
+> now, if you'd like to fix it do it so the software path isn't affected.
 
-as virtnet_xsk_pool_disable() unregisters an xdp_rxq_info that was
-never registered and passes the NULL rq->xsk_pool to
-xsk_pool_dma_unmap().
+The fix moved to DSA, with br_fdb_update() unchanged: "[PATCH net-next
+0/2] net: dsa: fix host fdb refcount when an entry roams". DSA no longer
+counts the roam events; when it handles each event from its workqueue,
+it looks up where the bridge has the entry. The only bridge change is
+that RCU lookup and the filter it shares with br_switchdev_fdb_notify().
 
-Keep the pools DMA mapped across suspend, as the DMA device does not
-change, and only move the driver state of a pool from the old queues to
-the new ones. On freeze, release it in remove_vq_common() once the
-device is reset and the posted buffers are back in the pool. On restore,
-set it up again before virtnet_open() fills the queues and enables NAPI.
+https://lore.kernel.org/netdev/cover.1794134495.git.julius@bairaktaris.de/
 
-If that fails for a queue, the pool is left DMA mapped and
-virtnet_xsk_pool_disable() only unmaps it when the socket is closed. A
-pool left above curr_queue_pairs by removing XDP is not set up again,
-so it is unmapped on freeze.
-
-This was found by code review of the suspend path and reproduced in
-QEMU by running a suspend cycle with an AF_XDP socket bound, not in
-production.
-
-Fixes: 09d2b3182c8e ("virtio_net: xsk: bind/unbind xsk for rx")
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
- drivers/net/virtio_net.c | 151 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 145 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index f9d227060375..d9c920f42126 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5774,6 +5774,8 @@ static void virtnet_freeze_down(struct virtio_device *vdev)
- }
- 
- static int init_vqs(struct virtnet_info *vi);
-+static void virtnet_xsk_pools_release(struct virtnet_info *vi);
-+static void virtnet_xsk_pools_attach(struct virtnet_info *vi);
- 
- static int virtnet_restore_up(struct virtio_device *vdev)
- {
-@@ -5790,13 +5792,13 @@ static int virtnet_restore_up(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	if (netif_running(vi->dev)) {
--		rtnl_lock();
-+	rtnl_lock();
-+	virtnet_xsk_pools_attach(vi);
-+	if (netif_running(vi->dev))
- 		err = virtnet_open(vi->dev);
--		rtnl_unlock();
--		if (err)
--			goto err_destroy_pools;
--	}
-+	rtnl_unlock();
-+	if (err)
-+		goto err_destroy_pools;
- 
- 	netif_tx_lock_bh(vi->dev);
- 	netif_device_attach(vi->dev);
-@@ -5808,6 +5810,7 @@ static int virtnet_restore_up(struct virtio_device *vdev)
- err_destroy_pools:
- 	virtio_reset_device(vdev);
- 	free_unused_bufs(vi);
-+	virtnet_xsk_pools_release(vi);
- 	virtnet_destroy_page_pools(vi);
- 	virtnet_del_vqs(vi);
- 	return err;
-@@ -6038,6 +6041,13 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
- 	rq = &vi->rq[qid];
- 
- 	pool = rq->xsk_pool;
-+	if (!pool) {
-+		/* Binding it again on restore failed, only the DMA map is left */
-+		pool = xsk_get_pool_from_qid(dev, qid);
-+		if (pool)
-+			xsk_pool_dma_unmap(pool, 0);
-+		return 0;
-+	}
- 
- 	err = virtnet_rq_bind_xsk_pool(vi, rq, NULL);
- 	err |= virtnet_sq_bind_xsk_pool(vi, sq, NULL);
-@@ -6053,6 +6063,133 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
- 	return err;
- }
- 
-+/*
-+ * Freeze frees the receive and send queues, but the AF_XDP sockets stay
-+ * bound and the xsk core keeps their pools. Release only the driver state
-+ * of the zero-copy pools here, once the device is reset and the buffers
-+ * posted to it are back in the pools. The pools stay DMA mapped, since the
-+ * DMA device is still the same after restore and the buffers on their free
-+ * lists keep their DMA addresses.
-+ *
-+ * A pool left above curr_queue_pairs by removing XDP is not bound again
-+ * on restore, so unmap it as well.
-+ */
-+static void virtnet_xsk_pools_release(struct virtnet_info *vi)
-+{
-+	int i;
-+
-+	for (i = 0; i < vi->max_queue_pairs; i++) {
-+		struct receive_queue *rq = &vi->rq[i];
-+		struct send_queue *sq = &vi->sq[i];
-+
-+		if (rq->xsk_pool) {
-+			if (i >= vi->curr_queue_pairs)
-+				xsk_pool_dma_unmap(rq->xsk_pool, 0);
-+			xdp_rxq_info_unreg(&rq->xsk_rxq_info);
-+			kvfree(rq->xsk_buffs);
-+			rq->xsk_buffs = NULL;
-+			rq->xsk_pool = NULL;
-+		}
-+
-+		if (sq->xsk_pool) {
-+			virtqueue_unmap_single_attrs(sq->vq, sq->xsk_hdr_dma_addr,
-+						     vi->hdr_len, DMA_TO_DEVICE, 0);
-+			kfree(sq->xsk_hdr);
-+			sq->xsk_hdr = NULL;
-+			sq->xsk_pool = NULL;
-+		}
-+	}
-+}
-+
-+/* Set up the driver state of a still DMA mapped pool on a new queue pair. */
-+static int virtnet_xsk_pool_attach(struct virtnet_info *vi, u16 qid,
-+				   struct xsk_buff_pool *pool)
-+{
-+	struct receive_queue *rq = &vi->rq[qid];
-+	struct send_queue *sq = &vi->sq[qid];
-+	struct device *dma_dev;
-+	dma_addr_t hdr_dma;
-+	int err;
-+
-+	dma_dev = virtqueue_dma_dev(rq->vq);
-+	if (!rq->page_pool || !dma_dev || dma_dev != virtqueue_dma_dev(sq->vq))
-+		return -EINVAL;
-+
-+	rq->xsk_buffs = kvzalloc_objs(*rq->xsk_buffs,
-+				      virtqueue_get_vring_size(rq->vq));
-+	if (!rq->xsk_buffs)
-+		return -ENOMEM;
-+
-+	sq->xsk_hdr = kzalloc_obj(*sq->xsk_hdr);
-+	if (!sq->xsk_hdr) {
-+		err = -ENOMEM;
-+		goto err_free_buffs;
-+	}
-+
-+	hdr_dma = virtqueue_map_single_attrs(sq->vq, sq->xsk_hdr, vi->hdr_len,
-+					     DMA_TO_DEVICE, 0);
-+	if (virtqueue_map_mapping_error(sq->vq, hdr_dma)) {
-+		err = -ENOMEM;
-+		goto err_free_hdr;
-+	}
-+
-+	err = xdp_rxq_info_reg(&rq->xsk_rxq_info, vi->dev, qid,
-+			       rq->napi.napi_id);
-+	if (err < 0)
-+		goto err_unmap_hdr;
-+
-+	err = xdp_rxq_info_reg_mem_model(&rq->xsk_rxq_info,
-+					 MEM_TYPE_XSK_BUFF_POOL, NULL);
-+	if (err < 0)
-+		goto err_unreg;
-+
-+	xsk_pool_set_rxq_info(pool, &rq->xsk_rxq_info);
-+
-+	sq->xsk_hdr_dma_addr = hdr_dma;
-+	sq->xsk_pool = pool;
-+	rq->xsk_pool = pool;
-+
-+	return 0;
-+
-+err_unreg:
-+	xdp_rxq_info_unreg(&rq->xsk_rxq_info);
-+err_unmap_hdr:
-+	virtqueue_unmap_single_attrs(sq->vq, hdr_dma, vi->hdr_len,
-+				     DMA_TO_DEVICE, 0);
-+err_free_hdr:
-+	kfree(sq->xsk_hdr);
-+	sq->xsk_hdr = NULL;
-+err_free_buffs:
-+	kvfree(rq->xsk_buffs);
-+	rq->xsk_buffs = NULL;
-+	return err;
-+}
-+
-+/*
-+ * On restore, set the zero-copy pools up again on the new queues before
-+ * they are filled and their NAPI is enabled.
-+ */
-+static void virtnet_xsk_pools_attach(struct virtnet_info *vi)
-+{
-+	struct xsk_buff_pool *pool;
-+	int i, err;
-+
-+	ASSERT_RTNL();
-+
-+	for (i = 0; i < vi->curr_queue_pairs; i++) {
-+		pool = xsk_get_pool_from_qid(vi->dev, i);
-+		if (!pool || !pool->umem->zc)
-+			continue;
-+
-+		/* The pool stays DMA mapped until it is disabled */
-+		err = virtnet_xsk_pool_attach(vi, i, pool);
-+		if (err)
-+			netdev_warn(vi->dev,
-+				    "failed to bind AF_XDP pool to queue %d: %d\n",
-+				    i, err);
-+	}
-+}
-+
- static int virtnet_xsk_pool_setup(struct net_device *dev, struct netdev_bpf *xdp)
- {
- 	if (xdp->xsk.pool)
-@@ -7208,6 +7345,8 @@ static void remove_vq_common(struct virtnet_info *vi)
- 	/* Free unused buffers in both send and recv, if any. */
- 	free_unused_bufs(vi);
- 
-+	virtnet_xsk_pools_release(vi);
-+
- 	/*
- 	 * Rule of thumb is netdev_tx_reset_queue() should follow any
- 	 * skb freeing not followed by netdev_tx_completed_queue()
--- 
-2.43.0
-
-
-
+Julius
