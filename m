@@ -1,42 +1,42 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794146777;
-	b=rQ2JEKw/Bg5LOYsDjhYG6jHmDqB1NGL/vKKnfUBUNpyA/JccS+vBExBH/ghjSxIsZSAi
-	 vqvLci3cyvUe3f6dAyLphPN/OAINpMRhd14JqMb+ETgFhalnRY0/IBpdSl44oC0u6MBve
-	 U54ZqfLTIZ2qAa8vZIBJHmsBnx+d0ZH5O7oCycZPdMgz1h88NczCwNsAL9C7uj6q7hE9o
-	 wnoS1AZl4dDSzAfgA3i42prrAuc0nrwFUf1xiuDk3gdX0PzcqihTf3AY7LMRWHZmD7Ue7
-	 OcQ08v7yrim0bi4mQwCHBCRhXYnBexy1q6To7lSXE5lDR55A4UXH0EB8266GtxJRYQw==
+	t=1794146806;
+	b=1+mMMDdnI7lMftCcYyEyN3ILky1vlrMrwTWhBmcg10w5xJtG0sNxekqQJ0sbvSJEzex0
+	 PiQady/fd3kvXsIAjb1LIbx0BDZUB+raxBUXwZCIq4jgH5uIYfX7B2AkdwKx+KaThpnwy
+	 Dhzeeji7jquoNquaK9E21naOLItYQW+gKtocEg4OD9aGT8Qk8XAOKan6+kwMWziP2IRFV
+	 yhIA6y6ZvMzWLVUhGuRD3jjMGPqRCln/D4SjAdqYRAAdYMR8YKoJq2ZIl+vl2vDIZp6Pp
+	 Ru1XyxGTV3DdGxCeDTflD+aGXgA85BFM3iHoavtezReYwNAplmN/efpWV8TPJYVZgEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794146777;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794146806;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=KpFhWEgRChoJJWWLLsoxr9atX7ojHr52psIpS09DOzQ=;
-	b=ijgc7bwb/jXU7jgxmYRVex1w2usNFXKfS0serghwgCtNzrIqc13qMdcgQ+NyLAI9E2D9
-	 VCXmRmWjWpSuFVbF3zaH5k/lVWKiDIKgh/7H/AP0CO76CT8m8uuUdSg17kDUUn0Q3N+bQ
-	 O51sByA2w2vbG+O/6bZF9ffRE9NKZISBU0DdWYBYZOJ/X8tj8YU3ZQX0oYmCBLmpPVNK7
-	 jB86U9SXWj208vPL4vco5yMe55AKFFfa3HTP+U+ucCxunAVGgiRB8tESmSA9Wu5wWIl6T
-	 u/DoCAILS2fHRTzBV84xvZHDCHNA1r2IxRGxLkwCrWmM4yd8pZulLN9Gb8FOdOXZ2/A==
+	bh=CKqvphMgjr/QNuebPWa6HLZr3WLoXlzpW/YvgjEUBqY=;
+	b=J7XvmMYCi3A/2KL5+lOziG9fBUlUYqOP70WYXeJptIt3vlHifCZ1Z+k+01b5zw+UnN3u
+	 XLOAmSszy9VxhCEKjyct4KJ5MrrDXLqF/ea+VQR5Lq8v7JGs4zDSgXFCywW3ryf/6CRvI
+	 KAB4RrzZw0mkiDFAtr0MTAWzPa3fj82rBo9rgGgW6uN1kg+YNXOK9hzpF41C4N34IJwCJ
+	 NaHJCJBpIz30u5oHcuI4N8NCP76kf5x159R2lPh5SVVoOxy7u0nXOdWOV/2CE1IekG7Jx
+	 WLRgrwgsRZTltOSkCm0gOfe3xXiKkIOkG7DG4Aks91L+wjXVzF5CU/uIDTza/lElYLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=hUui69+6;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=TOHaDMWO;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC29606A320;
-	Sun,  8 Nov 2026 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CF8606A330;
+	Sun,  8 Nov 2026 14:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=hUui69+6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A144D1F0089F;
-	Sun,  8 Nov 2026 14:06:16 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=TOHaDMWO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA871F008BD;
+	Sun,  8 Nov 2026 14:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1794146776;
-	bh=KpFhWEgRChoJJWWLLsoxr9atX7ojHr52psIpS09DOzQ=;
+	s=korg; t=1794146805;
+	bh=CKqvphMgjr/QNuebPWa6HLZr3WLoXlzpW/YvgjEUBqY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hUui69+6vx72SEp6I4RU2bEau87jQtKoVfAyOjJjDlcotewG6fSbL+q6Y+aqxEdTi
-	 4hMSFTWG1sVrvJSHwfFSGV/qGPevSQDUeR9piTUi1hman1XCtIs5fgigwJyKn6qqxF
-	 RlW/cPruYELdDhSak3VhviNhOlfChgzwFFq7/Z5U=
-Date: Sun, 8 Nov 2026 09:06:13 -0500
+	b=TOHaDMWOQ0FCB7WkU5FLy1od8vFY6BgoDsmPLCrr7Z4DEzi7wxeKW5bmH6cx/36xd
+	 5CHEBu+9kTDwVFtTx/ZgvOrqKnyUQqrAm99xC86VA84wyjfolW9+AypyuhvUMin9ai
+	 OYZz/C5wUGLMB6nog9zy7VK17im2ACxnuP7XdKAo=
+Date: Sun, 8 Nov 2026 09:06:43 -0500
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -47,11 +47,11 @@ Cc: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next 1/2] sysfs: facilitate creating an empty
+Subject: Re: [PATCH net-next 2/2] net sysfs: simplify creating empty wireless
  directory
-Message-ID: <2026110846-iphone-alarm-134f@gregkh>
+Message-ID: <2026110816-crate-tightly-8560@gregkh>
 References: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
- <340683d8-83f5-415b-b54c-b2916817f860@gmail.com>
+ <675f4353-125e-4168-a617-c0d1fb519045@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,39 +63,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <340683d8-83f5-415b-b54c-b2916817f860@gmail.com>
+In-Reply-To: <675f4353-125e-4168-a617-c0d1fb519045@gmail.com>
 
-On Sun, Nov 08, 2026 at 02:45:05PM +0100, Heiner Kallweit wrote:
-> We have use cases where an empty sysfs directory is created.
-> This requires an attribute list consisting of only the sentinal entry.
-> It takes only to modify one check to enable creating an empty directory
-> with a NULL attribute list.
+On Sun, Nov 08, 2026 at 02:46:03PM +0100, Heiner Kallweit wrote:
+> Now that an empty directory can be created with attrs being NULL,
+> make use of this new functionality and remove the dummy attribute list.
 > 
 > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 > ---
->  fs/sysfs/group.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  net/core/net-sysfs.c | 5 -----
+>  1 file changed, 5 deletions(-)
 > 
-> diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
-> index 4e1e4f18a16..031cb6f36b5 100644
-> --- a/fs/sysfs/group.c
-> +++ b/fs/sysfs/group.c
-> @@ -141,9 +141,10 @@ static int internal_create_group(struct kobject *kobj, int update,
->  	if (unlikely(update && !kobj->sd))
->  		return -EINVAL;
+> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+> index 5c0402389c6..f58b59e1126 100644
+> --- a/net/core/net-sysfs.c
+> +++ b/net/core/net-sysfs.c
+> @@ -910,13 +910,8 @@ static const struct attribute_group netstat_group = {
+>  	.attrs  = netstat_attrs,
+>  };
 >  
-> -	if (!grp->attrs && !grp->bin_attrs) {
-> -		pr_debug("sysfs: (bin_)attrs not set by subsystem for group: %s/%s, skipping\n",
-> -			 kobj->name, grp->name ?: "");
-> +	/* If name is set w/o attributes, create an empty directory */
-> +	if (!grp->name && !grp->attrs && !grp->bin_attrs) {
-> +		pr_debug("sysfs: (bin_)attrs not set by subsystem for group: %s, skipping\n",
-> +			 kobj->name);
+> -static struct attribute *wireless_attrs[] = {
+> -	NULL
+> -};
+> -
+>  static const struct attribute_group wireless_group = {
+>  	.name = "wireless",
+> -	.attrs = wireless_attrs,
 
-Where is this now documented?
-
-And why would you ever want to make a directory with nothing in it?
-That is not how sysfs should be working.
+Why does this want to create an empty directory?  Surely you aren't
+adding attributes later to it, right?  If so, that's not ok either...
 
 thanks,
 
