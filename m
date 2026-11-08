@@ -1,98 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794174330;
-	b=F9Y12jc2DOKJycLP/mWGLT0bmNHLBRbSP9hw9i/GljXK+p4luCd+KIuDz81Wua6hogDn
-	 Fx82DdRTxpeiEK7a6iBFO4LxkMkKge9jw4nLMLBW1AIhKlMWROnkGCv8IGWXemkZnJQfi
-	 csRBEO/FmRjWxcQkXi1/0TFKN86eqmN5Z933wZ5bVPF00oTMKVC9qZd+ZUiIwoyj366HT
-	 MM8ctTJvx+BmiV7haPnJ711p6oASxR5cmEaY0R5aCV4Nquy7a3zRUtp7CGE+CUiLuX/Sb
-	 dEyYq+Zx3L8mWWVotA1NJ9y3lFlYqq9ddrzAKFW0SjEoMkKnyE8CLpO1KsQjtH7HPqA==
+	t=1794174494;
+	b=culEYaNZY3xrXEWveJIoDJ/Ul9/taP0gpPImKRsqSXqbxGzUcLJ2yhJGXvrUUEVnodup
+	 E/WRpmPUjJMzc3gUmD+l3+Z3HX8w4bFn40z5FaeH/sHTN807B87LIS5IH7FxYwM3f1843
+	 mYDAN7TWTwjQW2LRQb4S9VW7dMF9Wba2CTNxryMB2kMZ1b03Jn/Uxwc5e6UZlYhp3ut7Z
+	 Dhq+K5JLrL4yl5zoEu/PTCHjdwzv+03DXWdiYOJ3tZ7wSNJg2lm+yrnK5q3jnAyfap1/V
+	 2WceVnL2fZlnqO50HR+UuiuhVL20umKaHhHiM1zRNob0aNfPvbJrmh1q5hvfCTq7gfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794174330;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=JUxUAMy16IVX6oKR7B7W9Pu+/Amfhkj4aAkm8I1TZU8=;
-	b=YphowjZqGZzEYHZbNAMlHpEjBxB9DEmlXz0JaPKyqskPYVbhcE24l3Rh3G6Y6Leq3IvN
-	 4lB0cjYKZU63yoG39hC46y2rM+Kv8m6CRBR0nHeyTGDsHGCwmWLWZtUcd0xNYHwC0TROp
-	 oyE7Btv8bcnosZYGk1aN6cKiSHAPzxeapmduJGSD6yFLYcP28u4LzXE3Fhg+FSB2/PbA+
-	 bZbjvFC2RnsqSWJw3dvU1ZUFygcyv25tkHjvK7izHd32Q92JwMIrpRzIK8iFVqJS9oka5
-	 lWLv1++vlK6F6yH18NLq6LIMUhZ19ShO39oyjmChb20SKQv9Thsyha/IaqtEJWljjXw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794174494;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
+	 X-SRS-Rewrite;
+	bh=oUh8ZRAlvJSZnNMXU/jJVKE0sbvLF7BJSlY1zGuWv1E=;
+	b=NS/PAON6gr1zsACUv8Ig8/eShfo5WwVDY1ruPWkmAxal6Oa794JFW+o+uvDZ070M/Bzu
+	 7gKoThZju3PFMBr38pJco66Gy8lUEE8EFQkH4FDy55N4anodUFOUA/IRUixMwHaiTuMzv
+	 86ums1DcFzW5mzdfLfYhPs6Eghn7TKtQxM3caDjQ1RSh9Jm+BWn5hDO+XO/smD9fF8Y9r
+	 31kPojT560cOOMiAGKdRYhg1Z+3I6w4gKAXfzUByKeQBCV4bIBnno5Lj7U48HwIWDBo5Q
+	 setdePBiqo9owfmTTo2sSgC7362+YjfoSnOK9ABZyHGBmoULBRydsVHF/K1QY4eJ//Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="t96MQh/f";
-	arc=none smtp.remote-ip=209.85.216.51
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gG58siOC;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FF4606D839
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:45:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78FF4606D839
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89777606A321;
+	Sun,  8 Nov 2026 21:48:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89777606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t96MQh/f
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b09a65c76dso190259a91.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:45:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794174329; x=1794779129; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JUxUAMy16IVX6oKR7B7W9Pu+/Amfhkj4aAkm8I1TZU8=;
-        b=t96MQh/fvAozkfyI7tfGPF/kwaP9aGKoKEZtcA+xWx5nBBqs8tKDA9SiIQNJSGCupo
-         5jHvQH5WoV1dlDfViMxihsnVMJ+hV6/fpo05K3UTvccatwWzMwRdzjS2E24VIqhCMZHg
-         RbUabdCVR84KzNg+JLXbeb9St9iDT+apkearz8GaW0xdaXSLdaXXjMpeoUAPrwWk9FFi
-         kagQ9dngm7Jk0witf0m7ymwyoDzoA1px+pQ3Clg4SXyVIVXj3eGNoV5EyTQKL4S80ULn
-         vzCowjuk6V1xI7jgevjJV6+bPg1DcY78fdfrSjwOyj/UIEhdN19j/7LG4kxMdj9WW44H
-         8+fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794174329; x=1794779129;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JUxUAMy16IVX6oKR7B7W9Pu+/Amfhkj4aAkm8I1TZU8=;
-        b=LDKouqYg8Dr0zxkg7imAA+fK5ig45nHFW8nN4n+982X0RNaWt2+xeBuV+BsnpvlNIg
-         kQR0SbuwsTUiClBoxcWabWGwGBLcCc5SGchrxDvS0YLZw4pM8iwVADhpN3OO2wsPWB/I
-         fhIBbeQ1KrX4R29QcxfnfJr6AYRG/MU6bB2Rdu1LNAnxlhRmOZ6zf96JeMF3DTnLaSAl
-         Pt02IfBhg8cRWDBkptQbWW61iFDGZeWekB2j8utfD9Odp0HLnvVadPqm6EnRGxyfdmv4
-         htjRMIaKrvVRFw18JXtjy7rFbvKqvMo01+NOsAF86EyCV+OgL0gevROIjZdjBDczvYWz
-         v3Pg==
-X-Gm-Message-State: APuU4Z+LZANVNUFPMRL8Ixz+Y61Ri1hGtVzXciG/rYIaEwvmOT82DuO3
-	EWeLeWh/BpWbZyhFsJlrLM5FxL2JFUQCTbdANmUEp58Age2aoQjL1u5UqULsZQ==
-X-Gm-Gg: AYBFou1n6vPTxaOGhPScU2fO6xsDhNFFnfGeLL0+ZA1eRwhXB4uuq4lNmmDhrbm0tXZ
-	k3+9CNbVGdQrq9YWjDgUCV/VjMwzDSRKAEHWHT2rDM3z1oTLM9VuBlfBf9qKBeuj/g0H8PIOI4N
-	JH+HbagmbOluRt2m6YJxbFcyVVQjZzqQAW7yXJkUlOBh6Elh3Dapd6bIGNLHA8w83TqbJz4XoBm
-	8Wf972BSVUH7oG7TAmV9KjyscAmFQHo0l3YWESOZ8XCdgNXRgSRSF4ISrecytEfCI4rUCKPRHNE
-	e8o0so+Ai6aM2LsCDaS6XxgtDymoA6cUANalG6wWo6LjYdB0oV3dTM5PDNvXh1eS8Gg8CD8HosX
-	jnmHjyuunW79IUxER5NDowLJW1aiaeslYsHn9rNtxilrMi2ug97zEmMtpKfVKDIes6+tTdQW8oe
-	66lqdMDyAlHs9QIIwDlCFe+ru3SiAiAuzB1dQd3QDulKT0DlP2fQddDEUiyKbGghYlPWByOEMQQ
-	4FAuBtKmGVKoe6RrjLZ2ylsxMb3jdd8RmvFmibOnalh29ru54/+6qGNw0+lCfLksFGAhKvuhte7
-	OSWpUdm5iT8M+mSn0RXSKHcCuyV3qpq47eoo02aVnWQDBSW8KSNoOA==
-X-Received: by 2002:a17:90b:384c:b0:3a5:147a:3b63 with SMTP id 98e67ed59e1d1-3b12d1027d4mr2233089a91.8.1794174328700;
-        Sun, 08 Nov 2026 13:45:28 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1034718f8sm4619463a91.4.2026.11.08.13.45.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 13:45:28 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 7/7] net: dsa: motorcomm: Support BR_FLOOD and BR_MCAST_FLOOD offloading
-Date: Mon,  9 Nov 2026 05:44:47 +0800
-Message-ID: <20261108214450.1662362-8-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261108214450.1662362-1-mmyangfl@gmail.com>
-References: <20261108214450.1662362-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gG58siOC
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oUh8ZRAlvJSZnNMXU/jJVKE0sbvLF7BJSlY1zGuWv1E=; b=gG58siOCGc9c0euWa0eAnsR9gW
+	PJdfwDVUlSn2jKHuhVDqwssW50mIvV/Tum6O8XzK5QVCefCTEIPO7tiBJ0/aR5aKsf8ZtBzjNPAOb
+	StrdW/enUDw7+YxntuUxjgyBWBdVlVbGAly16Y5ZYijoTy/CZV7IFuYZFGDGOBn7KHqGumDH43isy
+	M1kDI+X4FeyKD4g+ui0W+QQLqu9KelgR8cEZXJG0PyeYfATaqhGtc1YvuV00AzFppZ4izgnMyjyv0
+	MW1Fz91iV9u83RXcI3C/Jvz8cEPiaLS66xMJE4aq4KIntgSAVGCtK+VE12oInZYycdLu6VBAD28ah
+	fVsfL+6Q==;
+Received: from [205.251.233.236] (helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xQAk3-00000005aeQ-3Dug;
+	Sun, 08 Nov 2026 21:48:00 +0000
+Message-ID: <45f3955b35ad1948d973a0df213e10c341949ecc.camel@infradead.org>
+Subject: Re: [PATCH] wireguard: socket: fix sticky source address on p2p
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Jason A.Donenfeld" <Jason@zx2c4.com>
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S.Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Antonio
+ Quartulli <antonio@openvpn.net>, Ralf Lici <ralf@mandelbit.com>,  Sabrina
+ Dubroca <sd@queasysnail.net>, openvpn-devel@lists.sourceforge.net
+Date: Sun, 08 Nov 2026 13:47:55 -0800
+In-Reply-To: <116cec552f58748d434d4825c6c74f39266b265f.camel@infradead.org>
+References: <116cec552f58748d434d4825c6c74f39266b265f.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-31QIR/hC0fKD3XOt8//x"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,314 +72,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Let the hardware flood the unknown unicast / multicast for the port if:
 
-- the switch carries only one bridge, otherwise frames hitting FDB entry
-  from another bridge will be dropped;
-- all other ports in the bridge have BR_FLOOD / BR_MCAST_FLOOD enabled;
-- the port is not hairpined, as the hardware never floods back to its
-  ingress port.
+--=-31QIR/hC0fKD3XOt8//x
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This should cover most single-bridge usage. Other data paths remain
-unchanged in terms of behavior.
+On Fri, 2026-10-30 at 16:38 +0000, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>=20
+> WireGuard attempts to reply from the address to which the original
+> packet was sent, caching it in endpoint->src4 and validating it before
+> each use with inet_confirm_addr(..., RT_SCOPE_HOST).
+>=20
+> For Legacy IP that validation always fails for an address on a point-
+> to-point interface, because confirm_addr_indev() insists on
+> inet_ifa_match(), which compares against ifa_address =E2=80=94 the *peer*
+> address on a p2p link =E2=80=94 under a /32 mask. The local address is ne=
+ver
+> within that "subnet", so a perfectly valid source address is discarded
+> and send4() falls back to kernel source address selection.
+>=20
+> For peers on the far side of the p2p link, the fallback happens to
+> select the same address and nobody notices. But when a peer on a local
+> LAN sends to the p2p address (e.g. my OpenWrt box listening on its
+> external PPPoE address), the reply is sent from the LAN interface's own
+> address instead. A stateful firewall on the peer then drops the reply
+> as unrelated to the flow it originated, and the handshake never
+> completes.
+>=20
+> inet_confirm_addr() is an ARP helper answering "do I have an address
+> on the same subnet as this"; what send4() wants to ask is only "is
+> this still a local address". Use __ip_dev_find() for that, matching
+> what send6() already does with ipv6_chk_addr(). IPv6 does not have
+> this problem.
+>=20
+> Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/chip.c | 181 ++++++++++++++++++++++++++-----
- drivers/net/dsa/motorcomm/chip.h |  15 +++
- 2 files changed, 170 insertions(+), 26 deletions(-)
+Ping?
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 3d4aa79ac026..480203ac7c8e 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -1195,13 +1195,17 @@ static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
- 	if (res)
- 		return res;
- 
--	/* Unrelated since learning is off and all packets are trapped;
--	 * set it anyway
-+	/* Unrelated since learning is off and there is only one possible
-+	 * destination; set it anyway
- 	 */
- 	res = yt921x_port_set_pvid(priv, port, YT921X_VID_UNWARE);
- 	if (res)
- 		return res;
- 
-+	/* Also unrelated for FILTER_UNK_UCAST / FILTER_UNK_MCAST since all
-+	 * packets are handled by software
-+	 */
-+
- 	return 0;
- }
- 
-@@ -1218,6 +1222,97 @@ static int yt921x_userport_bridge(struct yt921x_priv *priv, int port)
- 	return 0;
- }
- 
-+/* ports_mask is optional */
-+static int yt921x_bridge_flood_set(struct yt921x_priv *priv, u16 ports_mask)
-+{
-+	struct dsa_bridge *bridges[YT921X_PORT_NUM];
-+	struct dsa_switch *ds = &priv->ds;
-+	struct dsa_port *dp;
-+	unsigned int count;
-+	u32 ctrl;
-+	int res;
-+	int ret;
-+
-+	/* Offloading is only enabled if there is at most 1 bridge - see the
-+	 * cross-bridge FDB mismatch below. (0 does nothing, of course.)
-+	 */
-+	count = 0;
-+	dsa_switch_for_each_user_port(dp, ds) {
-+		unsigned int i;
-+
-+		if (!dp->bridge)
-+			continue;
-+
-+		for (i = 0; i < count; i++)
-+			if (bridges[i] == dp->bridge)
-+				break;
-+		if (i == count) {
-+			bridges[count] = dp->bridge;
-+			count++;
-+		}
-+	}
-+
-+	ret = 0;
-+	if (count != 1) {
-+		ctrl = YT921X_FILTER_PORTS_M;
-+		res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
-+		if (res)
-+			ret = res;
-+		res = yt921x_reg_write(priv, YT921X_FILTER_UNK_MCAST, ctrl);
-+		if (res)
-+			ret = res;
-+		return ret;
-+	}
-+
-+	if (ports_mask)
-+		ports_mask &= ~dsa_cpu_ports(ds);
-+	if (!ports_mask)
-+		ports_mask = dsa_bridge_ports(ds, bridges[0]->dev);
-+
-+	for (int type = 0; type < 2; type++) {
-+		unsigned long targets_mask = ports_mask;
-+		u16 flood_mask;
-+		u32 addr;
-+		int port;
-+
-+		addr = !type ? YT921X_FILTER_UNK_UCAST :
-+		       YT921X_FILTER_UNK_MCAST;
-+
-+		flood_mask = 0;
-+		for_each_set_bit(port, &targets_mask, YT921X_PORT_NUM) {
-+			struct yt921x_port *pp = &priv->ports[port];
-+
-+			if (!type ? pp->flood : pp->mcast_flood)
-+				flood_mask |= BIT(port);
-+		}
-+
-+		ctrl = 0;
-+		for_each_set_bit(port, &targets_mask, YT921X_PORT_NUM) {
-+			struct yt921x_port *pp = &priv->ports[port];
-+
-+			/* Hardware never floods back to its own ingress port,
-+			 * keep hairpin port trapped: the software bridge does
-+			 * deliver a flood there.
-+			 */
-+			if (!pp->hairpin && !((flood_mask ^ ports_mask) &
-+					      ~BIT(port)))
-+				continue;
-+
-+			ctrl |= BIT(port);
-+		}
-+
-+		/* ACT_UNK is fixed to TRAP for every port, see
-+		 * yt921x_chip_setup_dsa().
-+		 */
-+
-+		res = yt921x_reg_update_bits(priv, addr, ports_mask, ctrl);
-+		if (res)
-+			ret = res;
-+	}
-+
-+	return ret;
-+}
-+
- static int yt921x_isolate(struct yt921x_priv *priv, int port)
- {
- 	u32 mask;
-@@ -1292,6 +1387,10 @@ static int yt921x_bridge_leave(struct yt921x_priv *priv, int port)
- 	if (res)
- 		return res;
- 
-+	res = yt921x_bridge_flood_set(priv, 0);
-+	if (res)
-+		return res;
-+
- 	return 0;
- }
- 
-@@ -1308,6 +1407,10 @@ yt921x_bridge_join(struct yt921x_priv *priv, int port, u16 ports_mask)
- 	if (res)
- 		return res;
- 
-+	res = yt921x_bridge_flood_set(priv, ports_mask);
-+	if (res)
-+		return res;
-+
- 	return 0;
- }
- 
-@@ -1316,7 +1419,12 @@ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
- 		    struct switchdev_brport_flags flags)
- {
- 	struct yt921x_port *pp = &priv->ports[port];
--	bool do_flush;
-+	struct dsa_switch *ds = &priv->ds;
-+	bool change_isolated = false;
-+	bool change_flood = false;
-+	struct net_device *bdev;
-+	struct dsa_port *dp;
-+	u32 ports_mask;
- 	u32 mask;
- 	int res;
- 
-@@ -1330,36 +1438,48 @@ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
- 			return res;
- 	}
- 
--	/* BR_FLOOD, BR_MCAST_FLOOD: see the comment where ACT_UNK_ACTn_TRAP
--	 * is set
--	 */
--
- 	/* BR_BCAST_FLOOD: we can filter bcast, but cannot trap them */
- 
--	do_flush = false;
- 	if (flags.mask & BR_HAIRPIN_MODE) {
- 		pp->hairpin = flags.val & BR_HAIRPIN_MODE;
--		do_flush = true;
-+		change_isolated = true;
-+		/* Hairpin also affects flood flags */
-+		change_flood = true;
- 	}
- 	if (flags.mask & BR_ISOLATED) {
- 		pp->isolated = flags.val & BR_ISOLATED;
--		do_flush = true;
-+		change_isolated = true;
- 	}
--	if (do_flush) {
--		struct dsa_switch *ds = &priv->ds;
--		struct dsa_port *dp = dsa_to_port(ds, port);
--		struct net_device *bdev;
- 
--		bdev = dsa_port_bridge_dev_get(dp);
--		if (bdev) {
--			u32 ports_mask;
-+	if (flags.mask & BR_FLOOD) {
-+		pp->flood = flags.val & BR_FLOOD;
-+		change_flood = true;
-+	}
-+	if (flags.mask & BR_MCAST_FLOOD) {
-+		pp->mcast_flood = flags.val & BR_MCAST_FLOOD;
-+		change_flood = true;
-+	}
- 
--			ports_mask = dsa_bridge_ports(ds, bdev);
--			ports_mask |= dsa_cpu_ports(ds);
--			res = yt921x_bridge(priv, ports_mask);
--			if (res)
--				return res;
--		}
-+	if (!change_isolated && !change_flood)
-+		return 0;
-+
-+	dp = dsa_to_port(ds, port);
-+	bdev = dsa_port_bridge_dev_get(dp);
-+	if (!bdev)
-+		return 0;
-+
-+	ports_mask = dsa_bridge_ports(ds, bdev);
-+	ports_mask |= dsa_cpu_ports(ds);
-+
-+	if (change_isolated) {
-+		res = yt921x_bridge(priv, ports_mask);
-+		if (res)
-+			return res;
-+	}
-+	if (change_flood) {
-+		res = yt921x_bridge_flood_set(priv, ports_mask);
-+		if (res)
-+			return res;
- 	}
- 
- 	return 0;
-@@ -2332,9 +2452,8 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- 	 * the "bridged" ports, thus we need to trap and handle those packets by
- 	 * software.
- 	 *
--	 * If there is no more than one bridge, we might be able to drop them
--	 * directly given some conditions are met, but we trap them in all cases
--	 * for now.
-+	 * The flood action is offloaded to the hardware by fixing UNK_ACT to
-+	 * TRAP and toggling the FILTER_UNK on the appropriate ports.
- 	 */
- 	ctrl = 0;
- 	for (int i = 0; i < YT921X_PORT_NUM; i++)
-@@ -2353,6 +2472,16 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
-+	/* Capture RMA when offloading mcast flood to hardware */
-+	for (int i = 0; i < 0x10; i++) {
-+		/* Reuse unknown mcast code */
-+		ctrl = YT921X_RMA_CTRL_CPU_CODE(0x1a) |
-+		       YT921X_RMA_CTRL_COPY_TO_CPU | YT921X_RMA_CTRL_DROP;
-+		res = yt921x_reg_write(priv, YT921X_RMA_CTRLn(i), ctrl);
-+		if (res)
-+			return res;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index ab6f28d057cb..12a7d1bf9f1d 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -329,6 +329,17 @@ enum yt921x_app_selector {
- #define YT921X_LAG_MEMBERnm(n, m)	(0x1805b0 + 4 * (4 * (n) + (m)))
- #define  YT921X_LAG_MEMBER_PORT_M		GENMASK(3, 0)
- #define   YT921X_LAG_MEMBER_PORT(x)			FIELD_PREP(YT921X_LAG_MEMBER_PORT_M, (x))
-+#define YT921X_RMA_CTRLn(n)		(0x1805d0 + 4 * (n))
-+#define  YT921X_RMA_CTRL_BYPASS_STORM		BIT(12)
-+#define  YT921X_RMA_CTRL_BYPASS_FLOW_METER	BIT(11)
-+#define  YT921X_RMA_CTRL_BYPASS_PORT_METER	BIT(10)
-+#define  YT921X_RMA_CTRL_DROP			BIT(9)
-+#define  YT921X_RMA_CTRL_COPY_TO_CPU		BIT(8)
-+#define  YT921X_RMA_CTRL_IGNORE_VLAN		BIT(7)
-+#define  YT921X_RMA_CTRL_IGNORE_PORT_ISOLATE	BIT(6)
-+#define  YT921X_RMA_CTRL_CPU_CODE_M		GENMASK(5, 0)
-+#define   YT921X_RMA_CTRL_CPU_CODE(x)			FIELD_PREP(YT921X_RMA_CTRL_CPU_CODE_M, (x))
-+#define   YT921X_RMA_CTRL_CPU_CODE_DEFAULT		0x3f
- #define YT921X_CPU_COPY			0x180690
- #define  YT921X_CPU_COPY_FORCE_INT_PORT		BIT(2)
- #define  YT921X_CPU_COPY_TO_INT_CPU		BIT(1)
-@@ -461,6 +472,10 @@ struct yt921x_port {
- 	bool hairpin:1;
- 	/* BR_ISOLATED */
- 	bool isolated:1;
-+	/* BR_FLOOD */
-+	bool flood:1;
-+	/* BR_MCAST_FLOOD */
-+	bool mcast_flood:1;
- 
- 	unsigned short acl_cnt;
- 
--- 
-2.53.0
+--=-31QIR/hC0fKD3XOt8//x
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+z1atVU6oqrdZG4iNZBuU7wIAAAAAAAA=
+
+
+--=-31QIR/hC0fKD3XOt8//x--
