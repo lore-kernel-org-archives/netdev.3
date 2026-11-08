@@ -1,96 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794126243;
-	b=TX/nKTvuD18LtSJDGoWYE5ieSaDQTypzF6gwbPv6BPIgiCo4uuqXJjyZ/gmCE0NSFM4d
-	 JzlwglhIqwt7NyH16enajDDVUdCYH7r51XJ1Sot3VbxzylFyXnUlparq1hsUjSSfwn8mF
-	 zVjeeSMC+9sfX3I8CT+bnaibCiFphLDPIS+Jmzyyvq00jQnLqbO/CSSHVp133FHdrdZSm
-	 OgwYW2trithI1YM0G3rZLatncvxJ/4rGODrVURqJ3WToxH4pGizmIZgokK1AZ4Tk3YW3S
-	 OpCWPDYHYrOowLwVtq61TqPPMf6El13c0SSNN2w008m0KFwA0GR4HrkOvjjC3I9WfSg==
+	t=1794127242;
+	b=U/f07YsHsOE/u3du0fipPjMXPwDp7fyIpavEYTOkSUX0YzQHJ2w5c1M2+0IBCt/Llk7J
+	 pY/IXh7EMyYxnFzlRp2Z7IoEhIuYHZsxXrRkcYHotMsLfNQVmuURzDPVZCpcFOJzcaxmI
+	 k11kqddJNlfaCf3gcCQg+4Xzqtkd+EbWHRzzYmT4SnSX0QTvClXq+O0lpm2cpWej+XMDW
+	 lsNESujBenBxJQ1O9l1imrRYC4xAxFcJ1YMzdMWK8tIzqO+Xm2SX6SClIkxk5DElUe3Bm
+	 9nH7zqtuXJI2T0sHZBu/yDbgm9MB7QBj65jwLh9jpJBYpDHuQhQ+nbUU4fkpkyPffrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794126243;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=qHVWSqA22IRi0IWfM3WN+vs5MdfzayNNwpdec0UidNM=;
-	b=n64JvWlrh1x0Pst8sllXumFnZyHqfVvFfA2h3u9tcr+9CLFUiPvhPqTwJn2gaxwvDcZR
-	 EvA3aAXwymx3NrlON7niu2WJNYhO/OxIdZuZimOVLQeLXbC/9ObEElo96omRzFGkZAhmB
-	 pMOvag/OgiLM1rYggabPRv0R7+XRrF8oTQF0K69+MeNVKcYEAKOi3L7zEAz1ZdD9aljmq
-	 RpqikjtB+pBkcvgLHtVJBeqWEK2r2TChg6HHhAvERqSgqLPabBwyCmCiss1FhRjmx1BwV
-	 bPJp0CCiF5ppCEagS1JEsRjloabbZouch6Gf6ax4St8CEMEQTqAZkLny/DXBb7qAhJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794127242;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer;
+	bh=zIOVRWimvi5sL6RvvcGg4xNjH+GTSE/6lJuUuXwnf0M=;
+	b=S2OSvZ37QAhpSBm1EJEXSPGJmmq8kP6kNMn+n+YmKeXZJnkGZE9/VdL/nUXQWYowEABN
+	 9xzRlTXaN7c0j2SLNuzWC2NWzC5tSA/Euv+TLQ86G/2lXlcsj5Z1zJheMQRUtJc+jHr/7
+	 0b9a0Fz7fqi/m1Km7vx0HIDHVr8GtgWzaroKyJcj0lXMiwZZI7fo4kQEqV/zw0XgYwXbR
+	 XIkAUagP+dKEnyFtRecfhahBKVhdIcP8IC9KIYib9rWEsM54I3GGuxlcDwAR/IbaNxo6Y
+	 ogNRLkXUQWgDvo3mvK3dw/zUXWre3Qh5l0R6jYXoXKjSD6HBLE64PWiJSAnLjGiLTug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Pg/txO38";
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=daXaBHZA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13680606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 08:24:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13680606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2533B606A31C;
+	Sun,  8 Nov 2026 08:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Pg/txO38
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-372bdb942dbso174734eec.1
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 00:24:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794126242; x=1794731042; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qHVWSqA22IRi0IWfM3WN+vs5MdfzayNNwpdec0UidNM=;
-        b=Pg/txO38QDBLU/kPMmr0doFaKJhLaG0yfEYjP5FcS60APBa1d9UfSoGEaxKhDhWGb+
-         ZBzTOOtubBCVZ88C2475nlvpkl89C9dYbsVr0xCqzbv5i5RN86X0ld0KCQ/kIajDNym2
-         F0IvTqAEx5FDPP9iZr/xBZf2jtcxWyycBhiNAGhfTC89lbaUjwT49mKjqtguLwuiVCO7
-         g1x2+wiHuA1e1ObRrE3qyPKbpMCQx3zuOAYeeVfJ5P9HlISecgd+3GfbI0H20uJA3Iuf
-         WdGQinPOhtMOqaLDZHfS/FOjRqAWseeAfJ60GNeTIYu8iCDn7VVXqscbU7JTkhWJVeaU
-         9KfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794126242; x=1794731042;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qHVWSqA22IRi0IWfM3WN+vs5MdfzayNNwpdec0UidNM=;
-        b=CugCUB2vx3n+TBeuPhNwV+hkTOT5iEB86qosU2WrhRYOqwqRRAyTWxd7+GBy9FbTSO
-         SO2Eb0UfPT+DGdAijWdGsEIoNXrH3ke1oLe11/Rd7GxMHvcx7Zpv7XQxnP5xHh3q2BzV
-         scigL6L0wEmyuLH5JZi1QBpXLMx2fsgwGR5aV6H/5SLfTtcKz4XTbiP2HOpMqVwQmdQ6
-         EQ0EM+K3pn90NHwfgvjYF49mlccf9Jr89EaboNuC+0t8adDFS1Yc8JP2XUNgDz2N3zbr
-         ihq6WYdTrQAMYrQKjTaRkK3qKr3QBZ0ki1BDubCuvKJESA23xiJ1uLPgvw7Xhit8Hkv0
-         90pw==
-X-Gm-Message-State: APuU4Z9WpSLZEoscK0/Bkw0SoxqlddaT3mkB4grh11uMU8lmPqw3FUts
-	PIzrV1cw1quVm8VI3Nr+YW/SMc/6v8RzFKwsFW9UYsYw7uvPnHvUhmaY
-X-Gm-Gg: AYBFou0z3lSIsgLtI8JWxL2hGFGe/i3k3JVFUbeHrECIs0dAE12Kf4N+lX6KiakGIbL
-	yLZtUi1vWABAyZBejVqpZu6pHqmALznmNqF3+h+9aXso7TSVAMbeZs8l+KwdKXT4fL+pS2Zi8Sz
-	xGPCVam1DWQEK/bKGyBoU2woheVuNiQJ2W+V+12Y6vT+vmoGjevC15e721/WKZMnuMxPwU8IpJt
-	24bUaEivDTtGsEZhLisP+uSB/lMO5fLSASSlYmAPSOZA4HvP6kqsldg/dfKeRgeraSPJcOJDwhs
-	nbNOr8H8XawmR3bb/ib1qIiXJbbq7mWVl3tOfydiulrIBlBKmKs5i5bnXDYpE4w8aE/uc2DcaEl
-	g0npF6RLjBYNKIC88vliSdVrLmx811UbolS/NN/ZXGtZtVMDQZ2RTyOhFvLOUc/omUfWi7q11eb
-	SqFYNmOHMiT5gauLWdz/a1RmJNfGX+SChfpTlFux++TkmdA5LxA4eS7Qqh4M0rlJn8t9Z0N3dQw
-	1G5DFKwkquP4v7PdRy9KT/tJUr8/PkWlBF9z24uUZfvDF5AyRJKMSQY/wGhOUeg/0tvHsopnkxe
-	Guh4c7RHOqZU4144ujGld3mDvNl7
-X-Received: by 2002:a05:701b:260d:b0:1a7:99b9:2eb9 with SMTP id a92af1059eb24-1b39feb35dcmr1247987c88.27.1794126242051;
-        Sun, 08 Nov 2026 00:24:02 -0800 (PST)
-Received: from gmail.com ([2a03:2880:9ff:66::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3731487edsm4577292c88.2.2026.11.08.00.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 00:24:01 -0800 (PST)
-Date: Sun, 8 Nov 2026 00:24:00 -0800
-From: Narcisa Vasile <narcisav.kernel@gmail.com>
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	willemb@google.com, mst@redhat.com, jasowangio@gmail.com,
-	eperezma@redhat.com, willemdebruijn.kernel@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: add a KUnit test for the
- alloc_skb_with_frags() tail split
-Message-ID: <avAxoDhRA/qgo7oM@gmail.com>
-References: <20261108100617.23840-1-yanhaishuang@cmss.chinamobile.com>
- <20261108100617.23840-3-yanhaishuang@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=daXaBHZA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED871F0089F;
+	Sun,  8 Nov 2026 08:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794127241;
+	bh=zIOVRWimvi5sL6RvvcGg4xNjH+GTSE/6lJuUuXwnf0M=;
+	h=From:Date:Subject:To:Cc;
+	b=daXaBHZALBdtiBs2E2dTVw58NYJWaRWQ4TE1oinT0rExsydmZqpXJhKv17+2WKsIi
+	 4b54+A0StZc/5OgM1CUgn3xr6uxI334upHw8FOA4y67pTUh32DjJDARFKY5qN7cVif
+	 SPoobMJNmoVRLjWHEcUJgNumK6ikdU+LThlkvPss7CAA4SQ8Dn+hXlgZCMA3aioEmj
+	 DZiHJD+tPmHkiIFV4AC0vW8h0/uAOXOEkU7HdDpPuxWPeeYZHCFsvqF9AG7E1h9bj9
+	 SC3T+ajpUzpDj6FNfnVfw2Fsv/IPWLY8pZ8+1lcOjqtcd6VaC4avJsimpLU9K4VjRE
+	 Y6U4P90xmfruQ==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Sun, 08 Nov 2026 10:40:36 +0200
+Subject: [PATCH net-next] ptp: ocp: replace __get_free_page() with
+ kmalloc()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,22 +53,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108100617.23840-3-yanhaishuang@cmss.chinamobile.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBBFr1JmbbDGGsSriItJMm1HMA0zUQqld
+ zfR5fv/8TZQEiaFW7eB0IeVl1ThdOggzJgmMhwrg+2t650djB9MLtlQvDg8X9HhGKHKWWjk9Re
+ 6Q6JiEq0FHv9H3/5JobROcz0qGS+YwtymRXjidHyhFhLY9y/Kmt8VlAAAAA==
+X-Change-ID: 20260624-b4-ptp-ed56a38a6afd
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.16.1-dev
 
-On Sun, Nov 08, 2026 at 07:06:17PM +0900, Haishuang Yan wrote:
-> Allocate MAX_SKB_FRAGS - 2 full chunks of PAGE_ALLOC_COSTLY_ORDER plus
-> a 7 page tail. Rounding the tail down to 4 + 2 + 1 pages would need
-> one frag more than MAX_SKB_FRAGS, which made the allocation fail with
-> -ENOBUFS before the previous patch.
-> 
-> Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-> ---
->  net/core/net_test.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/net/core/net_test.c b/net/core/net_test.c
+ptp_ocp_summary_show() allocates a temporary buffer for formatting
+PTP OCP device summary information.
 
-Thanks, I tried it locally.
-Reviewed-by: Narcisa Vasile <narcisav.kernel@gmail.com>
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
+
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
+
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
+
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
+
+Replace use of __get_free_page() with kmalloc() and free_page() with
+kfree().
+
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
+
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+Removing needless calls to page allocator helps with memdesc (aka project
+folio) conversion and gives a nicer API without casts.
+---
+ drivers/ptp/ptp_ocp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 625a85b2dc7e5..decc56892059b 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -18,6 +18,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/xilinx_spi.h>
+ #include <linux/spi/altera.h>
++#include <linux/slab.h>
+ #include <net/devlink.h>
+ #include <linux/i2c.h>
+ #include <linux/iopoll.h>
+@@ -5281,7 +5282,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+ 	bool on, map;
+ 	int i;
+ 
+-	buf = (char *)__get_free_page(GFP_KERNEL);
++	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+@@ -5497,7 +5498,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+ 			   post_ns - pre_ns);
+ 	}
+ 
+-	free_page((unsigned long)buf);
++	kfree(buf);
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(ptp_ocp_summary);
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20260624-b4-ptp-ed56a38a6afd
+
+--
+Sincerely yours,
+Mike.
+
