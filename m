@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.38.221.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794172549;
-	b=dJNBZlchvV81QvL4pdTIoUGEmI1h7TqIY2hUUso31MKVHktXAga0ou9Km+k4m8FD0o2X
-	 PVHO2V7E7zz68VLiB2xGObNrYJufi3gkt35DQ1OGrAPxuu3zuprc95tvoZ86WCtKtyapM
-	 m9fDPqKiJFcInB2YNg/NGNQKnO49oGNcteGS1gR1d/Oeeugixr04IjmhzNQz4xjPEWskT
-	 +whXbI2x/bvkuTZd0oifCj2cVg809pYRXJNbvQrIrHuGjyJ1f591mQ/gMr2osiO0phn0t
-	 hcFuYcK1rvLUPMTuwpWKQaAVsnzqG16KJH5C7WI3kvj7O7LqU63aQs3PG6an577CHVg==
+	t=1794172553;
+	b=peQxNroTYlkHRHcJqVNfZKAl7aM8AVbTuoZJN+D1H31gnTIS//NZuEkE3VK7Eb8DpYif
+	 rIodETS64fRt7X6JMKBbAj0BD5kmMdk/ZlHQ02imSYSpUa7jQaxkZFeoRsXMTUoEn0hI/
+	 Y7ZoteTmebVd//SniKiN3y2DBDjmfrpRAM4HMuAJZ8H66mpyp7gQGzpjJ4rF8yUIgkUNt
+	 IWHOtI9LXTCwDhU/9r7vHTrdf2KIVh7SCfmzIHIkqBSl6oAt4vGQVNIa7LtkcHW40K23r
+	 gsVYr5Kqyzo8sCiHoIKtycT4duHOCLvt46t79dhDHBnk+ekc8M7qdcAwuOAkb/Ag8aA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794172549;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794172553;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=Iu4QoDLYgmOS+/MkA8YJr1ISuxuT+bHJCCK8i0TgHrQ=;
-	b=aQBgCTmVBnpt+ySeNNZdmexwzAb0QzGdpz/AMffLZdU48KQCmDuv29OmBy+QC6hlHVTS
-	 Pr1Ip4rreBZxTP5ZAPumGkqA/JHLQCEKm3NEEmyA5/iPe12vlXP8VvP2O3zAvd3WVr5gI
-	 yX6B/KLKHm6l4opAZxFp3eia/pvTFrKAHtZlowekrYdHrkLBgiCZP8RuSpDX7u1o3/jZH
-	 X6ZqERVZN5c7MwVhakEh38HDy0BT6PE4cVgaTheLlNxU67ki7le4Dalxj6uNq0zDbcqoq
-	 niBCGU9WnfbaLf6evP6Gy5qMBLYKpt9+pAGO3+sKw123olGzJ+f+e3oHUBJ/itzzwaw==
+	bh=zJIdsI9GQClsRIIG1G+ICuk2dQgUV+nU+vebLgHoSJM=;
+	b=PnjmgSCT0EZdMmOtgTRkrgusKp4rNSS2u0NUu6nG8mGNpIX0wh0KNW/Dstfm/YHIttqI
+	 gg2eKJSbQ3njx8a1QU0iI8I3BTR3vwAZTL8d7m5daZnXnAOXdfoSKjkB7WLo4lAAL60HK
+	 MHSI+xudW3RLqUKnPawiwWEWLl3QcQf4Wwj5l9MFMQKxqLOg4ePX2HfuCDpabLA8bhzB7
+	 JCq/H+sGLwYV4SbRMeaxVMQV2JakZhQpAHnhTOFvJCF6flUpJX4E8Z3PzdXNlWjb8NYJo
+	 O6d6EOaj3lq8LWhuBSLPc7CK4UvPeKvh6jL2xsF2KYcKQdVtg6H4epzUzq9SsYxGu5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=loljews.com;
 	spf=pass smtp.mailfrom=loljews.com;
-	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=o92o7PzT;
+	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=WNo9O6Or;
 	arc=none smtp.remote-ip=54.38.221.178
 Received: from mnc015mcc432.ss7-reroute.local (unknown [54.38.221.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84050606A31C;
-	Sun,  8 Nov 2026 21:15:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84050606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E99606A326;
+	Sun,  8 Nov 2026 21:15:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3E99606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=loljews.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loljews.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=o92o7PzT
+	dkim=pass (2048-bit key, unprotected) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=WNo9O6Or
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=loljews.com; s=mail;
-	t=1794172543; bh=Iu4QoDLYgmOS+/MkA8YJr1ISuxuT+bHJCCK8i0TgHrQ=;
+	t=1794172536; bh=zJIdsI9GQClsRIIG1G+ICuk2dQgUV+nU+vebLgHoSJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o92o7PzTPiCT8OZNd5FgitNTj1ag2yN0n6f8UfYoYFQRYDMpzPd1jIBgL9BwNogNP
-	 liF+PZHUSeSfo60NwANo1fgmpQ5ObP4nIHyGpcxQ/yQcLdRo/Doxk6Q8ZnVp2xgSq5
-	 3+8ENzfX/tmzIPsNp8CwauqrzAdgC5guNYA1aNFbvp55y8ZLxaefmu7FyBxgieWqrd
-	 WrJWIqeRizwLBkNg3dSUUFzgsXjtKJHmH7SjZiiz0MFnjYMI35K1GtIzOgMk/7bZbW
-	 WWgThmyvVSMOjWr9Jel+Ucd5UeX/u3M27VbP2OfF/EMl7exi7/8gc6Qnl5McBoedGn
-	 B8tE1EuwSQaUw==
+	b=WNo9O6Or91J3mkC8W5nuerD6BmPr9ZcbTvoGwd1PfpF0T1HI2f/zUmU0/XtosL3Zs
+	 Pia5iOwDY14Mp75ONZa3bpSNtcQ1kvCvafjnA0qsHf6PkjS2TqCo57f2z5wzP5PoJe
+	 T6xYK4I69BKUdRr8Pp2NwNQbTJInYg4dNl9MgDNHkG/PqnjmeH9o4NpsD+m5oXoF6C
+	 vZ8tt4UpMlWe0xc4fU0qaCt+O4u4wsqOtCX6nC+XMUgxcrIiav8+FmHkvjntk2aHxk
+	 fl2FtBUtxFhncCvMEUzgRowbL0ODG8p93vqamuNhSV6ZlENm04zgCrHfyTefjtdf9A
+	 0/3xLK+1uHL0w==
 Received: from loljews.com (localhost [127.0.0.1])
-	by postfix (Postfix) with ESMTP id CA2FD27A53FD;
-	Sun, 08 Nov 2026 23:15:43 +0200 (EET)
+	by postfix (Postfix) with ESMTP id D383727A3595;
+	Sun, 08 Nov 2026 23:15:36 +0200 (EET)
 From: Sandeep Haemoon <sandeeph@loljews.com>
 To: netdev@vger.kernel.org
-Cc: netdev-bot+sashiko@kernel.org, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, Mason Chang <mason-cw.chang@mediatek.com>, Frank Wunderlich <frank-w@public-files.de>, linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: ethernet: mtk_eth_soc: add 9K jumbo frame
-Date: Sun, 08 Nov 2026 23:15:43 +0200
-Message-Id: <patch-85762b9476cfa21ef2c3e99899a3be9c@loljews.com>
-In-Reply-To: <179408883078.994134.17583422873503660321@kernel.org>
-References: <patch-cb77640ba129138f860134f54fa345aa@loljews.com> <179408883078.994134.17583422873503660321@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, Mason Chang <mason-cw.chang@mediatek.com>, Frank Wunderlich <frank-w@public-files.de>, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 1/2] net: ethernet: mtk_eth_soc: skip page_pool
+Date: Sun, 8 Nov 2026 22:37:59 +0200
+Message-Id: <patch-e9b81d2fdf3b2d4b11048e6a642bcfcc@loljews.com>
+In-Reply-To: <patch-aad4cfa8d9522d1f7dbc9893ea12e813@loljews.com>
+References: <patch-aad4cfa8d9522d1f7dbc9893ea12e813@loljews.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,39 +65,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Thanks. All ten findings are valid; v3 fixes them.  The same applies to the
-two findings in the review of 1/2.
+page_pool hands out order-0 pages and the pool is created with
+MTK_PP_MAX_BUF_SIZE as the maximum DMA length, so it can only back a ring
+whose descriptor length (ring->buf_size) fits in that.
 
-- XDP: mtk_xdp_setup() and mtk_change_mtu() now compare the shared
-  mtk_rx_buf_len()/eth->rx_buf_len against MTK_PP_MAX_BUF_SIZE, so a
-  program can no longer attach when the rings have no page_pool, whether
-  the large MTU is set on the same MAC or on another one.
-- Every SoC: the RX buffer floor stays at 2K, so MTUs up to 2K keep
-  working at runtime, DSA user ports included, and mtk_change_mtu() now
-  rejects only a change that needs larger buffers (-EBUSY on growth), so
-  lowering an MTU no longer locks the port out of further changes.
-- MT7628: the 1518 max_mtu branch is restored; dropping it was not
-  intended.
-- Commit message: corrected. The series does not include the runtime
-  reallocation, and mtk_hw_init() uses the shared length now, so the
-  description matches the three call sites.
-- PDMA RX SDL: the field is masked and replaced instead of OR-ed, so it
-  no longer accumulates across opens.
-- XMAC_RX_CFG2: read-modify-write, so the bits outside the length field
-  survive.
-- MAC limits: rewritten on every mac_config(), so a reopen after a
-  smaller MTU narrows the MACs that still carry the old limit.
-- Order-2 buffers: acknowledged as the cost of the downstream design and
-  documented; the unused QDMA ring carrying half of it is a separate
-  follow-up.
-- Comment and commit text: fixed.
+Gate the pool on ring->buf_size instead of ring->frag_size: frag_size is
+computed with the netdev_alloc_frag() layout, whose headroom and
+skb_shared_info footprint differ from the pool's, so a ring can pass a
+frag_size <= PAGE_SIZE test while its descriptor length is already larger
+than the pool can map.
 
-The page_pool gate in 1/2 is also changed as suggested there: it now
-tests ring->buf_size <= MTK_PP_MAX_BUF_SIZE, since frag_size is computed
-with the netdev_alloc_frag() layout and does not describe what the pool
-can map.
+This is preparation for the 9K support in the next patch.  Today every
+ring is smaller than the pool's limit and the new condition is always
+true, so there is no functional change; once the normal ring follows a
+jumbo MTU it grows past the limit and takes the netdev_alloc_frag()/
+mtk_max_lro_buf_alloc() path that is already there.
 
-v3: https://lore.kernel.org/all/patch-aad4cfa8d9522d1f7dbc9893ea12e813@loljews.com/
+Link: https://github.com/mediatek/mtk-openwrt-feeds
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Sandeep Haemoon <sandeeph@loljews.com>
+---
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-pw-bot: cr
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index ad0fdc413..f2b2fb113 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2819,7 +2819,15 @@ static int mtk_rx_alloc(struct mtk_eth *eth, int ring_no, int rx_flag)
+ 	if (!ring->data)
+ 		return -ENOMEM;
+ 
+-	if (mtk_page_pool_enabled(eth)) {
++	/* page_pool hands out order-0 pages and caps the DMA mapping at
++	 * MTK_PP_MAX_BUF_SIZE, so it can only back a ring whose descriptor
++	 * length fits that.  Today every ring does; this is the preparation
++	 * for the 9K support in the next patch, where the normal ring grows
++	 * past the pool's limit and takes the netdev_alloc_frag()/
++	 * mtk_max_lro_buf_alloc() path below instead.
++	 */
++	if (mtk_page_pool_enabled(eth) &&
++	    ring->buf_size <= MTK_PP_MAX_BUF_SIZE) {
+ 		struct page_pool *pp;
+ 
+ 		pp = mtk_create_page_pool(eth, &ring->xdp_q, ring_no,
+-- 
+2.53.0
 
