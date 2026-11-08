@@ -1,55 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.38.221.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794172549;
-	b=trsFtwy70r+Ujt2Ic3x+LAiCViMp9m/rEnFxzojSbJG8YCUC3JnK6xNe/JKGeMi8gSmX
-	 DTLSoeG32F4ECx8iaz4aeVtRDI6PztO+MtKhPbmQsJfMlVZ262khSH68eeCpcZXKrO/XA
-	 tF3wMmQKeT+aeswm9h1yc/DNPRc3aMrYHNHynXEsjJ+NAAan6nh2rA39f6OH0KDfwfxuD
-	 YbBrS9oCn1jZOt//cMDxqmpvp5aTPAY+muR97/NfOL8JhFJ/02xtc/zX37v/dAXNACXL/
-	 cxovZwb2gASxDUYZkCRggOQpB2u8eBNT/PNALkeyojjdJ+PCHV0JzVR2PtL1gSpi8Mg==
+	t=1794173443;
+	b=o5aKK+cR6ovV7M5oNK/u9bSZaMosRkIeQO/nh/HcyHyhM2n4470+wwxD4+usMBaRvG3r
+	 ZI+Fn4AsXU//VflYSU59slmXLifu7oMp5pKCFcCcX0ejqPLVI+BA5ZqowXH+m4fYjZdKw
+	 c5siKZU+XmhtXB2SCrNzUbaS6notkGn7Qya7hYyh3iqVawSATOBFK2so+OM9MaLiFqKHa
+	 FZb2ghtS1JJDlYS/WXUtD6tgYjCb7O1dUcQ8bhEXR6auJ5YySik+v83Blf+dms6AIhpMC
+	 P0tuFnaVcKtvpDcF/KX3slCyht2RLfddH0Q66ij581gR08JYwwSFsd1ZiSjZcwspxdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794172549;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=QVUbFs7Z4kyGdbEXF6zg2YiEg2VY57J5U/RR+tPalRE=;
-	b=SVmrlop1hUm86UfworNRU3R8u24kLoQP3Km8CyWRm3bfUQPvFjSTeN4jaai7dPz8zpZ+
-	 v2n5Qr2QXaAIEuEuPHi2kqp5yK+zMLg/jNX4rijQlFofj/YwXvnkW8cFnPDPUJKZoQWgg
-	 UcTB1uUFcQOaEljuHcPE3ZqbboJLNdDBEJD2/lNf27cbkpwsS38tDemNIIMHz1CRr1l9N
-	 jTeQR0p75KfC2SWA0Pn6uWPB2h+HkZaq6/mLxG3xfy/LNUVH/WugAkEya6Smc4A96SFdS
-	 tMNiNabHKT56N6/OYtyO0m+zoqbhanATIky3NHhkD0W0ajQ9RuFO6ri60akR86fplmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794173443;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Jw+/Fkc20+Qp4XR5VO/LxheUCUIT4ctMVUZLv2aVJAc=;
+	b=3+q4wt45roLs49WtnmigBxx5AcdrE7Ffqyv/ca4DCTe88WDeDf3h7UH7T8f+Z61OYwWT
+	 321/NVX3lzMu1LxTHI8y6VCC8OboiC/CZF7qrLCGz4SeFW2bZgOGbptMLpNUECHIkwk0i
+	 FeNWfPj8phm94HEOvgYkTtM9nA9PCrU7YcZE5V4brIXWYxauDzUKraBRWjpEiAqZPULqS
+	 HkY7dBdNaEsrs//o+vAvAJEq2eYE+ldlmwvBJKeDkoS2ZEgx0rQVaFEZOlYO+mrYtl1xQ
+	 C3UZnabNH2lxT3dw67GNaMfSYeGTKoskoqxYwmOIrh5pjHwxxSnWMPOebsrRq83Zaew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=loljews.com;
-	spf=pass smtp.mailfrom=loljews.com;
-	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=QNk0Uvma;
-	arc=none smtp.remote-ip=54.38.221.178
-Received: from mnc015mcc432.ss7-reroute.local (unknown [54.38.221.178])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7FxV7XM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DFB606A323;
-	Sun,  8 Nov 2026 21:15:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3DFB606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=loljews.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loljews.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB3606A31C;
+	Sun,  8 Nov 2026 21:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=QNk0Uvma
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=loljews.com; s=mail;
-	t=1794172536; bh=QVUbFs7Z4kyGdbEXF6zg2YiEg2VY57J5U/RR+tPalRE=;
-	h=From:To:Cc:Subject:Date;
-	b=QNk0UvmabABrVKHt5evVen51oIh6a39nvJBA3DFWRB7/KVX0VlUgptjtYUPlJfwv8
-	 7qAlH2fwi/Irc5Ax2yubzoxFU8pHsonIDkPn+9PkCTtQ1Q5+GPjBrno72QEJM8VuZT
-	 9pnzZllF5WLsyASHRMotvWPFrQggmVbi62zFNaUmNjJaSeZ9vigq1aIdNkBN7tQulF
-	 CzKO+c/EFRd/4AlOGO9avfN5SaxePocZ7bV5cb8Lw1UireT2Rwgf20WbWl6OqJaUtE
-	 0Aqn2QzLSaT1U2wnzhlKaiVB4ZiNxaHAmyoUB88McCHmObyvnOUmR4/3+D2awU/cT2
-	 fExQkdWkjSzFQ==
-Received: from loljews.com (localhost [127.0.0.1])
-	by postfix (Postfix) with ESMTP id A789027A3593;
-	Sun, 08 Nov 2026 23:15:36 +0200 (EET)
-From: Sandeep Haemoon <sandeeph@loljews.com>
-To: netdev@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, Mason Chang <mason-cw.chang@mediatek.com>, Frank Wunderlich <frank-w@public-files.de>, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/2] net: ethernet: mtk_eth_soc: 9K jumbo frame support
-Date: Sun, 8 Nov 2026 22:38:19 +0200
-Message-Id: <patch-aad4cfa8d9522d1f7dbc9893ea12e813@loljews.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7FxV7XM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663951F0089F;
+	Sun,  8 Nov 2026 21:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794173443;
+	bh=Jw+/Fkc20+Qp4XR5VO/LxheUCUIT4ctMVUZLv2aVJAc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=j7FxV7XMRjRBVBjDNqZB72oA6jNKCIgXW5mW9v9+7afoWjL/Y4/xiKO+32hlJypep
+	 ql2qzXBguSaxKXlPqwF0qxBYD2YhHmjOAWVuUxc9IHQ+pPSBj9VJee+3nfHiMZi4LY
+	 BWEV6CTemNlAcLukfktIV7W6dFicWad8WWkJwe7ae7k8BSaqaQbF6JfIBohwQehv1c
+	 GIVnSnk1jkaHCMKtKD02iB1H0vrjNO9heeqYwwpgsRij9HwVtNFPUM3VaDMc8mvISc
+	 31NUc/hyZ9vuaARvFnTbQE50pvjtlD7AL7RecIVu3DcX2RiNR5i3jYqCwUnbC/WZSc
+	 2Fq+v9gYLlPSQ==
+Subject: Re: [PATCH net 1/2] net: macb: credit unsent frames to BQL in
+ macb_tx_error_task()
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ sean.anderson@linux.dev, robert.hancock@calian.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 08 Nov 2026 21:30:41 +0000
+Message-ID: <179417344193.994134.16378845352525630728@kernel.org>
+In-Reply-To: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de>
+References: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,81 +64,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
 
-This series makes the MediaTek SoC ethernet driver support 9K jumbo
-frames on the 10G XGMII MACs (MT7988).  The driver advertises a 2030-byte
-max_mtu and programs the MAC max-rx field for at most 2048 bytes, so
-MTU > 2K is rejected and 9K frames are not usable.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Patch 1 gates page_pool on the descriptor length of the ring: the pool
-hands out order-0 pages and maps at most MTK_PP_MAX_BUF_SIZE, so a ring
-whose descriptor length is larger has to use the
-netdev_alloc_frag()/mtk_max_lro_buf_alloc() path.  It is pure
-preparation, every ring fits today.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Patch 2 adds the MTK_NETSYS_RX_9K capability, advertises 9K max_mtu on
-the XGMII MACs (from the DT phy_mode at probe, so DSA can raise the
-conduit MTU before the netdev is opened), programs XMAC_RX_CFG2 and the
-PDMA RX SDL, derives the shared RX buffer length from the largest MTU,
-sizes the RX rings from it and keeps the MAC max-rx limits in sync with
-it.  A runtime MTU change that needs larger buffers is rejected with
--EBUSY while DMA is running; shrinking is allowed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-This work is a forward-port of the MediaTek downstream jumbo work: Mason
-Chang's "change default rx buffer length" and "add 9k jumbo frame
-support" (MediaTek OpenWrt feed 999-eth-30/31, carried in
-frank-w/BPI-Router-Linux), plus Frank Wunderlich's "try to fix crash the
-right way".  The runtime reallocation of Mason's "dynamic rx buffer
-adjustment" (feed 999-eth-33) is not included and will be sent
-separately.
+- [High] The fix leaves a second site with the same bug.
 
-The equivalent change was tested on a BPI-R4 Pro 8X (MT7988, 10G lan6 /
-MxL86252) on the 6.18.60 backport: with both ends at MTU 9000, 8K ICMP
-passes and iperf3 with MSS 8900 reaches ~9.87 Gbit/s (vs ~2.57 Gbit/s at
-MSS 1460); the DSA conduit is raised to 9004 at boot.  This v7.3 series
-is compile-tested with CONFIG_NET_MEDIATEK_SOC=y and COMPILE_TEST=y; no
-hardware run of this exact tree yet.
+--
 
-Changes in v3:
-- gate page_pool on ring->buf_size <= MTK_PP_MAX_BUF_SIZE instead of
-  ring->frag_size <= PAGE_SIZE: frag_size uses the netdev_alloc_frag()
-  layout, so a ring could pass the old test while its descriptor length
-  was already larger than the pool can map;
-- keep 2K as the minimum RX buffer length, so MTUs up to 2K keep working
-  at runtime on every SoC, DSA user ports included;
-- restore MT7628's 1518 max_mtu, which v2 dropped by accident;
-- in mtk_change_mtu() reject only a change that needs larger buffers, so
-  a lowered MTU no longer locks the port out of further changes;
-- program XMAC_RX_CFG2 with read-modify-write, keeping the bits outside
-  the length field;
-- replace the PDMA RX SDL field instead of OR-ing into it, which grew on
-  every open with a different MTU;
-- rewrite the MAC max-rx limits on every mac_config(), so a reopen with a
-  smaller MTU narrows MACs that still carry the old limit;
-- derive the XDP admission checks from the shared RX buffer length, so a
-  program cannot attach and then never run;
-- correct the commit messages: no runtime reallocation is included, and
-  mtk_hw_init() now uses the shared length too;
-- keep Simon Horman's Reviewed-by on 1/2 only, as 2/2 changed materially.
+net: macb: credit unsent frames to BQL in macb_tx_error_task()
 
-The order-2 allocation cost at 9K (one buffer per slot, high-order
-GFP_ATOMIC refill) is unchanged from the downstream design and is called
-out in the commit message.
+This commit moves the BQL packets/bytes accounting in macb_tx_error_task()
+out of the "TX complete" branch. Every frame removed from the ring is now
+credited through netdev_tx_completed_queue(), whether it was sent or not.
+This stops the DQL in-flight count from leaking on each TX error.
 
-v2: https://lore.kernel.org/all/patch-2793186c653124c4c0b3d463bde2ea3a@loljews.com/
-v1: https://lore.kernel.org/all/patch-4f863a941889f0bceca1c082f2d79624@loljews.com/
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index f087f278f9e56..b6105f915fe35 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
 
-Sandeep Haemoon (2):
-  net: ethernet: mtk_eth_soc: skip page_pool for RX rings it cannot back
-  net: ethernet: mtk_eth_soc: add 9K jumbo frame support
+[ ... ]
 
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 215 +++++++++++++++-----
- drivers/net/ethernet/mediatek/mtk_eth_soc.h |  10 +-
- 2 files changed, 173 insertions(+), 52 deletions(-)
+> @@ -1428,6 +1426,12 @@ static void macb_tx_error_task(struct work_struct *work)
+>  			desc->ctrl = ctrl | MACB_BIT(TX_USED);
+>  		}
+>  
+> +		/* BQL has to see every frame leaving the ring, sent or not */
+> +		if (skb) {
+> +			packets++;
+> +			bytes += skb->len;
+> +		}
+> +
+>  		macb_tx_unmap(&bp->info, tx_skb, 0);
+>  	}
+>  
 
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+[Severity: High]
+The commit message describes the problem in general terms: "The frames
+dropped on a TX error are never returned to BQL." Does
+macb_hresp_error_task() leak in the same way?
+
+macb_interrupt_misc() queues it as BH work when the hardware reports
+HRESP:
+
+macb_interrupt_misc() {
+    ...
+	if (status & MACB_BIT(HRESP)) {
+		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+    ...
+}
+
+It then resets the TX rings and restarts the queues. It never calls
+netdev_tx_completed_queue() or netdev_tx_reset_queue():
+
+macb_hresp_error_task() {
+    ...
+	netif_tx_stop_all_queues(netdev);
+	netif_carrier_off(netdev);
+
+	bp->macbgem_ops.mog_init_rings(ctx);
+
+	/* Initialize TX and RX buffers */
+	macb_init_buffers(bp);
+    ...
+	netif_carrier_on(netdev);
+	netif_tx_start_all_queues(netdev);
+}
+
+gem_init_rings() and macb_init_rings() mark every TX descriptor TX_USED
+and set txq->head = txq->tail = 0. Every frame between tail and head was
+already charged in macb_start_xmit():
+
+	netdev_tx_sent_queue(netdev_get_tx_queue(bp->netdev, q),
+			     skb->len);
+
+So DQL would count those bytes as in flight forever. After enough HRESP
+events, the queue would stay stopped with an empty ring. Only
+macb_close() would recover it, through netdev_tx_reset_queue().
+
+This commit carries the same Fixes: tag as the BQL introduction, and that
+commit missed both paths. Could the HRESP ring reset path be covered here
+too, or in a companion patch, so that backports get both fixes?
+
+On a side note, this HRESP path also seems to reset head and tail
+without unmapping the DMA buffers or freeing the tx_skb->skb entries. Are
+those skbs and DMA mappings leaked as well?
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52%40tipi-net.de
