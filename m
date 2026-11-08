@@ -1,60 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794119290;
-	b=35uzd78DId9HqmP5WWb5khWxysTFnK6Eujygopv06CB0Sp7Wl6Z+ZAy0iXdSdNTZ97XP
-	 oGxGGdsjDzBwr0GgoqRuzu3zJicQb5olXcCcP7/1Ul7jyMmR/MmbJMrbP6n0i7RwBmPY6
-	 kNjl3QfSnBIV7QyNnwIoUdsTM9z+5OT+YSRS796wGjkW5tUa1pNYJmfg55lDdDrMzZ8bw
-	 MgYkpyNWUL2MTi6Er+305Ubs/usamBybTSuvbnR6BCXlHWoIfp5He3PYR6LaFZSvtVMfs
-	 xkpedC8I6s/5hVKc8rM5zdf096/GhqvaShd9MqBvJ0D/d8GXX6kKm56b4L5g1QnNzeQ==
+	t=1794120582;
+	b=QvGM/J+hRylPLsBQXi3gHMVa5ktZPASUSpWzbA6F+g0oKCc6pUP4trqRziIPod1VsCHJ
+	 lUACQrlrz28DEzwMVvZUqqnpsbPvj2VetzZqRONjQeNFucWEww8Wg3foUqhLIq0Krgukt
+	 nEYUk1n3mywm/6kUko60ZMYs2Urfq0qFwAQNa4qTu/lDyP7ox+sg3u+uQURyLQ2wDC8Bp
+	 8ZX3zzeE0SGKSGHWLfUKSMSLLjdctE8T+ip19S+AB9UxJgBf01eWO/sLl+8Dzqqq7YGBD
+	 /8b6r++0Dw2CA0BknEa8WwkQa7+5y5mJbreKWeARv8to1rH5BP7UUUrz8OHfwDFE8BQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794119290;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=GmtsPiMSdPb7buBasD1wcQJp98i4wRyriYYk3hWW9rI=;
-	b=uVxkIJhOs7nJaOwVocRFK2xZ0omlfBbRiVnJ3CY/q9HtEDHBr5HXSRtxoRtnkFmczZQS
-	 +jxV2jrLVjzHfCFF2xSsfnLe7KFtem4ZrYqGNes4z/84lmQQOx5H84YDwJWRwIqp3jz35
-	 p9uX8flMP8fn7fXat8dHVo+2LH3awYv5wi89TUMsEuQd8j//RfpbicP3sELbOVv+ynhOE
-	 B6yWYoluOrSAfvE5MQZlsGe4TwQ86g8cDOEqoa8XA2zyu7r9DzrnAXsnAPkH97vBGdB8P
-	 BoYoKMlYdzLoN7tL/trOxWGG8VYGCTQLxnsUgNbU8U7XANSzVWBsr338nsHpnh/862A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794120582;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=x7Z+RUwPNkJfYSyvADI+2XwTh8BlG6SdiyklPwWIP7I=;
+	b=kdhon3RjIqkHOj+HXsPZoe8uyyUJAFQr6mBzn0JMN8Beoraqke2rPeWzsUBJ8vwKP5mQ
+	 tu/79n47F4qNHQlWfrTcRQjxiN3SvQRA21vjrctRzgXW9ruZqz94EFraKu32Rg/oXm2Gf
+	 T/N9Zx9Q0ey/kJSm8u9mS7r2scq1AvvwxtnYNhYzXWFyi59u8NnnPYeHH97lghJGCk/5H
+	 cPvuIbpQpOmd3SAIyDZS9GgTMjwhc7SQPj4VqU8bgs7MBsjO4BuJcedK5F7VzDy980vm1
+	 HRUWJvs47hBeaUFb1dI3hGSghj7lWmjM4EmsnslnwdZn+FMIR2S/eqedeuNZTkLKMow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JzfLuXBz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iJ6EVQFZ;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F370606A31A;
-	Sun,  8 Nov 2026 06:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901E9606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:49:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 901E9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JzfLuXBz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC071F0089F;
-	Sun,  8 Nov 2026 06:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794119289;
-	bh=GmtsPiMSdPb7buBasD1wcQJp98i4wRyriYYk3hWW9rI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JzfLuXBzGOVuceG6d0VXFOme4v93UgmYjElTdAc3KsKgOB0uDmflOWeBhB2SyHf6F
-	 KAEAoQRDjMdXdfYjdqKo4YFkTPSiRjocNknVYhJRtw5y7VEBBk0ClBwKPJE7Ihl+1A
-	 jGr7gQVZngKujMyfhnbX+L2PpB0L1c5b9ufk6ehAn77gG8EeLIxG7bQiONuGJz1HoX
-	 Vt8V7mcdW8x6nQ/e1FdFIZZXCH9zdCD9iPDoYTLYayazFU7aQxDLmDq29UN27ZpNdg
-	 mXsHak1kOdoC8X/IgQ5gC7xwlto5w5uDju9mgY+1XmJFi5CjxA3JbH00LetJd/syYz
-	 tCGVMwP4sBXSw==
-Subject: Re: [PATCH net] gve: bound the device reported rule count in the flow
- rules query
-From: netdev-bot+sashiko@kernel.org
-To: yhlee@isslab.korea.ac.kr
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, willemb@google.com,
- pkaligineedi@google.com, jeroendb@google.com, stable@vger.kernel.org
-Date: Sun, 08 Nov 2026 06:28:08 +0000
-Message-ID: <179411928865.994134.15713036918131150201@kernel.org>
-In-Reply-To: <20261104061329.1881388-1-yhlee@isslab.korea.ac.kr>
-References: <20261104061329.1881388-1-yhlee@isslab.korea.ac.kr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iJ6EVQFZ
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso1123735e9.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:49:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794120580; x=1794725380; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x7Z+RUwPNkJfYSyvADI+2XwTh8BlG6SdiyklPwWIP7I=;
+        b=iJ6EVQFZqUc1JCULdiEBgNJ84P54mp7p0pzC8E12y44CcymFXp95DeiwtpJutyDQks
+         djQPxTSogG61m8a/JgFTnpVeM/4lTbS9gfuxk06kfcT0DBMiBvLa8W7MCcCEtJ553TDU
+         q2SmlgloURYCXaAiwAtgrUV8e+Efjvh1PBAxlFtLf8ZD3owfPIgDc2gGL8RUhjzl3Czj
+         XTzv06fF3xab+Dx2oGntk1Fc4Qfw/rVua8BT0hGWjTBkdarjSWKcVyX7Vhp1tN6eOLmS
+         WzD38G4NnWMmjOLhWLJM+tHoeuacn3xcC71IiBCX/w0fd/U3O5Hmxh/F5LrYUNfICGiH
+         3tZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794120580; x=1794725380;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x7Z+RUwPNkJfYSyvADI+2XwTh8BlG6SdiyklPwWIP7I=;
+        b=2RpRfC9AtSCseW5ZY4c13y8FNwSs2kK5c8a6b3D2rbc8HFIr3vUa4Zlv0dmMQJJA4I
+         McaxaWLNkhTgARjeMtpN7DSs9bed06di4aRIffRLoPBmJVx2MFSKli/CeCMTkvxEsf2Q
+         z5eFGqIAoCl3ZvilKZ88E6OoE6PaIVAty7T64IVAS8U0De+IQJARhgpzkgEup17Qbpv2
+         NmgmrSSKEAook222C0JROHST1C/EZVKbfmQFoCyRRyhSzcA2ZPHusDHm8t/mN6JjJWFa
+         UvD8epFSofbiQMv7ejza4ZS/l9RTwB1dMUVpUq2MzmksO9J8w0a3C1ZjVBsP81ZwjpdJ
+         0k8g==
+X-Forwarded-Encrypted: i=1; AKwUvBwo2JmlhSIxPIYa1rtWXCkTOpsKpD3FSd8UYSou9tBexAc6wvEQP6N3ECMs+8pMbBQ+aibv2jc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/UEXyMt0OsvtcjOZlBQIEsdhmC5YQ0cEEDqWfiFFaU7aTxX7G/
+	4WTVOrR/bjVYkJZ9CleGWEIERFrfOxCf6BB3tB5ln8J0Lb9yUlFhr0kN
+X-Gm-Gg: AYBFou3pN130OkMvQab9LPniGyOkvhB8Vh9nJgpVSgNOCXSzeBFLYIwHNVlw1QAmSlE
+	PeGCy6t2iU08UG68XBdeMXc0uzmUELWGTbcQxPDvaZTIhflWxfE1Au1sImotPnwGygAgu5+W9Ge
+	w++eP9CU3YPhtGM7wexHimyyBVRDS5zrVuGCCH17LTy8eJSl8jWpeXdfRfw0FVInORKy6uQ08Pv
+	BtsbGz6op5MnyNO3hV+t/SlJ0tVpDXgL4JtbXYXR7/aAvm3JbzW6Uf/33md55LFXe3Ct86mGDL0
+	1RPxQsqimRYVKhw2M76UFhnDG0hYR1gIqcrDsVsIaAccIZgiwKtqa54vW9BDQWxck/PzRrOD/6L
+	0LYoYp+/7XY+03PIq0mlRg/Zj/vm8TAMpIjoes2hNPzPfs5Q89ntyH5KD3k+PO/f8vS2SPF+eBo
+	jhQmIxA4jvtz8Uemv4nP+Oh/rPF47Av0+Z8uW8MHYuG7fdqnabuItJOtq1kFpsqNf1REkN4b7Zw
+	bHrgwVawUsUmmZQgj4rOZWa5NoqjZQO+g3ZWf5hVMdb3RtcMjZiT6uwmIdtXpH/9QSOyy1wZ5rN
+	JhRdyUMQFv2jSgCc8g3oMpI0/Lqttmr1ZTm8SD3j5L0OQQ==
+X-Received: by 2002:a05:600c:8712:b0:4b3:6900:280c with SMTP id 5b1f17b1804b1-4b963c7d013mr12738155e9.19.1794120579685;
+        Sat, 07 Nov 2026 22:49:39 -0800 (PST)
+Received: from localhost.localdomain ([2a06:c701:475e:f800:9c3f:1631:3855:dec8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b8fdda3358sm37582945e9.0.2026.11.07.22.49.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 22:49:39 -0800 (PST)
+From: Avi Weiss <thnkslprpt@gmail.com>
+To: richardcochran@gmail.com,
+	netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	arnd@arndb.de,
+	john.stultz@linaro.org,
+	linux-kernel@vger.kernel.org,
+	Avi Weiss <thnkslprpt@gmail.com>
+Subject: [PATCH net v2] ptp: Report clock removal to poll waiters
+Date: Sun,  8 Nov 2026 08:49:29 +0200
+Message-ID: <20261108064928.1931917-2-thnkslprpt@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,151 +103,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+ptp_clock_unregister() marks the clock defunct and wakes timestamp
+waiters before posix_clock_unregister() marks it a zombie. A poll
+waiter can consume the removal wakeup while the event queue is empty,
+return no events, and remain blocked until timeout after device
+removal.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+Using netdevsim's mock PTP clock in an x86_64 QEMU/KVM guest,
+the unpatched kernel missed all eight epoll removal notifications.
+The four poll waits returned POLLERR only at timeout. With this
+patch, all 12 poll and epoll waits reported clock removal promptly.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Check the defunct state after registering the poll wait queue and
+return EPOLLERR when the clock is being removed. Use READ_ONCE() for
+the lockless defunct checks and WRITE_ONCE() for the unregister store.
 
-- [Medium] The commit message gets the pre-patch impact of the
-  GVE_FLOW_RULE_QUERY_IDS path wrong.
+Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+---
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  gve_adminq_process_rss_query() in…
+v2:
+  - ddress Sashiko's v1 review, forwarded by Simon Horman, by pairing
+    the new READ_ONCE() with WRITE_ONCE() in ptp_clock_unregister() and
+    using READ_ONCE() for both ptp_read() checks
+  - the v1 poll fix already addressed the observed removal scenario,
+    these changes are really just to make the lockless accesses consistent
 
---
+v1: https://lore.kernel.org/r/20261102122340.1160733-1-thnkslprpt@gmail.com/
+ drivers/ptp/ptp_chardev.c | 8 ++++++--
+ drivers/ptp/ptp_clock.c   | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-gve: bound the device reported rule count in the flow rules query
-
-This patch makes gve_adminq_process_flow_rules_query() reject a
-device-reported num_queried_rules that does not fit in the admin queue
-buffer after the descriptor. The check runs before the count is turned
-into a memcpy() length. It is applied to both the
-GVE_FLOW_RULE_QUERY_RULES and GVE_FLOW_RULE_QUERY_IDS opcodes.
-
-> For GVE_FLOW_RULE_QUERY_IDS the destination is large
-> enough, but the descriptor and the rule array share one
-> GVE_ADMINQ_BUFFER_SIZE block and the array starts after the descriptor, so
-> counts of 1021 to 1024 read past that 4096 byte block.
-
-[Severity: Medium]
-Is this description of the pre-patch QUERY_IDS behavior complete? It
-seems to hold only for counts up to 1024.
-
-rule_ids_cache is allocated in gve_alloc_flow_rule_caches() as:
-
-    kvcalloc(GVE_FLOW_RULE_IDS_CACHE_SIZE, sizeof(*flow_rules_cache->rule_ids_cache),
-             GFP_KERNEL);
-
-GVE_FLOW_RULE_IDS_CACHE_SIZE is GVE_ADMINQ_BUFFER_SIZE divided by the size
-of a __be32 location. That makes the cache 1024 entries, or 4096 bytes.
-
-Before this patch, a reply with num_queried_rules = 1025 and
-total_length = 4116 passes the total_length check. The memcpy() in
-gve_adminq_process_flow_rules_query() then writes 4100 bytes into the
-4096-byte rule_ids_cache, and larger counts write further. So the IDS path
-looks like it also had a heap write overflow, not only a 4 to 16 byte
-over-read.
-
-There is also a wrap case. For num_queried_rules >= 2^30 the u32 multiply
-num_queried_rules * 4 wraps, so the memcpy() is small. However,
-rule_ids_cache_num is still set to the huge count. gve_get_flow_rule_ids()
-then walks past the 1024 entries:
-
-    for (i = 0; i < *cache_num; i++) {
-        if (j >= cmd->rule_cnt)
-            return -EMSGSIZE;
-
-        rule_locs[j++] = be32_to_cpu(rule_ids_cache[i]);
-
-Those values reach userspace through ETHTOOL_GRXCLSRLALL.
-
-The RULES path can wrap the same way, since 2^29 * 88 is 0 mod 2^32. The
-resulting rules_cache_num is then walked through ETHTOOL_GRXCLSRULE. That
-command is in the same no-CAP_NET_ADMIN list in net/ethtool/ioctl.c, but
-the commit message only mentions ETHTOOL_GRXCLSRLALL.
-
-The new bounds do cover all of these cases. Could the commit message also
-mention the write overflow for more than 1024 ids and the multiply wrap on
-both paths?
-
-> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-> index 8b215fca9c1b6..02c1f398f6e39 100644
-> --- a/drivers/net/ethernet/google/gve/gve_adminq.c
-> +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-> @@ -1542,14 +1542,20 @@ static int gve_adminq_process_flow_rules_query(struct gve_priv *priv, u16 query_
->  {
->  	struct gve_flow_rules_cache *flow_rules_cache = &priv->flow_rules_cache;
->  	u32 num_queried_rules, total_memory_len, rule_info_len;
-> +	u32 rule_info_max_len;
->  	void *rule_info;
->  
->  	total_memory_len = be32_to_cpu(descriptor->total_length);
->  	num_queried_rules = be32_to_cpu(descriptor->num_queried_rules);
->  	rule_info = (void *)(descriptor + 1);
-> +	rule_info_max_len = GVE_ADMINQ_BUFFER_SIZE - sizeof(*descriptor);
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but
-does gve_adminq_process_rss_query() in gve_adminq.c need the same kind of
-bound?
-
-gve_adminq_query_rss_config() also allocates its descriptor from
-priv->adminq_pool, whose blocks are GVE_ADMINQ_BUFFER_SIZE bytes. The only
-length check compares device-supplied values with each other:
-
-    hash_lut_length = priv->rss_lut_size * sizeof(*rxfh->indir);
-
-    if (sizeof(*descriptor) + priv->rss_key_size + hash_lut_length != total_memory_length) {
-
-gve_enable_supported_features() takes the key and LUT sizes from the
-device with no upper bound:
-
-    info->rss_key_size =
-        be16_to_cpu(dev_op_rss_config->hash_key_size);
-    info->rss_lut_size =
-        be16_to_cpu(dev_op_rss_config->hash_lut_size);
-    info->cache_rss_config = false;
-
-Nothing then caps the total at GVE_ADMINQ_BUFFER_SIZE - sizeof(*descriptor)
-before these reads:
-
-    memcpy(rxfh->key, rss_info_addr, priv->rss_key_size);
-    ...
-    for (i = 0; i < priv->rss_lut_size; i++)
-        rxfh->indir[i] = be32_to_cpu(lut[i]);
-
-hash_lut_length is also a u16. With rss_lut_size = 16384 it truncates to
-0, so the check passes against a small total_length while the loop still
-reads 64 KiB of LUT.
-
-The ethtool destination buffers are sized from gve_get_rxfh_key_size() and
-gve_get_rxfh_indir_size(). Those return the same device values, so they do
-not limit the read either.
-
-Because cache_rss_config is false, gve_get_rxfh() always calls
-gve_adminq_query_rss_config(). ETHTOOL_GRSSH also does not require
-CAP_NET_ADMIN.
-
-Can this copy kernel memory from beyond the 4096-byte DMA block to an
-unprivileged user?
-
->  
->  	switch (query_opcode) {
->  	case GVE_FLOW_RULE_QUERY_RULES:
-> +		if (num_queried_rules >
-> +		    rule_info_max_len / sizeof(*flow_rules_cache->rules_cache))
-> +			return -EINVAL;
-> +
-
-[ ... ]
-
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index f63b45f5ee6a..dc5865e95f77 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -593,6 +593,9 @@ __poll_t ptp_poll(struct posix_clock_context *pccontext, struct file *fp,
+ 
+ 	poll_wait(fp, &ptp->tsev_wq, wait);
+ 
++	if (READ_ONCE(ptp->defunct))
++		return EPOLLERR;
++
+ 	return queue_cnt(queue) ? EPOLLIN : 0;
+ }
+ 
+@@ -616,10 +619,11 @@ ssize_t ptp_read(struct posix_clock_context *pccontext, uint rdflags,
+ 	if (cnt > EXTTS_BUFSIZE)
+ 		cnt = EXTTS_BUFSIZE;
+ 
+-	if (wait_event_interruptible(ptp->tsev_wq, ptp->defunct || queue_cnt(queue)))
++	if (wait_event_interruptible(ptp->tsev_wq,
++				     READ_ONCE(ptp->defunct) || queue_cnt(queue)))
+ 		return -ERESTARTSYS;
+ 
+-	if (ptp->defunct)
++	if (READ_ONCE(ptp->defunct))
+ 		return -ENODEV;
+ 
+ 	event = kmalloc(EXTTS_BUFSIZE, GFP_KERNEL);
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index 4111342d64f0..d2640325abf7 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -518,7 +518,7 @@ int ptp_clock_unregister(struct ptp_clock *ptp)
+ 	get_device(&ptp->dev);
+ 
+ 	/* Wake up any userspace waiting for an event. */
+-	ptp->defunct = 1;
++	WRITE_ONCE(ptp->defunct, 1);
+ 	wake_up_interruptible(&ptp->tsev_wq);
+ 
+ 	/* Tear down the POSIX clock, which removes the user interface. */
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104061329.1881388-1-yhlee%40isslab.korea.ac.kr
+2.43.0
+
