@@ -1,83 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794174327;
-	b=4B6BG1S35k+V68RPELvWfWwrvo+8VAKRZpBJWajgP0rVd6Tfk4JOe1fBsNFJgd0OWeDw
-	 HakdtHurUbYb9v+EKsSSuTqQGYQ3qPyrpNS/6bhVTYdYjq/N5wCtxUoor+5jShSQqxml5
-	 OhtvVdGZoMym672aXZDPh3DpNQKHxU05ilrDn40CkrIfzBOTxQyTXwHZcTthg1iqdG/kG
-	 f7BuEYwxgg6CaicPzlN5wEAXeV42fxRXGIwm80/2HCKPyDvM2jKa0IhjFr/QtBBzfke3W
-	 65nSGzLLKuxKTBMRqbsmB2D7DXwcu/6WqOrNebz4F0TzuTNsEpYOaxxmF0tTixOTuDg==
+	t=1794174323;
+	b=i+ZNtdBqjqo2JITiCajKv4r7ilSAand97uk7NSfqEJoSHeD3YBJ2yNsUs5MQpDu/CFDf
+	 ci+KEUi7qFM/0bWlUdN4C40fZKY/+SAZ74ORGfK7ozKIXIk9oyCACmCJmCz3NTHYSZSdo
+	 nW8VU2zAZq/FUW9SqLxig9RTTn7ZaNPjtrHTxdrgpQ/Zo55c7d5X5z/qaAZCgRRZvNsXj
+	 ESnABzfOUvge01nrDXnXM7BDcf3CW9BXvlx0gxQLjAeIvb2NBjNka9gOUqJve6EHfiz7l
+	 d3SEsrH5KJtSDf0g7NZ0JuKPeOa9PJr0Yx39dYrzVmrScVQ38deLyXqFg/IMPsXNJaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794174327;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794174323;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Z6qsKejGug2sNisulG4c9FY0DKxN3PKWlr+7E8JUKfo=;
-	b=r43PzSbvqesH1W0krXnHFmskgkVOPV+pmi6uy34ytWwMMIV18jt05o1u9I+CbS6/mOOX
-	 n1N44I6OApT3+BbdDeVMiWA3WBW6nRrSrdbSkVgH3aP466cVSAvDuB/68MoScQP9JOlwZ
-	 bppx4WYzis4tIC9mHpSgeiDYR6x7hzU+zR1M98AwKHp8GfyxLg2J707a4Qpyv09oTBq0A
-	 5+s5alkK1fUSzZSy0H9PpYHclJ9Yq4rReBj7bYUHs7v9SXMqsZIyUjKNfKjihNR918UZ3
-	 N7zxDc6GvfEbk9QQSyHk6GuBoqknFxVDtlTnfZMxSnV2zuT+2iT3vhWhcPSIYHi5mnQ==
+	bh=9l6NWEWMJ9uUn8jbFCIYRZKatM0u3CjixN3oolZ9eG4=;
+	b=BlWxZK+guwSK0HWipfEqYgO5NuFz+zzcnAbtzIfDHxJucxPblMQXyehGCZ0E+uPWCd15
+	 8kqkAgqYxIv3AnJm7zMPmsETTHgcBltpnc91+b43RLp3B6CHbVqNOSuzGG767StBFcBAs
+	 Rdmq59h9Ppd7I5PnxnWDkYhWt/u4L77dAObfbFm1Wrn1BHVYpc5lSmTjXLsF9Nhn0nT8G
+	 tkIKujB82p5buagv5+6/Ur+OCsIlWsiP/hc2iY4y/8xMsXoQmX4QlVyOg4exp0ZKN9QOk
+	 BnWj/OiTLkhti0DW9CRjg0xxy3qP/jcueXfy3ECR3jHXnm92pQBfgCfDihXTUUfhMqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uIniuxtr;
-	arc=none smtp.remote-ip=209.85.214.169
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=THV0xTKZ;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCFF606D802
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:45:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBCFF606D802
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FFC606D830
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:45:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94FFC606D830
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uIniuxtr
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e977109392so1249145ad.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:45:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=THV0xTKZ
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ed0b03ce3eso761335ad.3
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:45:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794174326; x=1794779126; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794174323; x=1794779123; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z6qsKejGug2sNisulG4c9FY0DKxN3PKWlr+7E8JUKfo=;
-        b=uIniuxtriHntxbvbeL4mp3CAX2eRTO0I5fFcfZVvz2hPhBdp1WMReQspbGh3OA/697
-         Nt2FYUMaMvD/ay8l06g6dmEBj+iF+qLcsTM70HXrZd9VW/21vxZKKwizgxzuH6ahvOoY
-         s6qmvE07gW5Oi8FegF2dVg8Qrm5+2SLnXYHwthn9P5zmh6R7fk+Yj9KiinzWUMdh81+3
-         FZjALoM2XuA5m6a9+kNH1ZMzUwf4U3AKyGNZilrbjZ4g5OKg+oScvtI1WEBL1XdmyBlV
-         mlhqsNBkrLHZhtJifxqETkodXBvZaDQcIJd4ZxIUA06Bz95dDh0mcM6ywQaM08NAO/Kf
-         trFA==
+        bh=9l6NWEWMJ9uUn8jbFCIYRZKatM0u3CjixN3oolZ9eG4=;
+        b=THV0xTKZgIs8+l/ENmpvDdI17Z5IpqRUFt2ohzy+3h57IpWtEPQ9YCm3OcP1x9/HCa
+         7HU3/HxBEHVffWEIArrNNLnHFrIn1DZD71D407U3eTMQ08YhNGmjK5OUYAq4nwf9ARHj
+         /3od4ypNvNyMlkFOzzJptI3/01034pItCunu9IpezgqUcnplTTwc9SNuG4zvI8+RVO7n
+         QRsHehjIOpfLqKTq0dOD340ga1pFvL62nuCn7KGZ3NnTv+h8THb6uUkRQNVYgWboWKVz
+         EygvO/J3V5yR407ESloHTEc4d9fw29qlhZJAgxLTZ+gV6vNAbN1sZWruD/W5FgOEUxt2
+         nohA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794174326; x=1794779126;
+        d=1e100.net; s=20260707; t=1794174323; x=1794779123;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z6qsKejGug2sNisulG4c9FY0DKxN3PKWlr+7E8JUKfo=;
-        b=d54nawuA5hfGvUKMEJqN2tgwkrDapu3tpG09RxALpCF9T9LDOZg8srw09PEW0ORKkV
-         NztcVOyMGokBLe9yzavBBsFcIJPnHzQu8jpIYaAN9MFNES5b5o4+1Y2+iItbdwJ7irDD
-         zIsXG8DL70ny8zujnj4mbpqk131N0xzQst5OoH9t19zp3/16plktc8xj4xe6dPVR0Fo0
-         R51VyveqLJMkVBSDz/m/00dwA0j2N/ub40ZXJ4xwXqnrFTrOI53uiVPIYwrNqStZA/Oe
-         iIPLtpBfKUfFPLP4rZgNCsZsVBmyla/gzw2FtLjnyXZKW7eq1X1tta7fNmzLqrHbu3+n
-         sCdQ==
-X-Gm-Message-State: APuU4Z+oAr9lYN2Uo7g5XWfo8a0vyk8xqljPGHQP4BY4XQJMbcvIl5IJ
-	mmPVbBDitEtqCUgKnLrY61Z066hy9oK3mtBHvE8i/zS2zRyEjDXTttgwM9TOvg==
-X-Gm-Gg: AYBFou0q+BYhYIuXoHcEd3tAVHQwpTAAoctDq4ye9hzeSELYrpb8Y4QmVp5iMae0I5P
-	g18w3+1TwFO3e3Tm3jYVu/Ol5KIFwT/A+jHCgbheeKvzaPfVW3d4AWdhZFFps+j2wZL6wNzX6KS
-	TCEncQNatjZSMOrTzWDXy7gIgeXvvb8dWi3h3a1tWh9XA9sXwSpoZrx6U261Cb3A7DgQ2/c0kUC
-	Me0Vbt9S83tdKW7rYU7Y0Q800gvOqXF/zRsx38yt7bIEkx1s0Mv7nne41hpJLcKskUV33QFfLAh
-	ORT667hYw7PA1k5jh8MqFvR3Of+yBo9j4EAYJqSFL/5gIOulQsDY7M3zpQ++7aEUXmDWQQ44ben
-	dvZxYuh2aruwrujufspkR+VASnf7ZtqXow+Em6MKKLi/COXA/TUVwUIMR3azCG5+vVFwJGYEJ8k
-	F73f96YJT8TD3YzmyxgUD4Si+a2BKF+dlaDFNqzL7Y+A8iy8S1bV0dNRG+mZ14OR/MtzxkPsjNk
-	TRApiY/ph1LcXJCNBMqgaDWQ7U8vRQvHpFVPpwWaHKA8ZA2uvFuXi8VBOYbgJ2mLeeG92JGtLg1
-	6TTPdz+Ty42lOIQwBK9sBKD+IC1yJ5kHT65xkCk7/Tx4t20xRg5aakQyDQnFUPRWknU5kGnkaM4
-	w
-X-Received: by 2002:a17:90a:dfc4:b0:3b0:a7da:d244 with SMTP id 98e67ed59e1d1-3b12d4beabdmr2746884a91.30.1794174325799;
-        Sun, 08 Nov 2026 13:45:25 -0800 (PST)
+        bh=9l6NWEWMJ9uUn8jbFCIYRZKatM0u3CjixN3oolZ9eG4=;
+        b=Fu2fqw9DQaFZ878TyaH8ci40ZDE+8GNp+l4Ld3dflqGODEHOAbYWmnBrU2KRjBAtJ/
+         Yjh3menp7RQfwotHulkhBI/OnEm3NoPLLMp1badFlb//bqCwBu6I8YZxmkiIzwGKIhxj
+         9wJmh/4mdW/oztzsgFHbTvMYBicROotnIedA2PgUrUV92kT6ahlf3+Xwt0KQ9o3OtoK2
+         Hs2PxPUzUKRnEodUVzJh3Ry1zeOZxEPOfcTnTCgtNEqYVY1aft6EJZgQIlld150KHp4C
+         rpv92sxOF/7n2TFNyV8FyjGBnBIqZ7Wx29xD3VL/vqShP+Tf/m4DknPZ01UC1sYk16mR
+         F70g==
+X-Gm-Message-State: APuU4Z8YMci7o3zj00S1FfIkiLVgAg2ELNFR9ftiPm71xNH91ITuYdpi
+	HhKbbAmQYBeehKr9QobBxurA49ZtAtcNbfFaHH1lCK/89UvJSyF1bh9JsI86NA==
+X-Gm-Gg: AYBFou1tqiHrlbXMjioAQht4Un70Ou8VNkYQGxHvoxlIyvQ61cQ7/YRt/J8FhkjSV9x
+	bZcIszNN7+aI9m4FFQr7Ze3fMIr2FTBzLoW6lsWNJ6TS0F9upqnWoW5hkjaMYCXnc7+2+QMidNV
+	A5zVVc9vp+TkPpHO8MeI6RBdYYwy7pPO9ePUKGv1CCY2EiDlbajYk+Qrlec1IaiMdzCI5AldjkE
+	Ols8DADaO29XBIihMmdrUzZEYoCN5FKTXEX15AUS+DCXXgDo8/6FfOszhf9oAZF4R1M6SWVauF7
+	QUBwVvyFDWqFBke1s9z0vhYW4cDhlchlGxDpE2DRNUSLoVSN3UMIDBpYNde20/drW20+fraf7Qj
+	Ivi3ldLhmA2YRoJW9ph/7mBfJ1StuojWCpZtLg4z1HNo0z2M7jVyUT49kTZE52o4454AKaJMxo0
+	2p8HnLd7f2S/3W+qssT+B3XbCx7X3MLcrz3lRx9CrgvZ9YHBNIXD46ttwXP1xji81kZzvqm3mWd
+	SERz5iZmHiJdhiGst5UbDd7lMqK5j8t2YG2MUwBMRaTLaN8MsyFNZ+tFJqipk72lR0itCM9By6u
+	DQ/8smxgz+bwyrzZuZ9olB2blMpxcDhlfkJyX7dYHOlaoNFoCyfWlY4=
+X-Received: by 2002:a17:90b:2e48:b0:3ad:8a14:bc73 with SMTP id 98e67ed59e1d1-3b12d5ba8d1mr2092245a91.50.1794174322647;
+        Sun, 08 Nov 2026 13:45:22 -0800 (PST)
 Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1034718f8sm4619463a91.4.2026.11.08.13.45.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1034718f8sm4619463a91.4.2026.11.08.13.45.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 13:45:25 -0800 (PST)
+        Sun, 08 Nov 2026 13:45:22 -0800 (PST)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -88,9 +87,9 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 6/7] net: dsa: motorcomm: Report inconsistency on bridge join failure
-Date: Mon,  9 Nov 2026 05:44:46 +0800
-Message-ID: <20261108214450.1662362-7-mmyangfl@gmail.com>
+Subject: [PATCH net-next v5 5/7] net: dsa: motorcomm: Translate FDB VID for VLAN-unaware bridges
+Date: Mon,  9 Nov 2026 05:44:45 +0800
+Message-ID: <20261108214450.1662362-6-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261108214450.1662362-1-mmyangfl@gmail.com>
 References: <20261108214450.1662362-1-mmyangfl@gmail.com>
@@ -105,32 +104,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-DSA does not send bridge_leave when port_bridge_join fails, so a join
-that fails midway leaves the port half configured. Rolling back from the
-driver would just issue more register accesses that can fail the same
-way. Set an extack message on failure instead.
+A VLAN-unaware bridge reports VID 0 for its FDB entries, but lookups run
+with the unaware FID (VID 4095). Entries added through switchdev were
+installed under FID 0 and could never be hit by the hardware lookups.
+
+Translate the unaware FID and VID 0 back and forth, so the software
+mapping stays symmetric with the hardware lookups.
 
 Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/dsa/motorcomm/chip.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 46534127d070..3d4aa79ac026 100644
+index fbf3a0cba49b..46534127d070 100644
 --- a/drivers/net/dsa/motorcomm/chip.c
 +++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -1433,6 +1433,11 @@ yt921x_dsa_port_bridge_join(struct dsa_switch *ds, int port,
- 	res = yt921x_bridge_join(priv, port, ports_mask);
- 	mutex_unlock(&priv->reg_lock);
- 
-+	/* DSA does not send bridge_leave when join fails */
-+	if (res)
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Fatal IO error; hardware no longer consistent");
+@@ -590,7 +590,10 @@ yt921x_fdb_dump(struct yt921x_priv *priv, u16 ports_mask,
+ 	res = yt921x_fdb_read(priv, addr, &vid, &pmask, &index, &status);
+ 	if (res)
+ 		return res;
 +
- 	return res;
- }
+ 	if ((pmask & ports_mask) && !is_multicast_ether_addr(addr)) {
++		if (vid == YT921X_VID_UNWARE)
++			vid = 0;
+ 		res = cb(addr, vid,
+ 			 status == YT921X_FDB_ENTRY_STATUS_STATIC, data);
+ 		if (res)
+@@ -618,6 +621,8 @@ yt921x_fdb_dump(struct yt921x_priv *priv, u16 ports_mask,
+ 		if (!pmask)
+ 			break;
  
++		if (vid == YT921X_VID_UNWARE)
++			vid = 0;
+ 		if ((pmask & ports_mask) && !is_multicast_ether_addr(addr)) {
+ 			res = cb(addr, vid,
+ 				 status == YT921X_FDB_ENTRY_STATUS_STATIC,
+@@ -740,6 +745,10 @@ yt921x_fdb_leave(struct yt921x_priv *priv, const unsigned char *addr,
+ 	u32 val;
+ 	int res;
+ 
++	/* See yt921x_fdb_join() */
++	if (!vid)
++		vid = YT921X_VID_UNWARE;
++
+ 	/* Check for presence */
+ 	res = yt921x_fdb_has(priv, addr, vid, &index);
+ 	if (res)
+@@ -782,6 +791,13 @@ yt921x_fdb_join(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
+ 	u32 val2;
+ 	int res;
+ 
++	/* A vlan-unaware bridge reports vid 0, but untagged lookups on its
++	 * ports run with the unaware FID; map so that static entries match the
++	 * hardware lookups.
++	 */
++	if (!vid)
++		vid = YT921X_VID_UNWARE;
++
+ 	/* Check for presence */
+ 	res = yt921x_fdb_has(priv, addr, vid, &index);
+ 	if (res)
 -- 
 2.53.0
 
