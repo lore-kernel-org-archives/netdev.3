@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794162775;
-	b=vAWZbgyTQ76P5PKNHqLy4PLmDuFZzdp/Bu8vGo0iV0k3mBdt6A+wNsmJUucKP9+XJ1lw
-	 Y3kM+ihoMjL7ANVH13cXw9Q+2ISt28U04akd+LjfczqFELOJXp5EFWtFEQN07XycJs6gF
-	 RBgoMmj/xE6W1xJ9md+0u21sb3t6t/4aLHNu3ST0YPr1a1OQgKkNYla+GKn7lXhbOj0Z0
-	 ZtijEqrED38dMeGwJucfo2DrQFYSwmck0r9fFw+YNuDd1aJ4J6MEsBkY5NjYSSMv5jMtS
-	 PKKPTShwkCMrs+jigYC6W5xO4TpHAT1K7vBs4BrRmWPs+2zhLf3xNFrXbYKMo+ifzlw==
+	t=1794162776;
+	b=vAtQqSUnLHqp7p+eiQh1FL7vR7J3V62meFLAUQdCDBwTPBojdk0YjpFkmWIl1HiqpqpF
+	 XuAwU/a0OXetJ8KXhxAxpBXXvo7YTpMd9s+VYBrjzmXmzbaqKTHSzrQN3ztpg/xBP0tXo
+	 r68fY2MpgY+ND3FA8ljVH78crvNtImY0HXksuN7+1vmw5nVCc3SYVbMDI6sYFz3HCICdr
+	 9s0D2WX8MFKEwayYHlVR8Dq+Yda0lpdm3d6ZWqqppxu5FypyBUS6FwsTAKoy9IugZANym
+	 ckH6JeOROMHEUKiIBK1kCpUgjVUYGu9eQXDptZKpVbhhTQd3VJLKfVZ85hudD+QutHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794162775;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794162776;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=N5dUptyXKtymXcF3BYXgfRvm6MlHnsEhV3IJM/biYQ8=;
-	b=VdV7DV/izQ+qggDCy88tKugrVIW7Us/WO8I8EynNQgdDrCQxE6zgyWHKwsOgdi1xGz3o
-	 WXqkQM+gtfqBm1rgLfk2Kf1H+jXiuOwmBo2b/WIIHlsvEk38Bbe5GP/CTa7i0wpDZSGh5
-	 tV+csWjvi8PW/n8TCEMNiejBT4JVY/v4FVO6oDTLw46p0cdjj2g4YGFif4F1dMA2giz1S
-	 ugXoR03LnRi5VsRxexve1PSaLU+aiu7L7QZ3IdEo4H2/mHiAp8uFluGyMkM5xZ0X6izr3
-	 q0xKzwieYb0Ce1icBTJL5OWJS6vikEhPEA9zkxvEF2RX9IVunYANTgef7KDxGApibwQ==
+	bh=XbTw2KZ+CVczFhGs+1OfQ66aDNm0cDRHtTrgoJUnv/U=;
+	b=mO3tHE/p8XmGcImvYoKYT7JVAP7H7/WqPqTuBCncPycm3fOkWztzki3mvpnPRbIzXR5w
+	 vf8DlcV9LutYqz9mUTL2gwLxwEfdiIKoddwr8ewHJAZy95fosTM+/mbS+t+FZOPcl0kuf
+	 +/mDKLK6ecHWf544+wTx5pAlRTbymF6yJJnWeNbLG2K4W9b9Y0bZA2IK9bzz3ENGVLf03
+	 xKS5zbhZ5bB6idDkbd8KGFhY+hKZpYHplTsYy/wgnzFQXkSYN2Q4LNXWWES7PW+9wHkgU
+	 w89MScPOXd5A+zFSGToBNsv5+pP026839wxwPPom/4B3XFPKsT15LJ6Q0Ge/dJKcMJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3m9nWxT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJD2HyLo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82A7606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D890C606D805
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3m9nWxT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBD21F0089F;
-	Sun,  8 Nov 2026 18:32:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJD2HyLo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6181F008A4;
+	Sun,  8 Nov 2026 18:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794162774;
-	bh=N5dUptyXKtymXcF3BYXgfRvm6MlHnsEhV3IJM/biYQ8=;
+	s=k20260515; t=1794162775;
+	bh=XbTw2KZ+CVczFhGs+1OfQ66aDNm0cDRHtTrgoJUnv/U=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=W3m9nWxT2IxSjNfirhnfFytvZ/GiejSDsBBQVrCpmu7yVrnIG47uuoAalyVHKzBzV
-	 9Kr2Dz+2/l84VR3zEVO2eqoQfgMNuQ8RONbF68wHY/fTOE3vA6d5QIU7SOh6N+GWJF
-	 Gh9QvRJxUbihnpCNTyRA3YNS3ITMuZP0tpRrD3eBwMB3NJNMMeyG4yiKPpxafSEND7
-	 LopKycjgnGp6wJD2wmxITVHcyqZpgY9XJSikc4u1zuW2ULOtzOU7Wf6hsU63HmsKSI
-	 H4bYJXYEIAKQtuclKp2V4MFJCQRG/eJaSHNUmgif/HHovjGREnP8lCGj+FZG2yxTn9
-	 5SUythStTBx/w==
-Subject: Re: [net PATCH 4/5] fbnic: Suspend phylink after taking the datapath
- down in ndo_stop
+	b=SJD2HyLozkcDlN7nrQ+bxbUEHVay9Y4aELkdNwZjl22dMIk3Rh3yH2cSz01GHhS0l
+	 U6l6jd+MX25Me3vbI2Uy8zDjz81+BWKtdiCpP05zc4PePZR0+4wNg12TTUT5KlrdcC
+	 YJYHbbWGAajKSj/W5ihkRZVNx7Kd/Aqtg5jurWIXu+QXSg5Z3FeX43ahqwp0DjQ0fJ
+	 GuWOCD3UT9nt6zJAg+HQlrKyOwb1ond436/LaoGjlebZxJLw1XHVYi27c+AuV69oJu
+	 Wyo2RZzOQHrDS0cOUyh03ijATPyLk/U78vQ4UDRQVWLTdeoaWFh9im6bhb/p0qzS4D
+	 OO6aGqG22rcOg==
+Subject: Re: [net PATCH 5/5] fbnic: Wait for the outbound flush to complete on
+ mailbox teardown
 From: netdev-bot+sashiko@kernel.org
 To: alexander.duyck@gmail.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
  pabeni@redhat.com
-Date: Sun, 08 Nov 2026 18:32:53 +0000
-Message-ID: <179416277370.994134.16129749928882463511@kernel.org>
-In-Reply-To: <179381516644.9644.9042901965231900737.stgit@ahduyck-xeon-server.home.arpa>
-References: <179381516644.9644.9042901965231900737.stgit@ahduyck-xeon-server.home.arpa>
-X-sashiko-severity: Low
+Date: Sun, 08 Nov 2026 18:32:54 +0000
+Message-ID: <179416277472.994134.4219031759590425185@kernel.org>
+In-Reply-To: <179381517319.9644.1165591016149104577.stgit@ahduyck-xeon-server.home.arpa>
+References: <179381517319.9644.1165591016149104577.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,102 +64,106 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The Fixes tag points at the wrong commit.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but the kernel-doc
-  for fbnic_mac_free_irq()…
+- [Medium] If the new poll times out, fbnic_mbx_clean_desc_ring()
+  (drivers/net/ethernet/meta/fbnic/fbnic_fw.c) still frees the mailbox…
 
 --
 
-fbnic: Suspend phylink after taking the datapath down in ndo_stop
+fbnic: Wait for the outbound flush to complete on mailbox teardown
 
-This commit reorders fbnic_stop() so that fbnic_down() runs before
-fbnic_mac_free_irq() and phylink_suspend(). Tx can then drain while the
-link is still up, instead of draining into a MAC that is disabled and held
-in reset. The PM suspend path goes through ndo_stop, so it gets the same
-ordering.
+After fbnic_mbx_reset_desc_ring() arms the flush, this patch polls the AW
+or AR flush-done bit in FBNIC_PUL_USER_IP_LINK_RST_STATUS. The poll runs
+before the mailbox ring buffers are unmapped and freed, and it gives up
+after 1ms and warns.
 
-> Fixes: 6ede14a2c636 ("fbnic: Move phylink resume out of service_task and into open/close")
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> index 49b8813a35643..e00d626f64384 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
 
-[Severity: Low]
-Should this tag point at an earlier commit?
+[ ... ]
 
-Before 6ede14a2c636, phylink_suspend() was already the first thing that
-ran on the down path. fbnic_down_noidle() first called
-fbnic_service_task_stop(), and that function started with:
-
-drivers/net/ethernet/meta/fbnic/fbnic_pci.c:fbnic_service_task_stop() {
-	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbd));
-	cancel_delayed_work(&fbd->service_task);
-    ...
-}
-
-fbnic_napi_disable(), netif_tx_disable(), the RPC/rx-mode clearing,
-fbnic_disable() and the fbnic_wait_all_queues_idle() call in fbnic_down()
-all came after it.
-
-At 69684376eed5, fbnic_mac_link_down_asic() already disabled the MAC and
-held it in reset:
-
-	mac_ctrl |= FBNIC_SIG_MAC_IN0_RESET_FF_TX_CLK |
-		    FBNIC_SIG_MAC_IN0_RESET_TX_CLK |
-		    FBNIC_SIG_MAC_IN0_RESET_FF_RX_CLK |
-		    FBNIC_SIG_MAC_IN0_RESET_RX_CLK;
-
-6ede14a2c636 moved phylink_suspend() from the top of fbnic_down() to just
-before fbnic_down() in fbnic_stop(). It was still ahead of the queue
-teardown in both places.
-
-It looks like the ordering problem described here dates from
-69684376eed5 ("eth: fbnic: Add link detection"). Would this be more
-accurate?
-
-Fixes: 69684376eed5 ("eth: fbnic: Add link detection")
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> index 8a6703afca384..52244219d1668 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> @@ -86,11 +86,11 @@ static int fbnic_stop(struct net_device *netdev)
+> @@ -176,10 +177,25 @@ static void fbnic_mbx_unmap_and_free_msg(struct fbnic_dev *fbd, int mbx_idx,
+>  
+>  static void fbnic_mbx_clean_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
 >  {
->  	struct fbnic_net *fbn = netdev_priv(netdev);
+> +	u32 flush_done, val;
+>  	int i;
 >  
-> +	fbnic_down(fbn);
+>  	fbnic_mbx_reset_desc_ring(fbd, mbx_idx);
+>  
+> +	/* Arming the flush only starts it. Wait for the outbound path to
+> +	 * retire the requests it still holds before the buffers they may
+> +	 * target are unmapped and freed. A lost link reads back as all ones,
+> +	 * which ends the poll on the first pass.
+> +	 */
+> +	flush_done = mbx_idx == FBNIC_IPC_MBX_RX_IDX ?
+> +		     FBNIC_PUL_USER_IP_LINK_RST_STATUS_AW_FLUSH_DONE :
+> +		     FBNIC_PUL_USER_IP_LINK_RST_STATUS_AR_FLUSH_DONE;
+> +	if (read_poll_timeout_atomic(fbnic_rd32, val, val & flush_done, 2,
+> +				     1000, false, fbd,
+> +				     FBNIC_PUL_USER_IP_LINK_RST_STATUS))
+> +		dev_warn(fbd->dev, "Outbound flush did not complete: %08x\n",
+> +			 val);
 > +
->  	fbnic_mac_free_irq(fbn->fbd);
+>  	for (i = FBNIC_IPC_MBX_DESC_LEN; i--;)
+>  		fbnic_mbx_unmap_and_free_msg(fbd, mbx_idx, i);
+>  }
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but the kernel-doc for
-fbnic_mac_free_irq() in fbnic_irq.c says:
+[Severity: Medium]
+If read_poll_timeout_atomic() returns -ETIMEDOUT, does the original
+DMA-after-free problem still happen?
 
- * This function undoes the work done in fbnic_mac_request_irq and prepares
- * the device to no longer receive traffic on the host interface.
+On timeout the code only calls dev_warn(). It then falls through to the
+same loop as before, and fbnic_mbx_unmap_and_free_msg() does this for
+every descriptor:
 
-The function only disables the PCS MSI-X control entry, calls
-synchronize_irq(), masks the vector, frees the IRQ and clears
-fbd->mac_msix_vector.
+    dma_unmap_single(fbd->dev, mbx->buf_info[desc_idx].addr,
+                     PAGE_SIZE, direction);
 
-Host Rx is actually stopped in fbnic_down_noidle(), through
-fbnic_clear_rx_mode(), fbnic_clear_rules(), fbnic_rss_disable_hw() and
-fbnic_disable(). With this reordering, fbnic_down() has already stopped
-host traffic before fbnic_mac_free_irq() is called.
+    free_page((unsigned long)mbx->buf_info[desc_idx].msg);
 
-Could the comment be updated to say that this only tears down the MAC/PCS
-link interrupt?
+As the comment says, a lost link reads back as all ones, so that case
+exits on the first read. That leaves a timeout to mean a live device whose
+outbound path has not drained, which is the wedged-device case named in
+the commit message.
 
->  	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
->  
-> -	fbnic_down(fbn);
-> -
->  	fbnic_time_stop(fbn);
->  	fbnic_fw_xmit_ownership_msg(fbn->fbd, false);
+In that case the page can still be freed and reused, or its IOVA unmapped,
+while a Tx read or an Rx write is still pending against it. Both paths
+reach this branch:
+
+  fbnic_fw_disable_mbx()->fbnic_mbx_clean()->fbnic_mbx_clean_desc_ring()
+
+  fbnic_mbx_poll_tx_ready() clean_mbx error path->fbnic_mbx_clean()
+
+The Rx ring has one more case. fbnic_mbx_init_desc_ring() later sets BME
+and clears FLUSH and FLUSH_MODE, and nothing checks that the earlier AW
+flush finished:
+
+    wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
+         FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME |
+         ...
+
+Could writes still parked in the pipeline then land on freed or reused DMA
+addresses?
+
+On timeout, would it be safer to skip the unmap and free and leak the
+mailbox pages, instead of giving them back to the page allocator?
+
+Also, the 1ms limit doesn't seem to be based on the PCIe completion
+timeout, and that timeout is allowed to be longer. Is 1ms enough for
+outstanding reads to complete?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179381496288.9644.9775319757787890210.stgit%40ahduyck-xeon-server.home.arpa
