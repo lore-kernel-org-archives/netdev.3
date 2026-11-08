@@ -1,58 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794146950;
-	b=yxt7BTM8y+7yxs+tfF6MdiHmKbxyCPoCSRiK1yTNJB9rRi7FByMaCbxQBHXbFhVzZ3iP
-	 ttsKkynvA6Y90UgoG2PgU98OcSJ8KwStz0qe6x3u70jHO8voORzeMslXM1xno1GlwjYAv
-	 k2lslkuA9n5THOSVfRGcT2r/MkTAE43nxkUo1xFhBM/Pbip0Z83qHP8KgqEm085gb/tgu
-	 NTj/xCrA7XzVr2F/P62PwqflpeYJuqBPjHy7Aijl6Wf2dZRp8EnRaSawd/Csg11w99xqO
-	 3H3f0bnk+Cs/qRRMpItOwLFXdt6QXnJF67Ni2aPndM6PmzzMp1QMhTZZ4dyc6S97yQg==
+	t=1794147128;
+	b=TeZH2uqxRUHJsBhS5np10Em8xm9HM/+M37AqIc+Sb3jc2tUpjCHL1W0BJa0X7syEokZv
+	 pD/IQi2T7Prx8SAoBrGnvfj4VdfhTG9HPFtaIy3CJ5zCHLp58XrKBCHilU8AVvWDjgkPa
+	 9bUhX3cPaYs9OBYjLyL1LdOptg71lEJ/XmKGqIjXpCU/ArxRm+A5esJzKbVWIv4OyUgMi
+	 803olqyjqITxivz7gLGiLWSSR36ZZqqFi0MOQCa7h5xqebOBEWltK601LpU1lUdS7bfZM
+	 YlYFo0TB4cbV9I67t9GRcKqUx97MVJg0pHtu3ArwEXYtKjMiLJ9I71S8SrR1AMcAwiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794146950;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=sORGFzRD8E4HzQkwXuFsiWbFglj3g8iaUxPq0zUsHdo=;
-	b=t1qv2ZRb+wWRmqSx3DdCuW2Js4jtv/sIGpcH5grYb9mY23YQUNTjlFqinrF/0XLU7xHe
-	 GK49ZP3EuQBaetC1BC9aKpaW2ZcbMS16BkECwf1UJY+JoYRejAx/Gb+yLx5IE0As/MD2U
-	 8OtUe8MCU60a0n8BJxK5wlW+qsDLV50pDqkNgG00dOnSZK18sUZ+Z/oS5QXcnhPt/YZbZ
-	 20AOGaVI60pqMG8I5lem4lpLayAQjK+UIXdvmXbrAAjJNRcQQj1XNlDgGF0bR7twaeElE
-	 K+YFRfyb3W2uqMRPBUDortEsWVu9MhX10K9C97EKFpOVZ+YvUOro+Tl6TheHvDFpQQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794147128;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=JIaZlR1+78hwd/ku/8utqk2QTcK+/IJ9jh6fcvBKyxA=;
+	b=mEssRvMEHyQvTW7gK1T2LG7yarCwwDaUkQ0UKhmU01q0PaUmstmtTNjqv+oYnVBC2sHY
+	 Pu8uPSH8/tFsVtYhb/10AHyJWiMmB3uQ3JUA1U48banwwKNEduj25fQdufseSNCi5ELNk
+	 g055Uy2vXiK3cuenqgSXs3ZNNnCZmm2bMOxst4L6AqOymwcFc569FpMH5UiZ71DFjs/Ge
+	 u9qm84CyTxVLMpQC8HmHQwa7/zhBcPP0GUB8qb/Ip6I4CKDt8uGp7++sCB2CRTKBcv8l+
+	 08481ae1R7PecmdB0eGbMt8sPuaLPyCC5o+sIhSAyaLWf7QOzhWG9EFkvTlRxrO8MQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZL7T7561;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xEvDusG7;
+	arc=none smtp.remote-ip=209.85.221.47
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E74606A31C;
-	Sun,  8 Nov 2026 14:09:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38E74606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F525606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:12:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F525606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZL7T7561
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 07E5F1A1577;
-	Sun,  8 Nov 2026 14:08:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B64B360025;
-	Sun,  8 Nov 2026 14:08:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5ABC9103288D3;
-	Sun,  8 Nov 2026 15:08:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794146937; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=sORGFzRD8E4HzQkwXuFsiWbFglj3g8iaUxPq0zUsHdo=;
-	b=ZL7T7561Lu4FFwwsI7q0I9RZ2BQQlKh+5WelkTXTfY642Co5faUCOke7jxn9QZSQFt+Udr
-	u2wQcYlfcdX9sC6fI0Tad2Qqu4QNVzH96Ba2zmocZovrYEfPzhp+KXZIU1jOY7WMmkvD2K
-	1Kpu9W3Lk8G3sxablbgrJD3UE8iqyytlGBq2DlLMGC8i5rq99oI3iq41a+/GOqtzVMe2Q0
-	Ijfu0iGvXv6lBraFURij0WGZQFy2eZNapHctiGgj1ukc0QNFBeABvS4da5liFp8ocP3WEr
-	mE01PN2hwO1cEkzAWpBkqRqbt+woN1nVOQlAdiJmqMR5E1xyC6Z+DJYsoIv43g==
-Message-ID: <864f2931-4eb7-45c5-b58f-23339eb3af11@bootlin.com>
-Date: Sun, 8 Nov 2026 15:08:49 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xEvDusG7
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-49134c8509fso80211f8f.1
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 06:12:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794147127; x=1794751927; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JIaZlR1+78hwd/ku/8utqk2QTcK+/IJ9jh6fcvBKyxA=;
+        b=xEvDusG7e13//Nt5/Jj6aSpbDpimRN26HoN8BTJhklcFFbALqrGbSpU9HVRvrBvN8d
+         iQFFCGJgjdF+7qUz1yejuQim9bSJUcsJohaESpp/f62aQq3JoGzHmvgQ2VbvjjPRez25
+         s4ZgguMjlgpxJr/zM67gg/km4Hsvvbci+npWtm/0j1XJP2+VgMO4uROMP4iVfw86IITB
+         0fwmhjrqyAA9pDvQWcKIEZNCVYlQXGoSUswEoKvJ9JLQtysMDEcaBasrylmFXemfcDqu
+         rUKkR39ABHbP6oB9abwJ3fvcOqglcpPM7W1gYVCnAh1wdB/R4cuWqqby1wFWN9zjuk62
+         MyZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794147127; x=1794751927;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JIaZlR1+78hwd/ku/8utqk2QTcK+/IJ9jh6fcvBKyxA=;
+        b=n1XksahF1CxvF+B2ZqBnIRMha1f+GdiUH/L2gxqlIeqtGamyZOVwGvDEFdpkXEp+PU
+         KvDfoebyU5bwc/35DWRJs+uZtz3WdKQ8OAteek3LcskETv7M7yZpR3x4GXvi1zKEp/ai
+         2KCw15geG4NqQmclP6uFIuHB3NBfJZPUgGptfzD3/49W3OzcNEjGj7SLR1+dRz4oYtmF
+         77TvIHdEEzThgYJ6Ukm1BQMoCUeKq/BmCCzZ+JLQYoxdvFGp6J10wkpGF+eEkNY28ieV
+         u2wQZ6bss643MrsCRjiIRCTk3f0qZSLkoeBDLTy7yjZWu1XOKNvYkIcJqYCPyKlMBYek
+         Xg5A==
+X-Forwarded-Encrypted: i=1; AL+hErEnwSQvNyaUaEB5uc/1KWT495R41aNwNjkmkqKWyh7iv2aHOGodNKCKWHB9kwG02nEuBa+24R8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bK4FTK1og4xXOotIQDD2qOONN3+/NnJg8moDW1N5Gct/hvhpT
+	D5sOZHsGuvaMFMch8T2LUpMl1xa5iG7c/ztmlhhktVz+q9/eHJ2aR1Ug
+X-Gm-Gg: AYBFou22wzCYSGaL3E9hN95IRNod/QgdyGlLsSYZW2ZQkdsfJcMD6pJI35vP3H/Tk+F
+	OFsqh03JcfeY5ds8TCaVXJmUQGrsUJf4DO5Bz4zli/aE5cohvbRwY/d961/uxIBYNlA3OfsQFMM
+	aOtbSrkbKSd8nsVSwOQHL4Q4D3s2xxL+6tpYkE+txa6gO4osN12r9eA5KKvc2K2VcrHgn7tsgo0
+	g2RXheFA+iKR4zOx0AJX/24ptH5gvXMfgttMQtaKv0wKqJvAAeDi3yntC3AVOQuNxzy3GByd/4H
+	N8sximf1nlpCI6ag+OJDn2ed3RJ3dzcAEQqw56nBG2QKrYftgT1r6C7AvikVo4GLUmqueaZ4EQp
+	LtqSSOHBytIJ6aMjHrDEhs666NOW/pMCd9KObj5ekN9CJaZqAzcVw9NzBMRjbA4xdOeU5WZC/P/
+	42HIUCT8TikH4zlE3ltB2IvCpkgOU6OKOpsnGI+g5zQpN6QrEJM4/aCM0O6wzCYrWipQ+HDym+D
+	9neyTPr3dsZy6b8GWag+rdPaejbWi+2alrqhu5wBL/1/EpvpcpeemWK5yvon6OKgp3fKamW1hYK
+	MIBOXMydtSr0ein+r3XeCVsdk9ezbharFo8R2IiCwZlsLTpzPZTdGNlZ7VAFv6chwRf2iPHCEhn
+	HxflCvIlk+Z/qWdUl+iZPgLkBGisJlCacxOICg+DYNVF+wOeur6Rwv8VGDkPzeiXF3Q==
+X-Received: by 2002:a05:6000:2310:b0:491:8286:5f0e with SMTP id ffacd0b85a97d-49585d9a986mr2902049f8f.55.1794147126685;
+        Sun, 08 Nov 2026 06:12:06 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f45:7100:cde5:5d75:8598:b64f? (p200300ea8f457100cde55d758598b64f.dip0.t-ipconnect.de. [2003:ea:8f45:7100:cde5:5d75:8598:b64f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4959783f1d6sm4215028f8f.46.2026.11.08.06.12.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Nov 2026 06:12:05 -0800 (PST)
+Message-ID: <d85b02e5-d9ab-4535-ab82-9b8184fbd1a8@gmail.com>
+Date: Sun, 8 Nov 2026 15:12:04 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,82 +94,58 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] net: stmmac: release MDIO node if bus data allocation
- fails
-To: Wentao Liang <vulab@iscas.ac.cn>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Simon Horman
- <horms@kernel.org>, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261108110231.315004-1-vulab@iscas.ac.cn>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next 2/2] net sysfs: simplify creating empty wireless
+ directory
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ driver-core@lists.linux.dev
+References: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
+ <675f4353-125e-4168-a617-c0d1fb519045@gmail.com>
+ <2026110816-crate-tightly-8560@gregkh>
 Content-Language: en-US
-In-Reply-To: <20261108110231.315004-1-vulab@iscas.ac.cn>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <2026110816-crate-tightly-8560@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+On 08.11.2026 15:06, Greg Kroah-Hartman wrote:
+> On Sun, Nov 08, 2026 at 02:46:03PM +0100, Heiner Kallweit wrote:
+>> Now that an empty directory can be created with attrs being NULL,
+>> make use of this new functionality and remove the dummy attribute list.
+>>
+>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+>> ---
+>>  net/core/net-sysfs.c | 5 -----
+>>  1 file changed, 5 deletions(-)
+>>
+>> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+>> index 5c0402389c6..f58b59e1126 100644
+>> --- a/net/core/net-sysfs.c
+>> +++ b/net/core/net-sysfs.c
+>> @@ -910,13 +910,8 @@ static const struct attribute_group netstat_group = {
+>>  	.attrs  = netstat_attrs,
+>>  };
+>>  
+>> -static struct attribute *wireless_attrs[] = {
+>> -	NULL
+>> -};
+>> -
+>>  static const struct attribute_group wireless_group = {
+>>  	.name = "wireless",
+>> -	.attrs = wireless_attrs,
+> 
+> Why does this want to create an empty directory?  Surely you aren't
+> adding attributes later to it, right?  If so, that's not ok either...
+> 
 
-On 11/8/26 12:02, Wentao Liang wrote:
-> stmmac_mdio_setup() takes a reference on the MDIO device tree node and
-> stores it in plat->mdio_node before allocating plat->mdio_bus_data. If
-> that allocation fails, the function returns -ENOMEM and the caller
-> jumps to error_put_phy, which only drops plat->phy_node, so the
-> reference on the MDIO node is leaked.
-> 
-> Release the reference before returning, using an error label so that
-> the cleanup stays in one place.
-> 
-> The issue was found by a static analysis tool; the candidate was then
-> audited and the fix was prepared with the help of DeepSeek and
-> GPT-6.1 Sol. It was identified by code inspection only and was not
-> triggered; this patch was compile-tested, not tested on hardware.
-> 
-> Fixes: 1a981c0586c0 ("net: stmmac: Make MDIO bus reset optional")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+For compatibility reasons. See 38c1a01cf10c ("wireless: add back sysfs directory")
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
-> Changes in v2:
-> - Sorry for the very late follow-up to the review.
-> - Use a goto-based error label, as suggested by Simon Horman,
->   instead of an inline of_node_put().
-> - Describe how the issue was found and how it was tested, as
->   requested by netdev-bot.
-> - Drop Cc: stable@vger.kernel.org: the leak is only reachable when
->   the bus data allocation fails.
+> thanks,
 > 
->  drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> index 3ea16d618215..ded352afd103 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> @@ -356,12 +356,17 @@ static int stmmac_mdio_setup(struct plat_stmmacenet_data *plat,
->  						   sizeof(*plat->mdio_bus_data),
->  						   GFP_KERNEL);
->  		if (!plat->mdio_bus_data)
-> -			return -ENOMEM;
-> +			goto err_put_mdio_node;
->  
->  		plat->mdio_bus_data->needs_reset = true;
->  	}
->  
->  	return 0;
-> +
-> +err_put_mdio_node:
-> +	of_node_put(plat->mdio_node);
-> +	plat->mdio_node = NULL;
-> +	return -ENOMEM;
->  }
->  
->  /**
+> greg k-h
 
