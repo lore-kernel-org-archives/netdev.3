@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794108760;
-	b=0EZLBfBbUoVGmbO476xE+wgwGTuWnG/68CotmgpvIT1wzCGcXSt2IuP+jtzAqnIs5UfD
-	 ezxhmexgLKyImhxs1MzjbCcEOovu7V86urFIUDns2bMwOTtcV9I1oDMt728TSo3BooIE4
-	 drRL9ABeWdIIIpBH/m1O2NNE0UxHa4zaZ8xqwt4dcHvvA++myfqRlkrcutQfTZZjMavsp
-	 oOh7AJiLfR/rZXPFQIvAUq0vwRJpkq72kfb5DR0Nxi/j8T/qgbBUKkgFQV6SacZiUIHNx
-	 YCevAqJNtvTmSCojhXKBwog4Cv0sJHw4nL0yzcQvux+T+emsEFGFdeTn+5RJXctQjdw==
+	t=1794109719;
+	b=hPxQMwrYLJAdb5HjW/xI8IlaqnsMKqikAuTD3J1ABr/Rjx7KwYKPpKCe1VRsPrd7rvRF
+	 dACra5JX4LsDSInHfDK2LuNq+Dyg4wHMlP2wB+jsXcxtqnivybgN+i4ZxQ5inxqdUG8B+
+	 maa/xDFM28d7QczgfJCQosZIk2Yy8wEBBtIzgzqpT+Nvomr5tsKsgY50I2NKCYEXSjLkH
+	 +YpWLe5SgG8SYfPwc6Rm0iefPtMDH508QSwQUrfyXN9PDeOYeeBQLotFTGgelFrE6gKcp
+	 oPsCc+WxIiwoT/BJ95WRTG2/oGw537PKBj3uSo7POY1idmiEfwhoUB1TLqfBUR/Go2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794108760;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794109719;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=dWjDHi/ava+PNlwN23UkjzjBYrqch6Raos60ENp0ko8=;
-	b=Al85OPxE+joa+yx6EYT0dnugELUyS6XsQDSUJRcYcMxnV+/sNUhpeuURdG/y+JnF4Uqc
-	 x8JsnD9GAUDdcP2J9MQIaA3ZMIAdKy/dMvMcdJdGgf4iXpjy25aMneO3ehlDGx8+qiq/K
-	 U32E0/ueQTv8b2j2qrDEtFfQbLFXD/+0TcSNqD79otl2yqumCy+MCGKb9W71JFxAILOkb
-	 TOy2mbJcho/WU0+rrl1Nfavnasmt5C05iJ7UQjXGxrYNwTppz7O0NmlTqTjMIyRNIP52A
-	 WDiGs8fruHz6DJW3F6G+KmOYs6DbUxDhHE1NKlwAKFrAiayf2cCbRgslTnPnPAWH4Kg==
+	bh=TZiwCM2N46vTpQtDwGQiax0bnFKCo40uZq0Xn4XOGzQ=;
+	b=YCHcV2pKBR8zQeviGoqBfg6SH8dzSBGYyH76qXdOlCiZs4J7bAo5bakp8k7dKetVJUWu
+	 ltPH4hzf614MyqDwsxPBwWhU++ZOSixZmoVzH3H/W2qS1sVghdCD6vvlM0gvfqlhUJzhi
+	 J+Z4lfl54K5edEX4cSnhIINFPczWO5m8NaT72hrU0/Fppyn10rHX04fV2B6Nr4+3Xoogf
+	 VbZjAuEn/MnnQRW/3KJnz/JwVD8+7637nNVWh10Kqo+fyf5z7dZeDQu0DriETfzws3g+f
+	 OSKg+DxbdIXptHnGaJVO4zyGSf+xApkNRD8L5Ma8o9njMu+K6+DV47IhWlrErTZ5o9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzGJbjnA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWpQQY3F;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A7A606A32A;
-	Sun,  8 Nov 2026 03:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D78E606A31F;
+	Sun,  8 Nov 2026 03:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XzGJbjnA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCFF1F008A1;
-	Sun,  8 Nov 2026 03:32:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWpQQY3F
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEDF1F008A1;
+	Sun,  8 Nov 2026 03:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794108759;
-	bh=dWjDHi/ava+PNlwN23UkjzjBYrqch6Raos60ENp0ko8=;
+	s=k20260515; t=1794109718;
+	bh=TZiwCM2N46vTpQtDwGQiax0bnFKCo40uZq0Xn4XOGzQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XzGJbjnAEj+EcHHcM1vcP1DvtyVbVG58WOii84Ktl4e0j7lgnLbFoGf4JuPEDrHth
-	 bPXiB9hsG428eYsOg/ucUDV0kuAQrhLMUKEqPGJo5Fqu4bMF6I8tacTvkZAvD2NUnq
-	 qncaDZoP5s76UhdZOUahCprJpOaSn1fOsbM1id/pf70QNvFrwv2J3f9iuQuZtxh2KX
-	 QxmKqax3boOuftjnGA/ukaF/GT5abT4I6+ubb/G8XJQIZlv1KSHENip9fuUxVtIdp7
-	 3edjl1ewGIujS6f3F9VDCUtbKBZtYbPwvL3jeuQJlemoXoMtl/VE3i2/3FnJYkRrfT
-	 cPhZL6OyhM0VQ==
-Subject: Re: [PATCH v2 2/2] usb: gadget: u_ether: fix out-of-bounds read in
- get_ether_addr
+	b=TWpQQY3F3XHqMfmPt/mhf+VxDNGrw/P3UN54DWGxyqflxQsaQtr7obQOL+jomh2Vu
+	 8T6PPgNIpnNqy+I/Ktxwpb2q0pVQZ0LAkwtiBBh5KyVHFmvmVlV2J7KlCNn7cIUSgY
+	 6F8cjhnYqaGlqup6ZN8HtttH6P1EsTQSNN3dRSPCrXUR1pLIP6astsexhVDiKQ0YKC
+	 N4EWPEBvp451XOIcgWqdhq4LHOLAnnxA0qgzmCc1q5030y93l/DpMn8pPWGxF7FpLj
+	 iwpNcdMxuQvOXgSg7iRpRkc0v7InjZ3xEBwMnuc3s5/vM6TejZopJZ7tkV9UV90Jw4
+	 00gdBB5CajTUQ==
+Subject: Re: [PATCH net v8 3/3] xfrm: hold the tunnel device reference across
+ the input path
 From: netdev-bot+sashiko@kernel.org
-To: liuc63@xiaopeng.com
-Cc: gregkh@linuxfoundation.org, akpm@linux-foundation.org,
- andriy.shevchenko@intel.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, khtsai@google.com,
- fangxy@xiaopeng.com, rdunlap@infradead.org, dbrownell@users.sourceforge.net,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-Date: Sun, 08 Nov 2026 03:32:38 +0000
-Message-ID: <179410875819.994134.18111408259009320213@kernel.org>
-In-Reply-To: <20261104025058.2650911-3-liuc63@xiaopeng.com>
-References: <20261104025058.2650911-3-liuc63@xiaopeng.com>
+To: q.h.hack.winter@gmail.com
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
+ herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, linux-kernel@vger.kernel.org
+Date: Sun, 08 Nov 2026 03:48:37 +0000
+Message-ID: <179410971777.994134.15451365974741782333@kernel.org>
+In-Reply-To: <20261107111617.21347-4-q.h.hack.winter@gmail.com>
+References: <20261107111617.21347-4-q.h.hack.winter@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,126 +76,96 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new parse_mac_pton() call in get_ether_addr()
-  (drivers/usb/gadget/function/u_ether.c:691) still accepts malformed…
-- [Medium] The commit message misdescribes the user-visible effect of the
-  stricter syntax.
+- [High] This patch adds a reference that leaks, and the leak fires a
+  WARN on the error path that the async-teardown fix is meant to cover.
 
 --
 
-usb: gadget: u_ether: fix out-of-bounds read in get_ether_addr
+xfrm: hold the tunnel device reference across the input path
 
-This patch replaces the open coded MAC parsing loop in get_ether_addr()
-with parse_mac_pton(). The old loop read past the end of short strings
-and ignored invalid hex digits. It also selects GENERIC_NET_UTILS so that
-parse_mac_pton() is built in.
+This patch makes vti_input(), vti6_input_proto() and xfrm6_rcv_spi() take
+a reference on the tunnel net_device when they cache the tunnel pointer in
+the skb control buffer. xfrm_input() releases the reference on delivery
+and on drop, and IPTFS releases it through new helpers,
+xfrm_input_drop() and xfrm_input_consume().
 
-> The configfs dev_addr and host_addr attributes of the ECM and NCM
-> functions reach the same parser through gether_set_dev_addr() and
-> gether_set_host_addr().
+> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+> index cfd5cea033127..e3b6c486f0e9c 100644
+> --- a/net/xfrm/xfrm_input.c
+> +++ b/net/xfrm/xfrm_input.c
 
 [ ... ]
 
-> Note that this makes the accepted syntax stricter: the old loop also took
-> a separator-less string such as "aabbccddeeff" and the Cisco notation
-> "aabb.ccdd.eeff", both of which parse_mac_pton() rejects, so such input
-> now falls back to a random address instead of being parsed.
-
-[Severity: Medium]
-Is this description accurate for the configfs path?
-
-Only the legacy module parameter path, through gether_setup_name(), uses
-the random fallback. On the configfs path, gether_set_dev_addr() discards
-the random bytes and returns an error:
-
-drivers/usb/gadget/function/u_ether.c:gether_set_dev_addr() {
-	...
-	if (get_ether_addr(dev_addr, new_addr))
-		return -EINVAL;
-	...
-}
-
-gether_set_host_addr() does the same. The store handlers generated by
-USB_ETHERNET_CONFIGFS_ITEM_ATTR_DEV_ADDR() and
-USB_ETHERNET_CONFIGFS_ITEM_ATTR_HOST_ADDR() pass -EINVAL back to
-userspace.
-
-So "echo aabbccddeeff > functions/ecm.usb0/dev_addr" used to succeed. With
-this patch it fails with EINVAL, the previous address stays in place, and
-no random address is assigned.
-
-The message also names only ECM and NCM. The same store macros are used by
-f_ecm.c, f_eem.c, f_ncm.c, f_rndis.c and f_subset.c.
-
-Could the commit message describe the new EINVAL behaviour on configfs
-writes, and list all the affected functions?
-
-> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-> index 59d85d6a84a89..26471cb086b37 100644
-> --- a/drivers/usb/gadget/function/u_ether.c
-> +++ b/drivers/usb/gadget/function/u_ether.c
-> @@ -686,18 +686,10 @@ static int eth_stop(struct net_device *net)
->  static int get_ether_addr(const char *str, u8 *dev_addr)
->  {
->  	if (str) {
-> -		unsigned	i;
-> +		bool valid;
->  
-> -		for (i = 0; i < 6; i++) {
-> -			unsigned char num;
-> -
-> -			if ((*str == '.') || (*str == ':'))
-> -				str++;
-> -			num = hex_to_bin(*str++) << 4;
-> -			num |= hex_to_bin(*str++);
-> -			dev_addr [i] = num;
-> -		}
-> -		if (is_valid_ether_addr(dev_addr))
-> +		valid = parse_mac_pton(str, dev_addr, ".:");
-> +		if (valid && is_valid_ether_addr(dev_addr))
->  			return 0;
+> @@ -781,9 +838,12 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+>  	spin_unlock(&x->lock);
+>  drop:
+>  	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+> +	tdev = xfrm_input_take_tunnel_dev(skb, family);
+> +	kfree_skb(skb);
+> +	if (tdev)
+> +		dev_put(tdev);
 
 [Severity: High]
-Can malformed addresses with trailing characters still be accepted here?
+Can this leak the tunnel device reference taken by dev_hold() in
+vti_input() or vti6_input_proto()?
 
-parse_mac_pton() only enforces a minimum length, and then validates
-indices 0 through 16:
+At the top of xfrm_input(), in the resume/GRO/offload branch, the
+invalid-state check jumps to drop before family is assigned:
 
-lib/net_utils.c:parse_mac_pton() {
-	if (strnlen(s, MAC_ADDR_STR_LEN) < MAC_ADDR_STR_LEN)
-		return false;
-	...
-}
+    if (unlikely(x->km.state != XFRM_STATE_VALID)) {
+        ...
+        if (encap_type == -1)
+            async = 1;
+        goto drop;
+    }
 
-Nothing from str[MAC_ADDR_STR_LEN] onward is examined. Inputs such as
-"aa:bb:cc:dd:ee:ffzz", "aa:bb:cc:dd:ee:ff:11:22" or the typo
-"02:11:22:33:44:556" all return true. The truncated 6-byte prefix is then
-used as the address.
+    family = x->props.family;
 
-This covers the module parameter path through gether_setup_name(). It also
-covers the configfs dev_addr and host_addr stores of ECM, EEM, NCM, RNDIS
-and subset, where gether_set_dev_addr() returns 0 and sets
-NET_ADDR_SET. That seems to contradict the u_ether.h kernel-doc for
-gether_set_dev_addr() and gether_set_host_addr():
+At that point family still has its initial value, AF_UNSPEC. The slot is
+non-NULL, so xfrm_input_take_tunnel_dev() falls into its default case:
 
- * Returns negative errno if the new address is incorrect.
+    default:
+        WARN_ON_ONCE(1);
+        return NULL;
 
-The commit message says parse_mac_pton() "checks the length and every
-digit", but that only holds for the first 17 characters.
+The slot is not cleared and tdev stays NULL. The skb is freed and the
+dev_put() is skipped.
 
-netconsole's remote_mac_store() handles this with an explicit terminator
-check after mac_pton():
+One way to reach this is async crypto that completes after the SA has
+been deleted or has expired, for example during an IKE rekey:
 
-	if (!mac_pton(buf, remote_mac))
-		goto out_unlock;
-	if (buf[MAC_ADDR_STR_LEN] && buf[MAC_ADDR_STR_LEN] != '\n')
-		goto out_unlock;
+vti_input()
+  dev_hold(tunnel->dev)
+  xfrm_input()
+    esp_input() returns -EINPROGRESS
+<SA deleted, km.state no longer XFRM_STATE_VALID>
+xfrm_input_resume()
+  xfrm_input(skb, nexthdr, 0, -1)
+    goto drop with family == AF_UNSPEC
 
-Should get_ether_addr() do the same? A single trailing '\n' would still
-need to be allowed, since configfs writes from echo end with one.
+Two other paths look the same. One is an offload skb that enters through
+vti_input() with encap_type 0. The other is the IPTFS outer skb that is
+passed to xfrm_input(skb, 0, 0, -2) after the SA has become invalid.
 
->  	}
->  	eth_random_addr(dev_addr);
+If the reference leaks, a later unregister of the vti/vti6 device or a
+netns teardown would wait forever in netdev_wait_allrefs_any(). The
+WARN_ON_ONCE() would also panic the machine with panic_on_warn set.
+
+The commit message says:
+
+  "The early drop for a state that is no longer valid releases
+  the reference too, and needs the address family for that, so set the
+  family before the validity check."
+
+The diff doesn't move the family = x->props.family assignment ahead of
+the km.state check, though. Was that hunk left out of the patch?
+
+>  	if (async)
+>  		dev_put(dev);
+> -	kfree_skb(skb);
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL(xfrm_input);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104025058.2650911-1-liuc63%40xiaopeng.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107111617.21347-1-q.h.hack.winter%40gmail.com
