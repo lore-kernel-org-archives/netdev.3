@@ -1,54 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794117149;
-	b=kNCLTJnwgv3CH8+TDBmVPjnJnzKrEUk1uAlHDbk3qA1jZBID4uFIH1fRvDwlLu+x55PR
-	 +KzlCW6cPJzmudsaPRYzHe7cVskUe1qVZZ3BipXiOWtcpAMb1pFAvYuz9aBwOMb/sK5WK
-	 fFhjQlJ4GemrF8YlpeayzhDe4kurwHVBoDwkYsb93nJhujqkjPtnl5t2RZRX9mhMu37BB
-	 ETzjyaDBGcrVSptd7eJSZQUrGnfTIeSA5GQ0/rzd9+mRz3YcmXME23GcyIMXFPdNCkPFI
-	 hAoikqRKemeHpPX9LpsXMzDxm8qX7AL+ZUODjiNqV8TcJSaMF4E+RF9oWL71Ke+hSLA==
+	t=1794117494;
+	b=5qJwVNsBNTVhLKLk695Pz3RVTTRnopZPw5yeEG8MtCjy0bNelFeAQ1NqM30vl9OxGxGB
+	 R4iIk10EcauUlRM7ayRDX25/oMjvOZUSl9qLV/RGlMG075fvMOyO1ibW2a9o6MT2ia7xy
+	 emeMEFHSrFspbwGzul2cNsLXnGgIsP5561sWud/YLrRiiGPQl1+g2t/ZcMYtz4jkCDeW3
+	 c/uc7pCx7e8cW0KMHF5tcu3CdPdLPzz+lU/acbfukGvtY/cicz3Htb0l1dwYTnPCMHRh2
+	 WYk7tVIMw/jQPzmaWWZB+/r8OqsT+X6L3Xe+BPGdgRoOqeP8dFXNPIZRBxC9PRx0muQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794117149;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=QJc37cJ/S1g5YDvC+KD7J+WHe+A8KLkh38XT8Ub/b9w=;
-	b=hQJLRLm4bnFNET20cuq9JhA+jmlpi5G1ESYwhXtZX5QS0fyg//Ik/tG7pdFruFKeZnHX
-	 yQFFjnpTQ8SohnvmV08NVCtHEALGzvuZw+E1J4rSBplm/mcrYBo8vWz3bJXYLEk/Meqyk
-	 m3EPh8hqEDkD9F+T7h7uns3V+kh86e2flbkwwso6DpzjRZXE8GjGZJZpf3dSjMiQqfljA
-	 4DjkmDVoVMPDvRZo7iBmP8JAuVp5XTkcvDA4mLJvbqUbVcjlPV703TbcbTyoTwnYx71D+
-	 kJueLd57ZrECKn1Jw9DQjCSwyQtvx0Syp5VOtSCCURy4WSqxXnSHzfLE5LvIWuv4RhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794117494;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=IJn1AMk3SYqRRM9oElk7NJVUkVbpguV5f8/F8Hoavu0=;
+	b=JLcymINOmNpyOKY/5HFs8/QT5p+1yteY5Ml9n1dGdYtChIkc5mXsuJZAs+QWQP5+XRXG
+	 yDCYnUkVj6pYfuKUp7VXHgyBbCW91TrPetqI1DFnfi6lZPExMFSVyMPIh/1VKiEoueuV0
+	 ISm7D8zMcKH6XAxVTvo4xgg2gdbvKLtmBpNOo/1lPUJf9vq9jfd4CqxXCbt1wwAG4+JX6
+	 l/HhfHgvhiOJ+306kB/uOnYRTyZ0tva3oUARIwPpLspBvfIPRF/E3+YuEdKVZ/J6Ua60G
+	 7qrlPo8WKmdbGDMRqD1qH2I9GSDOCSXV3UTnsDPZIQJg01zJOmlnQEKIhuwfcb0D8pg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.197
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O7JxI+x0;
+	arc=none smtp.remote-ip=74.125.82.200
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB68606A31D
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 05:52:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BB68606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4b2d1eb484aso262315b6e.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 21:52:29 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F417606D80D
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 05:58:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F417606D80D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=O7JxI+x0
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36d69ab3c2bso326794eec.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 21:58:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794117493; x=1794722293; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IJn1AMk3SYqRRM9oElk7NJVUkVbpguV5f8/F8Hoavu0=;
+        b=O7JxI+x0qDO25SqmddFu2SvxIZxCk1I8uX2KySLYAzcN+dud2mvQ/Nj0Wb8QNaPdrS
+         BcuaKSt3nFELUixlFAGVCIUPhxd4TFduwOp0qOpwzfHXtjN0NbivmdfBWSUmdk0jyiYm
+         U97RW8W80j2bHND3Bx7qyzfceGOhwgN38DCmbr2HVPi0wjtpN6f9NymxGx0nTgTA16g4
+         FsY0Vln8L2bGooYdHCc+FHcOmnRukGXprSdUVktXSVsSTgveYkt7eYb8wzYvREXk7yp7
+         UcWTgC/hZhaBkcUHSajMSqRA60hvgi2jM5P4KWemsw3HycUmASrpw5U5juJBuK3dcunq
+         vCNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794117148; x=1794721948;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QJc37cJ/S1g5YDvC+KD7J+WHe+A8KLkh38XT8Ub/b9w=;
-        b=2jOYoRcpy0OBlHKcoez0ZiR1Xx0W+cj1ssQaK5QfsMcoR5Iuqz3BiN8RhAaSy3+A3Y
-         5Bybf14qk6Zw/6XSWen9QzCKyQfrV5x49Kc9j59mK4TMHgiJqR147OPec3kXCUxbJB/8
-         Ma6QQb8bqJ/3EEydfuNwYK2nJAJX6qlMdvKHPuCOMIlkqRuqeC3mv2Kx6Ay6orhHXYHA
-         7EWNAboY5Jfn0bQykqcMjcPYyknTu1B3u8sc+cR/sT4a3mrHZNnnQmOP5z5JKEPXh843
-         KeEj1bh6beJX/Urrf0LtMqNFoxWWExAsTnKSIoD9x8fyr4kZv8kuXh1sVmXXOiM0BTJu
-         wbDg==
-X-Forwarded-Encrypted: i=1; AKwUvBy8//ogYDJVkM3MVIgaFKtodKgOVJ9ENukKlfB3WoAgJlUXjhsnIPka3vTlTYWKQzo25HJKikw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+47wOL9dmXdTAI+twcWLBPT4sCmIjLymTfNuCpvwNq33vK7AEj
-	Cu6I99mDY567ryySPd3L/0heRHVdctoIL+GZiob9+dEU8Ev4B45AtiG7fMpOtW7v/I1eaUbxfM7
-	muLU4Otzuny6lvqM0PKgDWmkFF293Ngrdf3lkPVXfFLPOmXIrT1H8+ZMa9Hk=
+        d=1e100.net; s=20260707; t=1794117493; x=1794722293;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IJn1AMk3SYqRRM9oElk7NJVUkVbpguV5f8/F8Hoavu0=;
+        b=EdTFeYUHcq3htn7EKFlloxNuqWUNh71XcZGdklZqwPYG9AbJL4gkT+Bg41+XhzMfqF
+         xMSBy6lKxYWRdr67W53O6Ir8TtI2Ts1Tgl9eU6eiWsB3fO1j+zlyPus4IgGxvbZ6ybVU
+         xqDtDEmrAaDL2zTo/uAuGV+5KrdcGvZPaJDx47Li2fmf3Ixfnw67WpfERlSbVUCceFQZ
+         Q1GZzjBZ1Jh4Y5D3PD55kV0NxtJrKmXnnVzNNNjj9m7nyXaRAROxPCKmH+dWrZPzfGlZ
+         Vmh3Qc3j2t8FW2hRV7vobLHxhI5YrKdnniHmW41jTlk/+kQHFnyQ3IvqmZJsCqX4auFd
+         EgiA==
+X-Gm-Message-State: APuU4Z9t4aF+w7r3LOTsb9PTYuOiasA170rqodN3++coFeKFY9ap/8Tn
+	e0kS+LVERG6Rnu9qm9GUQneLxYvhq/b35n7wFFBhBmgtCgvYiTi9aN1CdMcUR7S+ynZh8lw8fhz
+	r8ETssOMvB44kbQKJKqjCQ4cFqKXbuhmz3f5pM724djUmdk0Sym/I1s8zZgLpGEnvlsPhQbXEY7
+	+VVpUcCexaqaLDagIC5UPRjgbOOG+eEjgRKnqWpsSRL5ZpKKqaTq+UyFyEpe2gi3Q=
+X-Received: from dlbrx22.prod.google.com ([2002:a05:7022:1716:b0:143:7311:4b88])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:4302:b0:1b2:43ac:d3a3 with SMTP id a92af1059eb24-1b39fe9e1famr1103103c88.24.1794117492902;
+ Sat, 07 Nov 2026 21:58:12 -0800 (PST)
+Date: Sun,  8 Nov 2026 05:58:06 +0000
+In-Reply-To: <20261108055809.2122934-1-almasrymina@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,123 +77,85 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c125:b0:4f6:a430:1822 with SMTP id
- 5614622812f47-568141ffe0fmr509756b6e.7.1794117148467; Sat, 07 Nov 2026
- 21:52:28 -0800 (PST)
-Date: Sat, 07 Nov 2026 21:52:28 -0800
-In-Reply-To: <6aee17c4.8be4ead1.3b45e1.0199.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6af00e1c.5a668245.1aceb6.0005.GAE@google.com>
-Subject: Re: [syzbot] [nfs?] [net?] WARNING in svc_destroy
-From: syzbot <syzbot+8cbdf9aa6c281a4e6bbe@syzkaller.appspotmail.com>
-To: anna@kernel.org, cel@kernel.org, dai.ngo@oracle.com, davem@davemloft.net, 
-	edumazet@kernel.org, horms@kernel.org, jlayton@kernel.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, neil@brown.name, 
-	netdev@vger.kernel.org, okorniev@redhat.com, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com, tom@talpey.com, trondmy@kernel.org
+Mime-Version: 1.0
+References: <20261108055809.2122934-1-almasrymina@google.com>
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261108055809.2122934-4-almasrymina@google.com>
+Subject: [PATCH net-next v2 3/6] net: guard memory provider RX queue open and
+ close on unregister
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot has found a reproducer for the following issue on:
+When a memory provider RX queue is leased to a virtual netdev,
+netif_mp_open_rxq() and netif_mp_close_rxq() redirect through
+rxq->lease and lock the physical backing netdev directly rather than via
+netdev_get_by_index_lock(). This raises two issues during netdev
+unregistration:
 
-HEAD commit:    d164c7d754f0 Merge tag 'devicetree-fixes-for-7.4-1' of git..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=13ac11a1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
-dashboard link: https://syzkaller.appspot.com/bug?extid=8cbdf9aa6c281a4e6bbe
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1494d369580000
+1. In __netif_mp_open_rxq(), the physical backing netdev may already be
+   in NETREG_UNREGISTERING (after dev_shutdown() and
+   dev_memory_provider_uninstall() have run on it, before cascaded
+   unregistration of the virtual leasee tears down the lease). Reject
+   opening an RX queue if dev->reg_state != NETREG_REGISTERED.
+2. In __netif_mp_close_rxq(), when the physical backing netdev
+   unregisters before the virtual leasee, dev_memory_provider_uninstall()
+   on the physical netdev does not uninstall the virtual queues, so
+   phys_rxq->mp_params remains populated until the virtual leasee's
+   netif_rxq_cleanup_unlease() or socket teardown runs. At that point
+   the physical netdev has already gone through dev_shutdown() and must
+   not call netdev_rx_queue_reconfig(). When dev->reg_state >
+   NETREG_REGISTERED, clear rxq->mp_params and return 0.
 
-AI-generated root cause summary:
-In fs/nfs/callback.c, nfs4_callback_up_net() first initializes an IPv4 TCP
-listener transport via svc_xprt_create(..., PF_INET, ...), which links the
-transport onto serv->sv_permsocks. When a subsequent call to
-svc_xprt_create(..., PF_INET6, ...) fails with an error other than
--EAFNOSUPPORT, nfs4_callback_up_net() returns the error immediately without
-tearing down the existing IPv4 transport. As a result, nfs_callback_up() unwinds
-on error and calls xprt_svc_destroy_nullify_bc() -> svc_destroy(), which
-triggers the WARN_ONCE(!list_empty(&serv->sv_permsocks)) warning because the
-IPv4 transport is still attached to the service, and subsequently frees the
-service while leaving the active listener with a dangling pointer.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=8cbdf9aa6c281a4e6bbe
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8cbdf9aa6c281a4e6bbe@syzkaller.appspotmail.com
-
-NFS: callback service start failed
-------------[ cut here ]------------
-SVC: permsocks remain for NFSv4 callback
-WARNING: net/sunrpc/svc.c:532 at svc_destroy+0x299/0x330 net/sunrpc/svc.c:532, CPU#1: syz-executor154/6024
-Modules linked in:
-CPU: 1 UID: 0 PID: 6024 Comm: syz-executor154 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/06/2026
-RIP: 0010:svc_destroy+0x29d/0x330 net/sunrpc/svc.c:532
-Code: 48 b8 00 00 00 00 00 fc ff df 49 8b 5d 00 48 8d 7b 18 48 89 fa 48 c1 ea 03 80 3c 02 00 75 67 48 8d 3d e7 6d 77 07 48 8b 73 18 <67> 48 0f b9 3a e9 d0 fd ff ff 48 8b 7c 24 08 e8 7f 4d 85 f7 e9 a5
-RSP: 0018:ffffc9000393f860 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffffffff9040bf80 RCX: 0000000000000000
-RDX: 1ffffffff20817f3 RSI: ffffffff8c37ebc0 RDI: ffffffff927b0660
-RBP: 0000000000000000 R08: 00000000ffffffff R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888020bcc000
-R13: ffff8880274a0000 R14: ffff88802c3c4000 R15: ffffffff9cd624c0
-FS:  000055556ff69400(0000) GS:ffff888122575000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055fdb0009fd0 CR3: 00000000377ff000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- nfs_callback_up+0x511/0xad0 fs/nfs/callback.c:236
- nfs4_init_callback fs/nfs/nfs4client.c:327 [inline]
- nfs4_init_client_minor_version fs/nfs/nfs4client.c:379 [inline]
- nfs4_init_client+0x236/0x420 fs/nfs/nfs4client.c:429
- nfs_get_client+0xf38/0x1230 fs/nfs/client.c:467
- nfs4_set_client+0x3f6/0x640 fs/nfs/nfs4client.c:763
- nfs4_init_server.isra.0+0x5be/0xf80 fs/nfs/nfs4client.c:1014
- nfs4_create_server+0x185/0x2b0 fs/nfs/nfs4client.c:1063
- nfs4_try_get_tree+0x93/0x140 fs/nfs/nfs4super.c:228
- nfs_get_tree+0xa61/0x1440 fs/nfs/fs_context.c:1621
- vfs_get_tree+0x92/0x320 fs/super.c:1881
- fc_mount fs/namespace.c:1282 [inline]
- do_new_mount_fc fs/namespace.c:3910 [inline]
- do_new_mount fs/namespace.c:3986 [inline]
- path_mount+0x7d0/0x2850 fs/namespace.c:4337
- do_mount fs/namespace.c:4350 [inline]
- __do_sys_mount fs/namespace.c:4565 [inline]
- __se_sys_mount fs/namespace.c:4542 [inline]
- __x64_sys_mount+0x293/0x310 fs/namespace.c:4542
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd324de7f1a
-Code: 48 c7 c2 d8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffca5d506e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fd324de7f1a
-RDX: 00007fd324e4603f RSI: 00007fd324e45ffe RDI: 00007fd324e46044
-RBP: 0000000000000004 R08: 00007ffca5d50760 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fd324e45ffe
-R13: 0000000000001789 R14: 0000000000000801 R15: 00007ffca5d50760
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-   7:	fc ff df
-   a:	49 8b 5d 00          	mov    0x0(%r13),%rbx
-   e:	48 8d 7b 18          	lea    0x18(%rbx),%rdi
-  12:	48 89 fa             	mov    %rdi,%rdx
-  15:	48 c1 ea 03          	shr    $0x3,%rdx
-  19:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
-  1d:	75 67                	jne    0x86
-  1f:	48 8d 3d e7 6d 77 07 	lea    0x7776de7(%rip),%rdi        # 0x7776e0d
-  26:	48 8b 73 18          	mov    0x18(%rbx),%rsi
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e9 d0 fd ff ff       	jmp    0xfffffe04
-  34:	48 8b 7c 24 08       	mov    0x8(%rsp),%rdi
-  39:	e8 7f 4d 85 f7       	call   0xf7854dbd
-  3e:	e9                   	.byte 0xe9
-  3f:	a5                   	movsl  %ds:(%rsi),%es:(%rdi)
-
-
+Signed-off-by: Mina Almasry <almasrymina@google.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ net/core/netdev_rx_queue.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
+index a7261fedd5e76..85ae5abf16b8e 100644
+--- a/net/core/netdev_rx_queue.c
++++ b/net/core/netdev_rx_queue.c
+@@ -193,6 +193,14 @@ static int __netif_mp_open_rxq(struct net_device *dev, unsigned int rxq_idx,
+ 	struct netdev_rx_queue *rxq;
+ 	int ret;
+ 
++	/* A leased physical dev is locked via rxq->lease rather than
++	 * netdev_get_by_index_lock(), so check reg_state under its lock.
++	 */
++	if (dev->reg_state != NETREG_REGISTERED) {
++		NL_SET_ERR_MSG(extack, "Device is being unregistered");
++		return -ENODEV;
++	}
++
+ 	if (!qops)
+ 		return -EOPNOTSUPP;
+ 
+@@ -284,12 +292,13 @@ static int __netif_mp_close_rxq(struct net_device *dev, unsigned int rxq_idx,
+ 
+ 	rxq = __netif_get_rx_queue(dev, rxq_idx);
+ 
+-	/* Callers holding a netdev ref may get here after we already
+-	 * went thru shutdown via dev_memory_provider_uninstall().
++	/* Callers holding a netdev ref or tearing down a queue lease may get
++	 * here after dev already went through shutdown.
+ 	 */
+-	if (dev->reg_state > NETREG_REGISTERED &&
+-	    !rxq->mp_params.mp_ops)
++	if (dev->reg_state > NETREG_REGISTERED) {
++		memset(&rxq->mp_params, 0, sizeof(rxq->mp_params));
+ 		return 0;
++	}
+ 
+ 	if (WARN_ON_ONCE(rxq->mp_params.mp_ops != old_p->mp_ops ||
+ 			 rxq->mp_params.mp_priv != old_p->mp_priv))
+-- 
+2.56.0.455.g6c5a503b38-goog
+
