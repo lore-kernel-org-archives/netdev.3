@@ -1,108 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794138459;
-	b=RJjFv6jutEhmR9rr3ZX/ATYg6hVTtgpQzfO2EArj+0xO9BAosPSM4f+GQOT7dvn0RdMu
-	 qJwxMUZYyn7WQ+smRAG1waR3KzoPv5eCWQWrVX9CvGaSAiwSkgYwnCsPUhhzrJL7Ai4Qw
-	 vHlhzVtYAVOtbn2+wY2hzHB0QY90U97fHhSOWQEAett1dgw1U4cb++paFCtlzBACij8xc
-	 7Hz0SbQL8tQmvmkS/EzPlFnjRXkB8cL3+MiTInkqawy/2LNnPnc4I8vON8EJw/EqV8V47
-	 6bFvWJEuqubUyXwd/7bo9jdQ8zoa6OtFli9UeWynfPzsnNokgZRG2E/EKUAj/6sxtmg==
+	t=1794138718;
+	b=37AqyOHZ+1ejmG7c2cV2Z9DOXLCRd5eSRGv7tJYcfNQfy8l8btrSInh8qIjRGdH3QZjl
+	 ok7uf/uiBTQI28tnIiVPVLTmcodMD1n5c5nztzAVVCxUAifdZt5FhidtAUTeL38BU+ua3
+	 GpNjbMhTAQKU+LQgH3aOmG1edYQO9b/S7O2+raqXjfJ4AvoAUba5ymoCEJVIFXF7DHowl
+	 eVBEpe1/4PhoQoDo8+WnUqyljqFYPAU1SSLfOwpZAdWQGHYXqGvOd5wH3d8lGpHq4f+2b
+	 KmZalrhYllLPWUUMrzHqf4OzcGVi787iAjsA6Kpy62pWlmgP7rmUoZWUy73KIMRRwOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794138459;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=H6Hvjmx3E6u8slnggZfsBaEM6lqcy8rkOeo4cE7U+mg=;
-	b=xMdEgQyVM26CTW5bR05RcuroOOyaQI8dhEp348LB8NJO3l6Tnox9l+SVGqYD7TWA3pSl
-	 tCyx9hqZXwV5CH11UMwDfAy1k6ynCflmp8zUMXIh5SCgteQFmLCjhDml1rUOPJZmKJ7DR
-	 r8lqO/82B3kuidS6gUvoJVbiZRKpoyWfOvJ8VQ9LGNqTMsftnIykkqkiCt/KyvFwS4jop
-	 9wzX4oDTiqmQsamqfipF2lcyQcpn6OFx4bItptGoaPd1ruqFMoETxA0RZpwe0Xe16ksJ2
-	 8gdHtr7dVN+rK+YtuJVk4Zp6ZN33tjdipJwlf+4u9vkMnC79hr58oQ/yTspphmYBcpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794138718;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=6irgwjl0CKnMQ9nS5iLmZ+DUm7sN5bmZr5v1ixkjk2c=;
+	b=cATrZN4xMcwReb1FeC3RS73xSSVIUsaXVcmjI4Wcv3bbn0anXToBtDsAID/Z6DCH8nEI
+	 NfR3OjuoF/FnXkAysomATxfeK1USN7oViZBydlvpFjg0jreyYEl0sDZtCFLyXdDh155Qv
+	 jAa/tFKhzey7115nGqmp5sdbac5UAoAEAu8jVeI3RtR5Z+VjN08aEsla8TRDKQ4YvCj07
+	 ohukFsDLAhOiGczDLMU+7E6rlLAbstMwP05wuMR7KOSSQ7dv25itpKCZaetDckm/6rwni
+	 a0MjLCsqwDhYdXbc7o6FJwJEM+jiX3zWvAYlpdkb5lcXVtljwdY3MPysKa8oBb8NUvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bairaktaris.de;
-	spf=pass smtp.mailfrom=bairaktaris.de;
-	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=xGhIG1Tp;
-	arc=none smtp.remote-ip=209.85.218.49
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lumrOjkX;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A980606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 11:47:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A980606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE664606A321;
+	Sun,  8 Nov 2026 11:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=xGhIG1Tp
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c4d21051042so7929466b.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 03:47:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1794138457; x=1794743257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H6Hvjmx3E6u8slnggZfsBaEM6lqcy8rkOeo4cE7U+mg=;
-        b=xGhIG1Tplo1kH9dcB87zNLRAt3n/9K6PYwIBoLwd1L4PGtDHMoa8ORQHH49CXGl9AY
-         KHDU+thupviKWfIb5fg6X0wyKGPB0wQ7sQps9IcQQo1QTs8nRmtX/dxj8AlW/IfZg+XC
-         LZ2UmmtM+0M1xXmprmFruUDKQxNtQZU4cczvKKk3Gug42TgbBgxuUJpJki8AwO4mvdtl
-         Ni7PzH/PMnw/Uqr9wrI9TqtH13nkEFfPNaLr3M0mJGNQ9afzY7CWJ4R2g2xW6h/r6OT1
-         7I2mxijr2UL9YS9ccTF2nIpOnqXrwXBosMfmzJcTAfHNvR/fjqpNC0kSZrzl5Rxy9UnI
-         QkKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794138457; x=1794743257;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H6Hvjmx3E6u8slnggZfsBaEM6lqcy8rkOeo4cE7U+mg=;
-        b=0E9f0e6Py3nIpwtUACTfb0oC3yMMvbbvwxefjxsDPJmDwVBFQJL6PVULwpFxwwyLYR
-         H0Leh+8tNut0D8pGEoA0P7cGl68ihaebCDdlTAOxhwZRaWqpyfSs2Cu/x0cGTuD7DCIN
-         AgU8xmAXXqJz0NV7nFEBbXcTZPkzQJuaX5Mbc1iF7VdpWdDK4X94Qjzbpa0Nld4x160b
-         cRTdBIhdP1Gkb37c2BLFLIrRcVWB4hzBj0EVK6ePU+Pla4lH5qhOnZwWWngUTq5VI7lx
-         iK+jG3jHDJtXyNSZcuGGysZz5QnHNwALIlitug2+29kXxAzcByxZBI9NMidcj3DqYJ0t
-         rV1A==
-X-Forwarded-Encrypted: i=1; AL+hErG5ItX+2acuKIjblJ9j+S9yBl33Tyi17inPorAuiYYbmyMVy+9ZOLE7pLeeRSflWgmFpoMqT7o=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9nRVgmwQFVgtaiInw9Z45706xoU3PKW5m8LUfdIV13iKSLvmmH
-	bE06W6luYjGih6519hiZlzMbSaiCsP8QdfQ2fQQ8ds+q8SJ17kEig+n0riryni7yIw==
-X-Gm-Gg: AYBFou1J3PQfn0DZ3RFepD9utpdYgNgx+MLb/8gn/SyG6Q6eDseJk5yieYTAqCjIsAG
-	tHG7aB9jsWUOtYpZ7PEPbk7I6GrSIEZqdlgLYGZSowtLFxwDImQQ0Z3FjeNc/52v8mhM7ukkfR4
-	TY4IngJVOm7+7weyqgYOOhbKHQcTiQdoSSmttCGIdoVr5L1WEyyb7fYedhSEleLMpg0jdQnEEID
-	E1wikrEEYpzWA/cama0eaYcCkQJfusXFE6p8cHCab53G/CfTarI0XgvJ/aakVtn1Tv5Acu0H13X
-	DRqz8O6ztgxIHM7LCfmKyfHCFEAVjJoStWJAsAyrjLEujW2Pee3TMfQd6ODWEmV70XMeevsaHZV
-	JGFOXqF4IoEEe8wM3w+II9WTthwWCj/z1Nj18BHRlHwYZ6I38uUo1Jo7LantTWhxaU+NhfbkDja
-	H/Moshj0VCsWVxz9NpFbvBVnB7N3mJaH8tWzf3ytn1ovS/VSMIoeHqhb61I3frrXLD+PlEDMNSn
-	7shk0gBxJLyD9x6+FnzCikBfHfN/Y97ySIK36UPX+9EkMd/iJ50T9nHE9gw+Jctpf1o6mSFq0Ow
-	YOpBATcBtSuvK+kIDbMLKyqtS84PGIRAPIYsjPP1hpmjA2POZks3yHxGnTA0kl2AmJlH/6BuVE/
-	kPF5cryPLkn3oc6RnW2p+WernvzNAUWffg1lLPieoAbUmyeMtchQyr6OrfDpVoBTftqcB0aKWqq
-	9X8Khn3TP1P7GzOO11DjsJ5Wy0RHibu9Z9zAsyAo4jXko3yqpaPxuBW+th/JtspPX4xIs/KYC5U
-	4lIhkA2uh7ygdCHqMGZxWuLSW/PVxNQeDOxBJenuN4DGsOhCb7F4LOFfDQlmGAyDzuDl6M3v7UC
-	9H53LGb07oI7omZQ6w==
-X-Received: by 2002:a17:906:4792:b0:c4d:31c5:e30 with SMTP id a640c23a62f3a-c4d6d7ced04mr87104766b.49.1794138457495;
-        Sun, 08 Nov 2026 03:47:37 -0800 (PST)
-Received: from Desktop (p54afff19.dip0.t-ipconnect.de. [84.175.255.25])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b721ed3b32sm490083a12.23.2026.11.08.03.47.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 03:47:36 -0800 (PST)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netdev-bot+sinfo@kernel.org
-Cc: razor@blackwall.org,
-	idosch@nvidia.com,
-	andrew@lunn.ch,
-	andrew+netdev@lunn.ch,
-	olteanv@gmail.com,
-	netdev@vger.kernel.org,
-	bridge@lists.linux.dev,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] net: dsa: fix host fdb refcount when an entry roams
-Date: Sun,  8 Nov 2026 12:47:37 +0100
-Message-ID: <20261108114737.124573-1-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1794134495.git.julius@bairaktaris.de>
-References: <cover.1794134495.git.julius@bairaktaris.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lumrOjkX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01151F0089F;
+	Sun,  8 Nov 2026 11:51:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794138717;
+	bh=6irgwjl0CKnMQ9nS5iLmZ+DUm7sN5bmZr5v1ixkjk2c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lumrOjkXe+QBW/NcP3EhoyY6/YiHed3QJSIQ5VJZFUdwrTn65v9HMVyJilAHFChmo
+	 7i2Y2rEn8q4UOxLACRIVgWxg1Jhbt8S+PPpVN5D6O8B5NKUf01vBRsqkzZ+8f9+R4G
+	 EaG7tuQ559FUnf2r/sl4BX6WWO2URo0b+Bqw0TkPH4IuMCkbcSX4XJ1kr7vWkrPuV9
+	 Tsb5SMYWC8j/RcDynthJ0MUX+sVMXDycjh2Ot6bQmMGEylTkB7j+BqZMPbpsJp7Mov
+	 qkcVP/J3DPWguqgfsNtT2r47NgnSqf0WCRd1GFAfkdi7XFqlNTBXEd/jUiSFSAYIRT
+	 h6Z1+rFgMekcw==
+Subject: Re: [PATCH net] sctp: preserve stream scheduler across outq teardown
+From: netdev-bot+sashiko@kernel.org
+To: juny24602@gmail.com
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org, junvyyang@tencent.com,
+ stable@kernel.org, corvus@tencent.com
+Date: Sun, 08 Nov 2026 11:51:56 +0000
+Message-ID: <179413871612.994134.359540125574426236@kernel.org>
+In-Reply-To: <20261104105507.62743-1-juny24602@gmail.com>
+References: <20261104105507.62743-1-juny24602@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,20 +63,121 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-> - How the issue was discovered, e.g. hit in production, hit during
->   development, syzbot report, manual code inspection, LLM or static
->   analysis tool scan.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Hit during development on a Xiaomi AX3600 (IPQ8074) running OpenWrt's
-qca-ppe DSA switch driver. A station roaming between a DSA user port
-and a Wi-Fi AP port of the same bridge logged
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-  qca-ppe 3a000000.ppe: port 5 failed to delete 02:5a:0b:a2:1a:46 vid 0 from fdb: -2
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-3-6 times per address when the two ports received on different CPUs,
-and not at all when they shared one CPU (4 runs each). The dsa_loop
-harness described in the cover letter reproduces it on net-next.
+- [Medium] The patch changes how outqueue teardown behaves in the common
+  case, and the commit message does not say so.
 
-Julius
+--
+
+sctp: preserve stream scheduler across outq teardown
+
+This patch keeps q->sched in sctp_outq_init() across the memset, so that
+sctp_sched_set_sched() can free the old scheduler's per-stream state when
+sctp_outq_teardown() reinitializes a live outqueue. Without that,
+installing a different default scheduler could read stale data through
+the shared union in struct sctp_stream_out_ext.
+
+> diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
+> index e92fb9da4647a..6cb4b4339d8b7 100644
+> --- a/net/sctp/outqueue.c
+> +++ b/net/sctp/outqueue.c
+> @@ -190,9 +190,13 @@ static inline int sctp_cacc_skip(struct sctp_transport *primary,
+>   */
+>  void sctp_outq_init(struct sctp_association *asoc, struct sctp_outq *q)
+>  {
+> +	const struct sctp_sched_ops *sched = q->sched;
+> +
+>  	memset(q, 0, sizeof(struct sctp_outq));
+>
+>  	q->asoc = asoc;
+> +	/* Retain the scheduler to allow freeing its per-stream state. */
+> +	q->sched = sched;
+
+[Severity: Medium]
+The commit message only talks about the case where the installed scheduler
+differs from sctp_sk(sk)->default_ss. Does this also change behaviour in
+the more common case, where the two are the same?
+
+Before this patch, q->sched was NULL after the memset. That meant
+sctp_sched_set_sched() never took its early return, and every outqueue
+purge ran n->init() and n->init_sid() on each stream:
+
+net/sctp/stream_sched.c:sctp_sched_set_sched() {
+    ...
+	n = sctp_sched_ops[sched];
+	if (old == n)
+		return ret;
+    ...
+	n->init(&asoc->stream);
+	for (i = 0; i < asoc->stream.outcnt; i++) {
+		...
+		ret = n->init_sid(&asoc->stream, i, GFP_ATOMIC);
+    ...
+}
+
+With q->sched kept, old == n whenever default_ss matches the installed
+scheduler, so the per-stream reset is skipped. The init_sid callbacks that
+no longer run on teardown are:
+
+net/sctp/stream_sched_prio.c:sctp_sched_prio_init_sid() {
+	...
+	return sctp_sched_prio_set(stream, sid, 0, gfp);
+}
+
+net/sctp/stream_sched_fc.c:sctp_sched_fc_init_sid() {
+	...
+	soute->fc_length = 0;
+	soute->fc_weight = 1;
+	...
+}
+
+As a result, PRIO priorities and WFQ weights set through
+SCTP_STREAM_SCHEDULER_VALUE now survive a peer restart and a stale-cookie
+retry. Previously both paths reset them to 0 and 1:
+
+sctp_sf_do_dupcook_a() / sctp_sf_do_5_2_6_stale()
+  -> SCTP_CMD_PURGE_OUTQUEUE
+    -> sctp_outq_teardown()
+      -> sctp_outq_init()
+        -> sctp_sched_set_sched()   /* returns early, old == n */
+
+For FC and WFQ there is a second effect. __sctp_outq_teardown() calls
+sctp_sched_dequeue_done() on every leftover data chunk it discards:
+
+net/sctp/outqueue.c:__sctp_outq_teardown() {
+    ...
+	while ((chunk = sctp_outq_dequeue_data(q)) != NULL) {
+		sctp_sched_dequeue_done(q, chunk);
+
+		/* Mark as send failure. */
+		sctp_chunk_fail(chunk, q->error);
+    ...
+}
+
+sctp_sched_fc_dequeue_done() then adds ch->skb->len to soute->fc_length.
+That used to be cleared by init_sid. Now it isn't, so a stream with a
+large unsent backlog at restart begins the restarted association with
+fc_length inflated by bytes that were never sent.
+
+Keeping the user-configured values may well be the preferred behaviour.
+Since this is going to stable, could the commit message describe it? If
+it isn't intended, should teardown reset the per-stream scheduler state
+explicitly, or at least the fc_length accumulated from discarded chunks?
+
+>  	INIT_LIST_HEAD(&q->out_chunk_list);
+>  	INIT_LIST_HEAD(&q->control_chunk_list);
+>  	INIT_LIST_HEAD(&q->retransmit);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104105507.62743-1-juny24602%40gmail.com
