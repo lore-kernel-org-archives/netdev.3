@@ -1,58 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.191
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794121170;
-	b=YIHSFUOqi5DOVAwp9NkaV3Lwe1EQfIFhtpmZ9hzpD6FmnhIJie97aS22Sbq7q4f7j0xs
-	 xLyLeXmezW1Ukws3jV50cXHKivQbtS6uK7nGHFqqKgJ0aEtc8lqjkAVHITCP8VgZ61ytp
-	 blr+BnJbNDTRNsnVy8x9RqelJXM6Pz7uUSTsOhi7eEvj8DDYc4PuNj07mBo0gNVfE+RHn
-	 cShltiKj7fjaXHKTw1QTHfzAEnM07hYEUbE80mCJ3lIsgaOSpvmrda3vA6zblhFgcz4S5
-	 iuaI8UbOHZZaV8PsjhOwMHjfR1MgLei5CE2AIqAgxwOJcjo6AIkfSGem/nEIaZVrXSg==
+	t=1794121784;
+	b=LbHamruZkgW5SY1KgToD+2m1n22yjHMLBJ4eOCftSvjiJolw4RYFQuSXWcCV5JYegP1k
+	 jTozAvrhhjWCj0uMV+hFBaT3A8EEdKt3lyfm/HyY97Xt8Pzw737Xd/oLLpTMUh4Fj3qwz
+	 dsC2ZdL+F7APC0G0gKf3AnW578D82+vo1IKXcrQRn5PU+MPUuI+nRuIsTSk1hPNyW3N4c
+	 NSR8t54QqupxGUvHreoEU+4W9cu3XO7mv7vpz5f+hYyyCAk/Fqey2boc31Dhpty0zjWKv
+	 QKfW+2HERxGMaoTBGQriFKRu+9amW/FX2QDmZ7A+n2spObRIe4jB/P74VR/dywXI8oQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794121170;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=XOzF4wHAqjx7GKBzWRVfKJ5JeQgw7NrDI7qQvZi9SXg=;
-	b=2pJKR/1jVhkqOnm9VZKIihLQ0QjGBam2H1z+k3VqhqomTagg441wstCHkMVMT1lyi6RN
-	 Gr811qqw094mHC+5S0E+F9C+Yn6mGj1CzmwygGm9kcUSPWLSrZuiODEoL4BR5FC1EBoru
-	 f89rMUAQZ+QRZDFgOrkh3kdrjE/cZD+xGm2ZfoFaggnryNRqVWQJkFVxN8ix6TQqHT266
-	 EEjG8UQSxPRG6zM9etKZAEDlAEsCbq3dFJnGLCA5N8PKvd+kKH8DfRZ+HjzPapkoEys2V
-	 POIik6Oi1j3CfzavdRBskiBTivKmA5Ag0hyw9V744MiCF1IzpZRN4OXNv6swIiD27eg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794121784;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=u6kbnt8wIfmVTnovskbJOkzKYfRyHxmOIoHNpPYAAZI=;
+	b=Hmethtc/2SUdetk0nEciMFaOyTua9UnVsyYOqVp6eFiDVjZZL1vVPcwsdftcQRo6Dvgq
+	 BQuRSm9ls3rTZ294vbTLvq3Mxz5mjlmwnhkwgXRXC6RTQ6hiLHj/+INbAVIhgQeRsUZft
+	 23mHPyON7tpeAYwU613TKF8/7px8MoZaeg+S+yYf8MxANdLGjXzhf8oRKU6Q0Mf43xDJm
+	 KSQDWtglyvUoaR96zAFQLn+6k0ZjBedJBKIz9J2P5TuvZlEqMwCJW5lUwqSUrNm1UlrUn
+	 wM1F7Rgb1CDa3jrFR0SDbWIk8vKXMXOJiw9jiY4Zh4vbMi2KqmjU3ZOAKW+rh0g277A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jqbHpPJ8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=UjlzLPoL;
+	arc=none smtp.remote-ip=203.205.221.191
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C40F606A33D;
-	Sun,  8 Nov 2026 06:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9838606A31C;
+	Sun,  8 Nov 2026 07:09:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9838606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jqbHpPJ8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998431F0089F;
-	Sun,  8 Nov 2026 06:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794121170;
-	bh=XOzF4wHAqjx7GKBzWRVfKJ5JeQgw7NrDI7qQvZi9SXg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jqbHpPJ8XQrj14DsdGG1XTV3oWvr842DVUpmHzsSKSlCOA2hoTT1BREDWpEuDiiR6
-	 YuTXemeFPQBffYAAxPJDNLTb2OW96B8ZcU3tRDWkI8cKWd9I71aY8jn2BZUx4lRmS1
-	 jAZoYTlcOoS0RNuktBpNBpMPLDzDqg9150l2bc5PSQ3ED728G0N19sfOt6Cl9X12hh
-	 1PqkwkshlmKZ0452sXdgvvI20dVCEGDqYSa19SrsNnTX4EVptDpWOkj/WTq4hDy5QL
-	 liTx5YZ7zjUT7Ktytt+ZsRQOfRZ0wtzA5dF9rUXUR3hC20/eHoNxvJujYY7J4d3tay
-	 xf835mtdnDp5Q==
-Subject: Re: [PATCH net 3/3] net: xgmac: disable timeout work before teardown
-From: netdev-bot+sashiko@kernel.org
-To: 0xbeac@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 08 Nov 2026 06:59:29 +0000
-Message-ID: <179412116920.994134.12974909597820462141@kernel.org>
-In-Reply-To: <20261104063245.23402-4-0xbeac@gmail.com>
-References: <20261104063245.23402-4-0xbeac@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=UjlzLPoL
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1794121779; bh=u6kbnt8wIfmVTnovskbJOkzKYfRyHxmOIoHNpPYAAZI=;
+	h=From:To:Cc:Subject:Date;
+	b=UjlzLPoLymNtxXWzNzUwM35h6oWQXENyG2d/N4Vfu6IGxTgbyoNDdIyXSS0FqStWh
+	 ngFvYkAMykFURCiORnZ+F00k28ikLjOYz65v079Y9lroOnQgi/3SE8RhKyEOoxeRII
+	 3rZbNW8RixALMJvkilIbql06fXYdIctBc7qhYKaE=
+Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:5872:d752:285e:a265])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 264264C7; Sun, 08 Nov 2026 15:09:36 +0800
+X-QQ-mid: xmsmtpt1794121776tu7jnxuck
+Message-ID: <tencent_3049FF6D9F23419F56589E244420973D2708@qq.com>
+X-QQ-XMAILINFO: Mpk1SqVBRfAQvrb5ZmWJ3UNm46QhUTuOOjt3uwMnDrwSV4MbvIVXkiisq4n1zG
+	 hTuqt2zlxk3ftFrRdOnJXgxKwpStSb7fzcd2CETOxmml1DaBidCUs6m8IxdrbbG9NwpKANlc4Awc
+	 M7/rUSNSlUMFWdLYP2IhWQUmeuBVTVstHvm+EvcX2gWA4/fkyZjicEzXs8bqtHOCq/zciClvgeS6
+	 8x0D2mJt+RszG8RokGS9U2RfD+P/WGbjA71KA/Kayj8IU26MyDsIuFN52vdUCNT9Ogn75wUg2ed6
+	 yh0h0aqlDYeBHvz4q7+kMcbmSDBus/bBvQpV39v2Jm3bGQvGWeEW/W4h0jxm89/jRGqivhxvh4pV
+	 WOGr43QIYHkBcJ4IzqGeL74FDt48SXDx5JngMvWopMkMd1pd2/o2HShIIL1vukPhx63Gcd2Iythd
+	 oynfVsgjV9NKPyQ842aJzg4bHPOccM3AmjHTWTi2uaOBxi9CjDd7RhZuD8B3p1BQLSH/E8ZZkbXa
+	 MJ4IDFVzcRxkBWalqYBZ1S+Ndd3cmAVtruPSFPDDe8Sukxmbb/zTFWhEUzNYbOE/1pS3OkoW+hPR
+	 G4yqfxl6y4biF5BGPz26wxnQsxlotcHw3uWEsF4gE59b7pufZ3/i1wuLfYC5/pfNynqF2UZbZa8p
+	 av9YqpTNfVDRN4YGpw1youT/OF/X/MXHZxH9YPEJzTcbqkMcmnrKB24R4Gbjt318oLbgM4A5ZZl/
+	 lN3a+6LRpvWR6anZBcBNlHRcVSNk6eNmAuvrm7UrH9ozXyQQb8+ALmYOTll01VCK+ELca3enl1CO
+	 yNpHK61cEB3FXRTRBuzB8S1GVOxMkr3W1ALuh5rdGxPvlG3L41Fhessl/yb93jgaHM2vO9wgz3MN
+	 QEg8Tuh3fjoo49HeniCKfUV9CS3TOlZGCoxjva3Nx7vgbt6ioOFS/3chtK5e3YFu+a5bM/fB1x44
+	 RAEN8iXbNXPplitMU+xi2OXXaQ8pjCa+6EmqRWMM14DlVwzOhunL6N/mYY+WX1nyE/abdgba4v7Q
+	 DBW79ePh8YHYHXLprb+O+9O9eufNfn4OxxRepuVcYOiZPqaoM+51ARtB5Zvb0TbIaKx6jjbWaOpl
+	 NoXGIKvkg8w9oKVHQteNbmAA2kJ8CcpgY+/9TdBeXMlPweAoA=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: Yingjie Wang <1075151112@qq.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	ast@kernel.org
+Subject: [PATCH net v2] ipv6: reject routes without an inet6_dev
+Date: Sun,  8 Nov 2026 15:09:36 +0800
+X-OQ-MSGID: <20261108070936.2832089-1-1075151112@qq.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,218 +84,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+ip6_route_output() and ip6_route_lookup() can return an error-free route
+whose rt6i_idev is NULL.  Lowering an external nexthop device's MTU below
+IPV6_MIN_MTU tears down its inet6_dev, while fib6_ifdown() leaves routes
+using nexthop objects in the FIB.
 
-Critical: 0 · High: 1 (1) · Medium: 2 · Low: 1
+An unprivileged user with CAP_NET_ADMIN in a private user and network
+namespace can construct this state.  Consumers which treat a route without
+an error as usable can then dereference the NULL rt6i_idev.  This was
+reproduced as a KASAN NULL pointer dereference in ip6_tnl_xmit().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+A similar missing inet6_dev check was fixed in commit 1b9b5323725e
+("netfilter: ip6t_rpfilter: reject routes without inet6_dev").  However,
+the route construction path still marks routes without an inet6_dev as
+successful, leaving every consumer responsible for the same check.
 
-- [High] xgmac_resume() can deadlock against the timeout work.
-- [Medium] The workqueue disable count can get stuck above zero and stay
-  that way, so TX-hang recovery is lost for good.
-- [Medium] In xgmac_suspend(), netif_device_detach() (line 1887) runs
-  before disable_work_sync() (line 1893).
-- [Low] The new comments describe the enable/disable pairing wrongly.
+Acquire the inet6_dev reference before initializing the destination.  If a
+non-reject route has no inet6_dev, initialize it as RTN_UNREACHABLE instead
+of a successful route.  Explicit reject routes keep their original type and
+error.  This establishes that ordinary error-free IPv6 routes have an
+inet6_dev while retaining the existing defensive checks at callers.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it sits on the
-  same stop/failed-open path.
+The modified route object builds cleanly with W=1.  A full x86_64 KASAN
+bzImage build completes; it reports two pre-existing kernel-doc warnings
+outside this change.
 
---
+Tests:
+  - `make W=1 net/ipv6/route.o`
+  - full x86_64 KASAN `bzImage` build with `W=1`
+  - KASAN QEMU with an unprivileged user and network namespace: after
+    lowering the MTU, the stale route returned `No route to host`, a normal
+    route still resolved, and the collect_md trigger completed without
+    KASAN, oops, or panic
+  - `tools/testing/selftests/net/ip6_tunnel.sh` in the same KASAN QEMU
 
-net: xgmac: disable timeout work before teardown
+Fixes: 5b98324ebe29 ("ipv6: Allow routes to use nexthop objects")
+Closes: https://lore.kernel.org/netdev/tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com/
+Link: https://lore.kernel.org/netdev/DMP4WRIOGMBX.3VW2KNLBGDZ0K@gmail.com/
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Yingjie Wang <1075151112@qq.com>
+---
+Changes since v1:
+  - Move the invariant into IPv6 route construction following Alexei
+    Starovoitov's review.
+  - Acquire `rt6i_idev` before destination initialization and preserve the
+    existing handling of explicit reject routes.
+  - Update `Fixes:` to the nexthop-object route support commit.
 
-This patch disables tx_timeout_work at probe and re-enables it in
-xgmac_open() and xgmac_resume(). It also synchronously disables the work
-in xgmac_stop(), xgmac_suspend() and xgmac_remove(). The goal is to keep
-the TX timeout work from running against freed DMA rings, released IRQs
-or unmapped registers.
+v1: https://lore.kernel.org/netdev/tencent_CB9E1044AC97882719FF3A9F5B410A562408@qq.com/
 
-> diff --git a/drivers/net/ethernet/calxeda/xgmac.c b/drivers/net/ethernet/calxeda/xgmac.c
-> index a2410fba6be2e..9b7aee56f2610 100644
-> --- a/drivers/net/ethernet/calxeda/xgmac.c
-> +++ b/drivers/net/ethernet/calxeda/xgmac.c
-> @@ -1023,6 +1023,9 @@ static int xgmac_open(struct net_device *dev)
->  	if (ret < 0)
->  		return ret;
->  
-> +	/* xgmac_stop() disables this work before freeing the rings. */
-> +	enable_work(&priv->tx_timeout_work);
-> +
+ net/ipv6/route.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-[Severity: Medium]
-Can the disable count on tx_timeout_work get stuck above zero here?
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 2eb884558c24..a4c792fc55e3 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1165,6 +1165,12 @@ static void ip6_rt_init_dst(struct rt6_info *rt, const struct fib6_result *res)
+ 		return;
+ 	}
+ 
++	/* addrconf_ifdown() removed inet6_dev. The device can't do IPv6. */
++	if (!rt->rt6i_idev) {
++		ip6_rt_init_dst_reject(rt, RTN_UNREACHABLE);
++		return;
++	}
++
+ 	rt->dst.error = 0;
+ 	rt->dst.output = ip6_output;
+ 
+@@ -1200,10 +1206,10 @@ static void ip6_rt_copy_init(struct rt6_info *rt, const struct fib6_result *res)
+ 	const struct net_device *dev = nh->fib_nh_dev;
+ 	struct fib6_info *f6i = res->f6i;
+ 
++	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
+ 	ip6_rt_init_dst(rt, res);
+ 
+ 	rt->rt6i_dst = f6i->fib6_dst;
+-	rt->rt6i_idev = dev ? in6_dev_get(dev) : NULL;
+ 	rt->rt6i_flags = res->fib6_flags;
+ 	if (nh->fib_nh_gw_family) {
+ 		rt->rt6i_gateway = nh->fib_nh_gw6;
 
-disable_work() and enable_work() nest, so every xgmac_stop() needs a
-matching xgmac_open() that succeeds. xgmac_change_mtu() does:
-
-	xgmac_stop(dev);
-	WRITE_ONCE(dev->mtu, new_mtu);
-	return xgmac_open(dev);
-
-If xgmac_dma_desc_rings_init() fails with -ENOMEM, xgmac_open() returns
-before enable_work() and the count stays at 1. A failed ndo_change_mtu
-does not close the device, so it stays running.
-
-A later ifdown calls xgmac_stop() again, and disable_work_sync() raises
-the count to 2. The next ifup succeeds, but its enable_work() only brings
-the count back to 1.
-
->From then on, schedule_work() from xgmac_tx_timeout() and from the
-DMA_STATUS_TPS path in xgmac_interrupt() does nothing until the driver
-is rebound. Without this patch, a down/up cycle fully recovered the
-device.
-
-Would enabling the work on the open failure path, or tracking whether it
-is currently enabled, avoid this?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but it is on the same
-xgmac_change_mtu() stop/failed-open path. The error labels in
-xgmac_dma_desc_rings_init() free the buffers without clearing the
-pointers:
-
-err_dma_tx:
-	kfree(priv->tx_skbuff);
-err_tx_skb:
-	dma_free_coherent(priv->device,
-			  DMA_RX_RING_SZ * sizeof(struct xgmac_dma_desc),
-			  priv->dma_rx, priv->dma_rx_phy);
-err_dma_rx:
-	kfree(priv->rx_skbuff);
-	return -ENOMEM;
-
-When xgmac_change_mtu()->xgmac_open() fails here, the interface stays
-running while priv->rx_skbuff, priv->dma_rx and priv->tx_skbuff can
-point at freed memory.
-
-The next ndo_stop then goes through
-xgmac_stop()->xgmac_free_dma_desc_rings(). There,
-xgmac_free_rx_skbufs() walks the freed rx_skbuff[] array, and
-dma_free_coherent() on priv->dma_rx and kfree() on
-priv->rx_skbuff/priv->tx_skbuff can run a second time.
-
-Could these error labels set the pointers to NULL after freeing them?
-
->  	/* Enable the MAC Rx/Tx */
->  	xgmac_mac_enable(ioaddr);
->  
-> @@ -1046,6 +1049,13 @@ static int xgmac_stop(struct net_device *dev)
->  {
->  	struct xgmac_priv *priv = netdev_priv(dev);
->  
-> +	/*
-> +	 * The timeout work programs the DMA rings that are freed below, and
-> +	 * it toggles NAPI.  Disable it synchronously before touching either;
-> +	 * xgmac_open() and xgmac_resume() enable it again.
-> +	 */
-
-[Severity: Low]
-This isn't a bug, but the comment here and the one added in
-xgmac_probe() describe a pairing that doesn't match the code. This
-comment says "xgmac_open() and xgmac_resume() enable it again". The
-probe comment says the probe-time disable_work() is the matching disable
-for "the enable_work() in xgmac_open()/xgmac_resume()".
-
-xgmac_resume() returns early when !netif_running(ndev), and the device
-is not running after dev_close()->ndo_stop. So the enable in resume can
-never balance a disable done in xgmac_stop() or probe. It is balanced by
-the disable_work_sync() in xgmac_suspend().
-
-Could the comments describe the actual pairs, probe/stop with open and
-suspend with resume?
-
-> +	disable_work_sync(&priv->tx_timeout_work);
-> +
-
-[ ... ]
-
-> @@ -1862,6 +1885,12 @@ static int xgmac_suspend(struct device *dev)
->  		return 0;
->  
->  	netif_device_detach(ndev);
-> +	/*
-> +	 * The timeout work touches the DMA registers and toggles NAPI.
-> +	 * Disable it before NAPI and the interrupts are torn down;
-> +	 * xgmac_resume() enables it again.
-> +	 */
-> +	disable_work_sync(&priv->tx_timeout_work);
-
-[Severity: Medium]
-Should disable_work_sync() come before netif_device_detach() here?
-
-If xgmac_tx_timeout_work() is already running when xgmac_suspend() is
-called, disable_work_sync() waits for it to finish. The work ends with:
-
-	netif_tx_unlock(priv->dev);
-	netif_wake_queue(priv->dev);
-
-That undoes the netif_tx_stop_all_queues() done by netif_device_detach().
-Nothing later in xgmac_suspend() stops the queue again. xgmac_stop(), by
-contrast, calls netif_tx_disable().
-
-The qdisc path (sch_direct_xmit()->dev_hard_start_xmit()) doesn't check
-netif_device_present(). Can xgmac_xmit() then write descriptors and
-XGMAC_DMA_TX_POLL while NAPI, interrupts and the MAC/DMA are being shut
-down for suspend?
-
->  	napi_disable(&priv->napi);
->  	writel(0, priv->base + XGMAC_DMA_INTR_ENA);
->  
-> @@ -1891,6 +1920,7 @@ static int xgmac_resume(struct device *dev)
->  
->  	/* Enable the MAC and DMA */
->  	xgmac_mac_enable(ioaddr);
-> +	enable_work(&priv->tx_timeout_work);
->  	writel(DMA_INTR_DEFAULT_MASK, ioaddr + XGMAC_DMA_STATUS);
->  	writel(DMA_INTR_DEFAULT_MASK, ioaddr + XGMAC_DMA_INTR_ENA);
->  
-
-[Severity: High]
-Can system resume deadlock against the timeout work here?
-
-At this point NAPI is still disabled from xgmac_suspend(). The work is
-already enabled, and DMA_INTR_DEFAULT_MASK (which includes TSE) is
-unmasked before napi_enable() runs. A "transmit process stopped"
-interrupt in this window takes this path in xgmac_interrupt():
-
-	if (intr_status & DMA_STATUS_TPS) {
-		...
-		schedule_work(&priv->tx_timeout_work);
-	}
-
-The work then starts with napi_disable() on a NAPI that is already
-disabled:
-
-worker
-xgmac_tx_timeout_work()
-  napi_disable()
-    netdev_lock(n->dev)
-    napi_disable_locked()
-      loops in usleep_range() while NAPIF_STATE_SCHED is set
-
-resume
-xgmac_resume()
-  napi_enable()
-    netdev_lock(n->dev)    <- blocks on the worker
-
-Only napi_enable_locked() clears SCHED, and it needs the netdev_lock the
-worker holds. Neither side can make progress.
-
-This window existed before the patch. However, the suspend hunk is meant
-to keep the work from toggling NAPI while it is down, and the
-enable_work() placement here leaves it open. xgmac_open() also enables
-the work before napi_enable(), but there the DMA interrupts stay masked
-until after napi_enable().
-
-Would moving enable_work() and the interrupt unmask after napi_enable()
-in xgmac_resume() avoid this?
-
+base-commit: 30c71476d842b094651bd7712f6c8ee8716147d0
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104063245.23402-1-0xbeac%40gmail.com
+2.43.0
+
