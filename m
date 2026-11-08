@@ -1,75 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794103619;
-	b=i5UXHYIgCpZJzHhMBlNYn1+zuQwplBE1qTYSDnPZWq99XIKG7fxU+zR2iPA+2DClozS3
-	 r4Eo1qyZuoO8eOlt0FMGdUVOOMKg3kqrBjPOb8/z9Ys+HN0qAq6qiLyGB29Bx7cVZl80i
-	 F+lAu/DZTAeEzw9ddv0noXMkNP0SEXZuGjN2SHNYPYB3n+fuK3dQMfHbxVBNzCqJrWcZO
-	 dKrEbvcoEXtWndKn6GYNIzno0hSVQnJkd6RXXk4YCUPhCsEmQxBpsfiggBz4bPY8XxIDe
-	 tenW57qDFWRQw4aFJJ0mTgJ3II72gDZD1zN7Mn8zFp8wIYZBF6mjVPxPGwcN/RwD7iA==
+	t=1794103880;
+	b=OZ69h5H7GAEC7usoYNhrvkqiGuGhuPpsZN3izC5G0zZMWbpGTnG9UZ7I4pfFmX+Qlt8c
+	 Ptkob3H8QUzZd47AaE6qRT+v4UWo1pAfMtaAclKmQsERWedW8drBwQdLQA4g1yTYC10OV
+	 MflWlx2HaZK7GIB/TMd7Czw164io+x/6l5/q4ui4Z4olSTEmOwk+VCkGs54cGKCyGcdPw
+	 IR5I3KROAzt0ql4PvFAIAY4VvFs4lK4kLlKs3YwV7kHP6fq/cKTwPW4BTnioYegYG0fSG
+	 b6jT3BXhpPwi7Q93NEgYiwAK1hBS9+Y1b2VU/U4t9NB7v5Qc5tpm2FqlLRf3Y6fn8Uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794103619;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=2/D69VEzPM7Q/+SVKhU5ORcgYn8HSMO73uMCYp751oY=;
-	b=Caj8u4OW7839QniJGi1+pcTwiatCuvwjqEo/L6ROt4FB8M3iuFp/eCRpQyTVEEivtXX6
-	 1E702VWk70L1u6r/ijuGyXuEbjJgz+Q+d1O3lyQsn67nGmmJ0MIcV8m9BIe4X/IpuR/QP
-	 awxXmz4gTu4X/Vd57697Qk8umS9z5UhjTdWKSjuwvwSZWdvwUuFR6S9RQ8giqzloWKG/E
-	 R7BHMVtUnJB3q+cZ5yg3O0IQ4fNz/N90/UvocT66aCDtm/V3Ia+0u8h1uwefqCXfh1Cm/
-	 SyDBqSqgNoaOG37X6iqSC9UktDe/ctwQbv0Uwu9strG9DUXodhkM/LBENGX0hti1mYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794103880;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=gQaCTOTpCvF7DZ5GQ3rLnRX05Gyc9PqQ55BJs+cL+kc=;
+	b=tILXS5y1xHeBEGse9uwZgiZDK8K7zwIkWqxkGtOxyPdMrXSbbY1hptKjN9lYmz09BBVD
+	 SvRWEZn23rGDHFbNG/cKZYo/tmYqsFdEWzrst6pKXZpiOrcv6x5wPvOQCZNSm9wjzY/sw
+	 7xf826myb4liNSzDIslyFE0HsKkZDvGw6AeLI0nKWfUZ1aXfgRN+WBfFAr9bYo5RV5XJ2
+	 4Ttvv/fWOZAv6Rdhf1w0Uxr6Bejsdvrve8UaPt+NNDlSYaRUmGmpfZwXOm1+HKLDIJVgC
+	 rJK9DHioCyq94Lm0k+0kTaHt/QIeCcniKxhwqnvmg0RgCZk96dHSY/DckI+AKCJe2iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=MALCRar1;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3BC606A331;
-	Sun,  8 Nov 2026 02:06:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B3BC606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NFtJ4rs3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB70606A31F;
+	Sun,  8 Nov 2026 02:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=MALCRar1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=MALCRar1X88OK8ITtk1PjF/ZBkUMbOoqCFBGWMXDO+c/84HKmVy1AcOycZ8IdVhXM3sqUbTLMy7iS
-	 5mCxKm2lSm6w+5XefiT4sop7JHRUBsle6QVjI77e21YpYQVUYRiXy/PX8X1raoGdFmGLIGBQ52xtTT
-	 Eyz+P00yKI04LkXM=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16aefd93dfdc-952a1;
-	Sun, 08 Nov 2026 10:06:55 +0800 (CST)
-X-RM-TRANSID:2ee16aefd93dfdc-952a1
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56aefd91c07a-59b0f;
-	Sun, 08 Nov 2026 10:06:54 +0800 (CST)
-X-RM-TRANSID:2ee56aefd91c07a-59b0f
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	willemdebruijn.kernel@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Subject: [PATCH net 2/2] net: add a KUnit test for the alloc_skb_with_frags() tail split
-Date: Sun,  8 Nov 2026 19:06:17 +0900
-Message-ID: <20261108100617.23840-3-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261108100617.23840-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261108100617.23840-1-yanhaishuang@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NFtJ4rs3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB611F008A1;
+	Sun,  8 Nov 2026 02:11:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794103879;
+	bh=gQaCTOTpCvF7DZ5GQ3rLnRX05Gyc9PqQ55BJs+cL+kc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NFtJ4rs3/7TZFXLhRMyF0pX3xpa0qsqf72Jez9M70SKrM23v/ZyF1e1hu1BnuyOJm
+	 t2A2rSgfdwCwEmLA3zb3eQPTTVZ4By9iITy96X9Q0JP5thwfMf+1MCxZtIfKElhK71
+	 Yyeg6Aj9IBe2meIx1FA85UUt301+DUNGbDwjdiKBBWN7vN8l1518EphRNNjg27iuej
+	 50Np2Dacw8C3RmaihkRD1U5+iW22BVeGK3r4IUuc89srEq0sIGGwWj7PafKQ4Qgnml
+	 w2SuKHVLTrMmdSKe7CZX9jgJ4JhE4MGgvct/ETXOjWsRCjMMMdPJwC5rEfzaWSiPai
+	 KKJjaVv98D/Ig==
+Subject:
+ Re: [PATCH net v2 2/2] xfrm: fix selector matching for IPv6 atomic fragments
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Sun, 08 Nov 2026 02:11:18 +0000
+Message-ID: <179410387864.994134.9353647654476828846@kernel.org>
+In-Reply-To: <20261103225842.3204446-4-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261103225842.3204446-4-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,56 +63,178 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Allocate MAX_SKB_FRAGS - 2 full chunks of PAGE_ALLOC_COSTLY_ORDER plus
-a 7 page tail. Rounding the tail down to 4 + 2 + 1 pages would need
-one frag more than MAX_SKB_FRAGS, which made the allocation fail with
--ENOBUFS before the previous patch.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
- net/core/net_test.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-diff --git a/net/core/net_test.c b/net/core/net_test.c
-index 2b5080c22663..5a451aaf37c9 100644
---- a/net/core/net_test.c
-+++ b/net/core/net_test.c
-@@ -1721,7 +1721,31 @@ static void netmem_ref_test_tcp_devmem_recv(struct kunit *test)
- #endif
- #endif
- 
-+static void alloc_skb_with_frags_test_tail(struct kunit *test)
-+{
-+	/* MAX_SKB_FRAGS - 2 full chunks plus a 7 page tail: rounding the
-+	 * tail down to 4 + 2 + 1 pages would need one frag too many.
-+	 */
-+	unsigned long len = (MAX_SKB_FRAGS - 2) *
-+			    (PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER) +
-+			    7 * PAGE_SIZE;
-+	unsigned long frags_len = 0;
-+	struct sk_buff *skb;
-+	int err, i;
-+
-+	skb = alloc_skb_with_frags(0, len, PAGE_ALLOC_COSTLY_ORDER, &err,
-+				   GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, skb, "err %d", err);
-+
-+	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
-+		frags_len += skb_frag_size(&skb_shinfo(skb)->frags[i]);
-+	KUNIT_EXPECT_EQ(test, frags_len, len);
-+
-+	kfree_skb(skb);
-+}
-+
- static struct kunit_case net_test_cases[] = {
-+	KUNIT_CASE(alloc_skb_with_frags_test_tail),
- 	KUNIT_CASE_PARAM(gso_test_func, gso_test_gen_params),
- 	KUNIT_CASE_PARAM(ip_tunnel_flags_test_run,
- 			 ip_tunnel_flags_test_gen_params),
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The new atomic-fragment shortcut in __xfrm_decode_session()
+  (net/xfrm/xfrm_policy.c) checks only the FIRST IPv6 Fragment header,…
+- [High] xfrm: out-of-bounds read via ipv6_find_hdr() in
+  __xfrm_decode_session()
+
+--
+
+xfrm: fix selector matching for IPv6 atomic fragments
+
+This commit changes __xfrm_decode_session() so that an IPv6 atomic
+fragment (offset 0, M=0) is decoded as a complete datagram. It clears
+FLOW_DIS_IS_FRAGMENT and recovers the ports at the transport offset found
+by the flow dissector. Real fragments keep ports, ICMPv6 type/code and GRE
+key unset.
+
+> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> index 4f6a5b81e3b5a..5acb1e0c1b02f 100644
+> --- a/net/xfrm/xfrm_policy.c
+> +++ b/net/xfrm/xfrm_policy.c
+> @@ -3530,9 +3530,25 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
+>  		decode_session4(&flkeys, fl, reverse);
+>  		break;
+>  #if IS_ENABLED(CONFIG_IPV6)
+> -	case AF_INET6:
+> +	case AF_INET6: {
+> +		struct frag_hdr _fh, *fh;
+> +		unsigned int offset = 0;
+> +
+> +		if ((flkeys.control.flags & FLOW_DIS_IS_FRAGMENT) &&
+> +		    ipv6_find_hdr(skb, &offset, NEXTHDR_FRAGMENT,
+> +				  NULL, NULL) == NEXTHDR_FRAGMENT) {
+> +			fh = skb_header_pointer(skb, offset, sizeof(_fh), &_fh);
+> +			if (fh && !(fh->frag_off & htons(IP6_OFFSET | IP6_MF))) {
+> +				flkeys.control.flags &= ~FLOW_DIS_IS_FRAGMENT;
+> +				flkeys.ports.ports = skb_flow_get_ports(skb,
+> +									flkeys.control.thoff,
+> +									flkeys.basic.ip_proto,
+> +									NULL, 0);
+
+[Severity: High]
+Is it safe to call ipv6_find_hdr() here without first making sure the
+IPv6 header is in the linear part of the skb?
+
+Everything else in __xfrm_decode_session() goes through
+__skb_flow_dissect(). That reads headers with __skb_header_pointer(),
+so it copes with a nonlinear network header. ipv6_find_hdr() does not.
+With *offset == 0 it starts with:
+
+net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
+    ...
+	u8 nexthdr = ipv6_hdr(skb)->nexthdr;
+    ...
+}
+
+That reads skb_network_header(skb) + 6 directly. There is no
+skb_header_pointer() or pskb_may_pull() in front of it.
+
+xfrm_icmp_flow_decode() looks like a caller where the header may not
+be linear. It clones the ICMPv6 error skb and does
+pskb_pull(newskb, hl), which drops only the outer IPv6 and ICMPv6
+headers. It then calls skb_reset_network_header(newskb) and
+xfrm_decode_session_reverse().
+
+Nothing pulls the quoted IPv6 header into the linear area. If that
+header sits in page frags, skb_headlen(newskb) can be 0 at this point.
+The dissector still copies the inner IPv6 and Fragment headers out of
+the frags and sets FLOW_DIS_IS_FRAGMENT. The new ipv6_find_hdr() call
+then reads ipv6_hdr(newskb)->nexthdr past skb_tail_pointer(newskb),
+into tailroom or skb_shared_info.
+
+This is reachable from xfrm_selector_inner_icmp_match() for an incoming
+ICMPV6_DEST_UNREACH, ICMPV6_PKT_TOOBIG or ICMPV6_TIME_EXCEED message
+whose quoted packet carries a Fragment header. A remote sender can
+therefore trigger it. A BPF flow dissector that sets is_frag on a short
+or nonlinear skb would reach the same call.
+
+Before this patch, the AF_INET6 case never read the skb directly, so
+this read is new. Could this avoid ipv6_find_hdr() and walk the
+extension header chain with skb_header_pointer() only, starting at
+skb_network_offset(skb)? Or is there a guarantee I am missing that the
+network header is linear for every caller of __xfrm_decode_session()?
+A pskb_may_pull() here would modify an skb that these paths otherwise
+only read, so I am not sure that is the better option.
+
+[Severity: High]
+Can the Fragment header checked here differ from the one that thoff and
+ip_proto describe?
+
+With target == NEXTHDR_FRAGMENT, ipv6_find_hdr() stops at the first
+Fragment header in the chain. The dissector runs with
+FLOW_DISSECTOR_F_PARSE_1ST_FRAG, so it skips past any offset-0 Fragment
+header and keeps walking:
+
+net/core/flow_dissector.c:__skb_flow_dissect() {
+    ...
+	key_control->flags |= FLOW_DIS_IS_FRAGMENT;
+
+	nhoff += sizeof(_fh);
+	ip_proto = fh->nexthdr;
+
+	if (!(fh->frag_off & htons(IP6_OFFSET))) {
+		key_control->flags |= FLOW_DIS_FIRST_FRAG;
+		if (flags & FLOW_DISSECTOR_F_PARSE_1ST_FRAG) {
+			fdret = FLOW_DISSECT_RET_IPPROTO_AGAIN;
+			break;
+		}
+	}
+
+	fdret = FLOW_DISSECT_RET_OUT_GOOD;
+    ...
+}
+
+It stops at the first Fragment header with a non-zero offset. At out:,
+thoff = nhoff, so flkeys.control.thoff and flkeys.basic.ip_proto come
+from the last Fragment header it processed.
+
+Take a packet like this:
+
+  IPv6 | Frag(off=0, M=0, nexthdr=44) | Frag(off=N>0, nexthdr=UDP) | payload
+
+This is a real non-first fragment. ipv6_frag_rcv() treats it as one: it
+skips the atomic header and then reassembles the inner header.
+
+Here, though, only the outer atomic header is checked. FLOW_DIS_IS_FRAGMENT
+is cleared, and skb_flow_get_ports() reads at an offset inside the fragment
+payload. decode_session6() then copies those payload bytes into
+fl6_sport/fl6_dport.
+
+Forwarded fragments are not reassembled unless nf_defrag_ipv6 is loaded.
+So a remote sender could get this packet matched against port-specific
+selectors through ip6_forward()->xfrm6_policy_check(XFRM_POLICY_FWD) and
+xfrm6_route_forward(). Before this patch, it could only match
+port-wildcard selectors.
+
+The opposite case also seems possible:
+
+  IPv6 | Frag(0, M=0) | Frag(0, M=1) | UDP
+
+This real first fragment would get its ports decoded. The later fragments
+of the same datagram would still get ports=0.
+
+Doesn't that bring back the per-fragment classification mismatch that
+7e3a42a12c4b removed? It also seems to contradict this part of the commit
+message:
+
+  "Leave ports, ICMPv6 type and code, and GRE key unset for real
+  fragments."
+
+Would it be safer to require that every Fragment header in the chain is
+atomic? Another option is to check that the header the dissector stopped
+at is the one tested here.
+
+> +			}
+> +		}
+>  		decode_session6(&flkeys, fl, reverse);
+>  		break;
+> +	}
+>  #endif
+>  	default:
+>  		return -EAFNOSUPPORT;
+
 -- 
-2.43.0
-
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261103225842.3204446-2-Jeremy.Jean%40oss.cyber.gouv.fr
