@@ -1,59 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794147750;
-	b=t6nBxBCSHaI5mywXb/QjTqqEPVl3gZItVqS57FosR61Mr2J5fBuMgiiwJ2qpGMEov9ol
-	 BffYBROCX6PpkLLE2xHb52pf5uabTc+wukbMCdvVeiNh6meBckh5V65PjqOw1k+RnFP8+
-	 DQiaI0zFEg1FuhtR/2eIwb2IRYrVOTw4DrMVRuSGOVI0O+52b48Q2lXpX4TJxgnjCbg2O
-	 DY0pIFrrvfktdkVea4/EQSRWTprP19Ll2e1uGV0r36/PBMDz1pTafEoREWyoq1Ky+YZNE
-	 V8W11Eu8OuSThFiV9Tny7qI3XBkESexXOIvPluURX+iB8DXnS/3w34YLmoQLA0otIYg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794147750;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=8nSnyp4qIY+eMxZ+jWwWlVQJaqb6UKomcauQ+sOlv74=;
-	b=mz9VcawaIUXe4NQUKbvI1KY/vpNN4rYaxqCMKRdwHkWBhPDtnhygiIIf/PhwSz1QcJN1
-	 QVJ69REEGshLDFe2ZST3kMhCPvHEkjcpli8OgHy8waTfNQ/YAJYcnh3QspM8ZvqhhPcn5
-	 Buc44CnaL040bhaYO5JvwUh/2JG2FuTPvKkRVC9psxpLrNZORfLX7hOJhj2tUGuZD/iN2
-	 DkEoNwi3uU9yqBtIbMeUrEN0PRQ1SbQVbeE0d24x3Hv4SrrBe5TuT5sF+O0IQNL/E7bQL
-	 1B7YDvfRTr7PwOQqQG0jJG6or8SUX2lhOXYMEYu/4YWI654DJdodclmqOVZ6yH0hekg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BR6d+siC;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794147983;
+	b=Kj0ngIMcVOPuJ2LgZb0r9R4i3xseM1kGYWYmyTOMSec5zDANMnsrdlndy+AqqjAqtUSU
+	 mmsiRXqlGuUSgPS+KdxPZ/KoJshLqzpGn8sYVYjoQ4s1jRc2FKTjcqBaADmXIwZJLRMDt
+	 k8qj5WMWDq9HaUcM9hnZCRnHefhDnvPR4tdjFIeNgQPVDD5dnKnAh2zQBL7P51Vajl0yj
+	 mVn8jH6LzbiUXOStrB1UiSIn5OxHgiArlJ2sGqUWIcWbLZgtXtzvLxM1vIO4DaYt4Me7D
+	 ZdtD3AttsinB84KLa2ut2YrOwX8jcZ9ZRv+wQADM87OOuwUJ0QB//bvMVd8N4PckTEg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794147983;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=hjhsNncsjgKW87hQ+9pO09miYo1AKAJ+Ny2ApylajPw=;
+	b=5Pblz4bcBzg08GhXS/XlmHNtps1ooirRdh4jQXe85mBKtIvpQJHvpaHpjA0LaGwDWP4p
+	 yYxL2QuBa6HpG9kYbieS7hR1Xx0Cf8ZOqEhQho8rMuMEhA3uqUIzCx1nDd0kubMlGGCeK
+	 UkxknTMvnMcps7ClqxZJQB7/yGA6pxt8Fzbb+/py0rO9tdoQkfCZKVoxifDd6er4FXaqE
+	 mjjEKJzzP6cOJkA0r8fepw/pbxL5v+lcwp/E0WDrDaOefvPiYHtohjUNrhSyC5gFkDams
+	 AVe5gDRhWFyK9vC6az6rAFDHvyibPst3/SP6f5GdFYfjCVjZ/n452Yjf6lgcqAw/skQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YmEcQCo4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.46
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012046.outbound.protection.outlook.com [40.93.195.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F965606A331;
-	Sun,  8 Nov 2026 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E09606A31C;
+	Sun,  8 Nov 2026 14:26:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58E09606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BR6d+siC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6720C1F0089F;
-	Sun,  8 Nov 2026 14:22:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794147749;
-	bh=8nSnyp4qIY+eMxZ+jWwWlVQJaqb6UKomcauQ+sOlv74=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BR6d+siCVXoHe+4BaQgvXxUzZKyolUL4fCaEOmHQuNmqygG+idw61mbvLKmiyxX9A
-	 5iyZg9dRKtZTo3J6mV9F9zhEsvysqNOvQwveT1o2nSqmUzI6pbOe6Ta6Rf5v5nZeMc
-	 mfWsgb0wcJt/0HPbEf4K5YptCnnWeEriaSBgzcIGxd7i8adg0RgzrJkqd9VxUkNNsy
-	 LdJVPw2n72R9d0whtwE8Yyv8/fo9r4NZxfVciO8ck/S2WaAtMz5ICSj6vZHx1E2xIC
-	 IB59w4T/7aIQMIMESwAr1VrMRNJx512GnptBeEjnufF1R26lH35jirI7klk7aw15h9
-	 IMFZ41N1FIW7Q==
-Subject:
- Re: [PATCH net-next 3/4] net: dsa: motorcomm: Use safe 64-bit counter reader
-From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 14:22:29 +0000
-Message-ID: <179414774900.994134.836318177639068785@kernel.org>
-In-Reply-To: <20261107132040.1066996-4-mmyangfl@gmail.com>
-References: <20261107132040.1066996-4-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YmEcQCo4
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eLqYSmCsKPNYAwS8vSZzaAv51k6R5Apcy4blNJ+NOutqGy6qR4SQ/iek9TEma+a8OYowfWXVSzDGpClH7Du2CX4FsOLG2KBrsZykHP1L6cutt34skd8ZLZSdCOKDow7UlT8k1G6ZQhHS++IVBhIKnc6GESnuBhJ0SSBIEdxDF5UFrsQno/kCUhYfcQlOUPqYWlE1baia5E7N/hNhhoPS1UouoKHXzNZxeKJz3S6k2ja317lHcz3KM8XKCBvfoFViqKyE75+DCnxy34mkwVXNYamLjaQ4HEuAWobeWVh+YZvqzqltrCfxoD62JZT+g+NZZEWq+m982N2baHQ3H6nZvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hjhsNncsjgKW87hQ+9pO09miYo1AKAJ+Ny2ApylajPw=;
+ b=QH30DI+QVTCiKPiH+iiHrEmM1iGc3KGRQr3iQph2Ewl7/+I2FXDcWl8SrC+6KpMe2ai1Upy2GnG4HHrAiXXXBNR2ni/u65Z5U7YiYb3fJJ/f52GYElYM4WU67yEGW+ezjMT+cdJGBWpeK2jBWEfPa6P/PJ2OkB1v4SEfOdqQZOJfqEBK1dDL2iGzfjcYdxz5ZB/I7PqCfWpEBWQ77ixBgYjx2KBeSPha9hCH3Ly9M1p991SM1OsfTHivhUVbxCOChURvdoU9RO2aIdZtNj+CRNoSXBEN1fQPsQIDkfUyQyPs/rA6qPRMDaqkJG+bCy4WsD0R+7A5ZISvUcKx6oDWxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hjhsNncsjgKW87hQ+9pO09miYo1AKAJ+Ny2ApylajPw=;
+ b=YmEcQCo4uTXe5qqyg9kWANIZml6N7NVqpO+CCp8w3qVqDYOMAKF35M5BNiBb9G5h0nWUeDzsVOi1/6C9DMtBXHHjbNpq0KM01Ix2BbAjZM2D4OdOhbirF1jrCiDzibTXxa2lbWOqMMNlINn1kQik1BEurmPB3KaCJfD1TUqHtZFNQFP4V3/nRsT52vRSLXH2d+IWPJ/IjKj5HsyNcNuJMR9T/1UoukRkzLapII8YalL/4h0Gul6y/IlIgb/ueE0Pt+RbsMjWgfA5ku6nH+TOaB0Qp1VHb9STbqq84UfDCl9uD8BKwupd6XjHnfyMs6NodoheAknqQZFb3Ewj2wAtTQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by BY5PR12MB4049.namprd12.prod.outlook.com (2603:10b6:a03:201::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Sun, 8 Nov
+ 2026 14:26:20 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0592.010; Sun, 8 Nov 2026
+ 14:26:20 +0000
+Date: Sun, 8 Nov 2026 16:26:10 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, shuah@kernel.org, weiwan@google.com,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v2 0/2] ipv6: ignore link state in gateway check
+Message-ID: <20261108142610.GA1273791@shredder>
+References: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104195655.1406837-1-aroslavdudkov622@gmail.com>
+X-ClientProxiedBy: TLZP290CA0010.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:9::9)
+ To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,159 +96,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BY5PR12MB4049:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b28f85f-5487-4e83-6fd7-08df3da441fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|18002099003|22082099003|10067099003|11063799006|261028144727099003|261026121527099003|261022075727099003|261022105027099003|56012099006|261026140227099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	L1lTf4xhw8q2P93/xqwbQshk2YtaaFPiiFsU3XGGW+cpNaU4JS8M38+gOE4wpfceUP7Kq+aLP1IL2OxCcWTOdxLN0W/fj7+X/fGF5YhQJc08vWtEf3A7Lz3RVtARZIh7ffT6Jdunt7oHZkSpAFquIGs6JPAb6XpJuvPhkQq9d+hcnigEQLoE6MKHZiYKffM8AwB4criyU8vRQDEklQTo/3l1M+2qgGPgfWSoI9vYKuJuhzsKTua6YJzpGy5T+gJJWgf0SMcv+VOQ73Dg5SoRMCjFMgOUsgopiTjVyWU2Efn7byu8SFv6wAyEP8NecqnX8IuEhuLM5PWjLNGOFx7FQpIN8lG0sqh0Z5klpMKVYCKXNtMDihKOO7/VD585kkpQl4Voiep0t+nD5J5VectGIF9qDbQxUs8QLLSzGXT6eUgdq88qILSCbvdk26Pk2a5y5BSGoimtKNXsoqq45y9Gsoj/rhD0wfMTNZqqVDqyGwgVoioKxzfTEpjoVDPXZhBRMHR0uFvYceNQI+mzH+50Lsa8azCjQhhFC1WCJEm0Zuun4X+qY3hAH4lk7KlgX+f1iIOeTK/7tSmXZ6ZOZM6MaNYLk7LXiMnn+IUCbsHFWQxaHFvQWEaP1n5AiAlzwoZrpjbv1p6j2ez9a9JGZR+PFHxnCuu8/VrzWwttLLMUPy0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(10067099003)(11063799006)(261028144727099003)(261026121527099003)(261022075727099003)(261022105027099003)(56012099006)(261026140227099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qE2bU3y/GZwWat5kXwPR9tNryDm3acEW8TEdRSWloQFBIAe64XhZ13vOXXsI?=
+ =?us-ascii?Q?ZmXZGeZFlDumiQBYsPIrMdaIP6fTFtEwD2UcBIyO+6PxS1zvGY6ZURnHI4Mt?=
+ =?us-ascii?Q?/nC5aGiFk7y6UeGlxTUJx6j6D+h73PnnBCFjCi+KCok1SaM3ZFCD7rX+NgsR?=
+ =?us-ascii?Q?XyRW/1QfjgXaZ6oAdm2YTnezd4XMwl9YTy6rx5e/PXfXTOQ2XxR7KSk9YBC9?=
+ =?us-ascii?Q?KIKqL6tKj94UurEcCA3uIOSQL2hOEs/02cnrqJymVlMbCSH9wsR6CeQR+Kjr?=
+ =?us-ascii?Q?SYZ/F4G2VmuBTp36rgo5gSL1lsOiGJ187J8LoKbuX95hhAFpmH2AeWFCbBbj?=
+ =?us-ascii?Q?OB4C1MW6HjIVzpKghj3tvSwv3igJcmJ2KoNzWWmy78+pDM+EsIEh/awvKWQF?=
+ =?us-ascii?Q?iifeFGERKQlQ4WMBLxrGJ0fxnRDx09F6F5IK5IDjuWWr3EG5XjldbI2Kgk5I?=
+ =?us-ascii?Q?j+Y9q7ydO1X+Kl/mUiHP8z5va97eBNSpuEeIrilprZdTzVOl3jvhsOEwT8Of?=
+ =?us-ascii?Q?MQ8GIdjDN341crkgtDlVL+9tsSk8rACnfoWQlJOGKcFb83ZEUudJ9QNpqQ75?=
+ =?us-ascii?Q?cjE08AzaIoMFR6gSio56U45nLh1cGY8pqDGGiD97kecx5o9h+qnVYQgbf2sM?=
+ =?us-ascii?Q?x40j9/SJQE7fXVOHbN0uaUZSPmT1/gt04YMGB8njRG2wzDRkd4NdM/xpvp+k?=
+ =?us-ascii?Q?T+G6Igo/MocZFQ3JraK9Jtid2kpH9+7lp97GE3wGCjuNhtksBeaaPMSp3ztO?=
+ =?us-ascii?Q?xL3nHKPbqfpPJ4NSoKiExrYMpPaBL9LloJCXMIL5UIiqF8TtMTqiSSURfvCX?=
+ =?us-ascii?Q?UhjXRpiSm94Ec4BgCKXZHifqJabYN/FmYyJS7biCQgOn8ynxxSKlbOVgycEy?=
+ =?us-ascii?Q?hDXb995byHBVRlIaeabiyouXKly2ChMcobS4EJMRE1KtMjB6tb4xwxDU+0o0?=
+ =?us-ascii?Q?AjGbF7kj/jPnn9icjQUzt/N7VPteAB3gbJHTL3U6Oe9ERmPTsVZImilggTpK?=
+ =?us-ascii?Q?OLez3e367X6NUHPkbrabZpxBsmcv7WlionHkBimpuHY2Jj14o7hqsowHPOtz?=
+ =?us-ascii?Q?T0q9jYCNpAvrcniZAWE7TibGTe7IkGnyeriAF55khd7l9zbpWu6kOUX+Ydkv?=
+ =?us-ascii?Q?qZ78dr7WrkLleKT/qsy4tRzH4Qbcx5OjCfEfmBCNHpBA9r5+EnDbHKfi+MH+?=
+ =?us-ascii?Q?xLx1VyYsU0i/UnV0BRRI+Ydt6ml7kQLBUBcGk6DAVgw0n+mFKm+3+7MKYrJe?=
+ =?us-ascii?Q?9Y3VU+zhHjcQ5+JF9qwx8x4cPbMsR8MlJJfh2/5U24PPhrOilVRLmWtwgIFd?=
+ =?us-ascii?Q?F8YxQvDesQuD5Je9eviDEa1OMLk9/8rwoYKL+MYVP+5YIvxoIO71aXm8in8J?=
+ =?us-ascii?Q?89dMuMettL+gM9ssPhlmF0T3z1lFYPGX15SxymJqtNWnVNNqqtDn2OwR0ELV?=
+ =?us-ascii?Q?3h6RYvcvpkq6jwaua5cCtxfpzbUo6NhZE+hxPcOdNcPrz7+VkD5gyrwkXklY?=
+ =?us-ascii?Q?Y7LDtIgYggaA5r5GCIEYURtVLYt9MbSPf2PKx5yrdOlipTxxW2KNI0FDkng3?=
+ =?us-ascii?Q?r+oqNIk+1+cxG/8EqfaPwDPlNMmuGI6bkUokCLAV7i7os6Hzk7C9zwcvxSAn?=
+ =?us-ascii?Q?P0UVg3uHj5am6o17mI6TUA7POySyRGWOOsocQcSbrQyqd/VTDJ6vm0JBkQxl?=
+ =?us-ascii?Q?pF6aIWqqXUYKQiGZDctWwuNo8Ru1+/MUkEWG5hwoHibnZwLs?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b28f85f-5487-4e83-6fd7-08df3da441fe
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2026 14:26:20.2007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aG2ZyKnczJKsXXI6fcuLECh76vv37ozG8PJqb7DbTy+MrXSRJVPez050yWBLGpPkXDyuxdpNQN+qybRpeBmenw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4049
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Nov 04, 2026 at 07:56:53PM +0000, Yaroslav Dudkov wrote:
+> IPv6 gateway validation can reject routes in non-main tables when
+> ignore_routes_with_linkdown is enabled and the nexthop device has
+> no carrier, even though these routes should be added.
+> 
+> Fix this by ignoring link state during gateway validation and add a
+> regression selftest covering IPv4 and IPv6 route installation.
+> 
+> Changes in v2:
+> - Fix variable ordering.
+> - Add a regression selftest.
+> 
+> v1: https://lore.kernel.org/netdev/20261028152634.3355852-1-aroslavdudkov622@gmail.com/
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] yt921x_counter_read() in drivers/net/dsa/motorcomm/smi.c
-  returns a false -EIO for half of the low-word wraps that race with a…
-- [Low] "net: dsa: motorcomm: Use safe 64-bit counter reader" fixes a
-  user-visible bug, a transient ~4 GiB jump in the 64-bit RX/TX good-…
-
---
-
-net: dsa: motorcomm: Use safe 64-bit counter reader
-
-This commit changes how yt921x_mib_read() reads the 64-bit MIB counters.
-The old code read the low word and then the high word. That is replaced
-with a new helper, yt921x_counter_read(), which reads the low word again
-and reads the high word again if the low word wrapped. The aim is to
-avoid a spurious ~4 GiB jump when the low word wraps between the two
-reads.
-
-> diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
-> index 90b0ef670aa31..b45bc82117412 100644
-> --- a/drivers/net/dsa/motorcomm/mib.c
-> +++ b/drivers/net/dsa/motorcomm/mib.c
-> @@ -102,29 +102,26 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
-
-[ ... ]
-
-> -		} else {
-> -			u32 val1;
->  
-> -			res = yt921x_reg_read(priv, reg + 4, &val1);
-> +			buf[i] = val;
-> +		} else {
-> +			res = yt921x_counter_read(priv, reg, &buf[i]);
->  			if (res)
->  				break;
-> -			val = ((u64)val1 << 32) | val0;
->  		}
-
-[Severity: Low]
-The commit fixes a user-visible problem: a transient ~4 GiB jump in the
-64-bit good-bytes and bad-bytes counters. That jump shows up in ethtool -S
-and rtnl_link_stats64. Should it carry a Fixes: tag?
-
-The read removed here, which takes the low word and then the high word in
-two separate transactions, has been in the driver since it was added in
-drivers/net/dsa/yt921x.c. It was later moved into
-drivers/net/dsa/motorcomm/mib.c by 25265e7ccdb51b. That would suggest:
-
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-
-> diff --git a/drivers/net/dsa/motorcomm/smi.c b/drivers/net/dsa/motorcomm/smi.c
-> index bf3adfd64165a..16f62409422d5 100644
-> --- a/drivers/net/dsa/motorcomm/smi.c
-> +++ b/drivers/net/dsa/motorcomm/smi.c
-> @@ -63,6 +63,41 @@ int yt921x_reg_update_bits(struct yt921x_priv *priv, u32 reg, u32 mask, u32 val)
->  	return yt921x_reg_write(priv, reg, u);
->  }
->  
-> +/* Reliably read a 64-bit counter, assuming the counter isn't that "fast" */
-> +int yt921x_counter_read(struct yt921x_priv *priv, u32 reg, u64 *valp)
-> +{
-> +	u32 old_lo;
-> +	int res;
-> +	u32 hi;
-> +	u32 lo;
-> +
-> +	res = yt921x_reg_read(priv, reg, &old_lo);
-> +	if (res)
-> +		return res;
-> +
-> +	res = yt921x_reg_read(priv, reg + 4, &hi);
-> +	if (res)
-> +		return res;
-> +
-> +	res = yt921x_reg_read(priv, reg, &lo);
-> +	if (res)
-> +		return res;
-> +
-> +	if (lo < old_lo) {
-> +		u32 new_hi;
-> +
-> +		res = yt921x_reg_read(priv, reg + 4, &new_hi);
-> +		if (res)
-> +			return res;
-> +		if (new_hi != hi + 1)
-> +			return -EIO;
-
-[Severity: Medium]
-Can this return -EIO for a read that is actually consistent?
-
-The reads happen in this order:
-
-  t0: old_lo = [reg]
-  t1: hi     = [reg + 4]
-  t2: lo     = [reg]
-  t3: new_hi = [reg + 4]   (only if lo < old_lo)
-
-lo < old_lo only shows that the low word wrapped somewhere between t0 and
-t2.
-
-If the wrap happens between t1 and t2, then hi == H and new_hi == H + 1,
-so the check passes.
-
-If the wrap happens between t0 and t1, the carry is already in the high
-word when hi is read. Then hi == H + 1 and new_hi == H + 1 == hi. The
-(hi, lo) pair is a valid snapshot, but new_hi != hi + 1 rejects it with
--EIO.
-
-The t0..t1 window is one SMI transaction, the same size as the t1..t2
-window. So roughly half of the wraps that race with a read would take
-this path. At 1 Gb/s the low words of the good-bytes and bad-bytes
-counters wrap about every 34 seconds.
-
-When it happens, yt921x_mib_read() breaks out of its descriptor loop, so
-the remaining counters for that port are not refreshed. The partially
-refreshed buffer is still published, and this message is logged:
-
-  Failed to read stats for port N: -5
-
-In addition, yt921x_mib_poll() backs off:
-
-	if (res)
-		delay *= 4;
-
-That moves the poll interval from 3 seconds to 12 seconds, for a bus
-error that never occurred.
-
-The later "net: dsa: motorcomm: Prevent rx_bytes/tx_bytes underflow"
-change drops the whole sample for that cycle instead. It does not touch
-yt921x_counter_read(), so the false -EIO is still present after it.
-
-Would it work to accept new_hi when it equals either hi or hi + 1 and
-pair it with lo? Another option is a hi/lo/hi read that retries while
-the two hi values differ.
-
-> +		hi = new_hi;
-> +	}
-> +
-> +	*valp = ((u64)hi << 32) | lo;
-> +	return 0;
-> +}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107132040.1066996-1-mmyangfl%40gmail.com
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
