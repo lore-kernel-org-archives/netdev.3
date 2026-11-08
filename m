@@ -1,82 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794144551;
-	b=ll/UMxm+0r1XQOpgIeUEM8d/pSpwvt17FUpqs9hf2yvFOVUY52yUDpeubO0cwfWWe9Xy
-	 +4fV/NPJbDT23A79VGJDUJtXUmehYOpI1keP7hlHCVsu7Bxwaw4o5uT7n9LuKkSPAIuYH
-	 fw8ad9MyhuX2bXAvLYw2XucY3AQ44VXINAOFllUZUDL6Y3r+UhEb8JHqng6MjiiYqIIKS
-	 iGx2gjKk/fAy5ThrDkftQcvRO7ddrGmRJOxespJMzfnxkSPQQqqJFSByb3LVXHRANS/jg
-	 UjI1auBhcOa+87CacXoh5DCQkD3RKScXmqaFU4D6o9oPx+WLxNnewwkSo8xVx9ofhyg==
+	t=1794145453;
+	b=X/qnZpD5IlcBZxICAJDw8PY8kQBl0Bjpyrp6RmdZCyykZqlrRn0DftisL/48HjA5THnP
+	 5MCCNanjBN94YUpT78c8CWzBz6A1LISRrkzio4f6a3O0EPAZ7jH0fO/JbnDlQeldkfM0C
+	 eg+ZUlx7heeCJucn6wER3QlYRbh3k6ZNpCqw7u7B86RkJTQXLwXh99DCq2A+3WDbu7E77
+	 mxF9HL8KFYUtBy/aOGEcrA99RHDmgM6AtsQVHR6OiGddfKUPz/V6eOMJ/pynO4dC+E5UY
+	 Shk7FwkTg/yMy8m6YF1oAEL1rXd0Wbih4zb0Kmx5zRMk0qL6D1CcAokd03LjUxzEXpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794144551;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794145453;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=lRccb7zFXAZRlpy06P3LA8/Kjn5v7zQ+e9MSG+eMWK8=;
-	b=x9ZaNeX9YPeuGu74w0iEcSfcH6vR+L/FL+uhOfbj+Y4nLPR3wx+knQQzlklTmErwxBma
-	 6cfwTS2QSzeg5Yt/C5fRf5z38R2RJaNaC/BX2Q7oXNPQWWWrA8aIqPSZzM/jtH9yhNFLJ
-	 wnQXI90XD4Up6A7qLpKqTtsO4pnzeYmfWXhThpKOnWMjXJsLvehKj0zuj/NEqe3hgGct1
-	 B+JcIJHcrwgSjgsKPwFjjLaF/l16oZFodTnkYql+53Gj97qGdHZ9YPBAi6tRQ+aodUaUz
-	 rm+cBWzevcRSe2UCLgGZdXBiXeSfEgLOsEDnseVi6JR4nNjY6hdyFWqEWuo0d657M/w==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Content-Language:To:Cc:From:Subject:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=/slH5zszpOl1ltCk3nRrYIZgnTGPPYf7qmqiT7WcwHw=;
+	b=iS4JdfcXqj2fIm0ePGEj2P40o6T39Nt9SXGU+PZzIgKePzMYlQw+3kibC+RcIibgQrdb
+	 +FcyvJI01eG5vTFQvQerM/G9Mb9kgllL9NNJU2+fdYdE7JPEbQb2xuEKVrrshvpcrP+av
+	 Ghht7hljbzySMekcNj5M/sIktXmwO0Wi6dnuM/79ujd8Ufrv3d64j/T3C8+gzJu/tuqVW
+	 8QuqayqCKzMKbRGtg7SIBUQ7mBEQf9VDXQD0D08TfOb0Blrx0jLqXahssYlBEvJaBqpnS
+	 qXoh1kioiAA/1mC810K/rZ/C9qSrYi3+R4QNyduvorL3x0PaPyQLdoyUwh94cKMvCsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ieee.org;
-	spf=pass smtp.mailfrom=ieee.org;
-	arc=none smtp.remote-ip=209.85.219.50
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ORRSqMQq;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC9606A320
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 13:29:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99CC9606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91ebf4cd218so1042346d6.3
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 05:29:04 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD6B606A334
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 13:44:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AD6B606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ORRSqMQq
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48e09aa5264so45600f8f.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 05:44:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1794144543; x=1794749343; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lRccb7zFXAZRlpy06P3LA8/Kjn5v7zQ+e9MSG+eMWK8=;
-        b=BsxPqebZhw4rwrPqtv53XeehDB+Qy+5VYjNtjlVtbXzKrNFs48pKsl084nQv1iDXcG
-         Viz95t6gEbKnMnY3HnxYdZRsCNtzZyWwFHmrJ9DHWP6tjv0sfeZa/DOL3vJD3tnjY86y
-         jN4EdwZIQIDX66WX+Mcmorc9xgAqG4pbEfd8g=
+        d=gmail.com; s=20260707; t=1794145451; x=1794750251; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/slH5zszpOl1ltCk3nRrYIZgnTGPPYf7qmqiT7WcwHw=;
+        b=ORRSqMQqNfgqCsQYnbdE7d8rVcmkC8gNQ1IFFXS8fzBkUBPy0QS7Dmh85LN9MtxljM
+         ALCMDhlA045XNENSNHLt3rdEGCsJ6HcrKHUtSmh5nIPf7XzVQTdF2pg1C4hE70/+r0te
+         GLANXbP7Rb2gQzC3Mqx73OQJwH7vYKQo56wFoop6RsG5JcAKniSnUlbwj4LW3/3DqsJt
+         2AqLKyekxR6t4zq5sfq9ZBdtFjfXdiZqOCs/KU+L3Ss/i/z80CLRlqVubSqCTmqtyfVL
+         A5vliMEFBnV/4yxotplFqXjMZStbzAqwJDo/r3IY9FQUgjpzlIBA2zG7vZX2n/yUbYq2
+         Wf1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794144543; x=1794749343;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lRccb7zFXAZRlpy06P3LA8/Kjn5v7zQ+e9MSG+eMWK8=;
-        b=vR352A7c4oqnmlskyp9+zDpDKNwCCOBsrjiyIpfuNtgzTvxIOJjhoqNuE1yu6isF7O
-         2FsnfOWReRtkAD6PQNzNwEPe/ORfbDO75k+EoD9DIxUjjCWXpBCQIwQBK6NNuRQORxfO
-         xCRyIiYQL0qXIvIHB668ypomHoJVd7C/ORTKgj2bx8uZzbyXhvl6cQ+gRxm4AvezRzwr
-         H1lmGn9/vhD8tLI+aMBwjrWEU0MBjxApHumpxGVPWmE1jSDAS5gMnmJJL0AO/BgfoQ+I
-         QbSNeE1bPZvKhCvLfC2afr6e4cW0Pox3Vhm1O1zR9URbGpixC/UxIj9dJLnq6XrVjkxT
-         8G+g==
-X-Forwarded-Encrypted: i=1; AL+hErHpFHqpMfop68ytzRA14p7mJl5IWSdGiMr2tc+oYfQbrZBbbuxi5tF7vaBvwqAMQbcQ7KUO3lY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+YYI47dNSTS+rRx7Bl6C03be9gddZSoZ5010oEyWynm10Dqx6/
-	CbtlngL7Z2SvZJ9RuKKGoe99I5W1EeskIqX68asOoshBgq8zVp2KNdSEV3whi2+Bjw==
-X-Gm-Gg: AYBFou0j39xfi4ZVa53naDy++3YgGgrQoYXmiG2lU25QbdbltDg5FdgEhHwT6MVsOnD
-	o3ZY+HCu1Kqfpz9DgxQaxypJNlGUETy4PjOyxEtst/lMewrRdHaBA3bhXoyRBzInYWL0n92D/SM
-	usSAWstxYZnpL3acsYhkJ5fj+hSx+BDUN12sVkVPYY57rNLzvpZ6EDYLEAhLSsYgE0+KtcvR7qF
-	NVdnQVORn5hlYf4JfuMrJrlM0UiKmklnRx7UApJT/tED9Q4IoJ+M6tRaFJiCZDYfeMvsQdxlbno
-	X8Ux9w4qlqLfKk+vm+WWLDpIZa+YbkrEj/sWpxfV6yXP9UM7L4Ka6YSi/hex5YBMRPEPrerjDGX
-	YT3KmOQTMf9F4KfTZSM0grctg/+95FeLzl0DWC4Ew2CTCTfDxcYDNP8jLCKGTjpOmqJNA2G8cUI
-	tYMueJhJnZ2/isMXZ0l4NuZKtVQvN8i1wfCxvqXcXWFR5/ahXwCr8wgU0CVuwoaSf9Nu5VD83dO
-	6UC9r0DrChqKXgv0UZcXZ9eUpU32sZl/j4d4u6S6cfBVLRYS82Xfm7Ptfj0XpHrxPWZ5sj1zhiA
-	2FhvtgAdF7aV7GLk9L6aWadK2od4A6A=
-X-Received: by 2002:a05:620a:880d:b0:939:6dea:374d with SMTP id af79cd13be357-9478474cda4mr191133785a.49.1794144543434;
-        Sun, 08 Nov 2026 05:29:03 -0800 (PST)
-Received: from [10.211.55.5] ([73.62.185.64])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-94782ccb826sm208255485a.6.2026.11.08.05.29.02
+        d=1e100.net; s=20260707; t=1794145451; x=1794750251;
+        h=content-transfer-encoding:content-type:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/slH5zszpOl1ltCk3nRrYIZgnTGPPYf7qmqiT7WcwHw=;
+        b=gLMzOnCdxZWiNAdGDAqOpjPUHNrQ5yGOpn3I9YYluv8lhnF7I1SLyymdXCOrd5D91o
+         a1hLiJeP9DZAhT80PshKGFkvf7OGDbSpYyJty6LMKkRY+Br9WJaJ0VSWQaWeLfXZ98Qv
+         VBy6V8i28EEiofpdUHQyWCClj/vnsoNop/Gk8/nlP9mNrpATxonS17n6zXlnj8t4QNsH
+         Pe+Jakh7YqW5kKVQlVG0kRfNUPjuP/mMvzVVmnZA3xWH+y24gbNd7rGqZRCD1lVci62V
+         IZiffd4EhW6NarhFeIpm7srGakD49gO8lMjVzYq3o/I+vZyWHIWSLoAYFNFGVZjZOck6
+         36KQ==
+X-Gm-Message-State: APuU4Z86z/GoF6ZSujtFcv8wpxr1NGyBpor+1dgufgC0tkQ7XkTJS0FF
+	DzqSiS1PDd56XkAGBGZ8jswvpfYG+3JutnFV4mpaa5vMZMjjVV98cZJX
+X-Gm-Gg: AYBFou2NAfH/AHFrhBYE6vryTMNfDq0Rtdthzw0jdpMEMlm6e146XMYBGOkRMFGYcF2
+	uZCqdsPb+2ghxQlJCc6JaHfvY5NSRdhQrgB+/iDquB+A9o8mHEtmw4F8e/rxfjU6b5VCgFgu9VK
+	2DkueYC7szxtgNE37VcYAh7xS43KyJlqGWwsTXvEVcA3UNhvnTD6gVAKdVBcKMjOW6l76vtV29w
+	xU1tOXD1O76utpbBdd6r5hcQ4ls0bJhuu+YUIT/fevLuZXvBgL+G2blQOPw3MRRosiKG2UT5BUV
+	cz2ToFNGdqYbkTsyrZRJz80w4VHTW0HniKF7RdZrgmD/eQtk4R0NEj1qN7FHNCUo9JnyJD8s30K
+	fcJwLubuERhhdiDXptiZuIO26EAbUMXLtEFZHjsa8QDnSHIpCXW3o313NCUyuAhyQpR/mXS8Get
+	wfwU9dP0TNLx8JZWUWyEhQYnDiKMImEHYYXJeDUQqo/sX9h++aHo2v53i89SdQ7hCPeUrTdDS1y
+	ycCIIgCl1ythorT4wjMn+mHKImn+xyTdRVXCP9uP4VLm4ntAqM5OlOzc7kAgin2WkDyzrgPXmV1
+	QB5wcvXdWZy5NaiqHjuBA8m86ZOhaGprwQgBhgtYbxDY5q+c9BLWNF5kUQ7UtkBHjHSAOrCWeXM
+	UbnMcv6tJ8z4oTKIaMToz15dEvVdXiqAojHoy4/6q/J3RvMtSncK7+tcVDqWN98OlzQ==
+X-Received: by 2002:a05:6000:98b:b0:48d:f3a4:a6aa with SMTP id ffacd0b85a97d-49583b08d97mr2802498f8f.35.1794145451153;
+        Sun, 08 Nov 2026 05:44:11 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f45:7100:cde5:5d75:8598:b64f? (p200300ea8f457100cde55d758598b64f.dip0.t-ipconnect.de. [2003:ea:8f45:7100:cde5:5d75:8598:b64f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49596509892sm4331729f8f.15.2026.11.08.05.44.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Nov 2026 05:29:02 -0800 (PST)
-Message-ID: <84720345-3fc8-4320-8bd3-ca23b3c9c69c@ieee.org>
-Date: Sun, 8 Nov 2026 07:29:01 -0600
+        Sun, 08 Nov 2026 05:44:10 -0800 (PST)
+Message-ID: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
+Date: Sun, 8 Nov 2026 14:44:10 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,79 +91,35 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: ipa: Fix runtime PM reference leak in ipa_remove()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- elder@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com
-References: <20260917115115.2149796-1-vulab@iscas.ac.cn>
- <7509f005-709d-46d5-8554-b9d2fd0cd218@ieee.org>
- <20261108102500.3182111-1-vulab@iscas.ac.cn>
 Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20261108102500.3182111-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Johan Hovold <johan@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ driver-core@lists.linux.dev
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next 0/2] sysfs: facilitate creating an empty directory
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/8/26 4:25 AM, Wentao Liang wrote:
-> Hi Alex,
-> 
-> Sorry for the very late reply, and for the noise.
+We have use cases where an empty sysfs directory is created.
+This requires an attribute list consisting of only the sentinal entry.
+It takes only to modify one check to enable creating an empty directory
+with a NULL attribute list. Use the new feature in net sysfs.
 
-Sounds like you learned a few things:
-- Always base your work on a recent published branch (like
-   the latest Linux -rc, or linux-next/master, or whatever
-   the maintainer prefers).
-- When using tools like your static analysis tool and/or AI
-   assistance as a major part of your effort, state that with
-   and "Assisted-by" tag.
-- Pace yourself on sending patches, allowing reviewers time
-   to see them.  At least one day (so people anywhere in the
-   world will get a chance), and more (because people are also
-   busy).
+Proposal: Apply through netdev tree, w/ ACK from sysfs core.
 
-Consider the last point especially true on AI-generated content.
-Take the extra time to really review in depth any change, and
-really understand its effects (both locally, and in the broader
-context of where the code sits in the system).
+Heiner Kallweit (2):
+  sysfs: facilitate creating an empty directory
+  net sysfs: simplify creating empty wireless directory
 
-One last lesson is that a single apology message to anyone who
-might have been affected by your messages would have been fine.
-I got three, and they largely overlapped each other.
+ fs/sysfs/group.c     | 7 ++++---
+ net/core/net-sysfs.c | 5 -----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-It's OK, but I'm glad you view this as something you have learned
-from.  Keep going, but keep improving.
-
-					-Alex
-> 
-> You are right that this is already fixed, and I should have caught it
-> before posting.  6b9eaa61ff2df ("net: ipa: balance runtime PM reference on
-> remove error") makes the same change, and it has been in mainline since
-> v7.3-rc1.  I rechecked ipa_remove() in the current tree, and that error
-> path now releases the reference:
-> 
-> 			dev_err(dev, "Failed to stop modem (%pe), leaking resources\n",
-> 				ERR_PTR(ret));
-> 			pm_runtime_put_noidle(dev);
-> 			return;
-> 
-> so the usage count is balanced there and there is nothing left to fix.
-> The patch needs no v2; please disregard it.  The patchwork entry already
-> shows as not applicable.
-> 
-> You asked how I found the problem.  The candidate came from our static
-> analysis tooling, which flagged the missing put on that error path.  I
-> then used DeepSeek and GPT-6.1 Sol to audit the finding and to help write
-> the change, and I reviewed the result myself before sending it.
-> 
-> What I got wrong is that the diff was prepared from an old snapshot
-> (v7.1-rc4 based) and I did not check the current tree before posting, so
-> I missed that the fix had already landed.  That is on me, and I am sorry
-> for the review time it cost you.
-> 
-> I am going through the outstanding feedback on my patches by hand now,
-> thread by thread, and will answer each one.
-> 
-> Thanks,
-> Wentao
+-- 
+2.56.0
 
