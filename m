@@ -1,59 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794147496;
-	b=GwKWqnd948Q1i3CycXenzgp+WBNOyyYDDBStaRTJ19Jcir+daxmnFJFU+/mFf7jQpNjj
-	 iF1HXdH8Yf2lNiOyyb5ZQcIlBfpnFUYbm8xlly6aDtbWkAH1xno6PD0ZDb9lg2EMmBkKh
-	 2Vz6KkPQae7luobmVurpvSvQsNzDyC08X4HMoriAAFm4PJABbHXdQdx1tOA707AtZjdLg
-	 DpmP8JOsyOSqTQxBMNlPpnvF25D+RjdrkMHaOchTMWTbYmGXGzNlLqgwd02KmBuaOXJg3
-	 /A7wM382ig3fXvVdSO3BtpibpkCua2ZTPU6SfI+41uhk9CmZ2idvX710iUCw6w82ozw==
+	t=1794147640;
+	b=poh6OegG5MXfDeUFlUvHVlddZkcb4vV+kzi0kL9AHt9s5NDcKEAOFViGjgY30hVPaORa
+	 9WtvdDRC4YPi3TKPd/DoCjkmOjozSDk7CXy3D2ZWFmGrjyu2nhzWG57oOv7i4ZiGO5vTw
+	 kYSfwYHa8HYGsA/WfmmlptkcY+XlpfBde5/bBVgbms07yxtfsXPGgBTGSqiKvQNV4aKDy
+	 Lx6dk2eY/Baoy52BjQsvGzUhDAw3NwIA6Ikq1WWZzpTSOYL86yEJG0XeIXcx35n8PPDHt
+	 8s5xnYG8bAn9HQWWU9TpIlzpvcP1lzvEzeYOr7RJIt1oPMVrNqc9dPNSB/IjzsTrw+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794147496;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=abKaeZg/hOITMson77Otqz/eijU8iluUpb9OKmQ2iuQ=;
-	b=0qPdAOWoW12OOsMmL4KjF+RefYPyAypb/hmhD8xePcFljUuouanooJbY7ixtJuUoJGJS
-	 O8qeKf6IdRa/GFNt+nrnSKu6GPUgUckGdoSUbzQYmY9jj8PqmLuFWhOv7n5A3hrkg59gM
-	 Qi7DPpvcRC0ehHgVTAOEY7KG85I85C7GS1CRf/654MsLSPMZZKi2OI6n3pZYwhF6XZnaX
-	 3UkDg41JTECOtU1sJ4vxBhZwvLvMqOy50Xg+C21sd7+Le9BDe4T4cCJ/K9SXtGZQZIkVJ
-	 eJgbNnJ7S1+g10Dv5jWREsmxJP3RLS7ZhBAiUVBBvjJ57WGH/oYdpMvhCfvioqRkUZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794147640;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type;
+	bh=It2I1hWua5Tj1m0aBaBWkv2oh3oD0Hzdd+bti3K6A7E=;
+	b=mO/UlvejlLAQIT+SgwD6GYKiXKKadKd5iS+Lt9xHloutBruyOVeuFtUgNtk1JpcUosYh
+	 LOC2/UgRfHhTHM8l8l8jEmto9ODQGjelr/sPZQO0O5ClZr5B8TQ2gEw2vwAx0a7HzPNwu
+	 sEGDfYebhttg5KjYp1slGIzwHA1O+2yfIpYVM06mDDV4NDBQsNgG2PrwUvJJfUh7ahMaq
+	 U/d7ltlKu4sWNIT4vSgR0ALUmuOdRtTqZEVnI9j5copn5H7ihDYV+2tvnzpwBZd9Tv+MZ
+	 2y1uA+5ciS1FL3E6Jwc7Wkdxia5eye9/v5wVEsqnyTBzY0NtO2h8eLHiZn88zQQs/Ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="MgyR/A7n";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=protonmail.com;
+	spf=pass smtp.mailfrom=protonmail.com;
+	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=OEJdGF8s;
+	arc=none smtp.remote-ip=109.224.244.16
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D472606A31C;
-	Sun,  8 Nov 2026 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECAE606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 14:20:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1ECAE606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MgyR/A7n
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4821F0089F;
-	Sun,  8 Nov 2026 14:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794147496;
-	bh=abKaeZg/hOITMson77Otqz/eijU8iluUpb9OKmQ2iuQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MgyR/A7n1zd+rhRyP2TYfrRwkCUkPX6G0iQjGGv/tGw96ipTBbV/IvlbNUT+oL2aW
-	 mECjBq8twEf6uIt12TQpJAqvUQc4WV0lgn9XrodWKePfYpli0IywDmyzSmmsLV4Gny
-	 EfN/YN9AR2ZLEvWcUTwPbYJNe7f+8u2jAwuSNAoDsbJskVWuPMmPVTZlxC1ELmdVm0
-	 zKBOQ0qvyJz7fRuMMJKByeW6j1QrrQ60v3s03A+97XaMhW+A7IUeOP8ApM2zxwgD0H
-	 FnupU5t8eT9By2tLt6WtoOwDcy4eG8yh77Cn4T8dwckMV113eB2CzL1cE835MRcsWB
-	 BP39hIRglbBrg==
-Date: Sun, 8 Nov 2026 14:18:12 +0000
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>,
-	Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
-	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: qualcomm: rmnet: bound TX aggregates on
- byte-limit update
-Message-ID: <20261108141812.GA18859@horms.kernel.org>
-References: <20261031221052.1642262-1-Jeremy.Jean@oss.cyber.gouv.fr>
- <20261031221052.1642262-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <179348482309.3286.17799482231932078029@kernel.org>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=OEJdGF8s
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1794147636; x=1794406836;
+	bh=It2I1hWua5Tj1m0aBaBWkv2oh3oD0Hzdd+bti3K6A7E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=OEJdGF8slAMmrQk3xOrwsyQiFc5g/gBS1/3jbiENEu3wkWsw3Or/A+92EXNMe75Mf
+	 zcAwkcJhDymd1fWpn+kAqCiXuEHQIgGFBE/Yzjpt/EPCPF0Ysm2kG0k+8nji8xeC0t
+	 ooqutkvO1sVmn2dx0dArG5Pq31X95eFO3vLd6VJVyUw/YiIihwolbLsUii3FOqir0o
+	 LC4jdFUAoyKOrGKr16C6H1LpSC5c+BhjhSYvjd4kdq2zOVF3swr0ms0EkD55j6rYXP
+	 3pkjErCmztuTN75LIRxdn+0VaFRYW0FEbSWwKujar1/v3Kz56TkPM6k9VFBWyjsRZL
+	 vZsfDr5bJM9ow==
+Date: Sun, 08 Nov 2026 14:20:31 +0000
+To: linux-wpan@vger.kernel.org, netdev@vger.kernel.org
+From: Ryan Prinz <rc4d5a@protonmail.com>
+Cc: Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Miquel Raynal <miquel.raynal@bootlin.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Ryan Prinz <rc4d5a@protonmail.com>
+Subject: [PATCH net RESEND] ieee802154: 6lowpan: validate fragment offset against datagram size
+Message-ID: <20261108142008.758061-1-rc4d5a@protonmail.com>
+In-Reply-To: <20261107223217.718177-1-rc4d5a@protonmail.com>
+References: <20261107223217.718177-1-rc4d5a@protonmail.com>
+Feedback-ID: 190731814:user:proton
+X-Pm-Message-ID: 8417274c5bc59c4d0a564e96dfa557e7058b1e4f
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,39 +64,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------19cdf1c7d8f42fa0f7e0bcbb2160600e4ee20326ee91871a8f2a9280719425e7"; charset=utf-8
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------19cdf1c7d8f42fa0f7e0bcbb2160600e4ee20326ee91871a8f2a9280719425e7
+Content-Type: multipart/mixed;
+ boundary=c36f5401997db1097316905cd00acbd43df74ad8043aac9de08a0aaf9af5
+From: Ryan Prinz <rc4d5a@protonmail.com>
+To: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Ryan Prinz <rc4d5a@protonmail.com>
+Subject: [PATCH net RESEND] ieee802154: 6lowpan: validate fragment offset against datagram size
+Date: Sun,  8 Nov 2026 15:20:07 +0100
+Message-ID: <20261108142008.758061-1-rc4d5a@protonmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261107223217.718177-1-rc4d5a@protonmail.com>
+References: <20261107223217.718177-1-rc4d5a@protonmail.com>
+MIME-Version: 1.0
+
+--c36f5401997db1097316905cd00acbd43df74ad8043aac9de08a0aaf9af5
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179348482309.3286.17799482231932078029@kernel.org>
 
-On Sat, Oct 31, 2026 at 10:13:43PM +0000, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+A 6LoWPAN fragment announces the total size of the datagram it belongs
+to (d_size) and its own offset within that datagram. The reassembly
+code never checks that the offset actually fits inside d_size, so a
+fragment claiming to start far past the end of the datagram is
+accepted the same as a legitimate one, allowing an attacker to forge
+data of another sender.
 
-Hi Jérémy,
+lowpan_frag_queue() considers a datagram complete by counting bytes
+received (fq->q.meat) against the declared size (fq->q.len), not by
+verifying the bytes form a contiguous range. A fragment with an
+out-of-range offset still has its length counted toward that total, so
+a legitimate fragment exchange plus an attacker fragment can sum to
+d_size, marking the datagram complete while a gap in the data was
+never filled, and appending the out-of-range fragment's bytes to the
+end of the reassembled buffer as if they were part of the message.
 
-I would appreciate it if you could take a moment to respond to
-the questions posed by the bot above.
+IPv6's reassembly (net/ipv6/reassembly.c, ip6_frag_queue()) computes
+end = of
+fset + payload length for every fragment and checks end
+against IPV6_MAXPLEN, which bounds offset by construction. 6LoWPAN's
+d_offset and d_size are independent wire fields with no such coupling,
+and no separate bounds check was added for it.
+
+The same class of bug was assigned CVE-2019-8359 (CVSS 9.8) in
+Contiki-NG's 6LoWPAN stack before a 2019 fix; RIOT-OS's implementation
+(gnrc_sixlowpan_frag_rb_add) rejects a fragment once offset + size
+exceeds the reassembly buffer's datagram_size. Linux's 6LoWPAN
+reassembly is the only one of these implementations without an
+equivalent check.
+
+Fix by rejecting any fragment whose offset, or offset plus length,
+falls outside [0, d_size).
+
+Reproduced two ways: with a local kernel module calling
+lowpan_frag_rcv() directly, and over mac802154_hwsim with three
+independent processes standing in for sender, receiver and attacker.
+An attacker in radio range who observes one fragment of an
+in-progress transmission reads d_tag, d_size and
+ the addressing in the
+clear, then sends a single out-of-range fragment of its own. The
+receiver's reassembly completes with the attacker's bytes appended to
+the legitimate data. Both reproducers were re-run against this fix to
+confirm the out-of-range fragment is now rejected and the datagram no
+longer completes with it included.
+
+AI Disclosure: An AI assistant (Claude) was used to assist with the
+analysis and testing. I have verified the vulnerability, the fix, and
+the test results myself and take responsibility for this contribution,
+per Documentation/process/coding-assistants.rst.
+
+Fixes: 7240cdec60b1 ("6lowpan: handling 6lowpan fragmentation via inet_frag api")
+Signed-off-by: Ryan Prinz <rc4d5a@protonmail.com>
+---
+Resending with correct tree designator in the subject
+
+ net/ieee802154/6lowpan/reassembly.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ieee802154/6lowpan/reassembly.c b/net/ieee802154/6lowpan/reassembly.c
+index ddb6a5817d09..905ba5f86
+844 100644
+--- a/net/ieee802154/6lowpan/reassembly.c
++++ b/net/ieee802154/6lowpan/reassembly.c
+@@ -103,6 +103,9 @@ static int lowpan_frag_queue(struct lowpan_frag_queue *fq,
+ 	offset = lowpan_802154_cb(skb)->d_offset << 3;
+ 	end = lowpan_802154_cb(skb)->d_size;
+ 
++	if (offset > end || skb->len > end - offset)
++		goto err;
++
+ 	/* Is this the final fragment? */
+ 	if (offset + skb->len == end) {
+ 		/* If we already have some bits beyond end
+-- 
+2.51.2
+
+--c36f5401997db1097316905cd00acbd43df74ad8043aac9de08a0aaf9af5
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="publickey - rc4d5a@protonmail.com
+ - 0xE775BF83.asc"; name="publickey - rc4d5a@protonmail.com -
+ 0xE775BF83.asc"
+Content-Type: application/pgp-keys; filename="publickey -
+ rc4d5a@protonmail.com - 0xE775BF83.asc"; name="publickey -
+ rc4d5a@protonmail.com - 0xE775BF83.asc"
+
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCkNvbW1lbnQ6IGh0dHBzOi8vZ29w
+ZW5wZ3Aub3JnClZlcnNpb246IEdvcGVuUEdQIDIuMTAuMAoKeGpNRWFkRFpyUllKS3dZQkJBSGFS
+dzhCQVFkQTFpeGV6cng0ZTBFNWJGcjV6UU8xMitlb20vdWZnUVFTS05jQwpHU1ZjUzlqTkxYSmpO
+R1ExWVVCd2NtOTBiMjV0WVdsc0xtTnZiU0E4Y21NMFpEVmhRSEJ5YjNSdmJtMWhhV3d1ClkyOXRQ
+c0xBRVFRVEZnb0Fnd1dDYWREWnJRTUxDUWNKRUFVYktZOW5tekdRUlJRQUFBQUFBQndBSUhOaGJI
+UkEKYm05MFlYUnBiMjV6TG05d1pXNXdaM0JxY3k1dmNtY21EdVNNSm1tcTJWVDN2aFkzY0JzRDFS
+YUVsZGE2dDdpTwo1S21uZXZwYXhRTVZDZ2dFRmdBQ0FRSVpBUUtiQXdJZUFSWWhCT2QxdjRPUWRH
+ZGFobnFvR0FVYktZOW5tekdRCkFBQmFDUUVBdWxVaElDbmFPSU9DT1d4T3pldUNUZ0dUVGkxM1k4
+WjdVL3pYaER1bmFpa0EvaUJRRVBZOEx5NisKU2RZUnZzekQwcHBsS0M0elB2WkhqRDZaMEo4U2Ir
+RUh6amdFYWREWnJSSUtLd1lCQkFHWFZRRUZBUUVIUUNwbApBSFVLZXNpb25QaGlBVnBvL3dDUFdt
+MnR3SGtpL0tmaUpHQVdlckIxQXdFSUI4SytCQmdXQ2dCd0JZSnAwTm10CkNSQUZHeW1QWjVzeGtF
+VVVBQUFBQUFBY0FDQnpZV3gwUUc1dmRHRjBhVzl1Y3k1dmNHVnVjR2R3YW5NdWIzSm4KNlJuS0R5
+WjJlV1BjOSs3NEJIR3VPM1E1VGVuWFZ6bWRrRjQ3L1lYQUxFOENtd3dXSVFUbmRiK0RrSFJuV29a
+NgpxQmdGR3ltUFo1c3hrQUFBN1RzQS8zRy9hUE9NeGE2MDZxdlh2U3lUOURDNTJCa294ZmlNMk5N
+SFpHK0QwSnVGCkFQMFhXbGRlbEVvTFY1bWNRbXFIVThqMVp2ZzRtT1hWL2owYytPWmRheVhUQnc9
+PQo9VnZDNAotLS0tLUVORCBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0t
+--c36f5401997db1097316905cd00acbd43df74ad8043aac9de08a0aaf9af5--
+
+--------19cdf1c7d8f42fa0f7e0bcbb2160600e4ee20326ee91871a8f2a9280719425e7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wqsEARYIAF0FgmrwhS4JEAUbKY9nmzGQNRQAAAAAABwAEHNhbHRAbm90YXRp
+b25zLm9wZW5wZ3Bqcy5vcmfsZ22onEk7RTLaGmyu4qseFiEE53W/g5B0Z1qG
+eqgYBRspj2ebMZAAADG2APwNNOr3CrZuqj5wdHqqoaLz872ga3L/WMdpU0to
+kckabgEAhGcSMOdHS9xUARmcZDV3Uj5gZTW6vzYx2gFP/S23fg4=
+=0L9K
+-----END PGP SIGNATURE-----
+
+
+--------19cdf1c7d8f42fa0f7e0bcbb2160600e4ee20326ee91871a8f2a9280719425e7--
+
