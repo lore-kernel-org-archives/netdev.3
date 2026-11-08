@@ -1,57 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794168481;
-	b=S38WZhT1kGlounmcSPenzGyB5BD3kUNyh4p7bPwBz4I6cP5W3AFw2wM8rXejlUig49fQ
-	 Yer02KRVBa4CaDe/UbRzDIQ66enian5dioXrU/hFnQjt2KMu19K/CHXxYuGq0Chvf9vyE
-	 dSNu33Y7SUiYUAT7KFzm/39yl34FOYlduMAUYQRnnbSejLKQKIGQYIeHmpQNqd4KVzksz
-	 9NmBc5Sax5pzAVBNFhPzhXwYdsXa8g5tlLpgqwbUqS9Ap8dXxvyYxWgjuHRDncGSArvXU
-	 g0Oww9CQjjMtBdS2xK09atoBY3ONCj9UCcMf7W0nXcjmtTvLfJdlXjdP/Kha1RYX/YQ==
+	t=1794168848;
+	b=OZqAxpu3FzAKum4BRnPInGBgVd9vs+c3Za1BB3nE61wwokS6brLYaXAvRho3XssWea2g
+	 XId9ycVbJbJ3gbg/DKuMU2ANMxchKDpepcLy3ywxE3cPsgWJClaWwAW4mXki+tpQcSukP
+	 oDb0YmiWYuzDRP5WRLdLaA9gGT6Zsdxd7gz0wsw7QBnvBWwZsRiML4G36auzgBW+Vw4M/
+	 +6CYRbxmgX00hJ0xANPfQnVwF6VFBh3aBvJgWkWOrtYsqyXnXH+0bUTQaT3wDlg44sPPf
+	 8aoVfMapC94QpNDkhZIyYGGoI/Ql6DrSCIqbCTpvs+Ko+1UkbRcGYQffgYOtsQasOCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794168481;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ShjZWSXlkH+y2ozjDqdd1hUWXOLO8siRY81x9SqGvKI=;
-	b=LWwPuXbWcgWeof1dWM+bRo5NWWQ5SyA9chGFrCG2pGaz4aHr0xg+BjXy/axONqcR4oCm
-	 +95Nr6qLC0r2hlHuUhuR2Tla1+fCoyCKKfn4Priq24F9uDCYn9IoVAl77ppKYIxMPrgQZ
-	 4X2+Bv5NNTjG0j3HpErtaVRc3vBMGeuS2uwrEuOzB36uitOLW3NN9NSrH6f+2d6YdKHch
-	 Y7wNWFTmnQUARZX0NlJpf11cIJB3bZ/qLS8KZw4moSsB6/zpmWrDqTTzfkZn+NrvkQEMC
-	 mMgV5UwuHo7g3y94WPW9sFPxJAJM1IlUazkXRUshky/3ucq4pKykOzIfSprqEcdNtoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794168848;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=IsNyGyRNTFcxWGn3Qz0OssQxOJ6qSTsmetDcQj0Y/yM=;
+	b=3OJMJaFUpxICx/YpM4RMGyayDDu0MoB30O+E+qRVmLrFpbYJ//GxGw6omdJnS0mlEw+o
+	 dJNNiOyaUU06s4gINiQN8yFfua/Er9SRUtugmovc46oZ3bP475pcjnSyjEgNwO2KjreHI
+	 uJ+AbGaFZsruZB+4HhMuut6RAn38UjLOEQ2QYwGXI4w3q8SSRbIYo8+nn8tvaE+Yn2wCS
+	 tA3rMk+3O54f0ibVDhJ6EuHKi5FZlOk/UB7pwy6Yl8bKztlqfGjjw/MOkcvIDLWG/e5FK
+	 yyThwwFzV1nsuIiVl1mV1bfMzNg6YICQ8o1adBe+lAqTaa4ziq6M80HfB/cOpRHiicQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbzvbtjI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nKqNxiZn;
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255F5606A320;
-	Sun,  8 Nov 2026 20:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93001606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:14:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93001606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WbzvbtjI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB5E1F0089F;
-	Sun,  8 Nov 2026 20:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794168480;
-	bh=ShjZWSXlkH+y2ozjDqdd1hUWXOLO8siRY81x9SqGvKI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WbzvbtjIzWQ7c02Bl5Fib9ZFDZ1XzfqzA6ircgqAtLzIDkRx6QcWk0L0RuI4rgXvk
-	 OL5lxQa5NM66WuPGI0oxkxKVSmaLYQRXCteIyZuj7GEAfTGKyND6sz45AKlMuheSUW
-	 4v5K/229Xrs4ZsyiXLfMGoc2Mb9UOUrTAPYKLaV1o+xH0iy+UUXfouHEcOv+Av4MLA
-	 rVyN6xdHJBu69LD9G81PGh02S0d608F2expFmj3wfogR4DuWSQ9A4MhFgWWKlYzhBL
-	 GPx4/JA9m48hoyROOCw8B9LVhTQGdRklUUKasS3GFAWV6ik/7xvhu4tV2Dq2ldSV4F
-	 8ZEXZ8qNrK47Q==
-Subject: Re: [PATCH] net/sched: sch_qfq: revalidate aggregate after peek
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Sun, 08 Nov 2026 20:07:59 +0000
-Message-ID: <179416847962.994134.4238466491131411640@kernel.org>
-In-Reply-To: <20261106200236.716641-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261106200236.716641-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nKqNxiZn
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso120780a91.3
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 12:14:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794168847; x=1794773647; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IsNyGyRNTFcxWGn3Qz0OssQxOJ6qSTsmetDcQj0Y/yM=;
+        b=nKqNxiZnBY8DH0fkKdkvrcecYxQiU453RHD9QVFhR1HM9QDK8dTDnJON8MwH49TJIs
+         Kh4JGFrUpYMUyiJzRXvZ7RkZd0GylMPd0by1+BjoJ8D1uGuxCxHBGhBd5LiN9QZ6Rgyi
+         PDxN/wZVl/dyetRFLqF7nUw/mM/I4U/2+NZwys/7P2BHU2TJURhBLoz+jA/oOzZvIG5w
+         +rDxTP/2Xqgk+COJZ0L6pssyyT6d3Kmo3xXjCZuRfOFVTctO6opk+nz2FlwwHfmiGQ/+
+         STrArmDbojKMIPbXaWzXcYjV7PkfmeobbrW5GEc9s9QbvC1wDQ/pFNaPBBWnBS/AkscI
+         Gecw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794168847; x=1794773647;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IsNyGyRNTFcxWGn3Qz0OssQxOJ6qSTsmetDcQj0Y/yM=;
+        b=v8bLXYwYSaMwdVkNWZj3gan6EES1iVHYaGiDi9++7jfSQu8X44a6O+q55pRfm899k0
+         BsL5kAZ/YQKmKbunZ7Z5XSwOoPpFizTqItaL3M+JV6HJ+tAtWTZ9+IW6GsHsD/udAv0c
+         FTCRXEG7+6N6F8iAdcd4Y3SiIqLU2OzUbFH5kOPXoR22qh4fd2d5cDBjGQp8i93FrdUB
+         KulclSYSBU7vCoQtx9tfEUAwWGpsVzpzRuAc74jG7vT3Wqi+YeZErh50nN3QLRSxGDP+
+         lM1TjuLNmsYfPfoOACM/G0mSl/vBu7Dt9O4vtHDTRUGnWdljWLR7nfk84dcxTel2gTFo
+         /+aQ==
+X-Gm-Message-State: APuU4Z9SRpq6Rt57NwmbCM6L349OvF34f/HJbwuzN7xUJV0+OEGwTvVG
+	BdSjRCTpVnBpRBrJ7X60WWAOX3zItY7rZg2tOnFcqpTOBn2TPn5I4uY/83oR6Ebnnv/2NwbA5Ba
+	mRgpmaL0=
+X-Gm-Gg: AYBFou3SllryzMWRd4hDkQxtEwdzsF5dGKE+uQUKpkxorYVX9CRo02Jlj4NoqLEe2YR
+	aHl6Ns79kFNKBWavoE9jWODYLCAkc80W1sMtVV/ISUw5SL8t4Y+TMg70iaZ5KKOxELBq1ih9fM4
+	bL7tuyQAGKyKhzL5njBnZdqTh+GS/t77cc2/aiYGDRNXRA1ZVH2vIlN4KEbkhbT/+FFNZHLj8CH
+	aAd4F0ujMEeVAD/gRdpILowW0zC9NCSSqLpsSOYmjs2zA0TGY6VcIAnJ15lvKLVIPJqZiHsepCF
+	sK6forxn6oSIETcQufBmpPgJZ6VLmDxS1bE+tk0Y9Q/eP8CBfHXRW4xK3GDAL27HCWdPcHrDTG0
+	wuN3efolV+BnhqUecKzHifV1+c5VcSX+xD9ner55ojWK15m2XqHx5Jwgi3HPkzC0ndrkt0TqQGu
+	pFwu4PduNYnR0vM5GZPjXez1SBw/LWPML+nOs+UFxNE5ukh1vNNVp5BY3XpCVKHUSKDDtz8DjtS
+	vIfmQ6iBvd1TpUAjQYJKtdcZnwTKi/41R5fBWQdNpcwlSaMNAvq3KH5EOcMNbnisnH2lVA35VYZ
+	MQiVtGt1htMq8mD2GiMMElKnl19cNUosq4bARXcvZxGhrLPVtrYr0pxiZPPnFb84MsnwOw==
+X-Received: by 2002:a17:90b:498b:b0:3a8:699f:959d with SMTP id 98e67ed59e1d1-3b12d305b7bmr1966251a91.31.1794168846766;
+        Sun, 08 Nov 2026 12:14:06 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b127fad1d3sm4013208a91.11.2026.11.08.12.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 12:14:05 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH 1/2] lib: bound the hostname cache in resolve_address
+Date: Sun,  8 Nov 2026 12:14:03 -0800
+Message-ID: <20261108201404.1133079-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,184 +93,176 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+The reverse lookup cache in resolve_address() grows without bound,
+including negative entries, so a long running "ip -r monitor" can be
+made to consume memory by churning addresses.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 1
+Replace it with a small fixed size open addressed table (32 slots,
+multiplicative hash, oldest entry in the probe window is replaced)
+and use getnameinfo() instead of the obsolete gethostbyaddr().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reported-by: Anthropic OSS scanner (ANT-2026-XBIHX07L)
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+---
+ lib/utils.c | 119 ++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 83 insertions(+), 36 deletions(-)
 
-- [High] The fix is incomplete.
-- [High] The new `goto restart` in qfq_dequeue() can loop forever.
-- [Low] The commit message omits the trigger mechanism and one
-  behavioural change.
-
---
-
-net/sched: sch_qfq: revalidate aggregate after peek
-
-This patch makes qfq_dequeue() reload q->in_serv_agg after each
-qfq_peek_skb() call. It restarts if q->in_serv_agg or cl->agg changed,
-because a child peek can re-enter QFQ and free the in-service aggregate.
-It also makes qfq_enqueue() recheck cl_is_active() and use cl->agg after
-the child peek.
-
-> diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-> index e900890e9c544..517e9083b403e 100644
-> --- a/net/sched/sch_qfq.c
-> +++ b/net/sched/sch_qfq.c
-> @@ -1103,17 +1103,24 @@ static void qfq_schedule_agg(struct qfq_sched *q, struct qfq_aggregate *agg);
->  static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
->  {
-
-[ ... ]
-
-> +restart:
-> +	in_serv_agg = q->in_serv_agg;
-> +	skb = NULL;
-> +	len = 0;
->  	if (in_serv_agg == NULL)
->  		return NULL;
->  
-> -	if (!list_empty(&in_serv_agg->active))
-> +	if (!list_empty(&in_serv_agg->active)) {
->  		skb = qfq_peek_skb(in_serv_agg, &cl, &len);
-> +		if (unlikely(in_serv_agg != q->in_serv_agg || cl->agg != in_serv_agg))
-> +			goto restart;
-> +	}
-
-[Severity: High]
-Can this goto restart spin forever when cl is linked on
-in_serv_agg->active but cl->agg points to a different aggregate?
-
-That state looks reachable through the child peek in agg_dequeue(), which
-this patch leaves unguarded (see below). Take a netem child that feeds a
-duplicating netem. The nested rootq->enqueue() lands in qfq_enqueue(). If
-cl->agg->lmax < len, qfq_change_agg() moves cl from the in-service
-aggregate A to aggregate C. A survives because it has other classes:
-
-qfq_dequeue()
-  agg_dequeue(A, cl, len)
-    qdisc_peek_len(cl->qdisc)
-      netem_dequeue() -> netem_enqueue(dup) -> rootq->enqueue()
-        qfq_enqueue()
-          qfq_change_agg()
-            qfq_deactivate_class()   /* cl removed from A->active */
-            qfq_add_to_agg()         /* cl->agg = C, cl on C->active */
-    cl->deficit += agg->lmax;
-    list_move_tail(&cl->alist, &agg->active);   /* agg is still A */
-
-Now cl is on A->active with cl->agg == C. Once cl reaches the head of A,
-qfq_peek_skb(A) returns cl and the cl->agg != in_serv_agg check is true.
-The restart then reloads the same in_serv_agg and peeks the same head
-class again.
-
-For a qdisc_peek_dequeued() child, the peek just returns the cached
-gso_skb, so nothing changes between iterations. Would qfq_dequeue() then
-loop forever while holding the root qdisc lock?
-
-C may also stay scheduled with an empty active list. A later
-qfq_choose_next_agg() followed by qfq_peek_skb() could then call
-list_first_entry() on an empty list.
-
-> @@ -1151,6 +1158,8 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
->  		 */
->  		in_serv_agg = q->in_serv_agg = qfq_choose_next_agg(q);
->  		skb = qfq_peek_skb(in_serv_agg, &cl, &len);
-> +		if (unlikely(in_serv_agg != q->in_serv_agg || cl->agg != in_serv_agg))
-> +			goto restart;
->  	}
->  	if (!skb)
->  		return NULL;
-
-[Severity: High]
-Is the fix complete? Right after this, qfq_dequeue() calls
-agg_dequeue(in_serv_agg, cl, len). That does another child peek through
-qdisc_peek_len() and then uses the cached aggregate without revalidating
-it:
-
-net/sched/sch_qfq.c:agg_dequeue() {
-    ...
-	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
-		cl->deficit += agg->lmax;
-		list_move_tail(&cl->alist, &agg->active);
-	}
-    ...
-}
-
-qdisc_peek_len() calls sch->ops->peek(sch) directly. That is the same
-re-entry point this patch guards after qfq_peek_skb().
-
-Take a QFQ class whose child is netem N1, where N1's child is a
-duplicating netem N2. The free looks reachable:
-
-qfq_dequeue()
-  agg_dequeue()
-    qdisc_peek_len(N1)
-      qdisc_peek_dequeued() -> netem_dequeue(N1)
-        qdisc_enqueue(skb, N2) -> netem_enqueue(N2)
-          rootq->enqueue(skb2, rootq, to_free)
-            qfq_enqueue()
-              qfq_change_agg()       /* cl->agg->lmax < len */
-                qfq_rm_from_agg()
-                  qfq_destroy_agg()  /* num_classes == 1, kfree(agg) */
-
-The cl->agg->lmax < len condition can hold if lmax is lowered through
-qfq_change_class() while packets are queued in netem.
-
-After that, reading agg->lmax reads freed memory, and list_move_tail()
-links cl into the freed agg->active. When agg_dequeue() returns,
-qfq_dequeue() still updates the same aggregate without a check:
-
-	if (unlikely(in_serv_agg->budget < len))
-		in_serv_agg->budget = 0;
-	else
-		in_serv_agg->budget -= len;
-
-This is the budget field from the KASAN report in the commit message.
-
-The commit message says "After each child peek, restart qfq_dequeue() if
-either q->in_serv_agg or cl->agg changed". Does the qdisc_peek_len() call
-in agg_dequeue() need the same treatment?
-
-A codel or fq_codel child that is emptied during the peek doesn't seem to
-hit this. In that case qdisc_peek_len() returns 0, cl->deficit < 0u is
-always false, and list_move_tail() is never reached. The netem path above
-is enough to trigger it.
-
-> @@ -1274,9 +1283,10 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  	/* if the class is active, then done here */
->  	if (cl_is_active(cl)) {
->  		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
-> -		    list_first_entry(&agg->active, struct qfq_class, alist)
-> +		    cl_is_active(cl) &&
-> +		    list_first_entry(&cl->agg->active, struct qfq_class, alist)
->  		    == cl && cl->deficit < len)
-> -			list_move_tail(&cl->alist, &agg->active);
-> +			list_move_tail(&cl->alist, &cl->agg->active);
-
-[Severity: Low]
-This isn't a bug, but could the commit message say more about the trigger
-and about this behaviour change?
-
-It only says "a child peek can re-enter QFQ and free it". It doesn't
-describe the topology: a netem child whose qdisc_peek_dequeued() runs
-netem_dequeue(), feeding a duplicating netem that calls rootq->enqueue().
-It also doesn't give the free path (qfq_enqueue() -> qfq_change_agg() ->
-qfq_rm_from_agg() -> qfq_destroy_agg()) or a reproducer.
-
-The added cl_is_active(cl) recheck also skips the DRR requeue when the
-nested path has deactivated the class. The commit message only says "Also
-use cl->agg after the child peek in qfq_enqueue()".
-
-Describing the mechanism would make it easier to check that every child
-peek or dequeue site that can re-enter QFQ is covered. One example is the
-qdisc_peek_len() call in agg_dequeue() mentioned above.
-
+diff --git a/lib/utils.c b/lib/utils.c
+index c4cd3c3d..f4bd53ff 100644
+--- a/lib/utils.c
++++ b/lib/utils.c
+@@ -1092,57 +1092,104 @@ const char *family_name(int family)
+ }
+ 
+ #ifdef RESOLVE_HOSTNAMES
++/*
++ * Small fixed size cache of reverse lookups (including failures).
++ * Open addressing, the oldest entry in the probe window is replaced,
++ * so memory stays bounded for long running ip monitor.
++ */
++#define NHASH_BITS	5
++#define NHASH		(1u << NHASH_BITS)
++#define NPROBE		4
++
+ struct namerec {
+-	struct namerec *next;
+-	const char *name;
+-	inet_prefix addr;
++	unsigned int	stamp;
++	__u8		family;		/* 0 = unused */
++	__u8		len;
++	__u8		addr[16];
++	char		name[256];	/* "" = lookup failed */
+ };
+ 
+-#define NHASH 257
+-static struct namerec *nht[NHASH];
++static struct namerec nht[NHASH];
++static unsigned int nstamp;
+ 
+-static const char *resolve_address(const void *addr, int len, int af)
++static unsigned int name_hash(const void *addr, int len)
+ {
+-	struct namerec *n;
+-	struct hostent *h_ent;
+-	unsigned int hash;
+-	static int notfirst;
++	__u32 h = 0, w;
++	int i;
+ 
++	for (i = 0; i < len; i += 4) {
++		memcpy(&w, addr + i, 4);
++		h ^= w;
++	}
++	return (h * 0x9e3779b1u) >> (32 - NHASH_BITS);
++}
++
++static void name_lookup(struct namerec *n)
++{
++	union {
++		struct sockaddr sa;
++		struct sockaddr_in sin;
++		struct sockaddr_in6 sin6;
++	} u = { };
++	socklen_t salen;
++
++	if (n->family == AF_INET) {
++		u.sin.sin_family = AF_INET;
++		memcpy(&u.sin.sin_addr, n->addr, 4);
++		salen = sizeof(u.sin);
++	} else {
++		u.sin6.sin6_family = AF_INET6;
++		memcpy(&u.sin6.sin6_addr, n->addr, 16);
++		salen = sizeof(u.sin6);
++	}
+ 
+-	if (af == AF_INET6 && ((__u32 *)addr)[0] == 0 &&
+-	    ((__u32 *)addr)[1] == 0 && ((__u32 *)addr)[2] == htonl(0xffff)) {
++	fflush(stdout);
++	if (getnameinfo(&u.sa, salen, n->name, sizeof(n->name),
++			NULL, 0, NI_NAMEREQD))
++		n->name[0] = '\0';
++}
++
++static const char *resolve_address(int af, int len, const void *addr,
++				   char *buf, int buflen)
++{
++	struct namerec *n, *victim = NULL;
++	unsigned int hash, i;
++
++	if (af == AF_INET6 && len == 16 &&
++	    IN6_IS_ADDR_V4MAPPED((const struct in6_addr *)addr)) {
+ 		af = AF_INET;
+ 		addr += 12;
+ 		len = 4;
+ 	}
+ 
+-	hash = *(__u32 *)(addr + len - 4) % NHASH;
++	if (!((af == AF_INET && len == 4) || (af == AF_INET6 && len == 16)))
++		return NULL;
++
++	hash = name_hash(addr, len);
++	for (i = 0; i < NPROBE; i++) {
++		n = &nht[(hash + i) % NHASH];
++
++		if (n->family == af && n->len == len &&
++		    memcmp(n->addr, addr, len) == 0)
++			goto found;
+ 
+-	for (n = nht[hash]; n; n = n->next) {
+-		if (n->addr.family == af &&
+-		    n->addr.bytelen == len &&
+-		    memcmp(n->addr.data, addr, len) == 0)
+-			return n->name;
++		if (!victim || (victim->family &&
++				(!n->family || n->stamp < victim->stamp)))
++			victim = n;
+ 	}
+-	n = malloc(sizeof(*n));
+-	if (n == NULL)
+-		return NULL;
+-	n->addr.family = af;
+-	n->addr.bytelen = len;
+-	n->name = NULL;
+-	memcpy(n->addr.data, addr, len);
+-	n->next = nht[hash];
+-	nht[hash] = n;
+-	if (++notfirst == 1)
+-		sethostent(1);
+-	fflush(stdout);
+ 
+-	h_ent = gethostbyaddr(addr, len, af);
+-	if (h_ent != NULL)
+-		n->name = strdup(h_ent->h_name);
++	n = victim;
++	n->family = af;
++	n->len = len;
++	memcpy(n->addr, addr, len);
++	name_lookup(n);
++found:
++	n->stamp = ++nstamp;
++	if (n->name[0] == '\0' ||
++	    strlcpy(buf, n->name, buflen) >= (size_t)buflen)
++		return NULL;
+ 
+-	/* Even if we fail, "negative" entry is remembered. */
+-	return n->name;
++	return buf;
+ }
+ #endif
+ 
+@@ -1156,7 +1203,7 @@ const char *format_host_r(int af, int len, const void *addr,
+ 		len = len <= 0 ? af_byte_len(af) : len;
+ 
+ 		if (len > 0 &&
+-		    (n = resolve_address(addr, len, af)) != NULL)
++		    (n = resolve_address(af, len, addr, buf, buflen)) != NULL)
+ 			return n;
+ 	}
+ #endif
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106200236.716641-2-Jeremy.Jean%40oss.cyber.gouv.fr
+2.53.0
+
