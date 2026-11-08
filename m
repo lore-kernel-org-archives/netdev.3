@@ -1,80 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794129877;
-	b=5sgkBaMfTezJSNamMFBbeYtnWfAoiBnDv+yBU/cwc1kgYSU5Xb98r6Ajb+ObPRTOVOcJ
-	 pXozCSqD7G5pGi7emR8/q7N3gfmawjDUmagQQPYkvynsGlHWpt/vcXLrgvTJP8zUGGDWU
-	 yPKs68pkbjGSicgdWVOy7X7goa4/KVw3Z8ZhE/vyWDWeyMvNrNGkT6XvayjZs4Qk6+17r
-	 EIZfqMhKyapEa2wQvdCZhJnqgsyVaCAbGMlooBwb220GvH5/8ZsmpxNnYTNGVU9BcEiji
-	 1IGUrTUBFTphmt0ci53sPvh9R55ieETzJWRCMxu38L+cd/DgpQEYpPLZ5P+bwlBCh4Q==
+	t=1794131165;
+	b=qQiilK7eMXyMeGimeaYYeQCwm9+LubT49/zoq/3KpWJu3FPqKYui6wbld/gNveak8vIf
+	 pGOc2GykoHn+Hz0sEt97XvkhQDM14RZPTbMbDeNkLYr+hwIC9UmoBfmtLBwVnvI/Y9RFk
+	 7hIO0SexhhSNBZxwMoikLlexJotzPzSCcKcZ8278JT8Ac+rpiFKKLMlKdhCHr/dtRtaxA
+	 MVOLJ64hJ/E7abZOtyIFhz3PC/eZAE96Z4ir3i+pygccR9ffxoEOAmcCIJwte/zKci7bX
+	 JpaRIiP+s21KtTyy2ieN/8MrCEQfHTR+yw0d0DWRbEizhkVQgauPUDvAE32gKpPeMvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794129877;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=PnzH+B+BQHmWRcHqdfcGVVstdJf8NJtY2FdKLBnT8BA=;
-	b=u6lnBriWkO/IT/STdue0S/unIpFazF26IJziWxRfj3101nifgJXw4MpwYUb4sD8mmCpU
-	 0O90y2NgWTguoJBIAELATahep/ldP6/6MWbZHGG0kX9hfV2ntTcV686i3FLXoFkTefb1H
-	 IarGBA/ODuCibrlAGdfTNHehT5Zd8uXncWKE1qWSHyvoZZi5LGP2ZvszB2e5xJGTBTgaH
-	 xDqV2z+WSDloBkPs5nkDjo/YiPQDevqArn1b/Lp6omGiVBANsw2wnxeZOpSRlzixFy0AN
-	 GCSqeDF/6NXYd8rnrPTZQXW8CorV9L4W1ecyRAYy+a4OF3fRUk+XP7opC8DVKhATlrg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794131165;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=D1K0wrjeRxXZkT8OyeftvPsGaY/KHPkSXaBR6fxBie0=;
+	b=gP7sOaOp+qwB42TjP+ocniUfeBxESayXFk0VePOYG3Pul7qFr5cw1z/IpnCUm2VRzXIA
+	 pUOmralnzwrNTX6n5PSKgiOb2czTT9kUvUD6muQZHPWW/LdDG21M1oFmQHgqaQOrQtrwf
+	 GLzT9mLBeH9D0l5CeaRhNpmdeYsYUK6fxOIq7RpHlJtV1sA5bZleJ0XzgKG2t7VDr6o1P
+	 FQb2gXr+ByGOD6jfkZ6lgpMTVZpYIESExd8Ehgi6em3s6ovbpj8WDiPn+kr2U3ZBy9B1D
+	 FvLI0Nl2ji2IEZDttZcdklYLJKWHC7GDNtGHuHfpUx3iTmIFGBllJAJhJF1qNmZvqEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=P6HdDUCZ;
-	arc=none smtp.remote-ip=111.22.67.137
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36D5606A321;
-	Sun,  8 Nov 2026 09:24:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F36D5606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P6kizvfy;
+	arc=none smtp.remote-ip=209.85.215.173
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A7B606A322
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 09:46:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1A7B606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=P6HdDUCZ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=P6kizvfy
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cdb15cd8558so90240a12.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 01:46:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=P6HdDUCZ2dodrGT4fxgKTi+gcM2AkdrIy1MRstIFj6tiyIi5AAWFz+a1KqJgaNoDq3kdT/LXsx/Ol
-	 8lpjzTROB9Pi98FQQudt3FpG6rLUHyHcUubKzESAblFP6B7rF2p4zESaYABsJ7axqy7o0Q+xxQxy2i
-	 OhHS1Qcf+NsKrn+M=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46af03fcbe3e-5aacf;
-	Sun, 08 Nov 2026 17:24:27 +0800 (CST)
-X-RM-TRANSID:2ee46af03fcbe3e-5aacf
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03.03 (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76af03fc1270-639dd;
-	Sun, 08 Nov 2026 17:24:26 +0800 (CST)
-X-RM-TRANSID:2ee76af03fc1270-639dd
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+        d=gmail.com; s=20260707; t=1794131164; x=1794735964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D1K0wrjeRxXZkT8OyeftvPsGaY/KHPkSXaBR6fxBie0=;
+        b=P6kizvfydJEBBrd67EW+ZuJceoQtok8mvajjLX1bbZYcyblT69RDSyyGmIvodHkDRD
+         gIipWpBC9yKMmbpRGSmXdk6qO5/5NngYLoXoy5LU7K8cXS7HAo2Uj+7LyjtB+T/NSiAc
+         8VmP3ibaXdqvZXsfuyvq3nroSmJuRGRf9OPVJOK61xdisduR4jW5S/qs3FTZmZaY50Li
+         n9nDFR8+inTfiLt2LyA4EdbWlTA3EKgwWl35KfLIg1c8zOarAtJ3zfOfBlMsDOCyx7q0
+         ZT+YPn5MqBGn8lzhHQlxM/PruosuuhCiaznd8f14+kPS1/UDaDuCdFL3uD5QWswYeo5S
+         JmcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794131164; x=1794735964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D1K0wrjeRxXZkT8OyeftvPsGaY/KHPkSXaBR6fxBie0=;
+        b=SbAtstU2wlqD/kCmRlwSFEjkUVgSTKID84i2t0el04+YwaXm6rTqMLQUyr3mR2O3te
+         NPbGVo1AjCHg8e5JweUDsSKPf1lkwboFiqSNWFiJUJ0CVrcTbFGvcXeGrUEAicB7+Q64
+         ZzRr5bwQYZxowbtxNkm+qKpb28HU4MQZ/C4XGp54zTEqganbPzBiZP/IXSURPOZ2zjiS
+         t0OIG5ZwUAtagJQJl9WOVdDrHrVyaVvyzIVz8SCMn3q5Z6kxdgR0kDag83nYX5Hc4J4P
+         E3meGUKHHPPNLqlbzm84UfQTFGfYcFwVZF29qm32V/JyrdFM8Pw+v2lIByiYaYyzvX3v
+         He1g==
+X-Gm-Message-State: APuU4Z/+95ddnB47oTnN3buyX3JWdenm1ovPI1bq58yrw4jV2zIU1a3u
+	hT/w4wLHOItu7B3Zvoksf8MHDzrZFzFtjuSPMnBsYhvopNFv7nFqyP9AgIp9Fg==
+X-Gm-Gg: AYBFou2MIUnEkifzg9XSv1SU+P349AJ+djqlgB+ViFpQc1X18HA1JDdPc3bPX1H/jbU
+	nxXkr7OVBShyaOSof4QgfvVQxj04V59Lv5qN0NLrVrOZ7Puk90bGr78dM1GxA//4UFCQJLZGZYi
+	5fMnWXu4We+x2E1ZoKqUiA8lpuREFlE6W8ud4MXoyay+FjCo3hIM3Mv7Fo+/X+Ai8fnoGVP2O6G
+	jugIocA0eGy6O/6xlyyqWyToD+8bC8nvs3hfy5LSRucIHpHGuaiHy8X+XLhVlmhUnnc8HxK+LtN
+	x3o0WcgWO6eZ1pDIDiWS3twH4qzS2Uh7yvyum0d7NZTGp/1dFSqis4Q56AwtUq/3I2vKbusxyoi
+	K7nuX3xFJsWHD2iPrUypQzz3CPNFzfBgkAJhrfIYXRBbJkRk9ChpVWSeMJqdjO+Pl547YFnm4W3
+	Njra3KVgG/ZYgMVlDvvKbkKkR/ftB6GpmHdTiaEj1ykQsDy4VOjn4rEBAsL1A3M4Rv6ASLYvP/x
+	ogwV5I1oraDnRMeM2gUBBOGAqHRgixHxoxEz7F/DiD2qYBrY21r0X2ZQ2Y7lUngySdHTXA235Wr
+	3ALYJR2S7ClOtdew/TcabMQ5EraQblEZmfprgtUdxjjFdXN6VsubwQ==
+X-Received: by 2002:a17:903:2281:b0:2dd:ad73:c987 with SMTP id d9443c01a7336-2ed837a83abmr9322425ad.31.1794131163926;
+        Sun, 08 Nov 2026 01:46:03 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed813af834sm3222715ad.0.2026.11.08.01.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 01:46:03 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/2] virtio_net: Don't DMA map the kernel image for the AF_XDP TX header
-Date: Mon,  9 Nov 2026 02:23:54 +0900
-Message-ID: <20261108172417.56607-1-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179411647562.994134.8636776015987575971@kernel.org>
-References: <20261107125723.33547-1-yanhaishuang@cmss.chinamobile.com> <20261107125723.33547-2-yanhaishuang@cmss.chinamobile.com> <179411647562.994134.8636776015987575971@kernel.org>
+Subject: [PATCH net-next v2 0/2] net: dsa: motorcomm: Add devlink info and resources
+Date: Sun,  8 Nov 2026 17:45:08 +0800
+Message-ID: <20261108094512.1285796-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,21 +100,27 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 08, 2026 at 05:41:15AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> > and binding an AF_XDP zero-copy socket fails with -ENOMEM. Even where
-> > the mapping succeeds, the header shares cache lines with unrelated data.
->
-> [Severity: Low]
-> Does the second sentence here match what the patch does? It reads as
-> though the patch also gives the header its own cache line.
+Add basic devlink support: expose the ASIC id through .devlink_info_get,
+and register devlink resources for the hardware blocks, reporting ACL,
+FDB (with unicast/mcast/static occupancy) and meter usage.
 
-[ ... ]
+v2:
+ - fix issues reported by sashiko
+v1: https://lore.kernel.org/r/20261106184811.350700-1-mmyangfl@gmail.com
 
-> Could this sentence be dropped, or reworded so it doesn't suggest the
-> patch provides cache-line isolation?
+David Yang (2):
+  net: dsa: motorcomm: Report error when FDB fails to add
+  net: dsa: motorcomm: Add devlink info and resources
 
-Agreed. The header is only mapped DMA_TO_DEVICE, so the sentence
-doesn't describe a real problem, and the patch doesn't change it
-anyway. I'll drop it in v2.
+ drivers/net/dsa/motorcomm/Makefile  |   1 +
+ drivers/net/dsa/motorcomm/chip.c    |  63 +++++++-
+ drivers/net/dsa/motorcomm/chip.h    |   4 +
+ drivers/net/dsa/motorcomm/devlink.c | 216 ++++++++++++++++++++++++++++
+ drivers/net/dsa/motorcomm/devlink.h |  18 +++
+ 5 files changed, 295 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/devlink.c
+ create mode 100644 drivers/net/dsa/motorcomm/devlink.h
 
+-- 
+2.53.0
 
