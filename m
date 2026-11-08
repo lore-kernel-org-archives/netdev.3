@@ -1,66 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.254.200.92
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794122308;
-	b=XhGSUtNO7gpZc/xcPAK8Y+b0K14JyKFcZQEzmnx+FiUHWXVG5MoI+IwLU2pe+q2GLE8y
-	 MwM0l/xGhBStzhXMI/envhR0u3OwUdw7lIoCJaYosfR70mlJHtnBN42nQeHARQ8BwkEnW
-	 z7QFCV4vJxDimSWlAkBCFZHWnQetV63rDVs6NtO4CYX2gNV4nUJYRbROYYp3Gjn6pLGhH
-	 dE5xPb8rn707VEQJMLXuWT+IkMEpwnfQ7MPsYpe3HUpj94w6mko2zBKryXWkVVCkMO8Zg
-	 AkZP3mR18EQckATUOBaP/J2IcGSjzfEs2GgwcJA4SgrYEw4KRYMf+WGbFCBKT5ZFk3g==
+	t=1794122420;
+	b=H01yhTarZTb8CO04cAaL19rM5Bb2iK3/TUxpBIkbLlwEWOvZ/d5kSFHnRWYgPgxMVJlk
+	 5gWej5AMWQeAwAi7rvxDl5Pc4cSnEDchYfcNaP0ySikvh5YPQFssuczVoZJdo5hbzy67p
+	 cdLwb6VHsKDM9VETko4RydgvChN2WvTDgBjaJQdcCNdwAkP2N9oNacdWb5JB4afI+pmrB
+	 RxZO5LYgPx0/3lU3EgQ+eD136R0xOPfSVw2ooz+nhjPRg/RDQiz2xeCrhilH5FVB24k9H
+	 agfQ/XRZNTDzMNeyLFn6iIdhkP6Ejp+m0+rXYPMNHS6954FUJPShQM5Te5qMRdbKJTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794122308;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=rp00DiKSxgo0zNtK24eQEtuDxTngsNsV2eHoN50n1pY=;
-	b=2eJ8oO0WtIas41H+RSP9DLHaK8JYVJ3Qa2I8ufv1pEUmY7clIEr3BYA8Mxcfdlw1pxer
-	 NH5V3oYSqQR2qH1gdz8BjL6dE0XsFbvyXRaEeYwpUM8PiOrG+lRo/1GQtMAlRLFpbPKrG
-	 mU1Uch5sELG7Lt6VKT9+BmAKutCoA2tVhmhT5g5nMl4/cl2619AJ3zoBPfFU5ZPjDhd7n
-	 SBRG5yEPgkBKtYcieItQU5uS/T5uibRcGYqSE64qdoJRI8GrxSlT1Q+dliOYnIqXITg9C
-	 cbeNP5QOZc1ctOQ5kVVBwmH4Oy1HBkAH6Rp7+tTkQCwwIErrCltZlwpDfankFbvfeOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794122420;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:Mime-Version:
+	 Content-Type:Date:Message-Id:Subject:From:To:Cc:X-Mailer:References:
+	 In-Reply-To:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:
+	 X-QQ-RECHKSPAM;
+	bh=oK11WFoEYcxKkv5gOP1n+/n0b5JmGN4huhLMKQpylEw=;
+	b=FCD7vqPXgSOO/RaZQOyU9Fzi1qifOw8TRShJXhj9613ZYRs3HmGDVeDtjmx4tVqLeXbz
+	 R7RAGCFWG+1cMUK3R9UPA7Cf6q0YKb6YdyosaxAVmLrmSiYX805lrBfVumA+KQvs6dXD/
+	 ZAhbuWm9UuI5t686mJoIhHglD0bDzaIbmvv1+9HFncxoAgORPB7l+SvZH8438LvW313Te
+	 2WH/IMUp0fh9zoTXpTmKPnoFGmvKft8HJU3G0zCx/uLYlNsNg50a9rMuoyjnqtZjF3XiR
+	 xz/+Fnk6TdvnvxcpV/+ZgeBBd8YSzm9L0mLHA0VgL4eM/oGnDa+UtF1IAXv4hlRrFSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bH1l6BqP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=linux.spacemit.com;
+	spf=none smtp.mailfrom=linux.spacemit.com;
+	dkim=pass header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=VFDZBFhx;
+	arc=none smtp.remote-ip=54.254.200.92
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990B0606A322;
-	Sun,  8 Nov 2026 07:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E26606A31C;
+	Sun,  8 Nov 2026 07:20:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39E26606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bH1l6BqP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D111F008A1;
-	Sun,  8 Nov 2026 07:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794122308;
-	bh=rp00DiKSxgo0zNtK24eQEtuDxTngsNsV2eHoN50n1pY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bH1l6BqPf0NPLte0hdP1howIC+6VwVqzOWf8WeOFz/Rw0OhK07gIlCHCZH5AnicOF
-	 kB/NDEfmBHsEl9Mk/d6+2UHpqTziFmT/uhz5Xh/tZjjbSa3AtAe2obdNf8O7gg4wgd
-	 M4uCrouUoNZ0d5ATNHjihFfg6chwpWVWLxvfzbIiaXYi/D+EtGIqNwxkpMs9q2s6CE
-	 P3a2rPh21qW/Wr/9TR8loAAAyYn1PNfoLUOMrO41GWqDEpTOrWwkDMHJgDfeDHeyC0
-	 Ytp9rzwE/av3YJEZt7kxUBmNxQi3+vA9zQe2Ex4ogfGjXbe4LEonZwHqRRnOOEWh++
-	 CtTaNnMwl1t7w==
-Subject: Re: [PATCH net v5 3/4] igb: do not split AF_XDP zero-copy frames over
- several Rx buffers
-From: netdev-bot+sashiko@kernel.org
-To: tkusters@aweta.nl
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- sven.auhagen@voleatech.de, richardcochran@gmail.com, kurt@linutronix.de,
- sriram.yagnaraman@ericsson.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- maciej.fijalkowski@intel.com, p@1g4.org, stable@vger.kernel.org,
- piotr.kwapulinski@intel.com, aleksandr.loktionov@intel.com,
- alexander.nowlin@intel.com
-Date: Sun, 08 Nov 2026 07:18:26 +0000
-Message-ID: <179412230633.994134.8603408637757773209@kernel.org>
-In-Reply-To: <20261104-igb-rx-ts-fix-v5-3-bf4b4367129a@aweta.nl>
-References: <20261104-igb-rx-ts-fix-v5-3-bf4b4367129a@aweta.nl>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.a=rsa-sha256 header.s=mxsw2412 header.b=VFDZBFhx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+	s=mxsw2412; t=1794122369;
+	bh=oK11WFoEYcxKkv5gOP1n+/n0b5JmGN4huhLMKQpylEw=;
+	h=Mime-Version:Date:Message-Id:Subject:From:To;
+	b=VFDZBFhxBpsg4a8fgdFMmvshrrlVoQAcFWvoM4UJ0p+D0GaPsEAQ93TE9XBOEk3Lb
+	 gnnQ90p9Ga3WWHEBbs+CvWJh5UjTEcxe2UosH218ChliKGWWOMmpNsR24LIg/5T1Uz
+	 rDIGG5iSq1yKuUIFDeyUsr4RUf3nVnV3+9RA83OM=
+X-QQ-mid: esmtpgz15t1794122363t4cfaa196
+X-QQ-Originating-IP: 70UR/8/Qz3+J8nvl4pXEMghTUj9NoHrmNfQe2/YfDAM=
+Received: from = ( [120.237.158.181])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 08 Nov 2026 15:19:20 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 17965104858753304052
+EX-QQ-RecipientCnt: 20
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,157 +58,104 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=a02f21ac2a7151b86497f96503bce060f3b96109e2e2f1aeb6516b655868;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Sun, 08 Nov 2026 07:19:19 +0000
+Message-Id: <DMPNAPNEGQ5I.XYUIB7Y8HDCA@linux.spacemit.com>
+Subject: Re: [PATCH net] net: spacemit: Hold RTNL lock in emac_resume() and
+ emac_suspend()
+From: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>
+To: "Andrew Lunn" <andrew@lunn.ch>, "Ali Tariq" <alitariq45892@gmail.com>
+Cc: "Troy Mitchell" <troy.mitchell@linux.spacemit.com>, "Vadim Fedorenko"
+ <vadim.fedorenko@linux.dev>, <netdev@vger.kernel.org>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Yixun Lan" <dlan@kernel.org>, "Vivian Wang"
+ <wangruikang@iscas.ac.cn>, "Chukun Pan" <amadeus@jmu.edu.cn>, "Siddharth
+ Vadapalli" <s-vadapalli@ti.com>, "Tomas Hlavacek" <tmshlvck@gmail.com>,
+ "Muhammad Bilal" <meatuni001@gmail.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>, <linux-riscv@lists.infradead.org>,
+ <spacemit@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0-reader-ipc4
+References: <20261105123441.2524171-1-alitariq45892@gmail.com>
+ <DMO13SWAGZAN.NYISGLGI7Y5A@linux.spacemit.com>
+ <c55c5878-d9c1-4863-bc55-99d334ba2ede@gmail.com>
+ <12a95b3a-9c8b-4a2d-9b81-12b3839e64a9@lunn.ch>
+In-Reply-To: <12a95b3a-9c8b-4a2d-9b81-12b3839e64a9@lunn.ch>
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:linux.spacemit.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MME7GB1W8aIneB/PcnuM8U0HR8lqg7GEcSYyh9QnR9iBnl8iEvUaLDs4
+	6y0C5UuGxSfDnqzxzpUILr176+VdxBTwR1CSnzMDOC+Qh64bELgxp/Hkyp8noy9Of25x46I
+	/FnKlE/K/Rv97xcdgLt8WOdpfz7R+SNdoWYkSobFnDgYXdBpBp9BuSteBFDD84LanRBk5yh
+	Ci7jACHXSjtxnv/aS2WA8zuGNRSseo75nNLqeuTuZmg5qBuFSR/Dx9aJrngEuMf8thqPwXc
+	EgbGXUUQ4uvkfglsErxUet2fT06GQMb0gkzzQLJWyYxuXZwMQy9Ikms3sCuoeOkhyvd5LJ3
+	vJrmCD7t6MTpycaEGJDh7ENFsLoa8SLK/+P2VbNLLLzGqOLsiUnfnExMVuJ0XQHBACXY0DO
+	r09q5vimGa+iWbPEWeS5/IFEkzkYJl6ZnFHo0VP32ZXEuQJaiksiu1ZpaZwOuk/lDQfmGBj
+	tMdKZMa9oASYqrd9h3QEe64zXx1qJndo9TQlD571lEdVKeEzFjKvoXbOaWf32t+FFVy1SBJ
+	6jvmOJQjuiFj1UvEZZXvIROxmSK1LikxQNMXJYE3lpnuEMAU5WlRAB3dWS5VvHgXU1P5D9a
+	nNmC/JfvFz+lEVgcCtZLOJvwyAgudId9Gkr4W1W/HfwHtVxPQhk4zOsI6AJZcz5TMleTwTn
+	i/X4E+fdA0J9T6YDttqRhOgcTHZJk9MTBR7+dAwegXF/fV1t12vT0XNYbnLNuMYGkvxawVO
+	4+GY4W2pdZ3X+fcMLzZ4C/W/ls/OqICi4t3fMBjSrbxgqeYBxrKusKgaPqwPO8odPZvsdiz
+	NdS02qsMFbCHKtfvsGXdMV/QuOYtbfn8iCJ5xx6eaIR9Jzd4xGm7iFSZQBtubStlAmRiyC7
+	3jEF4G6meoq1M9Y4lsS1FQKT2dBOG9SdMUgWxkLLVesRTELpbHSb9Mrj3o3MZOW1+ybznnj
+	d0HpuSi8tJRU/67lqDuHmXQ345vrxITw/t40GAc3+NEYV7j2WO7TqZUOr1wZ4KRYsKXoijm
+	pr0ietjlLZP164/EV3cCLyj/S3IGn8RRTqcvHSb+rR8LNhkvQ5n79PzcuxYL6i/kZeisyKb
+	uG6rS3XrpBy+4PN+1E6IfDjNXH2tz3XnTyxTTTfRjHu
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+--a02f21ac2a7151b86497f96503bce060f3b96109e2e2f1aeb6516b655868
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+On Sat Nov 7, 2026 at 5:32 PM GMT, Andrew Lunn wrote:
+> On Fri, Nov 06, 2026 at 03:44:50PM +0500, Ali Tariq wrote:
+>>=20
+>>=20
+>> On 11/6/26 2:43 PM, Troy Mitchell wrote:
+>> > On Thu,  5 Nov 2026 17:34:37 +0500, Ali Tariq wrote:
+>> > > @@ -2056,7 +2059,9 @@ static int emac_suspend(struct device *dev)
+>> > >   		return 0;
+>> > >   	}
+>> > > +	rtnl_lock();
+>> > >   	emac_stop(ndev);
+>> > > +	rtnl_unlock();
+>> > >   	clk_disable_unprepare(priv->bus_clk);
+>> > >   	netif_device_detach(ndev);
+>> > This can deadlock. emac_stop() -> emac_down() calls
+>> > cancel_work_sync(&priv->tx_timeout_task) with RTNL now held, while
+>> > emac_tx_timeout_task() starts with rtnl_lock().
+>> >=20
+>>=20
+>> Thanks Troy, that makes sense.
+>>=20
+>> For the deadlock, I think the correct function to call is rtnl_trylock()
+>> inside the emac_tx_timeout_task(), which would return if the lock is alr=
+eady
+>> held and will hold the lock if it is not.
+>
+> rtnl_trylock() is generally a workaround needed for badly written
+> code. Please try to avoid it.
+Agreed. If the reset is done in place, the work does not need RTNL at all,
+so .ndo_stop can keep cancel_work_sync() as is.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [Medium] This patch makes igb_setup_srrctl()
-  (drivers/net/ethernet/intel/igb/igb_main.c, around line 4842) program…
-- [Low] Two new comments in drivers/net/ethernet/intel/igb/igb_xsk.c
-  contradict each other.
+--=20
+Troy Mitchell
 
---
 
-igb: do not split AF_XDP zero-copy frames over several Rx buffers
+--a02f21ac2a7151b86497f96503bce060f3b96109e2e2f1aeb6516b655868
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This patch programs SRRCTL.BSIZEPKT for AF_XDP zero-copy rings with the
-same 2 KiB or 3 KiB buffer size as the other rings. Before, it used the
-XSK frame size, rounded down to 1 KiB granularity. It also refuses XSK
-pools and MTU changes when the frame plus the timestamp header would not
-fit the XSK frame.
+-----BEGIN PGP SIGNATURE-----
 
-Link: https://lore.kernel.org/all/20261028083344.3047350-3-p@1g4.org/
+iJcEABYKAD8WIQSL4Ay2cExaPXAQcU2YCe+A+TM0LwUCavAidyEcdHJveS5taXRj
+aGVsbEBsaW51eC5zcGFjZW1pdC5jb20ACgkQmAnvgPkzNC9B0gEA1znr4tPpsYVC
+nAv98ga0dRZipfyxeRX03GPDfyO2H9kA/0MZoMdmj9AE80+OsoJRT6mWefpeM6Si
+aoXyFnKOqZsD
+=cK0u
+-----END PGP SIGNATURE-----
 
-> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-> index cf9911137bd31..b286adedad5df 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_main.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-> @@ -4833,9 +4833,13 @@ void igb_setup_srrctl(struct igb_adapter *adapter, struct igb_ring *ring)
->  	u32 srrctl = 0;
->  	u32 buf_size;
->  
-> -	if (ring->xsk_pool)
-> -		buf_size = xsk_pool_get_rx_frame_size(ring->xsk_pool);
-> -	else if (ring_uses_large_buffer(ring))
-> +	/* SRRCTL.BSIZEPKT has a 1 KiB granularity, so programming the XSK
-> +	 * frame size would round it down and split frames over several
-> +	 * buffers. XSK rings use the same buffer size as the other rings.
-> +	 * While XDP is attached, the receive length limit keeps frames
-> +	 * within the XSK frame, see igb_xsk_frame_fits().
-> +	 */
-> +	if (ring_uses_large_buffer(ring))
->  		buf_size = IGB_RXBUFFER_3072;
->  	else
->  		buf_size = IGB_RXBUFFER_2048;
-
-[Severity: Medium]
-Is a receive length limit always in force here while XDP is attached?
-With 2 KiB chunks and the default headroom, the XSK frame is 1792 bytes.
-BSIZEPKT is now 2048 or 3072.
-
-With VFs allocated, igb_set_rlpml() leaves the global RLPML at
-MAX_JUMBO_FRAME_SIZE. Only the PF pool's VMOLR carries the limit:
-
-drivers/net/ethernet/intel/igb/igb_main.c:igb_set_rlpml() {
-    ...
-	if (igb_xdp_is_enabled(adapter)) {
-		pool_rlpml = min(pool_rlpml, adapter->max_frame_size);
-		if (!vfn)
-			rlpml = min(rlpml, adapter->max_frame_size);
-	}
-	wr32(E1000_RLPML, rlpml);
-
-	/* the PF pool's VMOLR is used on these MACs, see igb_set_rx_mode() */
-	if (hw->mac.type < e1000_82576 || hw->mac.type > e1000_i350)
-		return;
-    ...
-}
-
-e1000_i354 is greater than e1000_i350, so the VMOLR write is skipped
-there. igb_probe_vfs() only rules out VFs on i210, i211 and 82580, and
-igb_enable_sriov() has no MAC type check.
-
-Take an i354 PF with VFs and XSK zero-copy active. Could a peer that sends
-a frame longer than the XSK frame make the NIC write up to 2048 or 3072
-bytes, plus the timestamp header, starting at chunk + headroom? That
-would run into the next UMEM chunk, or past the end of the last one. It
-would be up to 256 bytes with 2 KiB buffers. With 3 KiB buffers it would
-be about 1.3 KiB, for example MTU 1600 on 2 KiB chunks, which
-igb_xsk_frame_fits() accepts.
-
-The igb_xsk_frame_fits() checks in igb_xsk_pool(), igb_xsk_pool_enable()
-and igb_change_mtu() only compare adapter->max_frame_size against the XSK
-frame size. They only help if the MAC actually drops frames above
-max_frame_size.
-
-igb_clean_rx_irq_zc() passes the descriptor length to xsk_buff_set_size()
-without checking it against the XSK frame size. The later patch in the
-series, "igb: drop AF_XDP zero-copy frames that span several Rx buffers",
-only drops frames without EOP. An over-long frame that fits in one 2 or
-3 KiB hardware buffer has EOP set and would still be delivered.
-
-Before this patch, BSIZEPKT was rounded down to at most the XSK frame
-size. Frames were split, but the NIC could not write outside the frame.
-
-Two hardware details could not be verified: whether i354 silicon exposes
-SR-IOV, and whether the PF pool VMOLR, which is never programmed on i354,
-limits the length anyway.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/intel/igb/igb_xsk.c b/drivers/net/ethernet/intel/igb/igb_xsk.c
-> index ce4a7b58cad2f..fb04df82272ac 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_xsk.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_xsk.c
-> @@ -91,7 +91,20 @@ struct xsk_buff_pool *igb_xsk_pool(struct igb_adapter *adapter,
->  	if (!igb_xdp_is_enabled(adapter))
->  		return NULL;
->  
-> -	return (pool && pool->dev) ? pool : NULL;
-> +	if (!pool || !pool->dev)
-> +		return NULL;
-> +
-> +	/* the MTU check in igb_change_mtu() does not see a pool on a queue
-> +	 * that was hidden at the time, for example by SR-IOV
-> +	 */
-> +	if (!igb_xsk_frame_fits(pool, adapter->max_frame_size)) {
-
-[ ... ]
-
-> @@ -110,6 +123,10 @@ static int igb_xsk_pool_enable(struct igb_adapter *adapter,
->  	    qid >= netdev->real_num_tx_queues)
->  		return -EINVAL;
->  
-> +	/* igb_change_mtu() keeps this true while the pool is bound */
-> +	if (!igb_xsk_frame_fits(pool, adapter->max_frame_size))
-> +		return -EOPNOTSUPP;
-
-[Severity: Low]
-This isn't a bug, but does this comment contradict the one added to
-igb_xsk_pool() above? That one says igb_change_mtu() does not see a pool
-on a queue that was hidden at the time.
-
-igb_change_mtu() finds pools through xsk_get_pool_from_qid(). That
-returns NULL for a queue_id at or above both real_num_rx_queues and
-real_num_tx_queues. So a pool bound on a hidden queue is not checked, and
-igb_xsk_pool() can later drop it from zero-copy. The commit message
-describes the same case.
-
-Could this comment be reworded so it does not claim that igb_change_mtu()
-always keeps this true while the pool is bound?
-
->  	err = xsk_pool_dma_map(pool, &adapter->pdev->dev, IGB_RX_DMA_ATTR);
->  	if (err)
->  		return err;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104-igb-rx-ts-fix-v5-0-bf4b4367129a%40aweta.nl
+--a02f21ac2a7151b86497f96503bce060f3b96109e2e2f1aeb6516b655868--
