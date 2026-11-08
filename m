@@ -1,70 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794137724;
-	b=TmQOPaDZGhVnlsyuWQ6a50xbrdnSbI7xJI39948v6JsGvUFYEcIAHw2JT8eR7g1szh2W
-	 q9mbAv5drHKYBzIlpOP2st+G711nubEHtuxnd598uGzlwPHS1sdX4wvhA5qM9ToDYjm3C
-	 stQZfjnmTnLvPk+QEyCSz7DBRR+fppEQ64XJzgrMA8GAWhSgoRkIScoB5QqmMWzzr8bK2
-	 tMJSb0SdTHtn3D+HV64KSD1XwzJvArnGWHUy8MFnHK3O3xyICY1z0COWTCpSzB1DFoj+w
-	 ZBc7AAb+dnekuLyGKPGydAU/67bXZTXouKy11EODoClHS39KoiQ4c96+F065s9BdAwQ==
+	t=1794137960;
+	b=i/HBu35GRW5LADxFdiZh6+oCsRyIFuiEu80iQKqyFJakCTD7dRjd2c2EToi0tMYPfcMc
+	 balVzYZNYLyw5FPcJZhl+2XZ10INrb5aKNxR0O4nUsZ6s/Nw1MNH5aew/YLguRawyMyLi
+	 /1GScc4LltRTxPCq/gIsA1bLicJyGbLZz4ZrEckej/9WzhIlK5qtfUaNs1YJ8iMp/Zvu8
+	 Vk65BhrOsuhpAqUKjXvLE2IIfRhczyRRoYzKTocnnrSgIDydAkT1yUZWQOIfghoNvLWQE
+	 v/K7D4X9AByXw5aqDo6pBrTEgF3e5LowPkBmkhGCkex407PCat67NGpLk9lLOvmgsvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794137724;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794137960;
 	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
 	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=lwdAgCvtvRUcPybnp/UQAFDNlNUPBjMogcTxCraafKI=;
-	b=tJsNyrYUJwwfLrg6iscHn7OIdRB9+QsdkUjtM0nY1yPhkqkGWORQKWGTmD0U8GwtF4dx
-	 t2uXrCrNHUQkp0dLEoDRKzDnYFSbwHA5IY+b57euOAy3J0xcbPl3Jraw/RbfZY2GJgscX
-	 Iik5BGn0rpu9IeeYheAEEsS6Je+3eWW8dnqah8+6fW1lOSHismhxHKr+YZguG4mrk1pAJ
-	 2PJPR9LHAQpCWUVGzP5xa9PTT//lkjTvcTUcyjD0cNFuJhRrZz0uLVOcyL1GP2jd4WhPT
-	 S9fVGNiIlXEKLiH6newT0VtAB+8XgWcVDQVHkJJ21n4g3Emggk0eJ07hoPJN97mIK9w==
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=PKMP9x+/uS8gH389VeN6nXEv8IHL/gx+ZXrkvrPwewk=;
+	b=iOIQPdtUznICC1n3nIlZAF811xRb4atGHRNbEV62RUwd8sECvBmlBd6yB5vKEADwZd9m
+	 eQUzAMC03AiYFUNMhrAq56TRkV2eB/u6NBIhC8XCOqBWEaW/1b+DqVRIJbp7EOJTrn1nF
+	 9SVCEtkdd50a1qm4fstqlrAmKfASSiYeLfX5f/zoFniCnmG/NM7Ynx4D9TPvcAZJF8RKi
+	 PLHRVnl7vWh+ZSbPiwRupO5kusO7BP9PCqfwmtwr/JbT2k4dVM4j55g3Wczcz0xBa1gUR
+	 Z+Rf4w1OWvf2jGScYm4et5bjNSehQRmS7PZIV5Z7Vx+AN24Ec69ASuzckZvKCR1yq6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cmss.chinamobile.com;
 	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=SMJ8h3Vj;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F86606D808;
-	Sun,  8 Nov 2026 11:35:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67F86606D808
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rw1JJeiF;
+	arc=none smtp.remote-ip=111.22.67.137
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D93606A331;
+	Sun,  8 Nov 2026 11:39:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08D93606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=SMJ8h3Vj
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=rw1JJeiF
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=cmss.chinamobile.com; s=default; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=SMJ8h3VjycMU6b0a2OQw+Tud5XV5tepWOrndsjJutGvSp4zwkXsQw98nH7/7h485gbSHIsf9CO0Vm
-	 gXzQ1dSxXpjlv9j/YAznLQcw6JEsjUuualB04NXLtngxNbYq0nekAni1lI0GpgEA/NVhELEgVeO4HA
-	 GbaCOcWTHLMyC7n8=
+	b=rw1JJeiFkYZzeY7VTsL7wIx0pBUpnnAvMRTSg6DBSEDi/xxzwFDT84YiikTvzRdMUdyo8c3q+Gv6n
+	 XVY7+YDimP42I8gkwFx2Wzd1/fRhk0LsTMP56UYd85t5wnVN8nZNFyZ8SITfMgzpkU9CJVQsucVjTK
+	 oNcoM9Vy3FouAvzA=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
 Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56af05e68a11-b8e8a;
-	Sun, 08 Nov 2026 19:35:18 +0800 (CST)
-X-RM-TRANSID:2ee56af05e68a11-b8e8a
+	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86af05f64333-5b2f2;
+	Sun, 08 Nov 2026 19:39:16 +0800 (CST)
+X-RM-TRANSID:2ee86af05f64333-5b2f2
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03.03 (unknown[74.82.203.40])
-	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96af05e6933f-66b79;
-	Sun, 08 Nov 2026 19:35:18 +0800 (CST)
-X-RM-TRANSID:2ee96af05e6933f-66b79
+Received:from  (unknown[74.82.203.40])
+	by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea6af05f47e53-666bb;
+	Sun, 08 Nov 2026 19:39:16 +0800 (CST)
+X-RM-TRANSID:2eea6af05f47e53-666bb
 From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	William Tu <witu@nvidia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	bpf@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] erspan: drop packets with an unknown ERSPAN version
-Date: Mon,  9 Nov 2026 04:35:04 +0900
-Message-ID: <20261108193504.73393-1-yanhaishuang@cmss.chinamobile.com>
+Subject: [PATCH net v2 1/3] virtio_net: Don't DMA map the kernel image for the AF_XDP TX header
+Date: Mon,  9 Nov 2026 04:38:37 +0900
+Message-ID: <20261108193845.73621-2-yanhaishuang@cmss.chinamobile.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261108193845.73621-1-yanhaishuang@cmss.chinamobile.com>
+References: <20261108193845.73621-1-yanhaishuang@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,114 +86,94 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ERSPAN type II and III receive paths take the length of the ERSPAN
-header from the version field of the packet, with erspan_hdr_len(), but
-never check that the version is one they know: 1 for type II or 2 for
-type III.
+virtnet_xsk_pool_enable() DMA maps the static xsk_hdr, which lives in
+the kernel image. On arm64 the kernel image is mapped in the vmalloc
+area, so when the device uses the DMA API the mapping is rejected:
 
-For any other version, erspan_hdr_len() returns 0 or the type III
-length. With version 0, the ERSPAN header is not pulled, so it is
-passed up as the start of the inner Ethernet frame, and in collect_md
-mode the metadata is filled from the wrong part of the header. The
-ETH_HLEN pull in __iptunnel_pull_header() still covers the bytes that
-are copied, so nothing is read past the pulled data.
+  virtio_net virtio0: rejecting DMA map of vmalloc memory
+  WARNING: drivers/virtio/virtio_ring.c:3882 ...
 
-Reject such packets, as a packet with a truncated ERSPAN header already
-is.
+and binding an AF_XDP zero-copy socket fails with -ENOMEM.
 
-On IPv4, a packet with a 4-byte GRE header is taken as type I without
-looking at the protocol. gre_parse_header() treats an ETH_P_ERSPAN2
-packet as carrying an ERSPAN header whatever the GRE header length,
-but erspan_rcv() then skips that header's version and passes it up as
-the inner frame. Type I only uses ETH_P_ERSPAN, so check the protocol
-too. Such a packet now goes through the type III path and its version
-check.
+Allocate the all-zero header per send queue when the pool is enabled
+and free it when it is disabled.
 
+This was found while testing AF_XDP in QEMU on arm64, not in
+production. Tested in QEMU (TCG, arm64 virt, virtio-net-pci with
+iommu_platform=on) with a KASAN kernel: binding an XDP_ZEROCOPY socket
+fails without this patch and succeeds with it.
+
+Fixes: 21a4e3ce6dc7 ("virtio_net: xsk: bind/unbind xsk for tx")
 Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
 ---
-Tested on net-next fa5196392691 (x86_64 KVM guest), with hand-built
-GRE/ERSPAN packets sent over a veth into erspan and ip6erspan devices,
-in plain and collect_md mode: version 0 packets and ERSPAN2 packets
-with a 4-byte GRE header and version 0 or 3 are now dropped, version 1
-and 2 packets are unchanged, and erspan v1/v2 ping over IPv4 and IPv6
-still works.
+ drivers/net/virtio_net.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-v3:
-- Also check the protocol when classifying a packet as type I, so that
-  an ETH_P_ERSPAN2 packet with a 4-byte GRE header gets the version
-  check too (Sashiko).
-v2: https://lore.kernel.org/netdev/20261107130030.35220-1-yanhaishuang@cmss.chinamobile.com/
-- Drop the Fixes tags and correct the commit message: the ETH_HLEN pull
-  of __iptunnel_pull_header() covers the metadata copy, so there is no
-  out of bounds read (Ido, Sashiko).
-- Drop the patch that skipped the type III sub-header, as no device is
-  known to send it (Ido).
-v1: https://lore.kernel.org/netdev/20261018090236.2487997-1-yanhaishuang@cmss.chinamobile.com/
-
- net/ipv4/ip_gre.c  | 12 +++++++-----
- net/ipv6/ip6_gre.c |  3 +++
- 2 files changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 5485586fa0e6..f8a7c4353502 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -255,13 +255,13 @@ static void gre_err(struct sk_buff *skb, u32 info)
- 	ipgre_err(skb, info, &tpi);
- }
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index dd2c41ef6fbe..4f5d8812f75b 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -315,6 +315,8 @@ struct send_queue {
  
--static bool is_erspan_type1(int gre_hdr_len)
-+static bool is_erspan_type1(const struct tnl_ptk_info *tpi, int gre_hdr_len)
- {
- 	/* Both ERSPAN type I (version 0) and type II (version 1) use
- 	 * protocol 0x88BE, but the type I has only 4-byte GRE header,
- 	 * while type II has 8-byte.
- 	 */
--	return gre_hdr_len == 4;
-+	return tpi->proto == htons(ETH_P_ERSPAN) && gre_hdr_len == 4;
- }
+ 	struct xsk_buff_pool *xsk_pool;
  
- static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
-@@ -282,7 +282,7 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
++	/* All-zero header shared by the AF_XDP packets sent on this queue */
++	struct virtio_net_common_hdr *xsk_hdr;
+ 	dma_addr_t xsk_hdr_dma_addr;
+ };
  
- 	itn = net_generic(net, erspan_net_id);
- 	iph = ip_hdr(skb);
--	if (is_erspan_type1(gre_hdr_len)) {
-+	if (is_erspan_type1(tpi, gre_hdr_len)) {
- 		ver = 0;
- 		__set_bit(IP_TUNNEL_NO_KEY_BIT, flags);
- 		tunnel = ip_tunnel_lookup(itn, skb->dev->ifindex, flags,
-@@ -301,10 +301,12 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+@@ -500,8 +502,6 @@ struct virtio_net_common_hdr {
+ 	};
+ };
+ 
+-static struct virtio_net_common_hdr xsk_hdr;
+-
+ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
+ static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq);
+ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
+@@ -5971,11 +5971,21 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
+ 	if (!rq->xsk_buffs)
+ 		return -ENOMEM;
+ 
+-	hdr_dma = virtqueue_map_single_attrs(sq->vq, &xsk_hdr, vi->hdr_len,
++	/*
++	 * Don't map a static header: the kernel image is not in the linear
++	 * map on all architectures (e.g. arm64), so it can't be DMA mapped.
++	 */
++	sq->xsk_hdr = kzalloc_obj(*sq->xsk_hdr);
++	if (!sq->xsk_hdr) {
++		err = -ENOMEM;
++		goto err_free_buffs;
++	}
++
++	hdr_dma = virtqueue_map_single_attrs(sq->vq, sq->xsk_hdr, vi->hdr_len,
+ 					     DMA_TO_DEVICE, 0);
+ 	if (virtqueue_map_mapping_error(sq->vq, hdr_dma)) {
+ 		err = -ENOMEM;
+-		goto err_free_buffs;
++		goto err_free_hdr;
  	}
  
- 	if (tunnel) {
--		if (is_erspan_type1(gre_hdr_len))
-+		if (is_erspan_type1(tpi, gre_hdr_len))
- 			len = gre_hdr_len;
--		else
-+		else if (ver == ERSPAN_VERSION || ver == ERSPAN_VERSION2)
- 			len = gre_hdr_len + erspan_hdr_len(ver);
-+		else
-+			return PACKET_REJECT;
+ 	err = xsk_pool_dma_map(pool, dma_dev, 0);
+@@ -6004,6 +6014,9 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
+ err_xsk_map:
+ 	virtqueue_unmap_single_attrs(rq->vq, hdr_dma, vi->hdr_len,
+ 				     DMA_TO_DEVICE, 0);
++err_free_hdr:
++	kfree(sq->xsk_hdr);
++	sq->xsk_hdr = NULL;
+ err_free_buffs:
+ 	kvfree(rq->xsk_buffs);
+ 	return err;
+@@ -6032,6 +6045,8 @@ static int virtnet_xsk_pool_disable(struct net_device *dev, u16 qid)
  
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			return PACKET_REJECT;
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index b5d6ed8f0c36..46fac89a0743 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -507,6 +507,9 @@ static int ip6erspan_rcv(struct sk_buff *skb,
- 	if (tunnel) {
- 		int len = erspan_hdr_len(ver);
+ 	virtqueue_unmap_single_attrs(sq->vq, sq->xsk_hdr_dma_addr,
+ 				     vi->hdr_len, DMA_TO_DEVICE, 0);
++	kfree(sq->xsk_hdr);
++	sq->xsk_hdr = NULL;
+ 	kvfree(rq->xsk_buffs);
  
-+		if (unlikely(ver != ERSPAN_VERSION && ver != ERSPAN_VERSION2))
-+			return PACKET_REJECT;
-+
- 		if (unlikely(!pskb_may_pull(skb, len)))
- 			return PACKET_REJECT;
- 
-
-base-commit: fa5196392691051963726787944db872420dfa75
+ 	return err;
 -- 
 2.43.0
 
