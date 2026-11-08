@@ -1,56 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794148564;
-	b=oJikIhwRpYDxQOJN6/TFcQxS3gTYTMaUem+Q3uW6bztdMhpPZbritND4Tlmk7JMQiwJd
-	 jtxmS1mfcHTYUDxgk2FWI1C2S02s6N3vyOjJ1MVr0Zvss64q+XTQL2iyqq669WbdZtzYS
-	 B8j9lNsYAhv84NhJQIlabnTwAjn9jXxvFSHU4E3RUDmQf33ltAv6RQswpLeZrVBsPbIZv
-	 rBcQX1yCEbzfSUobhpVeNRDf9lcJqWDk08unbVkv0454bg+ehiA61BR0rQ0oxO5Vb5fax
-	 eHzHhfZH1bcISbBhNEnaYe7cVQr6FdE7n9VDz+f68t5A5I5MRDcj9MImOyH9d74ERrA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794148564;
-	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
-	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=u7inqwKFfb3gTPBstYWmnGcwWeA6cNNlSHfLt3zFDL8=;
-	b=V4rxdnDlOQePotohbVkvLx8P7jrO+9B3j+rKXTzpRrgeM/3flW2aiaLY08tkOw9ZLPh2
-	 Iryfcau7+ZXZIm9DHWuiGHhsdoLtphO/IfVDW0P5SEkv7hBom+etSwa//PsPI+MsCEb/L
-	 g0BSXZCcXxNV1yrUCM4j2Ub2f/UMkFaZhNwFOCLetDnbgQcyfSqHqvHF79bGFC8hEy2td
-	 GwTCSfgumckXBtSt4lcDhMQXqQT2+oD2ebhn8pWa5mxVogIi4Zc54x3v1oTeA/fg/cE5C
-	 2105MSWMBAS4bGP++3LroGvV9wuODCLE/QhfnVaJrIILpNwHF8rHNuZ07sSDDjakWbA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b="ia/80WnC";
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794148796;
+	b=R7RvMdYkcmNQLwhchnHPimXrLNP99ph//rjOjicazoSXOFYW3b5yp8sqzCcqLWoLiu2Z
+	 gHYxbS02wSJPCCWzaK5REqS06MCot4TVjjpsbNKfOZ40Vnnsymb+bxV8vmbuxowVSTDs0
+	 i0FoDkXjszC+erxlYFq5EWRBDl+A+VDCpT1JLte8JEpImHnOikAbzd3IV8eOzVN2uBL+V
+	 AUmZV+j9argGCctblRKrcxKJVIDPKBTCMRwAdE8AbBKaQjtMpbkqGVi4WkULmDFAP3RxB
+	 dl6TNRdDTCf2NBreOdIsw1C8aUM7b4l1ydvK3WTco6dVdRF4M2i8jKD58IHT6p29jZg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794148796;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=CeOxTxKArDbG7RBezkcPwmjmZobpCK7vzK4n/jgzMSk=;
+	b=asWtHcK61d56Wl5OHLA1f3bgVw/mE1iveXoIk2qOoRRtOtfjLcGexXQa+czg+LjV7F5N
+	 MjLBYuCND745TbJHfgikpwEcVlylKdKXSh/zrTon632JaiqZz8r40dWWRCHdnxaCEoVa8
+	 uAKI/KglC3bo6UZOPWo2rjw7935TDdlCAobEsEnnUI9VYWOS0BO5GBIAZsEtm5CvBaQSI
+	 qlnJ9DZek0ADP/dqUI4+rRzJHZX2V6TbVVa8pqZ7l7kWbZ1qu9E3S2d5DRUVQmPDYOzsn
+	 pwLe/oh3ni8ZXSW6O7G3Uul6hJ/BsTWw7KG+eOIHQw68TW5UtszH8zeXt+hYv/l5QxQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TfNHglHj;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEBB606A33C;
+	Sun,  8 Nov 2026 14:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TfNHglHj
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794148795;
+	b=EpnNumtdYx+jJyyIYYiI9FIeQy4hTwex3UxdALTZtHaAoGuG/R7sdwczeePIsslZKvLl
+	 5hD/C/DXpx38WFsn+DO0r+HYCJM40wkoQjAEfhjt+PStHbXg+Qag0b9RuUPwD1vadvbOA
+	 zRf6YPwdu8mhVtgYbWM2z75uuQ1yJwsEn/5fJmUdIZiycctJ+T/V8xz6FJwtG8Z1W1nse
+	 xEoVa0XlYey2ZD37EaGCzbMTKxzJok1GIpPYdyXJ4sVsaZpj94w6MqLMYEi2WhL2Oyq8L
+	 hOur/VuT+RTCYLfghfEXVOtBSyv1UOC7IWwBBBmtukCSv4/Ll6j1AMCcForvva5ZW7A==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794148795;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=CeOxTxKArDbG7RBezkcPwmjmZobpCK7vzK4n/jgzMSk=;
+	b=0e2HEpuMcNs2sYOTnc6bhr8Dz2qoIMqqPnZH/6WwbdnTElIxyMJ9lUY/Dupto67tv6Us
+	 24m/0SZzuXXz4imXJv0QV5zqhUKEfcTtXbk8JleksbG+QKRe5Xj4vqfA33EPPH5h5RnSH
+	 2oQn453ebndxcRhmotbC68iknj7E6SBv4CLHsSKnfg5gPJ+kI1FU8BTIc0Pd9V3TaNG8V
+	 6Kztl99TQb7yuzQ6Qb5BNfOJOyVb4Nta/rzQpKIhwz+FLiDZQbBPupMRDP6aOIoCufXXS
+	 HA9tRbw6ETWAbIvvMPUA/+IN8V3PMo8VQb7zanc1GkbMZbrQhTJddPsmkWB1FSRA8hg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D0D606A31C;
-	Sun,  8 Nov 2026 14:36:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7D0D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=ia/80WnC
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=u7inqwKFfb3gTPBstYWmnGcwWeA6cNNlSHfLt3zFDL8=; b=ia/80WnC/SbAVB42dNROaP987r
-	rsCVmQyd9J8dZGJdcLwpFxefAqIT7WQojUi1HFfZGe0RH4b6P5ofemhxFujPOqeNxsRQ65NwzG/lh
-	xYB3mczUO9VlJjeuoAOMolDWO5Y4m5Q60+X1kHGDC6DVr9NKX2hoix7eaRYXcZbpC/2LXysrSS8yR
-	F4FPx4RvYRe2ergNnvcnhRiVodG/me0LljaBez35vbilc3KVxA5MgXdmLnA1PNGdaiboRJAlPCLY6
-	59/wNSsM6LU4yuPUgtbg5hkKVJ0bRanXKJYkuGd9b/b+flcs16AM8iO7/mwBezXVBG33If6tetnyV
-	UNHUpJVA==;
-Received: from [::1] (port=49964 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xQ402-00000008amI-0wSB;
-	Sun, 08 Nov 2026 15:36:02 +0100
+	by smtp.kernel.org (Postfix) with ESMTPS id 198251F008A4;
+	Sun,  8 Nov 2026 14:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794148795;
+	bh=CeOxTxKArDbG7RBezkcPwmjmZobpCK7vzK4n/jgzMSk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=TfNHglHj9zWG8V2barZa+njevWyohUVz0Fm5qLoXyZ5sg4yO/ofH+IlOpMoDfUiMk
+	 Nk4PDFlEayKjdN6/XUy1ShhdBKlfAAjsnPOfk92BJ/kA9/YCEOUi7jv3ZQHavW04ra
+	 V8zGMd+4yi/g3GW7owR52lgZtxLtG/cVDnS1jO2vtohWOliQzNs1Ool4ZKoIeiOD5Z
+	 y6J9sddrDU6weukBGoMI5R2/m9SOixwjGUKEUJewok17gN1/yYu4xuPXZFdev2zD6L
+	 D8N27JStEBI0JfzJLny2WMuj7zIfZrX50a20GTFItL0dEkITZc4zqh6bOCbn7xt39k
+	 PBVtQGf8lkqkw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 9695D47FBF;
+	Sun,  8 Nov 2026 14:39:53 +0000 (UTC)
+From: Yongjian Wang via B4 Relay <devnull+echoowall.gmail.com@kernel.org>
+Date: Sun, 08 Nov 2026 22:39:53 +0800
+Subject: [PATCH net-next v2 3/4] selftests/net: packetdrill: add TCP black
+ hole detection test
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,78 +83,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Sun, 08 Nov 2026 15:36:01 +0100
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev-bot+sinfo@kernel.org, Subash Abhinov Kasiviswanathan
- <subash.a.kasiviswanathan@oss.qualcomm.com>, Sean Tranchetti
- <sean.tranchetti@oss.qualcomm.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: qualcomm: rmnet: bound TX aggregates on
- byte-limit update
-In-Reply-To: <20261108141812.GA18859@horms.kernel.org>
-References: <20261031221052.1642262-1-Jeremy.Jean@oss.cyber.gouv.fr>
- <20261031221052.1642262-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <179348482309.3286.17799482231932078029@kernel.org>
- <20261108141812.GA18859@horms.kernel.org>
-User-Agent: Roundcube Webmail/1.6.20
-Message-ID: <5a28b58c53e167ea8b6e0218fb63f54f@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261108-mtu-probing-series-v2-3-355d6490c3db@gmail.com>
+References: <20261108-mtu-probing-series-v2-0-355d6490c3db@gmail.com>
+In-Reply-To: <20261108-mtu-probing-series-v2-0-355d6490c3db@gmail.com>
+To: davem@davemloft.net, pabeni@redhat.com, ncardwell@google.com, 
+ horms@kernel.org, kuba@kernel.org, kuniyu@google.com, shuah@kernel.org, 
+ edumazet@kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ panweiping3@gmail.com, netdev@vger.kernel.org, 
+ Yongjian Wang <echoowall@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794148792; l=2271;
+ i=echoowall@gmail.com; s=20261026; h=from:subject:message-id;
+ bh=2gf+VU4SH9z04KrX//6g8/b2rrK3/ddnLXUqOlblf40=;
+ b=7q3nY3jteMK81g4oaXBQFD2D+TuCHTmZis9MFpehVkdgguW1+hKijcRKCymxd7pgl64FxeJXC
+ OFCT/ym3LQwDyBd/572PLUNxQnCBSYNVH79F3Jx/QSFWZt2kSNmMDfk
+X-Developer-Key: i=echoowall@gmail.com; a=ed25519;
+ pk=9XP6JhqjjPsHCF6UZZZTeqTRnXIa4+ufggnxXtTJ+no=
+X-Endpoint-Received: by B4 Relay for echoowall@gmail.com/20261026 with
+ auth_id=1323
+X-Original-From: Yongjian Wang <echoowall@gmail.com>
+Reply-To: echoowall@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On 2026-11-08 15:18, Simon Horman wrote:
-> On Sat, Oct 31, 2026 at 10:13:43PM +0000, netdev-bot+sinfo@kernel.org 
-> wrote:
->> Hi!
->> 
->> This is an automated message. This series looks like a fix, but its
->> commit messages seem to be missing some information:
->> 
->>  - How the issue was discovered, e.g. hit in production, hit during
->>    development, syzbot report, manual code inspection, LLM or static
->>    analysis tool scan.
->> 
->>  - Whether the issue was actually triggered, or is only theoretical
->>    (e.g. found by code inspection). If it was triggered please include
->>    the symptoms, like the stack trace or error messages.
->> 
->>  - What hardware the change was tested on. For driver fixes please
->>    mention the device (and if relevant firmware version) used for
->>    testing, or say that the change was not tested on real hardware.
->> 
->> Please do not repost the series just to address the above. Instead,
->> reply to this email with the missing information, so that reviewers
->> can take it into account. If the series needs another revision for
->> other reasons, please include the information in the commit messages
->> then.
->> 
->> The evaluation is done by an LLM so it may be wrong, if you think
->> that is the case please reply and explain.
-> 
-> Hi Jérémy,
-> 
-> I would appreciate it if you could take a moment to respond to
-> the questions posed by the bot above.
+From: Yongjian Wang <echoowall@gmail.com>
 
-Hello Simon,
+Black hole detection (net.ipv4.tcp_mtu_probing=1) has no selftest
+coverage.
 
-Sure, here are some answers:
-* The bug was found by LLM-assisted code review.
-* The bug was triggered by a software reproducer with a KASAN enabled
-   kernel under QEMU VM.
-* It has not been tested on real hardware.
+Add a test where a full-sized segment keeps timing out without any ICMP
+feedback. Check that the MSS drops to tcp_base_mss once tcp_retries1 is
+exceeded, and that the smaller MSS is also used for new data after the
+retransmission is acknowledged.
 
-Regards,
-Jérémy
+Set tcp_retries1 to 1 to keep the test short, and disable TLP so that
+every retransmission comes from the RTO timer, which is what
+tcp_write_timeout() counts.
+
+Signed-off-by: Yongjian Wang <echoowall@gmail.com>
+---
+ .../net/packetdrill/tcp_mtu_probing_blackhole.pkt  | 37 ++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_blackhole.pkt b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_blackhole.pkt
+new file mode 100644
+index 000000000..f10dbb36d
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_mtu_probing_blackhole.pkt
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0
++// Test black hole detection with tcp_mtu_probing=1: when full-sized segments
++// keep timing out and no ICMP arrives, TCP falls back to tcp_base_mss.
++
++`./defaults.sh
++sysctl -q net.ipv4.tcp_mtu_probing=1
++sysctl -q net.ipv4.tcp_base_mss=1024
++sysctl -q net.ipv4.tcp_retries1=1
++sysctl -q net.ipv4.tcp_early_retrans=0`
++
++    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 65535 <mss 1460,nop,nop,sackOK>
++   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK>
++  +.1 < . 1:1(0) ack 1 win 65535
++   +0 accept(3, ..., ...) = 4
++
++   +0 write(4, ..., 1460) = 1460
++   +0 > P. 1:1461(1460) ack 1
++
++// The first retransmission keeps the full size.
++  +.3 > P. 1:1461(1460) ack 1
++
++// Once tcp_retries1 is exceeded the MSS drops to tcp_base_mss.
++  +.6 > . 1:1025(1024) ack 1
++  +.1 < . 1:1(0) ack 1025 win 65535
++   +0 > P. 1025:1461(436) ack 1
++  +.1 < . 1:1(0) ack 1461 win 65535
++
++// New data keeps using the smaller MSS.
++   +0 write(4, ..., 1460) = 1460
++   +0 > . 1461:2485(1024) ack 1
++   +0 > P. 2485:2921(436) ack 1
++  +.1 < . 1:1(0) ack 2921 win 65535
+
+-- 
+Git-157)
+
+
