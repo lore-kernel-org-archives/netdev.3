@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794096941;
-	b=PnBvxhFDgKDXeUbFcb735ejohJGO4wqqgvnv4GGZd02QIK7S8hhCydqILQLPHBtSzxv6
-	 dOI8eMkl7gTnd/bZNPu9mq0/6aE3yAK8MsdxByHXTSjLL11nh9HM1muoklYfhERSj22Gd
-	 PXrIitN9guP2iQOQ6AaE/DPptynzKXvcnFBeuevB1/+vBG81a/2qICJi54QzJEfOXE0Fq
-	 jqcu/FA4+7E/8y4VLCrM98CJCDcR9Ss6xrkGIVre0Ip66TbLPcNBaI4ftS4Tv8ij/EX6H
-	 x1tQdAqyhNcDIoqsQD4z0vFrEuDAFJ3iMR5U5tUhPWjzBKn7ukvOLRMRk/daCP9tWsA==
+	t=1794096947;
+	b=UEe7xKDuaVnywhh6k4tpR7u9/0KRQxOUEUJgSNYztNjSiS3R4TzaSh5MItDoQzRWFoqU
+	 DCG3Dkptz4avDUU+8LubX7NY7qxQl/eLGqSSbhd40n25T670piITrgtklMeA4mZz/kHDf
+	 vbYn5/0Lry10+O3bahcm1PTXyYKjSmVqCONQPFTt5pBYRVozDJrSTTd3j5m8AqS18NdQJ
+	 PDbUGbnjp5t5T0v/5/a4nWygumswxYO0ShKT9LS+Qh8W7uKLvDQAq8XVUFV25FC2P6/ff
+	 3g2NTT06hsJLIZ5PIwJvYYCYw06YPsDneebAMVbPzXfCFyE30kgGT0lhwuwfMzUGaag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794096941;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794096947;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=SE+KzW/T94I18zgPcOykLbpz2IWGtapWaIYEhxmOj50=;
-	b=ghYZob9C6m1uPDEJWyvDSLXxhxQ9ijkN64j1Ox86kpkdg/i+jZ3bv8yju3kfd9M5rF7y
-	 FgFJpQk7FtmV/fxovbyLqbEo9knfl3nl0MNpAgiNLkaCkeBTGZ7ELzfgTx3GFoeoYBsTv
-	 kCdsrlarXwiZ/VqSdzPoiLxp2NBZHbL1cKTD5P66+hg3ZCP/1FKIko2jtKDUjRFi89Fa5
-	 AbRSFXyQaUM3i7Q41fSK3fbKSvMXsphlfl+CU5beZSk4xAVJx5boRimVh+0/TlU7IByh5
-	 LDWop3dJUiLTvcfjF9sX6h0RIxWH077MVPSmbEVGjLllN02vIDQqNQ3LRnyBhsLYuBQ==
+	bh=2blDjoZm7fSGSwtlnh9END5OcqULp72mUsNTGTxsSYc=;
+	b=kAhOv0ITw0Qx60K8qHwyazK7AQabdkvZPxZspYqKfeqEjwRLLdrY4UimPTy1mZXrlwwp
+	 lfb7B/oVHPuNLZeYK6/O+M6cgpFCl4khsmmS8zt2Y6pQgQpOkqywWqvtHT1nyjeplBSpV
+	 +yY54ZEAx8BpXHt9s3iRVAFMngJDKG3TPOqucwEO2cKEfOkPwG9upRi/kc/iURgt80GHZ
+	 fRxq4leoxIeUYRyWb6e2mbiIhO73iLVmsY8ooDahmFRJj1bLfmzJ/Prz4mudqJj2HCTMM
+	 ecRchVkyY1mtLmRuSsYRXmnsMLTt5aIJ1Y3Lc9HhMP7IIOecOBvNttknsrwHuVsALcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HVYTk1qG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rl99Fi5q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AC8606A339;
-	Sun,  8 Nov 2026 00:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959E606D839;
+	Sun,  8 Nov 2026 00:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HVYTk1qG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A1D1F008A1;
-	Sun,  8 Nov 2026 00:15:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rl99Fi5q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE561F008A4;
+	Sun,  8 Nov 2026 00:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794096941;
-	bh=SE+KzW/T94I18zgPcOykLbpz2IWGtapWaIYEhxmOj50=;
+	s=k20260515; t=1794096947;
+	bh=2blDjoZm7fSGSwtlnh9END5OcqULp72mUsNTGTxsSYc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HVYTk1qGrIYtT251fFnqk/iqGP2HCFroWeE451eYwV3wfunTRpoUByJpZ6uOY90ZX
-	 Yfw8L1BEs8EXtixz64i476+gzAVksSUoXelbZp7foSsbuapIyOMEQqmDXQkz8rfZj7
-	 4CZs6F2tXd6rkAgRIz1UCygvjWpGKw1lDfSWqHetaE3M/AupAK1MQOqcwCjJ0p0jhs
-	 fHVzWL2VVfMEDuIDlujayUFZw9fIQHGz0eH/tDtliLz40UNmxxjsAvcJzGrf0SnMBw
-	 t7VfUytz+PVpRPHxM20s8d0A4tBpyIl36xghLIsGruNiLXTqgeTutBx+0enwv2A8y8
-	 6ic8BCtuFX5yg==
-Subject: Re: [PATCH net-next v10 06/11] net: ethernet: oa_tc6: Support for
- vendor specific MMS
+	b=Rl99Fi5qSeKmZyvO/2mP+PnuI1aNNFc852g6eEHtnwZVGoNV4nlPKPwQfVELKoWZL
+	 CoXcGi4bc695L+TGCamxq9HaIXP7wJr0OkwYs/2jYolZDZCN1qeBnXzHH0nvPBwOnR
+	 4pqytsrikvII+57om1daoF495qnfAZh0MtjezKuX33QPyUk6s6sv1sstpRz2aIbn1m
+	 VEE6vGcio20F6Mn4pleGqlbpU82TjlDU49F+qwZDjnIWlZ9QRaCHHWG/UiJ7mq4nxa
+	 svn7/3xgIl3nl+UDdZEHCvcP9qGP3x1JIDbsSiVA78TypW/DRu44uIm/+hVBF5nQrt
+	 +mNo4qgFN28pA==
+Subject:
+ Re: [PATCH net-next v10 11/11] net: phy: ncn26000: Support for loopback
 From: netdev-bot+sashiko@kernel.org
 To: Selvamani.Rajagopal@onsemi.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -52,11 +52,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, piergiorgio.beruto@gmail.com, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, jerry.ray@microchip.com, ciprian.regus@analog.com
-Date: Sun, 08 Nov 2026 00:15:39 +0000
-Message-ID: <179409693924.994134.1633626847542095748@kernel.org>
-In-Reply-To: <20261106-s2500-mac-phy-support-v10-6-31b5a69b85b7@onsemi.com>
-References: <20261106-s2500-mac-phy-support-v10-6-31b5a69b85b7@onsemi.com>
-X-sashiko-severity: High
+Date: Sun, 08 Nov 2026 00:15:45 +0000
+Message-ID: <179409694533.994134.4523797133943252048@kernel.org>
+In-Reply-To: <20261106-s2500-mac-phy-support-v10-11-31b5a69b85b7@onsemi.com>
+References: <20261106-s2500-mac-phy-support-v10-11-31b5a69b85b7@onsemi.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -72,7 +72,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,156 +80,142 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] NULL pointer dereference on an error path in oa_tc6_init()
-  (drivers/net/ethernet/oa_tc6/oa_tc6_main.c).
-- [Medium] net: oa_tc6: oa_tc6_set_vend1_mms() called after PHY init in
-  oa_tc6_init()
-- [Medium] net: oa_tc6: NULL deref in oa_tc6_phy_exit() on capability
-  read failure
+- [Medium] After this patch, the S2500 enters loopback by setting only
+  the BMCR_LOOPBACK bit (genphy_loopback_no_speed() in…
+- [Low] The subject line "net: phy: ncn26000: Support for loopback" and
+  the body describe an onsemi S2500 change.
+- [Low] The kernel-doc for genphy_loopback_no_speed() in
+  drivers/net/phy/phy_device.c says `@speed: Speed setting.
 
 --
 
-net: ethernet: oa_tc6: Support for vendor specific MMS
+net: phy: ncn26000: Support for loopback
 
-This adds oa_tc6_set_vend1_mms(), which lets a vendor driver map
-MDIO_MMD_VEND1 to one of the vendor specific MMS values (10 to 15)
-allowed by the OPEN Alliance TC6 specification. The C45 MMS lookup now
-takes the tc6 context. The new vend1_mms field defaults to -EOPNOTSUPP
-in oa_tc6_init().
+This commit adds a new exported phylib helper, genphy_loopback_no_speed().
+It changes only the BMCR_LOOPBACK bit and returns an error if a non-zero
+speed is passed when enabling. The helper is used as the set_loopback
+callback for the onsemi S2500 PHY, and dp83867 is converted to it in place
+of its identical private dp83867_loopback().
 
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_main.c b/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
-> index e793d7fb0635f..5b2454b759740 100644
-> --- a/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
-> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
+> net: phy: ncn26000: Support for loopback
+>
+> Adding loopback support for S2500 internal PHY to help running
+> loopback test through ethtool.
+>
+> This instance requires only manipulating the loopback bit in
+> the PHY, without setting the speed. So, added a generic helper
+> function to modify loopback bit of the PHY only. This will
+> help the PHY drivers, like 10Base-T1S or any other PHYs that
+> want to handle loopback bit only.
 
-[ ... ]
+[Severity: Low]
+This isn't a bug, but the subject and body only describe an ncn26000/S2500
+change. The patch also adds a new exported phylib core API,
+genphy_loopback_no_speed(), in phy_device.c and phy.h. It also converts the
+TI dp83867 driver: dp83867_loopback() is deleted and
+dp83867_driver[].set_loopback now points to the new helper.
 
-> @@ -1658,6 +1672,7 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
->  	SET_NETDEV_DEV(netdev, &spi->dev);
->  	mutex_init(&tc6->spi_ctrl_lock);
->  	spin_lock_init(&tc6->tx_skb_lock);
-> +	tc6->vend1_mms = -EOPNOTSUPP;
->  	tc6->ttsc_current_id = OA_TC6_TTSCA_REG_ID;
->  	INIT_LIST_HEAD(&tc6->tx_ts_skb_q);
->  
+The dp83867 conversion behaves the same as the removed code. However,
+dp83867 is not mentioned anywhere in the commit message. The v8 changelog
+says two patches were merged into one.
 
-[Severity: Medium]
-This patch doesn't touch it, but oa_tc6_init() still has a broken
-unwind path. It was introduced earlier in the series by "net:
-ethernet: oa_tc6: Support for hardware timestamp".
+Could the commit message mention the dp83867 conversion? Alternatively, the
+core helper and the dp83867 conversion could go back into a separate patch,
+so that the subject prefix matches what each patch touches.
 
-Can a failed capability read oops on a NULL phydev? In oa_tc6_init(),
-oa_tc6_update_standard_capability() is called before oa_tc6_phy_init(),
-and on failure it does goto phy_exit.
-
-At that point tc6->phydev and tc6->mdiobus are still NULL from
-devm_kzalloc(). oa_tc6_phy_exit() only bails out early when
-OA_TC6_BROKEN_PHY is set.
-
-For lan865x and S2500 it goes on to call phy_disconnect(tc6->phydev).
-That dereferences the NULL phydev in phy_is_started() straight away.
-After that, oa_tc6_mdiobus_unregister() hands a NULL tc6->mdiobus to
-mdiobus_unregister() and mdiobus_free().
-
-Any failure of the OA_TC6_REG_STDCAP read during probe gets there,
-such as an SPI transfer error or a bad control reply:
-
-lan865x_probe()/s2500_probe()
-  oa_tc6_init()
-    oa_tc6_update_standard_capability()
-      oa_tc6_read_register() fails
-    goto phy_exit
-      oa_tc6_phy_exit()
-        phy_disconnect(NULL)
-
-The neighbouring failures before oa_tc6_phy_init() simply return
-ERR_PTR(ret), including oa_tc6_unmask_macphy_error_interrupts().
-Should this branch do the same?
+> diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
+> index 0006e157917df..c115af6eda33d 100644
+> --- a/drivers/net/phy/ncn26000.c
+> +++ b/drivers/net/phy/ncn26000.c
+> @@ -176,6 +176,7 @@ static struct phy_driver ncn26000_driver[] = {
+>  		.config_init           = ncn26000_config_init,
+>  		.config_aneg           = ncn26000_config_aneg,
+>  		.read_status           = ncn26000_read_status,
+> +		.set_loopback          = genphy_loopback_no_speed,
 
 [Severity: Medium]
-Does this setter run too late to affect PHY probing and
-initialization?
+Can the S2500's own config_aneg callback silently clear the loopback bit
+that this sets? genphy_loopback_no_speed() does a read-modify-write of
+BMCR_LOOPBACK only. ncn26000_config_aneg() overwrites the whole register:
 
-struct oa_tc6 is allocated inside oa_tc6_init(), and the caller only
-gets the pointer back once oa_tc6_init() returns. By then
-oa_tc6_init() has already run oa_tc6_phy_init(), which does:
-
-oa_tc6_phy_init()
-  oa_tc6_mdiobus_register()
-    mdiobus_register()
-      PHY driver .probe() / .get_features()
-  phy_connect_direct()
-    phy_attach_direct()
-      phy_init_hw()
-        .soft_reset(), fixups, .config_init(), .config_intr()
-      phy_resume()
-
-All of that goes through oa_tc6_mdiobus_read_c45() and
-oa_tc6_mdiobus_write_c45(). At that point tc6->vend1_mms is still
-the -EOPNOTSUPP default set a few lines earlier in oa_tc6_init().
-
-So any MDIO_MMD_VEND1 access the PHY driver makes during probe, reset
-or config_init fails with -EOPNOTSUPP. The mapping only takes effect
-for accesses made after the MAC driver calls oa_tc6_set_vend1_mms(),
-as s2500_probe() does later in this series.
-
-The late store into tc6->vend1_mms is also done with no lock held,
-while the MDIO bus is already registered and the PHY attached.
-
-Would it be better to pass the VEND1 MMS into oa_tc6_init(), or into
-some config structure handed to it? Then it would be in place before
-oa_tc6_phy_init() runs.
-
-If the S2500 PHY driver is known never to touch VEND1 before the MAC
-driver gets control back, could the commit message say so?
-
-[Severity: High]
-This patch doesn't touch it, but there is a problem further down in
-oa_tc6_init(). The earlier patch in this series, "net: ethernet: oa_tc6:
-Support for hardware timestamp", added it, and it is still there at the
-tip of the series.
-
-Can the capability read failure path oops with a NULL phydev? In
-oa_tc6_init():
-
-	ret = oa_tc6_update_standard_capability(tc6);
-	if (ret) {
-		dev_err(&tc6->spi->dev, "Failed to read capability\n");
-		goto phy_exit;
-	}
-
-This runs before oa_tc6_phy_init(), so tc6->phydev and tc6->mdiobus are
-still NULL from devm_kzalloc(). The phy_exit label then calls:
-
-oa_tc6_phy_exit() {
-	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
-		return;
-
-	phy_disconnect(tc6->phydev);
-	oa_tc6_mdiobus_unregister(tc6);
+drivers/net/phy/ncn26000.c:ncn26000_config_aneg() {
+    ...
+	// bring up the link
+	return phy_write(phydev, MII_BMCR, NCN26000_BCMR_LINK_CTRL_BIT);
 }
 
-Only adin1140 sets OA_TC6_BROKEN_PHY, so lan865x and S2500 both reach
-phy_disconnect(NULL). phy_disconnect() calls phy_is_started(phydev) right
-away, which dereferences phydev->state. After that,
-oa_tc6_mdiobus_unregister() would also pass a NULL mdiobus to
-mdiobus_unregister().
+NCN26000_BCMR_LINK_CTRL_BIT is BMCR_ANENABLE, so this write clears
+BMCR_LOOPBACK. If config_aneg runs while loopback is enabled, the PHY
+leaves loopback but phydev->loopback_enabled stays at 1. Frames the caller
+expects to loop back then go out on the shared 10BASE-T1S segment.
 
-This can trigger whenever the OA_TC6_REG_STDCAP read fails during probe,
-for example on an SPI transfer error or when the control read reply
-check fails:
+One path that reaches config_aneg while loopback is active:
 
-lan865x_probe()/s2500_probe()
-  oa_tc6_init()
-    oa_tc6_update_standard_capability()
-      oa_tc6_read_register() fails
-    goto phy_exit
-      oa_tc6_phy_exit()
-        phy_disconnect(NULL)
+phy_ethtool_ksettings_set()
+  phydev->state = PHY_UP
+  phy_state_machine()
+    _phy_start_aneg()
+      phy_config_aneg()
+        ncn26000_config_aneg()
 
-The nearby failures before oa_tc6_phy_init() (sw reset, unmask error
-interrupts, phy init) all use return ERR_PTR(ret). Should this branch do
-the same?
+The same PHY_UP branch runs if phy_loopback() takes phydev->lock just after
+phy_start(). BMCR writes through phy_mii_ioctl(), which call
+phy_start_aneg(), also reach it.
+
+genphy_setup_forced() avoids this by keeping the loopback bit out of the
+mask:
+
+	return phy_modify(phydev, MII_BMCR,
+			  ~(BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN), ctl);
+
+Should ncn26000_config_aneg() use phy_modify() with a similar mask so that
+BMCR_LOOPBACK is kept?
+
+>  		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
+>  		.get_plca_cfg          = genphy_c45_plca_get_cfg,
+>  		.get_plca_status       = genphy_c45_plca_get_status,
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 06c5a8c8cc2a2..ffb6845d5b03b 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -2923,6 +2923,28 @@ int genphy_resume(struct phy_device *phydev)
+>  }
+>  EXPORT_SYMBOL(genphy_resume);
+>
+> +/**
+> + * genphy_loopback_no_speed - Helper to modify the PHY loopback mode
+> + * without setting speed. Some PHYs, like 10Base-T1S, don't support
+> + * auto-negotiation and therefore setting the speed isn't supported.
+> + *
+> + * @phydev: The phy_device struct
+> + * @enable: Flag to enable or disable the PHY level loopback.
+> + * @speed: Speed setting. Not expected to be set. Error if it is set.
+
+[Severity: Low]
+This isn't a bug, but the doc for @speed doesn't match the code below:
+
+	if (enable && speed)
+		return -EOPNOTSUPP;
+
+A disable request with a non-zero speed succeeds and clears BMCR_LOOPBACK.
+Could the comment say that an error is returned only when enabling with a
+non-zero speed?
+
+> + *
+> + * Returns: 0 if successful, negative error code on failure.
+> + */
+> +int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
+> +			     int speed)
+> +{
+> +	if (enable && speed)
+> +		return -EOPNOTSUPP;
+> +
+> +	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+> +			  enable ? BMCR_LOOPBACK : 0);
+> +}
+> +EXPORT_SYMBOL(genphy_loopback_no_speed);
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106-s2500-mac-phy-support-v10-0-31b5a69b85b7%40onsemi.com
