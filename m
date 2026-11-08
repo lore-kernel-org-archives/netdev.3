@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794177114;
-	b=4HO66m8VF0/yfnm04MhoMO7ZWQjW4aL/egrn7+sRrl2S5knNtSh72IPkKJlgDEDPMBkk
-	 hUAihT8IQysIg3fI8Q6VQ2GDfdz7NYc/FlSfQatpnncNNOln+wvFKPz5Dvt+g18ZJ7uPP
-	 j00uT7bgucgOK7/KIsyUZDVHfzrw0iOXR/at1gnvhD1NSBjcXKV9Pe1X//jfejUJZmeen
-	 sez4P74g8lnW040qTCfPLIpDqN6L+gr3LEgnqiSNZFwig03MMg9p62JVFUAyPj/vp6ahh
-	 GvL/TJGTNk8kI2Dk7y3xyaC7E0zJ0kNnjxbt2f2xJ1nUfBPRWktkwUF+OiQZsKI+L+g==
+	t=1794177144;
+	b=HuYTNcC9+1klhPlJTsJTsxBJjuvv3RYuHLz4sixuQPeeyxu4Q6Fu3YZoNddMGcpLfCT0
+	 HMnSf5+YJnGj4OTRgK6eDu/mwlb3If8UcGSfuvmGRSHLjaPsWj+CFUZEXER51vQihTk5i
+	 VaRQE/mN9igvPZmvlpI5rqq8GfWcg8XoG1PRA4qYcFmm2JpZYuN2Ym6o/5Xukqiux4b+5
+	 Zo9ght8O4nDrH7KmvYXx00QaOFKyS8OiaIUAJRJyphbWMqV8fEH1wbUXz6ZcXLcQID+GU
+	 eCTmGSbppeZ7UqQQjNzYYqG7BY44RHxDgW/z+pBh5Tj7SNPsSBrZel0G4LFy9XSgncw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794177114;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794177144;
 	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
 	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=g/cYqN1rGyHuNRthZzurI3x4a+62pgq35o4KhHKAEtw=;
-	b=JCQouAwvrXqRSAa+tO4rvdzrx4lppi0AyoMqUFlBnrocStNbTTt5pg5ngI2g5BpFf4ho
-	 oGZ8CIsJ7D9NE3ojGoW8x6cJvhDz4ibiW452xdoXm2b5PyhbxZa+O0w58A6a/bLIoA8PD
-	 S9MkG7OKYTbxeclTrum92CaP9xRGKry1qsDyXyWmE7kmjBpAamWVPmmGwJPtAT2C7Zity
-	 usPm5GHb0Wb+4lbDMes1yfv4eQ5rDOPhL+SWzjmc/6UZKv23NYVIKhhleZejYSLINKbVm
-	 jG0uiAePW1V3RfWRdKwR1baDRGWbQKD0yZt2KeJ8PUpbiEPg5Vek1iYwLEMPb5OFEKQ==
+	bh=9L6q0YkJhINETobLEedWRcicqFSMNtT+abPs/Uh3YjQ=;
+	b=0ihEUy/0Fk5RRCnxV4JAgmUgDr3ZcoCiOX8B9XKdgnMIDJcuNjjW30RCIsg82jJqU2Tb
+	 8LhVbU3Qid9z41vnm3qY2CuNUwraVpIM07ameMVdnoKcc9tq9b1yJbSma/OpykDbhtIQq
+	 848Zf6gdwWnLg54AA+7dbt5ammKKnJL/KRQlRF5ZCsBE5shyoXL8RXDEfhWD/b4NVi+EZ
+	 3PAFfC4Rpek4xVF+AQUclGTYU9lOfjLLjpXB913nQ6aRDKRlDpjUIjXgKzi4Xhvp21LUn
+	 dHNu6l0nOiofQAJ0nX4sgy0v6FaoZPqHKbg8SQGJWrBu0jqz473W+twlucK8Vhxfs9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=proton.me;
 	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=Olz15Zaf;
-	arc=none smtp.remote-ip=79.135.106.29
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=MgYJMhsc;
+	arc=none smtp.remote-ip=109.224.244.17
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D81606A320;
-	Sun,  8 Nov 2026 22:31:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4D81606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6353606A325;
+	Sun,  8 Nov 2026 22:32:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6353606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=Olz15Zaf
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=MgYJMhsc
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1794177111; x=1794436311;
-	bh=g/cYqN1rGyHuNRthZzurI3x4a+62pgq35o4KhHKAEtw=;
+	s=protonmail2; t=1794177140; x=1794436340;
+	bh=9L6q0YkJhINETobLEedWRcicqFSMNtT+abPs/Uh3YjQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Olz15ZafyGmAiHEo7IpgcVYTAlTETDkwLxWZagIFK/p/r+m6smtfCWNbvBW9VReM0
-	 OecaOgg4DsK4DNuoNus8eVEgFKjS3ZzObNYONeMidaIgtsjONiSE2Gc+afjWksaBVy
-	 1wFLg9WWf/UKNlZprSn4K+nquiDR44MNGhVB9nzXO85wepeRwnhMR6tv0TpJVVFvMg
-	 Vl3/Jm3lzX5q0xAIy6K+/d7lVW4/NWnDqwe3N+zADFa3hCAvZDnA862JRVfsVphmdj
-	 7VriTMjSWFxSI99nfp5HZjZho3Vj4bclAA6l88LCNhTdqBtYZ1Fl7x2z9Eb9uqsU6r
-	 Yz4IrCVSL3LSA==
-Date: Sun, 08 Nov 2026 22:31:46 +0000
-To: "jhs@mojatatu.com" <jhs@mojatatu.com>, "jiri@resnulli.us" <jiri@resnulli.us>, "davem@davemloft.net" <davem@davemloft.net>, "edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+	b=MgYJMhscuxKa5ltauC/4NPylXLPFqh+Aw+jKviKjQCQggaymPYTCvXkUA/c900lzM
+	 rQFE6nfYKuLJewo7YAMy9lvgCqUvrawlDRRSttktpFvMyXZDdVIpDN7JBOrPUysU7k
+	 JFII5XAZu6MP8rNwVS26707DqGywS+dOhqrMb6tthM43WUuXw6CVizr73ZZdApH1fY
+	 UPEyOKVhcZl+S/zKOfOO4C8cqXzOKvoQnwsvqKaYaTonKAbJIp6A5w9g77ac4Z+lrS
+	 tCFu7/lT8yX3WwsLgsETA+nEcFesC+SsB4XXsmLHMSxcIvydSdDSiVkorBzVZwRsSv
+	 /mdgYX4BxEzvg==
+Date: Sun, 08 Nov 2026 22:32:17 +0000
+To: "pablo@netfilter.org" <pablo@netfilter.org>, "fw@strlen.de" <fw@strlen.de>, "kadlec@netfilter.org" <kadlec@netfilter.org>
 From: Noah Weinberger <NoahWeinberger2003@proton.me>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH] net/sched: em_meta: clamp shift to value width
-Message-ID: <PonpZoq156a2aiUCGrHWYeg_kl3yFtp5oE2JaeCRJosmPfqWvGCrSlM-dn8lG7kSQpaAJuSaDN1zwr8X9UTC_DxfkFYZQVEQpV9kb-dMWxc=@proton.me>
+Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] netfilter: nft_dynset: reject DELETE op when set lacks ->delete
+Message-ID: <5aybqcVfq3WxYdpbT0Ea6bEWamp-4x10J9FF_5La7SSXJ57a4j176x_t3zUW8Ii2r84MsPX8xx_vNashO2PRWvuO9yNsaxS8YV_4TLc-QHU=@proton.me>
 Feedback-ID: 186545857:user:proton
-X-Pm-Message-ID: 8670b41f2d7ada11545e0e42e1c7af06b67fed0d
+X-Pm-Message-ID: b3d9ccead2c59e7b876970e6da36d7e95a6fdbeb
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,20 +66,20 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-em_meta_change() copies the user-supplied header without validating
-hdr.shift, and meta_int_apply_extras() then executes
-dst->value >>=3D v->hdr.shift on an unsigned long. A shift count of
-BITS_PER_LONG or more (the field is a u8, so up to 255) is undefined
-behaviour - on x86 the count is hardware-masked, so the practical
-effect is a wrong match verdict or a UBSAN splat, not corruption.
-act_pedit clamps its shift for exactly this class.
+nft_dynset_init() checks that the referenced set implements ->update,
+but for NFT_DYNSET_OP_DELETE the packet path calls set->ops->delete
+unconditionally. Today the only set type with ->update (nft_set_hash)
+also implements ->delete, so the call is always valid - but any future
+set type implementing ->update without ->delete turns a rule evaluation
+into a NULL function call.
 
-The patch clamps both values at change time, like act_pedit does.
+Reject the DELETE op at init time when ->delete is missing, next to the
+existing ->update check.
 
 Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd =
-(v7.4-rc1, 2026-11-07), net/sched/em_meta.c:762-770 (meta_int_apply_extras)=
-, 906-941 (em_meta_change).
-Longstanding code; the sibling fix pattern exists in act_pedit.
+(v7.4-rc1, 2026-11-07), net/netfilter/nft_dynset.c:98-101 (eval), 209-217 (=
+init).
+Longstanding asymmetry.
 
 This was found during an assisted (AI-supported) static source review of
 mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); e=
@@ -91,24 +91,18 @@ verification rather than a battle-tested fix.
 
 Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
 ---
-diff --git a/net/sched/em_meta.c b/net/sched/em_meta.c
-index 48bdd77..6681c67 100644
---- a/net/sched/em_meta.c
-+++ b/net/sched/em_meta.c
-@@ -936,6 +936,14 @@ static int em_meta_change(struct net *net, void *data,=
- int len,
- =09memcpy(&meta->lvalue.hdr, &hdr->left, sizeof(hdr->left));
- =09memcpy(&meta->rvalue.hdr, &hdr->right, sizeof(hdr->right));
+diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
+index fa4da69..5e2bbd0 100644
+--- a/net/netfilter/nft_dynset.c
++++ b/net/netfilter/nft_dynset.c
+@@ -216,6 +216,9 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
+ =09if (priv->op > NFT_DYNSET_OP_DELETE)
+ =09=09return -EOPNOTSUPP;
 =20
-+=09/* Keep the shift within the value width to avoid undefined
-+=09 * behaviour in meta_int_apply_extras(), like act_pedit does.
-+=09 */
-+=09if (meta->lvalue.hdr.shift > BITS_PER_LONG - 1)
-+=09=09meta->lvalue.hdr.shift =3D BITS_PER_LONG - 1;
-+=09if (meta->rvalue.hdr.shift > BITS_PER_LONG - 1)
-+=09=09meta->rvalue.hdr.shift =3D BITS_PER_LONG - 1;
++=09=09if (priv->op =3D=3D NFT_DYNSET_OP_DELETE && !set->ops->delete)
++=09=09=09return -EOPNOTSUPP;
 +
- =09if (!meta_is_supported(&meta->lvalue) ||
- =09    !meta_is_supported(&meta->rvalue)) {
- =09=09err =3D -EOPNOTSUPP;
+ =09timeout =3D 0;
+ =09if (tb[NFTA_DYNSET_TIMEOUT] !=3D NULL) {
+ =09=09if (!(set->flags & NFT_SET_TIMEOUT))
 
