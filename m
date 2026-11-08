@@ -1,98 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794120788;
-	b=XSum+6ONz3vQgOAYjlbwmJV2N/pZ8KwUGcVyH0RJRdgHgcZjUG6LnzVGkRkssq/kQ55u
-	 ABI1ke99ePSIUQTz2Oupj1QKCK1brTm3wyuqQtPCEhtIgns0oz2bYUq5XbdOFnwGXnf1r
-	 47YSbHCSg8P5XD9Hahw49W7wMY2JCIAZ3hG1XfvR49bFHoB8vvw6CWjY2B14+JgI3WO93
-	 Do6zRfRUE6pIuZhTU+TN40UslpYrfTaUmHIUjioKGeTulV8ac7DK9q4dvmqxGU/bcjcVA
-	 8PwOiboGp6vYX83dFkKEjI4taEIm0AP5wAUGUJw+fHm2IEbP+jiaHW+r53X2NzdCltQ==
+	t=1794120792;
+	b=mzzXmLdZmpgAUAH5/j/Yy7c3v1Xo7G5XH0aTmTJ9XuCMl6hSm0cuNgVHRY4IVSJbY2gY
+	 0vsJJyhfO6C3czY1StFJLliGxJf40qOx7st1kycr3OFHzGZOpqpIgiRi9tqjK/weFD5jn
+	 h/xDG2Z4i0QJ7R4BP4AN6oax1okJLsD6gbUylkYy/yHujdiKvxmKU2spn9I6ke8+naqNl
+	 qWQtsgmkrNXzMf5g2K9afSNOj9eY5Yg59x26OTGOkqaIlEH/wQQ9U14ESqTwL2+0HklR5
+	 79O9Qruxu7OSEPA4RzpGKhDhsKDw66f3BxObIe7Yf/Mj3jrFMW8u+yjIIt1aMvNsf8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794120788;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794120792;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=pyBtVqP8NGRwts0i4gjQbcb31qjJWBl7WO9S1ZYG21k=;
-	b=CerHRc5XaxsH6HyzA/5RL2YKZ1d780ufzb4Y5PPt9I8VkT0/8tJs/tuepzMqPOj8+vd8
-	 X0rOpYjl/AOAokGiAsbirn4HktoWKFkGaHRgXbFR54s2LC+JIEjax9fdNxUlVNz0v1T4X
-	 pxK8OMDKJEOyzXr9jClbVbeYByBDXYmMJRXfbUhU7kbUAfT0iL3laLdADXN9+Sq5PVeFD
-	 tA37BsZdtThS4LQQYN1O6EACxt3HDKo7F+YF2p9DmWX0A2hFJnUxDzycFR0uUEzCzpz/U
-	 sawiYcQobbHHO5TMo5VWGKFfjGVrV5XFNdZrsoqn4OpiG+oC68J/9rFOoF4j5vFBj/A==
+	bh=8fMfiOGweAcQIPo4dT9V+NST5hjS1PFasnJK1IH2aqs=;
+	b=E7WlUHQf5hQSDnDbj+ryPn515Y/gT1I9BWP4YGrI0T6xMzplZrdTvz7ZnN29cctQERCW
+	 O8UtVtaDYIH5p8gkryXyFKgjQaG06jRbRdCYuSHc8zqbHfmKE3PQEnuM9nLPw93yn+fvb
+	 949wjGnK/2qNzxaLe3s3lf2IKTFiwcrqvJqR59PHjZU+dcZQQTI8KY7Xnt1L1DSKyTF7F
+	 eKsSVG2UCmVCZhjMcpk1JawYsXmEfSKCEuWzj28WwVxff/s/V2IoX6O+LtjM1/qFYoOlC
+	 SSsiIZ4Tce2t9AXbv8h4t1MepPc4wL/G0Qsr8+hcWMKRH1/3UXFIDwzL0YSq5RMylrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FkGQbpKR;
-	arc=none smtp.remote-ip=209.85.160.98
-Received: from mail-oa1-f98.google.com (mail-oa1-f98.google.com [209.85.160.98])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=LIk53qWG;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DE2606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:53:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19DE2606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD624606A31A
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:53:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD624606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FkGQbpKR
-Received: by mail-oa1-f98.google.com with SMTP id 586e51a60fabf-451a49abd8aso345083fac.3
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:53:07 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=LIk53qWG
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso89766a91.2
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:53:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794120787; x=1794725587;
+        d=1e100.net; s=20260707; t=1794120791; x=1794725591;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pyBtVqP8NGRwts0i4gjQbcb31qjJWBl7WO9S1ZYG21k=;
-        b=ggfjxf2L9nH7xtKfdTL9ZAs3tS/OBGisfKYm70g2jqzSN25DT4oL09Q01oRiMgBg2V
-         opxABo1RYvcmQUnLdSkoVGrn79l0/aNudT6uiHGwtxhuAgXVoNad4ib0mPPdXF/iGmZr
-         xhuECMim5cLM5ayRtvY7s0Nu+hF752CpZlsQgbjPm304H2wIrqipKr9fLlBEC1XXJj+e
-         bhCa/6MDLB61MXjH3DGUtHDHbGnvFN08tMFspVE22FHP/nX5rBB8kUAO5yrMTCta79QT
-         1vBfdLnH48k6bsI+wJcqu3EXDm90yjHUZUnMycXaJ09OrPyiGjtMtCDpfjNFpf4s3Yl3
-         sSDw==
-X-Forwarded-Encrypted: i=1; AL+hErEY+tfNLq+XdR7V+H28kI4lMJ3CO0JDzLPPV8r/IHnY5FikVP0p5LIWZv0yVYPri0xOuVwmYik=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9iwnle1ASdPxtBaPDWwXLzMYgBLXL7pe2lV7RV9tcC6efz7fyh
-	b0jBAlJxlJRWI6uxPTxb0zj5i5Wk4G8dtMxROQuu+mow89MBlf17zBwRDB4XiJVYy+97XU7Zset
-	HrIKxZBr2P/x4EasuftzrCFQuI5PNAP0Wfjabpz547zzRpRZsjBvPU3Jd5yl5X87NZznh58CTPe
-	8aMB+LOAOF0kCAzuez3vdh78t5a/Sy4wqouQYPHTkqiyPevyemvm7KKFfu+fJieuwAXPs+35a4E
-	3cnBuKdkKfKJQ==
-X-Gm-Gg: AYBFou1URNYvNJYOH8eLgvVs9sXO0+O3vkk4I7CSvSD3iCMfUQNDGyfbRaHq/w3oVZK
-	yp2I8sOj9pTGBDhqwAliAjFh/n5QjPvezhp8564eUur9bMC5FBDEqOtIHtmHuG+bThNnAVRwwJN
-	SKdIE21eHBBwHvgwEI4FK81RRISc7VAeyINIhV76wW9MqwnayZEDRgjpP5CE0OJz33tlEQJktbq
-	4/x+vfT0GVRSVoJiX0e/Q+vp7BCaAIXxhkqh6mVBu1LlVyaZ9nSf0hiY5u1JJ1zjNrgozJlUmWH
-	yo0xK6loVCUP7O7LMS1kwqp2AtOV1Loodt6lLXbmPqdxyZj3uJ8W/dFARm1QQmvwDwPZMmqCVCF
-	LoSYv+tR9NmpgGf7cYWDrP3smbTm1f/pG2quoIB/He50DGW46PYAa01cWg/GhZzHOcVh2rwsLWh
-	OKd7VP/jLDbF/BeV0/+ovXEIgiB/z64ixjB3w=
-X-Received: by 2002:a05:6870:8131:b0:48f:e0e5:a1f6 with SMTP id 586e51a60fabf-4adec8c5b8emr375129fac.42.1794120786557;
-        Sat, 07 Nov 2026 22:53:06 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-17.dlp.protect.broadcom.com. [144.49.247.17])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4ade6ae6bcdsm10508fac.33.2026.11.07.22.53.05
+        bh=8fMfiOGweAcQIPo4dT9V+NST5hjS1PFasnJK1IH2aqs=;
+        b=JM3mONkvy+6MZEi2v56e/JSuRNfrJ58kZ0sJ4yNlMR9C8gL0aM/ldq9e0ZYxNrnmXy
+         b3xif9tl+YtdvFbv1XjBkbmicSur008DNgivAQmLaBNOSwE1yMgdg0e9uY5PjCoqxhrG
+         PUG03s11pedAW+UDkqxpSLTY5Rrzp0iCBP4+r7n52jfJqavIP5TLdR1IEFOmgOSJ1q7m
+         Z+AxyLoUjryvIf8c0M8dB26M1zyaf+24ZzICJi4smJkooobwWxXV1oBy7Q+H/Bxyj/Sb
+         Gcnpm6HDCndQ6QC0b6zTkqyuP9Y01bueCBidf3xMfTVhB08IXyPgAjDFnNeG2YEb27r+
+         AHwQ==
+X-Forwarded-Encrypted: i=1; AL+hErHvP5be8Q4b/CMTbcJUA+27J83QFY48TYm8/zW61mrQOmeYYoFlwSd2S20VqHR7S4oW5F/hRLc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Fv2rqfsZ1zRcatmhoP15yd6BQ5eKR3Z8LE9sFWgjc0trpD7EC
+	5m70ehSl3fc7bXf/jXW3gPtQADvnndkg0jRTeAJBgtp0RrgOxer2b3/fWZhxdw8duG3T9s78CW5
+	82HozkHi+6Q/8WcxfcwpeRlFo06108b3evCx/al7Qy4F1ELn1dtEMRtkB21oS3d+7kUaqM7w2S+
+	uOBuWuBrKyMDnc6jWmX04nKioL8oF9+4biilLLCXhRxj6YcF8B8EwlPMGtq4m5cRhqYZhojZnf+
+	tAwuEFHlSx/PQ==
+X-Gm-Gg: AYBFou3LqOUKA/P9ksTRW8f8H9fDLH4i64gGBMWCslniO+iYrdTFLhqUmc/W+6kwl4L
+	Byj8JiYPPG5EIhlCYOzzM3wrZ7K6vhTgM691KEnFheSfgeamGKovK2JA1px56Z2PUJK7JYOpxAB
+	gS4G15jkrW1JjSlrKvErqUW0i1dO5DUqwNN7z3Bd8KqIyuRvwfoSktEGBDWwehmNuiG7mCWJYQN
+	fnBTc+df5dhQurSLZjt0VNQj0dxzymlego0/bAVhNg2Iy8gCiTi8xMYYaxGGfX/8Vj6Ay7/F+aV
+	idzrVSlnM4vgZrs3Ej1bGH1AJR+vwJwDGbSULy5xctzXI8t+ZNTYE+FLObmZivQX5x3PPLtkx2j
+	QaIEj1gF5gU3bCtPU19Ku4jBF7sF/PscT7tujxK5ghg/BztYgV/HhS0NiwrMyhnziqsTw7bvDHz
+	MPwAjUDMS8pzBue8CfHLlveeGVPSUwuTqFAIk=
+X-Received: by 2002:a17:90b:55c5:b0:3ae:9944:3bf0 with SMTP id 98e67ed59e1d1-3b12d4bb729mr579028a91.34.1794120791126;
+        Sat, 07 Nov 2026 22:53:11 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b1058d66absm3253298a91.4.2026.11.07.22.53.10
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 07 Nov 2026 22:53:06 -0800 (PST)
+        Sat, 07 Nov 2026 22:53:11 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1b0d864826cso523589c88.1
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:53:05 -0800 (PST)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36ecd5db581so1316265eec.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:53:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794120785; x=1794725585; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1794120789; x=1794725589; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pyBtVqP8NGRwts0i4gjQbcb31qjJWBl7WO9S1ZYG21k=;
-        b=FkGQbpKRSO8EzZ88ed5g6+mUmXe2/IIVI5nFKuCZDvRyopvzJNZCrWWjgEWmBCgol3
-         EYVt9cCV/p7OqAAe5KqYJ3mPixhrNS8eVaSBfjRqTVW/HEaYYlh9miA2Gyt964NYJQR6
-         hWy8khz/cIZUFFX34cabDE+6JuQ3AoNOOt3k4=
-X-Forwarded-Encrypted: i=1; AKwUvBxQfMA5162YFAugwIl6yKtJDPWQCfcK0v+OUI0nTTF9/e1Hi8ISrQ78qvBd/ttg2lesARzk5FU=@vger.kernel.org
-X-Received: by 2002:a05:701b:220d:b0:1a5:9abb:fdd7 with SMTP id a92af1059eb24-1b39fecbd9fmr1183174c88.9.1794120784687;
-        Sat, 07 Nov 2026 22:53:04 -0800 (PST)
-X-Received: by 2002:a05:701b:220d:b0:1a5:9abb:fdd7 with SMTP id a92af1059eb24-1b39fecbd9fmr1183143c88.9.1794120783779;
-        Sat, 07 Nov 2026 22:53:03 -0800 (PST)
+        bh=8fMfiOGweAcQIPo4dT9V+NST5hjS1PFasnJK1IH2aqs=;
+        b=LIk53qWGWJHLFPqPWUqPVuIkaojnY21FSLewFFjWJbtXBA3SOhO5iXGltDWaLf/+z5
+         gRMXJEygv2KrkNDUVTZOunkYxh/JHvy/9xlHaeoDDQ2ZZIvCIcCbRmb0kOinapISej+E
+         xuJRriIIuWApUDwKImOx2N+Ma+p2jNQCGZbUM=
+X-Forwarded-Encrypted: i=1; AKwUvBy6KXn17LbMxFfmNyAy/6skvRX1I/4giB8uYzElxjUjUbybCaygNXmvOFv9Iy3Urvv7YKkNfFw=@vger.kernel.org
+X-Received: by 2002:a05:701a:ca05:b0:196:aa86:fcf3 with SMTP id a92af1059eb24-1b39fef03femr1339177c88.26.1794120789332;
+        Sat, 07 Nov 2026 22:53:09 -0800 (PST)
+X-Received: by 2002:a05:701a:ca05:b0:196:aa86:fcf3 with SMTP id a92af1059eb24-1b39fef03femr1339143c88.26.1794120788655;
+        Sat, 07 Nov 2026 22:53:08 -0800 (PST)
 Received: from pc-hpe-top-git-sendmail-server.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3755e8a27sm3497993c88.7.2026.11.07.22.52.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3755e8a27sm3497993c88.7.2026.11.07.22.53.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 22:53:02 -0800 (PST)
+        Sat, 07 Nov 2026 22:53:07 -0800 (PST)
 From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 To: michael.chan@broadcom.com,
 	kuba@kernel.org
@@ -102,11 +102,12 @@ Cc: andrew+netdev@lunn.ch,
 	edumazet@kernel.org,
 	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>
-Subject: [PATCH net 3/4] tg3: Skip querying for management FW when no NCSI present
-Date: Sun,  8 Nov 2026 12:25:25 +0530
-Message-ID: <20261108065526.710152-4-pavan.chebbi@broadcom.com>
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Vishvambar Panth S <vishvambar.panth-s@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>
+Subject: [PATCH net 4/4] tg3: Fix heap overflow in unbuffered NVRAM write path
+Date: Sun,  8 Nov 2026 12:25:26 +0530
+Message-ID: <20261108065526.710152-5-pavan.chebbi@broadcom.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261108065526.710152-1-pavan.chebbi@broadcom.com>
 References: <20261108065526.710152-1-pavan.chebbi@broadcom.com>
@@ -122,57 +123,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On BCM5719/BCM5720, when the NCSI component is missing in the NVRAM,
-driver should not assume that "DASH" management FW is running by
-default. In this case if user runs ethtool -i command, invalid string
-"DASH" and garbage DASH FW version is being displayed. However, the
-5719/20 chipset cannot have any "DASH" management firmware running.
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-Hence skip querying the APE FW version registers and adding the "DASH"
-string to the tp->fw_ver if NCSI is not present. Just report the
-bootcode version.
+tg3_nvram_write_block_unbuffered() reads a whole NVRAM page into a
+buffer of pagesize bytes, copies the caller's data into it at page_off,
+and writes the page back.  The copy size was clamped to pagesize rather
+than to the room left in the page, pagesize - page_off, so a write at an
+offset that is not page aligned, as ETHTOOL_SEEPROM allows, copies past
+the end of the buffer and corrupts the kernel heap.
 
-This was seen by a user.  With this change, ethtool -i displays only the
-bootcode version.
+Clamp size to pagesize - page_off.  Also advance buf by size on each
+iteration, as the data of a write that spans pages was otherwise taken
+from the start of the caller's buffer for every page.
 
-Fixes: ecc796486f0a ("tg3: Detect APE firmware types")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+This was found by an AI code review scan.  It has not been triggered, so
+the issue is theoretical.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Vishvambar Panth S <vishvambar.panth-s@broadcom.com>
 Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
 Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index e9b48e58fdd4..16f8368874e7 100644
+index 16f8368874e7..5b5b21d759a6 100644
 --- a/drivers/net/ethernet/broadcom/tg3.c
 +++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -16029,19 +16029,21 @@ static void tg3_probe_ncsi(struct tg3 *tp)
+@@ -3399,13 +3399,14 @@ static int tg3_nvram_write_block_unbuffered(struct tg3 *tp, u32 offset, u32 len,
+ 			break;
  
- static void tg3_read_dash_ver(struct tg3 *tp)
- {
--	int vlen;
--	u32 apedata;
- 	char *fwtype;
--
--	apedata = tg3_ape_read32(tp, TG3_APE_FW_VERSION);
-+	u32 apedata;
-+	int vlen;
+ 		page_off = offset & pagemask;
+-		size = pagesize;
++		size = pagesize - page_off;
+ 		if (len < size)
+ 			size = len;
  
- 	if (tg3_flag(tp, APE_HAS_NCSI))
- 		fwtype = "NCSI";
- 	else if (tp->pdev->device == TG3PCI_DEVICE_TIGON3_5725)
- 		fwtype = "SMASH";
-+	else if (tg3_asic_rev(tp) == ASIC_REV_5719 ||
-+		 tg3_asic_rev(tp) == ASIC_REV_5720)
-+		return;
- 	else
- 		fwtype = "DASH";
+ 		len -= size;
  
-+	apedata = tg3_ape_read32(tp, TG3_APE_FW_VERSION);
- 	vlen = strlen(tp->fw_ver);
+ 		memcpy(tmp + page_off, buf, size);
++		buf += size;
  
- 	snprintf(&tp->fw_ver[vlen], TG3_VER_SIZE - vlen, " %s v%d.%d.%d.%d",
+ 		offset = offset + (pagesize - page_off);
+ 
 -- 
 2.52.0
 
