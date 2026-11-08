@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794141574;
-	b=3j69UWwG6fTw77/RDl9CxDEmpx4vrNtIcTyQHQB3YQ7xI/ivqqOo8fIPlXAomCiAKGGi
-	 IFafbvVcQ1jSN9NTGAxkCGdrJsb5fFnftDRaQsLE2D+rdv5UJedBuKpt3pmGItMIAptJ+
-	 oqUOjV3/aUVcYsyA1I9DL/Q+weKW0p/lj67E/5FEW1PW7NKutroS3oa9jLFfkPchPiJH7
-	 N/6KHE0qHtOv0tvrquNMWyqpkkzcyB3GlDhLtqW7gRu+2AB5XuElj7lZH6QtXB4jPSogB
-	 y5dgza4DIF9uz1ccqVjgKe991WFiILuiVGeBkwF6YJf0Ihg/r4tFDo9I8/PqrZ/c3iA==
+	t=1794141579;
+	b=CWsc+blwx0MDGSJBzXvaurr8d7m+Dl2BGkgbDsLktCdTiAY5hcZd0vxfbrRRXV9v3TWS
+	 gPoG91Y1bq3Kl7Vdob2i8DuXAzDUOZFj5OFpLnpp0ahASn3UYfwtaNZOIYIK47v+3vYqD
+	 g0aY32CJPqYHlnz1K69QTdj/LfAtYMrzoxoG2cDzw3ngCKUlhU/mP9YoQ4NyhXqhUNLUO
+	 K6dpeFV0/oY0iNgCW3SsCb6Xh/vz2RXJjG8KQ38C0IxdFZZfYtxhBpv9rIYkcZemQozG5
+	 NWKY6TnWX3dMhrhnzB35G578KeUN8L/AHNwbFu0nb6ibCigYS/YGUG9MYbIPgLQmlVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794141574;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794141579;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=2CtE1xbQJnYr2V8UN6I3X9KLuyotoxUeIkthClIT48g=;
-	b=YhaAz+9CUoKPNmvXtPoTUl2cta7NsSORiktpWyo8U4nBpUCmK5pnkwxBKqADndFIYM0B
-	 EqHB35Pr9OAtaoyaPw/4eAlFnbA+z2DOMnlLH0tL87RICZ8fWvfjO8HpnTSFmFZ6F9pLI
-	 AyWYyPAp5GpsexbvKdnLeblvDejG5PSYXInpb7QxmSdjcs6pnVH4bmSAhnZT6jYaIZM++
-	 gESLCVHjnMD+saFp/ttyJbKOBuC6fL/brQ/yEiQkUjVJ0EWEPlo8VWvuCpAMqHVyGQ2+f
-	 0lQD0p4YrybwtyKsPX9t6mxSFOcX9ufGh8gnHdfrUj7Pb1wF6AmeJlt0nt2TGON20CA==
+	bh=A/8HbcVlRuERO8DwLj45a+EZMPGwkTzISV+xYxVRBL0=;
+	b=4KCz6INs4zZaiX8lLFkoCjWlsiROJhE+H9TKPGCpoHXCbVhWiIeae5IwJ1N2D6B9rJZi
+	 MuF6ofEeS+VDhm9hoy4C8DA7aJeTFv1NlV201wfX322OkqZN4h/Hogw7/SjLYx0nzVeve
+	 Ugm6Yhx2iSfCeIhwwRJgHBVXUn8HzeFf13ampYUn0dEY0d6hNzMxN7zHzjAVtGU36aJNP
+	 /i7Si9O5Rt/1Mx04KCAVmye78el2z/cJK45mBZwjlguYbGvMnovM/PGFwsVFgq2TvJgfe
+	 bC+ALV1Ct8CVDUivdB22Bq1uxyTeei0y0pSYOyrTRdTh5KNFRFKlLj7Bsk6iJCj6jtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYKTYjq6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhwXUOqN;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834A3606A336;
-	Sun,  8 Nov 2026 12:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3D0606A335;
+	Sun,  8 Nov 2026 12:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XYKTYjq6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00431F008A3;
-	Sun,  8 Nov 2026 12:39:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JhwXUOqN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396D11F008BD;
+	Sun,  8 Nov 2026 12:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794141574;
-	bh=2CtE1xbQJnYr2V8UN6I3X9KLuyotoxUeIkthClIT48g=;
+	s=k20260515; t=1794141578;
+	bh=A/8HbcVlRuERO8DwLj45a+EZMPGwkTzISV+xYxVRBL0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XYKTYjq62Sgrqc4SHsDp1Bt4gv5bDqBfEJTkNKWdJCg5oI06rN18+d7WCfGSS5U53
-	 PgOLsX+Fkx/PlV+VofsYO2tBd8t7zcj6XnHx+hpo7HZlOQ1gkcJd8y1fFvJf6DxxSD
-	 0R9CY2jAUHY2gorHkBWdWqyT+8dCo76pBj1szF0vpvtueM+BbF5ps+yllE4q5u2Xg6
-	 4KCuueylm6vPZVA587SJNIi5Mm8SRmxt5xYNSSVDh/XjDGEeRRn+Nwm0dLsKgWchfW
-	 dzf9FPdj1TijrgFg14XZgsZnPZW540BqzBf7tZg/ePmPeDFL0qnIdavEbSnAmAe9im
-	 zx8ZCeCYq/9jw==
-Subject: Re: [PATCH net-next v4 3/8] net: dsa: motorcomm: Reset port flags on
- bridge leaving
+	b=JhwXUOqNMAtGRUvPpHn1TMW60AKl8oa0Mbs9v9a3N1OynMJJW33AlU/WKhXwOqL0M
+	 TCUS1P95uWAJM0tbzxcl/ZwcJXUX7lCRrmxNS6mRGE4ogYwQyiynsjMvtaQESeRth9
+	 ZeVcNEa6ZomsH4rhpkj2jU+r9o3RS9Ekz30D+Hld7p9Wyef7YiAwOehFeCI/OdnSGf
+	 x7Ko0JWeHpU5jHU3nbclfiXhSXiCYmz3lPr1oZyV7RsuFKOhnc9eKznpHNxa/YgIQf
+	 V7P7RNu6viwcHiW97hYHAmAtwPxfW/uYBWxEZ9T4VpNsJCv05XL8fXzThJVGVbCM2B
+	 MxAwVXFyqujdg==
+Subject: Re: [PATCH net-next v4 7/8] net: dsa: motorcomm: Translate FDB VID
+ for VLAN-unaware bridges
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 12:39:33 +0000
-Message-ID: <179414157335.994134.3474239739070494244@kernel.org>
-In-Reply-To: <20261107121631.1040612-4-mmyangfl@gmail.com>
-References: <20261107121631.1040612-4-mmyangfl@gmail.com>
-X-sashiko-severity: High
+Date: Sun, 08 Nov 2026 12:39:37 +0000
+Message-ID: <179414157777.994134.13352035575135683593@kernel.org>
+In-Reply-To: <20261107121631.1040612-8-mmyangfl@gmail.com>
+References: <20261107121631.1040612-8-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,147 +75,147 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] This patch resets pp->isolated and pp->hairpin in
-  yt921x_userport_standalone() when a port leaves a bridge, but nothing…
-- [Low] The patch fixes a user-visible forwarding bug: a port that
-  rejoins a bridge is programmed with stale hairpin/isolation state in…
-- [Low] The new comment in the shared helper yt921x_userport_standalone()
-  says "The return value got ignored by DSA core".
+- [Medium] Static entries for VLAN-unaware bridges now share FID 4095
+  with hardware-learned dynamic entries.
+- [Low] The commit fixes a functional bug that has existed since the
+  driver was added, but it carries no Fixes: tag.
+- [Low] yt921x_fdb_dump() declares `u16 vid;` (line 582) with no
+  initializer.
 
 --
 
-net: dsa: motorcomm: Reset port flags on bridge leaving
+net: dsa: motorcomm: Translate FDB VID for VLAN-unaware bridges
 
-This patch clears the cached pp->hairpin and pp->isolated flags in
-yt921x_userport_standalone() when a port leaves a bridge. The goal is to
-keep stale BR_HAIRPIN_MODE and BR_ISOLATED state from being programmed
-on the next bridge join.
+This patch maps VID 0 from a VLAN-unaware bridge to the unaware FID
+(YT921X_VID_UNWARE, 4095) in yt921x_fdb_join() and yt921x_fdb_leave().
+It also maps FID 4095 back to VID 0 in yt921x_fdb_dump(). The goal is
+that static FDB entries installed through switchdev match the hardware
+lookups.
 
-> DSA does not clear BR_HAIRPIN_MODE and BR_ISOLATED when a port leaves
-> a bridge, so the cached flags survive into the next bridge join and
-> program stale hairpin and port isolation state.
->
-> Reset them when leaving the bridge.
->
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> A VLAN-unaware bridge reports VID 0 for its FDB entries, but lookups run
+> with the unaware FID (VID 4095). Entries added through switchdev were
+> installed under FID 0 and could never be hit by the hardware lookups.
 
 [Severity: Low]
-Should this have a Fixes: tag? The caching of pp->hairpin and
-pp->isolated in yt921x_bridge_flags(), with no reset on leave, comes
-from the original driver commit:
+This describes a user-visible bug that has been there since the driver
+was added. Should this carry a Fixes: tag?
+
+YT921X_VID_UNWARE was added in the same commit as the PVID 4095 setup in
+yt921x_vlan_filtering(). So were yt921x_fdb_join() and yt921x_fdb_leave(),
+which write the caller's VID straight into FDB_IO1_FID. That suggests:
 
 Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 47f06945b8c4e..c51491ef4dae5 100644
+> index 1b05ac29ecd76..e41fe4859bfe4 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -1158,10 +1158,17 @@ yt921x_dsa_port_vlan_add(struct dsa_switch *ds, int port,
->
->  static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
->  {
-> +	struct yt921x_port *pp = &priv->ports[port];
->  	u32 mask;
->  	u32 ctrl;
->  	int res;
->
-> +	/* The return value got ignored by DSA core, reset flags before touching
-> +	 * the hardware.
-> +	 */
+> @@ -590,6 +590,9 @@ yt921x_fdb_dump(struct yt921x_priv *priv, u16 ports_mask,
+>  	res = yt921x_fdb_read(priv, addr, &vid, &pmask, &index, &status);
+>  	if (res)
+>  		return res;
+> +
+> +	if (vid == YT921X_VID_UNWARE)
+> +		vid = 0;
 
 [Severity: Low]
-This isn't a bug, but is this comment accurate for both callers of
-yt921x_userport_standalone()?
+Can this read vid before it has been initialized?
 
-It holds for yt921x_bridge_leave(), which is reached from the void
-.port_bridge_leave op. yt921x_port_setup() also calls this helper and
-returns its error:
+In yt921x_fdb_dump(), vid has no initializer. yt921x_fdb_read() returns 0
+without writing *vidp when the slot is NOTFOUND or has INVALID status:
 
-yt921x_port_setup() {
+yt921x_fdb_read() {
     ...
-	res = yt921x_userport_standalone(priv, port);
-	if (res)
-		return res;
+	if (val & YT921X_FDB_RESULT_NOTFOUND) {
+		*ports_maskp = 0;
+		return 0;
+	}
+    ...
+	if ((data1 & YT921X_FDB_IO1_STATUS_M) ==
+	    YT921X_FDB_IO1_STATUS_INVALID) {
+		*ports_maskp = 0;
+		return 0;
+	}
     ...
 }
 
-That error goes back through .port_setup, and dsa_port_devlink_setup()
-in net/dsa/devlink.c propagates it:
+When FDB index 0 is empty, the new comparison therefore runs on an
+uninitialized stack value. The result is thrown away because cb() is
+skipped when pmask is 0. KMSAN or -Wmaybe-uninitialized could still flag
+it.
 
-	if (ds->ops->port_setup) {
-		err = ds->ops->port_setup(ds, dp->index);
-		if (err)
-			return err;
+Before this patch, vid was only read inside the (pmask & ports_mask)
+block.
 
-Could the reset and this comment go into yt921x_bridge_leave() instead?
+The copy inside the GET_NEXT loop is fine because the !pmask break runs
+first. Could this remap move inside the pmask check, or could vid be
+initialized?
 
-> +	pp->hairpin = false;
-> +	pp->isolated = false;
+>  	if ((pmask & ports_mask) && !is_multicast_ether_addr(addr)) {
+>  		res = cb(addr, vid,
+>  			 status == YT921X_FDB_ENTRY_STATUS_STATIC, data);
 
-[Severity: High]
-Now that the cached flags are cleared on leave, does anything restore
-them on the next join?
+[ ... ]
 
-dsa_port_inherit_brport_flags() in net/dsa/port.c only replays this
-set:
-
-	const unsigned long mask = BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD |
-				   BR_BCAST_FLOOD | BR_PORT_LOCKED;
-
-So BR_ISOLATED and BR_HAIRPIN_MODE on the bridge port never reach the
-driver on join. The bridge doesn't replay brport flags either.
-nbp_switchdev_sync_objs() only replays VLAN, MDB and FDB objects.
-
-This driver implements .port_lag_join. Take a bond that is a bridge
-port and already has "bridge link set dev bond0 isolated on" (or
-"hairpin on") applied, so yt921x_bridge_flags() has cached the flag on
-each yt921x member.
-
-Then a member leaves the bond and rejoins, or a new member is added:
-
-dsa_port_lag_leave()
-  dsa_port_bridge_leave()
-    yt921x_dsa_port_bridge_leave()
-      yt921x_bridge_leave()
-        yt921x_userport_standalone()
-          pp->hairpin = false;
-          pp->isolated = false;
-
-dsa_port_lag_join()
-  dsa_port_bridge_join()
-    yt921x_dsa_port_bridge_join()
-      yt921x_bridge_join()
-        yt921x_bridge()
-
-yt921x_bridge() builds YT921X_PORTn_ISOLATION(port) only from the
-cache:
-
-		ctrl = ~ports_mask;
-		if (pp->isolated)
-			ctrl |= isolated_mask;
-		if (!pp->hairpin)
-			ctrl |= BIT(port);
-
-Wouldn't this leave the port without isolation and hairpin in hardware?
-It would also be dropped from isolated_mask for the other isolated
-ports. Meanwhile "bridge link show" still reports bond0 as isolated, and
-the hardware stays wrong until the user toggles the flag again.
-
-Before this patch, the stale cache happened to keep a rejoining member
-correct, so the rejoin case looks like a regression. The commit message
-says the aim is correct hairpin and isolation state on the next bridge
-join, and this LAG path still doesn't get there.
-
-Would it be better to sync these flags on join? One way is to add
-BR_HAIRPIN_MODE | BR_ISOLATED to the inherit and clear masks in
-net/dsa/port.c, which would make the driver-local reset unnecessary.
-Another is to read br_port_flag_is_set() on the bridge port in the
-driver's bridge join path.
-
+> @@ -782,6 +791,13 @@ yt921x_fdb_join(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
+>  	u32 val2;
+>  	int res;
+>  
+> +	/* A vlan-unaware bridge reports vid 0, but untagged lookups on its
+> +	 * ports run with the unaware FID; map so that static entries match the
+> +	 * hardware lookups.
+> +	 */
+> +	if (!vid)
+> +		vid = YT921X_VID_UNWARE;
 > +
->  	ctrl = ~priv->cpu_ports_mask;
->  	res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port), ctrl);
+>  	/* Check for presence */
+>  	res = yt921x_fdb_has(priv, addr, vid, &index);
 >  	if (res)
+
+[Severity: Medium]
+With this mapping, static entries for a VLAN-unaware bridge now share FID
+4095 with entries the hardware learns. Before, they were in FID 0, which
+learning never touched. What happens when yt921x_fdb_has() finds an
+already learned entry for the same MAC?
+
+Further down in yt921x_fdb_join(), the existing entry is not replaced.
+It is forced to static and the new port is ORed into its egress mask:
+
+	ctrl1 = val1 & ~YT921X_FDB_IO1_STATUS_M;
+	ctrl1 |= YT921X_FDB_IO1_STATUS_STATIC;
+	ctrl2 = val2 | YT921X_FDB_IO2_EGR_PORTS(ports_mask);
+
+A learned entry on port P thus becomes a static entry for both P and the
+new port, so unicast to that MAC is also sent to P.
+
+On delete, yt921x_fdb_leave() only clears the departing port's bit:
+
+	ctrl2 = val2 & ~YT921X_FDB_IO2_EGR_PORTS(ports_mask);
+
+That leaves a static entry on P that never ages out. It is not cleared by
+yt921x_dsa_port_fast_age() either, because that calls
+yt921x_fdb_flush_port(priv, port, false).
+
+Assisted learning on the CPU port is one way to get there:
+
+  station X is learned in hardware on switch port P
+  X moves to a foreign bridge port, e.g. Wi-Fi
+  port_fdb_add(cpu, X, 0)  -> static {P, CPU}
+  bridge entry ages out
+  port_fdb_del(cpu, X, 0)  -> static {P}
+
+If X later shows up on another switch port, hardware learning cannot
+override the static entry. DSA also ignores bridge-learned entries on
+offloaded ports, so traffic to X keeps going to P.
+
+The same stale state can come from a user "bridge fdb add X dev swpA
+master static" for a MAC currently learned on swpB, followed by
+"bridge fdb del".
+
+The merge logic is older than this patch and already affects VLAN-aware
+bridges. This mapping makes it reachable for VLAN-unaware bridges too.
+Can this leave static entries in FID 4095 that the software bridge does
+not know about?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107121631.1040612-1-mmyangfl%40gmail.com
