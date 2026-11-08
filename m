@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794148023;
-	b=S2+BIhsZq7OH1UD/ZNxS9r0hPsq8jnj3fvUKIKffHmKctuLWR3rf0dQF4jpq1NvY5vXX
-	 4K57Q92glqQFTbqkVEj0k4PZ3WUc3YLoXYs8yILd2a6QYvJsj4fcaNE4jcFSkg4jXXr82
-	 bREe2afxr2h507HXJr5LUDqGEki7SBrwlOHD/1IFMMVu6Xm7U6EOA0JbAJ6mMdun6bGun
-	 BwmpCG6Yp/rLGSxJC13yc8bK6xFwJKsIuh6HPvo4JhcbvEadWcDQT0wjN5irs5aJSvvCk
-	 0mxJ+G2VhoHYPko0NuDsgrEbyuible+ET6sjjnfyd27arq5XDtVQlhDN89Gp/jvJ6WQ==
+	t=1794148020;
+	b=EGA0hCk0EySh0LxlVjgbw8QlU6TBDzufd1q3yFFHk3W+jp+ob1maSgxuFw3QkcYLLm//
+	 l4u16g9lSQ9MQsuirQSLs1cXwOoKq1MF9KJ1+aGHDzweHasIR1tTBw2fKlYkdFSfbzbhB
+	 oBcWno7dDOG5ys6zGhcXfPCuu0gdf2y/PD5n7NT4MoRa4vBJb+62laO2Zw36tmEpCoRb9
+	 6Kl1p8QTKLpcOIK+1g6Vvj3nQ5VVZ8NCnAmGbeN71hkPgQz81Vx64fL0pwKIpoUStABBb
+	 prebzjJjYhQfwPAEKqTQA1CH2g/nAj+iIOFmQ0jkG8KxXdNzky786QjwofUMNXNxxrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794148023;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794148020;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
 	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
 	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=tOHTRsSEaZagNTHT0lNEFJtGwuWPJgb7aelTZKqw7lg=;
-	b=MFQ2GOjFhfiCThoHZ+LMQwc1XwF1RbB0vK7SNhG4AjXrE4mRAAftvPfWUmBxBgN/TtDU
-	 /OylqV31i6D4y/Z9U6O17Bt5SSxUGFZGjsBW23AYtu4DHkAZ+d/wAr2tVhlMVPiidJ8aq
-	 sCWpkvicK+rDssH0on145CUDqClQDc6shahM00+YKC5P7eQDNiuN34R57nME+Y0x4DeAd
-	 Pi7Fm0RR6UybXt4Lv34oSJ8+iCG3drMbShgPXw4Op0JSyb498SCnvDLrvO/lSaIU2RJwS
-	 /f5lZy8xAlkQO198Hh809GqbKie9y3bYZLIX0GdXtUFR7Yp5gP7CntVAUWa6c8LXhqw==
+	bh=HFFMCIabuDJl1dk8Y6onVW1hr4NVtO/ZAth8uZTKrro=;
+	b=BV+7Xni0IvgcWLCgT/kMcucZqmhvtOB4U+mctQr2cCoxug+CruPWKEY3PAwiVCDB0dbQ
+	 bkPMyAWlI6ijkbXoFEddq9BO0fvScMQY8j7XGpmN8x77zijR4oCgItKRSrGL+15isyUNY
+	 OgSKg6dvoTs1igeKNCroEBhLproy3w9VcLMt9ItYdgR+vuyIuoyW8m9fz41Z5chOTcu0i
+	 XJx4s+6WIWyJfBDGWxrV5VopdZ6jc/DgWCWzY7vBEuZjpY93P4GpI/M6xLlTFqAyIkFDy
+	 YODw44NwBIuU/AGFNHiLESAXLuZetcN/K7yFo0aW1MyR4PapoSAf6xmqL4rIsuYhEFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=oss.cyber.gouv.fr;
 	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=X+E7z5hg;
+	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=euB1lDC4;
 	arc=none smtp.remote-ip=51.159.188.251
 Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B6C606D809;
-	Sun,  8 Nov 2026 14:27:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28B6C606D809
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C8E606A31C;
+	Sun,  8 Nov 2026 14:26:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21C8E606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=X+E7z5hg
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=euB1lDC4
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=tOHTRsSEaZagNTHT0lNEFJtGwuWPJgb7aelTZKqw7lg=; b=X+E7z5hgKvjlRl5FSTULccBbvB
-	ZoinZlrGZLGdJgecuu6TP+R5FRH9Yn9kqhKtwJ4QUJzrAUH8ji6w1rnlJ6mp5LVsvaqRrq2Pr+3Yy
-	WQkWsOYVsvMjzxGYynM0QJopEiKRcPoGf2UrsZ+aj5JcUmZy7WA5wW0QVCfq2fDW5CRoBRDoa7zKI
-	MyAL8A7z6C4C0Qi0WZ59YaXnGu1Cqb5mt9A4KvheI+s0TeZlEYqjnQG4zB8dy6AQ/2awPpxLqIRua
-	/63nn9embuqWQnJF7YzUZ3OLHqsOh3GA4liwiSkbla2SmNvM98bSQyA3bCy607oe2qJGekhticGSi
-	6oFLt0fw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=HFFMCIabuDJl1dk8Y6onVW1hr4NVtO/ZAth8uZTKrro=; b=euB1lDC40g1yzMKrSGjk35dwQ0
+	VKyG0Aiszyex5H/P+P3iHUmxpchzph01kDndlrCxLAzgnaS+0VIGs6zxRCymeCaE3/9MuotjplSuT
+	fB8ntYhOOAgVW/zZKr5eGemFqPu+bAgiLOPkyiCbOBwX3AfxoQsakw10v9BgGrGJAsi2fQPQDyvuE
+	xLUMkUHZK0akgl6FmAaaD3ZK7hnceBjEWlh4LyZBMB+xa0RGBxRKfn24FACy5hIXhdAxW3IoMWk+w
+	YJXoWKQyyKGuD+qPPBqJG5CjnX7oGOkp8XUCmwhCL1Qck5gbX9oRRnfuRsA4Q90Id6rV6tro+chvL
+	X7VDpU5w==;
 Received: from [151.115.150.205] (port=49652 helo=gepetto..)
 	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xQ3rJ-00000008IcJ-2uUU;
-	Sun, 08 Nov 2026 15:27:01 +0100
+	id 1xQ3rF-00000008IcJ-06wZ;
+	Sun, 08 Nov 2026 15:26:57 +0100
 From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
 To: Steffen Klassert <steffen.klassert@secunet.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
@@ -65,14 +65,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH ipsec v2 7/7] xfrm: leave the sequence counter unchanged on ESN overflow
-Date: Sun,  8 Nov 2026 14:26:52 +0000
-Message-ID: <20261108142652.1330952-8-Jeremy.Jean@oss.cyber.gouv.fr>
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: [PATCH ipsec v2 0/7] xfrm: fix ESP IV generation and ESN authentication
+Date: Sun,  8 Nov 2026 14:26:45 +0000
+Message-ID: <20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261108142652.1330952-1-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,36 +92,65 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-When the 64-bit ESN counter overflows, xfrm_replay_overflow_offload_esn()
-rejects the packet and rolls back the stored counter. It decrements
-replay_esn->oseq even though only the local oseq has advanced, which
-can later induce a reuse of the last sequence number and the
-corresponding AES-GCM nonce. Both IPv4 and IPv6 are affected, yet,
-processing about 2^64 packets under a single key is required to
-trigger this bug, which is highly unlikely in regular use cases.
+Hello,
 
-Leave replay_esn->oseq unchanged on overflow. Keep the decrement of
-replay_esn->oseq_hi to undo its earlier increment.
+This series fixes nonce reuse in AES-GCM and ESN authentication errors
+in the IPv4 and IPv6 ESP offload paths:
+* 1/7 and 2/7: Save the current sequence number before incrementing it,
+               so that GCM IV construction prevents nonce reuse,
+* 3/7: Use the current sequence for software AAD and hardware offload,
+* 4/7: Give each early GSO segment a private secpath,
+* 5/7: Use the packet sequence directly for mlx5 IV generation,
+* 6/7: Segment untrusted GSO packets before allocating sequence numbers,
+* 7/7: Keep the sequence counter unchanged after full ESN overflow.
 
-Fixes: d7dbefc45cf5 ("xfrm: Add xfrm_replay_overflow functions for offloading")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Note that triggering the bug fixed by 7/7 is impractical: it requires
+processing about 2^64 packets under a single key. Yet, I still believe
+it's cleaner to fix it.
+
+On the crypto side, as a reminder, reusing a nonce under the same GCM
+key is catastrophic for security: it exposes the XOR of the plaintexts
+and can reveal GCM authentication key, which opens the possibilty for
+an adversary to forge ciphertexts without recovering the AES key.
+
+This series combines and extends these two individual reports:
+* https://lore.kernel.org/all/20260925095105.446269-2-Jeremy.Jean@oss.cyber.gouv.fr/
+* https://lore.kernel.org/all/20260925095128.446450-2-Jeremy.Jean@oss.cyber.gouv.fr/
+
+Recent discussion with Sabrina Dubroca may also be of interest:
+https://lore.kernel.org/all/c443bad568f4e03d05b848b1b245707d@oss.cyber.gouv.fr/T/#u
+
+Regards,
+Jérémy
+
 ---
- net/xfrm/xfrm_replay.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_replay.c b/net/xfrm/xfrm_replay.c
-index 9394953247ab9..01504e5b1ad41 100644
---- a/net/xfrm/xfrm_replay.c
-+++ b/net/xfrm/xfrm_replay.c
-@@ -721,7 +721,6 @@ static int xfrm_replay_overflow_offload_esn(struct xfrm_state *x, struct sk_buff
- 				xo->seq.hi = oseq_hi;
- 			}
- 			if (replay_esn->oseq_hi == 0) {
--				replay_esn->oseq--;
- 				replay_esn->oseq_hi--;
- 				xfrm_audit_state_replay_overflow(x, skb);
- 				err = -EOVERFLOW;
+Changes in v2:
+- Rebase onto ipsec/master.
+- Clarify Patch 4's description and comment.
+- Remove the duplicate mlx5 IV helper and callback in Patch 5.
+
+Jérémy Jean (7):
+  xfrm: esp6: use the current sequence number for the IV
+  xfrm: esp4: use the current sequence number for the IV
+  xfrm: esp: use the current sequence number for AAD and offload
+  xfrm: prevent AES-GCM nonce reuse after early GSO
+  net/mlx5e: Use the packet sequence number for the IPsec IV
+  xfrm: segment untrusted GSO packets before sequence allocation
+  xfrm: leave the sequence counter unchanged on ESN overflow
+
+ .../mellanox/mlx5/core/en_accel/ipsec.c       | 18 -----------
+ .../mellanox/mlx5/core/en_accel/ipsec.h       |  2 --
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.c  | 31 +++----------------
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h  |  4 ---
+ net/ipv4/esp4.c                               | 13 +++-----
+ net/ipv4/esp4_offload.c                       |  7 +++--
+ net/ipv6/esp6.c                               | 13 +++-----
+ net/ipv6/esp6_offload.c                       |  7 +++--
+ net/xfrm/xfrm_output.c                        | 16 ++++++++--
+ net/xfrm/xfrm_replay.c                        |  1 -
+ 10 files changed, 36 insertions(+), 76 deletions(-)
+
 -- 
 2.47.3
 
