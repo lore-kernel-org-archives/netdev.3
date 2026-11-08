@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794176889;
-	b=kQ1YK8g77F2lEbqrrbdhCmwG1MxxSUthDd4bMLZlpxllrv7z6NF5FB6fT+Ns8ADOwtxY
-	 i7eXbnerhdtDzwMaOArKw2LJSLRJAo8Qvf2VvHeR8PRe+Ij20Peb76ZuTDAoh0krc4+mX
-	 O3n7H3JU1MT+ihe9S0FwtAx5ekeW5rx7I6jXCe/r14v2D9OhrF2tthoouBaZXOXB4csDv
-	 NxmgseZXsyhNm0XZRSVr/AySfNXD/CGDOEuhu9pzgRD+ixgQ1kIt5p35GyGuIUWELVD2i
-	 MQ3wykQB5UoNQAakqMeCJs/UKddAu8rNx1LGz30HQSjRXoLwe8tmNNVqhTwLomvyqkg==
+	t=1794176883;
+	b=QveygXCiO5KXe6LEwN/ZXjevsGlD7PMcYicFvrDyeQ7El6fg85GCQzh8TfNwyceZKwqw
+	 XVoHCzQoGwVuxvchMZpX6TyiIFhw4/2ULZtHNLF/5GPtes7RqmcJX9CouK3SvIByEEk1n
+	 T+QtrNpmq5ZgC1aiCfrDzOgUKV+ZKW2vJ/Hc2OlzSyL28Qr9QQd2sAwMEUpWXjVaNewn9
+	 hDVh4bp4OJ1AIYaa2X7Wdew0u73kF+hUz7JdQaZ5R/3XaEMdkilAoukvWNvjWd/JLenOz
+	 YXSv2lHCvdgAoSJX0tlUbo+wXFo94JG04GhD0EB6Db9oAeyFcxe+WM8sqchubPKYhyA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794176889;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
-	b=E+2B1HyY2G03WNG0Knhfo1zvK63z+99/EkMQ+tkNGR4b//jyrtL4MvRv2621PNCMR0Hu
-	 k/DaRBqA+5K1u91jXPtPYV9KHRcRXWaiTkdIkAPvdL7ZgaFs88XIdILKTh1o30UcN+06M
-	 TWHNeNVuUvMMJJ53yCTYETxSVqut8lYCwXElNHo7tqPHknzKTafN2jDsuvvE0VvlUo28O
-	 ft3UlYRb5t4SpSLnFAX93UPsZXubKZKwX3iuGVyTJ6NxMNFNGXJj7wgIF6NO0wPVsd4gS
-	 Y4DQH6hr9nGR8vAnqgbW6tsxRn9RKxO+cSVLA66MK6cceBG3gPgr9c5JBDvVZ1cWg7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794176883;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=utZWCVUwL9dxzbQPpp4mQBan0oHgMwAL+V4PtqAR+9k=;
+	b=Atds03iaLajZUEZZoXSrWWZ6Cw7sruj+EXD0ouNbofFafY8fFDI0arGXtnHSZ83l7XQl
+	 5lg+lkCEevfxjcmKy/i7RL+gMx7+D9S3i4CvSpgBsmIJ7NifKYMiAzZ3O11APLkF+dGc/
+	 hdz8MutXgBaXX6L7rEd9JLBUTEPMTxFWmvtukDs//4MmNmvSeLTs2RNrZ7q+ciADydeH0
+	 gljX8B6M3TCkaxOldRbxyDpMZ2mBuqjlcXgM/C3RxjVszmWZxZul2I7wH4x6wQhghVDAZ
+	 N0+YSJGnpHZPI36V17IzO6fHfeG+MbBWZOOhbW1OiVZhDnVXIRe0eGkBqMlIe4ijdEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gc7oUUKY;
-	arc=none smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F65NEQOC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D246A6082BCC
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 22:28:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D246A6082BCC
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 56CDE606D81F;
+	Sun,  8 Nov 2026 22:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gc7oUUKY
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4ae34ad9bb6so312385e9.2
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 14:28:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794176887; x=1794781687; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
-        b=Gc7oUUKYhXfkzyx4k8R8oVoqd2a1GEZJYPK8L4AhkN64P4yEv7LvuatfcoSyFVoVWw
-         LgjwkaxoNOBgcBLRLPZ6qRzyJ6gy8CxIHCs45u7htBQv6+liu+k5eDu6hrOsQjCZSA3P
-         ueHS/oBEzNRSm96p8tQUy+0/WHVA/HuqX+6iDRzLP6LPc0wqvybPxavkZv7tOeqKSxyv
-         hi6WTI+N8x9ng5uL5hgJJWVXc+bvFnMEn8MfovnvgBxBL93Cqaq1Tfk5OWmc8iWTSbvy
-         jbU7JtTs/SYdTNq2cmcvjKHrvOL85H9ksfXgMDpUNnXuuqykGC0zvTaBSsFQFjpvo8tC
-         9z9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794176887; x=1794781687;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7p12hu+h/2h8BDalwKmT9RqYemNdCQPSYKJ8VeGC68Y=;
-        b=q3HVG8Etya9HF5Q0RLQPsdZ/NhttGcrmbgmTr4gfnrpjGIUN26vIBs8T/m8LDHK4eA
-         f3VATgxLAj0lqTg30MB4uAWZpmDVAVkBb6xPS9q5GP9rL8vCUDvKQk+dLbByWpYQ65MK
-         cOA6bOu5eaGjmgYYk1z0cJQeEOkWvWkeMe6B68CbFYBuMKciGt/WDpG0qvPgEV+dc+WB
-         67lJvXDn44izYhYSI15KYF9QpPsBPS4mFcmRtO71o5urOXoyy11vpCb9uj1KWT1oamn+
-         noedgnrV6Ui/6Kx+YyOZoVB/2g57/H/id5uPooFyjWAPBH6EKwSTDuicUlapXv2mbgaQ
-         MtjQ==
-X-Gm-Message-State: APuU4Z8Sioa7qeRakvnHZ8RC4MLgmOX7Ht3fWWNa/pBfh3M7F9Ab6FDH
-	Ws4rFsyC1vGBaBu3oK2w2jJvxdl3Nvarcvr3DvlvPCzRY7Gokdw1lUT/
-X-Gm-Gg: AYBFou0rcV8KWwUV8unqwsQGis9Hj0F0i+yLzZDrkqEAD0v93Fv9vyLp+m70HSccJhJ
-	fqt6bf3couiZeILLVCukJ91s/71X6sLT+M1cZUp18wIlTnxhq6lENwy6PNbHTAeiCweTT4+cl3k
-	apHWSaB/LoRX1EMqQRRfqCn6aApdBaYrHf+wOqMPIGbOE5YpKUkBWuaUUMl42f36F90Om3cnf9a
-	IPtXL5zzLwXV6LkyaIJq1Qu8tftjIbT6FR+AzhqvdttMACbfizOTkKLraOeyLEgTGLPrDJeLdL/
-	nVqHHhkC5JdaQPCI5bdqivuPfzssY2E2YgiZpLpbgVlOu4nmXoo7WxVZbRsI2g7LMmnPXl6MLFM
-	0iQGNwoCZDldkVq/AygLDJ2MZYJYWIh16BrEX8E8stMVCmrbwILCNhp66+NCdmQp437KP4DkFBb
-	RrPrLTv+lIwcu3obvg4gEpdVuEt5DCvC8T3ykTkbycbJCrk3urhJqm9OIJXIjMrauMTGHcgd3vR
-	rJQluTgzOj1I+2gob5M/aHX7LPNs90RlSVvvdzVppbxylBw0Y0ipSDMJU/nMrH7O8UnhBjJE2P2
-	49FrRtSQJJRn/NpqDuiuCKcK2GBg50+gqXVfDzk/LwJLD8WJSjqw5zPVNXYkaATM7ShpPl6DPHC
-	kaQO2U8ZYjGE57w124Ed6eSQRgy9hVz/JWkdzbwgHFibP9iqfF12vWEF9KERhBO/+J3hJzgUGTs
-	R0NCk0pFu5Kg+s5i++m/TUoDH+Cq0uI+vhDJCY3j9l47rv+ok=
-X-Received: by 2002:a05:600c:c09a:b0:4a0:1f9e:5f78 with SMTP id 5b1f17b1804b1-4b943f77191mr31556685e9.0.1794176886817;
-        Sun, 08 Nov 2026 14:28:06 -0800 (PST)
-Received: from ?IPV6:2a02:3100:599c:f8fc:6c90:be22:1a93:1ff? (dynamic-2a02-3100-599c-f8fc-6c90-be22-1a93-01ff.310.pool.telefonica.de. [2a02:3100:599c:f8fc:6c90:be22:1a93:1ff])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b76cb772e1sm212597315e9.0.2026.11.08.14.28.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Nov 2026 14:28:05 -0800 (PST)
-Message-ID: <e1a0aa77-908e-4786-96b2-5d0d58675f21@gmail.com>
-Date: Sun, 8 Nov 2026 23:28:04 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F65NEQOC
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 27EC51F008A1;
+	Sun,  8 Nov 2026 22:28:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794176882;
+	bh=utZWCVUwL9dxzbQPpp4mQBan0oHgMwAL+V4PtqAR+9k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=F65NEQOC96K6hVx9gC68O+G+GMBWtTWav9hnagWPOV+nE2JvgtXBINJoit9d9TS5N
+	 CAa5p46GO3U2zL8v7mLhvoAlDOSRYf80tQrUle773Y2jk3RwAb2p1zdsnUxgkOkxem
+	 LSKsndYW6G3+87WwydltS9QFRepF7L3zAwN//MvfFci7sy2iTeEGb8X+8G+9mPIBM7
+	 wizAk4oIGcKU4yTzmeWbZ60fVXi8yEaXRQV+iP8AaKti74Ef38PQ5JRS5gFZIc9/o2
+	 UdcITI2WCxH5xU3/+ZYTMcWqf+2xpj34VhWNKANJ7d4JJAwEAna/JU0ZzfTnPv3xJ7
+	 91SU4o00WU1Yw==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Morris <jmorris@namei.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v5 09/12] rxrpc: Move key types to their own module
+Date: Mon,  9 Nov 2026 00:27:15 +0200
+Message-ID: <20261108222719.304712-10-jarkko@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261108222719.304712-1-jarkko@kernel.org>
+References: <20261108222719.304712-1-jarkko@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,75 +92,1085 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v8 2/4] net: hsr: refuse forwarding devices as HSR/PRP
- ports
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
- shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
- qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
- bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
- liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com,
- lukma@denx.de, fmancera@suse.de, danishanwar@ti.com
-References: <20261107220544.20-3-xiexinet@gmail.com>
- <179417570554.994134.17137863494736269542@kernel.org>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- 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
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <179417570554.994134.17137863494736269542@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The point about cloned data is right: skb_share_check() only
-handles a shared skb, but when packet_rcv() or a tc mirror holds a
-clone, the TCP/UDP GSO handlers on the RX path still write the checksum
-into the shared head. v9 will make the head private with
-skb_cow_head(skb, 0) before __skb_gso_segment().
+Once keys pin the kernel module implementing their key type, hosting rxrpc
+and rxrpc_s keys inside the same module prevents unloading the transport
+module while keys remain in keyrings or cached connections.
 
-I will check the TX GSO cost on HW tag-insertion offloads and mention
-aggregates from older HSR senders as well as older PRP senders in the
-v9 message.
+Split the key types and their preparse logic into a separate rxrpc_keys.ko
+module that rxrpc.ko depends on, and flush key GC on rxrpc exit.
 
-v8 also conflicts with Sebastian's pending "hsr: inline PTP header" v10
-in net-next; v9 will describe how the two combine.
+By doing this, rxrpc.ko can be removed while the persistent keys pin only
+rxrpc_keys.ko.
 
+Co-developed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ Documentation/networking/rxrpc.rst |   2 +-
+ net/Makefile                       |   2 +-
+ net/rxrpc/Kconfig                  |  20 +++
+ net/rxrpc/Makefile                 |   7 +-
+ net/rxrpc/af_rxrpc.c               |  19 +--
+ net/rxrpc/ar-internal.h            |  25 +--
+ net/rxrpc/key.c                    | 122 +++++---------
+ net/rxrpc/rxgk.c                   |  66 --------
+ net/rxrpc/rxkad.c                  |  47 ------
+ net/rxrpc/security.c               | 184 ++++++++++++++++++++
+ net/rxrpc/server_key.c             | 260 +++++++++++++++++------------
+ 11 files changed, 411 insertions(+), 343 deletions(-)
 
+diff --git a/Documentation/networking/rxrpc.rst b/Documentation/networking/rxrpc.rst
+index eca055a536aa..394190c40d6e 100644
+--- a/Documentation/networking/rxrpc.rst
++++ b/Documentation/networking/rxrpc.rst
+@@ -1165,5 +1165,5 @@ API Function Reference
+ .. kernel-doc:: net/rxrpc/recvmsg.c
+ .. kernel-doc:: net/rxrpc/rxgk.c
+ .. kernel-doc:: net/rxrpc/rxkad.c
++.. kernel-doc:: net/rxrpc/security.c
+ .. kernel-doc:: net/rxrpc/sendmsg.c
+-.. kernel-doc:: net/rxrpc/server_key.c
+diff --git a/net/Makefile b/net/Makefile
+index 69c16a7851b4..97b2bd2ace7b 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -30,7 +30,7 @@ obj-$(CONFIG_LAPB)		+= lapb/
+ obj-$(CONFIG_CAN)		+= can/
+ obj-$(CONFIG_BT)		+= bluetooth/
+ obj-$(CONFIG_SUNRPC)		+= sunrpc/
+-obj-$(CONFIG_AF_RXRPC)		+= rxrpc/
++obj-$(CONFIG_RXRPC_KEYS)	+= rxrpc/
+ obj-$(CONFIG_AF_KCM)		+= kcm/
+ obj-$(CONFIG_STREAM_PARSER)	+= strparser/
+ obj-$(CONFIG_ATM)		+= atm/
+diff --git a/net/rxrpc/Kconfig b/net/rxrpc/Kconfig
+index 2cebb666dc07..30135ae62bd6 100644
+--- a/net/rxrpc/Kconfig
++++ b/net/rxrpc/Kconfig
+@@ -3,6 +3,18 @@
+ # RxRPC session sockets
+ #
+ 
++config RXRPC_KEYS
++	tristate "RxRPC key types"
++	select CRYPTO
++	select CRYPTO_LIB_DES if RXKAD
++	select KEYS
++	help
++	  Say Y or M here to include support for rxrpc and rxrpc_s key types
++	  independently of RxRPC session sockets.
++
++	  To compile this as a module, choose M here: the module will be called
++	  rxrpc_keys.
++
+ config AF_RXRPC
+ 	tristate "RxRPC session sockets"
+ 	depends on INET
+@@ -10,6 +22,7 @@ config AF_RXRPC
+ 	select CRYPTO_LIB_DES if RXKAD
+ 	select KEYS
+ 	select NET_UDP_TUNNEL
++	select RXRPC_KEYS
+ 	help
+ 	  Say Y or M here to include support for RxRPC session sockets (just
+ 	  the transport part, not the presentation part: (un)marshalling is
+@@ -54,6 +67,9 @@ config AF_RXRPC_DEBUG
+ 
+ 	  See Documentation/networking/rxrpc.rst.
+ 
++endif
++
++if RXRPC_KEYS
+ 
+ config RXKAD
+ 	bool "RxRPC Kerberos security"
+@@ -86,6 +102,10 @@ config RXGK
+ 
+ 	  See Documentation/networking/rxrpc.rst.
+ 
++endif
++
++if AF_RXRPC
++
+ config RXPERF
+ 	tristate "RxRPC test service"
+ 	help
+diff --git a/net/rxrpc/Makefile b/net/rxrpc/Makefile
+index f994f9f30a29..196e0ce085ba 100644
+--- a/net/rxrpc/Makefile
++++ b/net/rxrpc/Makefile
+@@ -3,6 +3,7 @@
+ # Makefile for Linux kernel RxRPC
+ #
+ 
++obj-$(CONFIG_RXRPC_KEYS) += rxrpc_keys.o
+ obj-$(CONFIG_AF_RXRPC) += rxrpc.o
+ 
+ rxrpc-y := \
+@@ -19,7 +20,6 @@ rxrpc-y := \
+ 	input_rack.o \
+ 	insecure.o \
+ 	io_thread.o \
+-	key.o \
+ 	local_event.o \
+ 	local_object.o \
+ 	misc.o \
+@@ -32,7 +32,6 @@ rxrpc-y := \
+ 	rtt.o \
+ 	security.o \
+ 	sendmsg.o \
+-	server_key.o \
+ 	skbuff.o \
+ 	txbuf.o \
+ 	utils.o
+@@ -45,5 +44,9 @@ rxrpc-$(CONFIG_RXGK) += \
+ 	rxgk_app.o \
+ 	rxgk_kdf.o
+ 
++rxrpc_keys-y := \
++	key.o \
++	server_key.o
++
+ obj-$(CONFIG_RXPERF) += rxperf.o
+ obj-$(CONFIG_KUNIT) += tests/
+diff --git a/net/rxrpc/af_rxrpc.c b/net/rxrpc/af_rxrpc.c
+index 9ab0f22c881e..6ccb99a992b9 100644
+--- a/net/rxrpc/af_rxrpc.c
++++ b/net/rxrpc/af_rxrpc.c
+@@ -1077,18 +1077,6 @@ static int __init af_rxrpc_init(void)
+ 		goto error_sock;
+ 	}
+ 
+-	ret = register_key_type(&key_type_rxrpc);
+-	if (ret < 0) {
+-		pr_crit("Cannot register client key type\n");
+-		goto error_key_type;
+-	}
+-
+-	ret = register_key_type(&key_type_rxrpc_s);
+-	if (ret < 0) {
+-		pr_crit("Cannot register server key type\n");
+-		goto error_key_type_s;
+-	}
+-
+ 	ret = rxrpc_sysctl_init();
+ 	if (ret < 0) {
+ 		pr_crit("Cannot register sysctls\n");
+@@ -1098,10 +1086,6 @@ static int __init af_rxrpc_init(void)
+ 	return 0;
+ 
+ error_sysctls:
+-	unregister_key_type(&key_type_rxrpc_s);
+-error_key_type_s:
+-	unregister_key_type(&key_type_rxrpc);
+-error_key_type:
+ 	sock_unregister(PF_RXRPC);
+ error_sock:
+ 	proto_unregister(&rxrpc_proto);
+@@ -1124,8 +1108,6 @@ static void __exit af_rxrpc_exit(void)
+ {
+ 	_enter("");
+ 	rxrpc_sysctl_exit();
+-	unregister_key_type(&key_type_rxrpc_s);
+-	unregister_key_type(&key_type_rxrpc);
+ 	sock_unregister(PF_RXRPC);
+ 	proto_unregister(&rxrpc_proto);
+ 	unregister_pernet_device(&rxrpc_net_ops);
+@@ -1139,6 +1121,7 @@ static void __exit af_rxrpc_exit(void)
+ 	destroy_workqueue(rxrpc_workqueue);
+ 	rxrpc_exit_security();
+ 	kmem_cache_destroy(rxrpc_call_jar);
++	key_gc_flush();
+ 	_leave("");
+ }
+ 
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab..b5deab0e1ed9 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -273,18 +273,6 @@ struct rxrpc_security {
+ 	/* Clean up a security service */
+ 	void (*exit)(void);
+ 
+-	/* Parse the information from a server key */
+-	int (*preparse_server_key)(struct key_preparsed_payload *);
+-
+-	/* Clean up the preparse buffer after parsing a server key */
+-	void (*free_preparse_server_key)(struct key_preparsed_payload *);
+-
+-	/* Destroy the payload of a server key */
+-	void (*destroy_server_key)(struct key *);
+-
+-	/* Describe a server key */
+-	void (*describe_server_key)(const struct key *, struct seq_file *);
+-
+ 	/* initialise a connection's security */
+ 	int (*init_connection_security)(struct rxrpc_connection *,
+ 					struct rxrpc_key_token *);
+@@ -1307,10 +1295,6 @@ extern const struct rxrpc_security rxrpc_no_security;
+  */
+ extern struct key_type key_type_rxrpc;
+ 
+-int rxrpc_request_key(struct rxrpc_sock *, sockptr_t , int);
+-int rxrpc_get_server_data_key(struct rxrpc_connection *, const void *, time64_t,
+-			      u32);
+-
+ /*
+  * local_event.c
+  */
+@@ -1492,6 +1476,11 @@ const struct rxrpc_security *rxrpc_get_incoming_security(struct rxrpc_sock *,
+ 							 struct sk_buff *);
+ struct key *rxrpc_look_up_server_security(struct rxrpc_connection *,
+ 					  struct sk_buff *, u32, u32);
++int rxrpc_request_key(struct rxrpc_sock *rx, sockptr_t optval, int optlen);
++int rxrpc_get_server_data_key(struct rxrpc_connection *conn,
++			      const void *session_key, time64_t expiry,
++			      u32 kvno);
++int rxrpc_server_keyring(struct rxrpc_sock *rx, sockptr_t optval, int optlen);
+ 
+ /*
+  * sendmsg.c
+@@ -1505,8 +1494,6 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *, struct msghdr *, size_t);
+  */
+ extern struct key_type key_type_rxrpc_s;
+ 
+-int rxrpc_server_keyring(struct rxrpc_sock *, sockptr_t, int);
+-
+ /*
+  * skbuff.c
+  */
+@@ -1633,7 +1620,7 @@ extern unsigned int rxrpc_debug;
+ #define _leave(FMT,...)	kleave(FMT,##__VA_ARGS__)
+ #define _debug(FMT,...)	kdebug(FMT,##__VA_ARGS__)
+ 
+-#elif defined(CONFIG_AF_RXRPC_DEBUG)
++#elif defined(CONFIG_AF_RXRPC_DEBUG) && !defined(RXRPC_KEY_PROVIDER)
+ #define RXRPC_DEBUG_KENTER	0x01
+ #define RXRPC_DEBUG_KLEAVE	0x02
+ #define RXRPC_DEBUG_KDEBUG	0x04
+diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
+index cbd26da44951..49d0871beaf9 100644
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -9,6 +9,7 @@
+  */
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define RXRPC_KEY_PROVIDER
+ 
+ #include <linux/module.h>
+ #include <linux/net.h>
+@@ -615,89 +616,6 @@ static void rxrpc_describe(const struct key *key, struct seq_file *m)
+ 	}
+ }
+ 
+-/*
+- * grab the security key for a socket
+- */
+-int rxrpc_request_key(struct rxrpc_sock *rx, sockptr_t optval, int optlen)
+-{
+-	struct key *key;
+-	char *description;
+-
+-	_enter("");
+-
+-	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
+-		return -EINVAL;
+-
+-	description = memdup_sockptr_nul(optval, optlen);
+-	if (IS_ERR(description))
+-		return PTR_ERR(description);
+-
+-	key = request_key_net(&key_type_rxrpc, description, sock_net(&rx->sk), NULL);
+-	if (IS_ERR(key)) {
+-		kfree(description);
+-		_leave(" = %ld", PTR_ERR(key));
+-		return PTR_ERR(key);
+-	}
+-
+-	rx->key = key;
+-	kfree(description);
+-	_leave(" = 0 [key %x]", key->serial);
+-	return 0;
+-}
+-
+-/*
+- * generate a server data key
+- */
+-int rxrpc_get_server_data_key(struct rxrpc_connection *conn,
+-			      const void *session_key,
+-			      time64_t expiry,
+-			      u32 kvno)
+-{
+-	const struct cred *cred = current_cred();
+-	struct key *key;
+-	int ret;
+-
+-	struct {
+-		u32 kver;
+-		struct rxrpc_key_data_v1 v1;
+-	} data;
+-
+-	_enter("");
+-
+-	key = key_alloc(&key_type_rxrpc, "x",
+-			GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, cred, 0,
+-			KEY_ALLOC_NOT_IN_QUOTA, NULL);
+-	if (IS_ERR(key)) {
+-		_leave(" = -ENOMEM [alloc %ld]", PTR_ERR(key));
+-		return -ENOMEM;
+-	}
+-
+-	_debug("key %d", key_serial(key));
+-
+-	data.kver = 1;
+-	data.v1.security_index = RXRPC_SECURITY_RXKAD;
+-	data.v1.ticket_length = 0;
+-	data.v1.expiry = rxrpc_time64_to_u32(expiry);
+-	data.v1.kvno = 0;
+-
+-	memcpy(&data.v1.session_key, session_key, sizeof(data.v1.session_key));
+-
+-	ret = key_instantiate_and_link(key, &data, sizeof(data), NULL, NULL);
+-	if (ret < 0)
+-		goto error;
+-
+-	conn->key = key;
+-	_leave(" = 0 [%d]", key_serial(key));
+-	return 0;
+-
+-error:
+-	key_revoke(key);
+-	key_put(key);
+-	_leave(" = -ENOMEM [ins %d]", ret);
+-	return -ENOMEM;
+-}
+-EXPORT_SYMBOL(rxrpc_get_server_data_key);
+-
+ /**
+  * rxrpc_get_null_key - Generate a null RxRPC key
+  * @keyname: The name to give the key.
+@@ -893,3 +811,41 @@ static long rxrpc_read(const struct key *key,
+ 	_leave(" = %zu", size);
+ 	return size;
+ }
++
++static int __init rxrpc_keys_init(void)
++{
++	int ret;
++
++	ret = register_key_type(&key_type_rxrpc);
++	if (ret < 0) {
++		pr_crit("Cannot register client key type\n");
++		goto error_key_type;
++	}
++
++	ret = register_key_type(&key_type_rxrpc_s);
++	if (ret < 0) {
++		pr_crit("Cannot register server key type\n");
++		goto error_key_type_s;
++	}
++
++	return 0;
++
++error_key_type_s:
++	unregister_key_type(&key_type_rxrpc);
++
++error_key_type:
++	return ret;
++}
++
++static void __exit rxrpc_keys_exit(void)
++{
++	unregister_key_type(&key_type_rxrpc_s);
++	unregister_key_type(&key_type_rxrpc);
++}
++
++module_init(rxrpc_keys_init);
++module_exit(rxrpc_keys_exit);
++
++MODULE_DESCRIPTION("RxRPC key types");
++MODULE_AUTHOR("David Howells <dhowells@redhat.com>");
++MODULE_LICENSE("GPL");
+diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+index 77a67ace1d24..5fb3ce15cac4 100644
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -14,68 +14,6 @@
+ #include "ar-internal.h"
+ #include "rxgk_common.h"
+ 
+-/*
+- * Parse the information from a server key
+- */
+-static int rxgk_preparse_server_key(struct key_preparsed_payload *prep)
+-{
+-	const struct krb5_enctype *krb5;
+-	struct krb5_buffer *server_key = (void *)&prep->payload.data[2];
+-	unsigned int service, sec_class, kvno, enctype;
+-	int n = 0;
+-
+-	_enter("%zu", prep->datalen);
+-
+-	if (sscanf(prep->orig_description, "%u:%u:%u:%u%n",
+-		   &service, &sec_class, &kvno, &enctype, &n) != 4)
+-		return -EINVAL;
+-
+-	if (prep->orig_description[n])
+-		return -EINVAL;
+-
+-	krb5 = crypto_krb5_find_enctype(enctype);
+-	if (!krb5)
+-		return -ENOPKG;
+-
+-	prep->payload.data[0] = (struct krb5_enctype *)krb5;
+-
+-	if (prep->datalen != krb5->key_len)
+-		return -EKEYREJECTED;
+-
+-	server_key->len = prep->datalen;
+-	server_key->data = kmemdup(prep->data, prep->datalen, GFP_KERNEL);
+-	if (!server_key->data)
+-		return -ENOMEM;
+-
+-	_leave(" = 0");
+-	return 0;
+-}
+-
+-static void rxgk_free_server_key(union key_payload *payload)
+-{
+-	struct krb5_buffer *server_key = (void *)&payload->data[2];
+-
+-	kfree_sensitive(server_key->data);
+-}
+-
+-static void rxgk_free_preparse_server_key(struct key_preparsed_payload *prep)
+-{
+-	rxgk_free_server_key(&prep->payload);
+-}
+-
+-static void rxgk_destroy_server_key(struct key *key)
+-{
+-	rxgk_free_server_key(&key->payload);
+-}
+-
+-static void rxgk_describe_server_key(const struct key *key, struct seq_file *m)
+-{
+-	const struct krb5_enctype *krb5 = key->payload.data[0];
+-
+-	if (krb5)
+-		seq_printf(m, ": %s", krb5->name);
+-}
+-
+ /*
+  * Handle rekeying the connection when we see our limits overrun or when the
+  * far side decided to rekey.
+@@ -1335,10 +1273,6 @@ const struct rxrpc_security rxgk_yfs = {
+ 	.no_key_abort			= RXGK_NOTAUTH,
+ 	.init				= rxgk_init,
+ 	.exit				= rxgk_exit,
+-	.preparse_server_key		= rxgk_preparse_server_key,
+-	.free_preparse_server_key	= rxgk_free_preparse_server_key,
+-	.destroy_server_key		= rxgk_destroy_server_key,
+-	.describe_server_key		= rxgk_describe_server_key,
+ 	.init_connection_security	= rxgk_init_connection_security,
+ 	.alloc_txbuf			= rxgk_alloc_txbuf,
+ 	.secure_packet			= rxgk_secure_packet,
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index ca9f0e82cb9a..2936c6effae3 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -47,50 +47,6 @@ struct rxkad_level2_hdr {
+ static void rxkad_prime_packet_security(struct rxrpc_connection *conn,
+ 					const struct fcrypt_key *cipher);
+ 
+-/*
+- * Parse the information from a server key
+- *
+- * The data should be the 8-byte secret key.
+- */
+-static int rxkad_preparse_server_key(struct key_preparsed_payload *prep)
+-{
+-	struct des_ctx *des_key;
+-	int err;
+-
+-	if (prep->datalen != 8)
+-		return -EINVAL;
+-
+-	memcpy(&prep->payload.data[2], prep->data, 8);
+-
+-	des_key = kmalloc_obj(*des_key);
+-	if (!des_key) {
+-		_leave(" = -ENOMEM");
+-		return -ENOMEM;
+-	}
+-
+-	err = des_expand_key(des_key, prep->data, 8);
+-	if (err) {
+-		kfree_sensitive(des_key);
+-		_leave(" = %d", err);
+-		return err;
+-	}
+-
+-	prep->payload.data[0] = des_key;
+-	_leave(" = 0");
+-	return 0;
+-}
+-
+-static void rxkad_free_preparse_server_key(struct key_preparsed_payload *prep)
+-{
+-	kfree_sensitive(prep->payload.data[0]);
+-}
+-
+-static void rxkad_destroy_server_key(struct key *key)
+-{
+-	kfree_sensitive(key->payload.data[0]);
+-	key->payload.data[0] = NULL;
+-}
+-
+ /*
+  * initialise connection security
+  */
+@@ -1124,9 +1080,6 @@ const struct rxrpc_security rxkad = {
+ 	.no_key_abort			= RXKADUNKNOWNKEY,
+ 	.init				= rxkad_init,
+ 	.exit				= rxkad_exit,
+-	.preparse_server_key		= rxkad_preparse_server_key,
+-	.free_preparse_server_key	= rxkad_free_preparse_server_key,
+-	.destroy_server_key		= rxkad_destroy_server_key,
+ 	.init_connection_security	= rxkad_init_connection_security,
+ 	.alloc_txbuf			= rxkad_alloc_txbuf,
+ 	.secure_packet			= rxkad_secure_packet,
+diff --git a/net/rxrpc/security.c b/net/rxrpc/security.c
+index 2bfbf2b2bb37..28883a70c9e8 100644
+--- a/net/rxrpc/security.c
++++ b/net/rxrpc/security.c
+@@ -10,6 +10,8 @@
+ #include <linux/skbuff.h>
+ #include <linux/udp.h>
+ #include <linux/crypto.h>
++#include <linux/key-type.h>
++#include <linux/slab.h>
+ #include <net/sock.h>
+ #include <net/af_rxrpc.h>
+ #include <keys/rxrpc-type.h>
+@@ -208,3 +210,185 @@ struct key *rxrpc_look_up_server_security(struct rxrpc_connection *conn,
+ 	read_unlock(&conn->local->services_lock);
+ 	return key;
+ }
++
++/*
++ * grab the security key for a socket
++ */
++int rxrpc_request_key(struct rxrpc_sock *rx, sockptr_t optval, int optlen)
++{
++	struct key *key;
++	char *description;
++
++	_enter("");
++
++	if (optlen <= 0 || optlen > PAGE_SIZE - 1 || rx->key)
++		return -EINVAL;
++
++	description = memdup_sockptr_nul(optval, optlen);
++	if (IS_ERR(description))
++		return PTR_ERR(description);
++
++	key = request_key_net(&key_type_rxrpc, description, sock_net(&rx->sk), NULL);
++	if (IS_ERR(key)) {
++		kfree(description);
++		_leave(" = %ld", PTR_ERR(key));
++		return PTR_ERR(key);
++	}
++
++	rx->key = key;
++	kfree(description);
++	_leave(" = 0 [key %x]", key->serial);
++	return 0;
++}
++
++/*
++ * generate a server data key
++ */
++int rxrpc_get_server_data_key(struct rxrpc_connection *conn,
++			      const void *session_key,
++			      time64_t expiry,
++			      u32 kvno)
++{
++	const struct cred *cred = current_cred();
++	struct {
++		u32 kver;
++		struct rxrpc_key_data_v1 v1;
++	} data;
++	struct key *key;
++	int ret;
++
++	_enter("");
++
++	key = key_alloc(&key_type_rxrpc, "x",
++			GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, cred, 0,
++			KEY_ALLOC_NOT_IN_QUOTA, NULL);
++	if (IS_ERR(key)) {
++		_leave(" = -ENOMEM [alloc %ld]", PTR_ERR(key));
++		return -ENOMEM;
++	}
++
++	_debug("key %d", key_serial(key));
++
++	data.kver = 1;
++	data.v1.security_index = RXRPC_SECURITY_RXKAD;
++	data.v1.ticket_length = 0;
++	data.v1.expiry = rxrpc_time64_to_u32(expiry);
++	data.v1.kvno = 0;
++
++	memcpy(&data.v1.session_key, session_key, sizeof(data.v1.session_key));
++
++	ret = key_instantiate_and_link(key, &data, sizeof(data), NULL, NULL);
++	if (ret < 0)
++		goto error;
++
++	conn->key = key;
++	_leave(" = 0 [%d]", key_serial(key));
++	return 0;
++
++error:
++	key_revoke(key);
++	key_put(key);
++	_leave(" = -ENOMEM [ins %d]", ret);
++	return -ENOMEM;
++}
++EXPORT_SYMBOL(rxrpc_get_server_data_key);
++
++/*
++ * grab the security keyring for a server socket
++ */
++int rxrpc_server_keyring(struct rxrpc_sock *rx, sockptr_t optval, int optlen)
++{
++	struct key *key;
++	char *description;
++
++	_enter("");
++
++	if (rx->securities)
++		return -EINVAL;
++
++	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
++		return -EINVAL;
++
++	description = memdup_sockptr_nul(optval, optlen);
++	if (IS_ERR(description))
++		return PTR_ERR(description);
++
++	key = request_key(&key_type_keyring, description, NULL);
++	if (IS_ERR(key)) {
++		kfree(description);
++		_leave(" = %ld", PTR_ERR(key));
++		return PTR_ERR(key);
++	}
++
++	rx->securities = key;
++	kfree(description);
++	_leave(" = 0 [key %x]", key->serial);
++	return 0;
++}
++
++/**
++ * rxrpc_sock_set_security_keyring - Set the security keyring for a kernel service
++ * @sk: The socket to set the keyring on
++ * @keyring: The keyring to set
++ *
++ * Set the server security keyring on an rxrpc socket.  This is used to provide
++ * the encryption keys for a kernel service.
++ *
++ * Return: %0 if successful and a negative error code otherwise.
++ */
++int rxrpc_sock_set_security_keyring(struct sock *sk, struct key *keyring)
++{
++	struct rxrpc_sock *rx = rxrpc_sk(sk);
++	int ret = 0;
++
++	lock_sock(sk);
++	if (rx->securities)
++		ret = -EINVAL;
++	else if (rx->sk.sk_state != RXRPC_UNBOUND)
++		ret = -EISCONN;
++	else
++		rx->securities = key_get(keyring);
++	release_sock(sk);
++	return ret;
++}
++EXPORT_SYMBOL(rxrpc_sock_set_security_keyring);
++
++/**
++ * rxrpc_sock_set_manage_response - Set the manage-response flag for a kernel service
++ * @sk: The socket to set the keyring on
++ * @set: True to set, false to clear the flag
++ *
++ * Set the flag on an rxrpc socket to say that the caller wants to manage the
++ * RESPONSE packet and the user-defined data it may contain.  Setting this
++ * means that recvmsg() will return messages with RXRPC_CHALLENGED in the
++ * control message buffer containing information about the challenge.
++ *
++ * The user should respond to the challenge by passing RXRPC_RESPOND or
++ * RXRPC_RESPOND_ABORT control messages with sendmsg() to the same call.
++ * Supplementary control messages, such as RXRPC_RESP_RXGK_APPDATA, may be
++ * included to indicate the parts the user wants to supply.
++ *
++ * The server will be passed the response data with a RXRPC_RESPONDED control
++ * message when it gets the first data from each call.
++ *
++ * Note that this is only honoured by security classes that need auxiliary data
++ * (e.g. RxGK).  Those that don't offer the facility (e.g. RxKAD) respond
++ * without consulting userspace.
++ *
++ * Return: The previous setting.
++ */
++int rxrpc_sock_set_manage_response(struct sock *sk, bool set)
++{
++	struct rxrpc_sock *rx = rxrpc_sk(sk);
++	int ret;
++
++	lock_sock(sk);
++	ret = !!test_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
++	if (set)
++		set_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
++	else
++		clear_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
++	release_sock(sk);
++	return ret;
++}
++EXPORT_SYMBOL(rxrpc_sock_set_manage_response);
+diff --git a/net/rxrpc/server_key.c b/net/rxrpc/server_key.c
+index 3efe104b1930..0be259dd0df0 100644
+--- a/net/rxrpc/server_key.c
++++ b/net/rxrpc/server_key.c
+@@ -9,6 +9,11 @@
+  */
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define RXRPC_KEY_PROVIDER
++
++#include <crypto/des.h>
++#include <crypto/krb5.h>
++#include <linux/fips.h>
+ 
+ #include <linux/module.h>
+ #include <linux/net.h>
+@@ -42,6 +47,7 @@ struct key_type key_type_rxrpc_s = {
+ 	.destroy	= rxrpc_destroy_s,
+ 	.describe	= rxrpc_describe_s,
+ };
++EXPORT_SYMBOL(key_type_rxrpc_s);
+ 
+ /*
+  * Vet the description for an RxRPC server key.
+@@ -60,156 +66,198 @@ static int rxrpc_vet_description_s(const char *desc)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_RXKAD
+ /*
+- * Preparse a server secret key.
++ * Parse the information from a server key
++ *
++ * The data should be the 8-byte secret key.
+  */
+-static int rxrpc_preparse_s(struct key_preparsed_payload *prep)
++static int rxkad_preparse_server_key(struct key_preparsed_payload *prep)
+ {
+-	const struct rxrpc_security *sec;
+-	unsigned int service, sec_class;
+-	int n;
++	struct des_ctx *des_key;
++	int err;
++
++	if (fips_enabled)
++		return -ENOPKG;
++
++	if (prep->datalen != 8)
++		return -EINVAL;
++
++	memcpy(&prep->payload.data[2], prep->data, 8);
++
++	des_key = kmalloc_obj(*des_key);
++	if (!des_key) {
++		_leave(" = -ENOMEM");
++		return -ENOMEM;
++	}
++
++	err = des_expand_key(des_key, prep->data, 8);
++	if (err) {
++		kfree_sensitive(des_key);
++		_leave(" = %d", err);
++		return err;
++	}
++
++	prep->payload.data[0] = des_key;
++	_leave(" = 0");
++	return 0;
++}
++
++static void rxkad_free_preparse_server_key(struct key_preparsed_payload *prep)
++{
++	kfree_sensitive(prep->payload.data[0]);
++}
++
++static void rxkad_destroy_server_key(struct key *key)
++{
++	kfree_sensitive(key->payload.data[0]);
++	key->payload.data[0] = NULL;
++}
++#endif
++
++#ifdef CONFIG_RXGK
++/*
++ * Parse the information from a server key
++ */
++static int rxgk_preparse_server_key(struct key_preparsed_payload *prep)
++{
++	const struct krb5_enctype *krb5;
++	struct krb5_buffer *server_key = (void *)&prep->payload.data[2];
++	unsigned int service, sec_class, kvno, enctype;
++	int n = 0;
+ 
+ 	_enter("%zu", prep->datalen);
+ 
+-	if (!prep->orig_description)
++	if (sscanf(prep->orig_description, "%u:%u:%u:%u%n",
++		   &service, &sec_class, &kvno, &enctype, &n) != 4)
+ 		return -EINVAL;
+ 
+-	if (sscanf(prep->orig_description, "%u:%u%n", &service, &sec_class, &n) != 2)
++	if (prep->orig_description[n])
+ 		return -EINVAL;
+ 
+-	sec = rxrpc_security_lookup(sec_class);
+-	if (!sec)
++	krb5 = crypto_krb5_find_enctype(enctype);
++	if (!krb5)
+ 		return -ENOPKG;
+ 
+-	prep->payload.data[1] = (struct rxrpc_security *)sec;
++	prep->payload.data[0] = (struct krb5_enctype *)krb5;
+ 
+-	if (!sec->preparse_server_key)
+-		return -EINVAL;
++	if (prep->datalen != krb5->key_len)
++		return -EKEYREJECTED;
++
++	server_key->len = prep->datalen;
++	server_key->data = kmemdup(prep->data, prep->datalen, GFP_KERNEL);
++	if (!server_key->data)
++		return -ENOMEM;
+ 
+-	return sec->preparse_server_key(prep);
++	_leave(" = 0");
++	return 0;
+ }
+ 
+-static void rxrpc_free_preparse_s(struct key_preparsed_payload *prep)
++static void rxgk_free_server_key(union key_payload *payload)
+ {
+-	const struct rxrpc_security *sec = prep->payload.data[1];
++	struct krb5_buffer *server_key = (void *)&payload->data[2];
+ 
+-	if (sec && sec->free_preparse_server_key)
+-		sec->free_preparse_server_key(prep);
++	kfree_sensitive(server_key->data);
+ }
+ 
+-static void rxrpc_destroy_s(struct key *key)
++static void rxgk_free_preparse_server_key(struct key_preparsed_payload *prep)
+ {
+-	const struct rxrpc_security *sec = key->payload.data[1];
++	rxgk_free_server_key(&prep->payload);
++}
+ 
+-	if (sec && sec->destroy_server_key)
+-		sec->destroy_server_key(key);
++static void rxgk_destroy_server_key(struct key *key)
++{
++	rxgk_free_server_key(&key->payload);
+ }
+ 
+-static void rxrpc_describe_s(const struct key *key, struct seq_file *m)
++static void rxgk_describe_server_key(const struct key *key, struct seq_file *m)
+ {
+-	const struct rxrpc_security *sec = key->payload.data[1];
++	const struct krb5_enctype *krb5 = key->payload.data[0];
+ 
+-	seq_puts(m, key->description);
+-	if (sec && sec->describe_server_key)
+-		sec->describe_server_key(key, m);
++	if (krb5)
++		seq_printf(m, ": %s", krb5->name);
+ }
++#endif
+ 
+ /*
+- * grab the security keyring for a server socket
++ * Preparse a server secret key.
+  */
+-int rxrpc_server_keyring(struct rxrpc_sock *rx, sockptr_t optval, int optlen)
++static int rxrpc_preparse_s(struct key_preparsed_payload *prep)
+ {
+-	struct key *key;
+-	char *description;
++	unsigned int service, sec_class;
++	int n;
+ 
+-	_enter("");
++	_enter("%zu", prep->datalen);
+ 
+-	if (rx->securities)
++	if (!prep->orig_description)
+ 		return -EINVAL;
+ 
+-	if (optlen <= 0 || optlen > PAGE_SIZE - 1)
++	if (sscanf(prep->orig_description, "%u:%u%n", &service, &sec_class, &n) != 2)
+ 		return -EINVAL;
+ 
+-	description = memdup_sockptr_nul(optval, optlen);
+-	if (IS_ERR(description))
+-		return PTR_ERR(description);
++	prep->payload.data[1] = (void *)(uintptr_t)sec_class;
+ 
+-	key = request_key(&key_type_keyring, description, NULL);
+-	if (IS_ERR(key)) {
+-		kfree(description);
+-		_leave(" = %ld", PTR_ERR(key));
+-		return PTR_ERR(key);
++	switch (sec_class) {
++#ifdef CONFIG_RXKAD
++	case RXRPC_SECURITY_RXKAD:
++		return rxkad_preparse_server_key(prep);
++#endif
++#ifdef CONFIG_RXGK
++	case RXRPC_SECURITY_YFS_RXGK:
++		return rxgk_preparse_server_key(prep);
++#endif
++	default:
++		return -ENOPKG;
+ 	}
++}
+ 
+-	rx->securities = key;
+-	kfree(description);
+-	_leave(" = 0 [key %x]", key->serial);
+-	return 0;
++static void rxrpc_free_preparse_s(struct key_preparsed_payload *prep)
++{
++	switch ((uintptr_t)prep->payload.data[1]) {
++#ifdef CONFIG_RXKAD
++	case RXRPC_SECURITY_RXKAD:
++		rxkad_free_preparse_server_key(prep);
++		break;
++#endif
++#ifdef CONFIG_RXGK
++	case RXRPC_SECURITY_YFS_RXGK:
++		rxgk_free_preparse_server_key(prep);
++		break;
++#endif
++	default:
++		break;
++	}
+ }
+ 
+-/**
+- * rxrpc_sock_set_security_keyring - Set the security keyring for a kernel service
+- * @sk: The socket to set the keyring on
+- * @keyring: The keyring to set
+- *
+- * Set the server security keyring on an rxrpc socket.  This is used to provide
+- * the encryption keys for a kernel service.
+- *
+- * Return: %0 if successful and a negative error code otherwise.
+- */
+-int rxrpc_sock_set_security_keyring(struct sock *sk, struct key *keyring)
++static void rxrpc_destroy_s(struct key *key)
+ {
+-	struct rxrpc_sock *rx = rxrpc_sk(sk);
+-	int ret = 0;
+-
+-	lock_sock(sk);
+-	if (rx->securities)
+-		ret = -EINVAL;
+-	else if (rx->sk.sk_state != RXRPC_UNBOUND)
+-		ret = -EISCONN;
+-	else
+-		rx->securities = key_get(keyring);
+-	release_sock(sk);
+-	return ret;
++	switch ((uintptr_t)key->payload.data[1]) {
++#ifdef CONFIG_RXKAD
++	case RXRPC_SECURITY_RXKAD:
++		rxkad_destroy_server_key(key);
++		break;
++#endif
++#ifdef CONFIG_RXGK
++	case RXRPC_SECURITY_YFS_RXGK:
++		rxgk_destroy_server_key(key);
++		break;
++#endif
++	default:
++		break;
++	}
+ }
+-EXPORT_SYMBOL(rxrpc_sock_set_security_keyring);
+ 
+-/**
+- * rxrpc_sock_set_manage_response - Set the manage-response flag for a kernel service
+- * @sk: The socket to set the keyring on
+- * @set: True to set, false to clear the flag
+- *
+- * Set the flag on an rxrpc socket to say that the caller wants to manage the
+- * RESPONSE packet and the user-defined data it may contain.  Setting this
+- * means that recvmsg() will return messages with RXRPC_CHALLENGED in the
+- * control message buffer containing information about the challenge.
+- *
+- * The user should respond to the challenge by passing RXRPC_RESPOND or
+- * RXRPC_RESPOND_ABORT control messages with sendmsg() to the same call.
+- * Supplementary control messages, such as RXRPC_RESP_RXGK_APPDATA, may be
+- * included to indicate the parts the user wants to supply.
+- *
+- * The server will be passed the response data with a RXRPC_RESPONDED control
+- * message when it gets the first data from each call.
+- *
+- * Note that this is only honoured by security classes that need auxiliary data
+- * (e.g. RxGK).  Those that don't offer the facility (e.g. RxKAD) respond
+- * without consulting userspace.
+- *
+- * Return: The previous setting.
+- */
+-int rxrpc_sock_set_manage_response(struct sock *sk, bool set)
++static void rxrpc_describe_s(const struct key *key, struct seq_file *m)
+ {
+-	struct rxrpc_sock *rx = rxrpc_sk(sk);
+-	int ret;
+-
+-	lock_sock(sk);
+-	ret = !!test_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+-	if (set)
+-		set_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+-	else
+-		clear_bit(RXRPC_SOCK_MANAGE_RESPONSE, &rx->flags);
+-	release_sock(sk);
+-	return ret;
++	seq_puts(m, key->description);
++
++	switch ((uintptr_t)key->payload.data[1]) {
++#ifdef CONFIG_RXGK
++	case RXRPC_SECURITY_YFS_RXGK:
++		rxgk_describe_server_key(key, m);
++		break;
++#endif
++	default:
++		break;
++	}
+ }
+-EXPORT_SYMBOL(rxrpc_sock_set_manage_response);
 -- 
-Xin
+2.47.3
 
-pw-bot: cr
