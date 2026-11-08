@@ -1,96 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794118694;
-	b=kQwdYwXGMexjymY4rZRa9n/WFKWKUz7Y61AAwXWtGEGxgs+wgs908U48WVVVYgFMbdFD
-	 Qku0Z6doWB0b6doxT2OF5WAIXRQEU91Aoj0726EW0Ep7Iwtf98Di+/4mLVFuUPH/8e2Uz
-	 6Ch0wwfV2V5PFPqkznDVbDNgElLnqbe0CnEq425NRww3muJyjDjHtwCYatURU1FBRffkD
-	 L9n+v0c1Hf81VcZGCisJ1DquMMnrL4XTVFXE6pvkjW+nqHMMeriu+9Was4Gi68QItD6/4
-	 nbHrXSA0AP6H2zfsgLG9E2elr2PUN2bSQL4BWs+gEG2wmsgo8aThyQIFiLFwH7Dar8Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794118694;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794118922;
+	b=TfnQKvEMAxWDhtPwmVdXBFGM0nqsoombR9eKE2TnZy4isEx7RrB3mlAXw/4LNmdf7vdp
+	 J+sFj6WUCG504huTs9tjusmQVJeAdBt4fv8gfFfGSuuLpk2DV30rBHYeJ8YhD68wsl6uB
+	 4/I8jZ9FKburCqlToDo9A1F+NieuakE15U56ikWLjN2ZamK6hl0SU5/CNu5RrEcYqQc8V
+	 DP7RTc9mvNFbA6Boh48s4YIDJIPf49ITRp9+wVS+s8JqrzVv2mdec0VWF2ux/eEhOiUgy
+	 bG2WNGQRXCFw1oGnMy+Ai/pkMMUyvw3Kgx3xRlu1aeDYst3Xsx+AfBWTTBSzzJKWD9Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794118922;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=Mcozko3cpjsd4Fb6V5y36/b9iev/kYzZlS9QuT6BrZc=;
-	b=i+pQoRiFlpA8LRMw8ejueIDXsR6LL1JSwE3skV3JF5XURVqf7pqQUXk+yI79Ey6goIZS
-	 RJPZncfbFAI8kZnq1HuneDxfvvtgwFAu51iwf2dD/nY3KOq3mqM8Trvaqkq0zEx2gfEZx
-	 QXnlGBw3LdB07r1xHYQ0MDtyQwacJGKqWZO1nRUGVCoSdk3lv/bb8CRRsHE/PZByB4JTx
-	 zWeu/LelMUv7lxbqPTeKFmEsx1N1rW3FVLlK+nIu8v02Xcx2PlYpZ6u7/7xMEEoZbB2q3
-	 zI4eweWFbwBvX3xVsPBGdCsRmZqIM3gXLR9G1SuSWT7XPDhS9/KFrM+msqN5tdBnCiw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=niXzWDD3;
-	arc=none smtp.remote-ip=74.125.82.50
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=v2XprYGCXtRTCuqB4/wKtddK9ZYd1kM+u1y6WT6JlOc=;
+	b=y4riHxD1CZMqbiJBXmPFHVcoFWHUHNdAghto1rHttapE/thQMKEOjv2TSzN9U8hm8YlP
+	 cfFEMb4ZcwcH21PU9ljXUL+cnvx9U5Oz0uyYpgUCOBBLVQxcVnIL/N9BmhMQC4aYp9ns3
+	 R9hKd9QLy9AwpQNLnYtQWcvROaL7MICvGZv6R0cmiaU5jNhIrGrm4AcX3QoUmj+QnQ7Lr
+	 P6Lb1E+Hp6Wgonl6lEoyX0zGja8PSF0vbYvOQ+19tGP2poa5n9xKtqHVBybLZgztjwBr6
+	 qExZu0QUeYibLbSVjxk/rz7SOyhPoxV+51Kigh244JxE2buaDID2Gwrcna42MlsFh5Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hUgHyzbh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC6B606A31A
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:18:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAC6B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A52606A31D
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:22:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13A52606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=niXzWDD3
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a2761c69fbso522080c88.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:18:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hUgHyzbh
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso221a12.0
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:22:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794118920; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hhAyy26fs/xg70pIwECXqsVByefj4EE6XHjfMUycRTFgl0oG7WlEad8EmOwXQjSThO
+         jTxZxwDboiYqD1uU6hcgpdXjD0//gbwzt5nnLtmLTekR+QWJu1P4LAquIVg5LxVVPgY4
+         a0M8T/5vYcMeU5U1vJWYczRi1AmxG/rQSmRDR8E1lavbgXmkiCLQ196HAyCrbCVfKChV
+         OHHO2FWg3Kgen7icK1Ytv5j3gGpLtFm5ARgAsxyN4nkzvynlC/OQITJsW+my/JJ7qXu6
+         2PHr86soe7SRtOtI8L0urdZVlAT4Cy7RPqmpjiQD3dg0Xpq49kgwPw8/6Y+/bL/THTxd
+         Ntsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v2XprYGCXtRTCuqB4/wKtddK9ZYd1kM+u1y6WT6JlOc=;
+        fh=G+1sc63uYJ6FNssCNngeTrtwbKG1M4GkMhKgifHG6Cs=;
+        b=Mmox/HZvaQRGwqK6W/cMFs+YyQkoDCFW2qYMMSV4lGSDYLdcJbDWVfQbcHTBl2z7P/
+         yXHn0U3Pl09PNgmTeZfIoDPDgCM7ySh2Ng5QlbKw6/ebPNiZgChxBjsmrVDzAiDmQFqd
+         FX3NVMUB3VSWdJDbVMxMnMyFpAkRxc82SbYwRx7zn6UvPcdAYYl09/OYLLrd/loBZ6If
+         z34NHKFjS7eXMOVV6SgQKrd99339MxDQ8t4ZtLoImqvqkpHXMf0VJ+40xqmWdeZ8S0VO
+         x6oEr2YVRceJpZB09rFCOTERm9CzByIP5rJOAcAIBbh48Dz4bZuZ/E3x1m4NHSZzIkX6
+         4N0A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794118693; x=1794723493; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mcozko3cpjsd4Fb6V5y36/b9iev/kYzZlS9QuT6BrZc=;
-        b=niXzWDD37PKYpBFRkqWDTihy/W3R4h/GAC8tTa1OPPMrT58BdfYps9O1lw+lAHqOOW
-         ndCpG4Js/Bs2q3kPesofjxYM79x8xFHQgdWGulBqUJRg9JZqUpfrkf4szH63lo1U4Lnc
-         qPj/Gr4IBJtkGxSKu5stljLMdTzWuy3s7UCKRE3a3S1vcPkGKG61I40ttKPH965/EFqU
-         RdgudLmgUiBKFVcb8fEK+mUjHJFN1QZWfCE4plGPJ883+3NM+1cJ9Y9PDmWnGUXA/SPs
-         zR0pwZXFDQyNFf2vxTX4WNjiDC5u+G9yoC4aqZA9koFuFGYbiRU/hzOZ4lcC8q8D/HPO
-         G7lA==
+        d=google.com; s=20260707; t=1794118920; x=1794723720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=v2XprYGCXtRTCuqB4/wKtddK9ZYd1kM+u1y6WT6JlOc=;
+        b=hUgHyzbhHHaa3x0MGZHtZ50WogQLFlCdZt/lmpI5crcqaTYEzBLVvoJT+z9qJrP+mN
+         2zbgqjLjweGNemctefm1fEFSRBhgSp3oao5JaYrbL794p9RQwLH8IbD03A1vfK9G8Hgn
+         xU6BgmL/ohZrkZkQyqHOCeP1wKoEuHAy+mrlzWmeCsJ2azmakD7HX9Dv1qYjRCWTRvml
+         +A31W1Sdhj137368ySt2DvScSVHTeX6n1V3A5imgT+udmv2EDO5fo8gOJEOirBFNfme2
+         CiOhPNFnNc+LyuKNTbG/oQjABYDT9OeAE1XRKctqmZGWr4uzP4FMUjddZw6ab+cFyo3z
+         Mnkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794118693; x=1794723493;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Mcozko3cpjsd4Fb6V5y36/b9iev/kYzZlS9QuT6BrZc=;
-        b=UMmFethe1tcNYNZ69o/86pW1qCOBqzQGkmTtlY+iUGxr+6O+zqUmzs6SG9sM06+Ji8
-         RhwacSzLFex7wl45BPXFIgkPtjvRJ8BRVMfoDpKTFycyYA90lfEQtPGNH/toJfkWGr4e
-         DdFWrFHgBzskaV82wIvHEOeYkd961kIn8wd1ISDrVJkd5nj4s3m10lnFxIj6MKtJP+kY
-         V8PDC8WQNdXCv7NQBElrJ0+d6sAUGkqu0yFgQXzRs4F/1EUDfK58KcLdW3FpDesTtQdD
-         l2eZJBQMy4I3ErMPj7ITv9vuVg9rhcyewpv/tuCQGdiAYCiJh5ssu+OsBXtoHRanysiM
-         IBiA==
-X-Gm-Message-State: APuU4Z++wBHnhgrfLquMB2NQAnnOQlQO3RCntsPY0bwfVcRWyBX7n9MF
-	YfeWz7AffjPRxrf/OWZn+UZ+LREEw53hdsDIyTw6vnqpFXW9nq5WCuS0J0ZWfsESM3s=
-X-Gm-Gg: AYBFou2GoAfNZMSNYwvuPh6j1jzbK7X37QB27Fel9/IvT3L8h9QClFqpqfJyOwpMJQf
-	UAl9NBvFwyitT8NsoyBb0V/hctwMVTxtAiF/IEyg8KayNnEdzFvG7xk5QWl98H+bRkeAM2zVc5J
-	/u6ynNwH3EJfcBWIz3oxkC4N9PwnjHENdBr9s6uVpclHuDKnO3stGzRSmzGMb+34Yz3bNUuIlvy
-	40+oFnggCOi5lwqDvCZnTwn2bQTsTpB9d6sYiPqE5vuMmfECE8SNg7XfOzlhoDB0czBygH/TAcw
-	eMkMtB0wZUyfw38+wr5GCghU63k8cViA/lKZkfCO96pboMtKjrSOCXlF+xsdIRlyo7RSyBcWB2O
-	B3Lrt+WBOAI47FAMjfwiwfRrsi9R/pVeFn7MlbSsEKZpVHcESFVnQwHsWpgVdAoF4CZcITWHP2L
-	1iG/npsbATybbps3CSS3FkNEvH2S/hv4g2FJOIsttTxBDLxSflt09Zc+gkFDAmqqTJiuPEziYfR
-	+25S/eyfD0DmBzLRl2l7MAXsqp3yTmjUfiwPkxJ2X1ae1StX8RVtLHw4BnPbQ26Z+RB+pXJrtLr
-	nPEtXZz2LOOXH2Kf+42TVYcXO+px/6BbcyrFTysBeOdo9h8KuHF2LhNboBbZ6jqYi/c=
-X-Received: by 2002:a05:701b:42c6:10b0:174:cf1b:235c with SMTP id a92af1059eb24-1b39fed16edmr1123611c88.43.1794118692861;
-        Sat, 07 Nov 2026 22:18:12 -0800 (PST)
-Received: from LAPTOP-KD1TH5BD.tail375eb4.ts.net ([47.11.96.146])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b37314626dsm4838725c88.1.2026.11.07.22.18.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 22:18:12 -0800 (PST)
-From: Gopal Malaviya <gopalmalaviya53@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] docs: net: fix outdated default values of four sysctls
-Date: Sun,  8 Nov 2026 06:17:46 +0000
-Message-ID: <20261108061746.32090-1-gopalmalaviya53@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1794118920; x=1794723720;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v2XprYGCXtRTCuqB4/wKtddK9ZYd1kM+u1y6WT6JlOc=;
+        b=TW1Wu8y/mzywY6kpVhPK0Gd86J1uAxBSS8x+0aftxLygoOJdfNObanOUIgdn1hg9rQ
+         0AO1eSJAGgTcdGqoVZXWtd1hyqgfWlq2qAeDEun9StD9oTM+LhkpBH1RC7yaUqgFdist
+         Lt4y59I2Jl6pt+VC5Rccci0ZjNrPRlcmQom2esJfkbyp1Ntr/UybsjguRUvJi2wMCT0e
+         +fCEVvuRGF8QiFnPqWfSE1YrHkNR79kALusAVSVWhix2Xtyn6kmtioaEi2BXbAvqEtHq
+         cNLYHoyTBcrauTKs86mrAsr5W+D/r7mWm13b3gFhUdYKSIAYbJLrxqcyGMUNp3jwkbvr
+         81QA==
+X-Forwarded-Encrypted: i=1; AL+hErFNiH32IoL2hl46Sv+JhAD04iJCMMqgRun+g3b7oU5zffODj8jIjP6TQtNYo5xeWHWy3m1sJ0I=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8AKGIyrHdjAEWPcQL16QRP79eYPpsX+Iz0VHkclY/6BTYfNn7/
+	ahn719UB01rM5h7iq6oD93c9xBf+A9ntN0fKfibWgVEl0ZTT91p5dWs+sg6tjrKg64ogx6nSgJ1
+	I0cC79ZpFxcydetVPag/VPZ40l2b3FH1KByxr8OJN
+X-Gm-Gg: AYBFou3nztOVfM0Q3rO2xZmJauXivU8w07D2GajbJoi/UnwS7kmS9gzCz7ijRHQrjcs
+	3u98x9pNiJV/eeCc0XD5ZLxVRXNTar4kVLeIpkTcbuMPdp2+AXNGzlsOHhFmcqgum7orTls2nFb
+	MEjS0w1LOhCuYFxnsqOIoUvuriub/nW7s+BcHnYVRlzsVXl/C8MYn4BxRUz2njuktpKZAyRfwiH
+	dO/ky+uADW9Y61HWV9/NN3BSFwxDl4MI17lE7aqSTWrtvcXSCoY8Rk5/N4l6DK1VYcL0red2skg
+	GQQYWxnpGUiT7VY7p9W3BmqGz9THdL3Xj1l7qyqJmK1pgzRxa2oFG08ciOIkrhLEUfd/caswGCo
+	l173oARY1O6hmcPrDIKzGaTo5wLcDXic9uCLqLVrl6qm0fPQbffv69soP4Q==
+X-Received: by 2002:a05:6402:c502:20b0:6aa:128c:36ad with SMTP id
+ 4fb4d7f45d1cf-6b6fef8853fmr25733a12.10.1794118919631; Sat, 07 Nov 2026
+ 22:21:59 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,99 +104,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261015163915.1166043-1-almasrymina@google.com>
+ <20261015163915.1166043-4-almasrymina@google.com> <20261020121858.3b9107c5@kernel.org>
+ <CAHS8izPwWT+vbgAe49m5vXsRxT3unbfjLTkVZBScgAPdQTo2dQ@mail.gmail.com> <20261021132304.23e0a4e7@kernel.org>
+In-Reply-To: <20261021132304.23e0a4e7@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Sat, 7 Nov 2026 22:21:48 -0800
+X-Gm-Features: AclHuK84A9Z4KJMCekRVvO906KgemJ7leA4F7qgUGSEUquHWR-U_KufDY8SuGMQ
+Message-ID: <CAHS8izNTbs8ONvjhiw+6cRkZQq+cX3t=BZK9aCr39JNkVbY9gA@mail.gmail.com>
+Subject: Re: [PATCH net v4 3/4] netdevsim: support devmem RX and TX bindings
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Simon Horman <horms@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Tariq Toukan <tariqt@nvidia.com>, 
+	Kaifeng Wang <kaifengw@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The defaults documented in ip-sysctl.rst for four sysctls differ from
-the values the kernel actually uses:
+On Wed, Oct 21, 2026 at 1:23=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Tue, 20 Oct 2026 23:17:34 -0700 Mina Almasry wrote:
+> > But on the other hand the test coverage is nice, and maybe one day if
+> > we add enough devmem support in netdevsim we'll be able to fuzz the
+> > data path or something. Is there a way to get the best of both worlds?
+> > Like put a comment on top of netdevsim that this is test simulator
+> > device and any missing functionality and/or bugs in it should be
+> > medium criticality max or something? Or is it too much trouble and I
+> > should drop the netdevsim support and tests?
+>
+> I already strip Fixes tags and apply the patches to net-next.
+> But it's still a burden. If you're signing up to fix the issues /
+> review the slop we can try.
 
-  sysctl                  documented  actual
-  cipso_rbm_strictvalid   0           1
-  flowlabel_state_ranges  1           0
-  router_solicitations    3           -1
-  regen_max_retry         5           3
+Hi Jakub,
 
-Each one went stale when the code changed and the documentation was not
-updated, or was wrong from the start:
+So I started looking into whether we can improve test and fuzz
+coverage with an improved netdevsim. My LLM prototyped full datapath
+(with devmem) and offload support in netdevsim so the hardware
+selftests and packetdrill run and pass in a plain VM without physical
+NICs. I posted the branch at:
 
-- cipso_v4_rbm_strictvalid has been initialised to 1 since CIPSO was
-  merged, while the documentation added with it said 0.
-- Commit be26849bfb6f ("ipv6: Disable flowlabel state ranges by
-  default") changed the default of flowlabel_state_ranges to 0.
-- Commit bd11f0741fa5 ("ipv6 addrconf: implement RFC7559 router
-  solicitation backoff") changed MAX_RTR_SOLICITATIONS from 3 to -1,
-  meaning that router solicitations are sent without a limit. The
-  documentation was not updated and never mentioned -1.
-- Commit 76f793e3a471 ("ipv6: updates to privacy addresses per RFC
-  4941.") changed REGEN_MAX_RETRY from 5 to 3.
+https://github.com/mina/linux/tree/nsim-devmem-rx-tx
 
-Update the four defaults and note that -1 means no limit for
-router_solicitations.
+The main problem is the total LLM generated diff to netdevsim: 62
+files changed with 5,525 additions and 672 deletions :( So it's a big
+change.
 
-The mismatches were found with the help of an AI assistant (Claude),
-which compared the defaults documented in ip-sysctl.rst with the values
-under /proc/sys/net on a running kernel and with the initial values in
-the source. I confirmed each value with sysctl on a running kernel and
-against the net-next source and the commits below. The commit message
-was drafted with the same assistance.
+But with this, we can do pretty cool things:
 
-Tested by building the networking documentation with
-"make SPHINXDIRS=networking htmldocs": the change adds no warnings and
-the four defaults render as updated.
+- All 36/36 drivers/net/hw/ tests, 18/18 drivers/net/ tests, and
+164/164 net/packetdrill/ tests now pass on a linked netdevsim pair,
+without needing real hardware. This is significant because a lot of
+these 'driver' tests also actually tested unique code paths in core
+like devmem.
 
-Fixes: 8802f616f6de ("[NetLabel]: documentation")
-Fixes: be26849bfb6f ("ipv6: Disable flowlabel state ranges by default")
-Fixes: bd11f0741fa5 ("ipv6 addrconf: implement RFC7559 router solicitation backoff")
-Fixes: 76f793e3a471 ("ipv6: updates to privacy addresses per RFC 4941.")
-Signed-off-by: Gopal Malaviya <gopalmalaviya53@gmail.com>
----
- Documentation/networking/ip-sysctl.rst | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+- NIPA can now (I think) run all these netdev driver tests and
+packetdrills without real hardware:
+https://github.com/mina/patches/tree/nipa-nsim-hw-and-packetdrill
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index bc22400b53..0b7bfbd98a 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -1587,7 +1587,7 @@ cipso_rbm_strictvalid - BOOLEAN
- 	- 0 (disabled)
- 	- 1 (enabled)
- 
--	Default: 0 (disabled)
-+	Default: 1 (enabled)
- 
- IP Variables
- ============
-@@ -2418,7 +2418,7 @@ flowlabel_state_ranges - BOOLEAN
- 	- 0 (disabled)
- 	- 1 (enabled)
- 
--	Default: 1 (enabled)
-+	Default: 0 (disabled)
- 
- 
- flowlabel_reflect - INTEGER
-@@ -2956,9 +2956,9 @@ router_solicitation_interval - INTEGER
- 
- router_solicitations - INTEGER
- 	Number of Router Solicitations to send until assuming no
--	routers are present.
-+	routers are present. A value of -1 means no limit.
- 
--	Default: 3
-+	Default: -1
- 
- use_oif_addrs_only - BOOLEAN
- 	When enabled, the candidate source addresses for destinations
-@@ -3034,7 +3034,7 @@ regen_max_retry - INTEGER
- 	Number of attempts before give up attempting to generate
- 	valid temporary addresses.
- 
--	Default: 5
-+	Default: 3
- 
- max_addresses - INTEGER
- 	Maximum number of autoconfigured addresses per interface.  Setting
+- Packetdrill can now run on netdevsim:
+https://github.com/mina/patches/tree/packetdrill-nsim-default
 
-base-commit: fa5196392691051963726787944db872420dfa75
--- 
-2.43.0
+-(best part) Syzkaller can now fuzz live devmem/zcrx datapath &
+offload netlink APIs:
+https://github.com/mina/patches/tree/syzkaller-nsim-full-net-coverage
 
+You asked me to do add syzkaller devmem support before, but adding
+devmem support to netdevsim was too hard. With LLMs, it's almost
+trivial, but it involves a lot of generated code.
+
+Do you think this (or a subset) is valuable to post upstream to add to
+netdevsim?
+
+--=20
+Thanks,
+Mina
