@@ -1,59 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794143819;
-	b=EqQRvNwBSRdawhceN2NI9VSlQ6E7IVsPslVdvMSu53pb5BvfME4PBWCat8W8ZkDT4VNZ
-	 FsCJkf+qILsJcp6QaEFS21MB69I1AxHHm1OpmOjMJkY+vPlCS6xf1TD3Pvprt2PYpfhCs
-	 Xzaum4hN7J5ns0O9LyWfnsoVc7cBfkfTP1x+xoNxCDeBxvORQqrfMtMTTT3wUNoWnc9ij
-	 BXS1YEsgfakzW8H5VATjHlOLrOuakD3//PhBT52fjDNEMhq3aYfkXOXnhciXrHe7wnaeq
-	 vZEKeEz2IYm97YFepQg3GUFst/F/6KcQEhzcS7eD7APfPOoNhgpVGCfjtQFuCqYz6Rw==
+	t=1794143916;
+	b=kuDNvx4pIcbucwekFBFHnMkMHz4AxcH870+2sumKDUW/V0KSwAXM51AdXxCTbwPnEK9s
+	 pMnwUkEFZu5ttFUtsmRTaz2YIqDfbkMsNWBn9vWgqJKSwHX3j6SUgmE6/E4K4X9HcTeMk
+	 VeUWCqkrDxiqSwQ6EloLuhbJAhUxo9vUXm+H/4l5zF+BSS1L/wQasj8piLh4MdUgaesV7
+	 bqhuGWo3vZlslz+KzzZDa+HSdAOjEcAuu790TSb323+h49lEyCJOjUxTUPILz6cWoG9MT
+	 9wQa3Bb0XJS+YkXNzUWxnB03fXZdycreYEaeoVMFRDboxU0QwpiDqzGbzA7ZvQgwXsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794143819;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=JJxNTB9eCOe/pFt54aN+l5cQw4iYZx9PorRckcs6gdQ=;
-	b=KeY+GDID8Y7M47V4e5LljjfXAbTiPQUIS9K+k3IgwPTBGjSREB8YGdZeed1xPhotN+oW
-	 uE2hSp0ES2Czg/6Uw1/3IeTCn01sv98vXve/2IYOoufuKXj8Xgah6g+bHKpLY0n+ujBl6
-	 5UsSjJ8vzO8BIZuLF5J/A6NVQqHgbg2EpufprXR6gfT0q2k/P0XAL2I8RLNiYnOZuMfaE
-	 36tVFcQ7HBXNYknFCvyDaUmNYC3OqrNskRpMoXxAd393r9g6LI2/cdB4llD2tbuY8aYx2
-	 LuqKufLHxDztL5PgHKts4cUTkPMxsUFJZZqhrdeBgZQ3+H1oGZFPhlinKl8UBxIwb4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794143916;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:
+	 Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=7Y04tqt6QoAZDnmim+FnFs7Mh/95J1U07zdy+ADsQEA=;
+	b=WAR9aDFAYDjjoIsAq+9/xxdyIsuMv0EbQ2RTIWkLZY6NphH0BZhyw/9WuFGMdecmq6hr
+	 iuav51yiq6aCDvBI2neT1Y0XBoUtlpcJa12hJOFP6HaANzf02fEuhd77zstAEPFhcZH6r
+	 1yqRVMXTaCw1jl0GPz5zsk8MDQc1jNXHpnuuTB/SqVCq+Ne+mz+0sE4FJ0EdZ/yJ/WtUX
+	 cpFxn2KQvgiLWkWxReZhXSonF6b2KsVisYmS0c3QJy0D9E4GZPwRzF8fF8PSv3qvTakn6
+	 p87Qihl+iStJaDibaahVsYXPzpraKzCPykmE9h0CjwT5iWUCIBN9ai8GAZxvRLLdTeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwWxL12V;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=INCH0h+q;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EcwhhSsr;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A399606A31C;
-	Sun,  8 Nov 2026 13:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E760606A322
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 13:18:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E760606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lwWxL12V
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610821F0089F;
-	Sun,  8 Nov 2026 13:16:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794143818;
-	bh=JJxNTB9eCOe/pFt54aN+l5cQw4iYZx9PorRckcs6gdQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lwWxL12VW8wXib5rkzi0bjImamFqNFpn1HCyZW61SWsB9qe6eDK10uNY2tOmWjEtj
-	 60kIctPb8gPxRoYpfr0uyqEXGrK8aMNIxvj7P4nwZe7GDDMjmMRZmdFMUI5R0syDwS
-	 I0ifTKmsEHrA2BEbAOlBgREQqIEtYrc89gLBlrweMGfdwCb157E4G3h6A2Au3tAZSO
-	 T8UFAUcAofKNKNvxIR8MNSyZrvA2yr0N5DSLmINT63Puv10YWq9M+dzV0XrL3IBllp
-	 n7fKcF9XrPcMuUTQGx3yAdl2VzriXIShX2XMC59myMVjp2kykAJHjvYWoyVsPXTauP
-	 tD6OaHvaoQEaA==
-Subject:
- Re: [PATCH net v1 1/1] net: phylink: keep initial advertising settings
-From: netdev-bot+sashiko@kernel.org
-To: thi.zirnstein@gmail.com
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 13:16:57 +0000
-Message-ID: <179414381793.994134.3838415671926603542@kernel.org>
-In-Reply-To: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
-References: <20261104125509.3221743-1-thi.zirnstein@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=INCH0h+q;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EcwhhSsr
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A8Ah5QC285109
+	for <netdev@vger.kernel.org>; Sun, 8 Nov 2026 13:18:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7Y04tqt6QoAZDnmim+FnFs
+	7Mh/95J1U07zdy+ADsQEA=; b=INCH0h+qeF4laeKeCp+7aqaVhTBbw0X0nK58Ur
+	K8NEIPlATJ4/CqP8cDSXlcZxQA2pNptLgDq4tey47fOiiUln6pYTDvp4rJFjbROa
+	U8/V/mOnol2EWaMQ4QbxsgiLsPOo+XZo+zVExUj1xdOe6lv9ENyB1vP0g4yyg8US
+	tEPGNul/H+4FnoKWN/tqDE3dccJHVa1XDX2dZWgZvjjfuv0HJVTkIZLRExmg1yeW
+	reaw1u8sANtVTznavSFLH2M50DHFtLe38nPkwuatpUmu4E/wM7laehVyu1FeHp0k
+	xtORaPeJjgiXHfqNSVG9qutqqIKTqC2d24J+5DxWZuHn33BQ==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsw99jsta-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:18:34 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30bcb065bfdso217942eec.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 05:18:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1794143914; x=1794748714; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7Y04tqt6QoAZDnmim+FnFs7Mh/95J1U07zdy+ADsQEA=;
+        b=EcwhhSsr2cyu720msVU44f1//T0TOwAuIuYm8V0vDNUBinACSsAQP0BHuNwNVSxi9g
+         90LZmzaYpf2ypismWhKOOxS+T3JfpjB692BsA4Sv2w6do9WK3VRKx8s9S6j/fPWYPIgX
+         wC1cKypyZz9Y7N8mrkjL+QAJh8wJpaV01HYPcwI/4h68TG5QEknCcC4eH+M+6YSzGvhR
+         C5r72BhZQb1vbe0e5ZGz8jqTqBo6bL67tgiCmq2tiRxk0pQ0oe8NWMXJxJteiqa6xYrO
+         n0kHrahB44DZQ2Aql+W9aojRx2BbifcY4UfiCm5nJqSHFfQC4H9fQJBRpXCdW/c/JY5w
+         JRiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794143914; x=1794748714;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=7Y04tqt6QoAZDnmim+FnFs7Mh/95J1U07zdy+ADsQEA=;
+        b=j6B7oNi7oqw1mytv87zmohtkQzjzrs928zzZGVbrH++SNjSs6c3NQv74ElrYiXPoms
+         3Evyx8gWtkS5JiVKItlMgoGEY0DuDtFyohKqNmy3nRfsfPw2BhWZKTk69ygYYQ1y2z5b
+         sJX2V2yRFMdG/iSD8FS5lXuAzF7krSAijOsmZi8FlhOPYqk5lkm+prFxIjJmtuVy0H31
+         pJFkFg48OE/fgb5H5E5qO19k9i2g6KAe9tpJsxKOakVKodR3QuO7+IEX1jlVVd/nfCb8
+         yEhU3LcNSng2GqMwaMDiwxdPrUFqYuil7lUObPh+JdKKe3QwCErB2fb86MdyEjhd1a+e
+         cfww==
+X-Forwarded-Encrypted: i=1; AL+hErGxiYJJ9gh2OcIha9pBHxGXb5ccg3LwvIrfXDVB2tAyAsGwWag4uI8IGagIurC8CQJX+16xlq8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ZWe9qmkSXs5OeAxDodcjBhp8ww/yNVP31OCnonjuzps40cp9B
+	LXog8NwPxqjVnGs+GQHgvKD66uP+b8DFIF7yON6d7dhT8H6TJ2Eyo+bX3h/DtmwKVeZ+LpBQ5fY
+	Hc9kpZAVG6BIV3ckid3SKjajcPi8hdykZJH1nKSTeHwgHr+SO0INywFDilJ4=
+X-Gm-Gg: AYBFou0zKdkGj1ccaxPQAeIBM6nlzIR5PaZsYQxku9dbk8MeW6vuxEjBmQ7AonzPLhb
+	fcB0G2G6AtckRxMVmWL9bTSE6vHzGGBVKbTyexrjLofBaZWcYTSuwhQ/oC5PBqRISOUsy7hORKe
+	G5+e/FOsmq7fPTz9OaFtKSHbWkDTwSoeVU/6NhhLa19vEU9bkVorR+tt54MWYXQta+8Os34ZTWk
+	2xi3Qbgdcye2tyjbwxVvSvYuWaD6Yw/QUxOxnx27gFJ7V+JIeGjZT6Ih9erDtzmCSPxexQ/rJca
+	WWi3+u2VL6fZoVmf1M6Pb+OvktKUeydUhHkT37w6M2l/7mYgKC+MzOgoWhXpwuHxjNtAKB563jz
+	Mk5IL5Z2Rt++JJgphwoP7A4Epi+UjNgE2d4m0VhA8Tqbsk4s/UM63iGr5ptmZr3smZIvbvuIgrT
+	VB4vU=
+X-Received: by 2002:a05:701b:2214:b0:1b2:611a:89fd with SMTP id a92af1059eb24-1b39feda27cmr1957813c88.45.1794143913274;
+        Sun, 08 Nov 2026 05:18:33 -0800 (PST)
+X-Received: by 2002:a05:701b:2214:b0:1b2:611a:89fd with SMTP id a92af1059eb24-1b39feda27cmr1957781c88.45.1794143912612;
+        Sun, 08 Nov 2026 05:18:32 -0800 (PST)
+Received: from hu-imrashai-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3757214cbsm5336980c88.13.2026.11.08.05.18.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 05:18:32 -0800 (PST)
+From: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Subject: [PATCH v2 00/10] Add support for Qualcomm TSCSS hardware
+Date: Sun, 08 Nov 2026 18:48:21 +0530
+Message-Id: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,218 +114,184 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJ528GoC/0XO3YrDIBCG4VsJHq/FMRqzOep9LCWoM2mFbU01C
+ buU3vtOf2BPhE+Gh/cmKpVEVQzNTRTaUk35wkN/NCKe/OVIMiFvoZXulFNWLjXWKo0B7I2JQOQ
+ E386FpvTzdL4OvE+pLrn8PtkNHr9vQbu3sIFUMhAhGHLagtrnWnfX1X/HfD7v+BGH+0sudF05b
+ Hnx/12cySaAcvIY45h0HNke6zrPuSyyM963VmMbAAeOYCz4SvLhp2VoECeyEJRXk8X4SQZsjDr
+ 2HnsM4GyrEY3uAnfc/wA0kiO4KAEAAA==
+X-Change-ID: 20260705-tscss-441d844c1ee7
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+        Eric Dumazet <edumazet@kernel.org>
+Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
+        Taniya Das <taniya.das@oss.qualcomm.com>,
+        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Imran Shaik <imran.shaik@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Proofpoint-ORIG-GUID: ZlcJOWlnpYkl6Ae9dStZ1dyO5O_K25dm
+X-Proofpoint-GUID: ZlcJOWlnpYkl6Ae9dStZ1dyO5O_K25dm
+X-Authority-Analysis: v=2.4 cv=CMq/zhrD c=1 sm=1 tr=0 ts=6af076aa cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=J1Y8HTJGAAAA:8
+ a=20KFwNOVAAAA:8 a=CLs3rlwnB2RECI_rIAYA:9 a=QEXdDO2ut3YA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22 a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA4MDA1MiBTYWx0ZWRfX3KNoWhZWruJP
+ a9cQXP0VbrpYWrLohG9HfwvAXuG2ASsga3zhAlsKi9vxUjIkoYD0grtooHnFZr6miIcy0DGQN+p
+ t30TUerr9xeGfVAK/l5EBI8et1LC0nY7dcTAM5R0qesxEWD91UvqXZZMFvH24GNvOa80ppL6Hd6
+ jXkVWExQl1TRvmQTuAkdlN90DPWiTHI3v+1B2QMQlTGUNPSqFg0wQXhOlmXsNDH89oY8ziweHkk
+ E2LfOVvAYtJLK08X+KJL4lyJPs/Q/nWr4lmTvFtpAEIS1nGE0HR8hEvzXYUprSNSGjvWTx3Sq3T
+ xJC0awjUvYRQGLvXgkp38Ane8awuOztsQigipt3TvluHH1jiYVMb3p/bkJA45aRCLF9AZjfAgJM
+ NGLrkFY5xbpIUElWipC1C6qmEVn0MBjniwpKBaneO+0NokX3Xg3IyL09omyYRd74qb5zdA9b7a7
+ AmO6IxReyV2vltEw4jA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA4MDA1MiBTYWx0ZWRfX9of5El/T+PK2
+ Kj+4LDj3rPLypjZKAxfy/7nSy8tcvW8LTd4x5ZjrHFZl7xwD0+EDCQ3eeDFKa8mHU45LaNWBlh+
+ 0M7ijlofSbA+qjrKTtxDpuuytxTux3U=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-08_04,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ adultscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611080052
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+This series introduces support for the Qualcomm Timestamp Counter Subsystem
+(TSCSS) hardware, a time synchronization subsystem present on Qualcomm
+Lemans, Monaco and QDU1000 SoCs.
 
-Critical: 0 · High: 3 · Medium: 2 · Low: 0
+TSCSS is composed of two main hardware blocks:
+ - Timestamp Counter (TSC): a free-running hardware counter that provides
+   continuous timekeeping for the SoC, and is functional with a GCC TSC AHB
+   config clock and a global counter clock. The TSC counter resolution and
+   supported functionalities vary across SoC variants.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+ - Event Timestamp Unit (ETU): It captures TSC counter timestamps against
+   external hardware events. Each ETU slice binds a slice identifier to
+   an external event selector, and the ETU additionally requires its own
+   clock, pinctrl along with either a per-slice interrupt (QDU1000) or
+   a single summary interrupt across all ETU slices (Lemans and Monaco).
 
-- [High] In phylink_bringup_phy() (drivers/net/phy/phylink.c:2323), the
-  new linkmode_and() limits the PHY's validated advertisement to…
-- [High] phylink_bringup_phy() now reads pl->link_config.advertising as
-  the user's requested advertisement.
-- [High] For a PHY on an SFP module, phylink_sfp_config_phy() calls
-  phylink_bringup_phy() (line 3891) before phylink_sfp_set_config()…
-- [Medium] The fix carries over only part of a pre-open link
-  configuration.
-- [Medium] phylink_bringup_phy() can now give phylib an autoneg
-  advertisement with no link modes in it.
+ +------------------------------------------------+  +------------------+
+ | Global clock controller - TSC AHB/CNTR/ETU CLK |  |  EVENT_IN[0:15]  |
+ +------------------------------------------------+  +------------------+
+                          |                                  |
+                          v                                  v
+ +----------------------------------------------------------------------+
+ |               Timestamp Counter Subsystem (TSCSS)                    |
+ |                                                                      |
+ |                   +----------------------------------------------+   |
+ |  +------------+   |         Event Timestamp Unit (ETU)           |   |
+ |  | Timestamp  |   |           0x01C90000-0x01C9FFFF              |   |
+ |  |  Counter   |   | +------------------------------------------+ |   |
+ |  |   (TSC)    |   | |               ETU Slices                 | |   |
+ |  |            |   | | [Slice 0]  [Slice 1]   [...]  [Slice 15] | |   |
+ |  | 0x1C80000  |   | | 0x1C90000  0x1C91000          0x1C9F000  | |   |
+ |  +------------+   | |                                          | |   |
+ |                   | +-----------+------------------------------+ |   |
+ |                   +-------------|--------------------+-----------+   |
+ |                                 |                    |               |
+ +---------------------------------|--------------------|---------------+
+                                   |                    |
+                                   v                    v
+                         +----------------------------------------+
+                         |    per-slice IRQ  (OR)  summary IRQ    |
+                         |      (QDU1000)            (Lemans)     |
+                         +----------------------------------------+
+                                             |
+                                             v
+                              +-----------------------------+
+                              |   Interrupt Controller      |
+                              +-----------------------------+
 
---
+The address offsets shown in the diagram above are specific to Qualcomm
+Lemans SoC.
 
-net: phylink: keep initial advertising settings
+The Qualcomm Nord SoC additionally has a timer register region used to
+generate a periodic pulse in sync with the TSC counter.
 
-This patch keeps an advertisement that was set through ethtool before the
-MAC driver connects the PHY in ndo_open. phylink_bringup_phy() now ANDs
-the PHY's validated advertisement with pl->link_config.advertising. The
-result is stored back into both pl->link_config.advertising and
-phy->advertising.
+This series currently covers only the TSC block driver functionality; ETU
+driver support will follow in a later series.
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index e885da1c28311..145f181bc9d37 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -2320,6 +2320,7 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy,
->  	pl->phy_state.duplex = DUPLEX_UNKNOWN;
->  	pl->phy_state.rate_matching = RATE_MATCH_NONE;
->  	linkmode_copy(pl->supported, supported);
-> +	linkmode_and(config.advertising, config.advertising, pl->link_config.advertising);
+Signed-off-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+---
+Changes in v2:
+- Fixed SoC names, and updated bindings as per review comments on v1 [Krzysztof]
+- Added ARCH_QCOM in Kconfig, fixed the probe() and remove() order, and
+  used dev_err_probe [Krzysztof]
+- Dropped the unnecessary "inline" keyword [Jakub]
+- Added support for Nord and Shikra SoCs, which support continuous dynamic
+  dynamic drift correction.
+- Updated the clocks handling.
+- Link to v1: https://lore.kernel.org/r/20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com
 
-[Severity: High]
-Can this narrow the PHY advertisement on the first ndo_open, before the
-user has configured anything?
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+To: Abel Vesa <abelvesa@kernel.org>
+Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>
+Cc: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Cc: Taniya Das <taniya.das@oss.qualcomm.com>
+Cc: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
 
-If nothing has been set through ethtool, pl->link_config.advertising
-still holds the default from phylink_create(), or from
-phylink_parse_mode() for in-band:
+---
+Imran Shaik (10):
+      dt-bindings: ptp: Document the TSCSS on Qualcomm SA8775P and QCS8300 SoCs
+      dt-bindings: ptp: Document TSCSS hardware on Qualcomm QDU1000 SoC
+      dt-bindings: ptp: Document TSCSS hardware on Qualcomm Nord and Shikra SoCs
+      ptp: qcom: Add PTP driver for the Qualcomm TSC hardware
+      arm64: defconfig: Enable Qualcomm TSC driver
+      arm64: dts: qcom: lemans: Add support for TSCSS node
+      arm64: dts: qcom: monaco: Add support for TSCSS node
+      arm64: dts: qcom: qdu1000: Add support for TSCSS node
+      arm64: dts: qcom: shikra: Add support for TSCSS node
+      arm64: dts: qcom: nord: Add support for TSCSS node
 
-    linkmode_fill(pl->supported);
-    linkmode_copy(pl->link_config.advertising, pl->supported);
-    phylink_validate(pl, pl->supported, &pl->link_config);
+ .../devicetree/bindings/ptp/qcom,nord-tscss.yaml   | 186 +++++++
+ .../bindings/ptp/qcom,qdu1000-tscss.yaml           | 170 ++++++
+ .../bindings/ptp/qcom,sa8775p-tscss.yaml           | 169 ++++++
+ arch/arm64/boot/dts/qcom/lemans.dtsi               |  12 +
+ arch/arm64/boot/dts/qcom/monaco.dtsi               |  12 +
+ arch/arm64/boot/dts/qcom/nord-embedded.dtsi        |  14 +
+ arch/arm64/boot/dts/qcom/qdu1000.dtsi              |  13 +
+ arch/arm64/boot/dts/qcom/shikra.dtsi               |  12 +
+ arch/arm64/configs/defconfig                       |   1 +
+ drivers/ptp/Kconfig                                |  11 +
+ drivers/ptp/Makefile                               |   1 +
+ drivers/ptp/ptp_qcom_tsc.c                         | 598 +++++++++++++++++++++
+ 12 files changed, 1199 insertions(+)
+---
+base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
+change-id: 20260705-tscss-441d844c1ee7
+prerequisite-change-id: 20261107-gcc_i2c_tsc_support-64aa352d3b1d:v1
+prerequisite-patch-id: 8c93973348ea4b80f1dfcd445a8a3afb8a530d21
+prerequisite-patch-id: 5a3418fa67b14fd6b67e00f8c21ee699fedb320d
 
-That mask is validated only for the DT phy-mode, with rate_matching left
-at RATE_MATCH_NONE.
+Best regards,
+--  
+Imran Shaik <imran.shaik@oss.qualcomm.com>
 
-phylink_validate_phy() deliberately validates more widely. It uses
-phy->possible_interfaces or the PHY's rate matching mode, and for C45
-PHYs it does this:
-
-    if (phy->is_c45 && state->rate_matching == RATE_MATCH_NONE &&
-        ...)
-        state->interface = PHY_INTERFACE_MODE_NA;
-
-The AND here undoes that widening, and the narrowed result is then
-copied into phy->advertising.
-
-Two examples:
-
-- phy-mode = "10gbase-r" with an 88X3310 or AQR class PHY: the default
-  only has MAC_10000FD modes.
-- phy-mode = "2500base-x" with an RTL8221B class PHY: only MAC_2500FD
-  survives.
-
-Wouldn't the PHY then advertise only 10GBASE-T (or 2500BASE-T)? Before
-this patch it could link with lower speed partners; after it, those
-links would fail.
-
-The AND can't tell a user setting apart from phylink's own
-interface-limited default. Would user intent need to be tracked
-separately?
-
-[Severity: Medium]
-Can the intersection end up with no link modes here?
-
-The AND runs after phylink_validate_phy(). Nothing checks for an empty
-result or re-validates it before it is copied into phy->advertising.
-
-While no PHY is attached, pl->supported holds every MAC mode for the
-interface. For MAC_1000FD that includes 1000baseX_Full and
-1000baseKX_Full. So "ethtool -s ethX advertise 1000baseX/Full" is
-accepted while the interface is down.
-
-At ndo_open, ANDing the copper PHY's baseT modes with that mask leaves
-only Autoneg and Pause. phydev->autoneg stays enabled.
-
-The other two configuration paths reject this state.
-phylink_ethtool_ksettings_set() has:
-
-    /* If autonegotiation is enabled, we must have an advertisement */
-    if (linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
-                          config.advertising) &&
-        phylink_is_empty_linkmode(config.advertising))
-        return -EINVAL;
-
-phy_ethtool_ksettings_set() also returns -EINVAL for an empty
-advertisement with autoneg enabled.
-
-phylink_bringup_phy() returns 0 here, and the link silently never comes
-up. Should the result be checked, or fall back to the PHY's validated
-advertisement?
-
-The missing check also turns the stale link_config and SFP cases below
-into a total link loss.
-
->  	linkmode_copy(pl->link_config.advertising, config.advertising);
-
-[Severity: High]
-Does pl->link_config.advertising still reflect what the user asked for
-once a PHY has been attached?
-
-With a PHY present, phylink_ethtool_ksettings_set() passes the request
-to phylib and returns without touching link_config:
-
-    /* We can rely on phylib for this update; we also do not need
-     * to update the pl->link_config settings:
-     ...
-     */
-    return phy_ethtool_ksettings_set(pl->phydev, &phy_kset);
-
-This line writes the intersection back into pl->link_config.advertising,
-and phylink_disconnect_phy() never resets it. Non-genphy PHY drivers
-also keep phy->advertising across phy_detach() and phy_attach(). On
-macb, stmmac, r8169 and tn40xx, the mask can therefore only lose bits
-across ndo_stop and ndo_open.
-
-Two sequences show this:
-
-(a) "ethtool -s advertise 100baseT/Full" while up, then ifdown/ifup,
-leaves link_config at {100M}. A later ethtool -s with the full set
-while up is reverted to {100M} at the next ifdown/ifup.
-
-(b) "ethtool -s advertise 100baseT/Full", ifdown/ifup, then
-"ethtool -s advertise 1000baseT/Full", ifdown/ifup, gives {1G} AND
-{100M}.
-
-In case (b) only the Autoneg and Pause bits are left. Wouldn't the PHY
-then advertise no speed modes, so the link never comes up until the
-driver is rebound?
-
-[Severity: High]
-How does this behave for PHYs on SFP modules?
-
-phylink_sfp_config_phy() calls phylink_bringup_phy() before it updates
-link_config for the new module:
-
-    ret = phylink_bringup_phy(pl, phy, config.interface);
-    ...
-    phylink_sfp_set_config(pl, support, &config, true);
-
-So the AND uses whatever pl->link_config.advertising was left by the
-cage default or by a previously inserted module. Neither module removal
-nor PHY disconnect resets it.
-
-Some examples:
-
-(1) A 1000BASE-SX module leaves {1000baseX_Full, Autoneg, Pause, FIBRE}.
-If a copper SGMII module (e.g. 88E1111) is inserted next, its baseT
-modes are ANDed with that mask, which has no speed bits.
-
-(2) If an optical module's only interface has no in-band AN,
-phylink_sfp_config_optical() calls linkmode_zero(config.advertising).
-That leaves link_config.advertising entirely zero for the next copper
-SFP PHY.
-
-(3) A cage with managed = "in-band-status" and phy-mode 1000base-x only
-gets MAC_1000FD modes from phylink_parse_mode(). Even the first copper
-module inserted would lose its 10/100 modes.
-
-Right after bringup, phylink_sfp_set_config() overwrites
-link_config.advertising with the module's full mask. Doesn't that leave
-phylink's recorded advertisement out of sync with what the PHY was
-actually programmed with?
-
->  
->  	/* Restrict the phy advertisement according to the MAC support. */
-
-[Severity: Medium]
-Is only half of a forced link configuration set before open carried
-over here?
-
-Without a PHY, phylink_ethtool_ksettings_set() handles
-"ethtool -s ethX autoneg off speed 100 duplex full" in two steps. It
-stores the speed and duplex in link_config.speed and
-link_config.duplex, and it clears the Autoneg bit:
-
-    linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, config.advertising,
-                     kset->base.autoneg == AUTONEG_ENABLE);
-
-At bringup only the bitmap is applied, through the new AND and the
-following linkmode_copy(phy->advertising, config.advertising).
-phydev->autoneg, phydev->speed and phydev->duplex are never updated.
-
-So the PHY keeps autonegotiating and ignores the forced mode, as it did
-before the patch. The difference is that phy->advertising now lacks the
-Autoneg bit while phydev->autoneg is still AUTONEG_ENABLE.
-
-phy_ethtool_ksettings_set() always keeps these two consistent. Is this
-a state phylib expects? ethtool would now report autoneg on while
-Autoneg is not advertised.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104125509.3221743-1-thi.zirnstein%40gmail.com
