@@ -1,89 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794153767;
-	b=OlZ/W0c57DBGY/2hhdlT03gE9pBXvRWzMmuQ8Gcei+2OiQAI4/G83jyOBOB2ughStVcs
-	 63Hu2zRG1tFzewGacMyj/8fNXm6QrHC5GnRwTXGXNl2o1/dUVrxFoEL6Vhgn6IsNgEoPP
-	 0Q41woKPUW90xj3j1jeaFW5XULn6YjK5+bFfZ+/oMjH4gvDVSs9n9awAmaMbFGU3RooF2
-	 yKd1OKvJHulUGHq59wYu+iZRSWGcg+4r1iJt8JxhYFQruNJPxsvAkK3Gg5tYmALtOWw5g
-	 IzIsLun/3JRGJSqsmd8VfS366qyM/i0h3gKtb0C7QAxa0pQMvwa6qjFEC8OFNlNbpTw==
+	t=1794154331;
+	b=f5FU2vopV/EHcNBLdLufUz6xX4AK3CG3U294ZxIwKxTloMMI0rzTPdSX/mu5weH2vNVC
+	 gstwHGA8GhjmkvdWoDOJQTE70FE99pnd04RMgjiBkpXVvx9gqwqoc/RZ/1BhxO0D+iU5S
+	 lngyEeQOOtR3SmzV6cz8hFRnDl7xDkehsMmf6zebZsYwIOXUlP7A1FTwH3YvM/ErrYapU
+	 GKtQhQ5yQ8xL5EI32mxwRMeSx140VBaLUi8gdso++OJk0rGBZSjx3N2gQ5jjH+fJWw/Rf
+	 IXiEeboS9KwY76B4Bkmcn1rs3sIv/DHqv5CDBAO7LoMtH0h2Rrkqj3BmUg1RcJB7ZmQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794153767;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794154331;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=J4NyFDuTUY3lwLAeO38/EuphRDS2yiibt54EKH6XAwg=;
-	b=nbF+V2pPhdGopRH6ZAoOTHk14owawo+IVrSRwsnmron/ppbOwLaGEGCPT8gGPQz+kWHG
-	 EooVFJRPxUZyeFWLmJh1WbhgLrKQ+OL+jtTedJbM9kM6nXdHGoLatFP+HioaYlATEAeJn
-	 6VAnv6eXk87xX7qLTnDSOjhWxZz0o9vN62i+/2tR0Gh4nAZA2VjrGq9ApIaHHlgfd8lTi
-	 hBmvo1UIRH9cNZNVHI2mcbS2a4umFaEEETXhLiXITN2Lrz5t7KxHDsNYTlNxi5rzRxwTe
-	 BZILicJyqTuHqwOlCw6VhuKvVDWegW7Sm2gDlTYsRRTqEknehrBA8NTvxoXbkKlpPUA==
+	bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
+	b=a3U46L4koQxCkd8J8Yn2qL+I9y2d8Ke5RkStCreAG7SuZk5jCrwT1oXD45h2/ZMYZ9Q/
+	 Xn9R3epRAoiqPtm5BDXWswONEChkXrcsprf7+usByDEEGQdOoAf8mmDlyJWuf6eRfUXUr
+	 5S/MC954JLlbf9WS+5wGFgvPG5he+JfXU6xJe/Ik6v2aYrY5OVrXNUlrnrsgmjCAOtHlz
+	 rYpbDSSv7jHe/FGG46oYzDw91G0eGzytaz8684GiiDPuBVMSNhz8D6IJqMoCMnJHVsUA4
+	 Xbc4Dq07sU4bFfnIY1qoGdhr8hh8Hv57NQOW8qy4lyVscjGu1aTxkDRQQ3JnBtWGjiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qXrVrinl;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JZ4Gby2F;
+	arc=none smtp.remote-ip=74.125.82.49
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C498C606A320
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 16:02:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C498C606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1241606A322
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 16:12:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1241606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qXrVrinl
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48e4831c028so170054f8f.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 08:02:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JZ4Gby2F
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1a2af4c8d00so357404c88.0
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 08:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794153765; x=1794758565; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J4NyFDuTUY3lwLAeO38/EuphRDS2yiibt54EKH6XAwg=;
-        b=qXrVrinlnoFYJR0zwhqsYePzZPuH2zknXhHrNS6QnT2kPYj96nbj7rjAHL1HDd6dGM
-         8t7eqj/zr0EkTZlB03P+un6k4zDtCRe7UZ5ho1yh+7K+1E7BgWtdZpjdd0cn5tg8pbi+
-         NKqRk8Thqmhus2d98SUE8+pTfyI7LJt10Rt9bjMeWCqsVfp/DmOjdZX5mC/sLr5z5LPl
-         fmEpe4I7pONmjE4D8CJUVmXV7R/ROr3kmoi5cCuWQBZ3mzBd3kMuX5CjWDikPzgA+nGq
-         vOZTKs9OnotDm7w5ghWF0VHcm64ka/dIPRTy3HlH7WMggsh/0ELtHKdPyYYWH4d5Zb7D
-         IPag==
+        d=gmail.com; s=20260707; t=1794154330; x=1794759130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
+        b=JZ4Gby2FvC2DBELHKFx4SybDLlGtuB7SQ5XgQ5eR59R2j4Wg931xxWyqTJsGcWV8FI
+         leBHwUTE0i6796d8QedyDtdwFxpDyWOw+9Y4q7WcrU7TRHMlMTw3w76jZSSajMGMDJ4v
+         4XdIGavyeSMSmY6yumPOTrqDSGHXfU6Z85RMvzjKYX87Gd4vmexl0CSQ6jbxpB2/YLRC
+         NstZsnB6mkmNZ1PoEAGSqdyn6ZZ9Ohhg4+7TwwfTeOLfE+ggP9wOjYQkp8+DdpD+bxW/
+         vQi5cFukX7xg1v0XtHq39C7mVEfVv0amHiDB67Ntg0Zh87z0aGO6trfKrcugE6gm+8Qa
+         BxWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794153765; x=1794758565;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794154330; x=1794759130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J4NyFDuTUY3lwLAeO38/EuphRDS2yiibt54EKH6XAwg=;
-        b=ieIVn+budN9K7NURGPCIzb+/ZJmfGDTUzj25LMnS/5NYtvPS++GH+6QYx1DwAI+QZb
-         l258IBn2Z39ypxmti0BziSF+e/SbsmbUOPaYXzugd8AqIr0krIZIKINwWHsp6KRXUJZY
-         QcZ1KNx0ZN4FhG+2EU74639DLoRdnSEaYvQ7NZpDIVCTm+WWbYoGxUmgjOtd/erIsXij
-         v8MbZifgORa7PCcsLtJKisPIZXDf5ynssl1ldO32W1vAqLC+j+gxPz8q5ONwHxsENcUU
-         ly2GQXU8/f/cYn3sQcNKRlIkZebP+A7LY29BI4tHifcfUDURHzyKjFS01kbfJf7x3/Ec
-         gB+Q==
-X-Forwarded-Encrypted: i=1; AL+hErGVTqnxEPhxlFWwSJIk63KYvj5ohm6kC72cd/3AIXeSqUqogK5gpxqsRba0e00M75kbWJnl61M=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9vswVR/Cy/2vikU0lDqr16pW3NF2jaRmDAsIGtgNCMmKFRUf5l
-	rIyNXq1HmFuznuqZpv8axOFE4//n+9QSC1+qvrOV2I/htiUhVDezklNT
-X-Gm-Gg: AYBFou2LC9OUBccilUyvGRx7Nthiv/hj5mr9p4dSa+YyysrNuiekbZMcmdsUrOQFocp
-	CyuPOUzHqnEtYoE6gpUkGfW1qPpY/yS8SqOi3yUwTBKvkfasaBSPXMMGtV3pqrtKgZtXYY8w9Ok
-	ZfsQhS8vpk6KnX1mG7ZPcz2tyeC2BDsGIpiaEXrrPpEGdNy3tkEwpod2AM6TM1V8QQfsokexNtq
-	dMNgp3Xp4TvZGGri5So+CmwhFhnrIqI9zEimEjitRcsraegkt6RkjG+0m7GJpiFEAbaPhRYSSe4
-	+YAy0dIRyRJz36i0TTb+dm5u8sX0zMV1CLWkOtzgcJiHO9Pjn8wtYE4tyTKDxZjEBTxnMgDmXOk
-	a46hsLiE9UmR/kVlZGVYMqDbTd2Qt1Xo8XgCXYinr6AkLVKxAF5862p7ldi3QMiHGiNIhoST4jd
-	NsmFXdvuiDZeUOp+8kyrmyuSR5T6YmNAcuPfk80GZJ+d5a9QtW0W8XWPIiPMGIqxlHF9UqQAcbk
-	KCJ/c2l3rvVEktNPsQvZek0M1V9cnkuvulbnq2GXG5VetfB+QvLBjSJK2nhdBghcEoH5uT1LcVM
-	33MHV+ybqKNRBhj2sp4Rw98+/3te3N0aIdb81XAZZBQaN9gVutZhID1XEslrkQxLU2tSPp9lDVW
-	/o9MUCqg788I4iofq07HM121HM1TLcp1VO0wmC+S7hLVWmutFb5ROIOcEuc/++S+N2gI=
-X-Received: by 2002:a5d:5f90:0:b0:48e:4a8a:e17f with SMTP id ffacd0b85a97d-4958083082amr3604985f8f.4.1794153764903;
-        Sun, 08 Nov 2026 08:02:44 -0800 (PST)
-Received: from ?IPV6:2003:ea:8f45:7100:cde5:5d75:8598:b64f? (p200300ea8f457100cde55d758598b64f.dip0.t-ipconnect.de. [2003:ea:8f45:7100:cde5:5d75:8598:b64f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49597d0a775sm4952992f8f.55.2026.11.08.08.02.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Nov 2026 08:02:44 -0800 (PST)
-Message-ID: <3e6370f9-0905-41ad-a87c-c51c0a41513c@gmail.com>
-Date: Sun, 8 Nov 2026 17:02:43 +0100
+        bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
+        b=TMF+LX5sG5MNX4829OJRUpscTGJGKQCPonFXfYT+iCGjE0zSQoFqiiL7JsEevHgphb
+         y+Lx5PlcUjnEIhBpR/xARcdCv6nXX+JZyECe80+BsOELKoNjP5vQbxUx7uA4pKJ2sd1R
+         PKId5SoincAkNRbJjlrV8vSJ+NmQBQvZ5RRWiN3QC31l1zUZ8K+XUOInFkMl2/n5tLA9
+         CHmhaOs6FdiJHKL6uf0vU0X2noH9jtfmSVDM9kJZCrBmPQptqZRSxW7K2y+BoXias+Al
+         R1lHKjnYEu+w4RbDEg2ujZ+ga7WT21SIFIJNCZCy2LzFfaBJeBLkEWCeNSRp/KS8a9tw
+         97dg==
+X-Forwarded-Encrypted: i=1; AL+hErFTb1s6FKJ4dd14IymZFoeWxieI2D4O2Zuqf8emc/lohVG1U5kDfzAaQbaBshrt7tMKTTXhh+Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Q426BkD8uF5vtHdY4MUaJhpvIUGw0nLdh3x3ACVqazHzg1yBv
+	vsFzNoGvi4ty2OfeId9DNy5x1xHSiIPAbj0L/E4dPbAp9pkm8MyNuivs
+X-Gm-Gg: AYBFou1iJ9P+uo62//vixg653+MaxnsSjFRFhk5sogCtmUiuTWLkgE4oXWVLh+YEshZ
+	5immGeDmaHWBRkAZy8wUuMt4d8E8h26QNJa1vAiucAEp87WVUO/WpzMCuJ9Dmam5x4wyYTFNqve
+	WJna9BKxlo81HuXah9G9Dt1364buawmEjYhcc7uIruzeCfPBiPDrvXlcKhIyuz3+LyeC342xIxl
+	3m8BVi1eDD2MYTFnFAg6Yj8C8xhMfUKv1+TNTBBDLZS0dPmfGw6fYFPgoF+gnz0mg9D6kAgX5I8
+	tbuJY9HAOCNBxZSUtINcDX/BmLiBsGriIigxIQkYzdnvuwGAcxaCA/GDRZvQrDcPgwBVmLRbAZI
+	7OU0uo7ZnQ60zSzkPMP3gwladj8eMpc3/ARcAF22o8lezGRP+mrEx04k/4c7htyLqDkCu+gkPuv
+	vOCjKb2t1EN4VJeKnIRDtV3BiKwJBUkZtTLWrjQbKiTDn2hbhUkAnyYEqZLBsbN+0rQT1XMg1HJ
+	LEYv1SDVqfquuU9/1gzWsw2NlY3pLmrpt3TK4/6SxSoM+szq9AbHD1hLP44piMnEukvH2GQZchR
+	ITvHa+30SG+JfD0CcZYiEbbcGY4h5gxWvp6J/ylYh6pULMUlI0Fs8l8g0b+z/5QBKmX1+15Rsqs
+	VX8c=
+X-Received: by 2002:a05:701a:ca05:b0:18d:ac5a:89ef with SMTP id a92af1059eb24-1b39fef0c5cmr3037830c88.31.1794154329553;
+        Sun, 08 Nov 2026 08:12:09 -0800 (PST)
+Received: from Terra.tail0ac356.ts.net ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3731487edsm7103369c88.2.2026.11.08.08.11.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 08:12:08 -0800 (PST)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wei Yongjun <yjwei@cn.fujitsu.com>,
+	Michio Honda <micchie@sfc.wide.ad.jp>,
+	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] sctp: reset stored flag for each association
+Date: Sun,  8 Nov 2026 08:11:49 -0800
+Message-ID: <20261108161149.2774119-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,73 +108,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net sysfs: simplify creating empty wireless
- directory
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- driver-core@lists.linux.dev
-References: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
- <675f4353-125e-4168-a617-c0d1fb519045@gmail.com>
- <2026110816-crate-tightly-8560@gregkh>
- <d85b02e5-d9ab-4535-ab82-9b8184fbd1a8@gmail.com>
- <2026110812-angles-guru-473b@gregkh>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-In-Reply-To: <2026110812-angles-guru-473b@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08.11.2026 15:21, Greg Kroah-Hartman wrote:
-> On Sun, Nov 08, 2026 at 03:12:04PM +0100, Heiner Kallweit wrote:
->> On 08.11.2026 15:06, Greg Kroah-Hartman wrote:
->>> On Sun, Nov 08, 2026 at 02:46:03PM +0100, Heiner Kallweit wrote:
->>>> Now that an empty directory can be created with attrs being NULL,
->>>> make use of this new functionality and remove the dummy attribute list.
->>>>
->>>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
->>>> ---
->>>>  net/core/net-sysfs.c | 5 -----
->>>>  1 file changed, 5 deletions(-)
->>>>
->>>> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
->>>> index 5c0402389c6..f58b59e1126 100644
->>>> --- a/net/core/net-sysfs.c
->>>> +++ b/net/core/net-sysfs.c
->>>> @@ -910,13 +910,8 @@ static const struct attribute_group netstat_group = {
->>>>  	.attrs  = netstat_attrs,
->>>>  };
->>>>  
->>>> -static struct attribute *wireless_attrs[] = {
->>>> -	NULL
->>>> -};
->>>> -
->>>>  static const struct attribute_group wireless_group = {
->>>>  	.name = "wireless",
->>>> -	.attrs = wireless_attrs,
->>>
->>> Why does this want to create an empty directory?  Surely you aren't
->>> adding attributes later to it, right?  If so, that's not ok either...
->>>
->>
->> For compatibility reasons. See 38c1a01cf10c ("wireless: add back sysfs directory")
-> 
-> How long do we have to keep that?  That was a very long time ago, 2012,
-> why not just remove it entirely now?  And if the sysfs core hasn't
-> needed this since then, why give other people the opportunity to abuse
-> it this way as well?  That doesn't feel like a good idea to me.
-> 
+sctp_send_asconf_del_ip() walks every association on an endpoint. The
+stored flag records that the current association took the single-homed
+deferral path and therefore did not allocate an ASCONF chunk. It is
+currently scoped to the whole function. Once one association sets it,
+later eligible multihomed associations allocate chunks but skip
+sctp_send_asconf(), leaking each chunk and its skb.
 
-Seems Fedora learnt at the same time (end of 2012) to live w/o the compat wireless directory.
-https://github.com/fedora-sysv/initscripts/commit/4e96fcecee7ab70295a5f2c52748cd57cbab60bb
-So it should be time now to remove it. I'll submit a patch for it.
+Reset stored for every association so only an association taking the
+deferral path skips transmission. In an A/B kmemleak test, the
+vulnerable kernel reported 210 leaked objects from this call path and the
+fixed kernel reported none.
 
-> thanks,
-> 
-> greg k-h
+Cc: stable@vger.kernel.org
+Fixes: 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ net/sctp/socket.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325ec1c..ed91ceff45a9 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -771,7 +771,6 @@ static int sctp_send_asconf_del_ip(struct sock		*sk,
+ 	struct sctp_sockaddr_entry *saddr;
+ 	int 			i;
+ 	int 			retval = 0;
+-	int			stored = 0;
+ 
+ 	chunk = NULL;
+ 	sp = sctp_sk(sk);
+@@ -784,6 +783,7 @@ static int sctp_send_asconf_del_ip(struct sock		*sk,
+ 		 __func__, sk, addrs, addrcnt);
+ 
+ 	list_for_each_entry(asoc, &ep->asocs, asocs) {
++		int stored = 0;
+ 
+ 		if (!asoc->peer.asconf_capable)
+ 			continue;
+-- 
+2.56.0
 
