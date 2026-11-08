@@ -1,60 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794157346;
-	b=k17dOTMNgeIpOggT+srUlEOKOfIk9mMvGVzkmFomla9lFXa43uBaMSBl/H+jMfEXJrLF
-	 SdYrzjeJQrEQyhRLqb4F+RENffYujljFrS41a5oSn3lV5k19u2qtzz0vltyhUrUe9W/sN
-	 vZfk0GqcfZeEJZZO/pLyjoGhDUgqFuRWsb/kEU3ElfY4a33r/QPdR8KHvI4fvCaJhAXPz
-	 TUnP/p/qinnDPtaQDC17ZS35ZU6HT7l0suN5JjntqCV6jkKsD5zvZSMha3JHX9tcongpO
-	 GEIP6AzCOsPfPmNk8bBSXrSjlHHcr1z4ddkJM+y3Jkar1TIyXY5f6jd021ZTlJ8vnpw==
+	t=1794157342;
+	b=5cxcd3g7+R2lAWiq5y+U8WST3lPhwcSMTeIV0ntIDQ8oBBkoxqUakLUS4bwSpakCdAuT
+	 p6Kft3Dr2R3tLQS3uaPMosfapq71s/Z3SrIErPtY/KpkdXPgqHsFWH3OfbgPlH5S/1Hf/
+	 fIMNZxDUlVYD02A1QLT8trpsxRrS/gNHTGTVS87yjaaKGk+Aku//QNqGWguOS4G6UsK4r
+	 N/Nzc9LMOKMTkYNKNOqAmTzsj7jTXlxGNzCgCEIiByqm9yX8FYBRJONhXU8mz9Mv9E6w5
+	 U8sITQTauCTP1EwLpVu6fUY4cs5GFNYbEv1reaL0XIw9VS52maiY8BEep9ZqOW6p71g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794157346;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=B3OFhFaD9Cip7KMo015kSeNJt+uJfckFsdDq5kntSPs=;
-	b=YMbCc5hQDbroUL+xOynfBxMuyOrtN1uVq64ekU6QS7slQyXyPp8ytdWbAHdRL1cxtZ0v
-	 cSbW3ODqv8yCwIaH0A5/o2ykoRU3BZxB8aSgN5bwnY2ymJK/YpovGCo0yBw9udqa7owDH
-	 wobhiOIzoM9EEySpSinr7o+z1dCTSUnnoUhuOQt5j6RcNhHlNFWaK6zKOooeyZEo+9ej+
-	 L4QbdHafvI5ok860yNTWeX90MCHrroVX1hWRfabewE+Ncexv9R/h+G7/OHVe5GpKmQPC7
-	 8aUoBxiw67giZL6Y2gJU/4o5UcQjotextywrHeBjOAe3VVml5ZxyKPGnBr23ljf0KhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794157342;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=qFlpjEueTpCiMBdjh8PXXrYdnau7ws5RWsTwS4pQKrE=;
+	b=WlzoInJ+ZcT9ignOZIjPtydReIPmFeiTgs8XfQDMiXodnz/qdKGpHG2Q7bdqOYrT2DtF
+	 JN6yBewnN2moan7Pu0snwupIILfKFvurx3Q9N32yODvJTWUCqE7+EuI9cH9wEDEisUSuC
+	 hi3ts6TuYdsntLEzxvEFFV4ACtAOsL5JxX+Ez3j5kMZMe+knJ0zEKmGcw5VLsQRKFHXjD
+	 awla0wGSWEnpckEbezT/eg5x1Yg6Gu3I2N3cf5lKeFzlhUb3vTV9fiJPiPVCXkxhy7ddo
+	 rTcpG7XgVUlfYCreCAcO9uXyXQgJawk/x6kdHvegLdPjV9VnTKtS75QlgLQ45hFN+jg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VvUq5ruV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhunhaGC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67357606A321;
-	Sun,  8 Nov 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9720606A31C;
+	Sun,  8 Nov 2026 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VvUq5ruV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762A21F0089F;
-	Sun,  8 Nov 2026 17:02:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mhunhaGC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36B81F0089F;
+	Sun,  8 Nov 2026 17:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794157346;
-	bh=B3OFhFaD9Cip7KMo015kSeNJt+uJfckFsdDq5kntSPs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VvUq5ruVLCHh/XdhKKKvm7KjwnL75VqvffEVIBYmKMfaR7z6+webvJ8DWnDsGoiu3
-	 S0JQxUBFu0UhO7d3+im66z9SQUN102TvEyqZd5DG0ypzb4riwTeoBjOIPQlR1VLhql
-	 kW4KfNxFJZPU8K7trUkoFYixvcX9hr4HR6XrDTK0gyYrFOQeFzLr5Z82Mj/pgfnhMy
-	 Bvlz3t/lzJ3uWXEFkPi0Yjn2StY4lyMorFdZXQQYc692kXHiJVNDl2B3hUpJAoHwLx
-	 mrJ/bCI4P/hsrn5IPXbzvwejRK0w+6KUZv3xeWRa3vfbw2Dl3aKqJzvsqO5EfL1NzW
-	 iIHcQIWgw6JDw==
-Subject:
- Re: [PATCH net] tun: delete the flow entries of the moved queue on detach
-From: netdev-bot+sashiko@kernel.org
-To: umangpokhriyall@gmail.com
-Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
- jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 17:02:25 +0000
-Message-ID: <179415734502.994134.10139593761656069984@kernel.org>
-In-Reply-To: <20261104174240.138491-1-umangpokhriyall@gmail.com>
-References: <20261104174240.138491-1-umangpokhriyall@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794157341;
+	bh=qFlpjEueTpCiMBdjh8PXXrYdnau7ws5RWsTwS4pQKrE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mhunhaGC7EzIXBAewEYHTGHdu3as0GnW4KEeFBL4EIDf54IKSDKIOCulf8r1QBH5n
+	 54qLU5xQqMyvc/4ngQxdDo1OOwzuiUtBX5mxCZ3itBbgDEso6g9R2HGXDstPQsN+ci
+	 388YhEXBAWk9d/lJDN6oVpqK1xbsvX+NIFav7D9qSw6DBZZ8/hfaa2y8VRr02JLp4Y
+	 lN3cTQ9xzZIufuAFpFFAU70GFNMOSf4RDm9QFTP+RoSfd/OS4NfqTcsKq6/mKJKruo
+	 5Ff8R/1rvRDOXqISrMmYQunYoWd7HhvW8XuIoEyI3wHT/9J/xMyxnvlZ6wRObA1mb3
+	 VNeRfHDh5IhUw==
+Date: Sun, 8 Nov 2026 17:02:16 +0000
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: vulab@iscas.ac.cn, sgoutham@marvell.com, gakula@marvell.com,
+	rkannoth@marvell.com, sbhatta@marvell.com, bbhushan2@marvell.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: octeontx2-pf: drop the TC mark reference when
+ adding a flow fails
+Message-ID: <20261108170216.GG18859@horms.kernel.org>
+References: <20261103100536.1310108-1-vulab@iscas.ac.cn>
+ <179405110835.994134.149418482897287841@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,134 +62,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179405110835.994134.149418482897287841@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sat, Nov 07, 2026 at 11:31:48AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The new helper otx2_tc_put_mark_flow() (otx2_tc.c:1240-1245)
+>   uses `req->match_id != 0` to decide whether a mark_flows reference was…
+> - [Medium] net: octeontx2-pf: otx2_tc_put_mark_flow() leaves TC mark flag
+>   enabled
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+It seems to me that although two issues above are pre-existing, they
+should be considered as part of the problem that this patch seeks to
+address. So I think they should be addressed by a revised version of
+this patch-set.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but it makes the
+>   counter the patch balances meaningless.
+> - [Medium] This problem wasn't introduced by this patch, but the error
+>   paths of otx2_tc_add_flow() that the patch edits fail to undo other…
 
-- [Medium] The fix is incomplete.
-
---
-
-tun: delete the flow entries of the moved queue on detach
-
-When __tun_detach() moves the last queue into the freed slot, it is
-supposed to delete the flow entries that still point at the moved queue's
-old index. Before this patch it passed tun->numqueues + 1, an index that
-never exists, so nothing was deleted. The patch passes tun->numqueues
-instead.
-
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index dcec7311e6011..3b292bce4438c 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -615,7 +615,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
->  		}
->  
->  		synchronize_net();
-> -		tun_flow_delete_by_queue(tun, tun->numqueues + 1);
-> +		tun_flow_delete_by_queue(tun, tun->numqueues);
-
-[Severity: Medium]
-This removes the case where every learned flow was misdirected on each
-detach. Can a concurrent write() still put back an entry that points at
-the old index after this delete has run?
-
-tun_flow_update() reads the queue index before its own rcu_read_lock().
-It does not take tun->lock, rtnl, or the consumer_lock that __tun_detach()
-uses when it rewrites ntfile->queue_index:
-
-drivers/net/tun.c:tun_flow_update() {
-	...
-	u16 queue_index = tfile->queue_index;
-
-	head = &tun->flows[tun_hashfn(rxhash)];
-
-	rcu_read_lock();
-
-	e = tun_flow_find(head, rxhash);
-	if (likely(e)) {
-		/* TODO: keep queueing to old queue until it's empty? */
-		if (READ_ONCE(e->queue_index) != queue_index)
-			WRITE_ONCE(e->queue_index, queue_index);
-	...
-	} else {
-		spin_lock_bh(&tun->lock);
-		...
-			tun_flow_create(tun, head, rxhash, queue_index);
-	...
-}
-
-tun_get_user() also calls it only after it has left its RCU section:
-
-	rcu_read_unlock();
-
-	preempt_disable();
-	dev_sw_netstats_rx_add(tun->dev, len);
-	preempt_enable();
-
-	if (rxhash)
-		tun_flow_update(tun, rxhash, tfile);
-
-So the synchronize_net() before the delete does not seem to wait for this
-writer. Here N is the queue count before the detach. One possible
-sequence, with write() on the moved queue (ntfile):
-
-CPU1 (write() on ntfile)            CPU2 (__tun_detach())
-tun_flow_update()
-  queue_index = tfile->queue_index;
-  /* N-1 */
-  <preempted>
-                                    ntfile->queue_index = index;
-                                    WRITE_ONCE(tun->numqueues, N-1);
-                                    synchronize_net();
-                                    tun_flow_delete_by_queue(tun, N-1);
-  rcu_read_lock();
-  WRITE_ONCE(e->queue_index, N-1);
-  /* or tun_flow_create(..., N-1) */
-
-A second sequence: the queue being detached is the last one (index is N-1,
-so ntfile == tfile) and the detach is IFF_DETACH_QUEUE. A write() that
-passed the !tfile->detached check in tun_get_user() before
-tun_disable_queue() can reach tun_flow_update() after the delete. It still
-carries queue_index N-1, and nothing rewrites that.
-
-In both cases tun_automq_select_queue() returns the stored index without
-checking it against numqueues:
-
-	if (e) {
-		tun_flow_save_rps_rxhash(e, txq);
-		txq = e->queue_index;
-	} else {
-		txq = reciprocal_scale(txq, numqueues);
-	}
-
-Before tun_set_real_num_queues() runs, tfiles[N-1] is NULL, so
-tun_net_xmit() drops the packet. After it runs, netdev_cap_txqueue() sends
-the packet to queue 0 and prints the same "selects TX queue N-1, but real
-number of TX queues is N-1" warning quoted in the commit message. This
-lasts until the flow is written again from a live queue or ages out.
-
-The vhost path (tun_sendmsg()->tun_xdp_one()->tun_flow_update()) runs
-inside the rcu_read_lock() taken in tun_sendmsg(), so only the write()
-path appears to be affected.
-
-The plain read of e->queue_index in tun_flow_delete_by_queue() also races
-with the lockless WRITE_ONCE() in tun_flow_update().
-
-There are two possible fixes. One is to read tfile->queue_index and update
-e->queue_index under tun->lock. The other is to have
-tun_automq_select_queue() fall back to reciprocal_scale() when
-e->queue_index >= numqueues. Would either of these work here?
-
-[ ... ]
+...
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104174240.138491-1-umangpokhriyall%40gmail.com
+pw-bot: changes-requested
