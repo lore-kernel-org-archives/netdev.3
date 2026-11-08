@@ -1,80 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.188.146
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794125220;
-	b=MIgPdULSlDTIoBuXVS4nnE4zO9oOnwflYoMXjeew5KC+o+yhYnDIuZBrUKzTCqwnxgHM
-	 mjhnkP42XpltX4zTDWaim2iZUNodPGc777W3T6eM7yrICDzuUAHuvcEWYYj8VjQJoZhKF
-	 R2eWTWD2KLTQuL0n2qq/ty41+IcV9mP3BF+G4RkJigkChgP6dtwNgAO8rWAygoVb6zKOw
-	 1PPPOTEM8cnsqPjuh13ubvsFxln7QqjlKzm1ckrTRbQ6zJPhrpE3J5V2D66g9NXFuvaRO
-	 Wu3e0v6aOONDmCcVtwuBJZqTwuT5dAnT4uu904O0wdOGhXobIpFfA70dyIq8/exL5Cw==
+	t=1794125266;
+	b=d79KDl8FIdajGJDgjRF8nR1jWdB+PQWR3AaMAuHjPTH7+PZ9apNtR3gCSQ16o/UthgF0
+	 uQpKRQeYcY05y/dTwFd3ekxzHEBFHB5EuVTy1qhmpKwewO5a3y1twho0JPy54DaFfXe9S
+	 nxgCjDMgn2UlMROWfEnapFZnDfxFTlS5DkSlbItVB3KnKOGTt74AKvnE1LHomnHb/z+v/
+	 SCjEzo6M+qj2gwuMfwGkZJVv6eKPn4BB8jE1PC0Bc3VX9DmSd+lmeIWrYpmQcpp9wAMXT
+	 AWR2MpGRSxpetnKHEOcV/2NXVDLF1LV2ArVhlCvHqfZPWTmqAzmTCiD/HccwWDcePdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794125220;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794125266;
 	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
 	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:X-Mailer;
-	bh=cCUDO6hpmWPlWvGiiXpkfQ2w4rus1uQTPSE74K03cdc=;
-	b=fC0YdbxpD1dUEJAFy39aUM5ZIcidqXM/XrTCUDHqSkVkiDGF5Qn41GPXbL2lL2oCxS9U
-	 yNsKWY3X5XfmlJWnq7LQVWqjFTmh+2rT5wPWNvlJUEz9lRdhFfBahgu5ToyE8JeUttrnZ
-	 oGt4W5+aCUYEoxXvoQj1o8vFWu9l2gdWe+8W7F/4V4Yo6ztptzM0UWuDaa54WKAjaXI3f
-	 +B67l1G/TjnIIAhgKPLR3YHAPSY39XNKbTDwDm5d3ZqXob2cFCdfkehKfbPMxn3NkIjTE
-	 6z9muK0JbqDpn1n8AwspPS59+tjm34ZudSI7yMDM2e72Q9rovJK6Lf0ogsrf+2ZB3GQ==
+	bh=6KfUEzdcsEDabwHcd4Zxkr4dgdZ+h3gk2mA5fGSh99A=;
+	b=pB9YNqCsNz8wUgB33XT560GpcNfdKM3PQotkK0mp6p1hDJlMLPV689Aa5giWb0ES2Hsi
+	 zA0O7jYuBQTW0jRl99NwjiQuy+RZVjMEQOTPDHF+nnaXNWVSRfmTxcR9jrsRDm2ExXHPW
+	 3jrsMv0h5LG72u9J+XmKOkMgSlC7vIgjUnCV/0Zhlyf17/epqsyX1bYPKCBu6/8tmq7Dk
+	 h0WrLn6pzaLAfnRqhbOS6HjlR51i8PYjLl/1dpq3wXegIGWJdU7y+VauwISH/ZHpCUk8g
+	 2NknHYHoo+/nZkJEYsLTpwdmre47Ja6Kqs/ZIQQV1N06rUL4ZiaVYDwo4Qi8Hp26rIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=yahoo.com;
 	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Ul570lH3;
-	arc=none smtp.remote-ip=66.163.188.146
-Received: from sonic303-20.consmr.mail.ne1.yahoo.com (sonic303-20.consmr.mail.ne1.yahoo.com [66.163.188.146])
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=cBdYn5oq;
+	arc=none smtp.remote-ip=66.163.184.200
+Received: from sonic301-31.consmr.mail.ne1.yahoo.com (sonic301-31.consmr.mail.ne1.yahoo.com [66.163.184.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E66A606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 08:06:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E66A606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA36606A320
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 08:07:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AA36606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Ul570lH3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794125218; bh=cCUDO6hpmWPlWvGiiXpkfQ2w4rus1uQTPSE74K03cdc=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=Ul570lH3ooQ+TyYTmKbK8hJorTxEyNsrOQlroq0ddCQAMjJVhdbQDxIR44jHiZAs5S7pfh9AGT7j2F3CX2xM85Q1z3oHpYfWe4JWS2yoeusaJ2MFlRH6WlU2qECUQHGa6yLyDDprKgq+YKWgo0+dH175uBKRREirinBzFA8yIceatdGYsftG89eQKHd+dsyb6XvHL1AstvYH+7eKEeykVMkHBE37e+cHdTElVKo0cwkLhbu0fG5EIn+ijVWdqguvL+VH59oudd/kdarNqsrSPfvhaUtBtWqNZD5IezZCnZgNsbSdXnSqjDo9gqqFTVC+NvJPolL3hyz2if84w1488g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794125218; bh=BLmi+WmJ/v3Gq6vUHeDPzWUoZnfCcLgZ0vmPDEkiwZJ=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=V51MShxhy8Kc/GpjEeEm5H4e261NARILNe8qpxzQMMTq445j9ItTqOz7c+BzJwrljKcxzUEryZwVmOswvLFlwSHqnqn72UL/FpdlqjB5rj07Kat8sUwLXDBI03+bggv6Dt+54YMyJiUf3ZZrCcWfbUJ9xfUn4+WtNFM7vlzbW/ghCRCYYik8hbpmATBQg27JOFIXFOjj8xFI049+O5wsXDBzmpottNELugriomPll6Ig2Ue1hNR+4l2MdXI7Ye6+D7DPVhod4esNjYb/BSUYlcoYLCmBqVzAGndopGqWn+kO9ETpOOCtKN/g1z9GLhLBXCVevL/NtyqVwCZGrjTU8A==
-X-YMail-OSG: aQR85gUVM1noA.FGZVp7rbn_Gc7T.lxaz3Tab5OaiI2UTt2W9tzg.1OvORhwaK7
- NGqldxiFOFudl4jIgLzLE1nYMB94_TsDbiOSxIugcotk0Dcle8aHfOdaOjEmY84ggCVQdprtUmwO
- JksVz9f4Bt5L3gdGo6Xo8Y3_rkT_.D4pjBWU1ApkJmAAQcW5dh5tHnqC12KhbkDvMGyTPwXw4hmJ
- 3Zl2duJalGaPBCbBoG4vrZgZw178ulfJ8jQcxK5gq7otABFOr8MyRdiSdAeUrTMusItpkbGV5Fmc
- gXlpEZ9.gEgKNiqOlpUns.qmrzhRBxzYWy8l8lqWoMN9_Me8m43UQpFZIo.jUyTMDwluXpIjeJWB
- 8IcYCB6XGnDLGIe2mCcNpiz4bn0Mdjvuq00Wg.hGtfDsUNE9WiS52iOy9ZZ.hjU5uKyLicj1GlO5
- Z8acQOB3gwmojCFWiJxhIQLhNrLBvxW598fEdoH9uJ.5TCkhBvhVw_PYi7TtwhtapUPsCNwxTckL
- 0z2UoNikwl3kxflfkceL4UdbwDyMEK7HnuqgOf3j_qzaY1dXKCRNPTvg8cbE8tQR65CXjaA6N50l
- EPUWtRH6KZmCPdUrRX7HXEvaygrSpj03uzCpm03ZfDcXhZi8_ETRDoEkfEXpFAxEkc1sCVJdqvMZ
- CnpSAL2__xHHQLKpdGxHkeUPEgfVgU7XqbzyxhZk7o0bct.ZhalzlG7jFJcHN4CG29hsKmA42yQO
- ScOSBOSCrvZdvcwAlSuOLzDdsFaRJJ4y2Qbzqa0pfAPk89SAyQDb1WE44tmhOTOAwfmg4EXp5m8B
- 0dzC.H08o.GiMMiNY6wKFf_xGtUb80HfEwWqcLE8hHem8TaAld3reafKxmQ24DuYbR63jgcqr7At
- YdtFR6dJCV0E18WfO9QO4t8UJF_U.GLV0GF2RUbbD3FbBUP3_8IXecTYrPtnLRVDZMCzTBtuDB_V
- ckwBE11OPz8WieArGxAVg7Sx12ljUf7YuZuIgg6FWjI7V469f1rzo49hAejrGy9eQmZh4WcCR7nw
- k0RF9hPGv4ewK4VhXnLFXgHErsNs16LIarDthLePABIFy.vHQkkHS.cQVVTZhtOVsjAdt7Yz79mq
- 9vLxlqwPuZEQclRigK2ZVVBLhtNun.fid4rcDFkrpMmE6w0iDAqnuORPwrOVNXclVgsgM4.MfzGh
- 5PY8uzUxqWOYl2N7lQnQfPkw0aqdiqlX24JelpyI3WKWN9Ep.e2rGoD3oYavmFjY3cqSiOYlvl3X
- As82FgWR0Tdw1uhbRAjV7rZCE8u7ynnsu5BXUUuBbsztn3ZzK9Z_raqr0PHEHB4RMJ0JGyObPx_F
- XEVZbT9UPda7ELx9Uv4nNR4URsz2IZ3dCt9KmsDsbjdz8IpGRJJRGkUbdcmMFBf4HZGZh1LkPaHl
- BZym1KDiFcepSytB2wSqtBIFPQv7Dozbhl9p4N5dM2kPL1siI0cILA37w3WTlQ05krFULBqhazNK
- o6IfCpsk7dAJAB2Hhy6fh51bOxwG1sOjvQ.ruZzXR.Ff8klJCGK_iioJAMXCbhBRL9l55pixfwcX
- beSi8ZX7DNAFACKWoCIWWYIGyATKJ370MEC6pbzP2FAxPGkMqGJnSEbVKe62B6mAodCWfxP1qgRm
- IHUBman2SaWYROWUI61495Zf2YLlZMsLo.mk0IoLnXmmgBo7rjpCJPKFw.c3mvZ94IOGlTGSN46u
- YOooOxxqPaisrUI0HKF._GLWwOI2ZsMzHNbSiqnfO2WCspeUfiJsvMO6Q2W4h694erlrASJsBJoP
- HYKRIXPtWCrff2ALWA5LuZDSng3IzOtPFdvr06loQQ9ZNYR2Jf74etRmwljkhEu6SZtSHUksH5YS
- gSDBUvkrLArmNxbu88rt6j09t_0jIn_aSKqolx68TvV1hDmMTFsqjN8hbLrZM_KAYIPBYX9Scusf
- NuoRDp9ruhMugNE1ZfC2gxNt0glR1ROcsLG1Jg_3bnq3hZrgCk04uy4adWCxv6kyA.yx7M44gb1z
- tNQC3h9XhslIXsDAj0ScSuAdHW1.rIHRXifrAEvkYRRdXtQLGP28CBRLQDmDStw3j.e7EP8ojJDZ
- El4l_uGNfly5gtCERTVJ2.HyeZ2T.uf0oV9ntsy_BDxuqwtgMTAY17gFuwaoVe64B4gD92HFzQLw
- hDprVTp4DMu7IWE0paRbbx9YFpoExw3X8ndUfS27IeLVebg63TFKsVlhtzZ3tRsY.Q5RDxKUsthn
- ZmVxV0oh1Hvdudoo6p49XX7OKDYztcWXWuApoT9c467gbjJq.vs7iEYeSWKPX06OwpzpNB3FYWV7
- NZCAAoWU0k6qd7YYQZu6Wk2kKGeDD7e195jAD
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=cBdYn5oq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794125265; bh=6KfUEzdcsEDabwHcd4Zxkr4dgdZ+h3gk2mA5fGSh99A=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=cBdYn5oqdM8VRQoekU5IiUFRKRa90FiGPLLAUv7J2L1GHibmOa2T5ghNh6LsOpf+fjefr5Locs1a/yUp/L5i+UeDchx6YVSum7YNd6GFO9WMM0nMA0Ek+ow3OB89LMWcUz5NUQb4Fi0XeDPJwrtDNOpTIV9ti4btd0s+3IH30dkhsDb2AT4MGbrL/toLwtI2hbp05owxVgmZluy36JNGoW0x9RFwGiF+ZR/yVt4NadXMqWJTrlKH1H0L4eNS5uWCoEgbFH4+L2w6+dMRjC50CVz3J41rClvmuEAuIb/sAl9UhzDO/C6lM/ugXfTW42Tde2XJYCTgkzh5KCltNwaPFQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794125265; bh=5nJKPXYN+f4yrriWRXfVaVPGoUoWGyu3PCzbPP5F3yX=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=EaJ+gAimxUnoSC9DlzF9D/GmVOrKOVD123OhxboiOJldi5CywwL6CweXLDGGixE3HVqq8yo0aj0NU3FWL+7GwicvhT4jhl2NMlKt6TYdDxcj41JBYL5LfDFKhRu3U27GVFkR977TIzjHByvKNkIw/c3Dg6clI81/9Ao+FeqJa/oBmmL2EvbqMF/Ib42FRPMyMvtvk6aHbEHUopuaH5mGUB3yUB+fcm38w1AGUpIzwP46VZPXQuAZ0doon6/BiKmH6GdQHpfyHYQ4BI6oGcV5LW+0p2dXtP9k9YH2yrlJlyNfD4cVmCOmeX1AsU53lG4L9djbv/3DMKTIiktwGn6/Dw==
+X-YMail-OSG: dYzwfaEVM1myLJ0KxIxrDL41gTSk_TYqyHQ3HQoyKm015VPLNi3_wPYpiNt.ASB
+ IeP3Y9dVcWwIsNYOmbTtMDMOk.K8qoZ5YN.ul_fKjoEX69o55vKnlxK.8ZomE1.mJhI8EmJckoQG
+ 5KqzY4LCIqPqi4xoJ1Viuq92hiyhIpRqRQ43rpjIUH8zS.67gQ1GXmYVVdf__4ccPpFY36qGcnEK
+ KcKBKmhKzQB.l1dwjkyiGpL6c65t0ZrfO1TnW_8HMwjfOqGTLh564rJObMuxvrxLBqZFVa_ow0wM
+ hLbgoKJjHPCxYXdbzusf1LQrxT1VAucvXrs_vHaFLlqtJaEG9QvKRl64YcPLSDb2veYQcwLc6Fnc
+ BjerKNuiCEhd2Q3CAgsRdkm0DaO8j8_XK04Dx5tJZ1.15z70QyPAYf3Nlwn0GjX5raOGmNrB1pjp
+ Nk6dB7.woXaz9xGaSjaRCuydpHHZf2ZxhljXlSdzVUjdCKgpw0uw_dBx8OLISJs5hqBhW8lHxcyp
+ D1FY.3fycyvBABEaqcR6lSMIN8p0u7ifjaMtu9IGYmKt6WTOk1Frwsj2EB8OCsKkb3tQ4hBOeRHm
+ LAk40v7NuSO_fHihOxK_IeZZd0DVj675ScWktyrEcaWABcIzzOmxESiPSyjZPm3Eekmf6Xi8pu6C
+ JTi55mrwdjlFSvuk1gTKqvJD99gSrVaU.SbNQer8wAaOxYgazJCDTWszsGqGx3NGZMF8A808nhvT
+ WeTdPRq49G0ucusPuKpdjLnfvFhY8j01SAiCOz6aYGgEK3diSuyHb4hmZue43Aonw4QRq6D7vQ4n
+ RJbB2F0I.sj6NJrYJ2R62Hi47qcRceXDDSOxlNwHyIHb.A7zAzXXJn.9WVD37aWazFVJwDT4E7AB
+ 5OlHVi7D_ptCQMoA3E.riBEsCZ7sGx.eYqDR8YTFi7bUCoDngfWJQM9giLcngeNE2mQeS3g56ZEC
+ oe_p1RJ0NG6I3fukbyCnpyDmsatQp9PGlgsCMvLjOQY3EYFJ8aL1hPEWUQqvK2PSY9o8q6BejyjE
+ R_6PplXHDtL7lN4JIdKp.wzullJcLaciGV4T5_tYHqe95UqvMqHutQGsT.j8eRSSU2QZ95V_YZ1Y
+ 6HyBJHRt2Hx9ifvf40_d0HZcHj.99UT8c.i6Xcu5DWnOfTUyqpT9VS667hqldR67xB4C5dL_ayM7
+ zZqAhNloOcU26A.itvUtckGegCNgxy_Rt.YmZIiITDvbrurAACFvrKlrZhHA4yDqlLY1KKRas6Dk
+ EAIYj2lM8RP97CxV6IrxRyE6vvamu2w0uyKGrvPnCFt3SGk9louRtWW5WU8pdzB5D1rqk_LnN8x6
+ 5_WaAnfghsu2DGZ.03WxEgzQp_mOrTC_6oy.gXmOMVQ_Z2gQOWP2VHFAkZTf2.FIa_Fw_FBCEszl
+ MP5V9yVgxc.b2CfV0b9f11DWqTR5UDpif2BjNBU94z40GOtWtRH_0npKEYVPw700eVDARKTLdk70
+ qzfGI27sxLfHiyUawKEXT_IZjSHZVGetp4iNrPeT6J1iXOweHB3C1mB8yzvYwPWrRg0zHdOJpLqJ
+ .58I4aBSrn.iJSi4Mn2poYXxCCizGozZG2GzFY672lEvaYvO5rBxdgbA7mFI35t.PG_2gDUnfaBH
+ T7gn__F78w2Hcy0W4jGoi7k.O3y9NKy0ccDBFhqf1xlXG7K6nRS56yUtAWfjCyvn24fMNlTFciuZ
+ pw._egCHqdVDrAJjIHHQxTlInwOVsvl.F1WfueWU6Jz80t.tASSvLrOv8ifgBvaQkYzcnRY_1e0o
+ bcgvdxXoZ4p8ghSvaAP.wSc3eE3YpB_UJOQ5nl7Bju7qOWDUkRt85hD2QSfU6mxQf.iwfCqgRK.V
+ WTTB5_RVCMmyoyqurx3zlevBG.MupOC.MpD_V4tRodaZWBpVMKlBb2qVdS6Xiup8scVqiAqEDBlv
+ 4gDPl5frlDfAwx_4lJ9vKly_s61KuQ4sXPz8lONQ.ojVyoMXNQVGk8eLCylIYfvfF7CKphlxgVxL
+ w1eE4YQwjosyNs.u7F9Ir3ZMDKjRkJCzqK.u3hHHXba1cgJbyn.Y_3UoUjAXPstHC809wbnxH_VC
+ Atm7PcORnLcX1cPjfuxaAjebZhRCa_1HfXSV8Qg6z_f4jwkGunh_sQkG2rbgfF6d8jyltMlnvj1f
+ PnzsYiFhuKJGHP_KeLlAggJM84lbiXnil61kgFXvW7obzgxlbyqy4GzyQBfakGTER1xS6ij_h8No
+ z.n7k6.9pYOswUvH0awJKejmx4ogVY8JEswuMLe83.49sZ11wLMo6dDyUGMWmBbBGwqU4dI0lhdu
+ Rb.q4GP9Y5uvLgTtB5Z.wmhG98b9kZ2J2HFH.
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: c610995b-83c4-483b-9fb3-cb7e38ee670d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Sun, 8 Nov 2026 08:06:58 +0000
-Received: by hermes--production-bf1-6d6877594b-txh44 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 29fc1b2c3ae916a3487954e516a1409a;
-          Sun, 08 Nov 2026 08:06:53 +0000 (UTC)
-Message-ID: <310bca10-e082-4d0a-a645-42fd4e58d2a6@yahoo.com>
-Date: Sun, 8 Nov 2026 09:06:48 +0100
+X-Sonic-ID: e6e16e82-a044-4c02-91c3-9de629474b65
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ne1.yahoo.com with HTTP; Sun, 8 Nov 2026 08:07:45 +0000
+Received: by hermes--production-bf1-6d6877594b-txhz8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e54a4390e0e3eda1a5bf77a8b1251c97;
+          Sun, 08 Nov 2026 08:07:43 +0000 (UTC)
+Message-ID: <c9cd2537-262a-428e-8f33-6ae039711b1f@yahoo.com>
+Date: Sun, 8 Nov 2026 09:07:37 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,8 +85,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v9 02/11] net: dsa: realtek: rtl8365mb: add chip
- family infrastructure
+Subject: [PATCH net-next v9 03/11] net: dsa: realtek: rtl8365mb: set speed for
+ family D
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
@@ -101,227 +101,166 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.26943 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Add enum rtl8365mb_family and struct rtl8365mb_family_info, which holds
-the data shared by all chips of one family: the family id, the port
-count and the init jam table. struct rtl8365mb_chip_info now points to
-it through a family_info member, and all existing chips use the
-RTL8365MB_FAMILY_C instance. rtl8365mb_get_family_info() and
-rtl8365mb_is_d() are declared in a new rtl8365mb.h so that the VLAN
-code can use them too.
+On family C hardware, forcing a 2.5 Gbps link speed requires relying
+strictly on the HSGMII SerDes configuration block, while forcing a dummy
+1 Gbps value inside the standard digital interface register. Family D
+introduces a dedicated hardware link speed value (5) for 2500M. The speed
+bitfield width has been expanded to 3 bits, splitting the most significant
+bit into a new separate register field (FORCE_SPEED2), which maps directly
+to a distinct per-port digital interface force layout.
 
-Use num_ports from the family info in rtl8365mb_detect() instead of a
-fixed constant, so that a family with a different port count can be
-described by its own entry.
+On family D the forced-mode configuration (link, duplex, pause, speed)
+is written to a per-port register at 0x12c0 + port instead of the
+per-extint register. The bit positions of TXPAUSE, RXPAUSE, LINK, DUPLEX
+and the low two speed bits are the same as on family C; the upper speed
+bits go to bits 13:12 (FORCE_SPEED2), so FORCE_EN (bit 12 on family C)
+is not set. A second per-port register at 0x12c8 + port enables the
+forced mode: the vendor RTL8367D API writes 0xFFFF there when the MAC
+is forced and 0 otherwise. This driver always forces the MAC, as on
+family C, so it writes 0xFFFF on every call, including link down.
 
-RTL8365MB_FAMILY_D is defined here but no chip uses it yet; it is
-needed by the following patches, which add family D handling for chips
-whose register layout differs from the existing ones.
-
-No functional change.
+The family D branch is not reachable until the chip table entry is
+added in the last patch.
 
 Tested-by: Gustavo Foletto Mora <gusfmora@gmail.com>
 Tested-by: Stanislaw Pal <kuncy7@gmail.com>
 Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl8365mb.h      | 29 +++++++++++++
- drivers/net/dsa/realtek/rtl8365mb_main.c | 52 +++++++++++++++---------
- 2 files changed, 61 insertions(+), 20 deletions(-)
- create mode 100644 drivers/net/dsa/realtek/rtl8365mb.h
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 81 ++++++++++++++++++++----
+ 1 file changed, 68 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.h b/drivers/net/dsa/realtek/rtl8365mb.h
-new file mode 100644
-index 0000000..daa8f0b
---- /dev/null
-+++ b/drivers/net/dsa/realtek/rtl8365mb.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _RTL8365MB_H
-+#define _RTL8365MB_H
-+
-+#include "realtek.h"
-+
-+enum rtl8365mb_family {
-+	RTL8365MB_FAMILY_C,
-+	RTL8365MB_FAMILY_D,
-+};
-+
-+struct rtl8365mb_jam_tbl_entry;
-+
-+struct rtl8365mb_family_info {
-+	enum rtl8365mb_family family;
-+	unsigned int num_ports;
-+	const struct rtl8365mb_jam_tbl_entry *jam_table;
-+	size_t jam_size;
-+};
-+
-+const struct rtl8365mb_family_info *
-+rtl8365mb_get_family_info(struct realtek_priv *priv);
-+
-+static inline bool rtl8365mb_is_d(struct realtek_priv *priv)
-+{
-+	return rtl8365mb_get_family_info(priv)->family == RTL8365MB_FAMILY_D;
-+}
-+
-+#endif /* _RTL8365MB_H */
 diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index da06f95..b500c84 100644
+index b500c84..0d87d6b 100644
 --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -110,12 +110,15 @@
- #include "rtl83xx.h"
- #include "rtl8365mb_l2.h"
- #include "rtl8365mb_vlan.h"
-+#include "rtl8365mb.h"
+@@ -346,6 +346,8 @@
+ #define RTL8365MB_PORT_SPEED_10M	0
+ #define RTL8365MB_PORT_SPEED_100M	1
+ #define RTL8365MB_PORT_SPEED_1000M	2
++#define RTL8365MB_D_PORT_SPEED_2500M	5
++#define RTL8365MB_D_PORT_SPEED_MSB_MASK	BIT(2)
  
- /* Family-specific data and limits */
- #define RTL8365MB_PHYADDRMAX		7
- #define RTL8365MB_NUM_PHYREGS		32
- #define RTL8365MB_PHYREGMAX		(RTL8365MB_NUM_PHYREGS - 1)
--#define RTL8365MB_MAX_NUM_PORTS		11
-+#define RTL8365MB_C_MAX_NUM_PORTS	11
-+/* Highest port count of any supported chip, used for sizing */
-+#define RTL8365MB_MAX_NUM_PORTS		RTL8365MB_C_MAX_NUM_PORTS
- /* Valid for the whole family except RTL8370B, which has 4160 entries.
-  * RTL8370B is mentioned in vendor code but it might not even belong
-  * to the same RTL8367C family.
-@@ -702,14 +705,20 @@ struct rtl8365mb_extint {
- 	unsigned int supported_interfaces;
- };
+ /* External interface force configuration registers 0~2 */
+ #define RTL8365MB_DIGITAL_INTERFACE_FORCE_REG0		0x1310 /* EXT0 */
+@@ -364,6 +366,26 @@
+ #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK		BIT(2)
+ #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK		GENMASK(1, 0)
  
-+static const struct rtl8365mb_family_info rtl8365mb_family_c = {
-+	.family = RTL8365MB_FAMILY_C,
-+	.num_ports = RTL8365MB_C_MAX_NUM_PORTS,
-+	.jam_table = rtl8365mb_init_jam_8365mb_vc,
-+	.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+};
++/* bits[13:12]; bit 13 reserved, no defined speed value uses it yet */
++#define   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK	GENMASK(13, 12)
 +
- /**
-  * struct rtl8365mb_chip_info - static chip-specific info
-  * @name: human-readable chip name
-  * @chip_id: chip identifier
-  * @chip_ver: chip silicon revision
-+ * @family_info: data shared by all chips of the same family
-  * @extints: available external interfaces
-- * @jam_table: chip-specific initialization jam table
-- * @jam_size: size of the chip's jam table
-  *
-  * These data are specific to a given chip in the family of switches supported
-  * by this driver. When adding support for another chip in the family, a new
-@@ -719,9 +728,8 @@ struct rtl8365mb_chip_info {
- 	const char *name;
- 	u32 chip_id;
- 	u32 chip_ver;
-+	const struct rtl8365mb_family_info *family_info;
- 	const struct rtl8365mb_extint extints[RTL8365MB_MAX_NUM_EXTINTS];
--	const struct rtl8365mb_jam_tbl_entry *jam_table;
--	size_t jam_size;
- };
- 
- /* Chip info for each supported switch in the family */
-@@ -731,29 +739,28 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		.name = "RTL8365MB-VC",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0040,
-+		.family_info = &rtl8365mb_family_c,
- 		.extints = {
- 			{ 6, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) },
- 		},
--		.jam_table = rtl8365mb_init_jam_8365mb_vc,
--		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
- 		.name = "RTL8367S",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x00A0,
-+		.family_info = &rtl8365mb_family_c,
- 		.extints = {
- 			{ 6, 1, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
- 			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) },
- 		},
--		.jam_table = rtl8365mb_init_jam_8365mb_vc,
--		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
- 		.name = "RTL8367SB",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0010,
-+		.family_info = &rtl8365mb_family_c,
- 		.extints = {
- 			{ 6, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) |
-@@ -761,21 +768,18 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) },
- 		},
--		.jam_table = rtl8365mb_init_jam_8365mb_vc,
--		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- 	{
- 		.name = "RTL8367RB-VB",
- 		.chip_id = 0x6367,
- 		.chip_ver = 0x0020,
-+		.family_info = &rtl8365mb_family_c,
- 		.extints = {
- 			{ 6, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) },
- 			{ 7, 2, PHY_INTF(MII) | PHY_INTF(TMII) |
- 				PHY_INTF(RMII) | PHY_INTF(RGMII) },
- 		},
--		.jam_table = rtl8365mb_init_jam_8365mb_vc,
--		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
- };
- 
-@@ -874,6 +878,14 @@ struct rtl8365mb {
- 
- #define pcs_to_rtl8365mb(_pcs) container_of((_pcs), struct rtl8365mb, pcs)
- 
-+const struct rtl8365mb_family_info *
-+rtl8365mb_get_family_info(struct realtek_priv *priv)
-+{
-+	struct rtl8365mb *mb = priv->chip_data;
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE		0x12c0
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(_port) \
++		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE + (_port))
 +
-+	return mb->chip_info->family_info;
-+}
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE		0x12c8
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(_port) \
++		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE + (_port))
 +
- static int rtl8365mb_phy_poll_busy(struct realtek_priv *priv)
- {
- 	u32 val;
-@@ -3036,17 +3048,17 @@ static int rtl8365mb_change_tag_protocol(struct dsa_switch *ds,
- static int rtl8365mb_switch_init(struct realtek_priv *priv)
- {
- 	struct rtl8365mb *mb = priv->chip_data;
--	const struct rtl8365mb_chip_info *ci;
-+	const struct rtl8365mb_family_info *fi;
++/* Per-port force-mode enable. The vendor RTL8367D API
++ * (dal_rtl8367d_port_macForceLink_set()) treats it as an on/off switch for
++ * the whole forced configuration: all bits set when the MAC is forced, zero
++ * when it is not. The meaning of the individual bits is not documented.
++ * This driver always forces the MAC, as on family C, so all bits are set
++ * on every call, including link down.
++ */
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK	GENMASK(15, 0)
++
+ /* CPU port mask register - controls which ports are treated as CPU ports */
+ #define RTL8365MB_CPU_PORT_MASK_REG	0x1219
+ #define   RTL8365MB_CPU_PORT_MASK_MASK	RTL8365MB_PORT_MASK
+@@ -1644,23 +1666,32 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+ 	u32 r_duplex;
+ 	u32 r_speed;
+ 	u32 r_link;
++	bool is_d;
+ 	int val;
  	int ret;
- 	int i;
  
--	ci = mb->chip_info;
-+	fi = mb->chip_info->family_info;
+ 	if (!extint)
+ 		return -ENODEV;
  
- 	/* Do any chip-specific init jam before getting to the common stuff */
--	if (ci->jam_table) {
--		for (i = 0; i < ci->jam_size; i++) {
--			ret = regmap_write(priv->map, ci->jam_table[i].reg,
--					   ci->jam_table[i].val);
-+	if (fi->jam_table) {
-+		for (i = 0; i < fi->jam_size; i++) {
-+			ret = regmap_write(priv->map, fi->jam_table[i].reg,
-+					   fi->jam_table[i].val);
- 			if (ret)
- 				return ret;
- 		}
-@@ -3349,7 +3361,7 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
++	is_d = rtl8365mb_is_d(priv);
+ 	if (link) {
+ 		/* Force the link up with the desired configuration */
+ 		r_link = 1;
+ 		r_rx_pause = rx_pause ? 1 : 0;
+ 		r_tx_pause = tx_pause ? 1 : 0;
  
- 	dev_info(priv->dev, "found an %s switch\n", mb->chip_info->name);
+-		/* The speed field has no value for 2.5 Gbps: the rate is
+-		 * determined by the HSGMII SerDes configuration, and the
+-		 * vendor driver programs the 1 Gbps value here.
+-		 */
+-		if (speed == SPEED_2500 || speed == SPEED_1000) {
++		if (speed == SPEED_2500) {
++			if (is_d) {
++				r_speed = RTL8365MB_D_PORT_SPEED_2500M;
++			} else {
++				/* The speed field has no value for 2.5 Gbps:
++				 * the rate is determined by the HSGMII SerDes
++				 * configuration, and the vendor driver programs
++				 * the 1 Gbps value here.
++				 */
++				r_speed = RTL8365MB_PORT_SPEED_1000M;
++			}
++		} else if (speed == SPEED_1000) {
+ 			r_speed = RTL8365MB_PORT_SPEED_1000M;
+ 		} else if (speed == SPEED_100) {
+ 			r_speed = RTL8365MB_PORT_SPEED_100M;
+@@ -1690,20 +1721,44 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+ 		r_duplex = 0;
+ 	}
  
--	priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
-+	priv->num_ports = mb->chip_info->family_info->num_ports;
- 	mb->priv = priv;
- 	mb->cpu.trap_port = RTL8365MB_MAX_NUM_PORTS;
- 	mb->cpu.insert = RTL8365MB_CPU_INSERT_TO_ALL;
+-	val = FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK, 1) |
+-	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK,
++	val = FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK,
+ 			 r_tx_pause) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_RXPAUSE_MASK,
+ 			 r_rx_pause) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK, r_link) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK,
+ 			 r_duplex) |
+-	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK, r_speed);
+-	ret = regmap_write(priv->map,
+-			   RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
+-			   val);
+-	if (ret)
+-		return ret;
++	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK,
++			 r_speed &
++			 RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK);
++
++	if (is_d) {
++		/* Speed is 3 bits on family D: bits[1:0] go into FORCE_SPEED,
++		 * bit[2] goes into FORCE_SPEED2 (register bit 12); only 2500M
++		 * sets it. Register bit 13 is reserved.
++		 */
++		val |= FIELD_PREP(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK,
++				  FIELD_GET(RTL8365MB_D_PORT_SPEED_MSB_MASK,
++					    r_speed));
++		ret = regmap_write(priv->map,
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(port),
++				   val);
++		if (ret)
++			return ret;
++
++		ret = regmap_write(priv->map,
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(port),
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK);
++		if (ret)
++			return ret;
++	} else {
++		val |= FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK, 1);
++		ret = regmap_write(priv->map,
++				   RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
++				   val);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
