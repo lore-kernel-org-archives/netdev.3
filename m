@@ -1,60 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794173443;
-	b=o5aKK+cR6ovV7M5oNK/u9bSZaMosRkIeQO/nh/HcyHyhM2n4470+wwxD4+usMBaRvG3r
-	 ZI+Fn4AsXU//VflYSU59slmXLifu7oMp5pKCFcCcX0ejqPLVI+BA5ZqowXH+m4fYjZdKw
-	 c5siKZU+XmhtXB2SCrNzUbaS6notkGn7Qya7hYyh3iqVawSATOBFK2so+OM9MaLiFqKHa
-	 FZb2ghtS1JJDlYS/WXUtD6tgYjCb7O1dUcQ8bhEXR6auJ5YySik+v83Blf+dms6AIhpMC
-	 P0tuFnaVcKtvpDcF/KX3slCyht2RLfddH0Q66ij581gR08JYwwSFsd1ZiSjZcwspxdw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794173443;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Jw+/Fkc20+Qp4XR5VO/LxheUCUIT4ctMVUZLv2aVJAc=;
-	b=3+q4wt45roLs49WtnmigBxx5AcdrE7Ffqyv/ca4DCTe88WDeDf3h7UH7T8f+Z61OYwWT
-	 321/NVX3lzMu1LxTHI8y6VCC8OboiC/CZF7qrLCGz4SeFW2bZgOGbptMLpNUECHIkwk0i
-	 FeNWfPj8phm94HEOvgYkTtM9nA9PCrU7YcZE5V4brIXWYxauDzUKraBRWjpEiAqZPULqS
-	 HkY7dBdNaEsrs//o+vAvAJEq2eYE+ldlmwvBJKeDkoS2ZEgx0rQVaFEZOlYO+mrYtl1xQ
-	 C3UZnabNH2lxT3dw67GNaMfSYeGTKoskoqxYwmOIrh5pjHwxxSnWMPOebsrRq83Zaew==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7FxV7XM;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.176
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794173498;
+	b=yI3LGR9TCMf9yhRtWmoE1U+KKm5FqnBSm6ZD0wCH1IGzreJJkwakBjiiX4xPzUmdOqlI
+	 YBc1X6m6NHKFIwoqCyxSNgIo4HQdmwjl9Jx7sfypkxpFjMcDSYf1c1t7U9eJDa8Ep+K3a
+	 tcSo2ezx7/zJ4lkDNmup08BrMwovcWUY+62KotHcUJcN80uCuEp1l3oTLtpviA4J2Nipb
+	 DzOQWT+usGdhE7kqYD4Cfls6IVlkmQpaquI5XKEY5eCyCD3SYQGcnr5339UqApq2eMJfd
+	 fQrD6fOOVwV3ztiFHVPms+tgM9cDEZ3zIxd+vw0QGDfDDZmpjohrNm/voCtNCNsjA5g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794173498;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=mNnSytHabs4CSN2sn2OhzEVzq3LVe6ObrYpizxNtHsM=;
+	b=HcNQzOtM40JUVQWFALQBC3kzwHPnuH1i4OgH4Rk6goxV1L+a6KA6QU7XAwYVpIfpXL06
+	 U40uJnmdkSOrh+IVcw8Zqr+HLDOX2ZYY/MPChVkj5VMhpjJhP6kfWC99koxejGnDYeioM
+	 HztiMZ42TvNFrZSaDz4VTxkOEz0zzCpkExobxw5t5kaB+pAhSOp9trx/xEH32OvX+G/79
+	 ob8yu9nZZBnOpPHzmdrDgldmEpYbJvV0gSrS0kn2XjkyCpw10uvxxEo3id0jrcP54A5ET
+	 CHsQUvYMeDB3l/4d5tBZ4x8fkgJN8I5bDtzhKuAoilg/BoEFo/jjHWwiJ91+qG3gr1w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SaNgY0wi;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.176
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB3606A31C;
-	Sun,  8 Nov 2026 21:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CB6606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:31:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65CB6606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7FxV7XM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663951F0089F;
-	Sun,  8 Nov 2026 21:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794173443;
-	bh=Jw+/Fkc20+Qp4XR5VO/LxheUCUIT4ctMVUZLv2aVJAc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j7FxV7XMRjRBVBjDNqZB72oA6jNKCIgXW5mW9v9+7afoWjL/Y4/xiKO+32hlJypep
-	 ql2qzXBguSaxKXlPqwF0qxBYD2YhHmjOAWVuUxc9IHQ+pPSBj9VJee+3nfHiMZi4LY
-	 BWEV6CTemNlAcLukfktIV7W6dFicWad8WWkJwe7ae7k8BSaqaQbF6JfIBohwQehv1c
-	 GIVnSnk1jkaHCMKtKD02iB1H0vrjNO9heeqYwwpgsRij9HwVtNFPUM3VaDMc8mvISc
-	 31NUc/hyZ9vuaARvFnTbQE50pvjtlD7AL7RecIVu3DcX2RiNR5i3jYqCwUnbC/WZSc
-	 2Fq+v9gYLlPSQ==
-Subject: Re: [PATCH net 1/2] net: macb: credit unsent frames to BQL in
- macb_tx_error_task()
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- sean.anderson@linux.dev, robert.hancock@calian.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 21:30:41 +0000
-Message-ID: <179417344193.994134.16378845352525630728@kernel.org>
-In-Reply-To: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de>
-References: <20261107-nb-macb-tx-error-task-net-v1-1-a2aac5d64d52@tipi-net.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SaNgY0wi
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-539a57a0b1fso69528b6e.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:31:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794173497; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ER5F9aWymk+MsGJC9f7kRQO6mjMiFMpPb/ACL7EZAFspytoIQJW3hPZtknle8h70oE
+         Zs1Y5GrqjErvqzkb4wwKoB/fAgV4bKJCzRl3bxc/UwtbvhZJ+hajxRNVmOJCWS7QxAtP
+         OX3ejkd1J2jlyVYiy3L4PGBelQQFrNS8Jf3aXU8lsGZUSBsAF5hGTbHQMxL3WUKj7mQR
+         Bn14P3uBVqw5Faq1yVPjgnuGehPW+JfgRzufJeZ6iQpmb8rNvcRw1sSxepVaKg5mWioq
+         hZggpQ7bVPA4RhderTuJyrEXKOFDLqEPlQvRZ5cI6FlxZUWQZ09Xd9prSAxxp7AGAapK
+         S3xA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mNnSytHabs4CSN2sn2OhzEVzq3LVe6ObrYpizxNtHsM=;
+        fh=apboHd9+R1dvvCkJdZDZKmUVNsbKVTk7ZyeK9b5N4V4=;
+        b=eQUwnLMsB2qz6kgUXAu0Odr+c6rjd/Jqh38QNXobj0+S1oEirTBbb47y7Aqo7/byBf
+         RNz8q/TJnoWH/ydslW/ewyjnXqRdaukJn9HGxkEZOgRMLs59T/Y4T8DUVB48GshqbaH+
+         8oGCPr337JUBJnq21spDFIyo90hDPDceujyhh16A5QNteTq98ZcEI13c4nqianCCMkmU
+         mjFmEkaV/QONg48KgAMoa8KTuzj5FOL/bavtTEj/zFnIMxbgu8WA5+7TAdx9WzIPIOLo
+         3CP6KVoErrgfvjNpoZOJQlmMdSyCszvkPeAnDoUVfoN428AfNIlAalGR7HZU5eXW+GTe
+         Fgfg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794173497; x=1794778297; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mNnSytHabs4CSN2sn2OhzEVzq3LVe6ObrYpizxNtHsM=;
+        b=SaNgY0wi61CAMHoAaSAQElsriA2ewO4xeY3dct06JAYBGplqD3C6/rek6GQ+oVhW1V
+         c96l3/xt+NQ87IE2kKzyUC2egVoZkyzkRlIIJzKNijtNlJsI6TytrvFuQOTrS/kIQiCs
+         MttP++uinY9OyXbMycU/YsPR/3kINXZF2w7XbDEX8JRWjqiagJ62o3+LIrskahKivXjs
+         LuDenNmzPDb6qxKXf+T67kSCeN6+OWZEV6TK0AfHduSy+uRlVJY/adPJ+hPutNEE8QEk
+         9uxME+zB1P0yQWN0JTWXMlCvV+J3DVbCyR7jdd/aubIZGtKQxQKapbarULmtBmqbOF7O
+         7XrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794173497; x=1794778297;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mNnSytHabs4CSN2sn2OhzEVzq3LVe6ObrYpizxNtHsM=;
+        b=NZKwrXQ8+6T51kRH5IXrP7t6cLjLUqwy2nb7KJB/VgquNEFFM2LtTx/N2wUkqtqNim
+         z1b+eY9zsvclVeNTDZH5ebMESc+4s0KBXUWcQDA59zD/CeXd8NFMHm20GpvXAv6d2APN
+         SixAalRtVdKgycMW0Qko7bTviB9u+rLsvdFPjjzdfZnqpmhXKeqNRSmzT19Mpb4GWYDn
+         3kitcsUdT+4er18NPBTr4W0REwQ19pR5GpYvSVlhQc0fAcWZoAvRujH/wdBQVsLJnlbr
+         OPY35LYqyjQDRes3xSe/loyjguFwB2UYaQDRldgPCjpPqth+h+u0XW5HyAzI8pVjmf8V
+         2nFg==
+X-Gm-Message-State: APuU4Z9FNalUcGohMdB+d6ShdsMbyVziD+39qgcVmcQudANyPyesCPME
+	3BSryzwfaRka3jRhFurB7xrq69uPuhHWiNFUusLHO+T+bI/ZP/4gl46wURR3mEKUaMrq2Zruxae
+	uaHzafjsvdSX6bN8VLfL6FbHBIRBBHck=
+X-Gm-Gg: AYBFou36gBOxIDDNaqBHvg30dZ1+D3AQ2wSj+GdVmUJSndj3u1maB14Tgil43vsBrcd
+	wAQWc+J06+Qt7RprXwWrKjtzt893Jr2i7b19ZqPXYr/aRzk5tmUxTnksb74r8AUM1LAsbrna4AL
+	H1oXnvGeaJubKfM4ar9RUKFf5KcBLHyGGlE0F47qxxE/Esk41Hz2jpJVgMzEgUCYwvzPEgXT32D
+	WeUSBUPxDdzcFHS00D4f6qss+a2tSVnhftquwiLekxXZFcwWAEifcDHxUl9lh1BqTj5Pl5UkCn+
+	vJgHv0EUBKfl9d7ZRcK1JWdfIuFHY0V8R1rAXQpRE1wrG/EWvjWfbAXxnO2XIsl2jsSRRXgjP3/
+	ETG1Q5526Ep0r+e40QTQbFI/+LfYljbccGCcf4E/Fd+HxgrvVGR2FV27f/LJZjsjLp7iCvFII
+X-Received: by 2002:a05:6808:bc5:b0:53b:1d13:dffd with SMTP id
+ 5614622812f47-568143a72e9mr1609971b6e.7.1794173497308; Sun, 08 Nov 2026
+ 13:31:37 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,100 +103,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261108210357.1633411-1-mmyangfl@gmail.com> <179417201494.488859.17405768719520305251@kernel.org>
+In-Reply-To: <179417201494.488859.17405768719520305251@kernel.org>
+From: David Yang <mmyangfl@gmail.com>
+Date: Mon, 9 Nov 2026 05:31:01 +0800
+X-Gm-Features: AclHuK-7rjeMC6REsEvqypnWoJ8UWs35DflZP2w5x1Ar7W3Kfyao2q3Crk9apyI
+Message-ID: <CAAXyoMPFUTnyw9+oR9_RTi0EA5og8zXt6C4pj2ceqMEwb9+GVQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: motorcomm: Reread port flags on bridge joining
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon, Nov 9, 2026 at 5:06=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix leaves a second site with the same bug.
-
---
-
-net: macb: credit unsent frames to BQL in macb_tx_error_task()
-
-This commit moves the BQL packets/bytes accounting in macb_tx_error_task()
-out of the "TX complete" branch. Every frame removed from the ring is now
-credited through netdev_tx_completed_queue(), whether it was sent or not.
-This stops the DQL in-flight count from leaking on each TX error.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index f087f278f9e56..b6105f915fe35 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-
-[ ... ]
-
-> @@ -1428,6 +1426,12 @@ static void macb_tx_error_task(struct work_struct *work)
->  			desc->ctrl = ctrl | MACB_BIT(TX_USED);
->  		}
->  
-> +		/* BQL has to see every frame leaving the ring, sent or not */
-> +		if (skb) {
-> +			packets++;
-> +			bytes += skb->len;
-> +		}
-> +
->  		macb_tx_unmap(&bp->info, tx_skb, 0);
->  	}
->  
-
-[Severity: High]
-The commit message describes the problem in general terms: "The frames
-dropped on a TX error are never returned to BQL." Does
-macb_hresp_error_task() leak in the same way?
-
-macb_interrupt_misc() queues it as BH work when the hardware reports
-HRESP:
-
-macb_interrupt_misc() {
-    ...
-	if (status & MACB_BIT(HRESP)) {
-		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
-    ...
-}
-
-It then resets the TX rings and restarts the queues. It never calls
-netdev_tx_completed_queue() or netdev_tx_reset_queue():
-
-macb_hresp_error_task() {
-    ...
-	netif_tx_stop_all_queues(netdev);
-	netif_carrier_off(netdev);
-
-	bp->macbgem_ops.mog_init_rings(ctx);
-
-	/* Initialize TX and RX buffers */
-	macb_init_buffers(bp);
-    ...
-	netif_carrier_on(netdev);
-	netif_tx_start_all_queues(netdev);
-}
-
-gem_init_rings() and macb_init_rings() mark every TX descriptor TX_USED
-and set txq->head = txq->tail = 0. Every frame between tail and head was
-already charged in macb_start_xmit():
-
-	netdev_tx_sent_queue(netdev_get_tx_queue(bp->netdev, q),
-			     skb->len);
-
-So DQL would count those bytes as in flight forever. After enough HRESP
-events, the queue would stay stopped with an empty ring. Only
-macb_close() would recover it, through netdev_tx_reset_queue().
-
-This commit carries the same Fixes: tag as the BQL introduction, and that
-commit missed both paths. Could the HRESP ring reset path be covered here
-too, or in a companion patch, so that backports get both fixes?
-
-On a side note, this HRESP path also seems to reset head and tail
-without unmapping the DMA buffers or freeing the tx_skb->skb entries. Are
-those skbs and DMA mappings leaked as well?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107-nb-macb-tx-error-task-net-v1-0-a2aac5d64d52%40tipi-net.de
+Reported by sashiko, code inspection only.
