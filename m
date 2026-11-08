@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.103
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794174919;
-	b=gwFJgFWehlbwqWD8YelzuES/TvxPHdZ5Q+RCJQCteVC1QgSGyCdnMUGYJMYcqKT2C63Q
-	 OZHB0nKb8/qnFwkOxBnAHoDVifHSeMva2jt0guiKwlAEc62eIBxrmO2GnvoBPLovh3Jnx
-	 j9/BCpV7VlCj9D1y9ctWNMQk9L75yX1dEWT4RmySO/giFe1iTRT3Yh8xLu2BP2tQL/F35
-	 oucn4tTdk26i9tCLCIcwESHm4yGXByn7fezCl4QKOxrzVYmjToIiEFrgzCnI213IZZg2W
-	 eGu6wlsG1gDff59NBuusYkTqow/wML/CDL2MqZiT+XSZm080fqP7l2kmQlbC/mpa16g==
+	t=1794175064;
+	b=IvN93whdmBWS4b5uy/ppH7MFFyefEMCh66Ij/ZgQQbCVlmCJC0UjNIyEZyFmJ1uYKRFb
+	 dP5dBW09kwnqfjEfbT6yEOcD+5wxmDbRQShgLEdxSVIsYv3hArwjmq+kvM/+X4fm7xLYl
+	 NnppzWQdaiF0mE/pnVDq6mcLWObtXDBXrPAX4N8IX6sG0Fj6pjxDHcjQIAyMgucg7Ma43
+	 /vB3uEynX0woxFJBmmHj8CG5I8/G3v8QDkbd4L7xNiS1P6NMP4WQAdhqUW/SDhQ01VUN8
+	 A35g461Mmn0LDFnJozFVwS2UFo2d92TQEvq0JEWbSiXAVd09ar0Pm7MI10ThOrYnBcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794174919;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794175064;
 	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
 	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=p/3wfQGZ3MYS3ucEGRSJg5ubjFtczwohZ7bLXkPBJnw=;
-	b=ZnbgjaJphjDfd8ZTrpS1mCzoH/u6I9byIT8O5iczFTj2nTVbYmQLWpp9ppn2M7wk6mjv
-	 plf6JoRTnQGyugGmnXgkbrA9VgV0D9kF/NojE9GYo+Tr8wGYnA+5mDbQAeG5Rtmb+4hZd
-	 9+JXo5b1PSrGAHP4CqyPl8FQa0ss30j1TCbueWxQwi2D45rOh21LuU7bH/nPoL8HGmLIi
-	 kgfxZhZ9Smb41aqOTod0BKqUn8ZdL1y6/DsFOLn/exZG6k5CRLZeCuNvqKXsYPE7fXaYT
-	 ehHqPMSezRpjk7TewqINZ45yUFXnljvkRz+2HLMSB2PjOjmXs6XOCz/FCR7fKn+TlbA==
+	bh=Ia18UYtnWBdapIgN7aPkviiAshzghaVd7+6TEQ0f1ss=;
+	b=BXlkaHS0il22IcHuuguP9EuTQ5Mpulo1Rz1lOuA7pKaoyLHd0MBd44eYBMClDDb1ZCl8
+	 8tjDRA3hBPvVHht5UWxYsHDBYrQm1Ch2GB1M0vhXowscraMcs9NGbF3fJfCbAli51xTj6
+	 QLaqUjiJinnQroHmY7FooE6HoNRptP81n+OL3w9eHT3NanWcSDix0/+wA8bSLp8NJ4ZP2
+	 rO8hOYSenGAHI1+a5e/1xUzgkxoSLqBgtN5kqmJ4IOf2YA0dAZEjcSfnOjxGoo3idMh70
+	 p64Q/3zdI2UZNYsj0ijXOCCeJ6sOlZSwdrNChMuwpckXYdX84hGZm14lMQpWD/Rd0gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=proton.me;
 	spf=pass smtp.mailfrom=proton.me;
-	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b="D+mz//4P";
-	arc=none smtp.remote-ip=109.224.244.116
-Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+	dkim=pass header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=WONgqkHE;
+	arc=none smtp.remote-ip=185.70.43.103
+Received: from mail-43103.protonmail.ch (mail-43103.protonmail.ch [185.70.43.103])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFDE606A322
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:55:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCFDE606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A98606A31C;
+	Sun,  8 Nov 2026 21:57:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33A98606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=D+mz//4P
+	dkim=pass (2048-bit key, unprotected) header.d=proton.me header.i=@proton.me header.a=rsa-sha256 header.s=protonmail2 header.b=WONgqkHE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1794174916; x=1794434116;
-	bh=p/3wfQGZ3MYS3ucEGRSJg5ubjFtczwohZ7bLXkPBJnw=;
+	s=protonmail2; t=1794175062; x=1794434262;
+	bh=Ia18UYtnWBdapIgN7aPkviiAshzghaVd7+6TEQ0f1ss=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=D+mz//4Poc2sfKlt23LsS3GoLETAQcHpK6Zh/1Rrp3xRAckR+PO/MLmnm/mFj9gFZ
-	 8HmI+4Cgl/gEWKViqySvdXOUDjxE4Ozaer4fYHxsMTLUOgJss3pUBNglGCjbyI6Nin
-	 YE2zDCFzXtkHgE/2iddUQ8pDdnxW1WV/a4lRiKraKqvu+dmKU03kX2qceQFfz2eB2T
-	 2wu3tLsrwb6YX/Vo6OLGl/EmdkU6b45EwKzEEECvESvfvXU7TH6qVCzCvAkFLju9b6
-	 J8dKqxqzlHvHKgzDgqNhVqt87g1Y3+cv3Vl7QxtVf1fwUT+sjM9xT+W17SOg6jGXVV
-	 /zF/+SSP6AJOQ==
-Date: Sun, 08 Nov 2026 21:55:13 +0000
+	b=WONgqkHEaAhNoq9cphyKabziO3OlCTKgRiWHiCoDyJ87lbze/DjrvE129akVtX//Z
+	 CQdtRRFR8+z7fjkZet3C1xHZf8jOPPMGUQD4MAayIiGTUTJhyDz282E/RX/A+n6kYY
+	 tAbZ8Pa2F9oHnH+IrYgeOsw1e50CjjmhiwYTOjm+hcziYJYsgPNRUHJjw4UvlLoXRK
+	 hu8JLR0CffTkes6TIWko+qUn0Df+bjPrL1zY8iUyQs0ADbhF0hCyo+cy4JIIPdb9rg
+	 vT2dDtf6JEhFeUoMm07GQk5w/+ndef8HM+I1l2TWhtiq7u27Uo2mSR8eL74hPxrHYJ
+	 DgOT7oyU3MLaQ==
+Date: Sun, 08 Nov 2026 21:57:39 +0000
 To: "johannes@sipsolutions.net" <johannes@sipsolutions.net>
 From: Noah Weinberger <NoahWeinberger2003@proton.me>
 Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "security@kernel.org" <security@kernel.org>
-Subject: [PATCH] wifi: mac80211: use frame link_id when adjusting link_sta on reorder release
-Message-ID: <Sq80dyNRnQWE5H_yZYIwxaQiwgvIrIlET6kND66_K0UpnKQZruHroWDq6hlYKDM0y9e2vXW2UBlBmnjw3bCLKk1Acrp7F49_jk883tbCqxk=@proton.me>
+Subject: [PATCH] wifi: nl80211: clear wdev before erroring out of station dump
+Message-ID: <ltwfLZuSH-PEFdqMECEU8rHwZCjSL5--7RG-qrW8a-Fwezdgpb1QYiDm-8aCRNIgwY-laqSmHJWAqV4uI092NLEudhWEABdd3B5iGsV4jJ8=@proton.me>
 Feedback-ID: 186545857:user:proton
-X-Pm-Message-ID: bb8ae6812a85f3b79d59340257cc7d96353ef54a
+X-Pm-Message-ID: 5eb0af483ff3e980d0fda2c37c59a9658e0c80cb
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,40 +66,32 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-In ieee80211_rx_handlers(), when frames are released from the BA reorder
-buffer on timeout, rx->link_sta is re-fetched using the *previous*
-rx->link_id instead of the frame's own status->link_id. For a legacy
-(non-MLO) client on an MLO access point,
-ieee80211_release_reorder_timeout() passes link_id =3D -1 and
-ieee80211_rx_data_set_sta() never updates rx->link_id, so the adjust
-block evaluates rcu_dereference(rx->sta->link[-1]).
+In nl80211_dump_station(), the new -EAGAIN retry path calls
+__nl80211_lock_held_wdev(), which drops the reference we hold and then
+re-looks up the wdev under the wiphy mutex. If the wdev is being
+removed, that lookup returns ERR_PTR(-ENODEV).
 
-link[-1] aliases deflink.pub, the last member of the struct embedded
-directly before link[] in struct sta_info, which is always non-NULL - so
-the existing NULL fallback cannot fire and rx->link_sta becomes a
-struct ieee80211_link_sta * that the RX handlers then treat as a
-struct link_sta_info *.
+The IS_ERR branch jumps to out_err with 'wdev' still set to the error
+pointer, and out_err then does:
 
-ieee80211_rx_h_sta_process() subsequently writes statistics through that
-type-confused pointer (a fragments counter, a u64 byte counter fed with
-the attacker-controlled frame length, signal EWMAs and chain-signal
-values) at fixed offsets inside struct ieee80211_sta around deflink. The
-corruption is intra-object and therefore invisible to KASAN; depending
-on the exact layout it can reach the link[] pointer array, nmi,
-nan_sched and the driver-private area that follow deflink. At minimum
-this is a remotely triggered crash on MLO APs serving legacy clients;
-worse outcomes are layout-dependent.
+    else if (wdev)
+            wdev_put(wdev);
 
-The one-word fix below uses the frame's own status->link_id, which also
-restores the intended behaviour for MLD peers interleaving frames from
-two links inside one reorder window (the current code fetches the link
-STA of the *previous* frame's link).
+i.e. wdev_put() is called on ERR_PTR(-ENODEV), dereferencing an
+unmapped kernel address (~0xd). The station dump requires no
+capabilities, so any local user can reach the trigger while a
+concurrent interface removal (admin action or unplug) closes the race.
+The result is a kernel oops in the dumping task, or a full panic with
+panic_on_oops.
+
+The sibling handlers nl80211_get_station() and nl80211_tx_mgmt() never
+put the error pointer; the dump path is the only one that does. Clear
+wdev before jumping to the error label.
 
 Affected version/commit: mainline fa4ad798f6f681031775266044ba1b0cf3c670bd =
-(v7.4-rc1, 2026-11-07), net/mac80211/rx.c:4243-4255 (adjust block), rx.c:43=
-75-4404 (ieee80211_rx_data_set_sta), rx.c:4410-4426 (ieee80211_release_reor=
-der_timeout).
-Introduced in the v7.4 merge window (regression vs v7.3).
+(v7.4-rc1, 2026-11-07), net/wireless/nl80211.c:9023-9035 (EAGAIN path), nl8=
+0211.c:296-306 (__nl80211_lock_held_wdev), nl80211.c:9133-9137 (out_err).
+Introduced in the v7.4 merge window (unlocked station-dump rework).
 
 This was found during an assisted (AI-supported) static source review of
 mainline fa4ad798f6f681031775266044ba1b0cf3c670bd (v7.4-rc1, 2026-11-07); e=
@@ -110,22 +102,19 @@ conditions are described above instead. Please treat this as a report for
 verification rather than a battle-tested fix.
 
 Fixes: [fill in before sending - on a full clone run:
-  git log -S 'rcu_dereference(rx->sta->link[rx->link_id])' --oneline -- net=
-/mac80211/rx.c]
+  git log -S '__nl80211_lock_held_wdev' --oneline -- net/wireless/nl80211.c=
+]
 Reported-by: [your name and email]
 ---
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index ecee934..836d571 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4244,7 +4244,7 @@ static void ieee80211_rx_handlers(struct ieee80211_rx=
-_data *rx,
- =09=09    unlikely(rx->link_id !=3D status->link_id)) {
- =09=09=09if (rx->sta) {
- =09=09=09=09rx->link_sta =3D
--=09=09=09=09=09rcu_dereference(rx->sta->link[rx->link_id]);
-+=09=09=09=09=09rcu_dereference(rx->sta->link[status->link_id]);
-=20
- =09=09=09=09/* Link got disabled, just use deflink */
- =09=09=09=09if (!rx->link_sta)
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d790e20..7392834 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9031,6 +9031,7 @@ static int nl80211_dump_station(struct sk_buff *skb,
+ =09=09=09=09=09=09=09=09wdev);
+ =09=09=09=09if (IS_ERR(wdev)) {
+ =09=09=09=09=09err =3D PTR_ERR(wdev);
++=09=09=09=09=09wdev =3D NULL;
+ =09=09=09=09=09goto out_err;
+ =09=09=09=09}
 
