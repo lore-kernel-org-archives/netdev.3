@@ -1,104 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794154331;
-	b=f5FU2vopV/EHcNBLdLufUz6xX4AK3CG3U294ZxIwKxTloMMI0rzTPdSX/mu5weH2vNVC
-	 gstwHGA8GhjmkvdWoDOJQTE70FE99pnd04RMgjiBkpXVvx9gqwqoc/RZ/1BhxO0D+iU5S
-	 lngyEeQOOtR3SmzV6cz8hFRnDl7xDkehsMmf6zebZsYwIOXUlP7A1FTwH3YvM/ErrYapU
-	 GKtQhQ5yQ8xL5EI32mxwRMeSx140VBaLUi8gdso++OJk0rGBZSjx3N2gQ5jjH+fJWw/Rf
-	 IXiEeboS9KwY76B4Bkmcn1rs3sIv/DHqv5CDBAO7LoMtH0h2Rrkqj3BmUg1RcJB7ZmQ==
+	t=1794154346;
+	b=PUwzVT4XtvSBUcdhmjKykc4JyVRcItK3+jOE+ScA/gO5hVB62hqiBbC6jYFatqRYDS2L
+	 0aaXOoAzU7yeVwfQqMjnPBMaLaAdEOiSD6+brQmTIiJnGiNTMjB3+SXJmuPLTc5tDrGxm
+	 xF1sMhCvEl34F1jTKUbTI6UyJLgK6ISW5wDBPYRTbK1HKciO/Qut5tzkkeI+LSTu1Xv3X
+	 wsk678TiHfBvZ7wWN2+2wPnYZuknmF7whjHofqPu8LAtbuodK30zNU1wmPMJnRNfCmGjG
+	 v19FO34/k+BRjAUN+PO2UZPba23ECvU79CO2Yin3+C0xr4qJDsSn0XYsVwnU35vUdwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794154331;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794154346;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
-	b=a3U46L4koQxCkd8J8Yn2qL+I9y2d8Ke5RkStCreAG7SuZk5jCrwT1oXD45h2/ZMYZ9Q/
-	 Xn9R3epRAoiqPtm5BDXWswONEChkXrcsprf7+usByDEEGQdOoAf8mmDlyJWuf6eRfUXUr
-	 5S/MC954JLlbf9WS+5wGFgvPG5he+JfXU6xJe/Ik6v2aYrY5OVrXNUlrnrsgmjCAOtHlz
-	 rYpbDSSv7jHe/FGG46oYzDw91G0eGzytaz8684GiiDPuBVMSNhz8D6IJqMoCMnJHVsUA4
-	 Xbc4Dq07sU4bFfnIY1qoGdhr8hh8Hv57NQOW8qy4lyVscjGu1aTxkDRQQ3JnBtWGjiQ==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:From:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=3dQexnH2CQPCd6uomqpp+F0/o0hfCHm4JSVgBUNYqmk=;
+	b=m4aP/c3qsERaTsScgJZ2MhEiKDpc42yr3IPTm9BeDWxpG4EBs5d+yEhSvg8mWENqoa1f
+	 4dl9XCeTtPxa7GjTxCPLgqQsH5ty2lGpDYxLz/P8u/8BnX8C4mmxZ6k3HPl0HPX17ISBb
+	 7UGnbZfmI0eJBtNSfhcftyfSnAKSg7wAiUDZClakN5BzBJFPE2lT6sktP/2gV5WtjvshX
+	 TWBMs+mRAox+nACC4Q5Bzfw8gFZOGcdHyvJeZyjy83bDvryx/sd1t5QT4zn+BCqiT0v52
+	 dHfHfnWYIVdZuc2THJFd8q5PpgKhV3+8mpGbwMXWNcHnGAdRuafU2e5695Li/MBDXUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JZ4Gby2F;
-	arc=none smtp.remote-ip=74.125.82.49
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TlulpGDp;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1241606A322
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 16:12:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1241606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E0B606A322
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 16:12:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2E0B606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JZ4Gby2F
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1a2af4c8d00so357404c88.0
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 08:12:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TlulpGDp
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so1275925e9.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 08:12:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794154330; x=1794759130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
-        b=JZ4Gby2FvC2DBELHKFx4SybDLlGtuB7SQ5XgQ5eR59R2j4Wg931xxWyqTJsGcWV8FI
-         leBHwUTE0i6796d8QedyDtdwFxpDyWOw+9Y4q7WcrU7TRHMlMTw3w76jZSSajMGMDJ4v
-         4XdIGavyeSMSmY6yumPOTrqDSGHXfU6Z85RMvzjKYX87Gd4vmexl0CSQ6jbxpB2/YLRC
-         NstZsnB6mkmNZ1PoEAGSqdyn6ZZ9Ohhg4+7TwwfTeOLfE+ggP9wOjYQkp8+DdpD+bxW/
-         vQi5cFukX7xg1v0XtHq39C7mVEfVv0amHiDB67Ntg0Zh87z0aGO6trfKrcugE6gm+8Qa
-         BxWg==
+        d=gmail.com; s=20260707; t=1794154344; x=1794759144; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3dQexnH2CQPCd6uomqpp+F0/o0hfCHm4JSVgBUNYqmk=;
+        b=TlulpGDp4hUigOLh/QFhZYrRXzFS2lSMyM5SgP+im+oHkRgWC5r0lNU1as3UHkxmiU
+         B+ywm5Zx/cQRppvTQSarsTGDLFmne9ZNoKByO9n3tDGtdKUCWK3LYcr4ogAU1QFoGkjT
+         /TH4uFEEESj9+0aHM8pDZftc9TCutMuGyULVWYmXi3Rh9Soe3I4B2P1LW5q+hS6TyJuD
+         +zpH9Drcz08Xn4pYW5Qh+3RuKkXPAmKKjPU3WRiB0tEGdcleCbT1fD2ty0nJTSdEAc/y
+         u4Mh+wLzyq+SBd0zIRaanDSOxT4FaIhASnxRUqlGZWpIorHIh1+V3JMkQzb2FHbylsOt
+         O3mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794154330; x=1794759130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794154344; x=1794759144;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=89T9eyf/7pt2w5bHMloyOSyIASgmUej+LCY3qWFQwTs=;
-        b=TMF+LX5sG5MNX4829OJRUpscTGJGKQCPonFXfYT+iCGjE0zSQoFqiiL7JsEevHgphb
-         y+Lx5PlcUjnEIhBpR/xARcdCv6nXX+JZyECe80+BsOELKoNjP5vQbxUx7uA4pKJ2sd1R
-         PKId5SoincAkNRbJjlrV8vSJ+NmQBQvZ5RRWiN3QC31l1zUZ8K+XUOInFkMl2/n5tLA9
-         CHmhaOs6FdiJHKL6uf0vU0X2noH9jtfmSVDM9kJZCrBmPQptqZRSxW7K2y+BoXias+Al
-         R1lHKjnYEu+w4RbDEg2ujZ+ga7WT21SIFIJNCZCy2LzFfaBJeBLkEWCeNSRp/KS8a9tw
-         97dg==
-X-Forwarded-Encrypted: i=1; AL+hErFTb1s6FKJ4dd14IymZFoeWxieI2D4O2Zuqf8emc/lohVG1U5kDfzAaQbaBshrt7tMKTTXhh+Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Q426BkD8uF5vtHdY4MUaJhpvIUGw0nLdh3x3ACVqazHzg1yBv
-	vsFzNoGvi4ty2OfeId9DNy5x1xHSiIPAbj0L/E4dPbAp9pkm8MyNuivs
-X-Gm-Gg: AYBFou1iJ9P+uo62//vixg653+MaxnsSjFRFhk5sogCtmUiuTWLkgE4oXWVLh+YEshZ
-	5immGeDmaHWBRkAZy8wUuMt4d8E8h26QNJa1vAiucAEp87WVUO/WpzMCuJ9Dmam5x4wyYTFNqve
-	WJna9BKxlo81HuXah9G9Dt1364buawmEjYhcc7uIruzeCfPBiPDrvXlcKhIyuz3+LyeC342xIxl
-	3m8BVi1eDD2MYTFnFAg6Yj8C8xhMfUKv1+TNTBBDLZS0dPmfGw6fYFPgoF+gnz0mg9D6kAgX5I8
-	tbuJY9HAOCNBxZSUtINcDX/BmLiBsGriIigxIQkYzdnvuwGAcxaCA/GDRZvQrDcPgwBVmLRbAZI
-	7OU0uo7ZnQ60zSzkPMP3gwladj8eMpc3/ARcAF22o8lezGRP+mrEx04k/4c7htyLqDkCu+gkPuv
-	vOCjKb2t1EN4VJeKnIRDtV3BiKwJBUkZtTLWrjQbKiTDn2hbhUkAnyYEqZLBsbN+0rQT1XMg1HJ
-	LEYv1SDVqfquuU9/1gzWsw2NlY3pLmrpt3TK4/6SxSoM+szq9AbHD1hLP44piMnEukvH2GQZchR
-	ITvHa+30SG+JfD0CcZYiEbbcGY4h5gxWvp6J/ylYh6pULMUlI0Fs8l8g0b+z/5QBKmX1+15Rsqs
-	VX8c=
-X-Received: by 2002:a05:701a:ca05:b0:18d:ac5a:89ef with SMTP id a92af1059eb24-1b39fef0c5cmr3037830c88.31.1794154329553;
-        Sun, 08 Nov 2026 08:12:09 -0800 (PST)
-Received: from Terra.tail0ac356.ts.net ([198.176.50.208])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3731487edsm7103369c88.2.2026.11.08.08.11.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 08:12:08 -0800 (PST)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wei Yongjun <yjwei@cn.fujitsu.com>,
-	Michio Honda <micchie@sfc.wide.ad.jp>,
-	YOSHIFUJI Hideaki <yoshfuji@linux-ipv6.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] sctp: reset stored flag for each association
-Date: Sun,  8 Nov 2026 08:11:49 -0800
-Message-ID: <20261108161149.2774119-1-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        bh=3dQexnH2CQPCd6uomqpp+F0/o0hfCHm4JSVgBUNYqmk=;
+        b=nTRFkBBarROwl5lVMl5Y21eBTQrv6MLimmBIFpI0DOmA4om3bF/fV+o2dlqsREXSGt
+         M6WhxLKuQqC5x9RHdeFEKjdigQO8bjMxtpdqRaum2vix/ecFUI28HzRoMmJhcMr4ekjt
+         9v0DVjUW/6CIKeyeJPwouvG/uIUHkIwySQ0U4rauaRMKvNzvPzFeB7JxPd3GV3ol2Phn
+         BHu7ry8BMiWU8oqihqrcwam+Vv/6MIJx3ZNowlHel6ulty3cmeHJYJyWe2be3vGq9v4y
+         p/CFdaZuXWwcjoKvbDQ7w5s1M801ePe1TWjpEWPBsU3y0dyu14MAVfBS2HQVi5/44NEa
+         NBAA==
+X-Gm-Message-State: APuU4Z++ZKrXWFOSzOb4Qg4KaR45viXrvJYWG68SdZ/NXY3/IoCxJHib
+	dOY1IB5IklUrY06nAQcsBEuuV9djiRt6LbZIjXvLkJbY441JLfhXG3jsqrGpcA==
+X-Gm-Gg: AYBFou3GnmxcimX6VB6VUNlHC7AeKvcvuszd8g1DuF0MG08GwRZKosEgSZ7sVjc/JKz
+	+JReW0t2AJP02622oktv7AnaPXJv5eYxvxOVRySArwhF5NeWlHxHGh8jXL5szW6vNP57ZfJYM6R
+	mLpUJeVDHUC/hLlzhK0E6oA0yhGZCku51QJT1yB05blXFkvv3tKrQysOUHDlrU6NcgCdp0JP2Vy
+	GkCqeLmDSd6JcFxJqixmnA17tiDmg5VYikAZAU/K1Tfr2TskgbPF6UL5GuHa82icdA5AJ5tpn0V
+	EG4ox/V7Hx/3YxuHdZBKwSVVEBTNVrq/x7x0K2FY6G3035GgWcGWsl/bgCc8o58wdoMvWscgSRt
+	bVmOkkrn7WoliPo5+1X/QmuQAur58Y9jRobk43FaBEtpYOdCPUxTN9/9V4aU6WoM80jeBjsLe4R
+	CyxgxLQFw+zGO+HxfmRmvHGBYqIYADaAMMh9sNSSVj7kWjdQh90sCcSwW2EiDRkIYgliAbamFp6
+	H/A1oWxyqWFoT81jJx8EpfGJfVtEKue4t/bjUe2ASJkBIAcC9ER95lopDJiPesBE+02miWeQVEn
+	mo1DLPhUI+Pi617iNSmDqofDt/ZmSzQ+mmvKzlE+NDXEhAlfxQSewl8PjjQc8l6ppJHwt5yUcyA
+	DPzoaA32+4QmDrmJm9yLZdq4zHva3ESBxmx2JaDCPWGoDa1cvWjPCXzYHCPhTRfBwgmk=
+X-Received: by 2002:a05:600c:1d08:b0:4a9:2a92:231f with SMTP id 5b1f17b1804b1-4b960d9b26amr34842195e9.7.1794154343463;
+        Sun, 08 Nov 2026 08:12:23 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f45:7100:cde5:5d75:8598:b64f? (p200300ea8f457100cde55d758598b64f.dip0.t-ipconnect.de. [2003:ea:8f45:7100:cde5:5d75:8598:b64f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b76cb75913sm124864075e9.0.2026.11.08.08.12.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Nov 2026 08:12:22 -0800 (PST)
+Message-ID: <62fcd666-ea7d-465c-87e3-9a15afd25624@gmail.com>
+Date: Sun, 8 Nov 2026 17:12:21 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,48 +90,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/2] sysfs: facilitate creating an empty
+ directory
+From: Heiner Kallweit <hkallweit1@gmail.com>
+To: David Miller <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Johan Hovold <johan@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ driver-core@lists.linux.dev
+References: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
+Content-Language: en-US
+In-Reply-To: <0a0a7987-abb2-49c8-bc16-3938233ae9c5@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-sctp_send_asconf_del_ip() walks every association on an endpoint. The
-stored flag records that the current association took the single-homed
-deferral path and therefore did not allocate an ASCONF chunk. It is
-currently scoped to the whole function. Once one association sets it,
-later eligible multihomed associations allocate chunks but skip
-sctp_send_asconf(), leaking each chunk and its skb.
+On 08.11.2026 14:44, Heiner Kallweit wrote:
+> We have use cases where an empty sysfs directory is created.
+> This requires an attribute list consisting of only the sentinal entry.
+> It takes only to modify one check to enable creating an empty directory
+> with a NULL attribute list. Use the new feature in net sysfs.
+> 
+> Proposal: Apply through netdev tree, w/ ACK from sysfs core.
+> 
+> Heiner Kallweit (2):
+>   sysfs: facilitate creating an empty directory
+>   net sysfs: simplify creating empty wireless directory
+> 
+>  fs/sysfs/group.c     | 7 ++++---
+>  net/core/net-sysfs.c | 5 -----
+>  2 files changed, 4 insertions(+), 8 deletions(-)
+> 
 
-Reset stored for every association so only an association taking the
-deferral path skips transmission. In an A/B kmemleak test, the
-vulnerable kernel reported 210 leaked objects from this call path and the
-fixed kernel reported none.
-
-Cc: stable@vger.kernel.org
-Fixes: 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- net/sctp/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c7b9e325ec1c..ed91ceff45a9 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -771,7 +771,6 @@ static int sctp_send_asconf_del_ip(struct sock		*sk,
- 	struct sctp_sockaddr_entry *saddr;
- 	int 			i;
- 	int 			retval = 0;
--	int			stored = 0;
- 
- 	chunk = NULL;
- 	sp = sctp_sk(sk);
-@@ -784,6 +783,7 @@ static int sctp_send_asconf_del_ip(struct sock		*sk,
- 		 __func__, sk, addrs, addrcnt);
- 
- 	list_for_each_entry(asoc, &ep->asocs, asocs) {
-+		int stored = 0;
- 
- 		if (!asoc->peer.asconf_capable)
- 			continue;
--- 
-2.56.0
-
+Will be replaced with patch to remove the deprecated wireless directory.
+--
+pw-bot: cr
