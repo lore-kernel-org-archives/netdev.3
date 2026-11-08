@@ -1,75 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794101402;
-	b=bJk5rqjTdI+izRU04IIomKx7WSdFGn2w5s1cqjYTi/40gJn/v3v4D9ewlgvi5tJ8r5es
-	 AmjSfns4SOSxAPey6aYiDlDDgSMADSegj2ZQZ//o83+lp74Av41g1p7nOWyDMNEEQUBn/
-	 CPUZYHQ3rESGbKm1wB5Z7RdMQsQzE76RYrqBg64Z/IQV2VsBtis4b91oy/DQdBLkQzrxY
-	 PHHlRXZMcAHZ86DfsTKr+fu5ZMSi4u02CJaoxbYapogxCnQAkCZi/o647R4pLaDWTAdjz
-	 x01hxbRuvHQCZNrLRXtCgXnB6oLQB122dmGFrEoPjtV4O3VI+BJocDQczChwraENdVg==
+	t=1794101921;
+	b=PQSzw4h0qgKECCU5JPpkYg7RfwshK8YX9NoyZbEc+CWFAM//QlIwsfK7aX8uTnBy82NW
+	 d8AFeJ18eqCGXg/5U6i4snPd6QGdX8cxMKRwud447wfgprRAaEcXmSu68Pwbxskdh/i+r
+	 +ec5stzqdF0+GYtQ2mWJuLd/aUCyt8qgltrZYLb07/mYZu0o2fDoHids+nMb0KuZ0cvzQ
+	 VA+jgX3ZhLIHI/X82D9Md+TlX+NP+EOG0Am1zcDndbdoxTmvxtocTI70ttGP2/X8oe1D+
+	 Dn9yWtntMEJBgCjC080q/VoOihhsaNZm0K7zfEaQDhqs1b52pgGBsyMofbl2pmZXJrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794101402;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794101921;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=621j/uB7EI3DNlS5KJBXHr9OTg+ZzLObUVfSibvev2E=;
-	b=NemK7ZFjGDO7wPE6Z5ueSdnQCtVjijQTBBPy9bXNa+Zdb+MGdaTeHI20yRi/5+lYlwIR
-	 I6EyQ3YXIOQj4zAhCBvFHiznDLMeqm3D74RF4OlJFRhbRYGp70y4TCbcE0xnA+iHmsXCN
-	 vzn1lBs6HqwA+ZgohCrzytjjW0JW4m6g/Cg+hU/WJd7jpWzKLoJKEDU/ebdjIE1Y3k2Fg
-	 V6XgzZfWdEfrPTpOvbIR1H5+fnVuUzCdfXAI95D0NJHDj8wy+WSrD0lhKRDY359dK2eVd
-	 WhR87nYlU1oK5pqf8DePEcS4zAu6pRdHbgITaWzMdefmTV5uqfqOQo5nKIJJfhL+DeA==
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=/uSXhPx21SBnJci3H0+0ie5+kBgS6J31mI34WcLWCK0=;
+	b=ck5QRD0GSV0qv8eu/b2pB0XeuqU2I+YV4xjVs4oRmtdgNOgZIV1n+UJqcHUNv5d8SUaX
+	 dES5yvsF7bE5cYuyTJtW1sAjWgJKSg8Dci1+koVV9OgVDdJVqGca33w7nSIkP2jH90Gju
+	 +DagVShnCq8FWUQi8wU60D+lr4zX/adiY3UHAzFB7oBYiWpThxo7UJ1RexV7D8ecChAa1
+	 tGlnbBFNkfP+FCg4jNkJLIAUf6NSvnOI6B/RmXX/fIjqhzSMd1jfiJN78D3juj/MRwYOU
+	 M1728OiSHBBHs41rVy8uxnsAN7Th47xZI6tsVgAkhz1NAdFG0hmTumk7pDVpVmXbHVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="SLAf6uS/";
-	arc=none smtp.remote-ip=209.85.215.200
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JAir+9iZ;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE188606A326
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 01:30:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE188606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE61606A330
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 01:38:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECE61606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SLAf6uS/
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cdb86c39250so40555a12.2
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 17:30:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JAir+9iZ
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-36fa5673fccso141086eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 17:38:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794101401; x=1794706201; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=621j/uB7EI3DNlS5KJBXHr9OTg+ZzLObUVfSibvev2E=;
-        b=SLAf6uS/SDu65Q1dgevwOt5fvVCdlW5x8R9p34muHSEnUvhIlaNZsfM40U7mODKRLW
-         sHIdCkifJudnHZIhcBU/AWiSFrubESmPqldkP3/M8k2Mk+ub2eseKXFOAULcU3JFQJ44
-         bV64dLl7YNtGd1Pa3HTwt8URimcfYM5NrdY4o9iUmctSI5vJ5bMQ+UWQ8IDvCELmtmQB
-         pglqsrrgLps2O3LkXsuh6XK+4fZRRWZ8CY8jEOzpI54Fwoi9UXnfv3dxxPd33iKY97d5
-         YrFnURPC/cBFrCLpkLabDpPnJc+MwITuw6SZsVquPEUXbUhR3l5/B5r0wl9j6xbPBlhV
-         vGCA==
+        d=google.com; s=20260707; t=1794101920; x=1794706720; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/uSXhPx21SBnJci3H0+0ie5+kBgS6J31mI34WcLWCK0=;
+        b=JAir+9iZqT0mkGSlAiO+axrWeb4IN1pjE7KbLHG+uHYyfgfPfaWdD28zVELuudADPl
+         c9qfhDy3KMpxEEdY+ED8UKN+A5mMkgJpRZPIPPXa4rncQpnmu3qJIZNKbVFXKt8RF6Nv
+         hYJY719gE8AZye3SHIyMaarbqLqY90zFUKc0GQhItUut7/sVz6fic5fD2aUgra+Vbn7m
+         khN/kRfbYsrPqF7r9/iyJSyjBNibjto7tRMG8j0ILScaW3EfulsHxyr2C5Ry9SZxC+0d
+         Sjm3Md4YJfwQcckNbFkAVx/S2dwmewlH3+bl/KH5EHu02QOhR+Rqrnf06WCv8KM8w34l
+         meAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794101401; x=1794706201;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=621j/uB7EI3DNlS5KJBXHr9OTg+ZzLObUVfSibvev2E=;
-        b=fsCU+7OyxF8uF8xkBfoHbostIf5v/x/48ZjHUObgk3WE80fGGp/n6vpV/CR5ewngQy
-         np8FVn5kE6cgIh87fhTnU9AZFpqfwJ0tr1gWCOeBiJVZAhUw/Rl74k1JHRQYv31aaQCu
-         Zxjsfgv6oxY2AEcT29haCu4hFBqa5mQ8JfrSCnLfJypJJWYc7WR4wY8XytydNLZtlUnG
-         r3q1vAQoYGwqDM6SQ3J8h6ipyQVTv/ZCIPalrnJ+/PvfL6TNE+9hqr3D8BRCg5craUOg
-         GbivyjCNVUP1eLzIVsl3RnrcRNNkZElh0Af21zqT1oM58BOWNJGLZcya949c4uWTMT/s
-         1/nQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJVuVY7IPnCmqXFsZSFbNG0Gur25HgpjcFx03WL0ZKMQBQ6UmKBD0HGYiA0kfrF2k14/8fUVg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8mc9chzzk3bUDLac2xv0Z9cnsQij+bXMl8qaTaftlClnRq9RuV
-	YEp6LEe6ubb8kwoyPlpNmovKIs1+wNOjbDwveCuaEUyfyf1l+QJZj2+k03FAn1KPLkUD8saTPFt
-	pt6N0cTxJJqOEshTYBU9Ov302qg==
-X-Received: from pgcgn14-n2.prod.google.com ([2002:a05:6a02:6a0e:20b0:cdb:6cc1:5c2d])
- (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:431b:b0:3eb:a3eb:a08a with SMTP id adf61e73a8af0-3eed52d1bcdmr449368637.75.1794101400634;
- Sat, 07 Nov 2026 17:30:00 -0800 (PST)
-Date: Sun,  8 Nov 2026 10:29:49 +0900
-In-Reply-To: <20261108012949.3943642-1-yuyanghuang@google.com>
+        d=1e100.net; s=20260707; t=1794101920; x=1794706720;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/uSXhPx21SBnJci3H0+0ie5+kBgS6J31mI34WcLWCK0=;
+        b=l+nv4myVZNzC3RQKQYRuEHfQvaUPgF+7d6okh/KQlPX7ojv/OfpDMin/ECjeg6WJGN
+         jXMnGiebUtl2ZgzkxBy//VWCxTtAsf/Lf6mDLbZCK/Y+swziqbITZbyW1PFXZ7baTElT
+         pmlZk2Sa37f92CydmUcUsaSK4xsplnEvnYWsL7u0ah1HqY440B4wbKHXeE4tg1OdWbWB
+         TXrlBd8zYzZ+Qonu27FYNwnZHOOfrpSpr2dDLrOI/n2bI6Q5YHMC7drUqSK4aPLW7iLW
+         G5slWGzlpKrIMWsam7A7qA+6MefU5w+M+apEFS/doMjh0PBOwRZTgzxGVEkUAu+AT+jR
+         rRbA==
+X-Gm-Message-State: APuU4Z9tD+THYul+DkVYyyghmnXMQIsQGUI3YPWG8MdHvsGOnaLou0wa
+	zf+LPtQ1lPvdmfwIiRMKyaklGpgOnbB8VsRRxJqgsWi7fPnI1a2IDXVToDmcodBLWGg8y6jC/Um
+	KDeS9OY3aSv/jNSq5y+qs9Iyysgrw48MFmbyY5OsZKPMFUbuqT2Kd6KjTgh+TaWAtJ3N3rAZffD
+	qMm0Htr1Tg7YYVhbtYUotmRhcML0Jr1LShEAwok84IjS+keeUrVmtjYTk+yXkMpS8=
+X-Received: from dybb6.prod.google.com ([2002:a05:693c:6086:b0:343:520f:7a80])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:8956:20b0:36d:8b1a:7faa with SMTP id 5a478bee46e88-3725d77d41bmr961521eec.7.1794101919564;
+ Sat, 07 Nov 2026 17:38:39 -0800 (PST)
+Date: Sun,  8 Nov 2026 01:38:36 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,63 +76,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261108012949.3943642-1-yuyanghuang@google.com>
 X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261108012949.3943642-3-yuyanghuang@google.com>
-Subject: [PATCH iproute2-next 2/2] ipmaddr: read link-layer multicast
- addresses via netlink
-From: Yuyang Huang <yuyanghuang@google.com>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org
+Message-ID: <20261108013838.1454450-1-almasrymina@google.com>
+Subject: [PATCH net-next v4 0/2] net: prevent mixing incompatible memory
+ providers in skbs
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, linux-kernel@vger.kernel.org, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Daniel Borkmann <daniel@iogearbox.net>
 Content-Type: text/plain; charset="UTF-8"
 
-"ip maddr show" gets the IPv4 and IPv6 entries from RTM_GETMULTICAST
-dumps but still parses /proc/net/dev_mcast for the link-layer ones.
-The kernel now also dumps the device multicast list (dev->mc) for
-RTM_GETMULTICAST requests with ifa_family AF_PACKET, so use it for
-those too.
+Enforce that all fragments in a nonlinear skb come from compatible
+memory providers (and for devmem, the exact same binding).
 
-The dump carries every column of /proc/net/dev_mcast: IFA_MULTICAST is
-the address, IFA_MC_USERS the reference count and IFA_F_GLOBAL in
-IFA_FLAGS the "static" column, set for entries added explicitly, e.g.
-by "ip maddr add". The output does not change.
+Patch 1 fixes skb->unreadable propagation in skb_split() and skb_shift().
+Patch 2 adds skb_has_net_iovs(), skb_mem_provider_compat(), and
+skb_frags_can_coalesce(), and enforces provider/binding compatibility
+across TX, TCP, GRO, skb_shift(), and skb_try_coalesce().
 
-Older kernels reject the AF_PACKET dump with EOPNOTSUPP, in which case
-/proc/net/dev_mcast is parsed as before.
+v3 -> v4:
+- Fold skb_shinfo(skb)->nr_frags into skb_has_net_iovs() and drop
+  redundant nr_frags checks in skb_net_iov_provider() and
+  net_devmem_skb_binding() (Stanislav Fomichev).
+- Remove the empty-skb check and redundant !skb_has_net_iovs(skb1)
+  branch from skb_mem_provider_compat(), and add a comment on the
+  early skb_has_net_iovs() check (Stanislav Fomichev).
+- Propagate skb->unreadable and compare skb_frag_netmem() directly in
+  tcp_clone_payload() instead of rejecting unreadable skbs in
+  tcp_can_coalesce_send_queue_head().
+- v3: https://lore.kernel.org/netdev/20261104042521.3979880-1-almasrymina@google.com/
 
-Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
----
- ip/ipmaddr.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+v2 -> v3:
+- Drop patch 2 ('netmem: store memory provider private pointer directly
+  in struct net_iov') and compare net_iov_owner(niov) (for devmem) /
+  niov->desc.pp (for other net_iov providers) directly in
+  skb_mem_provider_compat() (Stanislav Fomichev).
+- Squash the skb_frags_can_coalesce() helper patch into its caller patch
+  (Stanislav Fomichev).
+- v2: https://lore.kernel.org/netdev/20261102231827.4088254-1-almasrymina@google.com/
 
-diff --git a/ip/ipmaddr.c b/ip/ipmaddr.c
-index 95b703d2..2df520a3 100644
---- a/ip/ipmaddr.c
-+++ b/ip/ipmaddr.c
-@@ -261,6 +261,10 @@ static int accept_maddr(struct nlmsghdr *n, void *arg)
- 	ma->addr.bitlen = ma->addr.bytelen << 3;
- 	memcpy(ma->addr.data, RTA_DATA(tb[IFA_MULTICAST]), ma->addr.bytelen);
- 	ma->users = rta_getattr_u32(tb[IFA_MC_USERS]);
-+	/* IFA_F_GLOBAL is the "static" column of /proc/net/dev_mcast */
-+	if (ifm->ifa_family == AF_PACKET && tb[IFA_FLAGS] &&
-+	    (rta_getattr_u32(tb[IFA_FLAGS]) & IFA_F_GLOBAL))
-+		ma->features = "static";
- 	maddr_ins(&ctx->list, ma);
- 
- 	return 0;
-@@ -388,8 +392,10 @@ static int multiaddr_list(int argc, char **argv)
- 		}
- 	}
- 
--	if (!filter.family || filter.family == AF_PACKET)
--		read_dev_mcast(&list);
-+	if (!filter.family || filter.family == AF_PACKET) {
-+		if (read_maddr_netlink(AF_PACKET, &list) < 0)
-+			read_dev_mcast(&list);
-+	}
- 	if (!filter.family || filter.family == AF_INET) {
- 		if (read_maddr_netlink(AF_INET, &list) < 0)
- 			read_igmp(&list);
+v1 -> v2:
+- Generalize the check across TX, TCP collapse, GRO, IP defrag,
+  skb_shift(), and skb_try_coalesce() by storing mp_priv directly in
+  struct net_iov and introducing skb_frags_can_coalesce().
+- Fix skb->unreadable propagation in skb_split() and skb_shift().
+- Add KUnit coverage for cross-provider and cross-binding rejection.
+- v1: https://lore.kernel.org/netdev/20261008034027.1403188-1-almasrymina@google.com/
+
+Mina Almasry (2):
+  net: fix skb->unreadable propagation in skb_split() and skb_shift()
+  net: prevent mixing frags from different memory providers or bindings
+
+ include/linux/skbuff.h | 65 ++++++++++++++++++++++++++++++++++++++++++
+ include/net/tcp.h      |  5 ++--
+ net/core/datagram.c    |  4 +--
+ net/core/dev.c         | 14 ++++-----
+ net/core/devmem.h      | 22 ++++++++++++++
+ net/core/gro.c         | 16 ++++-------
+ net/core/net_test.c    | 42 +++++++++++++++++++++++----
+ net/core/skbuff.c      | 32 ++++++++++-----------
+ net/ipv4/tcp.c         |  2 +-
+ net/ipv4/tcp_output.c  |  3 +-
+ 10 files changed, 157 insertions(+), 48 deletions(-)
+
+
+base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
 -- 
 2.56.0.455.g6c5a503b38-goog
 
