@@ -1,57 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794127425;
-	b=Km9AOQyRxcETZYkbPsdT7aavuJUvVnw2Y8jmpZKiv8iC3RHKxSXFIwGEUNoLYYJhSsWG
-	 hKJIrRl69K8iRvH1jhnx8r8/4SEUqS/o+8mlaMaeL2/3+yk/Xp854pN8yTlTiC0kN4bOx
-	 0ioUVZWYyoqbSSyeKDwq7c5AtM7I1guW9kmZgFX+JF9AaZ8jdOjMuUK6L9KdPJ3g0MDHx
-	 RLdDiQFKg9enkG/DwYYhcPXzJWJosxvTaNinju1YKkc6iLG4WuvvSucBuJ9V41bQS5BCP
-	 fBhMHbLc0eSd0E5Vb7GqqF+N5fH51hIFnvm9p0A/5cM78hh+o0j1nvCba8qwGXj7iAg==
+	t=1794127427;
+	b=g10sUEVXD5kMu/r9a4UI4lIytT8OjIs55mofJai+ua9d3tBlsA3YBgtrk2YhtMs3bMjq
+	 mltICnhg6Xw97f+VNZTgjaoVH8polwvN8ncwhoN7CVXB2NG1HDLVkDEzeaeOx5d9eWCPk
+	 Nx3rYULJ1Hx7jDUO4CxMIbTpe6W5KtJg6DD1Ac8sy8Kx34eg6iJw7xfxRAr0yGAy2aIl0
+	 IbSjftKfKVdbxcJKg9LvatmsmpZx9xRXusHCOGv6JrQ78uASiFialgYzB6oK+aze20PxI
+	 XdkRmEUsG1w3ihNe/zcUXl1gTtK8dTXIIcWyMJdKBUn0nEVQqPUZk9BCynns/NQZnpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794127425;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794127427;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=NTu6xQo3qc3xPnwGy2quUxpwZu0qheDm9O+kUYdRyQQ=;
-	b=oNREaybpsrliXD4Ua/ex3c6Y+ENOlhClCbtvN7OvzyiHa6q0qXTKsG7r5M8hGmIu/y84
-	 Sdn4eNp3gdBXOUyBKGIpCr7mnMgyHhqT0tzzZxthCEMyvZ3mP4CixT8kqu6Pwop/1r+AU
-	 KjLON2E3P5Idwhs/s/NteBZPEBo5DrE5tOxOCzu17349uC53lv6QQ74GdrxjhwCaVEs+H
-	 qjzaXlMhboJxzYEV1ufglSr/qYUbHHsf/xcRkSaME3T8Nch6WxRF4zE+O2FYNPfq08ubE
-	 Gv1tmrzYyXh6PCaeloz2/7ucfVDk4gOdLsdAdiw0Gtw6aJe0adO89ugxYiTlAuV2g1A==
+	bh=D03DLPhiUbatlmzCbhFPIl/sOaArPvqf62qjeV0nhO0=;
+	b=CGtOoYxsbyxqSO8lzD+BimA2gnIA9F41WMPR3MYEwDWtnzeP2IMLvVZbdtejeEBCYavb
+	 GVfSkvIp8TUK78HoxwOm6vHINcdFk+HOsucL1dn0Umwj9N0WHffO3vWCdIVM7pljHsq21
+	 XTboCF7/M/qltqywnBNuEQfwKWp+z2azOPaT6gKpTVDYzlLoMI5Qk6cjWKym+VSlmoSVP
+	 kEhW9OjL2IVToV29T3zgKinDAT2U7Rp0u1+X2tlIZb/HmCJRZeEl5mEU0LUPVjoom9P6g
+	 DsCPLwRspF1q9L2e9cHd+Jv0jydgA31YxK7C5wnjWejoWunV05E+aDGWGAo/RougxRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoXkcmF+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JYVl7s+w;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446D3606A320;
-	Sun,  8 Nov 2026 08:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACDF606A321;
+	Sun,  8 Nov 2026 08:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoXkcmF+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735871F0089F;
-	Sun,  8 Nov 2026 08:43:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JYVl7s+w
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE96E1F0089F;
+	Sun,  8 Nov 2026 08:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794127425;
-	bh=NTu6xQo3qc3xPnwGy2quUxpwZu0qheDm9O+kUYdRyQQ=;
+	s=k20260515; t=1794127426;
+	bh=D03DLPhiUbatlmzCbhFPIl/sOaArPvqf62qjeV0nhO0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KoXkcmF++9T6/0XVOFsol4pJwoU7/qS1b3TIv6cfZwgm8AADDAUHrwRuyX8HMUusP
-	 Bb5eZ6EIYiTjJ7dOSgTtlg04g1YGK/0e3bBrU0VIHEg1Y+nV/CEXkfv0WVg9N9lkMR
-	 EbgTjR61i61I8ftIKzprbg3Ypaf/icfWx+kH+jnOAQLe7nz8jbLLVAGzWzazTFNskx
-	 /vhABeTpvWHWbMtLb0/Bdcruq0wOx2zFOzCTnJJlU2v1l8Dzx/VB4AJZRsb+tL06dp
-	 LDzvmjGlQLmg9yTodJRb3RjWSKlEuheiDeY1+xHpgTMWbN/CeOnIM6RXfXRJh2bfge
-	 HCITEm1BPiDtw==
-Subject: Re: [PATCH net 1/2] net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+	b=JYVl7s+wHQYByJI7xny9hgmFDi/syrj/lODnMBpEfM7QlDOj0RkFyc9VoU/quGTHT
+	 Tx8ilQri/nRj/ahIxxIxx6Hf6bAHLeTmSRiY96ucTcGEKbVWwOOGADUm5wvDIkTMN+
+	 lIZJItcKdadxjbOxJ3/HxCutN9GAmfg/QFrPfQpiWWFZZq8qN3eSXQdvc7NvrNslpL
+	 lZgDASslv3nuJf/yt096NQDzmQV0DLgS0g0UVyWkmK3jfO4u9Ib9kbv3JbM/TGDPsR
+	 /jLyiTqPBvSw4xHl1Mme+/XlLEIgeEGdUl1w/9cJMQqVVb99YdNUVSnJbxPWS4KRnu
+	 WjgLdp30JmxnA==
+Subject: Re: [PATCH net 2/2] net: dsa: realtek: rtl8365mb: keep the neutral
+ PVID in VLAN-unaware bridges
 From: netdev-bot+sashiko@kernel.org
 To: stijncleynhens@gmail.com
 Cc: netdev@vger.kernel.org, linusw@kernel.org, luizluca@gmail.com,
  alvin.sipraga@analog.com, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  namiltd@yahoo.com, linux-kernel@vger.kernel.org
-Date: Sun, 08 Nov 2026 08:43:44 +0000
-Message-ID: <179412742402.994134.1195257082406220235@kernel.org>
-In-Reply-To: <20261104082514.2139278-2-stijncleynhens@gmail.com>
-References: <20261104082514.2139278-2-stijncleynhens@gmail.com>
-X-sashiko-severity: Low
+Date: Sun, 08 Nov 2026 08:43:45 +0000
+Message-ID: <179412742527.994134.15454493035066829519@kernel.org>
+In-Reply-To: <20261104082514.2139278-3-stijncleynhens@gmail.com>
+References: <20261104082514.2139278-3-stijncleynhens@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,111 +65,141 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Low] The commit message says "On its own this has no visible effect".
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] This patch keeps untagged frames of VLAN-unaware bridge ports on
+  the neutral PVID (VID 0).
 
 --
 
-net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+net: dsa: realtek: rtl8365mb: keep the neutral PVID in VLAN-unaware bridges
 
-This commit adds rtl8365mb_vlan_4k_setup_neutral() and calls it from
-rtl8365mb_vlan_setup(). The helper sets Independent VLAN Learning on the
-VLAN4k entry of VID 0, so that lookups and learning match the IVL-keyed
-FDB and MDB entries the driver installs for VID 0.
+This commit stores the PVID that the bridge requests for each port. It only
+writes that PVID to the hardware while the port filters VLANs. Ports of a
+VLAN-unaware bridge stay on the neutral PVID (VLANMC index 0, VID 0), so
+their untagged frames are looked up against the VID 0 FDB and MDB entries
+that DSA installs.
 
-> On its own this has no visible effect: standalone ports do not learn and
-> the driver does not control host flooding, so the unused static entries
-> only meant that traffic was flooded to the CPU. The next patch, which
-> moves VLAN-unaware bridges onto VID 0, depends on it.
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index b90e46c165bf8..a7db267bc8816 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> index 8d49ffadce926..58948e76f122a 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> @@ -322,6 +322,37 @@ rtl8365mb_vlan_4k_port_set(struct dsa_switch *ds, int port,
->  	return 0;
+> @@ -2004,6 +2007,41 @@ rtl8365mb_port_set_vlan_egress_mode(struct realtek_priv *priv, int port,
+>  			RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK, val);
 >  }
 >  
-> +/*
-> + * rtl8365mb_vlan_4k_setup_neutral() - Use IVL in the neutral VLAN
-> + * @priv: realtek_priv pointer
-> + *
-> + * Untagged frames of standalone ports and of ports in a VLAN-unaware bridge
-> + * are classified to VID 0, the VID of the neutral PVID. No bridge VLAN sets
-> + * up its VLAN4k entry, which by default uses Shared VLAN Learning, so the
-> + * switch would learn these frames by FID while the driver installs its FDB
-> + * and MDB entries for VID 0 with Independent VLAN Learning. Use IVL in VID 0
-> + * as in every other VLAN.
-
-[Severity: Low]
-The commit message paragraph quoted above says "On its own this has no
-visible effect". Does that hold for ports in a VLAN-unaware bridge that
-have no PVID?
-
-You can reach that configuration by creating the bridge with
-vlan_default_pvid 0, or by removing a port's PVID with bridge vlan del. At
-this commit such a port falls back to the neutral PVID, which is VLANMC[0]
-with EVID 0. rtl8365mb_vlan_pvid_port_clear() keeps the frame filter when
-the port is not filtering, then sets the PVID index to 0:
-
-rtl8365mb_vlan_pvid_port_clear() {
-    ...
-	} else {
-		/* skip undo_set_framefilter */
-		accepted_frame = prev_accepted_frame;
-	}
-
-	ret = rtl8365mb_vlan_port_set_pvid(priv, port, 0);
-    ...
-}
-
-As a result, untagged frames on that port are classified to VID 0.
-
-Standalone ports don't learn, but bridge ports do:
-
-rtl83xx_port_bridge_join() {
-    ...
-	if (priv->ops->port_set_learning) {
-		ret = priv->ops->port_set_learning(priv, port, true);
-    ...
-}
-
-Before this patch, VLAN4k[0] used SVL, so the switch learned and looked
-up these frames by FID 0. The IVL {VID 0} FDB and MDB entries that DSA
-installs never matched. That includes bridge static entries and the
-assisted learning entries on the CPU port.
-
-This looks like the same roaming and hairpin drop scenario that the
-follow-up patch "net: dsa: realtek: rtl8365mb: keep the neutral PVID in
-VLAN-unaware bridges" describes. This patch fixes it on its own for
-PVID-less VLAN-unaware bridge ports.
-
-This patch has its own Fixes: tag. Could the commit message say that it
-already changes forwarding for PVID-less VLAN-unaware bridge ports,
-instead of only discussing standalone ports?
-
-A related point about the new kernel-doc: it says untagged frames "of
-ports in a VLAN-unaware bridge are classified to VID 0". At this commit,
-ds->configure_vlan_while_not_filtering is set, so rtl8365mb_port_vlan_add()
-programs the bridge PVID (VID 1 by default) even when filtering is off.
-rtl8365mb_port_vlan_filtering() also doesn't reset the port to the
-neutral PVID.
-
-So the comment is only true for PVID-less ports until the next patch in
-the series lands. The code change itself looks correct.
-
-> + *
-> + * Context: Can sleep. Must be called with &priv->vlan_lock held.
-> + * Takes and releases &priv->map_lock.
-> + * Return: 0 on success, or a negative error code on failure.
+> +/* Program the PVID that the port should use for untagged frames: the PVID of
+> + * the bridge while the port filters VLANs, and the neutral PVID (VID 0)
+> + * otherwise. A VLAN-unaware bridge, like a standalone port, gets its FDB and
+> + * MDB entries with VID 0 from DSA. As the switch looks up its forwarding
+> + * database by the VLAN that it classifies a frame to, a bridge PVID would make
+> + * those entries miss every lookup.
 > + */
+> +static int rtl8365mb_port_commit_pvid(struct dsa_switch *ds, int port,
+> +				      bool vlan_filtering,
+> +				      struct netlink_ext_ack *extack)
+> +{
+> +	struct realtek_priv *priv = ds->priv;
+> +	struct rtl8365mb *mb = priv->chip_data;
+> +	u16 hw_pvid, pvid = 0;
+> +	int ret;
+> +
+> +	lockdep_assert_held(&priv->vlan_lock);
+> +
+> +	if (vlan_filtering)
+> +		pvid = mb->ports[port].bridge_pvid;
+
+[Severity: High]
+Ports of a VLAN-unaware bridge now classify untagged frames to VID 0. Since
+the preceding commit "net: dsa: realtek: rtl8365mb: use IVL in VLAN 0",
+can bridged multicast now match VID 0 MC entries that belong to someone
+else?
+
+The hardware MC entry is keyed only by MAC and VID. Member masks from all
+databases are ORed into the same slot:
+
+drivers/net/dsa/realtek/rtl8365mb_l2.c:rtl8365mb_l2_add_mc() {
+    ...
+	memcpy(mc.key.mac_addr, mac_addr, ETH_ALEN);
+	mc.key.vid = vid;
+	mc.key.ivl = true;
+    ...
+	mc.member |= BIT(port);
+    ...
+}
+
+rtl83xx_port_mdb_add() accepts both DSA_DB_PORT and DSA_DB_BRIDGE, then
+drops the database before it programs the entry:
+
+drivers/net/dsa/realtek/rtl83xx.c:rtl83xx_port_mdb_add() {
+    ...
+	/* EFID is not used by hardware MDB entries; debugging only */
+	efid = db.type == DSA_DB_BRIDGE ? db.bridge.num : 0;
+    ...
+}
+
+VID 0 also holds the standalone host entries. Take this call chain:
+
+dsa_user_set_rx_mode()
+  __dev_mc_sync()
+    dsa_user_sync_mc()
+      dsa_user_vlan_for_each()
+
+dsa_user_vlan_for_each() always calls the callback for VID 0, whether the
+port is bridged or not. As a result, dsa_port_standalone_host_mdb_add()
+installs every address in each user port's mc list on the CPU port at
+VID 0. Every lan port that is up has 01:00:5e:00:00:01 (224.0.0.1) and
+33:33:00:00:00:01 (ff02::1) in that list.
+
+Now take an untagged frame to ff02::1 or 224.0.0.1 that enters lan1 of a
+VLAN-unaware br0. It now hits an entry whose only member is the CPU port.
+
+The bridge never adds port members for these groups, because br_multicast.c
+returns early for ipv4_is_local_multicast() and
+ipv6_addr_is_ll_all_nodes(). So the switch would send the frame only to the
+CPU.
+
+rtl8_4_read_tag() then marks the frame as already forwarded:
+
+net/dsa/tag_rtl8_4.c:rtl8_4_read_tag() {
+    ...
+	if (reason != RTL8_4_REASON_TRAP)
+		dsa_default_offload_fwd_mark(skb);
+    ...
+}
+
+Because of that mark, the software bridge doesn't forward the frame to lan2
+either. Would IPv6 router advertisements, MLD/IGMP general queries and
+other all-nodes or all-hosts traffic then stop reaching the other wired
+ports of the bridge?
+
+There is a second case when the same switch has two VLAN-unaware bridges.
+An MDB entry for group G in br0 with members {lan2} would also match br1
+traffic to G arriving on lan3.
+
+The entry's members ANDed with the port mask of lan3 give an empty set, so
+the switch would drop br1's traffic to G instead of flooding it. Is that
+the intended behavior?
+
+Neither case was possible before this patch. These ports were classified to
+the bridge PVID (VID 1), so they missed every VID 0 entry.
+
+The commit message only mentions a limitation for tagged frames. The
+comment in rtl8365mb_l2_add_mc() argues that colliding MC entries cannot
+leak traffic across bridges. It doesn't cover traffic that ends up dropped
+or not flooded.
 
 [ ... ]
 
