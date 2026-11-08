@@ -1,94 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794171851;
-	b=4h90OhnPaybwzGwjJJ6EObOsuK0UpSbtqp4eaHty7VGBvw+rkHLtsGwtIRcUsjopXrkK
-	 +Yt7F4WcaA9yT1G67a2dO3247++LdVJj3EF6yoV/BSHEL+ZcKVfvMQInnYBF4r7oPymCd
-	 dtRpdXV3n1bncrOZuBRXO57Bt1OOxVNbFhfky73VN7cQT6+i+rveEKzPPvIv0ohcXwlVX
-	 PNMeBDOzhTkg1HUmIQbaqODX/FGAsZ5x92zF7HbAKaylosEcxX03Sh/V6A9lXXu5Wb0PK
-	 J8CiNH7uQikESHMEfYc90rRuMMu8uTMzMpXfMJnGSXr893hPJUsnSOjRuAN7gOPcG2A==
+	t=1794171900;
+	b=3soj/k02tEHtj64HD+km+YKLhDarLf9/pSm5S3TDj8sTYuCEKtZD2yBz6Gvm0xx7HqIM
+	 oY7U9s6+3H+YdIkMi1HDQd2O2yezZZ6nnKCRoqeixUrp5EkBIsv0afmGd2pcjL0gZS5dR
+	 W/82oNhmBr6v8OBF0aj+Ftl+L5NbXHM1GOioUDkVKdop7VIUnl9ZQ690k+c+MGHKuYX18
+	 Qtf1HXAGwYD3sg2PyH9AahAmotAmpg7NkU7QXoagia76tUgeCUQnwRlphlxWtRf4LftDG
+	 h9p830+F9xPJgSUepBSpD2kRlBhLkJvBMvPE7P+JgKcvgqJRYlVLySBlP0cZKvxuK1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794171851;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=eIb7bdwJudGm44awRNyhi/z38sBFIBc01LhzAmpW+h4=;
-	b=hJ/YOUjAKPGuwZZxcadZ4pKx8jKvm3SO/pZWEuZp2EbNGnHqvYMJt6prC88tr6Nasuy2
-	 Sjb+oXgM2f0z+k1NR2JQrNv6e7i9o3Lt8S45ZWWcYf+HsKkQVQEjkPw1xaDqoi9gn/k/N
-	 qzjZXvQMV23BOXbKYvcLC/X0BSwJlHngA4oei8K8J2mrSJqDIq5ZkEv0opHqIc8NTVeDJ
-	 wRfw3Ez8WW9FJwjPzJBQ4zSZP85z5aTkKQ+QCb3YLYY/2tljg0NBfNTZlhz5Uc5YWHT9w
-	 P5UfS63rvubvBuNQhkn2kjktdm8BbSMyheQmGr2ge43f+VK/nC8OE1TKQfUpd57cV1w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794171900;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=krgZwyjxrCIUZLlQLcUb/n73QFlmrRfeqYeUKVXIUJ0=;
+	b=d3fU984AVof+pqr8G2JYghZh7vIYgHJN/RNzTd04qR0XuGCEs+AqdcUHDvZFLciAWt1U
+	 I28kiyv++FMaUON6qn/Fu/Uf73AL++z2W41HsjCCt5mK1FYOe/4z4CyGlDZUhH1LHqVvS
+	 N4BCSxYKRoaiDepbTiDXYFXviLR+Ud6wcrI8Lyle41EUd5k/gIXkG1VPSoyhrIK3JqPr9
+	 yLECDZC4KKrFrUK3nnymhqcw4oDwFDFY3OYFe/Gg1pmiZjgLsc8IHQNehqw4AOQBoWz/E
+	 867kGdMikzJ5uy5l85T6z9zW+9LBE4RNM1CabJX2mrUwJZpYV+l3UyVimpxhqcFqfWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=m96FZTEu;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OmMyhEg1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1191F606A320
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 21:04:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1191F606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCCC606A31C;
+	Sun,  8 Nov 2026 21:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=m96FZTEu
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso106544a91.2
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 13:04:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794171850; x=1794776650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eIb7bdwJudGm44awRNyhi/z38sBFIBc01LhzAmpW+h4=;
-        b=m96FZTEuIAb1CYOvgLsTEIMyqu1plbocUGEaOJnkyQkNav2+Oz1eUD1BpW3lwJpXTp
-         kMHAbNkuMouCdo4oJe/tv+AwLFqY4uj0pvCBai177lKT1eaB27LpwOsRmUh36dFYEPGk
-         ZgE+/VT5cgtbEe9NZTjFdnYWB5w8wL5NUD0AMhFUmTW3PGHe6dgp/OQ1HvubR5VW23qx
-         mhb3DDxokoWis8dAGrQt6mKrBXYsepIj8yVr8Ucp99nz06j6L9ZC1FkGmhXRUaKNnqbD
-         jBliXU7M0Xx6yntrVDoYxirnPsTr7SOADi21fooV7Uwhh5GMij8v1BWTDhQH0bTywPVk
-         kIxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794171850; x=1794776650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eIb7bdwJudGm44awRNyhi/z38sBFIBc01LhzAmpW+h4=;
-        b=ZJa+AnRXbCQBq+kDFqL0miuniIM18t5zgob8798/xxEX5qVkoeTxvw+/HkrjpLuhhX
-         sHK6l6Z8/NXHuSeUKigi2l+Q4NYU70fFyvkG/sVDIqZ0tCcOGkZHcJpaocowlhdpDHdg
-         nfeQlVUOu6xPbDYeLlctp3LafyKK9lvhw6mTyMMdhsS7XK7Rwe6EphJeEFfusPO/TOo/
-         xnC1DUXOt42pnDFSVQXaQR+Vhlur3i4KAzE+gqrnlbtGvZ8fRDdomBzkySi5RxDZ6IVd
-         1f5HHb9FKcvgUdT6tWNcdNy+I7V658+pkGYrQBn6cgtqM6VxGUgfDCfgutbNDYOvVd/r
-         nASA==
-X-Gm-Message-State: APuU4Z+XmsCM4d3BchpEOtPjI4b96gzxJpucD5+19gCjRBezSbVxN6Zw
-	PdMFrHPyiM6T6h+hiLzzLyVLNCx1J1lFWOdfCYAojqecIteJjmDMWPPLjcY9BQ==
-X-Gm-Gg: AYBFou2bXjRVFFx++aNiaYr7Dw7TcO2b5BD7ftZee0b6B8bHFBkBYIonYDdWDzDPPpb
-	ektlZ0QLjt5Sq6jsjTjgLyt/CG5DY08Bwun5rf1MCZRVbDqw51uTUGDVKsBadnSNTsy5Nv7xn0V
-	BaFLMjzkiTmboYirJAnkr107ZCy9qvddFMwo7355q1aoeHUDCY6gj/Gfc7OdzhPNM9jiVvuPgK5
-	AXOvPAfw+pW2dFJauMUZfHdcPLkMSNp5GP6tkTKloUfOLbWi0+ny6/rCffDWOsq1C6f79hFHZyB
-	pRXZV02BqTKcQS/Rvl4MTQA6fqOvMy3s5eddFF9oUOL+/6ncHI5HXJpGi/2GtjxKaW9W7PqnPn0
-	4WhGsWV+hE7zN7xzIgVf+Y8Qd85NCGPE4xXBXmReE/YymZRVac00EsGdXs02qIY4s902dc/jdxN
-	Kdk5EcXBhUQdNN+L7LdGgqWuB2N/NVfb38SLUPsp1cCHdCutfvYJ7rDGn22bWPG5o5Cbyq88lBm
-	NWM6zrYoDRoybrTHZ2GA1c7nQVE4wWf1qkJwN8I1bg9Mx2b0UlH5xms83rwQxQYv3PE2EhYJMLO
-	9edm/gJjdPnN8z4j5tZe2Tm7HQjtEA915MQqP5c7UlhVgHLs+qjL6A==
-X-Received: by 2002:a17:90b:4a51:b0:3a4:b30b:b501 with SMTP id 98e67ed59e1d1-3b12d0e965amr2097709a91.9.1794171850235;
-        Sun, 08 Nov 2026 13:04:10 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1279158c4sm4209414a91.14.2026.11.08.13.04.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 13:04:09 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: dsa: motorcomm: Reread port flags on bridge joining
-Date: Mon,  9 Nov 2026 05:03:54 +0800
-Message-ID: <20261108210357.1633411-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OmMyhEg1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE161F0089F;
+	Sun,  8 Nov 2026 21:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794171899;
+	bh=krgZwyjxrCIUZLlQLcUb/n73QFlmrRfeqYeUKVXIUJ0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OmMyhEg1BPjcNDIitkZuD3rqShKRhucsH5bhcXilZgQjIORW1QFJBeohga/z5mlEZ
+	 b/NUUbV7/srSV/4k/tX/wW9y1DYYGHM/OB8MBnZxzpwlQDwRxObXciStJ0DUVXsmX0
+	 T66mrwHrWoUW8nWO5juqjCY6FmDmNJII8n/LWMNqUrfjjCzW6v1VGeDl1naFrF9IcZ
+	 mwB9LVFcK9MjruDckre2HSK6DO69CkEH5Ctge6Ys2WnFsZaulf+xcVg9s6RghJDjxM
+	 vEhL9IZniXaFZBvX8C/yh39ykW5pFzPf2d1A78c6REM16e0r4tCCF8ST5a3eM4NW/h
+	 1kSwXac2b59TQ==
+Subject: Re: [PATCH net v2] net: mii: Accept link settings read back while the
+ link is down
+From: netdev-bot+sashiko@kernel.org
+To: anthony.pighin@nokia.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ zhangxiangqian@kylinos.cn, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Sun, 08 Nov 2026 21:04:58 +0000
+Message-ID: <179417189843.994134.10373591226348070230@kernel.org>
+In-Reply-To: <20261107210236.721901-1-anthony.pighin@nokia.com>
+References: <20261107210236.721901-1-anthony.pighin@nokia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,46 +64,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-DSA replays neither BR_ISOLATED nor BR_HAIRPIN_MODE on join (e.g. a LAG
-member rejoining its bond), so the cached flags survive into the next
-bridge join and program stale hairpin and port isolation state. Sync
-them from the bridge port.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/chip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 33e5fc127244..fcc3a299ed66 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -1405,6 +1405,9 @@ yt921x_dsa_port_bridge_join(struct dsa_switch *ds, int port,
- 			    struct netlink_ext_ack *extack)
- {
- 	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
-+	struct yt921x_port *pp = &priv->ports[port];
-+	struct net_device *brport_dev;
-+	struct dsa_port *dp;
- 	u16 ports_mask;
- 	int res;
- 
-@@ -1414,7 +1417,12 @@ yt921x_dsa_port_bridge_join(struct dsa_switch *ds, int port,
- 	ports_mask = dsa_bridge_ports(ds, bridge.dev);
- 	ports_mask |= priv->cpu_ports_mask;
- 
-+	dp = dsa_to_port(ds, port);
-+	brport_dev = dsa_port_to_bridge_port(dp);
-+
- 	mutex_lock(&priv->reg_lock);
-+	pp->isolated = br_port_flag_is_set(brport_dev, BR_ISOLATED);
-+	pp->hairpin = br_port_flag_is_set(brport_dev, BR_HAIRPIN_MODE);
- 	res = yt921x_bridge_join(priv, port, ports_mask);
- 	mutex_unlock(&priv->reg_lock);
- 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] On ksz884x, `ethtool -s ethX autoneg on` while the link is
+  down now succeeds but writes a half-duplex-only advertisement to the…
+
+--
+
+net: mii: Accept link settings read back while the link is down
+
+This patch changes mii_ethtool_get_link_ksettings() so that it reports
+SPEED_UNKNOWN only when autoneg is enabled and the link is down. It also
+makes mii_ethtool_set_link_ksettings() accept SPEED_UNKNOWN when autoneg
+is enabled. With both changes, ethtool's read-modify-write of link
+settings succeeds while the link is down.
+
+> diff --git a/drivers/net/mii.c b/drivers/net/mii.c
+> index 37bc3131d31a8..225488f2438b2 100644
+> --- a/drivers/net/mii.c
+> +++ b/drivers/net/mii.c
+> @@ -199,6 +199,9 @@ void mii_ethtool_get_link_ksettings(struct mii_if_info *mii,
+>  			cmd->base.speed = SPEED_10;
+>  			cmd->base.duplex = !!(nego & ADVERTISED_10baseT_Full);
+>  		}
+> +
+> +		if (!(bmsr & BMSR_LSTATUS))
+> +			cmd->base.speed = SPEED_UNKNOWN;
+>  	} else {
+>  		cmd->base.autoneg = AUTONEG_DISABLE;
+
+[ ... ]
+
+> @@ -333,9 +333,11 @@ int mii_ethtool_set_link_ksettings(struct mii_if_info *mii,
+>  	struct net_device *dev = mii->dev;
+>  	u32 speed = cmd->base.speed;
+>  
+> +	/* Autoneg ignores speed, which is SPEED_UNKNOWN while the link is down */
+>  	if (speed != SPEED_10 &&
+>  	    speed != SPEED_100 &&
+> -	    speed != SPEED_1000)
+> +	    speed != SPEED_1000 &&
+> +	    !(cmd->base.autoneg == AUTONEG_ENABLE && speed == SPEED_UNKNOWN))
+>  		return -EINVAL;
+>  	if (cmd->base.duplex != DUPLEX_HALF && cmd->base.duplex != DUPLEX_FULL)
+>  		return -EINVAL;
+
+[Severity: Medium]
+Can this make ksz884x write a half-duplex-only advertisement to the PHY
+when "ethtool -s ethX autoneg on" is run while the link is down?
+
+With autoneg on and the link down, lp_advertising is 0 in
+mii_ethtool_get_link_ksettings(). That makes nego 0, so the read-back
+is:
+
+    cmd->base.speed  = SPEED_UNKNOWN
+    cmd->base.duplex = !!(nego & ADVERTISED_10baseT_Full);  /* DUPLEX_HALF */
+
+The commit message cites genphy_read_status(), but unlike that function
+this code does not report the duplex as DUPLEX_UNKNOWN here.
+
+The ksz884x caller, netdev_set_link_ksettings() in
+drivers/net/ethernet/micrel/ksz884x.c, treats the read-back speed and
+duplex as user intent when autoneg is set and the advertising mask
+matches priv->advertising:
+
+    if (cmd->base.autoneg && priv->advertising == advertising) {
+        advertising |= ADVERTISED_ALL;
+        ...
+        if (0 == cmd->base.duplex)
+            advertising &=
+                ~(ADVERTISED_100baseT_Full |
+                ADVERTISED_10baseT_Full);
+        ...
+    }
+    ...
+    } else {
+        port->duplex = cmd->base.duplex + 1;
+        if (1000 != speed)
+            port->speed = speed;
+        ...
+    }
+
+As a result:
+
+- the full-duplex modes are dropped from the advertising mask
+- port->duplex becomes 1 (half)
+- SPEED_UNKNOWN is truncated to 0xff in the u8 speed field of struct
+  ksz_port
+
+Before this patch, mii_ethtool_set_link_ksettings() returned -EINVAL for
+SPEED_UNKNOWN and never touched MII_ADVERTISE. Now it continues: it
+writes ADVERTISE_10HALF | ADVERTISE_100HALF through the driver's
+mdio_write() and restarts autoneg. Once a cable is connected, the PHY
+negotiates half duplex.
+
+The legacy ethtool path reaches this directly. "ethtool -s ethX autoneg
+on" sets advertising to the current non-mode bits plus all supported
+modes. When the PHY already advertises all four 10/100 modes, that
+matches priv->advertising. Speed and duplex are passed through
+unchanged from the read-back.
+
+port_set_link_speed() also reads port->duplex == 1 as a manual
+half-duplex request, and strips the FD bits again on later
+reconfiguration:
+
+    if (1 == port->duplex)
+        data &= ~(PORT_AUTO_NEG_100BTX_FD |
+            PORT_AUTO_NEG_10BT_FD);
+
+The old code already wrote the port fields before mii_ethtool_set_link_ksettings()
+returned -EINVAL. What is new is that the PHY now gets reprogrammed right
+away.
+
+Could the get and set paths be made consistent here? One option is to
+report DUPLEX_UNKNOWN for autoneg with the link down, as genphy does,
+and accept it under autoneg in the set path. Another is to make sure
+callers like ksz884x do not treat speed and duplex from a link-down
+read-back as user intent.
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107210236.721901-1-anthony.pighin%40nokia.com
