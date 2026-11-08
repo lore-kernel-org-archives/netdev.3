@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794178925;
-	b=bcXpRRBrkaJmr3Sqet8S4tPt3bmPSOWLulNqBo2oyR7IpO+wfVNvE38vB0BFkkJrEFO9
-	 u2vhTfnTb/YMbKEXqQB4tAaMY9QFKSPiWcNOx2T+GZQNDnUf6/h/h4wRrXCVDEvY5VitZ
-	 SaPz2CV5sC3cvBdGiUWwSVHgQ71OWF3eWbWKSMgtgy82tEWA9R1QjNzA1KW9EwQoG2SVv
-	 hyTccXD+R8LaLoo4zK50Gqe3viO2eGdKItV3SGOa7ID64dWni94740Px3Fmnj2HfsN5Ae
-	 xa+qSszK+b8hVVlnLCfj+tWT+N0F+7fSRZO5sDCAZkGZaIGkMEHP4xhb/tMr8gj7Vrg==
+	t=1794178920;
+	b=cvs/m/wvPUkMapJ2uNHRWmiuXfKNvj1uF963BTmqIAwhzNisXcpP6gT9spov/sdnqK3h
+	 WyTQeLAgUJ22Q/adySdg+aXsxbtStBgXpFa0WLyYc+zE9epNJ0y5LEMYJd71fPzAHuE1s
+	 xQCg7KS+xbXjTbJZxDjf96ToiOg5TwqUeVsFKzHmEx6xQQBo4kO7uwgM36PsdG1MjDKpB
+	 85DnRgLzfSwzrgMNu+hcW43rejotKuzIvMvxPVRaZNR9kNgn8JmSKVJH2kb/Ifnje/5kP
+	 ci8uwbNW/LI3u4S+W41zEDYNJpV2BuFJXENTKv6cfLBqpjc3SlijKcktE/zFGeY4LWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794178925;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794178920;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=aHa9EsIbkQj3QkxuMW9rElf3U34lECQh15at03Vz2fI=;
-	b=lS+EsmMJh+mh25ykWfNR2CeC0OC5YZpC1SXYqFx6CQPFgPQRTgGcQ8xJzkFx5+sBuzmx
-	 aa0beaViAnpJTmaNTi58hg/SpGgUvpI2MayxNXrndtqR0Wzj6z04TMUKXovvyU84AGKMG
-	 Lx6EQIoxCA4E6rIX9VFvGcWtKWMsTWEfYYfArQojty7zMNKuidhD/l3xcE9YP1Z7hKNs6
-	 dHO01Nht1wuJXG9QtWKb2MVk8SuI1nbq8nsvFH4fLIct+IEVSlPq7GP3fGEjyibZkMjy4
-	 dSXLiPv9ltLjKUfnj3OpZ5MZ9jF69/5AsB9NRCxD2UHb34NovUdatEnnj+DGevPMTXQ==
+	bh=zKx5R6i9AUhGBVwnmAlpJmhnW8ZyYNcifeunGVtyNv8=;
+	b=lpQoGvMeIQ3le617Up2cp5RPFA5KGNNoM6lGaGm+8ZmR+QR4nP3HfqxEVPd2ExyZCW1o
+	 1vMids9mKOtAedNh9Nc+y8svTFX7WdMN3U14Z8lEwSLMXMzuududKPmBiElksDhp/+szb
+	 c/GS7/Wq86VxIMtxCSbU9D23jGgFE4A9OLSrTdFuBvQrYZv76n/H3fgF9NPkh7LuYrtca
+	 xgrYX/47nmCdga/SK9nuPk8sQOUj8l2ILtRkT5+e7F/0nHJYXG6vF3qVs4zhvPXjnqWC2
+	 r4j6I3a5Lne7OJxwiZ1JEEDdezYgR9KRThBHO1vPGQnjOpRKLGXV9l3cndKWA2I3z/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U4qJtvhG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RaTAtZ8s;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2297F606A321;
-	Sun,  8 Nov 2026 23:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E64606A322;
+	Sun,  8 Nov 2026 23:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U4qJtvhG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7BF1F0089F;
-	Sun,  8 Nov 2026 23:02:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RaTAtZ8s
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1385D1F008A1;
+	Sun,  8 Nov 2026 23:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794178924;
-	bh=aHa9EsIbkQj3QkxuMW9rElf3U34lECQh15at03Vz2fI=;
+	s=k20260515; t=1794178919;
+	bh=zKx5R6i9AUhGBVwnmAlpJmhnW8ZyYNcifeunGVtyNv8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U4qJtvhGCOle3g1eSa3RPf8a0E0hWvaU17lT+MvP+kiwbI279KOIZ9W1uHBIOrdwd
-	 gdhjnodkCqCQfB+CDa0ZCzitr+BjCQf+OoUkZDHWe1N2mFCh9f4TG8ZTc5awPz7d1s
-	 dnMJO95sAEj2Er8Fksrou0xxmavjCps9orG/hXuUZ5wioLAKNjjXMGBAOqPqMXqTWR
-	 heLfdjD+Wqm+T1eigUUZtTiT5FOUKtFT5kdahGIZcoTLcT61kikZv7jopmluDFp1DK
-	 K0RStBidWHiKLWBMFV24kWenO6flk2GpJJDp0fxp7/hEeJQ7DJYIGLlfQrah63Yeja
-	 deHK7li9SXJdA==
-Subject: Re: [PATCH net v3 8/8] selftests: net: tuntap: write UDP tunnel
- offsets in little endian
+	b=RaTAtZ8sAQWwuJEHl9M5It5XhW8RlO9VqHObl6A+XPgdBH3jmiJOR3WoJ/uasmcNL
+	 LbLWLGaABD4SOp6hDWe9Pi9yPGOWe5GzmZby4gmaSRQ7Cq0VlDZMI5QypU/vj7Zckp
+	 YDH7Xw4op4RAkzKCYRm+CP2hhhnWqLiKbRhMO7SzHFawmqtLXVpBQ5WYU9sG3ab+6I
+	 4VPiI/vHe6+nHa1WdZ+4gngRRtpse4UuJQjn40hJetD/bH5LnYUiszTFSTYdNN5zee
+	 DK1kyfaK16C2AY5eCqVt6kxnm+/Zv8/ekrZUIyyMKjPot/kIBFmkj2PmDyWzLEdOxl
+	 JO53p6qo0CVcQ==
+Subject: Re: [PATCH net v3 2/8] net: virtio: do not use dev->type to find the
+ outer L3 header
 From: netdev-bot+sashiko@kernel.org
 To: edumazet@kernel.org
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  pabeni@redhat.com, horms@kernel.org, willemb@google.com, mst@redhat.com,
  jasowangio@gmail.com, eperezma@redhat.com, hassansultan@google.com,
  virtualization@lists.linux.dev
-Date: Sun, 08 Nov 2026 23:02:03 +0000
-Message-ID: <179417892365.994134.10585353902960139433@kernel.org>
-In-Reply-To: <20261105115715.1466924-9-edumazet@kernel.org>
-References: <20261105115715.1466924-9-edumazet@kernel.org>
+Date: Sun, 08 Nov 2026 23:01:58 +0000
+Message-ID: <179417891864.994134.2460720079613864614@kernel.org>
+In-Reply-To: <20261105115715.1466924-3-edumazet@kernel.org>
+References: <20261105115715.1466924-3-edumazet@kernel.org>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,7 +68,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,77 +76,149 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] selftests: net: tun: UDP tunnel GSO tests still fail on big-
-  endian hosts
+- [Medium] net: virtio: outer_l3min includes ETH_HLEN in
+  virtio_net_hdr_tnl_to_skb()
+
+Pre-existing issues:
+- [Medium] This patch makes Ethernet framing an explicit argument
+  (`has_eth`), but virtio_net_hdr_tnl_to_skb() in…
 
 --
 
-> diff --git a/tools/testing/selftests/net/tuntap_helpers.h b/tools/testing/selftests/net/tuntap_helpers.h
-> --- a/tools/testing/selftests/net/tuntap_helpers.h
-> +++ b/tools/testing/selftests/net/tuntap_helpers.h
-> @@ -375,11 +377,14 @@ static inline int build_virtio_net_hdr_v1_hash_tunnel(uint8_t *buf, bool is_tap,
->  	inner_iphlen = (inner_family == AF_INET) ? sizeof(struct iphdr) :
->  						   sizeof(struct ipv6hdr);
+net: virtio: do not use dev->type to find the outer L3 header
+
+virtio_net_l3_start() used skb->dev->type to decide whether a frame
+starts with an Ethernet header. tun can change that type with
+TUNSETLINK, so this patch adds a has_eth argument to
+virtio_net_hdr_tnl_to_skb() instead. Callers now pass true for
+virtio_net and tun_xdp_one(), and pass whether the device is IFF_TAP
+in tun_get_user().
+
+Link: https://lore.kernel.org/netdev/179387332014.488856.9111956413610107951@kernel.org/
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index dcec7311e6011..3920b3dff1e84 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1944,7 +1944,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		break;
+>  	}
 >  
-> -	vh_tunnel->outer_th_offset = eth_hlen + outer_iphlen;
-> -	vh_tunnel->inner_nh_offset = vh_tunnel->outer_th_offset + ETH_HLEN +
-> -				     GENEVE_HLEN + sizeof(struct udphdr);
-> +	outer_th = eth_hlen + outer_iphlen;
-> +	inner_nh = outer_th + ETH_HLEN + GENEVE_HLEN + sizeof(struct udphdr);
+> -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+> +	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr,
+> +				    (tun->flags & TUN_TYPE_MASK) == IFF_TAP)) {
+>  		atomic_long_inc(&tun->rx_frame_errors);
+>  		err = -EINVAL;
+>  		goto free_skb;
+
+[ ... ]
+
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index 357116c2a1489..b7b6b542f4763 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+
+[ ... ]
+
+> @@ -452,6 +450,7 @@ virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
+>  static inline int
+>  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
+> +			  bool has_eth,
+>  			  bool tnl_hdr_negotiated,
+>  			  bool tnl_csum_negotiated,
+>  			  bool little_endian)
+> @@ -505,7 +504,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+>  	if (ret)
+>  		return ret;
 >  
-> -	vh->csum_start = vh_tunnel->inner_nh_offset + inner_iphlen;
-> +	/* The tunnel offsets are always little endian. */
-> +	vh_tunnel->outer_th_offset = htole16(outer_th);
-> +	vh_tunnel->inner_nh_offset = htole16(inner_nh);
-> +
-> +	vh->csum_start = inner_nh + inner_iphlen;
->  	vh->csum_offset = __builtin_offsetof(struct udphdr, check);
->  	vh->flags = VIRTIO_NET_HDR_F_NEEDS_CSUM;
->  	vh->hdr_len = hdr_len;
+> -	if (!virtio_net_tnl_offsets_ok(skb, outer_isv6, outer_th))
+> +	if (!virtio_net_tnl_offsets_ok(skb, has_eth, outer_isv6, outer_th))
+>  		return -EINVAL;
 
 [Severity: Medium]
-Does this fully fix the big-endian case? The commit message says
-csum_start follows the tun vnet header endianness, but that holds for
-only part of the kernel path.
+Now that the framing is passed in as has_eth, should the minimum outer
+transport offset check earlier in virtio_net_hdr_tnl_to_skb() depend
+on it as well? outer_l3min is still computed as ETH_HLEN +
+virtio_l3min(outer_isv6), so outer_th must be at least 34 for IPv4 or
+54 for IPv6, whatever has_eth says.
 
-tun_open() never issues TUNSETVNETLE, so on a big-endian host
-tun_vnet_is_little_endian() is false. virtio_net_hdr_tnl_to_skb() does
-read csum_start with __virtio16_to_cpu(little_endian, ...) for the
-initial offset ordering check. It then calls
-__virtio_net_hdr_to_skb(skb, hdr, true, ...) with little_endian
-hardcoded to true.
+On an IFF_TUN device, tun_get_user() calls skb_reset_network_header()
+and passes has_eth=false. virtio_net_l3_start() then returns nhoff = 0,
+and virtio_net_l4_start() computes thoff = 20 for a plain IPv4 outer
+header, or 40 for a plain IPv6 one. virtio_net_tnl_offsets_ok() then
+requires outer_th == thoff, but the floor above has already rejected
+both values.
 
-Inside __virtio_net_hdr_to_skb(), csum_start, csum_offset and
-gso_size get byte swapped. build_virtio_net_hdr_v1_hash_tunnel()
-still writes all three in host order, so:
+As a result, the has_eth=false path only accepts frames whose outer L3
+header is at least ETH_HLEN bytes longer than the minimum, such as IPv4
+with options or IPv6 with extension headers. Would ordinary UDP tunnel
+GSO frames written to an IFF_TUN fd get -EINVAL and be counted in
+rx_frame_errors?
 
-  csum_start 84 becomes 21504
-  csum_offset 6 becomes 1536
-  gso_size 1400 becomes 30725
+The transmit side of the same ABI produces exactly those offsets: in
+TUN mode virtio_net_hdr_tnl_from_skb() fills outer_th_offset from
+skb->transport_header - skb_headroom(skb), which is 20 for an L3-first
+IPv4 frame. set_offload() also enables NETIF_F_GSO_UDP_TUNNEL without
+looking at IFF_TAP or IFF_TUN, so IFF_TUN devices reach this path.
 
-The 2800 byte frames used by tun_vnet_udptnl_proto and
-tun_vnet_udptnl_proto_l3 are much smaller than that. The
-pskb_may_pull() for the checksum location therefore fails, and
-write() returns -EINVAL before virtio_net_tnl_offsets_ok() is ever
-reached. The outer_proto_bad* cases would still see EINVAL, but for
-the wrong reason, and the positive cases would still fail.
+This isn't introduced by this patch, but since has_eth is now available
+here, would something like this work?
 
-The receive side has the same problem.
-virtio_net_hdr_tnl_from_skb() calls
-virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen), so
-gso_size comes back little endian. recv_gso_packet() then compares
-vh->gso_size directly against the host order variant->gso_size.
+	outer_l3min = (has_eth ? ETH_HLEN : 0) +
+		      virtio_l3min(outer_isv6);
 
-So the UDP tunnel tests in tun.c would still fail on big-endian
-hosts after this patch. Which way do you want to fix it?
+[Severity: Medium]
+This isn't a bug introduced by this patch, but now that the framing is
+passed in as has_eth, should the minimum outer transport offset in
+virtio_net_hdr_tnl_to_skb() depend on it too? That check comes earlier
+in the same function and still assumes an Ethernet header:
 
-One option is for the tests to switch the device to little endian
-with TUNSETVNETLE and write the base header fields with htole16() too.
+include/linux/virtio_net.h:virtio_net_hdr_tnl_to_skb() {
+    ...
+	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
+    ...
+	if (outer_th < outer_l3min ||
+	    inner_nh < outer_th + sizeof(struct udphdr) ||
+	    inner_th < inner_nh + inner_l3min)
+		return -EINVAL;
+    ...
+}
 
-The other is to treat the hardcoded true in
-virtio_net_hdr_tnl_to_skb() and virtio_net_hdr_tnl_from_skb() as the
-real bug. The same function already decodes csum_start with
-little_endian a few lines earlier.
+On an IFF_TUN device, tun_get_user() resets the network header and
+passes has_eth=false. virtio_net_l3_start() then returns nhoff = 0, and
+virtio_net_tnl_offsets_ok() requires outer_th == thoff. For a plain
+outer header, thoff is 20 for IPv4 and 40 for IPv6. The floor above has
+already rejected both values, since it is 34 or 54.
+
+As a result, the has_eth=false path only accepts frames whose outer L3
+header is at least ETH_HLEN bytes longer than the minimum, such as IPv4
+with options or IPv6 with extension headers. Would ordinary UDP tunnel
+GSO frames written to an IFF_TUN fd get -EINVAL and be counted in
+rx_frame_errors?
+
+The transmit side of the same ABI seems to produce exactly those
+offsets. In TUN mode, tun_put_user() ends up in
+virtio_net_hdr_tnl_from_skb(), which writes:
+
+	outer_th = skb->transport_header - skb_headroom(skb);
+	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
+	vhdr->outer_th_offset = cpu_to_le16(outer_th);
+
+For an L3-first frame, that gives 20 for IPv4. Also, set_offload() in
+tun.c enables NETIF_F_GSO_UDP_TUNNEL without checking IFF_TAP or
+IFF_TUN, so IFF_TUN devices can reach this receive path.
+
+The selftest commit in this series also mentions the limitation: "The
+outer IPv4 header carries options, as virtio_net_hdr_tnl_to_skb()
+expects room for an Ethernet header before the outer transport header."
+
+Would something like this work here?
+
+	outer_l3min = (has_eth ? ETH_HLEN : 0) + virtio_l3min(outer_isv6);
+
+>  
+>  	/* In case of USO, the inner protocol is still unknown and
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105115715.1466924-1-edumazet%40kernel.org
