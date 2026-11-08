@@ -1,59 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794161455;
-	b=ROlqkX1hhHhl9IbzjCmB4D5GgIwoiBuEIoVtTeP9bslhLy6rMc9Gmpt0YLCJqflJ5kZ0
-	 k3iTsst4PA7D2KBohYmf07PFlVSjKZgN/TJRDrVIrgLiTV6fv8NzQwXyqCmAfWCy15rR6
-	 Ihr8Qdpk2sX4HtKw6cCKBA/qxoO4gIhvy0hFpO7U+LVbIdxFgxthsy3obU9tvEGMiVt70
-	 JHf9o7p3VU9KQrLRsnTappZETBr46hd6ghCJD6TlzLikdQJHFrcDiHJvilVkjXjRxWHvq
-	 5l/DyVGx2gYMK8wJWzybtV+5h4ex3WccyWDUnSIRq849jF/oLyCbTudvZza5I0Jx1UA==
+	t=1794162725;
+	b=r0M39hjuWDFo/HZPBfFnjQCrIAsj10HNteEokUGeXvP0zibMyLdIMZQfIMlw/myuGAlf
+	 mfLa3X1kVmaz1gvkMsemmuNIHDNsD+ziUjBSwp27PVHrFLTt5qPWE68pvuTzjK/ohkKXA
+	 aDYhEn7bCcM8UkmgXcq4ebhWB2gy+Zi5khH/Gw1g6e7X08CW0MQ+PB4VWNy5cmqr2FDJc
+	 OIkucq2/FL/booLQrDFBNBfpaRq72KIAtz3ngCXyCqh+DFTzFIbXvd2rIYEh8/V8rEtGP
+	 KW/SoGGYLtKoTXYR43xNwEUTqR4Uk6M8v7cn9i/UnT7wqZsXGXWExxrCLQF3DLd01sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794161455;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=mWlw/ViMWFPCs+qMA43hWXn+bbri2664QL/7yWSVSy0=;
-	b=BIhWhNXiL60CSI/HEz2m7e3n9Zh6TMweRbH0TRD/cfUJuUzrX1NyQzHtPamMPAJcX8rz
-	 ONHD9tkGBLIIHtlFZTchn9v6Dyb5Dh60ug1QJbVexMnVus0UEvqHmezpM1sNXB8c7WsgK
-	 UInSGAavxye0rem0fO99Uw2Nkr2Ff/PMObpcQevoWsnLPLCBCt4rp62ydBvqv++ewLl8j
-	 11y2L+8slwj/7OEgLbIdTtrA4l2U+uTl+HZz8YocctvCBh7FFvwC1DqqJrZiLhZoQe+9W
-	 Qp3VG7zZ5Xxjfk3e15L5aGg3JnG3TYgoozIeyeXTIV0HNukt7ay7GzYwNCh1WVfPc7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794162725;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=dFkadmcoyh6vL70GL1A4zEl8wwQu3kHxlpOJ4h+0Quw=;
+	b=O0kS71Gd7ClklOBigBP+C/cu+QttJDD05aYuzP3ZNO6EbaQIp5Khhzgzbm7zTL1+fJ0x
+	 wP2crvSMD5NderitnkyrWC657786pJvD11dp1UcUkc2GM/vKgCLJstN7oEgUI1tADKH6k
+	 RIcj0cs3E4g/MiHTUok5+4LC8pnZlBbTyVftUg+hZlHx4cb/f4fkZl4cT+cYhuLqX2vMH
+	 OJwd90brmsbrgsT9MtoecrniFrAfe7ny0cndd3wHuLtSUXqHp3A6xEYt0zKuPUUZ/StuR
+	 7Lt8iOW/fMLg85cr9n41Ubv5UMme8fBZMHiJq3NFKbEqW5mImIh6f9/in28wSoimM8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDZ+Xu6z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="IJ80/boD";
+	arc=none smtp.remote-ip=209.85.216.51
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D162606A31C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE71606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 18:32:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6EE71606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GDZ+Xu6z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53FF1F008A5;
-	Sun,  8 Nov 2026 18:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794161454;
-	bh=mWlw/ViMWFPCs+qMA43hWXn+bbri2664QL/7yWSVSy0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GDZ+Xu6zUqO/w+9Iy3cMwjVNWVbgh5MMOQKUsQoGlVzFsDg49Cv+fo8zM6pBpmsFO
-	 ku1oQHUyw4ZajxCGz3aBNv9RDipg02SQQcuI50aZNIQThdfIZ9p1GexxvfFSZok1lO
-	 1iJ7UvC6GcIgIZTi5JLhYcFyppNLAcVWtNKtBhbh5uTdYpQzbeQMNO1u+/Lo1+RAGk
-	 gzZL3euBNsyWrrRwujFzrFg8cyHu8MHn0skYgDJFU0jXC885+gJA0NQk4foi9NtP7Q
-	 3hAp93QFltTgFsh1/IV57MichPlcqGK0wiD5RigPEQbEkvkh1tvLs0QIxe3Z0W6Ymx
-	 /jN4E04r0ghjg==
-Subject: Re: [PATCH net] net: reset transport_header for ndo_features_check
-From: netdev-bot+sashiko@kernel.org
-To: tactii@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- alexanderduyck@fb.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com
-Date: Sun, 08 Nov 2026 18:10:53 +0000
-Message-ID: <179416145321.994134.5211085786998602067@kernel.org>
-In-Reply-To: <20261104175517.2395704-1-tactii@gmail.com>
-References: <20261104175517.2395704-1-tactii@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IJ80/boD
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b09a83d12aso135518a91.2
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 10:32:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794162725; x=1794767525; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dFkadmcoyh6vL70GL1A4zEl8wwQu3kHxlpOJ4h+0Quw=;
+        b=IJ80/boDQtMRoIwjrZsUSJQgl+ycHU6Grft8+P2IPGh/JQ3W+dE4vtcvHfk/sSqh98
+         F0WVJbH70SFLKNeBMNnyTNLf9MSEw23N4XCtkCGWhf3y/GDYlFDYxHGsFwqJH/SS+tNo
+         CYgtiqfa/cE19pJQlOI8YX6F+Rm7JEM/Dn1V2Z33eWdAPKWNpBCceOSi80fDBVYxAcyy
+         DhfbqGkrNzThf+U/pW9nSm/S7LVNCVZSFnUzb2EzAPfNQ9eUrBD9FeaSZSkwv6SbkJhD
+         bGcRH9s20alGfUvsrx299D129jLpAZS9t+iuvxNH4Jxudb/bfK0k+0B8ck+alwYGDjCj
+         7fZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794162725; x=1794767525;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dFkadmcoyh6vL70GL1A4zEl8wwQu3kHxlpOJ4h+0Quw=;
+        b=d3fOJBI6u1MR6iGEVBKoDS3gdDQE3qPi6fJLKTVObCFOEHIw9TMxcekkeLdTlmZKJ2
+         uqV9VhWpYPnmdsizZSsYuD6k1KhUgjUbBhuzbvvLMl10QAGCDAUPfjlhbovdk/TLASKD
+         QTRFiUe+Nts/4BtIZHErpX9rzz1RKNtkMn+PMgHlm8P9JcwWGffj4ejwI3Ue+pbuFGnu
+         YAgNx33JURkQKX2b19IO18Okn8oHJzEQZCAm30HZCjubEXLIbsKHBIBk3lDkDqDg6jvm
+         r9GC1+8hRDkomR/PnQF301VKq/MFUsv0Vr9HUnKuTTn+udsmd4vz4kYlFl9wLyvjyP05
+         bhlg==
+X-Gm-Message-State: APuU4Z97KoYfOhp/ubBkKTeS83AuOqzBdihtFwvbrAE94a/pB6w6uLPD
+	A3zydRatHt7RFdi4PmDKNpO4IVkDgEBJ+oB8BfrTyb35RIrEEts1boz5yZmRtg==
+X-Gm-Gg: AYBFou0kXJ18gDxkBbJK8iy4rsWx60/Jal3Ee67sjYtc9ivMGBWmR6LFILiKnrkBPep
+	2C/9PwKMLBSTJz/7b/Axx1GIsquO/3zvOT2FtlF7DTF0RQ38jlZ+bnS1toq4TVoOBXeQDaS6ZAd
+	yk/fOM5N6l3sikXRirPVfFNrgvjO2NHNMqOikzTSff3tN++mCtMpHd2KIAWCzp4TEwnwfuLjP8w
+	HLexOE9IG7mAj6SkOlyAIvV+m2mF4A/qMtpQQKSyo2UlNJoCaE8+bzMb+BV/3TO7HghKJdbqUkp
+	GbZUsVYmOFLXn9Kn69cadKxh6jOdm+rZk9Mg9Nl3RklQhAGKm/Eb+GJUuEsfZv8s1K/dmXf8jOT
+	j6sfmbQjm1NgM75t7B2TmcsE3+F3tiEi70Z6TffbqSp6hWIZgu4dyxHrwY+CIMNv9HaDV/6U2Hd
+	OpSo+EcCj8pqE24l9jlmGZgHQ/j2I0cTwXo7ZfGLBwu7Siy2Y334Mev4QTRRZvQCWTFC+AyZF9s
+	nTLM7ci8f7fA7pji4p06dRKZ7FJs4s6tkfnUeZeII0ZjqHPdOu6T1LqYFbexXcNiXe69V9hL6SJ
+	YWxQTJFBUo+P3HFrjU6BMgaVREaZ+bkDLJej784uwTcKtM7u5KJVhw==
+X-Received: by 2002:a17:90b:52c5:b0:3b0:9e2c:9b57 with SMTP id 98e67ed59e1d1-3b12d1087efmr2244213a91.4.1794162724579;
+        Sun, 08 Nov 2026 10:32:04 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:28::1d2:30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1054a53e4sm7600534a91.0.2026.11.08.10.31.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 10:32:01 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] net: dsa: motorcomm: MIB fixup
+Date: Mon,  9 Nov 2026 02:29:25 +0800
+Message-ID: <20261108182931.1542638-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,107 +98,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Various MIB defects, reported and verified against vendor doc by LLM.
+Very low severity, target them to net-next.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+v2:
+ - fix issues reported by sashiko
+ - drop patch 4
+v1: https://lore.kernel.org/r/20261107132040.1066996-1-mmyangfl@gmail.com
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+David Yang (3):
+  net: dsa: motorcomm: Fix stats64 error counter mapping
+  net: dsa: motorcomm: Fix RMON fragments stat
+  net: dsa: motorcomm: Use safe 64-bit counter reader
 
-- [Medium] The patch moves the csum_start-based transport_header reset in
-  validate_xmit_skb() (net/core/dev.c) above netif_skb_features(), so it…
-
---
-
-net: reset transport_header for ndo_features_check
-
-This patch moves the csum_start based transport_header (or
-inner_transport_header) reset in validate_xmit_skb() so it runs before
-netif_skb_features(). ndo_features_check() then sees the same L4 header
-offset that ndo_start_xmit() sees. The motivation is drivers such as i40e,
-whose features_check hook bounds header lengths using a transport_header
-that can be stale after IPv6 forwarding with extension headers, bridged
-IPv6, or seg6/rpl/ioam6.
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index df1a840b03343..155be1f51494c 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4207,6 +4207,15 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
->  	if (unlikely(!skb))
->  		goto out_null;
->  
-> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> +		if (skb->encapsulation)
-> +			skb_set_inner_transport_header(skb,
-> +						       skb_checksum_start_offset(skb));
-> +		else
-> +			skb_set_transport_header(skb,
-> +						 skb_checksum_start_offset(skb));
-> +	}
-> +
->  	features = netif_skb_features(skb);
->  	skb = validate_xmit_vlan(skb, features);
->  	if (unlikely(!skb))
-
-[Severity: Medium]
-
-The reset now runs before the netif_needs_gso() branch, so the GSO path is
-affected too. Is the commit message's statement that "Software segmentation
-parses the headers itself" accurate for that path?
-
-On the GSO branch, validate_xmit_skb() calls skb_gso_output_max_segs()
-before __skb_gso_segment() when gso_within_dev_limits() fails:
-
-	if (netif_needs_gso(skb, features)) {
-		...
-		if (unlikely(!gso_within_dev_limits(skb, dev)))
-			max_segs = skb_gso_output_max_segs(skb, dev);
-
-skb_gso_output_max_segs() reads transport_header, and it has a guard
-written for stale headers:
-
-net/core/dev.c:skb_gso_output_max_segs() {
-    ...
-	/*
-	 * The transport offset can be unset or stale, so hdr_len is only taken
-	 * from a header at the checksum start.
-	 */
-	if (!skb_transport_header_was_set(skb) ||
-	    skb_checksum_start(skb) != skb_transport_header(skb))
-		return 0;
-    ...
-}
-
-Commit 32bfd220cd6f ("net: core: re-segment oversized TCP GSO skbs") added
-this guard. Its message says that an skb whose transport header is unset or
-stale keeps today's segmentation.
-
-After this patch, every non-encapsulated CHECKSUM_PARTIAL skb that reaches
-this point has transport_header == csum_start. The guard can no longer fire
-for those skbs on this path.
-
-That changes behaviour for over-limit TCP GSO skbs whose header used to be
-stale. Examples are forwarded GRO or BIG TCP IPv6 skbs with destination
-options or a routing header, and seg6 inline, rpl or ioam6 skbs.
-
-Before this patch they were fully segmented to MSS (max_segs = 0). Now they
-are re-segmented into smaller GSO skbs. hdr_len is computed from the reset
-header, and __netif_skb_features() is evaluated again.
-
-The new behaviour looks correct, since the header is no longer stale. Could
-the commit message mention this change?
-
-Should the comment and the now redundant check in skb_gso_output_max_segs()
-also be updated for this caller?
-
-32bfd220cd6f appears to be in mainline only, so this should not affect the
-stable backport.
+ drivers/net/dsa/motorcomm/mib.c | 43 +++++++++++++++++----------------
+ drivers/net/dsa/motorcomm/smi.c | 35 +++++++++++++++++++++++++++
+ drivers/net/dsa/motorcomm/smi.h |  2 ++
+ 3 files changed, 59 insertions(+), 21 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104175517.2395704-1-tactii%40gmail.com
+2.53.0
+
