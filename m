@@ -1,72 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794117623;
-	b=zA5vjoxkRFN9f9/VkotkWi074laHRHVnqTVeqNWDCOw3A3BAO46fG9cqfQxxTsFUStMs
-	 vMb7vIioGK7aDPZdfICpcZO267b8xMKHOCsj00jz1Jw4a7EcGMIBZd8gMVOObYK/jypQu
-	 q1dWJzERZPJbURfcVqm03SeGWqRQdifYUlGwKW/SfuzD0Yw7K7yjO9tYZjv8/WCGFz7Bm
-	 xVHWHhrBEfz0BJp17Oe16YadS0ig+YkVvfWWnso+a1UkXF35S9rcdlhQYrsGHkQOV4llF
-	 ULXvwaG7fgP/wEiUHOAkg2iPV1XjGLw83AXpM8kT4GMy3oJbqJht4dq9XpSuR+p9+dw==
+	t=1794117624;
+	b=ojc+7PspBpp0sb6OpBOmpoMNIRxpGicAS80UvhRvH2IfBBJs5YdwHsDvs8s0f+ItZknu
+	 e/HRTgmysuFbD+GmGVmYiMuVFDM8hxL3CSDggVOllZgo8MmVIE9ZdIt/NkrDJtcAuZFDh
+	 nbZeNOWU1vDhgxbkx49ypUhTOHYJXPKgkQuzvMs+f8PUDJnjsxD5yzn/4R70w+NqaS+Iu
+	 wMLxuuy4TZaGmRiifTGDPhWDJG1reIkzc9+Lp/CldibXr9YQTKezJBlwZ0jyoWGxZQdLK
+	 T7R650hES+xsdn55CcwPNFEucUha9azbCjI7Vhgp2sVdeTR8v2JP8efNNMk0MtHkWLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794117623;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794117624;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
-	 Subject:From:To:Cc:Content-Type;
-	bh=v2y1yaggoH6p1mGRTKD+i49Hl5+O8T2kFeVCtW/lYKQ=;
-	b=l/KprOA3kGpYwNfW/lJ/omMjKZMZ9wLEFaFYQfyCEdYndYITjY9GdBQhSdkGh4vI5Loy
-	 SlSB3m6jNd7l4YWIqeR1WLbcGrEWPwSjlTpR0yk9f7hVHAF4XxLxAW79MBMC10DZk7tKu
-	 FRPFu5e7ssrFF3Ar2MjUag/nxsgG2PgqhgM4F6ONqjul4R5wqb6VclQE2affbdTu4ItSw
-	 i8lM02dCI9/Rog8ylC7QBS/Of9NiLN0lvLFGNzQl9RE/O8DMUAYD+ATQvAsWBVcIDPAIa
-	 RMuHmw461HIRN3Xclb4QtMnBKBcaVln6gWWbIFptx4aHWGLnyRbGMLQojbGIRndnN3w==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
+	b=gG90GPb0jQdVbWXXX0b6w3yzHv7u7lK1YVosOdoEiG4tbZ6vqH507N4KVk59th2fdgF7
+	 LeWrpMk217+VN4Ynh4Vh/9cDWaS2WtnBNIuPZ66iMCxMyHEXedeqIyVsI2ruJ2JtYzqFu
+	 bvRC4Zoei8aNLG/wIZqhoxBaHAvOyIA0a9fB9wc7KSXibPN7MQrxnso4M5O8bhQIneQoF
+	 Ir8x6nxj7IufHtD6ZQXeVvBhKTBJFmDm0YszUCMDr7gbqc+I+TXKPFphDmlBBGydVGIAy
+	 G+p9vrvGIvTAG6Sejrd0k1aOqprM7Bh+HpUWIA/wmKDagi+ijApWVbpRYPDmSK9Zj1g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oOPv0hkU;
-	arc=none smtp.remote-ip=74.125.82.198
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZUFxRUQN;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB20606D82C
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:00:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BEB20606D82C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891FF6082BC0
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 06:00:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 891FF6082BC0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oOPv0hkU
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3425098ae4bso1805959eec.0
-        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:00:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZUFxRUQN
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso652024eec.1
+        for <netdev@vger.kernel.org>; Sat, 07 Nov 2026 22:00:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794117622; x=1794722422; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v2y1yaggoH6p1mGRTKD+i49Hl5+O8T2kFeVCtW/lYKQ=;
-        b=oOPv0hkUFAUSi2nG7TM5E1wDeDTsRg3G3uimlaKRt5nZsFQzW7LvXIYPYaJYsRAYGe
-         fEiNN0QaPsBq/j/IVFpO9ALP8zmKqD2lWOzBQMz0RR/zr2xRU8k6GxfcYcngZozADQcQ
-         nhEiyaKxZIKDl6vzGzF+Lx8jY4z4QPCiIaJESiycNOfAn0h5I7L757HMhAwctuFf7JQP
-         DhPrSTOfBZwlEQzCl/u6gZ0Uqc8HIXOtw/04liErnrrQiHK5A0aEz4GUYVOTSBfwUcgo
-         Ggu5lps2AjqpXvb5dB+ayUPh/A8+fNwroHdyGuMByVLSNCOYciz1tHyLx4CNxTIyQDg4
-         AFIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794117622; x=1794722422;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794117624; x=1794722424; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=v2y1yaggoH6p1mGRTKD+i49Hl5+O8T2kFeVCtW/lYKQ=;
-        b=RbQafXUTPAEZo7que6mWqAMHSzgzJVYum7rrmw03sl3Fy0lKuDUsjfs3e5nmi8hGR0
-         TfYSdA9/s3p/B1AW7ODhQqqhgjYj2uG6z05HOSPtOtGwomHd/L8c4ETyfLuTdL1zGN8J
-         s46lI8pXOTIfd+gQRDY7M4JvA5uf3/RpiitLBM908UvJbz8If3LIF1p6zAicMLlsw/rK
-         OdsjFYL6B4H2zr53kFZTyk3T+43sSLSzVK4wnkIXvg3rayqKR9HUy3o+Z/kh0EwfWhcB
-         2kRShuSKcuJAlL17gmy/+imc4+HH3hsRL8AumvyKI9UVvClXeHUe9Te/5nqBnyOdifQ4
-         Gn1Q==
-X-Gm-Message-State: APuU4Z92x1TB2DrwUCE/VUFm8Vr5X+9zs8Jl9JiS2Rbw1rYQvZAKGcOm
-	lilQSxTAq4BCYqEqRP8xqNfNH1wkqbEb5Gz2trCjS+zLAjYX/Y+CTRSuoSQ1TEMJk3PZmwUCkh7
-	s2OR44eN2Q+EJi2/3oPgquQZuCBMf0g8brhaqURnkOaBiLWDOh2Jp4RafMpwGG/TJC+pJzxkta2
-	uDUXek3N1RtqPOsRuTGWyGeMEk41t2d8AjfnpsGeyfQu72dzap7cLsw4owcspZT2E=
-X-Received: from dycoy13.prod.google.com ([2002:a05:7301:fc0d:b0:35c:eb2a:8c31])
+        bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
+        b=ZUFxRUQNdBYEp12TDla0AaORrjj1dtLwBX85IUXAFXkZ/DKxiO9yaO/OHL4kY1VsUc
+         NObwyTqatyOO5mRc7wLCDfnacoN6BjBCDpfUfeNuH6B/U4cXwTyxowAiOocVTV8KCMN0
+         VirwgM69XGlvCUjdWuAiscM/dbnoLU4afZjBJYk4nX2JvjtKcWe+G0DyGsKIfUYZEJqP
+         SjIEjJywq5ywTkGeaY1gSauZpYXifHaogoKs/2VVmkioOdfAWwCR6/Fqf7A4431X4/1k
+         OUrZs8q7tUQoQDCkQpkLyLhmFwl85f28UrVLNeLJekXmP29ERbTn2opbZCa2eV/DZNK1
+         cYXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794117624; x=1794722424;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ls8Vsqz37bk9Lc/TUQk6BA8al47BcGIFX0n6D6YIHe4=;
+        b=KvRO4mW5e4/hwVT2uDLIU5j1jxC7F08k51obxvG089u1oBEYRN+ecVAF+EbwYC0526
+         4NfzXHlMKgnKyiHuL3POHPMvNg4U+6IGAmX9V6as12/16cZo9MENkwXdJhYMGB+sR1W/
+         wOvAq1CwtTcAhRqcQjA1f+femvxdkKb84/7iWHf+xMn7HtAVyjECkW2AZ2r8FRXex+SY
+         QM1hROZ3n8FZl09zzMwxC/J0a+YZup2fAxjghFKUnsGudnGEFc5PBhbD/6Errc6afVsO
+         jW59b0BJud3Y5slJWaLGkYMswa1wZzIE5gl95sfXwwiD3l05yIDP0ho51BoW7FKNcyDu
+         YNKQ==
+X-Gm-Message-State: APuU4Z+rTlBn5Lp29MLRyChZIcZGvwG+JxajjAET99Idye6CsSQZqECl
+	M9H2ShKSsvWKZaUPLoHObCJmxm+pPTH5FPLXEq3cYVK1H7lykgLtBmjRrS+6Iqs9ZwbhMcRjRaH
+	csTvapmaMH/PeciEztcH59c49prFrIHOP9/ioRlXpxQuJcaFakJGzBCAkyECIX/TJZTSUmTqglO
+	YqH4ldP6ygBAdxKYBpPgoeNahRMK74DeX01HUbSSHBOVxFtcQf3lCfNVjmGJn4Wfw=
+X-Received: from dycmb13-n2.prod.google.com ([2002:a05:693c:20cd:20b0:36a:17c6:6824])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:264b:b0:13c:f65c:d5b5 with SMTP id a92af1059eb24-1b269a6631dmr4891275c88.3.1794117617306;
- Sat, 07 Nov 2026 22:00:17 -0800 (PST)
-Date: Sun,  8 Nov 2026 06:00:11 +0000
+ 2002:a05:693c:6390:20b0:36c:9bc6:3ec with SMTP id 5a478bee46e88-37252f3042emr1787652eec.3.1794117622089;
+ Sat, 07 Nov 2026 22:00:22 -0800 (PST)
+Date: Sun,  8 Nov 2026 06:00:14 +0000
+In-Reply-To: <20261108060016.2131509-1-almasrymina@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,9 +78,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261108060016.2131509-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261108060016.2131509-1-almasrymina@google.com>
-Subject: [PATCH net-next v2 0/5] net: deprecate skb->pp_recycle and skb_mark_for_recycle()
+Message-ID: <20261108060016.2131509-4-almasrymina@google.com>
+Subject: [PATCH net-next v2 3/5] tcp: detach page_pool pages before mapping in tcp_zerocopy_receive()
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org
 Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
@@ -147,161 +150,174 @@ Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer <hawk@kernel.o
 	linux-omap@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Remove the per-SKB skb->pp_recycle bitfield and skb_mark_for_recycle()
-helper, and reference-count netmems directly by their underlying type
-via netmem_is_pp() inside netmem_inc_ref() and netmem_dec_ref().
+Once tcp_zerocopy_receive() maps an order-0 RX fragment page into a
+userspace VMA via vm_insert_pages(), vm_insert_pages() increments
+page->_refcount, which prevents the page from being recycled back into
+its page_pool when the RX SKB is freed. However, while the RX SKB still
+holds its fragment reference, the page remains marked as a page_pool
+page (page_pool_page_is_pp(page) == true) inside the userspace VMA, so
+subsequent GUP callers such as sendmsg(MSG_ZEROCOPY) or vmsplice() can
+encounter a page_pool page while holding only a raw struct page
+reference.
 
 Establish the invariant that pp_ref_count is only incremented by callers
 that already hold an active pp_ref_count (>= 1) on that netmem, and a
 raw page_ref_count is never converted into a pp_ref_count:
-- Detach page_pool pages in tcp_zerocopy_receive() before mapping them
-  into userspace via vm_insert_pages(), so userspace VMAs and subsequent
-  GUP callers (such as MSG_ZEROCOPY or vmsplice()) never observe an
-  active page_pool page.
-- Fall back to copying in tls_push_data() when MSG_SPLICE_PAGES
-  encounters a page_pool page, since kTLS device offload record->frags[]
-  tracks pages via raw struct page references.
-- Keep page_pool_unref_netmem(), napi_pp_get_page(), napi_pp_put_page(),
-  and __page_pool_put_page() free of 0 -> 1 pp_ref_count conversion
-  workarounds or extra barriers, preserving the non-atomic
-  page_pool_unref_netmem() fast path unchanged.
+- In can_map_frag(), require !skb_cloned(skb), page_pool_ref_count == 1,
+  and page_ref_count == 1 for page_pool pages so the fragment being
+  mapped holds the sole reference to the page; cloned SKBs or page_pool
+  pages with additional references (including drivers holding an
+  undrained fragment bias) fall back to copying.
+- In tcp_zerocopy_receive(), convert the fragment's sole pp_ref_count
+  into a regular page reference and detach the page from its page_pool
+  via get_page(page) + napi_pp_put_page(page_to_netmem(page)) before
+  queueing the page for vm_insert_pages(). If vm_insert_pages()
+  subsequently fails, the detached page remains referenced by the RX SKB
+  via its regular page reference and is freed back to the page allocator
+  when the SKB is consumed.
 
-bench_page_pool_simple results (5-iteration interleaved UML runs):
-- no-softirq-page_pool01 (fast-path cache recycle): 40 cycles (20.3 ns)
-  baseline vs 30-31 cycles (15.3 ns) patched (~9-10 cycles / -24.7%
-  improvement over baseline: using __netmem_to_page() in
-  page_pool_netmem_is_exclusively_owned() and
-  __page_pool_page_can_be_recycled() after checking netmem_is_net_iov()
-  eliminates two redundant WARN_ON_ONCE() expansions and out-of-line
-  netmem_to_page() calls per recycle).
-- no-softirq-page_pool02 (ptr_ring recycle): 81 cycles (40.7 ns)
-  baseline vs 74 cycles (37.2 ns) patched (~7 cycles / -8.6%
-  improvement over baseline).
-- no-softirq-page_pool03 (slow page-allocator path with elevated
-  page_ref_count): 458-461 cycles (230.0 ns) baseline vs 454-455 cycles
-  (227.6 ns) patched (~5 cycles / -1.0% improvement over baseline).
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ include/net/page_pool/helpers.h |  5 ++++
+ net/core/datagram.c             |  2 ++
+ net/ipv4/tcp.c                  | 44 ++++++++++++++++++++++++++++-----
+ 3 files changed, 45 insertions(+), 6 deletions(-)
 
-This series simplifies SKB and netmem reference counting:
-- Reclaims 1 bit from struct sk_buff (skb->pp_recycle).
-- Unifies reference counting of SKB fragment netmems and regular netmems
-  under netmem_inc_ref() and netmem_dec_ref(), eliminating the separate
-  skb_netmem_ref(), skb_netmem_unref(), and skb_mark_for_recycle() APIs.
-- Removes 95 net lines across 65 files (339 insertions, 434 deletions).
-
-1/5: net: skbuff: skip managed zerocopy frags in skb_frag_ref()
-2/5: net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
-3/5: tcp: detach page_pool pages before mapping in tcp_zerocopy_receive()
-4/5: net: remove skb->pp_recycle and consolidate netmem refcounting
-5/5: net: remove skb_mark_for_recycle()
-
-v1 -> v2:
-- Patch 2/5: Check page_ref_count(compound_head(buf->page)) <= 0 with
-  WARN_ON_ONCE() in skb_pipe_buf_get() to guard against refcount
-  overflow, and fall back to copying in tls_push_data() when
-  MSG_SPLICE_PAGES encounters a page_pool page so kTLS device offload
-  never converts a raw page_ref_count into a pp_ref_count.
-- Patch 3/5: Replace zerocopy_fill_skb_from_iter() refcount conversion
-  with detaching page_pool pages up front in tcp_zerocopy_receive()
-  before vm_insert_pages().
-- Patch 4/5: Keep net/tls/ record->frags[] and fallback scatterlists on
-  get_page()/put_page() to match mlx5 tx_sync_info_get(), and restore
-  page_pool_unref_netmem(), napi_pp_get_page(), napi_pp_put_page(), and
-  __page_pool_put_page() to their clean baseline non-RMW fast paths.
-- v1:
-  https://lore.kernel.org/netdev/20261103211424.127627-1-almasrymina@google.com/
-
-Notes on Medium/Low Sashiko findings intentionally skipped:
-- Patch 1/5 (Low): iptfs_output_queued() skb_zcopy_managed() check does
-  not carry a separate Fixes: tag as it is part of this net-next
-  refactoring series.
-- Patch 3/5 (Medium): can_map_frag() requires page_pool_ref_count == 1,
-  so drivers holding an undrained fragment bias (e.g. mlx5 mpwqe, fbnic)
-  fall back to copying in tcp_zerocopy_receive() (documented in commit
-  message; detaching requires holding the sole pp_ref_count).
-- Patch 3/5 (Low): page_pool_ref_count() naming kept to mirror
-  page_ref_count().
-- Patch 4/5 (Medium): skb_irq_freeable() in netpoll_zap_completion_queue()
-  does not check netmem_is_pp() (pre-existing for forwarded pp_recycle=1
-  RX SKBs; documented in commit message Caveats).
-- Patch 4/5 (Low): napi_pp_get_page() and napi_pp_put_page() remain
-  out-of-line exported functions in net/core/skbuff.c.
-
-Mina Almasry (5):
-  net: skbuff: skip managed zerocopy frags in skb_frag_ref()
-  net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
-  tcp: detach page_pool pages before mapping in tcp_zerocopy_receive()
-  net: remove skb->pp_recycle and consolidate netmem refcounting
-  net: remove skb_mark_for_recycle()
-
- Documentation/networking/page_pool.rst        |   1 -
- drivers/net/ethernet/airoha/airoha_eth.c      |   1 -
- drivers/net/ethernet/alibaba/eea/eea_rx.c     |   3 -
- .../net/ethernet/broadcom/asp2/bcmasp_intf.c  |   1 -
- .../net/ethernet/broadcom/bnge/bnge_txrx.c    |   5 -
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     |   8 -
- .../net/ethernet/broadcom/genet/bcmgenet.c    |   2 -
- drivers/net/ethernet/cisco/enic/enic_rq.c     |   1 -
- drivers/net/ethernet/engleder/tsnep_main.c    |   2 -
- drivers/net/ethernet/freescale/fec_main.c     |   1 -
- drivers/net/ethernet/google/gve/gve_rx_dqo.c  |   9 -
- .../net/ethernet/hisilicon/hibmcge/hbg_txrx.c |   1 -
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   |   6 -
- .../net/ethernet/huawei/hinic3/hinic3_rx.c    |   1 -
- drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 -
- drivers/net/ethernet/marvell/mvneta.c         |   2 -
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   |   2 -
- .../marvell/octeontx2/nic/otx2_txrx.c         |   1 -
- drivers/net/ethernet/mediatek/mtk_eth_soc.c   |   1 -
- drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   1 -
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   |   8 -
- drivers/net/ethernet/mellanox/mlxsw/pci.c     |   2 -
- .../ethernet/microchip/lan966x/lan966x_fdma.c |   2 -
- .../microchip/sparx5/lan969x/lan969x_fdma.c   |   1 -
- drivers/net/ethernet/microsoft/mana/mana_en.c |   3 -
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    |   1 -
- .../net/ethernet/pensando/ionic/ionic_txrx.c  |   2 -
- .../net/ethernet/realtek/rtase/rtase_main.c   |   1 -
- drivers/net/ethernet/renesas/ravb_main.c      |   2 -
- drivers/net/ethernet/socionext/netsec.c       |   1 -
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |   1 -
- drivers/net/ethernet/tehuti/tn40.c            |   1 -
- drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   1 -
- drivers/net/ethernet/ti/cpsw.c                |   2 -
- drivers/net/ethernet/ti/cpsw_new.c            |   2 -
- drivers/net/ethernet/ti/icssg/icssg_common.c  |   1 -
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   2 -
- drivers/net/veth.c                            |   3 +-
- drivers/net/virtio_net.c                      |  16 +-
- drivers/net/vmxnet3/vmxnet3_xdp.c             |   1 -
- drivers/net/wireless/mediatek/mt76/dma.c      |   1 -
- .../net/wireless/mediatek/mt76/mt7996/mac.c   |   1 -
- drivers/net/wireless/mediatek/mt76/npu.c      |   1 -
- drivers/net/wireless/mediatek/mt76/usb.c      |   1 -
- drivers/net/xen-netfront.c                    |   1 -
- include/linux/mm.h                            |   2 +-
- include/linux/skbuff.h                        |  12 +-
- include/linux/skbuff_ref.h                    |  60 +---
- include/net/netmem.h                          |  37 ++-
- include/net/page_pool/helpers.h               |  25 +-
- net/core/datagram.c                           |   2 +
- net/core/gro.c                                |   9 -
- net/core/net_test.c                           | 274 ++++++++----------
- net/core/netmem_priv.h                        |  21 +-
- net/core/page_pool.c                          |   6 +-
- net/core/skbuff.c                             |  74 ++---
- net/core/xdp.c                                |  13 +-
- net/ipv4/esp4.c                               |  11 +-
- net/ipv4/tcp.c                                |  44 ++-
- net/ipv6/esp6.c                               |  11 +-
- net/tls/tls_device.c                          |   8 +-
- net/tls/tls_device_fallback.c                 |   2 +-
- net/wireless/util.c                           |  31 +-
- net/xfrm/trace_iptfs.h                        |   6 +-
- net/xfrm/xfrm_iptfs.c                         |  16 +-
- 65 files changed, 339 insertions(+), 434 deletions(-)
-
-
-base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
+diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+index 28635ce9454e8..c814ce95282eb 100644
+--- a/include/net/page_pool/helpers.h
++++ b/include/net/page_pool/helpers.h
+@@ -242,6 +242,11 @@ page_pool_get_dma_dir(const struct page_pool *pool)
+ 	return pool->p.dma_dir;
+ }
+ 
++static inline long page_pool_ref_count(netmem_ref netmem)
++{
++	return atomic_long_read(netmem_get_pp_ref_count_ref(netmem));
++}
++
+ static inline void page_pool_fragment_netmem(netmem_ref netmem, long nr)
+ {
+ 	atomic_long_set(netmem_get_pp_ref_count_ref(netmem), nr);
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index ecc30a6f83023..808eda4f7efb5 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -34,6 +34,7 @@
+  *
+  */
+ 
++#include <kunit/visibility.h>
+ #include <linux/module.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+@@ -702,6 +703,7 @@ int zerocopy_fill_skb_from_iter(struct sk_buff *skb,
+ 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_IF_KUNIT(zerocopy_fill_skb_from_iter);
+ 
+ static int
+ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b9de7c302ba83..a984e7e93e4c9 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -286,6 +286,7 @@
+ #include <asm/ioctls.h>
+ #include <net/busy_poll.h>
+ #include <net/hotdata.h>
++#include <net/page_pool/helpers.h>
+ #include <trace/events/tcp.h>
+ #include <net/rps.h>
+ 
+@@ -1921,7 +1922,7 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
+ 	return frag;
+ }
+ 
+-static bool can_map_frag(const skb_frag_t *frag)
++static bool can_map_frag(const struct sk_buff *skb, const skb_frag_t *frag)
+ {
+ 	struct page *page;
+ 
+@@ -1935,18 +1936,32 @@ static bool can_map_frag(const skb_frag_t *frag)
+ 	if (PageCompound(page) || page->mapping)
+ 		return false;
+ 
++	/* Before mapping a page_pool page into userspace,
++	 * tcp_zerocopy_receive() converts this fragment's pp_ref_count into a
++	 * regular page reference and detaches the page from its page_pool via
++	 * napi_pp_put_page(). Require this skb_frag_t to hold the sole
++	 * reference to the page so no other fragment or SKB clone expects
++	 * pp_ref_count on it after detachment.
++	 */
++	if (page_pool_page_is_pp(page) &&
++	    (skb_cloned(skb) ||
++	     page_pool_ref_count(page_to_netmem(page)) != 1 ||
++	     page_ref_count(page) != 1))
++		return false;
++
+ 	return true;
+ }
+ 
+-static int find_next_mappable_frag(const skb_frag_t *frag,
++static int find_next_mappable_frag(const struct sk_buff *skb,
++				   const skb_frag_t *frag,
+ 				   int remaining_in_skb)
+ {
+ 	int offset = 0;
+ 
+-	if (likely(can_map_frag(frag)))
++	if (likely(can_map_frag(skb, frag)))
+ 		return 0;
+ 
+-	while (offset < remaining_in_skb && !can_map_frag(frag)) {
++	while (offset < remaining_in_skb && !can_map_frag(skb, frag)) {
+ 		offset += skb_frag_size(frag);
+ 		++frag;
+ 	}
+@@ -1986,7 +2001,8 @@ static void tcp_zerocopy_set_hint_for_skb(struct sock *sk,
+ 	 * mappable_offset: Bytes till next mappable frag, *not* counting bytes
+ 	 * in partial_frag_remainder.
+ 	 */
+-	mappable_offset = find_next_mappable_frag(frag, zc->recv_skip_hint);
++	mappable_offset = find_next_mappable_frag(skb, frag,
++						  zc->recv_skip_hint);
+ 	zc->recv_skip_hint = mappable_offset + partial_frag_remainder;
+ }
+ 
+@@ -2290,7 +2306,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 				break;
+ 		}
+ 
+-		mappable_offset = find_next_mappable_frag(frags,
++		mappable_offset = find_next_mappable_frag(skb, frags,
+ 							  zc->recv_skip_hint);
+ 		if (mappable_offset) {
+ 			zc->recv_skip_hint = mappable_offset;
+@@ -2300,6 +2316,22 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 		if (WARN_ON_ONCE(!page))
+ 			break;
+ 
++		/* Convert this fragment's sole pp_ref_count into a regular
++		 * page reference and detach the page from its page_pool before
++		 * mapping it into userspace. Once vm_insert_pages() elevates
++		 * page_ref_count the page cannot be recycled into the
++		 * page_pool anyway (and if vm_insert_pages() fails, the
++		 * detached page is freed to the page allocator when the skb is
++		 * consumed); detaching it up front ensures that a page_pool
++		 * page is never mapped into a userspace VMA (where GUP callers
++		 * such as MSG_ZEROCOPY or vmsplice() would otherwise observe a
++		 * page_pool page while holding only a raw page_ref_count).
++		 */
++		if (page_pool_page_is_pp(page)) {
++			get_page(page);
++			napi_pp_put_page(page_to_netmem(page));
++		}
++
+ 		prefetchw(page);
+ 		pages[pages_to_map++] = page;
+ 		length += PAGE_SIZE;
 -- 
 2.56.0.455.g6c5a503b38-goog
 
