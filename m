@@ -1,49 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794127242;
-	b=U/f07YsHsOE/u3du0fipPjMXPwDp7fyIpavEYTOkSUX0YzQHJ2w5c1M2+0IBCt/Llk7J
-	 pY/IXh7EMyYxnFzlRp2Z7IoEhIuYHZsxXrRkcYHotMsLfNQVmuURzDPVZCpcFOJzcaxmI
-	 k11kqddJNlfaCf3gcCQg+4Xzqtkd+EbWHRzzYmT4SnSX0QTvClXq+O0lpm2cpWej+XMDW
-	 lsNESujBenBxJQ1O9l1imrRYC4xAxFcJ1YMzdMWK8tIzqO+Xm2SX6SClIkxk5DElUe3Bm
-	 9nH7zqtuXJI2T0sHZBu/yDbgm9MB7QBj65jwLh9jpJBYpDHuQhQ+nbUU4fkpkyPffrw==
+	t=1794127425;
+	b=Km9AOQyRxcETZYkbPsdT7aavuJUvVnw2Y8jmpZKiv8iC3RHKxSXFIwGEUNoLYYJhSsWG
+	 hKJIrRl69K8iRvH1jhnx8r8/4SEUqS/o+8mlaMaeL2/3+yk/Xp854pN8yTlTiC0kN4bOx
+	 0ioUVZWYyoqbSSyeKDwq7c5AtM7I1guW9kmZgFX+JF9AaZ8jdOjMuUK6L9KdPJ3g0MDHx
+	 RLdDiQFKg9enkG/DwYYhcPXzJWJosxvTaNinju1YKkc6iLG4WuvvSucBuJ9V41bQS5BCP
+	 fBhMHbLc0eSd0E5Vb7GqqF+N5fH51hIFnvm9p0A/5cM78hh+o0j1nvCba8qwGXj7iAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794127242;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer;
-	bh=zIOVRWimvi5sL6RvvcGg4xNjH+GTSE/6lJuUuXwnf0M=;
-	b=S2OSvZ37QAhpSBm1EJEXSPGJmmq8kP6kNMn+n+YmKeXZJnkGZE9/VdL/nUXQWYowEABN
-	 9xzRlTXaN7c0j2SLNuzWC2NWzC5tSA/Euv+TLQ86G/2lXlcsj5Z1zJheMQRUtJc+jHr/7
-	 0b9a0Fz7fqi/m1Km7vx0HIDHVr8GtgWzaroKyJcj0lXMiwZZI7fo4kQEqV/zw0XgYwXbR
-	 XIkAUagP+dKEnyFtRecfhahBKVhdIcP8IC9KIYib9rWEsM54I3GGuxlcDwAR/IbaNxo6Y
-	 ogNRLkXUQWgDvo3mvK3dw/zUXWre3Qh5l0R6jYXoXKjSD6HBLE64PWiJSAnLjGiLTug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794127425;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=NTu6xQo3qc3xPnwGy2quUxpwZu0qheDm9O+kUYdRyQQ=;
+	b=oNREaybpsrliXD4Ua/ex3c6Y+ENOlhClCbtvN7OvzyiHa6q0qXTKsG7r5M8hGmIu/y84
+	 Sdn4eNp3gdBXOUyBKGIpCr7mnMgyHhqT0tzzZxthCEMyvZ3mP4CixT8kqu6Pwop/1r+AU
+	 KjLON2E3P5Idwhs/s/NteBZPEBo5DrE5tOxOCzu17349uC53lv6QQ74GdrxjhwCaVEs+H
+	 qjzaXlMhboJxzYEV1ufglSr/qYUbHHsf/xcRkSaME3T8Nch6WxRF4zE+O2FYNPfq08ubE
+	 Gv1tmrzYyXh6PCaeloz2/7ucfVDk4gOdLsdAdiw0Gtw6aJe0adO89ugxYiTlAuV2g1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=daXaBHZA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoXkcmF+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2533B606A31C;
-	Sun,  8 Nov 2026 08:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446D3606A320;
+	Sun,  8 Nov 2026 08:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=daXaBHZA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED871F0089F;
-	Sun,  8 Nov 2026 08:40:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoXkcmF+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735871F0089F;
+	Sun,  8 Nov 2026 08:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794127241;
-	bh=zIOVRWimvi5sL6RvvcGg4xNjH+GTSE/6lJuUuXwnf0M=;
-	h=From:Date:Subject:To:Cc;
-	b=daXaBHZALBdtiBs2E2dTVw58NYJWaRWQ4TE1oinT0rExsydmZqpXJhKv17+2WKsIi
-	 4b54+A0StZc/5OgM1CUgn3xr6uxI334upHw8FOA4y67pTUh32DjJDARFKY5qN7cVif
-	 SPoobMJNmoVRLjWHEcUJgNumK6ikdU+LThlkvPss7CAA4SQ8Dn+hXlgZCMA3aioEmj
-	 DZiHJD+tPmHkiIFV4AC0vW8h0/uAOXOEkU7HdDpPuxWPeeYZHCFsvqF9AG7E1h9bj9
-	 SC3T+ajpUzpDj6FNfnVfw2Fsv/IPWLY8pZ8+1lcOjqtcd6VaC4avJsimpLU9K4VjRE
-	 Y6U4P90xmfruQ==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 08 Nov 2026 10:40:36 +0200
-Subject: [PATCH net-next] ptp: ocp: replace __get_free_page() with
- kmalloc()
+	s=k20260515; t=1794127425;
+	bh=NTu6xQo3qc3xPnwGy2quUxpwZu0qheDm9O+kUYdRyQQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KoXkcmF++9T6/0XVOFsol4pJwoU7/qS1b3TIv6cfZwgm8AADDAUHrwRuyX8HMUusP
+	 Bb5eZ6EIYiTjJ7dOSgTtlg04g1YGK/0e3bBrU0VIHEg1Y+nV/CEXkfv0WVg9N9lkMR
+	 EbgTjR61i61I8ftIKzprbg3Ypaf/icfWx+kH+jnOAQLe7nz8jbLLVAGzWzazTFNskx
+	 /vhABeTpvWHWbMtLb0/Bdcruq0wOx2zFOzCTnJJlU2v1l8Dzx/VB4AJZRsb+tL06dp
+	 LDzvmjGlQLmg9yTodJRb3RjWSKlEuheiDeY1+xHpgTMWbN/CeOnIM6RXfXRJh2bfge
+	 HCITEm1BPiDtw==
+Subject: Re: [PATCH net 1/2] net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+From: netdev-bot+sashiko@kernel.org
+To: stijncleynhens@gmail.com
+Cc: netdev@vger.kernel.org, linusw@kernel.org, luizluca@gmail.com,
+ alvin.sipraga@analog.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ namiltd@yahoo.com, linux-kernel@vger.kernel.org
+Date: Sun, 08 Nov 2026 08:43:44 +0000
+Message-ID: <179412742402.994134.1195257082406220235@kernel.org>
+In-Reply-To: <20261104082514.2139278-2-stijncleynhens@gmail.com>
+References: <20261104082514.2139278-2-stijncleynhens@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,92 +63,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBBFr1JmbbDGGsSriItJMm1HMA0zUQqld
- zfR5fv/8TZQEiaFW7eB0IeVl1ThdOggzJgmMhwrg+2t650djB9MLtlQvDg8X9HhGKHKWWjk9Re
- 6Q6JiEq0FHv9H3/5JobROcz0qGS+YwtymRXjidHyhFhLY9y/Kmt8VlAAAAA==
-X-Change-ID: 20260624-b4-ptp-ed56a38a6afd
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.16.1-dev
 
-ptp_ocp_summary_show() allocates a temporary buffer for formatting
-PTP OCP device summary information.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+Low priority / nit picks for your consideration:
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
-
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
-
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
-
-Replace use of __get_free_page() with kmalloc() and free_page() with
-kfree().
-
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
-
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-Removing needless calls to page allocator helps with memdesc (aka project
-folio) conversion and gives a nicer API without casts.
----
- drivers/ptp/ptp_ocp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 625a85b2dc7e5..decc56892059b 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -18,6 +18,7 @@
- #include <linux/spi/spi.h>
- #include <linux/spi/xilinx_spi.h>
- #include <linux/spi/altera.h>
-+#include <linux/slab.h>
- #include <net/devlink.h>
- #include <linux/i2c.h>
- #include <linux/iopoll.h>
-@@ -5281,7 +5282,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
- 	bool on, map;
- 	int i;
- 
--	buf = (char *)__get_free_page(GFP_KERNEL);
-+	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
-@@ -5497,7 +5498,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
- 			   post_ns - pre_ns);
- 	}
- 
--	free_page((unsigned long)buf);
-+	kfree(buf);
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptp_ocp_summary);
-
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20260624-b4-ptp-ed56a38a6afd
+- [Low] The commit message says "On its own this has no visible effect".
 
 --
-Sincerely yours,
-Mike.
 
+net: dsa: realtek: rtl8365mb: use IVL in VLAN 0
+
+This commit adds rtl8365mb_vlan_4k_setup_neutral() and calls it from
+rtl8365mb_vlan_setup(). The helper sets Independent VLAN Learning on the
+VLAN4k entry of VID 0, so that lookups and learning match the IVL-keyed
+FDB and MDB entries the driver installs for VID 0.
+
+> On its own this has no visible effect: standalone ports do not learn and
+> the driver does not control host flooding, so the unused static entries
+> only meant that traffic was flooded to the CPU. The next patch, which
+> moves VLAN-unaware bridges onto VID 0, depends on it.
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> index 8d49ffadce926..58948e76f122a 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> @@ -322,6 +322,37 @@ rtl8365mb_vlan_4k_port_set(struct dsa_switch *ds, int port,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * rtl8365mb_vlan_4k_setup_neutral() - Use IVL in the neutral VLAN
+> + * @priv: realtek_priv pointer
+> + *
+> + * Untagged frames of standalone ports and of ports in a VLAN-unaware bridge
+> + * are classified to VID 0, the VID of the neutral PVID. No bridge VLAN sets
+> + * up its VLAN4k entry, which by default uses Shared VLAN Learning, so the
+> + * switch would learn these frames by FID while the driver installs its FDB
+> + * and MDB entries for VID 0 with Independent VLAN Learning. Use IVL in VID 0
+> + * as in every other VLAN.
+
+[Severity: Low]
+The commit message paragraph quoted above says "On its own this has no
+visible effect". Does that hold for ports in a VLAN-unaware bridge that
+have no PVID?
+
+You can reach that configuration by creating the bridge with
+vlan_default_pvid 0, or by removing a port's PVID with bridge vlan del. At
+this commit such a port falls back to the neutral PVID, which is VLANMC[0]
+with EVID 0. rtl8365mb_vlan_pvid_port_clear() keeps the frame filter when
+the port is not filtering, then sets the PVID index to 0:
+
+rtl8365mb_vlan_pvid_port_clear() {
+    ...
+	} else {
+		/* skip undo_set_framefilter */
+		accepted_frame = prev_accepted_frame;
+	}
+
+	ret = rtl8365mb_vlan_port_set_pvid(priv, port, 0);
+    ...
+}
+
+As a result, untagged frames on that port are classified to VID 0.
+
+Standalone ports don't learn, but bridge ports do:
+
+rtl83xx_port_bridge_join() {
+    ...
+	if (priv->ops->port_set_learning) {
+		ret = priv->ops->port_set_learning(priv, port, true);
+    ...
+}
+
+Before this patch, VLAN4k[0] used SVL, so the switch learned and looked
+up these frames by FID 0. The IVL {VID 0} FDB and MDB entries that DSA
+installs never matched. That includes bridge static entries and the
+assisted learning entries on the CPU port.
+
+This looks like the same roaming and hairpin drop scenario that the
+follow-up patch "net: dsa: realtek: rtl8365mb: keep the neutral PVID in
+VLAN-unaware bridges" describes. This patch fixes it on its own for
+PVID-less VLAN-unaware bridge ports.
+
+This patch has its own Fixes: tag. Could the commit message say that it
+already changes forwarding for PVID-less VLAN-unaware bridge ports,
+instead of only discussing standalone ports?
+
+A related point about the new kernel-doc: it says untagged frames "of
+ports in a VLAN-unaware bridge are classified to VID 0". At this commit,
+ds->configure_vlan_while_not_filtering is set, so rtl8365mb_port_vlan_add()
+programs the bridge PVID (VID 1 by default) even when filtering is off.
+rtl8365mb_port_vlan_filtering() also doesn't reset the port to the
+neutral PVID.
+
+So the comment is only true for PVID-less ports until the next patch in
+the series lands. The code change itself looks correct.
+
+> + *
+> + * Context: Can sleep. Must be called with &priv->vlan_lock held.
+> + * Takes and releases &priv->map_lock.
+> + * Return: 0 on success, or a negative error code on failure.
+> + */
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261104082514.2139278-1-stijncleynhens%40gmail.com
