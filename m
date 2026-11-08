@@ -1,92 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794167332;
-	b=v7A8/JDAd7K5L0hq6OCWltxohb4ecHDTscQGPfwF2BJ/M5uqU0udKTXTf/34lv53h0A7
-	 DsFzS9X7EZczYATFei4dKdUSoNr7h+WtMFPnzelepfCB/1sR5g+/I99lJHWTFd7qU/X48
-	 8KPgPemFK/r9jba8u4urVpQ6E1yTP4YTX5Mhm2qAjxv8YS9ahlXixdDv0HHz0ifmyRZ7Q
-	 lZY9G3OYQJxCBV1I3wHtGt3e1DMFEpE2/Gq64PDC3Fzr1CIc0SpYv6c5SIzzVlj6gKcQt
-	 UgENKKekQuSbrhYcXwGCmIbRbFRw9+v1Z+AWbE4ctN3E60Tx3AP4rbnBMGlADyzh0xw==
+	t=1794168060;
+	b=RxXygCRNUmUvCUnpBvkjrIbOZDnv7Lm3B4Mydmoki282TevgJLplbdJiiT5p1Yg+mJLa
+	 aPNvA8aYWslzaimocAoPIxE6Qy8FTqnyH451STXSVkys3sYYmhghzMQMJffDGztoDs8+Q
+	 qiSwmEqz5nhXMPZ6aWx36uiisVh3aN8WLqiTbyifmInoaadP31uQF4pg/LV9Sha+AuMCC
+	 QiJlvsOLNorbs4JY2sJ4Ugodomoz28oRMrYxkFkc1YYVBj5TQ+yjpsz+3LdQ6jKzZqZ6n
+	 l/zQq8fhGI8NBZVSDD0QRfIh3P/yIV4A6hHbqHavCzK3D/c8cFgxJsmm/N7cQ3ZpO8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794167332;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:Thread-Index:Content-Language;
-	bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
-	b=2XQKRvIkiJOaTcOZZf/qH8dyHVw3K1qgm3dUA7Iurhour05WUMhR4YhRcOViwNxLo82D
-	 kaailunO7ZVKqky8OHv3ZCcd4Ow03+ReHhnRgg64Fc2P182I3KawMBfvFJgAkUfLhzAmw
-	 /mRtKplmG+Byqo8yQDhpg7Yaq/ETiiVlPqMHsIKn0MGempm1XZHdu8DEyolJmJHMS7anV
-	 MZBOJ9Nx9f0L+DRfwhiUrQGzFHmT+H+uuNd50ekOANJjtDxQIFPq8eRLX+Ez9hBARty0F
-	 clRZT8rcJjZCedRtl9mVx7JzBsJX6FNo7acbQaEdAS9XdBlLTBeoH3EOH2hM25AbTSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794168060;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=bZD9WxQLC7rKJWVcR8n1dH1v0AeuRODCN3NKYMnO9VA=;
+	b=G2nT9nhkaN5MDqu/L7037tzcAwFsGdOr8ukIH8Y9ZD4mxqJrPF8tmIOiDBMi+M1P70Zh
+	 3mjIRL+ZYmsVPyMzekoTEKldArjO7vRQlmuKNJDNxF/gdaj/npPeh8jhp+WJ6P4z+t4yR
+	 r8pnM1K60Y743SheG4W4aDVE8xUaj0e/j8RK/F9bCciJW2U2Bbgdt+lIgglCl90h3Lgyo
+	 6PrYiUFKaexAIdnxL2NiijjerpEExS/OwrLrF7iPo0gXKGAG8/xV6E9SsgUdNeZRLFNMQ
+	 clUiw6oplyUTq104mmIq61KtAKtG+3V9n/94YRv+EeGLfMWungSZpgFMsUa7gErHp4w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jXyBRKdJ;
-	arc=none smtp.remote-ip=209.85.219.44
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=djHpkVFI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666FB606A322
-	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 19:48:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666FB606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7719606A31C
+	for <netdev@vger.kernel.org>; Sun,  8 Nov 2026 20:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jXyBRKdJ
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-91e9309f171so2352936d6.2
-        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 11:48:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794167330; x=1794772130; darn=vger.kernel.org;
-        h=content-language:thread-index:content-transfer-encoding
-         :content-type:mime-version:message-id:date:subject:cc:to:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
-        b=jXyBRKdJkp6XXvNTVIP2mXjuKPdYX1DWsFl9pcjjUplrb32KrShGQams2/5jR6g9B/
-         iYuUFgoWKkSRHJlK9aABS/6k7CON3OhlRylQDZKvG5/GpLNAR5DoaH+ndUFPLzWHJCRG
-         aFvjcLhjmVEuIN2jkZXDiOK4BcFmxQVMhg98YqvRxcr45aW2dKpfHNPel5FVskOaqbYv
-         YGaPgrqrJM0fwl9k0MPvARz5ufMpydgf3kzHR1o0HdAV6jq579EcNHP+dDBmlYuRqqae
-         XgbHIsBg3FoK7GzT/bLE35d0fYOeDUpzlcVKEcGgxPfhyT1F3gYnyiTUwZlaRXpXHBte
-         KU+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794167330; x=1794772130;
-        h=content-language:thread-index:content-transfer-encoding
-         :content-type:mime-version:message-id:date:subject:cc:to:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=70zQaTidZegJHL8BTv/OZYMfTi+NPOAhkseasQT6l4c=;
-        b=mC9Iq5iED5t1oQUI1+pUWHOkERbYFoc0WD+oc2Mf695sW3L03gVvIloIbOs0iewO6L
-         qVuwhM8qgxOPIcKouXFIBqTSzYwHn3OPEiX2ZTi1PimRLfRloUjVl3GJDLvE6aHryfkm
-         G4hLKWoearihk6gROdVYpvvXp6KAoOIpz93Km/moc3YzpWB9wxEBnei1uN8nsgE/PKh5
-         6qzc2o2RHnBtlPA7qvYgo4V4DbOVg9mjj8ypN28qtucKU0nUD3CpVKCiyckQ4aMSu9iO
-         0+qczr0OP4zt6ShehSXJOuKmpbOuV4BsMFM5jLY/XVeBK5R34OsD29usXuYqtY5LEku/
-         mmgw==
-X-Gm-Message-State: APuU4Z+pq8frBWhQrO1YIrNJlTtQSvvKNtPNVSfksyi2rrFDGnA/ND0S
-	LiHeMS7h12zZQecSGcN7FIfGvm0Da8MZBRycJmy+p+BghmIj7cVYt2yU
-X-Gm-Gg: AYBFou35HTAoJloJ8vWy1K2tJxZLkkw4haiH5LJ3LnRp9sZ5fTqDuuHgVmS1hoCn+yy
-	blV9NlUZWxFhGU9f/NSgD+exREy86i8ryq9pkfagDENGmA5K89wStkF/sJor7X2hn5LV71XO0i2
-	g4JXviSRyuNe2rPIIRPRQjtAdYLhvp6gDuEXNk04lrt/Vnln48aDLY1gVrirc3DT6DmMKN9v7gy
-	zRUpCdjOiUKVNOXpKIYDbJOxNlcN8veGXDAopaowRL9bg9ys2BjK3J0gFkpeupjE4ZAnGdDO3iH
-	Ad/KlPWNjXXikwcYHH9BonW8k/aixxP8/6i67bzgivE6e0B6yFVpkIJExh0oqWpfNaEvLEI0SI7
-	p0Zx8xZoxQpSGtReh7FCizrmIO6rsrDqoTA2V+5wiSTM+znl4L6k0UeHAP8Iwg6fx5+rXFqheyg
-	a1ELelQkHxi3hYBaNBVsDaHQmyCtGjiT3dtC7DpgQYj68pBXj/6R1L9xH2Ebzhb/w9J58Ieb0Uv
-	ilsuvcUT/EvLecpwBcaOin8iAf5MkgVdMGuBflvHEpXPKljMY7uUbZq/Q0n49igqI9GOhwrgULZ
-	Ww6d1ucqZ1gQahir2avVSKsugyMAQzvOrRDIaeusNtpLy/HjhqhsAyrXqXqwMshEPmQ8
-X-Received: by 2002:ad4:5745:0:b0:91e:76a7:187 with SMTP id 6a1803df08f44-91ed24acfe1mr32302126d6.43.1794167330178;
-        Sun, 08 Nov 2026 11:48:50 -0800 (PST)
-Received: from Desktop ([186.247.175.171])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91eced95d39sm25058076d6.13.2026.11.08.11.48.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 08 Nov 2026 11:48:49 -0800 (PST)
-From: <brianrobertjames@gmail.com>
-To: <westeri@kernel.org>,
-	<YehezkelShB@gmail.com>
-Cc: <netdev@vger.kernel.org>,
-	<linux-usb@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: thunderbolt_net: GRO header-length ordering defect on Proxmox 7.0.14
-Date: Sun, 8 Nov 2026 14:48:48 -0500
-Message-ID: <000201dd6fba$2c726e80$85574b80$@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=djHpkVFI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5431F008A1;
+	Sun,  8 Nov 2026 20:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794168059;
+	bh=bZD9WxQLC7rKJWVcR8n1dH1v0AeuRODCN3NKYMnO9VA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=djHpkVFIFn8L227NSk3UA8vh3XQR0/N3X6IlbmYiFAon3lZMArl/AVdYjitL64QSI
+	 5ChEXkhw5TQlDFlSnp0EZGU1r0F4AJbqM0laoKys2qDmEeGNu9XCLZh8xjJZ3gwb6Q
+	 puroMMNknXllAqkZrRkpgj6jbOmw8w5J3/lXj+/KGEhOPrQcucRgfeitZi7C8262Sg
+	 rQtgq+b5s7GQGqgmAXtk1ULLKrqlcqbKmdLOl+dx6dPzflC8ng4B/302IzYvdf71IJ
+	 GBRUqKmPA2skX0qkZ+Ypge57tS+GxCLPo1cXblkce1kngrDK328lJgjI+dEzWA3xGD
+	 Yw0+np/0TSAJQ==
+Subject:
+ Re: [PATCH net v6 1/2] enic: retain admin-channel DMA until queues stop
+From: netdev-bot+sashiko@kernel.org
+To: satishkh@cisco.com
+Cc: netdev@vger.kernel.org, sebaddel@cisco.com, aradhana@cisco.com,
+ rfaucett@cisco.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Date: Sun, 08 Nov 2026 20:00:58 +0000
+Message-ID: <179416805837.994134.11428485393774392132@kernel.org>
+In-Reply-To: <20261107-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v6-1-155d64f802e9@cisco.com>
+References: <20261107-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v6-1-155d64f802e9@cisco.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,108 +63,185 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: Ad1vuZ0ajLhI60pVTHeHwa3vcNZzXQ==
-Content-Language: en-us
 
-Hello Mika and Yehezkel,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-I would appreciate your assessment of a thunderbolt_net GRO ordering defect
-observed on a direct USB4 link between two AMD Proxmox hosts. We have
-receiver-only original/corrected/original comparisons and packet-order
-traces supporting the Ethernet-header/headroom correction already published
-by Shun Li.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-Credit for that prior published correction belongs to Shun Li:
-https://github.com/riverscn/thunderbolt-net-dkms/commit/b18a196bb5ca54246443
-e1a29924d6007aa16036 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-We independently investigated the same defect and applied the minimal change
-to pinned official Proxmox source. We did not install the project's broader
-DKMS/RX-normalization modifications.
+- [Medium] Surprise removal of a V2 VF now permanently retains the
+  driver's objects, and each removal cycle leaks a new set.
 
-Tested environment:
-- Two AMD x86-64 hosts with one direct USB4 cable; native thunderbolt0
-traffic, no bridge, VM or Ceph in the path.
-- Receiver kernel 7.0.14-28-pve, #2 SMP PREEMPT_DYNAMIC PMX 7.0.14-28
-(2026-11-02T11:54Z). Also reproduced historically on 7.0.2-6-pve.
-- MTU 9000; TSO/GSO/GRO enabled; gso_max_size=65536; unpaced single-stream
-IPv4 TCP iperf3.
-- Stock thunderbolt controller driver unchanged. Receiver comparisons
-changed only the network module's header/headroom metadata. Cable, ports,
-offloads and CPU/IRQ placement stayed constant within each comparison.
-Secure Boot remained enabled with signed test modules.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the patch
+  edits the exact lines involved and leaves it in place.
 
-Receiver-only comparison, original -> corrected -> original, 20 seconds per
-arm:
-  Original:          30.599221 Gb/s, 620 TCP retransmissions
-  GRO corrected:     29.779541 Gb/s,   0 TCP retransmissions
-  Original restored: 29.994158 Gb/s, 540 TCP retransmissions
+--
 
-Endpoint interface error/drop increments and receiver FQ drops were zero in
-all three arms. The unchanged sender in this historical receiver-isolation
-test was still on 7.0.2-6-pve with TX E2E enabled; receiver RX flags stayed
-FRAME|E2E (6). Both hosts now remain on 7.0.14-28-pve. This is not a
-two-latest-kernel GRO-only comparison.
+enic: retain admin-channel DMA until queues stop
 
-Minimal reproduction outline: establish direct USB4 IP connectivity with the
-above settings, run an iperf3 server bound to the receiver's USB4 address,
-and run one 20-second TCP stream from the peer:
-  receiver: iperf3 -s -B <receiver-USB4-IP>
-  sender: iperf3 -c <receiver-USB4-IP> -B <sender-USB4-IP> -P 1 -t 20 -J
-Repeat after changing only the receiver's header/headroom line, then restore
-the original receiver module and repeat. Module reload interrupts the data
-link; our management connection was separate.
+This commit tracks the SR-IOV admin channel as DOWN, LIVE or QUARANTINED.
+The admin WQ/RQ/CQ DMA allocations are freed only after both queues report
+RUNNING == 0; otherwise the channel is quarantined, reset workers close the
+netdev, and probe unwind and removal keep the netdev, vnic_dev and admin
+allocations until reboot. It also checks the enic_open() return value in
+the reset workers and detaches the netdev during removal.
 
-Mechanism and minimal correction in tbnet_probe():
-- dev->hard_header_len += sizeof(struct thunderbolt_ip_frame_header);
-+ dev->needed_headroom = sizeof(struct thunderbolt_ip_frame_header);
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_admin.c b/drivers/net/ethernet/cisco/enic/enic_admin.c
+> index 61c82b48044d0..8a063c563a41e 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_admin.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_admin.c
 
-The 12-byte transport header is not part of the Ethernet MAC header
-presented to eth_type_trans()/GRO. The original hard_header_len is 26 rather
-than ETH_HLEN (14), so gro_list_prepare() can compare 12 IP-header bytes as
-link-layer bytes and fail to recognize packets belonging to the same flow.
-Runtime tracing confirmed original hard_header_len/needed_headroom=26/0
-versus corrected 14/12.
+[ ... ]
 
-Historical paired receive hooks on 7.0.2 covered the same 18,871,120,863 TCP
-payload bytes and 303,590 packets before GRO and at TCP ingress, on the same
-CPU. Forward sequence gaps were 0 before GRO and 1,219 at TCP ingress, with
-no packet-length parsing mismatches. A corrected capture had equal byte
-coverage and zero forward gaps. Retransmitted/overlapping sequence ranges
-were treated separately. This localizes the observed ordering defect to the
-receive software path; it is not proof of physical USB4 packet loss.
+> @@ -600,60 +608,51 @@ int enic_admin_channel_open(struct enic *enic)
 
-Full reproduction details, source provenance and the one-line patch:
-https://bugzilla.proxmox.com/show_bug.cgi?id=8306 
+[ ... ]
 
-Independent hardware validation shared with the prior fix's author:
-https://github.com/riverscn/thunderbolt-net-dkms/issues/27 
+> +static int enic_admin_wq_disable(struct enic *enic)
+>  {
+> -	int err;
+> +	struct vnic_wq *wq = &enic->admin_wq;
+> +	u32 running;
+>  
 
-Separate context: with both hosts on 7.0.14-28-pve and GRO already
-corrected, we also observed TX-credit-dependent fragment-validation errors.
-A local negotiated TX E2E opt-in gave 18,604 -> 1 -> 18,601 TCP
-retransmissions in off/on/off 20-second arms. This is a separate diagnostic
-change, excluded from the GRO patch. Its lower-level cause is unresolved; we
-are not proposing globally re-enabling TX E2E given the known controller
-compatibility concerns. The related discussion and limitations are here:
-https://github.com/hellas-ai/thunderbolt-ibverbs/pull/78#issuecomment-672616
-9650 
+[ ... ]
 
-We have not reproduced these observations on the latest vanilla mainline
-kernel, and upstream acceptance of Shun Li's GRO correction has not been
-verified. Could you assess whether the GRO correction is appropriate for
-upstream/backporting, or point us to an existing fix or discussion? Raw
-benchmark and trace evidence is retained locally.
+> +	iowrite32(0, &wq->ctrl->enable);
+> +	return read_poll_timeout(ioread32, running, !running, 10, 500000,
+> +				 false, &wq->ctrl->running);
+> +}
 
-AI assistance disclosure: source review, diagnostic automation, analysis and
-preparation of this email were AI-assisted using OpenAI Codex (GPT-6 model
-family; a more specific serving-model identifier was not provided).
-Measurements came from actual hosts and are not simulated results.
+[Severity: Medium]
+What happens here after a surprise removal of the VF, for example through
+pciehp or when the VF is pulled out from under a guest? MMIO reads then
+return 0xffffffff, so !running never becomes true and read_poll_timeout()
+returns -ETIMEDOUT on every pass. enic_admin_rq_disable() behaves the same
+way.
 
-Thank you,
-Brian James
+On removal the sequence looks like this:
 
+enic_remove()
+  enic_admin_channel_close()
+    enic_admin_qp_type_set(QP_DISABLE)       fails fast
+    enic_admin_wq_disable()/rq_disable()     time out, retried once
+    admin_chan_state = ENIC_ADMIN_CHAN_QUARANTINED
+  unregister_netdev(), enic_dev_deinit(), vnic_dev_close()
+  enic_admin_channel_final_recheck()         times out again
+  quarantine branch:
+      pci_dev_get(pdev);
+      pci_clear_master(pdev);
+      pci_disable_device(pdev);
+      pci_set_drvdata(pdev, NULL);
+      ...
+      return;
+
+That return skips vnic_dev_unregister(), enic_iounmap(),
+pci_release_regions() and free_netdev(). Does every surprise removal of a
+V2 VF now keep the following until reboot?
+
+  - the netdev
+  - the vnic_dev and its coherent buffers
+  - the admin rings and RQ buffers
+  - a pinned pci_dev
+
+Removal also gets a few seconds of extra polling. Before this patch, all
+of these were freed.
+
+The kept BAR reservation also doesn't seem to block a re-added device.
+pci_destroy_dev()->pci_free_resources() detaches the old resource from the
+iomem tree. A device re-enumerated in the same slot could then probe a new
+enic instance and leak another set of objects on its next removal.
+
+The probe unwind at err_out_vnic_unregister behaves the same way if the
+device disappears during probe.
+
+The commit message says:
+
+  An all-ones MMIO read or a recoverable PCI channel-offline state is not
+  accepted as queue-stop proof.
+
+However, nothing in drivers/net/ethernet/cisco/enic/ checks
+pci_dev_is_disconnected(), pci_channel_offline() or
+pci_channel_io_perm_failure. Should a permanently removed device, which
+can no longer bus-master, count as stopped so that normal teardown runs?
+
+The later commit "enic: require DEVCMD2 and set the V2 VF mailbox source"
+changes the retention check to enic_control_dma_unresolved(), but it does
+not change this behaviour.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
+> index 6b5824f45a14c..899e0b1e14be2 100644
+> --- a/drivers/net/ethernet/cisco/enic/enic_main.c
+> +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
+
+[ ... ]
+
+> @@ -2264,17 +2276,27 @@ static void enic_reset(struct work_struct *work)
+
+[ ... ]
+
+> +	if (enic_admin_channel_is_quarantined(enic)) {
+> +		/* Core close excludes netpoll and clears __LINK_STATE_START first. */
+> +		dev_close(enic->netdev);
+> +		goto reset_out;
+> +	}
+>  
+>  	enic_stop(enic->netdev);
+>  	if (enic_is_sriov_vf_v2(enic))
+> @@ -2287,7 +2309,8 @@ static void enic_reset(struct work_struct *work)
+>  	enic_dev_set_ig_vlan_rewrite_mode(enic);
+>  	enic_ext_cq(enic);
+>  
+> -	enic_open(enic->netdev);
+> +	if (enic_open(enic->netdev))
+> +		goto reset_out;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but this patch changes these
+exact lines. If enic_open() fails here, the netdev keeps IFF_UP and
+__LINK_STATE_START. By then, enic_stop() above has already disabled every
+NAPI, freed the IRQs and destroyed the page pools.
+
+enic_open() can fail in any of these:
+
+  - enic_request_intr()
+  - enic_dev_notify_set()
+  - page_pool_create()
+  - the RQ fill
+  - enic_dev_enable()
+
+Each of those failure paths leaves NAPI disabled.
+
+A later dev_close(), or unregister_netdev() from enic_remove(), then runs
+enic_stop() a second time:
+
+enic_stop()
+  napi_disable()
+    napi_disable_locked()
+        while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+            usleep_range(20, 200);
+            val = READ_ONCE(n->state);
+        }
+
+The first disable left those bits set. Could this loop spin forever while
+holding rtnl_lock and the netdev instance lock? Even if the loop exited,
+enic_free_intr() would call free_irq() on vectors whose msix[i].requested
+flag was never cleared.
+
+Should the netdev be closed with dev_close() on this failure, as the
+quarantined case just above already does? The same applies to
+enic_open() in enic_tx_hang_reset().
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261107-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v6-0-155d64f802e9%40cisco.com
