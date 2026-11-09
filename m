@@ -1,79 +1,165 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794189233;
-	b=B4qjDwkOwSQHxxzSwKajsvcBDWGtKRAacNUk4x8+LkdKsLdJyaooXqLn0LQiUhNLRt/+
-	 DG1x51dcFN11r/ei33NoRpD11INURvKOYETEM/YBYWZ4oP1jwo9kJgcKNTsU3qbG9U03W
-	 Qniv1kcZGSXu9ldS2xIiC7ifmEvU+EeNxlSBQ6L+RxggZLL9oIfGRIWab+oc2m2TcDjul
-	 QZqL7eKlibD54c87SSadqSpyZPyBTeYtz1aId/17z0TxINNkMEpnpzsRL/udE+/W4jTC8
-	 Rkeq7NRYV/LC1VMl9PBBkgvb9CefJL4/tWcKp2FXjB/aSBAQrQ35bBbeG7fIBs93pMQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794189233;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=V+SieL2nVGZvLEQKccUXIqqYkXNqZxAUIg9/rkL36Zk=;
-	b=Db/hZ5YiuOPRSjU/VTEg3aqJne1d+XSVOmSSf5duBBmif/VD0zIRAGgQsEorEPYshYEy
-	 3DZDnFMqcF999L6PuwfiRtrkJZZJKoUB+qtjiyp86sysuICBtXoplk2yiGeyJ8AgR7HNQ
-	 Oj/WvdMCGmwCLNGidvtaeO3kguFeUYMRHmNzgAxbQtym0jwiWmk81BoVSW559rujuKhSR
-	 x7qkuMOH1yivQd7gd5Oq+cg82EdhiC16i/I19lNBxq5AdiyyrelKX68YwkzeFxGXzgsbp
-	 riLfRsXXO+BFnFx0lDgOty2dnhK7JDLcYAE7dpPVlw9AHtOy1i3GmqTSJmGezGDiGNw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h3bgj8+l;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24643606A320;
-	Mon,  9 Nov 2026 01:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h3bgj8+l
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794189232;
-	b=qQRSq+jSircbGwSPlFDPl1fHt0fjxF9Uh6hzBniUhJ+/Y7adzlnT2VIpLG0e4WofnySo
-	 wGqeV2A5M+8PUDiULT6EqHMWBVTeoNDsO7fZSqpgGX4nqGDMMm7Xz7RESfjvQQpziQMqK
-	 1S3qWpGTwyc7qhFTzIVHSQK07brJ5I08OZmailMpkSVaZM77fUh5VxbfngBrh4+sKZP6I
-	 DhV4Cs2t9XvP+OVvdSsBxaHhZKRKcUarQet8LOu0nne9BRioqBhhlzhl+ljbGKIjQT5Zk
-	 YFqcJoi/Wg5AO7DgFizH6q1Bkok9Lxb/COMFyTpE0NXPbcliZCrJT1h6b+H86f470eg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794189232;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=V+SieL2nVGZvLEQKccUXIqqYkXNqZxAUIg9/rkL36Zk=;
-	b=fZ30g7G6H8NrkrIT14FECJGENuC7sJ+0W5LNvRFgimT1A/6h7NFwq8ynJjoxnJeTyHYX
-	 YrN6rhnomJWaFveLl4jl10atX5j7904QbR20AkGvLBXS454/nDCb1Ik2Zy33hkqlLZvZv
-	 emyP58ktUDt9kGypJsMgnsd6Qph5+3ntjbGB7a+/Okk0K9RdLQEeuVjAb3i5ylgXckgUB
-	 6EY5xgwvs94BzoH3f8Q/OrXIINyCWLIbCazncHo80FozTghL1cR1RjnysXNbrWLJinC3O
-	 wnthEljd6GvJWFbqbs4VP40f5oMIPc31gG8H2yAnaqwLSNW5gEwlu6pBo6q14UlYLVA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.153.120
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794189269;
+	b=yDwuVNtaBH+3Ai1hRKQEtnYyHH87ejCzww1Ff0VTd8d62Eh7WWZGqaoY6eiwjIIrAR2L
+	 NpqoFip6zAoam6biydKW65D8GbFA5bfhJLk8KSDt/AlcImyjAOiMzDi4ev0887/0jESZz
+	 GFVsIKzMfRdIdz6xeSslnGQnc7+qhG/nb1oRfgeUbIhkTrpAqLp8dR3hsgd4Ld7WTjBFZ
+	 O0q2Ew0LPpXPGwe443qWmsspX66Nr9UWz/C5UKtmREY7604H1DDjdkW2vQAx34oXC9T4z
+	 tDAvwcFEeya30tsodyOCRUpDZEf0qW2FmsuUWCrLYdySRKboqgYb8uoKS9xl7Zc3IOg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794189269;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
+	 Content-Language:Content-Type:Content-Transfer-Encoding;
+	bh=4Ce2Opq+3cRum1feb4ndeygKjow9mzh4NOCsEVYyi5E=;
+	b=Vh0cyeCc5WqhwiPc9q5zPL50tWL9CTOWJAszsX8XfhCA4OKi710rCO58nQjP3GAuHKiE
+	 p63hzpZPCIujYXov1EjP/DA/B0qrkAq0QPQ3tgH+vtEhjZiToYVOMvTSNGsNp4zhvpWGz
+	 12U93dmKB4eFtlQhoLQWkGDBnnPqznTuChS4u2xLkksk+4LcEuLVUCGFSPwwJeAF6qptH
+	 dGccL9/9SeJTkLG3om8tPYwWc+cOSiSlqwJrGGgp89FvvD8YfSPrDHY3R0yB+B0h3UjvX
+	 XALRvU+PfMYQebeaSxHHK21EH3bO/Z5Z1BiDhfMusWFGBaubwJkxCeSYuOGaCGFGBYA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=onsemi.com;
+	spf=pass smtp.mailfrom=onsemi.com;
+	dkim=pass header.d=onsemi.com header.i=@onsemi.com header.a=rsa-sha256 header.s=mimecast20250127 header.b=dDGY9mwd;
+	arc=none smtp.remote-ip=170.10.153.120
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0D5731F0089F;
-	Mon,  9 Nov 2026 01:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794189232;
-	bh=V+SieL2nVGZvLEQKccUXIqqYkXNqZxAUIg9/rkL36Zk=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=h3bgj8+lBanCwdpmKvjlJr6ly2Xjzx0Q4MAe/BlDnTE8tnfTB9P9eDSZoaZOB8GS/
-	 S4ujNAsPMymzzmjrc7aFb3s8uo8ePhZ4ekP94h42X4PpdMfWDrHifgzm48rISU7HeI
-	 fO7GnmTKrLs21+QoPCf8jJmoTKnEdkmntsq+poM4q47BtgzhNsOUp0W7qJuZWt9gZ1
-	 Jh2AJvXFTXIdHEYio8ZgHfTuaU03Ldj6JTXaBmE/PP3O/QrH+e7kIfUQLjU+PB+8+1
-	 yCmuxJPcczbFIX82rf+mOB8Uq+5Ri6KeKOldJQEV0qXPZSHs/P590qJ6U8YKVEd8LK
-	 b061T1cRAIr3g==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5F2A2481F8;
-	Mon,  9 Nov 2026 01:53:51 +0000 (UTC)
-From: Ricardo Pardini via B4 Relay <devnull+ricardo.pardini.net@kernel.org>
-Date: Mon, 09 Nov 2026 02:53:47 +0100
-Subject: [PATCH net-next] dt-bindings: net: add Realtek RTL8125 PCIe
- Ethernet
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA41E606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:54:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA41E606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=onsemi.com header.i=@onsemi.com header.a=rsa-sha256 header.s=mimecast20250127 header.b=dDGY9mwd
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1794189267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Ce2Opq+3cRum1feb4ndeygKjow9mzh4NOCsEVYyi5E=;
+	b=dDGY9mwdnQO828lseRiZcOJPs0DkhHRpR1eCEoIAqdCtggD9AfVreAOEQ91wj5X4BuJ1Ys
+	ZfVFjS29gjUirkRk5ncZ8NZ4lf3Tj0xm9tEWgd+dH5uEdzk6Ggu067atZqifrsODYFKDPX
+	JlOOWjdaXAnI/AHxZTTOrBfiguBDQJpcVY09CvquzhHRUaFG8X8a/IKvcsJD2Ktmoo4PRZ
+	pKnVOe+qQXsAA/DkgK8UwVW1++WPUIeF+UjFfUDT2qbuz3tK7LtxaBFtJNnyWtQjPWO6n8
+	Ljr1rIPyfWvu2lPilSL8NKG2o5syQJO9ivUPjh05vYQxfvSkVy2NvdepXA5YyA==
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010031.outbound.protection.outlook.com [52.101.46.31])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id usb-mta-58-Lk60vyD2MOyqDmZIGEriAQ-1; Sun,
+ 08 Nov 2026 17:54:08 -0800
+X-MC-Unique: Lk60vyD2MOyqDmZIGEriAQ-1
+X-Mimecast-MFC-AGG-ID: Lk60vyD2MOyqDmZIGEriAQ_1794189241
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com (2603:10b6:610:110::22)
+ by SA0PR02MB7209.namprd02.prod.outlook.com (2603:10b6:806:da::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 01:48:56 +0000
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e]) by CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 01:48:55 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "parthiban.veerasooran@microchip.com"
+	<parthiban.veerasooran@microchip.com>, "horms@kernel.org" <horms@kernel.org>,
+	"corbet@lwn.net" <corbet@lwn.net>, "skhan@linuxfoundation.org"
+	<skhan@linuxfoundation.org>, "rdunlap@infradead.org" <rdunlap@infradead.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "edumazet@kernel.org"
+	<edumazet@kernel.org>, "piergiorgio.beruto@gmail.com"
+	<piergiorgio.beruto@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "jerry.ray@microchip.com"
+	<jerry.ray@microchip.com>, "ciprian.regus@analog.com"
+	<ciprian.regus@analog.com>
+Subject: RE: [PATCH net-next v10 11/11] net: phy: ncn26000: Support for
+ loopback
+Thread-Topic: [PATCH net-next v10 11/11] net: phy: ncn26000: Support for
+ loopback
+Thread-Index: AQHdbkU6i9E79EVvikCnHNGf/9UL4LcjUA6AgAF3bdA=
+Date: Mon, 9 Nov 2026 01:48:55 +0000
+Message-ID: <CH0PR02MB7867732FC15ED54183BAAB0783732@CH0PR02MB7867.namprd02.prod.outlook.com>
+References: <20261106-s2500-mac-phy-support-v10-11-31b5a69b85b7@onsemi.com>
+ <179409694533.994134.4523797133943252048@kernel.org>
+In-Reply-To: <179409694533.994134.4523797133943252048@kernel.org>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR02MB7867:EE_|SA0PR02MB7209:EE_
+x-ms-office365-filtering-correlation-id: fbf5158d-91a7-40f3-07d5-08df3e039d88
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|38070700021|10067099003|11063799006|4143699003|56012099006|261022105027099003|261009221227099003|261009221727099003|261009223027099003|261009223327099003|261009220027099003|261026140227099003|261028144727099003|261026121527099003|22082099003|18002099003
+x-microsoft-antispam-message-info: rVwCPDQJnDozJAnSGW+MmTxS9t3iqg2Dhf+O+q/4LqFJ/ErWbwDJc5N4hMDJgP7obrm84WdSI5gYSr2llAjYmqpj1lclOvRI5yguo4LplyLwhm82THPj7aRZTU1tTf8/iXp7ByfzoOyGaXy9xDY+ZL1npSU1VWDY7YNEhaXlxZ3xAiCtsL4SzbMQBULWzj179eqTsVkuNPEVA2VuPUuXo8ous9Uu7Z8sQn9d4+TYbEZxDRGUHXOdHKbTEaUzvhA5UT+FiRkndcw/TiV3Q7m/Pbb7EhPVjhkyQptJ60zx1ObPnSPiIhQ9bLfCifDcIyYd4l7oLhfAel8Pvp0mJ8Gmf7l8FPz+9XLSBmVuFSXHlaVhE4v2CpG+RYAfM/uintsa/MG/jVU5LYzfJJCZvQfvoF86sUVmpG+dv8oOhw0fXWBSW3n2T2pzISgZFc3jdvQ23xFgYXzbqKWoiGoCRrjaZ0XUC7+/nFHyBAARff/0T/+NUSudi7sKJVBbG8nvYSA6PKprmGYO9kwu4dhp3QwwGpdssu8TpWzggym4SsElo5Y93hStU7ex2gukao8Zx24KCshUCWpaYubH7eq4YKwdsLQ7RehskIO4ve6GX/+2vWH8/dLdr1gJXv3Kc7mWCxFmca+q27iKuk2fPbvyb3QLlB0qHCB4cOIsVF49gzzmA1s=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB7867.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(38070700021)(10067099003)(11063799006)(4143699003)(56012099006)(261022105027099003)(261009221227099003)(261009221727099003)(261009223027099003)(261009223327099003)(261009220027099003)(261026140227099003)(261028144727099003)(261026121527099003)(22082099003)(18002099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QjZIOFVJSHM3Tm9NTkwzOWVSOVltL1BJV0dCL1dXaVdyakVKeFZHZ3JwRUVY?=
+ =?utf-8?B?RVlUb2REQi9NYmcrT1NVcDAyanJKZzQ0eDV1QTh4ckFxaHdqTVlkckJvNG45?=
+ =?utf-8?B?UWdZckNKdE5SVFJWZm9UbVdwQ29YdHlHVlJMZ0U4dVhGTXQzd3ZZV0J3WStr?=
+ =?utf-8?B?eEtPblJQYkNZVm1SYjNncEJabnh6dFB0bThtY0FVamdMeHZ2SDJ6Ynd3dXE1?=
+ =?utf-8?B?Tnppb3JtU0p5MUdUSlRJZUFTL2VBeVBXQTA4c0JPZnJYL3VjRzFXNnpQdWhJ?=
+ =?utf-8?B?THVEUXdvV0hLSE9SZlhtaWxVK08xaGhpK1ZCQjV0UjZaWEEyeWs0eW9xWkMz?=
+ =?utf-8?B?dEl5Vm16ODdBYnMwdytpMHpJNWZSdGRsbHpFR2o4elVBMEJBeG9QWE96Unlq?=
+ =?utf-8?B?K1B4U0ZQUVR0M1VCeHhnWHExQzhnTkZkdGRUenlZYVZlTkRJRksvVXMxUUdz?=
+ =?utf-8?B?RFROZEpkZDQwYSsxNlorZHg5VUxuaVArb0tjWG40R1JHZlhFTnJpeUtYYi9Q?=
+ =?utf-8?B?OThlMHdSbGpla1hBQnBvY0s5dUVNcFF3TzlRMFEwNnJ5OE12YWhnWFBtdHVY?=
+ =?utf-8?B?OXI5c0xoeWc3M1JQbDRPeGhhYzNtbUNpdlpMa3F3V3dsRlBIYmNaRWMvOWc5?=
+ =?utf-8?B?UXJNaTNXV0pwZWZTU1dtWEwvRTk0OEw1L0dJVG4vNEtHQ2ExdmVzbW03aCtk?=
+ =?utf-8?B?TkpsSERrcDhaRmZKcmVNcUJzeFVQcHVZd3pMVWlNN0FKSHhjTUx2dEFpVXVN?=
+ =?utf-8?B?TnpGc2U5U0t1TU44ZHRMcklTZFcvZTUveXNGdDROdm9mRVdkaDZXLzJTbG1h?=
+ =?utf-8?B?N1owT3NwMExkcEZ3dEFQVkFRVWRqVU9NQ2xZVFN4akYrdUh6NU5WcDFLcjJm?=
+ =?utf-8?B?V1EvQ2Z1bGFDWk9XZnAyVFRSYzV5L3ZpNkNoYjZrNjdtYTRHK0Z1cG83MmxL?=
+ =?utf-8?B?aURTVmVKek5Qb2lPZlJLbnhMaEdjSzFOaU1HN2M1bHRSckhiM210UVRhOUZ6?=
+ =?utf-8?B?QWpEMm9iaENpcmlHRFRPSEpTZWtzdVF6SS9BNGVrLzg3c3NJcDEwQ0cxQTJt?=
+ =?utf-8?B?Rlg5ZmZmdk00U1Zwa1NQbWIyUm1hbDlLbUZOT1VZSExtUjkxMElzOTZLRVVp?=
+ =?utf-8?B?aHM2eE1qWlNLMkJpaHhjUHc3bXRQemFZdFpEK2oxREYvMXBBNm9wRWlyUzJ4?=
+ =?utf-8?B?NTI0NjI1RjNnb3kzUFFuSzNoeVlXQlhMd3FoVG9rRG1zNFc0aVVxSXpNV1FN?=
+ =?utf-8?B?emI2OWdjRitEVUs4b1VEUE5jb1pTdnFLNHZLK0FjYWsyckpMTVhEejcwOUpW?=
+ =?utf-8?B?TE56d0NRdGVxejZlTEl3MGtXRGc0NSthQVdKelUrTkdUcjJ0bFg4T0kydFpi?=
+ =?utf-8?B?UEF2NVh3SUhuNHZDa1BTdFgvLzVlYWxveDkyb0RGVDF2VXpPWFFFTWEzUTFy?=
+ =?utf-8?B?UndidkcyMUl5ZFVZaWd5OWp5aEQ3ekt4aVBKYmk5VE1WTi9GNXN5K2thUG5B?=
+ =?utf-8?B?V2dyK3FPUWhhRVdTbHRUUCtla0g3NFkvbUlXbTArNEZ0WXlTYy8razg5Qjcz?=
+ =?utf-8?B?RzFDVE1UMXBhanhyT3AweWRnV2ZYSFlxVjEwMUZlTUx4VzhITG1FOGc5RDZI?=
+ =?utf-8?B?YUVKUi9zdFBzbXVsQ3pTY1JERnhCVWpvdko3TlJtZkxvOTE2WUpCd3hHS1VH?=
+ =?utf-8?B?WGhGdWdaSjZSN3k5ZnRXZk5PWFk5WmhSak8yNC9yK2tvVzhJN2dnYXhBMWJh?=
+ =?utf-8?B?c21kSkRzVHlZek9qQXJkM0JCR3YxaitNUzhHVHJvN3V4TzZORU9hNjVkTG9Y?=
+ =?utf-8?B?aVRwcDZPWk5IUHJuM1hqWFQ5QUVGWEZhWjVHalVkQTBmWSswcS9vbUZ6K3Rs?=
+ =?utf-8?B?RFpxTUZTREswbWFWRWZSemExT1JaNlJiSkZRVnJUMXRVYWdwYmFSQkFXTWFC?=
+ =?utf-8?B?aldEbHdUV3l3SWN0ZFlJSjV3Qko1SFhiN0ozSjFHSEZLekRWMlVuV3ZPUlVp?=
+ =?utf-8?B?bHFrUy8rZDk5MXFBcTY1aDVrdzdhaHJldHl0c2x0UDZuZnFsL1JMQmV4b1Fr?=
+ =?utf-8?B?VGxXZlZzcEM0STI0WHkxbGorSEw0L0VaZ3BFbDViUkRLUW9IZngzZkpFSzFi?=
+ =?utf-8?B?eituOHh6R2cxTktZeUFpdzJGellkSm5jWEUvTUVLSHlNVW1jdHhIdHJ1KzVl?=
+ =?utf-8?B?M3RYZTQwT3k5YkFOTnJnOGdaT01ZQXp1R1JVdFBLU1lBSkNjZURUSS9MaWpP?=
+ =?utf-8?B?ekdvbEhlelA2bkNCNEQybDl4U0ZnRTg2Z1orc09qZ0NMZXFXV1lwSmRyRUla?=
+ =?utf-8?B?ZGhlOFdlM0V3OEtPU0xNeUhtVTFGWEF3YkhuUWk3OStnU3g2TmV4dz09?=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,159 +169,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261109-dt-bindings-net-realtek-rtl8125-v1-1-cff4b8a8be66@pardini.net>
-X-B4-Tracking: v=1; b=H4sIAKon8WoC/yWNQQ6CQAxFr0K6tgkdIoJXMS5gpmCVVDNTDQnh7
- gy4fPn57y2QOAonuBYLRP5JkrdmoFMB/tHpyCghM7jS1URlg8GwFw2iY0Jlw8jdZPzCaFND7ox
- tS87Vni5VNUC2fCIPMh+FG+wH5dng/l/St3+ytz0A67oBqUu5Do0AAAA=
-X-Change-ID: 20261108-dt-bindings-net-realtek-rtl8125-991226c1733f
-To: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, Ricardo Pardini <ricardo@pardini.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4350;
- i=ricardo@pardini.net; h=from:subject:message-id;
- bh=7nlD6uY1u4F0mRBPPEUBKpIYrlmDUFHO6at2lmifh/s=;
- b=owEBbQGS/pANAwAKATteP+Oex+3pAcsmYgBq8SeuO6zb9eCJ6q8FtHOjt+bOOtHzf7xobZ4Yv
- OGicDy6heCJATMEAAEKAB0WIQSsGCMM9q/qytxIiJM7Xj/jnsft6QUCavEnrgAKCRA7Xj/jnsft
- 6XLNB/9Bw77ejpGM8LhzEykrl+tF+nUiOG35uGPYS4dZ8xPFx7G7xNQ2S0r2IIG3rj5RMbgcw5V
- vQvGZ9yBx/Ua1WVRrmQR4kEHWEr9xR6JdnUMZ6h6NLqof5GwES+wDjiodYS0M49rYgeiLDfjX9J
- tC5HcEYbyzBvBvVsv4bFdmHLACkeSC3mKh2DcLrcuH+/N1+ny7mvxjbn/YbZ9AlqWUdqj3v9Xlu
- 40lySG5btGdRNqZJyA8H4AP+m6R4U8eE/1mTUNSWt75dtCMtHgcY1lyr2Mrnu1Hen6dHaY0lSpL
- +6G+94wjy2dCIb1FeEcGETp6gTlsRo8FLwo3LXxOcb1fVe9S
-X-Developer-Key: i=ricardo@pardini.net; a=openpgp;
- fpr=AC18230CF6AFEACADC4888933B5E3FE39EC7EDE9
-X-Endpoint-Received: by B4 Relay for ricardo@pardini.net/default with
- auth_id=588
-X-Original-From: Ricardo Pardini <ricardo@pardini.net>
-Reply-To: ricardo@pardini.net
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: PTJLim1RQZ25ErDKXonQosjEhLsSwKrxjEV6QDQP8QZp899U+OPxhliiSRT1TwYbWBgRwAODpqvFh9X5tt4WXSm5slEokSu73HJMKjUMxdz/g5HQlyrLKyROnoNwgTYN7j5O8rds2FwW/8W37W0UK0hlCCHaXRnbS0q7kAz6HWduCyhBFnI5GEZ62Y2wUuVS88hj1LJalXpKymkRIIPBZZ3hz3pRp2AU9VVtEy5iyrnYgTbGDSL65XujtPFBrQUY4H2FH72gNKvV6DTaK2rj8lHtisiKD33pA3rBjK+Q/gc9mKjfn8J1akdIvsW22ApfYuaJn8tH6v0n9QF9XFpFJA==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB7867.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbf5158d-91a7-40f3-07d5-08df3e039d88
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2026 01:48:55.7729
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: J1eI5WFd/BygPzShLY6WkTqdtdsY8CgBuFrw0WnV/gRihxo2sAwNmDwKZRWSrzvCNvcT6As3//dSRlHM3WRYsxg0crQhFBGl2L8S6pW4k0g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR02MB7209
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QSUNnAg7PWmJQNpcOLb9amG7Jdpfi0qL0X6IPEW-4eI_1794189241
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-From: Ricardo Pardini <ricardo@pardini.net>
-
-Add a binding for fixed/soldered Realtek RTL8125 PCIe Ethernet
-controller. As a PCIe device, its "pci10ec,8125" compatible is the
-Open Firmware spelling auto-derived from its PCI-SIG vendor/device IDs
-and is already covered by the generic dtschema pci-device.yaml. The
-compatible itself therefore needs no binding to be valid.
-
-A dedicated binding is needed because board DTs describe these
-soldered function nodes in order to attach ethernet-controller
-properties to them: a placeholder local-mac-address that the bootloader
-fills in today, and potentially nvmem-cells, phy-handle, etc. in the
-future. This binding references ethernet-controller.yaml so those
-properties are validated on the RTL8125 PCI function nodes.
-
-Suggested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
----
-Add a DT binding for the Realtek RTL8125 2.5GbE PCIe Ethernet
-controller, so that board DTs describing soldered RTL8125 PCI function
-nodes get their ethernet-controller properties (local-mac-address,
-nvmem-cells, ...) validated.
-
-This was previously patch 1/7 of the series "describe RTL8125 PCIe
-NICs on Rockchip boards (and add DT binding)", up to v5 [1]. Per
-Heiko's review [2] it is now sent on its own via net-next; the board
-DT patches continue separately in that series (v6+). There is no
-build-time dependency between the two: "pci10ec,8125" is already
-covered by dtschema's pci-device.yaml, so the board DTs validate
-without this binding.
-
-The need for the binding (and for the compatible at all, since the
-kernel binds these nodes by their reg) was discussed with Heiner in
-v3 [3] and v4 [4]; the outcome, per Krzysztof, is reflected in the
-commit message.
-
-The patch is unchanged since v5 1/7, apart from the rebase onto
-net-next; Rob's Reviewed-by from v5 [5] is carried over.
-
-[1] https://patch.msgid.link/20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net
-[2] https://lore.kernel.org/all/1971659.CQOukoFCf9@phil/
-[3] https://lore.kernel.org/all/b7cc8eba-ff6e-417d-8e74-b3bb24e08a26@gmail.com/T/#u
-[4] https://lore.kernel.org/all/876a38f8-75ea-4b32-bb65-216cb3adb436@gmail.com/T/#u
-[5] https://lore.kernel.org/all/178976078089.1640411.4176382061491076376.robh@kernel.org/
----
- .../devicetree/bindings/net/realtek,rtl8125.yaml   | 43 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 44 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml b/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml
-new file mode 100644
-index 000000000000..eee13fbc1e6a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/realtek,rtl8125.yaml
-@@ -0,0 +1,43 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/realtek,rtl8125.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Realtek RTL8125 2.5 Gigabit PCIe Ethernet Controller
-+
-+maintainers:
-+  - Heiner Kallweit <hkallweit1@gmail.com>
-+
-+description:
-+  The Realtek RTL8125 is a 2.5GBASE-T Ethernet controller with a PCIe host
-+  interface.
-+
-+allOf:
-+  - $ref: ethernet-controller.yaml#
-+
-+properties:
-+  compatible:
-+    const: pci10ec,8125
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    pcie {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        ethernet@0,0 {
-+            compatible = "pci10ec,8125";
-+            reg = <0x10000 0 0 0 0>;
-+            local-mac-address = [00 00 00 00 00 00];
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fe23913b1e43..afe9bff92936 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -134,6 +134,7 @@ M:	Heiner Kallweit <hkallweit1@gmail.com>
- M:	nic_swsd@realtek.com
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/realtek,rtl8125.yaml
- F:	drivers/net/ethernet/realtek/r8169*
- 
- 8250/16?50 (AND CLONE UARTS) SERIAL DRIVER
-
----
-base-commit: fa5196392691051963726787944db872420dfa75
-change-id: 20261108-dt-bindings-net-realtek-rtl8125-991226c1733f
-
-Best regards,
---  
-Ricardo Pardini <ricardo@pardini.net>
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBuZXRkZXYtYm90K3Nhc2hpa29A
+a2VybmVsLm9yZyA8bmV0ZGV2LWJvdCtzYXNoaWtvQGtlcm5lbC5vcmc+DQo+IFRvOiBTZWx2YW1h
+bmkgUmFqYWdvcGFsIDxTZWx2YW1hbmkuUmFqYWdvcGFsQG9uc2VtaS5jb20+DQo+IFN1YmplY3Q6
+IFJlOiBbUEFUQ0ggbmV0LW5leHQgdjEwIDExLzExXSBuZXQ6IHBoeTogbmNuMjYwMDA6IFN1cHBv
+cnQgZm9yIGxvb3BiYWNrDQo+IA0KPiANCiANCj4gQ3JpdGljYWw6IDAgwrcgSGlnaDogMCDCtyBN
+ZWRpdW06IDEgwrcgTG93OiAyDQo+IA0KPiANCj4gW1NldmVyaXR5OiBNZWRpdW1dDQo+IENhbiB0
+aGUgUzI1MDAncyBvd24gY29uZmlnX2FuZWcgY2FsbGJhY2sgc2lsZW50bHkgY2xlYXIgdGhlIGxv
+b3BiYWNrIGJpdA0KPiB0aGF0IHRoaXMgc2V0cz8gZ2VucGh5X2xvb3BiYWNrX25vX3NwZWVkKCkg
+ZG9lcyBhIHJlYWQtbW9kaWZ5LXdyaXRlIG9mDQo+IEJNQ1JfTE9PUEJBQ0sgb25seS4gbmNuMjYw
+MDBfY29uZmlnX2FuZWcoKSBvdmVyd3JpdGVzIHRoZSB3aG9sZSByZWdpc3RlcjoNCg0KQWdyZWUu
+IEFkZGluZyBzMjUwMCdzIG93biBjb25maWdfYW5lZyBjYWxsYmFjayBzbyB0aGF0IGV4aXN0aW5n
+IFBIWSdzIGJlaGF2aW9yIHdvbid0IGNoYW5nZQ0KYW5kIGNhdXNlIGFueSByZWdyZXNzaW9uLg0K
+DQoNCj4gLS0NCj4gU2FzaGlrbyBBSSByZXZpZXcgwrcgaHR0cHM6Ly9uZXRkZXYtYWkuYm90cy5s
+aW51eC5kZXYvc2FzaGlrby8jL3BhdGNoc2V0LzIwMjYxMTA2LXMyNTAwLQ0KPiBtYWMtcGh5LXN1
+cHBvcnQtdjEwLTAtMzFiNWE2OWI4NWI3JTQwb25zZW1pLmNvbQ0KPiA8aHR0cHM6Ly9uZXRkZXYt
+YWkuYm90cy5saW51eC5kZXYvc2FzaGlrby8jL3BhdGNoc2V0LzIwMjYxMTA2LXMyNTAwLW1hYy1w
+aHktc3VwcG9ydC12MTAtMC0zMWI1YTY5Yjg1YjclNDBvbnNlbWkuY29tDQo+IGV0ZGV2LWFpLmJv
+dHMubGludXguZGV2Pg0KDQo=
 
