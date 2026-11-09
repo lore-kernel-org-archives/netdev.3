@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794253733;
-	b=ePeCt6JNA5q4YORDS1/wRRRmMXnaqTwx9ZdORxhmFeui73McmUQT+Ac+Z1fdMO5zZ9kZ
-	 VY+7g8r1RAkjfXySVYSo+zaZXvohvMXnKSJpsY5zUzCIU/UIz5xYDIBnZtDk4FQM/Ahou
-	 PwrfITBSRg18cR7a5aZYq3S22OXIrBRv0EFqbH7agrC/YQRJKJkpORn1TYfc0HHqbDID0
-	 OMYebTM/Hxi8xBP+Xi8jMgN62kYAMdF/pxIs+nFbVSt+eNCFPgVj4pHFC3z1KjivMQbDu
-	 HGtMkVaVERxPTy0Wsu/Kw22vnTpj1KsecZi9zOoWJTRU+mZwHy5ns1AfurGdSKUA77w==
+	t=1794253730;
+	b=xxiBrD+SLBcuE/ekIm3Z0k2gbmHVAsB7SmHM6X06Fj0RMCg6CxcqV43CeLUl+udbaU7r
+	 aTeLRKARtAN74nrkRtURGlcie7Tp5lVTk1cjyscibQXHDJYyMJ35+6V7atEpGeYqMBnng
+	 f9XdCz1ZzoRZTQK1T2Kn5JT/IxF97Yw2KSQ2RRd/seucFq2Q4dmZx9uUE+jALTMGcLS+B
+	 RDhhhqebW2JsJGugsNQXafCKUwalA2RQxjrss/ByKNnyXlYg5tkNYJzCYbJwa3M+uG2DC
+	 o0pDK/heT2qXOAZxzeSHu3Cnq2QfqZNybN+sZlKFUMVbsnjigiN46xi3Ek5V1q5mmig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794253733;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253730;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=Eyd9veasL+1zYHn5ojY0wOfd1QwDacZa46cZ6SG2zHg=;
-	b=spRy6jbbtvHurG3a2Z90MTazgzVfvHPzWAnXKivKdfIh5LyGxcroy2dCmrinjSJv6HK2
-	 AVLpEYrPwB1CwTxOzI6BjPiz6ziqSBiRjIZ6vOmjCV+q3jLC94GOUe7wBDJYLLhMaNYUe
-	 nHytj1WVGxaiXTRsgvrLVrP9oktEv4+gK3kcUDSsdyorEEsb64LxNIRkd7QXRDSXmgctR
-	 2LZ50iQnU9XiUEGe96O2KQ88sAjR2RM3C3OaQOrXsiI23S1uxmDeJBOMi2/l4O8f7B63U
-	 NWpt4JyqLLUI6OGI5yTQL2+Be/f4+nAaf1hHuqCsPRNiR5/pK/ID7sDF8O1ITA5e4rQ==
+	bh=CSRtMtlF+ByoNSybcSp5RPlobIyfbjmSYQic9q5nQeg=;
+	b=RpW+fCnznMEi17ELzAKUtpMpxYbQErOZXurxUB5VAQB2UWUfuqMhcpCasELzrNZw6O8D
+	 pxHX8PUSVOzIsXs3qztwaLApfROxRSgsUO89m72uG1V+Uoubxm3CtmQa1TF4VYFTK9hGO
+	 m7SgJdiWEqtTUkX2D57Sr9B0bwe7XGwyBcZ+y5yDNn9a5erznkrCodPI4cfR6IReX5ouD
+	 OkcadlPQ9ujDWSj7cL8aGpCqBZpQF/iBqLYlX3h3fTQJy6aTqanLzhHjrDcEwUiryged6
+	 vImZfCaIzROP7sdTGJxR+rJqQH/7naGTyIipK0KdgCQAstgrIQicbp1VMK/LB578M9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaJTdBmy;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QtaJIGVl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0C160A2607
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2928606A325
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaJTdBmy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE061F008AB;
-	Mon,  9 Nov 2026 19:48:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QtaJIGVl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB9D1F008A7;
+	Mon,  9 Nov 2026 19:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794253732;
-	bh=Eyd9veasL+1zYHn5ojY0wOfd1QwDacZa46cZ6SG2zHg=;
+	s=k20260515; t=1794253729;
+	bh=CSRtMtlF+ByoNSybcSp5RPlobIyfbjmSYQic9q5nQeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aaJTdBmynzbjnQFsI7eGeOOluMCh0GBRbCRHUlELV87AZZ5QetuMrlUdrZXnoAvlU
-	 ecp5/wMLK29XxqqjNt7+p7vI71jRy/784qWtM/l+IrMhZoLnSyrNlfTAWC2gGM9w7v
-	 2HWmLLFjeWGjeLn/nv6Mx3DrD7LY9KAnNHh2v415KLDJiwlonteDGXiQfP2M2QvpNj
-	 uXuTL4+dma6AnM7iIbSlzmjWhMs8pvU9vzCBgMPkk/pljk/XQyV7F2AtUukiejFp9L
-	 0QmzN12M+P6/PgfCH4lPNhWNum9CLrYYa2dRz+RM6o5N4wFSy51IxsuGup7t3H3k+P
-	 gX4ueX8ODuwBQ==
+	b=QtaJIGVlNomKVZ7q8DUBDOVFeDTaxD2G+SiB457BkpMZYZvT6UtT/CyM/s4bVtFMn
+	 B8zDkATsbXpbkj/afM99iZoNRjk7tKse6ItXKne5hRck6HFtcPmiBxmHz22iQ24q1P
+	 I5fb13uLOsdPXGB+NWSqFssAB5E+g+rPlLH9s/AvKDipPs0wXZXITmHgHmXPW1/WUM
+	 eO7qzo2ZY8qvMFo8ofuH0eC20PWfhzBik1fHqUSFlyCgfU+cnrxXmb/w7cTBd6waFG
+	 5i7Hs7AKamMWe4gHS5xAxu8SuuY34zwc8xAzv8FKAC97LrdvPicCw+pGnVKjtYytkO
+	 oXL8mCDuvVdjQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc: netdev@vger.kernel.org,
 	ernis@linux.microsoft.com,
 	Jakub Kicinski <kuba@kernel.org>,
 	stable+noautosel@kernel.org
-Subject: [PATCH net-next v2 5/5] hv_netvsc: let the core take XDP off a netvsc device that is going away
-Date: Mon,  9 Nov 2026 11:48:43 -0800
-Message-ID: <20261109194843.1353592-6-kuba@kernel.org>
+Subject: [PATCH net-next v2 1/5] hv_netvsc: fix the program refcount when the VF refuses XDP
+Date: Mon,  9 Nov 2026 11:48:39 -0800
+Message-ID: <20261109194843.1353592-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109194843.1353592-1-kuba@kernel.org>
 References: <20261109194843.1353592-1-kuba@kernel.org>
@@ -70,75 +70,96 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-netvsc_remove() lets the VF go, taking the XDP program back from it,
-takes the program off the channels, then frees the channels and clears
-nvdev, and only then unregisters the netdev. dev_xdp_uninstall() still
-finds the program in netvsc's xdp_state[] at that point and asks
-netvsc_bpf() to remove it, which fails with -ENODEV for the lack of
-nvdev. That trips the WARN_ON() in dev_xdp_uninstall() on every unbind
-or hot-remove of a netvsc device running native XDP, and
-dev_xdp_install() returns before it drops the program from the XDP
-dispatcher, which then holds on to it for good. The WARN came with
-commit 7f0a838254bd ("bpf, xdp: Maintain info on attached XDP BPF
-programs in net_device"): the core used to ask netvsc for its program
-first, and netvsc reported none once nvdev was gone, which left the
-program with the dispatcher all the same.
+ndo_bpf() takes over the reference it is passed only on success, the
+caller puts it back itself on failure. netvsc_xdp_set() takes that one
+plus num_chn - 1 more for its channels, and the rollback after the VF
+refuses the program clears the channels again, putting all num_chn of
+them. dev_xdp_install() then puts the one it passed in a second time,
+and the program can be freed while the fd which loaded it still points
+at it.
 
-Accept the removal once there are no channels and no VF left to take the
-program off. If suspend parked the program for netvsc_resume() to put
-back, drop it from there, or resume would bring back a program the core
-no longer knows about. This also lets the program be removed from a
-netvsc device without a VF which lost its channels to a failed
-reconfiguration, rather than fail. The core is about to record the
-programs uppers propagate as well, which would bring the same to a
-netvsc device enslaved to a bond running XDP.
+The VF refuses a program netvsc has already committed to when the
+program is single-buffer and the VF has header-data split enabled, when
+the VF has a memory provider bound, or when the VF's driver has
+conditions of its own.
 
-Spotted by AI while reviewing the XDP propagation series. Untested.
+The rollback clears the channels rather than putting back the program
+they ran before, too. A refused replace or removal then leaves the
+synthetic path running no program at all, while the core and the VF
+keep the old one. Put the old program back instead.
 
-Cc: stable+noautosel@kernel.org # LLM report + LLM fix, untested
-Fixes: 7f0a838254bd ("bpf, xdp: Maintain info on attached XDP BPF programs in net_device")
+Reported by Sashiko during core rework. Unverified and untested.
+
+Cc: stable+noautosel@kernel.org # untested fix to unlikely driver error path
+Fixes: 184367dce4f7 ("hv_netvsc: Fix XDP refcnt for synthetic and VF NICs")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
 v2:
- - drop the program suspend parked for resume rather than refuse the
-   removal, which still tripped the WARN with the config a failed
-   suspend leaves behind (Sashiko)
- - commit msg: the dispatcher kept the program before 7f0a838254bd too,
-   name the function which skips the dispatcher, and mention devices
-   which lost their channels to a failed reconfiguration
- - Tested-by tags from v1 not carried over, the code changed
-v1: https://lore.kernel.org/20261001014131.310771-6-kuba@kernel.org
+ - put the old program back on the channels rather than clearing them
+   (Kameron)
+ - reword the comment on the extra reference, it's the caller's, which
+   isn't always the core
+ - Tested-by tags from v1 not carried over, the rollback changed
+v1: https://lore.kernel.org/20261001014131.310771-2-kuba@kernel.org
 ---
- drivers/net/hyperv/netvsc_bpf.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_bpf.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
-index 143fc0c12841..14bb520b44ed 100644
+index 1dd3755d9e6d..fcc60729384e 100644
 --- a/drivers/net/hyperv/netvsc_bpf.c
 +++ b/drivers/net/hyperv/netvsc_bpf.c
-@@ -206,7 +206,21 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+@@ -197,6 +197,7 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+ 	struct netvsc_device *nvdev = rtnl_dereference(ndevctx->nvdev);
+ 	struct net_device *vf_netdev = rtnl_dereference(ndevctx->vf_netdev);
+ 	struct netlink_ext_ack *extack = bpf->extack;
++	struct bpf_prog *old_prog;
  	int ret;
  
  	if (!nvdev || nvdev->destroy) {
--		return -ENODEV;
-+		struct netvsc_device_info *saved;
-+
-+		if (bpf->command != XDP_SETUP_PROG || bpf->prog || vf_netdev)
-+			return -ENODEV;
-+
-+		/* The channels and the VF are gone, and so is the program,
-+		 * except for the reference netvsc_suspend() keeps for
-+		 * netvsc_resume().
-+		 */
-+		saved = ndevctx->saved_netvsc_dev_info;
-+		if (saved && saved->bprog) {
-+			bpf_prog_put(saved->bprog);
-+			saved->bprog = NULL;
-+		}
-+		return 0;
- 	}
+@@ -205,10 +206,17 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
  
  	switch (bpf->command) {
+ 	case XDP_SETUP_PROG:
++		/* Hold on to the old program, to put it back on the channels
++		 * if the VF refuses the change.
++		 */
++		old_prog = netvsc_xdp_get(nvdev);
++		if (old_prog)
++			bpf_prog_inc(old_prog);
++
+ 		ret = netvsc_xdp_set(dev, bpf->prog, extack, nvdev);
+ 
+ 		if (ret)
+-			return ret;
++			goto put_old_prog;
+ 
+ 		ret = netvsc_vf_setxdp(vf_netdev, bpf->prog);
+ 
+@@ -216,9 +224,22 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+ 			netdev_err(dev, "vf_setxdp failed:%d\n", ret);
+ 			NL_SET_ERR_MSG_MOD(extack, "vf_setxdp failed");
+ 
+-			netvsc_xdp_set(dev, NULL, extack, nvdev);
++			/* The caller hands us its reference to bpf->prog only
++			 * on success, take one so that putting the num_chn
++			 * channel references below doesn't consume it.
++			 */
++			if (bpf->prog)
++				bpf_prog_inc(bpf->prog);
++			/* Can't fail, old_prog has passed the same checks
++			 * before. The channels take over our reference to it.
++			 */
++			netvsc_xdp_set(dev, old_prog, extack, nvdev);
++			return ret;
+ 		}
+ 
++put_old_prog:
++		if (old_prog)
++			bpf_prog_put(old_prog);
+ 		return ret;
+ 
+ 	default:
 -- 
 2.56.0
 
