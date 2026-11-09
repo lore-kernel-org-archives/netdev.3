@@ -1,78 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.202
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.245
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794192247;
-	b=lGyIoLsBs1Il0vLREpLcnrY5RCbH8eswQj5NQLYw2S8Uij+8mVV9P7HUt/FaJqoSy9We
-	 KSjJyAqTGensEsc8Ud38avwAQ+QwXi+skA/Yo6CiR6P1uKnpQ9TVmtO6iQuMr6BJPcGKv
-	 BuifkWbkRy2Y9zTNZqIE9eQBVWM/oyfznq4D/VIIzYrTk8r/xJ6F417WpfhUcGn8WquhU
-	 cWVb6zt3dck1zTchvQ6+HSEovYGnhNxo3Y6uyfJ8RXcoMYJEDEGvVIrW3+mRxrzrKj1nI
-	 EUu0yFCFp28r64ZGTn4B9MpdjTLMb4RKv32ms8R4rkAAvkYvb3RmNVhFlTvRft9L9og==
+	t=1794192763;
+	b=i1u0QcFJzkmcU6GFvnvb8pKrq+fNl8dwxKH+pfny8fWCVgg4D+6aHz+tbkMz93Fc5yYh
+	 GF3AMJlyF/a6SGWE6QFBEw+YO2qC1b7+kC9mvN6I0HQMl7cXechrwmEeXWkHTlEtMBy14
+	 jPtKxsBUemq8aKWJRBWLp+akZPKryr7XEChjGSxC+5MkSmAxia6oy6djNATbEI2W7Tguv
+	 VUKOhNTrKf3atFRcgYBG5t8pbeyvhMBH7ZYdsTPXSBfs2vCutg5ZJuTZ6Kix+W6j6LTlh
+	 zfkKIDkaEeuBpIQprftOrPjuPhvy9dbVijSNHWJJ8Kr7rmS/84BzeE8SXnb/Py/5nRA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794192247;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=H1+zVgqWjnuazHdFGrF5+1OIlBZ3gUEMkAVX6j7BpD0=;
-	b=0P4hy3HianAFb8tKOAudFZricmqP1NPmWIVnLOBNJcpsi7slX9+wdqJG0Lk7Tjh7sRXR
-	 FZFQz7iG7JHghePKLz9n+uCEKyeD0JmRuBxsGmDbWsN4WVR/n6t8DRRZ5RXh8PCcH1a7w
-	 lznOI2vQMye6a3iL+EB/sRdUjvhKuHuqNUZt3Bblh7so66IGz6y56Md5aemkzqeTzaZzX
-	 nppznFFjCUMMkWxKWQbJexKeApH3gDtk6g2GWkm9umjBL9ys+K2JudUS+TxlpDT80xDOk
-	 nLUL5+vKyk/hByZMKBgfbJJhlt8j5LZ2d4sXRaf0iik0++Q2rDmSeFtK1JtAhzlMMPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794192763;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=qB2X3p6Fnij6aDtj4F1N9a2CNtZpESRoicBIwPmoEc0=;
+	b=XIbDuWyKU14FufwuGNMOQSRJE9WacQQFwbMbgtqC/nbz4Jc18jARRm2Zb/SXCElXAlWu
+	 e2iboHTeRoaWj5IsqhMeqRc2LCIViAtheL4tHON/c2RhjGjzaVotezLs8FwYUvQSrXU5A
+	 WaBVCmK/Ecs5fpimTVPkpprLcyEraAVXa2OhvmwAbZuZJDs4pIFJ5uIqY+u5ydC5PiC3W
+	 kV86np1777tkSmbQxA6mI0NrML+l/QCg3pej+QFcEln0Uor7l9oQ98c+TWlMWlfQKZcp+
+	 AYP11W2fX/pnYCUqmhEhg0qYogr3OJwGxwzhLb4hYcK9UZrBURyR2Lj269jpSeXfl/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b="ia/AwgVd";
-	arc=none smtp.remote-ip=203.205.221.202
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eC7adzfA;
+	arc=none smtp.remote-ip=91.218.175.245
+Received: from mta0.migadu.com (out-245.mta0.migadu.com [91.218.175.245])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287FC606A320;
-	Mon,  9 Nov 2026 02:44:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 287FC606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FA2606A320
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 02:52:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54FA2606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=ia/AwgVd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794192236;
-	bh=H1+zVgqWjnuazHdFGrF5+1OIlBZ3gUEMkAVX6j7BpD0=;
-	h=From:To:Cc:Subject:Date;
-	b=ia/AwgVdgqiZy06teqd8oFkdq1ubVVJ/WtS6xvfqsz8mOz1vJqepwI9/kp5ZGUHAL
-	 34wLPlcPJNk5FSbeMV5SKJ9qxxCnmGunjQl7UoFdLbwd66mbk/a8sAj/Lgft9lOdSL
-	 kriM//wlfUfnMCZdiOBYbst9HtarMkOSX2WO++y4=
-Received: from HAPYCAO-MC1.tencent.com ([101.226.143.240])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id AF61963D; Mon, 09 Nov 2026 10:43:54 +0800
-X-QQ-mid: xmsmtpt1794192234tl0sucdz5
-Message-ID: <tencent_6A1D611E2DA9545DA6E76ABCCA806BC39707@qq.com>
-X-QQ-XMAILINFO: NGZp1yYNf7Y+gLy60EWnFuf3eCIWV70oVoiExU/THEuLqbBTeP3BjOJIDKJas2
-	 BujGZqJvp2cQ7jQGvVmqi3C2Kf3GaKNCFhmALwKDXqsklZOyuJ+6JRW4H14+1Y8STdGKARzFFmG+
-	 oyZOGp8zxC4z+5mklp/iVX1bsWLTvm1Wz/KfkUNiRoAIw0H+RJzm2vhZ3VpjKsgrDXQqQZdfr38W
-	 6/xHu/Qn2TXedTJqz2NpI1ByqyVxbgTTjQebXkUde9vOuc8dgG6Ttd06oCiICLy5OParJ9wjNuUo
-	 CZ7vcb5bejocwqCPixQrwMN195n03RfgGiE5Wqvd32NatNR0/DN8W5wmfLSAXySfXd3iWN6jiIuc
-	 2YuXMrctCeMPr2kuDQlOxlz0Ecv7zHxbTQgsnd/XY63Gn8vzyDLa88Oh/8DOlqWZWqpGpjxuB/ar
-	 8qobc3wZBJg4m2SF9eHnOKsa+DtveJ9rb7N4nIPs2er+DAFqp8gc6E5F136QzVqDsmJZysiDmlCE
-	 BC0djtw20Gde8V7iDhgbsm+Kkymv1JdqqTF4+0TXSXMHbqDBoocgiz6ufeHDOS4fB3FuBkbkSgwE
-	 /0a/5G/izGfhMtYMZSsMIrlx36DAhbdgXvZKkxiYoQFHZjfR9nFFzvaUMB8IKNVdmyfwBf2D6wDF
-	 FWbouN9EALVGwE6b3r0fMHCARX5DKO3Vvn7FlzoJCZusrQmcXa0nFSox9QzDKssrHJn+eQa8B74/
-	 MvZRiQ5JPlnvix3QDISKPbPc1Jt0TpNICbmDxcJ76bEZgDvj6k2MbTVHmO1MP2R/HgAMyyjVTD3b
-	 SdShpheLLaQUYY8KWZZZ7GnBnyMPvQFuCaeeD76rOUGoo3zG6n0Z8946Vp5ECmkpMDfToTT1rfcs
-	 SC6eTlS4Xqs9QbDbfFxsOCENnBgpLwAkX0ruZz5QeM1IELgI82Z3qqUuOKQvz2W/RRdVNrRXRgJE
-	 hOcRihT0BU7NpxUp7WBlPBdzJEqCwDj46yRWjeGPNN7Qw638d5tGd/W83JzOZyzAQ3ydnihX+kr7
-	 c3Cdkzap0OXbL3ynp8DG+2DTiO4nSRviAfa+ncqTA/7qb2YdPDfHhODkC2mmKA2xM70LtM9OKBRw
-	 enJNelbpFxwHo+qgiqISW4n0PwJu8r2ApTy4+mfovOvYwU6lg=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: bo cao <treebacker@foxmail.com>
-To: bpf@vger.kernel.org
-Cc: andrii.nakryiko@gmail.com,
-	andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	netdev@vger.kernel.org,
-	Bo Cao <treebacker@foxmail.com>
-Subject: [PATCH bpf v4] bpf: check cpu_possible() in per-cpu helpers and map callbacks
-Date: Mon,  9 Nov 2026 10:43:53 +0800
-X-OQ-MSGID: <20261109024353.4260-1-treebacker@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=eC7adzfA
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=KgVWWAxyr8iPCwiWN8wYMPXLomCb+GIGzWKMLYf37Ts=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794192760; v=1; x=1794797560;
+ b=eC7adzfALQ0L4SM+y+ZdJC3Q5i5q9u43x0RsBuKad2n46bMdwo3ZCSREJmKrjaMErch/haL1
+ BoOt+34GR7eIf7biomoRsJyV6Ao43W3E12J2oque0TezGsDMeDoNmXAec7pBPUv0NtmKHRGOUyc
+ C7Barj8w+Ln8WBELoC6TkfiY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id b67e6ef6822d9ad3;
+	Mon, 09 Nov 2026 02:52:40 +0000
+X-Mizu-Trace-ID: b67e6ef6822d9ad3
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Mon, 09 Nov 2026 10:52:25 +0800
+Subject: [PATCH net v3] ipv6: ioam6: do not modify shared tuninfo
+ eh.nexthdr
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,148 +60,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261109-ipv6_ioam_lock-v3-1-a86195859d1e@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WN3w6CIByFX8VxHQ0QnXXVe7TmkCB/aeDAWM757
+ iF10Z/Lc3a+883IKwfKo302I6cCeLAmhnyTIdkKc1EYzjEjRlhJKckxDKGswYpb3VvZ4bKghEl
+ R8B2pUIQGpzQ80uERGTWi06v09+aq5LherbMW/GjdlLSBpvHbwH8NgWKKuWZcctrESXPoph6M9
+ Vtp0ntgn3zxx7PIV5ookRPJtRZf/LIsTzoIe2kEAQAA
+X-Change-ID: 20261103-ipv6_ioam_lock-65102ca54908
+To: Justin Iurman <justin.iurman@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, 
+ Sashiko <netdev-bot+sashiko@kernel.org>
+X-Mailer: b4 0.16.0
 
-From: Bo Cao <treebacker@foxmail.com>
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-bpf_map_lookup_percpu_elem() and bpf_per_cpu_ptr() take the target
-CPU id as an unconstrained u32 and only reject cpu >= nr_cpu_ids
-before using it as a per_cpu_ptr() index.  Per-cpu memory is only
-allocated for possible CPUs, so on a system with a sparse possible
-mask (e.g. an arm64 guest with possible CPUs 0,2-3) a hole CPU id
-passes the checks and per_cpu_ptr() computes the pointer from the
-uninitialized __per_cpu_offset[hole].  For per-cpu maps this reads
-and writes memory outside any valid per-cpu chunk, and for a percpu
-obj allocated with bpf_percpu_obj_new() the result is writable, too.
+ioam6_do_inline() and ioam6_do_encap() stored the next header into
+the shared ilwt->tuninfo template and then memcpy()ed it into the
+skb. The lwtstate is used from multiple CPUs without locking, so
+another packet can overwrite eh.nexthdr between the store and the
+memcpy.
 
-The cpu_possible() check must go into the three per-cpu map
-callbacks as well as the helper wrapper, because the verifier
-rewrites bpf_map_lookup_percpu_elem() calls with a known map into
-direct calls to the callbacks (kernel/bpf/fixups.c).
+The packet can then leave with an HBH nexthdr that does not match its
+payload (e.g. TCP labelled as UDP, or a local packet labelled
+IPPROTO_IPV6). Set nexthdr on the per-packet Hop-by-Hop copy after
+memcpy instead, leave the shared template read-only.
 
-Also carry PTR_MAYBE_NULL into the register type on the
-returns_cpu_specific_alloc_ptr path of check_helper_call():
-bpf_per_cpu_ptr() can return NULL (for cpu >= nr_cpu_ids since
-01cc55af9388), but the verifier currently drops the flag on that
-path, so a program that skips the NULL test on a percpu obj result
-passes verification and oopses on NULL + offset at run time.
+Making tuninfo as const now since it's not modified anymore.
 
-Reproduced on an arm64 guest with possible mask 0,2-3, where a
-socket filter program passing the hole-CPU lookup result of
-bpf_map_lookup_percpu_elem() to bpf_map_update_elem() faults inside
-array_map_update_elem().
-
-Fixes: 07343110b293 ("bpf: add bpf_map_lookup_percpu_elem for percpu map")
-Fixes: eaa6bcb71ef6 ("bpf: Introduce bpf_per_cpu_ptr()")
-Fixes: 01cc55af9388 ("bpf: Add bpf_this_cpu_ptr/bpf_per_cpu_ptr support for allocated percpu obj")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bo Cao <treebacker@foxmail.com>
+Fixes: 3edede08ff37 ("ipv6: ioam: Support for IOAM injection with lwtunnels")
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+Closes: https://lore.kernel.org/netdev/179336082844.3134.1265197633714491521@kernel.org
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
-Changes in v4:
-- trim the commit message per review
-- no code changes since v3
+The issue is reported by Sashiko. It was confirmed with concurrent TCP
+and UDP traffic through a shared ioam6 inline route on a multi-CPU host.
 
-Link: https://lore.kernel.org/bpf/CAEf4BzYDmzNoN-5Rnfj4RrAU8wKnZe+tDFApng61L0mubXqung@mail.gmail.com/
-
+Without the fix, a packet can leave with an HBH nexthdr that does not
+match its payload (e.g. hbh->nexthdr=17 with a TCP segment after the HBH,
+or hbh->nexthdr=6 with a UDP segment). With the fix, the same load reports
+no HBH/L4 mismatch: nexthdr is written only on the per-packet Hop-by-Hop
+header after memcpy, never on the shared tuninfo template.
+---
 Changes in v3:
-- rename author and Signed-off-by to match the sender (bo cao).
-- drop the incorrect "MEM_RDONLY, so reads only" claim for
-  bpf_per_cpu_ptr(): it only holds for ksym arguments; percpu kptr
-  results are writable.
-- keep PTR_MAYBE_NULL on R0 for bpf_per_cpu_ptr() on percpu obj:
-  check_helper_call() drops the flag on the
-  returns_cpu_specific_alloc_ptr path, so the NULL return (for
-  cpu >= nr_cpu_ids since 01cc55af9388, and now also for a hole
-  CPU) let a non-checking program oops on NULL + offset.  With the
-  flag kept, the verifier requires the NULL test; existing selftests
-  already check.
+- make tuninfo as const (Justin Iurman)
+- Link to v2: https://patch.msgid.link/20261105-ipv6_ioam_lock-v2-1-8f0ea30c4ffa@kylinos.cn
 
-Changes in v2: add the cpu_possible() check to the three per-cpu map
-callbacks as well, because the verifier rewrites helper calls with a
-known map into direct calls to the callbacks (kernel/bpf/fixups.c)
-and thus bypasses the helpers.c wrapper.
-
-Link: https://lore.kernel.org/r/tencent_3A8413B414528B9802AB092A67AE015FFE09@qq.com
+Changes in v2:
+- Add one missed Fixes tag. No code change.
+- Link to v1: https://patch.msgid.link/20261104-ipv6_ioam_lock-v1-1-4f24c41b261b@kylinos.cn
 ---
- kernel/bpf/arraymap.c | 2 +-
- kernel/bpf/hashtab.c  | 4 ++--
- kernel/bpf/helpers.c  | 6 +++++-
- kernel/bpf/verifier.c | 3 ++-
- 4 files changed, 10 insertions(+), 5 deletions(-)
+ net/ipv6/ioam6_iptunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 133f189bf6d2..eab03f985280 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -327,7 +327,7 @@ static void *percpu_array_map_lookup_percpu_elem(struct bpf_map *map, void *key,
- 	struct bpf_array *array = container_of(map, struct bpf_array, map);
- 	u32 index = *(u32 *)key;
- 
--	if (cpu >= nr_cpu_ids)
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
- 		return NULL;
- 
- 	if (unlikely(index >= array->map.max_entries))
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index bf78e09f4d51..007279c16b77 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -2670,7 +2670,7 @@ static void *htab_percpu_map_lookup_percpu_elem(struct bpf_map *map, void *key,
- {
- 	struct htab_elem *l;
- 
--	if (cpu >= nr_cpu_ids)
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
- 		return NULL;
- 
- 	l = __htab_map_lookup_elem(map, key);
-@@ -2696,7 +2696,7 @@ static void *htab_lru_percpu_map_lookup_percpu_elem(struct bpf_map *map, void *k
- {
- 	struct htab_elem *l;
- 
--	if (cpu >= nr_cpu_ids)
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
- 		return NULL;
- 
- 	l = __htab_map_lookup_elem(map, key);
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 648abe1ba63a..f9f2bd665038 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -133,6 +133,10 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
- BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
- {
- 	WARN_ON_ONCE(!bpf_rcu_lock_held());
-+
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
-+		return 0;
-+
- 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index cfb2c41634a0..a1f954dd7c2a 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -254,7 +254,7 @@ static int ioam6_do_fill(struct net *net, struct sk_buff *skb)
  }
  
-@@ -753,7 +757,7 @@ const struct bpf_func_proto bpf_copy_from_user_task_proto = {
- 
- BPF_CALL_2(bpf_per_cpu_ptr, const void *, ptr, u32, cpu)
+ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+-			   struct ioam6_lwt_encap *tuninfo,
++			   const struct ioam6_lwt_encap *tuninfo,
+ 			   struct dst_entry *cache_dst)
  {
--	if (cpu >= nr_cpu_ids)
-+	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
- 		return (unsigned long)NULL;
+ 	struct ipv6hdr *oldhdr, *hdr;
+@@ -276,12 +276,12 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
  
- 	return (unsigned long)per_cpu_ptr((const void __percpu *)(const uintptr_t)ptr, cpu);
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5601d2056218..0cedf39ee226 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -12957,7 +12957,8 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
- 			regs[BPF_REG_0].mem_size = tsize;
- 		} else {
- 			if (returns_cpu_specific_alloc_ptr) {
--				regs[BPF_REG_0].type = PTR_TO_BTF_ID | MEM_ALLOC | MEM_RCU;
-+				regs[BPF_REG_0].type = PTR_TO_BTF_ID | MEM_ALLOC | MEM_RCU |
-+						       (ret_flag & PTR_MAYBE_NULL);
- 			} else {
- 				/* MEM_RDONLY may be carried from ret_flag, but it
- 				 * doesn't apply on PTR_TO_BTF_ID. Fold it, otherwise
--- 
-2.39.5 (Apple Git-154)
+ 	hdr = ipv6_hdr(skb);
+ 	memmove(hdr, oldhdr, sizeof(*oldhdr));
+-	tuninfo->eh.nexthdr = hdr->nexthdr;
+ 
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 	skb_postpush_rcsum(skb, hdr, sizeof(*hdr) + hdrlen);
+ 
+ 	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	((struct ipv6_opt_hdr *)skb_transport_header(skb))->nexthdr = hdr->nexthdr;
+ 
+ 	hdr->nexthdr = NEXTHDR_HOP;
+ 	hdr->payload_len = cpu_to_be16(skb->len - sizeof(*hdr));
+@@ -290,7 +290,7 @@ static int ioam6_do_inline(struct net *net, struct sk_buff *skb,
+ }
+ 
+ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+-			  struct ioam6_lwt_encap *tuninfo,
++			  const struct ioam6_lwt_encap *tuninfo,
+ 			  bool has_tunsrc,
+ 			  struct in6_addr *tunsrc,
+ 			  struct in6_addr *tundst,
+@@ -314,8 +314,8 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ 	skb_mac_header_rebuild(skb);
+ 	skb_set_transport_header(skb, sizeof(*hdr));
+ 
+-	tuninfo->eh.nexthdr = NEXTHDR_IPV6;
+ 	memcpy(skb_transport_header(skb), (u8 *)tuninfo, hdrlen);
++	((struct ipv6_opt_hdr *)skb_transport_header(skb))->nexthdr = NEXTHDR_IPV6;
+ 
+ 	hdr = ipv6_hdr(skb);
+ 	memcpy(hdr, inner_hdr, sizeof(*hdr));
+
+---
+base-commit: fafbc4051123d5459ea6950899cec08ed946e278
+change-id: 20261103-ipv6_ioam_lock-65102ca54908
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
 
