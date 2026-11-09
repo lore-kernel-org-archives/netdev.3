@@ -1,61 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794188329;
-	b=aMp17AwEZsUhfpHtbZVjOHhswdlwx3Ovfilr9aZ1A+2HBcSr4LagZXIFpLoH+AYW0gXX
-	 rlu9azkBtYRohVyjUrW+IpgfvHIKUfK1Yw4wtfEER1STU5tuSPhSAsYtk6TEDIYbk1j7K
-	 YOpj5FC0Xg76YY5d3Ai4QmSwINf1rwPBiDKApWqCmAc68G0q297bYxOHdUi9nnylCl9fZ
-	 4z+U/ZVG5I1YJmEc+PtkaPtfx/9cySdoZAg45Kave18QwPYebCvSLR0aeWyF0oPS8NBjv
-	 ZoWOWLXcZjPlDoY0bV3/5jmIFZVhey4LgJAKm4iLkoCbhChh3I8N/rMc28NbY9bXnpA==
+	t=1794188678;
+	b=sQk4dhziRdDfWbOnYVkod2DfG8tEB/588wC3kHSjXYtwoileGfZY07orYjbWP5Od9sFV
+	 a/LYlAUWK5urwvpvau2+V3xKWkyGgVe92PqwatTYGJuTLGvFoM54/PgBnVE+bPTH1OFiq
+	 LIhSeMnTaE4qd5ob/Fd5/Xjp2eX6cQvjoNFOgjrcLzS4ZzH1fco7QpGk0gzumV/dhQIpT
+	 +Sy5qjBw4qBurBdkwI80XzzF0YFKD0YOCWIcVpfpOES7UWd+6U7nZYrPlIl2yzb+g7iqR
+	 y5Nh2KubL+u+niWHbX+IOUuPhhWiuokGE8Vr/PCv8QRNTBjSxHKD+ahoNo8nlc8FYAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794188329;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=jgJQfbD85DE2uxnUN7b8QIZUT8lwjyaqkF8TDj03zC4=;
-	b=sWAC3cVU4DEDMmdAsN79IbsXfdpC/LMdXAIAlGkhjrC+l8yaguM/BMx8c7YtZKdK6YtR
-	 A0f78NZaS33E3/T4QWeDVEjULKGKygMCAqoM757A7VjQnneJI9xghg7O48dYJaaPXpSpU
-	 0cWYIdnDqaiKX3WqHkv+dweJdmHcsJKRD6fIyAoLvCpptg1CjsSXDKVHxtR2PH91hnafd
-	 7RmPagW/ogUcBmyV+nKporvhrFr4UxHdMYiL4cmi0mOsJb1u1UOX3Q8HpLWUGl9Lpp//a
-	 NmZjOhq2Zw987wbZr3cGjZXwviYRIqjjIUX9eE5LqMADarTACOvP6Mc9bmV52IVavTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794188678;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Jv/87TDdACczKq9hFLvV7QZnq2Emc/Ycb5t1vAWaIw8=;
+	b=Jkv9Gv/lSbc7gS110Y/oYDqxLoMQ0Zpx4FCpbsDAoMxDsLJFj0EjlHEOGkz3FN8pDkxU
+	 w25ZO4Sf58EeufEPHJFK4s6mb2NugRLSDzToDM2sLrbykIxVGtFHNffAjm8NCR1/b9d+d
+	 hHtPkbSwFjyPRetQl0zLtoLvgNlVVfLrzJPsabZ62OvuZDZUU3XM9gGPmER42osyt3L6e
+	 KE5X88hOE8JdEbe4SZOifrp6X5w0wWPFUzxtnXjhdcK/upVSSY8hXSBjXQ58Fscd9hFn5
+	 qh/w4yLKZV+NT1064lPHPB4gUZo3J2OlfdSoVBXufmUcd2Ob2MetmcUOHrcOdABsooA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjTPy2yz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=e2sP3xbr;
+	arc=none smtp.remote-ip=209.85.215.176
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625A606A320;
-	Mon,  9 Nov 2026 01:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EA2606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 01:44:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23EA2606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DjTPy2yz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748BC1F0089F;
-	Mon,  9 Nov 2026 01:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794188328;
-	bh=jgJQfbD85DE2uxnUN7b8QIZUT8lwjyaqkF8TDj03zC4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DjTPy2yztsF3Tw1bDXzsfQy3yCKNQuLLExDeMe3KMc+9tR31wqrUtF2Kc1Z3PHYIj
-	 c0B4nD/15J65wnauqLKeCeBZBNwRg8/gd0fmEaP9wx1i7ex7f+zt9wEBG9r1HmBKDT
-	 EGJn2CcgV35vWxd0u722U4Lom/OFTUcdn1NR75AU+hCU1Tjxq1aEWl9TnCTChkQ7jJ
-	 79qGiMQ6SAiRByFEVlCYYtSXjnJc1sgMODXXnLtQSSC/g5fTtBp6UUwSKwn6HJjMuu
-	 MaVOeO3qddBGVCvv+OmgGIFbabu8QdS1wznPGSS4OFDSFG+dL1xuu+2+9my5F6Vc4N
-	 nqnW6JHGlgEwA==
-Subject: Re: [PATCH net-next v4 2/2] net: prevent mixing frags from different
- memory providers or bindings
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- kaiyuanz@google.com, linux-kernel@vger.kernel.org, ncardwell@google.com,
- kuniyu@google.com, bobbyeshleman@meta.com, asml.silence@gmail.com,
- sdf@fomichev.me, daniel@iogearbox.net
-Date: Mon, 09 Nov 2026 01:38:46 +0000
-Message-ID: <179418832697.994134.11198338213560511850@kernel.org>
-In-Reply-To: <20261108013838.1454450-3-almasrymina@google.com>
-References: <20261108013838.1454450-3-almasrymina@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=e2sP3xbr
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cd3310348d2so179980a12.1
+        for <netdev@vger.kernel.org>; Sun, 08 Nov 2026 17:44:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794188677; x=1794793477; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jv/87TDdACczKq9hFLvV7QZnq2Emc/Ycb5t1vAWaIw8=;
+        b=e2sP3xbrhztPvwx9LJsplnZXUCCLM9ygQESZ89Zq5zm3sGPiMs9VOI2oHahyLr9CJz
+         2LNLeoVQWVHZYFqsWdRCfUygG1PXVVE9n7gbRRiBUSondBLbcwVC8hAunbzVYvGEiDFL
+         A6TfJrBFRjER/kxJOTtckeU16l7P3CFgGUpA+6TxuVqBswEwqeWlCaj4eA1B7HFDmeCp
+         UFpVofxT+XlLqk3kqxl0Z2AAsrXZHemSgiM8nxR18i4sATad5yvn//DpghxIm/VQCt95
+         6KXx/DLGyGxfqtEDNa0NztfI3wW0ibKnNLXasXWRBYLkPG7BowrXQBg8WnsVom/zFZo+
+         os/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794188677; x=1794793477;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Jv/87TDdACczKq9hFLvV7QZnq2Emc/Ycb5t1vAWaIw8=;
+        b=22yN2BETkXLxWJB5XIjeuQ5anKQKW73N6+fQMdE1ykEap/pSUi0m5teOnoeLKxs74A
+         Tx2VrT+E5ugyZGDXRVU8lkjMYXGofshc+znfg1kbX0YRRLauw3LuB4TYQab0RtXqPd4E
+         fBCo6VvmU2SSUZUDa1Y7BtM2nBy2Nwlu5IbRuep4VpUdLMjZBjqRaldY6l2k67uZ319B
+         Wxi7wWR8IaVRvyukyV27P0789vFMjvnrizf/0mPzJopSaq6I4GififR7uZ0ncXfooIlc
+         WoU+m96+R0oE8kZqr06YlE5AhTvfLjPs8Fb3dR9r0f9nY5pLClEC5rHw3t6RuSzokLio
+         rg8Q==
+X-Gm-Message-State: APuU4Z+9cy4w7jB/yZAZ798OuK7XOIrDz9BDOFy5IpiYouYCLwV5vOrU
+	5h1cfvrkmUX5XbE6VLKKNKF/wCBcTM20uZXg/SZsdTZIySCdcvqStqjnJ/nXsEJW4ZD2MHvKLsU
+	1VD4KCO8=
+X-Gm-Gg: AYBFou1bwjk8sFsuOmv9Ve6tYBlYZLfWzWTNdf7b4EE81hQL0FBpuamoS4jr54RoOpR
+	H347Pv1GotNKDTQlQ8PHmsL7J17oSEhuhdYeboEPf9lgBqBiofsY7QjQeRvKQKEJbks/y7YtIFj
+	2gX7kQLLnLmTFQZ5sX+Ma8jELBPD8m02MomGgezKKPx53F70x5xT2AUho/R6ztedITzxB3wKk1X
+	zCCvThXqlpU24XPebGyd7gYj1miZRkE2pMSFV34cFbn4q+McA4f5jJr9h/Af2ehajqc7woL7AKi
+	RR+mO1kFwU705SqulZpeZKSYa+ywK9vaFItQYJRrAdDyd4BZp/i9bKhtYKH2OMRKT3pcj05Lb1z
+	ofbFq4TLu6KYBGKuNZKF1tBdMkWaZP2sI19Rc+pg76nrEh+eii5KRz2/C9NULBnlf4KeJQkVAxp
+	uYJRMkr2hXojLHqhandi79K6y7mLn53Wof0hNGemIeKRu18/YbTA0qBe0eMKe61uQeaAc/9CiIb
+	S20m8clv7bxgO43IzzuMcSC4n8mag/TztwSJwWH5rhnmfIYQFVT2SmjRElQNcbqPPeg3XY6rIyC
+	ezF8s+u1yw2WgCCxglMMcFFo8XJaZ7fvej+AVatCqXGidhn1G4rOzzw7WqIgbbviyE2FPZQ=
+X-Received: by 2002:a17:90b:1e47:b0:3ac:a6a5:5757 with SMTP id 98e67ed59e1d1-3b12d3fc296mr1794518a91.11.1794188677417;
+        Sun, 08 Nov 2026 17:44:37 -0800 (PST)
+Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0fc1bc1e6sm5641735a91.0.2026.11.08.17.44.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 17:44:36 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2 0/5] netlink receive path hardening
+Date: Sun,  8 Nov 2026 17:43:57 -0800
+Message-ID: <20261109014434.115922-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,167 +93,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Six scanner reports all landed on the same code, so they are better
+fixed together than one at a time. The time() seeding was parallel
+discovery: Florian reported it on netdev independently of the two
+scanner findings that flagged it.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+The common thread is that iproute2 trusted whatever came back from its
+own socket. The sender went unchecked until after the framing checks,
+and in the ss -D case until after the datagram had been written to the
+dump file. The framing walk assumed every message in a datagram is
+padded. Any process with CAP_NET_ADMIN over the namespace could use
+that to inject events into a monitor, or to keep a dump from ever
+completing.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+One behavior change: paths that used to exit(1) on a short or malformed
+datagram now skip it and carry on, since a datagram from a non-kernel
+sender is no reason to abort.
 
-- [Medium] The commit message says the whole change is "theoretical", but
-  one of the bundled fixes closes a bug that any devmem TX socket can…
-- [Medium] skb_has_net_iovs() returns `skb->unreadable &&
-  skb_shinfo(skb)->nr_frags`.
+Note: rdma monitor is not fixed by these changes. It opens its socket with a
+bare mnl_socket_open(), so the connect() does not reach it.
 
---
+Worth exercising:
 
-net: prevent mixing frags from different memory providers or bindings
+ - ip monitor all, ip -r monitor, devlink monitor, rdma monitor.
+ - ss -D dump recording, and replay with ss -F.
+ - ss -E, which sets local.nl_pid = 0 and dump = 0 to match multicast
+   notifications. Should be unaffected: it relies on the
+   nlmsg_pid/nlmsg_seq comparison, unchanged here, and the
+   nladdr.nl_pid requirement it already met is now enforced earlier in
+   rtnl_recvmsg().
+ - rdma stat and rdma dev, now going through mnlu_socket_recvfrom()
+   and mnlu_next_seq().
 
-The patch adds skb_has_net_iovs(), skb_net_iov_provider(),
-skb_mem_provider_compat(), skb_frags_can_coalesce() and
-net_devmem_skb_binding(). These are used in the coalesce, shift, GRO,
-TCP collapse and devmem TX paths so that frags from different memory
-providers or devmem bindings are never mixed in one skb. It also
-propagates skb->unreadable and compares netmems when merging frags in
-tcp_clone_payload().
+Stephen Hemminger (5):
+  netlink: use a counter for sequence numbers
+  netlink: ignore messages not sent by the kernel
+  netlink: connect sockets to the kernel
+  netlink: handle unpadded last message in receive loops
+  libnetlink: do not read past datagram when recording dump
 
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 6787fcf6ac3e4..e6f63450a193a 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -1882,6 +1882,17 @@ static inline bool skb_frags_readable(const struct sk_buff *skb)
->  	return !skb->unreadable;
->  }
->  
-> +/* Return true if frags in this skb are backed by net_iovs.
-> + * Assumes skb->unreadable and net_iov-backed frags are equivalent for now;
-> + * the two can be decoupled in the future if readable net_iovs in skbs are
-> + * introduced. Also check nr_frags because not all frag-removal paths clear
-> + * skb->unreadable when nr_frags drops to 0.
-> + */
-> +static inline bool skb_has_net_iovs(const struct sk_buff *skb)
-> +{
-> +	return skb->unreadable && skb_shinfo(skb)->nr_frags;
-> +}
-
-[Severity: Medium]
-
-Does the nr_frags gate make the checks this patch replaces weaker, for
-exactly the state the comment above describes?
-
-An skb with unreadable=1 and nr_frags==0 is now classified like a
-page-backed skb. So skb_mem_provider_compat() and skb_frags_can_coalesce()
-report it as compatible with a readable skb. The checks being replaced
-rejected that case:
-
-skb_try_coalesce():
-	if (skb_frags_readable(from) != skb_frags_readable(to))
-		return false;
-
-tcp_skb_can_collapse():
-	skb_frags_readable(to) == skb_frags_readable(from)
-
-tcp_sendmsg_locked():
-	unlikely(skb_frags_readable(skb) != !binding)
-
-Take skb_try_coalesce() with to stale-unreadable with 0 frags, and from
-readable with only page frags and headlen 0. It skips the copy path and
-passes skb_frags_can_coalesce(). It also misses the new readability check,
-because that check only runs when skb_headlen(from) != 0. The page frags
-are then copied into to, and to->unreadable stays set.
-
-skb_shift() behaves the same way and only clears the source skb's
-unreadable bit. In tcp_sendmsg_locked(), net_devmem_skb_binding(skb)
-returns NULL for such a tail. With binding == NULL, page data is appended
-to the tail instead of starting a new segment.
-
-The resulting skb is flagged unreadable but holds struct page frags.
-net_devmem_skb_binding() returns NULL for it, so would
-validate_xmit_unreadable_skb() drop it on every transmit and retransmit?
-
-	if (!binding || binding->direction != DMA_TO_DEVICE ||
-	    READ_ONCE(binding->dev) != dev)
-		goto out_free;
-
-On RX, the dmabuf recvmsg path would reject the non-niov frags.
-
-The stale state can be produced. __pskb_trim_head() in tcp_output.c
-removes frags without clearing unreadable, and it is reached through
-__tcp_retransmit_skb()->tcp_trim_head() for a FIN skb whose data has been
-acked.
-
-I could not find a live path where such an skb later becomes the target
-of a coalesce, shift or sendmsg append, because that FIN skb is the last
-one in its queue. So this may only weaken the old checks rather than
-cause a reachable failure.
-
-Would it make sense to keep rejecting a readable/unreadable mismatch in
-these paths as well?
-
-[ ... ]
-
-> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> index cf3ddc055d48d..b8a5c3556243b 100644
-> --- a/net/ipv4/tcp_output.c
-> +++ b/net/ipv4/tcp_output.c
-> @@ -2692,8 +2692,9 @@ static int tcp_clone_payload(struct sock *sk, struct sk_buff *to,
->  				     probe_size - len);
->  			len += todo;
->  			skb_shinfo(to)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-> +			to->unreadable |= skb->unreadable;
->  			if (lastfrag &&
-> -			    skb_frag_page(fragfrom) == skb_frag_page(lastfrag) &&
-> +			    skb_frag_netmem(fragfrom) == skb_frag_netmem(lastfrag) &&
->  			    skb_frag_off(fragfrom) == skb_frag_off(lastfrag) +
->  						      skb_frag_size(lastfrag)) {
->  				skb_frag_size_add(lastfrag, todo);
-
-[Severity: Medium]
-
-The commit message says:
-
-  This issue is theoretical and was found by manual code inspection and
-  LLM review; it was not triggered in production.
-
-Is that accurate for this tcp_clone_payload() change? It looks like it
-fixes a reachable data corruption bug that any devmem TX socket can hit
-when MTU probing is enabled.
-
-Before this patch, the path was:
-
-tcp_write_xmit()
-  tcp_mtu_probe()
-    tcp_can_coalesce_send_queue_head()
-      tcp_skb_can_collapse()   <- only required equal readability
-    tcp_clone_payload()
-
-The probe nskb comes from tcp_stream_alloc_skb() with unreadable=0.
-Nothing set the flag when net_iov frags were copied into it. So
-validate_xmit_unreadable_skb() returned early without checking the
-binding's direction or device. Readers gated only by skb_frags_readable(),
-such as skb_copy_bits() for packet taps, could treat the net_iovs as
-struct pages.
-
-There is a second problem in the old merge test. skb_frag_page() returns
-NULL for every net_iov frag, so the test was NULL == NULL. The frag
-offset comes from the user iovec address in net_devmem_get_niov_at():
-
-	*off = virt_addr % PAGE_SIZE;
-
-Consider an iovec at dmabuf offset 0 with length 100 (niov 0, off 0),
-followed by one at offset 2*PAGE_SIZE+100 (niov 2, off 100). The two
-frags have contiguous offsets but sit on different niovs. They would be
-merged into one 200 byte frag on niov 0. Bytes 100..199 of the probe
-would then be sent from the wrong dmabuf page as valid TCP payload.
-
-Since this puts wrong data on the wire, could the commit message describe
-it accurately? Could this fix also be split into its own patch, so it is
-easier to spot for stable backports?
+ include/mnl_utils.h |   2 +
+ lib/libnetlink.c    | 131 +++++++++++++++++++++-----------------------
+ lib/mnl_utils.c     |  54 +++++++++++++++++-
+ rdma/stat.c         |   2 +-
+ rdma/utils.c        |   2 +-
+ 5 files changed, 117 insertions(+), 74 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108013838.1454450-1-almasrymina%40google.com
+2.53.0
+
