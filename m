@@ -1,99 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794268594;
-	b=WsLKiLbswm/h1Ml/hkeUYNc+A/xXDDuZtrWUABv5MEQm9hJizepVsRfBhQ2F+hLnzJkP
-	 4Whfk60lPoq8ZKa0C9OIc5WRD3eVBOaqPM65xuO2jKBJhUNX1lXPcsqg9sg/U3tIKTkUW
-	 3pKeZhsHsreIGEAXykZBmpxqmG8Qvw+2zIzUgm9uRy13spAdKrw6D0Ml07kFM4jN7t4Nc
-	 38Ob8WDsp4zVwP2/uzD7TLyOsqyRuhgncJW5nw5wEeu2JSayOq4T3vcpTETQYmLzw7N1q
-	 bvfWf3nLQooi5xiMIE0gDc4GQegR6rTMoYwxvkkptCcDFqmz3lsV8zm4RsNJBgDnbIA==
+	t=1794268595;
+	b=yC/mKKLsq2jirR0Z1JwgTC3iwLWBMgMoSrPG4KX/TW9rEwhHkX77ZwdyXQ8S2Pta87QD
+	 73znjPmjy5qO0JRTRtbITZo32NYfLDXdBGzFrkkr9TShTwPbYt94X5YiYNSs4cs7r1jMY
+	 GloXyCPsTjBnrL08h1/t2/sYiB9srOc0s5sPVAucuyZk+XOnyDZvefE3m9bBFEsq/ctUl
+	 waE5PF7Iq4pkTR83LUwaCJfkJ96l804eo5pS1WT+pPHlS7c2979mkYbMChOXKncINRwnz
+	 CvDrOoKZOjU9otuPlNwVoVIp33kg6iZNJTarbrTMsRGwjqwstjVRgzmA+mtWp2aUFKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794268594;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=MV9l+zJLmKEJUA1yt63pBpC3JlqNH1CMzrjR4zJJ62k=;
-	b=wvLoNxapdpBBiVPT1fKzy8w7YP+xlvrfJ114+ybn+ENUjX9CSktK5LjKpcx3pPtfla9G
-	 sPdz81HnS7JnT1FrPs8AyV/04hwn684pEHoERnTYO4C2vwhDBVWjmfBWXMhNhX+VrTCLl
-	 XkKyIOOY4pOJAzcScWOsOWClHy9F6Z3sqjQBqlnC63EltStJfdp3tGDEYLBUXF3gBBjp/
-	 0Rjh2NnylvQOVnOS2vWqdPqza+ZZktmPsVEp9e69pN7y6cm95DQk6M9ABQYy/zIGC8SfT
-	 vLn10SFHqTG/B047h3lGUNfJphs1+A8Ah6yi4OxdhDfUR/P8ld8wok8LxfmDwXfoWOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794268595;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=fc3xgMoVJ+Z0pQKIvdskwV42JM1Myfbtedpu947h7Ys=;
+	b=kWjPMuarA8LRyjMxUFAn/Z/zlG9GhPlHXhx0cwkwVD2IykWI4YWOOtJ92R1OFU8UQ8QG
+	 M0fNdBeMlbJojtFhL97ie0n4hsU510OXRQLQG5jziRNZ89hDk7l+1e0ZIXjEOrClFOgmi
+	 6du5wDYb/RD+94hR2NnyBpdLTJCeeAcCud21jzm7pl2xNnIReWc5dNiMohh1WIMnwxjij
+	 F6mqoN61OOnv8/FAITbwDZzlroFcvt3pvENaW0fgYEcxrrrzDl8jzl47q6XBb8o97iC2U
+	 kPreUvjdYhPvgRXIb7TRd0T2i0P4npiBqG877r0jz04jptHix3zs5YmLY1lVfaEDSCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=VLCqFtn3;
-	arc=none smtp.remote-ip=209.85.160.97
-Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b4NJBitw;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461EB606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4641C606A321
 	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:56:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 461EB606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4641C606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=VLCqFtn3
-Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-451a49abd8aso1480620fac.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:56:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794268593; x=1794873393;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=MV9l+zJLmKEJUA1yt63pBpC3JlqNH1CMzrjR4zJJ62k=;
-        b=WkxNNQ56LNqesqUXqqznEWawc0NuACFB6gSEpQk/sFieeLmLAFwrEkYPvDyTfbPDYm
-         2FQrhW24UcWOfn8TqqJ34OgH1j+rSaJ7j3eU/by8yJlK4Yo2aUz1zgd27uscDqzokkRU
-         Iw55ZVi27mUyXm/z6IoUfivxKxT002zk8fL9j7VBa9JXh+ZPm8terrFEJLSQG+frR+Bk
-         Pweo2fSWpH52zxEUhxouqHleNUZMWxynI5SKwSucZ9qwiz8enbUDVvf/vSGM7vS+X89l
-         gF5ykBpZIrNvnQ6OdEYDeS/d1cqn9NSWKhAxLF6jsb5I5R9z11fXuVzWy7qZajG9adxQ
-         3xdA==
-X-Gm-Message-State: APuU4Z/ZDg0v1hA0zIvJKO9BPN3LGaQI8k1BmDfyIBc25qngOYk1xJWw
-	iWbdpCttuKaDl3jnQ+2JWgDLlyhcJu23xQDrpdJDXvU66BSXx7WtaCwkTFZpPx5Z6RHOR9Lbz0C
-	7MUwW8xYK/dj4yzvkMvU0L0mwYyyOg5lBxGyxlK+GMb8MzrzB/kW+VbI+/xWr1NbzsPJumOY2Th
-	P8RaazvS4/5xG1Fpzuv3I+4cALxjIxDsC2IIRzMB+cCfE2eQe3mpCxCGQDLewzA3Dc++lb2MZbL
-	QCVeUupp+JADSaL
-X-Gm-Gg: AYBFou2SFCcPPs70cPRkMyIc+cT4dFA09jXG8zj/xojBYVNdwgeCCorZKPEKQjWs3Dc
-	szI4IkcPVahTbz8S4OcQfFgZ8MfNBCxzpD0+X0NoKvV2ItojQj5xMw8RCfQoJsjsorLMwRVlDWa
-	GnaboTfcDm7lnDL31OOVUlazpq+Ph8uE1bFdBF87YFvFqEoR/nvB4Vlk2rB7tdI9uljphJvpdbR
-	Qj2jvl5EcSADbQjBhcLKt0snNlYh6jo7CboeKeG6jbg7ycSSalq3q+9gwbsEqxTwg84/mroGis9
-	WdtLobO8t5qulHT2BZ7ccGKTPSLYw8j48FUeYX5aGUcygSIDwnA01ml3OofRM5rRQYmCNjcjal5
-	vY1fGBXYa4YwNmN56DxONuOFQse/zZnA7of0J7iUcgu75PUvYZTGgKuWMjqufYZuW8KX7u4n3bv
-	T6EHxmZDYxoMhTGXK9EWo/HMRPxUfIIgzt/OPRgcRn
-X-Received: by 2002:a05:6870:392a:b0:459:2c03:6302 with SMTP id 586e51a60fabf-4ae225884d1mr425934fac.11.1794268593000;
-        Mon, 09 Nov 2026 15:56:33 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4ae2309909dsm8035fac.27.2026.11.09.15.56.31
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 09 Nov 2026 15:56:32 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91edde88d16so19097246d6.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:56:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1794268591; x=1794873391; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MV9l+zJLmKEJUA1yt63pBpC3JlqNH1CMzrjR4zJJ62k=;
-        b=VLCqFtn3HS6Mup60PGesKPi/CqY6dd6JQ+EePcPvKPpyGx8Y1dzAOiGdnwUvOXP0Jf
-         LpV0BlaC2pikJaZhO1Ee4xzP7t0NfH/KdhqyS5h8WnYEU3DmtoRek0ARdXbhujnpj7fH
-         PD7c4374lNxh8H1CNF+pP3C13u3FUWYmf/szA=
-X-Received: by 2002:a05:6214:c2a:b0:91e:8c55:e005 with SMTP id 6a1803df08f44-91eef93d977mr19944566d6.39.1794268591080;
-        Mon, 09 Nov 2026 15:56:31 -0800 (PST)
-X-Received: by 2002:a05:6214:c2a:b0:91e:8c55:e005 with SMTP id 6a1803df08f44-91eef93d977mr19944316d6.39.1794268590351;
-        Mon, 09 Nov 2026 15:56:30 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ef04fe53asm7909876d6.27.2026.11.09.15.56.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 15:56:29 -0800 (PST)
-Message-ID: <41b76df2-d07a-4b59-93b6-5e4e6fe264e1@broadcom.com>
-Date: Mon, 9 Nov 2026 15:56:27 -0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b4NJBitw
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LELLP3484442;
+	Mon, 9 Nov 2026 23:56:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=fc3xgMoVJ+Z0pQKIvdskwV42JM1Myfbtedpu947h7
+	Ys=; b=b4NJBitwBl8hMKpR1C6zVtxxQZmboXUFvFxPBWV9h/M9cY7mr431rnbrP
+	a53cYabcjPdV0N5xEv08flZXTf8o96t6jWCffeTub+n5rnIQ2jQ1TrQWnz7RETKN
+	gsi7t51QXsUlJrtG6+xDeCmnc6wxfvdcrEnaCCQ+41lF6APiXrr5wThoTuiLLVc+
+	e1gA8FMCTgteyhWTgfeuyIOTFLpIJjNDXnoRgVKIz2fOIQtjXI7I6Z9jEfl6/zMs
+	R6EyJoCcmRew2Sut7kKjp2jCfQyduUTMOBygy0/lvbIV5/GHQUtlmFRchJGiPUye
+	WR22K5SiqJyVVBYOPDKe/fL96l39g==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hstdg2169-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:56:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9LK2KV715559;
+	Mon, 9 Nov 2026 23:56:06 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4htfak4d9b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Nov 2026 23:56:06 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A9Nu4Ys19137028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Nov 2026 23:56:04 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 72E7958028;
+	Mon,  9 Nov 2026 23:56:04 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 292BA58017;
+	Mon,  9 Nov 2026 23:56:01 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.169.223])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Nov 2026 23:56:00 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: Mingming Cao <mmc@linux.ibm.com>, davem@davemloft.net, kuba@kernel.org,
+        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
+Subject: [PATCH net-next v8 00/15] ibmveth: Add multi-queue RX support
+Date: Mon,  9 Nov 2026 15:55:41 -0800
+Message-Id: <20261109235556.60604-1-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,196 +95,344 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 3/8] net: dsa: b53: clear stale state when creating
- an ARL entry
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, vivien.didelot@gmail.com,
- linux-kernel@vger.kernel.org
-References: <20261030211617.288562-4-florian.fainelli@broadcom.com>
- <179348376043.3131.9215522572202391161@kernel.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <179348376043.3131.9215522572202391161@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=J+M/fwnS c=1 sm=1 tr=0 ts=6af25d97 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=bC-a23v3AAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=9R54UkLUAAAA:8 a=c92rfblmAAAA:8 a=qG2clzYjeD1B5d1RadEA:9
+ a=FO4_E8m0qiDe52t0p3_H:22 a=YTcpBFlVQWkNscrzJ_Dz:22 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfX4fAHso4+uHhj
+ tLX1ccPxzoM0xrcL5Zqa0i6G/wdZKiIbYpXToAzsdh0gXVb6WgVwlKlO9BN5HterWZ+dVV6DNsR
+ cyvOojoqVlrCPPiQpmgskBjCJkl55Ef+deNbD/j/nXDNhV+5Yd4WjGdGL42H6VTj+ojhnMgI7t9
+ qcwir1Q7US9We0aVpk9eH9YRhdLmYErn7mJUiYCs0fIz+ob/ubUwxsBMZMN0+MVdK601YiSKyd6
+ 2DVT1Jt9bWMw7TEPWnqOWEk/n1kifLFUeqHAESVmaxAUVHWpFUu061bbngfhoDQYyNf2MOpzu2M
+ 2QNBat6+51tU/RxFzKhbg7+aIMLROtz3TeAKZ3uJD5ig0mNYhXEFaZ9ngFipodkH7VWSDOAwgqb
+ r/9eFUWIne08DB5yMP8GVSj1U39V1V2tVbXpES1o+DAJlrIGXYZilCHDk0NQBNG72lAGRlFuWMR
+ AS+JIwsuRCj198lX5GA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDA5NCBTYWx0ZWRfXzWA5JXddJmuE
+ yt2GHKIC33GL+wHStngbunaJWzODa5IWHn8/6+e/JklG5BTx3yqmVExxu2tXq2m4Cgpp1KXc5Og
+ 8k4QS+2dnSvHAIQFA9rSxxk0Osoi9Bc=
+X-Proofpoint-GUID: AquKjavMDO5dcC2N81ZgcQFfRRExBtlo
+X-Proofpoint-ORIG-GUID: I6QtE9nPC9BbHt16mW9jlRFnRLfmJI2p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-09_07,2026-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 suspectscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090094
 
-On 10/31/26 14:56, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] In b53_arl_op() (drivers/net/dsa/b53/b53_common.c), deleting a
->    {MAC,VID} that is missing from the ARL now returns -ENOENT.
-> - [Medium] Deleting an ARL entry that is not in hardware now fails with
->    -ENOENT, including the -ENOSPC lookup result, which used to return 0…
-> 
-> --
-> 
-> net: dsa: b53: clear stale state when creating an ARL entry
-> 
-> When an ARL lookup misses, the patch now clears the b53_arl_entry before
-> building a new one. This stops a multicast add from ORing the port into an
-> unrelated bin's bitmap. A delete of an absent entry now returns -ENOENT
-> without writing to hardware, and that includes the -ENOSPC lookup result,
-> which used to return 0.
-> 
->> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
->> index 559d4b360c828..c38e8c5838bd8 100644
->> --- a/drivers/net/dsa/b53/b53_common.c
->> +++ b/drivers/net/dsa/b53/b53_common.c
->> @@ -1990,11 +1990,15 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
->>   	case -ENOSPC:
->>   		dev_dbg(dev->dev, "{%pM,%.4d} no space left in ARL\n",
->>   			addr, vid);
->> -		return is_valid ? ret : 0;
->> +		return is_valid ? ret : -ENOENT;
->>   	case -ENOENT:
->> +		if (!is_valid)
->> +			return ret;
-> 
-> [Severity: Medium]
-> Can returning -ENOENT on delete leave DSA's host address tracking out of
-> sync with the ARL?
-> 
-> b53_fdb_del() and b53_mdb_del() pass this value back to DSA. On CPU/DSA
-> ports, when the last reference drops, dsa_port_do_fdb_del() in
-> net/dsa/switch.c treats any driver error as "still in hardware":
-> 
-> 	err = ds->ops->port_fdb_del(ds, port, addr, vid, db);
-> 	trace_dsa_fdb_del_hw(dp, addr, vid, &db, err);
-> 	if (err) {
-> 		refcount_set(&a->refcount, 1);
-> 		goto out;
-> 	}
-> 
-> 	list_del(&a->list);
-> 	kfree(a);
-> 
-> dsa_port_do_mdb_del() handles errors the same way. The struct dsa_mac_addr
-> then stays on dp->fdbs or dp->mdbs with refcount 1.
-> 
-> A later add of the same {addr, vid, db} finds that record in
-> dsa_port_do_fdb_add() or dsa_port_do_mdb_add() and only calls
-> refcount_inc(). port_fdb_add or port_mdb_add is never called, so the
-> hardware entry is not reinstalled. The record is only freed by the leftover
-> sweep in dsa_port_teardown().
-> 
-> How can the hardware lose an entry that DSA still tracks? b53 doesn't set
-> ds->fdb_isolation, so dsa_port_bridge_host_fdb_add/del() force
-> db.bridge.num = 0, and all bridges share one ARL namespace.
-> 
-> A unicast ARL entry holds a single port. A user-port static FDB for the
-> same MAC/VID, for example in another bridge, overwrites the CPU port's host
-> entry. Deleting that user-port FDB invalidates the entry, and the later
-> host delete then misses.
-> 
-> There may be a second path, though I have not confirmed it.
-> bcm_sf2_sw_resume() calls bcm_sf2_sw_rst() and then ds->ops->setup(), and
-> does not replay FDB/MDB entries. If that reset clears the ARL, every later
-> host delete would miss.
-> 
-> Before this patch, the 0 return let DSA free its record, so the next add
-> reprogrammed the switch. Would returning 0 for a delete of an absent entry
-> fix the stale-bin problem without this side effect?
-> 
-> The commit message mentions the return value change, but not its effect on
-> the DSA core refcounting. With the Fixes: tag this will also go to stable.
-> Later patches in the series don't touch b53_arl_op(), b53_fdb_del() or
-> b53_mdb_del().
-> 
-> [Severity: Medium]
-> On BCM5325 and BCM5365, does this make every MDB delete fail?
-> 
-> b53_mdb_add() returns before it touches the ARL:
-> 
-> 	if (is5325(priv) || is5365(priv))
-> 		return -EOPNOTSUPP;
-> 
-> b53_mdb_del() has no matching check:
-> 
-> 	ret = b53_arl_op(priv, 0, port, mdb->addr, mdb->vid, false);
-> 	mutex_unlock(&priv->arl_mutex);
-> 	if (ret)
-> 		dev_err(ds->dev, "failed to delete MDB entry\n");
-> 
-> The bridge calls switchdev_port_obj_del() on RTM_DELMDB whether or not the
-> add was offloaded:
-> 
-> br_switchdev_mdb_notify()
->    switchdev_port_obj_del()
->      dsa_user_port_obj_del()
->        dsa_port_mdb_del()
->          dsa_port_do_mdb_del()
->            b53_mdb_del()
->              b53_arl_op() -> -ENOENT
-> 
-> So every group leave or expiry on a bridged 5325/5365 port with snooping
-> enabled would log "failed to delete MDB entry". It would also log a second
-> message from switchdev_port_obj_del_deferred(), which only ignores
-> -EOPNOTSUPP:
-> 
-> 	err = switchdev_port_obj_del_now(dev, obj);
-> 	if (err && err != -EOPNOTSUPP)
-> 		switchdev_obj_id_to_helpful_msg(dev, obj->id, err, false);
-> 
-> On other chips, when a user-port FDB or MDB add fails with -ENOSPC, the
-> bridge delete that follows now fails too. For FDBs,
-> dsa_user_switchdev_event_work() then logs "port %d failed to delete %pM
-> vid %d from fdb".
-> 
-> Should b53_mdb_del() get the same 5325/5365 guard as b53_mdb_add()? Or
-> should a missing entry on delete be treated as success? b53_arl_op() and
-> b53_mdb_del() are still the same at the end of the series.
+Hi,
 
-Agreed. I’ll respin this patch such that deleting an absent entry 
-returns success for both lookup-miss cases, while retaining the early 
-return without writing hardware. This avoids retaining stale DSA 
-host-address references and errors for entries that were never 
-offloaded. I’ll update the commit message accordingly.
+Power11 PHYP adds Virtual Ethernet multi-queue (MQ) RX: multiple
+logical-LAN RX queues, per-queue buffer posting, and completion
+delivery. Guest Linux did not use that; ibmveth still registered one
+RX queue even when PHYP was MQ-capable.
 
-pw-bot: cr
+This series adds the ibmveth MQ client for net-next. When PHYP
+advertises IBMVETH_ILLAN_RX_MULTI_QUEUE_SUPPORT via H_ILLAN_ATTRIBUTES,
+probe enables MQ with a default RX count of min(num_online_cpus(), 8)
+(same cap as TX today); ethtool -L can raise RX up to 16. Packets are
+received on per-queue NAPI. Older firmware without the bit is unchanged.
+Queue selection remains firmware-defined (PHYP hash). Ethtool RSS hash
+get/set for that algorithm is deferred to a follow-up series so this
+one stays MQ datapath only.
+
+User-visible bits: ethtool -l/-L (channels); standard per-queue
+packets/bytes and RX drops via netdev_stat_ops, with ndo_get_stats64
+as the aggregate (including queues since removed); and a read-only
+debugfs buffer_pools dump. ethtool -S keeps its existing keys and adds
+per-queue driver counters (rx%d_interrupts, rx%d_polls,
+rx%d_large_packets, rx%d_invalid_buffers, tx%d_send_failures).
+rx_no_buffer is now cumulative across close/open instead of the
+current buffer-list page's count, and no-buffer drops show up as
+rx_missed_errors. poolN/ sysfs is unchanged.
+
+This version is based on net-next, which now has the two open()
+error-path fixes (af0524bf4ce1, 84bec0bf0352) and the nine ibmveth
+fixes that came out of the v7 review (merge d53a5309cc4a, [1]). The
+MQ patches extend that handling per queue instead of carrying their
+own copy, so this series no longer fixes single-queue bugs. Patch 5
+makes the wait from commit 3f872b34368c ("ibmveth: wait for the RX
+poll to return before freeing the RX queue") per queue, and patch 9
+keeps the header checks from commit 9486c89a8e15 ("ibmveth: check
+headers in the RX large send and checksum helpers").
+
+Background:
+
+ibmveth today uses one logical LAN, one set of buffer pools, and one
+NAPI context. PHYP MQ mode gives each RX queue its own handle (post via
+H_ADD_LOGICAL_LAN_BUFFERS_QUEUE, subordinate register via
+H_REG_LOGICAL_LAN_QUEUE); traffic can land on any active queue. The
+driver needs per-queue pools, IRQs, and NAPI to match. Legacy firmware
+keeps the original hcall path.
+
+Series layout (15 patches):
+
+  1-2   Hypercall wrappers; MQ adapter layout (MAX_RX_QUEUES stays 1)
+  3-9   Queue-aware helpers (still SQ runtime): RX, per-queue pools,
+        IRQ, TX, PHYP register (open/close 3-7); buffer submit (8);
+        split RX poll helpers for MQ (9)
+  10    Enable MQ datapath at probe/open (subordinate register helpers
+        land here with first use)
+  11-13 Per-queue RX/TX stats; get_channels MQ counts; debugfs buffer_pools
+  14    Incremental RX resize; live ethtool -L rx
+  15    Down-path publish
+
+- Helper patches (3-7) reshape ibmveth_open()/close() into
+  queue-aware helpers; patch 8 adds the queue-aware buffer submit used
+  by replenish. Patch 9 splits the SQ poll path into per-slot helpers
+  for MQ; it does not change open/close. MQ stays off
+  through 3-9: num_rx_queues stays 1 and multi_queue is false until
+  patch 10. The live single-queue path still changes where the review
+  required it (IRQ teardown wait and remask, replenish lock, poll
+  harden).
+- Patch 10 is the switch: probe sets multi_queue from firmware and
+  raises num_rx_queues; open() registers the subordinate queues and
+  replenishes every active queue.
+- Patch 11 moves counters per queue and exports packets/bytes and RX
+  drops through netdev_stat_ops. The existing -S keys stay, and
+  per-queue driver keys are added.
+
+Testing:
+
+W=1 ibmveth.o at every commit (plain and KUnit), KUnit 5/5 at tip
+(qemu pseries).
+
+ppc64le PowerVM LPARs on POWER11, MQ and legacy firmware, all passing
+on this version:
+* channels: ethtool -l/-L with the interface up and down,
+  mq_fallback, module reload
+* stats: qstats vs ethtool -S vs ip -s link; counters across
+  ifdown/up and queue removal
+* resize under iperf3 RX+TX: ethtool -L 1..16 with RX spread checked
+  at each step, and -L cycling in parallel with ifdown/up
+* close/open under iperf3 load (MQ and rx 1)
+* rx 1 on MQ firmware and legacy firmware: ifdown/up churn, soak,
+  stats
+
+Changes in v8:
+
+Same 15 patches as v7, rebased onto net-next, which now carries the
+open-fail pair and the nine ibmveth fixes. v7's in-tree copies of
+those single-queue fixes are gone; the per-patch --- notes list what
+each commit dropped and which merged commit owns it. The rest comes
+from the v7 review and our own re-review.
+
+Code changes:
+* Patch 4: a pool-alloc failure in open() unwinds through
+  h_free_logical_lan(), as the merged open-fail fix does.
+* Patch 5: teardown runs synchronize_net() after napi_disable(), then
+  remasks and frees the IRQ; close() keeps net-next's no_buffer order.
+* Patch 6: open() starts with netif_tx_disable() and starts the TX
+  queues under netif_tx_lock_bh(), since NAPI and generic XDP_TX are
+  already live.
+* Patch 7: queue_registered[] marks a live slot (handle 0 is valid);
+  ibmveth_register_logical_lan() returns long.
+* Patch 8: replenish_lock is spin_lock_bh(); poll reads each
+  correlator once and harvest resets on a bad one.
+* Patch 9: bad and oversize slots count rx_dropped and consume budget;
+  a poll that uses its whole budget returns without completing NAPI.
+* Patch 10: in MQ mode a hard H_FREE_LOGICAL_LAN failure keeps the LAN
+  memory mapped until the next open() or remove() frees it; poolN
+  writes return -EBUSY meanwhile. Single queue still unmaps.
+  restart_rx_queue() no longer unmasks PHYP; apply_mq_fallback() sets
+  real_num to 1; set_channels rejects an RX change until patch 14.
+* Patch 11: counters use WRITE_ONCE()/READ_ONCE(); no_buffer is
+  retired at every unmap, so no counter goes backwards; three
+  per-queue -S keys are dropped.
+* Patch 12: max_rx is the live rx_count, not a fixed 1, on single
+  queue or once mq_fallback is set.
+* Patch 14: live -L waits after napi_disable() before remasking and
+  rolls RX back if TX fails; a rollback whose set_real() fails skips
+  the unmask, and scale-up unmasks only through enable_irq(). A queue
+  stranded by a failed scale-up is freed after the next successful
+  H_FREE_LOGICAL_LAN.
+* Patch 15: the down-path returns -EBUSY if a queue in the new range
+  is still registered.
+
+Changes in v7:
+
+Same 15 patches as v6. We followed up the v6 netdev-bot review
+with replies; this v7 is the series after that, plus a few items
+from our own re-review.
+
+* Patch 3: update_rx_no_buffer() returns if buffer_list_addr[0] is
+  NULL (the per-queue form stays in patch 10).
+* Patch 6: synchronize_net() on the late TX-alloc unwind before RX is
+  freed.
+* Patch 8: replenish failure log names the wrapper from the filled
+  count; advance ring on NULL buffer so poll does not spin.
+* Patch 9: oversize bound is min(skb_tailroom, pool->buff_size).
+* Patch 10: unregister_netdev before cancel_work_sync and gate reset
+  on NETREG_REGISTERED (moved from patch 11); wait for pool kobject
+  release before free_netdev(). Drop the probe CMO refresh and the two
+  CMO follow-ups: CMO (Power9 and earlier) and MQ firmware (Power11+)
+  do not coexist.
+* Patch 11: replenish_lock on the close harvest (remove-path
+  unregister/cancel reorder moved to patch 10 with the reset producer).
+* Patch 12: set_channels() returns -EOPNOTSUPP on rx_count changes until
+  patch 14 implements live resize.
+* Patch 14: key buffer-list unmap on allocation presence because
+  DMA address zero is valid; reject an RX count change while down
+  with -EOPNOTSUPP. Failed H_FREE skips unmap and restores the
+  surviving count; widen real_num before scale-up unmask. Scale-up
+  register -EOPNOTSUPP latches mq_fallback. The scale-up /
+  scale-down helper split is code motion only.
+* Patch 15: publish the down-path RX count, which lifts patch 14's
+  temporary rejection. get_channels max_tx is at least the live
+  tx_count, and set_channels uses the same ceiling, so CPU offline
+  cannot block an RX-only ethtool -L.
+* Commit message / kdoc / comment / debug-log updates on 1, 3, 4, 5,
+  7, 8, 9, 10, 11, 12, 14 and 15 (patch 1 also names the new hcalls in
+  the perf powerpc-hcalls script and documents H_BUSY on the register-queue
+  wrapper; patch 10 prints the register-queue failure with %ld).
+* Kept: enable_irq on schedule_prep failure; mask PHYP before
+  napi_disable; get_channels reports the live rx_count (no clamp).
+* Reopen unwind in patches 3 and 6 is pre-existing. No Fixes: tag
+  here. The SQ open-fail path is already on the list as
+  [PATCH net 0/2] (Message-ID:
+  <cover.1790357373.git.mmc@linux.ibm.com>). This series does
+  not depend on it. If both land, keep the helper versions in
+  patches 3/4/6; the net pair is the current single-queue path
+  only.
+
+Changes in v6:
+
+Same 15 patches as v5. Jakub v5 review folded in; per-patch detail is
+below --- on each commit.
+
+* Both new registration wrappers use plpar_hcall(), not plpar_hcall9().
+* Poll: IPv4 check through skb->data; budget 0 does not complete NAPI.
+* Scale-down: publish the surviving count, then synchronize_net(),
+  then destroy. num_rx_queues uses smp_store_release / smp_load_acquire.
+* packets/bytes/drops through netdev_stat_ops, not private -S strings.
+  Thirteen existing -S keys kept. No hcall_* or pool%d_ keys.
+  replenish_* are per-queue u64; no atomics. get_base_stats() is the
+  retired-queue remainder.
+* Reset worker gated on NETREG_REGISTERED (cannot reopen after
+  unregister).
+* get_channels() keeps the live rx_count; mq_fallback caps max_rx so
+  a TX-only ethtool -L is not a silent RX shrink.
+
+Changes in v5:
+
+* Restack mailed v4 (14 patches) to v5 (15):
+
+    v4 1-8  helpers                -> v5 1-8
+    (new)   SQ poll harden         -> v5 9   (before MQ enable)
+    v4 9    MQ enable              -> v5 10
+    v4 10   stats                  -> v5 11
+    (new)   get_channels           -> v5 12  (peeled from stats)
+    v4 11   debugfs                -> v5 13
+    v4 12   resize                 -> v5 14
+    v4 13   set_channels           -> v5 15
+    v4 14   trailing poll/shutdown -> folded into v5 5/9/10/14
+            (mailed "P14" was that trailer, not v5 14)
+* Teardown-first resize after aggressive ethtool -L; thin defensive
+  poll skip remains; no correlator generation field this series
+* opened / rx_irq_setup; set_channels keys on opened (not IFF_UP)
+* filter_list_dma=0 on map error; restore default-active 64 KiB pool;
+  unwind pools by allocation presence; probe_cleanup clears vio
+  drvdata; remove: unregister then cancel_work
+* TX quiesce before freeing bounce buffers; guard start_xmit if LTB gone
+* MQ H_FUNCTION recovery (reset + SQ fallback); no printk under
+  replenish_lock; lock harvest with replenish; resume kicks all queues
+* Per-queue update_rx_no_buffer; publish-before-free on resize;
+  CMO refresh; IRQ helpers return errno
+* Harvest abort (no fake GRO / UAF); poll refuses PHYP re-arm on close;
+  wrap-safe skb_put; atomic set_channels; monotonic stats across shrink
+* Keep mask -> sync -> napi_disable on teardown; open stays
+  request_irq -> napi_enable while PHYP masked; scale-up/recovery keep
+  napi_enable before enable_irq
+* Pool geometry kept on free; restart_rx_queue after open/scale-down;
+  remask after napi_disable; schedule_rx_queue masks only when
+  napi_schedule_prep succeeds (STOP + poll no-rearm for storms)
+
+Changes in v4:
+
+Addresses Simon's v3 review and related fixes:
+* First-use helpers/includes (irqdomain.h with first dispose); no
+  unused statics; dropped orphan open/close pipeline patch
+* Open/close unwind (free LAN before RX pools); no double TX teardown
+* MQ open: replenish all queues before PHYP unmask; H_FUNCTION on
+  subordinate register is a hard open failure
+* Resize/set_channels hardenings; stats probe-lifetime + sum-on-read;
+  buffer_pools diagnostic on debugfs
+* Patch 9: put already-created pool kobjects on probe failure paths
+* Patch 14: correlator skip, skb tailroom check, napi_complete_done
+  shutdown return < budget
+* Bisect-friendly restack (helpers with first use)
+
+Changes in v3:
+
+* Dropped RFC; addressed style / DMA feedback from earlier revisions
+* Early MQ enablement iterations (see lore links below)
+
+Comments welcome.
+
+[1] https://patch.msgid.link/20261013182926.30417-1-mmc@linux.ibm.com
+
+---
+v7 lore:
+  https://lore.kernel.org/r/cover.1790319558.git.mmc@linux.ibm.com
+Sashiko NIPA (v7):
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790319558.git.mmc@linux.ibm.com
+v6 lore:
+  https://lore.kernel.org/r/cover.1788102125.git.mmc@linux.ibm.com
+Sashiko NIPA (v6):
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788102125.git.mmc@linux.ibm.com
+v5 lore:
+  https://lore.kernel.org/r/20260814073642.24630-1-mmc@linux.ibm.com
+v5 review (Jakub Kicinski):
+  https://lore.kernel.org/r/20260818014710.3853684-1-kuba@kernel.org
+Sashiko Gemini (sashiko.dev):
+  https://sashiko.dev/#/patchset/20260814073642.24630-1-mmc@linux.ibm.com
+Sashiko NIPA (v5):
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814073642.24630-1-mmc@linux.ibm.com
+
+Previous versions
+v7: https://lore.kernel.org/r/cover.1790319558.git.mmc@linux.ibm.com
+v6: https://lore.kernel.org/r/cover.1788102125.git.mmc@linux.ibm.com
+v5: https://lore.kernel.org/r/20260814073642.24630-1-mmc@linux.ibm.com
+v4: https://lore.kernel.org/r/cover.1785457143.git.mmc@linux.ibm.com
+v3: https://lore.kernel.org/r/20260706193603.8039-1-mmc@linux.ibm.com
+v2: https://lore.kernel.org/r/20260701222327.61325-1-mmc@linux.ibm.com
+v1: https://lore.kernel.org/r/cover.1782758799.git.mmc@linux.ibm.com
+v4 review (Jakub Kicinski):
+  https://lore.kernel.org/r/20260806183614.3171785-1-kuba@kernel.org
+v3 review (Simon Horman):
+  https://lore.kernel.org/r/20260714124327.GJ1364329@horms.kernel.org
+
+Mingming Cao (15):
+  ibmveth: Add MQ RX hypercall wrappers and call definitions
+  ibmveth: Prepare MQ RX adapter data structures
+  ibmveth: Refactor RX resource allocation for MQ RX bring-up
+  ibmveth: Refactor buffer pool management for per-queue MQ RX
+  ibmveth: Refactor RX interrupt control for MQ RX queues
+  ibmveth: Refactor TX resource allocation in open/close paths
+  ibmveth: Add RX queue register helpers for MQ
+  ibmveth: Add queue-aware RX buffer submit helper for MQ
+  ibmveth: Split RX poll into per-slot helpers for MQ
+  ibmveth: Enable multi-queue RX receive path
+  ibmveth: Add per-queue RX and TX statistics collection
+  ibmveth: Report MQ-aware RX counts in ethtool get_channels
+  ibmveth: Expose per-queue buffer pool details via debugfs
+  ibmveth: Implement incremental MQ RX queue resize
+  ibmveth: Complete set_channels down-path
+
+ arch/powerpc/include/asm/hvcall.h   |    6 +-
+ drivers/net/ethernet/ibm/ibmveth.c  | 5007 ++++++++++++++++++++++-----
+ drivers/net/ethernet/ibm/ibmveth.h  |  240 +-
+ tools/perf/python/powerpc-hcalls.py |    4 +
+ 4 files changed, 4318 insertions(+), 939 deletions(-)
+
+
+base-commit: fa5196392691051963726787944db872420dfa75
 -- 
-Florian
+2.50.1 (Apple Git-155)
+
