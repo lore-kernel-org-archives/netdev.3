@@ -1,83 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794252666;
-	b=kf9OnaqgyVmwl/1OeAKwj78njXG8apldAr/PuSh3WCs6RPZFafeXhPFJ4Ocq6R3kjo8c
-	 xl856WjfG6kzcm4ebWKN2FPLexXJVOE8Ij3BxjATvOBcKAY+a38yhvq0YHQW+P7XqJAPT
-	 iFNO52u5MVmoB0AUa/8fOmJC55OBmmMWraACIiBDSRhde4ruHlPsQeG48FXjoPQKEFcKb
-	 zoCf42jChM6C8F/G997B20iCSIvBeGVaUTyhNn1zDII+tLGBJdfOGU/9UrBwryX2W6X/n
-	 KSaSmE+l27tqP8MF5ebV9X/jK600tss55/sbeYGEIBG5cAHGDF8tV9kg04J8LA2Erpw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794252666;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=nuOW7NWdhMq5j72nN6lv/64QA7Dp66RTY9dzYbrrXv4=;
-	b=Xo/EW8OGO4i5O9n+CZRxcFZ1VuLdsC0iQhqaZ50YaLUCOM2UUfGsuJeuPE41/XIruO/C
-	 X+PoVFm8nxHebTrw40vbqZfcGfADTAXz2b9BAm7q4MuesBSPcNdCNU8SXeLJrhCecIO8/
-	 ow4Kri22TJDO0/QYNUge1a+glta9HZsamylPCAGvGoLDzZc+q9oGZzvO9eLByDkjI+xnd
-	 9V4sKRNrvHH7Sq7WOG9hqROX5v7Xl6XaQGX8M/XHxK1uTCSb8DQ0pcLQheBG35ownS4bv
-	 jFh7oHUL+UeUqoiWmc1kqO6Y/KNmwgChBFG962PV1ovGkocthCzdbibpV9durhSgrgQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Z4xEdWAJ;
-	arc=none smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794252934;
+	b=TgU+ASza0Al0b0K4Hguc+9UJaadZmfJWLGm3uOfy8PyYqcdSRSzDAuS3GYXFzsI9WJvo
+	 vZGcB0UV17h0oHw72i0l+F6CuBry57PAhPsdrzVeycOM+zAX9NV+tDmIfa89QmXEGTurT
+	 opKDnIjflKxERxj51t72efBxlUo94XjtqQVNjEt76k+jvju1mHZQM4S3HlQyZ/98nitdg
+	 B9qISr+9TuzqpiYUjrZZJSgS5+i8SLvqZwBHjCK6eVIBFWAIjdqzvIZX7VLwtLs1BrV6b
+	 ydoQ4v4R+Ktw+9p3alF+dhPDUBO0EvxXTp2HR60uCG8vY9rjCuQSyjfkSROlrNpYh+g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794252934;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
+	b=2RRPg9P6532lHvl1F7LumksRGK8N1w/miVaN6Zjy4f2EEqU5qHqCPuPcFenzX4SWTDXc
+	 brMCLKBz0EiU75nRmOvgdnMQTk1MGT8HN+wtCgmbBoj9bYZLDMdgiK4cTBVSTNXUo8V/H
+	 IU8ceuYF6yVi5+mPHwAXzd8SmMfgfS+hmxC23XxYbvmOvMCLO+RRf8whlraO1PB2SgxU/
+	 Rd8DJdUE4aIe3Z9VwLvUko+hmg2A8CTwbTlOKjt/XcoLkZsfAKIN/UdLifkC4CyxREGU6
+	 nMm97dOaEumavMJsUxv64mIclkqNNzmiqhltoQV63wyNbqVuMbKTVHKY/q7gztN/RBQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Upoi+H2O;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.45
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011045.outbound.protection.outlook.com [52.101.62.45])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD232606A33A
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:31:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD232606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81A0606A31C
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:35:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B81A0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Z4xEdWAJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794252666; x=1825788666;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lalvHr/Ke8F4LeI/vsiTGtcced7OK5Z19UGpFJJrATE=;
-  b=Z4xEdWAJ9vok2+gHQMdb14o77+iECOI1tzICJ8j4ghYqBJ7VhR7asyea
-   P3/qua24PmadHdzpCUKowEAZgB7nTY5MKlWJbUsjFgsvqMHysb/OTVUQZ
-   umzMrP6xafbDV7ATRvTFbARwRJDhJPM8vWtqIYxh4swBHbq+AXUdfw+wD
-   N6ljMhoY28EiI+URlTcNC+kG0RtWSyJiAYbjbDTJwGBunmpfgZZjTkGAq
-   Xo3SrFS1pAk8BuIvN+us01u+eF5dRyoQwzcqm3YaSaAJLdHpbOzaSpUIz
-   rhhiXmZX5xjHdk2W7N+I8ZzEvqf8hfwehC3LXws0fuiwWyztVxsKXJbKA
-   w==;
-X-CSE-ConnectionGUID: Byg2co1uQ7WKUN6PhkF+jQ==
-X-CSE-MsgGUID: ZuSVjrG2SSiRInHuEryFog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3021059"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="3021059"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 11:31:05 -0800
-X-CSE-ConnectionGUID: UqKz67FHRruXYr6adGhAKQ==
-X-CSE-MsgGUID: yd0QrsDIQuOBTnVCzNUL9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="9808007"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa013.fm.intel.com with ESMTP; 09 Nov 2026 11:31:03 -0800
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Upoi+H2O
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gKpWGXMEYK5p7CopsZiCWS9v25m+r3bA3KSSVDyJa44oFWWZsV2SDgyOr1eN3ha0kqi51vcJd0tt/pM6t6JHtwOZIEPY79wNKeVZw2goHF1JWHIKggoXNrf3dNJOzuljWVa43kW8G71JaveQp3RYVGnrjhmHx9Wfh+2PtE3E5lETq4Ig1jIKf33wUYZfPepMPELwpScuZhJ10UzRuF/qmPo8oA2P/ayqyY03/zqKzjPaTj/pC0nQiRIjMfcvxYiTqEtT9g9JkaoZRF/F/MzW/lXJyb7ffQPefN6ZJOLm8p+4yerK78DlZ8I61s42UVcb78b3OOskU7pgF0rAqg36CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
+ b=t1RMsUsEx8q8AkafDkY7BU4JY5CHlIa+2bnkDeV7sH67IdzfM1H2+XvbbX5GITfOpF/ZXWcwDst0wO48WVaJBpttgJz0JEeD9D9Yr2QT4O3/Grp/SScPCpGsd1jIfg+XzwHI2E8sqIv3hnErAQd6x7YkICLwvOBiEka38G0kHBLugM6GAP4kDjIos3j6ztUTVA0NPtUzaY6g3XoGRyWdMLekUbpYMerDLsiKsEh4X4ROuagg5EP9SswM7xq8u9ESlq1iXU/y2NdqYuvSPVgsvyNlplbSteTxM+XVnSP+LhKOGzavTYGAoVH4jJ66u7JJ7iVM4lap906DUfrzJ3m2gQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
+ b=Upoi+H2OsT46HtderEUbvgxOMoOVuXLsfqN1dMq4RAuQZFEtPyJXXjU4/CqnI1Of4AueaH+/kc3FfAqHuPZbORHHzEoCVolXAQv6/UJcbggDVu8U4QmC8J1WNG+afIShGzexpVAghgGXMeuA73CZaPih5uYn7nrFeEN/Zf4a0LY=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS4PR12MB9708.namprd12.prod.outlook.com (2603:10b6:8:278::7) by
+ IA1PR12MB6387.namprd12.prod.outlook.com (2603:10b6:208:389::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.13; Mon, 9 Nov 2026 19:35:06 +0000
+Received: from DS4PR12MB9708.namprd12.prod.outlook.com
+ ([fe80::8570:d817:2f81:c62a]) by DS4PR12MB9708.namprd12.prod.outlook.com
+ ([fe80::8570:d817:2f81:c62a%4]) with mapi id 15.21.0569.011; Mon, 9 Nov 2026
+ 19:35:05 +0000
+Message-ID: <c45b46d9-4dca-4fef-9bf8-9ab2fbcd48b8@amd.com>
+Date: Mon, 9 Nov 2026 11:35:02 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 0/5] ionic: FEC reporting fixes and
+ .get_fec_stats handler
 To: netdev@vger.kernel.org
-Cc: magnus.karlsson@intel.com,
-	stfomichev@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	tushar.vyavahare@intel.com,
-	kerneljasonxing@gmail.com,
-	bjorn@kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: [PATCH v2 net-next 4/4] selftests: net: move xdp_hw_metadata from selftests/bpf
-Date: Mon,  9 Nov 2026 20:30:48 +0100
-Message-Id: <20261109193048.1006986-5-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20261109193048.1006986-1-maciej.fijalkowski@intel.com>
-References: <20261109193048.1006986-1-maciej.fijalkowski@intel.com>
+Cc: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, "Nikhil P. Rao" <nikhil.rao@amd.com>,
+ Eric Dumazet <edumazet@kernel.org>
+References: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
+From: Eric Joyner <eric.joyner@amd.com>
+Content-Language: en-US
+In-Reply-To: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW3PR05CA0017.namprd05.prod.outlook.com
+ (2603:10b6:303:2b::22) To DS4PR12MB9708.namprd12.prod.outlook.com
+ (2603:10b6:8:278::7)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,432 +100,149 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS4PR12MB9708:EE_|IA1PR12MB6387:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8935ecb-f879-4974-6037-08df3e988dec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|11063799006|56012099006|261021123027099003|261021135927099003|261021121427099003|261026121527099003|261022105027099003|261026140227099003|261009223027099003|261028144727099003|261102123227099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	RChzMT0QEJf53gMubbxNEobbeud3qDV6HUWSHgl+G1zc9SwLvKqxsi2rmZghXu8S6KnD5MgCeRqMXT3Tg5ZhxScSzhmmU8u1PoVl0mRlZQDtPRRI2HrZtV+gmnf2Aw/4pgXyUlmeo8AMIZ3gbDmaZAUdXdaRYIbZ7gIX2LzpwcvuxTJzHoeoX4VfqxWVaPB/R2547OpmKCXy44cK9/QopHv8PcRe46xqn5+bRC7Qr7ms8cZEGrzDeSfEqJe0oWHsoL3BL7YuT1qcL+p0BVtPDQEip/rkTiYQi1gzearAvA4JZeQso0aRv8fqb3TpfbeERcfKXnxCVJFZzzmd22JRv2UF9gU/8N2I6WH2hmZfSDeE22qXQYYh1zNiK0Qo5xGaZXSXFvzzVDZf5vGlMpHrwwh3gAMxUNt3BDYInhTt5BkfZpoG4cCC4EjFyo/x5JMYrXFf0ps5j04BIIgWMac+1CUCX9Vb8P3vG2+63qTn7mJ8KTyP/xE11/zbUYFzKDKFO31mL22tuc+bTlZXYuU2vcmPKfp4+YjqdIQC+BD/DEmwT5OdO9hiRxJf10VJNqEfAA7illBsB96yDoiUxj/mEtv3wZ913IGD+ciIOYM5oUY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9708.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(11063799006)(56012099006)(261021123027099003)(261021135927099003)(261021121427099003)(261026121527099003)(261022105027099003)(261026140227099003)(261009223027099003)(261028144727099003)(261102123227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZDNuMnA1dSt3Q2d5TkdVck02OEFyQU1MdHc5NDdwcVhDYzl1SFhJb2tYWk1X?=
+ =?utf-8?B?am1iQVcvalRTazVmRXNqaEFLbzZyREZLYmpKMUR3YmkrYmppRVVlOTRmZ2pF?=
+ =?utf-8?B?cmRiVGlwOUR0cWwwWGowOVhaUWhHZTBhOVlBR3pOcTVSYlpGTmZTbzd6QVJw?=
+ =?utf-8?B?L1oreXk3MDg2UlpqTnhpMk41ajRSNjNWWG55VExrYWNMcVpCeVNGZmsxQm5j?=
+ =?utf-8?B?alNXVStqYXdUNCsyOFhJd0lwUTYzM3hLZXU0VkF5RWVSRjZhVzcwMHExK2FF?=
+ =?utf-8?B?aWNRdHhkUWVnZWZkbGxIYXdxSlZNWHE5b1lSdHhmTzRpUHE1STFITTBwVWFs?=
+ =?utf-8?B?bDVOQ3ZhSHlLMVFzQ3JSenFZTW0xeEZXbFhYVmNDVEdqN0tQVDBWTjFxbDJa?=
+ =?utf-8?B?V1Jlc1JWVkcrT1pYWW1CUlZpSVU4Rk4reEpHNmtzcnhvUFBBZ1h5ZW9sSU8z?=
+ =?utf-8?B?RUtaajBUWUZUOER2QzJPUFBIVFRsN1B0NVMwVmhMdVo3bnJGRVp6R3lPL0lr?=
+ =?utf-8?B?VDhFVVdVbE1GYS9xNlk5dEJWdjF5UE85SG5iclIvMFM2WkdocGF6VFZrWENq?=
+ =?utf-8?B?ZlkvdGx5dHVmZjVpNlRtamU4TjQxZUJpUXlIZ3pxbXM3bHF2aEFzZC9pWldz?=
+ =?utf-8?B?UndtTEFpLzU3ZXBPWjVWV0p4V3U1TGd5Wmx1dCtrQzFYZlFjUFNMR2dlSG9o?=
+ =?utf-8?B?T3pmL2FyWDVRYjBSWmMwS0g5S200d3dwWXc2WXI4RmhkcEVCeThrWWFuVWE1?=
+ =?utf-8?B?U0VDMDJqdUZYSXhaa09MZUdrZzJSa2dET1BNOEp6b1VGdlV2NzBocytsUjE2?=
+ =?utf-8?B?U0YxM2kzOWxKUDhHRS9kQUN6K0NVOUtlbCtPUm1icDdndWhyWXRFSkJ2clY2?=
+ =?utf-8?B?WnB0am5qWFFwSEVRNnFGZUtlaHZXazR2TTFyVmNjeUhZZ256L3RJYy85RDMv?=
+ =?utf-8?B?VFJLMk5aVzBxa3RkSlpkbDNWcGwzZktXa3l2S1QvejZpelEzV2c0cWY0WkQy?=
+ =?utf-8?B?a2VIS3EzOGFUK0tNbkttcXp4ekIwZmRDVXdSQVR5UFNFdkh6cTBuV3hBN3Zo?=
+ =?utf-8?B?bmJuS0pYUFN0S1haWUxtVld5UlRQNnNaVGF1NlZvb2dmVnNkdGQ5Y0lEaGl1?=
+ =?utf-8?B?KzFsS0lTZFpIWkJjMGVoeUNZZUhBZG01K21XcEQ2SFQra1BLODhRa3RXOUVr?=
+ =?utf-8?B?Tm9IemQ0K2VjMmJPTUFqckl1Z3pGKzEvNlZMNitranZISDBESnhyZXhFNGk0?=
+ =?utf-8?B?Ny9KTlg5TnlLdk5McGFpclRuOTBkWldqZy9ncHAxUjlwZmZmeHAxVlFEZGFp?=
+ =?utf-8?B?SGZaNzRkUXdZMno0VTRwL0dTbnB4Wm90Q01LaXhVVEVPUUVmczNIUjJNVXJo?=
+ =?utf-8?B?S29DeW5KVzN6NXk3L2FpQnV4UHdCM3JRMEcreHhqOVZtL3BCVE0zbk1jTXo4?=
+ =?utf-8?B?ODhvalBKOUVEbENRSUNpQVp6L2tzYVdmMTA0OFVnVjQwZVF3UWg4MkJxVTZ4?=
+ =?utf-8?B?QS9LS3Qva3l0bXY1NWM3cVIvY0FjbXh5R09VbS8xT3VXSHJuWWFOZURNYm13?=
+ =?utf-8?B?a00rVE1tYlRRbHdKbm9yMUtxa1VISTdqYjd2OGxPSVN3VHhqMzFwaFRNOUFZ?=
+ =?utf-8?B?NlNpcDRqNkZaYWZNV0EwL0RabyttTGF5Z24vK3BzMU0yWTUvQ013L1k3aHNX?=
+ =?utf-8?B?blhSUFo4aDBrQy9kNTZ4MXZhOWxEaW10Ly9MeVh5U3RxZXJDUitXZyt5dDR1?=
+ =?utf-8?B?cVgzektBRW9pM0RUTm9QNUphYkZHOC9kYUEwL3hPQmxIVU42d0hWdlpDeDYy?=
+ =?utf-8?B?RFY2dms5akVUMzFUZmdWMjlib2NyOGo2L2Vtc2JKdVk3a1JHVG5GUUZLR3Zi?=
+ =?utf-8?B?c2tVcy84NkhRcEVHcnNJOFJhSE16dUFuYzhmUnEvVFNnb29pUUFtRUw5RnVO?=
+ =?utf-8?B?ZW85MXY5NFpMakdBQWRGdWdkUEpjaWpwVWJwZVlud1NzbjJVRGhHd2w4eXpE?=
+ =?utf-8?B?ZDFmbEl5aDZvZnVKYVpabHdHRmIxbEVmNWZBQkc5dVpadTNwNkZSdkQzQkto?=
+ =?utf-8?B?a3JZNnIreUtGcTBFNTV6T1NrSllhdHJjeVBONDR1WDlTQmxoM1JUVVBMSk1B?=
+ =?utf-8?B?UnFhRGYrdGg1aFRRVU1RblQyQ1I1ejFOZzFYckpFajN5RTlYY3YrL25tM2R4?=
+ =?utf-8?B?WWZ0bGdNMElSL1BFUWZ2dElrajVlY0paQlhiTE9ycEI0R0J4MHd2bCtRSVBz?=
+ =?utf-8?B?SXlYeHJyVGFSY0hnZS9JbSt2cEo5b25BcTE4T3BOM1hjNS9QQnhPTW1sMnpK?=
+ =?utf-8?Q?JH9FAVSaVsTK34CsUB?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8935ecb-f879-4974-6037-08df3e988dec
+X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9708.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 19:35:05.1394
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O38Eaqqk0PsueqJSYQUQUi7s47KpkHKqQe0TJLdCW/3FW9Blh9JZWHQhzgK9bzRa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6387
 
-Move xdp_hw_metadata and its XDP program to selftests/net, next to the
-AF_XDP library in net/lib/xsk that the tool is built from.
+On 11/4/2026 1:19 PM, Eric Joyner wrote:
+> Add a .get_fec_stats ethtool handler, and fix the FEC reporting it
+> depends on.
+> 
+> Patch 1 writes the IONIC_STAT_INVALID markers in extra_stats one
+> counter at a time, so a reader that tests a single counter cannot see a
+> torn value.
+> 
+> Patches 2-4 fix ionic_get_fecparam(). fec->fec reported the constant
+> set of supported modes instead of the configured mode, and
+> fec->active_fec reported the requested mode instead of the operational
+> one. Patch 2 has a Fixes: tag, but patches 3 and 4 rework the lines it
+> changes, so it is sent to net-next with them rather than to net. The
+> bug only affects what ethtool reports.
+> 
+> Patch 5 adds the handler. It reports statistics only while the
+> operational FEC mode is RS.
+> 
+> The netdev AI review of v2, which Simon forwarded, asked whether the
+> per-bin local really guarantees a single read of each counter. It does
+> not, so v3 reads every counter with READ_ONCE() and drops the struct
+> copy. The port_info lifetime problem that the AI review raised on v1
+> and v2 is fixed in net-next by commit d90d1a768b3b ("ionic: fix
+> port_info use-after-free on firmware recovery").
+> 
+> Claude was used while developing this series: to investigate the v2
+> review questions, and to help write the code changes and commit
+> messages. The authors reviewed every change. The series was tested on
+> Pollara and Vulcano NICs.
+> 
+> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+> ---
+> Changes in v3:
+> - Read each counter with READ_ONCE() and drop the struct copy of
+>   extra_stats (netdev AI review of v2).
+> - Report statistics based on status.fec_type, the operational FEC mode,
+>   instead of config.fec_type, matching the active FEC mode that patch 4
+>   reports.
+> - Add patches 1-4, which fix the FEC reporting the handler depends on.
+>   Patches 1-4 are by Nikhil, who is also a Co-developed-by on patch 5.
+> - Drop Vadim's Reviewed-by from v1, since the code has changed.
+> - Rebase onto current net-next.
+> - Link to v2: https://lore.kernel.org/r/20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com
+> 
+> Changes in v2:
+> - Latch each histogram bin into a local before testing it against
+>   IONIC_STAT_INVALID, so the sentinel check and the store cannot be
+>   folded into two separate reads of the firmware-updated DMA buffer.
+> - Explain in the commit message why the RS FEC check gates every
+>   reported counter rather than just the histogram: they all come from
+>   the RS decoder, including fec_corrected_bits_total despite its name.
+> - Rebased onto current net-next.
+> - Link to v1: https://lore.kernel.org/r/20260731214021.15279-1-eric.joyner@amd.com
+> 
+> ---
+> Eric Joyner (1):
+>       ionic: Add .get_fec_stats ethtool handler
+> 
+> Nikhil P. Rao (4):
+>       ionic: write the extra_stats invalid markers one counter at a time
+>       ionic: report the configured FEC mode in ethtool_fecparam.fec
+>       ionic: map the FEC type through a helper in ionic_get_fecparam()
+>       ionic: report the operational FEC mode from ethtool --show-fec
+> 
+>  .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 116 ++++++++++++++++++---
+>  drivers/net/ethernet/pensando/ionic/ionic_main.c   |   8 +-
+>  drivers/net/ethernet/pensando/ionic/ionic_stats.h  |   2 +
+>  3 files changed, 112 insertions(+), 14 deletions(-)
+> ---
+> base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
+> change-id: 20260814-ionic-get-fec-stats-990736964908
+> 
+> Best regards,
 
-The tool used test_progs and network_helpers only for start_server(),
-two checksum helpers and strscpy(). Open the UDP socket with a local
-helper, copy csum_tcpudp_magic() and csum_ipv6_magic(), and fill
-ifr_name with snprintf(). Build the XDP program against the uapi
-headers rather than vmlinux.h: mirror struct vlan_hdr and enum
-xdp_rss_hash_type, and cast to void * in the bound checks.
+The Sashiko review from sashiko.dev says no regressions:
+https://sashiko.dev/#/patchset/20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7%40amd.com
 
-Build the tool only when bpftool works, and install it without running
-it, as it needs a NIC and a peer that sends it traffic. Copy
-xdp_metadata.h rather than move it, as the xdp_metadata test in
-test_progs still uses it. Update xsk-tx-metadata.rst and the XDP entry
-of MAINTAINERS.
+But I don't see an entry for this patchset in
+https://netdev-ai.bots.linux.dev/sashiko/#/ after searching for it; does it need
+a manual submission there?
 
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
----
- Documentation/networking/xsk-tx-metadata.rst  |  2 +-
- MAINTAINERS                                   |  1 +
- tools/testing/selftests/bpf/.gitignore        |  1 -
- tools/testing/selftests/bpf/Makefile          |  8 --
- tools/testing/selftests/net/.gitignore        |  2 +
- tools/testing/selftests/net/Makefile          | 20 +++++
- .../xdp_hw_metadata.bpf.c}                    | 35 +++++---
- .../selftests/{bpf => net}/xdp_hw_metadata.c  | 81 +++++++++++++++++--
- tools/testing/selftests/net/xdp_metadata.h    | 67 +++++++++++++++
- 9 files changed, 190 insertions(+), 27 deletions(-)
- rename tools/testing/selftests/{bpf/progs/xdp_hw_metadata.c => net/xdp_hw_metadata.bpf.c} (75%)
- rename tools/testing/selftests/{bpf => net}/xdp_hw_metadata.c (92%)
- create mode 100644 tools/testing/selftests/net/xdp_metadata.h
-
-diff --git a/Documentation/networking/xsk-tx-metadata.rst b/Documentation/networking/xsk-tx-metadata.rst
-index f240930ca1df..ac15e5fddc6b 100644
---- a/Documentation/networking/xsk-tx-metadata.rst
-+++ b/Documentation/networking/xsk-tx-metadata.rst
-@@ -144,6 +144,6 @@ See ``tools/net/ynl/samples/netdev.c`` on how to query this information.
- Example
- =======
- 
--See ``tools/testing/selftests/bpf/xdp_hw_metadata.c`` for an example
-+See ``tools/testing/selftests/net/xdp_hw_metadata.c`` for an example
- program that handles TX metadata. Also see https://github.com/fomichev/xskgen
- for a more bare-bones example.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 503ab09875d6..b845eed9a3c1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -30531,6 +30531,7 @@ F:	net/core/xdp.c
- F:	samples/bpf/xdp*
- F:	tools/testing/selftests/bpf/*/*xdp*
- F:	tools/testing/selftests/bpf/*xdp*
-+F:	tools/testing/selftests/net/*xdp*
- K:	(?:\b|_)xdp(?:\b|_)
- 
- XDP SOCKETS (AF_XDP)
-diff --git a/tools/testing/selftests/bpf/.gitignore b/tools/testing/selftests/bpf/.gitignore
-index cd098c0271ef..e318a38035d2 100644
---- a/tools/testing/selftests/bpf/.gitignore
-+++ b/tools/testing/selftests/bpf/.gitignore
-@@ -38,7 +38,6 @@ test_cpp
- *.tmp
- xdp_redirect_multi
- xdp_synproxy
--xdp_hw_metadata
- xdp_features
- verification_cert.h
- *.BTF
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 203f2cedaf77..2d46e47bab60 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -56,7 +56,6 @@ TEST_GEN_PROGS_EXTENDED = \
- 	test_cpp \
- 	veristat \
- 	xdp_features \
--	xdp_hw_metadata \
- 	xdp_synproxy
- 
- TEST_GEN_FILES += $(TEST_KMODS) liburandom_read.so urandom_read sign-file uprobe_multi
-@@ -568,13 +567,6 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
- 
--$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c ../net/lib/xsk/xsk.c network_helpers.c \
--			   $(TOOLSDIR)/lib/find_bit.c xdp_metadata.h \
--			   ../net/lib/xsk/xsk.h network_helpers.h test_progs.h bpf_util.h \
--			   $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ) | $(OUTPUT)
--	$(call msg,BINARY,,$@)
--	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
--
- $(OUTPUT)/xdp_features: xdp_features.c network_helpers.c xdp_features.h \
- 			   network_helpers.h \
- 			   test_progs.h bpf_util.h $(OUTPUT)/xdp_features.skel.h \
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index 21412510ac26..0bd88b48a53c 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -60,3 +60,5 @@ udp_splice_checksum
- udpgso
- udpgso_bench_rx
- udpgso_bench_tx
-+xdp_hw_metadata
-+xdp_hw_metadata.skel.h
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 7dba412401ea..83882735229d 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -226,6 +226,17 @@ TEST_GEN_PROGS += $(YNL_GEN_PROGS)
- 
- TEST_GEN_FILES += $(patsubst %.c,%.o,$(wildcard *.bpf.c))
- 
-+# xdp_hw_metadata needs a working bpftool to generate its skeleton
-+BPFTOOL ?= bpftool
-+HAS_BPFTOOL := $(shell $(BPFTOOL) version >/dev/null 2>&1 && echo y)
-+ifeq ($(HAS_BPFTOOL),y)
-+COND_GEN_FILES += xdp_hw_metadata
-+else
-+$(warning excluding xdp_hw_metadata, bpftool not installed or not working)
-+endif
-+
-+TEST_GEN_FILES += $(COND_GEN_FILES)
-+
- TEST_INCLUDES := forwarding/lib.sh
- 
- include ../lib.mk
-@@ -249,3 +260,12 @@ $(OUTPUT)/bind_bhash: LDLIBS += -lpthread
- $(OUTPUT)/io_uring_zerocopy_tx: CFLAGS += -I../../../include/
- 
- include bpf.mk
-+
-+# Reference tool for checking XDP RX/TX metadata on real HW, built with
-+# the AF_XDP library of net/lib/xsk.
-+$(OUTPUT)/xdp_hw_metadata: xdp_hw_metadata.c xdp_metadata.h lib/xsk/xsk.c \
-+			   lib/xsk/xsk.h $(OUTPUT)/xdp_hw_metadata.skel.h $(BPFOBJ)
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) -I$(top_srcdir)/tools/include $(CFLAGS) -I$(OUTPUT) \
-+		-I$(SCRATCH_DIR)/include \
-+		$(filter %.c,$^) $(BPFOBJ) $(LDLIBS) -lelf -lz -o $@
-diff --git a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c b/tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-similarity index 75%
-rename from tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-rename to tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-index 330ece2eabdb..a183436646b1 100644
---- a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/net/xdp_hw_metadata.bpf.c
-@@ -1,10 +1,23 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <vmlinux.h>
-+#include <linux/bpf.h>
-+#include <linux/if_ether.h>
-+#include <linux/in.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <linux/udp.h>
- #include "xdp_metadata.h"
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_endian.h>
- 
-+/* Mirror of struct vlan_hdr from include/linux/if_vlan.h, which is not
-+ * part of the UAPI headers.
-+ */
-+struct vlan_hdr {
-+	__be16 h_vlan_TCI;
-+	__be16 h_vlan_encapsulated_proto;
-+};
-+
- struct {
- 	__uint(type, BPF_MAP_TYPE_XSKMAP);
- 	__uint(max_entries, 256);
-@@ -39,25 +52,29 @@ int rx(struct xdp_md *ctx)
- 	data_end = (void *)(long)ctx->data_end;
- 	eth = data;
- 
--	if (eth + 1 < data_end && (eth->h_proto == bpf_htons(ETH_P_8021AD) ||
--				   eth->h_proto == bpf_htons(ETH_P_8021Q)))
-+	if ((void *)(eth + 1) < data_end &&
-+	    (eth->h_proto == bpf_htons(ETH_P_8021AD) ||
-+	     eth->h_proto == bpf_htons(ETH_P_8021Q)))
- 		eth = (void *)eth + sizeof(struct vlan_hdr);
- 
--	if (eth + 1 < data_end && eth->h_proto == bpf_htons(ETH_P_8021Q))
-+	if ((void *)(eth + 1) < data_end &&
-+	    eth->h_proto == bpf_htons(ETH_P_8021Q))
- 		eth = (void *)eth + sizeof(struct vlan_hdr);
- 
--	if (eth + 1 < data_end) {
-+	if ((void *)(eth + 1) < data_end) {
- 		if (eth->h_proto == bpf_htons(ETH_P_IP)) {
- 			iph = (void *)(eth + 1);
--			if (iph + 1 < data_end && iph->protocol == IPPROTO_UDP)
-+			if ((void *)(iph + 1) < data_end &&
-+			    iph->protocol == IPPROTO_UDP)
- 				udp = (void *)(iph + 1);
- 		}
- 		if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
- 			ip6h = (void *)(eth + 1);
--			if (ip6h + 1 < data_end && ip6h->nexthdr == IPPROTO_UDP)
-+			if ((void *)(ip6h + 1) < data_end &&
-+			    ip6h->nexthdr == IPPROTO_UDP)
- 				udp = (void *)(ip6h + 1);
- 		}
--		if (udp && udp + 1 > data_end)
-+		if (udp && (void *)(udp + 1) > data_end)
- 			udp = NULL;
- 	}
- 
-@@ -82,7 +99,7 @@ int rx(struct xdp_md *ctx)
- 	data_meta = (void *)(long)ctx->data_meta;
- 	meta = data_meta;
- 
--	if (meta + 1 > data) {
-+	if ((void *)(meta + 1) > data) {
- 		__sync_add_and_fetch(&pkts_fail, 1);
- 		return XDP_PASS;
- 	}
-diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/net/xdp_hw_metadata.c
-similarity index 92%
-rename from tools/testing/selftests/bpf/xdp_hw_metadata.c
-rename to tools/testing/selftests/net/xdp_hw_metadata.c
-index ab3f5fc56e86..6db928f1ffdc 100644
---- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/net/xdp_hw_metadata.c
-@@ -16,11 +16,11 @@
-  * - TX launch time HW offload is requested for transmission
-  */
- 
--#include <test_progs.h>
--#include <network_helpers.h>
- #include "xdp_hw_metadata.skel.h"
--#include "xsk.h"
-+#include "lib/xsk/xsk.h"
- 
-+#include <bpf/bpf.h>
-+#include <errno.h>
- #include <error.h>
- #include <linux/kernel.h>
- #include <linux/bits.h>
-@@ -47,6 +47,9 @@
- #include <linux/ethtool.h>
- #include <sys/socket.h>
- #include <arpa/inet.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
-+#include <signal.h>
- 
- #include "xdp_metadata.h"
- 
-@@ -87,7 +90,69 @@ int launch_time_queue;
- 	system(command);					\
- })
- 
--void test__fail(void) { /* for network_helpers.c */ }
-+static __u16 csum_fold(__u32 csum)
-+{
-+	csum = (csum & 0xffff) + (csum >> 16);
-+	csum = (csum & 0xffff) + (csum >> 16);
-+
-+	return (__u16)~csum;
-+}
-+
-+static __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr, __u32 len,
-+				 __u8 proto, __wsum csum)
-+{
-+	__u64 s = csum;
-+
-+	s += (__u32)saddr;
-+	s += (__u32)daddr;
-+	s += htons(proto + len);
-+	s = (s & 0xffffffff) + (s >> 32);
-+	s = (s & 0xffffffff) + (s >> 32);
-+
-+	return csum_fold((__u32)s);
-+}
-+
-+static __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
-+			       const struct in6_addr *daddr, __u32 len,
-+			       __u8 proto, __wsum csum)
-+{
-+	__u64 s = csum;
-+	int i;
-+
-+	for (i = 0; i < 4; i++)
-+		s += (__u32)saddr->s6_addr32[i];
-+	for (i = 0; i < 4; i++)
-+		s += (__u32)daddr->s6_addr32[i];
-+	s += htons(proto + len);
-+	s = (s & 0xffffffff) + (s >> 32);
-+	s = (s & 0xffffffff) + (s >> 32);
-+
-+	return csum_fold((__u32)s);
-+}
-+
-+static int open_udp_server(__u16 port)
-+{
-+	struct sockaddr_in6 addr = {
-+		.sin6_family = AF_INET6,
-+		.sin6_port = htons(port),
-+		.sin6_addr = IN6ADDR_ANY_INIT,
-+	};
-+	struct timeval timeo = { .tv_sec = 1 };
-+	int fd;
-+
-+	fd = socket(AF_INET6, SOCK_DGRAM, 0);
-+	if (fd < 0)
-+		return -1;
-+
-+	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeo, sizeof(timeo)) ||
-+	    setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &timeo, sizeof(timeo)) ||
-+	    bind(fd, (struct sockaddr *)&addr, sizeof(addr))) {
-+		close(fd);
-+		return -1;
-+	}
-+
-+	return fd;
-+}
- 
- static int open_xsk(int ifindex, struct xsk *xsk, __u32 queue_id)
- {
-@@ -550,7 +615,7 @@ static int rxq_num(const char *ifname)
- 	struct ifreq ifr = {
- 		.ifr_data = (void *)&ch,
- 	};
--	strscpy(ifr.ifr_name, ifname);
-+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
- 	int fd, ret;
- 
- 	fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-@@ -571,7 +636,7 @@ static void hwtstamp_ioctl(int op, const char *ifname, struct hwtstamp_config *c
- 	struct ifreq ifr = {
- 		.ifr_data = (void *)cfg,
- 	};
--	strscpy(ifr.ifr_name, ifname);
-+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
- 	int fd, ret;
- 
- 	fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-@@ -853,9 +918,9 @@ int main(int argc, char *argv[])
- 		error(1, -ret, "xdp_hw_metadata__load");
- 
- 	printf("prepare skb endpoint...\n");
--	server_fd = start_server(AF_INET6, SOCK_DGRAM, NULL, 9092, 1000);
-+	server_fd = open_udp_server(9092);
- 	if (server_fd < 0)
--		error(1, errno, "start_server");
-+		error(1, errno, "open_udp_server");
- 	timestamping_enable(server_fd,
- 			    SOF_TIMESTAMPING_SOFTWARE |
- 			    SOF_TIMESTAMPING_RAW_HARDWARE);
-diff --git a/tools/testing/selftests/net/xdp_metadata.h b/tools/testing/selftests/net/xdp_metadata.h
-new file mode 100644
-index 000000000000..9371889f76d3
---- /dev/null
-+++ b/tools/testing/selftests/net/xdp_metadata.h
-@@ -0,0 +1,67 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#pragma once
-+
-+#ifndef ETH_P_IP
-+#define ETH_P_IP 0x0800
-+#endif
-+
-+#ifndef ETH_P_IPV6
-+#define ETH_P_IPV6 0x86DD
-+#endif
-+
-+#ifndef ETH_P_8021Q
-+#define ETH_P_8021Q 0x8100
-+#endif
-+
-+#ifndef ETH_P_8021AD
-+#define ETH_P_8021AD 0x88A8
-+#endif
-+
-+#ifndef BIT
-+#define BIT(nr)			(1 << (nr))
-+#endif
-+
-+/* Non-existent checksum status */
-+#define XDP_CHECKSUM_MAGIC	BIT(2)
-+
-+/* Mirror of enum xdp_rss_hash_type from include/net/xdp.h, which is not
-+ * part of the UAPI headers.
-+ */
-+enum xdp_rss_hash_type {
-+	XDP_RSS_L3_IPV4		= BIT(0),
-+	XDP_RSS_L3_IPV6		= BIT(1),
-+	XDP_RSS_L3_DYNHDR	= BIT(2),
-+	XDP_RSS_L4		= BIT(3),
-+	XDP_RSS_L4_TCP		= BIT(4),
-+	XDP_RSS_L4_UDP		= BIT(5),
-+	XDP_RSS_L4_SCTP		= BIT(6),
-+	XDP_RSS_L4_IPSEC	= BIT(7),
-+	XDP_RSS_L4_ICMP		= BIT(8),
-+};
-+
-+enum xdp_meta_field {
-+	XDP_META_FIELD_TS	= BIT(0),
-+	XDP_META_FIELD_RSS	= BIT(1),
-+	XDP_META_FIELD_VLAN_TAG	= BIT(2),
-+};
-+
-+struct xdp_meta {
-+	union {
-+		__u64 rx_timestamp;
-+		__s32 rx_timestamp_err;
-+	};
-+	__u64 xdp_timestamp;
-+	__u32 rx_hash;
-+	union {
-+		__u32 rx_hash_type;
-+		__s32 rx_hash_err;
-+	};
-+	union {
-+		struct {
-+			__be16 rx_vlan_proto;
-+			__u16 rx_vlan_tci;
-+		};
-+		__s32 rx_vlan_tag_err;
-+	};
-+	enum xdp_meta_field hint_valid;
-+};
--- 
-2.43.0
-
+- Eric
