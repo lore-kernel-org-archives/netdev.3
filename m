@@ -1,59 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794220636;
-	b=fnvK17v6ePcX88zNfYZxEUAP2qkVCbJq4hT8g2YiXC6fn7J2TjNPn55FCohrKiyRnYOw
-	 5SctDn0WOlWSSy0yzc1ZZE16ZgPSL0hbsEOh+XUqmijVK23Fgt95UzjeFjPJixAljH9Pl
-	 o7KFU6yWCAJNdHlxYIQsqSUiF9mI/1EI+iNDcXYPe8tFccodEbBh4GazOTVKm0HvIFOI/
-	 VvowfKvXuRibXLwyyizzXyD8u5+x1SbzgdCbEoOAIYmyDCTOaklRP1/w93e26UWALtt3j
-	 JmwaZq3uAUV9qb/vTY5E8xKLr9mOkUSU+G9TBjpxkHxWvIe0xzhAC+UAxwdPrT5RAXw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794220636;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=JWGXSQ0hUQUGHoC4dVJ49MPWtJvFZTUeG1TXP2ZaI3g=;
-	b=roWvUrbfxdVU5Yo0uTV5tJJtD6EkdDi/uJ47t7BmdCpd+qDyyyiaoiwjnpwth3OVlToN
-	 uiqNXGLtIh1NqlA860rNspXusQPuDVzdTvFjLQz0RkQL/Orc9Cl5dIqCj8gO3r2PWOapu
-	 acyXyTIUkPuv1llxnR89diHoIiKh4KCz7tuFpxb73gzqmq50kRPXFyNrtlzssjnkGG2Md
-	 JYTSAdKvIxHAonm4K3WSGqMea+XUT261Ls/fdldJJ44j1xgYCl+z7QhdhgpIojVF0N3w5
-	 ItzQFIbIH/wiQoFItyzpNawkjjLdPBsNNFXnpzVYF4j+B8J45DgnG1tC/yS1GzstEnw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ChR5inIe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.63
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794221099;
+	b=OSgVHwxaoEiShmCU1NWDe/dtjgxyNRWkMhPmjPtGmBvlN8ic06mhtWXhSBqh005R5vtj
+	 6/A9u2eUDheeW+5KJgiAhwJs2DMHu4Yv72o5yKM2mAfiXK9mfE4LtZ6GpS6pfLdy3HGju
+	 wvv14Rwx/Z4kiDZTkqJMMgKu/qs2IS5VysBKEr1mF/rdNcmwwtMMot3DdKjJxkHGTWiqj
+	 OkrfJMeewipeHohx2s2U0AUqHc2alCfcPX2xagn6pAW+Q3o+igx6WDirUdq8K+QnjHn1d
+	 LeFzZcnyvAayudM9lFUPDnntAkNMjuajB932OEGp5kG5/ffNuvyXM1nJtABIOa87CyA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794221099;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=lxCE1wG/I3mMOJM+8q4VBNuNna6sL2JkhRWTAJELiTY=;
+	b=RG+hYxbP+L6QV59ChppHzqB81LFgXmfSC244Anf54ZOr04goJQQxxtXM+IWzi9JTPV1N
+	 Cdvrwt1Fk7yZ6vNsttu7uqpvpIh/xoWxvhnqJ+uDhuqFxAqXSPlOxfvCDH5UJ8re7KNnq
+	 yZ+Lsufo+Lz7GOYgG2yp/q7mTPG5iUTVi7+yTVZj4Or6XW5OiHixvU3KXeCCHJy6LzAqM
+	 1iBP6H4BlOLX0oStaqy5GUy280A3CDld7qgBlz3s3czkD84ocdYpvPw8kpLkWOCFb4A2S
+	 UzilPy5l513BmO2jzLbLoU0Uwb0dhWH1qbEY0Y7P+uJGhhR6JFoxqX/PxyWbCT5bG5g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VbS7S3AR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.63
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012063.outbound.protection.outlook.com [40.107.209.63])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF518606A323;
-	Mon,  9 Nov 2026 10:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D414606A325;
+	Mon,  9 Nov 2026 10:44:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D414606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ChR5inIe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D701F0089F;
-	Mon,  9 Nov 2026 10:37:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794220635;
-	bh=JWGXSQ0hUQUGHoC4dVJ49MPWtJvFZTUeG1TXP2ZaI3g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ChR5inIeuioYwn2lnClX1r47ujkSy3cnVwlYioF4BFRS0jInmFSD8MS8Eh7Q+v6Op
-	 lPAJKxmTWbQWxanhbExqOG+PavGbimGM2EosCDYi8dzt5A9eno9sYoLPOsrZIn+Vj7
-	 KVFLYYTCr7OfIH4wjiziV0oOIDbC8u3PGE7iBh2bISAHMc1RF4lFBNvUQ0RE93wcAZ
-	 GJdphuurrKPfvwED0gYeuzvsDZKWlBcc5MotiuMuNsCF2TRyiVcPLnyDK0HYDzIf3V
-	 ue1xRXLk6W14/9KPiEtB9WUYOfnICb//YIsKxoJWZDCq5ssBgRZuwpTDvgN/JhjX7w
-	 11NamFqqe7Zgg==
-Subject: Re: [PATCH net-next 2/3] net: sb1250-mac: Advertise and honor RX
- checksum offload
-From: netdev-bot+sashiko@kernel.org
-To: f.fainelli@gmail.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, macro@orcam.me.uk
-Date: Mon, 09 Nov 2026 10:37:14 +0000
-Message-ID: <179422063443.994134.7898125324608942943@kernel.org>
-In-Reply-To: <20261105193435.2050321-3-f.fainelli@gmail.com>
-References: <20261105193435.2050321-3-f.fainelli@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VbS7S3AR
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nrZ5+DUQfd9CFDvV9Q4xKDffiyvnQfWBBOBKGBFS/SRqd1/Ese6LwJzu+wceXtSXm83uRrH2TsVbzSftr7r0Mup1/VzhCmsaPcOPUqVMbdwrWs2J75PqO2Czn+tllYwGtkDPKz0kLPNtxSKQYFWivmAwChEuhOkm+ErsfVeUHo0hHilIJDYrbqCmQHIR2BGwY3X4MGZeq0He5z1FthcyjPKv/MxlMgIZOqFroFViD2vRe54nR+zY+vxM1b1o6d/BdsNIpE9trsmM+oKS10+jcmHmhko1GrWyqnMylmETaXTiCG4yWTlfJF8tGLRghxL0u6pMnuCTPwej+4GgaGUgbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lxCE1wG/I3mMOJM+8q4VBNuNna6sL2JkhRWTAJELiTY=;
+ b=D2maa3L2NEAXThWUDQb6Yi3yr88ovbxzlVzcUGZ28bEka7buSecNm2I8NzTt8uB+GLQ1hL3VioT5PvbomAD9YZt8o+bFjLXLUU/y85EiBiRqWlmuX2V2kMBzkP1F9CFkEavLqmTyQrYeTCb8dziamDVOWNg7MjBVyGit8geidP3LjajY1e30aZxe+gwZRXtO2juPOa1FS1GHJjuFTSQSktyMPnVGvIJ6oW+S/vMNX7bCYC1Wg6iUMQgfubgL5oypJ3I6lUvdPL77sV8+FErLgJdZZtMSg/jS0lDBlBVcOwEQN5srVxqGlnzDSibNUhjDv48tUwRLXyrLWlr/QIJwlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lxCE1wG/I3mMOJM+8q4VBNuNna6sL2JkhRWTAJELiTY=;
+ b=VbS7S3ARxjOoXgzhO8Qpb5sFQZo40vXo2jd4xuUGtk/BX1bvVCgcr+GZj2dqkTXu2qXtJ3hZjaiG7vEPz69dAF2UxSEXo8roCGANlQet+ihSubKHQV8GRxWfxRzKYV7nGEOLwrJLYl/ScLERSQElMNRzR45rEpumI3ZmUAt5/5L1yPJYoAkLagcjbzdKQBfOKh1WMZ9yw7oI0FeTBdHR0Y2iGnEpyiifYDg0EiC64kcpgKz9codMzSDQuGUbQMeSDy/vXKkKcguECPSclVMTQOciTlGyUowk1u+d0FV9XV3PAUKc8Q3KO/gkJbQiS94OUNPSw0pllV2JRKZ7RfryLw==
+Received: from BN9PR03CA0087.namprd03.prod.outlook.com (2603:10b6:408:fc::32)
+ by AT6PR12MB026552.namprd12.prod.outlook.com (2603:10b6:170:116::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 10:44:52 +0000
+Received: from BN3PEPF00022BCD.namprd03.prod.outlook.com
+ (2603:10b6:408:fc:cafe::5e) by BN9PR03CA0087.outlook.office365.com
+ (2603:10b6:408:fc::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
+ Nov 2026 10:44:52 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN3PEPF00022BCD.mail.protection.outlook.com (10.167.248.169) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 10:44:51 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 02:44:37 -0800
+Received: from [10.125.206.9] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 02:44:32 -0800
+Message-ID: <9113a476-91c5-44fe-9160-ff9c82f7550f@nvidia.com>
+Date: Mon, 9 Nov 2026 12:44:29 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,132 +104,209 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rdma-next 21/23] RDMA/mlx5: Clamp log_max_* shifts in
+ query_device and ucontext paths
+To: <netdev-bot+sashiko@kernel.org>
+CC: <jgg@ziepe.ca>, <leon@kernel.org>, <linux-rdma@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
+	<mbloch@nvidia.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
+	<dtatulea@nvidia.com>, <moshe@nvidia.com>, <maorg@nvidia.com>
+References: <20261103163949.1554-22-yishaih@nvidia.com>
+ <179408310732.994134.11296743978617194234@kernel.org>
+Content-Language: en-US
+From: Yishai Hadas <yishaih@nvidia.com>
+In-Reply-To: <179408310732.994134.11296743978617194234@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCD:EE_|AT6PR12MB026552:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36dcd3d7-f796-4d26-02e5-08df3e4e7c00
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|82310400026|36860700016|11063799006|4143699003|56012099006|261021121427099003|261021135927099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	QSVp12MjEHcRzcw1tLV+mi7W4v6JB7PjtLKHU31OgNHdDymIlEAk7i+RtcZHK+qBFM0mvR3cZFUxaE9ZB22dcduEzFNQ6umTCDtqiunesmCinyq7pqtojovTHQ+oLcF0l0tCjwCsJFyqHGLuFvkLkvCoYQ924dkcF0PooebLJVZHOR1ohmI+2bnVGsaYrHjyX0xLuOYRb86Yv5i9WjBtdLo8J4rZ4s+Ny9kKYhUf4iPBYUV3t2RlMLm94deMaaLaMZZi7vu6w4DEIrrtjqDUTFGBva7mNasLb2c6ay49AZoYUV+9VdOR31qZ1eDo2tCMkStlrJDb7l/UAw8weuju6UkAODuCyqIn0/plaOwi2Mfy0UZ0ut3as6NauIJV+6knw/89AfoCBKtqWwFieg/Jz/fH+OqpO/3neyBKadVJcu8z5kOxs8+rKz9gyDM0b4h+kse9E/pzFwPfr4ascCGEZ6IVptoAbqhU6/6Urvvjv5lWjtAbowyXC1wenRjFch0BxMnWnVuS1U8BSCkJI37a4N/7qmYsA+V8blFo3zd3EsSrh4AjqPX9zaXlv4aZVJfd9N/wsEqQWIfY8apQIfHiEtbML/cHDo3y9NwuLxRMQB9mKmQIyS6kbQOXGsgwySHPq56RdhaPu+TzWdnBaUoqQTX6St1kMnEhu94wvYH0q/x50GX55Am4PIvuVCDepwPlFfGTAODaNxyyqqnscQiG6w==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(82310400026)(36860700016)(11063799006)(4143699003)(56012099006)(261021121427099003)(261021135927099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	NsH8nGrLRnoBgp6QSfS+Z8H3uxQlPIkilRYynpcp3MbJVFISTlJLlVzR8KII8WFt4/naPZ/XRL4gCG5LNuWoYrYkn5jaKoKzJC/6W2zFkzovZ/+ZCgFoVNgzGAVh8KBba1F3n0fEHaehGeRo72QJ9ECeODpqvvuny6kEeSNB7Vv7jQQ+5qLAFqCb5uwSQQemJIHDgOedQRwwmL0bhvfe/FEIdbbHmBUdL4mXmiAJj4r+drbq7uZ6kRmHXkcJk59bhjDhbgSnzmEmxLkNDpCOVJ6ZjYneXWJnYuEof2ZS86v0sNeMEhTJtJZbIJt53aClwEFy+zzOD+opDSnTcG5H1V4mahUs2qHnEQTnyPFVscIGwQAUYWlzWIa4L0lH3wNfdVfFBSPxYvzTqT9fAHwt6ftN45d6hHDHPLUWZjGdYXGye01NrXyUmGGIHjl15RsM
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 10:44:51.6923
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36dcd3d7-f796-4d26-02e5-08df3e4e7c00
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BCD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT6PR12MB026552
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On 07/11/2026 22:25, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 2
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] mlx5_ib_create_srq() (drivers/infiniband/hw/mlx5/srq.c) now
+>    takes its SRQ size limit from MLX5_CAP_GEN_LOGSZ_U32(log_max_srq_sz).
+> - [Low] The commit message does not fully match the diff.
+> - [Low] When FW reports log_max_cq_sz >= 31, mlx5_ib_query_device() now
+>    advertises props->max_cqe = MLX5_CAP_GEN_LOGSZ_U32(log_max_cq_sz) - 1…
+> 
+> --
+> 
+> RDMA/mlx5: Clamp log_max_* shifts in query_device and ucontext paths
+> 
+> This commit replaces the open-coded 1 << cap computations of FW log_max_*
+> capabilities with MLX5_CAP_GEN_LOGSZ_U32() and MLX5_CAP_GEN_LOGSZ_U64().
+> This covers the query_device, query_port, ucontext and SRQ create paths.
+> It also computes max_qp_wr in 64 bits and saturates the max_res_rd_atom
+> and max_total_mcast_qp_attach products at U32_MAX.
+> 
+>> The device, port and ucontext attributes and the SRQ size limit are
+>> computed as 1 << cap from 8-bit log_max_* FW capabilities. An untrusted
+>> NIC can report 31 or more, which makes the shift undefined. The same
+>> applies to 1ull << log_pg_sz with a value of 64 or more.
+> 
+> [Severity: Low]
+> This isn't a bug, but is the "8-bit log_max_*" description accurate? In
+> mlx5_ifc.h several of the converted fields are narrower, for example:
+> 
+> 	u8         log_max_msg[0x5];
+> 
+> log_tag_matching_list_sz is also 5 bits wide. log_max_klm_list_size and
+> log_max_ra_req_qp are 6 bits.
+> 
+> The diff also changes the tso_caps computation in mlx5_ib_query_device():
+> 
+> 	resp.tso_caps.max_tso = BIT(max_tso);
+> 
+> Here max_tso comes from the 5-bit Ethernet cap MLX5_CAP_ETH(max_lso_cap),
+> not from a log_max_* general cap, and the commit message doesn't mention
+> this change. The BIT() conversion itself looks correct.
+> 
+> Could the message be updated to cover this change and to fix the field
+> width?
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Right, will fix the commit message in V1.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+>> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+>> index c29102260989f..ace4cdc95c9da 100644
+>> --- a/drivers/infiniband/hw/mlx5/main.c
+>> +++ b/drivers/infiniband/hw/mlx5/main.c
+> 
+> [ ... ]
+> 
+>> @@ -1111,29 +1112,31 @@ static int mlx5_ib_query_device(struct ib_device *ibdev,
+>>   	props->max_send_sge = max_sq_sg;
+>>   	props->max_recv_sge = max_rq_sg;
+>>   	props->max_sge_rd	   = MLX5_MAX_SGE_RD;
+>> -	props->max_cq		   = 1 << MLX5_CAP_GEN(mdev, log_max_cq);
+>> -	props->max_cqe = (1 << MLX5_CAP_GEN(mdev, log_max_cq_sz)) - 1;
+>> +	props->max_cq		   = MLX5_CAP_GEN_LOGSZ_U32(mdev, log_max_cq);
+>> +	props->max_cqe = MLX5_CAP_GEN_LOGSZ_U32(mdev, log_max_cq_sz) - 1;
+> 
+> [Severity: Low]
+> If FW reports log_max_cq_sz >= 31, this advertises max_cqe as 2^31 - 1.
+> Can the CQ create path actually honour that value?
+> 
+> mlx5_ib_create_user_cq() in cq.c rounds the requested size up and then
+> checks it against INT_MAX:
+> 
+> 	if (entries > max_cq_entries || entries > INT_MAX)
+> 		return -EINVAL;
+> 
+> cq_roundup_entries() is 1ULL << fls64(cqe), so any cqe in
+> [2^30, 2^31 - 1] rounds up to 2^31 and gets -EINVAL. That makes the real
+> maximum 2^30 - 1.
+> 
+> Would a consumer that sizes its CQ from attrs.max_cqe then fail to create
+> the CQ? For log_max_cq_sz <= 30 the two values agree.
+> 
 
-- [High] sbdma_rx_process()
-  (drivers/net/ethernet/broadcom/sb1250-mac.c:1146-1149) reads the…
-- [Medium] The RX checksum engine's IP-header-offset setup, which the
-  probe comment calls necessary ("This is needed for PASS2 for Rx H/W…
+Right, V1 will cap the advertised max_cqe at the largest CQ size the 
+create path accepts.
 
---
+> [ ... ]
+> 
+>> diff --git a/drivers/infiniband/hw/mlx5/srq.c b/drivers/infiniband/hw/mlx5/srq.c
+>> index 6a4a937d97ce9..3fbb0eaf12558 100644
+>> --- a/drivers/infiniband/hw/mlx5/srq.c
+>> +++ b/drivers/infiniband/hw/mlx5/srq.c
+>> @@ -198,7 +198,7 @@ int mlx5_ib_create_srq(struct ib_srq *ib_srq,
+>>   	size_t buf_size;
+>>   	int err;
+>>   	struct mlx5_srq_attr in = {};
+>> -	__u32 max_srq_wqes = 1 << MLX5_CAP_GEN(dev->mdev, log_max_srq_sz);
+>> +	__u32 max_srq_wqes = MLX5_CAP_GEN_LOGSZ_U32(dev->mdev, log_max_srq_sz);
+> 
+> [Severity: Medium]
+> With log_max_srq_sz >= 31 this limit now saturates at 2^31. Can the rest
+> of mlx5_ib_create_srq() handle queue sizes that large?
+> 
+> In adversarial mode the caps filter passes log_max_srq_sz through
+> unchanged (MLX5_HCA_CAP_ALLOW in caps_filter.c). A uverbs user could then
+> request max_wr = 0x7fffffff, which passes the
+> init_attr->attr.max_wr >= max_srq_wqes check. After that:
+> 
+> 	srq->msrq.max    = roundup_pow_of_two(init_attr->attr.max_wr + 1);
+> 
+> This stores 2^31 into the int max field of struct mlx5_core_srq, which
+> becomes INT_MIN.
+> 
+> 	buf_size = srq->msrq.max * desc_size;
+> 	if (buf_size < desc_size)
+> 		return -EINVAL;
+> 
+> When msrq.max >= 2^26, this size_t product is a power of two >= 2^31. It
+> passes the wrap check. However, create_srq_user() and create_srq_kernel()
+> take int buf_size, so the value is truncated to 0 or INT_MIN.
+> 
+> On the user path the truncated value becomes the min_size passed to
+> ib_umem_get_desc_check(), so a dmabuf descriptor of any size is accepted.
+> 
+> in.log_size = ilog2(srq->msrq.max) still describes the full queue to FW.
+> mlx5_cmd_create_srq()->create_srq_cmd()->__set_srq_page_size() then calls
+> get_pas_size(), which computes:
+> 
+> 	u32 rq_sz	  = 1 << (log_srq_size + 4 + log_rq_stride);
+> 
+> Here the shift count is 32 to 36. That is the same kind of undefined shift
+> this commit removes.
+> 
+> The garbage result feeds the WARN_ON() that compares against
+> ib_umem_num_dma_blocks() in __set_srq_page_size(). A local user could
+> make that WARN fire, or create an SRQ whose FW-declared size doesn't match
+> the pinned buffer.
+> 
+> Finally, init_attr->attr.max_wr = srq->msrq.max - 1 is a signed overflow
+> when msrq.max is INT_MIN.
+> 
+> The downstream overflow could already be reached with log_max_srq_sz
+> values of 26 to 30. However, the commit message notes "the limits can now
+> reach 2^31" and fixes other consumers of 2^31 values.
+> 
+> Should the SRQ path get a tighter bound as well? For example, it could
+> reject msrq.max > INT_MAX / desc_size, or keep
+> log_size + 4 + wqe_shift below 32. 
 
-net: sb1250-mac: Advertise and honor RX checksum offload
+Right, V1 rejects an SRQ size and a buffer size above INT_MAX, computing
+the buffer size with check_mul_overflow(). This also keeps log_size + 4 
++ wqe_shift below 32.
 
-This patch adds NETIF_F_RXCSUM to hw_features. It also enables the
-offload by default on chip revisions where sbmac_set_iphdr_offset()
-reports hardware checksum support. The receive path now tests the active
-feature bit, not sc->rx_hw_checksum, before it marks packets
-CHECKSUM_UNNECESSARY.
-
-> diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
-> index 1843b52e96f51..546415d3134c6 100644
-> --- a/drivers/net/ethernet/broadcom/sb1250-mac.c
-> +++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
-> @@ -1142,8 +1142,8 @@ static int sbdma_rx_process(struct sbmac_softc *sc, struct sbmacdma *d,
->  				 * the kernel
->  				 */
->  				sb->protocol = eth_type_trans(sb,d->sbdma_eth->sbm_dev);
-> -				/* Check hw IPv4/TCP checksum if supported */
-> -				if (sc->rx_hw_checksum == ENABLE) {
-> +				/* Honor the RX checksum offload feature setting. */
-> +				if (dev->features & NETIF_F_RXCSUM) {
->  					if (!((dsc->dscr_a) & M_DMA_ETHRX_BADIP4CS) &&
->  					    !((dsc->dscr_a) & M_DMA_ETHRX_BADTCPCS)) {
->  						sb->ip_summed = CHECKSUM_UNNECESSARY;
-
-[Severity: High]
-In sbdma_rx_process(), is M_DMA_ETHRX_BADTCPCS tested against the right
-descriptor word? The header defines it as a dscr_b bit:
-
-arch/mips/include/asm/sibyte/sb1250_dma.h:
-/* Note: This bit is in the DSCR_B options field */
-#define M_DMA_ETHRX_BADTCPCS	_SB_MAKEMASK1(0)
-
-In dscr_a, bit 0 is the low bit of the RX buffer's physical address,
-which sbdma_add_rcvbuffer() programs:
-
-	dsc->dscr_a = virt_to_phys(sb_new->data) |
-		V_DMA_DSCRA_A_SIZE(NUMCACHEBLKS(pktsize + NET_IP_ALIGN)) |
-		M_DMA_DSCRA_INTERRUPT;
-
-sb_new->data is set up with sbdma_align_skb(sb_new, SMP_CACHE_BYTES,
-NET_IP_ALIGN). The address is therefore cache-line aligned plus 2, so
-that bit is always 0.
-
-If so, the hardware's TCP checksum result is never read. Any frame with
-a valid IPv4 header checksum gets CHECKSUM_UNNECESSARY. That includes
-TCP segments the hardware flagged as having a bad TCP checksum, and the
-stack then skips software verification of the payload.
-
-This decoding seems to go back to the original driver code. Still, the
-commit message says "The driver already trusts hardware RX checksum
-status". This patch rewrites the same conditional and makes it a
-default-on offload that ethtool reports.
-
-Should this test dsc->dscr_b & M_DMA_ETHRX_BADTCPCS instead? The same
-loop already reads dscr_b through G_DMA_DSCRB_PKT_SIZE(), so the
-hardware does write that word back.
-
-The later patch in the series ("Add ethtool autonegotiation restart
-support") doesn't change this check either.
-
-> @@ -2214,6 +2214,10 @@ static int sbmac_init(struct platform_device *pldev, long long base)
->  
->  	/* This is needed for PASS2 for Rx H/W checksum feature */
->  	sbmac_set_iphdr_offset(sc);
-> +	if (sc->rx_hw_checksum == ENABLE) {
-> +		dev->hw_features |= NETIF_F_RXCSUM;
-> +		dev->features |= NETIF_F_RXCSUM;
-> +	}
-
-[Severity: Medium]
-Is the IP header offset that the checksum engine relies on actually
-programmed while the interface is running? The comment above calls it
-necessary, but sbmac_set_iphdr_offset() does:
-
-	/* Hard code the off set to 15 for now */
-	reg = __raw_readq(sc->sbm_rxfilter);
-	reg &= ~M_MAC_IPHDR_OFFSET | V_MAC_IPHDR_OFFSET(15);
-	__raw_writeq(reg, sc->sbm_rxfilter);
-
-Because of operator precedence, this only masks the register and never
-writes 15 into the field. S_MAC_IPHDR_OFFSET is 8 and the field is 8
-bits wide, so the field ends up as the old value's low four bits.
-
-There is a second problem. The path sbmac_open() ->
-sbmac_set_channel_state() -> sbmac_channel_start() writes the whole of
-sbm_rxfilter:
-
-	__raw_writeq(0, s->sbm_rxfilter);
-	...
-	__raw_writeq(M_MAC_UCAST_EN | M_MAC_BCAST_EN, s->sbm_rxfilter);
-
-That resets IPHDR_OFFSET to 0. sbmac_mii_poll() also calls
-sbmac_channel_start() on link changes, and nothing reprograms the field
-afterwards.
-
-So while traffic is flowing, the checksum engine uses an IP header
-offset the driver never intended. NETIF_F_RXCSUM is now advertised and
-turned on by default based only on the revision check, and
-sbdma_rx_process() trusts the engine's status bits.
-
-Could the field be set with something like:
-
-	reg &= ~M_MAC_IPHDR_OFFSET;
-	reg |= V_MAC_IPHDR_OFFSET(15);
-
-and kept across the rxfilter writes in sbmac_channel_start()? This code
-predates the patch, and the later patches in the series don't touch it.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105193435.2050321-1-f.fainelli%40gmail.com
+Yishai
