@@ -1,59 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794199896;
-	b=Xd0TrtplllJlmoJ3kKcLATDsZWGzoi7Yn6LOxqTyfWjmyy/8zQM3nwKjOa/86vvmtBFY
-	 PkuqcZu8WL8dB+yAcRo3RIkSyaSk+qqxnJzBAFDhu1Cxbrl+/U9LHSFOKilunm3vv5HNV
-	 9Zy9GM5a5BfmNc7RjW5o6g7Xvlk3qzviCdCK4pJy9o7Ut1ZVa6q9WbXaCz18hXePsmtwv
-	 Qd/EPa6SkoLmjFeWy5Z35AqP8V+VPso1WrJCp1AKL5k2l4Jc2ZeANl//yvOwqAbRK+4v2
-	 /vZOmgfeNC39cWWYz43v3D2LgHG8KCOSF6RV3B0WzGWEsKx2zTS+qTo3NJmBKIZGiqA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794199896;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=z62OfWpJCIMFh0MJOTCFqnkCgOEtVmX/+I0r+KURVhI=;
-	b=JfFssobf67PXqs9ToDbF2ZKZ8z3luJFz1PA+lSNX5Mx9tt7ObatK4xVuR66vFaCxjV27
-	 5ExWyLkEhhHdGdNV4uaeiqyowDZwvkrLDrfJ/4pzAzCDm4oRKpRIN9BcKS9lQAu8fsK78
-	 m6m63ZnwD6hmL6h4/4Ihz2WEzOAztjecU3RZxbR0nVmfHVLM+0qb2/R9ZiYzBujDTn9cx
-	 Sk/WO8EShdhIL5KZ+ZYBk1T/o+84uAvizyChSKd9kwMAbpoYGcqo7FwJjv6/NN9Z3IMXl
-	 o8DeGcviSH2W3ZbuJhbMOi6cbsfRx+ucFCjwVSwiga6o8uo1lc48kZaHuIC6wZ8P5MQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J5US4viD;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794200159;
+	b=U9jDEZqFw6PQ7MonLI2RBPvMC3ckEWSbISf5aTqWa8EXDxygG7G/j6xseVlGDoFSTNjh
+	 2XeW22mLVfqyIWkluPCWmSJrcJyAWgRnJlydWlHLmeax5LtpVRQsjCxrVNT5eEkQvuImh
+	 cCxYYb+RKJW2eycU3UEu6ruUzk5tEsn8UuwdHUzRFj9bJWA09/OG+UWvX3M1nehxv/Qb1
+	 Yl4ZGR8xl20jX6e3CV3HMocofuqBNwwRgqyloySoXNRuEAlImXI6XOfZDyu3Hx4NuZJC6
+	 RaSbF0LP+hyPvTEldcKawqJ6G5NzZz5A2t+RWdKUjxn8YBtsQniuWRd2+SRSN0ECsIA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794200159;
+	h=DMARC-Filter:DKIM-Signature:Received:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To:X-ZohoMailClient;
+	bh=TVjYb4BBcraXHmLMuxAJ4VYWO2AEgU5Dcu295blPONo=;
+	b=OKr3grgO6rtK6BtnQXTCX5qbJ0pcMAr8rdWmouCyGE689svuEVA0m3eCRvtEUa4JQ1WY
+	 0WECJIucFKY4Qv9h6ODeVYcQZWoKDIRty5/AOabCOa/oroCnKtDthUnXPfWPzUVYomd7r
+	 wKeA6NvIHIrfW/f3z4DYvHPwr/8pq043FGs2p6rMVmjdTt9CJAQIRtS5vpkqz3QFJGp6O
+	 KVze9l7DVRh/mgFeImwRviRWG3d84DsdDqBMJcKLbC/Js3R2agytSa8o1EgSmyfX45jM/
+	 ZOrQJrpU7AXotxexe0oJirVBkjsecHtfcdAjUlh6TYvyBSNuhDYlGeoJ7hwAegybRjw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pigmoral.tech;
+	spf=pass smtp.mailfrom=pigmoral.tech;
+	dkim=pass header.d=pigmoral.tech header.i=@pigmoral.tech header.a=rsa-sha256 header.s=zmail header.b=JhM5iZI3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.12
+Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E585F606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 04:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9660606A31C;
+	Mon,  9 Nov 2026 04:55:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9660606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J5US4viD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DE01F0089F;
-	Mon,  9 Nov 2026 04:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794199895;
-	bh=z62OfWpJCIMFh0MJOTCFqnkCgOEtVmX/+I0r+KURVhI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J5US4viDe9wYhM1Ay6gG2K/MQumgoruX6tvHvNDsKgI07O7/JKktPtLHoWlAka1gj
-	 RaoQDvRCGhCiNkfhbHrCvUjygAWXnJaMrmeWTOc5e+hK2QyD4+tF4ifn5h6XVjcTDE
-	 MZxGydo/PEDGv5O0jmcjk2cXlgm8ZXpqiNvPtlgN29Z86YpM3qKmnHSiXX3ij1o0rq
-	 4SPvC3lbuzRbE6D1K8UPX7uX6sPaYINE3KIXvakary63a/iFQMkmJvM8L3xbbGIbYI
-	 GdwZ6UoG64jhDD7LqIJdSYzJQrv+6RaBt3EnkkzmbFBXjHFeCVFBpTAob6VBDZm922
-	 MxKWyVZQIW8Ew==
-Subject: Re: [PATCH net] tcp: do not resurrect a former listener with
- SO_ATTACH_REUSEPORT_[CE]BPF
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
- kylebot@openai.com
-Date: Mon, 09 Nov 2026 04:51:34 +0000
-Message-ID: <179419989441.994134.10967877917982374376@kernel.org>
-In-Reply-To: <20261105164830.1682714-1-edumazet@kernel.org>
-References: <20261105164830.1682714-1-edumazet@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=@pigmoral.tech header.a=rsa-sha256 header.s=zmail header.b=JhM5iZI3
+ARC-Seal: i=1; a=rsa-sha256; t=1794200117; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=kgJ06YONRy5PtT6LHHPXY7TeZ2USZKKkLv8VZandB6V0/jYTAD5MvY/abxIpfJJFHvhFWImCLYhTZydSTic0Z01jk7gYNT43rJGqer251Q++Ix2yk2HeUdVCujgY7ckjqQ1u9FFJderC3M8BUeYFhHh3B+5fVMXYF8u/gYTxadM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794200117; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TVjYb4BBcraXHmLMuxAJ4VYWO2AEgU5Dcu295blPONo=; 
+	b=JpBUlC2mqu54blu6aDoBbT/qtR6O1cOs4yA9O0dwWCfAC5hfHKXxxVVVWJfoB4yqdA2NQxjl8Ug8RYyhZSgVnQeCJ2gRoi37EChlObs7aDKGX1YWKFBK/Fce/Am4weGpuQV0GXb4GjoDItAkXP4RWME0kT2mpmbgsvCFVtJjpfU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: a=rsa-sha256; b=JhM5iZI38onPijDbb/bTo6SBqko9SM8euQYqdXR7Rge9qDB6vu8o53ARCnp9UqaIVhzgBI0Xhj1icaq7Bd+WrCPBNMtUwAjy0+Oc6xUN9gl8IIcATPbCKWj0FOz2sI69wwQoMKuXHh1KUF6gB0U8eHn9aU+LJ5zu0+HSNvQZHu4=; c=relaxed/relaxed; s=zmail; d=pigmoral.tech; v=1; bh=TVjYb4BBcraXHmLMuxAJ4VYWO2AEgU5Dcu295blPONo=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 17942001166001004.3701295111581;
+	Sun, 8 Nov 2026 20:55:16 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,106 +55,82 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 12:55:07 +0800
+Message-Id: <DMQEUUHANG74.30N8VT6UGHO0M@pigmoral.tech>
+Cc: "Stephen Boyd" <sboyd@kernel.org>, "Brian Masney"
+ <bmasney+clk@redhat.com>, "Jerome Brunet" <jbrunet+clk@baylibre.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Chen-Yu Tsai" <wens@kernel.org>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Samuel Holland"
+ <samuel@sholland.org>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul
+ Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
+ Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Richard
+ Cochran" <richardcochran@gmail.com>, <linux-clk@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <netdev@vger.kernel.org>, "Jerome
+ Brunet" <jbrunet@baylibre.com>, "Andre Przywara" <andre.przywara@arm.com>,
+ "Norman Herms" <dockseed@proton.me>, "Vinicius Pedrosa"
+ <vinicius.eduardo.pedrosa@gmail.com>
+Subject: Re: [PATCH v6 3/8] clk: sunxi-ng: a733: Add PRCM CCU
+From: "Junhui Liu" <junhui.liu@pigmoral.tech>
+To: "Enzo Adriano" <enzo.adriano.code@gmail.com>, <junhui.liu@pigmoral.tech>
+X-Mailer: aerc 0.22.0
+References: <20261009-a733-clk-v6-0-ae8178fce7e8@pigmoral.tech>
+ <20261009-a733-clk-v6-3-ae8178fce7e8@pigmoral.tech>
+ <20261103-a733-ccu-v6-fw-clocks@gmail.com>
+In-Reply-To: <20261103-a733-ccu-v6-fw-clocks@gmail.com>
+X-ZohoMailClient: External
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi Enzo,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+On Tue Nov 3, 2026 at 9:33 AM CST, Enzo Adriano wrote:
+> Hi Junhui,
+>
+> On Fri, Oct 09, 2026 at 11:52:08PM +0800, Junhui Liu wrote:
+>> +static SUNXI_CCU_P_DATA_WITH_MUX_GATE(r_cpu_timer0, "r-timer0", r_apb_p=
+arents, 0x100,
+>> +				      1, 3,	/* P */
+>> +				      4, 3,	/* mux */
+>> +				      BIT(0),	/* gate */
+>> +				      0);
+>
+> On a Cubie A7S with vendor boot firmware, v6 reaches a Linux shell but
+> stalls at warm reboot. The system-controller firmware uses the R-domain
+> timer and mailboxes without Linux clock consumers, so disabling these
+> clocks as unused can leave its services unavailable.
+>
+> Could you consider marking r-timer0, bus-r-timer, bus-r-riscv and
+> bus-r-msgbox here, and bus-msgbox0 in 7/8, CLK_IS_CRITICAL in the next
+> revision? My standalone patch has the diff, firmware references and
+> board results:
+> https://lore.kernel.org/r/20261031020640-263f7b05-a7s-clock@gmail.com
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I'd prefer not to mark these clocks as critical just for the vendor
+firmware. You can see my reply in v5:
 
-- [High] The new check in reuseport_attach_prog()
-  (net/core/sock_reuseport.c) decides the socket is an…
+https://lore.kernel.org/linux-sunxi/DLYAHDTH3129.3AYF0OSHL8RJ8@pigmoral.tec=
+h/
 
---
+Since you've already submitted a separate patch adding these critical
+flags, I'll leave that to you. If the maintainers agree that these
+clocks should be marked critical, your patch can be picked up.
 
-tcp: do not resurrect a former listener with SO_ATTACH_REUSEPORT_[CE]BPF
+>
+> With those five flags, two RAM boots of my A7S integration completed
+> warm reboots without clk_ignore_unused, and all five clocks reported
+> enabled. That is one board on vendor firmware. Vinicius reported native
+> PSCI reboot working on an A7Z without local critical flags on
+> bus-r-riscv and bus-r-msgbox, with TF-A and U-Boot built from source, so
+> the boot chain may matter. I haven't tested suspend, or shown that each
+> of the five flags is needed on its own.
+>
+> Thanks,
+> Enzo
 
-This patch makes reuseport_attach_prog() return -EINVAL when it is called
-on an unhashed TCP socket whose unhashed_state is TCP_LISTEN. Without this,
-a socket that was shutdown() after listen() could be put back into the
-listening section of a new reuseport group. reuseport_migrate_sock() could
-then pick that dead socket, which leads to a use-after-free in
-espintcp_destruct().
-
-> diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
-> index fccbdd0430b05..41a25be1bfff6 100644
-> --- a/net/core/sock_reuseport.c
-> +++ b/net/core/sock_reuseport.c
-
-[ ... ]
-
-> @@ -692,6 +693,14 @@ int reuseport_attach_prog(struct sock *sk, struct bpf_prog *prog)
->  		if (!sk->sk_reuseport)
->  			return -EINVAL;
->  
-> +		/* Do not put a shutdown()ed TCP listener back into the
-> +		 * listening section of a reuseport group while it is in
-> +		 * TCP_CLOSE: requests can still migrate to it.
-> +		 */
-> +		if (sk->sk_protocol == IPPROTO_TCP &&
-> +		    inet_csk(sk)->unhashed_state == TCP_LISTEN)
-> +			return -EINVAL;
-
-[Severity: High]
-Can a raw socket reach this check with sk_protocol == IPPROTO_TCP? For
-socket(AF_INET, SOCK_RAW, IPPROTO_TCP), inet_create() does:
-
-    if (SOCK_RAW == sock->type) {
-        inet->inet_num = protocol;
-    ...
-    sk->sk_protocol = protocol;
-
-In that case the object is a struct raw_sock (or raw6_sock for AF_INET6),
-not an inet_connection_sock.
-
-As far as I can tell, this path gets there from userspace:
-
-  socket(AF_INET or AF_INET6, SOCK_RAW, IPPROTO_TCP)
-    raw_hash_sk() hashes it, since inet_num is 6
-  connect(AF_UNSPEC)
-    inet_dgram_connect()->__udp_disconnect()->sk->sk_prot->unhash()
-    (raw_unhash_sk()), so sk_unhashed() is now true
-  setsockopt(SO_REUSEPORT, 1)
-    only sk_is_inet() is checked
-  setsockopt(SO_ATTACH_REUSEPORT_CBPF), or SO_ATTACH_REUSEPORT_EBPF with a
-  BPF_PROG_TYPE_SOCKET_FILTER program
-    sk_reuseport_attach_filter()->reuseport_attach_prog()
-
-Neither attach path checks sk_type before it calls reuseport_attach_prog().
-Only the SK_REUSEPORT program type does.
-
-In inet_connection_sock, unhashed_state comes after icsk_accept_queue, two
-bind bucket pointers, two timer_lists and five u32s. struct raw_sock only
-adds icmp_filter, ipmr_table and numa_drop_counters on top of inet_sock.
-
-On !SMP builds, or with lockdep or debug spinlock configs that make
-spinlock_t and timer_list larger, does this become a slab-out-of-bounds
-read past the raw_sock object? On other configs the read lands in padding
-or in the drop counters, which may be uninitialized.
-
-For raw6_sock it reads an unrelated byte inside ipv6_pinfo. If that byte
-happens to equal TCP_LISTEN, the attach fails with -EINVAL.
-
-The only privilege needed is CAP_NET_RAW in the netns user namespace, which
-an unprivileged user can get with unshare(CLONE_NEWUSER | CLONE_NEWNET).
-
-Would the existing sk_is_tcp() helper in include/net/sock.h work better
-here than the bare sk_protocol test?
-
-    return sk_is_inet(sk) &&
-           sk->sk_type == SOCK_STREAM &&
-           sk->sk_protocol == IPPROTO_TCP;
-
-> +
->  		err = reuseport_alloc(sk, false);
->  		if (err)
->  			return err;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105164830.1682714-1-edumazet%40kernel.org
+--=20
+Best regards,
+Junhui Liu
