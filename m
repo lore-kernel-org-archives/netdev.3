@@ -1,78 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794242477;
-	b=N+NzR//EmEQ6XKff4NiKqTxxyNvJ7Fm4WbTT9pkn7VFSCKYvohPrQcwPfyU8YE4xPUPe
-	 5r8JPz74Rttxw385MPpLazrNHh4zhnOExYF4hZEzEvnkwkiCTr8OCjNAFshHlqlDrqvKb
-	 kgQLY+RlEF7+P1yTi4YFIktciSiCC4myG3lffl3Jf0qENWMmLGTDr8pFzyYGnkq2WPJ7k
-	 cYVM04r0H9xpCIAc4fhycD8NtOzC2ncfvKIcpB+KfAzvyf974vRxDXKJDwA9MNwARHbuQ
-	 9ooGie8JsOcJ6nhYrMiSWrGVuoT+TuxD04/tM8rahWXsWp1cO2hn7kq3GQXjMQ/W/aA==
+	t=1794242480;
+	b=r2s/hSiDieTYLkmkqVRcUeDJ38FYGyIVTWa+Njzb774Ye9QOqNr3VfqzOa5SLVtLO9B2
+	 KDD8MbK4II2KPGKA1fmf/qgc4tMxaRLLLe1QeNVNNqbTNej2i3ZqJZ6igUeqg80hDQltG
+	 BKJMy/xYZA07xgce9dTIPSl7cNdl5sqw0OHkyhlEBoBMTMZ4AHNT3OraIRPuAmbQtf2HD
+	 4kWb0iXoYFNoEBuG6iMA7D9cQXcmtOTVgkJOpr8t/M6Tu3WYvJrkyq5TcedZdsC75D9w7
+	 duVGLHLwWotWTiYenY+Y+17na1RhSesBh0lCsJZngEOb2rVW1O4pnBMfSo4NlhDuE5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794242477;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=1/xGQFJzRlf+R2dUsEBhYB/5ASb9U6Kk4vCgR9M14zg=;
-	b=ar+7wOaOeK2qNs692uRFIdTxj5bGOnorIruQoR2C/Mc6gDF18a8BpcFz3CH998XmfkyZ
-	 Rg5Ao5xae8cxxO/0l9aWAy2hJ3AgQHb/2U8zdqz+F3nGphu8TXcpDCQGWaJV/Qk6Bd19+
-	 w7uEgez4fQqYrbqsdQMvKWM0JlBMedEqTJrtUHiw3Yx+CXHcOsNJvDMMwVbaz2FPFAETD
-	 BU9Eg5J7ZjRnJkZ3CozXrL0qQnfZHTo0PRT/KVGEJNYl8lhcH0YawAB2Mv2GPWPB+vUGD
-	 kdxMEdiQR04XxWGLmfswEEuzDMgJtrcVphPqbksAH4gNFWRV97FZFJH7vw4Q8mrRi2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794242480;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=CHFTJhwk8o3vbjDfAurOi0s726zv5dR5BwHLDpqnADY=;
+	b=Ux8KqO+16R/nkPcOVsHsN2XIr4al4Q23sePlBnFeNWP3+9fpJJeLLPb74XsYvm5qP00F
+	 0OvA7XFD8V3rKNbRXL+Qs31ox1Op9wAn8H9JyRZZxIiK8xZsDcXgI6hqGaOkrzFleHvIY
+	 Efbf2FeAa4WayGBu7eUvgoEpYOCAGbhxkIKyx+tuX7e0h1RpcKugN87x0ixizXMg6ecGl
+	 vgbkSbGIoQKdHq0yZ8QCyMrS2XyJiPaUT/Ceu2dXQ7wsnCvVaOObtCyV9zrJW86GA1BGE
+	 2ZQiSeRMOfDHG3jaeSwB5nXKbXBU3hVJ9T/cKUTJuXLmjv9uoPKd1RQ8vGDxb6XVyyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=foxmail.com;
-	spf=pass smtp.mailfrom=foxmail.com;
-	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=QdcZMTon;
-	arc=none smtp.remote-ip=162.62.57.64
-Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GhGNCRc1;
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D676606A32A
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:41:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9D676606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CEC606A331
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 16:41:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23CEC606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=QdcZMTon
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1794242464;
-	bh=1/xGQFJzRlf+R2dUsEBhYB/5ASb9U6Kk4vCgR9M14zg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QdcZMTon7FEjAHIKtoMWNukl0TdjU5o11LhG2x1C6DWhJ4K25aNVGc4ARdBCdfhtl
-	 biwaD0OYobZlqn/IEo2BFbmz/ErEjrEpKHk3gTFlwrPwZtXoYUcXfoK+hIkw6JEtkI
-	 cYE4HW1l68LewDrftIvV1VBkFsk02KkvMUOML560=
-Received: from localhost.localdomain ([183.23.108.92])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id A413CE3C; Tue, 10 Nov 2026 00:41:01 +0800
-X-QQ-mid: xmsmtpt1794242462t8z6c8aen
-Message-ID: <tencent_CD16EBF205C325851350EF748C92E37AD206@qq.com>
-X-QQ-XMAILINFO: Nkqq4bFvvULWN/IsjO86NTpeO9ltnvjto85oTbF6z2uuLivzsn3Q2qlJNlVUJi
-	 NvGZ/mo5XlVAyPl8KIp2AVB40fHzQzEI12iFw1AkYfTYp7ycZGGmoNbGupCqvWQ2d3YjDW1g9Cc3
-	 J/BPRuuZRfrfZ5Lu3QSvD8Y09HLd6Z6FGkkVpOUocvv9CDjtVkjTRrFnQT981ryB3jXFFjbBhwhF
-	 31kOmPgPc3qPrc00q2t5ZMZ2bq0Wkjr5+LYn2hbpHJ8bH3yaDAvMGq5M/HCLfUcNkbLzD0qZa1VA
-	 9IUzmt66AbnWtYz88bcn9beOtjZwOPb1etXAEC8mMUsIgYcxle6LHGUR7UBKlir2zC0ecZf7CdB/
-	 Mp7qhZiygrtH2SW3kGCPlsLl9i81WXpleTYI0Mjz2flK9q+bIaBuLieVFnAlYztQbb+A6HHpM6AW
-	 jequhTBV4URqYFgeX7hvkHJTBYWECQ7CCeY65ePE4O3dhhdiSkog2UXlP7TCe6qN8MAGq1DmUxnN
-	 IbxxgU2j786Nh/SuuGcZUL8RngmNfW5ZJuS6I8Ygm7gxLzdBugFkX7+JSxaIe1+dQOKksRBQt+Ih
-	 EjPUZlvvHRKscwNB/uy9UZN0Hdhkd4kijm3WIiyichlQLmjb/mIKr7fqdShTEtAOzg2ReSpdao8h
-	 X1uiWyPxxr8UhI0+cmN60Wf3iLEYL1jiF6eob2Ikujvpwu9ysXWnhg9CISz7/koLRwJbqqd6Xu3z
-	 YprJol/ZRcx/BBkA9dA0ngRfh8Exw+VMtZiQZNrsgCBBCRNX5vAwLsudmpvXIsmqcv+u05Yh6FMg
-	 md49bTeyM3PmGHZWXe8Pmfpqw6/TZELSjHQZCG85dEWrlNvbxfA1GLayZl2rYh2oQbhBtuB3yWiH
-	 9+oCWy7RfbbaaHxlKH3FCvmgXKGbhootETGZeQRG5zZ6OaEKiLoO69nlTgiKoK3/8KfBfH8F6gPN
-	 kUalRAOEjVv2CyNm7NWQXiMKutc/ongMGpzY/KEnMid6NS3xF69NUenJxL3uBdXXdT0g6xQzm+qC
-	 de+7N4unraug1Hide9BSmT1orP9qhAqwJS3BkPwih3n2fAMgWfvFO1XRelctnitolQ9oxbwQ==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: memoriaru@foxmail.com
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GhGNCRc1
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso1307325eec.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 08:41:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794242479; x=1794847279; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CHFTJhwk8o3vbjDfAurOi0s726zv5dR5BwHLDpqnADY=;
+        b=GhGNCRc1kVQjOY145xHfkbiKQEemuUsh9JpsTB3j6UaZ//X/1MLY7PregsdllFTAeT
+         iwWxnHieWaedwloAFeos9JaftimkMPel6oAranE3GeWKRrRHHZrodbddI8/8n8e5fZrJ
+         eykLu2eknSvYQqG8AFnPgrWUFOPI+w33k3Q4Pj7uoxAigSoOTF8XJN0k5rapzBm5b2Th
+         pE+0I9Teowpi5RkmWe3YcGK/gR2NpsfagdhfiOdXAbEiBPmBPsbNxuj1qXvlQ9nenWNR
+         UyiCBVq24CP2jdyRGlstC8VXwt9lC5QqyWNMyIioMoPs7ug04M5p5EPFgnu4Omamx6hg
+         7Dtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794242479; x=1794847279;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CHFTJhwk8o3vbjDfAurOi0s726zv5dR5BwHLDpqnADY=;
+        b=zA1v7EvbPxSLscCH5joWGWrsMwxh8pMmZ4Wtou1vgAbHOZNpu34e+Yf9WESlZ1Ih29
+         skGqYzjUw+1OE8raJLMzLXNwU4TTWqtb6rKt2dN77Uc9pByi0FEfkSJx+0iZgI4I0o4y
+         7iAImMwtzBMspPGeLw2vJy13AD15tv4RvhiO6VTlQRbnpJzkjyLanZHxqzQpvpWVXF5n
+         lRmBqPmA+N+Oqv58P3TGos09Hcz1TseRb2xUTW+obd8X1Gxc6VXObZsFWnk5506flOm6
+         p/FAcHhfPoeStneujqVZmnulJQ2qMk2KHY665uYnIHFMvUYNyTZxD5bHCHZsZSYunbtB
+         LO2w==
+X-Gm-Message-State: APuU4Z/g+K4abWlnL/HYXjiBtsSr5uLPNi0p43gnDm04VVMh47L34eIS
+	W9xH4pP4TQxl73vmlFr3joFccNAIsduSWiAtNeFWmTJ7YRA7SlgS17Pc0/brqw==
+X-Gm-Gg: AYBFou2CcKtE9o8jMqLQvXo240WmbMmVN1hpVSiLwP7OXER9RwUqzllAzqXn4pos1de
+	fuAtuuLGpzLbF9djUF7PB+3MlmF06WKdSpIJzh80/7XAGthyhAhaPxl2DJS0X4Hwze+Ku7lm+so
+	54GPxEXrfGfgpIJaAUYhTIFcPo1moJFdiLaPfoajUc8ltIuBoA0SaxoJ+4/G0T8DPKiY9tkEW1l
+	AbhshSzmtT7DTPudhRsDypmtG4zyuMdqyPBBcz8ifN26cpSAA+htD6hWBW7VbBveOgJgOsWgcK3
+	xtU6DBh1h5fMCUSO5pHjfaU63GbVt+g28VOPPXjB9Pu6V9UFnfjoQLQCOiOsV0L+9tBM/F0ajZ+
+	XJsgigaj8WKU9qcrOuuJTO20SPq4KsyT8c8XX5rRiRR6Aa8hZvqgyl820p0H9yvCnWWYyG+uqxY
+	HsQvZgX1FfmHRbzOzXJNfV3b9A2aEZ/210jbCwAYZVPtIg3toxYv6E6zjacF/wp5vnSqyKTbdVr
+	TT6KapHZuADM/AMQn9mgfuOXXR7gzG7IBH3kcloIW/XoQYLUPYQ+RETV2NLvVSD9ARnoW8VKzJW
+	CAdzIN6kofykqTvs6U652J1pVj0X2nowMIGRNAZguYa1uJEG3WQpyaX4bbCVmnW67vvlwh96vOq
+	p1iLadECha1ujgKDglFyDEfm6CFNhP/m8+73nnVGvr4x64A==
+X-Received: by 2002:a05:7301:f29:b0:36a:50f4:ed0d with SMTP id 5a478bee46e88-37256035489mr8959716eec.25.1794242479011;
+        Mon, 09 Nov 2026 08:41:19 -0800 (PST)
+Received: from l ([2603:8002:ea00:6800:9863:3329:170e:7401])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37265618e11sm13634066eec.7.2026.11.09.08.41.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 08:41:18 -0800 (PST)
+From: Dave Seddon <dave.seddon.ca@gmail.com>
 To: netdev@vger.kernel.org
-Cc: Steen.Hegelund@microchip.com,
-	daniel.machon@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	memoriaru@foxmail.com
-Subject: [PATCH net v3 1/2] net: sparx5: fix RX ring stall on frames from inactive ports
-Date: Tue, 10 Nov 2026 00:40:59 +0800
-X-OQ-MSGID: <20261109164100.8947-2-memoriaru@foxmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20261109164100.8947-1-memoriaru@foxmail.com>
-References: <20261109164100.8947-1-memoriaru@foxmail.com>
+Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	David Ahern <dsahern@kernel.org>
+Subject: [PATCH iproute2 v2] libnetlink: zero padding in rta_addattr_l()
+Date: Mon,  9 Nov 2026 08:41:16 -0800
+Message-ID: <20261109164116.2637408-1-dave.seddon.ca@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,54 +96,55 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Hewei <memoriaru@foxmail.com>
+rta_addattr_l() copies alen bytes but advances the parent by
+RTA_ALIGN(len), so the 1-3 padding bytes are never written. This affects
+every caller that passes an unaligned length. Nests built in stack
+buffers (lwtunnel encap, RTA_MULTIPATH, RTA_METRICS) then send those
+bytes to the kernel. For example, in
 
-When the FDMA RX path receives a frame whose source port does not map
-to an active netdev, sparx5_fdma_rx_get_frame() logs an error, flushes
-the extraction FIFO and returns false - without advancing the FDMA
-software cursor and without releasing the skb, which has already been
-extended with skb_put().
+  ip nexthop add id 53 encap mpls 101 ttl 10 via 192.0.2.1 dev d0
 
-The DCB for this frame still carries its hardware DONE bit, so the next
-NAPI poll picks up the same DCB, takes the same inactive-port branch and
-returns false again. The software cursor never moves past this DCB, so
-RX traffic on all ports stalls until the module is reloaded.
+the three bytes after MPLS_IPTUNNEL_TTL are stack contents:
 
-Treat a bogus frame as consumed: free the skb, clear its slot in the
-rx->skb[][] array and return true, so the NAPI loop advances past the
-DB the same way it does for any other received frame. The slot is
-refilled by sparx5_fdma_rx_dataptr_cb() when the DCB is recycled. The
-extraction FIFO flush is dropped since the frame is already consumed
-into the DB, and the error is ratelimited.
+  05 00 02 00  0a 7f 00 00    MPLS_IPTUNNEL_TTL, ttl 10, stack bytes
+  05 00 02 00  0a 00 00 00    with this patch
 
-Found by code inspection; the stall needs the hardware to emit a frame
-with an invalid source port, which cannot be triggered without hardware.
+and valgrind reports "sendmsg(msg.msg_iov[0]) points to uninitialised
+byte(s)".
 
-Fixes: 10615907e9b5 ("net: sparx5: switchdev: adding frame DMA functionality")
-Signed-off-by: Zhang Hewei <memoriaru@foxmail.com>
+The kernel skips padding when parsing, so nothing fails, but its own
+encoder zeroes it (__nla_reserve()), and so does addraw_l() here. Do
+the same.
+
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+v2:
+ - Drop the Fixes: tag; the gap goes back to the initial import (Stephen)
+ - Cite addraw_l() as the precedent
+ - Correct the note on addattr_l()
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-index 15ec9b0..e35ef0e 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_fdma.c
-@@ -157,9 +157,11 @@ static bool sparx5_fdma_rx_get_frame(struct sparx5 *sparx5, struct sparx5_rx *rx
- 		       sparx5->ports[fi.src_port] :
- 		       NULL;
- 	if (!port || !port->ndev) {
--		dev_err(sparx5->dev, "Data on inactive port %d\n", fi.src_port);
--		sparx5_xtr_flush(sparx5, XTR_QUEUE);
--		return false;
-+		dev_err_ratelimited(sparx5->dev, "Data on inactive port %d\n",
-+				    fi.src_port);
-+		dev_kfree_skb_any(skb);
-+		rx->skb[fdma->dcb_index][fdma->db_index] = NULL;
-+		return true;
- 	}
- 	skb->dev = port->ndev;
- 	skb_pull(skb, IFH_LEN * sizeof(u32));
+addattr_l() doesn't zero its padding either (07f9436201eb added the
+memset to addraw_l()), but its callers zero their request first, so it
+is left alone. I can send that as a separate patch if wanted.
+
+v1: https://lore.kernel.org/netdev/20261104052901.2735000-1-dave.seddon.ca@gmail.com/
+---
+ lib/libnetlink.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/libnetlink.c b/lib/libnetlink.c
+index edf3a8ba..c4a8e694 100644
+--- a/lib/libnetlink.c
++++ b/lib/libnetlink.c
+@@ -1502,6 +1502,7 @@ int rta_addattr_l(struct rtattr *rta, int maxlen, int type,
+ 	subrta->rta_len = len;
+ 	if (alen)
+ 		memcpy(RTA_DATA(subrta), data, alen);
++	memset((void *)subrta + len, 0, RTA_ALIGN(len) - len);
+ 	rta->rta_len = NLMSG_ALIGN(rta->rta_len) + RTA_ALIGN(len);
+ 	return 0;
+ }
 -- 
-2.39.5 (Apple Git-154)
+2.56.0
 
