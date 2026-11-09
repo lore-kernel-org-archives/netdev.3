@@ -1,48 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794224889;
-	b=3y+42dDj7H8juC0EhoU3R2OUhNaUypMbLWxT6yF6Vd99QstQNdgXBQB2SD01wFacWD71
-	 DbFxsPZdHxyuolJPYJAxXxxGooaAVXU7nWcVHIU7RosWA7B/7MgjXxbSdg/s/eqTPMGFC
-	 PbF+5mdkkEbWBKOyYAKKfB4+p0zYO7HlZmq/DO5tdNIo2+xrM1fsdfxFVRfZLkAKta3g3
-	 GvtDfEw655+NErHBUrgjyIQ/oXjLTuW/lxf3KMVhVUK0AFr5fQ6JiTsY3aVMf2piFQo+0
-	 S/G9vqUJAclwrfklgkby+6Rmi6Fr5u3CjLLM7f41YrA7aV41ASXcC/iP6VftBQcqrsw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794224889;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=dLR3tt7szd0TGb4S6lGS4WgHmWKCFdUs6WqirA3PsmA=;
-	b=rTZ4YH9cheaqO9l6JPK+nSO+VEUeuoTsxbN7IBfymiK+pURkgV94TrSaRX+D53FKUYNN
-	 H7tzSUhvBiWAQTSa5s3FMUU2upTcOKekfiRorIA+N6tJKvrOmRWCwLYaAMk49dfmgENBh
-	 7n6ZYh5BFXTbIJgRN+ta9T0RD6sp/T/nYgJAtwtRS/oaA5k7s/JeGR6Tx5mmo0TXnwRRl
-	 IP/Q2ZkDM0zEtD04w6pXWMWit6Wr8oxNLuum6vDxoIdU9kEjmmGa4zPTtid6ap3Ypf3rO
-	 GbA/yb3dGWOK90Xqry2cDCiCiBE+iVzqNJGIAphzWdbrTc9PN6QpXYW5Jz/fFqsXZRA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2YpDqpu;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794224927;
+	b=nkU+FkgvMRfy3aGtNi4VKVECfh5HHWAKFrHLhcqviNSjPROBryYym5Dl6FVbL1sBGO3R
+	 OnrDpeuMBFdBXo2XSwmvem/3G69f/TdluwVe+sJ+UEYpNnIet54YexzOJ7HnsZqjF7joP
+	 +7sVoHzOpns9Wa46hQ1Co6lRsCK5qJm1Z2CkvrPHXs78Q1YIPuwgtH/ndn4wf9r9OQpZ2
+	 xi8Xcty2hQ5Qtdi6ZbooUm8Km4I78Bz1UqO34ZEjQD2y0tnO9P2bcakfnYY1+3SyAg8Wo
+	 Vr6pg8ItiN7a2H20gIKZjpcWO9syra9IwkyBGQ73uosr48scIR6wLzzEqI4WAF2toiw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794224927;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=+mafEj/GrWhGLS2pQIXbCar7L/xgmjKGxeZNnZycuS4=;
+	b=G07De2bUWmNbQLO20dnoTqBnUYnl8tXbp4G5XIlbcN5I7f+tP9z/2H11YlMjbxI54G+A
+	 0Vjzuu3Yj1aQs3BwhFF5+oen1BBQXG3LoNUzBl2KwX/JS6lBHM3ZRoDhrbaqIPRoPp8o8
+	 GIqihdY+lGcho5o3MScP8tH07pTupenB56VItEfpc7Et9pMsh4tjLf4ssItllfK8+wRyk
+	 UsVrX8Q1TxzPwvboMW90Bjx6SZdwkl4qUDNr+3majR2RWDXsTWgLnjxWEN2QKN6Vu+APp
+	 2yXgw4ud5/TuxHzae1aN+yihrP3X2k5+uN9u6BTSJsOWNxMQ1S4RaJ/5bQOKJp8dw+g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=St6gzCjS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.41
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012041.outbound.protection.outlook.com [40.93.195.41])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E7A606A331;
-	Mon,  9 Nov 2026 11:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C086606A322;
+	Mon,  9 Nov 2026 11:48:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C086606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k2YpDqpu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861661F0089F;
-	Mon,  9 Nov 2026 11:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794224888;
-	bh=dLR3tt7szd0TGb4S6lGS4WgHmWKCFdUs6WqirA3PsmA=;
-	h=From:Date:Subject:To:Cc;
-	b=k2YpDqpunDxbXTKheHuhlfv2XOrJFFgY6jW1HZShoaqiqZUi8/zosif5k2yrb3yXd
-	 qTsACoA5kCZop/JmGsEDY6XIy1ODzo+3kG2q4hx286F+TAsTyXja3+/H3PXX74eLf7
-	 SmvukGAmFHi2iDsUea/ltdfCL8mWhVkeyE7nTULYI8KK+vvQpQQxiBBlwUQn8VYLlN
-	 WIPVvh/3RAaC5I2gF+gLre4lzsoMCYR8gAMYBvnqPNN4VD+sb68je1Dn4ztdF6R/ub
-	 H8pksf+QAmpbpbp3wN3TErRC2XoPbVC8y2CXaKFsdUVTOjCr9eYmZM1hP7y8noeQx0
-	 Yrq3vcbNUr2kg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 09 Nov 2026 12:47:26 +0100
-Subject: [PATCH iproute2-net v2] mptcp: limits: fix JSON support
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=St6gzCjS
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kqzO7jyWETmtoQ0YRaB4wfcWMPfMNu/fU0FqIpBBvVJvqE/BDRYlWVtzTIF5h14/h/DCvzZh34Ig0lNusSKW0g/OKbiMOUsl8v19Qfb+SHNL+qc/CNd14qh96WbOhZ0NpTr7YnaXb04pEmXhz0HtcJwYDD1jp2AyfLAZoKYnEHmD58CHMr+q3FW3p8QcCUdilYsAUHNOK8pcY2bAK08zojF8xZe82O0gEaicf4wMmBugdhPMWarKKmg2nHtYZr/D9wMS+bdG1WhynjG9t+hNhZXaU2ZwUG0SUD3z8XbVa8LsyN7+d/3t2Vk3P2s69YFg86AkDF7HwrQV8c3kM/0ZWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+mafEj/GrWhGLS2pQIXbCar7L/xgmjKGxeZNnZycuS4=;
+ b=Bt3RhhiDALZiQb2gkdMsclzguVcgFfm2DxGzgFAcAjqyDRj6uiIDdwwWsc1JZDjn6L417T803kAf2yM4jxFQ5ghVCOmboUfmbjUcXX8q86rx0Xx8y6dntPWIVAXWH4VlcM8lfc59gEysRXypcXql9BXaG9GZRilSYHC2wK67p8qtLkD55Jen0MVGg159rH5EBLkYQpM4scD1xnVknwLa/jbZ+yw7Dy6Bd/0Vyzz8coaiMr56UrVvtAkVNntatjoLCZfslxvrL7d0g5O9wZppodLZivEyoWAoAntkGc0KkhkPC9jMmx2K+U+ZqDVBnz+Yv91OitxSaagBlFuFTaPLdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=everpuredata.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+mafEj/GrWhGLS2pQIXbCar7L/xgmjKGxeZNnZycuS4=;
+ b=St6gzCjSMlPVjVy8eIYcPfoYdJ417QfDVHWc7iLGm3dETWnZ5vxg/efk/XBMtTjQ/4iAUaMi3e7yobJJoY3h5k5OivhmSfW2/PgVtv4yw9vzm/Oyfu5CBz/8z2afhGX15Yu6/CXE5AIDiDHpQ+WzOm6/bbPpENBL5/yIquBuE1j26WLTXBzt4arOlqlElRateDa6TMj3bC6WtLRNJGVgF+dHcXCC7YjA+EHsVqMRziUA8e6lIGhS2jbDDzAqnuGQPlqhzxSONs54Ja5H9ZS6VHoAOj1HABN/PzLtc1T1xwCK5wG4r/xuUUP+RT+5ezaivttYjhikjn+Owgjlvc8whg==
+Received: from BN9PR03CA0762.namprd03.prod.outlook.com (2603:10b6:408:13a::17)
+ by PH8PR12MB8606.namprd12.prod.outlook.com (2603:10b6:510:1ce::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Mon, 9 Nov
+ 2026 11:48:41 +0000
+Received: from BN3PEPF00022BCE.namprd03.prod.outlook.com
+ (2603:10b6:408:13a:cafe::6f) by BN9PR03CA0762.outlook.office365.com
+ (2603:10b6:408:13a::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.12 via Frontend Transport; Mon, 9
+ Nov 2026 11:48:41 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN3PEPF00022BCE.mail.protection.outlook.com (10.167.248.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 11:48:41 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 03:48:25 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
+ 2026 03:48:24 -0800
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
+ with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Mon, 9 Nov
+ 2026 03:48:14 -0800
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Rishikesh Jethwani <rjethwani@everpuredata.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, "John
+ Fastabend" <john.fastabend@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+	Neal Cardwell <ncardwell@google.com>, <netdev@vger.kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, Willem de Bruijn
+	<willemb@google.com>
+CC: Alexander Graf <graf@amazon.com>, Aviad Yehezkel <aviadye@mellanox.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>, Boris Pismenny
+	<borisp@mellanox.com>, Boris Pismenny <borisp@nvidia.com>, Carolina Jubran
+	<cjubran@nvidia.com>, Costa Shulyupin <costa.shul@redhat.com>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Eran Ben Elisha <eranbe@mellanox.com>, Gal Pressman
+	<gal@nvidia.com>, Ilya Lesokhin <ilyal@mellanox.com>, Jacob Keller
+	<jacob.e.keller@intel.com>, Jonathan Corbet <corbet@lwn.net>, Leon Romanovsky
+	<leon@kernel.org>, <linux-doc@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
+	<mbloch@nvidia.com>, Martin Karsten <mkarsten@uwaterloo.ca>, Randy Dunlap
+	<rdunlap@infradead.org>, Richard Cochran <richardcochran@gmail.com>, "Saeed
+ Mahameed" <saeedm@mellanox.com>, Saeed Mahameed <saeedm@nvidia.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
+	"Stanislav Fomichev" <sdf@fomichev.me>, Stanislav Fomichev
+	<sdf.kernel@gmail.com>, Stefano Garzarella <sgarzare@redhat.com>, Tariq
+ Toukan <tariqt@mellanox.com>, Tariq Toukan <tariqt@nvidia.com>, Wang Zhan
+	<wang.zhan@smartx.com>, "William Tu" <witu@nvidia.com>
+Subject: [RFC net-next 0/7] [Cover Letter] net/mlx5e: kTLS TX fixes for WQEs in flight
+Date: Mon, 9 Nov 2026 13:47:27 +0200
+Message-ID: <20261109114734.2087878-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,86 +133,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-mptcp-limits-json-v2-1-ad8d20051515@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OwQ6CMBBEf8Xs2TWlKqAn/8NwKGWBRWibthAN4
- d8FvHuczLyZmSGQZwpwP8zgaeLA1qxCHg+gW2UaQq5WDVLINBHyhoOL2mHPA8eAXbAG61ToXJZ
- pntUKVs55qvm9dz6BnbdjJImGIhQ/N4xlRzputVu+5RCt/+wXpmSn/qxNCSaYKZ2ddaVKcb08X
- uQN9SfrGyiWZfkCSQgdXNMAAAA=
-X-Change-ID: 20261029-mptcp-limits-json-f60c82b687fa
-To: Stephen Hemminger <stephen@networkplumber.org>, 
- David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1966; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=zy7+Fbeo8gWBYR6XZE0iheb26AvJ8im34GrTrSSazQ8=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLI+bvq+J/HwzBUzSm/zzxHhfNE/R1d32wPG7WkB7aWXd
- Fes3vF7eUcpC4MYF4OsmCKLdFtk/sznVbwlXn4WMHNYmUCGMHBxCsBEnFYyMuzKXzA5cXnsW4by
- HJfrG1YKOrzI+eYWw9Q75cJjxmNJCd8ZfrNMzuls3y9cZDtrS5wf/4s5jetCWB2XtG3lrM6rcFp
- 6kAEA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCE:EE_|PH8PR12MB8606:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4aa06b9-f086-4317-76cc-08df3e576689
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|82310400026|36860700016|921020|11063799006|261021121427099003|56012099006|261021123027099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261026121527099003|261028144727099003|261102123227099003|10067099003|18002099003|6133799003|13003099007|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	fHlzXWy5n3q5EHQcKNG2r4D5GsFJaNp5oz6udrzQV48+pQOMHXZrvlUkdUgKSwfq3+ODXxBwCKgxqVD2NbhcATVvq0KRKz6+cQ2lBVJLFh0+5nh0qas62SUJkhOc8WVmyN4xwUFJFMk0ePcw5wDMAMxP4xPG43AreHDVZFU8smpNjc51ZL/HSSezzQgVTJjDEb9TpAnpK7DhsdOZule1YUiG2kEmHvgRZSIej7QSD7HDrsxH7pXh+t86IVvn9A2VmtRxW2T6GywJG1GSajs2PM00hPMVBLcnB2s7UtWm+icDWUiIvKxz16bKDnaITXs2T9uT4UXz405eB/p2wl6I3oxRve5f7tpLh+03FvRtVARApnzZPrijHjMMD6IrLWxoscXIdR5WOy7F2ZRUjmkT6SVHY0IC+IUD3BQc8W71LccUOzXiiX5Wi8lPaargVRh7O/Gc/J8A/aL3gc9ZW5bDXdiAfNCSoN9Kn2fF8qK7YiFHBlBBEZHP4lhF5Sw0/FLVu2AkBHlLclgXFy5AFYi1gIaXaW2t7dx+ern6tqXCODSmB2yqGfw/uEbGgWk5yznsIi9FknkDfBTrfHQ+jby13rzEkJ/aE9+E4D/x52uOkhyG0T6QHLCAOW8jJQIABJuLw8cMuWIGDvFWtIskIwqnWbW5E4dMnXzb/RtespGdj5orXOm/3wogNRsJkhBn6uQywd/W9wP8gEUgYbFsSJ0svWiONCukiU2x9YLj5+oBPOPNpC1ehD/LP2uDPmFx4YHd
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(82310400026)(36860700016)(921020)(11063799006)(261021121427099003)(56012099006)(261021123027099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261102123227099003)(10067099003)(18002099003)(6133799003)(13003099007)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	I8serH/1N2cbWYphre52A/E8dqv2EGq1vR6HbvGl6xaNpHEpBdLnYTmfEku6BtiiIXXLLuIy8m8Gy1GSCdQ2bQcjllkT/rBGUlldB0Rkznf3OI6o0IWOuxnM/WWUuKEQjzv9Hf3K/SvK66uq6vOT4KhAZwyZoardehj1KkUwJ9HAvStWDk++6BV3WPAI8YwaeI1R9i+MD9JG4BhzKylzns++zhiMf8SmWWLWOZrOPKsNAvVtWw8PopewnR/HqBBNY+sJ9hzcubPV0Rs4WvAwau4VIJIQNbrOCH/kcOoLmVhQA1B4Uxy4YWOwuR5ViL26uRyy97AukR8oqedYL2Zym9inQX8gC/GGwrT823pNUfgCL0AixD8jeK2hkMYcJ4mZVe/REMnBdvTlv7Ddr1rjD4VDDBVWH7rK+UO10GSZ8K/StPK19YzrCBeeZ2KIl2+n
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 11:48:41.1879
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4aa06b9-f086-4317-76cc-08df3e576689
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BCE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB8606
 
-print_mptcp_limit() was trying to open a JSON sub-object and closing it,
-but no JSON object was actually created before.
+Hi,
 
-Because of that, JSON support was not working with the MPTCP limits:
+This series fixes kTLS TX offload cases where WQEs that a connection
+posted are still in flight while its device state is released, changed
+from another SQ, or assumed to be in sync. Records then go out wrongly
+encrypted, or the TIS and DEK are released while still in use.
 
-  $ ip -j -p mptcp limits show
-  add_addr_accepted 0 subflows 2
+kTLS TX WQEs update the TIS crypto and record tracking state of a
+connection as they execute, and the device orders WQEs only within an
+SQ. The series makes sure that:
 
-Create a "plain" object before calling print_mptcp_limit: the MPTCP
-limits are different from what is usually seen in IP commands. Indeed,
-this object doesn't list multiple items with different attributes, but
-only a bunch of attributes. With this _plain() helpers, an extra array
-is not going to be added: it is not needed and doesn't make sense here.
+- An skb dropped after WQEs were posted for it is held until they
+  complete, and a connection whose WQEs were lost is resynced fully
+  (patches 1-2).
+- The context params are posted only for an skb that uses them, on the
+  SQ of the connection's data (patch 3).
+- The old and new SQs never execute together across a channels switch
+  (patch 4).
+- The TX queue of an offloaded socket does not change while it has
+  packets in flight, in the stack and in the mlx5e queue selection
+  (patches 5-6). An skb that still reaches another SQ meanwhile, e.g.
+  after tc skbedit queue_mapping, is dropped before anything is posted
+  (patch 7).
 
-After this modification, we now have:
+Patches 1-6 are fixes, for net. Patch 7 is for net-next, on top of
+them. TLS 1.3 rekey support for device offload builds on this series.
 
-  $ ip -j -p mptcp limits show
-  {
-      "add_addr_accepted": 0,
-      "subflows": 2
-  }
+Tested on ConnectX-6 Dx, with a software kTLS receiver that checks
+every byte. The commit messages describe the reproduction and the
+results of each fix.
 
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-Changes in v2:
-- Explain why _plain() is used here. (Stephen's LLM review)
-- Add missing 'not' in the commit message. (Stephen's LLM review)
-- (No code change.)
-- Link to v1: https://patch.msgid.link/20261029-mptcp-limits-json-v1-1-7ac73cdab054@kernel.org
----
- ip/ipmptcp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Link: https://lore.kernel.org/netdev/20261022181751.1349984-1-rjethwani@purestorage.com/
 
-diff --git a/ip/ipmptcp.c b/ip/ipmptcp.c
-index 02cf72ce..54976c08 100644
---- a/ip/ipmptcp.c
-+++ b/ip/ipmptcp.c
-@@ -446,7 +446,14 @@ static int mptcp_limit_get_set(int argc, char **argv, int cmd)
- 
- 	ret = 0;
- 	if (do_get) {
-+		/* This object is different from what is usually seen in IP
-+		 * commands: it doesn't list multiple items with different
-+		 * attributes, but only a bunch of attributes. Use _plain()
-+		 * because an array is not needed and doesn't make sense here.
-+		 */
-+		new_json_obj_plain(json);
- 		ret = print_mptcp_limit(answer, stdout);
-+		delete_json_obj_plain();
- 		free(answer);
- 	}
- 
+Regards,
+Tariq
 
----
-base-commit: d95f66508b32fb2c51e70a9127dffd1db8623614
-change-id: 20261029-mptcp-limits-json-f60c82b687fa
+Tariq Toukan (7):
+  net/mlx5e: kTLS, Hold a dropped skb until its posted WQEs complete
+  net/mlx5e: kTLS, Resync TX fully after its WQEs were lost
+  net/mlx5e: kTLS, Post TX context params only for skbs that use them
+  net/mlx5e: Drain old TX SQs before activating new channels
+  net: tls: keep the TX queue of a device-offloaded socket stable
+  net/mlx5e: kTLS, Keep the TX queue of an offloaded socket stable
+  net/mlx5e: kTLS, Keep a TX connection on one SQ at a time
 
-Best regards,
---  
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
+ Documentation/admin-guide/sysctl/net.rst      |   3 +
+ .../ethernet/mellanox/mlx5/counters.rst       |   7 +
+ Documentation/networking/tls-offload.rst      |  20 +++
+ .../net/ethernet/mellanox/mlx5/core/en/selq.c |  96 ++++++++--
+ .../net/ethernet/mellanox/mlx5/core/en/txrx.h |   2 +
+ .../mellanox/mlx5/core/en_accel/ktls.c        |   1 +
+ .../mellanox/mlx5/core/en_accel/ktls_tx.c     | 165 +++++++++++++++---
+ .../mellanox/mlx5/core/en_accel/ktls_txrx.h   |  21 +++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  88 +++++++++-
+ .../ethernet/mellanox/mlx5/core/en_stats.c    |   4 +
+ .../ethernet/mellanox/mlx5/core/en_stats.h    |   2 +
+ .../net/ethernet/mellanox/mlx5/core/en_tx.c   |  98 +++++++++--
+ include/net/sock.h                            |  33 +++-
+ include/net/tls.h                             |  13 ++
+ net/core/dev.c                                |   3 +-
+ net/core/sock.c                               |   2 +-
+ net/ipv4/tcp_output.c                         |   7 +-
+ net/tls/tls_device.c                          |   3 +
+ 18 files changed, 503 insertions(+), 65 deletions(-)
+
+
+base-commit: fa5196392691051963726787944db872420dfa75
+-- 
+2.44.0
 
