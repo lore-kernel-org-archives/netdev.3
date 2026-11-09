@@ -1,112 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214265;
-	b=FOoOUZp7LJfF5XOiqfmuQj8MxudUwf8FkJ0YXT9UmQZ7zcwfmhGcafaTHudU8li8P9OG
-	 Z/3uGrtP9vr/fz0+F01kP2EqKCCK5HtWCXdzylEt06DouaTFi9dudWqnncfP0YavAPIJx
-	 yhToLFhYtrDYd+1A5UrO/Om7fxBBnYTionUejbtYm72GuE6+4VAoHuSN6zEhiq3GQazdy
-	 2gEPES6HlJs03AfFRuH7e6I9gZXTVd8add/cnjdwBFC97+XZYeuDi7aH6sOBF+KYRwDTe
-	 5l5ep+T+znAay+HddwO0drUmVpSFbuIYQ1Hoy5LaRJv4z7wqDAHKMCERDFCdWMT+wRw==
+	t=1794214365;
+	b=qs9ZkIOWe8D+7EYtNaXP0cWVqQnRQRXBIEZcZX04uYb+tra98JFfso4dNuxAHZKFUHFJ
+	 pQF04v8B3aGVw6ZyHzKvHi3L7IJT4qFcCTktroJ/fbcEldClkxj3wQWbf1HasH6BMqv4a
+	 gJQFB7Q6YY37l3mYe/0fV1vVhB0qigltRi0Ro8/jpbzj7k1ZohCC4enwQAAVutYl6S+N0
+	 URZsyvnUJtEKz0p4KJWdSX6Egm4/SB1EpLGKnuS+2QHy5nsB4XJP0Z4abWEIcJ9qrnxnK
+	 bLQHe1q6+/aEYwW9KcNhRk0jam6AQL0CWceVpWbmYLlCcTKVD3HtiSJlTpyU2RP1BDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214265;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=/3oARxDEXLg7TaIeiQ6V/+h8xlKkrQx7Ze0qvtDuS0o=;
-	b=YvX6uHKg9Zjl9KuzyNXIJ6eDTNgxMxzutEVgL3FBr/ZjtERDhKTKnGupvcbXazzOs/C8
-	 cUQzSEfh0o5qbrSxuPVRyYtWL5xbZQswrE99GWw4+jJOuMWVU6yEiRZ7KcQssZdIxRsX7
-	 /tBJgxRvjabQgqrzKQuNxOtjQ45MEaVxDNYoeEana0VwJu4dR2YChyZSAe0mwVaYULx3v
-	 lknglI1MD3k9sF5yRAqbbukJaBIk03UU0lLa5tTDZXbHXSyY+ArxBKJaeceaue7H0Nauu
-	 6XMjlDoFIAuYIAQHzted+OdpHfTj1urfsOjUSTBapMDReiq53J8Y7SOemgtSgA816wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214365;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=z/b0JCeHd4giR3CDPQxMDvXhf6SqEu80D1hSwgPctUI=;
+	b=mRP38G5/UWvDdKdeAFL/AN9bKgy/YJmonoSDSIaDQsYdcFv4gDD43SEA7FZYgtCIo7mh
+	 whGY+4fKs/MjFHCQcGfPZH9wCAK2VSiklvQ6W11bedzL99lNtbr372Fuq3bQwifiuocxt
+	 XuNX8+VjvgJTBQ3IMreBgSL4bcCoyEUJR7ZOiZpWi+bpTvAeoNvU2fsqbAmWuw/3sklq4
+	 ChtCL0TpLKQ17qKKISepNZ8Pd6E4LraQ1jR22sUlibnLTf9YAOSGJkBVT0Ckj6/DeRJzo
+	 rvlZZaLV0fejiSi+loGDvHxBhwOWSZBKrdwgCaWbwKJWbrDdWIPrLT6D4m3rqFk8MRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cjrSw68y;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UP7EsUHX;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vlk6CKgb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB2E606EE9C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 08:51:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4CB2E606EE9C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B27C6082BC9;
+	Mon,  9 Nov 2026 08:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cjrSw68y;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UP7EsUHX
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A969qPO480811
-	for <netdev@vger.kernel.org>; Mon, 9 Nov 2026 08:51:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/3oARxDEXLg7TaIeiQ6V/+h8xlKkrQx7Ze0qvtDuS0o=; b=cjrSw68yVIWyLr/e
-	xwi4uJeVc9sKtHO2Xr1mYmIH7z5SlQE7UxfRuNJs9f9tvHYNZ1YItIbo/mB/V3+Y
-	r1Ztf36xojPxSquwT5XIpkJzpVL+7W5IguF1hckFJtVxPYWG82pSA2Nq/q4on1cK
-	5wwkarHShHogSjHBittWPna3/BMZt49ns3QHBpYNixfjFm5u6u1FXt6XezwDRXsg
-	ptskg9C5EwJSFo9bCpTTYXt1Jmjbvnhgf9YECn96QMFuX7JFmJ8GKdZY1NQYPW3u
-	bz+lu+ZJaalA8mHfH3r6h0BknwNXeRZRIsuLr9o1CO+Ue4O9wDXOvc1IGo2W4XA3
-	U9iXkg==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hstxsdmm9-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 08:51:04 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36fe0b57d91so784007eec.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 00:51:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794214264; x=1794819064; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/3oARxDEXLg7TaIeiQ6V/+h8xlKkrQx7Ze0qvtDuS0o=;
-        b=UP7EsUHXjxAcRBKAOoYsVd+lU1C8nKSBhoGcKyHouS6aedfgJyQ9vEAFNRDag64F+p
-         WjdfHa8yd/sH2luNCUiMI6sNI1nlyHURl4nAUlXVcZYz6FsDybgoj+ur9CcmoWqOkKSm
-         ykPNUSs1oedb3gttjjxNIaXpLb6QJRFzjIBccr1gXE2w63q7r3/M90mf1vbna8Sqv1ih
-         GYIMJoWcoY7n9tPHc17nauv8brGEJTM/K/DkZLqr2DNyWU6++20IjoN1APRM4aGLTm4b
-         R4SRy50Rx6Cq0KkA8O1IC4wOtSzhWG2qRWJmSS91L6IjcWFn7iUeaAdPQHqFo5wxypPB
-         ao0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794214264; x=1794819064;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/3oARxDEXLg7TaIeiQ6V/+h8xlKkrQx7Ze0qvtDuS0o=;
-        b=pVJ+ZCp0qPiYd0MVkLNpjKQl92GEcCO8HkdJY2T6O0flyg5MFuvYQy9F/4D1A0Ptqz
-         VoOIU3USRNvuXuMgy8odAbSjKUNMCbpOJWESsJAmN1B+BVtaywJ3pYqun0bhUdINV1Eh
-         AZx7nf7iyVeTwnkVLBRau6ftPqHAGdfy5HoqmIehXR1dPf+JF+aSJQthcoPobxlt6h9C
-         8UB3pI4BDJy7llQNi0QiMjttsS/X7VJ4yOG8cGKRSK1WfHXKJNT+HVkqOKJmwQBWARip
-         TMUY9WHUFV26FfgdovFPy+4K60CzbR+8ObiqXOE488trUmn4qOFUt7GDiNVnUoTHEjaa
-         hLFg==
-X-Forwarded-Encrypted: i=1; AL+hErEbhYYb8M87bQAEU1L+OyzhNdY4Ko5C7Tl1XyR+rReXaYGqgNCse8/TRvc6URp7ZdRHBQ+UO4k=@vger.kernel.org
-X-Gm-Message-State: APuU4Z83099/fcIeIARiDivxCiG7ppXdTyvkF1XEKZe2KJerTDNSfbqi
-	MGtKJSk0oe+fruZKVjjdG7qjUiAH3GquI7F85JtMh8myom+lqloLmZ/6GxF3R3nyDFz0XkK2FOs
-	xEncJ0hffxqfY2T+h5Xy5W9yA9f5I9K8Hr95JwigbaPEtXbCvfESnSN2crlA=
-X-Gm-Gg: AYBFou1UIkxUMb60K+hTS+SZaThWqsL65fKf9NzgTCHdvvfo0ieiwJybdU9ejWi38x1
-	8mSXadwVRdGniaf+dMI9ehGN+MPNPWNICwIOdZaB5RDiF2LUsupn5M/8NrDXXd9EHTqvXujBnhb
-	SJDZj+ihPcAC9Qg6NUzw1pupodX1quiS5iZIi2+7nhaYO8ir6DxXmHAm7i4JIRh2PA8MuXvTJoE
-	WswZlm90n/vuP0TZ8PoVg8b8NEHPUQ/yMYP04sshJBxbeXMepmzbh/V7wVJ0pOqiXbtLUthIgoO
-	KaTHm/5jVRtjjia9r0UAFLdt7V5lGTeRINwISJPiv18RpyeXM/suDUcvcpXdtjSh3Gexos51cLn
-	JNW+3icEgDtZyjUeZR6bY33EcUNeHyCgrh5LpSUCNcTFOWvniSLxO43JHRedaG4xRKmT2fUCMoo
-	kH
-X-Received: by 2002:a05:693c:87c7:20b0:360:d4c5:7243 with SMTP id 5a478bee46e88-37256614e85mr6020765eec.11.1794214263889;
-        Mon, 09 Nov 2026 00:51:03 -0800 (PST)
-X-Received: by 2002:a05:693c:87c7:20b0:360:d4c5:7243 with SMTP id 5a478bee46e88-37256614e85mr6020716eec.11.1794214263258;
-        Mon, 09 Nov 2026 00:51:03 -0800 (PST)
-Received: from [192.168.0.195] ([124.123.199.27])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-372656187f8sm10575336eec.5.2026.11.09.00.50.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 00:51:02 -0800 (PST)
-Message-ID: <a7228569-c78c-4262-a9ba-d355101a48d0@oss.qualcomm.com>
-Date: Mon, 9 Nov 2026 14:20:50 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vlk6CKgb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB52A1F008A2;
+	Mon,  9 Nov 2026 08:52:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794214364;
+	bh=z/b0JCeHd4giR3CDPQxMDvXhf6SqEu80D1hSwgPctUI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Vlk6CKgbI0SXgj6m96VeKgIX5VY74Ze+pg0jxLjmXFkKScvWLD+HpaDZybYGSUGPk
+	 x5wtUIg4hUGOENJD2g7o1Rp8oo4etVeqBago+jqNzs5pWJIh6oTRaGd6zL82aY0R9N
+	 XXPwTHks9iSXEMo2lqihlI4Q1DDU1kym7+8+a74UeKnkC+yIeR6XNYjYRZmGHzX4aT
+	 dLAk9XsjTy5ms6DyEEP76sUnKmbP7gwCd6GZi+Pptsr18S5tdVHjqTqiy3/HqMntsG
+	 unV871D9WXD62XRL2KW4OysoProAqo0DrKBLCtN66LYxGzrQlx09hfl/MuDOqRmXK3
+	 w0B+YLYCPJnWQ==
+Subject: Re: [PATCH net-next v9 04/11] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
+From: netdev-bot+sashiko@kernel.org
+To: namiltd@yahoo.com
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alvin.sipraga@analog.com, gusfmora@gmail.com, kuncy7@gmail.com,
+ fabianotassotti@gmail.com, gabonpivovich@gmail.com, contact@c127.dev
+Date: Mon, 09 Nov 2026 08:52:43 +0000
+Message-ID: <179421436328.994134.5244949005980013878@kernel.org>
+In-Reply-To: <9a9da3fd-2c1c-4911-aa6e-8a2100843bb8@yahoo.com>
+References: <9a9da3fd-2c1c-4911-aa6e-8a2100843bb8@yahoo.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,96 +66,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] dt-bindings: clock: qcom: Add bindings for PDM
- GP_MN clock divider
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
-        Jerome Brunet <jbrunet+clk@baylibre.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Linus Walleij <linusw@kernel.org>,
-        Richard Cochran
- <richardcochran@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Imran Shaik <imran.shaik@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, netdev@vger.kernel.org
-References: <20261026-b4-pdm_clk_gp_mnd_v2-v2-0-ff8e4bc8d567@oss.qualcomm.com>
- <20261026-b4-pdm_clk_gp_mnd_v2-v2-1-ff8e4bc8d567@oss.qualcomm.com>
- <20261027-inescapable-rough-viper-6cd56d@quoll>
- <fc2c4943-0482-4c72-b713-5a66c9995c5e@oss.qualcomm.com>
- <362884cb-71c1-4d12-b315-9923118c8564@oss.qualcomm.com>
-Content-Language: en-US
-From: Taniya Das <taniya.das@oss.qualcomm.com>
-In-Reply-To: <362884cb-71c1-4d12-b315-9923118c8564@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: Q2KhLYYeJ83n00DnYNnzE5dwIyN1Y2a4
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX7i9vj3e3vx41
- e04KYPXw5kjXU1injXQ9E5Fe9yKzSK2RKsc+ENzP73JXVoP0A8+gQB0714Sh9mdUPeR90vMyLv9
- OjSKJwg7Bgd5LrSbzPYc7ztMOKmGWf0=
-X-Authority-Analysis: v=2.4 cv=dZMVTnXe c=1 sm=1 tr=0 ts=6af18978 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=kgg5nJQTCQF2KXP9n8GJFg==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=IYge48onPvb9mXducVgA:9 a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX5ksa7GbWu5Ez
- J0I9I7Yz9a2ewhwDJFswAeQiPORabx4/nJA599LmGO05Dklm9rQuE48Ee8o6gpMAUTpGOGXHoEf
- Hiq4J6AjR9Y8pprKI6MyGuXC7abfadUvDrIMlk3//xPv/Jlii4exz5+gq7kzGH/dIZv9+59j7dQ
- oDaOnNStrxsrWUp5vKw4oaXHk0tAJNTISJlBHmibV5L0twXytp8EQMEfL6h4rGoSsF4vB/JsW2b
- YZk52NxbNmTnfE1yHwUKMElx4KXRFzfQQhzB3mMf52GAXKA3y9nfM5VVCN6uJhhRMekR9ATFrI3
- 4SAHT5nxbks4bVUDlhdgBFbOFXUTbLgXfnDNAH5kfwMjvQSBaX00UozFXShZJL8N3sENzNaJmOg
- NTRkLECWzFGJTtTIr2NkrBuv835DHgYwZkPrdUHRYeBCM4pEDP7GcbiJxQeCmyhKjnxSKEmrivf
- XccymGa1uoJCfn/JkhA==
-X-Proofpoint-GUID: Q2KhLYYeJ83n00DnYNnzE5dwIyN1Y2a4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-09_03,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611090035
 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
+Low priority / nit picks for your consideration:
 
-On 11/2/2026 8:38 PM, Konrad Dybcio wrote:
->>>> +  assigned-clocks:
->>>> +    maxItems: 1
->>>> +    description: Parent clock phandle used to set the input frequency.
->>>> +
->>>> +  assigned-clock-rates:
->>>> +    maxItems: 1
->>>> +    description: |
->>>> +      Rate for the parent clock in Hz.
->>>> +      Supported rates: 19200000, 9600000, 6400000, 4800000.
->>> Neither assigned-clocks nor assigned-clock-rates should be needed.
->>> Parent clock is outside of scope of this binding.
->>>
->> Sure I will remove, but the parent clock input is a requirement of the
->> Hardware and the output of this module entirely depends on the above
->> ranges of frequencies mentioned and that is the reason to keep the rates
->> specifically. I will capture it in the description and hope that should
->> be fine.
-> So this is essentially xo, xo/2, xo/3, xo/4. The gcc_pdm_xo4_div_clk_src
-> you added is defined as a 4-wide divider - do we need to limit that
-> divider's range, or would div=0b1111=xo/15 also work?
+- [Low] On family D (RTL8367S-VB), rtl8365mb_phylink_get_caps() in
+  drivers/net/dsa/realtek/rtl8365mb_main.c does not advertise RGMII for…
 
+--
 
-Konrad, the divider is valid till 15(i.e 1.2MHz input frequency is
-valid). I will update the frequency range in the next patchset in the
-description if you think that is the way we should go about.
+net: dsa: realtek: rtl8365mb: set RGMII mode for family D
+
+For family D, this patch clears the EXT1 RGMII TX clock delay field in
+EXT_TXC_DLY. It binds the RGMII/MII pins to MAC7 in TOP_CON0 and disables
+SerDes 1 before RGMII is selected. In phylink_get_caps(), RGMII is no
+longer advertised on port 7 when TOP_CON0 shows that MAC4 owns
+extension 1.
+
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index 0d87d6bbe15a7..0b7c124abb1e7 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+
+[ ... ]
+
+> @@ -1799,8 +1847,26 @@ static void rtl8365mb_phylink_get_caps(struct dsa_switch *ds, int port,
+>  	 * which remain unimplemented.
+>  	 */
+>  
+> -	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII)
+> -		phy_interface_set_rgmii(config->supported_interfaces);
+> +	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_RGMII) {
+> +		/* On family D the EXT1 pins are shared with MAC4 (UTP port 4).
+> +		 * If MAC4 owns them, RGMII on this port cannot work.
+> +		 */
+> +		if (rtl8365mb_is_d(priv) && extint->id == 1) {
+> +			ret = regmap_read(priv->map, RTL8365MB_D_REG_TOP_CON0, &data);
+> +			if (ret)
+> +				dev_warn(priv->dev,
+> +					 "failed to read TOP_CON0, RGMII on port %d disabled: %pe\n",
+> +					 port, ERR_PTR(ret));
+> +			else if (data & RTL8365MB_D_MAC4_SEL_EXT1_MASK)
+> +				dev_warn(priv->dev,
+> +					 "port %d: EXT1 is owned by MAC4, RGMII disabled\n",
+> +					 port);
+> +			else
+> +				phy_interface_set_rgmii(config->supported_interfaces);
+
+[Severity: Low]
+Is a warning the right log level here? Port 7 may end up with no usable
+interface at all.
+
+In the RTL8367S-VB chip table entry added later in the series, port 7 is
+described as MII | TMII | RMII | RGMII. RGMII is the only one of those
+modes the driver implements. When either branch above skips
+phy_interface_set_rgmii(), config->supported_interfaces stays empty, and
+phylink_create() rejects that:
+
+drivers/net/phy/phylink.c:phylink_create() {
+    ...
+	if (phy_interface_empty(config->supported_interfaces)) {
+		dev_err(config->dev,
+			"phylink: error: empty supported_interfaces\n");
+		return ERR_PTR(-EINVAL);
+	}
+    ...
+}
+
+When port 7 is a user port, dsa_tree_setup_ports() falls back to
+dsa_port_setup_as_unused(). When port 7 is the CPU port (the series
+supports an RGMII CPU port there), the whole tree setup is aborted:
+
+net/dsa/dsa.c:dsa_tree_setup_ports() {
+    ...
+		if (dsa_port_is_dsa(dp) || dsa_port_is_cpu(dp)) {
+			err = dsa_port_setup(dp);
+			if (err)
+				goto teardown;
+		}
+    ...
+}
+
+In that case the switch fails to probe. A warn-level "RGMII disabled"
+message suggests the port keeps working in a degraded state.
+
+In the regmap_read() failure branch, the real I/O error is only shown at
+warn level. The probe then fails with a generic -EINVAL from phylink.
+
+The commit message says:
+
+  "so the configuration is refused before any EXT1 register is touched"
+
+and:
+
+  "The driver logs a warning naming the conflict."
+
+Could the commit message mention that the port, or the whole switch if
+port 7 is the CPU port, will fail to set up? Should these messages be
+dev_err() and say that the port cannot be used?
+
+> +		} else {
+> +			phy_interface_set_rgmii(config->supported_interfaces);
+> +		}
+> +	}
+>  
+>  	if (extint->supported_interfaces & RTL8365MB_PHY_INTERFACE_MODE_SGMII &&
+>  	    mb->sds_supported)
 
 -- 
-Thanks,
-Taniya Das
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/9b73858d-fc09-4988-8bab-fd7b88db9412%40yahoo.com
