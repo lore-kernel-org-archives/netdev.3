@@ -1,53 +1,156 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.79.60.68
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229566;
-	b=V8rdVb+l0gAlG3QUbXPPHoYzf1yUT/zH6797Q9fbT8VlhHgILWu/L0oOb9XpIvPhoUvi
-	 cF7Mzjw0+Y0ewt7l7ImgMvDEGNwh6clXWYj1N7mHFMbkAzDdvIPwUb+q82kMgUGsJXlTz
-	 /Zz+Sx6wSCSfJv2cCM8zxO3Uqdhi90mmJQxjy3MUiV/Ksn33E6ILw/EcBj0nTRgjQmjOY
-	 YGqPusiGrOWQW4wSRNKMMumY5sx92WnFk0qyUAL0TQcsX1Of+4Zft7+V+8DgYCV3aya7/
-	 lV0OtYBLVwvWhpBcyu2fZJVQPeuUQrjXlXqZgGhsgiVt0DC2e+w57veM1TXj1grA54A==
+	t=1794229611;
+	b=xqIvyeMEqQTmZAoR9zkP6E/y9vIL7vAgg8KpgfXxsqacvt8vqTl2c9bD5SEnL5TlwlIM
+	 BiwqUG8vyCoH7bY9NJ9dmneyXWte73LPZ7M9hZcW/suXLSgvuis0pxDxGA3yyaue7bgF2
+	 mMYNRxr0blUjvmvsFAf/A4c2wei+PYQJgtWQ232dch0wf1mEbbs9OdDwtl2y9XA55g9dP
+	 S6KcIzhInjds4hqK04uxKlv7Mjsi3hwZhL6ji+D0SeVP34JD1Cm2NuYU8NpIRL0VpxjsE
+	 AteH5QBM1HEyGpM7GvnnggMGyNL3pXtjXcaKpDqvCFeYxiQeeuXmgYXkB7f37JQzTPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229566;
-	h=DMARC-Filter:Content-Type:Content-Transfer-Encoding:Message-ID:To:Cc:
-	 Subject:X-Priority:X-Mailer:X-Originating-IP:In-Reply-To:References:
-	 MIME-Version:Received:From:Date:X-HM-Tid:X-HM-MType:X-HM-NTES-SC:
-	 X-HM-Spam-Status:DKIM-Signature;
-	bh=Uwx411kQ+pLsLGYRN6fUT/Mj26SB4GKvUWvjQbIK0qs=;
-	b=Ekq/vg9jo0fQzQr6zh+xHHDxaSdp7hVDi64IXeqOmEZHK+hjhGjVGgZHrwyaRfURVaAq
-	 46diTUOLY7WVHPc5KlXVLN3x82K248puzgHieMKHy7ZVCybOz7gXQJNogL7Sd0dInea5i
-	 zWnt/N2VySS4ZY8XQnDptDeTFfK1LghGef6VBQSDsh4g0rbW8kSBU7qJ3FzDsfqhKE9PI
-	 yRUy8gL2Oaj17TkOHs4KBiFmTu4k9+cJwWTD3O2g00KsFlLXGHUO1NUVj2BTy6XNBB/CE
-	 qqfzjmWS7f7fF1gfG1Sou/HMiZmtWstGgdnAM8nsgQS+l79lfkTQK0I6KkE2B0psROQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229611;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+	b=k0AxsBPK9RU5OsyRG5zBRC6+lV1xBe4T0+SCpbYhCH4hG5bqIxUkP2f3E/ITJCly/t/P
+	 VrYMlAaHWo0BCOYinP0fjEPoVmDc8YH/2611RonI0U95mYmQMIutAJ0bgOOmvlqWtZHbw
+	 49tNTZpPxWdLvOs8bs6Pub7fcOOSK6v8yX+RtDaPt6MXH8dBJiUDGR9FiKlZkOK9GRimi
+	 XHYiDGZLtJrrP+HYSpix9uCBIuzuKzgGoy10TCi/Zw5lE1xohqSdO17OW0RDuMmlqfkMi
+	 7lIOuE1egqsUuJogHxj3cSSijfTzdI6GRoaCH44pwcbF61Z/Q+StQChgzoX6RvC5/Uw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mail.sdu.edu.cn;
-	spf=pass smtp.mailfrom=mail.sdu.edu.cn;
-	dkim=pass header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=c24RGP0w;
-	arc=none smtp.remote-ip=210.79.60.68
-Received: from mail-m6068.netease.com (mail-m6068.netease.com [210.79.60.68])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=brBKYvqA;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hvH2JAKU;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E46E606A321;
-	Mon,  9 Nov 2026 13:06:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E46E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.sdu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.sdu.edu.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EFA606A331
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 13:06:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9EFA606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mail.sdu.edu.cn header.i=@mail.sdu.edu.cn header.a=rsa-sha256 header.s=default header.b=c24RGP0w
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AHAASAAGLPGJfVjn9skPJKoS.3.1794229559658.Hmail.202321181@mail.sdu.edu.cn>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCBuZXRdIG5ldDogcGh5OiBtaWNyZWw6IEZpeCBwb3RlbnRpYWwgc2hhcmVkIFBIQyB1c2UtYWZ0ZXItZnJlZQ==?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com web
-In-Reply-To: <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
-References: <20261107-0d0c29e10a-net-micrel-lan8814-1@mail.sdu.edu.cn> <71089325-dfab-45f7-9ebd-1feb65013863@lunn.ch>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=brBKYvqA;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=hvH2JAKU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794229609;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+	b=brBKYvqAgmzd5ioRQI92wuXELPvhkYgKM2F8jauv/xxTF85vJf9TfZRJDwY6S3qocWE2w5
+	BklDMCD3x6U+dxXdxMJaoOgWrz9jeDkOxnyPazk+ay+NgDvaIImxEGxj66aehgAhvPFl4U
+	14Sbuz1J+yZQPmFV0N/cb/YE+8+rEkg=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-5CiMWHJHPbGtedWTJq_Dfg-1; Mon, 09 Nov 2026 08:06:48 -0500
+X-MC-Unique: 5CiMWHJHPbGtedWTJq_Dfg-1
+X-Mimecast-MFC-AGG-ID: 5CiMWHJHPbGtedWTJq_Dfg_1794229607
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6b70d5bd731so972930a12.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 05:06:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794229607; x=1794834407; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+        b=hvH2JAKUSPVN6CLi6ISw5CHEFk3kPPwX1uKW23tcP+tjSVKeRNUFAITwWBNXNw3VXK
+         zAS0k7VgaTGEeOoiCTbdFHAyPaNCHkgQAr0Iw5CKQd5HTNSjYPUzjz/W2V6qPp1GfwlG
+         QXUlhHLmJG/B84GBezCBkFReNNINJG7gH0Pt261lGg1cSjRs1YY0rXZeXOmbC6NCKRgb
+         4Yyxk1tUUGitmRMqkX9FdvZT9B2RdJuzn/5xE59oCnobNDOJupirMcPqRWUWQ9w+2r39
+         x3nWRxdKdrdnuJIPiFXIw+j9wT+Nlanvnm41D3MtSFPF412jW0sWvm2PFteDKwoP38kK
+         360w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794229607; x=1794834407;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ala+oDARam9VyrCVVd83FiqqzQ26GgOylxTttfV+xTA=;
+        b=oWpIw1YQ6kbL4GlnJn0JOEv6HsvIuHfzxU63kjRxNfaMOwjnDnhgpH+Ma89wRJs8cq
+         DKnGVY2Uu9Scz9ipDhlE8gM76hdv3WfJxOLdbrWYaZWKb8WeZrwdiQhOnFp3gMyQjW0g
+         BIxB8jEtTKSY+gazPRvVdxn7cRW2iDA9RQI6WvPPjfmEqp3gpVmitHARtt3AX80o9Urp
+         tPEjuixKdhMaX13+8ERhVyGFoVQoSly7Dy+JOzSCegnZFjRVONUZIASUvAC12K3ptEmk
+         b+goU/ZRm5/WMPI2LKi3lB+hEZIWP5XwdXCf/LsgOGZmjtkyzW4uPh4OqBg5E4RIl/nJ
+         qXEw==
+X-Forwarded-Encrypted: i=1; AL+hErExuUTBWuFjdmofFbYiI4z9VUToZTUc7BVcMG/s/d3Xe58tTgNQ/hU0sIezh3QN0uC0X9/HwrA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ev+pFbRbR0ic2H7blA5AJl1yB+GtKmCpHPenN2scufhoN2Qnf
+	DZNTFsxKqL0ZpFVRBarOzhNrWmqikCoKVLhZD3otCt3folQnpvmWtEYDdgHH0lUK+JLqen0MUTu
+	0CLDmiL6XjKTdjAb3c/iNb2A5R/SE/+m/O46c++sFDCFgs9UMOpVmwNW4jg==
+X-Gm-Gg: AYBFou0m8XcrL93Yue1rMNsdEHE8eaahJZNVX0wwnSRgySUnZSetsWqRsscbIcy/ad2
+	K3//hJdYqmG39ZIkSVhJ7ZCa4K1qgyQHKZEsNOwlhWHuSxIGcyQHkYxkDR2VQF+/z92PVUL/xLp
+	JfMQHwROgq/wOacVBOxmdL+2P0nKg7RtMQaESa1ZOxgrGIeT91QdG0sjhl84YToeieelrbQ7rrZ
+	7V5Y/3DAa6ftteuPxG8f8yjmzFbvTqJPlk9iZfPbuouMiD39Z0mRIORNsvTynRbC0K6cwHg7KyL
+	aq+2EHUOPu3SdAHG6g/ZiwZ9qeRVp+/STAVBNiEwpZ7oRX/BgOUuOp0ktXjP4sj30xMZEPC4eXR
+	hEz6kVjkCtuvm3w/osY6XME7uCHFCl90EBuPrArZ5
+X-Received: by 2002:a17:907:18c3:b0:c25:f7db:4bec with SMTP id a640c23a62f3a-c4d6db5760cmr321580366b.18.1794229607351;
+        Mon, 09 Nov 2026 05:06:47 -0800 (PST)
+X-Received: by 2002:a17:907:18c3:b0:c25:f7db:4bec with SMTP id a640c23a62f3a-c4d6db5760cmr321574566b.18.1794229606674;
+        Mon, 09 Nov 2026 05:06:46 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d69f9384csm168299566b.13.2026.11.09.05.06.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 05:06:45 -0800 (PST)
+Date: Mon, 9 Nov 2026 08:06:38 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Scott Branden <scott.branden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 14/14] vhost-vdpa: convert mmap hook to mmap_prepare
+Message-ID: <20261109080616-mutt-send-email-mst@kernel.org>
+References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
+ <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,52 +160,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Received: from 202321181@mail.sdu.edu.cn( [101.76.249.61] ) by ajax-webmail ( [127.0.0.1] ) ; Mon, 9 Nov 2026 21:05:59 +0800 (GMT+08:00)
-From: =?UTF-8?B?5p2O5bm/56GV?= <liguangshuo@mail.sdu.edu.cn>
-Date: Mon, 9 Nov 2026 21:05:59 +0800 (GMT+08:00)
-X-HM-Tid: 0aa1c068f344d0cdkusy32cfb2e0ea97
-X-HM-MType: 1
-X-HM-NTES-SC: AL0_4z5B86Wr4Tz9jdMF+bhXMVHpP02bZAKsMEiErRSAekjx+ys+KNZNl0PLwl
-	f2MeqR5lbiqKsoq8sm3hZVy9q3VY0Ca69y1LOfMeXKdLfI1E5i1eQoqSDNKmzdVlKZstM3zMatiP
-	6f2nKh8VfvidlmoN6FW855umPHcnkTFehqKqk=
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHhhKVktIHhhDShpLSksdH1YVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKS0pVTE1VSU9CVU1KWVdZFhoPEhUdFFlBWU9LSFVCQk
-	lOS1VKS0tVSkJLQlkG
-DKIM-Signature: a=rsa-sha256;
-	b=c24RGP0w8GS1kFlMgpeIV4goy0/fiBcfsRhdX8M7EE6Rx0KfYRRZ0miTjZgw3bZBWhWbZRq/IKlF2x0yBeDImPT+PORQF6vs8CHzhLW/PzXtyHrYIM1JUHoyqZg16/KlzZM53qp8XgFAYIsc6e43m2TE8cRRQK8wwM2sqRquBfo=; s=default; c=relaxed/relaxed; d=mail.sdu.edu.cn; v=1;
-	bh=Uwx411kQ+pLsLGYRN6fUT/Mj26SB4GKvUWvjQbIK0qs=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
 
-CkhpIEFuZHJldywKCkZyb206IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4KRGF0ZTogMjAy
-Ni0xMS0wNyAyMjo0MDo0NQpUbzogIEd1YW5nc2h1byBMaSA8bGlndWFuZ3NodW9AbWFpbC5zZHUu
-ZWR1LmNuPgpDYzogIEhlaW5lciBLYWxsd2VpdCA8aGthbGx3ZWl0MUBnbWFpbC5jb20+LFJ1c3Nl
-bGwgS2luZyA8bGludXhAYXJtbGludXgub3JnLnVrPiwiRGF2aWQgUy4gTWlsbGVyIiA8ZGF2ZW1A
-ZGF2ZW1sb2Z0Lm5ldD4sRXJpYyBEdW1hemV0IDxlZHVtYXpldEBrZXJuZWwub3JnPixKYWt1YiBL
-aWNpbnNraSA8a3ViYUBrZXJuZWwub3JnPixQYW9sbyBBYmVuaSA8cGFiZW5pQHJlZGhhdC5jb20+
-LG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcsbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZwpTdWJq
-ZWN0OiBSZTogW1BBVENIIG5ldF0gbmV0OiBwaHk6IG1pY3JlbDogRml4IHBvdGVudGlhbCBzaGFy
-ZWQgUEhDIHVzZS1hZnRlci1mcmVlPk9uIFNhdCwgTm92IDA3LCAyMDI2IGF0IDAyOjU0OjM3UE0g
-KzA4MDAsIEd1YW5nc2h1byBMaSB3cm90ZToKPj4gVGhlIHNoYXJlZCBQSEMgb3V0bGl2ZXMgdGhl
-IGZpcnN0IFBIWSdzIG1hbmFnZWQgcGluIGFycmF5IGFuZCBpcyBub3QKPj4gdW5yZWdpc3RlcmVk
-IGJlZm9yZSB0aGUgcGFja2FnZSBkYXRhIGlzIGZyZWVkLiBTdWJzZXF1ZW50IFBIQyBvcGVyYXRp
-b25zCj4+IGNhbiB0aGVyZWZvcmUgYWNjZXNzIHJlbGVhc2VkIHN0b3JhZ2UuCj4+IAo+PiBLZWVw
-IHRoZSBwaW5zIGF0IHBhY2thZ2Ugc2NvcGUgYW5kIHNlbGVjdCBhIHJlbWFpbmluZyBQSFkgZm9y
-IHJlZ2lzdGVyCj4+IGFjY2VzcyB3aGVuIGEgbWVtYmVyIGxlYXZlcy4gVW5yZWdpc3RlciB0aGUg
-Y2xvY2sgYmVmb3JlIHJlbGVhc2luZyBpdHMKPj4gc3RvcmFnZSBvbiB0aGUgbGFzdCBtZW1iZXIn
-cyBleGl0LiBQYWlyIGVhY2ggbWVtYmVyJ3MgcmVnaXN0cmF0aW9uIHdpdGgKPj4gY2xlYW51cCB0
-aGF0IGFsc28gcnVucyBvbiBwcm9iZSBmYWlsdXJlLCBhbmQgc2VyaWFsaXplIGNsb2NrIGFjY2Vz
-cyB3aXRoCj4+IG1lbWJlciByZW1vdmFsLgo+Cj5Zb3UgZml4IGxvb2tzIG92ZXJseSBjb21wbGlj
-YXRlZC4gVWdseS4KPgo+VHJ5IGxvb2tpbmcgYXQgaXQgZnJvbSBhIGRpZmZlcmVudCBkaXJlY3Rp
-b24uCj4KPi5wcm9iZSgpIGFuZCAucmVtb3ZlKCkgc2hvdWxkIGJlIG9wcG9zaXRlcyBvZiBlYWNo
-IG90aGVyLiBXaGF0IGhhcHBlbnMKPmlmIHlvdSBkbyB0aGF0Pwo+Cj4gICAgQW5kcmV3Cj4KPi0t
-LQo+cHctYm90OiBjcgo+CgpPbiBMQU44ODE0LCBvbmUgUEhZIHJlZ2lzdGVycyB0aGUgc2hhcmVk
-IFBIQyBhbmQgb3ducyBpdHMgcGluIGFycmF5LgpJZiB0aGF0IFBIWSB1bnJlZ2lzdGVycyB0aGUg
-Y2xvY2sgaW4gLnJlbW92ZSgpLCB0aGUgY2xvY2sgZ29lcyBhd2F5CmJlZm9yZSB0aGUgcGlucyBh
-cmUgZnJlZWQuIElmIGFub3RoZXIgcG9ydCBpcyBzdGlsbCBib3VuZCwgaXQgbG9zZXMKYWNjZXNz
-IHRvIHRoZSBQSEMuIEkgYWRkZWQgdGhlIGhhbmRvZmYgaW4gdjEgdG8ga2VlcCB0aGUgY2xvY2sK
-YXZhaWxhYmxlIGluIHRoYXQgY2FzZS4KCkknbGwgcmV3b3JrIHRoaXMgYXJvdW5kIHRoZSBQSFkg
-dGhhdCByZWdpc3RlcmVkIHRoZSBjbG9jay4gSSdsbCBjaGVjawpob3cgdGhlIHJlbWFpbmluZyBw
-b3J0cyByZXBvcnQgdGhlIFBIQyBhZnRlciB0aGF0IFBIWSB1bmJpbmRzLCBhbmQKd2hhdCBoYXBw
-ZW5zIGlmIGl0IGJpbmRzIGFnYWluIHdoaWxlIGFub3RoZXIgcG9ydCBpcyBzdGlsbCB1cC4KClRo
-YW5rcywKR3VhbmdzaHVvCgoKCg==
+On Thu, Nov 05, 2026 at 09:05:45PM +0000, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
+> only validates the request and sets the VMA flags, operations and page
+> protection.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+Who's merging this, me?
+> ---
+>  drivers/vhost/vdpa.c | 23 ++++++++++++-----------
+>  1 file changed, 12 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index ff7d90719171..993b2d7c8927 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -1573,19 +1573,19 @@ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
+>  	.fault = vhost_vdpa_fault,
+>  };
+>  
+> -static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
+> +static int vhost_vdpa_mmap_prepare(struct vm_area_desc *desc)
+>  {
+> -	struct vhost_vdpa *v = vma->vm_file->private_data;
+> +	struct vhost_vdpa *v = desc->file->private_data;
+>  	struct vdpa_device *vdpa = v->vdpa;
+>  	const struct vdpa_config_ops *ops = vdpa->config;
+>  	struct vdpa_notification_area notify;
+> -	unsigned long index = vma->vm_pgoff;
+> +	unsigned long index = desc->pgoff;
+>  
+> -	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+> +	if (vma_desc_size(desc) != PAGE_SIZE)
+>  		return -EINVAL;
+> -	if ((vma->vm_flags & VM_SHARED) == 0)
+> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
+>  		return -EINVAL;
+> -	if (vma->vm_flags & VM_READ)
+> +	if (vma_desc_test(desc, VMA_READ_BIT))
+>  		return -EINVAL;
+>  	if (!ops->get_vq_notification)
+>  		return -ENOTSUPP;
+> @@ -1598,12 +1598,13 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
+>  		return -EINVAL;
+>  	if (notify.addr & (PAGE_SIZE - 1))
+>  		return -EINVAL;
+> -	if (vma->vm_end - vma->vm_start != notify.size)
+> +	if (vma_desc_size(desc) != notify.size)
+>  		return -ENOTSUPP;
+>  
+> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> -	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
+> -	vma->vm_ops = &vhost_vdpa_vm_ops;
+> +	desc->page_prot = pgprot_noncached(desc->page_prot);
+> +	vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
+> +			   VMA_DONTDUMP_BIT);
+> +	desc->vm_ops = &vhost_vdpa_vm_ops;
+>  	return 0;
+>  }
+>  #endif /* CONFIG_MMU */
+> @@ -1615,7 +1616,7 @@ static const struct file_operations vhost_vdpa_fops = {
+>  	.write_iter	= vhost_vdpa_chr_write_iter,
+>  	.unlocked_ioctl	= vhost_vdpa_unlocked_ioctl,
+>  #ifdef CONFIG_MMU
+> -	.mmap		= vhost_vdpa_mmap,
+> +	.mmap_prepare	= vhost_vdpa_mmap_prepare,
+>  #endif /* CONFIG_MMU */
+>  	.compat_ioctl	= compat_ptr_ioctl,
+>  };
+> 
+> -- 
+> 2.56.0
+
