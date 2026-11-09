@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794262951;
-	b=Kuof3eKpG2u3auyJOL8ub47YdG1+w+74E74w2Kdyp8JnnbDTGD9fEc52qF95Ba9kqPL0
-	 hwbECqKpx6JvwJ80EuMHLLnoy9Q5zUo0vW9R6whkoKyqbKmYeNDwZntXk0bl+kNelxBXu
-	 P6xieGNb+0ar4V8nNnpxIdMLZ8b3vCd5mT/t9FXJD0gt/klsHvXY1AtpkTncMQws5l1+6
-	 9dqVjnbmV4KExsS2qCS7vUXoYubcrn0CjuSMTwRWXzlDAJrVtcOBPExqcp90ZbJeYZqfA
-	 76VBHGTI6F0/18/b3gepcIpQ3D3aBpCiwnpSDpqW19wqIM4OEJ5tvHWJy+8NLMSuodg==
+	t=1794262952;
+	b=e+l3BD862i9eLaOu3vfg/jicGigmeERAmQAISWPWd64Jb6sSkEULWxKmYb/1fF4Zi5BT
+	 M19E8Lv+jnzN7Wq/EbPFHLsdExegAU6Fr4oFMQKE1NYbiLXsVOzJAbJThy5foDIZ5tjIh
+	 Kn1PdseYXBIkGMJKeR4QyGvQYe5zP+U5ilVT2zj4JBl2WJx2lG65m6ClMITtDF0bOsXDg
+	 +akp/sBKzKf9KrOMdYUTsMsum12rLPcMCjs+CAFxnFgas36mBd4OAf4lZ5Il7IrzGm8Az
+	 63Epgd/Hixy6YAXgNg9tBzXKmXTqyoXaBm8WSqOO4AcYl9ot4BjqkVj59nXxs43Kulg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794262951;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794262952;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=O0a6fglP0H3yIqJEiLTB6YZUM/nKYqXeYK5nl4wY4+g=;
-	b=GSBF50+VAOS1OHkviHwtSchFCrVCHgzZs1ZUy2eYHd4fyxOmsWBVoqNWgTxx40nsgwhh
-	 gjTy+RyB9rwsnETJfx7vS0zmJnsbbmbi7F0Bz5RCZD1pwsmBAMNx0cdxstQB2XLqK9TlK
-	 8L1tKeljW2HUjfHjzw75RCqfB5NtNuVDac4/OJTFgAXYmHJHPz60mb99DkV2HCeRw1EQD
-	 6X1yzVe5myfda018k9QLZlQ75XZStoENYkCPhC+AVjqGxsnSyzW5D/kZYa10HBZF3VxU1
-	 L3zUp7RoJrDH47wQkOWDKJrvk9kbVQ2bK5c2vdQSljPwE7khMmLkBO0WlYSYuxqzftw==
+	bh=OiCpC5XsB3JYKakoqgJAGxb3FzHd2zCmjhOwtLqCcWc=;
+	b=PrxrPzUuXPmEuSUgw/EMl0b+LfkLsv23rKLi7gzqrQ+QSq4WBud2SqYh2kSjG+Flwgnn
+	 7QX6YgmNgb8Vw7DL2jIC4WhNtq4ubo4Kad6Y6DS35cN8jpua1RW5Q7dqb1ZQjrSXPdh+Q
+	 lv/ck186R0dsosbFR/Axu3FnbUnKgmlX3Hxt5Ze1KhzvERpBcXE04LhQutL4pUfIdPAdU
+	 WCeUolyU7u9iBAJYD4e8l7JZ+mSQ5QidK7sy5+g2SgZEviRyQ+gOX9AQNRAaCT5wIPnhL
+	 uFwhivJSAfbW+xismlY7WdLAlBumg/K27GfYRNJv4ef+BSJGcMK2TKoE7/TCX2vJdgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rkx4XElr;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pc14mFzS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E020060A2611;
-	Mon,  9 Nov 2026 22:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16A60A261A;
+	Mon,  9 Nov 2026 22:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rkx4XElr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B361F008A1;
-	Mon,  9 Nov 2026 22:22:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pc14mFzS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313761F008A3;
+	Mon,  9 Nov 2026 22:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794262950;
-	bh=O0a6fglP0H3yIqJEiLTB6YZUM/nKYqXeYK5nl4wY4+g=;
+	s=k20260515; t=1794262951;
+	bh=OiCpC5XsB3JYKakoqgJAGxb3FzHd2zCmjhOwtLqCcWc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Rkx4XElrh6LJfbP6o/GJnpr0WY9u5dg/6Po2XhAOcHVyreqd+cLRREhCc5sTL5Ygn
-	 fav/RfoBbbXq5ioYSN8mW0FRL/xbHoqYmmIR3Llu1VTOrP8nquQDCJuoWEcq0J1bSa
-	 Vok/UrFfUxiYeL6YLsLpLYmgfdWUmzxiJlnGu2u8gQ5mvebpaoqfKglwSdh7dVaYJY
-	 e20y03i52NJT2kjoPaPZthj4kU+eMvgrfihRObtDMfl8S9z504saOwoyFy6DVB89pQ
-	 h3mmUGJHb/8g1FZZ2+eG5u+pyhRXD7rhpWI3FlNrwDGaDr7utVJztbvj5iJjua1iCN
-	 RgYayplKLXOrw==
-Subject: Re: [PATCH net-next v5 5/7] net: dsa: motorcomm: Translate FDB VID
- for VLAN-unaware bridges
+	b=Pc14mFzS08ChMou+vLHy/VLWuEut/MmhM/CcqDlpyb4cC33r6yBXzcopmsDJvDx7Q
+	 da3giONMgPOV4LK+b2fGDRnQRfY4pwLUiL7ODCHH8rARYHAmfX119IvabQSMtC7co/
+	 6S6J5YLtL59C1HRJ3k1NozoiV6lOL+NXJ32K4Pbhv7t7X/4eIWxa73ytlpsNLtdDSO
+	 y5djTQ+DKBv1ceyYlcwGFLCptf0ccsVN7cIn9UUHVQmuC2CaznszxcyGO/tuJS7ppr
+	 kmAHdY93dRYxZ5QFTLeJEi/N5OgsHGAuVu2CqkbD/fkzWmuGyry0Fpc6UnMDnrkpBA
+	 uchrsM5WgkYZw==
+Subject: Re: [PATCH net-next v5 6/7] net: dsa: motorcomm: Report inconsistency
+ on bridge join failure
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Mon, 09 Nov 2026 22:22:29 +0000
-Message-ID: <179426294961.994134.2967123857690354980@kernel.org>
-In-Reply-To: <20261108214450.1662362-6-mmyangfl@gmail.com>
-References: <20261108214450.1662362-6-mmyangfl@gmail.com>
+Date: Mon, 09 Nov 2026 22:22:30 +0000
+Message-ID: <179426295075.994134.15437406189348834005@kernel.org>
+In-Reply-To: <20261108214450.1662362-7-mmyangfl@gmail.com>
+References: <20261108214450.1662362-7-mmyangfl@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,173 +75,157 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In drivers/net/dsa/motorcomm/chip.c, yt921x_fdb_join() (line
-  798) and yt921x_fdb_leave() (line 749) now rewrite every vid-0 FDB/MDB…
-- [Low] The patch fixes a defect that has existed since the driver was
-  added in commit 186623f4aa72 ("net: dsa: yt921x: Add support for…
-- [Low] The commit message describes only FDB entries ('A VLAN-unaware
-  bridge reports VID 0 for its FDB entries').
+- [High] When yt921x_bridge_join() fails partway, the patch knowingly
+  leaves the switch half-programmed and only sets an extack message.
+- [Medium] In yt921x_dsa_port_bridge_join()
+  (drivers/net/dsa/motorcomm/chip.c:1436-1439), a failed join is…
+- [Low] The new extack text "Fatal IO error; hardware no longer
+  consistent" is set for every non-zero return from…
 
 --
 
-net: dsa: motorcomm: Translate FDB VID for VLAN-unaware bridges
+net: dsa: motorcomm: Report inconsistency on bridge join failure
 
-This patch remaps VID 0 to the VLAN-unaware FID (YT921X_VID_UNWARE, 4095)
-when adding or removing entries in yt921x_fdb_join() and
-yt921x_fdb_leave(). It also maps FID 4095 back to VID 0 when unicast
-entries are dumped in yt921x_fdb_dump().
-
-> A VLAN-unaware bridge reports VID 0 for its FDB entries, but lookups run
-> with the unaware FID (VID 4095). Entries added through switchdev were
-> installed under FID 0 and could never be hit by the hardware lookups.
-
-[Severity: Low]
-The commit message only mentions FDB entries. However,
-yt921x_fdb_join() and yt921x_fdb_leave() are also the backends for
-yt921x_dsa_port_mdb_add() and yt921x_dsa_port_mdb_del():
-
-yt921x_dsa_port_mdb_add()
-    res = yt921x_fdb_join(priv, addr, vid, BIT(port));
-
-yt921x_dsa_port_mdb_del()
-    res = yt921x_fdb_leave(priv, addr, vid, BIT(port));
-
-That means every vid 0 MDB entry on a VLAN-unaware bridge, from IGMP/MLD
-snooping or static mdb entries, also moves from the unused FID 0 into
-the live FID 4095.
-
-Before this patch, the hardware treated known-group multicast as unknown
-and trapped it to the CPU. The software bridge then forwarded it to the
-group members and to the multicast router ports.
-
-Now the hardware forwards it only to the MDB member ports. When the CPU
-port is in the mask, the frame arrives with code FORWARD and
-offload_fwd_mark set, so software does not forward it again. net/dsa has
-no mrouter handling, so router ports that are not group members appear
-to stop receiving this traffic.
-
-Could the commit message describe this change in multicast forwarding?
-The "back and forth" translation on the dump side also skips multicast
-entries.
-
-[ ... ]
-
->     Signed-off-by: David Yang <mmyangfl@gmail.com>
-
-[Severity: Low]
-This isn't a bug, but should this carry a Fixes: tag? Since the driver
-was added, yt921x_fdb_join() and yt921x_fdb_leave() have passed vid 0
-straight through to FID 0:
-
-Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
-
-Static entries were never offloaded. Host FDB entries installed through
-assisted_learning_on_cpu_port also never overrode the hardware-learned
-FID 4095 entry. So a station that moved from a switch port to a CPU-side
-interface kept being forwarded to its old port until ageing.
-
-Note that backporting this patch as written would also backport the
-cross-domain FID 4095 issue raised below.
+This commit sets an extack error message in yt921x_dsa_port_bridge_join()
+when yt921x_bridge_join() fails, because DSA does not call port_bridge_leave
+after a failed join. The commit message says that rolling back from the
+driver would only issue more register accesses that could fail the same way.
 
 > diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index fbf3a0cba49b3..46534127d070e 100644
+> index 46534127d070e..3d4aa79ac0268 100644
 > --- a/drivers/net/dsa/motorcomm/chip.c
 > +++ b/drivers/net/dsa/motorcomm/chip.c
-
-[ ... ]
-
-> @@ -740,6 +745,10 @@ yt921x_fdb_leave(struct yt921x_priv *priv, const unsigned char *addr,
->  	u32 val;
->  	int res;
+> @@ -1433,6 +1433,11 @@ yt921x_dsa_port_bridge_join(struct dsa_switch *ds, int port,
+>  	res = yt921x_bridge_join(priv, port, ports_mask);
+>  	mutex_unlock(&priv->reg_lock);
 >  
-> +	/* See yt921x_fdb_join() */
-> +	if (!vid)
-> +		vid = YT921X_VID_UNWARE;
-> +
->  	/* Check for presence */
->  	res = yt921x_fdb_has(priv, addr, vid, &index);
->  	if (res)
-
-[ ... ]
-
-> @@ -782,6 +791,13 @@ yt921x_fdb_join(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
->  	u32 val2;
->  	int res;
->  
-> +	/* A vlan-unaware bridge reports vid 0, but untagged lookups on its
-> +	 * ports run with the unaware FID; map so that static entries match the
-> +	 * hardware lookups.
-> +	 */
-> +	if (!vid)
-> +		vid = YT921X_VID_UNWARE;
+> +	/* DSA does not send bridge_leave when join fails */
+> +	if (res)
 
 [Severity: High]
-Is this remap safe when more than one forwarding domain uses FID 4095,
-or when a vid 0 entry doesn't come from a VLAN-unaware bridge?
+What state is the switch left in when yt921x_bridge_join() fails partway?
+In net/dsa/port.c, dsa_port_bridge_join() does only this:
 
-Both here and in yt921x_fdb_leave(), every vid 0 add or delete is
-remapped. The code ignores the dsa_db argument and never checks the
-bridge's vlan_filtering state. Every VLAN-unaware bridge port and every
-standalone port seems to share FID 4095:
+	err = dsa_broadcast(DSA_NOTIFIER_BRIDGE_JOIN, &info);
+	if (err)
+		goto out_rollback;
+    ...
+out_rollback:
+	dsa_port_bridge_destroy(dp, br);
 
-yt921x_vlan_filtering()
-	if (!bdev || !vlan_filtering)
-		pvid = YT921X_VID_UNWARE;
+So software treats the port as standalone, but the hardware may still have
+the following.
 
-yt921x_userport_standalone()
-	res = yt921x_port_set_pvid(priv, port, YT921X_VID_UNWARE);
+YT921X_PORT_LEARN_DIS may be cleared in YT921X_PORTn_LEARN(port) by
+yt921x_userport_bridge(). The driver does not set fdb_isolation, so the
+standalone port would learn into the shared FDB. yt921x_userport_standalone()
+normally prevents that.
 
-The driver doesn't set ds->fdb_isolation or program a separate FID per
-bridge.
+Some YT921X_PORTn_ISOLATION() registers may already have been rewritten by
+the loop in yt921x_bridge():
 
-Before this patch, vid 0 entries landed in FID 0, which nothing looked
-up. Now they are live STATIC entries in the shared FID. The comment in
-yt921x_chip_setup_dsa() describes what happens on a cross-domain hit:
+		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
+				       ctrl);
+		if (res)
+			return res;
 
-	 * isolation takes _after_ FDB lookups, i.e. if an FDB entry (from
-	 * another bridge) is matched and the destination port (in another
-	 * bridge) is blocked, the packet will be dropped instead of flooding to
+ports_mask includes the joining port. So the lower-indexed members would no
+longer block the joining port, and the joining port's own register may
+already allow forwarding to the bridge.
 
-Take a VLAN-unaware LAN bridge where a host on swp1 has joined multicast
-group G, plus a standalone WAN port:
+Can the switch then forward and flood traffic between a port the kernel
+thinks is standalone and the bridge members, until another join/leave
+cycle?
 
-yt921x_dsa_port_mdb_add(swp1, G, vid 0)
-  yt921x_fdb_join()
-    vid = YT921X_VID_UNWARE
-    STATIC entry {G, FID 4095, egress swp1}
+The commit message says:
 
-A frame for G that arrives on the standalone WAN port is looked up in
-FID 4095 and matches the LAN entry. The standalone isolation mask
-(~cpu ports) then removes swp1, so the frame is dropped. Before this
-patch, the same frame was unknown multicast and was trapped to the CPU.
+  "Rolling back from the driver would just issue more register accesses
+  that can fail the same way."
 
-Two VLAN-unaware bridges behave the same way. br1 traffic for a MAC or
-group known only in br0 is dropped instead of being trapped. If the CPU
-port is in the entry, the frame arrives with code FORWARD and
-yt921x_tag_rcv() calls dsa_default_offload_fwd_mark(). Then the br1
-software path won't forward it to br1 switch ports either.
+yt921x_reg_mdio_read() and yt921x_reg_mdio_write() each send the full SMI
+address/data sequence by themselves. So an MDIO failure looks
+per-transaction and may be transient. The driver also keeps doing register
+I/O after this failure.
 
-VLAN-aware bridges send vid 0 entries down too, because br_fdb_add()
-adds a vid 0 entry when no VLAN is given. VLAN-aware ports fall back to
-pvid 0 rather than 4095:
+Would a best-effort call to yt921x_bridge_leave() on this error path work,
+reporting the inconsistency only if that call also fails?
+yt921x_bridge_leave() already exists. It runs yt921x_userport_standalone()
+and then yt921x_isolate() to restore the standalone configuration.
 
-yt921x_pvid_clear()
-	res = yt921x_port_set_pvid(priv, port,
-				   vlan_filtering ? 0 : YT921X_VID_UNWARE);
+Later in the series, "net: dsa: motorcomm: Support BR_FLOOD and
+BR_MCAST_FLOOD offloading" adds yt921x_bridge_flood_set() as a third join
+step. It writes the global YT921X_FILTER_UNK_UCAST/MCAST registers, and the
+error path is still not rolled back there.
 
-So in FID 4095 those entries would only affect other domains.
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "Fatal IO error; hardware no longer consistent");
 
-The entries are STATIC, so hardware learning can't correct this.
+[Severity: Medium]
+Will this message reach anyone when extack is NULL? NL_SET_ERR_MSG_MOD()
+does nothing in that case, and the legacy bridge ioctl passes NULL:
 
-Could the remap be limited to entries that really belong to a
-VLAN-unaware bridge, for example based on db.bridge or the port's
-VLAN-filtering state, with care for vlan_filtering toggles? The other
-option would be for the driver to separate FIDs per bridge first.
+net/bridge/br_ioctl.c:add_del_if() {
+    ...
+		ret = br_add_if(br, dev, NULL);
+    ...
+}
 
-Later patches in the series don't touch yt921x_fdb_join() or
-yt921x_fdb_leave(). The flood offload patch ("Support BR_FLOOD and
-BR_MCAST_FLOOD offloading") mentions that cross-bridge FDB hits are
-dropped, but it only restricts flooding of unknown traffic.
+That NULL is passed down this chain:
+
+netdev_upper_dev_link()->dsa_user_changeupper()->dsa_port_bridge_join()
+    ->DSA_NOTIFIER_BRIDGE_JOIN->ds->ops->port_bridge_join()
+
+So brctl addif (SIOCBRADDIF) on a yt921x port would still report nothing
+beyond the errno.
+
+On the netlink path, the message goes only to the requesting socket. The
+hardware state it describes stays after the reply.
+
+The matching leave path in this driver already logs failures in
+yt921x_dsa_port_bridge_leave():
+
+	if (res)
+		dev_err(dev, "Failed to %s port %d: %i\n", "unbridge",
+			port, res);
+
+Should the join path also log with dev_err(), in addition to setting the
+extack message?
+
+[Severity: Low]
+Is this message accurate for every non-zero return from
+yt921x_bridge_join()?
+
+The first hardware access is this chain:
+
+yt921x_userport_bridge()->yt921x_reg_clear_bits()->yt921x_reg_update_bits()
+
+yt921x_reg_update_bits() does this before any write:
+
+	res = yt921x_reg_read(priv, reg, &v);
+	if (res)
+		return res;
+
+If that read fails, no register has been changed. After
+dsa_port_bridge_destroy(), hardware and software still agree, yet the user
+is told the hardware is "no longer consistent".
+
+"Fatal" also seems inaccurate. The driver records no dead state, and each
+SMI access is self-contained.
+
+A more speculative case: if a register op returned -EOPNOTSUPP,
+dsa_user_changeupper() would turn the join into a success:
+
+			if (err == -EOPNOTSUPP) {
+				NL_SET_ERR_MSG_WEAK_MOD(extack,
+							"Offloading not supported");
+				err = 0;
+			}
+
+A weak message does not replace the driver's text. The successful join
+would then carry the "Fatal IO error" message.
+
+Could the message be set only when a write has actually happened, or be
+softened to something like "may be inconsistent"?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261108214450.1662362-1-mmyangfl%40gmail.com
