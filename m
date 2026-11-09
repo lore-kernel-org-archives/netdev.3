@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794248741;
-	b=qvWD8dkwbcPCZL/ooQVoqir8asDfeQ6nXRALxH6EmhE0HSclLQxdWwe2x6NBrOLcqNsX
-	 LT+Y8aUUTqytdnkzglSfnKumRJ2GGe0Tdy4KcDt17opDrQGoHKvdnfAxIcjEdeiS6Raz9
-	 UJIuynuC9T9b5tjjUEops/XuFY+N3KE6V4FSPYgGAopnUvBrsBFLnlA+P7LLjGg9AYXQv
-	 WopgrmJKXk/9Gvh1wSTaq9ulZaIKdvGdV2/KtY5I6ZTRU0z8ZDNyDEQjF2se7jRN0J8fW
-	 FD0+TTJm0pVY9/dauVTyIDfWa1FQDwAEVOqMWVilwCk0EgHfTTKGfo4J4ngwFGY3oZA==
+	t=1794248751;
+	b=ZYZgpzCVKom9/lYODcwJhH/yubketiJICrF1x+EjWNjNq5kpZjcPN54Gr3SbN5KL1LR1
+	 QpZJibLeD6IvfOFjTd3k498Ig9hj524HSPEzn345RNd0ZrRUiitlWP1KhWqYBV1+NboPw
+	 erwglgLUZS7zXRi4AJKaMQpl+Fls6XbEYIKYLuwMd9GhgZeB081b3gfBh4MCS6x0EmaK2
+	 XJxcTPvpjdFG7SoUP71UdwC2IwFpE2VGFB2YOzTDkY1hY7FU9+GSICay8LgPBD8QwMxdp
+	 vE+uQ8Z/zoRkHFIjLXUkqpu/5XSfEj/59IgrbS2dC+hEgCIhLmurxQ4ML2WRs1EF0UQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794248741;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794248751;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=wHhmhY6cRdeQR3uTF+o2IxUToxKZc/w8lJFloEvagjc=;
-	b=GfhYWuzUit2F27a2R6pG66Qjd7jHr5rEqjTqyZUSRSVaVqlPFu3biNtIjjEqPrKQPg3w
-	 G9gCNA9bwv2zuLNc2yyUW/ikxUZE0ww0Ca9KZJU0409Bv6dkbce2brZRzVGZRRPhpfSu1
-	 5gsk7Cr21WTw/LjZIcNgduqeSPlj99SEWOaFh9WPKR8bedJr7jt/CXqRiH+ZMaZPrwH7y
-	 +kcv3ysHKOMKtd0me9wOkfwKgDt0B1jMhMCUAfwm/FttF8x46tqNnbewdAl8v1HUG/owb
-	 LRyxzkHrXZD05nKQW62+kJ0XzIjxY3RrB7xfF8YMC2uf25F3tn/jmdIKRsRymRNsI+g==
+	bh=6cydJtB07kzkqbqAwuyYeLXmBk6fsv/YqKMHTHat3gU=;
+	b=yBUyX3SSy6fqN/beUY8BF0vbVTVTEN85LaM8MMVEvM8NaKlJNVtJmCy5yoHo6FwY2RCB
+	 4qA4p/SMKXcBrWHQVfvHN13bNZ0kuAnYLoVNlfma6UOLbA4m8Z/GubR2sjkcylkz/TTvL
+	 51qKY/4b6RMorm53bjTxkOZCId1jOiGt7aSgh3CEKSmd1l/RJs4KOhlUik4TSAlovneLs
+	 SeqVNLCxMQc8XM7PJVoKHT06HM0TSAAchQ5OYWlqjjidfazXb9GyfTGxBO4xSVb7Dm4hT
+	 N8+ZjGG9V8O0qhz+Hr82wC4nVC47u+1Vw6Ac+pOiWRU/C/e0POe4UthWtTk6qi1J00Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=be9UfR7V;
-	arc=none smtp.remote-ip=209.85.208.72
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kBnf4hYt;
+	arc=none smtp.remote-ip=209.85.218.71
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FD160A2601
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34FD160A2601
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4ED606B595
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 18:25:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE4ED606B595
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=be9UfR7V
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6b5654ad27fso1069381a12.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kBnf4hYt
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c4d288b67ccso100626266b.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 10:25:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794248738; x=1794853538; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794248749; x=1794853549; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wHhmhY6cRdeQR3uTF+o2IxUToxKZc/w8lJFloEvagjc=;
-        b=be9UfR7VzO40gF4mogOesTwNgamOxgls37lY3DEesH7y9ZUal3LbTbQJqEdr1/QIMh
-         N8IvrXQA/hxAAYzdAFH7O9GdpUkLta69O3LLpzlliYOItQ33HIuB/SDRK60qmPIkPyK/
-         1vEQrYic4+0QhoWIjNwlSD1mXZOQlSQvn4I/g5h0ul65UWITWqK6w7QXc3Eue5WIZY9B
-         CVaEPW/CdSOp3My8IWAUQT2b6bI0wd8j+eI8GGbfldwOIsVl5y5Xtjhe0nqHqEwaK74n
-         lxnBs1R96V/Ug7IwkAqFFGMF0GxaRR23MMqevc1+mSSzhhT2Y7219tngVOf2Ayg+dnxC
-         2gfA==
+        bh=6cydJtB07kzkqbqAwuyYeLXmBk6fsv/YqKMHTHat3gU=;
+        b=kBnf4hYtoAi6E7BgFDqnei3MfKoNd3l287mBPH3iw4u/4JNe3dReP5bgxnWNJ+7TyV
+         yVCsZmLa3t2BF/UE/8XDPnqK0hNDug4mIJmXHjKPJ2IHcOY1QwiPHTwJNqIjpJWaBlZa
+         t9GfihExQfkI6bziWq5T/ahUAh8mLVaSpwl/Xj811t1+OGvnSB6wLxP05QgIwwFLwKlE
+         zjwhqxpuVx/tsA3p2zpVE+XB762kGkg8aNDeIFSGfojLCdDI629N/CzXv932R+cNcRO/
+         8YbTP9x+5ZtNx6izUOzxN91TZpLlgSY0YwcFSHuGOaXWGkXbD4rkAYt2xDeSwLaiIiYg
+         Q9vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248738; x=1794853538;
+        d=1e100.net; s=20260707; t=1794248749; x=1794853549;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wHhmhY6cRdeQR3uTF+o2IxUToxKZc/w8lJFloEvagjc=;
-        b=l9vPR4mS5gHMVrt7KOl0RKvTbAQ7T7PILvHaxOrLS9d9SDql/TeHHzAXxMb/ebpgWc
-         F1KxY5bwBT1Fj0A3cdcLUsYSmim3CCiATYyNdTavbLMw/gaK+E2NVw9jVB95vCChi/EU
-         bb32dnxCEQittzG53vGQXgoPwfB1QIet5v6mUKYhregAzq7tCjsB1K1Sw2MR3jZU9Tbn
-         Pw43gRM2VcpIm7BI+1XFq1LXrZzZ8BUQvW/YKNl4HFbrIyUCcocoADEjkgTYZfZs3905
-         MSx6CPu5ecZ7JuvgktmXcRbWcumpNt1o3UocHMEXNCY7uPox8tLkWqTGQzcmhNwX6LAX
-         ae+g==
-X-Forwarded-Encrypted: i=1; AL+hErEFDPodu/a5e4Ao9fc1tNZ/PLJ/2Qo2jtOCF0JIf7NjekE6oA9as0xtGKPsBPFoXFMzDv8RiRM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z85uzF0RhZOnS/9lqOBLaLxv3qCa3FnJ8mBQMlY3MR6eBuQ0VCh
-	Gq809ANG5jJTpKkJBskbzmt9j7SABz7W++0ZfUJTcXGdHD73c/SLNmZ4bxrwkkdtshLwyouOJLS
-	FgUX1Kw==
-X-Received: from edag25.prod.google.com ([2002:a05:6402:3219:b0:6b5:70a4:c77d])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:1ed3:b0:6b5:6116:e333
- with SMTP id 4fb4d7f45d1cf-6b756ae9459mr377929a12.31.1794248738070; Mon, 09
- Nov 2026 10:25:38 -0800 (PST)
-Date: Mon,  9 Nov 2026 18:25:09 +0000
+        bh=6cydJtB07kzkqbqAwuyYeLXmBk6fsv/YqKMHTHat3gU=;
+        b=yR53RuY2G0SHt28zLjx4iugQTMOWcpXG3MT7uZfJXoZoTo1caaej9pYp3Qy7tN+Y7p
+         Lx9WdcW9bRFMQdv1qB4V0BnmDqgWnU4Xlqix1Vvx7lK00wi4gvb44GU9ynNuIl0IaFBz
+         fynhUywpiUWuWXA7I0qqD477ARbuXMPFNr/9MjbyinDAAIA2avOWlZkdhYCs8ZMXR0bl
+         mr9GKkv8xFIma/BZY/zVMmzXvqqfvrAUwmcJNPFskGBoQyCCq6bxW4EUMjRLQz2O4234
+         n/Cum5MZ1Ik9RYxgcnte9Sw5jLZRelomfuZOY3g23qPYJtp9XJGmmzpRAbfc7LARxwAR
+         v8Lg==
+X-Forwarded-Encrypted: i=1; AL+hErFI9dAO8nRnUmfppSP7aeHqQKZA8FjDXnyT4rpqezwZALxdu18uASsZpnr6/sGjCAIy4Ilgecw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9+hjbcr7awMcQByKVdOJuAmhur/H9QhQ7tUk+TJh+XhjUSi1S0
+	2KQhpyeWUTAzXOR608O7c8WMu0bZLoPmxWGQrIVNTvtBVw5Yovo94GtZttOHqJy7Erm+lcySd3f
+	BrycnAw==
+X-Received: from ejbo13.prod.google.com ([2002:a17:906:358d:b0:c31:7cee:94dd])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:c11:b0:c49:d1c5:431a
+ with SMTP id a640c23a62f3a-c50495ecedbmr18940166b.38.1794248749031; Mon, 09
+ Nov 2026 10:25:49 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:20 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261109182533.3594984-2-lrizzo@google.com>
-Subject: [RFC PATCH v2 01/25] iommu/dma: Introduce CONFIG_PISA and metadata table
+Message-ID: <20261109182533.3594984-13-lrizzo@google.com>
+Subject: [RFC PATCH v2 12/25] net/core: Use per-node PISA allocators for skb_page_frag_refill()
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -102,639 +102,643 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-PISA ("Pre-mapped IOVA Superpage Allocator") is a memory allocator
-that provides devices which opt in with DMA-able memory backed by large
-physically contiguous pages (typically 2MB, but fully configurable),
-and mapped by IOMMU leaves of the same size.
+Transmit socket buffers use memory coming from skb_page_frag_refill().
+Sockets whose leaf device has enabled pisa_tx_bufs should use PISA
+memory.
 
-PISA has the following features:
-- greatly reduces IOTLB pressure by using fewer, much larger IOMMU
-  entries.
+Add a dedicated per-task page_frag, current->task_frag_pisa, populated
+with read-only PISA blocks via __GFP_PISA_RO, and select it on TX when
+the socket's (or cork's) route goes out in the clear through a PISA-enabled
+device.
 
-- greatly reduces DMA map/unmap cost. Mapping only happens when the
-  first block from a 2MB page is used. Unmapping is a no-op for the
-  caller, and happens in a separate task when no blocks from the 2MB
-  page are in use and the page should be returned to the buddy
-  allocator.
-
-- much better security than DMA-FQ, because buffers are not returned to
-  the buddy allocator until the mappings have been removed and the IOTLB
-  flushed.
-
-- removes the cost of copying into bounce buffers, e.g. for
-  overcommitted or Confidential Computing VMs.
-
-- fine-grained opt-in selection (each device can opt in selectively for
-  descriptors, transmit and/or receive data buffers and headers) permits
-  choosing the correct security and performance tradeoffs.
-
-- default is to use the base IOMMU mode (DMA or DMA-FQ) of the device.
-
-PISA is integrated with the main IO APIs (dma_alloc_attrs,
-dma_map/unmap, page_pool, TX socket buffers and disk IO buffers) so that
-no device driver modifications should be necessary.
-
-Add a CONFIG_PISA option, enabled only on supported kernels (64bit,
-!PREEMPT_RT) and introduce a sparse metadata table to hold per-2MB buffer
-state (similar to pageblock_flags).
-The metadata table is initialized on first use, consumes 4KB of RAM
-and 2MB of virtual address space for each 16GB of physical RAM.
-
-Also add a built-in KUnit test suite (CONFIG_PISA_META_KUNIT_TEST)
-exercising initialization idempotency, PFN/physical round-trip lookups,
-out-of-bounds physical address handling, and PISA membership toggling.
+Because walking lower devices can be expensive (e.g. bonded devices),
+cache the leaf device check on the net_device and refresh it at most once
+every ~250ms. Special paths that hold plaintext before encryption (IPsec,
+kTLS) or do not use a DMA device keep using regular pages;
+ESP output uses skb_page_frag_refill_dev() to opt in when the
+egress device has pisa_tx_bufs enabled.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/iommu/Kconfig      |  33 +++++
- drivers/iommu/Makefile     |   2 +
- drivers/iommu/pisa-kunit.c | 102 +++++++++++++
- drivers/iommu/pisa-meta.c  | 286 +++++++++++++++++++++++++++++++++++++
- drivers/iommu/pisa-priv.h  |  31 ++++
- include/linux/pisa.h       |  79 ++++++++++
- 6 files changed, 533 insertions(+)
- create mode 100644 drivers/iommu/pisa-kunit.c
- create mode 100644 drivers/iommu/pisa-meta.c
- create mode 100644 drivers/iommu/pisa-priv.h
- create mode 100644 include/linux/pisa.h
+ drivers/base/core.c        | 24 +++++++---
+ drivers/iommu/pisa-alloc.c | 57 ++++++++++++++++++++++++
+ drivers/iommu/pisa-kunit.c |  3 +-
+ include/linux/device.h     |  9 ++++
+ include/linux/netdevice.h  |  4 ++
+ include/linux/pisa.h       | 20 +++++++++
+ include/linux/sched.h      |  4 ++
+ include/linux/skbuff.h     |  2 +
+ include/net/sock.h         | 89 ++++++++++++++++++++++++++++++++++++++
+ kernel/exit.c              |  2 +
+ kernel/fork.c              |  2 +
+ net/core/sock.c            | 41 ++++++++++++++++++
+ net/ipv4/esp4.c            |  4 +-
+ net/ipv4/ip_output.c       | 11 +++--
+ net/ipv4/tcp.c             |  3 +-
+ net/ipv6/esp6.c            |  4 +-
+ net/ipv6/ip6_output.c      | 11 +++--
+ 17 files changed, 270 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-index 85a8d7fdfa30b..15e06eaed0924 100644
---- a/drivers/iommu/Kconfig
-+++ b/drivers/iommu/Kconfig
-@@ -423,4 +423,37 @@ config IOMMU_DEBUG_PAGEALLOC
- 	  If unsure, say N.
- endif # IOMMU_SUPPORT
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 97cd2d03ff77c..ade0c94b02ae7 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2909,7 +2909,8 @@ static ssize_t removable_show(struct device *dev, const struct device_attribute
+ static const DEVICE_ATTR_RO(removable);
  
-+# Pre-mapped IOVA Superpage Allocator
-+config PISA
-+	bool "Pre-mapped IOVA Superpage Allocator"
-+	depends on X86_64 || ARM64
-+	depends on !PREEMPT_RT
-+	default y
-+	help
-+	  PISA is a specialized memory allocator with an API similar to
-+	  alloc_pages(). For devices that opt-in, it provides DMA-able
-+	  pages backed by 2MB physically contiguous pages, and mapped in
-+	  the IOMMU maps with a single leaf PTE of the same size. Mapping,
-+	  unmapping and IOTLB flushing are done lazily to reduce CPU overhead.
-+	  The large mappings greatly reduce IOTLB usage. As in strict iommu
-+	  mode, pages are returned to the buddy allocator only when any existing
-+	  mappings have been removed and IOTLB flushed.
-+	  Uses 4KB of metadata for each 32MB of PISA buffers, allocated on demand.
+ /* Per-device configuration to selectively enable PISA */
+-static ssize_t pisa_attr_store(const char *buf, size_t count, bool *field)
++static ssize_t pisa_attr_store(struct device *dev, const char *buf, size_t count,
++			       bool *field, int (*setter)(struct device *, bool))
+ {
+ 	bool val;
+ 	int ret = kstrtobool(buf, &val);
+@@ -2921,11 +2922,17 @@ static ssize_t pisa_attr_store(const char *buf, size_t count, bool *field)
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+-	WRITE_ONCE(*field, val);
++	if (setter) {
++		ret = setter(dev, val);
++		if (ret < 0)
++			return ret;
++	} else {
++		WRITE_ONCE(*field, val);
++	}
+ 	return count;
+ }
+ 
+-#define PISA_BOOL_ATTR(name)						\
++#define PISA_SET_ATTR(name, setter)					\
+ static ssize_t name##_show(struct device *dev,				\
+ 			   struct device_attribute *attr, char *buf)	\
+ {									\
+@@ -2935,13 +2942,15 @@ static ssize_t name##_store(struct device *dev,				\
+ 			    struct device_attribute *attr,		\
+ 			    const char *buf, size_t count)		\
+ {									\
+-	return pisa_attr_store(buf, count, &dev->name);			\
++	return pisa_attr_store(dev, buf, count, &dev->name, setter);	\
+ }									\
+ static DEVICE_ATTR_RW(name)
+ 
++#define PISA_BOOL_ATTR(name)	PISA_SET_ATTR(name, NULL)
 +
-+	  The config option enforces requirements (2MB large pages and !PREEMPT_RT) at compile
-+	  time. Other constraints (e.g. dma-coherent devices) are verified at runtime.
+ PISA_BOOL_ATTR(pisa_coherent);
+ PISA_BOOL_ATTR(pisa_rx_bufs);
+-PISA_BOOL_ATTR(pisa_tx_bufs);
++PISA_SET_ATTR(pisa_tx_bufs, net_pisa_tx_bufs_set);
+ PISA_BOOL_ATTR(pisa_tx_skb_heads);
+ 
+ static struct attribute *dev_attr_pisa[] = {
+@@ -3100,8 +3109,11 @@ static void device_remove_attrs(struct device *dev)
+ 	const struct class *class = dev->class;
+ 	const struct device_type *type = dev->type;
+ 
+-	if (IS_ENABLED(CONFIG_PISA) && dev->dma_mask)
++	if (IS_ENABLED(CONFIG_PISA) && dev->dma_mask) {
+ 		device_remove_group(dev, &dev_attr_pisa_group);
++		if (dev->pisa_tx_bufs)
++			net_pisa_tx_bufs_set(dev, false);
++	}
+ 
+ 	if (dev->physical_location) {
+ 		device_remove_group(dev, &dev_attr_physical_location_group);
+diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
+index 913706a503341..7b9d0a7acc101 100644
+--- a/drivers/iommu/pisa-alloc.c
++++ b/drivers/iommu/pisa-alloc.c
+@@ -644,6 +644,63 @@ bool pisa_has_free_blocks_rx(const struct device *dev, unsigned int order, int n
+ }
+ EXPORT_SYMBOL(pisa_has_free_blocks_rx);
+ 
++#ifdef CONFIG_NET
++/* Enabled while at least one device has pisa_tx_bufs set. */
++DEFINE_STATIC_KEY_FALSE(net_pisa_tx_bufs_key);
++EXPORT_SYMBOL(net_pisa_tx_bufs_key);
 +
-+	  If unsure, say Y.
++int net_pisa_tx_bufs_set(struct device *dev, bool val)
++{
++	static DEFINE_MUTEX(lock);
 +
-+config PISA_META_KUNIT_TEST
-+	bool "KUnit test for PISA metadata table (built-in)" if !KUNIT_ALL_TESTS
-+	depends on PISA && KUNIT=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Builds KUnit unit tests for the sparse, per-PISA-frame metadata table,
-+	  and PISA page allocators in drivers/iommu/pisa-*.c, verifying metadata
-+	  lookup, allocator recycling, and coherent block allocation.
++	mutex_lock(&lock);
++	if (dev->pisa_tx_bufs != val) {
++		WRITE_ONCE(dev->pisa_tx_bufs, val);
++		if (val)
++			static_branch_inc(&net_pisa_tx_bufs_key);
++		else
++			static_branch_dec(&net_pisa_tx_bufs_key);
++	}
++	mutex_unlock(&lock);
++	return 0;
++}
 +
-+	  If unsure, say N.
++/*
++ * The sysfs attribute pisa_tx_bufs lives on the physical DMA parent
++ * (dev->dev.parent), whereas a socket route (dst->dev) may point to an upper
++ * virtual net_device (bond, VLAN, ipvlan, etc.). Walking lower devices via
++ * netdev_walk_all_lower_dev_rcu() on every TX allocation would be too
++ * expensive, so dev->pisa_tx_stamp caches the walk result on the net_device
++ * and refreshes it at most once every 256 jiffies:
++ *   bit 0 (PISA_TX_STAMP_OK):         pisa_tx_bufs enabled on lower device(s)
++ *   bits 31..8 (PISA_TX_STAMP_MASK):  upper 24 bits of (u32)jiffies
++ */
++static int netdev_pisa_tx_bufs_walk(struct net_device *dev, struct netdev_nested_priv *priv)
++{
++	return dev->dev.parent && READ_ONCE(dev->dev.parent->pisa_tx_bufs);
++}
 +
- source "drivers/iommu/generic_pt/Kconfig"
-diff --git a/drivers/iommu/Makefile b/drivers/iommu/Makefile
-index 29a26d2a3af12..b5d3be1df3eda 100644
---- a/drivers/iommu/Makefile
-+++ b/drivers/iommu/Makefile
-@@ -11,6 +11,8 @@ obj-$(CONFIG_IOMMU_API) += iommu-traces.o
- obj-$(CONFIG_IOMMU_API) += iommu-sysfs.o
- obj-$(CONFIG_IOMMU_DEBUGFS) += iommu-debugfs.o
- obj-$(CONFIG_IOMMU_DMA) += dma-iommu.o
-+obj-$(CONFIG_PISA) += pisa-meta.o
-+obj-$(CONFIG_PISA_META_KUNIT_TEST) += pisa-kunit.o
- obj-$(CONFIG_IOMMU_IO_PGTABLE) += io-pgtable.o
- obj-$(CONFIG_IOMMU_IO_PGTABLE_ARMV7S) += io-pgtable-arm-v7s.o
- obj-$(CONFIG_IOMMU_IO_PGTABLE_LPAE) += io-pgtable-arm.o
++/* Slow path of __netdev_tx_pisa_ok(): refresh dev->pisa_tx_stamp. */
++bool netdev_tx_pisa_refresh(struct net_device *dev, u32 now)
++{
++	bool ok;
++
++	if (dev->dev.parent) {
++		ok = READ_ONCE(dev->dev.parent->pisa_tx_bufs);
++	} else {
++		rcu_read_lock();
++		ok = netdev_walk_all_lower_dev_rcu(dev,
++						   netdev_pisa_tx_bufs_walk,
++						   NULL) != 0;
++		rcu_read_unlock();
++	}
++	now |= ok ? PISA_TX_STAMP_OK : 0;
++	WRITE_ONCE(dev->pisa_tx_stamp, now);
++	return now & PISA_TX_STAMP_OK;
++}
++EXPORT_SYMBOL(netdev_tx_pisa_refresh);
++#endif /* CONFIG_NET */
++
+ /*
+  * Split a non-compound page of @old_order into 1 << (@old_order - @new_order)
+  * pages of @new_order (compound if @new_order > 0), all frozen at refcount 0.
 diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-new file mode 100644
-index 0000000000000..0633f3238e012
---- /dev/null
+index 5bbb540eb505e..5f6b2ebcab1d9 100644
+--- a/drivers/iommu/pisa-kunit.c
 +++ b/drivers/iommu/pisa-kunit.c
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * KUnit tests for the opaque struct pisa_meta table API.
-+ */
-+#include <kunit/test.h>
-+#include <linux/gfp.h>
-+#include <linux/pisa.h>
-+#include <linux/mm.h>
-+
-+#include "pisa-priv.h"
-+
-+static void test_meta_init_and_roundtrip(struct kunit *test)
-+{
-+	unsigned long pfn, base_pfn;
-+	struct pisa_meta *m_pfn;
-+	struct page *page;
-+
-+	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-+	/* Second call must be idempotent. */
-+	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-+
-+	page = alloc_page(GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+
-+	pfn = page_to_pfn(page);
-+	base_pfn = ALIGN_DOWN(pfn, 1UL << PISA_ORDER);
-+	__free_page(page);
-+
-+	KUNIT_ASSERT_EQ(test, pisa_meta_ensure_pfn(pfn, true), 0);
-+	m_pfn = pisa_meta_of_pfn(pfn);
-+	KUNIT_EXPECT_EQ(test, pisa_meta_to_pfn(m_pfn), base_pfn);
-+}
-+
-+static void test_meta_invalid_phys(struct kunit *test)
-+{
-+	struct pisa_meta *meta;
-+
-+	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-+
-+	meta = pisa_meta_of_pfn(PHYS_PFN(PHYS_ADDR_MAX));
-+	KUNIT_ASSERT_NOT_NULL(test, meta);
-+	KUNIT_EXPECT_EQ(test, pisa_meta_to_pfn(meta), ULONG_MAX);
-+	KUNIT_EXPECT_FALSE(test, is_pisa_pfn(ULONG_MAX >> PAGE_SHIFT));
-+	KUNIT_EXPECT_NE(test, pisa_meta_ensure_pfn(ULONG_MAX >> PAGE_SHIFT, false), 0);
-+}
-+
-+static void pisa_meta_set_active(struct pisa_meta *meta, bool active)
-+{
-+	WRITE_ONCE(meta->flags, active ? PISA_ACTIVE : 0);
-+}
-+
-+static void test_meta_active_toggle(struct kunit *test)
-+{
-+	unsigned long pfn, base_pfn;
-+	struct pisa_meta *meta;
-+	struct page *page;
-+
-+	KUNIT_ASSERT_EQ(test, pisa_meta_init(), 0);
-+
-+	page = alloc_pages(GFP_KERNEL, PISA_ORDER);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+
-+	pfn = page_to_pfn(page);
-+	base_pfn = ALIGN_DOWN(pfn, 1UL << PISA_ORDER);
-+	/* The buddy allocator returns naturally aligned blocks. */
-+	KUNIT_EXPECT_EQ(test, pfn, base_pfn);
-+	if (pisa_meta_ensure_pfn(pfn, true)) {
-+		__free_pages(page, PISA_ORDER);
-+		KUNIT_FAIL(test, "pisa_meta_ensure_pfn(%lu) failed", pfn);
-+		return;
-+	}
-+	KUNIT_EXPECT_EQ(test, pisa_meta_ensure_pfn(pfn, false), 0);
-+	meta = pisa_meta_of_pfn(pfn);
-+
-+	KUNIT_EXPECT_FALSE(test, is_pisa_pfn(pfn));
-+
-+	pisa_meta_set_active(meta, true);
-+	KUNIT_EXPECT_TRUE(test, is_pisa_pfn(base_pfn));
-+	KUNIT_EXPECT_TRUE(test, is_pisa_pfn(pfn));
-+	KUNIT_EXPECT_TRUE(test, is_pisa_pfn(base_pfn + (1UL << PISA_ORDER) - 1));
-+
-+	pisa_meta_set_active(meta, false);
-+	KUNIT_EXPECT_FALSE(test, is_pisa_pfn(pfn));
-+
-+	__free_pages(page, PISA_ORDER);
-+}
-+
-+static struct kunit_case pisa_meta_test_cases[] = {
-+	KUNIT_CASE(test_meta_init_and_roundtrip),
-+	KUNIT_CASE(test_meta_invalid_phys),
-+	KUNIT_CASE(test_meta_active_toggle),
-+	{}
-+};
-+
-+static struct kunit_suite pisa_meta_test_suite = {
-+	.name = "pisa_meta",
-+	.test_cases = pisa_meta_test_cases,
-+};
-+
-+kunit_test_suite(pisa_meta_test_suite);
-+MODULE_DESCRIPTION("KUnit tests for struct pisa_meta table");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/iommu/pisa-meta.c b/drivers/iommu/pisa-meta.c
-new file mode 100644
-index 0000000000000..5ceea91e4d5e8
---- /dev/null
-+++ b/drivers/iommu/pisa-meta.c
-@@ -0,0 +1,286 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/*
-+ * PISA sparse per-PISA-frame metadata table.
-+ * See Documentation/core-api/pisa.rst for the architecture overview.
-+ */
-+
-+#include <linux/bitmap.h>
-+#include <linux/cache.h>
-+#include <linux/cacheflush.h>
-+#include <linux/pisa.h>
-+#include <linux/export.h>
-+#include <linux/gfp.h>
-+#include <linux/memblock.h>
-+#include <linux/memory.h>
-+#include <linux/moduleparam.h>
-+#include <linux/mm.h>
-+#include <linux/mutex.h>
-+#include <linux/pgtable.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/vmalloc.h>
-+
-+#include "pisa-priv.h"
-+
-+static_assert(PISA_META_SIZE <= PAGE_SIZE);
-+static_assert(PISA_SIZE <= SZ_2M);
-+static_assert(PISA_BLOCKS(0) <= PISA_MAX_BLOCKS);
-+static_assert(PISA_ORDER <= MAX_PAGE_ORDER);
-+static_assert(PISA_SHIFT <= SUBSECTION_SHIFT);
-+
-+/* Enabled by pisa_meta_init() to activate fast-path hooks. */
-+DEFINE_STATIC_KEY_FALSE(pisa_key);
-+EXPORT_SYMBOL(pisa_key);
-+
-+/* Parameters are pisa.<name> at boot and in /sys/module/pisa/parameters/. */
-+#undef MODULE_PARAM_PREFIX
-+#define MODULE_PARAM_PREFIX "pisa."
-+
-+/* Physical address bits covered by @pisa_meta_array (0 = max_possible_pfn). */
-+static unsigned int pisa_max_bits __read_mostly;
-+module_param_named(max_bits, pisa_max_bits, uint, 0444);
-+
-+/*
-+ * Metadata is in a sparse @pisa_meta_array[pfn >> PISA_ORDER] in vmalloc space
-+ * (256B per 2MB frame). Each 4KB backing page covers a chunk of 16 entries (32MB)
-+ * and is tracked in @pisa_chunk_bitmap, 1 bit per chunk, 4KB per 1TB, 1MB for 48bit
-+ * of address space. The total address space is @pisa_meta_nframes, all the variables
-+ * are set and memory allocated before enabling @pisa_key.
-+ */
-+
-+/* Sparse per-PISA-frame metadata table, indexed by pfn >> PISA_ORDER */
-+struct pisa_meta *pisa_meta_array __read_mostly;
-+EXPORT_SYMBOL(pisa_meta_array);
-+
-+/* Number of PISA frames covered by @pisa_meta_array. */
-+unsigned long pisa_meta_nframes __read_mostly;
-+EXPORT_SYMBOL(pisa_meta_nframes);
-+
-+/* One bit per 32MB chunk, set once its metadata page is backed. */
-+unsigned long *pisa_chunk_bitmap __read_mostly;
-+EXPORT_SYMBOL(pisa_chunk_bitmap);
-+
-+/* Shared sink entry returned for unbacked or out-of-range PFNs */
-+static struct pisa_meta pisa_meta_nil __read_mostly;
-+
-+/* Protects init and page-table allocation */
-+static DEFINE_MUTEX(pisa_meta_mutex);
-+
-+/* Return metadata for @pfn, or shared sink @pisa_meta_nil (flags == 0) if unbacked. */
-+struct pisa_meta *pisa_meta_of_pfn(unsigned long pfn)
-+{
-+	unsigned long frame = pfn >> PISA_ORDER;
-+
-+	if (unlikely(!static_branch_unlikely(&pisa_key) || frame >= pisa_meta_nframes ||
-+		     !test_bit_acquire(pfn >> PISA_CHUNK_ORDER, pisa_chunk_bitmap)))
-+		return &pisa_meta_nil;
-+
-+	return &pisa_meta_array[frame];
-+}
-+
-+/* Base PFN of @meta's PISA frame, or ULONG_MAX if out-of-range/sink. */
-+unsigned long pisa_meta_to_pfn(const struct pisa_meta *meta)
-+{
-+	unsigned long frame = meta - pisa_meta_array;
-+
-+	if (unlikely(frame >= pisa_meta_nframes))
-+		return ULONG_MAX;
-+
-+	return frame << PISA_ORDER;
-+}
-+
-+/* PTE for @addr in the array, or NULL if its page table was not allocated. */
-+static pte_t *pisa_meta_pte(unsigned long addr)
-+{
-+	pgd_t *pgd = pgd_offset_k(addr);
-+	p4d_t *p4d;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+
-+	if (pgd_none(pgdp_get(pgd)))
-+		return NULL;
-+	p4d = p4d_offset(pgd, addr);
-+	if (p4d_none(p4dp_get(p4d)))
-+		return NULL;
-+	pud = pud_offset(p4d, addr);
-+	if (pud_none(pudp_get(pud)))
-+		return NULL;
-+	pmd = pmd_offset(pud, addr);
-+	if (pmd_none(pmdp_get(pmd)))
-+		return NULL;
-+	return pte_offset_kernel(pmd, addr);
-+}
-+
-+/* Back chunk of @pfn in @pisa_meta_array with a zeroed page and set its bitmap bit. */
-+static int pisa_meta_back(unsigned long pfn, gfp_t gfp)
-+{
-+	/* Protects lazy installation of backing pages into preallocated page tables. */
-+	static DEFINE_SPINLOCK(pisa_meta_pte_lock);
-+	unsigned long idx = pfn >> PISA_CHUNK_ORDER;
-+	unsigned long addr = (unsigned long)pisa_meta_array + (idx << PAGE_SHIFT), flags;
-+	struct page *online = pfn_to_online_page(pfn);
-+	int nid = online ? page_to_nid(online) : NUMA_NO_NODE;
-+	pte_t *ptep = pisa_meta_pte(addr);
-+	struct page *page;
-+
-+	if (!ptep)
-+		return -EINVAL;
-+
-+	page = alloc_pages_node(nid, gfp | __GFP_ZERO | __GFP_NOWARN, 0);
-+	if (!page)
-+		return -ENOMEM;
-+
-+	spin_lock_irqsave(&pisa_meta_pte_lock, flags);
-+	if (pte_none(ptep_get(ptep))) {
-+		set_pte_at(&init_mm, addr, ptep, pfn_pte(page_to_pfn(page), PAGE_KERNEL));
-+		flush_cache_vmap(addr, addr + PAGE_SIZE);
-+		page = NULL;
-+		/* Pair with test_bit_acquire() in readers. */
-+		smp_mb__before_atomic();
-+		set_bit(idx, pisa_chunk_bitmap);
-+	}
-+	spin_unlock_irqrestore(&pisa_meta_pte_lock, flags);
-+
-+	if (page)
-+		__free_page(page);
-+	return 0;
-+}
-+
-+/* Allocate the page tables for the entries of [@start_pfn, @end_pfn). */
-+static int pisa_meta_prealloc(struct pisa_meta *array, unsigned long nframes,
-+			      unsigned long start_pfn, unsigned long end_pfn)
-+{
-+	unsigned long start, end;
-+
-+	end_pfn = min(end_pfn, nframes << PISA_ORDER);
-+	if (start_pfn >= end_pfn)
-+		return 0;
-+
-+	start = round_down((unsigned long)&array[start_pfn >> PISA_ORDER], PAGE_SIZE);
-+	end = round_up((unsigned long)&array[((end_pfn - 1) >> PISA_ORDER) + 1], PAGE_SIZE);
-+	return apply_to_page_range(&init_mm, start, end - start, NULL, NULL);
-+}
-+
-+struct pisa_meta_range {
-+	struct pisa_meta *array;
-+	unsigned long nframes;
-+};
-+
-+static int pisa_meta_prealloc_ram(unsigned long start_pfn, unsigned long nr_pages, void *arg)
-+{
-+	struct pisa_meta_range *r = arg;
-+
-+	return pisa_meta_prealloc(r->array, r->nframes, start_pfn, start_pfn + nr_pages);
-+}
-+
-+/* Page tables for memory about to go online; failure keeps it out of the allocators. */
-+static int pisa_meta_memory_cb(struct notifier_block *nb, unsigned long action, void *arg)
-+{
-+	struct memory_notify *mn = arg;
-+
-+	if (action != MEM_GOING_ONLINE)
-+		return NOTIFY_OK;
-+
-+	mutex_lock(&pisa_meta_mutex);
-+	if (pisa_meta_array)
-+		pisa_meta_prealloc(pisa_meta_array, pisa_meta_nframes, mn->start_pfn,
-+				   mn->start_pfn + mn->nr_pages);
-+	mutex_unlock(&pisa_meta_mutex);
-+	return NOTIFY_OK;
-+}
-+
-+/* Memory hotplug notifier for preallocating metadata page tables. */
-+static struct notifier_block pisa_meta_memory_nb = {
-+	.notifier_call = pisa_meta_memory_cb,
-+};
-+
-+int pisa_meta_ensure_pfn(unsigned long pfn, bool can_block)
-+{
-+	unsigned long idx = pfn >> PISA_CHUNK_ORDER;
-+
-+	if (!static_branch_unlikely(&pisa_key) || (pfn >> PISA_ORDER) >= pisa_meta_nframes)
-+		return -ERANGE;
-+
-+	if (likely(test_bit_acquire(idx, pisa_chunk_bitmap)))
-+		return 0;
-+
-+	/* Memory onlined before the notifier was registered has no page table. */
-+	if (can_block && !pisa_meta_pte((unsigned long)pisa_meta_array + (idx << PAGE_SHIFT))) {
-+		int err;
-+
-+		mutex_lock(&pisa_meta_mutex);
-+		err = pisa_meta_prealloc(pisa_meta_array, pisa_meta_nframes, pfn, pfn + 1);
-+		mutex_unlock(&pisa_meta_mutex);
-+		if (err)
-+			return err;
-+	}
-+
-+	return pisa_meta_back(pfn, can_block ? GFP_KERNEL : GFP_ATOMIC);
-+}
-+
-+/* Reserve the sparse @pisa_meta_array and preallocate page tables for present RAM. */
-+int pisa_meta_init(void)
-+{
-+	unsigned long top_pfn, nframes, nchunks, size;
-+	struct pisa_meta_range range;
-+	struct pisa_meta *array;
-+	struct vm_struct *vm;
-+	int ret = 0;
-+
-+	if (static_branch_unlikely(&pisa_key))
-+		return 0;
-+
-+	mutex_lock(&pisa_meta_mutex);
-+	if (pisa_meta_array)
-+		goto out_unlock;
-+
-+	if (pisa_max_bits)
-+		top_pfn = 1UL << (clamp_t(unsigned int, pisa_max_bits, PISA_SHIFT,
-+					   MAX_PHYSMEM_BITS) - PAGE_SHIFT);
-+	else
-+		top_pfn = max_t(unsigned long, max_pfn, max_possible_pfn);
-+	nframes = DIV_ROUND_UP(top_pfn, 1UL << PISA_ORDER);
-+	size = PAGE_ALIGN(nframes << PISA_META_SHIFT);
-+	nchunks = size >> PAGE_SHIFT;
-+
-+	/* kvalloc() to avoid kmalloc limitations on large layouts */
-+	pisa_chunk_bitmap = kvcalloc(BITS_TO_LONGS(nchunks), sizeof(unsigned long), GFP_KERNEL);
-+	if (!pisa_chunk_bitmap) {
-+		ret = -ENOMEM;
-+		goto out_unlock;
-+	}
-+
-+	vm = get_vm_area(size, VM_MAP);
-+	if (!vm) {
-+		ret = -ENOMEM;
-+		goto out_free_bitmap;
-+	}
-+	array = vm->addr;
-+
-+	range.array = array;
-+	range.nframes = nframes;
-+	ret = walk_system_ram_range(0, nframes << PISA_ORDER, &range, pisa_meta_prealloc_ram);
-+	if (ret)
-+		goto out_free_vm;
-+
-+	pisa_meta_nframes = nframes;
-+	pisa_meta_array = array;
-+	static_branch_enable(&pisa_key);
-+
-+	pr_info("pisa: %lu frames, %lu KB of KVA\n", nframes, size / 1024);
-+	mutex_unlock(&pisa_meta_mutex);
-+
-+	/* Register outside pisa_meta_mutex (taken by the notifier under chain lock). */
-+	register_memory_notifier(&pisa_meta_memory_nb);
-+	return 0;
-+
-+out_free_vm:
-+	free_vm_area(vm);
-+out_free_bitmap:
-+	kvfree(pisa_chunk_bitmap);
-+	pisa_chunk_bitmap = NULL;
-+out_unlock:
-+	mutex_unlock(&pisa_meta_mutex);
-+	return ret;
-+}
-+EXPORT_SYMBOL(pisa_meta_init);
-diff --git a/drivers/iommu/pisa-priv.h b/drivers/iommu/pisa-priv.h
-new file mode 100644
-index 0000000000000..c873970f6a670
---- /dev/null
-+++ b/drivers/iommu/pisa-priv.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+#ifndef _DRIVERS_IOMMU_PISA_PRIV_H
-+#define _DRIVERS_IOMMU_PISA_PRIV_H
-+
-+#include <linux/pisa.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+
-+#ifdef CONFIG_PISA
-+
-+#define PISA_MAX_BLOCKS		512U
-+
-+#define PISA_BLOCKS(order)	(1U << (PISA_ORDER - (order)))
-+
-+/**
-+ * struct pisa_meta - Metadata for a single PISA page in @pisa_meta_array
-+ * @flags:	PISA_ACTIVE while this page is owned by a pisa_alloc
-+ */
-+struct pisa_meta {
-+	u8 flags;
-+} __aligned(PISA_META_SIZE);
-+
-+static_assert(offsetof(struct pisa_meta, flags) == 0);
-+static_assert(sizeof(struct pisa_meta) == PISA_META_SIZE);
-+
-+int pisa_meta_ensure_pfn(unsigned long pfn, bool can_block);
-+struct pisa_meta *pisa_meta_of_pfn(unsigned long pfn);
-+unsigned long pisa_meta_to_pfn(const struct pisa_meta *meta);
-+
-+#endif /* CONFIG_PISA */
-+#endif /* _DRIVERS_IOMMU_PISA_PRIV_H */
-diff --git a/include/linux/pisa.h b/include/linux/pisa.h
-new file mode 100644
-index 0000000000000..acf92ced245d8
---- /dev/null
-+++ b/include/linux/pisa.h
-@@ -0,0 +1,79 @@
-+/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-+/* See Documentation/core-api/pisa.rst for the architecture overview. */
-+#ifndef _LINUX_PISA_H
-+#define _LINUX_PISA_H
-+
-+#include <linux/bitops.h>
-+#include <linux/jump_label.h>
-+#include <linux/mm.h>
-+#include <linux/types.h>
-+
-+#ifdef CONFIG_PISA
-+
-+#define PISA_SHIFT		21U
-+#define PISA_SIZE		(1UL << PISA_SHIFT)
-+#define PISA_MASK		(~(PISA_SIZE - 1))
-+#define PISA_ORDER		(PISA_SHIFT - PAGE_SHIFT)
-+
-+/*
-+ * Each struct pisa_meta entry in pisa_meta_array has size PISA_META_SIZE
-+ * (256 B) and starts with a u8 flags byte.
-+ */
-+#define PISA_META_SHIFT		8
-+#define PISA_META_SIZE		(1U << PISA_META_SHIFT)
-+#define PISA_CHUNK_ORDER	(PISA_ORDER + PAGE_SHIFT - PISA_META_SHIFT)
-+
-+enum {
-+	PISA_ACTIVE		= BIT(0), /* page is owned by a pisa_alloc */
-+};
-+
-+/* Enabled on first pisa_meta_init() to activate fast-path hooks. */
-+DECLARE_STATIC_KEY_FALSE(pisa_key);
-+
-+struct pisa_meta;
-+extern struct pisa_meta *pisa_meta_array;
-+extern unsigned long pisa_meta_nframes;
-+extern unsigned long *pisa_chunk_bitmap;
-+
-+int pisa_meta_init(void);
-+
-+/* fast membership check for pisa pfn/pages */
-+static inline bool is_pisa_pfn(unsigned long pfn)
-+{
-+	unsigned long frame = pfn >> PISA_ORDER;
-+	const u8 *flags;
-+
-+	if (!static_branch_unlikely(&pisa_key))
-+		return false;
-+	if (unlikely(frame >= pisa_meta_nframes ||
-+		     !test_bit_acquire(pfn >> PISA_CHUNK_ORDER, pisa_chunk_bitmap)))
-+		return false;
-+
-+	flags = (const u8 *)pisa_meta_array + (frame << PISA_META_SHIFT);
-+	return READ_ONCE(*flags) & PISA_ACTIVE;
-+}
-+
-+#else /* !CONFIG_PISA */
-+
-+static inline int pisa_meta_init(void)
+@@ -477,7 +477,8 @@ static void test_dev_pisa_attrs(struct kunit *test)
+ 	}
+ 	kunit_check_pisa_attr(test, dev, "pisa_coherent", &dev->pisa_coherent);
+ 	kunit_check_pisa_attr(test, dev, "pisa_rx_bufs", &dev->pisa_rx_bufs);
+-	kunit_check_pisa_attr(test, dev, "pisa_tx_bufs", &dev->pisa_tx_bufs);
++	if (IS_ENABLED(CONFIG_NET))
++		kunit_check_pisa_attr(test, dev, "pisa_tx_bufs", &dev->pisa_tx_bufs);
+ 	kunit_check_pisa_attr(test, dev, "pisa_tx_skb_heads", &dev->pisa_tx_skb_heads);
+ 	device_unregister(dev);
+ }
+diff --git a/include/linux/device.h b/include/linux/device.h
+index b3c11e32116ca..08f511b978ded 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -814,6 +814,15 @@ struct device {
+ 	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+ };
+ 
++#if defined(CONFIG_NET) && defined(CONFIG_PISA)
++int net_pisa_tx_bufs_set(struct device *dev, bool val);
++#else
++static inline int net_pisa_tx_bufs_set(struct device *dev, bool val)
 +{
 +	return -EOPNOTSUPP;
 +}
++#endif
 +
-+static inline bool is_pisa_pfn(unsigned long pfn)
+ #define __create_dev_flag_accessors(accessor_name, flag_name) \
+ static inline bool dev_##accessor_name(const struct device *dev) \
+ { \
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 435be7880d7e5..41c999223a15e 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2161,6 +2161,7 @@ enum netdev_reg_state {
+  *	@neighbours:	List heads pointing to this device's neighbours'
+  *			dev_list, one per address-family.
+  *	@hwprov: Tracks which PTP performs hardware packet time stamping.
++ *	@pisa_tx_stamp:	Cached leaf pisa flags and timestamp.
+  *
+  *	FIXME: cleanup struct net_device such that network protocol info
+  *	moves out.
+@@ -2276,6 +2277,9 @@ struct net_device {
+ 	} adj_list;
+ 
+ 	/* Read-mostly cache-line for fast-path access */
++#ifdef CONFIG_PISA
++	u32			pisa_tx_stamp;
++#endif
+ 	xdp_features_t		xdp_features;
+ 	const struct xdp_metadata_ops *xdp_metadata_ops;
+ 	const struct xsk_tx_metadata_ops *xsk_tx_metadata_ops;
+diff --git a/include/linux/pisa.h b/include/linux/pisa.h
+index cdf176464d74a..822e1556d78ef 100644
+--- a/include/linux/pisa.h
++++ b/include/linux/pisa.h
+@@ -107,6 +107,18 @@ static inline gfp_t pisa_rx_gfp(const struct device *dev)
+ 	return dev && READ_ONCE(dev->pisa_rx_bufs) ? __GFP_PISA_RW : 0;
+ }
+ 
++/* current->task_frag_pisa lifetime, see task_page_frag(). */
++static inline void pisa_task_frag_init(struct task_struct *tsk)
++{
++	tsk->task_frag_pisa.page = NULL;
++}
++
++static inline void pisa_task_frag_release(struct task_struct *tsk)
++{
++	if (tsk->task_frag_pisa.page)
++		put_page(tsk->task_frag_pisa.page);
++}
++
+ #else /* !CONFIG_PISA */
+ 
+ static inline int pisa_meta_init(void)
+@@ -164,6 +176,14 @@ static inline bool pisa_has_free_blocks_rx(const struct device *dev,
+ 	return false;
+ }
+ 
++static inline void pisa_task_frag_init(struct task_struct *tsk)
++{
++}
++
++static inline void pisa_task_frag_release(struct task_struct *tsk)
++{
++}
++
+ #endif /* CONFIG_PISA */
+ 
+ static inline struct page *
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 1c93da75226e3..1c7ef0d90dc35 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1453,6 +1453,10 @@ struct task_struct {
+ 	struct pipe_inode_info		*splice_pipe;
+ 
+ 	struct page_frag		task_frag;
++#ifdef CONFIG_PISA
++	/* TX frag that may hold PISA pages, see sk_page_frag_dst(). */
++	struct page_frag		task_frag_pisa;
++#endif
+ 
+ #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+ 	struct lazy_mmu_state		lazy_mmu_state;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 6787fcf6ac3e4..2fce6eafa1cb3 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3808,6 +3808,8 @@ static inline void skb_frag_page_copy(skb_frag_t *fragto,
+ }
+ 
+ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t prio);
++bool skb_page_frag_refill_dev(unsigned int sz, struct page_frag *pfrag,
++			      const struct sk_buff *skb);
+ 
+ /**
+  * __skb_frag_dma_map - maps a paged fragment via the DMA API
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 173b37b2b8bb0..73906351d11db 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2670,6 +2670,95 @@ static inline struct page_frag *sk_page_frag(struct sock *sk)
+ 	return &sk->sk_frag;
+ }
+ 
++/* 256-jiffy cache in dev->pisa_tx_stamp; see netdev_tx_pisa_refresh(). */
++#define PISA_TX_STAMP_OK	BIT(0)
++#define PISA_TX_STAMP_MASK	(~0xffU)
++
++#ifdef CONFIG_PISA
++DECLARE_STATIC_KEY_FALSE(net_pisa_tx_bufs_key);
++
++static inline bool net_pisa_tx_bufs_enabled(void)
++{
++	return static_branch_unlikely(&net_pisa_tx_bufs_key);
++}
++
++bool netdev_tx_pisa_refresh(struct net_device *dev, u32 now);
++
++static inline bool __netdev_tx_pisa_ok(const struct net_device *dev)
++{
++	u32 stamp, now;
++
++	if (!dev)
++		return false;
++	stamp = READ_ONCE(dev->pisa_tx_stamp);
++	now = (u32)jiffies & PISA_TX_STAMP_MASK;
++	if (likely((stamp & PISA_TX_STAMP_MASK) == now))
++		return stamp & PISA_TX_STAMP_OK;
++	return netdev_tx_pisa_refresh((struct net_device *)dev, now);
++}
++#else
++static inline bool net_pisa_tx_bufs_enabled(void)
 +{
 +	return false;
 +}
 +
-+#endif /* CONFIG_PISA */
-+
-+static inline bool is_pisa_phys(phys_addr_t phys)
++static inline bool __netdev_tx_pisa_ok(const struct net_device *dev)
 +{
-+	return is_pisa_pfn(phys >> PAGE_SHIFT);
++	return false;
++}
++#endif
++
++/*
++ * May TX payload routed through @dst be copied into PISA pages? Those pages
++ * stay readable by every device that mapped them for as long as they are
++ * active, so only data that leaves the host in clear qualifies: IPsec payload
++ * is still plaintext here.
++ */
++static inline bool dst_tx_pisa_ok(const struct dst_entry *dst)
++{
++	bool ok = false;
++
++	if (!net_pisa_tx_bufs_enabled() || !dst)
++		return false;
++
++	rcu_read_lock();
++	if (!dst_xfrm(dst))
++		ok = __netdev_tx_pisa_ok(dst_dev_rcu(dst));
++	rcu_read_unlock();
++	return ok;
 +}
 +
-+static inline bool is_pisa_page(const struct page *page)
++/* Is @pfrag the task's frag reserved for PISA-eligible data? */
++static inline bool is_pisa_pfrag(const struct page_frag *pfrag)
 +{
-+	return is_pisa_pfn(page_to_pfn(page));
++#ifdef CONFIG_PISA
++	return pfrag == &current->task_frag_pisa;
++#else
++	return false;
++#endif
 +}
-+#endif /* _LINUX_PISA_H */
++
++/* current->task_frag, or its PISA twin if @dst qualifies. */
++static inline struct page_frag *task_page_frag(const struct dst_entry *dst)
++{
++#ifdef CONFIG_PISA
++	if (dst_tx_pisa_ok(dst))
++		return &current->task_frag_pisa;
++#endif
++	return &current->task_frag;
++}
++
++/*
++ * sk_page_frag() for data routed through @dst. PISA pages only ever enter
++ * current->task_frag_pisa, so data of sockets that do not qualify (or that use
++ * sk_page_frag() directly: kTLS, sockmap, KCM, MPTCP) never lands in them.
++ */
++static inline struct page_frag *sk_page_frag_dst(struct sock *sk,
++						 const struct dst_entry *dst)
++{
++	return sk->sk_use_task_frag ? task_page_frag(dst) : &sk->sk_frag;
++}
++
+ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag);
+ 
+ static inline bool __sock_writeable(const struct sock *sk, int wmem_alloc)
+diff --git a/kernel/exit.c b/kernel/exit.c
+index d5e7bc2af804a..ac7ca1fb180c3 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/mm.h>
++#include <linux/pisa.h>
+ #include <linux/slab.h>
+ #include <linux/sched/autogroup.h>
+ #include <linux/sched/mm.h>
+@@ -1009,6 +1010,7 @@ void __noreturn do_exit(long code)
+ 
+ 	if (tsk->task_frag.page)
+ 		put_page(tsk->task_frag.page);
++	pisa_task_frag_release(tsk);
+ 
+ 	exit_task_stack_account(tsk);
+ 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 5efceb8d58a78..d235d7ab04687 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -44,6 +44,7 @@
+ #include <linux/mmu_notifier.h>
+ #include <linux/fs.h>
+ #include <linux/mm.h>
++#include <linux/pisa.h>
+ #include <linux/mm_inline.h>
+ #include <linux/memblock.h>
+ #include <linux/nsproxy.h>
+@@ -982,6 +983,7 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+ #endif
+ 	tsk->splice_pipe = NULL;
+ 	tsk->task_frag.page = NULL;
++	pisa_task_frag_init(tsk);
+ 	tsk->wake_q.next = NULL;
+ 	tsk->worker_private = NULL;
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e2401d735c5a7..695fefe316925 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -115,6 +115,7 @@
+ #include <linux/memcontrol.h>
+ #include <linux/prefetch.h>
+ #include <linux/compat.h>
++#include <linux/pisa.h>
+ #include <linux/mroute.h>
+ #include <linux/mroute6.h>
+ #include <linux/icmpv6.h>
+@@ -3257,13 +3258,20 @@ DEFINE_STATIC_KEY_FALSE(net_high_order_alloc_disable_key);
+  */
+ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
+ {
++	/* PISA pages only go into current->task_frag_pisa, see sk_page_frag_dst(). */
++	if (is_pisa_pfrag(pfrag))
++		gfp |= __GFP_PISA_RO;
++
+ 	if (pfrag->page) {
++		if ((gfp & __GFP_PISA_RO) && !pisa_page_can_recycle(pfrag->page))
++			goto drop_page;
+ 		if (page_ref_count(pfrag->page) == 1) {
+ 			pfrag->offset = 0;
+ 			return true;
+ 		}
+ 		if (pfrag->offset + sz <= pfrag->size)
+ 			return true;
++drop_page:
+ 		put_page(pfrag->page);
+ 	}
+ 
+@@ -3289,6 +3297,39 @@ bool skb_page_frag_refill(unsigned int sz, struct page_frag *pfrag, gfp_t gfp)
+ }
+ EXPORT_SYMBOL(skb_page_frag_refill);
+ 
++/**
++ * skb_page_frag_refill_dev - GFP_ATOMIC skb_page_frag_refill() for @skb TX
++ * @sz: minimum size of the fragment we want to get
++ * @pfrag: pointer to page_frag, private to the caller
++ * @skb: packet being transmitted
++ *
++ * Pages come from the per-node DMA_TO_DEVICE PISA allocators when they are
++ * useful for @skb's egress device (__netdev_tx_pisa_ok()), otherwise from the
++ * buddy allocator. PISA pages are readable by every device that maps them
++ * while they stay active, so @pfrag must only ever hold data meant for devices,
++ * e.g. ciphertext; it may mix PISA and ordinary pages.
++ */
++bool skb_page_frag_refill_dev(unsigned int sz, struct page_frag *pfrag,
++			      const struct sk_buff *skb)
++{
++	gfp_t gfp = GFP_ATOMIC;
++
++	/*
++	 * Before ip_finish_output2() populates skb->dev (e.g. esp_output),
++	 * the egress device is carried by skb_dst(skb).
++	 */
++	if (net_pisa_tx_bufs_enabled()) {
++		const struct dst_entry *dst = skb_dst(skb);
++
++		rcu_read_lock();
++		if (__netdev_tx_pisa_ok(skb->dev ?: (dst ? dst_dev_rcu(dst) : NULL)))
++			gfp |= __GFP_PISA_RO;
++		rcu_read_unlock();
++	}
++	return skb_page_frag_refill(sz, pfrag, gfp);
++}
++EXPORT_SYMBOL(skb_page_frag_refill_dev);
++
+ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag)
+ {
+ 	if (likely(skb_page_frag_refill(32U, pfrag, sk->sk_allocation)))
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index ae701561d9f12..feecf094f582c 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -451,7 +451,7 @@ int esp_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 
+ 			spin_lock_bh(&x->lock);
+ 
+-			if (unlikely(!skb_page_frag_refill(allocsize, pfrag, GFP_ATOMIC))) {
++			if (unlikely(!skb_page_frag_refill_dev(allocsize, pfrag, skb))) {
+ 				spin_unlock_bh(&x->lock);
+ 				goto cow;
+ 			}
+@@ -560,7 +560,7 @@ int esp_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
+ 		allocsize = ALIGN(skb->data_len, L1_CACHE_BYTES);
+ 
+ 		spin_lock_bh(&x->lock);
+-		if (unlikely(!skb_page_frag_refill(allocsize, pfrag, GFP_ATOMIC))) {
++		if (unlikely(!skb_page_frag_refill_dev(allocsize, pfrag, skb))) {
+ 			spin_unlock_bh(&x->lock);
+ 			goto error_free;
+ 		}
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 3396f177a18d0..a5ea530bc8b5b 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -986,7 +986,10 @@ static int __ip_append_data(struct sock *sk,
+ 
+ 	exthdrlen = !skb ? rt->dst.header_len : 0;
+ 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
+-	paged = !!cork->gso_size;
++	paged = !!cork->gso_size ||
++		(sk->sk_type != SOCK_RAW &&
++		 (rt->dst.dev->features & NETIF_F_SG) &&
++		 is_pisa_pfrag(pfrag));
+ 
+ 	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
+ 
+@@ -1383,8 +1386,8 @@ int ip_append_data(struct sock *sk, struct flowi4 *fl4,
+ 	}
+ 
+ 	return __ip_append_data(sk, fl4, &sk->sk_write_queue, &inet->cork.base,
+-				sk_page_frag(sk), getfrag,
+-				from, length, transhdrlen, flags);
++				sk_page_frag_dst(sk, inet->cork.base.dst),
++				getfrag, from, length, transhdrlen, flags);
+ }
+ 
+ static void ip_cork_release(struct inet_cork *cork)
+@@ -1592,7 +1595,7 @@ struct sk_buff *ip_make_skb(struct sock *sk,
+ 		return ERR_PTR(err);
+ 
+ 	err = __ip_append_data(sk, fl4, &queue, cork,
+-			       &current->task_frag, getfrag,
++			       task_page_frag(cork->dst), getfrag,
+ 			       from, length, transhdrlen, flags);
+ 	if (err) {
+ 		__ip_flush_pending_frames(sk, &queue, cork);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b9de7c302ba83..b8d44a0638914 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1290,9 +1290,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 			copy = msg_data_left(msg);
+ 
+ 		if (zc == 0) {
++			const struct dst_entry *dst = __sk_dst_get(sk);
+ 			bool merge = true;
+ 			int i = skb_shinfo(skb)->nr_frags;
+-			struct page_frag *pfrag = sk_page_frag(sk);
++			struct page_frag *pfrag = sk_page_frag_dst(sk, dst);
+ 
+ 			if (!sk_page_frag_refill(sk, pfrag))
+ 				goto wait_for_space;
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index d654f0f442388..cdedda548749a 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -481,7 +481,7 @@ int esp6_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 
+ 			spin_lock_bh(&x->lock);
+ 
+-			if (unlikely(!skb_page_frag_refill(allocsize, pfrag, GFP_ATOMIC))) {
++			if (unlikely(!skb_page_frag_refill_dev(allocsize, pfrag, skb))) {
+ 				spin_unlock_bh(&x->lock);
+ 				goto cow;
+ 			}
+@@ -592,7 +592,7 @@ int esp6_output_tail(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+ 		allocsize = ALIGN(skb->data_len, L1_CACHE_BYTES);
+ 
+ 		spin_lock_bh(&x->lock);
+-		if (unlikely(!skb_page_frag_refill(allocsize, pfrag, GFP_ATOMIC))) {
++		if (unlikely(!skb_page_frag_refill_dev(allocsize, pfrag, skb))) {
+ 			spin_unlock_bh(&x->lock);
+ 			goto error_free;
+ 		}
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 25fe0ba98b1a6..957c38a08680c 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1486,7 +1486,10 @@ static int __ip6_append_data(struct sock *sk,
+ 		dst_exthdrlen = rt->dst.header_len - rt->rt6i_nfheader_len;
+ 	}
+ 
+-	paged = !!cork->gso_size;
++	paged = !!cork->gso_size ||
++		(sk->sk_type != SOCK_RAW &&
++		 (rt->dst.dev->features & NETIF_F_SG) &&
++		 is_pisa_pfrag(pfrag));
+ 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
+ 	orig_mtu = mtu;
+ 
+@@ -1889,8 +1892,8 @@ int ip6_append_data(struct sock *sk,
+ 	}
+ 
+ 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
+-				 sk_page_frag(sk), getfrag,
+-				 from, length, transhdrlen, flags);
++				 sk_page_frag_dst(sk, inet->cork.base.dst),
++				 getfrag, from, length, transhdrlen, flags);
+ }
+ EXPORT_SYMBOL_GPL(ip6_append_data);
+ 
+@@ -2092,7 +2095,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 	}
+ 
+ 	err = __ip6_append_data(sk, &queue, cork,
+-				&current->task_frag, getfrag, from,
++				task_page_frag(cork->base.dst), getfrag, from,
+ 				length + exthdrlen, transhdrlen + exthdrlen,
+ 				flags);
+ 	if (err) {
 -- 
 2.56.0.542.g3ef89b7020-goog
 
