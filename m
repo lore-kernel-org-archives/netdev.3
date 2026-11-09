@@ -1,101 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794253553;
-	b=kjTNOSga45i0mQjZfeUsG3Q5/F/ulByNjfMfAvWiq04dE5I3StyP+FlQyt4i4+BqPyYF
-	 wMRj7IHmQNO7YZSKNtjTxoQO1kojT4UppQe2PUINdOVRChBjVw/amoHp1pzW7QlEyKeoc
-	 RyPVcMcR+Zc5kD/wcBDNfzbTdZ6NKeFyKHbQh6+xkFmFaHGDaqE1FGlszfRcz/viELGFx
-	 1x5Oq0B1OL2rTDG9/0aYCwrv2YJDSSPkXOojKHhK+97Uoi8yNYai0DI7MlZPHQ2Fr3YvX
-	 Rp5NY6QPP4BjTmfJs7PoXxi82cwBmODmg0NX7u9DpnmpZgGc3EkH8GvvDbDF4pVIQqw==
+	t=1794253567;
+	b=U/o/0rxoOnh3TjXG/troXNI9qhpwwTUZn1WfWSniDKHBdAQazaiLJzgclrbdjVT4ZWTi
+	 eqqdtKPUtVYt1WvBCC/v7qlesRDSdG1v+h0uiyb7Evr0uuHBUQk9F6eCmrHmCcc6lzJuu
+	 /geozixhalKVM1U4z30lmyksg8ZJ+Qu0pSTfKN1UYP7faamWrPAitYKm3vr90iSANrdgT
+	 MqiGZcj3y6LYF3GLh5eKd+AdkCZ0EiipC/l7H2Q7nHFuY+SqYlrh3Z6OPCwoWZj2A7KNF
+	 37xlbvwO3z0r/nudVSUA7Rku5VMZg8tdeRW8PTt7DmoTR6BWdfiuKbEbboT+ztKrO4w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794253553;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253567;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=eiGRyV0/2D+VxvRiL6LVlldu4Mo4SygtHqGmo4tg7R4=;
-	b=CFKHuIif6quUmiZREY1X3ljSu5y7CpBKYOhTfWWYiRozuC0PRBmT/EENc0aFRBfoLY9F
-	 z/TUTEmUOLSXTvjgYDHX9iRT0krK/7Rv/5Y5GL7FCOhkMk+7rj5nfmb8XGpRex3hu6aC/
-	 OutR3KETvJ589IudLpByLvW9HP4YP1xCY0iRghmDI+rScgyO6Np1mLwAiffIxqOKugvQX
-	 CFdX35JJwVXGkqnL6kAHXW3QjXVY97jIr+WKDnQ9xEqSV1MmveYlZNyYIcFHecNvGOxHD
-	 9HRKeqv+UUcB4ccf8xbbBJTJnElz5L/9QLYizeECxlKOmVyR6mNu9TmUkU0jZe3VoHA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=iOArzfF7wNe46tx1BE66G31FeLK1fkOr8F1BKZ5Pz78=;
+	b=n5nyjqEs1tAgwqNey8BiNTmgtsI07qxwclks53US4dpPLrl2dSaUr39Xt1+iYLSVNOBO
+	 g1hdYrc7Ui1A7/MJaas8IEPt5FPgW0Ar0eGA9X4ojd+IIz5P8ukEXfkfqcgjz7GoTz8Cq
+	 4orH4KAu2vxIsSyhAAOTwK0g2ajFuYcu4x1xugVdcf7Zoyy52HQ1MMgaWHlZhsy6xQra+
+	 k+cYVcNcMoZD1vS5BQT3gJAzUNQ9VhQdRx7oz102LmnkCLU9v00wkxRdNK+xDav5HfSZY
+	 aiSZjXMQFv0IiZeyLoETM12+zLiyWZxpPJOs2v636LTCr0YtuZxTNOya6c0KeYDEz+g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ercuwi9C;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.175
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Pm9JCe6h;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.50
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1416D606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:45:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1416D606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADBC606A32A
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:46:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ADBC606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ercuwi9C
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so10005ad.1
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 11:45:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794253552; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Pm9JCe6h
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4682977f9aso159126866b.1
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 11:46:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794253566; cv=none;
         d=google.com; s=arc-20260327;
-        b=j1Z5cMZfnQG+cC84qDI/7sQ+U+K19KN7lu3RbnkgfhMmIVwrdT2HZEKQHTW1P0XnjJ
-         XCncaOrAScNAX5XAopk+ciho671Vr+dEAvdXoOMDqFrM9xiYHui1zurdhFTPt1Hxhsuc
-         pYlV39BRJnuumu1PRtFpp5FBOUFgR82LtUHsmICetDFB8VTZPkUYNs116JV4NJbBND2Y
-         7AQDCwZna3b//az3nKK5HNfc3GckAKJlWPkckkx77qKupi7F6p8CkaH1iRXWV0mgPcs5
-         oGB8AuukKnPWEn0FYkUK0LTZHrhpk998+xWbEcRuXddXSATUh8TefvDIDpizx4axC7pW
-         WAeA==
+        b=XnWy2Wk1Bo6LpW7oFAuk3ZjHxqRhugRuYiZjB3Idm00inqGV/GDYX5L4ggKvTwQ0Sv
+         tghtLQ23BpbL7xEA1OUj17x2Ac7VTpDV9imjzpYFRXAdp+G3+KtUENlWRmuGSAPRzmv4
+         A67hgLydPcSsw5Lj2vmyJw02ss+4V+AFCrPidEqRy5HisMAiiIkmDLDFRTTKJ60qqJwO
+         QafxKPKa9dSDEouiPcMCFbGHribvbh6swNIwSii4/maQ4YqMwWXUF2Lf58qvTui4UnMV
+         szm01dvXdCtlB2iTnajDFs8RtfAl0WvPLDdwlMYN/z1nUsavbpMLJZcX+DhGxgwnh4Dv
+         ga/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=eiGRyV0/2D+VxvRiL6LVlldu4Mo4SygtHqGmo4tg7R4=;
-        fh=3Tx6BZnwOY9nyymmsikAIffq6zqNZH1TF7Y21imbe+0=;
-        b=dGjF5a9EQYd63i77ggWPPmtbMMfr9R+ctNx9mbaMVUAJvzN4mhMIEcnp61NuUCBfXo
-         aOAjpE6MhK7UbV9I+bYz8ffHu9rfIDBZ2imsGHMjohBxFs/seC1BKojsG0TuZt9cu6iz
-         ZNzvaCXTKn1v8An5g6MHRkke+74c2KHBVfmr76EkZTp/PH2IiXixGo2miYhmHppWNj41
-         6tJnNekm35tCg4VF8j0LGxjsoobydaGtO4N1IbsamZQ5kqRZChBjpKE4c4HZ25+14IsF
-         yx0r2Eb/pxKbxcTgMJNZuPndZZ3pWkAbA+S3KVgyHa4s8Ujvoz3eew2R0Q/E/OlN8IyJ
-         VtRg==;
+        bh=iOArzfF7wNe46tx1BE66G31FeLK1fkOr8F1BKZ5Pz78=;
+        fh=FNetVJa7K4MYOSQ4gBQlsJ3/dPfHoNdpttK2LTvPMI8=;
+        b=ioYLihYot5M8TnQZTL8cHsWfCS6e5n5LolzsaCDY5P+urt2/9eXPZAHuMimfrjtD4J
+         dy9dA1PvE9v8Ngr8rzei7GKfzOLXkBXI1brc2pAKzP/7jKPuSwkPGWtw/Yf8vl4Js3Y0
+         ZdkJoqz90Un65NArQXIBft2tifER6U+keGJTMKwb8kikcxf3FbzA1TM/K3diGKLvreHL
+         tuxO5CI52+rH5MRsoqrHV5IGLnpZwxgWkquhat79Np+AGIhXra2sPEJyRVE9km1Mj3Ef
+         ine06eqiX+bTINme03OhymoQKuGT5Rb0sTCZewQETPZ0aWPedghrPoBWzC/3X3gJbGpN
+         HSuA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794253552; x=1794858352; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794253566; x=1794858366; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=eiGRyV0/2D+VxvRiL6LVlldu4Mo4SygtHqGmo4tg7R4=;
-        b=ercuwi9CYDzC+T4JGz/F0D3B+85z2Syi6RARIORqBqZuGpbJ/zyh7Jg7ftBxmI87m7
-         V9LMsYyHH/UWGGm0BjUJvBOE9ZGwVYxTtu00M25zOLX13MW4eXH28pNAo1gxWRZVUkdr
-         lj9BOW1uoh+Vliox898zW5pmTqaWmJV+7MCuQa8b2jfUCp4U4nzzaPPgQz5VWRF4SKzG
-         seucLzuI4CoQ9dv0qjSZB5fi35fbmV0c0O4gIkbnM0uIozjbfOekgiqU4/vyKxZeRpJf
-         /v4ub8l29DZ8IuUctZVr8i+WbJ8DbC/Eki25p7DDotPOQcKq1o532C71uKGcO8AR1sSk
-         y94w==
+        bh=iOArzfF7wNe46tx1BE66G31FeLK1fkOr8F1BKZ5Pz78=;
+        b=Pm9JCe6hrPVGrO2xDSZJWLVIhH3J0+mcxGAYvFMk2DFM0ZHUx03KkC0cEv/3IjxXND
+         eZOQbXyQiFneqqRZLDkftAGH9oiDqBN7ob4S6jiuI+wE82k/kcKGphEO5PdiOQ4YImwr
+         5VNEvqdRvqcbGenyy0d3N0YBo0a0GX5vIDKuiiGSSzkwlYO8v0xXsMnPhPsgsetEjlww
+         yAVG4+PkSS43HSduO3LaOKyAsUHHOcGjT1fmbuaO5T14ranz/G47LCT1e6xjA6Q9ytVU
+         IUhEPyVotJ0oW3lL+ikjEYqT/+N9XD+oy17B2/l6qCPex25kWUX3Mc6srIW/JRWQ9ynq
+         WrmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794253552; x=1794858352;
+        d=1e100.net; s=20260707; t=1794253566; x=1794858366;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eiGRyV0/2D+VxvRiL6LVlldu4Mo4SygtHqGmo4tg7R4=;
-        b=acGFvUjBjiegvKEI/VaWAMuc/oGkK4ZeY4R3tRMRtu+bXrBDdLwXGzj6/yMUOBvlgG
-         Rjy8iKc4m4XiMXGLh4OuaDBaK8yyQljL4ekl71+m4o0EN/Ey1+UH2dYuwRw7s1/yByVj
-         3AvSOXI3R7uzUay/FdynNSiCJCrXzSYoAzIgouTUnVYae99Ig/vii7olCAIbZSgVerD/
-         hSlmCMd40OMZfU8qro0Q8w2eBi01FWEXpPl118h75LhMyKaqpHvqwnyIB7l52ARllaSS
-         8k+4mRiZTdS5kUkSpnBwW3ZV8kkj8MbvM+6dMOL62fZlQY6UAJouOcRbt6CrSB5Oen2w
-         j13A==
-X-Forwarded-Encrypted: i=1; AL+hErH1gof897hsHZB2Deu+YbeGWo9B0ON5erp3KXIqACyJS8HWPWKVX7j+KwYsVGERjHpUlUW1tgY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+g8Cmir6K9rkNxj9x5/b4WGVHCadi3C1H3m4eNlwWEcp1OfnQD
-	wPoeL4c9RFm8VpN3njn78k7E8x//tAo1hRA/c+WRgLkiMvnLHLbANmGbKDJNZWxkeiLbp0DK2rn
-	CBFd3NOSaJ4m5KTBoYwQVSOdlDE5wDhMCzYkFLhOW
-X-Gm-Gg: AYBFou0rNOFBAkk3tu5zYZ3VXKIkwdC0M2jsOHGaXtZADbDgXmqVHeA5rJuZWudWj11
-	2LZDnIjm7XYyxMcWDUbEuRJsHbRtopZQb9TgJWr3V2jh1gwIec5s+s6hsudbgF5Z3WNI5Cbe/Up
-	HaSKu/VrCs3nTuJJQdBKi/b49FqYIQtveS4UUEv12Ilw+g77RjRwc/FBtvAoKzJvNDc14oQ4TFI
-	YB4qV+HZY4plpYbUN/vmg/N2SnlJiJCsMBiZec2p+va2LClJclJ1MMkxaZeyziIalA3czQJ9C73
-	MVJ08Ed6rLmoc9FYpOkZWTMOkNVIGHy8vitjugMTHRf8MFqJtcj+vWegLpWrj7eTyaPZX9BNEwZ
-	z9MtBCyIBlo1aZsKJ7J5TPOdCAoclu8TCQUVNOouKNZNpwfYjMbpU1Lx2AEs5c1ZHRpUDeC1b86
-	anpwtCgFsZ/l5yI8prJetdF17NWaSyF3UCltWgKBI=
-X-Received: by 2002:a17:902:f611:b0:2e6:d25:d874 with SMTP id
- d9443c01a7336-2edb812e0bbmr796845ad.10.1794253551599; Mon, 09 Nov 2026
- 11:45:51 -0800 (PST)
+        bh=iOArzfF7wNe46tx1BE66G31FeLK1fkOr8F1BKZ5Pz78=;
+        b=pf6hVey/WBNuzagcWt3WStGk6BRvRWESfQbm36fanCX8k8xxjGrU+YDDq6KqJlK8nn
+         gduBarcPu3cSXnHfgvHi+ZzMdF+a33YELGcw8VvVGEjSBNmz2BevHfNpVFMd1jtk1nEQ
+         rqRhEErynj/kHmJJd4rJ/PnQ+Ri4KuQd2E+7p4wcbVRWLz2Rasj7MEkMiyBj+QYyCHgR
+         9IRwAPvBAEHWgXtwzOZcHMh3j5sbvCJ6g5UcsBr6Ry8kr14GHkBMR7AMcm+u/R7eVJn9
+         ugP3+jtb9TSBHCGf+v1yOBMox1OWvsqxKlYM5rYQKJnfGTV3svtRdgNbgpLQYeXvmXx8
+         1YbA==
+X-Gm-Message-State: APuU4Z95C7kj+iISgdlUTaQC54HVrdRY3nQhNJpYCgtD2/OfagZiy6rV
+	WJZNdrAr1ZvCTGneFBEDVYqzF11tKjWdHX8PbVJevybo9GvFAsbvlBSTkhuqwVN2u0uArZ808pU
+	SVEhYx7nfofvuXBkvrPeoqQHWJCED4UIrt1bTwG5E
+X-Gm-Gg: AYBFou2x5aF4QpiCOBd641leD1nbiIMesmhyocXKkC661UVdrzFWJm6y+UvIqjqSXsR
+	Kgc/loUN3dOrkCBo+dpuU374ZjkEjUQ+B6XQprVOVWAB1o6taDlaZZMdpTVUhtvpBMLe76uxWUU
+	kVYlLC2GwWxNoLp8vOUEztOCt3Em505xyAzfefaE/7FIqRdGcUwzzft86akHJr6m3eoYjK0aSss
+	A0PlGUKMRpF9HDLyfSpKcWy/FXewm0JRLzJcuu9+JrfyI9HO4SanpUZo1DdPrPyF8Dq/CHS3HBA
+	FfVSkaTRz6a1kwU595tskdm5BlvqHN5b/EwtQbwfM4Y/YnEN1S3J857Ef0ecPPz+XkVtHbVP+mk
+	Qow8RcBa9vt7+2EjCdh3Ti5GwRiq3sQ+XuZFdLEQf1NKq2uQdmr7WIB8OaHRplrFaNyM=
+X-Received: by 2002:a17:907:3e20:b0:c41:64c1:cc2d with SMTP id
+ a640c23a62f3a-c50491bd62emr32238066b.2.1794253565000; Mon, 09 Nov 2026
+ 11:46:05 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,195 +103,92 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261104070041.1902653-1-yhlee@isslab.korea.ac.kr>
-In-Reply-To: <20261104070041.1902653-1-yhlee@isslab.korea.ac.kr>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Mon, 9 Nov 2026 11:45:40 -0800
-X-Gm-Features: AclHuK_whYsAe78BgacGejquIYJ9dQ31ukLprOco_opsVCNz0hY1b_kOtAwu6a4
-Message-ID: <CAEAWyHerrErox7nuZVau0T++ymEhF7jfo1rccxtOqyXKm--Kqg@mail.gmail.com>
-Subject: Re: [PATCH net] gve: bound the device reported RSS sizes in the RSS query
-To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Cc: Joshua Washington <joshwash@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Willem de Bruijn <willemb@google.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Hariprasad Kelam <hkelam@marvell.com>, stable@vger.kernel.org
+References: <20261109100437.331423-1-amaan.cheval@gmail.com> <20261109100437.331423-2-amaan.cheval@gmail.com>
+In-Reply-To: <20261109100437.331423-2-amaan.cheval@gmail.com>
+From: Joshua Washington <joshwash@google.com>
+Date: Mon, 9 Nov 2026 11:45:53 -0800
+X-Gm-Features: AclHuK-f_6xX0FRybZe2n9V_Z8dkntQqvMXacQrG_VwUeSpjRAkA9EO6aNAi2BM
+Message-ID: <CALuQH+Uee+=2NyhCXVmmESwXxSqDYKY3Foj70KM2qY6g5UsOXw@mail.gmail.com>
+Subject: Re: [PATCH net v5 1/2] gve: refuse XDP on queue formats without XDP support
+To: Amaan Cheval <amaan.cheval@gmail.com>
+Cc: netdev@vger.kernel.org, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	bcf@google.com, jordanrhee@google.com, przemyslaw.kitszel@intel.com, 
+	maciej.fijalkowski@intel.com, pkaligineedi@google.com, maolson@google.com, 
+	csully@google.com, willemb@google.com, yangchun@google.com, npl@google.com, 
+	awogbemila@google.com, shailend@google.com, nktgrg@google.com, 
+	maxyuan@google.com, bpf@vger.kernel.org, john.fastabend@gmail.com, 
+	hawk@kernel.org, sdf@fomichev.me, daniel@iogearbox.net, ast@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 3, 2026 at 11:01=E2=80=AFPM Yehyeong Lee <yhlee@isslab.korea.ac=
-.kr> wrote:
+On Mon, Nov 9, 2026 at 2:05=E2=80=AFAM Amaan Cheval <amaan.cheval@gmail.com=
+> wrote:
 >
-> gve_adminq_process_rss_query() copies priv->rss_key_size bytes and
-> priv->rss_lut_size words out of the admin queue buffer.  Both sizes come
-> from the device: gve_parse_device_option() takes them from the RSS device
-> option with no validation, and gve_adminq_describe_device() stores them.
-> They are 16 bit fields, so either can be up to 65535.
+> Commit d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ
+> RDA") enabled XDP on DQO-RDA by dropping the queue_format check from
+> verify_xdp_configuration(), which until then refused every format but
+> GQI-QPL. Nothing replaced it: gve_set_netdev_xdp_features() advertises
+> no XDP features for DQO-QPL and gve_xdp_xmit() rejects it, but the core
+> only checks that ndo_bpf exists, so a native XDP program, and an AF_XDP
+> socket on top of it, can still be attached on a queue format the driver
+> does not support.
 >
-> The source is one GVE_ADMINQ_BUFFER_SIZE block and the payload starts
-> after the descriptor, so it holds at most 4088 bytes.  The only length
-> test compares the sum with descriptor->total_length, which the same devic=
-e
-> wrote, and it is computed into a u16:
+> The DQO-QPL RX path was never written for that. Its page accounting
+> assumes the driver keeps a reference of its own across every handoff:
+> gve_xdp_done_dqo() passes the buffer to xdp_do_redirect() and then
+> recycles it with gve_reuse_buffer(), so a redirect target that releases
+> the buffer synchronously, such as an AF_XDP socket in copy mode, can
+> drop the page's last reference when pagecnt_bias runs out. The page is
+> then freed while it is still DMA-mapped and registered in the QPL, and
+> the driver posts it back to the device.
 >
->         u16 hash_lut_length;
->         ...
->         hash_lut_length =3D priv->rss_lut_size * sizeof(*rxfh->indir);
+> Refuse XDP setup in gve_verify_xdp_configuration() whenever the driver
+> advertises no XDP features for the current queue format, which today
+> means DQO-QPL. A zero-copy XSK pool bind is already refused by the core
+> for the same reason, and a copy-mode bind never reaches the driver and
+> is harmless without a program.
 >
->         if (sizeof(*descriptor) + priv->rss_key_size + hash_lut_length !=
-=3D
->             total_memory_length) {
->
-> A lut size of 16384 makes that product 65536, which truncates to zero, so
-> the device only has to report a total_length of 48 to pass.  The loop the=
-n
-> reads 16384 words, 65536 bytes, out of a 4096 byte block, and the walk
-> lands in rxfh->indir, which the ethtool core sized from the same device
-> value.  ETHTOOL_GRSSH and ETHTOOL_GRXFHINDIR hand that to the caller and
-> neither needs CAP_NET_ADMIN, net/ethtool/ioctl.c exempts them.
->
-> Reject sizes that do not fit the buffer, and compute the lut length in a
-> type that cannot truncate.
->
-> In the driver the block is dma_pool memory, so KASAN does not annotate it
-> and the contents of the neighbouring blocks leak with no report at all;
-> the report below comes from a KUnit harness that hands the handler a
-> kmalloc block of the same size, injects the device reply, and is not part
-> of this patch.  Unpatched, a lut of 16384 and a lut of 1022 both read pas=
-t
-> the block; with the patch both are rejected with -EINVAL, and the sizes
-> the driver itself defaults to, 40 and 128, still work.
->
->   BUG: KASAN: slab-out-of-bounds in gve_adminq_process_rss_query+0x3da/0x=
-4a0
->   Read of size 4 at addr ffff888002845000 by task kunit_try_catch/54
->
->   CPU: 0 UID: 0 PID: 54 Comm: kunit_try_catch Tainted: G                 =
-N  7.3.0-dirty #11 PREEMPT(lazy)
->   Tainted: [N]=3DTEST
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x3f/0x50
->    print_report+0xcd/0x620
->    ? gve_adminq_process_rss_query+0x3da/0x4a0
->    kasan_report+0xde/0x110
->    ? gve_adminq_process_rss_query+0x3da/0x4a0
->    gve_adminq_process_rss_query+0x3da/0x4a0
->    gve_rss_run.constprop.0+0xa7/0x1a0
->    ? __pfx_gve_rss_run.constprop.0+0x10/0x10
->    ? __pfx_read_tsc+0x10/0x10
->    ? ktime_get_ts64+0x192/0x250
->    kunit_try_run_case+0x1ca/0x4b0
->    ? __pfx_kunit_try_run_case+0x10/0x10
->    ? kthread_affine_node+0x247/0x360
->    ? __pfx_kthread_affine_node+0x10/0x10
->    ? __pfx_kunit_try_run_case+0x10/0x10
->    ? __pfx_kunit_generic_run_threadfn_adapter+0x10/0x10
->    kunit_generic_run_threadfn_adapter+0x7b/0xe0
->    kthread+0x36a/0x4f0
->    ? __pfx_kthread+0x10/0x10
->    ret_from_fork+0x34d/0x620
->    ? __pfx_ret_from_fork+0x10/0x10
->    ? __switch_to+0x22/0xde0
->    ? __pfx_kthread+0x10/0x10
->    ret_from_fork_asm+0x19/0x30
->    </TASK>
->
->   Allocated by task 54:
->    kasan_save_stack+0x33/0x60
->    kasan_save_track+0x14/0x30
->    __kasan_kmalloc+0x8f/0xa0
->    __kmalloc_noprof+0x19b/0x3e0
->    kunit_kmalloc_array+0x1b/0x50
->    gve_rss_ctx_init+0x40a/0x910
->    gve_rss_run.constprop.0+0x93/0x1a0
->    kunit_try_run_case+0x1ca/0x4b0
->    kunit_generic_run_threadfn_adapter+0x7b/0xe0
->    kthread+0x36a/0x4f0
->    ret_from_fork+0x34d/0x620
->    ret_from_fork_asm+0x19/0x30
->
->   The buggy address belongs to the object at ffff888002844000
->    which belongs to the cache kmalloc-4k of size 4096
->   The buggy address is located 0 bytes to the right of
->    allocated 4096-byte region [ffff888002844000, ffff888002845000)
->
->   The buggy address belongs to the physical page:
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x28=
-40
->   head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
->   flags: 0x4000000000000040(head|zone=3D1)
->   page_type: f5(slab)
->   raw: 4000000000000040 ffff888001042140 dead000000000122 000000000000000=
-0
->   raw: 0000000000000000 0000000000040004 00000000f5000000 000000000000000=
-0
->   head: 4000000000000040 ffff888001042140 dead000000000122 00000000000000=
-00
->   head: 0000000000000000 0000000000040004 00000000f5000000 00000000000000=
-00
->   head: 4000000000000003 ffffea00000a1001 00000000ffffffff 00000000ffffff=
-ff
->   head: 0000000000000000 0000000000000000 00000000ffffffff 00000000000000=
-00
->   page dumped because: kasan: bad access detected
->
->   Memory state around the buggy address:
->    ffff888002844f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->    ffff888002844f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->   >ffff888002845000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->                      ^
->    ffff888002845080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->    ffff888002845100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-> Fixes: fa46c456fa6e ("gve: Add RSS adminq commands and ethtool support")
+> Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ RDA=
+")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-
-Similarly to https://lore.kernel.org/netdev/CAEAWyHdJNjhV4biOFR+cw0MWNMZHUT=
-638+AT9Q83s9G7wyBsgw@mail.gmail.com/,
-the driver already provides an 'available_length' field as part of
-gve_adminq_query_rss_config(). So this should be dropped too.
+> Signed-off-by: Amaan Cheval <amaan.cheval@gmail.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
 
 > ---
->  drivers/net/ethernet/google/gve/gve_adminq.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+> v5:
+>  - Check dev->xdp_features instead of queue_format, and reword the
+>    subject and message around that (Joshua).
+> v4: https://lore.kernel.org/netdev/20261106114551.212675-2-amaan.cheval@g=
+mail.com/
 >
-> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/e=
-thernet/google/gve/gve_adminq.c
-> index 8b215fca9c1b63..1ba658cb2942be 100644
-> --- a/drivers/net/ethernet/google/gve/gve_adminq.c
-> +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-> @@ -1615,7 +1615,7 @@ static int gve_adminq_process_rss_query(struct gve_=
-priv *priv,
->                                         struct ethtool_rxfh_param *rxfh)
->  {
->         u32 total_memory_length;
-> -       u16 hash_lut_length;
-> +       u32 hash_lut_length;
->         void *rss_info_addr;
->         __be32 *lut;
->         u16 i;
-> @@ -1623,6 +1623,14 @@ static int gve_adminq_process_rss_query(struct gve=
-_priv *priv,
->         total_memory_length =3D be32_to_cpu(descriptor->total_length);
->         hash_lut_length =3D priv->rss_lut_size * sizeof(*rxfh->indir);
+>  drivers/net/ethernet/google/gve/gve_main.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> +       if (sizeof(*descriptor) + priv->rss_key_size + hash_lut_length >
-> +           GVE_ADMINQ_BUFFER_SIZE) {
-> +               dev_err(&priv->dev->dev,
-> +                       "rss sizes from device do not fit the adminq buff=
-er: key %u lut %u\n",
-> +                       priv->rss_key_size, priv->rss_lut_size);
-> +               return -EINVAL;
+> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/eth=
+ernet/google/gve/gve_main.c
+> index 2437cd8ba633..fe560f5c5408 100644
+> --- a/drivers/net/ethernet/google/gve/gve_main.c
+> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> @@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct net=
+_device *dev,
+>         struct gve_priv *priv =3D netdev_priv(dev);
+>         u16 max_xdp_mtu;
+>
+> +       if (!(dev->xdp_features & NETDEV_XDP_ACT_BASIC)) {
+> +               NL_SET_ERR_MSG_MOD(extack,
+> +                                  "XDP is not supported on this queue fo=
+rmat.");
+> +               return -EOPNOTSUPP;
 > +       }
 > +
->         if (sizeof(*descriptor) + priv->rss_key_size + hash_lut_length !=
-=3D total_memory_length) {
->                 dev_err(&priv->dev->dev,
->                         "rss query desc from device has invalid length pa=
-rameter.\n");
->
-> base-commit: 787268686c64be60023743b527645a907e38ccca
+>         if (dev->features & NETIF_F_GRO_HW) {
+>                 NL_SET_ERR_MSG_MOD(extack,
+>                                    "XDP is not supported when HW-GRO is o=
+n.");
 > --
-> 2.43.0
+> 2.47.3
 >
+
+Thanks!
