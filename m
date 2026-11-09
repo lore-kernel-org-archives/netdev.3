@@ -1,100 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.59
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794221555;
-	b=a6YYhf9W7fM9TQvC4y9pIAzIqYE1jwNynzzXMzNaL6gZDWQqX//jfoQyssFm9slUKMyd
-	 xnXFy1FHN7eRu5owUx94GqavUOC7RkHlYiiUudukzGNY8vqrwlviAzuLiooMwzdBg8N4Q
-	 pBDs5xZznDcfyVhSWK3o0U/VO44zysyHoC5j98RKhH7jdYUC6Zb6G344v6/PYWExeu0n7
-	 PTFUS3TPry9v44WA+cI4dOYDNV4BxhY/Y/4NIldTxl6vg4zlsV1lKKoCw6bX4O5Vh4L0o
-	 RdIMQLSBFREoThVYWqD/TORcF6/5nvhSi7hZBls3JswU5Mff76F0rQfUFk2Y9/G51dQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794221555;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=H2m/iIwMg3NWHwB7SnknGQngQY4gKtSyJH9pyTIZWVM=;
-	b=oDxx5ws29OJIQkklFl26INg6asBa7H2wug7bwawEJHqZlyx6G/glYwDYWX592ML9B5a1
-	 ECAcDnyDyWOrc0gDidFClgS9fDCJFGwr5i+zttfVs7fvZhI+BJ0qteAwDDErvH+hmqRuP
-	 5Es6f/4CLxTLa3l5AG7CiOSq9WNrGwo0Ol3yXWzCVJRWbZ73T9gKBFeC6FpSb1iXsVSs3
-	 u/O+poBUyeAGASJVnejK3rZUhcwXzIHIKrnS3xzSGeKLP+7gMV5b14mb/b4Yu9eR7b/om
-	 OGMoQGQ0pxzqyJUjHWF13yArCR8EY9Jhl/S1yPZ6fN4uNCjgxwrIXyHejSdFP/iuVpA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FshHAS+S;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.59
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013059.outbound.protection.outlook.com [40.93.196.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794221578;
+	b=5spaIjOVaLxv2eN5VB7ufdqeET8JINud/QHkeV6MGXojXXdbliBJ40hxQGRR/Ym9U5ag
+	 ohsIhfdywYIZOTtLejlZ6ehgRnl1pjAPVz+LAyk3/ywMXA+fPqmj0I1UVMBqSkK2JQsrH
+	 oTyzyHCWRmAzSFwxqaFXmtIs9Z84ttGDhjNjHlaDxLHoXM4dZ44HLb2iFNpOdvyQTLckW
+	 rM8TvKbP7NMCWwUPenggwT2Nrmk3EBMerG0X8J6cOVg0fOxN/OHw7ooLtMvhZKOe0r0+E
+	 GJD6pqaqN4TnPgqTIfmyznmR/QwD3h5XNwGd/uLHUsODm76A80SAzJ95Cxrvd3CEh3w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794221578;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=1zQyQfd7Pg+TzVSNkwUE2q6hgZHqlG+eVtCLMd8G0fQ=;
+	b=4dM1vc4Bzzq4JID6wC8JBEDSwXUMyfNv/J4mjaJgJsSrw2/xEoyFxwu/F+TgvQhTVM3e
+	 55Hg7MTNcd3aBZTD1m0YFZ1CKN/oIJdt9ooqVyeVy8E1gJoiwflYuJIcQrMgwxomGoAM0
+	 cySCuAlfubn2q7zI88zp7iITuzs4uA/63pP6/Ih8j3TVhX6agNfVZipx//5fZLJHra8Bv
+	 hOnrOj4RIxgCDNLcgXqfQ6i5Nmk9+7IEOhlt9oTi/jvbKH8gF3F/IyzIIVc2l065wivvK
+	 gxXCcBii6jhyKFGpQnUA8NF+iL174qHeDrvnXUkNr5alLs7I1Jmu9kY/OH5kCVLjj2g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=is.s.u-tokyo.ac.jp;
+	spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp;
+	dkim=pass header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=mrbtu23g;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A84606A321;
-	Mon,  9 Nov 2026 10:52:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A84606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983EE606A322
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 10:52:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 983EE606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FshHAS+S
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oP2GjQuvPDEALGlwqnNsiuuMfM/jKWmk3KzazEGI68Uc9FcWoIOxOK77PTtNT+z1UbrEddnhAiwCgsZ4TYX0PEQmdSkYUz0Nb3mI1OSpqQ+oCxPan4LX/VMlFB4MRI9R2QX7hQ4xLwEc8JvY52KbHqrizqg2HZkmF2RxEOjOlShS9G4+NWRL1S2XF1dCh7K88RdN09lTW4WIliKrfXOzPQUi+38VSb4G5A6FQlvBMmRTfCf5agilgFliRaieOcvFZkDZfmQ2hJMQ1u4qxbozynbMA5wezWPXMZXHFH35s72BmbPCFqvYWdyuOTI0ugJSl7CZ5dhgtqC6LznIfZ60mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H2m/iIwMg3NWHwB7SnknGQngQY4gKtSyJH9pyTIZWVM=;
- b=FgSys30J406ytIyvgjBss9KzWqjCBqF0cV9ogUN+D206tF49RGc068lqs3x0ASxkKkxDwUjnXjVeHg5V9aYxWLcwujxDfbXs7BzSUUMQLsIJmfOMUBxIbm2ibHKN7Oad+C7Tm6fK76XZq9R6Zbqs6U7r7dnfRwl4ASbN5P2Kbf831Vw++B5xMEPlBWORSVoIysHjcMmYA72j16kI2L5mQE0ccPR69ae4C+R7b64n787bdYOqNfy0i2ouIYYQNhD9JMxIzN3ZAWEc8U0vZXjqCc9sHHBBtehnF/E2ZX6zMbKTkXQqfYz/+WPtztN4E0AhHR7/Ipx8ZZzY8Ln1tg/zBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H2m/iIwMg3NWHwB7SnknGQngQY4gKtSyJH9pyTIZWVM=;
- b=FshHAS+SJ3ZSge6qofR2CWIcS3BKRCDvAeczDtGoTgBYOnUFtA9o0IT6ZSfnnALiU0riRqgMhttFxq3qq0PyxSxUeC/jIa74owDHF0IJCRL/n9ZColotKgL+tyHVSfNduNhc0CDH6zeiyG/jXNK1d9E+H4OPgyYhGTXnv0nn8kRQEXZEh1Hjsqd5rG8eVq/Nm3ga3rKSM7WYWZ0lckO1oGytuLMwf31qcDOmi6A1iCMVCS3l1vjf8+HBvorOVqjFZSA+8Iv4cHHhg/Fj+IOCV0DAC0BNGY/336m8ZuurVP1Y9xZQyqp2YmAlZVKEI1JnjfZFMWcPMhGoSDJThjst4A==
-Received: from CH0PR04CA0085.namprd04.prod.outlook.com (2603:10b6:610:74::30)
- by DS8PR12MB333896.namprd12.prod.outlook.com (2603:10b6:8:447::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 10:52:29 +0000
-Received: from CH2PEPF0000014A.namprd02.prod.outlook.com
- (2603:10b6:610:74:cafe::54) by CH0PR04CA0085.outlook.office365.com
- (2603:10b6:610:74::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
- Nov 2026 10:52:28 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH2PEPF0000014A.mail.protection.outlook.com (10.167.244.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 10:52:28 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 02:52:17 -0800
-Received: from [10.125.206.9] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Mon, 9 Nov
- 2026 02:52:12 -0800
-Message-ID: <a9936dee-857d-41bc-b324-cc471172bdbf@nvidia.com>
-Date: Mon, 9 Nov 2026 12:52:09 +0200
+	dkim=pass (2048-bit key, unprotected) header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=mrbtu23g
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1ae18eb9b69so701199c88.0
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 02:52:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=is.s.u-tokyo.ac.jp; s=google; t=1794221576; x=1794826376; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1zQyQfd7Pg+TzVSNkwUE2q6hgZHqlG+eVtCLMd8G0fQ=;
+        b=mrbtu23gmpxDhvj9lIuLzVAcy9ggR/dACUCylfJdr5HPlW7rbfwu8g7y6HvT5aCGLd
+         EVv2Mq/Uqm8mrnmUcoSZkM7in1s4s9q47VGjkIfbLhcbJYpCrA4mGcVVo4vjd6fnrpce
+         UHC4Tncg/hnG3BZSBbRALWFbLbTOd5B4RyFy/BtFzoP2k6xjKNQPcnIQGvL5oSkXbtRP
+         ZMpCCx8vTsm1yg5tyx2DkAtTUA5EkLqkb4o9KChWxZRoLw09fDagWW5/mPV4ADn1VGze
+         tCgtC+9kVwqxgIGUDbEDBH1BfwFoCaYdI6yvrPtaOODI8fZmLx9X8zCKl8K0pcOSYsyn
+         tQGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794221576; x=1794826376;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1zQyQfd7Pg+TzVSNkwUE2q6hgZHqlG+eVtCLMd8G0fQ=;
+        b=Ci3Eh3/PES7nE7wIinupQ3PJr7KTxsDmpF49BqK7j9fT+BqQdR/IM+EEMo/2MmSw1R
+         N+R9+0ZaoXBecCIyUw78tPWdnHWZaQGrmFWXrh2hRvpFQP4zAriUgNBV9tCY5JgeO1wF
+         wYKVhOOEwrbzcRJr/lXW08Z2TmTuX6nX+CucmYgL5S/5L9EixvTyl1pAm1pGE03Lq6DE
+         YxIWRalSHoJgqXfRpyiFGvEgrbY/DBQIDVB2yAvgyTFOHL/1vZmw81I/be86qGazvPdH
+         skXjAESRQ+Aw7qyhr7wxxk/tKbecJliXYVM2m5tCErGxEBaLw+QtLQ1W1OqA+R/qQH0o
+         smEA==
+X-Forwarded-Encrypted: i=1; AL+hErHJF0o4UYRxRckK3wvNZAoitxit+4Z7aKff3tAR/IWA1lCap+lvIRyn2y3F/nJpbv92TVk/0JA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8PbQZD3/YBEE0TqO5OZEE1aMF/5HeQso+KZXsMdT4ZX4syEJ36
+	vtwxAQqUCHvnvuTap2yiPXEv8mz+ipoVBteViJjLta8mkBxetvLKHtojAI+8oXn9vA==
+X-Gm-Gg: AYBFou3ab4xmSAjd2q3wbCqgkRTDVIv73T0++NQeLRqflrSQOoUmsEuwOSkAPYO3kkU
+	SXmwOyXfuwbycwJrnjYqpVV59bvzp9H0DYnffU9TfVWmnn8SM2hrf8BW/iQwwpm02b4IJVfgqcM
+	VP3cXjPq2YsU3jvqYOpLyazzRy3lfuoKDnnpzKkkQMmSe+pi2l6unE8N5DbwwVXh2/rpryZB0rF
+	W3du6NuWGdGp74YbTBEUPTN+W5b+5h4Rjbf3iC9sQFmgP711yzc4801WR5xqgTmRdS/gk83duKo
+	Tohno6yn49YM9VBVaU2yKH5cVXlcw34IKkjs6V6+CHJv0IpSgrzQaLMnyWXSAt+gxHHHp4EUesq
+	gyLyIoPcQL0qBEIUFpTln09V21UR4dnEWVTFDwtBTt/0ZeEoNa4Frv9Nl0SDt7ZM3frYI6uXBzD
+	TDYJQOMfZNm50FKZ4sS/fzDP4MFS6VKN95CzKQU1lIcBkFjbLQLL5G5gv3O5KBHn89YCTKPpYyz
+	OvruVEtZbxgYIojYoQsnHErNAkkKG28BTXaZVgO8VB5Hhm7AmeP3p7HyTiEU+vamCrw1dQNEXJA
+	KlMFi8Wzx5ghvelyUW12YIlbYkYKDgq5O1falQ==
+X-Received: by 2002:a05:701b:464b:b0:1b2:6855:99ac with SMTP id a92af1059eb24-1b39ff1d913mr5044256c88.46.1794221576448;
+        Mon, 09 Nov 2026 02:52:56 -0800 (PST)
+Received: from wang0.localdomain ([133.11.33.33])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b375726fd1sm12228744c88.14.2026.11.09.02.52.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 02:52:56 -0800 (PST)
+From: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Simon Horman <horms@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Tomas Bortoli <tomasbortoli@gmail.com>,
+	Chirantan Ekbote <chirantan@chromium.org>,
+	Greg Kurz <groug@kaod.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>,
+	v9fs@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Takahiro Shinagawa <shina@is.s.u-tokyo.ac.jp>
+Subject: [PATCH 0/5] 9p: bound zero-copy error replies and keep flushed requests until the device returns them
+Date: Mon,  9 Nov 2026 19:52:46 +0900
+Message-ID: <20261109105251.2545764-1-lian@is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,184 +110,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rdma-next 23/23] RDMA/mlx5: Advertise adversarial mode via
- ib_device::adversarial_mode
-To: <netdev-bot+sashiko@kernel.org>
-CC: <jgg@ziepe.ca>, <leon@kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
-	<mbloch@nvidia.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
-	<dtatulea@nvidia.com>, <moshe@nvidia.com>, <maorg@nvidia.com>
-References: <20261103163949.1554-24-yishaih@nvidia.com>
- <179408310891.994134.2389971836310893033@kernel.org>
-Content-Language: en-US
-From: Yishai Hadas <yishaih@nvidia.com>
-In-Reply-To: <179408310891.994134.2389971836310893033@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000014A:EE_|DS8PR12MB333896:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2fb5536-1b81-46d1-bd97-08df3e4f8c6d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|82310400026|36860700016|261009223027099003|11063799006|4143699003|56012099006|261021121427099003|261022105027099003|261022075727099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	dZ9QXqCyZqMq9uUIlqiC8hDUrHJsenc1dyr/iiBNkTLnKWN7yL8bClV7iNxWJ9pc0qEkcGHOeR7eCaJf6YOYVOkJXWuRhC6UdUCUo9ZrZP4R4vSenVmpWnEtZtDb9+mMZem1CCqZQ6rogLPLkhfDnSyomp+0/RmX++tobP2X6Bbvz+gWMsbayJs3g6byFKwyPekFV0LqXg19KdfgTqzmF+qphQGew67IwRxjSd48VJusjB65pe+LY3TP5JY8PfxU1vjAYn+pPsTBoQYy/PGCpNor8N3LoQTNnzuXEcuoD14SFqmgwMANBUg2pmANE4G+F2gJWbXQl9iNvyH2Z7T8nhlyo3It4CoLrm6u+1LXWqGkXu1iFFyNDZQFv18DWeL3nAIrin1jGG9JB6pv3eVXKDMkAfJo0PX1m5jfTECa89S6rfAI8nIRdtkI2gp1ejVbbLQARaBRAeLnC4a7Ryyp7ZMFZ20R1ygmgEqFMp5GM4HMMoRPx9EePrH0pl4m64baiqja0JSqL6ciM/s0lyv/7FuLX7+NLSxJ/teKlobf+LBtaatyQ49z5XKeTiGUlOUbvhALEUgbI2ip1++gxIKXbwLM1XPIqWnZxG6Ksr8wBi5Wmy/2YTMbWmy/r4XK8uG23cDjLvmOnRcRh5SK+K9R3zsWI2MRptGuCZwfq9hWNGVr8laTTeKBCvMpbhc4a967eEu/fOepcT8IvAIuJ50+PA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(261009223027099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022105027099003)(261022075727099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	VKHatse6hNVwJfCBHBPDhe5Qt+LwuWk34YXnM7IiBJtxYtNNh9dzdeHLCp+dElsnCNRyV8Xj/xDKL3czNVaNcOD20OvxTlNJc4EQZnT6/e4iDeuJE74D6wUvXVTcrTd3ByTtv91ky47AVRn5GKlN9JDkGGwc3oO7Th7BQ1fQEtA3VeVA8NoNs47fZ4jpo1Te7tAXjhIzzvhkFxJOpQswJD0gDxgj6JuNW+9Qtsxdl2+oudEFRL9IvdGfdNVxwTPvoPo+SjNWuy7weNJUndVdrGphin1InLcrRlmt/kDBRO+lcdJrJJANgyWCDtmA11hXMIhq6XgTg/ibLHJz97jkYr99c4Oez7BfWqWNPxpUfbFsXHBuWE2dFadsPOGiASxtxLZ6ABJW830+ZqoFODoJvK6gFNwpmLgrxLYG70n5fmaAk/mPHxJJPgN8eRVWxfxV
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 10:52:28.8141
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2fb5536-1b81-46d1-bd97-08df3e4f8c6d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000014A.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS8PR12MB333896
 
-On 07/11/2026 22:25, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The series is not bisectable on confidential-computing (CoCo)
->    guests.
-> - [Low] The commit message understates what this one line does.
-> 
-> --
-> 
-> RDMA/mlx5: Advertise adversarial mode via ib_device::adversarial_mode
-> 
-> This commit sets ib_device::adversarial_mode from the
-> mlx5_ib_adversarial_mode global in mlx5_ib_stage_caps_init(). The uverbs
-> core can then report adversarial mode to rdma-core and only let
-> adversarial-mode-aware userspace open a context on the device.
-> 
->> diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
->> index ace4cdc95c9da..f8af90941b53d 100644
->> --- a/drivers/infiniband/hw/mlx5/main.c
->> +++ b/drivers/infiniband/hw/mlx5/main.c
->> @@ -4778,6 +4778,7 @@ static int mlx5_ib_stage_caps_init(struct mlx5_ib_dev *dev)
->>   	}
->>   
->>   	dev->ib_dev.use_cq_dim = true;
->> +	dev->ib_dev.adversarial_mode = mlx5_ib_adversarial_mode;
-> 
-> [Severity: Medium]
-> Can the series still be bisected on CoCo guests when this assignment
-> comes last?
-> 
-> An earlier patch, "RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from
-> mlx5_core adversarial API", sets the global in mlx5_ib_init():
-> 
->      mlx5_ib_adversarial_mode = mlx5_is_adversarial();
-> 
-> This comes from cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), so it is true
-> on any SEV-SNP/TDX guest.
-> 
-> Next, "RDMA/mlx5: Block generic CQ poll path in adversarial mode" adds
-> this to mlx5_poll_one():
-> 
->      if (unlikely(mlx5_ib_adversarial_mode))
->          return -EOPNOTSUPP;
-> 
-> That patch says this is safe because kernel ULPs don't bind to the device.
-> 
-> However, kernel ULPs only stop binding once ib_device_check_mandatory()
-> sees the core flag:
-> 
->      if (device->adversarial_mode)
->          device->kverbs_provider = false;
-> 
-> mlx5 doesn't set ib_dev.adversarial_mode until this commit.
-> 
-> That leaves a window from the CQ poll blocking patch up to "RDMA/core:
-> Report and enforce adversarial mode via GET_CONTEXT". In that window,
-> kverbs_provider stays true for mlx5 on a CoCo guest.
-> 
-> add_client_context() then binds MAD, CM, rdma_cm, IPoIB, SRP, iSER,
-> NVMe-oF and the other clients. Their CQs use mlx5_poll_one():
-> 
-> mlx5_ib_poll_cq()
->    cq->poll_one() == mlx5_poll_one()
->      returns -EOPNOTSUPP
-> 
-> mlx5_ib_poll_cq() stops at the first non-zero return, so it always reports
-> 0 completions. Wouldn't MAD sends time out, the IPoIB TX ring fill up, and
-> NVMe-oF/SRP I/O hang in those intermediate commits?
-> 
-> In the same window, legacy rdma-core would still get contexts, and uverbs
-> POLL_CQ would always come back empty.
-> 
-> Could this assignment move into the patch that enables the driver-side
-> mode? Another option is to place it right after "RDMA/core: Suppress
-> kverbs_provider for adversarial_mode devices", before any hardening patch
-> that changes behaviour. Either way, every commit in the series would keep
-> working.
+This series fixes memory errors caused by a misbehaving virtio-9p device
+in zero-copy requests and in the flush of an interrupted request. A
+correct device can also cause a double put, which is fixed in patch 3. A
+zero-copy write interrupted by a fatal signal can also overwrite a later
+write to the same file, which is fixed in patch 4.
 
-Setting ib_dev.adversarial_mode declares that the device supports 
-adversarial mode, so it is done last, once all the hardening is in
-place. Adversarial mode is not expected to be used with only part of the 
-series.
+The patches were tested with QEMU modified to send the malformed or slow
+replies.
 
-> 
-> [Severity: Low]
-> This isn't a bug, but the commit message only says:
-> 
->      Set ib_device::adversarial_mode during capability init so that the
->      uverbs core layer can report adversarial mode to rdma-core and enforce
->      that only adversarial-mode-aware userspace opens a context on this
->      device.
-> 
-> In practice, this line turns on the full adversarial policy for every
-> mlx5 ib_device on a CC_ATTR_GUEST_MEM_ENCRYPT guest. The pf, raw_eth/rep
-> and plane profiles all run MLX5_IB_STAGE_CAPS.
-> 
-> With the flag set, ib_device_check_mandatory() clears kverbs_provider.
-> add_client_context() then skips every client that lacks no_kverbs_req:
-> 
->      if (!device->kverbs_provider && !client->no_kverbs_req)
->          return 0;
-> 
-> Only uverbs has no_kverbs_req. As a result, MAD, ib_umad, IB CM, SA,
-> rdma_cm, IPoIB, SRP, iSER, NVMe-oF, NFS/RDMA, RDS and SMC-R no longer
-> bind.
-> 
-> Because cma and SA never bind, librdmacm users going through ucma can't
-> use the device either, even if they are adversarial-aware.
-> 
-> Unmodified rdma-core also gets -EPERM, both from GET_CONTEXT and from the
-> legacy write() path.
-> 
-> There is no opt-out, since the decision comes only from
-> cc_platform_has(). Other patches in the series say this is intended, but
-> this commit is where it takes effect for mlx5.
-> 
-> Could the commit message say that, once this is applied, kernel ULPs and
-> rdma_cm-based userspace stop working on mlx5 in CoCo guests?
-> 
->>   
->>   	return 0;
->>
-> 
+Lianjie Wang (5):
+  9p/virtio: clamp the reply size of a zero-copy request
+  9p: ignore a zero-copy reply that arrives after a fatal signal
+  9p/virtio: keep a request until the device returns it
+  9p: take the tag of a flushed request from the request
+  9p/virtio: keep zero-copy buffers until the device returns them
 
-OK, will update the commit message in V1.
+ include/net/9p/client.h |   6 ++
+ net/9p/client.c         |  19 +++---
+ net/9p/trans_virtio.c   | 130 ++++++++++++++++++++++++++++------------
+ 3 files changed, 106 insertions(+), 49 deletions(-)
 
-Yishai
+
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+-- 
+2.56.0
+
