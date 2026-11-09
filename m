@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.135.77
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794214861;
-	b=ygjpZEhFPi6WfSfsKu0UkFkuxdoGzN9y3hvspckxMyxwBXZ6bQB6F221eQXD8PNfko/m
-	 MxtrUc/NJLwRdKFkJW4ayXz4+zdE9w5a4BA6AC90ZB46I3sbGj5D64lkJsFYcCMxUFq8Y
-	 swD5vwUf6bGOlBIJ7hvXPwA5Om6kuC7TPePB+tX984K6Vk5GiFyXkTlta3tI4HqHi5tbM
-	 4HDoYhnhDUPRyMqgFIi6slV9VG3WCsKwgjuEoQQaXEnXFCV6CsPlv4HBH3ZN39ktCWSEJ
-	 9rL4gVMkg1a28B4Cge2VPyFeUgjRMR1K0WOEhL3tqP51GTZwYGSJMbGfIZNRMCJSQRg==
+	t=1794214883;
+	b=exNQToPJQmo2gTbHpX98FlBT1FqHC6lW0ew8OK0onOMHIPNBN/9SuRlUf/KwdXApI6dK
+	 etU/YjzD9mT/YdeFPab5X8591+r+1YxkCAxJ3SOPQ7dBJd+YQGx03C1+s8EhHFXOAPQ/c
+	 ehkmXuG4XaGpp05fIPjpHcbvaZEokfduyKHSQqK3d8aCLbh7qsnw73P5SXD2dpvSjQXhD
+	 98qteQ6HB5JNP1NIPDg4j0s4Exnkdw0tIJMdEvAT48oOBbmZB61ZA3Oo1uR63TM0y3eJF
+	 27DgxONJK51FC1JYrdbnDIBmHvmbUVypJBu/FdhRCsJinOSpyH2ni2FxJuzRM4wT4dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794214861;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794214883;
 	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:Received:
 	 Received:Received:Received:Received:From:To:CC:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
@@ -15,71 +15,71 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
 	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
 	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=wYgaf33YCSGvd1+TKBHqYk51SOLt5H37zybAWrE9mJY=;
-	b=ejzWGoyQK6W0AcRL5KVfYrht6pGS2sx1XJnsFmXoAL+Br/ZxBF5VkqV6GH2bE3U0sHK5
-	 uEDcCa2nE9A8Blk0ZMAFPYNr4+wQndJBQ9JQSsmE5ClbyBZT1JihNFhAYuRwdrEDhscL+
-	 NxwX/KOFm3dPZaSxWI5VFf+gSpwaXloyLaj+MRsUccaehqQN10k6LmC6n3Hs4rer55Hsw
-	 PlHDYKnDdHJIgKz0nzPpXt5Rblrf43/hGz6dJvtbVo14m71ND5gsKwhZoCuLkrKozU4go
-	 0E8VMkBLD5rGQX6x5HrXFbwFboRjoY2gIgB0/OvGw3937BjvOeBe70NHQJsbrloZabA==
+	bh=jRSxakWFobOjaN7tHnTo1HI5v5IJJwgk4Ao9wBMszZw=;
+	b=2Xn2JSHWZxoHXZr6F9wdpXArQMKHugZWnvVDcbH9+mTE1AFhblBLnSqneGSGtOoQ7VXH
+	 skVLbo1H4nLuNy6qgbV2iQ8kQ8zHS4odcbgWQ3AGRTyO3CACsl8mwIPdkT3qPfTldu65c
+	 OTSN94ptf0L66ey3BwhTr3glO+koQ+ble8zR2SDtv3aZ8AiA8ZHTWL1b1WpMqy9Q35jrb
+	 kodNygsBr1OwtTOxKSUAsdjFSQrI/YRPeqJEry1LimYn1tZ36Vb9yIyWK95lalEMj84/1
+	 rutboE8Fnuv7Yvj0/repZm44g5RSnhzXsLIX2oZHBiT7gHWaMMNIC1KwXahmHEXH5rA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=analog.com;
 	spf=pass smtp.mailfrom=analog.com;
-	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=UuW+vfNw;
-	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=LlqlYNVO;
+	dkim=pass header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=RIRDacO0;
+	dkim=pass header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=xMdwR3iw;
 	arc=none smtp.remote-ip=148.163.135.77
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4684F606D805;
-	Mon,  9 Nov 2026 09:01:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4684F606D805
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827DE606A31C;
+	Mon,  9 Nov 2026 09:01:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 827DE606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=UuW+vfNw;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=LlqlYNVO
+	dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.a=rsa-sha256 header.s=DKIM header.b=RIRDacO0;
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.a=rsa-sha256 header.s=DKIM header.b=xMdwR3iw
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A96BtQ73169892;
-	Mon, 9 Nov 2026 04:00:47 -0500
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A96BuNN3169932;
+	Mon, 9 Nov 2026 04:01:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	DKIM; bh=wYgaf33YCSGvd1+TKBHqYk51SOLt5H37zybAWrE9mJY=; b=UuW+vfN
-	wEl02o+F2tDgvlWIry9wl2BUOlw7CaGTpVfZA4yeTItVk8sbmDZ7605WwtgECIUK
-	gez6ggGrW6kMXUe7byQCpPXTPJmIEFTWVQYs/hb63WuyAOuj+4VrdmjrGFDKohaA
-	fDjaRbCL3jtgboDvphxYeI/liAR7m0pYwNeNiFKovdvJagB+wBfhai+V+xzmjsY/
-	0zRQziyhSCbf+threDo28z9Hpb8S5w4eQQpTkNfpIjq8GDleK7qvnGdM2uoZ6OIV
-	4IPxz/6Adrbur6kpSfOL9643Ak5JQWjbdXkUG4CCsA8/NyYnCbj62PMxns87epEM
-	HqgkUSlZ4lGZ59A==
+	DKIM; bh=jRSxakWFobOjaN7tHnTo1HI5v5IJJwgk4Ao9wBMszZw=; b=RIRDacO
+	08nUXKnS1TEYB8EXZ7USy6rkvlCO2rr9doiCqz4utfHYDuBQwPgJ5CMN/0OzhxO2
+	GXP4VrZOKyx1Ek6DW/SxKPdsbpGeNar02RkM/nOdXfkWs0vQdMwdpuAUTstPeEwB
+	YhWBF3vWd6HCZ10Q6QCzeYApstDZwTtR3aEUxjKTo/SjAH3hazIVaWWW+hCoL2Cc
+	HwzC0B05ZsPLe4yCSMMuJyN+GRVyT7Luf1QdVSIrq6dyZAbgciZizBt3xnT4iqVX
+	XkH+A5n8tt85uRQGwI2neZ3b1BE0HmAvmQYkWlYUsvmmKmjEnpQnPoM4YJkfe0+1
+	NGkGPOpAi21WAiw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=wYgaf
-	33YCSGvd1+TKBHqYk51SOLt5H37zybAWrE9mJY=; b=LlqlYNVO7hPsaffkgtvmy
-	aHr3RGnfPTnnbQPAjDa7koyvp3SsiPiKVHWD9X98DeiYfG3Ei6fHNOjEa/2/ol5O
-	gdCnOt7wI2NUVhnMwEl+RgjHk83C3HGn50fjWDlyPTdW2Uc4rQwH3eBw4HGOAoWz
-	1eEWJO5EZfuivGUy93mtco6zo3Y1G1UBPTLtTvG1nUTZtwmEj7aQMntyLjoZL90u
-	oVDWpKaX0RJoUtFfSTPecFAsos+mAKExgDt5BuIheytkjRKUfVw9dCYA+MqqHbIm
-	OjZBSLffHt+mD8hsTgc9V9qNSd9V2mr9IpEyk2M8n76SJ45YTkYEtcb9ogJSU4ZO
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4ht1s7a8tu-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=jRSxa
+	kWFobOjaN7tHnTo1HI5v5IJJwgk4Ao9wBMszZw=; b=xMdwR3iwL7SJRiODIc+zf
+	AwMAOVSA1xQEV74nIAAWCi7WvIqN97/hGLralF+dn9qHxGg4yESTiIVYFfp7n7Iy
+	Qyusc5pCYp3+PhsU66DK5GPjkzNm5GwIKSLbK5gGYlc1GwpgCTvMG7SPnh6smtWy
+	+w/dPAabOudz0RJbGw5QLFsYgWJjlie6TBkZgUkGz1xLXk8QqQiluRqgWt/i8ObL
+	ACVOuJbcyHPWBok8OIwwZ0p0nd/iDBpY4X3XMwxAxymywCp+RtPDHkRiUR5yBGWA
+	fQpdFHy8WRFzt29hheyfvvEvMAx2fwVQR1qcTpfvpDfZ/8Xx63QQYj+mAcQZEb15
+	Q==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4ht1s7a8y3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Nov 2026 04:00:45 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 6A990iVm032015
+	Mon, 09 Nov 2026 04:01:12 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 6A991Al4045741
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 9 Nov 2026 04:00:44 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 9 Nov 2026 04:01:11 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Mon, 9 Nov
- 2026 04:00:44 -0500
+ 2026 04:01:10 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 9 Nov 2026 04:00:44 -0500
+ Transport; Mon, 9 Nov 2026 04:01:10 -0500
 Received: from HYB-6AVb5If9qTU.ad.analog.com (HYB-6AVb5If9qTU.ad.analog.com [10.135.4.41])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 6A98xreH024796;
-	Mon, 9 Nov 2026 04:00:37 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 6A98xreI024796;
+	Mon, 9 Nov 2026 04:01:03 -0500
 From: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
         "David S. Miller"
@@ -104,9 +104,9 @@ CC: =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Iustin
  Stolniceanu <iustin.stolniceanu@analog.com>
-Subject: [PATCH net-next v2 2/7] net: ethernet: oa_tc6: Allow custom reset settle time values
-Date: Mon, 9 Nov 2026 10:59:47 +0200
-Message-ID: <20261109085952.105331-3-iustin.stolniceanu@analog.com>
+Subject: [PATCH net-next v2 3/7] net: ethernet: oa_tc6: Add support for MDIO indirect access
+Date: Mon, 9 Nov 2026 10:59:48 +0200
+Message-ID: <20261109085952.105331-4-iustin.stolniceanu@analog.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261109085952.105331-1-iustin.stolniceanu@analog.com>
 References: <20261109085952.105331-1-iustin.stolniceanu@analog.com>
@@ -122,24 +122,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=c4A+0h9l c=1 sm=1 tr=0 ts=6af18bbe cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+X-Authority-Analysis: v=2.4 cv=c4A+0h9l c=1 sm=1 tr=0 ts=6af18bd8 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=0sLvza09kfJOxVLZPwjg:22 a=Z0pTeXoby7EwIRygza74:22 a=gAnH3GRIAAAA:8
- a=jwvB6ghkBqQFQwKxTisA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: s_TRPih00Oq4jRVCSu5Jr5rVfwuPshUN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX1a5JzFQQYJ4a
- GuBOytPnLvJNvY8hdchexijUjqlEL6M5Xai5Eyi3TzV7n/9Bw2dzo39xIZWWpL+iJXX1UiNsDOz
- RrNbWYdpk+qS12fe4AfYImlcoQlUNLK1zo/8HT0A2PS+Yilnh3vxCVPYuhYxWX0jD3wZLDWz/jO
- NRiZhkKjFdSnx1FGoT6xmHOznRQJhcM/Jg6zFKsj7b9TGjl+7/w2AXhDnyelgBYbZ6UPULP61ai
- J9N8/fYSHq381YGFD/njqC6YNdZpntrtlDHbGOCtlWhayEpKqDhuV0KCBfdFfT0+g4iCm5H+wD7
- DlyugoGRxxhIiKoSMmXLcAQIZSu8h7CPgpGO3cLa+TPgRE2rJBHHedKY71K90p2FODcoGULjVeK
- M5HBIsD1TZq1igveJZe0rlcuCANxFupEwZIyHcT0jTASqqSxAyLS7w4exDJMVSYT2A9qW/hFkES
- 4RAiS+fS2997GqOSyag==
-X-Proofpoint-ORIG-GUID: s_TRPih00Oq4jRVCSu5Jr5rVfwuPshUN
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX0y2VaFaB3mfG
- ybIRKw2IdAAxNluMDXMkQVQeNCuEQf1A1eNsBu5i4r81l/yB2wQSe77jBbB+W2THo+8rgW2CaZV
- KNwIwOdf/ZU2p16TQIVT3lBsZ9/T1UKlbiCuNEF/Xi99vG29aFcf
+ a=U-HMAtdv00Up3EeIBasA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: eQ2YZINO3Y5lBRE9Djl9kAyslu7kOXUS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX6HLRy6730soB
+ tj1Dp9orZrnaqUJfG8AVxFgWhNZnO1a+5nprPRNMH0ZeGwFtrYvX51t+Mxoc9Xbc/fcyU8++5S3
+ 3oQCMDMJUyuVqHDvUEucTph7wxi/+77lDaF7jmpoIij3QwjfvbkSU8BkRSjQy2Z5+2iSbZxZymj
+ Di48pST92kcCWz0Md17z/LM3X05ZnCK7CSNmS9Qu4Cc4YndnpxacuPTKTUWGxY/KWX2HVh5cgg/
+ dZAu3j9eBMWNtScNw9W/z113TX384Hjk69/HMPib8J/yqc0gy2tzbzCE15mGa+r+F0qtmYDhfl9
+ 7x8bEKrGe3JYWx6TAHu8iJIt0bhrqL8ntgS2TXGuLUsb3Tvpn4Wd5kPbJKa2Q6HuVTDVaDU+IcI
+ uh/6lBOr1jB3EBu84hINQSTAVhEmSOf7ggY5JFHEngwwxb9NIKd0Q6DZ7yESN3rk2SzloOvaIJp
+ /qcECxqzJAl8F9mBkPw==
+X-Proofpoint-ORIG-GUID: eQ2YZINO3Y5lBRE9Djl9kAyslu7kOXUS
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA5MDAzNSBTYWx0ZWRfX2KdpFoRiiVRN
+ fAKEMBbx5ebH/j4CK9bPObdH7r0VCtaLxCZPXkI7ADRdfYxK41jXwQv95Z5X5tP4dRpLdHYxOuT
+ TIVqk8+e6Yudliy62+RrsAibwLXVQuZRmZzR1dVmSSBO6GcJ1Op4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-09_03,2026-11-06_01,2025-10-01_01
@@ -151,97 +151,305 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
 
 From: Ciprian Regus <ciprian.regus@analog.com>
 
-oa_tc6_init() waits a fixed 1 ms after deasserting the reset GPIO
-before accessing the MAC-PHY, and polls STATUS0 for RESETC right after
-the software reset. The reset timing parameters of a MAC-PHY device are
-outside of the OA TC6 scope. For example, the ADIN1110 needs up to 50 ms
-after RESET is deasserted and up to 10 ms after a software reset before
-its registers can be accessed, and it tristates its SDO pin during the
-reset.
+The OPEN Alliance TC6 specification defines two ways for the SPI host
+to access the registers of the PHY integrated in a MAC-PHY: direct
+access, where the PHY registers are mapped into the MAC-PHY register
+space, and indirect access, through the MDIOACC registers. A MAC-PHY
+reports support for direct access through the DPRAC bit in the STDCAP
+register.
 
-Add hwreset_settle_us and softreset_settle_us fields to struct
-oa_tc6_quirks so drivers can set these times. If hwreset_settle_us is
-not set, the GPIO reset keeps the existing 1 ms wait. If
-softreset_settle_us is not set, there is no wait after the software
-reset, as before.
+The framework currently supports only direct access and fails to
+register the MDIO bus when DPRAC is not set.
+
+Read STDCAP when registering the MDIO bus and, if direct access is not
+supported, implement the Clause 22 and Clause 45 MDIO operations as
+indirect transactions through MDIOACC: for Clause 45, write the
+address command to MDIOACC0 and the read or write command to
+MDIOACC1; for Clause 22, write the command to MDIOACC1. Then poll
+for TRDONE.
+
+If TAERR (turnaround error) is set, no PHY answered at that address
+and the DATA field must be ignored. Return 0xffff in that case, as
+for an empty address on an MDIO bus, so that the PHY bus scan skips
+the address instead of failing. Return -EIO for a write.
 
 Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
-Co-developed-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
 Signed-off-by: Iustin Stolniceanu <iustin.stolniceanu@analog.com>
 Reviewed-by: Alvin Šipraga <alvin.sipraga@analog.com>
 ---
- drivers/net/ethernet/oa_tc6.c | 17 +++++++++++++----
- include/linux/oa_tc6.h        |  4 ++++
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/oa_tc6.c | 171 +++++++++++++++++++++++++++++++---
+ include/linux/oa_tc6.h        |  15 +++
+ 2 files changed, 171 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 364027c39fa4..549997ba363a 100644
+index 549997ba363a..be1833c232e3 100644
 --- a/drivers/net/ethernet/oa_tc6.c
 +++ b/drivers/net/ethernet/oa_tc6.c
-@@ -89,6 +89,8 @@ struct oa_tc6 {
+@@ -89,6 +89,7 @@ struct oa_tc6 {
  	bool int_flag;
  	bool disable_traffic;
  	bool prot_ctrl;
-+	u32 hwreset_settle_us;
-+	u32 softreset_settle_us;
++	bool mdio_indirect_mode;
+ 	u32 hwreset_settle_us;
+ 	u32 softreset_settle_us;
  	enum oa_tc6_quirk_flag quirk_flags;
- 	struct gpio_desc *reset_gpio;
- };
-@@ -652,6 +654,8 @@ static int oa_tc6_sw_reset_macphy(struct oa_tc6 *tc6)
+@@ -436,24 +437,149 @@ int oa_tc6_write_register_mms(struct oa_tc6 *tc6, u8 mms, u16 address,
+ }
+ EXPORT_SYMBOL_GPL(oa_tc6_write_register_mms);
+ 
+-static int oa_tc6_check_phy_reg_direct_access_capability(struct oa_tc6 *tc6)
++static void oa_tc6_handle_link_change(struct net_device *netdev)
+ {
+-	u32 regval;
++	phy_print_status(netdev->phydev);
++}
++
++static int oa_tc6_mdioacc_wait_done(struct oa_tc6 *tc6, u32 *regval)
++{
++	int ret, err;
++
++	ret = read_poll_timeout(oa_tc6_read_register, err,
++				err || (*regval & OA_TC6_MDIOACC_TRDONE),
++				100, 30000, false, tc6, OA_TC6_REG_MDIOACC(1),
++				regval);
++	if (ret)
++		return ret;
++
++	return err;
++}
++
++/* On a turnaround error no PHY answered and the DATA field must be ignored.
++ * Return all ones, like an MDIO bus with no PHY at that address, so that
++ * bus scanning skips the address instead of failing.
++ */
++static int oa_tc6_mdioacc_read_data(u32 reg_val)
++{
++	if (reg_val & OA_TC6_MDIOACC_TAERR)
++		return 0xffff;
++
++	return FIELD_GET(OA_TC6_MDIOACC_DATA, reg_val);
++}
++
++static int oa_tc6_mdioacc_write_done(struct oa_tc6 *tc6)
++{
++	u32 reg_val;
+ 	int ret;
+ 
+-	ret = oa_tc6_read_register(tc6, OA_TC6_REG_STDCAP, &regval);
++	ret = oa_tc6_mdioacc_wait_done(tc6, &reg_val);
  	if (ret)
  		return ret;
  
-+	fsleep(tc6->softreset_settle_us);
+-	if (!(regval & OA_TC6_STDCAP_DIRECT_PHY_REG_ACCESS))
+-		return -ENODEV;
++	return reg_val & OA_TC6_MDIOACC_TAERR ? -EIO : 0;
++}
+ 
+-	return 0;
++static int oa_tc6_indirect_mdiobus_read_c45(struct oa_tc6 *tc6, int addr,
++					    int devnum, int regnum)
++{
++	u32 reg_val;
++	int ret;
 +
- 	/* Poll for soft reset complete for every 1ms until 1s timeout */
- 	ret = readx_poll_timeout(oa_tc6_read_status0, tc6, regval,
- 				 regval & OA_TC6_STATUS0_RESETC,
-@@ -1474,8 +1478,13 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
- 	mutex_init(&tc6->spi_ctrl_lock);
- 	spin_lock_init(&tc6->tx_skb_lock);
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_ADDR);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C45);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, devnum);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DATA, regnum);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(0), reg_val);
++	if (ret)
++		return ret;
++
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_RD);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C45);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, devnum);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(1), reg_val);
++	if (ret)
++		return ret;
++
++	ret = oa_tc6_mdioacc_wait_done(tc6, &reg_val);
++	if (ret)
++		return ret;
++
++	return oa_tc6_mdioacc_read_data(reg_val);
+ }
  
--	if (quirks)
-+	tc6->hwreset_settle_us = 1000;
-+	if (quirks) {
- 		tc6->quirk_flags = quirks->quirk_flags;
-+		if (quirks->hwreset_settle_us)
-+			tc6->hwreset_settle_us = quirks->hwreset_settle_us;
-+		tc6->softreset_settle_us = quirks->softreset_settle_us;
-+	}
+-static void oa_tc6_handle_link_change(struct net_device *netdev)
++static int oa_tc6_indirect_mdiobus_write_c45(struct oa_tc6 *tc6, int addr,
++					     int devnum, int regnum, u16 val)
+ {
+-	phy_print_status(netdev->phydev);
++	u32 reg_val;
++	int ret;
++
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_ADDR);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C45);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, devnum);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DATA, regnum);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(0), reg_val);
++	if (ret)
++		return ret;
++
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_WR);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C45);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, devnum);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DATA, val);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(1), reg_val);
++	if (ret)
++		return ret;
++
++	return oa_tc6_mdioacc_write_done(tc6);
++}
++
++static int oa_tc6_indirect_mdiobus_read(struct oa_tc6 *tc6, int addr,
++					int regnum)
++{
++	u32 reg_val;
++	int ret;
++
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_RD);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C22);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, regnum);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(1), reg_val);
++	if (ret)
++		return ret;
++
++	ret = oa_tc6_mdioacc_wait_done(tc6, &reg_val);
++	if (ret)
++		return ret;
++
++	return oa_tc6_mdioacc_read_data(reg_val);
++}
++
++static int oa_tc6_indirect_mdiobus_write(struct oa_tc6 *tc6, int addr,
++					 int regnum, u16 val)
++{
++	u32 reg_val;
++	int ret;
++
++	reg_val = FIELD_PREP(OA_TC6_MDIOACC_OP, OA_TC6_MDIOACC_OP_WR);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_ST, OA_TC6_MDIOACC_ST_C22);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_PRTAD, addr);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DEVAD, regnum);
++	reg_val |= FIELD_PREP(OA_TC6_MDIOACC_DATA, val);
++
++	ret = oa_tc6_write_register(tc6, OA_TC6_REG_MDIOACC(1), reg_val);
++	if (ret)
++		return ret;
++
++	return oa_tc6_mdioacc_write_done(tc6);
+ }
  
- 	/* Set the SPI controller to pump at realtime priority */
- 	tc6->spi->rt = true;
-@@ -1515,12 +1524,12 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
- 					     "failed to get reset gpio\n"));
+ static int oa_tc6_mdiobus_read(struct mii_bus *bus, int addr, int regnum)
+@@ -462,6 +588,9 @@ static int oa_tc6_mdiobus_read(struct mii_bus *bus, int addr, int regnum)
+ 	u32 regval;
+ 	int ret;
  
- 	if (tc6->reset_gpio) {
--		/* Keep the reset asserted for 10 us and then allow 1 ms of
--		 * settle time for the crystal oscillator startup.
-+		/* Keep the reset asserted for 10 us and then allow the reset
-+		 * settle time (1 ms by default).
- 		 */
- 		fsleep(10);
- 		gpiod_set_value_cansleep(tc6->reset_gpio, 0);
--		fsleep(1000);
-+		fsleep(tc6->hwreset_settle_us);
- 	}
++	if (tc6->mdio_indirect_mode)
++		return oa_tc6_indirect_mdiobus_read(tc6, addr, regnum);
++
+ 	ret = oa_tc6_read_register(tc6, OA_TC6_PHY_STD_REG_ADDR_BASE |
+ 				   (regnum & OA_TC6_PHY_STD_REG_ADDR_MASK),
+ 				   &regval);
+@@ -476,6 +605,9 @@ static int oa_tc6_mdiobus_write(struct mii_bus *bus, int addr, int regnum,
+ {
+ 	struct oa_tc6 *tc6 = bus->priv;
  
- 	/* Check the PROTE bit status so that we can reset the device */
++	if (tc6->mdio_indirect_mode)
++		return oa_tc6_indirect_mdiobus_write(tc6, addr, regnum, val);
++
+ 	return oa_tc6_write_register(tc6, OA_TC6_PHY_STD_REG_ADDR_BASE |
+ 				     (regnum & OA_TC6_PHY_STD_REG_ADDR_MASK),
+ 				     val);
+@@ -507,6 +639,10 @@ int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
+ 	int mms;
+ 	int ret;
+ 
++	if (tc6->mdio_indirect_mode)
++		return oa_tc6_indirect_mdiobus_read_c45(tc6, addr, devnum,
++							regnum);
++
+ 	mms = oa_tc6_get_phy_c45_mms(devnum);
+ 	if (mms < 0)
+ 		return mms;
+@@ -525,6 +661,10 @@ int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
+ 	struct oa_tc6 *tc6 = bus->priv;
+ 	int mms;
+ 
++	if (tc6->mdio_indirect_mode)
++		return oa_tc6_indirect_mdiobus_write_c45(tc6, addr, devnum,
++							 regnum, val);
++
+ 	mms = oa_tc6_get_phy_c45_mms(devnum);
+ 	if (mms < 0)
+ 		return mms;
+@@ -535,8 +675,16 @@ EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
+ 
+ static int oa_tc6_mdiobus_register(struct oa_tc6 *tc6)
+ {
++	u32 regval;
+ 	int ret;
+ 
++	ret = oa_tc6_read_register(tc6, OA_TC6_REG_STDCAP, &regval);
++	if (ret)
++		return ret;
++
++	if (!(regval & OA_TC6_STDCAP_DIRECT_PHY_REG_ACCESS))
++		tc6->mdio_indirect_mode = true;
++
+ 	tc6->mdiobus = mdiobus_alloc();
+ 	if (!tc6->mdiobus) {
+ 		netdev_err(tc6->netdev, "MDIO bus alloc failed\n");
+@@ -587,13 +735,6 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
+ 	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
+ 		return 0;
+ 
+-	ret = oa_tc6_check_phy_reg_direct_access_capability(tc6);
+-	if (ret) {
+-		netdev_err(tc6->netdev,
+-			   "Direct PHY register access is not supported by the MAC-PHY\n");
+-		return ret;
+-	}
+-
+ 	ret = oa_tc6_mdiobus_register(tc6);
+ 	if (ret)
+ 		return ret;
 diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 6eac6b842156..f676e712e75d 100644
+index f676e712e75d..d4fce06ed93b 100644
 --- a/include/linux/oa_tc6.h
 +++ b/include/linux/oa_tc6.h
-@@ -73,6 +73,10 @@ enum oa_tc6_quirk_flag {
+@@ -50,6 +50,21 @@
+ #define OA_TC6_INT_MASK0_ALL_INTERRUPTS                 (GENMASK(5, 0) | \
+ 							 GENMASK(12, 7))
  
- struct oa_tc6_quirks {
- 	enum oa_tc6_quirk_flag quirk_flags;
-+	/* Wait after deasserting the reset GPIO, 1 ms if not set */
-+	u32 hwreset_settle_us;
-+	/* Wait after the software reset, before polling for RESETC */
-+	u32 softreset_settle_us;
- };
- 
- struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
++#define OA_TC6_REG_MDIOACC(x)	(0x20 + (x))
++#define OA_TC6_MDIOACC_TRDONE	BIT(31)
++#define OA_TC6_MDIOACC_TAERR	BIT(30)
++#define OA_TC6_MDIOACC_ST	GENMASK(29, 28)
++#define OA_TC6_MDIOACC_OP	GENMASK(27, 26)
++#define OA_TC6_MDIOACC_PRTAD	GENMASK(25, 21)
++#define OA_TC6_MDIOACC_DEVAD	GENMASK(20, 16)
++#define OA_TC6_MDIOACC_DATA	GENMASK(15, 0)
++
++#define OA_TC6_MDIOACC_ST_C45		0x0
++#define OA_TC6_MDIOACC_ST_C22		0x1
++#define OA_TC6_MDIOACC_OP_ADDR		0x0
++#define OA_TC6_MDIOACC_OP_WR		0x1
++#define OA_TC6_MDIOACC_OP_RD		0x3
++
+ /* PHY Clause 22 registers base address and mask */
+ #define OA_TC6_PHY_STD_REG_ADDR_BASE		0xFF00
+ #define OA_TC6_PHY_STD_REG_ADDR_MASK		0x1F
 -- 
 2.43.0
 
