@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794187389;
-	b=pKxGIdCLJIlex/dSMZsBDyPx57ScZo/in3XZTA8i02LO2u8pLxdpVoIm5P51LC1dOsry
-	 BCy8DeV+ylOzyQkaU+jfkrkppHLY8334I5qcSzDsuLvwElHS/TxkJD/m8sgt8jhpueAwp
-	 jIEUSBo2mtie6jXNIV9qer3SiZoU4VNV4aArn5uP1gKFWgZ4g/CMVk9fWCUJq+THokTtL
-	 ClfBYna/xUd1XalvPVMeNBMS2wyIcWJjnSJU/wzUPJIIo3W4LovDhK/OLUNbcxFa3LaVy
-	 42ZTSOj/zImalLDiAkvG8n61zrAVShc/YHYKePTpveV3zucDdGkHeT1bwXKQ9cTU5RA==
+	t=1794187382;
+	b=d5BVAeQ+X1MffJRJJGKVFYBqpUmkqI3cEafhrwHrtKRs4j2jyOzkVF4l2vXQyC4xNRYf
+	 vtg1JdimJ7lMWZd15b6wKWf1JEDygHoX1LHEPkbw1NH6lWrEaB3fpiaWy1+7ghiDaORiy
+	 vZkD3W87E9fnGuVoTnu/1NmNHoNyocTNJGZbDTEXa7PJF2xRccZMewZYp34ovRskmQQoP
+	 1n4x0opvV5ZZeN/8mEdAsNhKK918NLXHKhVhkxxcSLWUj+piKW6R9ghu+YbpFLoTBQDBi
+	 50D/scJ5hQp4c3P2KKt5m2TRka9lMNrKJjyybdENOMr8c01vG1FLn/4iNX6hycQK1wQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794187389;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794187382;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=v2Yor7+qFezh8HPF9vAVfh7/7aqNEEqI/kVoUGNY7E0=;
-	b=UhiSjAOuEZ0g9bL+YN/9R9iD3jhILGNwq1PiUokNVYggMHfM9jSBRWm1V3BNToaH1APb
-	 QiE/wl/wtdsu5ps3/FdoXAAUNmf/KWs9fia3HwV69F4EqBQZqKSFJAuN7eeFArjGggGAM
-	 nYAiLmfaQeJQximpV3RzBt3zu8Y3Ld3e/SK6BEPgBAKmeR4SnjwwUMZcEygwHhI78pIMw
-	 aGIDrOykfHyfIiT+mamekbf4aCtcsNDty+/KnuRRtmT207M877VK//bw0RC98qqciMjyt
-	 vJRJxBj5eojy5Lo+nkrJoeEbK5DxE2sfY6YabgDMBlOzsmjP7xH59oT40E1yS0Jxcdg==
+	bh=L7Ie4rh+uYGxiq2YkIEoTSDrjYWbd6DHs/eMTJlEa9Q=;
+	b=L4qn7c0ejwwNUhu9T1nQd1jFEZfz9S+rbjOb3cy/gw3IHxWYGQr0pwBueM1Hd49tbxok
+	 j60qBwFFKq5Sa4IrMigm/WVyYqDZWxhYvgizxqV+EP9PyXyNCTWOW2Vi3GR2Rm1LCZ1h8
+	 hwv8keE00wtS4jQXRTniabSNOWiku+lj5liM+S/c8AsfL2o1QPYe9Iu87Ps56744sjyb6
+	 v7Q3mm5L0ZQzKA515Nk0cGbASfOmFa8OBspTRVDB//wjUcYer1sIyD+cUSFyRsVb5IuOs
+	 9L0MxTAbk1cHQU+sTSBBaiR86AqQ6FPNj839CAvmcLTWzdIkCnaWjSGlh/DlJyE7BwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KPDmP7q+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtqNDTYG;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6C8606A33B;
-	Mon,  9 Nov 2026 01:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E89608361C;
+	Mon,  9 Nov 2026 01:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KPDmP7q+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189F31F008A2;
-	Mon,  9 Nov 2026 01:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtqNDTYG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D811F008A3;
+	Mon,  9 Nov 2026 01:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794187389;
-	bh=v2Yor7+qFezh8HPF9vAVfh7/7aqNEEqI/kVoUGNY7E0=;
+	s=k20260515; t=1794187381;
+	bh=L7Ie4rh+uYGxiq2YkIEoTSDrjYWbd6DHs/eMTJlEa9Q=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KPDmP7q+cqrQ5L2vC+h+pU3wreyiS/8hHVEVyTfGf9pkaAaKcTH1vpCQO4TzkhfYF
-	 bQgFuO2nCiTjanS0objgxeQ1Dum2tozdEnWxhO7FX1QCd8GPRrV3OPF4f62gPaKHIo
-	 NNRxMVB/5kC14RHA2cwoG6hHRtohDZ7lIxQGLzhJ2Hxabvpq+JLZdJHKGBYZkqKjN8
-	 U+o98dRaZYIZu04FDcKqqm/RGihUPyqBAWkTjY/xpesD9OWokWlgfe7ZwApVPtLV+G
-	 6pusbAtMmaWa6TdZXIhi4qMrY0SfeHcVc7zB7tquiS9cQsRAU9mqGqCX35mgB2Sf7X
-	 OmOeJRaKGrIoA==
-Subject: Re: [PATCH net-next v3 9/9] selftests: drv-net: devmem: TX from a
- hugepage-backed dmabuf
+	b=WtqNDTYGMKb1uwgxb3dvg8Tbu0JhIG5QgTYAcstBRvzVLdAHT6iFj1a14W3RdmqBZ
+	 NyHNPWoTXkn8hirfreV9or1CBrFcQqNgboycfQb7tyDEbyb4s+3YJm7/2FFLW902bu
+	 ia0uF/sDR1+052W50w95+mg6hNMhjtyijlX4Hr6DCEcAf/8ixUA9hUNe1tllof4n48
+	 yFehCNNp39ouaAgwF7/8y7OT22nk5cbHhwVvQhHo8ZLJIuIEAhzit0Y/gR7r4HE3qc
+	 sLSyxSfMjslU7mv3aWX2VCxExr3aytLZ2HjJMHhhq6J6ihRwkHChlEYFeS4nhSwRI1
+	 POlwnWoM1gtrw==
+Subject: Re: [PATCH net-next v3 5/9] bnxt_en: set the netmem TX frag size
+ limit to 32KB
 From: netdev-bot+sashiko@kernel.org
 To: sdf.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
@@ -55,10 +55,10 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  daniel@iogearbox.net, razor@blackwall.org, leitao@debian.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org, leon@kernel.org
-Date: Mon, 09 Nov 2026 01:23:06 +0000
-Message-ID: <179418738661.994134.1386581650492985196@kernel.org>
-In-Reply-To: <20261105222058.944293-10-sdf@fomichev.me>
-References: <20261105222058.944293-10-sdf@fomichev.me>
+Date: Mon, 09 Nov 2026 01:22:59 +0000
+Message-ID: <179418737922.994134.6838913010792422653@kernel.org>
+In-Reply-To: <20261105222058.944293-6-sdf@fomichev.me>
+References: <20261105222058.944293-6-sdf@fomichev.me>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -78,38 +78,104 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit author is "Stanislav Fomichev <sdf.kernel@gmail.com>"
-  but the only Signed-off-by is "Stanislav Fomichev <sdf@fomichev.me>".
+- [Low] This patch fixes a real bug in released kernels but has no Fixes:
+  tag, and it does not say that it depends on the earlier patch in this…
+
+Pre-existing issues:
+- [High] bnxt_start_xmit() still writes non-netmem page frag lengths
+  straight into the 16-bit TX BD length field (TX_BD_LEN = 0xffff << 16).
 
 --
 
-selftests: drv-net: devmem: TX from a hugepage-backed dmabuf
+bnxt_en: set the netmem TX frag size limit to 32KB
 
-This commit adds a -H option to ncdevmem that backs the udmabuf with 2MB
-hugepages. It also adds a TX test that sends a 3MB buffer from that
-dmabuf, so frags end at the 2MB net_iov boundary and continue past it.
-The payload repeats every 7 bytes so that offset errors are caught.
+This patch sets dev->netmem_tx_max_frag_size to SZ_32K in bnxt_init_one().
+That caps netmem TX frags at the largest power of 2 that fits in the 16-bit
+TX BD length field. With 64K pages this lowers the PAGE_SIZE default, so
+64KB devmem frags no longer wrap the BD length to 0 with BIG TCP.
 
-> Author: Stanislav Fomichev <sdf.kernel@gmail.com>
-> ...
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index f20b61180ab2d..4bcf84faf18f1 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -17471,6 +17471,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	if (BNXT_SUPPORTS_QUEUE_API(bp))
+>  		dev->queue_mgmt_ops = &bnxt_queue_mgmt_ops;
+>  	dev->netmem_tx = NETMEM_TX_DMA;
+> +	dev->netmem_tx_max_frag_size = SZ_32K;
 
 [Severity: Low]
-This isn't a bug, but the author address doesn't match the Signed-off-by
-address. The author is sdf.kernel@gmail.com, and the only sign-off is from
-sdf@fomichev.me.
+The commit message says:
 
-checkpatch.pl reports this as FROM_SIGN_OFF_MISMATCH ("From:/Signed-off-by:
-email address mismatch"), and the netdev automated checks will flag it too.
+  With 64K pages it lowers it, 64KB frags would otherwise wrap the BD
+  length to 0 with BIG TCP.
 
-Could a Signed-off-by be added for the author address? Alternatively, an
-in-body "From: Stanislav Fomichev <sdf@fomichev.me>" line would make the
-author match the sign-off.
+Isn't this a bug that already exists on 64K-page kernels, rather than a
+side effect of the new limit?
 
-Every commit in the series has the same mismatch, from "bnxt_en: let the
-stack segment GSO skbs with too many frags" through this one. It probably
-comes from how the series was sent, so the fix would need to go into every
-patch.
+Before this series, net_devmem_get_niov_at() returns size = PAGE_SIZE - off,
+and zerocopy_fill_skb_from_devmem() applies no other cap. With BIG TCP, an
+aligned devmem send can produce a 65536-byte frag. bnxt_start_xmit() then
+does:
+
+    flags = len << TX_BD_LEN_SHIFT;
+
+which leaves 0 in the 16-bit length field.
+
+Should this patch carry a Fixes: tag for commit 4922ca773d9d ("eth: bnxt:
+add netmem TX support")?
+
+This change also only works together with "net: devmem: add a per-device
+netmem TX frag size limit". That patch adds dev->netmem_tx_max_frag_size and
+binding->tx_max_frag_size, and it has no Fixes: tag either.
+
+Without the tags and a note about the dependency, stable kernels on 64K-page
+systems (arm64 64K, ppc64) would keep the wrap. Would a separate minimal fix
+for the net tree work better?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the same 16-bit wrap still
+looks reachable for frags that are not netmem. bnxt_start_xmit() writes
+every frag length straight into the TX BD:
+
+    len = skb_frag_size(frag);
+    ...
+    flags = len << TX_BD_LEN_SHIFT;
+    txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
+
+TX_BD_LEN is defined as (0xffff << 16), and the length is not clamped or
+split. Meanwhile the DMA mapping and dma_unmap_len cover the full frag.
+
+The new limit is only applied in zerocopy_fill_skb_from_devmem(), through
+binding->tx_max_frag_size. bnxt enables BIG TCP via
+netif_set_tso_max_size(dev, GSO_MAX_SIZE) in bnxt_init_one(). That means
+ordinary page frags can reach 64K or more.
+
+On 64K-PAGE_SIZE kernels, SKB_FRAG_PAGE_ORDER is 0, so
+skb_page_frag_refill() hands out 64K pages. tcp_sendmsg_locked() can then
+coalesce data into one frag of a full 65536 bytes. Sendfile or splice of a
+full 64K page-cache page gives the same result.
+
+On any page size, MSG_ZEROCOPY on a THP or hugetlb buffer goes through
+zerocopy_fill_skb_from_iter(). That function merges contiguous subpages of
+the same compound head:
+
+    if (head == skb_frag_page(last) &&
+        start == skb_frag_off(last) + skb_frag_size(last)) {
+        skb_frag_size_add(last, size);
+
+so a single frag can be larger than 64K.
+
+In these cases, can the NIC get a BD whose length (len mod 64K, or 0) does
+not match the mapped buffer? That could produce malformed TSO segments or a
+TX timeout.
+
+The RX side already handles this limit. bnxt.h has the comment "The RXBD
+length is 16-bit so we can only support page sizes < 64K". There doesn't
+seem to be an equivalent check on TX, for example in bnxt_features_check()
+or bnxt_start_xmit().
+
+BIG TCP has been enabled in bnxt since commit b6488b161ab2.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105222058.944293-1-sdf%40fomichev.me
