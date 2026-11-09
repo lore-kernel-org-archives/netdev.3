@@ -1,165 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.153.120
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794208923;
-	b=2Gb48sckHLu3Rw6D7ckDgKyxLGB6wVf7DFgGnGVcVbz9x6XYfDc4oI8s96uVB1j6Yh1T
-	 to0w8CBu3kHvEwe8KqdiEzwB6iETPUzI05zOjMFzetGgr5NDABJmJdrDEGmcn1AGwb0/S
-	 fqJVU6QXEUTlsA1Q4nObik4hwiczKx4Dv2Gpq/CPtitw3xcdQM59RmkIcKHO2pJ0+bEb9
-	 LVa9Aa31/vfvRC0sPxo+rknvVtfnNVcmMBIEKHijhPcHFiXZyl2Fvk58SdqGBrZfCDW+Y
-	 XbIfN6qWFaeoD0IP2jOoRDM5eDs/jGxi03w4tcvJyJHJbbnkN0b6U0kePYQiy+/JnpA==
+	t=1794209269;
+	b=eI02Qmgi5z4CxdhKH4uosNNzt3h2FTI3deWSTaQDBiYnY4djvtoHNwOklNOVwOuom4Ed
+	 tIjhbIyK/xYEfZOU/zqDBxn60axFNFneR2U9t3PdKuiz0rv3xTMSo3e+u06C1euqGXbwu
+	 D/i1U80q8VHHWKF7YS9U6otpfbig1Ux4hsMUKpsjBKTHenREQhe9PMQ3ivMWklkhT4APm
+	 iaeMTrvO4MbAFmoOr5LVeGZvsORqF9BGbUhiBLk6XitLxhTwu1xV8tL/ub6u5UV+ZpqpN
+	 vQNV8WJDsCRzYDaE+SnlE0z3BKCPe2eGGC+TRQ7MJFBhFqUPclDzTdtTFSZjbZ56EDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794208923;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:CC:Subject:
-	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
-	 Accept-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
-	 Content-Language:Content-Type:Content-Transfer-Encoding;
-	bh=KYPV6wensJpZ0H54sDjKI19wMYHjxgHB0HtbqVPpv58=;
-	b=IgytYj3mjKHsUM7qqaTrAOv9wz21ZljMs4By64cUhd5JBu6JD+pv5vAqFmu7Cu2WQqjF
-	 Al2EMSWMaqkFFb9u6/gURqBXsqY2VtgqtFbTnFaLStG2E9QZTHh1I9FlAvWizdQSBUNka
-	 hSiOJy4fm1cfUmUdZcAlfXezKT7n6rjeD+tculqgrv3zYDSDLnfa79w08AbptW1l4RD7g
-	 Qsykjw7eTKCWnw1vYA8oVkcHjMd+eQeDk2+DtAqEG1O1RG5RGmp0Mua6WPBt87rt69WT4
-	 Wzg/cdIndYGjN/v+XUnSgqmJDIE++Ayg8n0WwRdbutclbDpYdgOurA6n2FPjc2Js1GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794209269;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Swcf0DnhAtIl8EvIgkGj2uhJo8mAoXKQQhHzUI9iGIY=;
+	b=p8ZoqMEaePGj3StC2AW74mgHZWJhnmrdqCVLKG8iABz0dN4xmpK3W27e8d7XMhVhLIYB
+	 cNPg6c0qEyKgMpC8LJjAmf0PBCwXC86nZZwVVgudOc9bnx4B7/vhC/IZAFr6P6Wavdgfk
+	 6AEFln341sXGoQ38XIMgDCoGAqStRlf7pt+KLMspsGrlOT6POLtBtvE/wHdN8cLfFaE1L
+	 z8mbyRRwNMTWUrV/6vH37HfUEfhF6xTIRK4waWE0U3eUX4+QG6pw59ME/yXEC5WRAJ14D
+	 ZYgeFtmsi6N3xgADCxVK7YrYq0ble4eYMgOgBWRdU+suWVM+PFLe25yj0UC0chOKYMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=onsemi.com;
-	spf=pass smtp.mailfrom=onsemi.com;
-	dkim=pass header.d=onsemi.com header.i=@onsemi.com header.a=rsa-sha256 header.s=mimecast20250127 header.b=U4HC1FtR;
-	arc=none smtp.remote-ip=170.10.153.120
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.153.120])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ec6Y0l0a;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0D7606A326
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 07:22:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B0D7606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2ED606A31C;
+	Mon,  9 Nov 2026 07:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.a=rsa-sha256 header.s=mimecast20250127 header.b=U4HC1FtR
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1794208922;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYPV6wensJpZ0H54sDjKI19wMYHjxgHB0HtbqVPpv58=;
-	b=U4HC1FtRnEEKCShpWzWxrn4AsaQHPuVLsK+G3zFGdIkMDwrDg39sjIsDE9+IHPC4ur3Zl6
-	GHOgoNuldSnsqHWsdlc4/xcqkChCxM4Pdkraej67ODTpYpMUaxC2tmiE732eD54I8tNPvP
-	8K6jeWQhwP1V/9dND3cgRZ7iKa9oiQJNVoxh4+yoiQDAC3RLSSw30DG6tfYrCnjwhJoMAA
-	JDzxgbRRteCYAzVSS+5mLjE7ckYouAoTtrWL5BoFrpXw57tZmgxAYbCUSJdKDDSPL6k/Yv
-	1ThTN6XtxfyGb3NqQ32Xad6lZh27ebhNQTamFU/wZc91Nfg1FgCUZUeWotzwcQ==
-Received: from CO1PR03CU002.outbound.protection.outlook.com
- (mail-westus2azon11010054.outbound.protection.outlook.com [52.101.46.54])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id usb-mta-64-1NgwYe-IOoG7hJ3ewe4KTQ-2; Sun,
- 08 Nov 2026 23:21:49 -0800
-X-MC-Unique: 1NgwYe-IOoG7hJ3ewe4KTQ-2
-X-Mimecast-MFC-AGG-ID: 1NgwYe-IOoG7hJ3ewe4KTQ_1794208902
-Received: from CH0PR02MB7867.namprd02.prod.outlook.com (2603:10b6:610:110::22)
- by LV0PR02MB11136.namprd02.prod.outlook.com (2603:10b6:408:335::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Mon, 9 Nov
- 2026 07:21:40 +0000
-Received: from CH0PR02MB7867.namprd02.prod.outlook.com
- ([fe80::d722:d686:a9cb:6c2e]) by CH0PR02MB7867.namprd02.prod.outlook.com
- ([fe80::d722:d686:a9cb:6c2e%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
- 07:21:39 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
-	<conor+dt@kernel.org>, "parthiban.veerasooran@microchip.com"
-	<parthiban.veerasooran@microchip.com>, "horms@kernel.org" <horms@kernel.org>,
-	"corbet@lwn.net" <corbet@lwn.net>, "skhan@linuxfoundation.org"
-	<skhan@linuxfoundation.org>, "rdunlap@infradead.org" <rdunlap@infradead.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "edumazet@kernel.org"
-	<edumazet@kernel.org>, "piergiorgio.beruto@gmail.com"
-	<piergiorgio.beruto@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "jerry.ray@microchip.com"
-	<jerry.ray@microchip.com>, "ciprian.regus@analog.com"
-	<ciprian.regus@analog.com>
-Subject: RE: [PATCH net-next v10 08/11] onsemi: s2500: Add driver support for
- S2500 MAC-PHY
-Thread-Topic: [PATCH net-next v10 08/11] onsemi: s2500: Add driver support for
- S2500 MAC-PHY
-Thread-Index: AQHdbkU7K/ZZSGDp3UW3vWqItWxnR7cjUAmAgAHDs9A=
-Date: Mon, 9 Nov 2026 07:21:39 +0000
-Message-ID: <CH0PR02MB78677ACDC62782D4F8F5C09E83732@CH0PR02MB7867.namprd02.prod.outlook.com>
-References: <20261106-s2500-mac-phy-support-v10-8-31b5a69b85b7@onsemi.com>
- <179409694139.994134.9808308167935611990@kernel.org>
-In-Reply-To: <179409694139.994134.9808308167935611990@kernel.org>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR02MB7867:EE_|LV0PR02MB11136:EE_
-x-ms-office365-filtering-correlation-id: 8942e273-696c-47b2-531d-08df3e3218f3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|22082099003|18002099003|10067099003|38070700021|56012099006|4143699003|5023799004|11063799006|261026140227099003|261028144727099003|261102123227099003|261022105027099003|261022075727099003|261021121427099003|261026121527099003|261009223027099003
-x-microsoft-antispam-message-info: xnycj0qFseurvIA6i6DqUCocYXHgDd+ni6n/fAyJXwM6IqQJ4GofrxXJe9VKTnKrE6cGFTJ2UOje1bvehHMznoL961MbL6XVvciEFrn7ZfkSAIAXTrKoqWoEXv4JnqQavGsDtMs0DSNZrkZZsSRQfl0jXNTdm64DzlSC1Jq3zEUhsnmhaXEU3hefHXq/VGbP63qNcTtnSc7MicjqpLRD6W/GU/rTRdEl24JHqjAH54HQjCgObpMChVj0muhs6qtoQzSiPmrOaq5t5+A4EdHjKSN5pA8SRc3jn4vt+zfFhDdo+LNL4pjMghwpCHXxCeBMC6/JE7ltideU+NaCuS6YM5ZWF47IfVjruAb433S08dgArulkjpHZ6dKHa+e+70vaSOZDoHH9oe5AAIAGGeme3Up3e8TUphyZN8C59FEyeQmhdHP9eJGe4WPA46M1lL8t44t/3BUKPWT4uFya9CU5Ovc9F2Wy45Y7K50XompWY+mHeKHR9bNkHzdqeaAm3ZioZUyQRneAB8TDQhTPWYKBzIWFrfhC7dv7Pxn38eoxGhu69PRGPNQlV9k+0ohJcRAvSC7QsBHi3ZIrKz8mIm8t1gkQbfeTMoCh4sYFTuy/GDlXxtGWbJHc/nZYMoOP2h1/zKCGIMFXwYuxNQco/Q/5eeeuM7udx9jpeoNGEGCsCBo=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB7867.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(22082099003)(18002099003)(10067099003)(38070700021)(56012099006)(4143699003)(5023799004)(11063799006)(261026140227099003)(261028144727099003)(261102123227099003)(261022105027099003)(261022075727099003)(261021121427099003)(261026121527099003)(261009223027099003);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eDBNWVprRnJ1Z0t5KzFZcm80WDByNC9pdUxaZ2tzYk84S3BMRzYxZldqR0ZR?=
- =?utf-8?B?SUZTVDd0aFNpWTR4b2ZKbUVlZDY5SXlSalB1aEd3VUJjT0N3RWIyUEJKTmZN?=
- =?utf-8?B?LzNYUUVaVWxwQ0xaeXhWbEhJRHFGWU9VK1V1MjhiUE9WRHNpMS8vN0dITThI?=
- =?utf-8?B?cGhyV2ZtR2l0SEVJMjZMdXVnWDQ3Y05PRm0wWmw5OWRrQndRR2VMSDFaKys0?=
- =?utf-8?B?Y0toRHAvTDJKc2czanBPa1FVWUNabXUvT3A0NlF1ZW5kVkNISUg3RHk5Y1ZP?=
- =?utf-8?B?ZFlZb2tSSkR5N0hiZXREQTlWZHFTME50dUo1MUxwb3N6elhRYWZBakxaWXRx?=
- =?utf-8?B?NFBiZUZ4dk9HU1lEdzlOaHV6ZlFxVVNEeXNCM1BZdUhGWlhyVUVENzJpRTFW?=
- =?utf-8?B?bHFqMzhzU3ZuNWhNclB2RGVKeEVrNHJpRng0UHFsb3NNVUxEVGNQU2l1cWtJ?=
- =?utf-8?B?VmhCeGJQQjBzSUd6WjRPR1E0dXhwOXhUZUFSWGV3cmVVOGpJRkxlK0NCc0ZM?=
- =?utf-8?B?WWRkQjRibE0rbUxFcTF5eHJWVmtwdXBuTHdoQ1ZtL3pCbHdMbTdGbEkvSU1t?=
- =?utf-8?B?ekZXQm1aQmpLSDgrbmlwUVR5NFBZUjdhbzhkaU9IK01NMHhQc0s1YmlOU1Zo?=
- =?utf-8?B?UWF1ZmtMV09RaHIzTkdwaU1jekhJVTh3N1NBWndvQkwrUHkrSWZza2VBay8z?=
- =?utf-8?B?b05aQXRXOXZ4WVZ6MjBIdlhQMGFVRXdaTUFONFkvS1k5a1l3UzcxaEZ3U0Ru?=
- =?utf-8?B?YUNUbHUxeExremRKVjJOYWdSR0lFTmRlNVZlNkw3YW5hZHhudndSNlRPMnJa?=
- =?utf-8?B?dU5BcU1uTUVxL016dkh2MFBIeTZtM3dFNVhTZ3UvQm0vSXpEWllKeEJOdE16?=
- =?utf-8?B?SHpjeHd4Y3AwL0liQ2xyWkV6SkFqamVGZVRwaS84SkNyTDlUSm1VcXZla3NE?=
- =?utf-8?B?T2U4TU5KZzd5eExMRHhDSHJBNUFRWUhQYlhKc2VWNmtsVXZHTnBaYXp4aUVN?=
- =?utf-8?B?anB3SmxEc3hOdm1kR3RJRHVNdVF0dnMzcVBMckJwNGpscHB1THlhNkVCWno3?=
- =?utf-8?B?UjNPa0V5dHQ4VHYzWnB6UUkydkJBek9JZEM1MVNMcXY1N3JLZk5ia3dILy9t?=
- =?utf-8?B?dnY4ZGNORHlucjJjZGtmOStFQ3JBQjBmSGlkRU1CUEYxUFBTTWQrNlY4enk5?=
- =?utf-8?B?eTk0ZVZxTE9NUWlNUm1hQ3h6NjlhNEpnVEx5U2NTRnM1TitmU01ZeUxOdjhY?=
- =?utf-8?B?Sk81d2liSGUwVVo5ZW92Z0JVNTRrSCttSWN4WXVKMndzKzdiVlcxbWx5MVlU?=
- =?utf-8?B?N1Z1TFRjTm11SCthZ3lUS1FNbDhXT0dOYTZwQXRxUWJuazY2MmJwckErZkEy?=
- =?utf-8?B?SWR5dFVCbGpEMkJBV2NYM1hUSEFUUWRZem5FQktSWkliZzRvUThuOVZSeUlI?=
- =?utf-8?B?NUU1czVSdXoyYTgwOVVOd0xJV1AzNGE0elB2T2lhMFJ1NGxrNC94RmNYUmZS?=
- =?utf-8?B?VDFBTCtRWjZFUzJxanMvMitRWGNBaE0zTDQwK3AyWFE1Q2t5bVBrQVA4c0Jy?=
- =?utf-8?B?RVJyUEVIRmlzYURHNVYzNWhoZ1RMNEt3dUtrQVllR0xIZW41RWRFcndRZ1dO?=
- =?utf-8?B?TW95WW1zT3JMQnV3SnIrRGQ1OHk5WUNVY25pcHNSRWFhMnFFZXVDZjdKbHU1?=
- =?utf-8?B?dDlWQ1VsbnVZWEh4SnpTNnVYVGNjRnZsOEVSbEZLMHlsK2Z3L29QakU1L1pD?=
- =?utf-8?B?QkoveG1lWnFiek5taERMQzZsd2xuWnVicUtsL1NIcEF1YUxCYSt5RVhkb295?=
- =?utf-8?B?YW1hdXl1TmFkSlRRU1NoVUd5bWFNZ0hNcVhqSjdOcDZ3Um1JdmNycjdISVFV?=
- =?utf-8?B?Smc3YUk2R3FkaXh3SWZKbWkwK1FDZ2V3K29SV0Y0Ri9lRFdGaVRvL2ZMamYr?=
- =?utf-8?B?c2Vwb3J4dlZ0anUvOEhSUUVKd2h4RXBmNlVrdlNuNkgwdm1UU0FWVDNUcEVP?=
- =?utf-8?B?aHpGamFuUzdENVJYWlcyL3lTcEtPaWIxZDU5SWxiR0NKUlRGTHRtQWNOeERP?=
- =?utf-8?B?MEEvS0ZkTlkvWFRVOS9sWTlVQnhheWR5UGJNUHAxK1dHNm9ZWm5sN0NzcEpC?=
- =?utf-8?B?V1NhakJManZDKzd5cVRMRitUdmtSOUs1QlM4Z3ZObXg0TXI2ZkdRVlFxLzFm?=
- =?utf-8?B?RDg3UUVxM3dtTThMbXhGd2RLeUsyNUtGYjUvZExBNHhNMU80ZWRUUlprSlcz?=
- =?utf-8?B?aFJtMFdDRG12OHVOKzgrTENFMjkxY2pjRXlCdnIxeU5KbUxydTVmWXhTRHR0?=
- =?utf-8?B?YjV4bEtndzZjcVNqbm02QlhIcTJBdm5FT1dtaWY1TGNVdDRIN3ZRZz09?=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ec6Y0l0a
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1031F0089F;
+	Mon,  9 Nov 2026 07:27:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794209268;
+	bh=Swcf0DnhAtIl8EvIgkGj2uhJo8mAoXKQQhHzUI9iGIY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ec6Y0l0a0Pu06bsmUhIrFlg/+tW+dqzq4tBH4x0aAlMf7xVfKs5Pz8uqKjn900s93
+	 1Vq0nP08rbhq6kKE0t1NhKQnB8Ail0HlGDHkTYWB9XnbyhVP0HGnbhJdqZk9Aifix6
+	 zll237N5XC42JyKzqpEdVc2tkJ7PYBy9219C17Kalc7LXFSOzNIH1VATakb7uvI5ol
+	 vzYBlAo2qakZ6QqEo7XsSvYh/PRzAg8E9ttQJsKLDToQ9kNoZwzm6vo1PMmiB4/J3k
+	 e63EAos85FQUkR28ZP0xfjQFskinLh3SSmwqyIdZYqZ6D0GQ7vugTUwsUiUkM884un
+	 jXxllez+lXZWg==
+Subject: Re: [PATCH net] netfilter: nf_flow_table: defer pernet stats release
+ to last flowtable teardown
+From: netdev-bot+sashiko@kernel.org
+To: q.h.hack.winter@gmail.com
+Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, vladbu@nvidia.com,
+ ozsh@nvidia.com, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kuba@kernel.org
+Date: Mon, 09 Nov 2026 07:27:47 +0000
+Message-ID: <179420926753.994134.7270811903271795956@kernel.org>
+In-Reply-To: <20261105065509.94627-1-q.h.hack.winter@gmail.com>
+References: <20261105065509.94627-1-q.h.hack.winter@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -169,62 +64,231 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: g6d5yi0IVU5H7x8wZwyN1FlywTWJVikJwqH3PKO+gLvO4iP0j8upPDNrvlz9J+xHWfxtiAaLBgimMoTau+YrRPyewIAPH+l9D9DWBOLe8czjMhMJDB05TbHAM1Ie/K2f/6F2CbNz4w8LkB2EpTCbjACd6o5VOakwsXgOwNCBqutKC/O76wwO+WrlTrNSD7ECPRtZ6plMxyUHrQ79W8daRfFtntZATNvcvRVTdoVvtyLDMPlYhiolWRyDV03ZkRWVaTww303UewG0SF8+J1Bwo6z0r6SV4+auXjoPoDSvwkSYIRbDdm3kBLf8d8tE6eI3LHK2iiOYhLllo3RYX/67aQ==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB7867.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8942e273-696c-47b2-531d-08df3e3218f3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Nov 2026 07:21:39.7172
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Br7FHkL1p/b5Ya+xl5ArBHvFvqHR8uAXHD7d79ma2cSauXM/oOF9Lg8+lp2XLNkKBPkOvMmrV4ljKXTSSLS1WqBSvF7xkPAJwYo1/WJdqPI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR02MB11136
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9LlVmxxSi6p_qh1wCw4odO404EwHOdUlzwckabEtEaM_1794208902
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBuZXRkZXYtYm90K3Nhc2hpa29A
-a2VybmVsLm9yZyA8bmV0ZGV2LWJvdCtzYXNoaWtvQGtlcm5lbC5vcmc+DQo+IFN1YmplY3Q6IFJl
-OiBbUEFUQ0ggbmV0LW5leHQgdjEwIDA4LzExXSBvbnNlbWk6IHMyNTAwOiBBZGQgZHJpdmVyIHN1
-cHBvcnQgZm9yIFMyNTAwDQo+IE1BQy1QSFkNCg0KPiANCj4gPiArIGlmIChlbmRfdmFsaWQgJiYg
-ZnJhbWVfZHJvcCkgew0KPiA+ICsgb2FfdGM2X2NsZWFudXBfb25nb2luZ19yeF9za2IodGM2KTsN
-Cj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBOb3RoaW5nIGhlcmUgY2hlY2tzIHRjNi0+cXVp
-cmtfZmxhZ3MgJiBPQV9UQzZfQ09ORklHX1JYQ1RFIG9yDQo+IHRjNi0+Y3RjX2NhcGFibGUuIERv
-ZXNuJ3QgdGhpcyBjaGFuZ2UgUlggYmVoYXZpb3VyIGZvciBldmVyeSBPQSBUQzYNCj4gZHJpdmVy
-Pw0KDQpZZXMuIEl0IGRvZXMuIEJ1dCBkcm9wcGluZyBmcmFtZXMgYmFzZWQgb24gRkQgYml0IGlz
-IGluIHRoZSBzcGVjaWZpY2F0aW9uLg0KSSBkb24ndCBzZWUgYW55IGlzc3VlIGVuYWJsaW5nIHRo
-aXMuIEluIGZhY3QsIGlnbm9yaW5nIHRoaXMgYml0IHdvdWxkIGNhdXNlDQpkcml2ZXIgdG8gcmVj
-ZWl2ZSBtYWxmb3JtZWQgb3IgaW52YWxpZCBmcmFtZS4NCg0KSSBmaXhlZCB0aGUgY29tbWl0IG1l
-c3NhZ2UgdG8gbWFrZSBpdCBjbGVhcg0KDQo+IA0KPiBbU2V2ZXJpdHk6IE1lZGl1bV0NCj4gVGhp
-cyBnb3RvIHdhcyBhZGRlZCBlYXJsaWVyIGluIHRoZSBzZXJpZXMsIG5vdCBoZXJlLCBidXQgdGhl
-IG5ldw0KPiBjdXQtdGhyb3VnaCBjb2RlIHNpdHMgcmlnaHQgYWZ0ZXIgaXQuIERvZXNuJ3QgdGhp
-cyBvb3BzIGlmIHRoZSBTVERDQVANCj4gcmVhZCBmYWlscz8NCg0KWWVzLiBGaXhpbmcgaXQuDQoN
-Cj4gDQo+IA0KPiANCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBEb2VzIHRoZSBTMjUwMCBs
-YXRjaCBQVFBOU0VDIHdoZW4gUFRQX1NFQyBpcyByZWFkPyBUaGUgb2N0ZXQgc3RhdGlzdGljcw0K
-PiByZWdpc3RlcnMgaGF2ZSBhIGNvbW1lbnQgZGVzY3JpYmluZyB0aGlzIGtpbmQgb2YgbGF0Y2hp
-bmcsIGJ1dCB0aGUgUFRQDQo+IHRpbWUgcmVnaXN0ZXJzIGhhdmUgbm90aGluZyBzaW1pbGFyLg0K
-PiANCj4gV2l0aG91dCBzdWNoIGEgbGF0Y2gsIGEgcmVhZCBuZWFyIGEgc2Vjb25kcyByb2xsb3Zl
-ciBjb3VsZCBwYWlyIHRoZSBvbGQNCj4gc2Vjb25kIHdpdGggYSB3cmFwcGVkIG5hbm9zZWNvbmQg
-dmFsdWUsIGFuZCBiZSBvZmYgYnkgYWxtb3N0IGEgc2Vjb25kLg0KDQoNCldlIGFyZSBkb2luZyB0
-aGUgYmVzdCB3ZSBjb3VsZCBkby4gVGhhdCBpcyByZWFkaW5nIGJvdGggcmVnaXN0ZXJzIGluIGEg
-c2luZ2xlIHJlYWQuDQpOb3RoaW5nIHRvIGZpeCBoZXJlLg0KDQoNCj4gPiArIH0NCj4gDQo+IFsg
-Li4uIF0NCj4gDQo+ID4gKw0KPiA+ICtzdGF0aWMgY29uc3QgY2hhciBzMjUwMF9tYWNfc3RhdF9z
-dHJpbmdzW11bRVRIX0dTVFJJTkdfTEVOXSA9IHsNCj4gPiArICJyeF9taXNtYXRjaF9kcm9wcyIs
-DQo+ID4gK307DQo+ID4gKw0KPiANCj4gW1NldmVyaXR5OiBNZWRpdW1dDQo+IElzbid0IHRoaXMg
-Y291bnRlciBhbHJlYWR5IGNvdmVyZWQgYnkgdGhlIHN0YW5kYXJkIG5ldGRldiBzdGF0cz8NCg0K
-DQpJIGRpZCBjb25zaWRlciB0aGlzLiBUbyB1c2UgdGhlIGV4aXN0aW5nIG1lY2hhbmlzbSwgSSBo
-YXZlIHRvIGFkZCBhIHBvbGxpbmcgd29ya2VyDQpqdXN0IHRvIGFjY29tbW9kYXRlIG9uZSBjb3Vu
-dGVyLiBCZWNhdXNlIEFQSSBkb2Vzbid0IGFsbG93IGJsb2NraW5nIHR5cGUgU1BJIGNhbGxzIA0K
-dG8gZ2F0aGVyIHN0YXRzLlNvIGRlY2lkZWQgdG8ga2VlcCB0aGlzIHdheS4NCg0KPiANCj4gDQo+
-IC0tDQo+IFNhc2hpa28gQUkgcmV2aWV3IMK3IGh0dHBzOi8vbmV0ZGV2LWFpLmJvdHMubGludXgu
-ZGV2L3Nhc2hpa28vIy9wYXRjaHNldC8yMDI2MTEwNi1zMjUwMC0NCj4gbWFjLXBoeS1zdXBwb3J0
-LXYxMC0wLTMxYjVhNjliODViNyU0MG9uc2VtaS5jb20NCj4gPGh0dHBzOi8vbmV0ZGV2LWFpLmJv
-dHMubGludXguZGV2L3Nhc2hpa28vIy9wYXRjaHNldC8yMDI2MTEwNi1zMjUwMC1tYWMtcGh5LXN1
-cHBvcnQtdjEwLTAtMzFiNWE2OWI4NWI3JTQwb25zZW1pLmNvbQ0KPiA9bmV0ZGV2LWFpLmJvdHMu
-bGludXguZGV2Pg0KDQo=
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
+Critical: 0 · High: 3 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] In nf_flow_table_free() (net/netfilter/nf_flow_table_core.c),
+  the line `release = net->ft.exiting && !--net->ft.nr_ft;` only…
+- [High] The deferred-release scheme keeps its state (ft.lock, ft.nr_ft,
+  ft.exiting, ft.stat) inside struct net and expects the last…
+- [High] nf_flow_table_fini_net() sets net->ft.exiting = true, but
+  nf_flow_table_init_net() never resets exiting or nr_ft.
+- [Medium] The commit message gets the failure mechanism wrong and does
+  not mention a behaviour change.
+
+--
+
+netfilter: nf_flow_table: defer pernet stats release to last flowtable teardown
+
+This commit counts flowtables per netns and adds an exiting flag, so
+that the free_percpu() of net->ft.stat moves from netns exit to the
+last nf_flow_table_free() of a dismantled netns. It also adds
+nf_flow_table_offload_drain(), which flushes all three offload
+workqueues on every nf_flow_table_free().
+
+> diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+> index 0d72dc8ae47a1..de0a9f0e4f7b9 100644
+> --- a/net/netfilter/nf_flow_table_core.c
+> +++ b/net/netfilter/nf_flow_table_core.c
+
+[ ... ]
+
+> @@ -781,19 +791,51 @@ void nf_flow_table_free(struct nf_flowtable *flow_table)
+>  	nf_flow_table_iterate(flow_table, nf_flow_table_do_cleanup, NULL);
+>  	nf_flow_table_gc_run(flow_table);
+>  	nf_flow_table_offload_flush_cleanup(flow_table);
+> +
+> +	/* The gc pass above can still queue offload works whose handlers
+> +	 * decrement the pernet statistics.  Drain them all.
+> +	 */
+> +	nf_flow_table_offload_drain();
+
+[Severity: Medium]
+Does the commit message describe the failure correctly? It says:
+
+  "The flushes in nf_flow_table_free() only drain those workqueues when
+  hardware offload is in use, so after free_percpu() the stray workers
+  still this_cpu_inc()/this_cpu_dec() into freed percpu memory."
+
+As far as I can see, offload works are only queued for hardware offload
+flowtables. flow_offload_add() calls nf_flow_offload_add() only when
+nf_flowtable_hw_offload() is true. nf_flow_offload_gc_step() only queues
+del/stats works for flows that have NF_FLOW_HW set:
+
+    if (test_bit(NF_FLOW_HW, &flow->flags)) {
+
+NFT_FLOWTABLE_HW_OFFLOAD also can't be toggled on update. So the flushes
+that only run for hw offload don't seem to be the actual gap.
+
+When fini_net runs before the flowtable is freed, the stats access
+appears to come from the synchronous gc pass inside nf_flow_table_free()
+itself, not only from stray workers:
+
+  nf_flow_table_gc_run()
+    flow_offload_queue_work()
+      NF_FLOW_TABLE_STAT_INC_ATOMIC
+
+Also, nf_flow_table_offload_drain() is called unconditionally here. That
+includes software-only flowtables in live namespaces. It flushes
+nf_flow_offload_add_wq, nf_flow_offload_del_wq and
+nf_flow_offload_stats_wq. As a result, every flowtable deletion waits for
+all pending hardware offload work in the system, driver callbacks
+included.
+
+The commit message presents the drain as part of the final release for a
+dismantled netns. With Cc: stable, could the message also mention this
+latency change?
+
+>  	rhashtable_destroy(&flow_table->rhashtable);
+> +
+> +	net = read_pnet(&flow_table->net);
+> +	if (net) {
+> +		bool release;
+> +
+> +		spin_lock(&net->ft.lock);
+> +		release = net->ft.exiting && !--net->ft.nr_ft;
+
+[Severity: High]
+Can this leak net->ft.stat for any netns that freed a flowtable before it
+exited?
+
+While the netns is alive, net->ft.exiting is false. The && then
+short-circuits, so --net->ft.nr_ft never runs.
+
+nf_flow_table_init() still increments nr_ft for every flowtable.
+nf_tables_newflowtable() and tcf_ct_flow_table_get() both call
+write_pnet() before nf_flow_table_init(), so net is always set there.
+
+Take this sequence:
+
+  create netns
+  add an nft flowtable                      nr_ft = 1
+  delete it
+    nf_tables_flowtable_destroy()
+      nf_flow_table_free()                  exiting == false, nr_ft stays 1
+  destroy netns
+    nf_flow_table_fini_net()
+      release = !net->ft.nr_ft;             false
+
+After this, nothing calls free_percpu(net->ft.stat).
+
+Removing a tc ct action through tcf_ct_flow_table_cleanup_work() does the
+same. So does the nf_tables_newflowtable() error path after a successful
+init.
+
+Should nr_ft be decremented unconditionally, with only the release
+decision depending on exiting?
+
+> +		spin_unlock(&net->ft.lock);
+> +
+> +		/* Released by the last flowtable teardown, see
+> +		 * nf_flow_table_fini_net().
+> +		 */
+> +		if (release)
+> +			free_percpu(net->ft.stat);
+> +	}
+
+[Severity: High]
+Can this block run after struct net has already been freed?
+
+The hand-off state (ft.lock, ft.nr_ft, ft.exiting, ft.stat) lives in
+struct net. act_ct doesn't hold a netns reference on its flowtable.
+tcf_ct_flow_table_get() does:
+
+    write_pnet(&ct_ft->nf_ft.net, net);
+
+with no get_net() or net_passive_inc(). Teardown then goes:
+
+  tcf_ct_cleanup()
+    call_rcu(tcf_ct_params_free_rcu)
+      tcf_ct_flow_table_put()
+        queue_rcu_work(act_ct_wq, &ct_ft->rwork)
+          tcf_ct_flow_table_cleanup_work()
+            nf_flow_table_free()
+
+cleanup_net() runs the pernet exits, then rcu_barrier(), then
+net_passive_dec(). A later cleanup_net() frees the net through
+net_complete_free().
+
+rcu_barrier() waits for the RCU callback that queues the work. It does
+not wait for the work to run on act_ct_wq. Nothing in act_ct's pernet
+exit flushes act_ct_wq, since ct_exit_net() only calls
+tc_action_net_exit().
+
+This is the case the patch targets: fini_net sees nr_ft > 0 and sets
+exiting. If the deferred nf_flow_table_free() runs after struct net is
+freed, it takes spin_lock(&net->ft.lock) and decrements nr_ft. It may
+also call free_percpu() on a pointer read from freed or reused memory.
+
+act_ct_wq is ordered. Each cleanup item now does
+cancel_delayed_work_sync() plus three global flush_workqueue() calls, so
+a backlog of ct_ft cleanups makes this window wider.
+
+Would act_ct need to pin the netns, or should the stats live outside
+struct net?
+
+>  }
+>  EXPORT_SYMBOL_GPL(nf_flow_table_free);
+>  
+>  static int nf_flow_table_init_net(struct net *net)
+>  {
+> +	spin_lock_init(&net->ft.lock);
+>  	net->ft.stat = alloc_percpu(struct nf_flow_table_stat);
+>  	return net->ft.stat ? 0 : -ENOMEM;
+>  }
+>  
+>  static void nf_flow_table_fini_net(struct net *net)
+>  {
+> -	free_percpu(net->ft.stat);
+> +	bool release;
+> +
+> +	spin_lock(&net->ft.lock);
+> +	net->ft.exiting = true;
+
+[Severity: High]
+Is net->ft.exiting ever cleared again?
+
+nf_flow_table_init_net() only calls spin_lock_init() and alloc_percpu().
+struct netns_ft is embedded in struct net, so exiting and nr_ft survive a
+module unload and reload. That holds for every existing netns, including
+init_net.
+
+Take this sequence:
+
+  rmmod nf_flow_table
+    nf_flow_table_module_exit()
+      unregister_pernet_subsys(&nf_flow_table_net_ops)
+        nf_flow_table_fini_net()
+          exiting = true, stat freed if nr_ft == 0
+  modprobe nf_flow_table
+    nf_flow_table_init_net()
+      stat re-allocated, exiting still true
+  create and delete a flowtable
+    nf_flow_table_free()
+      release = net->ft.exiting && !--net->ft.nr_ft;   true
+      free_percpu(net->ft.stat)                        netns still alive
+
+>From then on, flow_offload_queue_work() and the work handlers update
+freed percpu memory, and the procfs stats read it. At netns exit,
+nf_flow_table_fini_net() sees nr_ft == 0 and frees the same pointer a
+second time.
+
+The out_proc error path in nf_flow_table_pernet_init() leaves the same
+stale flag. So does the register_pernet_subsys() unwind when module init
+fails, on namespaces that stay alive.
+
+Should nf_flow_table_init_net() reset exiting and nr_ft?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105065509.94627-1-q.h.hack.winter%40gmail.com
