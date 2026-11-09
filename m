@@ -1,89 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794259563;
-	b=vJp5AGSpmJWfWETN3qZLVM61sHzesWTc+N8iA7YMc8XoUKcwoWGKNESAPzHh7i+YYYj6
-	 tJPnugR0z7il6CKrdfspROmpOOxNNdQ+sGBI1TbzK0EZ4oODk+A50MlO6ruoOWes4gBW4
-	 kG+y6BqruKGEe7uae79UMJJXDY6IgnW4czHWruOcdT7YnpgY72Ket73ciLXSFl+RYzhm0
-	 8Xce06PteqgO0g4NLrvPR7BzAQubYJVlyLHh5OAIIs2Y9vn13q6FP252QJAgv+JpOlLP1
-	 PPr2wl8nVQueJH9pf2blF11fQwpksaGRPG85sQ+F2ocjbIk1JHLFAFpax1dS6bXpdTg==
+	t=1794259564;
+	b=sNds3p9o+8Br8Xb33IoPmAGu9ClBkXjxL3trPQJT2Ntpl9E6V8iX/Rff7ktq5W2RrjST
+	 aCUqsDkEghkfaY4k50NHTZ2+8yoKyN05WFCjfIb3JB9W46r6t5BYlP7MrBlouL8xFOv6q
+	 wSKWYq9Qp84y5+A4qrqieNnpYgnnurDdzBh1BIzZDNuw7qJCK43vQSAMakjWc9dZoWWyF
+	 YWlanI7IMffc8f4kV7I9nt45kmLNG1lCe++JmifeKT6h2bpL9TVLENRSW8JJsdjK5GWzs
+	 Jp0BfZ9MbeGbaG4TiJAa7kNZ76nw7Vr5XyorsjNa3++i0mWWnlUXk/jylSZaLkmGiaw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794259563;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794259564;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
-	b=nBZ/AEUv9TmkAhzwvW5+bVOn76ZPHPsXHbaHsMWDtHMlkOW/X/t3YAhshVX/c8F3hln8
-	 HFmpjNqWpKF7sdFq+DrajN/guz7D0fKM4jXC0MJxcvej1IGjBKXJwqlJ9ILNrgyhVe0a1
-	 Y4dRbwDCRlhfjf4FuUFF+U2eatpUbW0jyg0xLewUEfmGS9OIRGO9BmID53y8m6e3+cses
-	 hw+y6qXyX360bEiVwOUF8s02vjpVV1zuOiqdVaVekPLcH+R/V0USXCUwilSE1hYZnDoZs
-	 pTdx24OSLiBvs3Bl8UiS4Or84z0ea/YA3lVtZZAQL9T2MzaGvrLZXOu+JlEws5+qmdQ==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Tjw56/pLVUPC5w8Tq75N+AiMEtXwfP+dxZK4YdW5KOQ=;
+	b=sNbzoXh0k1PtcwypxvRYGwttdflPPyp5yQpdcJkNprh71mHC6s7YzP9JWuSYUuWBcvQJ
+	 m6rQyna6f+4j+VzFQ9qtQjJfNOI048TW0QpiDHSBTaaJpriQedsGGAr/Xunpy0sKEhXJH
+	 NLzL2OgmNsCRVAtHI41HAhcXL2NfqTaLyxhRPGz/jCw/VN29b2++kfcp+z5B3b8eEJytd
+	 3bI0pvvWrjAwNY8PTKehXoHfKUWvOgOOuq/RNL9xGese0WYfRWyvoPYDvsS9sRmcNCeD1
+	 0kqAJqkc7lOZg9ZO6hC0+0+H2SGTmm9znBitrn+fuAjOPhBaSkjfK2a8e6vKnedqGaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cPb9WBQV;
-	arc=none smtp.remote-ip=209.85.210.177
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="m/xpnqin";
+	arc=none smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CAA606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 21:26:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21CAA606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CA6606A331
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 21:26:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56CA6606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=cPb9WBQV
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so610577b3a.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 13:26:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=m/xpnqin
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8b271e573adso517489b3a.2
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 13:26:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794259562; x=1794864362; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
-        b=cPb9WBQVZGuA2p6y5G1rnf8qrywNuLGbquUytmjFSVK2c9cFSmSBsr9IJC1lNy4c4k
-         nAfo2pimOolJx78Igw2BAO0LF7ZrC3nc07T0K0sKRfvqeXozq6HbSc5yPkbyI3+Nm9Nb
-         ZMtLYYsAAn9drr1v6NLvmq9cXwVI7ZI6abXWMuXYSNe+VIGDA/k87IVuWp4jE8QOLtkF
-         X8Z19WdwhsMFvagnoWQ5Ljd5k4/ECxoQ6m0okWPBCfGHpGzD2tVqzsyYTGS+ePgSyrqL
-         b99W8w4FjFRO6Q6cbkpoJxjtd6Bkyh+oUYl8NCSxojZo5B1whJws+RIWVj2ESd0yQQSR
-         Xj8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794259562; x=1794864362;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794259564; x=1794864364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=So58nkxBn/1sh9oUy8UMMPh3nuvv9mqA8Gj+ns+yy5s=;
-        b=dldMupPxUr3ssUODagVkKKI8SkAhSgDFaDDGVcymug7NGxkluaqg8t9MvpM6Vc8GMT
-         gIA8UCEIoV0+ROaDHKy0PzTh8dYmyCiwNawpS9ap4kO7rbf4XJVvyUqtVm7hrlObZyHg
-         TRTJQjybW+EDn9OSSK9iAblWxQJd7/tImvt/3Wc1pSvSGxQ8Ine8CsfK1JWmXLJxOq3l
-         ToyfsBBTOv7J4KWccVQF2G3w/XoIVvl5JVtiebKMJ1z+WzqsrA3QJ1jOf8oEUw7pJZGf
-         MHkHPj+MW0e+pysARRmFc5JQo9LRpSelm1u+ENoLaWdw1Vr7kHzho/YvEJ66cY5WNJTN
-         8Ltw==
-X-Gm-Message-State: APuU4Z8g2brgRCX1niMquT8Gb3NGWUi77NWz+ILdB3Hk831VbxiAGQSY
-	auiMuBI2BBjIaRUKmlp9ZMogJX8WdU/UXSS/MilvKnpgzvJ12dnUNj4mgBFIxw+ZIuxcdkTA4CC
-	fsHlqjAM=
-X-Gm-Gg: AYBFou2jU0Inz9Fp0D1F5dNZiMGfe4/G2OAhWziYJG22euvU72opCkQjgZkt6Ar8eZQ
-	1bCx3SfNrm1AA1hheZY80cGK09evxU+3YVlwbOe5tZ4Arqnk2SoRgiduKxYkSzJVEB4RrUggrHX
-	5Tsoz33oHRkDOF50r5W9W3gJfPkm93OFuiOg6M3oIQpjl0WQSx9UHllOTtWY+xqoYhFxtr0Irua
-	Kp3AQTIG2T0lSboY3QkohmgmmzFEtsem/VQsmkn9xkCTO8JDYVZe1h/mfOQc5qU2dW0KKsO0oGP
-	eI7WZR+Zt6ThSAqYm4AKtyeLLx/5c/rDd09lYz9tkf6XMo/ibPjB+Y7/30Kt3b2/5jRRPx++f4R
-	TylXPdwJpDlgwQrn38tyqcOl0pQUf8agGyzAtrkaF0klYUCzEOB+vHEPXwgsoC+3FyzSST6N/Dg
-	RSsXvIyROPmz9b/5/B544ddKmWfLQwVqaeDwjPFKAivUXUJWdaibZaUJwAWAm/Etp4tEOS4TkQm
-	XKoy6ZyQ6a+kEUmrNc5Hq9oREYx0SOdQeszECT2vg/iLlQ4TaTetCMQbKnGpaTO8fxp3BfmX6D/
-	hIDZhJYE2371Si05fko9ia+VNb6Ud2ZRh997agXHfnfa1Wg6G/lP9k9pgle6GF4aWb5Z
-X-Received: by 2002:a05:6a00:17a3:b0:897:4932:5098 with SMTP id d2e1a72fcca58-8ba86b939f6mr746526b3a.27.1794259562386;
-        Mon, 09 Nov 2026 13:26:02 -0800 (PST)
+        bh=Tjw56/pLVUPC5w8Tq75N+AiMEtXwfP+dxZK4YdW5KOQ=;
+        b=m/xpnqin0iZZp45oS/YHzOmIxzIiGKYZEWPT15P4U9wekahsD8tZDosxo82uUUJZhe
+         mA1nAnI1Gdh72lpa8KrA7GI7DJhHQAy8fugzl9++B2+e42wrWUznNrx1plpWff4xnO0O
+         WpZ8UfULLV9+zGc9n2aU+OYxMmb4W7zXodaxc+YkpDrY9hwvsxuAaBSFzx9p2sk9uuiO
+         kg/n23ItZwQiWJwOxBeDH05UQuukZ/4/dYGvnN5ZgTmkjaGF/C/STUwlJdlBzwV8bUGD
+         bZH0/YH+MPbxAzSYxyVzmXtnRYKleHOhUs5ZBVefoIVRaCvFV5C7xMJMBVSXFkndd1w/
+         bWpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794259564; x=1794864364;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Tjw56/pLVUPC5w8Tq75N+AiMEtXwfP+dxZK4YdW5KOQ=;
+        b=sOdVhhQs/zwFT1mqyjvElH7VY53VL0yguj85VHTQjtNpkQVBgRnYDVKNRXsO5c7CK0
+         aXy+f0CxZvGtNAKcJIyDJC5TBYwqc894rQTow1acahMUuoKil+ah4R8HtcriN11k6sqQ
+         pgQOkyCM8VeQ5TLfz+oDAGhF4Xlq6PfUF0ay75cPxev34GD1OsOQJQHxHZHwB/aibrXM
+         Ze9GYi8Z8W7VO5CuAmb0zCOb1uEPYmjXhPOhLYPTwM+8q1XybOGsOWZmeMKCf+odPWGs
+         pwo12tYDYumAX95Jxvo+qiSrsncTNUmcka0Aalq0/yqHBYqJw+ECC+4bYMoupJhBVACu
+         kCXg==
+X-Gm-Message-State: APuU4Z8TQofl9brA43BnuXaU2FY+UeSz5peNm8oXPxxIdxeDV5l/69nb
+	APg+8V3+Gr+iHIHE75zq1Zt5bIxMfhH//WwBVUVlBVlqF89jasMpaqDvCZSF5rvdca2aMUUm+k8
+	ODKWyZh8=
+X-Gm-Gg: AYBFou14tYbUzQmYJ/zojUK/H3JV11nFHHZSCu3n8pj3J1Tfq2UChGL6Qvy/RoJa2ia
+	tDh4+S/fMXs7IIuwyHK3JNHNdu4rzH3qL5gtFVY5FsG7r6V8oIJ24HqxmZnu10pA5vQ3SzlctL8
+	djVf0RDzgfFKpoihUzmF3oBocTF6Ydm5caHc7CWogFC95XFhPL9lu5urwJCh0y0gEm549eOfzzh
+	VLkuSSh4zbnJORKBGSfMB/gLFwuGh1+fLF0UY8ZiZik3fBQUM2Hik3pKgS0mhJH+/RIlqeEXgiS
+	2M3Dx6HEeDqLpvJ0LJWP6n/VknnuDl0CdI0zSwdlVijl2zyF0m0fFa5HaAzhWtB34XAW5le7kKK
+	hUjg8azkEWFDaNE3ES4k03MBEHF4TKMpGgXGzvVPvFNL8HAEJpkwY7pXy/Ti8AWZS2VgBAxC5bc
+	WCauL+M1Kaj4uUOVfwPBV1nYlYSqCnMM9qQ10bV+3pkDH0/xCfLyM1n9xpZRBfq9j8/0CmOxsPr
+	DdalR5ScJewhmMhuzbcgL5Xl4INNJEPmUZ6uxKQaS6xJ8QPlcRSgKjMV46LsLu9hFjKPBMnYWsn
+	kZBS0HaV//Bzm8YQIh9Kl57elPjc56wOd1sBZyyq+n+v1SePG7EFlXc/QRy3IZZ32SAm
+X-Received: by 2002:a05:6a00:1898:b0:882:1b4d:1840 with SMTP id d2e1a72fcca58-8ba867aaed4mr820967b3a.24.1794259563680;
+        Mon, 09 Nov 2026 13:26:03 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de3619sm122854b3a.5.2026.11.09.13.26.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de3619sm122854b3a.5.2026.11.09.13.26.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 13:26:01 -0800 (PST)
+        Mon, 09 Nov 2026 13:26:03 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 00/11] ss fixes from an OSS scan
-Date: Mon,  9 Nov 2026 13:25:16 -0800
-Message-ID: <20261109212559.39661-1-stephen@networkplumber.org>
+Subject: [PATCH iproute2 01/11] ss: fix double close on sock_diag send failure
+Date: Mon,  9 Nov 2026 13:25:17 -0800
+Message-ID: <20261109212559.39661-2-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261109212559.39661-1-stephen@networkplumber.org>
+References: <20261109212559.39661-1-stephen@networkplumber.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,41 +99,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fixes for the ss findings of scan iproute2-20261015-004, plus bugs
-found while confirming them.
+If sendmsg() fails, tcpdiag_send() and sockdiag_send() close the
+netlink socket, then inet_show_netlink() closes it again via
+rtnl_close(). The second close clobbers errno with EBADF.
 
-The biggest overall change is removing all the fallback /proc parsing.
-Even the oldest supported LTS kernel now supports netlink for socket
-diagnostics. Users building their own kernels with custom configs
-without netlink socket diags will just see an error.
+Leave closing the socket to the caller.
 
-The other changes escape names chosen by whoever owns the socket,
-bound state and type values from the kernel before indexing name
-tables, and stop treating a netlink port id as the owner's pid.
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+---
+ misc/ss.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-The overall output format is unchanged. Replaying a TCPDIAG_FILE does show
-more: the recorded IPv6 dump was skipped before, so those rows are new
-and the address columns widen to fit them.
-
-Stephen Hemminger (11):
-  ss: fix double close on sock_diag send failure
-  ss: drop /proc fallback for socket listing
-  ss: escape names chosen by the socket owner
-  ss: size the TCPDIAG_FILE buffer to the record
-  ss: replay all dumps in TCPDIAG_FILE
-  ss: bound state and type name lookups
-  ss: fix rpcbind service cache
-  ss: read socket SELinux context only for -z
-  ss: check owner before naming a netlink socket
-  ss: keep following events after ENOBUFS
-  ss: report a failed SCTP or MPTCP dump
-
- lib/escape.c                  |   7 +-
- man/man8/ss.8                 |   3 +-
- misc/ss.c                     | 874 +++++++++-------------------------
- testsuite/tests/ss/ssfilter.t |  26 +-
- 4 files changed, 239 insertions(+), 671 deletions(-)
-
+diff --git a/misc/ss.c b/misc/ss.c
+index cffee883..674ed8e8 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -3931,10 +3931,8 @@ static int tcpdiag_send(int fd, int protocol, struct filter *f)
+ 		.msg_iovlen = iovlen,
+ 	};
+ 
+-	if (sendmsg(fd, &msg, 0) < 0) {
+-		close(fd);
++	if (sendmsg(fd, &msg, 0) < 0)
+ 		return -1;
+-	}
+ 
+ 	return 0;
+ }
+@@ -4026,7 +4024,6 @@ static int sockdiag_send(int family, int fd, int protocol, struct filter *f)
+ 
+ 	if (sendmsg(fd, &msg, 0) < 0) {
+ 		free(bpf_rta);
+-		close(fd);
+ 		return -1;
+ 	}
+ 
 -- 
 2.53.0
 
