@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.60.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794229851;
-	b=GFjO97UnnNnEYaWl9Z1EM2dEq+sDk8uLg5ebraron6GtHJ6chRk6dzDIflmUnXswybB0
-	 Uvt13hfxgaaG6SbDHkL0CPefnrvuX7KRpyib3SSJOa9yDhHjiRwEK6GCmZVU6o7jqIgrV
-	 +Te3S4V51PeRzh/N0crmH/H6KciVQev3krcBQDxfU91BeUzywcbPhbApiDnRN6PvvZNQq
-	 5XleETvtMc7PFsB/aepX/lKl07iu4GhU1u1y0iLf2AyvF9C1Zrg2p9J4BEu0sHORnyssq
-	 ar0WQ1FzL92FDT1m40Kyeykm1VpQBw2nTE/Ll2k1pv2SwjMzpWoUzSzqq34EgRFYqpQ==
+	t=1794229848;
+	b=1zxWrJP3ZNX/h0MOhfS6r9ClQYXGAg3qi25o1ylB2u3xfXPom2SpdNGP502BI5AmABYU
+	 LwuNCVOsRR3+YoRl49MLSMmCx/8DebqkCsAlXoBHZl9pCWgjJ4dRRKvvh5MgDV574xQJI
+	 tAUbp1cg/X5uJv2Z4RKNmqmA/wU6wIN5vL5UE03rbsz55M+v0ZC+PcJv6bOWBdvHYy8WN
+	 RzXvfokFiO5T0PWBKsV8/iHJnbV874LeWg4VL+yA7zfmu2giCfM064RpgwD3Jl6EHyf8i
+	 gznnibqbtLvNvzXXTJTBhMvrHmlgVwHQ52D/3cByAOoCm2o1oIQg90qkdhCN70gj6Jg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794229851;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794229848;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=aMuTF0Rp4AJLqq/hu0ov8pdez1qv5/LPIm5Jj2vh8O0=;
-	b=OaI4569Zvr/b4DlsWME1q6OF6NcVduRO6uI82Z2OKecU3DrYnrJoRCuk8KCnas3DQSod
-	 j3oIeaaUIq7FVapTU6n24G4h+U0EC+CIX1zXdaccb1avXiemz874eYmTdw9cjbDQFKCMA
-	 fUYmzxUz/4WsXfMLv+hOiBR6Amgu0BEQoT+0LYF32gXpLGiduE/zsFw6sLNwmkS08aqrB
-	 sVesWrO0cpzbjvwgZzgssKgryitNQcLwuN5v801UNarKo0a21YMqhwaQ5wRvL1o8AmuOg
-	 75vsEnqd/vxdXjnI7ZdO7AKE6WqldOWuJ98qQIDiKRpHojtObx3I4XSVlo2T2Y+CDDA==
+	bh=HMWVSYbVReaQvn6vsmT0jO2CyxVbMT6voyL5m7FUv58=;
+	b=Nuw6AKkPOnzWfSFKsjq3fko0pgm9T1ZfV04JNF+iXQvobI1Pt33NAX12nNHOLAMDAmzY
+	 rifCNthI9Vd6zYfFjbd/8/YObkDCWOYzDeduABmqLteI8TS+AAdcCWOV9DCOQEloEwmK7
+	 LPaKQY5U//zkospS3rNA3BWFKRYEg6Ga4cKvSbZMWDbbmRq8WJMyEq5kjFuGxP0+tcjf8
+	 oK6BeOk7R2iyyUpO/0n6k3qKO5OG8Pfw9cJSDEREid6Z/VmYJ5CSZjeUBWMi5u0fVJGg7
+	 rsXbxHIFYi8RfKl8OVxjGI+N9mwxh6o3IPyZs7SM9/65qezqmKd2qK+egZc+KHibqMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=corp.free.fr;
 	spf=pass smtp.mailfrom=corp.free.fr;
-	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=iGlistFp;
+	dkim=pass header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=i23YClqA;
 	arc=none smtp.remote-ip=212.27.60.169
 Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A0606EE82;
-	Mon,  9 Nov 2026 13:10:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B9A0606EE82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4100C606D812;
+	Mon,  9 Nov 2026 13:10:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4100C606D812
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=iGlistFp
+	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.a=rsa-sha256 header.s=rcs header.b=i23YClqA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
-	t=1794229849; bh=AvMfG0x9eaHPXbYtLDNNClLkN0EMNdf+A2XCW1/CUVk=;
+	t=1794229846; bh=r7AVXNRaRSXaGwGg/zYogQuj3T7r4JX2XJQNHMJ7dHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGlistFpJ5qbOjwp6fPAXzTmoqogXfxCJ009kAcl1Df92j55COLYEPGx0kLYQkEEP
-	 sj4NU8KjBU4o4IrmlFM/1XfWeEOaPfab1QSW7oVYSewjL0XN/mAVG+AQQCzTVMsog/
-	 d6WJ+XORKOW82mQx/yqC/vuoOhAVuUdyP3RgdkUdNlvl45SCO8+rSoUtLkPACkyNC1
-	 lptHSdjVtWHsNKzKTErmL4IllGKXZcoVQ6mT/1fVKCbW0uGJHMeRSfHEj37IYII+qX
-	 l2FsFzyp4nR9KBhYxjjQFuQnaJFrFvrJnAtWD8bQd7mX9f0mbbQrt++7kr82zbpxgs
-	 Xw+pAn7QhnIGw==
+	b=i23YClqAAMhbmyvVgpBszmfD2jDl+3nwzS679N3uPfi+DDE80wNKl1oQWjhnolNuW
+	 vO2bHpRcYGUWkY8NaF3DSaOtAXs8+OHFtaTPapIkT3HvcvGVvOQiyWJWhemR1ErD/a
+	 BoOWz+ytAQ56/FyTFUp3a96YGz/1tQsGJrmEyZ8N8grxsfmrJ/z3fQfk8tk3i22k7m
+	 wRfb5GZg5Sj9N3rG2xgXpbf50AKjfssTzoMMBbLHieWm/7GYMeaY/5CXFZhTwXa7o0
+	 GZ9ydbnonjNo4gPvsomAFrG7OhgAOlpFlK2hjpuqD+kDAH7oq2s5eZw+V9WXf/Ih7k
+	 +50DIIqZDG0Vg==
 Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
-	by rcs.proxad.net (Postfix) with ESMTPSA id AA07844C11DB;
-	Mon,  9 Nov 2026 14:10:48 +0100 (CET)
+	by rcs.proxad.net (Postfix) with ESMTPSA id 411B944C11AE;
+	Mon,  9 Nov 2026 14:10:46 +0100 (CET)
 From: Alexandre Cassen <acassen@corp.free.fr>
 To: Saeed Mahameed <saeedm@nvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
@@ -73,9 +73,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	oss-drivers@corigine.com
-Subject: [PATCH net-next 07/10] selftests: forwarding: tc_flower: test the enc_key_id mask
-Date: Mon,  9 Nov 2026 14:10:33 +0100
-Message-ID: <20261109131039.959438-8-acassen@corp.free.fr>
+Subject: [PATCH net-next 02/10] cxgb4: flower: refuse a tunnel key wider than the VNI
+Date: Mon,  9 Nov 2026 14:10:28 +0100
+Message-ID: <20261109131039.959438-3-acassen@corp.free.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261109131039.959438-1-acassen@corp.free.fr>
 References: <20261109131039.959438-1-acassen@corp.free.fr>
@@ -90,94 +90,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A filter on a block of tunnel keys must match a key inside the block and
-no key outside it. It must also dump its mask. A second filter proves that
-the frame outside the block reaches the device.
+cxgb4 holds a 24 bit VNI and truncates the key and the mask of enc_key_id.
+An exact key above bit 23 already selects the wrong VNI. Flower is about
+to accept partial masks. A mask that only covers bits above 23 would then
+clear the VNI mask and encap_vld. The rule would match any traffic its
+other keys allow. Refuse a key that no VNI can match.
 
-When tc does not know the mask or a device refuses it under skip_sw, the
-test only logs this. Reporting a skip would turn the exit status of the
-whole script into a skip.
+Found by an AI code review agent while auditing the users of enc_key_id.
+Build tested only.
 
 Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
 ---
- .../selftests/net/forwarding/tc_flower.sh     | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/tc_flower.sh b/tools/testing/selftests/net/forwarding/tc_flower.sh
-index b58909a93112..9d9f109ab895 100755
---- a/tools/testing/selftests/net/forwarding/tc_flower.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
-@@ -3,6 +3,7 @@
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
+index 3307e5042681..d9a509be5c51 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
+@@ -316,6 +316,17 @@ static int cxgb4_validate_flow_match(struct netlink_ext_ack *extack,
+ 		return -EOPNOTSUPP;
+ 	}
  
- ALL_TESTS="match_dst_mac_test match_src_mac_test match_dst_ip_test \
- 	match_src_ip_test match_ip_flags_test match_pcp_test match_vlan_test \
-+	match_enc_key_id_mask_test \
- 	match_ip_tos_test match_indev_test match_ip_ttl_test
- 	match_mpls_label_test \
- 	match_mpls_tc_test match_mpls_bos_test match_mpls_ttl_test \
-@@ -280,6 +281,62 @@ match_vlan_test()
- 	log_test "VLAN match ($tcflags)"
- }
++	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID)) {
++		struct flow_match_enc_keyid match;
++
++		flow_rule_match_enc_keyid(rule, &match);
++		if (be32_to_cpu(match.key->keyid) >> ENCAP_VNI_BITWIDTH) {
++			NL_SET_ERR_MSG_MOD(extack,
++					   "Tunnel key does not fit the 24 bit VNI");
++			return -EOPNOTSUPP;
++		}
++	}
++
+ 	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_BASIC)) {
+ 		struct flow_match_basic match;
  
-+enc_key_id_mask_check()
-+{
-+	tc filter show dev gt-ex ingress pref 1 | grep -q "enc_key_id 256/0xf00"
-+	check_err $? "Did not dump the mask"
-+
-+	$MZ gt1 -c 1 -p 64 -a "$(mac_get gt1)" -b $h2mac -t ip -q
-+
-+	tc_check_packets "dev gt-ex ingress" 101 1
-+	check_err $? "Did not match a key inside the mask"
-+
-+	$MZ gt2 -c 1 -p 64 -a "$(mac_get gt2)" -b $h2mac -t ip -q
-+
-+	tc_check_packets "dev gt-ex ingress" 102 1
-+	check_err $? "Did not receive the key outside the mask"
-+
-+	tc_check_packets "dev gt-ex ingress" 101 1
-+	check_err $? "Matched a key outside the mask"
-+
-+	log_test "enc_key_id mask match ($tcflags)"
-+}
-+
-+match_enc_key_id_mask_test()
-+{
-+	RET=0
-+
-+	if ! tc filter add dev $h2 ingress flower help 2>&1 | grep -q MASKED-KEY-ID; then
-+		echo "SKIP: iproute2 too old; tc is missing the enc_key_id mask"
-+		return 0
-+	fi
-+
-+	tunnel_create gt1 gretap 192.0.2.1 192.0.2.2 dev $h1 key 300
-+	tunnel_create gt2 gretap 192.0.2.1 192.0.2.2 dev $h1 key 600
-+	ip link set dev gt1 master v$h1
-+	ip link set dev gt2 master v$h1
-+	ip link add gt-ex type gretap external # To collect tunnel info
-+	ip link set dev gt-ex up
-+	ip link set dev gt-ex master v$h2
-+	tc qdisc add dev gt-ex clsact
-+
-+	# A device may refuse a partial mask but software must take it
-+	tc filter add dev gt-ex ingress protocol ip pref 1 handle 101 flower \
-+		$tcflags enc_key_id 256/0xf00 action drop
-+	if [[ $? -ne 0 && $tcflags == "skip_sw" ]]; then
-+		log_info "Device refuses the enc_key_id mask"
-+	else
-+		tc filter add dev gt-ex ingress protocol ip pref 2 handle 102 \
-+			flower $tcflags enc_key_id 600 action drop
-+		enc_key_id_mask_check
-+	fi
-+
-+	tc qdisc del dev gt-ex clsact
-+	tunnel_destroy gt-ex
-+	tunnel_destroy gt2
-+	tunnel_destroy gt1
-+}
-+
- match_ip_tos_test()
- {
- 	RET=0
 -- 
 2.43.0
 
