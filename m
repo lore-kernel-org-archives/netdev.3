@@ -1,96 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.45
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794252934;
-	b=TgU+ASza0Al0b0K4Hguc+9UJaadZmfJWLGm3uOfy8PyYqcdSRSzDAuS3GYXFzsI9WJvo
-	 vZGcB0UV17h0oHw72i0l+F6CuBry57PAhPsdrzVeycOM+zAX9NV+tDmIfa89QmXEGTurT
-	 opKDnIjflKxERxj51t72efBxlUo94XjtqQVNjEt76k+jvju1mHZQM4S3HlQyZ/98nitdg
-	 B9qISr+9TuzqpiYUjrZZJSgS5+i8SLvqZwBHjCK6eVIBFWAIjdqzvIZX7VLwtLs1BrV6b
-	 ydoQ4v4R+Ktw+9p3alF+dhPDUBO0EvxXTp2HR60uCG8vY9rjCuQSyjfkSROlrNpYh+g==
+	t=1794253173;
+	b=42qNF0G67NHWsp0eNYUNOu/gT3sQeix7dwl9yXCCC41Lc8dvvKRSVS2fQ5GMqAuwyAHB
+	 5s9Q4eRzu8GluAAxGxNh87rNCBIGgFwpL/LY6a6E5NQvgXoz6ugfRaCyL1zZ37/wxGN9T
+	 g8UuGNqi/1mMtZYi+ztW8H6q3sEZ5x8S5cM5bEwmsFTvVBVdt4bqYebDsAd13pRpvgUAR
+	 2ezJpntpgxmLNAup5HtcnlPCh2DQvrh2Cy6z62YsK4twpgHzPCBz+aWI20g+iQzkA4qfS
+	 Wcgs2V0Mbw20AoIEHb9SpMraZKIQ75chBbVZ37WJ7cPKuC1Na58NIxYmAH5VXVJDe7g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794252934;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
-	b=2RRPg9P6532lHvl1F7LumksRGK8N1w/miVaN6Zjy4f2EEqU5qHqCPuPcFenzX4SWTDXc
-	 brMCLKBz0EiU75nRmOvgdnMQTk1MGT8HN+wtCgmbBoj9bYZLDMdgiK4cTBVSTNXUo8V/H
-	 IU8ceuYF6yVi5+mPHwAXzd8SmMfgfS+hmxC23XxYbvmOvMCLO+RRf8whlraO1PB2SgxU/
-	 Rd8DJdUE4aIe3Z9VwLvUko+hmg2A8CTwbTlOKjt/XcoLkZsfAKIN/UdLifkC4CyxREGU6
-	 nMm97dOaEumavMJsUxv64mIclkqNNzmiqhltoQV63wyNbqVuMbKTVHKY/q7gztN/RBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253173;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	b=3FSFvVhzv/Jk3Wlgb9+Hg6YT1HKZ90q+IZY+spG/WG+JmvbwYS+C7Pjh8uFS1z/B5+0t
+	 l2UXTKRybKMWvGBgDgo4KYOTAEtvrjbWZeEYuBlRgEKvxu02d4C08lf9jGkHndgQXhnXi
+	 zp4NedTJ+q5ZOrO0MmGPDa2fwiuodEgX+cpDg1kBT15odlWWBuHc2gKtfPWuvKcID+TTN
+	 qrQwt31fL4tERZgVTeBDvujRc1sBmcbPAMav8coxR5Vki1X+V0rwnW+5RBaa8F79L3SpZ
+	 sZl7avOdx35ecPt7UUNnB14EZtdCS/0EXKjUGpO+iAnOojgbsYWNWyMQSEgxy3nzTWQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Upoi+H2O;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.45
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011045.outbound.protection.outlook.com [52.101.62.45])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81A0606A31C
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 19:35:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B81A0606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DF5606A31C;
+	Mon,  9 Nov 2026 19:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Upoi+H2O
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gKpWGXMEYK5p7CopsZiCWS9v25m+r3bA3KSSVDyJa44oFWWZsV2SDgyOr1eN3ha0kqi51vcJd0tt/pM6t6JHtwOZIEPY79wNKeVZw2goHF1JWHIKggoXNrf3dNJOzuljWVa43kW8G71JaveQp3RYVGnrjhmHx9Wfh+2PtE3E5lETq4Ig1jIKf33wUYZfPepMPELwpScuZhJ10UzRuF/qmPo8oA2P/ayqyY03/zqKzjPaTj/pC0nQiRIjMfcvxYiTqEtT9g9JkaoZRF/F/MzW/lXJyb7ffQPefN6ZJOLm8p+4yerK78DlZ8I61s42UVcb78b3OOskU7pgF0rAqg36CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
- b=t1RMsUsEx8q8AkafDkY7BU4JY5CHlIa+2bnkDeV7sH67IdzfM1H2+XvbbX5GITfOpF/ZXWcwDst0wO48WVaJBpttgJz0JEeD9D9Yr2QT4O3/Grp/SScPCpGsd1jIfg+XzwHI2E8sqIv3hnErAQd6x7YkICLwvOBiEka38G0kHBLugM6GAP4kDjIos3j6ztUTVA0NPtUzaY6g3XoGRyWdMLekUbpYMerDLsiKsEh4X4ROuagg5EP9SswM7xq8u9ESlq1iXU/y2NdqYuvSPVgsvyNlplbSteTxM+XVnSP+LhKOGzavTYGAoVH4jJ66u7JJ7iVM4lap906DUfrzJ3m2gQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XEFcPba+XfaAUJ4pRuoBM8mBFed6R8aVk6b40VstW0k=;
- b=Upoi+H2OsT46HtderEUbvgxOMoOVuXLsfqN1dMq4RAuQZFEtPyJXXjU4/CqnI1Of4AueaH+/kc3FfAqHuPZbORHHzEoCVolXAQv6/UJcbggDVu8U4QmC8J1WNG+afIShGzexpVAghgGXMeuA73CZaPih5uYn7nrFeEN/Zf4a0LY=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com (2603:10b6:8:278::7) by
- IA1PR12MB6387.namprd12.prod.outlook.com (2603:10b6:208:389::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.13; Mon, 9 Nov 2026 19:35:06 +0000
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a]) by DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a%4]) with mapi id 15.21.0569.011; Mon, 9 Nov 2026
- 19:35:05 +0000
-Message-ID: <c45b46d9-4dca-4fef-9bf8-9ab2fbcd48b8@amd.com>
-Date: Mon, 9 Nov 2026 11:35:02 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 0/5] ionic: FEC reporting fixes and
- .get_fec_stats handler
-To: netdev@vger.kernel.org
-Cc: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, "Nikhil P. Rao" <nikhil.rao@amd.com>,
- Eric Dumazet <edumazet@kernel.org>
-References: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
-From: Eric Joyner <eric.joyner@amd.com>
-Content-Language: en-US
-In-Reply-To: <20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW3PR05CA0017.namprd05.prod.outlook.com
- (2603:10b6:303:2b::22) To DS4PR12MB9708.namprd12.prod.outlook.com
- (2603:10b6:8:278::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZNrmWxW
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794253172;
+	b=0NmJiQoL9uCY9dXfVNem3nvUDAD46sX4u6F+096w9DsfoF7wbMcYPCSXwEohn0UZMFdB
+	 KURk5DvuW6OSoupH2MlVBngnEpVizIcbrc+eaEtUbcvxC9gmrY511wK2GDpwEh49wqXXG
+	 LIjW/yXoVY66GjErXSWf25qS3iwLiFpQ7f0ZpVZDMj4BPbS0pVY/Os7qxZO1lvCrwkAjQ
+	 OskYGMHWjPP2yxsHCPC2+6qtll7HvHB685pvknT7HzEfJhQMdubOzKuap/B1sX8mY2jge
+	 H/ITbjq1FByjNQDJWZvhjxapb4sGTpKqk8Qqz8LO19H5rjThaRg6JaYcarl7oTmwgOw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794253172;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	b=0G+/98hUvMBhFEquEe83GkDDcxReMkRpc+AJQUVCf4+TMwWLmmBz0OIeRqoZP4TnCQw2
+	 J+jYlmtC1vEJwXj/O0u6ZkYZ0QPfglQ3zL2VdLRws9XZxaCCLO9++132ZMxVujBAjinGc
+	 r89cem3qQB6Vu81ohhMCFMdFKVaJNc13pktpzlruyCJ1uoMgfMP9kWPnyaXNwS2Je0FUP
+	 7PiR0sNjmcBLXEWSPI9VREAPBA07L4sGgREgbk7703U5lT9/nroxqifILlIQK8fLA7JTM
+	 /U7KFDIuBD17bHNFDOPu09HGryysmi1/BSmMU8Ic3GlZD8CVO4CcfYUBDDusQVYrUSw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id A21B11F0089F;
+	Mon,  9 Nov 2026 19:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794253172;
+	bh=+SpHWuB6zKKOg3YMCGBS0eIDV2dpGhp+lFZvfVQEXG8=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=DZNrmWxWOFiKrNxNxneZOqnZ+6ZfXGIc2bp0EmcEtOWokJYPqrGYWXVW6O+1G1IzJ
+	 EeQuOmkqbhNbh1/wJnArvzqFVvDFSat/Yj0FZbBfqla51Ju9WYjajWhQFFK37u7Bei
+	 YCPnnBSIPZ2Len/+3zGdiD4Yvd2vn0Zp9QMJ9MKmuQc9vUIFmqbzKsFBACX7ouKQNb
+	 VTANWBzcNiYIm3kPNWimYOFABUsSk9b/OvoBzTXGUsei6MGAGUVFcyfO6+b58TmObM
+	 sHcHmrVqK1WQMOmB+FNAb2bKmQmceAymL45u9NyjhVMNvXMz/wTGzI8OIZTEtQRjou
+	 vWHeYR6V4j9Cw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id F291048619;
+	Mon,  9 Nov 2026 19:39:30 +0000 (UTC)
+From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
+Date: Mon, 09 Nov 2026 20:39:24 +0100
+Subject: [PATCH net v4] vsock/virtio: clear vqs[] to avoid a UAF on a
+ failed PM restore
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,149 +83,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR12MB9708:EE_|IA1PR12MB6387:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8935ecb-f879-4974-6037-08df3e988dec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|11063799006|56012099006|261021123027099003|261021135927099003|261021121427099003|261026121527099003|261022105027099003|261026140227099003|261009223027099003|261028144727099003|261102123227099003|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	RChzMT0QEJf53gMubbxNEobbeud3qDV6HUWSHgl+G1zc9SwLvKqxsi2rmZghXu8S6KnD5MgCeRqMXT3Tg5ZhxScSzhmmU8u1PoVl0mRlZQDtPRRI2HrZtV+gmnf2Aw/4pgXyUlmeo8AMIZ3gbDmaZAUdXdaRYIbZ7gIX2LzpwcvuxTJzHoeoX4VfqxWVaPB/R2547OpmKCXy44cK9/QopHv8PcRe46xqn5+bRC7Qr7ms8cZEGrzDeSfEqJe0oWHsoL3BL7YuT1qcL+p0BVtPDQEip/rkTiYQi1gzearAvA4JZeQso0aRv8fqb3TpfbeERcfKXnxCVJFZzzmd22JRv2UF9gU/8N2I6WH2hmZfSDeE22qXQYYh1zNiK0Qo5xGaZXSXFvzzVDZf5vGlMpHrwwh3gAMxUNt3BDYInhTt5BkfZpoG4cCC4EjFyo/x5JMYrXFf0ps5j04BIIgWMac+1CUCX9Vb8P3vG2+63qTn7mJ8KTyP/xE11/zbUYFzKDKFO31mL22tuc+bTlZXYuU2vcmPKfp4+YjqdIQC+BD/DEmwT5OdO9hiRxJf10VJNqEfAA7illBsB96yDoiUxj/mEtv3wZ913IGD+ciIOYM5oUY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9708.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(11063799006)(56012099006)(261021123027099003)(261021135927099003)(261021121427099003)(261026121527099003)(261022105027099003)(261026140227099003)(261009223027099003)(261028144727099003)(261102123227099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZDNuMnA1dSt3Q2d5TkdVck02OEFyQU1MdHc5NDdwcVhDYzl1SFhJb2tYWk1X?=
- =?utf-8?B?am1iQVcvalRTazVmRXNqaEFLbzZyREZLYmpKMUR3YmkrYmppRVVlOTRmZ2pF?=
- =?utf-8?B?cmRiVGlwOUR0cWwwWGowOVhaUWhHZTBhOVlBR3pOcTVSYlpGTmZTbzd6QVJw?=
- =?utf-8?B?L1oreXk3MDg2UlpqTnhpMk41ajRSNjNWWG55VExrYWNMcVpCeVNGZmsxQm5j?=
- =?utf-8?B?alNXVStqYXdUNCsyOFhJd0lwUTYzM3hLZXU0VkF5RWVSRjZhVzcwMHExK2FF?=
- =?utf-8?B?aWNRdHhkUWVnZWZkbGxIYXdxSlZNWHE5b1lSdHhmTzRpUHE1STFITTBwVWFs?=
- =?utf-8?B?bDVOQ3ZhSHlLMVFzQ3JSenFZTW0xeEZXbFhYVmNDVEdqN0tQVDBWTjFxbDJa?=
- =?utf-8?B?V1Jlc1JWVkcrT1pYWW1CUlZpSVU4Rk4reEpHNmtzcnhvUFBBZ1h5ZW9sSU8z?=
- =?utf-8?B?RUtaajBUWUZUOER2QzJPUFBIVFRsN1B0NVMwVmhMdVo3bnJGRVp6R3lPL0lr?=
- =?utf-8?B?VDhFVVdVbE1GYS9xNlk5dEJWdjF5UE85SG5iclIvMFM2WkdocGF6VFZrWENq?=
- =?utf-8?B?ZlkvdGx5dHVmZjVpNlRtamU4TjQxZUJpUXlIZ3pxbXM3bHF2aEFzZC9pWldz?=
- =?utf-8?B?UndtTEFpLzU3ZXBPWjVWV0p4V3U1TGd5Wmx1dCtrQzFYZlFjUFNMR2dlSG9o?=
- =?utf-8?B?T3pmL2FyWDVRYjBSWmMwS0g5S200d3dwWXc2WXI4RmhkcEVCeThrWWFuVWE1?=
- =?utf-8?B?U0VDMDJqdUZYSXhaa09MZUdrZzJSa2dET1BNOEp6b1VGdlV2NzBocytsUjE2?=
- =?utf-8?B?U0YxM2kzOWxKUDhHRS9kQUN6K0NVOUtlbCtPUm1icDdndWhyWXRFSkJ2clY2?=
- =?utf-8?B?WnB0am5qWFFwSEVRNnFGZUtlaHZXazR2TTFyVmNjeUhZZ256L3RJYy85RDMv?=
- =?utf-8?B?VFJLMk5aVzBxa3RkSlpkbDNWcGwzZktXa3l2S1QvejZpelEzV2c0cWY0WkQy?=
- =?utf-8?B?a2VIS3EzOGFUK0tNbkttcXp4ekIwZmRDVXdSQVR5UFNFdkh6cTBuV3hBN3Zo?=
- =?utf-8?B?bmJuS0pYUFN0S1haWUxtVld5UlRQNnNaVGF1NlZvb2dmVnNkdGQ5Y0lEaGl1?=
- =?utf-8?B?KzFsS0lTZFpIWkJjMGVoeUNZZUhBZG01K21XcEQ2SFQra1BLODhRa3RXOUVr?=
- =?utf-8?B?Tm9IemQ0K2VjMmJPTUFqckl1Z3pGKzEvNlZMNitranZISDBESnhyZXhFNGk0?=
- =?utf-8?B?Ny9KTlg5TnlLdk5McGFpclRuOTBkWldqZy9ncHAxUjlwZmZmeHAxVlFEZGFp?=
- =?utf-8?B?SGZaNzRkUXdZMno0VTRwL0dTbnB4Wm90Q01LaXhVVEVPUUVmczNIUjJNVXJo?=
- =?utf-8?B?S29DeW5KVzN6NXk3L2FpQnV4UHdCM3JRMEcreHhqOVZtL3BCVE0zbk1jTXo4?=
- =?utf-8?B?ODhvalBKOUVEbENRSUNpQVp6L2tzYVdmMTA0OFVnVjQwZVF3UWg4MkJxVTZ4?=
- =?utf-8?B?QS9LS3Qva3l0bXY1NWM3cVIvY0FjbXh5R09VbS8xT3VXSHJuWWFOZURNYm13?=
- =?utf-8?B?a00rVE1tYlRRbHdKbm9yMUtxa1VISTdqYjd2OGxPSVN3VHhqMzFwaFRNOUFZ?=
- =?utf-8?B?NlNpcDRqNkZaYWZNV0EwL0RabyttTGF5Z24vK3BzMU0yWTUvQ013L1k3aHNX?=
- =?utf-8?B?blhSUFo4aDBrQy9kNTZ4MXZhOWxEaW10Ly9MeVh5U3RxZXJDUitXZyt5dDR1?=
- =?utf-8?B?cVgzektBRW9pM0RUTm9QNUphYkZHOC9kYUEwL3hPQmxIVU42d0hWdlpDeDYy?=
- =?utf-8?B?RFY2dms5akVUMzFUZmdWMjlib2NyOGo2L2Vtc2JKdVk3a1JHVG5GUUZLR3Zi?=
- =?utf-8?B?c2tVcy84NkhRcEVHcnNJOFJhSE16dUFuYzhmUnEvVFNnb29pUUFtRUw5RnVO?=
- =?utf-8?B?ZW85MXY5NFpMakdBQWRGdWdkUEpjaWpwVWJwZVlud1NzbjJVRGhHd2w4eXpE?=
- =?utf-8?B?ZDFmbEl5aDZvZnVKYVpabHdHRmIxbEVmNWZBQkc5dVpadTNwNkZSdkQzQkto?=
- =?utf-8?B?a3JZNnIreUtGcTBFNTV6T1NrSllhdHJjeVBONDR1WDlTQmxoM1JUVVBMSk1B?=
- =?utf-8?B?UnFhRGYrdGg1aFRRVU1RblQyQ1I1ejFOZzFYckpFajN5RTlYY3YrL25tM2R4?=
- =?utf-8?B?WWZ0bGdNMElSL1BFUWZ2dElrajVlY0paQlhiTE9ycEI0R0J4MHd2bCtRSVBz?=
- =?utf-8?B?SXlYeHJyVGFSY0hnZS9JbSt2cEo5b25BcTE4T3BOM1hjNS9QQnhPTW1sMnpK?=
- =?utf-8?Q?JH9FAVSaVsTK34CsUB?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8935ecb-f879-4974-6037-08df3e988dec
-X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9708.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 19:35:05.1394
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O38Eaqqk0PsueqJSYQUQUi7s47KpkHKqQe0TJLdCW/3FW9Blh9JZWHQhzgK9bzRa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6387
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261109-vsock-restore-uaf-send-v4-1-1df8dfb5d5de@eldare.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNQW6DMBAF0KtEXsfVjAGbZNV7RFkYZty4iaCyw
+ UqEuHsNXRRFirL8oz/vTyJy8BzFcTeJwMlH33c5lPudaC+2+2LpKWehQGkEQJli315l4Dj0geV
+ onYzckUTXmuKgncWGRH7+Cez8fYVPouNBnP+OcWy+uR0Wcqld/OI81vmEa/ndUkKJsiKrwRkwF
+ ehPvpEN/EG8jiS1YVT9klGZ0aayljRZg+UzU/wzCOVLpsgMaSDQZV03ldky8zz/AjpYukFhAQA
+ A
+X-Change-ID: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jerome Mohm <jrmmhm.kernel@eldare.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794253170; l=4147;
+ i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
+ bh=5YFXaOW8KllonSsjF6SOnB8HkwciO73pZwsUjT72k8E=;
+ b=o5Ui0yGmlrlsv7s3vDR3Ic3XgYduWqet+IqPcVhgBKc2puHQzgL+jxfeHT/pgfs6jWrU82E9J
+ /7KX0+ab2xgBwU5CsrABnE3TPB51T8iCBoYthWQ/phU9iNUse8McHiX
+X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
+ pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
+X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
+ auth_id=1075
+X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Reply-To: jrmmhm.kernel@eldare.de
+Content-Transfer-Encoding: 7bit
 
-On 11/4/2026 1:19 PM, Eric Joyner wrote:
-> Add a .get_fec_stats ethtool handler, and fix the FEC reporting it
-> depends on.
-> 
-> Patch 1 writes the IONIC_STAT_INVALID markers in extra_stats one
-> counter at a time, so a reader that tests a single counter cannot see a
-> torn value.
-> 
-> Patches 2-4 fix ionic_get_fecparam(). fec->fec reported the constant
-> set of supported modes instead of the configured mode, and
-> fec->active_fec reported the requested mode instead of the operational
-> one. Patch 2 has a Fixes: tag, but patches 3 and 4 rework the lines it
-> changes, so it is sent to net-next with them rather than to net. The
-> bug only affects what ethtool reports.
-> 
-> Patch 5 adds the handler. It reports statistics only while the
-> operational FEC mode is RS.
-> 
-> The netdev AI review of v2, which Simon forwarded, asked whether the
-> per-bin local really guarantees a single read of each counter. It does
-> not, so v3 reads every counter with READ_ONCE() and drops the struct
-> copy. The port_info lifetime problem that the AI review raised on v1
-> and v2 is fixed in net-next by commit d90d1a768b3b ("ionic: fix
-> port_info use-after-free on firmware recovery").
-> 
-> Claude was used while developing this series: to investigate the v2
-> review questions, and to help write the code changes and commit
-> messages. The authors reviewed every change. The series was tested on
-> Pollara and Vulcano NICs.
-> 
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
-> ---
-> Changes in v3:
-> - Read each counter with READ_ONCE() and drop the struct copy of
->   extra_stats (netdev AI review of v2).
-> - Report statistics based on status.fec_type, the operational FEC mode,
->   instead of config.fec_type, matching the active FEC mode that patch 4
->   reports.
-> - Add patches 1-4, which fix the FEC reporting the handler depends on.
->   Patches 1-4 are by Nikhil, who is also a Co-developed-by on patch 5.
-> - Drop Vadim's Reviewed-by from v1, since the code has changed.
-> - Rebase onto current net-next.
-> - Link to v2: https://lore.kernel.org/r/20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com
-> 
-> Changes in v2:
-> - Latch each histogram bin into a local before testing it against
->   IONIC_STAT_INVALID, so the sentinel check and the store cannot be
->   folded into two separate reads of the firmware-updated DMA buffer.
-> - Explain in the commit message why the RS FEC check gates every
->   reported counter rather than just the histogram: they all come from
->   the RS decoder, including fec_corrected_bits_total despite its name.
-> - Rebased onto current net-next.
-> - Link to v1: https://lore.kernel.org/r/20260731214021.15279-1-eric.joyner@amd.com
-> 
-> ---
-> Eric Joyner (1):
->       ionic: Add .get_fec_stats ethtool handler
-> 
-> Nikhil P. Rao (4):
->       ionic: write the extra_stats invalid markers one counter at a time
->       ionic: report the configured FEC mode in ethtool_fecparam.fec
->       ionic: map the FEC type through a helper in ionic_get_fecparam()
->       ionic: report the operational FEC mode from ethtool --show-fec
-> 
->  .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 116 ++++++++++++++++++---
->  drivers/net/ethernet/pensando/ionic/ionic_main.c   |   8 +-
->  drivers/net/ethernet/pensando/ionic/ionic_stats.h  |   2 +
->  3 files changed, 112 insertions(+), 14 deletions(-)
-> ---
-> base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
-> change-id: 20260814-ionic-get-fec-stats-990736964908
-> 
-> Best regards,
+From: Jerome Mohm <jrmmhm.kernel@eldare.de>
 
-The Sashiko review from sashiko.dev says no regressions:
-https://sashiko.dev/#/patchset/20261104-ionic-get-fec-stats-v3-0-b261fd53d0a7%40amd.com
+virtio_vsock_vqs_del() frees the virtqueues but leaves vsock->vqs[]
+pointing at them. If virtio_vsock_restore() then fails, the driver
+stays bound with a dangling vqs[], and the next freeze or unbind
+passes a freed virtqueue to virtqueue_detach_unused_buf():
 
-But I don't see an entry for this patchset in
-https://netdev-ai.bots.linux.dev/sashiko/#/ after searching for it; does it need
-a manual submission there?
+  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+   virtio_vsock_remove
+  Freed by task ...:
+   vp_del_vqs
+   virtio_vsock_freeze
 
-- Eric
+Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
+early from virtio_vsock_vqs_del() when vqs[] is empty: the detach
+loops would pass NULL to virtqueue_detach_unused_buf(), and a second
+del_vqs() would free virtio-mmio's IRQ again, which only WARNs in
+free_irq() ("Trying to free already-free IRQ").
+
+Found with the help of Anthropic's Claude and reproduced on virtio-pci
+and virtio-mmio by failing the restore with failslab, without other
+kernel changes; the virtio-mmio WARN was found by the netdev Sashiko
+review and reproduced with v1 of this patch. With this patch neither
+report appears on virtio-pci or virtio-mmio guests, and the vsock
+vmtest.sh single-VM tests pass. A find_vqs() failure after some
+virtqueues were set up was not exercised.
+
+Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+---
+Changes in v4:
+- Say why the early return is needed: the detach loops would pass NULL
+  to virtqueue_detach_unused_buf() (answering Stefano).
+- Say in the message and the comment that freeing virtio-mmio's IRQ
+  again only WARNs (Stefano).
+- Move the send queue purge before virtio_reset_device() (Stefano).
+- Message: the use-after-free also reproduces on virtio-mmio.
+- Rebase onto current net; rebuilt and retested on virtio-pci and
+  virtio-mmio, and the vmtest.sh single-VM tests rerun on this version.
+  The moved purge ran with an empty send queue only; the ns_* tests of
+  vmtest.sh were not run (they need root on the host). The reproducers
+  are available on request.
+- Link to v3: https://patch.msgid.link/20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de
+---
+ net/vmw_vsock/virtio_transport.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..cf63bc99f3cc 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -714,8 +714,10 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+ 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
+-	if (ret < 0)
++	if (ret < 0) {
++		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ 		return ret;
++	}
+ 
+ 	virtio_vsock_update_guest_cid(vsock);
+ 
+@@ -776,11 +778,19 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 	vsock->event_run = false;
+ 	mutex_unlock(&vsock->event_lock);
+ 
++	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
++
+ 	/* Flush all device writes and interrupts, device will not use any
+ 	 * more buffers.
+ 	 */
+ 	virtio_reset_device(vdev);
+ 
++	/* After a failed restore no virtqueues are live, and a second
++	 * del_vqs() would free virtio-mmio's IRQ again (a WARN in free_irq()).
++	 */
++	if (!vsock->vqs[VSOCK_VQ_RX])
++		return;
++
+ 	mutex_lock(&vsock->rx_lock);
+ 	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
+ 		kfree_skb(skb);
+@@ -791,10 +801,10 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+ 		kfree_skb(skb);
+ 	mutex_unlock(&vsock->tx_lock);
+ 
+-	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
+-
+ 	/* Delete virtqueues and flush outstanding callbacks if any */
+ 	vdev->config->del_vqs(vdev);
++
++	memset(vsock->vqs, 0, sizeof(vsock->vqs));
+ }
+ 
+ static int virtio_vsock_probe(struct virtio_device *vdev)
+
+---
+base-commit: 1d5e2c57e9ffc134e14b3f837c8d7c53b508bd22
+change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
+
+Best regards,
+--  
+Jerome Mohm <jrmmhm.kernel@eldare.de>
+
+
