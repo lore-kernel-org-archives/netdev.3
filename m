@@ -1,100 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794217146;
-	b=RhLpVtS5m/2kakwbh/uhgONw4eu3Rg4nhRePiNGEXCMZMB78qCZqMgRObX+73B4SeJuf
-	 uE0cOukFoNn2CvniD2lqgiq8MmCmCRjQpXkmq8wmf3HzVU1m2VMOvhtEh3DIgO0Vg4xX6
-	 6bvRsX9qUb81zbcgOO2jUWuzZNf0YczBE3xhhzBVvvFbsHFk0VR1Rf+8sZwwT0iHZDGGN
-	 AZ5WCI9g90uFqj9pO20OLHW0c5yV1m36miw2yF2AOmvSJqDdWZc1dA7mP4i1RIhF65J0t
-	 j2Y1bDtm8CyDmehe6h/25WF2YcpsFZDHNfAzvmcQ/VYXEPhGwMG01O9KKT1JCl6CWsA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794217146;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=Bt2kTkjGKfcd8zMvx1shHZytI48P75SXp34GvUI4/fg=;
-	b=QHyx/rWyimbrN0WZp/M0ornY0t8BsK/+nMO76VsH/KC9OI9azjGginX+Fyr6uCHDSRXs
-	 v6a8yrSgTIetfmlvxMVpKz3Z/Ans8NFZtuCNFK6GRNzLPQw72xTqumm1iUMfyPneXgRlx
-	 lXxt8i/IM3ZgM2U3lWl7m74hFcWWNX1pRG6A9YENczH1oWbbYg+86yuhgrta9OWRgNZmJ
-	 w43jGaR356ckd+Tg9ct36n0pzXi3xpr35/cXZeZLNlufdPH9eRJZ248XZJWoJziOOOSvI
-	 CDdHskRFLQHuVVDZRUIhpnDBpenkQyiMC6ij9rkiiqAlzNmHP0Zf762kIuZl95yKaxw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Ez/Z55b0";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.54
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794217425;
+	b=F9SeKEaVUQe9G5V4/nM/3QTOMGJ1U3L/tAg2tNwDvvY4XKxVgOEr3Ro1Cjcx2CqR1QT3
+	 kH/Yq98iybxK+eAZeKOCK0VGRRRmniIMRXNQKQRIM1gqWbWKzYilkdYwGj9D4Wxw5x/vf
+	 cgAbrTHPwQeOWxSmiYwNBGyXmuB6gn6braZ+XCgJsbodFmSsdPPBIMBD/lxKVyN2/w6s7
+	 oHoEKlgDnccsKQC4qyynj8HpJdt0a/5MdevDKhVdq0tsgI+7RLhQyKqo+XOQ/mR1qyl39
+	 DhkU0M3b3uGW3W1D5k/Azr0BMydxjXBZ8cbS7F0zRXwhAcOi6lTK/cNkISq9GMCb/Hg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794217425;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=ptywGNiTNVGUFGqPa/Yt2XRlNd43/CqRk5k+EWi/QvA=;
+	b=uh4O1ODunORMED8pzAi65ASpbz+PzaDTwqgy3FZ5ncqO51euA7r6et6QuBauGCWT0Mw7
+	 RRHt/syEbjrfSKPbhYsglprydk8wj8sHXDXWzNPOS41FOvpUWS/j7Gcw8tbZzggil0vk2
+	 uldS07q3s/0ixmobNELph59tTKIjKKAWZvyvqlH0ZsCL9vh2QUKh6bC4d0SvoBr3fVECf
+	 fNRYQXEWFA5cc8xmoQGG8E2zNaresG3GDCX5rDnGUU2dnKB1p30jU03EfaN8Rj3IieFH+
+	 8uwlTfbdjmFoaevNjzSvQ6QSj2fYYGJ1Yew9+zp1mbGpHKX8oCS4jjbdkzPrd0wGKdQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YvyQ3QrE;
+	arc=none smtp.remote-ip=220.197.31.5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084F6606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 09:39:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 084F6606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CB2606A321
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 09:43:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83CB2606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ez/Z55b0
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-483d290f398so365005fac.2
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 01:39:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794217145; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ski20wfHP7Xp4tNf0itUrxu9iTnBkkkqk/X7K/e1788MVn+lAvwlMXUPupxgwYsxMw
-         NECrEdpZM+NbRzMWH/rvtvX2D+o9K7BB++YMMmHF0VAhUGh46pz073+M41Bjj2CziFBl
-         dHD+HpCulI0BmOhkshgfzxdKmiUQVwgKTCG3jT/Dz9dH1Q3E7qONFfm2OlK+fyyyfXfb
-         +6PUrmksQMElME2j1YVRiYW/AXBVm+9Z6BuAppRSj1fo08PSju9AdwCTfKhuAXwYZMkF
-         aQdqSn+w8iXvy2SjGTsvoJaFhSlJfyD8i1S8jJ1WohqIZi8nt7FbInPzO3q/yrh1R5JO
-         8hWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bt2kTkjGKfcd8zMvx1shHZytI48P75SXp34GvUI4/fg=;
-        fh=vUIVsb692bL7iFV/YXcaUNmIAbH5pBPSkcA2U4E3XsA=;
-        b=ZIgEYFQIu2rJtl+JQO0B4MnTgPNydZsB1pJt0POjNvoUQ6eBFJzpylXoa22rXPtbpG
-         pNmIWV0+l8jYZ+SpkiahqZvf57k8Ok8BUDNwXxt+Nl2ksOrF9E9a3taZYsAmC+9oUUqg
-         xP3gBMt+Ds/X43K20OTHHm8b/a41yjEd1dcLr9F9RwKgdl61UOILYUfmh2+ZAip2hKiX
-         tngfFVKhxM3B2XEwX0NWmrPVn7GlnRtVte7w5ykudBfj7lG3M3TTMyQh92IeihMpBqKq
-         RNQnNbRWhCPSyZHVpO24yVPmGeTlnuNd0Lzt9ZD+yQmRYN9cKCE73rdaST3YZQQ5Lmxf
-         bLmQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794217145; x=1794821945; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Bt2kTkjGKfcd8zMvx1shHZytI48P75SXp34GvUI4/fg=;
-        b=Ez/Z55b0uswFCCrOov466Vti5izMG1v2RfIprz1liD212lvlAPN/9oxAdWhDg8/HNo
-         hRWSJkAfaoWCJV9ylz1pMAI4Im1eai8Bz2J7SNqnmNttW4mOzZXW/RNk5dwQcwPU18q2
-         75/965pmobYanJrT/00PyCd01etzF7VJNN5PdoYALtWwGKJ7yf4bGFy01E6aOM4G9vJX
-         PWCB2pPCGQ5kmudjm2rrRMbIBGZ3X/Q+hh0qoTWNhHgH3sg2OKQ1J9mkXdeR0soyUnUT
-         oK4d4EoG2w6Fti24nb/9i+6XfjKQSiMsQJZ2EKY2yg41a89atwJ6KA/NBWy/R6jeI/mN
-         9zLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794217145; x=1794821945;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Bt2kTkjGKfcd8zMvx1shHZytI48P75SXp34GvUI4/fg=;
-        b=0MfHdMltoOWyNz1dKdys6V34pYMnCIm2YmszF0GTCQw/GXVKPoFdP2bI86CPVcz1EB
-         aG8UaBB7JlwGfCxlwGt24iZHKo3cqr55wcA6MPyYqJJvOoi/ZueXnA8U6ZqUk/q8y7UY
-         loQEeuxjiZKxZOZotigZHqXnoRHZUaztQIQy8DJrKX3qGPtumcbvKik+7J4bnAd5SYC4
-         WClUGGma2wziayBrgtYKYFHQmJPUdUjaws0GYKMa8sD+YMsr2A/ErJBfQ1LB1pCksDpr
-         SeV6+zfn3L0ks1AfiNUjUClRGWtKpWKN7B8VIeQmINpvKL4iCK/fNysvCuZeKmrrPXRt
-         xEtg==
-X-Gm-Message-State: APuU4Z+0/dV0CW29IHZINZSFgXesFb29Ftbnu/ABVfJKCwe0ZeOASU8K
-	GjmNm/EhwmqnhCZhjHhou80ZMF2REzzKAe3jNyJnzLk6YBMeTkbulbd5mm7pfNyOtT+AJ1DLrco
-	3PfHq+roKkFbmtmBFb53c41e0fjYd/Dw=
-X-Gm-Gg: AYBFou0Ts/eL5mu+P3tT3gT0P2cUKuaWGWtj0ESSHp6lplMs7IWNkjK9Yht6IEEID1y
-	y2vSjABDXQfx0WfiBo8oIVKb4o+fEvNCkVUo95+o3r0qI7UC0zlogZp7maOjJGwwsEVKMZqvA8r
-	A6GM2UwLQ+EUeotyhTQu4CPm4gHNclcLlqdyuZRBxf5bLkuf/PTabiyhUDLbz2lTk80z3FmSsaX
-	+WTQA0jMPNt7dGc743QSNncmH11/3Dyp7zk3D9AtZerog05skEGMaDNOxkVCsEr1+AjRy8qPx9V
-	qrCRmrLguEDs6vYiEBIzCUvrmgK5ZsebdxBA0XMi2a1UyTb2ME4kOagE+ALtjD9fo5cP37P9y1m
-	Y4DwZUYty5lY9uJznrHr2HhfHDDL0X4WnCNQtRUIZkRnKMCTd+XGTZTAJ7gD+007KKWmZEarXM6
-	9rhdOqs3BR3jhllw==
-X-Received: by 2002:a05:6871:b09:b0:499:c554:b635 with SMTP id
- 586e51a60fabf-4adec9a0521mr1832827fac.28.1794217144641; Mon, 09 Nov 2026
- 01:39:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=YvyQ3QrE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pt
+	ywGNiTNVGUFGqPa/Yt2XRlNd43/CqRk5k+EWi/QvA=; b=YvyQ3QrEJw43EnS0jU
+	DnzH28ti8cFUkYD6WlAauNaL/MvD5Ux4hvDEKd7Fthue2HavPOHQ7RpX52KYxppv
+	2ojoQINtHMV6ZoWZl4ZKAfSQid/a6I1sMortaWdw0LCZRF0AXIkY9P4Hw0UdOo5e
+	UXu4MUWVrUhV84emMD39G7dEE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wBHJCGvlfFq58sxGQ--.4049S4;
+	Mon, 09 Nov 2026 17:43:13 +0800 (CST)
+From: Longjun Tang <lange_tang@163.com>
+To: mst@redhat.com,
+	kuba@kernel.org,
+	eperezma@redhat.com,
+	jasowangio@gmail.com
+Cc: xuanzhuo@linux.alibaba.com,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	tanglongjun@kylinos.cn
+Subject: [PATCH 2/3] virtio_net: introduce an RX queue watchdog for stuck detection
+Date: Mon,  9 Nov 2026 17:43:09 +0800
+Message-Id: <20261109094310.103979-3-lange_tang@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261109094310.103979-1-lange_tang@163.com>
+References: <20261109094310.103979-1-lange_tang@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,93 +67,211 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106114551.212675-1-amaan.cheval@gmail.com>
- <20261106114551.212675-2-amaan.cheval@gmail.com> <CALuQH+VtASWP=w9ibTJ7ioYxWrS5sgi9yCZMVK0D831_A-zusw@mail.gmail.com>
-In-Reply-To: <CALuQH+VtASWP=w9ibTJ7ioYxWrS5sgi9yCZMVK0D831_A-zusw@mail.gmail.com>
-From: Amaan Cheval <amaan.cheval@gmail.com>
-Date: Mon, 9 Nov 2026 15:08:53 +0530
-X-Gm-Features: AclHuK8ZY94zA-0byUQ__DrC9NeVtoJKfHv6SKapSVwO8ABChRUHJeGPjboSxYY
-Message-ID: <CAG+wEg3VCFnPMkkXVLBNgSNra2YBSZAM-Q--AEQvA597z7X5MA@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] gve: block XDP on the DQO-QPL queue format
-To: Joshua Washington <joshwash@google.com>
-Cc: netdev@vger.kernel.org, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	bcf@google.com, jordanrhee@google.com, przemyslaw.kitszel@intel.com, 
-	maciej.fijalkowski@intel.com, pkaligineedi@google.com, maolson@google.com, 
-	csully@google.com, willemb@google.com, yangchun@google.com, npl@google.com, 
-	awogbemila@google.com, shailend@google.com, nktgrg@google.com, 
-	maxyuan@google.com, bpf@vger.kernel.org, john.fastabend@gmail.com, 
-	hawk@kernel.org, sdf@fomichev.me, daniel@iogearbox.net, ast@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBHJCGvlfFq58sxGQ--.4049S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr4DJFWUZr4fKrW7KF4DJwb_yoWxGF4xpF
+	W3Aw15trW8tr4xuayxJ397XF13KrykXry7GrWfK398uFs8Kr1rZFn2kry5Ga9Y9FZ3Jr17
+	Xr4kt3yfK3yv9rJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j3-B_UUUUU=
+X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC4hKo1mrxlbJX9QAA3Q
 
-On Sat, Nov 7, 2026 at 8:43=E2=80=AFAM Joshua Washington <joshwash@google.c=
-om> wrote:
->
-> On Fri, Nov 6, 2026 at 3:46=E2=80=AFAM Amaan Cheval <amaan.cheval@gmail.c=
-om> wrote:
-> >
-> > Commit d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ
-> > RDA") enabled XDP on DQO-RDA by dropping the queue_format check from
-> > verify_xdp_configuration(), which until then refused every format but
-> > GQI-QPL. Nothing replaced it for DQO-QPL: gve_set_netdev_xdp_features()
-> > advertises no XDP features there and gve_xdp_xmit() rejects it, but the
-> > core only checks that ndo_bpf exists, so a native XDP program, and an
-> > AF_XDP socket on top of it, can still be attached on DQO-QPL.
-> >
-> > The DQO-QPL RX path was never written for that. Its page accounting
-> > assumes the driver keeps a reference of its own across every handoff:
-> > gve_xdp_done_dqo() passes the buffer to xdp_do_redirect() and then
-> > recycles it with gve_reuse_buffer(), so a redirect target that releases
-> > the buffer synchronously, such as an AF_XDP socket in copy mode, can
-> > drop the page's last reference when pagecnt_bias runs out. The page is
-> > then freed while it is still DMA-mapped and registered in the QPL, and
-> > the driver posts it back to the device.
-> >
-> > Refuse XDP program setup on DQO-QPL in gve_verify_xdp_configuration(),
-> > matching the features the driver advertises. A zero-copy XSK pool bind
-> > is already refused by the core for the same reason, and a copy-mode
-> > bind never reaches the driver and is harmless without a program.
-> >
-> > Fixes: d8a8ca14c937 ("gve: add XDP_TX and XDP_REDIRECT support for DQ R=
-DA")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Amaan Cheval <amaan.cheval@gmail.com>
-> > ---
-> >  drivers/net/ethernet/google/gve/gve_main.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
-thernet/google/gve/gve_main.c
-> > index 2437cd8ba633..4e9e692a0ed0 100644
-> > --- a/drivers/net/ethernet/google/gve/gve_main.c
-> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
-> > @@ -1723,6 +1723,12 @@ static int gve_verify_xdp_configuration(struct n=
-et_device *dev,
-> >         struct gve_priv *priv =3D netdev_priv(dev);
-> >         u16 max_xdp_mtu;
-> >
-> > +       if (priv->queue_format =3D=3D GVE_DQO_QPL_FORMAT) {
->
-> Thanks for implementing this!
->
-> Minor suggestion: Can we check based on dev->xdp_features
-> (NETDEV_XDP_ACT_BASIC) instead?
+From: Longjun Tang <tanglongjun@kylinos.cn>
 
-Thank you, yes, I'll respin.
+The backend raises an interrupt after adding buffers to the used ring,
+and the hypervisor injects it. If one is lost (e.g., a transient KVM
+failure), NAPI will not be scheduled and the driver stops consuming
+buffers. The ring eventually fills up, the backend stops notifying, and
+the queue is left permanently stuck.
 
->
-> > +               NL_SET_ERR_MSG_MOD(extack,
-> > +                                  "XDP is not supported in DQO QPL que=
-ue format.");
-> > +               return -EOPNOTSUPP;
-> > +       }
-> > +
-> >         if (dev->features & NETIF_F_GRO_HW) {
-> >                 NL_SET_ERR_MSG_MOD(extack,
-> >                                    "XDP is not supported when HW-GRO is=
- on.");
-> > --
-> > 2.47.3
-> >
+Add a per-device watchdog that scans the RX queues once per second and
+detects a queue that has a non-zero backlog while making no consumption
+progress and receiving no new interrupt for rx_watchdog_timeo seconds
+(default 5, 0 disables it). On detection, reschedule NAPI.
+
+Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
+---
+ drivers/net/virtio_net.c | 104 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index dd2c41ef6fbe..ec7c248080c5 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -36,6 +36,10 @@ module_param(csum, bool, 0444);
+ module_param(gso, bool, 0444);
+ module_param(napi_tx, bool, 0644);
+ 
++/* RX queue stall timeout in seconds; 0 disables the watchdog. */
++static unsigned int rx_watchdog_timeo = 5;
++module_param(rx_watchdog_timeo, uint, 0644);
++
+ #define VIRTIO_OFFLOAD_MAP_MIN	46
+ #define VIRTIO_OFFLOAD_MAP_MAX	47
+ #define VIRTIO_FEATURES_MAP_MIN	65
+@@ -318,6 +322,13 @@ struct send_queue {
+ 	dma_addr_t xsk_hdr_dma_addr;
+ };
+ 
++struct virtnet_rq_watchdog {
++	u16 last_used;
++	u16 calls;
++	unsigned long jiffies;
++	bool stalled;
++};
++
+ /* Internal representation of a receive virtqueue */
+ struct receive_queue {
+ 	/* Virtqueue associated with this receive_queue */
+@@ -332,6 +343,9 @@ struct receive_queue {
+ 	/* The number of rx notifications */
+ 	u16 calls;
+ 
++	/* RX watchdog state. */
++	struct virtnet_rq_watchdog watchdog;
++
+ 	/* Is dynamic interrupt moderation enabled? */
+ 	bool dim_enabled;
+ 
+@@ -443,6 +457,9 @@ struct virtnet_info {
+ 	/* Work struct for setting rx mode */
+ 	struct work_struct rx_mode_work;
+ 
++	/* RX watchdog timer for stuck detection */
++	struct timer_list rx_watchdog;
++
+ 	/* Does the affinity hint is set for virtqueues? */
+ 	bool affinity_hint_set;
+ 
+@@ -3067,6 +3084,80 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ 	return received;
+ }
+ 
++/*
++ * An RX queue is stalled if it has a backlog but makes no progress and
++ * gets no new interrupt for rx_watchdog_timeo seconds, usually because
++ * an interrupt was lost.  Mark it stalled and reschedule NAPI to drain
++ * the ring, refill the buffers.
++ */
++static void virtnet_rx_watchdog(struct timer_list *t)
++{
++	struct virtnet_info *vi = timer_container_of(vi, t, rx_watchdog);
++	unsigned long timeout = rx_watchdog_timeo * HZ;
++	int i;
++
++	if (!rx_watchdog_timeo)
++		return;
++
++	for (i = 0; i < vi->curr_queue_pairs; i++) {
++		struct receive_queue *rq = &vi->rq[i];
++		u16 last_used = virtqueue_get_last_used_idx(rq->vq);
++		u16 calls = rq->calls;
++		bool backlog = virtqueue_poll(rq->vq, last_used);
++		bool progress = last_used != rq->watchdog.last_used;
++
++		if (!backlog || progress || calls != rq->watchdog.calls) {
++			rq->watchdog.last_used = last_used;
++			rq->watchdog.calls = calls;
++			rq->watchdog.jiffies = jiffies;
++			continue;
++		}
++
++		if (time_after(jiffies, rq->watchdog.jiffies + timeout)) {
++			unsigned int stall_ms =
++				jiffies_to_msecs(jiffies - rq->watchdog.jiffies);
++
++			netdev_warn(vi->dev,
++				    "RX queue %u stalled for %u ms, rescheduling NAPI\n",
++				    i, stall_ms);
++
++			rq->watchdog.stalled = true;
++			virtqueue_napi_schedule(&rq->napi, rq->vq);
++
++			/* Rate-limit to one event per timeout. */
++			rq->watchdog.jiffies = jiffies;
++		}
++	}
++
++	mod_timer(&vi->rx_watchdog, jiffies + HZ);
++}
++
++static void virtnet_rx_watchdog_init_queue(struct receive_queue *rq)
++{
++	rq->watchdog.last_used = virtqueue_get_last_used_idx(rq->vq);
++	rq->watchdog.calls = rq->calls;
++	rq->watchdog.jiffies = jiffies;
++	rq->watchdog.stalled = false;
++}
++
++static void virtnet_rx_watchdog_start(struct virtnet_info *vi)
++{
++	int i;
++
++	if (!rx_watchdog_timeo)
++		return;
++
++	for (i = 0; i < vi->curr_queue_pairs; i++)
++		virtnet_rx_watchdog_init_queue(&vi->rq[i]);
++
++	mod_timer(&vi->rx_watchdog, jiffies + HZ);
++}
++
++static void virtnet_rx_watchdog_stop(struct virtnet_info *vi)
++{
++	timer_delete_sync(&vi->rx_watchdog);
++}
++
+ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+ {
+ 	virtnet_napi_tx_disable(&vi->sq[qp_index]);
+@@ -3230,6 +3321,8 @@ static int virtnet_open(struct net_device *dev)
+ 		netif_carrier_on(dev);
+ 	}
+ 
++	virtnet_rx_watchdog_start(vi);
++
+ 	return 0;
+ 
+ err_enable_qp:
+@@ -3759,6 +3852,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	struct virtio_net_rss_config_trailer old_rss_trailer;
+ 	struct net_device *dev = vi->dev;
+ 	struct scatterlist sg;
++	u16 old_queue_pairs = vi->curr_queue_pairs;
+ 
+ 	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
+ 		return 0;
+@@ -3816,7 +3910,14 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	if (vi->has_rss)
+ 		vi->rss_trailer.max_tx_vq = cpu_to_le16(queue_pairs);
+ succ:
++	if (dev->flags & IFF_UP) {
++		/* Init new queues */
++		for (int i = old_queue_pairs; i < queue_pairs; i++)
++			virtnet_rx_watchdog_init_queue(&vi->rq[i]);
++	}
++
+ 	vi->curr_queue_pairs = queue_pairs;
++
+ 	if (dev->flags & IFF_UP) {
+ 		local_bh_disable();
+ 		for (int i = 0; i < vi->curr_queue_pairs; ++i)
+@@ -3832,6 +3933,8 @@ static int virtnet_close(struct net_device *dev)
+ 	struct virtnet_info *vi = netdev_priv(dev);
+ 	int i;
+ 
++	virtnet_rx_watchdog_stop(vi);
++
+ 	/* Prevent the config change callback from changing carrier
+ 	 * after close
+ 	 */
+@@ -6900,6 +7003,7 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	INIT_WORK(&vi->config_work, virtnet_config_changed_work);
+ 	INIT_WORK(&vi->rx_mode_work, virtnet_rx_mode_work);
+ 	disable_work(&vi->rx_mode_work);
++	timer_setup(&vi->rx_watchdog, virtnet_rx_watchdog, 0);
+ 
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF)) {
+ 		vi->mergeable_rx_bufs = true;
+-- 
+2.51.0
+
