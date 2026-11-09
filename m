@@ -1,59 +1,93 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794209643;
-	b=zKhXnc9P79h0P+WDH5v66nh4PGP37ITQtqcKTihMkDV5FDAvT0TgV/E5F5uiY3zdMSs1
-	 8yruJiUhUb+AZeV8Lb9ydU/9/rh75egWIJ2WqPIyOvBz746HM0IYLtzZNai0RZxOc5Ktm
-	 1sVO5PVhwyed7DN466qh5un4Nkpqezuilty9BW5tfiJCv3OUhV1j/FjHuDlIhFobAO5dn
-	 7lAuXw/nGrNYjdvXak0xnmwg4sGjvAmE7G0aSOM0WIfSi1R1HOyq1xCldt50wAZ8JyRgH
-	 hwxEBzly0g9KNOVQChwfDzpsJHX34+YaaXdJjpPeRJ/feqNGbAyzjemH0O0wJBeh9lg==
+	t=1794209645;
+	b=Fw09vnRc1jkC9PoMjjH7C6jxUQQSNOgU3G34Bh+9HL8v3PViORoOf3Fw+k/NIRhkDM1v
+	 cpCJ/nMP3xQpq829FMoHtQpQhSsKYilsK1L4eDZ35KC2jUR7VVn9OB09R2Nf7UKOACAtl
+	 dqRust6ILxBzYE0Gfe/aatW+BD4qJ1bh6Fpaee98LBxrEvyuX/8bTvCoqp9nsqRSlZtEa
+	 CXvyGJRYN2Y6jUL2ZYp87ayxEOpg4zdFtlLJYu8KX/AdJxw4y6RCmcOiAI9BWsRe/kg3h
+	 I3fsQLXDDZ0CmQlFJpTBZ3AVaTE3htxuN/fe2L8vi11d1DplxjIcEoXn3A9KaWoe1rA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794209643;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=xUomCp3G+LfMvtKyqhwJAVOlhjISvM2EjbUQ5TP+saA=;
-	b=yL7R+jADtsYkT/VTDThpoFHoZD03tOnQRV/imdXfJN+EEA6k3QkquRNHd33Jx3jL0ECm
-	 kmJJ2ewcm+2hMl7vqzHc/LTrewqIsnyrLpQQX5NQCDjEMTQ3cppfDVPJeJ1dD89Flznar
-	 sL8HEjEHKRYd+EpQTlHHImZqQwqkol0TnjvLT1kJiQyk5JHxkg2FxInW4E00rV/ph+JrE
-	 LmLeLfsdf9uwiIKHvcDf1Lf60TLgrnlkG2hik7KLEUZ8ZkoikZ39Ih5fKoPUIqyPdAPwf
-	 Anz1FSJ6M59j4dmYgNyWOvptBzGLxDW2y7k7A9Hvo67vpxg7aspOZ25XdC4B8ahvGUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794209645;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Type:X-Mailer:
+	 Content-Transfer-Encoding;
+	bh=cdCM073jR/DCJh2HUDXaqMPcxaAwWF1lPqWNiB/vLUE=;
+	b=0vKsntalvKb5zwLeRqR9lMsWOLgL1hbOYyDK4vuZRMZu4CwhQLc1yh/G9Q6aSVo2Hx47
+	 SMrnv2t08dtMBd0FyMftlcm7VENlT4v8O8vaMKLMli8LoUY63LrW97FEgepvUl9Zj9E6+
+	 VnpkCiIz3yyx1n2qzMGGzn5gFWysMA9p1W2TVDjEJfMxBSU40a7nUT6Y84TwYYTxWk+zY
+	 boX++8ks5hobUX4WpVA+Vk+WZfNePoYKe3w6gcs2LHNfP7OlrJC3ctfnDt8UU/sUePLYy
+	 e8yhScubrrI2I1+CmWCwkLfNhcHlorjmetrR4VZ8l5c4+R8YPsj+ekpRMmuUxVUuh7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofYQ8dJQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JFbxgJSV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55834606A322;
-	Mon,  9 Nov 2026 07:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F5A606A33E;
+	Mon,  9 Nov 2026 07:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ofYQ8dJQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4410E1F008A1;
-	Mon,  9 Nov 2026 07:34:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JFbxgJSV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA111F0089F;
+	Mon,  9 Nov 2026 07:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794209641;
-	bh=xUomCp3G+LfMvtKyqhwJAVOlhjISvM2EjbUQ5TP+saA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ofYQ8dJQMRuSeejKWpsw2KtfaUmurR0LF1MhBod/ZZ3P41TEG4wozg3N48S1aJCzj
-	 t9AFBk0ss8klUBmdyPyZclxYESs+j2fT7t1S4CZHEjM1e7dUg2McfxayuCgd7mgkL4
-	 0gGmxlmPx/hQsgmz69CaRYPukLtkGR2DCJqzdMQCfv7b6rWiDA+IYM0Do96/wNxA4X
-	 Wa2IwtHgwzQ+1U0/2bokoAB8eROTfoR0pJ4MfgoUp/dC9A3HsrClmwbqTYQVGpugnD
-	 SQBQ9ImMZIS5t5PrlkBjLj1hNCbvyV0nw8ClQHEQANbUPZXPpFCsVzam2l8TjhxLJQ
-	 rVendOyk+RUmg==
-Subject: Re: [PATCH net] can: j1939: transport: validate the DPO packet offset
-From: netdev-bot+sashiko@kernel.org
-To: sunyiqi2@huawei.com
-Cc: robin@protonic.nl, o.rempel@pengutronix.de, kernel@pengutronix.de,
- socketcan@hartkopp.net, mkl@pengutronix.de, linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
- luoxiaoxing@huawei.com, kuba@kernel.org
-Date: Mon, 09 Nov 2026 07:34:00 +0000
-Message-ID: <179420964075.994134.5840863564858819241@kernel.org>
-In-Reply-To: <20261105065931.1302-1-sunyiqi2@huawei.com>
-References: <20261105065931.1302-1-sunyiqi2@huawei.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794209644;
+	bh=cdCM073jR/DCJh2HUDXaqMPcxaAwWF1lPqWNiB/vLUE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JFbxgJSVJyGy7SW+J+0KIAxI1XhrPwQhbNaVT6wRNqGNJPT7ebLpgixmX6f5TRYUI
+	 mI7fszmxT6vtfO/WS/HH6XQEZxYbeDKtCIRxOS5I/TRspMJWr6Z+uaJ9I3EU8aqlVh
+	 pleyfOrhrz2HjvolsAzEt/GTTS2xbbCRZknTG+Sc+H8nIXLaQ1Lpa9AS5AiqsYy4bC
+	 VOfWafAmh07YVtc7Ezu9uhzDbqubQgq0VCD6lMiMWbwT9piMq3DbO7ZkTu4Yv3jDxE
+	 hIAGVG2IO4CDNeMLIpywlIWi4W0JI7iD08jh9GM9edSnABb/Lcb6rQM9etPnCUrZJ+
+	 wv+htg3AQIizg==
+From: Leon Romanovsky <leon@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Johan Hovold <johan@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Cc: linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-input@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	iommu@lists.linux.dev,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v2 02/19] wifi: mac80211_hwsim: lock device for manual driver binding
+Date: Mon,  9 Nov 2026 09:33:32 +0200
+Message-ID: <20261109-device-trust-core-v2-2-3b12d9a9f861@nvidia.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
+References: <20261109-device-trust-core-v2-0-3b12d9a9f861@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,121 +97,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Leon Romanovsky <leonro@nvidia.com>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+The documented API contract for device_bind_driver() requires the device
+lock. mac80211_hwsim uses it for a newly created class device with no bus,
+so no automatic driver-core path can bind the device concurrently and the
+missing lock was safe.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-- [High] When a second out-of-range ETP DPO arrives, the new bad-offset
-  branch in j1939_xtp_rx_dpo_one() (net/can/j1939/transport.c) cancels…
-
---
-
-can: j1939: transport: validate the DPO packet offset
-
-This patch makes j1939_xtp_rx_dpo_one() check the packet offset from a
-received ETP DPO against session->pkt.total. An offset that is out of
-range is rejected and the session is aborted with
-J1939_XTP_ABORT_BAD_EDPO_OFFSET. This prevents a NULL skb from reaching
-j1939_sk_recv() when a later EOMA arrives.
-
-> diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-> index 8fcfd13e5e6f8..bda50432a72ea 100644
-> --- a/net/can/j1939/transport.c
-> +++ b/net/can/j1939/transport.c
-> @@ -1823,14 +1823,22 @@ static void j1939_xtp_rx_dpo_one(struct j1939_session *session,
-
-[ ... ]
-
-> +	packet = j1939_etp_ctl_to_packet(skb->data);
-> +	if (packet >= session->pkt.total) {
-> +		j1939_session_timers_cancel(session);
-> +		j1939_session_cancel(session, J1939_XTP_ABORT_BAD_EDPO_OFFSET);
-> +		return;
-> +	}
-
-[Severity: High]
-What happens if a second out-of-range DPO arrives while the session is
-already in J1939_SESSION_WAITING_ABORT?
-
-After the first bad DPO, j1939_session_cancel() arms the abort rxtimer
-and moves the session to WAITING_ABORT. The session stays on
-priv->active_session_list. j1939_session_get_by_addr_locked() does not
-filter on state, so j1939_xtp_rx_dpo() can still find it.
-
-If a second bad DPO comes in before J1939_XTP_ABORT_TIMEOUT_MS expires,
-this branch runs:
-
-j1939_xtp_rx_dpo_one()
-  j1939_session_timers_cancel()
-    j1939_session_rxtimer_cancel()
-      hrtimer_cancel(&session->rxtimer)   <- pending abort timer removed
-      j1939_session_put(session)
-  j1939_session_cancel()
-    if (session->state >= J1939_SESSION_ACTIVE &&
-        session->state < J1939_SESSION_WAITING_ABORT) {
-        ...                              <- skipped, already WAITING_ABORT
-    }
-
-j1939_tp_rxtimer() is the only timeout path that deactivates a session
-in WAITING_ABORT:
-
-    if (session->state == J1939_SESSION_WAITING_ABORT) {
-        ...
-        j1939_session_deactivate_activate_next(session);
-
-Once its timer has been cancelled, that path cannot run. Does the
-session then stay on the active list for good, still holding its
-reassembly skb and its netdev and j1939_priv references?
-
-Every repeated bad DPO would also queue another J1939_ERRQUEUE_RX_ABORT.
-
-Before this patch, a DPO in WAITING_ABORT only called
-j1939_tp_set_rxtimeout(session, 750). That re-armed rxtimer, so the
-session was still deactivated later.
-
-j1939_xtp_rx_rts_session_active() already documents this hazard and
-works around it:
-
-    } else if (session->state == J1939_SESSION_WAITING_ABORT) {
-        /* Force deactivation for the receiver.
-         * If we rely on the timer starting in j1939_session_cancel,
-         * a second RTS call here will cancel that timer and fail
-         * to restart it because the state is already WAITING_ABORT.
-         */
-        j1939_session_deactivate_activate_next(session);
-
-That workaround came from commit 1809c82aa073 ("net: can: j1939:
-j1939_xtp_rx_rts_session_active(): deactivate session upon receiving
-the second rts"). It fixed a syzbot refcount leak that showed up as
-"unregister_netdevice: waiting for vcan0 to become free".
-
-Any of these could avoid the problem:
-
-- Return early when session->state >= J1939_SESSION_WAITING_ABORT.
-
-- Cancel only the txtimer here. j1939_session_cancel() already cancels
-  and re-arms rxtimer through j1939_tp_set_rxtimeout().
-
-- Force j1939_session_deactivate_activate_next() when the state is
-  already WAITING_ABORT, as the RTS path does.
-
-The out_session_cancel paths in j1939_xtp_rx_cts_one() and
-j1939_xtp_rx_dat_one() use the same cancel-then-noop sequence, so a
-shared helper might be a better fix.
-
->  	/* transmitted without problems */
-> -	session->pkt.dpo = j1939_etp_ctl_to_packet(skb->data);
-> +	session->pkt.dpo = packet;
->  	session->last_cmd = dat[0];
->  	j1939_tp_set_rxtimeout(session, 750);
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim_main.c b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+index e53714b81ec2c..b796da3dd54b3 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim_main.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim_main.c
+@@ -5769,7 +5769,9 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
+ 		goto failed_drvdata;
+ 	}
+ 	data->dev->driver = &mac80211_hwsim_driver.driver;
++	device_lock(data->dev);
+ 	err = device_bind_driver(data->dev);
++	device_unlock(data->dev);
+ 	if (err != 0) {
+ 		pr_debug("mac80211_hwsim: device_bind_driver failed (%d)\n",
+ 		       err);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261105065931.1302-1-sunyiqi2%40huawei.com
+2.56.0
+
