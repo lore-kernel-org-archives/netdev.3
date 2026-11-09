@@ -1,55 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794265336;
-	b=FizXhnkl1/SZrFfHJluIjp0I7CpF17Fz5uvlr+C9AyC7VtjxG88dPJPYj3o7Le43dTjx
-	 VT9G8vZ2ZBJqMmi2WarJWui59D2ZsEP0YxweeLHQCLTC1yqhd+Wr1QswHfPd6+A+3o7YG
-	 NHAFS+mMMi+32f3veNl4MAhkdpypPTs6XBwSMMuvJp2WEztsVEVYz+xKz5Bi+ni9HfOLj
-	 Q6+C7346+Lm0ObJvGVNfqwlT5WR6uV7dehnFaDhfPWQWuDNqGPIRNIxONkgJmb2QPtCV6
-	 baCP0idIx4+m6h4tDVs5UoJTLboI/PlgLPRjc988NVKrbh7uRaAkdoOLqkgnhZh6hQQ==
+	t=1794265351;
+	b=0zf4Dpi0ZhdjAUyRHbK+5RFAi2vCJmpeIYmgr/YoAf8bE7znXKkYq8h7qnVbgQw4rVWk
+	 w3ZLmpOHfBzdqnd1JDKSDj+3MbHT/J4Y3MlExJ6PetUwf2qLPAC9TFKMdMxrmIB/5uuWm
+	 VH52gZb8G51UjBXMT5PfRNuVO6UkruCNcQqPs4fvgsfd9Wp5LtEiBOmuwUzIG+KcwYNp4
+	 Bvh0Yvf6lb3FGb5It8H0jClQzATopFRIUusSkyrQW5xg2jCpX6Rajcxirc89RAlFhq+5M
+	 7tzx0NbrAF+/50wV6d/4E8AQVeQFB+6wHUdOHh+yi1oNIv6pnWFJEm/jMzk5wXpP2vQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794265336;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794265351;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=jnnudFivQXRA6ZoeOMrEtcMeJdKY4hVR8OblfVoIrLM=;
-	b=Uc1uaHnVYHn9XDWIfCnq9tgT36xOL7wIBYjvKmzVzi7sMDf/MIp9aGMXwCE7/ZlDAECE
-	 2hyWa5V7lWQndKmW5OrrM8Y1drJHLADn41S64nD7pVzx2DKkQp9JRpoLxWVsQVXaJvSyO
-	 AietxQHX8Rp35/QHDa4z0PcK9nuZNe7W9U0mDha09GteRLwt26QKsQrbGcdExrgdE6JvY
-	 TFi4rCBGKyTgjdF/yDVYo0AaViYAf4/crBhZuKMyPuDNQ9ZWOrauptXRYx9RxtwoZ/I+o
-	 x7BcgVQuv/frjtuh5YfL7L/mmZM/Ea+ECsG+oI8Mg0r1Tm8FuryCD61qqhyjlfJa1uw==
+	bh=46y7602YTfhoa+pZNU3EQ9THKts6U3FC1YzFDGUGHTc=;
+	b=aPtUaopIBq7hsDW3L5EjzmUu0x51SOjaUMaliGDQj11COU8yaWKiL8GrXjYhElSyAxoQ
+	 4GDJhUGF22I51qYfW3hwd3+VBjDFXxahJdi3I1LvbTmXYA28DHECI2qzybx/1QKkfkaKc
+	 ZeAYbqpmzt1FXhTEw1EPfKF2mcyAzo35f2qdlAuqbZ7ZlC+EzNq2CdfLpaMbflZ75waCR
+	 1VqIbDblf2yij1aWLMQpgXVTSvh1pjhkTHyFDsea8b366XP4jwM+gunTfiGEE9ppNv9pL
+	 aH2yBh9FLsc78G6d/ID9c1QDmzfOyGoF9BtPM20SOJCsMDueaofuHxKqV1QIX3VrwIA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=irvrdGgU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FlAsxvae;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DF3606A321
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B195E606A31C;
+	Mon,  9 Nov 2026 23:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=irvrdGgU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D381F0089F;
-	Mon,  9 Nov 2026 23:02:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FlAsxvae
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256CA1F0089F;
+	Mon,  9 Nov 2026 23:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794265335;
-	bh=jnnudFivQXRA6ZoeOMrEtcMeJdKY4hVR8OblfVoIrLM=;
+	s=k20260515; t=1794265350;
+	bh=46y7602YTfhoa+pZNU3EQ9THKts6U3FC1YzFDGUGHTc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=irvrdGgUPau4WjJqhec+myLZlpaBf74naHLH1ru90JkMXj3XktKHhyJDZ/PtYRdoD
-	 31g9+n2ICQ7oqBfFd/bkjQWgfdsqK5aala6y1V1BzotjxoY9qPLntJoB/hwgaEmVgn
-	 o9YcsZ+2eSaevokTLfReQCOMX9R8AnxWsCVsBtzJ98JiPp8C/PlKGBkUa301kkMkL1
-	 v95gWKeGKnoRiO7MDORy3jvXrLLp15vd7pahQkaBrNuh/Ck49JMDjR9cb0XrpmiBei
-	 pngOEzKTB1VLb+6ueVpaPGTVNrlWoaKxsoe6HogrtBvhqcm000RwJELR8v/NrU0l2o
-	 JjxD108oZuEFA==
-Subject:
- Re: [PATCH net] udp: do not use a cross-family sk_rx_dst in early demux
+	b=FlAsxvaeMDArxHIG/5wJJHfkfp6cWYTGd6orowChaqxjdPh0oNkTaBW+wdBYMnyvJ
+	 QhWuW0G6AbHhVuZ+tAQtv1VdeZ/rteLzU0AfMIdHz5EM5VMOPXOlq0sOATfXxJl6Jl
+	 ClGt1EZY3+heaT0G0rf9Fmd4ogukJ7CaVwjrQNnF5alYsKFgX84o1KjUBk/4fdc6r1
+	 SD5/Pa5A+FPGnDYABZ2zD7Tg6hmfvMq2WrTyFlkhZtZQagHeh3DN1T3Ed2/V6lWDU1
+	 eztxJXzQlIypPHhdk0+AMTmos9dWoGOhffa6mDs3vXzG3uFzMxh35yy613YvQUC30m
+	 Jfd05qHiCLihQ==
+Subject: Re: [PATCH] nfc: llcp: pull DM reason byte before use
 From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org
-Date: Mon, 09 Nov 2026 23:02:14 +0000
-Message-ID: <179426533453.994134.11750369259085131425@kernel.org>
-In-Reply-To: <20261106110135.2161204-1-edumazet@kernel.org>
-References: <20261106110135.2161204-1-edumazet@kernel.org>
+To: NoahWeinberger2003@proton.me
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 09 Nov 2026 23:02:29 +0000
+Message-ID: <179426534967.994134.7609721697490865811@kernel.org>
+In-Reply-To: <mcyWWpY9VDnsb1o6EnHOMwEinRkPRORIx9_O6DMiKhWHsDIrbITdgbL2PkFkJKgxIIs_0euqmOIT9eCZVFZ9-F8y_g_dFysV8EEOHP6UxmY=@proton.me>
+References: <mcyWWpY9VDnsb1o6EnHOMwEinRkPRORIx9_O6DMiKhWHsDIrbITdgbL2PkFkJKgxIIs_0euqmOIT9eCZVFZ9-F8y_g_dFysV8EEOHP6UxmY=@proton.me>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -63,10 +62,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,83 +73,115 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message says "TCP does not have the same problem",
-  but tcp_v6_early_demux() (net/ipv6/ip6_input.c) uses the same pattern…
+- [Medium] The commit has no Signed-off-by: trailer.
+- [Low] The patch fixes an uninitialized read that a remote NFC peer can
+  trigger in nfc_llcp_recv_dm() (net/nfc/llcp_core.c), but it carries no…
+- [Low] The commit body is written as a cover letter or bug report, not a
+  changelog.
 
 --
 
-udp: do not use a cross-family sk_rx_dst in early demux
+nfc: llcp: pull DM reason byte before use
 
-With this patch, udp_v4_early_demux() and udp_v6_early_demux() use the
-cached sk->sk_rx_dst only when dst->ops->family matches the packet's
-family. Without the check, a dual-stack socket connected to a v4-mapped
-address can attach an IPv4 dst to an IPv6 skb, or the reverse, because
-the dst_check() callbacks can ignore the cookie.
+This patch adds a pskb_may_pull() check for the LLCP header plus one byte
+at the top of nfc_llcp_recv_dm(). With it, the DM reason code in
+skb->data[2] is only read when that byte is actually present. Until now,
+__nfc_llcp_recv() pulled only the two-byte header before dispatching.
 
-> TCP does not have the same problem: sk_ehashfn() hashes a v4-mapped
-> socket with inet_ehashfn(), while IPv6 lookups use inet6_ehashfn(),
-> so IPv6 packets do not normally find a v4-mapped TCP socket.
+> nfc: llcp: pull DM reason byte before use
+
+[ ... ]
+
+> Reported-by: Noah Weinberger <noahweinberger2003@proton.me>
 
 [Severity: Medium]
-Is this statement about TCP fully accurate? tcp_v6_early_demux() in
-net/ipv6/ip6_input.c uses the same pattern this patch removes from UDP.
-It never checks the family of the cached dst:
+There is no Signed-off-by: in the trailer block. The only trailer is a
+Reported-by: that names the commit author.
 
-net/ipv6/ip6_input.c:tcp_v6_early_demux() {
-    ...
-		if (sk_fullsock(sk)) {
-			struct dst_entry *dst = rcu_dereference(sk->sk_rx_dst);
+Documentation/process/submitting-patches.rst requires a Signed-off-by: for
+the Developer's Certificate of Origin. A Reported-by: for yourself doesn't
+replace it.
 
-			if (dst)
-				dst = dst_check(dst, sk->sk_rx_dst_cookie);
-			if (dst &&
-			    sk->sk_rx_dst_ifindex == skb->skb_iif)
-				skb_dst_set_noref(skb, dst);
-		}
-    ...
-}
+Could this be resent with a Signed-off-by: so it can be applied?
 
-A v4-mapped AF_INET6 TCP socket caches an IPv4 rtable in sk_rx_dst.
-That covers a dual-stack child accepted over IPv4 and a socket connected
-to ::ffff:a.b.c.d. ipv4_dst_check() ignores the cookie, so dst_check()
-here does not reject that rtable.
+> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> index 74bf817007cf2..733e643e02234 100644
+> --- a/net/nfc/llcp_core.c
+> +++ b/net/nfc/llcp_core.c
+> @@ -1276,13 +1276,16 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+>  }
+>  
+>  static void nfc_llcp_recv_dm(struct nfc_llcp_local *local,
+> -			     const struct sk_buff *skb)
+> +			     struct sk_buff *skb)
+>  {
+>  	struct nfc_llcp_sock *llcp_sock;
+>  	struct sock *sk;
+>  	u8 dsap, ssap, reason;
+>  	bool connecting = false;
+>  
+> +	if (!pskb_may_pull(skb, LLCP_HEADER_SIZE + 1))
+> +		return;
 
-Take a spoofed IPv6 segment from ::ffff:C to ::ffff:S with matching ports
-(ip6_rcv_core() now accepts it). inet6_match() would accept the
-v4-mapped socket for it. The only thing that keeps the socket out of the
-lookup is the sk_hash comparison:
+[Severity: Low]
+This early return now drops truncated DM frames without logging anything.
+Before this patch, a two-byte DM still looked up a socket and moved it to
+LLCP_CLOSED, using whatever byte happened to be in skb->data[2].
 
-net/ipv6/inet6_hashtables.c:__inet6_lookup_established() {
-    ...
-	hash = inet6_ehashfn(net, daddr, hnum, saddr, sport);
-    ...
-		if (sk->sk_hash != hash)
-			continue;
-		if (!inet6_match(net, sk, saddr, daddr, ports, dif, sdif))
-			continue;
-    ...
-}
+Should the commit message mention this change in behaviour?
 
-The socket's sk_hash comes from inet_ehashfn() in sk_ehashfn(), keyed by
-inet_ehash_secret. The lookup uses inet6_ehashfn(), keyed by
-tcp_ipv6_hash_secret.
+Other malformed PDU paths in this file log a message. For example,
+nfc_llcp_recv_agf() does this:
 
-These are two independently keyed 32-bit hashes. A collision for a given
-tuple is unlikely but possible. The secrets are fixed for each boot, so a
-tuple that collides once keeps colliding.
+	pr_err("Malformed AGF PDU\n");
 
-If such a collision happens, the IPv4 dst would be attached to the IPv6
-skb. Then ip6_rcv_finish_core() would skip ip6_route_input(), and
-ip_local_deliver() would parse the IPv6 header as IPv4. Is that the same
-misparse this patch fixes for UDP?
+Would a pr_debug() or pr_err() be useful here too?
 
-The XFRM non-refcounted socket issue does not apply here, because
-__inet6_lookup_established() takes a reference and the destructor is
-sock_edemux.
+A separate point: the commit body reads more like a cover letter than a
+changelog. It opens with:
 
-Could the same family guard go into tcp_v6_early_demux() (AF_INET6) and
-tcp_v4_early_demux() (AF_INET)? Otherwise, the commit message could say
-that TCP relies on the hash mismatch rather than on an explicit check.
+  "Hello,"
+
+It also includes the notes about the AI-assisted review and the tree it
+was done against, and says the patch has not been compiled or runtime
+tested. It ends with:
+
+  "Please treat this as a report for verification rather than a
+  battle-tested fix."
+
+Could this text go below the --- separator so it doesn't end up in git
+history?
+
+> +
+>  	dsap = nfc_llcp_dsap(skb);
+>  	ssap = nfc_llcp_ssap(skb);
+>  	reason = skb->data[2];
+
+[Severity: Low]
+Should this carry a Fixes: tag and a stable Cc? The unchecked read of
+skb->data[2] goes back to the commit that added DM handling:
+
+Fixes: 5c0560b7a5c6 ("NFC: Handle LLCP Disconnected Mode frames")
+
+A remote peer can reach this read in two ways. The first is a plain
+two-byte DM:
+
+__nfc_llcp_recv()
+    pskb_may_pull(skb, LLCP_HEADER_SIZE)    /* only 2 bytes */
+  -> nfc_llcp_rx_skb()
+    -> nfc_llcp_recv_dm()
+         reason = skb->data[2];
+
+The second is a DM sub-PDU inside an AGF. nfc_llcp_recv_agf() accepts any
+sub-PDU with pdu_len >= LLCP_HEADER_SIZE. It allocates a new skb with
+nfc_alloc_recv_skb(pdu_len) and copies only pdu_len bytes into it, so
+data[2] is uninitialized tailroom.
+
+That byte decides whether nfc_llcp_connecting_sock_get() or
+nfc_llcp_sock_get() is called. That in turn decides which socket gets
+sk_err = ENXIO and is moved to LLCP_CLOSED.
+
+Without a Fixes: tag, stable backporters may not pick this up.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261106110135.2161204-1-edumazet%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/mcyWWpY9VDnsb1o6EnHOMwEinRkPRORIx9_O6DMiKhWHsDIrbITdgbL2PkFkJKgxIIs_0euqmOIT9eCZVFZ9-F8y_g_dFysV8EEOHP6UxmY%3D%40proton.me
