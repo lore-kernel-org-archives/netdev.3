@@ -1,83 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794268633;
-	b=PGc7vhrlZCDkibnpKR0sjN0XFqeaiUV92Nx4x8hgm47J2sikbdlIByhKCfYm/pQQoGg1
-	 VhGi/E2t3D6tq89VPxcA2tgJGMwXQCQy9eI9EUBF3rbhlPcvb9UXHFGL0z8pyDouuhmev
-	 kJorgKXns2LguDObqoFrWml7cAFLQKApes5Syu0ZRLvDDqOOhtoXIUGfabv1R8REgDSAG
-	 UZgymDxIk+qbV+0YE8DHaLLfvP5Av+9oDgRXAYPpuHotrMDAMzHs49nHSJqBqIMWIvKPu
-	 ziTWakHgWgKusVzGoXUtBX3lsPnkNYkt2zDYs5Boet2gl6le96Q84g/MpcaX7/0Qb1Q==
+	b=Njr2oPRoH6JMee2A7osbdSh2/W+LZK39c3S9SrC1SsGA//S7eee6IB+kcVa7Im6Fd/69
+	 z0bjteYcuY8ZSpaA9UUpJ1j2IUuWP56rNcfUv/39L2mKpnXy3bKrIvlVBEltrNTR0P+b6
+	 6b+zA1pxfhd45Nsibdk9DS7E0Who4voLkopNQwj0VzBOjlAkKiwiCSaoQuOvQjmM9Jk7+
+	 e+7OCJoTzoPGDQ+k5ZfKvP3sOo/Qh0lxBhtUyK6iUNNa9MnqK3kFOAsJWhmKZqcvwNU7I
+	 tAg9du/bq1XlJZC42eO4MU6KGy8YzrX3ZtZdyFXYwN1B6LSeW8PSsvRZtHSQbNyYklA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794268633;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=O8eQPRbmSM0PxKcsSe9CO6QxZj9GQ3yxigAUlLTkIWA=;
-	b=UlUyubOhkBe5Skrif0qpfDIw8xCAPpzKevQ+9jYWRC9JdAZmV994x0Ugh2DxHaRzqt9v
-	 rQI8QOMvqrpPyEKl5tyhqSNXU3HTpEIBCU3vpk5EWkKZeGkzMYr1YjBPsvJNDNktRHq+3
-	 S77GOZPnF13skajYyuP6yAoL/ym1axlzPvtVn8mK+e9O4aR69+0K7OpoW1sAgXjYK4rJ0
-	 JJfAGgl59nlAU44HA/MKMmEKvWCEhnwDuUtxPOFZeR9E43jrFpp2B674uxihCuEek81cZ
-	 QWo3Qs0JT1vF0CMaMMOfvhwOgfHfajyQSab20Vdg4FQH/PS77L1GQYXk6JK2ywJVk/g==
+	bh=bUZiKxiN9UwTPTT2/T4hOmDQIJacds4pPM6KBGzyM+M=;
+	b=qvENbv8Tl8WwpoEH5t1vV9Lr56HGTcGEWEQWr0zwuvxQhYXYyOjnvjKL/1OAgvOQgqIn
+	 tGsxrOlao2PVi8fMaeeRqDtK12fxdBlcqvY5zUiGiIWWJb5aWvUoy3tHn7MGl50aeSu0G
+	 dAZLKD0s3CFmu07zNti1HFWePTYHvW99yd0IMwmRafrA/gMsmw0Z6V3bMs31oGqL9m4NS
+	 Dxtb458RN0XmSaXH1AO01UKZVCO0DwSpQHfUk+/r8dOWXcOGi344UdmNEHYN1mU8Os7te
+	 HY/RNKxDtYrGp51no30zoOJ+HMsbjW7CzADHlfPle5zMWBs+sUV+5EjbOKUSBVZIcow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="At/u6aRN";
-	arc=none smtp.remote-ip=209.85.218.45
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=04yOWM+k;
+	arc=none smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D545B60A261E
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:57:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D545B60A261E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670C560A262B
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 23:57:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 670C560A262B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=At/u6aRN
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c504bfd7393so27270266b.0
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:57:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=04yOWM+k
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c4cb6834eaaso213950766b.2
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 15:57:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794268631; x=1794873431; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794268632; x=1794873432; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=O8eQPRbmSM0PxKcsSe9CO6QxZj9GQ3yxigAUlLTkIWA=;
-        b=At/u6aRNyBVweiy0zcEZwIIjIwwRPUKr7TZTlhF3hR/w6ck5wyxNzvcf0y6+Q6CMpT
-         xGPHXBQKyv1NG/g94tG7dSS8v2pn62qVUMLZN5U1mHQSSZW3UkW4wTvciQG/qSf9c2HF
-         Gb/XUFNbnEqSY0whRhrU2A1YnXSdzHT1WcMhnMwuUbmT5ZyfAqVA5EMY9GSSobU+/Z+4
-         /3YXWVTz9VA3x4eu6gT/m/7dodNNNgKuZJkKpTKWBi3GXQihbMwLinydfE6VDUnWIcpC
-         2alfIvukef/cqDoL7FDKWYsPC9ZoWJWOJJfVWNNWxBn47E0cJ/wI2lht2lxW2Qhp2TyL
-         eYEg==
+        bh=bUZiKxiN9UwTPTT2/T4hOmDQIJacds4pPM6KBGzyM+M=;
+        b=04yOWM+k/J2vJbOxXUDh0EaGXrGbLl0A81Sa17tERghvsaeSGEUO1m8vCuE+0+wxPp
+         HMFndcKqi/rv+gYljgNu4I7TSaM1tkBnQdHQD9w7Iu6SB4UBq2NJrwwHL9hJyNk8Z6Ce
+         wOj0pFWEtBGWhXXIV3v/uIBAjos0vitOGtyzqEe9Yyzw0ssFIs8Oxeq/QFZvhMG2qUU+
+         9hHHnt73d4ll6A+gbVoYH2CCuGXmjxJ7xktkY/F2hgz2rG5LUc1F57PUedphiSVLw14Z
+         WNxPyfzyBWjjULTdAKoRskqhPCQwF0chapsEaP7o7XEpZ5zcFzMNmvWz5HeVNENRAdWv
+         ePhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794268631; x=1794873431;
+        d=1e100.net; s=20260707; t=1794268632; x=1794873432;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O8eQPRbmSM0PxKcsSe9CO6QxZj9GQ3yxigAUlLTkIWA=;
-        b=c1H8n2gOWCu7eOWnPbYScHeV6KHPOs51cPnyImSCCLn132jbTwI40223cHAnwjUZ4w
-         DeATi/ctUb6H0tFXPAVmDvRHFiq+nTO8MZL8zFmQ7RlmVXxQA0IDfTJDrxPjHAgNaL7e
-         ANKDgaa/rRl8apMfKzm8AI0+VdnS+TOCgYj7Mg7UEsmlbj4W7/kaqhPkFwj8hKjnxY5g
-         ZegyHE1qa+f0LsrEJXv+ZFjMSzOsuRoXAlJkc4dwn54IxZPIUC+MBNxXU8aPrMMeSebL
-         Wb4R7tCUhpxB6E4wRgMXluSZPms6A1oSEac/5V9MhRYzE9mOrtzHqFWPH1Ve2j69N2MN
-         hLNw==
-X-Gm-Message-State: APuU4Z8mVd6wC82476cdBDDhILAtNfOzY0MjKbTwB2OVUOalPc85QAIz
-	Wj07N0SRSfk2u9PgwOvv1weD99kGdQ5nPHQa9PY1qFB+nt2niaWu7ZORdtSdg8K/
-X-Gm-Gg: AYBFou2Wj98SIVHvtJUVtO8tLL49OoSkA8Ijpyoa2RK97Vta/W3+IZVUTQJ7VfhYlnH
-	Xvs/ylEwY9yj8KgRPHP+iig/i4y4GMHX9ebX3WwYgg5VUuPUYUqdD4J5F+H/9Z0Nox8TjO6fXP3
-	i/VmTiAsacmH6gQznXG5TxXKWBySZyNJLX4VptcSUBcvOnzldoRpguegFPUsEpod9js8NloSX5j
-	KoehPvP8hSO34h4Bw+e4G5A9TpFOvBoMqOdx4th5JUzjtinHIl1cD27vzB7le9Lobm44Rt5el/R
-	uh++fv3p2D6YTh1vA65vjYFw2NETEC7L4CXfQo0a9lBBuVhz+969Bu6V+m2czbC4l6Yz9rOeXJx
-	LoBzYPqD8n3kTkrNqm7SeXHrPBmcqg3qq+n/+fNU9i/mJhJ8wMML7cZnyCmmStVo7IIJHaOdRfW
-	ynxwH0qHZPvrbncTUFLupH9IN4UTQCzFp2vZx5CDn9C7edVaOdJgGqDKzV0mvnCLWvpk4mY8dBi
-	p+El/uLIjdFcToJe9Km13ZiTfZyQNmNhgBh+95Na4B4BFnYCgqykCjgZSrO1dpNne/69fB09dAx
-	GjYy72hqp9sSx6KHu8Ahhj9ricNYCjKkShFphTYyepKwC6MmR9tmizaOQIYrjPLvI5XP01nP+LH
-	p
-X-Received: by 2002:a17:906:3db:b0:c3f:c878:7c1d with SMTP id a640c23a62f3a-c50494f374emr55535466b.9.1794268631110;
+        bh=bUZiKxiN9UwTPTT2/T4hOmDQIJacds4pPM6KBGzyM+M=;
+        b=fQwiahU/1UW01OWTS6VP1H79HntDBBLQ41e4GA0x3FY74Ky6+EiI8XJiPkAcCdrg3m
+         3JBLrlo2DJT1AwhAaziqclr79KTtYxRTlrxRzKVXAD5GJLzdCXlo38uBiEaxZ9odeUoL
+         t41JWDfezFuEd81daAdfRvs/KvM8zDLwJGzTG6rXVB1ACe5ShEqti8UvklDV3bKXjv6A
+         k63NjkbFiOSmfi0chb9Tx7HkFTbugIRoQoZ3uachxtehKhfs6As1ZXSLOEIvkcMb7V0K
+         SykScvi+ivK4qWjr3DDz3S7y5exRYJIkfvCSgMiU8n3F5tP99MuMXZBYjF/EDj6T3Bjz
+         giAA==
+X-Gm-Message-State: APuU4Z90XykAcsAKsSp39HmBIeG3194/wDrPLruG/V/E9rL0q2wjJJg5
+	bP7lEnH0IMozJWk42OxooZFGgfvmVAgLoE2uKDlsXZuQRX1Sh3uF38Zk57iERye6
+X-Gm-Gg: AYBFou3Pr1m4Jnh519Njq2zjCwI1vQ8zmhVr7p+6MBBLhSm5vyB80wjYzf79I8tIM6u
+	1xbJkhirVpJFgtJdZsOXiDD5U2cd/+O2wLVPdTKsp/HpieRCuTnU3iknS/c5kesUq7Lf1jtsUd0
+	JGWYB5cNkxm71R5LJyUu/6MDumY6WckSOam7JCgFw3scDSofLiGzD94J7nOD2VB0z+o9LV8z7Wq
+	/XWsVtCJ0S4tFXvPOD6B4NFp+JPQaGAhwOMHrZbivKZNgw8xQjoqI53Nv4+NZVPAmhlXW6puSIX
+	2PTI94ulDqREnRHgKjNMLlFbWq6HE2QZcyc0CMF/SOJqZ/7E9a8WzvT4Kpbm1i7BAQzbzHdMwsi
+	etAfpR37rh6M1427Q/oP/LaieUnlyYDmO9Kn2c6f7UMSZp6gMAxsuQpmgYGFHZ25IBiVtD6ac3e
+	Aqd957m1/Au90+onslMa9o4FmQAfHprN0Cdnn+BbZNT6OudFWIa5Eq/ep/THad6Fm5Mt4q++Z8z
+	frGinL6270OAJTDpV4NpsGalpj7MdzxGAVw41b6JNjuL9O7xIk3UU2IDpizRYSUdh8eJ+eIo2u5
+	9k+QLR9HQxCpUlIvnI0gGPYYibKbsphHbYXki+7G6DlnafyxWnr8CCg=
+X-Received: by 2002:a17:906:b2d8:b0:c2a:b1cc:158d with SMTP id a640c23a62f3a-c504964fd7dmr42259166b.32.1794268631803;
         Mon, 09 Nov 2026 15:57:11 -0800 (PST)
 Received: from localhost.localdomain ([2a13:e746:396c:c600::8fa])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a56b772sm33725066b.16.2026.11.09.15.57.10
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a56b772sm33725066b.16.2026.11.09.15.57.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 15:57:10 -0800 (PST)
+        Mon, 09 Nov 2026 15:57:11 -0800 (PST)
 From: "Kordian Chmielewski (mlody1212)" <kudzo51@gmail.com>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
@@ -88,9 +87,9 @@ Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/7] net: bcm4908_enet: release the TX ring on stop
-Date: Tue, 10 Nov 2026 00:56:56 +0100
-Message-ID: <20261109235700.2586821-4-kudzo51@gmail.com>
+Subject: [PATCH net 4/7] net: bcm4908_enet: unmap the buffer of a dropped RX frame
+Date: Tue, 10 Nov 2026 00:56:57 +0100
+Message-ID: <20261109235700.2586821-5-kudzo51@gmail.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109235700.2586821-1-kudzo51@gmail.com>
 References: <20261109235700.2586821-1-kudzo51@gmail.com>
@@ -105,78 +104,29 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-bcm4908_enet_stop() disables the TX DMA but leaves the ring as it is:
-the skbs of frames not completed yet stay mapped and are never freed,
-and their descriptors keep DMA_CTL_STATUS_OWN. The next open starts
-the indexes from 0 again over those descriptors, so the DMA can send
-from a buffer that has been freed, and start_xmit() finds OWN set on a
-slot it is about to use.
+When poll_rx() drops a frame (too short, or not in a single buffer),
+it frees the buffer without unmapping it first, so the memory goes
+back to the page allocator while still mapped for the device. Unmap it
+as the path for good frames does.
 
-Unmap and free the skbs left in the TX ring on stop, clear slot->skb
-once poll_tx() has freed it, and clear the TX descriptors when the ring
-is initialised.
-
-Fixes: 4feffeadbcb2 ("net: broadcom: bcm4908enet: add BCM4908 controller driver")
+Fixes: 4dc7f09b8bec ("net: broadcom: bcm4908_enet: fix RX path possible mem leak")
 Signed-off-by: Kordian Chmielewski (mlody1212) <kudzo51@gmail.com>
 ---
- drivers/net/ethernet/broadcom/bcm4908_enet.c | 23 ++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/ethernet/broadcom/bcm4908_enet.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/ethernet/broadcom/bcm4908_enet.c b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-index 727ad1e96..8008b44a4 100644
+index 8008b44a4..778920e37 100644
 --- a/drivers/net/ethernet/broadcom/bcm4908_enet.c
 +++ b/drivers/net/ethernet/broadcom/bcm4908_enet.c
-@@ -312,6 +312,10 @@ static void bcm4908_enet_dma_ring_init(struct bcm4908_enet *enet,
- 	enet_write(enet, ring->st_ram_block + ENET_DMA_CH_STATE_RAM_BASE_DESC_PTR,
- 		   (uint32_t)ring->dma_addr);
+@@ -653,6 +653,7 @@ static int bcm4908_enet_poll_rx(struct napi_struct *napi, int weight)
  
-+	/* A descriptor the stopped DMA never completed still carries OWN */
-+	if (ring->is_tx)
-+		memset(ring->cpu_addr, 0, ring->length * sizeof(*ring->buf_desc));
-+
- 	ring->read_idx = 0;
- 	ring->write_idx = 0;
- }
-@@ -495,6 +499,23 @@ static int bcm4908_enet_open(struct net_device *netdev)
- 	return 0;
- }
- 
-+static void bcm4908_enet_tx_ring_clean(struct bcm4908_enet *enet)
-+{
-+	struct bcm4908_enet_dma_ring *tx_ring = &enet->tx_ring;
-+	struct device *dev = enet->dev;
-+	int i;
-+
-+	for (i = 0; i < tx_ring->length; i++) {
-+		struct bcm4908_enet_dma_ring_slot *slot = &tx_ring->slots[i];
-+
-+		if (!slot->skb)
-+			continue;
-+		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
-+		dev_kfree_skb_any(slot->skb);
-+		slot->skb = NULL;
-+	}
-+}
-+
- static int bcm4908_enet_stop(struct net_device *netdev)
- {
- 	struct bcm4908_enet *enet = netdev_priv(netdev);
-@@ -510,6 +531,7 @@ static int bcm4908_enet_stop(struct net_device *netdev)
- 	bcm4908_enet_dma_rx_ring_disable(enet, &enet->rx_ring);
- 	bcm4908_enet_dma_tx_ring_disable(enet, &enet->tx_ring);
- 
-+	bcm4908_enet_tx_ring_clean(enet);
- 	bcm4908_enet_dma_uninit(enet);
- 
- 	free_irq(enet->irq_tx, enet);
-@@ -686,6 +708,7 @@ static int bcm4908_enet_poll_tx(struct napi_struct *napi, int weight)
- 
- 		dma_unmap_single(dev, slot->dma_addr, slot->len, DMA_TO_DEVICE);
- 		dev_kfree_skb(slot->skb);
-+		slot->skb = NULL;
- 
- 		handled++;
- 		bytes += slot->len;
+ 		if (len < ETH_ZLEN ||
+ 		    (ctl & (DMA_CTL_STATUS_SOP | DMA_CTL_STATUS_EOP)) != (DMA_CTL_STATUS_SOP | DMA_CTL_STATUS_EOP)) {
++			dma_unmap_single(dev, slot.dma_addr, ENET_RX_BUF_DMA_SIZE, DMA_FROM_DEVICE);
+ 			skb_free_frag(slot.buf);
+ 			enet->netdev->stats.rx_dropped++;
+ 			break;
 -- 
 2.56.0
 
