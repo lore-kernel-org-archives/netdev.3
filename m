@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794247120;
-	b=5B3Qy1naoX8Qc3m/I9oS3J9s2K9GsS9rAj/l+p76sCsFYqaKWdqH0E3WOVWsFwdd5rpE
-	 yUgMZo7DZaS2zELzULh0cxkmRzry7uhUT4hK0FgrtbPpVVfXD1sWxkKfXTmxwmx/IN5J5
-	 ozl0MyYKCQheo4cV01ICKCMJXNLyLeeOXgzGEsNR5FRGPRFJI5VK4akniayjy0xa9sOyR
-	 1FBgdMTBLkDDAfNdjeeoAfTVunE60Ll/VJufA4Lko0VjsXJaFLmzh1SfQ7qL4Ry9hHMD4
-	 oRoV31zqHw3+k2vBmey5AN4pXBvn3ZNGArzOHMK1XDaTjoFbLiAPcSZsteK4ZMju7gw==
+	t=1794247121;
+	b=MRkRrwjJkYmf3Nj03ylorEz4aHc0rTXtc44/8f6qKhpPlE2o8h/G3ycouw+wsaGYml+U
+	 xjSGkeZlJqtHUoUoNHNbfDOZ0qHQ3iVLQvOOFg+tk20NE9gTGhJk+6opRFK+npOFBs2Pv
+	 tQT8M0tlBhck8XuNLknB7q5kf4jsMuMLoXWULsAKB/PXW7vz0z/ZQ50PFTINTnoceWEKI
+	 uUfgw7JWKAkB340zIknq4yUmtWK6f4e+aqVM/EMjLtiDpYFGi1JZVQtLeujf2SJYdJZkO
+	 9mX/ntGd1MNOUdtvtV7cVhpgjeDLTwHBmeV2zJuCkM9vIYT1auWWRqfmmjEU29o4vkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794247120;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794247121;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=rPOvzWkUJq/t5Js23tuescAerfdO09GtRFy1lT5bZOE=;
-	b=Qy7/s9URjUh8Y/0q045pd9/sjiNGkgys87X5Or4drHTAxyzHrolY+PNibPHhXLhR4HpH
-	 dCa0FDTTWbMuD6D9D5VpFAIMK1240OIOUsMRxn2mi+O6yb/nrC/IT8BuSuURwmestw8hU
-	 7usaggunGHziLhkX39HDLx4bCU4xKmUDmCX1mRw4xDObih5NhOrZZvm6WxHH1/u3p0o9Z
-	 POm2Ep15uGtwz7TdPLLke5kXZHLlyrRaBf8booTw0SBms6vBNxwsrv+NlIZ8lSK7YoHMV
-	 rQ3SCxhMKFTrrpMNszH1maLCVCJTtvFmOKRBmlk3bzhZjw1NEKvs0jS9HQt6T6RtUtA==
+	bh=AoABK9sVWD8CUmv/vo9Fp7a6ac1c5zdUHY7NCBW+ZP0=;
+	b=mhcsqpVxqr1x7d0yW3BsfuJ28q8o4tULu8fnVvfvM7gcSz3fr4FvP3NtZ+0Z9IJMUZDg
+	 rbDPtX4vPSssyKR3uXk9TLUiFyTR3Xy/ai8EZmZlgBzXDKBsz8XRaPJcj9cvD7eXP1co8
+	 AlAAF6s713nlghZHMk0pU9PNSfn05r68jEYq3DPfSiu8+r5ajp7jkFRZCbngZF9FGJYiM
+	 TH5QTr7u/SVAW7PdDrgfylAkvwKSY2Q0vt4AGg+ngx49XusX+39o/QXUo92RKcciftmrx
+	 eVw5rbFPLG+mBVeeZl0luBSDpRPrTJ4WkJh/gx5BKPDcFEHNExGORAehNQtGHdlyp+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TuISpUT5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ITkWFb0x;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09C3606A325;
-	Mon,  9 Nov 2026 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680E4606A334;
+	Mon,  9 Nov 2026 17:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TuISpUT5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7C01F008A7;
-	Mon,  9 Nov 2026 17:58:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ITkWFb0x
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70871F008A5;
+	Mon,  9 Nov 2026 17:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794247119;
-	bh=rPOvzWkUJq/t5Js23tuescAerfdO09GtRFy1lT5bZOE=;
+	s=k20260515; t=1794247121;
+	bh=AoABK9sVWD8CUmv/vo9Fp7a6ac1c5zdUHY7NCBW+ZP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TuISpUT5QsQj5oHdR4GvZWSNGhLdkV/cfCpr4YUgdPUq80WRtMmfyK9NwWL/okrIP
-	 KNBDvd4nuHkdKtwz+VamZpFPFin8fQhWcZ1TSveezj33nGdAi0VuSsStH7RBk3wAcG
-	 f2+Wmnq7k3CxtqbGh9oF+LYUVbYR1tRtlftNe61/O0uBdNpUufFiTlUXQqd2jqlbL4
-	 7UrzhM7A0c9muY3ZS+QG1Vpw2s2POoAW/OvlucI8+7zOBbJQbF333s5YB1IsMV+UJd
-	 IhklI70kiQ72kKwlfCchA5t/oruTQR3Sn4y5jTxDWstNRKVuhL5ITmFVmfKW0uBh5x
-	 iUq47cbi49Eug==
+	b=ITkWFb0xFLX80k0K+y36ObLHJfCeNmfcK7f6mUkm1KMFjA2fz7n7mao8YwjPSudUG
+	 hphmJ6NMN5Mq6783Iim5AWPzaxh/YN6o/sikAzZwac/wFstFYF8w5D+B5QDOSoNhSs
+	 jEb8k5dqDaq5HCvvkJWOGxA2WLE3BsAFiJDrKFKUhy40SvLjHG1ifSvZ+LgBMUp61H
+	 hNjip0LryPoyrQwILoL9j7oXA6/44g6HUbIF7JQSCXti3ff+Oi3soh/zXxX9CFeL1v
+	 QC7inQqRDHTSAhz52RSUJBBoOa29gwb376LeHPoNrL8/IWo2KRZRaEtZbKFKCob/Wq
+	 vC8Q3sI+JeSHA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -51,9 +51,9 @@ Cc: netdev@vger.kernel.org,
 	cel@kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 2/5] tls: Consume empty data records in tls_sw_splice_read()
-Date: Mon,  9 Nov 2026 09:58:33 -0800
-Message-ID: <20261109175836.1246840-3-kuba@kernel.org>
+Subject: [PATCH net 5/5] selftests: tls: Cover the cap on consecutive empty records
+Date: Mon,  9 Nov 2026 09:58:36 -0800
+Message-ID: <20261109175836.1246840-6-kuba@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261109175836.1246840-1-kuba@kernel.org>
 References: <20261109175836.1246840-1-kuba@kernel.org>
@@ -68,97 +68,157 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chuck Lever <cel@kernel.org>
+Check through both recv() and splice() that a run of 128 empty data
+records is consumed and the data record behind it is delivered, and
+that a run of 129 breaks the connection with EBADMSG before the data
+record can be read. Two runs of 128 with a read returning EAGAIN in
+between must not break the connection, the cap applies to a burst the
+reader cannot keep up with, not to the connection as a whole.
 
-A zero-length application_data record decrypts to full_len == 0,
-so tls_sw_splice_read() splices zero bytes and returns zero. A zero
-return from a splice read means EOF, and the caller tears down a
-connection that is still live.
+kTLS cannot send an empty record. A TLS 1.3 record of type 0 whose
+only byte is the data content type decrypts to one, since the receiver
+strips the 0 as padding.
 
-Consume the record and fetch the next one, as tls_sw_read_sock()
-does. The cap on consecutive empty records bounds the loop.
-
-When an empty record precedes a close_notify, splice(2) now returns
--EINVAL from the control-record test instead of a false EOF. A
-splice that reaches an alert record already reports -EINVAL.
-
-Fixes: c46234ebb4d1 ("tls: RX path for ktls")
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Closes: https://lore.kernel.org/netdev/akaoXcfamBp8_mYe@krikkit/
-Signed-off-by: Chuck Lever <cel@kernel.org>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-Jakub:
- - rewrite as a loop to avoid the non-error-handling goto
----
- net/tls/tls_sw.c | 48 ++++++++++++++++++++++++++++--------------------
- 1 file changed, 28 insertions(+), 20 deletions(-)
+ tools/testing/selftests/net/tls.c | 124 ++++++++++++++++++++++++++++++
+ 1 file changed, 124 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index adf3b26b8a75..b05b9e76bd25 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2044,32 +2044,40 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	if (err)
- 		goto splice_read_end;
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index ed7feeac1cc4..48409f06a975 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -2889,6 +2889,130 @@ TEST_F(zero_len_splice, test)
+ 	close(p[1]);
+ }
  
--	if (!skb_queue_empty(&ctx->rx_list)) {
--		skb = __skb_dequeue(&ctx->rx_list);
--	} else {
--		struct tls_decrypt_arg darg;
-+	for (;;) {
-+		if (!skb_queue_empty(&ctx->rx_list)) {
-+			skb = __skb_dequeue(&ctx->rx_list);
-+		} else {
-+			struct tls_decrypt_arg darg;
- 
--		err = tls_rx_rec_wait(sk, nonblock, true, false);
--		if (err <= 0)
--			goto splice_read_end;
-+			err = tls_rx_rec_wait(sk, nonblock, true, false);
-+			if (err <= 0)
-+				goto splice_read_end;
- 
--		memset(&darg.inargs, 0, sizeof(darg.inargs));
-+			memset(&darg.inargs, 0, sizeof(darg.inargs));
- 
--		err = tls_rx_one_record(sk, NULL, &darg);
--		if (err < 0)
--			goto splice_read_end;
-+			err = tls_rx_one_record(sk, NULL, &darg);
-+			if (err < 0)
-+				goto splice_read_end;
- 
--		tls_rx_rec_done(ctx);
--		skb = darg.skb;
--	}
-+			tls_rx_rec_done(ctx);
-+			skb = darg.skb;
-+		}
- 
--	rxm = strp_msg(skb);
--	tlm = tls_msg(skb);
-+		rxm = strp_msg(skb);
-+		tlm = tls_msg(skb);
- 
--	/* splice does not support reading control messages */
--	if (tlm->control != TLS_RECORD_TYPE_DATA) {
--		err = -EINVAL;
--		goto splice_requeue;
-+		/* splice does not support reading control messages */
-+		if (tlm->control != TLS_RECORD_TYPE_DATA) {
-+			err = -EINVAL;
-+			goto splice_requeue;
-+		}
++FIXTURE(zero_len_run)
++{
++	int fd, cfd;
++	bool notls;
++};
 +
-+		/* Splicing zero bytes would read as EOF */
-+		if (rxm->full_len)
-+			break;
++/* Before each of two reads, send n[i] empty records followed by a data
++ * record if data[i] is set. ret[i] is the result of the read.
++ */
++FIXTURE_VARIANT(zero_len_run)
++{
++	unsigned int n[2];
++	bool data[2];
++	int ret[2];
++};
 +
-+		consume_skb(skb);
- 	}
- 
- 	chunk = min_t(unsigned int, rxm->full_len, len);
++FIXTURE_VARIANT_ADD(zero_len_run, 128)
++{
++	.n = { 128, 0, },
++	.data = { true, false, },
++	.ret = { 4, -EAGAIN, },
++};
++
++/* More than 128 consecutive empty records break the connection */
++FIXTURE_VARIANT_ADD(zero_len_run, 129)
++{
++	.n = { 129, 0, },
++	.data = { true, false, },
++	.ret = { -EBADMSG, -EAGAIN, },
++};
++
++/* The count starts over on every read */
++FIXTURE_VARIANT_ADD(zero_len_run, 128_128)
++{
++	.n = { 128, 128, },
++	.data = { false, true, },
++	.ret = { -EAGAIN, 4, },
++};
++
++FIXTURE_SETUP(zero_len_run)
++{
++	struct tls_crypto_info_keys tls13;
++	int ret;
++
++	tls_crypto_info_init(TLS_1_3_VERSION, TLS_CIPHER_AES_GCM_128,
++			     &tls13, 0);
++
++	ulp_sock_pair(_metadata, &self->fd, &self->cfd, &self->notls);
++	if (self->notls)
++		return;
++
++	ret = setsockopt(self->fd, SOL_TLS, TLS_TX, &tls13, tls13.len);
++	ASSERT_EQ(ret, 0);
++	ret = setsockopt(self->cfd, SOL_TLS, TLS_RX, &tls13, tls13.len);
++	ASSERT_EQ(ret, 0);
++}
++
++FIXTURE_TEARDOWN(zero_len_run)
++{
++	close(self->fd);
++	close(self->cfd);
++}
++
++static void zero_len_run_send(struct __test_metadata *_metadata, int fd,
++			      const FIXTURE_VARIANT(zero_len_run) *variant,
++			      int i)
++{
++	/* kTLS cannot send an empty record. Send the data content type as
++	 * the only byte of a record of type 0 instead, the receiver strips
++	 * the 0 as padding and sees an empty data record.
++	 */
++	char data_type = 0x17;
++	unsigned int j;
++
++	for (j = 0; j < variant->n[i]; j++)
++		ASSERT_EQ(tls_send_cmsg(fd, 0, &data_type, 1, 0), 1);
++	if (variant->data[i])
++		ASSERT_EQ(send(fd, "data", 4, 0), 4);
++}
++
++static void zero_len_run_expect(struct __test_metadata *_metadata,
++				ssize_t ret, int expected)
++{
++	EXPECT_EQ(ret, expected >= 0 ? expected : -1);
++	if (expected < 0)
++		EXPECT_EQ(errno, -expected);
++}
++
++TEST_F(zero_len_run, recv)
++{
++	char buf[16];
++	int i;
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	for (i = 0; i < 2; i++) {
++		zero_len_run_send(_metadata, self->fd, variant, i);
++		zero_len_run_expect(_metadata,
++				    recv(self->cfd, buf, sizeof(buf),
++					 MSG_DONTWAIT),
++				    variant->ret[i]);
++	}
++}
++
++TEST_F(zero_len_run, splice)
++{
++	int i, p[2];
++
++	if (self->notls)
++		SKIP(return, "no TLS support");
++
++	ASSERT_GE(pipe(p), 0);
++	for (i = 0; i < 2; i++) {
++		zero_len_run_send(_metadata, self->fd, variant, i);
++		zero_len_run_expect(_metadata,
++				    splice(self->cfd, NULL, p[1], NULL, 16,
++					   SPLICE_F_NONBLOCK),
++				    variant->ret[i]);
++	}
++	close(p[0]);
++	close(p[1]);
++}
++
+ FIXTURE(tls_err)
+ {
+ 	int fd, cfd;
 -- 
 2.56.0
 
