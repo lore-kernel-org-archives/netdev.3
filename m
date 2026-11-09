@@ -1,90 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794259567;
-	b=BY3ErmkJOnDko2kw7An4fFvNF63fQxNy6td8XO+BEJO1yYToX2tZfJpLUtgL2O9LEoWO
-	 mWNLOtIKktNdBaB54B4veDV4llsSt/aGLxiy1IoH0vgdam80Ix3Ani7hWUjBoA61S5NBV
-	 ca94FEhTkOlNLTqbVwWel2Jod6PBMjoEWuVBz2THV5lC+PJQ87C02NBw50sjJvm+2p8pH
-	 FIu32ktRKjEEOgxSrPbBBr0AeYM0DNbp6NNPl1T5siRj6v3LXY2WAddkz5gSi5LSByImX
-	 U6AmNu1T6zChziMZN4PKF+fGfwATZD0tUdk0Wmgu3mHEet0XS5sSHo9bC/Mm3bACa6Q==
+	t=1794259572;
+	b=wWc/uqM/FqpApv+PIoyjR7etDOizAPGFwFoOQryztnfBuyAHhPLC/ccXao+NoXp39msE
+	 hOb7aCSIbqVzePkK+7xIBl9eX9NkmHj091wktzWkcAmcAJZ6yMrsaUA5P8pn9nT0RAyOD
+	 aoY8OR/jyJJne3IbHaP1+5w9hDs82dCJT2aH0m7JLsnhwotlLiQU5LLr3HMC9ZyK1tXVj
+	 J0Zfs+vXmSNwFE5DI6q6olm3SG0uIypf5JQmxBc/Mt/2TBslSziefpZTiPC1dt//rt6Bp
+	 0ql+IeV7jgfFLWKDwLHIdnpJi/wkfI4Y4IL8ymixCeRPI/0fHsRuDxd0T2Hn4Cweo3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794259567;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794259572;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Q3zcQMqDEH3O4I4+hR+PZsKAFNrSci/jyKXEhYKAnVI=;
-	b=XpabKrE2e6BeXvy4xRBUVEwbRlyRN8KYHsMfHmZWYn30QXXtyVXRhI9aii4DQUsSeQ6Q
-	 F2+bxtLB4PpJxxzjOun5m3H5xI4zdYYlOY8fozR/SNhqR9TfnR5GhGlg8vLe+APYu4lyB
-	 zZHUtLTxvlzaYL5jrawu02O72LG53tKVqCN7LS650R3b34cDJaWFnerqo063rVcHl67Cn
-	 1/Stq0jmRXh4fHezst/FZmA1tG+eWdXhr2omJGudnYg4JC4guo2sAwETXJQRaoGlhoqS2
-	 giynVuHSTnNAVa2r7S837DP/IHeSAivXX0SWLgYbikF8AL1e7lXo+dwt8vqRu3ndUsQ==
+	bh=TL0XXlxMki1a0bp6bZbxAAcouCZGrlzuovLgQQ30PI0=;
+	b=08H7lWUupIXmZ6lcrJvzHxsYBCl6vyODr2b52O9zE/l0WgeSs59dQ08J3BM1TUmr5Gbv
+	 1sL5+uFpV/CgdrnMlXCwyG6MjoOvxUp314DHmWMSSxl5QbVFvkRIk4GifTB6R+36uggX+
+	 1O7Fm2+ag4DyAIdd3zrfsTS/CJq4POGCgRgvaz8hQPGWj750w1aVWsZsLec3WhaTEmDCm
+	 CFn6Y/tohhPiWpyjbMXibyT2d5TFDdpXCe04bd73vVbWtFNobhcYZ1eb/Ll3nvStfpXmd
+	 Q9FaglTZJj0y2PkbAQKC3qZuAVVtzT7VKYyJ0HVNVJOK8CcirqsH0letW/Uk4QOdI+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=networkplumber.org;
 	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Lfk8B9sr;
-	arc=none smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=qm3ppeH9;
+	arc=none smtp.remote-ip=209.85.210.173
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814BA606A33E
-	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 21:26:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 814BA606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4D160A2605
+	for <netdev@vger.kernel.org>; Mon,  9 Nov 2026 21:26:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C4D160A2605
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Lfk8B9sr
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8b5c3288e6cso568336b3a.3
-        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 13:26:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=qm3ppeH9
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a058315c79so673636b3a.3
+        for <netdev@vger.kernel.org>; Mon, 09 Nov 2026 13:26:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794259566; x=1794864366; darn=vger.kernel.org;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1794259571; x=1794864371; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q3zcQMqDEH3O4I4+hR+PZsKAFNrSci/jyKXEhYKAnVI=;
-        b=Lfk8B9sr0lgKElu4HJrNBUGqjjuLEZkfJ+b4qjFZX0Z7Y1kKVwmX3TR2Lc4/sJFDIo
-         bv+9IWdCZoVBsz6R52w9rvBjaah7N3U4GlmqAi1f2oxXuIyTFB7eg3/YjuQBp20LftAM
-         UzxhMacm2o4gAHAjFEz1I2jFbqHFMqoDL+HzebaY/WqxTSZbL3Qxq8qp8R6BRBaR6Fzy
-         PNdIBQgeukA8BblI8OZhrS9yfbD2/hZH/o/S/k795aaJQlX9vfVebGfgOMJHclPkQVMb
-         HjnTH0Cv86KXzdFIfk7dApluKhrei+CjEtjHfegefJ/JPK+8jciA0Aa51EoWF3NMaw0z
-         RDJQ==
+        bh=TL0XXlxMki1a0bp6bZbxAAcouCZGrlzuovLgQQ30PI0=;
+        b=qm3ppeH9wm6ONcFQVC4biQP7jKniaFD/2/uYwgCg5IhymnDrqatLeKubcnUd2xTVSr
+         Q1byY9Ri665mibCVCT3LFYxHQSP0XcBphiOQxJDl5MMHHo1naFqYQQDawAmqctL4Qixe
+         8/GpUd5l5v5YlxWkjq3Z+CbsLRUT9AaUc6VpLZU5DGQx2bSYoVtqdYT2MEA6GZ9IFVxC
+         YqtOvE2bsUylgpZuT7Bv4+zJoKgsG1eF5sXaioeDfh987jGPv8lFXx5tvu7Jz/4T5jpn
+         f0gE7eP3DT9sruq7PJy4jtLhH2Ety14QrmlG89MkNCe7YKJWQ47mmue0vFW5+renyZfy
+         oAoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794259566; x=1794864366;
+        d=1e100.net; s=20260707; t=1794259571; x=1794864371;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q3zcQMqDEH3O4I4+hR+PZsKAFNrSci/jyKXEhYKAnVI=;
-        b=SYRW+fQaBMmb4yoebZLfR5CpLzJQrxxGeYf16LH4bX98M8MaxtXSsTUGev3hDKVHdV
-         /nu80EcMNBGpFCcdClMGaxfIG6VaEu71p7OCIeoaGwRwh8SzOhscD728t+xY9KOYWIaP
-         D4rHniZMVYuOeX4DRieGpPCvaXYzxOtIxnrEy+VJitvjcopiwhg//rAQ1EwDin4Dn1mQ
-         /lb3ftuHp41o8Cl9owMq0QSFhgaj4zADXCgnhlobSEU96iKSBIOnrEbBzQ0lbkoDaCFY
-         ORlQ+MXliu3/BUlPOMiUTg9FKJ2zrYWldZeY5VcjHAkqLGcHyrNl5ikUFmT8A4xLwL43
-         vMRg==
-X-Gm-Message-State: APuU4Z8JrCGtPazPO4lrvqTlEqlPxcUHNU03oP2xHH/BHwab74o4a7wt
-	9w/gt5BtWaR/EXeatJx+zqwfh5/7YRVqXQVLzEyixO3wDDEvWD8kYbMKXuokUvZMdkDZ4X+G6ho
-	mNgAZbMk=
-X-Gm-Gg: AYBFou0pbaz2imgqeWVATU2JBzuBIkeT/1xVQwcRHcl6muknOiRQZXT3a2IHTgbAB7o
-	c8m//OsNlV16rL1nKkvSX0s0kq12ZUNzVk8xhc7HUTLXSqdRRjPReimzp+i7HvvSwWDLKEyfhUw
-	DbPEUgQfZ17gViifVSyLnEMzJLU2PHHjHkfyOC4uQ0j52MhwBa4UQkemOv/V3Feu9AKUpcgCnBW
-	hgSQkV3W9ysNz/HGayhGIJqJsoFSzPym5KxNuBgTjIjgiaarymCGh3etQIQ8IzJ3iolvZ6HYX+u
-	EUmFiyj2XpX3yG/pFJ89dkgU6wHSIyadom+cL7AIUNEN4rnFbbzMZNN5mmLNReVsqPrLTHJhbvq
-	/19XXCg+pQX8JG9TJHbby/wO8lrISm9VErmfq1RrWIVofGbC29MNNbzJMrDtzwzfA8SCezHR0nV
-	3FFzM7ty7wtIX9TMclVuKBvsRW1bQvZuUYiVutvuDb51z7SVoPgz3CP2v8oUCy9UHUCh/fU8cwJ
-	j9KyUfzvrWLe6I0+hCPfGNyZlmrui2iHInvxdSBG6IXt6kcApmo/WTnTKfNlgEEBFr3C8R6Dbeb
-	NcCyszraE7dnFwuHBx6vuPtM7A5n//Y+OtQMmU0sxcYVroKSaKMK9V60Ts6S/URbqYuc
-X-Received: by 2002:aa7:9312:0:b0:89e:43ee:6549 with SMTP id d2e1a72fcca58-8ba83bcfdaamr807414b3a.5.1794259565881;
-        Mon, 09 Nov 2026 13:26:05 -0800 (PST)
+        bh=TL0XXlxMki1a0bp6bZbxAAcouCZGrlzuovLgQQ30PI0=;
+        b=Ac5P0qJFvEb6QvUZ4F2gk9ApXEFjOyUKO0LX34kmgaqi8KBAEWD3uvYfI218oDlQ6O
+         6fD/7ErPBKpirV+wS5f85VvGTYvV9b/2TeDIGCv6Ml1R95Ov2uya53+33iihBKMy3kDM
+         3IDpUm6vS5FJCv3XAbAR+H6fmrZI0YeOhYK9PwZ0w6bBOdh3XEcLpcjfPcbWtr057ptG
+         +OjqoTzju9ytARQHESiPDWCeJAcWX4iIRoOzo+wUexdUlp/8MfksPFb4U47giSTPmgCF
+         hGlv8Ebx1pd98O59064tNqyA+VaYVbbj8Z6au+MrqpupMk/4UOxKxsKQs5PHgRHaIjhl
+         4k7Q==
+X-Gm-Message-State: APuU4Z8xibEXMHNcNzHdGEgtxx07eeodZo7rp7kDjYqwxL9e+fi61VIe
+	ch7Rq8wvZ48l4mGuS5Xgmnex2tf2QtwA2DteNpsM+qWvzGfuM6tn/vM+jTpMaxoZwt9hWAI5lpu
+	c0tTpuKU=
+X-Gm-Gg: AYBFou0BCDDORM45QXn/NehiHvzCIWTnAfm27rPOJPRivU5WQ0fT+cFwjFqLf/MdRyo
+	M6EihyBlvWtw85HYj7klYNd94aKkAVv9vIntMjICXzledgowNZ5DN03JCAF9WDwXd5XM3J5MATE
+	N0Oyv7bJ5JxDXI9HuETFq4Len1Y1S0j+ESb9O2IBGh87iQE85phmLNqDT0bk9NXjKA7gPBKuuEc
+	x3c5tNQJut2f9qKdrkiXWv2uvUUQeXYbvC2Q1Q1y//wMSeBuGrwfX6KPk4XG9alS5DEOI//gJzp
+	v47rDhLaOO9KBfx/uIbqRIEHTlLXbWPUUpXObpeSBZGxhlBhx2XwSwz/+KLd22kWD2QtefC60jU
+	pEkfifHBO/RCoYNzpEuvrnMZMu06WOvovxy2DukajXfgiQCH57Ywrw6qdy9rJXjEVESGHvXMc47
+	k2c4E1fyjQ0e08cGPH8n7Rxof5o1T69aPKZhYB14gmISGZpWS/a+uip3X4PUGl+I/ts5DoJQSsI
+	sjx2QuPXsNRYbsLkIoUo9LpSCZzRgytoTpMJrY4V/2mxMrMoluyNs8CfLfwJaKSmdzesN6tnMRG
+	Tb+G62KO+Bu8Vnkx+S3vjfYPWu7c1+cFoVTwZKT+ME0IUVlT1Ee9+hps1lESHyEBzcgi
+X-Received: by 2002:a05:6a00:e0e:b0:886:73c9:89d7 with SMTP id d2e1a72fcca58-8ba85237216mr792341b3a.11.1794259571544;
+        Mon, 09 Nov 2026 13:26:11 -0800 (PST)
 Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de3619sm122854b3a.5.2026.11.09.13.26.04
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baa7de3619sm122854b3a.5.2026.11.09.13.26.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 13:26:04 -0800 (PST)
+        Mon, 09 Nov 2026 13:26:10 -0800 (PST)
 From: Stephen Hemminger <stephen@networkplumber.org>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
 	Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute2 03/11] ss: escape names chosen by the socket owner
-Date: Mon,  9 Nov 2026 13:25:19 -0800
-Message-ID: <20261109212559.39661-4-stephen@networkplumber.org>
+Subject: [PATCH iproute2 08/11] ss: read socket SELinux context only for -z
+Date: Mon,  9 Nov 2026 13:25:24 -0800
+Message-ID: <20261109212559.39661-9-stephen@networkplumber.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261109212559.39661-1-stephen@networkplumber.org>
 References: <20261109212559.39661-1-stephen@networkplumber.org>
@@ -99,108 +99,76 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unix socket names and process names are set by whoever owns the
-socket and can contain newlines, control characters or a double
-quote. They reached the output unchanged, so a local user could
-split a row, insert a fake one, or, since -p prints the process name
-inside double quotes, make a bogus pid appear:
+user_ent_hash_build_task() called getfilecon() on /proc/PID/fd/N
+for every socket, even without -z, and the path was resolved again
+after readlink() had seen a socket. The owner of the descriptor
+could swap in a file on a FUSE mount it serves and hang ss -p
+in getxattr.
 
-  users:(("x",pid=1,fd=3",pid=268,fd=3))
+Only look up the context for -z, and read it through an O_PATH
+descriptor after checking with readlink(), which does not call into
+the file's filesystem, that it is still the same socket.
 
-Escape them with escape_str(), and replace the double quote
-there like the other non-printing characters. Set LC_CTYPE from the
-environment so UTF-8 names stay intact instead of having every
-non-ASCII byte replaced.
-
-Reported-by: Anthropic OSS scanner (ANT-2026-4X7MF603)
-Reported-by: Anthropic OSS scanner (ANT-2026-CAAB6GZ9)
-Assisted-by: Claude:claude-opus-5
+Reported-by: Anthropic OSS scanner (ANT-2026-EPMKLNM2)
+Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- lib/escape.c |  7 ++++---
- misc/ss.c    | 13 +++++++++++--
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ misc/ss.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/lib/escape.c b/lib/escape.c
-index b110f61b..e4646bc5 100644
---- a/lib/escape.c
-+++ b/lib/escape.c
-@@ -50,7 +50,7 @@ static const char UTF_tab[] = {
- 
- static const unsigned char ESC_tab[] = {
- 	"@..............................." // 0x00 - 0x1F
--	"||||||||||||||||||||||||||||||||" // 0x20 - 0x3F
-+	"||?|||||||||||||||||||||||||||||" // 0x20 - 0x3F
- 	"||||||||||||||||||||||||||||||||" // 0x40 - 0x5f
- 	"|||||||||||||||||||||||||||||||." // 0x60 - 0x7F
- 	"????????????????????????????????" // 0x80 - 0x9F
-@@ -83,8 +83,9 @@ static void esc_ctl(unsigned char *str, int len)
- 			esc_all(str);
- 			return;
- 		}
--		// and eliminate those non-printing control characters
--		if (*str < 0x20 || *str == 0x7f)
-+		// and eliminate those non-printing control characters,
-+		// plus double quote which callers use as a delimiter
-+		if (*str < 0x20 || *str == 0x7f || *str == '"')
- 			*str = '?';
- 		str += n;
- 		i += n;
 diff --git a/misc/ss.c b/misc/ss.c
-index b93df60f..4462a479 100644
+index 74cb3be1..4b3d1fa4 100644
 --- a/misc/ss.c
 +++ b/misc/ss.c
-@@ -25,6 +25,7 @@
- #include <limits.h>
- #include <stdarg.h>
- #include <ctype.h>
-+#include <locale.h>
+@@ -533,6 +533,38 @@ static void user_ent_add(unsigned int ino, char *task,
  
- #include "ss_util.h"
- #include "utils.h"
-@@ -4075,10 +4076,13 @@ static bool unix_type_skip(struct sockstat *s, struct filter *f)
- static void unix_stats_print(struct sockstat *s, struct filter *f)
- {
- 	char port_name[30] = {};
-+	char name[128];
+ #define MAX_PATH_LEN	1024
  
- 	sock_state_print(s);
- 
--	sock_addr_print(s->name ?: "*", " ",
-+	/* name is chosen by whoever bound the socket, may contain newlines */
-+	escape_str(name, s->name ?: "*", sizeof(name));
-+	sock_addr_print(name, " ",
- 			uint_to_str(s->lport, port_name), NULL);
- 	sock_addr_print(s->peer_name ?: "*", " ",
- 			uint_to_str(s->rport, port_name), NULL);
-@@ -4611,6 +4615,7 @@ static int netlink_show_one(struct filter *f,
- 	if (pid == -1) {
- 		procname[0] = '*';
- 	} else if (!numeric) {
-+		char task[16];
- 		int done = 0;
- 
- 		if (!pid) {
-@@ -4618,7 +4623,8 @@ static int netlink_show_one(struct filter *f,
- 			strncpy(procname, "kernel", 7);
- 		} else if (pid > 0) {
- 			if (get_task_name(getenv("PROC_ROOT"), pid,
--					  procname, sizeof(procname)) == 0) {
-+					  task, sizeof(task)) == 0) {
-+				escape_str(procname, task, sizeof(procname));
- 				snprintf(procname + strlen(procname),
- 					 sizeof(procname) - strlen(procname),
- 					 "/%d", pid);
-@@ -5357,6 +5363,9 @@ int main(int argc, char *argv[])
- 	int ch;
- 	int state_filter = 0;
- 
-+	/* needed by escape_str() to pass through UTF-8 names */
-+	setlocale(LC_CTYPE, "");
++/* The owner of a descriptor can point $PROC_ROOT/$ID/fd/$FD elsewhere
++ * (e.g. at a file on a FUSE mount it serves) after readlink() saw a socket.
++ * Pin the object and check it is still that socket before reading its label.
++ * The check uses readlink(), which does not call into the filesystem of
++ * the pinned object.
++ */
++static int user_ent_sock_context(const char *path, unsigned int ino,
++				 char **context)
++{
++	unsigned int pinned;
++	char self[64];
++	char lnk[64];
++	ssize_t len;
++	int ret = -1;
++	int fd;
 +
- 	while ((ch = getopt_long(argc, argv,
- 				 "halBetuwxnro460spTbEf:mMiA:D:F:vVzZN:KHQSO",
- 				 long_opts, NULL)) != EOF) {
++	fd = open(path, O_PATH | O_CLOEXEC);
++	if (fd < 0)
++		return -1;
++
++	snprintf(self, sizeof(self), "/proc/self/fd/%d", fd);
++	len = readlink(self, lnk, sizeof(lnk) - 1);
++	if (len > 0) {
++		lnk[len] = '\0';
++		if (sscanf(lnk, "socket:[%u]", &pinned) == 1 && pinned == ino)
++			ret = getfilecon(self, context);
++	}
++
++	close(fd);
++	return ret;
++}
++
+ static void user_ent_hash_build_task(char *path, int pid, int tid)
+ {
+ 	const char *no_ctx = "unavailable";
+@@ -580,7 +612,8 @@ static void user_ent_hash_build_task(char *path, int pid, int tid)
+ 		if (sscanf(lnk, "socket:[%u]", &ino) != 1)
+ 			continue;
+ 
+-		if (getfilecon(path, &sock_context) <= 0)
++		if (!show_sock_ctx ||
++		    user_ent_sock_context(path, ino, &sock_context) <= 0)
+ 			sock_context = strdup(no_ctx);
+ 
+ 		if (task[0] == '\0') {
 -- 
 2.53.0
 
